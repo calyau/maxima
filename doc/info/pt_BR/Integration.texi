@@ -28,11 +28,11 @@ integrais em termos de fun@value{cedilha}@~{o}es desconhecidas tais como @code{g
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o, Introdu@value{cedilha}@~{a}o a QUADPACK, Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} changevar (@mvar{expr}, @mvar{f(x,y)}, @mvar{y}, @mvar{x})
 Faz a mudan@value{cedilha}a de vari@'{a}vel dada por
-@code{@var{f(x,y)} = 0} em todas as integrais que ocorrem em @var{expr} com integra@value{cedilha}@~{a}o em
-rela@value{cedilha}@~{a}o a @var{x}.
-A nova vari@'{a}vel @'{e} @var{y}.
+@code{@mvar{f(x,y)} = 0} em todas as integrais que ocorrem em @mvar{expr} com integra@value{cedilha}@~{a}o em
+rela@value{cedilha}@~{a}o a @mvar{x}.
+A nova vari@'{a}vel @'{e} @mvar{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -90,7 +90,7 @@ fun@value{cedilha}@~{a}o de grau mais alto.  E.g.,
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Fun@value{cedilha}@~{a}o} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} dblint (@mvar{f}, @mvar{r}, @mvar{s}, @mvar{a}, @mvar{b})
 Uma rotina de integral dupla que foi escrita no 
 alto-n@'{i}vel do Maxima e ent@~{a}o traduzida e compilada para linguagem de m@'{a}quina.
 Use @code{load (dblint)} para acessar esse pacote.  Isso usa o m@'{e}todo da regra de 
@@ -104,31 +104,31 @@ Simpson em ambas as dire@value{cedilha}@~{o}es x e y para calcular
 /a /r(x)
 @end example
 
-A fun@value{cedilha}@~{a}o @var{f} deve ser uma fun@value{cedilha}@~{a}o traduzida ou compilada de duas
-vari@'{a}veis, e @var{r} e @var{s} devem cada uma ser uma fun@value{cedilha}@~{a}o traduzida ou
-compilada de uma vari@'{a}vel, enquanto @var{a} e @var{b} devem ser n@'{u}meros em ponto
+A fun@value{cedilha}@~{a}o @mvar{f} deve ser uma fun@value{cedilha}@~{a}o traduzida ou compilada de duas
+vari@'{a}veis, e @mvar{r} e @mvar{s} devem cada uma ser uma fun@value{cedilha}@~{a}o traduzida ou
+compilada de uma vari@'{a}vel, enquanto @mvar{a} e @mvar{b} devem ser n@'{u}meros em ponto
 flutuante.  A rotina tem duas vari@'{a}veis globais que determinam o
 n@'{u}mero de divis@~{o}es dos intervalos x e y: @code{dblint_x} e @code{dblint_y},
 ambas as quais s@~{a}o inicialmente 10, e podem ser alteradas independentemente para
 outros valores inteiros (existem @code{2*dblint_x+1} pontos calculados na
 dire@value{cedilha}@~{a}o x , e @code{2*dblint_y+1} na dire@value{cedilha}@~{a}o y).
 A rotina subdivide o eixo X e ent@~{a}o para cada valor de X isso
-primeiro calcula @code{@var{r}(x)} e @code{@var{s}(x)}; ent@~{a}o o eixo Y entre @code{@var{r}(x)} e @code{@var{s}(x)} @'{e}
+primeiro calcula @code{@mvar{r}(x)} e @code{@mvar{s}(x)}; ent@~{a}o o eixo Y entre @code{@mvar{r}(x)} e @code{@mvar{s}(x)} @'{e}
 subdividido e a integral ao longo do eixo Y @'{e} executada usando
 a regra de Simpson; ent@~{a}o a integral ao longo do eixo X @'{e} conclu@'{i}da usando
 a regra de Simpson com os valores da fun@value{cedilha}@~{a}o sendo as integrais-Y.  Esse
 procedimento pode ser numericamente inst@'{a}vel por uma grande variedade raz@~{o}es,
 mas razo@'{a}velmente r@'{a}pido: evite usar isso sobre fun@value{cedilha}@~{o}es altamente oscilat@'{o}rias
 e fun@value{cedilha}@~{o}es com singularidades (postes ou pontos de ramifica@value{cedilha}@~{a}o na
-regi@~{a}o).  As integrais Y dependem de quanto fragmentados @code{@var{r}(x)} e @code{@var{s}(x)} s@~{a}o,
-ent@~{a}o se a dit@^{a}ncia @code{@var{s}(x) - @var{r}(x)} varia rapidamente com X, nesse ponto pode ter
+regi@~{a}o).  As integrais Y dependem de quanto fragmentados @code{@mvar{r}(x)} e @code{@mvar{s}(x)} s@~{a}o,
+ent@~{a}o se a dit@^{a}ncia @code{@mvar{s}(x) - @mvar{r}(x)} varia rapidamente com X, nesse ponto pode ter
 erros substanciais provenientes de trunca@value{cedilha}@~{a}o com diferentes saltos-tamanhos
 nas v@'{a}rias integrais Y.  Um pode incrementar @code{dblint_x} e @code{dblint_y} em
 uma tentativa para melhorar a converg@^{e}ncia da rei@~{a}o, com sacrif@'{i}cio do
 tempo de computa@value{cedilha}@~{a}o.  Os valores da fun@value{cedilha}@~{a}o n@~{a}o s@~{a}o salvos, ent@~{a}o se a
 fun@value{cedilha}@~{a}o @'{e} muito desperdi@value{cedilha}adora de tempo,voc@^{e} ter@'{a} de esperar por
 re-computa@value{cedilha}@~{a}o se voc@^{e} mudar qualquer coisa (desculpe).
-Isso @'{e} requerido que as fun@value{cedilha}@~{o}es @var{f}, @var{r}, e @var{s} sejam ainda traduzidas
+Isso @'{e} requerido que as fun@value{cedilha}@~{o}es @mvar{f}, @mvar{r}, e @mvar{s} sejam ainda traduzidas
 ou compiladas previamente chamando @code{dblint}.  Isso resultar@'{a} em ordens de
 magnitude de melhoramentos de velocidade sobre o c@'{o}digo interpretado em muitos casos!
 
@@ -138,10 +138,10 @@ magnitude de melhoramentos de velocidade sobre o c@'{o}digo interpretado em muit
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} defint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} defint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 Tenta calcular uma integral definida.
 @code{defint} @'{e} chamada por @code{integrate} quando limites de integra@value{cedilha}@~{a}o s@~{a}o especificados,
-i.e., quando @code{integrate} @'{e} chamado como @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
+i.e., quando @code{integrate} @'{e} chamado como @code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
 Dessa forma do ponto de vista do usu@'{a}rio, isso @'{e} suficiente para chamar @code{integrate}.
 @c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
 
@@ -152,7 +152,7 @@ Veja @code{quad_qag} e fun@value{cedilha}@~{o}es rellacionadas para aproxima@val
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} erf (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} erf (@mvar{x})
 Representa a fun@value{cedilha}@~{a}o de erro, cuja derivada @'{e}:
 @code{2*exp(-x^2)/sqrt(%pi)}.
 
@@ -168,9 +168,9 @@ come@value{cedilha}ar.
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} ilt (@var{expr}, @var{t}, @var{s})
-Calcula a transforma@value{cedilha}@~{a}o inversa de Laplace de @var{expr} em
-rela@value{cedilha}@~{a}o a @var{t} e par@^{a}metro @var{s}.  @var{expr} deve ser uma raz@~{a}o de
+@deffn {Fun@value{cedilha}@~{a}o} ilt (@mvar{expr}, @mvar{t}, @mvar{s})
+Calcula a transforma@value{cedilha}@~{a}o inversa de Laplace de @mvar{expr} em
+rela@value{cedilha}@~{a}o a @mvar{t} e par@^{a}metro @mvar{s}.  @mvar{expr} deve ser uma raz@~{a}o de
 polin@^{o}mios cujo denominador tem somente fatores lineares e quadr@'{a}ticos.
 Usando a fun@value{cedilha}@~{o}es @code{laplace} e @code{ilt} juntas com as fun@value{cedilha}@~{o}es @code{solve} ou
 @code{linsolve} o usu@'{a}rio pode resolver uma diferencial simples ou
@@ -215,15 +215,15 @@ pos;
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} integrate (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~{a}o} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
-Tenta s@'{i}mbolicamente calcular a integral de @var{expr} em rela@value{cedilha}@~{a}o a @var{x}.
-@code{integrate (@var{expr}, @var{x})} @'{e} uma integral indefinida,
-enquanto @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} @'{e} uma integral definida,
-com limites de integra@value{cedilha}@~{a}o @var{a} e @var{b}.
-Os limites n@~{a}o poderam conter @var{x}, embora @code{integrate} n@~{a}o imponha essa restri@value{cedilha}@~{a}o.
-@var{a} n@~{a}o precisa ser menor que @var{b}.
-Se @var{b} @'{e} igual a @var{a}, @code{integrate} retorna zero.
+@deffn {Fun@value{cedilha}@~{a}o} integrate (@mvar{expr}, @mvar{x})
+@deffnx {Fun@value{cedilha}@~{a}o} integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+Tenta s@'{i}mbolicamente calcular a integral de @mvar{expr} em rela@value{cedilha}@~{a}o a @mvar{x}.
+@code{integrate (@mvar{expr}, @mvar{x})} @'{e} uma integral indefinida,
+enquanto @code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})} @'{e} uma integral definida,
+com limites de integra@value{cedilha}@~{a}o @mvar{a} e @mvar{b}.
+Os limites n@~{a}o poderam conter @mvar{x}, embora @code{integrate} n@~{a}o imponha essa restri@value{cedilha}@~{a}o.
+@mvar{a} n@~{a}o precisa ser menor que @mvar{b}.
+Se @mvar{b} @'{e} igual a @mvar{a}, @code{integrate} retorna zero.
 
 Veja @code{quad_qag} e fun@value{cedilha}@~{o}es relacionadas para aproxima@value{cedilha}@~{a}o num@'{e}rica de integrais definidas.
 Veja @code{residue} para computa@value{cedilha}@~{a}o de res@'{i}duos (integra@value{cedilha}@~{a}o complexa).
@@ -236,10 +236,10 @@ ou uma express@~{a}o contendo uma ou mais formas substantivas.
 A forma substantiva de @code{integrate} @'{e} mostrada com um sinal de integral.
 
 Em algumas circunst@^{a}ncias isso @'{e} @'{u}til para construir uma forma substantiva manualmente,
-colocando em @code{integrate} um ap@'{o}strofo, e.g., @code{'integrate (@var{expr}, @var{x})}.
+colocando em @code{integrate} um ap@'{o}strofo, e.g., @code{'integrate (@mvar{expr}, @mvar{x})}.
 Por exemplo, a integral pode depender de alguns par@^{a}metos que n@~{a}o est@~{a}o ainda calculados.
-A forma substantiva pode ser aplicada a seus argumentos por @code{ev (@var{i}, nouns)}
-onde @var{i} @'{e} a forma substantiva de interesse.
+A forma substantiva pode ser aplicada a seus argumentos por @code{ev (@mvar{i}, nouns)}
+onde @mvar{i} @'{e} a forma substantiva de interesse.
 
 @c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} manuseia integrais definidas separadamente das indefinidas,
@@ -272,7 +272,7 @@ Se nenhum dos procedimentos heur@'{i}sticos acha uma integral indefinida,
 o algor@'{i}tmo de Risch @'{e} executado.
 O sinalizador @code{risch} pode ser escolhido como um @code{evflag},
 na chamada para @code{ev} ou na linha de comando,
-e.g., @code{ev (integrate (@var{expr}, @var{x}), risch)} ou @code{integrate (@var{expr}, @var{x}), risch}.
+e.g., @code{ev (integrate (@mvar{expr}, @mvar{x}), risch)} ou @code{integrate (@mvar{expr}, @mvar{x}), risch}.
 Se @code{risch} est@'{a} presente, @code{integrate} chama a fun@value{cedilha}@~{a}o @code{risch}
 sem tentar heur@'{i}sticas primeiro.  Veja tamb@'{e}m @code{risch}.
 @c END EXPOSITION ON HEURISTICS
@@ -468,16 +468,16 @@ Algumas vezes isso ajudar@'{a} Maxima a obter resultados mais @'{u}teis.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
-Tenta calcular a integral definida de @var{expr} pelo uso de 
-@code{limit} para avaliar a integral indefinida @var{expr} em rela@value{cedilha}@~{a}o a @var{x}
-no limite superior @var{b} e no limite inferior @var{a}.
+@deffn {Fun@value{cedilha}@~{a}o} ldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+Tenta calcular a integral definida de @mvar{expr} pelo uso de 
+@code{limit} para avaliar a integral indefinida @mvar{expr} em rela@value{cedilha}@~{a}o a @mvar{x}
+no limite superior @mvar{b} e no limite inferior @mvar{a}.
 Se isso falha para calcular a integral definida,
 @code{ldefint} retorna uma express@~{a}o contendo limites como formas substantivas.
 
 @code{ldefint} n@~{a}o @'{e} chamada por @code{integrate},
-ent@~{a}o executando @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} pode retornar um resultado diferente de
-@code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
+ent@~{a}o executando @code{ldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})} pode retornar um resultado diferente de
+@code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
 @code{ldefint} sempre usa o mesmo m@'{e}todo para avaliar a integral definida,
 enquanto @code{integrate} pode utilizar v@'{a}rias heur@'{i}sticas e pode reconhecer alguns casos especiais.
 
@@ -485,7 +485,7 @@ enquanto @code{integrate} pode utilizar v@'{a}rias heur@'{i}sticas e pode reconh
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
 @c WHAT IS THIS ABOUT EXACTLY ??
-@deffn {Fun@value{cedilha}@~{a}o} potential (@var{givengradient})
+@deffn {Fun@value{cedilha}@~{a}o} potential (@mvar{givengradient})
 O c@'{a}lculo faz uso da vari@'{a}vel global @code{potentialzeroloc[0]}
 que deve ser @code{nonlist} ou da forma
 
@@ -502,11 +502,11 @@ para 0.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} residue (@var{expr}, @var{z}, @var{z_0})
+@deffn {Fun@value{cedilha}@~{a}o} residue (@mvar{expr}, @mvar{z}, @mvar{z_0})
 Calcula o res@'{i}duo no plano complexo da
-express@~{a}o @var{expr} quando a vari@'{a}vel @var{z} assumes o valor @var{z_0}.  O
-res@'{i}duo @'{e} o coeficiente de @code{(@var{z} - @var{z_0})^(-1)} nas s@'{e}ries de Laurent
-para @var{expr}.
+express@~{a}o @mvar{expr} quando a vari@'{a}vel @mvar{z} assumes o valor @mvar{z_0}.  O
+res@'{i}duo @'{e} o coeficiente de @code{(@mvar{z} - @mvar{z_0})^(-1)} nas s@'{e}ries de Laurent
+para @mvar{expr}.
 
 @example
 (%i1) residue (s/(s**2+a**2), s, a*%i);
@@ -522,8 +522,8 @@ para @var{expr}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} risch (@var{expr}, @var{x})
-Integra @var{expr} em rela@value{cedilha}@~{a}o a @var{x} usando um
+@deffn {Fun@value{cedilha}@~{a}o} risch (@mvar{expr}, @mvar{x})
+Integra @mvar{expr} em rela@value{cedilha}@~{a}o a @mvar{x} usando um
 caso transcendental do algor@'{i}tmo de Risch.  (O caso alg@'{e}brico do
 algor@'{i}tmo de Risch foi implementado.)  Isso atualmente
 manuseia os casos de exponenciais aninhadas e logar@'{i}tmos que a parte
@@ -549,7 +549,7 @@ come@value{cedilha}ar.
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} tldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn
@@ -642,8 +642,8 @@ que possu@'{i}rem o ponto @math{x = c}.
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qag (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{chave}, @mvar{epsrel}, @mvar{limite})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qag (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{chave}, @mvar{epsrel}, @mvar{limite})
 
 Integra@value{cedilha}@~{a}o de uma fun@value{cedilha}@~{a}o gen@'{e}rica sobre um intervalo finito.
 @code{quad_qag} implementa um integrador adaptativo globalmente simples usando a estrat@'{e}gia de Aind (Piessens, 1973).
@@ -663,11 +663,11 @@ As regras de alto n@'{i}vel s@~{a}o adequadas para integrandos fortemente oscila
 $$\int_a^b {f(x) dx}$$
 @end tex
 
-A fun@value{cedilha}@~{a}o a ser integrada @'{e} @var{f(x)}, com vari@'{a}vel
-dependente @var{x}, e a fun@value{cedilha}@~{a}o @'{e} para ser integrada entre os
-limites @var{a} e @var{b}.  @var{chave} @'{e} o integrador a ser usado
+A fun@value{cedilha}@~{a}o a ser integrada @'{e} @mvar{f(x)}, com vari@'{a}vel
+dependente @mvar{x}, e a fun@value{cedilha}@~{a}o @'{e} para ser integrada entre os
+limites @mvar{a} e @mvar{b}.  @mvar{chave} @'{e} o integrador a ser usado
 e pode ser um inteiro entre 1 e 6, inclusive.  O valor de
-@var{chave} seleciona a ordem da regra de integra@value{cedilha}@~{a}o de Gauss-Kronrod.
+@mvar{chave} seleciona a ordem da regra de integra@value{cedilha}@~{a}o de Gauss-Kronrod.
 Regra de alta ordem s@~{a}o adequadas para integrandos fortemente oscilat@'{o}rios.
 
 O integrando pode ser especidficado como o nome de uma fun@value{cedilha}@~{a}o Maxima ou uma fun@value{cedilha}@~{a}o Lisp ou um operador,
@@ -677,9 +677,9 @@ A integra@value{cedilha}@~{a}o num@'{e}rica @'{e} conclu@'{i}da adaptativamente 
 regi@~{a}o de integra@value{cedilha}@~{a}o at@'{e} que a precis@~{a}o desejada for
 completada.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
+Os argumentos opcionais @mvar{epsrel} e @mvar{limite} s@~{a}o o erro relativo
 desejado e o n@'{u}mero m@'{a}ximo de subintervalos respectivamente.
-@var{epsrel} padr@~{a}o em 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} padr@~{a}o em 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qag} retorna uma lista de quatro elementos:
 
@@ -726,8 +726,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qags (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limite})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qags (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limite})
 
 Integra@value{cedilha}@~{a}o de uma fun@value{cedilha}@~{a}o geral sobre um intervalo finito.
 @code{quad_qags} implementa subdivis@~{a}o de intervalo globalmente adaptativa com extrapola@value{cedilha}@~{a}o
@@ -745,16 +745,16 @@ Integra@value{cedilha}@~{a}o de uma fun@value{cedilha}@~{a}o geral sobre um inte
 $$\int_a^b {f(x) dx}$$
 @end tex
 
-A fun@value{cedilha}@~{a}o a ser integrada @'{e} @var{f(x)}, com
-vari@'{a}vel dependente @var{x}, e a fun@value{cedilha}@~{a}o @'{e} para ser integrada
-entre os limites @var{a} e @var{b}.
+A fun@value{cedilha}@~{a}o a ser integrada @'{e} @mvar{f(x)}, com
+vari@'{a}vel dependente @mvar{x}, e a fun@value{cedilha}@~{a}o @'{e} para ser integrada
+entre os limites @mvar{a} e @mvar{b}.
 
 O integrando pode ser especidficado como o nome de uma fun@value{cedilha}@~{a}o Maxima ou uma fun@value{cedilha}@~{a}o Lisp ou um operador,
 uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
+Os argumentos opcionais @mvar{epsrel} e @mvar{limite} s@~{a}o o erro relativo
 desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o em 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} padr@~{a}o em 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qags} retorna uma lista de quatro elementos:
 
@@ -803,8 +803,8 @@ Note que @code{quad_qags} @'{e} mais preciso e eficiente que @code{quad_qag} par
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qagi (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{inftype}, @mvar{epsrel}, @mvar{limite})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qagi (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{inftype}, @mvar{epsrel}, @mvar{limite})
 
 Integra@value{cedilha}@~{a}o de uma fun@value{cedilha}@~{a}o gen@'{e}rica sobre um intervalo finito ou semi-finito.
 O intervalo @'{e} mapeado sobre um intervalo finito e
@@ -843,26 +843,26 @@ $$\int_{-\infty}^\infty {f(x) dx}$$
 @end tex
 
 usando a rotina Quadpack QAGI.  A fun@value{cedilha}@~{a}o a ser integrada @'{e}
-@var{f(x)}, com vari@'{a}vel dependente @var{x}, e a fun@value{cedilha}@~{a}o @'{e} para
+@mvar{f(x)}, com vari@'{a}vel dependente @mvar{x}, e a fun@value{cedilha}@~{a}o @'{e} para
 ser integrada sobre um intervalo infinito.
 
 O integrando pode ser especidficado como o nome de uma fun@value{cedilha}@~{a}o Maxima ou uma fun@value{cedilha}@~{a}o Lisp ou um operador,
 uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
 
-O par@^{a}metro @var{inftype} determina o intervalo de integra@value{cedilha}@~{a}o como segue:
+O par@^{a}metro @mvar{inftype} determina o intervalo de integra@value{cedilha}@~{a}o como segue:
 
 @table @code
 @item inf
-O intervalo vai de @var{a} ao infinito positivo.
+O intervalo vai de @mvar{a} ao infinito positivo.
 @item minf
-O intervalo vai do infinito negativo at@'{e} @var{a}.
+O intervalo vai do infinito negativo at@'{e} @mvar{a}.
 @item both
 O intervalo corresponde a toda reta real.
 @end table
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
+Os argumentos opcionais @mvar{epsrel} e @mvar{limite} s@~{a}o o erro relativo
 desejado e o n@'{u}mero maximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} padr@~{a}o para 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qagi} retorna uma lista de quatro elementos:
 
@@ -914,8 +914,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qawc (@mvar{f(x)}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limite})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qawc (@mvar{f}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limite})
 
 Calcula o valor principal de Cauchy de @math{f(x)/(x - c)} over a finite interval.
 A estrat@'{e}gia @'{e} globalmente adaptativa, e a integra@value{cedilha}@~{a}o de
@@ -935,15 +935,15 @@ $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
 usando a rotina Quadpack QAWC.  A fun@value{cedilha}@~{a}o a ser integrada @'{e}
-@code{@var{f(x)}/(@var{x} - @var{c})}, com vari@'{a}vel dependente @var{x}, e a fun@value{cedilha}@~{a}o
-@'{e} para ser integrada sobre o intervalo que vai de @var{a} at@'{e} @var{b}.
+@code{@mvar{f(x)}/(@mvar{x} - @mvar{c})}, com vari@'{a}vel dependente @mvar{x}, e a fun@value{cedilha}@~{a}o
+@'{e} para ser integrada sobre o intervalo que vai de @mvar{a} at@'{e} @mvar{b}.
 
 O integrando pode ser especidficado como o nome de uma fun@value{cedilha}@~{a}o Maxima ou uma fun@value{cedilha}@~{a}o Lisp ou um operador,
 uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
+Os argumentos opcionais @mvar{epsrel} e @mvar{limite} s@~{a}o o erro relativo
 desejado e o m@'{a}ximo n@'{u}mero de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} padr@~{a}o para 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qawc} retorna uma lista de quatro elementos:
 
@@ -1005,8 +1005,8 @@ Principal Value
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qawf (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qawf (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
 
 Calcula uma transforma@value{cedilha}@~{a}o de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
 usando a fun@value{cedilha}@~{a}o QAWF do pacote Quadpack.
@@ -1026,7 +1026,7 @@ aplicado a s@'{e}ries de contribui@value{cedilha}@~{o}es de integrais.
 $$\int_a^\infty f(x) w(x) dx$$
 @end tex
 
-A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
+A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @mvar{trig}:
 
 @table @code
 @item cos
@@ -1044,7 +1044,7 @@ Os argumentos opcionais s@~{a}o:
 @item epsabs
 Erro absoluto de aproxima@value{cedilha}@~{a}o desejado.  Padr@~{a}o @'{e} 1d-10.
 @item limit
-Tamanho de array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'{e} o
+Tamanho de array interno de trabalho.  (@mvar{limit} - @mvar{limlst})/2 @'{e} o
 maximo n@'{u}mero de subintervalos para usar.  O Padr@~{a}o @'{e} 200.
 @item maxp1
 O n@'{u}mero m@'{a}ximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~{a}o
@@ -1055,9 +1055,9 @@ Limite superior sobre n@'{u}mero de ciclos.  Deve ser maior ou igual a
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limit} s@~{a}o o erro relativo
+@mvar{epsabs} e @mvar{limit} s@~{a}o o erro relativo
 desejado e o n@'{u}mero maximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limit} @'{e} 200.
+@mvar{epsrel} padr@~{a}o para 1e-8 e @mvar{limit} @'{e} 200.
 
 @code{quad_qawf} retorna uma lista de quatro elementos:
 
@@ -1106,8 +1106,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qawo (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limite}, @mvar{maxp1}, @mvar{limlst})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qawo (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limite}, @mvar{maxp1}, @mvar{limlst})
 
 Integra@value{cedilha}@~{a}o de @math{cos(omega x) f(x)} ou @math{sin(omega x) f(x)} sobre um intervalo finito,
 onde @math{omega} @'{e} uma constante.
@@ -1128,7 +1128,7 @@ $$\int_a^b f(x) w(x) dx$$
 @end tex
 
 
-A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
+A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @mvar{trig}:
 
 @table @code
 @item cos
@@ -1146,7 +1146,7 @@ Os argumentos opcionais s@~{a}o:
 @item epsabs
 Erro absoluto desejado de aproxima@value{cedilha}@~{a}o.  O Padr@~{a}o @'{e} 1d-10.
 @item limite
-Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'{e} o
+Tamanho do array interno de trabalho.  (@mvar{limite} - @mvar{limlst})/2 @'{e} o
 n@'{u}mero m@'{a}ximo de subintervalos a serem usados.  Default @'{e} 200.
 @item maxp1
 N@'{u}mero m@'{a}ximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~{a}o
@@ -1157,9 +1157,9 @@ Limite superior sobre o n@'{u}mero de ciclos.  Deve ser maior que ou igual a
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limite} s@~{a}o o erro relativo
+@mvar{epsabs} e @mvar{limite} s@~{a}o o erro relativo
 desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~{a}o @'{e} 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} o padr@~{a}o @'{e} 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qawo} retorna uma lista de quatro elementos:
 
@@ -1209,8 +1209,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~{a}o} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
-@deffnx {Fun@value{cedilha}@~{a}o} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffn {Fun@value{cedilha}@~{a}o} quad_qaws (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, @mvar{epsabs}, @mvar{limite})
+@deffnx {Fun@value{cedilha}@~{a}o} quad_qaws (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, @mvar{epsabs}, @mvar{limite})
 
 Integra@value{cedilha}@~{a}o de @math{w(x) f(x)} sobre um intervalo finito,
 onde @math{w(x)} @'{e} uma certa fun@value{cedilha}@~{a}o alg@'{e}brica ou logar@'{i}tmica.
@@ -1231,7 +1231,7 @@ Quadpack QAWS:
 $$\int_a^b f(x) w(x) dx$$
 @end tex
 
-A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @var{wfun}:
+A fun@value{cedilha}@~{a}o peso @math{w} @'{e} selecionada por @mvar{wfun}:
 
 @table @code
 @item 1
@@ -1253,14 +1253,14 @@ O argumentos opcionais s@~{a}o:
 @item epsabs
 Erro absoluto desejado de aproxima@value{cedilha}@~{a}o.  O padr@~{a}o @'{e} 1d-10.
 @item limite
-Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'{e} o
+Tamanho do array interno de trabalho.  (@mvar{limite} - @mvar{limlst})/2 @'{e} o
 n@'{u}mero m@'{a}ximo de subintervalos para usar.  O padr@~{a}o @'{e} 200.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limit} s@~{a}o o erro relativo
+@mvar{epsabs} e @mvar{limit} s@~{a}o o erro relativo
 desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~{a}o @'{e} 1e-8 e @var{limite} @'{e} 200.
+@mvar{epsrel} o padr@~{a}o @'{e} 1e-8 e @mvar{limite} @'{e} 200.
 
 @code{quad_qaws} retorna uma lista de quatro elementos:
 

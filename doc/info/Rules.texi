@@ -40,14 +40,14 @@ package.
 
 @c -----------------------------------------------------------------------------
 @anchor{apply1}
-@deffn {Function} apply1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
+@deffn {Function} apply1 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
 
-Repeatedly applies @var{rule_1} to
-@var{expr} until it fails, then repeatedly applies the same rule to all
-subexpressions of @var{expr}, left to right, until @var{rule_1} has failed
-on all subexpressions.  Call the result of transforming @var{expr} in this
-manner @var{expr_2}.  Then @var{rule_2} is applied in the same fashion
-starting at the top of @var{expr_2}.  When @var{rule_n} fails on the final
+Repeatedly applies @mvar{rule_1} to
+@mvar{expr} until it fails, then repeatedly applies the same rule to all
+subexpressions of @mvar{expr}, left to right, until @mvar{rule_1} has failed
+on all subexpressions.  Call the result of transforming @mvar{expr} in this
+manner @mvar{expr_2}.  Then @mvar{rule_2} is applied in the same fashion
+starting at the top of @mvar{expr_2}.  When @mvar{rule_n} fails on the final
 subexpression, the result is returned.
 
 @code{maxapplydepth} is the depth of the deepest subexpressions processed by
@@ -64,9 +64,9 @@ See also @code{applyb1}, @code{apply2}, and @code{let}.
 
 @c -----------------------------------------------------------------------------
 @anchor{apply2}
-@deffn {Function} apply2 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
+@deffn {Function} apply2 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
 
-If @var{rule_1} fails on a given subexpression, then @var{rule_2} is
+If @mvar{rule_1} fails on a given subexpression, then @mvar{rule_2} is
 repeatedly applied, etc.  Only if all rules fail on a given
 subexpression is the whole set of rules repeatedly applied to the next
 subexpression.  If one of the rules succeeds, then the same
@@ -86,13 +86,13 @@ See also @code{apply1} and @code{let}.
 
 @c -----------------------------------------------------------------------------
 @anchor{applyb1}
-@deffn {Function} applyb1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
+@deffn {Function} applyb1 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
 
-Repeatedly applies @var{rule_1} to the deepest subexpression of @var{expr}
+Repeatedly applies @mvar{rule_1} to the deepest subexpression of @mvar{expr}
 until it fails, then repeatedly applies the same rule one level higher (i.e.,
-larger subexpressions), until @var{rule_1} has failed on the top-level
-expression.  Then @var{rule_2} is applied in the same fashion to the result of
-@var{rule_1}.  After @var{rule_n} has been applied to the top-level expression,
+larger subexpressions), until @mvar{rule_1} has failed on the top-level
+expression.  Then @mvar{rule_2} is applied in the same fashion to the result of
+@mvar{rule_1}.  After @mvar{rule_n} has been applied to the top-level expression,
 the result is returned.
 
 @code{applyb1} is similar to @code{apply1} but works from
@@ -146,29 +146,29 @@ is not explicitly set by the user with @code{let} or by changing the value of
 
 @c -----------------------------------------------------------------------------
 @anchor{defmatch}
-@deffn  {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
-@deffnx {Function} defmatch (@var{progname}, @var{pattern})
+@deffn  {Function} defmatch (@mvar{progname}, @mvar{pattern}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffnx {Function} defmatch (@mvar{progname}, @mvar{pattern})
 
-Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}
-which tests @var{expr} to see if it matches @var{pattern}.
+Defines a function @code{@mvar{progname}(@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}
+which tests @mvar{expr} to see if it matches @mvar{pattern}.
 
-@var{pattern} is an expression containing the pattern arguments @var{x_1},
-@dots{}, @var{x_n} (if any) and some pattern variables (if any).  The pattern
+@mvar{pattern} is an expression containing the pattern arguments @mvar{x_1},
+@dots{}, @mvar{x_n} (if any) and some pattern variables (if any).  The pattern
 arguments are given explicitly as arguments to @code{defmatch} while the pattern
 variables are declared by the @code{matchdeclare} function.  Any variable not
 declared as a pattern variable in @code{matchdeclare} or as a pattern argument
 in @code{defmatch} matches only itself.
 
-The first argument to the created function @var{progname} is an expression to be
+The first argument to the created function @mvar{progname} is an expression to be
 matched against the pattern and the other arguments are the actual arguments
-which correspond to the dummy variables @var{x_1}, @dots{}, @var{x_n} in the
+which correspond to the dummy variables @mvar{x_1}, @dots{}, @mvar{x_n} in the
 pattern.
 
-If the match is successful, @var{progname} returns a list of equations whose
+If the match is successful, @mvar{progname} returns a list of equations whose
 left sides are the pattern arguments and pattern variables, and whose right
 sides are the subexpressions which the pattern arguments and variables matched.
 The pattern variables, but not the pattern arguments, are assigned the
-subexpressions they match.  If the match fails, @var{progname} returns
+subexpressions they match.  If the match fails, @mvar{progname} returns
 @code{false}.
 
 A literal pattern (that is, a pattern which contains neither pattern arguments
@@ -291,10 +291,10 @@ to see if it is a definite integral.
 
 @c -----------------------------------------------------------------------------
 @anchor{defrule}
-@deffn {Function} defrule (@var{rulename}, @var{pattern}, @var{replacement})
+@deffn {Function} defrule (@mvar{rulename}, @mvar{pattern}, @mvar{replacement})
 
 Defines and names a replacement rule for the given pattern.  If the rule named
-@var{rulename} is applied to an expression (by @code{apply1}, @code{applyb1}, or
+@mvar{rulename} is applied to an expression (by @code{apply1}, @code{applyb1}, or
 @code{apply2}), every subexpression matching the pattern will be replaced by the
 replacement.  All variables in the replacement which have been
 assigned values by the pattern match are assigned those values in the
@@ -314,10 +314,10 @@ If the match fails, the rule function returns @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{disprule}
-@deffn  {Function} disprule (@var{rulename_1}, @dots{}, @var{rulename_2})
+@deffn  {Function} disprule (@mvar{rulename_1}, @dots{}, @mvar{rulename_2})
 @deffnx {Function} disprule (all)
 
-Display rules with the names @var{rulename_1}, @dots{}, @var{rulename_n},
+Display rules with the names @mvar{rulename_1}, @dots{}, @mvar{rulename_n},
 as returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter},
 or a pattern defined by @code{defmatch}.
 Each rule is displayed with an intermediate expression label (@code{%t}).
@@ -366,11 +366,11 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{let}
-@deffn  {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n})
-@deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}], @var{package_name})
+@deffn  {Function} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
+@deffnx {Function} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, @dots{}, @mvar{arg_n}], @mvar{package_name})
 
-Defines a substitution rule for @code{letsimp} such that @var{prod} is replaced
-by @var{repl}.  @var{prod} is a product of positive or negative powers of the
+Defines a substitution rule for @code{letsimp} such that @mvar{prod} is replaced
+by @mvar{repl}.  @mvar{prod} is a product of positive or negative powers of the
 following terms:
 
 @itemize @bullet
@@ -388,36 +388,36 @@ is used to associate a predicate with the argument of the kernel.
 A term to a positive power will only match a term having at least that
 power.  A term to a negative power
 on the other hand will only match a term with a power at least as
-negative.  In the case of negative powers in @var{prod} the switch
+negative.  In the case of negative powers in @mvar{prod} the switch
 @code{letrat} must be set to @code{true}.
 See also @code{letrat}.
 
 If a predicate is included in the @code{let} function followed by a list of
 arguments, a tentative match (i.e. one that would be accepted if the predicate
 were omitted) is accepted only if @code{predname (arg_1', ..., arg_n')}
-evaluates to @code{true} where @var{arg_i'} is the value matched to @var{arg_i}.
-The @var{arg_i} may be the name of any atom or the argument of any kernel
-appearing in @var{prod}.
-@var{repl} may be any rational expression.  @c ONLY RATIONAL -- REALLY ??
-If any of the atoms or arguments from @var{prod} appear in @var{repl} the
+evaluates to @code{true} where @mvar{arg_i'} is the value matched to @mvar{arg_i}.
+The @mvar{arg_i} may be the name of any atom or the argument of any kernel
+appearing in @mvar{prod}.
+@mvar{repl} may be any rational expression.  @c ONLY RATIONAL -- REALLY ??
+If any of the atoms or arguments from @mvar{prod} appear in @mvar{repl} the
 appropriate substitutions are made.  @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
 
 The global flag @code{letrat} controls the simplification of quotients by
 @code{letsimp}.  When @code{letrat} is @code{false}, @code{letsimp} simplifies
-the numerator and denominator of @var{expr} separately, and does not simplify
+the numerator and denominator of @mvar{expr} separately, and does not simplify
 the quotient.  Substitutions such as @code{n!/n} goes to @code{(n-1)!} then
 fail.  When @code{letrat} is @code{true}, then the numerator, denominator, and
 the quotient are simplified in that order.
 
 These substitution functions allow you to work with several rule packages at
 once.  Each rule package can contain any number of @code{let} rules and is
-referenced by a user-defined name.  The command @code{let ([@var{prod},
-@var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
-adds the rule @var{predname} to the rule package @var{package_name}.  The
-command @code{letsimp (@var{expr}, @var{package_name})} applies the rules in 
-@var{package_name}.  @code{letsimp (@var{expr}, @var{package_name1},
-@var{package_name2}, ...)} is equivalent to @code{letsimp (@var{expr},
-@var{package_name1})} followed by @code{letsimp (%, @var{package_name2})},
+referenced by a user-defined name.  The command @code{let ([@mvar{prod},
+@mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{package_name})}
+adds the rule @mvar{predname} to the rule package @mvar{package_name}.  The
+command @code{letsimp (@mvar{expr}, @mvar{package_name})} applies the rules in 
+@mvar{package_name}.  @code{letsimp (@mvar{expr}, @mvar{package_name1},
+@mvar{package_name2}, ...)} is equivalent to @code{letsimp (@mvar{expr},
+@mvar{package_name1})} followed by @code{letsimp (%, @mvar{package_name2})},
 @dots{}
 
 @code{current_let_rule_package} is the name of the rule package that is
@@ -425,8 +425,8 @@ presently being used.  This variable may be assigned the name of any rule
 package defined via the @code{let} command.  Whenever any of the functions
 comprising the @code{let} package are called with no package name, the package
 named by @code{current_let_rule_package} is used.  If a call such as
-@code{letsimp (@var{expr}, @var{rule_pkg_name})} is made, the rule package
-@var{rule_pkg_name} is used for that @code{letsimp} command only, and
+@code{letsimp (@mvar{expr}, @mvar{rule_pkg_name})} is made, the rule package
+@mvar{rule_pkg_name} is used for that @code{letsimp} command only, and
 @code{current_let_rule_package} is not changed.  If not otherwise specified,
 @code{current_let_rule_package} defaults to @code{default_let_rule_package}.
 
@@ -494,11 +494,11 @@ the numerator, denominator, and their quotient are simplified in that order.
 @c -----------------------------------------------------------------------------
 @anchor{letrules}
 @deffn  {Function} letrules ()
-@deffnx {Function} letrules (@var{package_name})
+@deffnx {Function} letrules (@mvar{package_name})
 
 Displays the rules in a rule package.
 @code{letrules ()} displays the rules in the current rule package.
-@code{letrules (@var{package_name})} displays the rules in @var{package_name}.
+@code{letrules (@mvar{package_name})} displays the rules in @mvar{package_name}.
 
 The current rule package is named by @code{current_let_rule_package}.
 If not otherwise specified, @code{current_let_rule_package}
@@ -515,21 +515,21 @@ See also @code{disprule}, which displays rules defined by @code{tellsimp} and
 
 @c -----------------------------------------------------------------------------
 @anchor{letsimp}
-@deffn  {Function} letsimp (@var{expr})
-@deffnx {Function} letsimp (@var{expr}, @var{package_name})
-@deffnx {Function} letsimp (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
+@deffn  {Function} letsimp (@mvar{expr})
+@deffnx {Function} letsimp (@mvar{expr}, @mvar{package_name})
+@deffnx {Function} letsimp (@mvar{expr}, @mvar{package_name_1}, @dots{}, @mvar{package_name_n})
 
 Repeatedly applies the substitution rules defined by @code{let}
-until no further change is made to @var{expr}.
+until no further change is made to @mvar{expr}.
 
-@code{letsimp (@var{expr})} uses the rules from @code{current_let_rule_package}.
+@code{letsimp (@mvar{expr})} uses the rules from @code{current_let_rule_package}.
 
-@code{letsimp (@var{expr}, @var{package_name})} uses the rules from
-@var{package_name} without changing @code{current_let_rule_package}.
+@code{letsimp (@mvar{expr}, @mvar{package_name})} uses the rules from
+@mvar{package_name} without changing @code{current_let_rule_package}.
 
-@code{letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}
-is equivalent to @code{letsimp (@var{expr}, @var{package_name_1}},
-followed by @code{letsimp (%, @var{package_name_2})}, and so on.
+@code{letsimp (@mvar{expr}, @mvar{package_name_1}, ..., @mvar{package_name_n})}
+is equivalent to @code{letsimp (@mvar{expr}, @mvar{package_name_1}},
+followed by @code{letsimp (%, @mvar{package_name_2})}, and so on.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -552,11 +552,11 @@ plus the default package @code{default_let_rule_package}.
 
 @c -----------------------------------------------------------------------------
 @anchor{matchdeclare}
-@deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, @dots{}, @var{a_n}, @var{pred_n})
+@deffn {Function} matchdeclare (@mvar{a_1}, @mvar{pred_1}, @dots{}, @mvar{a_n}, @mvar{pred_n})
 
-Associates a predicate @var{pred_k} 
-with a variable or list of variables @var{a_k}
-so that @var{a_k} matches expressions
+Associates a predicate @mvar{pred_k} 
+with a variable or list of variables @mvar{a_k}
+so that @mvar{a_k} matches expressions
 for which the predicate returns anything other than @code{false}.
 
 A predicate is the name of a function,
@@ -602,18 +602,18 @@ expression to be matched.  However, if all match predicates are mutually
 exclusive, the match result is insensitive to ordering, as one match predicate
 cannot accept terms matched by another.
 
-Calling @code{matchdeclare} with a variable @var{a} as an argument changes the
-@code{matchdeclare} property for @var{a}, if one was already declared; only the
+Calling @code{matchdeclare} with a variable @mvar{a} as an argument changes the
+@code{matchdeclare} property for @mvar{a}, if one was already declared; only the
 most recent @code{matchdeclare} is in effect when a rule is defined.  Later
 changes to the @code{matchdeclare} property (via @code{matchdeclare} or
 @code{remove}) do not affect existing rules.
 
 @code{propvars (matchdeclare)} returns the list of all variables for which there
-is a @code{matchdeclare} property.  @code{printprops (@var{a}, matchdeclare)}
+is a @code{matchdeclare} property.  @code{printprops (@mvar{a}, matchdeclare)}
 returns the predicate for variable @code{a}.
 @code{printprops (all, matchdeclare)} returns the list of predicates for all
-@code{matchdeclare} variables.  @code{remove (@var{a}, matchdeclare)} removes
-the @code{matchdeclare} property from @var{a}.
+@code{matchdeclare} variables.  @code{remove (@mvar{a}, matchdeclare)} removes
+the @code{matchdeclare} property from @mvar{a}.
 
 The functions @code{defmatch}, @code{defrule}, @code{tellsimp},
 @code{tellsimpafter}, and @code{let} construct rules which test expressions
@@ -801,23 +801,23 @@ will reach before giving up.
 
 @c -----------------------------------------------------------------------------
 @anchor{remlet}
-@deffn  {Function} remlet (@var{prod}, @var{name})
+@deffn  {Function} remlet (@mvar{prod}, @mvar{name})
 @deffnx {Function} remlet ()
 @deffnx {Function} remlet (all)
-@deffnx {Function} remlet (all, @var{name})
+@deffnx {Function} remlet (all, @mvar{name})
 
-Deletes the substitution rule, @var{prod} --> repl, most
+Deletes the substitution rule, @mvar{prod} --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.
 
 @code{remlet()} and @code{remlet(all)} delete all substitution rules from the
 current rule package.  If the name of a rule package is supplied, e.g.
-@code{remlet (all, @var{name})}, the rule package @var{name} is also deleted.
+@code{remlet (all, @mvar{name})}, the rule package @mvar{name} is also deleted.
 
 If a substitution is to be changed using the same
 product, @code{remlet} need not be called, just redefine the substitution
 using the same product (literally) with the @code{let} function and the new
-replacement and/or predicate name.  Should @code{remlet (@var{prod})} now be
+replacement and/or predicate name.  Should @code{remlet (@mvar{prod})} now be
 called the original substitution rule is revived.
 
 See also @code{remrule}, which removes a rule defined by @code{tellsimp} or
@@ -830,18 +830,18 @@ See also @code{remrule}, which removes a rule defined by @code{tellsimp} or
 
 @c -----------------------------------------------------------------------------
 @anchor{remrule}
-@deffn  {Function} remrule (@var{op}, @var{rulename})
-@deffnx {Function} remrule (@var{op}, all)
+@deffn  {Function} remrule (@mvar{op}, @mvar{rulename})
+@deffnx {Function} remrule (@mvar{op}, all)
 
 Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
 
-@code{remrule (@var{op}, @var{rulename})}
-removes the rule with the name @var{rulename} from the operator @var{op}.
-When @var{op} is a built-in or user-defined operator
+@code{remrule (@mvar{op}, @mvar{rulename})}
+removes the rule with the name @mvar{rulename} from the operator @mvar{op}.
+When @mvar{op} is a built-in or user-defined operator
 (as defined by @code{infix}, @code{prefix}, etc.),
-@var{op} and @var{rulename} must be enclosed in double quote marks.
+@mvar{op} and @mvar{rulename} must be enclosed in double quote marks.
 
-@code{remrule (@var{op}, all)} removes all rules for the operator @var{op}.
+@code{remrule (@mvar{op}, all)} removes all rules for the operator @mvar{op}.
 
 See also @code{remlet}, which removes a rule defined by @code{let}.
 
@@ -904,7 +904,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{tellsimp}
-@deffn {Function} tellsimp (@var{pattern}, @var{replacement})
+@deffn {Function} tellsimp (@mvar{pattern}, @mvar{replacement})
 
 is similar to @code{tellsimpafter} but places
 new information before old so that it is applied before the built-in
@@ -974,24 +974,24 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{tellsimpafter}
-@deffn {Function} tellsimpafter (@var{pattern}, @var{replacement})
+@deffn {Function} tellsimpafter (@mvar{pattern}, @mvar{replacement})
 
 Defines a simplification rule which the Maxima simplifier applies after built-in
-simplification rules.  @var{pattern} is an expression, comprising pattern
+simplification rules.  @mvar{pattern} is an expression, comprising pattern
 variables (declared by @code{matchdeclare}) and other atoms and operators,
-considered literals for the purpose of pattern matching.  @var{replacement} is
-substituted for an actual expression which matches @var{pattern}; pattern
-variables in @var{replacement} are assigned the values matched in the actual
+considered literals for the purpose of pattern matching.  @mvar{replacement} is
+substituted for an actual expression which matches @mvar{pattern}; pattern
+variables in @mvar{replacement} are assigned the values matched in the actual
 expression.
 
-@var{pattern} may be any nonatomic expression in which the main operator is not
+@mvar{pattern} may be any nonatomic expression in which the main operator is not
 a pattern variable; the simplification rule is associated with the main
 operator.  The names of functions (with one exception, described below), lists,
-and arrays may appear in @var{pattern} as the main operator only as literals
+and arrays may appear in @mvar{pattern} as the main operator only as literals
 (not pattern variables); this rules out expressions such as @code{aa(x)} and
 @code{bb[y]} as patterns, if @code{aa} and @code{bb} are pattern variables.
 Names of functions, lists, and arrays which are pattern variables may appear as
-operators other than the main operator in @var{pattern}.
+operators other than the main operator in @mvar{pattern}.
 
 There is one exception to the above rule concerning names of functions.
 The name of a subscripted function in an expression such as @code{aa[x](y)}
@@ -1002,7 +1002,7 @@ expressions involving subscripted functions.
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
 @c The main operator of an expression @code{expr} is @code{caar $expr}.
 @c For most kinds of expressions,
-@c the main operator is the operator returned by @code{op (@var{pattern})};
+@c the main operator is the operator returned by @code{op (@mvar{pattern})};
 @c the sole exception is the operator @code{mqapply},
 @c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
 
@@ -1028,7 +1028,7 @@ However, as with all atoms in Maxima, the properties of pattern variables (as
 declared by @code{put} and related functions) are global.
 
 The rule constructed by @code{tellsimpafter} is named after the main operator of
-@var{pattern}.  Rules for built-in operators, and user-defined operators defined
+@mvar{pattern}.  Rules for built-in operators, and user-defined operators defined
 by @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, and
 @code{nofix}, have names which are Lisp identifiers.
 @c SLIGHTLY TOO MUCH DETAIL
@@ -1051,7 +1051,7 @@ and @code{:lisp (symbol-function '$foorule1)} displays its definition.
 
 @code{tellsimpafter} quotes its arguments.
 @code{tellsimpafter} returns the list of rules for the main operator of
-@var{pattern}, including the newly established rule.
+@mvar{pattern}, including the newly established rule.
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
 See also @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp},
@@ -1059,7 +1059,7 @@ See also @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp},
 
 Examples:
 
-@var{pattern} may be any nonatomic expression in which the 
+@mvar{pattern} may be any nonatomic expression in which the 
 main operator is not a pattern variable.
 
 @c ===beg===

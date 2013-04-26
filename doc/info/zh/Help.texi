@@ -60,7 +60,7 @@ Maxima是大小写敏感的,可以区分大写与小写字母的标志符,然而
 @end enumerate
 
 Lisp宏@code{#$}允许在Lisp代码中运用Maxima表达式.
-Lisp表达式@code{#$@var{expr}$}等同于 Maxima表达式@var{expr}.
+Lisp表达式@code{#$@mvar{expr}$}等同于 Maxima表达式@mvar{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -165,8 +165,8 @@ Maxima在线用户手册可以通过多种形式阅读,在Maxima交互式命令�
 @node 帮助的函数与变量,文档,帮助
 @section 与帮助有关的函数与变量
 
-@deffn {Function} demo (@var{filename})
-评估@var{filename}里Maxima表达式并显示结果.
+@deffn {Function} demo (@mvar{filename})
+评估@mvar{filename}里Maxima表达式并显示结果.
 @code{demo}将会在评估完每一个表达式后暂停,等待用户输入回车键继续.
 如果是在Xmaxima里运行,@code{demo}可能需要输入一个分号@code{;}再按回车.
 
@@ -251,18 +251,18 @@ _
 
 @end deffn
 
-@deffn {Function} describe (@var{string})
-@deffnx {Function} describe (@var{string}, exact)
-@deffnx {Function} describe (@var{string}, inexact)
+@deffn {Function} describe (@mvar{string})
+@deffnx {Function} describe (@mvar{string}, exact)
+@deffnx {Function} describe (@mvar{string}, inexact)
 @ifinfo
 @fnindex Help
 @end ifinfo
 
-@code{describe(@var{string})} 等同于 @code{describe(@var{string}, exact)}.
+@code{describe(@mvar{string})} 等同于 @code{describe(@mvar{string}, exact)}.
 
-@code{describe(@var{string}, exact)}查找一个名称等同于(大小写不敏感) @var{string}的子项, 当然要存在那么一个子项.
+@code{describe(@mvar{string}, exact)}查找一个名称等同于(大小写不敏感) @mvar{string}的子项, 当然要存在那么一个子项.
 
-@code{describe(@var{string}, inexact)} 搜索所有标题中包含@var{string}的文档子项,
+@code{describe(@mvar{string}, inexact)} 搜索所有标题中包含@mvar{string}的文档子项,
 如果找到多于一个子项,Maxima将会询问用户显示哪一项或者多项.
 
 在交互式命令行中@code{? foo} (@code{?} 与 @code{foo}中有一个空格)等同于@code{describe("foo", exact)},
@@ -314,9 +314,9 @@ Enter space-separated numbers, `all' or `none': 7 8
 在这个例子中,子项7与子项8被选择了.可以用 @code{all}或者@code{none}来全选或全不选,也可以用它们的缩写形式,@code{a} 与 @code{n}.
 @end deffn
 
-@deffn {Function} example (@var{topic})
+@deffn {Function} example (@mvar{topic})
 @deffnx {Function} example ()
-@code{example (@var{topic})} 将显示 @var{topic}中的一些例子,var{topic}是符号而不是字符串.
+@code{example (@mvar{topic})} 将显示 @mvar{topic}中的一些例子,var{topic}是符号而不是字符串.
 许多题目都是函数名称.@code{example ()} 将返回所有认识的主题列表.
 包含例子的文件名是通过全局变量@code{manual_demo}给定的,它的缺省值是 @code{"manual.demo"}.
 

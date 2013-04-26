@@ -6,18 +6,18 @@
 @node Defini@value{cedilha}@~oes para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Defini@value{cedilha}@~oes para augmented_lagrangian
 
-@deffn {Fun@value{cedilha}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Fun@value{cedilha}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
+@deffn {Fun@value{cedilha}@~ao} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
+@deffnx {Fun@value{cedilha}@~ao} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, args_opcionais)
  
-Retorna um m@'{@dotless{i}}nimo aproximado da express@~ao @var{FOM}
-com rela@value{cedilha}@~ao @`as vari@'aveis @var{xx},
-mantendo restrito o valor de @var{C} a zero.
-@var{yy} @'e uma lista de suposi@value{cedilha}@~oes iniciais para @var{xx}.
+Retorna um m@'{@dotless{i}}nimo aproximado da express@~ao @mvar{FOM}
+com rela@value{cedilha}@~ao @`as vari@'aveis @mvar{xx},
+mantendo restrito o valor de @mvar{C} a zero.
+@mvar{yy} @'e uma lista de suposi@value{cedilha}@~oes iniciais para @mvar{xx}.
 O m@'etodo utilizado @'e o m@'etodo do Lagrangiano aumentado (veja refer@^encias [1] e [2]).
 
 @code{args_opcionais} representam argumentos adicionais,
-especificados como @code{@var{s@'{@dotless{i}}mbolo} = @var{valor}}.
-Os argumentos opcionais que podem ser colocados no lugar de @var{s@'{@dotless{i}}mbolo}:
+especificados como @code{@mvar{s@'{@dotless{i}}mbolo} = @mvar{valor}}.
+Os argumentos opcionais que podem ser colocados no lugar de @mvar{s@'{@dotless{i}}mbolo}:
  
 @table @code
 @item niter

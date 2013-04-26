@@ -164,14 +164,14 @@ eine gew@"unschte Vereinfachung erzielen.
 
 @c --- 28.09.2011 DK -----------------------------------------------------------
 @anchor{init_atensor}
-@deffn  {Funktion} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Funktion} init_atensor (@var{alg_type})
+@deffn  {Funktion} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
+@deffnx {Funktion} init_atensor (@mvar{alg_type})
 
 @c Initializes the @code{atensor} package with the specified algebra type.
-@c @var{alg_type} can be one of the following:
+@c @mvar{alg_type} can be one of the following:
 
 Initialisiert das Paket @code{atensor} mit der angegebenen Algebra
-@var{alg_type}.  Das Argument @var{alg_type} kann einen der folgenden
+@mvar{alg_type}.  Das Argument @mvar{alg_type} kann einen der folgenden
 Werte haben:
 
 @table @code
@@ -188,19 +188,19 @@ definiert ist.
 @item clifford
 @c The Clifford algebra is defined by the commutation
 @c relation @code{u.v+v.u=-2*sf(u,v)} where @code{sf} is a symmetric
-@c scalar-valued function. For this algebra, @var{opt_dims} can be up
+@c scalar-valued function. For this algebra, @mvar{opt_dims} can be up
 @c to three nonnegative integers, representing the number of positive,
 @c degenerate, and negative dimensions of the algebra, respectively. If
-@c any @var{opt_dims} values are supplied, @code{atensor} will configure the
+@c any @mvar{opt_dims} values are supplied, @code{atensor} will configure the
 @c values of @code{adim} and @code{aform} appropriately. Otherwise,
 @c @code{adim} will default to 0 and @code{aform} will not be defined.
 Eine Clifford-Algebra, die durch die Vertauschungsregel @code{u.v + v.u =
 -2*sf(u,v)} definiert ist.  Die Bilinearform @mref{sf} ist eine symmetrische
-Funktion, die einen skalaren Wert als Ergebnis hat.  Das Argument @var{opt_dims}
+Funktion, die einen skalaren Wert als Ergebnis hat.  Das Argument @mvar{opt_dims}
 kann bis zu drei positive ganze Zahlen sein, die die positiven, 
 entarteten und negativen Dimensionen der Algebra bezeichnen.  Die Dimension
 @mref{adim} und die Matrix @mref{aform} werden entsprechend der angegebenen
-Argumente @var{opt_dims} initialisiert.  Sind keine Argumente @var{opt_dims}
+Argumente @mvar{opt_dims} initialisiert.  Sind keine Argumente @mvar{opt_dims}
 vorhanden, wird die Dimension @code{adim} zu Null initialisiert und keine
 Matrix @code{aform} definiert.
 
@@ -213,20 +213,20 @@ definiert ist.
 @item symplectic
 @c The symplectic algebra is defined by the commutation
 @c relation @code{u.v-v.u=2*af(u,v)} where @code{af} is an antisymmetric
-@c scalar-valued function. For the symplectic algebra, @var{opt_dims} can
+@c scalar-valued function. For the symplectic algebra, @mvar{opt_dims} can
 @c be up to two nonnegative integers, representing the nondegenerate and
-@c degenerate dimensions, respectively. If any @var{opt_dims} values are
+@c degenerate dimensions, respectively. If any @mvar{opt_dims} values are
 @c supplied, @code{atensor} will configure the values of @code{adim} and 
 @c @code{aform} appropriately. Otherwise, @code{adim} will default to 0 and 
 @c @code{aform} will not be defined.
 Eine symplektische Algebra, die durch die Vertauschungsregel
 @code{u.v - v.u = 2*af(u,v)} definiert ist.  Die Bilinearform @mref{af} ist
 eine antisymmetrische Funktion, die einen skalaren Wert als Ergebnis hat.  Das 
-Argument @var{opt_dims} kann bis zu zwei positive ganze Zahlen enthalten,
+Argument @mvar{opt_dims} kann bis zu zwei positive ganze Zahlen enthalten,
 die die nicht-degenerierten und degenerierten Dimensionen der Algebra
 bezeichnen.  Die Dimension @mref{adim} und die Matrix @mref{aform}@w{}
-werden entsprechend der angegebenen Argumente @var{opt_dims} initialisiert.
-Sind keine Argumente @var{opt_dims} vorhanden, wird die Dimension @code{adim}
+werden entsprechend der angegebenen Argumente @mvar{opt_dims} initialisiert.
+Sind keine Argumente @mvar{opt_dims} vorhanden, wird die Dimension @code{adim}
 zu Null initialisiert und keine Matrix @code{aform} definiert. 
 
 @item lie_envelop
@@ -235,10 +235,10 @@ zu Null initialisiert und keine Matrix @code{aform} definiert.
 @c an antisymmetric function.
 Eine einh@"ullende Lie-Algebra, die durch die Vertauschungsregel
 @code{u.v - v.u = 2*av(u,v)} definiert ist, wobei die Bilinearform @mref{av}@w{}
-eine antisymmetrische Funktion ist.  Das Argument @var{opt_dims} kann eine
+eine antisymmetrische Funktion ist.  Das Argument @mvar{opt_dims} kann eine
 positive ganze Zahl sein, welche die Dimension der Lie-Algebra angibt.  Die
 Dimension @mref{adim} und die Matrix @mref{aform} werden entsprechend des
-Argumentes @var{opt_dims} initialisiert.  Ist kein Argument @var{opt_dims}
+Argumentes @mvar{opt_dims} initialisiert.  Ist kein Argument @mvar{opt_dims}
 vorhanden, wird die Dimension @code{adim} zu Null initialisiert und keine Matrix
 @code{aform} definiert.
 @end table
@@ -286,16 +286,16 @@ Kommando @code{init_atensor(clifford, 3, 0, 1)}.
 
 @c --- 28.09.2011 DK -----------------------------------------------------------
 @anchor{atensimp}
-@deffn {Funktion} atensimp (@var{expr})
+@deffn {Funktion} atensimp (@mvar{expr})
 
-@c Simplifies an algebraic tensor expression @var{expr} according to the rules
+@c Simplifies an algebraic tensor expression @mvar{expr} according to the rules
 @c configured by a call to @code{init_atensor}. Simplification includes
 @c recursive application of commutation relations and resolving calls
 @c to @code{sf}, @code{af}, and @code{av} where applicable. A
 @c safeguard is used to ensure that the function always terminates, even
 @c for complex expressions.
 
-Vereinfacht einen Ausdruck @var{expr} entsprechend der Regeln f@"ur die Algebra,
+Vereinfacht einen Ausdruck @mvar{expr} entsprechend der Regeln f@"ur die Algebra,
 die mit der Funktion @mref{init_atensor} festgelegt ist.  Die Regeln werden
 rekursiv auf den Ausdruck angewendet.  Dabei werden auch Bilinearformen
 @mrefcomma{sf} @mref{af} und @mref{av} ausgewertet.
@@ -440,7 +440,7 @@ In diesem Beispiel wird @code{asymbol} auf den Wert @code{x} gesetzt.
 
 @c --- 28.09.2011 DK -----------------------------------------------------------
 @anchor{sf}
-@deffn {Funktion} sf (@var{u}, @var{v})
+@deffn {Funktion} sf (@mvar{u}, @mvar{v})
 
 @c A symmetric scalar function that is used in commutation relations.
 @c The default implementation checks if both arguments are base vectors
@@ -450,14 +450,14 @@ In diesem Beispiel wird @code{asymbol} auf den Wert @code{x} gesetzt.
 Eine symmetrische Bilinearform, die bei der Vereinfachung von Ausdr@"ucken
 mit der Funktion @mref{atensimp} angewendet wird.  Die Funktion kann vom Nutzer
 durch eine neue Funktion ersetzt werden.  Die Standardimplementation pr@"uft
-mit der Funktion @mrefcomma{abasep} ob die Argumente @var{u} und @var{v}
+mit der Funktion @mrefcomma{abasep} ob die Argumente @mvar{u} und @mvar{v}
 Basisvektoren sind und setzt f@"ur diesen Fall den entsprechen Wert der Matrix
 @mref{aform} ein.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{af}
-@deffn {Funktion} af (@var{u}, @var{v})
+@deffn {Funktion} af (@mvar{u}, @mvar{v})
 
 @c An antisymmetric scalar function that is used in commutation relations.
 @c The default implementation checks if both arguments are base vectors
@@ -467,14 +467,14 @@ Basisvektoren sind und setzt f@"ur diesen Fall den entsprechen Wert der Matrix
 Eine antisymmetrische Bilinearform, die bei der Vereinfachung von Ausdr@"ucken
 mit der Funktion @mref{atensimp} angewendet wird.  Die Funktion kann vom Nutzer
 durch eine neue Funktion ersetzt werden.  Die Standardimplementation pr@"uft
-mit der Funktion @mrefcomma{abasep} ob die Argumente @var{u} und @var{v}
+mit der Funktion @mrefcomma{abasep} ob die Argumente @mvar{u} und @mvar{v}
 Basisvektoren sind und setzt f@"ur diesen Fall den entsprechenden Wert der
 Matrix @mref{aform} ein.
 @end deffn
 
 @c --- 28.09.2011 DK -----------------------------------------------------------
 @anchor{av}
-@deffn {Funktion} av (@var{u}, @var{v})
+@deffn {Funktion} av (@mvar{u}, @mvar{v})
 
 @c An antisymmetric function that is used in commutation relations.
 @c The default implementation checks if both arguments are base vectors
@@ -484,7 +484,7 @@ Matrix @mref{aform} ein.
 Eine antisymmetrische Bilinearform, die bei der Vereinfachung von Ausdr@"ucken
 mit der Funktion @mref{atensimp} angewendet wird.  Die Funktion kann vom Nutzer
 durch eine neue Funktion ersetzt werden.  Die Standardimplementation pr@"uft
-mit der Funktion @mrefcomma{abasep} ob die Argumente @var{u} und @var{v}
+mit der Funktion @mrefcomma{abasep} ob die Argumente @mvar{u} und @mvar{v}
 Basisvektoren sind und setzt f@"ur diesen Fall den entsprechenden Wert
 @code{v[aform[i,j]]} der Matrix @mref{aform} ein.
 
@@ -513,14 +513,14 @@ Beispiel:
 
 @c --- 28.09.2011 DK -----------------------------------------------------------
 @anchor{abasep}
-@deffn {Funktion} abasep (@var{v})
+@deffn {Funktion} abasep (@mvar{v})
 
 @c Checks if its argument is an @code{atensor} base vector. That is, if it is
 @c an indexed symbol, with the symbol being the same as the value of
 @c @code{asymbol}, and the index having a numeric value between 1
 @c and @code{adim}.
 
-Pr@"uft, ob das Argument @var{v} ein Basisvektor ist.  Ein Basisvektor ist ein
+Pr@"uft, ob das Argument @mvar{v} ein Basisvektor ist.  Ein Basisvektor ist ein
 indiziertes Symbol mit dem Symbol @mref{asymbol} als Bezeichner und einem
 Index im Bereich von @code{1} bis @mrefdot{adim}
 

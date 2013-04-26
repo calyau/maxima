@@ -26,8 +26,8 @@ Drawdfは@code{draw}パッケージ上に構築されています。これはGnu
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-そして関数@var{F}を@code{drawdf}の引数に与えなければいけません。
-もし独立変数と従属変数が、上の式のように@var{x}と@var{y}でないなら、
+そして関数@mvar{F}を@code{drawdf}の引数に与えなければいけません。
+もし独立変数と従属変数が、上の式のように@mvar{x}と@mvar{y}でないなら、
 drawdfコマンドへの引数として与えられるリストの中に明示的に
 それら2つの変数を指名しなければいけません。
 (例を見てください。)
@@ -45,11 +45,11 @@ drawdfコマンドへの引数として与えられるリストの中に明示�
 $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
-そして@code{drawdf}の引数は2つの関数@var{G}と@var{F}を
+そして@code{drawdf}の引数は2つの関数@mvar{G}と@mvar{F}を
 その順に持つリストでなければいけません;
 すなわち、リストの最初の式は水平軸上に表された変数の時間導関数であり、
 二番目の式は垂直軸上に表された変数の時間導関数です。
-それら2つの変数は@var{x}と@var{y}である必要はありませんが、
+それら2つの変数は@mvar{x}と@mvar{y}である必要はありませんが、
 もしそうでないなら、
 drawdfに与えられる二番目の引数は
 2つの変数を、最初のものが水平軸上のものを、その後垂直軸上のものを指定する別のリストでなければいけません。
@@ -71,26 +71,26 @@ drawdfに与えられる二番目の引数は
 
 @subsection Functions
 
-@deffn {関数} drawdf (@var{dydx}, ...options and objects...)
-@deffnx {関数} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {関数} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
-@deffnx {関数} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options and objects...)
-@deffnx {関数} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {関数} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
+@deffn {関数} drawdf (@mvar{dydx}, ...options and objects...)
+@deffnx {関数} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...options and objects...)
 
 関数@code{drawdf}は、
 オプションの解曲線や@code{draw}パッケージを使う他のグラフィックスと一緒に、
 2D方向場を描きます。
 
 最初の引数は導関数を指定し、式か2つの式のリストでなければいけません。
-@var{dydx}, @var{dxdt}, @var{dydt}は@var{x}と@var{y}に依存する式です。
-@var{dvdu}, @var{dudt}, @var{dvdt}は@var{u}と@var{v}に依存する式です。
+@mvar{dydx}, @mvar{dxdt}, @mvar{dydt}は@mvar{x}と@mvar{y}に依存する式です。
+@mvar{dvdu}, @mvar{dudt}, @mvar{dvdt}は@mvar{u}と@mvar{v}に依存する式です。
 
-もし独立変数と従属変数が@var{x}と@var{y}でないなら、
+もし独立変数と従属変数が@mvar{x}と@mvar{y}でないなら、
 それらの名前を、導関数に続いてすぐに、
-2つの名前のリスト@code{[}@var{u},@var{v}@code{]}のとしてか、
-形式@code{[}@var{u},@var{umin},@var{umax}@code{]}と
-@code{[}@var{v},@var{vmin},@var{vmax}@code{]}の2つのリストとしてのいずれか
+2つの名前のリスト@code{[}@mvar{u},@mvar{v}@code{]}のとしてか、
+形式@code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}と
+@code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}の2つのリストとしてのいずれか
 のように,指定しなければいけません。
 
 残りの引数は@i{グラフィックオプション}か@i{グラフィックオブジェクト},
@@ -167,7 +167,7 @@ wxMaximaやImaximaのユーザーは@code{wxdrawdf}を代わりに使うかも�
 @code{field_degree=2}とすると、
 それぞれのグリッド点での1次と2次の導関数に基づいて、
 場が二次のスプラインで構成されます。
-@code{field_grid=[}@var{COLS},@var{ROWS}@code{]}は
+@code{field_grid=[}@mvar{COLS},@mvar{ROWS}@code{]}は
 グリッドの列と行の数を指定します。
 
 @example

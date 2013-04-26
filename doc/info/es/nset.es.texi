@@ -49,12 +49,12 @@ de simplificaci@'on elimina los elementos redundantes.
 @end example
 
 
-Dos elementos candidatos a formar parte de un conjunto, @var{x} e @var{y},
+Dos elementos candidatos a formar parte de un conjunto, @mvar{x} e @mvar{y},
 son redundantes, esto es, se consideran el mismo elemento a 
-efectos de consruir el conjunto, si y s@'olo si @code{is (@var{x} = @var{y})}
-devuelve el valor @code{true}. N@'otese que @code{is (equal (@var{x}, @var{y}))}
-puede devolver @code{true} y @code{is (@var{x} = @var{y})} retornar
-@code{false}; en cuyo caso los elementos @var{x} e @var{y} se
+efectos de consruir el conjunto, si y s@'olo si @code{is (@mvar{x} = @mvar{y})}
+devuelve el valor @code{true}. N@'otese que @code{is (equal (@mvar{x}, @mvar{y}))}
+puede devolver @code{true} y @code{is (@mvar{x} = @mvar{y})} retornar
+@code{false}; en cuyo caso los elementos @mvar{x} e @mvar{y} se
 considerar@'{@dotless{i}}an distintos.
 
 @c ===beg===
@@ -225,7 +225,7 @@ Hay dos formas para operar iterativamente sobre los elementos de un conjunto. Un
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
-La otra forma consiste en hacer uso de la construcci@'on @code{for @var{x} in @var{s} do}
+La otra forma consiste en hacer uso de la construcci@'on @code{for @mvar{x} in @mvar{s} do}
 
 @c ===beg===
 @c s: {a, b, c};
@@ -357,15 +357,15 @@ Stavros Macrakis de Cambridge, Massachusetts y Barton Willis de la University of
 @section Funciones y variables para los conjuntos
 
 
-@deffn {Funci@'on} adjoin (@var{x}, @var{a}) 
+@deffn {Funci@'on} adjoin (@mvar{x}, @mvar{a}) 
 
-Calcula la uni@'on del conjunto @var{a} y @code{@{@var{x}@}}.
+Calcula la uni@'on del conjunto @mvar{a} y @code{@{@mvar{x}@}}.
 
-La funci@'on @code{adjoin} emite un mensaje de error si @var{a}
+La funci@'on @code{adjoin} emite un mensaje de error si @mvar{a}
 no es un conjunto literal.
 
-Las sentencias @code{adjoin(@var{x}, @var{a})} y 
-@code{union(set(@var{x}), @var{a})} son equivalentes, aunque
+Las sentencias @code{adjoin(@mvar{x}, @mvar{a})} y 
+@code{union(set(@mvar{x}), @mvar{a})} son equivalentes, aunque
 @code{adjoin} puede ser algo m@'as r@'apida que @code{union}.
 
 V@'ease tambi@'en @code{disjoin}.
@@ -386,13 +386,13 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} belln (@var{n})
+@deffn {Funci@'on} belln (@mvar{n})
 
 Representa el @math{n}-@'esimo n@'umero de Bell, de
 modo que @code{belln(n)} es el n@'umero de particiones de un conjunto de 
-@var{n} elementos.
+@mvar{n} elementos.
 
-El argumento @var{n} debe ser un entero no negativo.
+El argumento @mvar{n} debe ser un entero no negativo.
 
 La funci@'on @code{belln} se distribuye sobre ecuaciones, listas,
 matrices y conjuntos.
@@ -417,7 +417,7 @@ Ejemplos:
 (%o3)                         true
 @end example
 
-Si @var{n} no es un entero no negativo, la funci@'on @code{belln(n)} no hace c@'alculo alguno.
+Si @mvar{n} no es un entero no negativo, la funci@'on @code{belln(n)} no hace c@'alculo alguno.
 
 @c ===beg===
 @c [belln (x), belln (sqrt(3)), belln (-9)];
@@ -429,9 +429,9 @@ Si @var{n} no es un entero no negativo, la funci@'on @code{belln(n)} no hace c@'
 @end deffn
 
 
-@deffn {Funci@'on} cardinality (@var{a})
+@deffn {Funci@'on} cardinality (@mvar{a})
 
-Devuelve el n@'umero de elementos del conjunto @var{a}.
+Devuelve el n@'umero de elementos del conjunto @mvar{a}.
 
 La funci@'on @code{cardinality} ignora los elementos
 redundantes, incluso cuando la simplificaci@'on est@'a
@@ -458,10 +458,10 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} cartesian_product (@var{b_1}, ... , @var{b_n})
+@deffn {Funci@'on} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
 
-Devuelve un conjunto formado por listas de la forma @code{[@var{x_1}, ..., @var{x_n}]},
-siendo @var{x_1}, ..., @var{x_n} elementos de los conjuntos @var{b_1}, ... , @var{b_n},
+Devuelve un conjunto formado por listas de la forma @code{[@mvar{x_1}, ..., @mvar{x_n}]},
+siendo @mvar{x_1}, ..., @mvar{x_n} elementos de los conjuntos @mvar{b_1}, ... , @mvar{b_n},
 respectivamente.
 
 La funci@'on @code{cartesian_product} emite un mensaje de error si alguno
@@ -488,17 +488,17 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} disjoin (@var{x}, @var{a})
+@deffn {Funci@'on} disjoin (@mvar{x}, @mvar{a})
 
-Devuelve el conjunto @var{a} sin el elemento @var{x}.
-Si @var{x} no es elemento de @var{a}, entonces el
-resultado es el propio @var{a}.
+Devuelve el conjunto @mvar{a} sin el elemento @mvar{x}.
+Si @mvar{x} no es elemento de @mvar{a}, entonces el
+resultado es el propio @mvar{a}.
 
 La funci@'on @code{disjoin} emite un mensaje de error si
-@var{a} no es un conjunto literal.
+@mvar{a} no es un conjunto literal.
 
-Las sentencias @code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}
-y @code{setdifference(@var{a}, set(@var{x}))} son todas ellas equivalentes;
+Las sentencias @code{disjoin(@mvar{x}, @mvar{a})}, @code{delete(@mvar{x}, @mvar{a})}
+y @code{setdifference(@mvar{a}, set(@mvar{x}))} son todas ellas equivalentes;
 pero en general, @code{disjoin} ser@'a m@'as r@'apida que las otras.
 
 Ejemplos:
@@ -519,13 +519,13 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} disjointp (@var{a}, @var{b}) 
+@deffn {Funci@'on} disjointp (@mvar{a}, @mvar{b}) 
 
-Devuelve @code{true} si y s@'olo si los conjuntos  @var{a} y @var{b}
+Devuelve @code{true} si y s@'olo si los conjuntos  @mvar{a} y @mvar{b}
 son disjuntos.
 
 La funci@'on @code{disjointp} emite un mensaje de error si
-@var{a} o @var{b} no son conjuntos literales.
+@mvar{a} o @mvar{b} no son conjuntos literales.
 
 Ejemplos:
 
@@ -542,13 +542,13 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} divisors (@var{n})
+@deffn {Funci@'on} divisors (@mvar{n})
 
-Calcula el conjunto de divisores de @var{n}.
+Calcula el conjunto de divisores de @mvar{n}.
 
-La sentencia @code{divisors(@var{n})} devuelve un conjunto
-de enteros si @var{n} es un entero no nulo.
-El conjunto de divisores incluye los elementos 1 y @var{n}.
+La sentencia @code{divisors(@mvar{n})} devuelve un conjunto
+de enteros si @mvar{n} es un entero no nulo.
+El conjunto de divisores incluye los elementos 1 y @mvar{n}.
 Los divisores de un entero negativo son los divisores de su
 valor absoluto.
 
@@ -610,13 +610,13 @@ matrices y conjuntos.
 @end deffn
 
 
-@deffn {Funci@'on} elementp (@var{x}, @var{a})
+@deffn {Funci@'on} elementp (@mvar{x}, @mvar{a})
 
-Devuelve @code{true} si y s@'olo si @var{x} es miembro del
-conjunto @var{a}.
+Devuelve @code{true} si y s@'olo si @mvar{x} es miembro del
+conjunto @mvar{a}.
 
 La funci@'on @code{elementp} emite un mensaje de error si 
-@var{a} no es un conjunto literal.
+@mvar{a} no es un conjunto literal.
 
 Ejemplos: 
 
@@ -633,8 +633,8 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} emptyp (@var{a})
-Devuelve @code{true} si y s@'olo si @var{a} es el conjunto vac@'{@dotless{i}}o o la lista vac@'{@dotless{i}}a.
+@deffn {Funci@'on} emptyp (@mvar{a})
+Devuelve @code{true} si y s@'olo si @mvar{a} es el conjunto vac@'{@dotless{i}}o o la lista vac@'{@dotless{i}}a.
 
 Ejemplos:
 
@@ -651,18 +651,18 @@ Ejemplos:
 @end deffn
        
 
-@deffn {Funci@'on} equiv_classes (@var{s}, @var{F})
+@deffn {Funci@'on} equiv_classes (@mvar{s}, @mvar{F})
 
-Devuelve el conjunto de las clases de equivalencia del conjunto @var{s}
-respecto de la relaci@'on de equivalencia @var{F}.
+Devuelve el conjunto de las clases de equivalencia del conjunto @mvar{s}
+respecto de la relaci@'on de equivalencia @mvar{F}.
 
-El argumento @var{F} es una funci@'on de dos variables definida sobre
-el producto cartesiano @var{s} por @var{s}.
-El valor devuelto por @var{F} debe ser @code{true} o @code{false},
-o bien una expresi@'on @var{expr} tal que @code{is(@var{expr})}
+El argumento @mvar{F} es una funci@'on de dos variables definida sobre
+el producto cartesiano @mvar{s} por @mvar{s}.
+El valor devuelto por @mvar{F} debe ser @code{true} o @code{false},
+o bien una expresi@'on @mvar{expr} tal que @code{is(@mvar{expr})}
 tome el valor @code{true} o @code{false}.
 
-Si @var{F} no es una relaci@'on de equivalencia, @code{equiv_classes}
+Si @mvar{F} no es una relaci@'on de equivalencia, @code{equiv_classes}
 la acepta sin emitir ning@'un mensaje de error, pero el resultado
 ser@'a incorrecto en general.
 
@@ -706,38 +706,38 @@ Las clases de equivalencia son n@'umeros que difieren en un m@'ultiplo de 3.
 @end deffn
 
 
-@deffn {Funci@'on} every (@var{f}, @var{s})
-@deffnx {Funci@'on} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Funci@'on} every (@mvar{f}, @mvar{s})
+@deffnx {Funci@'on} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-Devuelve @code{true} si el predicado @var{f} vale @code{true}
+Devuelve @code{true} si el predicado @mvar{f} vale @code{true}
 para todos los argumentos dados.
 
 Dado un conjunto como segundo argumento,
-@code{every(@var{f}, @var{s})} devuelve @code{true}
-si @code{is(@var{f}(@var{a_i}))} devuelve @code{true} para todos los
-@var{a_i} pertenecientes @var{s}.
-La funci@'on @code{every} puede evaluar o no @var{f} para todos los
-@var{a_i} pertenecientes @var{s}.
+@code{every(@mvar{f}, @mvar{s})} devuelve @code{true}
+si @code{is(@mvar{f}(@mvar{a_i}))} devuelve @code{true} para todos los
+@mvar{a_i} pertenecientes @mvar{s}.
+La funci@'on @code{every} puede evaluar o no @mvar{f} para todos los
+@mvar{a_i} pertenecientes @mvar{s}.
 Puesto que los conjuntos no est@'an ordenados, @code{every}
-puede evaluar @code{@var{f}(@var{a_i})} en cualquier orden.
+puede evaluar @code{@mvar{f}(@mvar{a_i})} en cualquier orden.
 
 Dada una o m@'as listas como argumentos,
-@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
-si @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} devuelve @code{true} 
-para todo @var{x_1}, ..., @var{x_n} en @var{L_1}, ..., @var{L_n}, respectivamente.
+@code{every(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} devuelve @code{true}
+si @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} devuelve @code{true} 
+para todo @mvar{x_1}, ..., @mvar{x_n} en @mvar{L_1}, ..., @mvar{L_n}, respectivamente.
 La funci@'on @code{every} puede evaluar o no 
-@var{f} para cualquier combinaci@'on de @var{x_1}, ..., @var{x_n}; adem@'as,
+@mvar{f} para cualquier combinaci@'on de @mvar{x_1}, ..., @mvar{x_n}; adem@'as,
 @code{every} eval@'ua las listas en el orden creciente del @'{@dotless{i}}ndice.
 
 Dado un conjunto vac@'{@dotless{i}}o @code{@{@}} o lista vac@'{@dotless{i}}a 
 @code{[]} como argumentos, @code{every} devuelve @code{false}.
 
 Si la variable global @code{maperror} vale @code{true}, todas las listas
-@var{L_1}, ..., @var{L_n} deben ser de igual longitud.
+@mvar{L_1}, ..., @mvar{L_n} deben ser de igual longitud.
 Si @code{maperror} vale @code{false}, los argumentos en forma de listas
 se truncan para igualar sus longitudes a la de la lista m@'as corta.
 
-Los valores que devuelve el predicado @var{f} cuando toman 
+Los valores que devuelve el predicado @mvar{f} cuando toman 
 (mediante @code{is}) un valor diferente a @code{true} y @code{false}
 se controlan con la variable global @code{prederror}.
 Si @code{prederror} vale @code{true}, tales valores se
@@ -776,7 +776,7 @@ El predicado es una funci@'on de dos argumentos.
 (%o2)                         false
 @end example
 
-Las respuestas del predicado @var{f} que se eval@'uan 
+Las respuestas del predicado @mvar{f} que se eval@'uan 
 a cualquier cosa diferente de @code{true} y @code{false}
 est@'an controlados por la variable global @code{prederror}.
 
@@ -804,19 +804,19 @@ est@'an controlados por la variable global @code{prederror}.
 @end deffn
  
 
-@deffn {Funci@'on} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {Funci@'on} extremal_subset (@var{s}, @var{f}, min)
+@deffn {Funci@'on} extremal_subset (@mvar{s}, @mvar{f}, max)
+@deffnx {Funci@'on} extremal_subset (@mvar{s}, @mvar{f}, min)
 
-Calcula el subconjunto de @var{s} para el cual la funci@'on @var{f}
+Calcula el subconjunto de @mvar{s} para el cual la funci@'on @mvar{f}
 toma sus valores mayor y menor.
 
-La sentencia @code{extremal_subset(@var{s}, @var{f}, max)}
-devuelve el subconjunto del conjunto o lista @var{s} para el cual
-la funci@'on real @var{f} toma su valor m@'aximo.
+La sentencia @code{extremal_subset(@mvar{s}, @mvar{f}, max)}
+devuelve el subconjunto del conjunto o lista @mvar{s} para el cual
+la funci@'on real @mvar{f} toma su valor m@'aximo.
 
-La sentencia @code{extremal_subset(@var{s}, @var{f}, min)}
-devuelve el subconjunto del conjunto o lista @var{s} para el cual
-la funci@'on real @var{f} toma su valor m@'{@dotless{i}}nimo.
+La sentencia @code{extremal_subset(@mvar{s}, @mvar{f}, min)}
+devuelve el subconjunto del conjunto o lista @mvar{s} para el cual
+la funci@'on real @mvar{f} toma su valor m@'{@dotless{i}}nimo.
 
 Ejemplos
 
@@ -833,9 +833,9 @@ Ejemplos
 @end deffn
 
 
-@deffn {Funci@'on} flatten (@var{expr})
+@deffn {Funci@'on} flatten (@mvar{expr})
 
-Recoge los argumentos de subexpresiones con el mismo operador que @var{expr}
+Recoge los argumentos de subexpresiones con el mismo operador que @mvar{expr}
 y construye con ellas otra expresi@'on a partir de estos argumentos.
 
 Aquellas subexpresiones en las que el operador es diferente del operador
@@ -929,9 +929,9 @@ Wrong number of arguments to mod
 @end deffn
 
 
-@deffn {Funci@'on} full_listify (@var{a})
+@deffn {Funci@'on} full_listify (@mvar{a})
 
-Sustituye los operadores de conjunto presentes en @var{a}
+Sustituye los operadores de conjunto presentes en @mvar{a}
 por operadores de listas, devolviendo el resultado.
 La funci@'on @code{full_listify} sustituye operadores de 
 conjuntos en subexpresiones anidadas, incluso cuando
@@ -955,12 +955,12 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} fullsetify (@var{a})
+@deffn {Funci@'on} fullsetify (@mvar{a})
 
-Si @var{a} es una lista, sustituye el operador de lista por el
+Si @mvar{a} es una lista, sustituye el operador de lista por el
 de conjunto, aplicando posteriormente @code{fullsetify} a todos
 los elementos que son a su vez conjuntos.
-Si @var{a} no es una lista, se devuelve sin cambio alguno.
+Si @mvar{a} no es una lista, se devuelve sin cambio alguno.
 
 La funci@'on @code{setify} sustituye solamente el operador principal.
 
@@ -982,7 +982,7 @@ conjunto porque el operador principal de @code{f([b])} no es una lista.
 @end deffn
 
 
-@deffn {Funci@'on} identity (@var{x})
+@deffn {Funci@'on} identity (@mvar{x})
 
 La funci@'on @code{identity} devuelve su argumento cualquiera que sea @'este.
 
@@ -1001,21 +1001,21 @@ los argumentos ya son valores booleanos.
 @end deffn
 
 
-@deffn {Funci@'on} integer_partitions (@var{n})
-@deffnx {Funci@'on} integer_partitions (@var{n}, @var{len})
+@deffn {Funci@'on} integer_partitions (@mvar{n})
+@deffnx {Funci@'on} integer_partitions (@mvar{n}, @mvar{len})
 
-Devuelve particiones enteras de @var{n}, esto es,
-listas de enteros cuyas sumas son @var{n}.
+Devuelve particiones enteras de @mvar{n}, esto es,
+listas de enteros cuyas sumas son @mvar{n}.
 
-La sentencia @code{integer_partitions(@var{n})}
-devuelve el conjunto de todas las particiones del entero @var{n}.
+La sentencia @code{integer_partitions(@mvar{n})}
+devuelve el conjunto de todas las particiones del entero @mvar{n}.
 Cada partici@'on es una lista ordenada de mayor a menor.
 
-La sentencia @code{integer_partitions(@var{n}, @var{len})}
-devuelve todas las particiones de longitud @var{len} o menor;
+La sentencia @code{integer_partitions(@mvar{n}, @mvar{len})}
+devuelve todas las particiones de longitud @mvar{len} o menor;
 en este caso, se a@~naden ceros a cada partici@'on con menos
-de @var{len} t@'erminos para que todas ellas sean de longitud
-@var{len}. Las particiones son listas ordenadas de mayor a menor.
+de @mvar{len} t@'erminos para que todas ellas sean de longitud
+@mvar{len}. Las particiones son listas ordenadas de mayor a menor.
 
 Una lista @math{[a_1, ..., a_m]} es una partici@'on de un entero no
 negativo @math{n} si (1) cada @math{a_i} es entero no nulo y (2)
@@ -1067,18 +1067,18 @@ particiones de 10 formadas por n@'umeros primos.
 @end deffn
 
 
-@deffn {Funci@'on} intersect (@var{a_1}, ..., @var{a_n})
+@deffn {Funci@'on} intersect (@mvar{a_1}, ..., @mvar{a_n})
 Es una forma abreviada de la funci@'on @code{intersection}.
 @end deffn
 
 
-@deffn {Funci@'on} intersection (@var{a_1}, ..., @var{a_n})
+@deffn {Funci@'on} intersection (@mvar{a_1}, ..., @mvar{a_n})
 
 Devuelve el conjunto de todos los elementos que son
-comunes a los conjuntos  @var{a_1} a @var{a_n}.
+comunes a los conjuntos  @mvar{a_1} a @mvar{a_n}.
 
 Emite un mensaje de error en caso de que cualquiera de los 
-@var{a_i} no sea un conjunto.
+@mvar{a_i} no sea un conjunto.
 
 Ejemplos:
 
@@ -1112,13 +1112,13 @@ Ejemplos:
 @end example
 @end deffn
 
-@deffn {Funci@'on} kron_delta (@var{x1}, @var{y1}, @dots{}, @var{xp}, @var{yp})
+@deffn {Funci@'on} kron_delta (@mvar{x1}, @mvar{y1}, @dots{}, @mvar{xp}, @mvar{yp})
 
 Es la funci@'on delta de Kronecker.
 
-La funci@'on @code{kron_delta} devuelve 1 cuando @var{xi} y
-@var{yi} son iguales para todos los pares, devolviendo 0 si existe
-un par en el que @var{xi} y @var{yi} no sean iguales. La igualdad
+La funci@'on @code{kron_delta} devuelve 1 cuando @mvar{xi} y
+@mvar{yi} son iguales para todos los pares, devolviendo 0 si existe
+un par en el que @mvar{xi} y @mvar{yi} no sean iguales. La igualdad
 se determina utilizando @code{is(equal(xi,xj))} y la desigualdad
 con @code{is(notequal(xi,xj))}. En caso de un solo argumento,
 @code{kron_delta} devuelve un mensaje de error.
@@ -1147,13 +1147,13 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} listify (@var{a})
+@deffn {Funci@'on} listify (@mvar{a})
 
-Si @var{a} es un conjunto, devuelve una lista con los elementos de @var{a};
-si  @var{a} no es un conjunto, devuelve @var{a}.
+Si @mvar{a} es un conjunto, devuelve una lista con los elementos de @mvar{a};
+si  @mvar{a} no es un conjunto, devuelve @mvar{a}.
 
 La funci@'on @code{full_listify} sustituye todos los operadores
-de conjunto en @var{a} por operadores de lista.
+de conjunto en @mvar{a} por operadores de lista.
 
 Ejemplos:
 
@@ -1170,18 +1170,18 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} lreduce (@var{f}, @var{s})
-@deffnx {Funci@'on} lreduce (@var{f}, @var{s}, @var{init})
+@deffn {Funci@'on} lreduce (@mvar{f}, @mvar{s})
+@deffnx {Funci@'on} lreduce (@mvar{f}, @mvar{s}, @mvar{init})
 
-Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria mediante
-composici@'on, siendo @var{s} una lista.
+Ampl@'{@dotless{i}}a la funci@'on binaria @mvar{F} a n-aria mediante
+composici@'on, siendo @mvar{s} una lista.
 
-La sentencia  @code{lreduce(@var{F}, @var{s})} devuelve
+La sentencia  @code{lreduce(@mvar{F}, @mvar{s})} devuelve
 @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
-Si se incluye el argumento opcional @var{s_0},
-el resultado equivale a @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
+Si se incluye el argumento opcional @mvar{s_0},
+el resultado equivale a @code{lreduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s}))}.
 
-La funci@'on @var{F} se aplica primero a los elementos del
+La funci@'on @mvar{F} se aplica primero a los elementos del
 extremo izquierdo de la lista, de ah@'{@dotless{i}} el nombre
 @code{lreduce}, (@i{left reduce}).
 
@@ -1232,24 +1232,24 @@ El s@'{@dotless{i}}mbolo @code{/} es el operador divisi@'on.
 @end deffn
 
 
-@deffn {Funci@'on} makeset (@var{expr}, @var{x}, @var{s})
+@deffn {Funci@'on} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
 
 Genera un conjunto cuyos miembros se generan a partir de la
-expresi@'on @var{expr}, siendo @var{x} una lista de variables de
-@var{expr} y @var{s} un conjunto o lista de listas.
-Para generar los elementos del conjunto, se eval@'ua @var{expr}
-asignando a las variables de @var{x} los elementos de @var{s}
+expresi@'on @mvar{expr}, siendo @mvar{x} una lista de variables de
+@mvar{expr} y @mvar{s} un conjunto o lista de listas.
+Para generar los elementos del conjunto, se eval@'ua @mvar{expr}
+asignando a las variables de @mvar{x} los elementos de @mvar{s}
 en paralelo.
 
-Los elementos de @var{s} deben tener la misma longitud que @var{x}.
-La lista de variables @var{x} debe ser una lista de s@'{@dotless{i}}mbolos
+Los elementos de @mvar{s} deben tener la misma longitud que @mvar{x}.
+La lista de variables @mvar{x} debe ser una lista de s@'{@dotless{i}}mbolos
 sin sub@'{@dotless{i}}ndices. Cuando se trate de un @'unico s@'{@dotless{i}}mbolo,
-@var{x} debe expresarse como una lista de un elemento y cada elemento de @var{s}
+@mvar{x} debe expresarse como una lista de un elemento y cada elemento de @mvar{s}
 debe ser una lista de un s@'olo elemento.
 
 @c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
-@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
-@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+@c @code{makeset(@mvar{expr}, @mvar{x}, @mvar{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@mvar{x}, L), ''@mvar{expr})), args(@mvar{s})))}.
 
 V@'ease tambi@'en @code{makelist}.
 
@@ -1284,13 +1284,13 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} moebius (@var{n})
+@deffn {Funci@'on} moebius (@mvar{n})
 
 Representa la funci@'on de Moebius.
 
-Si @var{n} es el producto de @math{k} n@'umeros primos diferentes,
-@code{moebius(@var{n})} devuelve @math{(-1)^k}, retornando 1 si 
-@math{@var{n} = 1} y 0 para cualesquiera otros enteros positivos.
+Si @mvar{n} es el producto de @math{k} n@'umeros primos diferentes,
+@code{moebius(@mvar{n})} devuelve @math{(-1)^k}, retornando 1 si 
+@math{@mvar{n} = 1} y 0 para cualesquiera otros enteros positivos.
 
 
 La funci@'on de Moebius se distribuye respecto de ecuaciones,
@@ -1334,17 +1334,17 @@ Ejemplos:
 @end deffn
  
 
-@deffn {Funci@'on} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffn {Funci@'on} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Funci@'on} multinomial_coeff ()
 
 Calcula el coeficiente multinomial.
 
-Si todos los @var{a_k} son enteros no negativos, el coeficiente multinomial
-es el n@'umero de formas de colocar  @code{@var{a_1} + ... + @var{a_n}}
-objetos diferentes en  @math{n} cajas con @var{a_k} elementos en la
+Si todos los @mvar{a_k} son enteros no negativos, el coeficiente multinomial
+es el n@'umero de formas de colocar  @code{@mvar{a_1} + ... + @mvar{a_n}}
+objetos diferentes en  @math{n} cajas con @mvar{a_k} elementos en la
 @math{k}-@'esima caja. En general,
-@code{multinomial_coeff (@var{a_1}, ..., @var{a_n})} calcula
-@code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
+@code{multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})} calcula
+@code{(@mvar{a_1} + ... + @mvar{a_n})!/(@mvar{a_1}! ... @mvar{a_n}!)}.
 
 Si no se dan argumentos, @code{multinomial_coeff()} devuelve 1.
 
@@ -1378,20 +1378,20 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} num_distinct_partitions (@var{n})
-@deffnx {Funci@'on} num_distinct_partitions (@var{n}, @var{list})
+@deffn {Funci@'on} num_distinct_partitions (@mvar{n})
+@deffnx {Funci@'on} num_distinct_partitions (@mvar{n}, @mvar{list})
 
-Si @var{n} es un entero no negativo, devuelve el n@'umero de
-particiones enteras distintas de @var{n}, en caso contrario
+Si @mvar{n} es un entero no negativo, devuelve el n@'umero de
+particiones enteras distintas de @mvar{n}, en caso contrario
 @code{num_distinct_partitions} devuelve una forma nominal.
 
-La sentencia @code{num_distinct_partitions(@var{n}, list)}
+La sentencia @code{num_distinct_partitions(@mvar{n}, list)}
 devuelve una lista con el n@'umero de particiones distintas
-de 1, 2, 3, ..., @var{n}.
+de 1, 2, 3, ..., @mvar{n}.
 
-Una partici@'on distinta de @var{n} es una lista de n@'umeros
+Una partici@'on distinta de @mvar{n} es una lista de n@'umeros
 enteros positivos distintos @math{k_1}, ..., @math{k_m}
-tales que @math{@var{n} = k_1 + ... + k_m}.
+tales que @math{@mvar{n} = k_1 + ... + k_m}.
 
 Ejemplos:
 
@@ -1411,18 +1411,18 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} num_partitions (@var{n})
-@deffnx {Funci@'on} num_partitions (@var{n}, @var{list})
+@deffn {Funci@'on} num_partitions (@mvar{n})
+@deffnx {Funci@'on} num_partitions (@mvar{n}, @mvar{list})
 
-Si @var{n} es un entero no negativo, devuelve el n@'umero de
-particiones enteras de @var{n}, en caso contrario @code{num_partitions}
+Si @mvar{n} es un entero no negativo, devuelve el n@'umero de
+particiones enteras de @mvar{n}, en caso contrario @code{num_partitions}
 devuelve una expresi@'on nominal.
 
-La sentencia @code{num_partitions(@var{n}, list)} devuelve una lista
-con los n@'umeros de particiones enteras de 1, 2, 3, ..., @var{n}.
+La sentencia @code{num_partitions(@mvar{n}, list)} devuelve una lista
+con los n@'umeros de particiones enteras de 1, 2, 3, ..., @mvar{n}.
 
-Siendo @var{n} un entero no negativo, @code{num_partitions(@var{n})}
-es igual a @code{cardinality(integer_partitions(@var{n}))}; sin
+Siendo @mvar{n} un entero no negativo, @code{num_partitions(@mvar{n})}
+es igual a @code{cardinality(integer_partitions(@mvar{n}))}; sin
 embargo, @code{num_partitions} no construye el conjunto de 
 particiones, por lo que es m@'as r@'apido.
 
@@ -1444,18 +1444,18 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} partition_set (@var{a}, @var{f})
+@deffn {Funci@'on} partition_set (@mvar{a}, @mvar{f})
 
-Particiona el conjunto @var{a} respecto del predicado @var{f}.
+Particiona el conjunto @mvar{a} respecto del predicado @mvar{f}.
 
 La funci@'on @code{partition_set} devuelve una lista con dos conjuntos;
-el primer conjunto es el subconjunto de @var{a} para el cual el predicado
-@var{f} devuelve @code{false} y el segundo contiene al resto de elementos de @var{a}.
+el primer conjunto es el subconjunto de @mvar{a} para el cual el predicado
+@mvar{f} devuelve @code{false} y el segundo contiene al resto de elementos de @mvar{a}.
 
 La funci@'on @code{partition_set} no aplica @code{is} al valor devuelto
-por @var{f}.
+por @mvar{f}.
 
-La funci@'on @code{partition_set} emite un mensaje de error si @var{a}
+La funci@'on @code{partition_set} emite un mensaje de error si @mvar{a}
 no es un conjunto literal.
 
 V@'ease tambi@'en @code{subset}.
@@ -1477,16 +1477,16 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} permutations (@var{a})
+@deffn {Funci@'on} permutations (@mvar{a})
 
 Devuelve un conjunto con todas las permutaciones distintas
-de los miembros de la lista o conjunto  @var{a}. Cada permutaci@'on
+de los miembros de la lista o conjunto  @mvar{a}. Cada permutaci@'on
 es una lista, no un conjunto.
 
-Si @var{a} es una lista, sus miembros duplicados no son eliminados
+Si @mvar{a} es una lista, sus miembros duplicados no son eliminados
 antes de buscar sus permutaciones.
 
-Si @var{a} no es una lista o conjunto, @code{permutations} emite
+Si @mvar{a} no es una lista o conjunto, @code{permutations} emite
 un mensaje de error.
 
 V@'ease tambi@'en @code{random_permutation}.
@@ -1506,21 +1506,21 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} powerset (@var{a})
-@deffnx {Funci@'on} powerset (@var{a}, @var{n})
+@deffn {Funci@'on} powerset (@mvar{a})
+@deffnx {Funci@'on} powerset (@mvar{a}, @mvar{n})
 
-Devuelve el conjunto de todos los subconjuntos del conjunto @var{a}
+Devuelve el conjunto de todos los subconjuntos del conjunto @mvar{a}
 o un sunconjunto de ellos.
 
-La sentencia @code{powerset(@var{a})} devuelve el conjunto de todos
-los subconjuntos de @var{a}, que contendr@'a @code{2^cardinality(@var{a})}
+La sentencia @code{powerset(@mvar{a})} devuelve el conjunto de todos
+los subconjuntos de @mvar{a}, que contendr@'a @code{2^cardinality(@mvar{a})}
 elementos.
 
-La sentencia @code{powerset(@var{a}, @var{n})} devuelve el conjunto de todos
-los subconjuntos de @var{a} de cardinalidad @var{n}.
+La sentencia @code{powerset(@mvar{a}, @mvar{n})} devuelve el conjunto de todos
+los subconjuntos de @mvar{a} de cardinalidad @mvar{n}.
 
-La funci@'on @code{powerset} emite un mensaje de error si @var{a} no
-es un conjunto literal o si @var{n} no es un entero no negativo.
+La funci@'on @code{powerset} emite un mensaje de error si @mvar{a} no
+es un conjunto literal o si @mvar{n} no es un entero no negativo.
 
 Ejemplos:
 
@@ -1550,10 +1550,10 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} random_permutation (@var{a})
+@deffn {Funci@'on} random_permutation (@mvar{a})
 
 Devuelve una permutaci@'on aleatoria del conjunto o lista
-@var{a}, siguiendo el algoritmo de Knuth.
+@mvar{a}, siguiendo el algoritmo de Knuth.
 
 El valor devuelto es una lista nueva distinta del argumento,
 incluso cuando todos los elementos son iguales. Sin embargo,
@@ -1583,18 +1583,18 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} rreduce (@var{f}, @var{s})
-@deffnx {Funci@'on} rreduce (@var{f}, @var{s}, @var{init})
+@deffn {Funci@'on} rreduce (@mvar{f}, @mvar{s})
+@deffnx {Funci@'on} rreduce (@mvar{f}, @mvar{s}, @mvar{init})
 
-Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria mediante
-composici@'on, siendo @var{s} una lista.
+Ampl@'{@dotless{i}}a la funci@'on binaria @mvar{F} a n-aria mediante
+composici@'on, siendo @mvar{s} una lista.
 
-La sentencia  @code{rreduce(@var{F}, @var{s})} devuelve
+La sentencia  @code{rreduce(@mvar{F}, @mvar{s})} devuelve
 @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-Si se incluye el argumento opcional @var{s_@{n + 1@}},
-el resultado equivale a @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
+Si se incluye el argumento opcional @mvar{s_@{n + 1@}},
+el resultado equivale a @code{rreduce(@mvar{F}, endcons(@mvar{s_@{n + 1@}}, @mvar{s}))}.
 
-La funci@'on @var{F} se aplica primero a los elementos del
+La funci@'on @mvar{F} se aplica primero a los elementos del
 extremo derecho de la lista, de ah@'{@dotless{i}} el nombre
 @code{rreduce}, (@i{right reduce}).
 
@@ -1646,13 +1646,13 @@ El s@'{@dotless{i}}mbolo @code{/} es el operador divisi@'on.
 @end deffn
 
 
-@deffn {Funci@'on}  setdifference (@var{a}, @var{b})
+@deffn {Funci@'on}  setdifference (@mvar{a}, @mvar{b})
 
-Devuelve el conjunto con los elementos del conjunto @var{a} que
-no pertenecen al conjunto @var{b}.
+Devuelve el conjunto con los elementos del conjunto @mvar{a} que
+no pertenecen al conjunto @mvar{b}.
 
 La funci@'on @code{setdifference} emite un mensaje de error si
-@var{a} o @var{b} no son conjuntos.
+@mvar{a} o @mvar{b} no son conjuntos.
 
 Ejemplos:
 
@@ -1684,15 +1684,15 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} setequalp (@var{a}, @var{b})
+@deffn {Funci@'on} setequalp (@mvar{a}, @mvar{b})
 
-Devuelve  @code{true} si los conjuntos @var{a} y @var{b} tienen
+Devuelve  @code{true} si los conjuntos @mvar{a} y @mvar{b} tienen
 el mismo n@'umero de elementos
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-y @code{is (@var{x} = @var{y})} vale @code{true}
-para @code{x} perteneciente a @var{a}
-e @code{y} perteneciente a @var{b},
+y @code{is (@mvar{x} = @mvar{y})} vale @code{true}
+para @code{x} perteneciente a @mvar{a}
+e @code{y} perteneciente a @mvar{b},
 considerados en el orden que determina la funci@'on 
 @code{listify}. En caso contrario, @code{setequalp}
 devuelve @code{false}.
@@ -1715,14 +1715,14 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} setify (@var{a})
+@deffn {Funci@'on} setify (@mvar{a})
 
-Construye un conjunto con los miembros de la lista @var{a}.
-Los elementos duplicados de la lista @var{a} son borrados
+Construye un conjunto con los miembros de la lista @mvar{a}.
+Los elementos duplicados de la lista @mvar{a} son borrados
 y ordenados de acuerdo con el predicado @code{orderlessp}.
 
 La funci@'on @code{setify} emite un mensaje de error si
-@var{a} no es un conjunto literal.
+@mvar{a} no es un conjunto literal.
 
 Ejemplos:
 
@@ -1742,9 +1742,9 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} setp (@var{a})
+@deffn {Funci@'on} setp (@mvar{a})
 
-Devuelve @code{true} si y s@'olo si @var{a} es un conjunto de Maxima.
+Devuelve @code{true} si y s@'olo si @mvar{a} es un conjunto de Maxima.
 
 La funci@'on @code{setp} devuelve @code{true} tanto cuando el conjunto
 tiene como cuando no tiene elementos repetidos.
@@ -1771,17 +1771,17 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} set_partitions (@var{a})
-@deffnx {Funci@'on} set_partitions (@var{a}, @var{n})
+@deffn {Funci@'on} set_partitions (@mvar{a})
+@deffnx {Funci@'on} set_partitions (@mvar{a}, @mvar{n})
 
-Devuelve el conjunto de todas las particiones de @var{a} o
+Devuelve el conjunto de todas las particiones de @mvar{a} o
 un subconjunto de ellas.
 
-La sentencia @code{set_partitions(@var{a}, @var{n})}
-devuelve un conjunto con todas las descomposiciones de @var{a}
-en @var{n} conjuntos no vac@'{@dotless{i}}os disjuntos.
+La sentencia @code{set_partitions(@mvar{a}, @mvar{n})}
+devuelve un conjunto con todas las descomposiciones de @mvar{a}
+en @mvar{n} conjuntos no vac@'{@dotless{i}}os disjuntos.
 
-La sentencia @code{set_partitions(@var{a})} devuelve el
+La sentencia @code{set_partitions(@mvar{a})} devuelve el
 conjunto de todas las particiones.
 
 La funci@'on @code{stirling2} devuelve la cardinalidad del conjunto
@@ -1824,7 +1824,7 @@ La cardinalidad del conjunto de particiones de un conjunto puede calcularse con 
 (%o3)                        90 = 90
 @end example
 
-Cada elemento de @code{p} deber@'{@dotless{i}}a tener @var{n} = 3 miembros,
+Cada elemento de @code{p} deber@'{@dotless{i}}a tener @mvar{n} = 3 miembros,
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
@@ -1855,37 +1855,37 @@ debe ser igual a @code{s},
 @end deffn
 
 
-@deffn {Funci@'on} some (@var{f}, @var{a})
-@deffnx {Funci@'on} some (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Funci@'on} some (@mvar{f}, @mvar{a})
+@deffnx {Funci@'on} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-Devuelve @code{true} si el predicado @var{f} devuelve @code{true}
+Devuelve @code{true} si el predicado @mvar{f} devuelve @code{true}
 para al menos uno de sus argumentos.
-Si el segundo argumento es un conjunto, @code{some (@var{f}, @var{a})}
-devuelve @code{true} si @code{@var{f}(@var{a_i})} devuelve tambi@'en
-@code{true} para alguno de los @var{a_i} en @var{a}; puede ser que
-@code{some} no eval@'ue @var{f} para todos los @var{a_i} de @var{s}.
+Si el segundo argumento es un conjunto, @code{some (@mvar{f}, @mvar{a})}
+devuelve @code{true} si @code{@mvar{f}(@mvar{a_i})} devuelve tambi@'en
+@code{true} para alguno de los @mvar{a_i} en @mvar{a}; puede ser que
+@code{some} no eval@'ue @mvar{f} para todos los @mvar{a_i} de @mvar{s}.
 Puesto que los conjuntos no est@'an ordenados, @code{some} puede evaluar
-@code{@var{f}(@var{a_i})} en cualquier orden.
+@code{@mvar{f}(@mvar{a_i})} en cualquier orden.
 
 Dada una o m@'as listas como argumentos,
-@code{some (@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
-si @code{@var{f}(@var{x_1}, ..., @var{x_n})} devuelve tambi@'en
-@code{true} para al menos un  @var{x_1}, ..., @var{x_n} de
-@var{L_1}, ..., @var{L_n}, respectivamente; puede ser que
-@code{some} no eval@'ue @var{f} para todos las combinaciones
-@var{x_1}, ..., @var{x_n}. La funci@'on @code{some} eval@'ua
+@code{some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} devuelve @code{true}
+si @code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} devuelve tambi@'en
+@code{true} para al menos un  @mvar{x_1}, ..., @mvar{x_n} de
+@mvar{L_1}, ..., @mvar{L_n}, respectivamente; puede ser que
+@code{some} no eval@'ue @mvar{f} para todos las combinaciones
+@mvar{x_1}, ..., @mvar{x_n}. La funci@'on @code{some} eval@'ua
 las listas en el orden creciente de su @'{@dotless{i}}ndice
 
 Dado un conjunto vac@'{@dotless{i}}o @code{@{@}} o una lista
 vac@'{@dotless{i}}a como argumentos, @code{some} devuelve @code{false}.
 
 Si la variable global @code{maperror} vale @code{true},
-todas las listas @var{L_1}, ..., @var{L_n} deben tener
+todas las listas @mvar{L_1}, ..., @mvar{L_n} deben tener
 igual n@'umero de elementos. Si @code{maperror} vale
 @code{false}, los argumentos se truncan para tener todos
 el n@'umero de elementos de la lista m@'as corta. 
 
-Los valores que devuelve el predicado @var{f} cuando toman 
+Los valores que devuelve el predicado @mvar{f} cuando toman 
 (mediante @code{is}) un valor diferente a @code{true} y @code{false}
 se controlan con la variable global @code{prederror}.
 Si @code{prederror} vale @code{true}, tales valores se
@@ -1923,7 +1923,7 @@ El predicado es una funci@'on de dos argumentos,
 (%o2)                         false
 @end example
 
-Las respuestas del predicado @var{f} que se eval@'uan 
+Las respuestas del predicado @mvar{f} que se eval@'uan 
 a cualquier cosa diferente de @code{true} y @code{false}
 est@'an controlados por la variable global @code{prederror}.
 
@@ -1957,18 +1957,18 @@ est@'an controlados por la variable global @code{prederror}.
 @end deffn
 
 
-@deffn {Funci@'on} stirling1 (@var{n}, @var{m})
+@deffn {Funci@'on} stirling1 (@mvar{n}, @mvar{m})
 
 Es el n@'umero de Stirling de primera especie.
 
-Si tanto @var{n} como @var{m} son enteros no negativos,
-el valor que toma @code{stirling1 (@var{n}, @var{m})}
+Si tanto @mvar{n} como @mvar{m} son enteros no negativos,
+el valor que toma @code{stirling1 (@mvar{n}, @mvar{m})}
 es el n@'umero de permutaciones de un conjunto de
-@var{n} elementos con @var{m} ciclos. Para m@'as detalles,
+@mvar{n} elementos con @mvar{m} ciclos. Para m@'as detalles,
 v@'ease Graham, Knuth and Patashnik @i{Concrete Mathematics}.
 Maxima utiliza una relaci@'on recursiva para definir
-@code{stirling1 (@var{n}, @var{m})} para @var{m} menor
-que 0; no est@'a definida para @var{n} menor que 0 ni
+@code{stirling1 (@mvar{n}, @mvar{m})} para @mvar{m} menor
+que 0; no est@'a definida para @mvar{n} menor que 0 ni
 para argumentos no enteros.
 
 La funci@'on @code{stirling1} es simplificadora. Maxima
@@ -2045,17 +2045,17 @@ Maxima aplicas algunas identidades a @code{stirling1},
 @end deffn
 
 
-@deffn {Funci@'on} stirling2 (@var{n}, @var{m})
+@deffn {Funci@'on} stirling2 (@mvar{n}, @mvar{m})
 
 Es el n@'umero de Stirling de segunda especie.
 
-Si @var{n} y @var{m} son enteros no negativos,
-@code{stirling2 (@var{n}, @var{m})} es el n@'umero
+Si @mvar{n} y @mvar{m} son enteros no negativos,
+@code{stirling2 (@mvar{n}, @mvar{m})} es el n@'umero
 de formas en las que se puede particionar un conjunto
-de cardinal @var{n} en @var{m} subconjuntos disjuntos.
+de cardinal @mvar{n} en @mvar{m} subconjuntos disjuntos.
 Maxima utiliza una relaci@'on recursiva para definir
-@code{stirling2 (@var{n}, @var{m})} con @var{m} menor
-que 0; la funci@'on no est@'a definida para  @var{n}
+@code{stirling2 (@mvar{n}, @mvar{m})} con @mvar{m} menor
+que 0; la funci@'on no est@'a definida para  @mvar{n}
 menor que 0  ni para argumentos no enteros.
 
 La funci@'on @code{stirling2} es simplificadora. Maxima
@@ -2142,16 +2142,16 @@ Maxima aplicas algunas identidades a @code{stirling2},
 @end deffn
 
 
-@deffn {Funci@'on} subset (@var{a}, @var{f})
+@deffn {Funci@'on} subset (@mvar{a}, @mvar{f})
 
-Devuelve el subconjunto del conjunto @var{a} que satisface el predicado @var{f}.
+Devuelve el subconjunto del conjunto @mvar{a} que satisface el predicado @mvar{f}.
 
 La funci@'on @code{subset} devuelve el conjunto que contiene a los
-elementos de @var{a} para los cuales @var{f} devuelve un resultado
+elementos de @mvar{a} para los cuales @mvar{f} devuelve un resultado
 diferente de @code{false}. La funci@'on @code{subset} no aplica
-@code{is} al valor retornado por @var{f}.
+@code{is} al valor retornado por @mvar{f}.
 
-La funci@'on @code{subset} emite un mensaje de error si @var{a}
+La funci@'on @code{subset} emite un mensaje de error si @mvar{a}
 no es un conjunto literal.
 
 V@'ease tambi@'en @code{partition_set}.
@@ -2171,12 +2171,12 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} subsetp (@var{a}, @var{b})
+@deffn {Funci@'on} subsetp (@mvar{a}, @mvar{b})
 
-Devuelve @code{true} si y s@'olo si el conjunto @var{a} es un subconjunto de @var{b}.
+Devuelve @code{true} si y s@'olo si el conjunto @mvar{a} es un subconjunto de @mvar{b}.
 
 La funci@'on @code{subsetp} emite un mensaje de error si
-cualesquiera @var{a} o @var{b} no es un conjunto literal.
+cualesquiera @mvar{a} o @mvar{b} no es un conjunto literal.
 
 Ejemplos:
 
@@ -2194,12 +2194,12 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} symmdifference (@var{a_1}, @dots{}, @var{a_n})
+@deffn {Funci@'on} symmdifference (@mvar{a_1}, @dots{}, @mvar{a_n})
 
-Devuelve la diferencia sim@'etrica de los conjuntos @code{ @var{a_1}, @dots{}, @var{a_n}}.
+Devuelve la diferencia sim@'etrica de los conjuntos @code{ @mvar{a_1}, @dots{}, @mvar{a_n}}.
 
-Dados dos argumentos, @code{symmdifference (@var{a}, @var{b})} equivale a
-@code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a}))}.
+Dados dos argumentos, @code{symmdifference (@mvar{a}, @mvar{b})} equivale a
+@code{union (setdifference (@mvar{a}, @mvar{b}), setdifference (@mvar{b}, @mvar{a}))}.
 
 La funci@'on @code{symmdifference} emite un mensaje de error si alguno de
 su argumentos no es un conjunto literal.
@@ -2237,27 +2237,27 @@ Ejemplos:
 @end deffn
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
-@deffn {Funci@'on} tree_reduce (@var{F}, @var{s})
-@deffnx {Funci@'on} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Funci@'on} tree_reduce (@mvar{F}, @mvar{s})
+@deffnx {Funci@'on} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
 
-Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria, siendo @var{s} una lista.
+Ampl@'{@dotless{i}}a la funci@'on binaria @mvar{F} a n-aria, siendo @mvar{s} una lista.
 
 La funci@'on @code{tree_reduce} equivale a lo suguiente:
-Aplicar @var{F} a pares sucesivos de elementos para formar
-una nueva lista @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
+Aplicar @mvar{F} a pares sucesivos de elementos para formar
+una nueva lista @code{[@mvar{F}(@mvar{s_1}, @mvar{s_2}), @mvar{F}(@mvar{s_3}, @mvar{s_4}), ...]},
 llevando el elemento final sin cambiar si el n@'umero de elementos es impar;
 despu@'es repetir hasta que la lista se reduzca a un @'unico elemento,
 que es el valor de retorno.
 
-Cuando est@'a presente el argumento opcional @var{s_0},
-el resultado equivale a @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+Cuando est@'a presente el argumento opcional @mvar{s_0},
+el resultado equivale a @code{tree_reduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s})}.
 
 Para la suma de n@'umeros decimales en coma flotante,
 @code{tree_reduce} puede devolver una suma que tenga un error
 de redondeo menor que el conseguido por @code{rreduce} o @code{lreduce}.
 
-Los elementos de @var{s} y los resultados parciales pueden colocarse
+Los elementos de @mvar{s} y los resultados parciales pueden colocarse
 en un @'arbol binario de m@'{@dotless{i}}nima profundidad, de ah@'{@dotless{i}}
 el nombre de @i{tree_reduce}.
 
@@ -2287,9 +2287,9 @@ impar de elementos,
 @end deffn
 
 
-@deffn {Function} union (@var{a_1}, ..., @var{a_n})
+@deffn {Function} union (@mvar{a_1}, ..., @mvar{a_n})
 
-Devuelve la uni@'on de los conjuntos @var{a_1} hasta @var{a_n}.
+Devuelve la uni@'on de los conjuntos @mvar{a_1} hasta @mvar{a_n}.
 
 La sentencia @code{union()} (sin argumentos) devuelve el
 conjunto vac@'{@dotless{i}}o.
@@ -2330,28 +2330,28 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} xreduce (@var{F}, @var{s})
-@deffnx {Funci@'on} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Funci@'on} xreduce (@mvar{F}, @mvar{s})
+@deffnx {Funci@'on} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
 
 
-Ampl@'{@dotless{i}}a la funci@'on @var{F} a n-aria mediante
-composici@'on; si @var{F} ya es n-aria, aplica @var{F} a @var{s}.
-Si @var{F} no es n-aria, @code{xreduce} equivale a @code{lreduce}.
-El argumento @var{s} debe ser una lista.
+Ampl@'{@dotless{i}}a la funci@'on @mvar{F} a n-aria mediante
+composici@'on; si @mvar{F} ya es n-aria, aplica @mvar{F} a @mvar{s}.
+Si @mvar{F} no es n-aria, @code{xreduce} equivale a @code{lreduce}.
+El argumento @mvar{s} debe ser una lista.
 
 Funciones n-arias reconocidas por Maxima son la suma @code{+}, la
 multiplicaci@'on @code{*}, @code{and}, @code{or}, @code{max},
 @code{min} y @code{append}. Las funciones tambi@'en se pueden
-declarar n-arias mediante @code{declare(@var{F}, nary)};
+declarar n-arias mediante @code{declare(@mvar{F}, nary)};
 para estas funciones, @code{xreduce} ser@'a m@'as r@'apida que
 @code{rreduce} o @code{lreduce}.
 
-Cuando est@'a presente el argumento opcional @var{s_0},
-el resultado equivale a @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+Cuando est@'a presente el argumento opcional @mvar{s_0},
+el resultado equivale a @code{xreduce(@mvar{s}, cons(@mvar{s_0}, @mvar{s}))}.
 
 La suma de n@'umeros decimales en coma flotante no es exactamente asociativa;
-a@'un as@'{@dotless{i}}, @code{xreduce} aplica la suma n-aria cuando @var{s}
+a@'un as@'{@dotless{i}}, @code{xreduce} aplica la suma n-aria cuando @mvar{s}
 contiene n@'umeros en coma flotante.
 
 Ejemplos:

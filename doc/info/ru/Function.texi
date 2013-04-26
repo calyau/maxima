@@ -73,7 +73,7 @@ map (lambda ([i], i+1), l)
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
-В этом случае, значение, возвращаемое функцией, будет равно значению @var{exprn}.
+В этом случае, значение, возвращаемое функцией, будет равно значению @mvar{exprn}.
 
 Использование команды возврата @code{return} возможно тоько внутри программного 
 блока @code{block}. Блок
@@ -152,45 +152,45 @@ block ([x: 1], expr1, ..., exprn)
 Функция @code{arrayapply} применяет функцию-массив к аргументам, аналогично тому
 как @code{apply} делает для обычных функций.
 Не существует полного аналога функции @code{map} для функций-массивов, но
-@code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} или 
-@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, где @var{L} -- список,
+@code{map(lambda([@mvar{x}], @mvar{a}[@mvar{x}]), @mvar{L})} или 
+@code{makelist(@mvar{a}[@mvar{x}], @mvar{x}, @mvar{L})}, где @mvar{L} -- список,
 действует очень похоже.
 
 Функция @code{remarray} удаляет определение функции-массива (включая сохраненные значения),
 аналогично тому как @code{remfunction} делает для обычных функций.
 
-Вызов @code{kill(@var{a}[@var{x}])} удаляет сохраненное значение функции-массива @var{a}
-для аргумента @var{x}. При следующем вызове @var{a} с аргументом @var{x}, функция
+Вызов @code{kill(@mvar{a}[@mvar{x}])} удаляет сохраненное значение функции-массива @mvar{a}
+для аргумента @mvar{x}. При следующем вызове @mvar{a} с аргументом @mvar{x}, функция
 будет перевычислена.
 Не существует способа сразу удалить все сохраненные значения функции-массива кроме как
-вызов @code{kill(@var{a})} или @code{remarray(@var{a})}, что также удаляет определение
+вызов @code{kill(@mvar{a})} или @code{remarray(@mvar{a})}, что также удаляет определение
 функции.
 
 @node Макросы, Функции и переменные для определения функций, Функции, Определение функций
 @section Макросы
 
-@deffn {Функция} buildq (@var{L}, @var{expr})
-Подставляет значения переменных, определяемых списком @var{L}, в выражение @var{expr}
-параллельно без перевычисления @var{expr}.
+@deffn {Функция} buildq (@mvar{L}, @mvar{expr})
+Подставляет значения переменных, определяемых списком @mvar{L}, в выражение @mvar{expr}
+параллельно без перевычисления @mvar{expr}.
 Результирующее выражение упрощается, но не вычисляется после выполнения
 @code{buildq}.
 
-Элементы списка @var{L} являются символами или операторами присваивания @code{@var{symbol}: @var{value}},
+Элементы списка @mvar{L} являются символами или операторами присваивания @code{@mvar{symbol}: @mvar{value}},
 вычисляемые параллельно.
 Т.е. значение переменных в правой части присваиваний вычисляются в контексте, 
-в котором вызван @code{buildq}, но не в контексте списка присваиваний @var{L}.
-Если для некоторых переменных в списке @var{L} не задано значений, то для них
+в котором вызван @code{buildq}, но не в контексте списка присваиваний @mvar{L}.
+Если для некоторых переменных в списке @mvar{L} не задано значений, то для них
 сохраняются значения из контекста вызова @code{buildq}.
 
-Переменные из списка @var{L} подставляются в @var{expr} параллельно.
+Переменные из списка @mvar{L} подставляются в @mvar{expr} параллельно.
 Т.е. значение каждой подстановки определяется до подстановки, и
 одна переменная не оказывает никакого влияния на другую.
 
-Если переменная @var{x} присутствует в @var{expr} в виде @code{splice (@var{x})},
-то @var{x} должна иметь значение в форме списка, и этот список будет вместо подстановки
-интерполирован в @var{expr}.
+Если переменная @mvar{x} присутствует в @mvar{expr} в виде @code{splice (@mvar{x})},
+то @mvar{x} должна иметь значение в форме списка, и этот список будет вместо подстановки
+интерполирован в @mvar{expr}.
 
-Любые другие переменные в @var{expr}, не присутствующие в @var{L}, переносятся в результат буквально
+Любые другие переменные в @mvar{expr}, не присутствующие в @mvar{L}, переносятся в результат буквально
 без изменения, даже в том случае, когда имеют значение в контексте вызова @code{buildq}.
 
 Примеры:
@@ -241,7 +241,7 @@ block ([x: 1], expr1, ..., exprn)
 (%o2)                        2 a b c
 @end example
 
-Значения переменных в @var{L} присваиваются параллельно, при последовательном
+Значения переменных в @mvar{L} присваиваются параллельно, при последовательном
 присваивании первый результат был бы равен @code{foo (b, b)}.
 Подстановки осуществляются параллельно. Сравните второй результат с результатом 
 функции @code{subst}, которая выполняет подстановки последовательно.
@@ -310,11 +310,11 @@ block ([x: 1], expr1, ..., exprn)
 
 @end deffn
 
-@deffn {Функция} macroexpand (@var{expr})
+@deffn {Функция} macroexpand (@mvar{expr})
 Если @code{expr} является вызовом макро-функции, то @code{macroexpand} возвращает макро-расширение 
-@var{expr} без его вычисления.  В противном случае, @code{macroexpand} возвращает @var{expr}.
+@mvar{expr} без его вычисления.  В противном случае, @code{macroexpand} возвращает @mvar{expr}.
 
-Если макро-расширение @var{expr} само является макро-вызовом, то оно тоже раскрывается.
+Если макро-расширение @mvar{expr} само является макро-вызовом, то оно тоже раскрывается.
 
 Функция @code{macroexpand} не вычисляет свои аргументы.
 Но если раскрытие макро-функций приводит к побочным эффектам, то эти эффекты
@@ -356,15 +356,15 @@ block ([x: 1], expr1, ..., exprn)
 
 @end deffn
 
-@deffn {Функция} macroexpand1 (@var{expr}) 
+@deffn {Функция} macroexpand1 (@mvar{expr}) 
 Если @code{expr} является вызовом макро-функции, то @code{macroexpand1} возвращает макро-расширение 
-@var{expr} без его вычисления.  В противном случае, @code{macroexpand1} возвращает @var{expr}.
+@mvar{expr} без его вычисления.  В противном случае, @code{macroexpand1} возвращает @mvar{expr}.
 
 Функция @code{macroexpand1} не вычисляет свои аргументы.
 Но если раскрытие макро-функций приводит к побочным эффектам, то эти эффекты
 выполняются.
 
-Если макро-расширение @var{expr} само является макро-вызовом, то оно не раскрывается.
+Если макро-расширение @mvar{expr} само является макро-вызовом, то оно не раскрывается.
 
 См. также @code{::=}, @code{macros} и @code{macroexpand}.
 
@@ -415,20 +415,20 @@ block ([x: 1], expr1, ..., exprn)
 
 @end defvr
 
-@deffn {Функция} splice (@var{a})
-Интерполирует список, обозначенный атомом @var{a} в выражение, но только если
+@deffn {Функция} splice (@mvar{a})
+Интерполирует список, обозначенный атомом @mvar{a} в выражение, но только если
 @code{splice} присутствует внутри @code{buildq}.
 В противном случае @code{splice} рассматривается как неопределенная функция.
-Если переменная @var{a} присутствует внутри @code{buildq} сама по себе без @code{splice},
-то вместо @var{a} подставляется (не интерполируется) соответствующий список.
+Если переменная @mvar{a} присутствует внутри @code{buildq} сама по себе без @code{splice},
+то вместо @mvar{a} подставляется (не интерполируется) соответствующий список.
 Аргументом @code{splice} может быть только атом, но не явный список или выражение,
 дающее список в качестве значения.
 
 Обычно, @code{splice} применяется для задания аргументов функции или оператора.
-Для функции @code{f}, выражение @code{f (splice (@var{a}))} внутри @code{buildq}
-преобразуется в @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
-Для оператора @code{o}, выражение @code{"o" (splice (@var{a})} внутри @code{buildq}
-преобразуется в @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
+Для функции @code{f}, выражение @code{f (splice (@mvar{a}))} внутри @code{buildq}
+преобразуется в @code{f (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}.
+Для оператора @code{o}, выражение @code{"o" (splice (@mvar{a})} внутри @code{buildq}
+преобразуется в @code{"o" (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)},
 где @code{o} может быть оператором любого вида (обычно оператором с многими аргументами).
 Обратите внимание, что оператор должен быть заключен в двойные кавычки @code{"}.
 
@@ -466,11 +466,11 @@ block ([x: 1], expr1, ..., exprn)
 @node Функции и переменные для определения функций,  , Макросы, Определение функций
 @section Функции и переменные для определения функций
 
-@deffn {Функция} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
-Составляет и вычисляет выражение @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Функция} apply (@mvar{F}, [@mvar{x_1}, ..., @mvar{x_n}])
+Составляет и вычисляет выражение @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
 
 Функция @code{apply} не пытается различить функцию-массив и обычную функцию, и
-если @var{F} есть имя функции-массива, то @code{apply} вычисляет @code{@var{F}(...)}
+если @mvar{F} есть имя функции-массива, то @code{apply} вычисляет @code{@mvar{F}(...)}
 (т.е. обычный вызов функции с круглыми а не с квадратными скобками).
 Функция @code{arrayapply} вычисляет вызов функции с квадратными скобками.
 
@@ -490,7 +490,7 @@ block ([x: 1], expr1, ..., exprn)
 (%o2)                        - 10.2
 @end example
 
-Функция @code{apply} вычисляет свои аргументы даже если функция @var{F} не вычисляет их.
+Функция @code{apply} вычисляет свои аргументы даже если функция @mvar{F} не вычисляет их.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -523,7 +523,7 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-Функция @code{apply} вычисляет имя функции @var{F}.
+Функция @code{apply} вычисляет имя функции @mvar{F}.
 Одиночная кавычка @code{'} блокирует это вычисление.
 @code{demoivre} является именем глобальной переменной и, одновременно, именем функции.
 
@@ -553,20 +553,20 @@ Improper name or value in functional position.
 @end deffn
 
 
-@deffn {Функция} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Функция} block (@var{expr_1}, ..., @var{expr_n})
-Функция @code{block} последовательно вычисляет @var{expr_1}, ..., @var{expr_n} 
+@deffn {Функция} block ([@mvar{v_1}, ..., @mvar{v_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Функция} block (@mvar{expr_1}, ..., @mvar{expr_n})
+Функция @code{block} последовательно вычисляет @mvar{expr_1}, ..., @mvar{expr_n} 
 и возвращает значение последнего вычисленного выражения.
 Последовательность вычисления может быть изменена при помощи функций @code{go}, @code{throw} и @code{return}.
-Последнее выражение @var{expr_n} вычисляется если не используется @code{return} или вычисляется выражение,
+Последнее выражение @mvar{expr_n} вычисляется если не используется @code{return} или вычисляется выражение,
 содержащие @code{throw}.
-Некоторые переменные @var{v_1}, ..., @var{v_m} могут быть объявлены локальными в блоке, и они
+Некоторые переменные @mvar{v_1}, ..., @mvar{v_m} могут быть объявлены локальными в блоке, и они
 отличаются от глобальных переменных с теми же именами.
 Если не требуется определять локальные переменные, то список может быть опущен.
-Внутри блока, все другие переменные, отличные от @var{v_1}, ..., @var{v_m},
+Внутри блока, все другие переменные, отличные от @mvar{v_1}, ..., @mvar{v_m},
 являются глобальными.
 
-@code{block} сохраняет текущие значения переменных @var{v_1}, ..., @var{v_m} (если таковые существуют)
+@code{block} сохраняет текущие значения переменных @mvar{v_1}, ..., @mvar{v_m} (если таковые существуют)
 при входе в блок, и затем удаляет их значения, так чтобы эти переменные вычислялись сами в себя.
 Локальные переменные могут принимать любые значения внутри блока, но пр выходе из него
 сохраненные значения восстанавливаются, а локальные в блоке значения теряются.
@@ -603,8 +603,8 @@ Improper name or value in functional position.
 @end deffn
 
 @c REPHRASE, NEEDS EXAMPLE
-@deffn {Функция} break (@var{expr_1}, ..., @var{expr_n})
-Вычисляет и печатает выражения @var{expr_1}, ..., @var{expr_n} и затем 
+@deffn {Функция} break (@mvar{expr_1}, ..., @mvar{expr_n})
+Вычисляет и печатает выражения @mvar{expr_1}, ..., @mvar{expr_n} и затем 
 вызывает прерывание Maxima с тем, чтобы пользователь мог исследовать и изменить
 окружение.  Ввод @code{exit;} возобновляет вычисление.
 
@@ -616,8 +616,8 @@ Improper name or value in functional position.
 
 @c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
 @c NEEDS CLARIFICATION
-@deffn {Функция} catch (@var{expr_1}, ..., @var{expr_n})
-Вычисляет @var{expr_1}, ..., @var{expr_n} одно за другими и, если одно из них
+@deffn {Функция} catch (@mvar{expr_1}, ..., @mvar{expr_n})
+Вычисляет @mvar{expr_1}, ..., @mvar{expr_n} одно за другими и, если одно из них
 приводит к вычислению выражения @code{throw (arg)}, то значением @code{catch} 
 становится значение аргумента @code{throw (arg)}, и дальнейшее вычисление не производится.
 Такой "нелокальный возврат" осуществляется из любого уровня вложенности до первого
@@ -625,7 +625,7 @@ Improper name or value in functional position.
 Если нет объемлющего @code{catch}, то @code{throw} вызывает ошибку.
 
 Если вычисление аргументов не приводит к вычислению @code{throw},
-то значение @code{catch} равно значению @var{expr_n}.
+то значение @code{catch} равно значению @mvar{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -647,16 +647,16 @@ Improper name or value in functional position.
 
 @end deffn
 
-@deffn {Функция} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
-@deffnx {Функция} compfile (@var{filename}, functions)
-@deffnx {Функция} compfile (@var{filename}, all)
+@deffn {Функция} compfile (@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})
+@deffnx {Функция} compfile (@mvar{filename}, functions)
+@deffnx {Функция} compfile (@mvar{filename}, all)
 
 Транслирует функции Maxima в Lisp 
-и записывает полученный код в файл @var{filename}.
+и записывает полученный код в файл @mvar{filename}.
 
-Вызов @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} транслирует только
+Вызов @code{compfile(@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})} транслирует только
 заданные функции.
-Вызов @code{compfile(@var{filename}, functions)} или вызов @code{compfile(@var{filename}, all)}
+Вызов @code{compfile(@mvar{filename}, functions)} или вызов @code{compfile(@mvar{filename}, all)}
 транслирует все определенные пользователем функции.
 
 Код Lisp не вычисляется, а результирующий файл не обрабатывается компилятором Lisp.
@@ -683,10 +683,10 @@ Improper name or value in functional position.
 @c 
 @c @end defvar
 
-@deffn {Функция} compile (@var{f_1}, ..., @var{f_n})
+@deffn {Функция} compile (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Функция} compile (functions)
 @deffnx {Функция} compile (all)
-Транслирует определения Maxima функций @var{f_1}, ..., @var{f_n} в Lisp, вычисляет Lisp код и 
+Транслирует определения Maxima функций @mvar{f_1}, ..., @mvar{f_n} в Lisp, вычисляет Lisp код и 
 вызывает Lisp функцию @code{COMPILE} на каждую транслированную функцию.
 Функция @code{compile} возвращает список скомпилированных функций.
 
@@ -703,25 +703,25 @@ Improper name or value in functional position.
 
 @end deffn
 
-@deffn {Функция} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-@deffnx {Функция} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
-@deffnx {Функция} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Функция} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Функция} define (ev (@var{expr_1}), @var{expr_2})
+@deffn {Функция} define (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{expr})
+@deffnx {Функция} define (@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}], @mvar{expr})
+@deffnx {Функция} define (funmake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
+@deffnx {Функция} define (arraymake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
+@deffnx {Функция} define (ev (@mvar{expr_1}), @mvar{expr_2})
 
-Определяет функцию с именем {f}, аргументами @var{x_1}, ..., @var{x_n} и телом функции @var{expr}.
+Определяет функцию с именем {f}, аргументами @mvar{x_1}, ..., @mvar{x_n} и телом функции @mvar{expr}.
 Функция @code{define} всегда вычисляет свой второй аргумент (если вычисление не экранировано, т.е. блокировано явным образом).
 Функция, определенная данным образом, может быть обычной функцией Maxima (с аргументами в круглых скобках)
 или функцией-массивом (с аргументам в квадратных скобках).
 
-Если последний аргумент @var{x_n} является одноэлементным списком,
+Если последний аргумент @mvar{x_n} является одноэлементным списком,
 то функция, определенная @code{define}, принимает произвольное число аргументов.
-Фактические параметры присваиваются по одному формальным параметрам @var{x_1}, ..., @var{x_(n - 1)},
-а все последующие фактические параметры, если таковые есть, присваиваются @var{x_n} одним списком.
+Фактические параметры присваиваются по одному формальным параметрам @mvar{x_1}, ..., @mvar{x_(n - 1)},
+а все последующие фактические параметры, если таковые есть, присваиваются @mvar{x_n} одним списком.
 
 Если первый параметр @code{define} имеет форму
-@code{@var{f}(@var{x_1}, ..., @var{x_n})} или @code{@var{f}[@var{x_1}, ..., @var{x_n}]}, то
-аргументы функции вычисляются, а @var{f} нет,
+@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} или @code{@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}]}, то
+аргументы функции вычисляются, а @mvar{f} нет,
 даже если уже есть функция или переменная с таким именем.
 
 Если же первый параметр является выражением с оператором @code{funmake}, @code{arraymake} или @code{ev},
@@ -731,7 +731,7 @@ Improper name or value in functional position.
 функция @code{f} определена внутри другой функции @code{g}, то 
 действие @code{f} не ограничено функцией @code{g}.
 
-Если некоторый формальный параметр @var{x_k} является экранированным символом (после вычисления),
+Если некоторый формальный параметр @mvar{x_k} является экранированным символом (после вычисления),
 то функция, определенная @code{define}, не будет вычислять соответствующий фактический параметр.
 Все остальные фактические параметры вычисляются.
 
@@ -775,7 +775,7 @@ Improper name or value in functional position.
                        x, y
 @end example
 
-Если последний аргумент @var{x_n} является одноэлементным списком,
+Если последний аргумент @mvar{x_n} является одноэлементным списком,
 то определенная @code{define} функция принимает произвольное число аргументов.
 
 @c ===beg===
@@ -823,8 +823,8 @@ Improper name or value in functional position.
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Функция} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
-@deffn {Функция} define_variable (@var{name}, @var{default_value}, @var{mode})
+@c @deffn {Функция} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode}, @mvar{documentation})
+@deffn {Функция} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
 
 Определяет глобальную переменную.
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
@@ -835,19 +835,19 @@ Improper name or value in functional position.
 
 @enumerate
 @item
-@code{mode_declare (@var{name}, @var{mode})} декларирует тип переменной @var{name} для транслятора.
+@code{mode_declare (@mvar{name}, @mvar{mode})} декларирует тип переменной @mvar{name} для транслятора.
 См. @code{mode_declare} для списка возможных типов.
 
 @item
-Если переменная не имеет значения, то @var{default_value} устанавливается равным @var{name}.
+Если переменная не имеет значения, то @mvar{default_value} устанавливается равным @mvar{name}.
 
 @item
-@code{declare (@var{name}, special)} объявляет переменную специальной.
+@code{declare (@mvar{name}, special)} объявляет переменную специальной.
 @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
-Ассоциирует имя @var{name} с тестовой функцией, чтобы обеспечить, что 
-@var{name} будут присваиваться значения только объявленного типа.
+Ассоциирует имя @mvar{name} с тестовой функцией, чтобы обеспечить, что 
+@mvar{name} будут присваиваться значения только объявленного типа.
 @end enumerate
 
 
@@ -970,9 +970,9 @@ Cannot assign to `baz_quux'.
 
 @end deffn
 
-@deffn {Функция} dispfun (@var{f_1}, ..., @var{f_n})
+@deffn {Функция} dispfun (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Функция} dispfun (all)
-Выводит определения пользовательских функций @var{f_1}, ..., @var{f_n}.
+Выводит определения пользовательских функций @mvar{f_1}, ..., @mvar{f_n}.
 Каждый аргумент должен быть именем: макроса (определенного при помощи @code{::=}),
 обычной функции (определенной @code{:=} или @code{define}),
 функции-массива (определенной @code{:=} или @code{define},
@@ -1134,8 +1134,8 @@ Lisp функции не включаются в список.
 
 @end defvr
 
-@deffn {Функция} fundef (@var{f})
-Возвращает определение функции @var{f}.
+@deffn {Функция} fundef (@mvar{f})
+Возвращает определение функции @mvar{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 Аргумент должен быть именем: макроса (определенного при помощи @code{::=}),
@@ -1150,8 +1150,8 @@ Lisp функции не включаются в список.
 Функция @code{fundef} не вычисляет свои аргументы.
 Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
 
-Вызов @code{fundef (@var{f})} возвращает определение функции @var{f}.
-В отличии от этого, @code{dispfun (@var{f})} присваивает определения функций
+Вызов @code{fundef (@mvar{f})} возвращает определение функции @mvar{f}.
+В отличии от этого, @code{dispfun (@mvar{f})} присваивает определения функций
 меткам промежуточных выражений.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
@@ -1162,14 +1162,14 @@ Lisp функции не включаются в список.
 
 @end deffn
 
-@deffn {Функция} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
-Возвращает выражение @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
-Это выражение упрощается но не вычисляется, т.е. функция @var{F} 
+@deffn {Функция} funmake (@mvar{F}, [@mvar{arg_1}, ..., @mvar{arg_n}])
+Возвращает выражение @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
+Это выражение упрощается но не вычисляется, т.е. функция @mvar{F} 
 не вызывается, даже если она определена.
 
 Функция @code{funmake} не различает обычные функции и функции-массивы.
-Если @var{F} есть имя функции-массива, то @code{funmake} все равно
-возвращает @code{@var{F}(...)}
+Если @mvar{F} есть имя функции-массива, то @code{funmake} все равно
+возвращает @code{@mvar{F}(...)}
 (т.е вызов функции с круглыми а не с квадратными скобками).
 Для функций-массивом следует использовать @code{arraymake}.
 
@@ -1295,19 +1295,19 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 
 @end deffn
 
-@deffn {Функция} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Функция} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Функция} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffn {Функция} lambda ([@mvar{x_1}, ..., @mvar{x_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Функция} lambda ([[@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Функция} lambda ([@mvar{x_1}, ..., @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
 Определяет и возвращает лямбда-выражение (т.е. функцию без имени).
-Функция может иметь обязательные параметры @var{x_1}, ..., @var{x_m}
-и/или необязательные параметры @var{L}, представляемые в форме списка.
-Значение, возвращаемое функцией, равно @var{expr_n}.
+Функция может иметь обязательные параметры @mvar{x_1}, ..., @mvar{x_m}
+и/или необязательные параметры @mvar{L}, представляемые в форме списка.
+Значение, возвращаемое функцией, равно @mvar{expr_n}.
 Лямбда-выражение может быть присвоено переменной и вычислено, как обычная функция.
 Лямбда-выражение может использоваться в тех же контекстах, где ожидается
 имя функции.
 
 При вычислении функции, создаются неинициализированные
-локальные переменные @var{x_1}, ..., @var{x_m}.
+локальные переменные @mvar{x_1}, ..., @mvar{x_m}.
 @code{lambda} может использоваться внутри @code{block} или другого @code{lambda},
 и локальные переменные создаются каждый раз, как вычисляется новый блок @code{block} или @code{lambda}.
 Локальные переменные выглядят как глобальные для каждого внутреннего блока @code{block} или @code{lambda}.
@@ -1316,7 +1316,7 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 и значению переменной в глобальном окружении в противном случае.
 Эта политика совпадает с обычным понятием "динамической области определения".
 
-После определения локальных переменных, выражения с @var{expr_1} по @var{expr_n} 
+После определения локальных переменных, выражения с @mvar{expr_1} по @mvar{expr_n} 
 последовательно вычисляются.
 Специальная переменная @code{%%} обозначает значение предыдущего выражения.
 Среди выражение могут применяться @code{throw} и @code{catch}.
@@ -1324,7 +1324,7 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 Команда возврата @code{return} не может использоваться в лямбда-выражении если только
 она не заключена в блоке @code{block}.  В этом случае @code{return} определяет
 значение блока а не лямбда-выражения в целом, за исключением случая, когда блок является 
-последним выражением @var{expr_n}.
+последним выражением @mvar{expr_n}.
 Аналогично, @code{go} не может использоваться в лямбда-выражении без объемлющего блока @code{block}.
 
 Функция @code{lambda} не вычисляет свои параметры.
@@ -1456,7 +1456,7 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 @itemize @bullet
 @item
 Лямбда-выражение может иметь переменное число аргументов,
-что обозначается @code{[@var{L}]} в качестве единственного или последнего параметра.
+что обозначается @code{[@mvar{L}]} в качестве единственного или последнего параметра.
 Фактические параметры представлены внутри функции в виде списка.
 @end itemize
 @c ===beg===
@@ -1483,8 +1483,8 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} local (@var{v_1}, ..., @var{v_n})
-Объявляет переменные @var{v_1}, ..., @var{v_n} локальными по отношению ко всем
+@deffn {Функция} local (@mvar{v_1}, ..., @mvar{v_n})
+Объявляет переменные @mvar{v_1}, ..., @mvar{v_n} локальными по отношению ко всем
 свойствам в выражении, где используется @code{local}.
 
 Функция @code{local} не вычисляет свои аргументы.
@@ -1727,7 +1727,7 @@ x + 99 is equal to x
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@deffn {Функция} mode_declare (@mvar{y_1}, @mvar{mode_1}, ..., @mvar{y_n}, @mvar{mode_n})
 Функция @code{mode_declare} используется для определения типов переменных или
 функций для последующей трансляции и компиляции.
 Вызов @code{mode_declare} обычно располагается в начале определения функции, 
@@ -1787,7 +1787,7 @@ mode_declare ([function (f_1, f_2, ...)], fixnum)
 
 @c WHAT IS THIS ABOUT ??
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} mode_identity (@var{arg_1}, @var{arg_2})
+@deffn {Функция} mode_identity (@mvar{arg_1}, @mvar{arg_2})
 Специальная форма, используемая вместе с @code{mode_declare} и
 @code{macros} для объявления, например, списка списков чисел с плавающей точкой или 
 других подобных составных объектов.
@@ -1835,11 +1835,11 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, x));
 
 @end defvr
 
-@deffn {Функция} translate (@var{f_1}, ..., @var{f_n})
+@deffn {Функция} translate (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Функция} translate (functions)
 @deffnx {Функция} translate (all)
 Транслирует определенные пользователем функции
-@var{f_1}, ..., @var{f_n} из языка Maxima в Lisp и вычисляет
+@mvar{f_1}, ..., @mvar{f_n} из языка Maxima в Lisp и вычисляет
 результат трансляции.
 Обычно, транслированные функции работают быстрее оригиналов.
 
@@ -1858,7 +1858,7 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @noindent
 
-где @var{x_1}, @var{x_2}, ... -- параметры функции, а @var{v_1}, @var{v_2}, ... 
+где @mvar{x_1}, @mvar{x_2}, ... -- параметры функции, а @mvar{v_1}, @mvar{v_2}, ... 
 -- локальные переменные.
 
 Имена транслированных функций удаляются из списка @code{functions} если значение @code{savedef} 
@@ -1896,8 +1896,8 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @end deffn
 
-@deffn {Функция} translate_file (@var{maxima_filename})
-@deffnx {Функция} translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn {Функция} translate_file (@mvar{maxima_filename})
+@deffnx {Функция} translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})
 Транслирует файл кода Maxima в файлд кода Lisp.
 Функция @code{translate_file} возвращает список трех имен файлов:
 имя файла Maxima, имя файла Lisp и имя файла, содержащего дополнительную
@@ -1909,13 +1909,13 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 ограничений, например, на использование @code{'@w{}'} и @code{%}.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-Вызов @code{translate_file (@var{maxima_filename})} транслирует файл Maxima @var{maxima_filename}
+Вызов @code{translate_file (@mvar{maxima_filename})} транслирует файл Maxima @mvar{maxima_filename}
 в Lisp файл с аналогичным именем.  Например, @code{foo.mac} транслируется в @code{foo.LISP}.
 Имя файла Maxima может включать имена директорий, и результирующий Lisp файл
 будет записан в ту же директорию, где располагается исходный файл Maxima.
 
-Вызов @code{translate_file (@var{maxima_filename}, @var{lisp_filename})} транслирует файл 
-Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
+Вызов @code{translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})} транслирует файл 
+Maxima @mvar{maxima_filename} в Lisp файл @mvar{lisp_filename}.
 @code{translate_file} игнорирует расширение имени файла для @code{lisp_filename},
 если таковое задано.
 Расширение Lisp файла всегда будет @code{LISP}.
@@ -2228,10 +2228,10 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 
 @end defvr
 
-@deffn {Функция} compile_file (@var{filename})
-@deffnx {Функция} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Функция} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
-Транслирует файл Maxima @var{filename} в Lisp,
+@deffn {Функция} compile_file (@mvar{filename})
+@deffnx {Функция} compile_file (@mvar{filename}, @mvar{compiled_filename})
+@deffnx {Функция} compile_file (@mvar{filename}, @mvar{compiled_filename}, @mvar{lisp_filename})
+Транслирует файл Maxima @mvar{filename} в Lisp,
 выполняет компилятор Lisp и, если трансляция и компиляция успешны, 
 то загружает скомпилированный код в Maxima.
 
@@ -2259,7 +2259,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 @c the compilation succeeded. This is a bug. 
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-Файл @var{filename} не может содержать специальные @code{:lisp} команды.
+Файл @mvar{filename} не может содержать специальные @code{:lisp} команды.
 
 Функция @code{compile_file} вычисляет свои аргументы.
 
@@ -2270,11 +2270,11 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} declare_translated (@var{f_1}, @var{f_2}, ...)
+@deffn {Функция} declare_translated (@mvar{f_1}, @mvar{f_2}, ...)
 При трансляции кода Maxima в код Lisp, транслятору важно знать, какие функции
 следует вызывать как транслированные или компилированные, а какие как обычные Maxima 
 функции или неопределенные.  Данная декларация, помещенная в начале транслируемого
-файла, дает транслятору информацию, что хотя @var{f_n} и не имеет свойство Lisp функции
+файла, дает транслятору информацию, что хотя @mvar{f_n} и не имеет свойство Lisp функции
 во время трансляции, но будет иметь таковое в момент вызова.
 Если транслятор не знает, что @code{fn} будет Lisp функцией, то
 генерируется код @code{(MFUNCTION-CALL fn arg1 arg2 ...)}.

@@ -154,9 +154,9 @@ and an integer: ~20t~d~%"$
 (%i7) close(s)$
 @end example
 
-@deffn {関数} close (@var{stream}) 
-@var{stream}を閉じて、
-もし@var{stream}が開いていたら
+@deffn {関数} close (@mvar{stream}) 
+@mvar{stream}を閉じて、
+もし@mvar{stream}が開いていたら
 @code{true}を返します。
 
 @opencatbox
@@ -165,8 +165,8 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} flength (@var{stream})
-@var{stream}の中の要素の数を返します。
+@deffn {関数} flength (@mvar{stream})
+@mvar{stream}の中の要素の数を返します。
 
 @opencatbox
 @category{File input} @category{File output} @category{Package stringproc}
@@ -174,14 +174,14 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} fposition (@var{stream})
-@deffnx {関数} fposition (@var{stream}, @var{pos})
-もし@var{pos}が使われてないなら、
-@var{stream}の中の現在位置を返します。
-もし@var{pos}が使われているなら、
-@code{fposition}は@var{stream}の中の位置を設定します。
-@var{pos}は正の数でなければいけません。
-@var{stream}の最初の要素は位置1にあります。
+@deffn {関数} fposition (@mvar{stream})
+@deffnx {関数} fposition (@mvar{stream}, @mvar{pos})
+もし@mvar{pos}が使われてないなら、
+@mvar{stream}の中の現在位置を返します。
+もし@mvar{pos}が使われているなら、
+@code{fposition}は@mvar{stream}の中の位置を設定します。
+@mvar{pos}は正の数でなければいけません。
+@mvar{stream}の最初の要素は位置1にあります。
 
 @opencatbox
 @category{File input} @category{File output} @category{Package stringproc}
@@ -190,9 +190,9 @@ and an integer: ~20t~d~%"$
 @end deffn
 
 @deffn {関数} freshline () 
-@deffnx {関数} freshline (@var{stream}) 
+@deffnx {関数} freshline (@mvar{stream}) 
 もし位置が行の最初でないなら
-(@var{stream}に)改行を書きます。
+(@mvar{stream}に)改行を書きます。
 @code{newline}も参照してください。
 
 @opencatbox
@@ -202,8 +202,8 @@ and an integer: ~20t~d~%"$
 @end deffn
 
 @deffn {関数} newline () 
-@deffnx {関数} newline (@var{stream}) 
-(@var{stream}に)改行を書きます。
+@deffnx {関数} newline (@mvar{stream}) 
+(@mvar{stream}に)改行を書きます。
 @code{newline()}の使用の例に関しては、
 @code{sprint}を参照してください。
 @code{newline()}が期待通りに動かない
@@ -215,8 +215,8 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} opena (@var{file}) 
-@var{file}への出力ストリームを返します。
+@deffn {関数} opena (@mvar{file}) 
+@mvar{file}への出力ストリームを返します。
 もし存在しているファイルを開いたら、
 @code{opena}はファイルの終わりに要素を追加します。
 
@@ -226,9 +226,9 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} openr (@var{file}) 
-@var{file}への入力ストリームを返します。
-もし@var{file}が存在しないなら、生成されます。
+@deffn {関数} openr (@mvar{file}) 
+@mvar{file}への入力ストリームを返します。
+もし@mvar{file}が存在しないなら、生成されます。
 
 @opencatbox
 @category{File input} @category{Package stringproc}
@@ -236,11 +236,11 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} openw (@var{file}) 
-@var{file}への出力ストリームを返します。
-もし@var{file}が存在しないなら、生成されます。
+@deffn {関数} openw (@mvar{file}) 
+@mvar{file}への出力ストリームを返します。
+もし@mvar{file}が存在しないなら、生成されます。
 もし存在しているファイルを開いたら、@code{openw}は
-@var{file}を破壊的に変更します。
+@mvar{file}を破壊的に変更します。
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -248,8 +248,8 @@ and an integer: ~20t~d~%"$
 
 @end deffn
 
-@deffn {関数} printf (@var{dest}, @var{string})
-@deffnx {関数} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+@deffn {関数} printf (@mvar{dest}, @mvar{string})
+@deffnx {関数} printf (@mvar{dest}, @mvar{string}, @mvar{expr_1}, ..., @mvar{expr_n})
 Common Lisp関数FORMATをMaximaで利用可能にします。
 (gcl.infoから:
 「フォーマットは
@@ -315,7 +315,7 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 (%o5)                    Two birds are singing.
 @end example
 
-もし@var{dest}がストリームか@code{true}なら、
+もし@mvar{dest}がストリームか@code{true}なら、
 @code{printf}は@code{false}を返します。
 そうでないなら、@code{printf}は出力を含む文字列を返します。
 
@@ -325,9 +325,9 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 
 @end deffn
 
-@deffn {関数} readline (@var{stream}) 
-@var{stream}の現在位置から行の終わりまでの文字を含む文字列か、
-もしファイルの終わりが来たら@var{false}を返します。
+@deffn {関数} readline (@mvar{stream}) 
+@mvar{stream}の現在位置から行の終わりまでの文字を含む文字列か、
+もしファイルの終わりが来たら@mvar{false}を返します。
 
 @opencatbox
 @category{File input} @category{Package stringproc}
@@ -337,7 +337,7 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 
 @c -----------------------------------------------------------------------------
 @anchor{sprint}
-@deffn {関数} sprint (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {関数} sprint (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
 引数を順に評価し、一番左から始まる「一行」に表示します。
 数は数の右隣に'-'と共に印字され、行の長さを無視します。
@@ -370,8 +370,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 @node Functions and Variables for characters, Functions and Variables for strings, Functions and Variables for input and output, stringproc
 @section Functions and Variables for characters
 
-@deffn {関数} alphacharp (@var{char})    
-もし@var{char}がアルファベット文字なら@code{true}を返します。
+@deffn {関数} alphacharp (@mvar{char})    
+もし@mvar{char}がアルファベット文字なら@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -379,8 +379,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 
 @end deffn
 
-@deffn {関数} alphanumericp (@var{char}) 
-もし@var{char}がアルファベット文字か数字なら@code{true}を返します。
+@deffn {関数} alphanumericp (@mvar{char}) 
+もし@mvar{char}がアルファベット文字か数字なら@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -388,8 +388,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 
 @end deffn
 
-@deffn {関数} ascii (@var{int}) 
-ASCIIコード@var{int}( -1 < int < 256 )に対応する文字を返します。
+@deffn {関数} ascii (@mvar{int}) 
+ASCIIコード@mvar{int}( -1 < int < 256 )に対応する文字を返します。
 
 @c ===beg===
 @c for n from 0 thru 255 do ( 
@@ -410,8 +410,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} cequal (@var{char_1}, @var{char_2})          
-もし@var{char_1}と@var{char_2}が同じなら@code{true}を返します。
+@deffn {関数} cequal (@mvar{char_1}, @mvar{char_2})          
+もし@mvar{char_1}と@mvar{char_2}が同じなら@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -419,7 +419,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} cequalignore (@var{char_1}, @var{char_2})    
+@deffn {関数} cequalignore (@mvar{char_1}, @mvar{char_2})    
 @code{cequal}と同様ですが、文字の大小を無視します。
 
 @opencatbox
@@ -428,8 +428,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} cgreaterp (@var{char_1}, @var{char_2})       
-もし@var{char_1}のASCIIコードが@var{char_2}のそれより大きいなら@code{true}を返します。
+@deffn {関数} cgreaterp (@mvar{char_1}, @mvar{char_2})       
+もし@mvar{char_1}のASCIIコードが@mvar{char_2}のそれより大きいなら@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -437,7 +437,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} cgreaterpignore (@var{char_1}, @var{char_2})
+@deffn {関数} cgreaterpignore (@mvar{char_1}, @mvar{char_2})
 @code{cgreaterp}と同様ですが、文字の大小を無視します。
 
 @opencatbox
@@ -446,8 +446,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} charp (@var{obj}) 
-もし@var{obj}がMaxima-文字なら@code{true}を返します。
+@deffn {関数} charp (@mvar{obj}) 
+もし@mvar{obj}がMaxima-文字なら@code{true}を返します。
 例えばイントロダクションを参照してください。
 
 @opencatbox
@@ -456,8 +456,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} cint (@var{char}) 
-@var{char}のASCIIコードを返します。
+@deffn {関数} cint (@mvar{char}) 
+@mvar{char}のASCIIコードを返します。
 
 @opencatbox
 @category{Package stringproc}
@@ -465,8 +465,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} clessp (@var{char_1}, @var{char_2})
-もし@var{char_1}のASCIIコードが@var{char_2}のそれより小さいなら@code{true}を返します。
+@deffn {関数} clessp (@mvar{char_1}, @mvar{char_2})
+もし@mvar{char_1}のASCIIコードが@mvar{char_2}のそれより小さいなら@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -474,7 +474,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} clesspignore (@var{char_1}, @var{char_2})
+@deffn {関数} clesspignore (@mvar{char_1}, @mvar{char_2})
 @code{clessp}と同様ですが、文字の大小を無視します。
 
 @opencatbox
@@ -483,8 +483,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {関数} constituent (@var{char})   
-もし@var{char}がグラフィック文字であり、スペース文字でないなら、
+@deffn {関数} constituent (@mvar{char})   
+もし@mvar{char}がグラフィック文字であり、スペース文字でないなら、
 @code{true}を返します。
 グラフィック文字は見ることができる文字とスペース文字です。
 (@code{constituent}は、Paul Graham, ANSI Common Lisp, 1996, page 67で定義されています。)
@@ -507,7 +507,7 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @end deffn
 
-@deffn {関数} cunlisp (@var{lisp_char}) 
+@deffn {関数} cunlisp (@mvar{lisp_char}) 
 Lisp文字をMaxima文字に変換します。
 (必要としないでしょう。)
 
@@ -517,8 +517,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} digitcharp (@var{char})    
-もし@var{char}が0から9までの数字なら、
+@deffn {関数} digitcharp (@mvar{char})    
+もし@mvar{char}が0から9までの数字なら、
 @code{true}を返します。
 
 @opencatbox
@@ -527,8 +527,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} lcharp (@var{obj}) 
-もし @var{obj}がLisp文字なら、@code{true}を返します。
+@deffn {関数} lcharp (@mvar{obj}) 
+もし @mvar{obj}がLisp文字なら、@code{true}を返します。
 (必要としないでしょう。)
 
 @opencatbox
@@ -537,8 +537,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} lowercasep (@var{char})    
-もし@var{char}が小文字なら、@code{true}を返します。
+@deffn {関数} lowercasep (@mvar{char})    
+もし@mvar{char}が小文字なら、@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -573,8 +573,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end defvr
 
-@deffn {関数} uppercasep (@var{char})    
-もし@var{char}が大文字なら、@code{true}を返します。
+@deffn {関数} uppercasep (@mvar{char})    
+もし@mvar{char}が大文字なら、@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -585,8 +585,8 @@ Lisp文字をMaxima文字に変換します。
 @node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
 @section Functions and Variables for strings
 
-@deffn {関数} stringp (@var{obj}) 
-もし@var{obj}が文字列なら、@code{true}を返します。
+@deffn {関数} stringp (@mvar{obj}) 
+もし@mvar{obj}が文字列なら、@code{true}を返します。
 例はイントロダクションを参照してください。
 
 @opencatbox
@@ -595,9 +595,9 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} charat (@var{string}, @var{n}) 
-@var{string}の@var{n}番目の文字を返します。
-@var{string}の一番目の文字は@var{n} = 1で返されます。
+@deffn {関数} charat (@mvar{string}, @mvar{n}) 
+@mvar{string}の@mvar{n}番目の文字を返します。
+@mvar{string}の一番目の文字は@mvar{n} = 1で返されます。
 
 @c ===beg===
 @c charat("Lisp",1);
@@ -613,8 +613,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} charlist (@var{string}) 
-@var{string}の文字すべてのリストを返します。
+@deffn {関数} charlist (@mvar{string}) 
+@mvar{string}の文字すべてのリストを返します。
 
 @c ===beg===
 @c charlist("Lisp");
@@ -633,14 +633,14 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} eval_string (@var{str})
-文字列@var{str}をMaxima式としてパースし、評価します。
-文字列@var{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
+@deffn {関数} eval_string (@mvar{str})
+文字列@mvar{str}をMaxima式としてパースし、評価します。
+文字列@mvar{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
 を持つかもしれませんし持たないかもしれません。
 
 もし複数あるなら、最初の式だけがパースされ、評価されます。
 
-もし@var{str}が文字列でないならエラーが出力されます。
+もし@mvar{str}が文字列でないならエラーが出力されます。
 
 例:
 
@@ -663,14 +663,14 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} parse_string (@var{str})
-文字列@var{str}をMaxima式としてパースします(評価しません)。
-文字列@var{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
+@deffn {関数} parse_string (@mvar{str})
+文字列@mvar{str}をMaxima式としてパースします(評価しません)。
+文字列@mvar{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
 を持つかもしれませんし持たないかもしれません。
 
 もし複数あるなら、最初の式だけがパースされ、評価されます。
 
-もし@var{str}が文字列でないならエラーが出力されます。
+もし@mvar{str}が文字列でないならエラーが出力されます。
 
 例:
 
@@ -694,8 +694,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} scopy (@var{string}) 
-@var{string}のコピーを新しい文字列として返します。
+@deffn {関数} scopy (@mvar{string}) 
+@mvar{string}のコピーを新しい文字列として返します。
 
 @opencatbox
 @category{Package stringproc}
@@ -703,9 +703,9 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sdowncase (@var{string}) 
-@deffnx {関数} sdowncase (@var{string}, @var{start}) 
-@deffnx {関数} sdowncase (@var{string}, @var{start}, @var{end}) 
+@deffn {関数} sdowncase (@mvar{string}) 
+@deffnx {関数} sdowncase (@mvar{string}, @mvar{start}) 
+@deffnx {関数} sdowncase (@mvar{string}, @mvar{start}, @mvar{end}) 
 @code{supcase}と同様ですが、大文字が小文字に変換されます。
 
 @opencatbox
@@ -714,8 +714,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sequal (@var{string_1}, @var{string_2}) 
-もし@var{string_1}と@var{string_2}が同じ長さで、同じ文字を含むなら、
+@deffn {関数} sequal (@mvar{string_1}, @mvar{string_2}) 
+もし@mvar{string_1}と@mvar{string_2}が同じ長さで、同じ文字を含むなら、
 @code{true}を返します。
 
 @opencatbox
@@ -724,7 +724,7 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sequalignore (@var{string_1}, @var{string_2})
+@deffn {関数} sequalignore (@mvar{string_1}, @mvar{string_2})
 @code{sequal}と同様ですが、文字の大小を無視します。
 
 @opencatbox
@@ -733,7 +733,7 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sexplode (@var{string})
+@deffn {関数} sexplode (@mvar{string})
 @code{sexplode}は関数@code{charlist}の別名です。
 
 @opencatbox
@@ -742,12 +742,12 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} simplode (@var{list})  
-@deffnx {関数} simplode (@var{list}, @var{delim})  
+@deffn {関数} simplode (@mvar{list})  
+@deffnx {関数} simplode (@mvar{list}, @mvar{delim})  
 @code{simplode}は式のリストを取り、それらを結合して文字列にします。
-もしデリミタ@var{delim}が指定されないなら、
+もしデリミタ@mvar{delim}が指定されないなら、
 @code{simplode}はデリミタを使いません。
-@var{delim}は任意の文字列を取り得ます。
+@mvar{delim}は任意の文字列を取り得ます。
 
 @c ===beg===
 @c simplode(["xx[",3,"]:",expand((x+y)^3)]);
@@ -769,11 +769,11 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sinsert (@var{seq}, @var{string}, @var{pos})  
-@code{substring (@var{string}, 1, @var{pos} - 1)}と
-文字列@var{seq}、@code{substring (@var{string}, @var{pos})}
+@deffn {関数} sinsert (@mvar{seq}, @mvar{string}, @mvar{pos})  
+@code{substring (@mvar{string}, 1, @mvar{pos} - 1)}と
+文字列@mvar{seq}、@code{substring (@mvar{string}, @mvar{pos})}
 の結合となる文字列を返します。
-@var{string}の一番目の文字は位置1にあることに注意してください。
+@mvar{string}の一番目の文字は位置1にあることに注意してください。
 
 @c ===beg===
 @c s: "A submarine."$
@@ -794,14 +794,14 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sinvertcase (@var{string})  
-@deffnx {関数} sinvertcase (@var{string}, @var{start})  
-@deffnx {関数} sinvertcase (@var{string}, @var{start}, @var{end})  
-位置@var{start}から@var{end}までのそれぞれの文字を逆順にすることを除いて
-@var{string}を返します。
-もし@var{end}が与えられないなら、
-@var{start}から
-@var{string}の終わりまでのすべての文字列が置き換えられます。
+@deffn {関数} sinvertcase (@mvar{string})  
+@deffnx {関数} sinvertcase (@mvar{string}, @mvar{start})  
+@deffnx {関数} sinvertcase (@mvar{string}, @mvar{start}, @mvar{end})  
+位置@mvar{start}から@mvar{end}までのそれぞれの文字を逆順にすることを除いて
+@mvar{string}を返します。
+もし@mvar{end}が与えられないなら、
+@mvar{start}から
+@mvar{string}の終わりまでのすべての文字列が置き換えられます。
 
 @c ===beg===
 @c sinvertcase("sInvertCase");
@@ -817,8 +817,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} slength (@var{string}) 
-@var{string}の中の文字の数を返します。
+@deffn {関数} slength (@mvar{string}) 
+@mvar{string}の中の文字の数を返します。
 
 @opencatbox
 @category{Package stringproc}
@@ -826,8 +826,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} smake (@var{num}, @var{char}) 
-@var{num}個の文字@var{char}を持つ新しい文字列を返します。
+@deffn {関数} smake (@mvar{num}, @mvar{char}) 
+@mvar{num}個の文字@mvar{char}を持つ新しい文字列を返します。
 
 @c ===beg===
 @c smake(3,"w");
@@ -843,9 +843,9 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} smismatch (@var{string_1}, @var{string_2}) 
-@deffnx {関数} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
-@var{string_1}と@var{string_2}が異なる@var{string_1}の最初の文字の位置、または
+@deffn {関数} smismatch (@mvar{string_1}, @mvar{string_2}) 
+@deffnx {関数} smismatch (@mvar{string_1}, @mvar{string_2}, @mvar{test}) 
+@mvar{string_1}と@mvar{string_2}が異なる@mvar{string_1}の最初の文字の位置、または
 @code{false}を返します。
 マッチングのデフォルトのテスト関数は@code{sequal}です。
 もし@code{smismatch}が文字の大小を無視なければいけないなら、
@@ -865,20 +865,20 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} split (@var{string})  
-@deffnx {関数} split (@var{string}, @var{delim})  
-@deffnx {関数} split (@var{string}, @var{delim}, @var{multiple})  
-@var{string}のすべてのトークンのリストを返します。
+@deffn {関数} split (@mvar{string})  
+@deffnx {関数} split (@mvar{string}, @mvar{delim})  
+@deffnx {関数} split (@mvar{string}, @mvar{delim}, @mvar{multiple})  
+@mvar{string}のすべてのトークンのリストを返します。
 それぞれのトークンはパースされていない文字列です。
-@code{split}は@var{delim}をデリミタとして使います。
-もし@var{delim}が与えられないなら、
+@code{split}は@mvar{delim}をデリミタとして使います。
+もし@mvar{delim}が与えられないなら、
 スペース文字がデフォルトのデリミタです。
-@var{multiple}はデフォルトで@code{true}のブーリアン変数です。
+@mvar{multiple}はデフォルトで@code{true}のブーリアン変数です。
 重複デリミタが1つとして読まれます。
 これは、
 もしタブが複数スペース文字として保存されているなら、
 役立ちます。
-もし@var{multiple}が@code{false}に設定されるなら、
+もし@mvar{multiple}が@code{false}に設定されるなら、
 それぞれのデリミタが有効です。
 
 @c ===beg===
@@ -898,9 +898,9 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sposition (@var{char}, @var{string}) 
-@var{string}の中で、@var{char}とマッチする最初の文字の位置を返します。
-@var{string}の一番目の文字は位置1にあります。
+@deffn {関数} sposition (@mvar{char}, @mvar{string}) 
+@mvar{string}の中で、@mvar{char}とマッチする最初の文字の位置を返します。
+@mvar{string}の一番目の文字は位置1にあります。
 文字の大小を無視した文字のマッチに関しては，
 @code{ssearch}を参照してください。
 
@@ -910,17 +910,17 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sremove (@var{seq}, @var{string})  
-@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test})  
-@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
-@var{string}同様文字列を返しますが、
-@var{seq}とマッチする部分文字列すべてなしに返します。
+@deffn {関数} sremove (@mvar{seq}, @mvar{string})  
+@deffnx {関数} sremove (@mvar{seq}, @mvar{string}, @mvar{test})  
+@deffnx {関数} sremove (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start})  
+@deffnx {関数} sremove (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start}, @mvar{end})  
+@mvar{string}同様文字列を返しますが、
+@mvar{seq}とマッチする部分文字列すべてなしに返します。
 マッチのデフォルトのテスト関数は@code{sequal}です。
-もし@code{sremove}が@var{seq}を検索する間文字の大小を無視しなければいけないなら、
+もし@code{sremove}が@mvar{seq}を検索する間文字の大小を無視しなければいけないなら、
 テストとして@code{sequalignore}を使ってください。
-探索を限定するには@var{start}と@var{end}を使ってください。
-@var{string}の一番目の文字は位置1にあることに注意してください。
+探索を限定するには@mvar{start}と@mvar{end}を使ってください。
+@mvar{string}の一番目の文字は位置1にあることに注意してください。
 
 @c ===beg===
 @c sremove("n't","I don't like coffee.");
@@ -939,10 +939,10 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sremovefirst (@var{seq}, @var{string})  
-@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test})  
-@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@deffn {関数} sremovefirst (@mvar{seq}, @mvar{string})  
+@deffnx {関数} sremovefirst (@mvar{seq}, @mvar{string}, @mvar{test})  
+@deffnx {関数} sremovefirst (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start})  
+@deffnx {関数} sremovefirst (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start}, @mvar{end})  
 @code{seq}とマッチする最初の文字列だけが削除されることを除いて、
 @code{sremove}同様です。
 
@@ -952,8 +952,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} sreverse (@var{string}) 
-@var{string}の文字すべてが逆順の文字列を返します。
+@deffn {関数} sreverse (@mvar{string}) 
+@mvar{string}の文字すべてが逆順の文字列を返します。
 
 
 @opencatbox
@@ -962,16 +962,16 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} ssearch (@var{seq}, @var{string})  
-@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test})  
-@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
-文字列@var{seq}とマッチする@var{string}の最初の部分文字列の位置を返します。
+@deffn {関数} ssearch (@mvar{seq}, @mvar{string})  
+@deffnx {関数} ssearch (@mvar{seq}, @mvar{string}, @mvar{test})  
+@deffnx {関数} ssearch (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start})  
+@deffnx {関数} ssearch (@mvar{seq}, @mvar{string}, @mvar{test}, @mvar{start}, @mvar{end})
+文字列@mvar{seq}とマッチする@mvar{string}の最初の部分文字列の位置を返します。
 マッチのためのデフォルトのテスト関数は@code{sequal}です。
 もし@code{ssearch}が文字の大小を無視しなければいけないなら、
 テストとして@code{sequalignore}を使ってください。
-検索を限定するには、@var{start}と@var{end}を使ってください。
-@var{string}の一番目の文字は位置1にあることに注意してください。
+検索を限定するには、@mvar{start}と@mvar{end}を使ってください。
+@mvar{string}の一番目の文字は位置1にあることに注意してください。
 
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
@@ -984,12 +984,12 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} ssort (@var{string}) 
-@deffnx {関数} ssort (@var{string}, @var{test}) 
-@code{test (@var{c}, @var{d})}が@code{false}、かつ、@code{test (@var{d}, @var{c})}が@code{true}であるような2つの連続する文字@var{c}と@var{d}がないような順で
-@var{string}の文字すべてを含む文字列を返します。
+@deffn {関数} ssort (@mvar{string}) 
+@deffnx {関数} ssort (@mvar{string}, @mvar{test}) 
+@code{test (@mvar{c}, @mvar{d})}が@code{false}、かつ、@code{test (@mvar{d}, @mvar{c})}が@code{true}であるような2つの連続する文字@mvar{c}と@mvar{d}がないような順で
+@mvar{string}の文字すべてを含む文字列を返します。
 
-ソートのためのデフォルトのテスト関数は@var{clessp}です。
+ソートのためのデフォルトのテスト関数は@mvar{clessp}です。
 テスト関数一式は@code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}です。
 
 @c ===beg===
@@ -1009,18 +1009,18 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} ssubst (@var{new}, @var{old}, @var{string}) 
-@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
-@var{string}の中の@var{old}にマッチするすべての部分文字列を
-@var{new}で置き換えた文字列を返します。
-@var{old}と@var{new}は同じ長さである必要はありません。
+@deffn {関数} ssubst (@mvar{new}, @mvar{old}, @mvar{string}) 
+@deffnx {関数} ssubst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}) 
+@deffnx {関数} ssubst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}, @mvar{start}) 
+@deffnx {関数} ssubst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}, @mvar{start}, @mvar{end}) 
+@mvar{string}の中の@mvar{old}にマッチするすべての部分文字列を
+@mvar{new}で置き換えた文字列を返します。
+@mvar{old}と@mvar{new}は同じ長さである必要はありません。
 マッチのためのデフォルトのテスト関数は@code{sequal}です。
 もし@code{ssubst}がoldを検索する間大文字小文字を無視すべきなら、
 テストとして@code{sequalignore}を使ってください。
-検索を制限するには、@var{start}と@var{end}を使ってください。
-@var{string}の一番目の文字は位置1にあることに注意してください。
+検索を制限するには、@mvar{start}と@mvar{end}を使ってください。
+@mvar{string}の一番目の文字は位置1にあることに注意してください。
 
 @c ===beg===
 @c ssubst("like","hate","I hate Thai food. I hate green tea.");
@@ -1039,11 +1039,11 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} ssubstfirst (@var{new}, @var{old}, @var{string}) 
-@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
-@var{old}とマッチする最初の部分文字列だけを置き換えることを除いて、
+@deffn {関数} ssubstfirst (@mvar{new}, @mvar{old}, @mvar{string}) 
+@deffnx {関数} ssubstfirst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}) 
+@deffnx {関数} ssubstfirst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}, @mvar{start}) 
+@deffnx {関数} ssubstfirst (@mvar{new}, @mvar{old}, @mvar{string}, @mvar{test}, @mvar{start}, @mvar{end}) 
+@mvar{old}とマッチする最初の部分文字列だけを置き換えることを除いて、
 @code{subst}と同様です。
 
 @opencatbox
@@ -1052,8 +1052,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} strim (@var{seq},@var{string}) 
-@var{string}の両端から@var{seq}に現れるすべての文字を除いた文字列を返します。
+@deffn {関数} strim (@mvar{seq},@mvar{string}) 
+@mvar{string}の両端から@mvar{seq}に現れるすべての文字を除いた文字列を返します。
 
 @c ===beg===
 @c "/* comment */"$
@@ -1074,8 +1074,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} striml (@var{seq}, @var{string}) 
-@var{string}の左端だけトリムすることを除いて
+@deffn {関数} striml (@mvar{seq}, @mvar{string}) 
+@mvar{string}の左端だけトリムすることを除いて
 @code{strim}と同様です。
 
 @opencatbox
@@ -1084,8 +1084,8 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} strimr (@var{seq}, @var{string}) 
-@var{string}の右端だけトリムすることを除いて
+@deffn {関数} strimr (@mvar{seq}, @mvar{string}) 
+@mvar{string}の右端だけトリムすることを除いて
 @code{strim}と同様です。
 
 @opencatbox
@@ -1094,13 +1094,13 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} substring (@var{string}, @var{start})
-@deffnx {関数} substring (@var{string}, @var{start}, @var{end}) 
-位置@var{start}で始まり位置@var{end}で終わる
-@var{string}の部分文字列を返します。
-位置@var{end}の文字は含まれません。
-もし@var{end}が与えられないなら、部分文字列は文字列の残りを含みます。
-@var{string}の一番目の文字は位置1にあることに注意してください。
+@deffn {関数} substring (@mvar{string}, @mvar{start})
+@deffnx {関数} substring (@mvar{string}, @mvar{start}, @mvar{end}) 
+位置@mvar{start}で始まり位置@mvar{end}で終わる
+@mvar{string}の部分文字列を返します。
+位置@mvar{end}の文字は含まれません。
+もし@mvar{end}が与えられないなら、部分文字列は文字列の残りを含みます。
+@mvar{string}の一番目の文字は位置1にあることに注意してください。
 
 @c ===beg===
 @c substring("substring",4);
@@ -1119,13 +1119,13 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} supcase (@var{string}) 
-@deffnx {関数} supcase (@var{string}, @var{start}) 
-@deffnx {関数} supcase (@var{string}, @var{start}, @var{end}) 
-@var{string}の位置@var{start}から@var{end}までの小文字を対応する大文字に置き換えた
+@deffn {関数} supcase (@mvar{string}) 
+@deffnx {関数} supcase (@mvar{string}, @mvar{start}) 
+@deffnx {関数} supcase (@mvar{string}, @mvar{start}, @mvar{end}) 
+@mvar{string}の位置@mvar{start}から@mvar{end}までの小文字を対応する大文字に置き換えた
 文字列を返します。
-もし@var{end}が与えられないなら、
-@var{start}から@var{string}の終わりまでのすべての小文字が置き換えられます。
+もし@mvar{end}が与えられないなら、
+@mvar{start}から@mvar{string}の終わりまでのすべての小文字が置き換えられます。
 
 @c ===beg===
 @c supcase("english",1,2);
@@ -1141,12 +1141,12 @@ Lisp文字をMaxima文字に変換します。
 
 @end deffn
 
-@deffn {関数} tokens (@var{string}) 
-@deffnx {関数} tokens (@var{string}, @var{test}) 
-@var{string}から抽出されたトークンのリストを返します。
+@deffn {関数} tokens (@mvar{string}) 
+@deffnx {関数} tokens (@mvar{string}, @mvar{test}) 
+@mvar{string}から抽出されたトークンのリストを返します。
 トークンは、文字があるテスト関数を満たす部分文字列です。
 もしテストが与えられないなら、
-@var{constituent}がデフォルトテストとして使われます。
+@mvar{constituent}がデフォルトテストとして使われます。
 @code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}}はテスト関数一式です。
 (The Lisp-version of 
 @code{tokens}のLispバージョンはPaul Grahamによって書かれました。 ANSI Common Lisp, 1996, page 67.)

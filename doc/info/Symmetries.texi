@@ -78,13 +78,13 @@ Springer-Verlag, New York Berlin, 308-320, 1989.
 @subsection Changing bases
 
 
-@deffn {Function} comp2pui (@var{n}, @var{L})
+@deffn {Function} comp2pui (@mvar{n}, @mvar{L})
 implements passing from the complete symmetric functions given in the list
-@var{L} to the elementary symmetric functions from 0 to @var{n}. If the
-list @var{L} contains fewer than @var{n+1} elements, it will be completed with
-formal values of the type @var{h1}, @var{h2}, etc. If the first element
-of the list @var{L} exists, it specifies the size of the alphabet,
-otherwise the size is set to @var{n}.
+@mvar{L} to the elementary symmetric functions from 0 to @mvar{n}. If the
+list @mvar{L} contains fewer than @mvar{n+1} elements, it will be completed with
+formal values of the type @mvar{h1}, @mvar{h2}, etc. If the first element
+of the list @mvar{L} exists, it specifies the size of the alphabet,
+otherwise the size is set to @mvar{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
@@ -102,7 +102,7 @@ otherwise the size is set to @var{n}.
 @end deffn
 
 
-@deffn {Function} ele2pui (@var{m}, @var{L})
+@deffn {Function} ele2pui (@mvar{m}, @mvar{L})
 goes from the elementary symmetric functions to the complete functions.
 Similar to @code{comp2ele} and @code{comp2pui}.
 
@@ -114,7 +114,7 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Function} ele2comp (@var{m}, @var{L})
+@deffn {Function} ele2comp (@mvar{m}, @mvar{L})
 Goes from the elementary symmetric functions to the compete functions.
 Similar to @code{comp2ele} and @code{comp2pui}.
 
@@ -126,23 +126,23 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Function} elem (@var{ele}, @var{sym}, @var{lvar})
-decomposes the symmetric polynomial @var{sym}, in the variables
-contained in the list @var{lvar}, in terms of the elementary symmetric
-functions given in the list @var{ele}.  If the first element of
-@var{ele} is given, it will be the size of the alphabet, otherwise the
-size will be the degree of the polynomial @var{sym}.  If values are
-missing in the list @var{ele}, formal values of the type @var{e1},
-@var{e2}, etc. will be added.  The polynomial @var{sym} may be given in
+@deffn {Function} elem (@mvar{ele}, @mvar{sym}, @mvar{lvar})
+decomposes the symmetric polynomial @mvar{sym}, in the variables
+contained in the list @mvar{lvar}, in terms of the elementary symmetric
+functions given in the list @mvar{ele}.  If the first element of
+@mvar{ele} is given, it will be the size of the alphabet, otherwise the
+size will be the degree of the polynomial @mvar{sym}.  If values are
+missing in the list @mvar{ele}, formal values of the type @mvar{e1},
+@mvar{e2}, etc. will be added.  The polynomial @mvar{sym} may be given in
 three different forms: contracted (@code{elem} should then be 1, its
 default value), partitioned (@code{elem} should be 3), or extended
 (i.e. the entire polynomial, and @code{elem} should then be 2).  The
 function @code{pui} is used in the same way.
 
-On an alphabet of size 3 with @var{e1}, the first elementary symmetric
+On an alphabet of size 3 with @mvar{e1}, the first elementary symmetric
 function, with value 7, the symmetric polynomial in 3 variables whose
 contracted form (which here depends on only two of its variables) is
-@var{x^4-2*x*y} decomposes as follows in elementary symmetric functions:
+@mvar{x^4-2*x*y} decomposes as follows in elementary symmetric functions:
 
 @c GENERATED FROM THE FOLLOWING
 @c elem ([3, 7], x^4 - 2*x*y, [x, y]);
@@ -170,8 +170,8 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Function} mon2schur (@var{L})
-The list @var{L} represents the Schur function @math{S_L}: we have
+@deffn {Function} mon2schur (@mvar{L})
+The list @mvar{L} represents the Schur function @math{S_L}: we have
 @iftex
 @math{L = [i_1,i_2, \ldots, i_q]}, with @math{i_1 \le i_2 \le \ldots \le i_q}.
 The Schur function @math{S_{i_1,i_2, \ldots, i_q}} is the minor
@@ -237,11 +237,11 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Function} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
+@deffn {Function} multi_elem (@mvar{l_elem}, @mvar{multi_pc}, @mvar{l_var})
 decomposes a multi-symmetric polynomial in the multi-contracted form
-@var{multi_pc} in the groups of variables contained in the list of lists
-@var{l_var} in terms of the elementary symmetric functions contained in
-@var{l_elem}.
+@mvar{multi_pc} in the groups of variables contained in the list of lists
+@mvar{l_var} in terms of the elementary symmetric functions contained in
+@mvar{l_elem}.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
@@ -293,14 +293,14 @@ the function @code{elem}.
 
 
 @c HMM, pui IS A VARIABLE AS WELL.  It's a function, for sure.
-@deffn {Function} pui (@var{L}, @var{sym}, @var{lvar})
-decomposes the symmetric polynomial @var{sym}, in the variables in the
-list @var{lvar}, in terms of the power functions in the list @var{L}.
-If the first element of @var{L} is given, it will be the size of the
+@deffn {Function} pui (@mvar{L}, @mvar{sym}, @mvar{lvar})
+decomposes the symmetric polynomial @mvar{sym}, in the variables in the
+list @mvar{lvar}, in terms of the power functions in the list @mvar{L}.
+If the first element of @mvar{L} is given, it will be the size of the
 alphabet, otherwise the size will be the degree of the polynomial
-@var{sym}.  If values are missing in the list @var{L}, formal values of
-the type @var{p1}, @var{p2} , etc. will be added. The polynomial
-@var{sym} may be given in three different forms: contracted (@code{elem}
+@mvar{sym}.  If values are missing in the list @mvar{L}, formal values of
+the type @mvar{p1}, @mvar{p2} , etc. will be added. The polynomial
+@mvar{sym} may be given in three different forms: contracted (@code{elem}
 should then be 1, its default value), partitioned (@code{elem} should be
 3), or extended (i.e. the entire polynomial, and @code{elem} should then
 be 2). The function @code{pui} is used in the same way.
@@ -339,10 +339,10 @@ Other functions for changing bases: @code{comp2ele}.
 
 
 
-@deffn {Function} pui2comp (@var{n}, @var{lpui})
-renders the list of the first @var{n} complete functions (with the
+@deffn {Function} pui2comp (@mvar{n}, @mvar{lpui})
+renders the list of the first @mvar{n} complete functions (with the
 length first) in terms of the power functions given in the list
-@var{lpui}. If the list @var{lpui} is empty, the cardinal is @var{n},
+@mvar{lpui}. If the list @mvar{lpui} is empty, the cardinal is @mvar{n},
 otherwise it is its first element (as in @code{comp2ele} and
 @code{comp2pui}).
 
@@ -385,11 +385,11 @@ Other functions for changing bases: @code{comp2ele}.
 
 
 
-@deffn {Function} pui2ele (@var{n}, @var{lpui})
+@deffn {Function} pui2ele (@mvar{n}, @mvar{lpui})
 effects the passage from power functions to the elementary symmetric functions.
 If the flag @code{pui2ele} is @code{girard}, it will return the list of
-elementary symmetric functions from 1 to @var{n}, and if the flag is
-@code{close}, it will return the @var{n}-th elementary symmetric function.
+elementary symmetric functions from 1 to @mvar{n}, and if the flag is
+@code{close}, it will return the @mvar{n}-th elementary symmetric function.
 
 Other functions for changing bases: @code{comp2ele}.
 
@@ -399,10 +399,10 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Function} puireduc (@var{n}, @var{lpui})
-@var{lpui} is a list whose first element is an integer @var{m}.
-@code{puireduc} gives the first @var{n} power functions in terms of the
-first @var{m}.
+@deffn {Function} puireduc (@mvar{n}, @mvar{lpui})
+@mvar{lpui} is a list whose first element is an integer @mvar{m}.
+@code{puireduc} gives the first @mvar{n} power functions in terms of the
+first @mvar{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
@@ -429,12 +429,12 @@ first @var{m}.
 @end deffn
 
 
-@deffn {Function} schur2comp (@var{P}, @var{l_var})
-@var{P} is a polynomial in the variables of the list @var{l_var}.  Each
+@deffn {Function} schur2comp (@mvar{P}, @mvar{l_var})
+@mvar{P} is a polynomial in the variables of the list @mvar{l_var}.  Each
 of these variables represents a complete symmetric function.  In
-@var{l_var} the @var{i}-th complete symmetric function is represented by
-the concatenation of the letter @code{h} and the integer @var{i}:
-@code{h@var{i}}.  This function expresses @var{P} in terms of Schur
+@mvar{l_var} the @mvar{i}-th complete symmetric function is represented by
+the concatenation of the letter @code{h} and the integer @mvar{i}:
+@code{h@mvar{i}}.  This function expresses @mvar{P} in terms of Schur
 functions.
 
 
@@ -465,9 +465,9 @@ functions.
 
 @subsection Changing representations
 
-@deffn {Function} cont2part (@var{pc}, @var{lvar})
+@deffn {Function} cont2part (@mvar{pc}, @mvar{lvar})
 returns the partitioned polynomial associated to the contracted form
-@var{pc} whose variables are in @var{lvar}.
+@mvar{pc} whose variables are in @mvar{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c pc: 2*a^3*b*x^4*y + x^5;
@@ -492,11 +492,11 @@ returns the partitioned polynomial associated to the contracted form
 
 
 
-@deffn {Function} contract (@var{psym}, @var{lvar})
+@deffn {Function} contract (@mvar{psym}, @mvar{lvar})
 returns a contracted form (i.e. a monomial orbit under the action of the
 @c CHECK ME!!
-symmetric group) of the polynomial @var{psym} in the variables contained
-in the list @var{lvar}.  The function @code{explose} performs the
+symmetric group) of the polynomial @mvar{psym} in the variables contained
+in the list @mvar{lvar}.  The function @code{explose} performs the
 inverse operation.  The function @code{tcontract} tests the symmetry of
 the polynomial.
 
@@ -525,9 +525,9 @@ the polynomial.
 @end deffn
 
 
-@deffn {Function} explose (@var{pc}, @var{lvar})
+@deffn {Function} explose (@mvar{pc}, @mvar{lvar})
 returns the symmetric polynomial associated with the contracted form
-@var{pc}. The list @var{lvar} contains the variables.
+@mvar{pc}. The list @mvar{lvar} contains the variables.
 
 @c GENERATED FROM THE FOLLOWING
 @c explose (a*x + 1, [x, y, z]);
@@ -544,9 +544,9 @@ returns the symmetric polynomial associated with the contracted form
 @end deffn
 
 
-@deffn {Function} part2cont (@var{ppart}, @var{lvar})
+@deffn {Function} part2cont (@mvar{ppart}, @mvar{lvar})
 goes from the partitioned form to the contracted form of a symmetric polynomial.
-The contracted form is rendered with the variables in @var{lvar}.
+The contracted form is rendered with the variables in @mvar{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
@@ -565,9 +565,9 @@ The contracted form is rendered with the variables in @var{lvar}.
 
 
 
-@deffn {Function} partpol (@var{psym}, @var{lvar})
-@var{psym} is a symmetric polynomial in the variables of the list
-@var{lvar}. This function retturns its partitioned representation.
+@deffn {Function} partpol (@mvar{psym}, @mvar{lvar})
+@mvar{psym} is a symmetric polynomial in the variables of the list
+@mvar{lvar}. This function retturns its partitioned representation.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -584,9 +584,9 @@ The contracted form is rendered with the variables in @var{lvar}.
 @end deffn
 
 
-@deffn {Function} tcontract (@var{pol}, @var{lvar})
-tests if the polynomial @var{pol} is symmetric in the variables of the
-list @var{lvar}.  If so, it returns a contracted representation like the
+@deffn {Function} tcontract (@mvar{pol}, @mvar{lvar})
+tests if the polynomial @mvar{pol} is symmetric in the variables of the
+list @mvar{lvar}.  If so, it returns a contracted representation like the
 function @code{contract}.
 
 @opencatbox
@@ -596,9 +596,9 @@ function @code{contract}.
 
 
 
-@deffn {Function} tpartpol (@var{pol}, @var{lvar})
-tests if the polynomial @var{pol} is symmetric in the variables of the
-list @var{lvar}.  If so, it returns its partitioned representation like
+@deffn {Function} tpartpol (@mvar{pol}, @mvar{lvar})
+tests if the polynomial @mvar{pol} is symmetric in the variables of the
+list @mvar{lvar}.  If so, it returns its partitioned representation like
 the function @code{partpol}.
 
 @opencatbox
@@ -612,13 +612,13 @@ the function @code{partpol}.
 @subsection Groups and orbits
 
 
-@deffn {Function} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
+@deffn {Function} direct ([@mvar{p_1}, ..., @mvar{p_n}], @mvar{y}, @mvar{f}, [@mvar{lvar_1}, ..., @mvar{lvar_n}])
 calculates the direct image (see M. Giusti, D. Lazard et A. Valibouze,
-ISSAC 1988, Rome) associated to the function @var{f}, in the lists of
-variables @var{lvar_1}, ..., @var{lvar_n}, and in the polynomials
-@var{p_1}, ..., @var{p_n} in a variable @var{y}.  The arity of the
-function @var{f} is important for the calulation.  Thus, if the
-expression for @var{f} does not depend on some variable, it is useless
+ISSAC 1988, Rome) associated to the function @mvar{f}, in the lists of
+variables @mvar{lvar_1}, ..., @mvar{lvar_n}, and in the polynomials
+@mvar{p_1}, ..., @mvar{p_n} in a variable @mvar{y}.  The arity of the
+function @mvar{f} is important for the calulation.  Thus, if the
+expression for @mvar{f} does not depend on some variable, it is useless
 to include this variable, and not including it will also considerably
 reduce the amount of computation.
 
@@ -721,12 +721,12 @@ Functions of @code{sym} used in this function:
 
 
 
-@deffn {Function} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2},..., @var{lvar_p}])
+@deffn {Function} multi_orbit (@mvar{P}, [@mvar{lvar_1}, @mvar{lvar_2},..., @mvar{lvar_p}])
 
-@var{P} is a polynomial in the set of variables contained in the lists
-@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. This function returns the
-orbit of the polynomial @var{P} under the action of the product of the
-symmetric groups of the sets of variables represented in these @var{p}
+@mvar{P} is a polynomial in the set of variables contained in the lists
+@mvar{lvar_1}, @mvar{lvar_2}, ..., @mvar{lvar_p}. This function returns the
+orbit of the polynomial @mvar{P} under the action of the product of the
+symmetric groups of the sets of variables represented in these @mvar{p}
 lists.
 
 @c GENERATED FROM THE FOLLOWING
@@ -753,12 +753,12 @@ Also see: @code{orbit} for the action of a single symmetric group.
 
 
 
-@deffn {Function} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
-returns the product of the two symmetric polynomials in @var{n}
+@deffn {Function} multsym (@mvar{ppart_1}, @mvar{ppart_2}, @mvar{n})
+returns the product of the two symmetric polynomials in @mvar{n}
 variables by working only modulo the action of the symmetric group of
-order @var{n}. The polynomials are in their partitioned form.
+order @mvar{n}. The polynomials are in their partitioned form.
 
-Given the 2 symmetric polynomials in @var{x}, @var{y}:  @code{3*(x + y)
+Given the 2 symmetric polynomials in @mvar{x}, @mvar{y}:  @code{3*(x + y)
 + 2*x*y} and @code{5*(x^2 + y^2)} whose partitioned forms are @code{[[3,
 1], [2, 1, 1]]} and @code{[[5, 2]]}, their product will be
 
@@ -785,10 +785,10 @@ Functions for changing the representations of a symmetric polynomial:
 
 
 
-@deffn {Function} orbit (@var{P}, @var{lvar})
-computes the orbit of the polynomial @var{P} in the variables in the list
-@var{lvar} under the action of the symmetric group of the set of
-variables in the list @var{lvar}.
+@deffn {Function} orbit (@mvar{P}, @mvar{lvar})
+computes the orbit of the polynomial @mvar{P} in the variables in the list
+@mvar{lvar} under the action of the symmetric group of the set of
+variables in the list @mvar{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c orbit (a*x + b*y, [x, y]);
@@ -815,15 +815,15 @@ groups on a polynomial.
 
 
 
-@deffn {Function} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
+@deffn {Function} pui_direct (@mvar{orbite}, [@mvar{lvar_1}, ..., @mvar{lvar_n}], [@mvar{d_1}, @mvar{d_2}, ..., @mvar{d_n}])
 
-Let @var{f} be a polynomial in @var{n} blocks of variables @var{lvar_1},
-..., @var{lvar_n}.  Let @var{c_i} be the number of variables in
-@var{lvar_i}, and @var{SC} be the product of @var{n} symmetric groups of
-degree @var{c_1}, ..., @var{c_n}. This group acts naturally on @var{f}.
-The list @var{orbite} is the orbit, denoted @code{@var{SC}(@var{f})}, of
-the function @var{f} under the action of @var{SC}. (This list may be
-obtained by the function @code{multi_orbit}.)  The @var{di} are integers
+Let @mvar{f} be a polynomial in @mvar{n} blocks of variables @mvar{lvar_1},
+..., @mvar{lvar_n}.  Let @mvar{c_i} be the number of variables in
+@mvar{lvar_i}, and @mvar{SC} be the product of @mvar{n} symmetric groups of
+degree @mvar{c_1}, ..., @mvar{c_n}. This group acts naturally on @mvar{f}.
+The list @mvar{orbite} is the orbit, denoted @code{@mvar{SC}(@mvar{f})}, of
+the function @mvar{f} under the action of @mvar{SC}. (This list may be
+obtained by the function @code{multi_orbit}.)  The @mvar{di} are integers
 s.t.
 @iftex
 $c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n$.
@@ -833,20 +833,20 @@ $c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n$.
 @end ifnottex
 
 @iftex
-Let @var{SD} be the product of the symmetric groups @math{S_{d_1} \times
+Let @mvar{SD} be the product of the symmetric groups @math{S_{d_1} \times
 S_{d_2} \times \cdots \times S_{d_n}}.
 @end iftex
 @ifnottex
-Let @var{SD} be the product of the symmetric groups @math{S_[d_1] x
+Let @mvar{SD} be the product of the symmetric groups @math{S_[d_1] x
 S_[d_2] x ... x S_[d_n]}.
 @end ifnottex
 The function @code{pui_direct} returns
-the first @var{n} power functions of @code{@var{SD}(@var{f})} deduced
-from the power functions of @code{@var{SC}(@var{f})}, where @var{n} is
-the size of @code{@var{SD}(@var{f})}.
+the first @mvar{n} power functions of @code{@mvar{SD}(@mvar{f})} deduced
+from the power functions of @code{@mvar{SC}(@mvar{f})}, where @mvar{n} is
+the size of @code{@mvar{SD}(@mvar{f})}.
 
-The result is in multi-contracted form w.r.t. @var{SD}, i.e. only one
-element is kept per orbit, under the action of @var{SD}.
+The result is in multi-contracted form w.r.t. @mvar{SD}, i.e. only one
+element is kept per orbit, under the action of @mvar{SD}.
 
 @c GENERATED FROM THE FOLLOWING
 @c l: [[x, y], [a, b]];
@@ -903,9 +903,9 @@ element is kept per orbit, under the action of @var{SD}.
 
 @subsection Partitions
 
-@deffn {Function} kostka (@var{part_1}, @var{part_2})
+@deffn {Function} kostka (@mvar{part_1}, @mvar{part_2})
 written by P. Esperet, calculates the Kostka number of the partition
-@var{part_1} and @var{part_2}.
+@mvar{part_1} and @mvar{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
 @c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
@@ -923,8 +923,8 @@ written by P. Esperet, calculates the Kostka number of the partition
 
 
 
-@deffn {Function} lgtreillis (@var{n}, @var{m})
-returns the list of partitions of weight @var{n} and length @var{m}.
+@deffn {Function} lgtreillis (@mvar{n}, @mvar{m})
+returns the list of partitions of weight @mvar{n} and length @mvar{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
@@ -944,9 +944,9 @@ Also see: @code{ltreillis}, @code{treillis} and @code{treinat}.
 
 
 
-@deffn {Function} ltreillis (@var{n}, @var{m})
-returns the list of partitions of weight @var{n} and length less than or
-equal to @var{m}.
+@deffn {Function} ltreillis (@mvar{n}, @mvar{m})
+returns the list of partitions of weight @mvar{n} and length less than or
+equal to @mvar{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c ltreillis (4, 2);
@@ -966,8 +966,8 @@ Also see: @code{lgtreillis}, @code{treillis} and @code{treinat}.
 
 
 
-@deffn {Function} treillis (@var{n})
-returns all partitions of weight @var{n}.
+@deffn {Function} treillis (@mvar{n})
+returns all partitions of weight @mvar{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
@@ -987,8 +987,8 @@ See also: @code{lgtreillis}, @code{ltreillis} and @code{treinat}.
 
 
 
-@deffn {Function} treinat (@var{part})
-retruns the list of partitions inferior to the partition @var{part} w.r.t.
+@deffn {Function} treinat (@mvar{part})
+retruns the list of partitions inferior to the partition @mvar{part} w.r.t.
 the natural order.
 
 @c GENERATED FROM THE FOLLOWING
@@ -1025,11 +1025,11 @@ See also: @code{lgtreillis}, @code{ltreillis} and @code{treillis}.
 
 @subsection Polynomials and their roots
 
-@deffn {Function} ele2polynome (@var{L}, @var{z})
-returns the polynomial in @var{z} s.t. the elementary symmetric
-functions of its roots are in the list @code{@var{L} = [@var{n},
-@var{e_1}, ..., @var{e_n}]}, where @var{n} is the degree of the
-polynomial and @var{e_i} the @var{i}-th elementary symmetric function.
+@deffn {Function} ele2polynome (@mvar{L}, @mvar{z})
+returns the polynomial in @mvar{z} s.t. the elementary symmetric
+functions of its roots are in the list @code{@mvar{L} = [@mvar{n},
+@mvar{e_1}, ..., @mvar{e_n}]}, where @mvar{n} is the degree of the
+polynomial and @mvar{e_i} the @mvar{i}-th elementary symmetric function.
 
 @c GENERATED FROM THE FOLLOWING
 @c ele2polynome ([2, e1, e2], z);
@@ -1052,7 +1052,7 @@ polynomial and @var{e_i} the @var{i}-th elementary symmetric function.
 @end group
 @end example
 @noindent
-The inverse: @code{polynome2ele (@var{P}, @var{z})}.
+The inverse: @code{polynome2ele (@mvar{P}, @mvar{z})}.
 
 Also see:
 @code{polynome2ele}, @code{pui2polynome}.
@@ -1064,11 +1064,11 @@ Also see:
 
 
 
-@deffn {Function} polynome2ele (@var{P}, @var{x})
-gives the list @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}
-where @var{n} is the degree of the polynomial @var{P} in the variable
-@var{x} and @var{e_i} is the @var{i}-the elementary symmetric function
-of the roots of @var{P}.
+@deffn {Function} polynome2ele (@mvar{P}, @mvar{x})
+gives the list @code{@mvar{l} = [@mvar{n}, @mvar{e_1}, ..., @mvar{e_n}]}
+where @mvar{n} is the degree of the polynomial @mvar{P} in the variable
+@mvar{x} and @mvar{e_i} is the @mvar{i}-the elementary symmetric function
+of the roots of @mvar{P}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
@@ -1085,7 +1085,7 @@ of the roots of @var{P}.
 @end group
 @end example
 @noindent
-The inverse: @code{ele2polynome (@var{l}, @var{x})}
+The inverse: @code{ele2polynome (@mvar{l}, @mvar{x})}
 
 @opencatbox
 @category{Package sym}
@@ -1094,10 +1094,10 @@ The inverse: @code{ele2polynome (@var{l}, @var{x})}
 
 
 
-@deffn {Function} prodrac (@var{L}, @var{k})
-@var{L} is a list containing the elementary symmetric functions 
-on a set @var{A}. @code{prodrac} returns the polynomial whose roots
-are the @var{k} by @var{k} products of the elements of @var{A}.
+@deffn {Function} prodrac (@mvar{L}, @mvar{k})
+@mvar{L} is a list containing the elementary symmetric functions 
+on a set @mvar{A}. @code{prodrac} returns the polynomial whose roots
+are the @mvar{k} by @mvar{k} products of the elements of @mvar{A}.
 
 Also see @code{somrac}.
 
@@ -1107,9 +1107,9 @@ Also see @code{somrac}.
 @end deffn
 
 
-@deffn {Function} pui2polynome (@var{x}, @var{lpui})
-calculates the polynomial in @var{x} whose power functions of the roots
-are given in the list @var{lpui}.
+@deffn {Function} pui2polynome (@mvar{x}, @mvar{lpui})
+calculates the polynomial in @mvar{x} whose power functions of the roots
+are given in the list @mvar{lpui}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
@@ -1149,10 +1149,10 @@ See also:
 
 
 
-@deffn {Function} somrac (@var{L}, @var{k})
-The list @var{L} contains elementary symmetric functions of a polynomial
-@var{P} . The function computes the polynomial whose roots are the 
-@var{k} by @var{k} distinct sums of the roots of @var{P}. 
+@deffn {Function} somrac (@mvar{L}, @mvar{k})
+The list @mvar{L} contains elementary symmetric functions of a polynomial
+@mvar{P} . The function computes the polynomial whose roots are the 
+@mvar{k} by @mvar{k} distinct sums of the roots of @mvar{P}. 
 
 Also see @code{prodrac}.
 
@@ -1167,17 +1167,17 @@ Also see @code{prodrac}.
 
 @subsection Resolvents
 
-@deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
-calculates the resolvent of the polynomial @var{P} in @var{x} of degree
-@var{n} >= @var{d} by the function @var{f} expressed in the variables
-@var{x_1}, ..., @var{x_d}.  For efficiency of computation it is
-important to not include in the list @code{[@var{x_1}, ..., @var{x_d}]}
-variables which do not appear in the transformation function @var{f}.
+@deffn {Function} resolvante (@mvar{P}, @mvar{x}, @mvar{f}, [@mvar{x_1},..., @mvar{x_d}]) 
+calculates the resolvent of the polynomial @mvar{P} in @mvar{x} of degree
+@mvar{n} >= @mvar{d} by the function @mvar{f} expressed in the variables
+@mvar{x_1}, ..., @mvar{x_d}.  For efficiency of computation it is
+important to not include in the list @code{[@mvar{x_1}, ..., @mvar{x_d}]}
+variables which do not appear in the transformation function @mvar{f}.
 
 To increase the efficiency of the computation one may set flags in
 @code{resolvante} so as to use appropriate algorithms:
 
-If the function @var{f} is unitary:
+If the function @mvar{f} is unitary:
 @itemize @bullet
 @item
 A polynomial in a single variable,
@@ -1419,9 +1419,9 @@ See also:
 
 
 
-@deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
+@deffn {Function} resolvante_alternee1 (@mvar{P}, @mvar{x})
 calculates the transformation
-@code{@var{P}(@var{x})} of degree @var{n} by the function
+@code{@mvar{P}(@mvar{x})} of degree @mvar{n} by the function
 @iftex
 @math{\prod_{1\leq i<j\leq n-1} (x_i-x_j)}.
 @end iftex
@@ -1442,9 +1442,9 @@ See also:
 @end deffn
 
 
-@deffn {Function} resolvante_bipartite (@var{P}, @var{x})
+@deffn {Function} resolvante_bipartite (@mvar{P}, @mvar{x})
 calculates the transformation of
-@code{@var{P}(@var{x})} of even degree @var{n} by the function 
+@code{@mvar{P}(@mvar{x})} of even degree @mvar{n} by the function 
 @iftex
 @math{x_1 x_2 \cdots x_{n/2} + x_{n/2+1}\cdots x_n}.
 @end iftex
@@ -1478,9 +1478,9 @@ See also:
 
 
 
-@deffn {Function} resolvante_diedrale (@var{P}, @var{x})
-calculates the transformation of @code{@var{P}(@var{x})} by the function
-@code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
+@deffn {Function} resolvante_diedrale (@mvar{P}, @mvar{x})
+calculates the transformation of @code{@mvar{P}(@mvar{x})} by the function
+@code{@mvar{x_1} @mvar{x_2} + @mvar{x_3} @mvar{x_4}}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
@@ -1511,9 +1511,9 @@ See also:
 
 
 
-@deffn {Function} resolvante_klein (@var{P}, @var{x})
-calculates the transformation of @code{@var{P}(@var{x})} by the function
-@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+@deffn {Function} resolvante_klein (@mvar{P}, @mvar{x})
+calculates the transformation of @code{@mvar{P}(@mvar{x})} by the function
+@code{@mvar{x_1} @mvar{x_2} @mvar{x_4} + @mvar{x_4}}.
 
 See also:
 @flushleft
@@ -1528,9 +1528,9 @@ See also:
 @end deffn
 
 
-@deffn {Function} resolvante_klein3 (@var{P}, @var{x})
-calculates the transformation of @code{@var{P}(@var{x})} by the function
-@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+@deffn {Function} resolvante_klein3 (@mvar{P}, @mvar{x})
+calculates the transformation of @code{@mvar{P}(@mvar{x})} by the function
+@code{@mvar{x_1} @mvar{x_2} @mvar{x_4} + @mvar{x_4}}.
 
 See also:
 @flushleft
@@ -1546,9 +1546,9 @@ See also:
 
 
 
-@deffn {Function} resolvante_produit_sym (@var{P}, @var{x})
+@deffn {Function} resolvante_produit_sym (@mvar{P}, @mvar{x})
 calculates the list of all product resolvents of the polynomial
-@code{@var{P}(@var{x})}.
+@code{@mvar{P}(@mvar{x})}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
@@ -1594,9 +1594,9 @@ See also:
 
 
 
-@deffn {Function} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
-computes the resolvent of the polynomial @code{@var{P}(@var{x})} by the
-polynomial @code{@var{Q}(@var{x})}. 
+@deffn {Function} resolvante_unitaire (@mvar{P}, @mvar{Q}, @mvar{x})
+computes the resolvent of the polynomial @code{@mvar{P}(@mvar{x})} by the
+polynomial @code{@mvar{Q}(@mvar{x})}. 
 
 See also:
 @flushleft
@@ -1611,10 +1611,10 @@ See also:
 @end deffn
 
 
-@deffn {Function} resolvante_vierer (@var{P}, @var{x})
+@deffn {Function} resolvante_vierer (@mvar{P}, @mvar{x})
 computes the transformation of
-@code{@var{P}(@var{x})} by the function @code{@var{x_1} @var{x_2} -
-@var{x_3} @var{x_4}}.
+@code{@mvar{P}(@mvar{x})} by the function @code{@mvar{x_1} @mvar{x_2} -
+@mvar{x_3} @mvar{x_4}}.
 
 See also:
 @flushleft
@@ -1634,11 +1634,11 @@ See also:
 @subsection Miscellaneous
 
 
-@deffn {Function} multinomial (@var{r}, @var{part})
-where @var{r} is the weight of the partition @var{part}.  This function
+@deffn {Function} multinomial (@mvar{r}, @mvar{part})
+where @mvar{r} is the weight of the partition @mvar{part}.  This function
 returns the associate multinomial coefficient: if the parts of
-@var{part} are @var{i_1}, @var{i_2}, ..., @var{i_k}, the result is
-@code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
+@mvar{part} are @mvar{i_1}, @mvar{i_2}, ..., @mvar{i_k}, the result is
+@code{@mvar{r}!/(@mvar{i_1}! @mvar{i_2}! ... @mvar{i_k}!)}.
 
 @opencatbox
 @category{Package sym}
@@ -1646,8 +1646,8 @@ returns the associate multinomial coefficient: if the parts of
 @end deffn
 
 
-@deffn {Function} permut (@var{L})
-returns the list of permutations of the list @var{L}.
+@deffn {Function} permut (@mvar{L})
+returns the list of permutations of the list @mvar{L}.
 
 @opencatbox
 @category{Package sym} @category{Lists}

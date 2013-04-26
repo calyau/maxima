@@ -9,23 +9,23 @@
 @node Definitions for zeilberger, , Introduction to zeilberger, zeilberger
 @section Definitions for zeilberger
 
-@deffn {Function} AntiDifference (@var{F_k}, @var{k})
+@deffn {Function} AntiDifference (@mvar{F_k}, @mvar{k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} Gosper (@var{F_k}, @var{k})
+@deffn {Function} Gosper (@mvar{F_k}, @mvar{k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Function} GosperSum (@mvar{F_k}, @mvar{k}, @mvar{a}, @mvar{b}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+@deffn {Function} parGosper (@mvar{F_@{n,k@}}, @mvar{k}, @mvar{n}, @mvar{d})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+@deffn {Function} Zeilberger (@mvar{F_@{n,k@}}, @mvar{k}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -17,15 +17,15 @@
 @node Definitions for Help,  , Documentation, Help
 @section Definitions for Help
 
-@deffn {Function} demo (@var{filename})
+@deffn {Function} demo (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} describe (@var{string})
+@deffn {Function} describe (@mvar{string})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} example (@var{topic})
+@deffn {Function} example (@mvar{topic})
 @deffnx {Function} example ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

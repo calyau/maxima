@@ -42,7 +42,7 @@ Testen der Installation und das Berichten von Fehlern:
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{run_testsuite}
-@deffn {Funktion} run_testsuite ([@var{options}])
+@deffn {Funktion} run_testsuite ([@mvar{options}])
 
 Die Funktion @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus.  
 Erfolgreiche Tests und Tests, die zwar nicht erfolgreich, aber als ein bekannter

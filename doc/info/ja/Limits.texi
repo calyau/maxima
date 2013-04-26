@@ -26,13 +26,13 @@ Default: 4
 
 @c -----------------------------------------------------------------------------
 @anchor{limit}
-@deffn  {関数} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {関数} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {関数} limit (@var{expr})
+@deffn  {関数} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {関数} limit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {関数} limit (@mvar{expr})
 
-実変数@var{x}が値@var{val}に方向@var{dir}に近づく時の
-@var{expr}の極限を計算します。
-@var{dir}は、上からの極限には値@code{plus}を、下からの極限には@code{minus}を持ち、
+実変数@mvar{x}が値@mvar{val}に方向@mvar{dir}に近づく時の
+@mvar{expr}の極限を計算します。
+@mvar{dir}は、上からの極限には値@code{plus}を、下からの極限には@code{minus}を持ち、
 また、 (両側極限が計算されることを暗示して)省略することもあります。
 
 @code{limit}は以下の特殊シンボルを使います:
@@ -92,9 +92,9 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971を参照してください�
 
 @c -----------------------------------------------------------------------------
 @anchor{tlimit}
-@deffn  {関数} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {関数} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {関数} tlimit (@var{expr})
+@deffn  {関数} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {関数} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {関数} tlimit (@mvar{expr})
 
 @code{expr}の@code{x}に関する@code{val}
 でのテイラー級数展開の方向@code{dir}からの極限を取ります。

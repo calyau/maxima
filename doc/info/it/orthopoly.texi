@@ -9,51 +9,51 @@
 @node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
 @section Definitions for orthogonal polynomials
 
-@deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
+@deffn {Function} assoc_legendre_p (@mvar{n}, @mvar{m}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
+@deffn {Function} assoc_legendre_q (@mvar{n}, @mvar{m}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} chebyshev_t (@var{n}, @var{x})
+@deffn {Function} chebyshev_t (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} chebyshev_u (@var{n}, @var{x})
+@deffn {Function} chebyshev_u (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
+@deffn {Function} gen_laguerre (@mvar{n}, @mvar{a}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} hermite (@var{n}, @var{x})
+@deffn {Function} hermite (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} intervalp (@var{e})
+@deffn {Function} intervalp (@mvar{e})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+@deffn {Function} jacobi_p (@mvar{n}, @mvar{a}, @mvar{b}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} laguerre (@var{n}, @var{x})
+@deffn {Function} laguerre (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} legendre_p (@var{n}, @var{x})
+@deffn {Function} legendre_p (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} legendre_q (@var{n}, @var{x})
+@deffn {Function} legendre_q (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} orthopoly_recur (@var{f}, @var{args})
+@deffn {Function} orthopoly_recur (@mvar{f}, @mvar{args})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -61,11 +61,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} orthopoly_weight (@var{f}, @var{args})
+@deffn {Function} orthopoly_weight (@mvar{f}, @mvar{args})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pochhammer (@var{n}, @var{x})
+@deffn {Function} pochhammer (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -73,31 +73,31 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} spherical_bessel_j (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_j (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} spherical_bessel_y (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_y (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} spherical_hankel1 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel1 (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} spherical_hankel2 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel2 (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+@deffn {Function} spherical_harmonic (@mvar{n}, @mvar{m}, @mvar{x}, @mvar{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} unit_step (@var{x})
+@deffn {Function} unit_step (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
+@deffn {Function} ultraspherical (@mvar{n}, @mvar{a}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

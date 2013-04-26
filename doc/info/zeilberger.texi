@@ -21,7 +21,7 @@ summation.
 @category{Sums and products} @category{Share packages} @category{Package zeilberger}
 @closecatbox
 
-@subsubsection The indefinite summation problem
+@subsection The indefinite summation problem
 
 @code{zeilberger} implements Gosper's algorithm for indefinite hypergeometric summation.
 Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
@@ -34,7 +34,7 @@ $$F_k = f_{k+1} - f_k.$$
 @math{F_k = f_(k+1) - f_k}.
 @end ifnottex
 
-@subsubsection The definite summation problem
+@subsection The definite summation problem
 
 @code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric summation.
 Given a proper hypergeometric term (in @math{n} and @math{k})
@@ -104,7 +104,7 @@ For example:@*
 @node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
 @section Functions and Variables for zeilberger
 
-@deffn {Function} AntiDifference (@math{F_k}, @var{k})
+@deffn {Function} AntiDifference (@math{F_k}, @mvar{k})
 
 Returns the hypergeometric anti-difference of @math{F_k}, if it exists.@*
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
@@ -115,7 +115,7 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @end deffn
 
-@deffn {Function} Gosper (@math{F_k}, @var{k})
+@deffn {Function} Gosper (@math{F_k}, @mvar{k})
 Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
 a rational function such that
 @tex
@@ -133,9 +133,9 @@ Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @end deffn
 
-@deffn {Function} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
+@deffn {Function} GosperSum (@math{F_k}, @mvar{k}, @mvar{a}, @mvar{b})
 
-Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
+Returns the summmation of @math{F_k} from @math{@mvar{k} = @mvar{a}} to @math{@mvar{k} = @mvar{b}}
 if @math{F_k} has a hypergeometric anti-difference.
 Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 
@@ -210,9 +210,9 @@ Dependent equations eliminated:  (1)
 @end deffn
 
 @iftex
-@deffn {Function} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
+@deffn {Function} parGosper (@math{F_{n,k}}, @mvar{k}, @mvar{n}, @mvar{d})
 
-Attempts to find a @var{d}-th order recurrence for
+Attempts to find a @mvar{d}-th order recurrence for
 @tex
 $F_{n,k}$.
 @end tex
@@ -234,9 +234,9 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
-@deffn {Function} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
+@deffn {Function} parGosper (@math{F_(n,k)}, @mvar{k}, @mvar{n}, @mvar{d})
 
-Attempts to find a @var{d}-th order recurrence for @math{F_(n,k)}.
+Attempts to find a @mvar{d}-th order recurrence for @math{F_(n,k)}.
 
 The algorithm yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
 Each solution has the form
@@ -253,7 +253,7 @@ Each solution has the form
 @end ifnottex
 
 @iftex
-@deffn {Function} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
+@deffn {Function} Zeilberger (@math{F_{n,k}}, @mvar{k}, @mvar{n})
 
 Attempts to compute the indefinite hypergeometric summation of
 @tex
@@ -284,7 +284,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
-@deffn {Function} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
+@deffn {Function} Zeilberger (@math{F_(n,k)}, @mvar{k}, @mvar{n})
 
 Attempts to compute the indefinite hypergeometric summation of @math{F_(n,k)}.
 
@@ -417,7 +417,7 @@ Default value: @code{linsolve}
 @defvr {Global variable} ev_point
 Default value: @code{big_primes[10]}
 
-@code{ev_point} is the value at which the variable @var{n} is evaluated
+@code{ev_point} is the value at which the variable @mvar{n} is evaluated
 when executing the modular test in @code{parGosper}.
 
 @opencatbox

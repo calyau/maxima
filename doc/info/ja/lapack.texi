@@ -20,19 +20,19 @@ SLATECプロジェクトから得られるようなFortranライブラリLAPACK�
 @node Functions and Variables for lapack, , Introduction to lapack, lapack
 @section Functions and Variables for lapack
 
-@deffn {関数} dgeev (@var{A})
-@deffnx {関数} dgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {関数} dgeev (@mvar{A})
+@deffnx {関数} dgeev (@mvar{A}, @mvar{right_p}, @mvar{left_p})
 
-行列@var{A}の固有値と、オプションで固有ベクトルを計算します。
-@var{A}の要素はすべて整数か浮動小数点数でなければいけません。
-@var{A}は平方(行と列が同じ数)でなければいけません。
-@var{A}は対称であってもなくてもいいです。
+行列@mvar{A}の固有値と、オプションで固有ベクトルを計算します。
+@mvar{A}の要素はすべて整数か浮動小数点数でなければいけません。
+@mvar{A}は平方(行と列が同じ数)でなければいけません。
+@mvar{A}は対称であってもなくてもいいです。
 
-@code{dgeev(@var{A})}は@var{A}の固有値だけを計算します。
-@code{dgeev(@var{A}, @var{right_p}, @var{left_p})}は
-@var{A}の固有値と、
-@math{@var{right_p} = @code{true}}の時、右固有ベクトル、
-@math{@var{left_p} = @code{true}}の時、左固有ベクトルを計算します。
+@code{dgeev(@mvar{A})}は@mvar{A}の固有値だけを計算します。
+@code{dgeev(@mvar{A}, @mvar{right_p}, @mvar{left_p})}は
+@mvar{A}の固有値と、
+@math{@mvar{right_p} = @code{true}}の時、右固有ベクトル、
+@math{@mvar{left_p} = @code{true}}の時、左固有ベクトルを計算します。
 
 3項目のリストが返されます。
 最初の項目は固有値のリストです。
@@ -105,18 +105,18 @@ Euclideanノルムが1に等しく、
 
 @end deffn
 
-@deffn {関数} dgeqrf (@var{A})
+@deffn {関数} dgeqrf (@mvar{A})
 
-行列 @var{A}のQR分解します。
+行列 @mvar{A}のQR分解します。
 All elements of 
-@var{A}のすべての要素は整数か浮動小数点数でなければいけません。
-@var{A}は行と列の数は同じかもしれませんし違うかもしれません。
+@mvar{A}のすべての要素は整数か浮動小数点数でなければいけません。
+@mvar{A}は行と列の数は同じかもしれませんし違うかもしれません。
 
 2つの項目のリストを返します。
-一番目の項目は行列 @var{Q}で、それは@var{A}と同じ行数を持つ平方正規直交行列です。
-二番目の項目は行列 @var{R}で、それは@var{A}tお同じサイズで、
+一番目の項目は行列 @mvar{Q}で、それは@mvar{A}と同じ行数を持つ平方正規直交行列です。
+二番目の項目は行列 @mvar{R}で、それは@mvar{A}tお同じサイズで、
 対角以下のすべての要素がが零に等しいものです。
-積 @code{@var{Q} . @var{R}}は(浮動小数点の丸め誤差を除いて)@var{A}に等しい。
+積 @code{@mvar{Q} . @mvar{R}}は(浮動小数点の丸め誤差を除いて)@mvar{A}に等しい。
 ここで "."は非可換乗算演算子です。
 
 @c ===beg===
@@ -152,29 +152,29 @@ All elements of
 
 @end deffn
 
-@deffn {関数} dgesv (@var{A}, @var{b})
+@deffn {関数} dgesv (@mvar{A}, @mvar{b})
 
-線形方程式 @math{@var{A} @var{x} = @var{b}}の
-解 @var{x}を計算します。
-ここで、 @var{A}は平方行列、
-@var{b}は@var{A}と同じ数の行と任意の長さの列を持つ行列です。
-戻り値 @var{x}は @var{b}と同じサイズです。
+線形方程式 @math{@mvar{A} @mvar{x} = @mvar{b}}の
+解 @mvar{x}を計算します。
+ここで、 @mvar{A}は平方行列、
+@mvar{b}は@mvar{A}と同じ数の行と任意の長さの列を持つ行列です。
+戻り値 @mvar{x}は @mvar{b}と同じサイズです。
 
-@var{A}と @var{b}の要素は
+@mvar{A}と @mvar{b}の要素は
 @code{float}を介して実の浮動小数点数に評価されなければいけません;
 従って、要素は任意の数値型か、数値定数のシンボルか、
 浮動小数点に評価される式であり得ます。
-@var{x}の要素はいつも浮動小数点数です。
+@mvar{x}の要素はいつも浮動小数点数です。
 すべての算術は浮動小数演算として実行されます。
 
 @code{dgesv}は
-@var{A}のLU分解を介して
+@mvar{A}のLU分解を介して
 解を計算します。
 
 例:
 
 @code{dgesv}は
-線形方程式 @math{@var{A} @var{x} = @var{b}}の解を計算します。
+線形方程式 @math{@mvar{A} @mvar{x} = @mvar{b}}の解を計算します。
 
 @c ===beg===
 @c A : matrix ([1, -2.5], [0.375, 5]);
@@ -199,8 +199,8 @@ All elements of
 (%o4)                                 0.0
 @end example
 
-@var{b}は@var{A}と同じ数の行と任意の長さの列を持つ行列です。
-@var{x}は @var{b}と同じサイズです。
+@mvar{b}は@mvar{A}と同じ数の行と任意の長さの列を持つ行列です。
+@mvar{x}は @mvar{b}と同じサイズです。
 
 @c ===beg===
 @c A : matrix ([1, -0.15], [1.82, 2]);
@@ -225,7 +225,7 @@ All elements of
 (%o4)                       1.1102230246251565E-15
 @end example
 
-@var{A}と @var{b}の要素は
+@mvar{A}と @mvar{b}の要素は
 実の浮動小数点数に評価されなければいけません;
 
 @c ===beg===
@@ -259,38 +259,38 @@ All elements of
 
 @end deffn
 
-@deffn {関数} dgesvd (@var{A})
-@deffnx {関数} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+@deffn {関数} dgesvd (@mvar{A})
+@deffnx {関数} dgesvd (@mvar{A}, @mvar{left_p}, @mvar{right_p})
 
-特異値から成る行列 @var{A}の特異値分解(SVD)を計算します。
+特異値から成る行列 @mvar{A}の特異値分解(SVD)を計算します。
 オプションで左および右特異ベクトルを取ります。
 
-@var{A}の要素はすべて整数か浮動小数点数でなければいけません。
-@var{A}は(行と列が同じ数の)平方かもしれませんし、そうでないかもしれません。
+@mvar{A}の要素はすべて整数か浮動小数点数でなければいけません。
+@mvar{A}は(行と列が同じ数の)平方かもしれませんし、そうでないかもしれません。
 
-@math{m}を @var{A}の行数、@math{n}を列数とします。
-@var{A}の特異値分解は
-@c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
-@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
-のような3つの行列 @var{U}, @var{Sigma}, @var{V^T}から構成されます。
-ここで、 @var{U}は @math{m}掛け@math{m}のユニタリ行列、
-@var{Sigma}は @math{m}掛け@math{n}の対角行列、
-@var{V^T}は @math{n}掛け@math{n}のユニタリ行列です。
+@math{m}を @mvar{A}の行数、@math{n}を列数とします。
+@mvar{A}の特異値分解は
+@c this code breaks texi2pdf: @math{@mvar{A} = @mvar{U} . @mvar{Sigma} . @mvar{V^T}}
+@math{@mvar{A} = @mvar{U} . @mvar{Sigma} . @mvar{V}^T}
+のような3つの行列 @mvar{U}, @mvar{Sigma}, @mvar{V^T}から構成されます。
+ここで、 @mvar{U}は @math{m}掛け@math{m}のユニタリ行列、
+@mvar{Sigma}は @math{m}掛け@math{n}の対角行列、
+@mvar{V^T}は @math{n}掛け@math{n}のユニタリ行列です。
 
 @math{sigma[i]}を
-@math{Sigma}の対角要素、すなわち、 @math{@var{Sigma}[i, i] = @var{sigma}[i]}と
+@math{Sigma}の対角要素、すなわち、 @math{@mvar{Sigma}[i, i] = @mvar{sigma}[i]}と
 します。
-要素 @math{sigma[i]}は @var{A}のいわゆる特異値です;
+要素 @math{sigma[i]}は @mvar{A}のいわゆる特異値です;
 これらは実数で、非負で、降順で返されます。
-@var{U}と @var{V}の最初の @math{min(m, n)}列は
-@var{A}の左と右特異ベクトルです。
-@code{dgesvd}は、@var{V}自身ではなく@var{V}の転置を返すことに注意してください。
+@mvar{U}と @mvar{V}の最初の @math{min(m, n)}列は
+@mvar{A}の左と右特異ベクトルです。
+@code{dgesvd}は、@mvar{V}自身ではなく@mvar{V}の転置を返すことに注意してください。
 
-@code{dgesvd(@var{A})}は @var{A}の特異値だけを計算します。
-@code{dgesvd(@var{A}, @var{left_p}, @var{right_p})}は
-@var{A}の特異値と、
-@math{@var{left_p} = @code{true}}の時、左特異ベクトル、
-@math{@var{right_p} = @code{true}}の時、右特異ベクトルを計算します。
+@code{dgesvd(@mvar{A})}は @mvar{A}の特異値だけを計算します。
+@code{dgesvd(@mvar{A}, @mvar{left_p}, @mvar{right_p})}は
+@mvar{A}の特異値と、
+@math{@mvar{left_p} = @code{true}}の時、左特異ベクトル、
+@math{@mvar{right_p} = @code{true}}の時、右特異ベクトルを計算します。
 
 3つの項目のリストが返されます。
 一つ目の項目は特異値のリストです。
@@ -386,10 +386,10 @@ All elements of
 
 @end deffn
 
-@deffn {関数} dlange (@var{norm}, @var{A})
-@deffnx {関数} zlange (@var{norm}, @var{A})
+@deffn {関数} dlange (@mvar{norm}, @mvar{A})
+@deffnx {関数} zlange (@mvar{norm}, @mvar{A})
 
-行列 @var{A}のノルムもしくはノルムのような関数を計算します。
+行列 @mvar{A}のノルムもしくはノルムのような関数を計算します。
 
 @table @code
 @item max
@@ -397,15 +397,15 @@ All elements of
 ここで @math{i}と @math{j}はそれぞれ行と列を行き渡ります。
 この関数は適切な行列ノルムではないことに注意してください。
 @item one_norm
-@var{A}の @math{L[1]}ノルム、
+@mvar{A}の @math{L[1]}ノルム、
 すなわち、それぞれの列の要素の絶対値の和の最大値
 を計算します。
 @item inf_norm
-@var{A}の @math{L[inf]}ノルム、
+@mvar{A}の @math{L[inf]}ノルム、
 すなわち、それぞれの行の要素の絶対値の和の最大値
 を計算します。
 @item frobenius
-@var{A}のFrobeniusノルム、すなわち、
+@mvar{A}のFrobeniusノルム、すなわち、
 行列要素の平方の和の平方根
 を計算します。
 @end table
@@ -416,22 +416,22 @@ All elements of
 
 @end deffn
 
-@deffn {関数} dgemm (@var{A}, @var{B})
-@deffnx {関数} dgemm (@var{A}, @var{B}, @var{options})
+@deffn {関数} dgemm (@mvar{A}, @mvar{B})
+@deffnx {関数} dgemm (@mvar{A}, @mvar{B}, @mvar{options})
 2つの行列の積を計算します。オプションで積を三つ目の行列に足し算します。
 
 最も簡単な形式では、
-@code{dgemm(@var{A}, @var{B})}は
-2つの実行列 @var{A}と @var{B}の積を計算します。
+@code{dgemm(@mvar{A}, @mvar{B})}は
+2つの実行列 @mvar{A}と @mvar{B}の積を計算します。
 
 二番目の形式では、
 @code{dgemm}は
-@math{@var{alpha} * @var{A} * @var{B} + @var{beta} * @var{C}}
+@math{@mvar{alpha} * @mvar{A} * @mvar{B} + @mvar{beta} * @mvar{C}}
 を計算します。
-ここで @var{A}, @var{B}, @var{C}は
+ここで @mvar{A}, @mvar{B}, @mvar{C}は
 適当なサイズの実行列であり、
-@var{alpha}と @var{beta}は実数です。
-オプションで、 @var{A}と/もしくは @var{B}は
+@mvar{alpha}と @mvar{beta}は実数です。
+オプションで、 @mvar{A}と/もしくは @mvar{B}は
 積を計算する前に転置を取ることができます。
 追加のパラメータはオプションのキーワード引数で指定できます:
 キーワード引数はオプションで、
@@ -441,24 +441,24 @@ All elements of
 
 @table @var
 @item C
-足すべき行列 @var{C}。
+足すべき行列 @mvar{C}。
 デフォルトは @code{false}であり、行列を足さないことを意味します。
 @item alpha
-@var{A}と @var{B}の積がこの値に掛けられます。
+@mvar{A}と @mvar{B}の積がこの値に掛けられます。
 デフォルトは1です。
 @item beta
-もし行列 @var{C}が与えられたら、
-この値は、足される前に@var{C}に掛けられます。
-デフォルト値は0で、これは, たとえ@var{C}が与えられても
-@var{C}が足されないことを意味します。
-故に、必ず@var{beta}に零でない値を指定してください。
+もし行列 @mvar{C}が与えられたら、
+この値は、足される前に@mvar{C}に掛けられます。
+デフォルト値は0で、これは, たとえ@mvar{C}が与えられても
+@mvar{C}が足されないことを意味します。
+故に、必ず@mvar{beta}に零でない値を指定してください。
 @item transpose_a
 もし @code{true}なら、
-@var{A}の代わりに@var{A}の転置が積に使われます。
+@mvar{A}の代わりに@mvar{A}の転置が積に使われます。
 デフォルトは @code{false}です。
 @item transpose_b
 もし @code{true}なら
-@var{B}の代わりに@var{B}の転置が積に使われます。
+@mvar{B}の代わりに@mvar{B}の転置が積に使われます。
 デフォルトは @code{false}です。
 @end table
 

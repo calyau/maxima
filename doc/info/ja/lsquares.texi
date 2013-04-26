@@ -22,13 +22,13 @@
 @section Functions and Variables for lsquares
 @c -----------------------------------------------------------------------------
 
-@deffn {関数} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
-@deffnx {関数} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {関数} lsquares_estimates (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
+@deffnx {関数} lsquares_estimates (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a}, initial = @mvar{L}, tol = @mvar{t})
 
 最小二乗の方法で決定されるような
-変数@var{x}と@var{a}の方程式@var{e}を
-データ@var{D}に最良フィットする
-パラメータ@var{a}を見積もります。
+変数@mvar{x}と@mvar{a}の方程式@mvar{e}を
+データ@mvar{D}に最良フィットする
+パラメータ@mvar{a}を見積もります。
 @code{lsquares_estimates}は最初に厳密な解を探し、
 それが失敗したら、近似的な解を探します。
 
@@ -37,18 +37,18 @@
 リストのそれぞれの要素は
 二乗平均誤差の、個別の等価な最小です。
 
-データ @var{D}は行列でなければいけません。
+データ @mvar{D}は行列でなければいけません。
 行それぞれは(文脈によって「レコード」とか「ケース」とか呼ばれる)1つのデータで、
 列それぞれは
 すべてのデータに関するある変数の値を含みます。
-変数のリスト @var{x}は @var{D}の列それぞれの名前を与えます。
+変数のリスト @mvar{x}は @mvar{D}の列それぞれの名前を与えます。
 解析をしない列にも名前を与えます。
 
-パラメータのリスト @var{a}は
+パラメータのリスト @mvar{a}は
 見積もられるパラメータの名前を与えます。
-方程式 @var{e}は変数 @var{x}と @var{a}に関する式か等式です;
-もし @var{e}が等式でないなら、
-@code{@var{e} = 0}と同様に扱われます。
+方程式 @mvar{e}は変数 @mvar{x}と @mvar{a}に関する式か等式です;
+もし @mvar{e}が等式でないなら、
+@code{@mvar{e} = 0}と同様に扱われます。
 
 @code{lsquares_estimates}の付加引数は
 等式として指定され、
@@ -56,9 +56,9 @@
 数値方法で見積もりを見つけるためにコールされる関数 @code{lbfgs}へそのまま渡されます。
 
 もしある厳密解が(@code{solve}を介して)見つけることができるなら、
-データ @var{D}は非数値を含むかもしれません。
+データ @mvar{D}は非数値を含むかもしれません。
 しかし、もし厳密解が見つからないなら、
-@var{D}の要素それぞれは数値でなければいけません。
+@mvar{D}の要素それぞれは数値でなければいけません。
 これは
 数リテラル(整数、有理数、通常の浮動小数点、多倍長浮動小数点)はもちろん、
 @code{%pi}や@code{%e}のような数値定数を含みます。
@@ -147,14 +147,14 @@
 
 @end deffn
 
-@deffn {関数} lsquares_estimates_exact (@var{MSE}, @var{a})
+@deffn {関数} lsquares_estimates_exact (@mvar{MSE}, @mvar{a})
 
 方程式系を構成し、@code{solve}を介して記号的にそれらを解くことを試みることで、
-平均二乗誤差 @var{MSE}を最小化する
-パラメータ @var{a}を見積もります。
+平均二乗誤差 @mvar{MSE}を最小化する
+パラメータ @mvar{a}を見積もります。
 平均二乗誤差は
  @code{lsquares_mse}が返すような
-パラメータ @var{a}の式です。
+パラメータ @mvar{a}の式です。
 
 戻り値は
 形式 @code{[a = ..., b = ..., c = ...]}の等式のリストのリストです。
@@ -216,14 +216,14 @@
 
 @end deffn
 
-@deffn {関数} lsquares_estimates_approximate (@var{MSE}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {関数} lsquares_estimates_approximate (@mvar{MSE}, @mvar{a}, initial = @mvar{L}, tol = @mvar{t})
 
-平均二乗誤差 @var{MSE}を最小化する
-パラメータ @var{a}を
+平均二乗誤差 @mvar{MSE}を最小化する
+パラメータ @mvar{a}を
 数値最小化関数 @code{lbfgs}を介して
 見積もります。
 平均二乗誤差は、
-@code{lsquares_mse}が返すようなパラメータ @var{a}の式です。
+@code{lsquares_mse}が返すようなパラメータ @mvar{a}の式です。
 
 
 @code{lsquares_estimates_approximate}が返す解は
@@ -238,10 +238,10 @@
 数値方法で見積もりを見つけるためにコールされる関数 @code{lbfgs}へそのまま渡されます。
 
 パラメータが数値が割り当てられた時
-@var{MSE}はは数に評価されなければいけません。
+@mvar{MSE}はは数に評価されなければいけません。
 これは
 This requires that the data from which 
-@var{MSE}が構成されるデータが
+@mvar{MSE}が構成されるデータが
 @code{%pi}や@code{%e}、
 数リテラル(整数、有理数、通常の浮動小数点、多倍長浮動小数点)
 のような数値定数を含みます。
@@ -305,11 +305,11 @@ This requires that the data from which
 
 @end deffn
 
-@deffn {関数} lsquares_mse (@var{D}, @var{x}, @var{e})
+@deffn {関数} lsquares_mse (@mvar{D}, @mvar{x}, @mvar{e})
 
 平均二乗誤差 (MSE)、
-変数 @var{x}の 方程式@var{e}に関する
-データ @var{D}の和の式を返します。
+変数 @mvar{x}の 方程式@mvar{e}に関する
+データ @mvar{D}の和の式を返します。
 
 MSEは以下のように定義されます:
 
@@ -328,10 +328,10 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end example
 @end ifnottex
 
-ここで、 @var{n}はデータ数で、
-@code{@var{e}[i]}は、
-@code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
-@var{x}の中の変数に対して評価された方程式 @var{e}です。
+ここで、 @mvar{n}はデータ数で、
+@code{@mvar{e}[i]}は、
+@code{i}番目のデータ @code{@mvar{D}[i]}から値を割り当てられた
+@mvar{x}の中の変数に対して評価された方程式 @mvar{e}です。
 
 @code{load(lsquares)}はこの関数をロードします。
 
@@ -407,18 +407,18 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 
 @end deffn
 
-@deffn {関数} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {関数} lsquares_residuals (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
 
-指定されたパラメータ @var{a}とデータ @var{D}での
-方程式 @var{e}に関する残差を返します。
+指定されたパラメータ @mvar{a}とデータ @mvar{D}での
+方程式 @mvar{e}に関する残差を返します。
 
 
-@var{D}は行列で、 @var{x}は変数のリスト、
-@var{e}は方程式か一般式です;
-もし方程式でないなら、 @var{e}は
-@code{@var{e} = 0}であるかのように扱われます。
-@var{a}は
-@var{x}を除いた@var{e}の任意の自由変数に値を指定する
+@mvar{D}は行列で、 @mvar{x}は変数のリスト、
+@mvar{e}は方程式か一般式です;
+もし方程式でないなら、 @mvar{e}は
+@code{@mvar{e} = 0}であるかのように扱われます。
+@mvar{a}は
+@mvar{x}を除いた@mvar{e}の任意の自由変数に値を指定する
 方程式のリストです。
 
 残差は以下のように定義されます:
@@ -434,10 +434,10 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 @end ifnottex
 
 ここで、
-@code{@var{e}[i]}は、
-@var{a}から任意の残りの自由変数を割り当てて、
-@code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
-@var{x}の中の変数に対して評価された方程式 @var{e}です。
+@code{@mvar{e}[i]}は、
+@mvar{a}から任意の残りの自由変数を割り当てて、
+@code{i}番目のデータ @code{@mvar{D}[i]}から値を割り当てられた
+@mvar{x}の中の変数に対して評価された方程式 @mvar{e}です。
 
 @code{load(lsquares)}はこの関数をロードします。
 
@@ -487,10 +487,10 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 
 @end deffn
 
-@deffn {関数} lsquares_residual_mse (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {関数} lsquares_residual_mse (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
 
-指定されたパラメータ @var{a}とデータ @var{D}での
-方程式 @var{e}に関する残差平均二乗誤差を返します。
+指定されたパラメータ @mvar{a}とデータ @mvar{D}での
+方程式 @mvar{e}に関する残差平均二乗誤差を返します。
 
 残差MSEは以下のように定義されます:
 
@@ -510,10 +510,10 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end ifnottex
 
 ここで、
-@code{@var{e}[i]}は、
-@var{a}から任意の残りの自由変数を割り当てて、
-@code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
-@var{x}の中の変数に対して評価された方程式 @var{e}です。
+@code{@mvar{e}[i]}は、
+@mvar{a}から任意の残りの自由変数を割り当てて、
+@code{i}番目のデータ @code{@mvar{D}[i]}から値を割り当てられた
+@mvar{x}の中の変数に対して評価された方程式 @mvar{e}です。
 
 @code{load(lsquares)}はこの関数をロードします。
 
@@ -564,28 +564,28 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 
 @end deffn
 
-@deffn {関数} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {関数} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {関数} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+@deffn {関数} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars})
+@deffnx {関数} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon})
+@deffnx {関数} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon},@mvar{maxdegree})
 「最小二乗」法によるデータ表の多変数多項式調整。
-@var{Mat}はデータを含む行列であり、
-@var{VarList}は変数名(Mat列それぞれの名前ですが、Mat列を無視する際には変数名の代わりに"-")のリストであり、
-@var{depvars}は従属変数の名前か、
-従属変数の1つ以上の名前(その名前@var{VarList}の中になければいけません)のリストであり、
-@var{maxexpon}はオプションの、独立変数それぞれの最大指数(デフォルト1)であり、
-@var{maxdegree}はオプションの最大多項式次数(デフォルトで@var{maxexpon})です;
-それぞれの項の指数の和は@var{maxdegree}以下でなければいけないことに注意してください。
+@mvar{Mat}はデータを含む行列であり、
+@mvar{VarList}は変数名(Mat列それぞれの名前ですが、Mat列を無視する際には変数名の代わりに"-")のリストであり、
+@mvar{depvars}は従属変数の名前か、
+従属変数の1つ以上の名前(その名前@mvar{VarList}の中になければいけません)のリストであり、
+@mvar{maxexpon}はオプションの、独立変数それぞれの最大指数(デフォルト1)であり、
+@mvar{maxdegree}はオプションの最大多項式次数(デフォルトで@mvar{maxexpon})です;
+それぞれの項の指数の和は@mvar{maxdegree}以下でなければいけないことに注意してください。
 もし @code{maxdgree = 0}なら制限は適用されません。
 
-もし @var{depvars}が(リストではなく)従属変数の名前なら、
+もし @mvar{depvars}が(リストではなく)従属変数の名前なら、
 @code{plsquares}は調整された多項式を返します。
-もし @var{depvars}が1つ以上の従属変数のリストなら、
+もし @mvar{depvars}が1つ以上の従属変数のリストなら、
 @code{plsquares}は調整された多項式のリストを返します。
 適合度について知らせるために
 決定係数が表示されます。
 それは0 (無相関)から1 (厳密相関)までの範囲です。
 これらの値は
-グローバル変数 @var{DETCOEF}(もし @var{depvars}がリストならリスト)にも保管されます。
+グローバル変数 @mvar{DETCOEF}(もし @mvar{depvars}がリストならリスト)にも保管されます。
 
 
 多変数線形調整の簡単な例:

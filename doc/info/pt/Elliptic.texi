@@ -8,7 +8,7 @@
 
 
 
-@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, , top
+@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, , Top
 @comment  node-name,  next,  previous,  up
 
 @section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais
@@ -125,115 +125,115 @@ Suporte a fun@value{cedilha}@~oes el@'{@dotless{i}}pticas e integrais el@'{@dotl
 Toy.  Foi colocado sob os termos da Licen@value{cedilha}@~a P@'ublica Geral (GPL)
 que governa a distribui@value{cedilha}@~ao do Maxima.
 
-@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, top
+@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Top
 @comment  node-name,  next,  previous,  up
 
 @section Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas
 
-@deffn {Fun@,{c}@~ao} jacobi_sn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_sn (@mvar{u}, @mvar{m})
 A Fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_cn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_cn (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_dn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_dn (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_ns (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_ns (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{ns(u,m) = 1/sn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_sc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_sc (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_sd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_sd (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_nc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_nc (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_cs (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_cs (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_cd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_cd (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_nd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_nd (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_ds (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_ds (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} jacobi_dc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} jacobi_dc (@mvar{u}, @mvar{m})
 A fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_sn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_sn (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_cn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_cn (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_dn (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_dn (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_ns (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_ns (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{ns(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_sc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_sc (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sc(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_sd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_sd (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{sd(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_nc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_nc (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_cs (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_cs (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cs(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_cd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_cd (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{cd(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_nd (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_nd (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_ds (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_ds (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{ds(u,m)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} inverse_jacobi_dc (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} inverse_jacobi_dc (@mvar{u}, @mvar{m})
 A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{dc(u,m)}.
 @end deffn
 
 
-@node Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, , Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, top
+@node Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, , Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Top
 @comment  node-name,  next,  previous,  up
 
 @section Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas
 
 @anchor{elliptic_f}
-@deffn {Fun@,{c}@~ao} elliptic_f (@var{phi}, @var{m})
+@deffn {Fun@,{c}@~ao} elliptic_f (@mvar{phi}, @mvar{m})
 A integral el@'{@dotless{i}}ptica incompleta de primeiro tipo, definida como
 
 @ifhtml
@@ -252,7 +252,7 @@ Veja tamb@'em @emph{elliptic_e} e @emph{elliptic_kc}.
 @end deffn
 
 @anchor{elliptic_e}
-@deffn {Fun@,{c}@~ao} elliptic_e (@var{phi}, @var{m})
+@deffn {Fun@,{c}@~ao} elliptic_e (@mvar{phi}, @mvar{m})
 A integral el@'{@dotless{i}}ptica incompleta de segundo tipo, definida como
 
 @ifhtml
@@ -269,7 +269,7 @@ Veja tamb@'em @emph{elliptic_e} e @emph{elliptic_ec}.
 @end deffn
 
 @anchor{elliptic_eu}
-@deffn {Fun@,{c}@~ao} elliptic_eu (@var{u}, @var{m})
+@deffn {Fun@,{c}@~ao} elliptic_eu (@mvar{u}, @mvar{m})
 A integral el@'{@dotless{i}}ptica incompleta de segundo tipo, definida como
 @ifhtml
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
@@ -300,7 +300,7 @@ onde $\phi = \sin^{-1} {\rm sn}(u, m)$
 Veja tamb@'em @emph{elliptic_e}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} elliptic_pi (@var{n}, @var{phi}, @var{m})
+@deffn {Fun@,{c}@~ao} elliptic_pi (@mvar{n}, @mvar{phi}, @mvar{m})
 A integral el@'{@dotless{i}}ptica incompleta de terceiro tipo, definida como
 
 @ifhtml
@@ -317,7 +317,7 @@ Somente a derivada em rela@value{cedilha}@~ao a @math{phi} @'e conhecida pelo Ma
 @end deffn
 
 @anchor{elliptic_kc}
-@deffn {Fun@,{c}@~ao} elliptic_kc (@var{m})
+@deffn {Fun@,{c}@~ao} elliptic_kc (@mvar{m})
 A integral el@'{@dotless{i}}ptica completa de primeiro tipo, definida como
 
 @ifhtml
@@ -335,7 +335,7 @@ termos de fun@value{cedilha}@~oes @math{Gama}.  Use @code{makegamma} para avalia
 @end deffn
 
 @anchor{elliptic_ec}
-@deffn {Fun@,{c}@~ao} elliptic_ec (@var{m})
+@deffn {Fun@,{c}@~ao} elliptic_ec (@mvar{m})
 A integral el@'{@dotless{i}}ptica completa de segundo tipo, definida como
 
 @ifhtml

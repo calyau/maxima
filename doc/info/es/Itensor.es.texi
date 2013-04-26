@@ -172,7 +172,7 @@ La siguiente sesi@'on de ejemplo demuestra c@'omo cargar el paquete @code{itenso
 @subsection Trabajando con objetos indexados
 
 
-@deffn {Funci@'on} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci@'on} dispcon (@mvar{tensor_1}, @mvar{tensor_2}, ...)
 @deffnx {Funci@'on} dispcon (all)
 
 Muestra las propiedades contractivas de sus argumentos tal como 
@@ -181,15 +181,15 @@ muestra todas propiedades contractivas que fueron definidas.
 @end deffn
 
 
-@deffn {Funci@'on} entertensor (@var{nombre})
+@deffn {Funci@'on} entertensor (@mvar{nombre})
 
-Permite crear un objeto indexado llamado @var{nombre}, con cualquier n@'umero de @'{@dotless{i}}ndices tensoriales y de derivadas. Se admiten desde un @'unico @'{@dotless{i}}ndice hasta una lista de @'{@dotless{i}}ndices. V@'ease el ejemplo en la descripci@'on de @code{covdiff}.
+Permite crear un objeto indexado llamado @mvar{nombre}, con cualquier n@'umero de @'{@dotless{i}}ndices tensoriales y de derivadas. Se admiten desde un @'unico @'{@dotless{i}}ndice hasta una lista de @'{@dotless{i}}ndices. V@'ease el ejemplo en la descripci@'on de @code{covdiff}.
 
 @end deffn
 
-@deffn {Funci@'on} changename (@var{anterior}, @var{nuevo}, @var{expr})
+@deffn {Funci@'on} changename (@mvar{anterior}, @mvar{nuevo}, @mvar{expr})
 
-Cambia el nombre de todos los objetos indexados llamados @var{anterior} a @var{new} en @var{expr}. El argumento @var{anterior} puede ser un s@'{@dotless{i}}mbolo o una lista de la forma @code{[@var{nombre}, @var{m}, @var{n}]}, en cuyo caso s@'olo los objetos indexados de llamados @var{nombre} con @var{m} @'{@dotless{i}}ndices covariantes y @var{n} contravariantes se renombrar@'an como @var{nuevo}.
+Cambia el nombre de todos los objetos indexados llamados @mvar{anterior} a @mvar{new} en @mvar{expr}. El argumento @mvar{anterior} puede ser un s@'{@dotless{i}}mbolo o una lista de la forma @code{[@mvar{nombre}, @mvar{m}, @mvar{n}]}, en cuyo caso s@'olo los objetos indexados de llamados @mvar{nombre} con @mvar{m} @'{@dotless{i}}ndices covariantes y @mvar{n} contravariantes se renombrar@'an como @mvar{nuevo}.
 
 @end deffn
 
@@ -212,15 +212,15 @@ Hace un listado de todos los tensores y sus @'{@dotless{i}}ndices en una expresi
 
 @end deffn
 
-@deffn {Funci@'on} ishow (@var{expr})
+@deffn {Funci@'on} ishow (@mvar{expr})
 
-Muestra @var{expr} con todos los objetos indexados que contiene, junto con los correspondientes @'{@dotless{i}}ndices covariantes (como sub@'{@dotless{i}}ndices) y contravariantes (como super@'{@dotless{i}}ndices). Los @'{@dotless{i}}ndices de derivadas se muestran como sub@'{@dotless{i}}ndices, separados de los covariantes por una coma; v@'eanse los m@'ultiples ejemplos de este documento.
+Muestra @mvar{expr} con todos los objetos indexados que contiene, junto con los correspondientes @'{@dotless{i}}ndices covariantes (como sub@'{@dotless{i}}ndices) y contravariantes (como super@'{@dotless{i}}ndices). Los @'{@dotless{i}}ndices de derivadas se muestran como sub@'{@dotless{i}}ndices, separados de los covariantes por una coma; v@'eanse los m@'ultiples ejemplos de este documento.
 
 @end deffn
 
-@deffn {Funci@'on} indices (@var{expr})
+@deffn {Funci@'on} indices (@mvar{expr})
 
-Devuelve una lista con dos elementos. El primer elemento es una lista con los @'{@dotless{i}}ndices libres, aquellos que aparecen una sola vez. El segundo elemento es una lista con los @'{@dotless{i}}ndices mudos en @var{expr}, aquellos que aparecen exactamente dos veces. Por ejemplo,
+Devuelve una lista con dos elementos. El primer elemento es una lista con los @'{@dotless{i}}ndices libres, aquellos que aparecen una sola vez. El segundo elemento es una lista con los @'{@dotless{i}}ndices mudos en @mvar{expr}, aquellos que aparecen exactamente dos veces. Por ejemplo,
 
 @example
 
@@ -240,10 +240,10 @@ Un producto tensorial que contenga el mismo @'{@dotless{i}}ndice m@'as de dos ve
 
 @end deffn
 
-@deffn {Funci@'on} rename (@var{expr})
-@deffnx {Funci@'on} rename (@var{expr}, @var{count})
+@deffn {Funci@'on} rename (@mvar{expr})
+@deffnx {Funci@'on} rename (@mvar{expr}, @mvar{count})
 
-Devuelve una expresi@'on equivalente a @var{expr} pero con los @'{@dotless{i}}ndices mudos de cada t@'ermino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los @'{@dotless{i}}ndices mudos son indexados empezando con el valor @var{count}. Cada @'{@dotless{i}}ndice mudo en un producto ser@'a diferente. En el caso de las sumas, la funci@'on @code{rename} operar@'a sobre cada t@'ermino de la suma reinicializando el contador con cada t@'ermino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem@'as, los @'{@dotless{i}}ndices se ordenar@'an alfanum@'ericamente, si la variable @code{allsym} vale @code{true}, respecto de los @'{@dotless{i}}ndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes. Suele acontecer que el efecto combinado de los dos cambios de nombre reduzcan la expresi@'on m@'as de lo que que pueda reducir cualquiera de ellas por separado.
+Devuelve una expresi@'on equivalente a @mvar{expr} pero con los @'{@dotless{i}}ndices mudos de cada t@'ermino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los @'{@dotless{i}}ndices mudos son indexados empezando con el valor @mvar{count}. Cada @'{@dotless{i}}ndice mudo en un producto ser@'a diferente. En el caso de las sumas, la funci@'on @code{rename} operar@'a sobre cada t@'ermino de la suma reinicializando el contador con cada t@'ermino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem@'as, los @'{@dotless{i}}ndices se ordenar@'an alfanum@'ericamente, si la variable @code{allsym} vale @code{true}, respecto de los @'{@dotless{i}}ndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes. Suele acontecer que el efecto combinado de los dos cambios de nombre reduzcan la expresi@'on m@'as de lo que que pueda reducir cualquiera de ellas por separado.
 
 
 @example
@@ -292,7 +292,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Funci@'on} show (@var{expr})
+@deffn {Funci@'on} show (@mvar{expr})
 Muestra @code{expr} con sus objetos indexados que tengan @'{@dotless{i}}ndices covariantes como sub@'{@dotless{i}}ndices y los contravariantes como super@'{@dotless{i}}ndices.  Los @'{@dotless{i}}ndices derivados se muestran como sub@'{@dotless{i}}ndices, separados por una coma de los covariantes.
 @end deffn
 
@@ -307,37 +307,37 @@ Si @code{flipflag} vale @code{false}, entonces @code{rename} construye una lista
 
 @end defvr
 
-@deffn {Funci@'on} defcon (@var{tensor_1})
-@deffnx {Funci@'on} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+@deffn {Funci@'on} defcon (@mvar{tensor_1})
+@deffnx {Funci@'on} defcon (@mvar{tensor_1}, @mvar{tensor_2}, @mvar{tensor_3})
 
-Le asigna a gives @var{tensor_1} la propiedad de que la contracci@'on de un producto de @var{tensor_1} por @var{tensor_2} da como resultado un @var{tensor_3} con los @'{@dotless{i}}ndices apropiados. Si s@'olo se aporta un argumento, @var{tensor_1}, entonces la contracci@'on del producto de @var{tensor_1} por cualquier otro objeto indexado que tenga los @'{@dotless{i}}ndices apropiados, por ejemplo @code{my_tensor}, dar@'a como resultado un objeto indexado con ese nombre, @code{my_tensor}, y con un nuevo conjunto de @'{@dotless{i}}ndices que reflejen las contracciones realizadas. Por ejemplo, si @code{imetric:g}, entonces @code{defcon(g)} implementar@'a el aumento o disminuci@'on de los @'{@dotless{i}}ndices a trav@'es de la contracci@'on con el tensor m@'etrico. Se puede dar m@'as de un @code{defcon} para el mismo objeto indexado, aplic@'andose el @'ultimo. La variable 
+Le asigna a gives @mvar{tensor_1} la propiedad de que la contracci@'on de un producto de @mvar{tensor_1} por @mvar{tensor_2} da como resultado un @mvar{tensor_3} con los @'{@dotless{i}}ndices apropiados. Si s@'olo se aporta un argumento, @mvar{tensor_1}, entonces la contracci@'on del producto de @mvar{tensor_1} por cualquier otro objeto indexado que tenga los @'{@dotless{i}}ndices apropiados, por ejemplo @code{my_tensor}, dar@'a como resultado un objeto indexado con ese nombre, @code{my_tensor}, y con un nuevo conjunto de @'{@dotless{i}}ndices que reflejen las contracciones realizadas. Por ejemplo, si @code{imetric:g}, entonces @code{defcon(g)} implementar@'a el aumento o disminuci@'on de los @'{@dotless{i}}ndices a trav@'es de la contracci@'on con el tensor m@'etrico. Se puede dar m@'as de un @code{defcon} para el mismo objeto indexado, aplic@'andose el @'ultimo. La variable 
 @code{contractions} es una lista con aquellos objetos indexados a los que se le han dado propiedades de contracci@'on con  @code{defcon}.
 
 @end deffn
 
-@deffn {Funci@'on} remcon (@var{tensor_1}, ..., @var{tensor_n})
+@deffn {Funci@'on} remcon (@mvar{tensor_1}, ..., @mvar{tensor_n})
 @deffnx {Funci@'on} remcon (all)
 
-Borra todas las propiedades de contracci@'on de @var{tensor_1}, ..., @var{tensor_n}). La llamada @code{remcon(all)} borra todas las propiedades de contracci@'on de todos los objetos indexados.
+Borra todas las propiedades de contracci@'on de @mvar{tensor_1}, ..., @mvar{tensor_n}). La llamada @code{remcon(all)} borra todas las propiedades de contracci@'on de todos los objetos indexados.
 
 @end deffn
 
-@deffn {Funci@'on} contract (@var{expr})
+@deffn {Funci@'on} contract (@mvar{expr})
 
-Lleva a cabo las contracciones tensoriales en @var{expr}, la cual puede ser cualquier combinaci@'on de sumas y productos. Esta funci@'on utiliza la informaci@'on dada a la funci@'on @code{defcon}. Para obtener mejores resultados, @code{expr}
+Lleva a cabo las contracciones tensoriales en @mvar{expr}, la cual puede ser cualquier combinaci@'on de sumas y productos. Esta funci@'on utiliza la informaci@'on dada a la funci@'on @code{defcon}. Para obtener mejores resultados, @code{expr}
 deber@'{@dotless{i}}a estar completamente expandida. La funci@'on @code{ratexpand} es la forma m@'as r@'apida de expandir productos y potencias de sumas si no hay variables en los denominadores de los t@'erminos.
 
 @end deffn
 
-@deffn {Funci@'on} indexed_tensor (@var{tensor})
+@deffn {Funci@'on} indexed_tensor (@mvar{tensor})
 
-Debe ejecutarse antes de asignarle componentes a un @var{tensor} para el que ya existe un valor, como @code{ichr1}, @code{ichr2} o @code{icurvature}. V@'ease el ejemplo de la descripci@'on de @code{icurvature}.
+Debe ejecutarse antes de asignarle componentes a un @mvar{tensor} para el que ya existe un valor, como @code{ichr1}, @code{ichr2} o @code{icurvature}. V@'ease el ejemplo de la descripci@'on de @code{icurvature}.
 
 @end deffn
 
-@deffn {Funci@'on} components (@var{tensor}, @var{expr})
+@deffn {Funci@'on} components (@mvar{tensor}, @mvar{expr})
 
-Permite asignar un valor indexado a la expresi@'on @var{expr} dando los valores de las componentes de @var{tensor}. El tensor debe ser de la forma @code{t([...],[...])}, donde cualquiera de las listas puede estar vac@'{@dotless{i}}a. La expresi@'on  @var{expr} puede ser cualquier objeto indexado que tenga otros objetos con los mismos @'{@dotless{i}}ndices libres que @var{tensor}. Cuando se utiliza para asignar valores al tensor m@'etrico en el que las componentes contengan @'{@dotless{i}}ndices mudos, se debe tener cuidado en no generar @'{@dotless{i}}ndices mudos m@'ultiples. Se pueden borrar estas asignaciones con la funci@'on  @code{remcomps}.
+Permite asignar un valor indexado a la expresi@'on @mvar{expr} dando los valores de las componentes de @mvar{tensor}. El tensor debe ser de la forma @code{t([...],[...])}, donde cualquiera de las listas puede estar vac@'{@dotless{i}}a. La expresi@'on  @mvar{expr} puede ser cualquier objeto indexado que tenga otros objetos con los mismos @'{@dotless{i}}ndices libres que @mvar{tensor}. Cuando se utiliza para asignar valores al tensor m@'etrico en el que las componentes contengan @'{@dotless{i}}ndices mudos, se debe tener cuidado en no generar @'{@dotless{i}}ndices mudos m@'ultiples. Se pueden borrar estas asignaciones con la funci@'on  @code{remcomps}.
 
 Es importante tener en cuenta que @code{components} controla la valencia del tensor, no el orden de los @'{@dotless{i}}ndices. As@'{@dotless{i}}, asignando componentes de la forma @code{x([i,-j],[])}, @code{x([-j,i],[])} o @code{x([i],[j])} todos ellos producen el mismo resultado, la asignaci@'on de componentes a un tensor de nombre @code{x} con valencia @code{(1,1)}.
 
@@ -423,14 +423,14 @@ Las componentes se pueden asignar a una expresi@'on indexada de cuatro maneras, 
 
 @end deffn
 
-@deffn {Funci@'on} remcomps (@var{tensor})
+@deffn {Funci@'on} remcomps (@mvar{tensor})
 
-Borra todos los valores de @var{tensor} que han sido asignados con la funci@'on @code{components}.
+Borra todos los valores de @mvar{tensor} que han sido asignados con la funci@'on @code{components}.
 
 @end deffn
 
 
-@deffn {Funci@'on} showcomps (@var{tensor})
+@deffn {Funci@'on} showcomps (@mvar{tensor})
 
 Muestra las componentes de un tensor definidas con la instrucci@'on @code{components}. Por ejemplo:
 
@@ -494,15 +494,15 @@ Valor por defecto: @code{1}
 Determina el sufijo num@'erico a ser utilizado en la generaci@'on del siguiente @'{@dotless{i}}ndice mudo. El prefijo se determina con la opci@'on @code{idummy} (por defecto: %).
 @end defvr
 
-@deffn {Funci@'on} kdelta (@var{L1}, @var{L2})
+@deffn {Funci@'on} kdelta (@mvar{L1}, @mvar{L2})
 
-Es la funci@'on delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @var{L1} la lista de @'{@dotless{i}}ndices covariantes y @var{L2} la lista de @'{@dotless{i}}ndices contravariantes. La funci@'on  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker. La instrucci@'on @code{ev(@var{expr},kdelta)} provoca la evaluaci@'on de una expresi@'on que contenga @code{kdelta([],[])}.
+Es la funci@'on delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @mvar{L1} la lista de @'{@dotless{i}}ndices covariantes y @mvar{L2} la lista de @'{@dotless{i}}ndices contravariantes. La funci@'on  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker. La instrucci@'on @code{ev(@mvar{expr},kdelta)} provoca la evaluaci@'on de una expresi@'on que contenga @code{kdelta([],[])}.
 
 En un abuso de la notaci@'on, @code{itensor} tambi@'en permite a @code{kdelta} tener 2 @'{@dotless{i}}ndices covariantes y ninguno contravariante, o 2 contravariantes y ninguno covariante. Esto es una funcionalidad del paquete, loque no implica que  @code{kdelta([i,j],[])} sea un objeto tensorial de pleno derecho.
 
 @end deffn
 
-@deffn {Funci@'on} kdels (@var{L1}, @var{L2})
+@deffn {Funci@'on} kdels (@mvar{L1}, @mvar{L2})
 
 Funci@'on delta de Kronecker simetrizada, utilizada en algunos c@'alculos. Por ejemplo:
 
@@ -527,13 +527,13 @@ Funci@'on delta de Kronecker simetrizada, utilizada en algunos c@'alculos. Por e
 
 @end deffn
 
-@deffn {Funci@'on} levi_civita (@var{L})
+@deffn {Funci@'on} levi_civita (@mvar{L})
 
-Es el tensor de permutaci@'on de Levi-Civita, el cual devuelve 1  si la lista @var{L} con una permutaci@'on par de enteros, -1 si es en una permutaci@'on impar y 0 si algunos de los @'{@dotless{i}}ndices de @var{L} est@'an repetidos.
+Es el tensor de permutaci@'on de Levi-Civita, el cual devuelve 1  si la lista @mvar{L} con una permutaci@'on par de enteros, -1 si es en una permutaci@'on impar y 0 si algunos de los @'{@dotless{i}}ndices de @mvar{L} est@'an repetidos.
 
 @end deffn
 
-@deffn {Funci@'on} lc2kdt (@var{expr})
+@deffn {Funci@'on} lc2kdt (@mvar{expr})
 
 Simplifica expresiones que contengan el s@'{@dotless{i}}mbolo de Levi-Civita, convirti@'endolas en expresiones con la delta de Kronecker siempre que sea posible. La diferencia principal entre esta funci@'on y la simple evaluaci@'on del s@'{@dotless{i}}mbolo de Levi-Civita consiste en que de esta @'ultima forma se obtienen expresiones de Kronecker con @'{@dotless{i}}ndices num@'ericos, lo que impide simplificaciones ulteriores. La funci@'on @code{lc2kdt} evita este problema, dando resultados con son m@'as f@'aciles de simplificar con @code{rename} o @code{contract}.
 
@@ -638,15 +638,15 @@ Regla de simplificaci@'on utilizada en expresiones que contienen el s@'{@dotless
 
 @end deffn
 
-@deffn {Funci@'on} canten (@var{expr})
+@deffn {Funci@'on} canten (@mvar{expr})
 
-Simplifica @var{expr} renombrando (v@'ease @code{rename}) y permutando @'{@dotless{i}}ndices mudos. La funci@'on @code{rename} se restringe a sumas de productos de tensores en los cuales no hay derivadas, por lo que est@'a limitada y s@'olo deber@'{@dotless{i}}a utilizarse si @code{canform} no es capaz de de llevar a cabo la simplificaci@'on requerida.
+Simplifica @mvar{expr} renombrando (v@'ease @code{rename}) y permutando @'{@dotless{i}}ndices mudos. La funci@'on @code{rename} se restringe a sumas de productos de tensores en los cuales no hay derivadas, por lo que est@'a limitada y s@'olo deber@'{@dotless{i}}a utilizarse si @code{canform} no es capaz de de llevar a cabo la simplificaci@'on requerida.
 
 La funci@'on @code{canten} devuelve un resultado matem@'aticamente correcto s@'olo si su argumento es una expresi@'on completamente sim@'etrica respecto de sus @'{@dotless{i}}ndices. Por esta raz@'on, @code{canten} devuelve un error si @code{allsym} no vale @code{true}.
 
 @end deffn
 
-@deffn {Funci@'on} concan (@var{expr})
+@deffn {Funci@'on} concan (@mvar{expr})
 
 Similar a @code{canten} pero tambi@'en realiza la contracci@'on de los @'{@dotless{i}}ndices.
 
@@ -661,9 +661,9 @@ Si vale @code{true} entonces todos los objetos indexados se consideran sim@'etri
 
 @end defvr
 
-@deffn {Funci@'on} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
+@deffn {Funci@'on} decsym (@mvar{tensor}, @mvar{m}, @mvar{n}, [@mvar{cov_1}, @mvar{cov_2}, ...], [@mvar{contr_1}, @mvar{contr_2}, ...])
 
-Declara propiedades de simetr@'{@dotless{i}}a para el @var{tensor} de @var{m} @'{@dotless{i}}ndices covariantes y @var{n} contravariantes. Los @var{cov_i} y @var{contr_i} son seudofunciones que expresan relaciones de simetr@'{@dotless{i}}a entre los @'{@dotless{i}}ndices covariantes y contravariantes, respectivamente. @'Estos son de la forma @code{symoper(@var{index_1}, @var{index_2},...)} donde @code{symoper} es uno de @code{sym}, @code{anti} o @code{cyc} y los @var{index_i} son enteros que indican la posici@'on del @'{@dotless{i}}ndice en el @var{tensor}.  Esto declarar@'a a @var{tensor} sim@'etrico, antisim@'etrico o c@'{@dotless{i}}clico respecto de @var{index_i}. La llamada @code{symoper(all)} indica que todos los @'{@dotless{i}}ndices cumplen la condici@'on de simetr@'{@dotless{i}}a. Por ejemplo, dado un objeto @code{b} con 5 @'{@dotless{i}}ndices covariantes, @code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declara @code{b} sim@'etrico en el primer y segundo @'{@dotless{i}}ndices covariantes, antisim@'etrico en su tercer y cuarto @'{@dotless{i}}ndices tambi@'en covariantes y c@'{@dotless{i}}clico en todos sus @'{@dotless{i}}ndices contravariantes. Cualquiera de las listas de declaraci@'on de simetr@'{@dotless{i}}as puede ser nula. La funci@'on que realiza las simplificaciones es @code{canform}, como se ilustra en el siguiente ejemplo,
+Declara propiedades de simetr@'{@dotless{i}}a para el @mvar{tensor} de @mvar{m} @'{@dotless{i}}ndices covariantes y @mvar{n} contravariantes. Los @mvar{cov_i} y @mvar{contr_i} son seudofunciones que expresan relaciones de simetr@'{@dotless{i}}a entre los @'{@dotless{i}}ndices covariantes y contravariantes, respectivamente. @'Estos son de la forma @code{symoper(@mvar{index_1}, @mvar{index_2},...)} donde @code{symoper} es uno de @code{sym}, @code{anti} o @code{cyc} y los @mvar{index_i} son enteros que indican la posici@'on del @'{@dotless{i}}ndice en el @mvar{tensor}.  Esto declarar@'a a @mvar{tensor} sim@'etrico, antisim@'etrico o c@'{@dotless{i}}clico respecto de @mvar{index_i}. La llamada @code{symoper(all)} indica que todos los @'{@dotless{i}}ndices cumplen la condici@'on de simetr@'{@dotless{i}}a. Por ejemplo, dado un objeto @code{b} con 5 @'{@dotless{i}}ndices covariantes, @code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declara @code{b} sim@'etrico en el primer y segundo @'{@dotless{i}}ndices covariantes, antisim@'etrico en su tercer y cuarto @'{@dotless{i}}ndices tambi@'en covariantes y c@'{@dotless{i}}clico en todos sus @'{@dotless{i}}ndices contravariantes. Cualquiera de las listas de declaraci@'on de simetr@'{@dotless{i}}as puede ser nula. La funci@'on que realiza las simplificaciones es @code{canform}, como se ilustra en el siguiente ejemplo,
 
 @example
 
@@ -700,26 +700,26 @@ Declara propiedades de simetr@'{@dotless{i}}a para el @var{tensor} de @var{m} @'
 
 @end deffn
 
-@deffn {Funci@'on} remsym (@var{tensor}, @var{m}, @var{n})
+@deffn {Funci@'on} remsym (@mvar{tensor}, @mvar{m}, @mvar{n})
 
-Borra todas las propiedades de simetr@'{@dotless{i}}a del @var{tensor} que tiene @var{m} @'{@dotless{i}}ndices covariantes y @var{n} contravariantes.
+Borra todas las propiedades de simetr@'{@dotless{i}}a del @mvar{tensor} que tiene @mvar{m} @'{@dotless{i}}ndices covariantes y @mvar{n} contravariantes.
 @end deffn
 
-@deffn {Funci@'on} canform (@var{expr})
-@deffnx {Funci@'on} canform (@var{expr}, @var{rename})
+@deffn {Funci@'on} canform (@mvar{expr})
+@deffnx {Funci@'on} canform (@mvar{expr}, @mvar{rename})
 
-Simplifica @var{expr} renombrando @'{@dotless{i}}ndices mudos y reordenando todos los @'{@dotless{i}}ndices seg@'un las condiciones de simetr@'{@dotless{i}}a que se le hayan impuesto. Si @code{allsym} vale @code{true} entonces todos los @'{@dotless{i}}ndices se consideran sim@'etricos, en otro caso se utilizar@'a la informaci@'on sobre simetr@'{@dotless{i}}as suministrada por @code{decsym}. Los @'{@dotless{i}}ndices mudos se renombran de la misma manera que en la funci@'on @code{rename}. Cuando @code{canform} se aplica a una expresi@'on grande el c@'alculo puede llevar mucho tiempo. Este tiempo se puede acortar llamando primero  a @code{rename}.
+Simplifica @mvar{expr} renombrando @'{@dotless{i}}ndices mudos y reordenando todos los @'{@dotless{i}}ndices seg@'un las condiciones de simetr@'{@dotless{i}}a que se le hayan impuesto. Si @code{allsym} vale @code{true} entonces todos los @'{@dotless{i}}ndices se consideran sim@'etricos, en otro caso se utilizar@'a la informaci@'on sobre simetr@'{@dotless{i}}as suministrada por @code{decsym}. Los @'{@dotless{i}}ndices mudos se renombran de la misma manera que en la funci@'on @code{rename}. Cuando @code{canform} se aplica a una expresi@'on grande el c@'alculo puede llevar mucho tiempo. Este tiempo se puede acortar llamando primero  a @code{rename}.
 V@'ease tambi@'en el ejemplo de la descripci@'on de @code{decsym}. La funci@'on @code{canform} puede que no reduzca completamente una expresi@'on a su forma m@'as sencilla, pero en todo caso devolver@'a un resultado matem@'aticamente correcto.
 
-Si al par@'ametro opcional @var{rename} se le asigna el valor @code{false}, no se renombrar@'an los @'{@dotless{i}}ndices mudos.
+Si al par@'ametro opcional @mvar{rename} se le asigna el valor @code{false}, no se renombrar@'an los @'{@dotless{i}}ndices mudos.
 @end deffn
 
 @subsection C@'alculo tensorial indexado
 
 
-@deffn {Funci@'on} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Funci@'on} diff (@mvar{expr}, @mvar{v_1}, [@mvar{n_1}, [@mvar{v_2}, @mvar{n_2}] ...])
 
-Se trata de la funci@'on de Maxima para la diferenciaci@'on, ampliada para las necesidades del paquete @code{itensor}. Calcula la derivada de @var{expr} respecto de @var{v_1} @var{n_1} veces, respecto de @var{v_2} @var{n_2} veces, etc. Para el paquete de tensores,la funci@'on ha sido modificada de manera que @var{v_i} puedan ser enteros desde 1 hasta el valor que tome la variable @code{dim}. Esto permite que la derivaci@'on se pueda realizar con respecto del @var{v_i}-@'esimo miembro de la lista @code{vect_coords}. Si @code{vect_coords} guarda una variable at@'omica, entonces esa variable ser@'a la que se utilice en la derivaci@'on. Con esto se hace posible la utilizaci@'on de una lista con nombres de coordenadas subindicadas, como @code{x[1]}, @code{x[2]}, ...
+Se trata de la funci@'on de Maxima para la diferenciaci@'on, ampliada para las necesidades del paquete @code{itensor}. Calcula la derivada de @mvar{expr} respecto de @mvar{v_1} @mvar{n_1} veces, respecto de @mvar{v_2} @mvar{n_2} veces, etc. Para el paquete de tensores,la funci@'on ha sido modificada de manera que @mvar{v_i} puedan ser enteros desde 1 hasta el valor que tome la variable @code{dim}. Esto permite que la derivaci@'on se pueda realizar con respecto del @mvar{v_i}-@'esimo miembro de la lista @code{vect_coords}. Si @code{vect_coords} guarda una variable at@'omica, entonces esa variable ser@'a la que se utilice en la derivaci@'on. Con esto se hace posible la utilizaci@'on de una lista con nombres de coordenadas subindicadas, como @code{x[1]}, @code{x[2]}, ...
 
 El paquete sobre tensores ampl@'{@dotless{i}}a las capacidades de @code{diff} con el
 fin de poder calcular derivadas respecto de variables indexadas. En particular, es
@@ -732,15 +732,15 @@ de acci@'on.
 @end deffn
 
 
-@deffn {Funci@'on} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Funci@'on} idiff (@mvar{expr}, @mvar{v_1}, [@mvar{n_1}, [@mvar{v_2}, @mvar{n_2}] ...])
 Diferenciaci@'on inicial. Al contrario que @code{diff}, que deriva respecto de una variable independiente, @code{idiff} puede usarse para derivar respecto de una coordenada. @c FALTA COMPLETAR PARRAFO.
 
 La funci@'on @code{idiff} tambi@'en puede derivar el determinante del tensor m@'etrico. As@'{@dotless{i}}, si @code{imetric} toma el valor @code{G} entonces @code{idiff(determinant(g),k)} devolver@'a @code{2*determinant(g)*ichr2([%i,k],[%i])} donde la @'{@dotless{i}}ndice mudo @code{%i} se escoge de forma apropiada.
 @end deffn
 
-@deffn {Funci@'on} liediff (@var{v}, @var{ten})
+@deffn {Funci@'on} liediff (@mvar{v}, @mvar{ten})
 
-Calcula la derivada de Lie de la expresi@'on tensorial @var{ten} respecto de campo vectorial @var{v}. La expresi@'on @var{ten} debe ser cualquier tensor indexado; @var{v} debe ser el nombre (sin @'{@dotless{i}}ndices) de un campo vectorial. Por ejemplo:
+Calcula la derivada de Lie de la expresi@'on tensorial @mvar{ten} respecto de campo vectorial @mvar{v}. La expresi@'on @mvar{ten} debe ser cualquier tensor indexado; @mvar{v} debe ser el nombre (sin @'{@dotless{i}}ndices) de un campo vectorial. Por ejemplo:
 
 @example
 
@@ -760,20 +760,20 @@ Calcula la derivada de Lie de la expresi@'on tensorial @var{ten} respecto de cam
 
 @end deffn
 
-@deffn {Funci@'on} rediff (@var{ten})
+@deffn {Funci@'on} rediff (@mvar{ten})
 
-Calcula todas las instrucciones @code{idiff} que aparezcan en la expresi@'on tensorial @var{ten}.
-
-@end deffn
-
-@deffn {Funci@'on} undiff (@var{expr})
-
-Devuelve una expresi@'on equivalente a @var{expr} pero con todas las derivadas de los objetos indexados reemplazadas por la forma nominal de la funci@'on @code{idiff}. @c FALTA TERMINAR EL PARRAFO
+Calcula todas las instrucciones @code{idiff} que aparezcan en la expresi@'on tensorial @mvar{ten}.
 
 @end deffn
 
+@deffn {Funci@'on} undiff (@mvar{expr})
 
-@deffn {Funci@'on} evundiff (@var{expr})
+Devuelve una expresi@'on equivalente a @mvar{expr} pero con todas las derivadas de los objetos indexados reemplazadas por la forma nominal de la funci@'on @code{idiff}. @c FALTA TERMINAR EL PARRAFO
+
+@end deffn
+
+
+@deffn {Funci@'on} evundiff (@mvar{expr})
 
 Equivale a @code{undiff} seguido de  @code{ev} y @code{rediff}.
 
@@ -834,21 +834,21 @@ Christoffel no se pod@'{@dotless{i}}an evaluar. Este fallo ha sido subsanado, de
 
 @end deffn
 
-@deffn {Funci@'on} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci@'on} flush (@mvar{expr}, @mvar{tensor_1}, @mvar{tensor_2}, ...)
 
-Iguala a cero en la expresi@'on @var{expr} todas las apariciones de @var{tensor_i} que no tengan @'{@dotless{i}}ndices de derivadas.
-
-@end deffn
-
-@deffn {Funci@'on} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
-
-Iguala a cero en la expresi@'on @var{expr} todas las apariciones de @var{tensor_i} que tengan @'{@dotless{i}}ndices de derivadas
+Iguala a cero en la expresi@'on @mvar{expr} todas las apariciones de @mvar{tensor_i} que no tengan @'{@dotless{i}}ndices de derivadas.
 
 @end deffn
 
-@deffn {Funci@'on} flushnd (@var{expr}, @var{tensor}, @var{n})
+@deffn {Funci@'on} flushd (@mvar{expr}, @mvar{tensor_1}, @mvar{tensor_2}, ...)
 
-Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{tensor} que tenga @var{n} o m@'as
+Iguala a cero en la expresi@'on @mvar{expr} todas las apariciones de @mvar{tensor_i} que tengan @'{@dotless{i}}ndices de derivadas
+
+@end deffn
+
+@deffn {Funci@'on} flushnd (@mvar{expr}, @mvar{tensor}, @mvar{n})
+
+Iguala a cero en @mvar{expr} todas las apariciones del objeto diferenciado  @mvar{tensor} que tenga @mvar{n} o m@'as
 @'{@dotless{i}}ndices de derivadas, como demuestra el siguiente ejemplo:
 
 @example
@@ -866,25 +866,25 @@ Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{
 @end example
 @end deffn
 
-@deffn {Funci@'on} coord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci@'on} coord (@mvar{tensor_1}, @mvar{tensor_2}, ...)
 
-Le da a @var{tensor_i} la propiedad de diferenciaci@'on coordenada, que la derivada del vector contravariante cuyo nombre es uno de los @var{tensor_i} es igual a la delta de Kronecker.  Por ejemplo, si se ha hecho @code{coord(x)} entonces  @code{idiff(x([],[i]),j)} da @code{kdelta([i],[j])}. La llamada @code{coord} devuelve una lista de todos los objetos indexados con esta propiedad.
+Le da a @mvar{tensor_i} la propiedad de diferenciaci@'on coordenada, que la derivada del vector contravariante cuyo nombre es uno de los @mvar{tensor_i} es igual a la delta de Kronecker.  Por ejemplo, si se ha hecho @code{coord(x)} entonces  @code{idiff(x([],[i]),j)} da @code{kdelta([i],[j])}. La llamada @code{coord} devuelve una lista de todos los objetos indexados con esta propiedad.
 
 @end deffn
 
-@deffn {Funci@'on} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci@'on} remcoord (@mvar{tensor_1}, @mvar{tensor_2}, ...)
 @deffnx {Funci@'on} remcoord (all)
 
 Borra todas las propiedades de diferenciaci@'on coordenada de @code{tensor_i} que hayan sido establecidas por la funci@'on @code{coord}. La llamada @code{remcoord(all)} borra esta propiedad de todos los objetos indexados.
 
 @end deffn
 
-@deffn {Funci@'on} makebox (@var{expr})
-Muestra @var{expr} de la misma manera que lo hace @code{show}; sin embargo, cualquier tensor de d'Alembert que aparezca en  @var{expr} estar@'a indicado por @code{[]}.  Por ejemplo, @code{[]p([m],[n])} representa @code{g([],[i,j])*p([m],[n],i,j)}.
+@deffn {Funci@'on} makebox (@mvar{expr})
+Muestra @mvar{expr} de la misma manera que lo hace @code{show}; sin embargo, cualquier tensor de d'Alembert que aparezca en  @mvar{expr} estar@'a indicado por @code{[]}.  Por ejemplo, @code{[]p([m],[n])} representa @code{g([],[i,j])*p([m],[n],i,j)}.
 
 @end deffn
 
-@deffn {Funci@'on} conmetderiv (@var{expr}, @var{tensor})
+@deffn {Funci@'on} conmetderiv (@mvar{expr}, @mvar{tensor})
 
 Simplifica expresiones que contengan derivadas ordinarias tanto de las formas covariantes como contravariantes del tensor m@'etrico. Por ejemplo,  @code{conmetderiv} puede relacionar la derivada del tensor m@'etrico contravariante con los s@'{@dotless{i}}mbolos de Christoffel, como se ve en el ejemplo:
 
@@ -903,8 +903,8 @@ Simplifica expresiones que contengan derivadas ordinarias tanto de las formas co
 @end example
 @end deffn
 
-@deffn {Funci@'on} simpmetderiv (@var{expr})
-@deffnx {Funci@'on} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Funci@'on} simpmetderiv (@mvar{expr})
+@deffnx {Funci@'on} simpmetderiv (@mvar{expr}[, @mvar{stop}])
 
 Simplifica expresiones que contienen productos de las derivadas del tensor m@'etrico. La funci@'on @code{simpmetderiv} reconoce dos identidades:
 
@@ -937,7 +937,7 @@ y
 
 que se deduce de las simetr@'{@dotless{i}}as de los s@'{@dotless{i}}mbolos de Christoffel.
 
-La funci@'on @code{simpmetderiv} tiene un argumento opcional, el cual detiene la funci@'on despu@'es de la primera sustituci@'on exitosa en un expresi@'on producto. La funci@'on @code{simpmetderiv} tambi@'en hace uso de la variable global @var{flipflag} que determina c@'omo aplicar una ordenaci@'on ``can@'onica'' a los @'{@dotless{i}}ndices de los productos.
+La funci@'on @code{simpmetderiv} tiene un argumento opcional, el cual detiene la funci@'on despu@'es de la primera sustituci@'on exitosa en un expresi@'on producto. La funci@'on @code{simpmetderiv} tambi@'en hace uso de la variable global @mvar{flipflag} que determina c@'omo aplicar una ordenaci@'on ``can@'onica'' a los @'{@dotless{i}}ndices de los productos.
 
 Todo esto se puede utilizar para conseguir buenas simplificaciones que ser@'{@dotless{i}}an dif@'{@dotless{i}}ciles o imposibles de conseguir, lo que se demuestra en el siguiente ejemplo, que utiliza expl@'{@dotless{i}}citamente las simplificaciones parciales de @code{simpmetderiv}:
 
@@ -982,7 +982,7 @@ V@'ease tambi@'en @code{weyl.dem} para un ejemplo que utiliza @code{simpmetderiv
 
 @end deffn
 
-@deffn {Funci@'on} flush1deriv (@var{expr}, @var{tensor})
+@deffn {Funci@'on} flush1deriv (@mvar{expr}, @mvar{tensor})
 
 Iguala a cero en @code{expr} todas las apariciones de @code{tensor} que tengan exactamente un @'{@dotless{i}}ndice derivado.
 
@@ -990,18 +990,18 @@ Iguala a cero en @code{expr} todas las apariciones de @code{tensor} que tengan e
 
 @subsection Tensores en espacios curvos
 
-@deffn {Funci@'on} imetric (@var{g})
+@deffn {Funci@'on} imetric (@mvar{g})
 @deffnx {Variable de sistema} imetric
-Especifica la m@'etrica haciendo la asignaci@'on de la variable @code{imetric:@var{g}}, adem@'as las propiedades de contracci@'on de la m@'etrica @var{g} se fijan ejecutando las instrucciones @code{defcon(@var{g}), defcon(@var{g},@var{g},kdelta)}. La variable @code{imetric}, a la que no se le asigna ning@'un valor por defecto, tiene el valor de la m@'etrica que se le haya asignado con la instrucci@'on @code{imetric(@var{g})}.
+Especifica la m@'etrica haciendo la asignaci@'on de la variable @code{imetric:@mvar{g}}, adem@'as las propiedades de contracci@'on de la m@'etrica @mvar{g} se fijan ejecutando las instrucciones @code{defcon(@mvar{g}), defcon(@mvar{g},@mvar{g},kdelta)}. La variable @code{imetric}, a la que no se le asigna ning@'un valor por defecto, tiene el valor de la m@'etrica que se le haya asignado con la instrucci@'on @code{imetric(@mvar{g})}.
 
 @end deffn
 
-@deffn {Funci@'on} idim (@var{n})
+@deffn {Funci@'on} idim (@mvar{n})
 Establece las dimensiones de la m@'etrica. Tambi@'en inicializa las propiedades de antisimetr@'{@dotless{i}}a de los s@'{@dotless{i}}mbolos de Levi-Civita para la dimensi@'on dada.
 
 @end deffn
 
-@deffn {Funci@'on} ichr1 ([@var{i}, @var{j}, @var{k}])
+@deffn {Funci@'on} ichr1 ([@mvar{i}, @mvar{j}, @mvar{k}])
 Devuelve el s@'{@dotless{i}}mbolo de Christoffel de primera especie dado por la definici@'on 
 @example
        (g      + g      - g     )/2 .
@@ -1012,7 +1012,7 @@ Para evaluar los s@'{@dotless{i}}mbolos de Christoffel de una m@'etrica determin
 
 @end deffn
 
-@deffn {Funci@'on} ichr2 ([@var{i}, @var{j}], [@var{k}])
+@deffn {Funci@'on} ichr2 ([@mvar{i}, @mvar{j}], [@mvar{k}])
 Devuelve el s@'{@dotless{i}}mbolo de Christoffel de segunda especie dado por la definici@'on
 @example
                        ks
@@ -1021,7 +1021,7 @@ Devuelve el s@'{@dotless{i}}mbolo de Christoffel de segunda especie dado por la 
 @end example
 @end deffn
 
-@deffn {Funci@'on} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+@deffn {Funci@'on} icurvature ([@mvar{i}, @mvar{j}, @mvar{k}], [@mvar{h}])
 Devuelve el tensor de curvatura de Riemann en t@'erminos de los s@'{@dotless{i}}mbolos de Christoffel de segunda especie (@code{ichr2}).  Se utiliza la siguiente notaci@'on:
 @example
                h             h            h         %1         h
@@ -1033,8 +1033,8 @@ Devuelve el tensor de curvatura de Riemann en t@'erminos de los s@'{@dotless{i}}
 @end example
 @end deffn
 
-@deffn {Funci@'on} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
-Devuelve la derivada covariante de @var{expr} respecto de las variables  @var{v_i} en t@'erminos de los s@'{@dotless{i}}mbolos de Christoffel de segunda especie (@code{ichr2}). Para evaluarlos debe hacerse @code{ev(@var{expr},ichr2)}.
+@deffn {Funci@'on} covdiff (@mvar{expr}, @mvar{v_1}, @mvar{v_2}, ...)
+Devuelve la derivada covariante de @mvar{expr} respecto de las variables  @mvar{v_i} en t@'erminos de los s@'{@dotless{i}}mbolos de Christoffel de segunda especie (@code{ichr2}). Para evaluarlos debe hacerse @code{ev(@mvar{expr},ichr2)}.
 
 @example
 
@@ -1079,14 +1079,14 @@ Enter a list of the derivative indices: [];
 
 @end deffn
 
-@deffn {Funci@'on} lorentz_gauge (@var{expr})
-Impone la condici@'on de Lorentz sustituyendo por 0 todos los objetos indexados de @var{expr} que tengan un @'{@dotless{i}}ndice derivado id@'entico a un @'{@dotless{i}}ndice contravariante.
+@deffn {Funci@'on} lorentz_gauge (@mvar{expr})
+Impone la condici@'on de Lorentz sustituyendo por 0 todos los objetos indexados de @mvar{expr} que tengan un @'{@dotless{i}}ndice derivado id@'entico a un @'{@dotless{i}}ndice contravariante.
 
 @end deffn
 
-@deffn {Funci@'on} igeodesic_coords (@var{expr}, @var{nombre})
+@deffn {Funci@'on} igeodesic_coords (@mvar{expr}, @mvar{nombre})
 
-Elimina los s@'{@dotless{i}}mbolos no diferenciados de Christoffel y las primeras derivadas del tensor m@'etrico de @var{expr}. El argumento @var{nombre} de la funci@'on @code{igeodesic_coords} se refiere a la m@'etrica @var{nombre} si aparece en @var{expr}, mientras que los coeficientes de conexi@'on deben tener los nombres  @code{ichr1} y/o @code{ichr2}. El siguiente ejemplo hace la verificaci@'on de la identidad c@'{@dotless{i}}clica satisfecha por el tensor de curvatura de Riemann haciendo uso de la funci@'on @code{igeodesic_coords}.
+Elimina los s@'{@dotless{i}}mbolos no diferenciados de Christoffel y las primeras derivadas del tensor m@'etrico de @mvar{expr}. El argumento @mvar{nombre} de la funci@'on @code{igeodesic_coords} se refiere a la m@'etrica @mvar{nombre} si aparece en @mvar{expr}, mientras que los coeficientes de conexi@'on deben tener los nombres  @code{ichr1} y/o @code{ichr2}. El siguiente ejemplo hace la verificaci@'on de la identidad c@'{@dotless{i}}clica satisfecha por el tensor de curvatura de Riemann haciendo uso de la funci@'on @code{igeodesic_coords}.
 
 @example
 
@@ -1559,9 +1559,9 @@ N@'otese que es primordial que los tensores utilizados junto con el operador @co
 
 @end defvr
 
-@deffn {Funci@'on} extdiff (@var{expr}, @var{i})
+@deffn {Funci@'on} extdiff (@mvar{expr}, @mvar{i})
 
-Calcula la derivada exterior de @var{expr} con respecto del @'{@dotless{i}}ndice @var{i}. La derivada exterior se define formalmente como el producto exterior del operador de la derivada parcial y una forma diferencial. Por lo tanto, esta operaci@'on tambi@'en se ve afectada por el valor que tome la variable @code{igeowedge_flag}. Ejemplo:
+Calcula la derivada exterior de @mvar{expr} con respecto del @'{@dotless{i}}ndice @mvar{i}. La derivada exterior se define formalmente como el producto exterior del operador de la derivada parcial y una forma diferencial. Por lo tanto, esta operaci@'on tambi@'en se ve afectada por el valor que tome la variable @code{igeowedge_flag}. Ejemplo:
 
 @example
 (%i1) load(itensor);
@@ -1591,9 +1591,9 @@ Calcula la derivada exterior de @var{expr} con respecto del @'{@dotless{i}}ndice
 
 @end deffn
 
-@deffn {Funci@'on} hodge (@var{expr})
+@deffn {Funci@'on} hodge (@mvar{expr})
 
-Calcula el dual de Hodge  @var{expr}. Por ejemplo:
+Calcula el dual de Hodge  @mvar{expr}. Por ejemplo:
 
 @example
 
@@ -1647,7 +1647,7 @@ Controla el comportamiento del producto exterior y de la derivada exterior. Cuan
 
 El paquete @code{itensor} dispone de soporte limitado para exportar expresiones con tensores a TeX. Puesto que las expresiones de @code{itensor} son llamadas a funciones, puede que la instrucci@'on habitual en Maxima, @code{tex}, no devuleva los resultados esperados. Se puede utlizar el comando @code{tentex}, que tratar@'a de traducir expresiones tensoriales a objetos de TeX correctamente indexados.
 
-@deffn {Funci@'on} tentex (@var{expr})
+@deffn {Funci@'on} tentex (@mvar{expr})
 
 Para utilizar la funci@'on @code{tentex}, primero se debe cargar @code{tentex}, tal como muestra el siguiente ejemplo:
 
@@ -1683,9 +1683,9 @@ T@'engase en cuenta que esta versi@'on de la funci@'on @code{tentex} es experime
 
 El paquete @code{itensor} genera c@'odigo Maxima que luego puede ser ejecutado en el contexto del paquete @code{ctensor}. La funci@'on que se encarga de esta tarea es @code{ic_convert}.
 
-@deffn {Function} ic_convert (@var{eqn})
+@deffn {Function} ic_convert (@mvar{eqn})
 
-Convierte la ecuaci@'on @var{eqn} del entorno @code{itensor} a una sentencia de asignaci@'on de @code{ctensor}. Sumas impl@'{@dotless{i}}citas sobre @'{@dotless{i}}ndices mudos se hacen expl@'{@dotless{i}}citas mientras que objetos indexados se transforman en arreglos (los sub@'{@dotless{i}}ndices de los arreglos se ordenan poniendo primero los covariantes seguidos de los contravariantes. La derivada de un objeto indexado se reemplazar@'a por por la forma nominal de @code{diff} tomada con respecto a @code{ct_coords} con el sub@'{@dotless{i}}ndice correspondiente al @'{@dotless{i}}ndice derivado. Los s@'{@dotless{i}}mbolos de Christoffel @code{ichr1}  @code{ichr2} se traducen a @code{lcs} y @code{mcs}, respectivamente. Adem@'as, se a@~naden bucles @code{do} para la sumaci@'on de todos los @'{@dotless{i}}ndices libres, de manera que la sentencia traducida pueda ser evaluada haciendo simplemente @code{ev}. Los siguientes ejemplos muestran las funcionalidades de esta funci@'on.
+Convierte la ecuaci@'on @mvar{eqn} del entorno @code{itensor} a una sentencia de asignaci@'on de @code{ctensor}. Sumas impl@'{@dotless{i}}citas sobre @'{@dotless{i}}ndices mudos se hacen expl@'{@dotless{i}}citas mientras que objetos indexados se transforman en arreglos (los sub@'{@dotless{i}}ndices de los arreglos se ordenan poniendo primero los covariantes seguidos de los contravariantes. La derivada de un objeto indexado se reemplazar@'a por por la forma nominal de @code{diff} tomada con respecto a @code{ct_coords} con el sub@'{@dotless{i}}ndice correspondiente al @'{@dotless{i}}ndice derivado. Los s@'{@dotless{i}}mbolos de Christoffel @code{ichr1}  @code{ichr2} se traducen a @code{lcs} y @code{mcs}, respectivamente. Adem@'as, se a@~naden bucles @code{do} para la sumaci@'on de todos los @'{@dotless{i}}ndices libres, de manera que la sentencia traducida pueda ser evaluada haciendo simplemente @code{ev}. Los siguientes ejemplos muestran las funcionalidades de esta funci@'on.
 
 @example
 (%i1) load(itensor);

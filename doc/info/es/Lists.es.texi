@@ -122,40 +122,40 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} append (@var{lista_1}, ..., @var{lista_n})
+@deffn {Funci@'on} append (@mvar{lista_1}, ..., @mvar{lista_n})
 
-Devuelve una lista cuyos elementos son los de la lista @var{lista_1} seguidos de los de @var{lista_2}, ...  La funci@'on @code{append} tambi@'en opera con expresiones generales, como la llamada @code{append (f(a,b), f(c,d,e));}, de la que se obtiene @code{f(a,b,c,d,e)}.
+Devuelve una lista cuyos elementos son los de la lista @mvar{lista_1} seguidos de los de @mvar{lista_2}, ...  La funci@'on @code{append} tambi@'en opera con expresiones generales, como la llamada @code{append (f(a,b), f(c,d,e));}, de la que se obtiene @code{f(a,b,c,d,e)}.
 
 Tecl@'eese @code{example(append);} para ver un ejemplo.
 
 @end deffn
 
-@deffn {Funci@'on} assoc (@var{clave}, @var{lista}, @var{valor_por_defecto})
-@deffnx {Function} assoc (@var{clave}, @var{lista})
+@deffn {Funci@'on} assoc (@mvar{clave}, @mvar{lista}, @mvar{valor_por_defecto})
+@deffnx {Function} assoc (@mvar{clave}, @mvar{lista})
 
-Esta funci@'on busca la @var{clave} en el lado derecho de la  @var{lista}, la cual es de la forma @code{[x,y,z,...]}, donde cada elemento  es una expresi@'on formada por un operador binario y dos elementos. Por ejemplo, @code{x=1}, @code{2^3}, @code{[a,b]} etc.  La @var{clave} se compara con el primer operando. La funci@'on @code{assoc} devuelve el segundo operando si se encuentra con que la @code{clave} coincide.  Si la @code{clave} no coincide entonces devuelve el valor @var{valor_por_defecto}. El argumento @var{valor_por_defecto} es opcional; en caso de no estar presente, se devolver@'a @code{false}.
-
-@end deffn
-
-
-@deffn {Funci@'on} cons (@var{expr}, @var{lista})
-
-Devuelve una nueva lista en la que el elemento @var{expr} ocupa la primera posici@'on, seguido de los elementos de @var{lista}. La funci@'on  @code{cons} tambi@'en opera con otro tipo de expresiones, como  @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
-
-@end deffn
-
-@deffn {Funci@'on} copylist (@var{lista})
-
-Devuelve una copia de la @var{lista}.
+Esta funci@'on busca la @mvar{clave} en el lado derecho de la  @mvar{lista}, la cual es de la forma @code{[x,y,z,...]}, donde cada elemento  es una expresi@'on formada por un operador binario y dos elementos. Por ejemplo, @code{x=1}, @code{2^3}, @code{[a,b]} etc.  La @mvar{clave} se compara con el primer operando. La funci@'on @code{assoc} devuelve el segundo operando si se encuentra con que la @code{clave} coincide.  Si la @code{clave} no coincide entonces devuelve el valor @mvar{valor_por_defecto}. El argumento @mvar{valor_por_defecto} es opcional; en caso de no estar presente, se devolver@'a @code{false}.
 
 @end deffn
 
 
-@deffn {Funci@'on} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
-Crea una lista mediante la evaluaci@'on de @var{form} con @var{x_1} tomando cada uno de los
-valores de @var{list_1}, para cada uno de estos valores liga @var{x_2} con cada elemento de 
-@var{list_2}, .... El n@'umero de elementos en el resultado ser@'a el producto del n@'umero de elementos
-en cada lista. Cada variable @var{x_i} debe ser un s@'{@dotless{i}}mbolo y no ser@'a evaluado.
+@deffn {Funci@'on} cons (@mvar{expr}, @mvar{lista})
+
+Devuelve una nueva lista en la que el elemento @mvar{expr} ocupa la primera posici@'on, seguido de los elementos de @mvar{lista}. La funci@'on  @code{cons} tambi@'en opera con otro tipo de expresiones, como  @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+
+@end deffn
+
+@deffn {Funci@'on} copylist (@mvar{lista})
+
+Devuelve una copia de la @mvar{lista}.
+
+@end deffn
+
+
+@deffn {Funci@'on} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, ..., @mvar{x_n}, @mvar{list_n})
+Crea una lista mediante la evaluaci@'on de @mvar{form} con @mvar{x_1} tomando cada uno de los
+valores de @mvar{list_1}, para cada uno de estos valores liga @mvar{x_2} con cada elemento de 
+@mvar{list_2}, .... El n@'umero de elementos en el resultado ser@'a el producto del n@'umero de elementos
+en cada lista. Cada variable @mvar{x_i} debe ser un s@'{@dotless{i}}mbolo y no ser@'a evaluado.
 La lista de argumentos ser@'a evaluada una vez al comienzo de la iteraci@'on.
 
 Ejemplos:
@@ -184,7 +184,7 @@ Con una doble iteraci@'on:
 @end group
 @end example
 
-En lugar de @var{list_i} se pueden suministrar dos argumentos cada uno de los cuales 
+En lugar de @mvar{list_i} se pueden suministrar dos argumentos cada uno de los cuales 
 deber@'{@dotless{i}}a poder evaluarse a un n@'umero, los cuales ser@'an los l@'{@dotless{i}}mites inferior
 y superior, ambos inclusive, para cada iteraci@'on.
 
@@ -203,24 +203,24 @@ del valor actual de @code{i}.
 @end deffn
 
 
-@deffn {Funci@'on} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Funci@'on} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn {Funci@'on} delete (@mvar{expr_1}, @mvar{expr_2})
+@deffnx {Funci@'on} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
 
-@code{delete(@var{expr_1}, @var{expr_2})}
-elimina de @var{expr_2} cualesquiera argumentos del operador
-del nivel superior que sean iguales a @var{expr_1}.
+@code{delete(@mvar{expr_1}, @mvar{expr_2})}
+elimina de @mvar{expr_2} cualesquiera argumentos del operador
+del nivel superior que sean iguales a @mvar{expr_1}.
 N@'otese que los argumentos de las subexpresiones no se ven
 afectados por esta funci@'on.
 
-@var{expr_1} puede ser un @'atomo o una expresi@'on no
-at@'omica. @var{expr_2} puede ser cualquier expresi@'on no
+@mvar{expr_1} puede ser un @'atomo o una expresi@'on no
+at@'omica. @mvar{expr_2} puede ser cualquier expresi@'on no
 at@'omica. La funci@'on @code{delete} devuelve una
-nueva expresi@'on sin modificar @var{expr_2}.
+nueva expresi@'on sin modificar @mvar{expr_2}.
 
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
-elimina de @var{expr_2} los primeros @var{n} argumentos
-del operador del nivel superior que sean iguales a @var{expr_1}.
-Si hay menos de @var{n} argumentos iguales, entonces se
+@code{delete(@mvar{expr_1}, @mvar{expr_2}, @mvar{n})}
+elimina de @mvar{expr_2} los primeros @mvar{n} argumentos
+del operador del nivel superior que sean iguales a @mvar{expr_1}.
+Si hay menos de @mvar{n} argumentos iguales, entonces se
 eliminan todos ellos.
 
 Ejemplos:
@@ -328,47 +328,47 @@ rat: replaced 0.0 by 0/1 = 0.0
 @end example
 @end deffn
 
-@deffn {Funci@'on} eighth (@var{expr})
+@deffn {Funci@'on} eighth (@mvar{expr})
 
-Devuelve el octavo elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
-
-@end deffn
-
-@deffn {Funci@'on} endcons (@var{expr}, @var{lista})
-
-Devuelve una nueva lista formada por los elementos de @code{lista} seguidos de los de @var{expr}. La funci@'on @code{endcons} tambi@'en opera con expresiones generales, por ejemplo @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+Devuelve el octavo elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
 
-@deffn {Funci@'on} fifth (@var{expr})
+@deffn {Funci@'on} endcons (@mvar{expr}, @mvar{lista})
 
-Devuelve el quinto elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
-
-@end deffn
-
-@deffn {Funci@'on} first (@var{expr})
-
-Devuelve la primera parte de @var{expr}, que puede consistir en el primer elemento de una lista, la primera fila de una matriz, el primer t@'ermino de una suma, etc. N@'otese que tanto @code{first} como sus funciones relacionadas, @code{rest} y @code{last}, operan sobre la forma en la que @var{expr} es mostrada por Maxima, no sobre la forma en la que es introducida la expresi@'on. Sin embargo, cuando la variable @code{inflag} toma el valor @code{true} estas funciones tendr@'an en cuenta el formato interno de @var{expr}. T@'engase en cuenta que el simplificador reordena las expresiones.  As@'{@dotless{i}}, @code{first(x+y)} devolver@'a @code{x} si @code{inflag} vale @code{true} y @code{y} cuando @code{inflag} tome el valor @code{false} (@code{first(y+x)} devuelve el mismo resultado). Las funciones @code{second} ... @code{tenth} devuelven desde el segundo hasta el d@'ecimo elemento del argumento de entrada.
+Devuelve una nueva lista formada por los elementos de @code{lista} seguidos de los de @mvar{expr}. La funci@'on @code{endcons} tambi@'en opera con expresiones generales, por ejemplo @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end deffn
 
-@deffn {Funci@'on} fourth (@var{expr})
+@deffn {Funci@'on} fifth (@mvar{expr})
 
-Devuelve el cuarto elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Devuelve el quinto elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
+
+@end deffn
+
+@deffn {Funci@'on} first (@mvar{expr})
+
+Devuelve la primera parte de @mvar{expr}, que puede consistir en el primer elemento de una lista, la primera fila de una matriz, el primer t@'ermino de una suma, etc. N@'otese que tanto @code{first} como sus funciones relacionadas, @code{rest} y @code{last}, operan sobre la forma en la que @mvar{expr} es mostrada por Maxima, no sobre la forma en la que es introducida la expresi@'on. Sin embargo, cuando la variable @code{inflag} toma el valor @code{true} estas funciones tendr@'an en cuenta el formato interno de @mvar{expr}. T@'engase en cuenta que el simplificador reordena las expresiones.  As@'{@dotless{i}}, @code{first(x+y)} devolver@'a @code{x} si @code{inflag} vale @code{true} y @code{y} cuando @code{inflag} tome el valor @code{false} (@code{first(y+x)} devuelve el mismo resultado). Las funciones @code{second} ... @code{tenth} devuelven desde el segundo hasta el d@'ecimo elemento del argumento de entrada.
+
+@end deffn
+
+@deffn {Funci@'on} fourth (@mvar{expr})
+
+Devuelve el cuarto elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
 
 
 
 
-@deffn {Funci@'on} join (@var{l}, @var{m})
-Crea una nueva lista con los elementos de las listas @var{l} y @var{m} alternados.
-El resultado tiene como elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
-Las listas @var{l} y @var{m} pueden contener cualquier tipo de elementos.
+@deffn {Funci@'on} join (@mvar{l}, @mvar{m})
+Crea una nueva lista con los elementos de las listas @mvar{l} y @mvar{m} alternados.
+El resultado tiene como elementos @code{[@mvar{l}[1], @mvar{m}[1], @mvar{l}[2], @mvar{m}[2], ...]}.
+Las listas @mvar{l} y @mvar{m} pueden contener cualquier tipo de elementos.
 
 Si las listas son de diferente longitud, @code{join} ignora los elementos sobrantes de la lista m@'as larga.
 
-Maxima da error si o bien @var{l} o @var{m} no son listas.
+Maxima da error si o bien @mvar{l} o @mvar{m} no son listas.
 
 Ejemplos:
 
@@ -395,15 +395,15 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} last (@var{expr})
+@deffn {Funci@'on} last (@mvar{expr})
 
-Devuelve la @'ultima parte (t@'ermino, fila, elemento, etc.) de @var{expr}.
+Devuelve la @'ultima parte (t@'ermino, fila, elemento, etc.) de @mvar{expr}.
 
 @end deffn
 
-@deffn {Funci@'on} length (@var{expr})
+@deffn {Funci@'on} length (@mvar{expr})
 
-Devuelve (por defecto) el n@'umero de partes de que consta @var{expr} en la versi@'on correspondiente a la que muestra.  En el caso de listas, se devuelve el n@'umero de elementos, si se trata de matrices el n@'umero de filas y se se trata de sumas el n@'umero de t@'erminos o sumandos (v@'ease @code{dispform}).
+Devuelve (por defecto) el n@'umero de partes de que consta @mvar{expr} en la versi@'on correspondiente a la que muestra.  En el caso de listas, se devuelve el n@'umero de elementos, si se trata de matrices el n@'umero de filas y se se trata de sumas el n@'umero de t@'erminos o sumandos (v@'ease @code{dispform}).
 
 La funci@'on @code{length} se ve afectada por el valor de la variable @code{inflag}.  As@'{@dotless{i}}, @code{length(a/(b*c));} devuelve 2 si @code{inflag} vale @code{false} (dando por hecho que @code{exptdispflag} vale @code{true}), pero devuelve 3 si @code{inflag} vale @code{true} (ya que la representaci@'on interna es @code{a*b^-1*c^-1}).
 
@@ -416,41 +416,41 @@ Cuando vale @code{false} provoca que no se realicen operaciones aritm@'eticas co
 
 @end defvr
 
-@deffn {Funci@'on} listp (@var{expr})
+@deffn {Funci@'on} listp (@mvar{expr})
 
-Devuelve el valor @code{true} si @var{expr} es una lista, y @code{false} en caso contrario.
+Devuelve el valor @code{true} si @mvar{expr} es una lista, y @code{false} en caso contrario.
 
 @end deffn
 
 
 
 @deffn  {Funci@'on} makelist ()
-@deffnx {Funci@'on} makelist (@var{expr}, @var{n})
-@deffnx {Funci@'on} makelist (@var{expr}, @var{i}, @var{i_max})
-@deffnx {Funci@'on} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
-@deffnx {Funci@'on} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{step})
-@deffnx {Funci@'on} makelist (@var{expr}, @var{x}, @var{list})
+@deffnx {Funci@'on} makelist (@mvar{expr}, @mvar{n})
+@deffnx {Funci@'on} makelist (@mvar{expr}, @mvar{i}, @mvar{i_max})
+@deffnx {Funci@'on} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_max})
+@deffnx {Funci@'on} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_max}, @mvar{step})
+@deffnx {Funci@'on} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
 
 El primer formato, @code{makelist ()}, crea una lista vac@'{@dotless{i}}a. El
-segundo formato, @code{makelist (@var{expr})}, crea una lista con @var{expr}
-como @'unico elemento. @code{makelist (@var{expr}, @var{n})} crea una lista
-de @var{n} elementos generados a partir de @var{expr}.
+segundo formato, @code{makelist (@mvar{expr})}, crea una lista con @mvar{expr}
+como @'unico elemento. @code{makelist (@mvar{expr}, @mvar{n})} crea una lista
+de @mvar{n} elementos generados a partir de @mvar{expr}.
 
-El formato m@'as general, @code{makelist (@var{expr}, @var{i}, @var{i_0},
-@var{i_max}, @var{step})}, devuelve la lista de elementos obtenidos al
-aplicar @code{ev (@var{expr}, @var{i}=@var{j})} a los elementos @var{j} 
-de la secuencia @var{i_0}, @var{i_0} + @var{step}, @var{i_0} +
-2*@var{step}, ..., siendo @var{|j|} menor o igual que @var{|i_max|}.
+El formato m@'as general, @code{makelist (@mvar{expr}, @mvar{i}, @mvar{i_0},
+@mvar{i_max}, @mvar{step})}, devuelve la lista de elementos obtenidos al
+aplicar @code{ev (@mvar{expr}, @mvar{i}=@mvar{j})} a los elementos @mvar{j} 
+de la secuencia @mvar{i_0}, @mvar{i_0} + @mvar{step}, @mvar{i_0} +
+2*@mvar{step}, ..., siendo @mvar{|j|} menor o igual que @mvar{|i_max|}.
 
-El incremento @var{step} puede ser un n@'umero (positivo o negativo) o una
+El incremento @mvar{step} puede ser un n@'umero (positivo o negativo) o una
 expresi@'on. En caso de omitirse, se utilizar@'a 1 como valor por defecto.
-Si se omiten  @var{i_0} y @var{step}, se le asignar@'a a ambos 1 como valor
+Si se omiten  @mvar{i_0} y @mvar{step}, se le asignar@'a a ambos 1 como valor
 por defecto.
 
-@code{makelist (@var{expr}, @var{x}, @var{list})} devuelve una lista, cuyo
+@code{makelist (@mvar{expr}, @mvar{x}, @mvar{list})} devuelve una lista, cuyo
 @code{j}-@'esimo elemento es igual a
-@code{ev (@var{expr}, @var{x}=@var{list}[j])} tomando @code{j} valores desde
-1 hasta @code{length (@var{list})}.
+@code{ev (@mvar{expr}, @mvar{x}=@mvar{list}[j])} tomando @code{j} valores desde
+1 hasta @code{length (@mvar{list})}.
 
 
 Ejemplos:
@@ -492,16 +492,16 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} member (@var{expr_1}, @var{expr_2})
+@deffn {Funci@'on} member (@mvar{expr_1}, @mvar{expr_2})
 
-Devuelve @code{true} si @code{is(@var{expr_1} = @var{a})}
-para alg@'un elemento @var{a} de @code{args(@var{expr_2})},
+Devuelve @code{true} si @code{is(@mvar{expr_1} = @mvar{a})}
+para alg@'un elemento @mvar{a} de @code{args(@mvar{expr_2})},
 en caso contrario devuelve @code{false}.
 
 Normalmente, @code{expr_2} ser@'a una lista,
-en cuyo caso @code{args(@var{expr_2}) = @var{expr_2}},
-y la comprobaci@'on ser@'a si @code{is(@var{expr_1} = @var{a})} para 
-alg@'un elemento @var{a} de @code{expr_2}.
+en cuyo caso @code{args(@mvar{expr_2}) = @mvar{expr_2}},
+y la comprobaci@'on ser@'a si @code{is(@mvar{expr_1} = @mvar{a})} para 
+alg@'un elemento @mvar{a} de @code{expr_2}.
 
 La funci@'on @code{member} no inspecciona las partes de los argumentos de @code{expr_2},
 por lo que puede devolver @code{false} si @code{expr_1} es parte de alguno de los argumentos de @code{expr_2}.
@@ -560,19 +560,19 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} ninth (@var{expr})
+@deffn {Funci@'on} ninth (@mvar{expr})
 
-Devuelve el noveno elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Devuelve el noveno elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 @end deffn
 
 
 
-@deffn {Funci@'on} pop (@var{list})
+@deffn {Funci@'on} pop (@mvar{list})
 
-Borra el primer elemento de la lista @var{list} y devuelve este
+Borra el primer elemento de la lista @mvar{list} y devuelve este
 mismo elemento.
 
-Si el argumento @var{list} es una lista vac@'{@dotless{i}}a, o
+Si el argumento @mvar{list} es una lista vac@'{@dotless{i}}a, o
 simplemente no es una lista, Maxima devuelve un mensaje de error.
 
 V@'ease @code{push} para los ejemplos.
@@ -583,14 +583,14 @@ Ejec@'utese @code{load(basic)} antes de utilizar esta funci@'on.
 
 
 
-@deffn {Funci@'on} push (@var{item}, @var{list})
+@deffn {Funci@'on} push (@mvar{item}, @mvar{list})
 
-A@~nade al comienzo de la lista @var{list} el elemento @var{item},
-devolviendo este mismo elemento. El argumento @var{list} debe ser necesariamente
-una lista, mientras que @var{item} puede ser cualquier s@'{@dotless{i}}mbolo
+A@~nade al comienzo de la lista @mvar{list} el elemento @mvar{item},
+devolviendo este mismo elemento. El argumento @mvar{list} debe ser necesariamente
+una lista, mientras que @mvar{item} puede ser cualquier s@'{@dotless{i}}mbolo
 o expresi@'on.
 
-Si el argumento @var{list} no es una lista, Maxima devuelve un
+Si el argumento @mvar{list} no es una lista, Maxima devuelve un
 mensaje de error.
 
 V@'ease @code{pop} para eliminar el primer elemento de una lista.
@@ -657,62 +657,62 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} rest (@var{expr}, @var{n})
-@deffnx {Funci@'on} rest (@var{expr})
+@deffn {Funci@'on} rest (@mvar{expr}, @mvar{n})
+@deffnx {Funci@'on} rest (@mvar{expr})
 
-Devuelve @var{expr} sin sus primeros @var{n} elementos si @var{n} es positivo, o sus @'ultimos @code{- @var{n}} elementos si @var{n} es negativo. En caso de que @var{n} tome el valor 1 puede ser omitido. La expresi@'on  @var{expr} puede ser una lista, una matriz o cualquier otra expresi@'on.
-
-@end deffn
-
-@deffn {Funci@'on} reverse (@var{lista})
-
-Invierte el orden de los elementos de la @var{lista} (no los propios elementos). La funci@'on @code{reverse} tambi@'en opera sobre expresiones generales, como en  @code{reverse(a=b);} gives @code{b=a}.
+Devuelve @mvar{expr} sin sus primeros @mvar{n} elementos si @mvar{n} es positivo, o sus @'ultimos @code{- @mvar{n}} elementos si @mvar{n} es negativo. En caso de que @mvar{n} tome el valor 1 puede ser omitido. La expresi@'on  @mvar{expr} puede ser una lista, una matriz o cualquier otra expresi@'on.
 
 @end deffn
 
-@deffn {Funci@'on} second (@var{expr})
+@deffn {Funci@'on} reverse (@mvar{lista})
 
-Devuelve el segundo elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
-
-@end deffn
-
-@deffn {Funci@'on} seventh (@var{expr})
-
-Devuelve el s@'eptimo elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Invierte el orden de los elementos de la @mvar{lista} (no los propios elementos). La funci@'on @code{reverse} tambi@'en opera sobre expresiones generales, como en  @code{reverse(a=b);} gives @code{b=a}.
 
 @end deffn
 
-@deffn {Funci@'on} sixth (@var{expr})
+@deffn {Funci@'on} second (@mvar{expr})
 
-Devuelve el sexto elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Devuelve el segundo elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
+
+@end deffn
+
+@deffn {Funci@'on} seventh (@mvar{expr})
+
+Devuelve el s@'eptimo elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
+
+@end deffn
+
+@deffn {Funci@'on} sixth (@mvar{expr})
+
+Devuelve el sexto elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
 
 
 
 
-@deffn {Funci@'on} sort (@var{L}, @var{P})
-@deffnx {Funci@'on} sort (@var{L})
+@deffn {Funci@'on} sort (@mvar{L}, @mvar{P})
+@deffnx {Funci@'on} sort (@mvar{L})
 
-@code{sort(@var{L}, @var{P})} ordena la lista @var{L} de acuerdo con el predicado @code{P}
-de dos argumentos, el cual define un preorden total sobre los elementos de @var{L}.
-Si @code{@var{P}(a, b)} vale @code{true}, entonces @code{a} aparece antes que @code{b} en
-el resultado. Si ninguna de las expresiones @code{@var{P}(a, b)} y @code{@var{P}(b, a)}
+@code{sort(@mvar{L}, @mvar{P})} ordena la lista @mvar{L} de acuerdo con el predicado @code{P}
+de dos argumentos, el cual define un preorden total sobre los elementos de @mvar{L}.
+Si @code{@mvar{P}(a, b)} vale @code{true}, entonces @code{a} aparece antes que @code{b} en
+el resultado. Si ninguna de las expresiones @code{@mvar{P}(a, b)} y @code{@mvar{P}(b, a)}
 valen @code{true}, entonces @code{a} y @code{b} son equivalentes y aparecen en el
 resultado en el mismo orden que a la entrada; esto es, @code{sort} es un orden estable.
 
-Si tanto @code{@var{P}(a, b)} como @code{@var{P}(b, a)} valen ambos @code{true} para
-algunos elementos de @var{L}, entonces @var{P} no es un predicado de orden correcto,
-siento entonces el resultado indefinido. Si @code{@var{P}(a, b)} toma un valor diferente
+Si tanto @code{@mvar{P}(a, b)} como @code{@mvar{P}(b, a)} valen ambos @code{true} para
+algunos elementos de @mvar{L}, entonces @mvar{P} no es un predicado de orden correcto,
+siento entonces el resultado indefinido. Si @code{@mvar{P}(a, b)} toma un valor diferente
 a @code{true} o @code{false}, entonces @code{sort} devuelve un error.
 
 El predicado puede especificarse como el nombre de una funci@'on, de una operaci@'on binaria
 infija o como una expresi@'on @code{lambda}. Si se especifica con el nombre de un operador,
 dicho nombre debe encerrarse con comillas dobles.
 
-La lista ordenada se devuelve como un nuevo objeto, no modific@'andose el argumento @var{L}.
+La lista ordenada se devuelve como un nuevo objeto, no modific@'andose el argumento @mvar{L}.
 
-@code{sort(@var{L})} equivale a @code{sort(@var{L}, orderlessp)}.
+@code{sort(@mvar{L})} equivale a @code{sort(@mvar{L}, orderlessp)}.
 
 La ordenaci@'on por defecto es ascendente, tal como queda determinada por @code{orderlessp}.
 El predicado @code{ordergreatp} ordena las listas en orden descendente.
@@ -779,7 +779,7 @@ con el nombre de un operador, dicho nombre debe encerrarse con comillas dobles.
 @end group
 @end example
 
-@code{sort(@var{L})} equivale a @code{sort(@var{L}, orderlessp)}.
+@code{sort(@mvar{L})} equivale a @code{sort(@mvar{L}, orderlessp)}.
 
 @c ===beg===
 @c L : [a, 2*b, -5, 7, 1 + %e, %pi];
@@ -887,8 +887,8 @@ que lo hace @code{<}, y cualesquiera otros elementos lo hace igual que @code{ord
 
 
 
-@deffn {Funci@'on} sublist (@var{list}, @var{p})
-Devuelve la lista de elementos de @var{list} para los cuales el predicado @code{p} retorna @code{true}.
+@deffn {Funci@'on} sublist (@mvar{list}, @mvar{p})
+Devuelve la lista de elementos de @mvar{list} para los cuales el predicado @code{p} retorna @code{true}.
 
 Ejemplo:
 
@@ -912,13 +912,13 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} sublist_indices (@var{L}, @var{P})
+@deffn {Funci@'on} sublist_indices (@mvar{L}, @mvar{P})
 
 Devuelve los @'{@dotless{i}}ndices de los elementos @code{x} de la
-lista @var{L} para la cual el predicado @code{maybe(@var{P}(x))}
+lista @mvar{L} para la cual el predicado @code{maybe(@mvar{P}(x))}
 devuelve @code{true}, lo que excluye a @code{unknown} y a @code{false}.
-@var{P} puede ser el nombre de una funci@'on o de una expresi@'on lambda.
-@var{L} debe ser una lista literal.
+@mvar{P} puede ser el nombre de una funci@'on o de una expresi@'on lambda.
+@mvar{L} debe ser una lista literal.
 
 Ejemplos:
 
@@ -964,16 +964,16 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} unique (@var{L})
+@deffn {Funci@'on} unique (@mvar{L})
 
-Devuelve la lista @var{L} sin redundancias, es decir, sin
+Devuelve la lista @mvar{L} sin redundancias, es decir, sin
 elementos repetidos
 
-Cuando ninguno de los elementos de @var{L} est@'a repetido,
-@code{unique} devuelve una r@'eplica de @var{L}, no la
-propia @var{L}.
+Cuando ninguno de los elementos de @mvar{L} est@'a repetido,
+@code{unique} devuelve una r@'eplica de @mvar{L}, no la
+propia @mvar{L}.
 
-Si @var{L} no es una lista, @code{unique} devuelve @var{L}.
+Si @mvar{L} no es una lista, @code{unique} devuelve @mvar{L}.
 
 Ejemplo:
 
@@ -990,15 +990,15 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} tenth (@var{expr})
+@deffn {Funci@'on} tenth (@mvar{expr})
 
-Devuelve el d@'ecimo elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Devuelve el d@'ecimo elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
 
-@deffn {Funci@'on} third (@var{expr})
+@deffn {Funci@'on} third (@mvar{expr})
 
-Devuelve el tercer elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
+Devuelve el tercer elemento de la lista o expresi@'on @mvar{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
 

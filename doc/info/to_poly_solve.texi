@@ -108,13 +108,13 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Operator} %if (@var{bool}, @var{a}, @var{b})
+@deffn {Operator} %if (@mvar{bool}, @mvar{a}, @mvar{b})
 @ifinfo
 @fnindex conditional evaluation
 @end ifinfo
 
 The operator @code{%if} is a simplifying conditional.  The
-@i{conditional} @var{bool} should be boolean-valued.  When the
+@i{conditional} @mvar{bool} should be boolean-valued.  When the
 conditional is true, return the second argument; when the conditional is
 false, return the third; in all other cases, return a noun form.
 
@@ -259,7 +259,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} complex_number_p (@var{x})
+@deffn {Function} complex_number_p (@mvar{x})
 
 The predicate @code{complex_number_p} returns true if its argument is
 either @code{a + %i * b}, @code{a}, @code{%i b}, or @code{%i},
@@ -286,10 +286,10 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} compose_functions (@var{l})
+@deffn {Function} compose_functions (@mvar{l})
 
 The function call @code{compose_functions(l)} returns a lambda form that is
-the @i{composition} of the functions in the list @var{l}.  The functions are
+the @i{composition} of the functions in the list @mvar{l}.  The functions are
 applied from @i{right} to @i{left}; for example
 
 @example
@@ -329,7 +329,6 @@ string, or lambda expression; found: a < b
 @itemize @bullet
 @item To avoid name conflicts, the independent variable is determined by the
 function @code{new_variable}.
-@end itemize
 
 @example
 (%i6) compose_functions([%g0]);
@@ -338,15 +337,14 @@ function @code{new_variable}.
 (%o7)              lambda([%g155], %g0(%g155))
 @end example
 
-@itemize
 Although the independent variables are different, Maxima is able to to
 deduce that these lambda forms are semantically equal:
-@end itemize
 
 @example
 (%i8) is(equal(%o6,%o7));
 (%o8)                         true
 @end example
+@end itemize
 
 @b{To use} @file{load(to_poly_solve)}
 
@@ -355,7 +353,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
-@deffn {Function} dfloat (@var{x})
+@deffn {Function} dfloat (@mvar{x})
 
 The function @code{dfloat} is a similar to @code{float}, but the function
 @code{dfloat} applies @code{rectform} when @code{float} fails to evaluate
@@ -394,7 +392,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} elim (@var{l}, @var{x})
+@deffn {Function} elim (@mvar{l}, @mvar{x})
 
 The function @code{elim} eliminates the variables in the set or list
 @code{x} from the equations in the set or list @code{l}.  Each member
@@ -467,7 +465,7 @@ other Maxima functions.
 
 @end deffn
  
-@deffn {Function} elim_allbut (@var{l}, @var{x})
+@deffn {Function} elim_allbut (@mvar{l}, @mvar{x})
 
 This function is similar to @code{elim}, except that it eliminates all the
 variables in the list of equations @code{l} @i{except} for those variables that
@@ -492,7 +490,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} eliminate_using (@var{l}, @var{e}, @var{x})
+@deffn {Function} eliminate_using (@mvar{l}, @mvar{e}, @mvar{x})
 
 Using @code{e} as the pivot, eliminate the symbol @code{x} from the
 list or set of equations in @code{l}.  The function @code{eliminate_using}
@@ -528,7 +526,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} fourier_elim ([@var{eq1}, @var{eq2}, @dots{}], [@var{var1}, @var{var}, @dots{}])
+@deffn {Function} fourier_elim ([@mvar{eq1}, @mvar{eq2}, @dots{}], [@mvar{var1}, @mvar{var}, @dots{}])
 
 Fourier elimination is the analog of Gauss elimination for linear inequations
 (equations or inequalities).  The function call @code{fourier_elim([eq1, eq2,
@@ -617,7 +615,7 @@ handles some expressions that are the product or quotient of linear terms:
 
 @end deffn
 
-@deffn {Function} isreal_p (@var{e})
+@deffn {Function} isreal_p (@mvar{e})
 
 The predicate @code{isreal_p} returns true when Maxima is able to
 determine that @code{e} is real-valued on the @i{entire} real line; it
@@ -742,7 +740,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} parg (@var{x})
+@deffn {Function} parg (@mvar{x})
 
 The function @code{parg} is a simplifying version of the complex argument function 
 @code{carg}; thus
@@ -797,7 +795,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} real_imagpart_to_conjugate (@var{e})
+@deffn {Function} real_imagpart_to_conjugate (@mvar{e})
 
 The function @code{real_imagpart_to_conjugate} replaces all occurrences
 of @code{realpart} and @code{imagpart} to algebraically equivalent expressions
@@ -820,7 +818,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} rectform_log_if_constant (@var{e})
+@deffn {Function} rectform_log_if_constant (@mvar{e})
 
 The function @code{rectform_log_if_constant} converts all terms of the form
 @code{ log(c)} to  @code{rectform(log(c))}, where @code{c} is
@@ -848,7 +846,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} simp_inequality (@var{e})
+@deffn {Function} simp_inequality (@mvar{e})
 
 The function @code{simp_inequality} applies some simplifications to
 conjunctions and disjunctions of inequations.
@@ -880,7 +878,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} standardize_inverse_trig (@var{e})
+@deffn {Function} standardize_inverse_trig (@mvar{e})
 
 This function applies the identities @code{cot(x) = atan(1/x),
 acsc(x) = asin(1/x),} and similarly for @code{asec, acoth, acsch}
@@ -894,7 +892,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
-@deffn {Function} subst_parallel (@var{l}, @var{e})
+@deffn {Function} subst_parallel (@mvar{l}, @mvar{e})
 
 When @code{l} is a single equation or a list of equations, substitute
 the right hand side of each equation for the left hand side.  The
@@ -961,13 +959,13 @@ functionality might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} to_poly (@var{e}, @var{l})
+@deffn {Function} to_poly (@mvar{e}, @mvar{l})
 
 The function @code{to_poly} attempts to convert the equation @code{e}
 into a polynomial system along with inequality constraints; the
 solutions to the polynomial system that satisfy the constraints are
 solutions to the equation @code{e}.  Informally, @code{to_poly}
-attempts to polynomialize the equation @var{e}; an example might
+attempts to polynomialize the equation @mvar{e}; an example might
 clarify:
 
 @example
@@ -1030,7 +1028,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} to_poly_solve (@var{e}, @var{l}, [options])
+@deffn {Function} to_poly_solve (@mvar{e}, @mvar{l}, [options])
 
 The function @code{to_poly_solve} tries to solve the equations @math{e}
 for the variables @math{l}.  The equation(s) @math{e} can either be a
@@ -1182,7 +1180,6 @@ generally, the order of these options does not matter.
 @itemize @bullet
 @item @code{simpfuncs = l}, where @code{l} is a list of functions.
 Apply the composition of the members of l to each solution.
-@end itemize
 
 @example
 (%i1) to_poly_solve(x^2=%i,x);
@@ -1194,9 +1191,7 @@ Apply the composition of the members of l to each solution.
                     sqrt(2)   sqrt(2)        sqrt(2)   sqrt(2)
 @end example
 
-@itemize
 Sometimes additional simplification can revert a simplification; for example
-@end itemize
 
 @example
 (%i3) to_poly_solve(x^2=1,x);
@@ -1206,19 +1201,15 @@ Sometimes additional simplification can revert a simplification; for example
 (%o4)            %union([x = 1], [x = %e      ]
 @end example
 
-@itemize
 Maxima doesn't try to check that each member of the function list @code{l} is
 purely a simplification; thus
-@end itemize
 
 @example
 (%i5) to_poly_solve(x^2 = %i,x, 'simpfuncs = [lambda([s],s^2)]);
 (%o5)                   %union([x = %i])
 @end example
 
-@itemize
 To convert each solution to a double float, use @code{simpfunc = ['dfloat]}:
-@end itemize
 
 @example
 (%i6) to_poly_solve(x^3 +x + 1 = 0,x, 
@@ -1228,13 +1219,11 @@ To convert each solution to a double float, use @code{simpfunc = ['dfloat]}:
 [x = 1.161541399997251 %i + .3411639019140089])
 @end example
 
-@itemize @bullet
 @item @code{use_grobner = true} With this option, the function
 @code{poly_reduced_grobner} is applied to the equations before
 attempting their solution.  Primarily, this option provides a workaround
 for weakness in the function @code{algsys}.  Here is an example of
 such a workaround:
-@end itemize
 
 @example
 (%i7) to_poly_solve([x^2+y^2=2^2,(x-1)^2+(y-1)^2=2^2],[x,y],
@@ -1251,12 +1240,10 @@ such a workaround:
 (%o8)                       %union()
 @end example
 
-@itemize @bullet
 @item @code{maxdepth = k}, where @code{k} is a positive integer.  This
 function controls the maximum recursion depth for the solver.  The
 default value for @code{maxdepth} is five.  When the recursions depth is
 exceeded, the solver signals an error:
-@end itemize
 
 @example
 (%i9) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
@@ -1266,11 +1253,9 @@ Unable to solve
 (%o9)        %solve([cos(x) = x], [x], maxdepth = 2)
 @end example
 
-@itemize @bullet
 @item @code{parameters = l}, where @code{l} is a list of symbols.  The solver
 attempts to return a solution that is valid for all members of the list
 @code{l}; for example:
-@end itemize
 
 @example
 (%i10) to_poly_solve(a * x = x, x);
@@ -1280,16 +1265,15 @@ attempts to return a solution that is valid for all members of the list
                                %if(a - 1 # 0, [x = 0], %union()))
 @end example
 
-@itemize
 In @code{(%o2)}, the solver introduced a dummy variable; to re-index the
 these dummy variables, use the function @code{nicedummies}:
-@end itemize
 
 @example
 (%i12) nicedummies(%);
 (%o12) %union(%if(a - 1 = 0, [x = %c0], %union()), 
                                %if(a - 1 # 0, [x = 0], %union()))
 @end example
+@end itemize
 
 The @code{to_poly_solve} uses data stored in the hashed array
 @code{one_to_one_reduce} to solve equations of the form @math{f(a) =
@@ -1372,7 +1356,6 @@ appends the conjugate equations; for example
 @item For an equation that involves the absolute value function, the
 @code{to_poly_solve} consults the fact database to decide if the
 argument to the absolute value is complex valued.  When
-@end itemize
 
 @example
 (%i1) to_poly_solve(abs(x) = 6, x);
@@ -1384,7 +1367,6 @@ argument to the absolute value is complex valued.  When
                                        0), [z = %c11], %union()))
 @end example
 
-@itemize
 @i{This is the only situation that the solver consults the fact database.  If
 a solve variable is declared to be an integer, for example, @code{to_poly_solve}
 ignores this declaration}.

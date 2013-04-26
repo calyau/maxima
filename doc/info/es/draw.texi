@@ -39,7 +39,7 @@ Se necesita tener instalado Gnuplot 4.2 o superior para ejecutar este paquete.
 
 
 
-@deffn {Constructor de escena} gr2d (@var{Opci@'on gr@'afica}, ..., @var{graphic_object}, ...)
+@deffn {Constructor de escena} gr2d (@mvar{Opci@'on gr@'afica}, ..., @mvar{graphic_object}, ...)
 
 La funci@'on @code{gr2d} construye un objeto que describe una escena 2d. Los
 argumentos son @i{opciones gr@'aficas} y @i{objetos gr@'aficos}
@@ -60,7 +60,7 @@ Para utilizar este objecto, ejec@'utese primero @code{load(draw)}.
 @end deffn
 
 
-@deffn {Constructor de escena} gr3d (@var{Opci@'on gr@'afica}, ..., @var{graphic_object}, ...)
+@deffn {Constructor de escena} gr3d (@mvar{Opci@'on gr@'afica}, ..., @mvar{graphic_object}, ...)
 
 La funci@'on @code{gr3d} construye un objeto que describe una escena 3d. Los
 argumentos son @i{opciones gr@'aficas} y @i{objetos gr@'aficos}
@@ -90,7 +90,7 @@ Para utilizar este objeto, ejec@'utese primero @code{load(draw)}.
 
 
 
-@deffn {Funci@'on} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+@deffn {Funci@'on} draw (@mvar{gr2d}, ..., @mvar{gr3d}, ..., @mvar{options}, ...)
 
 Representa gr@'aficamente una serie de escenas; sus argumentos son objetos
 @code{gr2d} y/o @code{gr3d}, junto con algunas opciones, o listas de escenas y opciones.
@@ -148,10 +148,10 @@ V@'eanse tambi@'en @code{gr2d}, @code{gr3d}, @code{draw2d} y @code{draw3d}.
 
 
 
-@deffn {Funci@'on} draw2d (@var{option}, @var{graphic_object}, ...)
+@deffn {Funci@'on} draw2d (@mvar{option}, @mvar{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr2d(@mvar{options}, ..., @mvar{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 2d.
 
@@ -161,10 +161,10 @@ V@'eanse tambi@'en @code{draw} y @code{gr2d}.
 @end deffn
 
 
-@deffn {Funci@'on} draw3d (@var{option}, @var{graphic_object}, ...)
+@deffn {Funci@'on} draw3d (@mvar{option}, @mvar{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr3d(@mvar{options}, ..., @mvar{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 3d.
 
@@ -175,7 +175,7 @@ V@'eanse tambi@'en @code{draw} y @code{gr3d}.
 
 
 
-@deffn {Funci@'on} draw_file (@var{Opci@'on gr@'afica}, ..., @var{Opci@'on gr@'afica}, ...)
+@deffn {Funci@'on} draw_file (@mvar{Opci@'on gr@'afica}, ..., @mvar{Opci@'on gr@'afica}, ...)
 
 Almacena el gr@'afico actual en un fichero. Las opciones gr@'aficas que
 acepta son: @code{terminal}, @code{dimensions},
@@ -196,10 +196,10 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} multiplot_mode (@var{term})
+@deffn {Funci@'on} multiplot_mode (@mvar{term})
 
 Esta funci@'on permite a Maxima trabajar en modo de gr@'aficos m@'ultiples en
-una sola ventana del terminal @var{term}; argumentos v@'alidos para esta funci@'on 
+una sola ventana del terminal @mvar{term}; argumentos v@'alidos para esta funci@'on 
 son @code{screen}, @code{wxt}, @code{aquaterm} y @code{none}.
 
 Cuando el modo de gr@'aficos m@'ultiples est@'a activo, cada llamada a @code{draw}
@@ -233,7 +233,7 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} set_draw_defaults (@var{Opci@'on gr@'afica}, ..., @var{Opci@'on gr@'afica}, ...)
+@deffn {Funci@'on} set_draw_defaults (@mvar{Opci@'on gr@'afica}, ..., @mvar{Opci@'on gr@'afica}, ...)
 
 Establece las opciones gr@'aficas de usuario. Esta funci@'on es @'util 
 para dibujar varios gr@'aficos con las mismas opciones. Llamando
@@ -328,7 +328,7 @@ V@'ease tambi@'en la opci@'on @code{columns}.
 @defvr {Opci@'on gr@'afica} axis_3d
 Valor por defecto: @code{true}
 
-Cuando @code{axis_3d} vale @code{true}, los ejes @var{x}, @var{y} y @var{z}
+Cuando @code{axis_3d} vale @code{true}, los ejes @mvar{x}, @mvar{y} y @mvar{z}
 permanecen visibles en las escenas 3d.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -722,8 +722,8 @@ positivo, una lista de tres n@'umeros o un conjunto num@'erico arbitrario:
 
 @itemize @bullet
 @item
-Si a @code{contour_levels} se le asigna un entero positivo @var{n},
-entonces se dibujar@'an @var{n} l@'{@dotless{i}}neas de nivel a intervalos
+Si a @code{contour_levels} se le asigna un entero positivo @mvar{n},
+entonces se dibujar@'an @mvar{n} l@'{@dotless{i}}neas de nivel a intervalos
 iguales. Por defecto, se dibuja@'an cinco isol@'{@dotless{i}}neas.
 
 @item
@@ -1328,7 +1328,7 @@ V@'ease tambi@'en @code{data_file_name}.
 Valor por defecto: @code{false}
 
 Cuando @code{grid} vale @code{true}, se dibujar@'a una rejilla sobre el
-plano @var{xy}.
+plano @mvar{xy}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -1415,7 +1415,7 @@ V@'eanse tambi@'en @code{head_length}, @code{head_angle} y @code{head_type}.
 @defvr {Opci@'on gr@'afica} head_length
 Valor por defecto: 2
 
-@code{head_length} indica, en las unidades del eje @var{x}, la
+@code{head_length} indica, en las unidades del eje @mvar{x}, la
 longitud de las flechas de los vectores.
 
 Esta opci@'on s@'olo es relevante para objetos de tipo @code{vector}.
@@ -1693,7 +1693,7 @@ V@'eanse tambi@'en @code{enhanced3d}, @code{colorbox} y @code{cbrange}.
 @defvr {Opci@'on gr@'afica} logx
 Valor por defecto: @code{false}
 
-Cuando @code{logx} vale @code{true}, el eje @var{x} se dibuja
+Cuando @code{logx} vale @code{true}, el eje @mvar{x} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -1715,7 +1715,7 @@ V@'eanse tambi@'en @code{logy} y @code{logz}.
 @defvr {Opci@'on gr@'afica} logy
 Valor por defecto: @code{false}
 
-Cuando @code{logy} vale @code{true}, el eje @var{y} se dibuja
+Cuando @code{logy} vale @code{true}, el eje @mvar{y} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -1737,7 +1737,7 @@ V@'eanse tambi@'en @code{logx} y @code{logz}.
 @defvr {Opci@'on gr@'afica} logz
 Valor por defecto: @code{false}
 
-Cuando @code{logz} vale @code{true}, el eje @var{z} se dibuja
+Cuando @code{logz} vale @code{true}, el eje @mvar{z} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2335,8 +2335,8 @@ Valor por defecto: @code{[60,30]}
 
 Un par de @'angulos, medidos en grados, indicando la dirección del 
 observador en una escena 3D. El primer @'angulo es la rotaci@'on 
-vertical alrededor del eje @var{x}, dentro del intervalo @math{[0, 360]}.
-El segundo es la rotaci@'on horizontal alrededor del eje @var{z}, dentro
+vertical alrededor del eje @mvar{x}, dentro del intervalo @math{[0, 360]}.
+El segundo es la rotaci@'on horizontal alrededor del eje @mvar{z}, dentro
 del intervalo @math{[0, 360]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2392,7 +2392,7 @@ del objeto gr@'afico @code{region}.
 @defvr {Opci@'on gr@'afica} xaxis
 Valor por defecto: @code{false}
 
-Si @code{xaxis} vale @code{true}, se dibujar@'a el eje @var{x}.
+Si @code{xaxis} vale @code{true}, se dibujar@'a el eje @mvar{x}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -2415,7 +2415,7 @@ V@'eanse tambi@'en @code{xaxis_width}, @code{xaxis_type} y @code{xaxis_color}.
 @defvr {Opci@'on gr@'afica} xaxis_color
 Valor por defecto: @code{"black"}
 
-@code{xaxis_color} especifica el color para el eje @var{x}. V@'ease
+@code{xaxis_color} especifica el color para el eje @mvar{x}. V@'ease
 @code{color} para ver c@'omo se definen los colores.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2440,7 +2440,7 @@ V@'eanse tambi@'en @code{xaxis}, @code{xaxis_width} y @code{xaxis_type}.
 Valor por defecto: @code{false}
 
 Si @code{xaxis_secondary} vale @code{true}, los valores de las funciones se pueden representar
-respecto del eje @var{x} secundario, el cual se dibuja en la parte superior de la escena.
+respecto del eje @mvar{x} secundario, el cual se dibuja en la parte superior de la escena.
 
 N@'otese que esta es una opci@'on gr@'afica local que s@'olo afecta a objetos 2d.
 
@@ -2469,7 +2469,7 @@ V@'eanse tambi@'en @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_
 @defvr {Opci@'on gr@'afica} xaxis_type
 Valor por defecto: @code{dots}
 
-@code{xaxis_type} indica c@'omo se debe dibujar el eje @var{x}; 
+@code{xaxis_type} indica c@'omo se debe dibujar el eje @mvar{x}; 
 valores admisibles son @code{solid} y @code{dots}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2493,7 +2493,7 @@ V@'eanse tambi@'en @code{xaxis}, @code{xaxis_width} y @code{xaxis_color}.
 @defvr {Opci@'on gr@'afica} xaxis_width
 Valor por defecto: 1
 
-@code{xaxis_width} es el ancho del eje @var{x}.
+@code{xaxis_width} es el ancho del eje @mvar{x}.
 Su valor debe ser un n@'umero positivo.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2518,7 +2518,7 @@ V@'eanse tambi@'en @code{xaxis}, @code{xaxis_type} y @code{xaxis_color}.
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
 La opci@'on @code{xlabel} almacena una cadena con la
-etiqueta del eje @var{x}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @mvar{x}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -2541,10 +2541,10 @@ V@'eanse tambi@'en @code{ylabel} y @code{zlabel}.
 @defvr {Opci@'on gr@'afica} xrange
 Valor por defecto: @code{auto}
 
-Cuando @code{xrange} vale @code{auto}, el rango de la coordenada @var{x}
+Cuando @code{xrange} vale @code{auto}, el rango de la coordenada @mvar{x}
 se calcula de forma autom@'atica.
 
-Si el usuario quiere especificar un intervalo para @var{x}, @'este debe
+Si el usuario quiere especificar un intervalo para @mvar{x}, @'este debe
 expresarse como una lista de Maxima, como en @code{xrange=[-2, 3]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2567,10 +2567,10 @@ V@'eanse tambi@'en @code{yrange} y @code{zrange}.
 @defvr {Opci@'on gr@'afica} xrange_secondary
 Valor por defecto: @code{auto}
 
-Cuando @code{xrange_secondary} vale @code{auto}, el rango del eje @var{x}
+Cuando @code{xrange_secondary} vale @code{auto}, el rango del eje @mvar{x}
 secundario se calcula de forma autom@'atica.
 
-Si el usuario quiere especificar un intervalo para el eje @var{x} secundario, @'este debe
+Si el usuario quiere especificar un intervalo para el eje @mvar{x} secundario, @'este debe
 expresarse como una lista de Maxima, como en @code{xrange_secondary=[-2, 3]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2586,15 +2586,15 @@ V@'eanse tambi@'en @code{xrange}, @code{yrange}, @code{zrange} y @code{yrange_se
 Valor por defecto: @code{auto}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
-del eje @var{x}.
+del eje @mvar{x}.
 
 @itemize @bullet
 @item
-Cuando a @code{xtics} se le da el valor @var{auto}, las marcas se dibujar@'an de
+Cuando a @code{xtics} se le da el valor @mvar{auto}, las marcas se dibujar@'an de
 forma autom@'atica.
 
 @item
-Cuando a @code{xtics} se le da el valor @var{none}, no habr@'a marcas en los ejes.
+Cuando a @code{xtics} se le da el valor @mvar{none}, no habr@'a marcas en los ejes.
 
 @item
 Cuando a @code{xtics} se le da un valor num@'erico positivo, se interpretar@'a como la
@@ -2664,7 +2664,7 @@ Marcas etiquetadas.
 Valor por defecto: @code{false}
 
 Si @code{xtics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
-el propio eje @var{x}, si vale @code{false} las marcas se colocan a lo largo del borde
+el propio eje @mvar{x}, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2676,7 +2676,7 @@ descripci@'on de la escena no reviste importancia.
 @defvr {Opci@'on gr@'afica} xtics_rotate
 Valor por defecto: @code{false}
 
-Si @code{xtics_rotate} vale @code{true}, las marcas del eje @var{x} se giran 
+Si @code{xtics_rotate} vale @code{true}, las marcas del eje @mvar{x} se giran 
 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2688,7 +2688,7 @@ descripci@'on de la escena no reviste importancia.
 @defvr {Opci@'on gr@'afica} xtics_rotate_secondary
 Valor por defecto: @code{false}
 
-Si @code{xtics_rotate_secondary} vale @code{true}, las marcas del eje @var{x} 
+Si @code{xtics_rotate_secondary} vale @code{true}, las marcas del eje @mvar{x} 
 secundario se giran 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2701,7 +2701,7 @@ descripci@'on de la escena no reviste importancia.
 Valor por defecto: @code{auto}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
-del eje @var{x} secundario.
+del eje @mvar{x} secundario.
 
 V@'ease @code{xtics} para una descripci@'on completa.
 @end defvr
@@ -2712,7 +2712,7 @@ V@'ease @code{xtics} para una descripci@'on completa.
 Valor por defecto: @code{false}
 
 Si @code{xtics_secondary_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
-el propio eje @var{x} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
+el propio eje @mvar{x} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2769,7 +2769,7 @@ Valor por defecto: @code{false}
 
 Coloca el plano-xy en escenas 3D. Si @code{xyplane} vale @code{false},
 el plano-xy se coloca autom@'aticamente; en cambio, si toma un
-valor real, el plano-xy intersectar@'a con el eje @var{z} a ese nivel.
+valor real, el plano-xy intersectar@'a con el eje @mvar{z} a ese nivel.
 Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2802,7 +2802,7 @@ del objeto gr@'afico @code{region}.
 @defvr {Opci@'on gr@'afica} yaxis
 Valor por defecto: @code{false}
 
-Si @code{yaxis} vale @code{true}, se dibujar@'a el eje @var{y}.
+Si @code{yaxis} vale @code{true}, se dibujar@'a el eje @mvar{y}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -2824,7 +2824,7 @@ V@'eanse tambi@'en @code{yaxis_width}, @code{yaxis_type} y @code{yaxis_color}.
 @defvr {Opci@'on gr@'afica} yaxis_color
 Valor por defecto: @code{"black"}
 
-@code{yaxis_color} especifica el color para el eje @var{y}. V@'ease
+@code{yaxis_color} especifica el color para el eje @mvar{y}. V@'ease
 @code{color} para ver c@'omo se definen los colores.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2849,7 +2849,7 @@ V@'eanse tambi@'en @code{yaxis}, @code{yaxis_width} y @code{yaxis_type}.
 Valor por defecto: @code{false}
 
 Si @code{yaxis_secondary} vale @code{true}, los valores de las funciones se pueden representar
-respecto del eje @var{y} secundario, el cual se dibuja al lado derecho de la escena.
+respecto del eje @mvar{y} secundario, el cual se dibuja al lado derecho de la escena.
 
 N@'otese que esta es una opci@'on gr@'afica local que s@'olo afecta a objetos 2d.
 
@@ -2876,7 +2876,7 @@ y @code{ytics_axis_secondary}.
 @defvr {Opci@'on gr@'afica} yaxis_type
 Valor por defecto: @code{dots}
 
-@code{yaxis_type} indica c@'omo se debe dibujar el eje @var{y}; 
+@code{yaxis_type} indica c@'omo se debe dibujar el eje @mvar{y}; 
 valores admisibles son @code{solid} y @code{dots}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2900,7 +2900,7 @@ V@'eanse tambi@'en @code{yaxis}, @code{yaxis_width} y @code{yaxis_color}.
 @defvr {Opci@'on gr@'afica} yaxis_width
 Valor por defecto: 1
 
-@code{yaxis_width} es el ancho del eje @var{y}.
+@code{yaxis_width} es el ancho del eje @mvar{y}.
 Su valor debe ser un n@'umero positivo.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2925,7 +2925,7 @@ V@'eanse tambi@'en @code{yaxis}, @code{yaxis_type} y @code{yaxis_color}.
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
 La opci@'on @code{ylabel} almacena una cadena con la
-etiqueta del eje @var{y}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @mvar{y}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -2948,10 +2948,10 @@ V@'eanse tambi@'en @code{xlabel} y @code{zlabel}.
 @defvr {Opci@'on gr@'afica} yrange
 Valor por defecto: @code{auto}
 
-Cuando @code{yrange} vale @code{auto}, el rango de la coordenada @var{y}
+Cuando @code{yrange} vale @code{auto}, el rango de la coordenada @mvar{y}
 se calcula de forma autom@'atica.
 
-Si el usuario quiere especificar un intervalo para @var{y}, @'este debe
+Si el usuario quiere especificar un intervalo para @mvar{y}, @'este debe
 expresarse como una lista de Maxima, como en @code{yrange=[-2, 3]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -2974,10 +2974,10 @@ V@'eanse tambi@'en @code{xrange} y @code{zrange}.
 @defvr {Opci@'on gr@'afica} yrange_secondary
 Valor por defecto: @code{auto}
 
-Cuando @code{yrange_secondary} vale @code{auto}, el rango del eje @var{y}
+Cuando @code{yrange_secondary} vale @code{auto}, el rango del eje @mvar{y}
 secundario se calcula de forma autom@'atica.
 
-Si el usuario quiere especificar un intervalo para el eje @var{y} secundario, @'este debe
+Si el usuario quiere especificar un intervalo para el eje @mvar{y} secundario, @'este debe
 expresarse como una lista de Maxima, como en @code{yrange_secondary=[-2, 3]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3007,7 +3007,7 @@ V@'eanse tambi@'en @code{xrange}, @code{yrange} y @code{zrange}.
 Valor por defecto: @code{auto}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
-del eje @var{y}.
+del eje @mvar{y}.
 
 V@'ease @code{xtics} para una descripci@'on completa.
 @end defvr
@@ -3019,7 +3019,7 @@ V@'ease @code{xtics} para una descripci@'on completa.
 Valor por defecto: @code{false}
 
 Si @code{ytics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
-el propio eje @var{y}, si vale @code{false} las marcas se colocan a lo largo del borde
+el propio eje @mvar{y}, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3032,7 +3032,7 @@ descripci@'on de la escena no reviste importancia.
 @defvr {Opci@'on gr@'afica} ytics_rotate
 Valor por defecto: @code{false}
 
-Si @code{ytics_rotate} vale @code{true}, las marcas del eje @var{y} se giran 
+Si @code{ytics_rotate} vale @code{true}, las marcas del eje @mvar{y} se giran 
 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3045,7 +3045,7 @@ descripci@'on de la escena no reviste importancia.
 @defvr {Opci@'on gr@'afica} ytics_rotate_secondary
 Valor por defecto: @code{false}
 
-Si @code{ytics_rotate_secondary} vale @code{true}, las marcas del eje @var{y} 
+Si @code{ytics_rotate_secondary} vale @code{true}, las marcas del eje @mvar{y} 
 secundario se giran 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3059,7 +3059,7 @@ descripci@'on de la escena no reviste importancia.
 Valor por defecto: @code{auto}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
-del eje @var{y} secundario.
+del eje @mvar{y} secundario.
 
 V@'ease @code{xtics} para una descripci@'on completa.
 @end defvr
@@ -3071,7 +3071,7 @@ V@'ease @code{xtics} para una descripci@'on completa.
 Valor por defecto: @code{false}
 
 Si @code{ytics_secondary_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
-el propio eje @var{y} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
+el propio eje @mvar{y} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3123,7 +3123,7 @@ por el algoritmo @i{marching cubes} implementado por el objeto
 @defvr {Opci@'on gr@'afica} zaxis
 Valor por defecto: @code{false}
 
-Si @code{zaxis} vale @code{true}, se dibujar@'a el eje @var{z} en
+Si @code{zaxis} vale @code{true}, se dibujar@'a el eje @mvar{z} en
 escenas 3D. Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3149,7 +3149,7 @@ V@'eanse tambi@'en @code{zaxis_width}, @code{zaxis_type} y @code{zaxis_color}.
 @defvr {Opci@'on gr@'afica} zaxis_color
 Valor por defecto: @code{"black"}
 
-@code{zaxis_color} especifica el color para el eje @var{z}. V@'ease
+@code{zaxis_color} especifica el color para el eje @mvar{z}. V@'ease
 @code{color} para ver c@'omo se definen los colores.
 Esta opci@'on no tiene efecto alguno en escenas 2D.
 
@@ -3175,7 +3175,7 @@ V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_type}.
 @defvr {Opci@'on gr@'afica} zaxis_type
 Valor por defecto: @code{dots}
 
-@code{zaxis_type} indica c@'omo se debe dibujar el eje @var{z}; 
+@code{zaxis_type} indica c@'omo se debe dibujar el eje @mvar{z}; 
 valores admisibles son @code{solid} y @code{dots}.
 Esta opci@'on no tiene efecto alguno en escenas 2D.
 
@@ -3201,7 +3201,7 @@ V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_color}.
 @defvr {Opci@'on gr@'afica} zaxis_width
 Valor por defecto: 1
 
-@code{zaxis_width} es el ancho del eje @var{z}.
+@code{zaxis_width} es el ancho del eje @mvar{z}.
 Su valor debe ser un n@'umero positivo. Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3228,7 +3228,7 @@ V@'eanse tambi@'en @code{zaxis}, @code{zaxis_type} y @code{zaxis_color}.
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
 La opci@'on @code{zlabel} almacena una cadena con la
-etiqueta del eje @var{z}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @mvar{z}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -3253,10 +3253,10 @@ V@'eanse tambi@'en @code{xlabel} y @code{ylabel}.
 @defvr {Opci@'on gr@'afica} zrange
 Valor por defecto: @code{auto}
 
-Cuando @code{zrange} vale @code{auto}, el rango de la coordenada @var{z}
+Cuando @code{zrange} vale @code{auto}, el rango de la coordenada @mvar{z}
 se calcula de forma autom@'atica.
 
-Si el usuario quiere especificar un intervalo para @var{z}, @'este debe
+Si el usuario quiere especificar un intervalo para @mvar{z}, @'este debe
 expresarse como una lista de Maxima, como en @code{zrange=[-2, 3]}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3282,7 +3282,7 @@ V@'eanse tambi@'en @code{xrange} y @code{yrange}.
 Valor por defecto: @code{auto}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
-del eje @var{z}.
+del eje @mvar{z}.
 
 V@'ease @code{xtics} para una descripci@'on completa.
 @end defvr
@@ -3295,7 +3295,7 @@ V@'ease @code{xtics} para una descripci@'on completa.
 Valor por defecto: @code{false}
 
 Si @code{ztics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
-el propio eje @var{z}, si vale @code{false} las marcas se colocan a lo largo del borde
+el propio eje @mvar{z}, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3309,7 +3309,7 @@ descripci@'on de la escena no reviste importancia.
 @defvr {Opci@'on gr@'afica} ztics_rotate
 Valor por defecto: @code{false}
 
-Si @code{ztics_rotate} vale @code{true}, las marcas del eje @var{z} se giran 
+Si @code{ztics_rotate} vale @code{true}, las marcas del eje @mvar{z} se giran 
 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -3323,14 +3323,14 @@ descripci@'on de la escena no reviste importancia.
 
 
 
-@deffn  {Objeto gr@'afico} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+@deffn  {Objeto gr@'afico} bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])
 Dibuja barras verticales en 2D.
 
 @b{2D}
 
-@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
-dibuja barras centradas en los valores @var{x1}, @var{x2}, ... de alturas @var{h1}, @var{h2}, ...
-y anchos @var{w1}, @var{w2}, ...
+@code{bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])} 
+dibuja barras centradas en los valores @mvar{x1}, @mvar{x2}, ... de alturas @mvar{h1}, @mvar{h2}, ...
+y anchos @mvar{w1}, @mvar{w2}, ...
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{key}, 
 @code{fill_color}, @code{fill_density} y @code{line_width}.
@@ -3358,15 +3358,15 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+@deffn  {Objeto gr@'afico} cylindrical (@mvar{radius},@mvar{z},@mvar{minz},@mvar{maxz},@mvar{azi},@mvar{minazi},@mvar{maxazi})
 Dibuja funciones 3D definidas en coordenadas cil@'{@dotless{i}}ndricas.
 
 @b{3D}
 
-@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
-dibuja la funci@'on @code{@var{radius}(@var{z},@var{azi})} definida en coordenadas cil@'{@dotless{i}}ndricas, con la variable
-@var{z} tomando valores desde @var{minz} hasta @var{maxz} y el @i{azimut} @var{azi} tomando valores desde
-@var{minazi} hasta @var{maxazi}.
+@code{cylindrical (@mvar{radius},@mvar{z},@mvar{minz},@mvar{maxz},@mvar{azi},@mvar{minazi},@mvar{maxazi})}
+dibuja la funci@'on @code{@mvar{radius}(@mvar{z},@mvar{azi})} definida en coordenadas cil@'{@dotless{i}}ndricas, con la variable
+@mvar{z} tomando valores desde @mvar{minz} hasta @mvar{maxz} y el @i{azimut} @mvar{azi} tomando valores desde
+@mvar{minazi} hasta @mvar{maxazi}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{color}.
@@ -3382,10 +3382,10 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
-Dibuja la matriz @var{mat} en 3D. Los valores @var{z} se toman de @var{mat},
-las abscisas van desde @var{x0} hasta @math{@var{x0} + @var{width}}
-y las ordenadas desde @var{y0} hasta @math{@var{y0} + @var{height}}. El elemento @math{a(1,1)}
+@deffn  {Objeto gr@'afico} elevation_grid (@mvar{mat},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
+Dibuja la matriz @mvar{mat} en 3D. Los valores @mvar{z} se toman de @mvar{mat},
+las abscisas van desde @mvar{x0} hasta @math{@mvar{x0} + @mvar{width}}
+y las ordenadas desde @mvar{y0} hasta @math{@mvar{y0} + @mvar{height}}. El elemento @math{a(1,1)}
 se proyecta sobre el punto @math{(x0,y0+height)}, @math{a(1,n)} sobre @math{(x0+width,y0+height)},
 @math{a(m,1)} sobre @math{(x0,y0)} y @math{a(m,n)} sobre @math{(x0+width,y0)}.
 
@@ -3416,16 +3416,16 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+@deffn  {Objeto gr@'afico} ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})
 Dibuja elipses y c@'{@dotless{i}}rculos en 2D.
 
 
 @b{2D}
 
-@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
-dibuja una elipse de centro @code{[@var{xc}, @var{yc}]} con semiejes horizontal y vertical
-@var{a} y @var{b}, respectivamente, comenzando en el @'angulo @var{ang1} y trazando un arco
-de amplitud igual al @'angulo @var{ang2}.
+@code{ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})}
+dibuja una elipse de centro @code{[@mvar{xc}, @mvar{yc}]} con semiejes horizontal y vertical
+@mvar{a} y @mvar{b}, respectivamente, comenzando en el @'angulo @mvar{ang1} y trazando un arco
+de amplitud igual al @'angulo @mvar{ang2}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
@@ -3453,7 +3453,7 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} errors ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffn  {Objeto gr@'afico} errors ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
 Dibuja puntos con barras de error asociadas horizontales, verticales o de
 ambos tipos, seg@'un sea el valor de la opci@'on @code{error_type}.
 
@@ -3499,14 +3499,14 @@ Barras de error horizontales y verticales.
 
 
 
-@deffn  {Objeto gr@'afico} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {Objeto gr@'afico} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {Objeto gr@'afico} explicit (@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})
+@deffnx {Objeto gr@'afico} explicit (@mvar{fcn},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})
 Dibuja funciones expl@'{@dotless{i}}citas en 2D y 3D.
 
 @b{2D}
 
-@code{explicit (@var{fcn},@var{var},@var{minval},@var{maxval})} dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn},
-con la variable @var{var} tomando valores desde @var{minval} hasta @var{maxval}.
+@code{explicit (@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})} dibuja la funci@'on expl@'{@dotless{i}}cita @mvar{fcn},
+con la variable @mvar{var} tomando valores desde @mvar{minval} hasta @mvar{maxval}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{adapt_depth}, @code{draw_realpart}, @code{line_width}, @code{line_type}, @code{key}, 
@@ -3526,10 +3526,10 @@ Ejemplo:
 
 @b{3D}
 
-@code{explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
-dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn}, con la variable 
-@code{var1} tomando valores desde @var{minval1} hasta @var{maxval1} y 
-la variable @var{var2} tomando valores desde @var{minval2} hasta @var{maxval2}.
+@code{explicit (@mvar{fcn},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})}
+dibuja la funci@'on expl@'{@dotless{i}}cita @mvar{fcn}, con la variable 
+@code{var1} tomando valores desde @mvar{minval1} hasta @mvar{maxval1} y 
+la variable @mvar{var2} tomando valores desde @mvar{minval2} hasta @mvar{maxval2}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}
@@ -3555,18 +3555,18 @@ V@'ease tambi@'en @code{filled_func} para el relleno de curvas.
 
 
 
-@deffn  {Objeto gr@'afico} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+@deffn  {Objeto gr@'afico} image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
 Reproduce una imagen en 2D.
 
 @b{2D}
 
-@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})}:
-dibuja la imagen @var{im} en la regi@'on rectangular desde el v@'ertice @var{(@var{x0},@var{y0})}
-hasta el @code{(x0+@var{width},y0+@var{height})} del plano real. El argumento @var{im} debe ser una
+@code{image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})}:
+dibuja la imagen @mvar{im} en la regi@'on rectangular desde el v@'ertice @mvar{(@mvar{x0},@mvar{y0})}
+hasta el @code{(x0+@mvar{width},y0+@mvar{height})} del plano real. El argumento @mvar{im} debe ser una
 matriz de n@'umeros reales, una matriz de vectores de longitud tres o un objeto
 de tipo @code{picture}.
 
-Si @var{im} es una matriz de n@'umeros reales, los valores de los
+Si @mvar{im} es una matriz de n@'umeros reales, los valores de los
 p@'{@dotless{i}}xeles se interpretan seg@'un indique la opci@'on
 gr@'afica @code{palette}, que es un vector de longitud tres con sus componentes tomando
 valores enteros en el rango desde -36 a +36; cada valor es un 
@@ -3594,12 +3594,12 @@ de las componentes crom@'aticas.
 @code{palette = gray} y @code{palette = color} son atajos para
 @code{palette = [3,3,3]} y @code{palette = [7,5,15]}, respectivamente.
 
-Si @var{im} es una matriz de vectores de longitud tres, @'estos se
+Si @mvar{im} es una matriz de vectores de longitud tres, @'estos se
 interpretar@'an como las componentes crom@'aticas rojo, verde y azul.
 
 Ejemplos:
 
-Si @var{im} es una matriz de n@'umeros reales, los valores de los
+Si @mvar{im} es una matriz de n@'umeros reales, los valores de los
 p@'{@dotless{i}}xeles se interpretan seg@'un indique la opci@'on
 gr@'afica @code{palette}.
 @example
@@ -3617,7 +3617,7 @@ gr@'afica @code{palette}.
 
 V@'ease tambi@'en @code{colorbox}.
 
-Si @var{im} es una matriz de vectores de longitud tres, @'estos se
+Si @mvar{im} es una matriz de vectores de longitud tres, @'estos se
 interpretar@'an como las componentes crom@'aticas rojo, verde y azul.
 @example
 (%i1) load(draw)$
@@ -3661,16 +3661,16 @@ se encuentran ejemplos m@'as elaborados.
 
 
 
-@deffn  {Objeto gr@'afico} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
-@deffnx {Objeto gr@'afico} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+@deffn  {Objeto gr@'afico} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})
+@deffnx {Objeto gr@'afico} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax},@mvar{z},@mvar{zmin},@mvar{zmax})
 Dibuja funciones impl@'{@dotless{i}}citas en 2D y 3D.
 
 @b{2D}
 
-@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
-dibuja la funci@'on impl@'{@dotless{i}}cita @var{fcn}, con la variable
-@code{x} tomando valores desde @var{xmin} hasta @var{xmax},
-y la variable @var{y} tomando valores desde @var{ymin} hasta @var{ymax}.
+@code{implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})}
+dibuja la funci@'on impl@'{@dotless{i}}cita @mvar{fcn}, con la variable
+@code{x} tomando valores desde @mvar{xmin} hasta @mvar{xmax},
+y la variable @mvar{y} tomando valores desde @mvar{ymin} hasta @mvar{ymax}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
@@ -3692,11 +3692,11 @@ Ejemplo:
 
 @b{3D}
 
-@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
-dibuja la funci@'on impl@'{@dotless{i}}cita @var{fcn}, con la variable @var{x} 
-tomando valores desde @var{xmin} hasta @var{xmax}, la variable @var{y} tomando 
-valores desde @var{ymin} hasta @var{ymax} y la variable @var{z} tomando 
-valores desde @var{zmin} hasta @var{zmax}. Este objeto est@'a programado con el 
+@code{implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax}, @mvar{y},@mvar{ymin},@mvar{ymax}, @mvar{z},@mvar{zmin},@mvar{zmax})}
+dibuja la funci@'on impl@'{@dotless{i}}cita @mvar{fcn}, con la variable @mvar{x} 
+tomando valores desde @mvar{xmin} hasta @mvar{xmax}, la variable @mvar{y} tomando 
+valores desde @mvar{ymin} hasta @mvar{ymax} y la variable @mvar{z} tomando 
+valores desde @mvar{zmin} hasta @mvar{zmax}. Este objeto est@'a programado con el 
 algoritmo @i{marching cubes}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{x_voxel}, 
@@ -3719,8 +3719,8 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} label ([@var{string},@var{x},@var{y}],...)
-@deffnx {Objeto gr@'afico} label ([@var{string},@var{x},@var{y},@var{z}],...)
+@deffn  {Objeto gr@'afico} label ([@mvar{string},@mvar{x},@mvar{y}],...)
+@deffnx {Objeto gr@'afico} label ([@mvar{string},@mvar{x},@mvar{y},@mvar{z}],...)
 Escribe etiquetas en 2D y 3D.
 
 Las etiquetas coloreadas s@'olo trabajan con Gnuplot 4.3. Este es un fallo conocido del
@@ -3731,8 +3731,8 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{lab
 
 @b{2D}
 
-@code{label([@var{string},@var{x},@var{y}])} escribe la cadena de caracteres @var{string} 
-en el punto @code{[@var{x},@var{y}]}.
+@code{label([@mvar{string},@mvar{x},@mvar{y}])} escribe la cadena de caracteres @mvar{string} 
+en el punto @code{[@mvar{x},@mvar{y}]}.
 
 Ejemplo:
 
@@ -3750,8 +3750,8 @@ Ejemplo:
 
 @b{3D}
 
-@code{label([@var{string},@var{x},@var{y},@var{z}])} escribe la cadena de caracteres @var{string}
-en el punto @code{[@var{x},@var{y},@var{z}]}.
+@code{label([@mvar{string},@mvar{x},@mvar{y},@mvar{z}])} escribe la cadena de caracteres @mvar{string}
+en el punto @code{[@mvar{x},@mvar{y},@mvar{z}]}.
 
 Ejemplo:
 
@@ -3767,12 +3767,12 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} mesh (@var{fila_1},@var{fila_2},...)
+@deffn  {Objeto gr@'afico} mesh (@mvar{fila_1},@mvar{fila_2},...)
 Dibuja un enrejado cuadrangular en 3D.
 
 @b{3D}
 
-El argumento @var{fila_i} es una lista de @var{n} puntos en 3D de la forma
+El argumento @mvar{fila_i} es una lista de @mvar{n} puntos en 3D de la forma
 @code{[[x_i1,y_i1,z_i1], ...,[x_in,y_in,z_in]]}, siendo todas las filas de
 igual longitud. Todos estos puntos definen una superficie arbitraria en 3D.
 En cierto sentido, se trata de una generalizaci@'on del objeto @code{elevation_grid}.
@@ -3820,8 +3820,8 @@ Dos cuadril@'ateros.
 
 
 
-@deffn  {Objeto gr@'afico} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {Objeto gr@'afico} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+@deffn  {Objeto gr@'afico} parametric (@mvar{xfun},@mvar{yfun},@mvar{par},@mvar{parmin},@mvar{parmax})
+@deffnx {Objeto gr@'afico} parametric (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par},@mvar{parmin},@mvar{parmax})
 Dibuja funciones param@'etricas en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
@@ -3829,9 +3829,9 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nti
 
 @b{2D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} dibuja la funci@'on param@'etrica 
-@code{[@var{xfun},@var{yfun}]}, con el par@'ametro @var{par} tomando valores desde 
-@var{parmin} hasta @var{parmax}.
+@code{parametric (@mvar{xfun},@mvar{yfun},@mvar{par},@mvar{parmin},@mvar{parmax})} dibuja la funci@'on param@'etrica 
+@code{[@mvar{xfun},@mvar{yfun}]}, con el par@'ametro @mvar{par} tomando valores desde 
+@mvar{parmin} hasta @mvar{parmax}.
 
 Ejemplo:
 
@@ -3845,9 +3845,9 @@ Ejemplo:
 
 @b{3D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} 
-dibuja la curva param@'etrica @code{[@var{xfun},@var{yfun},@var{zfun}]}, con el par@'ametro
-@var{par} tomando valores desde @var{parmin} hasta @var{parmax}.
+@code{parametric (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par},@mvar{parmin},@mvar{parmax})} 
+dibuja la curva param@'etrica @code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]}, con el par@'ametro
+@mvar{par} tomando valores desde @mvar{parmin} hasta @mvar{parmax}.
 
 Ejemplo:
 
@@ -3868,15 +3868,15 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+@deffn  {Objeto gr@'afico} parametric_surface (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par1},@mvar{par1min},@mvar{par1max},@mvar{par2},@mvar{par2min},@mvar{par2max})
 Dibuja superficies param@'etricas en 3D.
 
 @b{3D}
 
-@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
-dibuja la superficie param@'etrica @code{[@var{xfun},@var{yfun},@var{zfun}]}, 
-con el par@'ametro @var{par1} tomando valores desde @var{par1min} hasta @var{par1max}
-y el par@'ametro @var{par2} tomando valores desde @var{par2min} hasta @var{par2max}.
+@code{parametric_surface (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par1},@mvar{par1min},@mvar{par1max},@mvar{par2},@mvar{par2min},@mvar{par2max})}
+dibuja la superficie param@'etrica @code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]}, 
+con el par@'ametro @mvar{par1} tomando valores desde @mvar{par1min} hasta @mvar{par1max}
+y el par@'ametro @mvar{par2} tomando valores desde @mvar{par2min} hasta @mvar{par2max}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}
@@ -3901,17 +3901,17 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
-@deffnx {Objeto gr@'afico} points ([@var{y1},@var{y2},...])
-@deffnx {Objeto gr@'afico} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
-@deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
-@deffnx {Objeto gr@'afico} points (@var{matrix})
-@deffnx {Objeto gr@'afico} points (@var{1d_y_array})
-@deffnx {Objeto gr@'afico} points (@var{1d_x_array}, @var{1d_y_array})
-@deffnx {Objeto gr@'afico} points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})
-@deffnx {Objeto gr@'afico} points (@var{2d_xy_array})
-@deffnx {Objeto gr@'afico} points (@var{2d_xyz_array})
+@deffn  {Objeto gr@'afico} points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])
+@deffnx {Objeto gr@'afico} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
+@deffnx {Objeto gr@'afico} points ([@mvar{y1},@mvar{y2},...])
+@deffnx {Objeto gr@'afico} points ([[@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}],...])
+@deffnx {Objeto gr@'afico} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...], [@mvar{z1},@mvar{z2},...])
+@deffnx {Objeto gr@'afico} points (@mvar{matrix})
+@deffnx {Objeto gr@'afico} points (@mvar{1d_y_array})
+@deffnx {Objeto gr@'afico} points (@mvar{1d_x_array}, @mvar{1d_y_array})
+@deffnx {Objeto gr@'afico} points (@mvar{1d_x_array}, @mvar{1d_y_array}, @mvar{1d_z_array})
+@deffnx {Objeto gr@'afico} points (@mvar{2d_xy_array})
+@deffnx {Objeto gr@'afico} points (@mvar{2d_xyz_array})
 
 Dibuja puntos en 2D y 3D.
 
@@ -3921,19 +3921,19 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{poi
 
 @b{2D}
 
-@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} o 
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}
-dibuja los puntos @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc. Si no se dan las abscisas,
+@code{points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])} o 
+@code{points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])}
+dibuja los puntos @code{[@mvar{x1},@mvar{y1}]}, @code{[@mvar{x2},@mvar{y2}]}, etc. Si no se dan las abscisas,
 @'estas se asignan autom@'aticamente a enteros positivos consecutivos, de forma que
-@code{points([@var{y1},@var{y2},...])} dibuja los puntos @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, etc.
-Si @var{matrix} es una matriz de dos columnas o de dos filas, @code{points (@var{matrix})}
+@code{points([@mvar{y1},@mvar{y2},...])} dibuja los puntos @code{[1,@mvar{y1}]}, @code{[2,@mvar{y2}]}, etc.
+Si @mvar{matrix} es una matriz de dos columnas o de dos filas, @code{points (@mvar{matrix})}
 dibuja los puntos asociados.
 
-Si @var{1d_y_array} es un array lisp de n@'umeros en 1D, @code{points (@var{1d_y_array})}
+Si @mvar{1d_y_array} es un array lisp de n@'umeros en 1D, @code{points (@mvar{1d_y_array})}
 los dibujar@'a asignando las abscisas a n@'umeros enteros consecutivos.
-@code{points (@var{1d_x_array}, @var{1d_y_array})} dibuja los puntos cuyas coordenadas
-se toman de los dos arrays pasados como argumentos. Si @var{2d_xy_array} es un array lisp
-2D de dos filas, o de dos columnas, @code{points (@var{2d_xy_array})} dibuja los correspondientes
+@code{points (@mvar{1d_x_array}, @mvar{1d_y_array})} dibuja los puntos cuyas coordenadas
+se toman de los dos arrays pasados como argumentos. Si @mvar{2d_xy_array} es un array lisp
+2D de dos filas, o de dos columnas, @code{points (@mvar{2d_xy_array})} dibuja los correspondientes
 puntos del plano.
 
 Ejemplos:
@@ -4005,16 +4005,16 @@ Dibujando un array rellenado con la funci@'on @code{read_array}.
 
 @b{3D}
 
-@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} o 
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
-dibuja los puntos @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
-Si @var{matrix} es una matriz de tres columnas o de tres filas, @code{points (@var{matrix})}
-dibuja los puntos asociados. Si @var{matrix} es una matriz columna o fila, las abscisas 
+@code{points ([[@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}],...])} o 
+@code{points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...], [@mvar{z1},@mvar{z2},...])}
+dibuja los puntos @code{[@mvar{x1},@mvar{y1},@mvar{z1}]}, @code{[@mvar{x2},@mvar{y2},@mvar{z2}]}, etc.
+Si @mvar{matrix} es una matriz de tres columnas o de tres filas, @code{points (@mvar{matrix})}
+dibuja los puntos asociados. Si @mvar{matrix} es una matriz columna o fila, las abscisas 
 se asignan autom@'aticamente. 
 
-En caso de que los argumentos sean arrays lisp, @code{points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})}
-toma las coordenadas de los tres arrays unidimensionales. Si @var{2d_xyz_array} es un array 2D de tres columnas,
-o de tres filas, entonces @code{points (@var{2d_xyz_array})} dibuja los puntos correspondientes.
+En caso de que los argumentos sean arrays lisp, @code{points (@mvar{1d_x_array}, @mvar{1d_y_array}, @mvar{1d_z_array})}
+toma las coordenadas de los tres arrays unidimensionales. Si @mvar{2d_xyz_array} es un array 2D de tres columnas,
+o de tres filas, entonces @code{points (@mvar{2d_xyz_array})} dibuja los puntos correspondientes.
 
 Ejemplos:
 
@@ -4087,14 +4087,14 @@ por el usuario.
 
 
 
-@deffn  {Objeto gr@'afico} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+@deffn  {Objeto gr@'afico} polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})
 Dibuja funciones 2D definidas en coordenadas polares.
 
 @b{2D}
 
-@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} dibuja la funci@'on
-@code{@var{radius}(@var{ang})} definida en coordenadas polares, con la variable 
-@var{ang} tomando valores desde @var{minang} hasta @var{maxang}.
+@code{polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})} dibuja la funci@'on
+@code{@mvar{radius}(@mvar{ang})} definida en coordenadas polares, con la variable 
+@mvar{ang} tomando valores desde @mvar{minang} hasta @mvar{maxang}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key} y @code{color}.
@@ -4118,16 +4118,16 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Objeto gr@'afico} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffn  {Objeto gr@'afico} polygon ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])
+@deffnx {Objeto gr@'afico} polygon ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
 Dibuja pol@'{@dotless{i}}gonos en 2D.
 
 @b{2D}
 
-@code{polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} o 
-@code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
+@code{polygon ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])} o 
+@code{polygon ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])}:
 dibuja en el plano un pol@'{@dotless{i}}gono de v@'ertices 
-@code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc..
+@code{[@mvar{x1},@mvar{y1}]}, @code{[@mvar{x2},@mvar{y2}]}, etc..
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
@@ -4148,13 +4148,13 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} quadrilateral (@var{point_1}, @var{point_2}, @var{point_3}, @var{point_4})
+@deffn  {Objeto gr@'afico} quadrilateral (@mvar{point_1}, @mvar{point_2}, @mvar{point_3}, @mvar{point_4})
 Dibuja un cuadril@'atero.
 
 @b{2D}
 
-@code{quadrilateral ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}], [@var{x4},@var{y4}])} dibuja un cuadril@'atero de v@'ertices @code{[@var{x1},@var{y1}]}, 
-@code{[@var{x2},@var{y2}]}, @code{[@var{x3},@var{y3}]} y @code{[@var{x4},@var{y4}]}.
+@code{quadrilateral ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}], [@mvar{x3},@mvar{y3}], [@mvar{x4},@mvar{y4}])} dibuja un cuadril@'atero de v@'ertices @code{[@mvar{x1},@mvar{y1}]}, 
+@code{[@mvar{x2},@mvar{y2}]}, @code{[@mvar{x3},@mvar{y3}]} y @code{[@mvar{x4},@mvar{y4}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
@@ -4170,9 +4170,9 @@ Ejemplo:
 
 @b{3D}
 
-@code{quadrilateral ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}], [@var{x4},@var{y4},@var{z4}])} dibuja un cuadril@'atero de v@'ertices
-@code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]},
-@code{[@var{x3},@var{y3},@var{z3}]} y @code{[@var{x4},@var{y4},@var{z4}]}.
+@code{quadrilateral ([@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}], [@mvar{x3},@mvar{y3},@mvar{z3}], [@mvar{x4},@mvar{y4},@mvar{z4}])} dibuja un cuadril@'atero de v@'ertices
+@code{[@mvar{x1},@mvar{y1},@mvar{z1}]}, @code{[@mvar{x2},@mvar{y2},@mvar{z2}]},
+@code{[@mvar{x3},@mvar{y3},@mvar{z3}]} y @code{[@mvar{x4},@mvar{y4},@mvar{z4}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type}, 
 @code{line_width}, @code{color}, @code{key}, @code{enhanced3d} y @code{transform}.
@@ -4180,13 +4180,13 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{lin
 
 
 
-@deffn  {Objeto gr@'afico} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
+@deffn  {Objeto gr@'afico} rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])
 Dibuja rect@'angulos en 2D.
 
 @b{2D}
 
-@code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} dibuja un rect@'angulo de v@'ertices opuestos
-@code{[@var{x1},@var{y1}]} y @code{[@var{x2},@var{y2}]}.
+@code{rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])} dibuja un rect@'angulo de v@'ertices opuestos
+@code{[@mvar{x1},@mvar{y1}]} y @code{[@mvar{x2},@mvar{y2}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
@@ -4216,14 +4216,14 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} region (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {Objeto gr@'afico} region (@mvar{expr},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})
 Dibuja una regi@'on del plano definida por desigualdades.
 
 @b{2D}
-@var{expr} es una expresi@'on formada por desigualdades y los operadores l@'ogicos
+@mvar{expr} es una expresi@'on formada por desigualdades y los operadores l@'ogicos
 @code{and}, @code{or} y @code{not}. La regi@'on est@'a acotada por el rect@'angulo
-definido por @math{[@var{minval1}, @var{maxval1}]} y
-@math{[@var{minval2}, @var{maxval2}]}.
+definido por @math{[@mvar{minval1}, @mvar{maxval1}]} y
+@math{[@mvar{minval2}, @mvar{maxval2}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{fill_color}, 
 @code{key}, @code{x_voxel} y @code{y_voxel}.
@@ -4244,15 +4244,15 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+@deffn  {Objeto gr@'afico} spherical (@mvar{radius},@mvar{azi},@mvar{minazi},@mvar{maxazi},@mvar{zen},@mvar{minzen},@mvar{maxzen})
 Dibuja funciones 3D definidas en coordenadas esf@'ericas.
 
 @b{3D}
 
-@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
-dibuja la funci@'on @code{@var{radius}(@var{azi},@var{zen})} definida en coordenadas esf@'ericas, con el @i{azimut}
-@var{azi} tomando valores desde @var{minazi} hasta @var{maxazi} y el @i{zenit} @var{zen} tomando valores desde
-@var{minzen} hasta @var{maxzen}.
+@code{spherical (@mvar{radius},@mvar{azi},@mvar{minazi},@mvar{maxazi},@mvar{zen},@mvar{minzen},@mvar{maxzen})}
+dibuja la funci@'on @code{@mvar{radius}(@mvar{azi},@mvar{zen})} definida en coordenadas esf@'ericas, con el @i{azimut}
+@mvar{azi} tomando valores desde @mvar{minazi} hasta @mvar{maxazi} y el @i{zenit} @mvar{zen} tomando valores desde
+@mvar{minzen} hasta @mvar{maxzen}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{color}.
@@ -4267,14 +4267,14 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} triangle (@var{punto_1}, @var{punto_2}, @var{punto_3})
+@deffn  {Objeto gr@'afico} triangle (@mvar{punto_1}, @mvar{punto_2}, @mvar{punto_3})
 Dibuja un tri@'angulo.
 
 @b{2D}
 
-@code{triangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}])} dibuja
-un tri@'angulo de v@'ertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]} y
-@code{[@var{x3},@var{y3}]}.
+@code{triangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}], [@mvar{x3},@mvar{y3}])} dibuja
+un tri@'angulo de v@'ertices @code{[@mvar{x1},@mvar{y1}]}, @code{[@mvar{x2},@mvar{y2}]} y
+@code{[@mvar{x3},@mvar{y3}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
@@ -4290,8 +4290,8 @@ Ejemplo:
 
 @b{3D}
 
-@code{triangle ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}])} dibuja un tri@'angulo de v@'ertices @code{[@var{x1},@var{y1},@var{z1}]},
-@code{[@var{x2},@var{y2},@var{z2}]} y @code{[@var{x3},@var{y3},@var{z3}]}.
+@code{triangle ([@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}], [@mvar{x3},@mvar{y3},@mvar{z3}])} dibuja un tri@'angulo de v@'ertices @code{[@mvar{x1},@mvar{y1},@mvar{z1}]},
+@code{[@mvar{x2},@mvar{y2},@mvar{z2}]} y @code{[@mvar{x3},@mvar{y3},@mvar{z3}]}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type}, 
 @code{line_width}, @code{color}, @code{key}, @code{enhanced3d} y @code{transform}.
@@ -4299,14 +4299,14 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{lin
 
 
 
-@deffn  {Objeto gr@'afico} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
+@deffn  {Objeto gr@'afico} tube (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{rfun},@mvar{p},@mvar{pmin},@mvar{pmax})
 Dibuja un tubo en 3D de di@'ametro variable.
 
 @b{3D}
 
-@code{[@var{xfun},@var{yfun},@var{zfun}]}
-es la curva param@'etrica de par@'ametro @var{p}, el cual toma valores entre
-@var{pmin} y @var{pmax}. Se colocan c@'{@dotless{i}}rculos de radio @var{rfun}
+@code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]}
+es la curva param@'etrica de par@'ametro @mvar{p}, el cual toma valores entre
+@mvar{pmin} y @mvar{pmax}. Se colocan c@'{@dotless{i}}rculos de radio @mvar{rfun}
 con sus centros sobre la curva param@'etrica y perpendiculares a ella.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
@@ -4329,8 +4329,8 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
-@deffnx {Objeto gr@'afico} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+@deffn  {Objeto gr@'afico} vector ([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])
+@deffnx {Objeto gr@'afico} vector ([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])
 Dibuja vectores en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
@@ -4339,8 +4339,8 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{hea
 
 @b{2D}
 
-@code{vector ([@var{x},@var{y}], [@var{dx},@var{dy}])} dibuja el vector 
-@code{[@var{dx},@var{dy}]} con origen en @code{[@var{x},@var{y}]}.
+@code{vector ([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])} dibuja el vector 
+@code{[@mvar{dx},@mvar{dy}]} con origen en @code{[@mvar{x},@mvar{y}]}.
 
 Ejemplo:
 
@@ -4360,9 +4360,9 @@ Ejemplo:
 
 @b{3D}
 
-@code{vector([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])}
-dibuja el vector @code{[@var{dx},@var{dy},@var{dz}]} con 
-origen en @code{[@var{x},@var{y},@var{z}]}.
+@code{vector([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])}
+dibuja el vector @code{[@mvar{dx},@mvar{dy},@mvar{dz}]} con 
+origen en @code{[@mvar{x},@mvar{y},@mvar{z}]}.
 
 Ejemplo:
 
@@ -4391,22 +4391,22 @@ Ejemplo:
 
 
 
-@deffn  {Funci@'on} get_pixel (@var{pic},@var{x},@var{y})
-Devuelve el pixel de la imagen @var{pic}. Las coordenadas @var{x} e @var{y}
+@deffn  {Funci@'on} get_pixel (@mvar{pic},@mvar{x},@mvar{y})
+Devuelve el pixel de la imagen @mvar{pic}. Las coordenadas @mvar{x} e @mvar{y}
 van desde 0 hasta @code{ancho-1} y @code{alto-1}, respectivamente.
 @end deffn
 
 
 
 
-@deffn  {Funci@'on} make_level_picture (@var{data})
-@deffnx {Funci@'on} make_level_picture (@var{data},@var{width},@var{height})
+@deffn  {Funci@'on} make_level_picture (@mvar{data})
+@deffnx {Funci@'on} make_level_picture (@mvar{data},@mvar{width},@mvar{height})
 Devuelve un objeto @code{picture} consistente en una imagen de niveles.
-@code{make_level_picture (@var{data})} construye el objeto @code{picture}
-a partir de la matriz @var{data}.
-@code{make_level_picture (@var{data},@var{width},@var{height})}
+@code{make_level_picture (@mvar{data})} construye el objeto @code{picture}
+a partir de la matriz @mvar{data}.
+@code{make_level_picture (@mvar{data},@mvar{width},@mvar{height})}
 construye el objeto a partir de una lista de n@'umeros, en cuyo
-caso deben indicarse el ancho @var{width} y la altura @var{height}
+caso deben indicarse el ancho @mvar{width} y la altura @mvar{height}
 en p@'{@dotless{i}}xeles.
 
 El objeto  @code{picture} devuelto contiene los siguientes cuatro
@@ -4417,7 +4417,7 @@ elemento:
 @item anchura de la imagen
 @item altura de la imagen
 @item un array de enteros con los valores de los p@'{@dotless{i}}xeles
-entre 0 y 255. El argumento @var{data} debe contener s@'olo n@'umeros
+entre 0 y 255. El argumento @mvar{data} debe contener s@'olo n@'umeros
 entre 0 y 255; los cantidades negativas se transforman en ceros y las 
 que son mayores de 255 se igualan a este n@'umero.
 @end enumerate
@@ -4442,19 +4442,19 @@ Imagen de niveles a partir de una lista num@'erica.
 
 
 
-@deffn  {Funci@'on} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
-Devuelve un objeto @var{picture} conteniendo una imagen en color (RGB).
+@deffn  {Funci@'on} make_rgb_picture (@mvar{redlevel},@mvar{greenlevel},@mvar{bluelevel})
+Devuelve un objeto @mvar{picture} conteniendo una imagen en color (RGB).
 Los tres argumentos deben ser im@'agenes de niveles, para el rojo (R),
 verde (G) y azul (B).
 
-El objeto  @var{picture} devuelto contiene los siguientes cuatro
+El objeto  @mvar{picture} devuelto contiene los siguientes cuatro
 elemento:
 
 @enumerate
 @item el s@'{@dotless{i}}mbolo @code{rgb}
 @item anchura de la imagen
 @item altura de la imagen
-@item un array de enteros de @var{3*ancho*alto} con los valores de los p@'{@dotless{i}}xeles
+@item un array de enteros de @mvar{3*ancho*alto} con los valores de los p@'{@dotless{i}}xeles
 entre 0 y 255. Cada valor de pixel se representa en el array con tres n@'umeros consecutivos
 (rojo, verde, azul).
 @end enumerate
@@ -4479,15 +4479,15 @@ Ejemplo:
 
 
 
-@deffn  {Funci@'on} negative_picture (@var{pic})
-Devuelve el negativo de la imagen, sea @'esta de tipo nivel (@var{level})
-o color (@var{rgb}).
+@deffn  {Funci@'on} negative_picture (@mvar{pic})
+Devuelve el negativo de la imagen, sea @'esta de tipo nivel (@mvar{level})
+o color (@mvar{rgb}).
 @end deffn
 
 
 
 
-@deffn  {Funci@'on} picture_equalp (@var{x},@var{y})
+@deffn  {Funci@'on} picture_equalp (@mvar{x},@mvar{y})
 Devuelve @code{true} si los dos argumentos son im@'agenes id@'enticas,
 o @code{false} en caso contrario.
 @end deffn
@@ -4495,7 +4495,7 @@ o @code{false} en caso contrario.
 
 
 
-@deffn  {Funci@'on} picturep (@var{x})
+@deffn  {Funci@'on} picturep (@mvar{x})
 Devuelve @code{true} si el argumento es una imagen bien formada,
 o @code{false} en caso contrario.
 @end deffn
@@ -4503,25 +4503,25 @@ o @code{false} en caso contrario.
 
 
 
-@deffn  {Funci@'on} read_xpm (@var{xpm_file})
+@deffn  {Funci@'on} read_xpm (@mvar{xpm_file})
 Lee el fichero gr@'afico en formato xpm y devuelve un objeto @code{picture}.
 @end deffn
 
 
 
 
-@deffn  {Funci@'on} rgb2level (@var{pic})
-Transforma una imagen en color @var{rgb} a otra de niveles @var{level}
+@deffn  {Funci@'on} rgb2level (@mvar{pic})
+Transforma una imagen en color @mvar{rgb} a otra de niveles @mvar{level}
 promediando los niveles.
 @end deffn
 
 
 
 
-@deffn  {Funci@'on} take_channel (@var{im},@var{color})
-Si el argumento @var{color} es @code{red}, @code{green} o @code{blue},
+@deffn  {Funci@'on} take_channel (@mvar{im},@mvar{color})
+Si el argumento @mvar{color} es @code{red}, @code{green} o @code{blue},
 la funci@'on @code{take_channel} devuelve el canal de color correspondiente
-de la imagen @var{im}.
+de la imagen @mvar{im}.
 
 Ejemplo:
 
@@ -4573,7 +4573,7 @@ V@'ease tambi@'en @code{geomap}.
 
 
 
-@deffn  {Funci@'on} numbered_boundaries (@var{nlist})
+@deffn  {Funci@'on} numbered_boundaries (@mvar{nlist})
 Dibuja una lista de segmentos poligonales (l@'{@dotless{i}}neas 
 fronterizas), etiquetadas con sus n@'umeros correspondientes
 (coordenadas de @code{boundaries_array}). Esta funci@'on es
@@ -4595,8 +4595,8 @@ su componente num@'erica de @code{boundaries_array}.
 
 
 
-@deffn  {Funci@'on} make_poly_continent (@var{continent_name})
-@deffnx  {Funci@'on} make_poly_continent (@var{country_list})
+@deffn  {Funci@'on} make_poly_continent (@mvar{continent_name})
+@deffnx  {Funci@'on} make_poly_continent (@mvar{country_list})
 Construye los pol@'{@dotless{i}}gonos necesarios para dibujar
 un continente o lista de pa@'{@dotless{i}}ses coloreados.
 
@@ -4617,7 +4617,7 @@ Ejemplo:
 
 
 
-@deffn  {Funci@'on} make_poly_country (@var{country_name})
+@deffn  {Funci@'on} make_poly_country (@mvar{country_name})
 Construye los pol@'{@dotless{i}}gonos necesarios para dibujar
 un pa@'{@dotless{i}}s coloreado. En caso de contener islas,
 un pa@'{@dotless{i}}s tendr@'a asociados varios pol@'{@dotless{i}}gonos.
@@ -4634,10 +4634,10 @@ Ejemplo:
 
 
 
-@deffn  {Funci@'on} make_polygon (@var{nlist})
+@deffn  {Funci@'on} make_polygon (@mvar{nlist})
 Devuelve un objeto @code{polygon} a partie de una lista
 de l@'{@dotless{i}}neas fronterizas y de costas. El
-argumento @var{nlist} debe ser una lista de componentes
+argumento @mvar{nlist} debe ser una lista de componentes
 de @code{boundaries_array}.
 
 Ejemplo:
@@ -4697,10 +4697,10 @@ coloreado se podr@'a dibujar.
 
 
 
-@deffn  {Funci@'on} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
+@deffn  {Funci@'on} region_boundaries (@mvar{x1},@mvar{y1},@mvar{x2},@mvar{y2})
 Detecta los segmentos poligonales almacenados en la variable global
 @code{boundaries_array} totalmente contenidos en el rect@'angulo de v@'ertices
-(@var{x1},@var{y1}) -superior izquierdo- y (@var{x2},@var{y2})
+(@mvar{x1},@mvar{y1}) -superior izquierdo- y (@mvar{x2},@mvar{y2})
 -inferior derecho-.
 
 Ejemplo:
@@ -4718,10 +4718,10 @@ dibujar el sur de Italia.
 
 
 
-@deffn  {Funci@'on} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
+@deffn  {Funci@'on} region_boundaries_plus (@mvar{x1},@mvar{y1},@mvar{x2},@mvar{y2})
 Detecta los segmentos poligonales almacenados en la variable global
 @code{boundaries_array} con al menos un v@'ertice dentro del rect@'angulo 
-definido por los extremos (@var{x1},@var{y1}) -superior izquierdo- y (@var{x2},@var{y2})
+definido por los extremos (@mvar{x1},@mvar{y1}) -superior izquierdo- y (@mvar{x2},@mvar{y2})
 -inferior derecho-.
 
 Ejemplo:
@@ -4742,15 +4742,15 @@ Ejemplo:
 
 
 
-@deffn  {Objeto gr@'afico} geomap (@var{numlist})
-@deffnx {Objeto gr@'afico} geomap (@var{numlist},@var{3Dprojection})
+@deffn  {Objeto gr@'afico} geomap (@mvar{numlist})
+@deffnx {Objeto gr@'afico} geomap (@mvar{numlist},@mvar{3Dprojection})
 Dibuja mapas cartogr@'aficos en 2D y 3D.
 
 @b{2D}
 
 Esta funci@'on trabaja junto con la variable global @code{boundaries_array}.
 
-El argumento @var{numlist} es una lista de n@'umeros o de listas de 
+El argumento @mvar{numlist} es una lista de n@'umeros o de listas de 
 n@'umeros. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
 representando las componentes del array global @code{boundaries_array}.
 
@@ -4758,7 +4758,7 @@ Cada componente de @code{boundaries_array} es un array de decimales en
 coma flotante, las coordenadas de un segmento poligonal o l@'{@dotless{i}}nea
 fronteriza.
 
-@code{geomap (@var{numlist})} toma los enteros de sus argumentos y 
+@code{geomap (@mvar{numlist})} toma los enteros de sus argumentos y 
 dibuja los segmentos poligonales asociados de @code{boundaries_array}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_width}, 
@@ -4842,16 +4842,16 @@ comprender el siguiente c@'odigo.
 
 @b{3D}
 
-@code{geomap (@var{numlist})} proyecta los mapas sobre la esfera de radio 1
+@code{geomap (@mvar{numlist})} proyecta los mapas sobre la esfera de radio 1
 y centro (0,0,0). Es posible cambiar la esfera o el tipo de proyecci@'on haciendo
-uso de @code{geomap (@var{numlist},@var{3Dprojection})}.
+uso de @code{geomap (@mvar{numlist},@mvar{3Dprojection})}.
 
 Proyecciones 3D disponibles:
 
 @itemize @bullet
 @item
-@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: proyecta los mapas sobre la esfera de radio
-@var{r} y centro (@var{x},@var{y},@var{z}).
+@code{[spherical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r}]}: proyecta los mapas sobre la esfera de radio
+@mvar{r} y centro (@mvar{x},@mvar{y},@mvar{z}).
 @example
 (%i1) load(worldmap)$
 (%i2) draw3d(geomap(Australia), /* default projection */
@@ -4860,9 +4860,9 @@ Proyecciones 3D disponibles:
 @end example
 
 @item
-@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-proyecta mapas esf@'ericos
-sobre el cilindro de radio @var{rc} cuyo eje pasa a trav@'es de los polos del globo
-de radio @var{r} y centro (@var{x},@var{y},@var{z}).
+@code{[cylindrical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{rc}]}: re-proyecta mapas esf@'ericos
+sobre el cilindro de radio @mvar{rc} cuyo eje pasa a trav@'es de los polos del globo
+de radio @mvar{r} y centro (@mvar{x},@mvar{y},@mvar{z}).
 @example
 (%i1) load(worldmap)$
 (%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
@@ -4870,9 +4870,9 @@ de radio @var{r} y centro (@var{x},@var{y},@var{z}).
 @end example
 
 @item
-@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-proyecta mapas esf@'ericos sobre los
-conos de @'angulo @var{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @var{r} 
-y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la esfera.
+@code{[conic_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{alpha}]}: re-proyecta mapas esf@'ericos sobre los
+conos de @'angulo @mvar{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @mvar{r} 
+y centro (@mvar{x},@mvar{y},@mvar{z}). Ambos conos, norte y sur, son tangentes a la esfera.
 @example
 (%i1) load(worldmap)$
 (%i2) draw3d(geomap(World_coastlines,

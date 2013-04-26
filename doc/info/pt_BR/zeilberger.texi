@@ -65,15 +65,15 @@ Por exemplo:
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger, , Introdu@value{cedilha}@~{a}o a zeilberger, zeilberger
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger
 
-@deffn {Fun@value{cedilha}@~{a}o} AntiDifference (@var{F_k}, @var{k})
+@deffn {Fun@value{cedilha}@~{a}o} AntiDifference (@mvar{F_k}, @mvar{k})
 
 Retorna a anti-diferen@value{cedilha}a hipergeom@'{e}trica
-de @var{F_k}, se essa anti-diferen@value{cedilha}a.
+de @mvar{F_k}, se essa anti-diferen@value{cedilha}a.
 De outra forma @code{AntiDifference} retorna @code{no_hyp_antidifference}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} Gosper (@var{F_k}, @var{k})
-Retorna o certificado racional @var{R(k)} para @var{F_k}, isto @'{e},
+@deffn {Fun@value{cedilha}@~{a}o} Gosper (@mvar{F_k}, @mvar{k})
+Retorna o certificado racional @mvar{R(k)} para @mvar{F_k}, isto @'{e},
 uma fun@value{cedilha}@~{a}o racional tal que
 
 @math{F_k = R(k+1) F_(k+1) - R(k) F_k}
@@ -82,10 +82,10 @@ se essa fun@value{cedilha}@~{a}o racional exitir.
 De outra forma, @code{Gosper} retorna @code{no_hyp_sol}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Fun@value{cedilha}@~{a}o} GosperSum (@mvar{F_k}, @mvar{k}, @mvar{a}, @mvar{b}) 
 
-Retorna o somat@'{o}rio de @var{F_k} de @math{@var{k} = @var{a}} a @math{@var{k} = @var{b}}
-se @var{F_k} tiver ma diferen@value{cedilha}a hipergeom@'{e}trica.
+Retorna o somat@'{o}rio de @mvar{F_k} de @math{@mvar{k} = @mvar{a}} a @math{@mvar{k} = @mvar{b}}
+se @mvar{F_k} tiver ma diferen@value{cedilha}a hipergeom@'{e}trica.
 De outra forma, @code{GosperSum} retorna @code{nongosper_summable}.
 
 Exemplos:
@@ -142,8 +142,8 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
-Tenta encontrar uma recorr@^{e}ncia de @var{d}-@'{e}sima ordem para @var{F_@{n,k@}}.
+@deffn {Fun@value{cedilha}@~{a}o} parGosper (@mvar{F_@{n,k@}}, @mvar{k}, @mvar{n}, @mvar{d})
+Tenta encontrar uma recorr@^{e}ncia de @mvar{d}-@'{e}sima ordem para @mvar{F_@{n,k@}}.
 
 O algor@'{i}tmo retorna uma seq@"{u}@^{e}ncia
 @math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~{o}es.
@@ -154,8 +154,8 @@ Cada solu@value{cedilha}@~{a}o tem a forma
 @code{parGosper} retorna @code{[]} caso n@~{a}o consiga encontrar uma recorr@^{e}ncia.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
-Tenta calcular o somat@'{o}rio hipergeom@'{e}trico indefinido de @var{F_@{n,k@}}.
+@deffn {Fun@value{cedilha}@~{a}o} Zeilberger (@mvar{F_@{n,k@}}, @mvar{k}, @mvar{n})
+Tenta calcular o somat@'{o}rio hipergeom@'{e}trico indefinido de @mvar{F_@{n,k@}}.
 
 @code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~{a}o conseguir encontrar uma solu@value{cedilha}@~{a}o, ent@~{a}o @code{Zeilberger} invoca
 @code{parGosper}com ordem 1, 2, 3, ..., acima de @code{MAX_ORD}.
@@ -239,7 +239,7 @@ Valor padr@~{a}o: @code{linsolve}
 @defvr {Vari@'{a}vel global} ev_point
 Valor padr@~{a}o: @code{big_primes[10]}
 
-@code{ev_point} @'{e} o valor no qual a vari@'{a}vel @var{n} @'{e} avaliada
+@code{ev_point} @'{e} o valor no qual a vari@'{a}vel @mvar{n} @'{e} avaliada
 no momento da execu@value{cedilha}@~{a}o do teste modular em @code{parGosper}.
 @end defvr
 

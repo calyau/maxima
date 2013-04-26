@@ -76,7 +76,7 @@
 @vrindex Текущее входное выражение.
 @end ifinfo
 @code{__} - введенное выражение, обрабатываемое в данный момент.
-То есть, пока вычисляется @var{expr}, @code{__} равно @var{expr}.
+То есть, пока вычисляется @mvar{expr}, @code{__} равно @mvar{expr}.
 
 Введенное выражение присваивается переменной @code{__} до упрощения или вычисления.
 Однако, значение @code{__} упрощается (но не вычисляется) во время вывода.
@@ -87,7 +87,7 @@
 имеет значения последнего, введенного в режиме диалога или пакетном файле, выражения.
 @code{__} не принимает значения выражений, которые вводятся в обрабатываемом файле.
 В частности, если @code{load ($var{filename})} вызывается в режиме диалога, 
-то во время выполнения файла @code{__} имеет значение @code{load(@var{filename})}.
+то во время выполнения файла @code{__} имеет значение @code{load(@mvar{filename})}.
 
 См. также @code{_} и @code{%}.
 
@@ -219,7 +219,7 @@ Current input expression = --------------
 @ifinfo
 @vrindex Предыдущий результат в составном выражении
 @end ifinfo
-В составных выражениях таких как @code{block}, @code{lambda}, или @code{(@var{s_1}, ..., @var{s_n})},
+В составных выражениях таких как @code{block}, @code{lambda}, или @code{(@mvar{s_1}, ..., @mvar{s_n})},
 @code{%%} - значение предыдущего утверждения. К примеру выражения,
 
 @example
@@ -276,12 +276,12 @@ block (a: 42, break ())$
 
 @end defvr
 
-@deffn {Функция} %th (@var{i})
+@deffn {Функция} %th (@mvar{i})
 @ifinfo
 @fnindex N-ный по счету предыдущий вывод
 @end ifinfo
-Значение @var{i}-го предыдущего вывода. То есть, если следующим вычисленным выражением
-будет вывод с номером @var{n}, то @code{%th (@var{m})} примет значение вывода с номером (@var{n} - @var{m}).
+Значение @mvar{i}-го предыдущего вывода. То есть, если следующим вычисленным выражением
+будет вывод с номером @mvar{n}, то @code{%th (@mvar{m})} примет значение вывода с номером (@mvar{n} - @mvar{m}).
 
 @code{%th} полезна в пакетных @code{batch}-файлах или в ссылках на группу выведенных выражений.
 К примеру,
@@ -372,8 +372,8 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end defvr
 
-@deffn {Функция} appendfile (@var{filename})
-Добавляет копию консольного вывода в @var{filename}. 
+@deffn {Функция} appendfile (@mvar{filename})
+Добавляет копию консольного вывода в @mvar{filename}. 
 @code{appendfile} работает так же как и @code{writefile},
 но отличие в том, что если файл существует, он всегда дописывается.
 
@@ -388,12 +388,12 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
 @c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
 @c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
-@deffn {Функция} batch (@var{filename})
-Считывает выражения Maxima из @var{filename}, и обрабатывает их.
-@code{batch} ищет @var{filename} в директориях списка @code{file_search_maxima}.
+@deffn {Функция} batch (@mvar{filename})
+Считывает выражения Maxima из @mvar{filename}, и обрабатывает их.
+@code{batch} ищет @mvar{filename} в директориях списка @code{file_search_maxima}.
 См. @code{file_search}.
 
-@var{filename} содержит последовательность выражений Maxima,
+@mvar{filename} содержит последовательность выражений Maxima,
 завершающихся символами @code{;} или @code{$}.
 Специальные переменная @code{%} и функция @code{%th}
 ссылаются на предыдущие результаты внутри файла.
@@ -402,7 +402,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 Подходящий входной файл может быть создан при помощи текстового редактора или 
 функцией @code{stringout}.
 
-@code{batch} считывает каждое входящее выражение из @var{filename},
+@code{batch} считывает каждое входящее выражение из @mvar{filename},
 отображает его ввод в консоли,
 вычисляет соответствующее выходящее выражение
 и выводит его.
@@ -431,8 +431,8 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end deffn
 
-@deffn {Функция} batchload (@var{filename})
-Считывает выражения Maxima из @var{filename} и вычисляет их,
+@deffn {Функция} batchload (@mvar{filename})
+Считывает выражения Maxima из @mvar{filename} и вычисляет их,
 не отображая входные и выходные выражения и не присваивая ссылок
 выходным выражениям.
 Однако, печатаемый вывод (такой, какой производят команды @code{print} или @code{describe})
@@ -443,7 +443,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 внутри файла.
 Файл не может включать конструкции @code{:lisp}.
 
-@code{batchload} возвращает путь к @var{filename} в виде строки.
+@code{batchload} возвращает путь к @mvar{filename} в виде строки.
 @code{batchload} вычисляет свой аргумент.
 
 См. также @code{batch} и @code{load}.
@@ -464,13 +464,13 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @end deffn
 
 @c NEEDS CLARIFICATION !!!
-@deffn {Функция} collapse (@var{expr})
-Сворачивает выражение @var{expr} делая все его общие (т.е. равные)
+@deffn {Функция} collapse (@mvar{expr})
+Сворачивает выражение @mvar{expr} делая все его общие (т.е. равные)
 ссылающимися на одни ячейки памяти, тем самым сохраняя память.
 Функция (@code{collapse} используется командой @code{optimize}.
 Таким образом, вызов @code{collapse} может быть полезным до выгрузки в @code{save} файл. 
 Можно свернуть несколько выражений вместе используя команду  
-@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  
+@code{collapse ([@mvar{expr_1}, ..., @mvar{expr_n}])}.  
 Аналогично, можно свернуть элементы массива @code{A} 
 при помощи команды @code{collapse (listarray ('A))}.
 
@@ -479,7 +479,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @closecatbox
 @end deffn
 
-@deffn {Функция} concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Функция} concat (@mvar{arg_1}, @mvar{arg_2}, ...)
 Сцепляет свои аргументы. Аргументы должны быть атомами.
 Возвращаемое значение является символом, если первый аргумент -- символ, и строкой
 в противном случае.
@@ -528,7 +528,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end deffn
 
-@deffn {Функция} sconcat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Функция} sconcat (@mvar{arg_1}, @mvar{arg_2}, ...)
 
 Сцепляет аргументы в строки. В отличии от @code{concat}, аргументы не обязаны
 быть атомами.
@@ -559,7 +559,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @c 
 @c @end defvar
 
-@deffn {Функция} disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Функция} disp (@mvar{expr_1}, @mvar{expr_2}, ...)
 то же что и @code{display}, но отличается тем что значение аргументов отображаются 
 без выражений. Это полезно для сложных аргументов, у которых нет имени или
 в случае, когда интерес представляет только значение без имени. 
@@ -570,7 +570,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end deffn
 
-@deffn {Функция} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Функция} dispcon (@mvar{tensor_1}, @mvar{tensor_2}, ...)
 @deffnx {Функция} dispcon (all)
 Отображает ограничения аргументов, наложенные на них командой @code{defcon}.
 @code{dispcon (all)} отображает все ограничения, которые были заданы.
@@ -581,9 +581,9 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end deffn
 
-@deffn {Функция} display (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Функция} display (@mvar{expr_1}, @mvar{expr_2}, ...)
 Отображает равенства, выравненные по центру. Левыми частями равенств являются не вычисленные
-выражения @var{expr_i}, a правыми -- их значения.
+выражения @mvar{expr_i}, a правыми -- их значения.
 Эта функция полезна в блоках и конструкциях @code{for} для вывода промежуточных результатов.
 Аргументы @code{display} обычно являются атомами, переменными с индексом, или
 вызовами функций. См. также @code{disp}.
@@ -647,11 +647,11 @@ X*4/3;    ---        - X
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
-@deffn {Функция} dispterms (@var{expr})
-Выводит друг под другом части @var{expr}.
-Первым отображается оператор выражения @var{expr}, затем каждое слагаемое суммы, множители
+@deffn {Функция} dispterms (@mvar{expr})
+Выводит друг под другом части @mvar{expr}.
+Первым отображается оператор выражения @mvar{expr}, затем каждое слагаемое суммы, множители
 произведения или части более общего выражения отображаются отдельно. Это полезно,
-когда @var{expr} слишком большое для иных способов отображения. К примеру, если 
+когда @mvar{expr} слишком большое для иных способов отображения. К примеру, если 
 @code{P1}, @code{P2}, ... -- очень большие выражения, то программе может не хватить
 памяти при попытке отобразить @code{P1 + P2 + ...} как единое целое.
 Однако, @code{dispterms (P1 + P2 + ...)} отображает @code{P1}, затем ниже @code{P2} и т. д.
@@ -732,7 +732,7 @@ Example expression is --------------
 второе символом @code{error_syms[2]} и так далее.
 
 Если слишком больших выражений больше чем элементов в @code{error_syms},
-то символы генерируются автоматически, @code{n}-ный символ равен @code{concat ('errexp, @var{n})}.
+то символы генерируются автоматически, @code{n}-ный символ равен @code{concat ('errexp, @mvar{n})}.
 
 См. также @code{error} и @code{error_size}.
 
@@ -742,10 +742,10 @@ Example expression is --------------
 
 @end defvr
 
-@deffn {Функция} expt (@var{a}, @var{b})
-Если показательное выражение слишком широко для отображения в виде @code{@var{a}^@var{b}}),
-оно выводится в виде @code{expt (@var{a}, @var{b})} (или @code{ncexpt (@var{a}, @var{b})}
-в случае @code{@var{a}^^@var{b}}).
+@deffn {Функция} expt (@mvar{a}, @mvar{b})
+Если показательное выражение слишком широко для отображения в виде @code{@mvar{a}^@mvar{b}}),
+оно выводится в виде @code{expt (@mvar{a}, @mvar{b})} (или @code{ncexpt (@mvar{a}, @mvar{b})}
+в случае @code{@mvar{a}^^@mvar{b}}).
 
 @code{expt} и @code{ncexpt} не распознаются при вводе.
 
@@ -763,10 +763,10 @@ Example expression is --------------
 
 @end defvr
 
-@deffn {Функция} filename_merge (@var{path}, @var{filename})
-Составляет путь из @var{path} и @var{filename}. Если последняя часть пути @var{path}
-имеет форму @code{###.@var{something}}, эта часть заменяется на @code{@var{filename}}.@var{something}}.
-В противном случае последняя часть заменяется на @var{filename}.
+@deffn {Функция} filename_merge (@mvar{path}, @mvar{filename})
+Составляет путь из @mvar{path} и @mvar{filename}. Если последняя часть пути @mvar{path}
+имеет форму @code{###.@mvar{something}}, эта часть заменяется на @code{@mvar{filename}}.@mvar{something}}.
+В противном случае последняя часть заменяется на @mvar{filename}.
 
 Результатом является объект пути Lisp.
 
@@ -776,21 +776,21 @@ Example expression is --------------
 
 @end deffn
 
-@deffn {Функция} file_search (@var{filename})
-@deffnx {Функция} file_search (@var{filename}, @var{pathlist})
+@deffn {Функция} file_search (@mvar{filename})
+@deffnx {Функция} file_search (@mvar{filename}, @mvar{pathlist})
 
-@code{file_search} ищет файл @var{filename} и возвращает путь к этому файлу (в виде строки),
+@code{file_search} ищет файл @mvar{filename} и возвращает путь к этому файлу (в виде строки),
 если может его найти, иначе возвращает @code{false}.
-@code{file_search (@var{filename})} ищет в определенных по умолчанию каталогах для поиска, которые
+@code{file_search (@mvar{filename})} ищет в определенных по умолчанию каталогах для поиска, которые
 указаны в переменных @code{file_search_maxima}, @code{file_search_lisp} и @code{file_search_demo}.
 
 Перед попыткой сопоставить имя с шаблонами поиска файлов.
 @code{file_search} первым делом проверяет существование искомого файла.
 См. @code{file_search_maxima} о шаблонах поиска файла.
 
-Аргумент @var{filename} может быть как путем с именем, так и просто именем файла.
+Аргумент @mvar{filename} может быть как путем с именем, так и просто именем файла.
 Если каталог включен в пути поиска вместе с поисковым шаблоном файла,
-то @var{filename} может быть именем без расширения.
+то @mvar{filename} может быть именем без расширения.
 В примере
 
 @example
@@ -802,11 +802,11 @@ file_search ("zeta");
 будет найден один и тот же файл, если он существует и @code{/home/wfs/special/###.mac} включен
 в @code{file_search_maxima}.
 
-@code{file_search (@var{filename}, @var{pathlist})} осуществляет поиск в каталогах,
-заданных переменной @var{pathlist}, которая представляет из себя список строк.
-Аргумент @var{pathlist} замещает каталоги поиска, определенные по умолчанию, так если дан список путей,
+@code{file_search (@mvar{filename}, @mvar{pathlist})} осуществляет поиск в каталогах,
+заданных переменной @mvar{pathlist}, которая представляет из себя список строк.
+Аргумент @mvar{pathlist} замещает каталоги поиска, определенные по умолчанию, так если дан список путей,
 @code{file_search} ищет только в заданных там и не ищет в путях по умолчанию.
-Даже если @var{pathlist} содержит только один каталог, @var{pathlist} должен быть задан, как список из одного 
+Даже если @mvar{pathlist} содержит только один каталог, @mvar{pathlist} должен быть задан, как список из одного 
 элемента.
 
 Пользователь может изменять пути, определенные по умолчанию. См. @code{file_search_maxima}.
@@ -867,9 +867,9 @@ file_search_maxima: append (file_search_maxima,
 
 @end defvr
 
-@deffn {Функция} file_type (@var{filename})
-Возвращает предположение о содержимом @var{filename}, на основе 
-его расширения. @var{filename} не должен ссылаться на существующий файл,
+@deffn {Функция} file_type (@mvar{filename})
+Возвращает предположение о содержимом @mvar{filename}, на основе 
+его расширения. @mvar{filename} не должен ссылаться на существующий файл,
 не происходит попыток открыть файл и проверить содержимое.
 
 Возвращаемое значение является одним из символов: @code{object}, @code{lisp} или @code{maxima}.
@@ -883,12 +883,12 @@ file_search_maxima: append (file_search_maxima,
 
 @end deffn
 
-@deffn {Функция} grind (@var{expr})
+@deffn {Функция} grind (@mvar{expr})
 @deffnx {Управляющая переменная} grind
-Функция @code{grind} выводит @var{expr} в консоль в форме
+Функция @code{grind} выводит @mvar{expr} в консоль в форме
 подходящем для ввода в Maxima. @code{grind} всегда возвращает @code{done}.
 
-Когда @var{expr} является именем функции или макрокоманды, @code{grind} печатает
+Когда @mvar{expr} является именем функции или макрокоманды, @code{grind} печатает
 определение функции или макрокоманды вместо просто имени.
 
 См. также @code{string}, которая возвращает строку, а не печатает вывод. 
@@ -1062,8 +1062,8 @@ Maxima автоматически генерирует ссылку для каждого входного выражения,
 
 @end defvr
 
-@deffn {Функция} ldisp (@var{expr_1}, ..., @var{expr_n})
-Отображает выражения @var{expr_1}, ..., @var{expr_n} в консоли как в печатном выводе.
+@deffn {Функция} ldisp (@mvar{expr_1}, ..., @mvar{expr_n})
+Отображает выражения @mvar{expr_1}, ..., @mvar{expr_n} в консоли как в печатном выводе.
 @code{ldisp} присваивает метки промежуточных выражений для каждого аргумента
 и возвращает список меток.
 
@@ -1098,8 +1098,8 @@ Maxima автоматически генерирует ссылку для каждого входного выражения,
 
 @end deffn
 
-@deffn {Функция} ldisplay (@var{expr_1}, ..., @var{expr_n})
-Отображает выражения @var{expr_1}, ..., @var{expr_n} в консоли как при выводе.
+@deffn {Функция} ldisplay (@mvar{expr_1}, ..., @mvar{expr_n})
+Отображает выражения @mvar{expr_1}, ..., @mvar{expr_n} в консоли как при выводе.
 Каждое выражение печатается в виде равенства @code{lhs = rhs},
 в котором @code{lhs} -- один из аргументов функции @code{ldisplay},
 а @code{rhs} -- его значение.
@@ -1202,10 +1202,10 @@ Lisp символы отображаются с вопросительным знаком @code{?} перед ними.
 
 @end defvr
 
-@deffn {Функция} load (@var{filename})
-Вычисляет выражения в @var{filename},
+@deffn {Функция} load (@mvar{filename})
+Вычисляет выражения в @mvar{filename},
 тем самым загружая переменные, функции и другие объекты в Maxima.
-Значения любых существовавших объектов заменяются связями, полученными из @var{filename}.
+Значения любых существовавших объектов заменяются связями, полученными из @mvar{filename}.
 Для поиска файла @code{load} вызывает @code{file_search},
 пути поиска берутся из @code{file_search_maxima} и @code{file_search_lisp}.
 Если @code{load} выполнена успешно, то возвращается имя файла, иначе печатается сообщение об ошибке.
@@ -1215,7 +1215,7 @@ Lisp символы отображаются с вопросительным знаком @code{?} перед ними.
 код Lisp, и @code{stringout}, которая создает код Maxima, могут быть обработаны функцией @code{load}.
 @code{load} вызывает @code{loadfile} для загрузки Lisp файлов и @code{batchload} для загрузки Maxima файлов.
 
-@code{load} не распознает конструкции @code{:lisp} в файлах Maxima, и во время обработки @var{filename},
+@code{load} не распознает конструкции @code{:lisp} в файлах Maxima, и во время обработки @mvar{filename},
 глобальные переменные @code{_}, @code{__}, @code{%} и @code{%th} имеют те связи, которые были у них в момент 
 вызова @code{load}.
 
@@ -1232,8 +1232,8 @@ Lisp символы отображаются с вопросительным знаком @code{?} перед ними.
 
 @end deffn
 
-@deffn {Функция} loadfile (@var{filename})
-Вычисляет выражения Lisp в @var{filename}.
+@deffn {Функция} loadfile (@mvar{filename})
+Вычисляет выражения Lisp в @mvar{filename}.
 @code{loadfile} не вызывает @code{file_search}, поэтому @code{filename} должен включать
 расширение и информацию о пути, достаточную для поиска файла.
 
@@ -1369,8 +1369,8 @@ Maxima автоматически генерирует метки для каждого вычисленного выражения, соедин
 
 @end defvr
 
-@deffn {Функция} print (@var{expr_1}, ..., @var{expr_n})
-Вычисляет и отображает @var{expr_1}, ..., @var{expr_n} одно за другим,
+@deffn {Функция} print (@mvar{expr_1}, ..., @mvar{expr_n})
+Вычисляет и отображает @mvar{expr_1}, ..., @mvar{expr_n} одно за другим,
 слева направо, начиная с левого края экрана консоли.
 
 Функция @code{print} возвращает значение своего последнего аргумента.
@@ -1409,19 +1409,19 @@ Maxima автоматически генерирует метки для каждого вычисленного выражения, соедин
 
 @end deffn
 
-@deffn {Функция} printfile (@var{path})
+@deffn {Функция} printfile (@mvar{path})
 
-Выводит файл с именем @var{path} на консоль.
-Значение @var{path} может быть строкой или символом.
+Выводит файл с именем @mvar{path} на консоль.
+Значение @mvar{path} может быть строкой или символом.
 Если символ, то он преобразуется в строку.
 
-Если файл с именем @var{path} доступен в текущей директории, то 
+Если файл с именем @mvar{path} доступен в текущей директории, то 
 он печатается на консоли.
-В противном случае @code{printfile} пытается найти файл добавляя @var{path}
+В противном случае @code{printfile} пытается найти файл добавляя @mvar{path}
 ко всем элементам @code{file_search_usage}
 при помощи @code{filename_merge}.
 
-@code{printfile} возвращает @var{path}, если файл существует,
+@code{printfile} возвращает @mvar{path}, если файл существует,
 и результат успешного поиска файла.
 
 @opencatbox
@@ -1429,22 +1429,22 @@ Maxima автоматически генерирует метки для каждого вычисленного выражения, соедин
 @closecatbox
 @end deffn
 
-@deffn {Функция} tcl_output (@var{list}, @var{i0}, @var{skip})
-@deffnx {Функция} tcl_output (@var{list}, @var{i0})
-@deffnx {Функция} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+@deffn {Функция} tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})
+@deffnx {Функция} tcl_output (@mvar{list}, @mvar{i0})
+@deffnx {Функция} tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})
 
 Выводит элементы списков заключенными в фигурные скобки @code{@{ @}},
 в виде пригодном для использования в языке Tcl/Tk.
 
 
-@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
-выводит элементы списка @var{list} с номерами @var{i0}, @code{@var{i0} + @var{skip}},
-@code{@var{i0} + 2 @var{skip}} и так далее.
+@code{tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})}
+выводит элементы списка @mvar{list} с номерами @mvar{i0}, @code{@mvar{i0} + @mvar{skip}},
+@code{@mvar{i0} + 2 @mvar{skip}} и так далее.
 
-@code{tcl_output (@var{list}, @var{i0})} равнозначна @code{tcl_output (@var{list}, @var{i0}, 2)}.
+@code{tcl_output (@mvar{list}, @mvar{i0})} равнозначна @code{tcl_output (@mvar{list}, @mvar{i0}, 2)}.
 
-@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
-выводит @var{i}-ые элементы списков @var{list_1}, ..., @var{list_n}.
+@code{tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})}
+выводит @mvar{i}-ые элементы списков @mvar{list_1}, ..., @mvar{list_n}.
 
 Примеры:
 @c EXAMPLE INPUT
@@ -1483,8 +1483,8 @@ Maxima автоматически генерирует метки для каждого вычисленного выражения, соедин
 
 @end deffn
 
-@deffn {Функция} read (@var{expr_1}, ..., @var{expr_n})
-Выводит @var{expr_1}, ..., @var{expr_n}, затем считывает одно выражение с консоли и 
+@deffn {Функция} read (@mvar{expr_1}, ..., @mvar{expr_n})
+Выводит @mvar{expr_1}, ..., @mvar{expr_n}, затем считывает одно выражение с консоли и 
 возвращает вычисленное выражение.
 
 См. также @code{readonly}.
@@ -1505,8 +1505,8 @@ foo is 42  -- enter new value.
 
 @end deffn
 
-@deffn {Функция} readonly (@var{expr_1}, ..., @var{expr_n})
-Выводит @var{expr_1}, ..., @var{expr_n}, затем считывает одно выражение с консоли
+@deffn {Функция} readonly (@mvar{expr_1}, ..., @mvar{expr_n})
+Выводит @mvar{expr_1}, ..., @mvar{expr_n}, затем считывает одно выражение с консоли
 и Возвращает его без вычисления.
 
 @example
@@ -1530,17 +1530,17 @@ Enter an expression:
 
 @end deffn
 
-@deffn {Функция} reveal (@var{expr}, @var{depth})
-Замещает части выражения @var{expr} заданного уровня вложенности @var{depth}
+@deffn {Функция} reveal (@mvar{expr}, @mvar{depth})
+Замещает части выражения @mvar{expr} заданного уровня вложенности @mvar{depth}
 кратким описанием.
 
 @itemize @bullet
 @item
-Суммы и разности заменяются на @code{Sum(@var{n})},
-где @var{n} -- количество слагаемых.
+Суммы и разности заменяются на @code{Sum(@mvar{n})},
+где @mvar{n} -- количество слагаемых.
 @item
-Произведения заменяются на @code{Product{@var{n})},
-где @var{n} -- количество множителей.
+Произведения заменяются на @code{Product{@mvar{n})},
+где @mvar{n} -- количество множителей.
 @item
 Степени заменяются на @code{Expt}.
 @item
@@ -1549,8 +1549,8 @@ Enter an expression:
 Унарное отрицание заменяется на @code{Negterm}.
 @end itemize
 
-Если @var{depth} больше или равен максимальному уровню вложенности в выражении @var{expr},
-то @code{reveal (@var{expr}, @var{depth})} возвращает @var{expr} без изменений.
+Если @mvar{depth} больше или равен максимальному уровню вложенности в выражении @mvar{expr},
+то @code{reveal (@mvar{expr}, @mvar{depth})} возвращает @mvar{expr} без изменений.
 
 @code{reveal} вычисляет свои аргументы.
 @code{reveal} возвращает анализируемое выражение.
@@ -1614,20 +1614,20 @@ Enter an expression:
 
 @end defvr
 
-@deffn {Функция} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Функция} save (@var{filename}, values, functions, labels, ...)
-@deffnx {Функция} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Функция} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@deffnx {Функция} save (@var{filename}, all)
-@deffnx {Функция} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+@deffn {Функция} save (@mvar{filename}, @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, ...)
+@deffnx {Функция} save (@mvar{filename}, values, functions, labels, ...)
+@deffnx {Функция} save (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Функция} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, ...)
+@deffnx {Функция} save (@mvar{filename}, all)
+@deffnx {Функция} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @mvar{name_2}=@mvar{expr_2}, ...)
 
-Сохраняет текущие значения аргументов @var{name_1}, @var{name_2}, @var{name_3}, ..., в @var{filename}.
+Сохраняет текущие значения аргументов @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, ..., в @mvar{filename}.
 Аргументами являются имена переменных, функций и прочих объектов.
 Если имя не имеет значения или связанной с ним функцией, оно игнорируется.
-@code{save} возвращает @var{filename}.
+@code{save} возвращает @mvar{filename}.
 
 @code{save} сохраняет данные в форме Lisp выражений.
-Данные, сохраненные функцией @code{save}, можно загрузить при помощи @code{load (@var{filename})}.
+Данные, сохраненные функцией @code{save}, можно загрузить при помощи @code{load (@mvar{filename})}.
 
 Глобальная управляющая переменная @code{file_output_append} управляет тем,
 будет ли информация добавлена к файлу, или файл будет переписан заново.
@@ -1635,35 +1635,35 @@ Enter an expression:
 иначе @code{save} переписывает файл вывода. В обоих случаях @code{save} создает
 файл, если он до этого не существовал.
 
-Особая форма @code{save (@var{filename}, values, functions, labels, ...)}
+Особая форма @code{save (@mvar{filename}, values, functions, labels, ...)}
 сохраняет элементы перечисленные в списках @code{values}, @code{functions}, @code{labels} и т. д.
 Возможны любые имена определенные в @code{infolist}.
 @code{values} включает все определенные пользователем переменные.
 
-Особая форма @code{save (@var{filename}, [@var{m}, @var{n}])} сохраняет значения
-входных и результирующих выражений с номерами от @var{m} до @var{n}.
-Заметим, что @var{m} и @var{n} должны быть буквальными целыми.
+Особая форма @code{save (@mvar{filename}, [@mvar{m}, @mvar{n}])} сохраняет значения
+входных и результирующих выражений с номерами от @mvar{m} до @mvar{n}.
+Заметим, что @mvar{m} и @mvar{n} должны быть буквальными целыми.
 Входные и результирующие метки можно также записать одну за другой, например, @code{save ("foo.1", %i42, %o42)}.
-@code{save (@var{filename}, labels)} сохраняет все входные и результирующие выражения.
+@code{save (@mvar{filename}, labels)} сохраняет все входные и результирующие выражения.
 Сохраненные выражения при загрузке заменяют существующие.
 
-Особая форма @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
-сохраняет значения @var{expr_1}, @var{expr_2}, ... с именами @var{name_1}, @var{name_2}, ...
+Особая форма @code{save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @mvar{name_2}=@mvar{expr_2}, ...)}
+сохраняет значения @mvar{expr_1}, @mvar{expr_2}, ... с именами @mvar{name_1}, @mvar{name_2}, ...
 Эту форму полезно применять для входных и результирующих меток, 
 например, @code{save ("foo.1", aa=%o88)}.
 С правой стороны равенства в этой форме может стоять любое выражение, которое вычисляется.
-Эта форма не вводит новые имена в текущий сеанс Maxima, только сохраняет их в @var{filename}.
+Эта форма не вводит новые имена в текущий сеанс Maxima, только сохраняет их в @mvar{filename}.
 
 Эти особые формы и общую форму функции @code{save} можно как угодно смешивать.
-Например: @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
+Например: @code{save (@mvar{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
-Особая форма @code{save (@var{filename}, all)} сохраняет текущее состояние Maxima,
+Особая форма @code{save (@mvar{filename}, all)} сохраняет текущее состояние Maxima,
 включая все определенные пользователем переменные, функции, массивы и т. д., а также
 элементы, заданные автоматически.
 Сохраняемые элементы включают в себя системные переменные, такие как @code{file_search_maxima} или @code{showtime},
 если пользователь присвоил им новые значения. См. @code{myoptions}.
 
-@code{save} вычисляет @var{filename}, все остальные аргументы не вычисляются.
+@code{save} вычисляет @mvar{filename}, все остальные аргументы не вычисляются.
 
 @opencatbox
 @category{Управление сессией} @category{Вывод файлов}
@@ -1690,7 +1690,7 @@ Enter an expression:
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
-@deffn {Функция} show (@var{expr})
+@deffn {Функция} show (@mvar{expr})
 При отображении @code{expr}, у индексированных объектов ковариантные
 индексы показываются как нижние, а контравариантные --
 как верхние. Индексы дифференцирования отображаются нижними и отделяются от
@@ -1702,7 +1702,7 @@ Enter an expression:
 
 @end deffn
 
-@deffn {Функция} showratvars (@var{expr})
+@deffn {Функция} showratvars (@mvar{expr})
 Возвращает список переменных в каноническом рациональном выражении @code{expr}.
 
 См. также @code{ratvars}.
@@ -1725,7 +1725,7 @@ Enter an expression:
 
 @end defvr
 
-@deffn {Функция} string (@var{expr})
+@deffn {Функция} string (@mvar{expr})
 Преобразовывает @code{expr} в линейное представление,
 как оно было бы введено с клавиатуры.
 
@@ -1776,11 +1776,11 @@ Enter an expression:
 
 @end defvr
 
-@deffn {Функция} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Функция} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Функция} stringout (@var{filename}, input)
-@deffnx {Функция} stringout (@var{filename}, functions)
-@deffnx {Функция} stringout (@var{filename}, values)
+@deffn {Функция} stringout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+@deffnx {Функция} stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Функция} stringout (@mvar{filename}, input)
+@deffnx {Функция} stringout (@mvar{filename}, functions)
+@deffnx {Функция} stringout (@mvar{filename}, values)
 
 @code{stringout} записывает выражение в файл в той же форме, в которой 
 оно было бы введено с клавиатуры. Файл можно использовать в качестве входного для 
@@ -1801,15 +1801,15 @@ Enter an expression:
 Если @code{grind} равна @code{true}, @code{stringout} форматирует выход используя формат @code{grind}.
 Иначе используется формат @code{string}. См. @code{grind} и @code{string}.
 
-Особая форма @code{stringout (@var{filename}, [@var{m}, @var{n})} записывает значения входных выражений,
+Особая форма @code{stringout (@mvar{filename}, [@mvar{m}, @mvar{n})} записывает значения входных выражений,
 с номерами от m до n, включительно.
 
-Особая форма @code{stringout (@var{filename}, input)} записывает в файл все входные выражения.
+Особая форма @code{stringout (@mvar{filename}, input)} записывает в файл все входные выражения.
 
-Особая форма @code{stringout (@var{filename}, functions)} записывает в файл все пользовательские функции 
+Особая форма @code{stringout (@mvar{filename}, functions)} записывает в файл все пользовательские функции 
 (перечисленные в глобальном списке @code{functions}).
 
-Особая форма @code{stringout (@var{filename}, values)} записывает в файл все пользовательские 
+Особая форма @code{stringout (@mvar{filename}, values)} записывает в файл все пользовательские 
 переменные (перечисленные в глобальном списке @code{values}). Каждая переменная выводится как
 оператор присваивания: с именем переменной, двоеточием и ее значением. Заметим, что общая форма 
 @code{stringout} не выводит переменные в виде операторов присваивания.
@@ -1820,28 +1820,28 @@ Enter an expression:
 
 @end deffn
 
-@deffn {Функция} tex (@var{expr})
-@deffnx {Функция} tex (@var{expr}, @var{filename})
-@deffnx {Функция} tex (@var{expr}, false)
-@deffnx {Функция} tex (@var{label})
-@deffnx {Функция} tex (@var{label}, @var{filename})
-@deffnx {Функция} tex (@var{label}, false)
+@deffn {Функция} tex (@mvar{expr})
+@deffnx {Функция} tex (@mvar{expr}, @mvar{filename})
+@deffnx {Функция} tex (@mvar{expr}, false)
+@deffnx {Функция} tex (@mvar{label})
+@deffnx {Функция} tex (@mvar{label}, @mvar{filename})
+@deffnx {Функция} tex (@mvar{label}, false)
 
 Отображает выражение в представлении подходящим для системы подготовки документов TeX.
 Результат -- фрагмент документа, который можно скопировать в больший документ, но сам по себе
 он для обработки не подходит.
 
-@code{tex (@var{expr})} отображает TeX-представление выражения @var{expr} в консоль.
+@code{tex (@mvar{expr})} отображает TeX-представление выражения @mvar{expr} в консоль.
 
-@code{ (@var{label})} отображает TeX-представление выражения, помеченное @var{label},
+@code{ (@mvar{label})} отображает TeX-представление выражения, помеченное @mvar{label},
 и назначает его метке выражения (отображаемой слева от выражения).
 Метки выражений TeX совпадают с метками Maxima.
 
 
-@code{tex (@var{expr}, @var{filename})} и @code{tex (@var{label}, @var{filename})}
-добавляют свой TeX-вывод в файл @var{filename}.
+@code{tex (@mvar{expr}, @mvar{filename})} и @code{tex (@mvar{label}, @mvar{filename})}
+добавляют свой TeX-вывод в файл @mvar{filename}.
 
-@code{tex (@var{expr}, false)} и @code{tex (@var{label}, false)}
+@code{tex (@mvar{expr}, false)} и @code{tex (@mvar{label}, false)}
 возвращают свой вывод в виде строки.
 
 @code{tex} вычисляет свой первый аргумент после попытки определить, не является ли он меткой.
@@ -1871,7 +1871,7 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@code{tex (@var{expr}, false)} возвращает свой вывод в виде строки.
+@code{tex (@mvar{expr}, false)} возвращает свой вывод в виде строки.
 
 @c ===beg===
 @c S : tex (x * y * z, false);
@@ -1890,28 +1890,28 @@ $$-\cos x$$
 
 @end deffn
 
-@deffn {Функция} texput (@var{a}, @var{s})
-@deffnx {Функция} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Функция} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Функция} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Функция} texput (@mvar{a}, @mvar{s})
+@deffnx {Функция} texput (@mvar{a}, @mvar{s}, @mvar{operator_type})
+@deffnx {Функция} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)
+@deffnx {Функция} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)
 
-Задает TeX вывод для атома @var{a}, который может быть символом или именем оператора.
+Задает TeX вывод для атома @mvar{a}, который может быть символом или именем оператора.
 
-@code{texput (@var{a}, @var{s})} заставляет функцию @code{tex} в своем выводе вставлять
-строку @var{s} вместо @var{a}.
+@code{texput (@mvar{a}, @mvar{s})} заставляет функцию @code{tex} в своем выводе вставлять
+строку @mvar{s} вместо @mvar{a}.
 
-@code{texput (@var{a}, @var{s}, @var{operator_type})},
-где @var{operator_type} можеть принимать значения @code{prefix}, @code{infix}, @code{postfix}, @code{nary}
-или @code{nofix}, заставляет функцию @code{tex} вставлять @var{s} вместо @var{a} и помещать 
+@code{texput (@mvar{a}, @mvar{s}, @mvar{operator_type})},
+где @mvar{operator_type} можеть принимать значения @code{prefix}, @code{infix}, @code{postfix}, @code{nary}
+или @code{nofix}, заставляет функцию @code{tex} вставлять @mvar{s} вместо @mvar{a} и помещать 
 вставленный текст в подходящую позицию.
 
-@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
-заставляет @code{tex} вставлять @var{s_1} и @var{s_2} в вывод TeX с обоих сторон аргументов атома @var{a}.
+@code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)}
+заставляет @code{tex} вставлять @mvar{s_1} и @mvar{s_2} в вывод TeX с обоих сторон аргументов атома @mvar{a}.
 Аргументы (если их несколько) разделяются запятыми.
 
-@code{textpput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
-заставляет @code{tex} в TeX-выводе вставлять @var{s_1} и @var{s_2} с обоих сторон аргументов атома @var{a}
-и разделять их аргументом @var{s_3}.
+@code{textpput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)}
+заставляет @code{tex} в TeX-выводе вставлять @mvar{s_1} и @mvar{s_2} с обоих сторон аргументов атома @mvar{a}
+и разделять их аргументом @mvar{s_3}.
 
 Примеры:
 
@@ -2069,8 +2069,8 @@ $$ \langle a \, | \,b \rangle $$
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} system (@var{command})
-Выполняет команду @var{command} как отдельный процесс. 
+@deffn {Функция} system (@mvar{command})
+Выполняет команду @mvar{command} как отдельный процесс. 
 Команда отправляется на выполнение командной оболочке, заданной по умолчанию.
 @code{system} поддерживается не всеми операционными системами, она в основном существует 
 в Unix и Unix-подобных окружениях.
@@ -2109,15 +2109,15 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 @end defvr
 
-@deffn {Функция} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Функция} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Вычисляет @var{expr_1}, @var{expr_2}, @var{expr_3}, ... и записывает любой сгенерированный
-вывод в файл @var{f} или в выходной поток @var{s}.
+@deffn {Функция} with_stdout (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+@deffnx {Функция} with_stdout (@mvar{s}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+Вычисляет @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ... и записывает любой сгенерированный
+вывод в файл @mvar{f} или в выходной поток @mvar{s}.
 Вычисленные выражения не записываются в вывод.
 Вывод может генерироваться кроме прочих функциями @code{print}, @code{display}, @code{grind}.
 
 Глобальная переменная @code{file_output_append} управляет тем, будет ли @code{with_stdout}
-дописывать или переписывать заново файл @var{f}.
+дописывать или переписывать заново файл @mvar{f}.
 Если @code{file_output_append} равна @code{true}, @code{with_stdout} добавляет вывод к файлу.
 Иначе @code{with_stdout} переписывает файл.
 В обоих случаях, @code{with_stdout} создает файл, если тот не существовал.
@@ -2159,8 +2159,8 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 @end deffn
 
-@deffn {Функция} writefile (@var{filename})
-Начинает записывать копию сессии Maxima в @var{filename}.
+@deffn {Функция} writefile (@mvar{filename})
+Начинает записывать копию сессии Maxima в @mvar{filename}.
 Все взаимодействия между пользователем и Maxima  записываются в этот файл точно в том виде,
 в котором они показываются в консоли.
 
@@ -2168,7 +2168,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 Если хотите создать файл, содержащий выражения, с возможностью его загрузки, см. @code{save} и @code{stringout}.
 @code{save} сохраняет выражения в форме Lisp, в то время как @code{stringout} сохраняет их в форме Maxima. 
 
-Результат выполнения @code{writefile}, когда @var{filename} уже существует, зависит
+Результат выполнения @code{writefile}, когда @mvar{filename} уже существует, зависит
 от реализации лежащего в основе Lisp. Выходной файл может быть стерт или дописан.
 @code{appendfile} всегда дописывает файл.
 

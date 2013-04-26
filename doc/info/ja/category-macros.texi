@@ -1,63 +1,79 @@
 @macro opencatbox {}
+@c For the reasoning behind the ***** lines, see
+@c ../category-macros.texi
+@c *****
 @ifhtml
 @html
 <div class=categorybox>
 @end html
 @end ifhtml
+@c *****
 @end macro
 
 @macro category {name}
+@c *****
 @ifhtml
 @html
 &middot;
 @end html
 @ref{Category: \name\}
 @end ifhtml
+@c *****
 @end macro
 
 @macro closecatbox {}
+@c *****
 @ifhtml
 @html
 </div>
 @end html
 @end ifhtml
+@c *****
 @end macro
 
 @c Macros for cross references
 
 @macro mref {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}}
 @end ifhtml
 @ifnothtml
 @code{\nodename\}
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mxref {nodename, text}
+@c *****
 @ifhtml
 @code{@ref{\nodename\, \text\}}
 @end ifhtml
 @ifnothtml
 @code{\text\}
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mrefdot {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}}.
 @end ifhtml
 @ifnothtml
 @code{\nodename\}.
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mrefcomma {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}},
 @end ifhtml
 @ifnothtml
 @code{\nodename\},
 @end ifnothtml
+@c *****
 @end macro
 

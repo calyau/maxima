@@ -90,7 +90,7 @@ parabolic_cylinder_d (v,z)     Parabolische Zylinderfunktion D
 
 @c --- 12.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_j}
-@deffn {Funktion} bessel_j (@var{v}, @var{z})
+@deffn {Funktion} bessel_j (@mvar{v}, @mvar{z})
 
 Die Bessel-Funktion der ersten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  @code{bessel_j} ist definiert als
@@ -130,7 +130,7 @@ haben:
 
 @table @code
 @item conjugate function
-@code{bessel_j} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+@code{bessel_j} hat Spiegelsymmetrie, wenn das Argument @mvar{z} keine negative
 reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
 @mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
 @item complex characteristic
@@ -267,7 +267,7 @@ Ordnung.
 
 @c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_y}
-@deffn {Funktion} bessel_y (@var{v}, @var{z})
+@deffn {Funktion} bessel_y (@mvar{v}, @mvar{z})
 
 Die Bessel-Funktion der zweiten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  @code{bessel_y} ist definiert als
@@ -315,7 +315,7 @@ haben:
 
 @table @code
 @item conjugate function
-@code{bessel_y} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+@code{bessel_y} hat Spiegelsymmetrie, wenn das Argument @mvar{z} keine negative
 reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
 @mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
 @item complex characteristic
@@ -371,7 +371,7 @@ Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 
 @c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_i}
-@deffn {Funktion} bessel_i (@var{v}, @var{z})
+@deffn {Funktion} bessel_i (@mvar{v}, @mvar{z})
 
 Die modifizierte Bessel-Funktion der ersten Art der Ordnung @math{v} mit dem 
 Argument @math{v}.  @code{bessel_i} ist definiert als
@@ -410,7 +410,7 @@ haben:
 
 @table @code
 @item conjugate function
-@code{bessel_i} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+@code{bessel_i} hat Spiegelsymmetrie, wenn das Argument @mvar{z} keine negative
 reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
 @mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
 @item complex characteristic
@@ -464,7 +464,7 @@ Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 
 @c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_k}
-@deffn {Funktion} bessel_k (@var{v}, @var{z})
+@deffn {Funktion} bessel_k (@mvar{v}, @mvar{z})
 
 Die modifizierte Bessel-Funktion der zweiten Art der Ordnung @math{v} mit dem
 Argument @math{z}.  @code{bessel_k} ist definiert als
@@ -512,7 +512,7 @@ haben:
 
 @table @code
 @item conjugate function
-@code{bessel_k} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+@code{bessel_k} hat Spiegelsymmetrie, wenn das Argument @mvar{z} keine negative
 reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
 @mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
 @item complex characteristic
@@ -628,7 +628,7 @@ Weitere Beispiele f@"ur die Entwicklungen der Funktionen @mref{bessel_k} und
 
 @c --- 31.03.2011 DK -----------------------------------------------------------
 @anchor{scaled_bessel_i}
-@deffn {Funktion} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Funktion} scaled_bessel_i (@mvar{v}, @mvar{z}) 
 
 Die skalierte modifizierte Bessel-Funktion der ersten Art der Ordnung
 @math{v} mit dem Argument @math{z}.  Diese ist definiert als
@@ -665,14 +665,14 @@ Beispiele:
 
 @c -----------------------------------------------------------------------------
 @anchor{scaled_bessel_i0}
-@deffn {Funktion} scaled_bessel_i0 (@var{z})
+@deffn {Funktion} scaled_bessel_i0 (@mvar{z})
 
 Entspricht @code{scaled_bessel_i(0,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{scaled_bessel_i1}
-@deffn {Funktion} scaled_bessel_i1 (@var{z}) 
+@deffn {Funktion} scaled_bessel_i1 (@mvar{z}) 
 
 Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
@@ -684,7 +684,7 @@ Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 
 @c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{hankel_1}
-@deffn {Funktion} hankel_1 (@var{v}, @var{z})
+@deffn {Funktion} hankel_1 (@mvar{v}, @mvar{z})
 
 Die Hankel-Funktion der ersten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe A@w{ }&@w{ }S 9.1.3.  @code{hankel_1} ist definiert als
@@ -748,8 +748,8 @@ Entwicklung der Hankel-Funktion @code{hankel_1}, wenn die Optionsvariable
                        sqrt(%pi) sqrt(z)
 @end example
 
-Ableitung der Hankel-Funktion @code{hankel_1} nach dem Argument @var{z}.  Die
-Ableitung nach der Ordnung @var{v} ist nicht implementiert.  Maxima gibt eine
+Ableitung der Hankel-Funktion @code{hankel_1} nach dem Argument @mvar{z}.  Die
+Ableitung nach der Ordnung @mvar{v} ist nicht implementiert.  Maxima gibt eine
 Substantivform zur@"uck.
 
 @example
@@ -766,7 +766,7 @@ Substantivform zur@"uck.
 
 @c --- 27.03.2011 DK -----------------------------------------------------------
 @anchor{hankel_2}
-@deffn {Funktion} hankel_2 (@var{v}, @var{z})
+@deffn {Funktion} hankel_2 (@mvar{v}, @mvar{z})
 
 Die Hankel-Funktion der zweiten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe A@w{ }&@w{ }S 9.1.4.  @code{hankel_2} ist definiert als
@@ -822,7 +822,7 @@ L@"osungen der Airy-Differentialgleichung.
 
 @c --- 14.07.2011.2011 DK -----------------------------------------------------------
 @anchor{airy_ai}
-@deffn {Funktion} airy_ai (@var{z})
+@deffn {Funktion} airy_ai (@mvar{z})
 
 Die Airy-Funktion @math{Ai(z)} (A & S 10.4.2).
 
@@ -900,12 +900,12 @@ Ableitungen und Integral der Airy-Funktion @code{airy_ai}.
 
 @c --- 14.07.2011 DK -----------------------------------------------------------
 @anchor{airy_dai}
-@deffn {Funktion} airy_dai (@var{z})
+@deffn {Funktion} airy_dai (@mvar{z})
 
 Die Ableitung der Airy-Funktion @mrefdot{airy_ai}
 
 Die Ableitung der Airy-Funktion @code{airy_dai} ist f@"ur das symbolische und
-numerische Rechnen geeignet.  Ist das Argument @var{z} eine reelle oder
+numerische Rechnen geeignet.  Ist das Argument @mvar{z} eine reelle oder
 komplexe Gleitkommazahl, wird @code{airy_dai} numerisch berechnet.  Mit der
 Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
 numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
@@ -928,7 +928,7 @@ F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 @c --- 14.07.2011 DK -----------------------------------------------------------
 @need 1000
 @anchor{airy_bi}
-@deffn {Funktion} airy_bi (@var{z})
+@deffn {Funktion} airy_bi (@mvar{z})
 
 Die Airy-Funktion Bi(z) (A & S 10.4.3).
 
@@ -958,12 +958,12 @@ F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 
 @c --- 14.07.2011 DK -----------------------------------------------------------
 @anchor{airy_dbi}
-@deffn {Funktion} airy_dbi (@var{z})
+@deffn {Funktion} airy_dbi (@mvar{z})
 
 Die Ableitung der Airy-Funktion @mrefdot{airy_bi}
 
 Die Ableitung der Airy-Funktion @code{airy_dbi} ist f@"ur das symbolische und
-numerische Rechnen geeignet.  Ist das Argument @var{z} eine reelle oder
+numerische Rechnen geeignet.  Ist das Argument @mvar{z} eine reelle oder
 komplexe Gleitkommazahl, wird @code{airy_dbi} numerisch berechnet.  Mit der
 Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
 numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
@@ -990,7 +990,7 @@ F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 
 @c --- 27.03.2011---------------------------------------------------------------
 @anchor{struve_h}
-@deffn {Funktion} struve_h (@var{v}, @var{z})
+@deffn {Funktion} struve_h (@mvar{v}, @mvar{z})
 
 Die Struve-Funktion @math{H} der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe Abramowitz und Stegun, Handbook of Mathematical Functions,
@@ -1059,7 +1059,7 @@ Beispiele:
 
 @c --- 27.03.2011 DK -----------------------------------------------------------
 @anchor{struve_l}
-@deffn {Funktion} struve_l (@var{v}, @var{z})
+@deffn {Funktion} struve_l (@mvar{v}, @mvar{z})
 
 Die modifizierte Struve-Funktion @math{L} der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe Abramowitz und Stegun, Handbook of Mathematical Functions, 
@@ -1137,10 +1137,10 @@ unvollst@"andige Gammafunktion sind definiert in Abramowitz and Stegun,
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{bffac}
-@deffn {Funktion} bffac (@var{x}, @var{fpprec})
+@deffn {Funktion} bffac (@mvar{x}, @mvar{fpprec})
 
-Berechnet die Fakult@"at f@"ur gro@ss{}e Gleitkommazahlen.  Das Argument @var{x}
-muss eine gro@ss{}e Gleitkommazahl sein.  Das zweite Argument @var{fpprec} ist
+Berechnet die Fakult@"at f@"ur gro@ss{}e Gleitkommazahlen.  Das Argument @mvar{x}
+muss eine gro@ss{}e Gleitkommazahl sein.  Das zweite Argument @mvar{fpprec} ist
 die Anzahl der Stellen, f@"ur die die Fakult@"at berechnet wird.  Das Ergebnis
 ist eine gro@ss{}e Gleitkommazahl.
 
@@ -1166,16 +1166,16 @@ Beispiel:
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{bfpsi}
-@deffn  {Funktion} bfpsi (@var{n}, @var{x}, @var{fpprec})
-@deffnx {Funktion} bfpsi0 (@var{x}, @var{fpprec})
+@deffn  {Funktion} bfpsi (@mvar{n}, @mvar{x}, @mvar{fpprec})
+@deffnx {Funktion} bfpsi0 (@mvar{x}, @mvar{fpprec})
 
-@code{bfpsi} ist die Polygammafunktion f@"ur ein reelles Argument @var{x} und
-einer ganzzahligen Ordnung @var{n}.  @code{bfpsi0} ist die Digammafunktion.
-@code{bfpsi0(@var{x}, @var{fpprec})} ist @"aquivalent zu @code{bfpsi(0, @var{x},
-@var{fpprec})}.
+@code{bfpsi} ist die Polygammafunktion f@"ur ein reelles Argument @mvar{x} und
+einer ganzzahligen Ordnung @mvar{n}.  @code{bfpsi0} ist die Digammafunktion.
+@code{bfpsi0(@mvar{x}, @mvar{fpprec})} ist @"aquivalent zu @code{bfpsi(0, @mvar{x},
+@mvar{fpprec})}.
 
-Das Argument @var{x} der Funktionen @code{bfpsi} und @code{bfpsi0} muss eine
-gro@ss{}e Gleitkommazahl sein.  Das Argument @var{fpprec} gibt die Anzahl der
+Das Argument @mvar{x} der Funktionen @code{bfpsi} und @code{bfpsi0} muss eine
+gro@ss{}e Gleitkommazahl sein.  Das Argument @mvar{fpprec} gibt die Anzahl der
 Stellen an, f@"ur die die Funktion berechnet wird.  Das Ergebnis ist eine
 gro@ss{}e Gleitkommazahl.
 
@@ -1197,11 +1197,11 @@ Beispiel:
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{cbffac}
-@deffn {Funktion} cbffac (@var{z}, @var{fpprec})
+@deffn {Funktion} cbffac (@mvar{z}, @mvar{fpprec})
 
 Berechnet die Fakult@"at f@"ur komplexe gro@ss{}e Gleitkommazahlen.  Das
-Argument @var{z} ist eine komplexe gro@ss{}e Gleitkommazahl.  Das zweite
-Argument @var{fpprec} ist die Anzahl der Stellen, f@"ur die die Fakult@"at
+Argument @mvar{z} ist eine komplexe gro@ss{}e Gleitkommazahl.  Das zweite
+Argument @mvar{fpprec} ist die Anzahl der Stellen, f@"ur die die Fakult@"at
 berechnet wird.  Das Ergebnis ist eine komplexe gro@ss{}e Gleitkommazahl.
 
 F@"ur das symbolische Rechnen mit der Fakult@"at und der Gammafunktion siehe die
@@ -1215,7 +1215,7 @@ Siehe auch die Funktion @mrefdot{bffac}
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma}
-@deffn {Funktion} gamma (@var{z})
+@deffn {Funktion} gamma (@mvar{z})
 
 Die Definition der Gammafunktion ist (A & S 6.1.1)
 
@@ -1230,7 +1230,7 @@ Die Definition der Gammafunktion ist (A & S 6.1.1)
 @end example
 
 Die Gammafunktion @code{gamma} ist f@"ur das numerische und symbolische Rechnen
-geeignet.  F@"ur positive ganze Zahlen und rationale Zahlen als Argument @var{z}
+geeignet.  F@"ur positive ganze Zahlen und rationale Zahlen als Argument @mvar{z}
 wird die Gammafunktion vereinfacht.  F@"ur halbzahlige rationale Zahlen ist das
 Ergebnis der Vereinfachung eine rationale Zahl multipliziert mit
 @code{sqrt(%pi)}.  Die Vereinfachung f@"ur ganze Zahlen wird von der
@@ -1242,13 +1242,13 @@ rationale Zahlen von der Optionsvariablen @mref{gammalim} kontrolliert.
 F@"ur negative ganze Zahlen ist die Gammafunktion @code{gamma} nicht definiert.
 
 Maxima berechnet @code{gamma} numerisch f@"ur reelle und komplexe Argumente
-@var{z}.  Das Ergebnis ist eine reelle oder komplexe Gleitkommazahl.
+@mvar{z}.  Das Ergebnis ist eine reelle oder komplexe Gleitkommazahl.
 
 @code{gamma} hat Spiegelsymmetrie.
 
 Hat die Optionsvariable @mref{gamma_expand} den Wert @code{true}, entwickelt
 Maxima die Gammafunktion f@"ur Argumente der Form @code{z+n} und @code{z-n},
-wobei @var{n} eine ganze Zahl ist.
+wobei @mvar{n} eine ganze Zahl ist.
 
 Maxima kennt die Ableitung der Gammafunktion @code{gamma}.
 
@@ -1332,14 +1332,14 @@ Siehe die Funktion @code{gamma} f@"ur ein Beispiel.
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{log_gamma}
-@deffn {Funktion} log_gamma (@var{z})
+@deffn {Funktion} log_gamma (@mvar{z})
 
 Der Logarithmus der Gammafunktion.
 @end deffn
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete}
-@deffn {Funktion} gamma_incomplete (@var{a}, @var{z})
+@deffn {Funktion} gamma_incomplete (@mvar{a}, @mvar{z})
 
 Die unvollst@"andige Gammafunktion (A & S 6.5.2) die definiert ist als
 
@@ -1361,7 +1361,7 @@ $$\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete_regularized}
-@deffn {Funktion} gamma_incomplete_regularized (@var{a}, @var{z})
+@deffn {Funktion} gamma_incomplete_regularized (@mvar{a}, @mvar{z})
 
 Regularisierte unvollst@"andige Gammafunktion (A & S 6.5.1)
 
@@ -1380,7 +1380,7 @@ $${{{\it gamma\_incomplete}\left(a , z\right)}\over{\Gamma\left(a
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete_generalized}
-@deffn {Funktion} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z2})
+@deffn {Funktion} gamma_incomplete_generalized (@mvar{a}, @mvar{z1}, @mvar{z2})
 
 Verallgemeinerte unvollst@"andige Gammafunktion
 
@@ -1417,10 +1417,10 @@ ganze Zahlen zu kontrollieren.
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{makegamma}
-@deffn {Funktion} makegamma (@var{expr})
+@deffn {Funktion} makegamma (@mvar{expr})
 
 Ersetzt Fakult@"aten sowie Binomial- und Betafunktionen durch die Gammafunktion
-@mref{gamma} im Ausdruck @var{expr}.
+@mref{gamma} im Ausdruck @mvar{expr}.
 
 Siehe auch die Funktion @mrefcomma{makefact} um stattdessen Fakult@"aten in den
 Ausdruck einzusetzen.
@@ -1441,23 +1441,23 @@ Beispiel:
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{beta}
-@deffn {Funktion} beta (@var{a}, @var{b})
+@deffn {Funktion} beta (@mvar{a}, @mvar{b})
 
 Die Betafunktion ist definiert als @code{gamma(a) gamma(b)/gamma(a+b)}
 (A & S 6.2.1).
 
-Maxima vereinfacht die Betafunktion f@"ur positive ganze Zahlen @var{a} und
-@var{b} sowie rationale Zahlen, deren Summe @code{@var{a} + @var{b}} eine ganze
+Maxima vereinfacht die Betafunktion f@"ur positive ganze Zahlen @mvar{a} und
+@mvar{b} sowie rationale Zahlen, deren Summe @code{@mvar{a} + @mvar{b}} eine ganze
 Zahl ist.  Hat die Optionsvariable @mref{beta_args_sum_to_integer} den Wert
 @code{true}, vereinfacht Maxima die Betafunktion f@"ur allgemeine Ausdr@"ucke
-@var{a} und @var{b}, deren Summe eine ganze Zahl ist.
+@mvar{a} und @mvar{b}, deren Summe eine ganze Zahl ist.
 
-Ist eines der Argumente @var{a} oder @var{b} Null, ist die Betafunktion nicht
+Ist eines der Argumente @mvar{a} oder @mvar{b} Null, ist die Betafunktion nicht
 definiert.
 
 Im allgemeinen ist die Betafunktion nicht definiert f@"ur negative ganze Zahlen
-als Argument.  Ausnahme ist der Fall, dass @var{a = -n}, wobei @var{n} eine
-positive ganze Zahl und @var{b} eine positive ganze Zahl mit @var{b <= b} ist.
+als Argument.  Ausnahme ist der Fall, dass @mvar{a = -n}, wobei @mvar{n} eine
+positive ganze Zahl und @mvar{b} eine positive ganze Zahl mit @mvar{b <= b} ist.
 In diesem Fall kann eine analytische Fortsetzung der Betafunktion definiert
 werden.  Maxima gibt f@"ur diesen Fall ein Ergebnis zur@"uck.
 
@@ -1477,8 +1477,8 @@ numerisch.  F@"ur die numerische Berechnung nutzt Maxima die Funktion
 Maxima kennt Symmetrieeigenschaften der Betafunktion.  Die Betafunktion ist
 symmetrisch und hat Spiegelsymmetrie.
 
-Maxima kennt die Ableitung der Betafunktion nach den Argumenten @var{a} und
-@var{b}.
+Maxima kennt die Ableitung der Betafunktion nach den Argumenten @mvar{a} und
+@mvar{b}.
 
 Mit der Funktion @mref{makegamma} kann die Betafunktion durch Gammafunktionen
 ersetzt werden.  Entsprechend ersetzt die Funktion @mref{makefact}@w{}
@@ -1586,7 +1586,7 @@ Ableitung der Betafunktion.
 
 @c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{beta_incomplete}
-@deffn {Funktion} beta_incomplete (@var{a}, @var{b}, @var{z})
+@deffn {Funktion} beta_incomplete (@mvar{a}, @mvar{b}, @mvar{z})
 
 Die Definition der unvollst@"andigen Betafunktion ist (A & S 6.6.1)
 
@@ -1627,15 +1627,15 @@ werden als
 @end example
 
 Maxima nutzt diese Definition, um die Funktion @code{beta_incomplete} f@"ur
-negative ganzzahlige Argumente @var{a} zu vereinfachen.
+negative ganzzahlige Argumente @mvar{a} zu vereinfachen.
 
-F@"ur positive ganzzahlige Argumente @var{a} vereinfacht @code{beta_incomplete}
-f@"ur jedes Argument @var{b} und @var{z}.  Entsprechend vereinfacht
-@code{beta_incomplete} f@"ur ein positives ganzzahliges Argument @var{b} mit
-der Ausnahme, dass @var{a} eine negative ganze Zahl ist.
+F@"ur positive ganzzahlige Argumente @mvar{a} vereinfacht @code{beta_incomplete}
+f@"ur jedes Argument @mvar{b} und @mvar{z}.  Entsprechend vereinfacht
+@code{beta_incomplete} f@"ur ein positives ganzzahliges Argument @mvar{b} mit
+der Ausnahme, dass @mvar{a} eine negative ganze Zahl ist.
 
 F@"ur @math{z=0} und @math{realpart(a) > 0} hat @code{beta_incomplete} den
-speziellen Wert Null.  F@"ur @var{z=1} und @math{realpart(b) > 0} vereinfacht
+speziellen Wert Null.  F@"ur @mvar{z=1} und @math{realpart(b) > 0} vereinfacht
 @code{beta_incomplete} zu einem Ausdruck mit der Betafunktion @code{beta(a, b)}.
 
 Maxima berechnet @code{beta_incomplete} numerisch f@"ur reelle und komplexe
@@ -1647,12 +1647,12 @@ Maxima Ausdr@"ucke der Form @code{beta_incomplete(a+n, b, z)} und
 @code{beta_incomplete(a-n, b, z)}, wobei @code{n} eine ganze Zahl ist.
 
 Maxima kennt die Ableitungen der unvollst@"andigen Betafunktion nach den
-Variablen @var{a}, @var{b} und @var{z} und das Integral f@"ur die 
-Integrationsvariable @var{z}.
+Variablen @mvar{a}, @mvar{b} und @mvar{z} und das Integral f@"ur die 
+Integrationsvariable @mvar{z}.
 
 Beispiele:
 
-Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{a}.
+Vereinfachung f@"ur eine positive ganze Zahl als Argument @mvar{a}.
 
 @example
 (%i1) beta_incomplete(2,b,z);
@@ -1662,7 +1662,7 @@ Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{a}.
                                   b (b + 1)
 @end example
 
-Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{b}.
+Vereinfachung f@"ur eine positive ganze Zahl als Argument @mvar{b}.
 
 @example
 (%i2) beta_incomplete(a,2,z);
@@ -1672,7 +1672,7 @@ Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{b}.
                                   a (a + 1)
 @end example
 
-Vereinfachung f@"ur positive ganzzahlige Argumente @var{a} und @var{b}.
+Vereinfachung f@"ur positive ganzzahlige Argumente @mvar{a} und @mvar{b}.
 
 @example
 (%i3) beta_incomplete(3,2,z);
@@ -1682,7 +1682,7 @@ Vereinfachung f@"ur positive ganzzahlige Argumente @var{a} und @var{b}.
                                       12
 @end example
 
-@var{a} ist eine negative ganze Zahl mit @math{b <= (-a)}.  Maxima vereinfacht
+@mvar{a} ist eine negative ganze Zahl mit @math{b <= (-a)}.  Maxima vereinfacht
 f@"ur diesem Fall.
 
 @example
@@ -1767,7 +1767,7 @@ Ableitung und Integral der unvollst@"andigen Betafunktion.
 
 @c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{beta_incomplete_regularized}
-@deffn {Funktion} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
+@deffn {Funktion} beta_incomplete_regularized (@mvar{a}, @mvar{b}, @mvar{z})
 
 @c The regularized incomplete beta function A&S 6.6.2, defined as
 
@@ -1788,17 +1788,17 @@ Wie bei der Funktion @mref{beta_incomplete} ist diese Definition nicht
 vollst@"andig.  Siehe @url{functions.wolfram.com} f@"ur eine vollst@"andige
 Definition der Funktion.
 
-@c @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
+@c @code{beta_incomplete_regularized} simplifies @mvar{a} or @mvar{b} a positive 
 @c integer.
 @c For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete_regularized}
-@c has the specific value 0. For @var{z=1} and @math{realpart(b)>0}, 
+@c has the specific value 0. For @mvar{z=1} and @math{realpart(b)>0}, 
 @c @code{beta_incomplete_regularized} simplifies to 1.
 
-@code{beta_incomplete_regularized} vereinfacht, wenn das Argument @var{a} oder
-@var{b} eine positive ganze Zahl ist.  F@"ur Argumente @code{@var{z} = 0} und
-@code{realpart(@var{a}) > 0} vereinfacht die Funktion
-@code{beta_incomplete_regularized} zu @code{0}.  F@"ur @code{@var{z} = 1} und
-@code{realpart(@var{b}) > 0} vereinfacht die Funktion
+@code{beta_incomplete_regularized} vereinfacht, wenn das Argument @mvar{a} oder
+@mvar{b} eine positive ganze Zahl ist.  F@"ur Argumente @code{@mvar{z} = 0} und
+@code{realpart(@mvar{a}) > 0} vereinfacht die Funktion
+@code{beta_incomplete_regularized} zu @code{0}.  F@"ur @code{@mvar{z} = 1} und
+@code{realpart(@mvar{b}) > 0} vereinfacht die Funktion
 @code{beta_incomplete_regularized} zu @code{1}.
 
 @c Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1813,21 +1813,21 @@ where n is an integer.
 
 Hat die Optionsvariable @mref{beta_expand} den Wert @code{true}, expandiert
 Maxima @code{beta_incomplete_regularized} f@"ur Argumente @math{a+n} oder
-@math{a-n}, wobei @var{n} eine ganze Zahl ist.
+@math{a-n}, wobei @mvar{n} eine ganze Zahl ist.
 
 @c Maxima knows the derivatives of @code{beta_incomplete_regularized} with
-@c respect to the variables @var{a}, @var{b}, and @var{z} and the integral with
-@c respect to the variable @var{z}.
+@c respect to the variables @mvar{a}, @mvar{b}, and @mvar{z} and the integral with
+@c respect to the variable @mvar{z}.
 
 Maxima kennt die Ableitung der Funktion @code{beta_incomplete_regularized}
-nach den Argumenten @var{a}, @var{b} und @var{z} sowie das Integral f@"ur das
-Argument @var{z}.
+nach den Argumenten @mvar{a}, @mvar{b} und @mvar{z} sowie das Integral f@"ur das
+Argument @mvar{z}.
 
 Beispiele:
 
-@c Simplification for @var{a} or @var{b} a positive integer:
+@c Simplification for @mvar{a} or @mvar{b} a positive integer:
 
-Vereinfachung, wenn die Argumente @var{a} oder @var{b} ganze Zahlen sind.
+Vereinfachung, wenn die Argumente @mvar{a} oder @mvar{b} ganze Zahlen sind.
 
 @example
 (%i1) beta_incomplete_regularized(2,b,z);
@@ -1894,7 +1894,7 @@ Expansion, wenn @code{beta_expand} den Wert @code{true} hat.
 @end group
 @end example
 
-@c The derivative and the integral wrt @var{z}:
+@c The derivative and the integral wrt @mvar{z}:
 
 Die Ableitung und das Integral der Funktion.
 
@@ -1917,7 +1917,7 @@ Die Ableitung und das Integral der Funktion.
 
 @c --- 11.07.2011 DK -----------------------------------------------------------
 @anchor{beta_incomplete_generalized}
-@deffn {Funktion} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+@deffn {Funktion} beta_incomplete_generalized (@mvar{a}, @mvar{b}, @mvar{z1}, @mvar{z2})
 
 @c The basic definition of the generalized incomplete beta function is
 
@@ -1933,21 +1933,21 @@ Die Definition der verallgemeinerten unvollst@"andigen Betafunktion ist
                       z1
 @end example
 
-@c Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b}
+@c Maxima simplifies @code{beta_incomplete_regularized} for @mvar{a} and @mvar{b}
 @c a positive integer.
 
 Maxima vereinfacht @code{beta_incomplete_refularized} f@"ur positive ganzzahlige
-Argumente @var{a} und @var{b}.
+Argumente @mvar{a} und @mvar{b}.
 
 @c For @math{realpart(a)>0} and @math{z1=0} or @math{z2=0}, Maxima simplifies
 @c @code{beta_incomplete_generalized} to @code{beta_incomplete}. For
-@c @math{realpart(b)>0} and @math{z1=1} or @var{z2=1}, Maxima simplifies to an
+@c @math{realpart(b)>0} and @math{z1=1} or @mvar{z2=1}, Maxima simplifies to an
 @c expression with @code{beta} and @code{beta_incomplete}.
 
 Ist @math{realpart(a)>0} und @math{z1=0} oder @math{z2=0}, vereinfacht Maxima
 @code{beta_incomplete_generalized} zu der Funktion
 @mrefdot{beta_incomplete}  Ist @math{realpart(b)>0} und @math{z1=1} oder
-@var{z2=1}, vereinfacht Maxima zu einem Ausdruck mit der Funktion
+@mvar{z2=1}, vereinfacht Maxima zu einem Ausdruck mit der Funktion
 @mref{beta} und @mrefdot{beta_incomplete}
 
 @c Maxima evaluates @code{beta_incomplete_regularized} for real and complex
@@ -1957,27 +1957,27 @@ Maxima berechnet @code{beta_incomplete_regularized} numerisch f@"ur reelle und
 komplexe Gleitkommazahlen in doppelter und beliebiger Genauigkeit.
 
 @c When @code{beta_expand} is @code{true}, Maxima expands
-@c @code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @var{n} a
+@c @code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @mvar{n} a
 @c positive integer.
 
 Hat die Optionsvariable @mref{beta_expand} den Wert @code{true}, dann expandiert
 Maxima @code{beta_incomplete_generalized} f@"ur Argumente @math{a+n} und
-@math{a-n}, wobei @var{n} eine positive ganze Zahl ist.
+@math{a-n}, wobei @mvar{n} eine positive ganze Zahl ist.
 
 @c Maxima knows the derivative of @code{beta_incomplete_generalized} with
-@c respect to the variables @var{a}, @var{b}, @var{z1}, and @var{z2} and the
-@c integrals with respect to the variables @var{z1} and @var{z2}.
+@c respect to the variables @mvar{a}, @mvar{b}, @mvar{z1}, and @mvar{z2} and the
+@c integrals with respect to the variables @mvar{z1} and @mvar{z2}.
 
 Maxima kennt die Ableitung der Funktion @code{beta_incomplete_generalized} nach
-den Variablen @var{a}, @var{b}, @var{z1} und @var{z2} sowie die Integrale
-f@"ur die Integrationsvariablen  @var{z1} und @var{z2}.
+den Variablen @mvar{a}, @mvar{b}, @mvar{z1} und @mvar{z2} sowie die Integrale
+f@"ur die Integrationsvariablen  @mvar{z1} und @mvar{z2}.
 
 Beispiele:
 
-@c Maxima simplifies @code{beta_incomplete_generalized} for @var{a} and @var{b}
+@c Maxima simplifies @code{beta_incomplete_generalized} for @mvar{a} and @mvar{b}
 @c a positive integer:
 
-Maxima vereinfacht @code{beta_incomplete_generalized}, wenn @var{a} und @var{b}
+Maxima vereinfacht @code{beta_incomplete_generalized}, wenn @mvar{a} und @mvar{b}
 positive ganze Zahlen sind.
 
 @example
@@ -2050,10 +2050,10 @@ Gleitkommagenauigkeit.
 (%o13)     - 9.6254630032054178691b-2 %i - 3.3238477353543591914b-3
 @end example
 
-@c Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
+@c Expansion for @math{a+n} or @math{a-n}, @mvar{n} a positive integer, when
 @c @code{beta_expand} is @code{true}:
 
-Expansion f@"ur @math{a+n} oder @math{a-n} und @var{n} eine positive ganze Zahl,
+Expansion f@"ur @math{a+n} oder @math{a-n} und @mvar{n} eine positive ganze Zahl,
 wenn @code{beta_expand} den Wert @code{true} hat.
 
 @example
@@ -2080,10 +2080,10 @@ wenn @code{beta_expand} den Wert @code{true} hat.
                                             1 - a
 @end example
 
-@c Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
+@c Derivative wrt the variable @mvar{z1} and integrals wrt @mvar{z1} and @mvar{z2}:
 
-Ableitung nach der Variablen @var{z1} und die Integrale f@"ur die
-Integrationsvariablen @var{z1} und @var{z2}.
+Ableitung nach der Variablen @mvar{z1} und die Integrale f@"ur die
+Integrationsvariablen @mvar{z1} und @mvar{z2}.
 
 @example
 (%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
@@ -2109,7 +2109,7 @@ Standardwert: @code{false}
 
 Hat die Optionsvariable @code{beta_expand} den Wert @code{true}, werden
 @code{beta(a,b)} und verwandte Funktionen f@"ur Argumente @math{a+n} oder
-@math{a-n} entwickelt, wobei @var{n} eine positive ganze Zahl ist.
+@math{a-n} entwickelt, wobei @mvar{n} eine positive ganze Zahl ist.
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -2118,38 +2118,38 @@ Hat die Optionsvariable @code{beta_expand} den Wert @code{true}, werden
 Standardwert: @code{false}
 
 @c When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies 
-@c @code{beta(a,b)}, when the arguments @var{a} and @var{b} sum to an integer.
+@c @code{beta(a,b)}, when the arguments @mvar{a} and @mvar{b} sum to an integer.
 
 Hat die Optionsvariable @code{beta_args_sum_to_integer} den Wert @code{true},
 vereinfacht Maxima die Funktion @code{beta(a,b)}, wenn sich die Argumente
-@var{a} und @var{b} zu einer ganzen Zahlen summieren.  Siehe auch @mrefdot{beta}
+@mvar{a} und @mvar{b} zu einer ganzen Zahlen summieren.  Siehe auch @mrefdot{beta}
 @end defvr
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {Function} psi (@var{x})
-@c @deffnx {Function} psi [@var{n}](@var{x})
+@c @deffn {Function} psi (@mvar{x})
+@c @deffnx {Function} psi [@mvar{n}](@mvar{x})
 
 @c --- 11.07.2011 DK -----------------------------------------------------------
 @anchor{psi}
-@deffn {Funktion} psi [@var{n}](@var{x})
+@deffn {Funktion} psi [@mvar{n}](@mvar{x})
 
-@c The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
-@c Thus, @code{psi[0](@var{x})} is the first derivative,
-@c @code{psi[1](@var{x})} is the second derivative, etc.
+@c The derivative of @code{log (gamma (@mvar{x}))} of order @code{@mvar{n}+1}.
+@c Thus, @code{psi[0](@mvar{x})} is the first derivative,
+@c @code{psi[1](@mvar{x})} is the second derivative, etc.
 
-Ist definiert als die Ableitung der Funktion @code{log(gamma(@var{x}))} der
-Ordnung @code{@var{n}+1}.  @code{psi[0](@var{x})} ist die erste Ableitung,
-@code{psi[1](@var{x})} ist die zweite Ableitung, usw.
+Ist definiert als die Ableitung der Funktion @code{log(gamma(@mvar{x}))} der
+Ordnung @code{@mvar{n}+1}.  @code{psi[0](@mvar{x})} ist die erste Ableitung,
+@code{psi[1](@mvar{x})} ist die zweite Ableitung, usw.
 
 @c Maxima does not know how, in general, to compute a numerical value of
 @c @code{psi}, but it can compute some exact values for rational args.
 @c Several variables control what range of rational args @code{psi} will
 @c return an exact value, if possible.  See @code{maxpsiposint},
 @c @code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracdenom}.
-@c That is, @var{x} must lie between @code{maxpsinegint} and
+@c That is, @mvar{x} must lie between @code{maxpsinegint} and
 @c @code{maxpsiposint}.  If the absolute value of the fractional part of
-@c @var{x} is rational and has a numerator less than @code{maxpsifracnum}
+@c @mvar{x} is rational and has a numerator less than @code{maxpsifracnum}
 @c and has a denominator less than @code{maxpsifracdenom}, @code{psi}
 @c will return an exact value.
 
@@ -2174,8 +2174,8 @@ Standardwert: @code{20}
 
 Die Optionsvariable @code{maxpsiposint} kontrolliert die Vereinfachung der
 Funktion @mref{psi} und enth@"alt eine obere positive Schranke.  Ist das
-Argument @var{x} der Funktion @code{psi} gr@"o@ss{}er als @code{maxpsiposint},
-dann versucht Maxima nicht @code{psi[@var{n}](@var{x})} zu vereinfachen.
+Argument @mvar{x} der Funktion @code{psi} gr@"o@ss{}er als @code{maxpsiposint},
+dann versucht Maxima nicht @code{psi[@mvar{n}](@mvar{x})} zu vereinfachen.
 
 Siehe auch @mrefcomma{maxpsifracdenom} @mref{maxpsifracnum} und
 @mrefdot{maxpsinegint}
@@ -2207,8 +2207,8 @@ Standardwert: @code{-10}
 
 Die Optionsvariable @code{maxpsinegint} kontrolliert die Vereinfachung der
 Funktion @mref{psi} und enth@"alt eine untere negative Schranke.  Ist das
-Argument @var{x} der Funktion @code{psi} kleiner als @code{maxpsinegint},
-dann versucht Maxima nicht @code{psi[@var{n}](@var{x})} zu vereinfachen.
+Argument @mvar{x} der Funktion @code{psi} kleiner als @code{maxpsinegint},
+dann versucht Maxima nicht @code{psi[@mvar{n}](@mvar{x})} zu vereinfachen.
 
 Siehe auch @mrefcomma{maxpsifracdenom} @mref{maxpsifracnum} und
 @mrefdot{maxpsiposint}
@@ -2239,10 +2239,10 @@ Beispiele:
 Standardwert: @code{6}
 
 Die Optionsvariable @code{maxpsifracnum} kontrolliert die Vereinfachung der
-Funktion @mrefdot{psi}  Ist das Argument @var{x} der Funktion @code{psi} eine
+Funktion @mrefdot{psi}  Ist das Argument @mvar{x} der Funktion @code{psi} eine
 rationale Zahl kleiner als eins mit @code{p/q} und ist der Z@"ahler @code{p}
 gr@"o@ss{}er als @code{maxpsifracnum}, dann versucht Maxima nicht
-@code{psi[@var{n}](@var{x})} zu vereinfachen.
+@code{psi[@mvar{n}](@mvar{x})} zu vereinfachen.
 
 Siehe auch @mrefcomma{maxpsifracdenom} @mref{maxpsiposint} und
 @mrefdot{maxpsinegint}
@@ -2271,10 +2271,10 @@ Beispiele:
 Standardwert: @code{6}
 
 Die Optionsvariable @code{maxpsifracdenom} kontrolliert die Vereinfachung der
-Funktion @mrefdot{psi}  Ist das Argument @var{x} der Funktion @code{psi} eine
+Funktion @mrefdot{psi}  Ist das Argument @mvar{x} der Funktion @code{psi} eine
 rationale Zahl kleiner als eins mit @code{p/q} und ist der Nenner @code{q}
 gr@"o@ss{}er als @code{maxpsifracdenom}, dann versucht Maxima nicht
-@code{psi[@var{n}](@var{x})} zu vereinfachen.
+@code{psi[@mvar{n}](@mvar{x})} zu vereinfachen.
 
 Siehe auch @mrefcomma{maxpsifracnum} @mref{maxpsiposint} und
 @mrefdot{maxpsinegint}
@@ -2312,9 +2312,9 @@ Beispiele:
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{makefact}
-@deffn {Funktion} makefact (@var{expr})
+@deffn {Funktion} makefact (@mvar{expr})
 
-Ersetzt Binomial-, Gamma- und Beta-Funktionen, die im Ausdruck @var{expr}
+Ersetzt Binomial-, Gamma- und Beta-Funktionen, die im Ausdruck @mvar{expr}
 auftreten, durch Fakult@"aten.
 
 Siehe auch die Funktion @mrefdot{makegamma}
@@ -2325,9 +2325,9 @@ Siehe auch die Funktion @mrefdot{makegamma}
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{numfactor}
-@deffn {Funktion} numfactor (@var{expr})
+@deffn {Funktion} numfactor (@mvar{expr})
 
-Gibt einen numerischen Faktor des Produktes @var{expr} zur@"uck.  Ist @var{expr}
+Gibt einen numerischen Faktor des Produktes @mvar{expr} zur@"uck.  Ist @mvar{expr}
 kein Produkt oder enth@"alt das Produkt keinen numerischen Faktor ist die
 R@"uckgabe @code{1}.
 
@@ -2355,56 +2355,56 @@ Abramowitz und Stegun, @i{Handbook of Mathematical Functions}, Kapitel 5.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_e1}
-@deffn {Funktion} expintegral_e1 (@var{z})
+@deffn {Funktion} expintegral_e1 (@mvar{z})
 
 Das Exponentielle Integral @code{E1(z)} (A&S 5.1.1).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_ei}
-@deffn {Funktion} expintegral_ei (@var{z})
+@deffn {Funktion} expintegral_ei (@mvar{z})
 
 Das Exponentielle Integral @code{Ei(z)} (A&S 5.1.2).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_li}
-@deffn {Funktion} expintegral_li (@var{n},@var{z})
+@deffn {Funktion} expintegral_li (@mvar{n},@mvar{z})
 
 Das Exponentielle Integral @code{Li(z)} (A&S 5.1.3).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_e}
-@deffn {Funktion} expintegral_e (@var{n}, @var{z})
+@deffn {Funktion} expintegral_e (@mvar{n}, @mvar{z})
 
 Das Exponentielle Integral @code{E[n](z)} (A&S 5.1.4).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_si}
-@deffn {Funktion} expintegral_si (@var{z})
+@deffn {Funktion} expintegral_si (@mvar{z})
 
 Das Exponentielle Integral @code{Si(z)} (A&S 5.2.1).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_ci}
-@deffn {Funktion} expintegral_ci (@var{z})
+@deffn {Funktion} expintegral_ci (@mvar{z})
 
 Das Exponentielle Integral @code{Ci(z)} (A&S 5.2.2).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_shi}
-@deffn {Funktion} expintegral_shi (@var{z})
+@deffn {Funktion} expintegral_shi (@mvar{z})
 
 Das Exponentielle Integral @code{Shi(z)} (A&S 5.2.3).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{expintegral_chi}
-@deffn {Funktion} expintegral_chi (@var{z})
+@deffn {Funktion} expintegral_chi (@mvar{z})
 
 Das Exponentielle Integral @code{Chi(z)} (A&S 5.2.4).
 @end deffn
@@ -2427,7 +2427,7 @@ Funktionen @mrefcomma{gamma_incomplete} @mrefcomma{expintegral_e1}@w{}
 Standardwert: @code{false}
 
 Expandiert das Exponentielle Integral @code{E[n](z)} f@"ur halbzahlige, gerade
-Ordnung @var{n} nach den Funktionen @mref{erfc} und @mrefdot{erf} sowie f@"ur
+Ordnung @mvar{n} nach den Funktionen @mref{erfc} und @mrefdot{erf} sowie f@"ur
 positive ganze Zahlen nach der Funktion @mrefdot{expintegral_ei}
 @end defvr
 
@@ -2441,7 +2441,7 @@ und Stegun, @i{Handbook of Mathematical Functions}, Kapitel 7.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{erf}
-@deffn {Funktion} erf (@var{z})
+@deffn {Funktion} erf (@mvar{z})
 
 Die Fehlerfunktion @code{erf(z)} (A&S 7.1.1).
 
@@ -2450,28 +2450,28 @@ Siehe auch die Optionsvariable @mrefdot{erfflag}
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{erfc}
-@deffn {Function} erfc (@var{z})
+@deffn {Function} erfc (@mvar{z})
 
 Die komplement@"are Fehlerfunktion @code{erfc(z) = 1 - erf(z)} (A & S 7.1.2).
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{erfi}
-@deffn {Funktion} erfi (@var{z})
+@deffn {Funktion} erfi (@mvar{z})
 
 Die imagin@"are Fehlerfunktion @code{erfi(z) = -%i*erf(%i*z)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{erf_generalized}
-@deffn {Funktion} erf_generalized (@var{z1}, @var{z2})
+@deffn {Funktion} erf_generalized (@mvar{z1}, @mvar{z2})
 
 Die verallgemeinerte Fehlerfunktion @math{Erf(z1, z2)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{fresnel_c}
-@deffn {Funktion} fresnel_c (@var{z})
+@deffn {Funktion} fresnel_c (@mvar{z})
 
 Das Fresnel-Integral, das definiert ist als (A & S 7.3.1):
 
@@ -2499,7 +2499,7 @@ Fehlerfunktion.
 
 @c -----------------------------------------------------------------------------
 @anchor{fresnel_s}
-@deffn {Funktion} fresnel_s (@var{z})
+@deffn {Funktion} fresnel_s (@mvar{z})
 
 Das Fresnel-Integral, das definiert ist als (A & S 7.3.2):
 
@@ -2694,145 +2694,145 @@ License (GPL).
 @c -----------------------------------------------------------------------------
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_sn (@var{u}, @var{m})
+@deffn {Funktion} jacobi_sn (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{sn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_cn (@var{u}, @var{m})
+@deffn {Funktion} jacobi_cn (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_dn (@var{u}, @var{m})
+@deffn {Funktion} jacobi_dn (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{dn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_ns (@var{u}, @var{m})
+@deffn {Funktion} jacobi_ns (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{ns(u,m) = 1/sn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_sc (@var{u}, @var{m})
+@deffn {Funktion} jacobi_sc (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_sd (@var{u}, @var{m})
+@deffn {Funktion} jacobi_sd (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_nc (@var{u}, @var{m})
+@deffn {Funktion} jacobi_nc (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_cs (@var{u}, @var{m})
+@deffn {Funktion} jacobi_cs (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_cd (@var{u}, @var{m})
+@deffn {Funktion} jacobi_cd (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_nd (@var{u}, @var{m})
+@deffn {Funktion} jacobi_nd (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_ds (@var{u}, @var{m})
+@deffn {Funktion} jacobi_ds (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} jacobi_dc (@var{u}, @var{m})
+@deffn {Funktion} jacobi_dc (@mvar{u}, @mvar{m})
 
 Die Jacobische elliptische Funktion @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_sn (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_sn (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{sn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_cn (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_cn (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{cn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_dn (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_dn (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{dn(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_ns (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_ns (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{ns(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_sc (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_sc (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{sc(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_sd (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_sd (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{sd(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_nc (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_nc (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{nc(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_cs (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_cs (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{cs(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_cd (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_cd (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{cd(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_nd (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_nd (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{nc(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_ds (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_ds (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{ds(u,m)}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
-@deffn {Funktion} inverse_jacobi_dc (@var{u}, @var{m})
+@deffn {Funktion} inverse_jacobi_dc (@mvar{u}, @mvar{m})
 
 Die inverse Jacobische elliptische Funktion @math{dc(u,m)}.
 @end deffn
@@ -2844,7 +2844,7 @@ Die inverse Jacobische elliptische Funktion @math{dc(u,m)}.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_f}
-@deffn {Funktion} elliptic_f (@var{phi}, @var{m})
+@deffn {Funktion} elliptic_f (@mvar{phi}, @mvar{m})
 
 Das unvollst@"andige elliptische Integral der ersten Art, das definiert ist als
 
@@ -2864,7 +2864,7 @@ Siehe auch @mref{elliptic_e} und @mrefdot{elliptic_kc}
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_e}
-@deffn {Funktion} elliptic_e (@var{phi}, @var{m})
+@deffn {Funktion} elliptic_e (@mvar{phi}, @mvar{m})
 
 Das unvollst@"andige elliptische Integral der zweiten Art, das definiert ist als
 
@@ -2883,7 +2883,7 @@ Siehe auch @mref{elliptic_e} und @mrefdot{elliptic_ec}
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_eu}
-@deffn {Funktion} elliptic_eu (@var{u}, @var{m})
+@deffn {Funktion} elliptic_eu (@mvar{u}, @mvar{m})
 
 Das unvollst@"andige elliptische Integral der zweiten Art, das definiert ist als
 
@@ -2922,7 +2922,7 @@ Siehe auch @mrefdot{elliptic_e}
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_pi}
-@deffn {Funktion} elliptic_pi (@var{n}, @var{phi}, @var{m})
+@deffn {Funktion} elliptic_pi (@mvar{n}, @mvar{phi}, @mvar{m})
 
 Das unvollst@"andige elliptische Integral der dritten Art, das definiert ist als
 
@@ -2936,12 +2936,12 @@ Das unvollst@"andige elliptische Integral der dritten Art, das definiert ist als
 $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Maxima kennt nur die Ableitung nach der Variablen @var{phi}.
+Maxima kennt nur die Ableitung nach der Variablen @mvar{phi}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_kc}
-@deffn {Funktion} elliptic_kc (@var{m})
+@deffn {Funktion} elliptic_kc (@mvar{m})
 
 Das vollst@"andige elliptische Integral der ersten Art, das definiert ist als
 
@@ -2956,14 +2956,14 @@ Das vollst@"andige elliptische Integral der ersten Art, das definiert ist als
 $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-F@"ur einige spezielle Argumente @var{m} kennt Maxima Werte mit der
+F@"ur einige spezielle Argumente @mvar{m} kennt Maxima Werte mit der
 Gammafunktion @mrefdot{gamma}  Die Werte k@"onnen mit der Funktion
 @mref{makegamma} berechnet werden.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{elliptic_ec}
-@deffn {Funktion} elliptic_ec (@var{m})
+@deffn {Funktion} elliptic_ec (@mvar{m})
 
 Das vollst@"andige elliptische Integral der zweiten Art, das definiert ist als
 
@@ -2978,7 +2978,7 @@ Das vollst@"andige elliptische Integral der zweiten Art, das definiert ist als
 $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 
-F@"ur einige spezielle Argumente @var{m} kennt Maxima Werte mit der
+F@"ur einige spezielle Argumente @mvar{m} kennt Maxima Werte mit der
 Gammafunktion @mrefdot{gamma}  Die Werte k@"onnen mit der Funktion
 @mref{makegamma} berechnet werden.
 @end deffn
@@ -2996,7 +2996,7 @@ Gammafunktion @mrefdot{gamma}  Die Werte k@"onnen mit der Funktion
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{%m}
-@deffn {Funktion} %m [@var{k}, @var{u}] (@var{z})
+@deffn {Funktion} %m [@mvar{k}, @mvar{u}] (@mvar{z})
 
 Ist die Whittaker M Funktion
 @code{M[k,u](z) = exp(-z/2) * z^(1/2+u) * M(1/2+u-k, 1+2*u, z)}.
@@ -3005,28 +3005,28 @@ Siehe A & S 13.1.32 f@"ur die Definition.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{%w}
-@deffn {Funktion} %w [@var{k}, @var{u}] (@var{z})
+@deffn {Funktion} %w [@mvar{k}, @mvar{u}] (@mvar{z})
 
 Ist die Whittaker W Funktion.  Siehe A & S 13.1.33 f@"ur die Definition.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{%f}
-@deffn {Funktion} %f [@var{p},@var{q}] (@var{[a], [b], z}) 
+@deffn {Funktion} %f [@mvar{p},@mvar{q}] (@mvar{[a], [b], z}) 
 
 @c The pFq(a1,a2,..ap;b1,b2,..bq;z) hypergeometric function,
 @c where @code{a} a list of length @code{p} and 
 @c @code{b} a list of length @code{q}.
 
 Ist die hypergeometrische Funktion
-@code{F[p,q](a_1, ..., a_p; b_1,..., b_q; z)}.  Das Argument @var{a} ist eine
-Liste mit den @var{p}-Elementen @var{a_i} und das Argument @var{b} die Liste
-mit den @var{q}-Elementen @var{b_i}.
+@code{F[p,q](a_1, ..., a_p; b_1,..., b_q; z)}.  Das Argument @mvar{a} ist eine
+Liste mit den @mvar{p}-Elementen @mvar{a_i} und das Argument @mvar{b} die Liste
+mit den @mvar{q}-Elementen @mvar{b_i}.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{hypergeometric}
-@deffn {Funktion} hypergeometric ([@var{a_1}, @dots{}, @var{a_p}], [@var{b_1}, @dots{} ,@var{b_q}], z)
+@deffn {Funktion} hypergeometric ([@mvar{a_1}, @dots{}, @mvar{a_p}], [@mvar{b_1}, @dots{} ,@mvar{b_q}], z)
 
 @c The hypergeometric function. Unlike Maxima's @code{%f} hypergeometric
 @c function, the function @code{hypergeometric} is a simplifying
@@ -3091,7 +3091,7 @@ Numerische Berechnung in doppelter und beliebiger Gleitkommagenauigkeit.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{parabolic_cylinder_d}
-@deffn {Funktion} parabolic_cylinder_d (@var{v}, @var{z})
+@deffn {Funktion} parabolic_cylinder_d (@mvar{v}, @mvar{z})
 
 @c The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}.
 @c (A&s 19.3.1)
@@ -3118,12 +3118,12 @@ Die parabolischen Zylinderfunktionen k@"onnen als Ergebnis der Funktion
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{li}
-@deffn {Funktion} li [@var{s}] (@var{z})
+@deffn {Funktion} li [@mvar{s}] (@mvar{z})
 
-@c Represents the polylogarithm function of order @var{s} and argument @var{z},
+@c Represents the polylogarithm function of order @mvar{s} and argument @mvar{z},
 @c defined by the infinite series
 
-Ist der Polylogarithmus der Ordnung @var{s} mit dem Argument @var{z}.  Der
+Ist der Polylogarithmus der Ordnung @mvar{s} mit dem Argument @mvar{z}.  Der
 Polylogarithmus wird durch die folgende Reihe definiert werden:
 
 @tex
@@ -3144,23 +3144,23 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
 @c @code{li [1]} is @code{- log (1 - z)}. @code{li [2]} and @code{li [3]} are 
 @c the dilogarithm and trilogarithm functions, respectively.
 
-F@"ur @var{s=1} geht der Polylogarithmus in die gew@"ohnliche
-Logarithmusfunktion @"uber und man erh@"alt @code{-log(1-z)}.  F@"ur @var{s=2}
-oder @var{s=3} spricht man vom Dilogarithmus oder Trilogarithmus.
+F@"ur @mvar{s=1} geht der Polylogarithmus in die gew@"ohnliche
+Logarithmusfunktion @"uber und man erh@"alt @code{-log(1-z)}.  F@"ur @mvar{s=2}
+oder @mvar{s=3} spricht man vom Dilogarithmus oder Trilogarithmus.
 
 @c When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)},
-@c which in turn simplifies to a numerical value if @var{z} is a real or complex
+@c which in turn simplifies to a numerical value if @mvar{z} is a real or complex
 @c floating point number or the @code{numer} evaluation flag is present.
 
-Maxima vereinfacht f@"ur @var{s=1} sofort zum gew@"ohnlichen Logarithmus.
-F@"ur negative ganze Zahlen @var{s} einschlie@ss{}lich der Null vereinfacht
+Maxima vereinfacht f@"ur @mvar{s=1} sofort zum gew@"ohnlichen Logarithmus.
+F@"ur negative ganze Zahlen @mvar{s} einschlie@ss{}lich der Null vereinfacht
 Maxima den Polylogarithmus zu einer rationalen Funktion.
 
 @c When the order is 2 or 3, the polylogarithm simplifies to a numerical value
-@c if @var{z} is a real floating point number or the @code{numer} evaluation 
+@c if @mvar{z} is a real floating point number or the @code{numer} evaluation 
 @c flag is present.
 
-Ist @var{s=2} oder @var{s=3} und das Argument @var{z} eine Gleitkommazahl, 
+Ist @mvar{s=2} oder @mvar{s=3} und das Argument @mvar{z} eine Gleitkommazahl, 
 vereinfacht Maxima den Di- oder Trilogarithmus zu einer Gleitkommazahl.
 
 Beispiele:
@@ -3202,14 +3202,14 @@ Beispiele:
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{specint}
-@deffn {Funktion} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@deffn {Funktion} specint (exp(- s*@mvar{t}) * @mvar{expr}, @mvar{t})
 
-@c Compute the Laplace transform of @var{expr} with respect to the variable
-@c @var{t}. The integrand @var{expr} may contain special functions.
+@c Compute the Laplace transform of @mvar{expr} with respect to the variable
+@c @mvar{t}. The integrand @mvar{expr} may contain special functions.
 
-Berechnet die Laplace-Transformation des Ausdrucks @var{expr} f@"ur die
-Integrationsvariable @var{t}.  @var{s} ist der Parameter der
-Laplace-Transformation.  Der Integrand @var{expr} kann spezielle
+Berechnet die Laplace-Transformation des Ausdrucks @mvar{expr} f@"ur die
+Integrationsvariable @mvar{t}.  @mvar{s} ist der Parameter der
+Laplace-Transformation.  Der Integrand @mvar{expr} kann spezielle
 Funktionen der Mathematik enthalten.
 
 @c The following special functions are handled by @code{specint}: incomplete
@@ -3341,10 +3341,10 @@ mit dem Exponentiellen Integral @code{expintegral_e1}.
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{hgfred}
-@deffn {Funktion} hgfred (@var{a}, @var{b}, @var{z})
+@deffn {Funktion} hgfred (@mvar{a}, @mvar{b}, @mvar{z})
 
 @c Simplify the generalized hypergeometric function in terms of other,
-@c simpler, forms.  @var{a} is a list of numerator parameters and @var{b}
+@c simpler, forms.  @mvar{a} is a list of numerator parameters and @mvar{b}
 @c is a list of the denominator parameters.
 
 Vereinfacht die Hypergeometrische Funktion zu einfacheren Funktionen, wie
@@ -3366,16 +3366,16 @@ verallgemeinerte geometrische Reihe und ist wie folgt definiert:
 @end group
 @end example
 
-Die Argumente @var{a} und @var{b} sind Listen mit den Parametern der 
+Die Argumente @mvar{a} und @mvar{b} sind Listen mit den Parametern der 
 Hypergeometrischen Funktion @code{a_1}, @dots{}, @code{a_p} sowie
-@code{b_1}, @dots{}, @code{b_p}.  Die Liste @var{a} enth@"alt die
-@code{p}-Elemente @var{a_i} und die Liste @var{b} enth@"alt die
-@var{q}-Elemente @var{b_i}.
+@code{b_1}, @dots{}, @code{b_p}.  Die Liste @mvar{a} enth@"alt die
+@code{p}-Elemente @mvar{a_i} und die Liste @mvar{b} enth@"alt die
+@mvar{q}-Elemente @mvar{b_i}.
 
 @c If @code{hgfred} cannot simplify the hypergeometric function, it returns
-@c an expression of the form @code{%f[p,q]([a], [b], x)} where @var{p} is
-@c the number of elements in @var{a}, and @var{q} is the number of elements
-@c in @var{b}.  This is the usual @code{pFq} generalized hypergeometric
+@c an expression of the form @code{%f[p,q]([a], [b], x)} where @mvar{p} is
+@c the number of elements in @mvar{a}, and @mvar{q} is the number of elements
+@c in @mvar{b}.  This is the usual @code{pFq} generalized hypergeometric
 @c function
 
 Kann @code{hgfred} die Hypergeomentrische Funktion nicht vereinfachen, wird
@@ -3411,7 +3411,7 @@ Beispiele:
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{lambert_w}
-@deffn {Funktion} lambert_w (@var{z})
+@deffn {Funktion} lambert_w (@mvar{z})
 
 Der Hauptzweig der Lambert W Funktion, die L@"osung von
 @code{z = W(z) * exp(W(z))}.
@@ -3419,7 +3419,7 @@ Der Hauptzweig der Lambert W Funktion, die L@"osung von
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{nzeta}
-@deffn {Funktion} nzeta (@var{z})
+@deffn {Funktion} nzeta (@mvar{z})
 
 Die Plasma Dispersion Funktion
 @code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}.
@@ -3427,21 +3427,21 @@ Die Plasma Dispersion Funktion
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{nzetar}
-@deffn {Funktion} nzetar (@var{z})
+@deffn {Funktion} nzetar (@mvar{z})
 
 Gibt  @code{realpart(nzeta(z))} zur@"uck.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{nzetai}
-@deffn {Funktion} nzetai (@var{z})
+@deffn {Funktion} nzetai (@mvar{z})
 
 Gibt @code{imagpart(nzeta(z))} zur@"uck.
 @end deffn
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
 @anchor{%s}
-@deffn {Funktion} %s [@var{u},@var{v}] (@var{z})
+@deffn {Funktion} %s [@mvar{u},@mvar{v}] (@mvar{z})
 
 Lommels kleine Funktion @code{s[u,v](z)}.  Siehe Gradshteyn & Ryzhik 8.570.1.
 @end deffn

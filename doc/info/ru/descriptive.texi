@@ -22,7 +22,7 @@
 Для справки по функциям пакета @code{descriptive} можно использовать любое статистическое руководство.
 
 Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу 
-@var{'mario AT edu DOT xunta DOT es'}.
+@mvar{'mario AT edu DOT xunta DOT es'}.
 
 Ниже приведен простой пример использования функций пакета @code{descriptive} в зависимости
 от природы своих аргументов
@@ -138,7 +138,7 @@
 для 5 метеорологических станций в Ирландии (Это часть данных, взятых с 12 метеорологических
 станций. Исходные данные свободно доступны в StatLib Data Repository и их анализ обсуждается в 
 Haslett, J., Raftery, A. E. (1989) 
-@var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. 
+@mvar{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. 
 Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 
 @c ===beg===
@@ -202,8 +202,8 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 @node Функции и переменные для манипулирования данными, Функции и переменные для описательной статистики, Введение в пакет descriptive, Пакет descriptive
 @section Функции и переменные для манипулирования данными
 
-@deffn {Функция} continuous_freq (@var{list})
-@deffnx {Функция} continuous_freq (@var{list}, @var{m})
+@deffn {Функция} continuous_freq (@mvar{list})
+@deffnx {Функция} continuous_freq (@mvar{list}, @mvar{m})
 Аргумент @code{continuous_freq} должен быть списком чисел,
 которые группируются в интервалы и вычисляется число чисел в каждом из 
 интервалов. Необязательный второй аргумент @code{continuous_freq}
@@ -235,7 +235,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 
 
 
-@deffn {Функция} discrete_freq (@var{list})
+@deffn {Функция} discrete_freq (@mvar{list})
 Вычисляет абсолютные частоты для дискретной выборки, как числовой так и категоризированной. 
 Ее единственный аргумент является списком
 
@@ -270,8 +270,8 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 
 
 
-@deffn {Функция} subsample (@var{data_matrix}, @var{logical_expression})
-@deffnx {Функция} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num1}, @var{col_num2}, ...)
+@deffn {Функция} subsample (@mvar{data_matrix}, @mvar{logical_expression})
+@deffnx {Функция} subsample (@mvar{data_matrix}, @mvar{logical_expression}, @mvar{col_num1}, @mvar{col_num2}, ...)
 Является некоторым вариантом Maxima функции @code{submatrix}. 
 Первый аргумент -- имя матрицы данных, второй -- экранированное логическое выражение, необязательные 
 последующие аргументы -- номера колонок, которые необходимо выбрать. 
@@ -298,7 +298,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 @end example
 
 Это многомерная выборка в которой скорость ветра в первой метеорологической станции 
-превышает 18.  В экранированном логическом выражении @var{i}-й компонент
+превышает 18.  В экранированном логическом выражении @mvar{i}-й компонент
 данных обозначается @code{%c[i]}. 
 Символ @code{%c[i]} используется внутри @code{subsample},
 что вызывает проблемы если этот символ используется для обозначения категории в 
@@ -413,7 +413,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 Здесь, первая компонента бессмыслена, т.к. @code{A} и @code{B} 
 представляют категории, вторая компонента -- средний возраст пациентов в форме рационального числа, 
 а четвертая и последняя компоненты демонстрируют странное поведение.
-Это потому, что символ @code{NA} используется для случая, когда данные недоступны (@var{non available}),
+Это потому, что символ @code{NA} используется для случая, когда данные недоступны (@mvar{non available}),
 а следовательно эти два средних значения бессмысленны. Возможным решением является исключение
 из матрицы строк с символами @code{NA}, хотя это и приводит к некоторой потере
 данных
@@ -447,8 +447,8 @@ Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 
 
 
-@deffn {Функция} mean (@var{list})
-@deffnx {Функция} mean (@var{matrix})
+@deffn {Функция} mean (@mvar{list})
+@deffnx {Функция} mean (@mvar{matrix})
 Среднее значение выборки, определяемое как
 @ifhtml
 @example
@@ -510,8 +510,8 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 
 
 
-@deffn {Функция} var (@var{list})
-@deffnx {Функция} var (@var{matrix})
+@deffn {Функция} var (@mvar{list})
+@deffnx {Функция} var (@mvar{matrix})
 Дисперсия выборки, определяемая как
 @ifhtml
 @example
@@ -565,8 +565,8 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 
 
 
-@deffn {Функция} var1 (@var{list})
-@deffnx {Функция} var1 (@var{matrix})
+@deffn {Функция} var1 (@mvar{list})
+@deffnx {Функция} var1 (@mvar{matrix})
 Дисперсия выборки, определяемая как
 @ifhtml
 @example
@@ -626,8 +626,8 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 
 
-@deffn {Функция} std (@var{list})
-@deffnx {Функция} std (@var{matrix})
+@deffn {Функция} std (@mvar{list})
+@deffnx {Функция} std (@mvar{matrix})
 Стандартное отклонение выборки, или квадратный корень функции @code{var}, 
 дисперсии с знаменателем @math{n}.
 
@@ -663,8 +663,8 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 
 
-@deffn {Функция} std1 (@var{list})
-@deffnx {Функция} std1 (@var{matrix})
+@deffn {Функция} std1 (@mvar{list})
+@deffnx {Функция} std1 (@mvar{matrix})
 Квадратный корень функции @code{var1}, дисперсии с знаменателем @math{n-1}.
 
 Пример:
@@ -699,8 +699,8 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 
 
-@deffn {Функция} noncentral_moment (@var{list}, @var{k})
-@deffnx {Функция} noncentral_moment (@var{matrix}, @var{k})
+@deffn {Функция} noncentral_moment (@mvar{list}, @mvar{k})
+@deffnx {Функция} noncentral_moment (@mvar{matrix}, @mvar{k})
 Нецентральный момент порядка @math{k}, определенный как
 @ifhtml
 @example
@@ -764,8 +764,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 
 
 
-@deffn {Функция} central_moment (@var{list}, @var{k})
-@deffnx {Функция} central_moment (@var{matrix}, @var{k})
+@deffn {Функция} central_moment (@mvar{list}, @mvar{k})
+@deffnx {Функция} central_moment (@mvar{matrix}, @mvar{k})
 Центральный момент порядка @math{k}, определенный как
 @ifhtml
 @example
@@ -825,8 +825,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {Функция} cv (@var{list})
-@deffnx {Функция} cv (@var{matrix})
+@deffn {Функция} cv (@mvar{list})
+@deffnx {Функция} cv (@mvar{matrix})
 Коэффициент дисперсии есть отношение стандартного отклонения @code{std} к 
 среднему значению @code{mean},
 
@@ -860,9 +860,9 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {Функция} mini (@var{list})
-@deffnx {Функция} mini (@var{matrix})
-Минимальное значение выборки @var{list},
+@deffn {Функция} mini (@mvar{list})
+@deffnx {Функция} mini (@mvar{matrix})
+Минимальное значение выборки @mvar{list},
 
 @c ===beg===
 @c load (descriptive)$
@@ -893,9 +893,9 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {Функция} maxi (@var{list})
-@deffnx {Функция} maxi (@var{matrix})
-Максимальное значение выборки @var{list},
+@deffn {Функция} maxi (@mvar{list})
+@deffnx {Функция} maxi (@mvar{matrix})
+Максимальное значение выборки @mvar{list},
 
 @c ===beg===
 @c load (descriptive)$
@@ -926,8 +926,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {Функция} range (@var{list})
-@deffnx {Функция} range (@var{matrix})
+@deffn {Функция} range (@mvar{list})
+@deffnx {Функция} range (@mvar{matrix})
 Разница между экстремальными значениями выборки.
 
 Пример:
@@ -959,11 +959,11 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {Функция} quantile (@var{list}, @var{p})
-@deffnx {Функция} quantile (@var{matrix}, @var{p})
-Есть @var{p}-квантиль выборки @var{list}, где @var{p} есть число в пределах @math{[0, 1]}.
+@deffn {Функция} quantile (@mvar{list}, @mvar{p})
+@deffnx {Функция} quantile (@mvar{matrix}, @mvar{p})
+Есть @mvar{p}-квантиль выборки @mvar{list}, где @mvar{p} есть число в пределах @math{[0, 1]}.
 Хотя существует несколько определений квантили 
-(Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. 
+(Hyndman, R. J., Fan, Y. (1996) @mvar{Sample quantiles in statistical packages}. 
 American Statistician, 50, 361-365), 
 в пакете @code{descriptive} используется определение, основанное на линейной интерполяции.
 
@@ -998,8 +998,8 @@ American Statistician, 50, 361-365),
 
 
 
-@deffn {Функция} median (@var{list})
-@deffnx {Функция} median (@var{matrix})
+@deffn {Функция} median (@mvar{list})
+@deffnx {Функция} median (@mvar{matrix})
 Когда выборка упорядочена, то, если размер выборки нечетен, что медиана есть центральное значение,
 иначе она есть среднее двух центральных значений.
 
@@ -1038,10 +1038,10 @@ American Statistician, 50, 361-365),
 
 
 
-@deffn {Функция} qrange (@var{list})
-@deffnx {Функция} qrange (@var{matrix})
+@deffn {Функция} qrange (@mvar{list})
+@deffnx {Функция} qrange (@mvar{matrix})
 Интерквартильный размах есть разница между третьей и первой квартилью 
-@code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
+@code{quantile(@mvar{list},3/4) - quantile(@mvar{list},1/4)},
 
 @c ===beg===
 @c load (descriptive)$
@@ -1075,8 +1075,8 @@ American Statistician, 50, 361-365),
 
 
 
-@deffn {Функция} mean_deviation (@var{list})
-@deffnx {Функция} mean_deviation (@var{matrix})
+@deffn {Функция} mean_deviation (@mvar{list})
+@deffnx {Функция} mean_deviation (@mvar{matrix})
 Среднее отклонение, определяемое как
 @ifhtml
 @example
@@ -1138,8 +1138,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 
 
 
-@deffn {Функция} median_deviation (@var{list})
-@deffnx {Функция} median_deviation (@var{matrix})
+@deffn {Функция} median_deviation (@mvar{list})
+@deffnx {Функция} median_deviation (@mvar{matrix})
 Медианное отклонение, определенное как 
 @ifhtml
 @example
@@ -1166,7 +1166,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
-где @code{med} есть медиана выборки @var{list}.
+где @code{med} есть медиана выборки @mvar{list}.
 
 Пример:
 
@@ -1201,8 +1201,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 
 
 
-@deffn {Функция} harmonic_mean (@var{list})
-@deffnx {Функция} harmonic_mean (@var{matrix})
+@deffn {Функция} harmonic_mean (@mvar{list})
+@deffnx {Функция} harmonic_mean (@mvar{matrix})
 Гармоническое среднее, определенное как
 @ifhtml
 @example
@@ -1266,8 +1266,8 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 
 
 
-@deffn {Функция} geometric_mean (@var{list})
-@deffnx {Функция} geometric_mean (@var{matrix})
+@deffn {Функция} geometric_mean (@mvar{list})
+@deffnx {Функция} geometric_mean (@mvar{matrix})
 Геометрическое среднее, определенное как
 @ifhtml
 @example
@@ -1327,8 +1327,8 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 
 
 
-@deffn {Функция} kurtosis (@var{list})
-@deffnx {Функция} kurtosis (@var{matrix})
+@deffn {Функция} kurtosis (@mvar{list})
+@deffnx {Функция} kurtosis (@mvar{matrix})
 Коэффициент куртозиса, определенный как
 @ifhtml
 @example
@@ -1388,8 +1388,8 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 
 
 
-@deffn {Функция} skewness (@var{list})
-@deffnx {Функция} skewness (@var{matrix})
+@deffn {Функция} skewness (@mvar{list})
+@deffnx {Функция} skewness (@mvar{matrix})
 Коэффициент асимметрии, определенный как
 @ifhtml
 @example
@@ -1449,8 +1449,8 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 
 
 
-@deffn {Функция} pearson_skewness (@var{list})
-@deffnx {Функция} pearson_skewness (@var{matrix})
+@deffn {Функция} pearson_skewness (@mvar{list})
+@deffnx {Функция} pearson_skewness (@mvar{matrix})
 Коэффициент асимметрии Парсона, определенные как  
 @ifhtml
 @example
@@ -1471,7 +1471,7 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
-где @var{med} -- медиана @var{list}.
+где @mvar{med} -- медиана @mvar{list}.
 
 Пример:
 
@@ -1505,8 +1505,8 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 
 
 
-@deffn {Функция} quartile_skewness (@var{list})
-@deffnx {Функция} quartile_skewness (@var{matrix})
+@deffn {Функция} quartile_skewness (@mvar{list})
+@deffnx {Функция} quartile_skewness (@mvar{matrix})
 Коэффициент квартильной асимметрии, определенный как 
 @ifhtml
 @example
@@ -1530,7 +1530,7 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
-где @math{c_p} есть @var{p}-квартиль выборки @var{list}.
+где @math{c_p} есть @mvar{p}-квартиль выборки @mvar{list}.
 
 Пример:
 
@@ -1569,7 +1569,7 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
 
 
 
-@deffn {Функция} cov (@var{matrix})
+@deffn {Функция} cov (@mvar{matrix})
 Матрица ковариации многомерной выборки, определенная как
 @ifhtml
 @example
@@ -1634,7 +1634,7 @@ $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {Функция} cov1 (@var{matrix})
+@deffn {Функция} cov1 (@mvar{matrix})
 Матрица ковариации многомерной выборки, определенная как
 @ifhtml
 @example
@@ -1699,25 +1699,25 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {Функция} global_variances (@var{matrix})
-@deffnx {Функция} global_variances (@var{matrix}, @var{logical_value})
+@deffn {Функция} global_variances (@mvar{matrix})
+@deffnx {Функция} global_variances (@mvar{matrix}, @mvar{logical_value})
 Функция @code{global_variances} возвращает список глобальных измерений дисперсии:
 
 @itemize @bullet
 @item
-@var{полная дисперсия}: @code{trace(S_1)},
+@mvar{полная дисперсия}: @code{trace(S_1)},
 @item
-@var{средняя дисперсия}: @code{trace(S_1)/p},
+@mvar{средняя дисперсия}: @code{trace(S_1)/p},
 @item
-@var{обобщенная дисперсия}: @code{determinant(S_1)},
+@mvar{обобщенная дисперсия}: @code{determinant(S_1)},
 @item
-@var{обобщенное стандартное отклонение}: @code{sqrt(determinant(S_1))},
+@mvar{обобщенное стандартное отклонение}: @code{sqrt(determinant(S_1))},
 @item
-@var{эффективная дисперсия} @code{determinant(S_1)^(1/p)}, (определена в: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@mvar{эффективная дисперсия} @code{determinant(S_1)^(1/p)}, (определена в: Pe@~na, D. (2002) @mvar{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{эффективное стандартное отклонение}: @code{determinant(S_1)^(1/(2*p))}.
+@mvar{эффективное стандартное отклонение}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-где @var{p} есть размерность многомерной случайной переменной а @math{S_1} 
+где @mvar{p} есть размерность многомерной случайной переменной а @math{S_1} 
 есть матрица ковариации, возвращаемая @code{cov1}.
 
 Пример:
@@ -1770,8 +1770,8 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {Функция} cor (@var{matrix})
-@deffnx {Функция} cor (@var{matrix}, @var{logical_value})
+@deffn {Функция} cor (@mvar{matrix})
+@deffnx {Функция} cor (@mvar{matrix}, @mvar{logical_value})
 Матрица корреляции многомерной выборки.
 
 Пример:
@@ -1842,14 +1842,14 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {Функция} list_correlations (@var{matrix})
-@deffnx {Функция} list_correlations (@var{matrix}, @var{logical_value})
+@deffn {Функция} list_correlations (@mvar{matrix})
+@deffnx {Функция} list_correlations (@mvar{matrix}, @mvar{logical_value})
 Функция @code{list_correlations} возвращает список мер корреляции:
 
 @itemize @bullet
 
 @item
-@var{матрица точности}: обратная к матрице ковариации @math{S_1},
+@mvar{матрица точности}: обратная к матрице ковариации @math{S_1},
 @ifhtml
 @example
        -1     ij
@@ -1869,7 +1869,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{вектор множественной корреляции}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, где 
+@mvar{вектор множественной корреляции}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, где 
 @ifhtml
 @example
        2          1
@@ -1895,7 +1895,7 @@ $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 когда остальные переменные используются как регрессоры.
 
 @item
-@var{матрица частичной корреляции}: с элементом @math{(i, j)} равным
+@mvar{матрица частичной корреляции}: с элементом @math{(i, j)} равным
 @ifhtml
 @example
                          ij
@@ -1983,12 +1983,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @section Функции и переменные для статистических графиков
 
 
-@deffn {Функция} histogram (@var{list})
-@deffnx {Функция} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} histogram (@var{one_column_matrix})
-@deffnx {Функция} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} histogram (@var{one_row_matrix})
-@deffnx {Функция} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+@deffn {Функция} histogram (@mvar{list})
+@deffnx {Функция} histogram (@mvar{list}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} histogram (@mvar{one_column_matrix})
+@deffnx {Функция} histogram (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} histogram (@mvar{one_row_matrix})
+@deffnx {Функция} histogram (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
 Эта функция строит гистограмму для непрерывной выборки.
 Данные выборки должны быть представлены в виде списка или одномерной матрицы.
 
@@ -1998,7 +1998,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 Опции, определенные в пакете @code{draw}. См. также @code{bars} и @code{barsplot}.
 @item
-@var{nclasses} - число классов в гистограмме (10 по умолчанию).
+@mvar{nclasses} - число классов в гистограмме (10 по умолчанию).
 @end itemize
 
 См. также @code{discrete_freq} и @code{continuous_freq} для подсчета данных,
@@ -2041,12 +2041,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 
 
-@deffn {Функция} scatterplot (@var{list})
-@deffnx {Функция} scatterplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} scatterplot (@var{matrix})
-@deffnx {Функция} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
-Строит корреляционную диаграмму (scatter diagrams) для одномерной (@var{list}) или
-многомерной (@var{matrix}) выборки. 
+@deffn {Функция} scatterplot (@mvar{list})
+@deffnx {Функция} scatterplot (@mvar{list}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} scatterplot (@mvar{matrix})
+@deffnx {Функция} scatterplot (@mvar{matrix}, @mvar{option_1}, @mvar{option_2}, ...)
+Строит корреляционную диаграмму (scatter diagrams) для одномерной (@mvar{list}) или
+многомерной (@mvar{matrix}) выборки. 
 
 Доступны следующие опции:
 
@@ -2054,7 +2054,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 Опции, определенные в пакете @code{draw}.
 @item
-@var{nclasses} - число классов в гистограмме (10 по умолчанию).
+@mvar{nclasses} - число классов в гистограмме (10 по умолчанию).
 @end itemize
 
 Примеры:
@@ -2155,12 +2155,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@deffn {Функция} barsplot (@var{list})
-@deffnx {Функция} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} barsplot (@var{one_column_matrix})
-@deffnx {Функция} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} barsplot (@var{one_row_matrix})
-@deffnx {Функция} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+@deffn {Функция} barsplot (@mvar{list})
+@deffnx {Функция} barsplot (@mvar{list}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} barsplot (@mvar{one_column_matrix})
+@deffnx {Функция} barsplot (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} barsplot (@mvar{one_row_matrix})
+@deffnx {Функция} barsplot (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
 Аналогична @code{histogram} но для дискретных, численных или категоризированных,
 статистических переменных.
 
@@ -2170,7 +2170,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 Опции, определенные в пакете @code{draw}.
 @item
-@var{box_width} -- относительная ширина прямоугольников (@code{3/4} по умолчанию).
+@mvar{box_width} -- относительная ширина прямоугольников (@code{3/4} по умолчанию).
 Это число должно быть в интервале @code{[0,1]}.
 @end itemize
 
@@ -2206,12 +2206,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@deffn {Функция} piechart (@var{list})
-@deffnx {Функция} piechart (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} piechart (@var{one_column_matrix})
-@deffnx {Функция} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} piechart (@var{one_row_matrix})
-@deffnx {Функция} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+@deffn {Функция} piechart (@mvar{list})
+@deffnx {Функция} piechart (@mvar{list}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} piechart (@mvar{one_column_matrix})
+@deffnx {Функция} piechart (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
+@deffnx {Функция} piechart (@mvar{one_row_matrix})
+@deffnx {Функция} piechart (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, ...)
 Аналогична @code{barsplot}, но вместо прямоугольников строит сектора, т.е. круговую диаграмму.
 
 Доступны следующие опции:
@@ -2220,9 +2220,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 Опции, определенные в пакете @code{draw}.
 @item
-@var{pie_center} -- центр диаграммы (@code{[0,0]} по умолчанию).
+@mvar{pie_center} -- центр диаграммы (@code{[0,0]} по умолчанию).
 @item
-@var{pie_radius} -- радиус диаграммы (1 по умолчанию).
+@mvar{pie_radius} -- радиус диаграммы (1 по умолчанию).
 @end itemize
 
 Пример:
@@ -2267,14 +2267,14 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@deffn {Функция} boxplot (@var{data})
-@deffnx {Функция} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
+@deffn {Функция} boxplot (@mvar{data})
+@deffnx {Функция} boxplot (@mvar{data}, @mvar{option_1}, @mvar{option_2}, ...)
 Эта функция строит диаграмму типа "ящик-с-усами" (box-and-whishker). 
-Аргумент @var{data} может быть списком, что не представляет большого
+Аргумент @mvar{data} может быть списком, что не представляет большого
 интереса, т.к. подобные диаграммы в основном используются для
 сравнения различных выборок или матриц, чтобы сравнить две или более 
 компонент многомерной выборки.
-Но @var{data} также может быть списком выборок, возможно различной длины 
+Но @mvar{data} также может быть списком выборок, возможно различной длины 
 (это единственная функция в пакете @code{descriptive}, которая допускает
 такой тип данных). 
 
@@ -2284,7 +2284,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 Опции, определенные в пакете @code{draw}.
 @item
-@var{box_width} - относительная ширина ящиков (@code{3/4} по умолчанию). 
+@mvar{box_width} - относительная ширина ящиков (@code{3/4} по умолчанию). 
 Это число должно быть в интервале @code{[0,1]}.
 @end itemize
 

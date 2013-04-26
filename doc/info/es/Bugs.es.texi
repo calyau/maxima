@@ -6,7 +6,7 @@
 
 @node Funciones y variables para la detecci@'on e informe de fallos
 @section Funciones y variables para la detecci@'on e informe de fallos
-@deffn {Funci@'on} run_testsuite ([@var{options}])
+@deffn {Funci@'on} run_testsuite ([@mvar{options}])
 
 Ejecuta el conjunto de pruebas de Maxima. Los tests que producen las 
 respuestas deseadas son considerados como ``pruebas superadas'', como

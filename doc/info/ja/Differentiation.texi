@@ -9,16 +9,16 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{antid}
-@deffn {関数} antid (@var{expr}, @var{x}, @var{u(x)}) 
+@deffn {関数} antid (@mvar{expr}, @mvar{x}, @mvar{u(x)}) 
 
-@var{expr}の@var{x}に関する不定積分がリストから構成できるような、
+@mvar{expr}の@mvar{x}に関する不定積分がリストから構成できるような、
 ２要素リストを返します。
-式@var{expr}は、未知の関数@var{u}とその導関数を含むことができます。
+式@mvar{expr}は、未知の関数@mvar{u}とその導関数を含むことができます。
 
 Let 
-２要素リスト@var{L}が@code{antid}の戻り値だとします。
-@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}は
-@var{expr}の@var{x}に関する不定積分です。
+２要素リスト@mvar{L}が@code{antid}の戻り値だとします。
+@code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})}は
+@mvar{expr}の@mvar{x}に関する不定積分です。
 
 @code{antid}が完全に成功した時、
 戻り値の２番目の要素はゼロです。
@@ -30,10 +30,10 @@ Let
 @code{antid}パッケージは、関数@code{nonzeroandfreeof}と@code{linear}も定義します。
 
 @code{antid}は、以下のように@code{antidiff}と関係します。
-２要素リスト@var{L}が@code{antid}の戻り値とします。
-@code{antidiff}の戻り値は、@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}に
+２要素リスト@mvar{L}が@code{antid}の戻り値とします。
+@code{antidiff}の戻り値は、@code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})}に
 等しいです。
-ここで、@var{x}は積分変数です。
+ここで、@mvar{x}は積分変数です。
 
 例:
 
@@ -85,10 +85,10 @@ Let
 
 @c -----------------------------------------------------------------------------
 @anchor{antidiff}
-@deffn {関数} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+@deffn {関数} antidiff (@mvar{expr}, @mvar{x}, @mvar{u}(@mvar{x}))
 
-@var{expr}の@var{x}に関する不定積分を返します。
-式@var{expr}は、未知の関数@var{u}とその導関数を含むことができます。
+@mvar{expr}の@mvar{x}に関する不定積分を返します。
+式@mvar{expr}は、未知の関数@mvar{u}とその導関数を含むことができます。
 
 @code{antidiff}が完全に成功した時、
 結果の式は、積分記号を含みません(すなわち、@code{integrate}名詞を含みません)。
@@ -101,10 +101,10 @@ Let
 @code{antid}パッケージは、関数@code{nonzeroandfreeof}と@code{linear}も定義します。
 
 @code{antidiff}は、以下のように@code{antid}と関係します。
-２要素リスト@var{L}が@code{antid}の戻り値とします。
-@code{antidiff}の戻り値は、@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}に
+２要素リスト@mvar{L}が@code{antid}の戻り値とします。
+@code{antidiff}の戻り値は、@code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})}に
 等しいです。
-ここで、@var{x}は積分変数です。
+ここで、@mvar{x}は積分変数です。
 
 例:
 
@@ -156,11 +156,11 @@ Let
 
 @c -----------------------------------------------------------------------------
 @anchor{at}
-@deffn  {関数} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
-@deffnx {関数} at (@var{expr}, @var{eqn})
-等式のリスト@code{[@var{eqn_1}, ..., @var{eqn_n}]}
-もしくは１つの等式@var{eqn}の中で指定されたように値を仮定された変数で、
-式@var{expr}を評価します。
+@deffn  {関数} at (@mvar{expr}, [@mvar{eqn_1}, @dots{}, @mvar{eqn_n}])
+@deffnx {関数} at (@mvar{expr}, @mvar{eqn})
+等式のリスト@code{[@mvar{eqn_1}, ..., @mvar{eqn_n}]}
+もしくは１つの等式@mvar{eqn}の中で指定されたように値を仮定された変数で、
+式@mvar{expr}を評価します。
 
 もしも部分式が、値が指定される変数のいずれかに依存するが
 指定の@code{atvalue}がなく、他の方法で評価できないなら、
@@ -233,43 +233,43 @@ Let
 
 @c -----------------------------------------------------------------------------
 @anchor{atvalue}
-@deffn  {関数} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
-@deffnx {関数} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@deffn  {関数} atvalue (@mvar{expr}, [@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_m} = @mvar{a_m}], @mvar{c})
+@deffnx {関数} atvalue (@mvar{expr}, @mvar{x_1} = @mvar{a_1}, @mvar{c})
 
-値@var{c}を
-点@code{@var{x} = @var{a}}の@var{expr}に割り当てます。
+値@mvar{c}を
+点@code{@mvar{x} = @mvar{a}}の@mvar{expr}に割り当てます。
 典型的には、境界値はこのメカニズムによって確立されます。
 
-@var{expr}は、関数引数が陽に現れる
+@mvar{expr}は、関数引数が陽に現れる
 関数評価
-@code{@var{f}(@var{x_1}, ..., @var{x_m})}または
+@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_m})}または
 導関数
-@code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
+@code{diff (@mvar{f}(@mvar{x_1}, ..., @mvar{x_m}), @mvar{x_1}, @mvar{n_1}, ..., @mvar{x_n}, @mvar{n_m})}
 です。
 @c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
 @c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
-@var{n_i}は、@var{x_i}に関する微分の階数です。
+@mvar{n_i}は、@mvar{x_i}に関する微分の階数です。
 
-atvalueが確立される点は、等式のリスト@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}
+atvalueが確立される点は、等式のリスト@code{[@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_m} = @mvar{a_m}]}
 によって与えられます。
-もし１変数@var{x_1}なら、
+もし１変数@mvar{x_1}なら、
 リストとしてくくられることなしに１つの等式は与えられます。
 
-@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)}は
+@code{printprops ([@mvar{f_1}, @mvar{f_2}, ...], atvalue)}は
 @code{atvalue}コールによって指定されるような
-関数@code{@var{f_1}, @var{f_2}, ...}のatvalueを表示します。
+関数@code{@mvar{f_1}, @mvar{f_2}, ...}のatvalueを表示します。
 
-@code{printprops (@var{f}, atvalue)}は、
-１関数@var{f}のatvalueを表示します。
+@code{printprops (@mvar{f}, atvalue)}は、
+１関数@mvar{f}のatvalueを表示します。
 @code{printprops (all, atvalue)}は、
 atvaluesが定義された関数すべてのatvalueを表示します。
 
 atvaluesが表示される時、
 シンボル@code{@@1}, @code{@@2}, @dots{} は
-変数@var{x_1}, @var{x_2}, @dots{}を表します。
+変数@mvar{x_1}, @mvar{x_2}, @dots{}を表します。
 
 @code{atvalue}は引数を評価します。
-@code{atvalue}はatvalue@var{c}を返します。
+@code{atvalue}はatvalue@mvar{c}を返します。
 
 例:
 
@@ -338,9 +338,9 @@ atvaluesが表示される時、
 
 @c -----------------------------------------------------------------------------
 @anchor{del}
-@deffn {関数} del (@var{x})
+@deffn {関数} del (@mvar{x})
 
-@code{del (@var{x})}は、変数@math{x}の微分を表します。
+@code{del (@mvar{x})}は、変数@math{x}の微分を表します。
 
 もし独立変数が指定されないなら、
 @code{diff}は、@code{del}を含む式を返します。
@@ -371,7 +371,7 @@ atvaluesが表示される時、
 
 @c -----------------------------------------------------------------------------
 @anchor{delta}
-@deffn {関数} delta (@var{t})
+@deffn {関数} delta (@mvar{t})
 
 Diracのデルタ関数
 
@@ -413,7 +413,7 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{depends}
-@deffn {関数} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+@deffn {関数} depends (@mvar{f_1}, @mvar{x_1}, ..., @mvar{f_n}, @mvar{x_n})
 
 導関数を計算するために、変数の間の関数依存を宣言します。
 宣言された依存関係なしでは、
@@ -421,17 +421,17 @@ each call to
 もし@code{depends (f, x)}が宣言されたら、
 @code{diff (f, x)}はシンボリックな導関数(すなわち、@code{diff}名詞)をもたらします。
 
-それぞれの引数@var{f_1}, @var{x_1}, などは、
+それぞれの引数@mvar{f_1}, @mvar{x_1}, などは、
 変数や配列の名前、または名前のリストをとり得ます。
-@var{f_i} (多分ただ１つの要素)のすべての要素は、
-@var{x_i} (多分ただ１つの要素)のすべての要素に依存するように宣言されます。
-もしいくつかの@var{f_i}が、配列名だったり、配列名を含むなら、
-配列の要素すべては@var{x_i}に依存します。
+@mvar{f_i} (多分ただ１つの要素)のすべての要素は、
+@mvar{x_i} (多分ただ１つの要素)のすべての要素に依存するように宣言されます。
+もしいくつかの@mvar{f_i}が、配列名だったり、配列名を含むなら、
+配列の要素すべては@mvar{x_i}に依存します。
 
 @code{diff}は、@code{depends}によって確立された間接的依存関係を認識し、
 これらの場合に連鎖規則を適用します。
 
-@code{remove (@var{f}, dependency)}は、@var{f}に関して宣言された
+@code{remove (@mvar{f}, dependency)}は、@mvar{f}に関して宣言された
 依存関係すべてを取り除きます。
 
 @code{depends}は、確立された依存関係のリストを返します。
@@ -512,10 +512,10 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{derivdegree}
-@deffn {関数} derivdegree (@var{expr}, @var{y}, @var{x})
+@deffn {関数} derivdegree (@mvar{expr}, @mvar{y}, @mvar{x})
 
-@var{expr}に現れる独立変数@var{x}に関する
-従属変数@var{y}の微分の最高階数を返します。
+@mvar{expr}に現れる独立変数@mvar{x}に関する
+従属変数@mvar{y}の微分の最高階数を返します。
 
 例:
 
@@ -542,7 +542,7 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{derivlist}
-@deffn {関数} derivlist (@var{var_1}, @dots{}, @var{var_k})
+@deffn {関数} derivlist (@mvar{var_1}, @dots{}, @mvar{var_k})
 
 @code{ev}コマンド内にて、指摘された変数に関する微分のみを起こします。
 
@@ -567,23 +567,23 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{diff}
-@deffn  {関数} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
-@deffnx {関数} diff (@var{expr}, @var{x}, @var{n})
-@deffnx {関数} diff (@var{expr}, @var{x})
-@deffnx {関数} diff (@var{expr})
+@deffn  {関数} diff (@mvar{expr}, @mvar{x_1}, @mvar{n_1}, @dots{}, @mvar{x_m}, @mvar{n_m})
+@deffnx {関数} diff (@mvar{expr}, @mvar{x}, @mvar{n})
+@deffnx {関数} diff (@mvar{expr}, @mvar{x})
+@deffnx {関数} diff (@mvar{expr})
 
-@var{expr}の中のすべての変数の中のいくつかに関する、@var{expr}の導関数すなわち微分を返します。
+@mvar{expr}の中のすべての変数の中のいくつかに関する、@mvar{expr}の導関数すなわち微分を返します。
 
-@code{diff (@var{expr}, @var{x}, @var{n})}は@var{x}に関する@var{expr}の@var{n}階微分を返します。
+@code{diff (@mvar{expr}, @mvar{x}, @mvar{n})}は@mvar{x}に関する@mvar{expr}の@mvar{n}階微分を返します。
 
-@code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}は
-@var{x_1}, ..., @var{x_m}に関する@var{expr}の偏微分を返します。
-これは、@code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}と同値です。
+@code{diff (@mvar{expr}, @mvar{x_1}, @mvar{n_1}, ..., @mvar{x_m}, @mvar{n_m})}は
+@mvar{x_1}, ..., @mvar{x_m}に関する@mvar{expr}の偏微分を返します。
+これは、@code{diff (... (diff (@mvar{expr}, @mvar{x_m}, @mvar{n_m}) ...), @mvar{x_1}, @mvar{n_1})}と同値です。
 
-@code{diff (@var{expr}, @var{x})}は変数@var{x}に関する@var{expr}の1階微分を返します。
+@code{diff (@mvar{expr}, @mvar{x})}は変数@mvar{x}に関する@mvar{expr}の1階微分を返します。
 
-@code{diff (@var{expr})}は@var{expr}の全微分を返します。
-すなわち、それぞれの変数に関する@var{expr}の微分に変数それぞれの微分@code{del}を掛けたものの和を返します。
+@code{diff (@mvar{expr})}は@mvar{expr}の全微分を返します。
+すなわち、それぞれの変数に関する@mvar{expr}の微分に変数それぞれの微分@code{del}を掛けたものの和を返します。
 @c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
 @code{del}の更なる整理は提供されません。
 
@@ -629,13 +629,13 @@ each call to
 
 テンソルパッケージのために、以下の変更が取り込まれています:
 
-(1) @var{expr}の中の任意のインデックスされたオブジェクトの導関数は、追加された引数として添えられた変数@var{x_i}を持ちます。
+(1) @mvar{expr}の中の任意のインデックスされたオブジェクトの導関数は、追加された引数として添えられた変数@mvar{x_i}を持ちます。
 そして導関数のインデックスはすべてソートされます。
 
-(2) @var{x_i}は、1から変数@code{dimension} [デフォルト値: 4]の値までの整数を取ります。
+(2) @mvar{x_i}は、1から変数@code{dimension} [デフォルト値: 4]の値までの整数を取ります。
 これにより、例えば @code{[x, y, z, t]}など
-座標名のリストして設定されたリスト@code{coordinates}の@var{x_i}番目のメンバーに関する微分が実行されます。
-もし@code{coordinates}がアトムの変数にバインドされているなら、@var{x_i}で下付き添字された変数が、微分の変数として使われます。
+座標名のリストして設定されたリスト@code{coordinates}の@mvar{x_i}番目のメンバーに関する微分が実行されます。
+もし@code{coordinates}がアトムの変数にバインドされているなら、@mvar{x_i}で下付き添字された変数が、微分の変数として使われます。
 これにより、座標名や@code{X[1]}, @code{X[2]}, @dots{}のような下付き添字された名前の配列が使えることになります。
 もし@code{coordinates}に値が割り当てられていないなら、変数は上の(1)のように扱われます。
 
@@ -661,9 +661,9 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{dscalar}
-@deffn {関数} dscalar (@var{f})
+@deffn {関数} dscalar (@mvar{f})
 
-スカラーのダランベルシアンをスカラー関数に@var{f}に適用します。
+スカラーのダランベルシアンをスカラー関数に@mvar{f}に適用します。
 
 @c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
 @c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
@@ -694,7 +694,7 @@ each call to
 
 @c -----------------------------------------------------------------------------
 @anchor{express}
-@deffn {関数} express (@var{expr})
+@deffn {関数} express (@mvar{expr})
 
 @c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
 @c The result uses the noun form of any
@@ -809,24 +809,24 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 
 @c -----------------------------------------------------------------------------
 @anchor{gradef}
-@deffn  {関数} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, ..., @var{g_m})
-@deffnx {関数} gradef (@var{a}, @var{x}, @var{expr})
+@deffn  {関数} gradef (@mvar{f}(@mvar{x_1}, @dots{}, @mvar{x_n}), @mvar{g_1}, ..., @mvar{g_m})
+@deffnx {関数} gradef (@mvar{a}, @mvar{x}, @mvar{expr})
 
-関数@var{f}もしくは変数@var{a}の偏微分（すなわち、勾配の成分）を定義します。
+関数@mvar{f}もしくは変数@mvar{a}の偏微分（すなわち、勾配の成分）を定義します。
 
-@code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}は、
-@code{d@var{f}/d@var{x_i}}を@var{g_i}として定義します。
-ここで、@var{g_i}は式です; @var{g_i}は関数コールでもあり得ますが、関数名ではありません。
-偏微分の数@var{m}は、引数の数@var{n}よりもちいさいかもしれません。
-その場合、微分は@var{x_1}から@var{x_m}までのみに関して定義されます。
+@code{gradef (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{g_1}, ..., @mvar{g_m})}は、
+@code{d@mvar{f}/d@mvar{x_i}}を@mvar{g_i}として定義します。
+ここで、@mvar{g_i}は式です; @mvar{g_i}は関数コールでもあり得ますが、関数名ではありません。
+偏微分の数@mvar{m}は、引数の数@mvar{n}よりもちいさいかもしれません。
+その場合、微分は@mvar{x_1}から@mvar{x_m}までのみに関して定義されます。
 
-@code{gradef (@var{a}, @var{x}, @var{expr})}は、
-変数@var{a}の@var{x}に関する微分を@var{expr}と定義します。
-これは、 (@code{depends (@var{a}, @var{x})}を介して)
-@var{a}の@var{x}への依存性を確立もします。
+@code{gradef (@mvar{a}, @mvar{x}, @mvar{expr})}は、
+変数@mvar{a}の@mvar{x}に関する微分を@mvar{expr}と定義します。
+これは、 (@code{depends (@mvar{a}, @mvar{x})}を介して)
+@mvar{a}の@mvar{x}への依存性を確立もします。
 
-最初の引数@code{@var{f}(@var{x_1}, ..., @var{x_n})}または@var{a}はクォートされますが、
-残りの引数@var{g_1}, ..., @var{g_m}は評価されます。
+最初の引数@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})}または@mvar{a}はクォートされますが、
+残りの引数@mvar{g_1}, ..., @mvar{g_m}は評価されます。
 @code{gradef}は偏微分が定義された関数や変数を返します。
 
 @code{gradef}は、Maximaの組み込み関数の微分を再定義できます。
@@ -835,12 +835,12 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 
 @code{gradef}は、添字付き関数の偏微分を定義できません。
 
-@code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)}は、
-関数@var{f_1}, ..., @var{f_n}の偏微分を
+@code{printprops ([@mvar{f_1}, ..., @mvar{f_n}], gradef)}は、
+関数@mvar{f_1}, ..., @mvar{f_n}の偏微分を
 @code{gradef}で定義されたように、表示します。
 
-@code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)}は、
-変数@var{a_n}, ..., @var{a_n}の偏微分を
+@code{printprops ([@mvar{a_n}, ..., @mvar{a_n}], atomgrad)}は、
+変数@mvar{a_n}, ..., @mvar{a_n}の偏微分を
 @code{gradef}で定義されたように、表示します。
 
 @code{gradefs}は、偏微分が@code{gradef}によって定義された
@@ -875,12 +875,12 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 
 @c -----------------------------------------------------------------------------
 @anchor{laplace}
-@deffn {関数} laplace (@var{expr}, @var{t}, @var{s})
+@deffn {関数} laplace (@mvar{expr}, @mvar{t}, @mvar{s})
 
-変数@var{t}に関するラブラス変換@var{expr}を計算し、パラメータ@var{s}に変換しようとします。
+変数@mvar{t}に関するラブラス変換@mvar{expr}を計算し、パラメータ@mvar{s}に変換しようとします。
 
 @code{laplace}は、
-@var{expr}の中で、
+@mvar{expr}の中で、
 @code{derivative}, @code{integrate}, @code{sum}, @code{ilt}はもちろん、
 関数@code{delta}, @code{exp},
 @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf}
@@ -897,7 +897,7 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 名詞@code{laplace}が返されます。
 
 @c REPHRASE THIS
-@var{expr}は、従属変数の@code{atvalue}が使われる線形定数係数微分方程式であるかもしれません。
+@mvar{expr}は、従属変数の@code{atvalue}が使われる線形定数係数微分方程式であるかもしれません。
 @c "used" -- USED HOW ??
 要求されるatvalueは、
 変換が計算される前か後に供給されるかもしれません。
@@ -910,10 +910,10 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 @code{integrate (f(x) * g(t - x), x, 0, t)}の畳み込み積分を認識します;
 他の種類の畳み込みは認識されません。
 
-関数関係は、 @var{expr}で陽に表現されなければいけません;
+関数関係は、 @mvar{expr}で陽に表現されなければいけません;
 @code{depends}で確立した暗黙の関係は認識されません。
-例えば、もし@var{f}が@var{x}と@var{y}に依存するなら、
-@code{f (x, y)}が@var{expr}の中に現れなければいけません。
+例えば、もし@mvar{f}が@mvar{x}と@mvar{y}に依存するなら、
+@code{f (x, y)}が@mvar{expr}の中に現れなければいけません。
 
 逆ラプラス変換@code{ilt}も参照してください。
 

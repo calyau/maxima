@@ -7,7 +7,7 @@
 @node Defini@value{cedilha}@~oes para makeOrders,  , makeOrders, makeOrders
 @section Defini@value{cedilha}@~oes para makeOrders
 
-@deffn {Fun@value{cedilha}@~ao} makeOrders (@var{indvarlist},@var{orderlist})
+@deffn {Fun@value{cedilha}@~ao} makeOrders (@mvar{indvarlist},@mvar{orderlist})
 Retorna uma lista de todos os expoentes para um polin@'omio acima de e incluindo os argumentos. 
 
 @example

@@ -13,15 +13,15 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {Function} linear_program (@mvar{A}, @mvar{b}, @mvar{c})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Function} maximize_sx (@mvar{obj}, @mvar{cond}, [@mvar{pos}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Function} minimize_sx (@mvar{obj}, @mvar{cond}, [@mvar{pos}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

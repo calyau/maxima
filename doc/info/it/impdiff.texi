@@ -5,7 +5,7 @@
 @node Definitions for impdiff,  , impdiff, impdiff
 @section Definitions for impdiff
 
-@deffn {Function} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+@deffn {Function} implicit_derivative (@mvar{f},@mvar{indvarlist},@mvar{orderlist},@mvar{depvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

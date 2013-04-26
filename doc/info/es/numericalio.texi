@@ -44,16 +44,16 @@ continuaci@'on de l@'{@dotless{i}}nea interrumpida.
 
 
 Las funciones para la entrada y salida de datos en formato texto tiene un 
-argumento opcional, @var{separator_flag}, para indicar qu@'e car@'acter
+argumento opcional, @mvar{separator_flag}, para indicar qu@'e car@'acter
 se utiliza como separador.
 
 Para la entrada de texto se reconocen los siguientes valores de la
-variable @var{separator_flag}: @code{comma} para los valores separados por
+variable @mvar{separator_flag}: @code{comma} para los valores separados por
 comas, @code{pipe} para los valores separados por el car@'acter de la barra
 vertical @code{|}, @code{semicolon} para los valores separados por punto y
 coma @code{;}, y @code{space} para cuando los valores se separan por espacios
 o tabulaciones. Si el nombre del fichero tiene extensi@'on @code{.csv} y no se
-especifica el argumento @var{separator_flag}, se tomar@'a por defecto @code{comma}.
+especifica el argumento @mvar{separator_flag}, se tomar@'a por defecto @code{comma}.
 Si el fichero tiene cualquier otra extensi@'on diferente de @code{.csv} y no se
 especifica @code{separator_flag}, se usar@'a por defecto @code{space}.
 
@@ -67,7 +67,7 @@ escribirse expl@'{@dotless{i}}citamente, por lo que la lista
 
 @subsection Separadores v@'alidos para escritura
 
-Para la entrada de texto se acepta @code{tab} como valor de @var{separator_flag}
+Para la entrada de texto se acepta @code{tab} como valor de @mvar{separator_flag}
  para datos separados por tabuladores, as@'{@dotless{i}} como
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
 
@@ -102,104 +102,104 @@ de flujos de bytes.
 @node Funciones y variables para entrada y salida en formato texto, Funciones y variables para entrada y salida en formato binario, Introducci@'on a numericalio, numericalio
 @section Funciones y variables para entrada y salida en formato texto
 
-@deffn {Funci@'on} read_matrix (@var{S})
-@deffnx {Funci@'on} read_matrix (@var{S}, @var{M})
-@deffnx {Funci@'on} read_matrix (@var{S}, @var{separator_flag})
-@deffnx {Funci@'on} read_matrix (@var{S}, @var{M}, @var{separator_flag})
+@deffn {Funci@'on} read_matrix (@mvar{S})
+@deffnx {Funci@'on} read_matrix (@mvar{S}, @mvar{M})
+@deffnx {Funci@'on} read_matrix (@mvar{S}, @mvar{separator_flag})
+@deffnx {Funci@'on} read_matrix (@mvar{S}, @mvar{M}, @mvar{separator_flag})
 
-@code{read_matrix(@var{S})} lee la fuente @var{S} y devuelve su contenido completo en forma
+@code{read_matrix(@mvar{S})} lee la fuente @mvar{S} y devuelve su contenido completo en forma
 de matriz. El tama@~no de la matriz se deduce de los datos de entrada: 
 cada fila del fichero forma una fila de la matriz. Si hay filas con diferente n@'umero de elementos,
 @code{read_matrix} emite un mensaje de error.
 
-@code{read_matrix(@var{S}, @var{M})} lee la fuente @var{S} y va almacenando su contenido
-en la matriz @var{M}, hasta que @var{M} est@'e llena o hasta que se consuma la fuente.
+@code{read_matrix(@mvar{S}, @mvar{M})} lee la fuente @mvar{S} y va almacenando su contenido
+en la matriz @mvar{M}, hasta que @mvar{M} est@'e llena o hasta que se consuma la fuente.
 Los datos se almacenan fila a fila. Los datos de entrada no necesitan tener el
-mismo n@'umero de filas y columnas que @var{M}.
+mismo n@'umero de filas y columnas que @mvar{M}.
 
-La fuente @var{S} puede ser el nombre de un fichero o de un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o de un flujo.
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 
 @end deffn
 
-@deffn {Funci@'on} read_array (@var{S}, @var{A})
-@deffnx {Funci@'on} read_array (@var{S}, @var{A}, @var{separator_flag})
+@deffn {Funci@'on} read_array (@mvar{S}, @mvar{A})
+@deffnx {Funci@'on} read_array (@mvar{S}, @mvar{A}, @mvar{separator_flag})
 
-Guarda el contenido de la fuente @var{S} en el array @var{A},
-hasta que @var{A} est@'e lleno o hasta que se consuma la fuente.
+Guarda el contenido de la fuente @mvar{S} en el array @mvar{A},
+hasta que @mvar{A} est@'e lleno o hasta que se consuma la fuente.
 Los datos se almacenan fila a fila. Los datos de entrada no necesitan tener el
-mismo n@'umero de filas y columnas que @var{A}.
+mismo n@'umero de filas y columnas que @mvar{A}.
 
-La fuente @var{S} puede ser el nombre de un fichero o de un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o de un flujo.
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 
 @end deffn
 
 
-@deffn {Funci@'on} read_hashed_array (@var{S}, @var{A})
-@deffnx {Funci@'on} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
+@deffn {Funci@'on} read_hashed_array (@mvar{S}, @mvar{A})
+@deffnx {Funci@'on} read_hashed_array (@mvar{S}, @mvar{A}, @mvar{separator_flag})
 
-Lee la fuente @var{S} y devuelve su contenido completo en forma de array de claves.
-La fuente @var{S} puede ser el nombre de un fichero o de un flujo.
+Lee la fuente @mvar{S} y devuelve su contenido completo en forma de array de claves.
+La fuente @mvar{S} puede ser el nombre de un fichero o de un flujo.
 
 @code{read_hashed_array} interpreta el primer elemento de cada fila como una clave,
 asociando el resto de la fila, en formato de lista, a la clave. Por ejemplo,
 la secuencia @code{567 12 17 32 55} equivale a @code{A[567]: [12, 17, 32, 55]$}.
 Las filas no necesitan tener todas ellas el mismo n@'umero de elementos.
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 @end deffn
 
-@deffn {Funci@'on} read_nested_list (@var{S})
-@deffnx {Funci@'on} read_nested_list (@var{S}, @var{separator_flag})
+@deffn {Funci@'on} read_nested_list (@mvar{S})
+@deffnx {Funci@'on} read_nested_list (@mvar{S}, @mvar{separator_flag})
 
-Lee la fuente @var{S} y devuelve su contenido completo en forma de lista anidada.
-La fuente @var{S} puede ser el nombre de un fichero o de un flujo.
+Lee la fuente @mvar{S} y devuelve su contenido completo en forma de lista anidada.
+La fuente @mvar{S} puede ser el nombre de un fichero o de un flujo.
 
 @code{read_nested_list} devuelve una lista que tiene una sublista por cada fila
 de entrada. Los filas de entrada no necesitan tener todas ellas el mismo n@'umero
 de elementos. Las filas en blanco no se ignoran, sino que se convierten 
 en listas vac@'{@dotless{i}}as
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 @end deffn
 
-@deffn {Funci@'on} read_list (@var{S})
-@deffnx {Funci@'on} read_list (@var{S}, @var{L})
-@deffnx {Funci@'on} read_list (@var{S}, @var{separator_flag})
-@deffnx {Funci@'on} read_list (@var{S}, @var{L}, @var{separator_flag})
+@deffn {Funci@'on} read_list (@mvar{S})
+@deffnx {Funci@'on} read_list (@mvar{S}, @mvar{L})
+@deffnx {Funci@'on} read_list (@mvar{S}, @mvar{separator_flag})
+@deffnx {Funci@'on} read_list (@mvar{S}, @mvar{L}, @mvar{separator_flag})
 
-@code{read_list(@var{S})} lee la fuente @var{S} y devuelve su contenido como una lista simple.
+@code{read_list(@mvar{S})} lee la fuente @mvar{S} y devuelve su contenido como una lista simple.
 
-@code{read_list(@var{S}, @var{L})} guarda el contenido de la fuente @var{S} en la lista @var{L},
-hasta que @var{L} est@'e llena o hasta que se consuma la fuente.
+@code{read_list(@mvar{S}, @mvar{L})} guarda el contenido de la fuente @mvar{S} en la lista @mvar{L},
+hasta que @mvar{L} est@'e llena o hasta que se consuma la fuente.
 
-La fuente @var{S} puede ser el nombre de un fichero o de un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o de un flujo.
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 @end deffn
 
-@deffn {Funci@'on} write_data (@var{X}, @var{D})
-@deffnx {Funci@'on} write_data (@var{X}, @var{D}, @var{separator_flag})
+@deffn {Funci@'on} write_data (@mvar{X}, @mvar{D})
+@deffnx {Funci@'on} write_data (@mvar{X}, @mvar{D}, @mvar{separator_flag})
 
-Escribe el objeto @var{X} en el destino @var{D}.
+Escribe el objeto @mvar{X} en el destino @mvar{D}.
 
 @code{write_data} escribe una matriz fila a fila; cada l@'{@dotless{i}}nea de
 entrada se corresponde con una fila.
@@ -215,15 +215,15 @@ asociada en una sola l@'{@dotless{i}}nea.
 
 @code{write_data} escribe una lista simple en una @'unica fila.
 
-El destino @var{D} puede ser el nombre de un fichero o un flujo; en el primer caso,
+El destino @mvar{D} puede ser el nombre de un fichero o un flujo; en el primer caso,
 la variable global @code{file_output_append} controla si el fichero de salida es
 ampliado con la nueva informaci@'on o si se borra antes; en el segundo caso,
 no se realiza ning@'un tipo de acci@'on por parte de @code{write_data} despu@'es
 de que se hayan escrito los datos; en particular, el flujo se mantiene abierto.
 
-Los valores aceptados para @var{separator_flag} son:
+Los valores aceptados para @mvar{separator_flag} son:
 @code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
-Si no se especifica un valor para @var{separator_flag},
+Si no se especifica un valor para @mvar{separator_flag},
 se supone que los datos est@'an separados por espacios.
 @end deffn
 
@@ -233,10 +233,10 @@ se supone que los datos est@'an separados por espacios.
 @node Funciones y variables para entrada y salida en formato binario, , Funciones y variables para entrada y salida en formato texto, numericalio
 @section Funciones y variables para entrada y salida en formato binario
 
-@deffn {Funci@'on} assume_external_byte_order (@var{byte_order_flag})
+@deffn {Funci@'on} assume_external_byte_order (@mvar{byte_order_flag})
 
 Le indica a @code{numericalio} el orden de los bytes en que debe leer y escribir los datos.
-Los valores que reconoce @var{byte_order_flag} son dos:
+Los valores que reconoce @mvar{byte_order_flag} son dos:
 @code{lsb}, que indica que el byte menos significativo debe ser el primero, y @code{msb},
 que indica que el byte m@'as significativo es el que debe ir en primer lugar.
 
@@ -244,76 +244,76 @@ En caso de no hacer ninguna selecci@'on, @code{numericalio} interpreta que es el
 m@'as significativo el que se debe leer o escribir primero.
 @end deffn
 
-@deffn {Funci@'on} openr_binary (@var{file_name})
-Devuelve un flujo de entrada de bytes no signados para la lectura del fichero de nombre @var{file_name}.
+@deffn {Funci@'on} openr_binary (@mvar{file_name})
+Devuelve un flujo de entrada de bytes no signados para la lectura del fichero de nombre @mvar{file_name}.
 
 @end deffn
 
-@deffn {Funci@'on} openw_binary (@var{file_name})
-Devuelve un flujo de entrada de bytes no signados para la escritura en el fichero de nombre @var{file_name}.
+@deffn {Funci@'on} openw_binary (@mvar{file_name})
+Devuelve un flujo de entrada de bytes no signados para la escritura en el fichero de nombre @mvar{file_name}.
 
 @end deffn
 
-@deffn {Funci@'on} opena_binary (@var{file_name})
-Devuelve un flujo de entrada de bytes no signados para a@~nadir datos al fichero de nombre @var{file_name}.
+@deffn {Funci@'on} opena_binary (@mvar{file_name})
+Devuelve un flujo de entrada de bytes no signados para a@~nadir datos al fichero de nombre @mvar{file_name}.
 
 @end deffn
 
-@deffn {Funci@'on} read_binary_matrix (@var{S}, @var{M})
-Lee n@'umeros decimales en coma flotante de 8 bytes desde la fuente @var{S} y los
-va almacenando en la matriz @var{M}, bien hasta que @var{M} se llene, o bien hasta que
-la fuente se haya consumido. La matriz @var{M} se rellena fila a fila.
+@deffn {Funci@'on} read_binary_matrix (@mvar{S}, @mvar{M})
+Lee n@'umeros decimales en coma flotante de 8 bytes desde la fuente @mvar{S} y los
+va almacenando en la matriz @mvar{M}, bien hasta que @mvar{M} se llene, o bien hasta que
+la fuente se haya consumido. La matriz @mvar{M} se rellena fila a fila.
 
-La fuente @var{S} puede ser el nombre de un fichero o un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o un flujo.
 
 El orden de los bytes de los datos procedentes de la fuente se especifican
 mediante @code{assume_external_byte_order}.
 
 @end deffn
 
-@deffn {Funci@'on} read_binary_array (@var{S}, @var{A})
-Lee n@'umeros decimales en coma flotante de 8 bytes desde la fuente @var{S} y los
-va almacenando en el array @var{A}, bien hasta que @var{A} se llene, o bien hasta que
-la fuente se haya consumido. @var{A} debe ser un array creado por @code{array}
-o por @code{make_array}. El array @var{A} se rellena fila a fila.
+@deffn {Funci@'on} read_binary_array (@mvar{S}, @mvar{A})
+Lee n@'umeros decimales en coma flotante de 8 bytes desde la fuente @mvar{S} y los
+va almacenando en el array @mvar{A}, bien hasta que @mvar{A} se llene, o bien hasta que
+la fuente se haya consumido. @mvar{A} debe ser un array creado por @code{array}
+o por @code{make_array}. El array @mvar{A} se rellena fila a fila.
 
-La fuente @var{S} puede ser el nombre de un fichero o un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o un flujo.
 
 El orden de los bytes de los datos procedentes de la fuente se especifican
 mediante @code{assume_external_byte_order}.
 
 @end deffn
 
-@deffn {Funci@'on} read_binary_list (@var{S})
-@deffnx {Funci@'on} read_binary_list (@var{S}, @var{L})
-@code{read_binary_list(@var{S})} lee el contenido completo de la fuente de datos @var{S}
+@deffn {Funci@'on} read_binary_list (@mvar{S})
+@deffnx {Funci@'on} read_binary_list (@mvar{S}, @mvar{L})
+@code{read_binary_list(@mvar{S})} lee el contenido completo de la fuente de datos @mvar{S}
 como una secuencia de n@'umeros decimales en coma flotante de 8 bytes en formato binario,
 devolvi@'endolos en forma de lista.
 
-La fuente @var{S} puede ser el nombre de un fichero o un flujo.
+La fuente @mvar{S} puede ser el nombre de un fichero o un flujo.
 
-@code{read_binary_list(@var{S}, @var{L})} lee n@'umeros decimales en coma flotante de 8 bytes en
-formato binario desde la fuente @var{S} y los almacena en la lista @var{L}, bien hasta que
+@code{read_binary_list(@mvar{S}, @mvar{L})} lee n@'umeros decimales en coma flotante de 8 bytes en
+formato binario desde la fuente @mvar{S} y los almacena en la lista @mvar{L}, bien hasta que
 @'esta est@'e llena, o bien hasta que se consuman los datos de la fuente.
 
 El orden de los bytes de los datos procedentes de la fuente se especifican
 mediante @code{assume_external_byte_order}.
 @end deffn
 
-@deffn {Funci@'on} write_binary_data (@var{X}, @var{D})
+@deffn {Funci@'on} write_binary_data (@mvar{X}, @mvar{D})
 
-Escribe el objeto @var{X}, que contiene n@'umeros decimales en
-coma flotante de 8 bytes del est@'andar IEEE 754, en el destino @var{D}.
+Escribe el objeto @mvar{X}, que contiene n@'umeros decimales en
+coma flotante de 8 bytes del est@'andar IEEE 754, en el destino @mvar{D}.
 Cualesquiera otros tipos de decimales son transformados a 8 bytes. 
 @code{write_binary_data} no puede escribir datos no num@'ericos.
 
-El objeto @var{X} puede ser una lista, una lista anidada, una matriz, o un
-array creado con @code{array} o @code{make_array}; @var{X} no puede ser
+El objeto @mvar{X} puede ser una lista, una lista anidada, una matriz, o un
+array creado con @code{array} o @code{make_array}; @mvar{X} no puede ser
 ni un array no declarado ni cualquier otro tipo de objeto distinto a los citados.
 @code{write_binary_data} escribe las listas anidadas, las matrices y los arrays
 fila a fila.
 
-El destino @var{D} puede ser el nombre de un fichero o un flujo; en el primer caso,
+El destino @mvar{D} puede ser el nombre de un fichero o un flujo; en el primer caso,
 la variable global @code{file_output_append} controla si el fichero de salida es
 ampliado con la nueva informaci@'on o si se borra antes; en el segundo caso,
 no se realiza ning@'un tipo de acci@'on por parte de @code{write_binary_data} despu@'es

@@ -85,28 +85,28 @@ y @code{similaritytransform}.
 @node Funciones y variables para las matrices y el @'algebra lineal,  , Introducci@'on a las matrices y el @'algebra lineal, Matrices y @'Algebra Lineal
 @section Funciones y variables para las matrices y el @'algebra lineal
 
-@deffn {Funci@'on} addcol (@var{M}, @var{lista_1}, ..., @var{lista_n})
-A@~nade la/s columna/s dada/s por la/s lista/s (o matrices) a la matriz @var{M}.
+@deffn {Funci@'on} addcol (@mvar{M}, @mvar{lista_1}, ..., @mvar{lista_n})
+A@~nade la/s columna/s dada/s por la/s lista/s (o matrices) a la matriz @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} addrow (@var{M}, @var{lista_1}, ..., @var{lista_n})
-A@~nade la/s fila/s dada/s por la/s lista/s (o matrices) a la matriz @var{M}.
+@deffn {Funci@'on} addrow (@mvar{M}, @mvar{lista_1}, ..., @mvar{lista_n})
+A@~nade la/s fila/s dada/s por la/s lista/s (o matrices) a la matriz @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} adjoint (@var{M})
-Devuelve el adjunto de la matriz @var{M}.
-La matriz adjunta es la transpuesta de la matriz de cofactores de @var{M}.
+@deffn {Funci@'on} adjoint (@mvar{M})
+Devuelve el adjunto de la matriz @mvar{M}.
+La matriz adjunta es la transpuesta de la matriz de cofactores de @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Funci@'on} augcoefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
 Devuelve la matriz aumentada de coeficientes del sistema de ecuaciones lineales 
-@var{eqn_1}, ..., @var{eqn_m} de variables @var{x_1}, ..., @var{x_n}. Se trata de la
+@mvar{eqn_1}, ..., @mvar{eqn_m} de variables @mvar{x_1}, ..., @mvar{x_n}. Se trata de la
 matriz de coeficientes con una columna adicional para los t@'erminos constantes de cada
 ecuaci@'on, es decir, aquellos t@'erminos que no dependen de las variables
-@var{x_1}, ..., @var{x_n}.
+@mvar{x_1}, ..., @mvar{x_n}.
 
 @example
 (%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
@@ -120,17 +120,17 @@ ecuaci@'on, es decir, aquellos t@'erminos que no dependen de las variables
 
 
 
-@deffn  {Funci@'on} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_m}], [@var{y_1},@var{y_2}, ..., @var{y_n}])
-@deffnx {Funci@'on} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_n}])
+@deffn  {Funci@'on} cauchy_matrix ([@mvar{x_1},@mvar{x_2}, ..., @mvar{x_m}], [@mvar{y_1},@mvar{y_2}, ..., @mvar{y_n}])
+@deffnx {Funci@'on} cauchy_matrix ([@mvar{x_1},@mvar{x_2}, ..., @mvar{x_n}])
 
-Devuelve una matriz de Cauchy @var{n} by @var{m} de elementos
-@var{a[i,j]} = 1/(@var{x_i}+@var{y_i}).
+Devuelve una matriz de Cauchy @mvar{n} by @mvar{m} de elementos
+@mvar{a[i,j]} = 1/(@mvar{x_i}+@mvar{y_i}).
 El segundo elemento de @code{cauchy_matrix} es opcional, y en caso
 de no estar presente, los elementos ser@'an de la forma
-@var{a[i,j]} = 1/(@var{x_i}+@var{x_j}).
+@mvar{a[i,j]} = 1/(@mvar{x_i}+@mvar{x_j}).
 
 Observaci@'on: en la literatura, la matriz de Cauchy se define a veces
-con sus elementos de la forma @var{a[i,j]} = 1/(@var{x_i}-@var{y_i}).
+con sus elementos de la forma @mvar{a[i,j]} = 1/(@mvar{x_i}-@mvar{y_i}).
 
 Ejemplos:
 
@@ -161,10 +161,10 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} charpoly (@var{M}, @var{x})
-Calcula el polinomio caracter@'{@dotless{i}}stico de la matriz @var{M}
-respecto de la variable @var{x}. Esto es, 
-@code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
+@deffn {Funci@'on} charpoly (@mvar{M}, @mvar{x})
+Calcula el polinomio caracter@'{@dotless{i}}stico de la matriz @mvar{M}
+respecto de la variable @mvar{x}. Esto es, 
+@code{determinant (@mvar{M} - diagmatrix (length (@mvar{M}), @mvar{x}))}.
 
 @example
 (%i1) a: matrix ([3, 1], [2, 4]);
@@ -201,9 +201,9 @@ respecto de la variable @var{x}. Esto es,
 
 @end deffn
 
-@deffn {Funci@'on} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
-Devuelve la matriz de coeficientes para las variables @var{x_1}, ..., @var{x_n}
-del sistema de ecuaciones lineales @var{eqn_1}, ..., @var{eqn_m}.
+@deffn {Funci@'on} coefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+Devuelve la matriz de coeficientes para las variables @mvar{x_1}, ..., @mvar{x_n}
+del sistema de ecuaciones lineales @mvar{eqn_1}, ..., @mvar{eqn_m}.
 
 @example
 (%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
@@ -214,17 +214,17 @@ del sistema de ecuaciones lineales @var{eqn_1}, ..., @var{eqn_m}.
 
 @end deffn
 
-@deffn {Funci@'on} col (@var{M}, @var{i})
-Devuelve la @var{i}-@'esima columna de la matriz @var{M}.
+@deffn {Funci@'on} col (@mvar{M}, @mvar{i})
+Devuelve la @mvar{i}-@'esima columna de la matriz @mvar{M}.
 El resultado es una matriz de una sola columna.
 @c EXAMPLE HERE
 
 @end deffn
 
-@deffn {Funci@'on} columnvector (@var{L})
-@deffnx {Funci@'on} covect (@var{L})
-Devuelve una matriz con una columna  y @code{length (@var{L})} filas,
-conteniendo los elementos de la lista @var{L}.
+@deffn {Funci@'on} columnvector (@mvar{L})
+@deffnx {Funci@'on} covect (@mvar{L})
+Devuelve una matriz con una columna  y @code{length (@mvar{L})} filas,
+conteniendo los elementos de la lista @mvar{L}.
 
 La llamada @code{covect} es un sin@'onimo de @code{columnvector}.
 
@@ -252,9 +252,9 @@ Warning - you are redefining the Macsyma function eigenvectors
 @end deffn
 
 
-@deffn {Funci@'on} copymatrix (@var{M})
-Devuelve una copia de la matriz @var{M}. Esta es la @'unica
-manera de obtener una r@'eplica de @var{M} adem@'as de la de
+@deffn {Funci@'on} copymatrix (@mvar{M})
+Devuelve una copia de la matriz @mvar{M}. Esta es la @'unica
+manera de obtener una r@'eplica de @mvar{M} adem@'as de la de
 copiar elemento a elemento.
 
 N@'otese que una asignaci@'on de una matriz a otra, como en @code{m2: m1},
@@ -266,8 +266,8 @@ modificada.
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {Funci@'on} determinant (@var{M})
-Calcula el determinante de  @var{M} por un m@'etodo similar al
+@deffn {Funci@'on} determinant (@mvar{M})
+Calcula el determinante de  @mvar{M} por un m@'etodo similar al
 de eliminaci@'on de Gauss
 
 @c JUST HOW DOES ratmx AFFECT THE RESULT ??
@@ -314,16 +314,16 @@ Ejemplo:
 
 @end defvr
 
-@deffn {Funci@'on} diagmatrix (@var{n}, @var{x})
-Devuelve una matriz diagonal de orden @var{n} 
-con los elementos de la diagonal todos ellos iguales a @var{x}. La llamada
-@code{diagmatrix (@var{n}, 1)} devuelve una matriz identidad
-(igual que @code{ident (@var{n})}).
+@deffn {Funci@'on} diagmatrix (@mvar{n}, @mvar{x})
+Devuelve una matriz diagonal de orden @mvar{n} 
+con los elementos de la diagonal todos ellos iguales a @mvar{x}. La llamada
+@code{diagmatrix (@mvar{n}, 1)} devuelve una matriz identidad
+(igual que @code{ident (@mvar{n})}).
 
-La variable @var{n} debe ser un n@'umero entero, en caso contrario @code{diagmatrix} env@'{@dotless{i}}a un mensaje de error.
+La variable @mvar{n} debe ser un n@'umero entero, en caso contrario @code{diagmatrix} env@'{@dotless{i}}a un mensaje de error.
 
-@var{x} puede ser cualquier tipo de expresi@'on, incluso otra matriz.
-Si @var{x} es una matriz, no se copia; todos los elementos de la diagonal son iguales a @var{x}.
+@mvar{x} puede ser cualquier tipo de expresi@'on, incluso otra matriz.
+Si @mvar{x} es una matriz, no se copia; todos los elementos de la diagonal son iguales a @mvar{x}.
 
 @c NEED EXAMPLE HERE
 @end deffn
@@ -343,13 +343,13 @@ selecciones para @code{dot} controlan las operaciones a ejecutar.
 Valor por defecto: @code{true}
 
 Cuando @code{domxexpt} vale @code{true},
-un exponente matricial, como @code{exp (@var{M})} donde @var{M} es
+un exponente matricial, como @code{exp (@mvar{M})} donde @mvar{M} es
 una matriz, se interpreta como una matriz cuyo elemento @code{[i,j} es
-igual a @code{exp (m[i,j])}. En otro caso, @code{exp (@var{M})} se
-eval@'ua como @code{exp (ev(@var{M}))}.
+igual a @code{exp (m[i,j])}. En otro caso, @code{exp (@mvar{M})} se
+eval@'ua como @code{exp (ev(@mvar{M}))}.
 
-La variable @code{domxexpt} afecta a todas las expresiones de la forma @code{@var{base}^@var{exponente}}
-donde @var{base} es una expresi@'on escalar o constante y @var{exponente} es una
+La variable @code{domxexpt} afecta a todas las expresiones de la forma @code{@mvar{base}^@mvar{exponente}}
+donde @mvar{base} es una expresi@'on escalar o constante y @mvar{exponente} es una
 lista o matriz.
 
 Ejemplo:
@@ -495,9 +495,9 @@ en @code{SC*A} y @code{A.(SC*B)} en @code{SC*(A.B)}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@deffn {Funci@'on} echelon (@var{M})
-Devuelve la forma escalonada de la matriz @var{M}, obtenida por eliminaci@'on gaussiana.
-La forma escalonada se calcula a partir de @var{M} mediante operaciones elementales con sus filas,
+@deffn {Funci@'on} echelon (@mvar{M})
+Devuelve la forma escalonada de la matriz @mvar{M}, obtenida por eliminaci@'on gaussiana.
+La forma escalonada se calcula a partir de @mvar{M} mediante operaciones elementales con sus filas,
 de tal manera que el primer elemento no nulo de cada fila en la matriz 
 resultado es la unidad y que cada elemento de la columna por debajo del primer uno de cada
 fila sean todos ceros.
@@ -533,12 +533,12 @@ matrices triangularizadas.
 
 @end deffn
 
-@deffn {Funci@'on} eigenvalues (@var{M})
-@deffnx {Funci@'on} eivals (@var{M})
+@deffn {Funci@'on} eigenvalues (@mvar{M})
+@deffnx {Funci@'on} eivals (@mvar{M})
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
 Devuelve una lista con dos sublistas. La primera sublista la forman los
-valores propios de la matriz @var{M} y la segunda sus multiplicidades correspondientes.
+valores propios de la matriz @mvar{M} y la segunda sus multiplicidades correspondientes.
 
 El nombre @code{eivals} es un sin@'onimo de @code{eigenvalues}.
 
@@ -565,17 +565,17 @@ funciones y variables del paquete estar@'an activas.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Funci@'on} eigenvectors (@var{M})
-@deffnx {Funci@'on} eivects (@var{M})
+@deffn {Funci@'on} eigenvectors (@mvar{M})
+@deffnx {Funci@'on} eivects (@mvar{M})
 
-Calcula los vectores propios de la matriz @var{M}.
+Calcula los vectores propios de la matriz @mvar{M}.
 El resultado devuelto es una lista con dos elementos;
 el primero est@'a formado por dos listas, la primera con los valores propios
-de @var{M} y la segunda con sus respectivas multiplicidades, el segundo
+de @mvar{M} y la segunda con sus respectivas multiplicidades, el segundo
 elemento es una lista de listas de vectores propios, una por
 cada valor propio, pudiendo haber uno o m@'as vectores propios en cada lista.
 
-Tomando la matriz @var{M} como argumento, devuelve una lista de listas,
+Tomando la matriz @mvar{M} como argumento, devuelve una lista de listas,
 la primera de las cuales es la salida de @code{eigenvalues} y las 
 siguientes son los vectorios propios de la matriz asociados a los
 valores propios correspondientes. Los vectores propios calculados son los 
@@ -700,23 +700,23 @@ Una matriz con dos vectores propios para uno de los valores propios.
 
 
 
-@deffn {Funci@'on} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
-Devuelve una matriz de orden @var{m} por @var{n}, con todos sus elementos 
-nulos, excepto el que ocupa la posici@'on @code{[@var{i}, @var{j}]}, que
-es igual a @var{x}.
+@deffn {Funci@'on} ematrix (@mvar{m}, @mvar{n}, @mvar{x}, @mvar{i}, @mvar{j})
+Devuelve una matriz de orden @mvar{m} por @mvar{n}, con todos sus elementos 
+nulos, excepto el que ocupa la posici@'on @code{[@mvar{i}, @mvar{j}]}, que
+es igual a @mvar{x}.
 
 @end deffn
 
-@deffn {Funci@'on} entermatrix (@var{m}, @var{n})
-Devuelve una matriz de orden @var{m} por @var{n}, cuyos elementos
+@deffn {Funci@'on} entermatrix (@mvar{m}, @mvar{n})
+Devuelve una matriz de orden @mvar{m} por @mvar{n}, cuyos elementos
 son leidos de forma interactiva.
 
-Si @var{n} es igual a @var{m}, Maxima pregunta por el tipo de
+Si @mvar{n} es igual a @mvar{m}, Maxima pregunta por el tipo de
 matriz (diagonal, sim@'etrica, antisim@'etrica o general) y luego por
 cada elemento. Cada respuesta introducida por el usuario debe terminar
 con un punto y coma @code{;} o con un signo de d@'olar @code{$}.
 
-Si @var{n} y @var{m} no son iguales, Maxima pregunta
+Si @mvar{n} y @mvar{m} no son iguales, Maxima pregunta
 por el valor de cada elemento.
 
 Los elementos de la matriz pueden ser cualquier tipo de 
@@ -753,19 +753,19 @@ Matrix entered.
 @end deffn
 
 
-@deffn {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@deffnx {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@deffnx {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2})
-Devuelve una matriz generada a partir de @var{a}, siendo @code{@var{a}[@var{i_1},@var{j_1}]} el elemento superior izquierdo y @code{@var{a}[@var{i_2},@var{j_2}]} el inferior derecho de la matriz. 
-Aqu@'{@dotless{i}} @var{a} se declara como una arreglo (creado por @code{array},
+@deffn {Funci@'on} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1}, @mvar{j_1})
+@deffnx {Funci@'on} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1})
+@deffnx {Funci@'on} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2})
+Devuelve una matriz generada a partir de @mvar{a}, siendo @code{@mvar{a}[@mvar{i_1},@mvar{j_1}]} el elemento superior izquierdo y @code{@mvar{a}[@mvar{i_2},@mvar{j_2}]} el inferior derecho de la matriz. 
+Aqu@'{@dotless{i}} @mvar{a} se declara como una arreglo (creado por @code{array},
 pero no por @code{make_array}), o un array no declarado, o una funci@'on array, o una
 expresi@'on lambda de dos argumentos.
 (An array function is created like other functions with @code{:=} or @code{define},
 but arguments are enclosed in square brackets instead of parentheses.)
 
-Si se omite @var{j_1}, entonces se le asigna el valor @var{i_1}. Si tanto @var{j_1} como @var{i_1} se omiten, a las dos variables se le asigna el valor 1.
+Si se omite @mvar{j_1}, entonces se le asigna el valor @mvar{i_1}. Si tanto @mvar{j_1} como @mvar{i_1} se omiten, a las dos variables se le asigna el valor 1.
 
-Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el elemento simb@'olico @code{@var{a}[i,j]}.
+Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el elemento simb@'olico @code{@mvar{a}[i,j]}.
 
 @c ===beg===
 @c h [i, j] := 1 / (i + j - 1);
@@ -820,17 +820,17 @@ Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el el
 
 @end deffn
 
-@deffn {Funci@'on} gramschmidt (@var{x})
-@deffnx {Funci@'on} gramschmidt (@var{x}, @var{F})
+@deffn {Funci@'on} gramschmidt (@mvar{x})
+@deffnx {Funci@'on} gramschmidt (@mvar{x}, @mvar{F})
 
-Ejecuta el algoritmo de ortogonalizaci@'on de Gram-Schmidt sobre @var{x},
+Ejecuta el algoritmo de ortogonalizaci@'on de Gram-Schmidt sobre @mvar{x},
 que puede ser una matriz o una lista de listas. La funci@'on 
-@code{gramschmidt} no altera el valor de @var{x}.
+@code{gramschmidt} no altera el valor de @mvar{x}.
 El producto interno por defecto empleado en @code{gramschmidt} es
-@code{innerproduct}, o @var{F}, si se ha hecho uso de esta opci@'on.
+@code{innerproduct}, o @mvar{F}, si se ha hecho uso de esta opci@'on.
 
-Si @var{x} es una matriz, el algoritmo se aplica a las filas de @var{x}. Si
-@var{x} es una lista de listas, el algoritmo se aplica a las sublistas,
+Si @mvar{x} es una matriz, el algoritmo se aplica a las filas de @mvar{x}. Si
+@mvar{x} es una lista de listas, el algoritmo se aplica a las sublistas,
 las cuales deben tener el mismo n@'umero de miembros. En cualquier caso,
 el valor devuelto es una lista de listas, cuyas sublistas son ortogonales.
 @c Falta completar este p'arrafo
@@ -894,14 +894,14 @@ por el usuario.
 @end deffn
 
 
-@deffn {Funci@'on} ident (@var{n})
-Devuelve la matriz identidad de orden @var{n}.
+@deffn {Funci@'on} ident (@mvar{n})
+Devuelve la matriz identidad de orden @mvar{n}.
 
 @end deffn
 
-@deffn {Funci@'on} innerproduct (@var{x}, @var{y})
-@deffnx {Funci@'on} inprod (@var{x}, @var{y})
-Devuelve el producto interior o escalar de @var{x} por @var{y}, que deben ser listas de igual longitud, o ambas matrices columa o fila de igual longitud. El valor devuelto es @code{conjugate (x) . y}, donde @code{.} es el operador de multiplicaci@'on no conmutativa.
+@deffn {Funci@'on} innerproduct (@mvar{x}, @mvar{y})
+@deffnx {Funci@'on} inprod (@mvar{x}, @mvar{y})
+Devuelve el producto interior o escalar de @mvar{x} por @mvar{y}, que deben ser listas de igual longitud, o ambas matrices columa o fila de igual longitud. El valor devuelto es @code{conjugate (x) . y}, donde @code{.} es el operador de multiplicaci@'on no conmutativa.
 
 Es necesario cargar la funci@'on haciendo @code{load ("eigen")}.
 
@@ -911,15 +911,15 @@ El nombre @code{inprod} es sin@'onimo de @code{innerproduct}.
 @end deffn
 
 @c THIS DESCRIPTION NEEDS WORK
-@deffn {Funci@'on} invert (@var{M})
-Devuelve la inversa de la matriz @var{M}, calculada por el m@'etodo del adjunto.
+@deffn {Funci@'on} invert (@mvar{M})
+Devuelve la inversa de la matriz @mvar{M}, calculada por el m@'etodo del adjunto.
 
 La implementaci@'on actual no es eficiente para matrices de orden grande.
 
 Cuando @code{detout} vale @code{true}, el determinante se deja
  fuera de la inversa a modo de factor escalar.
 
-Los elementos de la matriz inversa no se expanden. Si @var{M} tiene elementos
+Los elementos de la matriz inversa no se expanden. Si @mvar{M} tiene elementos
 polin@'omicos, se puede mejorar el aspecto del resultado haciendo 
 @code{expand (invert (m)), detout}.
 
@@ -929,8 +929,8 @@ informaci@'on sobre otro m@'etodo para invertir matrices.
 @end deffn
 
 
-@deffn {Funci@'on} list_matrix_entries (@var{M})
-Devuelve una lista con todos los elementos de la matriz @var{M}.
+@deffn {Funci@'on} list_matrix_entries (@mvar{M})
+Devuelve una lista con todos los elementos de la matriz @mvar{M}.
 
 Ejemplo:
 
@@ -965,12 +965,12 @@ Ejemplo:
 
 @end defvr
 
-@deffn {Funci@'on} matrix (@var{fila_1}, ..., @var{fila_n})
-Devuelve una matriz rectangular con las filas  @var{fila_1}, ..., @var{fila_n}. Cada fila es una lista de expresiones. Todas las filas deben tener el mismo n@'umero de miembros.
+@deffn {Funci@'on} matrix (@mvar{fila_1}, ..., @mvar{fila_n})
+Devuelve una matriz rectangular con las filas  @mvar{fila_1}, ..., @mvar{fila_n}. Cada fila es una lista de expresiones. Todas las filas deben tener el mismo n@'umero de miembros.
 
 Las operaciones @code{+} (suma), @code{-} (resta), @code{*} (multiplicaci@'on) y @code{/} (divisi@'on), se llevan a cabo elemento a elemento cuando los operandos son dos matrices, un escalar y una matriz o una matriz con un escalar. La operaci@'on @code{^} (exponenciaci@'on, equivalente a @code{**}) se lleva cabo tambi@'en elemento a elemento si los operandos son un escalr y una matriz o uma matriz y un escalar, pero no si los operandos son dos matrices.
 
-El producto matricial se representa con el operador de multiplicaci@'on no conmutativa @code{.}. El correspondiente operador de exponenciaci@'on no conmutativa es @code{^^}. Dada la matriz @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2} y @code{@var{A}^^-1} es la inversa de @var{A}, si existe.
+El producto matricial se representa con el operador de multiplicaci@'on no conmutativa @code{.}. El correspondiente operador de exponenciaci@'on no conmutativa es @code{^^}. Dada la matriz @code{@mvar{A}}, @code{@mvar{A}.@mvar{A} = @mvar{A}^^2} y @code{@mvar{A}^^-1} es la inversa de @mvar{A}, si existe.
 
 Algunas variables controlan la simplificaci@'on de expresiones que incluyan estas operaciones: @code{doallmxops}, @code{domxexpt}, @code{domxmxops}, @code{doscmxops} y @code{doscmxplus}.
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
@@ -1098,7 +1098,7 @@ Multiplicaci@'on matricial no conmutativa.
 @end example
 @itemize @bullet
 @item
-Exponenciaci@'on matricial no conmutativa. Una base escalar @var{b} elevada a un exponente matricial @var{M} se lleva a cabo elemento a elemento y por lo tanto @code{b^^m} equivale a @code{b^m}.
+Exponenciaci@'on matricial no conmutativa. Una base escalar @mvar{b} elevada a un exponente matricial @mvar{M} se lleva a cabo elemento a elemento y por lo tanto @code{b^^m} equivale a @code{b^m}.
 @end itemize
 @example
 (%i12) x ^^ 3;
@@ -1133,16 +1133,16 @@ Una matriz elevada al exponente -1 con el operador de exponenciaci@'on no conmut
 
 @end deffn
 
-@deffn {Funci@'on} matrixmap (@var{f}, @var{M})
-Devuelve una matriz con el elemento @code{i,j} igual a @code{@var{f}(@var{M}[i,j])}.
+@deffn {Funci@'on} matrixmap (@mvar{f}, @mvar{M})
+Devuelve una matriz con el elemento @code{i,j} igual a @code{@mvar{f}(@mvar{M}[i,j])}.
 
 V@'eanse tambi@'en @code{map}, @code{fullmap}, @code{fullmapl} y @code{apply}.
 
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {Funci@'on} matrixp (@var{expr})
-Devuelve @code{true} si @var{expr} es una matriz, en caso contrario @code{false}.
+@deffn {Funci@'on} matrixp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es una matriz, en caso contrario @code{false}.
 
 @end deffn
 
@@ -1264,38 +1264,38 @@ Ejemplos:
 
 
 @c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
-@deffn {Funci@'on} mattrace (@var{M})
-Devuelve la traza (esto es, la suma de los elementos de la diagonal principal) de la matriz cuadrada @var{M}.  
+@deffn {Funci@'on} mattrace (@mvar{M})
+Devuelve la traza (esto es, la suma de los elementos de la diagonal principal) de la matriz cuadrada @mvar{M}.  
 
 Para disponer de esta funci@'on es necesario cargar el paquete haciendo @code{load ("nchrpl")}.
 
 @end deffn
 
-@deffn {Funci@'on} minor (@var{M}, @var{i}, @var{j})
-Devuelve el menor @code{(@var{i}, @var{j})} de la matriz @var{M}.  Esto es, la propia matriz @var{M}, una vez extra@'{@dotless{i}}das la fila @var{i} y la columna @var{j}.
+@deffn {Funci@'on} minor (@mvar{M}, @mvar{i}, @mvar{j})
+Devuelve el menor @code{(@mvar{i}, @mvar{j})} de la matriz @mvar{M}.  Esto es, la propia matriz @mvar{M}, una vez extra@'{@dotless{i}}das la fila @mvar{i} y la columna @mvar{j}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} ncharpoly (@var{M}, @var{x})
-Devuelve el polinomio caracter@'{@dotless{i}}stico de la matriz @var{M} respecto de la variable @var{x}. Es una alternativa a la funci@'on @code{charpoly} de Maxima.
+@deffn {Funci@'on} ncharpoly (@mvar{M}, @mvar{x})
+Devuelve el polinomio caracter@'{@dotless{i}}stico de la matriz @mvar{M} respecto de la variable @mvar{x}. Es una alternativa a la funci@'on @code{charpoly} de Maxima.
 
-La funci@'on @code{ncharpoly} opera calculando trazas de las potencias de la matriz dada, que son iguales a las sumas de las potencias de las ra@'{@dotless{i}}ces del polinomio caracter@'{@dotless{i}}stico. A partir de estas cantidades se pueden calcular las funciones sim@'etricas de las ra@'{@dotless{i}}ces, que no son otra cosa sino los coeficientes del polinomio caracter@'{@dotless{i}}stico. La funci@'on   @code{charpoly} opera calculando el determinante de  by @code{@var{x} * ident [n] - a}. La funci@'on @code{ncharpoly} es m'as eficiente en el caso de matrices grandes y densas.
+La funci@'on @code{ncharpoly} opera calculando trazas de las potencias de la matriz dada, que son iguales a las sumas de las potencias de las ra@'{@dotless{i}}ces del polinomio caracter@'{@dotless{i}}stico. A partir de estas cantidades se pueden calcular las funciones sim@'etricas de las ra@'{@dotless{i}}ces, que no son otra cosa sino los coeficientes del polinomio caracter@'{@dotless{i}}stico. La funci@'on   @code{charpoly} opera calculando el determinante de  by @code{@mvar{x} * ident [n] - a}. La funci@'on @code{ncharpoly} es m'as eficiente en el caso de matrices grandes y densas.
 
 Para disponer de esta funci@'on es necesario cargar el paquete haciendo @code{load ("nchrpl")}.
 
 @end deffn
 
-@deffn {Funci@'on} newdet (@var{M})
-Calcula el determinante de la matriz @var{M} por el algoritmo del @'arbol menor
+@deffn {Funci@'on} newdet (@mvar{M})
+Calcula el determinante de la matriz @mvar{M} por el algoritmo del @'arbol menor
 de Johnson-Gentleman. El resultado devuelto por @code{newdet} tiene formato CRE.
 @end deffn
 
 
 
-@deffn {Funci@'on} permanent (@var{M})
-Calcula la permanente de la matriz @var{M} por el algoritmo del @'arbol menor de
+@deffn {Funci@'on} permanent (@mvar{M})
+Calcula la permanente de la matriz @mvar{M} por el algoritmo del @'arbol menor de
 Johnson-Gentleman. La permanente es como un determinante pero sin cambios de signo.
 El resultado devuelto por @code{permanent} tiene formato CRE.
 
@@ -1303,11 +1303,11 @@ V@'ease tambi@'en @code{newdet}.
 
 @end deffn
 
-@deffn {Funci@'on} rank (@var{M})
-Calcula el rango de la matriz @var{M}.  Esto es, el orden del mayor subdeterminante no singular de @var{M}.
+@deffn {Funci@'on} rank (@mvar{M})
+Calcula el rango de la matriz @mvar{M}.  Esto es, el orden del mayor subdeterminante no singular de @mvar{M}.
 
 @c STATEMENT NEEDS CLARIFICATION
-La funci@'on @var{rango} puede retornar una respuesta err@'onea si no detecta que un elemento de la matriz equivalente a cero lo es.
+La funci@'on @mvar{rango} puede retornar una respuesta err@'onea si no detecta que un elemento de la matriz equivalente a cero lo es.
 
 @end deffn
 
@@ -1320,8 +1320,8 @@ Si @code{ratmx} vale @code{true}, las cuatro operaciones citadas m@'as arriba se
 
 @end defvr
 
-@deffn {Funci@'on} row (@var{M}, @var{i})
-Devuelve la @var{i}-@'esima fila de la matriz @var{M}. El valor que devuelve tiene formato de matriz.
+@deffn {Funci@'on} row (@mvar{M}, @mvar{i})
+Devuelve la @mvar{i}-@'esima fila de la matriz @mvar{M}. El valor que devuelve tiene formato de matriz.
 
 @end deffn
 
@@ -1351,20 +1351,20 @@ Si @code{scalarmatrixp} vale @code{false}, las matrices 1 x 1 no se convierten e
 
 @c FALTA AQUI DEFINICION DE scalefactors.
 
-@deffn {Funci@'on} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
-Asigna el valor @var{x} al (@var{i}, @var{j})-@'esimo elemento de la matriz @var{M} y devuelve la matriz actualizada.
+@deffn {Funci@'on} setelmx (@mvar{x}, @mvar{i}, @mvar{j}, @mvar{M})
+Asigna el valor @mvar{x} al (@mvar{i}, @mvar{j})-@'esimo elemento de la matriz @mvar{M} y devuelve la matriz actualizada.
 
-La llamada @code{@var{M} [@var{i}, @var{j}]: @var{x}} hace lo mismo, pero devuelve  @var{x} en lugar de @var{M}.
+La llamada @code{@mvar{M} [@mvar{i}, @mvar{j}]: @mvar{x}} hace lo mismo, pero devuelve  @mvar{x} en lugar de @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} similaritytransform (@var{M})
-@deffnx {Funci@'on} simtran (@var{M})
-La funci@'on @code{similaritytransform} calcula la transformada de similitud de la matriz @code{M}. Devuelve una lista que es la salida de la instrucci@'on @code{uniteigenvectors}. Adem@'as, si la variable @code{nondiagonalizable} vale @code{false} entonces se calculan dos matrices globales @code{leftmatrix} y @code{rightmatrix}. Estas matrices tienen la propiedad de que @code{leftmatrix . @var{M} . rightmatrix} es una matriz diagonal con los valores propios de @var{M} en su diagonal.  Si @code{nondiagonalizable} vale @code{true} entonces no se calculan estas matrices.
+@deffn {Funci@'on} similaritytransform (@mvar{M})
+@deffnx {Funci@'on} simtran (@mvar{M})
+La funci@'on @code{similaritytransform} calcula la transformada de similitud de la matriz @code{M}. Devuelve una lista que es la salida de la instrucci@'on @code{uniteigenvectors}. Adem@'as, si la variable @code{nondiagonalizable} vale @code{false} entonces se calculan dos matrices globales @code{leftmatrix} y @code{rightmatrix}. Estas matrices tienen la propiedad de que @code{leftmatrix . @mvar{M} . rightmatrix} es una matriz diagonal con los valores propios de @mvar{M} en su diagonal.  Si @code{nondiagonalizable} vale @code{true} entonces no se calculan estas matrices.
 
 Si la variable @code{hermitianmatrix} vale @code{true} entonces @code{leftmatrix} es el conjugado complejo de la transpuesta de @code{rightmatrix}.  En otro caso @code{leftmatrix} es la inversa de @code{rightmatrix}.
 
-Las columnas de la matriz @code{rightmatrix} son los vectores propios de @var{M}.  Las otras variables (v@'eanse @code{eigenvalues} y @code{eigenvectors}) tienen el mismo efecto, puesto que @code{similaritytransform} llama a las otras funciones del paquete para poder formar @code{rightmatrix}.
+Las columnas de la matriz @code{rightmatrix} son los vectores propios de @mvar{M}.  Las otras variables (v@'eanse @code{eigenvalues} y @code{eigenvectors}) tienen el mismo efecto, puesto que @code{similaritytransform} llama a las otras funciones del paquete para poder formar @code{rightmatrix}.
 
 Estas funciones se cargan con @code{load ("eigen")}.
 
@@ -1380,25 +1380,25 @@ utilizar@'a rutinas especiales para calcular determinantes dispersos.
 
 @end defvr
 
-@deffn {Funci@'on} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
-@deffnx {Funci@'on} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
-@deffnx {Funci@'on} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
-Devuelve una nueva matriz formada a partir de la matriz @var{M} pero cuyas filas @var{i_1}, ..., @var{i_m} y columnas  @var{j_1}, ..., @var{j_n} han sido eliminadas.
+@deffn {Funci@'on} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
+@deffnx {Funci@'on} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M})
+@deffnx {Funci@'on} submatrix (@mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
+Devuelve una nueva matriz formada a partir de la matriz @mvar{M} pero cuyas filas @mvar{i_1}, ..., @mvar{i_m} y columnas  @mvar{j_1}, ..., @mvar{j_n} han sido eliminadas.
 
 @end deffn
 
-@deffn {Funci@'on} transpose (@var{M})
-Calcula la transpuesta de @var{M}.
+@deffn {Funci@'on} transpose (@mvar{M})
+Calcula la transpuesta de @mvar{M}.
 
-Si @var{M} es una matriz, el valor devuelto es otra matriz @var{N} tal que @code{N[i,j] = M[j,i]}.
+Si @mvar{M} es una matriz, el valor devuelto es otra matriz @mvar{N} tal que @code{N[i,j] = M[j,i]}.
 
-Si @var{M} es una lista, el valor devuelto es una matriz @var{N} de @code{length (m)} filas y 1 columna, tal que @code{N[i,1] = M[i]}.
+Si @mvar{M} es una lista, el valor devuelto es una matriz @mvar{N} de @code{length (m)} filas y 1 columna, tal que @code{N[i,1] = M[i]}.
 
-En caso de no ser @var{M} ni matriz ni lista, se devuelve la
-expresi@'on nominal @code{'transpose (@var{M})}.
+En caso de no ser @mvar{M} ni matriz ni lista, se devuelve la
+expresi@'on nominal @code{'transpose (@mvar{M})}.
 @end deffn
 
-@deffn {Funci@'on} triangularize (@var{M})
+@deffn {Funci@'on} triangularize (@mvar{M})
 Devuelve la forma triangular superior de la matriz @code{M}, obtenida por eliminaci@'on gaussiana.
 El resultado es el mismo que el devuelto por @code{echelon}, con la salvedad de que el primer elemento no nulo de cada fila no se normaliza a 1.
 
@@ -1425,9 +1425,9 @@ Las funciones @code{lu_factor} y @code{cholesky} tambi@'en triangularizan matric
 
 @end deffn
 
-@deffn {Funci@'on} uniteigenvectors (@var{M})
-@deffnx {Funci@'on} ueivects (@var{M})
-Calcula los vectores propios unitarios de la matriz @var{M}. El valor que devuelve es una lista de listas, la primera de las cuales es la salida de la funci@'on @code{eigenvalues} y el resto de sublistas son los vectores propios unitarios de la matriz correspondiente a esos valores propios, respectivamente.
+@deffn {Funci@'on} uniteigenvectors (@mvar{M})
+@deffnx {Funci@'on} ueivects (@mvar{M})
+Calcula los vectores propios unitarios de la matriz @mvar{M}. El valor que devuelve es una lista de listas, la primera de las cuales es la salida de la funci@'on @code{eigenvalues} y el resto de sublistas son los vectores propios unitarios de la matriz correspondiente a esos valores propios, respectivamente.
 
 Las variables citadas en la descripci@'on de la funci@'on @code{eigenvectors} tienen los mismos efectos en @code{uniteigenvectors}.
 
@@ -1442,9 +1442,9 @@ El nombre @code{ueivects} es sin@'onimo de @code{uniteigenvectors}.
 
 @end deffn
 
-@deffn {Funci@'on} unitvector (@var{x})
-@deffnx {Funci@'on} uvect (@var{x})
-Devuelve @math{@var{x}/norm(@var{x})}, esto es, el vector unitario de igual direcci@'on y sentido que @var{x}.
+@deffn {Funci@'on} unitvector (@mvar{x})
+@deffnx {Funci@'on} uvect (@mvar{x})
+Devuelve @math{@mvar{x}/norm(@mvar{x})}, esto es, el vector unitario de igual direcci@'on y sentido que @mvar{x}.
 
 @code{load ("eigen")} loads this function.
 
@@ -1457,7 +1457,7 @@ El nombre @code{uvect} es sin@'onimo de @code{unitvector}.
 
 
 
-@deffn {Funci@'on} vectorpotential (@var{givencurl})
+@deffn {Funci@'on} vectorpotential (@mvar{givencurl})
 Devuelve el vector potencial de un vector rotacional en el sistema
 de coordenadas actual. 
 @code{potentialzeroloc} tiene un rol similar al de @code{potential}, 
@@ -1470,7 +1470,7 @@ permutaci@'on c@'{@dotless{i}}clica de las coordenadas.
 
 
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
-@deffn {Funci@'on} vectorsimp (@var{expr})
+@deffn {Funci@'on} vectorsimp (@mvar{expr})
 Realiza simplificaciones y expansiones de acuerdo con los valores de las siguientes variables globales:
 
 @code{expandall}, @code{expanddot}, @code{expanddotplus}, @code{expandcross}, @code{expandcrossplus},
@@ -1511,8 +1511,8 @@ Estas variables est@'an declaradas como @code{evflag}.
 @c AQUI FALTA LA DEFINICION DE LA VARIABLE vect_cross
 
 
-@deffn {Funci@'on} zeromatrix (@var{m}, @var{n})
-Devuelve una matriz rectangular @var{m} por @var{n} con todos sus elementos iguales a cero.
+@deffn {Funci@'on} zeromatrix (@mvar{m}, @mvar{n})
+Devuelve una matriz rectangular @mvar{m} por @mvar{n} con todos sus elementos iguales a cero.
 
 @end deffn
 

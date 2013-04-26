@@ -6,19 +6,19 @@
 @node Defini@value{cedilha}@~oes para implicit_plot,  , implicit_plot, implicit_plot
 @section Defini@value{cedilha}@~oes para implicit_plot
 
-@deffn {Fun@value{cedilha}@~ao} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Fun@value{cedilha}@~ao} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn {Fun@value{cedilha}@~ao} implicit_plot (@mvar{expr}, @mvar{x_range}, @mvar{y_range})
+@deffnx {Fun@value{cedilha}@~ao} implicit_plot ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{x_range}, @mvar{y_range})
 
 Mostra na tela um gr@'afico de uma ou mais express@~oes na forma
-impl@'{@dotless{i}}cita. @var{expr} @'e a express@~ao a ser montado o gr@'afico, @var{x_range} o
-intervalo do eixo do eixo horizontal e @var{y_range} o intervalo do eixo
-vertical. @var{implicit_plot} somente trabalha com o driver do
-gnuplot. @var{implicit_plot} respeita as escolhas globais para o driver do
-gnuplot escolhidas por meio da fun@value{cedilha}@~ao @var{set_plot_option}. Op@value{cedilha}@~oes podem tamb;em serem passadas para
-a fun@value{cedilha}@~ao @var{implicit_plot} como argumentos opcionais.
+impl@'{@dotless{i}}cita. @mvar{expr} @'e a express@~ao a ser montado o gr@'afico, @mvar{x_range} o
+intervalo do eixo do eixo horizontal e @mvar{y_range} o intervalo do eixo
+vertical. @mvar{implicit_plot} somente trabalha com o driver do
+gnuplot. @mvar{implicit_plot} respeita as escolhas globais para o driver do
+gnuplot escolhidas por meio da fun@value{cedilha}@~ao @mvar{set_plot_option}. Op@value{cedilha}@~oes podem tamb;em serem passadas para
+a fun@value{cedilha}@~ao @mvar{implicit_plot} como argumentos opcionais.
 
-@var{implicit_plot} trabalha por meio de mudan@value{cedilha}as de sinal de trilha sobre a @'area
-fornecida atrav@'es de @var{x_range} e @var{y_range} e pode falhar em express@~oes
+@mvar{implicit_plot} trabalha por meio de mudan@value{cedilha}as de sinal de trilha sobre a @'area
+fornecida atrav@'es de @mvar{x_range} e @mvar{y_range} e pode falhar em express@~oes
 complicadas.
 
 Exemplo:

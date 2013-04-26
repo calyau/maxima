@@ -80,7 +80,7 @@ Lisp идентификатор, который записан в смешанном регистре и заключенный в вертика
 @end enumerate
 
 @code{#$} Lisp макрооператор позволяет использовать Maxima выражения в Lisp коде.
-@code{#$@var{expr}$} превращается в Lisp выражение, эквивалентное Maxima выражению @var{expr}.
+@code{#$@mvar{expr}$} превращается в Lisp выражение, эквивалентное Maxima выражению @mvar{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -202,8 +202,8 @@ Lisp, установка (setq si::*notify-gbc* t) поможет вам определить, какие области
 @node Справочная система,  , Документация, Справка
 @section Справочная система
 
-@deffn {Функция} demo (@var{filename})
-вычисляет Maxima выражения в @var{filename} и показывает результаты.
+@deffn {Функция} demo (@mvar{filename})
+вычисляет Maxima выражения в @mvar{filename} и показывает результаты.
 @code{demo} останавливается после вычислений каждого выражения 
 и продолжает после того, как пользователь нажмет ``Enter''.
 (Если запущена Xmaxima, @code{demo} необходимо перед вводом 
@@ -295,20 +295,20 @@ _
 
 @end deffn
 
-@deffn {Функция} describe (@var{string})
-@deffnx {Функция} describe (@var{string}, exact)
-@deffnx {Функция} describe (@var{string}, inexact)
+@deffn {Функция} describe (@mvar{string})
+@deffnx {Функция} describe (@mvar{string}, exact)
+@deffnx {Функция} describe (@mvar{string}, inexact)
 @ifinfo
 @fnindex Справка
 @end ifinfo
 
-@code{describe(@var{string})} эквивалентно @code{describe(@var{string}, exact)}.
+@code{describe(@mvar{string})} эквивалентно @code{describe(@mvar{string}, exact)}.
 
-@code{describe(@var{string}, exact)} ищет элемент, с заголовком равным  
-(независимо от регистра) @var{string}, если такой элемент есть.
+@code{describe(@mvar{string}, exact)} ищет элемент, с заголовком равным  
+(независимо от регистра) @mvar{string}, если такой элемент есть.
 
-@code{describe(@var{string}, inexact)} ищет все документированные элементы, 
-которые содержат @var{string} в своих заголовках.
+@code{describe(@mvar{string}, inexact)} ищет все документированные элементы, 
+которые содержат @mvar{string} в своих заголовках.
 Если есть более чем один такой элемент, Maxima спросит пользователя выбрать
 элемент или несколько элементов для отображения.
 
@@ -370,11 +370,11 @@ Enter space-separated numbers, `all' or `none': 7 8
 
 @end deffn
 
-@deffn {Функция} example (@var{topic})
+@deffn {Функция} example (@mvar{topic})
 @deffnx {Функция} example ()
-@code{example (@var{topic})} показывает некоторые примеры для символа @var{topic} (не строки).
-Большинство @var{topic} являются именами функций.
-@code{example ()} возвращает список всех доступных @var{topic}.
+@code{example (@mvar{topic})} показывает некоторые примеры для символа @mvar{topic} (не строки).
+Большинство @mvar{topic} являются именами функций.
+@code{example ()} возвращает список всех доступных @mvar{topic}.
 
 Имя файла содержащего эти примеры задано глобальной переменной @code{manual_demo}, 
 которая исходно равна @code{"manual.demo"}.

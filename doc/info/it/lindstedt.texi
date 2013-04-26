@@ -5,7 +5,7 @@
 @node Definitions for lindstedt,  , lindstedt, lindstedt
 @section Definitions for lindstedt
 
-@deffn {Function} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {Function} Lindstedt (@mvar{eq},@mvar{pvar},@mvar{torder},@mvar{ic})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

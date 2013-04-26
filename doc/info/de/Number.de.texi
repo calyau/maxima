@@ -22,15 +22,15 @@
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{bern}
-@deffn {Funktion} bern (@var{n})
+@deffn {Funktion} bern (@mvar{n})
 
-@c Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@c Returns the @mvar{n}'th Bernoulli number for integer @mvar{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT
 @c OR JUST PRETEND IT'S "RETURNED" ???
 @c Bernoulli numbers equal to zero are suppressed if @code{zerobern} is 
 @c @code{false}.
 
-Gibt die @var{n}-te Bernoulli-Zahl der ganzen Zahl @var{n} zur@"uck. Hat die
+Gibt die @mvar{n}-te Bernoulli-Zahl der ganzen Zahl @mvar{n} zur@"uck. Hat die
 Optionsvariable @code{zerobern} den Wert @code{false}, werden Bernoulli-Zahlen
 unterdr@"uckt, die Null sind.
 
@@ -54,23 +54,23 @@ Siehe auch @mrefdot{burn}
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{bernpoly}
-@deffn {Funktion} bernpoly (@var{x}, @var{n})
+@deffn {Funktion} bernpoly (@mvar{x}, @mvar{n})
 
-@c Returns the @var{n}'th Bernoulli polynomial in the variable @var{x}.
+@c Returns the @mvar{n}'th Bernoulli polynomial in the variable @mvar{x}.
 
-Gibt das @var{n}-te Bernoulli-Polynom in der Variablen @var{x} zur@"uck.
+Gibt das @mvar{n}-te Bernoulli-Polynom in der Variablen @mvar{x} zur@"uck.
 @end deffn
 
 @c TODO: DIE FUNKTION ZETA KANN INZWISCHEN IN BELIEBIGER GENAUIGKEIT RECHNEN.
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{bfzeta}
-@deffn {Function} bfzeta (@var{s}, @var{n})
+@deffn {Function} bfzeta (@mvar{s}, @mvar{n})
 
-@c Returns the Riemann zeta function for the argument @var{s}. The return value 
-@c is a big float (bfloat); @var{n} is the number of digits in the return value.
+@c Returns the Riemann zeta function for the argument @mvar{s}. The return value 
+@c is a big float (bfloat); @mvar{n} is the number of digits in the return value.
 
-Die Riemannsche Zeta-Funktion f@"ur das Argument @var{s}, die wie folgt 
+Die Riemannsche Zeta-Funktion f@"ur das Argument @mvar{s}, die wie folgt 
 definiert ist:
 
 @tex
@@ -89,7 +89,7 @@ $$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
 @end ifnottex
 
 @code{bfzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck.  Die Anzahl 
-der Stellen wird durch das Argument @var{n} angegeben.
+der Stellen wird durch das Argument @mvar{n} angegeben.
 
 Anstatt der Funktion @code{bfzeta} ist die Funktion @mref{zeta} zu bevorzugen,
 die sowohl f@"ur reelle und komplexe Gleitkommazahlen und Gleitkommazahlen mit
@@ -98,15 +98,15 @@ eine beliebigen Genauigkeit die Riemannsche Zeta-Funktion berechnen kann.
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{bfhzeta}
-@deffn {Funktion} bfhzeta (@var{s}, @var{h}, @var{n})
+@deffn {Funktion} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
 
-@c Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
-@c The return value is a big float (bfloat); @var{n} is the number of digits in 
+@c Returns the Hurwitz zeta function for the arguments @mvar{s} and @mvar{h}.
+@c The return value is a big float (bfloat); @mvar{n} is the number of digits in 
 @c the return value.
 
 @c The Hurwitz zeta function is defined as
 
-Die Hurwitzsche Zeta-Funktion f@"ur die Argumente @var{s} und @var{h}, die wie
+Die Hurwitzsche Zeta-Funktion f@"ur die Argumente @mvar{s} und @mvar{h}, die wie
 folgt definiert ist:
 
 @tex
@@ -125,22 +125,22 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @end ifnottex
 
 @code{bfhzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck.  Die 
-Anzahl der Stellen wird durch das Argument @var{n} angegeben.
+Anzahl der Stellen wird durch das Argument @mvar{n} angegeben.
 
 @c @code{load ("bffac")} loads this function.
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{burn}
-@deffn {Funktion} burn (@var{n})
+@deffn {Funktion} burn (@mvar{n})
 
-@c Returns a rational number, which is an approximation of the @var{n}'th 
-@c Bernoulli number for integer @var{n}. @code{burn} exploits the observation 
+@c Returns a rational number, which is an approximation of the @mvar{n}'th 
+@c Bernoulli number for integer @mvar{n}. @code{burn} exploits the observation 
 @c that (rational) Bernoulli numbers can be approximated by (transcendental) 
 @c zetas with tolerable efficiency:
 
-Gibt eine rational Zahl zur@"uck, die eine N@"aherung f@"ur die @var{n}-te 
-Bernoulli Zahl f@"ur die ganze Zahl @var{n} ist.  @code{burn} berechnet eine 
+Gibt eine rational Zahl zur@"uck, die eine N@"aherung f@"ur die @mvar{n}-te 
+Bernoulli Zahl f@"ur die ganze Zahl @mvar{n} ist.  @code{burn} berechnet eine 
 N@"aherung als gro@ss{}e Gleitkommatzahl mit der folgenden Beziehung:
 
 @example
@@ -152,14 +152,14 @@ N@"aherung als gro@ss{}e Gleitkommatzahl mit der folgenden Beziehung:
 @end example
 
 @c @code{burn} may be more efficient than @code{bern} for large, isolated 
-@c @var{n} as @code{bern} computes all the Bernoulli numbers up to index @var{n}
+@c @mvar{n} as @code{bern} computes all the Bernoulli numbers up to index @mvar{n}
 @c before returning. @code{burn} invokes the approximation for even integers 
-@c @var{n} > 255. For odd integers and @var{n} <= 255 the function @code{bern} 
+@c @mvar{n} > 255. For odd integers and @mvar{n} <= 255 the function @code{bern} 
 @c is called.
 
 @code{burn} kann effizienter als die Funktion @code{bern} f@"ur gro@ss{}e, 
-einzelne ganze Zahlen @var{n} sein, da @code{bern} zun@"achst alle Bernoulli 
-Zahlen bis @var{n} berechnet.  @code{burn} ruft f@"ur ungerade ganze Zahlen und 
+einzelne ganze Zahlen @mvar{n} sein, da @code{bern} zun@"achst alle Bernoulli 
+Zahlen bis @mvar{n} berechnet.  @code{burn} ruft f@"ur ungerade ganze Zahlen und 
 Zahlen die kleiner oder gleich 255 die Funktion @code{bern} auf.
 
 @c @code{load ("bffac")} loads this function. See also @code{bern}.
@@ -169,10 +169,10 @@ Das Kommando @code{load(bffac)} l@"adt die Funktion.  Siehe auch @mrefdot{bern}
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{chinese}
-@deffn {Funktion} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+@deffn {Funktion} chinese ([@mvar{r_1}, @dots{}, @mvar{r_n}], [@mvar{m_1}, @dots{}, @mvar{m_n}])
 
 L@"ost die simultanen Kongruenzen @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
-Die Reste @var{r_n} und die Moduli @var{m_n} m@"ussen ganze Zahlen sein, 
+Die Reste @mvar{r_n} und die Moduli @mvar{m_n} m@"ussen ganze Zahlen sein, 
 die Moduli zus@"atzlich positiv und paarweise teilerfremd.
 
 @example
@@ -195,18 +195,18 @@ die Moduli zus@"atzlich positiv und paarweise teilerfremd.
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{divsum}
-@deffn  {Funktion} divsum (@var{n}, @var{k})
-@deffnx {Funktion} divsum (@var{n})
+@deffn  {Funktion} divsum (@mvar{n}, @mvar{k})
+@deffnx {Funktion} divsum (@mvar{n})
 
-@c @code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
-@c raised to the @var{k}'th power.
+@c @code{divsum (@mvar{n}, @mvar{k})} returns the sum of the divisors of @mvar{n}
+@c raised to the @mvar{k}'th power.
 
-@code{divsum(@var{n}, @var{k})} potenziert die Teiler des Argumentes @var{n} 
-mit dem Argument @var{k} und gibt die Summe als Ergebnis zur@"uck.
+@code{divsum(@mvar{n}, @mvar{k})} potenziert die Teiler des Argumentes @mvar{n} 
+mit dem Argument @mvar{k} und gibt die Summe als Ergebnis zur@"uck.
 
-@c @code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
+@c @code{divsum (@mvar{n})} returns the sum of the divisors of @mvar{n}.
 
-@code{divsum(@var{n})} gibt die Summe der Teiler der Zahl @var{n} zur@"uck.
+@code{divsum(@mvar{n})} gibt die Summe der Teiler der Zahl @mvar{n} zur@"uck.
 
 @example
 (%i1) divsum (12);
@@ -222,11 +222,11 @@ mit dem Argument @var{k} und gibt die Summe als Ergebnis zur@"uck.
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{euler}
-@deffn {Funktion} euler (@var{n})
+@deffn {Funktion} euler (@mvar{n})
 
-@c Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
+@c Returns the @mvar{n}'th Euler number for nonnegative integer @mvar{n}.
 
-Gibt die @var{n}-te Eulersche Zahl f@"ur eine nichtnegative ganze Zahl @var{n}
+Gibt die @mvar{n}-te Eulersche Zahl f@"ur eine nichtnegative ganze Zahl @mvar{n}
 zur@"uck.
 
 @c For the Euler-Mascheroni constant, see @code{%gamma}.
@@ -243,13 +243,13 @@ Beispiele:
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{fib}
-@deffn {Funktion} fib (@var{n})
+@deffn {Funktion} fib (@mvar{n})
 
-@c Returns the @var{n}'th Fibonacci number. @code{fib(0)} equal to 0 and 
-@c @code{fib(1)} equal to 1, and @code{fib (-@var{n})} equal to 
-@c @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+@c Returns the @mvar{n}'th Fibonacci number. @code{fib(0)} equal to 0 and 
+@c @code{fib(1)} equal to 1, and @code{fib (-@mvar{n})} equal to 
+@c @code{(-1)^(@mvar{n} + 1) * fib(@mvar{n})}.
 
-Gibt die @var{n-te} Fibonacci-Zahl zur@"uck.  Die Fibonacci-Folge ist rekursiv 
+Gibt die @mvar{n-te} Fibonacci-Zahl zur@"uck.  Die Fibonacci-Folge ist rekursiv 
 definiert:
 
 @example
@@ -265,7 +265,7 @@ F@"ur negative ganze Zahlen kann die Fibonacci-Folge erweitert wird mit:
    fib(- n) = (- 1)      f(n)
 @end example 
 
-@c After calling @code{fib}, @code{prevfib} is equal to @code{fib(@var{x} - 1)},
+@c After calling @code{fib}, @code{prevfib} is equal to @code{fib(@mvar{x} - 1)},
 @c the Fibonacci number preceding the last one computed.
 
 @c TODO: PREVFIB HAT KEINEN EINTRAG.
@@ -281,12 +281,12 @@ Nach einem Aufruf der Funktion @code{fib(n)}, enth@"alt die Systemvariable
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{fibtophi}
-@deffn {Funktion} fibtophi (@var{expr})
+@deffn {Funktion} fibtophi (@mvar{expr})
 
-@c Expresses Fibonacci numbers in @var{expr} in terms of the constant 
+@c Expresses Fibonacci numbers in @mvar{expr} in terms of the constant 
 @c @code{%phi}, which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
 
-Fibonacci-Zahlen im Ausdruck @var{expr} werden durch die Goldene Zahl 
+Fibonacci-Zahlen im Ausdruck @mvar{expr} werden durch die Goldene Zahl 
 @code{%phi} ausgedr@"uckt.  Siehe @mrefdot{%phi}
 
 Beispiele:
@@ -315,10 +315,10 @@ Beispiele:
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{ifactors}
-@deffn {Funktion} ifactors (@var{n})
+@deffn {Funktion} ifactors (@mvar{n})
 
-Faktorisiert eine positive ganze Zahl @var{n}.  Sind @code{n = p1^e1 * ... * pk^nk} die
-Faktoren der ganzen Zahl @var{n}, dann gibt @code{ifactor} das Ergebnis
+Faktorisiert eine positive ganze Zahl @mvar{n}.  Sind @code{n = p1^e1 * ... * pk^nk} die
+Faktoren der ganzen Zahl @mvar{n}, dann gibt @code{ifactor} das Ergebnis
 @code{[[p1, e1], ..., [pk, ek]]} zur@"uck.
 
 F@"ur die Faktorisierung kommen Probedivisionen mit Primzahlen bis 9973, 
@@ -341,13 +341,13 @@ gen@"ugt es hierf@"ur, @code{factors_only : true} zu setzen.
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{igcdex}
-@deffn {Funktion} igcdex (@var{n}, @var{k})
+@deffn {Funktion} igcdex (@mvar{n}, @mvar{k})
 
-@c Gibt die Liste @code{[@var{a}, @var{b}, @var{u}]} zur@"uck, in der @var{u} der 
+@c Gibt die Liste @code{[@mvar{a}, @mvar{b}, @mvar{u}]} zur@"uck, in der @mvar{u} der 
 Gibt die Liste @code{[a, b, u]} zur@"uck, in der @code{u} der 
-gr@"o@ss{}te gemeinsame Teiler von @var{n} und @var{k} ist und in der zus@"atzlich 
-@c gilt, dass @code{@var{u} = @var{a} * @var{n} + @var{b} * @var{k}}. 
-gilt, dass @code{u = a * @var{n} + b * @var{k}}. 
+gr@"o@ss{}te gemeinsame Teiler von @mvar{n} und @mvar{k} ist und in der zus@"atzlich 
+@c gilt, dass @code{@mvar{u} = @mvar{a} * @mvar{n} + @mvar{b} * @mvar{k}}. 
+gilt, dass @code{u = a * @mvar{n} + b * @mvar{k}}. 
 
 @code{igcdex} verwendet den Euklidischen Algorithmus.  Siehe auch @mref{gcdex}.
 
@@ -369,11 +369,11 @@ Beispiele:
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{inrt}
-@deffn {Funktion} inrt (@var{x}, @var{n})
+@deffn {Funktion} inrt (@mvar{x}, @mvar{n})
 
-@c Returns the integer @var{n}'th root of the absolute value of @var{x}.
+@c Returns the integer @mvar{n}'th root of the absolute value of @mvar{x}.
 
-Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
+Gibt die ganzzahlige @mvar{n}-te Wurzel des Betrags von @mvar{x} zur@"uck.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -384,13 +384,13 @@ Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{inv_mod}
-@deffn {Funktion} inv_mod (@var{n}, @var{m})
+@deffn {Funktion} inv_mod (@mvar{n}, @mvar{m})
 
-Berechnet das modulare Inverse von @var{n} zum Modul @var{m}.  Das Argument
-@var{n} muss eine ganze Zahl und der Modul @var{p} eine positive ganze Zahl 
+Berechnet das modulare Inverse von @mvar{n} zum Modul @mvar{m}.  Das Argument
+@mvar{n} muss eine ganze Zahl und der Modul @mvar{p} eine positive ganze Zahl 
 sein.  @code{inv_mod(n, m)} gibt @code{false} zur@"uck, wenn das modulare Inverse
-nicht existiert.  Das modulare Inverse existiert, wenn @var{n} teilerfremd zum 
-Modul @var{m} ist.
+nicht existiert.  Das modulare Inverse existiert, wenn @mvar{n} teilerfremd zum 
+Modul @mvar{m} ist.
 
 Siehe auch die Funktionen @mref{power_mod} und @mrefdot{mod}
 
@@ -408,22 +408,22 @@ Beispiele:
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{isqrt}
-@deffn {Funktion} isqrt (@var{x})
+@deffn {Funktion} isqrt (@mvar{x})
 
-@c Returns the "integer square root" of the absolute value of @var{x}, which is 
+@c Returns the "integer square root" of the absolute value of @mvar{x}, which is 
 @c an integer.
 
-Gibt die ganzzahlige Wurzel des Betrages von @var{x} zur@"uck, wenn @var{x} eine
+Gibt die ganzzahlige Wurzel des Betrages von @mvar{x} zur@"uck, wenn @mvar{x} eine
 ganze Zahl ist.  Andernfalls wird eine Substantivform zur@"uckgegeben.
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{jacobi}
-@deffn {Funktion} jacobi (@var{p}, @var{q})
+@deffn {Funktion} jacobi (@mvar{p}, @mvar{q})
 
-@c Returns the Jacobi symbol of @var{p} and @var{q}.
+@c Returns the Jacobi symbol of @mvar{p} and @mvar{q}.
 
-Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
+Berechnet das Jacobi-Symbol f@"ur die Argumente @mvar{p} und @mvar{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -434,7 +434,7 @@ Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{lcm}
-@deffn {Funktion} lcm (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} lcm (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
 @c Returns the least common multiple of its arguments. The arguments may be 
 @c general expressions as well as integers.
@@ -449,50 +449,50 @@ Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{mod}
-@deffn {Funktion} mod (@var{x}, @var{p})
+@deffn {Funktion} mod (@mvar{x}, @mvar{p})
 
-@c If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return 
-@c @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}. Further for all real 
-@c @var{x}, we have @code{mod (@var{x}, 0) = @var{x}}. For a discussion of the 
-@c definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of 
+@c If @mvar{x} and @mvar{y} are real numbers and @mvar{y} is nonzero, return 
+@c @code{@mvar{x} - @mvar{y} * floor(@mvar{x} / @mvar{y})}. Further for all real 
+@c @mvar{x}, we have @code{mod (@mvar{x}, 0) = @mvar{x}}. For a discussion of the 
+@c definition @code{mod (@mvar{x}, 0) = @mvar{x}}, see Section 3.4, of 
 @c "Concrete Mathematics," by Graham, Knuth, and Patashnik. The function 
-@c @code{mod (@var{x}, 1)} is a sawtooth function with period 1 with 
+@c @code{mod (@mvar{x}, 1)} is a sawtooth function with period 1 with 
 @c @code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
 
-Berechnet den Divisionsrest @code{x mod y} des Arguments @var{x} zum Modul @var{y}. 
-@var{x} und @var{y} k@"onnen ganze Zahlen, rationale Zahlen, Gleitkommazahlen 
+Berechnet den Divisionsrest @code{x mod y} des Arguments @mvar{x} zum Modul @mvar{y}. 
+@mvar{x} und @mvar{y} k@"onnen ganze Zahlen, rationale Zahlen, Gleitkommazahlen 
 oder allgemeine Ausdr@"ucke sein.
 
-Sind @var{x} und @var{y} reelle Zahlen und ist @var{y} ungleich Null, gibt 
-@code{mod(@var{x}, @var{y})} das Ergebnis von @code{@var{x} - @var{y} * 
-floor(@var{x} / @var{y})} zur@"uck.  Weiterhin gilt f@"ur alle reellen Zahlen
-@code{mod(@var{x}, 0) = @var{x}}.  F@"ur eine Diskussion dieser Definition siehe
+Sind @mvar{x} und @mvar{y} reelle Zahlen und ist @mvar{y} ungleich Null, gibt 
+@code{mod(@mvar{x}, @mvar{y})} das Ergebnis von @code{@mvar{x} - @mvar{y} * 
+floor(@mvar{x} / @mvar{y})} zur@"uck.  Weiterhin gilt f@"ur alle reellen Zahlen
+@code{mod(@mvar{x}, 0) = @mvar{x}}.  F@"ur eine Diskussion dieser Definition siehe
 Kapitel 3.4, "Concrete Mathematics" von Graham, Knuth, and Patashnik.  Die 
-Funktion @code{mod(@var{x}, 1)} ist eine S@"agezahnfunktion mit der Periode 1 
+Funktion @code{mod(@mvar{x}, 1)} ist eine S@"agezahnfunktion mit der Periode 1 
 mit @code{mod(1, 1) = 0} und @code{mod(0, 1) = 0}.
 
 @c To find the principal argument (a number in the interval @code{(-%pi, %pi]}) 
-@c of a complex number, use the function @code{@var{x} |-> %pi - mod (%pi - 
-@c @var{x}, 2*%pi)}, where @var{x} is an argument.
+@c of a complex number, use the function @code{@mvar{x} |-> %pi - mod (%pi - 
+@c @mvar{x}, 2*%pi)}, where @mvar{x} is an argument.
 
 Der Hauptwert einer komplexen Zahl, die im Intervall @code{(-%pi, %pi)} liegt,
-kann mit @code{%pi - mod(%pi - @var{x}, 2*%pi)} bestimmt werden, wobei @var{x}
+kann mit @code{%pi - mod(%pi - @mvar{x}, 2*%pi)} bestimmt werden, wobei @mvar{x}
 die komplexe Zahl ist.
 
-@c When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
+@c When @mvar{x} and @mvar{y} are constant expressions (@code{10 * %pi}, for 
 @c example), @code{mod} uses the same big float evaluation scheme that 
 @c @code{floor} and @code{ceiling} uses. Again, it's possible, although 
 @c unlikely, that @code{mod} could return an erroneous value in such cases.
 
-Sind @var{x} und @var{y} konstante Ausdr@"ucke, wie zum Beispiel @code{10 * %pi},
+Sind @mvar{x} und @mvar{y} konstante Ausdr@"ucke, wie zum Beispiel @code{10 * %pi},
 verwendet @code{mod} dasselbe @mref{bfloat}-Auswertungsschema wie @code{floor} 
 und @code{ceiling}. Diese Umwandlung kann, wenn auch unwahrscheinlich, 
 zu Fehlern f@"uhren.
 
-@c For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several 
+@c For nonnumerical arguments @mvar{x} or @mvar{y}, @code{mod} knows several 
 @c simplification rules:
 
-F@"ur nicht numerische Argumente @var{x} oder @var{y} kennt @code{mod}
+F@"ur nicht numerische Argumente @mvar{x} oder @mvar{y} kennt @code{mod}
 verschiedene Vereinfachungen.
 
 Siehe auch die Funktionen @mref{power_mod} und @mrefdot{inv_mod}
@@ -529,11 +529,11 @@ Vereinfachung f@"ur nicht numerische Argumente.
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{next_prime}
-@deffn {Funktion} next_prime (@var{n})
+@deffn {Funktion} next_prime (@mvar{n})
 
-@c Returns the smallest prime bigger than @var{n}.
+@c Returns the smallest prime bigger than @mvar{n}.
 
-Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
+Gibt die kleinste Primzahl zur@"uck, die der Zahl @mvar{n} folgt.
 
 @example
 (%i1) next_prime(27);
@@ -543,14 +543,14 @@ Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{power_mod}
-@deffn {Funktion} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {Funktion} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
 
 Verwendet einen modularen Algorithmus, um @code{a^n mod m} zu berechnen. 
-Die Argumente @var{a} und @var{n} m@"ussen ganze Zahlen und der Modul @var{m} 
-eine positive ganze Zahl sein.  Ist @var{n} negativ, wird @mref{inv_mod} zur 
+Die Argumente @mvar{a} und @mvar{n} m@"ussen ganze Zahlen und der Modul @mvar{m} 
+eine positive ganze Zahl sein.  Ist @mvar{n} negativ, wird @mref{inv_mod} zur 
 Berechnung des modularen Inversen aufgerufen.
 
-@code{power_mod (@var{a}, @var{n}, @var{m})} ist @"aquivalent zu 
+@code{power_mod (@mvar{a}, @mvar{n}, @mvar{m})} ist @"aquivalent zu 
 @code{mod(a^n, m)}.  Der Algorithmus von @code{power_mod} ist jedoch 
 insbesondere f@"ur gro@ss{}e ganze Zahlen wesentlich effizienter.
 
@@ -584,21 +584,21 @@ werden.
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{primep}
-@deffn {Funktion} primep (@var{n})
+@deffn {Funktion} primep (@mvar{n})
 
-F@"uhrt einen Primzahltest f@"ur das Argument @var{n} durch.  Liefert
-@code{primep} das Ergebnis @code{false}, ist @var{n} keine Primzahl.  Ist das
-Ergebnis @code{true}, ist @var{n} mit sehr gro@ss{}er Wahrscheinlichkeit eine 
+F@"uhrt einen Primzahltest f@"ur das Argument @mvar{n} durch.  Liefert
+@code{primep} das Ergebnis @code{false}, ist @mvar{n} keine Primzahl.  Ist das
+Ergebnis @code{true}, ist @mvar{n} mit sehr gro@ss{}er Wahrscheinlichkeit eine 
 Primzahl.
 
-F@"ur ganze Zahlen @var{n} kleiner als 341550071728321 wird eine deterministische
+F@"ur ganze Zahlen @mvar{n} kleiner als 341550071728321 wird eine deterministische
 Variante des Miller-Rabin-Tests angewandt.  Hat in diesem Fall @code{primep} den Wert
-@code{true}, dann ist @var{n} mit Sicherheit eine Primzahl.
+@code{true}, dann ist @mvar{n} mit Sicherheit eine Primzahl.
 
-F@"ur ganze Zahlen @var{n} gr@"o@ss{}er 341550071728321 f@"uhrt @code{primep}
+F@"ur ganze Zahlen @mvar{n} gr@"o@ss{}er 341550071728321 f@"uhrt @code{primep}
 @mref{primep_number_of_tests} Pseudo-Primzahl-Tests nach Miller-Rabin und 
 einen Pseudo-Primzahl-Test nach Lucas durch.  Die Wahrscheinlichkeit, dass 
-eine zusammen gesetzte Zahl @var{n} einen Miller-Rabin-Test besteht, ist kleiner
+eine zusammen gesetzte Zahl @mvar{n} einen Miller-Rabin-Test besteht, ist kleiner
 als 1/4.  Mit dem Standardwert 25 @code{primpe_number_of_tests} sinkt diese 
 Wahrscheinlichkeit damit unter einen Wert von 10^-15.
 @end deffn
@@ -616,11 +616,11 @@ Die Anzahl der Pseudo-Primzahl-Tests nach Miller-Rabin in der Funktion
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{prev_prime}
-@deffn {Funktion} prev_prime (@var{n})
+@deffn {Funktion} prev_prime (@mvar{n})
 
-@c Returns the greatest prime smaller than @var{n}.
+@c Returns the greatest prime smaller than @mvar{n}.
 
-Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
+Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @mvar{n} ist.
 
 @example
 (%i1) prev_prime(27);
@@ -630,15 +630,15 @@ Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{qunit}
-@deffn {Funktion} qunit (@var{n})
+@deffn {Funktion} qunit (@mvar{n})
 
 @c Returns the principal unit of the real quadratic number field 
-@c @code{sqrt (@var{n})} where @var{n} is an integer, i.e., the element whose 
+@c @code{sqrt (@mvar{n})} where @mvar{n} is an integer, i.e., the element whose 
 @c norm is unity. This amounts to solving Pell's equation 
-@c @code{a^2 - @var{n} b^2 = 1}.
+@c @code{a^2 - @mvar{n} b^2 = 1}.
 
-Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung 
-@code{a^2 - @var{n} b^2 = 1}.
+Findet f@"ur das Argument @mvar{n} L@"osungen der Pellschen Gleichung 
+@code{a^2 - @mvar{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -650,10 +650,10 @@ Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{totient}
-@deffn {Funktion} totient (@var{n})
+@deffn {Funktion} totient (@mvar{n})
 
-Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @var{n}
-und teilerfremd zu @var{n} sind.
+Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @mvar{n}
+und teilerfremd zu @mvar{n} sind.
 @end deffn
 
 @c --- 27.03.2012 VN -----------------------------------------------------------
@@ -672,18 +672,18 @@ ausgeschlossen, die gleich Null sind.  Siehe @mref{bern} und @mrefdot{euler}
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{zeta}
-@deffn {Funktion} zeta (@var{n})
+@deffn {Funktion} zeta (@mvar{n})
 
-@c Returns the Riemann zeta function. If @var{n} is a negative integer, 0, or a 
+@c Returns the Riemann zeta function. If @mvar{n} is a negative integer, 0, or a 
 @c positive even integer, the Riemann zeta function simplifies to an exact 
 @c value. For a positive even integer the option variable @code{zeta%pi} has to 
 @c be @code{true} in addition (See @code{zeta%pi}). For a floating point or 
 @c bigfloat number the Riemann zeta function is evaluated numerically. Maxima 
-@c returns a noun form @code{zeta (@var{n})} for all other arguments, including 
+@c returns a noun form @code{zeta (@mvar{n})} for all other arguments, including 
 @c rational noninteger, and complex arguments, or for even integers, if 
 @c @code{zeta%pi} has the value @code{false}.
 
-Die Riemannsche Zeta-Funktion f@"ur @var{s}, die wie folgt definiert ist:
+Die Riemannsche Zeta-Funktion f@"ur @mvar{s}, die wie folgt definiert ist:
 
 @tex
 $$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
@@ -700,7 +700,7 @@ $$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
 @end example
 @end ifnottex
 
-F@"ur negative ganze Zahlen @var{n}, Null und positive gerade ganze Zahlen 
+F@"ur negative ganze Zahlen @mvar{n}, Null und positive gerade ganze Zahlen 
 wird @code{zeta} zu einem exakten Ergebnis vereinfacht.  
 Damit diese Vereinfachung f@"ur positive ganze Zahlen ausgef@"uhrt wird, 
 muss die Optionsvariable @code{zeta%pi} den Wert @code{true} haben.  
@@ -754,7 +754,7 @@ Standardwert: @code{true}
 @c @code{zeta} returns a noun form @code{zeta (n)} for even integer @code{n}.
 
 Hat @code{zeta%pi} den Wert @code{true}, vereinfacht die Funktion @code{zeta(n)}
-f@"ur gerade ganzen Zahlen @var{n} zu einem Ergebnis, das proportional zu 
+f@"ur gerade ganzen Zahlen @mvar{n} zu einem Ergebnis, das proportional zu 
 @code{%pi^n} ist.  Ansonsten ist das Ergebnis von @code{zeta} eine 
 Substantivform f@"ur gerade ganze Zahlen.
 
@@ -775,15 +775,15 @@ Beispiele:
 
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_log}
-@deffn {Funktion} zn_log (@var{a}, @var{g}, @var{n}) 
-@deffnx {Funktion} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Funktion} zn_log (@mvar{a}, @mvar{g}, @mvar{n}) 
+@deffnx {Funktion} zn_log (@mvar{a}, @mvar{g}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
 
-Berechnet den diskreten Logarithmus.  Sei (Z/@var{n}Z)* eine zyklische Gruppe, 
-@var{g} eine Primitivwurzel modulo @var{n} und @var{a} ein Element dieser Gruppe.
+Berechnet den diskreten Logarithmus.  Sei (Z/@mvar{n}Z)* eine zyklische Gruppe, 
+@mvar{g} eine Primitivwurzel modulo @mvar{n} und @mvar{a} ein Element dieser Gruppe.
 Dann berechnet @code{zn_log (a, g, n)} eine L@"osung der Kongruenz 
 @code{g^x = a mod n}.
 
-Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @var{n}. 
+Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @mvar{n}. 
 Da diese Berechnung ebenfalls zeitaufw@"andig ist, kann es eventuell sinnvoll 
 sein, die Primfaktoren des Totienten vorab zu berechnen und @code{zn_log} als 
 viertes Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe von 
@@ -793,7 +793,7 @@ Optionsvariable @code{factors_only} entsprechen.
 Als Algorithmus wird die Pohlig-Hellman-Reduktion und das Rho-Verfahren von 
 Pollard f@"ur den diskreten Logarithmus verwendet. Die Laufzeit von @code{zn_log} 
 h@"angt im Wesentlichen von der Bitl@"ange des gr@"o@ss{}ten Primfaktors des 
-Totienten von @var{n} ab. 
+Totienten von @mvar{n} ab. 
 
 Siehe auch @mref{zn_primroot}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
 
@@ -840,15 +840,15 @@ Primfaktors des Totienten ab.
 
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_order}
-@deffn {Funktion} zn_order (@var{x}, @var{n}) 
-@deffnx {Funktion} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Funktion} zn_order (@mvar{x}, @mvar{n}) 
+@deffnx {Funktion} zn_order (@mvar{x}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
 
-Ist @var{x} eine Einheit in der endlichen Gruppe (Z/@var{n}Z)*, so berechnet 
+Ist @mvar{x} eine Einheit in der endlichen Gruppe (Z/@mvar{n}Z)*, so berechnet 
 @code{zn_order} die Ordnung dieses Elements.  Andernfalls gibt @code{zn_order} 
-@code{false} zur@"uck.  @var{x} ist eine Einheit modulo @var{n}, falls @var{x} 
-teilerfremd zu @var{n} ist.
+@code{false} zur@"uck.  @mvar{x} ist eine Einheit modulo @mvar{n}, falls @mvar{x} 
+teilerfremd zu @mvar{n} ist.
 
-Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @var{n}. 
+Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @mvar{n}. 
 Da diese Berechnung manchmal recht zeitaufw@"andig ist, kann es eventuell sinnvoll 
 sein, die Primfaktoren des Totienten vorab zu berechnen und @code{zn_order} als 
 drittes Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe von 
@@ -859,7 +859,7 @@ Siehe auch @mref{zn_primroot}, @mref{ifactors}, @mref{totient}.
 
 Beispiele:
 
-@code{zn_order} berechnet die Ordnung einer Einheit @var{x} aus (Z/@var{n}Z)*.
+@code{zn_order} berechnet die Ordnung einer Einheit @mvar{x} aus (Z/@mvar{n}Z)*.
 
 @example
 (%i1) n : 22$
@@ -897,22 +897,22 @@ entsprechen.
 
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_primroot}
-@deffn {Funktion} zn_primroot (@var{n}) 
-@deffnx {Funktion} zn_primroot (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Funktion} zn_primroot (@mvar{n}) 
+@deffnx {Funktion} zn_primroot (@mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
 
-Ist die multiplikative Gruppe (Z/@var{n}Z)* zyklisch, berechnet @code{zn_primroot} 
-die kleinste Primitivwurzel modulo @var{n}.  Dies ist der Fall, wenn @var{n} gleich 
+Ist die multiplikative Gruppe (Z/@mvar{n}Z)* zyklisch, berechnet @code{zn_primroot} 
+die kleinste Primitivwurzel modulo @mvar{n}.  Dies ist der Fall, wenn @mvar{n} gleich 
 @code{2}, @code{4}, @code{p^k} oder @code{2*p^k} ist, wobei @code{p} prim und 
 gr@"osser @code{2} und @code{k} eine nat@"urliche Zahl ist.  @code{zn_primroot} 
 f@"uhrt einen entsprechenden Pr@"atest durch, wenn die Optionsvariable 
 @mref{zn_primroot_pretest} (Standardwert: @code{false}) @code{true} gesetzt wurde.
 In jedem Fall wird die Suche durch die obere Schranke @mref{zn_primroot_limit} begrenzt.
 
-Ist (Z/@var{n}Z)* nicht zyklisch oder kann bis @code{zn_primroot_limit} 
-keine Primitivwurzel modulo @var{n} gefunden werden, gibt @code{zn_primroot} 
+Ist (Z/@mvar{n}Z)* nicht zyklisch oder kann bis @code{zn_primroot_limit} 
+keine Primitivwurzel modulo @mvar{n} gefunden werden, gibt @code{zn_primroot} 
 @code{false} zur@"uck. 
 
-Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @var{n}. 
+Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @mvar{n}. 
 Diese Berechnung kann zeitaufw@"andig sein und es kann daher eventuell sinnvoll 
 sein, die Primfaktoren des Totienten vorab zu berechnen und @code{zn_primroot} 
 als zus@"atzliches Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe  
@@ -923,7 +923,7 @@ Siehe auch @mref{zn_primroot_p}, @mref{zn_order}, @mref{ifactors}, @mref{totient
 
 Beispiele:
 
-@code{zn_primroot} berechnet die kleinste Primitivwurzel modulo @var{n} oder gibt 
+@code{zn_primroot} berechnet die kleinste Primitivwurzel modulo @mvar{n} oder gibt 
 @code{false} zur@"uck.
 
 @example
@@ -972,14 +972,14 @@ Primitivwurzel.  Wurde die Optionsvariable @mref{zn_primroot_verbose}
 
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_primroot_p}
-@deffn {Funktion} zn_primroot_p (@var{x}, @var{n}) 
-@deffnx {Funktion} zn_primroot_p (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Funktion} zn_primroot_p (@mvar{x}, @mvar{n}) 
+@deffnx {Funktion} zn_primroot_p (@mvar{x}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
 
-Testet, ob @var{x} eine Primitivwurzel in der multiplikativen Gruppe (Z/@var{n}Z)* 
+Testet, ob @mvar{x} eine Primitivwurzel in der multiplikativen Gruppe (Z/@mvar{n}Z)* 
 ist. 
 
 Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von  
-@var{n}.  Wird dieser Test nacheinander auf mehrere Zahlen angewandt, 
+@mvar{n}.  Wird dieser Test nacheinander auf mehrere Zahlen angewandt, 
 kann es sinnvoll sein, die Primfaktoren des Totienten vorab zu berechnen 
 und @code{zn_primroot_p} als zus@"atzliches drittes Argument zu @"ubergeben. 
 Die Form muss dabei der R@"uckgabe von @code{ifactors(totient(n))} mit der 

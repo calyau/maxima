@@ -20,13 +20,13 @@ gr@'{a}ficas em espa@value{cedilha}o de fase, veja o pacote adicional
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais
 
 
-@deffn {Fun@value{cedilha}@~{a}o} bc2 (@var{solu@value{cedilha}@~{a}o}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {Fun@value{cedilha}@~{a}o} bc2 (@mvar{solu@value{cedilha}@~{a}o}, @mvar{xval1}, @mvar{yval1}, @mvar{xval2}, @mvar{yval2})
 Resolve o problema do valor limite para equa@value{cedilha}@~{o}es diferenciais de segunda ordem. 
-Aqui: @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
-@code{ode2}, @var{xval1} especifica o valor da vari@'{a}vel independente
-em um primeiro ponto, na forma @code{@var{x} = @var{x1}}, e @var{yval1}
+Aqui: @mvar{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
+@code{ode2}, @mvar{xval1} especifica o valor da vari@'{a}vel independente
+em um primeiro ponto, na forma @code{@mvar{x} = @mvar{x1}}, e @mvar{yval1}
 fornece o valor da vari@'{a}vel dependente naquele ponto, na forma
-@code{@var{y} = @var{y1}}. As express@~{o}es @var{xval2} e @var{yval2}
+@code{@mvar{y} = @mvar{y1}}. As express@~{o}es @mvar{xval2} e @mvar{yval2}
 fornecem os valores para essas vari@'{a}veis em um segundo ponto, usando a mesma
 forma.
 
@@ -35,13 +35,13 @@ Veja @code{ode2} para um exemplo de sua utiliza@value{cedilha}@~{a}o.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} desolve (@var{eqn}, @var{x})
-@deffnx {Fun@value{cedilha}@~{a}o} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@value{cedilha}@~{a}o} desolve (@mvar{eqn}, @mvar{x})
+@deffnx {Fun@value{cedilha}@~{a}o} desolve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])
 A Fun@value{cedilha}@~{a}o @code{dsolve} resolve sistema de equa@value{cedilha}@~{o}es diferenciais
-lineares ordin@'{a}rias usando a transformada de Laplace.  Aqui as @var{eqn}'s
-s@~{a}o equa@value{cedilha}@~{o}es diferenciais nas vari@'{a}veis dependentes @var{x_1}, ...,
-@var{x_n}.  A depend@^{e}ncia funcional de @var{x_1}, ..., @var{x_n} com rela@value{cedilha}@~{a}o @`{a}
-vari@'{a}vel independente, por exemplo @var{x}, deve ser explicitamente indicada
+lineares ordin@'{a}rias usando a transformada de Laplace.  Aqui as @mvar{eqn}'s
+s@~{a}o equa@value{cedilha}@~{o}es diferenciais nas vari@'{a}veis dependentes @mvar{x_1}, ...,
+@mvar{x_n}.  A depend@^{e}ncia funcional de @mvar{x_1}, ..., @mvar{x_n} com rela@value{cedilha}@~{a}o @`{a}
+vari@'{a}vel independente, por exemplo @mvar{x}, deve ser explicitamente indicada
 nas vari@'{a}veis e em suas derivadas. Por exemplo, isso pode n@~{a}o ser
 caminho correto para definir duas equa@value{cedilha}@~{o}es:
 
@@ -104,39 +104,39 @@ Se @code{desolve} n@~{a}o pode obter uma solu@value{cedilha}@~{a}o, retorna @cod
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ic1 (@var{solu@value{cedilha}@~{a}o}, @var{xval}, @var{yval})
+@deffn {Fun@value{cedilha}@~{a}o} ic1 (@mvar{solu@value{cedilha}@~{a}o}, @mvar{xval}, @mvar{yval})
 Resolve problemas de valor inicial para equa@value{cedilha}@~{o}es diferenciais de primeira ordem.
-Aqui @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
-@code{ode2}, @var{xval} fornece um valor inicial para a vari@'{a}vel
-independente na forma @code{@var{x} = @var{x0}}, e @var{yval} fornece o
-valor inicial para a vari@'{a}vel dependente na forma @code{@var{y} =
-@var{y0}}.
+Aqui @mvar{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
+@code{ode2}, @mvar{xval} fornece um valor inicial para a vari@'{a}vel
+independente na forma @code{@mvar{x} = @mvar{x0}}, e @mvar{yval} fornece o
+valor inicial para a vari@'{a}vel dependente na forma @code{@mvar{y} =
+@mvar{y0}}.
 
 Veja @code{ode2} para um exemplo de sua utiliza@value{cedilha}@~{a}o.
 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} ic2 (@var{solu@value{cedilha}@~{a}o}, @var{xval}, @var{yval}, @var{dval})
+@deffn {Fun@value{cedilha}@~{a}o} ic2 (@mvar{solu@value{cedilha}@~{a}o}, @mvar{xval}, @mvar{yval}, @mvar{dval})
 Resolve problemas de valor inicial para equa@value{cedilha}@~{o}es diferenciais de segunda ordem.
-Aqui @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrada por
-@code{ode2}, @var{xval} fornece o valor inicial para a vari@'{a}vel
-independente na forma @code{@var{x} = @var{x0}}, @var{yval} fornece o
-valor inicial da veri@'{a}vel dependente na forma @code{@var{y} =
-@var{y0}}, e @var{dval} fornece o valor inicial para a primeira
+Aqui @mvar{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrada por
+@code{ode2}, @mvar{xval} fornece o valor inicial para a vari@'{a}vel
+independente na forma @code{@mvar{x} = @mvar{x0}}, @mvar{yval} fornece o
+valor inicial da veri@'{a}vel dependente na forma @code{@mvar{y} =
+@mvar{y0}}, e @mvar{dval} fornece o valor inicial para a primeira
 derivada da vari@'{a}vel dependente com rela@value{cedilha}@~{a}o @`{a} vari@'{a}vel
-independente, na forma @code{diff(@var{y},@var{x}) = @var{dy0}}
+independente, na forma @code{diff(@mvar{y},@mvar{x}) = @mvar{dy0}}
 (@code{diff} n@~{a}o precisa receber ap@'{o}strofo para evitar avalia@value{cedilha}@~{a}o).
 
 Veja @code{ode2} para um exemplo de seu uso.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+@deffn {Fun@value{cedilha}@~{a}o} ode2 (@mvar{eqn}, @mvar{dvar}, @mvar{ivar})
 A fun@value{cedilha}@~{a}o @code{ode2} resolve uma equa@value{cedilha}@~{a}o diferencial ordin@'{a}ria (EDO)
 de primeira ou de segunda ordem. @code{ode2} usa tr@^{e}s argumentos: uma EDO fornecida por
-@var{eqn}, a vari@'{a}vel dependente @var{dvar}, e a vari@'{a}vel
-independente @var{ivar}. Quando @code{ode2} encontra uma solu@value{cedilha}@~{a}o, @code{ode2} retorna ou uma solu@value{cedilha}@~{a}o expl@'{i}cita ou
+@mvar{eqn}, a vari@'{a}vel dependente @mvar{dvar}, e a vari@'{a}vel
+independente @mvar{ivar}. Quando @code{ode2} encontra uma solu@value{cedilha}@~{a}o, @code{ode2} retorna ou uma solu@value{cedilha}@~{a}o expl@'{i}cita ou
 uma sulu@value{cedilha}@~{a}o impl@'{i}cita para a vari@'{a}vel dependente. @code{%c} @'{e} usado para
 representar a constante de integra@value{cedilha}@~{a}o no caso de equa@value{cedilha}@~{o}es de primeira ordem,
 e @code{%k1} e @code{%k2} as constantes para equa@value{cedilha}@~{o}es de

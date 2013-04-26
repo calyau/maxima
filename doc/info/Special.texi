@@ -68,7 +68,7 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_j}
-@deffn {Function} bessel_j (@var{v}, @var{z})
+@deffn {Function} bessel_j (@mvar{v}, @mvar{z})
 
 The Bessel function of the first kind of order @math{v} and argument @math{z}.
 
@@ -100,7 +100,7 @@ although the infinite series is not used for computations.
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_y}
-@deffn {Function} bessel_y (@var{v}, @var{z})
+@deffn {Function} bessel_y (@mvar{v}, @mvar{z})
 
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
 
@@ -128,7 +128,7 @@ the limit as @math{v} approaches @math{n} is taken.
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_i}
-@deffn {Function} bessel_i (@var{v}, @var{z})
+@deffn {Function} bessel_i (@mvar{v}, @mvar{z})
 
 The modified Bessel function of the first kind of order @math{v} and argument
 @math{z}.
@@ -160,7 +160,7 @@ although the infinite series is not used for computations.
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_k}
-@deffn {Function} bessel_k (@var{v}, @var{z})
+@deffn {Function} bessel_k (@mvar{v}, @mvar{z})
 
 The modified Bessel function of the second kind of order @math{v} and argument
 @math{z}.
@@ -187,7 +187,7 @@ then the limit as @math{v} approaches @math{n} is taken.
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel_1}
-@deffn {Function} hankel_1 (@var{v}, @var{z})
+@deffn {Function} hankel_1 (@mvar{v}, @mvar{z})
 
 The Hankel function of the first kind of order @math{v} and argument @math{z}
 (A&S 9.1.3). @code{hankel_1} is defined as
@@ -268,7 +268,7 @@ order @math{v} is not supported. Maxima returns a noun form:
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel_2}
-@deffn {Function} hankel_2 (@var{v}, @var{z})
+@deffn {Function} hankel_2 (@mvar{v}, @mvar{z})
 
 The Hankel function of the second kind of order @math{v} and argument @math{z}
 (A&S 9.1.4). @code{hankel_2} is defined as
@@ -328,7 +328,7 @@ the Bessel function is expanded.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Function} scaled_bessel_i (@mvar{v}, @mvar{z}) 
 
 The scaled modified Bessel function of the first kind of order
 @math{v} and argument @math{z}.  That is, @math{scaled_bessel_i(v,z) =
@@ -343,7 +343,7 @@ symbolic work, it is probably preferable to work with the expression
 @closecatbox
 @end deffn
 
-@deffn {Function} scaled_bessel_i0 (@var{z}) 
+@deffn {Function} scaled_bessel_i0 (@mvar{z}) 
 
 Identical to @code{scaled_bessel_i(0,z)}.
 
@@ -353,7 +353,7 @@ Identical to @code{scaled_bessel_i(0,z)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} scaled_bessel_i1 (@var{z})
+@deffn {Function} scaled_bessel_i1 (@mvar{z})
 
 Identical to @code{scaled_bessel_i(1,z)}.
 @opencatbox
@@ -362,7 +362,7 @@ Identical to @code{scaled_bessel_i(1,z)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
+@deffn {Function} %s [@mvar{u},@mvar{v}] (@mvar{z}) 
 Lommel's little s[u,v](z) function.  
 Probably Gradshteyn & Ryzhik 8.570.1.
 @opencatbox
@@ -384,7 +384,7 @@ of the Airy differential equation @code{diff (y(x), x, 2) - x y(x) = 0}.
 If the argument @code{x} is a real or complex floating point 
 number, the numerical value of the function is returned.
 
-@deffn {Function} airy_ai (@var{x})
+@deffn {Function} airy_ai (@mvar{x})
 The Airy function Ai(x).  (A&S 10.4.2)
 
 The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
@@ -397,7 +397,7 @@ See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} airy_dai (@var{x})
+@deffn {Function} airy_dai (@mvar{x})
 The derivative of the Airy function Ai @code{airy_ai(x)}. 
 
 See @code{airy_ai}.
@@ -408,7 +408,7 @@ See @code{airy_ai}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} airy_bi (@var{x})
+@deffn {Function} airy_bi (@mvar{x})
 The Airy function Bi(x).  (A&S 10.4.3)
 
 The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
@@ -421,7 +421,7 @@ See @code{airy_ai}, @code{airy_dbi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} airy_dbi (@var{x})
+@deffn {Function} airy_dbi (@mvar{x})
 The derivative of the Airy Bi function @code{airy_bi(x)}.
 
 See @code{airy_ai} and @code{airy_bi}.
@@ -452,7 +452,7 @@ functions are defined in Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{bffac}
-@deffn {Function} bffac (@var{expr}, @var{n})
+@deffn {Function} bffac (@mvar{expr}, @mvar{n})
 
 Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
@@ -465,16 +465,16 @@ it's a good idea to request a couple of extra.
 
 @c -----------------------------------------------------------------------------
 @anchor{bfpsi}
-@deffn  {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+@deffn  {Function} bfpsi (@mvar{n}, @mvar{z}, @mvar{fpprec})
+@deffnx {Function} bfpsi0 (@mvar{z}, @mvar{fpprec})
 
-@code{bfpsi} is the polygamma function of real argument @var{z} and integer
-order @var{n}.  @code{bfpsi0} is the digamma function.
-@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to
-@code{bfpsi (0, @var{z}, @var{fpprec})}.
+@code{bfpsi} is the polygamma function of real argument @mvar{z} and integer
+order @mvar{n}.  @code{bfpsi0} is the digamma function.
+@code{bfpsi0 (@mvar{z}, @mvar{fpprec})} is equivalent to
+@code{bfpsi (0, @mvar{z}, @mvar{fpprec})}.
 
 These functions return bigfloat values.
-@var{fpprec} is the bigfloat precision of the return value.
+@mvar{fpprec} is the bigfloat precision of the return value.
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
@@ -487,7 +487,7 @@ These functions return bigfloat values.
 
 @c -----------------------------------------------------------------------------
 @anchor{cbffac}
-@deffn {Function} cbffac (@var{z}, @var{fpprec})
+@deffn {Function} cbffac (@mvar{z}, @mvar{fpprec})
 Complex bigfloat factorial.
 
 @code{load ("bffac")} loads this function.
@@ -499,7 +499,7 @@ Complex bigfloat factorial.
 
 @c -----------------------------------------------------------------------------
 @anchor{gamma}
-@deffn {Function} gamma (@var{z})
+@deffn {Function} gamma (@mvar{z})
 
 The basic definition of the gamma function (A&S 6.1.1) is
 
@@ -605,7 +605,7 @@ The Euler-Mascheroni constant is @code{%gamma}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} log_gamma (@var{z})
+@deffn {Function} log_gamma (@mvar{z})
 
 The natural logarithm of the gamma function.
 
@@ -615,7 +615,7 @@ The natural logarithm of the gamma function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gamma_greek (@var{a}, @var{z})
+@deffn {Function} gamma_greek (@mvar{a}, @mvar{z})
 
 The lower incomplete gamma function (A&S 6.5.2):
 
@@ -642,7 +642,7 @@ See also @code{gamma_incomplete} (upper incomplete gamma function).
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gamma_incomplete (@var{a}, @var{z})
+@deffn {Function} gamma_incomplete (@mvar{a}, @mvar{z})
 
 The incomplete upper gamma function A&S 6.5.3:
 
@@ -674,7 +674,7 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
+@deffn {Function} gamma_incomplete_regularized (@mvar{a}, @mvar{z})
 
 The regularized incomplete upper gamma function A&S 6.5.1:
 
@@ -702,7 +702,7 @@ Also see @code{gamma_incomplete}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z1})
+@deffn {Function} gamma_incomplete_generalized (@mvar{a}, @mvar{z1}, @mvar{z1})
 
 The generalized incomplete gamma function.
 
@@ -783,9 +783,9 @@ simplification of the result of @code{gamma} of an integer argument as well.
 
 @c -----------------------------------------------------------------------------
 @anchor{makegamma}
-@deffn {Function} makegamma (@var{expr})
+@deffn {Function} makegamma (@mvar{expr})
 Transforms instances of binomial, factorial, and beta
-functions in @var{expr} into gamma functions.
+functions in @mvar{expr} into gamma functions.
 
 See also @code{makefact}.
 
@@ -795,7 +795,7 @@ See also @code{makefact}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} beta (@var{a}, @var{b})
+@deffn {Function} beta (@mvar{a}, @mvar{b})
 The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
 (A&S 6.2.1).
 
@@ -803,11 +803,11 @@ Maxima simplifies the beta function for positive integers and rational
 numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is 
 @code{true}, Maxima simplifies also general expressions which sum to an integer. 
 
-For @var{a} or @var{b} equal to zero the beta function is not defined.
+For @mvar{a} or @mvar{b} equal to zero the beta function is not defined.
 
 In general the beta function is not defined for negative integers as an 
-argument. The exception is for @var{a=-n}, @var{n} a positive integer 
-and @var{b} a positive integer with @var{b<=n}, it is possible to define an 
+argument. The exception is for @mvar{a=-n}, @mvar{n} a positive integer 
+and @mvar{b} a positive integer with @mvar{b<=n}, it is possible to define an 
 analytic continuation. Maxima gives for this case a result.
 
 When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
@@ -824,8 +824,8 @@ bigfloat precision. For numerical evaluation Maxima uses @code{log_gamma}:
 
 Maxima knows that the beta function is symmetric and has mirror symmetry.
 
-Maxima knows the derivatives of the beta function with respect to @var{a} or 
-@var{b}.
+Maxima knows the derivatives of the beta function with respect to @mvar{a} or 
+@mvar{b}.
 
 To express the beta function as a ratio of gamma functions see @code{makegamma}. 
 
@@ -929,7 +929,7 @@ The derivative of the beta function wrt @code{a}:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
+@deffn {Function} beta_incomplete (@mvar{a}, @mvar{b}, @mvar{z})
 
 The basic definition of the incomplete beta function (A&S 6.6.1) is
 
@@ -969,15 +969,15 @@ For negative integers @math{a = -n} and positive integers @math{b=m} with
                             k = 0
 @end example
 
-Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
+Maxima uses this definition to simplify @code{beta_incomplete} for @mvar{a} a 
 negative integer.
 
-For @var{a} a positive integer, @code{beta_incomplete} simplifies for any 
-argument @var{b} and @var{z} and for @var{b} a positive integer for any 
-argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
+For @mvar{a} a positive integer, @code{beta_incomplete} simplifies for any 
+argument @mvar{b} and @mvar{z} and for @mvar{b} a positive integer for any 
+argument @mvar{a} and @mvar{z}, with the exception of @mvar{a} a negative integer.
 
 For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete} has the 
-specific value zero. For @var{z=1} and @math{realpart(b)>0}, 
+specific value zero. For @mvar{z=1} and @math{realpart(b)>0}, 
 @code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
 
 Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
@@ -989,12 +989,12 @@ expressions like @code{beta_incomplete(a+n,b,z)} and
 @code{beta_incomplete(a-n,b,z)} where n is a positive integer.
 
 Maxima knows the derivatives of @code{beta_incomplete} with respect to the 
-variables @var{a}, @var{b} and @var{z} and the integral with respect to the 
-variable @var{z}.
+variables @mvar{a}, @mvar{b} and @mvar{z} and the integral with respect to the 
+variable @mvar{z}.
 
 Examples:
 
-Simplification for @var{a} a positive integer:
+Simplification for @mvar{a} a positive integer:
 
 @example
 (%i1) beta_incomplete(2,b,z);
@@ -1004,7 +1004,7 @@ Simplification for @var{a} a positive integer:
                                   b (b + 1)
 @end example
 
-Simplification for @var{b} a positive integer:
+Simplification for @mvar{b} a positive integer:
 
 @example
 (%i2) beta_incomplete(a,2,z);
@@ -1014,7 +1014,7 @@ Simplification for @var{b} a positive integer:
                                   a (a + 1)
 @end example
 
-Simplification for @var{a} and @var{b} a positive integer:
+Simplification for @mvar{a} and @mvar{b} a positive integer:
 
 @example
 (%i3) beta_incomplete(3,2,z);
@@ -1026,7 +1026,7 @@ Simplification for @var{a} and @var{b} a positive integer:
 @end group
 @end example
 
-@var{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
+@mvar{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
 
 @example
 (%i4) beta_incomplete(-3,1,z);
@@ -1115,7 +1115,7 @@ Derivative and integral for @code{beta_incomplete}:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
+@deffn {Function} beta_incomplete_regularized (@mvar{a}, @mvar{b}, @mvar{z})
 
 The regularized incomplete beta function A&S 6.6.2, defined as
 
@@ -1130,11 +1130,11 @@ As for @code{beta_incomplete} this definition is not complete. See
 functions.wolfram.com for a complete definition of 
 @code{beta_incomplete_regularized}.
 
-@code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
+@code{beta_incomplete_regularized} simplifies @mvar{a} or @mvar{b} a positive 
 integer.
 
 For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete_regularized} has 
-the specific value 0. For @var{z=1} and @math{realpart(b)>0}, 
+the specific value 0. For @mvar{z=1} and @math{realpart(b)>0}, 
 @code{beta_incomplete_regularized} simplifies to 1.
 
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1145,12 +1145,12 @@ When @code{beta_expand} is @code{true}, Maxima expands
 where n is an integer.
 
 Maxima knows the derivatives of @code{beta_incomplete_regularized} with respect 
-to the variables @var{a}, @var{b}, and @var{z} and the integral with respect to 
-the variable @var{z}.
+to the variables @mvar{a}, @mvar{b}, and @mvar{z} and the integral with respect to 
+the variable @mvar{z}.
 
 Examples:
 
-Simplification for @var{a} or @var{b} a positive integer:
+Simplification for @mvar{a} or @mvar{b} a positive integer:
 
 @example
 (%i1) beta_incomplete_regularized(2,b,z);
@@ -1208,7 +1208,7 @@ Expansion, when @code{beta_expand} is @code{true}:
                                            beta(a, b) (b + a - 1)
 @end example
 
-The derivative and the integral wrt @var{z}:
+The derivative and the integral wrt @mvar{z}:
 
 @example
 (%i15) diff(beta_incomplete_regularized(a,b,z),z);
@@ -1232,7 +1232,7 @@ The derivative and the integral wrt @var{z}:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+@deffn {Function} beta_incomplete_generalized (@mvar{a}, @mvar{b}, @mvar{z1}, @mvar{z2})
 
 The basic definition of the generalized incomplete beta function is
 
@@ -1248,28 +1248,28 @@ The basic definition of the generalized incomplete beta function is
 @end group
 @end example
 
-Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
+Maxima simplifies @code{beta_incomplete_regularized} for @mvar{a} and @mvar{b} 
 a positive integer.
 
 For @math{realpart(a)>0} and @math{z1=0} or @math{z2=0}, Maxima simplifies
 @code{beta_incomplete_generalized} to @code{beta_incomplete}. For 
-@math{realpart(b)>0} and @math{z1=1} or @var{z2=1}, Maxima simplifies to an 
+@math{realpart(b)>0} and @math{z1=1} or @mvar{z2=1}, Maxima simplifies to an 
 expression with @code{beta} and @code{beta_incomplete}.
 
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
 in float and bigfloat precision.
 
 When @code{beta_expand} is @code{true}, Maxima expands 
-@code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @var{n} a 
+@code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @mvar{n} a 
 positive integer.
 
 Maxima knows the derivative of @code{beta_incomplete_generalized} with respect 
-to the variables @var{a}, @var{b}, @var{z1}, and @var{z2} and the integrals with
-respect to the variables @var{z1} and @var{z2}.
+to the variables @mvar{a}, @mvar{b}, @mvar{z1}, and @mvar{z2} and the integrals with
+respect to the variables @mvar{z1} and @mvar{z2}.
 
 Examples:
 
-Maxima simplifies @code{beta_incomplete_generalized} for @var{a} and @var{b} a 
+Maxima simplifies @code{beta_incomplete_generalized} for @mvar{a} and @mvar{b} a 
 positive integer:
 
 @example
@@ -1331,7 +1331,7 @@ Numerical evaluation for complex arguments in float or bigfloat precision:
 (%o13)     - 9.6254630032054178691b-2 %i - 3.3238477353543591914b-3
 @end example
 
-Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when 
+Expansion for @math{a+n} or @math{a-n}, @mvar{n} a positive integer, when 
 @code{beta_expand} is @code{true}: 
 
 @example
@@ -1357,7 +1357,7 @@ Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
                                             1 - a
 @end example
 
-Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
+Derivative wrt the variable @mvar{z1} and integrals wrt @mvar{z1} and @mvar{z2}:
 
 @example
 (%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
@@ -1392,7 +1392,7 @@ where @math{n} is an integer.
 Default value: false
 
 When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies 
-@code{beta(a,b)}, when the arguments @var{a} and @var{b} sum to an integer.
+@code{beta(a,b)}, when the arguments @mvar{a} and @mvar{b} sum to an integer.
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Simplification flags and variables}
@@ -1402,22 +1402,22 @@ When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {Function} psi (@var{x})
-@c @deffnx {Function} psi [@var{n}](@var{x})
-@deffn {Function} psi [@var{n}](@var{x})
+@c @deffn {Function} psi (@mvar{x})
+@c @deffnx {Function} psi [@mvar{n}](@mvar{x})
+@deffn {Function} psi [@mvar{n}](@mvar{x})
 
-The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
-Thus, @code{psi[0](@var{x})} is the first derivative,
-@code{psi[1](@var{x})} is the second derivative, etc.
+The derivative of @code{log (gamma (@mvar{x}))} of order @code{@mvar{n}+1}.
+Thus, @code{psi[0](@mvar{x})} is the first derivative,
+@code{psi[1](@mvar{x})} is the second derivative, etc.
 
 Maxima does not know how, in general, to compute a numerical value of
 @code{psi}, but it can compute some exact values for rational args.
 Several variables control what range of rational args @code{psi} will
 return an exact value, if possible.  See @code{maxpsiposint},
 @code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracdenom}.
-That is, @var{x} must lie between @code{maxpsinegint} and
+That is, @mvar{x} must lie between @code{maxpsinegint} and
 @code{maxpsiposint}.  If the absolute value of the fractional part of
-@var{x} is rational and has a numerator less than @code{maxpsifracnum}
+@mvar{x} is rational and has a numerator less than @code{maxpsifracnum}
 and has a denominator less than @code{maxpsifracdenom}, @code{psi}
 will return an exact value.
 
@@ -1446,7 +1446,7 @@ Default value: -10
 
 @code{maxpsinegint} is the most negative value for which
 @code{psi[n](x)} will try to compute an exact value.  That is if
-@var{x} is less than @code{maxnegint}, @code{psi[n](@var{x})} will not
+@mvar{x} is less than @code{maxnegint}, @code{psi[n](@mvar{x})} will not
 return simplified answer, even if it could.
 
 @opencatbox
@@ -1458,9 +1458,9 @@ return simplified answer, even if it could.
 @defvr {Option variable} maxpsifracnum
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
+Let @mvar{x} be a rational number less than one of the form @code{p/q}.
 If @code{p} is greater than @code{maxpsifracnum}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
+@code{psi[@mvar{n}](@mvar{x})} will not try to return a simplified
 value.
 
 @opencatbox
@@ -1472,9 +1472,9 @@ value.
 @defvr {Option variable} maxpsifracdenom
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
+Let @mvar{x} be a rational number less than one of the form @code{p/q}.
 If @code{q} is greater than @code{maxpsifracdenom}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
+@code{psi[@mvar{n}](@mvar{x})} will not try to return a simplified
 value.
 
 @opencatbox
@@ -1485,9 +1485,9 @@ value.
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {Function} makefact (@var{expr})
+@deffn {Function} makefact (@mvar{expr})
 Transforms instances of binomial, gamma, and beta
-functions in @var{expr} into factorials.
+functions in @mvar{expr} into factorials.
 
 See also @code{makegamma}.
 
@@ -1498,9 +1498,9 @@ See also @code{makegamma}.
 
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@deffn {Function} numfactor (@var{expr})
+@deffn {Function} numfactor (@mvar{expr})
 Returns the numerical factor multiplying the expression
-@var{expr}, which should be a single term.
+@mvar{expr}, which should be a single term.
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
 @code{content} returns the greatest common divisor (gcd) of all terms in a sum.
@@ -1529,56 +1529,56 @@ The Exponential Integral and related funtions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 5
 
-@deffn {Function} expintegral_e1 (@var{z})
+@deffn {Function} expintegral_e1 (@mvar{z})
 The Exponential Integral E1(z) (A&S 5.1.1)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_ei (@var{z})
+@deffn {Function} expintegral_ei (@mvar{z})
 The Exponential Integral Ei(z) (A&S 5.1.2)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_li (@var{z})
+@deffn {Function} expintegral_li (@mvar{z})
 The Exponential Integral Li(z)  (A&S 5.1.3)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_e (@var{n},@var{z})
+@deffn {Function} expintegral_e (@mvar{n},@mvar{z})
 The Exponential Integral En(z)  (A&S 5.1.4)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_si (@var{z})
+@deffn {Function} expintegral_si (@mvar{z})
 The Exponential Integral Si(z) (A&S 5.2.1)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_ci (@var{z})
+@deffn {Function} expintegral_ci (@mvar{z})
 The Exponential Integral Ci(z) (A&S 5.2.2)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_shi (@var{z})
+@deffn {Function} expintegral_shi (@mvar{z})
 The Exponential Integral Shi(z) (A&S 5.2.3)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_chi (@var{z})
+@deffn {Function} expintegral_chi (@mvar{z})
 The Exponential Integral Chi(z) (A&S 5.2.4)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1616,7 +1616,7 @@ Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{erf}
-@deffn {Function} erf (@var{z})
+@deffn {Function} erf (@mvar{z})
 
 The Error Function erf(z) (A&S 7.1.1)
 
@@ -1626,7 +1626,7 @@ See also flag @code{erfflag}.
 @closecatbox
 @end deffn
 
-@deffn {Function} erfc (@var{z})
+@deffn {Function} erfc (@mvar{z})
 The Complementary Error Function erfc(z) (A&S 7.1.2)
 
 @code{erfc(z) = 1-erf(z)}
@@ -1635,7 +1635,7 @@ The Complementary Error Function erfc(z) (A&S 7.1.2)
 @closecatbox
 @end deffn
 
-@deffn {Function} erfi (@var{z})
+@deffn {Function} erfi (@mvar{z})
 The Imaginary Error Function. 
 
 @code{erfi(z) = -%i*erf(%i*z)}
@@ -1644,14 +1644,14 @@ The Imaginary Error Function.
 @closecatbox
 @end deffn
 
-@deffn {Function} erf_generalized (@var{z1},@var{z2})
+@deffn {Function} erf_generalized (@mvar{z1},@mvar{z2})
 Generalized Error function Erf(z1,z2)
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} fresnel_c (@var{z})
+@deffn {Function} fresnel_c (@mvar{z})
 The Fresnel Integral C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
 
 The simplification fresnel_c(-x) = -fresnel_c(x) is applied when
@@ -1666,7 +1666,7 @@ See flags @code{erf_representation} and @code{hypergeometric_representation}.
 @closecatbox
 @end deffn
 
-@deffn {Function} fresnel_s (@var{z})
+@deffn {Function} fresnel_s (@mvar{z})
 The Fresnel Integral S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
 
 The simplification fresnel_s(-x) = -fresnel_s(x) is applied when
@@ -1702,7 +1702,7 @@ The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 12.
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} struve_h (@var{v}, @var{z})
+@deffn {Function} struve_h (@mvar{v}, @mvar{z})
 The Struve Function H of order v and argument z. (A&S 12.1.1)
 
 @opencatbox
@@ -1711,7 +1711,7 @@ The Struve Function H of order v and argument z. (A&S 12.1.1)
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} struve_l (@var{v}, @var{z})
+@deffn {Function} struve_l (@mvar{v}, @mvar{z})
 The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
 
 @opencatbox
@@ -1728,7 +1728,7 @@ The Hypergeometric Functions are defined in Abramowitz and Stegun,
 Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
-@deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
+@deffn {Function} %m [@mvar{k},@mvar{u}] (@mvar{z}) 
 Whittaker M function
 @code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
 (A&S 13.1.32)
@@ -1737,7 +1737,7 @@ Whittaker M function
 @closecatbox
 @end deffn
 
-@deffn {Function} %w [@var{k},@var{u}] (@var{z}) 
+@deffn {Function} %w [@mvar{k},@mvar{u}] (@mvar{z}) 
 Whittaker W function.  (A&S 13.1.33)
 @opencatbox
 @category{Special functions}
@@ -1745,7 +1745,7 @@ Whittaker W function.  (A&S 13.1.33)
 @end deffn
 
 
-@deffn {Function} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
+@deffn {Function} %f [@mvar{p},@mvar{q}] (@mvar{[a],[b],z}) 
 The pFq(a1,a2,..ap;b1,b2,..bq;z) hypergeometric function,
 where @code{a} a list of length @code{p} and 
 @code{b} a list of length @code{q}.
@@ -1754,7 +1754,7 @@ where @code{a} a list of length @code{p} and
 @closecatbox
 @end deffn
 
-@deffn {Function} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+@deffn {Function} hypergeometric ([@mvar{a1}, ..., @mvar{ap}],[@mvar{b1}, ... ,@mvar{bq}], x)
 The hypergeometric function. Unlike Maxima's @code{%f} hypergeometric
 function, the function @code{hypergeometric} is a simplifying
 function; also, @code{hypergeometric} supports complex double and
@@ -1807,7 +1807,7 @@ The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
 Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
-@deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
+@deffn {Function} parabolic_cylinder_d (@mvar{v}, @mvar{z}) 
 The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 @opencatbox
 @category{Special functions}
@@ -1822,10 +1822,10 @@ The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 
 
 
-@deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@deffn {Function} specint (exp(- s*@mvar{t}) * @mvar{expr}, @mvar{t})
 
-Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
-The integrand @var{expr} may contain special functions. 
+Compute the Laplace transform of @mvar{expr} with respect to the variable @mvar{t}.
+The integrand @mvar{expr} may contain special functions. 
 
 The following special functions are handled by @code{specint}: incomplete gamma 
 function, error functions (but not the error function @code{erfi}, it is easy to 
@@ -1931,16 +1931,16 @@ the representation to @code{expintegral_e1}:
 @closecatbox
 @end deffn
 
-@deffn {Function} hgfred (@var{a}, @var{b}, @var{t})
+@deffn {Function} hgfred (@mvar{a}, @mvar{b}, @mvar{t})
 
 Simplify the generalized hypergeometric function in terms of other,
-simpler, forms.  @var{a} is a list of numerator parameters and @var{b}
+simpler, forms.  @mvar{a} is a list of numerator parameters and @mvar{b}
 is a list of the denominator parameters. 
 
 If @code{hgfred} cannot simplify the hypergeometric function, it returns
-an expression of the form @code{%f[p,q]([a], [b], x)} where @var{p} is
-the number of elements in @var{a}, and @var{q} is the number of elements
-in @var{b}.  This is the usual @code{pFq} generalized hypergeometric
+an expression of the form @code{%f[p,q]([a], [b], x)} where @mvar{p} is
+the number of elements in @mvar{a}, and @mvar{q} is the number of elements
+in @mvar{b}.  This is the usual @code{pFq} generalized hypergeometric
 function. 
 
 @example
@@ -1968,7 +1968,7 @@ function.
 @end example
 
 It can be beneficial to load orthopoly too as the following example
-shows.  Note that @var{L} is the generalized Laguerre polynomial.
+shows.  Note that @mvar{L} is the generalized Laguerre polynomial.
 
 @example
 (%i5) load(orthopoly)$
@@ -1991,7 +1991,7 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @end example
 @end deffn
 
-@deffn {Function} lambert_w (@var{z})
+@deffn {Function} lambert_w (@mvar{z})
 The principal branch of Lambert's W function W(z), the solution of 
 @code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
 @opencatbox
@@ -1999,8 +1999,8 @@ The principal branch of Lambert's W function W(z), the solution of
 @closecatbox
 @end deffn
 
-@deffn {Function} generalized_lambert_w (@var{k}, @var{z})
-The @var{k}-th branch of Lambert's W function W(z), the solution of 
+@deffn {Function} generalized_lambert_w (@mvar{k}, @mvar{z})
+The @mvar{k}-th branch of Lambert's W function W(z), the solution of 
 @code{z = W(z) * exp(W(z))}. (DLMF 4.13)
 
 The principal branch, denoted Wp(z) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
@@ -2013,7 +2013,7 @@ The other branch with real values, denoted Wm(z) in DLMF, is @code{generalized_l
 
 
 
-@deffn {Function} nzeta (@var{z})
+@deffn {Function} nzeta (@mvar{z})
 The Plasma Dispersion Function 
 @code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
 @opencatbox
@@ -2021,14 +2021,14 @@ The Plasma Dispersion Function
 @closecatbox
 @end deffn
 
-@deffn {Function} nzetar (@var{z})
+@deffn {Function} nzetar (@mvar{z})
 Returns @code{realpart(nzeta(z))}.
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} nzetai (@var{z})
+@deffn {Function} nzetai (@mvar{z})
 Returns @code{imagpart(nzeta(z))}.
 @opencatbox
 @category{Special functions}

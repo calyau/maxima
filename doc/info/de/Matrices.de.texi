@@ -184,13 +184,13 @@ Das Paket @code{eigen} enth@"alt die folgenden Funktionen:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{addcol}
-@deffn {Funktion} addcol (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+@deffn {Funktion} addcol (@mvar{M}, @mvar{list_1}, @dots{}, @mvar{list_n})
 
 @c Appends the column(s) given by the one or more lists (or matrices) onto the
-@c matrix @var{M}.
+@c matrix @mvar{M}.
 
-H@"angt eine oder mehrere Spalten, die als Listen @var{list_1}, @dots{}, 
-@var{list_n} @"ubergeben werden, an die Matrix @var{M} an.
+H@"angt eine oder mehrere Spalten, die als Listen @mvar{list_1}, @dots{}, 
+@mvar{list_n} @"ubergeben werden, an die Matrix @mvar{M} an.
 
 Beispiel:
 
@@ -208,13 +208,13 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{addrow}
-@deffn {Funktion} addrow (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+@deffn {Funktion} addrow (@mvar{M}, @mvar{list_1}, @dots{}, @mvar{list_n})
 
 @c Appends the row(s) given by the one or more lists (or matrices) onto the 
-@c matrix @var{M}.
+@c matrix @mvar{M}.
 
-H@"angt eine oder mehrere Zeilen, die als Listen @var{list_1}, @dots{},
-@var{list_n} @"ubergeben werden, an die Matrix @var{M} an.
+H@"angt eine oder mehrere Zeilen, die als Listen @mvar{list_1}, @dots{},
+@mvar{list_n} @"ubergeben werden, an die Matrix @mvar{M} an.
 
 Beispiel:
 
@@ -236,26 +236,26 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{adjoint}
-@deffn {Funktion} adjoint (@var{M})
+@deffn {Funktion} adjoint (@mvar{M})
 
-@c Returns the adjoint of the matrix @var{M}. The adjoint matrix is the 
-@c transpose of the matrix of cofactors of @var{M}.
+@c Returns the adjoint of the matrix @mvar{M}. The adjoint matrix is the 
+@c transpose of the matrix of cofactors of @mvar{M}.
 
-Gibt die adjungierte der Matrix @var{M} zur@"uck.
+Gibt die adjungierte der Matrix @mvar{M} zur@"uck.
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{augcoefmatrix}
-@deffn {Funktion} augcoefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Funktion} augcoefmatrix ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
-@c Returns the augmented coefficient matrix for the variables @var{x_1}, ..., 
-@c @var{x_n} of the system of linear equations @var{eqn_1}, ..., @var{eqn_m}.
+@c Returns the augmented coefficient matrix for the variables @mvar{x_1}, ..., 
+@c @mvar{x_n} of the system of linear equations @mvar{eqn_1}, ..., @mvar{eqn_m}.
 @c This is the coefficient matrix with a column adjoined for the constant terms 
-@c in each equation (i.e., those terms not dependent upon @var{x_1}, ..., 
-@c @var{x_n}).
+@c in each equation (i.e., those terms not dependent upon @mvar{x_1}, ..., 
+@c @mvar{x_n}).
 
-Gibt die erweiterte Koeffizientenmatrix f@"ur die Variablen @var{x_1}, @dots{}, 
-@var{x_n} und dem linearen Gleichungssystem @var{eqn_1}, @dots{}, @var{eqn_m}.
+Gibt die erweiterte Koeffizientenmatrix f@"ur die Variablen @mvar{x_1}, @dots{}, 
+@mvar{x_n} und dem linearen Gleichungssystem @mvar{eqn_1}, @dots{}, @mvar{eqn_m}.
 Die erweiterte Koeffizientenmatrix entsteht, wenn an die Koeffizientenmatrix 
 des Gleichungssystems die Spalte mit der rechten Seite des Gleichungssystems
 angef@"ugt wird.
@@ -273,15 +273,15 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{charpoly}
-@deffn {Funktion} charpoly (@var{M}, @var{x})
+@deffn {Funktion} charpoly (@mvar{M}, @mvar{x})
 
-@c Returns the characteristic polynomial for the matrix @var{M} with respect to
-@c variable @var{x}. That is, 
-@c @code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
+@c Returns the characteristic polynomial for the matrix @mvar{M} with respect to
+@c variable @mvar{x}. That is, 
+@c @code{determinant (@mvar{M} - diagmatrix (length (@mvar{M}), @mvar{x}))}.
 
-Gibt das charakteristische Polynom der Matrix @var{M} f@"ur die Variable @var{x}
+Gibt das charakteristische Polynom der Matrix @mvar{M} f@"ur die Variable @mvar{x}
 zur@"uck.  Das charakterische Polynom wird als
-@code{determinant(@var{M} - diagmatrix(length (@var{M}), @var{x}))} berechnet.
+@code{determinant(@mvar{M} - diagmatrix(length (@mvar{M}), @mvar{x}))} berechnet.
 
 Beispiel:
 
@@ -321,13 +321,13 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{coefmatrix}
-@deffn {Funktion} coefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Funktion} coefmatrix ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
-@c Returns the coefficient matrix for the variables @var{x_1}, ..., @var{x_n} 
-@c of the system of linear equations @var{eqn_1}, ..., @var{eqn_m}.
+@c Returns the coefficient matrix for the variables @mvar{x_1}, ..., @mvar{x_n} 
+@c of the system of linear equations @mvar{eqn_1}, ..., @mvar{eqn_m}.
 
-Gibt die Koeffizientenmatrix f@"ur die Variablen @var{x_1}, @dots{}, @var{x_n}
-des linearen Gleichungssystem @var{eqn_1}, @dots{}, @var{eqn_m} zur@"uck.
+Gibt die Koeffizientenmatrix f@"ur die Variablen @mvar{x_1}, @dots{}, @mvar{x_n}
+des linearen Gleichungssystem @mvar{eqn_1}, @dots{}, @mvar{eqn_m} zur@"uck.
 
 Beispiel:
 
@@ -343,13 +343,13 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{col}
-@deffn {Funktion} col (@var{M}, @var{i})
+@deffn {Funktion} col (@mvar{M}, @mvar{i})
 
-@c Returns the @var{i}'th column of the matrix @var{M}. The return value is a
+@c Returns the @mvar{i}'th column of the matrix @mvar{M}. The return value is a
 @c matrix.
 @c EXAMPLE HERE
 
-Gibt die @var{i}-te Spalte der Matrix @var{M} zur@"uck.  Das Ergebnis ist eine
+Gibt die @mvar{i}-te Spalte der Matrix @mvar{M} zur@"uck.  Das Ergebnis ist eine
 Matrix.
 
 Beispiel:
@@ -368,13 +368,13 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{columnvector}
-@deffn  {Funktion} columnvector (@var{L})
-@deffnx {Funktion} covect (@var{L})
+@deffn  {Funktion} columnvector (@mvar{L})
+@deffnx {Funktion} covect (@mvar{L})
 
-@c Returns a matrix of one column and @code{length(@var{L})} rows, containing 
-@c the elements of the list @var{L}.
+@c Returns a matrix of one column and @code{length(@mvar{L})} rows, containing 
+@c the elements of the list @mvar{L}.
 
-Gibt eine Matrix mit einer Spalte zur@"uck, die die Elemente der Liste @var{L}
+Gibt eine Matrix mit einer Spalte zur@"uck, die die Elemente der Liste @mvar{L}
 enth@"alt.
 
 @c @code{covect} is a synonym for @code{columnvector}.
@@ -406,12 +406,12 @@ Beispiel:
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{copymatrix}
-@deffn {Funktion} copymatrix (@var{M})
+@deffn {Funktion} copymatrix (@mvar{M})
 
-@c Returns a copy of the matrix @var{M}.  This is the only way to make a copy 
-@c aside from copying @var{M} element by element.
+@c Returns a copy of the matrix @mvar{M}.  This is the only way to make a copy 
+@c aside from copying @mvar{M} element by element.
 
-Gibt eine Kopie der Matrix @var{M} zur@"uck.
+Gibt eine Kopie der Matrix @mvar{M} zur@"uck.
 
 @c Note that an assignment of one matrix to another, as in @code{m2: m1}, does 
 @c not copy @code{m1}. An assignment @code{m2 [i,j]: x} or 
@@ -427,12 +427,12 @@ ausgef@"uhrt werden.
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{determinat}
-@deffn {Funktion} determinant (@var{M})
+@deffn {Funktion} determinant (@mvar{M})
 
-@c Computes the determinant of @var{M} by a method similar to Gaussian 
+@c Computes the determinant of @mvar{M} by a method similar to Gaussian 
 @c elimination.
 
-Berechnet die Determinate der Matrix @var{M}.  Die angewendete Methode ist
+Berechnet die Determinate der Matrix @mvar{M}.  Die angewendete Methode ist
 vergleichbar mit dem Gau@ss{}-Verfahren.
 
 @c JUST HOW DOES ratmx AFFECT THE RESULT ?? IS A SPARSE DETERMINANT SOMETHING 
@@ -489,27 +489,27 @@ Beispiele:
 
 @c -----------------------------------------------------------------------------
 @anchor{diagmatrix}
-@deffn {Funktion} diagmatrix (@var{n}, @var{x})
+@deffn {Funktion} diagmatrix (@mvar{n}, @mvar{x})
 
-@c Returns a diagonal matrix of size @var{n} by @var{n} with the diagonal 
-@c elements all equal to @var{x}. @code{diagmatrix (@var{n}, 1)} returns an 
-@c identity matrix (same as @code{ident (@var{n})}).
+@c Returns a diagonal matrix of size @mvar{n} by @mvar{n} with the diagonal 
+@c elements all equal to @mvar{x}. @code{diagmatrix (@mvar{n}, 1)} returns an 
+@c identity matrix (same as @code{ident (@mvar{n})}).
 
-Gibt eine @var{n}-dimensionale Diagonalmatrix zur@"uck, deren Diagonalelemente
-alle den Wert @var{x} haben.
+Gibt eine @mvar{n}-dimensionale Diagonalmatrix zur@"uck, deren Diagonalelemente
+alle den Wert @mvar{x} haben.
 
-@c @var{n} must evaluate to an integer, otherwise @code{diagmatrix} complains 
+@c @mvar{n} must evaluate to an integer, otherwise @code{diagmatrix} complains 
 @c with an error message.
 
-@var{n} muss zu einer ganzen Zahl auswerten.  Ansonsten meldet Maxima einen
+@mvar{n} muss zu einer ganzen Zahl auswerten.  Ansonsten meldet Maxima einen
 Fehler.
 
-@c @var{x} can be any kind of expression, including another matrix. If @var{x} 
+@c @mvar{x} can be any kind of expression, including another matrix. If @mvar{x} 
 @c is a matrix, it is not copied; all diagonal elements refer to the same 
-@c instance, @var{x}.
+@c instance, @mvar{x}.
 
-@var{x} kann ein beliebiger Ausdruck einschlie@ss{}lich einer Matrix sein.  Ist
-@var{x} eine Matrix, dann wird diese nicht kopiert.
+@mvar{x} kann ein beliebiger Ausdruck einschlie@ss{}lich einer Matrix sein.  Ist
+@mvar{x} eine Matrix, dann wird diese nicht kopiert.
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -534,22 +534,22 @@ ausgef@"uhrt, die mit den einzelnen @code{dot}-Schaltern eingeschaltet sind.
 Standardwert: @code{true}
 
 @c When @code{domxexpt} is @code{true}, a matrix exponential, 
-@c @code{exp (@var{M})} where @var{M} is a matrix, is interpreted as a matrix 
+@c @code{exp (@mvar{M})} where @mvar{M} is a matrix, is interpreted as a matrix 
 @c with element @code{[i,j} equal to @code{exp (m[i,j])}. Otherwise 
-@c @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)}}.
+@c @code{exp (@mvar{M})} evaluates to @code{exp (@mvar{ev(M)}}.
 
 Hat @code{domxexpt} den Wert @code{true}, wird die Exponentiation
-@code{exp(@var{M})}, wobei @var{M} eine Matrix ist, elementweise f@"ur jedes
+@code{exp(@mvar{M})}, wobei @mvar{M} eine Matrix ist, elementweise f@"ur jedes
 einzelne Matrixelement ausgef@"uhrt, so dass f@"ur jedes Element der Matrix 
 gilt @code{exp (m[i,j])}.  Ansonsten wird die Exponentiation als
-@code{exp (@var{ev(M)}} ausgewertet.
+@code{exp (@mvar{ev(M)}} ausgewertet.
 
 @c @code{domxexpt} affects all expressions of the form 
-@c @code{@var{base}^@var{power}} where @var{base} is an expression assumed 
-@c scalar or constant, and @var{power} is a list or matrix.
+@c @code{@mvar{base}^@mvar{power}} where @mvar{base} is an expression assumed 
+@c scalar or constant, and @mvar{power} is a list or matrix.
 
-@code{domxexpt} beeinflu@ss{}t alle Ausdr@"ucke der Form @code{@var{a}^@var{b}},
-wobei @var{a} eine Konstante oder ein skalarer Ausdruck und @var{b} eine
+@code{domxexpt} beeinflu@ss{}t alle Ausdr@"ucke der Form @code{@mvar{a}^@mvar{b}},
+wobei @mvar{a} eine Konstante oder ein skalarer Ausdruck und @mvar{b} eine
 Liste oder Matrix ist.
 
 Beispiele:
@@ -780,15 +780,15 @@ Hat @code{dotscrules} den Wert @code{true}, vereinfacht Maxima Ausdr@"ucke
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{echelon}
-@deffn {Funktion} echelon (@var{M})
+@deffn {Funktion} echelon (@mvar{M})
 
-@c Returns the echelon form of the matrix @var{M}, as produced by Gaussian 
-@c elimination. The echelon form is computed from @var{M} by elementary row 
+@c Returns the echelon form of the matrix @mvar{M}, as produced by Gaussian 
+@c elimination. The echelon form is computed from @mvar{M} by elementary row 
 @c operations such that the first non-zero element in each row in the resulting 
 @c matrix is one and the column elements under the first one in each row are 
 @c all zero.
 
-Gibt die Matrix @var{m} in ihrer Stufenform zur@"uck, wie sie im Gau@ss{}schen
+Gibt die Matrix @mvar{m} in ihrer Stufenform zur@"uck, wie sie im Gau@ss{}schen
 Eliminationsverfahren auftritt.
 
 @c @code{triangularize} also carries out Gaussian elimination,
@@ -829,20 +829,20 @@ Beispiel:
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{eigenvalues}
-@deffn  {Funktion} eigenvalues (@var{M})
-@deffnx {Funktion} eivals (@var{M})
+@deffn  {Funktion} eigenvalues (@mvar{M})
+@deffnx {Funktion} eivals (@mvar{M})
 
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; 
 @c EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION 
 @c ITEM
 
-@c Returns a list of two lists containing the eigenvalues of the matrix @var{M}.
+@c Returns a list of two lists containing the eigenvalues of the matrix @mvar{M}.
 @c The first sublist of the return value is the list of eigenvalues of the
 @c matrix, and the second sublist is the list of the
 @c multiplicities of the eigenvalues in the corresponding order.
 
-Gibt eine Liste mit den Eigenwerten der Matrix @var{M} und deren
+Gibt eine Liste mit den Eigenwerten der Matrix @mvar{M} und deren
 Multiplizit@"aten zur@"uck.  Die erste Teilliste enth@"alt die Eigenwerte, die
 zweite deren Multiplizit@"aten.
 
@@ -888,18 +888,18 @@ Das Paket @code{eigen} wird automatisch geladen, wenn eine der Funktionen
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{eigenvectors}
-@deffn  {Funktion} eigenvectors (@var{M})
-@deffnx {Funktion} eivects (@var{M})
+@deffn  {Funktion} eigenvectors (@mvar{M})
+@deffnx {Funktion} eivects (@mvar{M})
 
-@c Computes eigenvectors of the matrix @var{M}. The return value is a list of 
-@c two elements. The first is a list of the eigenvalues of @var{M} and a list 
+@c Computes eigenvectors of the matrix @mvar{M}. The return value is a list of 
+@c two elements. The first is a list of the eigenvalues of @mvar{M} and a list 
 @c of the multiplicities of the eigenvalues. The second is a list of lists of 
 @c eigenvectors. There is one list of eigenvectors for each eigenvalue. There 
 @c may be one or more eigenvectors in each list.
 
-Berechnet die Eigenvektoren der Matrix @var{M}.  Die R@"uckgabe ist eine Liste, 
+Berechnet die Eigenvektoren der Matrix @mvar{M}.  Die R@"uckgabe ist eine Liste, 
 die zwei weitere Listen enth@"alt.  Die erste Liste enth@"alt die Eigenwerte der
-Matrix @var{m} und deren Multiplizit@"aten.  Die zweite Liste enth@"alt die
+Matrix @mvar{m} und deren Multiplizit@"aten.  Die zweite Liste enth@"alt die
 Eigenvektoren.
 
 @c @code{eivects} is a synonym for @code{eigenvectors}.
@@ -1052,36 +1052,36 @@ Eine Matrix, die zwei Eigenvektoren zu jedem Eigenwert hat.
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{ematrix}
-@deffn {Funktion} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+@deffn {Funktion} ematrix (@mvar{m}, @mvar{n}, @mvar{x}, @mvar{i}, @mvar{j})
 
-@c Returns an @var{m} by @var{n} matrix, all elements of which are zero except 
-@c for the @code{[@var{i}, @var{j}]} element which is @var{x}.
+@c Returns an @mvar{m} by @mvar{n} matrix, all elements of which are zero except 
+@c for the @code{[@mvar{i}, @mvar{j}]} element which is @mvar{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
-Gibt eine @var{m} @code{x} @var{n}-Matrix zur@"uck, deren Elemente den Wert 0 
-haben, bis auf das Element @code{[@var{i}, @var{j}]}, das den Wert @var{x} hat.
+Gibt eine @mvar{m} @code{x} @mvar{n}-Matrix zur@"uck, deren Elemente den Wert 0 
+haben, bis auf das Element @code{[@mvar{i}, @mvar{j}]}, das den Wert @mvar{x} hat.
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{entermatrix}
-@deffn {Funktion} entermatrix (@var{m}, @var{n})
+@deffn {Funktion} entermatrix (@mvar{m}, @mvar{n})
 
-@c Returns an @var{m} by @var{n} matrix, reading the elements interactively.
+@c Returns an @mvar{m} by @mvar{n} matrix, reading the elements interactively.
 
-Gibt eine @var{m} @code{x} @var{n}-Matrix zur@"uck, die von der Konsole 
+Gibt eine @mvar{m} @code{x} @mvar{n}-Matrix zur@"uck, die von der Konsole 
 eingelesen wird.
 
-@c If @var{n} is equal to @var{m}, Maxima prompts for the type of the matrix 
+@c If @mvar{n} is equal to @mvar{m}, Maxima prompts for the type of the matrix 
 @c (diagonal, symmetric, antisymmetric, or general) and for each element.
 @c Each response is terminated by a semicolon @code{;} or dollar sign @code{$}.
 
-Ist @var{n} gleich @var{m}, fragt Maxima nach dem Typ der Matrix.  Folgende
+Ist @mvar{n} gleich @mvar{m}, fragt Maxima nach dem Typ der Matrix.  Folgende
 Typen k@"onnen angegeben werden: diagonal, symmetric, antisymmetric oder 
 allgemein.  Dannach werden die einzelnen Elemente der Matrix abgefragt.
 
-@c If @var{n} is not equal to @var{m}, Maxima prompts for each element.
+@c If @mvar{n} is not equal to @mvar{m}, Maxima prompts for each element.
 
-Sind @var{n} und @var{m} voneinander verschieden, fragt Maxima nach jedem 
+Sind @mvar{n} und @mvar{m} voneinander verschieden, fragt Maxima nach jedem 
 Element der Matrix.
 
 @c The elements may be any expressions, which are evaluated. @code{entermatrix}
@@ -1122,7 +1122,7 @@ Matrix entered.
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{express}
-@deffn {Funktion} express (@var{expr})
+@deffn {Funktion} express (@mvar{expr})
 
 @c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? 
 @c I'M NOT GETTING IT
@@ -1207,38 +1207,38 @@ Beispiele:
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{genmatrix}
-@deffn  {Funktion} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@deffnx {Funktion} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@deffnx {Funktion} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+@deffn  {Funktion} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1}, @mvar{j_1})
+@deffnx {Funktion} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1})
+@deffnx {Funktion} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2})
 
-@c Returns a matrix generated from @var{a}, taking element 
-@c @code{@var{a}[@var{i_1},@var{j_1}]} as the upper-left element and 
-@c @code{@var{a}[@var{i_2},@var{j_2}]} as the lower-right element of the matrix.
-@c Here @var{a} is a declared array (created by @code{array} but not by 
+@c Returns a matrix generated from @mvar{a}, taking element 
+@c @code{@mvar{a}[@mvar{i_1},@mvar{j_1}]} as the upper-left element and 
+@c @code{@mvar{a}[@mvar{i_2},@mvar{j_2}]} as the lower-right element of the matrix.
+@c Here @mvar{a} is a declared array (created by @code{array} but not by 
 @c @code{make_array}) or an undeclared array, or an array function, or a lambda 
 @c expression of two arguments. (An array function is created like other 
 @c functions with @code{:=} or @code{define}, but arguments are enclosed in 
 @c square brackets instead of parentheses.)
 
-Generiert eine Matrix aus einem Array @var{a}.  Das erste Element der Matrix
-ist der Wert @code{@var{a}[@var{i_1},@var{j_1}]} und das letzte Element der
-Matrix ist @code{@var{a}[@var{i_2},@var{j_2}]}.  @var{a} muss ein deklariertes
+Generiert eine Matrix aus einem Array @mvar{a}.  Das erste Element der Matrix
+ist der Wert @code{@mvar{a}[@mvar{i_1},@mvar{j_1}]} und das letzte Element der
+Matrix ist @code{@mvar{a}[@mvar{i_2},@mvar{j_2}]}.  @mvar{a} muss ein deklariertes
 Array sein, dass mit der Funktion @code{array} definiert wurde.  Weiterhin kann
-@var{a} ein undeklariertes Array, eine Array-Funktion oder ein lambda-Ausdruck
+@mvar{a} ein undeklariertes Array, eine Array-Funktion oder ein lambda-Ausdruck
 mit zwei Argumenten sein.
 
-@c If @var{j_1} is omitted, it is assumed equal to @var{i_1}. If both @var{j_1} 
-@c and @var{i_1} are omitted, both are assumed equal to 1.
+@c If @mvar{j_1} is omitted, it is assumed equal to @mvar{i_1}. If both @mvar{j_1} 
+@c and @mvar{i_1} are omitted, both are assumed equal to 1.
 
-Wird @var{j_1} nicht angegeben, nimmt Maxima an, das der Wert gleich @var{i_1} 
-ist.  Werden beide Argumente @var{j_1} und @var{i_1} nicht angegeben, werden
+Wird @mvar{j_1} nicht angegeben, nimmt Maxima an, das der Wert gleich @mvar{i_1} 
+ist.  Werden beide Argumente @mvar{j_1} und @mvar{i_1} nicht angegeben, werden
 die Werte zu 1 angenommen.
 
 @c If a selected element @code{i,j} of the array is undefined, the matrix will
-@c contain a symbolic element @code{@var{a}[i,j]}.
+@c contain a symbolic element @code{@mvar{a}[i,j]}.
 
 Ist eines der Elemente @code{[i,j]} des Arrays nicht definiert, enth@"alt die
-Matrix den symbolischen Wert @code{@var{a}[i,j]}.
+Matrix den symbolischen Wert @code{@mvar{a}[i,j]}.
 
 Beispiele:
 
@@ -1288,31 +1288,31 @@ Beispiele:
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{gramschmidt}
-@deffn  {Funktion} gramschmidt (@var{x})
-@deffnx {Funktion} gramschmidt (@var{x}, @var{F})
+@deffn  {Funktion} gramschmidt (@mvar{x})
+@deffnx {Funktion} gramschmidt (@mvar{x}, @mvar{F})
 
-@c Carries out the Gram-Schmidt orthogonalization algorithm on @var{x}, which 
-@c is either a matrix or a list of lists. @var{x} is not modified by
+@c Carries out the Gram-Schmidt orthogonalization algorithm on @mvar{x}, which 
+@c is either a matrix or a list of lists. @mvar{x} is not modified by
 @c @code{gramschmidt}. The inner product employed by @code{gramschmidt} is 
-@c @var{F}, if present, otherwise the inner product is the function 
+@c @mvar{F}, if present, otherwise the inner product is the function 
 @c @code{innerproduct}.
 
 Wendet das Gram-Schmidtsche Orthogonalisierungsverfahren auf das Argument
-@var{x} an.  @var{x} ist eine Matrix oder eine Liste mit Listen f@"ur die 
-Spalten.  Das Argument @var{x} wird von @code{gramschmidt} nicht ver@"andert.
-@var{F} bezeichnet eine Funktion, die als Skalarprodukt f@"ur das Verfahren 
-verwendet wird.  Wird @var{F} nicht angegeben, wird die Funktion 
+@mvar{x} an.  @mvar{x} ist eine Matrix oder eine Liste mit Listen f@"ur die 
+Spalten.  Das Argument @mvar{x} wird von @code{gramschmidt} nicht ver@"andert.
+@mvar{F} bezeichnet eine Funktion, die als Skalarprodukt f@"ur das Verfahren 
+verwendet wird.  Wird @mvar{F} nicht angegeben, wird die Funktion 
 @code{innerproduct} f@"ur das Skalarprodukt angewendet.
 
-@c If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.
-@c If @var{x} is a list of lists, the algorithm is applied to the sublists,
+@c If @mvar{x} is a matrix, the algorithm is applied to the rows of @mvar{x}.
+@c If @mvar{x} is a list of lists, the algorithm is applied to the sublists,
 @c which must have equal numbers of elements. In either case, the return value 
 @c is a list of lists, the sublists of which are orthogonal and span the same 
-@c space as @var{x}. If the dimension of the span of @var{x} is less than the
+@c space as @mvar{x}. If the dimension of the span of @mvar{x} is less than the
 @c number of rows or sublists, some sublists of the return value are zero.
 
-Ist @var{x} eine Matrix, wird der Algorithmus auf die Zeilen der Matrix
-angewendet.  Ist @var{x} eine Liste mit Listen, wird der Algorithmus auf die
+Ist @mvar{x} eine Matrix, wird der Algorithmus auf die Zeilen der Matrix
+angewendet.  Ist @mvar{x} eine Liste mit Listen, wird der Algorithmus auf die
 Teillisten angewendet, die jeweils die gleiche Anzahl an Elementen haben
 m@"ussen.
 
@@ -1372,24 +1372,24 @@ Funktion f@"ur das Skalarprodukt.
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{ident}
-@deffn {Funktion} ident (@var{n})
+@deffn {Funktion} ident (@mvar{n})
 
-@c Returns an @var{n} by @var{n} identity matrix.
+@c Returns an @mvar{n} by @mvar{n} identity matrix.
 
-Gibt eine @var{n} @code{x} @var{n}-Einheitsmatrix zur@"uck.
+Gibt eine @mvar{n} @code{x} @mvar{n}-Einheitsmatrix zur@"uck.
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{innerproduct}
-@deffn  {Funktion} innerproduct (@var{x}, @var{y})
-@deffnx {Funktion} inprod (@var{x}, @var{y})
+@deffn  {Funktion} innerproduct (@mvar{x}, @mvar{y})
+@deffnx {Funktion} inprod (@mvar{x}, @mvar{y})
 
 @c Returns the inner product (also called the scalar product or dot product) of 
-@c @var{x} and @var{y}, which are lists of equal length, or both 1-column or 
+@c @mvar{x} and @mvar{y}, which are lists of equal length, or both 1-column or 
 @c 1-row matrices of equal length. The return value is @code{conjugate (x) . y},
 @c where @code{.} is the noncommutative multiplication operator.
 
-Gibt das Skalarprodukt der Argumente @var{x} und @var{y} zur@"uck.  Die Argument
+Gibt das Skalarprodukt der Argumente @mvar{x} und @mvar{y} zur@"uck.  Die Argument
 k@"onnen Listen oder 1-spaltige oder 1-reihige Matrizen sein.  Das Skalarprodukt
 wird als @code{conjugate(x) . y} berechnet, wobei @code{.} der Operator der
 nicht-kommutativen Multiplikation ist.
@@ -1409,12 +1409,12 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{invert}
-@deffn {Funktion} invert (@var{M})
+@deffn {Funktion} invert (@mvar{M})
 
-@c Returns the inverse of the matrix @var{M}. The inverse is computed by the
+@c Returns the inverse of the matrix @mvar{M}. The inverse is computed by the
 @c adjoint method.
 
-Gibt die inverse Matrix der Matrix @var{M} zur@"uck.  Die inverse Matrix wird
+Gibt die inverse Matrix der Matrix @mvar{M} zur@"uck.  Die inverse Matrix wird
 mittels der Adjunkten Matrix berechnet.
 
 @c This allows a user to compute the inverse of a matrix with bfloat entries or
@@ -1441,14 +1441,14 @@ Die implementierte Methode ist jedoch ineffizient f@"ur gro@ss{}e Matrizen.
 Hat die Optionsvariable @code{detout} den Wert @code{true}, wird die 
 Determinante als Faktor aus der Matrix herausgezogen.
 
-@c The elements of the inverse are not automatically expanded. If @var{M} has 
+@c The elements of the inverse are not automatically expanded. If @mvar{M} has 
 @c polynomial elements, better appearing output can be generated by 
 @c @code{expand (invert (m)), detout}. If it is desirable to then divide through
 @c by the determinant this can be accomplished by @code{xthru (%)} or 
 @c alternatively from scratch by
 
 Die Elemente der inversen Matrix werden nicht automatisch expandiert.  Hat
-@var{M} Polynome als Elemente, hat das Ergebnis m@"oglicherweise mit dem
+@mvar{M} Polynome als Elemente, hat das Ergebnis m@"oglicherweise mit dem
 Kommando @code{expand(invert(m)), detout} eine einfachere Form.  Mit der Funktion
 @code{multthru} die Determinate in die Matrix hereinmultipliziert werden.  Die
 inverse Matrix kann auch folgenderma@ss{}en berechnet werden:
@@ -1492,13 +1492,13 @@ Beispiel:
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{matrix}
-@deffn {Funktion} matrix (@var{row_1}, @dots{}, @var{row_n})
+@deffn {Funktion} matrix (@mvar{row_1}, @dots{}, @mvar{row_n})
 
-@c Returns a rectangular matrix which has the rows @var{row_1}, ..., 
-@c @var{row_n}. Each row is a list of expressions. All rows must be the same 
+@c Returns a rectangular matrix which has the rows @mvar{row_1}, ..., 
+@c @mvar{row_n}. Each row is a list of expressions. All rows must be the same 
 @c length.
 
-Gibt eine Matrix mit den Spalten @var{row_1}, @dots{}, @var{row_n} zur@"uck.
+Gibt eine Matrix mit den Spalten @mvar{row_1}, @dots{}, @mvar{row_n} zur@"uck.
 Jede Spalte ist eine Liste mit Asudr@"ucken.  Alle Spalten m@"ussen die gleiche
 L@"ange haben.
 
@@ -1520,13 +1520,13 @@ ein Skalar und eine Matrix oder umgekehrt sind.
 
 @c Matrix multiplication is represented by the noncommutative multiplication
 @c operator @code{.}. The corresponding noncommutative exponentiation operator 
-@c is @code{^^}. For a matrix @code{@var{A}}, @code{@var{A}.@var{A} =@var{A}^^2}
-@c and @code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
+@c is @code{^^}. For a matrix @code{@mvar{A}}, @code{@mvar{A}.@mvar{A} =@mvar{A}^^2}
+@c and @code{@mvar{A}^^-1} is the inverse of @mvar{A}, if it exists.
 
 Die nichtkommutatie Multiplikation von Matrizen wird mit dem Operator @code{.}
 ausgef@"uhrt.  Der entsprechende Operator f@"ur die nichtkommutative 
-Exponentiation ist @code{^^}. F@"ur eine Matrix @code{@var{A}} ist 
-@code{@var{A} . @var{A} = @var{A}^^2}. @code{@var{A}^^-1} ist die inverse 
+Exponentiation ist @code{^^}. F@"ur eine Matrix @code{@mvar{A}} ist 
+@code{@mvar{A} . @mvar{A} = @mvar{A}^^2}. @code{@mvar{A}^^-1} ist die inverse 
 Matrix, falls diese existiert.
 
 @c There are switches for controlling simplification of expressions involving 
@@ -1700,8 +1700,8 @@ Nichtkommutative Multiplikation zweier Matrizen.
                 [  17 a - 8 b     11 b + 3 a   ]
 @end example
 
-@c Noncommutative matrix exponentiation. A scalar base @var{b} to a matrix power
-@c @var{M} is carried out element by element and so @code{b^^m} is the same as 
+@c Noncommutative matrix exponentiation. A scalar base @mvar{b} to a matrix power
+@c @mvar{M} is carried out element by element and so @code{b^^m} is the same as 
 @c @code{b^m}.
 
 Nichtkommutative Exponentiation einer Matrix.  Ist die Basis ein Skalar wird die
@@ -1746,13 +1746,13 @@ Berechnung der inversen Matrix mit @code{x^^-1}.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{matrixmap}
-@deffn {Funktion} matrixmap (@var{f}, @var{M})
+@deffn {Funktion} matrixmap (@mvar{f}, @mvar{M})
 
 @c Returns a matrix with element @code{i,j} equal to 
-@c @code{@var{f}(@var{M}[i,j])}.
+@c @code{@mvar{f}(@mvar{M}[i,j])}.
 
 Gibt eine Matrix mit den Elementen @code{[i,j]} zur@"uck, die mit
-@code{@var{f}(@var{M}[i,j])} berechnet werden.
+@code{@mvar{f}(@mvar{M}[i,j])} berechnet werden.
 
 @c See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 
@@ -1763,11 +1763,11 @@ Siehe auch @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{matrixp}
-@deffn {Funktion} matrixp (@var{expr})
+@deffn {Funktion} matrixp (@mvar{expr})
 
-@c Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
+@c Returns @code{true} if @mvar{expr} is a matrix, otherwise @code{false}.
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine Matrix ist.  Ansonsten wird
+Gibt @code{true} zur@"uck, wenn @mvar{expr} eine Matrix ist.  Ansonsten wird
 @code{false} zur@"uckgegeben.
 @end deffn
 
@@ -1943,12 +1943,12 @@ Beispiele:
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{mattrace}
-@deffn {Funktion} mattrace (@var{M})
+@deffn {Funktion} mattrace (@mvar{M})
 
 @c Returns the trace (that is, the sum of the elements on the main diagonal) of
-@c the square matrix @var{M}.
+@c the square matrix @mvar{M}.
 
-Gibt die Spur einer quadratischen Matrix @var{M} zur@"uck.
+Gibt die Spur einer quadratischen Matrix @mvar{M} zur@"uck.
 
 @c @code{mattrace} is called by @code{ncharpoly}, an alternative to Maxima's 
 @c @code{charpoly}.
@@ -1958,23 +1958,23 @@ Gibt die Spur einer quadratischen Matrix @var{M} zur@"uck.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{minor}
-@deffn {Funktion} minor (@var{M}, @var{i}, @var{j})
+@deffn {Funktion} minor (@mvar{M}, @mvar{i}, @mvar{j})
 
-@c Returns the @var{i}, @var{j} minor of the matrix @var{M}.  That is, @var{M}
-@c with row @var{i} and column @var{j} removed.
+@c Returns the @mvar{i}, @mvar{j} minor of the matrix @mvar{M}.  That is, @mvar{M}
+@c with row @mvar{i} and column @mvar{j} removed.
 
-Gibt den Minor zu @var{i}, @var{j} der Matrix @var{M} zur@"uck.  Die Matrix
-entsteht durch Streichen der @var{i}-ten Spalte und @var{j}-ten Zeile.
+Gibt den Minor zu @mvar{i}, @mvar{j} der Matrix @mvar{M} zur@"uck.  Die Matrix
+entsteht durch Streichen der @mvar{i}-ten Spalte und @mvar{j}-ten Zeile.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{ncharpoly}
-@deffn {Funktion} ncharpoly (@var{M}, @var{x})
+@deffn {Funktion} ncharpoly (@mvar{M}, @mvar{x})
 
-@c Returns the characteristic polynomial of the matrix @var{M} with respect to 
-@c @var{x}.  This is an alternative to Maxima's @code{charpoly}.
+@c Returns the characteristic polynomial of the matrix @mvar{M} with respect to 
+@c @mvar{x}.  This is an alternative to Maxima's @code{charpoly}.
 
-Gibt das charakteristische Polynom der Matrix @var{M} f@"ur die Variable @var{x}
+Gibt das charakteristische Polynom der Matrix @mvar{M} f@"ur die Variable @mvar{x}
 zur@"uck.  Diese Funktion ist eine Alternative zur Funktion @code{charpoly}.
 
 @c @code{ncharpoly} works by computing traces of powers of the given matrix,
@@ -1983,7 +1983,7 @@ zur@"uck.  Diese Funktion ist eine Alternative zur Funktion @code{charpoly}.
 @c functions of the roots can be calculated, which are nothing more than
 @c the coefficients of the characteristic polynomial.  @code{charpoly} works by
 @c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
-@c forming the determinant of @code{@var{x} * ident [n] - a}.  Thus
+@c forming the determinant of @code{@mvar{x} * ident [n] - a}.  Thus
 @c @code{ncharpoly} wins, for example, in the case of large dense matrices 
 @c filled with integers, since it avoids polynomial arithmetic altogether.
 @c @code{load("nchrpl")} loads this file.
@@ -1995,49 +1995,49 @@ Kommando @code{load(nchrpl} l@"adt die Funktion.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{newdet}
-@deffn {Funktion} newdet (@var{M}, @var{n})
+@deffn {Funktion} newdet (@mvar{M}, @mvar{n})
 
-@c Computes the determinant of the matrix or array @var{M} by the
+@c Computes the determinant of the matrix or array @mvar{M} by the
 @c Johnson-Gentleman tree minor algorithm.
 @c UGH -- ARRAYS ARE SUCH A MESS
-@c The argument @var{n} is the order; it is optional if @var{M} is a matrix.
+@c The argument @mvar{n} is the order; it is optional if @mvar{M} is a matrix.
 
-Berechnet die Determinate der Matrix oder eines Arrays @var{M} mit dem
-Johnson-Gentleman-Algorithmus.  Das Argument @var{n} ist die Ordnung.  F@"ur
-eine Matrix ist @var{n} ein optionales Argument.
+Berechnet die Determinate der Matrix oder eines Arrays @mvar{M} mit dem
+Johnson-Gentleman-Algorithmus.  Das Argument @mvar{n} ist die Ordnung.  F@"ur
+eine Matrix ist @mvar{n} ein optionales Argument.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{permanent}
-@deffn {Funktion} permanent (@var{M}, @var{n})
+@deffn {Funktion} permanent (@mvar{M}, @mvar{n})
 
-@c Computes the permanent of the matrix @var{M}.  A permanent is like a 
+@c Computes the permanent of the matrix @mvar{M}.  A permanent is like a 
 @c determinant but with no sign changes.
 
-Berechnet die Permanente der Matrix @var{M}.  Die Permanente ist @"ahnlich der
+Berechnet die Permanente der Matrix @mvar{M}.  Die Permanente ist @"ahnlich der
 Determinate, aber es fehlen die Vorzeichenwechsel.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{rank}
-@deffn {Funktion} rank (@var{M})
+@deffn {Funktion} rank (@mvar{M})
 
-@c Computes the rank of the matrix @var{M}.  That is, the order of the largest 
-@c non-singular subdeterminant of @var{M}.
+@c Computes the rank of the matrix @mvar{M}.  That is, the order of the largest 
+@c non-singular subdeterminant of @mvar{M}.
 
-Berechnet den Rang der Matrix @var{M}.
+Berechnet den Rang der Matrix @mvar{M}.
 
 @c STATEMENT NEEDS CLARIFICATION
-@c @var{rank} may return the wrong answer if it cannot determine that a matrix
+@c @mvar{rank} may return the wrong answer if it cannot determine that a matrix
 @c  element that is equivalent to zero is indeed so.
 
-@var{rank} kann ein falsches Ergebnis geben, wenn ein Element @"aquivalent
+@mvar{rank} kann ein falsches Ergebnis geben, wenn ein Element @"aquivalent
 zu Null ist, dies aber nicht von Maxima festgestellt werden kann.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{potenial}
-@deffn {Funktion} potential (@var{givengradient})
+@deffn {Funktion} potential (@mvar{givengradient})
 
 The calculation makes use of the global variable @code{potentialzeroloc[0]}
 which must be @code{nonlist} or of the form
@@ -2090,12 +2090,12 @@ ausgegeben wird.  Siehe auch @code{lmxchar}.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{row}
-@deffn {Funktion} row (@var{M}, @var{i})
+@deffn {Funktion} row (@mvar{M}, @mvar{i})
 
-@c Returns the @var{i}'th row of the matrix @var{M}. The return value is a 
+@c Returns the @mvar{i}'th row of the matrix @mvar{M}. The return value is a 
 @c matrix.
 
-Gibt die @var{i}-te Spalte der Matrix @var{M} zur@"uck.  Der R@"uckgabewert ist 
+Gibt die @mvar{i}-te Spalte der Matrix @mvar{M} zur@"uck.  Der R@"uckgabewert ist 
 eine Matrix.
 @end deffn
 
@@ -2128,7 +2128,7 @@ einem Skalar vereinfacht.
 @c I WONDER WHAT THIS IS ABOUT
 
 @c -----------------------------------------------------------------------------
-@deffn {Funktion} scalefactors (@var{coordinatetransform})
+@deffn {Funktion} scalefactors (@mvar{coordinatetransform})
 
 Here coordinatetransform evaluates to the form [[expression1, expression2,
 @dots{}], indeterminate1, indeterminat2, @dots{}], where indeterminate1, 
@@ -2148,32 +2148,32 @@ usage of the form
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{setelmx}
-@deffn {Funktion} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+@deffn {Funktion} setelmx (@mvar{x}, @mvar{i}, @mvar{j}, @mvar{M})
 
-@c Assigns @var{x} to the (@var{i}, @var{j})'th element of the matrix @var{M},
+@c Assigns @mvar{x} to the (@mvar{i}, @mvar{j})'th element of the matrix @mvar{M},
 @c and returns the altered matrix.
 
-Weist @var{x} dem Matrixelement @code{[@var{i},@var{j}]} zu und gibt die
+Weist @mvar{x} dem Matrixelement @code{[@mvar{i},@mvar{j}]} zu und gibt die
 modifizierte Matrix zur@"uck.
 
-@c @code{@var{M} [@var{i}, @var{j}]: @var{x}} has the same effect,
-@c but returns @var{x} instead of @var{M}.
+@c @code{@mvar{M} [@mvar{i}, @mvar{j}]: @mvar{x}} has the same effect,
+@c but returns @mvar{x} instead of @mvar{M}.
 
-@code{@var{M}[@var{i}, @var{j}]: @var{x}} hat denselben Effekt.  In diesem Fall
-wird jedoch der Wert @var{x} zur@"uckgeben und nicht die Matrix.
+@code{@mvar{M}[@mvar{i}, @mvar{j}]: @mvar{x}} hat denselben Effekt.  In diesem Fall
+wird jedoch der Wert @mvar{x} zur@"uckgeben und nicht die Matrix.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{similaritytransform}
-@deffn  {Funktion} similaritytransform (@var{M})
-@deffnx {Funktion} simtran (@var{M})
+@deffn  {Funktion} similaritytransform (@mvar{M})
+@deffnx {Funktion} simtran (@mvar{M})
 
 @code{similaritytransform} computes a similarity transform of the matrix 
 @code{M}.  It returns a list which is the output of the @code{uniteigenvectors}
 command.  In addition if the flag @code{nondiagonalizable} is @code{false} two 
 global matrices @code{leftmatrix} and @code{rightmatrix} are computed.  These 
-matrices have the property that @code{leftmatrix . @var{M} . rightmatrix} is a 
-diagonal matrix with the eigenvalues of @var{M} on the diagonal.  If 
+matrices have the property that @code{leftmatrix . @mvar{M} . rightmatrix} is a 
+diagonal matrix with the eigenvalues of @mvar{M} on the diagonal.  If 
 @code{nondiagonalizable} is @code{true} the left and right matrices are not 
 computed.
 
@@ -2182,7 +2182,7 @@ complex conjugate of the transpose of @code{rightmatrix}.  Otherwise
 @code{leftmatrix} is the inverse of @code{rightmatrix}.
 
 @code{rightmatrix} is the matrix the columns of which are the unit eigenvectors 
-of @var{M}.  The other flags (see @code{eigenvalues} and @code{eigenvectors}) 
+of @mvar{M}.  The other flags (see @code{eigenvalues} and @code{eigenvectors}) 
 have the same effects since @code{similaritytransform} calls the other functions
 in the package in order to be able to form @code{rightmatrix}.
 
@@ -2207,45 +2207,45 @@ Matrizen, um die Determinante einer Matrix zu berechnen.
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{submatrix}
-@deffn  {Funktion} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
-@deffnx {Funktion} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
-@deffnx {Funktion} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
+@deffn  {Funktion} submatrix (@mvar{i_1}, @dots{}, @mvar{i_m}, @mvar{M}, @mvar{j_1}, @dots{}, @mvar{j_n})
+@deffnx {Funktion} submatrix (@mvar{i_1}, @dots{}, @mvar{i_m}, @mvar{M})
+@deffnx {Funktion} submatrix (@mvar{M}, @mvar{j_1}, @dots{}, @mvar{j_n})
 
-Gibt eine Kopie der Matrix @var{M} zur@"uck, in der die Zeilen 
-@var{i_1}, @dots{}, @var{i_m} und Spalten @var{j_1}, @dots{}, @var{j_n} 
+Gibt eine Kopie der Matrix @mvar{M} zur@"uck, in der die Zeilen 
+@mvar{i_1}, @dots{}, @mvar{i_m} und Spalten @mvar{j_1}, @dots{}, @mvar{j_n} 
 nicht enthalten sind.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{transpose}
-@deffn {Funktion} transpose (@var{M})
+@deffn {Funktion} transpose (@mvar{M})
 
-@c Returns the transpose of @var{M}.
+@c Returns the transpose of @mvar{M}.
 
-Gibt die Transponierte der Matrix @var{M} zur@"uck.
+Gibt die Transponierte der Matrix @mvar{M} zur@"uck.
 
-@c If @var{M} is a matrix, the return value is another matrix @var{N}
+@c If @mvar{M} is a matrix, the return value is another matrix @mvar{N}
 @c such that @code{N[i,j] = M[j,i]}.
 
-Ist @var{M} eine Matrix, ist das Ergebnis eine Matrix @var{N} mit den 
+Ist @mvar{M} eine Matrix, ist das Ergebnis eine Matrix @mvar{N} mit den 
 Elementen @code{N[i,j] = M[j,i]}.
 
-@c If @var{M} is a list, the return value is a matrix @var{N}
+@c If @mvar{M} is a list, the return value is a matrix @mvar{N}
 @c of @code{length (m)} rows and 1 column, such that @code{N[i,1] = M[i]}.
 
-Ist @var{M} eine Liste, ist die R@"uckgabe eine Matrix @var{N} mit
+Ist @mvar{M} eine Liste, ist die R@"uckgabe eine Matrix @mvar{N} mit
 @code{length(M)} Spalten und einer Zeile.  Die Elemente sind 
 @code{N[i,1] = M[i]}.
 
-@c Otherwise @var{M} is a symbol, and the return value is a noun expression 
-@c @code{'transpose (@var{M})}.
+@c Otherwise @mvar{M} is a symbol, and the return value is a noun expression 
+@c @code{'transpose (@mvar{M})}.
 
-Ansonsten wird eine Substantivform @code{'transpose(@var{M})} zur@"uckgegeben.
+Ansonsten wird eine Substantivform @code{'transpose(@mvar{M})} zur@"uckgegeben.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{triangularize}
-@deffn {Funktion} triangularize (@var{M})
+@deffn {Funktion} triangularize (@mvar{M})
 
 @c Returns the upper triangular form of the matrix @code{M}, as produced by 
 @c Gaussian elimination. The return value is the same as @code{echelon},
@@ -2283,17 +2283,17 @@ Beispiel:
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{uniteigenvectors}
-@deffn  {Funktion} uniteigenvectors (@var{M})
-@deffnx {Funktion} ueivects (@var{M})
+@deffn  {Funktion} uniteigenvectors (@mvar{M})
+@deffnx {Funktion} ueivects (@mvar{M})
 
-@c Computes unit eigenvectors of the matrix @var{M}. The return value is a list 
+@c Computes unit eigenvectors of the matrix @mvar{M}. The return value is a list 
 @c of lists, the first sublist of which is the output of the @code{eigenvalues} 
 @c command, and the other sublists of which are the unit eigenvectors of the 
 @c matrix corresponding to those eigenvalues respectively.
 
-Berechnet die Einheitsvektoren der Matrix @var{M}.  Die R@"uckgabe ist eine 
+Berechnet die Einheitsvektoren der Matrix @mvar{M}.  Die R@"uckgabe ist eine 
 Liste, die zwei weitere Listen enth@"alt.  Die erste Liste enth@"alt die 
-Eigenwerte der Matrix @var{M} und deren Multiplizit@"aten.  Die zweite Liste 
+Eigenwerte der Matrix @mvar{M} und deren Multiplizit@"aten.  Die zweite Liste 
 enth@"alt die Einheitsvektoren.
 
 Ansonsten entspricht @code{uniteigenvectors} der Funktion @code{eigenvectors}.
@@ -2326,13 +2326,13 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
 @anchor{unitvector}
-@deffn  {Funktion} unitvector (@var{x})
-@deffnx {Funktion} uvect (@var{x})
+@deffn  {Funktion} unitvector (@mvar{x})
+@deffnx {Funktion} uvect (@mvar{x})
 
-@c Returns @math{@var{x}/norm(@var{x})}; this is a unit vector in the same
-@c direction as @var{x}.
+@c Returns @math{@mvar{x}/norm(@mvar{x})}; this is a unit vector in the same
+@c direction as @mvar{x}.
 
-Gibt den Einheitsvektor @math{@var{x}/norm(@var{x})} zur@"uck.
+Gibt den Einheitsvektor @math{@mvar{x}/norm(@mvar{x})} zur@"uck.
 
 @c @code{load ("eigen")} loads this function.
 
@@ -2345,7 +2345,7 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 
 @c -----------------------------------------------------------------------------
 @anchor{vectorpotential}
-@deffn {Funktion} vectorpotential (@var{givencurl})
+@deffn {Funktion} vectorpotential (@mvar{givencurl})
 
 Returns the vector potential of a given curl vector, in the current 
 coordinate system.  @code{potentialzeroloc} has a similar role as for 
@@ -2358,7 +2358,7 @@ be a cyclic permutation of the coordinate variables.
 
 @c -----------------------------------------------------------------------------
 @anchor{vectorsimp}
-@deffn {Funktion} vectorsimp (@var{expr})
+@deffn {Funktion} vectorsimp (@mvar{expr})
 
 Applies simplifications and expansions according to the following global flags:
 
@@ -2443,11 +2443,11 @@ Beispiel:
 
 @c -----------------------------------------------------------------------------
 @anchor{zeromatrix}
-@deffn {Funktion} zeromatrix (@var{m}, @var{n})
+@deffn {Funktion} zeromatrix (@mvar{m}, @mvar{n})
 
-@c Returns an @var{m} by @var{n} matrix, all elements of which are zero.
+@c Returns an @mvar{m} by @mvar{n} matrix, all elements of which are zero.
 
-Gibt eine @var{m} x @var{n}-Matrix zur@"uck, deren Elemente alle Null sind.
+Gibt eine @mvar{m} x @mvar{n}-Matrix zur@"uck, deren Elemente alle Null sind.
 @end deffn
 
 @c --- End of file Matrices.de.texi --------------------------------------------

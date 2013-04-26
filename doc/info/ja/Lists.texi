@@ -108,9 +108,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{append}
-@deffn {関数} append (@var{list_1}, @dots{}, @var{list_n})
-@var{list_1}の要素のあとに
-@var{list_2}の要素が続き、@dots{}
+@deffn {関数} append (@mvar{list_1}, @dots{}, @mvar{list_n})
+@mvar{list_1}の要素のあとに
+@mvar{list_2}の要素が続き、@dots{}
 という１つのリストを返します。
 @code{append}は一般式上でも機能します。
 例えば、 @code{append (f(a,b), f(c,d,e));}は
@@ -127,19 +127,19 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
-@deffn  {関数} assoc (@var{key}, @var{list}, @var{default})
-@deffnx {関数} assoc (@var{key}, @var{list})
+@deffn  {関数} assoc (@mvar{key}, @mvar{list}, @mvar{default})
+@deffnx {関数} assoc (@mvar{key}, @mvar{list})
 
 この関数は
-形式 @code{[x,y,z,...]}の入力 @var{list}の左辺の中で @var{key}を探します。
-ここで @var{list}の要素のそれぞれは二項演算子と２つの要素の式です。
+形式 @code{[x,y,z,...]}の入力 @mvar{list}の左辺の中で @mvar{key}を探します。
+ここで @mvar{list}の要素のそれぞれは二項演算子と２つの要素の式です。
 例えば、 @code{x=1}, @code{2^3}, @code{[a,b]}など。
-最初のオペランドに対して @var{key}がチェックされます。
+最初のオペランドに対して @mvar{key}がチェックされます。
 もし @code{key}が見つかったら、
 @code{assoc}は二番目のオペランドを返します。
 もし @code{key}が見つからなかったら、
-@var{default}値を返します。
-@var{default}はオプションで、省略すると @code{false}に設定されます。
+@mvar{default}値を返します。
+@mvar{default}はオプションで、省略すると @code{false}に設定されます。
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -151,10 +151,10 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn {関数} cons (@var{expr}, @var{list})
+@deffn {関数} cons (@mvar{expr}, @mvar{list})
 
-最初の要素として要素 @var{expr}で構成され、
-@var{list}の要素が続く新しいリストを返します。
+最初の要素として要素 @mvar{expr}で構成され、
+@mvar{list}の要素が続く新しいリストを返します。
 @code{cons}は他の式上でも機能します。
 例えば、 @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}。
 
@@ -165,9 +165,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{copylist}
-@deffn {関数} copylist (@var{list})
+@deffn {関数} copylist (@mvar{list})
 
-リスト @var{list}のコピーを返します。
+リスト @mvar{list}のコピーを返します。
 
 @opencatbox
 @category{Lists}
@@ -176,15 +176,15 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{create_list}
-@deffn {関数} create_list (@var{form}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
+@deffn {関数} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, @dots{}, @mvar{x_n}, @mvar{list_n})
 
-@var{list_1}の要素それぞれにバインドされた @var{x_1}で、
+@mvar{list_1}の要素それぞれにバインドされた @mvar{x_1}で、
 また、それぞれのバインドに対して、
-@var{x_2}を @var{list_2}の要素それぞれにバインドして、...
-それらのバインドを使って @var{form}を評価することによって
+@mvar{x_2}を @mvar{list_2}の要素それぞれにバインドして、...
+それらのバインドを使って @mvar{form}を評価することによって
 リストを生成します。
 結果の要素の数はそれぞれのリストの要素の数の積です。
-それぞれの変数 @var{x_i}は実際に、シンボルでなければいけません。ーそれは評価されません。
+それぞれの変数 @mvar{x_i}は実際に、シンボルでなければいけません。ーそれは評価されません。
 リスト引数は繰り返しの始めに一度だけ評価されます。
 
 @example
@@ -201,7 +201,7 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 (%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
 @end example
 
-@var{list_i}の代わりに、
+@mvar{list_i}の代わりに、
 それぞれが数に評価される２つの引数を供給することもできます。
 これらは繰り返しの下限と上限になります。
 
@@ -219,28 +219,28 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{delete}
-@deffn {関数} delete (@var{expr_1}, @var{expr_2})
-@deffnx {関数} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn {関数} delete (@mvar{expr_1}, @mvar{expr_2})
+@deffnx {関数} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
 
-@code{delete(@var{expr_1}, @var{expr_2})}は、
-@var{expr_2}から
+@code{delete(@mvar{expr_1}, @mvar{expr_2})}は、
+@mvar{expr_2}から
 そのトップレベル演算子の引数のうち、
-@var{expr_1}と("="で決定される意味で)同じ引数を取り除きます。
+@mvar{expr_1}と("="で決定される意味で)同じ引数を取り除きます。
 "="は、同値ではなく、形式的な同一をテストすることに注意してください。
 部分式の引数には影響しないことにも注意してください。
 
-@var{expr_1}はアトムか、非アトムの式を取り得ます。
-@var{expr_2}は任意の非アトムの式を取り得ます。
+@mvar{expr_1}はアトムか、非アトムの式を取り得ます。
+@mvar{expr_2}は任意の非アトムの式を取り得ます。
 @code{delete}は新しい式を返します;
-@var{expr_2}を変更しません。
+@mvar{expr_2}を変更しません。
 
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})}は、
+@code{delete(@mvar{expr_1}, @mvar{expr_2}, @mvar{n})}は、
 
-@var{expr_2}から
+@mvar{expr_2}から
 そのトップレベル演算子の引数のうち、
-@var{expr_1}と同じ最初の
-@var{n}個の引数を取り除きます。
-もしそんな引数が @var{n}個より少ないなら、
+@mvar{expr_1}と同じ最初の
+@mvar{n}個の引数を取り除きます。
+もしそんな引数が @mvar{n}個より少ないなら、
 該当するすべての引数が取り除かれます。
 
 例:
@@ -295,7 +295,7 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 (%o1)                    foo(b, c, d, a)
 @end example
 
-引数が @var{expr_1}と同じかどうかは"="で決定されます。
+引数が @mvar{expr_1}と同じかどうかは"="で決定されます。
 @code{equal}ですが、"="でない引数は取り除かれません。
 
 @c ===beg===
@@ -332,9 +332,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{eighth}
-@deffn {関数} eighth (@var{expr})
+@deffn {関数} eighth (@mvar{expr})
 
-式またはリスト @var{expr}の8番目の項を返します。
+式またはリスト @mvar{expr}の8番目の項を返します。
 詳細は @code{first}を参照してください。
 
 @opencatbox
@@ -347,9 +347,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn {関数} endcons (@var{expr}, @var{list})
+@deffn {関数} endcons (@mvar{expr}, @mvar{list})
 
-@var{expr}が続く @code{list}の要素から成る新しいリストを返します。
+@mvar{expr}が続く @code{list}の要素から成る新しいリストを返します。
 @code{endcons}は一般式上でも機能します。
 例えば、
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}。
@@ -361,9 +361,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{fifth}
-@deffn {関数} fifth (@var{expr})
+@deffn {関数} fifth (@mvar{expr})
 
-式またはリスト @var{expr}の5番目の項を返します。
+式またはリスト @mvar{expr}の5番目の項を返します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
@@ -375,14 +375,14 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{first}
-@deffn {関数} first (@var{expr})
+@deffn {関数} first (@mvar{expr})
 
 リストの最初の要素、行列の最初の行、和の最初の項などに帰着する、
-@var{expr}の最初の部分を返します。
+@mvar{expr}の最初の部分を返します。
 @code{first}とその関連関数 @code{rest}と @code{last}は、
-入力時にタイプした形式ではなく、 @var{expr}の表示形式上で機能することに注意してください。
+入力時にタイプした形式ではなく、 @mvar{expr}の表示形式上で機能することに注意してください。
 しかしながら、もし変数 @code{inflag}が @code{true}に設定されているなら、
-これらの関数は @var{expr}の内部形式を見ます。
+これらの関数は @mvar{expr}の内部形式を見ます。
 整理器は式を再配置することに注意してください。
 例えば、
 @code{first(x+y)}は、
@@ -399,9 +399,9 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{fourth}
-@deffn {関数} fourth (@var{expr})
+@deffn {関数} fourth (@mvar{expr})
 
-式またはリスト @var{expr}の4番目の項を返します。
+式またはリスト @mvar{expr}の4番目の項を返します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
@@ -411,16 +411,16 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 
 @c -----------------------------------------------------------------------------
 @anchor{join}
-@deffn {関数} join (@var{l}, @var{m})
+@deffn {関数} join (@mvar{l}, @mvar{m})
 
-リスト@var{l}と@var{m}の要素を交互に含む新しいリストを生成します。
-結果は、要素 @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}を持ちます。
-リスト @var{l}と @var{m}は、任意のタイプの要素を含めます。
+リスト@mvar{l}と@mvar{m}の要素を交互に含む新しいリストを生成します。
+結果は、要素 @code{[@mvar{l}[1], @mvar{m}[1], @mvar{l}[2], @mvar{m}[2], ...]}を持ちます。
+リスト @mvar{l}と @mvar{m}は、任意のタイプの要素を含めます。
 
 もしリストの長さが違ったら、
 @code{join}は長いリストの要素を無視します。
 
-もし @var{l}か @var{m}がリストでなかったら、
+もし @mvar{l}か @mvar{m}がリストでなかったら、
 Maximaは文句を言います。
 
 例:
@@ -449,8 +449,8 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{last}
-@deffn {関数} last (@var{expr})
-@var{expr}最後の(項、行、要素など）部分を返します。
+@deffn {関数} last (@mvar{expr})
+@mvar{expr}最後の(項、行、要素など）部分を返します。
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -461,9 +461,9 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{length}
-@deffn {関数} length (@var{expr})
+@deffn {関数} length (@mvar{expr})
 
-(デフォルトでは) @var{expr}の外部(表示)形式の部分の数を返します。
+(デフォルトでは) @mvar{expr}の外部(表示)形式の部分の数を返します。
 リストに関しては、これは要素の数を返し、
 行列に関しては行数であり、
 和に関しては項数です。
@@ -497,9 +497,9 @@ Maximaは文句を言います。
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} listp (@var{expr})
+@deffn {関数} listp (@mvar{expr})
 
-もし @var{expr}がリストなら @code{true}、
+もし @mvar{expr}がリストなら @code{true}、
 そうでなければ @code{false}を返します。
 
 @opencatbox
@@ -509,19 +509,19 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
-@deffn  {関数} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-@deffnx {関数} makelist (@var{expr}, @var{x}, @var{list})
+@deffn  {関数} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
+@deffnx {関数} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
 
-要素それぞれが @var{expr}から生成されたリストを構成し、返します。
+要素それぞれが @mvar{expr}から生成されたリストを構成し、返します。
 
-@code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})}は、
-@var{i_0}から @var{i_1}に等しい @code{j}に対して
-@code{j}番目の要素が @code{ev (@var{expr}, @var{i}=j)}に等しい
+@code{makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})}は、
+@mvar{i_0}から @mvar{i_1}に等しい @code{j}に対して
+@code{j}番目の要素が @code{ev (@mvar{expr}, @mvar{i}=j)}に等しい
 リストを返します。
 
-@code{makelist (@var{expr}, @var{x}, @var{list})}は、
-1から @code{length (@var{list})}に等しい @code{j}に対して、
-@code{j}番目の要素が @code{ev (@var{expr}, @var{x}=@var{list}[j])}に等しい
+@code{makelist (@mvar{expr}, @mvar{x}, @mvar{list})}は、
+1から @code{length (@mvar{list})}に等しい @code{j}に対して、
+@code{j}番目の要素が @code{ev (@mvar{expr}, @mvar{x}=@mvar{list}[j])}に等しい
 リストを返します。
 
 例:
@@ -545,18 +545,18 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{member}
-@deffn {関数} member (@var{expr_1}, @var{expr_2})
+@deffn {関数} member (@mvar{expr_1}, @mvar{expr_2})
 
 もし
-@code{args(@var{expr_2})}の中のある要素@var{a}に対して
-@code{is(@var{expr_1} = @var{a})}なら
+@code{args(@mvar{expr_2})}の中のある要素@mvar{a}に対して
+@code{is(@mvar{expr_1} = @mvar{a})}なら
 @code{true}を返し、
 そうでなければ @code{false}を返します。
 
 @code{expr_2}は通常リストです。
-その場合、 @code{args(@var{expr_2}) = @var{expr_2}}かつ
-@code{expr_2}の中のある要素 @var{a}に対して、
-@code{is(@var{expr_1} = @var{a})}であることがテストです。
+その場合、 @code{args(@mvar{expr_2}) = @mvar{expr_2}}かつ
+@code{expr_2}の中のある要素 @mvar{a}に対して、
+@code{is(@mvar{expr_1} = @mvar{a})}であることがテストです。
 
 @code{member}は
 @code{expr_2}の引数の部分を検査しません。
@@ -606,9 +606,9 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{ninth}
-@deffn {関数} ninth (@var{expr})
+@deffn {関数} ninth (@mvar{expr})
 
-式またはリスト @var{expr}の9番目の項を返します。
+式またはリスト @mvar{expr}の9番目の項を返します。
 詳細は @code{first}を参照してください。
 
 @opencatbox
@@ -618,12 +618,12 @@ Maximaは文句を言います。
 
 @c -----------------------------------------------------------------------------
 @anchor{pop}
-@deffn {関数} pop (@var{list})
+@deffn {関数} pop (@mvar{list})
 
-@code{pop}は、リスト @var{list}から最初の要素を取り除き、この要素を返します。
-@var{list}はリストそのものではなく、リストにバインドされたシンボルでなければいけません。
+@code{pop}は、リスト @mvar{list}から最初の要素を取り除き、この要素を返します。
+@mvar{list}はリストそのものではなく、リストにバインドされたシンボルでなければいけません。
 
-もし引数 @var{list}がリストにバインドされていないかリストが空なら、
+もし引数 @mvar{list}がリストにバインドされていないかリストが空なら、
 Maximaはエラーメッセージを生成します。
 
 例には @mref{push}も参照してください。
@@ -637,14 +637,14 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{push}
-@deffn {関数} push (@var{item}, @var{list})
+@deffn {関数} push (@mvar{item}, @mvar{list})
 
-@code{push}は項目 @var{item}をリスト @var{list}の先頭に追加し、
+@code{push}は項目 @mvar{item}をリスト @mvar{list}の先頭に追加し、
 新しいリストのコピーを返します。
-@var{list}はリストそのものではなく、リストにバインドされたシンボルでなければいけません。
-@var{item}は任意のMaximaシンボルや式が使えます。
+@mvar{list}はリストそのものではなく、リストにバインドされたシンボルでなければいけません。
+@mvar{item}は任意のMaximaシンボルや式が使えます。
 
-もし引数 @var{list}がリストにバインドされていないかリストが空なら、
+もし引数 @mvar{list}がリストにバインドされていないかリストが空なら、
 Maximaはエラーメッセージを生成します。
 
 リストから最初の項目を取り除くには @mref{pop}も参照してください。
@@ -698,17 +698,17 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
-@deffn  {関数} rest (@var{expr}, @var{n})
-@deffnx {関数} rest (@var{expr})
+@deffn  {関数} rest (@mvar{expr}, @mvar{n})
+@deffnx {関数} rest (@mvar{expr})
 
-もし @var{n}が正なら、
-頭の @var{n}個の要素を取り除いた
-@var{expr}を返し、
-もし @var{n}が負なら、
-お尻の @code{- @var{n}}個の要素を取り除いた
-@var{expr}を返します。
-もし @var{n}が1なら、省略できます。
-@var{expr}は、リスト、行列、他の式を取り得ます。
+もし @mvar{n}が正なら、
+頭の @mvar{n}個の要素を取り除いた
+@mvar{expr}を返し、
+もし @mvar{n}が負なら、
+お尻の @code{- @mvar{n}}個の要素を取り除いた
+@mvar{expr}を返します。
+もし @mvar{n}が1なら、省略できます。
+@mvar{expr}は、リスト、行列、他の式を取り得ます。
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -720,9 +720,9 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{reverse}
-@deffn {関数} reverse (@var{list})
+@deffn {関数} reverse (@mvar{list})
 
-@var{list} のメンバーの順序を逆にします。
+@mvar{list} のメンバーの順序を逆にします。
 (メンバー自身は変えません。)
  @code{reverse}は、一般式でも機能します。
 例えば、 @code{reverse(a=b);}は @code{b=a}を与えます。
@@ -734,9 +734,9 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{second}
-@deffn {関数} second (@var{expr})
+@deffn {関数} second (@mvar{expr})
 
-式またはリスト @var{expr}の二番目の項を返します。
+式またはリスト @mvar{expr}の二番目の項を返します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
@@ -746,9 +746,9 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{seventh}
-@deffn {関数} seventh (@var{expr})
+@deffn {関数} seventh (@mvar{expr})
 
-式またはリスト @var{expr}の7番目の項を返します。
+式またはリスト @mvar{expr}の7番目の項を返します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
@@ -758,9 +758,9 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{sixth}
-@deffn {関数} sixth (@var{expr})
+@deffn {関数} sixth (@mvar{expr})
 
-式またはリスト @var{expr}の6番目の項を返します。
+式またはリスト @mvar{expr}の6番目の項を返します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
@@ -770,36 +770,36 @@ Maximaはエラーメッセージを生成します。
 
 @c -----------------------------------------------------------------------------
 @anchor{sort}
-@deffn  {関数} sort (@var{L}, @var{P})
-@deffnx {関数} sort (@var{L})
+@deffn  {関数} sort (@mvar{L}, @mvar{P})
+@deffnx {関数} sort (@mvar{L})
 
-任意の隣り合う要素について@code{@var{P} (@var{L}[k], @var{L}[k + 1])}が@code{true}
+任意の隣り合う要素について@code{@mvar{P} (@mvar{L}[k], @mvar{L}[k + 1])}が@code{true}
 になるように
-２つの引数の述語論理@code{P}に従ってリスト@var{L}をソートします。
+２つの引数の述語論理@code{P}に従ってリスト@mvar{L}をソートします。
 述語論理は関数や２値中値演算子の名前として、@code{lambda}式として指定されるかもしれません。
 もし演算子名として指定されたなら、名前は「ダブルクォート」でくくられます。
 
 ソートされたリストは新しいオブジェクトとして返されます;
-@var{L}は変更されません。
+@mvar{L}は変更されません。
 戻り値を構成するために、
-@code{sort}は、@var{L}の要素の浅いコピーを実行します。
+@code{sort}は、@mvar{L}の要素の浅いコピーを実行します。
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
 @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-もし述語論理@var{P}が@var{L}の要素の総順序でなければ、
+もし述語論理@mvar{P}が@mvar{L}の要素の総順序でなければ、
 @code{sort}は、エラーなしに実行を完了するかもしれませんが、結果は未定義です。
 もし述語論理が@code{true}もしくは@code{false}以外の何かに評価されるなら、
 @code{sort}はエラーを出力します。
 
-@code{sort (@var{L})}は @code{sort (@var{L}, orderlessp)}と同値です。
+@code{sort (@mvar{L})}は @code{sort (@mvar{L}, orderlessp)}と同値です。
 すなわち、デフォルトソート順序は昇順です。@mref{orderlessp}で決められているように。
 
 述語論理@code{ordergreatp}はリストを降順にソートします。
 述語論理@code{ordermagnitudep}はMaxima数や数値を持つ定数シンボル、
 定数に評価されることができる式を大きさによってソートします。
-リスト@var{L}の他のすべての要素は@code{orderlessp}によってソートされます。
+リスト@mvar{L}の他のすべての要素は@code{orderlessp}によってソートされます。
 述語論理@code{"<"}も大きさによる順序付けを許しますが、
-もしリスト@var{L}の要素が@code{"<"}の下で比較可能でないなら完全には並べません。
+もしリスト@mvar{L}の要素が@code{"<"}の下で比較可能でないなら完全には並べません。
 
 例:
 
@@ -861,9 +861,9 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist}
-@deffn {関数} sublist (@var{list}, @var{p})
+@deffn {関数} sublist (@mvar{list}, @mvar{p})
 
-述語論理@code{p}が@code{true}を返す@var{list}の要素のリストを返します。
+述語論理@code{p}が@code{true}を返す@mvar{list}の要素のリストを返します。
 
 例:
 
@@ -885,13 +885,13 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist_indices}
-@deffn {関数} sublist_indices (@var{L}, @var{P})
+@deffn {関数} sublist_indices (@mvar{L}, @mvar{P})
 
-述語論理 @code{maybe(@var{P}(x))}が @code{true}を返す、
-リスト @var{L}の要素 @code{x}のインデックスを返します;
+述語論理 @code{maybe(@mvar{P}(x))}が @code{true}を返す、
+リスト @mvar{L}の要素 @code{x}のインデックスを返します;
 これは @code{false}はもちろん @code{unknown}も除外します。
-@var{P}は関数名かラムダ式を取り得ます。
-@var{L}はリストリテラルでなければいけません。
+@mvar{P}は関数名かラムダ式を取り得ます。
+@mvar{L}はリストリテラルでなければいけません。
 
 例:
 
@@ -929,17 +929,17 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 @c -----------------------------------------------------------------------------
 @anchor{unique}
-@deffn {関数} unique (@var{L})
+@deffn {関数} unique (@mvar{L})
 
-リスト @var{L}の重複しない要素を返します。
+リスト @mvar{L}の重複しない要素を返します。
 
-@var{L}の要素すべてが重複しない時、
+@mvar{L}の要素すべてが重複しない時、
 @code{unique}は、
-@var{L}自身ではなく、
-@var{L}の浅いコピーを返します。
+@mvar{L}自身ではなく、
+@mvar{L}の浅いコピーを返します。
 
-もし @var{L}がリストでないなら、
-@code{unique}は@var{L}を返します。
+もし @mvar{L}がリストでないなら、
+@code{unique}は@mvar{L}を返します。
 
 例:
 
@@ -954,9 +954,9 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 @c -----------------------------------------------------------------------------
 @anchor{tenth}
-@deffn {関数} tenth (@var{expr})
+@deffn {関数} tenth (@mvar{expr})
 
-式またはリスト @var{expr}の10番目の項を返します。
+式またはリスト @mvar{expr}の10番目の項を返します。
 詳細は @code{first}を参照してください。
 
 
@@ -967,9 +967,9 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 @c -----------------------------------------------------------------------------
 @anchor{third}
-@deffn {関数} third (@var{expr})
+@deffn {関数} third (@mvar{expr})
 
-式またはリスト @var{expr}の三番目の項を返します。
+式またはリスト @mvar{expr}の三番目の項を返します。
 詳細は @code{first}を参照してください。
 
 @opencatbox

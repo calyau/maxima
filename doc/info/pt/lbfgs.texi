@@ -28,42 +28,42 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Defini@value{cedilha}@~oes para lbfgs, , Introdu@value{cedilha}@~ao a lbfgs, Top
 @section Defini@value{cedilha}@~oes para lbfgs
 
-@deffn {Fun@value{cedilha}@~ao} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Fun@value{cedilha}@~ao} lbfgs (@mvar{FOM}, @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
 
-Encontra uma solu@value{cedilha}@~ao aproximada da minimiza@value{cedilha}@~ao n@~ao limitada de n@'umero de m@'erito @var{FOM}
-sobre a lista de vari@'aveis @var{X},
-come@value{cedilha}ando a partir da estimativa inicial @var{X0},
+Encontra uma solu@value{cedilha}@~ao aproximada da minimiza@value{cedilha}@~ao n@~ao limitada de n@'umero de m@'erito @mvar{FOM}
+sobre a lista de vari@'aveis @mvar{X},
+come@value{cedilha}ando a partir da estimativa inicial @mvar{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
 O algoritmo aplicado @'e um algoritmo de mem@'oria limitada[1] quasi-Newton (BFGS).
 Esse algoritmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@value{cedilha}@~ao de baixo ranque da
 inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
 
-@var{iprint} controla as messaens de progresso mostradas atrav@'es de @code{lbfgs}.
+@mvar{iprint} controla as messaens de progresso mostradas atrav@'es de @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@var{iprint}[1]} controla a frequ@^encia das mensagens de progresso.
+@code{@mvar{iprint}[1]} controla a frequ@^encia das mensagens de progresso.
 @table @code
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
 Messagens na primeira itera@value{cedilha}@~ao e na @'ultima itera@value{cedilha}@~ao.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@value{cedilha}@~oes.
+Mostra uma mensagem a cada @code{@mvar{iprint}[1]} itera@value{cedilha}@~oes.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla a quantidade de informa@value{cedilha}@~oes fornecidas pelas mensagens de progresso (verbosidade).
+@code{@mvar{iprint}[2]} controla a quantidade de informa@value{cedilha}@~oes fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de itera@value{cedilha}@~oes, o n@'umero de avalia@value{cedilha}@~oes de @var{FOM}, o valor de @var{FOM},
-a norma do gradiente de @var{FOM}, e o comprimento do salto.
+Mostra na tela o contador de itera@value{cedilha}@~oes, o n@'umero de avalia@value{cedilha}@~oes de @mvar{FOM}, o valor de @mvar{FOM},
+a norma do gradiente de @mvar{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
-O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
+O mesmo que @code{@mvar{iprint}[2] = 0}, adicionando @mvar{X0} e o gradiente de @mvar{FOM} avaliado em @mvar{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@value{cedilha}@~ao.
+O mesmo que @code{@mvar{iprint}[2] = 1}, adicionando valores de @mvar{X} a cada itera@value{cedilha}@~ao.
 @item iprint[2] = 3
-O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@value{cedilha}@~ao.
+O mesmo que @code{@mvar{iprint}[2] = 2}, adicionando o gradiente de @mvar{FOM} a cada itera@value{cedilha}@~ao.
 @end table
 @end table
 

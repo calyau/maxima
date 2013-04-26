@@ -33,7 +33,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} %th (@var{i})
+@deffn {Function} %th (@mvar{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -49,15 +49,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} appendfile (@var{filename})
+@deffn {Function} appendfile (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} batch (@var{filename})
+@deffn {Function} batch (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} batchload (@var{filename})
+@deffn {Function} batchload (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -65,28 +65,28 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} collapse (@var{expr})
+@deffn {Function} collapse (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Function} concat (@mvar{arg_1}, @mvar{arg_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Function} sconcat (@mvar{arg_1}, @mvar{arg_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Function} disp (@mvar{expr_1}, @mvar{expr_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Function} dispcon (@mvar{tensor_1}, @mvar{tensor_2}, ...)
 @deffnx {Function} dispcon (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} display (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Function} display (@mvar{expr_1}, @mvar{expr_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -98,7 +98,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} dispterms (@var{expr})
+@deffn {Function} dispterms (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -110,7 +110,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} expt (@var{a}, @var{b})
+@deffn {Function} expt (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -118,12 +118,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} filename_merge (@var{path}, @var{filename})
+@deffn {Function} filename_merge (@mvar{path}, @mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} file_search (@var{filename})
-@deffnx {Function} file_search (@var{filename}, @var{pathlist})
+@deffn {Function} file_search (@mvar{filename})
+@deffnx {Function} file_search (@mvar{filename}, @mvar{pathlist})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -133,11 +133,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} file_type (@var{filename})
+@deffn {Function} file_type (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} grind (@var{expr})
+@deffn {Function} grind (@mvar{expr})
 @deffnx {Option variable} grind
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -150,11 +150,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ldisp (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} ldisp (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ldisplay (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} ldisplay (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -170,11 +170,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} load (@var{filename})
+@deffn {Function} load (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} loadfile (@var{filename})
+@deffn {Function} loadfile (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -198,25 +198,25 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} print (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} print (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
-@deffnx {Function} tcl_output (@var{list}, @var{i0})
-@deffnx {Function} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+@deffn {Function} tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})
+@deffnx {Function} tcl_output (@mvar{list}, @mvar{i0})
+@deffnx {Function} tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} read (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} read (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} readonly (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} reveal (@var{expr}, @var{depth})
+@deffn {Function} reveal (@mvar{expr}, @mvar{depth})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -224,11 +224,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Function} save (@var{filename}, values, functions, labels, ...)
-@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@deffnx {Function} save (@var{filename}, all)
+@deffn {Function} save (@mvar{filename}, @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, ...)
+@deffnx {Function} save (@mvar{filename}, values, functions, labels, ...)
+@deffnx {Function} save (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Function} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, ...)
+@deffnx {Function} save (@mvar{filename}, all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -236,11 +236,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} show (@var{expr})
+@deffn {Function} show (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} showratvars (@var{expr})
+@deffn {Function} showratvars (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -248,7 +248,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} string (@var{expr})
+@deffn {Function} string (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -256,29 +256,29 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} stringout (@var{filename}, input)
-@deffnx {Function} stringout (@var{filename}, functions)
-@deffnx {Function} stringout (@var{filename}, values)
+@deffn {Function} stringout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+@deffnx {Function} stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Function} stringout (@mvar{filename}, input)
+@deffnx {Function} stringout (@mvar{filename}, functions)
+@deffnx {Function} stringout (@mvar{filename}, values)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tex (@var{expr})
-@deffnx {Function} tex (@var{label})
-@deffnx {Function} tex (@var{expr}, @var{filename})
-@deffnx {Function} tex (@var{label}, @var{filename})
+@deffn {Function} tex (@mvar{expr})
+@deffnx {Function} tex (@mvar{label})
+@deffnx {Function} tex (@mvar{expr}, @mvar{filename})
+@deffnx {Function} tex (@mvar{label}, @mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} texput (@var{a}, @var{s})
-@deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Function} texput (@mvar{a}, @mvar{s})
+@deffnx {Function} texput (@mvar{a}, @mvar{s}, @mvar{operator_type})
+@deffnx {Function} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)
+@deffnx {Function} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} system (@var{command})
+@deffn {Function} system (@mvar{command})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -286,11 +286,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffn {Function} with_stdout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} writefile (@var{filename})
+@deffn {Function} writefile (@mvar{filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

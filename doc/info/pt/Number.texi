@@ -7,8 +7,8 @@
 @node Defini@value{cedilha}@~oes para Teoria dos N@'umeros,  , Teoria dos N@'umeros, Teoria dos N@'umeros
 @section Defini@value{cedilha}@~oes para Teoria dos N@'umeros
 
-@deffn {Fun@value{cedilha}@~ao} bern (@var{n})
-Retorna o @var{n}'@'esimo n@'umero de Bernoulli para o inteiro @var{n}.
+@deffn {Fun@value{cedilha}@~ao} bern (@mvar{n})
+Retorna o @mvar{n}'@'esimo n@'umero de Bernoulli para o inteiro @mvar{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
 N@'umeros de Bernoulli iguais a zero s@~ao suprimidos se @code{zerobern} for @code{false}.
@@ -30,25 +30,25 @@ Veja tamb@'em @code{burn}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bernpoly (@var{x}, @var{n})
-Retorna o @var{n}'@'esimo polin@'omio de Bernoulli na
-vari@'avel @var{x}.
+@deffn {Fun@value{cedilha}@~ao} bernpoly (@mvar{x}, @mvar{n})
+Retorna o @mvar{n}'@'esimo polin@'omio de Bernoulli na
+vari@'avel @mvar{x}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfzeta (@var{s}, @var{n})
-Retorna a fun@value{cedilha}@~ao zeta de Riemann para o argumento @var{s}.
+@deffn {Fun@value{cedilha}@~ao} bfzeta (@mvar{s}, @mvar{n})
+Retorna a fun@value{cedilha}@~ao zeta de Riemann para o argumento @mvar{s}.
 O valor de retorno @'e um grande inteiro em ponto flutuante (bfloat);
-@var{n} @'e o n@'umero de d@'{@dotless{i}}gitos no valor de retorno.
+@mvar{n} @'e o n@'umero de d@'{@dotless{i}}gitos no valor de retorno.
 
 @code{load ("bffac")} chama essa fun@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfhzeta (@var{s}, @var{h}, @var{n})
-Retorna a fun@value{cedilha}@~ao zeta de Hurwitz para os argumentos @var{s} e @var{h}.
+@deffn {Fun@value{cedilha}@~ao} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
+Retorna a fun@value{cedilha}@~ao zeta de Hurwitz para os argumentos @mvar{s} e @mvar{h}.
 O valor de retorno @'e um grande inteiro em ponto flutuante (bfloat);
-@var{n} @'e o n@'umeros de d@'{@dotless{i}}gitos no valor de retorno.
+@mvar{n} @'e o n@'umeros de d@'{@dotless{i}}gitos no valor de retorno.
 
 A fun@value{cedilha}@~ao zeta de Hurwitz @'e definida como
 
@@ -60,11 +60,11 @@ sum ((k+h)^-s, k, 0, inf)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} binomial (@var{x}, @var{y})
-O coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
-Se @var{x} e @var{y} forem inteiros, ent@~ao o valor num@'erico do coeficiente
+@deffn {Fun@value{cedilha}@~ao} binomial (@mvar{x}, @mvar{y})
+O coeficiente binomial @code{@mvar{x}!/(@mvar{y}! (@mvar{x} - @mvar{y})!)}.
+Se @mvar{x} e @mvar{y} forem inteiros, ent@~ao o valor num@'erico do coeficiente
 binomial @'e calculado.
-Se @var{y}, ou @var{x - y}, for um inteiro,
+Se @mvar{y}, ou @mvar{x - y}, for um inteiro,
 o the coeficiente binomial @'e expresso como um polin@'omio.
 
 Exemplos:
@@ -95,11 +95,11 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} burn (@var{n})
-Retorna o @var{n}'@'esimo n@'umero de Bernoulli para o inteiro @var{n}.
-@code{burn} pode ser mais eficitente que @code{bern} para valores grandes e isolados de @var{n}
-(talvez @var{n} maior que 105 ou algo parecido), @c CLAIM MADE IN bffac.usg !!!
-como @code{bern} calcula todos os n@'umeros de Bernoulli at@'e o @'{@dotless{i}}ndice @var{n} antes de retornar.
+@deffn {Fun@value{cedilha}@~ao} burn (@mvar{n})
+Retorna o @mvar{n}'@'esimo n@'umero de Bernoulli para o inteiro @mvar{n}.
+@code{burn} pode ser mais eficitente que @code{bern} para valores grandes e isolados de @mvar{n}
+(talvez @mvar{n} maior que 105 ou algo parecido), @c CLAIM MADE IN bffac.usg !!!
+como @code{bern} calcula todos os n@'umeros de Bernoulli at@'e o @'{@dotless{i}}ndice @mvar{n} antes de retornar.
 
 @c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
 @c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
@@ -118,9 +118,9 @@ aproximados atrav@'es de zetas (transcendentes) com efici@^encia toler@'avel.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cf (@var{expr})
-Converte @var{expr} em uma fra@value{cedilha}@~ao cont@'{@dotless{i}}nua.
-@var{expr} @'e uma express@~ao
+@deffn {Fun@value{cedilha}@~ao} cf (@mvar{expr})
+Converte @mvar{expr} em uma fra@value{cedilha}@~ao cont@'{@dotless{i}}nua.
+@mvar{expr} @'e uma express@~ao
 compreendendo fra@value{cedilha}@~oes cont@'{@dotless{i}}nuas e ra@'{@dotless{i}}zes quadradas de inteiros.
 Operandos na express@~ao podem ser combinados com operadores aritm@'eticos.
 Com excess@~ao de fra@value{cedilha}@~oes cont@'{@dotless{i}}nuas e ra@'{@dotless{i}}zes quadradas,
@@ -133,7 +133,7 @@ Maxima n@~ao conhece opera@value{cedilha}@~oes sobre fra@value{cedilha}@~oes con
 Uma fra@value{cedilha}@~ao cont@'{@dotless{i}}nua @code{a + 1/(b + 1/(c + ...))}
 @'e representada atrav@'es da lista @code{[a, b, c, ...]}.
 Os elementos da lista @code{a}, @code{b}, @code{c}, ... devem avaliar para inteiros. 
-@var{expr} pode tamb@'em conter @code{sqrt (n)} onde @code{n} @'e um inteiro.
+@mvar{expr} pode tamb@'em conter @code{sqrt (n)} onde @code{n} @'e um inteiro.
 Nesse caso @code{cf} fornecer@'a tantos
 termos de fra@value{cedilha}@~ao cont@'{@dotless{i}}nua quantos forem o valor da vari@'avel
 @code{cflength} vezes o per@'{@dotless{i}}odo.
@@ -149,7 +149,7 @@ Exemplos:
 
 @itemize @bullet
 @item
-@var{expr} @'e uma express@~ao compreendendo fra@value{cedilha}@~oes cont@'{@dotless{i}}nuas e ra@'{@dotless{i}}zes quadradas de inteiros.
+@mvar{expr} @'e uma express@~ao compreendendo fra@value{cedilha}@~oes cont@'{@dotless{i}}nuas e ra@'{@dotless{i}}zes quadradas de inteiros.
 
 @example
 (%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
@@ -200,7 +200,7 @@ Maxima n@~ao conhece opera@value{cedilha}@~oes sobre fra@value{cedilha}@~oes con
 
 @c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
 @c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
-@deffn {Fun@value{cedilha}@~ao} cfdisrep (@var{list})
+@deffn {Fun@value{cedilha}@~ao} cfdisrep (@mvar{list})
 Constr@'oi e retorna uma express@~ao aritm@'etica comum
 da forma @code{a + 1/(b + 1/(c + ...))}
 a partir da representa@value{cedilha}@~ao lista de uma fra@value{cedilha}@~ao cont@'{@dotless{i}}nua @code{[a, b, c, ...]}.
@@ -220,9 +220,9 @@ a partir da representa@value{cedilha}@~ao lista de uma fra@value{cedilha}@~ao co
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cfexpand (@var{x})
+@deffn {Fun@value{cedilha}@~ao} cfexpand (@mvar{x})
 Retorna uma matriz de numeradores e denominadores dos
-@'ultimo (columa 1) e pen@'ultimo (columa 2) convergentes da fra@value{cedilha}@~ao cont@'{@dotless{i}}nua @var{x}.
+@'ultimo (columa 1) e pen@'ultimo (columa 2) convergentes da fra@value{cedilha}@~ao cont@'{@dotless{i}}nua @mvar{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -260,13 +260,13 @@ per@'{@dotless{i}}odo.  Dessa forma o padr@~ao @'e fornecer um per@'{@dotless{i}
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} divsum (@var{n}, @var{k})
-@deffnx {Fun@value{cedilha}@~ao} divsum (@var{n})
+@deffn {Fun@value{cedilha}@~ao} divsum (@mvar{n}, @mvar{k})
+@deffnx {Fun@value{cedilha}@~ao} divsum (@mvar{n})
 
-@code{divsum (@var{n}, @var{k})} retorna a adi@value{cedilha}@~ao dos divisores de @var{n}
-elevados @`a @var{k}'@'esima pot@^encia.
+@code{divsum (@mvar{n}, @mvar{k})} retorna a adi@value{cedilha}@~ao dos divisores de @mvar{n}
+elevados @`a @mvar{k}'@'esima pot@^encia.
 
-@code{divsum (@var{n})} retorna a adi@value{cedilha}@~ao dos divisores de @var{n}.
+@code{divsum (@mvar{n})} retorna a adi@value{cedilha}@~ao dos divisores de @mvar{n}.
 
 @example
 (%i1) divsum (12);
@@ -281,8 +281,8 @@ elevados @`a @var{k}'@'esima pot@^encia.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} euler (@var{n})
-Retorna o @var{n}'@'esimo n@'umero de Euler para o inteiro @var{n} n@~ao negativo.
+@deffn {Fun@value{cedilha}@~ao} euler (@mvar{n})
+Retorna o @mvar{n}'@'esimo n@'umero de Euler para o inteiro @mvar{n} n@~ao negativo.
 
 Para a constante de Euler-Mascheroni, veja @code{%gamma}.
 
@@ -302,20 +302,20 @@ A constante de Euler-Mascheroni, 0.5772156649015329 ....
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} factorial (@var{x})
-Representa a fun@value{cedilha}@~ao factorial. Maxima trata @code{factorial (@var{x})} da mesma forma que @code{@var{x}!}.
+@deffn {Fun@value{cedilha}@~ao} factorial (@mvar{x})
+Representa a fun@value{cedilha}@~ao factorial. Maxima trata @code{factorial (@mvar{x})} da mesma forma que @code{@mvar{x}!}.
 Veja @code{!}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fib (@var{n})
-Retorna o @var{n}'@'esimo n@'umero de Fibonacci.
+@deffn {Fun@value{cedilha}@~ao} fib (@mvar{n})
+Retorna o @mvar{n}'@'esimo n@'umero de Fibonacci.
 @code{fib(0)} igual a 0 e @code{fib(1)} igual a 1,
 e
-@code{fib (-@var{n})} igual a @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+@code{fib (-@mvar{n})} igual a @code{(-1)^(@mvar{n} + 1) * fib(@mvar{n})}.
 
 Ap@'os chamar @code{fib},
-@code{prevfib} @'e iguala @code{fib (@var{x} - 1)},
+@code{prevfib} @'e iguala @code{fib (@mvar{x} - 1)},
 o n@'umero de Fibonacci anterior ao @'ultimo calculado.
 
 @example
@@ -325,8 +325,8 @@ o n@'umero de Fibonacci anterior ao @'ultimo calculado.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fibtophi (@var{expr})
-Expressa n@'umeros de Fibonacci que aparecem em @var{expr} em termos da constante @code{%phi},
+@deffn {Fun@value{cedilha}@~ao} fibtophi (@mvar{expr})
+Expressa n@'umeros de Fibonacci que aparecem em @mvar{expr} em termos da constante @code{%phi},
 que @'e @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
 Exemplos:
@@ -361,9 +361,9 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ifactors (@var{n})
-Para um inteiro positivo @var{n} retorna a factora@value{cedilha}@~ao de @var{n}. Se
-@code{n=p1^e1..pk^nk} for a decomposi@value{cedilha}@~ao de @var{n} em factores
+@deffn {Fun@value{cedilha}@~ao} ifactors (@mvar{n})
+Para um inteiro positivo @mvar{n} retorna a factora@value{cedilha}@~ao de @mvar{n}. Se
+@code{n=p1^e1..pk^nk} for a decomposi@value{cedilha}@~ao de @mvar{n} em factores
 primos, @code{ifactors} retorna @code{[[p1, e1], ... , [pk, ek]]}.
 
 Os m@'etodos de factora@value{cedilha}@~ao usados s@~ao divis@~oes triviais por primos at@'e 9973,
@@ -378,8 +378,8 @@ o m@'etodo rho de Pollard e o m@'etodo da curva el@'{@dotless{i}}ptica.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} inrt (@var{x}, @var{n})
-Retorna a parte inteira da @var{n}'@'esima ra@'{@dotless{i}}z do valor absoluto de @var{x}.
+@deffn {Fun@value{cedilha}@~ao} inrt (@mvar{x}, @mvar{n})
+Retorna a parte inteira da @mvar{n}'@'esima ra@'{@dotless{i}}z do valor absoluto de @mvar{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -389,10 +389,10 @@ Retorna a parte inteira da @var{n}'@'esima ra@'{@dotless{i}}z do valor absoluto 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} inv_mod (@var{n}, @var{m})
-Calcula o  inverso de @var{n} m@'odulo @var{m}. 
+@deffn {Fun@value{cedilha}@~ao} inv_mod (@mvar{n}, @mvar{m})
+Calcula o  inverso de @mvar{n} m@'odulo @mvar{m}. 
 @code{inv_mod (n,m)} retorna @code{false}, 
-se @var{n} modulo @var{m} for zero.
+se @mvar{n} modulo @mvar{m} for zero.
 
 @example
 (%i1) inv_mod(3, 41);
@@ -405,8 +405,8 @@ se @var{n} modulo @var{m} for zero.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} jacobi (@var{p}, @var{q})
-Retorna s@'{@dotless{i}}mbolo de Jacobi de @var{p} e @var{q}.
+@deffn {Fun@value{cedilha}@~ao} jacobi (@mvar{p}, @mvar{q})
+Retorna s@'{@dotless{i}}mbolo de Jacobi de @mvar{p} e @mvar{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -416,7 +416,7 @@ Retorna s@'{@dotless{i}}mbolo de Jacobi de @var{p} e @var{q}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lcm (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~ao} lcm (@mvar{expr_1}, ..., @mvar{expr_n})
 Retorna o menor m@'ultiplo comum entre seus argumentos.
 Os argumentos podem ser express@~oes gerais tamb@'em inteiras.
 
@@ -424,8 +424,8 @@ Os argumentos podem ser express@~oes gerais tamb@'em inteiras.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} minfactorial (@var{expr})
-Examina @var{expr} procurando por ocorr@^encias de dois factoriais
+@deffn {Fun@value{cedilha}@~ao} minfactorial (@mvar{expr})
+Examina @mvar{expr} procurando por ocorr@^encias de dois factoriais
 que diferem por um inteiro.  
 @code{minfactorial} ent@~ao converte um em um polin@'omio vezes o outro.
 
@@ -448,8 +448,8 @@ que diferem por um inteiro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} next_prime (@var{n})
-Retorna o menor primo maior que @var{n}.
+@deffn {Fun@value{cedilha}@~ao} next_prime (@mvar{n})
+Retorna o menor primo maior que @mvar{n}.
 
 @example
 (%i1) next_prime(27);
@@ -458,9 +458,9 @@ Retorna o menor primo maior que @var{n}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} partfrac (@var{expr}, @var{var})
-Expande a express@~ao @var{expr} em fra@value{cedilha}@~oes parciais
-com rela@value{cedilha}@~ao @`a vari@'avel principal @var{var}.  @code{partfrac} faz uma decomposi@value{cedilha}@~ao
+@deffn {Fun@value{cedilha}@~ao} partfrac (@mvar{expr}, @mvar{var})
+Expande a express@~ao @mvar{expr} em fra@value{cedilha}@~oes parciais
+com rela@value{cedilha}@~ao @`a vari@'avel principal @mvar{var}.  @code{partfrac} faz uma decomposi@value{cedilha}@~ao
 completa de fra@value{cedilha}@~ao parcial.  O algoritmo utilizado @'e baseado no
 facto que os denominadores de uma expans@~ao de fra@value{cedilha}@~ao parcial (os
 factores do denominador original) s@~ao relativamente primos.  Os
@@ -487,10 +487,10 @@ a expans@~ao acontece.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {Fun@value{cedilha}@~ao} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
 Usa um algoritmo modular para calcular @code{a^n mod m} 
-onde @var{a} e @var{n} s@~ao inteiros e @var{m} @'e um inteiro positivo. 
-Se @var{n} for negativo, @code{inv_mod} @'e usada para encontrar o inverso modular.
+onde @mvar{a} e @mvar{n} s@~ao inteiros e @mvar{m} @'e um inteiro positivo. 
+Se @mvar{n} for negativo, @code{inv_mod} @'e usada para encontrar o inverso modular.
 
 @example
 (%i1) power_mod(3, 15, 5);
@@ -505,20 +505,20 @@ Se @var{n} for negativo, @code{inv_mod} @'e usada para encontrar o inverso modul
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} primep (@var{n})
-Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} @'e um
-n@'umero compostro e se esse teste retornar @code{true}, @var{n} @'e um n@'umero primo
+@deffn {Fun@value{cedilha}@~ao} primep (@mvar{n})
+Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @mvar{n} @'e um
+n@'umero compostro e se esse teste retornar @code{true}, @mvar{n} @'e um n@'umero primo
 com grande probabilidade.
 
-Para @var{n} menor que 341550071728321 uma vers@~ao deterministra do teste de 
-Miller-Rabin @'e usada. Se @code{primep (n)} retornar @code{true}, ent@~ao @var{n} @'e um
+Para @mvar{n} menor que 341550071728321 uma vers@~ao deterministra do teste de 
+Miller-Rabin @'e usada. Se @code{primep (n)} retornar @code{true}, ent@~ao @mvar{n} @'e um
 n@'umero primo.
 
-Para @var{n} maior que 34155071728321 @code{primep} usa
+Para @mvar{n} maior que 34155071728321 @code{primep} usa
 @code{primep_number_of_tests} que @'e os testes de pseudo-primalidade de Miller-Rabin
-e um teste de pseudo-primalidade de Lucas. A probabilidade que @var{n} ir@'a
+e um teste de pseudo-primalidade de Lucas. A probabilidade que @mvar{n} ir@'a
 passar por um teste de Miller-Rabin @'e menor que 1/4. Usando o valor padr@~ao 25 para
-@code{primep_number_of_tests}, a probabilidade de @var{n} passar no teste sendo
+@code{primep_number_of_tests}, a probabilidade de @mvar{n} passar no teste sendo
 composto @'e muito menor que 10^-15.
 
 @end deffn
@@ -529,8 +529,8 @@ Valor por omiss@~ao: 25
 N@'umero de testes de Miller-Rabin usados em @code{primep}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} prev_prime (@var{n})
-Retorna o maior primo menor que @var{n}.
+@deffn {Fun@value{cedilha}@~ao} prev_prime (@mvar{n})
+Retorna o maior primo menor que @mvar{n}.
 
 @example
 (%i1) prev_prime(27);
@@ -538,11 +538,11 @@ Retorna o maior primo menor que @var{n}.
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} qunit (@var{n})
+@deffn {Fun@value{cedilha}@~ao} qunit (@mvar{n})
 Retorna a principal unidade do campo dos n@'umeros quadr@'aticos reais
-@code{sqrt (@var{n})} onde @var{n} @'e um inteiro,
+@code{sqrt (@mvar{n})} onde @mvar{n} @'e um inteiro,
 i.e., o elemento cuja norma @'e unidade.
-Isso @'e importante para resolver a equa@value{cedilha}@~ao de Pell @code{a^2 - @var{n} b^2 = 1}.
+Isso @'e importante para resolver a equa@value{cedilha}@~ao de Pell @code{a^2 - @mvar{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -553,9 +553,9 @@ Isso @'e importante para resolver a equa@value{cedilha}@~ao de Pell @code{a^2 - 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} totient (@var{n})
-Retorna o n@'umero de inteiros menores que ou iguais a @var{n} que
-s@~ao relativamente primos com @var{n}.
+@deffn {Fun@value{cedilha}@~ao} totient (@mvar{n})
+Retorna o n@'umero de inteiros menores que ou iguais a @mvar{n} que
+s@~ao relativamente primos com @mvar{n}.
 
 @end deffn
 
@@ -568,10 +568,10 @@ Veja @code{bern}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} zeta (@var{n})
-Retorna a fun@value{cedilha}@~ao zeta de Riemann se @var{x} for um inteiro negativo, 0, 1,
+@deffn {Fun@value{cedilha}@~ao} zeta (@mvar{n})
+Retorna a fun@value{cedilha}@~ao zeta de Riemann se @mvar{x} for um inteiro negativo, 0, 1,
 ou n@'umero par positivo,
-e retorna uma forma substantiva @code{zeta (@var{n})} para todos os outros argumentos,
+e retorna uma forma substantiva @code{zeta (@mvar{n})} para todos os outros argumentos,
 incluindo n@~ao inteiros racionais, ponto flutuante, e argumentos complexos.
 
 Veja tamb@'em @code{bfzeta} e @code{zeta%pi}.

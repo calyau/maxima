@@ -7,11 +7,11 @@
 @section Funciones y variables para lindstedt
 
 
-@deffn {Funci@'on} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {Funci@'on} Lindstedt (@mvar{eq},@mvar{pvar},@mvar{torder},@mvar{ic})
 Este es el primer paso hacia un programa para resolver ecuaciones de Lindstedt.
 Puede resolver problemas con condiciones iniciales, las cuales pueden ser
-constantes arbitrarias (no pueden usarse @var{%k1} ni @var{%k2}) donde las condiciones iniciales sobre las ecuaciones de perturbaci@'on son @math{z[i]=0, z'[i]=0} para @math{i>0}.
-El argumento @var{ic} es la lista de condiciones iniciales.
+constantes arbitrarias (no pueden usarse @mvar{%k1} ni @mvar{%k2}) donde las condiciones iniciales sobre las ecuaciones de perturbaci@'on son @math{z[i]=0, z'[i]=0} para @math{i>0}.
+El argumento @mvar{ic} es la lista de condiciones iniciales.
 
 Ejemplo:
 @example

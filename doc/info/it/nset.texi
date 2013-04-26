@@ -9,196 +9,196 @@
 @node Definitions for Sets,  , Introduction to Sets, Sets
 @section Definitions for Sets
 
-@deffn {Function} adjoin (@var{x}, @var{a}) 
+@deffn {Function} adjoin (@mvar{x}, @mvar{a}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} belln (@var{n})
+@deffn {Function} belln (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cardinality (@var{a})
+@deffn {Function} cardinality (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cartesian_product (@var{b_1}, ... , @var{b_n})
+@deffn {Function} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} disjoin (@var{x}, @var{a})
+@deffn {Function} disjoin (@mvar{x}, @mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} disjointp (@var{a}, @var{b}) 
+@deffn {Function} disjointp (@mvar{a}, @mvar{b}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} divisors (@var{n})
+@deffn {Function} divisors (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} elementp (@var{x}, @var{a})
+@deffn {Function} elementp (@mvar{x}, @mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} emptyp (@var{a})
+@deffn {Function} emptyp (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} equiv_classes (@var{s}, @var{F})
+@deffn {Function} equiv_classes (@mvar{s}, @mvar{F})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} every (@var{f}, @var{s})
-@deffnx {Function} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Function} every (@mvar{f}, @mvar{s})
+@deffnx {Function} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {Function} extremal_subset (@var{s}, @var{f}, min)
+@deffn {Function} extremal_subset (@mvar{s}, @mvar{f}, max)
+@deffnx {Function} extremal_subset (@mvar{s}, @mvar{f}, min)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} flatten (@var{expr})
+@deffn {Function} flatten (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} full_listify (@var{a})
+@deffn {Function} full_listify (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fullsetify (@var{a})
+@deffn {Function} fullsetify (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} identity (@var{x})
+@deffn {Function} identity (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} integer_partitions (@var{n})
-@deffnx {Function} integer_partitions (@var{n}, @var{len})
+@deffn {Function} integer_partitions (@mvar{n})
+@deffnx {Function} integer_partitions (@mvar{n}, @mvar{len})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
+@deffn {Function} intersect (@mvar{a_1}, ..., @mvar{a_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} intersection (@var{a_1}, ..., @var{a_n})
+@deffn {Function} intersection (@mvar{a_1}, ..., @mvar{a_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} kron_delta (@var{x}, @var{y})
+@deffn {Function} kron_delta (@mvar{x}, @mvar{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} listify (@var{a})
+@deffn {Function} listify (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lreduce (@var{F}, @var{s})
-@deffnx {Function} lreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} lreduce (@mvar{F}, @mvar{s})
+@deffnx {Function} lreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} makeset (@var{expr}, @var{x}, @var{s})
+@deffn {Function} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} moebius (@var{n})
+@deffn {Function} moebius (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffn {Function} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Function} multinomial_coeff ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} num_distinct_partitions (@var{n})
-@deffnx {Function} num_distinct_partitions (@var{n}, list)
+@deffn {Function} num_distinct_partitions (@mvar{n})
+@deffnx {Function} num_distinct_partitions (@mvar{n}, list)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} num_partitions (@var{n})
-@deffnx {Function} num_partitions (@var{n}, list)
+@deffn {Function} num_partitions (@mvar{n})
+@deffnx {Function} num_partitions (@mvar{n}, list)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} partition_set (@var{a}, @var{f})
+@deffn {Function} partition_set (@mvar{a}, @mvar{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} permutations (@var{a})
+@deffn {Function} permutations (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} powerset (@var{a})
-@deffnx {Function} powerset (@var{a}, @var{n})
+@deffn {Function} powerset (@mvar{a})
+@deffnx {Function} powerset (@mvar{a}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rreduce (@var{F}, @var{s})
-@deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+@deffn {Function} rreduce (@mvar{F}, @mvar{s})
+@deffnx {Function} rreduce (@mvar{F}, @mvar{s}, @mvar{s_@{n + 1@}})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function}  setdifference (@var{a}, @var{b})
+@deffn {Function}  setdifference (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} setequalp (@var{a}, @var{b})
+@deffn {Function} setequalp (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} setify (@var{a})
+@deffn {Function} setify (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} setp (@var{a})
+@deffn {Function} setp (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} set_partitions (@var{a})
-@deffnx {Function} set_partitions (@var{a}, @var{n})
+@deffn {Function} set_partitions (@mvar{a})
+@deffnx {Function} set_partitions (@mvar{a}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} some (@var{f}, @var{a})
-@deffnx {Function} some (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Function} some (@mvar{f}, @mvar{a})
+@deffnx {Function} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} stirling1 (@var{n}, @var{m})
+@deffn {Function} stirling1 (@mvar{n}, @mvar{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} stirling2 (@var{n}, @var{m})
+@deffn {Function} stirling2 (@mvar{n}, @mvar{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} subset (@var{a}, @var{f})
+@deffn {Function} subset (@mvar{a}, @mvar{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} subsetp (@var{a}, @var{b})
+@deffn {Function} subsetp (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
+@deffn {Function} symmdifference (@mvar{a_1}, ..., @mvar{a_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tree_reduce (@var{F}, @var{s})
-@deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} tree_reduce (@mvar{F}, @mvar{s})
+@deffnx {Function} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} union (@var{a_1}, ..., @var{a_n})
+@deffn {Function} union (@mvar{a_1}, ..., @mvar{a_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} xreduce (@var{F}, @var{s})
-@deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} xreduce (@mvar{F}, @mvar{s})
+@deffnx {Function} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

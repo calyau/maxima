@@ -5,7 +5,7 @@
 @node Definitions for stirling,  , stirling, stirling
 @section Definitions for stirling
 
-@deffn {Function} stirling (@var{z},@var{n})
+@deffn {Function} stirling (@mvar{z},@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

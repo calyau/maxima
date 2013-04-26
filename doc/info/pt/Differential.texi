@@ -19,15 +19,15 @@ espa@,{c}o de fase, consulte o pacote adicional @code{plotdf}.
 @section Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais
 
 
-@deffn {Fun@value{cedilha}@~ao} bc2 (@var{solu@value{cedilha}@~ao}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {Fun@value{cedilha}@~ao} bc2 (@mvar{solu@value{cedilha}@~ao}, @mvar{xval1}, @mvar{yval1}, @mvar{xval2}, @mvar{yval2})
 Resolve um problema de valores fronteira para uma equa@,{c}@~ao
-diferencial de segunda ordem.  Aqui: @var{solu@value{cedilha}@~ao} @'e
+diferencial de segunda ordem.  Aqui: @mvar{solu@value{cedilha}@~ao} @'e
 uma solu@value{cedilha}@~ao geral para a equa@value{cedilha}@~ao,
-calculada por @code{ode2}; @var{xval1} define o valor da vari@'avel
-independente, num primeiro ponto, na forma @code{@var{x} = @var{x1}}, e
-@var{yval1} define o valor da vari@'avel dependente, no mesmo ponto, na
-forma @code{@var{y} = @var{y1}}. As express@~oes @var{xval2} e
-@var{yval2} definem os valores das mesmas vari@'aveis, num segundo
+calculada por @code{ode2}; @mvar{xval1} define o valor da vari@'avel
+independente, num primeiro ponto, na forma @code{@mvar{x} = @mvar{x1}}, e
+@mvar{yval1} define o valor da vari@'avel dependente, no mesmo ponto, na
+forma @code{@mvar{y} = @mvar{y1}}. As express@~oes @mvar{xval2} e
+@mvar{yval2} definem os valores das mesmas vari@'aveis, num segundo
 ponto, usando a mesma forma.
 
 Veja um exemplo da sua utiliza@,{c}@~ao na documenta@,{c}@~ao de
@@ -36,13 +36,13 @@ Veja um exemplo da sua utiliza@,{c}@~ao na documenta@,{c}@~ao de
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} desolve (@var{eqn}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@value{cedilha}@~ao} desolve (@mvar{eqn}, @mvar{x})
+@deffnx {Fun@value{cedilha}@~ao} desolve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])
 A fun@value{cedilha}@~ao @code{dsolve} resolve sistemas de
 equa@,{c}@~oes diferenciais ordin@'arias lineares usando transformada de
-Laplace. Aqui as express@~oes @var{eqn} s@~ao equa@,{c}@~oes
-diferenciais nas vari@'aveis dependentes @var{x_1}, ..., @var{x_n}.  A
-rela@,{c}@~ao funcional de @var{x_1}, ..., @var{x_n} na vari@'avel
+Laplace. Aqui as express@~oes @mvar{eqn} s@~ao equa@,{c}@~oes
+diferenciais nas vari@'aveis dependentes @mvar{x_1}, ..., @mvar{x_n}.  A
+rela@,{c}@~ao funcional de @mvar{x_1}, ..., @mvar{x_n} na vari@'avel
 independente deve ser indicada explicitamente nas vari@'aveis e nas suas
 derivadas. Por exemplo, esta forma de definir as equa@,{c}@~oes n@~ao
 seria correcta:
@@ -108,40 +108,40 @@ Se @code{desolve} n@~ao pode obter uma solu@,{c}@~ao, retorna @code{false}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} ic1 (@var{solu@,{c}@~ao}, @var{xval}, @var{yval})
+@deffn {Fun@,{c}@~ao} ic1 (@mvar{solu@,{c}@~ao}, @mvar{xval}, @mvar{yval})
 Resolve problemas de valor inicial para equa@,{c}@~oes diferenciais de
-primeira ordem.  Aqui @var{solu@,{c}@~ao} @'e uma solu@,{c}@~ao geral
-para a equa@,{c}@~ao, na forma dada por @code{ode2}, @var{xval} d@'a um
-valor inicial para a vari@'avel independente, na forma @code{@var{x} =
-@var{x0}}, e @var{yval} d@'a o valor inicial para a vari@'avel
-dependente, na forma @code{@var{y} = @var{y0}}.
+primeira ordem.  Aqui @mvar{solu@,{c}@~ao} @'e uma solu@,{c}@~ao geral
+para a equa@,{c}@~ao, na forma dada por @code{ode2}, @mvar{xval} d@'a um
+valor inicial para a vari@'avel independente, na forma @code{@mvar{x} =
+@mvar{x0}}, e @mvar{yval} d@'a o valor inicial para a vari@'avel
+dependente, na forma @code{@mvar{y} = @mvar{y0}}.
 
 Veja um exemplo da sua utiliza@,{c}@~ao na documenta@,{c}@~ao de
 @code{ode2}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ic2 (@var{solu@,{c}@~ao}, @var{xval}, @var{yval}, @var{dval})
+@deffn {Fun@,{c}@~ao} ic2 (@mvar{solu@,{c}@~ao}, @mvar{xval}, @mvar{yval}, @mvar{dval})
 Resolve problemas de valores iniciais para equa@,{c}@~oes diferenciais
-de segunda ordem. Aqui @var{solu@,{c}@~ao} @'e uma solu@,{c}@~ao geral
-para a equa@,{c}@~ao, na forma dada por @code{ode2}, @var{xval} d@'a um
-valor inicial para a vari@'avel independente, na forma @code{@var{x} =
-@var{x0}}, @var{yval} d@'a o valor inicial para a vari@'avel dependente,
-na forma @code{@var{y} = @var{y0}} e @var{dval} d@'a o valor inicial
+de segunda ordem. Aqui @mvar{solu@,{c}@~ao} @'e uma solu@,{c}@~ao geral
+para a equa@,{c}@~ao, na forma dada por @code{ode2}, @mvar{xval} d@'a um
+valor inicial para a vari@'avel independente, na forma @code{@mvar{x} =
+@mvar{x0}}, @mvar{yval} d@'a o valor inicial para a vari@'avel dependente,
+na forma @code{@mvar{y} = @mvar{y0}} e @mvar{dval} d@'a o valor inicial
 para a primeira derivada da vari@'avel dependente, em fun@,{c}@~ao da
-vari@'avel independente, na forma @code{diff(@var{y},@var{x}) =
-@var{dy0}} (@code{diff} n@~ao tem que ser precedido por ap@'ostrofo).
+vari@'avel independente, na forma @code{diff(@mvar{y},@mvar{x}) =
+@mvar{dy0}} (@code{diff} n@~ao tem que ser precedido por ap@'ostrofo).
 
 Veja um exemplo da sua utiliza@,{c}@~ao na documenta@,{c}@~ao de
 @code{ode2}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+@deffn {Fun@,{c}@~ao} ode2 (@mvar{eqn}, @mvar{dvar}, @mvar{ivar})
 A fun@,{c}@~ao @code{ode2} resolve uma equa@,{c}@~ao diferencial
 ordin@'aria (EDO) de primeira ou de segunda ordem.  Precisa de tr@^es
-argumentos: uma EDO dada por @var{eqn}, a vari@'avel dependente
-@var{dvar}, e a vari@'avel independente @var{ivar}.  Quando conseguir,
+argumentos: uma EDO dada por @mvar{eqn}, a vari@'avel dependente
+@mvar{dvar}, e a vari@'avel independente @mvar{ivar}.  Quando conseguir,
 retorna uma solu@,{c}@~ao para a vari@'avel dependente, na forma
 expl@'{@dotless{i}}cita ou impl@'{@dotless{i}}cita. @code{%c} @'e usado
 para representar a constante de integra@,{c}@~ao no caso de

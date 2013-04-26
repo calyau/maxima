@@ -13,7 +13,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ggf (@var{l})
+@deffn {Function} ggf (@mvar{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

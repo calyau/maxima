@@ -5,13 +5,13 @@
 @node Functions and Variables for Groups,  , Groups, Groups
 @section Functions and Variables for Groups
 
-@deffn {関数} todd_coxeter (@var{relations}, @var{subgroup})
-@deffnx {関数} todd_coxeter (@var{relations})
+@deffn {関数} todd_coxeter (@mvar{relations}, @mvar{subgroup})
+@deffnx {関数} todd_coxeter (@mvar{relations})
 
 G/Hの次数を見つけます。
-ここで、Gは法@var{relations}に関する自由群で、
-Hは、@var{subgroup}が生成するGの部分群です。
-@var{subgroup}は、オプションの引数であり、
+ここで、Gは法@mvar{relations}に関する自由群で、
+Hは、@mvar{subgroup}が生成するGの部分群です。
+@mvar{subgroup}は、オプションの引数であり、
 省略すると[]になります。
 これをする時には、
 GのG/H上の右作用に関する乗算テーブルを生成します。

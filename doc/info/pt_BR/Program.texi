@@ -16,13 +16,13 @@ primitivas tais como @code{go}.
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa
 
 @deffn {Fun@value{cedilha}@~{a}o} backtrace ()
-@deffnx {Fun@value{cedilha}@~{a}o} backtrace (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} backtrace (@mvar{n})
 Imprime a pilha de chamadas, que @'{e}, a lista de fun@value{cedilha}@~{o}es que
 foram chamadas pela fun@value{cedilha}@~{a}o correntemente ativa.
 
 @code{backtrace()} imprime toda a pilha de chamadas.
 
-@code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
+@code{backtrace (@mvar{n})} imprime as @mvar{n} mais recentes chamadas a
 fun@value{cedilha}@~{o}es, incluindo a fun@value{cedilha}@~{a}o correntemente ativa.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
@@ -54,7 +54,7 @@ Exemplos:
 
 @itemize @bullet
 @item
-@code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
+@code{backtrace (@mvar{n})} imprime as @mvar{n} mais recentes chamadas a
 fun@value{cedilha}@~{o}es, incluindo a fun@value{cedilha}@~{a}o correntemente ativa.
 
 @example
@@ -87,21 +87,21 @@ condi@value{cedilha}@~{o}es de encerramento.  S@~{a}o elas:
 
 @itemize @bullet
 @item
-@code{for @var{Vari@'{a}vel}: @var{valor_inicial} step @var{incremento}
-      thru @var{limite} do @var{corpo}}
+@code{for @mvar{Vari@'{a}vel}: @mvar{valor_inicial} step @mvar{incremento}
+      thru @mvar{limite} do @mvar{corpo}}
 @item
-@code{for @var{Vari@'{a}vel}: @var{valor_inicial} step @var{incremento}
-      while @var{condi@value{cedilha}@~{a}o} do @var{corpo}}
+@code{for @mvar{Vari@'{a}vel}: @mvar{valor_inicial} step @mvar{incremento}
+      while @mvar{condi@value{cedilha}@~{a}o} do @mvar{corpo}}
 @item
-@code{for @var{Vari@'{a}vel}: @var{valor_inicial} step @var{incremento}
-      unless @var{condi@value{cedilha}@~{a}o} do @var{corpo}}
+@code{for @mvar{Vari@'{a}vel}: @mvar{valor_inicial} step @mvar{incremento}
+      unless @mvar{condi@value{cedilha}@~{a}o} do @mvar{corpo}}
 @end itemize
 
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
-(Alternativamente, o @code{step} pode ser dado ap@'{o}s a @var{condi@value{cedilha}@~{a}o} de encerramento
+(Alternativamente, o @code{step} pode ser dado ap@'{o}s a @mvar{condi@value{cedilha}@~{a}o} de encerramento
 ou limite.)
 
-@var{valor_inicial}, @var{incremento}, @var{limite}, e @var{corpo} podem ser quaisquer
+@mvar{valor_inicial}, @mvar{incremento}, @mvar{limite}, e @mvar{corpo} podem ser quaisquer
 express@~{o}es.  Se o incremento for 1 ent@~{a}o "@code{step 1}" pode ser omitido.
 
 A execu@value{cedilha}@~{a}o da declara@value{cedilha}@~{a}o @code{do} processa-se primeiro atribuindo o
@@ -109,32 +109,32 @@ A execu@value{cedilha}@~{a}o da declara@value{cedilha}@~{a}o @code{do} processa-
 vari@'{a}vel de controle).  Ent@~{a}o: (1) Se a vari@'{a}vel de controle excede
 o limite de uma especifica@value{cedilha}@~{a}o @code{thru}, ou se a condi@value{cedilha}@~{a}o de @code{unless} for
 @code{true}, ou se a condi@value{cedilha}@~{a}o de @code{while} for @code{false} ent@~{a}o o @code{do}
-ser@'{a} encerrado.  (2) O @var{corpo} @'{e} avaliado.  (3) O incremento @'{e} adicionado @`a
+ser@'{a} encerrado.  (2) O @mvar{corpo} @'{e} avaliado.  (3) O incremento @'{e} adicionado @`a
 vari@'{a}vel de controle.  O processo de (1) a (3) @'{e} executado
 repetidamente at@'{e} que a condi@value{cedilha}@~{a}o de encerramento seja satisfeita.  Pode-se tamb@'{e}m
 dar muitas condi@value{cedilha}@~{o}es de encerramento e nesse caso o @code{do} termina
 quando qualquer delas for satisfeita.
 
 Em geral o teste @code{thru} @'{e} satisfeito quando a vari@'{a}vel de controle for
-maior que o @var{limite} se o incremento for n@~{a}o negativo, ou quando a
-vari@'{a}vel de controle for menor que o @var{limite} se o @var{incremento} for negativo.
-O @var{incremento} e o @var{limite} podem ser express@~{o}es n@~{a}o num@'{e}ricas enquanto essa
-desigualdade puder ser determinada.  Todavia, a menos que o @var{incremento} seja
+maior que o @mvar{limite} se o incremento for n@~{a}o negativo, ou quando a
+vari@'{a}vel de controle for menor que o @mvar{limite} se o @mvar{incremento} for negativo.
+O @mvar{incremento} e o @mvar{limite} podem ser express@~{o}es n@~{a}o num@'{e}ricas enquanto essa
+desigualdade puder ser determinada.  Todavia, a menos que o @mvar{incremento} seja
 sintaticamente negativo (e.g. for um n@'{u}mero negativo) na hora em que a declara@value{cedilha}@~{a}o @code{do}
 for iniciada, Maxima assume que o incremento e o limite ser@~{a}o positivos quando o @code{do} for
 executado.  Se o limite e o incremento n@~{a}o forem positivos, ent@~{a}o o @code{do} pode n@~{a}o terminar
 propriamente.
 
-Note que o @var{limite}, @var{incremento}, e @var{condi@value{cedilha}@~{a}o} de encerramento s@~{a}o
+Note que o @mvar{limite}, @mvar{incremento}, e @mvar{condi@value{cedilha}@~{a}o} de encerramento s@~{a}o
 avaliados cada vez que ocorre um ciclo.  Dessa forma se qualquer desses for respons@'{a}vel por
 muitos c@'{a}lculos, e retornar um resultado que n@~{a}o muda durante todas
-as execu@value{cedilha}@~{o}es do @var{corpo}, ent@~{a}o @'{e} mais eficiente escolher uma
+as execu@value{cedilha}@~{o}es do @mvar{corpo}, ent@~{a}o @'{e} mais eficiente escolher uma
 vari@'{a}vel para seu valor pr@'{e}vio para o @code{do} e usar essa vari@'{a}vel na
 forma @code{do}.
 
 O valor normalmente retornado por uma declara@value{cedilha}@~{a}o @code{do} @'{e} o @'{a}tomo @code{done}.
 Todavia, a fun@value{cedilha}@~{a}o
-@code{return} pode ser usada dentro do @var{corpo} para sair da delcara@value{cedilha}@~{a}o @code{do} prematuramente e dar
+@code{return} pode ser usada dentro do @mvar{corpo} para sair da delcara@value{cedilha}@~{a}o @code{do} prematuramente e dar
 a isso qualquer valor desejado.
 Note todavia que um @code{return} dentro de um @code{do} que
 ocorre em um @code{block} encerrar@'{a} somente o @code{do} e n@~{a}o o @code{block}.  Note tamb@'{e}m
@@ -205,9 +205,9 @@ itera@value{cedilha}@~{a}o de Newton- Raphson um maximum de 10 vezes.  Caso o cr
 converg@^{e}cia n@~{a}o tenha sido encontrado o valor retornado pode ser @code{done}.
 Em lugar de sempre adicionar uma quantidade @`a vari@'{a}vel de controle pode-se
 algumas vezes desejar alterar isso de alguma outra forma para cada itera@value{cedilha}@~{a}o.
-Nesse caso pode-se usar @code{next @var{express@~{a}o}} em lugar de @code{step @var{incremento}}.
+Nesse caso pode-se usar @code{next @mvar{express@~{a}o}} em lugar de @code{step @mvar{incremento}}.
 Isso far@'{a} com que a vari@'{a}vel de controle seja escolhida para o
-resultado de avalia@value{cedilha}@~{a}o da @var{express@~{a}o} cada vez que o ciclo de repeti@value{cedilha}@~{a}o for executado.
+resultado de avalia@value{cedilha}@~{a}o da @mvar{express@~{a}o} cada vez que o ciclo de repeti@value{cedilha}@~{a}o for executado.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -219,10 +219,10 @@ resultado de avalia@value{cedilha}@~{a}o da @var{express@~{a}o} cada vez que o c
 @end example
 
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
-Como uma alternativa para @code{for @var{Vari@'{a}vel}: @var{valor} ...do...} a sintaxe
-@code{for @var{Vari@'{a}vel} from @var{valor} ...do...}  pode ser usada.  Isso permite o
-@code{from @var{valor}} ser colocado ap@'{o}s o @code{step} ou ap@'{o}s o @var{next} valor ou ap@'{o}s a
-@var{condi@value{cedilha}@~{a}o} de encerramento.  Se @code{from @var{valor}} for omitido ent@~{a}o 1 @'{e} usado como
+Como uma alternativa para @code{for @mvar{Vari@'{a}vel}: @mvar{valor} ...do...} a sintaxe
+@code{for @mvar{Vari@'{a}vel} from @mvar{valor} ...do...}  pode ser usada.  Isso permite o
+@code{from @mvar{valor}} ser colocado ap@'{o}s o @code{step} ou ap@'{o}s o @mvar{next} valor ou ap@'{o}s a
+@mvar{condi@value{cedilha}@~{a}o} de encerramento.  Se @code{from @mvar{valor}} for omitido ent@~{a}o 1 @'{e} usado como
 o valor inicial.
 
 Algumas vezes se pode estar interessado em executar uma itera@value{cedilha}@~{a}o onde
@@ -241,7 +241,7 @@ ra@'{i}z quadrada de 5 usando uma fraca suposi@value{cedilha}@~{a}o inicial.
 @end example
 
 Se isso for desejado pode-se sempre omitir as condi@value{cedilha}@~{o}es de encerramento
-inteiramente e apenas dar o @code{do @var{corpo}} que o @var{corpo} continuar@'{a} a ser 
+inteiramente e apenas dar o @code{do @mvar{corpo}} que o @mvar{corpo} continuar@'{a} a ser 
 avaliado indefinidamente.  Nesse caso a fun@value{cedilha}@~{a}o @code{return} ser@'{a} usada para
 encerrar a execu@value{cedilha}@~{a}o da declara@value{cedilha}@~{a}o @code{do}.
 
@@ -263,14 +263,14 @@ esse valor da declara@value{cedilha}@~{a}o @code{do} @'{e} retornado como o valo
 Uma outra forma de @code{do} @'{e} dispon@'{i}vel no Maxima.  A sintaxe @'{e}:
 
 @example
-for @var{Vari@'{a}vel} in @var{list} @var{end_tests} do @var{corpo}
+for @mvar{Vari@'{a}vel} in @mvar{list} @mvar{end_tests} do @mvar{corpo}
 @end example
 
-Os elementos de @var{list} s@~{a}o quaisquer express@~{o}es que ir@~{a}o
-sucessivamente ser atribu@'{i}das para a @var{vari@'{a}vel} a cada itera@value{cedilha}@~{a}o do
-@var{corpo}.  O teste opcional @var{end_tests} pode ser usado para encerrar a execu@value{cedilha}@~{a}o da
-declara@value{cedilha}@~{a}o @code{do}; de outra forma o @code{do} terminar@'{a} quando a @var{lista} for exaurida ou quando
-um @code{return} for executado no @var{corpo}.  (De fato, a @var{lista} pode ser qualquer
+Os elementos de @mvar{list} s@~{a}o quaisquer express@~{o}es que ir@~{a}o
+sucessivamente ser atribu@'{i}das para a @mvar{vari@'{a}vel} a cada itera@value{cedilha}@~{a}o do
+@mvar{corpo}.  O teste opcional @mvar{end_tests} pode ser usado para encerrar a execu@value{cedilha}@~{a}o da
+declara@value{cedilha}@~{a}o @code{do}; de outra forma o @code{do} terminar@'{a} quando a @mvar{lista} for exaurida ou quando
+um @code{return} for executado no @mvar{corpo}.  (De fato, a @mvar{lista} pode ser qualquer
 express@~{a}o n@~{a}o at@^{o}mica, e partes sucessivas s@~{a}o usadas.)
 
 @example
@@ -286,9 +286,9 @@ express@~{a}o n@~{a}o at@^{o}mica, e partes sucessivas s@~{a}o usadas.)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} errcatch (@var{expr_1}, ..., @var{expr_n})
-Avalia @var{expr_1}, ..., @var{expr_n} uma por uma e
-retorna @code{[@var{expr_n}]} (uma lista) se nenhum erro ocorrer.  Se um
+@deffn {Fun@value{cedilha}@~{a}o} errcatch (@mvar{expr_1}, ..., @mvar{expr_n})
+Avalia @mvar{expr_1}, ..., @mvar{expr_n} uma por uma e
+retorna @code{[@mvar{expr_n}]} (uma lista) se nenhum erro ocorrer.  Se um
 erro ocorrer na avalia@value{cedilha}@~{a}o de qualquer argumento, @code{errcatch}
 evita que o erro se propague e
 retorna a lista vazia @code{[]} sem avaliar quaisquer mais argumentos.
@@ -299,15 +299,15 @@ terminar@'{a} o @code{batch} se o erro n@~{a}o for detectado.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} error (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} error (@mvar{expr_1}, ..., @mvar{expr_n})
 @deffnx {Vari@'{a}vel de sistema} error
-Avalia e imprime @var{expr_1}, ..., @var{expr_n},
+Avalia e imprime @mvar{expr_1}, ..., @mvar{expr_n},
 e ent@~{a}o causa um retorno de erro para o n@'{i}vel mais alto do Maxima
 ou para o mais pr@'{o}ximo contendo @code{errcatch}.
 
 A vari@'{a}vel @code{error} @'{e} escolhida para uma lista descrevendo o erro.
 O primeiro elemento de @code{error} @'{e} uma seq@"{u}@^{e}ncia de caracteres de formato,
-que junta todas as seq@"{u}@^{e}ncias de caracteres entre os argumentos @var{expr_1}, ..., @var{expr_n},
+que junta todas as seq@"{u}@^{e}ncias de caracteres entre os argumentos @mvar{expr_1}, ..., @mvar{expr_n},
 e os elementos restantes s@~{a}o os valores de quaisquer argumentos que n@~{a}o s@~{a}o seq@"{u}@^{e}ncias de caracteres.
 
 @code{errormsg()} formata e imprime @code{error}.
@@ -330,7 +330,7 @@ facilidades de itera@value{cedilha}@~{a}o do Maxima.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} go (@var{tag})
+@deffn {Fun@value{cedilha}@~{a}o} go (@mvar{tag})
 @'{e} usada dentro de um @code{block} para transferir o controle para a declara@value{cedilha}@~{a}o
 do bloco que for identificada com o argumento para @code{go}.  Para identificar uma
 declara@value{cedilha}@~{a}o, coloque antes dessa declara@value{cedilha}@~{a}o um argumento at@^{o}mico como outra declara@value{cedilha}@~{a}o no
@@ -350,26 +350,26 @@ o pr@'{o}prio contendo o @code{go}.
 @c THIS ITEM IS IMPORTANT
 @deffn {Operador especial} if
 Representa avalia@value{cedilha}@~{a}o condicional. V@'{a}rias formas de express@~{o}es @code{if} s@~{a}o reconhecidas.
-@code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
-avalia para @var{expr_1} se @var{cond_1} avaliar para @code{true},
+@code{if @mvar{cond_1} then @mvar{expr_1} else @mvar{expr_0}}
+avalia para @mvar{expr_1} se @mvar{cond_1} avaliar para @code{true},
 de outra forma a express@~{a}o avalia para @code{expr_0}.
 
-@code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
-avalia para @var{expr_k} se @var{cond_k} for @code{true} e todas as condi@value{cedilha}@~{o}es precedentes forem @code{false}.
+@code{if @mvar{cond_1} then @mvar{expr_1} elseif @mvar{cond_2} then @mvar{expr_2} elseif ... else @mvar{expr_0}}
+avalia para @mvar{expr_k} se @mvar{cond_k} for @code{true} e todas as condi@value{cedilha}@~{o}es precedentes forem @code{false}.
 Se nenhuma das condi@value{cedilha}@~{o}es forem @code{true}, a express@~{a}o avalia para @code{expr_0}.
 
 O comportamento @code{else false} @'{e} assumido se @code{else} for omitido.
-Isso @'{e}, @code{if @var{cond_1} then @var{expr_1}} @'{e} equivalente a
-@code{if @var{cond_1} then @var{expr_1} else false},
-e @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
+Isso @'{e}, @code{if @mvar{cond_1} then @mvar{expr_1}} @'{e} equivalente a
+@code{if @mvar{cond_1} then @mvar{expr_1} else false},
+e @code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n}}
 @'{e} equivalente a
-@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
+@code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n} else false}.
 
-As alternativas @var{expr_0}, ..., @var{expr_n} podem ser quaisquer express@~{o}es do Maxima,
+As alternativas @mvar{expr_0}, ..., @mvar{expr_n} podem ser quaisquer express@~{o}es do Maxima,
 inclu@'{i}ndo express@~{o}es @code{if} aninhadas ( if dentro de if).
 As alternativas n@~{a}o s@~{a}o nem simplificadas nem avaliadas a menos que a correspondente condi@value{cedilha}@~{a}o seja @code{true}.
 
-As condi@value{cedilha}@~{o}es @var{cond_1}, ..., @var{cond_n} s@~{a}o express@~{o}es as quais potencialmente ou atualmente
+As condi@value{cedilha}@~{o}es @mvar{cond_1}, ..., @mvar{cond_n} s@~{a}o express@~{o}es as quais potencialmente ou atualmente
 avaliem para @code{true} ou para @code{false}.
 Quando uma condi@value{cedilha}@~{a}o n@~{a}o avalia atualmente para para @code{true} ou para @code{false},
 o comportamento de @code{if} @'{e} governado pelo sinalizador global @code{prederror}.
@@ -406,18 +406,18 @@ n@~{a}o                  not         prefixo l@'{o}gico
 
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
-@deffn {Fun@value{cedilha}@~{a}o} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
 Retorna uma express@~{a}o cujo operador principal
 @'{e} o mesmo que o das express@~{o}es
-@var{expr_1}, ..., @var{expr_n} mas cujas subpartes s@~{a}o os resultados da
-aplica@value{cedilha}@~{a}o de @var{f} nas correspondentes subpartes das express@~{o}es.  @var{f} @'{e} ainda
+@mvar{expr_1}, ..., @mvar{expr_n} mas cujas subpartes s@~{a}o os resultados da
+aplica@value{cedilha}@~{a}o de @mvar{f} nas correspondentes subpartes das express@~{o}es.  @mvar{f} @'{e} ainda
 o nome de uma fun@value{cedilha}@~{a}o de @math{n} argumentos
 ou @'{e} uma forma @code{lambda} de @math{n} argumentos.
 
 @code{maperror} - se @code{false} far@'{a} com que todas as fun@value{cedilha}@~{o}es mapeadas
-(1) parem quando elas terminarem retornando a menor @var{exp_i} se n@~{a}o forem todas as
-@var{exp_i} do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
-se @var{exp_i} n@~{a}o forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code{true}
+(1) parem quando elas terminarem retornando a menor @mvar{exp_i} se n@~{a}o forem todas as
+@mvar{exp_i} do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
+se @mvar{exp_i} n@~{a}o forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code{true}
 ent@~{a}o uma mensagem de erro ser@'{a} dada nas duas inst@^{a}ncias acima.
 
 Um dos usos dessa fun@value{cedilha}@~{a}o @'{e} para mapear (@code{map}) uma fun@value{cedilha}@~{a}o (e.g. @code{partfrac})
@@ -446,8 +446,8 @@ exaust@~{a}o de espa@value{cedilha}o da lista de armazenamento no decorrer da co
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mapatom (@var{expr})
-Retorna @code{true} se e somente se @var{expr} for tratada pelas rotinas de
+@deffn {Fun@value{cedilha}@~{a}o} mapatom (@mvar{expr})
+Retorna @code{true} se e somente se @mvar{expr} for tratada pelas rotinas de
 mapeamento como um @'{a}tomo.  "Mapatoms" s@~{a}o @'{a}tomos, n@'{u}meros
 (inclu@'{i}ndo n@'{u}meros racioanais), e vari@'{a}veis subscritas.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
@@ -461,12 +461,12 @@ Valor padr@~{a}o: @code{true}
 Quando @code{maperror} @'{e} @code{false}, faz com que todas as fun@value{cedilha}@~{o}es mapeadas, por exemplo
 
 @example
-map (f, @var{expr_1}, @var{expr_2}, ...)
+map (f, @mvar{expr_1}, @mvar{expr_2}, ...)
 @end example
 
 para (1) parar quando elas terminarem
-retornando a menor @var{exp_i} se n@~{a}o forem todas as @var{exp_i} do mesmo
-comprimento e (2) aplique @code{f} a @code{[@var{expr_1}, @var{expr_2}, ...]} se @code{expr_i} n@~{a}o forem todas
+retornando a menor @mvar{exp_i} se n@~{a}o forem todas as @mvar{exp_i} do mesmo
+comprimento e (2) aplique @code{f} a @code{[@mvar{expr_1}, @mvar{expr_2}, ...]} se @code{expr_i} n@~{a}o forem todas
 do mesmo tipo de objeto.
 
 Se @code{maperror} for @code{true} ent@~{a}o uma ,mensagem de erro
@@ -475,13 +475,13 @@ Se @code{maperror} for @code{true} ent@~{a}o uma ,mensagem de erro
 @end defvr
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
-Retorna uma lista de aplica@value{cedilha}@~{o}es de @var{f}
-em todas as partes das express@~{o}es @var{expr_1}, ..., @var{expr_n}.
-@var{f} @'{e} o nome de uma fun@value{cedilha}@~{a}o, ou uma express@~{a}o lambda.
+@deffn {Fun@value{cedilha}@~{a}o} maplist (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
+Retorna uma lista de aplica@value{cedilha}@~{o}es de @mvar{f}
+em todas as partes das express@~{o}es @mvar{expr_1}, ..., @mvar{expr_n}.
+@mvar{f} @'{e} o nome de uma fun@value{cedilha}@~{a}o, ou uma express@~{a}o lambda.
 
-@code{maplist} difere de @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}
-que retorna uma express@~{a}o com o mesmo operador principal que @var{expr_i} tem
+@code{maplist} difere de @code{map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})}
+que retorna uma express@~{a}o com o mesmo operador principal que @mvar{expr_i} tem
 (exceto para simplifica@value{cedilha}@~{o}es  e o caso onde @code{map} faz um @code{apply}).
 
 @end deffn
@@ -503,16 +503,16 @@ Veja tamb@'{e}m @code{is} e @code{maybe}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} return (@var{valor})
+@deffn {Fun@value{cedilha}@~{a}o} return (@mvar{valor})
 Pode ser usada para sair explicitamente de um bloco, levando
 seu argumento.  Veja @code{block} para mais informa@value{cedilha}@~{a}o.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} scanmap (@var{f}, @var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} scanmap (@var{f}, @var{expr}, bottomup)
-Recursivamente aplica @var{f} a @var{expr}, de cima
+@deffn {Fun@value{cedilha}@~{a}o} scanmap (@mvar{f}, @mvar{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} scanmap (@mvar{f}, @mvar{expr}, bottomup)
+Recursivamente aplica @mvar{f} a @mvar{expr}, de cima
 para baixo.  Isso @'{e} muito @'{u}til quando uma fatora@value{cedilha}@~{a}o completa @'{e}
 desejada, por exemplo:
 
@@ -524,9 +524,9 @@ desejada, por exemplo:
 @end example
 
 Note o caminho atrav@'{e}s do qual @code{scanmap} aplica a dada fun@value{cedilha}@~{a}o @code{factor} para as
-subexpress@~{o}es constituintes de @var{expr}; se outra forma de @var{expr} @'{e} apresentada
+subexpress@~{o}es constituintes de @mvar{expr}; se outra forma de @mvar{expr} @'{e} apresentada
 para @code{scanmap} ent@~{a}o o resultado pode ser diferente.  Dessa forma, @code{%o2} n@~{a}o @'{e}
-recuperada quando @code{scanmap} @'{e} aplicada para a forma expandida de @var{exp}:
+recuperada quando @code{scanmap} @'{e} aplicada para a forma expandida de @mvar{exp}:
 
 @example
 (%i3) scanmap(factor,expand(exp));
@@ -544,7 +544,7 @@ recursivamente uma fun@value{cedilha}@~{a}o dada para todas as subexpress@~{o}es
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
 
-@code{scanmap (@var{f}, @var{expr}, bottomup)} aplica @var{f} a @var{expr} de
+@code{scanmap (@mvar{f}, @mvar{expr}, bottomup)} aplica @mvar{f} a @mvar{expr} de
 baixo para cima.  E.g., para @code{f} indefinida,
 
 @example
@@ -560,8 +560,8 @@ caminhos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} throw (@var{expr})
-Avalia @var{expr} e descarta o valor retornado para o mais recente
+@deffn {Fun@value{cedilha}@~{a}o} throw (@mvar{expr})
+Avalia @mvar{expr} e descarta o valor retornado para o mais recente
 @code{catch}.  @code{throw} @'{e} usada com @code{catch} como um mecanismo de retorno
 n@~{a}o local.
 
@@ -574,25 +574,25 @@ Veja @code{do}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
-Aplica a fun@value{cedilha}@~{a}o @var{f} para cada um dos elementos do produto externo
-@var{a_1} vezes @var{a_2} ... vezes @var{a_n}.
+@deffn {Fun@value{cedilha}@~{a}o} outermap (@mvar{f}, @mvar{a_1}, ..., @mvar{a_n})
+Aplica a fun@value{cedilha}@~{a}o @mvar{f} para cada um dos elementos do produto externo
+@mvar{a_1} vezes @mvar{a_2} ... vezes @mvar{a_n}.
 
-@var{f} @'{e} o nome de uma fun@value{cedilha}@~{a}o de @math{n} argumentos
+@mvar{f} @'{e} o nome de uma fun@value{cedilha}@~{a}o de @math{n} argumentos
 ou uma express@~{a}o lambda de @math{n} argumentos.
-Cada argumento @var{a_k} pode ser uma lista simples ou lista aninhada ( lista contendo listas como elementos ), ou uma matrz, ou qualquer outro tip de express@~{a}o.
+Cada argumento @mvar{a_k} pode ser uma lista simples ou lista aninhada ( lista contendo listas como elementos ), ou uma matrz, ou qualquer outro tip de express@~{a}o.
 
 O valor de retorno de @code{outermap} @'{e} uma estrutura aninhada.
-Tomemos @var{x} como sendo o valor de retorno.
-Ent@~{a}o @var{x} tem a mesma estrutura da primeira lista, lista aninhada, ou argumento matriz,
-@code{@var{x}[i_1]...[i_m]} tem a mesma estrutura que a segunda lista, lista aninhada, ou argumento matriz,
-@code{@var{x}[i_1]...[i_m][j_1]...[j_n]} tem a mesma estrutura que a terceira lista, lista aninhada, ou argumento matriz,
+Tomemos @mvar{x} como sendo o valor de retorno.
+Ent@~{a}o @mvar{x} tem a mesma estrutura da primeira lista, lista aninhada, ou argumento matriz,
+@code{@mvar{x}[i_1]...[i_m]} tem a mesma estrutura que a segunda lista, lista aninhada, ou argumento matriz,
+@code{@mvar{x}[i_1]...[i_m][j_1]...[j_n]} tem a mesma estrutura que a terceira lista, lista aninhada, ou argumento matriz,
 e assim por diante,
-onde @var{m}, @var{n}, ... s@~{a}o os n@'{u}meros dos @'{i}ndices requeridos para acessar os
+onde @mvar{m}, @mvar{n}, ... s@~{a}o os n@'{u}meros dos @'{i}ndices requeridos para acessar os
 elementos de cada argumento (um para uma lista, dois para uma matriz, um ou mais para uma lista aninhada).
 Argumentos que n@~{a}o forem listas ou matrizes n@~{a}o afetam a estrutura do valor de retorno.
 
-Note que o efeito de @code{outermap} @'{e} diferente daquele de aplicar @var{f}
+Note que o efeito de @code{outermap} @'{e} diferente daquele de aplicar @mvar{f}
 a cada um dos elementos do produto externo retornado por @code{cartesian_product}.
 @code{outermap} preserva a estrutura dos argumentos no valor de retorno,
 enquanto @code{cartesian_product} n@~{a}o reserva essa mesma estrutura.

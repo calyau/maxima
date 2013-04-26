@@ -24,7 +24,7 @@ In @ref{Einf@"uhrung in die Kommandozeile} sind die vier Phasen der Eingabe,
 Auswertung, Vereinfachung und Ausgabe erl@"autert, die jede Eingabe des Nutzers
 bis zur Ausgabe auf der Konsole durchl@"auft.
 
-Jede Eingabe eines Ausdrucks @var{expr} wird von Maxima ausgewertet.  Symbole,
+Jede Eingabe eines Ausdrucks @mvar{expr} wird von Maxima ausgewertet.  Symbole,
 die keinen Wert haben, und Zahlen werden zu sich selbst ausgewertet.  Symbole,
 die einen Wert haben, werden durch ihren Wert ersetzt.
 
@@ -59,7 +59,7 @@ Beispiele:
 
 Die Variable @code{a} erh@"alt einen Wert.  Im ersten Fall liegt die Funktion
 @code{diff} in ihrer Verbform vor.  Die Auswertung bewirkt, dass die Funktion
-auf die Argumente @code{a*x^2} und @var{x} angewendet wird.  Im zweiten Fall
+auf die Argumente @code{a*x^2} und @mvar{x} angewendet wird.  Im zweiten Fall
 liegt die Funktion @code{diff} in ihrer Substantivform vor.  Dies wird hier
 durch den @mxref{', Quote-Operator} @code{'} bewirkt.  Jetzt wird die Funktion
 nicht angewendet.  Das Ergebnis ist ein symbolischer Ausdruck f@"ur die
@@ -136,7 +136,7 @@ Wird der Quote-Operator auf einen eingeklammerten Ausdruck angewendet, wird die
 Auswertung aller Symbole und Funktionen innerhalb der Klammern unterdr@"uckt.
 @code{'(f(x))} bedeutet, dass der Ausdruck @code{f(x)} nicht ausgewertet werden 
 soll.  @code{'f(x)} bedeutet, dass die Substantivform von @code{f} auf das 
-ausgewertete Argument @var{x} angewendet wird.
+ausgewertete Argument @mvar{x} angewendet wird.
 
 Der Quote-Operator unterdr@"uckt die Auswertung, aber nicht die Vereinfachung
 von Ausdr@"ucken.
@@ -241,8 +241,8 @@ werden.
 Der Quote-Quote-Operator @code{'@w{}'} (zwei Hochkommata) modifiziert die 
 Auswertung von Ausdr@"ucken, die von der Eingabe gelesen werden.
 
-Wird der Quote-Quote-Operator auf einen allgemeinen Ausdruck @var{expr}
-angewendet, wird der Ausdruck @var{expr} durch seinen Wert ersetzt.
+Wird der Quote-Quote-Operator auf einen allgemeinen Ausdruck @mvar{expr}
+angewendet, wird der Ausdruck @mvar{expr} durch seinen Wert ersetzt.
 
 Wird der Quote-Quote-Operator auf den Operator eines Ausdruckes angewendet,
 @"andert sich der Operator, wenn er in seiner Substantivform vorliegt, in die 
@@ -264,8 +264,8 @@ Siehe auch den @nxref{', Quote-Operator} @code{'} und den Auswertungsschalter
 
 Beispiele:
 
-Wird der Quote-Quote-Operator auf einen Ausdruck @var{expr} angewendet, wird 
-der Wert von @var{expr} in den Ausdruck eingesetzt.
+Wird der Quote-Quote-Operator auf einen Ausdruck @mvar{expr} angewendet, wird 
+der Wert von @mvar{expr} in den Ausdruck eingesetzt.
 
 @example
 (%i1) expand ((a + b)^3);
@@ -388,10 +388,10 @@ und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 
 @c --- 07.03.2011 DK -----------------------------------------------------------
 @anchor{ev}
-@deffn {Funktion} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffn {Funktion} ev (@mvar{expr}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
 
-Wertet den Ausdruck @var{expr} in einer Umgebung aus, die durch die Argumente
-@var{arg_1}, @dots{}, @var{arg_n} spezifiziert wird.  Die Argumente sind
+Wertet den Ausdruck @mvar{expr} in einer Umgebung aus, die durch die Argumente
+@mvar{arg_1}, @dots{}, @mvar{arg_n} spezifiziert wird.  Die Argumente sind
 Optionsvariablen (Boolesche Variablen), Zuweisungen, Gleichungen und Funktionen.
 @code{ev} gibt das Ergebnis der Auswertung zur@"uck.
 
@@ -399,53 +399,53 @@ Die Auswertung wird in den folgenden Schritten durchgef@"uhrt:
 
 @enumerate
 @item
-Zuerst wird die Umgebung gesetzt.  Dazu werden die Argumente @var{arg_1},
-@dots{}, @var{arg_n} ausgewertet.  Folgende Argumente sind m@"oglich:
+Zuerst wird die Umgebung gesetzt.  Dazu werden die Argumente @mvar{arg_1},
+@dots{}, @mvar{arg_n} ausgewertet.  Folgende Argumente sind m@"oglich:
 
 @itemize @bullet
 @item
-@code{simp} bewirkt, dass der Ausdruck @var{expr} vereinfacht wird.  Der Wert
+@code{simp} bewirkt, dass der Ausdruck @mvar{expr} vereinfacht wird.  Der Wert
 der Optionsvariablen @mref{simp} wird dabei ignoriert.  Der Ausdruck wird also
-auch dann vereinfacht, wenn die Optionsvariable @var{simp} den Wert @code{false}
+auch dann vereinfacht, wenn die Optionsvariable @mvar{simp} den Wert @code{false}
 hat.
 
 @item
 @code{noeval} unterdr@"uckt die Auswertungphase der Funktion @code{ev} (siehe 
 Schritt (4) unten).  Dies ist n@"utzlich im Zusammenhang mit anderen Schaltern
-und um einen Ausdruck @var{expr} erneuert zu vereinfachen, ohne dass dieser
+und um einen Ausdruck @mvar{expr} erneuert zu vereinfachen, ohne dass dieser
 ausgewertet wird.
 
 @item
 @code{nouns} bewirkt die Auswertung von Substantivformen.  Solche 
 Substantivformen sind typischerweise nicht ausgewertete Funktionen wie 
-@code{'integrate} oder @code{'diff}, die im Ausdruck @var{expr} enthalten sind.
+@code{'integrate} oder @code{'diff}, die im Ausdruck @mvar{expr} enthalten sind.
 
 @item
-@code{expand} bewirkt die Expansion des Ausdruckes @var{expr}.  Siehe die 
+@code{expand} bewirkt die Expansion des Ausdruckes @mvar{expr}.  Siehe die 
 Funktion @mrefdot{expand}
 
 @item
-@code{expand}(@var{m}, @var{n}) bewirkt die Expansion des Ausdruckes @var{expr}, 
+@code{expand}(@mvar{m}, @mvar{n}) bewirkt die Expansion des Ausdruckes @mvar{expr}, 
 wobei den Optionsvariablen @mref{maxposex} und @mref{maxnegex} die Werte der
-Argumente @var{m} und @var{n} zugewiesen werden.  Siehe die Funktion
+Argumente @mvar{m} und @mvar{n} zugewiesen werden.  Siehe die Funktion
 @mrefdot{expand}
 
 @item
 @code{detout} bewirkt, dass bei der Berechnung von Inversen von Matrizen, die im
-Ausdruck @var{expr} enthalten sind, Determinanten den Matrizen vorangestellt
+Ausdruck @mvar{expr} enthalten sind, Determinanten den Matrizen vorangestellt
 und nicht elementweise in die Matrize hereinmultipliziert werden.
 
 @item
 @code{diff} bewirkt, dass alle Ableitungen ausgef@"uhrt werden, die im Ausdruck
-@var{expr} enthalten sind.
+@mvar{expr} enthalten sind.
 
 @item
-@code{derivlist(@var{x}, @var{y}, @var{z}, ...)} bewirkt, dass die Ableitungen
-bez@"uglich der angegebenen Variablen @var{x}, @var{y}, @var{z}, @dots{}
+@code{derivlist(@mvar{x}, @mvar{y}, @mvar{z}, ...)} bewirkt, dass die Ableitungen
+bez@"uglich der angegebenen Variablen @mvar{x}, @mvar{y}, @mvar{z}, @dots{}
 ausgef@"uhrt werden.
 
 @item
-@code{risch} bewirkt das Integrale im Ausdruck @var{expr} mit dem
+@code{risch} bewirkt das Integrale im Ausdruck @mvar{expr} mit dem
 Risch-Algorithmus berechnet werden.  Siehe @code{risch}.  Wird der Schalter
 @mref{nouns} benutzt, wird der Standardalgorithmus f@"ur Integrale verwendet.
 
@@ -464,18 +464,18 @@ numerische Werte zugewiesen wurden, werden durch diese ersetzt.  Der Schalter
 werden.
 
 @item
-@code{eval} bewirkt eine zus@"atzliche Auswertung des Ausdrucks @var{expr}.
+@code{eval} bewirkt eine zus@"atzliche Auswertung des Ausdrucks @mvar{expr}.
 (Siehe Schritt (5) unten).  @code{eval} kann mehrfach angewendet werden.  Jedes 
 Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 
 @item
 @code{A}, wobei @code{A} ein Symbol ist, das als ein Auswertungsschalter
-@mref{evflag} definiert ist.  W@"ahrend der Auswertung des Ausdrucks @var{expr} 
+@mref{evflag} definiert ist.  W@"ahrend der Auswertung des Ausdrucks @mvar{expr} 
 erh@"alt @code{A} den Wert @code{true}.
 
 @item
 @code{V: expression} (oder alternativ @code{V=expression}) bewirkt, dass 
-@code{V} w@"ahrend der Auswertung des Ausdrucks @var{expr} den Wert
+@code{V} w@"ahrend der Auswertung des Ausdrucks @mvar{expr} den Wert
 @code{expression} erh@"alt.  @code{V} kann auch eine Optionsvariable sein, die
 f@"ur die Auswertung den Wert @code{expression} erh@"alt.  Wenn mehr als ein 
 Argument der Funktion @code{ev} @"ubergeben wird, wird die Zuweisung der Werte
@@ -485,14 +485,14 @@ Zuweisung eine Substitution ausgef@"uhrt.
 @item
 @code{F}, wobei @code{F} der Name einer Funktion ist, die als eine
 Auswertungsfunktion (siehe @mref{evfun}) definiert wurde.  @code{F} bewirkt,
-dass die Auswertungsfunktion auf den Ausdruck @var{expr} angewendet wird.
+dass die Auswertungsfunktion auf den Ausdruck @mvar{expr} angewendet wird.
 
 @item
 Jeder andere Funktionsname (zum Beispiel @code{sum}) bewirkt, dass jedes
-Auftreten dieser Funktion im Ausdruck @var{expr} ausgewertet wird.
+Auftreten dieser Funktion im Ausdruck @mvar{expr} ausgewertet wird.
 
 @item
-Zus@"atzlich kann f@"ur die Auswertung von @var{expr} eine lokale Funktion
+Zus@"atzlich kann f@"ur die Auswertung von @mvar{expr} eine lokale Funktion
 @code{F(x) := expression} definiert werden.
 
 @item
@@ -511,14 +511,14 @@ Die Argumente der Funktion @code{ev} k@"onnen in einer beliebigen Reihenfolge
 @"ubergeben werden.  Ausgenommen sind Gleichungen mit Substitutionen, die
 nacheinander von links nach rechts ausgewertet werden, sowie
 Auswertungsfunktionen, die verkettet werden.  So wird zum Beispiel
-@code{ev(@var{expr}, ratsimp, realpart)} zu
-@code{realpart(ratsimp(@var{expr}))}.
+@code{ev(@mvar{expr}, ratsimp, realpart)} zu
+@code{realpart(ratsimp(@mvar{expr}))}.
 
 Die Schalter @mrefcomma{simp} @mrefcomma{numer} @mref{float} und 
 @mref{detout} sind auch Optionsvariablen, die lokal in einem Block oder global
 gesetzt werden k@"onnen.
 
-Ist @var{expr} ein kanonischer rationaler Ausdruck (CRE = canonical rational
+Ist @mvar{expr} ein kanonischer rationaler Ausdruck (CRE = canonical rational
 expression), ist auch das Ergebnis der Funktion @code{ev} ein CRE-Ausdruck, 
 falls nicht die beiden Schalter @code{float} und @code{numer} den Wert 
 @code{true} haben.
@@ -529,7 +529,7 @@ erstellt, die auf der linken Seite von Gleichungen auftreten.  Die Gleichungen
 k@"onnen dabei entweder als Argument oder als Wert eines Argumentes vorliegen.
 Variablen, die nicht in dieser Liste enthalten sind, werden durch ihre globalen 
 Werte ersetzt.  Davon ausgenommen sind Variablen, die eine Array-Funktion 
-repr@"asentieren.  Ist zum Beispiel @var{expr} eine Marke wie @code{%i2} im
+repr@"asentieren.  Ist zum Beispiel @mvar{expr} eine Marke wie @code{%i2} im
 Beispiel unten oder das letzte Ergebnis @code{%}, so wird in diesem Schritt der
 globale Wert dieser Marke eingesetzt und die Bearbeitung durch @code{ev}
 fortgesetzt.
@@ -540,7 +540,7 @@ ausgef@"uhrt.
 
 @item
 Der resultierende Ausdruck wird erneut ausgewertet, au@ss{}er wenn @code{noeval} 
-unter den Argumente ist, und vereinfacht.  Die Funktionsaufrufe in @var{expr} 
+unter den Argumente ist, und vereinfacht.  Die Funktionsaufrufe in @mvar{expr} 
 werden erst ausgef@"uhrt, wenn die enthaltenden Variablen ausgewertet sind.
 Dadurch verh@"alt sich @code{ev(F(x))} wie @code{F(ev(x))}.
 
@@ -553,7 +553,7 @@ Anstatt der Anwendung der Funktion @code{ev} k@"onnen alternativ der Ausdruck
 und die Argumente durch Kommata getrennt eingegeben werden:
 
 @example
-@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
 @end example
 
 Diese Kurzschreibweise ist jedoch als Teil eines anderen Ausdrucks, zum Beispiel
@@ -642,12 +642,12 @@ Beispiele:
 @anchor{evflag}
 @defvr {Eigenschaft} evflag
 
-Wenn ein Symbol @var{x} die Eigenschaft eines Auswertungsschalters besitzt, sind
-die Ausdr@"ucke @code{ev(@var{expr}, @var{x})} und @code{@var{expr}, @var{x}}@ 
-@"aquivalent zu @code{ev(@var{expr}, @var{x} = true)}.  W@"ahrend der Auswertung
-von @var{expr} erh@"alt also @var{x} den Wert @code{true}.
+Wenn ein Symbol @mvar{x} die Eigenschaft eines Auswertungsschalters besitzt, sind
+die Ausdr@"ucke @code{ev(@mvar{expr}, @mvar{x})} und @code{@mvar{expr}, @mvar{x}}@ 
+@"aquivalent zu @code{ev(@mvar{expr}, @mvar{x} = true)}.  W@"ahrend der Auswertung
+von @mvar{expr} erh@"alt also @mvar{x} den Wert @code{true}.
 
-Mit @code{declare(@var{x}, evflag)} wird der Variablen @var{x} die
+Mit @code{declare(@mvar{x}, evflag)} wird der Variablen @mvar{x} die
 @code{evflag}-Eigenschaft gegeben.  Siehe auch die Funktion
 @mrefdot{declare}  Mit @mref{kill} oder @mref{remove} kann diese Eigenschaft
 wieder entfernt werden.  Siehe auch @mref{properties} f@"ur die Anzeige von
@@ -717,14 +717,14 @@ Beispiele:
 @anchor{evfun}
 @defvr {Eigenschaft} evfun
 
-Wenn eine Funktion @var{F} die Eigenschaft @code{evfun} besitzt, sind die 
-Ausdr@"ucke @code{ev(@var{expr}, @var{F})} und @code{@var{expr}, @var{F}}@ 
-@"aquivalent zu @code{@var{F}(ev(@var{expr}))}.
+Wenn eine Funktion @mvar{F} die Eigenschaft @code{evfun} besitzt, sind die 
+Ausdr@"ucke @code{ev(@mvar{expr}, @mvar{F})} und @code{@mvar{expr}, @mvar{F}}@ 
+@"aquivalent zu @code{@mvar{F}(ev(@mvar{expr}))}.
 
-Zwei oder mehr @code{evfun}-Funktionen @var{F}, @var{G}, @dots{} werden in der 
-aufgef@"uhrten Reihenfolge auf den Ausdruck @var{expr} angewendet.
+Zwei oder mehr @code{evfun}-Funktionen @mvar{F}, @mvar{G}, @dots{} werden in der 
+aufgef@"uhrten Reihenfolge auf den Ausdruck @mvar{expr} angewendet.
 
-Mit @code{declare(@var{F}, evfun)} wird der Funktion @var{F} die
+Mit @code{declare(@mvar{F}, evfun)} wird der Funktion @mvar{F} die
 @code{evfun}-Eigenschaft gegeben.  Siehe auch die Funktion @mrefdot{declare}@w{}
 Mit @mref{kill} oder @mref{remove} kann diese Eigenschaft wieder entfernt
 werden.  Siehe auch @mref{properties} f@"ur die Anzeige von Eigenschaften.

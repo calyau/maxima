@@ -6,7 +6,7 @@
 @node Functions and Variables for makeOrders,  , makeOrders, makeOrders
 @section Functions and Variables for makeOrders
 
-@deffn {関数} makeOrders (@var{indvarlist},@var{orderlist})
+@deffn {関数} makeOrders (@mvar{indvarlist},@mvar{orderlist})
 引数までの多項式のべきすべてのリストを返します。
 
 @example

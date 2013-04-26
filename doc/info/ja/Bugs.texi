@@ -9,7 +9,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{run_testsuite}
-@deffn {関数} run_testsuite ([@var{options}])
+@deffn {関数} run_testsuite ([@mvar{options}])
 
 Maximaのテストスイートを走らせます。
 望みの答えを生成したテストは「パス」とみなされます。

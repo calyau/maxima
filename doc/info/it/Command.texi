@@ -17,7 +17,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @node Definitions for Command Line,  , Introduction to Command Line, Command Line
 @section Definitions for Command Line
 
-@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {Function} alias (@mvar{new_name_1}, @mvar{old_name_1}, ..., @mvar{new_name_n}, @mvar{old_name_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -25,7 +25,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Function} ev (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -41,18 +41,18 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} kill (@var{a_1}, ..., @var{a_n})
+@deffn {Function} kill (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Function} kill (labels)
 @deffnx {Function} kill (inlabels, outlabels, linelabels)
-@deffnx {Function} kill (@var{n})
-@deffnx {Function} kill ([@var{m}, @var{n}])
+@deffnx {Function} kill (@mvar{n})
+@deffnx {Function} kill ([@mvar{m}, @mvar{n}])
 @deffnx {Function} kill (values, functions, arrays, ...)
 @deffnx {Function} kill (all)
-@deffnx {Function} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffnx {Function} kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} labels (@var{symbol})
+@deffn {Function} labels (@mvar{symbol})
 @deffnx {System variable} labels
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -74,9 +74,9 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
 @deffn {Function} playback ()
-@deffnx {Function} playback (@var{n})
-@deffnx {Function} playback ([@var{m}, @var{n}])
-@deffnx {Function} playback ([@var{m}])
+@deffnx {Function} playback (@mvar{n})
+@deffnx {Function} playback ([@mvar{m}, @mvar{n}])
+@deffnx {Function} playback ([@mvar{m}])
 @deffnx {Function} playback (input)
 @deffnx {Function} playback (slow)
 @deffnx {Function} playback (time)
@@ -84,9 +84,9 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} printprops (@var{a}, @var{i})
-@deffnx {Function} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {Function} printprops (all, @var{i})
+@deffn {Function} printprops (@mvar{a}, @mvar{i})
+@deffnx {Function} printprops ([@mvar{a_1}, ..., @mvar{a_n}], @mvar{i})
+@deffnx {Function} printprops (all, @mvar{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -98,7 +98,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
+@deffn {Function} remfunction (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} remfunction (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -111,7 +111,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} sstatus (@var{feature}, @var{package})
+@deffn {Function} sstatus (@mvar{feature}, @mvar{package})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

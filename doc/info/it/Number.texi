@@ -5,39 +5,39 @@
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
 
-@deffn {Function} bern (@var{n})
+@deffn {Function} bern (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bernpoly (@var{x}, @var{n})
+@deffn {Function} bernpoly (@mvar{x}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bfzeta (@var{s}, @var{n})
+@deffn {Function} bfzeta (@mvar{s}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bfhzeta (@var{s}, @var{h}, @var{n})
+@deffn {Function} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} binomial (@var{x}, @var{y})
+@deffn {Function} binomial (@mvar{x}, @mvar{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} burn (@var{n})
+@deffn {Function} burn (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cf (@var{expr})
+@deffn {Function} cf (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cfdisrep (@var{list})
+@deffn {Function} cfdisrep (@mvar{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cfexpand (@var{x})
+@deffn {Function} cfexpand (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -45,12 +45,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} divsum (@var{n}, @var{k})
-@deffnx {Function} divsum (@var{n})
+@deffn {Function} divsum (@mvar{n}, @mvar{k})
+@deffnx {Function} divsum (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} euler (@var{n})
+@deffn {Function} euler (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -58,55 +58,55 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} factorial (@var{x})
+@deffn {Function} factorial (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fib (@var{n})
+@deffn {Function} fib (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fibtophi (@var{expr})
+@deffn {Function} fibtophi (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ifactors (@var{n})
+@deffn {Function} ifactors (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} inrt (@var{x}, @var{n})
+@deffn {Function} inrt (@mvar{x}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} inv_mod (@var{n}, @var{m})
+@deffn {Function} inv_mod (@mvar{n}, @mvar{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} jacobi (@var{p}, @var{q})
+@deffn {Function} jacobi (@mvar{p}, @mvar{q})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lcm (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} lcm (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} minfactorial (@var{expr})
+@deffn {Function} minfactorial (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} next_prime (@var{n})
+@deffn {Function} next_prime (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} partfrac (@var{expr}, @var{var})
+@deffn {Function} partfrac (@mvar{expr}, @mvar{var})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {Function} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} primep (@var{n})
+@deffn {Function} primep (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -114,15 +114,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} prev_prime (@var{n})
+@deffn {Function} prev_prime (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} qunit (@var{n})
+@deffn {Function} qunit (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} totient (@var{n})
+@deffn {Function} totient (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -130,7 +130,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} zeta (@var{n})
+@deffn {Function} zeta (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

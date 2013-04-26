@@ -7,29 +7,29 @@
 @section Funciones y variables para augmented_lagrangian
 
 
-@deffn {Funci@'on} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Funci@'on} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
-@deffnx {Funci@'on} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
-@deffnx {Funci@'on} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffn {Funci@'on} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
+@deffnx {Funci@'on} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
+@deffnx {Funci@'on} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy})
+@deffnx {Funci@'on} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
 
 Devuelve una aproximaci@'on del valor m@'{@dotless{i}}nimo de
-la expresi@'on @var{FOM} respecto de las variables @var{xx},
-manteniendo las restricciones @var{C} igual a cero. La lista
-@var{yy} contiene las soluciones iniciales para @var{xx}.
+la expresi@'on @mvar{FOM} respecto de las variables @mvar{xx},
+manteniendo las restricciones @mvar{C} igual a cero. La lista
+@mvar{yy} contiene las soluciones iniciales para @mvar{xx}.
 El algoritmo que se utiliza es el m@'etodo del lagrangiano
 aumentado (ver referencias [1] y [2]).
 
-Si @var{grad} est@'a presente en la llamada a la funci@'on, se interpreta
-como el gradiente de @var{FOM} respecto de @var{xx}, representado como una
-lista de tantas expresiones como variables tenga @var{xx}. Si el
-argumento @var{grad} no est@'a, se calcular@'a de forma autom@'atica.
+Si @mvar{grad} est@'a presente en la llamada a la funci@'on, se interpreta
+como el gradiente de @mvar{FOM} respecto de @mvar{xx}, representado como una
+lista de tantas expresiones como variables tenga @mvar{xx}. Si el
+argumento @mvar{grad} no est@'a, se calcular@'a de forma autom@'atica.
 
-Tanto @var{FOM} como cada uno de los elementos de @var{grad}, si se
+Tanto @mvar{FOM} como cada uno de los elementos de @mvar{grad}, si se
 da como argumento, deben ser expresiones ordinarias; no admiti@'endose
 ni nombres de funciones ni expresiones lambda.
 
 El argumento @code{optional_args} hace referencia a otros argumentos adicionales,
-los cuales se especifican de la forma @code{@var{symbol} = @var{value}}.
+los cuales se especifican de la forma @code{@mvar{symbol} = @mvar{value}}.
 Los argumentos opcionales reconocidos son:
 
 @table @code

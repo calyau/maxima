@@ -44,17 +44,17 @@ solu@value{cedilha}@~oes exactas, e somente retorna aproxima@value{cedilha}@~oes
 @c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-@deffnx {Fun@value{cedilha}@~ao} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
-Resolve polin@'omios simult@^aneos @var{expr_1}, ..., @var{expr_m}
-ou equa@value{cedilha}@~oes polin@^omiais @var{eqn_1}, ..., @var{eqn_m}
-para as vari@'aveis @var{x_1}, ..., @var{x_n}.
-Uma express@~ao @var{expr} @'e equivalente a uma equa@value{cedilha}@~ao @code{@var{expr} = 0}.
+@deffn {Fun@value{cedilha}@~ao} algsys ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffnx {Fun@value{cedilha}@~ao} algsys ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+Resolve polin@'omios simult@^aneos @mvar{expr_1}, ..., @mvar{expr_m}
+ou equa@value{cedilha}@~oes polin@^omiais @mvar{eqn_1}, ..., @mvar{eqn_m}
+para as vari@'aveis @mvar{x_1}, ..., @mvar{x_n}.
+Uma express@~ao @mvar{expr} @'e equivalente a uma equa@value{cedilha}@~ao @code{@mvar{expr} = 0}.
 Pode existir mais equa@value{cedilha}@~oes que vari@'aveis ou vice-versa.
 
 @code{algsys} retorna uma lista de solu@value{cedilha}@~oes,
 com cada solu@value{cedilha}@~ao dada com uma lista de valores de estado das equa@value{cedilha}@~oes
-das vari@'aveis @var{x_1}, ..., @var{x_n} que satisfazem o sistema de equa@value{cedilha}@~oes.
+das vari@'aveis @mvar{x_1}, ..., @mvar{x_n} que satisfazem o sistema de equa@value{cedilha}@~oes.
 Se @code{algsys} n@~ao pode achar uma solu@value{cedilha}@~ao, uma lista vazia @code{[]} @'e retornada.
 
 Os s@'{@dotless{i}}mbolos @code{%r1}, @code{%r2}, ...,
@@ -66,12 +66,12 @@ O m@'etodo usado @'e o seguinte:
 (1) Primeiro as equa@value{cedilha}@~oes s@~ao factorizaadas e quebradas
 em subsistemas.
 
-(2) Para cada subsistema @var{S_i}, uma equa@value{cedilha}@~ao @var{E} e uma vari@'avel @var{x} s@~ao
+(2) Para cada subsistema @mvar{S_i}, uma equa@value{cedilha}@~ao @mvar{E} e uma vari@'avel @mvar{x} s@~ao
 seleccionados.
 A vari@'avel @'e escolhida para ter o menor grau n@~ao zero.
-Ent@~ao a resultante de @var{E} e @var{E_j} em rela@value{cedilha}@~ao a @var{x} @'e calculada para cada um das
-equa@value{cedilha}@~oes restantes @var{E_j} nos subsistemas @var{S_i}.
-Isso retorna um novo subsistema @var{S_i'} em umas poucas vari@'aveis, como @var{x} tenha sido eliminada.
+Ent@~ao a resultante de @mvar{E} e @mvar{E_j} em rela@value{cedilha}@~ao a @mvar{x} @'e calculada para cada um das
+equa@value{cedilha}@~oes restantes @mvar{E_j} nos subsistemas @mvar{S_i}.
+Isso retorna um novo subsistema @mvar{S_i'} em umas poucas vari@'aveis, como @mvar{x} tenha sido eliminada.
 O processo agora retorna ao passo (1).
 
 (3) Eventualmente, um subsistema consistindo de uma equa@value{cedilha}@~ao simples @'e
@@ -163,10 +163,10 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} allroots (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} allroots (@var{eqn})
+@deffn {Fun@value{cedilha}@~ao} allroots (@mvar{expr})
+@deffnx {Fun@value{cedilha}@~ao} allroots (@mvar{eqn})
 Calcula aproxima@value{cedilha}@~oes num@'ericas de ra@'{@dotless{i}}zes reais e complexas do
-polin@'omio @var{expr} ou equa@value{cedilha}@~ao polin@^omial @var{eqn} de uma vari@'avel.
+polin@'omio @mvar{expr} ou equa@value{cedilha}@~ao polin@^omial @mvar{eqn} de uma vari@'avel.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
 O sinalizador @code{polyfactor} quando @code{true} faz com que
@@ -175,8 +175,8 @@ polin@'omio for real, ou sobre os n@'umeros complexos, se o polin@'omio for
 complexo.
 
 @code{allroots} pode retornar resultados imprecisos no caso de m@'ultiplas ra@'{@dotless{i}}zes.
-Se o polin@'omio for real, @code{allroots (%i*@var{p})}) pode retornar
-aproxima@value{cedilha}@~oes mais precisas que @code{allroots (@var{p})},
+Se o polin@'omio for real, @code{allroots (%i*@mvar{p})}) pode retornar
+aproxima@value{cedilha}@~oes mais precisas que @code{allroots (@mvar{p})},
 como @code{allroots} invoca um algoritmo diferente naquele caso.
 
 @code{allroots} rejeita expresso@~oes que n@~ao sejam polin@'omios.
@@ -322,8 +322,8 @@ Solution:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} dimension (@var{eqn})
-@deffnx {Fun@value{cedilha}@~ao} dimension (@var{eqn_1}, ..., @var{eqn_n})
+@deffn {Fun@value{cedilha}@~ao} dimension (@mvar{eqn})
+@deffnx {Fun@value{cedilha}@~ao} dimension (@mvar{eqn_1}, ..., @mvar{eqn_n})
 @code{dimen} @'e um pacote de an@'alise dimensional.
 @code{load ("dimen")} chama esse pacote.
 @code{demo ("dimen")} mostra uma cura demostra@value{cedilha}@~ao.
@@ -343,11 +343,11 @@ dentro de @code{block}.  Terminando @code{block} com um sinal de dolar, $, escol
 @end defvr
 
 @c THIS COULD BENEFIT FROM REPHRASING
-@deffn {Fun@value{cedilha}@~ao} funcsolve (@var{eqn}, @var{g}(@var{t}))
-Retorna @code{[@var{g}(@var{t}) = ...]}  ou @code{[]}, dependendo de existir
-ou n@~ao uma fun@value{cedilha}@~ao racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
+@deffn {Fun@value{cedilha}@~ao} funcsolve (@mvar{eqn}, @mvar{g}(@mvar{t}))
+Retorna @code{[@mvar{g}(@mvar{t}) = ...]}  ou @code{[]}, dependendo de existir
+ou n@~ao uma fun@value{cedilha}@~ao racional @code{@mvar{g}(@mvar{t})} satisfazendo @mvar{eqn},
 que deve ser de primeira ordem, polin@'omio linear em (para esse caso) 
-@code{@var{g}(@var{t})} e @code{@var{g}(@var{t}+1)}
+@code{@mvar{g}(@mvar{t})} e @code{@mvar{g}(@mvar{t}+1)}
 
 @example
 (%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
@@ -429,26 +429,26 @@ Solution
 @c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
 @c MERGE IN TEXT FROM share/integequations/inteqn.usg
 @c AND EXAMPLES FROM .../intexs.mac
-@deffn {Fun@value{cedilha}@~ao} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+@deffn {Fun@value{cedilha}@~ao} ieqn (@mvar{ie}, @mvar{unk}, @mvar{tech}, @mvar{n}, @mvar{guess})
 @code{inteqn} @'e um pacote para resolver equa@value{cedilha}@~oes integrais.
 @code{load ("inteqn")} carrega esse pacote.
 
-@var{ie} @'e a equa@value{cedilha}@~ao integral; @var{unk} @'e a fun@value{cedilha}@~ao desconhecida; @var{tech} @'e a
-t@'ecnica a ser tentada nesses dados acima (@var{tech} = @code{first} significa: tente
-a primeira t@'ecnica que achar uma solu@value{cedilha}@~ao; @var{tech} = @code{all} significa: tente todas a
-t@'ecnicas aplic@'aveis); @var{n} @'e o n@'umero m@'aximo de termos a serem usados de
+@mvar{ie} @'e a equa@value{cedilha}@~ao integral; @mvar{unk} @'e a fun@value{cedilha}@~ao desconhecida; @mvar{tech} @'e a
+t@'ecnica a ser tentada nesses dados acima (@mvar{tech} = @code{first} significa: tente
+a primeira t@'ecnica que achar uma solu@value{cedilha}@~ao; @mvar{tech} = @code{all} significa: tente todas a
+t@'ecnicas aplic@'aveis); @mvar{n} @'e o n@'umero m@'aximo de termos a serem usados de
 @code{taylor}, @code{neumann}, @code{firstkindseries}, ou @code{fredseries} (isso @'e tamb@'em o
-n@'umero m@'aximo de ciclos de recurss@~ao para o m@'etodo de diferencia@value{cedilha}@~ao); @var{guess} @'e
+n@'umero m@'aximo de ciclos de recurss@~ao para o m@'etodo de diferencia@value{cedilha}@~ao); @mvar{guess} @'e
 o inicial suposto para @code{neumann} ou @code{firstkindseries}.
 
 Valores padr@~ao do segundo at@'e o quinto par@^ametro s@~ao:
 
-@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'e a primeira fun@value{cedilha}@~ao encontrada em um integrando
-que @'e desconhecida para Maxima e @var{x} @'e a vari@'avel que ocorre como um
-argumento para a primeira ocorr@^encia de @var{p} achada fora de uma integral no
+@mvar{unk}: @code{@mvar{p}(@mvar{x})}, onde @mvar{p} @'e a primeira fun@value{cedilha}@~ao encontrada em um integrando
+que @'e desconhecida para Maxima e @mvar{x} @'e a vari@'avel que ocorre como um
+argumento para a primeira ocorr@^encia de @mvar{p} achada fora de uma integral no
 caso de equa@value{cedilha}@~oes @code{secondkind} , ou @'e somente outra vari@'avel
 ao lado da vari@'avel de integra@value{cedilha}@~ao em equa@value{cedilha}@~oes @code{firstkind}.  Se uma
-tentativa de procurar por @var{x} falha, o utilizador ser@'a perguntado para suprir a
+tentativa de procurar por @mvar{x} falha, o utilizador ser@'a perguntado para suprir a
 vari@'avel independente.
 
 tech: @code{first}
@@ -456,7 +456,7 @@ tech: @code{first}
 n: 1
 
 guess: @code{none} o que far@'a com que @code{neumann} e @code{firstkindseries} use
-@code{@var{f}(@var{x})} como uma suposi@value{cedilha}@~ao inicial.
+@code{@mvar{f}(@mvar{x})} como uma suposi@value{cedilha}@~ao inicial.
 
 @end deffn
 
@@ -467,30 +467,30 @@ Valor por omiss@~ao: @code{true}
 retornado pelo comando @code{ieqn}.  Quando @code{ieqnprint} @'e
 @code{false}, as listas retornadas pela fun@value{cedilha}@~ao @code{ieqn} s@~ao da forma
 
-   [@var{solu@value{cedilha}@~ao}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
+   [@mvar{solu@value{cedilha}@~ao}, @mvar{tecnica usada}, @mvar{nterms}, @mvar{sinalizador}]
 
-onde @var{sinalizador} @'e retirado se a solu@value{cedilha}@~ao for exacta.
+onde @mvar{sinalizador} @'e retirado se a solu@value{cedilha}@~ao for exacta.
 
 De outra forma, isso @'e a
 palavra @code{approximate} ou @code{incomplete} correspondendo @`a forma inexacta ou
 forma aberta de solu@value{cedilha}@~ao, respectivamente.  Se um m@'etodo de s@'erie foi usado,
-@var{nterms} fornece o n@'umero de termos usados (que poder@'a ser menor que os n
+@mvar{nterms} fornece o n@'umero de termos usados (que poder@'a ser menor que os n
 dados para @code{ieqn} se ocorrer um erro evita a gera@value{cedilha}@~ao de termos adicionais).
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} lhs (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} lhs (@mvar{expr})
 Retorna o lado esquerdo (isto @'e, o primeiro argumento)
-da express@~ao @var{expr},
-quando o operador de @var{expr}
+da express@~ao @mvar{expr},
+quando o operador de @mvar{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 um dos operadores de atribui@value{cedilha}@~ao @code{:= ::= : ::},
 ou um operadro infixo definido pelo utilizador, como declarado por meio de @code{infix}.
 
-Quando @var{expr} for um @'atomo ou
+Quando @mvar{expr} for um @'atomo ou
 seu operador for alguma coisa que n@~ao esses listados acima,
-@code{lhs} retorna @var{expr}.
+@code{lhs} retorna @mvar{expr}.
 
 Veja tamb@'em @code{rhs}.
 
@@ -540,7 +540,7 @@ Exemplos:
 @end deffn
 
 @c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
-@deffn {Fun@value{cedilha}@~ao} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@value{cedilha}@~ao} linsolve ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
 Resolve a lista de
 equa@value{cedilha}@~oes lineares simult@^aneas para a lista de vari@'aveis.  As express@~oes
 devem ser cada uma polin@'omios nas vari@'aveis e podem ser equa@value{cedilha}@~oes.
@@ -662,10 +662,10 @@ multiplicidades das solu@value{cedilha}@~oes individuais retornadas por @code{so
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} nroots (@var{p}, @var{low}, @var{high})
+@deffn {Fun@value{cedilha}@~ao} nroots (@mvar{p}, @mvar{low}, @mvar{high})
 Retorna o n@'umero de ra@'{@dotless{i}}zes reais do polin@'omio 
-real de uma @'unica vari@'avel @var{p} no intervalo semi-aberto
-@code{(@var{low}, @var{high}]}.
+real de uma @'unica vari@'avel @mvar{p} no intervalo semi-aberto
+@code{(@mvar{low}, @mvar{high}]}.
 Uma extremidade do intervalo podem ser @code{minf} ou @code{inf}.
 infinito e mais infinito.
 
@@ -680,7 +680,7 @@ infinito e mais infinito.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} nthroot (@var{p}, @var{n})
+@deffn {Fun@value{cedilha}@~ao} nthroot (@mvar{p}, @mvar{n})
 Onde p @'e um polin@'omio com coeficientes inteiros e
 n @'e um inteiro positivo retorna q, um polin@'omio sobre os inteiros, tal
 que q^n=p ou imprime uma mensagem de erro indicando que p n@~ao @'e uma pot@^encia n-@'esima
@@ -713,14 +713,14 @@ aquelas solu@value{cedilha}@~oes que est@~ao livres de @code{%i}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} realroots (@var{expr}, @var{bound})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{eqn}, @var{bound})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{eqn})
-Calcula aproxima@value{cedilha}@~oes racionais das ra@'{@dotless{i}}zes reais da express@~ao polinomial @var{expr}
-ou da equa@value{cedilha}@~ao polinomial @var{eqn} de uma vari@'avel,
-dentro de uma toler@^ancia de @var{bound}.
-coeficientes de @var{expr} ou de @var{eqn} devem ser n@'umeros literais;
+@deffn {Fun@value{cedilha}@~ao} realroots (@mvar{expr}, @mvar{bound})
+@deffnx {Fun@value{cedilha}@~ao} realroots (@mvar{eqn}, @mvar{bound})
+@deffnx {Fun@value{cedilha}@~ao} realroots (@mvar{expr})
+@deffnx {Fun@value{cedilha}@~ao} realroots (@mvar{eqn})
+Calcula aproxima@value{cedilha}@~oes racionais das ra@'{@dotless{i}}zes reais da express@~ao polinomial @mvar{expr}
+ou da equa@value{cedilha}@~ao polinomial @mvar{eqn} de uma vari@'avel,
+dentro de uma toler@^ancia de @mvar{bound}.
+coeficientes de @mvar{expr} ou de @mvar{eqn} devem ser n@'umeros literais;
 constantes s@'{@dotless{i}}mbolo tais como @code{%pi} s@~ao rejeitadas.
 
 @code{realroots} atribui as multiplicidades das ra@'{@dotless{i}}zes que encontrar
@@ -733,11 +733,11 @@ e c@'alculos s@~ao realizados por meio de aritm@'etica racional exacta.
 Mesmo se alguns coeficientes forem n@'umeros em ponto flutuante,
 os resultados s@~ao racionais (a menos que for@value{cedilha}ados a n@'umeros em ponto flutuante por @code{float} ou por @code{numer} flags).
 
-Quando @var{bound} for menor que 1, todas as ra@'{@dotless{i}}zes inteiras s@~ao encontradas exactamente.
-Quando @var{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a vari@'avel globa @code{rootsepsilon}.
+Quando @mvar{bound} for menor que 1, todas as ra@'{@dotless{i}}zes inteiras s@~ao encontradas exactamente.
+Quando @mvar{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a vari@'avel globa @code{rootsepsilon}.
 
 Quando a var@'avel global @code{programmode} for @code{true},
-@code{realroots} retorna uma lista da forma @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
+@code{realroots} retorna uma lista da forma @code{[x = @mvar{x_1}, x = @mvar{x_2}, ...]}.
 Quando @code{programmode} for @code{false},
 @code{realroots} cria r@'otulos de express@~oes interm@'edias @code{%t1}, @code{%t2}, ...,
 atribui os resultados a eles, e retorna a lista de r@'otulos.
@@ -774,16 +774,16 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rhs (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} rhs (@mvar{expr})
 Retorna o lado direito (isto @'e, o segundo argumento)
-da express@~ao @var{expr},
-quando o operador de @var{expr}
+da express@~ao @mvar{expr},
+quando o operador de @mvar{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 um dos operadores de atribui@value{cedilha}@~ao @code{:= ::= : ::},
 ou um operador bin@'ario infixo definido pelo utilizador, como declarado por meio de @code{infix}.
 
-Quando @var{expr} for um @'etomo ou
+Quando @mvar{expr} for um @'etomo ou
 seu operadro for alguma coisa que n@~ao esses listados acima,
 @code{rhs} retorna 0.
 
@@ -843,7 +843,7 @@ Valor por omiss@~ao: @code{true}
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} rootscontract (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} rootscontract (@mvar{expr})
 Converte produtos de ra@'{@dotless{i}}zes em ra@'{@dotless{i}}zes de produtos.
 Por exemplo,
 @code{rootscontract (sqrt(x)*y^(3/2))} retorna @code{sqrt(x*y^3)}.
@@ -935,35 +935,35 @@ intervalo de confic@^encia para as ra@'{@dotless{i}}zes achadas pela fun@value{c
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} solve (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} solve (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-Resolve a equa@value{cedilha}@~ao alg@'ebrica @var{expr} para a vari@'avel
-@var{x} e retorna uma lista de equa@value{cedilha}@~oes solu@value{cedilha}@~ao em @var{x}.  Se @var{expr} n@~ao @'e uma
-equa@value{cedilha}@~ao, a equa@value{cedilha}@~ao @code{@var{expr} = 0} @'e assumida em seu lugar.
-@var{x} pode ser uma fun@value{cedilha}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
-excepto uma adi@value{cedilha}@~ao ou um produto.  @var{x} pode ser omitido se @var{expr} cont@'em somente uma
-vari@'avel.  @var{expr} pode ser uma express@~ao racional, e pode conter
+@deffn {Fun@value{cedilha}@~ao} solve (@mvar{expr}, @mvar{x})
+@deffnx {Fun@value{cedilha}@~ao} solve (@mvar{expr})
+@deffnx {Fun@value{cedilha}@~ao} solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])
+Resolve a equa@value{cedilha}@~ao alg@'ebrica @mvar{expr} para a vari@'avel
+@mvar{x} e retorna uma lista de equa@value{cedilha}@~oes solu@value{cedilha}@~ao em @mvar{x}.  Se @mvar{expr} n@~ao @'e uma
+equa@value{cedilha}@~ao, a equa@value{cedilha}@~ao @code{@mvar{expr} = 0} @'e assumida em seu lugar.
+@mvar{x} pode ser uma fun@value{cedilha}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
+excepto uma adi@value{cedilha}@~ao ou um produto.  @mvar{x} pode ser omitido se @mvar{expr} cont@'em somente uma
+vari@'avel.  @mvar{expr} pode ser uma express@~ao racional, e pode conter
 fun@value{cedilha}@~oes trigonom@'etricas, exponenciais, etc.
 
 O seguinte m@'etodo @'e usado:
 
-Tome @var{E} sendo a express@~ao e @var{X} sendo a vari@'avel.  Se @var{E} @'e linear em @var{X}
-ent@~ao isso @'e trivialmente resolvido para @var{X}.  De outra forma se @var{E} @'e da forma
+Tome @mvar{E} sendo a express@~ao e @mvar{X} sendo a vari@'avel.  Se @mvar{E} @'e linear em @mvar{X}
+ent@~ao isso @'e trivialmente resolvido para @mvar{X}.  De outra forma se @mvar{E} @'e da forma
 @code{A*X^N + B} ent@~ao o resultado @'e @code{(-B/A)^1/N)} vezes as @code{N}'@'esimas ra@'{@dotless{i}}zes da
 unidade.
 
-Se @var{E} n@~ao @'e linear em @var{X} ent@~ao o m@'aximo divisor comum (mdc) dos expoentes de @var{X} em @var{E} (digamos
-@var{N}) @'e dividido dentro dos expoentes e a multiplicidade das ra@'{@dotless{i}}zes @'e
-multiplicada por @var{N}.  Ent@~ao @code{solve} @'e chamada novamente sobre o resultado.
-Se @var{E} for dada em factores ent@~ao @code{solve} @'e chamada sobre cada um dos factores.  Finalmente
+Se @mvar{E} n@~ao @'e linear em @mvar{X} ent@~ao o m@'aximo divisor comum (mdc) dos expoentes de @mvar{X} em @mvar{E} (digamos
+@mvar{N}) @'e dividido dentro dos expoentes e a multiplicidade das ra@'{@dotless{i}}zes @'e
+multiplicada por @mvar{N}.  Ent@~ao @code{solve} @'e chamada novamente sobre o resultado.
+Se @mvar{E} for dada em factores ent@~ao @code{solve} @'e chamada sobre cada um dos factores.  Finalmente
 @code{solve} usar@'a as f@'ormulas quadr@'aticas, c@'ubicas, ou qu@'articas onde
 necess@'ario.
 
-No caso onde @var{E} for um polin@'omio em alguma fun@value{cedilha}@~ao de vari@'avel a ser
+No caso onde @mvar{E} for um polin@'omio em alguma fun@value{cedilha}@~ao de vari@'avel a ser
 resolvida, digamos @code{F(X)}, ent@~ao isso @'e primeiro resolvida para @code{F(X)} (chama o
-resultado @var{C}), ent@~ao a equa@value{cedilha}@~ao @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
-inverso da fun@value{cedilha}@~ao @var{F} que @'e conhecida.
+resultado @mvar{C}), ent@~ao a equa@value{cedilha}@~ao @code{F(X)=C} pode ser resolvida para @mvar{X} fornecendo o
+inverso da fun@value{cedilha}@~ao @mvar{F} que @'e conhecida.
 
 @code{breakup} se @code{false} far@'a com que @code{solve} expresse as solu@value{cedilha}@~oes de
 equa@value{cedilha}@~oes c@'ubicas ou qu@'articas como express@~oes simples ao inv@'es de como feito
@@ -975,7 +975,7 @@ Tente @code{apropos (solve)} para os comutadores que afectam @code{solve}.  @cod
 ent@~ao ser usada sobre o nome do comutador individual se seu propr@'osito n@~ao @'e
 claro.
 
-@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
+@code{solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])}
 resolve um sistema de equa@value{cedilha}@~oes polinomiais
 (lineares ou n@~ao-lineares) simult@^aneas por chamada a @code{linsolve} ou
 @code{algsys} e retorna uma lista de listas solu@value{cedilha}@~ao nas vari@'aveis.  No

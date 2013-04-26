@@ -55,8 +55,8 @@ University of Nebraska at Kearney (UNK)のBarton Willisが
                  2             2
 @end example
 
-これを@var{x}の冪の和として表すには、
-@var{ratsimp}か@var{rat}を結果に適用してください。
+これを@mvar{x}の冪の和として表すには、
+@mvar{ratsimp}か@mvar{rat}を結果に適用してください。
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -97,8 +97,8 @@ University of Nebraska at Kearney (UNK)のBarton Willisが
 (%o1) interval(- 0.062017037936715, 1.533267919277521E-11)
 @end example
 
-区間(interval)は形式form @code{interval (@var{c}, @var{r})}を取ります。
-ここで、@var{c}は中央値、@var{r}は区間の半径です。
+区間(interval)は形式form @code{interval (@mvar{c}, @mvar{r})}を取ります。
+ここで、@mvar{c}は中央値、@mvar{r}は区間の半径です。
 Maximaは区間上の算術をサポートしていないので、
 グラフィックスなどいくつかの状況では
 誤差を抑制し、区間の中央値だけ出力したいでしょう。
@@ -139,7 +139,7 @@ Maximaは区間上の算術をサポートしていないので、
 
 
 二番目の例の単位階段関数は、
-@var{n}が0で評価することによって、そうでなければ生じる誤差を抑制します。
+@mvar{n}が0で評価することによって、そうでなければ生じる誤差を抑制します。
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -258,7 +258,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 もしそんな量で割るなら、困ったことになるでしょう。
 例えば、
 以下の式は
-1より大きな整数 @var{n}で零になりますが、
+1より大きな整数 @mvar{n}で零になりますが、
 まだMaximaはそれを零に整理することができません。
 
 @c ===beg===
@@ -272,7 +272,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
                   n - 1           n               n - 2
 @end example
 
-特定の @var{n}では式を零に換算できます。
+特定の @mvar{n}では式を零に換算できます。
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -377,7 +377,7 @@ numerical evaluation of the
 @end example
 
 @code{float}を適用することは
-@var{x}を浮動小数点に評価しません。
+@mvar{x}を浮動小数点に評価しません。
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -389,9 +389,9 @@ numerical evaluation of the
                                  10.0
 @end example
 
-@var{x}を浮動小数点に評価するには、
+@mvar{x}を浮動小数点に評価するには、
 @code{pochhammer_max_index}を11以上にバインドして、
-@code{float}を @var{x}に適用する必要があります。
+@code{float}を @mvar{x}に適用する必要があります。
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -454,10 +454,10 @@ orhtopolyのバグを疑う前に、
 2,3の他の誤差も無視します。
 (ありそうにありませんが、)実際の誤差は推定を越える可能性があります。
 
-区間は形式 @code{interval (@var{c}, @var{r})}を持ちます。
+区間は形式 @code{interval (@mvar{c}, @mvar{r})}を持ちます。
 ここで、
-@var{c}は区間の中心で、
-@var{r}は半径です。
+@mvar{c}は区間の中心で、
+@mvar{r}は半径です。
 区間の中心は複素数であり得ますし、
 半径はいつも正の実数です。
 
@@ -591,7 +591,7 @@ Maximaはプロットする前にそれらを多項式に評価します;
 
 式 @code{legendre_p (5, x)}@i{全体}をクォートします;
 これは
-@code{'legendre_p (5, @var{x})}を使って関数名をクォートするだけとは違います。
+@code{'legendre_p (5, @mvar{x})}を使って関数名をクォートするだけとは違います。
 
 @opencatbox
 @category{Plotting}
@@ -641,12 +641,12 @@ Pochhammerシンボルの導函数は
 
 (%o1)の式に注意する必要があります;
 @code{psi}函数の差分は
-@code{@var{x} = -1, -2, .., -@var{n}}の時
+@code{@mvar{x} = -1, -2, .., -@mvar{n}}の時
 多項式です。
 これらの多項式は
-@var{n}が正の整数の時、
-導函数を@code{@var{n} - 1}次多項式にするように、
-@code{pochhammer (@var{x}, @var{n})}の因子を相殺します。
+@mvar{n}が正の整数の時、
+導函数を@code{@mvar{n} - 1}次多項式にするように、
+@code{pochhammer (@mvar{x}, @mvar{n})}の因子を相殺します。
 
 Pochhammerシンボルは
 ガンマ函数の商としての表現を通して
@@ -737,8 +737,8 @@ Pochhammerシンボルは
 @node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
 @section Functions and Variables for orthogonal polynomials
 
-@deffn {関数} assoc_legendre_p (@var{n}, @var{m}, @var{x})
-次数 @var{n}と位数 @var{m}の第一種Legendre陪函数。
+@deffn {関数} assoc_legendre_p (@mvar{n}, @mvar{m}, @mvar{x})
+次数 @mvar{n}と位数 @mvar{m}の第一種Legendre陪函数。
 
 参考文献: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 (second equation), page 334, and 8.2.5, page 333.
@@ -749,8 +749,8 @@ Pochhammerシンボルは
 
 @end deffn
 
-@deffn {関数} assoc_legendre_q (@var{n}, @var{m}, @var{x})
-次数 @var{n}と位数 @var{m}の第二種Legendre陪函数。
+@deffn {関数} assoc_legendre_q (@mvar{n}, @mvar{m}, @mvar{x})
+次数 @mvar{n}と位数 @mvar{m}の第二種Legendre陪函数。
 
 参考文献: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 
@@ -760,7 +760,7 @@ Pochhammerシンボルは
 
 @end deffn
 
-@deffn {関数} chebyshev_t (@var{n}, @var{x})
+@deffn {関数} chebyshev_t (@mvar{n}, @mvar{x})
 第一種Chebyshev函数。
 
 参考文献: Abramowitz and Stegun, equation 22.5.47, page 779.
@@ -771,7 +771,7 @@ Pochhammerシンボルは
 
 @end deffn
 
-@deffn {関数} chebyshev_u (@var{n}, @var{x})
+@deffn {関数} chebyshev_u (@mvar{n}, @mvar{x})
 第二種Chebyshev函数。
 
 参考文献: Abramowitz and Stegun, equation 22.5.48, page 779.
@@ -782,8 +782,8 @@ Pochhammerシンボルは
 
 @end deffn
 
-@deffn {関数} gen_laguerre (@var{n}, @var{a}, @var{x})
-次数 @var{n}の一般化Laguerre多項式。
+@deffn {関数} gen_laguerre (@mvar{n}, @mvar{a}, @mvar{x})
+次数 @mvar{n}の一般化Laguerre多項式。
 
 参考文献: Abramowitz and Stegun, equation 22.5.54, page 780.
 
@@ -793,7 +793,7 @@ Pochhammerシンボルは
 
 @end deffn
 
-@deffn {関数} hermite (@var{n}, @var{x})
+@deffn {関数} hermite (@mvar{n}, @mvar{x})
 Hermite多項式。
 
 参考文献: Abramowitz and Stegun, equation 22.5.55, page 780.
@@ -804,7 +804,7 @@ Hermite多項式。
 
 @end deffn
 
-@deffn {関数} intervalp (@var{e})
+@deffn {関数} intervalp (@mvar{e})
 もし入力が区間なら @code{true}を、
 そうでないなら @code{false}を返します。
 
@@ -814,14 +814,14 @@ Hermite多項式。
 
 @end deffn
 
-@deffn {関数} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+@deffn {関数} jacobi_p (@mvar{n}, @mvar{a}, @mvar{b}, @mvar{x})
 Jacobiの多項式。
 
 Jacobiの多項式は実際には
-@var{a}と @var{b}すべてに対して定義されます;
+@mvar{a}と @mvar{b}すべてに対して定義されます;
 しかし、Jacobi多項式の重み
-@code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}}は
-@code{@var{a} <= -1}か @code{@var{b} <= -1}で可積分でありません。
+@code{(1 - @mvar{x})^@mvar{a} (1 + @mvar{x})^@mvar{b}}は
+@code{@mvar{a} <= -1}か @code{@mvar{b} <= -1}で可積分でありません。
 
 参考文献: Abramowitz and Stegun, equation 22.5.42, page 779.
 
@@ -831,7 +831,7 @@ Jacobiの多項式は実際には
 
 @end deffn
 
-@deffn {関数} laguerre (@var{n}, @var{x})
+@deffn {関数} laguerre (@mvar{n}, @mvar{x})
 Laguerre多項式。
 
 参考文献: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
@@ -842,7 +842,7 @@ Laguerre多項式。
 
 @end deffn
 
-@deffn {関数} legendre_p (@var{n}, @var{x})
+@deffn {関数} legendre_p (@mvar{n}, @mvar{x})
 第一種Legendre多項式。
 
 参考文献: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
@@ -853,7 +853,7 @@ Laguerre多項式。
 
 @end deffn
 
-@deffn {関数} legendre_q (@var{n}, @var{x})
+@deffn {関数} legendre_q (@mvar{n}, @mvar{x})
 第二種Legendre多項式。
 
 参考文献: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
@@ -864,8 +864,8 @@ Laguerre多項式。
 
 @end deffn
 
-@deffn {関数} orthopoly_recur (@var{f}, @var{args})
-引数 @var{args}を持つ直交函数族 @var{f}の漸化式を返します。
+@deffn {関数} orthopoly_recur (@mvar{f}, @mvar{args})
+引数 @mvar{args}を持つ直交函数族 @mvar{f}の漸化式を返します。
 再帰は多項式次数に関してです。
 
 @c ===beg===
@@ -880,7 +880,7 @@ Laguerre多項式。
 @end example
 
 @code{orthopoly_recur}の二番目の引数は
-関数 @var{f}の正しい数の引数のリストでなければいけません;
+関数 @mvar{f}の正しい数の引数のリストでなければいけません;
 もしそうでないなら、Maximaはエラーをシグナルします。
 
 @c ===beg===
@@ -894,7 +894,7 @@ Function jacobi_p needs 4 arguments, instead it received 2
 @end example
 
 更に、
-@var{f}が直交多項式族の1つの名前でないなら、
+@mvar{f}が直交多項式族の1つの名前でないなら、
 エラーがシグナルされます。
 
 @c ===beg===
@@ -917,10 +917,10 @@ A recursion relation for foo isn't known to Maxima
 デフォルト値: @code{true}
 
 @code{orthopoly_returns_intervals}が @code{true}の時、
-浮動小数点の結果が形式 @code{interval (@var{c}, @var{r})}
+浮動小数点の結果が形式 @code{interval (@mvar{c}, @mvar{r})}
 で返されます。
-ここで、 @var{c}は区間の中心で、
-@var{r}は半径です。
+ここで、 @mvar{c}は区間の中心で、
+@mvar{r}は半径です。
 中心は複素数であり得ます;
 その場合、区間は複素平面上の円です。
 
@@ -930,11 +930,11 @@ A recursion relation for foo isn't known to Maxima
 
 @end defvr
 
-@deffn {関数} orthopoly_weight (@var{f}, @var{args})
+@deffn {関数} orthopoly_weight (@mvar{f}, @mvar{args})
 
 3つの要素のリストを返します;
 一番目の要素は
-リスト @var{args}が与える引数を持つ直交多項式族 @var{f}の重みの公式です;
+リスト @mvar{args}が与える引数を持つ直交多項式族 @mvar{f}の重みの公式です;
 二番目と三番目の要素は
 直交性の区間の下限と上限を与えます。
 例えば、
@@ -952,7 +952,7 @@ A recursion relation for foo isn't known to Maxima
 (%o2)                           0
 @end example
 
-@var{f}の主変数はシンボルでなければいけません;
+@mvar{f}の主変数はシンボルでなければいけません;
 そうでないなら、Maximaはエラーをシグナルします。
 
 @opencatbox
@@ -961,17 +961,17 @@ A recursion relation for foo isn't known to Maxima
 
 @end deffn
 
-@deffn {関数} pochhammer (@var{n}, @var{x})
+@deffn {関数} pochhammer (@mvar{n}, @mvar{x})
 Pochhammerシンボル。
-@code{@var{n} <= pochhammer_max_index}の非負整数 @var{n}に対して、
-式 @code{pochhammer (@var{x}, @var{n})}は
-@code{@var{n} > 0}の時、
-積 @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)}
+@code{@mvar{n} <= pochhammer_max_index}の非負整数 @mvar{n}に対して、
+式 @code{pochhammer (@mvar{x}, @mvar{n})}は
+@code{@mvar{n} > 0}の時、
+積 @code{@mvar{x} (@mvar{x} + 1) (@mvar{x} + 2) ... (@mvar{x} + n - 1)}
 を評価します。
-@code{@var{n} = 0}の時は1です。
-負の @var{n}に対しては、
-@code{pochhammer (@var{x}, @var{n})}は
-@code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}として定義されます。
+@code{@mvar{n} = 0}の時は1です。
+負の @mvar{n}に対しては、
+@code{pochhammer (@mvar{x}, @mvar{n})}は
+@code{(-1)^@mvar{n} / pochhammer (1 - @mvar{x}, -@mvar{n})}として定義されます。
 従って、
 
 @c ===beg===
@@ -1002,8 +1002,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
                             gamma(x)
 @end example
 
-@var{n}が @code{pochhammer_max_index}を越えるか、
-@var{n}が記号の時、
+@mvar{n}が @code{pochhammer_max_index}を越えるか、
+@mvar{n}が記号の時、
 @code{pochhammer}は名詞形を返します。
 
 @c ===beg===
@@ -1024,8 +1024,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 @defvr {変数} pochhammer_max_index
 デフォルト値: 100
 
-@code{pochhammer (@var{n}, @var{x})}は
-@code{@var{n} <= pochhammer_max_index}の時だけ
+@code{pochhammer (@mvar{n}, @mvar{x})}は
+@code{@mvar{n} <= pochhammer_max_index}の時だけ
 積を展開します。
 
 例:
@@ -1050,7 +1050,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end defvr
 
-@deffn {関数} spherical_bessel_j (@var{n}, @var{x})
+@deffn {関数} spherical_bessel_j (@mvar{n}, @mvar{x})
 第一種球Bessel函数。
 
 参考文献: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
@@ -1061,7 +1061,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} spherical_bessel_y (@var{n}, @var{x})
+@deffn {関数} spherical_bessel_y (@mvar{n}, @mvar{x})
 第二種球Bessel函数。
 
 参考文献: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
@@ -1072,7 +1072,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} spherical_hankel1 (@var{n}, @var{x})
+@deffn {関数} spherical_hankel1 (@mvar{n}, @mvar{x})
 第一種球Hankel函数。
 
 参考文献: Abramowitz and Stegun, equation 10.1.36, page 439.
@@ -1083,7 +1083,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} spherical_hankel2 (@var{n}, @var{x})
+@deffn {関数} spherical_hankel2 (@mvar{n}, @mvar{x})
 第二種球Hankel函数。
 
 参考文献: Abramowitz and Stegun, equation 10.1.17, page 439.
@@ -1094,7 +1094,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+@deffn {関数} spherical_harmonic (@mvar{n}, @mvar{m}, @mvar{x}, @mvar{y})
 球調和函数。
 
 参考文献: Merzbacher 9.64.
@@ -1105,13 +1105,13 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} unit_step (@var{x})
+@deffn {関数} unit_step (@mvar{x})
 左連続の単位階段函数;なので
-@code{unit_step (@var{x})}は@code{@var{x} <= 0}で0であり、
-@code{@var{x} > 0}で1です。
+@code{unit_step (@mvar{x})}は@code{@mvar{x} <= 0}で0であり、
+@code{@mvar{x} > 0}で1です。
 
 もし0で値1/2を取る単位階段函数が欲しいなら、
-@code{(1 + signum (@var{x}))/2}を使ってください。
+@code{(1 + signum (@mvar{x}))/2}を使ってください。
 
 @opencatbox
 @category{Package orthopoly} @category{Mathematical functions}
@@ -1119,7 +1119,7 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 
 @end deffn
 
-@deffn {関数} ultraspherical (@var{n}, @var{a}, @var{x})
+@deffn {関数} ultraspherical (@mvar{n}, @mvar{a}, @mvar{x})
 (Gegenbauer多項式としても知られている)超球多項式。
 
 参考文献: Abramowitz and Stegun, equation 22.5.46, page 779.

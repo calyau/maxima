@@ -134,10 +134,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{append}
-@deffn {Function} append (@var{list_1}, @dots{}, @var{list_n})
+@deffn {Function} append (@mvar{list_1}, @dots{}, @mvar{list_n})
 
-Returns a single list of the elements of @var{list_1} followed
-by the elements of @var{list_2}, @dots{}  @code{append} also works on
+Returns a single list of the elements of @mvar{list_1} followed
+by the elements of @mvar{list_2}, @dots{}  @code{append} also works on
 general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 @code{f(a,b,c,d,e)}.
 
@@ -152,16 +152,16 @@ Do @code{example(append);} for an example.
 
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
-@deffn  {Function} assoc (@var{key}, @var{list}, @var{default})
-@deffnx {Function} assoc (@var{key}, @var{list})
+@deffn  {Function} assoc (@mvar{key}, @mvar{list}, @mvar{default})
+@deffnx {Function} assoc (@mvar{key}, @mvar{list})
 
-This function searches for the @var{key} in the left hand side of the input
-@var{list} of the form @code{[x,y,z,...]} where each of the @var{list} elements
+This function searches for the @mvar{key} in the left hand side of the input
+@mvar{list} of the form @code{[x,y,z,...]} where each of the @mvar{list} elements
 is an expression of a binary operand and 2 elements.  For example @code{x=1},
-@code{2^3}, @code{[a,b]} etc.  The @var{key} is checked against the first
+@code{2^3}, @code{[a,b]} etc.  The @mvar{key} is checked against the first
 operand.  @code{assoc} returns the second operand if the @code{key} is found.
-If the @code{key} is not found it either returns the @var{default} value.
-@var{default} is optional and defaults to @code{false}.
+If the @code{key} is not found it either returns the @mvar{default} value.
+@mvar{default} is optional and defaults to @code{false}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -173,10 +173,10 @@ If the @code{key} is not found it either returns the @var{default} value.
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn {Function} cons (@var{expr}, @var{list})
+@deffn {Function} cons (@mvar{expr}, @mvar{list})
 
-Returns a new list constructed of the element @var{expr} as its first element,
-followed by the elements of @var{list}.  @code{cons} also works on other
+Returns a new list constructed of the element @mvar{expr} as its first element,
+followed by the elements of @mvar{list}.  @code{cons} also works on other
 expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @opencatbox
@@ -186,9 +186,9 @@ expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{copylist}
-@deffn {Function} copylist (@var{list})
+@deffn {Function} copylist (@mvar{list})
 
-Returns a copy of the list @var{list}.
+Returns a copy of the list @mvar{list}.
 
 @opencatbox
 @category{Lists}
@@ -197,14 +197,14 @@ Returns a copy of the list @var{list}.
 
 @c -----------------------------------------------------------------------------
 @anchor{create_list}
-@deffn {Function} create_list (@var{form}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
+@deffn {Function} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, @dots{}, @mvar{x_n}, @mvar{list_n})
 
-Create a list by evaluating @var{form} with @var{x_1} bound to
-each element of @var{list_1}, and for each such binding bind @var{x_2}
-to each element of @var{list_2}, @dots{}
+Create a list by evaluating @mvar{form} with @mvar{x_1} bound to
+each element of @mvar{list_1}, and for each such binding bind @mvar{x_2}
+to each element of @mvar{list_2}, @dots{}
 The number of elements in the result will be
 the product of the number of elements in each list.
-Each variable @var{x_i} must actually be a symbol -- it will not be evaluated.
+Each variable @mvar{x_i} must actually be a symbol -- it will not be evaluated.
 The list arguments will be evaluated once at the beginning of the
 iteration.
 
@@ -232,7 +232,7 @@ With a double iteration:
 @end group
 @end example
 
-Instead of @var{list_i} two args may be supplied each of which should
+Instead of @mvar{list_i} two args may be supplied each of which should
 evaluate to a number.  These will be the inclusive lower and
 upper bounds for the iteration.
 
@@ -256,24 +256,24 @@ depend on the current value of @code{i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{delete}
-@deffn  {Function} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn  {Function} delete (@mvar{expr_1}, @mvar{expr_2})
+@deffnx {Function} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
 
-@code{delete(@var{expr_1}, @var{expr_2})}
-removes from @var{expr_2} any arguments of its top-level operator
-which are the same (as determined by "=") as @var{expr_1}.
+@code{delete(@mvar{expr_1}, @mvar{expr_2})}
+removes from @mvar{expr_2} any arguments of its top-level operator
+which are the same (as determined by "=") as @mvar{expr_1}.
 Note that "=" tests for formal equality, not equivalence.
 Note also that arguments of subexpressions are not affected.
 
-@var{expr_1} may be an atom or a non-atomic expression.
-@var{expr_2} may be any non-atomic expression.
+@mvar{expr_1} may be an atom or a non-atomic expression.
+@mvar{expr_2} may be any non-atomic expression.
 @code{delete} returns a new expression;
-it does not modify @var{expr_2}.
+it does not modify @mvar{expr_2}.
 
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
-removes from @var{expr_2} the first @var{n} arguments of the top-level operator
-which are the same as @var{expr_1}.
-If there are fewer than @var{n} such arguments,
+@code{delete(@mvar{expr_1}, @mvar{expr_2}, @mvar{n})}
+removes from @mvar{expr_2} the first @mvar{n} arguments of the top-level operator
+which are the same as @mvar{expr_1}.
+If there are fewer than @mvar{n} such arguments,
 then all such arguments are removed.
 
 Examples:
@@ -338,7 +338,7 @@ Limit the number of removed arguments.
 @end group
 @end example
 
-Whether arguments are the same as @var{expr_1} is determined by "=".
+Whether arguments are the same as @mvar{expr_1} is determined by "=".
 Arguments which are @code{equal} but not "=" are not removed.
 
 @c ===beg===
@@ -386,9 +386,9 @@ rat: replaced 0.0 by 0/1 = 0.0
 
 @c -----------------------------------------------------------------------------
 @anchor{eighth}
-@deffn {Function} eighth (@var{expr})
+@deffn {Function} eighth (@mvar{expr})
 
-Returns the 8'th item of expression or list @var{expr}.
+Returns the 8'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -401,10 +401,10 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn {Function} endcons (@var{expr}, @var{list})
+@deffn {Function} endcons (@mvar{expr}, @mvar{list})
 
 Returns a new list consisting of the elements of @code{list} followed by
-@var{expr}.  @code{endcons} also works on general expressions, e.g.
+@mvar{expr}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @opencatbox
@@ -414,9 +414,9 @@ Returns a new list consisting of the elements of @code{list} followed by
 
 @c -----------------------------------------------------------------------------
 @anchor{fifth}
-@deffn {Function} fifth (@var{expr})
+@deffn {Function} fifth (@mvar{expr})
 
-Returns the 5'th item of expression or list @var{expr}.
+Returns the 5'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -428,14 +428,14 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{first}
-@deffn {Function} first (@var{expr})
+@deffn {Function} first (@mvar{expr})
 
-Returns the first part of @var{expr} which may result in the first element of a
+Returns the first part of @mvar{expr} which may result in the first element of a
 list, the first row of a matrix, the first term of a sum, etc.  Note that
 @code{first} and its related functions, @code{rest} and @code{last}, work
-on the form of @var{expr} which is displayed not the form which is typed on
+on the form of @mvar{expr} which is displayed not the form which is typed on
 input.  If the variable @mref{inflag} is set to @code{true} however, these
-functions will look at the internal form of @var{expr}.  Note that the
+functions will look at the internal form of @mvar{expr}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
 @code{inflag} is @code{true} and @code{y} if @code{inflag} is @code{false}
 (@code{first(y+x)} gives the same results).  The functions @code{second} @dots{}
@@ -448,9 +448,9 @@ simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
 
 @c -----------------------------------------------------------------------------
 @anchor{fourth}
-@deffn {Function} fourth (@var{expr})
+@deffn {Function} fourth (@mvar{expr})
 
-Returns the 4'th item of expression or list @var{expr}.
+Returns the 4'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -460,17 +460,17 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{join}
-@deffn {Function} join (@var{l}, @var{m})
+@deffn {Function} join (@mvar{l}, @mvar{m})
 
-Creates a new list containing the elements of lists @var{l} and @var{m},
-interspersed.  The result has elements @code{[@var{l}[1], @var{m}[1],
-@var{l}[2], @var{m}[2], ...]}.  The lists @var{l} and @var{m} may contain any
+Creates a new list containing the elements of lists @mvar{l} and @mvar{m},
+interspersed.  The result has elements @code{[@mvar{l}[1], @mvar{m}[1],
+@mvar{l}[2], @mvar{m}[2], ...]}.  The lists @mvar{l} and @mvar{m} may contain any
 type of elements.
 
 If the lists are different lengths, @code{join} ignores elements of the longer
 list.
 
-Maxima complains if @var{l} or @var{m} is not a list.
+Maxima complains if @mvar{l} or @mvar{m} is not a list.
 
 Examples:
 
@@ -504,9 +504,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{last}
-@deffn {Function} last (@var{expr})
+@deffn {Function} last (@mvar{expr})
 
-Returns the last part (term, row, element, etc.) of the @var{expr}.
+Returns the last part (term, row, element, etc.) of the @mvar{expr}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -517,10 +517,10 @@ Returns the last part (term, row, element, etc.) of the @var{expr}.
 
 @c -----------------------------------------------------------------------------
 @anchor{length}
-@deffn {Function} length (@var{expr})
+@deffn {Function} length (@mvar{expr})
 
 Returns (by default) the number of parts in the external
-(displayed) form of @var{expr}.  For lists this is the number of elements,
+(displayed) form of @mvar{expr}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
 of terms (see @mref{dispform}).
 
@@ -550,9 +550,9 @@ list-list operations should return lists.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} listp (@var{expr})
+@deffn {Function} listp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a list else @code{false}.
+Returns @code{true} if @mvar{expr} is a list else @code{false}.
 
 @opencatbox
 @category{Lists} @category{Predicate functions}
@@ -562,32 +562,32 @@ Returns @code{true} if @var{expr} is a list else @code{false}.
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
 @deffn  {Function} makelist ()
-@deffnx {Function} makelist (@var{expr}, @var{n})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_max})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{step})
-@deffnx {Function} makelist (@var{expr}, @var{x}, @var{list})
+@deffnx {Function} makelist (@mvar{expr}, @mvar{n})
+@deffnx {Function} makelist (@mvar{expr}, @mvar{i}, @mvar{i_max})
+@deffnx {Function} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_max})
+@deffnx {Function} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_max}, @mvar{step})
+@deffnx {Function} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
 
 The first form, @code{makelist ()}, creates an empty list. The second form,
-@code{makelist (@var{expr})}, creates a list with @var{expr} as its single
-element. @code{makelist (@var{expr}, @var{n})} creates a list of @var{n}
-elements generated from @var{expr}.
+@code{makelist (@mvar{expr})}, creates a list with @mvar{expr} as its single
+element. @code{makelist (@mvar{expr}, @mvar{n})} creates a list of @mvar{n}
+elements generated from @mvar{expr}.
 
-The most general form, @code{makelist (@var{expr}, @var{i}, @var{i_0},
-@var{i_max}, @var{step})}, returns the list of elements obtained when
-@code{ev (@var{expr}, @var{i}=@var{j})} is applied to the elements
-@var{j} of the sequence: @var{i_0}, @var{i_0} + @var{step}, @var{i_0} +
-2*@var{step}, ..., with @var{|j|} less than or equal to @var{|i_max|}.
+The most general form, @code{makelist (@mvar{expr}, @mvar{i}, @mvar{i_0},
+@mvar{i_max}, @mvar{step})}, returns the list of elements obtained when
+@code{ev (@mvar{expr}, @mvar{i}=@mvar{j})} is applied to the elements
+@mvar{j} of the sequence: @mvar{i_0}, @mvar{i_0} + @mvar{step}, @mvar{i_0} +
+2*@mvar{step}, ..., with @mvar{|j|} less than or equal to @mvar{|i_max|}.
 
-The increment @var{step} can be a number (positive or negative) or an
+The increment @mvar{step} can be a number (positive or negative) or an
 expression. If it is omitted, the default value 1 will be used. If both
-@var{i_0} and @var{step} are omitted, they will both have a default
+@mvar{i_0} and @mvar{step} are omitted, they will both have a default
 value of 1.
 
-@code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the
+@code{makelist (@mvar{expr}, @mvar{x}, @mvar{list})} returns a list, the
 @code{j}'th element of which is equal to
-@code{ev (@var{expr}, @var{x}=@var{list}[j])} for @code{j} equal to 1 through
-@code{length (@var{list})}.
+@code{ev (@mvar{expr}, @mvar{x}=@mvar{list}[j])} for @code{j} equal to 1 through
+@code{length (@mvar{list})}.
 
 Examples:
 
@@ -633,15 +633,15 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{member}
-@deffn {Function} member (@var{expr_1}, @var{expr_2})
+@deffn {Function} member (@mvar{expr_1}, @mvar{expr_2})
 
-Returns @code{true} if @code{is(@var{expr_1} = @var{a})}
-for some element @var{a} in @code{args(@var{expr_2})},
+Returns @code{true} if @code{is(@mvar{expr_1} = @mvar{a})}
+for some element @mvar{a} in @code{args(@mvar{expr_2})},
 otherwise returns @code{false}.
 
 @code{expr_2} is typically a list, in which case
-@code{args(@var{expr_2}) = @var{expr_2}} and @code{is(@var{expr_1} = @var{a})}
-for some element @var{a} in @code{expr_2} is the test.
+@code{args(@mvar{expr_2}) = @mvar{expr_2}} and @code{is(@mvar{expr_1} = @mvar{a})}
+for some element @mvar{a} in @code{expr_2} is the test.
 
 @code{member} does not inspect parts of the arguments of @code{expr_2}, so it
 may return @code{false} even if @code{expr_1} is a part of some argument of
@@ -705,9 +705,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{ninth}
-@deffn {Function} ninth (@var{expr})
+@deffn {Function} ninth (@mvar{expr})
 
-Returns the 9'th item of expression or list @var{expr}.
+Returns the 9'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -717,13 +717,13 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{pop}
-@deffn {Function} pop (@var{list})
+@deffn {Function} pop (@mvar{list})
 
-@code{pop} removes the first element from the list @var{list} and returns this 
-element.  @var{list} must be a symbol, which is bound to a list and not the list
+@code{pop} removes the first element from the list @mvar{list} and returns this 
+element.  @mvar{list} must be a symbol, which is bound to a list and not the list
 itself.
 
-If the argument @var{list} is not bound to a list or the list is empty, Maxima
+If the argument @mvar{list} is not bound to a list or the list is empty, Maxima
 generates an error message.
 
 See also @mref{push} for examples.
@@ -738,13 +738,13 @@ first: @code{load("basic")}.
 
 @c -----------------------------------------------------------------------------
 @anchor{push}
-@deffn {Function} push (@var{item}, @var{list})
+@deffn {Function} push (@mvar{item}, @mvar{list})
 
-@code{push} prepends the item @var{item} to the list @var{list} and returns a
-copy of the new list.  @var{list} must be a symbol, which is bound to a list and
-not the list itself.  @var{item} can be any Maxima symbol or expression.
+@code{push} prepends the item @mvar{item} to the list @mvar{list} and returns a
+copy of the new list.  @mvar{list} must be a symbol, which is bound to a list and
+not the list itself.  @mvar{item} can be any Maxima symbol or expression.
 
-If the argument @var{list} is not bound to a list, Maxima generates an error
+If the argument @mvar{list} is not bound to a list, Maxima generates an error
 message.
 
 See also @mref{pop} to remove the first item from a list.
@@ -818,12 +818,12 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
-@deffn  {Function} rest (@var{expr}, @var{n})
-@deffnx {Function} rest (@var{expr})
+@deffn  {Function} rest (@mvar{expr}, @mvar{n})
+@deffnx {Function} rest (@mvar{expr})
 
-Returns @var{expr} with its first @var{n} elements removed if @var{n} is
-positive and its last @code{- @var{n}} elements removed if @var{n} is negative.
-If @var{n} is 1 it may be omitted.  @var{expr} may be a list, matrix, or other
+Returns @mvar{expr} with its first @mvar{n} elements removed if @mvar{n} is
+positive and its last @code{- @mvar{n}} elements removed if @mvar{n} is negative.
+If @mvar{n} is 1 it may be omitted.  @mvar{expr} may be a list, matrix, or other
 expression.
 
 @opencatbox
@@ -836,9 +836,9 @@ expression.
 
 @c -----------------------------------------------------------------------------
 @anchor{reverse}
-@deffn {Function} reverse (@var{list})
+@deffn {Function} reverse (@mvar{list})
 
-Reverses the order of the members of the @var{list} (not
+Reverses the order of the members of the @mvar{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
 
@@ -849,9 +849,9 @@ e.g.  @code{reverse(a=b);} gives @code{b=a}.
 
 @c -----------------------------------------------------------------------------
 @anchor{second}
-@deffn {Function} second (@var{expr})
+@deffn {Function} second (@mvar{expr})
 
-Returns the 2'nd item of expression or list @var{expr}.
+Returns the 2'nd item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -861,9 +861,9 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{seventh}
-@deffn {Function} seventh (@var{expr})
+@deffn {Function} seventh (@mvar{expr})
 
-Returns the 7'th item of expression or list @var{expr}.
+Returns the 7'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -873,9 +873,9 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{sixth}
-@deffn {Function} sixth (@var{expr})
+@deffn {Function} sixth (@mvar{expr})
 
-Returns the 6'th item of expression or list @var{expr}.
+Returns the 6'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -885,27 +885,27 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{sort}
-@deffn  {Function} sort (@var{L}, @var{P})
-@deffnx {Function} sort (@var{L})
+@deffn  {Function} sort (@mvar{L}, @mvar{P})
+@deffnx {Function} sort (@mvar{L})
 
-@code{sort(@var{L}, @var{P})} sorts a list @var{L} according to a predicate @code{P} of two arguments
-which defines a strict weak order on the elements of @var{L}.
-If @code{@var{P}(a, b)} is @code{true}, then @code{a} appears before @code{b} in the result.
-If neither @code{@var{P}(a, b)} nor @code{@var{P}(b, a)} are @code{true},
+@code{sort(@mvar{L}, @mvar{P})} sorts a list @mvar{L} according to a predicate @code{P} of two arguments
+which defines a strict weak order on the elements of @mvar{L}.
+If @code{@mvar{P}(a, b)} is @code{true}, then @code{a} appears before @code{b} in the result.
+If neither @code{@mvar{P}(a, b)} nor @code{@mvar{P}(b, a)} are @code{true},
 then @code{a} and @code{b} are equivalent, and appear in the result in the same order as in the input.
 That is, @code{sort} is a stable sort.
 
-If @code{@var{P}(a, b)} and @code{@var{P}(b, a)} are both @code{true} for some elements of @var{L},
-then @var{P} is not a valid sort predicate, and the result is undefined.
-If @code{@var{P}(a, b)} is something other than @code{true} or @code{false}, @code{sort} signals an error.
+If @code{@mvar{P}(a, b)} and @code{@mvar{P}(b, a)} are both @code{true} for some elements of @mvar{L},
+then @mvar{P} is not a valid sort predicate, and the result is undefined.
+If @code{@mvar{P}(a, b)} is something other than @code{true} or @code{false}, @code{sort} signals an error.
 
 The predicate may be specified as the name of a function 
 or binary infix operator, or as a @code{lambda} expression.  If specified as
 the name of an operator, the name must be enclosed in double quotes.
 
-The sorted list is returned as a new object; the argument @var{L} is not modified.
+The sorted list is returned as a new object; the argument @mvar{L} is not modified.
 
-@code{sort(@var{L})} is equivalent to @code{sort(@var{L}, orderlessp)}.
+@code{sort(@mvar{L})} is equivalent to @code{sort(@mvar{L}, orderlessp)}.
 
 The default sorting order is ascending, as determined by @mrefdot{orderlessp} The predicate @code{ordergreatp} sorts a list in descending order.
 
@@ -969,7 +969,7 @@ the name of an operator, the name must be enclosed in double quotes.
 @end group
 @end example
 
-@code{sort(@var{L})} is equivalent to @code{sort(@var{L}, orderlessp)}.
+@code{sort(@mvar{L})} is equivalent to @code{sort(@mvar{L}, orderlessp)}.
 
 @c ===beg===
 @c L : [a, 2*b, -5, 7, 1 + %e, %pi];
@@ -1077,9 +1077,9 @@ and all other elements the same as @code{orderlessp}.
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist}
-@deffn {Function} sublist (@var{list}, @var{p})
+@deffn {Function} sublist (@mvar{list}, @mvar{p})
 
-Returns the list of elements of @var{list} for which the predicate @code{p}
+Returns the list of elements of @mvar{list} for which the predicate @code{p}
 returns @code{true}.
 
 Example:
@@ -1106,13 +1106,13 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist_indices}
-@deffn {Function} sublist_indices (@var{L}, @var{P})
+@deffn {Function} sublist_indices (@mvar{L}, @mvar{P})
 
-Returns the indices of the elements @code{x} of the list @var{L} for which
-the predicate @code{maybe(@var{P}(x))} returns @code{true};
+Returns the indices of the elements @code{x} of the list @mvar{L} for which
+the predicate @code{maybe(@mvar{P}(x))} returns @code{true};
 this excludes @code{unknown} as well as @code{false}.
-@var{P} may be the name of a function or a lambda expression.
-@var{L} must be a literal list.
+@mvar{P} may be the name of a function or a lambda expression.
+@mvar{L} must be a literal list.
 
 Examples:
 
@@ -1162,15 +1162,15 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{unique}
-@deffn {Function} unique (@var{L})
+@deffn {Function} unique (@mvar{L})
 
-Returns the unique elements of the list @var{L}.
+Returns the unique elements of the list @mvar{L}.
 
-When all the elements of @var{L} are unique,
-@code{unique} returns a shallow copy of @var{L},
-not @var{L} itself.
+When all the elements of @mvar{L} are unique,
+@code{unique} returns a shallow copy of @mvar{L},
+not @mvar{L} itself.
 
-If @var{L} is not a list, @code{unique} returns @var{L}.
+If @mvar{L} is not a list, @code{unique} returns @mvar{L}.
 
 Example:
 
@@ -1187,9 +1187,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{tenth}
-@deffn {Function} tenth (@var{expr})
+@deffn {Function} tenth (@mvar{expr})
 
-Returns the 10'th item of expression or list @var{expr}.
+Returns the 10'th item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1199,9 +1199,9 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{third}
-@deffn {Function} third (@var{expr})
+@deffn {Function} third (@mvar{expr})
 
-Returns the 3'rd item of expression or list @var{expr}.
+Returns the 3'rd item of expression or list @mvar{expr}.
 See @mref{first} for more details.
 
 @opencatbox

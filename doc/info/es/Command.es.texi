@@ -202,7 +202,7 @@ Con las siguientes funciones es posible formatear los resultados:
 
 @code{__} es la expresi@'on de entrada que est@'a siendo actualmente evaluada.
 Esto es, mientras se est@'a evaluando una expresi@'on de entrada, 
-@code{__} es igual a @var{expr}.
+@code{__} es igual a @mvar{expr}.
 
 A @code{__} se le asigna la expresi@'on de entrada antes de que @'esta sea 
 simplificada o evaluada. Sin embargo, el valor de @code{__} es simplificado,
@@ -215,8 +215,8 @@ Cuando un fichero es procesado por @code{load}, a la variable @code{__}
 se le asigna la @'ultima expresi@'on introducida, bien desde el modo
 interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
 a @code{__} una expresi@'on de entrada del fichero que est@'a siendo procesado.
-En particular, si @code{load (@var{filename})} es ejecutado desde el modo
-interactivo, entonces @code{__} almacena la expresi@'on @code{load (@var{filename})}
+En particular, si @code{load (@mvar{filename})} es ejecutado desde el modo
+interactivo, entonces @code{__} almacena la expresi@'on @code{load (@mvar{filename})}
 mientras el fichero est@'a siendo procesado.
 
 V@'eanse tambi@'en @code{_} y @code{%}.
@@ -351,7 +351,7 @@ V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 @end ifinfo
 
 En una sentencia compuesta, como @code{block}, @code{lambda} o 
-@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
+@code{(@mvar{s_1}, ..., @mvar{s_n})}, @code{%%} es el valor de la sentencia previa.
 
 La variable @code{%%} no está definida cuando se utiliza en la primera sentencia,
 o fuera de una sentencia compuesta.
@@ -404,14 +404,14 @@ _
 
 
 
-@deffn {Funci@'on} %th (@var{i})
+@deffn {Funci@'on} %th (@mvar{i})
 @ifinfo
 @fnindex i-@'esima salida anterior
 @end ifinfo
 
-Es el valor de la expresi@'on de la @var{i}-@'esima salida anterior.
-Esto es, si la siguiente expresi@'on a calcular es la salida @var{n}-@'esima,
-@code{%th (@var{m})} es la salida  (@var{n} - @var{m})-@'esima.
+Es el valor de la expresi@'on de la @mvar{i}-@'esima salida anterior.
+Esto es, si la siguiente expresi@'on a calcular es la salida @mvar{n}-@'esima,
+@code{%th (@mvar{m})} es la salida  (@mvar{n} - @mvar{m})-@'esima.
 
 @code{%th} es reconocido por @code{batch} y @code{load}, interpret@'andose
 de la misma manera que se acaba de indicar. Cuando un fichero es procesado
@@ -545,18 +545,18 @@ Todos los paquetes de reglas @code{let} definidos por el usuario, junto con el p
 
 
 
-@deffn {Funci@'on} kill (@var{a_1}, ..., @var{a_n})
+@deffn {Funci@'on} kill (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Funci@'on} kill (labels)
 @deffnx {Funci@'on} kill (inlabels, outlabels, linelabels)
-@deffnx {Funci@'on} kill (@var{n})
-@deffnx {Funci@'on} kill ([@var{m}, @var{n}])
+@deffnx {Funci@'on} kill (@mvar{n})
+@deffnx {Funci@'on} kill ([@mvar{m}, @mvar{n}])
 @deffnx {Funci@'on} kill (values, functions, arrays, ...)
 @deffnx {Funci@'on} kill (all)
-@deffnx {Funci@'on} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffnx {Funci@'on} kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))
 Elimina todas las asignaciones (valor, funci@'on, arreglo o regla) hechas a los
-argumentos @var{a_1}, ..., @var{a_n}.
-Un argumento @var{a_k} puede ser un s@'{@dotless{i}}mbolo o el elemento
-de un array. Si @var{a_k} es elemento de un array, @code{kill} elimina la
+argumentos @mvar{a_1}, ..., @mvar{a_n}.
+Un argumento @mvar{a_k} puede ser un s@'{@dotless{i}}mbolo o el elemento
+de un array. Si @mvar{a_k} es elemento de un array, @code{kill} elimina la
 asignaci@'on hecha a este elemento sin afectar al resto del array.
 
 Se reconocen varios argumentos especiales. 
@@ -574,27 +574,27 @@ que comienzan con el valor actual de @code{outchar}. Finalmente,
 de las etiquetas de las expresiones intermedias
 que comienzan con el valor actual de @code{linechar}.
 
-La instrucci@'on @code{kill (@var{n})}, siendo @var{n} un entero,
-elimina las asignaciones de las @'ultimas @var{n} etiquetas, tanto
+La instrucci@'on @code{kill (@mvar{n})}, siendo @mvar{n} un entero,
+elimina las asignaciones de las @'ultimas @mvar{n} etiquetas, tanto
 de entrada como de salida.
 
-La instrucci@'on @code{kill ([@var{m}, @var{n}])} elimina las asignaciones
-hechas a las etiquetas de entrada y salida desde la @var{m} hasta la@var{n}.
+La instrucci@'on @code{kill ([@mvar{m}, @mvar{n}])} elimina las asignaciones
+hechas a las etiquetas de entrada y salida desde la @mvar{m} hasta la@mvar{n}.
 
-La instrucci@'on @code{kill (@var{infolist})}, siendo @var{infolist} 
+La instrucci@'on @code{kill (@mvar{infolist})}, siendo @mvar{infolist} 
 cualquier elemento de @code{infolists} (como @code{values}, @code{functions} 
 o @code{arrays}), elimina todas las asignaciones hechas a los elementos de
-@var{infolist}. V@'ease tambi@'en @code{infolists}.
+@mvar{infolist}. V@'ease tambi@'en @code{infolists}.
 
 La instrucci@'on @code{kill (all)} elimina todas las asignaciones de
 todas las variables, pero no reinicia las variables globales a sus
 valores por defecto. V@'ease tambi@'en @code{reset}.
 
-La instrucci@'on @code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+La instrucci@'on @code{kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))}
 elimina las asignaciones hechas a todas las variables,
-excepto a @var{a_1}, ..., @var{a_n}; la instrucci@'on
-@code{kill (allbut (@var{infolist}))} elimina todas las asignaciones,
-excepto las de los elementos de @var{infolist}, pudiendo ser @var{infolist}
+excepto a @mvar{a_1}, ..., @mvar{a_n}; la instrucci@'on
+@code{kill (allbut (@mvar{infolist}))} elimina todas las asignaciones,
+excepto las de los elementos de @mvar{infolist}, pudiendo ser @mvar{infolist}
 igual a @code{values}, @code{functions}, @code{arrays}, etc.
 
 La memoria reservada para una asignaci@'on no se libera hasta que
@@ -607,7 +607,7 @@ como la del propio s@'{@dotless{i}}mbolo.
 La funci@'on @code{kill} no evalua sus argumentos. 
 El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.
 
-La llamada @code{kill (@var{symbol})} elimina todas las propiedades de @var{symbol}.
+La llamada @code{kill (@mvar{symbol})} elimina todas las propiedades de @mvar{symbol}.
 Por el contrario, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remrule}
 eliminan propiedades espec@'{@dotless{i}}ficas. 
 
@@ -618,14 +618,14 @@ argumentos carec@'{@dotless{i}}a de asignaci@'on previa.
 
 
 
-@deffn {Funci@'on} labels (@var{symbol})
+@deffn {Funci@'on} labels (@mvar{symbol})
 @deffnx {Variable del sistema} labels
-Retorna la lista de etiquetas de entrada, salida o de expresiones intermedias las cuales empiezan con @var{symbol}. 
-T@'{@dotless{i}}picamente @var{symbol} es el valor de las variables @code{inchar}, @code{outchar} o @code{linechar}. 
+Retorna la lista de etiquetas de entrada, salida o de expresiones intermedias las cuales empiezan con @mvar{symbol}. 
+T@'{@dotless{i}}picamente @mvar{symbol} es el valor de las variables @code{inchar}, @code{outchar} o @code{linechar}. 
 El caract@'er de etiqueta puede ser pasado con o sin signo de porcentaje, 
 as@'{@dotless{i}}, por ejemplo, @code{i} y @code{%i} producen el mismo resultado.  
 
-Si ninguna etiqueta empieza con @var{symbol}, @code{labels} retorna a una
+Si ninguna etiqueta empieza con @mvar{symbol}, @code{labels} retorna a una
 lista vac@'{@dotless{i}}a. 
 
 La funci@'on @code{labels} no evalua su argumento.
@@ -769,9 +769,9 @@ Ejemplo:
 
 
 @deffn {Funci@'on} playback ()
-@deffnx {Funci@'on} playback (@var{n})
-@deffnx {Funci@'on} playback ([@var{m}, @var{n}])
-@deffnx {Funci@'on} playback ([@var{m}])
+@deffnx {Funci@'on} playback (@mvar{n})
+@deffnx {Funci@'on} playback ([@mvar{m}, @mvar{n}])
+@deffnx {Funci@'on} playback ([@mvar{m}])
 @deffnx {Funci@'on} playback (input)
 @deffnx {Funci@'on} playback (slow)
 @deffnx {Funci@'on} playback (time)
@@ -789,11 +789,11 @@ El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@
 @code{playback ()} (sin argumentos) muestra todas las entradas, salidas y expresiones intermedias generadas hasta el momento. 
 Una expresi@'on de salida es mostrada incluso si @'esta fue suprimida por el caracter de terminaci@'on @code{$}, cuando fue originalmente calculada. 
 
-@code{playback (@var{n})}  muestra las @var{n} expresiones m@'as recientes. Cada entrada, salida y expresi@'on intermedia cuenta como una. 
+@code{playback (@mvar{n})}  muestra las @mvar{n} expresiones m@'as recientes. Cada entrada, salida y expresi@'on intermedia cuenta como una. 
 
-@code{playback ([@var{m}, @var{n}])} muestra entradas, salidas y expresiones intermedias con los n@'umeros desde @var{m} hasta @var{n}, ambos inclusive. 
+@code{playback ([@mvar{m}, @mvar{n}])} muestra entradas, salidas y expresiones intermedias con los n@'umeros desde @mvar{m} hasta @mvar{n}, ambos inclusive. 
 
-@code{playback ([@var{m}])} es equivalente a @code{playback ([@var{m}, @var{m}])};
+@code{playback ([@mvar{m}])} es equivalente a @code{playback ([@mvar{m}, @mvar{m}])};
 esto usualmente imprime un par de expresiones de entrada y salida. 
 
 @code{playback (input)} muestra todas las expresiones de entrada generadas hasta el momento. 
@@ -852,8 +852,8 @@ Vea tambi@'en: @code{debugging}.
 @end deffn
 
 
-@deffn {Funci@'on} read (@var{expr_1}, ..., @var{expr_n})
-Imprime @var{expr_1}, ..., @var{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on evaluada. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
+@deffn {Funci@'on} read (@mvar{expr_1}, ..., @mvar{expr_n})
+Imprime @mvar{expr_1}, ..., @mvar{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on evaluada. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
 
 V@'ease tambi@'en @code{readonly}.
 
@@ -871,8 +871,8 @@ foo vale 42  -- nuevo valor.
 
 
 
-@deffn {Funci@'on} readonly (@var{expr_1}, ..., @var{expr_n})
-Imprime @var{expr_1}, ..., @var{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on sin evaluar. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
+@deffn {Funci@'on} readonly (@mvar{expr_1}, ..., @mvar{expr_n})
+Imprime @mvar{expr_1}, ..., @mvar{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on sin evaluar. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
 
 @example
 (%i1) aa: 7$
@@ -1051,7 +1051,7 @@ Ejemplo:
 @end defvr
 
 
-@deffn {Funci@'on} disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Funci@'on} disp (@mvar{expr_1}, @mvar{expr_2}, ...)
 
 Es como @code{display} pero s@'olo se muestran los valores de
 los argumentos, no las ecuaciones. Es @'util para argumentos 
@@ -1083,10 +1083,10 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} display (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Funci@'on} display (@mvar{expr_1}, @mvar{expr_2}, ...)
 
 Muestra las ecuaciones cuyos miembros izquierdos son 
-@var{expr_i} sin evaluar y cuyos miembros derechos son los 
+@mvar{expr_i} sin evaluar y cuyos miembros derechos son los 
 valores de las expresiones. Esta funci@'on es @'util en los 
 bloques y en las sentencias @code{for} para mostrar resultados 
 intermedios.  Los argumentos de @code{display} suelen ser @'atomos, 
@@ -1173,12 +1173,12 @@ X*4/3;    ---        - X
 @end defvr
 
 
-@deffn {Funci@'on} dispterms (@var{expr})
-Muestra @var{expr} en partes, una debajo de la otra.
-Esto es, primero se muestra el operador de @var{expr}, luego 
+@deffn {Funci@'on} dispterms (@mvar{expr})
+Muestra @mvar{expr} en partes, una debajo de la otra.
+Esto es, primero se muestra el operador de @mvar{expr}, luego 
 cada t@'ermino si se trata de una suma, o cada factor si es un 
 producto, o si no se muestra separadamente la parte de una expresi@'on 
-m@'as general. Es @'util si @var{expr} es demasiado grande para 
+m@'as general. Es @'util si @mvar{expr} es demasiado grande para 
 representarla de otra forma.  Por ejemplo, si @code{P1}, @code{P2}, ...  
 son expresiones muy grandes, entonces el programa de representaci@'on 
 puede superar el espacio de almacenamiento tratando de mostrar 
@@ -1205,9 +1205,9 @@ Ejemplo:
 @end deffn
 
 
-@deffn {S@'{@dotless{i}}mbolo especial} expt (@var{a}, @var{b})
-@deffnx {S@'{@dotless{i}}mbolo especial} ncexpt (@var{a}, @var{b})
-Si una expresi@'on exponencial es demasiado ancha para ser mostrada como @code{@var{a}^@var{b}} aparecer@'a como @code{expt (@var{a}, @var{b})} (o como @code{ncexpt (@var{a}, @var{b})} en lugar de @code{@var{a}^^@var{b}}).
+@deffn {S@'{@dotless{i}}mbolo especial} expt (@mvar{a}, @mvar{b})
+@deffnx {S@'{@dotless{i}}mbolo especial} ncexpt (@mvar{a}, @mvar{b})
+Si una expresi@'on exponencial es demasiado ancha para ser mostrada como @code{@mvar{a}^@mvar{b}} aparecer@'a como @code{expt (@mvar{a}, @mvar{b})} (o como @code{ncexpt (@mvar{a}, @mvar{b})} en lugar de @code{@mvar{a}^^@mvar{b}}).
 
 @c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
 @c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
@@ -1242,13 +1242,13 @@ Ejemplo:
 @end defvr
 
 
-@deffn {Funci@'on} grind (@var{expr})
+@deffn {Funci@'on} grind (@mvar{expr})
 @deffnx {Variable opcional} grind
-La funci@'on @code{grind} imprime @var{expr}
+La funci@'on @code{grind} imprime @mvar{expr}
 en la consola en un formato admisible como entrada para Maxima. La funci@'on 
 @code{grind} devuelve siempre @code{done}.
 
-Cuando @var{expr} es el nombre de una funci@'on o macro, @code{grind}
+Cuando @mvar{expr} es el nombre de una funci@'on o macro, @code{grind}
 muestra la definici@'on de la funci@'on o de la macro en lugar de s@'olo
 su nombre.
 
@@ -1464,8 +1464,8 @@ diez.
 
 
 
-@deffn {Funci@'on} ldisp (@var{expr_1}, ..., @var{expr_n})
-Muestra las expresiones @var{expr_1}, ..., @var{expr_n} en la consola con el formato de salida;
+@deffn {Funci@'on} ldisp (@mvar{expr_1}, ..., @mvar{expr_n})
+Muestra las expresiones @mvar{expr_1}, ..., @mvar{expr_n} en la consola con el formato de salida;
 @code{ldisp} asigna una etiqueta a cada argumento y devuelve la lista de etiquetas.
 
 V@'eanse tambi@'en @code{disp}, @code{display} y @code{ldisplay}.
@@ -1497,8 +1497,8 @@ V@'eanse tambi@'en @code{disp}, @code{display} y @code{ldisplay}.
 
 
 
-@deffn {Funci@'on} ldisplay (@var{expr_1}, ..., @var{expr_n})
-Muestra las expresiones @var{expr_1}, ..., @var{expr_n} en la consola con el formato de salida.
+@deffn {Funci@'on} ldisplay (@mvar{expr_1}, ..., @mvar{expr_n})
+Muestra las expresiones @mvar{expr_1}, ..., @mvar{expr_n} en la consola con el formato de salida.
 Cad expresi@'on se muestra como una ecuaci@'on de la forma @code{lhs = rhs}
 en la que @code{lhs} es uno de los argumentos de @code{ldisplay}
 y @code{rhs} su valor. Normalmente, cada argumento ser@'a el nombre de una variable. La funci@'on
@@ -1676,8 +1676,8 @@ Ejemplo:
 @end defvr
 
 
-@deffn {Funci@'on} print (@var{expr_1}, ..., @var{expr_n})
-Eval@'ua y muestra las expresiones  @var{expr_1}, ..., @var{expr_n} secuencialmente de izquierda a derecha, comenzando la impresi@'on por el borde izquierdo de la consola.
+@deffn {Funci@'on} print (@mvar{expr_1}, ..., @mvar{expr_n})
+Eval@'ua y muestra las expresiones  @mvar{expr_1}, ..., @mvar{expr_n} secuencialmente de izquierda a derecha, comenzando la impresi@'on por el borde izquierdo de la consola.
 
 El valor devuelto por @code{print} es el valor de su @'ultimo argumento. La funci@'on @code{print} no genera etiquetas para las expresiones intermedias.
 

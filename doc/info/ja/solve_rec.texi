@@ -32,10 +32,10 @@
 @node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec
 @section Functions and Variables for solve_rec
 
-@deffn {関数} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {関数} reduce_order (@mvar{rec}, @mvar{sol}, @mvar{var})
 
-特殊解@var{sol}が知られている時、
-線形漸化式@var{rec}の次数を減らします。
+特殊解@mvar{sol}が知られている時、
+線形漸化式@mvar{rec}の次数を減らします。
 
 例:
 
@@ -109,9 +109,9 @@ WARNING: found some hypergeometrical solutions!
 
 @end defvr
 
-@deffn {関数} simplify_sum (@var{expr})
+@deffn {関数} simplify_sum (@mvar{expr})
 
-@var{expr}に現れるすべての和を閉形式に整理しようとします。
+@mvar{expr}に現れるすべての和を閉形式に整理しようとします。
 
 この関数を初めて使うには、
 @code{load(simplify_sum)}で
@@ -150,9 +150,9 @@ WARNING: found some hypergeometrical solutions!
 
 @end deffn
 
-@deffn {関数} solve_rec (@var{eqn}, @var{var}, [@var{init}])
-変数@var{var}に関して多項式係数を持つ線形漸化式@var{eqn}の超幾何解について解きます。
-オプション引数@var{init}は初期条件です。
+@deffn {関数} solve_rec (@mvar{eqn}, @mvar{var}, [@mvar{init}])
+変数@mvar{var}に関して多項式係数を持つ線形漸化式@mvar{eqn}の超幾何解について解きます。
+オプション引数@mvar{init}は初期条件です。
 
 @code{solve_rec}は、
 定数係数の線形漸化式を解くことができ、
@@ -235,7 +235,7 @@ Ricatti型漸化式の例:
 
 @end deffn
 
-@deffn {関数} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {関数} solve_rec_rat (@mvar{eqn}, @mvar{var}, [@mvar{init}])
 
 線形漸化式の有理解について解きます。
 引数の記述についてはsolve_recを参照してください。
@@ -288,8 +288,8 @@ Ricatti型漸化式の例:
 
 @end defvr
 
-@deffn {関数} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {関数} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {関数} summand_to_rec (@mvar{summand}, @mvar{k}, @mvar{n})
+@deffnx {関数} summand_to_rec (@mvar{summand}, [@mvar{k}, @mvar{lo}, @mvar{hi}], @mvar{n})
 
 和
 
@@ -306,8 +306,8 @@ Ricatti型漸化式の例:
 @end example
 
 が満たす漸化式を返します。
-ここで、被和(summand)は@var{k}と@var{n}に対して超幾何的です。
-もし@var{lo}と@var{hi}が省略されたら、
+ここで、被和(summand)は@mvar{k}と@mvar{n}に対して超幾何的です。
+もし@mvar{lo}と@mvar{hi}が省略されたら、
 それらは@code{lo = -inf}、@code{hi = inf}と仮定されます。
 
 この関数を初めて使うには、

@@ -32,20 +32,20 @@ El paquete @code{stats} carga en memoria los paquetes @code{descriptive},
 
 Para comentarios, errores o sugerencias, cont@'actese con el autor en
 
-@var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
+@mvar{'mario ARROBA edu PUNTO xunta PUNTO es'}.
 
 
 @node Funciones y variables para inference_result, Funciones y variables para stats, Introducci@'on a stats, Top
 @section Funciones y variables para inference_result
 
 
-@deffn {Funci@'on} inference_result (@var{title}, @var{values}, @var{numbers})
+@deffn {Funci@'on} inference_result (@mvar{title}, @mvar{values}, @mvar{numbers})
 
 Construye un objeto @code{inference_result} del tipo devuelto por las funciones
-estad@'{@dotless{i}}sticas. El argumento @var{title} es una cadena con
-el nombre del procedimiento; @var{values} es una lista con elementos de la
-forma @code{symbol = value} y @var{numbers} es una lista con enteros positivos
-desde uno hasta @code{length(@var{values})}, que indican qu@'e valores ser@'an
+estad@'{@dotless{i}}sticas. El argumento @mvar{title} es una cadena con
+el nombre del procedimiento; @mvar{values} es una lista con elementos de la
+forma @code{symbol = value} y @mvar{numbers} es una lista con enteros positivos
+desde uno hasta @code{length(@mvar{values})}, que indican qu@'e valores ser@'an
 mostrados por defecto.
 
 Ejemplo:
@@ -101,9 +101,9 @@ V@'ease tambi@'en @code{take_inference}.
 
 
 
-@deffn {Funci@'on} inferencep (@var{obj})
+@deffn {Funci@'on} inferencep (@mvar{obj})
 
-Devuelve @code{true} o @code{false}, dependiendo de que @var{obj} sea un
+Devuelve @code{true} o @code{false}, dependiendo de que @mvar{obj} sea un
 objeto de tipo @code{inference_result} o no.
 
 @end deffn
@@ -113,10 +113,10 @@ objeto de tipo @code{inference_result} o no.
 
 
 
-@deffn {Funci@'on} items_inference (@var{obj})
+@deffn {Funci@'on} items_inference (@mvar{obj})
 
 Devuelve una lista con los nombres de los elementos almacenados en
-@var{obj}, el cual debe ser un objeto de tipo @code{inference_result}.
+@mvar{obj}, el cual debe ser un objeto de tipo @code{inference_result}.
 
 Ejemplo:
 
@@ -146,12 +146,12 @@ todos los elementos almacenados, independientemente de que sean mostrados o no.
 
 
 
-@deffn {Funci@'on} take_inference (@var{n}, @var{obj})
-@deffnx {Funci@'on} take_inference (@var{name}, @var{obj})
-@deffnx {Funci@'on} take_inference (@var{list}, @var{obj})
+@deffn {Funci@'on} take_inference (@mvar{n}, @mvar{obj})
+@deffnx {Funci@'on} take_inference (@mvar{name}, @mvar{obj})
+@deffnx {Funci@'on} take_inference (@mvar{list}, @mvar{obj})
 
-Si @var{n} es un entero positivo, devuelve el @var{n}-@'esimo
-valor almacenado en @var{obj}; si el s@'{@dotless{i}}mbolo @var{name}
+Si @mvar{n} es un entero positivo, devuelve el @mvar{n}-@'esimo
+valor almacenado en @mvar{obj}; si el s@'{@dotless{i}}mbolo @mvar{name}
 es el nombre de uno de los elementos almacenados, tambi@'en
 devuelve su valor. Si el primer elemento es una lista de n@'umeros y/o 
 s@'{@dotless{i}}mbolos, la funci@'on @code{take_inference}
@@ -229,10 +229,10 @@ formato simb@'olico y racional.
 @end defvr
 
 
-@deffn {Funci@'on} test_mean (@var{x})
-@deffnx {Funci@'on} test_mean (@var{x}, @var{options} ...)
+@deffn {Funci@'on} test_mean (@mvar{x})
+@deffnx {Funci@'on} test_mean (@mvar{x}, @mvar{options} ...)
 
-Es el test @var{t} de la media. El argumento @var{x} es una lista o matriz
+Es el test @mvar{t} de la media. El argumento @mvar{x} es una lista o matriz
 columna con los datos de una muestra unidimensional. Tambi@'en realiza el
 test asint@'otico basado en el @i{Teorema Central del l@'{@dotless{i}}mite}
 si se le asigna a la opci@'on @code{'asymptotic} el valor @code{true}.
@@ -259,7 +259,7 @@ debe ser una expresi@'on que tome un valor en el intervalo (0,1).
 
 @item
 @code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
-exacto basado en la @var{t} de Student, o el asint@'otico basado en el
+exacto basado en la @mvar{t} de Student, o el asint@'otico basado en el
 @i{Teorema Central del l@'{@dotless{i}}mite}; valores v@'alidos son @code{true} y @code{false}.
 
 @end itemize
@@ -297,7 +297,7 @@ El resultado devuelto por la funci@'on  @code{test_mean} es un objeto
 
 Ejemplos:
 
-Realiza el contraste exacto @var{t} con varianza desconocida. La
+Realiza el contraste exacto @mvar{t} con varianza desconocida. La
 hip@'otesis nula es @math{H_0: mean=50}, frente a la alternativa
 unil@'atera @math{H_1: mean<50}; de acuerdo con los resultados,
 no hay evidencia para rechazar @math{H_0}, pues el @math{p}-valor
@@ -378,11 +378,11 @@ procedimiento s@'olo puede aplicarse en muestras grandes.
 
 
 
-@deffn {Funci@'on} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Funci@'on} test_means_difference (@mvar{x1}, @mvar{x2})
+@deffnx {Funci@'on} test_means_difference (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-Este es el test @var{t} para la diferencia de medias con muestras.
-Los argumentos @var{x1} y @var{x2} son listas o matrices columna
+Este es el test @mvar{t} para la diferencia de medias con muestras.
+Los argumentos @mvar{x1} y @mvar{x2} son listas o matrices columna
 que contienen dos muestras independientes. En caso de varianzas
 diferentes y desconocidas (v@'eanse las opciones @code{'dev1},
 @code{'dev2} y @code{'varequal} m@'as abajo) los grados de libertad
@@ -403,12 +403,12 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
 @code{'dev1}, valor por defecto @code{'unknown}, es el valor de la desviaci@'on 
-t@'{@dotless{i}}pica de la muestra @var{x1} cuando se conoce; valores v@'alidos 
+t@'{@dotless{i}}pica de la muestra @mvar{x1} cuando se conoce; valores v@'alidos 
 son: @code{'unknown} o una expresi@'on positiva.
 
 @item
 @code{'dev2}, valor por defecto @code{'unknown}, es el valor de la desviaci@'on 
-t@'{@dotless{i}}pica de la muestra @var{x2} cuando se conoce; valores v@'alidos 
+t@'{@dotless{i}}pica de la muestra @mvar{x2} cuando se conoce; valores v@'alidos 
 son: @code{'unknown} o una expresi@'on positiva.
 
 @item
@@ -420,7 +420,7 @@ intervalo de confianza; debe ser una expresi@'on que tome un valor en el interva
 
 @item
 @code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
-exacto basado en la @var{t} de Student, o el asint@'otico basado en el
+exacto basado en la @mvar{t} de Student, o el asint@'otico basado en el
 @i{Teorema Central del l@'{@dotless{i}}mite}; valores v@'alidos son @code{true} y @code{false}.
 
 @end itemize
@@ -459,7 +459,7 @@ El resultado devuelto por la funci@'on  @code{test_means_difference} es un objet
 Ejemplos:
 
 La igualdad de medias se contrasta con dos peque@~nas muestras
-@var{x} y @var{y}, contra la alternativa @math{H_1: m_1>m_2},
+@mvar{x} y @mvar{y}, contra la alternativa @math{H_1: m_1>m_2},
 siendo @math{m_1} y @math{m_2} las medias poblacionales; las
 varianzas son desconocidas y se supone que diferentes.
 
@@ -548,10 +548,10 @@ iguales.
 
 
 
-@deffn {Funci@'on} test_variance (@var{x})
-@deffnx {Funci@'on} test_variance (@var{x}, @var{options} ...)
+@deffn {Funci@'on} test_variance (@mvar{x})
+@deffnx {Funci@'on} test_variance (@mvar{x}, @mvar{options} ...)
 
-Este es el test @var{chi^2} de la varianza. El argumento @var{x}
+Este es el test @mvar{chi^2} de la varianza. El argumento @mvar{x}
 es una lista o matriz columna con los datos de una muestra unidimensional
 extra@'{@dotless{i}}da de una poblaci@'on normal.
 
@@ -647,11 +647,11 @@ es igual o mayor que 200.
 
 
 
-@deffn {Funci@'on} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Funci@'on} test_variance_ratio (@mvar{x1}, @mvar{x2})
+@deffnx {Funci@'on} test_variance_ratio (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-Este es el test @var{F} del cociente de las varianzas para dos
-poblaciones normales. Los argumentos @var{x1} y @var{x2} son listas
+Este es el test @mvar{F} del cociente de las varianzas para dos
+poblaciones normales. Los argumentos @mvar{x1} y @mvar{x2} son listas
 o matrices columna que contienen los datos de dos muestras 
 independientes.
 
@@ -665,11 +665,11 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
 @code{'mean1}, valor por defecto @code{'unknown}, es la media de la poblaci@'on de la
-que procede @var{x1} cuando se conoce.
+que procede @mvar{x1} cuando se conoce.
 
 @item
 @code{'mean2}, valor por defecto @code{'unknown}, es la media de la poblaci@'on de la
-que procede @var{x2} cuando se conoce.
+que procede @mvar{x2} cuando se conoce.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
@@ -755,11 +755,11 @@ a la alternativa de que la primera es mayor que la segunda.
 
 
 
-@deffn {Funci@'on} test_proportion (@var{x}, @var{n})
-@deffnx {Funci@'on} test_proportion (@var{x}, @var{n}, @var{options} ...)
+@deffn {Funci@'on} test_proportion (@mvar{x}, @mvar{n})
+@deffnx {Funci@'on} test_proportion (@mvar{x}, @mvar{n}, @mvar{options} ...)
 
-Inferencias sobre una proporci@'on. El argumento @var{x} es el
-n@'umero de @'exitos observados en @var{n} pruebas de Bernoulli
+Inferencias sobre una proporci@'on. El argumento @mvar{x} es el
+n@'umero de @'exitos observados en @mvar{n} pruebas de Bernoulli
 con probabilidad desconocida.
 
 Opciones:
@@ -892,12 +892,12 @@ Un contraste asint@'otico bil@'atero. El nivel de confianza es 99/100.
 
 
 
-@deffn {Funci@'on} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
-@deffnx {Funci@'on} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+@deffn {Funci@'on} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2})
+@deffnx {Funci@'on} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2}, @mvar{options} ...)
 
-Inferencias sobre la diferencia de dos proporciones. El argumento @var{x1} 
-es el n@'umero de @'exitos en @var{n1} experimentos de Bernoulli en la
-primera poblaci@'on y @var{x2} y @var{n2} son los valores correspondientes
+Inferencias sobre la diferencia de dos proporciones. El argumento @mvar{x1} 
+es el n@'umero de @'exitos en @mvar{n1} experimentos de Bernoulli en la
+primera poblaci@'on y @mvar{x2} y @mvar{n2} son los valores correspondientes
 para la segunda poblaci@'on. Las muestras son independientes y el contraste
 es asint@'otico.
 
@@ -1025,11 +1025,11 @@ desconocidos.
 
 
 
-@deffn {Funci@'on} test_sign (@var{x})
-@deffnx {Funci@'on} test_sign (@var{x}, @var{options} ...)
+@deffn {Funci@'on} test_sign (@mvar{x})
+@deffnx {Funci@'on} test_sign (@mvar{x}, @mvar{options} ...)
 
 Este es el test no param@'etrico de los signos para contrastes
-sobre la mediana de una poblaci@'on continua. El argumento @var{x}
+sobre la mediana de una poblaci@'on continua. El argumento @mvar{x}
 es una lista o matriz columna que contiene los datos de una muestra
 unidimensional.
 
@@ -1110,11 +1110,11 @@ la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 
 
 
-@deffn {Funci@'on} test_signed_rank (@var{x})
-@deffnx {Funci@'on} test_signed_rank (@var{x}, @var{options} ...)
+@deffn {Funci@'on} test_signed_rank (@mvar{x})
+@deffnx {Funci@'on} test_signed_rank (@mvar{x}, @mvar{options} ...)
 
 Este el test de los rangos signados de Wilcoxon para hacer inferencias sobre
-la mediana de una poblaci@'on continua. El argumento @var{x} es una lista
+la mediana de una poblaci@'on continua. El argumento @mvar{x} es una lista
 o matriz columna que contiene los datos de una muestra unidimensional.
 Realiza la aproximaci@'on normal si el tama@~no muestral es mayor que 20,
 o si en la muestra aparece alg@'un cero o hay empates.
@@ -1235,12 +1235,12 @@ debido a la presencia de empates.
 
 
 
-@deffn {Funci@'on} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+@deffn {Funci@'on} test_rank_sum (@mvar{x1}, @mvar{x2})
+@deffnx {Funci@'on} test_rank_sum (@mvar{x1}, @mvar{x2}, @mvar{option})
 
 Este es el test de Wilcoxon-Mann-Whitney para comparar las medianas
-de dos poblaciones continuas. Los dos primeros argumentos @var{x1}
-y @var{x2} son listas o matrices columna con los datos de dos
+de dos poblaciones continuas. Los dos primeros argumentos @mvar{x1}
+y @mvar{x2} son listas o matrices columna con los datos de dos
 muestras independientes. Realiza la aproximaci@'on normal si
 alguna de las muestras tiene tama@~no mayor que 10, o si hay
 empates.
@@ -1353,10 +1353,10 @@ alternativa es @math{H_1: median1 < median2}.
 
 
 
-@deffn {Funci@'on} test_normality (@var{x})
+@deffn {Funci@'on} test_normality (@mvar{x})
 
 Test de Shapiro-Wilk para el contraste de normalidad. El argumento
-@var{x} es una lista de n@'umeros, con tama@~no muestral mayor que 2
+@mvar{x} es una lista de n@'umeros, con tama@~no muestral mayor que 2
 y menor o igual que 5000; bajo cualesquiera otras condiciones, la
 funci@'on @code{test_normality} emite un mensaje de error.
 
@@ -1371,7 +1371,7 @@ un objeto @code{inference_result} con los siguientes apartados:
 @enumerate
 
 @item
-@code{'statistic}: valor del estad@'{@dotless{i}}stico @var{W}.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico @mvar{W}.
 
 @item
 @code{'p_value}: @math{p}-valor bajo la hip@'otesis de normalidad.
@@ -1413,13 +1413,13 @@ de tama@~no 9.
 
 
 
-@deffn {Funci@'on} linear_regression (@var{x})
-@deffnx {Funci@'on} linear_regression (@var{x} @var{option})
+@deffn {Funci@'on} linear_regression (@mvar{x})
+@deffnx {Funci@'on} linear_regression (@mvar{x} @mvar{option})
 
 Regresi@'on lineal m@'ultiple, 
 @math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},
 donde @math{u_i} son variables aleatorias independientes 
-@math{N(0,sigma)}. El argumento @var{x} debe ser una matriz 
+@math{N(0,sigma)}. El argumento @mvar{x} debe ser una matriz 
 con m@'as de una columna. La @'ultima columna se considera
 que son las respuestas (@math{y_i}).
 
@@ -1564,38 +1564,38 @@ v_distribution, residuals, adc, aic, bic]
 @section Funciones y variables para distribuciones especiales
 
 
-@deffn {Funci@'on} pdf_signed_rank (@var{x}, @var{n})
+@deffn {Funci@'on} pdf_signed_rank (@mvar{x}, @mvar{n})
 Funci@'on de densidad de probabilidad de la distribuci@'on exacta
 del estad@'{@dotless{i}}stico de contraste del test de los
-rangos signados. El argumento @var{x} es un n@'umero real y
-@var{n} un entero positivo.
+rangos signados. El argumento @mvar{x} es un n@'umero real y
+@mvar{n} un entero positivo.
 
 V@'ease tambi@'en @code{test_signed_rank}.
 @end deffn
 
-@deffn {Funci@'on} cdf_signed_rank (@var{x}, @var{n})
+@deffn {Funci@'on} cdf_signed_rank (@mvar{x}, @mvar{n})
 Funci@'on de probabilidad acumulada de la distribuci@'on exacta
 del estad@'{@dotless{i}}stico de contraste del test de los
-rangos signados. El argumento @var{x} es un n@'umero real y
-@var{n} un entero positivo.
+rangos signados. El argumento @mvar{x} es un n@'umero real y
+@mvar{n} un entero positivo.
 
 V@'ease tambi@'en @code{test_signed_rank}.
 @end deffn
 
-@deffn {Funci@'on} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Funci@'on} pdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 Funci@'on de densidad de probabilidad de la distribuci@'on exacta
 del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
-El argumento @var{x} es un n@'umero real y
-@var{n} y @var{m} son ambos enteros positivos.
+El argumento @mvar{x} es un n@'umero real y
+@mvar{n} y @mvar{m} son ambos enteros positivos.
 
 V@'ease tambi@'en @code{test_rank_sum}.
 @end deffn
 
-@deffn {Funci@'on} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Funci@'on} cdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 Funci@'on de probabilidad acumulada de la distribuci@'on exacta
 del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
-El argumento @var{x} es un n@'umero real y
-@var{n} y @var{m} son ambos enteros positivos.
+El argumento @mvar{x} es un n@'umero real y
+@mvar{n} y @mvar{m} son ambos enteros positivos.
 
 V@'ease tambi@'en @code{test_rank_sum}.
 @end deffn

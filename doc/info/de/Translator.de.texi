@@ -27,21 +27,21 @@
 
 @c --- 01.10.2011 DK -----------------------------------------------------------
 @anchor{compfile}
-@deffn  {Funktion} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
-@deffnx {Funktion} compfile (@var{filename}, functions)
-@deffnx {Funktion} compfile (@var{filename}, all)
+@deffn  {Funktion} compfile (@mvar{filename}, @mvar{f_1}, @dots{}, @mvar{f_n})
+@deffnx {Funktion} compfile (@mvar{filename}, functions)
+@deffnx {Funktion} compfile (@mvar{filename}, all)
 
 @c Translates Maxima functions into Lisp and writes the translated code into the
-@c file @var{filename}.
-@c @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
-@c specified functions. @code{compfile(@var{filename}, functions)} and 
-@c @code{compfile(@var{filename}, all)} translate all user-defined functions.
+@c file @mvar{filename}.
+@c @code{compfile(@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})} translates the
+@c specified functions. @code{compfile(@mvar{filename}, functions)} and 
+@c @code{compfile(@mvar{filename}, all)} translate all user-defined functions.
 
 @"Ubersetzt Maxima-Funktionen nach Lisp und schreibt den @"ubersetzten Code in 
-die Datei @var{filename}.  Mit dem Kommando @code{compfile(@var{filename}
-@var{f_1}, ..., @var{f_n})} werden die als Argument angegebenen Funktionen
-@var{f_1}, @dots{}, @var{f_n} @"ubersetzt.  Die Kommandos
-@code{compfile(@var{filename}, functions)} oder @code{compfile(@var{filename},
+die Datei @mvar{filename}.  Mit dem Kommando @code{compfile(@mvar{filename}
+@mvar{f_1}, ..., @mvar{f_n})} werden die als Argument angegebenen Funktionen
+@mvar{f_1}, @dots{}, @mvar{f_n} @"ubersetzt.  Die Kommandos
+@code{compfile(@mvar{filename}, functions)} oder @code{compfile(@mvar{filename},
 all)} @"ubersetzen dagegen alle vom Nutzer definierten Funktionen.
 
 @c The Lisp translations are not evaluated, nor is the output file processed by 
@@ -74,16 +74,16 @@ Siehe auch die Funktionen @mrefcomma{translate} @mref{translate_file} und
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{compile}
-@deffn  {Funktion} compile (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} compile (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} compile (functions)
 @deffnx {Funktion} compile (all)
 
-@c Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp, evaluates 
+@c Translates Maxima functions @mvar{f_1}, ..., @mvar{f_n} into Lisp, evaluates 
 @c the Lisp translations, and calls the Lisp function @code{COMPILE} on each 
 @c translated function. @code{compile} returns a list of the names of the 
 @c compiled functions.
 
-@"Ubersetzt die Maxima-Funktionen @var{f_1}, @dots{}, @var{f_n} nach Lisp, 
+@"Ubersetzt die Maxima-Funktionen @mvar{f_1}, @dots{}, @mvar{f_n} nach Lisp, 
 wertet die Lisp-@"Ubersetzungen aus und ruft den Lisp-Compiler f@"ur jede 
 @"ubersetzte Funktion auf.  @code{compile} gibt eine Liste mit den Namen der 
 kompilierten Funktionen zur@"uck.
@@ -104,15 +104,15 @@ nutzerdefinierten Funktionen.
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{compile_file}
-@deffn  {Funktion} compile_file (@var{filename})
-@deffnx {Funktion} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Funktion} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+@deffn  {Funktion} compile_file (@mvar{filename})
+@deffnx {Funktion} compile_file (@mvar{filename}, @mvar{compiled_filename})
+@deffnx {Funktion} compile_file (@mvar{filename}, @mvar{compiled_filename}, @mvar{lisp_filename})
 
-@c Translates the Maxima file @var{filename} into Lisp, executes the Lisp 
+@c Translates the Maxima file @mvar{filename} into Lisp, executes the Lisp 
 @c compiler, and, if the translation and compilation succeed, loads the compiled
 @c code into Maxima.
 
-@"Ubersetzt die Maxima-Datei @var{filename} nach Lisp, ruft den Lisp-Compiler 
+@"Ubersetzt die Maxima-Datei @mvar{filename} nach Lisp, ruft den Lisp-Compiler 
 auf und l@"adt falls erfolgreich den kompilierten Code in Maxima.
 
 @c @code{compile_file} returns a list of the names of four files: the original 
@@ -158,9 +158,9 @@ aufgef@"uhrt sind, keinen Effekt auf die @"Ubersetzung.
 zur@"uckgegeben, obwohl die Kompilierung erfolgreich ist.  Dies ist ein
 Programmfehler
 
-@c @var{filename} may not contain @code{:lisp} statements.
+@c @mvar{filename} may not contain @code{:lisp} statements.
 
-Die Datei @var{filename} darf keine @code{:lisp}-Anweisungen enthalten.
+Die Datei @mvar{filename} darf keine @code{:lisp}-Anweisungen enthalten.
 
 @c @code{compile_file} evaluates its arguments.
 
@@ -170,7 +170,7 @@ Die Datei @var{filename} darf keine @code{:lisp}-Anweisungen enthalten.
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{declare_translated}
-@deffn {Funktion} declare_translated (@var{f_1}, @var{f_2}, @dots{})
+@deffn {Funktion} declare_translated (@mvar{f_1}, @mvar{f_2}, @dots{})
 
 @c When translating a file of Maxima code to Lisp, it is important for the 
 @c translator to know which functions it sees in the file are to be called as 
@@ -186,7 +186,7 @@ den @"Ubersetzer wichtig zu wissen, welche Funktionen der Datei bereits
 Maxima-Funktionen oder undefiniert sind.  Mit der Deklaration 
 @code{declare_translated} am Anfang der zu @"ubersetzenden Datei wird dem 
 @"Ubersetzer mitgeteilt, dass die als Argumente aufgef@"uhrten Funktionen 
-@var{f_1}, @var{f_2}, @dots{} zur Laufzeit des Programms eine Lisp-Funktion 
+@mvar{f_1}, @mvar{f_2}, @dots{} zur Laufzeit des Programms eine Lisp-Funktion 
 repr@"asentieren.  Fehlt dem @"Ubersetzer diese Information wird das Kommando 
 @code{(MFUNCTION-CALL fn arg1 arg2 ...)} generiert.
 
@@ -208,7 +208,7 @@ passt.
 
 Beispiel:
 
-Im folgenden hat die Variable @var{n} den Wert 2.0.  Wird @var{n} mit
+Im folgenden hat die Variable @mvar{n} den Wert 2.0.  Wird @mvar{n} mit
 @code{mode_declare} als eine ganze Zahl definiert, gibt Maxima eine Warnung aus,
 wenn @code{mode_checkp} den Wert @code{true} hat.
 
@@ -278,7 +278,7 @@ haben.  Siehe @mref{mode_checkp} und @mrefdot{mode_check_errorp}
 
 @c --- 02.01.2011 DK -----------------------------------------------------------
 @anchor{mode_declare}
-@deffn {Funktion} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
+@deffn {Funktion} mode_declare (@mvar{y_1}, @mvar{mode_1}, @dots{}, @mvar{y_n}, @mvar{mode_n})
 
 @c @code{mode_declare} is used to declare the modes of variables and functions 
 @c for subsequent translation or compilation of functions. @code{mode_declare} 
@@ -364,7 +364,7 @@ definiert.
 
 @c --- 02.01.2011 DK -----------------------------------------------------------
 @anchor{mode_identity}
-@deffn {Funktion} mode_identity (@var{mode}, @var{expr})
+@deffn {Funktion} mode_identity (@mvar{mode}, @mvar{expr})
 
 @c A special form used with @code{mode_declare} and @code{macros} to declare, 
 @c e.g., a list of lists of flonums, or other compound data object.  The first 
@@ -386,8 +386,8 @@ definiert.
 @c @end example
 @c and use @code{firstnumb} every time you take the first of a list of numbers.
 
-Mit der Funktion @code{mode_identity} wird der Typ @var{mode} f@"ur das
-Ergebnis des Ausdrucks @var{expr} festgelegt.  Hat das Ergebnis einen anderen 
+Mit der Funktion @code{mode_identity} wird der Typ @mvar{mode} f@"ur das
+Ergebnis des Ausdrucks @mvar{expr} festgelegt.  Hat das Ergebnis einen anderen 
 Typ wird in Abh@"angigkeit von den Werten der Optionsvariablen 
 @code{mode_checkp}, @code{mode_check_warnp} und @code{mode_check_errorp} eine
 Warnung ausgegeben oder das Programm abgebrochen.
@@ -517,15 +517,15 @@ des Codes verbessern.
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{translate}
-@deffn  {Funktion} translate (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} translate (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} translate (functions)
 @deffnx {Funktion} translate (all)
 
-@c Translates the user-defined functions @var{f_1}, ..., @var{f_n} from the 
+@c Translates the user-defined functions @mvar{f_1}, ..., @mvar{f_n} from the 
 @c Maxima language into Lisp and evaluates the Lisp translations.  Typically the 
 @c translated functions run faster than the originals.
 
-Die vom Nutzer definierten Maxima-Funktionen @var{f_1}, @dots{}, @var{f_n} 
+Die vom Nutzer definierten Maxima-Funktionen @mvar{f_1}, @dots{}, @mvar{f_n} 
 werden nach Lisp @"ubersetzt.  Typischerweise sind die @"ubersetzten Funktionen 
 schneller als die Maxima-Funktionen.
 
@@ -538,13 +538,13 @@ Benutzer definierten Funktionen.
 @c Functions to be translated should include a call to @code{mode_declare} at 
 @c the beginning when possible in order to produce more efficient code.  For
 @c example:
-@c where the @var{x_1}, @var{x_2}, ...  are the parameters to the function and 
-@c the @var{v_1}, @var{v_2}, ... are the local variables.
+@c where the @mvar{x_1}, @mvar{x_2}, ...  are the parameters to the function and 
+@c the @mvar{v_1}, @mvar{v_2}, ... are the local variables.
 
 Funktionen, die @"ubersetzt werden sollen, sollten mit @code{mode_declare} den
 Typ von Variablen und Funktionen deklarieren, um effizienteren Code zu erhalten.
-Im Folgenden Beispiel sind @var{x_1}, @var{x_2}, @dots{} die Argumente der 
-Funktion und @var{v_1}, @var{v_2}, @dots{} sind die lokalen Variablen.
+Im Folgenden Beispiel sind @mvar{x_1}, @mvar{x_2}, @dots{} die Argumente der 
+Funktion und @mvar{v_1}, @mvar{v_2}, @dots{} sind die lokalen Variablen.
 
 @example
 f (x_1, x_2, ...) := block ([v_1, v_2, ...],
@@ -618,8 +618,8 @@ Das Ergebnis der Funktion @code{translate} ist eine Liste der Namen der
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{translate_file}
-@deffn  {Funktion} translate_file (@var{maxima_filename})
-@deffnx {Funktion} translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn  {Funktion} translate_file (@mvar{maxima_filename})
+@deffnx {Funktion} translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})
 
 @c Translates a file of Maxima code into a file of Lisp code. 
 @c @code{translate_file} returns a list of three filenames: the name of the
@@ -642,27 +642,27 @@ Die Kommandos @code{translate_file("foo.mac")} und @code{load("foo.LISP")}
 haben bis auf wenige Ausnahmen dieselbe Wirkung wie @code{batch("foo.mac")}.  
 Zum Beispiel funktionieren @code{'@w{}'} und @code{%} unterschiedlich.
 
-@c @code{translate_file (@var{maxima_filename})} translates a Maxima file 
-@c @var{maxima_filename} into a similarly-named Lisp file. For example, 
+@c @code{translate_file (@mvar{maxima_filename})} translates a Maxima file 
+@c @mvar{maxima_filename} into a similarly-named Lisp file. For example, 
 @c @code{foo.mac} is translated into @code{foo.LISP}. The Maxima filename may 
 @c include a directory name or names, in which case the Lisp output file is 
 @c written to the same directory from which the Maxima input comes.
 
-@code{translate_file(@var{maxima_filename})} @"ubersetzt die Maxima-Datei
-@var{maxima_filename} in ein Lisp-Datei mit einem vergleichbaren Namen.  Zum
+@code{translate_file(@mvar{maxima_filename})} @"ubersetzt die Maxima-Datei
+@mvar{maxima_filename} in ein Lisp-Datei mit einem vergleichbaren Namen.  Zum
 Beispiel wird die Maxima-Datei @code{foo.mac} zu @code{foo.LISP}.  Der Name der 
 Maxima-Datei kann Pfadangaben enthalten.  In diesem Fall wird die Lisp-Datei
 in dasselbe Verzeichnis wie die Maxima-Datei geschrieben.
 
-@c @code{translate_file (@var{maxima_filename}, @var{lisp_filename})} translates
-@c a Maxima file @var{maxima_filename} into a Lisp file @var{lisp_filename}.
+@c @code{translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})} translates
+@c a Maxima file @mvar{maxima_filename} into a Lisp file @mvar{lisp_filename}.
 @c @code{translate_file} ignores the filename extension, if any, of 
 @c @code{lisp_filename}; the filename extension of the Lisp output file is 
 @c always @code{LISP}. The Lisp filename may include a directory name or names,
 @c in which case the Lisp output file is written to the specified directory.
 
-@code{translate_file(@var{maxima_filename}, @var{lisp_filename})} @"ubersetzt
-die Maxima-Datei @var{maxima_filename} in eine Lisp-Datei mit dem Namen
+@code{translate_file(@mvar{maxima_filename}, @mvar{lisp_filename})} @"ubersetzt
+die Maxima-Datei @mvar{maxima_filename} in eine Lisp-Datei mit dem Namen
 @code{lisp_filename}.  @code{translate_file} ignoriert eine angegebene 
 Dateiendung des Dateinamenes @code{lisp_filename}.  Die Dateiendung ist immer
 @code{.LISP}.  Der Name der Lisp-Datei kann Pfadangaben enthalten, um die

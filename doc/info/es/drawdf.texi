@@ -29,8 +29,8 @@ forma
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-y ser la funci@'on @var{F} la que se pase a @code{drawdf} como argumento.
-Si las variables independiente y dependiente no son @var{x} e @var{y},
+y ser la funci@'on @mvar{F} la que se pase a @code{drawdf} como argumento.
+Si las variables independiente y dependiente no son @mvar{x} e @mvar{y},
 como en la ecuaci@'on anterior, entonces deben nombrarse de forma
 expl@'{@dotless{i}}cita en una lista que se pasar@'a a @code{drawdf}
 (ver ejemplos m@'as abajo).
@@ -48,11 +48,11 @@ deben escribirse de la forma
 $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
-y ser@'a una lista con las dos funciones @var{G} y @var{F} la que
+y ser@'a una lista con las dos funciones @mvar{G} y @mvar{F} la que
 se pase a @code{drawdf} como argumento. El orden de las funciones es
 importante; la primera ser@'a la derivada de la abscisa respecto del tiempo
 y la segunda la derivada de la ordenada respecto del tiempo.
-Si las variables no son las @var{x} e @var{y} habituales, el segundo
+Si las variables no son las @mvar{x} e @mvar{y} habituales, el segundo
 argumento que se pase a la funci@'on @code{drawdf} ser@'a una lista
 con los nombres de ambas variables, primero la correspondiente a las
 abscisas, seguida de la asociada a las ordenadas.
@@ -69,29 +69,29 @@ aut@'onoma en un sistema de dos ecuaciones aut@'onomas.
 
 @subsection Funciones
 
-@deffn {Funci@'on} drawdf (@var{dydx}, ...options and objects...)
-@deffnx {Funci@'on} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
-@deffnx {Funci@'on} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
-@deffnx {Funci@'on} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...opciones y objetos...)
-@deffnx {Funci@'on} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
-@deffnx {Funci@'on} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
+@deffn {Funci@'on} drawdf (@mvar{dydx}, ...options and objects...)
+@deffnx {Funci@'on} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...opciones y objetos...)
+@deffnx {Funci@'on} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...opciones y objetos...)
+@deffnx {Funci@'on} drawdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...opciones y objetos...)
+@deffnx {Funci@'on} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...opciones y objetos...)
+@deffnx {Funci@'on} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...opciones y objetos...)
 
 La funci@'on @code{drawdf} dibuja un campo de direcciones 2D, incluyendo
 opcionalmente curvas asociadas a soluciones particulares, as@'{@dotless{i}}
 como otros objeto gr@'aficos del paquete @code{draw}.
 
 El primer argumento especifica la(s) derivada(s), el cual debe estar
-formado por una expresi@'on o una lista de dos expresiones. @var{dydx}, @var{dxdt} y
-@var{dydt} son expresiones que dependen de @var{x} y @var{y}.
-@var{dvdu}, @var{dudt} y @var{dvdt} son expresiones que dependen de
-@var{u} y @var{v}.
+formado por una expresi@'on o una lista de dos expresiones. @mvar{dydx}, @mvar{dxdt} y
+@mvar{dydt} son expresiones que dependen de @mvar{x} y @mvar{y}.
+@mvar{dvdu}, @mvar{dudt} y @mvar{dvdt} son expresiones que dependen de
+@mvar{u} y @mvar{v}.
 
-Si las variables independiente y dependiente no son @var{x} e @var{y},
+Si las variables independiente y dependiente no son @mvar{x} e @mvar{y},
 sus nombres deben especificarse a continuaci@'on de las derivadas,
 bien como una lista de dos nombres,
-@code{[}@var{u},@var{v}@code{]}, o como dos listas de la forma
-@code{[}@var{u},@var{umin},@var{umax}@code{]} y
-@code{[}@var{v},@var{vmin},@var{vmax}@code{]}.
+@code{[}@mvar{u},@mvar{v}@code{]}, o como dos listas de la forma
+@code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]} y
+@code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}.
 
 El resto de argumentos son @i{opciones gr@'aficas}, @i{objetos gr@'aficos},
 o listas conteniendo elementos de ambos tipos. El conjunto de opciones y
@@ -165,7 +165,7 @@ num@'erico de Runge Kutta de cuarto orden.
 @code{field_degree=2} hace que el campo se componga de @i{splines}
 cuadr@'aticos basados en las derivadas de primer y segundo orden en
 cada punto de la malla. 
-@code{field_grid=[}@var{COLS},@var{ROWS}@code{]} 
+@code{field_grid=[}@mvar{COLS},@mvar{ROWS}@code{]} 
 especifica el n@'umero de columnas y filas a utilizar en la malla.
 
 @example

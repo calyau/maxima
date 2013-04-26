@@ -112,12 +112,12 @@ dotexptsimp:false;
 
 @section Functions and Variables for atensor
 
-@deffn {関数} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {関数} init_atensor (@var{alg_type})
+@deffn {関数} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
+@deffnx {関数} init_atensor (@mvar{alg_type})
 
 特定の代数型で
 @code{atensor}パッケージを初期化します。
-@var{alg_type}は以下のいずれかであり得ます:
+@mvar{alg_type}は以下のいずれかであり得ます:
 
 @code{universal}: 普遍代数は交換規則を持ちません。
 
@@ -126,9 +126,9 @@ dotexptsimp:false;
 @code{clifford}: Clifford代数は
 交換関係 @code{u.v+v.u=-2*sf(u,v)}で定義されます。
 ここで、 @code{sf}は対称スカラ値函数です。
-この代数では、 @var{opt_dims}は、
+この代数では、 @mvar{opt_dims}は、
 代数の正の次元数、縮退次元数、負の次元数をそれぞれ表す3つの非負整数までありえます。
-もしいずれかの @var{opt_dims}値が供給されたら、
+もしいずれかの @mvar{opt_dims}値が供給されたら、
 @code{atensor}は
 @code{adim}と @code{aform}の値を適切に構成します。
 そうでなければ、
@@ -140,9 +140,9 @@ dotexptsimp:false;
 交換関係 @code{u.v-v.u=2*af(u,v)}で定義されます。
 ここで、 @code{af}は反対称スカラ値函数です。
 シンプレクティック代数では、
-@var{opt_dims}は
+@mvar{opt_dims}は
 非縮退次元数、縮退次元数をそれぞれ表す2つの非負整数までありえます。
-もしいずれかの @var{opt_dims}値が供給されたら、
+もしいずれかの @mvar{opt_dims}値が供給されたら、
 @code{atensor}は
 @code{adim}と @code{aform}の値を適切に構成します。
 そうでなければ、
@@ -175,10 +175,10 @@ dotexptsimp:false;
 @end deffn
 
 
-@deffn {関数} atensimp (@var{expr})
+@deffn {関数} atensimp (@mvar{expr})
 
 @code{init_atensor}のコールで構成された規則に従って、
-代数テンソル式 @var{expr}を整理します。
+代数テンソル式 @mvar{expr}を整理します。
 整理は、
 適用可能な場所への
 交換関係の再帰的な適用と@code{sf}, @code{af}, @code{av}のコールの決定を含みます。
@@ -241,7 +241,7 @@ dotexptsimp:false;
 
 @end defvr
 
-@deffn {関数} sf (@var{u}, @var{v})
+@deffn {関数} sf (@mvar{u}, @mvar{v})
 
 交換関係で使われる対称スカラ関数。
 デフォルトの実装は
@@ -254,7 +254,7 @@ dotexptsimp:false;
 
 @end deffn
 
-@deffn {関数} af (@var{u}, @var{v})
+@deffn {関数} af (@mvar{u}, @mvar{v})
 
 交換関係で使われる反対称スカラ関数。
 デフォルトの実装は
@@ -267,7 +267,7 @@ dotexptsimp:false;
 
 @end deffn
 
-@deffn {関数} av (@var{u}, @var{v})
+@deffn {関数} av (@mvar{u}, @mvar{v})
 
 交換関係で使われる反対称スカラ関数。
 デフォルトの実装は
@@ -301,7 +301,7 @@ dotexptsimp:false;
 @end deffn
 
 
-@deffn {関数} abasep (@var{v})
+@deffn {関数} abasep (@mvar{v})
 
 引数が @code{atensor}基底ベクトルかチェックします。
 すなわち、@code{asymbol}の値と同じシンボルと

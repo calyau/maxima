@@ -215,10 +215,10 @@
 @node Функции и переменные пакета contrib_ode, Возможные улучшения пакета contrib_ode, Введение в пакет contrib_ode, Пакет contrib_ode
 @section Функции и переменные пакета contrib_ode
 
-@deffn {Функция} contrib_ode (@var{eqn}, @var{y}, @var{x})
+@deffn {Функция} contrib_ode (@mvar{eqn}, @mvar{y}, @mvar{x})
 
-Возвращает список решение ОДУ @var{eqn} с независимой переменной 
-@var{x} и зависимой переменной @var{y}.
+Возвращает список решение ОДУ @mvar{eqn} с независимой переменной 
+@mvar{x} и зависимой переменной @mvar{y}.
 
 @opencatbox
 @category{Пакет contrib_ode}
@@ -226,10 +226,10 @@
 
 @end deffn
 
-@deffn {Функция} odelin (@var{eqn}, @var{y}, @var{x})
+@deffn {Функция} odelin (@mvar{eqn}, @mvar{y}, @mvar{x})
 
 Функция @code{odelin} решает линейные однородные ОДУ первого и второго
-порядка с независимой переменной @var{x} и зависимой переменной @var{y}.  
+порядка с независимой переменной @mvar{x} и зависимой переменной @mvar{y}.  
 Она возвращает фундаментальный набор решений ОДУ.
 
 Для ОДУ второго порядка @code{odelin} использует метод Бронштейна-Лафаля,
@@ -268,11 +268,11 @@
 
 @end deffn
 
-@deffn {Функция} ode_check (@var{eqn}, @var{soln})
+@deffn {Функция} ode_check (@mvar{eqn}, @mvar{soln})
 
-Возвращает значение ОДУ @var{eqn} после подстановки в него
-возможного решения @var{soln}.  Значение эквивалентно нулю,
-если @var{soln} является решением @var{eqn}.
+Возвращает значение ОДУ @mvar{eqn} после подстановки в него
+возможного решения @mvar{soln}.  Значение эквивалентно нулю,
+если @mvar{soln} является решением @mvar{eqn}.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -353,7 +353,7 @@
 
 @end defvr
 
-@deffn {Функция} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {Функция} gauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
 
 Функции @code{gauss_a(a,b,c,x)} и @code{gauss_b(a,b,c,x)} есть 2F1 
 гипергеометрические функции.  Они представляют собой два независимых решения
@@ -372,7 +372,7 @@
 
 @end deffn
 
-@deffn {Функция} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {Функция} gauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
 См. @code{gauss_a}.
 
 @opencatbox
@@ -380,16 +380,16 @@
 @closecatbox
 @end deffn
 
-@deffn {Функция} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-Производная @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+@deffn {Функция} dgauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+Производная @code{gauss_a(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})} по @mvar{x}.
 
 @opencatbox
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn
 
-@deffn {Функция} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-Производная @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+@deffn {Функция} dgauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+Производная @code{gauss_b(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})} по @mvar{x}.
 
 @opencatbox
 @category{Пакет contrib_ode}
@@ -397,7 +397,7 @@
 @end deffn
 
 
-@deffn {Функция} kummer_m (@var{a}, @var{b}, @var{x})
+@deffn {Функция} kummer_m (@mvar{a}, @mvar{b}, @mvar{x})
 
 M-функция Куммера, как она определена в Abramowitz и Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2.
@@ -409,7 +409,7 @@ M-функция Куммера, как она определена в Abramowitz и Stegun,
 См. также @code{kummer_u}, @code{dkummer_m} и @code{dkummer_u}.
 @end deffn
 
-@deffn {Функция} kummer_u (@var{a}, @var{b}, @var{x})
+@deffn {Функция} kummer_u (@mvar{a}, @mvar{b}, @mvar{x})
 
 U-функция Куммера, как она определена в Abramowitz и Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
@@ -421,12 +421,12 @@ U-функция Куммера, как она определена в Abramowitz и Stegun,
 @closecatbox
 @end deffn
 
-@deffn {Функция} dkummer_m (@var{a}, @var{b}, @var{x})
-Производная @code{kummer_m(@var{a}, @var{b}, @var{x})} по @var{x}.
+@deffn {Функция} dkummer_m (@mvar{a}, @mvar{b}, @mvar{x})
+Производная @code{kummer_m(@mvar{a}, @mvar{b}, @mvar{x})} по @mvar{x}.
 @end deffn
 
-@deffn {Функция} dkummer_u (@var{a}, @var{b}, @var{x})
-Производная @code{kummer_u(@var{a}, @var{b}, @var{x})} по @var{x}.
+@deffn {Функция} dkummer_u (@mvar{a}, @mvar{b}, @mvar{x})
+Производная @code{kummer_u(@mvar{a}, @mvar{b}, @mvar{x})} по @mvar{x}.
 
 @opencatbox
 @category{Пакет contrib_ode}

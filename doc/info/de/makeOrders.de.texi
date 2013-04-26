@@ -16,7 +16,7 @@
 @section Functions and Variables for makeOrders
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} makeOrders (@var{indvarlist}, @var{orderlist})
+@deffn {Function} makeOrders (@mvar{indvarlist}, @mvar{orderlist})
 
 Returns a list of all powers for a polynomial up to and including the arguments. 
 

@@ -18,12 +18,12 @@
 @section Functions and Variables for Differential Equations
 
 
-@deffn {関数} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {関数} bc2 (@mvar{solution}, @mvar{xval1}, @mvar{yval1}, @mvar{xval2}, @mvar{yval2})
 二階微分方程式の境界値問題を解きます。
-ここで: @var{solution}は、@code{ode2}が見つけるような方程式の一般解です;
-@var{xval1}は、独立変数の最初の点の値を、形式@code{@var{x} = @var{x1}}で指定し、
-@var{yval1}は、その点の従属変数の値を、形式@code{@var{y} = @var{y1}}で与えます。
-式@var{xval2}と@var{yval2}は、
+ここで: @mvar{solution}は、@code{ode2}が見つけるような方程式の一般解です;
+@mvar{xval1}は、独立変数の最初の点の値を、形式@code{@mvar{x} = @mvar{x1}}で指定し、
+@mvar{yval1}は、その点の従属変数の値を、形式@code{@mvar{y} = @mvar{y1}}で与えます。
+式@mvar{xval2}と@mvar{yval2}は、
 それらの変数の二番目の点での値を、同じ形式を使って与えます。
 
 用法の例については@code{ode2}を参照してください。
@@ -34,11 +34,11 @@
 @end deffn
 
 
-@deffn {関数} desolve (@var{eqn}, @var{x})
-@deffnx {関数} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {関数} desolve (@mvar{eqn}, @mvar{x})
+@deffnx {関数} desolve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])
 関数@code{desolve}は、ラプラス変換を使って線形常微分方程式系を解きます。
-ここで、@var{eqn}群は、従属変数@var{x_1}, ..., @var{x_n}に関する微分方程式です。
-@var{x_1}, ..., @var{x_n}の独立変数、例えば@var{x}、への関数依存性は、
+ここで、@mvar{eqn}群は、従属変数@mvar{x_1}, ..., @mvar{x_n}に関する微分方程式です。
+@mvar{x_1}, ..., @mvar{x_n}の独立変数、例えば@mvar{x}、への関数依存性は、
 変数や導関数の中で陽に示されなければいけません。
 例えば、これは、２つの方程式を定義する正しい方法ではありません:
 
@@ -108,11 +108,11 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @closecatbox
 @end deffn
 
-@deffn {関数} ic1 (@var{solution}, @var{xval}, @var{yval})
+@deffn {関数} ic1 (@mvar{solution}, @mvar{xval}, @mvar{yval})
 一階微分方程式の初期値問題を解きます。
-ここで、@var{solution}は、@code{ode2}が見つけるような、方程式の一般解であり、
-@var{xval}は、独立変数の初期値を、形式@code{@var{x} = @var{x0}}で与え、
-@var{yval}は、従属変数の初期値を、形式@code{@var{y} = @var{y0}}で与えます。
+ここで、@mvar{solution}は、@code{ode2}が見つけるような、方程式の一般解であり、
+@mvar{xval}は、独立変数の初期値を、形式@code{@mvar{x} = @mvar{x0}}で与え、
+@mvar{yval}は、従属変数の初期値を、形式@code{@mvar{y} = @mvar{y0}}で与えます。
 
 用法の例については@code{ode2}を参照してください。
 
@@ -121,14 +121,14 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @closecatbox
 @end deffn
 
-@deffn {関数} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
+@deffn {関数} ic2 (@mvar{solution}, @mvar{xval}, @mvar{yval}, @mvar{dval})
 二階微分方程式の初期値を解きます。
-ここで、 @var{solution}は、@code{ode2}が見つけるような、
+ここで、 @mvar{solution}は、@code{ode2}が見つけるような、
 方程式の一般解のであり、
-@var{xval}は、独立変数の初期値を、形式@code{@var{x} = @var{x0}}で与え、
-@var{yval}は、従属変数の初期値を、形式@code{@var{y} = @var{y0}}で与え、
-@var{dval}は、従属変数の独立変数に関する一階導関数の初期値を、
-形式@code{diff(@var{y},@var{x}) = @var{dy0}}で、与えます。
+@mvar{xval}は、独立変数の初期値を、形式@code{@mvar{x} = @mvar{x0}}で与え、
+@mvar{yval}は、従属変数の初期値を、形式@code{@mvar{y} = @mvar{y0}}で与え、
+@mvar{dval}は、従属変数の独立変数に関する一階導関数の初期値を、
+形式@code{diff(@mvar{y},@mvar{x}) = @mvar{dy0}}で、与えます。
 (@code{diff}はクォートされる必要はありません。)
 
 用法の例については、@code{ode2}を参照してください。
@@ -138,10 +138,10 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @closecatbox
 @end deffn
 
-@deffn {関数} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+@deffn {関数} ode2 (@mvar{eqn}, @mvar{dvar}, @mvar{ivar})
 関数@code{ode2}は、一階または二階常微分方程式(ODE)を解きます。
 ３つの引数を取ります:
-@var{eqn}で与えられるODE、従属変数@var{dvar}、独立変数@var{ivar}。
+@mvar{eqn}で与えられるODE、従属変数@mvar{dvar}、独立変数@mvar{ivar}。
 成功した時、従属変数に関する陽解または陰解を返します。
 一階方程式の場合、@code{%c}が積分定数を表し、
 二階方程式の場合、@code{%k1}と@code{%k2}が定数を表します。

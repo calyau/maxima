@@ -106,10 +106,10 @@ sempre habilitado a obter as simplifica@value{cedilha}@~oes desejadas.
 
 @section Defini@value{cedilha}@~oes para o Pacote atensor
 
-@deffn {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type})
+@deffn {Fun@value{cedilha}@~ao} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
+@deffnx {Fun@value{cedilha}@~ao} init_atensor (@mvar{alg_type})
 
-Inicializa o pacote @code{atensor} com o tipo especificado de @'algebra.  @var{alg_type}
+Inicializa o pacote @code{atensor} com o tipo especificado de @'algebra.  @mvar{alg_type}
 pode ser um dos seguintes:
 
 @code{universal}: A @'algebra universal tendo regras n@~ao comutativas.
@@ -119,10 +119,10 @@ comuta@value{cedilha}@~ao @code{u.v+v.u=0}.
 
 @code{clifford}: A @'algebra de Clifford @'e definida pela rela@value{cedilha}@~ao
 de comuta@value{cedilha}@~ao @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} @'e a fun@value{cedilha}@~ao
-valor-escalar sim@'etrico.  Para essa @'algebra, @var{opt_dims} pode ser acima de tr@^es 
+valor-escalar sim@'etrico.  Para essa @'algebra, @mvar{opt_dims} pode ser acima de tr@^es 
 inteiros n@~ao negativos, representando o n@'umero de dimens@~oes positivas,
 dimens@~oes degeneradas, e dimens@~oes negativas da @'algebra, respectivamente.  Se
-quaisquer valores @var{opt_dims} s@~ao fornecidos, @code{atensor} ir@'a configurar os
+quaisquer valores @mvar{opt_dims} s@~ao fornecidos, @code{atensor} ir@'a configurar os
 valores de @code{adim} e @code{aform} apropriadamente.  Caso contr@'ario,
 @code{adim} ir@'a por padr@~ao para 0 e @code{aform} n@~ao ser@'a definida.
 
@@ -131,9 +131,9 @@ comuta@value{cedilha}@~ao @code{u.v-v.u=0}.
 
 @code{symplectic}: A @'algebra simpl@'etica @'e definida pela rela@value{cedilha}@~ao de 
 comuta@value{cedilha}@~ao @code{u.v-v.u=2*af(u,v)} onde @code{af} @'e uma fun@value{cedilha}@~ao valor-escalar 
-antisim@'etrica.  Para a @'algebra simpl@'etica, @var{opt_dims} pode
+antisim@'etrica.  Para a @'algebra simpl@'etica, @mvar{opt_dims} pode
 mais de dois inteiros n@~ao negativos, representando a dimens@~ao n@~ao degenerada e
-e a dimens@~ao degenerada, respectivamente.  Se quaisquer valores @var{opt_dims} s@~ao
+e a dimens@~ao degenerada, respectivamente.  Se quaisquer valores @mvar{opt_dims} s@~ao
 fornecidos, @code{atensor} ir@'a configurar os valores de @code{adim} e @code{aform}
 apropriadamente.  Caso contr@'ario, @code{adim} ir@'a por padr@~ao para 0 e @code{aform}
 n@~ao ser@'a definida.
@@ -164,9 +164,9 @@ equivalente a @code{init_atensor(clifford,0,0,1)}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} atensimp (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} atensimp (@mvar{expr})
 
-Simplifica a express@~ao alg@'ebrica de tensores @var{expr} conforme as
+Simplifica a express@~ao alg@'ebrica de tensores @mvar{expr} conforme as
 regras configuradas por uma chamada a @code{init_atensor}.
 Simplifica@value{cedilha}@~oes incluem aplica@value{cedilha}@~ao
 recursiva de rela@value{cedilha}@~oes comutativas e
@@ -204,7 +204,7 @@ O s@'{@dotless{i}}mbolo para bases vectoriais.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} sf (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} sf (@mvar{u}, @mvar{v})
 
 @'E uma fun@value{cedilha}@~ao escalar sim@'etrica que @'e usada em
 rela@value{cedilha}@~oes comutativas.  A implementa@value{cedilha}@~ao
@@ -214,7 +214,7 @@ matriz @code{aform}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} af (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} af (@mvar{u}, @mvar{v})
 
 @'E uma fun@value{cedilha}@~ao escalar antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@value{cedilha}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vectoriais
@@ -223,7 +223,7 @@ valor correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} av (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} av (@mvar{u}, @mvar{v})
 
 @'E uma fun@value{cedilha}@~ao antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@value{cedilha}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vectoriais
@@ -253,7 +253,7 @@ Por exemplo:
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} abasep (@var{v})
+@deffn {Fun@value{cedilha}@~ao} abasep (@mvar{v})
 
 Verifica se esse argumento @'e uma base vectorial @code{atensor} .  
 

@@ -19,7 +19,7 @@ Las fases que se suceden desde que el usuario solicita un c@'alculo hasta que
 obtiene el resultado son: la propia solicitud del c@'alculo, la evaluaci@'on,
 la simplificaci@'on y la respuesta.
 
-Toda expresi@'on @var{expr} que se introduzca en Maxima ser@'a evaluada, de manera
+Toda expresi@'on @mvar{expr} que se introduzca en Maxima ser@'a evaluada, de manera
 que los s@'{@dotless{i}}mbolos que no tengan asociado ning@'un valor y los n@'umeros
 eval@'uan a s@'{@dotless{i}} mismos; en cambio, aquellos s@'{@dotless{i}}mbolos
 que tengan un valor asociado ser@'an sustitu@'{@dotless{i}}dos por tales valores.
@@ -272,8 +272,8 @@ decimales de coma flotante son simples simplificaciones.
 El operador comilla-comilla @code{'@w{}'} (dos comillas simples) modifica la evaluaci@'on
 en las expresiones de entrada.
 
-Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
-el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+Aplicado a cualquier expresi@'on general @mvar{expr}, las dos comillas simples hacen que
+el valor de @mvar{expr} sea sustituido por @mvar{expr} en la expresi@'on de entrada.
 
 Aplicado al operador de una expresi@'on, el operador comilla-comilla hace que el operador
 pase de ser un nombre a ser un verbo, a menos que ya sea un verbo.
@@ -292,8 +292,8 @@ V@'eanse tambi@'en el operador comilla simple @code{'} y @code{nouns}.
 
 Ejemplos:
 
-Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
-el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+Aplicado a cualquier expresi@'on general @mvar{expr}, las dos comillas simples hacen que
+el valor de @mvar{expr} sea sustituido por @mvar{expr} en la expresi@'on de entrada.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -459,9 +459,9 @@ definici@'on de funciones, expresiones lambda y expresiones comentadas con una c
 
 
 
-@deffn {Funci@'on} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
-Evalua la expresi@'on @var{expr} en el entorno especificado
-por los argumentos @var{arg_1}, ..., @var{arg_n}.
+@deffn {Funci@'on} ev (@mvar{expr}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
+Evalua la expresi@'on @mvar{expr} en el entorno especificado
+por los argumentos @mvar{arg_1}, ..., @mvar{arg_n}.
 Los argumentos son interruptores (Variables Booleanas), variables de
 asignaci@'on, ecuaciones y funciones. 
 @code{ev} retorna el resultado (otra expresi@'on) de la evaluaci@'on. 
@@ -475,10 +475,10 @@ cuales pueden ser algunos o todos de la siguiente lista:
 
 @itemize @bullet
 @item
-@code{simp} causa que @var{expr} sea simplificada sin importar el valor de la variable interruptor @code{simp} la cual inhibe la simplificaci@'on cuando su valor es @code{false}. 
+@code{simp} causa que @mvar{expr} sea simplificada sin importar el valor de la variable interruptor @code{simp} la cual inhibe la simplificaci@'on cuando su valor es @code{false}. 
 @item
 @code{noeval} suprime la fase de evaluaci@'on de @code{ev} (Vea el paso (4) m@'as adelante). 
-Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @var{expr} que sea resimplificada sin ser reevaluada. 
+Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @mvar{expr} que sea resimplificada sin ser reevaluada. 
 @item
 @code{nouns} causa la evaluaci@'on de las formas nominales
 (t@'{@dotless{i}}picamente funciones sin evaluar tales como
@@ -486,50 +486,50 @@ Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @
 @item
 @code{expand} causa expansi@'on. 
 @item
-@code{expand (@var{m}, @var{n})} causa expansi@'on, asignando los valores de @code{maxposex} y
-@code{maxnegex} a @var{m} y @var{n}, respectivamente.
+@code{expand (@mvar{m}, @mvar{n})} causa expansi@'on, asignando los valores de @code{maxposex} y
+@code{maxnegex} a @mvar{m} y @mvar{n}, respectivamente.
 @item
-@code{detout} hace que cualesquiera matrices inversas calculadas en @var{expr} conserven su determinante fuera de la inversa, en vez de que divida a cada elemento.  
+@code{detout} hace que cualesquiera matrices inversas calculadas en @mvar{expr} conserven su determinante fuera de la inversa, en vez de que divida a cada elemento.  
 @item
-@code{diff} realiza todas las diferenciaciones indicadas en @var{expr}. 
+@code{diff} realiza todas las diferenciaciones indicadas en @mvar{expr}. 
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
+@code{derivlist (@mvar{x}, @mvar{y}, @mvar{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
 @item
-@code{risch} hace que las integrales presentes en @var{expr} se eval@'uen mediante
+@code{risch} hace que las integrales presentes en @mvar{expr} se eval@'uen mediante
 el algoritmo de Risch. V@'ease tambi@'en @code{risch}. Cuando se utiliza el 
 s@'{@dotless{i}}mbolo especial @code{nouns}, se aplica la rutina est@'andar de integraci@'on.
 @item
 @code{float} provoca la conversi@'on de los n@'umeros racionales no-enteros a n@'umeros decimales de coma flotante. 
 @item
-@code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
+@code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @mvar{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
 @item
 @code{pred} provoca la evaluaci@'on de los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}). 
 @item
-@code{eval} provoca una post-evaluaci@'on extra de @var{expr} (v@'ease el paso (5) m@'as adelante), pudiendo aparecer
+@code{eval} provoca una post-evaluaci@'on extra de @mvar{expr} (v@'ease el paso (5) m@'as adelante), pudiendo aparecer
 @code{eval} varias veces; por cada aparici@'on de @code{eval}, la expresi@'on es reevaluada.
 @item
 @code{A}, donde @code{A} es un @'atomo declarado como una variable de tipo interruptor, (Vea @code{evflag})
 causa que @code{A} tenga como valor @code{true} durante 
-la evaluaci@'on de @var{expr}.  
+la evaluaci@'on de @mvar{expr}.  
 @item
 @code{V: expresion} (o alternativamente @code{V=expresion}) causa que 
 @code{V} tenga el valor de @code{expresion} durante la evaluaci@'on
-de @var{expr}. Notese que si @code{V} es una opci@'on Maxima, entonces
+de @mvar{expr}. Notese que si @code{V} es una opci@'on Maxima, entonces
 @code{expresion} se usa como su valor durante la evaluaci@'on de
-@var{expr}. Si m@'as de un argumento de @code{ev} es de este 
+@mvar{expr}. Si m@'as de un argumento de @code{ev} es de este 
 tipo entonces el v@'{@dotless{i}}nculo se hace en paralelo. Si @code{V} es una
 expresi@'on no at@'omica entonces se hace una sustituci@'on m@'as que 
 un v@'{@dotless{i}}nculo.
 @item
 @code{F} donde @code{F}, un nombre de funci@'on, ha sido declarado para 
 ser una funci@'on de evaluaci@'on (Vea @code{evfun}) causa que
-@code{F} sea aplicada a @var{expr}. 
+@code{F} sea aplicada a @mvar{expr}. 
 @item
 Cualquier otro nombre de funci@'on (e.g., @code{sum}) causa la evaluaci@'on de las ocurrencias de esos nombres en @code{expr} como si ellos fueran
 verbos. 
 @item
-En adici@'on de que una funci@'on ocurra en @var{expr} (digamos @code{F(x)}) puede ser definida localmente para el prop@'osito de esta evaluaci@'on 
-de @var{expr} pasando @code{F(x) := expresion} como un argumento a
+En adici@'on de que una funci@'on ocurra en @mvar{expr} (digamos @code{F(x)}) puede ser definida localmente para el prop@'osito de esta evaluaci@'on 
+de @mvar{expr} pasando @code{F(x) := expresion} como un argumento a
 @code{ev}. 
 @item
 Si un @'atomo no mencionado anteriormente o una variable o expresi@'on 
@@ -546,21 +546,21 @@ de nombres de ecuaciones (e.g., @code{[%t1, %t2]} donde @code{%t1} y
 
 Los argumentos de @code{ev} pueden ser pasados en cualquier orden con excepci@'on de la sustituci@'on de ecuaciones las cuales son manipuladas en 
 secuencia, de izquierda a derecha y las funciones de evaluaci@'on las 
-cuales son compuestas, e.g., @code{ev (@var{expr}, ratsimp, realpart)}
-es manipulada como @code{realpart (ratsimp (@var{expr}))}. 
+cuales son compuestas, e.g., @code{ev (@mvar{expr}, ratsimp, realpart)}
+es manipulada como @code{realpart (ratsimp (@mvar{expr}))}. 
 
 Los interruptores @code{simp}, @code{numer} y @code{float} 
 pueden tambi@'en ser configurados localmente en una sentencia block, o
 globalmente en Maxima para que su efecto permanezca hasta que
 sean reconfiguradas.   
 
-Si @var{expr} es una Expresi@'on Racional Can@'onica (CRE, por sus siglas en ingl@'es), entonces la expresi@'on retornada por @code{ev} es tambi@'en 
+Si @mvar{expr} es una Expresi@'on Racional Can@'onica (CRE, por sus siglas en ingl@'es), entonces la expresi@'on retornada por @code{ev} es tambi@'en 
 de tipo CRE, siempre que los interruptores @code{numer} y @code{float} no sean @code{true}. 
 
 @item
 Durante el paso (1), se fabrica una lista de las variables que no contienen sub@'{@dotless{i}}ndices que aparecen en el lado izquierdo de las ecuaciones en los
-argumentos o en el valor de algunos argumentos si el valor es una ecuaci@'on. Las variables (variables que contienen sub@'{@dotless{i}}ndices las cuales no tienen asociado un arreglo de funciones como tambi@'en las variables que no contienen sub@'{@dotless{i}}ndices) en la expresi@'on @var{expr} son reemplazadas por sus valores globales, excepto por aquellos que aparezcan en esa lista. 
-Usualmente, @var{expr} es s@'olo una etiqueta o un @code{%} 
+argumentos o en el valor de algunos argumentos si el valor es una ecuaci@'on. Las variables (variables que contienen sub@'{@dotless{i}}ndices las cuales no tienen asociado un arreglo de funciones como tambi@'en las variables que no contienen sub@'{@dotless{i}}ndices) en la expresi@'on @mvar{expr} son reemplazadas por sus valores globales, excepto por aquellos que aparezcan en esa lista. 
+Usualmente, @mvar{expr} es s@'olo una etiqueta o un @code{%} 
 (como en @code{%i2} en el ejemplo de m@'as abajo) as@'{@dotless{i}} que 
 este paso simplemente recupera la expresi@'on a la que hace referencia 
 la etiqueta y as@'{@dotless{i}} @code{ev} puede trabajarla. 
@@ -572,7 +572,7 @@ ser@'an llevadas a cabo ahora.
 @item
 La expresi@'on resultante es tambi@'en reevaluada (a menos que uno de 
 los argumentos fuese @code{noeval}) y simplificada de acuerdo a los 
-argumentos. Notese que cualquier llamada a una funci@'on en @var{expr} 
+argumentos. Notese que cualquier llamada a una funci@'on en @mvar{expr} 
 ser@'a llevada a cabo despu@'es de que las variables sean evaluadas 
 en ella y que @code{ev(F(x))} pueda comportarse como @code{F(ev(x))}. 
 
@@ -602,7 +602,7 @@ por medio de la cual se pueden escribir solamente sus argumentos, sin
 el comando @code{ev()}; se trata de una forma de escritura simplificada:
 
 @example
-@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
 @end example
 
 Esta sintaxis no est@'a permitida dentro de otras expresiones, como
@@ -645,8 +645,8 @@ Soluci@'on
 
 
 @defvr {S@'{@dotless{i}}mbolo especial} eval
-Como argumento en una llamada a @code{ev (@var{expr})}, @code{eval} 
-fuerza una evaluaci@'on extra de @var{expr}.
+Como argumento en una llamada a @code{ev (@mvar{expr})}, @code{eval} 
+fuerza una evaluaci@'on extra de @mvar{expr}.
 
 V@'ease tambi@'en @code{ev}.
 
@@ -678,12 +678,12 @@ Ejemplo:
 
 
 @defvr {Propiedad} evflag
-Cuando un s@'{@dotless{i}}mbolo @var{x} goza de la propiedad @code{evflag},
-las expresiones @code{ev(@var{expr}, @var{x})} y @code{@var{expr}, @var{x}}
-(en modo interactivo) equivalen a @code{ev(@var{expr}, @var{x} = true)}.
-Esto es, a @var{x} se le asigna @code{true} al tiempo que se eval@'ua @var{expr}.
+Cuando un s@'{@dotless{i}}mbolo @mvar{x} goza de la propiedad @code{evflag},
+las expresiones @code{ev(@mvar{expr}, @mvar{x})} y @code{@mvar{expr}, @mvar{x}}
+(en modo interactivo) equivalen a @code{ev(@mvar{expr}, @mvar{x} = true)}.
+Esto es, a @mvar{x} se le asigna @code{true} al tiempo que se eval@'ua @mvar{expr}.
 
-La expresi@'on @code{declare(@var{x}, evflag)} dota a la variable @var{x}
+La expresi@'on @code{declare(@mvar{x}, evflag)} dota a la variable @mvar{x}
 de la propiedad @code{evflag}.
 
 Los interruptores que tienen la propiedad @code{evflag} son: 
@@ -763,15 +763,15 @@ Ejemplos:
 
 
 @defvr {Propiedad} evfun
-Cuando la funci@'on @var{F} goza de la propiedad @code{evfun},
-las expresiones @code{ev(@var{expr}, @var{F})} y @code{@var{expr}, @var{F}}
-(en modo interactivo) equivalen a @code{@var{F}(ev(@var{expr}))}.
+Cuando la funci@'on @mvar{F} goza de la propiedad @code{evfun},
+las expresiones @code{ev(@mvar{expr}, @mvar{F})} y @code{@mvar{expr}, @mvar{F}}
+(en modo interactivo) equivalen a @code{@mvar{F}(ev(@mvar{expr}))}.
 
-Si se especifican dos o m@'as funciones, @var{F}, @var{G}, etc., como poseedoras 
+Si se especifican dos o m@'as funciones, @mvar{F}, @mvar{G}, etc., como poseedoras 
 de la propiedad @code{evfun}, @'estas se aplican en el mismo orden en el que han sido 
 especificadas como tales.
 
-La expresi@'on @code{declare(@var{F}, evfun)} dota a la funci@'on  @var{F}
+La expresi@'on @code{declare(@mvar{F}, evfun)} dota a la funci@'on  @mvar{F}
 de la propiedad @code{evfun}.
 
 Las funciones que tienen la propiedad @code{evfun} por defecto son: 
@@ -891,7 +891,7 @@ verbales, esto es, las eval@'ua.  V@'eanse tambi@'en @code{noun}, @code{nounify}
 
 @defvr {S@'{@dotless{i}}mbolo especial} pred
 Cuando se utiliza como argumento en una llamada a
-@code{ev (@var{expr})}, @code{pred} provoca que los
+@code{ev (@mvar{expr})}, @code{pred} provoca que los
 predicados (expresiones que se reducen a @code{true} o
 @code{false}) se eval@'uen.
 

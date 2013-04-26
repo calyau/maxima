@@ -5,9 +5,9 @@
 @node Definitions for opsubst,  , opsubst, opsubst
 @section Definitions for opsubst
 
-@deffn {Function} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Function} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Function} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {Function} opsubst (@mvar{f},@mvar{g},@mvar{e})
+@deffnx {Function} opsubst (@mvar{g}=@mvar{f},@mvar{e})
+@deffnx {Function} opsubst ([@mvar{g1}=@mvar{f1},@mvar{g2}=@mvar{f2},..., @mvar{gn}=@mvar{fn}],@mvar{e})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

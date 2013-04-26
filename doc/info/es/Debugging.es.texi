@@ -203,10 +203,10 @@ V@'eanse tambi@'en @code{setcheck} y @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Funci@'on} timer (@var{f_1}, ..., @var{f_n})
+@deffn {Funci@'on} timer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Funci@'on} timer (all)
 @deffnx {Funci@'on} timer ()
-Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{timer} coloca cada una de ellas en la lista de funciones para las cuales se generar@'an estad@'{@dotless{i}}sticas relativas al tiempo de c@'omputo. As@'{@dotless{i}}, @code{timer(f)$ timer(g)$} coloca a @code{f} y luego a @code{g} en dicha lista de forma acumulativa.
+Dadas las funciones @mvar{f_1}, ..., @mvar{f_n}, @code{timer} coloca cada una de ellas en la lista de funciones para las cuales se generar@'an estad@'{@dotless{i}}sticas relativas al tiempo de c@'omputo. As@'{@dotless{i}}, @code{timer(f)$ timer(g)$} coloca a @code{f} y luego a @code{g} en dicha lista de forma acumulativa.
 
 La sentencia @code{timer(all)} coloca todas las funciones de usuario 
 (las referenciadas por la variable global @code{functions}) en la lista
@@ -224,9 +224,9 @@ V@'ease tambi@'en @code{timer_devalue}.
 
 @end deffn
 
-@deffn {Funci@'on} untimer (@var{f_1}, ..., @var{f_n})
+@deffn {Funci@'on} untimer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Funci@'on} untimer ()
-Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{untimer} las elimina de la lista de funciones cuyos tiempos de ejecuci@'on se quiere monitorizar.
+Dadas las funciones @mvar{f_1}, ..., @mvar{f_n}, @code{untimer} las elimina de la lista de funciones cuyos tiempos de ejecuci@'on se quiere monitorizar.
 
 Si no se le suministran argumentos, @code{untimer} borra completamente la lista.
 
@@ -243,9 +243,9 @@ V@'eanse tambi@'en @code{timer} y @code{timer_info}.
 
 @end defvr
 
-@deffn {Funci@'on} timer_info (@var{f_1}, ..., @var{f_n})
+@deffn {Funci@'on} timer_info (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Funci@'on} timer_info ()
-Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{timer_info} devuelve una matriz con informaci@'on relativa a los tiempos de ejecuci@'on de cada una de estas funciones. Sin argumentos, @code{timer_info} devuelve la informaci@'on asociada a todas las funciones cuyos tiempos de ejecuci@'on se quiere monitorizar.
+Dadas las funciones @mvar{f_1}, ..., @mvar{f_n}, @code{timer_info} devuelve una matriz con informaci@'on relativa a los tiempos de ejecuci@'on de cada una de estas funciones. Sin argumentos, @code{timer_info} devuelve la informaci@'on asociada a todas las funciones cuyos tiempos de ejecuci@'on se quiere monitorizar.
 
 La matriz devuelta por @code{timer_info} incluye los nombres de las funciones, tiempo de ejecuci@'on en cada llamada, n@'umero de veces que ha sido llamada, tiempo total de ejecuci@'on y tiempo consumido en la recolecci@'on de basura, @code{gctime} (del ingl@'es, "garbage collection time") en la versi@'on original de Macsyma, aunque ahora toma el valor constante cero.
 
@@ -260,11 +260,11 @@ V@'ease tambi@'en @code{timer}.
 @end deffn
 
 
-@deffn {Funci@'on} trace (@var{f_1}, ..., @var{f_n})
+@deffn {Funci@'on} trace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Funci@'on} trace (all)
 @deffnx {Funci@'on} trace ()
 
-Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{trace} imprime informaci@'on sobre depuraci@'on cada vez que estas funciones son llamadas; @code{trace(f)$ trace(g)$} coloca de forma acumulativa a @code{f} y luego a @code{g} en la lista de funciones a ser rastradas.
+Dadas las funciones @mvar{f_1}, ..., @mvar{f_n}, @code{trace} imprime informaci@'on sobre depuraci@'on cada vez que estas funciones son llamadas; @code{trace(f)$ trace(g)$} coloca de forma acumulativa a @code{f} y luego a @code{g} en la lista de funciones a ser rastradas.
 
 La sentencia @code{trace(all)} coloca todas las funciones de usuario 
 (las referenciadas por la variable global @code{functions}) en la lista
@@ -282,12 +282,12 @@ Si @code{timer (f)} est@'a activado, entonces @code{trace (f)} est@'a desactivad
 
 @end deffn
 
-@deffn {Funci@'on} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Funci@'on} trace_options (@var{f})
+@deffn {Funci@'on} trace_options (@mvar{f}, @mvar{option_1}, ..., @mvar{option_n})
+@deffnx {Funci@'on} trace_options (@mvar{f})
 
-Establece las opciones de rastreo para la funci@'on @var{f}. Cualquier otra opci@'on previamente especificada queda reemplazada por las nuevas. La ejecuci@'on de @code{trace_options (@var{f}, ...)} no tiene ning@'un efecto, a menos que se haya invocado previamente a @code{trace (@var{f})} (es indiferente que esta invocaci@'on sea anterior o posterior a @code{trace_options}). 
+Establece las opciones de rastreo para la funci@'on @mvar{f}. Cualquier otra opci@'on previamente especificada queda reemplazada por las nuevas. La ejecuci@'on de @code{trace_options (@mvar{f}, ...)} no tiene ning@'un efecto, a menos que se haya invocado previamente a @code{trace (@mvar{f})} (es indiferente que esta invocaci@'on sea anterior o posterior a @code{trace_options}). 
 
-@code{trace_options (@var{f})} inicializa todas las opciones a sus valores por defecto.
+@code{trace_options (@mvar{f})} inicializa todas las opciones a sus valores por defecto.
 
 Las claves de opciones son:
 
@@ -309,7 +309,7 @@ Imprime @code{-> true} tanto a la entrada como a la salida de la funci@'on.
 Detecta errores, otorgando la posibilidad de marcar un error, reintentar la llamada a la funci@'on o especificar un valor de retorno.
 @end itemize
 
-Las opciones de rastreo se especifican de dos formas. La @'unica presencia de la clave de opci@'on ya activa la opci@'on. (N@'otese que la opci@'on @var{foo} no se activa mediante @code{@var{foo}: true} u otra forma similar; se tendr@'a en cuenta tambi@'en que las claves no necesitan ir precedidas del ap@'ostrofo.) Especificando la clave de opci@'on junto con una funci@'on de predicado se hace que la opci@'on quede condicionada al predicado.
+Las opciones de rastreo se especifican de dos formas. La @'unica presencia de la clave de opci@'on ya activa la opci@'on. (N@'otese que la opci@'on @mvar{foo} no se activa mediante @code{@mvar{foo}: true} u otra forma similar; se tendr@'a en cuenta tambi@'en que las claves no necesitan ir precedidas del ap@'ostrofo.) Especificando la clave de opci@'on junto con una funci@'on de predicado se hace que la opci@'on quede condicionada al predicado.
 
 La lista de argumentos para las funciones de predicado es siempre @code{[level, direction, function, item]} donde @code{level} es el nivel de recursi@'on para la funci@'on,  @code{direction} puede ser tanto @code{enter} como @code{exit}, @code{function} es el nombre de la funci@'on  y @code{item} es la lista de argumentos (a la entrada) o el valor de retorno (a la salida).
 
@@ -338,9 +338,9 @@ Para la misma funci@'on, con la opci@'on @code{break} condicionada a un predicad
 
 @end deffn
 
-@deffn {Funci@'on} untrace (@var{f_1}, ..., @var{f_n})
+@deffn {Funci@'on} untrace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Funci@'on} untrace ()
-Dadas las funciones @var{f_1}, ..., @var{f_n},
+Dadas las funciones @mvar{f_1}, ..., @mvar{f_n},
 @code{untrace} desactiva el rastreo previamente activado por la funci@'on @code{trace}. Si no se aportan argumentos, @code{untrace} desactiva el rastreo de todas las funciones.
 
 La llamada a @code{untrace} devuelve una lista con las funciones para las que el rastreo se ha desactivado.

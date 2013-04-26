@@ -22,15 +22,15 @@
 @node Функции и переменные пакета affine,  , Введение в пакет affine, Пакет affine
 @section Функции и переменные пакета affine
 
-@deffn {Функция} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-Решает систему линейных уравнений @var{expr_1}, ..., @var{expr_m}
-относительно переменных  @var{x_1}, ..., @var{x_n}.
-Каждый аргумент @var{expr_i} может быть уравнением или произвольным выражением.
-В последнем случае выражение трактуется как уравнение вида @code{@var{expr_i} = 0}.
+@deffn {Функция} fast_linsolve ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+Решает систему линейных уравнений @mvar{expr_1}, ..., @mvar{expr_m}
+относительно переменных  @mvar{x_1}, ..., @mvar{x_n}.
+Каждый аргумент @mvar{expr_i} может быть уравнением или произвольным выражением.
+В последнем случае выражение трактуется как уравнение вида @code{@mvar{expr_i} = 0}.
 
 Возвращаемое значение является списком вида
-@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]},
-где @var{a_1}, ..., @var{a_n} не зависят от переменных @var{x_1}, ..., @var{x_n}.
+@code{[@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_n} = @mvar{a_n}]},
+где @mvar{a_1}, ..., @mvar{a_n} не зависят от переменных @mvar{x_1}, ..., @mvar{x_n}.
 
 @code{fast_linsolve} более быстрый чем @code{linsolve} для разреженных систем.
 
@@ -41,8 +41,8 @@
 @closecatbox
 @end deffn
 
-@deffn {Функция} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
-Возвращает базис Гребнера для уравнений  @var{expr_1}, ..., @var{expr_m}.
+@deffn {Функция} grobner_basis ([@mvar{expr_1}, ..., @mvar{expr_m}])
+Возвращает базис Гребнера для уравнений  @mvar{expr_1}, ..., @mvar{expr_m}.
 После этого функция @code{polysimp} может быть использована для
 упрощения других выражений по функций относительно данной
 системы уравнений.
@@ -53,10 +53,10 @@ grobner_basis ([3*x^2+1, y*x])$
 polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end example
 
-@code{polysimp(f)} возвращает 0 тогда и только тогда, когда @var{f} принадлежит
-идеалу уравнений @var{expr_1}, ..., @var{expr_m}.  Иными словами, тогда и только тогда,
-когда @var{f} является полиномиальной комбинацией элементов
-@var{expr_1}, ..., @var{expr_m}.
+@code{polysimp(f)} возвращает 0 тогда и только тогда, когда @mvar{f} принадлежит
+идеалу уравнений @mvar{expr_1}, ..., @mvar{expr_m}.  Иными словами, тогда и только тогда,
+когда @mvar{f} является полиномиальной комбинацией элементов
+@mvar{expr_1}, ..., @mvar{expr_m}.
 
 Команда @code{load(affine)} загружает эту функцию.
 
@@ -66,19 +66,19 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
-@deffn {Функция} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
-@deffnx {Функция} set_up_dot_simplifications (@var{eqns})
-Уравнения @var{eqns} являются полиномиальными уравнениями относительно
+@deffn {Функция} set_up_dot_simplifications (@mvar{eqns}, @mvar{check_through_degree})
+@deffnx {Функция} set_up_dot_simplifications (@mvar{eqns})
+Уравнения @mvar{eqns} являются полиномиальными уравнениями относительно
 некоммутативных переменных.
 Значение @code{current_variables} есть список переменных,
 используемых для вычисления степеней.  Уравнения должны быть
 однородными по степеням, для того, чтобы процедура сходилась.
 
 Если перекрывающиеся упрощения в @code{dot_simplifications} проверены
-до степени выше степени @var{f}, тогда верно следующее:
-@code{dotsimp(@var{f})} дает 0 тогда и только тогда, когда @var{f}
+до степени выше степени @mvar{f}, тогда верно следующее:
+@code{dotsimp(@mvar{f})} дает 0 тогда и только тогда, когда @mvar{f}
 принадлежит идеалу уравнений, т.е., тогда и только тогда, когда
-@var{f} является полиномиальной комбинацией уравнений.
+@mvar{f} является полиномиальной комбинацией уравнений.
 
 Здесь степень определяется с помощью @code{nc_degree} и зависит от
 весов отдельных переменных.
@@ -90,8 +90,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @closecatbox
 @end deffn
 
-@deffn {Функция} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
-Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
+@deffn {Функция} declare_weights (@mvar{x_1}, @mvar{w_1}, ..., @mvar{x_n}, @mvar{w_n})
+Присваивает веса @mvar{w_1}, ..., @mvar{w_n} переменным @mvar{x_1}, ..., @mvar{x_n}.
 Эти веса используются при вычислении @code{nc_degree}.
 
 Команда @code{load(affine)} загружает эту функцию.
@@ -101,8 +101,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @closecatbox
 @end deffn
 
-@deffn {Функция} nc_degree (@var{p})
-Возвращает степень некоммутативного полинома @var{p}.
+@deffn {Функция} nc_degree (@mvar{p})
+Возвращает степень некоммутативного полинома @mvar{p}.
 См. также @code{declare_weights}.
 
 Команда @code{load(affine)} загружает эту функцию.
@@ -113,9 +113,9 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
-@deffn {Функция} dotsimp (@var{f})
-Возвращает 0 тогда и только тогда, когда @var{f} принадлежит идеалу уравнений, т.е.,
-тогда и только тогда, когда @var{f} является полиномиальной
+@deffn {Функция} dotsimp (@mvar{f})
+Возвращает 0 тогда и только тогда, когда @mvar{f} принадлежит идеалу уравнений, т.е.,
+тогда и только тогда, когда @mvar{f} является полиномиальной
 комбинацией элементов уравнений.
 
 Команда @code{load(affine)} загружает эту функцию.
@@ -125,10 +125,10 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @closecatbox
 @end deffn
 
-@deffn {Функция} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+@deffn {Функция} fast_central_elements ([@mvar{x_1}, ..., @mvar{x_n}], @mvar{n})
 Если @code{set_up_dot_simplifications} было уже выполнено, тогда
-данная функция возвращает центральные полиномы степени @var{n}
-по переменным @var{x_1}, ..., @var{x_n}.
+данная функция возвращает центральные полиномы степени @mvar{n}
+по переменным @mvar{x_1}, ..., @mvar{x_n}.
 
 Например:
 @example
@@ -145,8 +145,8 @@ fast_central_elements ([x, y], 2);
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
-@deffn {Функция} check_overlaps (@var{n}, @var{add_to_simps})
-Проверяет перекрытия до степени @var{n},
+@deffn {Функция} check_overlaps (@mvar{n}, @mvar{add_to_simps})
+Проверяет перекрытия до степени @mvar{n},
 чтобы убедиться, что имеется достаточно правил упрощения для каждой
 степени чтобы @code{dotsimp} работало правильно.  Этот процесс может
 быть ускорен если заранее известна размерность пространства мономов.
@@ -164,9 +164,9 @@ fast_central_elements ([x, y], 2);
 @closecatbox
 @end deffn
 
-@deffn {Функция} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+@deffn {Функция} mono ([@mvar{x_1}, ..., @mvar{x_n}], @mvar{n})
 Возвращает список независимых мономов по отношению к текущим
-упрощениям степени @var{n} по переменным @var{x_1}, ..., @var{x_n}.
+упрощениям степени @mvar{n} по переменным @mvar{x_1}, ..., @mvar{x_n}.
 
 Команда @code{load(affine)} загружает эту функцию.
 
@@ -175,8 +175,8 @@ fast_central_elements ([x, y], 2);
 @closecatbox
 @end deffn
 
-@deffn {Функция} monomial_dimensions (@var{n})
-Вычисляет ряд Гильберта до степени @var{n} для текущей алгебры.
+@deffn {Функция} monomial_dimensions (@mvar{n})
+Вычисляет ряд Гильберта до степени @mvar{n} для текущей алгебры.
 
 Команда @code{load(affine)} загружает эту функцию.
 
@@ -185,9 +185,9 @@ fast_central_elements ([x, y], 2);
 @closecatbox
 @end deffn
 
-@deffn {Функция} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
-Возвращает список коэффициентов некоммутативных полиномов @var{p_1}, ..., @var{p_n}
-некоммутативных мономов @var{m_1}, ..., @var{m_n}.
+@deffn {Функция} extract_linear_equations ([@mvar{p_1}, ..., @mvar{p_n}], [@mvar{m_1}, ..., @mvar{m_n}])
+Возвращает список коэффициентов некоммутативных полиномов @mvar{p_1}, ..., @mvar{p_n}
+некоммутативных мономов @mvar{m_1}, ..., @mvar{m_n}.
 Коэффициенты должны быть скалярными.  Для получения списка мономов
 используется @code{list_nc_monomials}.
 
@@ -198,10 +198,10 @@ fast_central_elements ([x, y], 2);
 @closecatbox
 @end deffn
 
-@deffn {Функция} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
-@deffnx {Функция} list_nc_monomials (@var{p})
-Возвращает список некоммутативных мономов полинома @var{p}
-или списка полиномов @var{p_1}, ..., @var{p_n}.
+@deffn {Функция} list_nc_monomials ([@mvar{p_1}, ..., @mvar{p_n}])
+@deffnx {Функция} list_nc_monomials (@mvar{p})
+Возвращает список некоммутативных мономов полинома @mvar{p}
+или списка полиномов @mvar{p_1}, ..., @mvar{p_n}.
 
 Команда @code{load(affine)} загружает эту функцию.
 

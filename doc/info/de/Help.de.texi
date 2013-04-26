@@ -35,12 +35,12 @@ Dokumentation als Hilfedatei gelesen werden.
 
 @c --- 14.02.2011 DK -----------------------------------------------------------
 @anchor{apropos}
-@deffn {Funktion} apropos (@var{string})
+@deffn {Funktion} apropos (@mvar{string})
 
-Gibt eine Liste der Maxima-Symbole zur@"uck, die die Zeichenkette @var{string}
+Gibt eine Liste der Maxima-Symbole zur@"uck, die die Zeichenkette @mvar{string}
 im Namen enthalten.  Das Kommando @code{apropos("")} gibt eine Liste mit allen
 Maxima-Symbolen zur@"uck.  Wenn @code{apropos} kein Maxima-Symbol finden kann,
-das die Zeichenkette @var{string} im Namen enth@"alt, ist das Ergebnis eine
+das die Zeichenkette @mvar{string} im Namen enth@"alt, ist das Ergebnis eine
 leere Liste @code{[]}.
 
 Beispiel:
@@ -60,13 +60,13 @@ gamma_incomplete_generalized_regularized]
 
 @c --- 14.02.2011 DK -----------------------------------------------------------
 @anchor{demo}
-@deffn {Funktion} demo (@var{filename})
+@deffn {Funktion} demo (@mvar{filename})
 
-F@"uhrt die Beispiele der Demo-Datei @var{filename} aus.  Das Argument
-@var{filename} kann ein Symbol oder eine Zeichenkette sein.  @code{demo} macht
+F@"uhrt die Beispiele der Demo-Datei @mvar{filename} aus.  Das Argument
+@mvar{filename} kann ein Symbol oder eine Zeichenkette sein.  @code{demo} macht
 nach jeder Ausgabe eine Pause und wartet auf eine Eingabe.  @code{demo} sucht in
 den Ordnern, die in der Optionsvariablen @mref{file_search_demo} enthalten sind,
-nach der Datei @var{filename}.  Die Dateiendung @var{.dem} muss nicht angegeben
+nach der Datei @mvar{filename}.  Die Dateiendung @mvar{.dem} muss nicht angegeben
 werden.
 
 Siehe auch die Funktion @mref{file_search} f@"ur die Suche von Dateien und die
@@ -98,24 +98,24 @@ _
 
 @c --- 14.02.2011 DK -----------------------------------------------------------
 @anchor{describe}
-@deffn  {Funktion} describe (@var{topic})
-@deffnx {Funktion} describe (@var{topic}, exact)
-@deffnx {Funktion} describe (@var{topic}, inexact)
+@deffn  {Funktion} describe (@mvar{topic})
+@deffnx {Funktion} describe (@mvar{topic}, exact)
+@deffnx {Funktion} describe (@mvar{topic}, inexact)
 @ifinfo
 @fnindex Hilfe
 @end ifinfo
 
-@code{describe(@var{topic})} entspricht dem Kommando @code{describe(@var{topic},
-exact)}.  Das Argument @var{topic} ist eine Zeichenkette oder ein Symbol.  Wenn
-@var{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, @code{do} oder
+@code{describe(@mvar{topic})} entspricht dem Kommando @code{describe(@mvar{topic},
+exact)}.  Das Argument @mvar{topic} ist eine Zeichenkette oder ein Symbol.  Wenn
+@mvar{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, @code{do} oder
 @code{if} ist, muss der Name des Operators als eine Zeichenkette angegeben
 werden.  Der Name des Operators @code{+} f@"ur die Addition ist zum Beispiel
 @code{"+"}.
 
-@code{describe(@var{topic}, exact)} findet Eintr@"age, die mit @var{topic} 
+@code{describe(@mvar{topic}, exact)} findet Eintr@"age, die mit @mvar{topic} 
 @"ubereinstimmen.  Bei der Suche nach einer @"Ubereinstimmung werden Klein- und
 Gro@ss{}schreibung nicht voneinander unterschieden.
-@code{describe(@var{topic}, inexact)} findet Eintr@"age, die @var{topic}
+@code{describe(@mvar{topic}, inexact)} findet Eintr@"age, die @mvar{topic}
 enthalten.  Sind mehrere Eintr@"age vorhanden, fragt Maxima, welcher der 
 Eintr@"age angezeigt werden soll.
 
@@ -169,13 +169,13 @@ Enter space-separated numbers, `all' or `none': 2 3
 
 @c --- 14.02.2011 DK -----------------------------------------------------------
 @anchor{example}
-@deffn  {Funktion} example (@var{topic})
+@deffn  {Funktion} example (@mvar{topic})
 @deffnx {Funktion} example ()
 
-Das Kommando @code{example(@var{topic})} zeigt Beispiele f@"ur das Argument
-@var{topic}.  @var{topic} ist ein Symbol oder eine Zeichenkette.  Ist das
+Das Kommando @code{example(@mvar{topic})} zeigt Beispiele f@"ur das Argument
+@mvar{topic}.  @mvar{topic} ist ein Symbol oder eine Zeichenkette.  Ist das
 Argument ein Operator, wie zum Beispiel @code{+}, @code{*} oder @code{do}, muss
-das Argument @var{topic} eine Zeichenkette sein.  Der Name des Operators
+das Argument @mvar{topic} eine Zeichenkette sein.  Der Name des Operators
 @code{+} f@"ur die Addition ist zum Beispiel @code{"+"}.  Gro@ss{}- und
 Kleinschreibung werden nicht unterschieden.
 

@@ -6,13 +6,13 @@
 @section Functions and Variables for lindstedt
 
 
-@deffn {関数} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {関数} Lindstedt (@mvar{eq},@mvar{pvar},@mvar{torder},@mvar{ic})
 これはLindstedtコードで最初のパスです。
 摂動方程式上の初期条件が
 @math{i>0}に対して
 @math{z[i]=0, z'[i]=0}で、
-入力した初期条件―(@var{%k1}と@var{%k2}だけでなく)任意の定数があり得ます―で問題を解くことができます。
-@var{ic}は初期条件のリストです。
+入力した初期条件―(@mvar{%k1}と@mvar{%k2}だけでなく)任意の定数があり得ます―で問題を解くことができます。
+@mvar{ic}は初期条件のリストです。
 
 初期条件が与えられない時、
 摂動方程式の中の定数がゼロ次方程式解と同じなので、問題が起こります。

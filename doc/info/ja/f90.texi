@@ -6,9 +6,9 @@
 @section Functions and Variables for f90
 
 
-@deffn {関数} f90 (@var{expr_1}, ..., @var{expr_n})
+@deffn {関数} f90 (@mvar{expr_1}, ..., @mvar{expr_n})
 
-１つ以上の式@var{expr_1}, ..., @var{expr_n}を
+１つ以上の式@mvar{expr_1}, ..., @mvar{expr_n}を
 Fortran 90プログラムとして印字します。
 出力は標準出力に印字されます。
 

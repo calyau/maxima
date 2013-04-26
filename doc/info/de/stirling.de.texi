@@ -19,11 +19,11 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} stirling (@var{z}, @var{n})
-@deffnx {Function} stirling (@var{z}, @var{n}, @var{pred})
+@deffn  {Function} stirling (@mvar{z}, @mvar{n})
+@deffnx {Function} stirling (@mvar{z}, @mvar{n}, @mvar{pred})
 
 Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula.  When 
-@var{n} isn't a nonnegative integer, signal an error.  With the optional third 
+@mvar{n} isn't a nonnegative integer, signal an error.  With the optional third 
 argument @code{pred}, the Stirling formula is applied only when @code{pred} is 
 true.
 

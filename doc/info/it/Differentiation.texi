@@ -5,11 +5,11 @@
 @node Definitions for Differentiation,  , Differentiation, Differentiation
 @section Definitions for Differentiation
 
-@deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
+@deffn {Function} antid (@mvar{expr}, @mvar{x}, @mvar{u(x)}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+@deffn {Function} antidiff (@mvar{expr}, @mvar{x}, @mvar{u}(@mvar{x}))
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -17,8 +17,8 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
-@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@deffn {Function} atvalue (@mvar{expr}, [@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_m} = @mvar{a_m}], @mvar{c})
+@deffnx {Function} atvalue (@mvar{expr}, @mvar{x_1} = @mvar{a_1}, @mvar{c})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -26,11 +26,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} del (@var{x})
+@deffn {Function} del (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} delta (@var{t})
+@deffn {Function} delta (@mvar{t})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -38,7 +38,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+@deffn {Function} depends (@mvar{f_1}, @mvar{x_1}, ..., @mvar{f_n}, @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -46,11 +46,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} derivdegree (@var{expr}, @var{y}, @var{x})
+@deffn {Function} derivdegree (@mvar{expr}, @mvar{y}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} derivlist (@var{var_1}, ..., @var{var_k})
+@deffn {Function} derivlist (@mvar{var_1}, ..., @mvar{var_k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -58,10 +58,10 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
-@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} diff (@var{expr}, @var{x})
-@deffnx {Function} diff (@var{expr})
+@deffn {Function} diff (@mvar{expr}, @mvar{x_1}, @mvar{n_1}, ..., @mvar{x_m}, @mvar{n_m})
+@deffnx {Function} diff (@mvar{expr}, @mvar{x}, @mvar{n})
+@deffnx {Function} diff (@mvar{expr}, @mvar{x})
+@deffnx {Function} diff (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -69,16 +69,16 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} dscalar (@var{f})
+@deffn {Function} dscalar (@mvar{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} express (@var{expr})
+@deffn {Function} express (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
-@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
+@deffn {Function} gradef (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{g_1}, ..., @mvar{g_m})
+@deffnx {Function} gradef (@mvar{a}, @mvar{x}, @mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -86,7 +86,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
+@deffn {Function} laplace (@mvar{expr}, @mvar{t}, @mvar{s})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

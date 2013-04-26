@@ -32,10 +32,10 @@ Example:
 @node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec
 @section Functions and Variables for solve_rec
 
-@deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Function} reduce_order (@mvar{rec}, @mvar{sol}, @mvar{var})
 
-Reduces the order of linear recurrence @var{rec} when a particular solution
-@var{sol} is known. The reduced reccurence can be used to get other solutions.
+Reduces the order of linear recurrence @mvar{rec} when a particular solution
+@mvar{sol} is known. The reduced reccurence can be used to get other solutions.
 
 Example:
 
@@ -109,9 +109,9 @@ See also: @code{solve_rec}.
 
 @end defvr
 
-@deffn {Function} simplify_sum (@var{expr})
+@deffn {Function} simplify_sum (@mvar{expr})
 
-Tries to simplify all sums appearing in @var{expr} to a closed form.
+Tries to simplify all sums appearing in @mvar{expr} to a closed form.
 
 To use this function first load the @code{simplify_sum} package with
 @code{load(simplify_sum)}.
@@ -149,9 +149,9 @@ Example:
 
 @end deffn
 
-@deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
-Solves for hypergeometrical solutions to linear recurrence @var{eqn} with
-polynomials coefficient in variable @var{var}. Optional arguments @var{init}
+@deffn {Function} solve_rec (@mvar{eqn}, @mvar{var}, [@mvar{init}])
+Solves for hypergeometrical solutions to linear recurrence @mvar{eqn} with
+polynomials coefficient in variable @mvar{var}. Optional arguments @mvar{init}
 are initial conditions.
 
 @code{solve_rec} can solve linear recurrences with constant coefficients,
@@ -234,7 +234,7 @@ See also: @code{solve_rec_rat}, @code{simplify_products}, and @code{product_use_
 
 @end deffn
 
-@deffn {Function} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Function} solve_rec_rat (@mvar{eqn}, @mvar{var}, [@mvar{init}])
 
 Solves for rational solutions to linear recurrences. See solve_rec for
 description of arguments.
@@ -284,8 +284,8 @@ See also: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Function} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Function} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Function} summand_to_rec (@mvar{summand}, @mvar{k}, @mvar{n})
+@deffnx {Function} summand_to_rec (@mvar{summand}, [@mvar{k}, @mvar{lo}, @mvar{hi}], @mvar{n})
 
 Returns the recurrence sattisfied by the sum
 
@@ -301,7 +301,7 @@ Returns the recurrence sattisfied by the sum
 @end group
 @end example
 
-where summand is hypergeometrical in @var{k} and @var{n}. If @var{lo} and @var{hi}
+where summand is hypergeometrical in @mvar{k} and @mvar{n}. If @mvar{lo} and @mvar{hi}
 are omited, they are assumed to be @code{lo = -inf} and @code{hi = inf}.
 
 To use this function first load the @code{simplify_sum} package with

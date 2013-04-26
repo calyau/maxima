@@ -13,7 +13,7 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+@deffn {Function} deftaylor (@mvar{f_1}(@mvar{x_1}), @mvar{expr_1}, ..., @mvar{f_n}(@mvar{x_n}), @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -21,7 +21,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} niceindices (@var{expr})
+@deffn {Function} niceindices (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -29,11 +29,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {Function} nusum (@mvar{expr}, @mvar{x}, @mvar{i_0}, @mvar{i_1})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Function} pade (@mvar{taylor_series}, @mvar{numer_deg_bound}, @mvar{denom_deg_bound})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -41,7 +41,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {Function} powerseries (@mvar{expr}, @mvar{x}, @mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -49,15 +49,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} revert (@var{expr}, @var{x})
-@deffnx {Function} revert2 (@var{expr}, @var{x}, @var{n})
+@deffn {Function} revert (@mvar{expr}, @mvar{x})
+@deffnx {Function} revert2 (@mvar{expr}, @mvar{x}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {Function} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffn {Function} taylor (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{n})
+@deffnx {Function} taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], @mvar{a}, @mvar{n})
+@deffnx {Function} taylor (@mvar{expr}, [@mvar{x}, @mvar{a}, @mvar{n}, 'asymp])
+@deffnx {Function} taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], [@mvar{a_1}, @mvar{a_2}, ...], [@mvar{n_1}, @mvar{n_2}, ...])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -65,11 +65,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} taylorinfo (@var{expr})
+@deffn {Function} taylorinfo (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} taylorp (@var{expr})
+@deffn {Function} taylorp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -81,7 +81,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} taylor_simplifier (@var{expr})
+@deffn {Function} taylor_simplifier (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -89,15 +89,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} taytorat (@var{expr})
+@deffn {Function} taytorat (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} trunc (@var{expr})
+@deffn {Function} trunc (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} unsum (@var{f}, @var{n})
+@deffn {Function} unsum (@mvar{f}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

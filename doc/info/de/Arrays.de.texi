@@ -110,27 +110,27 @@ Arrays:
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{array}
-@deffn  {Funktion} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Funktion} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Funktion} array ([@var{name_1}, @dots{}, @var{name_m}], @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {Funktion} array (@mvar{name}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {Funktion} array (@mvar{name}, @mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {Funktion} array ([@mvar{name_1}, @dots{}, @mvar{name_m}], @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {Funktion} array ([@mvar{name_1}, @dots{}, @mvar{name_m}], @mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
 Erzeugt ein @math{n}-dimensionales Array.  Das Array kann bis zu 5 Dimensionen
 haben.  Die Indizes der @math{i}-ten Dimension sind ganze Zahlen in einem 
-Bereich von 0 bis einschlie@ss{}lich @var{dim_i}.
+Bereich von 0 bis einschlie@ss{}lich @mvar{dim_i}.
 
-@code{array(@var{name}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein Array, 
+@code{array(@mvar{name}, @mvar{dim_1}, ..., @mvar{dim_n})} erzeugt ein Array, 
 dessen Elemente einen beliebigen Typ haben und auch Symbole oder Ausdr@"ucke
 sein k@"onnen.
 
-@code{array(@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} erzeugt 
-ein Array mit Elementen, die vom Typ @var{type} sind.  Das Argument @var{type}
+@code{array(@mvar{name}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})} erzeugt 
+ein Array mit Elementen, die vom Typ @mvar{type} sind.  Das Argument @mvar{type}
 kann @code{fixnum} f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen
 sein.
  
-@code{array([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+@code{array([@mvar{name_1}, ..., @mvar{name_m}], @mvar{dim_1}, ..., @mvar{dim_n})}
 erzeugt @math{m} Arrays, die alle die gleiche Dimension haben.  Wie oben kann
-weiterhin der Typ der Arrays durch Angabe des Argumentes @var{type} als
+weiterhin der Typ der Arrays durch Angabe des Argumentes @mvar{type} als
 @code{fixnum} oder @code{flonum} festgelegt werden.
 
 Mit der Funktion @code{array} k@"onnen nicht-deklarierte Arrays in ein
@@ -184,10 +184,10 @@ Ein nicht-deklariertes Array kann in ein deklariertes Array umgewandelt werden.
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arrayapply}
-@deffn {Funktion} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Funktion} arrayapply (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}])
 
-Wertet @code{@var{A}[@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
-und @var{i_1}, @dots{}, @var{i_n} die Indizes eines Array-Elementes sind.
+Wertet @code{@mvar{A}[@mvar{i_1}, ... , @mvar{i_n}]} aus, wobei @mvar{A} ein Array
+und @mvar{i_1}, @dots{}, @mvar{i_n} die Indizes eines Array-Elementes sind.
 
 Siehe auch die Funktion @mrefcomma{subvar} die die gleiche Funktionalit@"at hat,
 sowie die Funktion @mrefcomma{arraymake} die die Referenz auf das Array-Element
@@ -222,9 +222,9 @@ Die Funktion @mref{subvar} hat die gleiche Funktionalit@"at wie
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arrayinfo}
-@deffn {Funktion} arrayinfo (@var{A})
+@deffn {Funktion} arrayinfo (@mvar{A})
 
-Gibt Informationen @"uber das Array @var{A} zur@"uck.  Das Argument @var{A} kann
+Gibt Informationen @"uber das Array @mvar{A} zur@"uck.  Das Argument @mvar{A} kann
 ein deklariertes oder ein nicht-deklariertes Array sowie eine Array-Funktion
 oder eine indizierte Funktion sein.
 
@@ -370,13 +370,13 @@ Array.
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arraymake}
-@deffn {Funktion} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Funktion} arraymake (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}])
 
-Gibt den Ausdruck @code{@var{A}[@var{i_1}, ..., @var{i_n}]} zur@"uck.  Das 
+Gibt den Ausdruck @code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]} zur@"uck.  Das 
 Ergebnis ist eine nicht ausgewertete Referenz auf ein Element des Arrays
-@var{A}.  @code{arraymake} ist vergleichbar mit der Funktion @mrefdot{funmake}
+@mvar{A}.  @code{arraymake} ist vergleichbar mit der Funktion @mrefdot{funmake}
 
-Ist das Array @var{A} ein Lisp-Array, wie es mit der Funktion 
+Ist das Array @mvar{A} ein Lisp-Array, wie es mit der Funktion 
 @mref{make_array} erzeugt wird, dann gibt @code{arraymake} einen Lisp-Fehler
 zur@"uck.  Das ist ein Programmfehler.
 
@@ -495,19 +495,19 @@ Beispiele:
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{fillarray}
-@deffn {Funktion} fillarray (@var{A}, @var{B})
+@deffn {Funktion} fillarray (@mvar{A}, @mvar{B})
 
-F@"ullt das Array @var{A} mit den Werten aus @var{B}.  Das Argument @var{B} ist 
+F@"ullt das Array @mvar{A} mit den Werten aus @mvar{B}.  Das Argument @mvar{B} ist 
 eine Liste oder ein Array.
 
-Hat das Array @var{A} einen Typ, dann kann es nur mit Elementen gef@"ullt
+Hat das Array @mvar{A} einen Typ, dann kann es nur mit Elementen gef@"ullt
 werden, die den gleichen Typ haben.
 
-Sind die Dimensionen von @var{A} und @var{B} verschieden, werden zun@"achst die
-Zeilen des Arrays @var{A} aufgef@"ullt.  Hat die Liste oder das Array @var{B}
-nicht gen@"ugend Elemente, um das Array @var{A} aufzuf@"ullen, werden die 
-restlichen Elemente mit dem letzten Wert von @var{B} aufgef@"ullt.
-@"Uberz@"ahlige Elemente in @var{B} werden ignoriert.
+Sind die Dimensionen von @mvar{A} und @mvar{B} verschieden, werden zun@"achst die
+Zeilen des Arrays @mvar{A} aufgef@"ullt.  Hat die Liste oder das Array @mvar{B}
+nicht gen@"ugend Elemente, um das Array @mvar{A} aufzuf@"ullen, werden die 
+restlichen Elemente mit dem letzten Wert von @mvar{B} aufgef@"ullt.
+@"Uberz@"ahlige Elemente in @mvar{B} werden ignoriert.
 
 @code{fillarray} gibt das erste Argument zur@"uck.
 
@@ -584,10 +584,10 @@ Arrays werden zeilenweise aufgef@"ullt.
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{listarray}
-@deffn {Funktion} listarray (@var{A})
+@deffn {Funktion} listarray (@mvar{A})
 
-Gibt eine Liste mit den Elementen des Arrays @var{A} zur@"uck.  Das Argument 
-@var{A} kann ein deklariertes, nicht-deklariertes, eine Array-Funktion oder eine
+Gibt eine Liste mit den Elementen des Arrays @mvar{A} zur@"uck.  Das Argument 
+@mvar{A} kann ein deklariertes, nicht-deklariertes, eine Array-Funktion oder eine
 indizierte Funktion sein.
 
 Die Elemente werden zeilenweise ausgegeben.  F@"ur nicht-deklarierte Arrays mit
@@ -603,7 +603,7 @@ keinen Typ haben, werden als @code{#####} zur@"uckgegeben.  Elemente von
 deklarierten Arrays mit einem Typ, geben den Wert 0 f@"ur den Typ @code{fixnum}
 und 0.0 f@"ur den Typ @code{flonum} zur@"uck.
 
-Ist das Argument @var{A} ein Lisp-Array, wie es von der Funktion
+Ist das Argument @mvar{A} ein Lisp-Array, wie es von der Funktion
 @mref{make_array} erzeugt wird, generiert Maxima einen Lisp-Fehler.  Das ist ein
 Programmfehler.
 
@@ -729,12 +729,12 @@ indizierte Funktion.
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{make_array}
-@deffn {Funktion} make_array (@var{type}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Funktion} make_array (@mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
-Gibt ein Lisp-Array zur@"uck.  Das Argument @var{type} kann die Werte
+Gibt ein Lisp-Array zur@"uck.  Das Argument @mvar{type} kann die Werte
 @code{any}, @code{flonum}, @code{fixnum} oder @code{hashed} haben.  Das Array
 hat @math{i} Dimensionen und der Index @math{i} l@"auft von 0 bis 
-einschlie@ss{}lich @math{@var{dim_i}-1}.
+einschlie@ss{}lich @math{@mvar{dim_i}-1}.
 
 @c TODO: MAKE_ARRAY KENNT NOCH DEN TYP FUNCTIONAL.  DAS FUNKTIONIERT ABER NICHT.
 
@@ -811,10 +811,10 @@ Beispiele:
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{rearray}
-@deffn {Funktion} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Funktion} rearray (@mvar{A}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
-Die Funktion @code{rearray} erlaubt es, ein Array @var{A} zu vergr@"o@ss{}ern
-oder auch zu verkleinern.  Die Anzahl der Dimensionen @var{n} sowie der Typ
+Die Funktion @code{rearray} erlaubt es, ein Array @mvar{A} zu vergr@"o@ss{}ern
+oder auch zu verkleinern.  Die Anzahl der Dimensionen @mvar{n} sowie der Typ
 eines Arrays k@"onnen nicht ge@"andert werden.
 
 Das neue Array wird zeilenweise mit den Werten des alten Arrays aufgef@"ullt.
@@ -845,7 +845,7 @@ selbst kein Lisp-Array ist.
 
 @c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{remarray}
-@deffn  {Funktion} remarray (@var{A_1}, @dots{}, @var{A_n})
+@deffn  {Funktion} remarray (@mvar{A_1}, @dots{}, @mvar{A_n})
 @deffnx {Funktion} remarray (all)
 
 Entfernt Arrays und Array-Funktionen.  Der vom Array belegte Speicher wird
@@ -861,9 +861,9 @@ sowie Array-Funktionen und indizierte Funktionen sein.
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{subvar}
-@deffn {Funktion} subvar (@var{x}, @var{i_1}, @var{x_2}, @dots{})
+@deffn {Funktion} subvar (@mvar{x}, @mvar{i_1}, @mvar{x_2}, @dots{})
 
-Wertet den indizierten Ausdruck @code{@var{x}[@var{i_1}, @var{i_2}, ...]} aus.
+Wertet den indizierten Ausdruck @code{@mvar{x}[@mvar{i_1}, @mvar{i_2}, ...]} aus.
 @code{subvar} wertet die Argumente aus.
 
 Siehe die Funktion @mrefcomma{arrayapply} die dieselbe Funktionalit@"at hat, und
@@ -899,9 +899,9 @@ Beispiele:
 
 @c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{subvarp}
-@deffn {Funktion} subvarp (@var{expr})
+@deffn {Funktion} subvarp (@mvar{expr})
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine indizierte Variable wie zum
+Gibt @code{true} zur@"uck, wenn @mvar{expr} eine indizierte Variable wie zum
 Beispiel @code{a[i]} ist.
 @end deffn
 

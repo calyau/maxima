@@ -25,11 +25,11 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{polartorect}
-@deffn {関数} polartorect (@var{r}, @var{t})
+@deffn {関数} polartorect (@mvar{r}, @mvar{t})
 
 形式@code{r %e^(%i t)}の複素値を形式@code{a + b %i}に変換します。
-ここで、@var{r}は大きさで、@var{t}は位相です。
-@var{r}と@var{t}は、同じサイズの１次元配列です。
+ここで、@mvar{r}は大きさで、@mvar{t}は位相です。
+@mvar{r}と@mvar{t}は、同じサイズの１次元配列です。
 配列のサイズは2のべき乗である必要はありません。
 
 関数が戻ると、入力配列の元の値は、実部@code{a}と虚部@code{b}に置き換えられます。
@@ -52,11 +52,11 @@ b = r sin(t)
 
 @c -----------------------------------------------------------------------------
 @anchor{recttopolar}
-@deffn {関数} recttopolar (@var{a}, @var{b})
+@deffn {関数} recttopolar (@mvar{a}, @mvar{b})
 
 形式@code{a + b %i}の複素値を形式@code{r %e^(%i t)}に変換します。
-ここで、@var{a}は実部で、@var{b}は虚部です。
-@var{a}と@var{b}は同じサイズの１次元配列です。
+ここで、@mvar{a}は実部で、@mvar{b}は虚部です。
+@mvar{a}と@mvar{b}は同じサイズの１次元配列です。
 配列のサイズは2のべき乗である必要はありません。
 
 関数が戻ると、入力配列の元の値は、大きさ@code{r}と偏角@code{t}に置き換えられます。
@@ -81,17 +81,17 @@ t = atan2(b, a)
 
 @c -----------------------------------------------------------------------------
 @anchor{inverse_fft}
-@deffn {関数} inverse_fft (@var{y})
+@deffn {関数} inverse_fft (@mvar{y})
 
 複素逆高速Fourier変換を計算します。
-@var{y}は、変換されるデータを含むリストもしくは配列です。
+@mvar{y}は、変換されるデータを含むリストもしくは配列です。
 要素の数は2のべき乗でなければいけません。
 要素は、数リテラル（整数、有理数、浮動小数点、多倍長浮動小数点）、シンボル定数、
 もしくは、@code{a}と@code{b}が数リテラルもしくはシンボル定数である式@code{a + b*%i}
 でなければいけません。
 
-@code{inverse_fft}は、@var{y}と同じタイプの新しいオブジェクトを返します。
-@var{y}は変更されません。
+@code{inverse_fft}は、@mvar{y}と同じタイプの新しいオブジェクトを返します。
+@mvar{y}は変更されません。
 結果はいつも浮動小数点、もしくは@code{a}と@code{b}が浮動小数点であるところの式
 @code{a + b*%i}として計算されます。
 
@@ -167,17 +167,17 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 
 @c -----------------------------------------------------------------------------
 @anchor{fft}
-@deffn {関数} fft (@var{x})
+@deffn {関数} fft (@mvar{x})
 
 複素高速Fourier変換を計算します。
-@var{x}は、変換されるデータを含むリストもしくは配列です。
+@mvar{x}は、変換されるデータを含むリストもしくは配列です。
 要素の数は2のべき乗でなければいけません。
 要素は、数リテラル（整数、有理数、浮動小数点、多倍長浮動小数点）、シンボル定数、
 もしくは、@code{a}と@code{b}が数リテラルもしくはシンボル定数である式@code{a + b*%i}
 でなければいけません。
 
-@code{fft}は、@var{x}と同じタイプの新しいオブジェクトを返します。
-@var{x}は変更されません。
+@code{fft}は、@mvar{x}と同じタイプの新しいオブジェクトを返します。
+@mvar{x}は変更されません。
 結果はいつも浮動小数点、もしくは@code{a}と@code{b}が浮動小数点であるところの式
 @code{a + b*%i}として計算されます。
 
@@ -189,7 +189,7 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
 @end example
 
-データ@var{x}が実数の時、
+データ@mvar{x}が実数の時、
 実係数@code{a}と@code{b}は以下のように計算することができます。
 @example
 x[j] = sum(a[k]*cos(2*%pi*j*k/n)+b[k]*sin(2*%pi*j*k/n), k, 0, n/2)
@@ -347,21 +347,21 @@ b[n/2] = 0
 
 @c -----------------------------------------------------------------------------
 @anchor{fortran}
-@deffn {関数} fortran (@var{expr})
+@deffn {関数} fortran (@mvar{expr})
 
-Fortran文として@var{expr}を印字します。
+Fortran文として@mvar{expr}を印字します。
 出力行は、スペースでインデントされます。
 もし行が長過ぎるなら、
 @code{fortran}は継続行を印字します。
 @code{fortran}は、指数演算子@code{^}を@code{**}として印字し、
 複素数@code{a + b %i}を形式@code{(a,b)}で印字します。
 
-@var{expr}は等式も取り、もしそうなら、@code{fortran}は、
+@mvar{expr}は等式も取り、もしそうなら、@code{fortran}は、
 等式の右辺を左辺に割り当てる割り当て文を印字します。
-特に、もし@var{expr}の右辺が行列名なら、
+特に、もし@mvar{expr}の右辺が行列名なら、
 @code{fortran}は、行列の要素それぞれに対する割り当て文を印字します。
 
-もし@var{expr}が@code{fortran}が認識する何かでないなら、
+もし@mvar{expr}が@code{fortran}が認識する何かでないなら、
 エラーなしに、式が@code{grind}フォーマットで印字されます。
 @code{fortran}は、リスト、配列、関数について知りません。
 
@@ -424,12 +424,12 @@ Fortran文として@var{expr}を印字します。
 
 @c -----------------------------------------------------------------------------
 @anchor{horner}
-@deffn  {関数} horner (@var{expr}, @var{x})
-@deffnx {関数} horner (@var{expr})
+@deffn  {関数} horner (@mvar{expr}, @mvar{x})
+@deffnx {関数} horner (@mvar{expr})
 
-Horner規則に従って、もし指定されないなら@var{x}を主変数として使い、
-@var{expr}の再配列された表現を返します。
-@code{x}は、@var{expr}の標準有理式形の主変数が使われる場合には、省略できます。
+Horner規則に従って、もし指定されないなら@mvar{x}を主変数として使い、
+@mvar{expr}の再配列された表現を返します。
+@code{x}は、@mvar{expr}の標準有理式形の主変数が使われる場合には、省略できます。
 
 もし@code{expr}が数値的に評価されるものなら、
 @code{horner}は、時々、安定性が改善されます。
@@ -465,20 +465,20 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @anchor{find_root_error}
 @anchor{find_root_abs}
 @anchor{find_root_rel}
-@deffn  {関数} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {関数} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {関数} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {関数} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffn  {関数} find_root (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
+@deffnx {関数} find_root (@mvar{f}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
+@deffnx {関数} bf_find_root (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
+@deffnx {関数} bf_find_root (@mvar{f}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
 @deffnx {オプション変数} find_root_error
 @deffnx {オプション変数} find_root_abs
 @deffnx {オプション変数} find_root_rel
 
-式@var{expr}もしくは関数@var{f}の根を、閉区間@math{[@var{a}, @var{b}]}上で見つけます。
-式@var{expr}は等式でも問題ありません。
-その場合、@code{find_root}は@code{lhs(@var{expr}) - rhs(@var{expr})}の根を探します。
+式@mvar{expr}もしくは関数@mvar{f}の根を、閉区間@math{[@mvar{a}, @mvar{b}]}上で見つけます。
+式@mvar{expr}は等式でも問題ありません。
+その場合、@code{find_root}は@code{lhs(@mvar{expr}) - rhs(@mvar{expr})}の根を探します。
 
-Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価可能であり、
-@var{expr}もしくは@var{f}は連続と仮定して、@code{find_root}は根もしくは、
+Maximaは@mvar{expr}もしくは@mvar{f}を@math{[@mvar{a}, @mvar{b}]}上で評価可能であり、
+@mvar{expr}もしくは@mvar{f}は連続と仮定して、@code{find_root}は根もしくは、
 もし複数の根があるなら、根の１つを見つけることを保証します。
 
 @code{find_root}は初め、２分木探索を適用します。
@@ -500,7 +500,7 @@ Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価�
 @end table
 
 懸案の関数が@code{abserr}以下の何かに評価される時、または、
-近似値@var{x_0}, @var{x_1}の差が@code{relerr * max(abs(x_0), abs(x_1))}以下になるなら、@code{find_root}は停止します。
+近似値@mvar{x_0}, @mvar{x_1}の差が@code{relerr * max(abs(x_0), abs(x_1))}以下になるなら、@code{find_root}は停止します。
 
 @code{find_root_abs}と@code{find_root_rel}のデフォルト値はともに零です。
 
@@ -512,10 +512,10 @@ Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価�
 そうでなければ、@code{find_root}は@code{find_root_error}の値を返します。
 @code{find_root_error}のデフォルト値は@code{true}です。
 
-もし@var{f}が探索アルゴリズムの中の任意のステップで、数以外の何かに評価するなら、
+もし@mvar{f}が探索アルゴリズムの中の任意のステップで、数以外の何かに評価するなら、
 @code{find_root}は、部分的に評価された@code{find_root}式を返します。
-@var{a}と@var{b}の順序は無視されます;
-根が探索される区間は@math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}です。
+@mvar{a}と@mvar{b}の順序は無視されます;
+根が探索される区間は@math{[min(@mvar{a}, @mvar{b}), max(@mvar{a}, @mvar{b})]}です。
 
 例:
 @c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
@@ -576,18 +576,18 @@ Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価�
 
 @c -----------------------------------------------------------------------------
 @anchor{newton}
-@deffn {関数} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+@deffn {関数} newton (@mvar{expr}, @mvar{x}, @mvar{x_0}, @mvar{eps})
 
-@var{expr}を@var{x}の１変数関数と考えて、
-Newton法による、@code{@var{expr} = 0}の近似解を返します。
-探索は、@code{@var{x} = @var{x_0}}で始まり、
-(@var{x}の現在値で評価された@var{expr}を使った)@code{abs(@var{expr}) < @var{eps}}が成り立つまで続きます。
+@mvar{expr}を@mvar{x}の１変数関数と考えて、
+Newton法による、@code{@mvar{expr} = 0}の近似解を返します。
+探索は、@code{@mvar{x} = @mvar{x_0}}で始まり、
+(@mvar{x}の現在値で評価された@mvar{expr}を使った)@code{abs(@mvar{expr}) < @mvar{eps}}が成り立つまで続きます。
 
-終了テスト@code{abs(@var{expr}) < @var{eps}}が@code{true}または@code{false}に評価される限り、
-@code{newton}は、未定義変数が@var{expr}の中に現れることを許します。
+終了テスト@code{abs(@mvar{expr}) < @mvar{eps}}が@code{true}または@code{false}に評価される限り、
+@code{newton}は、未定義変数が@mvar{expr}の中に現れることを許します。
 
 このように、
-@var{expr}は数に評価される必要はありません。
+@mvar{expr}は数に評価される必要はありません。
 
 @code{load(newton1)}はこの関数をロードします。
 
@@ -647,9 +647,9 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{equalp}
-@deffn {関数} equalp (@var{x}, @var{y})
+@deffn {関数} equalp (@mvar{x}, @mvar{y})
 
-もし@code{equal (@var{x}, @var{y})}なら、@code{true}を返し、
+もし@code{equal (@mvar{x}, @mvar{y})}なら、@code{true}を返し、
 そうでないなら、@code{false}を返します。
  (この場合、@code{equal (x, y)}がするようなエラーメッセージを与えません。)
 
@@ -661,16 +661,16 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{remfun}
-@deffn  {関数} remfun (@var{f}, @var{expr})
-@deffnx {関数} remfun (@var{f}, @var{expr}, @var{x})
+@deffn  {関数} remfun (@mvar{f}, @mvar{expr})
+@deffnx {関数} remfun (@mvar{f}, @mvar{expr}, @mvar{x})
 
-@code{remfun (@var{f}, @var{expr})}は、
-@var{expr}の中の@code{@var{f} (@var{arg})}すべてを@var{arg}で置き換えます。
+@code{remfun (@mvar{f}, @mvar{expr})}は、
+@mvar{expr}の中の@code{@mvar{f} (@mvar{arg})}すべてを@mvar{arg}で置き換えます。
 
-@code{remfun (@var{f}, @var{expr}, @var{x})}は、
-@var{expr}の中の@code{@var{f} (@var{arg})}を
-@var{arg}が変数@var{x}を含むときだけ
-@var{arg}で置き換えます。
+@code{remfun (@mvar{f}, @mvar{expr}, @mvar{x})}は、
+@mvar{expr}の中の@code{@mvar{f} (@mvar{arg})}を
+@mvar{arg}が変数@mvar{x}を含むときだけ
+@mvar{arg}で置き換えます。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -680,16 +680,16 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{funp}
-@deffn  {関数} funp (@var{f}, @var{expr})
-@deffnx {関数} funp (@var{f}, @var{expr}, @var{x})
+@deffn  {関数} funp (@mvar{f}, @mvar{expr})
+@deffnx {関数} funp (@mvar{f}, @mvar{expr}, @mvar{x})
 
-@code{funp (@var{f}, @var{expr})}は、
-もし@var{expr}が関数@var{f}を含むなら
+@code{funp (@mvar{f}, @mvar{expr})}は、
+もし@mvar{expr}が関数@mvar{f}を含むなら
 @code{true}を返します。
 
-@code{funp (@var{f}, @var{expr}, @var{x})}は、
-もし@var{expr}が関数@var{f}を含み、変数
-@var{x}が@var{f}のインスタンスの１つの引数のどこかにあるなら、
+@code{funp (@mvar{f}, @mvar{expr}, @mvar{x})}は、
+もし@mvar{expr}が関数@mvar{f}を含み、変数
+@mvar{x}が@mvar{f}のインスタンスの１つの引数のどこかにあるなら、
 @code{true}を返します。
 
 @c NEEDS EXAMPLES
@@ -700,27 +700,27 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{absint}
-@deffn  {関数} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {関数} absint (@var{f}, @var{x})
-@deffnx {関数} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn  {関数} absint (@mvar{f}, @mvar{x}, @mvar{halfplane})
+@deffnx {関数} absint (@mvar{f}, @mvar{x})
+@deffnx {関数} absint (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b})
 
-@code{absint (@var{f}, @var{x}, @var{halfplane})}は、
+@code{absint (@mvar{f}, @mvar{x}, @mvar{halfplane})}は、
 与えられた半平面(@code{pos}, @code{neg}, または@code{both})での
-@var{f}の@var{x}に関する不定積分を返します。
-@var{f}は、形式
+@mvar{f}の@mvar{x}に関する不定積分を返します。
+@mvar{f}は、形式
 @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}
 の式を含むことができます。
 
-@code{absint (@var{f}, @var{x})}は@code{absint (@var{f}, @var{x}, pos)}と同値です。
+@code{absint (@mvar{f}, @mvar{x})}は@code{absint (@mvar{f}, @mvar{x}, pos)}と同値です。
 
-@code{absint (@var{f}, @var{x}, @var{a}, @var{b})}は、
-@var{f}の
-@var{x}に関する
-@var{a}から@var{b}までの定積分
+@code{absint (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b})}は、
+@mvar{f}の
+@mvar{x}に関する
+@mvar{a}から@mvar{b}までの定積分
 を返します。
 
 @c SAME LIST AS ABOVE ??
-@var{f}は、絶対値を含むことができます。
+@mvar{f}は、絶対値を含むことができます。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -732,9 +732,9 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{fourier}
-@deffn {関数} fourier (@var{f}, @var{x}, @var{p})
+@deffn {関数} fourier (@mvar{f}, @mvar{x}, @mvar{p})
 
-区間@code{[-p, p]}上で定義された@code{@var{f}(@var{x})}のFourier係数のリストを返します。
+区間@code{[-p, p]}上で定義された@code{@mvar{f}(@mvar{x})}のFourier係数のリストを返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -746,7 +746,7 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{foursimp}
-@deffn {関数} foursimp (@var{l})
+@deffn {関数} foursimp (@mvar{l})
 
 もし@code{sinnpiflag}が@code{true}なら、@code{sin (n %pi)}を0に整理します。
 もし@code{cosnpiflag}が@code{true}なら、@code{cos (n %pi)}を@code{(-1)^n}に整理します。
@@ -785,12 +785,12 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c -----------------------------------------------------------------------------
 @anchor{fourexpand}
-@deffn {関数} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+@deffn {関数} fourexpand (@mvar{l}, @mvar{x}, @mvar{p}, @mvar{limit})
 
-Fourier係数@var{l}のリストから
-@var{limit}項までのFourier級数を構成し、返します。
-(@var{limit}は@code{inf}もあり得ます。)
-@var{x}と@var{p}は、@code{fourier}におけるものと同じ意味を持ちます。
+Fourier係数@mvar{l}のリストから
+@mvar{limit}項までのFourier級数を構成し、返します。
+(@mvar{limit}は@code{inf}もあり得ます。)
+@mvar{x}と@mvar{p}は、@code{fourier}におけるものと同じ意味を持ちます。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -802,10 +802,10 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{fourcos}
-@deffn {関数} fourcos (@var{f}, @var{x}, @var{p})
+@deffn {関数} fourcos (@mvar{f}, @mvar{x}, @mvar{p})
 
-@code{[0, @var{p}]}上で定義された
-@code{@var{f}(@var{x})}のFourierコサイン係数を返します。
+@code{[0, @mvar{p}]}上で定義された
+@code{@mvar{f}(@mvar{x})}のFourierコサイン係数を返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -817,10 +817,10 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{foursin}
-@deffn {関数} foursin (@var{f}, @var{x}, @var{p})
+@deffn {関数} foursin (@mvar{f}, @mvar{x}, @mvar{p})
 
-@code{[0, @var{p}]}上で定義された
-@code{@var{f}(@var{x})}のFourierサイン係数を返します。
+@code{[0, @mvar{p}]}上で定義された
+@code{@mvar{f}(@mvar{x})}のFourierサイン係数を返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -832,9 +832,9 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{totalfourier}
-@deffn {関数} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {関数} totalfourier (@mvar{f}, @mvar{x}, @mvar{p})
 
-@code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}を返します。
+@code{fourexpand (foursimp (fourier (@mvar{f}, @mvar{x}, @mvar{p})), @mvar{x}, @mvar{p}, 'inf)}を返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -846,10 +846,10 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{fourint}
-@deffn {関数} fourint (@var{f}, @var{x})
+@deffn {関数} fourint (@mvar{f}, @mvar{x})
 
 @code{[minf, inf]}上で定義された
-@code{@var{f}(@var{x})}のFourier積分係数のリストを構成し、返します。
+@code{@mvar{f}(@mvar{x})}のFourier積分係数のリストを構成し、返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -861,8 +861,8 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{fourintcos}
-@deffn {関数} fourintcos (@var{f}, @var{x})
-@code{[0, inf]}上の@code{@var{f}(@var{x})}のFourierコサイン積分係数を返します。
+@deffn {関数} fourintcos (@mvar{f}, @mvar{x})
+@code{[0, inf]}上の@code{@mvar{f}(@mvar{x})}のFourierコサイン積分係数を返します。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -874,8 +874,8 @@ Fourier係数@var{l}のリストから
 
 @c -----------------------------------------------------------------------------
 @anchor{forintsin}
-@deffn {関数} fourintsin (@var{f}, @var{x})
-@code{[0, inf]}上の@code{@var{f}(@var{x})}のFourierサイン積分係数を返します。
+@deffn {関数} fourintsin (@mvar{f}, @mvar{x})
+@code{[0, inf]}上の@code{@mvar{f}(@mvar{x})}のFourierサイン積分係数を返します。
 
 
 @c NEEDS EXAMPLES

@@ -23,11 +23,11 @@
 @closecatbox
 @end defvr
 
-@deffn {Функция} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Функция} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Функция} limit (@var{expr})
-Рассчитывает предел @var{expr} при стремлении вещественной переменной
-@var{x} к @var{val} по направлению @var{dir}.  @var{dir} может иметь значение
+@deffn {Функция} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Функция} limit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Функция} limit (@mvar{expr})
+Рассчитывает предел @mvar{expr} при стремлении вещественной переменной
+@mvar{x} к @mvar{val} по направлению @mvar{dir}.  @mvar{dir} может иметь значение
 @code{plus} для предела справа, @code{minus} для предела слева, либо
 опускаться (будет рассчитан двусторонний предел).
 
@@ -70,9 +70,9 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 @closecatbox
 @end defvr
 
-@deffn {Функция} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Функция} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Функция} tlimit (@var{expr})
+@deffn {Функция} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Функция} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Функция} tlimit (@mvar{expr})
 Вычисляет предел разложения выражения @code{expr} в ряд Тейлора в точке @code{x}
 равной @code{val} с направления @code{dir}.
 

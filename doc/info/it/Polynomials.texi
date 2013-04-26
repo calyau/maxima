@@ -17,39 +17,39 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} bezout (@var{p1}, @var{p2}, @var{x})
+@deffn {Function} bezout (@mvar{p1}, @mvar{p2}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bothcoef (@var{expr}, @var{x})
+@deffn {Function} bothcoef (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} coeff (@var{expr}, @var{x}, @var{n})
+@deffn {Function} coeff (@mvar{expr}, @mvar{x}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} combine (@var{expr})
+@deffn {Function} combine (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} content (@mvar{p_1}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} denom (@var{expr})
+@deffn {Function} denom (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} divide (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
+@deffn {Function} eliminate ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_k}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
+@deffn {Function} ezgcd (@mvar{p_1}, @mvar{p_2}, @mvar{p_3}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -57,11 +57,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} factcomb (@var{expr})
+@deffn {Function} factcomb (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} factor (@var{expr})
+@deffn {Function} factor (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -69,48 +69,48 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+@deffn {Function} factorout (@mvar{expr}, @mvar{x_1}, @mvar{x_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} factorsum (@var{expr})
+@deffn {Function} factorsum (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fasttimes (@var{p_1}, @var{p_2})
+@deffn {Function} fasttimes (@mvar{p_1}, @mvar{p_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fullratsimp (@var{expr})
+@deffn {Function} fullratsimp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fullratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Function} fullratsubst (@mvar{a}, @mvar{b}, @mvar{c})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
+@deffn {Function} gcd (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gcdex (@var{f}, @var{g})
-@deffnx {Function} gcdex (@var{f}, @var{g}, @var{x})
+@deffn {Function} gcdex (@mvar{f}, @mvar{g})
+@deffnx {Function} gcdex (@mvar{f}, @mvar{g}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gcfactor (@var{n})
+@deffn {Function} gcfactor (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gfactor (@var{expr})
+@deffn {Function} gfactor (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gfactorsum (@var{expr})
+@deffn {Function} gfactorsum (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} hipow (@var{expr}, @var{x})
+@deffn {Function} hipow (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -122,7 +122,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} lratsubst (@var{L}, @var{expr})
+@deffn {Function} lratsubst (@mvar{L}, @mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -130,21 +130,21 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} num (@var{expr})
+@deffn {Function} num (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} polydecomp (@var{p}, @var{x})
+@deffn {Function} polydecomp (@mvar{p}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quotient (@var{p_1}, @var{p_2})
-@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} quotient (@mvar{p_1}, @mvar{p_2})
+@deffnx {Function} quotient (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rat (@var{expr})
-@deffnx {Function} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} rat (@mvar{expr})
+@deffnx {Function} rat (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -152,12 +152,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} ratcoef (@var{expr}, @var{x})
+@deffn {Function} ratcoef (@mvar{expr}, @mvar{x}, @mvar{n})
+@deffnx {Function} ratcoef (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratdenom (@var{expr})
+@deffn {Function} ratdenom (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -165,11 +165,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratdiff (@var{expr}, @var{x})
+@deffn {Function} ratdiff (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratdisrep (@var{expr})
+@deffn {Function} ratdisrep (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -177,7 +177,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratexpand (@var{expr})
+@deffn {Function} ratexpand (@mvar{expr})
 @deffnx {Option variable} ratexpand
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -186,15 +186,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratnumer (@var{expr})
+@deffn {Function} ratnumer (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratnump (@var{expr})
+@deffn {Function} ratnump (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratp (@var{expr})
+@deffn {Function} ratp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -202,8 +202,8 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratsimp (@var{expr})
-@deffnx {Function} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} ratsimp (@mvar{expr})
+@deffnx {Function} ratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -211,17 +211,17 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Function} ratsubst (@mvar{a}, @mvar{b}, @mvar{c})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratvars (@var{x_1}, ..., @var{x_n})
+@deffn {Function} ratvars (@mvar{x_1}, ..., @mvar{x_n})
 @deffnx {Function} ratvars ()
 @deffnx {System variable} ratvars
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Function} ratweight (@mvar{x_1}, @mvar{w_1}, ..., @mvar{x_n}, @mvar{w_n})
 @deffnx {Function} ratweight ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -234,12 +234,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} remainder (@var{p_1}, @var{p_2})
-@deffnx {Function} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} remainder (@mvar{p_1}, @mvar{p_2})
+@deffnx {Function} remainder (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffn {Function} resultant (@mvar{p_1}, @mvar{p_2}, @mvar{x})
 @deffnx {Variable} resultant
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -248,20 +248,20 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} sqfr (@var{expr})
+@deffn {Function} sqfr (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tellrat (@var{p_1}, ..., @var{p_n})
+@deffn {Function} tellrat (@mvar{p_1}, ..., @mvar{p_n})
 @deffnx {Function} tellrat ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} totaldisrep (@var{expr})
+@deffn {Function} totaldisrep (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} untellrat (@var{x_1}, ..., @var{x_n})
+@deffn {Function} untellrat (@mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -108,9 +108,9 @@
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
-@deffn {関数} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-引数@var{arg_1}, ..., @var{arg_n}に依存する
-@var{expr}の形式を返します。
+@deffn {関数} facsum (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
+引数@mvar{arg_1}, ..., @mvar{arg_n}に依存する
+@mvar{expr}の形式を返します。
 引数は@code{ratvars}に適した任意の形式か、そんな形式のリストを取り得ます。
 もし引数がリストでなければ、
 返される形式は、引数に関して完全に展開され、引数の係数は因数分解されます。
@@ -132,8 +132,8 @@ complicated subexpressions,  such as
 
 @c CUTTING THIS OUT, BECAUSE IT IS OBVIOUSLY NOT CORRECT
 @c SEE EXAMPLE IN BUG REPORT ID: 2834336 - ratsimp vs facsum
-@c With no variable specification, for example @code{facsum (@var{expr})}, the 
-@c result returned is the same as that returned by @code{ratsimp (@var{expr})}.
+@c With no variable specification, for example @code{facsum (@mvar{expr})}, the 
+@c result returned is the same as that returned by @code{ratsimp (@mvar{expr})}.
 
 時々、ユーザーは
 式に関して、先頭演算子によってのみ指定された上記形式いずれかが欲しいかもしれません。
@@ -144,9 +144,9 @@ complicated subexpressions,  such as
 代わりに式@code{operator (log)}や@code{'operator (log)}
 を引数に含むことができます。
 もし
-演算子@var{op_1}, ..., @var{op_n}に関して
-式@var{expr}を@code{facsum}したいなら、
-@code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}を評価します。
+演算子@mvar{op_1}, ..., @mvar{op_n}に関して
+式@mvar{expr}を@code{facsum}したいなら、
+@code{facsum (@mvar{expr}, operator (@mvar{op_1}, ..., @mvar{op_n}))}を評価します。
 @code{operator}形式はリスト引数の中でも可能です。
 
 更に、
@@ -208,11 +208,11 @@ complicated subexpressions,  such as
 
 @end defvr
 
-@deffn {関数} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
-@var{expr}の因子に関して引数として
-@var{arg_1}, ... @var{arg_n}を付けて@code{facsum}をコールすることで得られる
-@var{expr}の形式を返します。
-もし@var{expr}の因子のいずれかがべきに累乗されるなら、
+@deffn {関数} factorfacsum (@mvar{expr}, @mvar{arg_1}, ... @mvar{arg_n})
+@mvar{expr}の因子に関して引数として
+@mvar{arg_1}, ... @mvar{arg_n}を付けて@code{facsum}をコールすることで得られる
+@mvar{expr}の形式を返します。
+もし@mvar{expr}の因子のいずれかがべきに累乗されるなら、
 因子と指数と両方がこの方法で処理されます。
 
 @opencatbox
@@ -223,7 +223,7 @@ complicated subexpressions,  such as
 
 @c -----------------------------------------------------------------------------
 @anchor{collectterms}
-@deffn {関数} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {関数} collectterms (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
 
 もしいくつかの式が@code{facsum}もしくは@code{factorfacsum}, @code{factenexpand}, @code{facexpten},
  @code{factorfacexpten}で整理されていて、それらが一緒に加算されているなら、
@@ -249,11 +249,11 @@ complicated subexpressions,  such as
 @category{Share packages} @category{Package functs}
 @closecatbox
 
-@deffn {関数} rempart (@var{expr}, @var{n})
-式@var{expr}からパーツ@var{n}を取り除きます。
+@deffn {関数} rempart (@mvar{expr}, @mvar{n})
+式@mvar{expr}からパーツ@mvar{n}を取り除きます。
 
-もし@var{n}が形式@code{[@var{l}, @var{m}]}のリストなら、
-パーツ@var{l}から@var{m}までが取り除かれます。
+もし@mvar{n}が形式@code{[@mvar{l}, @mvar{m}]}のリストなら、
+パーツ@mvar{l}から@mvar{m}までが取り除かれます。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -263,8 +263,8 @@ complicated subexpressions,  such as
 
 @end deffn
 
-@deffn {関数} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
-変数@var{x}に関する式のリスト[@var{f_1}, ..., @var{f_n}]の
+@deffn {関数} wronskian ([@mvar{f_1}, ..., @mvar{f_n}], @mvar{x})
+変数@mvar{x}に関する式のリスト[@mvar{f_1}, ..., @mvar{f_n}]の
 Wronskian行列を返します。
 Wronskian行列の行列式は、
 式のリストのWronskian行列式です。
@@ -289,8 +289,8 @@ Wronskian行列の行列式は、
 
 @c adjoint already described in doc/info/Matrices.texi
 
-@deffn {関数} tracematrix (@var{M})
-行列@var{M}の跡(対角要素の和)を返します。
+@deffn {関数} tracematrix (@mvar{M})
+行列@mvar{M}の跡(対角要素の和)を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -302,7 +302,7 @@ Wronskian行列の行列式は、
 
 @deffn {関数} rational (@code{z})
 分母を有理化するように、
-@var{z}の分子と分母に分母の複素共役を掛けます。
+@mvar{z}の分子と分母に分母の複素共役を掛けます。
 もし与えられたものがそうであれば、正準有理式(CRE)形式を返し、
 そうでないなら、一般形式を返します。
 
@@ -351,9 +351,9 @@ Wronskian行列の行列式は、
 
 @c kronecker superseded by kron_delta in src/nset.lisp
 
-@deffn {関数} nonzeroandfreeof (@var{x}, @var{expr})
-もし @var{expr}がゼロでなく、
-@code{freeof (@var{x}, @var{expr})}が@code{true}を返すなら、
+@deffn {関数} nonzeroandfreeof (@mvar{x}, @mvar{expr})
+もし @mvar{expr}がゼロでなく、
+@code{freeof (@mvar{x}, @mvar{expr})}が@code{true}を返すなら、
 @code{true}を返します。
 そうでなければ、@code{false}を返します。
 
@@ -365,11 +365,11 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} linear (@var{expr}, @var{x})
-@var{expr}が変数@var{x}に関して線形の式の時、
-@code{linear}は@code{@var{a}*@var{x} + @var{b}}を返します。
-ここで、@var{a}はゼロでなく、@var{a}と@var{b}は@var{x}に依存しません。
-そうでなければ、@code{linear}は@var{expr}を返します。
+@deffn {関数} linear (@mvar{expr}, @mvar{x})
+@mvar{expr}が変数@mvar{x}に関して線形の式の時、
+@code{linear}は@code{@mvar{a}*@mvar{x} + @mvar{b}}を返します。
+ここで、@mvar{a}はゼロでなく、@mvar{a}と@mvar{b}は@mvar{x}に依存しません。
+そうでなければ、@code{linear}は@mvar{expr}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -381,14 +381,14 @@ Wronskian行列の行列式は、
 
 @c -----------------------------------------------------------------------------
 @anchor{gcdivide}
-@deffn {関数} gcdivide (@var{p}, @var{q})
+@deffn {関数} gcdivide (@mvar{p}, @mvar{q})
 
 @code{takegcd}が@code{true}の時、
-@code{gcdivide}は多項式@var{p}と@var{q}を最大公約多項式で割り、
+@code{gcdivide}は多項式@mvar{p}と@mvar{q}を最大公約多項式で割り、
 結果の比を返します。
 
 @code{takegcd}が@code{false}の時、
-@code{gcdivide}は比@code{@var{p}/@var{q}}を返します。
+@code{gcdivide}は比@code{@mvar{p}/@mvar{q}}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -432,8 +432,8 @@ Wronskian行列の行列式は、
 
 @c lcm already described in doc/info/Number.texi
 
-@deffn {関数} arithmetic (@var{a}, @var{d}, @var{n})
-算術級数@code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}の第@var{n}項を返します。
+@deffn {関数} arithmetic (@mvar{a}, @mvar{d}, @mvar{n})
+算術級数@code{@mvar{a}, @mvar{a} + @mvar{d}, @mvar{a} + 2*@mvar{d}, ..., @mvar{a} + (@mvar{n} - 1)*@mvar{d}}の第@mvar{n}項を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -443,8 +443,8 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} geometric (@var{a}, @var{r}, @var{n})
-幾何級数@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}の第@var{n}項を返します。
+@deffn {関数} geometric (@mvar{a}, @mvar{r}, @mvar{n})
+幾何級数@code{@mvar{a}, @mvar{a}*@mvar{r}, @mvar{a}*@mvar{r}^2, ..., @mvar{a}*@mvar{r}^(@mvar{n} - 1)}の第@mvar{n}項を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -454,8 +454,8 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
-調和級数@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}の第@var{n}項を返します。
+@deffn {関数} harmonic (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{n})
+調和級数@code{@mvar{a}/@mvar{b}, @mvar{a}/(@mvar{b} + @mvar{c}), @mvar{a}/(@mvar{b} + 2*@mvar{c}), ..., @mvar{a}/(@mvar{b} + (@mvar{n} - 1)*@mvar{c})}の第@mvar{n}項を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -465,8 +465,8 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} arithsum (@var{a}, @var{d}, @var{n})
-算術級数の1から@var{n}までの和を返します。
+@deffn {関数} arithsum (@mvar{a}, @mvar{d}, @mvar{n})
+算術級数の1から@mvar{n}までの和を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -476,10 +476,10 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} geosum (@var{a}, @var{r}, @var{n})
-幾何級数の1から@var{n}までの和を返します。
-もし@var{n}が無限大(@code{inf})なら、
-@var{r}の絶対値が1未満でのみ、和は有限です。
+@deffn {関数} geosum (@mvar{a}, @mvar{r}, @mvar{n})
+幾何級数の1から@mvar{n}までの和を返します。
+もし@mvar{n}が無限大(@code{inf})なら、
+@mvar{r}の絶対値が1未満でのみ、和は有限です。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -489,8 +489,8 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} gaussprob (@var{x})
-Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
+@deffn {関数} gaussprob (@mvar{x})
+Gaussian確率函数@code{%e^(-@mvar{x}^2/2) / sqrt(2*%pi)}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -500,7 +500,7 @@ Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
 
 @end deffn
 
-@deffn {関数} gd (@var{x})
+@deffn {関数} gd (@mvar{x})
 Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
@@ -511,7 +511,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 @end deffn
 
-@deffn {関数} agd (@var{x})
+@deffn {関数} agd (@mvar{x})
 逆Gudermannian函数@code{log (tan (%pi/4 + x/2)))}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
@@ -522,7 +522,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 @end deffn
 
-@deffn {関数} vers (@var{x})
+@deffn {関数} vers (@mvar{x})
 正矢(せいし)@code{1 - cos (x)}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
@@ -533,8 +533,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 @end deffn
 
-@deffn {関数} covers (@var{x})
-余矢(よし)@code{1 - sin (@var{x})}を返します。
+@deffn {関数} covers (@mvar{x})
+余矢(よし)@code{1 - sin (@mvar{x})}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -544,8 +544,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 @end deffn
 
-@deffn {関数} exsec (@var{x})
-外正割(exsecant)@code{sec (@var{x}) - 1}を返します。
+@deffn {関数} exsec (@mvar{x})
+外正割(exsecant)@code{sec (@mvar{x}) - 1}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -555,7 +555,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
 @end deffn
 
-@deffn {関数} hav (@var{x})
+@deffn {関数} hav (@mvar{x})
 半正矢@code{(1 - cos(x))/2}を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
@@ -567,8 +567,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
-@deffn {関数} combination (@var{n}, @var{r})
-一度に@var{r}個を取る@var{n}個のオブジェクトの組み合わせの数を返します。
+@deffn {関数} combination (@mvar{n}, @mvar{r})
+一度に@mvar{r}個を取る@mvar{n}個のオブジェクトの組み合わせの数を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -579,8 +579,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
-@deffn {関数} permutation (@var{n}, @var{r})
-@var{n}個のオブジェクトの集合から選択された@var{r}個のオブジェクトの置換の数を返します。
+@deffn {関数} permutation (@mvar{n}, @mvar{r})
+@mvar{n}個のオブジェクトの集合から選択された@mvar{r}個のオブジェクトの置換の数を返します。
 
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
@@ -695,10 +695,10 @@ Maximaが不等式に掛けられる量の符号を決定できない時、
 別の問題は0掛ける不等式です;
 これを0にするデフォルト動作はそのままです。
 しかし、
-もし@code{X*@var{some_inequality}}とタイプして、
+もし@code{X*@mvar{some_inequality}}とタイプして、
 Maximaが@code{X}の符号を尋ね、
 @code{zero} (または@code{z})と答えたなら、
-プログラムは@code{X*@var{some_inequality}}を返し、
+プログラムは@code{X*@mvar{some_inequality}}を返し、
 @code{X}が0という情報を使いません。
 そんな時は、
 データベースは、決定の際、@code{X}を評価する目的ではなく、比較目的のためだけに使われるので、
@@ -740,16 +740,16 @@ Maximaが@code{X}の符号を尋ね、
 @closecatbox
 
 
-@deffn {関数} reduce_consts (@var{expr})
-@var{expr}の定部分式を構成された定アトムで置き換え、
+@deffn {関数} reduce_consts (@mvar{expr})
+@mvar{expr}の定部分式を構成された定アトムで置き換え、
 これら構成された定数すべての定義を等式のリスト@code{const_eqns}に保存し、
-修正された@var{expr}を返します。
-@var{expr}のそれらのパーツは、関数@code{constantp}が施された時@code{true}を返す
+修正された@mvar{expr}を返します。
+@mvar{expr}のそれらのパーツは、関数@code{constantp}が施された時@code{true}を返す
 定数です。
 それゆえ、
 @code{reduce_consts}を呼び出す前に、
 @example
-declare ([@var{objects to be given the constant property}], constant)$
+declare ([@mvar{objects to be given the constant property}], constant)$
 @end example
 をして、自分の式に現れる定数量のデータベースを設定すべきです。
 
@@ -789,7 +789,7 @@ map ('fortran, const_eqns)$
 @closecatbox
 
 
-@deffn {関数} gcfac (@var{expr})
+@deffn {関数} gcfac (@mvar{expr})
 @code{gcfac}は
 科学者が式をより簡単にしようとする時に適用するのと同じ発見的方法の適用を試みる
 因数分解関数です。
@@ -826,7 +826,7 @@ map ('fortran, const_eqns)$
 @node Package sqdnst,  , Package scifac, simplification
 @section Package sqdnst
 
-@deffn {関数} sqrtdenest (@var{expr})
+@deffn {関数} sqrtdenest (@mvar{expr})
 可能なら、簡単で、数値的で、二項無理数(binomial surds)の@code{sqrt}をdenestします。
 
 例えば、

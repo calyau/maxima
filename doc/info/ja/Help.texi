@@ -47,9 +47,9 @@ Maximaの対話プロンプトから@code{?}コマンド（すなわち@code{des
 
 @c -----------------------------------------------------------------------------
 @anchor{apropos}
-@deffn {関数} apropos (@var{string})
+@deffn {関数} apropos (@mvar{string})
 
-@var{string}を含むMaxima上の名前を検索します。
+@mvar{string}を含むMaxima上の名前を検索します。
 例えば、@code{apropos ("exp")}は、
 （@code{expand}, @code{exp}, @code{exponentialize}のように）
 @code{exp}を名前の一部として含むフラグ、関数すべてのリストを返します。
@@ -85,15 +85,15 @@ gamma_incomplete_generalized_regularized]
 
 @c -----------------------------------------------------------------------------
 @anchor{demo}
-@deffn {関数} demo (@var{filename})
+@deffn {関数} demo (@mvar{filename})
 
-@var{filename}の中のMaxima式を評価し、結果を表示します。
+@mvar{filename}の中のMaxima式を評価し、結果を表示します。
 @code{demo}はそれぞれの式を評価した後 停止し、
 ユーザーがリターンキーを入力すると続きを実行します。
 (Xmaximaで走らせている場合、
 @code{demo}はセミコロン@code{;}に続けて改行を入力する必要があります。)
 
-@code{demo}は、@var{filname}のファイルを探すため、
+@code{demo}は、@mvar{filname}のファイルを探すため、
 ディレクトリ@code{file_search_demo}のリストを検索します。
 もしファイルの拡張子が@code{.dem}なら、拡張子は省略できます。
 @code{file_search}も参照してください。
@@ -132,18 +132,18 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{describe}
-@deffn  {関数} describe (@var{string})
-@deffnx {関数} describe (@var{string}, exact)
-@deffnx {関数} describe (@var{string}, inexact)
+@deffn  {関数} describe (@mvar{string})
+@deffnx {関数} describe (@mvar{string}, exact)
+@deffnx {関数} describe (@mvar{string}, inexact)
 @ifinfo
 @fnindex Help
 @end ifinfo
 
-@code{describe(@var{string})}は@code{describe(@var{string}, exact)}と同値です。
+@code{describe(@mvar{string})}は@code{describe(@mvar{string}, exact)}と同値です。
 
-@code{describe(@var{string}, exact)}は（大文字小文字は区別せず）@var{string}に等しいタイトルを持った項目があれば、それを見つけます。
+@code{describe(@mvar{string}, exact)}は（大文字小文字は区別せず）@mvar{string}に等しいタイトルを持った項目があれば、それを見つけます。
 
-@code{describe(@var{string}, inexact)}はタイトルの中に@var{string}を含むすべての項目を見つけます。
+@code{describe(@mvar{string}, inexact)}はタイトルの中に@mvar{string}を含むすべての項目を見つけます。
 もし複数あれば、Maximaはユーザーに項目を選択するよう尋ねます。
 
 対話プロンプトでは、
@@ -206,11 +206,11 @@ Enter space-separated numbers, `all' or `none': 7 8
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
-@deffn  {関数} example (@var{topic})
+@deffn  {関数} example (@mvar{topic})
 @deffnx {関数} example ()
 
-@code{example (@var{topic})}は、@var{topic}の例をいくつか表示します。
-@var{topic}はシンボルもしくは文字列です。
+@code{example (@mvar{topic})}は、@mvar{topic}の例をいくつか表示します。
+@mvar{topic}はシンボルもしくは文字列です。
 @code{if}や@code{do}、@code{lambda}のような演算子の例を得るには、引数は文字列でなければなりません。例えば、 @code{example ("do")}。
 @code{example}は、大文字小文字を区別しません。トピックのほとんどは関数名です。
 

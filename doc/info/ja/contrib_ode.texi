@@ -229,9 +229,9 @@ Lie方法が試みられます。
 @node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
 @section Functions and Variables for contrib_ode
 
-@deffn {関数} contrib_ode (@var{eqn}, @var{y}, @var{x})
+@deffn {関数} contrib_ode (@mvar{eqn}, @mvar{y}, @mvar{x})
 
-独立変数@var{x}と従属変数@var{y}に関するODE @var{eqn}の解のリストを返します。
+独立変数@mvar{x}と従属変数@mvar{y}に関するODE @mvar{eqn}の解のリストを返します。
 
 
 @opencatbox
@@ -240,10 +240,10 @@ Lie方法が試みられます。
 
 @end deffn
 
-@deffn {関数} odelin (@var{eqn}, @var{y}, @var{x})
+@deffn {関数} odelin (@mvar{eqn}, @mvar{y}, @mvar{x})
 
 @code{odelin}は
-独立変数@var{x}と従属変数@var{y}に関する
+独立変数@mvar{x}と従属変数@mvar{y}に関する
 一階および二階線形斉次ODEを解きます。
 ODEの基本的な解一式を返します。
 
@@ -285,11 +285,11 @@ BronsteinとLafailleによる方法
 
 @end deffn
 
-@deffn {関数} ode_check (@var{eqn}, @var{soln})
+@deffn {関数} ode_check (@mvar{eqn}, @mvar{soln})
 
-可能な解@var{soln}を代入した後、
-ODE @var{eqn}の値を返します。
-もし@var{soln}が@var{eqn}の解なら
+可能な解@mvar{soln}を代入した後、
+ODE @mvar{eqn}の値を返します。
+もし@mvar{soln}が@mvar{eqn}の解なら
 値はゼロと同値です。
 
 @c ===beg===
@@ -371,7 +371,7 @@ ODE @var{eqn}の値を返します。
 
 @end defvr
 
-@deffn {関数} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {関数} gauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
 
 @code{gauss_a(a,b,c,x)}と@code{gauss_b(a,b,c,x)}は2F1幾何関数です。
 それらは超幾何微分方程式
@@ -390,7 +390,7 @@ ODE @var{eqn}の値を返します。
 
 @end deffn
 
-@deffn {関数} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {関数} gauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
 See @code{gauss_a}.
 
 @opencatbox
@@ -399,8 +399,8 @@ See @code{gauss_a}.
 
 @end deffn
 
-@deffn {関数} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-@code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}の@var{x}に関する導関数。
+@deffn {関数} dgauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@code{gauss_a(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})}の@mvar{x}に関する導関数。
 
 @opencatbox
 @category{Package contrib_ode}
@@ -408,8 +408,8 @@ See @code{gauss_a}.
 
 @end deffn
 
-@deffn {関数} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-@code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}の@var{x}に関する導関数。
+@deffn {関数} dgauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@code{gauss_b(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})}の@mvar{x}に関する導関数。
 
 @opencatbox
 @category{Package contrib_ode}
@@ -418,7 +418,7 @@ See @code{gauss_a}.
 @end deffn
 
 
-@deffn {関数} kummer_m (@var{a}, @var{b}, @var{x})
+@deffn {関数} kummer_m (@mvar{a}, @mvar{b}, @mvar{x})
 
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2の中で定義される
@@ -436,7 +436,7 @@ KummerのM関数
 
 @end deffn
 
-@deffn {関数} kummer_u (@var{a}, @var{b}, @var{x})
+@deffn {関数} kummer_u (@mvar{a}, @mvar{b}, @mvar{x})
 
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3の中で定義される
@@ -450,8 +450,8 @@ KummerのU関数
 
 @end deffn
 
-@deffn {関数} dkummer_m (@var{a}, @var{b}, @var{x})
-@code{kummer_m(@var{a}, @var{b}, @var{x})}の@var{x}に関する導関数。
+@deffn {関数} dkummer_m (@mvar{a}, @mvar{b}, @mvar{x})
+@code{kummer_m(@mvar{a}, @mvar{b}, @mvar{x})}の@mvar{x}に関する導関数。
 
 @opencatbox
 @category{Package contrib_ode}
@@ -459,8 +459,8 @@ KummerのU関数
 
 @end deffn
 
-@deffn {関数} dkummer_u (@var{a}, @var{b}, @var{x})
-@code{kummer_u(@var{a}, @var{b}, @var{x})}の@var{x}に関する導関数。
+@deffn {関数} dkummer_u (@mvar{a}, @mvar{b}, @mvar{x})
+@code{kummer_u(@mvar{a}, @mvar{b}, @mvar{x})}の@mvar{x}に関する導関数。
 
 @opencatbox
 @category{Package contrib_ode}

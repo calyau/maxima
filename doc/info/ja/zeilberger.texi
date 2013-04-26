@@ -21,7 +21,7 @@ Axel Rieseによって開発された「フィルタリング」最適化法を�
 @category{Sums and products} @category{Share packages} @category{Package zeilberger}
 @closecatbox
 
-@subsubsection The indefinite summation problem
+@subsection The indefinite summation problem
 
 @code{zeilberger}は
 超幾何不定総和に関するGosperのアルゴリズムの実装します。
@@ -36,7 +36,7 @@ $$F_k = f_{k+1} - f_k.$$
 @math{F_k = f_(k+1) - f_k}.
 @end ifnottex
 
-@subsubsection The definite summation problem
+@subsection The definite summation problem
 
 @code{zeilberger}は
 超幾何定総和に関するGosperのアルゴリズムの実装します。
@@ -104,7 +104,7 @@ Zeilbergerのアルゴリズムでの線形系上の情報を含む更なる情�
 @node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
 @section Functions and Variables for zeilberger
 
-@deffn {関数} AntiDifference (@math{F_k}, @var{k})
+@deffn {関数} AntiDifference (@math{F_k}, @mvar{k})
 
 もし存在すれば、@math{F_k}の超幾何反差を返します。@*
 そうでなければ、 @code{AntiDifference}は
@@ -116,7 +116,7 @@ Zeilbergerのアルゴリズムでの線形系上の情報を含む更なる情�
 
 @end deffn
 
-@deffn {関数} Gosper (@math{F_k}, @var{k})
+@deffn {関数} Gosper (@math{F_k}, @mvar{k})
 もし存在すれば、
 @math{F_k}に対する有理証(rational certificate)、
 すなわち、
@@ -135,10 +135,10 @@ $F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
 
 @end deffn
 
-@deffn {関数} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
+@deffn {関数} GosperSum (@math{F_k}, @mvar{k}, @mvar{a}, @mvar{b})
 
 もし @math{F_k}が超幾何反差を持つなら、
-@math{@var{k} = @var{a}}から @math{@var{k} = @var{b}}までの
+@math{@mvar{k} = @mvar{a}}から @math{@mvar{k} = @mvar{b}}までの
 @math{F_k}の和を返します。
 そうでなければ、 @code{GosperSum}は @code{nongosper_summable}を返します。
 
@@ -213,12 +213,12 @@ Dependent equations eliminated:  (1)
 @end deffn
 
 @iftex
-@deffn {関数} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
+@deffn {関数} parGosper (@math{F_{n,k}}, @mvar{k}, @mvar{n}, @mvar{d})
 
 @tex
 $F_{n,k}$.
 @end tex
-に対して次数@var{d}の漸化式を見つけようとします。
+に対して次数@mvar{d}の漸化式を見つけようとします。
 
 アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
 解それぞれは形式
@@ -240,9 +240,9 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
-@deffn {関数} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
+@deffn {関数} parGosper (@math{F_(n,k)}, @mvar{k}, @mvar{n}, @mvar{d})
 
-@math{F_(n,k)}に対して次数@var{d}の漸化式を見つけようとします。
+@math{F_(n,k)}に対して次数@mvar{d}の漸化式を見つけようとします。
 
 アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
 解それぞれは形式
@@ -262,7 +262,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end ifnottex
 
 @iftex
-@deffn {関数} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
+@deffn {関数} Zeilberger (@math{F_{n,k}}, @mvar{k}, @mvar{n})
 
 @tex
 $F_{n,k}$
@@ -302,7 +302,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
-@deffn {関数} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
+@deffn {関数} Zeilberger (@math{F_(n,k)}, @mvar{k}, @mvar{n})
 
 @math{F_(n,k)}の超幾何不定総和を計算しようとします。
 
@@ -450,7 +450,7 @@ Zeilbergerのアルゴリズムで方程式系を解くのに使うソルバを�
 デフォルト値: @code{big_primes[10]}
 
 @code{parGosper}でモジュラーテストを実行する時
-@code{ev_point}で変数 @var{n}が評価されます。
+@code{ev_point}で変数 @mvar{n}が評価されます。
 
 @opencatbox
 @category{Package zeilberger}

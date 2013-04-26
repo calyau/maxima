@@ -11,19 +11,19 @@
 @node Definitions for Integration, Introduction to QUADPACK, Introduction to Integration, Integration
 @section Definitions for Integration
 
-@deffn {Function} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
+@deffn {Function} changevar (@mvar{expr}, @mvar{f(x,y)}, @mvar{y}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
+@deffn {Function} dblint (@mvar{f}, @mvar{r}, @mvar{s}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} defint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} defint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} erf (@var{x})
+@deffn {Function} erf (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -31,12 +31,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ilt (@var{expr}, @var{t}, @var{s})
+@deffn {Function} ilt (@mvar{expr}, @mvar{t}, @mvar{s})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} integrate (@var{expr}, @var{x})
-@deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} integrate (@mvar{expr}, @mvar{x})
+@deffnx {Function} integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -48,24 +48,24 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} ldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} potential (@var{givengradient})
+@deffn {Function} potential (@mvar{givengradient})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
+@deffn {Function} residue (@mvar{expr}, @mvar{z}, @mvar{z_0})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} risch (@var{expr}, @var{x})
+@deffn {Function} risch (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Function} romberg (@var{expr}, @var{a}, @var{b})
+@deffn {Function} romberg (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffnx {Function} romberg (@mvar{expr}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -85,7 +85,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} tldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -95,38 +95,38 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @node Definitions for QUADPACK, , Introduction to QUADPACK, Integration
 @section Definitions for QUADPACK
 
-@deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qag (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{key}, @mvar{epsrel}, @mvar{limit})
+@deffnx {Function} quad_qag (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{key}, @mvar{epsrel}, @mvar{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qags (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limit})
+@deffnx {Function} quad_qags (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qagi (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{inftype}, @mvar{epsrel}, @mvar{limit})
+@deffnx {Function} quad_qagi (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{inftype}, @mvar{epsrel}, @mvar{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qawc (@mvar{f(x)}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limit})
+@deffnx {Function} quad_qawc (@mvar{f}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, @mvar{epsrel}, @mvar{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawf (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
+@deffnx {Function} quad_qawf (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawo (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
+@deffnx {Function} quad_qawo (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
-@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffn {Function} quad_qaws (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, @mvar{epsabs}, @mvar{limit})
+@deffnx {Function} quad_qaws (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, @mvar{epsabs}, @mvar{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

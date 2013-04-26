@@ -131,8 +131,8 @@ ya que tambi@'en lo son @code{!} para el factorial, @code{for}, @code{do} y
 para definir condicionales.
 
 Las funciones @code{remove} y @code{kill} eliminan propiedades de operadores de un @'atomo.
-La llamada @code{remove ("@var{a}", op)} s@'olo elimina las propiedades de operador de @var{a}.
-La llamada @code{kill ("@var{a}")} elimina todas las propiedades de @var{a}, incluidas las propiedades de operador.
+La llamada @code{remove ("@mvar{a}", op)} s@'olo elimina las propiedades de operador de @mvar{a}.
+La llamada @code{kill ("@mvar{a}")} elimina todas las propiedades de @mvar{a}, incluidas las propiedades de operador.
 N@'otese que el nombre del operador debe ir entre comillas.
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
@@ -726,10 +726,10 @@ El operador @code{or} no es conmutativo: @code{a or b} puede no ser igual a @cod
 Representa la negaci@'on de la igualdad sint@'actica @code{=}.
 
 N@'otese que debido a las reglas de evaluaci@'on de expresiones
-de tipo predicado (en concreto debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}), 
-@code{not @var{a} = @var{b}} equivale a @code{is(@var{a} # @var{b})}, 
-pero no a @code{@var{a} # @var{b}}.
+de tipo predicado (en concreto debido a que @code{not @mvar{expr}}
+obliga a la evaluaci@'on previa de @mvar{expr}), 
+@code{not @mvar{a} = @mvar{b}} equivale a @code{is(@mvar{a} # @mvar{b})}, 
+pero no a @code{@mvar{a} # @mvar{b}}.
 
 Ejemplos:
 
@@ -768,30 +768,30 @@ Ejemplos:
 @end ifinfo
 Operador de ecuaci@'on.
 
-La expresi@'on @code{@var{a} = @var{b}} representa una ecuaci@'on
+La expresi@'on @code{@mvar{a} = @mvar{b}} representa una ecuaci@'on
 sin evaluar, la cual puede verificarse o no. Las ecuaciones sin evaluar 
 pueden aparecer como argumentos de @code{solve}, @code{algsys}
 y de algunas otras funciones.
 
 La funci@'on @code{is} eval@'ua el operador @code{=} a un
-resultado booleano; @code{is(@var{a} = @var{b})} asigna un valor
-de verdad a @code{@var{a} = @var{b}}, siendo @code{true} si
-@var{a} y @var{b} son id@'enticos, lo cual acontece si
-ambos @var{a} y @var{b} son @'atomos id@'enticos, o si no
+resultado booleano; @code{is(@mvar{a} = @mvar{b})} asigna un valor
+de verdad a @code{@mvar{a} = @mvar{b}}, siendo @code{true} si
+@mvar{a} y @mvar{b} son id@'enticos, lo cual acontece si
+ambos @mvar{a} y @mvar{b} son @'atomos id@'enticos, o si no
 siendo @'atomos, sus operadores y argumentos respectivos
-son id@'enticos; en caso contrario, @code{is(@var{a} = @var{b})}
+son id@'enticos; en caso contrario, @code{is(@mvar{a} = @mvar{b})}
 devuelve el valor  @code{false}. Nunca se devuelve el valor @code{unknown}.
-Cuando @code{is(@var{a} = @var{b})} toma el valor @code{true}, 
-se dice que @var{a} y @var{b} son sint@'acticamente iguales,
+Cuando @code{is(@mvar{a} = @mvar{b})} toma el valor @code{true}, 
+se dice que @mvar{a} y @mvar{b} son sint@'acticamente iguales,
 no expresiones equivalentes, para las cuales 
-@code{is(equal(@var{a}, @var{b}))} devuelve @code{true}.
+@code{is(equal(@mvar{a}, @mvar{b}))} devuelve @code{true}.
 Las expresiones pueden ser equivalentes, pero no 
 sint@'acticamente iguales.
 
 La negaci@'on de @code{=} se representa por @code{#}.
 Como en el caso de @code{=}, la expresi@'on 
-@code{@var{a} # @var{b}} no est@'a evaluada; sin embargo,
-@code{is(@var{a} # @var{b})} eval@'ua @code{@var{a} # @var{b}}
+@code{@mvar{a} # @mvar{b}} no est@'a evaluada; sin embargo,
+@code{is(@mvar{a} # @mvar{b})} eval@'ua @code{@mvar{a} # @mvar{b}}
 a @code{true} o @code{false}.
 
 Adem@'as de @code{is}, hay otros operadores que eval@'uan 
@@ -799,10 +799,10 @@ Adem@'as de @code{is}, hay otros operadores que eval@'uan
 a saber, @code{if}, @code{and}, @code{or} y @code{not}.
 
 N@'otese que debido a las reglas de evaluaci@'on de expresiones
-de tipo predicado (en concreto debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}), 
-@code{not @var{a} = @var{b}} equivale a @code{is(@var{a} # @var{b})}, 
-pero no a @code{@var{a} # @var{b}}.
+de tipo predicado (en concreto debido a que @code{not @mvar{expr}}
+obliga a la evaluaci@'on previa de @mvar{expr}), 
+@code{not @mvar{a} = @mvar{b}} equivale a @code{is(@mvar{a} # @mvar{b})}, 
+pero no a @code{@mvar{a} # @mvar{b}}.
 
 Las funciones @code{rhs} y @code{lhs} devuelven los miembros
 derecho e izquierdo, respectivamente, de una ecuaci@'on o inecuaci@'on.
@@ -811,7 +811,7 @@ V@'eanse tambi@'en @code{equal} y @code{notequal}.
 
 Ejemplos:
 
-La expresi@'on @code{@var{a} = @var{b}} representa una ecuaci@'on
+La expresi@'on @code{@mvar{a} = @mvar{b}} representa una ecuaci@'on
 sin evaluar, la cual puede verificarse o no.
 
 @c ===beg===
@@ -841,8 +841,8 @@ sin evaluar, la cual puede verificarse o no.
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@var{a} = @var{b})} eval@'ua @code{@var{a} = @var{b}} 
-a @code{true} si @var{a} y @var{b}
+@code{is(@mvar{a} = @mvar{b})} eval@'ua @code{@mvar{a} = @mvar{b}} 
+a @code{true} si @mvar{a} y @mvar{b}
 son sint@'acticamente iguales (es decir, id@'enticas).
 Las expresiones pueden ser equivalentes, pero no 
 sint@'acticamente iguales.
@@ -887,9 +887,9 @@ Algunos operadores eval@'uan @code{=} y @code{#} a @code{true} o @code{false}.
 (%o4)                  [false, true, true]
 @end example
 
-Debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}, 
-@code{not @var{a} = @var{b}} equivale a @code{is(@var{a} # @var{b})}.
+Debido a que @code{not @mvar{expr}}
+obliga a la evaluaci@'on previa de @mvar{expr}, 
+@code{not @mvar{a} = @mvar{b}} equivale a @code{is(@mvar{a} # @mvar{b})}.
 
 @c ===beg===
 @c [2 * x # 3 * x, not (2 * x = 3 * x)];
@@ -1204,20 +1204,20 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 
 El operador de definici@'on de funciones. 
-La expresi@'on @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}}
-define una funci@'on de nombre @var{f} con argumentos
-@var{x_1}, ..., @var{x_n} y cuerpo @var{expr}.
+La expresi@'on @code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}) := @mvar{expr}}
+define una funci@'on de nombre @mvar{f} con argumentos
+@mvar{x_1}, ..., @mvar{x_n} y cuerpo @mvar{expr}.
 El operador @code{:=} no eval@'ua el cuerpo de la funci@'on (a menos que
 se indique lo contrario mediante el operador comilla-comilla @code{'@w{}'}).
 La funci@'on as@'{@dotless{i}} definida puede ser una funci@'on ordinaria
 de Maxima (con argumentos encerrados entre par@'entesis) o una funci@'on
 array (con argumentos encerrados entre corchetes).
 
-Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo
+Cuando el @'ultimo o @'unico argumento @mvar{x_n} es una lista de un solo
 elemento, la funci@'on definida por @code{:=} acepta un n@'umero variable
 de argumentos. Los valores de los argumentos se asignan uno a uno a los
-argumentos formales @var{x_1}, ..., @var{x_(n - 1)}, y cualesquiera otros
-valores de argumentos, si existen, se asignan a @var{x_n} en forma de lista.
+argumentos formales @mvar{x_1}, ..., @mvar{x_(n - 1)}, y cualesquiera otros
+valores de argumentos, si existen, se asignan a @mvar{x_n} en forma de lista.
 
 Todas las definiciones de funciones aparecen en el mismo espacio de
 nombres; definiendo una funci@'on @code{f} dentro de otra funci@'on @code{g}
@@ -1226,7 +1226,7 @@ No obstante, @code{local(f)} hace que la funci@'on @code{f}
 sea efectiva solamente dentro del bloque o empaquetado de expresiones en la
 que aparece @code{local}.
 
-Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado por el
+Si un argumento formal @mvar{x_k} es un s@'{@dotless{i}}mbolo afectado por el
 operador comilla (expresi@'on nominal), la funci@'on definida por @code{:=} no eval@'ua el
 correspondiente valor de argumento. 
 En cualquier otro caso, los argumentos que se pasan son evaluados.
@@ -1273,7 +1273,7 @@ de Maxima o una funci@'on array.
                        x, y
 @end example
 
-Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo
+Cuando el @'ultimo o @'unico argumento @mvar{x_n} es una lista de un solo
 elemento, la funci@'on definida por @code{:=} acepta un n@'umero variable
 de argumentos.
 
@@ -1321,44 +1321,44 @@ de argumentos.
 
 
 
-@deffn {Funci@'on} infix (@var{op})
-@deffnx {Funci@'on} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Funci@'on} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
-Declara @var{op} como operador infijo.
+@deffn {Funci@'on} infix (@mvar{op})
+@deffnx {Funci@'on} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
+@deffnx {Funci@'on} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
+Declara @mvar{op} como operador infijo.
 Un operador infijo es una funci@'on de dos argumentos,
 con el nombre de la funci@'on escrito entre sus argumentos.
 Por ejemplo, el operador de sustracci@'on @code{-} es un operador infijo.
 
-@code{infix (@var{op})} declara @var{op} como operador infijo
+@code{infix (@mvar{op})} declara @mvar{op} como operador infijo
 con fuerzas de ligadura por la izquierda y por la derecha iguales a 180, que es el valor por defecto, 
 y partes izquierda y derecha iguales a @code{any}.
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})} declara @var{op} como operador infijo
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})} declara @mvar{op} como operador infijo
 con fuerzas de ligadura por la izquierda y por la derecha declaradas en los argumentos, siendo las partes izquierda y derecha iguales a @code{any}.
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-declara @var{op} como operador infijo con fuerzas de ligadura por la 
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})}
+declara @mvar{op} como operador infijo con fuerzas de ligadura por la 
 izquierda y por la derecha, junto con los tipos de expresiones correspondientes
-a @var{lpos}, @var{rpos} y @var{pos}, que son el operando de la izquierda,
+a @mvar{lpos}, @mvar{rpos} y @mvar{pos}, que son el operando de la izquierda,
 el de la derecha y el operador del resultado; los tipos reconocidos son:
 @code{expr}, @code{clause} y @code{any}, que indican expresi@'on algebraica,
 expresi@'on booleana o cualquier otra, respectivamente. Maxima puede detectar
 algunos errores sint@'acticos comparando los tipos declarados con los de la expresi@'on
 actual.
 
-La precedencia de @var{op} con respecto a otros operadores deriva de las fuerzas de ligadura de los operadores en cuesti@'on.
-Si las fuerzas de ligadura a izquierda y derecha de @var{op} son ambas mayores que las fuerzas de ligadura a izquierda y derecha de otro operador, entonces @var{op} tiene preferencia sobre el otro operador. Si las fuerzas de ligadura no son ambas mayores o menores, se aplican otras relaciones m@'as complejas.
+La precedencia de @mvar{op} con respecto a otros operadores deriva de las fuerzas de ligadura de los operadores en cuesti@'on.
+Si las fuerzas de ligadura a izquierda y derecha de @mvar{op} son ambas mayores que las fuerzas de ligadura a izquierda y derecha de otro operador, entonces @mvar{op} tiene preferencia sobre el otro operador. Si las fuerzas de ligadura no son ambas mayores o menores, se aplican otras relaciones m@'as complejas.
 
-La asociatividad de @var{op} depende de las fuerzas de ligadura.
-Una mayor fuerza de ligadura a la izquierda (@var{lbp}) implica que @var{op} sea evaluado antes que otros operadores a su izquierda en la expresi@'on, mientras que mayor fuerza de ligadura a la derecha (@var{rbp}) implica que @var{op} sea evaluado antes que otros operadores a su derecha en la expresi@'on.
-As@'{@dotless{i}}, si @var{lbp} es mayor, @var{op} es asociativo por la derecha, mientras que si @var{rbp} es mayor, @var{op} es asociativo por la izquierda.
+La asociatividad de @mvar{op} depende de las fuerzas de ligadura.
+Una mayor fuerza de ligadura a la izquierda (@mvar{lbp}) implica que @mvar{op} sea evaluado antes que otros operadores a su izquierda en la expresi@'on, mientras que mayor fuerza de ligadura a la derecha (@mvar{rbp}) implica que @mvar{op} sea evaluado antes que otros operadores a su derecha en la expresi@'on.
+As@'{@dotless{i}}, si @mvar{lbp} es mayor, @mvar{op} es asociativo por la derecha, mientras que si @mvar{rbp} es mayor, @mvar{op} es asociativo por la izquierda.
 
 V@'ease tambi@'en @code{Syntax}.
 
 Ejemplos:
 
-Si las fuerzas de ligadura a izquierda y derecha de @var{op} son ambas mayores que las fuerzas de ligadura a izquierda y derecha de otro operador, entonces @var{op} tiene preferencia sobre el otro operador.
+Si las fuerzas de ligadura a izquierda y derecha de @mvar{op} son ambas mayores que las fuerzas de ligadura a izquierda y derecha de otro operador, entonces @mvar{op} tiene preferencia sobre el otro operador.
 
 @c ===beg===
 @c :lisp (get '$+ 'lbp)
@@ -1386,8 +1386,8 @@ Si las fuerzas de ligadura a izquierda y derecha de @var{op} son ambas mayores q
 (%o5)                       (a+1,b+2)
 @end example
 
-Mayor @var{lbp} hace a @var{op} asociativo por la derecha,
-mientras que mayor  @var{rbp} hace a @var{op} asociativo por la izquierda.
+Mayor @mvar{lbp} hace a @mvar{op} asociativo por la derecha,
+mientras que mayor  @mvar{rbp} hace a @mvar{op} asociativo por la izquierda.
 
 @c ===beg===
 @c infix ("##", 100, 99);
@@ -1434,10 +1434,10 @@ if x ## y then
 
 
 
-@deffn {Funci@'on} matchfix (@var{ldelimiter}, @var{rdelimiter})
-@deffnx {Funci@'on} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+@deffn {Funci@'on} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
+@deffnx {Funci@'on} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
 
-Declara un operador "matchfix" con delimitadores a la izquierda y derecha, @var{ldelimiter} y @var{rdelimiter}, respectivamente. Los delimitadores son cadenas alfanum@'ericas.
+Declara un operador "matchfix" con delimitadores a la izquierda y derecha, @mvar{ldelimiter} y @mvar{rdelimiter}, respectivamente. Los delimitadores son cadenas alfanum@'ericas.
 
 Un operador "matchfix" es una funci@'on con un n@'umero arbitrario de argumentos, de manera que los argumentos se presentan entre los delimitadores de la izquierda y derecha. Los delimitadores pueden ser cualquier tipo de cadena, en tanto que el analizador sint@'actico pueda distinguirlos de los operandos y de expresiones con operadores. En la pr@'actica esto excluye delimitadores como @code{%}, @code{,}, @code{$} y @code{;},  necesitando aislar los delimitadores con espacios en blanco. El delimitador de la derecha puede ser igual o diferente del de la izquierda.
 
@@ -1445,18 +1445,18 @@ Un delimitador de la izquierda s@'olo puede asociarse con un @'unico delimitador
 
 Un operador ya existente puede declararse como operador "matchfix" sin necesidad de que cambie el resto de propiedades. En particular, los operadores de Maxima tales como la suma @code{+} pueden ser declarados como "matchfix".
 
-La llamada @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
-declara el argumento @var{arg_pos} y el resultado @var{pos}, as@'{@dotless{i}}
-como los delimitadores  @var{ldelimiter} y @var{rdelimiter}.
+La llamada @code{matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})} 
+declara el argumento @mvar{arg_pos} y el resultado @mvar{pos}, as@'{@dotless{i}}
+como los delimitadores  @mvar{ldelimiter} y @mvar{rdelimiter}.
 
-Los argumentos @var{arg_pos} y @var{pos} son tipos de funciones,
+Los argumentos @mvar{arg_pos} y @mvar{pos} son tipos de funciones,
 reconoci@'endose como tales: @code{expr}, @code{clause} y @code{any},
 los cuales hacen referencia a una expresi@'on algebraica, booleana o
 de cualquier otro tipo, respectivamente.
 Maxima puede detectar ciertos errores sint@'acticos comparando el
 tipo de expresi@'on declarado con el de la expresi@'on actual.
 
-La funci@'on que ejecutar@'a una operaci@'on "matchfix" ser@'a una t@'{@dotless{i}}pica funci@'on definida por el usuario. La funci@'on de operador se define por el m@'etodo habitual con  @code{:=} o @code{define}. Los argumentos pueden escribirse entre los delimitadores, o con el delimitador izquierdo como una cadena precedida de ap@'ostrofo y seguidamente los argumentos entre par@'entesis. La llamada @code{dispfun (@var{ldelimiter})} muestra la definici@'on de la funci@'on.
+La funci@'on que ejecutar@'a una operaci@'on "matchfix" ser@'a una t@'{@dotless{i}}pica funci@'on definida por el usuario. La funci@'on de operador se define por el m@'etodo habitual con  @code{:=} o @code{define}. Los argumentos pueden escribirse entre los delimitadores, o con el delimitador izquierdo como una cadena precedida de ap@'ostrofo y seguidamente los argumentos entre par@'entesis. La llamada @code{dispfun (@mvar{ldelimiter})} muestra la definici@'on de la funci@'on.
 
 El @'unico operador "matchfix" de Maxima es el constructor de listas @code{[ ]}. Los par@'entesis  @code{( )} y las comillas dobles  @code{" "}  act@'uan como operadores "matchfix", pero son tratados como operadores "matchfix" por el analizador sint@'actico de Maxima.
 
@@ -1533,8 +1533,8 @@ Los operadores "matchfix" son funciones definidas por el usuario.
 
 
 
-@deffn  {Funci@'on} nary (@var{op})
-@deffnx {Funci@'on} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
+@deffn  {Funci@'on} nary (@mvar{op})
+@deffnx {Funci@'on} nary (@mvar{op}, @mvar{bp}, @mvar{arg_pos}, @mvar{pos})
 
 Un operador n-ario denota una funci@'on con un n@'umero arbitrario de
 argumentos entre los que se intercal el s@'{@dotless{i}}mbolo del operador,
@@ -1547,8 +1547,8 @@ transforma @code{j(j(a,b),j(c,d))} en @code{j(a, b, c, d)}.
 
 
 
-@deffn  {Funci@'on} nofix (@var{op})
-@deffnx {Funci@'on} nofix (@var{op}, @var{pos})
+@deffn  {Funci@'on} nofix (@mvar{op})
+@deffnx {Funci@'on} nofix (@mvar{op}, @mvar{pos})
 
 Los operadores no-fijos se utilizan para definir funciones sin argumentos.
 La mera presencia de tal operador en una instrucci@'on har@'a que se
@@ -1561,8 +1561,8 @@ como operador no-fijo.
 
 
 
-@deffn  {Funci@'on} postfix (@var{op})
-@deffnx {Funci@'on} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
+@deffn  {Funci@'on} postfix (@mvar{op})
+@deffnx {Funci@'on} postfix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})
 
 Los operadores sufijos son funciones de un @'unico argumento en las que @'este
 precede al operador, como en @code{3!}. La instrucci@'on @code{postfix("x")}
@@ -1572,8 +1572,8 @@ declara @code{x} como operador sufijo.
 
 
 
-@deffn  {Funci@'on} prefix (@var{op})
-@deffnx {Funci@'on} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
+@deffn  {Funci@'on} prefix (@mvar{op})
+@deffnx {Funci@'on} prefix (@mvar{op}, @mvar{rbp}, @mvar{rpos}, @mvar{pos})
 
 Los operadores prefijos son funciones de un @'unico argumento en las que @'este
 se coloca a continuaci@'on del operador. La instrucci@'on 

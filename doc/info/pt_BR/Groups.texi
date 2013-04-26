@@ -7,11 +7,11 @@
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos,  , Grupos, Grupos
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos
 
-@deffn {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o}, @var{subgroupo})
-@deffnx {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o})
+@deffn {Fun@value{cedilha}@~{a}o} todd_coxeter (@mvar{rela@value{cedilha}@~{a}o}, @mvar{subgroupo})
+@deffnx {Fun@value{cedilha}@~{a}o} todd_coxeter (@mvar{rela@value{cedilha}@~{a}o})
 
-Acha a ordem de G/H onde G @'{e} o m@'{o}dulo do Grupo Livre @var{rela@value{cedilha}@~{a}o}, e
-H @'{e} o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'{e} um argumento
+Acha a ordem de G/H onde G @'{e} o m@'{o}dulo do Grupo Livre @mvar{rela@value{cedilha}@~{a}o}, e
+H @'{e} o subgroupo de G gerado por @mvar{subgroupo}.  @mvar{subgroupo} @'{e} um argumento
 opcional, cujo valor padr@~{a}o @'{e} [].  Em fazendo isso a fun@value{cedilha}@~{a}o produz uma
 tabela de multiplica@value{cedilha}@~{a}o @`a direita de G sobre G/H, onde os
 co-conjuntos s@~{a}o enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no

@@ -7,7 +7,7 @@
 @node Funciones y variables para makeOrders,  , makeOrders, makeOrders
 @section Funciones y variables para makeOrders
 
-@deffn {Funci@'on} makeOrders (@var{indvarlist},@var{orderlist})
+@deffn {Funci@'on} makeOrders (@mvar{indvarlist},@mvar{orderlist})
 Devuelve una lista con las potencias de las variables de un polinomio t@'ermino a t@'ermino.
 
 @example

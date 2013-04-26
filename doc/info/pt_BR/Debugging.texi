@@ -261,10 +261,10 @@ Veja tamb@'{e}m @code{setcheck} e @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} timer (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} timer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} timer (all)
 @deffnx {Fun@value{cedilha}@~{a}o} timer ()
-Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+Dadas as fun@value{cedilha}@~{o}es @mvar{f_1}, ..., @mvar{f_n},
 @code{timer} coloca cada uma na lista de fun@value{cedilha}@~{o}es para as quais cronometragens estat@'{i}sticas s@~{a}o coletadas.
 @code{timer(f)$ timer(g)$} coloca @code{f} e ent@~{a}o @code{g} sobre a lista;
 a lista acumula de uma chamada para a chamada seguinte.
@@ -291,9 +291,9 @@ Se @code{trace(f)} est@'{a} vigorando, ent@~{a}o @code{timer(f)} n@~{a}o tem efe
 Veja tamb@'{e}m @code{timer_devalue}.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~{a}o} untimer (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} untimer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} untimer ()
-Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+Dadas as fun@value{cedilha}@~{o}es @mvar{f_1}, ..., @mvar{f_n},
 @code{untimer} remove cada uma das fun@value{cedilha}@~{o}es listadas da lista de fun@value{cedilha}@~{o}es estatisticamente monitoradas.
 
 Sem argumentos, @code{untimer} remove todas as fun@value{cedilha}@~{o}es atualmente na  lista de fun@value{cedilha}@~{o}es estatisticamente monitoradas.
@@ -320,9 +320,9 @@ Veja tamb@'{e}m @code{timer} e @code{timer_info}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} timer_info (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} timer_info (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} timer_info ()
-Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+Dadas as fun@value{cedilha}@~{o}es @mvar{f_1}, ..., @mvar{f_n},
 @code{timer_info} retorna uma matriz contendo informa@value{cedilha}@~{o}es de cronometragem para cada fun@value{cedilha}@~{a}o.
 Sem argumentos, @code{timer_info} retorna informa@value{cedilha}@~{o}es de cronometragem para
 todas as fun@value{cedilha}@~{o}es atualmente na lista de fun@value{cedilha}@~{o}es estatisticamente monitoradas.
@@ -343,10 +343,10 @@ Veja tamb@'{e}m @code{timer}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} trace (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} trace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} trace (all)
 @deffnx {Fun@value{cedilha}@~{a}o} trace ()
-Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+Dadas as fun@value{cedilha}@~{o}es @mvar{f_1}, ..., @mvar{f_n},
 @code{trace} instrui Maxima para mostrar
 informa@value{cedilha}@~{o}es de depura@value{cedilha}@~{a}o quando essas fun@value{cedilha}@~{o}es forem chamadas.
 @code{trace(f)$ trace(g)$} coloca @code{f} e ent@~{a}o @code{g} na lista de fun@value{cedilha}@~{o}es
@@ -373,14 +373,14 @@ Se @code{timer (f)} estiver em efeito, ent@~{a}o @code{trace (f)} n@~{a}o est@'{
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Fun@value{cedilha}@~{a}o} trace_options (@var{f})
-Escolhe as op@value{cedilha}@~{o}es de @code{trace} para a fun@value{cedilha}@~{a}o @var{f}.
+@deffn {Fun@value{cedilha}@~{a}o} trace_options (@mvar{f}, @mvar{option_1}, ..., @mvar{option_n})
+@deffnx {Fun@value{cedilha}@~{a}o} trace_options (@mvar{f})
+Escolhe as op@value{cedilha}@~{o}es de @code{trace} para a fun@value{cedilha}@~{a}o @mvar{f}.
 Quaisquer op@value{cedilha}@~{o}es anteriores s@~{a}o substitu@'{i}das.
-@code{trace_options (@var{f}, ...)} n@~{a}o tem efeito a menos que
-@code{trace (@var{f})} tenha sido tamb@'{e}m chamada (ou antes ou ap@'{o}s @code{trace_options}). 
+@code{trace_options (@mvar{f}, ...)} n@~{a}o tem efeito a menos que
+@code{trace (@mvar{f})} tenha sido tamb@'{e}m chamada (ou antes ou ap@'{o}s @code{trace_options}). 
 
-@code{trace_options (@var{f})} reposiciona todas as op@value{cedilha}@~{o}es para seus valores padr@~{a}o.
+@code{trace_options (@mvar{f})} reposiciona todas as op@value{cedilha}@~{o}es para seus valores padr@~{a}o.
 
 As op@value{cedilha}@~{o}es de palavra chave s@~{a}o:
 
@@ -406,8 +406,8 @@ tentar novamente a chamada de fun@value{cedilha}@~{a}o, ou especificar um valor 
 
 Op@value{cedilha}@~{o}es para @code{trace} s@~{a}o especificadas em duas formas. A presen@value{cedilha}a da palavra chave de 
 op@value{cedilha}@~{a}o sozinha coloca a op@value{cedilha}@~{a}o para ter efeito incondicionalmente.
-(Note que op@value{cedilha}@~{a}o @var{foo} n@~{a}o coloca para ter efeito especificando 
-@code{@var{foo}: true} ou uma forma similar; note tamb@'{e}m que palavras chave n@~{a}o precisam
+(Note que op@value{cedilha}@~{a}o @mvar{foo} n@~{a}o coloca para ter efeito especificando 
+@code{@mvar{foo}: true} ou uma forma similar; note tamb@'{e}m que palavras chave n@~{a}o precisam
 estar com ap@'{o}strofo.) Especificando a op@value{cedilha}@~{a}o palavra chave com uma fun@value{cedilha}@~{a}o
 predicado torna a op@value{cedilha}@~{a}o condicional sobre o predicado.
 
@@ -443,9 +443,9 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} untrace (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} untrace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} untrace ()
-Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+Dadas as fun@value{cedilha}@~{o}es @mvar{f_1}, ..., @mvar{f_n},
 @code{untrace} desabilita a a monitora@value{cedilha}@~{a}o habilitada pela fun@value{cedilha}@~{a}o @code{trace}.
 Sem argumentos, @code{untrace} desabilita a atua@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{trade} para todas as fun@value{cedilha}@~{o}es.
 

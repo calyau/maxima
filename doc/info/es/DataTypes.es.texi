@@ -145,7 +145,7 @@ Funciones disponibles para los n@'umeros complejos:
 @subsection Funciones y variables para los n@'umeros
 
 
-@deffn {Funci@'on} bfloat (@var{expr})
+@deffn {Funci@'on} bfloat (@mvar{expr})
 Convierte todos los n@'umeros y  funciones num@'ericas a n@'umeros decimales de punto flotante grandes ("bigfloats").
 El n@'umero de d@'{@dotless{i}}gitos significativos de los "bigfloats" resultantes se especifica mediante la variable global @code{fpprec}.
 
@@ -154,8 +154,8 @@ Si @code{float2bf} vale @code{false} se mostrar@'a un mensaje de aviso cuando un
 @end deffn
 
 
-@deffn {Funci@'on} bfloatp (@var{expr})
-Devuelve @code{true} si @var{expr} es un n@'umero decimal en punto flotante grande ("bigfloats"), en caso contrario devuelve @code{false}.
+@deffn {Funci@'on} bfloatp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es un n@'umero decimal en punto flotante grande ("bigfloats"), en caso contrario devuelve @code{false}.
 
 @end deffn
 
@@ -177,14 +177,14 @@ se muestra como @code{1.000000000000000B0}. En otro caso, se mostrar@'a como @co
 @end defvr
 
 
-@deffn {Funci@'on} evenp (@var{expr})
-Devuelve @code{true} si @var{expr} es un entero par y @code{false} en cualquier otro caso.
+@deffn {Funci@'on} evenp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es un entero par y @code{false} en cualquier otro caso.
 
 @end deffn
 
 
-@deffn {Funci@'on} float (@var{expr})
-Convierte los enteros, n@'umeros racionales y los decimales de punto flotante grandes ("bigfloats") que est@'an presentes en @var{expr} a n@'umeros de punto flotante. Tambi@'en act@'ua como s@'{@dotless{i}}mbolo @code{evflag}.
+@deffn {Funci@'on} float (@mvar{expr})
+Convierte los enteros, n@'umeros racionales y los decimales de punto flotante grandes ("bigfloats") que est@'an presentes en @mvar{expr} a n@'umeros de punto flotante. Tambi@'en act@'ua como s@'{@dotless{i}}mbolo @code{evflag}.
 
 @end deffn
 
@@ -199,8 +199,8 @@ puede conllevar p@'erdida de precisi@'on.
 @end defvr
 
 
-@deffn {Funci@'on} floatnump (@var{expr})
-Devuelve @code{true} si @var{expr} es un n@'umero de punto flotante, en caso contario retorna @code{false}.
+@deffn {Funci@'on} floatnump (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es un n@'umero de punto flotante, en caso contario retorna @code{false}.
 
 @end deffn
 
@@ -239,9 +239,9 @@ La variable @code{fpprintprec} no admite el valor 1.
 @end defvr
 
 
-@deffn {Funci@'on} integerp (@var{expr})
+@deffn {Funci@'on} integerp (@mvar{expr})
 
-Devuelve @code{true} si @var{expr} es un n@'umero entero y @code{false} en cualquier otro caso.
+Devuelve @code{true} si @mvar{expr} es un n@'umero entero y @code{false} en cualquier otro caso.
 
 La funci@'on @code{integerp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando @'este ha sido declarado como entero.
 
@@ -292,16 +292,16 @@ m1pbranch:false          m1pbranch:true
 @end defvr
 
 
-@deffn {Funci@'on} nonnegintegerp (@var{n})
+@deffn {Funci@'on} nonnegintegerp (@mvar{n})
 
-Devuelve @code{true} si y solo si @code{@var{n} >= 0}, siendo @var{n} un entero.
+Devuelve @code{true} si y solo si @code{@mvar{n} >= 0}, siendo @mvar{n} un entero.
 
 @end deffn
 
 
-@deffn {Funci@'on} numberp (@var{expr})
+@deffn {Funci@'on} numberp (@mvar{expr})
 
-Devuelve @code{true} si @var{expr} es un en@'umero entero, racional, 
+Devuelve @code{true} si @mvar{expr} es un en@'umero entero, racional, 
 de coma flotante o "bigfloat", en caso contrario devuelve @code{false}.
 
 La funci@'on @code{numberp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando el argumento es un n@'umero simb@'olico como @code{%pi} o @code{%i}, o aunque haya sido declarado como @code{even} (par), @code{odd} (impar), @code{integer} (entero), @code{rational} (racional), @code{irrational} (irracional), @code{real} (real), @code{imaginary} (imaginario) o @code{complex} (complejo).
@@ -398,8 +398,8 @@ Ejemplos:
 @end defvr
 
 
-@deffn {Funci@'on} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
-Declara las variables @code{x_1}, ..., @var{x_n} asign@'andoles los valores num@'ericos @code{expr_1}, ..., @code{expr_n}.
+@deffn {Funci@'on} numerval (@mvar{x_1}, @mvar{expr_1}, ..., @mvar{var_n}, @mvar{expr_n})
+Declara las variables @code{x_1}, ..., @mvar{x_n} asign@'andoles los valores num@'ericos @code{expr_1}, ..., @code{expr_n}.
 El valor num@'erico se eval@'ua y sustituye a la variable en cualquier expresi@'on en la que @'esta aparezca si @code{numer} toma el valor @code{true}. V@'ease tambi@'en @code{ev}.
 
 Las expresiones @code{expr_1}, ..., @code{expr_n} pueden ser expresiones no necesariamente num@'ericas.
@@ -407,8 +407,8 @@ Las expresiones @code{expr_1}, ..., @code{expr_n} pueden ser expresiones no nece
 
 
 
-@deffn {Funci@'on} oddp (@var{expr})
-Devuelve @code{true} si @var{expr} es un entero impar y @code{false} en caso contrario.
+@deffn {Funci@'on} oddp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es un entero impar y @code{false} en caso contrario.
 @end deffn
 
 
@@ -424,8 +424,8 @@ La variable @code{ratepsilon} guarda la tolerancia utilizada en la conversi@'on 
 
 
 
-@deffn {Funci@'on} rationalize (@var{expr})
-Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (big float) presentes en una expresi@'on @var{expr} de Maxima a sus formas racionales exactas equivalentes. Si el usuario no est@'a familiarizado con la representaci@'on binaria de n@'umeros en coma flotante, le puede extra@~nar que @code{rationalize (0.1)} no sea igual que 1/10.  Este comportamiento no es @'unico de Maxima, ya que el n@'umero 1/10 en su forma binaria es peri@'odico y no exacto.
+@deffn {Funci@'on} rationalize (@mvar{expr})
+Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (big float) presentes en una expresi@'on @mvar{expr} de Maxima a sus formas racionales exactas equivalentes. Si el usuario no est@'a familiarizado con la representaci@'on binaria de n@'umeros en coma flotante, le puede extra@~nar que @code{rationalize (0.1)} no sea igual que 1/10.  Este comportamiento no es @'unico de Maxima, ya que el n@'umero 1/10 en su forma binaria es peri@'odico y no exacto.
 
 @c ===beg===
 @c rationalize (0.5);
@@ -515,8 +515,8 @@ Ejemplo de uso:
 
 
 
-@deffn {Funci@'on} ratnump (@var{expr})
-Devuelve @code{true} si @var{expr} es un entero literal o una fracci@'on de enteros literales, en caso contrario devuelve @code{false}.
+@deffn {Funci@'on} ratnump (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es un entero literal o una fracci@'on de enteros literales, en caso contrario devuelve @code{false}.
 
 @end deffn
 
@@ -624,7 +624,7 @@ this string.";
 
 
 
-@deffn {Funci@'on} concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Funci@'on} concat (@mvar{arg_1}, @mvar{arg_2}, ...)
 Concatena sus argumentos, que deben ser todos @'atomos.
 El valor devuelto es un s@'{@dotless{i}}mbolo si el primer argumento es a su vez un s@'{@dotless{i}}mbolo, o una cadena en caso contrario.
 
@@ -669,7 +669,7 @@ N@'otese que aunque @code{concat (1, 2)} parezca un n@'umero, se trata de una ca
 
 
 
-@deffn {Funci@'on} sconcat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Funci@'on} sconcat (@mvar{arg_1}, @mvar{arg_2}, ...)
 
 Concatena sus argumentos para producir una cadena.
 Al contrario que @code{concat}, sus argumentos @i{no} necesitan ser @'atomos.
@@ -684,7 +684,7 @@ El resultado es una cadena.
 
 
 
-@deffn {Funci@'on} string (@var{expr})
+@deffn {Funci@'on} string (@mvar{expr})
 Convierte @code{expr} a la notaci@'on lineal de Maxima, tal como si fuese tecleada.
 
 El valor que retorna la funci@'on @code{string} es una cadena, por lo que no puede ser utilizada en los c@'alculos.

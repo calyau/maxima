@@ -5,15 +5,15 @@
 @node Functions and Variables for opsubst,  , opsubst, opsubst
 @section Functions and Variables for opsubst
 
-@deffn {関数} opsubst (@var{f},@var{g},@var{e})
-@deffnx {関数} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {関数} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {関数} opsubst (@mvar{f},@mvar{g},@mvar{e})
+@deffnx {関数} opsubst (@mvar{g}=@mvar{f},@mvar{e})
+@deffnx {関数} opsubst ([@mvar{g1}=@mvar{f1},@mvar{g2}=@mvar{f2},..., @mvar{gn}=@mvar{fn}],@mvar{e})
 関数@code{opsubst}は
 @code{opsubst}は式の中の演算子への代入だけをすることを除いて、
 関数@code{subst}に似ています。
 一般に、
-@var{f}が式@var{e}の中の演算子の時、
-式@var{e}の中で@var{g}を@var{f}に代入します。
+@mvar{f}が式@mvar{e}の中の演算子の時、
+式@mvar{e}の中で@mvar{g}を@mvar{f}に代入します。
 
 演算子を決定するために、
 @code{opsubst}は@code{inflag}をtrueに設定します。
