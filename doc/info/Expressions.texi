@@ -228,7 +228,7 @@ expressions.
 
 @c -----------------------------------------------------------------------------
 @anchor{alias}
-@deffn {Function} alias (@mvar{new_name_1}, @mvar{old_name_1}, @dots{}, @mvar{new_name_n}, @mvar{old_name_n})
+@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, @dots{}, @var{new_name_n}, @var{old_name_n})
 
 provides an alternate name for a (user or system) function, variable, array,
 etc.  Any even number of arguments may be used.
@@ -304,14 +304,14 @@ while
 (%o1)                   [aa, bb, 33, 44]
 @end example
 
-@code{kill(allbut(@mvar{a_1}, @mvar{a_2}, ...))} has the effect of
-@code{kill(all)} except that it does not kill the symbols @mvar{a_1}, @mvar{a_2},
+@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of
+@code{kill(all)} except that it does not kill the symbols @var{a_1}, @var{a_2},
 @dots{}
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{args}
-@deffn {Function} args (@mvar{expr})
+@deffn {Function} args (@var{expr})
 
 Returns the list of arguments of @code{expr}, which may be any kind of
 expression other than an atom.  Only the arguments of the top-level operator
@@ -321,7 +321,7 @@ subexpressions of elements of the list of arguments.
 The order of the items in the list may depend on the global flag
 @mrefdot{inflag}
 
-@code{args (@mvar{expr})} is equivalent to @code{substpart ("[", @mvar{expr}, 0)}.
+@code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
 See also @mrefcomma{substpart} and @mrefdot{op}
 
 @c NEEDS EXAMPLES
@@ -335,9 +335,9 @@ See also @mrefcomma{substpart} and @mrefdot{op}
 
 @c -----------------------------------------------------------------------------
 @anchor{atom}
-@deffn {Function} atom (@mvar{expr})
+@deffn {Function} atom (@var{expr})
 
-Returns @code{true} if @mvar{expr} is atomic (i.e. a number, name or string) else
+Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
 @code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and
 @code{atom(sin(x))} are @code{false} (assuming @code{a[1]} and @code{x} are
 unbound).
@@ -349,15 +349,15 @@ unbound).
 
 @c -----------------------------------------------------------------------------
 @anchor{box}
-@deffn  {Function} box (@mvar{expr})
-@deffnx {Function} box (@mvar{expr}, @mvar{a})
+@deffn  {Function} box (@var{expr})
+@deffnx {Function} box (@var{expr}, @var{a})
 
-Returns @mvar{expr} enclosed in a box.  The return value is an expression with
-@code{box} as the operator and @mvar{expr} as the argument.  A box is drawn on
+Returns @var{expr} enclosed in a box.  The return value is an expression with
+@code{box} as the operator and @var{expr} as the argument.  A box is drawn on
 the display when @code{display2d} is @code{true}.
 
-@code{box (@mvar{expr}, @mvar{a})} encloses @mvar{expr} in a box labelled by the
-symbol @mvar{a}.  The label is truncated if it is longer than the width of the
+@code{box (@var{expr}, @var{a})} encloses @var{expr} in a box labelled by the
+symbol @var{a}.  The label is truncated if it is longer than the width of the
 box.
 
 @code{box} evaluates its argument.  However, a boxed expression does not
@@ -436,14 +436,14 @@ the drawing character is not stored with the box expression.
 
 @c -----------------------------------------------------------------------------
 @anchor{collapse}
-@deffn {Function} collapse (@mvar{expr})
+@deffn {Function} collapse (@var{expr})
 
-Collapses @mvar{expr} by causing all of its common (i.e., equal) subexpressions
+Collapses @var{expr} by causing all of its common (i.e., equal) subexpressions
 to share (i.e., use the same cells), thereby saving space.  (@code{collapse} is
 a subroutine used by the @mref{optimize} command.)  Thus, calling
 @code{collapse} may be useful after loading in a @mref{save} file.  You can
 collapse several expressions together by using
-@code{collapse ([@mvar{expr_1}, ..., @mvar{expr_n}])}.  Similarly, you can
+@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarly, you can
 collapse the elements of the array @code{A} by doing
 @code{collapse (listarray ('A))}.
 
@@ -456,9 +456,9 @@ collapse the elements of the array @code{A} by doing
 
 @c -----------------------------------------------------------------------------
 @anchor{disolate}
-@deffn {Function} disolate (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-is similar to @code{isolate (@mvar{expr}, @mvar{x})} except that it enables the
+is similar to @code{isolate (@var{expr}, @var{x})} except that it enables the
 user to isolate more than one variable simultaneously.  This might be useful,
 for example, if one were attempting to change variables in a multiple
 integration, and that variable change involved two or more of the integration
@@ -472,14 +472,14 @@ A demo is available by @code{demo("disol")$}.
 
 @c -----------------------------------------------------------------------------
 @anchor{dispform}
-@deffn  {Function} dispform (@mvar{expr})
-@deffnx {Function} dispform (@mvar{expr}, all)
+@deffn  {Function} dispform (@var{expr})
+@deffnx {Function} dispform (@var{expr}, all)
 
-Returns the external representation of @mvar{expr}.
+Returns the external representation of @var{expr}.
 
-@code{dispform(@mvar{expr})} returns the external representation with respect to
-the main (top-level) operator.  @code{dispform(@mvar{expr}, all)} returns the
-external representation with respect to all operators in @mvar{expr}.
+@code{dispform(@var{expr})} returns the external representation with respect to
+the main (top-level) operator.  @code{dispform(@var{expr}, all)} returns the
+external representation with respect to all operators in @var{expr}.
 
 See also @mrefcomma{part} @mrefcomma{inpart} and @mrefdot{inflag}
 
@@ -557,7 +557,7 @@ Use of the optional argument @code{all}.
 
 @c -----------------------------------------------------------------------------
 @anchor{dpart}
-@deffn {Function} dpart (@mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Selects the same subexpression as @mrefcomma{part} but instead of just returning
 that subexpression as its value, it returns the whole expression with the
@@ -610,26 +610,26 @@ for @code{%e^x} in @code{%e^(a x)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{freeof}
-@deffn {Function} freeof (@mvar{x_1}, @dots{}, @mvar{x_n}, @mvar{expr})
+@deffn {Function} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
 
-@code{freeof (@mvar{x_1}, @mvar{expr})} returns @code{true} if no subexpression of
-@mvar{expr} is equal to @mvar{x_1} or if @mvar{x_1} occurs only as a dummy variable
-in @mvar{expr}, or if @mvar{x_1} is neither the noun nor verb form of any operator
-in @mvar{expr}, and returns @code{false} otherwise.
+@code{freeof (@var{x_1}, @var{expr})} returns @code{true} if no subexpression of
+@var{expr} is equal to @var{x_1} or if @var{x_1} occurs only as a dummy variable
+in @var{expr}, or if @var{x_1} is neither the noun nor verb form of any operator
+in @var{expr}, and returns @code{false} otherwise.
 
-@code{freeof (@mvar{x_1}, ..., @mvar{x_n}, @mvar{expr})} is equivalent to 
-@code{freeof (@mvar{x_1}, @mvar{expr}) and ... and freeof (@mvar{x_n},
-@mvar{expr})}.
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} is equivalent to 
+@code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n},
+@var{expr})}.
 
-The arguments @mvar{x_1}, @dots{}, @mvar{x_n} may be names of functions and
+The arguments @var{x_1}, @dots{}, @var{x_n} may be names of functions and
 variables, subscripted names, operators (enclosed in double quotes), or general
 expressions.  @code{freeof} evaluates its arguments.
 
-@code{freeof} operates only on @mvar{expr} as it stands (after simplification and
+@code{freeof} operates only on @var{expr} as it stands (after simplification and
 evaluation) and does not attempt to determine if some equivalent expression 
 would give a different result.  In particular, simplification may yield an
 equivalent but different expression which comprises some different elements than
-the original form of @mvar{expr}.
+the original form of @var{expr}.
 
 A variable is a dummy variable in an expression if it has no binding outside of 
 the expression.  Dummy variables recognized by @code{freeof} are the index of a 
@@ -744,7 +744,7 @@ Functions affected by the setting of @code{inflag} are: @mrefcomma{part}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{inpart}
-@deffn {Function} inpart (@mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 is similar to @mref{part} but works on the internal representation of the
 expression rather than the displayed form and thus may be faster since no
@@ -782,10 +782,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{isolate}
-@deffn {Function} isolate (@mvar{expr}, @mvar{x})
+@deffn {Function} isolate (@var{expr}, @var{x})
 
-Returns @mvar{expr} with subexpressions which are sums and which do not contain
-@mvar{var} replaced by intermediate expression labels (these being atomic symbols
+Returns @var{expr} with subexpressions which are sums and which do not contain
+@var{var} replaced by intermediate expression labels (these being atomic symbols
 like @code{%t1}, @code{%t2}, @dots{}).  This is often useful to avoid
 unnecessary expansion of subexpressions which don't contain the variable of
 interest.  Since the intermediate labels are bound to the subexpressions they
@@ -793,7 +793,7 @@ can all be substituted back by evaluating the expression in which they occur.
 
 @mref{exptisolate} (default value: @code{false}) if @code{true} will cause
 @code{isolate} to examine exponents of atoms (like @code{%e}) which contain
-@mvar{var}.
+@var{var}.
 
 @code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate
 with respect to products.  See @mrefdot{isolate_wrt_times}
@@ -889,13 +889,13 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{listofvars}
-@deffn {Function} listofvars (@mvar{expr})
+@deffn {Function} listofvars (@var{expr})
 
-Returns a list of the variables in @mvar{expr}.
+Returns a list of the variables in @var{expr}.
 
 @mref{listconstvars} if @code{true} causes @code{listofvars} to include 
 @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the 
-list it returns if they appear in @mvar{expr}.  The default is to omit these.
+list it returns if they appear in @var{expr}.  The default is to omit these.
 
 See also the option variable @mref{listdummyvars} to exclude or include
 "dummy variables" in the list of variables.
@@ -915,10 +915,10 @@ See also the option variable @mref{listdummyvars} to exclude or include
 
 @c -----------------------------------------------------------------------------
 @anchor{lfreeof}
-@deffn {Function} lfreeof (@mvar{list}, @mvar{expr})
+@deffn {Function} lfreeof (@var{list}, @var{expr})
 
-For each member @mvar{m} of @mvar{list}, calls
-@code{freeof (@mvar{m}, @mvar{expr})}.  It returns @code{false} if any call to
+For each member @var{m} of @var{list}, calls
+@code{freeof (@var{m}, @var{expr})}.  It returns @code{false} if any call to
 @mref{freeof} does and @code{true} otherwise.
 
 @opencatbox
@@ -930,7 +930,7 @@ For each member @mvar{m} of @mvar{list}, calls
 
 @c -----------------------------------------------------------------------------
 @anchor{lpart}
-@deffn {Function} lpart (@mvar{label}, @mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 is similar to @mref{dpart} but uses a labelled box.  A labelled box is similar
 to the one produced by @code{dpart} but it has a name in the top line.
@@ -1017,9 +1017,9 @@ definitions.
 
 @c -----------------------------------------------------------------------------
 @anchor{nounify}
-@deffn {Function} nounify (@mvar{f})
+@deffn {Function} nounify (@var{f})
 
-Returns the noun form of the function name @mvar{f}.  This is
+Returns the noun form of the function name @var{f}.  This is
 needed if one wishes to refer to the name of a verb function as if it
 were a noun.  Note that some verb functions will return their noun
 forms if they can't be evaluated for certain arguments.  This is also
@@ -1036,13 +1036,13 @@ See also @mrefdot{verbify}
 
 @c -----------------------------------------------------------------------------
 @anchor{nterms}
-@deffn {Function} nterms (@mvar{expr})
+@deffn {Function} nterms (@var{expr})
 
-Returns the number of terms that @mvar{expr} would have if it were fully
+Returns the number of terms that @var{expr} would have if it were fully
 expanded out and no cancellations or combination of terms occurred.
-Note that expressions like @code{sin (@mvar{expr})}, @code{sqrt (@mvar{expr})},
-@code{exp (@mvar{expr})}, etc. count as just one term regardless of how many
-terms @mvar{expr} has (if it is a sum).
+Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})},
+@code{exp (@var{expr})}, etc. count as just one term regardless of how many
+terms @var{expr} has (if it is a sum).
 
 @opencatbox
 @category{Expressions}
@@ -1053,16 +1053,16 @@ terms @mvar{expr} has (if it is a sum).
 
 @c -----------------------------------------------------------------------------
 @anchor{op}
-@deffn {Function} op (@mvar{expr})
+@deffn {Function} op (@var{expr})
 
-Returns the main operator of the expression @mvar{expr}.
-@code{op (@mvar{expr})} is equivalent to @code{part (@mvar{expr}, 0)}.
+Returns the main operator of the expression @var{expr}.
+@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}.
 
 @code{op} returns a string if the main operator is a built-in or user-defined
 prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
-Otherwise, if @mvar{expr} is a subscripted function expression, @code{op}
+Otherwise, if @var{expr} is a subscripted function expression, @code{op}
 returns the subscripted function; in this case the return value is not an atom.
-Otherwise, @mvar{expr} is an array function or ordinary function expression,
+Otherwise, @var{expr} is an array function or ordinary function expression,
 and @code{op} returns a symbol.
 
 @code{op} observes the value of the global flag @mrefdot{inflag}
@@ -1126,15 +1126,15 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{operatorp}
-@deffn  {Function} operatorp (@mvar{expr}, @mvar{op})
-@deffnx {Function} operatorp (@mvar{expr}, [@mvar{op_1}, @dots{}, @mvar{op_n}])
+@deffn  {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
-@code{operatorp (@mvar{expr}, @mvar{op})} returns @code{true}
-if @mvar{op} is equal to the operator of @mvar{expr}.
+@code{operatorp (@var{expr}, @var{op})} returns @code{true}
+if @var{op} is equal to the operator of @var{expr}.
 
-@code{operatorp (@mvar{expr}, [@mvar{op_1}, ..., @mvar{op_n}])} returns
-@code{true} if some element @mvar{op_1}, @dots{}, @mvar{op_n} is equal to the
-operator of @mvar{expr}.
+@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns
+@code{true} if some element @var{op_1}, @dots{}, @var{op_n} is equal to the
+operator of @var{expr}.
 
 @opencatbox
 @category{Operators} @category{Predicate functions}
@@ -1161,10 +1161,10 @@ substitute into the operator of an expression.  E.g.,
 
 @c -----------------------------------------------------------------------------
 @anchor{optimize}
-@deffn {Function} optimize (@mvar{expr})
+@deffn {Function} optimize (@var{expr})
 
 Returns an expression that produces the same value and
-side effects as @mvar{expr} but does so more efficiently by avoiding the
+side effects as @var{expr} but does so more efficiently by avoiding the
 recomputation of common subexpressions.  @code{optimize} also has the side
 effect of "collapsing" its argument so that all common subexpressions
 are shared.  Do @code{example (optimize)} for examples.
@@ -1191,16 +1191,16 @@ the @mref{optimize} command.
 @c -----------------------------------------------------------------------------
 @anchor{ordergreat}
 @anchor{orderless}
-@deffn  {Function} ordergreat (@mvar{v_1}, @dots{}, @mvar{v_n})
-@deffnx {Function} orderless (@mvar{v_1}, @dots{}, @mvar{v_n})
+@deffn  {Function} ordergreat (@var{v_1}, @dots{}, @var{v_n})
+@deffnx {Function} orderless (@var{v_1}, @dots{}, @var{v_n})
 
 @code{ordergreat} changes the canonical ordering of Maxima expressions
-such that @mvar{v_1} succeeds @mvar{v_2} succeeds @dots{}  succeeds @mvar{v_n},
-and @mvar{v_n} succeeds any other symbol not mentioned as an argument.
+such that @var{v_1} succeeds @var{v_2} succeeds @dots{}  succeeds @var{v_n},
+and @var{v_n} succeeds any other symbol not mentioned as an argument.
 
 @code{orderless} changes the canonical ordering of Maxima expressions
-such that @mvar{v_1} precedes @mvar{v_2} precedes @dots{} precedes @mvar{v_n},
-and @mvar{v_n} precedes any other variable not mentioned as an argument.
+such that @var{v_1} precedes @var{v_2} precedes @dots{} precedes @var{v_n},
+and @var{v_n} precedes any other variable not mentioned as an argument.
 
 The order established by @code{ordergreat} and @code{orderless} is dissolved
 by @mrefdot{unorder}  @code{ordergreat} and @code{orderless} can be called only
@@ -1217,13 +1217,13 @@ See also @mrefdot{ordergreatp}
 @c -----------------------------------------------------------------------------
 @anchor{ordergreatp}
 @anchor{orderlessp}
-@deffn  {Function} ordergreatp (@mvar{expr_1}, @mvar{expr_2})
-@deffnx {Function} orderlessp (@mvar{expr_1}, @mvar{expr_2})
+@deffn  {Function} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffnx {Function} orderlessp (@var{expr_1}, @var{expr_2})
 
-@code{ordergreatp} returns @code{true} if @mvar{expr_1} succeeds @mvar{expr_2} in
+@code{ordergreatp} returns @code{true} if @var{expr_1} succeeds @var{expr_2} in
 the canonical ordering of Maxima expressions, and @code{false} otherwise.
 
-@code{orderlessp} returns @code{true} if @mvar{expr_1} precedes @mvar{expr_2} in
+@code{orderlessp} returns @code{true} if @var{expr_1} precedes @var{expr_2} in
 the canonical ordering of Maxima expressions, and @code{false} otherwise.
 
 All Maxima atoms and expressions are comparable under @code{ordergreatp} and
@@ -1337,12 +1337,12 @@ Ordering non-atomic expressions.
 
 @c -----------------------------------------------------------------------------
 @anchor{part}
-@deffn {Function} part (@mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Returns parts of the displayed form of @code{expr}.  It obtains the part of
-@code{expr} as specified by the indices @mvar{n_1}, @dots{}, @mvar{n_k}.  First
-part @mvar{n_1} of @code{expr} is obtained, then part @mvar{n_2} of that, etc.
-The result is part @mvar{n_k} of @dots{} part @mvar{n_2} of part @mvar{n_1} of
+@code{expr} as specified by the indices @var{n_1}, @dots{}, @var{n_k}.  First
+part @var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc.
+The result is part @var{n_k} of @dots{} part @var{n_2} of part @var{n_1} of
 @code{expr}.  If no indices are specified @code{expr} is returned.
 
 @code{part} can be used to obtain an element of a list, a row of a matrix, etc.
@@ -1391,11 +1391,11 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{partition}
-@deffn {Function} partition (@mvar{expr}, @mvar{x})
+@deffn {Function} partition (@var{expr}, @var{x})
 
-Returns a list of two expressions.  They are (1) the factors of @mvar{expr}
-(if it is a product), the terms of @mvar{expr} (if it is a sum), or the list
-(if it is a list) which don't contain @mvar{x} and, (2) the factors, terms,
+Returns a list of two expressions.  They are (1) the factors of @var{expr}
+(if it is a product), the terms of @var{expr} (if it is a sum), or the list
+(if it is a list) which don't contain @var{x} and, (2) the factors, terms,
 or list which do.
 
 Examples:
@@ -1432,12 +1432,12 @@ error message is given.
 
 @c -----------------------------------------------------------------------------
 @anchor{pickapart}
-@deffn {Function} pickapart (@mvar{expr}, @mvar{n})
+@deffn {Function} pickapart (@var{expr}, @var{n})
 
-Assigns intermediate expression labels to subexpressions of @mvar{expr} at depth
-@mvar{n}, an integer.  Subexpressions at greater or lesser depths are not
+Assigns intermediate expression labels to subexpressions of @var{expr} at depth
+@var{n}, an integer.  Subexpressions at greater or lesser depths are not
 assigned labels.  @code{pickapart} returns an expression in terms of
-intermediate expressions equivalent to the original expression @mvar{expr}.
+intermediate expressions equivalent to the original expression @var{expr}.
 
 See also @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart}@w{}
 @mrefcomma{inpart} and @mrefdot{reveal}
@@ -1548,14 +1548,14 @@ the function itself.
 
 @c -----------------------------------------------------------------------------
 @anchor{psubst}
-@deffn  {Function} psubst (@mvar{list}, @mvar{expr})
-@deffnx {Function} psubst (@mvar{a}, @mvar{b}, @mvar{expr})
+@deffn  {Function} psubst (@var{list}, @var{expr})
+@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
 
-@code{psubst(@mvar{a}, @mvar{b}, @mvar{expr})} is simliar to @code{subst}.  See 
+@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}.  See 
 @mrefdot{subst}
 
 In distinction from @code{subst} the function @code{psubst} makes parallel 
-substitutions, if the first argument @mvar{list} is a list of equations.
+substitutions, if the first argument @var{list} is a list of equations.
 
 See also @mref{sublis} for making parallel substitutions.
 
@@ -1583,18 +1583,18 @@ substitution.
 
 @c -----------------------------------------------------------------------------
 @anchor{rembox}
-@deffn  {Function} rembox (@mvar{expr}, unlabelled)
-@deffnx {Function} rembox (@mvar{expr}, @mvar{label})
-@deffnx {Function} rembox (@mvar{expr})
+@deffn  {Function} rembox (@var{expr}, unlabelled)
+@deffnx {Function} rembox (@var{expr}, @var{label})
+@deffnx {Function} rembox (@var{expr})
 
-Removes boxes from @mvar{expr}.
+Removes boxes from @var{expr}.
 
-@code{rembox (@mvar{expr}, unlabelled)} removes all unlabelled boxes from
-@mvar{expr}.
+@code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from
+@var{expr}.
 
-@code{rembox (@mvar{expr}, @mvar{label})} removes only boxes bearing @mvar{label}.
+@code{rembox (@var{expr}, @var{label})} removes only boxes bearing @var{label}.
 
-@code{rembox (@mvar{expr})} removes all boxes, labelled and unlabelled.
+@code{rembox (@var{expr})} removes all boxes, labelled and unlabelled.
 
 Boxes are drawn by the @mrefcomma{box} @mrefcomma{dpart} and @mref{lpart}@w{}
 functions.
@@ -1672,18 +1672,18 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{reveal}
-@deffn {Function} reveal (@mvar{expr}, @mvar{depth})
+@deffn {Function} reveal (@var{expr}, @var{depth})
 
-Replaces parts of @mvar{expr} at the specified integer @mvar{depth}
+Replaces parts of @var{expr} at the specified integer @var{depth}
 with descriptive summaries.
 
 @itemize @bullet
 @item
-Sums and differences are replaced by @code{Sum(@mvar{n})}
-where @mvar{n} is the number of operands of the sum.
+Sums and differences are replaced by @code{Sum(@var{n})}
+where @var{n} is the number of operands of the sum.
 @item
-Products are replaced by @code{Product(@mvar{n})}
-where @mvar{n} is the number of operands of the product.
+Products are replaced by @code{Product(@var{n})}
+where @var{n} is the number of operands of the product.
 @item
 Exponentials are replaced by @code{Expt}.
 @item
@@ -1691,12 +1691,12 @@ Quotients are replaced by @code{Quotient}.
 @item
 Unary negation is replaced by @code{Negterm}.
 @item
-Lists are replaced by @code{List(@mvar{n})} where @mvar{n} ist the number of
+Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
 elements of the list.
 @end itemize
 
-When @mvar{depth} is greater than or equal to the maximum depth of @mvar{expr},
-@code{reveal (@mvar{expr}, @mvar{depth})} returns @mvar{expr} unmodified.
+When @var{depth} is greater than or equal to the maximum depth of @var{expr},
+@code{reveal (@var{expr}, @var{depth})} returns @var{expr} unmodified.
 
 @code{reveal} evaluates its arguments.
 @code{reveal} returns the summarized expression.
@@ -1760,9 +1760,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{sublis}
-@deffn {Function} sublis (@mvar{list}, @mvar{expr})
+@deffn {Function} sublis (@var{list}, @var{expr})
 
-Makes multiple parallel substitutions into an expression.  @mvar{list} is a list
+Makes multiple parallel substitutions into an expression.  @var{list} is a list
 of equations.  The left hand side of the equations must be an atom.
 
 The variable @mref{sublis_apply_lambda} controls simplification after
@@ -1830,17 +1830,17 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{subst}
-@deffn {Function} subst (@mvar{a}, @mvar{b}, @mvar{c})
+@deffn {Function} subst (@var{a}, @var{b}, @var{c})
 
-Substitutes @mvar{a} for @mvar{b} in @mvar{c}.  @mvar{b} must be an atom or a
-complete subexpression of @mvar{c}.  For example, @code{x+y+z} is a complete
-subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not.  When @mvar{b} does
+Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
+complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
+subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not.  When @var{b} does
 not have these characteristics, one may sometimes use @mref{substpart} or
-@mref{ratsubst} (see below).  Alternatively, if @mvar{b} is of the form
-@code{e/f} then one could use @code{subst (a*f, e, c)} while if @mvar{b} is of
+@mref{ratsubst} (see below).  Alternatively, if @var{b} is of the form
+@code{e/f} then one could use @code{subst (a*f, e, c)} while if @var{b} is of
 the form @code{e^(1/f)} then one could use @code{subst (a^f, e, c)}.  The
 @code{subst} command also discerns the @code{x^y} in @code{x^-y} so that
-@code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @mvar{a} and @mvar{b}
+@code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b}
 may also be operators of an expression enclosed in double-quotes @code{"} or
 they may be function names.  If one wishes to substitute for the independent
 variable in derivative forms then the @code{at} function (see below) should be
@@ -1849,12 +1849,12 @@ used.
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} is an alias for @code{substitute}.
 
-The commands @code{subst (@mvar{eq_1}, @mvar{expr})} or
-@code{subst ([@mvar{eq_1}, ..., @mvar{eq_k}], @mvar{expr})} are other permissible
-forms.  The @mvar{eq_i} are equations indicating substitutions to be made.
+The commands @code{subst (@var{eq_1}, @var{expr})} or
+@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} are other permissible
+forms.  The @var{eq_i} are equations indicating substitutions to be made.
 For each equation, the right side will be substituted for the left in the 
-expression @mvar{expr}.  The equations are substituted in serial from left to
-right in @mvar{expr}.  See the functions @code{sublis} and @code{psubst} for 
+expression @var{expr}.  The equations are substituted in serial from left to
+right in @var{expr}.  See the functions @code{sublis} and @code{psubst} for 
 making parallel substitutions.
 
 @mref{exptsubst} if @code{true} permits substitutions
@@ -1905,10 +1905,10 @@ For further examples, do @code{example (subst)}.
 
 @c ----------------------------------------------------------------------------
 @anchor{substinpart}
-@deffn {Function} substinpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Similar to @mrefcomma{substpart} but @code{substinpart} works on the
-internal representation of @mvar{expr}.
+internal representation of @var{expr}.
 
 Examples:
 
@@ -1992,12 +1992,12 @@ or @mref{substpart} is the same as calling @mref{inpart} or @code{substinpart}.
 
 @c -----------------------------------------------------------------------------
 @anchor{substpart}
-@deffn {Function} substpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-Substitutes @mvar{x} for the subexpression picked out by the rest of the
-arguments as in @mrefdot{part}  It returns the new value of @mvar{expr}.  @mvar{x}
-may be some operator to be substituted for an operator of @mvar{expr}.  In some
-cases @mvar{x} needs to be enclosed in double-quotes @code{"} (e.g.
+Substitutes @var{x} for the subexpression picked out by the rest of the
+arguments as in @mrefdot{part}  It returns the new value of @var{expr}.  @var{x}
+may be some operator to be substituted for an operator of @var{expr}.  In some
+cases @var{x} needs to be enclosed in double-quotes @code{"} (e.g.
 @code{substpart ("+", a*b, 0)} yields @code{b + a}).
 
 Example:
@@ -2036,9 +2036,9 @@ or @code{substpart} is the same as calling @code{inpart} or
 
 @c -----------------------------------------------------------------------------
 @anchor{symbolp}
-@deffn {Function} symbolp (@mvar{expr})
+@deffn {Function} symbolp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a symbol, else @code{false}.  In effect,
+Returns @code{true} if @var{expr} is a symbol, else @code{false}.  In effect,
 @code{symbolp(x)} is equivalent to the predicate
 @code{atom(x) and not numberp(x)}.
 
@@ -2108,9 +2108,9 @@ output @code{%o7}.
 
 @c -----------------------------------------------------------------------------
 @anchor{verbify}
-@deffn {Function} verbify (@mvar{f})
+@deffn {Function} verbify (@var{f})
 
-Returns the verb form of the function name @mvar{f}.
+Returns the verb form of the function name @var{f}.
 See also @code{verb}, @code{noun}, and @code{nounify}.
 
 Examples:

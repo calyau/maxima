@@ -9,55 +9,55 @@
 @node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Definitions for Trigonometric
 
-@deffn {Function} acos (@mvar{x})
+@deffn {Function} acos (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} acosh (@mvar{x})
+@deffn {Function} acosh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} acot (@mvar{x})
+@deffn {Function} acot (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} acoth (@mvar{x})
+@deffn {Function} acoth (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} acsc (@mvar{x})
+@deffn {Function} acsc (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} acsch (@mvar{x})
+@deffn {Function} acsch (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} asec (@mvar{x})
+@deffn {Function} asec (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} asech (@mvar{x})
+@deffn {Function} asech (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} asin (@mvar{x})
+@deffn {Function} asin (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} asinh (@mvar{x})
+@deffn {Function} asinh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} atan (@mvar{x})
+@deffn {Function} atan (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} atan2 (@mvar{y}, @mvar{x})
+@deffn {Function} atan2 (@var{y}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} atanh (@mvar{x})
+@deffn {Function} atanh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -65,27 +65,27 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} cos (@mvar{x})
+@deffn {Function} cos (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cosh (@mvar{x})
+@deffn {Function} cosh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cot (@mvar{x})
+@deffn {Function} cot (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} coth (@mvar{x})
+@deffn {Function} coth (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} csc (@mvar{x})
+@deffn {Function} csc (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} csch (@mvar{x})
+@deffn {Function} csch (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -97,31 +97,31 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} sec (@mvar{x})
+@deffn {Function} sec (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sech (@mvar{x})
+@deffn {Function} sech (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sin (@mvar{x})
+@deffn {Function} sin (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sinh (@mvar{x})
+@deffn {Function} sinh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tan (@mvar{x})
+@deffn {Function} tan (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tanh (@mvar{x})
+@deffn {Function} tanh (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} trigexpand (@mvar{expr})
+@deffn {Function} trigexpand (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -137,8 +137,8 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} trigreduce (@mvar{expr}, @mvar{x})
-@deffnx {Function} trigreduce (@mvar{expr})
+@deffn {Function} trigreduce (@var{expr}, @var{x})
+@deffnx {Function} trigreduce (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -146,11 +146,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} trigsimp (@mvar{expr})
+@deffn {Function} trigsimp (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} trigrat (@mvar{expr})
+@deffn {Function} trigrat (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -36,14 +36,14 @@ Veja tamb@'{e}m: @code{linear_program}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} linear_program (@mvar{A}, @mvar{b}, @mvar{c})
+@deffn {Fun@value{cedilha}@~{a}o} linear_program (@var{A}, @var{b}, @var{c})
 
 @code{linear_program} @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo simplex.
-@code{linear_program(A, b, c)} calcula um vetor @mvar{x} para o qual @code{c.x} @'{e} o m@'{i}nimo
+@code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'{e} o m@'{i}nimo
 poss@'{i}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argumento
-@mvar{A} @'{e} uma matriz e os argumentos @mvar{b} e @mvar{c} s@~{a}o listas.
+@var{A} @'{e} uma matriz e os argumentos @var{b} e @var{c} s@~{a}o listas.
 
-@code{linear_program} retorna uma lista contendo o vetor minimizado @mvar{x} e o
+@code{linear_program} retorna uma lista contendo o vetor minimizado @var{x} e o
 valor m@'{i}nimo @code{c.x}. Se o problema for n@~{a}o associado, @'{e} retornado "Problem not bounded!" e
 se o problema for n@~{a}o vi@'{a}vel, @'{e} retornado "Problem not feasible!".
 
@@ -71,10 +71,10 @@ Veja tamb@'{e}m: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} maximize_sx (@mvar{obj}, @mvar{cond}, [@mvar{pos}])
+@deffn {Fun@value{cedilha}@~{a}o} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Maximiza a fun@value{cedilha}@~{a}o linear objetiva @mvar{obj} submetida a alguma restri@value{cedilha}@~{a}o linear
-@mvar{cond}. Veja @code{minimize_sx} para uma descri@value{cedilha}@~{a}o detalhada de argumentos e valores de
+Maximiza a fun@value{cedilha}@~{a}o linear objetiva @var{obj} submetida a alguma restri@value{cedilha}@~{a}o linear
+@var{cond}. Veja @code{minimize_sx} para uma descri@value{cedilha}@~{a}o detalhada de argumentos e valores de
 retorno.
 
 
@@ -82,12 +82,12 @@ Veja tamb@'{e}m: @code{minimize_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} minimize_sx (@mvar{obj}, @mvar{cond}, [@mvar{pos}])
+@deffn {Fun@value{cedilha}@~{a}o} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Minimiza uma fun@value{cedilha}@~{a}o linear objetiva @mvar{obj} submetida a alguma restri@value{cedilha}@~{a}o
-linear @mvar{cond}. @mvar{cond} @'{e} uma lista de equa@value{cedilha}@~{o}es lineares ou
+Minimiza uma fun@value{cedilha}@~{a}o linear objetiva @var{obj} submetida a alguma restri@value{cedilha}@~{a}o
+linear @var{cond}. @var{cond} @'{e} uma lista de equa@value{cedilha}@~{o}es lineares ou
 desigualdades. Em desigualdades estritas @code{>} @'{e}  substituido por @code{>=}
-e @code{<} por @code{<=}. O argumento opcional @mvar{pos} @'{e} uma lista de
+e @code{<} por @code{<=}. O argumento opcional @var{pos} @'{e} uma lista de
 vari@'{a}veis de decis@~{a}o que s@~{a}o assumidas como sendo positivas.
 
 Se o m@'{i}nimo existir, @code{minimize_sx} retorna uma lista que cont@'{e}m
@@ -99,7 +99,7 @@ n@~{a}o vi@'{a}vel, @'{e} retornado "Ploblem not feasible!".
 As vari@'{a}veis de decis@~{a}o n@~{a}o s@~{a}o assumidas para serem n@~{a}o negativas por padr@~{a}o. Se todas
 as vari@'{a}veis de dicis@~{a}o forem n@~{a}o negativas, escolha @code{nonegative_sx} para @code{true}.
 Se somente algumas das vari@'{a}veis de decis@~{a}o forem positivas, coloque-as ent@~{a}o no argumento
-opcional @mvar{pos} (note que isso @'{e} mais eficiente que adicionar
+opcional @var{pos} (note que isso @'{e} mais eficiente que adicionar
 restri@value{cedilha}@~{o}es).
 
 @code{minimize_sx} utiliza o algor@'{i}tmo simplex que @'{e} implementado na fun@value{cedilha}@~{a}o

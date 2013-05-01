@@ -32,54 +32,54 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
 
-@deffn {関数} lbfgs (@mvar{FOM}, @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
-@deffnx {関数} lbfgs ([@mvar{FOM}, @mvar{grad}], @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
+@deffn {関数} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffnx {関数} lbfgs ([@var{FOM}, @var{grad}], @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-性能指標@mvar{FOM}の、
-初期見積もり@mvar{X0}から始めて
-変数リスト@mvar{X}上での、
+性能指標@var{FOM}の、
+初期見積もり@var{X0}から始めて
+変数リスト@var{X}上での、
 @math{norm(grad(FOM)) < epsilon*max(1, norm(X))}のような
 無制約最小化の近似解を見つけます。
 
-もし与えられたなら、@mvar{grad}は@mvar{FOM}の多変数@mvar{X}に関する勾配です。
-@mvar{grad}は@mvar{X}の要素それぞれに対して1つの要素を持つリストです。
+もし与えられたなら、@var{grad}は@var{FOM}の多変数@var{X}に関する勾配です。
+@var{grad}は@var{X}の要素それぞれに対して1つの要素を持つリストです。
 もし与えられなかったら、勾配は記号微分で自動的に計算されます。
 
 適用されるアルゴリズムは限定メモリ準Newton(BFGS)アルゴリズム [1]です。
 Hessian行列の逆元全体の代わりに低ランク近似が保存されるので、限定メモリと呼ばれます。
 アルゴリズムのそれぞれの繰り返しは直線探索です。
-すなわち、変数@mvar{X}に関して、近似Hessian逆元から計算される探索方向の線(ray)に沿っての探索です。
+すなわち、変数@var{X}に関して、近似Hessian逆元から計算される探索方向の線(ray)に沿っての探索です。
 FOMはいつも直線探索でうまく減少します。
 普通(しかしいつもではありません)FOMの勾配のノルムも減少します。
 
-@mvar{iprint}は@code{lbfgs}が印字する進捗メッセージを制御します。
+@var{iprint}は@code{lbfgs}が印字する進捗メッセージを制御します。
 
 @table @code
 @item iprint[1]
-@code{@mvar{iprint}[1]} controls the frequency of progress messages.
+@code{@var{iprint}[1]} controls the frequency of progress messages.
 @table @code
 @item iprint[1] < 0
 進捗メッセージなし。
 @item iprint[1] = 0
 最初と最後の繰り返しでメッセージ。
 @item iprint[1] > 0
-毎@code{@mvar{iprint}[1]}回の繰り返してメッセージを印字する。
+毎@code{@var{iprint}[1]}回の繰り返してメッセージを印字する。
 @end table
 @item iprint[2]
-@code{@mvar{iprint}[2]}は進捗メッセージの量を制御します。
+@code{@var{iprint}[2]}は進捗メッセージの量を制御します。
 @table @code
 @item iprint[2] = 0
-繰り返し回数、@mvar{FOM}の評価回数、@mvar{FOM}の値、@mvar{FOM}の勾配のノルム、ステップ長
+繰り返し回数、@var{FOM}の評価回数、@var{FOM}の値、@var{FOM}の勾配のノルム、ステップ長
 を印字します。
 @item iprint[2] = 1
-@code{@mvar{iprint}[2] = 0}に加えて、
-@mvar{X0}と@mvar{X0}で評価された@mvar{FOM}の勾配を印字します。
+@code{@var{iprint}[2] = 0}に加えて、
+@var{X0}と@var{X0}で評価された@var{FOM}の勾配を印字します。
 @item iprint[2] = 2
-@code{@mvar{iprint}[2] = 1}に加えて、
-繰り返しそれぞれで@mvar{X}の値を印字します。
+@code{@var{iprint}[2] = 1}に加えて、
+繰り返しそれぞれで@var{X}の値を印字します。
 @item iprint[2] = 3
-@code{@mvar{iprint}[2] = 2}に加えて、
-繰り返しそれぞれで@mvar{FOM}の勾配を印字します。
+@code{@var{iprint}[2] = 2}に加えて、
+繰り返しそれぞれで@var{FOM}の勾配を印字します。
 @end table
 @end table
 

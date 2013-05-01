@@ -9,9 +9,9 @@
 
 Este es el Paquete "Finance" (Ver 0.1).
 
-En todas las funciones, @mvar{rate} es la tasa de inter@'es
-compuesto, @mvar{num} es el n@'umero de periodos y debe ser
-positivo, y @mvar{flow} se refiere al flujo de caja; entonces,
+En todas las funciones, @var{rate} es la tasa de inter@'es
+compuesto, @var{num} es el n@'umero de periodos y debe ser
+positivo, y @var{flow} se refiere al flujo de caja; entonces,
 si se tiene un egreso el flujo es negativo y para un
 ingreso un valor positivo.
 
@@ -24,7 +24,7 @@ Autor: Nicol@'as Guarin Zapata.
 @section Funciones y Variables para finance
 
 
-@deffn {Function} days360 (@mvar{a@~no1},@mvar{mes1},@mvar{dia1},@mvar{a@~no2},@mvar{mes2},@mvar{dia2})
+@deffn {Function} days360 (@var{a@~no1},@var{mes1},@var{dia1},@var{a@~no2},@var{mes2},@var{dia2})
 
 Calcula la distancia entre 2 fechas, asumiendo a@~nos de 360 dias y meses de 30 d@'{@dotless{i}}as.
 
@@ -38,10 +38,10 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} fv (@mvar{rate},@mvar{PV},@mvar{num})
+@deffn {Function} fv (@var{rate},@var{PV},@var{num})
 
 Calcular el Valor Futuro a partir de uno en el Presente para una tasa de inter@'es dada.
-@mvar{rate} es la tasa de inter@'es, @mvar{PV} es el valor prestente y @mvar{num} es el n@'umero
+@var{rate} es la tasa de inter@'es, @var{PV} es el valor prestente y @var{num} es el n@'umero
 de periodos.
 
 Ejemplo:
@@ -54,10 +54,10 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} pv (@mvar{rate},@mvar{FV},@mvar{num})
+@deffn {Function} pv (@var{rate},@var{FV},@var{num})
 
-Calcula el valor actual de un valor futuro dada la tasa de inter@'es. @mvar{rate} es
-la tasa de inter@'es, @mvar{FV} es el valor futuro y @mvar{num} es el n@'umero
+Calcula el valor actual de un valor futuro dada la tasa de inter@'es. @var{rate} es
+la tasa de inter@'es, @var{FV} es el valor futuro y @var{num} es el n@'umero
 de periodos.
 
 Ejemplo:
@@ -70,13 +70,13 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} graph_flow (@mvar{val})
+@deffn {Function} graph_flow (@var{val})
 
 Grafica el flujo de caja en una l@'{@dotless{i}}nea de tiempo, los valores positivos
 est@'an en azul y hacia arriba; los negativos est@'an en rojo y hacia
 abajo.
 La direcci@'on del flujo est@'a dada por el signo de los valores.
-@mvar{val} es una lista de los valores del flujo de caja.
+@var{val} es una lista de los valores del flujo de caja.
 
 Ejemplo:
 
@@ -87,11 +87,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} annuity_pv (@mvar{rate},@mvar{PV},@mvar{num})
+@deffn {Function} annuity_pv (@var{rate},@var{PV},@var{num})
 
 Calcula una anualidad conociendo el valor presente (tipo deuda),
-para unos pagos peri@'odicos y constantes. @mvar{rate} es la tasa
-de inter@'es, @mvar{PV} es el valor presente y @mvar{num} es el
+para unos pagos peri@'odicos y constantes. @var{rate} es la tasa
+de inter@'es, @var{PV} es el valor presente y @var{num} es el
 n@'umero de periodos.
 
 Ejemplo:
@@ -104,11 +104,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} annuity_fv (@mvar{rate},@mvar{FV},@mvar{num})
+@deffn {Function} annuity_fv (@var{rate},@var{FV},@var{num})
 
 Calcula una anualidad conociendo el valor deseado (valor futuro),
-para una serie de pagos peri@'odicos y constantes. @mvar{rate} es la tasa
-de inter@'es, @mvar{FV} es el valor futuroe y @mvar{num} es el
+para una serie de pagos peri@'odicos y constantes. @var{rate} es la tasa
+de inter@'es, @var{FV} es el valor futuroe y @var{num} es el
 n@'umero de periodos.
 
 Ejemplo:
@@ -121,11 +121,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} geo_annuity_pv (@mvar{rate},@mvar{growing_rate},@mvar{PV},@mvar{num})
+@deffn {Function} geo_annuity_pv (@var{rate},@var{growing_rate},@var{PV},@var{num})
 
 Calcula una anualidad conociendo el valor presente (tipo deuda)
-en una serie de pagos periodicos crecientes.  @mvar{rate} es la tasa de inter@'es, @mvar{growing_rate}
-es el crecimiento de los pagos, @mvar{PV} es el valor presente, y @mvar{num} es el n@'umero de periodos.
+en una serie de pagos periodicos crecientes.  @var{rate} es la tasa de inter@'es, @var{growing_rate}
+es el crecimiento de los pagos, @var{PV} es el valor presente, y @var{num} es el n@'umero de periodos.
 
 Ejemplo:
 
@@ -137,12 +137,12 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} geo_annuity_fv (@mvar{rate},@mvar{growing_rate},@mvar{FV},@mvar{num})
+@deffn {Function} geo_annuity_fv (@var{rate},@var{growing_rate},@var{FV},@var{num})
 
 
 Calcular una anualidad conociendo el valor deseado (valor futuro)
-en una serie de pagos periodicos crecientes.  @mvar{rate} es la tasa de inter@'es, @mvar{growing_rate}
-es el crecimiento de los pagos, @mvar{FV} es el valor futuro, y @mvar{num} es el n@'umero de periodos.
+en una serie de pagos periodicos crecientes.  @var{rate} es la tasa de inter@'es, @var{growing_rate}
+es el crecimiento de los pagos, @var{FV} es el valor futuro, y @var{num} es el n@'umero de periodos.
 
 Ejemplo:
 
@@ -153,11 +153,11 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Function} amortization (@mvar{rate},@mvar{ammount},@mvar{num})
+@deffn {Function} amortization (@var{rate},@var{ammount},@var{num})
 
 La tabla de amortizaci@'on determinada por una tasa.
-Siendo @mvar{rate} es la tasa de inter@'es, @mvar{ammount} es el valor de la deuda,
-and @mvar{num} es el n@'umero de periodos.
+Siendo @var{rate} es la tasa de inter@'es, @var{ammount} es el valor de la deuda,
+and @var{num} es el n@'umero de periodos.
 
 Ejemplo:
 
@@ -182,15 +182,15 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} arit_amortization (@mvar{rate},@mvar{increment},@mvar{ammount},@mvar{num})
+@deffn {Function} arit_amortization (@var{rate},@var{increment},@var{ammount},@var{num})
 
 La tabla de amortizaci@'on determinada por una tasa espec@'{@dotless{i}}fica y unos pagos crecientes
 se puede hallar con @code{arit_amortization}.
 N@'otese que los pagos no son constantes, estos presentan
 un crecimiento aritm@'etico, el incremento es la diferencia entre dos
 filas consecutivas en la columna "Payment".
-@mvar{rate} es la tasa de inter@'es, @mvar{increment} es el incremento, @mvar{ammount}
-es el valor de la deuda, and @mvar{num} es el n@'umero de periodos.
+@var{rate} es la tasa de inter@'es, @var{increment} es el incremento, @var{ammount}
+es el valor de la deuda, and @var{num} es el n@'umero de periodos.
 
 Ejemplo:
 
@@ -215,15 +215,15 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} geo_amortization (@mvar{rate},@mvar{growing_rate},@mvar{ammount},@mvar{num})
+@deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{ammount},@var{num})
 
 La tabla de amortizaci@'on determinada por la tasa, el valor de la deuda,
 y el n@'umero de periodos se puede hallar con @code{geo_amortization}.
 N@'otese que los pagos no son constantes, estos presentan un
 crecimiento geom@'etrico, growin_rate es entonces el cociente entre
 dos filas consecutivas de la columna "Payment".
-@mvar{rate} es la tasa de inter@'es, @mvar{growing_rate} es el crecimeinto de los pagos, @mvar{ammount}
-es el valor de la deuda, y @mvar{num} es el numero de periodos.
+@var{rate} es la tasa de inter@'es, @var{growing_rate} es el crecimeinto de los pagos, @var{ammount}
+es el valor de la deuda, y @var{num} es el numero de periodos.
 
 Ejemplo:
 
@@ -248,11 +248,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} saving (@mvar{rate},@mvar{ammount},@mvar{num})
+@deffn {Function} saving (@var{rate},@var{ammount},@var{num})
 
 La tabla que presenta los valores para un ahorro constante y
 peri@'odico se pueden hallar con @code{saving}.
-@mvar{ammount} representa la cantidad deseada y @mvar{num} el n@'umero de
+@var{ammount} representa la cantidad deseada y @var{num} el n@'umero de
 periodos durante los que se ahorrar@'a.
 
 Ejemplo:
@@ -281,11 +281,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} npv (@mvar{rate},@mvar{val})
+@deffn {Function} npv (@var{rate},@var{val})
 
 Calcular el valor presente neto de una serie de valores para evaluar la
 viabilidad de un proyecto.
-@mvar{flowValues} es una lista con los valores para cada periodo.
+@var{flowValues} es una lista con los valores para cada periodo.
 
 Ejemplo:
 
@@ -297,12 +297,12 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} irr (@mvar{val},@mvar{IO})
+@deffn {Function} irr (@var{val},@var{IO})
 
 Tasa interna de retorno (en ingl@'es Internal Rate of Return - IRR), es el
 valor de tasa que hace que el Valor Presente Neto (NPV) sea cero.
-@mvar{flowValues} los valores para cada periodo (para periodos mayores a 0) y
-@mvar{I0} el valor para el periodo cero.
+@var{flowValues} los valores para cada periodo (para periodos mayores a 0) y
+@var{I0} el valor para el periodo cero.
 
 Ejemplo:
 
@@ -315,15 +315,15 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} benefit_cost (@mvar{rate},@mvar{input},@mvar{output})
+@deffn {Function} benefit_cost (@var{rate},@var{input},@var{output})
 
 Calcular la relaci@'on Beneficio/Costo, Beneficio es el Valor Presente Neto (NPV)
 de los flujos de caja positivos (inputs), y Costo es el Valor Presente Neto
 de los flujos de caja negativos (outputs).
 N@'otese que si se desea tener un valor de cero para un periodo especifico,
 esta entrada/salida debe indicarse como cero para ese periodo.
-@mvar{rate} es la tasa de inter@'es, @mvar{input} es una lista con los ingresos,
-y @mvar{output} es una lista con los egresos.
+@var{rate} es la tasa de inter@'es, @var{input} es una lista con los ingresos,
+y @var{output} es una lista con los egresos.
 
 Ejemplo:
 

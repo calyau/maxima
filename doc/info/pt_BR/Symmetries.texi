@@ -20,13 +20,13 @@
 @subsection Mudando a base do sistema de numera@value{cedilha}@~ao
 
 
-@deffn {Fun@value{cedilha}@~ao} comp2pui (@mvar{n}, @mvar{L})
+@deffn {Fun@value{cedilha}@~ao} comp2pui (@var{n}, @var{L})
 implementa a passagem das fun@,{c}@~oes sim@'etricas completamente sim@'etricas fornecidas na lista
-@mvar{L} para as fun@,{c}@~oes sim@'etricas elementares de 0 a @mvar{n}. Se a
-lista @mvar{L} contiver menos que @mvar{n+1} elementos, ser@'a completada com
-valores formais do tipo @mvar{h1}, @mvar{h2}, etc. Se o primeiro elemento
-da lista @mvar{L} existir, ele @'e interpretado como sendo o tamanho do alfabeto,
-de outra forma o tamanho @'e escolhido para @mvar{n}.
+@var{L} para as fun@,{c}@~oes sim@'etricas elementares de 0 a @var{n}. Se a
+lista @var{L} contiver menos que @var{n+1} elementos, ser@'a completada com
+valores formais do tipo @var{h1}, @var{h2}, etc. Se o primeiro elemento
+da lista @var{L} existir, ele @'e interpretado como sendo o tamanho do alfabeto,
+de outra forma o tamanho @'e escolhido para @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
@@ -39,7 +39,7 @@ de outra forma o tamanho @'e escolhido para @mvar{n}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} ele2pui (@mvar{m}, @mvar{L})
+@deffn {Fun@value{cedilha}@~{a}o} ele2pui (@var{m}, @var{L})
 vai de fun@value{cedilha}@~{o}es sim@'{e}tricas elementares para as fun@value{cedilha}@~oes completas.
 Similar a @code{comp2ele} e @code{comp2pui}.
 
@@ -48,7 +48,7 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} ele2comp (@mvar{m}, @mvar{L})
+@deffn {Fun@value{cedilha}@~{a}o} ele2comp (@var{m}, @var{L})
 Vai de fun@value{cedilha}@~{o}es sim@'{e}tricas elementares para fun@value{cedilha}@~{o}es completas.
 Similar a @code{comp2ele} e a @code{comp2pui}.
 
@@ -56,23 +56,23 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} elem (@mvar{ele}, @mvar{sym}, @mvar{lvar})
-decomp@~{o}e o polin@^{o}mio sim@'{e}trico @mvar{sym}, nas vari@'{a}veis
-contidas na lista @mvar{lvar}, em termos de fun@value{cedilha}@~{o}es elementares
-sim@'{e}tricas fornecidas na lista @mvar{ele}.  Se o primeiro elemento de
-@mvar{ele} for fornecido, esse primeiro elemento ser@'{a} o tamanho do alfabeto, de outra forma o
-tamanho ser@'{a} o grau do polin@^{o}mio @mvar{sym}.  Se valores forem
-omitidos na lista @mvar{ele}, valores formais do tipo @mvar{e1},
-@mvar{e2}, etc. ser@~{a}o adicionados.  O polin@^{o}mio @mvar{sym} pode ser fornecido de
+@deffn {Fun@value{cedilha}@~{a}o} elem (@var{ele}, @var{sym}, @var{lvar})
+decomp@~{o}e o polin@^{o}mio sim@'{e}trico @var{sym}, nas vari@'{a}veis
+contidas na lista @var{lvar}, em termos de fun@value{cedilha}@~{o}es elementares
+sim@'{e}tricas fornecidas na lista @var{ele}.  Se o primeiro elemento de
+@var{ele} for fornecido, esse primeiro elemento ser@'{a} o tamanho do alfabeto, de outra forma o
+tamanho ser@'{a} o grau do polin@^{o}mio @var{sym}.  Se valores forem
+omitidos na lista @var{ele}, valores formais do tipo @var{e1},
+@var{e2}, etc. ser@~{a}o adicionados.  O polin@^{o}mio @var{sym} pode ser fornecido de
 tr@^{e}s diferentes formas: contra@'{i}da (@code{elem} pode ent@~{a}o ser 1, seu
 valor padr@~{a}o), particionada (@code{elem} pode ser 3), ou extendida
 (i.e. o polin@^{o}mio completo, e @code{elem} pode ent@~{a}o ser 2).  A
 fun@value{cedilha}@~{a}o @code{pui} @'{e} usada ent@~{a}o da mesma forma.
 
-sobre um alfabeto de tamanho 3 com @mvar{e1}, a primeira fun@value{cedilha}@`{a}o elementar
+sobre um alfabeto de tamanho 3 com @var{e1}, a primeira fun@value{cedilha}@`{a}o elementar
 sim@'{e}trica, com valor 7, o polin@^{o}mio sim@'{e}trico em 3 vari@'{a}veis cuja
 forma contra@'{i}da (que aqui depende de duas de suas vari@'{a}veis) @'{e}
-@mvar{x^4-2*x*y} decomposto como segue em fun@value{cedilha}@~{o}es elementares sim@'{e}tricas:
+@var{x^4-2*x*y} decomposto como segue em fun@value{cedilha}@~{o}es elementares sim@'{e}tricas:
 
 @c GENERATED FROM THE FOLLOWING
 @c elem ([3, 7], x^4 - 2*x*y, [x, y]);
@@ -93,8 +93,8 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 @end deffn
 
 
-@deffn {Function} mon2schur (@mvar{L})
-a lsita @mvar{L} representa a fun@value{cedilha}@~{a}o de Schur @math{S_L}: temos
+@deffn {Function} mon2schur (@var{L})
+a lsita @var{L} representa a fun@value{cedilha}@~{a}o de Schur @math{S_L}: temos
 @iftex
 @math{L = [i_1,i_2, \ldots, i_q]}, with @math{i_1 \le i_2 \le \ldots \le i_q}.
 A fun@value{cedilha}@~{a}o de Schur @math{S_{i_1,i_2, \ldots, i_q}} @'{e} a menor
@@ -152,11 +152,11 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} multi_elem (@mvar{l_elem}, @mvar{multi_pc}, @mvar{l_var})
+@deffn {Fun@value{cedilha}@~{a}o} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
 decomp@~{o}es um polin@^{o}mio multi-sim@'{e}trico na forma multi-contra@'{i}da
-@mvar{multi_pc} nos grupos de vari@'{a}veis contidas na lista de listas
-@mvar{l_var} en termos de fun@value{cedilha}@~{o}es elementares sim@'{e}tricas contidas em
-@mvar{l_elem}.
+@var{multi_pc} nos grupos de vari@'{a}veis contidas na lista de listas
+@var{l_var} en termos de fun@value{cedilha}@~{o}es elementares sim@'{e}tricas contidas em
+@var{l_elem}.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
@@ -194,14 +194,14 @@ a fun@value{cedilha}@~{a}o @code{elem}.
 
 
 @c HMM, pui IS A VARIABLE AS WELL.  It's a function, for sure.
-@deffn {Fun@value{cedilha}@~{a}o} pui (@mvar{L}, @mvar{sym}, @mvar{lvar})
-decomp@~{o}e o polin@^{o}mio sim@'{e}trico @mvar{sym}, nas vari@'{a}veis na
-lista @mvar{lvar}, em termos de fun@value{cedilha}@~{o}es exponenciais na lista @mvar{L}.
-Se o primeiro elemento de @mvar{L} for fornecido, esse primeiro elemento ser@'{a} o tamanho do
+@deffn {Fun@value{cedilha}@~{a}o} pui (@var{L}, @var{sym}, @var{lvar})
+decomp@~{o}e o polin@^{o}mio sim@'{e}trico @var{sym}, nas vari@'{a}veis na
+lista @var{lvar}, em termos de fun@value{cedilha}@~{o}es exponenciais na lista @var{L}.
+Se o primeiro elemento de @var{L} for fornecido, esse primeiro elemento ser@'{a} o tamanho do
 alfabeto, de outra forma o tamanho ser@'{a} o grau do polin@^{o}mio
-@mvar{sym}.  Se valores forem omitidos na lista @mvar{L}, valores formais do
-tipo @mvar{p1}, @mvar{p2} , etc. ser@~{a}o adicionados. O polin@^{o}mio
-@mvar{sym} pode ser fornecido de tr@^{e}s diferentes formas: contra@'{i}da (@code{elem}
+@var{sym}.  Se valores forem omitidos na lista @var{L}, valores formais do
+tipo @var{p1}, @var{p2} , etc. ser@~{a}o adicionados. O polin@^{o}mio
+@var{sym} pode ser fornecido de tr@^{e}s diferentes formas: contra@'{i}da (@code{elem}
 pode ent@~{a}o ser 1, seu valor padr@~{a}o), particionada (@code{elem} pode ser
 3), ou extendida (i.e. o polin@^{o}mio completo, e @code{elem} pode ent@~{a}o
 ser 2). A fun@value{cedilha}@~{a}o @code{pui} @'{e} usada da mesma forma.
@@ -231,10 +231,10 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} pui2comp (@mvar{n}, @mvar{lpui})
-converte a dista das primeiras @mvar{n} fun@value{cedilha}@~{o}es completas (com o
+@deffn {Fun@value{cedilha}@~{a}o} pui2comp (@var{n}, @var{lpui})
+converte a dista das primeiras @var{n} fun@value{cedilha}@~{o}es completas (com o
 comprimento em primeiro lugar) em termos de fun@value{cedilha}@~{o}es exponenciais fornecidas na lista
-@mvar{lpui}. se a lista @mvar{lpui} for vazia, o cardinal @'{e} @mvar{n},
+@var{lpui}. se a lista @var{lpui} for vazia, o cardinal @'{e} @var{n},
 de outra forma o cardinal ser@'{a} seu primeiro elemento (como em @code{comp2ele} e em
 @code{comp2pui}).
 
@@ -268,20 +268,20 @@ Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} pui2ele (@mvar{n}, @mvar{lpui})
+@deffn {Fun@value{cedilha}@~{a}o} pui2ele (@var{n}, @var{lpui})
 efetiva a passagem de fun@value{cedilha}@~{o}es exponenciais para as fun@value{cedilha}@~{o}es elementares sim@'{e}tricas.
 Se o sinalizador @code{pui2ele} for @code{girard}, @code{pui2ele} ir@'{a} retornar a lista de
-fun@value{cedilha}@~{o}es elementares sim@'{e}tricas de 1 a @mvar{n}, e se o sinalizador for
-@code{close}, @code{pui2ele} retornar@'{a} a @mvar{n}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar.
+fun@value{cedilha}@~{o}es elementares sim@'{e}tricas de 1 a @var{n}, e se o sinalizador for
+@code{close}, @code{pui2ele} retornar@'{a} a @var{n}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar.
 
 Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp2ele}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} puireduc (@mvar{n}, @mvar{lpui})
-@mvar{lpui} @'{e} uma lista cujo primeiro elemento @'{e} um inteiro @mvar{m}.
-@code{puireduc} fornece as primeiras @mvar{n} fun@value{cedilha}@~{o}es exponenciais em termos das
-primeiras @mvar{m} fun@value{cedilha}@~{o}es.
+@deffn {Fun@value{cedilha}@~{a}o} puireduc (@var{n}, @var{lpui})
+@var{lpui} @'{e} uma lista cujo primeiro elemento @'{e} um inteiro @var{m}.
+@code{puireduc} fornece as primeiras @var{n} fun@value{cedilha}@~{o}es exponenciais em termos das
+primeiras @var{m} fun@value{cedilha}@~{o}es.
 
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
@@ -300,12 +300,12 @@ primeiras @mvar{m} fun@value{cedilha}@~{o}es.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} schur2comp (@mvar{P}, @mvar{l_var})
-@mvar{P} @'{e} um polin@^{o}mio nas vari@'{a}veis da lista @mvar{l_var}.  Cada
+@deffn {Fun@value{cedilha}@~{a}o} schur2comp (@var{P}, @var{l_var})
+@var{P} @'{e} um polin@^{o}mio nas vari@'{a}veis da lista @var{l_var}.  Cada
 uma dessas vari@'{a}veis represetna uma fun@value{cedilha}@~{a}o sim@'{e}trica completa.  Na
-lista @mvar{l_var} o @mvar{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica completa @'{e} representada atrav@'{e}s da
-concatena@value{cedilha}@~{a}o da letra @code{h} com o inteiro @mvar{i}:
-@code{h@mvar{i}}.  Essa fun@value{cedilha}@~{a}o expressa @mvar{P} em termos de fun@value{cedilha}@~oes de
+lista @var{l_var} o @var{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica completa @'{e} representada atrav@'{e}s da
+concatena@value{cedilha}@~{a}o da letra @code{h} com o inteiro @var{i}:
+@code{h@var{i}}.  Essa fun@value{cedilha}@~{a}o expressa @var{P} em termos de fun@value{cedilha}@~oes de
 Schur.
 
 
@@ -328,9 +328,9 @@ Schur.
 
 @subsection Modificando represetna@value{cedilha}@~{o}es
 
-@deffn {Fun@value{cedilha}@~{a}o} cont2part (@mvar{pc}, @mvar{lvar})
+@deffn {Fun@value{cedilha}@~{a}o} cont2part (@var{pc}, @var{lvar})
 Retorna o polin@^{o}mio particionado associado 
-@`{a} forma contra@'{i}da @mvar{pc} cujas vari@'{a}veis est@~{a}o em @mvar{lvar}.
+@`{a} forma contra@'{i}da @var{pc} cujas vari@'{a}veis est@~{a}o em @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c pc: 2*a^3*b*x^4*y + x^5;
@@ -347,11 +347,11 @@ Retorna o polin@^{o}mio particionado associado
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} contract (@mvar{psym}, @mvar{lvar})
+@deffn {Fun@value{cedilha}@~{a}o} contract (@var{psym}, @var{lvar})
 retorna uma forma contra@'{i}da (i.e. um mon@^{o}mio
 @c CHECK ME!!
-de grupo ssim@'etrico) do polin@^omio @mvar{psym} nas vari@'aveis contidas
-na lista @mvar{lvar}.  A fun@value{cedilha}@~ao @code{explose} executa a
+de grupo ssim@'etrico) do polin@^omio @var{psym} nas vari@'aveis contidas
+na lista @var{lvar}.  A fun@value{cedilha}@~ao @code{explose} executa a
 opera@value{cedilha}@~ao inversa.  A fun@value{cedilha}@~{a}o @code{tcontract} testa a sim@'{e}tria do
 polin@^{o}mio.
 
@@ -372,9 +372,9 @@ polin@^{o}mio.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} explose (@mvar{pc}, @mvar{lvar})
+@deffn {Fun@value{cedilha}@~{a}o} explose (@var{pc}, @var{lvar})
 retorna o polin@^{o}mio sim@'{e}trico associado com a forma contra@'{i}da
-@mvar{pc}. A lista @mvar{lvar} cont@'{e} as vari@'{a}veis.
+@var{pc}. A lista @var{lvar} cont@'{e} as vari@'{a}veis.
 
 @c GENERATED FROM THE FOLLOWING
 @c explose (a*x + 1, [x, y, z]);
@@ -385,9 +385,9 @@ retorna o polin@^{o}mio sim@'{e}trico associado com a forma contra@'{i}da
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} part2cont (@mvar{ppart}, @mvar{lvar})
+@deffn {Fun@value{cedilha}@~{a}o} part2cont (@var{ppart}, @var{lvar})
 vai da forma particionada para a forma contra@'{i}da de um polin@^{o}mio sim@'{e}trico.
-A forma contra@'{i}da @'{e} convertida com as vari@'{a}veis em @mvar{lvar}.
+A forma contra@'{i}da @'{e} convertida com as vari@'{a}veis em @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
@@ -400,9 +400,9 @@ A forma contra@'{i}da @'{e} convertida com as vari@'{a}veis em @mvar{lvar}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} partpol (@mvar{psym}, @mvar{lvar})
-@mvar{psym} @'{e} um polin@^{o}mio sim@'{e}trico nas vari@'{a}veis da lista
-@mvar{lvar}. Essa fun@value{cedilha}@~{a}o retorna sua represetna@value{cedilha}@~{a}o particionada.
+@deffn {Fun@value{cedilha}@~{a}o} partpol (@var{psym}, @var{lvar})
+@var{psym} @'{e} um polin@^{o}mio sim@'{e}trico nas vari@'{a}veis da lista
+@var{lvar}. Essa fun@value{cedilha}@~{a}o retorna sua represetna@value{cedilha}@~{a}o particionada.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -414,18 +414,18 @@ A forma contra@'{i}da @'{e} convertida com as vari@'{a}veis em @mvar{lvar}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} tcontract (@mvar{pol}, @mvar{lvar})
-testa se o polin@^{o}mio @mvar{pol} @'{e} sim@'{e}trico nas vari@'{a}veis da
-lista @mvar{lvar}.  Se for, @code{tcontract} retorna uma representa@value{cedilha}@~{a}o contra@'{i}da como o faz a
+@deffn {Fun@value{cedilha}@~{a}o} tcontract (@var{pol}, @var{lvar})
+testa se o polin@^{o}mio @var{pol} @'{e} sim@'{e}trico nas vari@'{a}veis da
+lista @var{lvar}.  Se for, @code{tcontract} retorna uma representa@value{cedilha}@~{a}o contra@'{i}da como o faz a
 fun@value{cedilha}@~{a}o @code{contract}.
 
 @end deffn
 
  
  
-@deffn {Fun@value{cedilha}@~{a}o} tpartpol (@mvar{pol}, @mvar{lvar})
-testa se o polin@^{o}mio @mvar{pol} @'{e} sim@'{e}trico nas vari@'{a}veis da
-lista @mvar{lvar}.  Se for, @code{tpartpol} retorna sua represetna@value{cedilha}@~{a}o particionada como
+@deffn {Fun@value{cedilha}@~{a}o} tpartpol (@var{pol}, @var{lvar})
+testa se o polin@^{o}mio @var{pol} @'{e} sim@'{e}trico nas vari@'{a}veis da
+lista @var{lvar}.  Se for, @code{tpartpol} retorna sua represetna@value{cedilha}@~{a}o particionada como
 o faz a fun@value{cedilha}@~{a}o @code{partpol}.
 
 @end deffn
@@ -436,13 +436,13 @@ o faz a fun@value{cedilha}@~{a}o @code{partpol}.
 @subsection Grupos e @'{o}rbitas
 
 
-@deffn {Fun@value{cedilha}@~{a}o} direct ([@mvar{p_1}, ..., @mvar{p_n}], @mvar{y}, @mvar{f}, [@mvar{lvar_1}, ..., @mvar{lvar_n}])
+@deffn {Fun@value{cedilha}@~{a}o} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
 calcula a imagem direta (see M. Giusti, D. Lazard et A. Valibouze,
-ISSAC 1988, Rome) associada @`{a} fun@value{cedilha}@~{a}o @mvar{f}, na lista de
-vari@'{a}veis @mvar{lvar_1}, ..., @mvar{lvar_n}, e nos polin@^{o}mios
-@mvar{p_1}, ..., @mvar{p_n} na vari@'{a}vel @mvar{y}.  A quantidade de argumetnos que a
-fun@value{cedilha}@`{a}o @mvar{f} pode receber @'{e} importante para o c@'{a}lculo.  Dessa forma, se a
-express@~{a}o para @mvar{f} n@~{a}o depende de alguma vari@'{a}vel, @'{e} in@'{u}til
+ISSAC 1988, Rome) associada @`{a} fun@value{cedilha}@~{a}o @var{f}, na lista de
+vari@'{a}veis @var{lvar_1}, ..., @var{lvar_n}, e nos polin@^{o}mios
+@var{p_1}, ..., @var{p_n} na vari@'{a}vel @var{y}.  A quantidade de argumetnos que a
+fun@value{cedilha}@`{a}o @var{f} pode receber @'{e} importante para o c@'{a}lculo.  Dessa forma, se a
+express@~{a}o para @var{f} n@~{a}o depende de alguma vari@'{a}vel, @'{e} in@'{u}til
 incluir essa vari@'{a}vel, e n@~{a}o incluir essa vari@'{a}vel ir@'{a} tamb@'{e}m reduzir
 consideravelmente o montante c@'{a}lculos efetuados.
 
@@ -534,12 +534,12 @@ Fun@value{cedilha}@~{o}es de @code{sym} utilizadas nesta fun@value{cedilha}@~{a}
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} multi_orbit (@mvar{P}, [@mvar{lvar_1}, @mvar{lvar_2},..., @mvar{lvar_p}])
+@deffn {Fun@value{cedilha}@~{a}o} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2},..., @var{lvar_p}])
 
-@mvar{P} @'{e} um polin@^{o}mio no conjunto de vari@'{a}veis contidas nas lista
-@mvar{lvar_1}, @mvar{lvar_2}, ..., @mvar{lvar_p}. Essa fun@value{cedilha}@~{a}o retorna a
-@'{o}rbita do polin@^{o}mio @mvar{P} sob a a@value{cedilha}@~{a}o do produto dos
-grupos sim@'{e}tricos dos conjuntos de vari@'{a}veis represetnadas nas @mvar{p}
+@var{P} @'{e} um polin@^{o}mio no conjunto de vari@'{a}veis contidas nas lista
+@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. Essa fun@value{cedilha}@~{a}o retorna a
+@'{o}rbita do polin@^{o}mio @var{P} sob a a@value{cedilha}@~{a}o do produto dos
+grupos sim@'{e}tricos dos conjuntos de vari@'{a}veis represetnadas nas @var{p}
 listas.
 
 @c GENERATED FROM THE FOLLOWING
@@ -558,12 +558,12 @@ Veja tamb@'{e}m: @code{orbit} para a a@value{cedilha}@~{a}o de um grupo sim@'{e}
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} multsym (@mvar{ppart_1}, @mvar{ppart_2}, @mvar{n})
-retorna oproduto de dois polin@^{o}mios sim@'{e}tricos em @mvar{n}
+@deffn {Fun@value{cedilha}@~{a}o} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
+retorna oproduto de dois polin@^{o}mios sim@'{e}tricos em @var{n}
 varieis trabalhando somente m@'{o}dulo a a@value{cedilha}@~{a}o do grupo sim@'{e}trico de
-ordem @mvar{n}. O polin@^{o}mios est@~{a}o em sua forma particionada.
+ordem @var{n}. O polin@^{o}mios est@~{a}o em sua forma particionada.
 
-Dados 2 polin@^{o}mio sim@'{e}tricos em @mvar{x}, @mvar{y}:  @code{3*(x + y)
+Dados 2 polin@^{o}mio sim@'{e}tricos em @var{x}, @var{y}:  @code{3*(x + y)
 + 2*x*y} e @code{5*(x^2 + y^2)} cujas formas particionadas s@~{a}o @code{[[3,
 1], [2, 1, 1]]} e @code{[[5, 2]]}, seu produto ir@'{a} ser
 
@@ -584,10 +584,10 @@ Fun@value{cedilha}@~oes para mudar as representac@~{o}es de um polin@^{o}mio sim
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} orbit (@mvar{P}, @mvar{lvar})
-calcula a @'{o}rbita do polin@^{o}mio @mvar{P} nas vari@'{a}veis na lista
-@mvar{lvar} sob a a@value{cedilha}@~{a}o do grupo sim@'{e}trico do conjunto das
-vari@'{a}veis na lista @mvar{lvar}.
+@deffn {Fun@value{cedilha}@~{a}o} orbit (@var{P}, @var{lvar})
+calcula a @'{o}rbita do polin@^{o}mio @var{P} nas vari@'{a}veis na lista
+@var{lvar} sob a a@value{cedilha}@~{a}o do grupo sim@'{e}trico do conjunto das
+vari@'{a}veis na lista @var{lvar}.
  
 @c GENERATED FROM THE FOLLOWING
 @c orbit (a*x + b*y, [x, y]);
@@ -606,38 +606,38 @@ sim@'{e}tricos sobre um polin@^{o}mio.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} pui_direct (@mvar{orbite}, [@mvar{lvar_1}, ..., @mvar{lvar_n}], [@mvar{d_1}, @mvar{d_2}, ..., @mvar{d_n}])
+@deffn {Fun@value{cedilha}@~{a}o} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 
-Tomemos @mvar{f} para ser um polin@^{o}mio em @mvar{n} blocos de vari@'{a}veis @mvar{lvar_1},
-..., @mvar{lvar_n}.  Fa@value{cedilha}amos @mvar{c_i} ser o n;umero de vari@'{a}veis em
-@mvar{lvar_i}, e @mvar{SC} ser o produto de @mvar{n} grupos sim@'{e}tricos de
-grau @mvar{c_1}, ..., @mvar{c_n}. Essas a@value{cedilha}@~{o}es dos grupos naturalmente sobre @mvar{f}.
-A lista @mvar{orbite} @'{e} a @'{o}rbita, denotada @code{@mvar{SC}(@mvar{f})}, da
-fun@value{cedilha}@~{a}o @mvar{f} sob a a@value{cedilha}@~{a}o de @mvar{SC}. (Essa lista pode ser
-obtida atrav@'{e}s da fun@value{cedilha}@~{a}o @code{multi_orbit}.)  Os @mvar{di} s@~{a}o inteiros
+Tomemos @var{f} para ser um polin@^{o}mio em @var{n} blocos de vari@'{a}veis @var{lvar_1},
+..., @var{lvar_n}.  Fa@value{cedilha}amos @var{c_i} ser o n;umero de vari@'{a}veis em
+@var{lvar_i}, e @var{SC} ser o produto de @var{n} grupos sim@'{e}tricos de
+grau @var{c_1}, ..., @var{c_n}. Essas a@value{cedilha}@~{o}es dos grupos naturalmente sobre @var{f}.
+A lista @var{orbite} @'{e} a @'{o}rbita, denotada @code{@var{SC}(@var{f})}, da
+fun@value{cedilha}@~{a}o @var{f} sob a a@value{cedilha}@~{a}o de @var{SC}. (Essa lista pode ser
+obtida atrav@'{e}s da fun@value{cedilha}@~{a}o @code{multi_orbit}.)  Os @var{di} s@~{a}o inteiros
 de forma que @math{c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n}.  
 
 @iftex
-Tomemos @mvar{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_{d_1} \times
+Tomemos @var{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_{d_1} \times
 +S_{d_2} \times \cdots \times S_{d_n}}.
 @end iftex
 @c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
 @c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
 @ifinfo
-Tomemos @mvar{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_[d_1] x
+Tomemos @var{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_[d_1] x
 S_[d_2] x ... x S_[d_n]}.
 @end ifinfo
 @ifhtml
-Tomemos @mvar{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_[d_1] x
+Tomemos @var{SD} para ser o produto dos grupos sim@'{e}tricos @math{S_[d_1] x
 S_[d_2] x ... x S_[d_n]}.
 @end ifhtml
 A fun@value{cedilha}@~{a}o @code{pui_direct} retorna
-as primeiras @mvar{n} fun@value{cedilha}@~{o}es exponenciais de @code{@mvar{SD}(@mvar{f})} deduzidas
-das fun@value{cedilha}@~{o}es exponenciais de @code{@mvar{SC}(@mvar{f})}, onde @mvar{n} @'{e}
-o tamanho de @code{@mvar{SD}(@mvar{f})}.
+as primeiras @var{n} fun@value{cedilha}@~{o}es exponenciais de @code{@var{SD}(@var{f})} deduzidas
+das fun@value{cedilha}@~{o}es exponenciais de @code{@var{SC}(@var{f})}, onde @var{n} @'{e}
+o tamanho de @code{@var{SD}(@var{f})}.
 
-O resultado est@'{a} na multi-forma contra@'{i}da com rela@value{cedilha}@~{a}o a @mvar{SD}, i.e. somente um
-elemento @'{e} mantido por @'{o}rbita, sob a a@value{cedilha}@~{a}o de @mvar{SD}.
+O resultado est@'{a} na multi-forma contra@'{i}da com rela@value{cedilha}@~{a}o a @var{SD}, i.e. somente um
+elemento @'{e} mantido por @'{o}rbita, sob a a@value{cedilha}@~{a}o de @var{SD}.
 
 @c GENERATED FROM THE FOLLOWING
 @c l: [[x, y], [a, b]];
@@ -682,9 +682,9 @@ elemento @'{e} mantido por @'{o}rbita, sob a a@value{cedilha}@~{a}o de @mvar{SD}
 
 @subsection Parti@value{cedilha}@~{o}es
 
-@deffn {Fun@value{cedilha}@~{a}o} kostka (@mvar{part_1}, @mvar{part_2})
+@deffn {Fun@value{cedilha}@~{a}o} kostka (@var{part_1}, @var{part_2})
 escrita por P. Esperet, calcula o n@'{u}mero de Kostka da parti@value{cedilha}@~{a}o
-@mvar{part_1} e @mvar{part_2}.
+@var{part_1} e @var{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
 @c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
@@ -696,8 +696,8 @@ escrita por P. Esperet, calcula o n@'{u}mero de Kostka da parti@value{cedilha}@~
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} lgtreillis (@mvar{n}, @mvar{m})
-retorna a lista de parti@value{cedilha}@~oes de peso @mvar{n} e comprimento @mvar{m}.
+@deffn {Fun@value{cedilha}@~{a}o} lgtreillis (@var{n}, @var{m})
+retorna a lista de parti@value{cedilha}@~oes de peso @var{n} e comprimento @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
@@ -711,9 +711,9 @@ Veja tamb@'{e}m: @code{ltreillis}, @code{treillis} e @code{treinat}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} ltreillis (@mvar{n}, @mvar{m})
-retorna a lista de parti@value{cedilha}@~{o}es de peso @mvar{n} e comprimento menor que ou
-igual a @mvar{m}.
+@deffn {Fun@value{cedilha}@~{a}o} ltreillis (@var{n}, @var{m})
+retorna a lista de parti@value{cedilha}@~{o}es de peso @var{n} e comprimento menor que ou
+igual a @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c ltreillis (4, 2);
@@ -727,8 +727,8 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{treillis} e @code{treinat}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} treillis (@mvar{n})
-retorna todas as parti@value{cedilha}@~oes de peso @mvar{n}.
+@deffn {Fun@value{cedilha}@~{a}o} treillis (@var{n})
+retorna todas as parti@value{cedilha}@~oes de peso @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
@@ -743,8 +743,8 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{ltreillis} e @code{treinat}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} treinat (@mvar{part})
-retorna a lista de parti@value{cedilha}@~oes inferiores @`{a} parti@value{cedilha}@`{a}o @mvar{part} com rela@value{cedilha}@~{a}o @`{a}
+@deffn {Fun@value{cedilha}@~{a}o} treinat (@var{part})
+retorna a lista de parti@value{cedilha}@~oes inferiores @`{a} parti@value{cedilha}@`{a}o @var{part} com rela@value{cedilha}@~{a}o @`{a}
 ordem natural.
 
 @c GENERATED FROM THE FOLLOWING
@@ -772,11 +772,11 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{ltreillis} e @code{treillis}.
 
 @subsection Polin@^{o}mios e suas ra@'{i}zes
 
-@deffn {Fun@value{cedilha}@~{a}o} ele2polynome (@mvar{L}, @mvar{z})
-retorna o polin@^{o}mio em @mvar{z} de forma que as fun@value{cedilha}@~oes elementares
-sim@'{e}tricas de suas ra@'{i}zes estejam na lista @code{@mvar{L} = [@mvar{n},
-@mvar{e_1}, ..., @mvar{e_n}]}, onde @mvar{n} @'{e} o grau dos
-polin@^{o}mios e @mvar{e_i} @'{e} a @mvar{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar.
+@deffn {Fun@value{cedilha}@~{a}o} ele2polynome (@var{L}, @var{z})
+retorna o polin@^{o}mio em @var{z} de forma que as fun@value{cedilha}@~oes elementares
+sim@'{e}tricas de suas ra@'{i}zes estejam na lista @code{@var{L} = [@var{n},
+@var{e_1}, ..., @var{e_n}]}, onde @var{n} @'{e} o grau dos
+polin@^{o}mios e @var{e_i} @'{e} a @var{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar.
 
 @c GENERATED FROM THE FOLLOWING
 @c ele2polynome ([2, e1, e2], z);
@@ -793,7 +793,7 @@ polin@^{o}mios e @mvar{e_i} @'{e} a @mvar{i}-@'{e}sima fun@value{cedilha}@~{a}o 
 (%o3)            x  - 14 x  + 56 x  - 56 x + 22
 @end example
 @noindent
-o inverso: @code{polynome2ele (@mvar{P}, @mvar{z})}.
+o inverso: @code{polynome2ele (@var{P}, @var{z})}.
  
 Veja tamb@'{e}m:
 @code{polynome2ele}, @code{pui2polynome}.
@@ -801,11 +801,11 @@ Veja tamb@'{e}m:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} polynome2ele (@mvar{P}, @mvar{x})
-fornece a lista @code{@mvar{l} = [@mvar{n}, @mvar{e_1}, ..., @mvar{e_n}]}
-onde @mvar{n} @'{e} o grau do polin@^{o}mio @mvar{P} na vari@'{a}vel
-@mvar{x} e @mvar{e_i} @'{e} a @mvar{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar
-das ra@'{i}zes de @mvar{P}.
+@deffn {Fun@value{cedilha}@~{a}o} polynome2ele (@var{P}, @var{x})
+fornece a lista @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}
+onde @var{n} @'{e} o grau do polin@^{o}mio @var{P} na vari@'{a}vel
+@var{x} e @var{e_i} @'{e} a @var{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar
+das ra@'{i}zes de @var{P}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
@@ -818,23 +818,23 @@ das ra@'{i}zes de @mvar{P}.
 (%o2)            x  - 14 x  + 56 x  - 56 x + 22
 @end example
 @noindent
-A inversa: @code{ele2polynome (@mvar{l}, @mvar{x})}
+A inversa: @code{ele2polynome (@var{l}, @var{x})}
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} prodrac (@mvar{L}, @mvar{k})
-@mvar{L} @'{e} uma lista contendo as fun@value{cedilha}@~{o}es sim@'{e}tricas elementares 
-sobre um conjunto @mvar{A}. @code{prodrac} retorna o polin@^{o}mio cujas ra@'{i}zes
-s@~{a}o os produtos @mvar{k} por @mvar{k} dos elementos de @mvar{A}.
+@deffn {Fun@value{cedilha}@~{a}o} prodrac (@var{L}, @var{k})
+@var{L} @'{e} uma lista contendo as fun@value{cedilha}@~{o}es sim@'{e}tricas elementares 
+sobre um conjunto @var{A}. @code{prodrac} retorna o polin@^{o}mio cujas ra@'{i}zes
+s@~{a}o os produtos @var{k} por @var{k} dos elementos de @var{A}.
  
 Veja tamb@'{e}m @code{somrac}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} pui2polynome (@mvar{x}, @mvar{lpui})
-calcula o polin@^{o}mio em @mvar{x} cujas fun@value{cedilha}@~{o}es exponenciais
-das ra@'{i}zes s@~{a}o dadas na lista @mvar{lpui}.
+@deffn {Fun@value{cedilha}@~{a}o} pui2polynome (@var{x}, @var{lpui})
+calcula o polin@^{o}mio em @var{x} cujas fun@value{cedilha}@~{o}es exponenciais
+das ra@'{i}zes s@~{a}o dadas na lista @var{lpui}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
@@ -860,10 +860,10 @@ Veja tamb@'{e}m:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} somrac (@mvar{L}, @mvar{k})
-A lista @mvar{L} contains fun@value{cedilha}@~{a}o sim@'{e}trica elementars de um polynomial
-@mvar{P} . The function computes the polin@^{o}mio whose roots are the 
-@mvar{k} by @mvar{k} distinct sums of the roots of @mvar{P}. 
+@deffn {Fun@value{cedilha}@~{a}o} somrac (@var{L}, @var{k})
+A lista @var{L} contains fun@value{cedilha}@~{a}o sim@'{e}trica elementars de um polynomial
+@var{P} . The function computes the polin@^{o}mio whose roots are the 
+@var{k} by @var{k} distinct sums of the roots of @var{P}. 
 
 Also see @code{prodrac}.
 @end deffn
@@ -874,17 +874,17 @@ Also see @code{prodrac}.
 
 @subsection Resolvents
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante (@mvar{P}, @mvar{x}, @mvar{f}, [@mvar{x_1},..., @mvar{x_d}]) 
-calcula a resilvente do polin@^{o}mio @mvar{P} em @mvar{x} de grau
-@mvar{n} >= @mvar{d} atrav@'{e}s da fFun@value{cedilha}@~{a}o @mvar{f} expressa nas vari@'{a}veis 
-@mvar{x_1}, ..., @mvar{x_d}.  Para efici@^{e}ncia de computa@value{cedilha}@~{a}o @'{e}
+@deffn {Fun@value{cedilha}@~{a}o} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
+calcula a resilvente do polin@^{o}mio @var{P} em @var{x} de grau
+@var{n} >= @var{d} atrav@'{e}s da fFun@value{cedilha}@~{a}o @var{f} expressa nas vari@'{a}veis 
+@var{x_1}, ..., @var{x_d}.  Para efici@^{e}ncia de computa@value{cedilha}@~{a}o @'{e}
 importante n@~{a}o incluir na lista as vari@'{a}veis
-@code{[@mvar{x_1}, ..., @mvar{x_d}]} que n@~{a}o aparecem na fun@value{cedilha}@~{a}o de transforma@value{cedilha}@~{a}o @mvar{f}.
+@code{[@var{x_1}, ..., @var{x_d}]} que n@~{a}o aparecem na fun@value{cedilha}@~{a}o de transforma@value{cedilha}@~{a}o @var{f}.
 
 Para melhorar a efici@^{e}ncia do c@'{a}lculo se pode escolher sinalizadores em
 @code{resolvante} de forma a usar os algor@'{i}tmos apropriados:
 
-Se a fun@value{cedilha}@~{a}o @mvar{f} for unit@'{a}ria :
+Se a fun@value{cedilha}@~{a}o @var{f} for unit@'{a}ria :
 @itemize @bullet
 @item
 um polin@^{o}mio em uma vari@'{a}vel simples,
@@ -1094,9 +1094,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_alternee1 (@mvar{P}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_alternee1 (@var{P}, @var{x})
 calcula a transforma@value{cedilha}@~{a}o de 
-@code{@mvar{P}(@mvar{x})} de grau @mvar{n} pela fun@value{cedilha}@~{a}o $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
+@code{@var{P}(@var{x})} de grau @var{n} pela fun@value{cedilha}@~{a}o $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 @iftex
 @math{\prod_{1\leq i<j\leq n-1} (x_i-x_j)}.
 @end iftex
@@ -1118,9 +1118,9 @@ Veja tamb@'{e}m :
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_bipartite (@mvar{P}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_bipartite (@var{P}, @var{x})
 calcula a trasforma@value{cedilha}@~{a}o de
-@code{@mvar{P}(@mvar{x})} de mesmo grau @mvar{n} atrav@'{e}s da fun@value{cedilha}@~{a}o 
+@code{@var{P}(@var{x})} de mesmo grau @var{n} atrav@'{e}s da fun@value{cedilha}@~{a}o 
 @iftex
 @math{x_1 x_2 \cdots x_{n/2} + x_{n/2+1}\cdots x_n}.
 @end iftex
@@ -1158,9 +1158,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_diedrale (@mvar{P}, @mvar{x})
-calcula a transforma@value{cedilha}@~{a}o de @code{@mvar{P}(@mvar{x})} atrav@'{e}s da fun@value{cedilha}@~{a}o
-@code{@mvar{x_1} @mvar{x_2} + @mvar{x_3} @mvar{x_4}}.
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_diedrale (@var{P}, @var{x})
+calcula a transforma@value{cedilha}@~{a}o de @code{@var{P}(@var{x})} atrav@'{e}s da fun@value{cedilha}@~{a}o
+@code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
@@ -1185,9 +1185,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_klein (@mvar{P}, @mvar{x})
-+calculates the transformation of @code{@mvar{P}(@mvar{x})} by the function
-+@code{@mvar{x_1} @mvar{x_2} @mvar{x_4} + @mvar{x_4}}.
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_klein (@var{P}, @var{x})
++calculates the transformation of @code{@var{P}(@var{x})} by the function
++@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 Veja tamb@'{e}m :
 
@@ -1198,9 +1198,9 @@ Veja tamb@'{e}m :
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_klein3 (@mvar{P}, @mvar{x})
-calcula a transforma@value{cedilha}@~{a}o de @code{@mvar{P}(@mvar{x})} atrav@'{e}s da fun@value{cedilha}@~{a}o
-@code{@mvar{x_1} @mvar{x_2} @mvar{x_4} + @mvar{x_4}}.
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_klein3 (@var{P}, @var{x})
+calcula a transforma@value{cedilha}@~{a}o de @code{@var{P}(@var{x})} atrav@'{e}s da fun@value{cedilha}@~{a}o
+@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 Veja tamb@'{e}m :
 
@@ -1212,9 +1212,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_produit_sym (@mvar{P}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_produit_sym (@var{P}, @var{x})
 calcula a lista de todas as resolventes de produto do polin@^{o}mio 
-@code{@mvar{P}(@mvar{x})}.
+@code{@var{P}(@var{x})}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
@@ -1252,9 +1252,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_unitaire (@mvar{P}, @mvar{Q}, @mvar{x})
-calcula a resolvente do polin@^{o}mio @code{@mvar{P}(@mvar{x})} atrav@'{e}s do
-polinomio @code{@mvar{Q}(@mvar{x})}. 
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
+calcula a resolvente do polin@^{o}mio @code{@var{P}(@var{x})} atrav@'{e}s do
+polinomio @code{@var{Q}(@var{x})}. 
 
 Veja tamb@'{e}m :
 
@@ -1266,9 +1266,9 @@ Veja tamb@'{e}m :
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} resolvante_vierer (@mvar{P}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} resolvante_vierer (@var{P}, @var{x})
 calcula a transforma@value{cedilha}@~{a}o de
-@code{@mvar{P}(@mvar{x})} pela fun@value{cedilha}@~{a}o @code{@mvar{x_1} @mvar{x_2} - @mvar{x_3} @mvar{x_4}}.
+@code{@var{P}(@var{x})} pela fun@value{cedilha}@~{a}o @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
 Veja tamb@'{e}m :
 
@@ -1283,14 +1283,14 @@ Veja tamb@'{e}m :
 
 @subsection Miscel@^ania
 
-@deffn {Fun@value{cedilha}@~{a}o} multinomial (@mvar{r}, @mvar{part})
-onde @mvar{r} @'{e} o peso da parti@value{cedilha}@~{a}o @mvar{part}.  Essa fun@value{cedilha}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} multinomial (@var{r}, @var{part})
+onde @var{r} @'{e} o peso da parti@value{cedilha}@~{a}o @var{part}.  Essa fun@value{cedilha}@~{a}o
 retorna o coefinciente multinomial associado: se as partes de
-@mvar{part} forem @mvar{i_1}, @mvar{i_2}, ..., @mvar{i_k}, o resultado @'{e}
-@code{@mvar{r}!/(@mvar{i_1}! @mvar{i_2}! ... @mvar{i_k}!)}.
+@var{part} forem @var{i_1}, @var{i_2}, ..., @var{i_k}, o resultado @'{e}
+@code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} permut (@mvar{L})
-retorna a lista de permuta@value{cedilha}@~{o}es da lista @mvar{L}.
+@deffn {Fun@value{cedilha}@~{a}o} permut (@var{L})
+retorna a lista de permuta@value{cedilha}@~{o}es da lista @var{L}.
 @end deffn

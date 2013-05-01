@@ -72,7 +72,7 @@ y asistencia, entre otros, de Barton Willis y Robert Dodier.
 @section Funciones y variables para units
 
 
-@deffn {Funci@'on} setunits (@mvar{list})
+@deffn {Funci@'on} setunits (@var{list})
 
 El paquete @code{unit} no utiliza por defecto dimensiones derivadas, pero convierte
 todas las unidades a las siete fundamentales en unidades MKS.
@@ -238,7 +238,7 @@ V@'ease tambi@'en @code{uforget}. Para hacer uso de esta funci@'on ejec@'utese @
 @end deffn
 
 
-@deffn {Funci@'on} uforget (@mvar{list})
+@deffn {Funci@'on} uforget (@var{list})
 Por defecto, el paquete @code{unit} convierte todas las unidades a las
 siete fundamentales del sistema MKS. Este comportamiento puede alterarse
 mediante la instrucci@'on @code{setunits}. Despu@'es, si el usuario quiere
@@ -278,7 +278,7 @@ V@'ease tambi@'en @code{setunits}. Para hacer uso de esta funci@'on ejec@'utese 
 @end deffn
 
 
-@deffn {Funci@'on} convert (@mvar{expr}, @mvar{list})
+@deffn {Funci@'on} convert (@var{expr}, @var{list})
 La funci@'on @code{convert} permite conversiones de una sola vez sin
 alterar el entorno global de ejecuci@'on. Acepta tanto un @'unico argumento
 como una lista de unidades a utilizar en las conversiones. Cuando se realiza
@@ -674,11 +674,11 @@ su entorno de trabajo.
 
 @end defvr
 
-@deffn {Funci@'on} metricexpandall (@mvar{x})
+@deffn {Funci@'on} metricexpandall (@var{x})
 
 Reconstruye autom@'aticamente las listas globales de unidades creando todas
 los m@'ultiplos y subm@'ultiplos m@'etricos necesarios. El argumento num@'erico 
-@mvar{x} se utiliza para especificar cu@'antos prefijos num@'ericos quiere 
+@var{x} se utiliza para especificar cu@'antos prefijos num@'ericos quiere 
 utilizar el usuario. Los argumentos son los siguientes:
 @example
 @group
@@ -707,7 +707,7 @@ paquete @code{unit}.
 @end defvr
 
 
-@c @deffn {Function} functionname (@mvar{arg1}, @mvar{arg2}, ..., @mvar{argn})
+@c @deffn {Function} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
 @c @end deffn
 
 @c @defvr {Variable} variablename

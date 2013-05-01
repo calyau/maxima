@@ -14,12 +14,12 @@ Es el n@'umero m@'aximo de veces que la regla de L'Hopital es aplicada en la fun
 
 @end defvr
 
-@deffn {Funci@'on} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
-@deffnx {Funci@'on} limit (@mvar{expr}, @mvar{x}, @mvar{val})
-@deffnx {Funci@'on} limit (@mvar{expr})
-Calcula el l@'{@dotless{i}}mite de @mvar{expr} cuando la variable real @mvar{x}
-se aproxima al valor @mvar{val} desde la direcci@'on @mvar{dir}. El argumento 
-@mvar{dir} puede ser el valor @code{plus} para un l@'{@dotless{i}}mite por la 
+@deffn {Funci@'on} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funci@'on} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funci@'on} limit (@var{expr})
+Calcula el l@'{@dotless{i}}mite de @var{expr} cuando la variable real @var{x}
+se aproxima al valor @var{val} desde la direcci@'on @var{dir}. El argumento 
+@var{dir} puede ser el valor @code{plus} para un l@'{@dotless{i}}mite por la 
 derecha, @code{minus} para un l@'{@dotless{i}}mite por la izquierda o simplemente 
 se omite para indicar un l@'{@dotless{i}}mite en ambos sentidos.
 
@@ -72,9 +72,9 @@ sobre formas desconocidas, a fin de evitar fallos tales como que
 
 @end defvr
 
-@deffn {Funci@'on} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
-@deffnx {Funci@'on} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
-@deffnx {Funci@'on} tlimit (@mvar{expr})
+@deffn {Funci@'on} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funci@'on} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funci@'on} tlimit (@var{expr})
 Calcula el l@'{@dotless{i}}mite del desarrollo de Taylor de la expresi@'on
 @code{expr} de variable @code{x} en el punto @code{val} en la direcci@'on @code{dir}.
 @end deffn

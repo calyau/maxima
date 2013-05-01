@@ -111,7 +111,7 @@ die Fakten f@"ur Aussagefunktionen wieder zur Verf@"ugung stehen.
 @defvr {Eigenschaft} alphabetic
 
 Das Kommando @code{declare(string, alphabetic)} deklariert die Zeichen der 
-Zeichenkette @mvar{string} als alphabetisch.  Das Argument @mvar{string} muss eine
+Zeichenkette @var{string} als alphabetisch.  Das Argument @var{string} muss eine
 Zeichenkette sein.  Zeichen, die als alphabetisch deklariert sind, k@"onnen in
 Maxima-Bezeichnern verwendet werden.  Siehe auch @ref{Bezeichner}.
 
@@ -135,7 +135,7 @@ Die Zeichen @code{"~"}, @code{"@@"} und @code{`} als alphabetisch erkl@"art.
 @anchor{bindtest}
 @defvr {Eigenschaft} bindtest
 
-Hat ein Symbol @mvar{x} die Eigenschaft @code{bindtest} und wird es ausgewertet,
+Hat ein Symbol @var{x} die Eigenschaft @code{bindtest} und wird es ausgewertet,
 ohne das dem Symbol bisher ein Wert zugewiesen wurde, signalisiert Maxima einen 
 Fehler.  Siehe auch die Funktion @mrefdot{declare}
 
@@ -160,7 +160,7 @@ aa unbound variable
 @anchor{constant}
 @defvr {Eigenschaft} constant
 
-Das Kommando @code{declare(@mvar{a}, constant)} deklariert ein Symbol @mvar{a}
+Das Kommando @code{declare(@var{a}, constant)} deklariert ein Symbol @var{a}
 als konstant.  Die Funktion @mref{constantp} hat f@"ur dieses Symbol dann das
 Ergebnis @code{true}.  Die Deklaration als eine Konstante verhindert nicht, dass
 dem Symbol ein Wert zugewiesen werden kann.  Siehe @mref{declare} und
@@ -182,9 +182,9 @@ Beispiel:
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{constantp}
-@deffn {Funktion} constantp (@mvar{expr})
+@deffn {Funktion} constantp (@var{expr})
 
-Gibt f@"ur einen konstanten Ausdruck @mvar{expr} den Wert @code{true} zur@"uck,
+Gibt f@"ur einen konstanten Ausdruck @var{expr} den Wert @code{true} zur@"uck,
 andernfalls @code{false}.
 
 Ein Ausdruck wird von Maxima als ein konstanter Ausdruck erkannt, wenn seine 
@@ -221,21 +221,21 @@ Beispiele:
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{declare}
-@deffn {Funktion} declare (@mvar{a_1}, @mvar{p_1}, @mvar{a_2}, @mvar{p_2}, @dots{})
+@deffn {Funktion} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
 
-Weist dem Symbol @mvar{a_i} die Eigenschaft @mvar{p_i} zu.  Die Argumente
-@mvar{a_i} und @mvar{p_i} k@"onnen Listen sein.  Ist @mvar{a_i} eine Liste, dann
-erh@"alt jedes Symbol der Liste die Eigenschaft @mvar{p_i}.  Ist umgekehrt
-@mvar{p_i} eine Liste mit Eigenschaften, dann erh@"alt das Symbol @mvar{a_i} 
-diese Eigenschaften.  Entsprechend erhalten alle Symbole einer Liste @mvar{a_i}
-die Eigenschaften einer Liste @mvar{p_i}.
+Weist dem Symbol @var{a_i} die Eigenschaft @var{p_i} zu.  Die Argumente
+@var{a_i} und @var{p_i} k@"onnen Listen sein.  Ist @var{a_i} eine Liste, dann
+erh@"alt jedes Symbol der Liste die Eigenschaft @var{p_i}.  Ist umgekehrt
+@var{p_i} eine Liste mit Eigenschaften, dann erh@"alt das Symbol @var{a_i} 
+diese Eigenschaften.  Entsprechend erhalten alle Symbole einer Liste @var{a_i}
+die Eigenschaften einer Liste @var{p_i}.
 
 Die Funktion @code{declare} wertet die Argumente nicht aus.  @code{declare} gibt
 stets @code{done} als Ergebnis zur@"uck.
 
-Hat ein Symbol @mvar{sym} die Eigenschaft @mvar{prop} mit der Funktion 
-@code{declare} erhalten, dann hat das Kommando @code{featurep(@mvar{sym}, 
-@mvar{prop})} das Ergebnis @code{true}.  Mit der Funktion @code{properties}
+Hat ein Symbol @var{sym} die Eigenschaft @var{prop} mit der Funktion 
+@code{declare} erhalten, dann hat das Kommando @code{featurep(@var{sym}, 
+@var{prop})} das Ergebnis @code{true}.  Mit der Funktion @code{properties}
 k@"onnen alle Eigenschaften eines Symbols angezeigt werden.
 
 Mit der Funktion @code{declare} k@"onnen Symbole die folgenden Eigenschaften
@@ -248,12 +248,12 @@ der Form @code{f(x + y + z + ...)} zu @code{f(x) + f(y) + f(z) + ...}
 vereinfacht.  Siehe @mrefdot{additive}
 
 @item alphabetic
-@mvar{a_i} ist eine Zeichenkette, deren Zeichen als alphabetische Zeichen 
+@var{a_i} ist eine Zeichenkette, deren Zeichen als alphabetische Zeichen 
 deklariert werden.  Die Zeichen k@"onnen dann in Maxima-Bezeichnern verwendet
 werden.  Siehe @mref{alphabetic} f@"ur Beispiele.
 
 @item antisymmetric, commutative, symmetric
-@mvar{a_i} wird als eine symmetrische, antisymmetrische oder kommutative Funktion
+@var{a_i} wird als eine symmetrische, antisymmetrische oder kommutative Funktion
 interpretiert.  Die Eigenschaften @code{commutative} und @code{symmetric} sind
 @"aquivalent.  Siehe @mrefcomma{antisymmetric} @mref{commutative} und
 @mrefdot{symmetric}
@@ -284,12 +284,12 @@ Auswertungsschalter @code{a_i} den Wert @code{true}.  Siehe @mref{evflag} f@"ur
 Beispiele.
 
 @item evfun
-Deklariert eine Funktion @mvar{a_i} als eine Auswertungsfunktion.  Tritt die 
-Funktion @mvar{a_i} als Argument der Funktion @code{ev} auf, so wird die Funktion
+Deklariert eine Funktion @var{a_i} als eine Auswertungsfunktion.  Tritt die 
+Funktion @var{a_i} als Argument der Funktion @code{ev} auf, so wird die Funktion
 auf den Ausdruck angewendet.  Siehe @mref{evfun} f@"ur Beispiele.
 
 @item feature
-@mvar{a_i} wird als eine Eigenschaft @code{feature} interpretiert.  Andere
+@var{a_i} wird als eine Eigenschaft @code{feature} interpretiert.  Andere
 Symbole k@"onnen dann diese vom Nutzer definierte Eigenschaft erhalten.
 Siehe @mrefdot{feature}
 
@@ -299,7 +299,7 @@ wird die Funktion als eine monoton steigende oder fallende Funktion
 interpretiert.  Siehe @mref{decreasing} und @mrefdot{increasing}
 
 @item integer, noninteger
-@mvar{a_i} wird als eine ganzzahlige oder nicht-ganzzahlige Variable
+@var{a_i} wird als eine ganzzahlige oder nicht-ganzzahlige Variable
 interpretiert.  Siehe @mref{integer} und @mrefdot{noninteger}
 
 @item integervalued
@@ -308,7 +308,7 @@ Vereinfachungen an, dass die Funktionen einen ganzzahligen Wertebereich hat.
 F@"ur ein Beispiel siehe @mrefdot{integervalued}
 
 @item lassociative, rassociative
-@mvar{a_i} wird als eine rechts- oder links-assoziative Funktion interpretiert.
+@var{a_i} wird als eine rechts- oder links-assoziative Funktion interpretiert.
 Siehe @mref{lassociative} und @mrefdot{rassociative}
 
 @item linear
@@ -316,7 +316,7 @@ Entspricht der Deklaration einer Funktion als @code{outative} und
 @code{additive}.  Siehe auch @mrefdot{linear}
 
 @item mainvar
-Wird eine Variable als @mvar{mainvar} deklariert, wird sie als eine 
+Wird eine Variable als @var{mainvar} deklariert, wird sie als eine 
 "Hauptvariable" interpretiert.  Eine Hauptvariable wird vor allen Konstanten und
 Variablen in einer kanonischen Ordnung eines Maxima-Ausdr@"uckes angeordnet.
 Die Anordnung wird durch die Funktion @code{ordergreatp} bestimmt.  Siehe auch
@@ -324,9 +324,9 @@ Die Anordnung wird durch die Funktion @code{ordergreatp} bestimmt.  Siehe auch
 
 @item multiplicative
 Hat eine Funktion @code{f} die Eigenschaft @code{multiplicative}, werden
-Ausdr@"ucke der Form @code{@mvar{a_i}(x * y * z * ...)} zu
-@code{@mvar{a_i}(x) * @mvar{a_i}(y) * @mvar{a_i}(z) * ...} vereinfacht.  Die
-Vereinfachung wird nur f@"ur das erste Argument der Funktion @mvar{f}
+Ausdr@"ucke der Form @code{@var{a_i}(x * y * z * ...)} zu
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...} vereinfacht.  Die
+Vereinfachung wird nur f@"ur das erste Argument der Funktion @var{f}
 ausgef@"uhrt.  Siehe @mrefdot{multiplicative}
 
 @item nary
@@ -340,43 +340,43 @@ Deklaration nur auf die Vereinfachung aus.  Siehe auch
 @mxrefdot{property_nary, nary}
 
 @item nonarray
-Hat ein Symbol @mvar{a_i} die Eigenschaft @code{nonarray}, wird es nicht als ein
+Hat ein Symbol @var{a_i} die Eigenschaft @code{nonarray}, wird es nicht als ein
 Array interpretiert, wenn das Symbol einen Index erh@"alt.  Diese Deklaration
-verhindert die mehrfache Auswertung, wenn @mvar{a_i} als indizierte Variable
+verhindert die mehrfache Auswertung, wenn @var{a_i} als indizierte Variable
 genutzt wird.  Siehe  @mrefdot{nonarray}
 
 @item nonscalar
-@mvar{a_i} wird als eine nicht-skalare Variable interpretiert.  Ein Symbol wird
+@var{a_i} wird als eine nicht-skalare Variable interpretiert.  Ein Symbol wird
 also als ein Vektor oder eine Matrix deklariert.  Siehe @mrefdot{nonscalar}
 
 @item noun
-@mvar{a_i} wird als Substantivform interpretiert.  Abh@"angig vom Kontext wird 
-@mvar{a_i} durch @code{'@mvar{a_i}} oder @code{nounify(@mvar{a_i})} ersetzt.
+@var{a_i} wird als Substantivform interpretiert.  Abh@"angig vom Kontext wird 
+@var{a_i} durch @code{'@var{a_i}} oder @code{nounify(@var{a_i})} ersetzt.
 Siehe auch @mrefdot{noun} f@"ur ein Beispiel.
 
 @item outative
-Ausdr@"ucke mit der Funktion @mvar{a_i} werden so vereinfacht, dass konstante 
-Faktoren aus dem Argument herausgezogen werden.  Hat die Funktion @mvar{a_i} ein 
+Ausdr@"ucke mit der Funktion @var{a_i} werden so vereinfacht, dass konstante 
+Faktoren aus dem Argument herausgezogen werden.  Hat die Funktion @var{a_i} ein 
 Argument, wird ein Faktor dann als konstant angesehen, wenn er ein Symbol oder 
-eine deklarierte Konstante ist.  Hat die Funktion @mvar{a_i} zwei oder mehr 
+eine deklarierte Konstante ist.  Hat die Funktion @var{a_i} zwei oder mehr 
 Argumente, wird ein Faktor dann als konstant angesehen, wenn das zweite Argument
 ein Symbol und der Faktor unabh@"angig vom zweiten Argument ist.  Siehe auch
 @mrefdot{outative}
 
 @item posfun
-@mvar{a_i} wird als eine Funktion interpretiert, die nur positive Werte hat.
+@var{a_i} wird als eine Funktion interpretiert, die nur positive Werte hat.
 Siehe @mrefdot{posfun}
 
 @item rational, irrational
-@mvar{a_i} wird als eine rationale oder irrationale Zahl interpretiert.  Siehe
+@var{a_i} wird als eine rationale oder irrationale Zahl interpretiert.  Siehe
 @mref{rational} und @mrefdot{irrational}
 
 @item real, imaginary, complex
-@mvar{a_i} wird als eine reelle, imagin@"are oder komplexe Zahl interpretiert.
+@var{a_i} wird als eine reelle, imagin@"are oder komplexe Zahl interpretiert.
 Siehe @mrefcomma{real} @mref{imaginary} und @mrefdot{complex}
 
 @item scalar
-@mvar{a_i} wird als skalare Variable interpretiert.  Siehe @mrefdot{scalar}
+@var{a_i} wird als skalare Variable interpretiert.  Siehe @mrefdot{scalar}
 @end table
 @end deffn
 
@@ -435,10 +435,10 @@ Beispiele:
 @anchor{feature}
 @defvr {Eigenschaft} feature
 
-@code{feature} ist eine Eigenschaft, die ein Symbol @mvar{sym} mit der Funktion
-@code{declare} erhalten kann.  In diesem Fall ist das Symbol @mvar{sym} selbst
+@code{feature} ist eine Eigenschaft, die ein Symbol @var{sym} mit der Funktion
+@code{declare} erhalten kann.  In diesem Fall ist das Symbol @var{sym} selbst
 eine Eigenschaft, so dass das Kommando @code{declare(x, sym)} einem Symbol
-@mvar{x} die vom Nutzer definierte Eigenschaft @code{sym} gibt.
+@var{x} die vom Nutzer definierte Eigenschaft @code{sym} gibt.
 
 Maxima unterscheidet Systemeigenschaften und mathematische Eigenschaften, die 
 Symbole und Ausdr@"ucke haben k@"onnen.  F@"ur Systemeigenschaften siehe die 
@@ -459,14 +459,14 @@ Beispiel:
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{featurep}
-@deffn {Funktion} featurep (@mvar{a}, @mvar{p})
+@deffn {Funktion} featurep (@var{a}, @var{p})
 
-Stellt fest, ob das Symbol oder der Ausdruck @mvar{a} die Eigenschaft @mvar{p} 
+Stellt fest, ob das Symbol oder der Ausdruck @var{a} die Eigenschaft @var{p} 
 hat.  Maxima nutzt die Fakten der aktiven Kontexte und die definierten
 Eigenschaften f@"ur Symbole und Funktionen.
 
 @code{featurep} gibt sowohl f@"ur den Fall @code{false} zur@"uck, dass das 
-Argument @mvar{a} nicht die Eigenschaft @mvar{p} hat, als auch f@"ur den Fall, 
+Argument @var{a} nicht die Eigenschaft @var{p} hat, als auch f@"ur den Fall, 
 dass Maxima dies nicht anhand der bekannten Fakten und Eigenschaften entscheiden
 kann.
 
@@ -490,15 +490,15 @@ Beispiele:
 Maxima kennt spezielle mathematische Eigenschaften von Funktionen und 
 Variablen.
 
-@code{declare(@mvar{x})}, @mvar{foo} gibt der Funktion oder Variablen @mvar{x} die
-Eigenschaft @mvar{foo}.
+@code{declare(@var{x})}, @var{foo} gibt der Funktion oder Variablen @var{x} die
+Eigenschaft @var{foo}.
 
-@code{declare(@mvar{foo}, feature)} deklariert die neue Eigenschaft @mvar{foo}.
+@code{declare(@var{foo}, feature)} deklariert die neue Eigenschaft @var{foo}.
 Zum  Beispiel deklariert @code{declare([red, green, blue], feature)} die drei 
 neuen Eigenschaften @code{red}, @code{green} und @code{blue}.
 
-@code{featurep(@mvar{x}, @mvar{foo})} hat die R@"uckgabe @code{true}, wenn @mvar{x} 
-die Eigenschaft @mvar{foo} hat.  Ansonsten wird @code{false} zur@"uckgegeben.
+@code{featurep(@var{x}, @var{foo})} hat die R@"uckgabe @code{true}, wenn @var{x} 
+die Eigenschaft @var{foo} hat.  Ansonsten wird @code{false} zur@"uckgegeben.
 
 Die Informationsliste @code{features} enth@"alt eine Liste der Eigenschaften, 
 die Funktionen und Variablen erhalten k@"onnen und die in die Datenbank
@@ -522,10 +522,10 @@ weitere Eigenschaften.  Siehe @mref{declare} und @mrefdot{status}
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{get}
-@deffn {Funktion} get (@mvar{a}, @mvar{i})
+@deffn {Funktion} get (@var{a}, @var{i})
 
-Gibt die Eigenschaft @mvar{i} des Symbols @mvar{a} zur@"uck.  Hat das Symbol
-@mvar{a} nicht die Eigenschaft @mvar{i}, wird @code{false} zur@"uckgegeben.
+Gibt die Eigenschaft @var{i} des Symbols @var{a} zur@"uck.  Hat das Symbol
+@var{a} nicht die Eigenschaft @var{i}, wird @code{false} zur@"uckgegeben.
 
 @code{get} wertet die Argumente aus.
 
@@ -600,9 +600,9 @@ Beispiel:
 @anchor{nonarray}
 @deffn {Eigenschaft} nonarray
 
-@code{declare(a, nonarray)} gibt dem Symbol @mvar{a} die Eigenschaft nicht ein
+@code{declare(a, nonarray)} gibt dem Symbol @var{a} die Eigenschaft nicht ein
 Array zu sein.  Dies verhindert die mehrfache Auswertung, wenn das Symbol
-@mvar{a} als indizierte Variable genutzt wird.
+@var{a} als indizierte Variable genutzt wird.
 
 Beispiel:
 
@@ -630,9 +630,9 @@ Matrix oder Liste bei nicht-kommutativen Rechenoperationen.
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{nonscalarp}
-@deffn {Funktion} nonscalarp (@mvar{expr})
+@deffn {Funktion} nonscalarp (@var{expr})
 
-Gibt @code{true} zur@"uck, wenn der Ausdruck @mvar{expr} kein Skalar ist.  Der
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} kein Skalar ist.  Der
 Ausdruck enth@"alt dann Matrizen, Listen oder Symbole, die als @code{nonscalar}
 deklariert wurden.
 @end deffn
@@ -648,15 +648,15 @@ zur@"uck.
 
 @c --- 27.05.2011 DK -----------------------------------------------------------
 @anchor{printprops}
-@deffn  {Funktion} printprops (@mvar{a}, @mvar{i})
-@deffnx {Funktion} printprops ([@mvar{a_1}, @dots{}, @mvar{a_n}], @mvar{i})
-@deffnx {Funktion} printprops (all, @mvar{i})
+@deffn  {Funktion} printprops (@var{a}, @var{i})
+@deffnx {Funktion} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
+@deffnx {Funktion} printprops (all, @var{i})
 
-Zeigt die zum Kennzeichen @mvar{i} zugeordnete Eigenschaft des Atoms @mvar{a} an.
-@mvar{i} kann einer der Werte @code{gradef}, @code{atvalue}, @code{atomgrad} oder
-@code{matchdeclare} sein.  @mvar{a} kann sowohl eine Liste von Atomen, als auch
+Zeigt die zum Kennzeichen @var{i} zugeordnete Eigenschaft des Atoms @var{a} an.
+@var{i} kann einer der Werte @code{gradef}, @code{atvalue}, @code{atomgrad} oder
+@code{matchdeclare} sein.  @var{a} kann sowohl eine Liste von Atomen, als auch
 das Atom @code{all} sein.  In diesem Fall werden alle Atome angezeigt, die eine
-Eigenschaft zum Kennzeichen @mvar{i} haben.
+Eigenschaft zum Kennzeichen @var{i} haben.
 
 Beispiel:
 
@@ -674,9 +674,9 @@ Beispiel:
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{properties}
-@deffn {Funktion} properties (@mvar{a})
+@deffn {Funktion} properties (@var{a})
 
-Gibt eine Liste mit den Eigenschaften zur@"uck, die das Symbol @mvar{a} von
+Gibt eine Liste mit den Eigenschaften zur@"uck, die das Symbol @var{a} von
 Maxima oder dem Nutzer erhalten hat.  Die R@"uckgabe kann jede Eigenschaft
 enthalten, die mit der Funktion @mref{declare} einem Symbol zugewiesen ist.
 Diese Eigenschaften sind:
@@ -825,22 +825,22 @@ werden, der in Zukunft zu beheben ist.
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{propvars}
-@deffn {Funktion} propvars (@mvar{prop})
+@deffn {Funktion} propvars (@var{prop})
 
 Gibt eine Liste mit den Atomen zur@"uck, die in der Informationsliste 
-@code{props} eingetragen sind und die die Eigenschaft @mvar{prop} haben.  Zum 
+@code{props} eingetragen sind und die die Eigenschaft @var{prop} haben.  Zum 
 Beispiel gibt @code{propvars(atvalue)} eine Liste der Atome zur@"uck, die die 
 Eigenschaft @code{atvalue} haben.
 @end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{put}
-@deffn {Funktion} put (@mvar{atom}, @mvar{value}, @mvar{indicator})
+@deffn {Funktion} put (@var{atom}, @var{value}, @var{indicator})
 
-Weist den Wert @mvar{value} der Eigenschaft @mvar{indicator} des Atoms @mvar{atom}
-zu.  @mvar{indicator} kann eine beliebige Eigenschaft sein und beschr@"ankt sich
+Weist den Wert @var{value} der Eigenschaft @var{indicator} des Atoms @var{atom}
+zu.  @var{indicator} kann eine beliebige Eigenschaft sein und beschr@"ankt sich
 nicht auf die vom System definierten Eigenschaften.  @code{put} wertet die 
-Argumente aus.  @code{put} gibt @mvar{value} zur@"uck.
+Argumente aus.  @code{put} gibt @var{value} zur@"uck.
 
 Beispiele:
 
@@ -864,7 +864,7 @@ Beispiele:
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{qput}
-@deffn {Funktion} qput (@mvar{atom}, @mvar{value}, @mvar{indicator})
+@deffn {Funktion} qput (@var{atom}, @var{value}, @var{indicator})
 
 Entspricht der Funktion @code{put} mit dem Unterschied, dass @code{qput} die
 Argumente nicht auswertet.
@@ -916,38 +916,38 @@ reelle Zahl, imagin@"are Zahl oder als eine komplexe Zahl interpretiert.
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{rem}
-@deffn {Funktion} rem (@mvar{atom}, @mvar{indicator})
+@deffn {Funktion} rem (@var{atom}, @var{indicator})
 
-Entfernt die Eigenschaft @mvar{indicator} vom Atom @mvar{atom}.
+Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
 @end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{remove}
-@deffn  {Funktion} remove (@mvar{a_1}, @mvar{p_1}, @dots{}, @mvar{a_n}, @mvar{p_n})
-@deffnx {Funktion} remove ([@mvar{a_1}, @dots{}, @mvar{a_m}], [@mvar{p_1}, @dots{}, @mvar{p_n}], @dots{})
-@deffnx {Funktion} remove ("@mvar{a}", operator)
-@deffnx {Funktion} remove (@mvar{a}, transfun)
-@deffnx {Funktion} remove (all, @mvar{p})
+@deffn  {Funktion} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
+@deffnx {Funktion} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
+@deffnx {Funktion} remove ("@var{a}", operator)
+@deffnx {Funktion} remove (@var{a}, transfun)
+@deffnx {Funktion} remove (all, @var{p})
 
 Entfernt Eigenschaften von Atomen.
 
-@code{remove(@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})} entfernt die
+@code{remove(@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} entfernt die
 Eigenschaft @code{p_k} von dem Atom @code{a_k}.
 
-@code{remove([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
-entfernt die Eigenschaften @mvar{p_1}, @dots{}, @mvar{p_n} von den Atomen 
-@mvar{a_1}, @dots{}, @mvar{a_m}.  Es k@"onnen mehrere Paare an Listen angegeben 
+@code{remove([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+entfernt die Eigenschaften @var{p_1}, @dots{}, @var{p_n} von den Atomen 
+@var{a_1}, @dots{}, @var{a_m}.  Es k@"onnen mehrere Paare an Listen angegeben 
 werden.
 
-@code{remove(all, @mvar{p})} entfernt die Eigenschaft @mvar{p} von allen Atomen, 
+@code{remove(all, @var{p})} entfernt die Eigenschaft @var{p} von allen Atomen, 
 die diese Eigenschaft aufweisen.
 
 Die zu entfernenden Eigenschaften k@"onnen vom System definierte Eigenschaften
 wie @code{function}, @code{macro}, @code{mode_declare} oder nutzerdefinierte
 Eigenschaften sein.
 
-@code{remove("@mvar{a}", operator)} oder @code{remove("@mvar{a}", op)}
-entfernen vom Atom @mvar{a} die Operatoreigenschaften, die mit den Funktionen
+@code{remove("@var{a}", operator)} oder @code{remove("@var{a}", op)}
+entfernen vom Atom @var{a} die Operatoreigenschaften, die mit den Funktionen
 @mrefcomma{prefix} @mrefcomma{infix} @mrefcomma{nary} @mrefcomma{postfix}@w{}
 @mref{matchfix} oder @mref{nofix} definiert wurden.  Die Namen von Operatoren
 m@"ussen als eine Zeichenkette angegeben werden.
@@ -965,9 +965,9 @@ bei nicht-kommutativen Rechenoperationen.
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{scalarp}
-@deffn {Funktion} scalarp (@mvar{expr})
+@deffn {Funktion} scalarp (@var{expr})
 
-Gibt @code{true} zur@"uck, wenn der Ausdruck @mvar{expr} eine Zahl, Konstante, 
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} eine Zahl, Konstante, 
 ein als Skalar definiertes Symbol oder ein aus diesen Objekten zusammengesetzter
 Ausdruck ist.  Der Ausdruck darf jedoch keine Liste oder eine Matrix sein.
 @end deffn
@@ -979,11 +979,11 @@ Ausdruck ist.  Der Ausdruck darf jedoch keine Liste oder eine Matrix sein.
 
 @c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{activate}
-@deffn {Funktion} activate (@mvar{context_1}, @dots{}, @mvar{context_n})
+@deffn {Funktion} activate (@var{context_1}, @dots{}, @var{context_n})
 
-Das Kommando @code{activate(@mvar{context})} aktiviert den Kontext @mvar{context}.
-Der Funktion @code{activate} k@"onnen mehrere Kontexte @mvar{context_1}, @dots{},
-@mvar{context_n} @"ubergeben werden.  Nur die Aussagen und Fakten eines aktiven
+Das Kommando @code{activate(@var{context})} aktiviert den Kontext @var{context}.
+Der Funktion @code{activate} k@"onnen mehrere Kontexte @var{context_1}, @dots{},
+@var{context_n} @"ubergeben werden.  Nur die Aussagen und Fakten eines aktiven
 Kontextes stehen f@"ur die Auswertung von Aussagen zur Verf@"ugung.
 
 Maxima gibt @code{done} zur@"uck, wenn der Kontext erfolgreich aktiviert werden
@@ -994,7 +994,7 @@ Das Kommando @code{facts()} gibt die Fakten und Aussagen des aktuellen Kontextes
 aus.  Die Aussagen und Fakten anderer Kontexte k@"onnen zwar aktiv sein, sind 
 aber in der R@"uckgabe von @code{facts} nicht enthalten.  Um die Aussagen und 
 Fakten eines anderen als des aktuellen Kontexts auszugeben, kann das Kommando 
-@code{facts(@mvar{context})} ausgef@"uhrt werden.
+@code{facts(@var{context})} ausgef@"uhrt werden.
 
 Die Systemvariable @mref{activecontexts} enth@"alt eine Liste der aktiven
 Kontexte.  Siehe auch die Systemvariable @mref{contexts} f@"ur eine Liste
@@ -1016,20 +1016,20 @@ der Liste @code{activecontexts} enthalten.  Siehe auch die Funktion
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{askinteger}
-@deffn  {Funktion} askinteger (@mvar{expr}, integer)
-@deffnx {Funktion} askinteger (@mvar{expr})
-@deffnx {Funktion} askinteger (@mvar{expr}, even)
-@deffnx {Funktion} askinteger (@mvar{expr}, odd)
+@deffn  {Funktion} askinteger (@var{expr}, integer)
+@deffnx {Funktion} askinteger (@var{expr})
+@deffnx {Funktion} askinteger (@var{expr}, even)
+@deffnx {Funktion} askinteger (@var{expr}, odd)
 
-Das Kommando @code{askinteger(@mvar{expr}, integer)} versucht anhand der Aussagen
-und Fakten der aktiven Kontexte zu entscheiden, ob @mvar{expr} eine ganze Zahl
+Das Kommando @code{askinteger(@var{expr}, integer)} versucht anhand der Aussagen
+und Fakten der aktiven Kontexte zu entscheiden, ob @var{expr} eine ganze Zahl
 repr@"asentiert.  Kann @code{askinteger} die Frage nicht entscheiden, fragt 
 Maxima den Nutzer.  Die Antwort wird dem aktuellen Kontext hinzugef@"ugt.  
-@code{askinteger(@mvar{expr})} ist @"aquivalent zu 
-@code{askinteger(@mvar{expr}, integer)}.
+@code{askinteger(@var{expr})} ist @"aquivalent zu 
+@code{askinteger(@var{expr}, integer)}.
 
-@code{askinteger(@mvar{expr}, even)} und @code{askinteger(@mvar{expr}, odd)}
-versuchen zu entscheiden, ob @mvar{expr} eine gerade oder ungerade ganze Zahl
+@code{askinteger(@var{expr}, even)} und @code{askinteger(@var{expr}, odd)}
+versuchen zu entscheiden, ob @var{expr} eine gerade oder ungerade ganze Zahl
 repr@"asentiert.  Kann Maxima dies nicht entscheiden, wird der Nutzer gefragt.
 Die Antwort wird dem aktuellen Kontext hinzugef@"ugt.
 
@@ -1055,9 +1055,9 @@ yes;
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{asksign}
-@deffn {Funktion} asksign (@mvar{expr})
+@deffn {Funktion} asksign (@var{expr})
 
-Die Funktion @code{asksign} versucht zu entscheiden, ob der Ausdruck @mvar{expr}
+Die Funktion @code{asksign} versucht zu entscheiden, ob der Ausdruck @var{expr}
 einen positiven, negativen oder den Wert Null repr@"asentiert.  Kann Maxima dies
 nicht feststellen, wird der Nutzer nach weiteren Informationen gefragt, um die 
 Frage zu entscheiden.  Die Antworten des Nutzers werden f@"ur die laufende 
@@ -1068,15 +1068,15 @@ positiven, negativen oder den Wert Null.
 
 @c --- 26.08.2010 DK -----------------------------------------------------------
 @anchor{assume}
-@deffn {Funktion} assume (@mvar{pred_1}, @dots{}, @mvar{pred_n})
+@deffn {Funktion} assume (@var{pred_1}, @dots{}, @var{pred_n})
 
-F@"ugt die Aussagen @mvar{pred_1}, @dots{}, @mvar{pred_n} dem aktuellen Kontext 
+F@"ugt die Aussagen @var{pred_1}, @dots{}, @var{pred_n} dem aktuellen Kontext 
 hinzu.  Eine inkonsistente oder redundante Aussage wird dem Kontext nicht
 hinzugef@"ugt.  @code{assume} gibt eine Liste mit den Aussagen zur@"uck, die dem
 Kontext hinzugef@"ugt wurden, oder die Symbole @code{redunant} und 
 @code{inconsistent}.
 
-Die Aussagen @mvar{pred_1}, @dots{}, @mvar{pred_n} k@"onnen nur Ausdr@"ucke mit 
+Die Aussagen @var{pred_1}, @dots{}, @var{pred_n} k@"onnen nur Ausdr@"ucke mit 
 den relationalen Operatoren @code{"<"}, @code{"<="}, @code{equal}, 
 @code{notequal}, @code{">="} und @code{">"} sein.  Aussagen k@"onnen nicht die
 Operatoren @code{"="} f@"ur Gleichungen oder @code{"#"} f@"ur Ungleichungen 
@@ -1084,12 +1084,12 @@ enthalten.  Auch k@"onnen keine Aussagefunktionen wie @code{integerp} verwendet
 werden.
 
 Zusammengesetzte Aussagen mit dem Operator @code{and} der Form 
-@code{@mvar{pred_1} and ... and @mvar{pred_n}} sind m@"oglich, nicht dagegen 
-Aussagen mit dem Operator @code{or} der Form @code{@mvar{pred_1} or ... or 
-@mvar{pred_n}}.  Ein Ausdruck mit dem Operator @code{not} der Form 
-@code{not(@mvar{pred_k})} ist dann m@"oglich, wenn @mvar{pred_k} eine 
-relationale Aussage ist.  Aussagen der Form @code{not (@mvar{pred_1} and
-@mvar{pred_2})} und @code{not (@mvar{pred_1} or @mvar{pred_2})} sind dagegen nicht
+@code{@var{pred_1} and ... and @var{pred_n}} sind m@"oglich, nicht dagegen 
+Aussagen mit dem Operator @code{or} der Form @code{@var{pred_1} or ... or 
+@var{pred_n}}.  Ein Ausdruck mit dem Operator @code{not} der Form 
+@code{not(@var{pred_k})} ist dann m@"oglich, wenn @var{pred_k} eine 
+relationale Aussage ist.  Aussagen der Form @code{not (@var{pred_1} and
+@var{pred_2})} und @code{not (@var{pred_1} or @var{pred_2})} sind dagegen nicht
 m@"oglich.
 
 Der Folgerungsmechanismus von Maxima ist nicht sehr stark.  Viele 
@@ -1214,7 +1214,7 @@ In diesem Fall werden von Maxima Variablen und indizierte Variablen als positiv
 angenommen, wenn @code{assume_pos} den Wert @code{true} hat.  Der 
 Optionsvariablen @mref{assume_pos_pred} kann eine Aussagefunktion mit einem
 Argument zugewiesen werden.  Hat die Aussagefunktion f@"ur ein Argument 
-@mvar{expr} das Ergebnis @code{true}, wird das Argument als positiv 
+@var{expr} das Ergebnis @code{true}, wird das Argument als positiv 
 angenommen, wenn die Optionsvariable @code{assume_pos} den Wert @code{true} hat
 und Maxima das Vorzeichen nicht aus den aktiven Kontexten ermitteln kann.
 
@@ -1430,9 +1430,9 @@ Kontext enth@"alt die Aussage @code{[a>0]}.  Der Kontext kann mit der Funktion
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{deactivate}
-@deffn {Funktion} deactivate (@mvar{context_1}, @dots{}, @mvar{context_n})
+@deffn {Funktion} deactivate (@var{context_1}, @dots{}, @var{context_n})
 
-Die Kontexte @mvar{context_1}, @dots{}, @mvar{context_n} werden deaktiviert.  Die
+Die Kontexte @var{context_1}, @dots{}, @var{context_n} werden deaktiviert.  Die
 Aussagen und Fakten dieser Kontexte stehen f@"ur die Auswertung von Aussagen 
 nicht mehr zur Verf@"ugung.  Die Kontexte werden nicht gel@"oscht und k@"onnen 
 mit der Funktion @mref{activate} wieder aktiviert werden.
@@ -1442,14 +1442,14 @@ Die deaktivierten Kontexte werden aus der Liste @mref{activecontexts} entfernt.
 
 @c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{facts}
-@deffn  {Funktion} facts (@mvar{item})
+@deffn  {Funktion} facts (@var{item})
 @deffnx {Funktion} facts ()
 
-Ist @mvar{item} der Name eines Kontextes, gibt @code{facts(@mvar{item})} eine
+Ist @var{item} der Name eines Kontextes, gibt @code{facts(@var{item})} eine
 Liste der Aussagen und Fakten des Kontextes @code{item} zur@"uck.
 
-Ist @mvar{item} nicht der Name eines Kontextes, gibt @code{facts(@mvar{item})} 
-eine Liste mit den Aussagen und Fakten zur@"uck, die zu @mvar{item} im aktuellen
+Ist @var{item} nicht der Name eines Kontextes, gibt @code{facts(@var{item})} 
+eine Liste mit den Aussagen und Fakten zur@"uck, die zu @var{item} im aktuellen
 Kontext bekannt sind.  Aussagen und Fakten die zu einem anderen aktiven Kontext
 geh@"oren einschlie@ss{}lich der Unterkontexte, sind nicht in der Liste 
 enthalten.
@@ -1482,25 +1482,25 @@ Beispiel:
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{forget}
-@deffn  {Funktion} forget (@mvar{pred_1}, @dots{}, @mvar{pred_n})
-@deffnx {Funktion} forget (@mvar{L})
+@deffn  {Funktion} forget (@var{pred_1}, @dots{}, @var{pred_n})
+@deffnx {Funktion} forget (@var{L})
 
 Entfernt Aussagen, die mit @code{assume} einem Kontext hinzugef@"ugt wurden.
 Die Aussagen k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt
 identisch zu vorherigen Fakten sind.
 
-@code{forget(@mvar{L})} entfernt alle Aussagen, die in der Liste @mvar{L}
+@code{forget(@var{L})} entfernt alle Aussagen, die in der Liste @var{L}
 enthalten sind.
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{is}
-@deffn {Funktion} is (@mvar{expr})
+@deffn {Funktion} is (@var{expr})
 
-Versucht festzustellen, ob die Aussage @mvar{expr} mit Hilfe der Aussagen und 
+Versucht festzustellen, ob die Aussage @var{expr} mit Hilfe der Aussagen und 
 Fakten der aktiven Kontexte entschieden werden kann.
 
-Kann die Aussage @mvar{expr} zu @code{true} oder @code{false} entschieden werden,
+Kann die Aussage @var{expr} zu @code{true} oder @code{false} entschieden werden,
 wird das entsprechende Ergebnis zur@"uckgegeben.  Andernfalls wird der 
 R@"uckgabewert durch den Schalter @mref{prederror} bestimmt.  Hat 
 @code{prederror} den Wert @code{true}, wird eine Fehlermeldung ausgegeben.  
@@ -1555,10 +1555,10 @@ a > 0
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{killcontext}
-@deffn {Funktion} killcontext (@mvar{context_1}, @dots{}, @mvar{context_n})
+@deffn {Funktion} killcontext (@var{context_1}, @dots{}, @var{context_n})
 
-Das Kommando @code{killcontext(@mvar{context})} l@"oscht den Kontext 
-@mvar{context}.
+Das Kommando @code{killcontext(@var{context})} l@"oscht den Kontext 
+@var{context}.
 
 Ist einer der Kontexte der aktuelle Kontext, wird der erste vorhandene 
 Unterkontext zum aktuellen Kontext.  Ist der erste verf@"ugbare Kontext der 
@@ -1576,9 +1576,9 @@ des aktuellen Kontextes ist oder wenn der Kontext mit der Funktion
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{maybe}
-@deffn {Funktion} maybe (@mvar{expr})
+@deffn {Funktion} maybe (@var{expr})
 
-Versucht festzustellen, ob die Aussage @mvar{expr} anhand der Aussagen und
+Versucht festzustellen, ob die Aussage @var{expr} anhand der Aussagen und
 Fakten der aktive Kontexte entschieden werden kann.
 
 Kann die Aussage als @code{true} oder @code{false} entschieden werden, gibt 
@@ -1605,10 +1605,10 @@ Beispiele:
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{newcontext}
-@deffn {Funktion} newcontext (@mvar{name})
+@deffn {Funktion} newcontext (@var{name})
 
-@code{newcontext(@mvar{name})} erzeugt einen neuen, leeren Kontext mit dem 
-Namen @mvar{name}. Der neue Kontext hat den Kontext @code{global} als Subkontext
+@code{newcontext(@var{name})} erzeugt einen neuen, leeren Kontext mit dem 
+Namen @var{name}. Der neue Kontext hat den Kontext @code{global} als Subkontext
 und wird zum aktuellen Kontext.
 
 @code{newcontext} wertet seine Argumente aus.  @code{newcontext} gibt 
@@ -1632,9 +1632,9 @@ Siehe auch @mref{is} und @mrefdot{maybe}
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{sign}
-@deffn {Funktion} sign (@mvar{expr})
+@deffn {Funktion} sign (@var{expr})
 
-Versucht das Vorzeichen des Ausdrucks @mvar{expr} auf Grundlage der Fakten der
+Versucht das Vorzeichen des Ausdrucks @var{expr} auf Grundlage der Fakten der
 aktuellen Datenbank zu finden.  @code{sign} gibt eine der folgende Antworten 
 zur@"uck: @code{pos} (positiv), @code{neg} (negative), @code{zero} (null),
 @code{pz} (positive oder null), @code{nz} (negative oder null), @code{pn}
@@ -1644,14 +1644,14 @@ Fall das Vorzeichen nicht bekannt ist).
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{supcontext}
-@deffn  {Funktion} supcontext (@mvar{name}, @mvar{context})
-@deffnx {FunKtion} supcontext (@mvar{name}) 
+@deffn  {Funktion} supcontext (@var{name}, @var{context})
+@deffnx {FunKtion} supcontext (@var{name}) 
 
 Erzeugt einen neuen Kontext, mit dem Namen @code{name}, der den Kontext 
-@code{context} als einen Unterkontext enth@"alt.  Der Kontext @mvar{context} muss
+@code{context} als einen Unterkontext enth@"alt.  Der Kontext @var{context} muss
 existieren.
 
-Wird @mvar{context} nicht angegeben, wird der aktuelle Kontext angenommen.
+Wird @var{context} nicht angegeben, wird der aktuelle Kontext angenommen.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1661,9 +1661,9 @@ Wird @mvar{context} nicht angegeben, wird der aktuelle Kontext angenommen.
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{charfun}
-@deffn {Funktion} charfun (@mvar{p})
+@deffn {Funktion} charfun (@var{p})
 
-Gibt den Wert 0 zur@"uck, wenn die Aussage @mvar{p} zu @code{false} ausgewertet
+Gibt den Wert 0 zur@"uck, wenn die Aussage @var{p} zu @code{false} ausgewertet
 werden kann und den Wert 1, wenn die Auswertung @code{true} liefert.  Kann
 die Aussage weder zu @code{false} oder @code{true} ausgewertet werden, wird eine
 Substantiv-Form zur@"uck gegeben.
@@ -1683,11 +1683,11 @@ Beispiele:
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{compare}
-@deffn {Funktion} compare (@mvar{x}, @mvar{y})
+@deffn {Funktion} compare (@var{x}, @var{y})
 
-Liefert den Vergleichsoperator @mvar{op} (@code{<}, @code{<=}, @code{>}, 
-@code{>=}, @code{=} oder @code{#}), so dass der Ausdruck @code{is(@mvar{x}
-@mvar{op} @mvar{y})} zu @code{true} ausgewertet werden kann.  Ist eines der
+Liefert den Vergleichsoperator @var{op} (@code{<}, @code{<=}, @code{>}, 
+@code{>=}, @code{=} oder @code{#}), so dass der Ausdruck @code{is(@var{x}
+@var{op} @var{y})} zu @code{true} ausgewertet werden kann.  Ist eines der
 Argumente eine komplexe Zahl, dann wird @code{notcomparable} zur@"uckgegeben.
 Kann Maxima keinen Vergleichsoperator bestimmen, wird @code{unknown}
 zur@"uckgegeben.
@@ -1722,16 +1722,16 @@ einer Funktion reelle Zahlen enth@"alt.  Obwohl der Wertebereich von
 
 @c --- 20.04.2011 DK -----------------------------------------------------------
 @anchor{equal}
-@deffn {Funktion} equal (@mvar{a}, @mvar{b})
+@deffn {Funktion} equal (@var{a}, @var{b})
 
 Repr@"asentiert die @"Aquivalenz, das hei@ss{}t den gleichen Wert.
 
 @code{equal} wird nicht ausgewertet oder vereinfacht.  Die Funktion
 @mref{is} versucht einen Ausdruck mit @code{equal} zu einem booleschen Wert
-auszuwerten.  @code{is(equal(@mvar{a}, @mvar{b}))} gibt @code{true} oder
-@code{false} zur@"uck, wenn und nur wenn @mvar{a} und @mvar{b} gleich oder
-ungleich sind f@"ur alle Werte ihrer Variablen, was mit @code{ratsimp(@mvar{a} -
-@mvar{b})} bestimmt wird.  Gibt @mref{ratsimp} das Ergebnis 0 zur@"uck, werden
+auszuwerten.  @code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder
+@code{false} zur@"uck, wenn und nur wenn @var{a} und @var{b} gleich oder
+ungleich sind f@"ur alle Werte ihrer Variablen, was mit @code{ratsimp(@var{a} -
+@var{b})} bestimmt wird.  Gibt @mref{ratsimp} das Ergebnis 0 zur@"uck, werden
 die beiden Ausdr@"ucke als @"aquivalent betracht.  Zwei Ausdr@"ucke k@"onnen
 @"aquivalent sein, obwohl sie nicht syntaktisch gleich (im allgemeinen
 identisch) sind.
@@ -1762,8 +1762,8 @@ Beispiele:
 @end example
 
 Die Funktion @code{is} versucht, @code{equal} zu einem booleschen Wert
-auszuwerten.  Der Ausdruck @code{is(equal(@mvar{a}, @mvar{b}))} gibt den Wert
-@code{true} zur@"uck, when @code{ratsimp(@mvar{a} - @mvar{b})} den Wert 0 hat.
+auszuwerten.  Der Ausdruck @code{is(equal(@var{a}, @var{b}))} gibt den Wert
+@code{true} zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat.
 Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch
 gleich sind.
 
@@ -1826,9 +1826,9 @@ booleschen Wert aus.
 (%o4)                  [false, true, true]
 @end example
 
-Da @code{not @mvar{expr}} den Ausdruck @mvar{expr} auswertet, ist 
-@code{not equal(@mvar{a}, @mvar{b})} @"aquivalent zu 
-@code{is(notequal(@mvar{a}, @mvar{b}))}
+Da @code{not @var{expr}} den Ausdruck @var{expr} auswertet, ist 
+@code{not equal(@var{a}, @var{b})} @"aquivalent zu 
+@code{is(notequal(@var{a}, @var{b}))}
 
 @example
 (%i1) [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1840,9 +1840,9 @@ Da @code{not @mvar{expr}} den Ausdruck @mvar{expr} auswertet, ist
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{notequal}
-@deffn {Funktion} notequal (@mvar{a}, @mvar{b})
+@deffn {Funktion} notequal (@var{a}, @var{b})
 
-Repr@"asentiert die Verneinung von @code{equal(@mvar{a}, @mvar{b})}.
+Repr@"asentiert die Verneinung von @code{equal(@var{a}, @var{b})}.
 
 Beispiele:
 
@@ -1872,19 +1872,19 @@ Beispiele:
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{unknown}
-@deffn {Funktion} unknown (@mvar{expr})
+@deffn {Funktion} unknown (@var{expr})
 
 @c TODO: FORMULIERUNG?
 
-Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @mvar{expr} einen Operator
+Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} einen Operator
 oder eine Funktion enth@"alt, die nicht von Maximas Vereinfacher erkannt wird.
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{zeroequiv}
-@deffn {Funktion} zeroequiv (@mvar{expr}, @mvar{v})
+@deffn {Funktion} zeroequiv (@var{expr}, @var{v})
 
-Testet, ob ein Ausdruck @mvar{expr} mit der Variablen @mvar{v} @"aquivalent zu 
+Testet, ob ein Ausdruck @var{expr} mit der Variablen @var{v} @"aquivalent zu 
 Null ist.  Die Funktion gibt @code{true}, @code{false} oder @code{dontknow} 
 zur@"uck.
 
@@ -1892,7 +1892,7 @@ zur@"uck.
 
 @enumerate
 @item
-Funktionen im Ausdruck @mvar{expr} m@"ussen von Maxima differenzierbar und 
+Funktionen im Ausdruck @var{expr} m@"ussen von Maxima differenzierbar und 
 auswertbar sein.
 
 @item

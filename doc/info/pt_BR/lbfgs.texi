@@ -28,47 +28,47 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs, , Introdu@value{cedilha}@~{a}o a lbfgs, Top
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs
 
-@deffn {Fun@value{cedilha}@~{a}o} lbfgs (@mvar{FOM}, @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
+@deffn {Fun@value{cedilha}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encontra uma solu@value{cedilha}@~{a}o aproximada da minimiza@value{cedilha}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @mvar{FOM}
-sobre a lista de vari@'{a}veis @mvar{X},
-come@value{cedilha}ando a partir da estimativa inicial @mvar{X0},
+Encontra uma solu@value{cedilha}@~{a}o aproximada da minimiza@value{cedilha}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
+sobre a lista de vari@'{a}veis @var{X},
+come@value{cedilha}ando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
 O algor@'{i}tmo aplicado @'{e} um algor@'{i}tmo de mem@'{o}ria limitada[1] quasi-Newton (BFGS).
 Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@value{cedilha}@~{a}o de baixo ranque da
 inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
 Cada itera@value{cedilha}@~{a}o do algor@'{i}tmo @'{e} uma busca de linha, isto @'{e},
-uma busca ao longo de um raio em torno da vari@'{a}veis @mvar{X},
+uma busca ao longo de um raio em torno da vari@'{a}veis @var{X},
 com a dire@value{cedilha}@~{a}o de busca calculada a partir da Hessian inversa aproximada.
 O FOM @'{e} sempre decrementado por meio de uma busca de linha realizada com sucesso.
 Usualmente (mas n@~{a}o sempre) a norma do gradiente de FOM tamb@'{e}m @'{e} decrementada.
 
-@mvar{iprint} controla as messaens de progresso mostradas atrav@'{e}s de @code{lbfgs}.
+@var{iprint} controla as messaens de progresso mostradas atrav@'{e}s de @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@mvar{iprint}[1]} controla a freq@"{u}@^{e}ncia das mensagens de progresso.
+@code{@var{iprint}[1]} controla a freq@"{u}@^{e}ncia das mensagens de progresso.
 @table @code
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
 Messagens na primeira itera@value{cedilha}@~{a}o e na @'{u}ltima itera@value{cedilha}@~{a}o.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@mvar{iprint}[1]} itera@value{cedilha}@~{o}es.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@value{cedilha}@~{o}es.
 @end table
 @item iprint[2]
-@code{@mvar{iprint}[2]} controla a quantidade de informa@value{cedilha}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
+@code{@var{iprint}[2]} controla a quantidade de informa@value{cedilha}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de itera@value{cedilha}@~{o}es, o n@'{u}mero de avalia@value{cedilha}@~{o}es de @mvar{FOM}, o valor de @mvar{FOM},
-a norma do gradiente de @mvar{FOM}, e o comprimento do salto.
+Mostra na tela o contador de itera@value{cedilha}@~{o}es, o n@'{u}mero de avalia@value{cedilha}@~{o}es de @var{FOM}, o valor de @var{FOM},
+a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
-O mesmo que @code{@mvar{iprint}[2] = 0}, adicionando @mvar{X0} e o gradiente de @mvar{FOM} avaliado em @mvar{X0}.
+O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@mvar{iprint}[2] = 1}, adicionando valores de @mvar{X} a cada itera@value{cedilha}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@value{cedilha}@~{a}o.
 @item iprint[2] = 3
-O mesmo que @code{@mvar{iprint}[2] = 2}, adicionando o gradiente de @mvar{FOM} a cada itera@value{cedilha}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@value{cedilha}@~{a}o.
 @end table
 @end table
 

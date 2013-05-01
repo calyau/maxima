@@ -44,19 +44,19 @@
 @section Функции и переменные для правил преобразования и шаблонов
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} apply1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
-Осуществляет повторное применение правила преобразования @mvar{rule_1} к
-@mvar{expr} до тех пор пока выражение отвечает шаблону преобразования,
+@deffn {Функция} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+Осуществляет повторное применение правила преобразования @var{rule_1} к
+@var{expr} до тех пор пока выражение отвечает шаблону преобразования,
 затем, таким же образом осуществляется повторное применение этого правила ко всем
-подвыражениям @mvar{expr}, слева направо. 
+подвыражениям @var{expr}, слева направо. 
 Далее, к полученному
-результату тем же способом применяется правило @mvar{rule_2} и так далее 
-все последующие правила вплоть до @mvar{rule_n}. Конечный результат возвращается.
+результату тем же способом применяется правило @var{rule_2} и так далее 
+все последующие правила вплоть до @var{rule_n}. Конечный результат возвращается.
 
 Переменная @code{maxapplydepth} контролирует нижнюю глубину уровня подвыражения до
 которого применяются правила преобразований в функциях @code{apply1} и @code{apply2}.
 
-См. также @mvar{applyb1}, @code{apply2} и @code{let}.
+См. также @var{applyb1}, @code{apply2} и @code{let}.
 
 @opencatbox
 @category{Правила преобразования и шаблоны}
@@ -64,11 +64,11 @@
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} apply2 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
-Если правило @mvar{rule_1} неприменимо на подвыражении  @mvar{expr},
-тогда применяется правило @mvar{rule_2} и далее по той же схеме остальные
-правила. Только если каждое из правил является неприменимым на данном подвыражении @mvar{expr}, 
-программа переходит на следующий уровень подвыражнния @mvar{expr}, 
+@deffn {Функция} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+Если правило @var{rule_1} неприменимо на подвыражении  @var{expr},
+тогда применяется правило @var{rule_2} и далее по той же схеме остальные
+правила. Только если каждое из правил является неприменимым на данном подвыражении @var{expr}, 
+программа переходит на следующий уровень подвыражнния @var{expr}, 
 и по той же схеме последовательно применяет весь набор правил, 
 начиная с первого. Если применение одного из правил оказывается
 успешным, тогда весь набор правил заново применяется к
@@ -85,15 +85,15 @@
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} applyb1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Функция} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 В отличие от @code{apply1} применяется по восходящей, т.е., сначала на
-самом глубоком уровне @mvar{expr} повторяется применение правила
-@mvar{rule_1}. Затем программа переходит на более высокие уровни
-@mvar{expr} и применяет данное правило по той же схеме.  После того как
-применение правила @mvar{rule_1} терпит неудачу на самом вернем уровне
-@mvar{expr} программа переходит к применению правила  @mvar{rule_2} по
+самом глубоком уровне @var{expr} повторяется применение правила
+@var{rule_1}. Затем программа переходит на более высокие уровни
+@var{expr} и применяет данное правило по той же схеме.  После того как
+применение правила @var{rule_1} терпит неудачу на самом вернем уровне
+@var{expr} программа переходит к применению правила  @var{rule_2} по
 той же схеме (по восходящей) и так далее, заканчивая применением
-правила  @mvar{rule_n}. После этого возвращается результат.
+правила  @var{rule_n}. После этого возвращается результат.
 
 Функция @code{applyb1} аналогична @code{apply1}, но работает по восходящей.
 
@@ -140,28 +140,28 @@
 @closecatbox
 @end defvr
 
-@deffn {Функция} defmatch (@mvar{progname}, @mvar{pattern}, @mvar{x_1}, ..., @mvar{x_n})
-@deffnx {Функция} defmatch (@mvar{progname}, @mvar{pattern})
-Определяет функцию @code{@mvar{progname} (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}, 
-которая проверяет выражение @mvar{expr} на соответствие шаблону @mvar{pattern}.
+@deffn {Функция} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
+@deffnx {Функция} defmatch (@var{progname}, @var{pattern})
+Определяет функцию @code{@var{progname} (@var{expr}, @var{x_1}, ..., @var{x_n})}, 
+которая проверяет выражение @var{expr} на соответствие шаблону @var{pattern}.
 
-Шаблон @mvar{pattern} - выражение, содержащее аргументы шаблона @mvar{x_1}, ..., @mvar{x_n} (если есть)
+Шаблон @var{pattern} - выражение, содержащее аргументы шаблона @var{x_1}, ..., @var{x_n} (если есть)
 и переменные шаблона (если есть).
 Аргументы шаблона задаются в явном виде, как аргументы функции
 @code{defmatch}, а переменные шаблона декларируются функцией @code{matchdeclare}.
 Всякая переменная, не декларированная как переменная шаблона при помощи @code{mathdeclare}
 или как аргумент шаблона при помощи @code{defmatch} соответствует только сама себе.
 
-Первым аргументом создаваемой функции @mvar{progname} является выражение,
+Первым аргументом создаваемой функции @var{progname} является выражение,
 проверяемое на соответствие шаблону, а другие аргументы это
-актуальные параметры, соответствующие аргументам шаблона  @mvar{x_1}, ..., @mvar{x_n}.
+актуальные параметры, соответствующие аргументам шаблона  @var{x_1}, ..., @var{x_n}.
 
 Если проверка на соответствие шаблону оказывается успешной, то
-@mvar{progname} возвращает список уравнений, в которых левые части
-являются аргументами и переменными шаблона, а правые части - подвыражения @mvar{expr},
+@var{progname} возвращает список уравнений, в которых левые части
+являются аргументами и переменными шаблона, а правые части - подвыражения @var{expr},
 сопоставленные данным аргументам и переменным. 
 Переменным шаблона, но не аргументам шаблона, присваиваются соответствующие значения.
-В случае неудачи сопоставления @mvar{progname} возвращает @code{false}.  
+В случае неудачи сопоставления @var{progname} возвращает @code{false}.  
 
 Любая переменная, не объявленная в параметрах шаблона в
 @code{matchdeclare} или в переменных шаблона в @code{defmatch},
@@ -279,9 +279,9 @@
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} defrule (@mvar{rulename}, @mvar{pattern}, @mvar{replacement})
+@deffn {Функция} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 Определяет и именует правило преобразования для данного шаблона.
-Если правило c именем @mvar{rulename} применяется к выражению
+Если правило c именем @var{rulename} применяется к выражению
 (путем @code{apply1}, @code{applyb1} или @code{apply2}), то каждое
 подвыражение, удовлетворяющее шаблону, заменяется соответствующей подстановкой. 
 После этого выражение упрощается.
@@ -296,9 +296,9 @@
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} disprule (@mvar{rulename_1}, ..., @mvar{rulename_2})
+@deffn {Функция} disprule (@var{rulename_1}, ..., @var{rulename_2})
 @deffnx {Функция} disprule (all)
-Выводит правила преобразований и их имена @mvar{rulename_1}, ..., @mvar{rulename_n},
+Выводит правила преобразований и их имена @var{rulename_1}, ..., @var{rulename_n},
 определенные в  @code{defrule}, @code{tellsimp} или @code{tellsimpafter}, или
 шаблоны, определенные @code{defmatch}.
 Каждое правило выводится в форме промежуточного выражения, маркированного символом (@code{%t}).
@@ -344,10 +344,10 @@
 @closecatbox
 @end deffn
 
-@deffn {Функция} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n})
-@deffnx {Функция} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}],  @mvar{package_name})
-Определяет правила подстановки для функции @code{letsimp} такие, что @mvar{prod} заменяется на @mvar{repl}.
-@mvar{prod} является произведением подвыражений положительной или  отрицательной степени. 
+@deffn {Функция} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Функция} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}],  @var{package_name})
+Определяет правила подстановки для функции @code{letsimp} такие, что @var{prod} заменяется на @var{repl}.
+@var{prod} является произведением подвыражений положительной или  отрицательной степени. 
 Подвыражения могут быть следующего типа:
 
 @itemize @bullet
@@ -365,23 +365,23 @@
 Члены положительной степени будут сопоставляться только членам, имеющим положительную
 степень. Члены отрицательной степени будут сопоставляться только членам, имеющим отрицательную
 степень. 
-Для  того чтобы @code{letsimp} работал с отрицательными степенями в @mvar{prod} 
+Для  того чтобы @code{letsimp} работал с отрицательными степенями в @var{prod} 
 переменная  @code{letrat} должна быть установлена равной @code{true}.
 См. также @code{letrat}.
 
 Если в функцию @code{let} включен предикат, с последующим списком аргументов,
 то подстановки осуществляются только если  @code{predname (arg_1', ...,
-arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mvar{arg_i}. 
-Переменная @mvar{arg_i} может быть именем атома или аргументом любого ядра, присутствующего в @mvar{prod}.
-@mvar{repl} может быть любым  рациональным выражением. @c ONLY RATIONAL -- REALLY ??
-Если любой атом или аргумент из @mvar{prod} присутствует в
-@mvar{repl}, то выполняются соответствующие подстановки. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
+arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{arg_i}. 
+Переменная @var{arg_i} может быть именем атома или аргументом любого ядра, присутствующего в @var{prod}.
+@var{repl} может быть любым  рациональным выражением. @c ONLY RATIONAL -- REALLY ??
+Если любой атом или аргумент из @var{prod} присутствует в
+@var{repl}, то выполняются соответствующие подстановки. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
 
 Глобальная переменная @code{letrat} управляет упрощением дробных
 выражений в @code{letsimp}.
 Если @code{letrat} равена @code{false}, то
 @code{letsimp} упрощает отдельно числитель и знаменатель выражения
-@mvar{expr}, но не упрощает их частное.
+@var{expr}, но не упрощает их частное.
 В этом случае подстановки типа @code{n!/n} на @code{(n-1)!} не будут работать.
 Если @code{letrat} равена @code{true}, тогда числитель, знаменатель и
 их частное упрощаются в данном порядке.
@@ -390,21 +390,21 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 правил одновременно. Каждый пакет правил может содержать любое
 количество правил преобразований @code{let} и обозначается некоторым
 заданным пользователем именем.
-Вызов @code{let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{package_name})}
-добавляет правило @mvar{predname} к пакету правил @mvar{package_name}.
-Вызов @code{letsimp (@mvar{expr}, @mvar{package_name})}
-применяет правила преобразований из пакета @mvar{package_name}.
-Процедура @code{letsimp (@mvar{expr}, @mvar{package_name1}, @mvar{package_name2}, ...)}
-эквивалентна применению функций @code{letsimp (@mvar{expr}, @mvar{package_name1})}
-и затем функции @code{letsimp (%, @mvar{package_name2})}, ....
+Вызов @code{let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
+добавляет правило @var{predname} к пакету правил @var{package_name}.
+Вызов @code{letsimp (@var{expr}, @var{package_name})}
+применяет правила преобразований из пакета @var{package_name}.
+Процедура @code{letsimp (@var{expr}, @var{package_name1}, @var{package_name2}, ...)}
+эквивалентна применению функций @code{letsimp (@var{expr}, @var{package_name1})}
+и затем функции @code{letsimp (%, @var{package_name2})}, ....
 
 Переменная @code{current_let_rule_package} содержит имя текущего пакета правил.
 Данной переменной может быть присвоено имя любого пакета правил,
 определенного при помощи @code{let}.
 Вызов команды @code{let} без упоминания имени пакета приводит к
 применению пакета, определенного @code{current_let_rule_package}.
-При вызове типа @code{letsimp (@mvar{expr}, @mvar{rule_pkg_name})},
-используются правила пакета @mvar{rule_pkg_name}, только для данного вызова @code{lrtsimp} а 
+При вызове типа @code{letsimp (@var{expr}, @var{rule_pkg_name})},
+используются правила пакета @var{rule_pkg_name}, только для данного вызова @code{lrtsimp} а 
 значение переменной  @code{current_let_rule_package}
 не меняется. По умолчанию @code{current_let_rule_package} равно @code{default_let_rule_package}.
 
@@ -439,7 +439,7 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 Значение по умолчанию: @code{false}
 
 Если @code{letrat} равна @code{false}, то @code{letsimp} упрощает отдельно числитель и знаменатель выражения
-@mvar{expr}, и не упрощает их частное.
+@var{expr}, и не упрощает их частное.
 
 Если @code{letrat} равна @code{true}, то числитель, знаменатель и их частное упрощаются в данном порядке.
 
@@ -466,12 +466,12 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 
 @c NEEDS EXAMPLES
 @deffn {Функция} letrules ()
-@deffnx {Функция} letrules (@mvar{package_name})
+@deffnx {Функция} letrules (@var{package_name})
 Выводит правила, содержащиеся в пакете правил преобразований.
 @code{letrules ()} выводит правила текущего пакета правил
 преобразований.
-@code{letrules (@mvar{package_name})} выводит правила преобразований в
-пакете @mvar{package_name}.
+@code{letrules (@var{package_name})} выводит правила преобразований в
+пакете @var{package_name}.
 
 Текущий пакет правил определяется значением @code{current_let_rule_package}.
 Если не определено иначе, то @code{current_let_rule_package}
@@ -486,21 +486,21 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 @closecatbox
 @end deffn
 
-@deffn {Функция} letsimp (@mvar{expr})
-@deffnx {Функция} letsimp (@mvar{expr}, @mvar{package_name})
-@deffnx {Функция} letsimp (@mvar{expr}, @mvar{package_name_1}, ..., @mvar{package_name_n})
+@deffn {Функция} letsimp (@var{expr})
+@deffnx {Функция} letsimp (@var{expr}, @var{package_name})
+@deffnx {Функция} letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})
 Данная функция осуществляет повторное применение правил подстановки,
-определенных в @code{let}, до тех пор пока выражение @mvar{expr} не
+определенных в @code{let}, до тех пор пока выражение @var{expr} не
 перестанет изменяться.
 
-@code{letsimp (@mvar{expr})} использует правила из пакета @code{current_let_rule_package}.
+@code{letsimp (@var{expr})} использует правила из пакета @code{current_let_rule_package}.
 
-@code{letsimp (@mvar{expr}, @mvar{package_name})} использует правила из пакета @mvar{package_name}
+@code{letsimp (@var{expr}, @var{package_name})} использует правила из пакета @var{package_name}
 без изменения значения переменной @code{current_let_rule_package}.
 
-@code{letsimp (@mvar{expr}, @mvar{package_name_1}, ..., @mvar{package_name_n})}
-эквивалентно применению  @code{letsimp (@mvar{expr}, @mvar{package_name_1}},
-затем @code{letsimp (%, @mvar{package_name_2})} и так далее.
+@code{letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}
+эквивалентно применению  @code{letsimp (@var{expr}, @var{package_name_1}},
+затем @code{letsimp (%, @var{package_name_2})} и так далее.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -519,9 +519,9 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 @closecatbox
 @end defvr
 
-@deffn {Функция} matchdeclare (@mvar{a_1}, @mvar{pred_1}, ..., @mvar{a_n}, @mvar{pred_n})
-Связывает предикат @mvar{pred_k} с переменной или списком переменных
-@mvar{a_k}, так что  @mvar{a_k} сопоставляется с выражениями,
+@deffn {Функция} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+Связывает предикат @var{pred_k} с переменной или списком переменных
+@var{a_k}, так что  @var{a_k} сопоставляется с выражениями,
 для которых предикат возвращает значение отличное от @code{false}.
 
 Предикат это есть имя функции, или лямбда-выражение, или вызов функции 
@@ -565,8 +565,8 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 Если все операторы предикаты взаимно исключают друг друга, то результат не зависит от порядка, 
 поскольку члены, соответствующие одному предикату, не могут соответствовать другому.
 
-Вызов  @code{matchdeclare} с переменной  @mvar{a} в качестве аргумента
-изменяет ранее объявленные свойства  @code{matchdeclare} для @mvar{a} -
+Вызов  @code{matchdeclare} с переменной  @var{a} в качестве аргумента
+изменяет ранее объявленные свойства  @code{matchdeclare} для @var{a} -
 при определении правил преобразования, учитываются только самый последний 
 вызов @code{matchdeclare}. 
 Все последующие изменения свойства @code{matchdeclare} 
@@ -575,12 +575,12 @@ arg_n')} дает @code{true}, где @mvar{arg_i'} есть значение, сопоставленное  @mva
 
 @code{propvars (matchdeclare)} возвращает список всех переменных,
 имеющих свойство @code{matchdeclare}.
-@code{printprops (@mvar{a}, matchdeclare)} возвращает предикат
+@code{printprops (@var{a}, matchdeclare)} возвращает предикат
 для переменной @code{a}.
 @code{printprops (all, matchdeclare)} возвращает список всех предикатов
 для всех переменных @code{matchdeclare}.
-@code{remove (@mvar{a}, matchdeclare)} удаляет свойства
-@code{matchdeclare} для переменной @mvar{a}.
+@code{remove (@var{a}, matchdeclare)} удаляет свойства
+@code{matchdeclare} для переменной @var{a}.
 
 Функции
 @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter} и @code{let}
@@ -733,13 +733,13 @@ bb aa partitions `product'
 @closecatbox
 @end deffn
 
-@deffn {Функция} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
-@deffnx {Функция} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
+@deffn {Функция} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Функция} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 Объявляет матчфиксный (matchfix) оператор с левым и правым ограничителями 
-@mvar{ldelimiter} и @mvar{rdelimiter} соответственно. Ограничители являются строками.
+@var{ldelimiter} и @var{rdelimiter} соответственно. Ограничители являются строками.
 
 Матчфиксный оператор является функцией любого количества аргументов
-заключенных между ограничителями @mvar{ldelimiter} и @mvar{rdelimiter}. 
+заключенных между ограничителями @var{ldelimiter} и @var{rdelimiter}. 
 Ограничителем может являться любая строка, если синтаксический анализатор 
 может различить ограничители от других выражений и операторов.
 На практике, это исключает такие ограничители, как
@@ -756,9 +756,9 @@ bb aa partitions `product'
 операторы сложения @code{+} могут быть объявлены матчфиксными, однако
 операторные функции для встроенных операторов определены быть не могут.
 
-Вызов @code{matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})} 
-объявляет аргумент "часть речи" @mvar{arg_pos} и результат "часть речи" @mvar{pos} 
-вместе с ограничителями @mvar{ldelimiter} и @mvar{rdelimiter}.
+Вызов @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
+объявляет аргумент "часть речи" @var{arg_pos} и результат "часть речи" @var{pos} 
+вместе с ограничителями @var{ldelimiter} и @var{rdelimiter}.
 
 Термин "чать речи" по отношению к декларации операторов означает тип выражения.
 Различаются три типа выражений: @code{expr}, @code{clause} и @code{any},
@@ -780,7 +780,7 @@ bb aa partitions `product'
 Аргументы могут быть записаны между ограничителями или при
 помощи левого ограничителя в форме строки и последующих аргументов
 в скобках.
-@code{dispfun (@mvar{ldelimiter})} выводит определение
+@code{dispfun (@var{ldelimiter})} выводит определение
 функции. 
 
 Единственный встроенный матчфиксный оператор это конструктор
@@ -789,7 +789,7 @@ bb aa partitions `product'
 синтаксическим анализатором Maxima как таковые.
 
 Функция @mcode{matchfix} вычисляет свои аргументы.
-Функция @code{matchfix} возвращает свой первый аргумент @mvar{ldelimiter}.
+Функция @code{matchfix} возвращает свой первый аргумент @var{ldelimiter}.
 @c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
 
 Примеры:
@@ -867,24 +867,24 @@ bb aa partitions `product'
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} remlet (@mvar{prod}, @mvar{name})
+@deffn {Функция} remlet (@var{prod}, @var{name})
 @deffnx {Функция} remlet ()
 @deffnx {Функция} remlet (all)
-@deffnx {Функция} remlet (all, @mvar{name})
-Удаляет правило подстановки @mvar{prod} -> замена, 
+@deffnx {Функция} remlet (all, @var{name})
+Удаляет правило подстановки @var{prod} -> замена, 
 определенное при самом последнем вызове функции @code{let}.  
 При вызове с именем правила в качестве аргумента 
 удаление производится из соответствующего пакета правил.
 
 Вызовы @code{remlet()} и @code{remlet(all)} удаляют все правила
 подстановки из текущего пакета правил. При указании имени, например,
-@code{remlet (all, @mvar{name})}, пакет правил @mvar{name} также удаляется.
+@code{remlet (all, @var{name})}, пакет правил @var{name} также удаляется.
 
 Если необходимо изменить правило подстановки одного 
 произведения, нет необходимости вызывать @code{remlet}, можно просто
 переопределить подстановку данного произведения при помощи функции
 @code{let}, с новой заменой и/или предикатом.
-После этого вызов @code{remlet (@mvar{prod})} восстанавливает исходное
+После этого вызов @code{remlet (@var{prod})} восстанавливает исходное
 правило подстановки.
 
 См. также функцию @code{remrule}, которая удаляет правила
@@ -895,17 +895,17 @@ bb aa partitions `product'
 @closecatbox
 @end deffn
 
-@deffn {Функция} remrule (@mvar{op}, @mvar{rulename})
-@deffnx {Функция} remrule (@mvar{op}, all)
+@deffn {Функция} remrule (@var{op}, @var{rulename})
+@deffnx {Функция} remrule (@var{op}, all)
 Удаляет правила, определенные функциями @code{tellsimp} или @code{tellsimpafter}.
 
-@code{remrule (@mvar{op}, @mvar{rulename})}
-удаляет правило с именем @mvar{rulename} для оператора @mvar{op}.
-Если оператор @mvar{op} является встроенным оператором или определен
+@code{remrule (@var{op}, @var{rulename})}
+удаляет правило с именем @var{rulename} для оператора @var{op}.
+Если оператор @var{op} является встроенным оператором или определен
 пользователем (например, при помощи функций @code{infix}, @code{prefix},
-и т.п.), тогда @mvar{op} и @mvar{rulename} необходимо заключить в двойные кавычки.
+и т.п.), тогда @var{op} и @var{rulename} необходимо заключить в двойные кавычки.
 
-@code{remrule (@mvar{op}, all)} удаляет все правила для оператора @mvar{op}.
+@code{remrule (@var{op}, all)} удаляет все правила для оператора @var{op}.
 
 См. также функцию @code{remlet}, удаляющую правила, определенные при помощи @code{let}.
 
@@ -965,7 +965,7 @@ bb aa partitions `product'
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
-@deffn {Функция} tellsimp (@mvar{pattern}, @mvar{replacement})
+@deffn {Функция} tellsimp (@var{pattern}, @var{replacement})
 аналогична @code{tellsimpafter}, но добавляет
 новую информацию о правилах до уже существующей. Таким образом, сначала
 применяются пользовательские правила упрощения, а потом правила,
@@ -1031,25 +1031,25 @@ bb aa partitions `product'
 @closecatbox
 @end deffn
 
-@deffn {Функция} tellsimpafter (@mvar{pattern}, @mvar{replacement})
+@deffn {Функция} tellsimpafter (@var{pattern}, @var{replacement})
 Определяет правило упрощения, которое встроенный в Maxima механизм
 упрощения применяет после встроенных правил упрощения.
-@mvar{pattern} - выражение, включающее переменные шаблона (объявленные в @code{matchdeclare})
+@var{pattern} - выражение, включающее переменные шаблона (объявленные в @code{matchdeclare})
 и другие атомы и операторы, которые рассматриваются как константы с точки зрения сопоставления с шаблоном.
-@mvar{replacement} подставляется вместо первоначального выражения, удовлетворяющего шаблону @mvar{pattern};
-переменным шаблона из в @mvar{replacement} присваиваются соответствующие подвыражения из
+@var{replacement} подставляется вместо первоначального выражения, удовлетворяющего шаблону @var{pattern};
+переменным шаблона из в @var{replacement} присваиваются соответствующие подвыражения из
 реального выражения.
 
-@mvar{pattern} может быть любым составным выражением в котором имя главного
+@var{pattern} может быть любым составным выражением в котором имя главного
 оператор не входит в число переменных шаблона;
 правило упрощения связывается с именем главного оператора.
 Имена функций (за исключением приведенных ниже), списки и массивы могут присутствовать
-в шаблоне  @mvar{pattern} в качестве основного оператора только, как
+в шаблоне  @var{pattern} в качестве основного оператора только, как
 литералы (не переменные шаблона);
 это исключает шаблоны вида @code{aa(x)} и @code{bb[y]},
 если @code{aa} и @code{bb} являются переменными шаблона.
 Имена функций, списки и массивы, которые являются переменными шаблона
-могут входить в качестве не основных операторов в описание шаблона @mvar{pattern}.
+могут входить в качестве не основных операторов в описание шаблона @var{pattern}.
 
 Есть одно исключение к указанному правилу, касающееся имен функций.
 Имена функций с индексом в выражениях типа @code{aa[x](y)}
@@ -1061,7 +1061,7 @@ bb aa partitions `product'
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
 @c The main operator of an expression @code{expr} is @code{caar $expr}.
 @c For most kinds of expressions,
-@c the main operator is the operator returned by @code{op (@mvar{pattern})};
+@c the main operator is the operator returned by @code{op (@var{pattern})};
 @c the sole exception is the operator @code{mqapply},
 @c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
 
@@ -1087,7 +1087,7 @@ bb aa partitions `product'
 и подобными функциями) являются глобальными.
 
 Правило, построенное с помощью @code{tellsimpafter},
-обозначаеся именем главного оператора @mvar{pattern}.
+обозначаеся именем главного оператора @var{pattern}.
 Правила для встроенных операторов и пользовательских функций,
 определенных  при помощи @code{infix}, @code{prefix}, 
 @code{postfix}, @code{matchfix} и @code{nofix},
@@ -1114,7 +1114,7 @@ Lisp- функцией. Если имя правила - @code{$foorule1}, то
 
 Функция @code{tellsimpafter} не вычисляет свои аргументы.
 Функция @code{tellsimpafter} возвращает список правил для основного оператора
-шаблона @mvar{pattern}, включая вновь объявленные правила.
+шаблона @var{pattern}, включая вновь объявленные правила.
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
 См. также @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{let},
@@ -1122,7 +1122,7 @@ Lisp- функцией. Если имя правила - @code{$foorule1}, то
 
 Примеры:
 
-@mvar{pattern} может быть любым неатомарным выражением в котором главный
+@var{pattern} может быть любым неатомарным выражением в котором главный
 оператор не является переменной шаблона.
 
 @c ===beg===

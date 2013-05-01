@@ -33,13 +33,13 @@
 @node Definitions for Expressions,  , Syntax, Expressions
 @section Definitions for Expressions
 
-@deffn {Function} at (@mvar{expr}, [@mvar{eqn_1}, ..., @mvar{eqn_n}])
-@deffnx {Function} at (@mvar{expr}, @mvar{eqn})
+@deffn {Function} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Function} at (@var{expr}, @var{eqn})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} box (@mvar{expr})
-@deffnx {Function} box (@mvar{expr}, @mvar{a})
+@deffn {Function} box (@var{expr})
+@deffnx {Function} box (@var{expr}, @var{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -47,7 +47,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} carg (@mvar{z})
+@deffn {Function} carg (@var{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -55,31 +55,31 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} constantp (@mvar{expr})
+@deffn {Function} constantp (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} declare (@mvar{a_1}, @mvar{p_1}, @mvar{a_2}, @mvar{p_2}, ...)
+@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} disolate (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {Function} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dispform (@mvar{expr})
+@deffn {Function} dispform (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} distrib (@mvar{expr})
+@deffn {Function} distrib (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dpart (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
+@deffn {Function} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} exp (@mvar{x})
+@deffn {Function} exp (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -99,21 +99,21 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} freeof (@mvar{x_1}, ..., @mvar{x_n}, @mvar{expr})
+@deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} genfact (@mvar{x}, @mvar{y}, @mvar{z})
+@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} imagpart (@mvar{expr})
+@deffn {Function} imagpart (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} infix (@mvar{op})
-@deffnx {Function} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
-@deffnx {Function} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
+@deffn {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -121,11 +121,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} inpart (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
+@deffn {Function} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} isolate (@mvar{expr}, @mvar{x})
+@deffn {Function} isolate (@var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -141,45 +141,45 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} listofvars (@mvar{expr})
+@deffn {Function} listofvars (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lfreeof (@mvar{list}, @mvar{expr})
+@deffn {Function} lfreeof (@var{list}, @var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lopow (@mvar{expr}, @mvar{x})
+@deffn {Function} lopow (@var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lpart (@mvar{label}, @mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
+@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multthru (@mvar{expr})
-@deffnx {Function} multthru (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} nounify (@mvar{f})
+@deffn {Function} nounify (@var{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} nterms (@mvar{expr})
+@deffn {Function} nterms (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} op (@mvar{expr})
+@deffn {Function} op (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} operatorp (@mvar{expr}, @mvar{op})
-@deffnx {Function} operatorp (@mvar{expr}, [@mvar{op_1}, ..., @mvar{op_n}])
+@deffn {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} optimize (@mvar{expr})
+@deffn {Function} optimize (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -187,27 +187,27 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ordergreat (@mvar{v_1}, ..., @mvar{v_n})
+@deffn {Function} ordergreat (@var{v_1}, ..., @var{v_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ordergreatp (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Function} ordergreatp (@var{expr_1}, @var{expr_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} orderless (@mvar{v_1}, ..., @mvar{v_n})
+@deffn {Function} orderless (@var{v_1}, ..., @var{v_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} orderlessp (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Function} orderlessp (@var{expr_1}, @var{expr_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} part (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
+@deffn {Function} part (@var{expr}, @var{n_1}, ..., @var{n_k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} partition (@mvar{expr}, @mvar{x})
+@deffn {Function} partition (@var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -215,7 +215,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} pickapart (@mvar{expr}, @mvar{n})
+@deffn {Function} pickapart (@var{expr}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -223,41 +223,41 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} polarform (@mvar{expr})
+@deffn {Function} polarform (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} powers (@mvar{expr}, @mvar{x})
+@deffn {Function} powers (@var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} product (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
+@deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} realpart (@mvar{expr})
+@deffn {Function} realpart (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rectform (@mvar{expr})
+@deffn {Function} rectform (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rembox (@mvar{expr}, unlabelled)
-@deffnx {Function} rembox (@mvar{expr}, @mvar{label})
-@deffnx {Function} rembox (@mvar{expr})
+@deffn {Function} rembox (@var{expr}, unlabelled)
+@deffnx {Function} rembox (@var{expr}, @var{label})
+@deffnx {Function} rembox (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sum (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
+@deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lsum (@mvar{expr}, @mvar{x}, @mvar{L})
+@deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} verbify (@mvar{f})
+@deffn {Function} verbify (@var{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

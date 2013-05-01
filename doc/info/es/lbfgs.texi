@@ -30,17 +30,17 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Funciones y variables para lbfgs, , Introducci@'on a lbfgs, Top
 @section Funciones y variables para lbfgs
 
-@deffn {Funci@'on} lbfgs (@mvar{FOM}, @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
-@deffnx {Function} lbfgs ([@mvar{FOM}, @mvar{grad}] @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
+@deffn {Funci@'on} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffnx {Function} lbfgs ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
 Encuentra una soluci@'on aproximada para el problema de minimizaci@'on
-sin restricciones de la funci@'on objetivo @mvar{FOM} para la lista de 
-variables @mvar{X}, partiendo de los estimadores iniciales @mvar{X0},
+sin restricciones de la funci@'on objetivo @var{FOM} para la lista de 
+variables @var{X}, partiendo de los estimadores iniciales @var{X0},
 de tal manera que @math{norm(grad(FOM)) < epsilon*max(1, norm(X))}.
 
-El argumento @mvar{grad} es el gradiente de @mvar{FOM} respecto
-de las variables @mvar{X}. @mvar{grad} es una lista con el mismo 
-n@'umero de elementos que @mvar{X}. Si no se pasa este argumento, el
+El argumento @var{grad} es el gradiente de @var{FOM} respecto
+de las variables @var{X}. @var{grad} es una lista con el mismo 
+n@'umero de elementos que @var{X}. Si no se pasa este argumento, el
 gradiente se calcula autom@'aticamente mediante derivaci@'on
 simb@'olica.
 
@@ -54,33 +54,33 @@ hessiano. La funci@'on objetivo decrece siempre tras cada b@'usqueda
 exitosa a lo largo de la recta; adem@'as, casi siempre decrece tambi@'en
 el m@'odulo del gradiente de la funci@'on.
 
-El argumento @mvar{iprint} controla los mensajes de progreso que env@'{@dotless{i}}a
+El argumento @var{iprint} controla los mensajes de progreso que env@'{@dotless{i}}a
 la funci@'on @code{lbfgs}.
 
 
 @table @code
 @item iprint[1]
-@code{@mvar{iprint}[1]} controla la frecuencia con la que se emiten los mensajes.
+@code{@var{iprint}[1]} controla la frecuencia con la que se emiten los mensajes.
 @table @code
 @item iprint[1] < 0
 No se env@'{@dotless{i}}an mensajes.
 @item iprint[1] = 0
 Mensajes @'unicamente en la primera y @'ultima iteraciones.
 @item iprint[1] > 0
-Imprime un mensaje cada @code{@mvar{iprint}[1]} iteraciones.
+Imprime un mensaje cada @code{@var{iprint}[1]} iteraciones.
 @end table
 @item iprint[2]
-@code{@mvar{iprint}[2]} controla la cantidad de informaci@'on contenida en los mensajes.
+@code{@var{iprint}[2]} controla la cantidad de informaci@'on contenida en los mensajes.
 @table @code
 @item iprint[2] = 0
-Imprime contador de iteraciones, n@'umero de evaluaciones de @mvar{FOM}, valor de @mvar{FOM},
-m@'odulo del gradiente de @mvar{FOM} y amplitud del paso.
+Imprime contador de iteraciones, n@'umero de evaluaciones de @var{FOM}, valor de @var{FOM},
+m@'odulo del gradiente de @var{FOM} y amplitud del paso.
 @item iprint[2] = 1
-Igual que @code{@mvar{iprint}[2] = 0}, incluyendo @mvar{X0} y el gradiente de @mvar{FOM} evaluado en @mvar{X0}.
+Igual que @code{@var{iprint}[2] = 0}, incluyendo @var{X0} y el gradiente de @var{FOM} evaluado en @var{X0}.
 @item iprint[2] = 2
-Igual que @code{@mvar{iprint}[2] = 1}, incluyendo los valores de @mvar{X} en cada iteraci@'on.
+Igual que @code{@var{iprint}[2] = 1}, incluyendo los valores de @var{X} en cada iteraci@'on.
 @item iprint[2] = 3
-Igual que @code{@mvar{iprint}[2] = 2}, incluyendo el gradiente de @mvar{FOM} en cada iteraci@'on.
+Igual que @code{@var{iprint}[2] = 2}, incluyendo el gradiente de @var{FOM} en cada iteraci@'on.
 @end table
 @end table
 

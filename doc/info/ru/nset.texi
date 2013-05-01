@@ -64,14 +64,14 @@ Maxima также определяет дельта-функцию Кронекера.
 (%o8)                       @{a, [b]@}
 @end example
 
-Два элемента @mvar{x} и @mvar{y} являются повторяющимися 
+Два элемента @var{x} и @var{y} являются повторяющимися 
 (т.е. рассматриваются совпадающими с точки зрения включения в множество),
-тогда и только тогда, когда @code{is(@mvar{x} = @mvar{y})} дает @code{true}.
+тогда и только тогда, когда @code{is(@var{x} = @var{y})} дает @code{true}.
 @c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-Заметим, что @code{is(equal(@mvar{x}, @mvar{y}))} может давать @code{true},
-тогда как @code{is(@mvar{x} = @mvar{y})} дает @code{false}.
-В этом случае элементы @mvar{x} и @mvar{y} считаются различными.
+Заметим, что @code{is(equal(@var{x}, @var{y}))} может давать @code{true},
+тогда как @code{is(@var{x} = @var{y})} дает @code{false}.
+В этом случае элементы @var{x} и @var{y} считаются различными.
 
 @c ===beg===
 @c x: a/c + b/c;
@@ -257,7 +257,7 @@ Function union expects a set, instead found [1,2]
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
-Другой способ -- использовать @code{for @mvar{x} in @mvar{s} do}
+Другой способ -- использовать @code{for @var{x} in @var{s} do}
 
 @c ===beg===
 @c s: {a, b, c};
@@ -423,13 +423,13 @@ University of Nebraska at Kearney (UNK)).
 @section Функции и переменные для работы с множествами
 
 @anchor{adjoin}
-@deffn {Функция} adjoin (@mvar{x}, @mvar{a}) 
+@deffn {Функция} adjoin (@var{x}, @var{a}) 
 
-Возвращает объединение множества @mvar{a} с @code{@{@mvar{x}@}}.
+Возвращает объединение множества @var{a} с @code{@{@var{x}@}}.
 
-Функция @code{adjoin} вызывает ошибку, если @mvar{a} не является множеством.
+Функция @code{adjoin} вызывает ошибку, если @var{a} не является множеством.
 
-Вызовы @code{adjoin(@mvar{x}, @mvar{a})} и @code{union(set(@mvar{x}), @mvar{a})}
+Вызовы @code{adjoin(@var{x}, @var{a})} и @code{union(set(@var{x}), @var{a})}
 эквивалентны, однако @code{adjoin} может быть несколько быстрее, чем @code{union}.
 
 См. также @code{disjoin}.
@@ -454,13 +454,13 @@ University of Nebraska at Kearney (UNK)).
 @closecatbox
 
 @anchor{belln}
-@deffn {Функция} belln (@mvar{n})
+@deffn {Функция} belln (@var{n})
 
 Представляет @math{n}-ое число Белла.
-@code{belln(n)} есть число разбиений множества с @mvar{n} элементами.
+@code{belln(n)} есть число разбиений множества с @var{n} элементами.
 
-Для неотрицательного целого @mvar{n},
-@code{belln(@mvar{n})} упрощается в @math{n}-ое число Белла.
+Для неотрицательного целого @var{n},
+@code{belln(@var{n})} упрощается в @math{n}-ое число Белла.
 Для других значений аргумента @code{belln} не упрощается.
 
 Функция @code{belln} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
@@ -503,9 +503,9 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{cardinality}
-@deffn {Функция} cardinality (@mvar{a})
+@deffn {Функция} cardinality (@var{a})
 
-Возвращает число различных элементов множества @mvar{a}. 
+Возвращает число различных элементов множества @var{a}. 
 
 Функция @code{cardinality} игнорирует повторяющиеся элементы даже если упрощение
 отключено.
@@ -536,9 +536,9 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{cartesian_product}
-@deffn {Функция} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
-Возвращает множество списков формы @code{[@mvar{x_1}, ..., @mvar{x_n}]}, где
-@mvar{x_1}, ..., @mvar{x_n} есть элементы множеств @mvar{b_1}, ... , @mvar{b_n} соответственно.
+@deffn {Функция} cartesian_product (@var{b_1}, ... , @var{b_n})
+Возвращает множество списков формы @code{[@var{x_1}, ..., @var{x_n}]}, где
+@var{x_1}, ..., @var{x_n} есть элементы множеств @var{b_1}, ... , @var{b_n} соответственно.
 
 Функция @code{cartesian_product} вызывает ошибку, если хотя бы один из ее аргументов
 не является множеством.
@@ -570,15 +570,15 @@ University of Nebraska at Kearney (UNK)).
 
 
 @anchor{disjoin}
-@deffn {Функция} disjoin (@mvar{x}, @mvar{a})
-Возвращает множество @mvar{a} без элемента @mvar{x}.
-Если @mvar{x} не является элементом @mvar{a}, то @mvar{a} 
+@deffn {Функция} disjoin (@var{x}, @var{a})
+Возвращает множество @var{a} без элемента @var{x}.
+Если @var{x} не является элементом @var{a}, то @var{a} 
 возвращается неизменным.
 
-Функция @code{disjoin} вызывает ошибку, если @mvar{a} не является множеством.
+Функция @code{disjoin} вызывает ошибку, если @var{a} не является множеством.
 
-@code{disjoin(@mvar{x}, @mvar{a})}, @code{delete(@mvar{x}, @mvar{a})} и
-@code{setdifference(@mvar{a}, set(@mvar{x}))} эквивалентны. 
+@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})} и
+@code{setdifference(@var{a}, set(@var{x}))} эквивалентны. 
 Из этих вариантов @code{disjoin} обычно быстрее других.
 
 Примеры:
@@ -604,10 +604,10 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{disjointp}
-@deffn {Функция} disjointp (@mvar{a}, @mvar{b}) 
-Возвращает @code{true} тогда и только тогда, когда множества @mvar{a} и @mvar{b} не пересекаются.
+@deffn {Функция} disjointp (@var{a}, @var{b}) 
+Возвращает @code{true} тогда и только тогда, когда множества @var{a} и @var{b} не пересекаются.
 
-Функция @code{disjointp} вызывает ошибку, если @mvar{a} или @mvar{b} не являются множествами.
+Функция @code{disjointp} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
 
 Примеры:
 
@@ -629,13 +629,13 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{divisors}
-@deffn {Функция} divisors (@mvar{n})
+@deffn {Функция} divisors (@var{n})
 
-Представляет множество делителей @mvar{n}.
+Представляет множество делителей @var{n}.
 
-Функция @code{divisors(@mvar{n})} упрощается до множества целых чисел, при этом
-@mvar{n} является ненулевым целым числом.
-Множество делителей включает 1 и @mvar{n}.
+Функция @code{divisors(@var{n})} упрощается до множества целых чисел, при этом
+@var{n} является ненулевым целым числом.
+Множество делителей включает 1 и @var{n}.
 Делители отрицательного числа совпадают с таковыми для его абсолютного значения.
 
 Функция @code{divisors} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
@@ -699,10 +699,10 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{elementp}
-@deffn {Функция} elementp (@mvar{x}, @mvar{a})
-Возвращает @code{true} тогда и только тогда, когда @mvar{x} является элементом множества @mvar{a}.
+@deffn {Функция} elementp (@var{x}, @var{a})
+Возвращает @code{true} тогда и только тогда, когда @var{x} является элементом множества @var{a}.
 
-Функция @code{elementp} вызывает ошибку, если @mvar{a} не является множеством.
+Функция @code{elementp} вызывает ошибку, если @var{a} не является множеством.
 
 Примеры:
 
@@ -724,8 +724,8 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{emptyp}
-@deffn {Функция} emptyp (@mvar{a})
-Возвращает @code{true} тогда и только тогда, когда @mvar{a} есть пустое множество или список.
+@deffn {Функция} emptyp (@var{a})
+Возвращает @code{true} тогда и только тогда, когда @var{a} есть пустое множество или список.
 
 Примеры:
 
@@ -747,18 +747,18 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
        
 @anchor{equiv_classes}
-@deffn {Функция} equiv_classes (@mvar{s}, @mvar{F})
-Возвращает множество классов эквивалентности множества @mvar{s} по отношению эквивалентности @mvar{F}.
+@deffn {Функция} equiv_classes (@var{s}, @var{F})
+Возвращает множество классов эквивалентности множества @var{s} по отношению эквивалентности @var{F}.
 
-@mvar{F} -- есть функция двух переменных, определенная на Декартовом произведении @mvar{s} на @mvar{s}.
-Возвращаемое @mvar{F} значение есть @code{true} или @code{false},
-либо выражение @mvar{expr} такое, что @code{is(@mvar{expr})} дает @code{true} или @code{false}.
+@var{F} -- есть функция двух переменных, определенная на Декартовом произведении @var{s} на @var{s}.
+Возвращаемое @var{F} значение есть @code{true} или @code{false},
+либо выражение @var{expr} такое, что @code{is(@var{expr})} дает @code{true} или @code{false}.
 
-Если @mvar{F} не является отношением эквивалентности, то @code{equiv_classes} 
+Если @var{F} не является отношением эквивалентности, то @code{equiv_classes} 
 применит его без возражения, но результат будет скорее всего неправильным.
 
 @c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
-@c @mvar{F} may be a relational operator (built-in or user-defined),
+@c @var{F} may be a relational operator (built-in or user-defined),
 @c an ordinary Maxima function, a Lisp function, a lambda expression,
 @c a macro, or a subscripted function.
 
@@ -805,33 +805,33 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{every}
-@deffn {Функция} every (@mvar{f}, @mvar{s})
-@deffnx {Функция} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
+@deffn {Функция} every (@var{f}, @var{s})
+@deffnx {Функция} every (@var{f}, @var{L_1}, ..., @var{L_n})
 
-Возвращает @code{true}, если предикат @mvar{f} дает @code{true} для всех аргументов.
+Возвращает @code{true}, если предикат @var{f} дает @code{true} для всех аргументов.
 
 Если второй аргумент является множеством, то  
-@code{every(@mvar{f}, @mvar{s})} возвращает @code{true},
-если @code{is(@mvar{f}(@mvar{a_i}))} возвращает @code{true} для всех @mvar{a_i} в @mvar{s}.
-@code{every} может вычислять @mvar{f} для всех @mvar{a_i} в @mvar{s}, а может и не для всех.
-Т.к. множества не упорядочены, то @code{every} может вычислять @code{@mvar{f}(@mvar{a_i})} 
+@code{every(@var{f}, @var{s})} возвращает @code{true},
+если @code{is(@var{f}(@var{a_i}))} возвращает @code{true} для всех @var{a_i} в @var{s}.
+@code{every} может вычислять @var{f} для всех @var{a_i} в @var{s}, а может и не для всех.
+Т.к. множества не упорядочены, то @code{every} может вычислять @code{@var{f}(@var{a_i})} 
 в произвольном порядке.
 
 Примененная к одному или нескольким спискам,
-@code{every(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} возвращает @code{true},
-если @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} возвращает @code{true} 
-для всех @mvar{x_1}, ..., @mvar{x_n} в @mvar{L_1}, ..., @mvar{L_n} соответственно.
-@code{every} может вычислять @mvar{f} для всех комбинаций @mvar{x_1}, ..., @mvar{x_n}, а может и не для всех.
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} возвращает @code{true},
+если @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} возвращает @code{true} 
+для всех @var{x_1}, ..., @var{x_n} в @var{L_1}, ..., @var{L_n} соответственно.
+@code{every} может вычислять @var{f} для всех комбинаций @var{x_1}, ..., @var{x_n}, а может и не для всех.
 @code{every} вычисляет списки в порядке возрастания индекса.
 
 Для пустого множества @code{@{@}} и пустого списка @code{[]} @code{every} возвращает @code{false}.
 
 Если глобальный флаг @code{maperror} равен @code{true}, то все списки 
-@mvar{L_1}, ..., @mvar{L_n} должны иметь одинаковую длину.
+@var{L_1}, ..., @var{L_n} должны иметь одинаковую длину.
 Если @code{maperror} равен @code{false}, то списки обрезаются до длины 
 самого короткого. 
 
-Значение предиката @mvar{f}, который вычисляется посредством @code{is}
+Значение предиката @var{f}, который вычисляется посредством @code{is}
 в значение, отличное от @code{true} или @code{false},
 управляется глобальным флагом @code{prederror}.
 Если @code{prederror} равен @code{true}, то данные
@@ -871,7 +871,7 @@ University of Nebraska at Kearney (UNK)).
 (%o2)                         false
 @end example
 
-Значение предиката @mvar{f}, вычисляемого в значение,
+Значение предиката @var{f}, вычисляемого в значение,
 отличное от @code{true} или @code{false},
 управляется глобальным флагом @code{prederror}.
 
@@ -904,16 +904,16 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
  
 @anchor{extremal_subset}
-@deffn {Функция} extremal_subset (@mvar{s}, @mvar{f}, max)
-@deffnx {Функция} extremal_subset (@mvar{s}, @mvar{f}, min)
+@deffn {Функция} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {Функция} extremal_subset (@var{s}, @var{f}, min)
 
-Возвращает подмножество @mvar{s}, на котором функция @mvar{f} принимает минимальное или максимальное значение.
+Возвращает подмножество @var{s}, на котором функция @var{f} принимает минимальное или максимальное значение.
 
-@code{extremal_subset(@mvar{s}, @mvar{f}, max)} возвращает подмножество множества или списка 
-@mvar{s}, для которого вещественнозначная функция @mvar{f} принимает максимальное значение.
+@code{extremal_subset(@var{s}, @var{f}, max)} возвращает подмножество множества или списка 
+@var{s}, для которого вещественнозначная функция @var{f} принимает максимальное значение.
 
-@code{extremal_subset(@mvar{s}, @mvar{f}, min)} возвращает подмножество множества или списка 
-@mvar{s}, для которого вещественнозначная функция @mvar{f} принимает минимальное значение.
+@code{extremal_subset(@var{s}, @var{f}, min)} возвращает подмножество множества или списка 
+@var{s}, для которого вещественнозначная функция @var{f} принимает минимальное значение.
 
 Примеры:
 
@@ -935,9 +935,9 @@ University of Nebraska at Kearney (UNK)).
 @end deffn
 
 @anchor{flatten}
-@deffn {Функция} flatten (@mvar{expr})
+@deffn {Функция} flatten (@var{expr})
 
-Собирает аргументы подвыражений, имеющих оператор верхнего уровня такой же как у @mvar{expr},
+Собирает аргументы подвыражений, имеющих оператор верхнего уровня такой же как у @var{expr},
 и строит выражение из этих собранных аргументов.
 
 Аргументы, имеющие оператор верхнего уровня отличный от главного оператора @code{expr},
@@ -1032,8 +1032,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{full_listify}
-@deffn {Функция} full_listify (@mvar{a})
-Заменяет в @mvar{a} все множества на списки и возвращает результат.
+@deffn {Функция} full_listify (@var{a})
+Заменяет в @var{a} все множества на списки и возвращает результат.
 @code{full_listify} заменяет операторы множества на операторы списка во вложенных подвыражениях,
 даже если главный оператор не есть @code{set}.
 
@@ -1059,10 +1059,10 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{fullsetify}
-@deffn {Функция} fullsetify (@mvar{a})
-Если @mvar{a} является списком, то @code{fullsetify} заменяет оператор списка на оператор множества и
+@deffn {Функция} fullsetify (@var{a})
+Если @var{a} является списком, то @code{fullsetify} заменяет оператор списка на оператор множества и
 применяет @code{fullsetify} ко всем членам этого множества.
-Если аргумент @mvar{a} не является списком, то он возвращается неизменным.
+Если аргумент @var{a} не является списком, то он возвращается неизменным.
 
 Функция @code{setify} заменяет только главный оператор.
 
@@ -1089,9 +1089,9 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{identity}
-@deffn {Функция} identity (@mvar{x})
+@deffn {Функция} identity (@var{x})
 
-Возвращает @mvar{x} для любого аргумента @mvar{x}.
+Возвращает @var{x} для любого аргумента @var{x}.
 
 Примеры:
 
@@ -1109,21 +1109,21 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{integer_partitions}
-@deffn {Функция} integer_partitions (@mvar{n})
-@deffnx {Функция} integer_partitions (@mvar{n}, @mvar{len})
+@deffn {Функция} integer_partitions (@var{n})
+@deffnx {Функция} integer_partitions (@var{n}, @var{len})
 
-Возвращает целочисленные разбиения @mvar{n}, т.е. списки целых чисел,
-сумма которых равна @mvar{n}.
+Возвращает целочисленные разбиения @var{n}, т.е. списки целых чисел,
+сумма которых равна @var{n}.
 
-Функция @code{integer_partitions(@mvar{n})} возвращает множество
-всех разбиений @mvar{n}.
+Функция @code{integer_partitions(@var{n})} возвращает множество
+всех разбиений @var{n}.
 Каждое разбиение есть список, отсортированный от большего значения к меньшему.
 
-Вызов @code{integer_partitions(@mvar{n}, @mvar{len})}
-возвращает все разбиения длины @mvar{len} или менее. 
-В этом случае к разбиениям, имеющим число членов меньшее, чем @mvar{len},
+Вызов @code{integer_partitions(@var{n}, @var{len})}
+возвращает все разбиения длины @var{len} или менее. 
+В этом случае к разбиениям, имеющим число членов меньшее, чем @var{len},
 добавляются нули, чтобы сделать все возвращаемые разбиения одинаковой
-длины @mvar{len}.
+длины @var{len}.
 
 Список @math{[a_1, ..., a_m]} есть разбиение неотрицательного целого числа 
 @math{n}, если (1) каждое @math{a_i} есть ненулевое положительное число и (2) 
@@ -1178,7 +1178,7 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{intersect}
-@deffn {Функция} intersect (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Функция} intersect (@var{a_1}, ..., @var{a_n})
 
 Функция @code{intersect} идентична @code{intersection}.
 
@@ -1189,8 +1189,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{intersection}
-@deffn {Функция} intersection (@mvar{a_1}, ..., @mvar{a_n})
-Возвращает множество, содержащие элементы, общие для всех множеств @mvar{a_1}, ..., @mvar{a_n}.
+@deffn {Функция} intersection (@var{a_1}, ..., @var{a_n})
+Возвращает множество, содержащие элементы, общие для всех множеств @var{a_1}, ..., @var{a_n}.
 
 Функция @code{intersection} вызывает ошибку, если хотя бы один из аргументов не является множеством.
 
@@ -1231,36 +1231,36 @@ Wrong number of arguments to mod
 
 @end deffn
 
-@deffn {Функция} kron_delta (@mvar{x}, @mvar{y})
+@deffn {Функция} kron_delta (@var{x}, @var{y})
 
 Дельта-функция Кронекера.
 
-@code{kron_delta} упрощается в 1, если @mvar{x} и @mvar{y} идентичны или очевидно эквивалентны,
-и упрощается в 0, если @mvar{x} и @mvar{y} очевидно не эквивалентны.
-Иначе, если эквивалентность или неэквивалентность @mvar{x} и @mvar{y} не ясна,
+@code{kron_delta} упрощается в 1, если @var{x} и @var{y} идентичны или очевидно эквивалентны,
+и упрощается в 0, если @var{x} и @var{y} очевидно не эквивалентны.
+Иначе, если эквивалентность или неэквивалентность @var{x} и @var{y} не ясна,
 то @code{kron_delta} упрощается в невычисляемую форму (noun).
 По отношению к числам с плавающей точкой @code{kron_delta} реализует осторожный подход.
-Если разница @code{@mvar{x} - @mvar{y}} является числом с плавающей точкой, то 
-@code{kron_delta} упрощается в невычисляемую форму, даже когда @mvar{x} по-видимому эквивалентно @mvar{y}.
+Если разница @code{@var{x} - @var{y}} является числом с плавающей точкой, то 
+@code{kron_delta} упрощается в невычисляемую форму, даже когда @var{x} по-видимому эквивалентно @var{y}.
 
 Функция
-@code{kron_delta(@mvar{x}, @mvar{y})} упрощается в 1,
+@code{kron_delta(@var{x}, @var{y})} упрощается в 1,
 если @code{is(x = y)} равно @code{true}.
 @code{kron_delta} тоже упрощается в 1,
-если @code{sign(abs(@mvar{x} - @mvar{y}))} есть @code{zero}
-и @code{@mvar{x} - @mvar{y}} не является числом с плавающей точкой
+если @code{sign(abs(@var{x} - @var{y}))} есть @code{zero}
+и @code{@var{x} - @var{y}} не является числом с плавающей точкой
 (ни обычное число с плавающей точкой, ни число с плавающей точкой повышенной точности).
-@code{kron_delta} упрощается в 0, если @code{sign(abs(@mvar{x} - @mvar{y}))} равно @code{pos}.
+@code{kron_delta} упрощается в 0, если @code{sign(abs(@var{x} - @var{y}))} равно @code{pos}.
 
-Если же @code{sign(abs(@mvar{x} - @mvar{y}))} дает
+Если же @code{sign(abs(@var{x} - @var{y}))} дает
 что-то отличное от @code{pos} или @code{zero},
-или @code{zero} но @code{@mvar{x} - @mvar{y}}
+или @code{zero} но @code{@var{x} - @var{y}}
 есть число с плавающей точкой,
 то @code{kron_delta} возвращает невычисляемое выражение.
 
 Функция @code{kron_delta} объявлена симметричной.
 Т.е. 
-@code{kron_delta(@mvar{x}, @mvar{y})} равно @code{kron_delta(@mvar{y}, @mvar{x})}.
+@code{kron_delta(@var{x}, @var{y})} равно @code{kron_delta(@var{y}, @var{x})}.
 
 Примеры:
 
@@ -1389,12 +1389,12 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{listify}
-@deffn {Функция} listify (@mvar{a})
+@deffn {Функция} listify (@var{a})
 
-Возвращает список с элементами @mvar{a}, если @mvar{a} есть множество.
-В противном случае @code{listify} возвращает @mvar{a}.
+Возвращает список с элементами @var{a}, если @var{a} есть множество.
+В противном случае @code{listify} возвращает @var{a}.
 
-Функция @code{full_listify} заменяет все операторы множества в @mvar{a} на операторы списка.
+Функция @code{full_listify} заменяет все операторы множества в @var{a} на операторы списка.
 
 Примеры:
 
@@ -1416,17 +1416,17 @@ Warning:  Float to bigfloat conversion of 0.25
 @closecatbox
 
 @anchor{lreduce}
-@deffn {Функция} lreduce (@mvar{F}, @mvar{s})
-@deffnx {Функция} lreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Функция} lreduce (@var{F}, @var{s})
+@deffnx {Функция} lreduce (@var{F}, @var{s}, @var{s_0})
 
-Расширяет бинарную функцию @mvar{F} до n-арной методом композиции.
-Аргумент @mvar{s} является списком.
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является списком.
 
-@code{lreduce(@mvar{F}, @mvar{s})} возвращает @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
-Если присутствует необязательный аргумент @mvar{s_0}, то
-результат эквивалентен @code{lreduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s}))}.
+@code{lreduce(@var{F}, @var{s})} возвращает @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
+Если присутствует необязательный аргумент @var{s_0}, то
+результат эквивалентен @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 
-Функция @mvar{F} сначала применяется к @i{левой} паре элементов списка, 
+Функция @var{F} сначала применяется к @i{левой} паре элементов списка, 
 откуда происходит название "lreduce" (left reduce). 
 
 См. также @code{rreduce}, @code{xreduce} и @code{tree_reduce}.
@@ -1480,22 +1480,22 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{makeset}
-@deffn {Функция} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
+@deffn {Функция} makeset (@var{expr}, @var{x}, @var{s})
 
-Возвращает множество с элементами, сгенерированными из выражения @mvar{expr},
-где @mvar{x} есть список переменных @mvar{expr},
-а @mvar{s} есть множество или список списков.
+Возвращает множество с элементами, сгенерированными из выражения @var{expr},
+где @var{x} есть список переменных @var{expr},
+а @var{s} есть множество или список списков.
 Для определения элемента результирующего списка
-выражение @mvar{expr} вычисляется при переменных @mvar{x}, равным значениям из @mvar{s} (параллельное присваивание).
+выражение @var{expr} вычисляется при переменных @var{x}, равным значениям из @var{s} (параллельное присваивание).
 
-Каждый член @mvar{s} должен иметь ту же длину, что и @mvar{x}.
-Список переменных @mvar{x} должен быть списком символов без индексов.
-Даже если символ только один, то @mvar{x} должен быть одноэлементным списком,
-а каждый член @mvar{s} должен быть одноэлементным списком.
+Каждый член @var{s} должен иметь ту же длину, что и @var{x}.
+Список переменных @var{x} должен быть списком символов без индексов.
+Даже если символ только один, то @var{x} должен быть одноэлементным списком,
+а каждый член @var{s} должен быть одноэлементным списком.
 
 @c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
-@c @code{makeset(@mvar{expr}, @mvar{x}, @mvar{s})} returns the same result as
-@c @code{setify(map(lambda([L], sublis(map("=", ''@mvar{x}, L), ''@mvar{expr})), args(@mvar{s})))}.
+@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
 
 См. также @code{makelist}.
 
@@ -1535,13 +1535,13 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{moebius}
-@deffn {Функция} moebius (@mvar{n})
+@deffn {Функция} moebius (@var{n})
 
 Представляет функцию Мебиуса.
 
-Если @mvar{n} есть произведение @math{k} различных простых чисел, то 
-@code{moebius(@mvar{n})} упрощается до @math{(-1)^k}.
-Если @math{@mvar{n} = 1}, то функция упрощается в 1.
+Если @var{n} есть произведение @math{k} различных простых чисел, то 
+@code{moebius(@var{n})} упрощается до @math{(-1)^k}.
+Если @math{@var{n} = 1}, то функция упрощается в 1.
 Для всех остальных положительных целых функция упрощается в 0. 
 
 Функция @code{moebius} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
@@ -1589,16 +1589,16 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
  
 @anchor{multinomial_coeff}
-@deffn {Функция} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Функция} multinomial_coeff (@var{a_1}, ..., @var{a_n})
 @deffnx {Функция} multinomial_coeff ()
 
 Возвращает мультиномиальный коэффициент.
 
-Если каждое @mvar{a_k} есть неотрицательное целое число, то мультиномиальный коэффициент
-дает число способов положить @code{@mvar{a_1} + ... + @mvar{a_n}} различных объектов
-в @math{n} ящиков с @mvar{a_k} элементами в @math{k}-ом ящике. 
-В целом, @code{multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})}
-равна @code{(@mvar{a_1} + ... + @mvar{a_n})!/(@mvar{a_1}! ... @mvar{a_n}!)}.
+Если каждое @var{a_k} есть неотрицательное целое число, то мультиномиальный коэффициент
+дает число способов положить @code{@var{a_1} + ... + @var{a_n}} различных объектов
+в @math{n} ящиков с @var{a_k} элементами в @math{k}-ом ящике. 
+В целом, @code{multinomial_coeff (@var{a_1}, ..., @var{a_n})}
+равна @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
 
 @code{multinomial_coeff()} (без аргументов) дает 1.
 
@@ -1636,17 +1636,17 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{num_distinct_partitions}
-@deffn {Функция} num_distinct_partitions (@mvar{n})
-@deffnx {Функция} num_distinct_partitions (@mvar{n}, list)
+@deffn {Функция} num_distinct_partitions (@var{n})
+@deffnx {Функция} num_distinct_partitions (@var{n}, list)
 
-Возвращает число целочисленных разбиений с различными частями для @mvar{n}, если @mvar{n} -- неотрицательное целое.
+Возвращает число целочисленных разбиений с различными частями для @var{n}, если @var{n} -- неотрицательное целое.
 Иначе @code{num_distinct_partitions} возвращает невычисляемую форму.
 
-@code{num_distinct_partitions(@mvar{n}, list)} возвращает список чисел
-целочисленных разбиений с различными частями для 1, 2, 3, ..., @mvar{n} . 
+@code{num_distinct_partitions(@var{n}, list)} возвращает список чисел
+целочисленных разбиений с различными частями для 1, 2, 3, ..., @var{n} . 
 
-Разбиение числа @mvar{n} с различными частями есть список различных положительных целых
-@math{k_1}, ..., @math{k_m}, таких что @math{@mvar{n} = k_1 + ... + k_m}.
+Разбиение числа @var{n} с различными частями есть список различных положительных целых
+@math{k_1}, ..., @math{k_m}, таких что @math{@var{n} = k_1 + ... + k_m}.
 
 Примеры:
 
@@ -1671,18 +1671,18 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{num_partitions}
-@deffn {Функция} num_partitions (@mvar{n})
-@deffnx {Функция} num_partitions (@mvar{n}, list)
+@deffn {Функция} num_partitions (@var{n})
+@deffnx {Функция} num_partitions (@var{n}, list)
 
-Возвращает число целочисленных разбиений числа @mvar{n},
-если @mvar{n} -- неотрицательное целое.
+Возвращает число целочисленных разбиений числа @var{n},
+если @var{n} -- неотрицательное целое.
 Иначе @code{num_partitions} возвращает невычисляемую форму.
 
-@code{num_partitions(@mvar{n}, list)} возвращает список чисел
-целочисленных разбиений для 1, 2, 3, ..., @mvar{n}.
+@code{num_partitions(@var{n}, list)} возвращает список чисел
+целочисленных разбиений для 1, 2, 3, ..., @var{n}.
 
-Для неотрицательного целого @mvar{n}, @code{num_partitions(@mvar{n})} равна 
-@code{cardinality(integer_partitions(@mvar{n}))}.
+Для неотрицательного целого @var{n}, @code{num_partitions(@var{n})} равна 
+@code{cardinality(integer_partitions(@var{n}))}.
 На самом деле @code{num_partitions} не строит полное множество разбиений
 и поэтому работает значительно быстрее.
 
@@ -1711,16 +1711,16 @@ Warning:  Float to bigfloat conversion of 0.25
 
 
 @anchor{partition_set}
-@deffn {Функция} partition_set (@mvar{a}, @mvar{f})
+@deffn {Функция} partition_set (@var{a}, @var{f})
 
-Разбивает множество @mvar{a} в соответствии с предикатом @mvar{f}.
+Разбивает множество @var{a} в соответствии с предикатом @var{f}.
 
 Функция @code{partition_set} возвращает список двух множеств.
-Первое множество состоит из элементов @mvar{a}, для которых @mvar{f} равен @code{false},
-а второе включает все остальные элементы @mvar{a}.
-Функция @code{partition_set} не применяет @code{is} к возвращаемым @mvar{f} значениям.
+Первое множество состоит из элементов @var{a}, для которых @var{f} равен @code{false},
+а второе включает все остальные элементы @var{a}.
+Функция @code{partition_set} не применяет @code{is} к возвращаемым @var{f} значениям.
 
-@code{partition_set} вызывает ошибку, если @mvar{a} не является множеством.
+@code{partition_set} вызывает ошибку, если @var{a} не является множеством.
 
 См. также @code{subset}.
 
@@ -1746,14 +1746,14 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{permutations}
-@deffn {Функция} permutations (@mvar{a})
+@deffn {Функция} permutations (@var{a})
 
-Возвращает множество различных перестановок членов списка или множества @mvar{a}. 
+Возвращает множество различных перестановок членов списка или множества @var{a}. 
 Каждая перестановка является списком. 
 
-Если @mvar{a} является списком, то повторные члены @mvar{a} включаются в перестановки.
+Если @var{a} является списком, то повторные члены @var{a} включаются в перестановки.
 
-@code{permutations} вызывает ошибку, если @mvar{a} не является списком или множеством.
+@code{permutations} вызывает ошибку, если @var{a} не является списком или множеством.
 
 См. также @code{random_permutation}.
 
@@ -1777,18 +1777,18 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{powerset}
-@deffn {Функция} powerset (@mvar{a})
-@deffnx {Функция} powerset (@mvar{a}, @mvar{n})
+@deffn {Функция} powerset (@var{a})
+@deffnx {Функция} powerset (@var{a}, @var{n})
 
-Возвращает множество всех подмножеств @mvar{a} или подмножество этого множества подмножеств.
+Возвращает множество всех подмножеств @var{a} или подмножество этого множества подмножеств.
 
-@code{powerset(@mvar{a})} возвращает множество всех подмножеств множества @mvar{a}.
-@code{powerset(@mvar{a})} имеет @code{2^cardinality(@mvar{a})} членов.
+@code{powerset(@var{a})} возвращает множество всех подмножеств множества @var{a}.
+@code{powerset(@var{a})} имеет @code{2^cardinality(@var{a})} членов.
 
-@code{powerset(@mvar{a}, @mvar{n})} возвращает множество подмножеств @mvar{a}, которые имеют
-мощность @mvar{n}.
+@code{powerset(@var{a}, @var{n})} возвращает множество подмножеств @var{a}, которые имеют
+мощность @var{n}.
 
-@code{powerset} вызывает ошибку, если @mvar{a} не является множеством или @mvar{n} 
+@code{powerset} вызывает ошибку, если @var{a} не является множеством или @var{n} 
 не есть целое число.
 
 Примеры:
@@ -1822,9 +1822,9 @@ Warning:  Float to bigfloat conversion of 0.25
 
 @end deffn
 
-@deffn {Функция} random_permutation (@mvar{a})
+@deffn {Функция} random_permutation (@var{a})
 
-Возвращает случайную перестановку множества или списка @mvar{a},
+Возвращает случайную перестановку множества или списка @var{a},
 построенную при помощи алгоритма тасования Кнута.
 
 Возвращаемое значение есть новый список, который отличен от исходного аргумента даже
@@ -1856,17 +1856,17 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{rreduce}
-@deffn {Функция} rreduce (@mvar{F}, @mvar{s})
-@deffnx {Функция} rreduce (@mvar{F}, @mvar{s}, @mvar{s_@{n + 1@}})
+@deffn {Функция} rreduce (@var{F}, @var{s})
+@deffnx {Функция} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
 
-Расширяет бинарную функцию @mvar{F} до n-арной методом композиции.
-Аргумент @mvar{s} является списком.
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является списком.
 
-@code{rreduce(@mvar{F}, @mvar{s})} возвращает @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-Если присутствует необязательный аргумент @mvar{s_@{n + 1@}}, то
-результат эквивалентен @code{rreduce(@mvar{F}, endcons(@mvar{s_@{n + 1@}}, @mvar{s}))}.
+@code{rreduce(@var{F}, @var{s})} возвращает @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
+Если присутствует необязательный аргумент @var{s_@{n + 1@}}, то
+результат эквивалентен @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
 
-Функция @mvar{F} сначала применяется к @i{правой} паре элементов списка, 
+Функция @var{F} сначала применяется к @i{правой} паре элементов списка, 
 откуда происходит название "rreduce" (right reduce). 
 
 См. также @code{lreduce}, @code{tree_reduce} и @code{xreduce}.
@@ -1922,12 +1922,12 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{setdifference}
-@deffn {Функция}  setdifference (@mvar{a}, @mvar{b})
+@deffn {Функция}  setdifference (@var{a}, @var{b})
 
-Возвращает множество, содержащее элементы множества @mvar{a}, которые
-отсутствуют в множестве @mvar{b}.
+Возвращает множество, содержащее элементы множества @var{a}, которые
+отсутствуют в множестве @var{b}.
 
-@code{setdifference} вызывает ошибку, если @mvar{a} или @mvar{b} не являются множествами.
+@code{setdifference} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
 
 Примеры:
 
@@ -1964,13 +1964,13 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{setequalp}
-@deffn {Функция} setequalp (@mvar{a}, @mvar{b})
+@deffn {Функция} setequalp (@var{a}, @var{b})
 
-Возвращает @code{true} если @mvar{a} и @mvar{b} имеют одинаковое количество элементов,
+Возвращает @code{true} если @var{a} и @var{b} имеют одинаковое количество элементов,
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-и @code{is(@mvar{x} = @mvar{y})} равно @code{true}
-для @code{x} из @mvar{a} и @code{y} из @mvar{b},
+и @code{is(@var{x} = @var{y})} равно @code{true}
+для @code{x} из @var{a} и @code{y} из @var{b},
 в порядке, определяемом @code{listify}.
 Иначе @code{setequalp} возвращает @code{false}.
 
@@ -1997,13 +1997,13 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{setify}
-@deffn {Функция} setify (@mvar{a})
+@deffn {Функция} setify (@var{a})
 
-Составляет множество из элементов списка @mvar{a}. Повторяющиеся элементы списка @mvar{a} 
+Составляет множество из элементов списка @var{a}. Повторяющиеся элементы списка @var{a} 
 удаляются, а элементы результирующего множества сортируются в соответствии с предикатом
 @code{orderlessp}.
 
-@code{setify} вызывает ошибку, если @mvar{a} не является списком.
+@code{setify} вызывает ошибку, если @var{a} не является списком.
 
 Примеры:
 
@@ -2028,9 +2028,9 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{setp}
-@deffn {Функция} setp (@mvar{a})
+@deffn {Функция} setp (@var{a})
 
-Возвращает @code{true} тогда и только тогда, когда @mvar{a} является Maxima множеством.
+Возвращает @code{true} тогда и только тогда, когда @var{a} является Maxima множеством.
 
 @code{setp} возвращает @code{true} как для неупрощенных множеств (т.е. содержащих излишние элементы),
 так и для упрощенных множеств.
@@ -2062,15 +2062,15 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Функция} set_partitions (@mvar{a})
-@deffnx {Функция} set_partitions (@mvar{a}, @mvar{n})
+@deffn {Функция} set_partitions (@var{a})
+@deffnx {Функция} set_partitions (@var{a}, @var{n})
 
-Возвращает множество разбиений @mvar{a} или подмножество этого множества.
+Возвращает множество разбиений @var{a} или подмножество этого множества.
 
-@code{set_partitions(@mvar{a}, @mvar{n})} возвращает множество всех разбиений @mvar{a} в 
-@mvar{n} непустых непересекающихся подмножеств.
+@code{set_partitions(@var{a}, @var{n})} возвращает множество всех разбиений @var{a} в 
+@var{n} непустых непересекающихся подмножеств.
 
-@code{set_partitions(@mvar{a})} возвращает множество всех разбиений.
+@code{set_partitions(@var{a})} возвращает множество всех разбиений.
 
 @code{stirling2} возвращает мощность множества всех разбиений множества.
 
@@ -2111,7 +2111,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                        90 = 90
 @end example
 
-Каждый элемент @code{p} должен иметь @mvar{n} = 3 члена. Проверим:
+Каждый элемент @code{p} должен иметь @var{n} = 3 члена. Проверим:
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
@@ -2147,36 +2147,36 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{some}
-@deffn {Функция} some (@mvar{f}, @mvar{a})
-@deffnx {Функция} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
+@deffn {Функция} some (@var{f}, @var{a})
+@deffnx {Функция} some (@var{f}, @var{L_1}, ..., @var{L_n})
 
-Возвращает @code{true}, если предикат @mvar{f} дает @code{true} для одного или более
+Возвращает @code{true}, если предикат @var{f} дает @code{true} для одного или более
 аргументов.
 
 Если второй параметр является множеством, то
-@code{some(@mvar{f}, @mvar{s})} возвращает @code{true},
-если @code{is(@mvar{f}(@mvar{a_i}))} дает @code{true} для одного или более @mvar{a_i} из @mvar{s}.
-@code{some} может вычислять @mvar{f} для всех или не для всех @mvar{a_i} из @mvar{s}.
+@code{some(@var{f}, @var{s})} возвращает @code{true},
+если @code{is(@var{f}(@var{a_i}))} дает @code{true} для одного или более @var{a_i} из @var{s}.
+@code{some} может вычислять @var{f} для всех или не для всех @var{a_i} из @var{s}.
 Т.к. множества не упорядочены, то
-@code{some} может вычислять @code{@mvar{f}(@mvar{a_i})} в любом порядке.
+@code{some} может вычислять @code{@var{f}(@var{a_i})} в любом порядке.
 
 Если аргументы являются одним или несколькими списками, то
-@code{some(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} возвращает @code{true},
-если  @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} дает @code{true} 
-для одного или более @mvar{x_1}, ..., @mvar{x_n} из @mvar{L_1}, ..., @mvar{L_n} соответственно.
-@code{some} может вычислять, а может и не вычислять @mvar{f} 
-для некоторых комбинаций @mvar{x_1}, ..., @mvar{x_n}.
+@code{some(@var{f}, @var{L_1}, ..., @var{L_n})} возвращает @code{true},
+если  @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} дает @code{true} 
+для одного или более @var{x_1}, ..., @var{x_n} из @var{L_1}, ..., @var{L_n} соответственно.
+@code{some} может вычислять, а может и не вычислять @var{f} 
+для некоторых комбинаций @var{x_1}, ..., @var{x_n}.
 @code{some} вычисляет списки в порядке возрастания индекса.
 
 Для пустого множества @code{@{@}} или списка @code{[]} 
 @code{some} возвращает @code{false}.
 
 Если глобальный флаг @code{maperror} равен @code{true}, то все списки 
-@mvar{L_1}, ..., @mvar{L_n} должны иметь одинаковую длину.
+@var{L_1}, ..., @var{L_n} должны иметь одинаковую длину.
 Если @code{maperror} равен @code{false}, то списки обрезаются
 до длины самого короткого.
 
-Значения предиката @mvar{f} (вычисляемое посредством @code{is})
+Значения предиката @var{f} (вычисляемое посредством @code{is})
 отличное от @code{true} или @code{false}
 управляется глобальным флагом @code{prederror}.
 Если @code{prederror} равен @code{true}, то
@@ -2214,7 +2214,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o2)                         false
 @end example
 
-Значение предиката @mvar{f}, отличное от @code{true} или @code{false},
+Значение предиката @var{f}, отличное от @code{true} или @code{false},
 управляется глобальным флагом @code{prederror}.
 
 @c ===beg===
@@ -2252,17 +2252,17 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{stirling1}
-@deffn {Функция} stirling1 (@mvar{n}, @mvar{m})
+@deffn {Функция} stirling1 (@var{n}, @var{m})
 
 Представляет число Стирлинга первого рода.
 
-Для неотрицательных целых @mvar{n} и @mvar{m} величина 
-@code{stirling1 (@mvar{n}, @mvar{m})} есть число перестановок множества из 
-@mvar{n} элементов, имеющих @mvar{m} циклов.
+Для неотрицательных целых @var{n} и @var{m} величина 
+@code{stirling1 (@var{n}, @var{m})} есть число перестановок множества из 
+@var{n} элементов, имеющих @var{m} циклов.
 См. книгу Graham, Knuth и Patashnik @i{Concrete Mathematics} по поводу деталей.
-Для определения @code{stirling1 (@mvar{n}, @mvar{m})} с @mvar{m},
+Для определения @code{stirling1 (@var{n}, @var{m})} с @var{m},
 меньшим нуля, Maxima использует рекуррентное соотношение.  
-Для @mvar{n} меньших нуля и нецелых аргументов функция не определена.
+Для @var{n} меньших нуля и нецелых аргументов функция не определена.
 
 @code{stirling1} является упрощающей функцией.
 Maxima знает следующие тождества.
@@ -2342,16 +2342,16 @@ Maxima применяет тождества для @code{stirling1}.
 @end deffn
 
 @anchor{stirling2}
-@deffn {Функция} stirling2 (@mvar{n}, @mvar{m})
+@deffn {Функция} stirling2 (@var{n}, @var{m})
 
 Представляет число Стирлинга второго рода.
 
-Для неотрицательных целых @mvar{n} и @mvar{m} число @code{stirling2 (@mvar{n}, @mvar{m})} 
-есть число способов, которыми множество мощности @mvar{n} может быть разбито
-на @mvar{m} непересекающихся подмножеств.
-Для определения @code{stirling2 (@mvar{n}, @mvar{m})} с @mvar{m},
+Для неотрицательных целых @var{n} и @var{m} число @code{stirling2 (@var{n}, @var{m})} 
+есть число способов, которыми множество мощности @var{n} может быть разбито
+на @var{m} непересекающихся подмножеств.
+Для определения @code{stirling2 (@var{n}, @var{m})} с @var{m},
 меньшим нуля, Maxima использует рекуррентное соотношение.  
-Для @mvar{n} меньших нуля и нецелых аргументов функция не определена.
+Для @var{n} меньших нуля и нецелых аргументов функция не определена.
 
 @code{stirling2} является упрощающей функцией.
 Maxima знает следующие тождества.
@@ -2441,15 +2441,15 @@ Maxima применяет тождества для @code{stirling2}.
 @end deffn
 
 @anchor{subset}
-@deffn {Функция} subset (@mvar{a}, @mvar{f})
+@deffn {Функция} subset (@var{a}, @var{f})
 
-Возвращает подмножество множества @mvar{a}, которое удовлетворяет предикату @mvar{f}. 
+Возвращает подмножество множества @var{a}, которое удовлетворяет предикату @var{f}. 
 
-Функция @code{subset} возвращает множество, состоящее из элементов @mvar{a},
-для которых @mvar{f} возвращает любое значение, отличное от @code{false}.
-Функция @code{subset} не применяет @code{is} к значению, возвращаемому @mvar{f}.
+Функция @code{subset} возвращает множество, состоящее из элементов @var{a},
+для которых @var{f} возвращает любое значение, отличное от @code{false}.
+Функция @code{subset} не применяет @code{is} к значению, возвращаемому @var{f}.
 
-Функция @code{subset} вызывает ошибку, если @mvar{a} не является множеством.
+Функция @code{subset} вызывает ошибку, если @var{a} не является множеством.
 
 См. также @code{partition_set}.
 
@@ -2473,11 +2473,11 @@ Maxima применяет тождества для @code{stirling2}.
 @end deffn
 
 @anchor{subsetp}
-@deffn {Функция} subsetp (@mvar{a}, @mvar{b})
+@deffn {Функция} subsetp (@var{a}, @var{b})
 
-Возвращает @code{true} тогда и только тогда, когда @mvar{a} есть подмножество @mvar{b}.
+Возвращает @code{true} тогда и только тогда, когда @var{a} есть подмножество @var{b}.
 
-Функция @code{subsetp} вызывает ошибку, если @mvar{a} или @mvar{b} не являются множествами.
+Функция @code{subsetp} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
 
 Примеры:
 
@@ -2499,13 +2499,13 @@ Maxima применяет тождества для @code{stirling2}.
 @end deffn
 
 @anchor{symmdifference}
-@deffn {Функция} symmdifference (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Функция} symmdifference (@var{a_1}, ..., @var{a_n})
 
 Возвращает симметричную разницу, т.е. множество, элементы
-которого присутствуют только в одном множестве @mvar{a_k}.
+которого присутствуют только в одном множестве @var{a_k}.
 
-При задании двух аргументов, @code{symmdifference(@mvar{a}, @mvar{b})} 
-эквивалентно @code{union ( setdifference (@mvar{a}, @mvar{b} ), setdifference (@mvar{b}, @mvar{a}))}.
+При задании двух аргументов, @code{symmdifference(@var{a}, @var{b})} 
+эквивалентно @code{union ( setdifference (@var{a}, @var{b} ), setdifference (@var{b}, @var{a}))}.
 
 Функция @code{symmdifference} вызывает ошибку, если любой из ее аргументов не является множеством.
 
@@ -2548,26 +2548,26 @@ Maxima применяет тождества для @code{stirling2}.
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
-@deffn {Функция} tree_reduce (@mvar{F}, @mvar{s})
-@deffnx {Функция} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Функция} tree_reduce (@var{F}, @var{s})
+@deffnx {Функция} tree_reduce (@var{F}, @var{s}, @var{s_0})
 
-Расширяет бинарную функцию @mvar{F} до n-арной методом композиции.
-Аргумент @mvar{s} является множеством или списком.
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является множеством или списком.
 
 Функция @code{tree_reduce} действует следующим образом:
-@mvar{F} применяется к последовательным парам элементов, чтобы сформировать новый список
-@code{[@mvar{F}(@mvar{s_1}, @mvar{s_2}), @mvar{F}(@mvar{s_3}, @mvar{s_4}), ...]}.
+@var{F} применяется к последовательным парам элементов, чтобы сформировать новый список
+@code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]}.
 При этом если число элементов нечетно, то последний элемент остается неизменным.
 Затем процесс повторяется до тех пор, пока не останется только один элемент списка,
 который и возвращается в качестве значения.
 
-Если присутствует необязательный элемент @mvar{s_0}, то
-результат эквивалентен @code{tree_reduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s})}.
+Если присутствует необязательный элемент @var{s_0}, то
+результат эквивалентен @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
 
 Для сложения чисел с плавающей точкой @code{tree_reduce} может возвращать сумму с меньшей
 ошибкой округления, чем @code{rreduce} или @code{lreduce}.
 
-Элементы @mvar{s} и частичные результаты могут быть представлены в виде бинарного дерева 
+Элементы @var{s} и частичные результаты могут быть представлены в виде бинарного дерева 
 минимальной глубины, откуда происходит название "tree_reduce".
 
 Примеры:
@@ -2599,8 +2599,8 @@ Maxima применяет тождества для @code{stirling2}.
 @end deffn
 
 @anchor{union}
-@deffn {Функция} union (@mvar{a_1}, ..., @mvar{a_n})
-Возвращает объединение множеств от @mvar{a_1} до @mvar{a_n}. 
+@deffn {Функция} union (@var{a_1}, ..., @var{a_n})
+Возвращает объединение множеств от @var{a_1} до @var{a_n}. 
 
 Вызов @code{union()} (без аргументов) возвращает пустое множество.
 
@@ -2645,27 +2645,27 @@ Maxima применяет тождества для @code{stirling2}.
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
-@deffn {Функция} xreduce (@mvar{F}, @mvar{s})
-@deffnx {Функция} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Функция} xreduce (@var{F}, @var{s})
+@deffnx {Функция} xreduce (@var{F}, @var{s}, @var{s_0})
 
-Расширяет функцию @mvar{F} до n-арной методом композиции или,
-если @mvar{F} уже n-арная, применяет @mvar{F} к @mvar{s}.
-Если @mvar{F} не является n-арной, то @code{xreduce} работает также, как @code{lreduce}.
-Аргумент @mvar{s} является списком.
+Расширяет функцию @var{F} до n-арной методом композиции или,
+если @var{F} уже n-арная, применяет @var{F} к @var{s}.
+Если @var{F} не является n-арной, то @code{xreduce} работает также, как @code{lreduce}.
+Аргумент @var{s} является списком.
 
 Известны следующие n-арные функции: сложение @code{+}, 
 умножение @code{*}, @code{and}, @code{or}, @code{max},
 @code{min} и @code{append}.
-Функции могут быть объявлены n-арными при помощи @code{declare(@mvar{F}, nary)}.
+Функции могут быть объявлены n-арными при помощи @code{declare(@var{F}, nary)}.
 Для таких функций, @code{xreduce} работает быстрее, чем @code{rreduce} или @code{lreduce}.
 
-Если задан необязательный аргумент @mvar{s_0}, то
-результат эквивалентен @code{xreduce(@mvar{s}, cons(@mvar{s_0}, @mvar{s}))}.
+Если задан необязательный аргумент @var{s_0}, то
+результат эквивалентен @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
 
 @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
 @c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
 Сложение чисел с плавающей точкой, строго говоря, не является ассоциативным.
-Функция @code{xreduce} применяет n-арное сложение, если @mvar{s} содержит числа с плавающей точкой.
+Функция @code{xreduce} применяет n-арное сложение, если @var{s} содержит числа с плавающей точкой.
 
 Примеры:
 

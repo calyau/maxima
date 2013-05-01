@@ -9,9 +9,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bern}
-@deffn {Function} bern (@mvar{n})
+@deffn {Function} bern (@var{n})
 
-Returns the @mvar{n}'th Bernoulli number for integer @mvar{n}.
+Returns the @var{n}'th Bernoulli number for integer @var{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
 Bernoulli numbers equal to zero are suppressed if @code{zerobern} is
@@ -39,10 +39,10 @@ See also @code{burn}.
 
 @c -----------------------------------------------------------------------------
 @anchor{bernpoly}
-@deffn {Function} bernpoly (@mvar{x}, @mvar{n})
+@deffn {Function} bernpoly (@var{x}, @var{n})
 
-Returns the @mvar{n}'th Bernoulli polynomial in the
-variable @mvar{x}.
+Returns the @var{n}'th Bernoulli polynomial in the
+variable @var{x}.
 
 @opencatbox
 @category{Number theory}
@@ -51,11 +51,11 @@ variable @mvar{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{bfzeta}
-@deffn {Function} bfzeta (@mvar{s}, @mvar{n})
+@deffn {Function} bfzeta (@var{s}, @var{n})
 
-Returns the Riemann zeta function for the argument @mvar{s}.
+Returns the Riemann zeta function for the argument @var{s}.
 The return value is a big float (bfloat);
-@mvar{n} is the number of digits in the return value.
+@var{n} is the number of digits in the return value.
 
 @opencatbox
 @category{Number theory} @category{Numerical evaluation}
@@ -64,11 +64,11 @@ The return value is a big float (bfloat);
 
 @c -----------------------------------------------------------------------------
 @anchor{bfhzeta}
-@deffn {Function} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
+@deffn {Function} bfhzeta (@var{s}, @var{h}, @var{n})
 
-Returns the Hurwitz zeta function for the arguments @mvar{s} and @mvar{h}.
+Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
 The return value is a big float (bfloat);
-@mvar{n} is the number of digits in the return value.
+@var{n} is the number of digits in the return value.
 
 The Hurwitz zeta function is defined as
 
@@ -96,10 +96,10 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 
 @c -----------------------------------------------------------------------------
 @anchor{burn}
-@deffn {Function} burn (@mvar{n})
+@deffn {Function} burn (@var{n})
 
-Returns a rational number, which is an approximation of the @mvar{n}'th Bernoulli
-number for integer @mvar{n}.  @code{burn} exploits the observation that
+Returns a rational number, which is an approximation of the @var{n}'th Bernoulli
+number for integer @var{n}.  @code{burn} exploits the observation that
 (rational) Bernoulli numbers can be approximated by (transcendental) zetas with
 tolerable efficiency:
 
@@ -111,10 +111,10 @@ tolerable efficiency:
                              %pi
 @end example
 
-@code{burn} may be more efficient than @code{bern} for large, isolated @mvar{n}
-as @code{bern} computes all the Bernoulli numbers up to index @mvar{n} before 
-returning.  @code{burn} invokes the approximation for even integers @mvar{n} >
-255.  For odd integers and @mvar{n} <= 255 the function @code{bern} is called.
+@code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
+as @code{bern} computes all the Bernoulli numbers up to index @var{n} before 
+returning.  @code{burn} invokes the approximation for even integers @var{n} >
+255.  For odd integers and @var{n} <= 255 the function @code{bern} is called.
 
 @code{load ("bffac")} loads this function.  See also @code{bern}.
 
@@ -125,10 +125,10 @@ returning.  @code{burn} invokes the approximation for even integers @mvar{n} >
 
 @c -----------------------------------------------------------------------------
 @anchor{chinese}
-@deffn {Function} chinese ([@mvar{r_1}, @dots{}, @mvar{r_n}], [@mvar{m_1}, @dots{}, @mvar{m_n}])
+@deffn {Function} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
 
 Solves the system of congruences @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
-The remainders @mvar{r_n} may be arbitrary integers while the moduli @mvar{m_n} have to be 
+The remainders @var{r_n} may be arbitrary integers while the moduli @var{m_n} have to be 
 positive and pairwise coprime integers.
 
 @example
@@ -155,10 +155,10 @@ positive and pairwise coprime integers.
 
 @c -----------------------------------------------------------------------------
 @anchor{cf}
-@deffn {Function} cf (@mvar{expr})
+@deffn {Function} cf (@var{expr})
 
 Computes a continued fraction approximation.
-@mvar{expr} is an expression comprising continued fractions,
+@var{expr} is an expression comprising continued fractions,
 square roots of integers, and literal real numbers
 (integers, rational numbers, ordinary floats, and bigfloats).
 @code{cf} computes exact expansions for rational numbers,
@@ -174,7 +174,7 @@ outside of @code{cf}.
 
 A continued fraction @code{a + 1/(b + 1/(c + ...))} is represented by the list
 @code{[a, b, c, ...]}.  The list elements @code{a}, @code{b}, @code{c}, @dots{}
-must evaluate to integers.  @mvar{expr} may also contain @code{sqrt (n)} where
+must evaluate to integers.  @var{expr} may also contain @code{sqrt (n)} where
 @code{n} is an integer.  In this case @code{cf} will give as many terms of the
 continued fraction as the value of the variable @code{cflength} times the
 period.
@@ -189,7 +189,7 @@ Examples:
 
 @itemize @bullet
 @item
-@mvar{expr} is an expression comprising continued fractions and square roots of
+@var{expr} is an expression comprising continued fractions and square roots of
 integers.
 
 @example
@@ -249,7 +249,7 @@ Maxima does not know about operations on continued fractions outside of
 
 @c -----------------------------------------------------------------------------
 @anchor{cfdisrep}
-@deffn {Function} cfdisrep (@mvar{list})
+@deffn {Function} cfdisrep (@var{list})
 
 Constructs and returns an ordinary arithmetic expression
 of the form @code{a + 1/(b + 1/(c + ...))}
@@ -275,10 +275,10 @@ from the list representation of a continued fraction @code{[a, b, c, ...]}.
 
 @c -----------------------------------------------------------------------------
 @anchor{cfexpand}
-@deffn {Function} cfexpand (@mvar{x})
+@deffn {Function} cfexpand (@var{x})
 
 Returns a matrix of the numerators and denominators of the last (column 1) and
-next-to-last (column 2) convergents of the continued fraction @mvar{x}.
+next-to-last (column 2) convergents of the continued fraction @var{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -326,13 +326,13 @@ Thus the default is to give one period.
 
 @c -----------------------------------------------------------------------------
 @anchor{divsum}
-@deffn  {Function} divsum (@mvar{n}, @mvar{k})
-@deffnx {Function} divsum (@mvar{n})
+@deffn  {Function} divsum (@var{n}, @var{k})
+@deffnx {Function} divsum (@var{n})
 
-@code{divsum (@mvar{n}, @mvar{k})} returns the sum of the divisors of @mvar{n}
-raised to the @mvar{k}'th power.
+@code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
+raised to the @var{k}'th power.
 
-@code{divsum (@mvar{n})} returns the sum of the divisors of @mvar{n}.
+@code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
 
 @example
 (%i1) divsum (12);
@@ -352,9 +352,9 @@ raised to the @mvar{k}'th power.
 
 @c -----------------------------------------------------------------------------
 @anchor{euler}
-@deffn {Function} euler (@mvar{n})
+@deffn {Function} euler (@var{n})
 
-Returns the @mvar{n}'th Euler number for nonnegative integer @mvar{n}.
+Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
 Euler numbers equal to zero are suppressed if @code{zerobern} is
 @code{false}.
 
@@ -393,15 +393,15 @@ Example: See @mref{ifactors}.
 
 @c -----------------------------------------------------------------------------
 @anchor{fib}
-@deffn {Function} fib (@mvar{n})
+@deffn {Function} fib (@var{n})
 
-Returns the @mvar{n}'th Fibonacci number.
+Returns the @var{n}'th Fibonacci number.
 @code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
 and
-@code{fib (-@mvar{n})} equal to @code{(-1)^(@mvar{n} + 1) * fib(@mvar{n})}.
+@code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
 After calling @code{fib},
-@code{prevfib} is equal to @code{fib (@mvar{x} - 1)},
+@code{prevfib} is equal to @code{fib (@var{x} - 1)},
 the Fibonacci number preceding the last one computed.
 
 @example
@@ -416,9 +416,9 @@ the Fibonacci number preceding the last one computed.
 
 @c -----------------------------------------------------------------------------
 @anchor{fibtophi}
-@deffn {Function} fibtophi (@mvar{expr})
+@deffn {Function} fibtophi (@var{expr})
 
-Expresses Fibonacci numbers in @mvar{expr} in terms of the constant @code{%phi},
+Expresses Fibonacci numbers in @var{expr} in terms of the constant @code{%phi},
 which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
 
 Examples:
@@ -457,10 +457,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{ifactors}
-@deffn {Function} ifactors (@mvar{n})
+@deffn {Function} ifactors (@var{n})
 
-For a positive integer @mvar{n} returns the factorization of @mvar{n}.  If
-@code{n=p1^e1..pk^nk} is the decomposition of @mvar{n} into prime
+For a positive integer @var{n} returns the factorization of @var{n}.  If
+@code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
 factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 
 Factorization methods used are trial divisions by primes up to 9973,
@@ -488,11 +488,11 @@ prime factors.
 
 @c -----------------------------------------------------------------------------
 @anchor{igcdex}
-@deffn {Function} igcdex (@mvar{n}, @mvar{k})
+@deffn {Function} igcdex (@var{n}, @var{k})
 
-Returns a list @code{[@mvar{a}, @mvar{b}, @mvar{u}]} where @mvar{u} is the greatest
-common divisor of @mvar{n} and @mvar{k}, and @mvar{u} is equal to
-@code{@mvar{a} @mvar{n} + @mvar{b} @mvar{k}}.  The arguments @mvar{n} and @mvar{k}
+Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the greatest
+common divisor of @var{n} and @var{k}, and @var{u} is equal to
+@code{@var{a} @var{n} + @var{b} @var{k}}.  The arguments @var{n} and @var{k}
 must be integers.
 
 @code{igcdex} implements the Euclidean algorithm.  See also @mrefdot{gcdex}
@@ -519,9 +519,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{inrt}
-@deffn {Function} inrt (@mvar{x}, @mvar{n})
+@deffn {Function} inrt (@var{x}, @var{n})
 
-Returns the integer @mvar{n}'th root of the absolute value of @mvar{x}.
+Returns the integer @var{n}'th root of the absolute value of @var{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -536,11 +536,11 @@ Returns the integer @mvar{n}'th root of the absolute value of @mvar{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{inv_mod}
-@deffn {Function} inv_mod (@mvar{n}, @mvar{m})
+@deffn {Function} inv_mod (@var{n}, @var{m})
 
-Computes the inverse of @mvar{n} modulo @mvar{m}.
+Computes the inverse of @var{n} modulo @var{m}.
 @code{inv_mod (n,m)} returns @code{false}, 
-if @mvar{n} is a zero divisor modulo @mvar{m}.
+if @var{n} is a zero divisor modulo @var{m}.
 
 @example
 (%i1) inv_mod(3, 41);
@@ -558,9 +558,9 @@ if @mvar{n} is a zero divisor modulo @mvar{m}.
 
 @c -----------------------------------------------------------------------------
 @anchor{isqrt}
-@deffn {Function} isqrt (@mvar{x})
+@deffn {Function} isqrt (@var{x})
 
-Returns the "integer square root" of the absolute value of @mvar{x}, which is an
+Returns the "integer square root" of the absolute value of @var{x}, which is an
 integer.
 
 @opencatbox
@@ -570,9 +570,9 @@ integer.
 
 @c -----------------------------------------------------------------------------
 @anchor{jacobi}
-@deffn {Function} jacobi (@mvar{p}, @mvar{q})
+@deffn {Function} jacobi (@var{p}, @var{q})
 
-Returns the Jacobi symbol of @mvar{p} and @mvar{q}.
+Returns the Jacobi symbol of @var{p} and @var{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -587,7 +587,7 @@ Returns the Jacobi symbol of @mvar{p} and @mvar{q}.
 
 @c -----------------------------------------------------------------------------
 @anchor{lcm}
-@deffn {Function} lcm (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} lcm (@var{expr_1}, @dots{}, @var{expr_n})
 
 Returns the least common multiple of its arguments.
 The arguments may be general expressions as well as integers.
@@ -601,27 +601,27 @@ The arguments may be general expressions as well as integers.
 
 @c -----------------------------------------------------------------------------
 @anchor{mod}
-@deffn {Function} mod (@mvar{x}, @mvar{y})
+@deffn {Function} mod (@var{x}, @var{y})
 
-If @mvar{x} and @mvar{y} are real numbers and @mvar{y} is nonzero, return
-@code{@mvar{x} - @mvar{y} * floor(@mvar{x} / @mvar{y})}.  Further for all real
-@mvar{x}, we have @code{mod (@mvar{x}, 0) = @mvar{x}}.  For a discussion of the
-definition @code{mod (@mvar{x}, 0) = @mvar{x}}, see Section 3.4, of
+If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return
+@code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.  Further for all real
+@var{x}, we have @code{mod (@var{x}, 0) = @var{x}}.  For a discussion of the
+definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of
 "Concrete Mathematics," by Graham, Knuth, and Patashnik.  The function
-@code{mod (@mvar{x}, 1)} is a sawtooth function with period 1 with
+@code{mod (@var{x}, 1)} is a sawtooth function with period 1 with
 @code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
 
 To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of
 a complex number, use the function
-@code{@mvar{x} |-> %pi - mod (%pi - @mvar{x}, 2*%pi)}, where @mvar{x} is an
+@code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, where @var{x} is an
 argument.
 
-When @mvar{x} and @mvar{y} are constant expressions (@code{10 * %pi}, for 
+When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
 example), @code{mod} uses the same big float evaluation scheme that @code{floor}
 and @code{ceiling} uses.  Again, it's possible, although unlikely, that
 @code{mod} could return an erroneous value in such cases.
 
-For nonnumerical arguments @mvar{x} or @mvar{y}, @code{mod} knows several
+For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several
 simplification rules:
 
 @c ===beg===
@@ -645,9 +645,9 @@ simplification rules:
 
 @c -----------------------------------------------------------------------------
 @anchor{next_prime}
-@deffn {Function} next_prime (@mvar{n})
+@deffn {Function} next_prime (@var{n})
 
-Returns the smallest prime bigger than @mvar{n}.
+Returns the smallest prime bigger than @var{n}.
 
 @example
 (%i1) next_prime(27);
@@ -661,10 +661,10 @@ Returns the smallest prime bigger than @mvar{n}.
 
 @c -----------------------------------------------------------------------------
 @anchor{partfrac}
-@deffn {Function} partfrac (@mvar{expr}, @mvar{var})
+@deffn {Function} partfrac (@var{expr}, @var{var})
 
-Expands the expression @mvar{expr} in partial fractions
-with respect to the main variable @mvar{var}.  @code{partfrac} does a complete
+Expands the expression @var{expr} in partial fractions
+with respect to the main variable @var{var}.  @code{partfrac} does a complete
 partial fraction decomposition.  The algorithm employed is based on
 the fact that the denominators of the partial fraction expansion (the
 factors of the original denominator) are relatively prime.  The
@@ -692,11 +692,11 @@ the expansion falls out.
 
 @c -----------------------------------------------------------------------------
 @anchor{power_mod}
-@deffn {Function} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
+@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
 
 Uses a modular algorithm to compute @code{a^n mod m} 
-where @mvar{a} and @mvar{n} are integers and @mvar{m} is a positive integer.
-If @mvar{n} is negative, @code{inv_mod} is used to find the modular inverse.
+where @var{a} and @var{n} are integers and @var{m} is a positive integer.
+If @var{n} is negative, @code{inv_mod} is used to find the modular inverse.
 
 @example
 (%i1) power_mod(3, 15, 5);
@@ -716,21 +716,21 @@ If @mvar{n} is negative, @code{inv_mod} is used to find the modular inverse.
 
 @c -----------------------------------------------------------------------------
 @anchor{primep}
-@deffn {Function} primep (@mvar{n})
+@deffn {Function} primep (@var{n})
 
-Primality test.  If @code{primep (@mvar{n})} returns @code{false}, @mvar{n} is a
-composite number and if it returns @code{true}, @mvar{n} is a prime number
+Primality test.  If @code{primep (@var{n})} returns @code{false}, @var{n} is a
+composite number and if it returns @code{true}, @var{n} is a prime number
 with very high probability.
 
-For @mvar{n} less than 341550071728321 a deterministic version of
-Miller-Rabin's test is used.  If @code{primep (@mvar{n})} returns
-@code{true}, then @mvar{n} is a prime number.
+For @var{n} less than 341550071728321 a deterministic version of
+Miller-Rabin's test is used.  If @code{primep (@var{n})} returns
+@code{true}, then @var{n} is a prime number.
 
-For @mvar{n} bigger than 341550071728321 @code{primep} uses
+For @var{n} bigger than 341550071728321 @code{primep} uses
 @code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
-Lucas pseudo-primality test.  The probability that a non-prime @mvar{n} will 
+Lucas pseudo-primality test.  The probability that a non-prime @var{n} will 
 pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
-@code{primep_number_of_tests}, the probability of @mvar{n} beeing
+@code{primep_number_of_tests}, the probability of @var{n} beeing
 composite is much smaller that 10^-15.
 
 @opencatbox
@@ -752,9 +752,9 @@ Number of Miller-Rabin's tests used in @code{primep}.
 
 @c -----------------------------------------------------------------------------
 @anchor{prev_time}
-@deffn {Function} prev_prime (@mvar{n})
+@deffn {Function} prev_prime (@var{n})
 
-Returns the greatest prime smaller than @mvar{n}.
+Returns the greatest prime smaller than @var{n}.
 
 @example
 (%i1) prev_prime(27);
@@ -768,12 +768,12 @@ Returns the greatest prime smaller than @mvar{n}.
 
 @c -----------------------------------------------------------------------------
 @anchor{qunit}
-@deffn {Function} qunit (@mvar{n})
+@deffn {Function} qunit (@var{n})
 
 Returns the principal unit of the real quadratic number field
-@code{sqrt (@mvar{n})} where @mvar{n} is an integer,
+@code{sqrt (@var{n})} where @var{n} is an integer,
 i.e., the element whose norm is unity.
-This amounts to solving Pell's equation @code{a^2 - @mvar{n} b^2 = 1}.
+This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -789,10 +789,10 @@ This amounts to solving Pell's equation @code{a^2 - @mvar{n} b^2 = 1}.
 
 @c -----------------------------------------------------------------------------
 @anchor{totient}
-@deffn {Function} totient (@mvar{n})
+@deffn {Function} totient (@var{n})
 
-Returns the number of integers less than or equal to @mvar{n} which
-are relatively prime to @mvar{n}.
+Returns the number of integers less than or equal to @var{n} which
+are relatively prime to @var{n}.
 
 @opencatbox
 @category{Number theory}
@@ -814,14 +814,14 @@ See @code{bern} and @code{euler}.
 
 @c -----------------------------------------------------------------------------
 @anchor{zeta}
-@deffn {Function} zeta (@mvar{n})
+@deffn {Function} zeta (@var{n})
 
-Returns the Riemann zeta function.  If @mvar{n} is a negative integer, 0, or a
+Returns the Riemann zeta function.  If @var{n} is a negative integer, 0, or a
 positive even integer, the Riemann zeta function simplifies to an exact value.
 For a positive even integer the option variable @code{zeta%pi} has to be
 @code{true} in addition (See @code{zeta%pi}).  For a floating point or bigfloat
 number the Riemann zeta function is evaluated numerically.  Maxima returns a
-noun form @code{zeta (@mvar{n})} for all other arguments, including rational
+noun form @code{zeta (@var{n})} for all other arguments, including rational
 noninteger, and complex arguments, or for even integers, if @code{zeta%pi} has
 the value @code{false}.
 
@@ -893,11 +893,11 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_log}
-@deffn {Function} zn_log (@mvar{a}, @mvar{g}, @mvar{n}) 
-@deffnx {Function} zn_log (@mvar{a}, @mvar{g}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
+@deffn {Function} zn_log (@var{a}, @var{g}, @var{n}) 
+@deffnx {Function} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Computes the discrete logarithm. Let (Z/@mvar{n}Z)* be a cyclic group, @mvar{g} a 
-primitive root modulo @mvar{n} and let @mvar{a} be a member of this group.  
+Computes the discrete logarithm. Let (Z/@var{n}Z)* be a cyclic group, @var{g} a 
+primitive root modulo @var{n} and let @var{a} be a member of this group.  
 @code{zn_log (a, g, n)} then solves the congruence @code{g^x = a mod n}.
 
 The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
@@ -958,11 +958,11 @@ The run time primarily depends on the bitlength of the totient's greatest prime 
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_order}
-@deffn {Function} zn_order (@mvar{x}, @mvar{n}) 
-@deffnx {Function} zn_order (@mvar{x}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
+@deffn {Function} zn_order (@var{x}, @var{n}) 
+@deffnx {Function} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Returns the order of @mvar{x} if it is a unit of the finite group (Z/@mvar{n}Z)* 
-or returns @code{false}.  @mvar{x} is a unit modulo @mvar{n} if it is coprime to @mvar{n}.
+Returns the order of @var{x} if it is a unit of the finite group (Z/@var{n}Z)* 
+or returns @code{false}.  @var{x} is a unit modulo @var{n} if it is coprime to @var{n}.
 
 The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
 might be time consuming in some cases and it can be useful to factor first 
@@ -974,7 +974,7 @@ See also @mref{zn_primroot}, @mref{ifactors}, @mref{totient}.
 
 Examples:
 
-@code{zn_order} computes the order of the unit @mvar{x} in (Z/@mvar{n}Z)*.
+@code{zn_order} computes the order of the unit @var{x} in (Z/@var{n}Z)*.
 
 @example
 (%i1) n : 22$
@@ -1016,18 +1016,18 @@ The optional third argument must be of the same form as the list returned by
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_primroot}
-@deffn {Function} zn_primroot (@mvar{n}) 
-@deffnx {Function} zn_primroot (@mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
+@deffn {Function} zn_primroot (@var{n}) 
+@deffnx {Function} zn_primroot (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-If the multiplicative group (Z/@mvar{n}Z)* is cyclic, @code{zn_primroot} computes the 
-smallest primitive root modulo @mvar{n}.  (Z/@mvar{n}Z)* is cyclic if @mvar{n} is equal to 
+If the multiplicative group (Z/@var{n}Z)* is cyclic, @code{zn_primroot} computes the 
+smallest primitive root modulo @var{n}.  (Z/@var{n}Z)* is cyclic if @var{n} is equal to 
 @code{2}, @code{4}, @code{p^k} or @code{2*p^k}, where @code{p} is prime and 
 greater than @code{2} and @code{k} is a natural number.  @code{zn_primroot} 
 performs an according pretest if the option variable @mref{zn_primroot_pretest}
 (default: @code{false}) is set to @code{true}.  In any case the computation is limited 
 by the upper bound @mref{zn_primroot_limit}.
 
-If (Z/@mvar{n}Z)* is not cyclic or if there is no primitive root up to 
+If (Z/@var{n}Z)* is not cyclic or if there is no primitive root up to 
 @code{zn_primroot_limit}, @code{zn_primroot} returns @code{false}.
 
 The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
@@ -1040,7 +1040,7 @@ See also @mref{zn_primroot_p}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
 
 Examples:
 
-@code{zn_primroot} computes the smallest primitive root modulo @mvar{n} or returns 
+@code{zn_primroot} computes the smallest primitive root modulo @var{n} or returns 
 @code{false}.
 
 @example
@@ -1096,10 +1096,10 @@ set to @code{true}, a message will be printed when @code{zn_primroot_limit} is r
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_primroot_p}
-@deffn {Function} zn_primroot_p (@mvar{x}, @mvar{n}) 
-@deffnx {Function} zn_primroot_p (@mvar{x}, @mvar{n}, [[@mvar{p1}, @mvar{e1}], @dots{}, [@mvar{pk}, @mvar{ek}]])
+@deffn {Function} zn_primroot_p (@var{x}, @var{n}) 
+@deffnx {Function} zn_primroot_p (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Checks whether @mvar{x} is a primitive root in the multiplicative group (Z/@mvar{n}Z)*.
+Checks whether @var{x} is a primitive root in the multiplicative group (Z/@var{n}Z)*.
 
 The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
 might be time consuming and in case @code{zn_primroot_p} will be consecutively 
@@ -1149,7 +1149,7 @@ The optional third argument must be of the same form as the list returned by
 @defvr {Option variable} zn_primroot_pretest
 Default value: @code{false} 
 
-The multiplicative group (Z/@mvar{n}Z)* is cyclic if @mvar{n} is equal to 
+The multiplicative group (Z/@var{n}Z)* is cyclic if @var{n} is equal to 
 @code{2}, @code{4}, @code{p^k} or @code{2*p^k}, where @code{p} is prime and 
 greater than @code{2} and @code{k} is a natural number.  
 

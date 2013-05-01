@@ -118,39 +118,39 @@ de forma similar a como lo hace @code{funmake} para las funciones
 ordinarias. Por otro lado, @code{arrayapply} aplica una funci@'on array
 a sus argumentos, tal como lo hace @code{apply} con las funciones
 ordinarias. No existe para las funciones array nada similar a @code{map},
-aunque @code{map(lambda([@mvar{x}], @mvar{a}[@mvar{x}]), @mvar{L})} o
-@code{makelist(@mvar{a}[@mvar{x}], @mvar{x}, @mvar{L})},
-siendo @mvar{L} una lista, podr@'{@dotless{i}}an suplantar esta
+aunque @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} o
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})},
+siendo @var{L} una lista, podr@'{@dotless{i}}an suplantar esta
 carencia.
 
 La funci@'on @code{remarray} borra la definici@'on de una funci@'on array,
 as@'{@dotless{i}} como cualesquiera valores almacenados que tenga asociados,
 tal como @code{remfunction} lo hace con las funciones ordinarias.
 
-La llamada @code{kill(@mvar{a}[@mvar{x}])} borra el valor de la funci@'on array
-@mvar{a} almacenado para el argumento @mvar{x};
-la pr@'oxima vez que se llame a @mvar{a} con el argumento @mvar{x},
+La llamada @code{kill(@var{a}[@var{x}])} borra el valor de la funci@'on array
+@var{a} almacenado para el argumento @var{x};
+la pr@'oxima vez que se llame a @var{a} con el argumento @var{x},
 se recalcular@'a el valor correspondiente.
 Sin embargo, no hay forma de borrar todos los valores almacenados de
-una sola vez, excepto mediante @code{kill(@mvar{a})} o @code{remarray(@mvar{a})},
+una sola vez, excepto mediante @code{kill(@var{a})} o @code{remarray(@var{a})},
 con lo que se borra tambi@'en la definici@'on de la propia funci@'on.
 
 @node Macros, Funciones y variables para la definici@'on de funciones, Funciones, Definici@'on de Funciones
 @section Macros
 
 
-@deffn {Funci@'on} buildq (@mvar{L}, @mvar{expr})
-Sustituye en paralelo las variables nombradas en la lista @mvar{L} en la expresi@'on @mvar{expr}, sin evaluar @'esta.
+@deffn {Funci@'on} buildq (@var{L}, @var{expr})
+Sustituye en paralelo las variables nombradas en la lista @var{L} en la expresi@'on @var{expr}, sin evaluar @'esta.
 La expresi@'on resultante se simplifica pero no se eval@'ua hasta que @code{buildq} termine de hacer las sustituciones.
 
-Los elementos de @mvar{L} son s@'{@dotless{i}}mbolos o expresiones de asignaci@'on del tipo @code{@mvar{symbol}: @mvar{value}},
-evaluadas en paralelo. Esto es, el valor de una variable en la parte derecha de una asignaci@'on es el valor que toma dicha variable en el contexto desde el que se invoca a @code{buildq}. En caso de que a una variable de @mvar{L} no se le haga una signaci@'on expl@'{@dotless{i}}cita, su valor en @code{buildq} es el mismo que tiene en el contexto desde el que se llama a @code{buildq}.
+Los elementos de @var{L} son s@'{@dotless{i}}mbolos o expresiones de asignaci@'on del tipo @code{@var{symbol}: @var{value}},
+evaluadas en paralelo. Esto es, el valor de una variable en la parte derecha de una asignaci@'on es el valor que toma dicha variable en el contexto desde el que se invoca a @code{buildq}. En caso de que a una variable de @var{L} no se le haga una signaci@'on expl@'{@dotless{i}}cita, su valor en @code{buildq} es el mismo que tiene en el contexto desde el que se llama a @code{buildq}.
 
-Las variables referenciadas en @mvar{L} se sustituyen en @mvar{expr} en paralelo. Esto es, la sustituci@'on para cada variable se determina antes de que se hagan las sustituciones, de forma que la sustituci@'on de una variable no tiene efecto alguno sobre las otras.
+Las variables referenciadas en @var{L} se sustituyen en @var{expr} en paralelo. Esto es, la sustituci@'on para cada variable se determina antes de que se hagan las sustituciones, de forma que la sustituci@'on de una variable no tiene efecto alguno sobre las otras.
 
-Si alguna variable @mvar{x} aparece como @code{splice (@mvar{x})} en @mvar{expr}, entonces a @mvar{x} se le debe asignar una lista, la cual ser@'a interpolada en @mvar{expr} en lugar de hacer una simple sustituci@'on; ver ejemplo m@'as abajo.
+Si alguna variable @var{x} aparece como @code{splice (@var{x})} en @var{expr}, entonces a @var{x} se le debe asignar una lista, la cual ser@'a interpolada en @var{expr} en lugar de hacer una simple sustituci@'on; ver ejemplo m@'as abajo.
 
-Cualesquiera otras variables de @mvar{expr} que no aparezcan en @mvar{L} se traspasan al resultado tal cual, incluso cuando tienen asignados valores en el contexto desde el que se llama a @code{buildq}.
+Cualesquiera otras variables de @var{expr} que no aparezcan en @var{L} se traspasan al resultado tal cual, incluso cuando tienen asignados valores en el contexto desde el que se llama a @code{buildq}.
 
 Ejemplos:
 
@@ -195,7 +195,7 @@ Como se ve a continuaci@'on, el resultado se simplifica tras las sustituciones. 
 (%o2)                        2 a b c
 @end example
 
-Las variables de @mvar{L} se asocian en paralelo; si se hiciese secuencialmente, el primer resultado ser@'{@dotless{i}}a @code{foo (b, b)}. Las sustituciones se llevan a cabo en paralelo. Comp@'arese el segundo resultado con el resultado de @code{subst}, que hace las sustituciones de forma secuencial.
+Las variables de @var{L} se asocian en paralelo; si se hiciese secuencialmente, el primer resultado ser@'{@dotless{i}}a @code{foo (b, b)}. Las sustituciones se llevan a cabo en paralelo. Comp@'arese el segundo resultado con el resultado de @code{subst}, que hace las sustituciones de forma secuencial.
 
 @c ===beg===
 @c buildq ([a: b, b: a], foo (a, b));
@@ -255,12 +255,12 @@ en la cual algunos argumentos son fijos.
 
 
 
-@deffn {Funci@'on} macroexpand (@mvar{expr})
-Devuelve la macroexpansi@'on de @mvar{expr}, sin evaluarla,
+@deffn {Funci@'on} macroexpand (@var{expr})
+Devuelve la macroexpansi@'on de @var{expr}, sin evaluarla,
 cuando @code{expr} es una llamada a una funci@'on macro; en caso contrario,
-@code{macroexpand} devuelve @mvar{expr}.
+@code{macroexpand} devuelve @var{expr}.
 
-Si la expansi@'on de @mvar{expr} devuelve otra llamada a una funci@'on macro, esta llamada tambi@'en se expande.
+Si la expansi@'on de @var{expr} devuelve otra llamada a una funci@'on macro, esta llamada tambi@'en se expande.
 
 La funci@'on @code{macroexpand} no eval@'ua su argumento.
 Sin embargo, si la expansi@'on de una llamada a funci@'on macro tiene efectos laterales, @'estos se ejecutan.
@@ -297,15 +297,15 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} macroexpand1 (@mvar{expr})
-Devuelve la macroexpansi@'on de @mvar{expr}, sin evaluarla,
+@deffn {Funci@'on} macroexpand1 (@var{expr})
+Devuelve la macroexpansi@'on de @var{expr}, sin evaluarla,
 cuando @code{expr} es una llamada a una funci@'on macro; en caso contrario,
-@code{macroexpand1} devuelve @mvar{expr}.
+@code{macroexpand1} devuelve @var{expr}.
 
 La funci@'on @code{macroexpand1} no eval@'ua su argumento.
 Sin embargo, si la expansi@'on de una llamada a funci@'on macro tiene efectos laterales, @'estos se ejecutan.
 
-Si la expansi@'on de @mvar{expr} devuelve otra llamada a una funci@'on macro, esta llamada no se expande.
+Si la expansi@'on de @var{expr} devuelve otra llamada a una funci@'on macro, esta llamada no se expande.
 
 V@'eanse tambi@'en @code{::=}, @code{macros} y @code{macroexpand}.
 
@@ -348,12 +348,12 @@ V@'ease tambi@'en @code{infolists}.
 
 @end defvr
 
-@deffn {Funci@'on} splice (@mvar{a})
+@deffn {Funci@'on} splice (@var{a})
 
-Interpola la lista nombrada por el @'atomo  @mvar{a} dentro de una expresi@'on, pero s@'olo si @code{splice} aparece dentro de @code{buildq}; en otro caso, @code{splice} se considera una funci@'on no definida. Si @mvar{a} aparece dentro de @code{buildq} sin @code{splice}, entonces queda sustituida por una lista dentro del resultado. El argumento de @code{splice} debe ser un @'atomo, no pudiendo ser una lista literal ni una expresi@'on que devuelva una lista.
+Interpola la lista nombrada por el @'atomo  @var{a} dentro de una expresi@'on, pero s@'olo si @code{splice} aparece dentro de @code{buildq}; en otro caso, @code{splice} se considera una funci@'on no definida. Si @var{a} aparece dentro de @code{buildq} sin @code{splice}, entonces queda sustituida por una lista dentro del resultado. El argumento de @code{splice} debe ser un @'atomo, no pudiendo ser una lista literal ni una expresi@'on que devuelva una lista.
 
-Normalmente @code{splice} suministra los argumentos para una funci@'on u operador. Para una funci@'on @code{f}, la expresi@'on @code{f (splice (@mvar{a}))} dentro de @code{buildq} se convierte en @code{f (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}. Dado un operador @code{o}, la expresi@'on @code{"o" (splice (@mvar{a})} dentro de @code{buildq} se convierte en 
-@code{"o" (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}, donde @code{o} puede ser cualquier tipo de operador, normalmente uno que admita varios argumentos. N@'otese que el operador debe ir encerrado entre comillas dobles @code{"}.
+Normalmente @code{splice} suministra los argumentos para una funci@'on u operador. Para una funci@'on @code{f}, la expresi@'on @code{f (splice (@var{a}))} dentro de @code{buildq} se convierte en @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}. Dado un operador @code{o}, la expresi@'on @code{"o" (splice (@var{a})} dentro de @code{buildq} se convierte en 
+@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}, donde @code{o} puede ser cualquier tipo de operador, normalmente uno que admita varios argumentos. N@'otese que el operador debe ir encerrado entre comillas dobles @code{"}.
 
 Ejemplos:
 
@@ -383,12 +383,12 @@ Ejemplos:
 @node Funciones y variables para la definici@'on de funciones, , Macros, Definici@'on de Funciones
 @section Funciones y variables para la definici@'on de funciones
 
-@deffn {Funci@'on} apply (@mvar{F}, [@mvar{x_1}, ..., @mvar{x_n}])
-Construye y eval@'ua la expresi@'on @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
+@deffn {Funci@'on} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Construye y eval@'ua la expresi@'on @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
 La funci@'on @code{apply} no hace distinciones entre funciones array y 
-funciones ordinarias; cuando @mvar{F} es el nombre de una funci@'on array,
-@code{apply} eval@'ua @code{@mvar{F}(...)}, esto es, hace una llamada con
+funciones ordinarias; cuando @var{F} es el nombre de una funci@'on array,
+@code{apply} eval@'ua @code{@var{F}(...)}, esto es, hace una llamada con
 par@'entesis en lugar de corchetes. La funci@'on @code{arrayapply}
 eval@'ua una llamada a funci@'on con corchetes para estos casos.
 
@@ -409,7 +409,7 @@ En este ejemplo, @code{min} se aplica al valor de @code{L}.
 @end example
 
 La funci@'on @code{apply} eval@'ua sus argumentos,
-incluso cuando la funci@'on @mvar{F} no lo hace.
+incluso cuando la funci@'on @var{F} no lo hace.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -442,7 +442,7 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-La funci@'on @code{apply} eval@'ua el nombre de funci@'on @mvar{F}.
+La funci@'on @code{apply} eval@'ua el nombre de funci@'on @var{F}.
 La comilla simple @code{'} evita la evaluaci@'on.
 El nombre @code{demoivre} corresponde a una variable global y
 tambi@'en a una funci@'on.
@@ -469,15 +469,15 @@ Improper name or value in functional position.
 @end deffn
 
 
-@deffn {Funci@'on} block ([@mvar{v_1}, ..., @mvar{v_m}], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {Funci@'on} block (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Funci@'on} block (@var{expr_1}, ..., @var{expr_n})
 
-La funci@'on @code{block} eval@'ua @mvar{expr_1}, ..., @mvar{expr_n} secuencialmente y devuelve el valor de la @'ultima expresi@'on evaluada. La secuencia puede alterarse con las funciones @code{go}, @code{throw} y @code{return}. La @'ultima expresi@'on es @mvar{expr_n} a menos que @code{return} o una expresi@'on que contenga un @code{throw} sea evaluada. Las variables @mvar{v_1}, ..., @mvar{v_m} son locales en el bloque; @'estas se distiguen de las globales que tengan el mismo nombre. Si no se declaran variables locales entonces se puede omitir la lista. Dentro del bloque, cualquier otra variable distinta de @mvar{v_1}, ..., @mvar{v_m} se considera global.
+La funci@'on @code{block} eval@'ua @var{expr_1}, ..., @var{expr_n} secuencialmente y devuelve el valor de la @'ultima expresi@'on evaluada. La secuencia puede alterarse con las funciones @code{go}, @code{throw} y @code{return}. La @'ultima expresi@'on es @var{expr_n} a menos que @code{return} o una expresi@'on que contenga un @code{throw} sea evaluada. Las variables @var{v_1}, ..., @var{v_m} son locales en el bloque; @'estas se distiguen de las globales que tengan el mismo nombre. Si no se declaran variables locales entonces se puede omitir la lista. Dentro del bloque, cualquier otra variable distinta de @var{v_1}, ..., @var{v_m} se considera global.
 
-La funci@'on @code{block} guarda los valores actuales de las variables @mvar{v_1}, ..., @mvar{v_m}, si los tienen, a la entrada del bloque y luego las eval@'ua a s@'{@dotless{i}} mismas, es decir les saca el valor temporalmente. A las variables locales se les puede asignar cualquier valor dentro del bloque, pero al salir de @'este, los valores inicialmente almacenados quedan restaurados, al tiempo que los asignados dentro del bloque se pierden.
+La funci@'on @code{block} guarda los valores actuales de las variables @var{v_1}, ..., @var{v_m}, si los tienen, a la entrada del bloque y luego las eval@'ua a s@'{@dotless{i}} mismas, es decir les saca el valor temporalmente. A las variables locales se les puede asignar cualquier valor dentro del bloque, pero al salir de @'este, los valores inicialmente almacenados quedan restaurados, al tiempo que los asignados dentro del bloque se pierden.
 
-La declaraci@'on @code{local(@mvar{v_1}, ..., @mvar{v_m})} dentro de un bloque
-almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @mvar{v_1}, ..., @mvar{v_m},
+La declaraci@'on @code{local(@var{v_1}, ..., @var{v_m})} dentro de un bloque
+almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @var{v_1}, ..., @var{v_m},
 borra cualesquiera otras propiedades antes de evaluar las expresiones y
 restaura las propiedades guardadas antes de abandonar el bloque.
 Algunas declaraciones, como @code{:=}, @code{array}, @code{dependencies}, @code{atvalue},
@@ -495,17 +495,17 @@ Normalmente los bloques aparecer@'an al lado derecho de las definiciones de func
 
 @end deffn
 
-@deffn {Funci@'on} break (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} break (@var{expr_1}, ..., @var{expr_n})
 
-Calcula e imprime @mvar{expr_1}, ..., @mvar{expr_n} para luego provocar la detenci@'on de Maxima, de modo que el usuario pueda examinar y cambiar el entorno de ejecuci@'on. Pulsando posteriormente @code{exit;} el c@'alculo se reanuda.
+Calcula e imprime @var{expr_1}, ..., @var{expr_n} para luego provocar la detenci@'on de Maxima, de modo que el usuario pueda examinar y cambiar el entorno de ejecuci@'on. Pulsando posteriormente @code{exit;} el c@'alculo se reanuda.
 
 @end deffn
 
-@deffn {Funci@'on} catch (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} catch (@var{expr_1}, ..., @var{expr_n})
 
-Eval@'ua @mvar{expr_1}, ..., @mvar{expr_n} una a una;  si alguna de ellas conlleva la evaluaci@'on de una expresi@'on de la forma @code{throw (arg)}, entonces el valor de @code{catch} es el de @code{throw (arg)} y ya no se eval@'uan m@'as expresiones. Esta respuesta pasa todos los niveles de anidamiento hasta el @code{catch} m@'as pr@'oximo. Si no hay ning@'un @code{catch}  que contenga un @code{throw} se emite un mensaje de error.
+Eval@'ua @var{expr_1}, ..., @var{expr_n} una a una;  si alguna de ellas conlleva la evaluaci@'on de una expresi@'on de la forma @code{throw (arg)}, entonces el valor de @code{catch} es el de @code{throw (arg)} y ya no se eval@'uan m@'as expresiones. Esta respuesta pasa todos los niveles de anidamiento hasta el @code{catch} m@'as pr@'oximo. Si no hay ning@'un @code{catch}  que contenga un @code{throw} se emite un mensaje de error.
 
-Si la evaluaci@'on de los argumentos no conlleva la evaluaci@'on de ning@'un @code{throw}, entonces el valor de @code{catch} es el devuelto por @mvar{expr_n}.
+Si la evaluaci@'on de los argumentos no conlleva la evaluaci@'on de ning@'un @code{throw}, entonces el valor de @code{catch} es el devuelto por @var{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -520,17 +520,17 @@ La funci@'on @code{g} devuelve las im@'agenes por @code{f} de todos los elemento
 
 @end deffn
 
-@deffn {Function} compfile (@mvar{filename}, @mvar{f_1}, @dots{}, @mvar{f_n})
-@deffnx {Function} compfile (@mvar{filename}, functions)
-@deffnx {Function} compfile (@mvar{filename}, all)
+@deffn {Function} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
+@deffnx {Function} compfile (@var{filename}, functions)
+@deffnx {Function} compfile (@var{filename}, all)
 
 Traduce funciones de Maxima a c@'odigo Lisp, guard@'andolo 
-luego en el fichero @mvar{filename}.
+luego en el fichero @var{filename}.
 
-Con la llamada @code{compfile(@mvar{filename}, @mvar{f_1}, @dots{}, @mvar{f_n})}
+Con la llamada @code{compfile(@var{filename}, @var{f_1}, @dots{}, @var{f_n})}
 se traducen las funciones especificadas, mientras que 
-@code{compfile(@mvar{filename}, functions)} y
-@code{compfile(@mvar{filename}, all)} traducen las funciones definidas por
+@code{compfile(@var{filename}, functions)} y
+@code{compfile(@var{filename}, all)} traducen las funciones definidas por
 el usuario.
 
 El c@'odigo Lisp traducido no se eval@'ua, ni el fichero 
@@ -543,11 +543,11 @@ V@'eanse tambi@'en @code{translate}, @code{translate_file} y @code{compile_file}
 
 @end deffn
 
-@deffn {Funci@'on} compile (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Funci@'on} compile (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} compile (functions)
 @deffnx {Funci@'on} compile (all)
 
-Traduce las funciones de Maxima @mvar{f_1}, ..., @mvar{f_n} a Lisp, evaluando el c@'odigo resultante, y llama a la funci@'on Lisp @code{COMPILE} para cada funci@'on traducida. La funci@'on @code{compile} devuelve una lista con los nombres de las funciones compiladas.
+Traduce las funciones de Maxima @var{f_1}, ..., @var{f_n} a Lisp, evaluando el c@'odigo resultante, y llama a la funci@'on Lisp @code{COMPILE} para cada funci@'on traducida. La funci@'on @code{compile} devuelve una lista con los nombres de las funciones compiladas.
 
 Las llamadas @code{compile (all)} o @code{compile (functions)} compilan todas las funciones definidas por el usuario.
 
@@ -555,29 +555,29 @@ La funci@'on @code{compile} no eval@'ua sus argumentos, pero con el operador com
 
 @end deffn
 
-@deffn {Funci@'on} define (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{expr})
-@deffnx {Funci@'on} define (@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}], @mvar{expr})
-@deffnx {Funci@'on} define (funmake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
-@deffnx {Funci@'on} define (arraymake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
-@deffnx {Funci@'on} define (ev (@mvar{expr_1}), @mvar{expr_2})
+@deffn {Funci@'on} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffnx {Funci@'on} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Funci@'on} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funci@'on} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funci@'on} define (ev (@var{expr_1}), @var{expr_2})
 
-Define una funci@'on de nombre @mvar{f} con argumentos @mvar{x_1}, ..., @mvar{x_n} y cuerpo @mvar{expr}.
+Define una funci@'on de nombre @var{f} con argumentos @var{x_1}, ..., @var{x_n} y cuerpo @var{expr}.
 @code{define} eval@'ua siempre su segundo argumento, a menos que se
 indique lo contrario con el operador de comilla simple. La funci@'on as@'{@dotless{i}}
 definida puede ser una funci@'on ordinaria de Maxima (con sus argumentos
 encerrados entre par@'entesis) o una funci@'on array (con sus argumentos encerrados
 entre corchetes).
 
-Cuando el @'ultimo o @'unico argumento @mvar{x_n} es una lista de un solo 
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo 
 elemento, la funci@'on definida por @code{define} acepta un n@'umero variable
 de argumentos. Los valores de los argumentos se van asignando uno a uno a 
-@mvar{x_1}, ..., @mvar{x_(n - 1)}, y los que queden, si los hay, se asignan 
-a @mvar{x_n} en forma de lista.
+@var{x_1}, ..., @var{x_(n - 1)}, y los que queden, si los hay, se asignan 
+a @var{x_n} en forma de lista.
 
 Cuando el primer argumento de @code{define} es una expresi@'on de la
-forma @code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} o
-@code{@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}]}, se eval@'uan los argumentos de la funci@'on,
-pero no @mvar{f}, incluso cuando se trate de una funci@'on o variable ya existente 
+forma @code{@var{f}(@var{x_1}, ..., @var{x_n})} o
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]}, se eval@'uan los argumentos de la funci@'on,
+pero no @var{f}, incluso cuando se trate de una funci@'on o variable ya existente 
 con ese nombre.
 
 Cuando el primer argumento es una expresi@'on con operador @code{funmake}, 
@@ -591,7 +591,7 @@ Sin embargo, @code{local(f)} hace que la definici@'on de la funci@'on @code{f}
 sea efectiva s@'olo dentro del bloque o expresi@'on compuesta en el que
 aparece @code{local}.
 
-Si un argumento formal @mvar{x_k} es un s@'{@dotless{i}}mbolo afectado
+Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado
 por el operador comilla simple (expresi@'on nominal), la funci@'on definida por
 @code{define} no eval@'ua el correspondiente valor de argumento.
 En cualquier otro caso, los argumentos que se pasan son evaluados.
@@ -638,7 +638,7 @@ definida puede ser una funci@'on ordinaria de Maxima o una funci@'on array.
                        x, y
 @end example
 
-Cuando el @'ultimo o @'unico argumento @mvar{x_n} es una lista de un solo 
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo 
 elemento, la funci@'on definida por @code{define} acepta un n@'umero variable
 de argumentos.
 
@@ -684,7 +684,7 @@ Cuando el primer argumento es una expresi@'on con operador @code{funmake},
 
 
 
-@deffn {Funci@'on} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
+@deffn {Funci@'on} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduce una variable global en el entorno de Maxima. La funci@'on 
 @code{define_variable} puede ser @'util en los paquetes escritos por
@@ -694,18 +694,18 @@ La funci@'on @code{define_variable} ejecuta los siguientes pasos:
 
 @enumerate
 @item
-@code{mode_declare (@mvar{name}, @mvar{mode})} declara el modo de @mvar{name} al traductor.
+@code{mode_declare (@var{name}, @var{mode})} declara el modo de @var{name} al traductor.
 V@'ease @code{mode_declare} para ver la lista de modos aceptables.
 
 @item
-Si a@'un no tiene asignaci@'on, se le da a la variable @mvar{default_value} el valor @mvar{name}.
+Si a@'un no tiene asignaci@'on, se le da a la variable @var{default_value} el valor @var{name}.
 
 @item
-@code{declare (@mvar{name}, special)} la declara como especial.
+@code{declare (@var{name}, special)} la declara como especial.
 
 @item
-Asocia @mvar{name} a una funci@'on de comprobaci@'on para asegurar que
-a @mvar{name} s@'olo se le asignan valores del modo declarado.
+Asocia @var{name} a una funci@'on de comprobaci@'on para asegurar que
+a @var{name} s@'olo se le asignan valores del modo declarado.
 @end enumerate
 
 
@@ -824,10 +824,10 @@ Cannot assign to `baz_quux'.
 @end deffn
 
 
-@deffn {Funci@'on} dispfun (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Funci@'on} dispfun (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} dispfun (all)
 
-Muestra la deficni@'on de las funciones de usuario @mvar{f_1}, ..., @mvar{f_n}. Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
+Muestra la deficni@'on de las funciones de usuario @var{f_1}, ..., @var{f_n}. Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
 
 La llamada @code{dispfun (all)} muestra todas las funciones de usuario tal como las dan las listas @code{functions}, @code{arrays} y @code{macros}, omitiendo las funciones con sub@'{@dotless{i}}ndices definidas con sub@'{@dotless{i}}ndices constantes.
 
@@ -911,7 +911,7 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} fullmap (@mvar{f}, @mvar{expr_1}, ...)
+@deffn {Funci@'on} fullmap (@var{f}, @var{expr_1}, ...)
 Similar a @code{map}, pero conservar@'a el mapeado
 descendente de todas las subexpresiones hasta que los operadores
 principales ya no sean los mismos.
@@ -935,7 +935,7 @@ en algunas transformaciones matriciales, por lo que Maxima generar@'a en algunas
 
 @end deffn
 
-@deffn {Funci@'on} fullmapl (@mvar{f}, @mvar{list_1}, ...)
+@deffn {Funci@'on} fullmapl (@var{f}, @var{list_1}, ...)
 Similar a @code{fullmap}, pero @code{fullmapl} s@'olo hace mapeo
 sobre listas y matrices.
 
@@ -1006,27 +1006,27 @@ Ejemplos:
 
 @end defvr
 
-@deffn {Funci@'on} fundef (@mvar{f})
+@deffn {Funci@'on} fundef (@var{f})
 
-Devuelve la definici@'on de la funci@'on @mvar{f}.
+Devuelve la definici@'on de la funci@'on @var{f}.
 
 Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
 
 La funci@'on @code{fundef} no eval@'ua sus argumentos; el operador comilla-comilla @code{'@w{}'} permite la evaluaci@'on.
 
-La llamada de funci@'on @code{fundef (@mvar{f})} devuelve la definici@'on de @mvar{f}. Por el contrario, @code{dispfun (@mvar{f})} crea una etiqueta intermedia y le asigna la definici@'on a la etiqueta.
+La llamada de funci@'on @code{fundef (@var{f})} devuelve la definici@'on de @var{f}. Por el contrario, @code{dispfun (@var{f})} crea una etiqueta intermedia y le asigna la definici@'on a la etiqueta.
 
 @end deffn
 
-@deffn {Funci@'on} funmake (@mvar{F}, [@mvar{arg_1}, ..., @mvar{arg_n}])
+@deffn {Funci@'on} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
 
-Devuelve una expresi@'on @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
+Devuelve una expresi@'on @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 El valor as@'{@dotless{i}} retornado es simplificado pero no evaluado,
-de forma que la funci@'on @mvar{F} no es invocada, incluso cuando exista.
+de forma que la funci@'on @var{F} no es invocada, incluso cuando exista.
 
 La funci@'on @code{funmake} no hace distinciones entre funciones array
-y funciones ordinarias; cuando @mvar{F} es el nombre de una funci@'on array,
-@code{funmake} devuelve @code{@mvar{F}(...)},
+y funciones ordinarias; cuando @var{F} es el nombre de una funci@'on array,
+@code{funmake} devuelve @code{@var{F}(...)},
 esto es, una llamada a funci@'on con par@'entesis en lugar de corchetes.
 La funci@'on @code{arraymake} devuelve una llamada a funci@'on con
 corchetes para estos casos.
@@ -1151,20 +1151,20 @@ Maxima simplifica el valor retornado de @code{funmake}.
 
 @end deffn
 
-@deffn {Funci@'on} lambda ([@mvar{x_1}, ..., @mvar{x_m}], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {Function} lambda ([[@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {Function} lambda ([@mvar{x_1}, ..., @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
 Define y devuelve una expresi@'on lambda (es decir, una funci@'on an@'onima).
-La funci@'on puede tener argumentos @mvar{x_1}, ..., @mvar{x_m} y/o argumentos
-opcionales @mvar{L}, que aparecer@'an dentro del cuerpo de la funci@'on como una lista.
-El valor que devuelve la funci@'on es @mvar{expr_n}.
+La funci@'on puede tener argumentos @var{x_1}, ..., @var{x_m} y/o argumentos
+opcionales @var{L}, que aparecer@'an dentro del cuerpo de la funci@'on como una lista.
+El valor que devuelve la funci@'on es @var{expr_n}.
 Una expresi@'on lambda puede asignarse a una variable y ser evaluada como si fuese una funci@'on ordinaria. Adem@'as, puede aparecer en algunos contextos en los que sea necesario un nombre de funci@'on.
 
-Cuando se eval@'ua la funci@'on, se crean las variables @mvar{x_1}, ..., @mvar{x_m} sin asignaci@'on de valores. Una funci@'on @code{lambda} puede aparecer dentro de un @code{block} o de otra @code{lambda}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque o de otra funci@'on @code{lambda}. Las variables locales se consideran globales dentro de un bloque o funci@'on @code{lambda} anidado dentro del primero. Si una variable es no local dentro de un bloque o funci@'on @code{lambda}, su valor es el que le corresponde en el bloque o funci@'on @code{lambda} superior. Este criterio se conoce con el nombre de "alcance din@'amico".
+Cuando se eval@'ua la funci@'on, se crean las variables @var{x_1}, ..., @var{x_m} sin asignaci@'on de valores. Una funci@'on @code{lambda} puede aparecer dentro de un @code{block} o de otra @code{lambda}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque o de otra funci@'on @code{lambda}. Las variables locales se consideran globales dentro de un bloque o funci@'on @code{lambda} anidado dentro del primero. Si una variable es no local dentro de un bloque o funci@'on @code{lambda}, su valor es el que le corresponde en el bloque o funci@'on @code{lambda} superior. Este criterio se conoce con el nombre de "alcance din@'amico".
 
-Una vez establecidas las variables locales @mvar{expr_1} a @mvar{expr_n} son secuencialmente evaluadas. La variable especial  @code{%%} representa el valor de la expresi@'on inmediata anterior. Las sentencias @code{throw} y @code{catch} pueden aparecer tambi@'en en la lista de expresiones.
+Una vez establecidas las variables locales @var{expr_1} a @var{expr_n} son secuencialmente evaluadas. La variable especial  @code{%%} representa el valor de la expresi@'on inmediata anterior. Las sentencias @code{throw} y @code{catch} pueden aparecer tambi@'en en la lista de expresiones.
 
-La funci@'on @code{return} no puede aparecer en una expresi@'on @code{lambda} a menos que se encuentre acotada dentro de un bloque (@code{block}), en cuyo caso @code{return} establece el valor de retorno del bloque, pero no de la expresi@'on @code{lambda}, a menos que el bloque resulte ser precisamente @mvar{expr_n}. De igual manera, @code{go} no puede aparecer en una expresi@'on @code{lambda} si no es dentro de un @code{block}.
+La funci@'on @code{return} no puede aparecer en una expresi@'on @code{lambda} a menos que se encuentre acotada dentro de un bloque (@code{block}), en cuyo caso @code{return} establece el valor de retorno del bloque, pero no de la expresi@'on @code{lambda}, a menos que el bloque resulte ser precisamente @var{expr_n}. De igual manera, @code{go} no puede aparecer en una expresi@'on @code{lambda} si no es dentro de un @code{block}.
 
 Las funciones @code{lambda} no eval@'uan sus argumentos;  el operador comilla-comilla @code{'@w{}'} permite su evaluaci@'on.
 
@@ -1286,7 +1286,7 @@ Puesto que @code{lambda} no eval@'ua sus argumentos, la expresi@'on lambda @code
 @itemize @bullet
 @item
 Una expresi@'on lambda puede tener un n@'umero variable de argumentos,
-los cuales se indican mediante @code{[@mvar{L}]}, bien sea solo o como un
+los cuales se indican mediante @code{[@var{L}]}, bien sea solo o como un
 @'ultimo argumento. Estos argumentos aparecer@'an dentro del cuerpo de
 la funci@'on en forma de lista.
 @end itemize
@@ -1308,10 +1308,10 @@ la funci@'on en forma de lista.
 @end example
 @end deffn
 
-@deffn {Funci@'on} local (@mvar{v_1}, ..., @mvar{v_n})
+@deffn {Funci@'on} local (@var{v_1}, ..., @var{v_n})
 
-La declaraci@'on @code{local(@mvar{v_1}, ..., @mvar{v_m})} dentro de un bloque
-almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @mvar{v_1}, ..., @mvar{v_m},
+La declaraci@'on @code{local(@var{v_1}, ..., @var{v_m})} dentro de un bloque
+almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @var{v_1}, ..., @var{v_m},
 borra cualesquiera otras propiedades antes de evaluar las expresiones y
 restaura las propiedades guardadas antes de abandonar el bloque.
 
@@ -1534,7 +1534,7 @@ Cuando @code{mode_check_warnp} vale @code{true}, se detallan los errores de modo
 
 @end defvr
 
-@deffn {Funci@'on} mode_declare (@mvar{y_1}, @mvar{modo_1}, ..., @mvar{y_n}, @mvar{modo_n})
+@deffn {Funci@'on} mode_declare (@var{y_1}, @var{modo_1}, ..., @var{y_n}, @var{modo_n})
 
 La funci@'on @code{mode_declare} se utiliza para declarar los modos de variables y funciones para la ulterior traducci@'on a Lisp o compilaci@'on de funciones. Se coloca habitualmente al comienzo de la definici@'on de una funci@'on, de un script en Maxima o se ejecuta en tiempo real.
 
@@ -1563,7 +1563,7 @@ El nombre @code{modedeclare} es sin@'onimo de @code{mode_declare}.
 
 @end deffn
 
-@deffn {Funci@'on} mode_identity (@mvar{arg_1}, @mvar{arg_2})
+@deffn {Funci@'on} mode_identity (@var{arg_1}, @var{arg_2})
 Es una forma especial usada con @code{mode_declare} y @code{macros} para declarar, por ejemplo, una lista de listas de n@'umeros. 
 
 @c Elimino aqu@'i un p@'arrafo. Comentario en la versi@'on inglesa: WHAT IS THIS ABOUT ?? (Mario)
@@ -1572,9 +1572,9 @@ Es una forma especial usada con @code{mode_declare} y @code{macros} para declara
 
 
 
-@deffn {Funci@'on} remfunction (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Funci@'on} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} remfunction (all)
-Desliga las definiciones de funci@'on de sus s@'{@dotless{i}}mbolos @mvar{f_1}, ..., @mvar{f_n}.
+Desliga las definiciones de funci@'on de sus s@'{@dotless{i}}mbolos @var{f_1}, ..., @var{f_n}.
 Los argumentos pueden ser nombres de funciones ordinarias 
 (creadas con @code{:=} o @code{define}) o de funciones macro (creadas con @code{::=}).
 
@@ -1613,11 +1613,11 @@ La funci@'on @code{compfile} hace la asignaci@'on @code{transcompile: true}.
 
 @end defvr
 
-@deffn {Funci@'on} translate (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Funci@'on} translate (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} translate (functions)
 @deffnx {Funci@'on} translate (all)
 
-Traduce las funciones definidas por el usuario @mvar{f_1}, ..., @mvar{f_n} del lenguaje de Maxima a Lisp y eval@'ua las traducciones Lisp. Normalmente las funciones traducidas se ejecutan m@'as rapidamente que las originales.
+Traduce las funciones definidas por el usuario @var{f_1}, ..., @var{f_n} del lenguaje de Maxima a Lisp y eval@'ua las traducciones Lisp. Normalmente las funciones traducidas se ejecutan m@'as rapidamente que las originales.
 
 Las llamadas @code{translate (all)} o @code{translate (functions)} traducen todas las funciones de usuario.
 
@@ -1630,7 +1630,7 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @noindent
 
-donde @mvar{x_1}, @mvar{x_2}, ... son los par@'ametros que se pasan a la funci@'on y @mvar{v_1}, @mvar{v_2}, ... son las variables locales.
+donde @var{x_1}, @var{x_2}, ... son los par@'ametros que se pasan a la funci@'on y @var{v_1}, @var{v_2}, ... son las variables locales.
 
 Los nombres de las funciones traducidas son eliminados de la lista @code{functions} si @code{savedef} vale @code{false} (ver m@'as abajo) y son a@~nadidos a las listas @code{props}.
 
@@ -1650,17 +1650,17 @@ El resultado devuelto por @code{translate} es una lista con los nombres de las f
 
 @end deffn
 
-@deffn {Funci@'on} translate_file (@mvar{nombre_fichero_maxima})
-@deffnx {Funci@'on} translate_file (@mvar{nombre_fichero_maxima}, @mvar{nombre_fichero_lisp})
+@deffn {Funci@'on} translate_file (@var{nombre_fichero_maxima})
+@deffnx {Funci@'on} translate_file (@var{nombre_fichero_maxima}, @var{nombre_fichero_lisp})
 
 Traduce un fichero en c@'odigo Maxima a un fichero en c@'odigo Lisp. La funci@'on @code{translate_file} devuelve una lista con los nombres de tres ficheros: el nombre del ficheero en Maxima, el nombre del fichero en Lisp y el nombre del fichero que contiene informaci@'on adicional sobre la traducci@'on. La funci@'on @code{translate_file} eval@'ua sus argumentos.
 
 La llamada @code{translate_file ("foo.mac"); load("foo.LISP")} es lo mismo que @code{batch ("foo.mac")}, excepto por la presencia de ciertas restricciones, como el uso de @code{'@w{}'} y @code{%}, por ejemplo.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-La llamada @code{translate_file (@mvar{nombre_fichero_maxima})} traduce un fichero en Maxima, @mvar{nombre_fichero_maxima}, a otro en Lisp de nombre similar. Por ejemplo, @code{foo.mac} se traduce en @code{foo.LISP}. El nombre del fichero en Maxima puede incluir el nombre de un directorio, en cuyo caso el fichero de salida Lisp se guardar@'a en el mismo directorio desde el que se ley@'o la fuente Maxima.
+La llamada @code{translate_file (@var{nombre_fichero_maxima})} traduce un fichero en Maxima, @var{nombre_fichero_maxima}, a otro en Lisp de nombre similar. Por ejemplo, @code{foo.mac} se traduce en @code{foo.LISP}. El nombre del fichero en Maxima puede incluir el nombre de un directorio, en cuyo caso el fichero de salida Lisp se guardar@'a en el mismo directorio desde el que se ley@'o la fuente Maxima.
 
-La llamada @code{translate_file (@mvar{nombre_fichero_maxima}, @mvar{nombre_fichero_lisp})} traduce el fichero Maxima  @mvar{nombre_fichero_maxima} en el fichero Lisp @mvar{nombre_fichero_lisp}. La funci@'on @code{translate_file} ignora la extensi@'on del fichero, en caso de que exista, de @code{nombre_fichero_lisp}; la extensi@'on del fichero de salida Lisp  ser@'a invariablemente @code{LISP}. El nombre del fichero Lisp puede incluir la ruta del directorio, en cuyo caso se almacenar@'a en el directorio especificado.
+La llamada @code{translate_file (@var{nombre_fichero_maxima}, @var{nombre_fichero_lisp})} traduce el fichero Maxima  @var{nombre_fichero_maxima} en el fichero Lisp @var{nombre_fichero_lisp}. La funci@'on @code{translate_file} ignora la extensi@'on del fichero, en caso de que exista, de @code{nombre_fichero_lisp}; la extensi@'on del fichero de salida Lisp  ser@'a invariablemente @code{LISP}. El nombre del fichero Lisp puede incluir la ruta del directorio, en cuyo caso se almacenar@'a en el directorio especificado.
 
 La funci@'on @code{translate_file} tambi@'en escribe un fichero de mensajes de avisos del traductor con diversos niveles de gravedad. La extensi@'on de este fichero es @code{UNLISP}. Este fichero puede contener informaci@'on valiosa, aunque de dif@'{@dotless{i}}cil interpretaci@'on, para detectar fallos en el c@'odigo traducido. El fichero @code{UNLISP} se guarda siempre en el mismo directorio desde el que se ley@'o la fuente de Maxima.
 
@@ -1820,11 +1820,11 @@ Devuelve un aviso cuando se detectan variables globales no definidas.
 
 @end defvr
 
-@deffn {Funci@'on} compile_file (@mvar{nombre_fich})
-@deffnx {Funci@'on} compile_file (@mvar{nombre_fich}, @mvar{nombre_fich_compilado})
-@deffnx {Funci@'on} compile_file (@mvar{nombre_fich}, @mvar{nombre_fich_compilado}, @mvar{nombre_fich_lisp})
+@deffn {Funci@'on} compile_file (@var{nombre_fich})
+@deffnx {Funci@'on} compile_file (@var{nombre_fich}, @var{nombre_fich_compilado})
+@deffnx {Funci@'on} compile_file (@var{nombre_fich}, @var{nombre_fich_compilado}, @var{nombre_fich_lisp})
 
-Traduce el fichero Maxima @mvar{nombre_fich} a Lisp, ejecuta el compilador de Lisp y, en caso de ser exitosa la compilaci@'on, carga el c@'odigo compilado en Maxima.
+Traduce el fichero Maxima @var{nombre_fich} a Lisp, ejecuta el compilador de Lisp y, en caso de ser exitosa la compilaci@'on, carga el c@'odigo compilado en Maxima.
 
 La funci@'on @code{compile_file} devuelve una lista con los nombres de tres ficheros: el fichero original en Maxima, la traducci@'on Lisp, notas sobre la traducci@'on y el c@'odigo compilado. Si la compilaci@'on falla, el cuarto elemento es  @code{false}.
 
@@ -1833,14 +1833,14 @@ Algunas declaraciones y definiciones entran en efecto tan pronto como el c@'odig
 
 Asignaciones y llamadas a funciones no se eval@'uan hasta que el c@'odigo compilado es cargado. En particular, dentro del fichero Maxima, asignaciones a los controles ("flags") de traducci@'on (@code{tr_numer}, etc.) no tienen efecto durante la traducci@'on.
 
-El @mvar{nombre_fich} no puede contener sentencias del tipo @code{:lisp}.
+El @var{nombre_fich} no puede contener sentencias del tipo @code{:lisp}.
 
 La funci@'on @code{compile_file} eval@'ua sus argumentos.
 
 @end deffn
 
 
-@deffn {Funci@'on} declare_translated (@mvar{f_1}, @mvar{f_2}, ...)
+@deffn {Funci@'on} declare_translated (@var{f_1}, @var{f_2}, ...)
 
 Cuando se traduce un fichero de c@'odigo Maxima a Lisp, es importante para el traductor saber qu@'e funciones de las que est@'an en el fichero van a ser llamadas como traducidas o compiladas, y cu@'ales son simplemente funciones Maxima o que no est@'an definidas. Se genera el c@'odigo @code{(MFUNCTION-CALL fn arg1 arg2 ...)} cuando el traductor no sabe si @code{fn} va a ser una funci@'on lisp.
 

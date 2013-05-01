@@ -20,74 +20,74 @@ e @code{tanh}.  Existe uma colec@,{c}@~ao de comandos especialmente para
 manusear fun@value{cedilha}@~oes trigonom@'etricas, veja @code{trigexpand},
 @code{trigreduce}, e o comutador @code{trigsign}.  Dois pacotes 
 compartilhados extendem as regras de simplifica@value{cedilha}@~ao constru@'{@dotless{i}}das no Maxima, 
-@code{ntrig} e @code{atrig1}.  Fa@value{cedilha}a @code{describe(@mvar{comando})}
+@code{ntrig} e @code{atrig1}.  Fa@value{cedilha}a @code{describe(@var{comando})}
 para detalhes.
 
 @node Defini@value{cedilha}@~oes para Trigonometria,  , Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico, Trigonometria
 @section Defini@value{cedilha}@~oes para Trigonometria
 
-@deffn {Fun@value{cedilha}@~ao} acos (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acos (@var{x})
  - Arco Cosseno.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} acosh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acosh (@var{x})
  - Arco Cosseno Hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} acot (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acot (@var{x})
  - Arco Cotangente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} acoth (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acoth (@var{x})
  - Arco Cotangente Hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} acsc (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acsc (@var{x})
  - Arco Cossecante.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} acsch (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} acsch (@var{x})
  - Arco Cossecante Hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} asec (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} asec (@var{x})
  - Arco Secante.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} asech (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} asech (@var{x})
  - Arco Secante Hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} asin (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} asin (@var{x})
  - Arco Seno.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} asinh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} asinh (@var{x})
  - Arco Seno Hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} atan (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} atan (@var{x})
  - Arco Tangente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} atan2 (@mvar{y}, @mvar{x})
-- retorna o valor de @code{atan(@mvar{y}/@mvar{x})} no intervalo de @code{-%pi} a
+@deffn {Fun@value{cedilha}@~ao} atan2 (@var{y}, @var{x})
+- retorna o valor de @code{atan(@var{y}/@var{x})} no intervalo de @code{-%pi} a
 @code{%pi}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} atanh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} atanh (@var{x})
  - Arco tangente Hiperb@'olico.
 
 @end deffn
@@ -104,32 +104,32 @@ Fa@value{cedilha}a @code{load(atrig1);} para us@'a-lo.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} cos (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} cos (@var{x})
  - Cosseno.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cosh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} cosh (@var{x})
  - Cosseno hiperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cot (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} cot (@var{x})
  - Cotangente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} coth (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} coth (@var{x})
  - Cotangente Hyperb@'olica.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} csc (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} csc (@var{x})
  - Cossecante.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} csch (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} csch (@var{x})
  - Cossecante Hyperb@'olica.
 
 @end deffn
@@ -149,47 +149,47 @@ meios-@^angulos s@~ao simplificados imediatamente.
 @defvr {Pacote} ntrig
 O pacote @code{ntrig} cont@'em um conjunto de regras de simplifica@value{cedilha}@~ao que s@~ao
 usadas para simplificar fun@value{cedilha}@~ao trigonom@'etrica cujos argumentos est@~ao na forma
-@code{@mvar{f}(@mvar{n} %pi/10)} onde @mvar{f} @'e qualquer das fun@value{cedilha}@~oes 
+@code{@var{f}(@var{n} %pi/10)} onde @var{f} @'e qualquer das fun@value{cedilha}@~oes 
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} e @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} sec (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} sec (@var{x})
  - Secante.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sech (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} sech (@var{x})
  - Secante Hyperb@'olica.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sin (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} sin (@var{x})
  - Seno.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sinh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} sinh (@var{x})
  - Seno Hyperb@'olico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} tan (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} tan (@var{x})
  - Tangente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} tanh (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} tanh (@var{x})
  - Tangente Hyperb@'olica.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} trigexpand (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} trigexpand (@var{expr})
 Expande fun@value{cedilha}@~oes trigonometricas e hyperb@'olicas de
-adi@value{cedilha}@~oes de @^angulos e de @^angulos multiplos que ocorram em @mvar{expr}.  Para melhores
-resultados, @mvar{expr} deve ser expandida.  Para intensificar o controle do utilizador
+adi@value{cedilha}@~oes de @^angulos e de @^angulos multiplos que ocorram em @var{expr}.  Para melhores
+resultados, @var{expr} deve ser expandida.  Para intensificar o controle do utilizador
 na simplifica@value{cedilha}@~ao, essa fun@value{cedilha}@~ao expande somente um n@'{@dotless{i}}vel de cada vez,
 expandindo adi@value{cedilha}@~oes de @^angulos ou @^angulos multiplos.  Para obter expans@~ao completa
 dentro de senos e co-senos imediatamente, escolha o comutador @code{trigexpand: true}.
@@ -258,25 +258,25 @@ Valor por omiss@~ao: @code{all}
 composi@value{cedilha}@~oes de fun@value{cedilha}@~oes trigonom@'etricas e hiperb@'olicas com suas fun@value{cedilha}@~oes
 inversas.
 
-Se @code{all}, ambas e.g. @code{atan(tan(@mvar{x}))} 
-e @code{tan(atan(@mvar{x}))} simplificar@~ao para @mvar{x}.  
+Se @code{all}, ambas e.g. @code{atan(tan(@var{x}))} 
+e @code{tan(atan(@var{x}))} simplificar@~ao para @var{x}.  
 
-Se @code{true}, a simplifica@value{cedilha}@~ao  de @code{@mvar{arcfun}(@mvar{fun}(@mvar{x}))} 
+Se @code{true}, a simplifica@value{cedilha}@~ao  de @code{@var{arcfun}(@var{fun}(@var{x}))} 
 @'e desabilitada.
 
 Se @code{false}, ambas as simplifica@value{cedilha}@~oes  
-@code{@mvar{arcfun}(@mvar{fun}(@mvar{x}))} e  
-@code{@mvar{fun}(@mvar{arcfun}(@mvar{x}))}
+@code{@var{arcfun}(@var{fun}(@var{x}))} e  
+@code{@var{fun}(@var{arcfun}(@var{x}))}
 s@~ao desabilitadas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} trigreduce (@mvar{expr}, @mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} trigreduce (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} trigreduce (@var{expr}, @var{x})
+@deffnx {Fun@value{cedilha}@~ao} trigreduce (@var{expr})
 Combina produtos e expoentes de senos e cossenso
-trigonom@'etricos e hiperb@'olicos de @mvar{x} dentro daqueles de m@'ultiplos de @mvar{x}.
+trigonom@'etricos e hiperb@'olicos de @var{x} dentro daqueles de m@'ultiplos de @var{x}.
 Tamb@'em tenta eliminar essas fun@value{cedilha}@~oes quando elas ocorrerem em
-denominadores.  Se @mvar{x} for omitido ent@~ao todas as vari@'aveis em @mvar{expr} s@~ao usadas.
+denominadores.  Se @var{x} for omitido ent@~ao todas as vari@'aveis em @var{expr} s@~ao usadas.
 
 Veja tamb@'em @code{poissimp}.
 
@@ -320,7 +320,7 @@ negativos para fun@value{cedilha}@~oes trigonom@'etricas. E.g., @code{sin(-x)} t
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} trigsimp (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} trigsimp (@var{expr})
 Utiliza as identidades @math{sin(x)^2 + cos(x)^2 = 1} and
 @math{cosh(x)^2 - sinh(x)^2 = 1} para simplificar express@~oes contendo @code{tan}, @code{sec},
 etc., para @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
@@ -334,11 +334,11 @@ habilitadas a adicionar simplifica@value{cedilha}@~oes ao resultado.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~ao} trigrat (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} trigrat (@var{expr})
 Fornece uma forma quase-linear simplificada can@'onica de uma
-express@~ao trigonom@'etrica; @mvar{expr} @'e uma fra@value{cedilha}@~ao racional de muitos @code{sin},
+express@~ao trigonom@'etrica; @var{expr} @'e uma fra@value{cedilha}@~ao racional de muitos @code{sin},
 @code{cos} ou @code{tan}, os argumentos delas s@~ao formas lineares em algumas vari@'aveis (ou
-kernels-n@'ucleos) e @code{%pi/@mvar{n}} (@mvar{n} inteiro) com coeficientes inteiros. O resultado @'e uma
+kernels-n@'ucleos) e @code{%pi/@var{n}} (@var{n} inteiro) com coeficientes inteiros. O resultado @'e uma
 fra@value{cedilha}@~ao simplificada com numerador e denominador ambos lineares em @code{sin} e @code{cos}.
 Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{@dotless{i}}vel.
 

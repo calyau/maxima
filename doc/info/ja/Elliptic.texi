@@ -131,7 +131,7 @@ Maximaの配布を管理するGeneral Public License (GPL)の条件のもと置�
 
 @section Functions and Variables for Elliptic Functions
 
-@deffn {関数} jacobi_sn (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_sn (@var{u}, @var{m})
 Jacobiの楕円関数@math{sn(u,m)}
 
 @opencatbox
@@ -139,7 +139,7 @@ Jacobiの楕円関数@math{sn(u,m)}
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_cn (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_cn (@var{u}, @var{m})
 Jacobiの楕円関数@math{cn(u,m)}.
 
 @opencatbox
@@ -147,7 +147,7 @@ Jacobiの楕円関数@math{cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_dn (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_dn (@var{u}, @var{m})
 Jacobiの楕円関数@math{dn(u,m)}.
 
 @opencatbox
@@ -155,7 +155,7 @@ Jacobiの楕円関数@math{dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_ns (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_ns (@var{u}, @var{m})
 Jacobiの楕円関数@math{ns(u,m) = 1/sn(u,m)}.
 
 @opencatbox
@@ -163,7 +163,7 @@ Jacobiの楕円関数@math{ns(u,m) = 1/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_sc (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_sc (@var{u}, @var{m})
 Jacobiの楕円関数@math{sc(u,m) = sn(u,m)/cn(u,m)}.
 
 @opencatbox
@@ -171,7 +171,7 @@ Jacobiの楕円関数@math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_sd (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_sd (@var{u}, @var{m})
 Jacobiの楕円関数@math{sd(u,m) = sn(u,m)/dn(u,m)}.
 
 @opencatbox
@@ -179,7 +179,7 @@ Jacobiの楕円関数@math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_nc (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_nc (@var{u}, @var{m})
 Jacobiの楕円関数@math{nc(u,m) = 1/cn(u,m)}.
 
 @opencatbox
@@ -187,7 +187,7 @@ Jacobiの楕円関数@math{nc(u,m) = 1/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_cs (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_cs (@var{u}, @var{m})
 Jacobiの楕円関数@math{cs(u,m) = cn(u,m)/sn(u,m)}.
 
 @opencatbox
@@ -195,7 +195,7 @@ Jacobiの楕円関数@math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_cd (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_cd (@var{u}, @var{m})
 Jacobiの楕円関数@math{cd(u,m) = cn(u,m)/dn(u,m)}.
 
 @opencatbox
@@ -203,7 +203,7 @@ Jacobiの楕円関数@math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_nd (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_nd (@var{u}, @var{m})
 Jacobiの楕円関数@math{nc(u,m) = 1/cn(u,m)}.
 
 @opencatbox
@@ -211,7 +211,7 @@ Jacobiの楕円関数@math{nc(u,m) = 1/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_ds (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_ds (@var{u}, @var{m})
 Jacobiの楕円関数@math{ds(u,m) = dn(u,m)/sn(u,m)}.
 
 @opencatbox
@@ -219,7 +219,7 @@ Jacobiの楕円関数@math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} jacobi_dc (@mvar{u}, @mvar{m})
+@deffn {関数} jacobi_dc (@var{u}, @var{m})
 Jacobiの楕円関数@math{dc(u,m) = dn(u,m)/cn(u,m)}.
 
 @opencatbox
@@ -227,7 +227,7 @@ Jacobiの楕円関数@math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_sn (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_sn (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{sn(u,m)}.
 
 @opencatbox
@@ -235,7 +235,7 @@ Jacobiの楕円関数の逆関数@math{sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_cn (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_cn (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{cn(u,m)}.
 
 @opencatbox
@@ -243,7 +243,7 @@ Jacobiの楕円関数の逆関数@math{cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_dn (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_dn (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{dn(u,m)}.
 
 @opencatbox
@@ -251,7 +251,7 @@ Jacobiの楕円関数の逆関数@math{dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_ns (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_ns (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{ns(u,m)}.
 
 @opencatbox
@@ -259,7 +259,7 @@ Jacobiの楕円関数の逆関数@math{ns(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_sc (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_sc (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{sc(u,m)}.
 
 @opencatbox
@@ -267,7 +267,7 @@ Jacobiの楕円関数の逆関数@math{sc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_sd (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_sd (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{sd(u,m)}.
 
 @opencatbox
@@ -275,7 +275,7 @@ Jacobiの楕円関数の逆関数@math{sd(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_nc (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_nc (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{nc(u,m)}.
 
 @opencatbox
@@ -283,7 +283,7 @@ Jacobiの楕円関数の逆関数@math{nc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_cs (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_cs (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{cs(u,m)}.
 
 @opencatbox
@@ -291,7 +291,7 @@ Jacobiの楕円関数の逆関数@math{cs(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_cd (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_cd (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{cd(u,m)}.
 
 @opencatbox
@@ -299,7 +299,7 @@ Jacobiの楕円関数の逆関数@math{cd(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_nd (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_nd (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{nc(u,m)}.
 
 @opencatbox
@@ -307,7 +307,7 @@ Jacobiの楕円関数の逆関数@math{nc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_ds (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_ds (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{ds(u,m)}.
 
 @opencatbox
@@ -315,7 +315,7 @@ Jacobiの楕円関数の逆関数@math{ds(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {関数} inverse_jacobi_dc (@mvar{u}, @mvar{m})
+@deffn {関数} inverse_jacobi_dc (@var{u}, @var{m})
 Jacobiの楕円関数の逆関数@math{dc(u,m)}.
 
 @opencatbox
@@ -330,7 +330,7 @@ Jacobiの楕円関数の逆関数@math{dc(u,m)}.
 @section Functions and Variables for Elliptic Integrals
 
 @anchor{elliptic_f}
-@deffn {関数} elliptic_f (@mvar{phi}, @mvar{m})
+@deffn {関数} elliptic_f (@var{phi}, @var{m})
 以下のように定義された第一種不完全楕円積分
 
 @ifhtml
@@ -352,7 +352,7 @@ $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end deffn
 
 @anchor{elliptic_e}
-@deffn {関数} elliptic_e (@mvar{phi}, @mvar{m})
+@deffn {関数} elliptic_e (@var{phi}, @var{m})
 以下のように定義された第二種不完全楕円積分
 
 @ifhtml
@@ -373,7 +373,7 @@ $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end deffn
 
 @anchor{elliptic_eu}
-@deffn {関数} elliptic_eu (@mvar{u}, @mvar{m})
+@deffn {関数} elliptic_eu (@var{u}, @var{m})
 以下のように定義された第二種不完全楕円積分
 
 @ifhtml
@@ -413,7 +413,7 @@ where $\phi = \sin^{-1} {\rm sn}(u, m)$.
 @closecatbox
 @end deffn
 
-@deffn {関数} elliptic_pi (@mvar{n}, @mvar{phi}, @mvar{m})
+@deffn {関数} elliptic_pi (@var{n}, @var{phi}, @var{m})
 以下のように定義された第三種不完全楕円積分
 
 @ifhtml
@@ -434,7 +434,7 @@ Maximaが知っている@math{phi}に関する唯一の導関数
 @end deffn
 
 @anchor{elliptic_kc}
-@deffn {関数} elliptic_kc (@mvar{m})
+@deffn {関数} elliptic_kc (@var{m})
 以下のように定義された第一種完全楕円積分
 
 @ifhtml
@@ -457,7 +457,7 @@ $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end deffn
 
 @anchor{elliptic_ec}
-@deffn {関数} elliptic_ec (@mvar{m})
+@deffn {関数} elliptic_ec (@var{m})
 以下のように定義された第二種完全楕円積分
 
 @ifhtml

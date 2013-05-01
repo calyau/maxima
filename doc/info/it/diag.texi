@@ -5,31 +5,31 @@
 @node Definitions for diag,  , diag, diag
 @section Definitions for diag
 
-@deffn {Function} diag (@mvar{lm})
+@deffn {Function} diag (@var{lm})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} JF (@mvar{lambda},@mvar{n})
+@deffn {Function} JF (@var{lambda},@var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} jordan (@mvar{mat})
+@deffn {Function} jordan (@var{mat})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dispJordan (@mvar{l})
+@deffn {Function} dispJordan (@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} minimalPoly (@mvar{l})
+@deffn {Function} minimalPoly (@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ModeMatrix (@mvar{A},@mvar{l})
+@deffn {Function} ModeMatrix (@var{A},@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} mat_function (@mvar{f},@mvar{mat})
+@deffn {Function} mat_function (@var{f},@var{mat})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

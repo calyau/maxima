@@ -851,7 +851,7 @@ where each line of input produces a line of output.}
 \let\implicitmath = $%$ font-lock fix
 %
 % One complication: _ usually means subscripts, but it could also mean
-% an actual _ character, as in @math{@mvar{some_variable} + 1}.  So make
+% an actual _ character, as in @math{@var{some_variable} + 1}.  So make
 % _ within @math be active (mathcode "8000), and distinguish by seeing
 % if the current family is \slfam, which is what @var uses.
 % 
@@ -4932,7 +4932,7 @@ width0pt\relax} \fi
 \catcode 61=\other % Turn off change made in \defparsebody
 }
 
-% @deftypefun int foobar (int @mvar{foo}, float @mvar{bar})
+% @deftypefun int foobar (int @var{foo}, float @var{bar})
 
 \def\deftypefun{\defparsebody\Edeftypefun\deftypefunx\deftypefunheader}
 
@@ -4946,7 +4946,7 @@ width0pt\relax} \fi
 \catcode 61=\other % Turn off change made in \defparsebody
 }
 
-% @deftypefn {Library Function} int foobar (int @mvar{foo}, float @mvar{bar})
+% @deftypefn {Library Function} int foobar (int @var{foo}, float @var{bar})
 
 \def\deftypefn{\defmethparsebody\Edeftypefn\deftypefnx\deftypefnheader}
 

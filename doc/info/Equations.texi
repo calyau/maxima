@@ -102,17 +102,17 @@ only yield approximations when all else fails.
 
 @c -----------------------------------------------------------------------------
 @anchor{algsys}
-@deffn  {Function} algsys ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
-@deffnx {Function} algsys ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn  {Function} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffnx {Function} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
-Solves the simultaneous polynomials @mvar{expr_1}, @dots{}, @mvar{expr_m} or
-polynomial equations @mvar{eqn_1}, @dots{}, @mvar{eqn_m} for the variables
-@mvar{x_1}, @dots{}, @mvar{x_n}.  An expression @mvar{expr} is equivalent to an
-equation @code{@mvar{expr} = 0}.  There may be more equations than variables or
+Solves the simultaneous polynomials @var{expr_1}, @dots{}, @var{expr_m} or
+polynomial equations @var{eqn_1}, @dots{}, @var{eqn_m} for the variables
+@var{x_1}, @dots{}, @var{x_n}.  An expression @var{expr} is equivalent to an
+equation @code{@var{expr} = 0}.  There may be more equations than variables or
 vice versa.
 
 @code{algsys} returns a list of solutions, with each solution given as a list
-of equations stating values of the variables @mvar{x_1}, @dots{}, @mvar{x_n}
+of equations stating values of the variables @var{x_1}, @dots{}, @var{x_n}
 which satisfy the system of equations.  If @code{algsys} cannot find a solution,
 an empty list @code{[]} is returned.
 
@@ -127,11 +127,11 @@ The method is as follows:
 First the equations are factored and split into subsystems.
 
 @item
-For each subsystem @mvar{S_i}, an equation @mvar{E} and a variable @mvar{x} are
+For each subsystem @var{S_i}, an equation @var{E} and a variable @var{x} are
 selected.  The variable is chosen to have lowest nonzero degree.  Then the
-resultant of @mvar{E} and @mvar{E_j} with respect to @mvar{x} is computed for each
-of the remaining equations @mvar{E_j} in the subsystem @mvar{S_i}.  This yields a
-new subsystem @mvar{S_i'} in one fewer variables, as @mvar{x} has been eliminated.
+resultant of @var{E} and @var{E_j} with respect to @var{x} is computed for each
+of the remaining equations @var{E_j} in the subsystem @var{S_i}.  This yields a
+new subsystem @var{S_i'} in one fewer variables, as @var{x} has been eliminated.
 The process now returns to (1).
 
 @item
@@ -227,19 +227,19 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{allroots}
-@deffn  {Function} allroots (@mvar{expr})
-@deffnx {Function} allroots (@mvar{eqn})
+@deffn  {Function} allroots (@var{expr})
+@deffnx {Function} allroots (@var{eqn})
 
 Computes numerical approximations of the real and complex roots of the
-polynomial @mvar{expr} or polynomial equation @mvar{eqn} of one variable.
+polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
 The flag @mref{polyfactor} when @code{true} causes @code{allroots} to factor
 the polynomial over the real numbers if the polynomial is real, or over the
 complex numbers, if the polynomial is complex.
 
 @code{allroots} may give inaccurate results in case of multiple roots.
-If the polynomial is real, @code{allroots (%i*@mvar{p})}) may yield
-more accurate approximations than @code{allroots (@mvar{p})}, as @code{allroots}
+If the polynomial is real, @code{allroots (%i*@var{p})}) may yield
+more accurate approximations than @code{allroots (@var{p})}, as @code{allroots}
 invokes a different algorithm in that case.
 
 @code{allroots} rejects non-polynomials.  It requires that the numerator
@@ -303,11 +303,11 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @c -----------------------------------------------------------------------------
 @anchor{bfallroots}
-@deffn  {Function} bfallroots (@mvar{expr})
-@deffnx {Function} bfallroots (@mvar{eqn})
+@deffn  {Function} bfallroots (@var{expr})
+@deffnx {Function} bfallroots (@var{eqn})
 
 Computes numerical approximations of the real and complex roots of the
-polynomial @mvar{expr} or polynomial equation @mvar{eqn} of one variable.
+polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
 In all respects, @code{bfallroots} is identical to @code{allroots} except
 that @code{bfallroots} computes the roots using bigfloats.  See 
@@ -434,8 +434,8 @@ Solution:
 
 @c -----------------------------------------------------------------------------
 @anchor{dimension}
-@deffn  {Function} dimension (@mvar{eqn})
-@deffnx {Function} dimension (@mvar{eqn_1}, @dots{}, @mvar{eqn_n})
+@deffn  {Function} dimension (@var{eqn})
+@deffnx {Function} dimension (@var{eqn_1}, @dots{}, @var{eqn_n})
 
 @code{dimen} is a package for dimensional analysis.
 @code{load ("dimen")} loads this package.
@@ -467,12 +467,12 @@ Termination of the @code{block} with a dollar sign, $, sets @code{dispflag} to
 
 @c -----------------------------------------------------------------------------
 @anchor{funcsolve}
-@deffn {Function} funcsolve (@mvar{eqn}, @mvar{g}(@mvar{t}))
+@deffn {Function} funcsolve (@var{eqn}, @var{g}(@var{t}))
 
-Returns @code{[@mvar{g}(@mvar{t}) = ...]}  or @code{[]}, depending on whether
-or not there exists a rational function @code{@mvar{g}(@mvar{t})} satisfying
-@mvar{eqn}, which must be a first order, linear polynomial in (for this case)
-@code{@mvar{g}(@mvar{t})} and @code{@mvar{g}(@mvar{t}+1)}
+Returns @code{[@var{g}(@var{t}) = ...]}  or @code{[]}, depending on whether
+or not there exists a rational function @code{@var{g}(@var{t})} satisfying
+@var{eqn}, which must be a first order, linear polynomial in (for this case)
+@code{@var{g}(@var{t})} and @code{@var{g}(@var{t}+1)}
 
 @example
 (%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) =
@@ -569,28 +569,28 @@ Solution
 
 @c -----------------------------------------------------------------------------
 @anchor{ieqn}
-@deffn {Function} ieqn (@mvar{ie}, @mvar{unk}, @mvar{tech}, @mvar{n}, @mvar{guess})
+@deffn {Function} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
 
 @code{inteqn} is a package for solving integral equations.
 @code{load ("inteqn")} loads this package.
  
-@mvar{ie} is the integral equation; @mvar{unk} is the unknown function; @mvar{tech}
-is the technique to be tried from those given above (@mvar{tech} = @code{first}
-means: try the first technique which finds a solution; @mvar{tech} = @code{all}
-means: try all applicable techniques); @mvar{n} is the maximum number of terms
+@var{ie} is the integral equation; @var{unk} is the unknown function; @var{tech}
+is the technique to be tried from those given above (@var{tech} = @code{first}
+means: try the first technique which finds a solution; @var{tech} = @code{all}
+means: try all applicable techniques); @var{n} is the maximum number of terms
 to take for @code{taylor}, @code{neumann}, @code{firstkindseries}, or
 @code{fredseries} (it is also the maximum depth of recursion for the
-differentiation method); @mvar{guess} is the initial guess for @code{neumann} or
+differentiation method); @var{guess} is the initial guess for @code{neumann} or
 @code{firstkindseries}.
 
 Default values for the 2nd thru 5th parameters are:
 
-@mvar{unk}: @code{@mvar{p}(@mvar{x})}, where @mvar{p} is the first function
-encountered in an integrand which is unknown to Maxima and @mvar{x} is the
-variable which occurs as an argument to the first occurrence of @mvar{p} found
+@var{unk}: @code{@var{p}(@var{x})}, where @var{p} is the first function
+encountered in an integrand which is unknown to Maxima and @var{x} is the
+variable which occurs as an argument to the first occurrence of @var{p} found
 outside of an integral in the case of @code{secondkind} equations, or is the
 only other variable besides the variable of integration in @code{firstkind}
-equations.  If the attempt to search for @mvar{x} fails, the user will be asked
+equations.  If the attempt to search for @var{x} fails, the user will be asked
 to supply the independent variable.
 
 tech: @code{first}
@@ -598,7 +598,7 @@ tech: @code{first}
 n: 1
 
 guess: @code{none} which will cause @code{neumann} and @code{firstkindseries}
-to use @code{@mvar{f}(@mvar{x})} as an initial guess.
+to use @code{@var{f}(@var{x})} as an initial guess.
 
 @opencatbox
 @category{Integral equations}
@@ -614,13 +614,13 @@ Default value: @code{true}
 @mref{ieqn} command.  When @code{ieqnprint} is @code{false}, the lists returned
 by the @code{ieqn} function are of the form
 
-   [@mvar{solution}, @mvar{technique used}, @mvar{nterms}, @mvar{flag}]
+   [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
 
-where @mvar{flag} is absent if the solution is exact.
+where @var{flag} is absent if the solution is exact.
 
 Otherwise, it is the word @code{approximate} or @code{incomplete} corresponding
 to an inexact or non-closed form solution, respectively.  If a series method was
-used, @mvar{nterms} gives the number of terms taken (which could be less than
+used, @var{nterms} gives the number of terms taken (which could be less than
 the n given to @code{ieqn} if an error prevented generation of further terms).
 
 @opencatbox
@@ -630,17 +630,17 @@ the n given to @code{ieqn} if an error prevented generation of further terms).
 
 @c -----------------------------------------------------------------------------
 @anchor{lhs}
-@deffn {Function} lhs (@mvar{expr})
+@deffn {Function} lhs (@var{expr})
 
 Returns the left-hand side (that is, the first argument) of the expression
-@mvar{expr}, when the operator of @mvar{expr} is one of the relational operators
+@var{expr}, when the operator of @var{expr} is one of the relational operators
 @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
 infix operator, as declared by @mrefdot{infix}
 
-When @mvar{expr} is an atom or its operator is something other than the ones
-listed above, @code{lhs} returns @mvar{expr}.
+When @var{expr} is an atom or its operator is something other than the ones
+listed above, @code{lhs} returns @var{expr}.
 
 See also @mrefdot{rhs}
 
@@ -700,7 +700,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{linsolve}
-@deffn {Function} linsolve ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn {Function} linsolve ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
 Solves the list of simultaneous linear equations for the list of variables.
 The expressions must each be polynomials in the variables and may be equations.
@@ -838,10 +838,10 @@ solutions returned by @mref{solve} or @mrefdot{realroots}
 
 @c -----------------------------------------------------------------------------
 @anchor{nroots}
-@deffn {Function} nroots (@mvar{p}, @mvar{low}, @mvar{high})
+@deffn {Function} nroots (@var{p}, @var{low}, @var{high})
 
-Returns the number of real roots of the real univariate polynomial @mvar{p} in
-the half-open interval @code{(@mvar{low}, @mvar{high}]}.  The endpoints of the
+Returns the number of real roots of the real univariate polynomial @var{p} in
+the half-open interval @code{(@var{low}, @var{high}]}.  The endpoints of the
 interval may be @code{minf} or @code{inf}.
 
 @code{nroots} uses the method of Sturm sequences.
@@ -861,11 +861,11 @@ interval may be @code{minf} or @code{inf}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nthroot}
-@deffn {Function} nthroot (@mvar{p}, @mvar{n})
+@deffn {Function} nthroot (@var{p}, @var{n})
 
-where @mvar{p} is a polynomial with integer coefficients and @mvar{n} is a
+where @var{p} is a polynomial with integer coefficients and @var{n} is a
 positive integer returns @code{q}, a polynomial over the integers, such that
-@code{q^n = p} or prints an error message indicating that @mvar{p} is not a
+@code{q^n = p} or prints an error message indicating that @var{p} is not a
 perfect nth power.  This routine is much faster than @mref{factor} or even
 @mrefdot{sqfr}
 
@@ -927,14 +927,14 @@ which are free of @code{%i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{realroots}
-@deffn  {Function} realroots (@mvar{expr}, @mvar{bound})
-@deffnx {Function} realroots (@mvar{eqn}, @mvar{bound})
-@deffnx {Function} realroots (@mvar{expr})
-@deffnx {Function} realroots (@mvar{eqn})
+@deffn  {Function} realroots (@var{expr}, @var{bound})
+@deffnx {Function} realroots (@var{eqn}, @var{bound})
+@deffnx {Function} realroots (@var{expr})
+@deffnx {Function} realroots (@var{eqn})
 
-Computes rational approximations of the real roots of the polynomial @mvar{expr}
-or polynomial equation @mvar{eqn} of one variable, to within a tolerance of
-@mvar{bound}.  Coefficients of @mvar{expr} or @mvar{eqn} must be literal numbers;
+Computes rational approximations of the real roots of the polynomial @var{expr}
+or polynomial equation @var{eqn} of one variable, to within a tolerance of
+@var{bound}.  Coefficients of @var{expr} or @var{eqn} must be literal numbers;
 symbol constants such as @code{%pi} are rejected.
 
 @code{realroots} assigns the multiplicities of the roots it finds
@@ -947,12 +947,12 @@ out by exact rational arithmetic.  Even if some coefficients are floating-point
 numbers, the results are rational (unless coerced to floats by the
 @mref{float} or @mref{numer} flags).
 
-When @mvar{bound} is less than 1, all integer roots are found exactly.
-When @mvar{bound} is unspecified, it is assumed equal to the global variable
+When @var{bound} is less than 1, all integer roots are found exactly.
+When @var{bound} is unspecified, it is assumed equal to the global variable
 @mrefdot{rootsepsilon}
 
 When the global variable @mref{programmode} is @code{true}, @code{realroots}
-returns a list of the form @code{[x = @mvar{x_1}, x = @mvar{x_2}, ...]}.
+returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
 When @code{programmode} is @code{false}, @code{realroots} creates intermediate
 expression labels @code{%t1}, @code{%t2}, @dots{},
 assigns the results to them, and returns the list of labels.
@@ -995,16 +995,16 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{rhs}
-@deffn {Function} rhs (@mvar{expr})
+@deffn {Function} rhs (@var{expr})
 
 Returns the right-hand side (that is, the second argument) of the expression
-@mvar{expr}, when the operator of @mvar{expr} is one of the relational operators
+@var{expr}, when the operator of @var{expr} is one of the relational operators
 @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
 infix operator, as declared by @mrefdot{infix}
 
-When @mvar{expr} is an atom or its operator is something other than the ones
+When @var{expr} is an atom or its operator is something other than the ones
 listed above, @code{rhs} returns 0.
 
 See also @mrefdot{lhs}
@@ -1080,7 +1080,7 @@ See @mref{rootscontract} for details.
 
 @c -----------------------------------------------------------------------------
 @anchor{rootscontract}
-@deffn {Function} rootscontract (@mvar{expr})
+@deffn {Function} rootscontract (@var{expr})
 
 Converts products of roots into roots of products.  For example,
 @code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
@@ -1185,36 +1185,36 @@ for the roots found by the @mref{realroots} function.
 
 @c -----------------------------------------------------------------------------
 @anchor{solve}
-@deffn  {Function} solve (@mvar{expr}, @mvar{x})
-@deffnx {Function} solve (@mvar{expr})
-@deffnx {Function} solve ([@mvar{eqn_1}, @dots{}, @mvar{eqn_n}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn  {Function} solve (@var{expr}, @var{x})
+@deffnx {Function} solve (@var{expr})
+@deffnx {Function} solve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
-Solves the algebraic equation @mvar{expr} for the variable @mvar{x} and returns a
-list of solution equations in @mvar{x}.  If @mvar{expr} is not an equation, the
-equation @code{@mvar{expr} = 0} is assumed in its place.
-@mvar{x} may be a function (e.g. @code{f(x)}), or other non-atomic expression
-except a sum or product.  @mvar{x} may be omitted if @mvar{expr} contains only one
-variable.  @mvar{expr} may be a rational expression, and may contain
+Solves the algebraic equation @var{expr} for the variable @var{x} and returns a
+list of solution equations in @var{x}.  If @var{expr} is not an equation, the
+equation @code{@var{expr} = 0} is assumed in its place.
+@var{x} may be a function (e.g. @code{f(x)}), or other non-atomic expression
+except a sum or product.  @var{x} may be omitted if @var{expr} contains only one
+variable.  @var{expr} may be a rational expression, and may contain
 trigonometric functions, exponentials, etc.
 
 The following method is used:
 
-Let @mvar{E} be the expression and @mvar{X} be the variable.  If @mvar{E} is linear
-in @mvar{X} then it is trivially solved for @mvar{X}.  Otherwise if @mvar{E} is of
+Let @var{E} be the expression and @var{X} be the variable.  If @var{E} is linear
+in @var{X} then it is trivially solved for @var{X}.  Otherwise if @var{E} is of
 the form @code{A*X^N + B} then the result is @code{(-B/A)^1/N)} times the
 @code{N}'th roots of unity.
 
-If @mvar{E} is not linear in @mvar{X} then the gcd of the exponents of @mvar{X} in
-@mvar{E} (say @mvar{N}) is divided into the exponents and the multiplicity of the
-roots is multiplied by @mvar{N}.  Then @code{solve} is called again on the
-result.  If @mvar{E} factors then @code{solve} is called on each of the factors.
+If @var{E} is not linear in @var{X} then the gcd of the exponents of @var{X} in
+@var{E} (say @var{N}) is divided into the exponents and the multiplicity of the
+roots is multiplied by @var{N}.  Then @code{solve} is called again on the
+result.  If @var{E} factors then @code{solve} is called on each of the factors.
 Finally @code{solve} will use the quadratic, cubic, or quartic formulas where
 necessary.
 
-In the case where @mvar{E} is a polynomial in some function of the variable to be
+In the case where @var{E} is a polynomial in some function of the variable to be
 solved for, say @code{F(X)}, then it is first solved for @code{F(X)} (call the
-result @mvar{C}), then the equation @code{F(X)=C} can be solved for @mvar{X}
-provided the inverse of the function @mvar{F} is known.
+result @var{C}), then the equation @code{F(X)=C} can be solved for @var{X}
+provided the inverse of the function @var{F} is known.
 
 @mref{breakup} if @code{false} will cause @code{solve} to express the solutions
 of cubic or quartic equations as single expressions rather than as made
@@ -1226,7 +1226,7 @@ individual solutions returned by @code{solve}, @mrefcomma{realroots} or
 @code{solve}.  @mref{describe} may then by used on the individual switch names
 if their purpose is not clear.
 
-@code{solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])}
+@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 solves a system of simultaneous (linear or non-linear) polynomial equations by
 calling @mref{linsolve} or @mref{algsys} and returns a list of the solution
 lists in the variables.  In the case of @code{linsolve} this list would contain

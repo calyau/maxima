@@ -11,9 +11,9 @@
 @node Функции и переменные для работы с ошибками
 @section Функции и переменные для работы с ошибками
 @deffn {Функция} run_testsuite ()
-@deffnx {Функция} run_testsuite (@mvar{boolean})
-@deffnx {Функция} run_testsuite (@mvar{boolean}, @mvar{boolean})
-@deffnx {Функция} run_testsuite (@mvar{boolean}, @mvar{boolean}, @mvar{list})
+@deffnx {Функция} run_testsuite (@var{boolean})
+@deffnx {Функция} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Функция} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 Запускает встроенный набор тестов программы Maxima.
 Тесты, дающие ожидаемый результат, рассматриваются как успешные.
 Сюда относятся также тесты не дающие ожидаемый

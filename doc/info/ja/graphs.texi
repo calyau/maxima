@@ -7,7 +7,7 @@
 @section Introduction to graphs
 
 @code{graphs}パッケージはMaximaにグラフと有向グラフデータ構造を提供します。
-有向グラフは@mvar{u}から@mvar{v}への有向辺と@mvar{v}から@mvar{u}への有向辺を持つことができますが、グラフや有向グラフは単純です(多重辺もループも持ちません)。
+有向グラフは@var{u}から@var{v}への有向辺と@var{v}から@var{u}への有向辺を持つことができますが、グラフや有向グラフは単純です(多重辺もループも持ちません)。
 
 内部的にはグラフは隣接リストで表現され、
 lisp構造として実装されます。
@@ -34,22 +34,22 @@ lisp構造として実装されます。
 
 @subsection Building graphs
 
-@deffn {関数} create_graph (@mvar{v_list}, @mvar{e_list})
-@deffnx {関数} create_graph (@mvar{n}, @mvar{e_list})
-@deffnx {関数} create_graph (@mvar{v_list}, @mvar{e_list}, @mvar{directed})
-頂点の集合@mvar{v_list}上に辺@mvar{e_list}を使って新しいグラフを生成します。
+@deffn {関数} create_graph (@var{v_list}, @var{e_list})
+@deffnx {関数} create_graph (@var{n}, @var{e_list})
+@deffnx {関数} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+頂点の集合@var{v_list}上に辺@var{e_list}を使って新しいグラフを生成します。
 
-@mvar{v_list}は頂点のリスト(@code{[v1, v2,..., vn]})もしくは
+@var{v_list}は頂点のリスト(@code{[v1, v2,..., vn]})もしくは
 頂点ラベルを持つ頂点のリスト(@code{[[v1,l1], [v2,l2],..., [vn,ln]]})です。
 
-@mvar{n}は頂点の数です。
+@var{n}は頂点の数です。
 頂点は0からn-1までの整数で識別されます。
 (訳注: 1から始まるMaximaのリストの添字の慣例とは異なることに注意してください。)
 
-@mvar{e_list}は辺のリスト(@code{[e1, e2,..., em]})もしくは
+@var{e_list}は辺のリスト(@code{[e1, e2,..., em]})もしくは
 辺の重みを持つ辺のリスト(@code{[[e1, w1], ..., [em, wm]]})です。
 
-もし@mvar{directed}が@code{false}でないなら、
+もし@var{directed}が@code{false}でないなら、
 有向グラフが返されます。
 
 例1: 頂点3つの循環を生成する。
@@ -123,16 +123,16 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} copy_graph (@mvar{g})
-グラフ@mvar{g}のコピーを返します。
+@deffn {関数} copy_graph (@var{g})
+グラフ@var{g}のコピーを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} circulant_graph (@mvar{n}, @mvar{d})
-パラメータ @mvar{n}と @mvar{d}を持つ巡回グラフを返します。
+@deffn {関数} circulant_graph (@var{n}, @var{d})
+パラメータ @var{n}と @var{d}を持つ巡回グラフを返します。
 
 例:
 @c ===beg===
@@ -171,47 +171,47 @@ Clebschグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} complement_graph (@mvar{g})
-グラフ @mvar{g}の補グラフを返します。
+@deffn {関数} complement_graph (@var{g})
+グラフ @var{g}の補グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} complete_bipartite_graph (@mvar{n}, @mvar{m})
-@mvar{n+m}この頂点上の完全2部グラフを返します。
+@deffn {関数} complete_bipartite_graph (@var{n}, @var{m})
+@var{n+m}この頂点上の完全2部グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} complete_graph (@mvar{n})
-@mvar{n}この頂点上の完全グラフを返します。
+@deffn {関数} complete_graph (@var{n})
+@var{n}この頂点上の完全グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} cycle_digraph (@mvar{n})
-@mvar{n}個の頂点上の有向グラフを返します。
+@deffn {関数} cycle_digraph (@var{n})
+@var{n}個の頂点上の有向グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} cycle_graph (@mvar{n})
-@mvar{n}この頂点上の閉路を返します。
+@deffn {関数} cycle_graph (@var{n})
+@var{n}この頂点上の閉路を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} cuboctahedron_graph (@mvar{n})
+@deffn {関数} cuboctahedron_graph (@var{n})
 立方八面体グラフを返します。
 
 @opencatbox
@@ -219,8 +219,8 @@ Clebschグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} cube_graph (@mvar{n})
-@mvar{n}次元立方体を返します。
+@deffn {関数} cube_graph (@var{n})
+@var{n}次元立方体を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -235,16 +235,16 @@ Clebschグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} empty_graph (@mvar{n})
-@mvar{n}個の頂点上の空グラフを返します。
+@deffn {関数} empty_graph (@var{n})
+@var{n}個の頂点上の空グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} flower_snark (@mvar{n})
-@mvar{4n}個の頂点上の花グラフを返します。
+@deffn {関数} flower_snark (@var{n})
+@var{4n}個の頂点上の花グラフを返します。
 
 例:
 @c ===beg===
@@ -264,8 +264,8 @@ Clebschグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} from_adjacency_matrix (@mvar{A})
-隣接行列 @mvar{A}で表現されるグラフを返します。
+@deffn {関数} from_adjacency_matrix (@var{A})
+隣接行列 @var{A}で表現されるグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -280,8 +280,8 @@ Fruchtグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_product (@mvar{g1}, @mvar{g1})
-グラフ @mvar{g1}と @mvar{g2}の直積を返します。
+@deffn {関数} graph_product (@var{g1}, @var{g1})
+グラフ @var{g1}と @var{g2}の直積を返します。
 
 例:
 @c ===beg===
@@ -304,16 +304,16 @@ Fruchtグラフを返します。
 @image{figures/graphs01,6cm}
 @end ifhtml
 
-@deffn {関数} graph_union (@mvar{g1}, @mvar{g1})
-グラフ@mvar{g1}と @mvar{g2}の和を返します。
+@deffn {関数} graph_union (@var{g1}, @var{g1})
+グラフ@var{g1}と @var{g2}の和を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} grid_graph (@mvar{n}, @mvar{m})
-@mvar{n x m}グリッドを返します。
+@deffn {関数} grid_graph (@var{n}, @var{m})
+@var{n x m}グリッドを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -368,8 +368,8 @@ Heawoodグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} induced_subgraph (@mvar{V}, @mvar{g})
-グラフ @mvar{g}の頂点の部分集合 @mvar{V}上の誘導部分グラフを返します。
+@deffn {関数} induced_subgraph (@var{V}, @var{g})
+グラフ @var{g}の頂点の部分集合 @var{V}上の誘導部分グラフを返します。
 
 例:
 @c ===beg===
@@ -399,27 +399,27 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} line_graph (@mvar{g})
-グラフ @mvar{g}の折れ線グラフを返します。
+@deffn {関数} line_graph (@var{g})
+グラフ @var{g}の折れ線グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} make_graph (@mvar{vrt}, @mvar{f})
-@deffnx {関数} make_graph (@mvar{vrt}, @mvar{f}, @mvar{oriented})
-述語論理関数 @mvar{f}を使ってグラフを生成します。
+@deffn {関数} make_graph (@var{vrt}, @var{f})
+@deffnx {関数} make_graph (@var{vrt}, @var{f}, @var{oriented})
+述語論理関数 @var{f}を使ってグラフを生成します。
 
-@mvar{vrt}は頂点か整数のリスト/集合です。
-もし @mvar{vrt}が整数なら、
-グラフの頂点は1から @mvar{vrt}までの整数です。
+@var{vrt}は頂点か整数のリスト/集合です。
+もし @var{vrt}が整数なら、
+グラフの頂点は1から @var{vrt}までの整数です。
 
-@mvar{f}は述語論理関数です。
-2つの頂点 @mvar{a}と @mvar{b}は
+@var{f}は述語論理関数です。
+2つの頂点 @var{a}と @var{b}は
 もし @code{f(a,b)=true}なら結合されます。
 
-もし @mvar{directed}が @mvar{false}でないなら、
+もし @var{directed}が @var{false}でないなら、
 グラフは有向です。
 
 例 1:
@@ -461,8 +461,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} mycielski_graph (@mvar{g})
-グラフ @mvar{g}のMycielskiグラフを返します。
+@deffn {関数} mycielski_graph (@var{g})
+グラフ @var{g}のMycielskiグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -477,16 +477,16 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} path_digraph (@mvar{n})
-@mvar{n}個の頂点上の有向道を返します。
+@deffn {関数} path_digraph (@var{n})
+@var{n}個の頂点上の有向道を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} path_graph (@mvar{n})
-@mvar{n}個の頂点上の道を返します。
+@deffn {関数} path_graph (@var{n})
+@var{n}個の頂点上の道を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -494,9 +494,9 @@ Adjacencies:
 @end deffn
 
 @deffn {関数} petersen_graph ()
-@deffnx {関数} petersen_graph (@mvar{n}, @mvar{d})
-Petersenグラフ @mvar{P_@{n,d@}}を返します。
-@mvar{n}と @mvar{d}のデフォルト値は
+@deffnx {関数} petersen_graph (@var{n}, @var{d})
+Petersenグラフ @var{P_@{n,d@}}を返します。
+@var{n}と @var{d}のデフォルト値は
 @code{n=5}と @code{d=2}です。
 
 @opencatbox
@@ -504,55 +504,55 @@ Petersenグラフ @mvar{P_@{n,d@}}を返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} random_bipartite_graph (@mvar{a}, @mvar{b}, @mvar{p})
+@deffn {関数} random_bipartite_graph (@var{a}, @var{b}, @var{p})
 @code{a+b}個の頂点上のランダムな2部グラフを返します。
-辺それぞれは確率 @mvar{p}で存在します。
+辺それぞれは確率 @var{p}で存在します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_digraph (@mvar{n}, @mvar{p})
+@deffn {関数} random_digraph (@var{n}, @var{p})
 @code{n}個の頂点上のランダムな有向グラフを返します。
-弧それぞれは確率 @mvar{p}で存在します。
+弧それぞれは確率 @var{p}で存在します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_regular_graph (@mvar{n})
-@deffnx {関数} random_regular_graph (@mvar{n}, @mvar{d})
-@mvar{n}個の頂点上の
-ランダムな@mvar{d}正則グラフを返します。
-@mvar{d}のデフォルト値は @code{d=3}です。
+@deffn {関数} random_regular_graph (@var{n})
+@deffnx {関数} random_regular_graph (@var{n}, @var{d})
+@var{n}個の頂点上の
+ランダムな@var{d}正則グラフを返します。
+@var{d}のデフォルト値は @code{d=3}です。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_graph (@mvar{n}, @mvar{p})
-@mvar{n}個の頂点上のランダムグラフを返します。
-辺それぞれは確率 @mvar{p}で存在します。
+@deffn {関数} random_graph (@var{n}, @var{p})
+@var{n}個の頂点上のランダムグラフを返します。
+辺それぞれは確率 @var{p}で存在します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_graph1 (@mvar{n}, @mvar{m})
-@mvar{n}個の頂点とランダムな @mvar{m}個の辺上のランダムグラフを返します。
+@deffn {関数} random_graph1 (@var{n}, @var{m})
+@var{n}個の頂点とランダムな @var{m}個の辺上のランダムグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_network (@mvar{n}, @mvar{p}, @mvar{w})
-@mvar{n}個の頂点上のランダムネットワークを返します。
-弧それぞれは確率 @mvar{p}で存在し、
+@deffn {関数} random_network (@var{n}, @var{p}, @var{w})
+@var{n}個の頂点上のランダムネットワークを返します。
+弧それぞれは確率 @var{p}で存在し、
 範囲 @code{[0,w]}の中に重みを持ちます。
 関数はリスト @code{[network, source, sink]}を返します。
 
@@ -577,16 +577,16 @@ Petersenグラフ @mvar{P_@{n,d@}}を返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} random_tournament (@mvar{n})
-@mvar{n}個の頂点上のランダムなトーナメントを返します。
+@deffn {関数} random_tournament (@var{n})
+@var{n}個の頂点上のランダムなトーナメントを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} random_tree (@mvar{n})
-@mvar{n}個の頂点上のランダムな木を返します。
+@deffn {関数} random_tree (@var{n})
+@var{n}個の頂点上のランダムな木を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -667,16 +667,16 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} underlying_graph (@mvar{g})
-有向グラフ @mvar{g}の台グラフを返します。
+@deffn {関数} underlying_graph (@var{g})
+有向グラフ @var{g}の台グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
 @closecatbox
 @end deffn
 
-@deffn {関数} wheel_graph (@mvar{n})
-@mvar{n+1}個の頂点上の車輪グラフを返します。
+@deffn {関数} wheel_graph (@var{n})
+@var{n+1}個の頂点上の車輪グラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - constructions}
@@ -685,8 +685,8 @@ Tutteグラフを返します。
 
 @subsection Graph properties
 
-@deffn {関数} adjacency_matrix (@mvar{gr})
-グラフ @mvar{gr}の隣接行列を返します。
+@deffn {関数} adjacency_matrix (@var{gr})
+グラフ @var{gr}の隣接行列を返します。
 
 例:
 @c ===beg===
@@ -712,8 +712,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} average_degree (@mvar{gr})
-グラフ @mvar{gr}に関する平均次数を返します。
+@deffn {関数} average_degree (@var{gr})
+グラフ @var{gr}に関する平均次数を返します。
 
 例:
 @c ===beg===
@@ -733,8 +733,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} biconnected_components (@mvar{gr})
-グラフ @mvar{gr}の2連結成分(の頂点集合)を返します
+@deffn {関数} biconnected_components (@var{gr})
+グラフ @var{gr}の2連結成分(の頂点集合)を返します
 
 例:
 @c ===beg===
@@ -768,8 +768,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} bipartition (@mvar{gr})
-グラフ @mvar{gr}の頂点の2分割か、もし @mvar{gr}が2部でないなら空のリストを返します。
+@deffn {関数} bipartition (@var{gr})
+グラフ @var{gr}の頂点の2分割か、もし @var{gr}が2部でないなら空のリストを返します。
 
 例:
 
@@ -796,8 +796,8 @@ Tutteグラフを返します。
 @image{figures/graphs02,6cm}
 @end ifhtml
 
-@deffn {関数} chromatic_index (@mvar{gr})
-グラフ @mvar{gr}の彩色指数を返します。
+@deffn {関数} chromatic_index (@var{gr})
+グラフ @var{gr}の彩色指数を返します。
 
 例:
 @c ===beg===
@@ -817,8 +817,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} chromatic_number (@mvar{gr})
-グラフ @mvar{gr}の彩色数を返します。
+@deffn {関数} chromatic_number (@var{gr})
+グラフ @var{gr}の彩色数を返します。
 
 例:
 @c ===beg===
@@ -839,8 +839,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} clear_edge_weight (@mvar{e}, @mvar{gr})
-グラフ @mvar{gr}の辺  @mvar{e}の重みを削除します。
+@deffn {関数} clear_edge_weight (@var{e}, @var{gr})
+グラフ @var{gr}の辺  @var{e}の重みを削除します。
 
 例:
 
@@ -866,8 +866,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} clear_vertex_label (@mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の頂点 @mvar{v}のラベルを削除します。
+@deffn {関数} clear_vertex_label (@var{v}, @var{gr})
+グラフ @var{gr}の頂点 @var{v}のラベルを削除します。
 
 例:
 @c ===beg===
@@ -893,8 +893,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} connected_components (@mvar{gr})
-グラフ @mvar{gr}の連携成分(の頂点集合)を返します。
+@deffn {関数} connected_components (@var{gr})
+グラフ @var{gr}の連携成分(の頂点集合)を返します。
 
 例:
 @c ===beg===
@@ -914,8 +914,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} diameter (@mvar{gr})
-グラフ @mvar{gr}の直径を返します。
+@deffn {関数} diameter (@var{gr})
+グラフ @var{gr}の直径を返します。
 
 例:
 @c ===beg===
@@ -933,10 +933,10 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} edge_coloring (@mvar{gr})
-グラフ @mvar{gr}の辺の最適色づけを返します。
+@deffn {関数} edge_coloring (@var{gr})
+グラフ @var{gr}の辺の最適色づけを返します。
 
-関数は彩色指数と@mvar{gr}の辺の色付けを表すリストを返します。
+関数は彩色指数と@var{gr}の辺の色付けを表すリストを返します。
 
 
 例:
@@ -966,8 +966,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} degree_sequence (@mvar{gr})
-グラフ @mvar{gr}の頂点次数のリストを返します。
+@deffn {関数} degree_sequence (@var{gr})
+グラフ @var{gr}の頂点次数のリストを返します。
 
 例:
 @c ===beg===
@@ -985,8 +985,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} edge_connectivity (@mvar{gr})
-グラフ @mvar{gr}の辺連結性を返します。
+@deffn {関数} edge_connectivity (@var{gr})
+グラフ @var{gr}の辺連結性を返します。
 
 @code{min_edge_cut}も参照してください。
 
@@ -995,8 +995,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} edges (@mvar{gr})
-(有向)グラフ @mvar{gr}の辺(弧)のリストを返します。
+@deffn {関数} edges (@var{gr})
+(有向)グラフ @var{gr}の辺(弧)のリストを返します。
 
 例:
 @c ===beg===
@@ -1014,14 +1014,14 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} get_edge_weight (@mvar{e}, @mvar{gr})
-@deffnx {関数} get_edge_weight (@mvar{e}, @mvar{gr}, @mvar{ifnot})
-グラフ @mvar{gr}の辺 @mvar{e}の重みを返します。
+@deffn {関数} get_edge_weight (@var{e}, @var{gr})
+@deffnx {関数} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+グラフ @var{gr}の辺 @var{e}の重みを返します。
 
 もし辺に割り当てられた重みがないなら、
 関数は1を返します。
 もし辺がグラフの中に存在しないなら、
-関数はエラーをシグナルするか、オプション引数 @mvar{ifnot}を返します。
+関数はエラーをシグナルするか、オプション引数 @var{ifnot}を返します。
 
 例:
 @c ===beg===
@@ -1047,8 +1047,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} get_vertex_label (@mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の頂点 @mvar{v}のラベルを返します。
+@deffn {関数} get_vertex_label (@var{v}, @var{gr})
+グラフ @var{gr}の頂点 @var{v}のラベルを返します。
 
 例:
 @c ===beg===
@@ -1068,8 +1068,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_charpoly (@mvar{gr}, @mvar{x})
-グラフ @mvar{gr}の(変数 @mvar{x}に関する)特性多項式を返します。
+@deffn {関数} graph_charpoly (@var{gr}, @var{x})
+グラフ @var{gr}の(変数 @var{x}に関する)特性多項式を返します。
 
 例:
 @c ===beg===
@@ -1090,8 +1090,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_center (@mvar{gr})
-グラフ @mvar{gr}の中心を返します。
+@deffn {関数} graph_center (@var{gr})
+グラフ @var{gr}の中心を返します。
 
 例:
 @c ===beg===
@@ -1111,8 +1111,8 @@ Tutteグラフを返します。
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_eigenvalues (@mvar{gr})
-グラフ @mvar{gr}の固有値を返します。
+@deffn {関数} graph_eigenvalues (@var{gr})
+グラフ @var{gr}の固有値を返します。
 関数は
 maxima @code{eigenvalue}関数と同じフォーマットで固有値を返します。
 
@@ -1134,8 +1134,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_periphery (@mvar{gr})
-グラフ @mvar{gr}の外周を返します。
+@deffn {関数} graph_periphery (@var{gr})
+グラフ @var{gr}の外周を返します。
 
 例:
 @c ===beg===
@@ -1155,8 +1155,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_size (@mvar{gr})
-グラフ @mvar{gr}の辺の数を返します。
+@deffn {関数} graph_size (@var{gr})
+グラフ @var{gr}の辺の数を返します。
 
 例:
 @c ===beg===
@@ -1176,8 +1176,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} graph_order (@mvar{gr})
-グラフ @mvar{gr}の頂点の数を返します。
+@deffn {関数} graph_order (@var{gr})
+グラフ @var{gr}の頂点の数を返します。
 
 例:
 @c ===beg===
@@ -1197,8 +1197,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} girth (@mvar{gr})
-@mvar{gr}の最短閉路の長さを返します。
+@deffn {関数} girth (@var{gr})
+@var{gr}の最短閉路の長さを返します。
 
 例:
 @c ===beg===
@@ -1218,9 +1218,9 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} hamilton_cycle (@mvar{gr})
-グラフ @mvar{gr}のHamilton閉路を返します。
-もし @mvar{gr}がハミルトニアンでないなら、空のリストを返します。
+@deffn {関数} hamilton_cycle (@var{gr})
+グラフ @var{gr}のHamilton閉路を返します。
+もし @var{gr}がハミルトニアンでないなら、空のリストを返します。
 
 例:
 @c ===beg===
@@ -1246,9 +1246,9 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @image{figures/graphs03,6cm}
 @end ifhtml
 
-@deffn {関数} hamilton_path (@mvar{gr})
-グラフ @mvar{gr}のHamilton経路を返します。
-もし @mvar{gr}がHamilton経路を持たないなら、空のリストを返します。
+@deffn {関数} hamilton_path (@var{gr})
+グラフ @var{gr}のHamilton経路を返します。
+もし @var{gr}がHamilton経路を持たないなら、空のリストを返します。
 
 例:
 @c ===beg===
@@ -1274,10 +1274,10 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @image{figures/graphs04,6cm}
 @end ifhtml
 
-@deffn {関数} isomorphism (@mvar{gr1}, @mvar{gr2})
+@deffn {関数} isomorphism (@var{gr1}, @var{gr2})
 
-グラフ/有向グラフ @mvar{gr1}と @mvar{gr2}の間の同型写像を返します。
-もし @mvar{gr1}と @mvar{gr2}が同型でないなら、空のリストを返します。
+グラフ/有向グラフ @var{gr1}と @var{gr2}の間の同型写像を返します。
+もし @var{gr1}と @var{gr2}が同型でないなら、空のリストを返します。
 
 例:
 @c ===beg===
@@ -1298,8 +1298,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} in_neighbors (@mvar{v}, @mvar{gr})
-有向グラフ @mvar{gr}の頂点 @mvar{v}の内隣接点のリストを返します。
+@deffn {関数} in_neighbors (@var{v}, @var{gr})
+有向グラフ @var{gr}の頂点 @var{v}の内隣接点のリストを返します。
 
 例:
 @c ===beg===
@@ -1322,8 +1322,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_biconnected (@mvar{gr})
-もし @mvar{gr}が2連結なら @code{true}を、
+@deffn {関数} is_biconnected (@var{gr})
+もし @var{gr}が2連結なら @code{true}を、
 そうでないなら、 @code{false}を返します。
 
 例:
@@ -1345,8 +1345,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_bipartite (@mvar{gr})
-もし @mvar{gr}が2部(2彩色)なら @code{true}を、
+@deffn {関数} is_bipartite (@var{gr})
+もし @var{gr}が2部(2彩色)なら @code{true}を、
 そうでないなら、 @code{false}を返します。
 
 例:
@@ -1368,8 +1368,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_connected (@mvar{gr})
-もしグラフ @mvar{gr}が連結なら @code{true}を、
+@deffn {関数} is_connected (@var{gr})
+もしグラフ @var{gr}が連結なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1388,8 +1388,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_digraph (@mvar{gr})
-もし @mvar{gr}が有向グラフなら @code{true}を、
+@deffn {関数} is_digraph (@var{gr})
+もし @var{gr}が有向グラフなら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1411,8 +1411,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_edge_in_graph (@mvar{e}, @mvar{gr})
-もし @mvar{e}が(有向)グラフ @mvar{g}の辺(弧)なら @code{true}を、
+@deffn {関数} is_edge_in_graph (@var{e}, @var{gr})
+もし @var{e}が(有向)グラフ @var{g}の辺(弧)なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1442,8 +1442,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_graph (@mvar{gr})
-もし @mvar{gr}がグラフなら @code{true}を、
+@deffn {関数} is_graph (@var{gr})
+もし @var{gr}がグラフなら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1465,8 +1465,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_graph_or_digraph (@mvar{gr})
-もし @mvar{gr}がグラフか有向グラフなら @code{true}を、
+@deffn {関数} is_graph_or_digraph (@var{gr})
+もし @var{gr}がグラフか有向グラフなら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1488,9 +1488,9 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_isomorphic (@mvar{gr1}, @mvar{gr2})
+@deffn {関数} is_isomorphic (@var{gr1}, @var{gr2})
 
-もし グラフ/有向グラフ @mvar{gr1}と @mvar{gr2}が同型なら @code{true}を、
+もし グラフ/有向グラフ @var{gr1}と @var{gr2}が同型なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 @code{isomorphism}も参照してください。
@@ -1513,9 +1513,9 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_planar (@mvar{gr})
+@deffn {関数} is_planar (@var{gr})
 
-もし @mvar{gr}が平面グラフなら @code{true}を、
+もし @var{gr}が平面グラフなら @code{true}を、
 そうでないなら @code{false}を返します。
 
 使われているアルゴリズムはDemoucronのアルゴリズムです。
@@ -1543,8 +1543,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_sconnected (@mvar{gr})
-もし有向グラフ @mvar{gr}が強連結なら @code{true}を、
+@deffn {関数} is_sconnected (@var{gr})
+もし有向グラフ @var{gr}が強連結なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1566,8 +1566,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_vertex_in_graph (@mvar{v}, @mvar{gr})
-もし @mvar{v}がグラフ @mvar{g}の頂点なら @code{true}を、
+@deffn {関数} is_vertex_in_graph (@var{v}, @var{gr})
+もし @var{v}がグラフ @var{g}の頂点なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1591,8 +1591,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} is_tree (@mvar{gr})
-もし @mvar{gr}が木なら @code{true}を、
+@deffn {関数} is_tree (@var{gr})
+もし @var{gr}が木なら @code{true}を、
 そうでないなら @code{false}を返します。
 
 例:
@@ -1614,8 +1614,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} laplacian_matrix (@mvar{gr})
-グラフ @mvar{gr}のLaplace行列を返します。
+@deffn {関数} laplacian_matrix (@var{gr})
+グラフ @var{gr}のLaplace行列を返します。
 
 例:
 @c ===beg===
@@ -1641,8 +1641,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} max_clique (@mvar{gr})
-グラフ @mvar{gr}の最大クリークを返します。
+@deffn {関数} max_clique (@var{gr})
+グラフ @var{gr}の最大クリークを返します。
 
 例:
 @c ===beg===
@@ -1662,8 +1662,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} max_degree (@mvar{gr})
-グラフ @mvar{gr}の頂点の最大次数と最大次数の頂点を返します。
+@deffn {関数} max_degree (@var{gr})
+グラフ @var{gr}の頂点の最大次数と最大次数の頂点を返します。
 
 例:
 @c ===beg===
@@ -1686,9 +1686,9 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} max_flow (@mvar{net}, @mvar{s}, @mvar{t})
-ソース @mvar{s}とシンク @mvar{t}を持ち
-ネットワーク @mvar{net}を通る最大フローを返します。
+@deffn {関数} max_flow (@var{net}, @var{s}, @var{t})
+ソース @var{s}とシンク @var{t}を持ち
+ネットワーク @var{net}を通る最大フローを返します。
 
 関数は最大フローの値と
 最適フローで弧の重みを表現するリストを返します。
@@ -1742,8 +1742,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} max_independent_set (@mvar{gr})
-グラフ @mvar{gr}の最大独立集合を返します。
+@deffn {関数} max_independent_set (@var{gr})
+グラフ @var{gr}の最大独立集合を返します。
 
 例:
 @c ===beg===
@@ -1769,8 +1769,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @image{figures/graphs05,6cm}
 @end ifhtml
 
-@deffn {関数} max_matching (@mvar{gr})
-グラフ @mvar{gr}の最大マッチングを返します。
+@deffn {関数} max_matching (@var{gr})
+グラフ @var{gr}の最大マッチングを返します。
 
 例:
 @c ===beg===
@@ -1797,8 +1797,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @image{figures/graphs06,6cm}
 @end ifhtml
 
-@deffn {関数} min_degree (@mvar{gr})
-グラフ @mvar{gr}の頂点の最小次数と最小次数の頂点を返します。
+@deffn {関数} min_degree (@var{gr})
+グラフ @var{gr}の頂点の最小次数と最小次数の頂点を返します。
 
 例:
 @c ===beg===
@@ -1821,8 +1821,8 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} min_edge_cut (@mvar{gr})
-グラフ @mvar{gr}の最小切断辺を返します。
+@deffn {関数} min_edge_cut (@var{gr})
+グラフ @var{gr}の最小切断辺を返します。
 
 @code{edge_connectivity}も参照してください。
 
@@ -1831,17 +1831,17 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @closecatbox
 @end deffn
 
-@deffn {関数} min_vertex_cover (@mvar{gr})
-グラフ @mvar{gr}の最小頂点被覆を返します。
+@deffn {関数} min_vertex_cover (@var{gr})
+グラフ @var{gr}の最小頂点被覆を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
-@deffn {関数} min_vertex_cut (@mvar{gr})
+@deffn {関数} min_vertex_cut (@var{gr})
 Returns the minimum vertex cut in the graph
-グラフ @mvar{gr}の最小頂点切断を返します。
+グラフ @var{gr}の最小頂点切断を返します。
 
 @code{vertex_connectivity}も参照してください。
 
@@ -1850,8 +1850,8 @@ Returns the minimum vertex cut in the graph
 @closecatbox
 @end deffn
 
-@deffn {関数} minimum_spanning_tree (@mvar{gr})
-グラフ @mvar{gr}の最小全域木を返します。
+@deffn {関数} minimum_spanning_tree (@var{gr})
+グラフ @var{gr}の最小全域木を返します。
 
 例:
 @c ===beg===
@@ -1876,8 +1876,8 @@ Returns the minimum vertex cut in the graph
 @image{figures/graphs07,6cm}
 @end ifhtml
 
-@deffn {関数} neighbors (@mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の頂点 @mvar{v}の隣接点のリストを返します。
+@deffn {関数} neighbors (@var{v}, @var{gr})
+グラフ @var{gr}の頂点 @var{v}の隣接点のリストを返します。
 
 例:
 @c ===beg===
@@ -1897,8 +1897,8 @@ Returns the minimum vertex cut in the graph
 @closecatbox
 @end deffn
 
-@deffn {関数} odd_girth (@mvar{gr})
-グラフ @mvar{gr}の最短奇閉路の長さを返します。
+@deffn {関数} odd_girth (@var{gr})
+グラフ @var{gr}の最短奇閉路の長さを返します。
 
 例:
 @c ===beg===
@@ -1921,8 +1921,8 @@ Returns the minimum vertex cut in the graph
 @closecatbox
 @end deffn
 
-@deffn {関数} out_neighbors (@mvar{v}, @mvar{gr})
-有向グラフ @mvar{gr}の頂点 @mvar{v}の外隣接点のリストを返します。
+@deffn {関数} out_neighbors (@var{v}, @var{gr})
+有向グラフ @var{gr}の頂点 @var{v}の外隣接点のリストを返します。
 
 例:
 @c ===beg===
@@ -1945,12 +1945,12 @@ Returns the minimum vertex cut in the graph
 @closecatbox
 @end deffn
 
-@deffn {関数} planar_embedding (@mvar{gr})
+@deffn {関数} planar_embedding (@var{gr})
 
-@mvar{gr}の平面埋め込みでのfacial walkのリストを返します。
-もし @mvar{gr}が平面グラフでないなら @code{false}を返します。
+@var{gr}の平面埋め込みでのfacial walkのリストを返します。
+もし @var{gr}が平面グラフでないなら @code{false}を返します。
 
-グラフ @mvar{gr}は2連結でなければいけません。
+グラフ @var{gr}は2連結でなければいけません。
 
 使われるアルゴリズムはDemoucronのアルゴリズムです。
 これは二次時間アルゴリズムです。
@@ -1972,8 +1972,8 @@ Returns the minimum vertex cut in the graph
 @closecatbox
 @end deffn
 
-@deffn {関数} print_graph (@mvar{gr})
-グラフ @mvar{gr}についてのある情報を印字します。
+@deffn {関数} print_graph (@var{gr})
+グラフ @var{gr}についてのある情報を印字します。
 
 例:
 @c ===beg===
@@ -2013,8 +2013,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} radius (@mvar{gr})
-グラフ @mvar{gr}の半径を返します。
+@deffn {関数} radius (@var{gr})
+グラフ @var{gr}の半径を返します。
 
 例:
 @c ===beg===
@@ -2032,8 +2032,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} set_edge_weight (@mvar{e}, @mvar{w}, @mvar{gr})
-グラフ @mvar{gr}の辺 @mvar{e}に重み @mvar{w}を割り当てます。
+@deffn {関数} set_edge_weight (@var{e}, @var{w}, @var{gr})
+グラフ @var{gr}の辺 @var{e}に重み @var{w}を割り当てます。
 
 例:
 @c ===beg===
@@ -2059,8 +2059,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} set_vertex_label (@mvar{v}, @mvar{l}, @mvar{gr})
-グラフ @mvar{gr}の頂点 @mvar{v}にラベル @mvar{l}を割り当てます。
+@deffn {関数} set_vertex_label (@var{v}, @var{l}, @var{gr})
+グラフ @var{gr}の頂点 @var{v}にラベル @var{l}を割り当てます。
 
 
 例:
@@ -2087,8 +2087,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} shortest_path (@mvar{u}, @mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の @mvar{u}から @mvar{v}までの最短経路を返します。
+@deffn {関数} shortest_path (@var{u}, @var{v}, @var{gr})
+グラフ @var{gr}の @var{u}から @var{v}までの最短経路を返します。
 
 例:
 @c ===beg===
@@ -2114,8 +2114,8 @@ Adjacencies:
 @image{figures/graphs08,6cm}
 @end ifhtml
 
-@deffn {関数} shortest_weighted_path (@mvar{u}, @mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の @mvar{u}から @mvar{v}までの最短重み付き経路とその長さを返します。
+@deffn {関数} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
+グラフ @var{gr}の @var{u}から @var{v}までの最短重み付き経路とその長さを返します。
 
 重み付き経路の長さは経路内の辺の辺重みの和です。
 もし辺に重みがないなら、辺はデフォルト重み1を持ちます。
@@ -2141,8 +2141,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} strong_components (@mvar{gr})
-有向グラフ @mvar{gr}の強成分を返します。
+@deffn {関数} strong_components (@var{gr})
+有向グラフ @var{gr}の強成分を返します。
 
 例:
 @c ===beg===
@@ -2165,11 +2165,11 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} topological_sort (@mvar{dag})
+@deffn {関数} topological_sort (@var{dag})
 
 Returns a topological sorting of the vertices of a directed graph
-有向グラフ @mvar{dag}の頂点のトポロジカルソートを返します。
-もし @mvar{dag}が有向無閉路グラフなら空のリストを返します。
+有向グラフ @var{dag}の頂点のトポロジカルソートを返します。
+もし @var{dag}が有向無閉路グラフなら空のリストを返します。
 
 例:
 @c ===beg===
@@ -2201,8 +2201,8 @@ Returns a topological sorting of the vertices of a directed graph
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_connectivity (@mvar{g})
-グラフ @mvar{g}の頂点連結性を返します。
+@deffn {関数} vertex_connectivity (@var{g})
+グラフ @var{g}の頂点連結性を返します。
 
 @code{min_vertex_cut}も参照してください。
 
@@ -2211,16 +2211,16 @@ Returns a topological sorting of the vertices of a directed graph
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_degree (@mvar{v}, @mvar{gr})
-グラフ @mvar{gr}の頂点 @mvar{v}の次数を返します。
+@deffn {関数} vertex_degree (@var{v}, @var{gr})
+グラフ @var{gr}の頂点 @var{v}の次数を返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_distance (@mvar{u}, @mvar{v}, @mvar{gr})
-(有向)グラフ @mvar{gr}の @mvar{u}と @mvar{v}の間の最短経路の長さを返します。
+@deffn {関数} vertex_distance (@var{u}, @var{v}, @var{gr})
+(有向)グラフ @var{gr}の @var{u}と @var{v}の間の最短経路の長さを返します。
 
 例:
 @c ===beg===
@@ -2243,9 +2243,9 @@ Returns a topological sorting of the vertices of a directed graph
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_eccentricity (@mvar{v}, @mvar{gr})
+@deffn {関数} vertex_eccentricity (@var{v}, @var{gr})
 
-グラフ @mvar{gr}の頂点 @mvar{v}の離心率を返します。
+グラフ @var{gr}の頂点 @var{v}の離心率を返します。
 
 例:
 @c ===beg===
@@ -2265,8 +2265,8 @@ Returns a topological sorting of the vertices of a directed graph
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_in_degree (@mvar{v}, @mvar{gr})
-有向グラフ @mvar{gr}の頂点 @mvar{v}の内次数を返します。
+@deffn {関数} vertex_in_degree (@var{v}, @var{gr})
+有向グラフ @var{gr}の頂点 @var{v}の内次数を返します。
 
 例:
 @c ===beg===
@@ -2298,8 +2298,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_out_degree (@mvar{v}, @mvar{gr})
-有向グラフ @mvar{gr}の頂点 @mvar{v}の外次数を返します。
+@deffn {関数} vertex_out_degree (@var{v}, @var{gr})
+有向グラフ @var{gr}の頂点 @var{v}の外次数を返します。
 
 例:
 @c ===beg===
@@ -2322,8 +2322,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} vertices (@mvar{gr})
-グラフ @mvar{gr}の頂点のリストを返します。
+@deffn {関数} vertices (@var{gr})
+グラフ @var{gr}の頂点のリストを返します。
 
 例:
 @c ===beg===
@@ -2341,10 +2341,10 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} vertex_coloring (@mvar{gr})
-グラフ @mvar{gr}の頂点の最適色付けを返します。
+@deffn {関数} vertex_coloring (@var{gr})
+グラフ @var{gr}の頂点の最適色付けを返します。
 
-関数は、彩色数と @mvar{gr}の頂点の色付けを表すリストを返します。
+関数は、彩色数と @var{gr}の頂点の色付けを表すリストを返します。
 
 例:
 @c ===beg===
@@ -2365,8 +2365,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} wiener_index (@mvar{gr})
-グラフ @mvar{gr}のWiener指数を返します。
+@deffn {関数} wiener_index (@var{gr})
+グラフ @var{gr}のWiener指数を返します。
 
 例:
 @c ===beg===
@@ -2385,8 +2385,8 @@ Adjacencies:
 
 @subsection Modifying graphs
 
-@deffn {関数} add_edge (@mvar{e}, @mvar{gr})
-辺 @mvar{e}をグラフ @mvar{gr}に加えます。
+@deffn {関数} add_edge (@var{e}, @var{gr})
+辺 @var{e}をグラフ @var{gr}に加えます。
 
 例:
 @c ===beg===
@@ -2412,8 +2412,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} add_edges (@mvar{e_list}, @mvar{gr})
-リスト @mvar{e_list}の中の辺すべてをグラフ @mvar{gr}に加えます。
+@deffn {関数} add_edges (@var{e_list}, @var{gr})
+リスト @var{e_list}の中の辺すべてをグラフ @var{gr}に加えます。
 
 例:
 @c ===beg===
@@ -2439,8 +2439,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} add_vertex (@mvar{v}, @mvar{gr})
-頂点 @mvar{v}をグラフ @mvar{gr}に加えます。
+@deffn {関数} add_vertex (@var{v}, @var{gr})
+頂点 @var{v}をグラフ @var{gr}に加えます。
 
 例:
 @c ===beg===
@@ -2466,21 +2466,21 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} add_vertices (@mvar{v_list}, @mvar{gr})
-リスト @mvar{v_list}の中の頂点すべてをグラフ @mvar{gr}に加えます。
+@deffn {関数} add_vertices (@var{v_list}, @var{gr})
+リスト @var{v_list}の中の頂点すべてをグラフ @var{gr}に加えます。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - modifications}
 @closecatbox
 @end deffn
 
-@deffn {関数} connect_vertices (@mvar{v_list}, @mvar{u_list}, @mvar{gr})
-グラフ @mvar{gr}に関して、
-リスト @mvar{v_list}内の頂点すべてを
-リスト @mvar{u_list}内の頂点に連結します。
+@deffn {関数} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
+グラフ @var{gr}に関して、
+リスト @var{v_list}内の頂点すべてを
+リスト @var{u_list}内の頂点に連結します。
 
 
-@mvar{v_list}と @mvar{u_list}は1つの頂点か、頂点のリストを取り得ます。
+@var{v_list}と @var{u_list}は1つの頂点か、頂点のリストを取り得ます。
 
 例:
 @c ===beg===
@@ -2507,8 +2507,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} contract_edge (@mvar{e}, @mvar{gr})
-グラフ @mvar{gr}の辺 @mvar{e}を縮約します。
+@deffn {関数} contract_edge (@var{e}, @var{gr})
+グラフ @var{gr}の辺 @var{e}を縮約します。
 
 例:
 @c ===beg===
@@ -2552,8 +2552,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} remove_edge (@mvar{e}, @mvar{gr})
-グラフ @mvar{gr}から辺 @mvar{e}を削除します。
+@deffn {関数} remove_edge (@var{e}, @var{gr})
+グラフ @var{gr}から辺 @var{e}を削除します。
 
 例:
 @c ===beg===
@@ -2579,8 +2579,8 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} remove_vertex (@mvar{v}, @mvar{gr})
-グラフ @mvar{gr}から頂点 @mvar{v}を削除します。
+@deffn {関数} remove_vertex (@var{v}, @var{gr})
+グラフ @var{gr}から頂点 @var{v}を削除します。
 
 @opencatbox
 @category{Package graphs}
@@ -2589,10 +2589,10 @@ Adjacencies:
 
 @subsection Reading and writing to files
 
-@deffn {関数} dimacs_export (@mvar{gr}, @mvar{fl})
-@deffnx {関数} dimacs_export (@mvar{gr}, @mvar{fl}, @mvar{comment1}, ..., @mvar{commentn})
+@deffn {関数} dimacs_export (@var{gr}, @var{fl})
+@deffnx {関数} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
 
-グラフをファイル @mvar{fl}にDIMACSフォーマットでエクスポートします。
+グラフをファイル @var{fl}にDIMACSフォーマットでエクスポートします。
 オプションのコメントはファイルの頭に加えられます。
 
 @opencatbox
@@ -2600,36 +2600,36 @@ Adjacencies:
 @closecatbox
 @end deffn
 
-@deffn {関数} dimacs_import (@mvar{fl})
+@deffn {関数} dimacs_import (@var{fl})
 
-DIMACSフォーマットのファイル @mvar{fl}からグラフを返します。
-
-@opencatbox
-@category{Package graphs} @category{Package graphs - io}
-@closecatbox
-@end deffn
-
-@deffn {関数} graph6_decode (@mvar{str})
-
-文字列 @mvar{str}にgraph6フォーマットで符号化されたグラフを返します。
+DIMACSフォーマットのファイル @var{fl}からグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - io}
 @closecatbox
 @end deffn
 
-@deffn {関数} graph6_encode (@mvar{gr})
+@deffn {関数} graph6_decode (@var{str})
 
-グラフ @mvar{gr}をgraph6フォーマットに符号化した文字列を返します。
+文字列 @var{str}にgraph6フォーマットで符号化されたグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - io}
 @closecatbox
 @end deffn
 
-@deffn {関数} graph6_export (@mvar{gr_list}, @mvar{fl})
+@deffn {関数} graph6_encode (@var{gr})
 
-リスト @mvar{gr_list}内のグラフをファイル @mvar{fl}に
+グラフ @var{gr}をgraph6フォーマットに符号化した文字列を返します。
+
+@opencatbox
+@category{Package graphs} @category{Package graphs - io}
+@closecatbox
+@end deffn
+
+@deffn {関数} graph6_export (@var{gr_list}, @var{fl})
+
+リスト @var{gr_list}内のグラフをファイル @var{fl}に
 graph6フォーマットでエクスポートします。
 
 
@@ -2638,46 +2638,46 @@ graph6フォーマットでエクスポートします。
 @closecatbox
 @end deffn
 
-@deffn {関数} graph6_import (@mvar{fl})
+@deffn {関数} graph6_import (@var{fl})
 
-graph6フォーマットのファイル @mvar{fl}からグラフのリストを返します。
-
-@opencatbox
-@category{Package graphs} @category{Package graphs - io}
-@closecatbox
-@end deffn
-
-@deffn {関数} sparse6_decode (@mvar{str})
-
-文字列 @mvar{str}にsparse6フォーマットで符号化されたグラフを返します。
+graph6フォーマットのファイル @var{fl}からグラフのリストを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - io}
 @closecatbox
 @end deffn
 
-@deffn {関数} sparse6_encode (@mvar{gr})
+@deffn {関数} sparse6_decode (@var{str})
 
-グラフ @mvar{gr}をsparse6フォーマットに符号化した文字列を返します。
-
-@opencatbox
-@category{Package graphs} @category{Package graphs - io}
-@closecatbox
-@end deffn
-
-@deffn {関数} sparse6_export (@mvar{gr_list}, @mvar{fl})
-
-リスト @mvar{gr_list}内のグラフを
-ファイル @mvar{fl}にsparse6フォーマットでエクスポートします。
+文字列 @var{str}にsparse6フォーマットで符号化されたグラフを返します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - io}
 @closecatbox
 @end deffn
 
-@deffn {関数} sparse6_import (@mvar{fl})
+@deffn {関数} sparse6_encode (@var{gr})
 
-sparse6フォーマットのファイル @mvar{fl}からグラフのリストを返します。
+グラフ @var{gr}をsparse6フォーマットに符号化した文字列を返します。
+
+@opencatbox
+@category{Package graphs} @category{Package graphs - io}
+@closecatbox
+@end deffn
+
+@deffn {関数} sparse6_export (@var{gr_list}, @var{fl})
+
+リスト @var{gr_list}内のグラフを
+ファイル @var{fl}にsparse6フォーマットでエクスポートします。
+
+@opencatbox
+@category{Package graphs} @category{Package graphs - io}
+@closecatbox
+@end deffn
+
+@deffn {関数} sparse6_import (@var{fl})
+
+sparse6フォーマットのファイル @var{fl}からグラフのリストを返します。
 
 
 @opencatbox
@@ -2687,14 +2687,14 @@ sparse6フォーマットのファイル @mvar{fl}からグラフのリストを
 
 @subsection Visualization
 
-@deffn {関数} draw_graph (@mvar{graph})
-@deffnx {関数} draw_graph (@mvar{graph}, @mvar{option1}, ..., @mvar{optionk})
+@deffn {関数} draw_graph (@var{graph})
+@deffnx {関数} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
 @code{draw}パッケージを使ってグラフを描画します。
 
 頂点を配置するのに使われるアルゴリズムは
-オプション引数 @mvar{program}で指定されます。
+オプション引数 @var{program}で指定されます。
 デフォルト値は @code{program=spring_embedding}です。
-@mvar{draw_graph}は
+@var{draw_graph}は
 頂点を配置するのにgraphvizプログラムも使うことができますが、
 graphvizを別途インストールしなければいけません。
 
@@ -2918,7 +2918,7 @@ graphvizを別途インストールしなければいけません。
 @end deffn
 
 @defvr {オプション変数} draw_graph_program
-デフォルト値: @mvar{spring_embedding}
+デフォルト値: @var{spring_embedding}
 
 頂点を配置するのに使われるプログラムのデフォルト値は
 @code{draw_graph}プログラムです。
@@ -2929,9 +2929,9 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_id
-デフォルト値: @mvar{false}
+デフォルト値: @var{false}
 
-もし @mvar{true}なら頂点のidが表示されます。
+もし @var{true}なら頂点のidが表示されます。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -2939,9 +2939,9 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_label
-デフォルト値: @mvar{false}
+デフォルト値: @var{false}
 
-もし @mvar{true}なら頂点のラベルが表示されます。
+もし @var{true}なら頂点のラベルが表示されます。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -2949,7 +2949,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} label_alignment
-デフォルト値: @mvar{center}
+デフォルト値: @var{center}
 
 頂点のラベル/idをいかに整列させるか決めます。
 @code{left}, @code{center}, @code{right}であり得ます。
@@ -2960,9 +2960,9 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_weight 
-デフォルト値: @mvar{false}
+デフォルト値: @var{false}
 
-もし @mvar{true}なら辺の重みを表示します。
+もし @var{true}なら辺の重みを表示します。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -2970,11 +2970,11 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} vertex_type
-デフォルト値: @mvar{circle}
+デフォルト値: @var{circle}
 
 頂点をいかに表示するか定義します。
 可能な値に関しては、
-@code{draw}パッケージの @mvar{point_type}オプションを参照してください。
+@code{draw}パッケージの @var{point_type}オプションを参照してください。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3009,9 +3009,9 @@ graphvizを別途インストールしなければいけません。
 
 @defvr {draw_graphオプション} show_vertex_type
 
-@mvar{show_vertices}で指定された頂点をいかに表示するか定義します。
+@var{show_vertices}で指定された頂点をいかに表示するか定義します。
 可能な値については、
-@code{draw}パッケージの @mvar{point_type}オプションを参照してください。
+@code{draw}パッケージの @var{point_type}オプションを参照してください。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3019,7 +3019,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_vertex_size
-@mvar{show_vertices}内の頂点のサイズ
+@var{show_vertices}内の頂点のサイズ
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3027,7 +3027,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_vertex_color 
-@mvar{show_vertices}リスト内の頂点を表示するのに使う色。
+@var{show_vertices}リスト内の頂点を表示するのに使う色。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3047,8 +3047,8 @@ graphvizを別途インストールしなければいけません。
 
 @defvr {draw_graphオプション} vertex_coloring
 頂点の色付けを指定します。
-色付け @mvar{col}は
-@mvar{vertex_coloring}が返すようなフォーマットで指定されなければいけません。
+色付け @var{col}は
+@var{vertex_coloring}が返すようなフォーマットで指定されなければいけません。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3073,7 +3073,7 @@ graphvizを別途インストールしなければいけません。
 
 @defvr {draw_graphオプション} edge_type
 辺をいかに表示するか定義します。
-@code{draw}パッケージの@mvar{line_type}オプションを参照してください。
+@code{draw}パッケージの@var{line_type}オプションを参照してください。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3081,7 +3081,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_edges
-異なる色を使ってリスト @mvar{e_list}内で指定された辺を表示する。
+異なる色を使ってリスト @var{e_list}内で指定された辺を表示する。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3089,7 +3089,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_edge_color
-@mvar{show_edges}リスト内の辺を表示するのに使う色。
+@var{show_edges}リスト内の辺を表示するのに使う色。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3097,7 +3097,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_edge_width
-@mvar{show_edges}内の辺の幅。
+@var{show_edges}内の辺の幅。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3105,8 +3105,8 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} show_edge_type
-@mvar{show_edges}内の辺を以下に表示するかを定義します。
-@code{draw}パッケージの@mvar{line_type}オプションを参照してください。
+@var{show_edges}内の辺を以下に表示するかを定義します。
+@code{draw}パッケージの@var{line_type}オプションを参照してください。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3125,7 +3125,7 @@ graphvizを別途インストールしなければいけません。
 @defvr {draw_graphオプション} edge_coloring
 辺の色付け。
 色付けは
-関数 @mvar{edge_coloring}が返すようなフォーマットで指定しなければいけません。
+関数 @var{edge_coloring}が返すようなフォーマットで指定しなければいけません。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3133,7 +3133,7 @@ graphvizを別途インストールしなければいけません。
 @end defvr
 
 @defvr {draw_graphオプション} redraw 
-デフォルト値: @mvar{false}
+デフォルト値: @var{false}
 
 もし @code{true}なら、
 たとえ位置がグラフの以前の描画から保存されていても頂点位置が再計算されます。
@@ -3175,7 +3175,7 @@ graphvizを別途インストールしなければいけません。
 
 @defvr {draw_graphオプション} terminal
 描画で使う端末。
-(@code{draw}パッケージの @mvar{terminal}オプションを参照してください。)
+(@code{draw}パッケージの @var{terminal}オプションを参照してください。)
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3193,10 +3193,10 @@ graphvizを別途インストールしなければいけません。
 @defvr {draw_graphオプション} program
 グラフの頂点を配置するのに使われるプログラムを定義します。
 graphvizプログラム (dot, neato, twopi, circ, fdp)の1つ,
-@mvar{circular}, @mvar{spring_embedding}, @mvar{planar_embedding}を取り得ます。
-2連結平面グラフでは @mvar{planar_embedding}だけが利用可能です。
+@var{circular}, @var{spring_embedding}, @var{planar_embedding}を取り得ます。
+2連結平面グラフでは @var{planar_embedding}だけが利用可能です。
 @code{program=spring_embedding}の時、
-固定位置の頂点の集合が @mvar{fixed_vertices}オプションで指定可能です。
+固定位置の頂点の集合が @var{fixed_vertices}オプションで指定可能です。
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - draw_graphs options}
@@ -3212,18 +3212,18 @@ graphvizプログラム (dot, neato, twopi, circ, fdp)の1つ,
 @closecatbox
 @end defvr
 
-@deffn {関数} vertices_to_path (@mvar{v_list})
-頂点のリスト @mvar{v_list}を
-@mvar{v_list}で定義された経路の辺のリストに変換します。
+@deffn {関数} vertices_to_path (@var{v_list})
+頂点のリスト @var{v_list}を
+@var{v_list}で定義された経路の辺のリストに変換します。
 
 @opencatbox
 @category{Package graphs}
 @closecatbox
 @end deffn
 
-@deffn {関数} vertices_to_cycle (@mvar{v_list})
-頂点のリスト @mvar{v_list}を
-@mvar{v_list}で定義された閉路の辺のリストに変換します。
+@deffn {関数} vertices_to_cycle (@var{v_list})
+頂点のリスト @var{v_list}を
+@var{v_list}で定義された閉路の辺のリストに変換します。
 
 @opencatbox
 @category{Package graphs}

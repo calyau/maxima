@@ -27,11 +27,11 @@ computation of the fast Fourier transform.
 
 @c -----------------------------------------------------------------------------
 @anchor{polartorect}
-@deffn {Function} polartorect (@mvar{r}, @mvar{t})
+@deffn {Function} polartorect (@var{r}, @var{t})
 
 Translates complex values of the form @code{r %e^(%i t)} to the form
-@code{a + b %i}, where @mvar{r} is the magnitude and @mvar{t} is the phase.
-@mvar{r} and @mvar{t} are 1-dimensional arrays of the same size.
+@code{a + b %i}, where @var{r} is the magnitude and @var{t} is the phase.
+@var{r} and @var{t} are 1-dimensional arrays of the same size.
 The array size need not be a power of 2.
 
 The original values of the input arrays are
@@ -54,11 +54,11 @@ b = r sin(t)
 
 @c -----------------------------------------------------------------------------
 @anchor{recttopolar}
-@deffn {Function} recttopolar (@mvar{a}, @mvar{b})
+@deffn {Function} recttopolar (@var{a}, @var{b})
 
 Translates complex values of the form @code{a + b %i} to the form
-@code{r %e^(%i t)}, where @mvar{a} is the real part and @mvar{b} is the imaginary
-part.  @mvar{a} and @mvar{b} are 1-dimensional arrays of the same size.
+@code{r %e^(%i t)}, where @var{a} is the real part and @var{b} is the imaginary
+part.  @var{a} and @var{b} are 1-dimensional arrays of the same size.
 The array size need not be a power of 2.
 
 The original values of the input arrays are
@@ -83,17 +83,17 @@ The computed angle is in the range @code{-%pi} to @code{%pi}.
 
 @c -----------------------------------------------------------------------------
 @anchor{inverse_fft}
-@deffn {Function} inverse_fft (@mvar{y})
+@deffn {Function} inverse_fft (@var{y})
 
 Computes the inverse complex fast Fourier transform.
-@mvar{y} is a list or array (named or unnamed) which contains the data to
+@var{y} is a list or array (named or unnamed) which contains the data to
 transform.  The number of elements must be a power of 2.
 The elements must be literal numbers (integers, rationals, floats, or bigfloats)
 or symbolic constants,
 or expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
 or symbolic constants.
 
-@code{inverse_fft} returns a new object of the same type as @mvar{y},
+@code{inverse_fft} returns a new object of the same type as @var{y},
 which is not modified.
 Results are always computed as floats
 or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
@@ -171,17 +171,17 @@ Complex data.
 
 @c -----------------------------------------------------------------------------
 @anchor{fft}
-@deffn {Function} fft (@mvar{x})
+@deffn {Function} fft (@var{x})
 
 Computes the complex fast Fourier transform.
-@mvar{x} is a list or array (named or unnamed) which contains the data to
+@var{x} is a list or array (named or unnamed) which contains the data to
 transform.  The number of elements must be a power of 2.
 The elements must be literal numbers (integers, rationals, floats, or bigfloats)
 or symbolic constants,
 or expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
 or symbolic constants.
 
-@code{fft} returns a new object of the same type as @mvar{x},
+@code{fft} returns a new object of the same type as @var{x},
 which is not modified.
 Results are always computed as floats
 or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
@@ -194,7 +194,7 @@ Then for @code{k} from 0 through @code{n - 1},
 y[k] = (1/n) sum(x[j] exp(+2 %i %pi j k / n), j, 0, n - 1)
 @end example
 
-When the data @mvar{x} are real,
+When the data @var{x} are real,
 real coefficients @code{a} and @code{b} can be computed such that
 
 @example
@@ -343,13 +343,13 @@ Computation of sine and cosine coefficients.
 @c -----------------------------------------------------------------------------
 
 @anchor{horner}
-@deffn  {Function} horner (@mvar{expr}, @mvar{x})
-@deffnx {Function} horner (@mvar{expr})
+@deffn  {Function} horner (@var{expr}, @var{x})
+@deffnx {Function} horner (@var{expr})
 
-Returns a rearranged representation of @mvar{expr} as in Horner's rule, using
-@mvar{x} as the main variable if it is specified.  @code{x} may be omitted in
+Returns a rearranged representation of @var{expr} as in Horner's rule, using
+@var{x} as the main variable if it is specified.  @code{x} may be omitted in
 which case the main variable of the canonical rational expression form of
-@mvar{expr} is used.
+@var{expr} is used.
 
 @code{horner} sometimes improves stability if @code{expr} is
 to be numerically evaluated.  It is also useful if Maxima is used to
@@ -389,21 +389,21 @@ To enable the Lisp debugger set *debugger-hook* to nil.
 @anchor{find_root_error}
 @anchor{find_root_abs}
 @anchor{find_root_rel}
-@deffn  {Function} find_root (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
-@deffnx {Function} find_root (@mvar{f}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
-@deffnx {Function} bf_find_root (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
-@deffnx {Function} bf_find_root (@mvar{f}, @mvar{a}, @mvar{b}, [@mvar{abserr}, @mvar{relerr}])
+@deffn  {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Function} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Function} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Option variable} find_root_error
 @deffnx {Option variable} find_root_abs
 @deffnx {Option variable} find_root_rel
 
-Finds a root of the expression @mvar{expr} or the function @mvar{f} over the
-closed interval @math{[@mvar{a}, @mvar{b}]}.  The expression @mvar{expr} may be an
+Finds a root of the expression @var{expr} or the function @var{f} over the
+closed interval @math{[@var{a}, @var{b}]}.  The expression @var{expr} may be an
 equation, in which case @code{find_root} seeks a root of
-@code{lhs(@mvar{expr}) - rhs(@mvar{expr})}.
+@code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-Given that Maxima can evaluate @mvar{expr} or @mvar{f} over
-@math{[@mvar{a}, @mvar{b}]} and that @mvar{expr} or @mvar{f} is continuous,
+Given that Maxima can evaluate @var{expr} or @var{f} over
+@math{[@var{a}, @var{b}]} and that @var{expr} or @var{f} is continuous,
 @code{find_root} is guaranteed to find the root,
 or one of the roots if there is more than one.
 
@@ -432,7 +432,7 @@ Desired relative error of root.  Default is @code{find_root_rel}.
 
 @code{find_root} stops when the function in question evaluates to
 something less than or equal to @code{abserr}, or if successive
-approximants @mvar{x_0}, @mvar{x_1} differ by no more than @code{relerr
+approximants @var{x_0}, @var{x_1} differ by no more than @code{relerr
 * max(abs(x_0), abs(x_1))}.  The default values of
 @code{find_root_abs} and @code{find_root_rel} are both zero.
 
@@ -446,12 +446,12 @@ When @code{find_root_error} is @code{true},
 Otherwise @code{find_root} returns the value of @code{find_root_error}.
 The default value of @code{find_root_error} is @code{true}.
 
-If @mvar{f} evaluates to something other than a number at any step in the search
+If @var{f} evaluates to something other than a number at any step in the search
 algorithm, @code{find_root} returns a partially-evaluated @code{find_root}
 expression.
 
-The order of @mvar{a} and @mvar{b} is ignored; the region in which a root is
-sought is @math{[min(@mvar{a}, @mvar{b}), max(@mvar{a}, @mvar{b})]}.
+The order of @var{a} and @var{b} is ignored; the region in which a root is
+sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
 
 Examples:
 
@@ -512,18 +512,18 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{newton}
-@deffn {Function} newton (@mvar{expr}, @mvar{x}, @mvar{x_0}, @mvar{eps})
+@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 
-Returns an approximate solution of @code{@mvar{expr} = 0} by Newton's method,
-considering @mvar{expr} to be a function of one variable, @mvar{x}.
-The search begins with @code{@mvar{x} = @mvar{x_0}}
-and proceeds until @code{abs(@mvar{expr}) < @mvar{eps}}
-(with @mvar{expr} evaluated at the current value of @mvar{x}).
+Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
+considering @var{expr} to be a function of one variable, @var{x}.
+The search begins with @code{@var{x} = @var{x_0}}
+and proceeds until @code{abs(@var{expr}) < @var{eps}}
+(with @var{expr} evaluated at the current value of @var{x}).
 
-@code{newton} allows undefined variables to appear in @mvar{expr},
-so long as the termination test @code{abs(@mvar{expr}) < @mvar{eps}} evaluates
+@code{newton} allows undefined variables to appear in @var{expr},
+so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
 to @code{true} or @code{false}.
-Thus it is not necessary that @mvar{expr} evaluate to a number.
+Thus it is not necessary that @var{expr} evaluate to a number.
 
 @code{load(newton1)} loads this function.
 
@@ -579,7 +579,7 @@ section should have the form,
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 which is a first-order ODE. Higher order differential equations of order
-@mvar{n} must be written as a system of @mvar{n} first-order equations of that
+@var{n} must be written as a system of @var{n} first-order equations of that
 kind. For instance, a second-order ODE should be written as a system of two
 equations
 @ifnottex
@@ -596,7 +596,7 @@ $${{dx}\over{dt}} = G(x,y,t) \qquad {{dy}\over{dt}} = F(x,y,t)$$
 The first argument in the functions will be a list with the expressions on
 the right-side of the ODE's. The variables whose derivatives are represented
 by those expressions should be given in a second list. In the case above those
-variables are @mvar{x} and @mvar{y}. The independent variable, @mvar{t} in the
+variables are @var{x} and @var{y}. The independent variable, @var{t} in the
 examples above, might be given in a separated option. If the expressions
 given do not depend on that independent variable, the system is called
 autonomous.
@@ -610,10 +610,10 @@ autonomous.
 @node Functions for numerical solution of differential equations, , Introduction to numerical solution of differential equations, Numerical
 @section Functions for numerical solution of differential equations
 @c -----------------------------------------------------------------------------
-@deffn {Function} plotdf (@mvar{dydx}, ...options...)
-@deffnx {Function} plotdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
+@deffn {Function} plotdf (@var{dydx}, ...options...)
+@deffnx {Function} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
 
 The function @code{plotdf} creates a two-dimensional plot of the direction
 field (also called slope field) for a first-order Ordinary Differential
@@ -623,13 +623,13 @@ Plotdf requires Xmaxima, even if its run from a Maxima session in
 a console, since the plot will be created by the Tk scripts in Xmaxima.
 If Xmaxima is not installed plotdf will not work.
 
-@mvar{dydx}, @mvar{dxdt} and @mvar{dydt} are expressions that depend on
-@mvar{x} and @mvar{y}. @mvar{dvdu}, @mvar{dudt} and @mvar{dvdt} are
-expressions that depend on @mvar{u} and @mvar{v}. In addition to those two
+@var{dydx}, @var{dxdt} and @var{dydt} are expressions that depend on
+@var{x} and @var{y}. @var{dvdu}, @var{dudt} and @var{dvdt} are
+expressions that depend on @var{u} and @var{v}. In addition to those two
 variables, the expressions can also depend on a set of parameters, with
 numerical values given with the @code{parameters} option (the option
 syntax is given below), or with a range of allowed values specified by a
-@mvar{sliders} option.
+@var{sliders} option.
 
 Several other options can be given within the command, or selected in
 the menu. Integral curves can be obtained by clicking on the plot, or
@@ -662,7 +662,7 @@ the last integral curve entered will be shown.
 
 Holding the right mouse button down while the cursor is moved, can be
 used to drag the plot sideways or up and down. Additional
-parameters such as the number of steps, the initial value of @mvar{t}
+parameters such as the number of steps, the initial value of @var{t}
 and the x and y centers and radii, may be set in the Config menu.
 
 A copy of the plot can be saved as a postscript file, using the menu
@@ -680,9 +680,9 @@ The options which are recognized by @code{plotdf} are the following:
 @itemize @bullet
 @item
 @dfn{tstep} defines the length of the increments on the
-independent variable @mvar{t}, used to compute an integral curve. If only
-one expression @mvar{dydx} is given to @code{plotdf}, the @mvar{x}
-variable will be directly proportional to @mvar{t}.
+independent variable @var{t}, used to compute an integral curve. If only
+one expression @var{dydx} is given to @code{plotdf}, the @var{x}
+variable will be directly proportional to @var{t}.
 The default value is 0.1.
 
 @item
@@ -703,24 +703,24 @@ synonyms for @code{forward} and @code{backward}.
 The default value is @code{both}.
 
 @item
-@dfn{tinitial} defines the initial value of variable @mvar{t} used
+@dfn{tinitial} defines the initial value of variable @var{t} used
 to compute integral curves. Since the differential equations are
 autonomous, that setting will only appear in the plot of the curves as
-functions of @mvar{t}. 
+functions of @var{t}. 
 The default value is 0.
 
 @item
 @dfn{versus_t} is used to create a second plot window, with a
-plot of an integral curve, as two functions @mvar{x}, @mvar{y}, of the
-independent variable @mvar{t}. If @code{versus_t} is given any value
+plot of an integral curve, as two functions @var{x}, @var{y}, of the
+independent variable @var{t}. If @code{versus_t} is given any value
 different from 0, the second plot window will be displayed. The second
 plot window includes another menu, similar to the menu of the main plot
 window.
 The default value is 0.
 
 @item
-@dfn{trajectory_at} defines the coordinates @mvar{xinitial} and
-@mvar{yinitial} for the starting point of an integral curve.
+@dfn{trajectory_at} defines the coordinates @var{xinitial} and
+@var{yinitial} for the starting point of an integral curve.
 The option is empty by default.
 
 @item
@@ -737,20 +737,20 @@ string with a comma-separated sequence of elements @code{name=min:max}
 
 @item
 @dfn{xfun} defines a string with semi-colon-separated sequence
-of functions of @mvar{x} to be displayed, on top of the direction field.
+of functions of @var{x} to be displayed, on top of the direction field.
 Those functions will be parsed by Tcl and not by Maxima.
 
 @item
 @dfn{x} should be followed by two numbers, which will set up the minimum
 and maximum values shown on the horizontal axis. If the variable on the
-horizontal axis is not @mvar{x}, then this option should have the name of
+horizontal axis is not @var{x}, then this option should have the name of
 the variable on the horizontal axis.
 The default horizontal range is from -10 to 10.
 
 @item
 @dfn{y} should be followed by two numbers, which will set up the minimum
 and maximum values shown on the vertical axis. If the variable on the
-vertical axis is not @mvar{y}, then this option should have the name of
+vertical axis is not @var{y}, then this option should have the name of
 the variable on the vertical axis.
 The default vertical range is from -10 to 10.
 
@@ -874,9 +874,9 @@ the two state variables as a function of time:
 
 @end deffn
 
-@deffn {Function} ploteq (@mvar{exp}, ...options...)
+@deffn {Function} ploteq (@var{exp}, ...options...)
 
-Plots equipotential curves for @mvar{exp}, which should be an expression
+Plots equipotential curves for @var{exp}, which should be an expression
 depending on two variables. The curves are obtained by integrating the
 differential equation that define the ortogonal trajetories to the solutions
 of the autonomous system obtained from the gradient of the expression given.
@@ -911,13 +911,13 @@ clicking on a point will plot the equipotential curve that passes by that point
 
 @end deffn
 
-@deffn {Function} rk (@mvar{ODE}, @mvar{var}, @mvar{initial}, @mvar{domain})
-@deffnx {Function} rk ([@mvar{ODE1},...,@mvar{ODEm}], [@mvar{v1},...,@mvar{vm}], [@mvar{init1},...,@mvar{initm}], @mvar{domain})
+@deffn {Function} rk (@var{ODE}, @var{var}, @var{initial}, @var{domain})
+@deffnx {Function} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{domain})
 
 The first form solves numerically one first-order ordinary differential
 equation, and the second form solves a system of m of those equations,
-using the 4th order Runge-Kutta method. @mvar{var} represents the dependent
-variable. @mvar{ODE} must be an expression that depends only on the independent
+using the 4th order Runge-Kutta method. @var{var} represents the dependent
+variable. @var{ODE} must be an expression that depends only on the independent
 and dependent variables and defines the derivative of the dependent
 variable with respect to the independent variable.
 
@@ -931,16 +931,16 @@ second and third elements are the initial and final values for that
 variable, and the last element sets the increments that should be used
 within that interval.
 
-If @mvar{m} equations are going to be solved, there should be @mvar{m}
-dependent variables @mvar{v1}, @mvar{v2}, ..., @mvar{vm}. The initial values
-for those variables will be @mvar{init1}, @mvar{init2}, ..., @mvar{initm}.
+If @var{m} equations are going to be solved, there should be @var{m}
+dependent variables @var{v1}, @var{v2}, ..., @var{vm}. The initial values
+for those variables will be @var{init1}, @var{init2}, ..., @var{initm}.
 There will still be just one independent variable defined by @code{domain},
-as in the previous case. @mvar{ODE1}, ..., @mvar{ODEm} are the expressions
+as in the previous case. @var{ODE1}, ..., @var{ODEm} are the expressions
 that define the derivatives of each dependent variable in
 terms of the independent variable. The only variables that may appear in
 those expressions are the independent variable and any of the dependent
-variables. It is important to give the derivatives @mvar{ODE1}, ...,
-@mvar{ODEm} in the list in exactly the same order used for the dependent
+variables. It is important to give the derivatives @var{ODE1}, ...,
+@var{ODEm} in the list in exactly the same order used for the dependent
 variables; for instance, the third element in the list will be interpreted
 as the derivative of the third dependent variable.
 
@@ -950,7 +950,7 @@ increments. If at some step one of the dependent variables takes an
 absolute value too large, the integration will be interrupted at that
 point. The result will be a list with as many elements as the number of
 iterations made. Each element in the results list is itself another list
-with @mvar{m}+1 elements: the value of the independent variable, followed
+with @var{m}+1 elements: the value of the independent variable, followed
 by the values of the dependent variables corresponding to that point.
 
 To solve numerically the differential equation
@@ -976,7 +976,7 @@ increments of 0.1 for t, use:
 (%i2) plot2d ([discrete, results])$
 @end example
 
-the results will be saved in the list @code{results} and the plot will show the solution obtained, with @mvar{t} on the horizontal axis and @mvar{x} on the vertical axis.
+the results will be saved in the list @code{results} and the plot will show the solution obtained, with @var{t} on the horizontal axis and @var{x} on the vertical axis.
 
 To solve numerically the system:
 
@@ -1000,7 +1000,7 @@ for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0:
 (%i2) plot2d ([discrete,makelist([p[1],p[3]],p,sol)], [xlabel,"t"],[ylabel,"y"])$
 @end example
 
-The plot will show the solution for variable @mvar{y} as a function of @mvar{t}.
+The plot will show the solution for variable @var{y} as a function of @var{t}.
 
 @opencatbox
 @category{Differential equations} @category{Numerical methods}

@@ -39,15 +39,15 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{apply1}
-@deffn {関数} apply1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {関数} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 
-@mvar{rule_1}を @mvar{expr}に、失敗するまで繰り返し適用して、
-それから同じルールを @mvar{expr}の部分式すべてに左から右へ、
-部分式すべてで @mvar{rule_1}が失敗するまで繰り返し適用します。
+@var{rule_1}を @var{expr}に、失敗するまで繰り返し適用して、
+それから同じルールを @var{expr}の部分式すべてに左から右へ、
+部分式すべてで @var{rule_1}が失敗するまで繰り返し適用します。
 
-この方法で @mvar{expr}を変換した結果を @mvar{expr_2}と呼ぶことにします。
-次に、 @mvar{rule_2}を @mvar{expr_2}の最上部から始めて同じ方法で適用します。
-@mvar{rule_n}が最後の部分式上で失敗する時、結果が返されます。
+この方法で @var{expr}を変換した結果を @var{expr_2}と呼ぶことにします。
+次に、 @var{rule_2}を @var{expr_2}の最上部から始めて同じ方法で適用します。
+@var{rule_n}が最後の部分式上で失敗する時、結果が返されます。
 
 @code{maxapplydepth}は、
 @code{apply1}と @code{apply2}が処理する最も深い部分式の深さです。
@@ -63,10 +63,10 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{apply2}
-@deffn {関数} apply2 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {関数} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 
-もし@mvar{rule_1}が与えられた部分式上で失敗したら、
-@mvar{rule_2}が繰り返し適用されます、などなど。
+もし@var{rule_1}が与えられた部分式上で失敗したら、
+@var{rule_2}が繰り返し適用されます、などなど。
 すべてのルールが与えられた部分式上で失敗した時だけ、
 ルールの全組が次の部分式に繰り返し適用されます。
 もしルールの１つが成功したら、
@@ -86,17 +86,17 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{applyb1}
-@deffn {関数} applyb1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {関数} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 
 失敗するまで、繰り返し
-@mvar{expr}の最も深い部分式に
-@mvar{rule_1}を適用し、
+@var{expr}の最も深い部分式に
+@var{rule_1}を適用し、
 その後、
-@mvar{rule_1}がトップレベルの式で失敗するまで、
+@var{rule_1}がトップレベルの式で失敗するまで、
 同じルールを１つ高いレベル(すなわち、より大きな部分式)に適用します。
-その後、@mvar{rule_2}が@mvar{rule_1}の結果に
+その後、@var{rule_2}が@var{rule_1}の結果に
 同様に適用されます。
-@mvar{rule_n}がトップレベルの式に適用された後、結果が返されます。
+@var{rule_n}がトップレベルの式に適用された後、結果が返されます。
 
 @code{applyb1}は
 @code{apply1}に似ていますが、
@@ -157,33 +157,33 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{defmatch}
-@deffn  {関数} defmatch (@mvar{progname}, @mvar{pattern}, @mvar{x_1}, @dots{}, @mvar{x_n})
-@deffnx {関数} defmatch (@mvar{progname}, @mvar{pattern})
+@deffn  {関数} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
+@deffnx {関数} defmatch (@var{progname}, @var{pattern})
 
-@mvar{pattern}にマッチするか見るために @mvar{expr}をテストする
-関数@code{@mvar{progname}(@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}
+@var{pattern}にマッチするか見るために @var{expr}をテストする
+関数@code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}
 を定義します。
 
-@mvar{pattern}は、
+@var{pattern}は、
  (引数として与えられているなら)
-パターン引数 @mvar{x_1}, ..., @mvar{x_n}を含む式です。
+パターン引数 @var{x_1}, ..., @var{x_n}を含む式です。
 パターン引数は @code{defmatch}の引数として明示的に与えます。
 一方、@code{matchdeclare}関数がパターン変数を宣言します。
 @code{matchdeclare}のパターン変数か @code{defmatch}のパターン引数として宣言されていない
 任意の変数はそれ自身とのみマッチします。
 
-生成関数@mvar{progname}の最初の引数はパターンに対してマッチされる式であり、
-他の引数は、パターンの中のダミー変数@mvar{x_1}, ..., @mvar{x_n}に対応する
+生成関数@var{progname}の最初の引数はパターンに対してマッチされる式であり、
+他の引数は、パターンの中のダミー変数@var{x_1}, ..., @var{x_n}に対応する
 実際の引数です。
 
 もしマッチが成功したなら、
-@mvar{progname}は、
+@var{progname}は、
 左辺がパターン引数やパターン変数で、右辺がパターン引数や変数がマッチした部分式の
 等式のリストを返します。
 パターン変数はそれらがマッチした部分式に割り当てられますが、
 パターン引数には割り当てられません。
 もしマッチが失敗したら、
-@mvar{progname}は @code{false}を返します。
+@var{progname}は @code{false}を返します。
 
 リテラルパターン(すなわち、パターン引数もパターン変数も含まないパターン)は、
 もしマッチが成功したら、
@@ -313,10 +313,10 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{defrule}
-@deffn {関数} defrule (@mvar{rulename}, @mvar{pattern}, @mvar{replacement})
+@deffn {関数} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 
 与えられたパターンに関する置き換えルールを定義し、名付けます。
-もし@mvar{rulename}と名付けられたルールが
+もし@var{rulename}と名付けられたルールが
 (@code{apply1}, @code{applyb1}, @code{apply2}によって)
 式に適用されるなら、
 パターンにマッチするすべての部分式はreplacementで置き換えられます。
@@ -337,12 +337,12 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{disprule}
-@deffn  {関数} disprule (@mvar{rulename_1}, ..., @mvar{rulename_2})
+@deffn  {関数} disprule (@var{rulename_1}, ..., @var{rulename_2})
 @deffnx {関数} disprule (all)
 
 @code{defrule}, @code{tellsimp}, @code{tellsimpafter}が返すような、または
 @code{defmatch}が定義するパターンのような、
-名前@mvar{rulename_1}, ..., @mvar{rulename_n}を持つルールを
+名前@var{rulename_1}, ..., @var{rulename_n}を持つルールを
 表示します。
 ルールそれぞれは中間式ラベル(@code{%t})と一緒に表示されます。
 
@@ -391,12 +391,12 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{let}
-@deffn  {関数} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n})
-@deffnx {関数} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{package_name})
+@deffn  {関数} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {関数} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
 
-@mvar{prod}は@mvar{repl}で置き換えられるような
+@var{prod}は@var{repl}で置き換えられるような
 @code{letsimp}のための代入ルールを定義します。
-@mvar{prod}は、以下の項の正または負のべきの積です:
+@var{prod}は、以下の項の正または負のべきの積です:
 
 @itemize @bullet
 @item
@@ -414,22 +414,22 @@ Maximaの整理器によって自動的に適用されます。
 
 正のべきの項は、少なくともそのべきを持つ項だけにマッチするでしょう。
 一方、負のべきの項は、少なくとも負としてのべきをもつ項だけにマッチするでしょう。
-@mvar{prod}の中の負のべきの場合、
+@var{prod}の中の負のべきの場合、
 スイッチ@code{letrat}を@code{true}に設定しなければいけません。
 @code{letrat}も参照してください。
 
 もし述語論理が
 引数のリストが続く@code{let}関数に含まれるなら、
-@mvar{arg_i'}が@mvar{arg_i}にマッチした値である場合、
+@var{arg_i'}が@var{arg_i}にマッチした値である場合、
 @code{predname (arg_1', ..., arg_n')}が@code{true}に評価される時だけ
 試験的なマッチ(すなわち、述語論理が省略されたなら受け入れられるもの)
 が受け入れられます。
-@mvar{arg_i}は、任意のアトム名や
-@mvar{prod}の中に現れる任意の核の引数を取り得ます。
-@mvar{repl}は、任意の有理式を取り得ます。
+@var{arg_i}は、任意のアトム名や
+@var{prod}の中に現れる任意の核の引数を取り得ます。
+@var{repl}は、任意の有理式を取り得ます。
 @c ONLY RATIONAL -- REALLY ??
 もし
-任意のアトムや@mvar{prod}からの引数が@mvar{repl}の中に現れるなら、
+任意のアトムや@var{prod}からの引数が@var{repl}の中に現れるなら、
 適切な代入が行われます。
 @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
 
@@ -437,7 +437,7 @@ Maximaの整理器によって自動的に適用されます。
 @code{letsimp}による商の整理を制御します。
 @code{letrat}が@code{false}の時、
 @code{letsimp}は、
-@mvar{expr}の分子と分母をそれぞれ整理し、章を整理はしません。
+@var{expr}の分子と分母をそれぞれ整理し、章を整理はしません。
 @code{n!/n}のような代入は@code{(n-1)!}に進み失敗します。
 @code{letrat}が@code{true}の時、
 分子、分母、商がその順番で整理されます。
@@ -445,14 +445,14 @@ Maximaの整理器によって自動的に適用されます。
 これらの代入関数は、同時にいくつかのルールパッケージを使うことを許します。
 ルールパッケージそれぞれは、
 任意の数の@code{let}ルールを含むことができ、ユーザー定義名で参照されます。
-コマンド@code{let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1},
-..., @mvar{arg_n}], @mvar{package_name})}は、
-ルール@mvar{predname}をルールパッケージ@mvar{package_name}に加えます。
-コマンド@code{letsimp (@mvar{expr}, @mvar{package_name})} は、
-@mvar{package_name}の中でルールを適用します。
-@code{letsimp (@mvar{expr}, @mvar{package_name1}, @mvar{package_name2}, ...)}は、
-@code{letsimp (%, @mvar{package_name2})}, @dots{}が続く
-@code{letsimp (@mvar{expr}, @mvar{package_name1})}と同値です。
+コマンド@code{let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1},
+..., @var{arg_n}], @var{package_name})}は、
+ルール@var{predname}をルールパッケージ@var{package_name}に加えます。
+コマンド@code{letsimp (@var{expr}, @var{package_name})} は、
+@var{package_name}の中でルールを適用します。
+@code{letsimp (@var{expr}, @var{package_name1}, @var{package_name2}, ...)}は、
+@code{letsimp (%, @var{package_name2})}, @dots{}が続く
+@code{letsimp (@var{expr}, @var{package_name1})}と同値です。
 
 @code{current_let_rule_package}は、
 現在使われているルールパッケージの名前です。
@@ -461,8 +461,8 @@ Maximaの整理器によって自動的に適用されます。
 @code{let}パッケージを構成する関数のいずれかがパッケージ名なしでコールされた時はいつでも
 @code{current_let_rule_package}が指定したパッケージが使われます。
 もし
-@code{letsimp (@mvar{expr}, @mvar{rule_pkg_name})}のようなコールがされたら、
-ルールパッケージ@mvar{rule_pkg_name}は、
+@code{letsimp (@var{expr}, @var{rule_pkg_name})}のようなコールがされたら、
+ルールパッケージ@var{rule_pkg_name}は、
 その@code{letsimp}コマンドだけで使われ、
 @code{current_let_rule_package}は変わりません。
 もし他に指定されないなら、
@@ -533,12 +533,12 @@ Maximaの整理器によって自動的に適用されます。
 @c -----------------------------------------------------------------------------
 @anchor{letrules}
 @deffn  {関数} letrules ()
-@deffnx {関数} letrules (@mvar{package_name})
+@deffnx {関数} letrules (@var{package_name})
 
 ルールパッケージのルールを表示します。
 @code{letrules ()}は現在のルールパッケージのルールを表示します。
-@code{letrules (@mvar{package_name})}は
-@mvar{package_name}のルールを表示します。
+@code{letrules (@var{package_name})}は
+@var{package_name}のルールを表示します。
 
 現在のルールパッケージは
 @code{current_let_rule_package}によって指名されます。
@@ -557,24 +557,24 @@ Maximaの整理器によって自動的に適用されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{letsimp}
-@deffn  {関数} letsimp (@mvar{expr})
-@deffnx {関数} letsimp (@mvar{expr}, @mvar{package_name})
-@deffnx {関数} letsimp (@mvar{expr}, @mvar{package_name_1}, @dots{}, @mvar{package_name_n})
+@deffn  {関数} letsimp (@var{expr})
+@deffnx {関数} letsimp (@var{expr}, @var{package_name})
+@deffnx {関数} letsimp (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
 
-@mvar{expr}に変化がなくなるまで
+@var{expr}に変化がなくなるまで
 繰り返し、@code{let}が定義する代入ルールを適用します。
 
-@code{letsimp (@mvar{expr})}は
+@code{letsimp (@var{expr})}は
 @code{current_let_rule_package}からルールを使います。
 
-@code{letsimp (@mvar{expr}, @mvar{package_name})}は、
+@code{letsimp (@var{expr}, @var{package_name})}は、
 @code{current_let_rule_package}を変えることなしに
-@mvar{package_name}からルールを使います。
+@var{package_name}からルールを使います。
 
-@code{letsimp (@mvar{expr}, @mvar{package_name_1}, ..., @mvar{package_name_n})}は、
+@code{letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}は、
 quivalent to 
-@code{letsimp (%, @mvar{package_name_2})}などが続く
-@code{letsimp (@mvar{expr}, @mvar{package_name_1}}と同値です。
+@code{letsimp (%, @var{package_name_2})}などが続く
+@code{letsimp (@var{expr}, @var{package_name_1}}と同値です。
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -598,10 +598,10 @@ quivalent to
 
 @c -----------------------------------------------------------------------------
 @anchor{matchdeclare}
-@deffn {関数} matchdeclare (@mvar{a_1}, @mvar{pred_1}, ..., @mvar{a_n}, @mvar{pred_n})
+@deffn {関数} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 
-述語論理 @mvar{pred_k}を変数 @mvar{a_k}の変数やリストに関連づけます。
-なので、 @mvar{a_k}は述語論理が @code{false}以外の何かを返す式にマッチします。
+述語論理 @var{pred_k}を変数 @var{a_k}の変数やリストに関連づけます。
+なので、 @var{a_k}は述語論理が @code{false}以外の何かを返す式にマッチします。
 
 述語論理は関数の名前、ラムダ式、関数コール、最後の引数のないラムダコール、
 @code{true}または @code{all}です。
@@ -647,21 +647,21 @@ quivalent to
 １つのマッチ述語論理はべつのものがマッチした項を受け入れられないので、
 マッチ結果は順序付けに影響されません。
 
-変数 @mvar{a}を引数として @code{matchdeclare}をコールすると、
+変数 @var{a}を引数として @code{matchdeclare}をコールすると、
 もし既に宣言されているなら、
-@mvar{a}に関する @code{matchdeclare}プロパティが変わります:
+@var{a}に関する @code{matchdeclare}プロパティが変わります:
 ルールが定義された時、直近の @code{matchdeclare}だけが効果を持ちます。
 (@code{matchdeclare}か @code{remove}を介した)
 @code{matchdeclare}プロパティへの後の変更は、存在するルールに影響しません。
 
 @code{propvars (matchdeclare)}は
 @code{matchdeclare}プロパティを持つ変数すべてのリストを返します。
-@code{printprops (@mvar{a}, matchdeclare)}は、
+@code{printprops (@var{a}, matchdeclare)}は、
 変数 @code{a}に関する述語論理を返します。
 @code{printprops (all, matchdeclare)}は、
 すべての @code{matchdeclare}変数に関する述語論理のリストを返します。
-@code{remove (@mvar{a}, matchdeclare)}は、
-@mvar{a}から @code{matchdeclare}プロパティを削除します。
+@code{remove (@var{a}, matchdeclare)}は、
+@var{a}から @code{matchdeclare}プロパティを削除します。
 
 関数 @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter}, @code{let}は、パターンに対して式をテストするルールを構成します。
 
@@ -846,24 +846,24 @@ bb aa partitions `product'
 
 @c -----------------------------------------------------------------------------
 @anchor{remlet}
-@deffn  {関数} remlet (@mvar{prod}, @mvar{name})
+@deffn  {関数} remlet (@var{prod}, @var{name})
 @deffnx {関数} remlet ()
 @deffnx {関数} remlet (all)
-@deffnx {関数} remlet (all, @mvar{name})
+@deffnx {関数} remlet (all, @var{name})
 
 @code{let}関数で直近に定義された
-代入ルール@mvar{prod} --> replを削除します。
+代入ルール@var{prod} --> replを削除します。
 もし名前が供給されるなら、ルールはルールパッケージ名から削除されます。
 
 @code{remlet()}や@code{remlet(all)}は
 現在のルールパッケージから代入ルールすべてを削除します。
-もし例えば、@code{remlet (all, @mvar{name})}にように、ルールパッケージ名が供給されるなら、
-ルールパッケージ@mvar{name}も削除されます。
+もし例えば、@code{remlet (all, @var{name})}にように、ルールパッケージ名が供給されるなら、
+ルールパッケージ@var{name}も削除されます。
 
 もし代入が同じ積を使って変更されるなら、
 @code{remlet}はコールされる必要はなく、
 @code{let}関数と新しい置き換え　かつ/または述語論理名で、文字通りに同じ積を使って代入を再定義だけです。
-さて、@code{remlet (@mvar{prod})}がコールされると、
+さて、@code{remlet (@var{prod})}がコールされると、
 元の代入ルールが生き返ります。
 
 @code{remrule}も参照してください。
@@ -876,21 +876,21 @@ bb aa partitions `product'
 
 @c -----------------------------------------------------------------------------
 @anchor{remrule}
-@deffn {関数} remrule (@mvar{op}, @mvar{rulename})
-@deffnx {関数} remrule (@mvar{op}, all)
+@deffn {関数} remrule (@var{op}, @var{rulename})
+@deffnx {関数} remrule (@var{op}, all)
 
 @code{tellsimp}や@code{tellsimpafter}で定義されたルールを削除します。
 
-@code{remrule (@mvar{op}, @mvar{rulename})}は、
-演算子@mvar{op}から
-名前@mvar{rulename}を持つ
+@code{remrule (@var{op}, @var{rulename})}は、
+演算子@var{op}から
+名前@var{rulename}を持つ
 ルールを削除します。
-@mvar{op}が組み込みか
+@var{op}が組み込みか
 (@code{infix}, @code{prefix}, などで定義されたような)ユーザー定義演算子の時、
-@mvar{op}と@mvar{rulename}はダブルクォートマークでくくられないといけません。
+@var{op}と@var{rulename}はダブルクォートマークでくくられないといけません。
 
-@code{remrule (@mvar{op}, all)}は
-演算子@mvar{op}に関するルールすべてを削除します。
+@code{remrule (@var{op}, all)}は
+演算子@var{op}に関するルールすべてを削除します。
 
 @code{remlet}も参照してください。
 @code{let}で定義されたルールを削除します。
@@ -954,7 +954,7 @@ bb aa partitions `product'
 
 @c -----------------------------------------------------------------------------
 @anchor{tellsimp}
-@deffn {関数} tellsimp (@mvar{pattern}, @mvar{replacement})
+@deffn {関数} tellsimp (@var{pattern}, @var{replacement})
 
 @code{tellsimpafter}に似ていますが、
 古いものの前に新しい情報を置くので、
@@ -1022,31 +1022,31 @@ bb aa partitions `product'
 
 @c -----------------------------------------------------------------------------
 @anchor{tellsimpafter}
-@deffn {関数} tellsimpafter (@mvar{pattern}, @mvar{replacement})
+@deffn {関数} tellsimpafter (@var{pattern}, @var{replacement})
 
 組み込み整理ルールの後、適Maxima整理器が適用する
 整理ルールを定義します。
-@mvar{pattern}は
+@var{pattern}は
 (@code{matchdeclare}で宣言された)
 パターン変数や他のアトムや演算子から成る、
 パターンマッチングの目的でリテラルと考えられる式です。
-@mvar{replacement}は、
-@mvar{pattern}にマッチする実際の式に代入されます;
-@mvar{replacement}の中のパターン変数は
+@var{replacement}は、
+@var{pattern}にマッチする実際の式に代入されます;
+@var{replacement}の中のパターン変数は
 実際の式の中でマッチした値に割り当てられます。
 
-@mvar{pattern}は、
+@var{pattern}は、
 主演算子がパターン変数でない任意の非アトム式を取り得ます;
 整理ルールは主演算子に関連付けられます。
 (以下で記述する１つの例外がありますが、)関数、リスト、配列の名前が、
 (パターン変数でなく)ただリテラルとして、
-主演算子として@mvar{pattern}の中で現れることができます;
+主演算子として@var{pattern}の中で現れることができます;
 これは、
 パターンとして
 もし@code{aa}や@code{bb}がパターン変数なら
 @code{aa(x)}や@code{bb[y]}のような式を除外します。
 パターン変数である関数、リスト、配列の名前は、
-@mvar{pattern}の中で、主演算子以外の演算子として現れることができます。
+@var{pattern}の中で、主演算子以外の演算子として現れることができます。
 
 上の関数名に関するルールに１つ例外があります。
 @code{aa[x](y)}のような式の中の添字付き関数の名前は
@@ -1057,7 +1057,7 @@ bb aa partitions `product'
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
 @c The main operator of an expression @code{expr} is @code{caar $expr}.
 @c For most kinds of expressions,
-@c the main operator is the operator returned by @code{op (@mvar{pattern})};
+@c the main operator is the operator returned by @code{op (@var{pattern})};
 @c the sole exception is the operator @code{mqapply},
 @c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
 
@@ -1084,7 +1084,7 @@ bb aa partitions `product'
 (@code{put}や関連関数で定義された)パターン変数のプロパティはグローバルです。
 
 @code{tellsimpafter}によって構成されたルールは、
-@mvar{pattern}の主演算子に由来します。
+@var{pattern}の主演算子に由来します。
 組み込み演算子や
 @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, @code{nofix}で
 定義されたユーザー定義演算子に関するルールは、
@@ -1111,7 +1111,7 @@ Lisp識別子である名前を持ちます。
 @code{tellsimpafter}は引数をクォートします。
 @code{tellsimpafter}は
 新しく確立されたルールを含む、
-@mvar{pattern}の主演算子に関する
+@var{pattern}の主演算子に関する
 ルールのリストを返します。
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
@@ -1119,7 +1119,7 @@ Lisp識別子である名前を持ちます。
 
 例:
 
-@mvar{pattern}は、
+@var{pattern}は、
 主演算子がパターン変数でない任意の非アトム式を取り得ます。
 
 @c ===beg===

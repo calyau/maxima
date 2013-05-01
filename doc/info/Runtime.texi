@@ -146,12 +146,12 @@ the same name.
 
 @c -----------------------------------------------------------------------------
 @anchor{sstatus}
-@deffn {Function} sstatus (@mvar{keyword}, @mvar{item})
+@deffn {Function} sstatus (@var{keyword}, @var{item})
 
-When @mvar{keyword} is the symbol @code{feature}, @mvar{item} is put on the list
+When @var{keyword} is the symbol @code{feature}, @var{item} is put on the list
 of system features.  After @code{sstatus (keyword, item)} is executed,
-@code{status (feature, item)} returns @code{true}.  If @mvar{keyword} is the
-symbol @code{nofeature}, @mvar{item} is deleted from the list of system features.
+@code{status (feature, item)} returns @code{true}.  If @var{keyword} is the
+symbol @code{nofeature}, @var{item} is deleted from the list of system features.
 This can be useful for package writers, to keep track of what features they have
 loaded in.
 
@@ -165,7 +165,7 @@ See also @code{status}.
 @c -----------------------------------------------------------------------------
 @anchor{status}
 @deffn  {Function} status (@code{feature})
-@deffnx {Function} status (@code{feature}, @mvar{item})
+@deffnx {Function} status (@code{feature}, @var{item})
 
 Returns information about the presence or absence of certain system-dependent 
 features.
@@ -177,9 +177,9 @@ version, operating system type, etc. The list may vary from one Lisp type to
 another.
 
 @item 
-@code{status (feature, item)} returns @code{true} if @mvar{item} is on the
+@code{status (feature, item)} returns @code{true} if @var{item} is on the
 list of items returned by @code{status (feature)} and @code{false} otherwise.
-@code{status} quotes the argument @mvar{item}. The quote-quote operator 
+@code{status} quotes the argument @var{item}. The quote-quote operator 
 @code{'@w{}'} defeats quotation. A feature whose name contains a special 
 character, such as a hyphen, must be given as a string argument. For example,
 @code{status (feature, "ansi-cl")}.
@@ -200,9 +200,9 @@ information.
 
 @c -----------------------------------------------------------------------------
 @anchor{system}
-@deffn {Function} system (@mvar{command})
+@deffn {Function} system (@var{command})
 
-Executes @mvar{command} as a separate process.  The command is passed to the
+Executes @var{command} as a separate process.  The command is passed to the
 default shell for execution.  @code{system} is not supported by all operating
 systems, but generally exists in Unix and Unix-like environments.
 
@@ -245,7 +245,7 @@ and elapsed time with each output line.
 @c -----------------------------------------------------------------------------
 @anchor{timedate}
 @deffn  {Function} timedate ()
-@deffnx {Function} timedate (@mvar{T})
+@deffnx {Function} timedate (@var{T})
 
 @code{timedate()} with no argument
 returns a string representing the current time and date.
@@ -253,9 +253,9 @@ The string has the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ},
 where the fields are year, month, day, hours, minutes, seconds, and time zone
 offset in hours and minutes.
 
-@code{timedate(@mvar{T})} returns the time @mvar{T}
+@code{timedate(@var{T})} returns the time @var{T}
 as a string with the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
-@mvar{T} is interpreted as the number of seconds since midnight, January 1, 1900,
+@var{T} is interpreted as the number of seconds since midnight, January 1, 1900,
 as returned by @code{absolute_real_time}.
 
 Example:

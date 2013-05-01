@@ -26,15 +26,15 @@ e o ponto de interroga@value{cedilha}@~{a}o @code{?} @'{e} reconhecido no in@'{i
 para significar um s@'{i}mbolo do Lisp (em oposi@value{cedilha}@~{a}o a um s@'{i}mbolo do Maxima).
 Nenhum caractere de continua@value{cedilha}@~{a}o (para continuar linhas quebradas) @'{e} reconhecido.
 
-@mvar{separator_flag} diz que caracteres separa elementos.
-@mvar{separator_flag} @'{e} um argumento opcional para todas as fun@value{cedilha}@~{o}es de leitura e escrita.
+@var{separator_flag} diz que caracteres separa elementos.
+@var{separator_flag} @'{e} um argumento opcional para todas as fun@value{cedilha}@~{o}es de leitura e escrita.
 
-Para entrada, os valores de @mvar{separator_flag} reconhecidos s@~{a}o:
+Para entrada, os valores de @var{separator_flag} reconhecidos s@~{a}o:
 @code{comma} para valores separados por v@'{i}rgula,
 @code{pipe} para valores separados pelo caractere barra vertical @code{|},
 @code{semicolon} para valores separados por ponto e v@'{i}rgula @code{;}, 
 e @code{space} para valores separados pelos caracteres de espa@value{cedilha}o e de tabula@value{cedilha}@~{a}o.
-Se o nome do arquivo a ser lido/escrito termina em @code{.csv} e @mvar{separator_flag} n@~{a}o for especificado,
+Se o nome do arquivo a ser lido/escrito termina em @code{.csv} e @var{separator_flag} n@~{a}o for especificado,
 @code{comma} @'{e} assumido.
 Se o nome do arquivo termina em alguma outra coisa que n@~{a}o @code{.csv} e @code{separator_flag} n@~{a}o for especificado,
 @code{space} @'{e} assumido.
@@ -54,10 +54,10 @@ e n@~{a}o @'{e} tentado colapsar a sa@'{i}da para @code{1234,,Foo}.
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para numericalio,  , Introdu@value{cedilha}@~{a}o a numericalio, numericalio
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para numericalio
 
-@deffn {Fun@value{cedilha}@~{a}o} read_matrix (@mvar{nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} read_matrix (@mvar{nomearquivo}, @mvar{separator_flag})
-L@^{e} o arquivo @mvar{nomearquivo} e retorna seu conte@'{u}do completo como uma matriz.
-Se @mvar{separator_flag} n@~{a}o for especificado, o arquivo @'{e} assumido como delimitado por espa@value{cedilha}os em branco.
+@deffn {Fun@value{cedilha}@~{a}o} read_matrix (@var{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} read_matrix (@var{nomearquivo}, @var{separator_flag})
+L@^{e} o arquivo @var{nomearquivo} e retorna seu conte@'{u}do completo como uma matriz.
+Se @var{separator_flag} n@~{a}o for especificado, o arquivo @'{e} assumido como delimitado por espa@value{cedilha}os em branco.
 
 @code{read_matrix} infere o tamanho da matriz dos dados de entrada.
 Cada linha do arquivo inicia uma linha da matriz.
@@ -65,8 +65,8 @@ Se algumas linhas possuirem diferentes comprimentos, @code{read_matrix} reclama.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} read_lisp_array (@mvar{nomearquivo}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~{a}o} read_lisp_array (@mvar{nomearquivo}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} read_lisp_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~{a}o} read_lisp_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_lisp_array} exige que o array
 seja declarado atrav@'{e}s de @code{make_array} antes de chamar
@@ -79,8 +79,8 @@ arquivo de entrada est@'{a} de acordo com as dimens@~{a}oes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} read_maxima_array (@mvar{nomearquivo}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~{a}o} read_maxima_array (@mvar{nomearquivo}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} read_maxima_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~{a}o} read_maxima_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_maxima_array} requer que o array
 seja declarado atrav@'{e}s de @code{array} antes de chamar
@@ -93,8 +93,8 @@ arquivo de entrada est@'{a} de acordo com as dimens@~{a}oes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} read_hashed_array (@mvar{nomearquivo}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~{a}o} read_hashed_array (@mvar{nomearquivo}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} read_hashed_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~{a}o} read_hashed_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_hashed_array} trata o primeiro item sobre uma linha como uma
 chave hash, e associa o restante da linha (como uma lista) com a chava.
@@ -104,8 +104,8 @@ Linhas n@~{a}o precisam ter o mesmo n@'{u}mero de elementos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} read_nested_list (@mvar{nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} read_nested_list (@mvar{nomearquivo}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} read_nested_list (@var{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} read_nested_list (@var{nomearquivo}, @var{separator_flag})
 
 @code{read_nested_list} retorna uma lista que tem uma sublista para cada
 linha de entrada. Linhas n@~{a}o precisam ter o mesmo n@'umero de elementos.
@@ -113,18 +113,18 @@ Linhas vazias @i{n@~{a}o} s@~{a}o ignoradas: uma linha vazia retorna uma sublist
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} read_list (@mvar{nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} read_list (@mvar{nomearquivo}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} read_list (@var{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} read_list (@var{nomearquivo}, @var{separator_flag})
 
 @code{read_list} l@^{e} todas as entradas em uma lista mon@'{o}tona.
 @code{read_list} ignora o caractere de fim de linha.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} write_data (@mvar{X}, @mvar{nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} write_data (@mvar{object}, @mvar{nomearquivo}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~{a}o} write_data (@var{X}, @var{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} write_data (@var{object}, @var{nomearquivo}, @var{separator_flag})
 
-@code{write_data} escreve o objeto @mvar{X} no arquivo @mvar{nomearquivo}.
+@code{write_data} escreve o objeto @var{X} no arquivo @var{nomearquivo}.
 
 @code{write_data} escreve matrizes da forma usual,
 com uma linha por fileira.

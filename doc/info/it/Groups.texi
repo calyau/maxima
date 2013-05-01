@@ -5,8 +5,8 @@
 @node Definitions for Groups,  , Groups, Groups
 @section Definitions for Groups
 
-@deffn {Function} todd_coxeter (@mvar{relations}, @mvar{subgroup})
-@deffnx {Function} todd_coxeter (@mvar{relations})
+@deffn {Function} todd_coxeter (@var{relations}, @var{subgroup})
+@deffnx {Function} todd_coxeter (@var{relations})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

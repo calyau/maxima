@@ -14,7 +14,7 @@ Essa @'{e} uma vari@'{a}vel de op@value{cedilha}@~{a}o para a fun@value{cedilha}
 
 Quando calculando a fra@value{cedilha}@~{a}o cont@'{i}nua da
 fun@value{cedilha}@~{a}o geradora, um quociente parcial tendo um grau
-(estritamente) maior que @mvar{GGFINFINITY} ser@'{a} descartado e
+(estritamente) maior que @var{GGFINFINITY} ser@'{a} descartado e
 o convergente atual ser@'{a} considerado como o valor exato
 da fun@value{cedilha}@~{a}o geradora; na grande mioria dos casos o grau de todos
 os quocientes parciais ser@'{a} ou 0 ou 1; se voc@^{e} usar um valor muito grande,
@@ -33,7 +33,7 @@ Essa @'{e} uma vari@'{a}vel de op@value{cedilha}@~{a}o para a fun@value{cedilha}
 
 Quando calculando a fra@value{cedilha}@~{a}o cont@'{i}nua da
 fun@value{cedilha}@~{a}o geradora, se nenhum bom resultado for encontrado (veja
-o sinalizador @mvar{GGFINFINITY}) ap@'{o}s se ter calculado uma quantidade de @mvar{GGFCFMAX} quocientes
+o sinalizador @var{GGFINFINITY}) ap@'{o}s se ter calculado uma quantidade de @var{GGFCFMAX} quocientes
 parciais, a fun@value{cedilha}@~{a}o geradora ser@'{a} considerada como
 n@~{a}o sendo uma fra@value{cedilha}@~{a}o de dois polin@^{o}mios e a fun@value{cedilha}@~{a}o ir@'{a}
 terminar. Coloque livemente um valor muito grande para fun@value{cedilha}@~{o}es geradoras
@@ -42,15 +42,15 @@ mais complicadas.
 Veja tamb@'{e}m @code{ggf}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ggf (@mvar{l})
+@deffn {Fun@value{cedilha}@~{a}o} ggf (@var{l})
 Calcula a fun@value{cedilha}@~{a}o geradora (se for uma fra@value{cedilha}@~{a}o de dois
-polin@^{o}mios) de uma seq@"{u}@^{e}ncia, sendo dados seus primeiros termos. @mvar{l}
+polin@^{o}mios) de uma seq@"{u}@^{e}ncia, sendo dados seus primeiros termos. @var{l}
 @'{e} uma lista de n@'{u}meros.
 
 A solu@value{cedilha}@~{a}o @'{e} retornada como uma fra@value{cedilha}@~{a}o de dois polin@^{o}mios.
 Se nenhuma solu@value{cedilha}@~{a}o tiver sido encontrada, @'{e} retornado @code{done}.
 
-Essa fun@value{cedilha}@~{a}o @'{e} controlada attrav@'{e}s das vari@'{a}veis globais @mvar{GGFINFINITY} e @mvar{GGFCFMAX}. Veja tamb@'{e}m @mvar{GGFINFINITY} e @mvar{GGFCFMAX}.
+Essa fun@value{cedilha}@~{a}o @'{e} controlada attrav@'{e}s das vari@'{a}veis globais @var{GGFINFINITY} e @var{GGFCFMAX}. Veja tamb@'{e}m @var{GGFINFINITY} e @var{GGFCFMAX}.
 
 Para usar essa fun@value{cedilha}@~{a}o primeiro escreva @code{load("ggf")}.
 @end deffn

@@ -30,9 +30,9 @@ essa equa@value{cedilha}@~ao dever@'a escrever-se na forma seguinte:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-e a fun@value{cedilha}@~ao @mvar{F} ser@'a dada como argumento para o
+e a fun@value{cedilha}@~ao @var{F} ser@'a dada como argumento para o
 comando @code{plotdf}. A vari@'avel independente tem que ser sempre
-@mvar{x} e a vari@'avel dependente @mvar{y}. A essas duas vari@'aveis
+@var{x} e a vari@'avel dependente @var{y}. A essas duas vari@'aveis
 n@~ao poder@'a estar associado nenhum valor num@'erico.
 
 Para desenhar o campo de direc@value{cedilha}@~oes de um sistema
@@ -50,7 +50,7 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 e o argumento para o comando @code{plotdf} ser@'a uma lista com duas
-express@~oes para as fun@value{cedilha}@~oes @mvar{F} e @mvar{G}.
+express@~oes para as fun@value{cedilha}@~oes @var{F} e @var{G}.
 
 Quando se trabalha com uma @'unica equa@value{cedilha}@~ao,
 @code{plotdf} assume implicitamente que @code{x=t} e @code{G(x,y)=1},
@@ -60,19 +60,19 @@ equa@value{cedilha}@~oes.
 @node Defini@value{cedilha}@~oes para plotdf,  , Introdu@value{cedilha}@~ao a plotdf, plotdf
 @section Defini@value{cedilha}@~oes para plotdf
 
-@deffn {Function} plotdf (@mvar{dydx},...op@value{cedilha}@~oes...)
-@deffnx {Function} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]},...op@value{cedilha}@~oes...)
+@deffn {Function} plotdf (@var{dydx},...op@value{cedilha}@~oes...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~oes...)
 
 Desenha um campo de direc@value{cedilha}@~oes em duas
-dimens@~oes @mvar{x} e @mvar{y}.
+dimens@~oes @var{x} e @var{y}.
 
-@mvar{dydx}, @mvar{dxdt} e @mvar{dydt} s@~ao express@~oes que dependem de
-@mvar{x} e @mvar{y}. Para al@'em dessas duas vari@'aveis, as duas
+@var{dydx}, @var{dxdt} e @var{dydt} s@~ao express@~oes que dependem de
+@var{x} e @var{y}. Para al@'em dessas duas vari@'aveis, as duas
 express@~oes podem depender de um conjunto de par@^ametros, com valores
 num@'ericos que s@~ao dados por meio da op@value{cedilha}@~ao
 @code{parameters} (a sintaxe dessa op@value{cedilha}@~ao explica-se mais
 para a frente), ou com um intervalo de poss@'{@dotless{i}}veis valores
-definidos com a op@value{cedilha}@~ao @mvar{sliders}.
+definidos com a op@value{cedilha}@~ao @var{sliders}.
 
 V@'arias outras op@value{cedilha}@~oes podem incluirem-se dentro do
 comando, ou serem seleccionadas no men@'u.  Clicando num ponto do
@@ -113,7 +113,7 @@ curva integral seleccionada.
 Mantendo o bot@~ao direito carregado enquanto se desloca o cursor,
 poder@'a arrastar o gr@'afico na horizontal e na vertical.  Outros
 par@^ametros, por exemplo, o n@'umero de passos, o valor inicial de
-@mvar{t}, as coordenadas do centro e o raio, podem ser alterados no
+@var{t}, as coordenadas do centro e o raio, podem ser alterados no
 sub-men@'u da op@value{cedilha}@~ao @emph{Config}.
 
 Com a op@value{cedilha}@~ao @emph{Save}, pode imprimir-se o
@@ -138,9 +138,9 @@ op@value{cedilha}@~oes:
 @itemize @bullet
 @item
 @dfn{tstep} estabelece a amplitude dos
-incrementos da vari@'avel independente @mvar{t}, utilizados para calcular
-as curvas integrais. Se for dada s@'o uma express@~ao @mvar{dydx}, a
-vari@'avel @mvar{x} ser@'a directamente proporcional a @mvar{t}.
+incrementos da vari@'avel independente @var{t}, utilizados para calcular
+as curvas integrais. Se for dada s@'o uma express@~ao @var{dydx}, a
+vari@'avel @var{x} ser@'a directamente proporcional a @var{t}.
 O valor por omiss@~ao @'e  0.1.
 
 @item
@@ -163,24 +163,24 @@ O valor por omiss@~ao @'e @code{both}.
 
 @item
 @dfn{tinitial} estabelece o valor inicial da
-vari@'avel @mvar{t} utilizado para calcular curvas integrais. J@'a que as
+vari@'avel @var{t} utilizado para calcular curvas integrais. J@'a que as
 equa@value{cedilha}@~oes diferenciais s@~ao aut@'onomas, esta
 op@value{cedilha}@~ao s@'o aparecer@'a nos gr@'aficos das curvas em
-fun@value{cedilha}@~ao de @mvar{t}.
+fun@value{cedilha}@~ao de @var{t}.
 O valor por omiss@~ao @'e 0.
 
 @item
 @dfn{versus_t} utiliza-se para criar uma segunda
 janela gr@'afica, com o gr@'afico de uma curva integral, como duas
-fun@value{cedilha}@~oes @mvar{x}, @mvar{y}, de vari@'avel independente
-@mvar{t}. Se for dado a @code{versus_t} qualquer valor diferente de 0,
+fun@value{cedilha}@~oes @var{x}, @var{y}, de vari@'avel independente
+@var{t}. Se for dado a @code{versus_t} qualquer valor diferente de 0,
 mostrar-se-@'a a segunda janela gr@'afica, que inclui outro men@'u,
 similar ao da janela principal.
 O valor por omiss@~ao @'e 0.
 
 @item
 @dfn{trajectory_at} estabelece as coordenadas
-@mvar{xinitial} e @mvar{yinitial} para o ponto inicial da curva integral.
+@var{xinitial} e @var{yinitial} para o ponto inicial da curva integral.
 N@~ao tem atribu@'{@dotless{i}}do nenhum valor por omiss@~ao.
 
 @item
@@ -202,7 +202,7 @@ v@'{@dotless{i}}rgulas.
 
 @item
 @dfn{xfun} estabelece uma cadeia de caracteres
-com fun@value{cedilha}@~oes de @mvar{x} separadas por ponto e
+com fun@value{cedilha}@~oes de @var{x} separadas por ponto e
 v@'{@dotless{i}}rgula para ser representadas por cima do campo de
 direc@value{cedilha}@~oes. Essas fun@value{cedilha}@~oes ser@~ao
 interpretadas por Tcl, e n@~ao por Maxima.

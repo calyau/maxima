@@ -330,12 +330,12 @@ Maximaはブレイクプロンプトを出します。
 
 @c -----------------------------------------------------------------------------
 @anchor{timer}
-@deffn  {関数} timer (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {関数} timer (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} timer (all)
 @deffnx {関数} timer ()
 
 @code{timer}は、
-タイミング統計が収集される関数のリストに与えられた関数@mvar{f_1}, @dots{}, @mvar{f_n}
+タイミング統計が収集される関数のリストに与えられた関数@var{f_1}, @dots{}, @var{f_n}
 それぞれを入れます。
 @code{timer(f)$ timer(g)$}は、リストに@code{f}を入れ、その後@code{g}を入れます;
 リストはあるコールから次へ累積されます。
@@ -368,11 +368,11 @@ Maximaは、計測される関数のリストに関して、
 
 @c -----------------------------------------------------------------------------
 @anchor{untimer}
-@deffn {関数} untimer (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn {関数} untimer (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} untimer ()
 
 @code{untimer}はタイマーリストから
-与えられた関数@mvar{f_1}, @dots{}, @mvar{f_n}それぞれを削除します。
+与えられた関数@var{f_1}, @dots{}, @var{f_n}それぞれを削除します。
 
 引数なしの時、
 @code{untimer}は、現在、タイマーリスト上の関数すべてを削除します。
@@ -411,10 +411,10 @@ Maximaは、計られる関数から
 
 @c -----------------------------------------------------------------------------
 @anchor{timer_info}
-@deffn {関数} timer_info (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {関数} timer_info (@var{f_1}, ..., @var{f_n})
 @deffnx {関数} timer_info ()
 
-与えられた関数@mvar{f_1}, ..., @mvar{f_n},
+与えられた関数@var{f_1}, ..., @var{f_n},
 @code{timer_info}は、
 関数それぞれのタイミング情報を含む
 行列を返します。
@@ -446,11 +446,11 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 @c -----------------------------------------------------------------------------
 @anchor{trace}
-@deffn  {関数} trace (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {関数} trace (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} trace (all)
 @deffnx {関数} trace ()
 
-関数 @mvar{f_1}, @dots{}, @mvar{f_n}が与えられたとして、
+関数 @var{f_1}, @dots{}, @var{f_n}が与えられたとして、
 @code{trace}は、Maximaに、
 それらの関数がコールされたときはいつでも
 デバッグ情報を印字するよう指示します。
@@ -489,17 +489,17 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 @c -----------------------------------------------------------------------------
 @anchor{trace_options}
-@deffn  {関数} trace_options (@mvar{f}, @mvar{option_1}, @dots{}, @mvar{option_n})
-@deffnx {関数} trace_options (@mvar{f})
+@deffn  {関数} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n})
+@deffnx {関数} trace_options (@var{f})
 
-関数@mvar{f}についてトレースオプションを設定します。
+関数@var{f}についてトレースオプションを設定します。
 いかなる以前のオプションも破棄されます。
-@code{trace_options (@mvar{f}, ...)}は、
+@code{trace_options (@var{f}, ...)}は、
 もし(@code{trace_options}の前でも後でも). 
-@code{trace (@mvar{f})}もコールされないなら、
+@code{trace (@var{f})}もコールされないなら、
 有効になりません。
 
-@code{trace_options (@mvar{f})}は、
+@code{trace_options (@var{f})}は、
 オプションすべてをデフォルト値に再設定します。
 
 オプションキーワードは以下の通りです:
@@ -528,8 +528,8 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 トレースオプションは、２つの形式で指定されます。
 オプションキーワード単体の存在は、
 オプションを無条件に実行します。
-(@code{@mvar{foo}: true}か似た形式を指定することでは、
-オプション@mvar{foo}は実行されないことに注意してください;
+(@code{@var{foo}: true}か似た形式を指定することでは、
+オプション@var{foo}は実行されないことに注意してください;
 キーワードはクォートする必要はないことにも注意してください。)
 オプションキーワードを述語論理関数で指定することは、
 オプションを述語論理上の条件付きにします。
@@ -572,11 +572,11 @@ name of the function, and
 
 @c -----------------------------------------------------------------------------
 @anchor{untrace}
-@deffn  {関数} untrace (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {関数} untrace (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} untrace ()
 
 @code{untrace}は、
-与えられた関数@mvar{f_1}, @dots{}, @mvar{f_n}について、
+与えられた関数@var{f_1}, @dots{}, @var{f_n}について、
 @code{trace}関数でイネーブルされたトレースをディセーブルします。
 引数なしでは、@code{untrace}は関数すべてのトレースをディセーブルします。
 

@@ -629,9 +629,9 @@ Computing conversions to base units; may take a moment.
 @end example
 @end deffn
 
-@deffn {Funci@'on} constvalue (@mvar{x})
-@deffnx {Funci@'on} declare_constvalue (@mvar{a}, @mvar{x})
-@deffnx {Funci@'on} remove_constvalue (@mvar{a})
+@deffn {Funci@'on} constvalue (@var{x})
+@deffnx {Funci@'on} declare_constvalue (@var{a}, @var{x})
+@deffnx {Funci@'on} remove_constvalue (@var{a})
 
 Devuelve la constante declarada para un s@'{@dotless{i}}mbolo.
 Los valores constantes se declaran con @code{declare_constvalue}.
@@ -690,19 +690,19 @@ Declarando una nueva constante.
 
 @end deffn
 
-@deffn {Funci@'on} units (@mvar{x})
-@deffnx {Funci@'on} declare_units (@mvar{a}, @mvar{u})
+@deffn {Funci@'on} units (@var{x})
+@deffnx {Funci@'on} declare_units (@var{a}, @var{u})
 
-Devuelve las unidades de la magnitud dimensional @mvar{x},
-o 1 en caso de que @mvar{x} sea adimensional.
+Devuelve las unidades de la magnitud dimensional @var{x},
+o 1 en caso de que @var{x} sea adimensional.
 
-@mvar{x} puede ser una expresi@'on literal dimensional @math{a ` b},
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
 un s@'{@dotless{i}}mbolo con unidades declaradas por
 medio de @code{declare_units}, o una expresi@'on 
 que contenga cualquiera o ambos de los anteriores.
 
-@code{declare_constvalue} declara que @code{units(@mvar{a})}
-debe devolver @mvar{u}, siendo @mvar{u} una expresi@'on.
+@code{declare_constvalue} declara que @code{units(@var{a})}
+debe devolver @var{u}, siendo @var{u} una expresi@'on.
 
 Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
 
@@ -779,17 +779,17 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} qty (@mvar{x})
-@deffnx {Funci@'on} declare_qty (@mvar{a}, @mvar{x})
+@deffn {Funci@'on} qty (@var{x})
+@deffnx {Funci@'on} declare_qty (@var{a}, @var{x})
 
-@code{qty} devuelve la parte adimensional de la magnitud dimensional @mvar{x},
-o @mvar{x}, si @mvar{x} es adimensional.
-@mvar{x} puede ser una expresi@'on literal dimensional @math{a ` b},
+@code{qty} devuelve la parte adimensional de la magnitud dimensional @var{x},
+o @var{x}, si @var{x} es adimensional.
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
 un s@'{@dotless{i}}mbolo con unidades declaradas o una expresi@'on 
 que contenga cualquiera o ambos de los anteriores.
 
-@code{declare_qty} declara que @code{qty(@mvar{a})}
-debe devolver @mvar{x}, siendo @mvar{x} una magnitud dimensional.
+@code{declare_qty} declara que @code{qty(@var{a})}
+debe devolver @var{x}, siendo @var{x} una magnitud dimensional.
 
 Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
 
@@ -851,9 +851,9 @@ Ejemplos:
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
-@deffn {Funci@'on} unitp (@mvar{x})
+@deffn {Funci@'on} unitp (@var{x})
 
-Devuelve @code{true} si @mvar{x} es una expresi@'on dimensional
+Devuelve @code{true} si @var{x} es una expresi@'on dimensional
 literal, un s@'{@dotless{i}}mbolo declarado como dimensional o
 una expresi@'on en la que su operador principal ha sido declarado
 como dimensional. En cualquier otro caso, @code{unitp} devuelve
@@ -914,11 +914,11 @@ principal se declara dimensional.
 
 @end deffn
 
-@deffn {Funci@'on} declare_unit_conversion (@mvar{u} = @mvar{v}, ...)
+@deffn {Funci@'on} declare_unit_conversion (@var{u} = @var{v}, ...)
 
-A@~nade las ecuaciones @mvar{u} = @mvar{v}, ... a la lista de conversiones
+A@~nade las ecuaciones @var{u} = @var{v}, ... a la lista de conversiones
 de unidades conocidas por el operador de conversi@'on @math{`@w{}`}.
-@mvar{u} y @mvar{v} son t@'erminos multiplicativos en las que las
+@var{u} y @var{v} son t@'erminos multiplicativos en las que las
 variables son unidades o expresiones dimensionales literales.
 
 De momento, es imperativo expresar las conversiones de forma
@@ -977,15 +977,15 @@ Computing conversions to base units; may take a moment.
 @end deffn
 
 
-@deffn {Funci@'on} declare_dimensions (@mvar{a_1}, @mvar{d_1}, ..., @mvar{a_n}, @mvar{d_n})
-@deffnx {Funci@'on} remove_dimensions (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Funci@'on} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {Funci@'on} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
-@code{declare_dimensions} declara @mvar{a_1}, ..., @mvar{a_n}
-con las dimensiones @mvar{d_1}, ..., @mvar{d_n}, respectivamente.
+@code{declare_dimensions} declara @var{a_1}, ..., @var{a_n}
+con las dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
 
-Cada @mvar{a_k} es un s@'{@dotless{i}}mbolo o lista de s@'{@dotless{i}}mbolos.
-En caso de ser una lista, cada s@'{@dotless{i}}mbolo en @mvar{a_k} se
-declara de dimensi@'on @mvar{d_k}.
+Cada @var{a_k} es un s@'{@dotless{i}}mbolo o lista de s@'{@dotless{i}}mbolos.
+En caso de ser una lista, cada s@'{@dotless{i}}mbolo en @var{a_k} se
+declara de dimensi@'on @var{d_k}.
 
 @code{remove_dimensions} invierte el efecto de @code{declare_dimensions}.
 
@@ -1018,12 +1018,12 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} declare_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
-@deffnx {Funci@'on} remove_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
+@deffn {Funci@'on} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Funci@'on} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Variable global} fundamental_dimensions
 
 @code{declare_fundamental_dimensions} declara dimensiones fundamentales.
-Los s@'{@dotless{i}}mbolos @mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ... se a@~naden a la lista
+Los s@'{@dotless{i}}mbolos @var{d_1}, @var{d_2}, @var{d_3}, ... se a@~naden a la lista
 de dimensiones fundamentales si no est@'an ya presentes en la lista.
 
 @code{remove_fundamental_dimensions} invierte el efecto de @code{declare_fundamental_dimensions}.
@@ -1061,16 +1061,16 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} declare_fundamental_units (@mvar{u_1}, @mvar{d_1}, ..., @mvar{u_n}, @mvar{d_n})
-@deffnx {Funci@'on} remove_fundamental_units (@mvar{u_1}, ..., @mvar{u_n})
+@deffn {Funci@'on} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {Funci@'on} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
 
-@code{declare_fundamental_units} declara @mvar{u_1}, ..., @mvar{u_n}
-de dimensiones @mvar{d_1}, ..., @mvar{d_n}, respectivamente.
+@code{declare_fundamental_units} declara @var{u_1}, ..., @var{u_n}
+de dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
 Todos los argumentos deben s@'{@dotless{i}}mbolos.
 
 Tras la llamada a @code{declare_fundamental_units},
-@code{dimensions(@mvar{u_k})} devuelve @mvar{d_k} para cada argumento @mvar{u_1}, ..., @mvar{u_n},
-y @code{fundamental_units(@mvar{d_k})} devuelve @mvar{u_k} para cada @mvar{d_1}, ..., @mvar{d_n}.
+@code{dimensions(@var{u_k})} devuelve @var{d_k} para cada argumento @var{u_1}, ..., @var{u_n},
+y @code{fundamental_units(@var{d_k})} devuelve @var{u_k} para cada @var{d_1}, ..., @var{d_n}.
 
 @code{remove_fundamental_units} invierte el efecto de @code{declare_fundamental_units}.
 
@@ -1113,14 +1113,14 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} dimensions (@mvar{x})
-@deffnx {Funci@'on} dimensions_as_list (@mvar{x})
+@deffn {Funci@'on} dimensions (@var{x})
+@deffnx {Funci@'on} dimensions_as_list (@var{x})
 
-@code{dimensions} devuelve las dimensiones de la magnitud dimensional @mvar{x}
+@code{dimensions} devuelve las dimensiones de la magnitud dimensional @var{x}
 en forma de expresi@'on que contiene productos y potencias de dimensiones
 fundamentales.
 
-@code{dimensions_as_list} devuelve las dimensiones de la magnitud dimensional @mvar{x}
+@code{dimensions_as_list} devuelve las dimensiones de la magnitud dimensional @var{x}
 en forma de lista, cuyos elementos indican las potencias de las dimensiones
 fundamentales correspondientes.
 
@@ -1180,14 +1180,14 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} fundamental_units (@mvar{x})
+@deffn {Funci@'on} fundamental_units (@var{x})
 @deffnx {Funci@'on} fundamental_units ()
 
-@code{fundamental_units(@mvar{x})} devuelve las unidades
-asociadas a las dimensiones fundamentales de @mvar{x},
-tal como queda determinada por @code{dimensions(@mvar{x})}.
+@code{fundamental_units(@var{x})} devuelve las unidades
+asociadas a las dimensiones fundamentales de @var{x},
+tal como queda determinada por @code{dimensions(@var{x})}.
 
-@mvar{x} puede ser una expresi@'on literal dimensional @math{a ` b},
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
 un s@'{@dotless{i}}mbolo con unidades declaradas a trav@'es de
 @code{declare_units} o una expresi@'on que contenga a ambos.
 
@@ -1227,10 +1227,10 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} dimensionless (@mvar{L})
+@deffn {Funci@'on} dimensionless (@var{L})
 
 Devuelve una expresi@'on sin dimensiones que se puede formar
-a partir de una lista @mvar{L} de cantidades dimensionales 
+a partir de una lista @var{L} de cantidades dimensionales 
 
 Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
 
@@ -1274,10 +1274,10 @@ constante de estructura fina.
 @end deffn
 
 
-@deffn {Funci@'on} natural_unit (@mvar{expr}, [@mvar{v_1}, ..., @mvar{v_n}])
+@deffn {Funci@'on} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
 
-Busca los exponentes @mvar{e_1}, ..., @mvar{e_n} tales que
-@code{dimension(@mvar{expr}) = dimension(@mvar{v_1}^@mvar{e_1} ... @mvar{v_n}^@mvar{e_n})}.
+Busca los exponentes @var{e_1}, ..., @var{e_n} tales que
+@code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
 
 Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
 

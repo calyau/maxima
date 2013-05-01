@@ -11,10 +11,10 @@
 @node Формула Стирлинга,  , Пакет stirling, Пакет stirling
 @section Формула Стирлинга
 
-@deffn {Функция} stirling (@mvar{z},@mvar{n})
+@deffn {Функция} stirling (@var{z},@var{n})
 
 Заменяет @code{gamma(x)} по формуле Стирлинга @math{O(1/x^(2n-1))}. Сообщает об ошибке,
-если @mvar{n} не является неотрицательным целым числом.
+если @var{n} не является неотрицательным целым числом.
 
 См. Abramowitz & Stegun, "Handbook of mathematical functions", 6.1.40.
 

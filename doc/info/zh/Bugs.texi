@@ -6,9 +6,9 @@
 @node Bug发现与上报的函数与变量
 @section  Bug发现与上报的函数与变量
 @deffn {Function} run_testsuite ()
-@deffnx {Function} run_testsuite (@mvar{boolean})
-@deffnx {Function} run_testsuite (@mvar{boolean}, @mvar{boolean})
-@deffnx {Function} run_testsuite (@mvar{boolean}, @mvar{boolean}, @mvar{list})
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 运行Maxima测试包,那些得到预期结果的测试认为是通过的,??"是那些测试没有得到预期结果但是已经知道的bug
 @c 这一句话没看懂
 @code{run_testsuite ()} 只显示那些没有通过的测试.

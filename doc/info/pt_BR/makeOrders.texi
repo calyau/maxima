@@ -8,7 +8,7 @@
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para makeOrders,  , makeOrders, makeOrders
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para makeOrders
 
-@deffn {Fun@value{cedilha}@~{a}o} makeOrders (@mvar{indvarlist},@mvar{orderlist})
+@deffn {Fun@value{cedilha}@~{a}o} makeOrders (@var{indvarlist},@var{orderlist})
 Retorna uma lista de todos os expoentes para um polin@^{o}mio acima de e incluindo os argumentos. 
 
 @example

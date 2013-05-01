@@ -5,7 +5,7 @@
 @node Functions and Variables for Bernstein,  , Bernstein, Bernstein
 @section Functions and Variables for Bernstein
 
-@deffn {関数} bernstein_poly (@mvar{k}, @mvar{n}, @mvar{x})
+@deffn {関数} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 @code{k}が負の整数でないと仮定すると、
 Bernstein多項式は
@@ -77,10 +77,10 @@ Bernstein多項式の明示形式への展開を制御します; 例えば:
 @end defvr
 
 
-@deffn {関数} multibernstein_poly (@mvar{[k1,k2,@dots{}, kp]}, @mvar{[n1,n2,@dots{}, np]}, @mvar{[x1,x2,@dots{}, xp]})
+@deffn {関数} multibernstein_poly (@var{[k1,k2,@dots{}, kp]}, @var{[n1,n2,@dots{}, np]}, @var{[x1,x2,@dots{}, xp]})
 
-マルチBernstein多項式 @code{multibernstein_poly (@mvar{[k1, k2, ..., 
-kp]}, @mvar{[n1, n2, ..., np]}, @mvar{[x1, x2, ..., xp]})}
+マルチBernstein多項式 @code{multibernstein_poly (@var{[k1, k2, ..., 
+kp]}, @var{[n1, n2, ..., np]}, @var{[x1, x2, ..., xp]})}
 Bernstein多項式 @code{bernstein_poly(k1, n1, x1)
 bernstein_poly(k2, n2, x2) ... bernstein_poly(kp, np, xp)}の積です。
 
@@ -88,7 +88,7 @@ bernstein_poly(k2, n2, x2) ... bernstein_poly(kp, np, xp)}の積です。
 
 @end deffn
 
-@deffn {関数} bernstein_approx (@mvar{f}, @mvar{[x1, x1, @dots{}, xn]}, n)
+@deffn {関数} bernstein_approx (@var{f}, @var{[x1, x1, @dots{}, xn]}, n)
 
 関数 @code{(x1, x2, ..., xn) |--> f}の
  @code{n}次の一様Bernstein多項式近似を返します。
@@ -121,7 +121,7 @@ bernstein_poly(k2, n2, x2) ... bernstein_poly(kp, np, xp)}の積です。
 
 @end deffn
 
-@deffn {関数} bernstein_expand (@mvar{e}, @mvar{[x1, x1, @dots{}, xn]})
+@deffn {関数} bernstein_expand (@var{e}, @var{[x1, x1, @dots{}, xn]})
 
 @emph{多項式} @code{e}を
 多変数Bernstein多項式の線形結合として厳密に表します。

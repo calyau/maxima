@@ -20,13 +20,13 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 @section Функции и переменные для программирования на Maxima
 
 @deffn {Функция} backtrace ()
-@deffnx {Функция} backtrace (@mvar{n})
+@deffnx {Функция} backtrace (@var{n})
 Печатает стек вызовов, т.е. список функций, которые
 вызывают текущую активную функцию.
 
 Вызов @code{backtrace()} печатает весь стек вызовов.
 
-Вызов @code{backtrace (@mvar{n})} печатает @mvar{n} последних
+Вызов @code{backtrace (@var{n})} печатает @var{n} последних
 функций, включая текущую.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
@@ -58,7 +58,7 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 
 @itemize @bullet
 @item
-Вызов @code{backtrace (@mvar{n})} печатает @mvar{n} последних
+Вызов @code{backtrace (@var{n})} печатает @var{n} последних
 функций, включая текущую.
 
 @example
@@ -94,52 +94,52 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 
 @itemize @bullet
 @item
-@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
-      thru @mvar{limit} do @mvar{body}}
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      thru @var{limit} do @var{body}}
 @item
-@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
-      while @mvar{condition} do @mvar{body}}
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      while @var{condition} do @var{body}}
 @item
-@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
-      unless @mvar{condition} do @mvar{body}}
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      unless @var{condition} do @var{body}}
 @end itemize
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
 (Как альтернатива, команда @code{step} может быть задана после условия завершения или 
 границы.)
 
-Параметры @mvar{initial_value}, @mvar{increment}, @mvar{limit} и @mvar{body} 
+Параметры @var{initial_value}, @var{increment}, @var{limit} и @var{body} 
 могут быть произвольными выражениями.  Если приращение равно 1, то команда
 "@code{step 1}" может быть опущена.
 
-Перед выполнение команды @code{do}, переменной @mvar{variable} 
-(далее называемой управляющей переменной) присваивается начальное значение @mvar{initial_value}. 
+Перед выполнение команды @code{do}, переменной @var{variable} 
+(далее называемой управляющей переменной) присваивается начальное значение @var{initial_value}. 
 Далее: (1) если значение управляющей переменной превышает верхнюю границу,
 задаваемую @code{thru}, или если условие @code{unless} равно @code{true}, 
 или условие @code{while} равно @code{false}, то @code{do} завершается.
-(2) Вычисляется @mvar{body}.  (3) Приращение добавляется к управляющей переменой.  
+(2) Вычисляется @var{body}.  (3) Приращение добавляется к управляющей переменой.  
 Шаги (1) -- (3) повторяются до выполнения условия завершения.  
 Можно задавать несколько условий завершения.  В этом случае команда @code{do} 
 завершается при удовлетворении любого из них.
 
 Обычно тест @code{thru} выполняется, когда управляющая переменная становится больше 
-@mvar{limit}, когда приращение @mvar{increment} неотрицательно, или, если переменная становится меньше
-@mvar{limit}, когда приращение @mvar{increment} отрицательно.
-Параметры @mvar{increment} и @mvar{limit} могут быть нечисловыми выражениями, если 
-может быть определено их неравенство.  Однако, если @mvar{increment} не является
+@var{limit}, когда приращение @var{increment} неотрицательно, или, если переменная становится меньше
+@var{limit}, когда приращение @var{increment} отрицательно.
+Параметры @var{increment} и @var{limit} могут быть нечисловыми выражениями, если 
+может быть определено их неравенство.  Однако, если @var{increment} не является
 синтаксически отрицательным (например, отрицательным числом) в момент начала выполнения команды @code{do},
-то Maxima предполагает положительность @mvar{increment} во время выполнения @code{do}.
-Если на самом деле @mvar{increment} окажется неположительным, то @code{do} 
+то Maxima предполагает положительность @var{increment} во время выполнения @code{do}.
+Если на самом деле @var{increment} окажется неположительным, то @code{do} 
 может не завершиться надлежащим образом.
 
-Отметим, что @mvar{limit}, @mvar{increment} и условие завершения вычисляются
+Отметим, что @var{limit}, @var{increment} и условие завершения вычисляются
 заново для каждой итерации.  Таким образом, если какое-либо из этих выражений требует 
 длительного вычисления, но не меняется от итерации к итерации при вычислении
-@mvar{body}, то будет более эффективным присвоить их
+@var{body}, то будет более эффективным присвоить их
 значение переменной до выполнения @code{do} и использовать эту переменную.
 
 Значение, обычно возвращаемое командой @code{do}, есть атом @code{done}.
-Однако, функция @code{return} может быть использована внутри @mvar{body}
+Однако, функция @code{return} может быть использована внутри @var{body}
 для завершения @code{do} и задания возвращаемого значения.
 Отметим, что вызов @code{return} внутри цикла @code{do}, расположенного  в блоке
 @code{block}, завершает @code{do} а не блок @code{block}.  
@@ -212,8 +212,8 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 
 Вместо добавления значения к управляющей переменной возможен
 другой способ ее изменения на каждом цикле итерации.
-В этом случае можно использовать @code{next @mvar{expression}} вместо @code{step @mvar{increment}}.
-Что вызывает присваивание управляющей переменной значения @mvar{expression}
+В этом случае можно использовать @code{next @var{expression}} вместо @code{step @var{increment}}.
+Что вызывает присваивание управляющей переменной значения @var{expression}
 при каждой итерации.
 
 @example
@@ -226,10 +226,10 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 @end example
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
-Синтаксис @code{for @mvar{variable} from @mvar{value} ...do...} может
-быть использован как альтернатива @code{for @mvar{variable}: @mvar{value} ...do...}.  
-Что позволяет располагать @code{from @mvar{value}} после значений @code{step} или @code{next}, 
-или после условия завершения.  Если @code{from @mvar{value}} опущено, то в качестве начального
+Синтаксис @code{for @var{variable} from @var{value} ...do...} может
+быть использован как альтернатива @code{for @var{variable}: @var{value} ...do...}.  
+Что позволяет располагать @code{from @var{value}} после значений @code{step} или @code{next}, 
+или после условия завершения.  Если @code{from @var{value}} опущено, то в качестве начального
 значения предполагается 1.
 
 Иногда требуется выполнить итерации без использования управляющей переменной.  
@@ -248,8 +248,8 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 @end example
 
 Если необходимо, то можно полностью опустить условия завершения
-и использовать только @code{do @mvar{body}}, что вызывает бесконечное 
-вычисление @mvar{body}.  В этом случае для завершения @code{do} следует
+и использовать только @code{do @var{body}}, что вызывает бесконечное 
+вычисление @var{body}.  В этом случае для завершения @code{do} следует
 использовать @code{return}.
 
 @example
@@ -269,15 +269,15 @@ Maxima предоставляет цикл @code{do}, для итерации, а также более простые управля
 В Maxima доступна еще одна форма команды @code{do}.  Ее синтаксис:
 
 @example
-for @mvar{variable} in @mvar{list} @mvar{end_tests} do @mvar{body}
+for @var{variable} in @var{list} @var{end_tests} do @var{body}
 @end example
 
-Элементы списка @mvar{list} (произвольные выражения) 
-последовательно присваиваются переменной @mvar{variable}
-Для каждой итерации вычисления @mvar{body}.  
-Необязательное условие @mvar{end_tests} может использоваться для завершения @code{do},
-иначе цикл завершится при исчерпании @mvar{list} или при выполнении @code{return} 
-внутри @mvar{body}.  (На самом деле, @mvar{list} может быть любым
+Элементы списка @var{list} (произвольные выражения) 
+последовательно присваиваются переменной @var{variable}
+Для каждой итерации вычисления @var{body}.  
+Необязательное условие @var{end_tests} может использоваться для завершения @code{do},
+иначе цикл завершится при исчерпании @var{list} или при выполнении @code{return} 
+внутри @var{body}.  (На самом деле, @var{list} может быть любым
 неатомарным выражением, последовательные части которого будут использованы в итерации.)
 
 @example
@@ -296,9 +296,9 @@ for @mvar{variable} in @mvar{list} @mvar{end_tests} do @mvar{body}
 @closecatbox
 @end deffn
 
-@deffn {Функция} errcatch (@mvar{expr_1}, ..., @mvar{expr_n})
-Вычисляет одно за другим выражения  @mvar{expr_1}, ..., @mvar{expr_n} 
-и, если не возникает ошибок, возвращает @code{[@mvar{expr_n}]} (список).  
+@deffn {Функция} errcatch (@var{expr_1}, ..., @var{expr_n})
+Вычисляет одно за другим выражения  @var{expr_1}, ..., @var{expr_n} 
+и, если не возникает ошибок, возвращает @code{[@var{expr_n}]} (список).  
 Если при вычислении одного из аргументов возникает ошибка, то
 @code{errcatch} предотвращает дальнейшее распространение ошибки и возвращает
 пустой список @code{[]} без дальнейшего вычисления аргументов.
@@ -312,15 +312,15 @@ for @mvar{variable} in @mvar{list} @mvar{end_tests} do @mvar{body}
 @closecatbox
 @end deffn
 
-@deffn {Функция} error (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Функция} error (@var{expr_1}, ..., @var{expr_n})
 @deffnx {Системная переменная} error
-Вычисляет и печатает @mvar{expr_1}, ..., @mvar{expr_n}, и
+Вычисляет и печатает @var{expr_1}, ..., @var{expr_n}, и
 затем вызывает ошибку, что возвращает управление на верхний
 уровень Maxima или ближайшему объемлющему @code{errcatch}.
 
 Значением переменной @code{error} является список, описывающий ошибку.
 Первый элемент @code{error} -- строка форматирования,
-которая объединяет все строки из параметров @mvar{expr_1}, ..., @mvar{expr_n},
+которая объединяет все строки из параметров @var{expr_1}, ..., @var{expr_n},
 остальные элементы -- есть значения нестроковых аргументов.
 
 Функция @code{errormsg()} форматирует и печатает @code{error},
@@ -352,7 +352,7 @@ for @mvar{variable} in @mvar{list} @mvar{end_tests} do @mvar{body}
 @closecatbox
 @end deffn
 
-@deffn {Функция} go (@mvar{tag})
+@deffn {Функция} go (@var{tag})
 Используется внутри блока @code{block} для передачи управления на команду,
 помеченную параметром @code{go}.  Для пометки команды в блоке, перед ней помещают
 другую команду в виде атома (метки).  Например:
@@ -375,28 +375,28 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @deffn {Специальный оператор} if
 Условное вычисление. Существуют различные формы условного выражения @code{if}.
 
-@code{if @mvar{cond_1} then @mvar{expr_1} else @mvar{expr_0}}
-вычисляет и возвращает значение @mvar{expr_1}, если значение @mvar{cond_1} равно @code{true},
+@code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
+вычисляет и возвращает значение @var{expr_1}, если значение @var{cond_1} равно @code{true},
 иначе вычисляет и возвращает значение @code{expr_0}.
 
-@code{if @mvar{cond_1} then @mvar{expr_1} elseif @mvar{cond_2} then @mvar{expr_2} elseif ... else @mvar{expr_0}}
-вычисляет и возвращает значение @mvar{expr_k}, если @mvar{cond_k} равно @code{true} 
+@code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
+вычисляет и возвращает значение @var{expr_k}, если @var{cond_k} равно @code{true} 
 а все предыдущие условия равны @code{false}.
-Если не одно из условий не равно @code{true}, то вычисляется и возвращается значение @mvar{expr_0}.
+Если не одно из условий не равно @code{true}, то вычисляется и возвращается значение @var{expr_0}.
 
 Если завершающее @code{else} отсутствует, то в конце подразумевается @code{else false}.
-Т.е. @code{if @mvar{cond_1} then @mvar{expr_1}} эквивалентно 
-@code{if @mvar{cond_1} then @mvar{expr_1} else false},
-а @code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n}}
+Т.е. @code{if @var{cond_1} then @var{expr_1}} эквивалентно 
+@code{if @var{cond_1} then @var{expr_1} else false},
+а @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
 эквивалентно
-@code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n} else false}.
+@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
 
-Альтернативы @mvar{expr_0}, ..., @mvar{expr_n} могут быть произвольными выражениями Maxima,
+Альтернативы @var{expr_0}, ..., @var{expr_n} могут быть произвольными выражениями Maxima,
 включая вложенные @code{if} выражения.
 Альтернативы не упрощаются и не вычисляются до тех пор пока соответствующее условие
 не равно @code{true}.
 
-Условия @mvar{cond_1}, ..., @mvar{cond_n} являются выражениями, которые потенциально или фактически
+Условия @var{cond_1}, ..., @var{cond_n} являются выражениями, которые потенциально или фактически
 вычисляются в @code{true} или @code{false}.
 Если значение условия не равно ни @code{true}, ни @code{false}, то
 поведение @code{if} управляется глобальной переменной @code{prederror}.
@@ -432,17 +432,17 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
-@deffn {Функция} map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Функция} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Возвращает выражение, с оператором верхнего уровня таким же как у выражений 
-@mvar{expr_1}, ..., @mvar{expr_n} но аргументы которого являются результатами 
-применения @mvar{f} к соответствующим аргументам выражений @mvar{expr_i}.  
-Здесь, @mvar{f} -- либо функция @math{n} аргументов, либо @code{lambda} 
+@var{expr_1}, ..., @var{expr_n} но аргументы которого являются результатами 
+применения @var{f} к соответствующим аргументам выражений @var{expr_i}.  
+Здесь, @var{f} -- либо функция @math{n} аргументов, либо @code{lambda} 
 выражение с @math{n} аргументами.
 
 Если переменная @code{maperror} равна @code{false}, то @code{map}:
-(1) остановится на самом коротком выражении @mvar{expr_i}, если не все @mvar{expr_i} 
-имеют одинаковую длину; (2) применит @mvar{f} к [@mvar{expr_1}, @mvar{expr_2},...],
-если не все @mvar{expr_i} имеют одинаковый тип.  Если @code{maperror} равна @code{true},
+(1) остановится на самом коротком выражении @var{expr_i}, если не все @var{expr_i} 
+имеют одинаковую длину; (2) применит @var{f} к [@var{expr_1}, @var{expr_2},...],
+если не все @var{expr_i} имеют одинаковый тип.  Если @code{maperror} равна @code{true},
 то в оба вышеуказанных случая считаются ошибкой.
 
 Одним из применений функции @code{map} является применение какой-либо функции
@@ -475,8 +475,8 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @closecatbox
 @end deffn
 
-@deffn {Функция} mapatom (@mvar{expr})
-Возвращает @code{true} тогда и только тогда, когда выражение @mvar{expr} рассматривается map-процедурами
+@deffn {Функция} mapatom (@var{expr})
+Возвращает @code{true} тогда и только тогда, когда выражение @var{expr} рассматривается map-процедурами
 как атомарное выражение.  К таким "mapatoms" относятся атомы, числа (включая рациональные) и
 переменные с индексом.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
@@ -493,12 +493,12 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 Если переменная @code{maperror} равна @code{false}, то все @code{map} функции, например:
 
 @example
-map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
+map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
-(1) остановится на самом коротком выражении @mvar{expr_i}, если не все @mvar{expr_i} 
-имеют одинаковую длину; (2) применит @mvar{f} к [@mvar{expr_1}, @mvar{expr_2},...],
-если не все @mvar{expr_i} имеют одинаковый тип.  
+(1) остановится на самом коротком выражении @var{expr_i}, если не все @var{expr_i} 
+имеют одинаковую длину; (2) применит @var{f} к [@var{expr_1}, @var{expr_2},...],
+если не все @var{expr_i} имеют одинаковый тип.  
 
 Если @code{maperror} равна @code{true},
 то в оба вышеуказанных случая считаются ошибками.
@@ -525,13 +525,13 @@ map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 @end defvr
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} maplist (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
-Возвращает список с @mvar{f}, примененной к частям выражений 
-@mvar{expr_1}, ..., @mvar{expr_n}.
-@mvar{f} -- есть имя функции или лямбда-выражение.
+@deffn {Функция} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Возвращает список с @var{f}, примененной к частям выражений 
+@var{expr_1}, ..., @var{expr_n}.
+@var{f} -- есть имя функции или лямбда-выражение.
 
-Функция @code{maplist} отличается от @code{map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})},
-которая возвращает выражение с главным оператором, одним для всех выражений @mvar{expr_i}
+Функция @code{maplist} отличается от @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})},
+которая возвращает выражение с главным оператором, одним для всех выражений @var{expr_i}
 (за исключеним упрощений и случая, когда @code{map} выполняет @code{apply}).
 
 @opencatbox
@@ -558,8 +558,8 @@ map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 @closecatbox
 @end defvr
 
-@deffn {Функция} return (@mvar{value})
-Используется для явного выхода из блока, делая @mvar{value} значением этого блока.
+@deffn {Функция} return (@var{value})
+Используется для явного выхода из блока, делая @var{value} значением этого блока.
 См. @code{block} для более детального описания.
 
 @opencatbox
@@ -568,9 +568,9 @@ map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} scanmap (@mvar{f}, @mvar{expr})
-@deffnx {Функция} scanmap (@mvar{f}, @mvar{expr}, bottomup)
-Применяет функцию @mvar{f} к @mvar{expr} рекурсивно начиная с верхнего уровня и глубже.
+@deffn {Функция} scanmap (@var{f}, @var{expr})
+@deffnx {Функция} scanmap (@var{f}, @var{expr}, bottomup)
+Применяет функцию @var{f} к @var{expr} рекурсивно начиная с верхнего уровня и глубже.
 Это может быть полезно, если, например, требуется полная факторизация:
 
 @example
@@ -581,7 +581,7 @@ map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 @end example
 
 Отметим, что то, как @code{scanmap} применяет данную функцию @code{factor} к подвыражениям
-@mvar{expr}, зависит от формы этого выражения.  И если дана другая форма @mvar{expr},
+@var{expr}, зависит от формы этого выражения.  И если дана другая форма @var{expr},
 то результат @code{scanmap} может быть другим.  Так, @code{%o2} не получится,
 если @code{scanmap} применить к раскрытому варианту @code{exp}:
 
@@ -601,7 +601,7 @@ map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
 
-@code{scanmap (@mvar{f}, @mvar{expr}, bottomup)} применяет @mvar{f} к @mvar{expr} с
+@code{scanmap (@var{f}, @var{expr}, bottomup)} применяет @var{f} к @var{expr} с
 самого глубокого уровня вверх.  Например, для неопределенной функции @code{f},
 
 @example
@@ -619,8 +619,8 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 @closecatbox
 @end deffn
 
-@deffn {Функция} throw (@mvar{expr})
-Вычисляет выражение @mvar{expr} и "бросает" его значение вверх до ближайшего @code{catch}.  
+@deffn {Функция} throw (@var{expr})
+Вычисляет выражение @var{expr} и "бросает" его значение вверх до ближайшего @code{catch}.  
 Функции @code{throw} и @code{catch} реализуют механизм нелокального возврата.
 
 @opencatbox
@@ -639,24 +639,24 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 @closecatbox
 @end deffn
 
-@deffn {Функция} outermap (@mvar{f}, @mvar{a_1}, ..., @mvar{a_n})
-Применяет функцию @mvar{f} к каждому элементу внешнего произведения 
-@mvar{a_1} x @mvar{a_2} ... x @mvar{a_n}.
+@deffn {Функция} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+Применяет функцию @var{f} к каждому элементу внешнего произведения 
+@var{a_1} x @var{a_2} ... x @var{a_n}.
 
-@mvar{f} -- есть имя функции с @math{n} аргументами или
+@var{f} -- есть имя функции с @math{n} аргументами или
 лямбда-выражение с @math{n} аргументами.
-Каждый элемент @mvar{a_k} может быть списком, списком списков, матрицей или любым другим выражением.
+Каждый элемент @var{a_k} может быть списком, списком списков, матрицей или любым другим выражением.
 
 Значение @code{outermap} является вложенной структурой.
-Пусть @mvar{x} является возвращаемым значением.
-Тогда @mvar{x} имеет ту же структуру, как первый аргумент (список, список списков или матрица),
-@code{@mvar{x}[i_1]...[i_m]} имеет ту же структуру, как второй аргумент (список, список списков или матрица),
-@code{@mvar{x}[i_1]...[i_m][j_1]...[j_n]} имеет ту же структуру, как третий аргумент (список, список списков или матрица),
-и т.д., где @mvar{m}, @mvar{n}, ... -- есть число индексов, необходимых для для доступа к элементам
+Пусть @var{x} является возвращаемым значением.
+Тогда @var{x} имеет ту же структуру, как первый аргумент (список, список списков или матрица),
+@code{@var{x}[i_1]...[i_m]} имеет ту же структуру, как второй аргумент (список, список списков или матрица),
+@code{@var{x}[i_1]...[i_m][j_1]...[j_n]} имеет ту же структуру, как третий аргумент (список, список списков или матрица),
+и т.д., где @var{m}, @var{n}, ... -- есть число индексов, необходимых для для доступа к элементам
 каждого из аргументов (один для списка, два для матрицы, еще один для вложенного списка).
 Аргументы, не являющиеся списками и матрицами, не оказывают влияния на возвращаемое значение.
 
-Отметим, что результат @code{outermap} отличается от применения @mvar{f} ко всем
+Отметим, что результат @code{outermap} отличается от применения @var{f} ко всем
 элементам внешнего произведения, возвращаемого @code{cartesian_product}.
 Функция @code{outermap} сохраняет структуру аргументов в возвращаемом значении, а @code{cartesian_product} нет.
 

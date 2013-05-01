@@ -120,11 +120,11 @@ Exemplo:
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para linearalgebra,  , Introdu@value{cedilha}@~{a}o a linearalgebra, linearalgebra
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para linearalgebra
 
-@deffn {Fun@value{cedilha}@~{a}o} addmatrices (@mvar{f}, @mvar{M_1}, ..., @mvar{M_n})
+@deffn {Fun@value{cedilha}@~{a}o} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
-Usando a fun@value{cedilha}@~{a}o @mvar{f} como a fun@value{cedilha}@~{a}o de adi@value{cedilha}@~{a}o, retorne a adi@value{cedilha}@~{a}o das
-matrizes @mvar{M_1}, ..., @mvar{M_n}. A fun@value{cedilha}@~{a}o @mvar{f} deve aceitar qualquer n@'{u}mero de
+Usando a fun@value{cedilha}@~{a}o @var{f} como a fun@value{cedilha}@~{a}o de adi@value{cedilha}@~{a}o, retorne a adi@value{cedilha}@~{a}o das
+matrizes @var{M_1}, ..., @var{M_n}. A fun@value{cedilha}@~{a}o @var{f} deve aceitar qualquer n@'{u}mero de
 argumentos (uma fun@value{cedilha}@~{a}o en@'{a}ria do Maxima).
 
 Exemplos:
@@ -146,41 +146,41 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} blockmatrixp (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} blockmatrixp (@var{M})
 
-Retorna @code{true} se e somente se @mvar{M} for uma matriz e toda entrada de
-@mvar{M} tamb@'{e}m for uma matriz.
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} columnop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
-
-Se @mvar{M} for uma matriz, retorna a matriz que resulta de fazer a  
-opera@value{cedilha}@~{a}o de coluna @code{C_i <- C_i - @mvar{theta} * C_j}. Se @mvar{M} n@~{a}o tiver uma linha
-@mvar{i} ou @mvar{j}, emite uma mensagem de erro.
+Retorna @code{true} se e somente se @var{M} for uma matriz e toda entrada de
+@var{M} tamb@'{e}m for uma matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} columnswap (@mvar{M}, @mvar{i}, @mvar{j})
+@deffn {Fun@value{cedilha}@~{a}o} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
-Se @mvar{M} for uma matriz, troca as colunas @mvar{i} e @mvar{j}.  Se @mvar{M} n@~{a}o tiver uma coluna
-@mvar{i} ou @mvar{j}, emite uma mensagem de erro.
+Se @var{M} for uma matriz, retorna a matriz que resulta de fazer a  
+opera@value{cedilha}@~{a}o de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~{a}o tiver uma linha
+@var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} columnspace (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} columnswap (@var{M}, @var{i}, @var{j})
 
-Se @mvar{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto
-@code{@{v_1, ..., v_n@}} @'{e} uma base para o espa@value{cedilha}o coluna de @mvar{M}.  A diferen@value{cedilha}a entre o maior elemento e o menor elemento do 
+Se @var{M} for uma matriz, troca as colunas @var{i} e @var{j}.  Se @var{M} n@~{a}o tiver uma coluna
+@var{i} ou @var{j}, emite uma mensagem de erro.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} columnspace (@var{M})
+
+Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto
+@code{@{v_1, ..., v_n@}} @'{e} uma base para o espa@value{cedilha}o coluna de @var{M}.  A diferen@value{cedilha}a entre o maior elemento e o menor elemento do 
 conjunto vazio @'{e} @code{@{0@}}. Dessa forma, quando o espa@value{cedilha}o coluna tiver somente 
 um membro, retorna @code{span ()}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} copy (@mvar{e})
+@deffn {Fun@value{cedilha}@~{a}o} copy (@var{e})
 
-Retorna uma c@'{o}pia da express@~{a}o @mvar{e} do Maxima. Embora @mvar{e} possa ser qualquer
-express@~{a}o do Maxima, A fun@value{cedilha}@~{a}o @code{copy} @'{e} mais @'{u}til quando @mvar{e} for ou
+Retorna uma c@'{o}pia da express@~{a}o @var{e} do Maxima. Embora @var{e} possa ser qualquer
+express@~{a}o do Maxima, A fun@value{cedilha}@~{a}o @code{copy} @'{e} mais @'{u}til quando @var{e} for ou
 uma lista ou uma matriz; considere:
 @c ===beg===
 @c m : [1,[2,3]]$
@@ -198,7 +198,7 @@ uma lista ou uma matriz; considere:
 (%i5) mm;
 (%o5)                      [1,[x,3]]
 @end example
-Vamos tentar a mesma experi@^{e}ncia, mas dessa vez tomemos @mvar{mm} como sendo uma c@'{o}pia de @mvar{m}
+Vamos tentar a mesma experi@^{e}ncia, mas dessa vez tomemos @var{mm} como sendo uma c@'{o}pia de @var{m}
 @c ===beg===
 @c m : [1,[2,3]]$
 @c mm : copy(m)$
@@ -215,29 +215,29 @@ Vamos tentar a mesma experi@^{e}ncia, mas dessa vez tomemos @mvar{mm} como sendo
 (%i10) mm;
 (%o10)                    [1,[x,3]]
 @end example
-Dessa vez, a atribui@value{cedilha}@~{a}o a @mvar{mm} n@~{a}o muda o valor de @mvar{m}.
+Dessa vez, a atribui@value{cedilha}@~{a}o a @var{mm} n@~{a}o muda o valor de @var{m}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cholesky (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} cholesky (@mvar{M}, @mvar{campo})
+@deffn {Fun@value{cedilha}@~{a}o} cholesky (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} cholesky (@var{M}, @var{campo})
 
 Retorna fatoriza@value{cedilha}@~{a}o de Cholesky da matriz hermitiana (or autoadjunta) 
-@mvar{M}. O valor padr@~{a}o para o segundo argumento @'{e} @code{generalring}. Para uma descri@value{cedilha}@~{a}o dos
-poss@'{i}veis valores para @mvar{campo}, veja @code{lu_factor}.
+@var{M}. O valor padr@~{a}o para o segundo argumento @'{e} @code{generalring}. Para uma descri@value{cedilha}@~{a}o dos
+poss@'{i}veis valores para @var{campo}, veja @code{lu_factor}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ctranspose (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} ctranspose (@var{M})
 
-Retorna a matriz transposta conjugada complexa da matriz @mvar{M}. A fun@value{cedilha}@~{a}o
+Retorna a matriz transposta conjugada complexa da matriz @var{M}. A fun@value{cedilha}@~{a}o
 @code{ctranspose} usa @code{matrix_element_transpose} para transpor cada elemento da matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} diag_matrix (@mvar{d_1}, @mvar{d_2},...,@mvar{d_n})
+@deffn {Fun@value{cedilha}@~{a}o} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
-Retorna uma matriz diagonal matriz com entradas de diagonal @mvar{d_1}, @mvar{d_2},...,@mvar{d_n}.
+Retorna uma matriz diagonal matriz com entradas de diagonal @var{d_1}, @var{d_2},...,@var{d_n}.
 Quando as entradas de diagonal forem matrizes, as entradas zero da matriz retornada
 ser@~{a}o todas matrizes de tamanho apropriado; por exemplo:
 @c ===beg===
@@ -262,24 +262,24 @@ ser@~{a}o todas matrizes de tamanho apropriado; por exemplo:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dotproduct (@mvar{u}, @mvar{v})
+@deffn {Fun@value{cedilha}@~{a}o} dotproduct (@var{u}, @var{v})
 
-Retorna o produto do ponto (produto escalar) dos vetores @mvar{u} e @mvar{v}.  Isso @'{e} o mesmo
-que @code{conjugate (transpose (@mvar{u})) . @mvar{v}}.  Os argumentos @mvar{u} e @mvar{v} devem ser
+Retorna o produto do ponto (produto escalar) dos vetores @var{u} e @var{v}.  Isso @'{e} o mesmo
+que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
 vetores coluna.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} eigens_by_jacobi (@mvar{A})
-@deffnx {Fun@value{cedilha}@~{a}o} eigens_by_jacobi (@mvar{A}, @mvar{tipo_corpo})
+@deffn {Fun@value{cedilha}@~{a}o} eigens_by_jacobi (@var{A})
+@deffnx {Fun@value{cedilha}@~{a}o} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
 
-Calculam os autovalores e autovetores de @mvar{A} pelo m@'{e}todo de rota@value{cedilha}@~{o}es de Jacobi.
-@mvar{A} deve ser uma matriz sim@'{e}trica (mas essa matriz sim@'{e}trica precisa n@~{a}o ser nem definida positiva e nem semidefinida positiva).
-@mvar{tipo_corpo} indica o corpo computacional, pode ser ou @code{floatfield} ou @code{bigfloatfield}.
-Se @mvar{tipo_corpo} n@~{a}o for especificado, o padr@~{a}o @'{e} @code{floatfield}.
+Calculam os autovalores e autovetores de @var{A} pelo m@'{e}todo de rota@value{cedilha}@~{o}es de Jacobi.
+@var{A} deve ser uma matriz sim@'{e}trica (mas essa matriz sim@'{e}trica precisa n@~{a}o ser nem definida positiva e nem semidefinida positiva).
+@var{tipo_corpo} indica o corpo computacional, pode ser ou @code{floatfield} ou @code{bigfloatfield}.
+Se @var{tipo_corpo} n@~{a}o for especificado, o padr@~{a}o @'{e} @code{floatfield}.
 
-Os elementos de @mvar{A} devem ser n@'{u}meros ou express@~{o}es que avaliam para n@'{u}meros
-via @code{float} ou @code{bfloat} (dependendo do valor de @mvar{tipo_corpo}).
+Os elementos de @var{A} devem ser n@'{u}meros ou express@~{o}es que avaliam para n@'{u}meros
+via @code{float} ou @code{bfloat} (dependendo do valor de @var{tipo_corpo}).
 
 Exemplos:
 @c ===beg===
@@ -339,136 +339,136 @@ number of rotations: 1
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} get_lu_factors (@mvar{x}) 
+@deffn {Fun@value{cedilha}@~{a}o} get_lu_factors (@var{x}) 
 
-Quando @code{@mvar{x} = lu_factor (@mvar{A})}, ent@~{a}o @code{get_lu_factors} retorna uma lista da 
-forma @code{[P, L, U]}, onde @mvar{P} @'{e} uma matriz de permuta@value{cedilha}@~{a}o, @mvar{L} @'{e} triangular baixa com
-a diagonal preenchida com a unidade, e @mvar{U} @'{e} triangular alta, e @code{@mvar{A} = @mvar{P} @mvar{L} @mvar{U}}.
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} hankel (@mvar{col})
-@deffnx {Fun@value{cedilha}@~{a}o} hankel (@mvar{col}, @mvar{lin})
-
-Retorna uma matriz de Hankel @mvar{H}. A primeira coluna de @mvar{H} @'{e} @mvar{col};
-exceto para a primeira entrada, a @'{u}ltima linha de @mvar{H} @'{e} @mvar{lin}. O
-valor padr@~{a}o para @mvar{lin} @'{e} o vetor nulo com o mesmo comprimento que @mvar{col}.
+Quando @code{@var{x} = lu_factor (@var{A})}, ent@~{a}o @code{get_lu_factors} retorna uma lista da 
+forma @code{[P, L, U]}, onde @var{P} @'{e} uma matriz de permuta@value{cedilha}@~{a}o, @var{L} @'{e} triangular baixa com
+a diagonal preenchida com a unidade, e @var{U} @'{e} triangular alta, e @code{@var{A} = @var{P} @var{L} @var{U}}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} hessian (@mvar{f},@mvar{vars})
+@deffn {Fun@value{cedilha}@~{a}o} hankel (@var{col})
+@deffnx {Fun@value{cedilha}@~{a}o} hankel (@var{col}, @var{lin})
 
-Retorna a matriz hessiana de @mvar{f} com rela@value{cedilha}@~{a}o @`as vari@'{a}veis na lista
-@mvar{vars}.  As entradas @mvar{i},@mvar{j} da matriz hessiana s@~{a}o
-@mvar{diff(f vars[i],1,vars[j],1)}.
+Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'{e} @var{col};
+exceto para a primeira entrada, a @'{u}ltima linha de @var{H} @'{e} @var{lin}. O
+valor padr@~{a}o para @var{lin} @'{e} o vetor nulo com o mesmo comprimento que @var{col}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} hilbert_matrix (@mvar{n})
+@deffn {Fun@value{cedilha}@~{a}o} hessian (@var{f},@var{vars})
 
-Retorna the @mvar{n} by @mvar{n} matriz de Hilbert. Quando @mvar{n} n@~{a}o for um inteiro
+Retorna a matriz hessiana de @var{f} com rela@value{cedilha}@~{a}o @`as vari@'{a}veis na lista
+@var{vars}.  As entradas @var{i},@var{j} da matriz hessiana s@~{a}o
+@var{diff(f vars[i],1,vars[j],1)}.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} hilbert_matrix (@var{n})
+
+Retorna the @var{n} by @var{n} matriz de Hilbert. Quando @var{n} n@~{a}o for um inteiro
 positivo, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} identfor (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} identfor (@mvar{M}, @mvar{corpo})
+@deffn {Fun@value{cedilha}@~{a}o} identfor (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} identfor (@var{M}, @var{corpo})
 
 Retorna uma matriz identidade que tem o mesmo tamanho que a matriz
-@mvar{M}.  As entradas de diagonal da matriz identidade s@~{a}o a 
-identidade multiplicativa do corpo @mvar{corpo}; o padr@~{a}o para
-@mvar{corpo} @'{e} @mvar{generalring}.
+@var{M}.  As entradas de diagonal da matriz identidade s@~{a}o a 
+identidade multiplicativa do corpo @var{corpo}; o padr@~{a}o para
+@var{corpo} @'{e} @var{generalring}.
 
-O primeiro argumento @mvar{M} pode ser uma  matriz quadrada ou um 
-n@~{a}o matriz. Quando @mvar{M} for uma matriz, cada entrada de @mvar{M} pode ser uma
-matriz quadrada -- dessa forma @mvar{M} pode ser uma matriz de bloco do Maxima. A
+O primeiro argumento @var{M} pode ser uma  matriz quadrada ou um 
+n@~{a}o matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
+matriz quadrada -- dessa forma @var{M} pode ser uma matriz de bloco do Maxima. A
 matriz pode ser de bloco para qualquer (finita) quantidade de n@'{i}veis.
 
 Veja tamb@'{e}m @code{zerofor}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} invert_by_lu (@mvar{M}, @mvar{(rng generalring)})
+@deffn {Fun@value{cedilha}@~{a}o} invert_by_lu (@var{M}, @var{(rng generalring)})
 
-Inverte a matriz @mvar{M} atrav@'{e}s de fatoriza@value{cedilha}@~{a}o linear alta (LU).  A fatoriza@value{cedilha}@~{a}o LU
-@'{e} conclu@'{i}da usando o anel @mvar{rng}.
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} kronecker_product (@mvar{A}, @mvar{B})
-
-Retorna o produto de Kronecker das matrizes @mvar{A} e @mvar{B}.
+Inverte a matriz @var{M} atrav@'{e}s de fatoriza@value{cedilha}@~{a}o linear alta (LU).  A fatoriza@value{cedilha}@~{a}o LU
+@'{e} conclu@'{i}da usando o anel @var{rng}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} listp (@mvar{e}, @mvar{p})
-@deffnx {Fun@value{cedilha}@~{a}o} listp (@mvar{e})
+@deffn {Fun@value{cedilha}@~{a}o} kronecker_product (@var{A}, @var{B})
 
-Recebendo um argumento opcional @mvar{p}, retorna @code{true} se @mvar{e} for 
-uma lista do Maxima e @mvar{p} avalia para @code{true} para elemento da lista.
-Quando @code{listp} n@~{a}o recebe o argumento opcional, retorna @code{true} se @mvar{e} for 
+Retorna o produto de Kronecker das matrizes @var{A} e @var{B}.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} listp (@var{e}, @var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} listp (@var{e})
+
+Recebendo um argumento opcional @var{p}, retorna @code{true} se @var{e} for 
+uma lista do Maxima e @var{p} avalia para @code{true} para elemento da lista.
+Quando @code{listp} n@~{a}o recebe o argumento opcional, retorna @code{true} se @var{e} for 
 uma lista do Maxima.  em todos os outros casos, retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} locate_matrix_entry (@mvar{M}, @mvar{r_1}, @mvar{c_1}, @mvar{r_2}, @mvar{c_2}, @mvar{f}, @mvar{rel})
+@deffn {Fun@value{cedilha}@~{a}o} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
 O primeiro argumento deve ser uma matriz; os argumentos que v@~{a}o de
-@mvar{r_1} at@'{e} @mvar{c_2} determinam um sub-matriz de @mvar{M} que consiste de
-linhas que v@~{a}o de @mvar{r_1} at@'{e} @mvar{r_2} e colunas que v@~{a}o de @mvar{c_1} at@'{e} @mvar{c_2}. 
+@var{r_1} at@'{e} @var{c_2} determinam um sub-matriz de @var{M} que consiste de
+linhas que v@~{a}o de @var{r_1} at@'{e} @var{r_2} e colunas que v@~{a}o de @var{c_1} at@'{e} @var{c_2}. 
 
-Encontra uma entrada na sub-matriz @mvar{M} que satisfaz alguma propriedade. 
+Encontra uma entrada na sub-matriz @var{M} que satisfaz alguma propriedade. 
 Existem tr@^{e}s casos:
 
-(1) @code{@mvar{rel} = 'bool} e @mvar{f} um predicado: 
+(1) @code{@var{rel} = 'bool} e @var{f} um predicado: 
 
 Examina a sub-matriz da esquerda para a direita e de cima para baixo,
 e retorna o @'{i}ndice da primeria entrada que satisfizer o 
-predicado @mvar{f}. Se nenhuma entrada da matriz satisfizer o predicado @mvar{f}, retorna @code{false}.
+predicado @var{f}. Se nenhuma entrada da matriz satisfizer o predicado @var{f}, retorna @code{false}.
 
-(2) @code{@mvar{rel} = 'max} e @mvar{f} avaliar para um n@'{u}mero real:
+(2) @code{@var{rel} = 'max} e @var{f} avaliar para um n@'{u}mero real:
 
-Examina a sub-matriz procurando por uma entrada que maximize @mvar{f}.
+Examina a sub-matriz procurando por uma entrada que maximize @var{f}.
 Retorna retorna o @'{i}ndice da entrada maximizada.
 
-(3) @code{@mvar{rel} = 'min} e @mvar{f} avaliar para um n@'{u}mero real:
+(3) @code{@var{rel} = 'min} e @var{f} avaliar para um n@'{u}mero real:
 
-Examina a sub-matriz procurando por uma entrada que minimize @mvar{f}. 
+Examina a sub-matriz procurando por uma entrada que minimize @var{f}. 
 Retorna o @'{i}ndice de uma entrada minimizada.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lu_backsub (@mvar{M}, @mvar{b})
+@deffn {Fun@value{cedilha}@~{a}o} lu_backsub (@var{M}, @var{b})
 
-Quando @code{@mvar{M} = lu_factor (@mvar{A}, @mvar{corpo})},
-ent@~{a}o @code{lu_backsub (@mvar{M}, @mvar{b})} resolve o sistema
-linear @code{@mvar{A} @mvar{x} = @mvar{b}}.
+Quando @code{@var{M} = lu_factor (@var{A}, @var{corpo})},
+ent@~{a}o @code{lu_backsub (@var{M}, @var{b})} resolve o sistema
+linear @code{@var{A} @var{x} = @var{b}}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lu_factor (@mvar{M}, @mvar{corpo})
+@deffn {Fun@value{cedilha}@~{a}o} lu_factor (@var{M}, @var{corpo})
 
-Retorna uma lista da forma @code{[@mvar{LU}, @mvar{perm}, @mvar{corpo}]}, 
-ou da forma @code{[@mvar{LU}, @mvar{perm}, @mvar{cmp}, @mvar{baixo-cnd} @mvar{alto-cnd}]}, onde
+Retorna uma lista da forma @code{[@var{LU}, @var{perm}, @var{corpo}]}, 
+ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cnd}]}, onde
 
-  (1) A matriz @mvar{LU} cont@'{e}a fatoriza@value{cedilha}@~{a}o de @mvar{M} na forma enpacotada. Forma
-      empacotada significa tr@^{e}s coisas: Primeiro, as linhas de @mvar{LU} s@~{a}o permutadas confirme a 
-      lista @mvar{perm}.  Se, por exemplo, @mvar{perm} for a lista list @code{[3,2,1]}, a primeira linha atual 
-      da fatoriza@value{cedilha}@~{a}o @mvar{LU} ser@'{a} a terceira linha da matriz @mvar{LU}. Segundo,
-      o fator triangular baixo de m @'{e} a parte triangular baixa de @mvar{LU} com as
+  (1) A matriz @var{LU} cont@'{e}a fatoriza@value{cedilha}@~{a}o de @var{M} na forma enpacotada. Forma
+      empacotada significa tr@^{e}s coisas: Primeiro, as linhas de @var{LU} s@~{a}o permutadas confirme a 
+      lista @var{perm}.  Se, por exemplo, @var{perm} for a lista list @code{[3,2,1]}, a primeira linha atual 
+      da fatoriza@value{cedilha}@~{a}o @var{LU} ser@'{a} a terceira linha da matriz @var{LU}. Segundo,
+      o fator triangular baixo de m @'{e} a parte triangular baixa de @var{LU} com as
       entradas de diagonal todas substitu@'{i}das pela unidade. Terceiro, o fator triangular alto de 
-      @mvar{M} @'{e} a parte triangular alta de @mvar{LU}.  
+      @var{M} @'{e} a parte triangular alta de @var{LU}.  
 
   (2) Quando o corpo for ou @code{floatfield} ou @code{complexfield},
-      os n@'{u}meros @mvar{baixo-cnd} e @mvar{alto-cnd} ser@~{a}o associados baixo e alto para o 
-      n@'{u}mero condicional de norma infinita de @mvar{M}.  Para todos os corpos (fields), o n@'{u}mero condicional de norma infinita 
+      os n@'{u}meros @var{baixo-cnd} e @var{alto-cnd} ser@~{a}o associados baixo e alto para o 
+      n@'{u}mero condicional de norma infinita de @var{M}.  Para todos os corpos (fields), o n@'{u}mero condicional de norma infinita 
       n@~{a}o pode ser estimado; para tais corpos, @code{lu_factor} retorna uma lista com dois itens.
       Ambos o baixo e o alto associado  podem diferir de seus verdadeiros valores de 
       fatores arbitr@'{a}riamente grandes. (Veja tamb@'{e}m @code{mat_cond}.)
    
-  O argumento @mvar{M} deve ser a matriz quadrada.
+  O argumento @var{M} deve ser a matriz quadrada.
 
-  O argumento opcional @mvar{cmp} deve ser um s@'{i}mbolo que determine um anel ou corpo. Os corpos e an@'{e}is 
+  O argumento opcional @var{cmp} deve ser um s@'{i}mbolo que determine um anel ou corpo. Os corpos e an@'{e}is 
   predefinidos s@~{a}o:
 
     (a) @code{generalring} -- o anel de express@~{o}es do Maxima,
@@ -490,7 +490,7 @@ A adi@value{cedilha}@~{a}o aritm@'{e}tica em ponto flutuante n@~{a}o @'{e} assoc
 de 'corpo' difere da defini@value{cedilha}@~{a}o matem@'{a}tica.
 
 Um membro do corpo @code{runningerror} @'{e} uma lista do M@'{a}xima de dois membros
-da forma @code{[x,n]},onde @mvar{x} @'{e} um n@'{u}mero em onto flutuante e
+da forma @code{[x,n]},onde @var{x} @'{e} um n@'{u}mero em onto flutuante e
 @code{n} @'{e} um inteiro. A diferen@value{cedilha}a relativa entre o valor de
 'verdadeiro' de @code{x} e @code{x} @'{e} aproximadamente associado pelo @'{e}psilon da
 m@'{a}quina vezes @code{n}. O erro de execu@value{cedilha}@~{a}o associado arrasta alguns termos
@@ -567,12 +567,12 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_cond (@mvar{M}, 1)
-@deffnx {Fun@value{cedilha}@~{a}o} mat_cond (@mvar{M}, inf)
+@deffn {Fun@value{cedilha}@~{a}o} mat_cond (@var{M}, 1)
+@deffnx {Fun@value{cedilha}@~{a}o} mat_cond (@var{M}, inf)
 
-Retorna o n@'{u}mero condiciona da norma de ordem @mvar{p} da matriz
-@mvar{m}. Os valores permitidos para @mvar{p} s@~{a}o 1 e @mvar{inf}.  Essa
-fun@value{cedilha}@~{a}o utiliza a fatoriza@value{cedilha}@~{a}o linear alta para inverter a matriz @mvar{m}. Dessa forma
+Retorna o n@'{u}mero condiciona da norma de ordem @var{p} da matriz
+@var{m}. Os valores permitidos para @var{p} s@~{a}o 1 e @var{inf}.  Essa
+fun@value{cedilha}@~{a}o utiliza a fatoriza@value{cedilha}@~{a}o linear alta para inverter a matriz @var{m}. Dessa forma
 o tempode execu@value{cedilha}@~{a}o para @code{mat_cond} @'{e} proporcional ao cubo do
 tamanho da matriz; @code{lu_factor} determina as associa@value{cedilha}@~{a}oes baixa e alta
 para o n@'{u}mero de condi@value{cedilha}@~{a}o de norma infinita em tempo proporcional ao
@@ -580,21 +580,21 @@ quadrado do tamanho da matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_norm (@mvar{M}, 1)
-@deffnx {Fun@value{cedilha}@~{a}o} mat_norm (@mvar{M}, inf)
-@deffnx {Fun@value{cedilha}@~{a}o} mat_norm (@mvar{M}, frobenius)
+@deffn {Fun@value{cedilha}@~{a}o} mat_norm (@var{M}, 1)
+@deffnx {Fun@value{cedilha}@~{a}o} mat_norm (@var{M}, inf)
+@deffnx {Fun@value{cedilha}@~{a}o} mat_norm (@var{M}, frobenius)
 
-Retorna a matriz de norma @mvar{p} da matriz @mvar{M}.  Os valores permitidos para @mvar{p} s@~{a}o
-1, @code{inf}, e @code{frobenius} (a norma da matriz de Frobenius). A matriz @mvar{M} pode ser
+Retorna a matriz de norma @var{p} da matriz @var{M}.  Os valores permitidos para @var{p} s@~{a}o
+1, @code{inf}, e @code{frobenius} (a norma da matriz de Frobenius). A matriz @var{M} pode ser
 uma matriz n@~{a}o de bloco.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} matrixp (@mvar{e}, @mvar{p})
-@deffnx {Fun@value{cedilha}@~{a}o} matrixp (@mvar{e})
+@deffn {Fun@value{cedilha}@~{a}o} matrixp (@var{e}, @var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} matrixp (@var{e})
 
-Fornecendo um argumento opcional @mvar{p}, @code{matrixp} retorna @code{true} se @mvar{e} for
-uma matriz e @mvar{p} avaliar para @code{true} para todo elemento da matriz.
+Fornecendo um argumento opcional @var{p}, @code{matrixp} retorna @code{true} se @var{e} for
+uma matriz e @var{p} avaliar para @code{true} para todo elemento da matriz.
 Quando a @code{matrixp} n@~{a}o for fornecido umargumento opcional, retorna @code{true} 
 se @code{e} for uma matriz.  em todos os outros casos, retorna @code{false}.
 
@@ -602,37 +602,37 @@ Veja tamb@'{e}m @code{blockmatrixp}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} matrix_size (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} matrix_size (@var{M})
 
 Retorna uma lista com dois elementos que fornecem o n@'{u}mero de linhas e colunas, respectivamente
-da matriz @mvar{M}.
+da matriz @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_fullunblocker (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} mat_fullunblocker (@var{M})
 
-Se @mvar{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'{i}veis. Se @mvar{M} for uma matriz,
-retorna @mvar{M}; de outra forma, emite uma mensagem de erro. 
+Se @var{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'{i}veis. Se @var{M} for uma matriz,
+retorna @var{M}; de outra forma, emite uma mensagem de erro. 
 
 @c precisa de exemplo aqui
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_trace (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} mat_trace (@var{M})
 
-Retorna o tra@value{cedilha}o da matriz @mvar{M}. Se @mvar{M} n@~{a}o for uma matriz, retorna uma
-forma substantiva. Quando @mvar{M} for uma matriz de bloco, @code{mat_trace(M)} retorna
+Retorna o tra@value{cedilha}o da matriz @var{M}. Se @var{M} n@~{a}o for uma matriz, retorna uma
+forma substantiva. Quando @var{M} for uma matriz de bloco, @code{mat_trace(M)} retorna
 o mesmo valor retornado por @code{mat_trace(mat_unblocker(m))}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_unblocker (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} mat_unblocker (@var{M})
 
-Se @mvar{M} for uma matriz de bloco, @code{mat_unbloker} desfaz o bloco de @mvar{M} um n@'{i}vel. Se @mvar{M} for uma matriz, 
-@code{mat_unblocker (M)} retorna @mvar{M}; de outra forma, emite uma mensagem de erro.
+Se @var{M} for uma matriz de bloco, @code{mat_unbloker} desfaz o bloco de @var{M} um n@'{i}vel. Se @var{M} for uma matriz, 
+@code{mat_unblocker (M)} retorna @var{M}; de outra forma, emite uma mensagem de erro.
 
-Dessa forma se cada entrada de @mvar{M} for matriz, @code{mat_unblocker (M)} retorna uma 
-matriz "desblocada", mas se cada entrada de @mvar{M} for uma matriz de bloco, @code{mat_unblocker (M)} 
+Dessa forma se cada entrada de @var{M} for matriz, @code{mat_unblocker (M)} retorna uma 
+matriz "desblocada", mas se cada entrada de @var{M} for uma matriz de bloco, @code{mat_unblocker (M)} 
 retorna uma matriz de bloco com um n@'{i}vel de bloco a menos.
 
 Se voc@^{e} usa matrizes de bloco, muito provavelmente voc@^{e} ir@'{a} querer escolher @code{matrix_element_mult} para 
@@ -667,52 +667,52 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} nonnegintegerp (@mvar{n})
+@deffn {Fun@value{cedilha}@~{a}o} nonnegintegerp (@var{n})
 
-Retorna @code{true} se e somente se @code{@mvar{n} >= 0} e @mvar{n} for um inteiro.
+Retorna @code{true} se e somente se @code{@var{n} >= 0} e @var{n} for um inteiro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} nullspace (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} nullspace (@var{M})
 
-Se @mvar{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto @code{@{v_1, ..., v_n@}}
-@'{e} uma base para o espa@value{cedilha}o nulo de @mvar{M}.  A diferen@value{cedilha}a entre o maior elemento e o menor elemento do conjunto vazio @'{e}  @code{@{0@}}.  
+Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto @code{@{v_1, ..., v_n@}}
+@'{e} uma base para o espa@value{cedilha}o nulo de @var{M}.  A diferen@value{cedilha}a entre o maior elemento e o menor elemento do conjunto vazio @'{e}  @code{@{0@}}.  
 Dessa forma, quando o espa@value{cedilha}o nulo tiver somente um membro, retorna @code{span ()}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} nullity (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} nullity (@var{M})
 
-Se @mvar{M} for uma matriz, retorna a dimens@~{a}o do espa@value{cedilha}o nulo de @mvar{M}.
+Se @var{M} for uma matriz, retorna a dimens@~{a}o do espa@value{cedilha}o nulo de @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} orthogonal_complement (@mvar{v_1}, ..., @mvar{v_n})
+@deffn {Fun@value{cedilha}@~{a}o} orthogonal_complement (@var{v_1}, ..., @var{v_n})
 
 Retorna @code{span (u_1, ..., u_m)}, onde o conjunto @code{@{u_1, ..., u_m@}} @'{e} uma 
 base para o complemento ortogonal do conjunto @code{(v_1, ..., v_n)}.
 
-Cada vetor no intervalo de @mvar{v_1} at@'{e} @mvar{v_n} deve ser um vetor coluna.
+Cada vetor no intervalo de @var{v_1} at@'{e} @var{v_n} deve ser um vetor coluna.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, @mvar{exponp})
-@deffnx {Fun@value{cedilha}@~{a}o} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})
-@deffnx {Fun@value{cedilha}@~{a}o} polynomialp (@mvar{p}, @mvar{L})
+@deffn {Fun@value{cedilha}@~{a}o} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {Fun@value{cedilha}@~{a}o} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {Fun@value{cedilha}@~{a}o} polynomialp (@var{p}, @var{L})
 
-Retorna @code{true} se @mvar{p} for um polin@^{o}mio nas vari@'{a}veis da lista @mvar{L},
-O predicado @mvar{coeffp} deve avaliar para @code{true} para cada
-coeficiente, e o predicado @mvar{exponp} deve avaliar para @code{true} para todos os 
-expoentes das vari@'{a}veis na lista @mvar{L}. Se voc@^{e} quiser usar um valor
-personalizado para @mvar{exponp}, voc@^{e} deve fornecer @mvar{coeffp} com um valor mesmo se voc@^{e} quiser
-o valor padr@~{a}o para @mvar{coeffp}.
+Retorna @code{true} se @var{p} for um polin@^{o}mio nas vari@'{a}veis da lista @var{L},
+O predicado @var{coeffp} deve avaliar para @code{true} para cada
+coeficiente, e o predicado @var{exponp} deve avaliar para @code{true} para todos os 
+expoentes das vari@'{a}veis na lista @var{L}. Se voc@^{e} quiser usar um valor
+personalizado para @var{exponp}, voc@^{e} deve fornecer @var{coeffp} com um valor mesmo se voc@^{e} quiser
+o valor padr@~{a}o para @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-@code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})} @'{e} equivalente a
-@code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, 'nonnegintegerp)}.
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} @'{e} equivalente a
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}.
 
-@code{polynomialp (@mvar{p}, @mvar{L})} @'{e} equivalente a
-@code{polynomialp (@mvar{p}, L@mvar{,} 'constantp, 'nonnegintegerp)}.
+@code{polynomialp (@var{p}, @var{L})} @'{e} equivalente a
+@code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
 O polin@^{o}mio n@~{a}o precisa ser expandido:
 
@@ -755,44 +755,44 @@ Polin@^{o}mios com duas vari@'{a}veis:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} polytocompanion (@mvar{p}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} polytocompanion (@var{p}, @var{x})
 
-Se @mvar{p} for um polin@^{o}mio em @mvar{x}, retorna a atriz companheira de @mvar{p}. Para
-um polin@^{o}mio m@^{o}nico @mvar{p} de grau @mvar{n},
-temos @code{@mvar{p} = (-1)^@mvar{n} charpoly (polytocompanion (@mvar{p}, @mvar{x}))}.
+Se @var{p} for um polin@^{o}mio em @var{x}, retorna a atriz companheira de @var{p}. Para
+um polin@^{o}mio m@^{o}nico @var{p} de grau @var{n},
+temos @code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
 
-Quando @mvar{p} n@~{a}o for um polin@^{o}mio em @mvar{x}, emite uma mensagem de erro.
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} ptriangularize (@mvar{M}, @mvar{v})
-
-Se @mvar{M} for uma matriz onde cada entrada dessa matriz for um polin@^{o}mio em @mvar{v}, retorna 
-a matriz @mvar{M2} tal que
-
-(1) @mvar{M2} @'{e} triangular alta,
-
-(2) @code{@mvar{M2} = @mvar{E_n} ... @mvar{E_1} @mvar{M}},
-onde os elemetnos de @mvar{E_1} a @mvar{E_n} s@~{a}o matrizes elementares 
-cujas entrada s@~{a}o polin@^{o}mios em @mvar{v},
-
-(3) @code{|det (@mvar{M})| = |det (@mvar{M2})|},
-
-Nota: Essa fun@value{cedilha}@~{a}o n@~{a}o verifica se toda entrada @'{e} um polin@^{o}mio em @mvar{v}.  
+Quando @var{p} n@~{a}o for um polin@^{o}mio em @var{x}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} rowop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
+@deffn {Fun@value{cedilha}@~{a}o} ptriangularize (@var{M}, @var{v})
 
-Se @mvar{M} for uma matriz, retorna a matriz que resulta de se fazer a  
-opera@value{cedilha}@~{a}o de linha @code{R_i <- R_i - theta * R_j}. Se @mvar{M} n@~{a}o tiver uma linha
-@mvar{i} ou @mvar{j}, emite uma mensagem de erro.
+Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@^{o}mio em @var{v}, retorna 
+a matriz @var{M2} tal que
+
+(1) @var{M2} @'{e} triangular alta,
+
+(2) @code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}},
+onde os elemetnos de @var{E_1} a @var{E_n} s@~{a}o matrizes elementares 
+cujas entrada s@~{a}o polin@^{o}mios em @var{v},
+
+(3) @code{|det (@var{M})| = |det (@var{M2})|},
+
+Nota: Essa fun@value{cedilha}@~{a}o n@~{a}o verifica se toda entrada @'{e} um polin@^{o}mio em @var{v}.  
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} rank (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
 
-Retorna o ranque daquela matriz @mvar{M}. O rank @'{e} a dimens@~{a}o do
+Se @var{M} for uma matriz, retorna a matriz que resulta de se fazer a  
+opera@value{cedilha}@~{a}o de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} n@~{a}o tiver uma linha
+@var{i} ou @var{j}, emite uma mensagem de erro.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} rank (@var{M})
+
+Retorna o ranque daquela matriz @var{M}. O rank @'{e} a dimens@~{a}o do
 espa@value{cedilha}o coluna. Exemplo:
 @c ===beg===
 @c rank(matrix([1,2],[2,4]));
@@ -809,19 +809,19 @@ espa@value{cedilha}o coluna. Exemplo:
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} rowswap (@mvar{M}, @mvar{i}, @mvar{j})
+@deffn {Fun@value{cedilha}@~{a}o} rowswap (@var{M}, @var{i}, @var{j})
 
-Se @mvar{M} for uma matriz, permuta as linha @mvar{i} e @mvar{j}. Se @mvar{M} n@~{a}o tiver uma linha
-@mvar{i} ou @mvar{j}, emite uma mensagem de erro.
+Se @var{M} for uma matriz, permuta as linha @var{i} e @var{j}. Se @var{M} n@~{a}o tiver uma linha
+@var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} toeplitz (@mvar{col})
-@deffnx {Fun@value{cedilha}@~{a}o} toeplitz (@mvar{col}, @mvar{lin})
+@deffn {Fun@value{cedilha}@~{a}o} toeplitz (@var{col})
+@deffnx {Fun@value{cedilha}@~{a}o} toeplitz (@var{col}, @var{lin})
 
-Retorna uma matriz de Toeplitz @mvar{T}. a primeira coluna de @mvar{T} @'{e} @mvar{col};
-exceto para a primeira entrada, a primeira linha de @mvar{T} @'{e} @mvar{lin}. O
-padr@~{a}o para @mvar{lin} @'{e} o conjugado complexo de @mvar{col}. Exemplo:
+Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} @'{e} @var{col};
+exceto para a primeira entrada, a primeira linha de @var{T} @'{e} @var{lin}. O
+padr@~{a}o para @var{lin} @'{e} o conjugado complexo de @var{col}. Exemplo:
 @c ===beg===
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
@@ -843,34 +843,34 @@ padr@~{a}o para @mvar{lin} @'{e} o conjugado complexo de @mvar{col}. Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} vandermonde_matrix ([@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Fun@value{cedilha}@~{a}o} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
-Retorna uma matriz @mvar{n} por @mvar{n} cuja @mvar{i}-@'{e}sima linha @'{e} 
-@code{[1, @mvar{x_i}, @mvar{x_i}^2, ... @mvar{x_i}^(@mvar{n}-1)]}. 
+Retorna uma matriz @var{n} por @var{n} cuja @var{i}-@'{e}sima linha @'{e} 
+@code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} zerofor (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o}  zerofor (@mvar{M}, @mvar{fld})
+@deffn {Fun@value{cedilha}@~{a}o} zerofor (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o}  zerofor (@var{M}, @var{fld})
 
 Retorna uma matriz zero que tem o mesmo tamanho da matriz
-@mvar{M}.  Toda entrada da matriz zero @'{e} a
-identidade aditiva do anel @mvar{fld}; o valor padr@~{a}o para
-@mvar{fld} @'{e} @mvar{generalring}.
+@var{M}.  Toda entrada da matriz zero @'{e} a
+identidade aditiva do anel @var{fld}; o valor padr@~{a}o para
+@var{fld} @'{e} @var{generalring}.
 
-O primeiro argumento @mvar{M} pode ser uma matriz quadrada ou uma
-n@~{a}o matriz. Quando @mvar{M} for uma matriz, cada entrada de @mvar{M} pode ser uma
-matriz quadrada -- dessa forma @mvar{M} pode ser uma matriz de bloco do Maxima. A
+O primeiro argumento @var{M} pode ser uma matriz quadrada ou uma
+n@~{a}o matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
+matriz quadrada -- dessa forma @var{M} pode ser uma matriz de bloco do Maxima. A
 matriz pode ser de bloco para qualquer n@'{i}vel (finito).
 
 Veja tamb@'{e}m @code{identfor}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} zeromatrixp (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} zeromatrixp (@var{M})
 
-Se @mvar{M} n@~{a}o for uma matriz de bloco, retorna @code{true} se @code{is (equal (@mvar{e}, 0))} 
-for verdadeiro para cada elemento @mvar{e} da matriz @mvar{M}.  Se @mvar{M} for uma matriz de bloco, retorna
-@code{true} se @code{zeromatrixp} avaliar para @code{true} para cada elemento de @mvar{e}.
+Se @var{M} n@~{a}o for uma matriz de bloco, retorna @code{true} se @code{is (equal (@var{e}, 0))} 
+for verdadeiro para cada elemento @var{e} da matriz @var{M}.  Se @var{M} for uma matriz de bloco, retorna
+@code{true} se @code{zeromatrixp} avaliar para @code{true} para cada elemento de @var{e}.
 
 @end deffn

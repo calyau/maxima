@@ -6,23 +6,23 @@
 @node Defini@value{cedilha}@~oes para Arrays,  , Arrays, Arrays
 @section Defini@value{cedilha}@~oes para Arrays
 
-@deffn {Fun@value{cedilha}@~ao} array (@mvar{name}, @mvar{dim_1}, ..., @mvar{dim_n})
-@deffnx {Fun@value{cedilha}@~ao} array (@mvar{name}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})
-@deffnx {Fun@value{cedilha}@~ao} array ([@mvar{nome_1}, ..., @mvar{nome_m}], @mvar{dim_1}, ..., @mvar{dim_n})
+@deffn {Fun@value{cedilha}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@value{cedilha}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@value{cedilha}@~ao} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
 
 Cria um array @math{n}-dimensional.  
 @math{n} pode ser menor ou igual a 5.
 Os subscritos para
-a @math{i}'@'esima dimens@~ao s@~ao inteiros no intervalo de 0 a @mvar{dim_i}.  
+a @math{i}'@'esima dimens@~ao s@~ao inteiros no intervalo de 0 a @var{dim_i}.  
 
-@code{array (@mvar{name}, @mvar{dim_1}, ..., @mvar{dim_n})} cria um array gen@'erico.
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} cria um array gen@'erico.
 
-@code{array (@mvar{name}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})} cria
+@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} cria
 um array, com elementos de um tipo especificado.
-@mvar{type} pode ser @code{fixnum} para
+@var{type} pode ser @code{fixnum} para
 inteiros de tamanho limitado ou @code{flonum} para n@'umeros em ponto flutuante.
 
-@code{array ([@mvar{nome_1}, ..., @mvar{nome_m}], @mvar{dim_1}, ..., @mvar{dim_n})}
+@code{array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})}
 cria @math{m} arrays, todos da mesma dimens@~ao.
 @c SAME TYPE AS WELL ??
 
@@ -42,17 +42,17 @@ declarado.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} arrayapply (@mvar{A}, [@mvar{i_1}, ..., @mvar{i_n}])
-Avalia @code{@mvar{A} [@mvar{i_1}, ..., @mvar{i_n}]},
-quando @mvar{A} for um array e @mvar{i_1}, ..., @mvar{i_n} s@~ao inteiros.
+@deffn {Fun@value{cedilha}@~ao} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
+quando @var{A} for um array e @var{i_1}, ..., @var{i_n} s@~ao inteiros.
 
 Ela @'e remanescente de @code{apply}, excepto o primeiro argumento que @'e um array ao inv@'es de uma fun@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} arrayinfo (@mvar{A})
-Retorna informa@value{cedilha}@~oes sobre o array @mvar{A}.
-O argumento @mvar{A} pode ser um array declarado, uma array n@~ao declarado ( que sofreu um hash),
+@deffn {Fun@value{cedilha}@~ao} arrayinfo (@var{A})
+Retorna informa@value{cedilha}@~oes sobre o array @var{A}.
+O argumento @var{A} pode ser um array declarado, uma array n@~ao declarado ( que sofreu um hash),
 uma fun@value{cedilha}@~ao de array, ou uma fun@value{cedilha}@~ao que possui subscrito.
 
 Para arrays declarados, @code{arrayinfo} retorna uma lista
@@ -179,8 +179,8 @@ Examples:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} arraymake (@mvar{A}, [@mvar{i_1}, ..., @mvar{i_n}])
-Retorna a express@~ao @code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]}.
+@deffn {Fun@value{cedilha}@~ao} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Retorna a express@~ao @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
 O resultado @'e uma refer@^encia a um array n@~ao avaliado.
 
 @code{arraymake} @'e remanic@^encia de @code{funmake},
@@ -285,27 +285,27 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} bashindices (@mvar{expr})
-Transforma a express@~ao @mvar{expr} dando a cada
+@deffn {Fun@value{cedilha}@~ao} bashindices (@var{expr})
+Transforma a express@~ao @var{expr} dando a cada
 somat@'orio e a cada produto um @'unico @'{@dotless{i}}ndice.  Isso d@'a a @code{changevar} grande
 precis@~ao quando se est@'a trabalhando com somat@'orios e produtos.  A forma do
-@'unico @'{@dotless{i}}ndice @'e @code{j@mvar{number}}.  A quantidade @mvar{number} @'e determindad por
+@'unico @'{@dotless{i}}ndice @'e @code{j@var{number}}.  A quantidade @var{number} @'e determindad por
 refer@^encia a @code{gensumnum}, que pode ser alterada pelo utilizador.  Por
 exemplo, @code{gensumnum:0$} reseta isso.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fillarray (@mvar{A}, @mvar{B})
-Preenche o array @mvar{A} com @mvar{B}, que @'e uma lista ou um array.
+@deffn {Fun@value{cedilha}@~ao} fillarray (@var{A}, @var{B})
+Preenche o array @var{A} com @var{B}, que @'e uma lista ou um array.
 
-Se um tipo espec@'{@dotless{i}}fico for declarado para @mvar{A} no momento de sua cria@value{cedilha}@~ao,
-@mvar{A} somente porde ser preenchido com elementos do tipo especificado;
+Se um tipo espec@'{@dotless{i}}fico for declarado para @var{A} no momento de sua cria@value{cedilha}@~ao,
+@var{A} somente porde ser preenchido com elementos do tipo especificado;
 Constitui um erro alguma tentativa feita para copiar um um elemento de um tipo diferente.
  
-Se as dimens@~oes dos arrays @mvar{A} e @mvar{B} forem
-diferents, @mvar{A} @'e preenchido no ordem de maior fileira.  Se n@~ao existirem elementos
-livres em @mvar{B} o @'ultimo elemento @'e usado para preencher todo o 
-resto de @mvar{A}.  Se existirem muitos , esses restantes seram ignorados.
+Se as dimens@~oes dos arrays @var{A} e @var{B} forem
+diferents, @var{A} @'e preenchido no ordem de maior fileira.  Se n@~ao existirem elementos
+livres em @var{B} o @'ultimo elemento @'e usado para preencher todo o 
+resto de @var{A}.  Se existirem muitos , esses restantes seram ignorados.
 
 @code{fillarray} retorna esse primeiro argumento.
 
@@ -373,9 +373,9 @@ Arrays multi-dimensionais s@~ao preenchidos em ordem de maior fileira.
 
  @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} listarray (@mvar{A})
-Retorna uma lista dos elementos do array @mvar{A}.
-O argumento @mvar{A} pode ser um array declarado, um array n@~ao declarado (desordenado - hashed),
+@deffn {Fun@value{cedilha}@~ao} listarray (@var{A})
+Retorna uma lista dos elementos do array @var{A}.
+O argumento @var{A} pode ser um array declarado, um array n@~ao declarado (desordenado - hashed),
 uma fun@value{cedilha}@~ao de array, ou uma fun@value{cedilha}@~ao com subscritos.
 
 Elementos s@~ao listados em ordem de linha maior.
@@ -499,12 +499,12 @@ Exemplos:
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~ao} make_array (@mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})
-Cria e retorna um array de Lisp.  @mvar{type} pode
+@deffn {Fun@value{cedilha}@~ao} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+Cria e retorna um array de Lisp.  @var{type} pode
 ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou
 @code{functional}.
 Existem @math{n} indices,
-e o @math{i}'en@'esimo indice est@'a no intervalo de 0 a @math{@mvar{dim_i} - 1}.
+e o @math{i}'en@'esimo indice est@'a no intervalo de 0 a @math{@var{dim_i} - 1}.
 
 A vantagem de @code{make_array} sobre @code{array} @'e que o valor de retorno n@~ao tem 
 um nome, e uma vez que um ponteiro a ele vai, ele ir@'a tamb@'em.
@@ -573,7 +573,7 @@ Exemplos:
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-@deffn {Fun@value{cedilha}@~ao} rearray (@mvar{A}, @mvar{dim_1}, ..., @mvar{dim_n})
+@deffn {Fun@value{cedilha}@~ao} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
 Altera as dimen@value{cedilha}@~oes de um array.  
 O novo array ser@'a preenchido com os elementos do antigo em
 ordem da maior linha.  Se o array antigo era muito pequeno, 
@@ -584,7 +584,7 @@ alterado.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remarray (@mvar{A_1}, ..., @mvar{A_n})
+@deffn {Fun@value{cedilha}@~ao} remarray (@var{A_1}, ..., @var{A_n})
 @deffnx {Fun@value{cedilha}@~ao} remarray (all)
 Remove arrays e fun@value{cedilha}@~oes associadas
 a arrays e libera o espa@value{cedilha}o ocupado.
@@ -599,12 +599,12 @@ desejado para redefinir os valores em um array desordenado.
 @code{remarray} retorna a lista dos arrays removidos.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} subvar (@mvar{x}, @mvar{i})
-Avalia a express@~ao subscrita @code{@mvar{x}[@mvar{i}]}.
+@deffn {Fun@value{cedilha}@~ao} subvar (@var{x}, @var{i})
+Avalia a express@~ao subscrita @code{@var{x}[@var{i}]}.
 
 @code{subvar} avalia seus argumentos.
 
-@code{arraymake (@mvar{x}, [@mvar{i}]} constr@'oi a express@~ao @code{@mvar{x}[@mvar{i}]},
+@code{arraymake (@var{x}, [@var{i}]} constr@'oi a express@~ao @code{@var{x}[@var{i}]},
 mas n@~ao a avalia.
 
 Exemplos:

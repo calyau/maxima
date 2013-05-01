@@ -48,8 +48,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} append (@mvar{list_1}, ..., @mvar{list_n})
-Возвращает новый список элементов @mvar{list_1} с последующими элементами @mvar{list_2} и т.д.  
+@deffn {Функция} append (@var{list_1}, ..., @var{list_n})
+Возвращает новый список элементов @var{list_1} с последующими элементами @var{list_2} и т.д.  
 @code{append} работает и с выражениями общего вида, например, @code{append (f(a,b), f(c,d,e));} дает
 @code{f(a,b,c,d,e)}.
 
@@ -61,14 +61,14 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} assoc (@mvar{key}, @mvar{list}, @mvar{default})
-@deffnx {Функция} assoc (@mvar{key}, @mvar{list})
-Эта функция ищет ключ @mvar{key} в правых частях списка @mvar{list},
-имеющего форму @code{[x,y,z,...]}, где каждый элемент @mvar{list} есть выражение с бинарным
+@deffn {Функция} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Функция} assoc (@var{key}, @var{list})
+Эта функция ищет ключ @var{key} в правых частях списка @var{list},
+имеющего форму @code{[x,y,z,...]}, где каждый элемент @var{list} есть выражение с бинарным
 оператором и двумя операндами.  Например, @code{x=1}, @code{2^3}, @code{[a,b]} и т.д.
-Ключ @mvar{key} сравнивается с первым операндом.  
+Ключ @var{key} сравнивается с первым операндом.  
 Если ключ @code{key} найден, то @code{assoc} возвращает второй операнд.
-В противном случае возвращается значение @mvar{default}.  Параметр @mvar{default} не
+В противном случае возвращается значение @var{default}.  Параметр @var{default} не
 обязателен и по умолчанию равен @code{false}.
 
 @opencatbox
@@ -78,8 +78,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @c REPHRASE
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Функция} atom (@mvar{expr})
-Возвращает @code{true} если @mvar{expr} является атомарным (т.е. число, имя или строка) и @code{false}
+@deffn {Функция} atom (@var{expr})
+Возвращает @code{true} если @var{expr} является атомарным (т.е. число, имя или строка) и @code{false}
 в противном случае.  Т.е. @code{atom(5)} равно @code{true}, тогда как @code{atom(a[1])} и @code{atom(sin(x))} 
 равны @code{false} (предполагая, что @code{a[1]} и @code{x} не имеют значения).
 
@@ -90,9 +90,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Функция} cons (@mvar{expr}, @mvar{list})
-Возвращает новый список, составленный из первого элемента равного @mvar{expr} с последующими
-элементами @mvar{list}.  Функция @code{cons} работает и с произвольными выражениями,
+@deffn {Функция} cons (@var{expr}, @var{list})
+Возвращает новый список, составленный из первого элемента равного @var{expr} с последующими
+элементами @var{list}.  Функция @code{cons} работает и с произвольными выражениями,
 например, @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @opencatbox
@@ -100,21 +100,21 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} copylist (@mvar{list})
-Возвращает копию списка @mvar{list}.
+@deffn {Функция} copylist (@var{list})
+Возвращает копию списка @var{list}.
 
 @opencatbox
 @category{Списки}
 @closecatbox
 @end deffn
 
-@deffn {Функция} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, ..., @mvar{x_n}, @mvar{list_n})
+@deffn {Функция} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
 
-Создает список, вычисляя выражение @mvar{form} с @mvar{x_1} последовательно равным элементам
-@mvar{list_1}, @mvar{x_2} последовательно равным элементам @mvar{list_2} и т.д.
+Создает список, вычисляя выражение @var{form} с @var{x_1} последовательно равным элементам
+@var{list_1}, @var{x_2} последовательно равным элементам @var{list_2} и т.д.
 Общее число элементов в результирующем списке равно произведению числа
 элементов во всех списках.
-Каждая переменная @mvar{x_i} должна быть символом.  Переменные не вычисляются.
+Каждая переменная @var{x_i} должна быть символом.  Переменные не вычисляются.
 Списки вычисляются однажды в начале итерации.
 
 @example
@@ -131,7 +131,7 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 (%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
 @end example
 
-Вместо списка @mvar{list_i} можно использовать два параметра, которые 
+Вместо списка @var{list_i} можно использовать два параметра, которые 
 должны иметь числовые значения.  Они будут рассматриваться как нижняя и верхняя
 границы итерации (включительно).
 
@@ -147,10 +147,10 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} delete (@mvar{expr_1}, @mvar{expr_2})
-@deffnx {Функция} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
-Удаляет все элементы, равные @mvar{expr_1}, из @mvar{expr_2}.  При этом @mvar{expr_1}
-может быть слагаемым @mvar{expr_2} (если это сумма) или множителем @mvar{expr_2}
+@deffn {Функция} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Функция} delete (@var{expr_1}, @var{expr_2}, @var{n})
+Удаляет все элементы, равные @var{expr_1}, из @var{expr_2}.  При этом @var{expr_1}
+может быть слагаемым @var{expr_2} (если это сумма) или множителем @var{expr_2}
 (если это произведение).
 
 @c ===beg===
@@ -162,8 +162,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @end example
 
-Вызов @code{delete(@mvar{expr_1}, @mvar{expr_2}, @mvar{n})} удаляет первые @mvar{n} случаев
-@mvar{expr_1} из @mvar{expr_2}.  Если число включений @mvar{expr_1} в @mvar{expr_2} меньше @mvar{n},
+Вызов @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} удаляет первые @var{n} случаев
+@var{expr_1} из @var{expr_2}.  Если число включений @var{expr_1} в @var{expr_2} меньше @var{n},
 то будут удалены все.
 
 @c ===beg===
@@ -183,8 +183,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} eighth (@mvar{expr})
-Возвращает восьмой элемент выражения или списка @mvar{expr}.
+@deffn {Функция} eighth (@var{expr})
+Возвращает восьмой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -194,8 +194,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Функция} endcons (@mvar{expr}, @mvar{list})
-Возвращает новый список, состоящий из элементов @code{list} с последующим @mvar{expr}.  
+@deffn {Функция} endcons (@var{expr}, @var{list})
+Возвращает новый список, состоящий из элементов @code{list} с последующим @var{expr}.  
 Функция @code{endcons} работает и с общими выражениями, например,
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
@@ -204,8 +204,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} fifth (@mvar{expr})
-Возвращает пятый элемент выражения или списка @mvar{expr}.
+@deffn {Функция} fifth (@var{expr})
+Возвращает пятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -214,14 +214,14 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} first (@mvar{expr})
-Возвращает первый элемент @mvar{expr}, что может быть первым элементом списка, 
+@deffn {Функция} first (@var{expr})
+Возвращает первый элемент @var{expr}, что может быть первым элементом списка, 
 первой строкой в матрице, первым слагаемым суммы и т.д.
 Заметим, что @code{first} и другие подобные функции, такие как @code{rest} и @code{last}, 
-работают с внешней (печатной) формой выражения @mvar{expr}, 
+работают с внешней (печатной) формой выражения @var{expr}, 
 а не с тем, как это выражение было введено.  
 Если значение @code{inflag} равно @code{true}, то эти функции будут 
-работать с внутренним представлением выражения @mvar{expr}.  Отметим, что упрощатель
+работать с внутренним представлением выражения @var{expr}.  Отметим, что упрощатель
 изменяет порядок членов в выражениях.  Так, @code{first(x+y)} будет равно @code{x}, если @code{inflag}
 равна @code{true}, и @code{y}, если @code{inflag} равна @code{false} (@code{first(y+x)} даст одинаковый
 результат в обоих случаях).  Функции @code{second} .. @code{tenth} дают со второго по десятый
@@ -232,8 +232,8 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} fourth (@mvar{expr})
-Возвращает четвертый элемент выражения или списка @mvar{expr}.
+@deffn {Функция} fourth (@var{expr})
+Возвращает четвертый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -241,9 +241,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 @closecatbox
 @end deffn
 
-@deffn {Функция} get (@mvar{a}, @mvar{i})
-Возвращает определенное пользователем свойство атома @mvar{a}, обозначенное @mvar{i}, или 
-@code{false}, если атом не имеет свойства @mvar{i}.
+@deffn {Функция} get (@var{a}, @var{i})
+Возвращает определенное пользователем свойство атома @var{a}, обозначенное @var{i}, или 
+@code{false}, если атом не имеет свойства @var{i}.
 
 Функция @code{get} вычисляет свои аргументы.
 
@@ -288,14 +288,14 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} join (@mvar{l}, @mvar{m})
-Возвращает новый список, состоящий из чередующихся элементов списков @mvar{l} и @mvar{m}.
-Результат будет иметь вид @code{[@mvar{l}[1], @mvar{m}[1], @mvar{l}[2], @mvar{m}[2], ...]}.
-Списки @mvar{l} и @mvar{m} могут иметь элементы любого типа.
+@deffn {Функция} join (@var{l}, @var{m})
+Возвращает новый список, состоящий из чередующихся элементов списков @var{l} и @var{m}.
+Результат будет иметь вид @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+Списки @var{l} и @var{m} могут иметь элементы любого типа.
 
 Если списки имеют разную длину, то @code{join} отбросит последние элементы более длинного списка.
 
-Ситуация, когда либо @mvar{l}, либо @mvar{m} не является списком, считается ошибкой.
+Ситуация, когда либо @var{l}, либо @var{m} не является списком, считается ошибкой.
 
 Примеры:
 
@@ -320,8 +320,8 @@ x is not numeric.
 
 @c NEEDS EXAMPLES
 @c HOW IS "LAST" PART DETERMINED ??
-@deffn {Функция} last (@mvar{expr})
-Возвращает последний элемент @mvar{expr} (элемент, слагаемое, множитель, строку и т.п.).
+@deffn {Функция} last (@var{expr})
+Возвращает последний элемент @var{expr} (элемент, слагаемое, множитель, строку и т.п.).
 
 @opencatbox
 @category{Списки} @category{Выражения}
@@ -329,8 +329,8 @@ x is not numeric.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} length (@mvar{expr})
-По умолчанию возвращает число частей внешней (печатной) формы выражения @mvar{expr}.  
+@deffn {Функция} length (@var{expr})
+По умолчанию возвращает число частей внешней (печатной) формы выражения @var{expr}.  
 Для списка -- это число элементов, для матрицы -- число строк, для суммы -- число
 слагаемых (см. @code{dispform}).
 
@@ -356,26 +356,26 @@ x is not numeric.
 @closecatbox
 @end defvr
 
-@deffn {Функция} listp (@mvar{expr})
-Возвращает @code{true}, если @mvar{expr} является списком и @code{false} в противном случае.
+@deffn {Функция} listp (@var{expr})
+Возвращает @code{true}, если @var{expr} является списком и @code{false} в противном случае.
 
 @opencatbox
 @category{Списки} @category{Функции предикаты}
 @closecatbox
 @end deffn
 
-@deffn {Функция} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
-@deffnx {Функция} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
+@deffn {Функция} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Функция} makelist (@var{expr}, @var{x}, @var{list})
 Создает и возвращает список, каждый элемент которого
-построен из выражения @mvar{expr}.
+построен из выражения @var{expr}.
 
-Вызов @code{makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})} возвращает список,
-с @code{j}-м элементом равным @code{ev (@mvar{expr}, @mvar{i}=j)} для
-@code{j}, пробегающего значения от @mvar{i_0} до @mvar{i_1}.
+Вызов @code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} возвращает список,
+с @code{j}-м элементом равным @code{ev (@var{expr}, @var{i}=j)} для
+@code{j}, пробегающего значения от @var{i_0} до @var{i_1}.
 
-Вызов @code{makelist (@mvar{expr}, @mvar{x}, @mvar{list})} возвращает список,
-с @code{j}-м элементом равным @code{ev (@mvar{expr}, @mvar{x}=@mvar{list}[j])}
-для @code{j}, пробегающего значения от 1 до @code{length (@mvar{list})}.
+Вызов @code{makelist (@var{expr}, @var{x}, @var{list})} возвращает список,
+с @code{j}-м элементом равным @code{ev (@var{expr}, @var{x}=@var{list}[j])}
+для @code{j}, пробегающего значения от 1 до @code{length (@var{list})}.
 
 Примеры:
 
@@ -396,15 +396,15 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} member (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Функция} member (@var{expr_1}, @var{expr_2})
 
-Возвращает @code{true} если @code{is(@mvar{expr_1} = @mvar{a})},
-для некоторого элемента @mvar{a} из @code{args(@mvar{expr_2})},
+Возвращает @code{true} если @code{is(@var{expr_1} = @var{a})},
+для некоторого элемента @var{a} из @code{args(@var{expr_2})},
 и @code{false} в противном случае.
 
 Обычно, @code{expr_2} является списком.
-В этом случае @code{args(@mvar{expr_2}) = @mvar{expr_2}}
-и @code{is(@mvar{expr_1} = @mvar{a})} для некоторого элемента @mvar{a} из @code{expr_2}.
+В этом случае @code{args(@var{expr_2}) = @var{expr_2}}
+и @code{is(@var{expr_1} = @var{a})} для некоторого элемента @var{a} из @code{expr_2}.
 
 Функция @code{member} не анализирует составные части аргументов @code{expr_2},
 и может возвратить @code{false} даже если @code{expr_1} является частью какого-либо из
@@ -450,8 +450,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} ninth (@mvar{expr})
-Возвращает девятый элемент выражения или списка @mvar{expr}.
+@deffn {Функция} ninth (@var{expr})
+Возвращает девятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -460,15 +460,15 @@ x is not numeric.
 @end deffn
 
 
-@deffn {Функция} unique (@mvar{L})
+@deffn {Функция} unique (@var{L})
 
-Возвращает уникальные элементы списка @mvar{L}.
+Возвращает уникальные элементы списка @var{L}.
 
-Если все элементы списка @mvar{L} уникальны, то
+Если все элементы списка @var{L} уникальны, то
 @code{unique} возвращает копию верхнего уровня
-списка @mvar{L}, а не сам список @mvar{L}.
+списка @var{L}, а не сам список @var{L}.
 
-Если @mvar{L} не является списком, то @code{unique} возвращает @mvar{L}.
+Если @var{L} не является списком, то @code{unique} возвращает @var{L}.
 
 Пример:
 
@@ -486,12 +486,12 @@ x is not numeric.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} rest (@mvar{expr}, @mvar{n})
-@deffnx {Функция} rest (@mvar{expr})
-Возвращает @mvar{expr} без первых @mvar{n} элементов, если @mvar{n} положительно,
-или без последних @code{- @mvar{n}} элементов, если @mvar{n} отрицательно.  
-Если @mvar{n} равен 1, то он может быть опущен.  
-Выражение @mvar{expr} может быть списком, матрицей или выражением.
+@deffn {Функция} rest (@var{expr}, @var{n})
+@deffnx {Функция} rest (@var{expr})
+Возвращает @var{expr} без первых @var{n} элементов, если @var{n} положительно,
+или без последних @code{- @var{n}} элементов, если @var{n} отрицательно.  
+Если @var{n} равен 1, то он может быть опущен.  
+Выражение @var{expr} может быть списком, матрицей или выражением.
 
 @opencatbox
 @category{Списки} @category{Выражения}
@@ -500,8 +500,8 @@ x is not numeric.
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Функция} reverse (@mvar{list})
-Изменяет порядок членов @mvar{list} (но не сами члены) на обратный.  
+@deffn {Функция} reverse (@var{list})
+Изменяет порядок членов @var{list} (но не сами члены) на обратный.  
 Функция @code{reverse} также работает с выражениями общего вида,
 например,  @code{reverse(a=b);} дает @code{b=a}.
 
@@ -510,8 +510,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} second (@mvar{expr})
-Возвращает второй элемент выражения или списка @mvar{expr}.
+@deffn {Функция} second (@var{expr})
+Возвращает второй элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -519,8 +519,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} seventh (@mvar{expr})
-Возвращает седьмой элемент выражения или списка @mvar{expr}.
+@deffn {Функция} seventh (@var{expr})
+Возвращает седьмой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -528,8 +528,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} sixth (@mvar{expr})
-Возвращает шестой элемент выражения или списка @mvar{expr}.
+@deffn {Функция} sixth (@var{expr})
+Возвращает шестой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -537,13 +537,13 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} sublist_indices (@mvar{L}, @mvar{P})
+@deffn {Функция} sublist_indices (@var{L}, @var{P})
 
-Возвращает список индексов элементов @code{x} списка @mvar{L}, для которых
-предикат @code{maybe(@mvar{P}(x))} возвращает @code{true},
+Возвращает список индексов элементов @code{x} списка @var{L}, для которых
+предикат @code{maybe(@var{P}(x))} возвращает @code{true},
 за исключением элементов @code{unknown} и @code{false}.
-Параметр @mvar{P} может быть именем функции или лямбда-выражением.
-Параметр @mvar{L} должен быть списком.
+Параметр @var{P} может быть именем функции или лямбда-выражением.
+Параметр @var{L} должен быть списком.
 
 Примеры:
 
@@ -580,8 +580,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} tenth (@mvar{expr})
-Возвращает десятый элемент выражения или списка @mvar{expr}.
+@deffn {Функция} tenth (@var{expr})
+Возвращает десятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox
@@ -589,8 +589,8 @@ x is not numeric.
 @closecatbox
 @end deffn
 
-@deffn {Функция} third (@mvar{expr})
-Возвращает третий элемент выражения или списка @mvar{expr}.
+@deffn {Функция} third (@var{expr})
+Возвращает третий элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
 @opencatbox

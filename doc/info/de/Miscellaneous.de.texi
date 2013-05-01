@@ -67,7 +67,7 @@ mit Control-A zu inspezieren.
 @c -----------------------------------------------------------------------------
 @anchor{gensym}
 @deffn  {Function} gensym ()
-@deffnx {Function} gensym (@mvar{x})
+@deffnx {Function} gensym (@var{x})
 
 @code{gensym()} creates and returns a fresh symbol.
 
@@ -75,10 +75,10 @@ The name of the new-symbol is the concatenation of a prefix, which defaults to
 "g", and a suffix, which is the decimal representation of a number that defaults
 to the value of a Lisp internal counter.
 
-If @mvar{x} is supplied, and is a string, then that string is used as a prefix 
+If @var{x} is supplied, and is a string, then that string is used as a prefix 
 instead of "g" for this call to gensym only.
 
-If @mvar{x} is supplied, and is an integer, then that integer, instead of the 
+If @var{x} is supplied, and is an integer, then that integer, instead of the 
 value of the internal Lisp integer, is used as the suffix for this call to 
 gensym only.
 
@@ -115,11 +115,11 @@ creating Maxima init files.
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{remvalue}
-@deffn  {Funktion} remvalue (@mvar{name_1}, @dots{}, @mvar{name_n})
+@deffn  {Funktion} remvalue (@var{name_1}, @dots{}, @var{name_n})
 @deffnx {Funktion} remvalue (all)
 
-Entfernt die Werte von nutzerdefinierten Variablen @mvar{name_1}, @dots{}, 
-@mvar{name_n}.  Die Variablen k@"onnen indiziert sein.
+Entfernt die Werte von nutzerdefinierten Variablen @var{name_1}, @dots{}, 
+@var{name_n}.  Die Variablen k@"onnen indiziert sein.
 @code{remvalue(all)} entfernt die Werte aller Variablen, die in der 
 Informationsliste @code{values} enthalten sind.
 
@@ -128,9 +128,9 @@ Siehe auch @mrefdot{values}
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{rncombine}
-@deffn {Funktion} rncombine (@mvar{expr})
+@deffn {Funktion} rncombine (@var{expr})
 
-Transformiert den Ausdruck @mvar{expr} so, dass alle Terme mit identischem Nenner
+Transformiert den Ausdruck @var{expr} so, dass alle Terme mit identischem Nenner
 oder Nennern, die sich nur um einen numerischen Faktor voneinander 
 unterscheiden, @"uber einen Nenner zusammengefasst werden. Die Funktion
 @code{combine} fasst ebenfalls Ausdr@"ucke @"uber einen Nenner zusammen, 
@@ -142,11 +142,11 @@ Die Funktion wird mit dem Kommando @code{rncomb} geladen.
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{setup_autoload}
-@deffn {Funktion} setup_autoload (@mvar{filename}, @mvar{function_1}, @dots{}, @mvar{function_n})
+@deffn {Funktion} setup_autoload (@var{filename}, @var{function_1}, @dots{}, @var{function_n})
 
-Die Funktionen @mvar{function_1}, @dots{}, @mvar{function_n} erhalten die 
-Eigenschaft, dass die Datei @mvar{filename} automatisch geladen wird, wenn die 
-Funktion zum ersten Mal genutzt werden soll.  @mvar{filename} wird mit der 
+Die Funktionen @var{function_1}, @dots{}, @var{function_n} erhalten die 
+Eigenschaft, dass die Datei @var{filename} automatisch geladen wird, wenn die 
+Funktion zum ersten Mal genutzt werden soll.  @var{filename} wird mit der 
 Funktion @code{load} geladen und enth@"alt @"ublicherweise den Code f@"ur die 
 Definition der zu ladenden Funktion.
 

@@ -84,20 +84,20 @@ Si se quiere experimentar con una @'algebra no asociativa, tambi@'en se puede ig
 
 @section Funciones y variables para atensor
 
-@deffn {Funci@'on} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
-@deffnx {Funci@'on} init_atensor (@mvar{alg_type})
+@deffn {Funci@'on} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Funci@'on} init_atensor (@var{alg_type})
 
-Inicializa el paquete @code{atensor} con el tipo de @'algebra especificado, @mvar{alg_type}, que puede ser una de las siguientes:
+Inicializa el paquete @code{atensor} con el tipo de @'algebra especificado, @var{alg_type}, que puede ser una de las siguientes:
 
 @code{universal}: El @'algebra universal no tiene reglas de conmutaci@'on.
 
 @code{grassmann}: El @'algebra de Grassman se define mediante la relaci@'on de conmutaci@'on @code{u.v+v.u=0}.
 
-@code{clifford}: El @'algebra de Clifford se define mediante la regla de conmutaci@'on  @code{u.v+v.u=-2*sf(u,v)} donde  @code{sf} es una funci@'on escalar sim@'etrica. Para esta @'algebra,  @mvar{opt_dims} puede contener hasta tres enteros no negativos, que representan el n@'umero de dimensiones positivas, degeneradas y negativas, respectivamente, de esta @'algebra. Si se suministran los valores de @mvar{opt_dims}, @code{atensor} configurar@'a los valores de @code{adim} y @code{aform} de forma apropiada. En otro caso, @code{adim} tomar@'a por defecto el valor 0 y @code{aform} no se definir@'a.
+@code{clifford}: El @'algebra de Clifford se define mediante la regla de conmutaci@'on  @code{u.v+v.u=-2*sf(u,v)} donde  @code{sf} es una funci@'on escalar sim@'etrica. Para esta @'algebra,  @var{opt_dims} puede contener hasta tres enteros no negativos, que representan el n@'umero de dimensiones positivas, degeneradas y negativas, respectivamente, de esta @'algebra. Si se suministran los valores de @var{opt_dims}, @code{atensor} configurar@'a los valores de @code{adim} y @code{aform} de forma apropiada. En otro caso, @code{adim} tomar@'a por defecto el valor 0 y @code{aform} no se definir@'a.
 
 @code{symmetric}: El @'algebra sim@'etrica se define mediante la regla de conmutaci@'on @code{u.v-v.u=0}.
 
-@code{symplectic}: El @'algebra simpl@'ectica se define mediante la regla de conmutaci@'on @code{u.v-v.u=2*af(u,v)}, donde @code{af} es una funci@'on escalar antisim@'etrica. Para el @'algebra simpl@'ectica, @mvar{opt_dims} puede contener hasta dos enteros no negativos, que representan las dimensiones no degeneradas y degeneradas, respectivamente. Si se suministran los valores de @mvar{opt_dims}, @code{atensor} configurar@'a los valores de @code{adim} y @code{aform} de forma apropiada. En otro caso, @code{adim} tomar@'a por defecto el valor 0 y @code{aform} no se definir@'a.
+@code{symplectic}: El @'algebra simpl@'ectica se define mediante la regla de conmutaci@'on @code{u.v-v.u=2*af(u,v)}, donde @code{af} es una funci@'on escalar antisim@'etrica. Para el @'algebra simpl@'ectica, @var{opt_dims} puede contener hasta dos enteros no negativos, que representan las dimensiones no degeneradas y degeneradas, respectivamente. Si se suministran los valores de @var{opt_dims}, @code{atensor} configurar@'a los valores de @code{adim} y @code{aform} de forma apropiada. En otro caso, @code{adim} tomar@'a por defecto el valor 0 y @code{aform} no se definir@'a.
 
 @code{lie_envelop}: El @'algebra de la envolvente de Lie se define mediante la regla de conmutaci@'on @code{u.v-v.u=2*av(u,v)}, donde @code{av} es una funci@'on antisim@'etrica.
 
@@ -115,9 +115,9 @@ La funci@'on @code{init_atensor} tambi@'en reconoce algunos tipos de @'algebras 
 @end deffn
 
 
-@deffn {Funci@'on} atensimp (@mvar{expr})
+@deffn {Funci@'on} atensimp (@var{expr})
 
-Simplifica la expresi@'on algebraica de un tensor  @mvar{expr} de acuerdo con las reglas configuradas mediante una llamada a  @code{init_atensor}. La simplificaci@'on incluye la aplicaci@'on recursiva de las reglas de conmutaci@'on y llamadas a @code{sf}, @code{af} y @code{av} siempre que sea posible. Se utiliza un algoritmo que asegure que la funci@'on termina siempre, incluso en el caso de expresiones complejas.
+Simplifica la expresi@'on algebraica de un tensor  @var{expr} de acuerdo con las reglas configuradas mediante una llamada a  @code{init_atensor}. La simplificaci@'on incluye la aplicaci@'on recursiva de las reglas de conmutaci@'on y llamadas a @code{sf}, @code{af} y @code{av} siempre que sea posible. Se utiliza un algoritmo que asegure que la funci@'on termina siempre, incluso en el caso de expresiones complejas.
 
 @end deffn
 
@@ -149,19 +149,19 @@ S@'{@dotless{i}}mbolo para los vectores base.
 
 @end defvr
 
-@deffn {Funci@'on} sf (@mvar{u}, @mvar{v})
+@deffn {Funci@'on} sf (@var{u}, @var{v})
 
 Una funci@'on escalar sim@'etrica que se utiliza en relaciones de conmutaci@'on. La implementaci@'on por defecto analiza si los dos argumentos son vectores base mediante  @code{abasep} y en tal caso sustituye el valor correspondiente de la matriz  @code{aform}.
 
 @end deffn
 
-@deffn {Funci@'on} af (@mvar{u}, @mvar{v})
+@deffn {Funci@'on} af (@var{u}, @var{v})
 
 Una funci@'on escalar antisim@'etrica que se utiliza en relaciones de conmutaci@'on. La implementaci@'on por defecto analiza si los dos argumentos son vectores base mediante  @code{abasep} y en tal caso sustituye el valor correspondiente de la matriz  @code{aform}.
 
 @end deffn
 
-@deffn {Funci@'on} av (@mvar{u}, @mvar{v})
+@deffn {Funci@'on} av (@var{u}, @var{v})
 
 Una funci@'on antisim@'etrica que se utiliza en relaciones de conmutaci@'on. La implementaci@'on por defecto analiza si los dos argumentos son vectores base mediante  @code{abasep} y en tal caso sustituye el valor correspondiente de la matriz  @code{aform}.
 
@@ -188,7 +188,7 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} abasep (@mvar{v})
+@deffn {Funci@'on} abasep (@var{v})
 
 Analiza si su argumento es un vector base en @code{atensor}. Esto es, si se trata de un s@'{@dotless{i}}mbolo indexado, siendo el s@'{@dotless{i}}mbolo el mismo que el valor de @code{asymbol} y si el @'{@dotless{i}}ndice tiene un valor num@'erico entre 1 y @code{adim}.
 

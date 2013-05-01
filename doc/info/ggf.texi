@@ -12,7 +12,7 @@ This is an option variable for function @code{ggf}.
 
 When computing the continued fraction of the
 generating function, a partial quotient having a degree
-(strictly) greater than @mvar{GGFINFINITY} will be discarded and
+(strictly) greater than @var{GGFINFINITY} will be discarded and
 the current convergent will be considered as the exact value
 of the generating function; most often the degree of all
 partial quotients will be 0 or 1; if you use a greater value,
@@ -36,7 +36,7 @@ This is an option variable for function @code{ggf}.
 
 When computing the continued fraction of the
 generating function, if no good result has been found (see
-the @mvar{GGFINFINITY} flag) after having computed @mvar{GGFCFMAX} partial
+the @var{GGFINFINITY} flag) after having computed @var{GGFCFMAX} partial
 quotients, the generating function will be considered as
 not being a fraction of two polynomials and the function will
 exit. Put freely a greater value for more complicated
@@ -50,15 +50,15 @@ See also @code{ggf}.
 
 @end defvr
 
-@deffn {Function} ggf (@mvar{l})
+@deffn {Function} ggf (@var{l})
 Compute the generating function (if it is a fraction of two
-polynomials) of a sequence, its first terms being given. @mvar{l}
+polynomials) of a sequence, its first terms being given. @var{l}
 is a list of numbers.
 
 The solution is returned as a fraction of two polynomials.
 If no solution has been found, it returns with @code{done}.
 
-This function is controlled by global variables @mvar{GGFINFINITY} and @mvar{GGFCFMAX}. See also @mvar{GGFINFINITY} and @mvar{GGFCFMAX}.
+This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCFMAX}. See also @var{GGFINFINITY} and @var{GGFCFMAX}.
 
 To use this function write first @code{load("ggf")}.
 

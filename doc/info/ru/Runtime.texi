@@ -90,13 +90,13 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-@deffn {Функция} featurep (@mvar{a}, @mvar{f})
-Пытается определить имеет ли объект @mvar{a} свойство @mvar{f}, используя факты,
+@deffn {Функция} featurep (@var{a}, @var{f})
+Пытается определить имеет ли объект @var{a} свойство @var{f}, используя факты,
 находящиеся в текущей базе данных.  Если да, то возвращается @code{true}, 
 иначе возвращается @code{false}.
 
-Отметим, что @code{featurep} возвращает @code{false} если даже ни @mvar{f},
-ни отрицание @mvar{f} не могут быть установлены.
+Отметим, что @code{featurep} возвращает @code{false} если даже ни @var{f},
+ни отрицание @var{f} не могут быть установлены.
 
 Функция @code{featurep} вычисляет свои аргументы.
 
@@ -171,7 +171,7 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 @end deffn
 
 @deffn {Функция} status (feature)
-@deffnx {Функция} status (feature, @mvar{putative_feature})
+@deffnx {Функция} status (feature, @var{putative_feature})
 @deffnx {Функция} status (status)
 Возвращает информацию о наличии или отсутствии определенных 
 системно-зависимых свойств.
@@ -181,10 +181,10 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 @code{status (feature)} возвращает список системных свойств.
 Что включает версию Lisp, тип операционной системы и т.д.
 Этот список может варьироваться от одной версии Lisp к другой.
-@item @code{status (feature, @mvar{putative_feature})} возвращает @code{true}, 
-если @mvar{putative_feature} присутствует в списке, возвращаемом @code{status (feature)},
+@item @code{status (feature, @var{putative_feature})} возвращает @code{true}, 
+если @var{putative_feature} присутствует в списке, возвращаемом @code{status (feature)},
 и @code{false} в противном случае.
-Функция @code{status} не вычисляет свои аргументы @mvar{putative_feature}.
+Функция @code{status} не вычисляет свои аргументы @var{putative_feature}.
 Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
 Свойства, содержащие в именах специальные символы, такие как тире, могут задаваться
 в форме строки. Например,@code{status (feature, "ansi-cl")}.

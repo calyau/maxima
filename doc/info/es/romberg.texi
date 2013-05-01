@@ -6,21 +6,21 @@
 @node Funciones y variables para romberg, , Top, Top
 @section Funciones y variables para romberg
 
-@deffn {Funci@'on} romberg (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
-@deffnx {Funci@'on} romberg (@mvar{F}, @mvar{a}, @mvar{b})
+@deffn {Funci@'on} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {Funci@'on} romberg (@var{F}, @var{a}, @var{b})
 
 Integra num@'ericamente por el m@'etodo de Romberg.
 
-La llamada @code{romberg(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}
-devuelve una estimaci@'on de la integral @code{integrate(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
-El argumento @mvar{expr} debe ser una expresi@'on reducible a un valor decimal
-en coma flotante cuando @mvar{x} es a su vez un n@'umero decimal.
+La llamada @code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
+devuelve una estimaci@'on de la integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
+El argumento @var{expr} debe ser una expresi@'on reducible a un valor decimal
+en coma flotante cuando @var{x} es a su vez un n@'umero decimal.
 
-La llamada @code{romberg(@mvar{F}, @mvar{a}, @mvar{b})} devuelve una estimaci@'on
-de la integral @code{integrate(@mvar{F}(x), x, @mvar{a}, @mvar{b})}, siendo
-@code{x} el @'unico argumento de @mvar{F}. El argumento @mvar{F} debe ser 
+La llamada @code{romberg(@var{F}, @var{a}, @var{b})} devuelve una estimaci@'on
+de la integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}, siendo
+@code{x} el @'unico argumento de @var{F}. El argumento @var{F} debe ser 
 una funci@'on en Lisp o en Maxima que devuelva un valor decimal
-en coma flotante cuando @mvar{x} es a su vez un n@'umero decimal; @mvar{F}
+en coma flotante cuando @var{x} es a su vez un n@'umero decimal; @var{F}
 puede ser el nombre de una funci@'on de Maxima traducida o compilada.
 
 La exactitud de @code{romberg} se controla con las variables globales 

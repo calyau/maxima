@@ -5,63 +5,63 @@
 @node Definitions for Symmetries,  , Symmetries, Symmetries
 @section Definitions for Symmetries
 
-@deffn {Function} comp2pui (@mvar{n}, @mvar{l})
+@deffn {Function} comp2pui (@var{n}, @var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cont2part (@mvar{pc}, @mvar{lvar})
+@deffn {Function} cont2part (@var{pc}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} contract (@mvar{psym}, @mvar{lvar})
+@deffn {Function} contract (@var{psym}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} direct ([@mvar{p_1}, ..., @mvar{p_n}], @mvar{y}, @mvar{f}, [@mvar{lvar_1}, ..., @mvar{lvar_n}])
+@deffn {Function} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ele2comp (@mvar{m}, @mvar{l})
+@deffn {Function} ele2comp (@var{m}, @var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ele2polynome (@mvar{l}, @mvar{z})
+@deffn {Function} ele2polynome (@var{l}, @var{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ele2pui (@mvar{m}, @mvar{l})
+@deffn {Function} ele2pui (@var{m}, @var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} elem (@mvar{ele}, @mvar{sym}, @mvar{lvar})
+@deffn {Function} elem (@var{ele}, @var{sym}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} explose (@mvar{pc}, @mvar{lvar})
+@deffn {Function} explose (@var{pc}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} kostka (@mvar{part_1}, @mvar{part_2})
+@deffn {Function} kostka (@var{part_1}, @var{part_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lgtreillis (@mvar{n}, @mvar{m})
+@deffn {Function} lgtreillis (@var{n}, @var{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ltreillis (@mvar{n}, @mvar{m})
+@deffn {Function} ltreillis (@var{n}, @var{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} mon2schur (@mvar{l})
+@deffn {Function} mon2schur (@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multi_elem (@mvar{l_elem}, @mvar{multi_pc}, @mvar{l_var})
+@deffn {Function} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multi_orbit (@mvar{P}, [@mvar{lvar_1}, @mvar{lvar_2}, ..., @mvar{lvar_p}])
+@deffn {Function} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -69,119 +69,119 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multinomial (@mvar{r}, @mvar{part})
+@deffn {Function} multinomial (@var{r}, @var{part})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} multsym (@mvar{ppart_1}, @mvar{ppart_2}, @mvar{n})
+@deffn {Function} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} orbit (@mvar{P}, @mvar{lvar})
+@deffn {Function} orbit (@var{P}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} part2cont (@mvar{ppart}, @mvar{lvar})
+@deffn {Function} part2cont (@var{ppart}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} partpol (@mvar{psym}, @mvar{lvar})
+@deffn {Function} partpol (@var{psym}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} permut (@mvar{l})
+@deffn {Function} permut (@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} polynome2ele (@mvar{P}, @mvar{x})
+@deffn {Function} polynome2ele (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} prodrac (@mvar{l}, @mvar{k})
+@deffn {Function} prodrac (@var{l}, @var{k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pui (@mvar{l}, @mvar{sym}, @mvar{lvar})
+@deffn {Function} pui (@var{l}, @var{sym}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pui2comp (@mvar{n}, @mvar{lpui})
+@deffn {Function} pui2comp (@var{n}, @var{lpui})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pui2ele (@mvar{n}, @mvar{lpui})
+@deffn {Function} pui2ele (@var{n}, @var{lpui})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pui2polynome (@mvar{x}, @mvar{lpui})
+@deffn {Function} pui2polynome (@var{x}, @var{lpui})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} pui_direct (@mvar{orbite}, [@mvar{lvar_1}, ..., @mvar{lvar_n}], [@mvar{d_1}, @mvar{d_2}, ..., @mvar{d_n}])
+@deffn {Function} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} puireduc (@mvar{n}, @mvar{lpui})
+@deffn {Function} puireduc (@var{n}, @var{lpui})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante (@mvar{P}, @mvar{x}, @mvar{f}, [@mvar{x_1}, ..., @mvar{x_d}])
+@deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_alternee1 (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_bipartite (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_bipartite (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_diedrale (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_diedrale (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_klein (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_klein (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_klein3 (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_klein3 (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_produit_sym (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_produit_sym (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_unitaire (@mvar{P}, @mvar{Q}, @mvar{x})
+@deffn {Function} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} resolvante_vierer (@mvar{P}, @mvar{x})
+@deffn {Function} resolvante_vierer (@var{P}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} schur2comp (@mvar{P}, @mvar{l_var})
+@deffn {Function} schur2comp (@var{P}, @var{l_var})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} somrac (@mvar{l}, @mvar{k})
+@deffn {Function} somrac (@var{l}, @var{k})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tcontract (@mvar{pol}, @mvar{lvar})
+@deffn {Function} tcontract (@var{pol}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tpartpol (@mvar{pol}, @mvar{lvar})
+@deffn {Function} tpartpol (@var{pol}, @var{lvar})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} treillis (@mvar{n})
+@deffn {Function} treillis (@var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} treinat (@mvar{part})
+@deffn {Function} treinat (@var{part})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

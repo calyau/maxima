@@ -18,7 +18,7 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} bernstein_poly (@mvar{k}, @mvar{n}, @mvar{x})
+@deffn {Function} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 Provided @code{k} is not a negative integer, the Bernstein polynomials
 are defined by @code{bernstein_poly(k,n,x) = binomial(n,k) x^k
@@ -87,18 +87,18 @@ When both @code{k} and @code{n} are explicitly integers, @code{bernstein(k,n,x)}
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} multibernstein_poly (@mvar{[k1, k2, @dots{}, kp]}, @mvar{[n1, n2, @dots{}, np]}, @mvar{[x1, x2, @dots{},  xp]})
+@deffn {Function} multibernstein_poly (@var{[k1, k2, @dots{}, kp]}, @var{[n1, n2, @dots{}, np]}, @var{[x1, x2, @dots{},  xp]})
 
 The multibernstein polynomial
-@code{multibernstein_poly (@mvar{[k1, ..., kp]}, @mvar{[n1, ..., np]},
-@mvar{[x1, ..., xp]})} is the product of bernstein polynomials
+@code{multibernstein_poly (@var{[k1, ..., kp]}, @var{[n1, ..., np]},
+@var{[x1, ..., xp]})} is the product of bernstein polynomials
 @code{bernstein_poly(k1, n1, x1) * ... * bernstein_poly(kp, np, xp)}.
 
 To use @code{multibernstein_poly}, first @code{load("bernstein")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} bernstein_approx (@mvar{f}, @mvar{[x1, x1, @dots{}, xn]}, @mvar{n})
+@deffn {Function} bernstein_approx (@var{f}, @var{[x1, x1, @dots{}, xn]}, @var{n})
 
 Return the @code{n}-th order uniform Bernstein polynomial approximation for the
 function @code{(x1, x2, ..., xn) |--> f}.
@@ -131,7 +131,7 @@ To use @code{bernstein_approx}, first @code{load("bernstein")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} bernstein_expand (@mvar{e}, @mvar{[x1, x1, @dots{}, xn]})
+@deffn {Function} bernstein_expand (@var{e}, @var{[x1, x1, @dots{}, xn]})
 
 Express the @emph{polynomial} @code{e} exactly as a linear combination of
 multi-variable Bernstein polynomials.

@@ -78,7 +78,7 @@ E.g., Lisp @code{|$Foo|} corresponde a Maxima @code{Foo}.
 @end enumerate
 
 A macro Lisp @code{#$} permite o uso de express@~oes Maxima em c@'odigo Lisp.
-@code{#$@mvar{expr}$} expande para uma express@~ao Lisp equivalente @`a express@~ao Maxima @mvar{expr}.
+@code{#$@var{expr}$} expande para uma express@~ao Lisp equivalente @`a express@~ao Maxima @var{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -195,8 +195,8 @@ e sa@'{@dotless{i}}da adicional.
 @node Defini@value{cedilha}@~oes para Ajuda,  , Documenta@value{cedilha}@~ao, Ajuda
 @section Defini@value{cedilha}@~oes para Ajuda
 
-@deffn {Fun@value{cedilha}@~ao} demo (@mvar{nomeficheiro})
-Avalia express@~oes Maxima em @mvar{nomeficheiro} e mostra os resultados.
+@deffn {Fun@value{cedilha}@~ao} demo (@var{nomeficheiro})
+Avalia express@~oes Maxima em @var{nomeficheiro} e mostra os resultados.
 @code{demo} faz uma pausa ap@'os avaliar cada express@~ao
 e continua ap@'os a conclus@~ao com um enter das entradas de utilizador.
 (Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'{@dotless{i}}rgula @code{;}
@@ -285,20 +285,20 @@ _
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} describe (@mvar{string})
-@deffnx {Fun@value{cedilha}@~ao} describe (@mvar{string}, exact)
-@deffnx {Fun@value{cedilha}@~ao} describe (@mvar{string}, inexact)
+@deffn {Fun@value{cedilha}@~ao} describe (@var{string})
+@deffnx {Fun@value{cedilha}@~ao} describe (@var{string}, exact)
+@deffnx {Fun@value{cedilha}@~ao} describe (@var{string}, inexact)
 @ifinfo
 @fnindex
 @end ifinfo
 
-@code{describe(@mvar{string})} @'e equivalente a @code{describe(@mvar{string}, exact)}.
+@code{describe(@var{string})} @'e equivalente a @code{describe(@var{string}, exact)}.
 
-@code{describe(@mvar{string}, exact)} encontra um item com t@'{@dotless{i}}tulo igual
+@code{describe(@var{string}, exact)} encontra um item com t@'{@dotless{i}}tulo igual
 (case-insensitive)
-a @mvar{string}, se existir tal item.
+a @var{string}, se existir tal item.
 
-@code{describe(@mvar{string}, inexact)} encontra todos os itens documentados que contiverem @mvar{string} em seus t@'{@dotless{i}}tulos.
+@code{describe(@var{string}, inexact)} encontra todos os itens documentados que contiverem @var{string} em seus t@'{@dotless{i}}tulos.
 Se existe mais de um de tal item, Maxima solicita ao utilizador seleccionar
 um item ou @'{@dotless{i}}tens para mostrar.
 
@@ -345,9 +345,9 @@ que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} example (@mvar{t@'opico})
+@deffn {Fun@value{cedilha}@~ao} example (@var{t@'opico})
 @deffnx {Fun@value{cedilha}@~ao} example ()
-@code{example (@mvar{topic})} mostra alguns exemplos de @mvar{t@'opico},
+@code{example (@var{topic})} mostra alguns exemplos de @var{t@'opico},
 que @'e um s@'{@dotless{i}}mbolo (n@~ao uma sequ@^encia de caracteres).
 A maioria dos t@'opicos s@~ao nomes de fun@value{cedilha}@~ao.
 @code{example ()} retorna a lista de todos os t@'opicos reconhecidos.

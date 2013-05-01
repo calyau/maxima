@@ -280,10 +280,10 @@ setcheck: ['x, 'y, 'z]$
 @closecatbox
 @end defvr
 
-@deffn {Функция} timer (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Функция} timer (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} timer (all)
 @deffnx {Функция} timer ()
-Добавляет функции @mvar{f_1}, ..., @mvar{f_n} к списку функций,
+Добавляет функции @var{f_1}, ..., @var{f_n} к списку функций,
 для которых собирается статистика тайминга.
 Последовательные вызовы @code{timer(f)$ timer(g)$} сначала добавляют к списку @code{f} 
 а затем @code{g}, т.е. список пополняется от одного вызова @code{timer} к другому.
@@ -314,9 +314,9 @@ Maxima сохраняет информацию о времени выполнения контролируемых функций.
 @closecatbox
 @end deffn
 
-@deffn {Функция} untimer (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Функция} untimer (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} untimer ()
-Удаляет функции @mvar{f_1}, ..., @mvar{f_n} из списка 
+Удаляет функции @var{f_1}, ..., @var{f_n} из списка 
 тайминг-контроля.
 
 Без аргументов, @code{untimer} удаляет все функции из списка тайминг-контроля.
@@ -350,9 +350,9 @@ Maxima сохраняет информацию о времени выполнения контролируемых функций.
 @closecatbox
 @end defvr
 
-@deffn {Функция} timer_info (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Функция} timer_info (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} timer_info ()
-Для функций @mvar{f_1}, ..., @mvar{f_n},
+Для функций @var{f_1}, ..., @var{f_n},
 возвращает матрицу, содержащую информацию о тайминге каждой из функций.
 Без аргументов, @code{timer_info} возвращает информацию для всех
 контролируемых функций.
@@ -376,10 +376,10 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @closecatbox
 @end deffn
 
-@deffn {Функция} trace (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Функция} trace (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} trace (all)
 @deffnx {Функция} trace ()
-Устанавливает трассировку для функций @mvar{f_1}, ..., @mvar{f_n},
+Устанавливает трассировку для функций @var{f_1}, ..., @var{f_n},
 т.е. Maxima будет печатать отладочную информацию при каждом
 вызове любой из этих функций.
 Последовательные вызовы @code{trace(f)$ trace(g)$} сначала включает трассировку @code{f} 
@@ -411,14 +411,14 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @closecatbox
 @end deffn
 
-@deffn {Функция} trace_options (@mvar{f}, @mvar{option_1}, ..., @mvar{option_n})
-@deffnx {Функция} trace_options (@mvar{f})
-Устанавливает опции трассировки для функции @mvar{f}.
+@deffn {Функция} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Функция} trace_options (@var{f})
+Устанавливает опции трассировки для функции @var{f}.
 Любые предыдущие опции переопределяются.
-@code{trace_options (@mvar{f}, ...)} не действует если не включена 
-трассировка @code{trace (@mvar{f})} (либо до, либо после вызова @code{trace_options}). 
+@code{trace_options (@var{f}, ...)} не действует если не включена 
+трассировка @code{trace (@var{f})} (либо до, либо после вызова @code{trace_options}). 
 
-@code{trace_options (@mvar{f})} возвращает все опции в значение "по умолчанию".
+@code{trace_options (@var{f})} возвращает все опции в значение "по умолчанию".
 
 Существуют следующие ключевые слова опций трассировки:
 
@@ -444,7 +444,7 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 Опции трассировки могут задаваться двумя способами.
 Одно ключевое слово включает соответствующую опцию безусловно.
-Заметим, что для включения опции @mvar{foo} не следует указывать @code{@mvar{foo}: true},
+Заметим, что для включения опции @var{foo} не следует указывать @code{@var{foo}: true},
 кроме того, опции не надо экранировать.
 Ключевое слово с предикатом включает опцию условно в зависимости
 от значения предиката.
@@ -482,9 +482,9 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @closecatbox
 @end deffn
 
-@deffn {Функция} untrace (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Функция} untrace (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} untrace ()
-Отменяет трассировку функций @mvar{f_1}, ..., @mvar{f_n},
+Отменяет трассировку функций @var{f_1}, ..., @var{f_n},
 установленную ранее при помощи @code{trace}.
 Без аргументов, @code{untrace} отменяет трассировку всех функций.
 

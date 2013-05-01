@@ -94,7 +94,7 @@ default, will be used.
 
 @c -----------------------------------------------------------------------------
 @anchor{bezout}
-@deffn {Function} bezout (@mvar{p1}, @mvar{p2}, @mvar{x})
+@deffn {Function} bezout (@var{p1}, @var{p2}, @var{x})
 
 an alternative to the @mref{resultant} command.  It
 returns a matrix.  @code{determinant} of this matrix is the desired resultant.
@@ -121,12 +121,12 @@ Examples:
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} bothcoef (@mvar{expr}, @mvar{x})
+@deffn {Function} bothcoef (@var{expr}, @var{x})
 
-Returns a list whose first member is the coefficient of @mvar{x} in @mvar{expr}
-(as found by @code{ratcoef} if @mvar{expr} is in CRE form
+Returns a list whose first member is the coefficient of @var{x} in @var{expr}
+(as found by @code{ratcoef} if @var{expr} is in CRE form
 otherwise by @code{coeff}) and whose second member is the remaining part of
-@mvar{expr}.  That is, @code{[A, B]} where @code{@mvar{expr} = A*@mvar{x} + B}.
+@var{expr}.  That is, @code{[A, B]} where @code{@var{expr} = A*@var{x} + B}.
 
 Example:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -149,31 +149,31 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} coeff (@mvar{expr}, @mvar{x}, @mvar{n})
-@deffnx {Function} coeff (@mvar{expr}, @mvar{x})
+@deffn  {Function} coeff (@var{expr}, @var{x}, @var{n})
+@deffnx {Function} coeff (@var{expr}, @var{x})
 
-Returns the coefficient of @code{@mvar{x}^@mvar{n}} in @mvar{expr},
-where @mvar{expr} is a polynomial or a monomial term in @mvar{x}.
+Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr},
+where @var{expr} is a polynomial or a monomial term in @var{x}.
 
-@code{coeff(@mvar{expr}, @mvar{x}^@mvar{n})} is equivalent
-to @code{coeff(@mvar{expr}, @mvar{x}, @mvar{n})}.
-@code{coeff(@mvar{expr}, @mvar{x}, 0)} returns the remainder of @mvar{expr}
-which is free of @mvar{x}.
-If omitted, @mvar{n} is assumed to be 1.
+@code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
+to @code{coeff(@var{expr}, @var{x}, @var{n})}.
+@code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
+which is free of @var{x}.
+If omitted, @var{n} is assumed to be 1.
 
-@mvar{x} may be a simple variable or a subscripted variable,
-or a subexpression of @mvar{expr} which
+@var{x} may be a simple variable or a subscripted variable,
+or a subexpression of @var{expr} which
 comprises an operator and all of its arguments.
 
 It may be possible to compute coefficients of expressions which are equivalent
-to @mvar{expr} by applying @code{expand} or @code{factor}.  @code{coeff} itself
+to @var{expr} by applying @code{expand} or @code{factor}.  @code{coeff} itself
 does not apply @code{expand} or @code{factor} or any other function.
 
 @code{coeff} distributes over lists, matrices, and equations.
 
 Examples:
 
-@code{coeff} returns the coefficient @code{@mvar{x}^@mvar{n}} in @mvar{expr}.
+@code{coeff} returns the coefficient @code{@var{x}^@var{n}} in @var{expr}.
 
 @c ===beg===
 @c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
@@ -184,8 +184,8 @@ Examples:
 (%o1)                          b
 @end example
 
-@code{coeff(@mvar{expr}, @mvar{x}^@mvar{n})} is equivalent
-to @code{coeff(@mvar{expr}, @mvar{x}, @mvar{n})}.
+@code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
+to @code{coeff(@var{expr}, @var{x}, @var{n})}.
 
 @c ===beg===
 @c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
@@ -200,8 +200,8 @@ to @code{coeff(@mvar{expr}, @mvar{x}, @mvar{n})}.
                                  3
 @end example
 
-@code{coeff(@mvar{expr}, @mvar{x}, 0)} returns the remainder of @mvar{expr}
-which is free of @mvar{x}.
+@code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
+which is free of @var{x}.
 
 @c ===beg===
 @c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
@@ -212,8 +212,8 @@ which is free of @mvar{x}.
 (%o1)                      c  u  + a u
 @end example
 
-@mvar{x} may be a simple variable or a subscripted variable,
-or a subexpression of @mvar{expr} which
+@var{x} may be a simple variable or a subscripted variable,
+or a subexpression of @var{expr} which
 comprises an operator and all of its arguments.
 
 @c ===beg===
@@ -289,12 +289,12 @@ function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} content (@mvar{p_1}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} content (@var{p_1}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns a list whose first element is
 the greatest common divisor of the coefficients of the terms of the
-polynomial @mvar{p_1} in the variable @mvar{x_n} (this is the content) and whose
-second element is the polynomial @mvar{p_1} divided by the content.
+polynomial @var{p_1} in the variable @var{x_n} (this is the content) and whose
+second element is the polynomial @var{p_1} divided by the content.
 @c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
 @c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
@@ -316,9 +316,9 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} denom (@mvar{expr})
+@deffn {Function} denom (@var{expr})
 
-Returns the denominator of the rational expression @mvar{expr}.
+Returns the denominator of the rational expression @var{expr}.
 
 @opencatbox
 @category{Expressions}
@@ -326,11 +326,11 @@ Returns the denominator of the rational expression @mvar{expr}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} divide (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} divide (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 computes the quotient and remainder
-of the polynomial @mvar{p_1} divided by the polynomial @mvar{p_2}, in a main
-polynomial variable, @mvar{x_n}.
+of the polynomial @var{p_1} divided by the polynomial @var{p_2}, in a main
+polynomial variable, @var{x_n}.
 @c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
 The other variables are as in the @code{ratvars} function.
 The result is a list whose first element is the quotient
@@ -357,15 +357,15 @@ Note that @code{y} is the main variable in the second example.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} eliminate ([@mvar{eqn_1}, @dots{}, @mvar{eqn_n}], [@mvar{x_1}, @dots{}, @mvar{x_k}])
+@deffn {Function} eliminate ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_k}])
 
 Eliminates variables from equations (or expressions assumed equal to zero) by
-taking successive resultants. This returns a list of @code{@mvar{n} - @mvar{k}}
-expressions with the @mvar{k} variables @mvar{x_1}, @dots{}, @mvar{x_k} eliminated.
-First @mvar{x_1} is eliminated yielding @code{@mvar{n} - 1} expressions, then
-@code{x_2} is eliminated, etc.  If @code{@mvar{k} = @mvar{n}} then a single
-expression in a list is returned free of the variables @mvar{x_1}, @dots{},
-@mvar{x_k}.  In this case @code{solve} is called to solve the last resultant for
+taking successive resultants. This returns a list of @code{@var{n} - @var{k}}
+expressions with the @var{k} variables @var{x_1}, @dots{}, @var{x_k} eliminated.
+First @var{x_1} is eliminated yielding @code{@var{n} - 1} expressions, then
+@code{x_2} is eliminated, etc.  If @code{@var{k} = @var{n}} then a single
+expression in a list is returned free of the variables @var{x_1}, @dots{},
+@var{x_k}.  In this case @code{solve} is called to solve the last resultant for
 the last variable.
 
 Example:
@@ -399,10 +399,10 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{ezgcd}
-@deffn {Function} ezgcd (@mvar{p_1}, @mvar{p_2}, @mvar{p_3}, @dots{})
+@deffn {Function} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, @dots{})
 
 Returns a list whose first element is the greatest common divisor of the
-polynomials @mvar{p_1}, @mvar{p_2}, @mvar{p_3}, @dots{} and whose remaining
+polynomials @var{p_1}, @var{p_2}, @var{p_3}, @dots{} and whose remaining
 elements are the polynomials divided by the greatest common divisor.  This
 always uses the @code{ezgcd} algorithm.
 
@@ -453,13 +453,13 @@ Default value: @code{true}
 
 @c -----------------------------------------------------------------------------
 @anchor{factor}
-@deffn  {Function} factor (@mvar{expr})
-@deffnx {Function} factor (@mvar{expr}, @mvar{p})
+@deffn  {Function} factor (@var{expr})
+@deffnx {Function} factor (@var{expr}, @var{p})
 
-Factors the expression @mvar{expr}, containing any number of variables or 
+Factors the expression @var{expr}, containing any number of variables or 
 functions, into factors irreducible over the integers.
-@code{factor (@mvar{expr}, @mvar{p})} factors @mvar{expr} over the field of 
-rationals with an element adjoined whose minimum polynomial is @mvar{p}.
+@code{factor (@var{expr}, @var{p})} factors @var{expr} over the field of 
+rationals with an element adjoined whose minimum polynomial is @var{p}.
 
 @code{factor} uses @code{ifactors} function for factoring integers.
 
@@ -628,11 +628,11 @@ integer factors of rational expressions.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} factorout (@mvar{expr}, @mvar{x_1}, @mvar{x_2}, @dots{})
+@deffn {Function} factorout (@var{expr}, @var{x_1}, @var{x_2}, @dots{})
 
-Rearranges the sum @mvar{expr} into a sum of terms of the form 
-@code{f (@mvar{x_1}, @mvar{x_2}, @dots{})*g} where @code{g} is a product of 
-expressions not containing any @mvar{x_i} and @code{f} is factored.
+Rearranges the sum @var{expr} into a sum of terms of the form 
+@code{f (@var{x_1}, @var{x_2}, @dots{})*g} where @code{g} is a product of 
+expressions not containing any @var{x_i} and @code{f} is factored.
 
 Note that the option variable @code{keepfloat} is ignored by @code{factorout}.
 
@@ -658,9 +658,9 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} factorsum (@mvar{expr})
+@deffn {Function} factorsum (@var{expr})
 
-Tries to group terms in factors of @mvar{expr} which are sums into groups of
+Tries to group terms in factors of @var{expr} which are sums into groups of
 terms such that their sum is factorable.  @code{factorsum} can recover the
 result of @code{expand ((x + y)^2 + (z + w)^2)} but it can't recover
 @code{expand ((x + 1)^2 + (x + y)^2)} because the terms have variables in
@@ -689,9 +689,9 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} fasttimes (@mvar{p_1}, @mvar{p_2})
+@deffn {Function} fasttimes (@var{p_1}, @var{p_2})
 
-Returns the product of the polynomials @mvar{p_1} and @mvar{p_2} by using a
+Returns the product of the polynomials @var{p_1} and @var{p_2} by using a
 special algorithm for multiplication of polynomials.  @code{p_1} and @code{p_2}
 should be multivariate, dense, and nearly the same size.  Classical
 multiplication is of order @code{n_1 n_2} where
@@ -705,7 +705,7 @@ and @code{n_2} is the degree of @code{p_2}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} fullratsimp (@mvar{expr})
+@deffn {Function} fullratsimp (@var{expr})
 
 @code{fullratsimp} repeatedly
 applies @code{ratsimp} followed by non-rational simplification to an
@@ -718,7 +718,7 @@ simplification may not be sufficient to return a simplified result.
 Sometimes, more than one such call may be necessary.
 @code{fullratsimp} makes this process convenient.
 
-@code{fullratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})} takes one or more
+@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} takes one or more
 arguments similar to @code{ratsimp} and @code{rat}.
 
 Example:
@@ -761,7 +761,7 @@ Example:
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} fullratsubst (@mvar{a}, @mvar{b}, @mvar{c})
+@deffn {Function} fullratsubst (@var{a}, @var{b}, @var{c})
 
 is the same as @code{ratsubst} except that it calls
 itself recursively on its result until that result stops changing.
@@ -857,18 +857,18 @@ equation as first argument.
 
 @c -----------------------------------------------------------------------------
 @anchor{gcd}
-@deffn {Function} gcd (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{})
+@deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, @dots{})
 
-Returns the greatest common divisor of @mvar{p_1} and @mvar{p_2}.  The flag
+Returns the greatest common divisor of @var{p_1} and @var{p_2}.  The flag
 @code{gcd} determines which algorithm is employed.  Setting @code{gcd} to
 @code{ez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd},
 subresultant @code{prs}, reduced, or modular algorithm, respectively.  If
-@code{gcd} @code{false} then @code{gcd (@mvar{p_1}, @mvar{p_2}, @mvar{x})} always
-returns 1 for all @mvar{x}.  Many functions (e.g. @mrefcomma{ratsimp}@w{}
+@code{gcd} @code{false} then @code{gcd (@var{p_1}, @var{p_2}, @var{x})} always
+returns 1 for all @var{x}.  Many functions (e.g. @mrefcomma{ratsimp}@w{}
 @mrefcomma{factor} etc.) cause gcd's to be taken implicitly.  For homogeneous
 polynomials it is recommended that @code{gcd} equal to @code{subres} be used.
 To take the gcd when an algebraic is present, e.g.,
-@code{gcd (@mvar{x}^2 - 2*sqrt(2)* @mvar{x} + 2, @mvar{x} - sqrt(2))}, the option
+@code{gcd (@var{x}^2 - 2*sqrt(2)* @var{x} + 2, @var{x} - sqrt(2))}, the option
 variable @mref{algebraic} must be @code{true} and @code{gcd} must not be
 @code{ez}.
 
@@ -900,7 +900,7 @@ Example:
 @end example
 
 @mref{ezgcd} returns a list whose first element is the greatest common divisor
-of the polynomials @mvar{p_1} and @mvar{p_2}, and whose remaining elements are
+of the polynomials @var{p_1} and @var{p_2}, and whose remaining elements are
 the polynomials divided by the greatest common divisor.
 
 @example
@@ -918,15 +918,15 @@ the polynomials divided by the greatest common divisor.
 
 @c -----------------------------------------------------------------------------
 @anchor{gcdex}
-@deffn  {Function} gcdex (@mvar{f}, @mvar{g})
-@deffnx {Function} gcdex (@mvar{f}, @mvar{g}, @mvar{x})
+@deffn  {Function} gcdex (@var{f}, @var{g})
+@deffnx {Function} gcdex (@var{f}, @var{g}, @var{x})
 
-Returns a list @code{[@mvar{a}, @mvar{b}, @mvar{u}]} where @mvar{u} is the greatest
-common divisor (gcd) of @mvar{f} and @mvar{g}, and @mvar{u} is equal to
-@code{@mvar{a} @mvar{f} + @mvar{b} @mvar{g}}.  The arguments @mvar{f} and @mvar{g}
-should be univariate polynomials, or else polynomials in @mvar{x} a supplied
+Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the greatest
+common divisor (gcd) of @var{f} and @var{g}, and @var{u} is equal to
+@code{@var{a} @var{f} + @var{b} @var{g}}.  The arguments @var{f} and @var{g}
+should be univariate polynomials, or else polynomials in @var{x} a supplied
 main variable since we need to be in a principal ideal domain for this to
-work.  The gcd means the gcd regarding @mvar{f} and @mvar{g} as univariate
+work.  The gcd means the gcd regarding @var{f} and @var{g} as univariate
 polynomials with coefficients being rational functions in the other variables.
 
 @code{gcdex} implements the Euclidean algorithm, where we have a sequence of
@@ -935,7 +935,7 @@ and the next one is built as if @code{q = quotient(r[i]/r[i+1])} then
 @code{L[i+2]: L[i] - q L[i+1]}, and it terminates at @code{L[i+1]} when the
 remainder @code{r[i+2]} is zero.
 
-The arguments @mvar{f} and @mvar{g} can be integers.  For this case the function
+The arguments @var{f} and @var{g} can be integers.  For this case the function
 @mref{igcdex} is called by @code{gcdex}.
 
 See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdivide} and
@@ -984,12 +984,12 @@ not the  @code{y+1} we would expect in @code{k[y, x]}.
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gcfactor (@mvar{n})
+@deffn {Function} gcfactor (@var{n})
 
-Factors the Gaussian integer @mvar{n} over the Gaussian integers, i.e., numbers
-of the form @code{@mvar{a} + @mvar{b} @code{%i}} where @mvar{a} and @mvar{b} are
+Factors the Gaussian integer @var{n} over the Gaussian integers, i.e., numbers
+of the form @code{@var{a} + @var{b} @code{%i}} where @var{a} and @var{b} are
 rational integers (i.e.,  ordinary integers).  Factors are normalized by making
-@mvar{a} and @mvar{b} non-negative.
+@var{a} and @var{b} non-negative.
 @c NEED EXAMPLES HERE
 
 @opencatbox
@@ -1000,12 +1000,12 @@ rational integers (i.e.,  ordinary integers).  Factors are normalized by making
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gfactor (@mvar{expr})
+@deffn {Function} gfactor (@var{expr})
 
-Factors the polynomial @mvar{expr} over the Gaussian integers
+Factors the polynomial @var{expr} over the Gaussian integers
 (that is, the integers with the imaginary unit @code{%i} adjoined).
 @c "This is like" -- IS IT THE SAME OR NOT ??
-This is like @code{factor (@mvar{expr}, @mvar{a}^2+1)} where @mvar{a} is @code{%i}.
+This is like @code{factor (@var{expr}, @var{a}^2+1)} where @var{a} is @code{%i}.
 
 Example:
 
@@ -1025,7 +1025,7 @@ Example:
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gfactorsum (@mvar{expr})
+@deffn {Function} gfactorsum (@var{expr})
 
 is similar to @code{factorsum} but applies @code{gfactor} instead
 of @code{factor}.
@@ -1036,17 +1036,17 @@ of @code{factor}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} hipow (@mvar{expr}, @mvar{x})
+@deffn {Function} hipow (@var{expr}, @var{x})
 
-Returns the highest explicit exponent of @mvar{x} in @mvar{expr}.
-@mvar{x} may be a variable or a general expression.
-If @mvar{x} does not appear in @mvar{expr},
+Returns the highest explicit exponent of @var{x} in @var{expr}.
+@var{x} may be a variable or a general expression.
+If @var{x} does not appear in @var{expr},
 @code{hipow} returns @code{0}.
 
 @code{hipow} does not consider expressions equivalent to @code{expr}.  In
 particular, @code{hipow} does not expand @code{expr}, so 
-@code{hipow (@mvar{expr}, @mvar{x})} and
-@code{hipow (expand (@mvar{expr}, @mvar{x}))} may yield different results.
+@code{hipow (@var{expr}, @var{x})} and
+@code{hipow (expand (@var{expr}, @var{x}))} may yield different results.
 
 Examples:
 
@@ -1144,10 +1144,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{lowpow}
-@deffn {Function} lopow (@mvar{expr}, @mvar{x})
+@deffn {Function} lopow (@var{expr}, @var{x})
 
-Returns the lowest exponent of @mvar{x} which explicitly appears in
-@mvar{expr}.  Thus
+Returns the lowest exponent of @var{x} which explicitly appears in
+@var{expr}.  Thus
 
 @example
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
@@ -1163,9 +1163,9 @@ Returns the lowest exponent of @mvar{x} which explicitly appears in
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lratsubst (@mvar{L}, @mvar{expr})
+@deffn {Function} lratsubst (@var{L}, @var{expr})
 
-is analogous to @code{subst (@mvar{L}, @mvar{expr})}
+is analogous to @code{subst (@var{L}, @var{expr})}
 except that it uses @code{ratsubst} instead of @code{subst}.
 
 The first argument of
@@ -1218,19 +1218,19 @@ equation may be given as first argument.
 @defvr {Option variable} modulus
 Default value: @code{false}
 
-When @code{modulus} is a positive number @mvar{p}, operations on rational numbers
+When @code{modulus} is a positive number @var{p}, operations on rational numbers
 (as returned by @code{rat} and related functions) are carried out modulo
-@mvar{p}, using the so-called "balanced" modulus system in which @code{@mvar{n}
-modulo @mvar{p}} is defined as an integer @mvar{k} in
-@code{[-(@mvar{p}-1)/2, ..., 0, ..., (@mvar{p}-1)/2]} when @mvar{p} is odd, or
-@code{[-(@mvar{p}/2 - 1), ..., 0, ...., @mvar{p}/2]} when @mvar{p} is even, such
-that @code{@mvar{a} @mvar{p} + @mvar{k}} equals @mvar{n} for some integer @mvar{a}.
+@var{p}, using the so-called "balanced" modulus system in which @code{@var{n}
+modulo @var{p}} is defined as an integer @var{k} in
+@code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]} when @var{p} is odd, or
+@code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} when @var{p} is even, such
+that @code{@var{a} @var{p} + @var{k}} equals @var{n} for some integer @var{a}.
 @c NEED EXAMPLES OF "BALANCED MODULUS" HERE
 
 @c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
-If @mvar{expr} is already in canonical rational expression (CRE) form when
-@code{modulus} is reset, then you may need to re-rat @mvar{expr}, e.g.,
+If @var{expr} is already in canonical rational expression (CRE) form when
+@code{modulus} is reset, then you may need to re-rat @var{expr}, e.g.,
 @code{expr: rat (ratdisrep (expr))}, in order to get correct results.
 
 Typically @code{modulus} is set to a prime number.  If @code{modulus} is set to
@@ -1280,10 +1280,10 @@ Examples:
 @c @end defvar
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} num (@mvar{expr})
+@deffn {Function} num (@var{expr})
 
-Returns the numerator of @mvar{expr} if it is a ratio.
-If @mvar{expr} is not a ratio, @mvar{expr} is returned.
+Returns the numerator of @var{expr} if it is a ratio.
+If @var{expr} is not a ratio, @var{expr} is returned.
 
 @code{num} evaluates its argument.
 
@@ -1295,19 +1295,19 @@ If @mvar{expr} is not a ratio, @mvar{expr} is returned.
 
 @c -----------------------------------------------------------------------------
 @anchor{polydecomp}
-@deffn {Function} polydecomp (@mvar{p}, @mvar{x})
+@deffn {Function} polydecomp (@var{p}, @var{x})
 
-Decomposes the polynomial @mvar{p} in the variable @mvar{x}
-into the functional composition of polynomials in @mvar{x}.
-@code{polydecomp} returns a list @code{[@mvar{p_1}, ..., @mvar{p_n}]} such that
+Decomposes the polynomial @var{p} in the variable @var{x}
+into the functional composition of polynomials in @var{x}.
+@code{polydecomp} returns a list @code{[@var{p_1}, ..., @var{p_n}]} such that
 
 @example
 lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x))
   ...))
 @end example
 
-is equal to @mvar{p}.
-The degree of @mvar{p_i} is greater than 1 for @mvar{i} less than @mvar{n}.
+is equal to @var{p}.
+The degree of @var{p_i} is greater than 1 for @var{i} less than @var{n}.
 
 Such a decomposition is not unique.
 
@@ -1353,10 +1353,10 @@ Re-express above example using @code{compose}:
 (%o3)                 [x  - a, x  - x - 1]
 @end example
 
-Note that though @code{compose (polydecomp (@mvar{p}, @mvar{x}), @mvar{x})} always
-returns @mvar{p} (unexpanded), @code{polydecomp (compose ([@mvar{p_1}, ...,
-@mvar{p_n}], @mvar{x}), @mvar{x})} does @i{not} necessarily return
-@code{[@mvar{p_1}, ..., @mvar{p_n}]}:
+Note that though @code{compose (polydecomp (@var{p}, @var{x}), @var{x})} always
+returns @var{p} (unexpanded), @code{polydecomp (compose ([@var{p_1}, ...,
+@var{p_n}], @var{x}), @var{x})} does @i{not} necessarily return
+@code{[@var{p_1}, ..., @var{p_n}]}:
 
 @c ===beg===
 @c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
@@ -1380,13 +1380,13 @@ returns @mvar{p} (unexpanded), @code{polydecomp (compose ([@mvar{p_1}, ...,
 
 @c -----------------------------------------------------------------------------
 @anchor{polymod}
-@deffn  {Function} polymod (@mvar{p})
-@deffnx {Function} polymod (@mvar{p}, @mvar{m})
+@deffn  {Function} polymod (@var{p})
+@deffnx {Function} polymod (@var{p}, @var{m})
 
-Converts the polynomial @mvar{p} to a modular representation with respect to the
+Converts the polynomial @var{p} to a modular representation with respect to the
 current modulus which is the value of the variable @code{modulus}.
 
-@code{polymod (@mvar{p}, @mvar{m})} specifies a modulus @mvar{m} to be used 
+@code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 instead of the current value of @code{modulus}.
 
 See @mrefdot{modulus}
@@ -1401,11 +1401,11 @@ See @mrefdot{modulus}
 
 @c -----------------------------------------------------------------------------
 @anchor{quotient}
-@deffn  {Function} quotient (@mvar{p_1}, @mvar{p_2})
-@deffnx {Function} quotient (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn  {Function} quotient (@var{p_1}, @var{p_2})
+@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
-Returns the polynomial @mvar{p_1} divided by the polynomial @mvar{p_2}.  The
-arguments @mvar{x_1}, @dots{}, @mvar{x_n} are interpreted as in @code{ratvars}.
+Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.  The
+arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
 
 @code{quotient} returns the first element of the two-element list returned by
 @code{divide}.
@@ -1419,16 +1419,16 @@ arguments @mvar{x_1}, @dots{}, @mvar{x_n} are interpreted as in @code{ratvars}.
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} rat (@mvar{expr})
-@deffnx {Function} rat (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn  {Function} rat (@var{expr})
+@deffnx {Function} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-Converts @mvar{expr} to canonical rational expression (CRE) form by expanding and
+Converts @var{expr} to canonical rational expression (CRE) form by expanding and
 combining all terms over a common denominator and cancelling out the
 greatest common divisor of the numerator and denominator, as well as
 converting floating point numbers to rational numbers within a
 tolerance of @code{ratepsilon}.
 The variables are ordered according
-to the @mvar{x_1}, @dots{}, @mvar{x_n}, if specified, as in @code{ratvars}.
+to the @var{x_1}, @dots{}, @var{x_n}, if specified, as in @code{ratvars}.
 
 @code{rat} does not generally simplify functions other than addition @code{+},
 subtraction @code{-}, multiplication @code{*}, division @code{/}, and
@@ -1503,15 +1503,15 @@ when canonical rational expressions (CRE) are used in algebraic mode.
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratcoef (@mvar{expr}, @mvar{x}, @mvar{n})
-@deffnx {Function} ratcoef (@mvar{expr}, @mvar{x})
+@deffn  {Function} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {Function} ratcoef (@var{expr}, @var{x})
 
-Returns the coefficient of the expression @code{@mvar{x}^@mvar{n}}
-in the expression @mvar{expr}.
-If omitted, @mvar{n} is assumed to be 1.
+Returns the coefficient of the expression @code{@var{x}^@var{n}}
+in the expression @var{expr}.
+If omitted, @var{n} is assumed to be 1.
 
 The return value is free
-(except possibly in a non-rational sense) of the variables in @mvar{x}.
+(except possibly in a non-rational sense) of the variables in @var{x}.
 If no coefficient of this type exists, 0 is returned.
 
 @code{ratcoef}
@@ -1522,14 +1522,14 @@ syntactic.
 Thus @code{ratcoef ((x + 1)/y + x, x)} returns @code{(y + 1)/y} whereas
 @code{coeff} returns 1.
 
-@code{ratcoef (@mvar{expr}, @mvar{x}, 0)}, viewing @mvar{expr} as a sum,
-returns a sum of those terms which do not contain @mvar{x}.
+@code{ratcoef (@var{expr}, @var{x}, 0)}, viewing @var{expr} as a sum,
+returns a sum of those terms which do not contain @var{x}.
 @c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
-Therefore if @mvar{x} occurs to any negative powers, @code{ratcoef} should not
+Therefore if @var{x} occurs to any negative powers, @code{ratcoef} should not
 be used.
 
 @c WHAT IS THE INTENT HERE ??
-Since @mvar{expr} is rationally
+Since @var{expr} is rationally
 simplified before it is examined, coefficients may not appear quite
 the way they were envisioned.
 
@@ -1551,16 +1551,16 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratdenom (@mvar{expr})
+@deffn {Function} ratdenom (@var{expr})
 
-Returns the denominator of @mvar{expr},
-after coercing @mvar{expr} to a canonical rational expression (CRE).
+Returns the denominator of @var{expr},
+after coercing @var{expr} to a canonical rational expression (CRE).
 The return value is a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@mvar{expr} is coerced to a CRE by @code{rat}
+@var{expr} is coerced to a CRE by @code{rat}
 if it is not already a CRE.
-This conversion may change the form of @mvar{expr} by putting all terms
+This conversion may change the form of @var{expr} by putting all terms
 over a common denominator.
 
 @code{denom} is similar, but returns an ordinary expression instead of a CRE.
@@ -1630,11 +1630,11 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratdiff (@mvar{expr}, @mvar{x})
+@deffn {Function} ratdiff (@var{expr}, @var{x})
 
-Differentiates the rational expression @mvar{expr} with respect to @mvar{x}.
-@mvar{expr} must be a ratio of polynomials or a polynomial in @mvar{x}.
-The argument @mvar{x} may be a variable or a subexpression of @mvar{expr}.
+Differentiates the rational expression @var{expr} with respect to @var{x}.
+@var{expr} must be a ratio of polynomials or a polynomial in @var{x}.
+The argument @var{x} may be a variable or a subexpression of @var{expr}.
 @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
 @c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
 @c HOW TO DESCRIBE THAT ??
@@ -1645,7 +1645,7 @@ The result is equivalent to @code{diff}, although perhaps in a different form.
 @code{ratdiff} returns a canonical rational expression (CRE) if @code{expr} is
 a CRE.  Otherwise, @code{ratdiff} returns a general expression.
 
-@code{ratdiff} considers only the dependence of @mvar{expr} on @mvar{x},
+@code{ratdiff} considers only the dependence of @var{expr} on @var{x},
 and ignores any dependencies established by @code{depends}.
 
 @c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND ratdiff (factor (rat (expr)), x) BOTH SUCCEED
@@ -1697,10 +1697,10 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratdisrep (@mvar{expr})
+@deffn {Function} ratdisrep (@var{expr})
 
 Returns its argument as a general expression.
-If @mvar{expr} is a general expression, it is returned unchanged.
+If @var{expr} is a general expression, it is returned unchanged.
 
 Typically @code{ratdisrep} is called to convert a canonical rational expression
 (CRE) into a general expression.
@@ -1716,17 +1716,17 @@ See also @code{totaldisrep}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratexpand (@mvar{expr})
+@deffn  {Function} ratexpand (@var{expr})
 @deffnx {Option variable} ratexpand
 
-Expands @mvar{expr} by multiplying out products of sums and
+Expands @var{expr} by multiplying out products of sums and
 exponentiated sums, combining fractions over a common denominator,
 cancelling the greatest common divisor of the numerator and
 denominator, then splitting the numerator (if a sum) into its
 respective terms divided by the denominator.
 
 The return value of @code{ratexpand} is a general expression,
-even if @mvar{expr} is a canonical rational expression (CRE).
+even if @var{expr} is a canonical rational expression (CRE).
 
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 The switch @code{ratexpand} if @code{true} will cause CRE
@@ -1814,16 +1814,16 @@ both be used at the same time.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratnumer (@mvar{expr})
+@deffn {Function} ratnumer (@var{expr})
 
-Returns the numerator of @mvar{expr},
-after coercing @mvar{expr} to a canonical rational expression (CRE).
+Returns the numerator of @var{expr},
+after coercing @var{expr} to a canonical rational expression (CRE).
 The return value is a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@mvar{expr} is coerced to a CRE by @code{rat}
+@var{expr} is coerced to a CRE by @code{rat}
 if it is not already a CRE.
-This conversion may change the form of @mvar{expr} by putting all terms
+This conversion may change the form of @var{expr} by putting all terms
 over a common denominator.
 
 @code{num} is similar, but returns an ordinary expression instead of a CRE.
@@ -1838,9 +1838,9 @@ are not considered ratios by @code{num}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratp (@mvar{expr})
+@deffn {Function} ratp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a canonical rational expression (CRE) or
+Returns @code{true} if @var{expr} is a canonical rational expression (CRE) or
 extended CRE, otherwise @code{false}.
 
 CRE are created by @code{rat} and related functions.
@@ -1866,17 +1866,17 @@ to rational numbers is displayed.
 
 @c -----------------------------------------------------------------------------
 @anchor{ratsimp}
-@deffn  {Function} ratsimp (@mvar{expr})
-@deffnx {Function} ratsimp (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn  {Function} ratsimp (@var{expr})
+@deffnx {Function} ratsimp (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-Simplifies the expression @mvar{expr} and all of its subexpressions, including
+Simplifies the expression @var{expr} and all of its subexpressions, including
 the arguments to non-rational functions.  The result is returned as the quotient
 of two polynomials in a recursive form, that is, the coefficients of the main
 variable are polynomials in the other variables.  Variables may include
 non-rational functions (e.g., @code{sin (x^2 + 1)}) and the arguments to any
 such functions are also rationally simplified.
 
-@code{ratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}
+@code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
 enables rational simplification with the
 specification of variable ordering as in @code{ratvars}.
 
@@ -1961,11 +1961,11 @@ substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{ratsubst}
-@deffn {Function} ratsubst (@mvar{a}, @mvar{b}, @mvar{c})
+@deffn {Function} ratsubst (@var{a}, @var{b}, @var{c})
 
-Substitutes @mvar{a} for @mvar{b} in @mvar{c} and returns the resulting expression.
+Substitutes @var{a} for @var{b} in @var{c} and returns the resulting expression.
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@mvar{b} may be a sum, product, power, etc.
+@var{b} may be a sum, product, power, etc.
 
 @c WHAT, EXACTLY, DOES ratsubst KNOW ??
 @code{ratsubst} knows something of the meaning of expressions
@@ -2025,18 +2025,18 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratvars (@mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn  {Function} ratvars (@var{x_1}, @dots{}, @var{x_n})
 @deffnx {Function} ratvars ()
 @deffnx {System variable} ratvars
 
-Declares main variables @mvar{x_1}, @dots{}, @mvar{x_n} for rational expressions.
-@mvar{x_n}, if present in a rational expression, is considered the main variable.
-Otherwise, @mvar{x_[n-1]} is considered the main variable if present, and so on
-through the preceding variables to @mvar{x_1}, which is considered the main
+Declares main variables @var{x_1}, @dots{}, @var{x_n} for rational expressions.
+@var{x_n}, if present in a rational expression, is considered the main variable.
+Otherwise, @var{x_[n-1]} is considered the main variable if present, and so on
+through the preceding variables to @var{x_1}, which is considered the main
 variable only if none of the succeeding variables are present.
 
 If a variable in a rational expression is not present in the @code{ratvars}
-list, it is given a lower priority than @mvar{x_1}.
+list, it is given a lower priority than @var{x_1}.
 
 The arguments to @code{ratvars} can be either variables or non-rational
 functions such as @code{sin(x)}.
@@ -2127,10 +2127,10 @@ evaluation are still present.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratweight (@mvar{x_1}, @mvar{w_1}, @dots{}, @mvar{x_n}, @mvar{w_n})
+@deffn  {Function} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
 @deffnx {Function} ratweight ()
 
-Assigns a weight @mvar{w_i} to the variable @mvar{x_i}.
+Assigns a weight @var{w_i} to the variable @var{x_i}.
 This causes a term to be replaced by 0 if its weight exceeds the
 value of the variable @code{ratwtlvl} (default yields no truncation).
 The weight of a term is the sum of the products of the
@@ -2200,11 +2200,11 @@ For the default value of @code{false}, no truncation occurs.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} remainder (@mvar{p_1}, @mvar{p_2})
-@deffnx {Function} remainder (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn  {Function} remainder (@var{p_1}, @var{p_2})
+@deffnx {Function} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
-Returns the remainder of the polynomial @mvar{p_1} divided by the polynomial
-@mvar{p_2}.  The arguments @mvar{x_1}, @dots{}, @mvar{x_n} are interpreted as in
+Returns the remainder of the polynomial @var{p_1} divided by the polynomial
+@var{p_2}.  The arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in
 @code{ratvars}.
 
 @code{remainder} returns the second element
@@ -2218,15 +2218,15 @@ of the two-element list returned by @code{divide}.
 
 @c -----------------------------------------------------------------------------
 @anchor{resultant}
-@deffn {Function} resultant (@mvar{p_1}, @mvar{p_2}, @mvar{x})
+@deffn {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
 
 The function @code{resultant} computes the resultant of the two polynomials
-@mvar{p_1} and @mvar{p_2}, eliminating the variable @mvar{x}.  The resultant is a
-determinant of the coefficients of @mvar{x} in @mvar{p_1} and @mvar{p_2}, which
-equals zero if and only if @mvar{p_1} and @mvar{p_2} have a non-constant factor
+@var{p_1} and @var{p_2}, eliminating the variable @var{x}.  The resultant is a
+determinant of the coefficients of @var{x} in @var{p_1} and @var{p_2}, which
+equals zero if and only if @var{p_1} and @var{p_2} have a non-constant factor
 in common.
 
-If @mvar{p_1} or @mvar{p_2} can be factored, it may be desirable to call
+If @var{p_1} or @var{p_2} can be factored, it may be desirable to call
 @mref{factor} before calling @code{resultant}.
 
 The option variable @code{resultant} controls which algorithm will be used to
@@ -2306,7 +2306,7 @@ containing some of the same factors.
 
 @c -----------------------------------------------------------------------------
 @anchor{showratvars}
-@deffn {Function} showratvars (@mvar{expr})
+@deffn {Function} showratvars (@var{expr})
 
 Returns a list of the canonical rational expression (CRE) variables in
 expression @code{expr}.
@@ -2322,7 +2322,7 @@ See also @code{ratvars}.
 
 @c -----------------------------------------------------------------------------
 @anchor{sqfr}
-@deffn {Function} sqfr (@mvar{expr})
+@deffn {Function} sqfr (@var{expr})
 
 is similar to @code{factor} except that the polynomial factors are
 "square-free."  That is, they have factors only of degree one.
@@ -2351,14 +2351,14 @@ Example:
 @c THIS ITEM STILL NEEDS WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} tellrat (@mvar{p_1}, @dots{}, @mvar{p_n})
+@deffn  {Function} tellrat (@var{p_1}, @dots{}, @var{p_n})
 @deffnx {Function} tellrat ()
 
 Adds to the ring of algebraic integers known to Maxima
-the elements which are the solutions of the polynomials @mvar{p_1}, @dots{},
-@mvar{p_n}.  Each argument @mvar{p_i} is a polynomial with integer coefficients.
+the elements which are the solutions of the polynomials @var{p_1}, @dots{},
+@var{p_n}.  Each argument @var{p_i} is a polynomial with integer coefficients.
 
-@code{tellrat (@mvar{x})} effectively means substitute 0 for @mvar{x} in rational
+@code{tellrat (@var{x})} effectively means substitute 0 for @var{x} in rational
 functions.
 
 @code{tellrat ()} returns a list of the current substitutions.
@@ -2374,11 +2374,11 @@ removes @code{tellrat} properties.
 
 When @code{tellrat}'ing a multivariate
 polynomial, e.g., @code{tellrat (x^2 - y^2)}, there would be an ambiguity as to
-whether to substitute @code{@mvar{y}^2} for @code{@mvar{x}^2}
+whether to substitute @code{@var{y}^2} for @code{@var{x}^2}
 or vice versa.  
 Maxima picks a particular ordering, but if the user wants to specify which, e.g.
 @code{tellrat (y^2 = x^2)} provides a syntax which says replace
-@code{@mvar{y}^2} by @code{@mvar{x}^2}.
+@code{@var{y}^2} by @code{@var{x}^2}.
 
 @c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
 @c DOES NOT YIELD AN ERROR, SO WHAT IS THE POINT ABOUT ratalgdenom ??
@@ -2427,11 +2427,11 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} totaldisrep (@mvar{expr})
+@deffn {Function} totaldisrep (@var{expr})
 
-Converts every subexpression of @mvar{expr} from canonical rational expressions
+Converts every subexpression of @var{expr} from canonical rational expressions
 (CRE) to general form and returns the result.
-If @mvar{expr} is itself in CRE form then @code{totaldisrep} is identical to
+If @var{expr} is itself in CRE form then @code{totaldisrep} is identical to
 @code{ratdisrep}.
 
 @code{totaldisrep} may be useful for
@@ -2445,9 +2445,9 @@ have some subexpressions in CRE form.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} untellrat (@mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} untellrat (@var{x_1}, @dots{}, @var{x_n})
 
-Removes @code{tellrat} properties from @mvar{x_1}, @dots{}, @mvar{x_n}.
+Removes @code{tellrat} properties from @var{x_1}, @dots{}, @var{x_n}.
 
 @c NEED EXAMPLES HERE
 @opencatbox

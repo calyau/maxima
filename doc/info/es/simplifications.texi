@@ -103,10 +103,10 @@ hace una demostraci@'on sobre su uso.
 @c SOME EXAMPLES WOULD HELP HERE
 
 
-@deffn {Funci@'on} facsum (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
+@deffn {Funci@'on} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 
-Devuelve una expresi@'on equivalente a @mvar{expr}, la cual
-depende de los argumentos @mvar{arg_1}, ..., @mvar{arg_n}, y 
+Devuelve una expresi@'on equivalente a @var{expr}, la cual
+depende de los argumentos @var{arg_1}, ..., @var{arg_n}, y 
 @'estos pueden ser de cualquiera de las formas aceptables
 para @code{ratvars}, o listas de estas formas. Si los
 argumentos no son listas, la forma devuelta se expande
@@ -131,9 +131,9 @@ se puede querer aplicar @code{facsum} con respecto a todos los
 @code{log}; en este caso, se puede incluir entre los argumentos bien
 los @code{log} espec@'{@dotless{i}}ficos que se quieran tratar de esta
 manera, bien la expresi@'on @code{operator (log)} o @code{'operator (log)}.
-Si se quiere aplicar @code{facsum} a @mvar{expr} con respecto a los 
-operadores @mvar{op_1}, ..., @mvar{op_n}, se debe evaluar 
-@code{facsum (@mvar{expr}, operator (@mvar{op_1}, ..., @mvar{op_n}))}.
+Si se quiere aplicar @code{facsum} a @var{expr} con respecto a los 
+operadores @var{op_1}, ..., @var{op_n}, se debe evaluar 
+@code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}.
 La forma @code{operator} puede aparecer tambi@'en dentro de las
 listas de argumentos.
 
@@ -173,15 +173,15 @@ es un cociente de polinomios.
 
 @end defvr
 
-@deffn {Funci@'on} factorfacsum (@mvar{expr}, @mvar{arg_1}, ... @mvar{arg_n})
-Devuelve una expresi@'on equivalente a @mvar{expr} obtenida aplicando
-@code{facsum} a los factores de @mvar{expr}, de argumentos
-@mvar{arg_1}, ... @mvar{arg_n}. Si alguno de los factores de @mvar{expr} se 
+@deffn {Funci@'on} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
+Devuelve una expresi@'on equivalente a @var{expr} obtenida aplicando
+@code{facsum} a los factores de @var{expr}, de argumentos
+@var{arg_1}, ... @var{arg_n}. Si alguno de los factores de @var{expr} se 
 eleva a una potencia, tanto el factor como el exponente se procesar@'an de
 esta manera.
 @end deffn
 
-@deffn {Funci@'on} collectterms (@mvar{expr}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
+@deffn {Funci@'on} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 Si algunas expresiones fueron ya simplificadas con @code{facsum}, @code{factorfacsum},
 @code{factenexpand},  @code{facexpten} o @code{factorfacexpten}, debiendo ser 
 luego sumadas, puede ser conveniente combinarlas utilizando la funci@'on
@@ -206,18 +206,18 @@ grandes.
 @node Paquete functs, Paquete ineq, Paquete facexp, simplification
 @section Paquete functs
 
-@deffn {Funci@'on} rempart (@mvar{expr}, @mvar{n})
-Elimina la parte @mvar{n} de la expresi@'on @mvar{expr}.
+@deffn {Funci@'on} rempart (@var{expr}, @var{n})
+Elimina la parte @var{n} de la expresi@'on @var{expr}.
 
-Si @mvar{n} es una lista de la forma @code{[@mvar{l}, @mvar{m}]}, entonces
-las partes desde @mvar{l} a @mvar{m} ser@'an eliminadas.
+Si @var{n} es una lista de la forma @code{[@var{l}, @var{m}]}, entonces
+las partes desde @var{l} a @var{m} ser@'an eliminadas.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} wronskian ([@mvar{f_1}, ..., @mvar{f_n}], @mvar{x})
-Devuelve la matriz wronskiana de las expresiones @mvar{f_1}, ..., @mvar{f_n}
-dependeientes de la variable @mvar{x}.
+@deffn {Funci@'on} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
+Devuelve la matriz wronskiana de las expresiones @var{f_1}, ..., @var{f_n}
+dependeientes de la variable @var{x}.
 El determinante de la matriz wronskiana es el determinante wronskiano de
 la lista de expresiones.
 
@@ -238,36 +238,36 @@ Ejemplo:
 
 @c adjoint already described in doc/info/Matrices.texi
 
-@deffn {Funci@'on} tracematrix (@mvar{M})
-Devuelve la traza (suma de los elementos de la diagonal) de la matriz @mvar{M}.
+@deffn {Funci@'on} tracematrix (@var{M})
+Devuelve la traza (suma de los elementos de la diagonal) de la matriz @var{M}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} rational (@mvar{z})
-Multiplica el numerador y denominador de @mvar{z} por el complejo conjugado
+@deffn {Funci@'on} rational (@var{z})
+Multiplica el numerador y denominador de @var{z} por el complejo conjugado
 del denominador, racionalizando as@'{@dotless{i}} el denominador.
 Devuelve la expresi@'on can@'onica racional (canonical rational expression,
-CRE) si el argumento @mvar{z} es de esta forma, en caso contrario devuelve una
+CRE) si el argumento @var{z} es de esta forma, en caso contrario devuelve una
 expresi@'on en formato com@'un.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} logand (@mvar{x},@mvar{y})
-Devuelve el "y" l@'ogico binario de los argumentos @mvar{x} e @mvar{y}.
+@deffn {Funci@'on} logand (@var{x},@var{y})
+Devuelve el "y" l@'ogico binario de los argumentos @var{x} e @var{y}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} logor (@mvar{x},@mvar{y})
-Devuelve el "o" l@'ogico binario de los argumentos @mvar{x} e @mvar{y}.
+@deffn {Funci@'on} logor (@var{x},@var{y})
+Devuelve el "o" l@'ogico binario de los argumentos @var{x} e @var{y}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} logxor (@mvar{x},@mvar{y})
-Devuelve el "o-excusivo" l@'ogico binario de los argumentos @mvar{x} e @mvar{y}.
+@deffn {Funci@'on} logxor (@var{x},@var{y})
+Devuelve el "o-excusivo" l@'ogico binario de los argumentos @var{x} e @var{y}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
@@ -276,33 +276,33 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 
 @c kronecker superseded by kron_delta in src/nset.lisp
 
-@deffn {Funci@'on} nonzeroandfreeof (@mvar{x}, @mvar{expr})
-Devuelve @code{true} si @mvar{expr} es diferente de cero y 
-@code{freeof (@mvar{x}, @mvar{expr})} devuelve @code{true}.
+@deffn {Funci@'on} nonzeroandfreeof (@var{x}, @var{expr})
+Devuelve @code{true} si @var{expr} es diferente de cero y 
+@code{freeof (@var{x}, @var{expr})} devuelve @code{true}.
 En caso contrario devuelve @code{false}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} linear (@mvar{expr}, @mvar{x})
-Si @mvar{expr} es una expresi@'on lineal respecto de la variable @mvar{x},
-@code{linear} devuelve @code{@mvar{a}*@mvar{x} + @mvar{b}}, siendo @mvar{a}
-no nula y, junto con @mvar{b}, no incluye a @mvar{x}. En otro caso, 
-@code{linear} devuelve @mvar{expr}.
+@deffn {Funci@'on} linear (@var{expr}, @var{x})
+Si @var{expr} es una expresi@'on lineal respecto de la variable @var{x},
+@code{linear} devuelve @code{@var{a}*@var{x} + @var{b}}, siendo @var{a}
+no nula y, junto con @var{b}, no incluye a @var{x}. En otro caso, 
+@code{linear} devuelve @var{expr}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} gcdivide (@mvar{p}, @mvar{q})
+@deffn {Funci@'on} gcdivide (@var{p}, @var{q})
 Si @code{takegcd} vale @code{true}, que es su valor por defecto, 
-@code{gcdivide} divide los polinomios @mvar{p} y @mvar{q} por su
+@code{gcdivide} divide los polinomios @var{p} y @var{q} por su
 m@'aximo com@'un divisor y devuelve el cociente de los resultados.
 @code{gcdivide} hace una llamada a la funci@'on @code{ezgcd} para
 dividir los polinomios por su m@'aximo com@'un divisor.
 
 
 Si @code{takegcd} vale @code{false}, @code{gcdivide} devuelve
-el cociente @code{@mvar{p}/@mvar{q}}.
+el cociente @code{@var{p}/@var{q}}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 
@@ -342,98 +342,98 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} arithmetic (@mvar{a}, @mvar{d}, @mvar{n})
-Devuelve el @mvar{n}-@'esimo t@'ermino de la progresi@'on aritm@'etica
-@code{@mvar{a}, @mvar{a} + @mvar{d}, @mvar{a} + 2*@mvar{d}, ..., @mvar{a} + (@mvar{n} - 1)*@mvar{d}}.
+@deffn {Funci@'on} arithmetic (@var{a}, @var{d}, @var{n})
+Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on aritm@'etica
+@code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} geometric (@mvar{a}, @mvar{r}, @mvar{n})
-Devuelve el @mvar{n}-@'esimo t@'ermino de la progresi@'on geom@'etrica
-@code{@mvar{a}, @mvar{a}*@mvar{r}, @mvar{a}*@mvar{r}^2, ..., @mvar{a}*@mvar{r}^(@mvar{n} - 1)}.
+@deffn {Funci@'on} geometric (@var{a}, @var{r}, @var{n})
+Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on geom@'etrica
+@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} harmonic (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{n})
-Devuelve el @mvar{n}-@'esimo t@'ermino de la progresi@'on arm@'onica
-@code{@mvar{a}/@mvar{b}, @mvar{a}/(@mvar{b} + @mvar{c}), @mvar{a}/(@mvar{b} + 2*@mvar{c}), ..., @mvar{a}/(@mvar{b} + (@mvar{n} - 1)*@mvar{c})}.
+@deffn {Funci@'on} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on arm@'onica
+@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} arithsum (@mvar{a}, @mvar{d}, @mvar{n})
-Devuelve la suma de la progresi@'on aritm@'etica desde hasta el @mvar{n}-@'esimo t@'ermino.
+@deffn {Funci@'on} arithsum (@var{a}, @var{d}, @var{n})
+Devuelve la suma de la progresi@'on aritm@'etica desde hasta el @var{n}-@'esimo t@'ermino.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} geosum (@mvar{a}, @mvar{r}, @mvar{n})
-Devuelve la suma de la sucesi@'on geom@'etrica hasta el @mvar{n}-@'esimo t@'ermino.
-Si @mvar{n} es infinito (@code{inf}) la suma ser@'a finita s@'olo si el valor absoluto de 
-@mvar{r} es menor que 1.
+@deffn {Funci@'on} geosum (@var{a}, @var{r}, @var{n})
+Devuelve la suma de la sucesi@'on geom@'etrica hasta el @var{n}-@'esimo t@'ermino.
+Si @var{n} es infinito (@code{inf}) la suma ser@'a finita s@'olo si el valor absoluto de 
+@var{r} es menor que 1.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} gaussprob (@mvar{x})
+@deffn {Funci@'on} gaussprob (@var{x})
 Devuelve la funci@'on de densidad de probabilidad,
-normal @code{%e^(-@mvar{x}^2/2) / sqrt(2*%pi)}.
+normal @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} gd (@mvar{x})
+@deffn {Funci@'on} gd (@var{x})
 Devuelve la funci@'on de Gudermann,
 @code{2*atan(%e^x)-%pi/2}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} agd (@mvar{x})
+@deffn {Funci@'on} agd (@var{x})
 Devuelve la inversa de la funci@'on de Gudermann,
 @code{log (tan (%pi/4 + x/2)))}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} vers (@mvar{x})
+@deffn {Funci@'on} vers (@var{x})
 Devuelve @code{1 - cos (x)}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} covers (@mvar{x})
-Devuelve @code{1 - sin (@mvar{x})}.
+@deffn {Funci@'on} covers (@var{x})
+Devuelve @code{1 - sin (@var{x})}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} exsec (@mvar{x})
-Devuelve @code{sec (@mvar{x}) - 1}.
+@deffn {Funci@'on} exsec (@var{x})
+Devuelve @code{sec (@var{x}) - 1}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} hav (@mvar{x})
+@deffn {Funci@'on} hav (@var{x})
 Devuelve @code{(1 - cos(x))/2}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
-@deffn {Funci@'on} combination (@mvar{n}, @mvar{r})
-Calcula el n@'umero de combinaciones de @mvar{n} objetos
-tomados de @mvar{r} en @mvar{r}.
+@deffn {Funci@'on} combination (@var{n}, @var{r})
+Calcula el n@'umero de combinaciones de @var{n} objetos
+tomados de @var{r} en @var{r}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
-@deffn {Funci@'on} permutation (@mvar{n}, @mvar{r})
-Calcula el n@'umero de permutaciones de @mvar{r}, seleccionados
-de un conjunto de @mvar{n}.
+@deffn {Funci@'on} permutation (@var{n}, @var{r})
+Calcula el n@'umero de permutaciones de @var{r}, seleccionados
+de un conjunto de @var{n}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
@@ -539,9 +539,9 @@ eq: a > b;
 @end example
 
 Otro problema es el producto de una desigualdad por cero.
-Si se escribe @code{x*@mvar{some_inequality}} y Maxima pregunta por
+Si se escribe @code{x*@var{some_inequality}} y Maxima pregunta por
 el signo de @code{x} y se responde que vale @code{zero} (o @code{z}),
-el programa devuelve @code{x*@mvar{some_inequality}} sin hacer uso de la
+el programa devuelve @code{x*@var{some_inequality}} sin hacer uso de la
 informaci@'on de que @code{x} es 0. En tal caso se deber@'{@dotless{i}}a
 escribir @code{ev (%, x: 0)}, ya que la base de datos s@'olo ser@'a utilizada 
 para fines comparativos y no para evaluar @code{x}.
@@ -575,16 +575,16 @@ multiplicativa.
 
 
 
-@deffn {Funci@'on} reduce_consts (@mvar{expr})
-Sustituye subexpresiones constantes de @mvar{expr} por @'atomos,
+@deffn {Funci@'on} reduce_consts (@var{expr})
+Sustituye subexpresiones constantes de @var{expr} por @'atomos,
 guardando la definici@'on de todos ellos en la lista de ecuaciones
- @code{const_eqns} y devolviendo el expresi@'on @mvar{expr} ya
-modificada. Se consideran partes constantes de @mvar{expr} aquellas
+ @code{const_eqns} y devolviendo el expresi@'on @var{expr} ya
+modificada. Se consideran partes constantes de @var{expr} aquellas
 que devuelven @code{true} cuando se les aplica la funci@'on @code{constantp},
 por lo que antes de llamar a @code{reduce_consts} se debe ejecutar
 
 @example
-declare ([@mvar{objetos a los que se quiera dar la propiedad de ser constantes}], constant)$
+declare ([@var{objetos a los que se quiera dar la propiedad de ser constantes}], constant)$
 @end example
 
 para crear la base de datos de las cantidades constantes presentes en
@@ -622,7 +622,7 @@ hace una demostraci@'on sobre su uso.
 @section Paquete scifac
 
 
-@deffn {Funci@'on} gcfac (@mvar{expr})
+@deffn {Funci@'on} gcfac (@var{expr})
 Es una funci@'on de factorizaci@'on que intenta aplicar la misma heur@'{@dotless{i}}stica
 que los humanos cuando tratan de hacer las expresiones m@'as simples, limit@'andose
 a la factorizaci@'on de monomios. En caso de sumas, @code{gcfac} hace lo siguiente:
@@ -656,7 +656,7 @@ hace una demostraci@'on sobre su uso.
 @node Paquete sqdnst,  , Paquete scifac, simplification
 @section Paquete sqdnst
 
-@deffn {Funci@'on} sqrtdenest (@mvar{expr})
+@deffn {Funci@'on} sqrtdenest (@var{expr})
 Reduce expresiones en las que se encuentren ra@'{@dotless{i}}ces cuadradas anidadas,
 siempre que sea posible
 

@@ -24,7 +24,7 @@
 @end ifinfo
 
 @code{__} is the input expression currently being evaluated.  That is, while an
-input expression @mvar{expr} is being evaluated, @code{__} is @mvar{expr}.
+input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
 
 @code{__} is assigned the input expression before the input is simplified or
 evaluated.  However, the value of @code{__} is simplified (but not evaluated)
@@ -35,8 +35,8 @@ by @code{batch}, @code{__} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{__} is bound to the input expression
 most recently entered at the interactive prompt or in a batch file; @code{__}
 is not bound to the input expressions in the file being processed.  In
-particular, when @code{load (@mvar{filename})} is called from the interactive
-prompt, @code{__} is bound to @code{load (@mvar{filename})} while the file is
+particular, when @code{load (@var{filename})} is called from the interactive
+prompt, @code{__} is bound to @code{load (@var{filename})} while the file is
 being processed.
 
 See also @mref{_} and @mrefdot{%}
@@ -176,7 +176,7 @@ See also @mrefcomma{_} @mrefcomma{%%} and @mrefdot{%th}
 @end ifinfo
 
 In compound statements, namely @mrefcomma{block} @mrefcomma{lambda} or
-@code{(@mvar{s_1}, ..., @mvar{s_n})}, @code{%%} is the value of the previous
+@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous
 statement.
 
 At the first statement in a compound statement, or outside of a compound
@@ -234,14 +234,14 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{%th}
-@deffn {Function} %th (@mvar{i})
+@deffn {Function} %th (@var{i})
 @ifinfo
 @fnindex N'th previous output
 @end ifinfo
 
-The value of the @mvar{i}'th previous output expression.  That is, if the next
-expression to be computed is the @mvar{n}'th output, @code{%th (@mvar{m})} is the
-(@mvar{n} - @mvar{m})'th output.
+The value of the @var{i}'th previous output expression.  That is, if the next
+expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is the
+(@var{n} - @var{m})'th output.
 
 @code{%th} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
 by @code{batch}, @code{%th} has the same meaning as at the interactive prompt.
@@ -411,18 +411,18 @@ one is not explicitly set by the user.)
 
 @c -----------------------------------------------------------------------------
 @anchor{kill}
-@deffn  {Function} kill (@mvar{a_1}, @dots{}, @mvar{a_n})
+@deffn  {Function} kill (@var{a_1}, @dots{}, @var{a_n})
 @deffnx {Function} kill (labels)
 @deffnx {Function} kill (inlabels, outlabels, linelabels)
-@deffnx {Function} kill (@mvar{n})
-@deffnx {Function} kill ([@mvar{m}, @mvar{n}])
+@deffnx {Function} kill (@var{n})
+@deffnx {Function} kill ([@var{m}, @var{n}])
 @deffnx {Function} kill (values, functions, arrays, @dots{})
 @deffnx {Function} kill (all)
-@deffnx {Function} kill (allbut (@mvar{a_1}, @dots{}, @mvar{a_n}))
+@deffnx {Function} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
-@mvar{a_1}, @dots{}, @mvar{a_n}.  An argument @mvar{a_k} may be a symbol or a
-single array element.  When @mvar{a_k} is a single array element, @code{kill}
+@var{a_1}, @dots{}, @var{a_n}.  An argument @var{a_k} may be a symbol or a
+single array element.  When @var{a_k} is a single array element, @code{kill}
 unbinds that element without affecting any other elements of the array.
 
 Several special arguments are recognized.  Different kinds of arguments
@@ -436,25 +436,25 @@ value of @mrefcomma{outchar} and @code{kill (linelabels)} unbinds only
 intermediate expression labels which begin with the current value of
 @mrefdot{linechar}
 
-@code{kill (@mvar{n})}, where @mvar{n} is an integer,
-unbinds the @mvar{n} most recent input and output labels.
+@code{kill (@var{n})}, where @var{n} is an integer,
+unbinds the @var{n} most recent input and output labels.
 
-@code{kill ([@mvar{m}, @mvar{n}])} unbinds input and output labels @mvar{m} through
-@mvar{n}.
+@code{kill ([@var{m}, @var{n}])} unbinds input and output labels @var{m} through
+@var{n}.
 
-@code{kill (@mvar{infolist})}, where @mvar{infolist} is any item in
+@code{kill (@var{infolist})}, where @var{infolist} is any item in
 @code{infolists} (such as @mrefcomma{values} @mrefcomma{functions} or
-@mref{arrays}) unbinds all items in @mvar{infolist}.
+@mref{arrays}) unbinds all items in @var{infolist}.
 See also @mrefdot{infolists}
 
 @code{kill (all)} unbinds all items on all infolists.  @code{kill (all)} does
 not reset global variables to their default values; see @mref{reset} on this
 point.
 
-@code{kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))} unbinds all items on all
-infolists except for @mvar{a_1}, @dots{}, @mvar{a_n}.
-@code{kill (allbut (@mvar{infolist}))} unbinds all items except for the ones on
-@mvar{infolist}, where @mvar{infolist} is @mrefcomma{values}@w{}
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))} unbinds all items on all
+infolists except for @var{a_1}, @dots{}, @var{a_n}.
+@code{kill (allbut (@var{infolist}))} unbinds all items except for the ones on
+@var{infolist}, where @var{infolist} is @mrefcomma{values}@w{}
 @mrefcomma{functions} @mrefcomma{arrays} etc.
 
 The memory taken up by a bound property is not released until all symbols are
@@ -465,7 +465,7 @@ unbinding the symbol itself.
 @code{kill} quotes its arguments.  The quote-quote operator @code{'@w{}'}
 defeats quotation.
 
-@code{kill (@mvar{symbol})} unbinds all properties of @mvar{symbol}.  In contrast,
+@code{kill (@var{symbol})} unbinds all properties of @var{symbol}.  In contrast,
 the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
 @mrefcomma{remarray} and @mref{remrule} unbind a specific property.
 
@@ -478,16 +478,16 @@ the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn  {Function} labels (@mvar{symbol})
+@deffn  {Function} labels (@var{symbol})
 @deffnx {System variable} labels
 
 Returns the list of input, output, or intermediate expression labels which begin
-with @mvar{symbol}.  Typically @mvar{symbol} is the value of
+with @var{symbol}.  Typically @var{symbol} is the value of
 @mrefcomma{inchar} @mrefcomma{outchar} or @mrefdot{linechar}  The label
 character may be given with or without a percent sign, so, for example, @code{i}
 and @code{%i} yield the same result.
 
-If no labels begin with @mvar{symbol}, @code{labels} returns an empty list.
+If no labels begin with @var{symbol}, @code{labels} returns an empty list.
 
 The function @code{labels} quotes its argument.  The quote-quote operator
 @code{'@w{}'} defeats quotation.  For example, @code{labels (''inchar)} returns
@@ -663,9 +663,9 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{playback}
 @deffn  {Function} playback ()
-@deffnx {Function} playback (@mvar{n})
-@deffnx {Function} playback ([@mvar{m}, @mvar{n}])
-@deffnx {Function} playback ([@mvar{m}])
+@deffnx {Function} playback (@var{n})
+@deffnx {Function} playback ([@var{m}, @var{n}])
+@deffnx {Function} playback ([@var{m}])
 @deffnx {Function} playback (input)
 @deffnx {Function} playback (slow)
 @deffnx {Function} playback (time)
@@ -684,14 +684,14 @@ intermediate expressions generated so far.  An output expression is displayed
 even if it was suppressed by the @code{$} terminator when it was originally
 computed.
 
-@code{playback (@mvar{n})} displays the most recent @mvar{n} expressions.
+@code{playback (@var{n})} displays the most recent @var{n} expressions.
 Each input, output, and intermediate expression counts as one.
 
-@code{playback ([@mvar{m}, @mvar{n}])} displays input, output, and intermediate
-expressions with numbers from @mvar{m} through @mvar{n}, inclusive.
+@code{playback ([@var{m}, @var{n}])} displays input, output, and intermediate
+expressions with numbers from @var{m} through @var{n}, inclusive.
 
-@code{playback ([@mvar{m}])} is equivalent to
-@code{playback ([@mvar{m}, @mvar{m}])}; this usually prints one pair of input and
+@code{playback ([@var{m}])} is equivalent to
+@code{playback ([@var{m}, @var{m}])}; this usually prints one pair of input and
 output expressions.
 
 @code{playback (input)} displays all input expressions generated so far.
@@ -752,9 +752,9 @@ return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},
 
 @c -----------------------------------------------------------------------------
 @anchor{read}
-@deffn {Function} read (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} read (@var{expr_1}, @dots{}, @var{expr_n})
 
-Prints @mvar{expr_1}, @dots{}, @mvar{expr_n}, then reads one expression from the
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
 console and returns the evaluated expression.  The expression is terminated with
 a semicolon @code{;} or dollar sign @code{$}.
 
@@ -779,9 +779,9 @@ foo is 42  -- enter new value.
 
 @c -----------------------------------------------------------------------------
 @anchor{readonly}
-@deffn {Function} readonly (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} readonly (@var{expr_1}, @dots{}, @var{expr_n})
 
-Prints @mvar{expr_1}, @dots{}, @mvar{expr_n}, then reads one expression from the
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
 console and returns the expression (without evaluation).  The expression is
 terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
 
@@ -998,7 +998,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{disp}
-@deffn {Function} disp (@mvar{expr_1}, @mvar{expr_2}, @dots{})
+@deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
 is like @mref{display} but only the value of the arguments are displayed rather
 than equations.  This is useful for complicated arguments which don't have names 
@@ -1034,9 +1034,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{display}
-@deffn {Function} display (@mvar{expr_1}, @mvar{expr_2}, @dots{})
+@deffn {Function} display (@var{expr_1}, @var{expr_2}, @dots{})
 
-Displays equations whose left side is @mvar{expr_i} unevaluated, and whose right
+Displays equations whose left side is @var{expr_i} unevaluated, and whose right
 side is the value of the expression centered on the line.  This function is 
 useful in blocks and @mref{for} statements in order to have intermediate results
 displayed.  The arguments to @code{display} are usually atoms, subscripted 
@@ -1142,12 +1142,12 @@ X*4/3;    ---        - X
 
 @c -----------------------------------------------------------------------------
 @anchor{dispterms}
-@deffn {Function} dispterms (@mvar{expr})
+@deffn {Function} dispterms (@var{expr})
 
-Displays @mvar{expr} in parts one below the other.  That is, first the operator
-of @mvar{expr} is displayed, then each term in a sum, or factor in a product, or
+Displays @var{expr} in parts one below the other.  That is, first the operator
+of @var{expr} is displayed, then each term in a sum, or factor in a product, or
 part of a more general expression is displayed separately.  This is useful if
-@mvar{expr} is too large to be otherwise displayed.  For example if @code{P1},
+@var{expr} is too large to be otherwise displayed.  For example if @code{P1},
 @code{P2}, @dots{}  are very large expressions then the display program may run
 out of storage space in trying to display @code{P1 + P2 + ...}  all at once.
 However, @code{dispterms (P1 + P2 + ...)} displays @code{P1}, then below it
@@ -1178,12 +1178,12 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{expt}
 @anchor{ncexpt}
-@deffn  {Special symbol} expt (@mvar{a}, @mvar{b})
-@deffnx {Special symbol} ncexpt (@mvar{a}, @mvar{b})
+@deffn  {Special symbol} expt (@var{a}, @var{b})
+@deffnx {Special symbol} ncexpt (@var{a}, @var{b})
 
 If an exponential expression is too wide to be displayed as
-@code{@mvar{a}^@mvar{b}} it appears as @code{expt (@mvar{a}, @mvar{b})} (or as
-@code{ncexpt (@mvar{a}, @mvar{b})} in the case of @code{@mvar{a}^^@mvar{b}}).
+@code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as
+@code{ncexpt (@var{a}, @var{b})} in the case of @code{@var{a}^^@var{b}}).
 
 @c THIS SEEMS LIKE A BUG TO ME.  expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
 @c ITSELF PRINTS THEM SOMETIMES.  THESE SHOULD JUST SIMPLIFY TO ^ AND ^^,
@@ -1223,13 +1223,13 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{grind}
-@deffn  {Function} grind (@mvar{expr})
+@deffn  {Function} grind (@var{expr})
 @deffnx {Option variable} grind
 
-The function @code{grind} prints @mvar{expr} to the console in a form suitable
+The function @code{grind} prints @var{expr} to the console in a form suitable
 for input to Maxima.  @code{grind} always returns @code{done}.
 
-When @mvar{expr} is the name of a function or macro, @code{grind} prints the
+When @var{expr} is the name of a function or macro, @code{grind} prints the
 function or macro definition instead of just the name.
 
 See also @mrefcomma{string} which returns a string instead of printing its
@@ -1450,9 +1450,9 @@ it is interpreted in base 10.
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisp}
-@deffn {Function} ldisp (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
 
-Displays expressions @mvar{expr_1}, @dots{}, @mvar{expr_n} to the console as
+Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
 printed output.  @code{ldisp} assigns an intermediate expression label to each
 argument and returns the list of labels.
 
@@ -1490,9 +1490,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisplay}
-@deffn {Function} ldisplay (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
 
-Displays expressions @mvar{expr_1}, @dots{}, @mvar{expr_n} to the console as
+Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
 printed output.  Each expression is printed as an equation of the form
 @code{lhs = rhs} in which @code{lhs} is one of the arguments of @code{ldisplay}
 and @code{rhs} is its value.  Typically each argument is a variable.
@@ -1744,9 +1744,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{print}
-@deffn {Function} print (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} print (@var{expr_1}, @dots{}, @var{expr_n})
 
-Evaluates and displays @mvar{expr_1}, @dots{}, @mvar{expr_n} one after another,
+Evaluates and displays @var{expr_1}, @dots{}, @var{expr_n} one after another,
 from left to right, starting at the left edge of the console display.
 
 The value returned by @code{print} is the value of its last argument.

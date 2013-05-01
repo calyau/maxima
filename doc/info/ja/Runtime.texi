@@ -106,16 +106,16 @@ See also
 
 @c -----------------------------------------------------------------------------
 @anchor{featurep}
-@deffn {関数} featurep (@mvar{a}, @mvar{f})
+@deffn {関数} featurep (@var{a}, @var{f})
 
 現在のデータベースの中の事実に基づいて
-オブジェクト@mvar{a}が
-フィーチャ@mvar{f}を持つかどうか
+オブジェクト@var{a}が
+フィーチャ@var{f}を持つかどうか
 を決定しようとします。
 もしそうなら、@code{true}を返し、そうでなければ@code{false}を返します。
 
 @code{featurep}は、
-@mvar{f}も@mvar{f}の否定も確立できない時は、
+@var{f}も@var{f}の否定も確立できない時は、
 @code{false}を返すことに注意してください。
 
 @code{featurep}は、引数を評価します。
@@ -203,13 +203,13 @@ Maximaの記憶装置とスタックマネージメントの状態の描写を�
 
 @c -----------------------------------------------------------------------------
 @anchor{sstatus}
-@deffn {関数} sstatus (@mvar{keyword}, @mvar{item})
+@deffn {関数} sstatus (@var{keyword}, @var{item})
 
-@mvar{keyword}がシンボル@code{feature}の時、@mvar{item}がシステムフィーチャのリスト上に追加されます。
+@var{keyword}がシンボル@code{feature}の時、@var{item}がシステムフィーチャのリスト上に追加されます。
 @code{sstatus (keyword, item)}が実行された後、
 @code{status (feature, item)}は@code{true}を返します。
-もし@mvar{keyword}がシンボル@code{nofeature}なら、
-@mvar{item}はシステムフィーチャのリストから削除されます。
+もし@var{keyword}がシンボル@code{nofeature}なら、
+@var{item}はシステムフィーチャのリストから削除されます。
 これはパッケージ作者が、搭載したフィーチャの追跡をするのに役に立つかもしれません。
 
 @code{status}も参照してください。
@@ -222,7 +222,7 @@ Maximaの記憶装置とスタックマネージメントの状態の描写を�
 @c -----------------------------------------------------------------------------
 @anchor{status}
 @deffn  {関数} status (@code{feature})
-@deffnx {関数} status (@code{feature}, @mvar{item})
+@deffnx {関数} status (@code{feature}, @var{item})
 いくつかのシステム依存のフィーチャの存在と不在についての情報を返す。
 
 @itemize @bullet
@@ -233,9 +233,9 @@ Maximaの記憶装置とスタックマネージメントの状態の描写を�
 
 @item
 @code{status (feature, item)}は、
-もし@mvar{item}が@code{status (feature)}が返す項目のリスト上にあるなら、
+もし@var{item}が@code{status (feature)}が返す項目のリスト上にあるなら、
 @code{true}を返し、そうでなければ、@code{false}を返します。
-@code{status}は、引数@mvar{item}をクォートします。
+@code{status}は、引数@var{item}をクォートします。
 クォート-クォート演算子@code{'@w{}'}は、クォーテーションに優先されます。
 名前が、ハイフンのように特殊文字を含むフィーチャは、
 文字列引数として与えられなければいけません。例えば、
@@ -258,9 +258,9 @@ Maximaの記憶装置とスタックマネージメントの状態の描写を�
 
 @c -----------------------------------------------------------------------------
 @anchor{system}
-@deffn {関数} system (@mvar{command})
+@deffn {関数} system (@var{command})
 
-別のプロセスとして@mvar{command}を実行します。
+別のプロセスとして@var{command}を実行します。
 コマンドは実行のためデフォルトのシェルに渡されます。
 @code{system}は、オペレーティングシステムすべてではサポートされませんが、
 一般にUnixとUnixライクな環境では存在します。
@@ -304,16 +304,16 @@ Maximaに出力行それぞれに計算時間と経過時間を印字させる�
 @c -----------------------------------------------------------------------------
 @anchor{timedate}
 @deffn  {関数} timedate ()
-@deffnx {関数} timedate (@mvar{T})
+@deffnx {関数} timedate (@var{T})
 
 引数なしの@code{timedate()}は現在時刻と日付を表す文字列を返します。
 文字列は、フォーマット@code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}を持ちます。
 ここで、欄は、年、月、日、時、分、秒、時間と分のタイムゾーンオフセットです。
 
-@code{timedate(@mvar{T})}は
+@code{timedate(@var{T})}は
 フォーマット@code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}の文字列として
-時刻@mvar{T}を返します。
-@mvar{T}は
+時刻@var{T}を返します。
+@var{T}は
 @code{absolute_real_time}が返すような
 1990年1月1日の真夜中以来の秒数として解釈されます。
 

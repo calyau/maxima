@@ -45,9 +45,9 @@ em si mesmo, ap@'os ter sido adicionado o simplificador a lista poder@'a transfo
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} append (@mvar{list_1}, ..., @mvar{list_n})
-Retorna uma lista simples dos elementos de @mvar{list_1} seguidos
-pelos elementos de @mvar{list_2}, ....  @code{append} tamb@'em trabalha sobre
+@deffn {Fun@value{cedilha}@~ao} append (@var{list_1}, ..., @var{list_n})
+Retorna uma lista simples dos elementos de @var{list_1} seguidos
+pelos elementos de @var{list_2}, ....  @code{append} tamb@'em trabalha sobre
 express@~oes gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
 @code{f(a,b,c,d,e)}.
 
@@ -56,22 +56,22 @@ Fa@value{cedilha}a @code{example(append);} para um exemplo.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} assoc (@mvar{key}, @mvar{list}, @mvar{default})
-@deffnx {Fun@value{cedilha}@~ao} assoc (@mvar{key}, @mvar{list})
-Essa fun@value{cedilha}@~ao procura pela chave @mvar{key} do lado esquerdo da entrada @mvar{list}
-que @'e da forma @code{[x,y,z,...]} onde cada elemento de @mvar{list} @'e uma express@~ao de
+@deffn {Fun@value{cedilha}@~ao} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Fun@value{cedilha}@~ao} assoc (@var{key}, @var{list})
+Essa fun@value{cedilha}@~ao procura pela chave @var{key} do lado esquerdo da entrada @var{list}
+que @'e da forma @code{[x,y,z,...]} onde cada elemento de @var{list} @'e uma express@~ao de
 um operando bin@'ario e 2 elementos.  Por exemplo @code{x=1}, @code{2^3}, @code{[a,b]} etc.
-A chave @mvar{key} @'e verificada contra o primeiro operando.  @code{assoc} retorna o segundo
+A chave @var{key} @'e verificada contra o primeiro operando.  @code{assoc} retorna o segundo
 operando se @code{key} for achada.  Se a chave @code{key} n@~ao for achada isso
-retorna o valor padr@~ao @mvar{default}.  @mvar{default} @'e opcional
+retorna o valor padr@~ao @var{default}.  @var{default} @'e opcional
 e o padr@~ao @'e @code{false}.
 
 @end deffn
 
 @c REPHRASE
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Fun@value{cedilha}@~ao} atom (@mvar{expr})
-Retorna @code{true} se @mvar{expr} for atomica (i.e. um n@'umero, nome ou sequ@^encia de caracteres) de outra forma retorna
+@deffn {Fun@value{cedilha}@~ao} atom (@var{expr})
+Retorna @code{true} se @var{expr} for atomica (i.e. um n@'umero, nome ou sequ@^encia de caracteres) de outra forma retorna
 @code{false}.  Desse modo @code{atom(5)} @'e @code{true} enquanto @code{atom(a[1])} e @code{atom(sin(x))} S@~ao
 @code{false} (assumindo @code{a[1]} e @code{x} n@~ao est@~ao associados).
 
@@ -79,26 +79,26 @@ Retorna @code{true} se @mvar{expr} for atomica (i.e. um n@'umero, nome ou sequ@^
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Fun@value{cedilha}@~ao} cons (@mvar{expr}, @mvar{list})
-Retorna uma nova lista constru@'{@dotless{i}}da do elemento @mvar{expr} como
-seu primeiro elemento, seguido por elementos de @mvar{list}.  @code{cons} tamb@'em trabalha
+@deffn {Fun@value{cedilha}@~ao} cons (@var{expr}, @var{list})
+Retorna uma nova lista constru@'{@dotless{i}}da do elemento @var{expr} como
+seu primeiro elemento, seguido por elementos de @var{list}.  @code{cons} tamb@'em trabalha
 sobre outras express@~oes, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} copylist (@mvar{list})
-Retorna uma c@'opia da lista @mvar{list}.
+@deffn {Fun@value{cedilha}@~ao} copylist (@var{list})
+Retorna uma c@'opia da lista @var{list}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, ..., @mvar{x_n}, @mvar{list_n})
+@deffn {Fun@value{cedilha}@~ao} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
 
-Cria uma lista por avalia@value{cedilha}@~ao de @mvar{form} com @mvar{x_1} associando a
-cada elemento @mvar{list_1}, e para cada tal associa@value{cedilha}@~ao anexa @mvar{x_2}
-para cada elemento de @mvar{list_2}, ....
+Cria uma lista por avalia@value{cedilha}@~ao de @var{form} com @var{x_1} associando a
+cada elemento @var{list_1}, e para cada tal associa@value{cedilha}@~ao anexa @var{x_2}
+para cada elemento de @var{list_2}, ....
 O n@'umero de elementos no resultado ser@'a
 o produto do n@'umero de elementos de cada lista.
-Cada vari@'avel @mvar{x_i} pode actualmente ser um s@'{@dotless{i}}bolo --o qual n@~ao pode ser avaliado.
+Cada vari@'avel @var{x_i} pode actualmente ser um s@'{@dotless{i}}bolo --o qual n@~ao pode ser avaliado.
 A lista de argumentos ser@'a avaliada uma @'unica vez no in@'{@dotless{i}}cio do bloco de 
 repeti@value{cedilha}@~ao.  
 
@@ -115,7 +115,7 @@ Com um bloco de repeti@value{cedilha}@~ao duplo:
 (%o79) [[a,e],[a,f],[a,h],[b,e],[b,f],[b,h]]
 @end example
 
-Em lugar de @mvar{list_i} dois argumentos podem ser fornecidos cada um dos quais ser@'a
+Em lugar de @var{list_i} dois argumentos podem ser fornecidos cada um dos quais ser@'a
 avaliado como um n@'umero.   Esses podem vir a ser inclusive o limite inferior e
 superior do bloco de repeti@value{cedilha}@~ao.   
 
@@ -124,15 +124,15 @@ superior do bloco de repeti@value{cedilha}@~ao.
 (%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
 @end example
 
-Note que os limites ou lista para a vari@'avel @mvar{j} podem
-depender do valor corrente de @mvar{i}.
+Note que os limites ou lista para a vari@'avel @var{j} podem
+depender do valor corrente de @var{i}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} delete (@mvar{expr_1}, @mvar{expr_2})
-@deffnx {Fun@value{cedilha}@~ao} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
-Remove todas as ocorr@^encias de @mvar{expr_1} em @mvar{expr_2}. @mvar{expr_1}
-pode ser uma parcela de @mvar{expr_2} (se isso for uma adi@value{cedilha}@~ao) ou um factor de @mvar{expr_2}
+@deffn {Fun@value{cedilha}@~ao} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Fun@value{cedilha}@~ao} delete (@var{expr_1}, @var{expr_2}, @var{n})
+Remove todas as ocorr@^encias de @var{expr_1} em @var{expr_2}. @var{expr_1}
+pode ser uma parcela de @var{expr_2} (se isso for uma adi@value{cedilha}@~ao) ou um factor de @var{expr_2}
 (se isso for um produto).
 
 @c ===beg===
@@ -144,9 +144,9 @@ pode ser uma parcela de @mvar{expr_2} (se isso for uma adi@value{cedilha}@~ao) o
 
 @end example
 
-@code{delete(@mvar{expr_1}, @mvar{expr_2}, @mvar{n})} remove as primeiras @mvar{n} ocorr@^encias de
-@mvar{expr_1} em @mvar{expr_2}.  Se houver menos que @mvar{n}
-ocorr@^encias de @mvar{expr_1} em @mvar{expr_2} ent@~ao todas as corr@^encias seram exclu@'{@dotless{i}}das.
+@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} remove as primeiras @var{n} ocorr@^encias de
+@var{expr_1} em @var{expr_2}.  Se houver menos que @var{n}
+ocorr@^encias de @var{expr_1} em @var{expr_2} ent@~ao todas as corr@^encias seram exclu@'{@dotless{i}}das.
 
 @c ===beg===
 @c delete(a, f(a,b,c,d,a));
@@ -162,35 +162,35 @@ ocorr@^encias de @mvar{expr_1} em @mvar{expr_2} ent@~ao todas as corr@^encias se
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} eighth (@mvar{expr})
-Retorna o oitavo item de uma express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} eighth (@var{expr})
+Retorna o oitavo item de uma express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Fun@value{cedilha}@~ao} endcons (@mvar{expr}, @mvar{list})
+@deffn {Fun@value{cedilha}@~ao} endcons (@var{expr}, @var{list})
 Retorna uma nova lista consistindo de elementos de
-@code{list} seguidos por @mvar{expr}.  @code{endcons} tamb@'em trabalha  sobre express@~oes gerais, e.g.
+@code{list} seguidos por @var{expr}.  @code{endcons} tamb@'em trabalha  sobre express@~oes gerais, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fifth (@mvar{expr})
-Retorna o quinto item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} fifth (@var{expr})
+Retorna o quinto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} first (@mvar{expr})
-Retorna a primeira parte de @mvar{expr} que pode resultar no primeiro
+@deffn {Fun@value{cedilha}@~ao} first (@var{expr})
+Retorna a primeira parte de @var{expr} que pode resultar no primeiro
 elemento de uma lista, a primeira linha de uma matriz, a primeira parcela de uma adi@value{cedilha}@~ao,
 etc.  Note que @code{first} e suas fun@value{cedilha}@~oes relacionadas, @code{rest} e @code{last}, trabalham
-sobre a forma de @mvar{expr} que @'e mostrada n@~ao da forma que @'e digitada na
+sobre a forma de @var{expr} que @'e mostrada n@~ao da forma que @'e digitada na
 entrada.  Se a vari@'avel @code{inflag} @'e escolhida para @code{true} todavia, essa
-fun@value{cedilha}@~oes olhar@~ao  na forma interna de @mvar{expr}.  Note que o
+fun@value{cedilha}@~oes olhar@~ao  na forma interna de @var{expr}.  Note que o
 simplificador re-ordena express@~oes.  Desse modo @code{first(x+y)} ser@'a @code{x} se @code{inflag}
 for @code{true} e @code{y} se @code{inflag} for @code{false} (@code{first(y+x)} fornece os mesmos
 resultados).  As fun@value{cedilha}@~oes @code{second} .. @code{tenth} retornam da segunda at@'e a
@@ -198,15 +198,15 @@ d@'ecima parte do seu argumento.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fourth (@mvar{expr})
-Retorna o quarto item da express@~o ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} fourth (@var{expr})
+Retorna o quarto item da express@~o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} get (@mvar{a}, @mvar{i})
-Recupera a propriedade de utilizador indicada por @mvar{i} associada com
-o @'atomo @mvar{a} ou retorna @code{false} se "a" n@~ao tem a propriedade @mvar{i}.
+@deffn {Fun@value{cedilha}@~ao} get (@var{a}, @var{i})
+Recupera a propriedade de utilizador indicada por @var{i} associada com
+o @'atomo @var{a} ou retorna @code{false} se "a" n@~ao tem a propriedade @var{i}.
 
 @code{get} avalia seus argumentos.
 
@@ -248,14 +248,14 @@ x is not numeric.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} join (@mvar{l}, @mvar{m})
-Cria uma nova lista contendo os elementos das lista @mvar{l} e @mvar{m}, intercaladas.
-O resultado tem os elementos @code{[@mvar{l}[1], @mvar{m}[1], @mvar{l}[2], @mvar{m}[2], ...]}.
-As listas @mvar{l} e @mvar{m} podem conter qualquer tipo de elementos.
+@deffn {Fun@value{cedilha}@~ao} join (@var{l}, @var{m})
+Cria uma nova lista contendo os elementos das lista @var{l} e @var{m}, intercaladas.
+O resultado tem os elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.
 
 Se as listas forem de diferentes comprimentos, @code{join} ignora elementos da lista mais longa.
 
-Maxima reclama se @mvar{L_1} ou @mvar{L_2} n@~ao for uma lista.
+Maxima reclama se @var{L_1} ou @var{L_2} n@~ao for uma lista.
 
 Exemplos:
 
@@ -277,15 +277,15 @@ Exemplos:
 
 @c NEEDS EXAMPLES
 @c HOW IS "LAST" PART DETERMINED ??
-@deffn {Fun@value{cedilha}@~ao} last (@mvar{expr})
-Retorna a @'ultima parte (parcela, linha, elemento, etc.) de @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} last (@var{expr})
+Retorna a @'ultima parte (parcela, linha, elemento, etc.) de @var{expr}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} length (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} length (@var{expr})
 Retorna (por padr@~ao) o n@'umero de partes na forma
-externa (mostrada) de @mvar{expr}.  Para listas isso @'e o n@'umero de elementos,
+externa (mostrada) de @var{expr}.  Para listas isso @'e o n@'umero de elementos,
 para matrizes isso @'e o n@'umero de linhas, e para adi@value{cedilha}@~oes isso @'e o n@'umero
 de parcelas (veja @code{dispform}).
 
@@ -305,23 +305,23 @@ listas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} listp (@mvar{expr})
-Retorna @code{true} se @mvar{expr} for uma lista de outra forma retorna @code{false}.
+@deffn {Fun@value{cedilha}@~ao} listp (@var{expr})
+Retorna @code{true} se @var{expr} for uma lista de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
-@deffnx {Fun@value{cedilha}@~ao} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
+@deffn {Fun@value{cedilha}@~ao} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Fun@value{cedilha}@~ao} makelist (@var{expr}, @var{x}, @var{list})
 Constr@'oi e retorna uma lista,
-cada elemento dessa lista @'e gerado usando @mvar{expr}.
+cada elemento dessa lista @'e gerado usando @var{expr}.
 
-@code{makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})} retorna uma lista,
-o @code{j}'@'esimo elemento dessa lista @'e igual a @code{ev (@mvar{expr}, @mvar{i}=j)}
-para @code{j} variando de @mvar{i_0} at@'e @mvar{i_1}.
+@code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} retorna uma lista,
+o @code{j}'@'esimo elemento dessa lista @'e igual a @code{ev (@var{expr}, @var{i}=j)}
+para @code{j} variando de @var{i_0} at@'e @var{i_1}.
 
-@code{makelist (@mvar{expr}, @mvar{x}, @mvar{list})} retorna uma lista,
-o @code{j}'@'esimo elemento @'e igual a @code{ev (@mvar{expr}, @mvar{x}=@mvar{list}[j])}
-para @code{j} variando de 1 at@'e @code{length (@mvar{list})}.
+@code{makelist (@var{expr}, @var{x}, @var{list})} retorna uma lista,
+o @code{j}'@'esimo elemento @'e igual a @code{ev (@var{expr}, @var{x}=@var{list}[j])}
+para @code{j} variando de 1 at@'e @code{length (@var{list})}.
 
 Exemplos:
 
@@ -339,15 +339,15 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} member (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Fun@value{cedilha}@~ao} member (@var{expr_1}, @var{expr_2})
 
-Retorna @code{true} se @code{is(@mvar{expr_1} = @mvar{a})}
-para algum elemento @mvar{a} em @code{args(@mvar{expr_2})},
+Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
+para algum elemento @var{a} em @code{args(@var{expr_2})},
 de outra forma retorna @code{false}.
 
 @code{expr_2} @'e tipicamente uma lista,
-nesse caso @code{args(@mvar{expr_2}) = @mvar{expr_2}}
-e @code{is(@mvar{expr_1} = @mvar{a})} para algum elemento @mvar{a} em @code{expr_2} @'e o teste.
+nesse caso @code{args(@var{expr_2}) = @var{expr_2}}
+e @code{is(@var{expr_1} = @var{a})} para algum elemento @var{a} em @code{expr_2} @'e o teste.
 
 @code{member} n@~ao inspeciona partes dos argumentos de @code{expr_2},
 ent@~ao @code{member} pode retornar @code{false} mesmo se @code{expr_1} for uma parte de algum argumento de @code{expr_2}.
@@ -389,55 +389,55 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ninth (@mvar{expr})
-Retorna o nono item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} ninth (@var{expr})
+Retorna o nono item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} rest (@mvar{expr}, @mvar{n})
-@deffnx {Fun@value{cedilha}@~ao} rest (@mvar{expr})
-Retorna @mvar{expr} com seus primeiros @mvar{n} elementos removidos se @mvar{n} for
-positivo e seus @'ultimos @code{- @mvar{n}} elementos removidos se @mvar{n} for negativo.  Se @mvar{n} for 1
-isso pode ser omitido.  @mvar{expr} pode ser uma lista, matriz, ou outra express@~ao.
+@deffn {Fun@value{cedilha}@~ao} rest (@var{expr}, @var{n})
+@deffnx {Fun@value{cedilha}@~ao} rest (@var{expr})
+Retorna @var{expr} com seus primeiros @var{n} elementos removidos se @var{n} for
+positivo e seus @'ultimos @code{- @var{n}} elementos removidos se @var{n} for negativo.  Se @var{n} for 1
+isso pode ser omitido.  @var{expr} pode ser uma lista, matriz, ou outra express@~ao.
 
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Fun@value{cedilha}@~ao} reverse (@mvar{list})
-Ordem reversa para os membros de @mvar{list} (n@~ao
+@deffn {Fun@value{cedilha}@~ao} reverse (@var{list})
+Ordem reversa para os membros de @var{list} (n@~ao
 os membros em si mesmos).  @code{reverse} tamb@'em trabalha sobre express@~oes gerais,
 e.g.  @code{reverse(a=b);} fornece @code{b=a}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} second (@mvar{expr})
-Retorna o segundo item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} second (@var{expr})
+Retorna o segundo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} seventh (@mvar{expr})
-Retorna o s@'etimo item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} seventh (@var{expr})
+Retorna o s@'etimo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sixth (@mvar{expr})
-Retorna o sexto item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} sixth (@var{expr})
+Retorna o sexto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sublist_indices (@mvar{L}, @mvar{P})
+@deffn {Fun@value{cedilha}@~ao} sublist_indices (@var{L}, @var{P})
 
-Retorna os @'{@dotless{i}}ndices dos elementos @code{x} da lista @mvar{L} para os quais
-o predicado @code{maybe(@mvar{P}(x))} retornar @code{true};
+Retorna os @'{@dotless{i}}ndices dos elementos @code{x} da lista @var{L} para os quais
+o predicado @code{maybe(@var{P}(x))} retornar @code{true};
 isso inclui @code{unknown} bem como @code{false}.
-@mvar{P} pode ser um nome de fun@value{cedilha}@~ao ou uma express@~ao lambda.
-@mvar{L} deve ser uma lista literal.
+@var{P} pode ser um nome de fun@value{cedilha}@~ao ou uma express@~ao lambda.
+@var{L} deve ser uma lista literal.
 
 Exemplos:
 @c ===beg===
@@ -466,14 +466,14 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} tenth (@mvar{expr})
-Retorna o d@'ecimo item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} tenth (@var{expr})
+Retorna o d@'ecimo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} third (@mvar{expr})
-Retorna o terceiro item da express@~ao ou lista @mvar{expr}.
+@deffn {Fun@value{cedilha}@~ao} third (@var{expr})
+Retorna o terceiro item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn

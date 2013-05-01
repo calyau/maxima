@@ -265,7 +265,7 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 
 @c -----------------------------------------------------------------------------
 @anchor{dispcon}
-@deffn  {関数} dispcon (@mvar{tensor_1}, @mvar{tensor_2}, ...)
+@deffn  {関数} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
 @deffnx {関数} dispcon (all)
 
 @code{defcon}に与えられたような引数の縮約プロパティを表示します。
@@ -278,10 +278,10 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} entertensor (@mvar{name})
+@deffn {関数} entertensor (@var{name})
 
 プロンプトによって、
-任意の数のテンソル添字や微分添字を持つ@mvar{name}と呼ばれる添字付きオブジェクトを生成することを許す関数です。
+任意の数のテンソル添字や微分添字を持つ@var{name}と呼ばれる添字付きオブジェクトを生成することを許す関数です。
 単一添字または(nullもありえる)添字のリストが容認可能な入力です。
 (@code{covdiff}の下の例を参照してください。)
 
@@ -291,12 +291,12 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} changename (@mvar{old}, @mvar{new}, @mvar{expr})
+@deffn {関数} changename (@var{old}, @var{new}, @var{expr})
 
-@mvar{expr}の中の@mvar{old}と呼ばれるすべての添字付きオブジェクトの名前を@mvar{new}に変えます。
-@mvar{old}はシンボルまたは形式@code{[@mvar{name}, @mvar{m}, @mvar{n}]}のリストであり得ます。
-後者の場合、@mvar{m}個の共変添字と@mvar{n}個の反変添字を持つ
-@mvar{name}と呼ばれるそれらの添字付きオブジェクトだけが@mvar{new}にリネームされます。
+@var{expr}の中の@var{old}と呼ばれるすべての添字付きオブジェクトの名前を@var{new}に変えます。
+@var{old}はシンボルまたは形式@code{[@var{name}, @var{m}, @var{n}]}のリストであり得ます。
+後者の場合、@var{m}個の共変添字と@var{n}個の反変添字を持つ
+@var{name}と呼ばれるそれらの添字付きオブジェクトだけが@var{new}にリネームされます。
 
 @opencatbox
 @category{Package itensor}
@@ -327,10 +327,10 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ishow (@mvar{expr})
+@deffn {関数} ishow (@var{expr})
 
 下付き添字としての共変添字と上付き添字としての反変添字を持つように
-添字付きオブジェクトを持つ形で@mvar{expr}を表示します。
+添字付きオブジェクトを持つ形で@var{expr}を表示します。
 微分添字は、共変添字からコンマで区切られた下付き添字として表示されます。
 (このドキュメント至る所の例を参照してください。)
 
@@ -340,12 +340,12 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} indices (@mvar{expr})
+@deffn {関数} indices (@var{expr})
 
 2つの要素のリストを返します。
 以下の例が例示するように、
-一番目は、@mvar{expr}の中の自由添字(一度だけ現れるもの)のリストです。
-二番目は、@mvar{expr}の中のダミー添字(正確に二回現れるもの)のリストです。
+一番目は、@var{expr}の中の自由添字(一度だけ現れるもの)のリストです。
+二番目は、@var{expr}の中のダミー添字(正確に二回現れるもの)のリストです。
 
 @example
 
@@ -370,13 +370,13 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} rename (@mvar{expr})
-@deffnx {関数} rename (@mvar{expr}, @mvar{count})
+@deffn  {関数} rename (@var{expr})
+@deffnx {関数} rename (@var{expr}, @var{count})
 
 もしオプションの二番目の引数が省略されたら、
-@mvar{expr}と同値な、
+@var{expr}と同値な、
 しかし、各項に対して、集合@code{[%1, %2,...]}から選ばれたダミー添字を持つ式を返します。
-そうでなければ、ダミー添字は@mvar{count}の値で始まるようインデックスされます。
+そうでなければ、ダミー添字は@var{count}の値で始まるようインデックスされます。
 積の中のそれぞれのダミー添字は異なります。
 和に関しては、@code{rename}は各項毎にカウンタが再設定されるように和の中の各項上で作用します。
 この方法で、@code{rename}はテンソル整理器として利用できます。
@@ -446,7 +446,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @c -----------------------------------------------------------------------------
 @anchor{show}
-@deffn {関数} show (@mvar{expr})
+@deffn {関数} show (@var{expr})
 下付き添字として共変インデックス、上付き添字として反変インデックスを持つよう、
 インデックスされたオブジェクトと一緒に@code{expr}を表示します。
 微分インデックスは下付き添字として表示され、
@@ -480,15 +480,15 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} defcon (@mvar{tensor_1})
-@deffnx {関数} defcon (@mvar{tensor_1}, @mvar{tensor_2}, @mvar{tensor_3})
-@mvar{tensor_1}に、
-@mvar{tensor_1}と@mvar{tensor_2}の積の縮約が
-適切な添字を持つ@mvar{tensor_3}に帰着するという
+@deffn {関数} defcon (@var{tensor_1})
+@deffnx {関数} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+@var{tensor_1}に、
+@var{tensor_1}と@var{tensor_2}の積の縮約が
+適切な添字を持つ@var{tensor_3}に帰着するという
 プロパティを与えます。
-もし引数が@mvar{tensor_1}１つだけ与えれたなら、
+もし引数が@var{tensor_1}１つだけ与えれたなら、
 , then the contraction of the product of 
-適切な添字を持つ任意の添字付きオブジェクト(@code{my_tensor}とします)との@mvar{tensor_1}の積の縮約はその名前、すなわち、@code{my_tensor}と、実行された縮約を反映した添字の新しい集合を持つ添字付きオブジェクトをもたらします。
+適切な添字を持つ任意の添字付きオブジェクト(@code{my_tensor}とします)との@var{tensor_1}の積の縮約はその名前、すなわち、@code{my_tensor}と、実行された縮約を反映した添字の新しい集合を持つ添字付きオブジェクトをもたらします。
 例えば、もし@code{imetric:g}なら、@code{defcon(g)}は
 計量テンソルとの縮約を通して添字の上げ下げを実行します。
 １つ以上の@code{defcon}を同じ添字付きオブジェクトに関して与えることができます;
@@ -502,9 +502,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} remcon (@mvar{tensor_1}, ..., @mvar{tensor_n})
+@deffn {関数} remcon (@var{tensor_1}, ..., @var{tensor_n})
 @deffnx {関数} remcon (all)
-@mvar{tensor_1}, ..., @mvar{tensor_n}からすべての縮約プロパティを取り除きます。
+@var{tensor_1}, ..., @var{tensor_n}からすべての縮約プロパティを取り除きます。
 @code{remcon(all)}は、すべての添字付きオブジェクトから
 すべての縮約プロパティを取り除きます。
 
@@ -514,10 +514,10 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} contract (@mvar{expr})
+@deffn {関数} contract (@var{expr})
 
 和と積の任意の組み合わせであり得る
-@mvar{expr}に関して
+@var{expr}に関して
 テンソル縮約を実行します。
 この関数は
 @code{defcon}関数に与えられた情報を使います。
@@ -536,11 +536,11 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} indexed_tensor (@mvar{tensor})
+@deffn {関数} indexed_tensor (@var{tensor})
 
 値に関する美しい姿が既に
 @code{ichr1}, @code{ichr2}, @code{icurvature}とともにあるように存在する
-@mvar{tensor}に成分を割り当てる前に実行されなければいけません。
+@var{tensor}に成分を割り当てる前に実行されなければいけません。
 @code{icurvature}の下の例を参照してください。
 
 @opencatbox
@@ -549,14 +549,14 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} components (@mvar{tensor}, @mvar{expr})
+@deffn {関数} components (@var{tensor}, @var{expr})
 
-@mvar{tensor}の成分の値を与える式@mvar{expr}に添字値を割り当てることを許します。
+@var{tensor}の成分の値を与える式@var{expr}に添字値を割り当てることを許します。
 その添字のすべてとともに起こるときはいつでも、これらは自動的にテンソルに代入されます。
 テンソルは、形式@code{t([...],[...])}でなければいけません。
 ここで形式@code{t([...],[...])}の中のリストのいずれかは空であり得えます。
-@mvar{expr}は、
-@mvar{tensor}と同じ自由添字を持つ他のオブジェクトを含む任意の添字付き式であり得ます。
+@var{expr}は、
+@var{tensor}と同じ自由添字を持つ他のオブジェクトを含む任意の添字付き式であり得ます。
 成分がダミー添字を含む計量テンソルへ値を割り当てるのに使われる時、
 複数のダミー添字の生成を避けるようにこれらの添字を定義するように注意しなければいけません。
 この割り当ての削除は関数@code{remcomps}に与えられます。
@@ -657,10 +657,10 @@ It is important to keep in mind that
 @closecatbox
 @end deffn
 
-@deffn {関数} remcomps (@mvar{tensor})
+@deffn {関数} remcomps (@var{tensor})
 
 @code{components}関数で割り当てられたすべての値を
-@mvar{tensor}からアンバインドします。
+@var{tensor}からアンバインドします。
 
 @opencatbox
 @category{Package itensor}
@@ -670,7 +670,7 @@ It is important to keep in mind that
 @c NEED LIST OF ARGUMENTS HERE
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} showcomps (@mvar{tensor})
+@deffn {関数} showcomps (@var{tensor})
 
 @code{components}コマンドを使って作られたように
 テンソルの成分割り当てを表示します。
@@ -762,12 +762,12 @@ Increments
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} kdelta (@mvar{L1}, @mvar{L2})
-共変添字のリスト@mvar{L1}と反変添字のリスト@mvar{L2}を使って
+@deffn {関数} kdelta (@var{L1}, @var{L2})
+共変添字のリスト@var{L1}と反変添字のリスト@var{L2}を使って
 @code{itensor}パッケージで定義された
 一般化されたKroneckerのデルタ関数です。
 @code{kdelta([i],[j])}は通常のKroneckerデルタを返します。
-コマンド@code{ev(@mvar{expr},kdelta)}は
+コマンド@code{ev(@var{expr},kdelta)}は
 @code{kdelta([],[])}を多様体の次元に含む
 式の評価をもたらします。
 
@@ -784,7 +784,7 @@ Increments
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} kdels (@mvar{L1}, @mvar{L2})
+@deffn {関数} kdels (@var{L1}, @var{L2})
 
 いくつかの計算で使われる、対称化されたKroneckerデルタ。
 例えば:
@@ -814,10 +814,10 @@ Increments
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} levi_civita (@mvar{L})
-もしリスト@mvar{L}が整数の偶置換から成るなら1を返し、
-@mvar{L}が奇置換なら成るなら-1を返し、
-@mvar{L}のいくつかの添字が繰り返しなら0を返す
+@deffn {関数} levi_civita (@var{L})
+もしリスト@var{L}が整数の偶置換から成るなら1を返し、
+@var{L}が奇置換なら成るなら-1を返し、
+@var{L}のいくつかの添字が繰り返しなら0を返す
 置換(別名Levi-Civita)テンソルです。
 
 @opencatbox
@@ -826,7 +826,7 @@ Increments
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} lc2kdt (@mvar{expr})
+@deffn {関数} lc2kdt (@var{expr})
 Levi-Civitaシンボルを含む式を整理し、可能ならこれらをKroneckerデルタ式に変換します。
 この関数と単にLevi-Civitaシンボルを評価することの主な違いは、
 直接評価はしばしば数値添字を含むKronecker式に帰着することです。
@@ -958,9 +958,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} canten (@mvar{expr})
+@deffn {関数} canten (@var{expr})
 名前を変えて(@code{rename}を参照してください)、ダミー添字を置換することで、
-@mvar{expr}を整理します。
+@var{expr}を整理します。
 @code{rename}は
 微分がないテンソル積の和に制限されます。
 本当に限定されていて、
@@ -979,7 +979,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} concan (@mvar{expr})
+@deffn {関数} concan (@var{expr})
 @code{canten}に似ていますが、添字縮約も実行します。
 
 @opencatbox
@@ -1006,21 +1006,21 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} decsym (@mvar{tensor}, @mvar{m}, @mvar{n}, [@mvar{cov_1}, @mvar{cov_2}, ...], [@mvar{contr_1}, @mvar{contr_2}, ...])
+@deffn {関数} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
-@mvar{m}個の共変添字と@mvar{n}個の反変添字を持つ@mvar{tensor}に関する
+@var{m}個の共変添字と@var{n}個の反変添字を持つ@var{tensor}に関する
 対称プロパティを宣言します。
-@mvar{cov_i}と@mvar{contr_i}は
+@var{cov_i}と@var{contr_i}は
 それぞれ、共変添字と反変添字の間の対称関係を表す擬似関数です。
 これらは
 contravariant indices respectively.  These are of the form
-形式@code{symoper(@mvar{index_1}, @mvar{index_2},...)}を取ります。
+形式@code{symoper(@var{index_1}, @var{index_2},...)}を取ります。
 ここで@code{symoper}は
 @code{sym}, @code{anti}もしくは@code{cyc}のいずれかで、
  and the 
-@mvar{index_i}は
-@mvar{tensor}の添字の位置を示す整数です。
-これは、@mvar{tensor}が@mvar{index_i}に関してそれぞれ対称、反対称、巡回であると宣言します。
+@var{index_i}は
+@var{tensor}の添字の位置を示す整数です。
+これは、@var{tensor}が@var{index_i}に関してそれぞれ対称、反対称、巡回であると宣言します。
 @code{symoper(all)}も対称条件に従う添字すべてを示す有効な形式です。
 例えば、
 5つの共変添字を持つオブジェクト@code{b}が与えられたとして、
@@ -1070,8 +1070,8 @@ contravariant indices respectively.  These are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} remsym (@mvar{tensor}, @mvar{m}, @mvar{n})
-@mvar{m}個の共変添字と@mvar{n}個の反変添字を持つ@mvar{tensor}から
+@deffn {関数} remsym (@var{tensor}, @var{m}, @var{n})
+@var{m}個の共変添字と@var{n}個の反変添字を持つ@var{tensor}から
 すべての対称プロパティを取り除きます。
 
 @opencatbox
@@ -1080,11 +1080,11 @@ contravariant indices respectively.  These are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} canform (@mvar{expr})
-@deffnx {関数} canform (@mvar{expr}, @mvar{rename})
+@deffn {関数} canform (@var{expr})
+@deffnx {関数} canform (@var{expr}, @var{rename})
 ダミー添字をリネームして、
 それらに課せられた対称条件によって指令されたようにすべての添字を並べ替えることで、
-@mvar{expr}を整理します。
+@var{expr}を整理します。
 もし@code{allsym}が@code{true}なら、
 すべての添字は対称と仮定され、
 そうでなければ、@code{decsym}宣言が提供する対称情報が使われます。
@@ -1097,7 +1097,7 @@ contravariant indices respectively.  These are of the form
 いつも数学的に正しい結果を返しますが、
 式を最も簡単な形式に完全に整理できないかもしれません。
 
-オプションの二番目のパラメータ@mvar{rename}は、
+オプションの二番目のパラメータ@var{rename}は、
 もし@code{false}に設定されたなら、リネームを抑制します。
 
 @opencatbox
@@ -1110,22 +1110,22 @@ contravariant indices respectively.  These are of the form
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} diff (@mvar{expr}, @mvar{v_1}, [@mvar{n_1}, [@mvar{v_2}, @mvar{n_2}] ...])
+@deffn {関数} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
 @code{itensor}のための能力に関して拡張された
 通常のMaxima微分関数です。
 It takes the derivative of 
-@mvar{v_1}に関して @mvar{n_1}階、
-@mvar{v_2}に関して @mvar{n_2}階、
-という@mvar{expr}の微分を取ります。
+@var{v_1}に関して @var{n_1}階、
+@var{v_2}に関して @var{n_2}階、
+という@var{expr}の微分を取ります。
 テンソルパッケージでは、
-@mvar{v_i}が1から変数 @code{dim}の値までの整数であるように
+@var{v_i}が1から変数 @code{dim}の値までの整数であるように
 関数が修正されています。
 これによって、
-微分がリスト @code{vect_coords}の @mvar{v_i}番目の要素に関して実行されます。
+微分がリスト @code{vect_coords}の @var{v_i}番目の要素に関して実行されます。
 もし
 @code{vect_coords}がアトム変数にバインドされているなら、
-@mvar{v_i}が下付きしたその変数が
+@var{v_i}が下付きしたその変数が
 微分変数として使われます。
 これは
 座標名や、@code{x[1]}, @code{x[2]}, ... のような下付き名の配列を使うことを可能にします。
@@ -1146,13 +1146,13 @@ It takes the derivative of
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} idiff (@mvar{expr}, @mvar{v_1}, [@mvar{n_1}, [@mvar{v_2}, @mvar{n_2}] ...])
+@deffn {関数} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 添字微分。
 独立変数に関して微分する@code{diff}と異なり、
 @code{idiff)}は座標に関して微分するのにつかうことができます。
 添字付きオブジェクトに関して，
 結果的に、これは
-@mvar{v_i}を微分添字として追加することになります。
+@var{v_i}を微分添字として追加することになります。
 @code{iframe_flag}が @code{true}に設定されていない限り
 続いて，微分添字が並び替えられます。
 
@@ -1169,11 +1169,11 @@ It takes the derivative of
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} liediff (@mvar{v}, @mvar{ten})
+@deffn {関数} liediff (@var{v}, @var{ten})
 
-ベクトル場 @mvar{v}に対してテンソル式 @mvar{ten}のLie微分を計算します。
-@mvar{ten}は任意の添字付きテンソル式でなければいけません;
-@mvar{v}はベクトル場の(添字なしの)名前でなければいけません。
+ベクトル場 @var{v}に対してテンソル式 @var{ten}のLie微分を計算します。
+@var{ten}は任意の添字付きテンソル式でなければいけません;
+@var{v}はベクトル場の(添字なしの)名前でなければいけません。
 例えば:
 
 @example
@@ -1197,9 +1197,9 @@ It takes the derivative of
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} rediff (@mvar{ten})
+@deffn {関数} rediff (@var{ten})
 
-テンソル式 @mvar{ten}の中の@code{idiff}コマンドすべてを評価します。
+テンソル式 @var{ten}の中の@code{idiff}コマンドすべてを評価します。
 
 @opencatbox
 @category{Package itensor}
@@ -1207,15 +1207,15 @@ It takes the derivative of
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} undiff (@mvar{expr})
+@deffn {関数} undiff (@var{expr})
 
-@mvar{expr}と同値な、
+@var{expr}と同値な、
 添字付きオブジェクトの微分すべてが@code{idiff}関数の名詞形で置き換えられた
 式を返します。
 引数はもし微分が実行されていたらその添字付きオブジェクトをもたらします。
 微分された添字付きオブジェクトを
-@mvar{expr}を生じるある関数定義で置き換えて、
-@code{ev(@mvar{expr}, idiff)}で微分を実行したい時、
+@var{expr}を生じるある関数定義で置き換えて、
+@code{ev(@var{expr}, idiff)}で微分を実行したい時、
 これは役に立ちます。
 
 
@@ -1225,7 +1225,7 @@ It takes the derivative of
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} evundiff (@mvar{expr})
+@deffn {関数} evundiff (@var{expr})
 
 @code{undiff}の実行と同値ですが、@code{ev}と @code{rediff}が続きます。
 
@@ -1292,9 +1292,9 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} flush (@mvar{expr}, @mvar{tensor_1}, @mvar{tensor_2}, ...)
-@mvar{expr}において、
-微分添字を持たない @mvar{tensor_i}をすべて0にします。
+@deffn {関数} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@var{expr}において、
+微分添字を持たない @var{tensor_i}をすべて0にします。
 
 @opencatbox
 @category{Package itensor}
@@ -1302,9 +1302,9 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} flushd (@mvar{expr}, @mvar{tensor_1}, @mvar{tensor_2}, ...)
-@mvar{expr}において、
-微分添字を持つ @mvar{tensor_i}をすべて0にします。
+@deffn {関数} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@var{expr}において、
+微分添字を持つ @var{tensor_i}をすべて0にします。
 
 @opencatbox
 @category{Package itensor}
@@ -1312,10 +1312,10 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} flushnd (@mvar{expr}, @mvar{tensor}, @mvar{n})
+@deffn {関数} flushnd (@var{expr}, @var{tensor}, @var{n})
 以下の例で例示されるように、
-@mvar{expr}において、
-@mvar{n}以上の微分添字を持つ微分されたオブジェクト @mvar{tensor}をすべて0にします。
+@var{expr}において、
+@var{n}以上の微分添字を持つ微分されたオブジェクト @var{tensor}をすべて0にします。
 @example
 
 (%i1) load(itensor);
@@ -1336,10 +1336,10 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} coord (@mvar{tensor_1}, @mvar{tensor_2}, ...)
+@deffn {関数} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
-@mvar{tensor_i}に、
-その名前が@mvar{tensor_i}の1つである反変ベクトルの微分がKroneckerデルタをもたらす
+@var{tensor_i}に、
+その名前が@var{tensor_i}の1つである反変ベクトルの微分がKroneckerデルタをもたらす
 座標微分プロパティを与えます。
 例えば、
 もし @code{coord(x)}が実行されたら、
@@ -1352,7 +1352,7 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} remcoord (@mvar{tensor_1}, @mvar{tensor_2}, ...)
+@deffn {関数} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
 @deffnx {関数} remcoord (all)
 
 @code{tensor_i}から
@@ -1365,10 +1365,10 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} makebox (@mvar{expr})
-@code{show}と同じように @mvar{expr}を表示します;
+@deffn {関数} makebox (@var{expr})
+@code{show}と同じように @var{expr}を表示します;
 しかし、
-@mvar{expr}に現れるテンソル d'Alembert演算子はすべて記号 @code{[]}を使って示されます。
+@var{expr}に現れるテンソル d'Alembert演算子はすべて記号 @code{[]}を使って示されます。
 例えば、 @code{[]p([m],[n])}は
 @code{g([],[i,j])*p([m],[n],i,j)}を表します。
 
@@ -1378,7 +1378,7 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} conmetderiv (@mvar{expr}, @mvar{tensor})
+@deffn {関数} conmetderiv (@var{expr}, @var{tensor})
 
 計量テンソルの共変と反変形式両方(現在の制約)の常微分を含む式を整理します。
 例えば、 以下に見られるように、
@@ -1405,8 +1405,8 @@ Christoffel記号の微分形式も評価できませんでした。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} simpmetderiv (@mvar{expr})
-@deffnx {関数} simpmetderiv (@mvar{expr}[, @mvar{stop}])
+@deffn {関数} simpmetderiv (@var{expr})
+@deffnx {関数} simpmetderiv (@var{expr}[, @var{stop}])
 
 計量テンソルの微分の積を含む式を整理します。
 特に、 @code{simpmetderiv}は2つの恒等式を知っています:
@@ -1444,7 +1444,7 @@ Christoffel記号の微分形式も評価できませんでした。
 それは、与えられた時、
 積式の中の最初にうまくいった代入の後、関数が停止するようにします。
 @code{simpmetderiv}関数は
-``正準''順序を積添字に適用する方法を決めるグローバル変数 @mvar{flipflag}も利用します。
+``正準''順序を積添字に適用する方法を決めるグローバル変数 @var{flipflag}も利用します。
 
 まとめると、
 これらの機能は
@@ -1500,10 +1500,10 @@ Weylテンソルの縮約を整理するために
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} flush1deriv (@mvar{expr}, @mvar{tensor})
+@deffn {関数} flush1deriv (@var{expr}, @var{tensor})
 
-@mvar{expr}において、
-微分添字を1つだけ持つ @mvar{tensor}をすべて0にします。
+@var{expr}において、
+微分添字を1つだけ持つ @var{tensor}をすべて0にします。
 
 @opencatbox
 @category{Package itensor}
@@ -1515,15 +1515,15 @@ Weylテンソルの縮約を整理するために
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} imetric (@mvar{g})
+@deffn {関数} imetric (@var{g})
 @deffnx {システム変数} imetric
 
-変数 @code{imetric:@mvar{g}}を割り当てることで計量を指定します。
+変数 @code{imetric:@var{g}}を割り当てることで計量を指定します。
 加えて、
-コマンド @code{defcon(@mvar{g}),defcon(@mvar{g}, @mvar{g}, kdelta)}を実行することで
-計量 @mvar{g}の縮約プロパティが設定されます。
+コマンド @code{defcon(@var{g}),defcon(@var{g}, @var{g}, kdelta)}を実行することで
+計量 @var{g}の縮約プロパティが設定されます。
 (デフォルトではバインドされていない)変数 @code{imetric}は
-@code{imetric(@mvar{g})}コマンドが割り当てる計量にバインドされます。
+@code{imetric(@var{g})}コマンドが割り当てる計量にバインドされます。
 
 @opencatbox
 @category{Package itensor}
@@ -1531,7 +1531,7 @@ Weylテンソルの縮約を整理するために
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} idim (@mvar{n})
+@deffn {関数} idim (@var{n})
 計量の次元を設定します。
 与えられた次元でLevi-Civita記号の反対称プロパティも初期化します。
 
@@ -1541,7 +1541,7 @@ Weylテンソルの縮約を整理するために
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ichr1 ([@mvar{i}, @mvar{j}, @mvar{k}])
+@deffn {関数} ichr1 ([@var{i}, @var{j}, @var{k}])
 以下の定義を介して第一種Christoffel記号をもたらします。
 @example
        (g      + g      - g     )/2 .
@@ -1558,7 +1558,7 @@ Weylテンソルの縮約を整理するために
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ichr2 ([@mvar{i}, @mvar{j}], [@mvar{k}])
+@deffn {関数} ichr2 ([@var{i}, @var{j}], [@var{k}])
 以下の定義を介して第二種Christoffel記号をもたらします。
 @example
                        ks
@@ -1572,7 +1572,7 @@ Weylテンソルの縮約を整理するために
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} icurvature ([@mvar{i}, @mvar{j}, @mvar{k}], [@mvar{h}])
+@deffn {関数} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 第二種Christoffel記号(@code{ichr2})を使った
 Riemann曲率テンソルをもたらします。
 以下の表記法が使われます:
@@ -1591,12 +1591,12 @@ Riemann曲率テンソルをもたらします。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} covdiff (@mvar{expr}, @mvar{v_1}, @mvar{v_2}, ...)
+@deffn {関数} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 第二種Christoffel記号(@code{ichr2})を使って、
-変数 @mvar{v_i}に対する
-@mvar{expr}の共変微分をもたらします。
+変数 @var{v_i}に対する
+@var{expr}の共変微分をもたらします。
 これらを評価するには、
-@code{ev(@mvar{expr},ichr2)}を使わなければ行けません。
+@code{ev(@var{expr},ichr2)}を使わなければ行けません。
 
 @example
 
@@ -1647,8 +1647,8 @@ Enter a list of the derivative indices: [];
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} lorentz_gauge (@mvar{expr})
-反変添字と同一の微分添字を持つ @mvar{expr}の中で
+@deffn {関数} lorentz_gauge (@var{expr})
+反変添字と同一の微分添字を持つ @var{expr}の中で
 添字付きオブジェクトすべてに0を代入することで、
 Lorentz条件を課します。
 
@@ -1658,13 +1658,13 @@ Lorentz条件を課します。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} igeodesic_coords (@mvar{expr}, @mvar{name})
+@deffn {関数} igeodesic_coords (@var{expr}, @var{name})
 
-@mvar{expr}内の、未微分 Christoffel記号と
+@var{expr}内の、未微分 Christoffel記号と
 計量テンソルの一階微分を消すようにします。
-@code{igeodesic_coords}関数での @mvar{name}は
-(もし @mvar{expr})の中で現れるなら)
-計量 @mvar{name}を参照します。
+@code{igeodesic_coords}関数での @var{name}は
+(もし @var{expr})の中で現れるなら)
+計量 @var{name}を参照します。
 一方で、接続係数は
 名前 @code{ichr1}か @code{ichr2}でコールされなければいけません。
 以下の例は、
@@ -2363,10 +2363,10 @@ A       /\ B       = ----- D              A       B
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} extdiff (@mvar{expr}, @mvar{i})
+@deffn {関数} extdiff (@var{expr}, @var{i})
 
-添字 @mvar{i}に対する
-@mvar{expr}の外積を計算します。
+添字 @var{i}に対する
+@var{expr}の外積を計算します。
 外微分は形式的に
 偏微分演算子のウェッジ積で微分形式として定義されます。
 そんなように、
@@ -2406,9 +2406,9 @@ A       /\ B       = ----- D              A       B
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} hodge (@mvar{expr})
+@deffn {関数} hodge (@var{expr})
 
-@mvar{expr}のHodge双対を計算します。
+@var{expr}のHodge双対を計算します。
 例えば:
 
 @example
@@ -2482,7 +2482,7 @@ A       /\ B       = ----- D              A       B
 これは、テンソル式を適切に添字が付けられたTeXオブジェクトに翻訳しようとします。
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} tentex (@mvar{expr})
+@deffn {関数} tentex (@var{expr})
 
 以下の例のように、
 @code{tentex}関数を使うには、
@@ -2529,9 +2529,9 @@ Maximaコードを生成する能力があります。
 この仕事を実行する関数は @code{ic_convert}です。
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ic_convert (@mvar{eqn})
+@deffn {関数} ic_convert (@var{eqn})
 
-@code{itensor}方程式 @mvar{eqn}を
+@code{itensor}方程式 @var{eqn}を
 @code{ctensor}割り当て文に変換します。
 添字付きオブジェクトが配列に変換される一方で、
 ダミー添字上の暗黙の和は明示的にされます。

@@ -17,18 +17,18 @@ as obtained from the SLATEC project.
 @node Functions and Variables for lapack, , Introduction to lapack, lapack
 @section Functions and Variables for lapack
 
-@deffn {Function} dgeev (@mvar{A})
-@deffnx {Function} dgeev (@mvar{A}, @mvar{right_p}, @mvar{left_p})
+@deffn {Function} dgeev (@var{A})
+@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
 
-Computes the eigenvalues and, optionally, the eigenvectors of a matrix @mvar{A}.
-All elements of @mvar{A} must be integer or floating point numbers.
-@mvar{A} must be square (same number of rows and columns).
-@mvar{A} might or might not be symmetric.
+Computes the eigenvalues and, optionally, the eigenvectors of a matrix @var{A}.
+All elements of @var{A} must be integer or floating point numbers.
+@var{A} must be square (same number of rows and columns).
+@var{A} might or might not be symmetric.
 
-@code{dgeev(@mvar{A})} computes only the eigenvalues of @mvar{A}.
-@code{dgeev(@mvar{A}, @mvar{right_p}, @mvar{left_p})} computes the eigenvalues of @mvar{A}
-and the right eigenvectors when @math{@mvar{right_p} = @code{true}}
-and the left eigenvectors when @math{@mvar{left_p} = @code{true}}.
+@code{dgeev(@var{A})} computes only the eigenvalues of @var{A}.
+@code{dgeev(@var{A}, @var{right_p}, @var{left_p})} computes the eigenvalues of @var{A}
+and the right eigenvectors when @math{@var{right_p} = @code{true}}
+and the left eigenvectors when @math{@var{left_p} = @code{true}}.
 
 A list of three items is returned.
 The first item is a list of the eigenvalues.
@@ -99,19 +99,19 @@ Example:
 
 @end deffn
 
-@deffn {Function} dgeqrf (@mvar{A})
+@deffn {Function} dgeqrf (@var{A})
 
-Computes the QR decomposition of the matrix @mvar{A}.
-All elements of @mvar{A} must be integer or floating point numbers.
-@mvar{A} may or may not have the same number of rows and columns.
+Computes the QR decomposition of the matrix @var{A}.
+All elements of @var{A} must be integer or floating point numbers.
+@var{A} may or may not have the same number of rows and columns.
 
 A list of two items is returned.
-The first item is the matrix @mvar{Q}, which is a square, orthonormal matrix
-which has the same number of rows as @mvar{A}.
-The second item is the matrix @mvar{R}, which is the same size as @mvar{A},
+The first item is the matrix @var{Q}, which is a square, orthonormal matrix
+which has the same number of rows as @var{A}.
+The second item is the matrix @var{R}, which is the same size as @var{A},
 and which has all elements equal to zero below the diagonal.
-The product @code{@mvar{Q} . @mvar{R}}, where "." is the noncommutative multiplication operator,
-is equal to @mvar{A} (ignoring floating point round-off errors).
+The product @code{@var{Q} . @var{R}}, where "." is the noncommutative multiplication operator,
+is equal to @var{A} (ignoring floating point round-off errors).
 
 @c ===beg===
 @c load (lapack)$
@@ -146,23 +146,23 @@ is equal to @mvar{A} (ignoring floating point round-off errors).
 
 @end deffn
 
-@deffn {Function} dgesv (@mvar{A}, @mvar{b})
+@deffn {Function} dgesv (@var{A}, @var{b})
 
-Computes the solution @mvar{x} of the linear equation @math{@mvar{A} @mvar{x} = @mvar{b}},
-where @mvar{A} is a square matrix, and @mvar{b} is a matrix of the same number of rows
-as @mvar{A} and any number of columns.
-The return value @mvar{x} is the same size as @mvar{b}.
+Computes the solution @var{x} of the linear equation @math{@var{A} @var{x} = @var{b}},
+where @var{A} is a square matrix, and @var{b} is a matrix of the same number of rows
+as @var{A} and any number of columns.
+The return value @var{x} is the same size as @var{b}.
 
-The elements of @mvar{A} and @mvar{b} must evaluate to real floating point numbers via @code{float};
+The elements of @var{A} and @var{b} must evaluate to real floating point numbers via @code{float};
 thus elements may be any numeric type, symbolic numerical constants, or expressions which evaluate to floats.
-The elements of @mvar{x} are always floating point numbers.
+The elements of @var{x} are always floating point numbers.
 All arithmetic is carried out as floating point operations.
 
-@code{dgesv} computes the solution via the LU decomposition of @mvar{A}.
+@code{dgesv} computes the solution via the LU decomposition of @var{A}.
 
 Examples:
 
-@code{dgesv} computes the solution of the linear equation @math{@mvar{A} @mvar{x} = @mvar{b}}.
+@code{dgesv} computes the solution of the linear equation @math{@var{A} @var{x} = @var{b}}.
 
 @c ===beg===
 @c A : matrix ([1, -2.5], [0.375, 5]);
@@ -187,8 +187,8 @@ Examples:
 (%o4)                                 0.0
 @end example
 
-@mvar{b} is a matrix with the same number of rows as @mvar{A} and any number of columns.
-@mvar{x} is the same size as @mvar{b}.
+@var{b} is a matrix with the same number of rows as @var{A} and any number of columns.
+@var{x} is the same size as @var{b}.
 
 @c ===beg===
 @c A : matrix ([1, -0.15], [1.82, 2]);
@@ -213,7 +213,7 @@ Examples:
 (%o4)                       1.1102230246251565E-15
 @end example
 
-The elements of @mvar{A} and @mvar{b} must evaluate to real floating point numbers.
+The elements of @var{A} and @var{b} must evaluate to real floating point numbers.
 
 @c ===beg===
 @c A : matrix ([5, -%pi], [1b0, 11/17]);
@@ -246,38 +246,38 @@ The elements of @mvar{A} and @mvar{b} must evaluate to real floating point numbe
 
 @end deffn
 
-@deffn {Function} dgesvd (@mvar{A})
-@deffnx {Function} dgesvd (@mvar{A}, @mvar{left_p}, @mvar{right_p})
+@deffn {Function} dgesvd (@var{A})
+@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
 
-Computes the singular value decomposition (SVD) of a matrix @mvar{A},
+Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
-All elements of @mvar{A} must be integer or floating point numbers.
-@mvar{A} might or might not be square (same number of rows and columns).
+All elements of @var{A} must be integer or floating point numbers.
+@var{A} might or might not be square (same number of rows and columns).
 
-Let @math{m} be the number of rows, and @math{n} the number of columns of @mvar{A}.
-The singular value decomposition of @mvar{A} comprises three matrices,
-@mvar{U}, @mvar{Sigma}, and @mvar{V^T},
+Let @math{m} be the number of rows, and @math{n} the number of columns of @var{A}.
+The singular value decomposition of @var{A} comprises three matrices,
+@var{U}, @var{Sigma}, and @var{V^T},
 such that
 
-@c this code breaks texi2pdf: @math{@mvar{A} = @mvar{U} . @mvar{Sigma} . @mvar{V^T}}
-@math{@mvar{A} = @mvar{U} . @mvar{Sigma} . @mvar{V}^T}
+@c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
 
-where @mvar{U} is an @math{m}-by-@math{m} unitary matrix,
-@mvar{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
-and @mvar{V^T} is an @math{n}-by-@math{n} unitary matrix.
+where @var{U} is an @math{m}-by-@math{m} unitary matrix,
+@var{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
+and @var{V^T} is an @math{n}-by-@math{n} unitary matrix.
 
 Let @math{sigma[i]} be a diagonal element of @math{Sigma},
-that is, @math{@mvar{Sigma}[i, i] = @mvar{sigma}[i]}.
-The elements @math{sigma[i]} are the so-called singular values of @mvar{A};
+that is, @math{@var{Sigma}[i, i] = @var{sigma}[i]}.
+The elements @math{sigma[i]} are the so-called singular values of @var{A};
 these are real and nonnegative, and returned in descending order.
-The first @math{min(m, n)} columns of @mvar{U} and @mvar{V} are
-the left and right singular vectors of @mvar{A}.
-Note that @code{dgesvd} returns the transpose of @mvar{V}, not @mvar{V} itself.
+The first @math{min(m, n)} columns of @var{U} and @var{V} are
+the left and right singular vectors of @var{A}.
+Note that @code{dgesvd} returns the transpose of @var{V}, not @var{V} itself.
 
-@code{dgesvd(@mvar{A})} computes only the singular values of @mvar{A}.
-@code{dgesvd(@mvar{A}, @mvar{left_p}, @mvar{right_p})} computes the singular values of @mvar{A}
-and the left singular vectors when @math{@mvar{left_p} = @code{true}}
-and the right singular vectors when @math{@mvar{right_p} = @code{true}}.
+@code{dgesvd(@var{A})} computes only the singular values of @var{A}.
+@code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} computes the singular values of @var{A}
+and the left singular vectors when @math{@var{left_p} = @code{true}}
+and the right singular vectors when @math{@var{right_p} = @code{true}}.
 
 A list of three items is returned.
 The first item is a list of the singular values.
@@ -373,24 +373,24 @@ Example:
 
 @end deffn
 
-@deffn {Function} dlange (@mvar{norm}, @mvar{A})
-@deffnx {Function} zlange (@mvar{norm}, @mvar{A})
+@deffn {Function} dlange (@var{norm}, @var{A})
+@deffnx {Function} zlange (@var{norm}, @var{A})
 
-Computes a norm or norm-like function of the matrix @mvar{A}.
+Computes a norm or norm-like function of the matrix @var{A}.
 
 @table @code
 @item max
 Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over
-the rows and columns, respectively, of @mvar{A}.
+the rows and columns, respectively, of @var{A}.
 Note that this function is not a proper matrix norm.
 @item one_norm
-Compute the @math{L[1]} norm of @mvar{A},
+Compute the @math{L[1]} norm of @var{A},
 that is, the maximum of the sum of the absolute value of elements in each column.
 @item inf_norm
-Compute the @math{L[inf]} norm of @mvar{A},
+Compute the @math{L[inf]} norm of @var{A},
 that is, the maximum of the sum of the absolute value of elements in each row.
 @item frobenius
-Compute the Frobenius norm of @mvar{A},
+Compute the Frobenius norm of @var{A},
 that is, the square root of the sum of squares of the matrix elements.
 @end table
 
@@ -400,18 +400,18 @@ that is, the square root of the sum of squares of the matrix elements.
 
 @end deffn
 
-@deffn {Function} dgemm (@mvar{A}, @mvar{B})
-@deffnx {Function} dgemm (@mvar{A}, @mvar{B}, @mvar{options})
+@deffn {Function} dgemm (@var{A}, @var{B})
+@deffnx {Function} dgemm (@var{A}, @var{B}, @var{options})
 Compute the product of two matrices and optionally add the product to
 a third matrix.
 
-In the simplest form, @code{dgemm(@mvar{A}, @mvar{B})} computes the
-product of the two real matrices, @mvar{A} and @mvar{B}.
+In the simplest form, @code{dgemm(@var{A}, @var{B})} computes the
+product of the two real matrices, @var{A} and @var{B}.
 
-In the second form, @code{dgemm} computes the @math{@mvar{alpha} *
-@mvar{A} * @mvar{B} + @mvar{beta} * @mvar{C}} where @mvar{A}, @mvar{B},
-@mvar{C} are real matrices of the appropriate sizes and @mvar{alpha} and
-@mvar{beta} are real numbers.  Optionally, @mvar{A} and/or @mvar{B} can
+In the second form, @code{dgemm} computes the @math{@var{alpha} *
+@var{A} * @var{B} + @var{beta} * @var{C}} where @var{A}, @var{B},
+@var{C} are real matrices of the appropriate sizes and @var{alpha} and
+@var{beta} are real numbers.  Optionally, @var{A} and/or @var{B} can
 be transposed before computing the product.  The extra parameters are
 specifed by optional keyword arguments: The keyword arguments are
 optional and may be specified in any order.  They all take the form
@@ -419,21 +419,21 @@ optional and may be specified in any order.  They all take the form
 
 @table @var
 @item C
-The matrix @mvar{C} that should be added.  The default is @code{false},
+The matrix @var{C} that should be added.  The default is @code{false},
 which means no matrix is added.
 @item alpha
-The product of @mvar{A} and @mvar{B} is multiplied by this value.  The
+The product of @var{A} and @var{B} is multiplied by this value.  The
 default is 1.
 @item beta
-If a matrix @mvar{C} is given, this value multiplies @mvar{C} before it
-is added.  The default value is 0, which implies that @mvar{C} is not
-added, even if @mvar{C} is given.  Hence, be sure to specify a non-zero
-value for @mvar{beta}.
+If a matrix @var{C} is given, this value multiplies @var{C} before it
+is added.  The default value is 0, which implies that @var{C} is not
+added, even if @var{C} is given.  Hence, be sure to specify a non-zero
+value for @var{beta}.
 @item transpose_a
-If @code{true}, the transpose of @mvar{A} is used instead of @mvar{A}
+If @code{true}, the transpose of @var{A} is used instead of @var{A}
 for the product.  The default is @code{false}.
 @item transpose_b
-If @code{true}, the transpose of @mvar{B} is used instead of @mvar{B}
+If @code{true}, the transpose of @var{B} is used instead of @var{B}
 for the product.  The default is @code{false}.
 @end table
 

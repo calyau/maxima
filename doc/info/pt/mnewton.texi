@@ -24,11 +24,11 @@ caso essa fun@value{cedilha}@~ao n@~ao seja convergente ou se convergir muito le
 Veja tamb@'em @code{mnewton}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} mnewton (@mvar{FuncList},@mvar{VarList},@mvar{GuessList})
+@deffn {Fun@value{cedilha}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
 Solu@value{cedilha}@~ao de multiplas fun@value{cedilha}@~oes n@~ao lineares usando o m@'etodo de Newton.
-@mvar{FuncList} @'e a lista de fun@value{cedilha}@~oes a serem resolvidas,
-@mvar{VarList} @'e a lista dos nomes de vari@'aveis, e
-@mvar{GuessList} @'e a lista de aproxima@value{cedilha}@~oes iniciais.
+@var{FuncList} @'e a lista de fun@value{cedilha}@~oes a serem resolvidas,
+@var{VarList} @'e a lista dos nomes de vari@'aveis, e
+@var{GuessList} @'e a lista de aproxima@value{cedilha}@~oes iniciais.
 
 A solu@value{cedilha}@~ao @'e retornada no mesmo formato retornado pela fun@value{cedilha}@~ao @code{solve()}.
 Caso a solu@value{cedilha}@~ao n@~ao seja encontrada, @code{[]} @'e retornado.

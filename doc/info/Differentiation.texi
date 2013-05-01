@@ -9,15 +9,15 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{antid}
-@deffn {Function} antid (@mvar{expr}, @mvar{x}, @mvar{u(x)}) 
+@deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
 
-Returns a two-element list, such that an antiderivative of @mvar{expr} with
-respect to @mvar{x} can be constructed from the list.  The expression @mvar{expr}
-may contain an unknown function @mvar{u} and its derivatives.
+Returns a two-element list, such that an antiderivative of @var{expr} with
+respect to @var{x} can be constructed from the list.  The expression @var{expr}
+may contain an unknown function @var{u} and its derivatives.
 
-Let @mvar{L}, a list of two elements, be the return value of @code{antid}.
-Then @code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})}
-is an antiderivative of @mvar{expr} with respect to @mvar{x}.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
+Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
+is an antiderivative of @var{expr} with respect to @var{x}.
 
 When @code{antid} succeeds entirely,
 the second element of the return value is zero.
@@ -30,9 +30,9 @@ the first element is zero and the second nonzero.
 defines the functions @code{nonzeroandfreeof} and @code{linear}.
 
 @code{antid} is related to @code{antidiff} as follows.
-Let @mvar{L}, a list of two elements, be the return value of @code{antid}.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
 Then the return value of @code{antidiff} is equal to
-@code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})} where @mvar{x} is the
+@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} where @var{x} is the
 variable of integration.
 
 Examples:
@@ -85,10 +85,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{antidiff}
-@deffn {Function} antidiff (@mvar{expr}, @mvar{x}, @mvar{u}(@mvar{x}))
+@deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 
-Returns an antiderivative of @mvar{expr} with respect to @mvar{x}.
-The expression @mvar{expr} may contain an unknown function @mvar{u} and its
+Returns an antiderivative of @var{expr} with respect to @var{x}.
+The expression @var{expr} may contain an unknown function @var{u} and its
 derivatives.
 
 When @code{antidiff} succeeds entirely, the resulting expression is free of
@@ -103,9 +103,9 @@ The @code{antid} package also defines the functions @code{nonzeroandfreeof} and
 @code{linear}.
 
 @code{antidiff} is related to @code{antid} as follows.
-Let @mvar{L}, a list of two elements, be the return value of @code{antid}.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
 Then the return value of @code{antidiff} is equal to
-@code{@mvar{L}[1] + 'integrate (@mvar{L}[2], @mvar{x})} where @mvar{x} is the
+@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} where @var{x} is the
 variable of integration.
 
 Examples:
@@ -158,12 +158,12 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{at}
-@deffn  {Function} at (@mvar{expr}, [@mvar{eqn_1}, @dots{}, @mvar{eqn_n}])
-@deffnx {Function} at (@mvar{expr}, @mvar{eqn})
+@deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
+@deffnx {Function} at (@var{expr}, @var{eqn})
 
-Evaluates the expression @mvar{expr} with the variables assuming the values as
-specified for them in the list of equations @code{[@mvar{eqn_1}, ...,
-@mvar{eqn_n}]} or the single equation @mvar{eqn}.
+Evaluates the expression @var{expr} with the variables assuming the values as
+specified for them in the list of equations @code{[@var{eqn_1}, ...,
+@var{eqn_n}]} or the single equation @var{eqn}.
 
 If a subexpression depends on any of the variables for which a value is
 specified but there is no @code{atvalue} specified and it can't be otherwise
@@ -237,36 +237,36 @@ This property is assigned by @code{gradef}.
 
 @c -----------------------------------------------------------------------------
 @anchor{atvalue}
-@deffn  {Function} atvalue (@mvar{expr}, [@mvar{x_1} = @mvar{a_1}, @dots{}, @mvar{x_m} = @mvar{a_m}], @mvar{c})
-@deffnx {Function} atvalue (@mvar{expr}, @mvar{x_1} = @mvar{a_1}, @mvar{c})
+@deffn  {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, @dots{}, @var{x_m} = @var{a_m}], @var{c})
+@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 
-Assigns the value @mvar{c} to @mvar{expr} at the point @code{@mvar{x} = @mvar{a}}.
+Assigns the value @var{c} to @var{expr} at the point @code{@var{x} = @var{a}}.
 Typically boundary values are established by this mechanism.
 
-@mvar{expr} is a function evaluation, @code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_m})},
-or a derivative, @code{diff (@mvar{f}(@mvar{x_1}, ..., @mvar{x_m}), @mvar{x_1},
-@mvar{n_1}, ..., @mvar{x_n}, @mvar{n_m})}
+@var{expr} is a function evaluation, @code{@var{f}(@var{x_1}, ..., @var{x_m})},
+or a derivative, @code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1},
+@var{n_1}, ..., @var{x_n}, @var{n_m})}
 @c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
 @c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
 in which the function arguments explicitly appear.
-@mvar{n_i} is the order of differentiation with respect to @mvar{x_i}.
+@var{n_i} is the order of differentiation with respect to @var{x_i}.
 
 The point at which the atvalue is established is given by the list of equations
-@code{[@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_m} = @mvar{a_m}]}.
-If there is a single variable @mvar{x_1},
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
+If there is a single variable @var{x_1},
 the sole equation may be given without enclosing it in a list.
 
-@code{printprops ([@mvar{f_1}, @mvar{f_2}, ...], atvalue)} displays the atvalues
-of the functions @code{@mvar{f_1}, @mvar{f_2}, ...} as specified by calls to
-@code{atvalue}.  @code{printprops (@mvar{f}, atvalue)} displays the atvalues of
-one function @mvar{f}.  @code{printprops (all, atvalue)} displays the atvalues
+@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the atvalues
+of the functions @code{@var{f_1}, @var{f_2}, ...} as specified by calls to
+@code{atvalue}.  @code{printprops (@var{f}, atvalue)} displays the atvalues of
+one function @var{f}.  @code{printprops (all, atvalue)} displays the atvalues
 of all functions for which atvalues are defined.
 
 The symbols @code{@@1}, @code{@@2}, @dots{} represent the
-variables @mvar{x_1}, @mvar{x_2}, @dots{} when atvalues are displayed.
+variables @var{x_1}, @var{x_2}, @dots{} when atvalues are displayed.
 
 @code{atvalue} evaluates its arguments.
-@code{atvalue} returns @mvar{c}, the atvalue.
+@code{atvalue} returns @var{c}, the atvalue.
 
 Examples:
 
@@ -337,9 +337,9 @@ description of these commands along with examples.
 
 @c -----------------------------------------------------------------------------
 @anchor{del}
-@deffn {Function} del (@mvar{x})
+@deffn {Function} del (@var{x})
 
-@code{del (@mvar{x})} represents the differential of the variable @math{x}.
+@code{del (@var{x})} represents the differential of the variable @math{x}.
 
 @code{diff} returns an expression containing @code{del}
 if an independent variable is not specified.
@@ -370,7 +370,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{delta}
-@deffn {Function} delta (@mvar{t})
+@deffn {Function} delta (@var{t})
 
 The Dirac Delta function.
 
@@ -449,26 +449,26 @@ See also @code{depends} and @code{gradef}.
 
 @c -----------------------------------------------------------------------------
 @anchor{depends}
-@deffn {Function} depends (@mvar{f_1}, @mvar{x_1}, @dots{}, @mvar{f_n}, @mvar{x_n})
+@deffn {Function} depends (@var{f_1}, @var{x_1}, @dots{}, @var{f_n}, @var{x_n})
 
 Declares functional dependencies among variables for the purpose of computing
 derivatives.  In the absence of declared dependence, @code{diff (f, x)} yields
 zero.  If @code{depends (f, x)} is declared, @code{diff (f, x)} yields a
 symbolic derivative (that is, a @code{diff} noun).
 
-Each argument @mvar{f_1}, @mvar{x_1}, etc., can be the name of a variable or
+Each argument @var{f_1}, @var{x_1}, etc., can be the name of a variable or
 array, or a list of names.
-Every element of @mvar{f_i} (perhaps just a single element)
+Every element of @var{f_i} (perhaps just a single element)
 is declared to depend
-on every element of @mvar{x_i} (perhaps just a single element).
-If some @mvar{f_i} is the name of an array or contains the name of an array,
-all elements of the array depend on @mvar{x_i}.
+on every element of @var{x_i} (perhaps just a single element).
+If some @var{f_i} is the name of an array or contains the name of an array,
+all elements of the array depend on @var{x_i}.
 
 @code{diff} recognizes indirect dependencies established by @code{depends}
 and applies the chain rule in these cases.
 
-@code{remove (@mvar{f}, dependency)} removes all dependencies declared for
-@mvar{f}.
+@code{remove (@var{f}, dependency)} removes all dependencies declared for
+@var{f}.
 
 @code{depends} returns a list of the dependencies established.
 The dependencies are appended to the global variable @code{dependencies}.
@@ -548,11 +548,11 @@ Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 @c -----------------------------------------------------------------------------
 @anchor{derivdegree}
-@deffn {Function} derivdegree (@mvar{expr}, @mvar{y}, @mvar{x})
+@deffn {Function} derivdegree (@var{expr}, @var{y}, @var{x})
 
 Returns the highest degree of the derivative
-of the dependent variable @mvar{y} with respect to the independent variable
-@mvar{x} occuring in @mvar{expr}.
+of the dependent variable @var{y} with respect to the independent variable
+@var{x} occuring in @var{expr}.
 
 Example:
 
@@ -579,7 +579,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{derivlist}
-@deffn {Function} derivlist (@mvar{var_1}, @dots{}, @mvar{var_k})
+@deffn {Function} derivlist (@var{var_1}, @dots{}, @var{var_k})
 
 Causes only differentiations with respect to
 the indicated variables, within the @code{ev} command.
@@ -604,28 +604,28 @@ When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
 
 @c -----------------------------------------------------------------------------
 @anchor{diff}
-@deffn  {Function} diff (@mvar{expr}, @mvar{x_1}, @mvar{n_1}, @dots{}, @mvar{x_m}, @mvar{n_m})
-@deffnx {Function} diff (@mvar{expr}, @mvar{x}, @mvar{n})
-@deffnx {Function} diff (@mvar{expr}, @mvar{x})
-@deffnx {Function} diff (@mvar{expr})
+@deffn  {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
+@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {Function} diff (@var{expr}, @var{x})
+@deffnx {Function} diff (@var{expr})
 
-Returns the derivative or differential of @mvar{expr} with respect to some or
-all variables in @mvar{expr}.
+Returns the derivative or differential of @var{expr} with respect to some or
+all variables in @var{expr}.
 
-@code{diff (@mvar{expr}, @mvar{x}, @mvar{n})} returns the @mvar{n}'th derivative of
-@mvar{expr} with respect to @mvar{x}.
+@code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative of
+@var{expr} with respect to @var{x}.
 
-@code{diff (@mvar{expr}, @mvar{x_1}, @mvar{n_1}, ..., @mvar{x_m}, @mvar{n_m})}
-returns the mixed partial derivative of @mvar{expr} with respect to @mvar{x_1}, 
-@dots{}, @mvar{x_m}.  It is equivalent to @code{diff (... (diff (@mvar{expr},
-@mvar{x_m}, @mvar{n_m}) ...), @mvar{x_1}, @mvar{n_1})}.
+@code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
+returns the mixed partial derivative of @var{expr} with respect to @var{x_1}, 
+@dots{}, @var{x_m}.  It is equivalent to @code{diff (... (diff (@var{expr},
+@var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
 
-@code{diff (@mvar{expr}, @mvar{x})}
-returns the first derivative of @mvar{expr} with respect to
-the variable @mvar{x}.
+@code{diff (@var{expr}, @var{x})}
+returns the first derivative of @var{expr} with respect to
+the variable @var{x}.
 
-@code{diff (@mvar{expr})} returns the total differential of @mvar{expr}, that is,
-the sum of the derivatives of @mvar{expr} with respect to each its variables
+@code{diff (@var{expr})} returns the total differential of @var{expr}, that is,
+the sum of the derivatives of @var{expr} with respect to each its variables
 times the differential @code{del} of each variable.
 @c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
 No further simplification of @code{del} is offered.
@@ -674,16 +674,16 @@ Examples:
 For the tensor package, the following modifications have been
 incorporated:
 
-(1) The derivatives of any indexed objects in @mvar{expr} will have the
-variables @mvar{x_i} appended as additional arguments.  Then all the
+(1) The derivatives of any indexed objects in @var{expr} will have the
+variables @var{x_i} appended as additional arguments.  Then all the
 derivative indices will be sorted.
 
-(2) The @mvar{x_i} may be integers from 1 up to the value of the variable
+(2) The @var{x_i} may be integers from 1 up to the value of the variable
 @code{dimension} [default value: 4].  This will cause the differentiation to be
-carried out with respect to the @mvar{x_i}'th member of the list
+carried out with respect to the @var{x_i}'th member of the list
 @code{coordinates} which should be set to a list of the names of the
 coordinates, e.g., @code{[x, y, z, t]}. If @code{coordinates} is bound to an
-atomic variable, then that variable subscripted by @mvar{x_i} will be used for
+atomic variable, then that variable subscripted by @var{x_i} will be used for
 the variable of differentiation.  This permits an array of coordinate names or
 subscripted names like @code{X[1]}, @code{X[2]}, @dots{} to be used.  If
 @code{coordinates} has not been assigned a value, then the variables will be
@@ -711,9 +711,9 @@ all differentiations indicated in @code{expr} are carried out.
 
 @c -----------------------------------------------------------------------------
 @anchor{dscalar}
-@deffn {Function} dscalar (@mvar{f})
+@deffn {Function} dscalar (@var{f})
 
-Applies the scalar d'Alembertian to the scalar function @mvar{f}.
+Applies the scalar d'Alembertian to the scalar function @var{f}.
 
 @c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
 @c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
@@ -744,7 +744,7 @@ Applies the scalar d'Alembertian to the scalar function @mvar{f}.
 
 @c -----------------------------------------------------------------------------
 @anchor{express}
-@deffn {Function} express (@mvar{expr})
+@deffn {Function} express (@var{expr})
 
 @c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
 @c The result uses the noun form of any
@@ -860,25 +860,25 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{gradef}
-@deffn  {Function} gradef (@mvar{f}(@mvar{x_1}, @dots{}, @mvar{x_n}), @mvar{g_1}, @dots{}, @mvar{g_m})
-@deffnx {Function} gradef (@mvar{a}, @mvar{x}, @mvar{expr})
+@deffn  {Function} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, @dots{}, @var{g_m})
+@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
 
 Defines the partial derivatives (i.e., the components of the gradient) of the
-function @mvar{f} or variable @mvar{a}.
+function @var{f} or variable @var{a}.
 
-@code{gradef (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{g_1}, ..., @mvar{g_m})}
-defines @code{d@mvar{f}/d@mvar{x_i}} as @mvar{g_i}, where @mvar{g_i} is an
-expression; @mvar{g_i} may be a function call, but not the name of a function.
-The number of partial derivatives @mvar{m} may be less than the number of
-arguments @mvar{n}, in which case derivatives are defined with respect to
-@mvar{x_1} through @mvar{x_m} only.
+@code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+defines @code{d@var{f}/d@var{x_i}} as @var{g_i}, where @var{g_i} is an
+expression; @var{g_i} may be a function call, but not the name of a function.
+The number of partial derivatives @var{m} may be less than the number of
+arguments @var{n}, in which case derivatives are defined with respect to
+@var{x_1} through @var{x_m} only.
 
-@code{gradef (@mvar{a}, @mvar{x}, @mvar{expr})} defines the derivative of variable
-@mvar{a} with respect to @mvar{x} as @mvar{expr}.  This also establishes the
-dependence of @mvar{a} on @mvar{x} (via @code{depends (@mvar{a}, @mvar{x})}).
+@code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of variable
+@var{a} with respect to @var{x} as @var{expr}.  This also establishes the
+dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
 
-The first argument @code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} or @mvar{a} is
-quoted, but the remaining arguments @mvar{g_1}, ..., @mvar{g_m} are evaluated.
+The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is
+quoted, but the remaining arguments @var{g_1}, ..., @var{g_m} are evaluated.
 @code{gradef} returns the function or variable for which the partial derivatives
 are defined.
 
@@ -888,12 +888,12 @@ derivative of @code{sin}.
 
 @code{gradef} cannot define partial derivatives for a subscripted function.
 
-@code{printprops ([@mvar{f_1}, ..., @mvar{f_n}], gradef)} displays the partial
-derivatives of the functions @mvar{f_1}, ..., @mvar{f_n}, as defined by
+@code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial
+derivatives of the functions @var{f_1}, ..., @var{f_n}, as defined by
 @code{gradef}.
 
-@code{printprops ([@mvar{a_n}, ..., @mvar{a_n}], atomgrad)} displays the partial
-derivatives of the variables @mvar{a_n}, ..., @mvar{a_n}, as defined by
+@code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial
+derivatives of the variables @var{a_n}, ..., @var{a_n}, as defined by
 @code{gradef}.
 
 @code{gradefs} is the list of the functions
@@ -929,12 +929,12 @@ for which partial derivatives have been defined by @code{gradef}.
 
 @c -----------------------------------------------------------------------------
 @anchor{laplace}
-@deffn {Function} laplace (@mvar{expr}, @mvar{t}, @mvar{s})
+@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
 
-Attempts to compute the Laplace transform of @mvar{expr} with respect to the 
-variable @mvar{t} and transform parameter @mvar{s}.
+Attempts to compute the Laplace transform of @var{expr} with respect to the 
+variable @var{t} and transform parameter @var{s}.
 
-@code{laplace} recognizes in @mvar{expr} the functions @code{delta}, @code{exp},
+@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
 @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
 as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}.  If
 laplace fails to find a transform the function @code{specint} is called.
@@ -945,7 +945,7 @@ and can handle the @code{unit_step} function.  See also @code{specint}.
 If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
 
 @c REPHRASE THIS
-@mvar{expr} may also be a linear, constant coefficient differential equation in
+@var{expr} may also be a linear, constant coefficient differential equation in
 which case @code{atvalue} of the dependent variable is used.
 @c "used" -- USED HOW ??
 The required atvalue may be supplied either before or after the transform is
@@ -958,10 +958,10 @@ for them and substituting their values back.
 @code{integrate (f(x) * g(t - x), x, 0, t)};
 other kinds of convolutions are not recognized.
 
-Functional relations must be explicitly represented in @mvar{expr};
+Functional relations must be explicitly represented in @var{expr};
 implicit relations, established by @code{depends}, are not recognized.
-That is, if @mvar{f} depends on @mvar{x} and @mvar{y},
-@code{f (x, y)} must appear in @mvar{expr}.
+That is, if @var{f} depends on @var{x} and @var{y},
+@code{f (x, y)} must appear in @var{expr}.
 
 See also @code{ilt}, the inverse Laplace transform.
 

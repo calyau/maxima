@@ -13,13 +13,13 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} algsys ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
-@deffnx {Function} algsys ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Function} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Function} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} allroots (@mvar{expr})
-@deffnx {Function} allroots (@mvar{eqn})
+@deffn {Function} allroots (@var{expr})
+@deffnx {Function} allroots (@var{eqn})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -31,8 +31,8 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} dimension (@mvar{eqn})
-@deffnx {Function} dimension (@mvar{eqn_1}, ..., @mvar{eqn_n})
+@deffn {Function} dimension (@var{eqn})
+@deffnx {Function} dimension (@var{eqn_1}, ..., @var{eqn_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -40,7 +40,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} funcsolve (@mvar{eqn}, @mvar{g}(@mvar{t}))
+@deffn {Function} funcsolve (@var{eqn}, @var{g}(@var{t}))
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -48,7 +48,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} ieqn (@mvar{ie}, @mvar{unk}, @mvar{tech}, @mvar{n}, @mvar{guess})
+@deffn {Function} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -56,11 +56,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} lhs (@mvar{expr})
+@deffn {Function} lhs (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} linsolve ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Function} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -76,11 +76,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} nroots (@mvar{p}, @mvar{low}, @mvar{high})
+@deffn {Function} nroots (@var{p}, @var{low}, @var{high})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} nthroot (@mvar{p}, @mvar{n})
+@deffn {Function} nthroot (@var{p}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -92,14 +92,14 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} realroots (@mvar{expr}, @mvar{bound})
-@deffnx {Function} realroots (@mvar{eqn}, @mvar{bound})
-@deffnx {Function} realroots (@mvar{expr})
-@deffnx {Function} realroots (@mvar{eqn})
+@deffn {Function} realroots (@var{expr}, @var{bound})
+@deffnx {Function} realroots (@var{eqn}, @var{bound})
+@deffnx {Function} realroots (@var{expr})
+@deffnx {Function} realroots (@var{eqn})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rhs (@mvar{expr})
+@deffn {Function} rhs (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -107,7 +107,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} rootscontract (@mvar{expr})
+@deffn {Function} rootscontract (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -115,9 +115,9 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} solve (@mvar{expr}, @mvar{x})
-@deffnx {Function} solve (@mvar{expr})
-@deffnx {Function} solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Function} solve (@var{expr}, @var{x})
+@deffnx {Function} solve (@var{expr})
+@deffnx {Function} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

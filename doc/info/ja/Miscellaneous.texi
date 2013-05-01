@@ -40,8 +40,8 @@ Maximaのコア実装の部分ではない、プログラムと他のファイ�
 @defvr {宣言} alphabetic
 
 @code{alphabetic}は、 @code{declare}が認識する宣言タイプです。
-式 @code{declare(@mvar{s}, alphabetic)}は、Maximaに
-@mvar{s}―は文字列でなければいけません―の中の文字のすべてをalphabeticとして認識するように
+式 @code{declare(@var{s}, alphabetic)}は、Maximaに
+@var{s}―は文字列でなければいけません―の中の文字のすべてをalphabeticとして認識するように
 命じます。
 
 @ref{Identifiers}も参照してください。
@@ -102,7 +102,7 @@ Maximaのコア実装の部分ではない、プログラムと他のファイ�
 @c -----------------------------------------------------------------------------
 @anchor{gensym}
 @deffn  {関数} gensym ()
-@deffnx {関数} gensym (@mvar{x})
+@deffnx {関数} gensym (@var{x})
 
 @code{gensym()}は新鮮なシンボルを生成し、返します。
 
@@ -110,11 +110,11 @@ Maximaのコア実装の部分ではない、プログラムと他のファイ�
 デフォルトでは"g"の接頭辞と
 Lisp内部カウンタの値がデフォルトの数の十進表現である接尾辞の連結です。
 
-もし@mvar{x}が供給されて、それが文字列なら、
+もし@var{x}が供給されて、それが文字列なら、
 このgensymへの呼び出しに限って、
 その文字列は"g"の代わりに接頭辞として使われます。
 
-もし@mvar{x}が供給されて、それが整数なら、
+もし@var{x}が供給されて、それが整数なら、
 このgensymへの呼び出しに限って、
 内部Lisp整数の値の代わりに接尾辞として使われます。
 
@@ -144,9 +144,9 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{properties}
-@deffn {関数} properties (@mvar{a})
+@deffn {関数} properties (@var{a})
 
-アトム@mvar{a}に関連づけられたプロパティすべての名前のリストを返します。
+アトム@var{a}に関連づけられたプロパティすべての名前のリストを返します。
 
 @opencatbox
 @category{Declarations and inferences}
@@ -176,10 +176,10 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{propvars}
-@deffn {関数} propvars (@mvar{prop})
+@deffn {関数} propvars (@var{prop})
 
 @code{props}リスト上の、
-@mvar{prop}が示すプロパティを持つアトムのリストを返します。
+@var{prop}が示すプロパティを持つアトムのリストを返します。
 従って，
 @code{propvars (atvalue)}は、atvalueを持つアトムのリストを返します。
 
@@ -196,16 +196,16 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{put}
-@deffn {関数} put (@mvar{atom}, @mvar{value}, @mvar{indicator})
+@deffn {関数} put (@var{atom}, @var{value}, @var{indicator})
 
-@mvar{value}を@mvar{atom}の(@mvar{indicator}が指定する)プロパティに割り当てます。
-@mvar{indicator}は、任意のプロパティの名前を取り得ますが、
+@var{value}を@var{atom}の(@var{indicator}が指定する)プロパティに割り当てます。
+@var{indicator}は、任意のプロパティの名前を取り得ますが、
 システム定義のプロパティは取りません。
 
 @code{rem}は@code{put}の効果をひっくり返します。
 
 @code{put}は引数を評価します。
-@code{put}は@mvar{value}を返します。
+@code{put}は@var{value}を返します。
 
 例:
 
@@ -232,9 +232,9 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{qput}
-@deffn {関数} qput (@mvar{atom}, @mvar{value}, @mvar{indicator})
+@deffn {関数} qput (@var{atom}, @var{value}, @var{indicator})
 
-@mvar{value}を@mvar{atom}の(@mvar{indicator}が指定する)プロパティに割り当てます。
+@var{value}を@var{atom}の(@var{indicator}が指定する)プロパティに割り当てます。
 これは、引数がクォートされることを除いて、@code{put}と同じです。
 
 例:
@@ -269,12 +269,12 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{rem}
-@deffn {関数} rem (@mvar{atom}, @mvar{indicator})
+@deffn {関数} rem (@var{atom}, @var{indicator})
 
-@mvar{atom}から、@mvar{indicator}が示すプロパティを取り除きます。
+@var{atom}から、@var{indicator}が示すプロパティを取り除きます。
 @code{rem}は@code{put}の効果をひっくり返します。
 
-@code{rem}が呼び出された時、もし@mvar{atom}が@mvar{indicator}プロパティを持っていたなら、@code{rem}は@code{done}を返します。もしそんなプロパティを持っていなかったら@code{false}を返します。
+@code{rem}が呼び出された時、もし@var{atom}が@var{indicator}プロパティを持っていたなら、@code{rem}は@code{done}を返します。もしそんなプロパティを持っていなかったら@code{false}を返します。
 
 @opencatbox
 @category{Declarations and inferences}
@@ -288,26 +288,26 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{remove}
-@deffn  {関数} remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})
-@deffnx {関数} remove ([@mvar{a_1}, @dots{}, @mvar{a_m}], [@mvar{p_1}, @dots{}, @mvar{p_n}], ...)
-@deffnx {関数} remove ("@mvar{a}", operator)
-@deffnx {関数} remove (@mvar{a}, transfun)
-@deffnx {関数} remove (all, @mvar{p})
+@deffn  {関数} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {関数} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], ...)
+@deffnx {関数} remove ("@var{a}", operator)
+@deffnx {関数} remove (@var{a}, transfun)
+@deffnx {関数} remove (all, @var{p})
 アトムに関連づけられたプロパティを取り除きます。
 
-@code{remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})}
+@code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
 は、アトム@code{a_k}からプロパティ@code{p_k}を取り除きます。
 
-@code{remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
+@code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
 は、
-アトム@mvar{a_1}, @dots{}, @mvar{a_m}から
-プロパティ@code{@mvar{p_1}, ..., @mvar{p_n}}を
+アトム@var{a_1}, @dots{}, @var{a_m}から
+プロパティ@code{@var{p_1}, ..., @var{p_n}}を
 取り除きます。
 リストのペアは複数を取り得ます。
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @mvar{p})}は、
-プロパティ@mvar{p}を、それを持つアトムすべてから取り除きます。
+@code{remove (all, @var{p})}は、
+プロパティ@var{p}を、それを持つアトムすべてから取り除きます。
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 取り除かれるプロパティは、
@@ -321,9 +321,9 @@ Lisp内部整数は、使われた後1だけ増分されます。
 プロパティは、@code{transfun}を取ることができます。
 これを実行した後は、翻訳バージョンでなく、Maximaバージョンの関数が実行されます。
 
-@code{remove ("@mvar{a}", operator)}または、同値な, @code{remove ("@mvar{a}", op)}
+@code{remove ("@var{a}", operator)}または、同値な, @code{remove ("@var{a}", op)}
 は、
-@mvar{a}から
+@var{a}から
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, @code{nofix}が宣言した演算子プロパティを取り除きます。
 演算子名はクォートされた文字列として書かれなければいけないことに注意してください。
 
@@ -343,10 +343,10 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{remvalue}
-@deffn  {関数} remvalue (@mvar{name_1}, ..., @mvar{name_n})
+@deffn  {関数} remvalue (@var{name_1}, ..., @var{name_n})
 @deffnx {関数} remvalue (all)
 
-(添字付きもありえる)ユーザー変数@mvar{name_1}, ..., @mvar{name_n}の値をシステムから
+(添字付きもありえる)ユーザー変数@var{name_1}, ..., @var{name_n}の値をシステムから
 取り除きます。
 
 @code{remvalue (all)}は、
@@ -366,11 +366,11 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{rncombine}
-@deffn {関数} rncombine (@mvar{expr})
+@deffn {関数} rncombine (@var{expr})
 
 同一の分母や、たがいに数値因子だけことなる分母を持つ
-@mvar{expr}のすべての項を結合することで、
-@mvar{expr}を変換します。
+@var{expr}のすべての項を結合することで、
+@var{expr}を変換します。
 これは、@code{combine}の振る舞いとわずかに違います。
 @code{combine}は、同一分母を持つ項を集めます。
 
@@ -392,9 +392,9 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{scalarp}
-@deffn {関数} scalarp (@mvar{expr})
+@deffn {関数} scalarp (@var{expr})
 
-もし@mvar{expr}が、数か、定数、
+もし@var{expr}が、数か、定数、
 @code{declare}で@code{scalar}と宣言された変数、
 数と定数とそんな変数から完全に構成され、行列やリストを含まない変数なら、
 @code{true}を返します。
@@ -406,12 +406,12 @@ Lisp内部整数は、使われた後1だけ増分されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{setup_autoload}
-@deffn {関数} setup_autoload (@mvar{filename}, @mvar{function_1}, ..., @mvar{function_n})
+@deffn {関数} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
 
-もし@mvar{function_1}, ..., @mvar{function_n}のいずれかが、
+もし@var{function_1}, ..., @var{function_n}のいずれかが、
 参照されたがまだ定義されていないなら、
-@code{load}を通じて@mvar{filename}がロードされるように指定します。
-@mvar{filename}は、
+@code{load}を通じて@var{filename}がロードされるように指定します。
+@var{filename}は、
 強制はされませんが、普通、指定された関数の定義を含みます。
 
 @code{setup_autoload}は配列関数については機能しません。

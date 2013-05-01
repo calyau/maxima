@@ -12,7 +12,7 @@
 @section Функции и переменные пакета bode
 
 
-@deffn {Функция} bode_gain (@mvar{H}, @mvar{range}, ...@mvar{plot_opts}...)
+@deffn {Функция} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
 Функция для построения амплитудной диаграммы Боде.
 
 Примеры (c 1 по 7 из  
@@ -67,7 +67,7 @@
 @end deffn
 
 
-@deffn {Функция} bode_phase (@mvar{H}, @mvar{range}, ...@mvar{plot_opts}...)
+@deffn {Функция} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
 Функция для построения фазовой диаграммы Боде.
 
 Примеры (с 1 по 7 из 

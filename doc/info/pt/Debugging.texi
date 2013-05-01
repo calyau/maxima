@@ -262,9 +262,9 @@ Veja tamb@'em @code{setcheck} e @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} timer (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@,{c}@~ao} timer (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} timer ()
-Dadas as fun@,{c}@~oes @mvar{f_1}, ..., @mvar{f_n},
+Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{timer} coloca cada uma na lista de fun@,{c}@~oes para as quais cronometragens estat@'{@dotless{i}}sticas s@~ao colectadas.
 @code{timer(f)$ timer(g)$} coloca @code{f} e ent@~ao @code{g} sobre a lista;
 a lista acumula de uma chamada para a chamada seguinte.
@@ -288,9 +288,9 @@ Se @code{trace(f)} est@'a vigorando, ent@~ao @code{timer(f)} n@~ao tem efeito; @
 Veja tamb@'em @code{timer_devalue}.
 
 @end deffn
-@deffn {Fun@,{c}@~ao} untimer (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@,{c}@~ao} untimer (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} untimer ()
-Dadas as fun@,{c}@~oes @mvar{f_1}, ..., @mvar{f_n},
+Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{untimer} remove cada uma das fun@,{c}@~oes listadas da lista de fun@,{c}@~oes estatisticamente monitoradas.
 
 Sem argumentos, @code{untimer} remove todas as fun@,{c}@~oes actualmente na  lista de fun@,{c}@~oes estatisticamente monitoradas.
@@ -317,9 +317,9 @@ Veja tamb@'em @code{timer} e @code{timer_info}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} timer_info (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@,{c}@~ao} timer_info (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} timer_info ()
-Dadas as fun@,{c}@~oes @mvar{f_1}, ..., @mvar{f_n},
+Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{timer_info} retorna uma matriz contendo informa@,{c}@~oes de cronometragem para cada fun@,{c}@~ao.
 Sem argumentos, @code{timer_info} retorna informa@,{c}@~oes de cronometragem para
 todas as fun@,{c}@~oes actualmente na lista de fun@,{c}@~oes estatisticamente monitoradas.
@@ -340,9 +340,9 @@ Veja tamb@'em @code{timer}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} trace (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@,{c}@~ao} trace (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} trace ()
-Dadas as fun@,{c}@~oes @mvar{f_1}, ..., @mvar{f_n},
+Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{trace} instrui Maxima para mostrar
 informa@,{c}@~oes de depura@,{c}@~ao quando essas fun@,{c}@~oes forem chamadas.
 @code{trace(f)$ trace(g)$} coloca @code{f} e ent@~ao @code{g} na lista de fun@,{c}@~oes
@@ -366,14 +366,14 @@ Se @code{timer (f)} estiver em efeito, ent@~ao @code{trace (f)} n@~ao est@'a agi
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} trace_options (@mvar{f}, @mvar{option_1}, ..., @mvar{option_n})
-@deffnx {Fun@,{c}@~ao} trace_options (@mvar{f})
-Escolhe as op@,{c}@~oes de @code{trace} para a fun@,{c}@~ao @mvar{f}.
+@deffn {Fun@,{c}@~ao} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Fun@,{c}@~ao} trace_options (@var{f})
+Escolhe as op@,{c}@~oes de @code{trace} para a fun@,{c}@~ao @var{f}.
 Quaisquer op@,{c}@~oes anteriores s@~ao substitu@'{@dotless{i}}das.
-@code{trace_options (@mvar{f}, ...)} n@~ao tem efeito a menos que
-@code{trace (@mvar{f})} tenha sido tamb@'em chamada (ou antes ou ap@'os @code{trace_options}). 
+@code{trace_options (@var{f}, ...)} n@~ao tem efeito a menos que
+@code{trace (@var{f})} tenha sido tamb@'em chamada (ou antes ou ap@'os @code{trace_options}). 
 
-@code{trace_options (@mvar{f})} reposiciona todas as op@,{c}@~oes para seus valores padr@~ao.
+@code{trace_options (@var{f})} reposiciona todas as op@,{c}@~oes para seus valores padr@~ao.
 
 As op@,{c}@~oes de palavra chave s@~ao:
 
@@ -399,8 +399,8 @@ tentar novamente a chamada de fun@,{c}@~ao, ou especificar um valor de retorno.
 
 Op@,{c}@~oes para @code{trace} s@~ao especificadas em duas formas. A presen@,{c}a da palavra chave de 
 op@,{c}@~ao sozinha coloca a op@,{c}@~ao para ter efeito incondicionalmente.
-(Note que op@,{c}@~ao @mvar{foo} n@~ao coloca para ter efeito especificando 
-@code{@mvar{foo}: true} ou uma forma similar; note tamb@'em que palavras chave n@~ao precisam
+(Note que op@,{c}@~ao @var{foo} n@~ao coloca para ter efeito especificando 
+@code{@var{foo}: true} ou uma forma similar; note tamb@'em que palavras chave n@~ao precisam
 estar com ap@'ostrofo.) Especificando a op@,{c}@~ao palavra chave com uma fun@,{c}@~ao
 predicado torna a op@,{c}@~ao condicional sobre o predicado.
 
@@ -436,9 +436,9 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} untrace (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@,{c}@~ao} untrace (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} untrace ()
-Dadas as fun@,{c}@~oes @mvar{f_1}, ..., @mvar{f_n},
+Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{untrace} desabilita a a monitora@,{c}@~ao habilitada pela fun@,{c}@~ao @code{trace}.
 Sem argumentos, @code{untrace} desabilita a atua@,{c}@~ao da fun@,{c}@~ao @code{trade} para todas as fun@,{c}@~oes.
 

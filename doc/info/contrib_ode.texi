@@ -216,10 +216,10 @@ Extensive debugging traces and messages are displayed if the command
 @node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
 @section Functions and Variables for contrib_ode
 
-@deffn {Function} contrib_ode (@mvar{eqn}, @mvar{y}, @mvar{x})
+@deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
-Returns a list of solutions of the ODE @mvar{eqn} with 
-independent variable @mvar{x} and dependent variable @mvar{y}.
+Returns a list of solutions of the ODE @var{eqn} with 
+independent variable @var{x} and dependent variable @var{y}.
 
 @opencatbox
 @category{Package contrib_ode}
@@ -227,11 +227,11 @@ independent variable @mvar{x} and dependent variable @mvar{y}.
 
 @end deffn
 
-@deffn {Function} odelin (@mvar{eqn}, @mvar{y}, @mvar{x})
+@deffn {Function} odelin (@var{eqn}, @var{y}, @var{x})
 
 @code{odelin} solves linear homogeneous ODEs of first and 
 second order with 
-independent variable @mvar{x} and dependent variable @mvar{y}.  
+independent variable @var{x} and dependent variable @var{y}.  
 It returns a fundamental solution set of the ODE.
 
 For second order ODEs, @code{odelin} uses a method, due to Bronstein
@@ -271,11 +271,11 @@ special functions.
 
 @end deffn
 
-@deffn {Function} ode_check (@mvar{eqn}, @mvar{soln})
+@deffn {Function} ode_check (@var{eqn}, @var{soln})
 
-Returns the value of ODE @mvar{eqn} after substituting a
-possible solution @mvar{soln}.  The value is equivalent to 
-zero if @mvar{soln} is a solution of @mvar{eqn}.
+Returns the value of ODE @var{eqn} after substituting a
+possible solution @var{soln}.  The value is equivalent to 
+zero if @var{soln} is a solution of @var{eqn}.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -357,7 +357,7 @@ method.
 
 @end defvr
 
-@deffn {Function} gauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
 geometric functions.  They represent any two independent
@@ -376,7 +376,7 @@ See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
 
 @end deffn
 
-@deffn {Function} gauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 See @code{gauss_a}.
 
 @opencatbox
@@ -385,8 +385,8 @@ See @code{gauss_a}.
 
 @end deffn
 
-@deffn {Function} dgauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
-The derivative with respect to @mvar{x} of @code{gauss_a(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})}.
+@deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @opencatbox
 @category{Package contrib_ode}
@@ -394,8 +394,8 @@ The derivative with respect to @mvar{x} of @code{gauss_a(@mvar{a}, @mvar{b}, @mv
 
 @end deffn
 
-@deffn {Function} dgauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
-The derivative with respect to @mvar{x} of @code{gauss_b(@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})}.
+@deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @opencatbox
 @category{Package contrib_ode}
@@ -404,7 +404,7 @@ The derivative with respect to @mvar{x} of @code{gauss_b(@mvar{a}, @mvar{b}, @mv
 @end deffn
 
 
-@deffn {Function} kummer_m (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Function} kummer_m (@var{a}, @var{b}, @var{x})
 
 Kummer's M function, as defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2.
@@ -421,7 +421,7 @@ See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
 
 @end deffn
 
-@deffn {Function} kummer_u (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
 
 Kummer's U function, as defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
@@ -434,8 +434,8 @@ See @code{kummer_m}.
 
 @end deffn
 
-@deffn {Function} dkummer_m (@mvar{a}, @mvar{b}, @mvar{x})
-The derivative with respect to @mvar{x} of @code{kummer_m(@mvar{a}, @mvar{b}, @mvar{x})}.
+@deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
+The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
 
 @opencatbox
 @category{Package contrib_ode}
@@ -443,8 +443,8 @@ The derivative with respect to @mvar{x} of @code{kummer_m(@mvar{a}, @mvar{b}, @m
 
 @end deffn
 
-@deffn {Function} dkummer_u (@mvar{a}, @mvar{b}, @mvar{x})
-The derivative with respect to @mvar{x} of @code{kummer_u(@mvar{a}, @mvar{b}, @mvar{x})}.
+@deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
+The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
 
 @opencatbox
 @category{Package contrib_ode}

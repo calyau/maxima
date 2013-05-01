@@ -12,18 +12,18 @@
 @node Функции и переменные пакета implicit_plot,  , Пакет implicit_plot, Пакет implicit_plot
 @section Функции и переменные пакета implicit_plot
 
-@deffn {Функция} implicit_plot (@mvar{expr}, @mvar{x_range}, @mvar{y_range})
-@deffnx {Функция} implicit_plot ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{x_range}, @mvar{y_range})
+@deffn {Функция} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Функция} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 
 Строит график одного или более неявных выражений. 
-@mvar{expr} -- изображаемое выражение, @mvar{x_range} -- пределы
-по горизонтальной оси, @mvar{y_range} -- пределы по вертикальной оси. 
+@var{expr} -- изображаемое выражение, @var{x_range} -- пределы
+по горизонтальной оси, @var{y_range} -- пределы по вертикальной оси. 
 @code{implicit_plot} учитывает глобальные установки для gnuplot,
-задаваемые при помощи функции @mvar{set_plot_option}. Опции могут быть указаны в 
+задаваемые при помощи функции @var{set_plot_option}. Опции могут быть указаны в 
 @code{implicit_plot} как дополнительные необязательные аргументы.
 
 Функция @code{implicit_plot} работает, отслеживая изменения знака в области, 
-заданной пределами @mvar{x_range} и @mvar{y_range}, и может ошибаться в сложных случаях.
+заданной пределами @var{x_range} и @var{y_range}, и может ошибаться в сложных случаях.
 
 Команда @code{load(implicit_plot)} загружает данную функцию.
 

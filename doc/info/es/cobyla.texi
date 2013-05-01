@@ -46,28 +46,28 @@ Referecias:
 @node Funciones y variables para cobyla, Ejemplos para cobyla, Introducci@'on a cobyla, cobyla
 @section Funciones y variables para cobyla
 
-@deffn {Funci@'on} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {Funci@'on} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn {Funci@'on} fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Funci@'on} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
 Devuelve una aproximaci@'on del valor m@'{@dotless{i}}nimo de la expresi@'on
-@mvar{F} respecto de las variables @mvar{X}, sujeta a un conjunto opcional
-de restricciones. @mvar{Y} es una lista que contiene una soluci@'on semilla
-inicial en @mvar{X}.
+@var{F} respecto de las variables @var{X}, sujeta a un conjunto opcional
+de restricciones. @var{Y} es una lista que contiene una soluci@'on semilla
+inicial en @var{X}.
 
-@mvar{F} debe ser una expresi@'on ordinaria, no valen nombres de funciones
+@var{F} debe ser una expresi@'on ordinaria, no valen nombres de funciones
 ni expresiones lambda.
 
 @code{optional_args} hace referencia a argumentos adicionales, que se
-especifican de la forma @code{@mvar{symbol} = @mvar{value}}. Los argumentos
+especifican de la forma @code{@var{symbol} = @var{value}}. Los argumentos
 opcionales que se reconocen son:
 
 @table @code
 @item constraints
 Lista de restricciones en forma de desigualdades e igualdades que debe
-satisfacer @mvar{X}. Las desigualdades deben ser de la forma 
-@code{g(@mvar{X}) >= h(@mvar{X})} o @code{g(@mvar{X}) <= h(@mvar{X})}.
+satisfacer @var{X}. Las desigualdades deben ser de la forma 
+@code{g(@var{X}) >= h(@var{X})} o @code{g(@var{X}) <= h(@var{X})}.
 Las restricciones de igualdad deben ser de la forma 
-@code{g(@mvar{X}) = h(@mvar{X})}.
+@code{g(@var{X}) = h(@var{X})}.
 @item rhobeg
 Valor inicial de la variable interna RHO, que controla el tama@~no del
 simplejo. Su valor por defecto es 1.0.
@@ -95,8 +95,8 @@ El resultado devuelto es un vector:
 @enumerate
 @item
 Los valores de las variables con las que se alcanza el valor m@'{@dotless{i}}nimo.
-Es una lista de elementos de la forma @code{@mvar{var} = @mvar{value}} para cada
-una de las variables listadas en @mvar{X}.
+Es una lista de elementos de la forma @code{@var{var} = @var{value}} para cada
+una de las variables listadas en @var{X}.
 @item
 El valor m@'{@dotless{i}}nimo de la funci@'on objetivo.
 @item
@@ -117,12 +117,12 @@ El c@'odigo @code{load(fmin_cobyla)} carga en memoria esta funci@'on..
 
 @end deffn
 
-@deffn {Funci@'on} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {Funci@'on} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn {Funci@'on} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Funci@'on} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
 Esta funci@'on es id@'entica a @code{fmin_cobyla}, excepto por el hecho
 de que utiliza aritm@'etica de precisi@'on arbitraria (bigfloat) y que el
-valor por defecto de @mvar{rhoend} es @code{10^(fpprec/2)}. 
+valor por defecto de @var{rhoend} es @code{10^(fpprec/2)}. 
 
 V@'ease @code{fmin_cobyla}.
 

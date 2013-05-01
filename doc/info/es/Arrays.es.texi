@@ -98,17 +98,17 @@ permiten trabajar con arrays:
 @node Funciones y variables para los arrays, , Introducci@'on a los arrays, Arrays
 @subsection Funciones y variables para los arrays
 
-@deffn {Funci@'on} array (@mvar{nombre}, @mvar{dim_1}, ..., @mvar{dim_n})
-@deffnx {Funci@'on} array (@mvar{nombre}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})
-@deffnx {Funci@'on} array ([@mvar{nombre_1}, ..., @mvar{nombre_m}], @mvar{dim_1}, ..., @mvar{dim_n})
+@deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funci@'on} array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})
 
-Crea un array de dimensi@'on @math{n}, que debe ser menor o igual que 5. Los sub@'{@dotless{i}}ndices de la @math{i}-@'esima dimensi@'on son enteros que toman valores entre 0 y @mvar{dim_i}.  
+Crea un array de dimensi@'on @math{n}, que debe ser menor o igual que 5. Los sub@'{@dotless{i}}ndices de la @math{i}-@'esima dimensi@'on son enteros que toman valores entre 0 y @var{dim_i}.  
 
-La llamada @code{array (@mvar{nombre}, @mvar{dim_1}, ..., @mvar{dim_n})} crea un array de tipo general.
+La llamada @code{array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})} crea un array de tipo general.
 
-La llamada @code{array (@mvar{nombre}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})} crea un array con sus elementos del tipo especificado. El tipo @mvar{type} puede ser @code{fixnum} para enteros de tama@~no limitado o @code{flonum} para n@'umeros decimales en coma flotante.
+La llamada @code{array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})} crea un array con sus elementos del tipo especificado. El tipo @var{type} puede ser @code{fixnum} para enteros de tama@~no limitado o @code{flonum} para n@'umeros decimales en coma flotante.
 
-La llamada @code{array ([@mvar{nombre_1}, ..., @mvar{nombre_m}], @mvar{dim_1}, ..., @mvar{dim_n})}
+La llamada @code{array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})}
 crea @math{m} arrays,  todos ellos de igual dimensi@'on.
 @c SAME TYPE AS WELL ??
 
@@ -118,16 +118,16 @@ Si el usuario asigna un valor a una variable subindicada antes de declarar el ar
 
 @end deffn
 
-@deffn {Funci@'on} arrayapply (@mvar{A}, [@mvar{i_1}, ..., @mvar{i_n}])
-Eval@'ua @code{@mvar{A} [@mvar{i_1}, ..., @mvar{i_n}]}, donde @mvar{A} es un array y @mvar{i_1}, ..., @mvar{i_n} son enteros.
+@deffn {Funci@'on} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Eval@'ua @code{@var{A} [@var{i_1}, ..., @var{i_n}]}, donde @var{A} es un array y @var{i_1}, ..., @var{i_n} son enteros.
 
 Esto es como @code{apply}, excepto por el hecho de que el primer argumento es un array en lugar de una funci@'on.
 
 @end deffn
 
-@deffn {Funci@'on} arrayinfo (@mvar{A})
-Devuelve informaci@'on sobre el array@mvar{A}.
-El argumento @mvar{A} puede ser un array declarado o no declarado,
+@deffn {Funci@'on} arrayinfo (@var{A})
+Devuelve informaci@'on sobre el array@var{A}.
+El argumento @var{A} puede ser un array declarado o no declarado,
 una funci@'on array o una funci@'on subindicada.
 
 En el caso de arrays declarados, @code{arrayinfo} devuelve una
@@ -257,11 +257,11 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} arraymake (@mvar{name}, [@mvar{i_1}, ..., @mvar{i_n}])
+@deffn {Funci@'on} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
 
 El resultado es una referencia a array no evaluada.
 
-Devuelve la expresi@'on @code{@mvar{name} [@mvar{i_1}, ..., @mvar{i_n}]}.
+Devuelve la expresi@'on @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
 
 Esta funci@'on es similar a @code{funmake}, excepto que el valor retornado es referencia a un array no evaluado, en lugar de una llamada a una funci@'on no evaluada.
 
@@ -364,27 +364,27 @@ Ejemplos:
 @end defvr
 
 
-@deffn {Funci@'on} arraysetapply (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}], @mvar{x})
+@deffn {Funci@'on} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
 
-Asigna @mvar{x} a @code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]},
-siendo @mvar{A} un array y @mvar{i_1}, @dots{}, @mvar{i_n} enteros.
+Asigna @var{x} a @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
+siendo @var{A} un array y @var{i_1}, @dots{}, @var{i_n} enteros.
 
 @code{arraysetapply} eval@'ua sus argumentos..
 @end deffn
 
 
 
-@deffn {Funci@'on} fillarray (@mvar{A}, @mvar{B})
-Rellena el array @mvar{A} con los valores de @mvar{B}, que puede ser una lista o array.
+@deffn {Funci@'on} fillarray (@var{A}, @var{B})
+Rellena el array @var{A} con los valores de @var{B}, que puede ser una lista o array.
 
-Si se ha declarado @mvar{A} de un determinado tipo en el momento de su
+Si se ha declarado @var{A} de un determinado tipo en el momento de su
 creaci@'on, s@'olo podr@'a contener elementos de ese tipo, produci@'endose
 un error en caso de intentar asignarle un elemento de tipo distinto.
 
-Si las dimensiones de los arrays @mvar{A} y @mvar{B} son diferentes,
-@mvar{A} se rellena seg@'un el orden de las filas. Si no hay 
-suficientes elementos en @mvar{B} el @'ultimo elemento se utiliza 
-para cubrir el resto de @mvar{A}. Si hay demasiados, los elementos 
+Si las dimensiones de los arrays @var{A} y @var{B} son diferentes,
+@var{A} se rellena seg@'un el orden de las filas. Si no hay 
+suficientes elementos en @var{B} el @'ultimo elemento se utiliza 
+para cubrir el resto de @var{A}. Si hay demasiados, los elementos 
 sobrantes son ignorados.
 
 La funci@'on @code{fillarray} devuelve su primer argumento.
@@ -453,9 +453,9 @@ Arrays multidimensionales se rellenan seg@'un el orden de las filas.
 @end deffn
 
 
-@deffn {Funci@'on} listarray (@mvar{A})
-Devuelve una lista con los elementos del array @mvar{A}.
-El argumento @mvar{A} puede ser un array declarado o no declarado,
+@deffn {Funci@'on} listarray (@var{A})
+Devuelve una lista con los elementos del array @var{A}.
+El argumento @var{A} puede ser un array declarado o no declarado,
 una funci@'on array o una funci@'on subindicada.
 
 Los elementos se ordenan en primera instancia respecto del primer 
@@ -581,12 +581,12 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} make_array (@mvar{tipo}, @mvar{dim_1}, ..., @mvar{dim_n})
+@deffn {Funci@'on} make_array (@var{tipo}, @var{dim_1}, ..., @var{dim_n})
 
-Construye y devuelve un array de Lisp. El argumento @mvar{tipo} puede ser
+Construye y devuelve un array de Lisp. El argumento @var{tipo} puede ser
 @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} o @code{functional}.
 Hay @math{n} @'{@dotless{i}}ndices, y el @'{@dotless{i}}ndice @math{i}-@'esimo
-va de  0 a @math{@mvar{dim_i} - 1}.
+va de  0 a @math{@var{dim_i} - 1}.
 
 La ventaja de @code{make_array} sobre @code{array} estriba en que el valor
 retornado no tiene nombre, y una vez que un puntero deja de referenciarlo,
@@ -646,12 +646,12 @@ Ejemplos:
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-@deffn {Funci@'on} rearray (@mvar{A}, @mvar{dim_1}, ..., @mvar{dim_n})
+@deffn {Funci@'on} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
 Cambia las dimensiones de un array. El nuevo array ser@'a rellenado con los elementos del viejo seg@'un el orden de las filas. Si el array antiguo era demasiado peque@~no, los elementos restantes se rellenan con @code{false}, @code{0.0} o @code{0}, dependiendo del tipo del array. El tipo del array no se puede cambiar.
 
 @end deffn
 
-@deffn {Funci@'on} remarray (@mvar{A_1}, ..., @mvar{A_n})
+@deffn {Funci@'on} remarray (@var{A_1}, ..., @var{A_n})
 @deffnx {Funci@'on} remarray (all)
 Borra los arrays y las funciones relacionadas con ellos, liberando el espacio de memoria ocupado.
 Los argumentos pueden ser arrays declarados, arrays no declarados (@i{hashed arrays}), 
@@ -666,12 +666,12 @@ La funci@'on @code{remarray} no eval@'ua sus argumentos.
 @end deffn
 
 
-@deffn {Funci@'on} subvar (@mvar{x}, @mvar{i})
-Eval@'ua la expresi@'on subindicada @code{@mvar{x}[@mvar{i}]}.
+@deffn {Funci@'on} subvar (@var{x}, @var{i})
+Eval@'ua la expresi@'on subindicada @code{@var{x}[@var{i}]}.
 
 La funci@'on @code{subvar} eval@'ua sus argumentos.
 
-La instrucci@'on @code{arraymake (@mvar{x}, [@mvar{i}]} construye la expresi@'on @code{@mvar{x}[@mvar{i}]},
+La instrucci@'on @code{arraymake (@var{x}, [@var{i}]} construye la expresi@'on @code{@var{x}[@var{i}]},
 pero no la eval@'ua.
 
 Ejemplos:
@@ -708,8 +708,8 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} subvarp (@mvar{expr})
-Devuelve @code{true} si @mvar{expr} es una variable subindicada, como @code{a[i]}.
+@deffn {Funci@'on} subvarp (@var{expr})
+Devuelve @code{true} si @var{expr} es una variable subindicada, como @code{a[i]}.
 
 @end deffn
 

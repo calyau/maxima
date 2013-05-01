@@ -16,7 +16,7 @@
 Пакет @code{graphs} предоставляет структуры для представления графов
 и ориентированных графов в Maxima. Графы и ориентированные графы являются простыми,
 т.е. не имеют кратных ребер и петель, но ориентированные графы могут иметь
-ориентированное ребро из @mvar{u} в @mvar{v} и ориентированное ребро из @mvar{v} в @mvar{u}.
+ориентированное ребро из @var{u} в @var{v} и ориентированное ребро из @var{v} в @var{u}.
 
 Внутренне графы представляются как списки смежности и реализованы
 в виде Lisp структур. Вершины обозначаются своими идентификаторами id (id --
@@ -38,20 +38,20 @@
 
 @subsection Построение графов
 
-@deffn {Функция} create_graph (@mvar{v_list}, @mvar{e_list})
-@deffnx {Функция} create_graph (@mvar{n}, @mvar{e_list})
-@deffnx {Функция} create_graph (@mvar{v_list}, @mvar{e_list}, @mvar{directed})
-Создает новый граф с множеством вершин @mvar{v_list} и ребрами @mvar{e_list}.
+@deffn {Функция} create_graph (@var{v_list}, @var{e_list})
+@deffnx {Функция} create_graph (@var{n}, @var{e_list})
+@deffnx {Функция} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+Создает новый граф с множеством вершин @var{v_list} и ребрами @var{e_list}.
 
-@mvar{v_list} -- список вершин (@code{[v1, v2,..., vn]}) или вершин вместе с метками
+@var{v_list} -- список вершин (@code{[v1, v2,..., vn]}) или вершин вместе с метками
 (@code{[[v1,l1], [v2,l2],..., [vn,ln]]}).
 
-Если @mvar{n} -- число вершин, то они будут обозначаться целыми числами от 0 до n-1.
+Если @var{n} -- число вершин, то они будут обозначаться целыми числами от 0 до n-1.
 
-@mvar{e_list} -- список ребер вида (@code{[e1, e2,..., em]}) или список ребер вместе с весами
+@var{e_list} -- список ребер вида (@code{[e1, e2,..., em]}) или список ребер вместе с весами
 (@code{[[e1, w1], ..., [em, wm]]}).
 
-Если @mvar{directed} отлично от @code{false}, то возвращается ориентированный граф.
+Если @var{directed} отлично от @code{false}, то возвращается ориентированный граф.
 
 Пример 1: цикл с тремя вершинами:
 @c ===beg===
@@ -120,12 +120,12 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} copy_graph (@mvar{g})
-Возвращает копию графа @mvar{g}.
+@deffn {Функция} copy_graph (@var{g})
+Возвращает копию графа @var{g}.
 @end deffn
 
-@deffn {Функция} circulant_graph (@mvar{n}, @mvar{d})
-Возвращает циркулянтный граф граф с параметрами @mvar{n} и @mvar{d}.
+@deffn {Функция} circulant_graph (@var{n}, @var{d})
+Возвращает циркулянтный граф граф с параметрами @var{n} и @var{d}.
 
 Пример:
 @c ===beg===
@@ -156,40 +156,40 @@ Adjacencies:
 Возвращает граф Клебша (Clebsch graph).
 @end deffn
 
-@deffn {Функция} complement_graph (@mvar{g})
-Возвращает граф, дополнительный графу @mvar{g}.
+@deffn {Функция} complement_graph (@var{g})
+Возвращает граф, дополнительный графу @var{g}.
 @end deffn
 
-@deffn {Функция} complete_bipartite_graph (@mvar{n}, @mvar{m})
-Возвращает полный двудольный граф с @mvar{n+m} вершинами.
+@deffn {Функция} complete_bipartite_graph (@var{n}, @var{m})
+Возвращает полный двудольный граф с @var{n+m} вершинами.
 @end deffn
 
-@deffn {Функция} complete_graph (@mvar{n})
-Возвращает полный граф с @mvar{n} вершинами.
+@deffn {Функция} complete_graph (@var{n})
+Возвращает полный граф с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} cycle_digraph (@mvar{n})
-Возвращает ориентированный циклический граф с @mvar{n} вершинами.
+@deffn {Функция} cycle_digraph (@var{n})
+Возвращает ориентированный циклический граф с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} cycle_graph (@mvar{n})
-Возвращает циклический граф с @mvar{n} вершинами.
+@deffn {Функция} cycle_graph (@var{n})
+Возвращает циклический граф с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} cube_graph (@mvar{n})
-Возвращает @mvar{n}-мерный куб.
+@deffn {Функция} cube_graph (@var{n})
+Возвращает @var{n}-мерный куб.
 @end deffn
 
 @deffn {Функция} dodecahedron_graph ()
 Возвращает граф додекаэдра.
 @end deffn
 
-@deffn {Функция} empty_graph (@mvar{n})
-Возвращает пустой граф с @mvar{n} вершинами.
+@deffn {Функция} empty_graph (@var{n})
+Возвращает пустой граф с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} flower_snark (@mvar{n})
-Возвращает цветочный граф (flower graph) с @mvar{4n} вершинами.
+@deffn {Функция} flower_snark (@var{n})
+Возвращает цветочный граф (flower graph) с @var{4n} вершинами.
 
 Пример:
 @c ===beg===
@@ -205,16 +205,16 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} from_adjacency_matrix (@mvar{A})
-Возвращает граф с матрицей смежности @mvar{A}.
+@deffn {Функция} from_adjacency_matrix (@var{A})
+Возвращает граф с матрицей смежности @var{A}.
 @end deffn
 
 @deffn {Функция} frucht_graph ()
 Возвращает граф Фручта (Frucht graph).
 @end deffn
 
-@deffn {Функция} graph_product (@mvar{g1}, @mvar{g1})
-Возвращает прямое произведение графов @mvar{g1} и @mvar{g2}.
+@deffn {Функция} graph_product (@var{g1}, @var{g1})
+Возвращает прямое произведение графов @var{g1} и @var{g2}.
 
 Пример:
 @c ===beg===
@@ -233,12 +233,12 @@ Adjacencies:
 @image{figures/graphs01,6cm}
 @end ifhtml
 
-@deffn {Функция} graph_union (@mvar{g1}, @mvar{g1})
-Возвращает объединение (сумму) графов @mvar{g1} и @mvar{g2}.
+@deffn {Функция} graph_union (@var{g1}, @var{g1})
+Возвращает объединение (сумму) графов @var{g1} и @var{g2}.
 @end deffn
 
-@deffn {Функция} grid_graph (@mvar{n}, @mvar{m})
-Возвращает решетку @mvar{n x m}.
+@deffn {Функция} grid_graph (@var{n}, @var{m})
+Возвращает решетку @var{n x m}.
 @end deffn
 
 @deffn {Функция} grotzch_graph ()
@@ -253,8 +253,8 @@ Adjacencies:
 Возвращает граф икосаэдра.
 @end deffn
 
-@deffn {Функция} induced_subgraph (@mvar{V}, @mvar{g})
-Возвращает граф, состоящий из подмножества вершин @mvar{V} графа @mvar{g}.
+@deffn {Функция} induced_subgraph (@var{V}, @var{g})
+Возвращает граф, состоящий из подмножества вершин @var{V} графа @var{g}.
 
 Пример:
 @c ===beg===
@@ -280,23 +280,23 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} line_graph (@mvar{g})
-Возвращает граф двойственный (line graph) графу @mvar{g}.
+@deffn {Функция} line_graph (@var{g})
+Возвращает граф двойственный (line graph) графу @var{g}.
 @end deffn
 
-@deffn {Функция} make_graph (@mvar{vrt}, @mvar{f})
-@deffnx {Функция} make_graph (@mvar{vrt}, @mvar{f}, @mvar{oriented})
-Создает граф, используя функцию предикат @mvar{f}.
+@deffn {Функция} make_graph (@var{vrt}, @var{f})
+@deffnx {Функция} make_graph (@var{vrt}, @var{f}, @var{oriented})
+Создает граф, используя функцию предикат @var{f}.
 
-@mvar{vrt} -- есть список/множество вкршин или целое число. 
-Если @mvar{vrt} есть целое число,
+@var{vrt} -- есть список/множество вкршин или целое число. 
+Если @var{vrt} есть целое число,
 то вершины графа будут целыми от 1 до
-@mvar{vrt}.
+@var{vrt}.
 
-@mvar{f} -- функция предикат.  Вершины @mvar{a} и @mvar{b} будут
+@var{f} -- функция предикат.  Вершины @var{a} и @var{b} будут
 соединены, если @code{f(a,b)=true}.
 
-Если @mvar{directed} не равно @mvar{false}, то граф будет ориентированным.
+Если @var{directed} не равно @var{false}, то граф будет ориентированным.
 
 Пример 1:
 @c ===beg===
@@ -333,56 +333,56 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} mycielski_graph (@mvar{g})
-Возвращает граф Мицельского (mycielskian graph) графа @mvar{g}.
+@deffn {Функция} mycielski_graph (@var{g})
+Возвращает граф Мицельского (mycielskian graph) графа @var{g}.
 @end deffn
 
 @deffn {Функция} new_graph ()
 Возвращает граф без вершин и ребер.
 @end deffn
 
-@deffn {Функция} path_digraph (@mvar{n})
-Возвращает ориентированный путь с @mvar{n} вершинами.
+@deffn {Функция} path_digraph (@var{n})
+Возвращает ориентированный путь с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} path_graph (@mvar{n})
-Возвращает путь с @mvar{n} вершинами.
+@deffn {Функция} path_graph (@var{n})
+Возвращает путь с @var{n} вершинами.
 @end deffn
 
 @deffn {Функция} petersen_graph ()
-@deffnx {Функция} petersen_graph (@mvar{n}, @mvar{d})
-Возвращает граф Петерсена @mvar{P_@{n,d@}}. Значения по умолчанию для
-@mvar{n} и @mvar{d} есть @code{n=5} и @code{d=2}.
+@deffnx {Функция} petersen_graph (@var{n}, @var{d})
+Возвращает граф Петерсена @var{P_@{n,d@}}. Значения по умолчанию для
+@var{n} и @var{d} есть @code{n=5} и @code{d=2}.
 @end deffn
 
-@deffn {Функция} random_bipartite_graph (@mvar{a}, @mvar{b}, @mvar{p})
+@deffn {Функция} random_bipartite_graph (@var{a}, @var{b}, @var{p})
 Возвращает случайный двудольный граф с @code{a+b} вершинами. 
-Каждая вершина присутствует с вероятностью @mvar{p}.
+Каждая вершина присутствует с вероятностью @var{p}.
 @end deffn
 
-@deffn {Функция} random_digraph (@mvar{n}, @mvar{p})
-Возвращает случайный ориентированный граф с @mvar{n} вершинами. 
-Каждое ребро присутствует с вероятностью @mvar{p}.
+@deffn {Функция} random_digraph (@var{n}, @var{p})
+Возвращает случайный ориентированный граф с @var{n} вершинами. 
+Каждое ребро присутствует с вероятностью @var{p}.
 @end deffn
 
-@deffn {Функция} random_regular_graph (@mvar{n})
-@deffnx {Функция} random_regular_graph (@mvar{n}, @mvar{d})
-Возвращает случайный @mvar{d}-регулярный граф с @mvar{n} вершинами. 
-Значение по умолчанию для @mvar{d} есть @code{d=3}.
+@deffn {Функция} random_regular_graph (@var{n})
+@deffnx {Функция} random_regular_graph (@var{n}, @var{d})
+Возвращает случайный @var{d}-регулярный граф с @var{n} вершинами. 
+Значение по умолчанию для @var{d} есть @code{d=3}.
 @end deffn
 
-@deffn {Функция} random_graph (@mvar{n}, @mvar{p})
-Возвращает случайный граф с @mvar{n} вершинами. 
-Каждое ребро присутствует с вероятностью @mvar{p}.
+@deffn {Функция} random_graph (@var{n}, @var{p})
+Возвращает случайный граф с @var{n} вершинами. 
+Каждое ребро присутствует с вероятностью @var{p}.
 @end deffn
 
-@deffn {Функция} random_graph1 (@mvar{n}, @mvar{m})
-Возвращает случайный граф с @mvar{n} вершинами и @mvar{m} случайными ребрами.
+@deffn {Функция} random_graph1 (@var{n}, @var{m})
+Возвращает случайный граф с @var{n} вершинами и @var{m} случайными ребрами.
 @end deffn
 
-@deffn {Функция} random_network (@mvar{n}, @mvar{p}, @mvar{w})
-Возвращает случайную сеть на @mvar{n} вершинах. Каждое ребро присутствует
-с вероятностью @mvar{p} и имеет вес в интервале @code{[0,w]}. 
+@deffn {Функция} random_network (@var{n}, @var{p}, @var{w})
+Возвращает случайную сеть на @var{n} вершинах. Каждое ребро присутствует
+с вероятностью @var{p} и имеет вес в интервале @code{[0,w]}. 
 Эта функция возвращает список @code{[network, source, sink]}.
 
 Пример:
@@ -402,30 +402,30 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} random_tournament (@mvar{n})
-Возвращает случайный полный ориентированный граф (tournament) с @mvar{n} вершинами.
+@deffn {Функция} random_tournament (@var{n})
+Возвращает случайный полный ориентированный граф (tournament) с @var{n} вершинами.
 @end deffn
 
-@deffn {Функция} random_tree (@mvar{n})
-Возвращает случайное дерево с @mvar{n} вершинами.
+@deffn {Функция} random_tree (@var{n})
+Возвращает случайное дерево с @var{n} вершинами.
 @end deffn
 
 @deffn {Функция} tutte_graph ()
 Возвращает граф Татта (Tutte).
 @end deffn
 
-@deffn {Функция} underlying_graph (@mvar{g})
-Возвращает неориентированный граф, получаемый заменой ребер ориентированного графа @mvar{g} на неориентированные.
+@deffn {Функция} underlying_graph (@var{g})
+Возвращает неориентированный граф, получаемый заменой ребер ориентированного графа @var{g} на неориентированные.
 @end deffn
 
-@deffn {Функция} wheel_graph (@mvar{n})
-Возвращает колесный граф (wheel graph) с @mvar{n+1} вершинами.
+@deffn {Функция} wheel_graph (@var{n})
+Возвращает колесный граф (wheel graph) с @var{n+1} вершинами.
 @end deffn
 
 @subsection Свойства графов
 
-@deffn {Функция} adjacency_matrix (@mvar{gr})
-Возвращает матрицу смежности графа @mvar{gr}.
+@deffn {Функция} adjacency_matrix (@var{gr})
+Возвращает матрицу смежности графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -447,8 +447,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} average_degree (@mvar{gr})
-Возвращает среднюю степень вершин графа @mvar{gr}.
+@deffn {Функция} average_degree (@var{gr})
+Возвращает среднюю степень вершин графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -464,8 +464,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} biconected_components (@mvar{gr})
-Возвращает (наборы вершин) 2-связных компонент графа @mvar{gr}.
+@deffn {Функция} biconected_components (@var{gr})
+Возвращает (наборы вершин) 2-связных компонент графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -495,9 +495,9 @@ Adjacencies:
 @end ifhtml
 @end deffn
 
-@deffn {Функция} bipartition (@mvar{gr})
-Возвращает двудольное разложение графа @mvar{gr} или пустой список,
-если @mvar{gr} не является двудольным.
+@deffn {Функция} bipartition (@var{gr})
+Возвращает двудольное разложение графа @var{gr} или пустой список,
+если @var{gr} не является двудольным.
 
 Пример:
 
@@ -520,8 +520,8 @@ Adjacencies:
 @image{figures/graphs02,6cm}
 @end ifhtml
 
-@deffn {Функция} chromatic_index (@mvar{gr})
-Возвращает хроматический индекс графа @mvar{gr}.
+@deffn {Функция} chromatic_index (@var{gr})
+Возвращает хроматический индекс графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -537,8 +537,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} chromatic_number (@mvar{gr})
-Возвращает хроматическое число графа @mvar{gr}.
+@deffn {Функция} chromatic_number (@var{gr})
+Возвращает хроматическое число графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -555,8 +555,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} clear_edge_weight (@mvar{e}, @mvar{gr})
-Удаляет вес ребра @mvar{e} в графе @mvar{gr}.
+@deffn {Функция} clear_edge_weight (@var{e}, @var{gr})
+Удаляет вес ребра @var{e} в графе @var{gr}.
 
 Пример:
 
@@ -578,8 +578,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} clear_vertex_label (@mvar{v}, @mvar{gr})
-Удаляет метку вершины @mvar{v} в графе @mvar{gr}.
+@deffn {Функция} clear_vertex_label (@var{v}, @var{gr})
+Удаляет метку вершины @var{v} в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -601,8 +601,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} connected_components (@mvar{gr})
-Возвращает (наборы вершин) компоненты связности графа @mvar{gr}.
+@deffn {Функция} connected_components (@var{gr})
+Возвращает (наборы вершин) компоненты связности графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -618,8 +618,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} diameter (@mvar{gr})
-Возвращает диаметр графа @mvar{gr}.
+@deffn {Функция} diameter (@var{gr})
+Возвращает диаметр графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -633,10 +633,10 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} edge_coloring (@mvar{gr})
-Возвращает оптимальную раскраску ребер графа @mvar{gr}.
+@deffn {Функция} edge_coloring (@var{gr})
+Возвращает оптимальную раскраску ребер графа @var{gr}.
 
-Эта функция возвращает хроматический индекс и список, представляющий раскраску ребер графа @mvar{gr}.
+Эта функция возвращает хроматический индекс и список, представляющий раскраску ребер графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -661,8 +661,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} degree_sequence (@mvar{gr})
-Возвращает список степеней вершин графа @mvar{gr}.
+@deffn {Функция} degree_sequence (@var{gr})
+Возвращает список степеней вершин графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -676,8 +676,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} edges (@mvar{gr})
-Возвращает список ребер/дуг ориентированного или неориентированного графа @mvar{gr}.
+@deffn {Функция} edges (@var{gr})
+Возвращает список ребер/дуг ориентированного или неориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -691,13 +691,13 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} get_edge_weight (@mvar{e}, @mvar{gr})
-@deffnx {Функция} get_edge_weight (@mvar{e}, @mvar{gr}, @mvar{ifnot})
-Возвращает вес ребра @mvar{e} графа @mvar{gr}.
+@deffn {Функция} get_edge_weight (@var{e}, @var{gr})
+@deffnx {Функция} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+Возвращает вес ребра @var{e} графа @var{gr}.
 
 Если вес не присвоен ребру, то возвращается 1. 
 Если ребро в графе отсутствует, то выдается ошибка или 
-возвращает необязательный аргумент @mvar{ifnot}.
+возвращает необязательный аргумент @var{ifnot}.
 
 Пример:
 @c ===beg===
@@ -719,8 +719,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} get_vertex_label (@mvar{v}, @mvar{gr})
-Возвращает метку вершины @mvar{v} графа @mvar{gr}.
+@deffn {Функция} get_vertex_label (@var{v}, @var{gr})
+Возвращает метку вершины @var{v} графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -736,8 +736,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_charpoly (@mvar{gr}, @mvar{x})
-Возвращает характеристический многочлен (от переменной @mvar{x}) графа @mvar{gr}.
+@deffn {Функция} graph_charpoly (@var{gr}, @var{x})
+Возвращает характеристический многочлен (от переменной @var{x}) графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -754,8 +754,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_center (@mvar{gr})
-Возвращает центр графа @mvar{gr}.
+@deffn {Функция} graph_center (@var{gr})
+Возвращает центр графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -771,8 +771,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_eigenvalues (@mvar{gr})
-Возвращает собственные значения графа @mvar{gr}. Значение возвращаются
+@deffn {Функция} graph_eigenvalues (@var{gr})
+Возвращает собственные значения графа @var{gr}. Значение возвращаются
 в том же формате, что возвращает Maxima функция @code{eigenvalue}.
 
 Пример:
@@ -789,8 +789,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_periphery (@mvar{gr})
-Возвращает периферию графа @mvar{gr}.
+@deffn {Функция} graph_periphery (@var{gr})
+Возвращает периферию графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -806,8 +806,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_size (@mvar{gr})
-Возвращает число вершин в графе @mvar{gr}.
+@deffn {Функция} graph_size (@var{gr})
+Возвращает число вершин в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -823,8 +823,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} graph_order (@mvar{gr})
-Возвращает число ребер в графе @mvar{gr}.
+@deffn {Функция} graph_order (@var{gr})
+Возвращает число ребер в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -840,8 +840,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} girth (@mvar{gr})
-Возвращает длину наикратчайшего цикла в графе @mvar{gr}.
+@deffn {Функция} girth (@var{gr})
+Возвращает длину наикратчайшего цикла в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -857,8 +857,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} hamilton_cycle (@mvar{gr})
-Возвращает гамильтонов цикл графа @mvar{gr} или пустой список, если граф @mvar{gr} не является гамильтоновым.
+@deffn {Функция} hamilton_cycle (@var{gr})
+Возвращает гамильтонов цикл графа @var{gr} или пустой список, если граф @var{gr} не является гамильтоновым.
 
 Пример:
 @c ===beg===
@@ -880,8 +880,8 @@ Adjacencies:
 @image{figures/graphs03,6cm}
 @end ifhtml
 
-@deffn {Функция} hamilton_path (@mvar{gr})
-Возвращает гамильтонов путь графа @mvar{gr} или пустой список, если граф @mvar{gr} не 
+@deffn {Функция} hamilton_path (@var{gr})
+Возвращает гамильтонов путь графа @var{gr} или пустой список, если граф @var{gr} не 
 имеет гамильтонова пути.
 
 Пример:
@@ -904,10 +904,10 @@ Adjacencies:
 @image{figures/graphs04,6cm}
 @end ifhtml
 
-@deffn {Функция} isomorphism (@mvar{gr1}, @mvar{gr2})
+@deffn {Функция} isomorphism (@var{gr1}, @var{gr2})
 
 Возвращает хэш-таблицу изоморфизма между (ориентированными) графами 
-@mvar{gr1} и @mvar{gr2}. Если @mvar{gr1} и @mvar{gr2} не изоморфны,
+@var{gr1} и @var{gr2}. Если @var{gr1} и @var{gr2} не изоморфны,
 то возвращается @code{false}.
 
 Пример:
@@ -925,9 +925,9 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} in_neighbors (@mvar{v}, @mvar{gr})
-Возвращает список входящих соседей (in-neighbors) вершины @mvar{v} 
-ориентированного графа @mvar{gr}.
+@deffn {Функция} in_neighbors (@var{v}, @var{gr})
+Возвращает список входящих соседей (in-neighbors) вершины @var{v} 
+ориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -946,8 +946,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_biconnected (@mvar{gr})
-Возвращает @code{true}, если граф @mvar{gr} 2-связный, и @code{false} в противном случае.
+@deffn {Функция} is_biconnected (@var{gr})
+Возвращает @code{true}, если граф @var{gr} 2-связный, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -964,8 +964,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_bipartite (@mvar{gr})
-Возвращает @code{true}, если граф @mvar{gr} двудольный, и @code{false} в противном случае.
+@deffn {Функция} is_bipartite (@var{gr})
+Возвращает @code{true}, если граф @var{gr} двудольный, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -982,8 +982,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_connected (@mvar{gr})
-Возвращает @code{true}, если граф @mvar{gr} связный, и @code{false} в противном случае.
+@deffn {Функция} is_connected (@var{gr})
+Возвращает @code{true}, если граф @var{gr} связный, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -997,8 +997,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_digraph (@mvar{gr})
-Возвращает @code{true}, если @mvar{gr} является ориентированным графом, и @code{false} в противном случае.
+@deffn {Функция} is_digraph (@var{gr})
+Возвращает @code{true}, если @var{gr} является ориентированным графом, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -1015,8 +1015,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_edge_in_graph (@mvar{e}, @mvar{gr})
-Возвращает @code{true}, если @mvar{e} есть ребро (ориентированного) графа @mvar{g},
+@deffn {Функция} is_edge_in_graph (@var{e}, @var{gr})
+Возвращает @code{true}, если @var{e} есть ребро (ориентированного) графа @var{g},
 и @code{false} в противном случае.
 
 Пример:
@@ -1042,8 +1042,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_graph (@mvar{gr})
-Возвращает @code{true}, если @mvar{gr} является графом, 
+@deffn {Функция} is_graph (@var{gr})
+Возвращает @code{true}, если @var{gr} является графом, 
 и @code{false} в противном случае.
 
 Пример:
@@ -1061,8 +1061,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_graph_or_digraph (@mvar{gr})
-Возвращает @code{true}, если @mvar{gr} является графом или ориентированным графом, и @code{false} в противном случае.
+@deffn {Функция} is_graph_or_digraph (@var{gr})
+Возвращает @code{true}, если @var{gr} является графом или ориентированным графом, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -1079,9 +1079,9 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_isomorphic (@mvar{gr1}, @mvar{gr2})
+@deffn {Функция} is_isomorphic (@var{gr1}, @var{gr2})
 
-Возвращает @code{true}, если (ориентированные) графы @mvar{gr1} и @mvar{gr2} изоморфны,
+Возвращает @code{true}, если (ориентированные) графы @var{gr1} и @var{gr2} изоморфны,
 и @code{false} в противном случае.
 
 См. также @code{isomorphism}.
@@ -1100,9 +1100,9 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_planar (@mvar{gr})
+@deffn {Функция} is_planar (@var{gr})
 
-Возвращает @code{true}, если @mvar{gr} является планарным графом, и @code{false} в противном случае.
+Возвращает @code{true}, если @var{gr} является планарным графом, и @code{false} в противном случае.
 
 Используется алгоритм Демукрона, который является квадратичным по времени.
 
@@ -1124,8 +1124,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_sconnected (@mvar{gr})
-Возвращает @code{true}, если ориентированный граф @mvar{gr} является сильно связным, 
+@deffn {Функция} is_sconnected (@var{gr})
+Возвращает @code{true}, если ориентированный граф @var{gr} является сильно связным, 
 и @code{false} в противном случае.
 
 Пример:
@@ -1143,8 +1143,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_vertex_in_graph (@mvar{v}, @mvar{gr})
-Возвращает @code{true}, если @mvar{v} есть вершина в графе @mvar{g}, и @code{false} в противном случае.
+@deffn {Функция} is_vertex_in_graph (@var{v}, @var{gr})
+Возвращает @code{true}, если @var{v} есть вершина в графе @var{g}, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -1163,8 +1163,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} is_tree (@mvar{gr})
-Возвращает @code{true}, если граф @mvar{gr} является деревом, и @code{false} в противном случае.
+@deffn {Функция} is_tree (@var{gr})
+Возвращает @code{true}, если граф @var{gr} является деревом, и @code{false} в противном случае.
 
 Пример:
 @c ===beg===
@@ -1181,8 +1181,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} laplacian_matrix (@mvar{gr})
-Возвращает матрицу Лапласа графа @mvar{gr}.
+@deffn {Функция} laplacian_matrix (@var{gr})
+Возвращает матрицу Лапласа графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1204,8 +1204,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} max_clique (@mvar{gr})
-Возвращает максимальную клику графа @mvar{gr}.
+@deffn {Функция} max_clique (@var{gr})
+Возвращает максимальную клику графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1221,8 +1221,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} max_degree (@mvar{gr})
-Возвращает максимальную степень вершины графа @mvar{gr} и саму вершину
+@deffn {Функция} max_degree (@var{gr})
+Возвращает максимальную степень вершины графа @var{gr} и саму вершину
 с максимальной степенью.
 
 Пример:
@@ -1242,8 +1242,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} max_flow (@mvar{net}, @mvar{s}, @mvar{t})
-Возвращает максимальный поток через сеть @mvar{net} с истоком @mvar{s} и стоком @mvar{t}.
+@deffn {Функция} max_flow (@var{net}, @var{s}, @var{t})
+Возвращает максимальный поток через сеть @var{net} с истоком @var{s} и стоком @var{t}.
 
 Функция возвращает значение максимального потока и список весов ребер
 оптимального потока.
@@ -1293,8 +1293,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} max_independent_set (@mvar{gr})
-Возвращает максимальное независимое множество графа @mvar{gr}.
+@deffn {Функция} max_independent_set (@var{gr})
+Возвращает максимальное независимое множество графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1316,8 +1316,8 @@ Adjacencies:
 @image{figures/graphs05,6cm}
 @end ifhtml
 
-@deffn {Функция} max_matching (@mvar{gr})
-Возвращает максимальный набор ребер, не имеющих общих вершин (maximal matching), для графа @mvar{gr}.
+@deffn {Функция} max_matching (@var{gr})
+Возвращает максимальный набор ребер, не имеющих общих вершин (maximal matching), для графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1340,8 +1340,8 @@ Adjacencies:
 @image{figures/graphs06,6cm}
 @end ifhtml
 
-@deffn {Функция} min_degree (@mvar{gr})
-Возвращает минимальную степень вершины графа @mvar{gr} и саму вершину
+@deffn {Функция} min_degree (@var{gr})
+Возвращает минимальную степень вершины графа @var{gr} и саму вершину
 с минимальной степенью.
 
 Пример:
@@ -1361,13 +1361,13 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} min_vertex_cover (@mvar{gr})
+@deffn {Функция} min_vertex_cover (@var{gr})
 
-Возвращает минимальное вершинное покрытие графа @mvar{gr}.
+Возвращает минимальное вершинное покрытие графа @var{gr}.
 @end deffn
 
-@deffn {Функция} minimum_spanning_tree (@mvar{gr})
-Возвращает минимальный каркас (минимальное остовное дерево) графа @mvar{gr}.
+@deffn {Функция} minimum_spanning_tree (@var{gr})
+Возвращает минимальный каркас (минимальное остовное дерево) графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1388,8 +1388,8 @@ Adjacencies:
 @image{figures/graphs07,6cm}
 @end ifhtml
 
-@deffn {Функция} neighbors (@mvar{v}, @mvar{gr})
-Возвращает список соседей вершины @mvar{v} в графе @mvar{gr}.
+@deffn {Функция} neighbors (@var{v}, @var{gr})
+Возвращает список соседей вершины @var{v} в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1405,8 +1405,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} odd_girth (@mvar{gr})
-Возвращает длину наикратчайшего нечетного цикла в графе @mvar{gr}.
+@deffn {Функция} odd_girth (@var{gr})
+Возвращает длину наикратчайшего нечетного цикла в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1425,9 +1425,9 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} out_neighbors (@mvar{v}, @mvar{gr})
-Возвращает список исходящих соседей (out-neighbors) вершины @mvar{v} 
-ориентированного графа @mvar{gr}.
+@deffn {Функция} out_neighbors (@var{v}, @var{gr})
+Возвращает список исходящих соседей (out-neighbors) вершины @var{v} 
+ориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1446,12 +1446,12 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} planar_embedding (@mvar{gr})
+@deffn {Функция} planar_embedding (@var{gr})
 
-Возвращает список поверхностных маршрутов (facial walks) в плоской укладке графа @mvar{gr},
-и @code{false}, если граф @mvar{gr} не является планарным.
+Возвращает список поверхностных маршрутов (facial walks) в плоской укладке графа @var{gr},
+и @code{false}, если граф @var{gr} не является планарным.
 
-Граф @mvar{gr} должен быть бисвязным.
+Граф @var{gr} должен быть бисвязным.
 
 Используется алгоритм Демукрона, который является квадратичным по времени.
 
@@ -1468,8 +1468,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} print_graph (@mvar{gr})
-Выводит некоторую информацию о графе @mvar{gr}.
+@deffn {Функция} print_graph (@var{gr})
+Выводит некоторую информацию о графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1505,8 +1505,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} radius (@mvar{gr})
-Возвращает радиус графа @mvar{gr}.
+@deffn {Функция} radius (@var{gr})
+Возвращает радиус графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1520,8 +1520,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} set_edge_weight (@mvar{e}, @mvar{w}, @mvar{gr})
-Присваивает вес @mvar{w} ребру @mvar{e} графа @mvar{gr}.
+@deffn {Функция} set_edge_weight (@var{e}, @var{w}, @var{gr})
+Присваивает вес @var{w} ребру @var{e} графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1543,8 +1543,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} set_vertex_label (@mvar{v}, @mvar{l}, @mvar{gr})
-Присваивает метку @mvar{l} вершине @mvar{v} графа @mvar{gr}.
+@deffn {Функция} set_vertex_label (@var{v}, @var{l}, @var{gr})
+Присваивает метку @var{l} вершине @var{v} графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1566,8 +1566,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} shortest_path (@mvar{u}, @mvar{v}, @mvar{gr})
-Возвращает кратчайший путь из вершины @mvar{u} в вершину @mvar{v} в графе @mvar{gr}.
+@deffn {Функция} shortest_path (@var{u}, @var{v}, @var{gr})
+Возвращает кратчайший путь из вершины @var{u} в вершину @var{v} в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1589,8 +1589,8 @@ Adjacencies:
 @image{figures/graphs08,6cm}
 @end ifhtml
 
-@deffn {Функция} strong_components (@mvar{gr})
-Возвращает сильную компоненту ориентированного графа @mvar{gr}.
+@deffn {Функция} strong_components (@var{gr})
+Возвращает сильную компоненту ориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1609,10 +1609,10 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} topological_sort (@mvar{dag})
+@deffn {Функция} topological_sort (@var{dag})
 
 Возвращает топологическую сортировку вершин ориентированного графа
-@mvar{dag}, или пустой список, если @mvar{dag} не является ориентированным ациклическим графом.
+@var{dag}, или пустой список, если @var{dag} не является ориентированным ациклическим графом.
 
 Пример:
 @c ===beg===
@@ -1640,13 +1640,13 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} vertex_degree (@mvar{v}, @mvar{gr})
-Возвращает степень вершины @mvar{v} в графе @mvar{gr}.
+@deffn {Функция} vertex_degree (@var{v}, @var{gr})
+Возвращает степень вершины @var{v} в графе @var{gr}.
 @end deffn
 
-@deffn {Функция} vertex_distance (@mvar{u}, @mvar{v}, @mvar{gr})
-Возвращает длину кратчайшего пути между вершинами @mvar{u} и @mvar{v} в
-(ориентированном) графе @mvar{gr}.
+@deffn {Функция} vertex_distance (@var{u}, @var{v}, @var{gr})
+Возвращает длину кратчайшего пути между вершинами @var{u} и @var{v} в
+(ориентированном) графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1665,9 +1665,9 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} vertex_eccentricity (@mvar{v}, @mvar{gr})
+@deffn {Функция} vertex_eccentricity (@var{v}, @var{gr})
 
-Возвращает эксцентриситет вершины @mvar{v} графа @mvar{gr}.
+Возвращает эксцентриситет вершины @var{v} графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1683,8 +1683,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} vertex_in_degree (@mvar{v}, @mvar{gr})
-Возвращает входящую степень вершины @mvar{v} ориентированного графа @mvar{gr}.
+@deffn {Функция} vertex_in_degree (@var{v}, @var{gr})
+Возвращает входящую степень вершины @var{v} ориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1712,8 +1712,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} vertex_out_degree (@mvar{v}, @mvar{gr})
-Возвращает исходящую степень вершины @mvar{v} ориентированного графа @mvar{gr}.
+@deffn {Функция} vertex_out_degree (@var{v}, @var{gr})
+Возвращает исходящую степень вершины @var{v} ориентированного графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1732,8 +1732,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} vertices (@mvar{gr})
-Возвращает список вершин графа  @mvar{gr}.
+@deffn {Функция} vertices (@var{gr})
+Возвращает список вершин графа  @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1749,8 +1749,8 @@ Adjacencies:
 
 @subsection Изменение графов
 
-@deffn {Функция} add_edge (@mvar{e}, @mvar{gr})
-Добавляет ребро @mvar{e} к графу @mvar{gr}.
+@deffn {Функция} add_edge (@var{e}, @var{gr})
+Добавляет ребро @var{e} к графу @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1772,8 +1772,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} add_edges (@mvar{e_list}, @mvar{gr})
-Добавляет ребра из списка @mvar{e_list} к графу @mvar{gr}.
+@deffn {Функция} add_edges (@var{e_list}, @var{gr})
+Добавляет ребра из списка @var{e_list} к графу @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1795,8 +1795,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} add_vertex (@mvar{v}, @mvar{gr})
-Добавляет вершину @mvar{v} к графу @mvar{gr}.
+@deffn {Функция} add_vertex (@var{v}, @var{gr})
+Добавляет вершину @var{v} к графу @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1818,15 +1818,15 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} add_vertices (@mvar{v_list}, @mvar{gr})
-Добавляет все вершины из списка @mvar{v_list} к графу @mvar{gr}.
+@deffn {Функция} add_vertices (@var{v_list}, @var{gr})
+Добавляет все вершины из списка @var{v_list} к графу @var{gr}.
 @end deffn
 
-@deffn {Функция} connect_vertices (@mvar{v_list}, @mvar{u_list}, @mvar{gr})
-Соединяет все вершины из списка @mvar{v_list} с вершинами из списка @mvar{u_list} 
-в графе @mvar{gr}.
+@deffn {Функция} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
+Соединяет все вершины из списка @var{v_list} с вершинами из списка @var{u_list} 
+в графе @var{gr}.
 
-@mvar{v_list} и @mvar{u_list} могут быть отдельными вершинами или списками вершин.
+@var{v_list} и @var{u_list} могут быть отдельными вершинами или списками вершин.
 
 Пример:
 @c ===beg===
@@ -1849,8 +1849,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} contract_edge (@mvar{e}, @mvar{gr})
-Стягивает ребро @mvar{e} в графе @mvar{gr}.
+@deffn {Функция} contract_edge (@var{e}, @var{gr})
+Стягивает ребро @var{e} в графе @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1890,8 +1890,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} remove_edge (@mvar{e}, @mvar{gr})
-Удаляет ребро @mvar{e} из графа @mvar{gr}.
+@deffn {Функция} remove_edge (@var{e}, @var{gr})
+Удаляет ребро @var{e} из графа @var{gr}.
 
 Пример:
 @c ===beg===
@@ -1913,15 +1913,15 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Функция} remove_vertex (@mvar{v}, @mvar{gr})
-Удаляет вершину @mvar{v} из графа @mvar{gr}.
+@deffn {Функция} remove_vertex (@var{v}, @var{gr})
+Удаляет вершину @var{v} из графа @var{gr}.
 @end deffn
 
-@deffn {Функция} vertex_coloring (@mvar{gr})
-Возвращает оптимальную раскраску вершин графа @mvar{gr}.
+@deffn {Функция} vertex_coloring (@var{gr})
+Возвращает оптимальную раскраску вершин графа @var{gr}.
 
 Функция возвращает хроматическое число и список, 
-описывающий раскраску вершин графа @mvar{g}.
+описывающий раскраску вершин графа @var{g}.
 
 Пример:
 @c ===beg===
@@ -1940,133 +1940,133 @@ Adjacencies:
 
 @subsection Чтение и запись файлов
 
-@deffn {Функция} dimacs_export (@mvar{gr}, @mvar{fl})
-@deffnx {Функция} dimacs_export (@mvar{gr}, @mvar{fl}, @mvar{comment1}, ..., @mvar{commentn})
+@deffn {Функция} dimacs_export (@var{gr}, @var{fl})
+@deffnx {Функция} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
 
-Экспортирует граф в файл @mvar{fl} в формате DIMACS. 
+Экспортирует граф в файл @var{fl} в формате DIMACS. 
 Необязательный комментарий будет добавлен к началу файла.
 @end deffn
 
-@deffn {Функция} dimacs_import (@mvar{fl})
+@deffn {Функция} dimacs_import (@var{fl})
 
-Возвращает граф из файла @mvar{fl}, в котором он записан в формате DIMACS.
+Возвращает граф из файла @var{fl}, в котором он записан в формате DIMACS.
 @end deffn
 
-@deffn {Функция} graph6_decode (@mvar{str})
+@deffn {Функция} graph6_decode (@var{str})
 
-Возвращает граф, закодированный в формате graph6 в строке @mvar{str}.
+Возвращает граф, закодированный в формате graph6 в строке @var{str}.
 @end deffn
 
-@deffn {Функция} graph6_encode (@mvar{gr})
+@deffn {Функция} graph6_encode (@var{gr})
 
-Возвращает строку -- закодированное представление графа @mvar{gr} в формате graph6.
+Возвращает строку -- закодированное представление графа @var{gr} в формате graph6.
 @end deffn
 
-@deffn {Функция} graph6_export (@mvar{gr_list}, @mvar{fl})
+@deffn {Функция} graph6_export (@var{gr_list}, @var{fl})
 
-Экспортирует графы из списка @mvar{gr_list} в файл @mvar{fl} в формате graph6.
+Экспортирует графы из списка @var{gr_list} в файл @var{fl} в формате graph6.
 @end deffn
 
-@deffn {Функция} graph6_import (@mvar{fl})
+@deffn {Функция} graph6_import (@var{fl})
 
-Возвращает список графов из файла @mvar{fl}, где они закодированы в формате graph6.
+Возвращает список графов из файла @var{fl}, где они закодированы в формате graph6.
 @end deffn
 
-@deffn {Функция} sparse6_decode (@mvar{str})
+@deffn {Функция} sparse6_decode (@var{str})
 
-Возвращает граф, закодированный в формате sparse6 в строке @mvar{str}.
+Возвращает граф, закодированный в формате sparse6 в строке @var{str}.
 @end deffn
 
-@deffn {Функция} sparse6_encode (@mvar{gr})
+@deffn {Функция} sparse6_encode (@var{gr})
 
-Возвращает строку -- закодированное представление графа @mvar{gr} в формате sparse6.
+Возвращает строку -- закодированное представление графа @var{gr} в формате sparse6.
 @end deffn
 
-@deffn {Функция} sparse6_export (@mvar{gr_list}, @mvar{fl})
+@deffn {Функция} sparse6_export (@var{gr_list}, @var{fl})
 
-Экспортирует графы из списка @mvar{gr_list} в файл @mvar{fl} в формате sparse6.
+Экспортирует графы из списка @var{gr_list} в файл @var{fl} в формате sparse6.
 @end deffn
 
-@deffn {Функция} sparse6_import (@mvar{fl})
+@deffn {Функция} sparse6_import (@var{fl})
 
-Возвращает список графов из файла @mvar{fl}, где они закодированы в формате sparse6.
+Возвращает список графов из файла @var{fl}, где они закодированы в формате sparse6.
 @end deffn
 
 @subsection Визуализация
 
-@deffn {Функция} draw_graph (@mvar{graph})
-@deffnx {Функция} draw_graph (@mvar{graph}, @mvar{option1}, ..., @mvar{optionk})
+@deffn {Функция} draw_graph (@var{graph})
+@deffnx {Функция} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
 Изображает граф с помощью пакета @code{draw}.
 
-Алгоритм, используемый для размещения вершин, определяется необязательной переменной @mvar{program}. 
+Алгоритм, используемый для размещения вершин, определяется необязательной переменной @var{program}. 
 Значение по умолчанию @code{program=spring_embedding}. 
 Может также использоваться программа graphviz, но она должна быть установлена отдельно.
 
-Необязательные аргументы @mvar{draw_graph} могут быть:
+Необязательные аргументы @var{draw_graph} могут быть:
 @itemize @bullet
 @item
-@dfn{show_id=show}: если @mvar{show} равно @mvar{true}, то изображаются
+@dfn{show_id=show}: если @var{show} равно @var{true}, то изображаются
 идентификаторы (id) вершин.
 @item
-@dfn{show_label=show}: если @mvar{show} равно @mvar{true}, то изображаются
+@dfn{show_label=show}: если @var{show} равно @var{true}, то изображаются
 метки вершин.
 @item
 @dfn{label_alignment=pos}: как разместить метку или идентификатор вершины. 
 Может быть @code{left}, @code{center} или  @code{right}. 
 По умолчанию @code{left}.
 @item
-@dfn{show_weight=show}: если @mvar{show} равно @mvar{true}, то изображаются
+@dfn{show_weight=show}: если @var{show} равно @var{true}, то изображаются
 веса ребер.
 @item
 @dfn{vertex_type=type}: определяет, как изображаются вершины. 
-См. опцию @mvar{point_type} пакета @code{draw}.
+См. опцию @var{point_type} пакета @code{draw}.
 @item
 @dfn{vertex_size=size}: размер вершин.
 @item
 @dfn{vertex_color=c}: цвет вершин.
 @item
-@dfn{show_vertices=v_list}: изобразить вершины из списка @mvar{v_list}
+@dfn{show_vertices=v_list}: изобразить вершины из списка @var{v_list}
 другим цветом.
 @item
-@dfn{show_vertex_type=type}: определяет, как изображаются вершины из списка @mvar{show_vertices}. 
-См. опцию @mvar{point_type} пакета @code{draw}.
+@dfn{show_vertex_type=type}: определяет, как изображаются вершины из списка @var{show_vertices}. 
+См. опцию @var{point_type} пакета @code{draw}.
 @item
-@dfn{show_vertex_size=size}: размер вершин в списке @mvar{show_vertices}.
+@dfn{show_vertex_size=size}: размер вершин в списке @var{show_vertices}.
 @item
-@dfn{show_vertex_color=c}: цвет вершин в списке @mvar{show_vertices}.
+@dfn{show_vertex_color=c}: цвет вершин в списке @var{show_vertices}.
 @item
 @dfn{vertex_partition=part}: разбиение
 @code{[[v1,v2,...],...,[vk,...,vn]]} вершин графа. 
 Вершины в каждом списка будут изображаться разными цветами.
 @item
-@dfn{vertex_coloring=col}: раскраска вершин. Раскраска @mvar{col} должна
-быть задана в формате, возвращаемом @mvar{vertex_coloring}.
+@dfn{vertex_coloring=col}: раскраска вершин. Раскраска @var{col} должна
+быть задана в формате, возвращаемом @var{vertex_coloring}.
 @item
 @dfn{edge_color=c}: цвет, используемый для изображения ребер.
 @item
 @dfn{edge_width=width}: толщина ребер.
 @item
 @dfn{edge_type=type}: определяет способ изображения ребер. 
-См. опцию @mvar{line_type} пакета @code{draw}.
+См. опцию @var{line_type} пакета @code{draw}.
 @item
-@dfn{show_edges=e_list}: изображать ребра из списка @mvar{e_list}
+@dfn{show_edges=e_list}: изображать ребра из списка @var{e_list}
 другим цветом.
 @item
-@dfn{show_edge_color=c}: цвет, используемый для изображения ребер из списка @mvar{show_edges}.
+@dfn{show_edge_color=c}: цвет, используемый для изображения ребер из списка @var{show_edges}.
 @item
-@dfn{show_edge_width=width}: ширина ребер @mvar{show_edges}.
+@dfn{show_edge_width=width}: ширина ребер @var{show_edges}.
 @item
-@dfn{show_edge_type=type}: определяет, как изображаются ребра из списка @mvar{show_edges}. 
-См. опцию @mvar{line_type} пакета @code{draw}.
+@dfn{show_edge_type=type}: определяет, как изображаются ребра из списка @var{show_edges}. 
+См. опцию @var{line_type} пакета @code{draw}.
 @item
 @dfn{edge_partition=partition}: разбиение 
 @code{[[e1,e2,...],...,[ek,...,em]]} ребер графа. Ребра в каждом списке
 будут изображаться разными цветами.
 @item
-@dfn{edge_coloring=col}: раскраска ребер. Раскраска @mvar{col} должна
-быть задана в формате, возвращаемом функцией @mvar{edge_coloring}.
+@dfn{edge_coloring=col}: раскраска ребер. Раскраска @var{col} должна
+быть задана в формате, возвращаемом функцией @var{edge_coloring}.
 @item
-@dfn{redraw=r}: если @mvar{redraw} равно @code{true}, то положение вершин
+@dfn{redraw=r}: если @var{redraw} равно @code{true}, то положение вершин
 вычисляется снова, даже если оно было сохранено с предыдущего изображения
 графа.
 @item
@@ -2079,18 +2079,18 @@ Adjacencies:
 @dfn{spring_embedding_depth=depth}: число итераций в алгоритме пружин
 (метод взаимодействия сил). Значение по умолчанию: 50.
 @item
-@dfn{terminal=term}: терминал, используемый для изображения (см. опцию @mvar{terminal} 
+@dfn{terminal=term}: терминал, используемый для изображения (см. опцию @var{terminal} 
 пакета @code{draw}).
 @item
 @dfn{file_name=file}: имя файла изображения, если терминал не является дисплеем.
 @item
 @dfn{program=prg}: определяет программу, используемую для расположения вершин графа. 
 Может быть одной из опций программы graphviz (dot, neato, twopi, circ,
-fdp), @mvar{circular}, @mvar{spring_embedding} или
-@mvar{planar_embedding}. @mvar{planar_embedding} примеменимо только
+fdp), @var{circular}, @var{spring_embedding} или
+@var{planar_embedding}. @var{planar_embedding} примеменимо только
 2-связным планарным графам. Когда @code{program=spring_embedding}, то набор
 вершин с фиксированным расположением может быть задан с помощью опции
-@mvar{fixed_vertices}.
+@var{fixed_vertices}.
 @item
 @dfn{fixed_vertices=[]}: задает список вершин, которые будут расположены в
 фиксорованных позициях по правильному многограннику. 
@@ -2274,15 +2274,15 @@ fdp), @mvar{circular}, @mvar{spring_embedding} или
 @end deffn
 
 @defvr {Управляющая переменная} draw_graph_program
-Значение по умолчанию: @mvar{spring_embedding}.
+Значение по умолчанию: @var{spring_embedding}.
 
 Значение по умолчанию, которое используется для расположения вершин в программе @code{draw_graph}.
 @end defvr
 
-@deffn {Функция} vertices_to_path (@mvar{v_list})
-Преобразует список вершин @mvar{v_list} в список ребер пути, определяемого списком @mvar{v_list}.
+@deffn {Функция} vertices_to_path (@var{v_list})
+Преобразует список вершин @var{v_list} в список ребер пути, определяемого списком @var{v_list}.
 @end deffn
 
-@deffn {Функция} vertices_to_cycle (@mvar{v_list})
-Преобразует список вершин @mvar{v_list} в список ребер цикла, определяемого списком @mvar{v_list}.
+@deffn {Функция} vertices_to_cycle (@var{v_list})
+Преобразует список вершин @var{v_list} в список ребер цикла, определяемого списком @var{v_list}.
 @end deffn

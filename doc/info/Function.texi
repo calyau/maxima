@@ -75,7 +75,7 @@ if you want a sequence of expressions, you do
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
-and the value of @mvar{exprn} is what is returned by the function.
+and the value of @var{exprn} is what is returned by the function.
 
 If you wish to make a @code{return} from some expression inside the
 function then you must use @code{block} and @code{return}.
@@ -161,19 +161,19 @@ analogous to @code{funmake} for ordinary functions.
 @code{arrayapply} applies an array function to its arguments,
 analogous to @code{apply} for ordinary functions.
 There is nothing exactly analogous to @code{map} for array functions,
-although @code{map(lambda([@mvar{x}], @mvar{a}[@mvar{x}]), @mvar{L})} or
-@code{makelist(@mvar{a}[@mvar{x}], @mvar{x}, @mvar{L})}, where @mvar{L} is a list,
+although @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} or
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, where @var{L} is a list,
 are not too far off the mark.
 
 @code{remarray} removes an array function definition (including any stored
 function values), analogous to @code{remfunction} for ordinary functions.
 
-@code{kill(@mvar{a}[@mvar{x}])} removes the value of the array function @mvar{a}
-stored for the argument @mvar{x};
-the next time @mvar{a} is called with argument @mvar{x},
+@code{kill(@var{a}[@var{x}])} removes the value of the array function @var{a}
+stored for the argument @var{x};
+the next time @var{a} is called with argument @var{x},
 the function value is recomputed.
 However, there is no way to remove all of the stored values at once,
-except for @code{kill(@mvar{a})} or @code{remarray(@mvar{a})},
+except for @code{kill(@var{a})} or @code{remarray(@var{a})},
 which also remove the function definition.
 
 @c -----------------------------------------------------------------------------
@@ -183,30 +183,30 @@ which also remove the function definition.
 
 @c -----------------------------------------------------------------------------
 @anchor{buildq}
-@deffn {Function} buildq (@mvar{L}, @mvar{expr})
+@deffn {Function} buildq (@var{L}, @var{expr})
 
-Substitutes variables named by the list @mvar{L} into the expression @mvar{expr},
-in parallel, without evaluating @mvar{expr}.  The resulting expression is
+Substitutes variables named by the list @var{L} into the expression @var{expr},
+in parallel, without evaluating @var{expr}.  The resulting expression is
 simplified, but not evaluated, after @code{buildq} carries out the substitution.
 
-The elements of @mvar{L} are symbols or assignment expressions
-@code{@mvar{symbol}: @mvar{value}}, evaluated in parallel.  That is, the binding
+The elements of @var{L} are symbols or assignment expressions
+@code{@var{symbol}: @var{value}}, evaluated in parallel.  That is, the binding
 of a variable on the right-hand side of an assignment is the binding of that
 variable in the context from which @code{buildq} was called, not the binding of
-that variable in the variable list @mvar{L}.  If some variable in @mvar{L} is not
+that variable in the variable list @var{L}.  If some variable in @var{L} is not
 given an explicit assignment, its binding in @code{buildq} is the same as in
 the context from which @code{buildq} was called.
 
-Then the variables named by @mvar{L} are substituted into @mvar{expr} in parallel.
+Then the variables named by @var{L} are substituted into @var{expr} in parallel.
 That is, the substitution for every variable is determined before any
 substitution is made, so the substitution for one variable has no effect on any
 other.
 
-If any variable @mvar{x} appears as @code{splice (@mvar{x})} in @mvar{expr},
-then @mvar{x} must be bound to a list,
-and the list is spliced (interpolated) into @mvar{expr} instead of substituted.
+If any variable @var{x} appears as @code{splice (@var{x})} in @var{expr},
+then @var{x} must be bound to a list,
+and the list is spliced (interpolated) into @var{expr} instead of substituted.
 
-Any variables in @mvar{expr} not appearing in @mvar{L} are carried into the result
+Any variables in @var{expr} not appearing in @var{L} are carried into the result
 verbatim, even if they have bindings in the context from which @code{buildq}
 was called.
 
@@ -258,7 +258,7 @@ before substitution, these two results would be the same.
 (%o2)                        2 a b c
 @end example
 
-The variables in @mvar{L} are bound in parallel; if bound sequentially,
+The variables in @var{L} are bound in parallel; if bound sequentially,
 the first result would be @code{foo (b, b)}.
 Substitutions are carried out in parallel;
 compare the second result with the result of @code{subst},
@@ -327,13 +327,13 @@ create another function for which some of the arguments are fixed.
 
 @c -----------------------------------------------------------------------------
 @anchor{macroexpand}
-@deffn {Function} macroexpand (@mvar{expr})
+@deffn {Function} macroexpand (@var{expr})
 
-Returns the macro expansion of @mvar{expr} without evaluating it,
+Returns the macro expansion of @var{expr} without evaluating it,
 when @code{expr} is a macro function call.
-Otherwise, @code{macroexpand} returns @mvar{expr}.
+Otherwise, @code{macroexpand} returns @var{expr}.
 
-If the expansion of @mvar{expr} yields another macro function call,
+If the expansion of @var{expr} yields another macro function call,
 that macro function call is also expanded.
 
 @code{macroexpand} quotes its argument.
@@ -377,17 +377,17 @@ Examples
 
 @c -----------------------------------------------------------------------------
 @anchor{macroexpand1}
-@deffn {Function} macroexpand1 (@mvar{expr})
+@deffn {Function} macroexpand1 (@var{expr})
 
-Returns the macro expansion of @mvar{expr} without evaluating it,
+Returns the macro expansion of @var{expr} without evaluating it,
 when @code{expr} is a macro function call.
-Otherwise, @code{macroexpand1} returns @mvar{expr}.
+Otherwise, @code{macroexpand1} returns @var{expr}.
 
 @code{macroexpand1} quotes its argument.
 However, if the expansion of a macro function call has side effects,
 those side effects are executed.
 
-If the expansion of @mvar{expr} yields another macro function call,
+If the expansion of @var{expr} yields another macro function call,
 that macro function call is not expanded.
 
 See also @code{::=}, @code{macros}, and @code{macroexpand}.
@@ -442,21 +442,21 @@ See also @code{infolists}.
 
 @c -----------------------------------------------------------------------------
 @anchor{splice}
-@deffn {Function} splice (@mvar{a})
+@deffn {Function} splice (@var{a})
 
-Splices (interpolates) the list named by the atom @mvar{a} into an expression,
+Splices (interpolates) the list named by the atom @var{a} into an expression,
 but only if @code{splice} appears within @code{buildq};
 otherwise, @code{splice} is treated as an undefined function.
-If appearing within @code{buildq} as @mvar{a} alone (without @code{splice}),
-@mvar{a} is substituted (not interpolated) as a list into the result.
+If appearing within @code{buildq} as @var{a} alone (without @code{splice}),
+@var{a} is substituted (not interpolated) as a list into the result.
 The argument of @code{splice} can only be an atom;
 it cannot be a literal list or an expression which yields a list.
 
 Typically @code{splice} supplies the arguments for a function or operator.
-For a function @code{f}, the expression @code{f (splice (@mvar{a}))} within
-@code{buildq} expands to @code{f (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}.
-For an operator @code{o}, the expression @code{"o" (splice (@mvar{a})} within
-@code{buildq} expands to @code{"o" (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)},
+For a function @code{f}, the expression @code{f (splice (@var{a}))} within
+@code{buildq} expands to @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
+For an operator @code{o}, the expression @code{"o" (splice (@var{a})} within
+@code{buildq} expands to @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
 where @code{o} may be any type of operator (typically one which takes multiple
 arguments).  Note that the operator must be enclosed in double quotes @code{"}.
 
@@ -497,14 +497,14 @@ Examples
 
 @c -----------------------------------------------------------------------------
 @anchor{apply}
-@deffn {Function} apply (@mvar{F}, [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn {Function} apply (@var{F}, [@var{x_1}, @dots{}, @var{x_n}])
 
-Constructs and evaluates an expression @code{@mvar{F}(@mvar{arg_1}, ...,
-@mvar{arg_n})}.
+Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ...,
+@var{arg_n})}.
 
 @code{apply} does not attempt to distinguish array functions from ordinary
-functions; when @mvar{F} is the name of an array function, @code{apply} evaluates
-@code{@mvar{F}(...)} (that is, a function call with parentheses instead of square
+functions; when @var{F} is the name of an array function, @code{apply} evaluates
+@code{@var{F}(...)} (that is, a function call with parentheses instead of square
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
 this case.
 
@@ -524,7 +524,7 @@ In this example, @code{min} is applied to the value of @code{L}.
 (%o2)                        - 10.2
 @end example
 
-@code{apply} evaluates arguments, even if the function @mvar{F} quotes them.
+@code{apply} evaluates arguments, even if the function @var{F} quotes them.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -558,7 +558,7 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@code{apply} evaluates the function name @mvar{F}.
+@code{apply} evaluates the function name @var{F}.
 Single quote @code{'} defeats evaluation.
 @code{demoivre} is the name of a global variable and also a function.
 
@@ -588,27 +588,27 @@ Improper name or value in functional position.
 
 @c -----------------------------------------------------------------------------
 @anchor{block}
-@deffn  {Function} block ([@mvar{v_1}, @dots{}, @mvar{v_m}], @mvar{expr_1}, @dots{}, @mvar{expr_n})
-@deffnx {Function} block (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn  {Function} block ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n})
+@deffnx {Function} block (@var{expr_1}, @dots{}, @var{expr_n})
 
-@code{block} evaluates @mvar{expr_1}, @dots{}, @mvar{expr_n} in sequence and
+@code{block} evaluates @var{expr_1}, @dots{}, @var{expr_n} in sequence and
 returns the value of the last expression evaluated.  The sequence can be
 modified by the @code{go}, @code{throw}, and @code{return} functions.  The last
-expression is @mvar{expr_n} unless @code{return} or an expression containing
+expression is @var{expr_n} unless @code{return} or an expression containing
 @code{throw} is evaluated.
-Some variables @mvar{v_1}, @dots{}, @mvar{v_m} can be declared local to the block;
+Some variables @var{v_1}, @dots{}, @var{v_m} can be declared local to the block;
 these are distinguished from global variables of the same names.  If no
 variables are declared local then the list may be omitted.  Within the block,
-any variable other than @mvar{v_1}, @dots{}, @mvar{v_m} is a global variable.
+any variable other than @var{v_1}, @dots{}, @var{v_m} is a global variable.
 
-@code{block} saves the current values of the variables @mvar{v_1}, @dots{},
-@mvar{v_m} (if any) upon entry to the block, then unbinds the variables so that
+@code{block} saves the current values of the variables @var{v_1}, @dots{},
+@var{v_m} (if any) upon entry to the block, then unbinds the variables so that
 they evaluate to themselves.  The local variables may be bound to arbitrary
 values within the block but when the block is exited the saved values are
 restored, and the values assigned within the block are lost.
 
-The declaration @code{local(@mvar{v_1}, ..., @mvar{v_m})} within @code{block}
-saves the properties associated with the symbols @mvar{v_1}, @dots{}, @mvar{v_m},
+The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
+saves the properties associated with the symbols @var{v_1}, @dots{}, @var{v_m},
 removes any properties before evaluating other expressions, and restores any
 saved properties on exit from the block.  Some declarations are implemented as
 properties of a symbol, including @code{:=}, @code{array}, @code{dependencies},
@@ -648,9 +648,9 @@ but can be used in other places as well.
 
 @c -----------------------------------------------------------------------------
 @anchor{break}
-@deffn {Function} break (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} break (@var{expr_1}, @dots{}, @var{expr_n})
 
-Evaluates and prints @mvar{expr_1}, @dots{}, @mvar{expr_n} and then
+Evaluates and prints @var{expr_1}, @dots{}, @var{expr_n} and then
 causes a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
 
@@ -664,9 +664,9 @@ his environment.  Upon typing @code{exit;} the computation resumes.
 
 @c -----------------------------------------------------------------------------
 @anchor{catch}
-@deffn {Function} catch (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Function} catch (@var{expr_1}, @dots{}, @var{expr_n})
 
-Evaluates @mvar{expr_1}, @dots{}, @mvar{expr_n} one by one; if any
+Evaluates @var{expr_1}, @dots{}, @var{expr_n} one by one; if any
 leads to the evaluation of an expression of the
 form @code{throw (arg)}, then the value of the @code{catch} is the value of
 @code{throw (arg)}, and no further expressions are evaluated.
@@ -675,7 +675,7 @@ nesting to the nearest enclosing @code{catch}.  If there is no @code{catch}
 enclosing a @code{throw}, an error message is printed.
 
 If the evaluation of the arguments does not lead to the evaluation of any
-@code{throw} then the value of @code{catch} is the value of @mvar{expr_n}.
+@code{throw} then the value of @code{catch} is the value of @var{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -698,16 +698,16 @@ the first negative element of @code{l} and "throws" it up.
 
 @c -----------------------------------------------------------------------------
 @anchor{compfile}
-@deffn  {Function} compfile (@mvar{filename}, @mvar{f_1}, @dots{}, @mvar{f_n})
-@deffnx {Function} compfile (@mvar{filename}, functions)
-@deffnx {Function} compfile (@mvar{filename}, all)
+@deffn  {Function} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
+@deffnx {Function} compfile (@var{filename}, functions)
+@deffnx {Function} compfile (@var{filename}, all)
 
 Translates Maxima functions into Lisp and writes the translated code into the
-file @mvar{filename}.
+file @var{filename}.
 
-@code{compfile(@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})} translates the
-specified functions.  @code{compfile (@mvar{filename}, functions)} and
-@code{compfile (@mvar{filename}, all)} translate all user-defined functions.
+@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
+specified functions.  @code{compfile (@var{filename}, functions)} and
+@code{compfile (@var{filename}, all)} translate all user-defined functions.
 
 The Lisp translations are not evaluated, nor is the output file processed by
 the Lisp compiler.
@@ -735,11 +735,11 @@ See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 
 @c -----------------------------------------------------------------------------
 @anchor{compile}
-@deffn  {Function} compile (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {Function} compile (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} compile (functions)
 @deffnx {Function} compile (all)
 
-Translates Maxima functions @mvar{f_1}, @dots{}, @mvar{f_n} into Lisp, evaluates
+Translates Maxima functions @var{f_1}, @dots{}, @var{f_n} into Lisp, evaluates
 the Lisp translations, and calls the Lisp function @code{COMPILE} on each
 translated function.  @code{compile} returns a list of the names of the
 compiled functions.
@@ -757,27 +757,27 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 
 @c -----------------------------------------------------------------------------
 @anchor{define}
-@deffn  {Function} define (@mvar{f}(@mvar{x_1}, @dots{}, @mvar{x_n}), @mvar{expr})
-@deffnx {Function} define (@mvar{f}[@mvar{x_1}, @dots{}, @mvar{x_n}], @mvar{expr})
-@deffnx {Function} define (funmake (@mvar{f}, [@mvar{x_1}, @dots{}, @mvar{x_n}]), @mvar{expr})
-@deffnx {Function} define (arraymake (@mvar{f}, [@mvar{x_1}, @dots{}, @mvar{x_n}]), @mvar{expr})
-@deffnx {Function} define (ev (@mvar{expr_1}), @mvar{expr_2})
+@deffn  {Function} define (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr})
+@deffnx {Function} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr})
+@deffnx {Function} define (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {Function} define (ev (@var{expr_1}), @var{expr_2})
 
-Defines a function named @mvar{f} with arguments @mvar{x_1}, @dots{}, @mvar{x_n}
-and function body @mvar{expr}.  @code{define} always evaluates its second
+Defines a function named @var{f} with arguments @var{x_1}, @dots{}, @var{x_n}
+and function body @var{expr}.  @code{define} always evaluates its second
 argument (unless explicitly quoted).  The function so defined may be an ordinary
 Maxima function (with arguments enclosed in parentheses) or an array function
 (with arguments enclosed in square brackets).
 
-When the last or only function argument @mvar{x_n} is a list of one element,
+When the last or only function argument @var{x_n} is a list of one element,
 the function defined by @code{define} accepts a variable number of arguments.
-Actual arguments are assigned one-to-one to formal arguments @mvar{x_1}, @dots{},
-@mvar{x_(n - 1)}, and any further actual arguments, if present, are assigned to
-@mvar{x_n} as a list.
+Actual arguments are assigned one-to-one to formal arguments @var{x_1}, @dots{},
+@var{x_(n - 1)}, and any further actual arguments, if present, are assigned to
+@var{x_n} as a list.
 
 When the first argument of @code{define} is an expression of the form
-@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} or @code{@mvar{f}[@mvar{x_1}, ...,
-@mvar{x_n}]}, the function arguments are evaluated but @mvar{f} is not evaluated,
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ...,
+@var{x_n}]}, the function arguments are evaluated but @var{f} is not evaluated,
 even if there is already a function or variable by that name.
 
 When the first argument is an expression with operator @code{funmake},
@@ -790,7 +790,7 @@ of @code{f} to @code{g}.  However, @code{local(f)} makes the definition of
 function @code{f} effective only within the block or other compound expression
 in which @code{local} appears.
 
-If some formal argument @mvar{x_k} is a quoted symbol (after evaluation), the
+If some formal argument @var{x_k} is a quoted symbol (after evaluation), the
 function defined by @code{define} does not evaluate the corresponding actual
 argument.  Otherwise all actual arguments are evaluated.
 
@@ -835,7 +835,7 @@ array function.
                        x, y
 @end example
 
-When the last or only function argument @mvar{x_n} is a list of one element,
+When the last or only function argument @var{x_n} is a list of one element,
 the function defined by @code{define} accepts a variable number of arguments.
 
 @c ===beg===
@@ -882,11 +882,11 @@ When the first argument is an expression with operator @code{funmake},
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Function} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode}, @mvar{documentation})
+@c @deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 
 @c -----------------------------------------------------------------------------
 @anchor{define_variable}
-@deffn {Function} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
+@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduces a global variable into the Maxima environment.
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable
@@ -898,19 +898,19 @@ translated or compiled.
 
 @enumerate
 @item
-@code{mode_declare (@mvar{name}, @mvar{mode})} declares the mode of @mvar{name} to
+@code{mode_declare (@var{name}, @var{mode})} declares the mode of @var{name} to
 the translator.  See @code{mode_declare} for a list of the possible modes.
 
 @item
-If the variable is unbound, @mvar{default_value} is assigned to @mvar{name}.
+If the variable is unbound, @var{default_value} is assigned to @var{name}.
 
 @item
-@code{declare (@mvar{name}, special)} declares it special.
+@code{declare (@var{name}, special)} declares it special.
 @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
-Associates @mvar{name} with a test function
-to ensure that @mvar{name} is only assigned values of the declared mode.
+Associates @var{name} with a test function
+to ensure that @var{name} is only assigned values of the declared mode.
 @end enumerate
 
 
@@ -1037,11 +1037,11 @@ Cannot assign to `baz_quux'.
 
 @c -----------------------------------------------------------------------------
 @anchor{dispfun}
-@deffn  {Function} dispfun (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {Function} dispfun (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} dispfun (all)
 
-Displays the definition of the user-defined functions @mvar{f_1}, @dots{},
-@mvar{f_n}.  Each argument may be the name of a macro (defined with @code{::=}),
+Displays the definition of the user-defined functions @var{f_1}, @dots{},
+@var{f_n}.  Each argument may be the name of a macro (defined with @code{::=}),
 an ordinary function (defined with @code{:=} or @code{define}), an array
 function (defined with @code{:=} or @code{define}, but enclosing arguments in
 square brackets @code{[ ]}), a subscripted function, (defined with @code{:=} or
@@ -1141,7 +1141,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{fullmap}
-@deffn {Function} fullmap (@mvar{f}, @mvar{expr_1}, @dots{})
+@deffn {Function} fullmap (@var{f}, @var{expr_1}, @dots{})
 
 Similar to @code{map}, but @code{fullmap} keeps mapping down all subexpressions
 until the main operators are no longer the same.
@@ -1173,7 +1173,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{fullmapl}
-@deffn {Function} fullmapl (@mvar{f}, @mvar{list_1}, @dots{})
+@deffn {Function} fullmapl (@var{f}, @var{list_1}, @dots{})
 
 Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and
 matrices.
@@ -1260,9 +1260,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{fundef}
-@deffn {Function} fundef (@mvar{f})
+@deffn {Function} fundef (@var{f})
 
-Returns the definition of the function @mvar{f}.
+Returns the definition of the function @var{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 The argument may be the name of a macro (defined with @code{::=}), an ordinary
@@ -1276,8 +1276,8 @@ subscript value, or a subscripted function defined with a constant subscript.
 @code{fundef} quotes its argument;
 the quote-quote operator @code{'@w{}'} defeats quotation.
 
-@code{fundef (@mvar{f})} returns the definition of @mvar{f}.
-In contrast, @code{dispfun (@mvar{f})} creates an intermediate expression label
+@code{fundef (@var{f})} returns the definition of @var{f}.
+In contrast, @code{dispfun (@var{f})} creates an intermediate expression label
 and assigns the definition to the label.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
@@ -1288,15 +1288,15 @@ and assigns the definition to the label.
 
 @c -----------------------------------------------------------------------------
 @anchor{funmake}
-@deffn {Function} funmake (@mvar{F}, [@mvar{arg_1}, @dots{}, @mvar{arg_n}])
+@deffn {Function} funmake (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
 
-Returns an expression @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
+Returns an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 The return value is simplified, but not evaluated,
-so the function @mvar{F} is not called, even if it exists.
+so the function @var{F} is not called, even if it exists.
 
 @code{funmake} does not attempt to distinguish array functions from ordinary
-functions; when @mvar{F} is the name of an array function,
-@code{funmake} returns @code{@mvar{F}(...)}
+functions; when @var{F} is the name of an array function,
+@code{funmake} returns @code{@var{F}(...)}
 (that is, a function call with parentheses instead of square brackets).
 @code{arraymake} returns a function call with square brackets in this case.
 
@@ -1423,19 +1423,19 @@ Maxima simplifies @code{funmake}'s return value.
 
 @c -----------------------------------------------------------------------------
 @anchor{lambda}
-@deffn  {Function} lambda ([@mvar{x_1}, @dots{}, @mvar{x_m}], @mvar{expr_1}, @dots{}, @mvar{expr_n})
-@deffnx {Function} lambda ([[@mvar{L}]], @mvar{expr_1}, @dots{}, @mvar{expr_n})
-@deffnx {Function} lambda ([@mvar{x_1}, @dots{}, @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn  {Function} lambda ([@var{x_1}, @dots{}, @var{x_m}], @var{expr_1}, @dots{}, @var{expr_n})
+@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
+@deffnx {Function} lambda ([@var{x_1}, @dots{}, @var{x_m}, [@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
 
 Defines and returns a lambda expression (that is, an anonymous function).
-The function may have required arguments @mvar{x_1}, @dots{}, @mvar{x_m} and/or
-optional arguments @mvar{L}, which appear within the function body as a list.
-The return value of the function is @mvar{expr_n}.  A lambda expression can be
+The function may have required arguments @var{x_1}, @dots{}, @var{x_m} and/or
+optional arguments @var{L}, which appear within the function body as a list.
+The return value of the function is @var{expr_n}.  A lambda expression can be
 assigned to a variable and evaluated like an ordinary function.  A lambda
 expression may appear in some contexts in which a function name is expected.
 
-When the function is evaluated, unbound local variables @mvar{x_1}, @dots{},
-@mvar{x_m} are created.  @code{lambda} may appear within @code{block} or another
+When the function is evaluated, unbound local variables @var{x_1}, @dots{},
+@var{x_m} are created.  @code{lambda} may appear within @code{block} or another
 @code{lambda}; local variables are established each time another @code{block} or
 @code{lambda} is evaluated.  Local variables appear to be global to any enclosed
 @code{block} or @code{lambda}.  If a variable is not local, its value is the
@@ -1443,14 +1443,14 @@ value most recently assigned in an enclosing @code{block} or @code{lambda}, if
 any, otherwise, it is the value of the variable in the global environment.
 This policy may coincide with the usual understanding of "dynamic scope".
 
-After local variables are established, @mvar{expr_1} through @mvar{expr_n} are
+After local variables are established, @var{expr_1} through @var{expr_n} are
 evaluated in turn.  The special variable @code{%%}, representing the value of
 the preceding expression, is recognized.  @code{throw} and @code{catch} may also
 appear in the list of expressions.
 
 @code{return} cannot appear in a lambda expression unless enclosed by
 @code{block}, in which case @code{return} defines the return value of the block
-and not of the lambda expression, unless the block happens to be @mvar{expr_n}.
+and not of the lambda expression, unless the block happens to be @var{expr_n}.
 Likewise, @code{go} cannot appear in a lambda expression unless enclosed by
 @code{block}.
 
@@ -1588,7 +1588,7 @@ via @code{buildq}, as in lambda expression @code{i2} below.
 @itemize @bullet
 @item
 A lambda expression may take a variable number of arguments,
-which are indicated by @code{[@mvar{L}]} as the sole or final argument.
+which are indicated by @code{[@var{L}]} as the sole or final argument.
 The arguments appear within the function body as a list.
 @end itemize
 
@@ -1618,9 +1618,9 @@ The arguments appear within the function body as a list.
 
 @c -----------------------------------------------------------------------------
 @anchor{local}
-@deffn {Function} local (@mvar{v_1}, @dots{}, @mvar{v_n})
+@deffn {Function} local (@var{v_1}, @dots{}, @var{v_n})
 
-Saves the properties associated with the symbols @mvar{v_1}, @dots{}, @mvar{v_n},
+Saves the properties associated with the symbols @var{v_1}, @dots{}, @var{v_n},
 removes any properties before evaluating other expressions,
 and restores any saved properties on exit
 from the block or other compound expression in which @code{local} appears.
@@ -1898,7 +1898,7 @@ described.
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_declare}
-@deffn {Function} mode_declare (@mvar{y_1}, @mvar{mode_1}, @dots{}, @mvar{y_n}, @mvar{mode_n})
+@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
 
 @code{mode_declare} is used to declare the modes of variables and functions for
 subsequent translation or compilation of functions.  @code{mode_declare} is
@@ -1962,7 +1962,7 @@ single-word integers.
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_identity}
-@deffn {Function} mode_identity (@mvar{arg_1}, @mvar{arg_2})
+@deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
 
 A special form used with @code{mode_declare} and @code{macros} to declare, e.g.,
 a list of lists of flonums, or other compound data object.  The first argument
@@ -1995,10 +1995,10 @@ every time you take the first of a list of numbers.
 
 @c -----------------------------------------------------------------------------
 @anchor{remfunction}
-@deffn  {Function} remfunction (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {Function} remfunction (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} remfunction (all)
 
-Unbinds the function definitions of the symbols @mvar{f_1}, @dots{}, @mvar{f_n}.
+Unbinds the function definitions of the symbols @var{f_1}, @dots{}, @var{f_n}.
 The arguments may be the names of ordinary functions (created by @mref{:=} or
 @mref{define}) or macro functions (created by @mref{::=}).
 
@@ -2059,11 +2059,11 @@ suitable for compilation.
 
 @c -----------------------------------------------------------------------------
 @anchor{translate}
-@deffn  {Function} translate (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {Function} translate (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} translate (functions)
 @deffnx {Function} translate (all)
 
-Translates the user-defined functions @mvar{f_1}, @dots{}, @mvar{f_n} from the
+Translates the user-defined functions @var{f_1}, @dots{}, @var{f_n} from the
 Maxima language into Lisp and evaluates the Lisp translations.
 Typically the translated functions run faster than the originals.
 
@@ -2079,8 +2079,8 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 @end example
 
 @noindent
-where the @mvar{x_1}, @mvar{x_2}, @dots{}  are the parameters to the function and
-the @mvar{v_1}, @mvar{v_2}, @dots{} are the local variables.
+where the @var{x_1}, @var{x_2}, @dots{}  are the parameters to the function and
+the @var{v_1}, @var{v_2}, @dots{} are the local variables.
 
 The names of translated functions are removed from the @code{functions} list
 if @code{savedef} is @code{false} (see below) and are added to the @code{props}
@@ -2124,8 +2124,8 @@ functions translated.
 
 @c -----------------------------------------------------------------------------
 @anchor{translate_file}
-@deffn  {Function} translate_file (@mvar{maxima_filename})
-@deffnx {Function} translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})
+@deffn  {Function} translate_file (@var{maxima_filename})
+@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
 
 Translates a file of Maxima code into a file of Lisp code.
 @code{translate_file} returns a list of three filenames:
@@ -2138,15 +2138,15 @@ containing additional information about the translation.
 @code{'@w{}'} and @code{%}, for example.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-@code{translate_file (@mvar{maxima_filename})} translates a Maxima file
-@mvar{maxima_filename} into a similarly-named Lisp file.
+@code{translate_file (@var{maxima_filename})} translates a Maxima file
+@var{maxima_filename} into a similarly-named Lisp file.
 For example, @code{foo.mac} is translated into @code{foo.LISP}.
 The Maxima filename may include a directory name or names,
 in which case the Lisp output file is written
 to the same directory from which the Maxima input comes.
 
-@code{translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})} translates
-a Maxima file @mvar{maxima_filename} into a Lisp file @mvar{lisp_filename}.
+@code{translate_file (@var{maxima_filename}, @var{lisp_filename})} translates
+a Maxima file @var{maxima_filename} into a Lisp file @var{lisp_filename}.
 @code{translate_file} ignores the filename extension, if any, of
 @code{lisp_filename}; the filename extension of the Lisp output file is always
 @code{LISP}.  The Lisp filename may include a directory name or names,
@@ -2479,11 +2479,11 @@ undefined global variables are seen.
 
 @c -----------------------------------------------------------------------------
 @anchor{compile_file}
-@deffn  {Function} compile_file (@mvar{filename})
-@deffnx {Function} compile_file (@mvar{filename}, @mvar{compiled_filename})
-@deffnx {Function} compile_file (@mvar{filename}, @mvar{compiled_filename}, @mvar{lisp_filename})
+@deffn  {Function} compile_file (@var{filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 
-Translates the Maxima file @mvar{filename} into Lisp, executes the Lisp compiler,
+Translates the Maxima file @var{filename} into Lisp, executes the Lisp compiler,
 and, if the translation and compilation succeed, loads the compiled code into
 Maxima.
 
@@ -2512,7 +2512,7 @@ flags (@code{tr_numer}, etc.) have no effect on the translation.
 @c the compilation succeeded. This is a bug. 
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@mvar{filename} may not contain @code{:lisp} statements.
+@var{filename} may not contain @code{:lisp} statements.
 
 @code{compile_file} evaluates its arguments.
 
@@ -2525,7 +2525,7 @@ flags (@code{tr_numer}, etc.) have no effect on the translation.
 
 @c -----------------------------------------------------------------------------
 @anchor{declare_translated}
-@deffn {Function} declare_translated (@mvar{f_1}, @mvar{f_2}, @dots{})
+@deffn {Function} declare_translated (@var{f_1}, @var{f_2}, @dots{})
 
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it

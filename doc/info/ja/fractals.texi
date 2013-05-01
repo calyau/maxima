@@ -43,11 +43,11 @@ Press 1994を参照してください。
 
 変換を変えて、別のフラクタルを見つけることができます。
 
-@deffn {関数} sierpinskiale (@mvar{n})
+@deffn {関数} sierpinskiale (@var{n})
 
 Sierpinski三角形: 3つの縮小写像; .5の縮小定数と変形;
 すべての写像は同じ縮小比です。
-引数@mvar{n}は十分大きく、10000以上でなければいけません、
+引数@var{n}は十分大きく、10000以上でなければいけません、
 
 例:
 
@@ -63,10 +63,10 @@ Sierpinski三角形: 3つの縮小写像; .5の縮小定数と変形;
 
 @end deffn
 
-@deffn {関数} treefale (@mvar{n})
+@deffn {関数} treefale (@var{n})
 
 すべて同じ縮小比を持つ3つの縮小写像。
-引数@mvar{n}は十分大きく、10000以上でなければいけません、
+引数@var{n}は十分大きく、10000以上でなければいけません、
 
 例:
 
@@ -82,10 +82,10 @@ Sierpinski三角形: 3つの縮小写像; .5の縮小定数と変形;
 
 @end deffn
 
-@deffn {関数} fernfale (@mvar{n})
+@deffn {関数} fernfale (@var{n})
 
 変換を選択する確率が縮小比に関係する、4つの縮小写像。
-引数@mvar{n}は十分大きく、10000以上でなければいけません、
+引数@var{n}は十分大きく、10000以上でなければいけません、
 
 例:
 
@@ -104,7 +104,7 @@ Sierpinski三角形: 3つの縮小写像; .5の縮小定数と変形;
 @node Definitions for complex fractals, Definitions for Koch snowflakes, Definitions for IFS fractals, Top
 @section Definitions for complex fractals
 
-@deffn {関数} mandelbrot_set (@mvar{x}, @mvar{y})
+@deffn {関数} mandelbrot_set (@var{x}, @var{y})
 
 Mandelbrot集合。
 
@@ -130,7 +130,7 @@ Mandelbrot集合。
 
 
 
-@deffn {関数} julia_set (@mvar{x}, @mvar{y})
+@deffn {関数} julia_set (@var{x}, @var{y})
 
 Julia集合。
 
@@ -178,7 +178,7 @@ Juliaフラクタルの複素パラメータ。
 
 
 
-@deffn {関数} julia_sin (@mvar{x}, @mvar{y})
+@deffn {関数} julia_sin (@var{x}, @var{y})
 
 関数@code{julia_set}が変換@code{julia_parameter+z^2}を実装する一方、
 関数@code{julia_sin}は@code{julia_parameter*sin(z)}を実装します。
@@ -213,14 +213,14 @@ See also @code{julia_parameter}.
 
 
 
-@deffn {関数} snowmap (@mvar{ent}, @mvar{nn})
+@deffn {関数} snowmap (@var{ent}, @var{nn})
 
 Koch雪片集合。
 関数@code{snowmap}は、
 複素平面内の初期値の閉多角形の頂点上に雪Koch写像をプロットします。
 ここで多角形の向きが重要です。
-引数Argument @mvar{nn}はKoch変換の繰り返し適用の回数です;
-@mvar{nn}は小さく(5か6で)なければいけません。
+引数Argument @var{nn}はKoch変換の繰り返し適用の回数です;
+@var{nn}は小さく(5か6で)なければいけません。
 
 例:
 
@@ -244,13 +244,13 @@ Koch雪片集合。
 @section Definitions for Peano maps
 
 ある面積を覆う連続曲線。
-警告: @mvar{n}と共に点の数は指数関数的に増加します。
+警告: @var{n}と共に点の数は指数関数的に増加します。
 
 
-@deffn {関数} hilbertmap (@mvar{nn})
+@deffn {関数} hilbertmap (@var{nn})
 
 Hilbert写像。
-@mvar{nn}は小さく(例えば5で)なければいけません。
+@var{nn}は小さく(例えば5で)なければいけません。
 もし7以上ならMaximaはクラッシュするかもしれません。
 
 例:
@@ -266,10 +266,10 @@ Hilbert写像。
 
 @end deffn
 
-@deffn {関数} sierpinskimap (@mvar{nn})
+@deffn {関数} sierpinskimap (@var{nn})
 
 Sierpinski写像。
-@mvar{nn}は小さく(例えば5で)なければいけません。
+@var{nn}は小さく(例えば5で)なければいけません。
 もし7以上ならMaximaはクラッシュするかもしれません。
 
 例:

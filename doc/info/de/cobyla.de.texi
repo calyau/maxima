@@ -70,25 +70,25 @@ Group, Report NA1998/04 from
 
 @c -----------------------------------------------------------------------------
 @anchor{fmin_cobyla}
-@deffn  {Function} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {Function} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn  {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
-Returns an approximate minimum of the expression @mvar{F} with respect
-to the variables @mvar{X}, subject to an optional set of constraints.
-@mvar{Y} is a list of initial guesses for @mvar{X}.
+Returns an approximate minimum of the expression @var{F} with respect
+to the variables @var{X}, subject to an optional set of constraints.
+@var{Y} is a list of initial guesses for @var{X}.
 
-@mvar{F} must be an ordinary expressions, not names of functions or lambda 
+@var{F} must be an ordinary expressions, not names of functions or lambda 
 expressions.
 
 @code{optional_args} represents additional arguments, specified as 
-@code{@mvar{symbol} = @mvar{value}}.  The optional arguments recognized are:
+@code{@var{symbol} = @var{value}}.  The optional arguments recognized are:
 
 @table @code
 @item constraints
-List of inequality and equality constraints that must be satisfied by @mvar{X}.
+List of inequality and equality constraints that must be satisfied by @var{X}.
 The inequality constraints must be actual inequalities of the form 
-@code{g(@mvar{X}) >= h(@mvar{X})} or @code{g(@mvar{X}) <= h(@mvar{X})}.  The
-equality constraints must be of the form @code{g(@mvar{X}) = h(@mvar{X})}.
+@code{g(@var{X}) >= h(@var{X})} or @code{g(@var{X}) <= h(@var{X})}.  The
+equality constraints must be of the form @code{g(@var{X}) = h(@var{X})}.
 
 @item rhobeg
 Initial value of the internal RHO variable which controls the size of simplex.
@@ -120,8 +120,8 @@ On return, a vector is given:
 @enumerate
 @item
 The value of the variables giving the minimum.  This is a list of
-elements of the form @code{@mvar{var} = @mvar{value}} for each of the
-variables listed in @mvar{X}.
+elements of the form @code{@var{var} = @var{value}} for each of the
+variables listed in @var{X}.
 @item
 The minimized function value
 @item
@@ -143,11 +143,11 @@ Return code with the following meanings
 
 @c -----------------------------------------------------------------------------
 @anchor{bf_fmin_cobyla}
-@deffn  {Function} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {Function} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn  {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
 This function is identical to @code{fmin_cobyla}, except that bigfloat
-operations are used, and the default value for @mvar{rhoend} is
+operations are used, and the default value for @var{rhoend} is
 @code{10^(fpprec/2)}.
 
 See @code{fmin_cobyla} for more information.

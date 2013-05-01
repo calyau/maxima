@@ -23,8 +23,8 @@ A structure is defined by the @code{defstruct} function;
 the global variable @code{structures} is the list of user-defined structures.
 The function @code{new} creates instances of structures.
 The @code{@@} operator refers to fields.
-@code{kill(@mvar{S})} removes the structure definition @mvar{S},
-and @code{kill(@mvar{x}@@ @mvar{a})} unbinds the field @mvar{a} of the structure instance @mvar{x}.
+@code{kill(@var{S})} removes the structure definition @var{S},
+and @code{kill(@var{x}@@ @var{a})} unbinds the field @var{a} of the structure instance @var{x}.
 
 In the pretty-printing console display (with @code{display2d} equal to @code{true}),
 structure instances are displayed with the value of each field
@@ -56,23 +56,23 @@ all fields are always visible.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} defstruct (@mvar{S}(@mvar{a_1}, @dots{}, @mvar{a_n}))
-@deffnx {Function} defstruct (@mvar{S}(@mvar{a_1} = @mvar{v_1}, @dots{}, @mvar{a_n} = @mvar{v_n}))
+@deffn  {Function} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {Function} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
 
-Define a structure, which is a list of named fields @mvar{a_1}, @dots{},
-@mvar{a_n} associated with a symbol @mvar{S}.
-An instance of a structure is just an expression which has operator @mvar{S}
+Define a structure, which is a list of named fields @var{a_1}, @dots{},
+@var{a_n} associated with a symbol @var{S}.
+An instance of a structure is just an expression which has operator @var{S}
 and exactly @code{n} arguments.
-@code{new(@mvar{S})} creates a new instance of structure @mvar{S}.
+@code{new(@var{S})} creates a new instance of structure @var{S}.
 
-An argument which is just a symbol @mvar{a} specifies the name of a field.
-An argument which is an equation @code{@mvar{a} = @mvar{v}} specifies the field name @mvar{a}
-and its default value @mvar{v}.
+An argument which is just a symbol @var{a} specifies the name of a field.
+An argument which is an equation @code{@var{a} = @var{v}} specifies the field name @var{a}
+and its default value @var{v}.
 The default value can be any expression.
 
-@code{defstruct} puts @mvar{S} on the list of user-defined structures, @code{structures}.
+@code{defstruct} puts @var{S} on the list of user-defined structures, @code{structures}.
 
-@code{kill(@mvar{S})} removes @mvar{S} from the list of user-defined structures,
+@code{kill(@var{S})} removes @var{S} from the list of user-defined structures,
 and removes the structure definition.
 
 Examples:
@@ -112,17 +112,17 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} new (@mvar{S})
-@deffnx {Function} new (@mvar{S} (@mvar{v_1}, @dots{}, @mvar{v_n}))
+@deffn  {Function} new (@var{S})
+@deffnx {Function} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
 
 @code{new} creates new instances of structures.
 
-@code{new(@mvar{S})} creates a new instance of structure @mvar{S}
+@code{new(@var{S})} creates a new instance of structure @var{S}
 in which each field is assigned its default value, if any,
 or no value at all if no default was specified in the structure definition.
 
-@code{new(@mvar{S}(@mvar{v_1}, ..., @mvar{v_n}))} creates a new instance of @mvar{S}
-in which fields are assigned the values @mvar{v_1}, @dots{}, @mvar{v_n}.
+@code{new(@var{S}(@var{v_1}, ..., @var{v_n}))} creates a new instance of @var{S}
+in which fields are assigned the values @var{v_1}, @dots{}, @var{v_n}.
 
 Examples:
 
@@ -149,13 +149,13 @@ Examples:
 @deffn {Operator} @@
 
 @code{@@} is the structure field access operator.
-The expression @code{@mvar{x}@@ @mvar{a}} refers to the value of field @mvar{a} of the structure instance @mvar{x}.
+The expression @code{@var{x}@@ @var{a}} refers to the value of field @var{a} of the structure instance @var{x}.
 The field name is not evaluated.
 
-If the field @mvar{a} in @mvar{x} has not been assigned a value,
-@code{@mvar{x}@@ @mvar{a}} evaluates to itself.
+If the field @var{a} in @var{x} has not been assigned a value,
+@code{@var{x}@@ @var{a}} evaluates to itself.
 
-@code{kill(@mvar{x}@@ @mvar{a})} removes the value of field @mvar{a} in @mvar{x}.
+@code{kill(@var{x}@@ @var{a})} removes the value of field @var{a} in @var{x}.
 
 Examples:
 

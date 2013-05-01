@@ -45,8 +45,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloat}
-@deffn {関数} bfloat (@mvar{expr})
-@mvar{expr}の中のすべての数や数の関数を多倍長浮動小数点に変換します。
+@deffn {関数} bfloat (@var{expr})
+@var{expr}の中のすべての数や数の関数を多倍長浮動小数点に変換します。
 戻り値の多倍長浮動小数点の有効桁数は、
 グローバル変数@mref{fpprec}によって規定されます。
 
@@ -61,9 +61,9 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloatp}
-@deffn {関数} bfloatp (@mvar{expr})
+@deffn {関数} bfloatp (@var{expr})
 
-もし@mvar{expr}が多倍長浮動小数点数なら@code{true}を、そうでなければ@code{false}を返します。
+もし@var{expr}が多倍長浮動小数点数なら@code{true}を、そうでなければ@code{false}を返します。
 
 @opencatbox
 @category{Numerical evaluation} @category{Predicate functions}
@@ -105,9 +105,9 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{evenp}
-@deffn {関数} evenp (@mvar{expr})
+@deffn {関数} evenp (@var{expr})
 
-もし@mvar{expr}が偶数なら@code{true}を返します。
+もし@var{expr}が偶数なら@code{true}を返します。
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 他の場合には@code{false}を返します。
 
@@ -118,9 +118,9 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{float}
-@deffn {関数} float (@mvar{expr})
+@deffn {関数} float (@var{expr})
 
-@mvar{expr}の中の整数、有理数、多倍長浮動小数点を浮動小数点に変換します。
+@var{expr}の中の整数、有理数、多倍長浮動小数点を浮動小数点に変換します。
 @code{float}は@code{evflag}でもあり、
 非整数有理数と多倍長浮動小数点を浮動小数点に変換します。
 
@@ -148,8 +148,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{floatnump}
-@deffn {関数} floatnump (@mvar{expr})
-もし@mvar{expr}が浮動小数点なら
+@deffn {関数} floatnump (@var{expr})
+もし@var{expr}が浮動小数点なら
 @code{true}を返し、そうでないなら
 @code{false}を返します。
 
@@ -204,8 +204,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 
 @c -----------------------------------------------------------------------------
 @anchor{integerp}
-@deffn {関数} integerp (@mvar{expr})
-もし@mvar{expr}が整数リテラルなら @code{true}を、
+@deffn {関数} integerp (@var{expr})
+もし@var{expr}が整数リテラルなら @code{true}を、
 そうでないなら @code{false}を返します。
 
 もし引数がシンボルならたとえ引数が宣言された整数でも、
@@ -267,9 +267,9 @@ m1pbranch:false          m1pbranch:true
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} nonnegintegerp (@mvar{n})
+@deffn {関数} nonnegintegerp (@var{n})
 
-@code{@mvar{n} >= 0}かつ @mvar{n}が整数の時だけ@code{true}を返します。
+@code{@var{n} >= 0}かつ @var{n}が整数の時だけ@code{true}を返します。
 
 
 @opencatbox
@@ -279,9 +279,9 @@ m1pbranch:false          m1pbranch:true
 
 @c -----------------------------------------------------------------------------
 @anchor{numberp}
-@deffn {関数} numberp (@mvar{expr})
+@deffn {関数} numberp (@var{expr})
 
-もし@mvar{expr}が文字リテラルか、有理数か、浮動小数点数か、多倍長浮動小数点なら
+もし@var{expr}が文字リテラルか、有理数か、浮動小数点数か、多倍長浮動小数点なら
 @code{true}を、
 そうでなければ @code{false}を返します。
 
@@ -400,7 +400,7 @@ Maximaは主枝を使って数値結果を評価します。
 
 @c -----------------------------------------------------------------------------
 @anchor{numerval}
-@deffn {関数} numerval (@mvar{x_1}, @mvar{expr_1}, @dots{}, @mvar{x_n}, @mvar{expr_n})
+@deffn {関数} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{x_n}, @var{expr_n})
 変数@code{x_1}, @dots{}, @code{x_n}を
 @code{expr_1}, @dots{}, @code{expr_n}に等しい数値を持つ変数だと宣言します。
 もし @code{numer}フラグが @code{true}なら、
@@ -416,8 +416,8 @@ Maximaは主枝を使って数値結果を評価します。
 
 @c -----------------------------------------------------------------------------
 @anchor{oddp}
-@deffn {関数} oddp (@mvar{expr})
-もしも@mvar{exp}が奇数であれば@code{true}を返し、
+@deffn {関数} oddp (@var{expr})
+もしも@var{exp}が奇数であれば@code{true}を返し、
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 それ以外では@code{false}を返します。
 
@@ -441,9 +441,9 @@ Maximaは主枝を使って数値結果を評価します。
 
 @c -----------------------------------------------------------------------------
 @anchor{rationalize}
-@deffn {関数} rationalize (@mvar{expr})
+@deffn {関数} rationalize (@var{expr})
 
-Maximaの式@mvar{expr}の中の倍精度浮動小数点やビッグフローすべてを同値の有理数に変換します。
+Maximaの式@var{expr}の中の倍精度浮動小数点やビッグフローすべてを同値の有理数に変換します。
 もし浮動小数点の２値表現に詳しくなれば、@code{rationalize (0.1)}が1/10に等しくないことに
 驚くかもしれません。
 この振る舞いはMaximaに特別なわけではありません。―1/10は２値の循環小数表現を持ちます。
@@ -551,8 +551,8 @@ reverse(uf))
 
 @c -----------------------------------------------------------------------------
 @anchor{ratnump}
-@deffn {関数} ratnump (@mvar{expr})
-もし@mvar{expr}が整数リテラルもしくは整数リテラルの比なら @code{true}を返し、
+@deffn {関数} ratnump (@var{expr})
+もし@var{expr}が整数リテラルもしくは整数リテラルの比なら @code{true}を返し、
 そうでなければ @code{false}を返します。
 
 @opencatbox
@@ -648,7 +648,7 @@ this string.";
 
 @c -----------------------------------------------------------------------------
 @anchor{concat}
-@deffn {関数} concat (@mvar{arg_1}, @mvar{arg_2}, @dots{})
+@deffn {関数} concat (@var{arg_1}, @var{arg_2}, @dots{})
 
 引数を連結します。
 引数はアトムに評価されなければいけません。
@@ -701,7 +701,7 @@ this string.";
 
 @c -----------------------------------------------------------------------------
 @anchor{sconcat}
-@deffn {関数} sconcat (@mvar{arg_1}, @mvar{arg_2}, ...)
+@deffn {関数} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
 引数を文字列に連結します。
 @mref{concat}と違い、引数はアトムである必要は@i{ありません}。
@@ -720,7 +720,7 @@ this string.";
 
 @c -----------------------------------------------------------------------------
 @anchor{string}
-@deffn {関数} string (@mvar{expr})
+@deffn {関数} string (@var{expr})
 
 @code{expr}を、ただまるでタイプされたようにMaximaの線形表記に変換します。
 

@@ -45,11 +45,11 @@ con la raz@'on de contracci@'on.
 Se pueden cambiar las transformaciones y encontrar nuevos fractales.
 
 
-@deffn {Funci@'on} sierpinskiale (@mvar{n})
+@deffn {Funci@'on} sierpinskiale (@var{n})
 
 Tri@'angulo de Sierpinski: 3 aplicaciones contractivas; constante de contracci@'on de 0.5
 y traslaciones. Todas las aplicaciones tienen la misma constante de contracci@'on. El argumento
-@mvar{n} debe ser suficientemente alto, 10000 o mayor.
+@var{n} debe ser suficientemente alto, 10000 o mayor.
 
 Ejemplo:
 
@@ -60,10 +60,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} treefale (@mvar{n})
+@deffn {Funci@'on} treefale (@var{n})
 
 3 aplicaciones contractivas, todas ellas con el mismo coeficiente
-de contracci@'on. El argumento @mvar{n} debe ser suficientemente alto, 10000 o mayor.
+de contracci@'on. El argumento @var{n} debe ser suficientemente alto, 10000 o mayor.
 
 Ejemplo:
 
@@ -74,10 +74,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} fernfale (@mvar{n})
+@deffn {Funci@'on} fernfale (@var{n})
 
 4 aplicaciones contractivas, cuyas probabilidades de selecci@'on deben estar
-relacionadas con su constante de contracci@'on. El argumento @mvar{n} debe ser
+relacionadas con su constante de contracci@'on. El argumento @var{n} debe ser
 suficientemente alto, 10000 o mayor.
 
 Ejemplo:
@@ -92,7 +92,7 @@ Ejemplo:
 @node Definiciones para fractales complejos, Definiciones para cops de Koch, Definiciones para IFS fractals, Top
 @section Definiciones para fractales complejos
 
-@deffn {Funci@'on} mandelbrot_set (@mvar{x}, @mvar{y})
+@deffn {Funci@'on} mandelbrot_set (@var{x}, @var{y})
 
 Conjunto de Mandelbrot.
 
@@ -114,7 +114,7 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} julia_set (@mvar{x}, @mvar{y})
+@deffn {Funci@'on} julia_set (@var{x}, @var{y})
 
 Conjuntos de Julia.
 
@@ -151,7 +151,7 @@ y otros que se sugieren son: @code{-.745+%i*.113002}, @code{-.39054-%i*.58679},
 
 
 
-@deffn {Funci@'on} julia_sin (@mvar{x}, @mvar{y})
+@deffn {Funci@'on} julia_sin (@var{x}, @var{y})
 
 Mientras que la funci@'on @code{julia_set} implementa la transformaci@'on 
 @code{julia_parameter+z^2}, la funci@'on @code{julia_sin} implementa 
@@ -179,12 +179,12 @@ V@'ease tambi@'en @code{julia_parameter}.
 
 
 
-@deffn {Funci@'on} snowmap (@mvar{ent}, @mvar{nn})
+@deffn {Funci@'on} snowmap (@var{ent}, @var{nn})
 
 Copos de Koch. La funci@'on @code{snowmap} dibuja el copo de Koch
 sobre los v@'ertices de un pol@'{@dotless{i}}gono convexo inicial del
 plano complejo. La orientaci@'on del pol@'{@dotless{i}}gono es importante.
-El argumento @mvar{nn} es el n@'umero de recursividades de la transformaci@'on
+El argumento @var{nn} es el n@'umero de recursividades de la transformaci@'on
 de Koch, el cual debe ser peque@~no (5 o 6).
 
 Ejemplos:
@@ -208,14 +208,14 @@ Ejemplos:
 @section Definiciones para curvas de Peano
 
 Funciones continuas que cubren un @'area. Aviso: el n@'umero de puntos
-crece exponencialmente con @mvar{n}.
+crece exponencialmente con @var{n}.
 
 
 
-@deffn {Funci@'on} hilbertmap (@mvar{nn})
+@deffn {Funci@'on} hilbertmap (@var{nn})
 
-Curva de Hilbert. El argumento @mvar{nn} debe ser peque@~no (por ejemplo, 5).
-Maxima se puede detener si @mvar{nn} es 7 o mayor.
+Curva de Hilbert. El argumento @var{nn} debe ser peque@~no (por ejemplo, 5).
+Maxima se puede detener si @var{nn} es 7 o mayor.
 
 Ejemplo:
 
@@ -225,10 +225,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} sierpinskimap (@mvar{nn})
+@deffn {Funci@'on} sierpinskimap (@var{nn})
 
-Curva de Sierpinski. El argumento @mvar{nn} debe ser peque@~no (por ejemplo, 5).
-Maxima se puede detener si @mvar{nn} es 7 o mayor.
+Curva de Sierpinski. El argumento @var{nn} debe ser peque@~no (por ejemplo, 5).
+Maxima se puede detener si @var{nn} es 7 o mayor.
 
 Ejemplo:
 

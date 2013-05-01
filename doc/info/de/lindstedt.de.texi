@@ -16,12 +16,12 @@
 @section Functions and Variables for lindstedt
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} Lindstedt (@mvar{eq},@mvar{pvar},@mvar{torder},@mvar{ic})
+@deffn {Function} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
 
 This is a first pass at a Lindstedt code.  It can solve problems with initial 
-conditions entered, which can be arbitrary constants, (just not @mvar{%k1} and 
-@mvar{%k2}) where the initial conditions on the perturbation equations are 
-@math{z[i]=0, z'[i]=0} for @math{i>0}. @mvar{ic} is the list of initial 
+conditions entered, which can be arbitrary constants, (just not @var{%k1} and 
+@var{%k2}) where the initial conditions on the perturbation equations are 
+@math{z[i]=0, z'[i]=0} for @math{i>0}. @var{ic} is the list of initial 
 conditions.
 
 Problems occur when initial conditions are not given, as the constants in the 

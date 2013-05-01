@@ -9,14 +9,14 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} lsquares (@mvar{Mat},@mvar{VarList},@mvar{equation},@mvar{ParamList})
-@deffnx {Function} lsquares (@mvar{Mat},@mvar{VarList},@mvar{equation},@mvar{ParamList},@mvar{GuessList})
+@deffn {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList})
+@deffnx {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList},@var{GuessList})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars})
-@deffnx {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon})
-@deffnx {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon},@mvar{maxdegree})
+@deffn {Function} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

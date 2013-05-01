@@ -29,9 +29,9 @@ forma:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-e a fun@value{cedilha}@~{a}o @mvar{F} pode ser dada como um argumento para
-@code{plotdf}. A vari@'{a}vel independente est@'{a} sempre identificada como @mvar{x},
-e a vari@'{a}vel dependente como @mvar{y}. Essas duas vari@'{a}veis podem n@~{a}o
+e a fun@value{cedilha}@~{a}o @var{F} pode ser dada como um argumento para
+@code{plotdf}. A vari@'{a}vel independente est@'{a} sempre identificada como @var{x},
+e a vari@'{a}vel dependente como @var{y}. Essas duas vari@'{a}veis podem n@~{a}o
 ter quaisquer valores atribu@'{i}dos a elas.
 
 Para montar o gr@'{a}fico do campo de dire@value{cedilha}@~{a}o de um conjunto de duas EDO's aut@^{o}nomas, elas devem
@@ -48,7 +48,7 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 e o argumento para @code{plotdf} pode ser uma lista com as duas
-fun@value{cedilha}@~{o}es @mvar{F} e @mvar{G}, em qualquer ordem.
+fun@value{cedilha}@~{o}es @var{F} e @var{G}, em qualquer ordem.
 
 Se somente uma EDO for fornecida, @code{plotdf} ir@'{a} admitir implicitamente
 @code{x=t}, e @code{G(x,y)=1}, transformando a equa@value{cedilha}@~{a}o n@~{a}o
@@ -57,17 +57,17 @@ aut@^{o}noma em um sistema de duas equa@value{cedilha}@~{o}es aut@^{o}nomas.
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf,  , Introdu@value{cedilha}@~{a}o a plotdf, plotdf
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf
 
-@deffn {Fun@value{cedilha}@~{a}o} plotdf (@mvar{dydx},...op@value{cedilha}@~{o}es...)
-@deffnx {Fun@value{cedilha}@~{a}o} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]},...op@value{cedilha}@~{o}es...)
+@deffn {Fun@value{cedilha}@~{a}o} plotdf (@var{dydx},...op@value{cedilha}@~{o}es...)
+@deffnx {Fun@value{cedilha}@~{a}o} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~{o}es...)
 
-Mostra um campo de dire@value{cedilha}@~{a}o em duas dimens@~{o}es @mvar{x} e @mvar{y}.
+Mostra um campo de dire@value{cedilha}@~{a}o em duas dimens@~{o}es @var{x} e @var{y}.
 
-@mvar{dydx}, @mvar{dxdt} e @mvar{dydt} s@~{a}o express@~{o}es que dependem
-de @mvar{x} e @mvar{y}. Adicionalmente para essas duas vari@'{a}veis, as
+@var{dydx}, @var{dxdt} e @var{dydt} s@~{a}o express@~{o}es que dependem
+de @var{x} e @var{y}. Adicionalmente para essas duas vari@'{a}veis, as
 express@~{o}es podem tamb@'{e}m depender de um conjunto de par@^{a}metros, com valores
 num@'{e}ricos fornecidos com os @code{par@^{a}metros} op@value{cedilha}@~{a}o (a sintaxe de op@value{cedilha}@~{a}o @'{e}
 fornecida abaixo), ou com um intervalo de valores permitidos especificados por meio de uma
-op@value{cedilha}@~{a}o @mvar{sliders}.
+op@value{cedilha}@~{a}o @var{sliders}.
 
 Muitas outras op@value{cedilha}@~{o}es podem ser fornecidas dentro do comando, ou selecionadas no
 menu. Curvas integrais podem ser obtidas por meio de um clique no gr@'{a}fico, ou
@@ -100,7 +100,7 @@ a @'{u}ltima curva integral fornecida ser@'{a} mostrada.
 
 Mantendo o bot@~{a}o direito do mouse pressionado enquanto o cursor @'{e} movido, pode ser
 usado para arrastar as laterais do gr@'{a}fico para cima ou para baixo. Par@^{a}metros
-adicionais tais como o n@'{u}mero de passos, o valor inicial de @mvar{t}
+adicionais tais como o n@'{u}mero de passos, o valor inicial de @var{t}
 e os centros de x e y e raios, podem ser escolhidos no menu Config.
 
 Uma c@'{o}pia do gr@'{a}fico pode ser impressa para uma impressora Postscript, ou gravada como um
@@ -121,9 +121,9 @@ As op@value{cedilha}@~{o}esque s@~{a}o reconhecidas por @code{plotdf} s@~{a}o as
 @itemize @bullet
 @item
 @dfn{tstep} define o comprimento dos incrementos sobre a
-vari@'{a}vel independente @mvar{t}, usado para calcular uma curva integral. Se somente
-uma express@~{a}o @mvar{dydx} for fornecida a @code{plotdf}, a vari@'{a}vel
-@mvar{x} ser@'{a} diretamente proporcional a @mvar{t}.
+vari@'{a}vel independente @var{t}, usado para calcular uma curva integral. Se somente
+uma express@~{a}o @var{dydx} for fornecida a @code{plotdf}, a vari@'{a}vel
+@var{x} ser@'{a} diretamente proporcional a @var{t}.
 O valor padr@~{a}o @'{e} 0.1.
 
 @item
@@ -144,24 +144,24 @@ sinonimos para @code{forward} e @code{backward}.
 O valor padr@~{a}o @'{e} @code{both}.
 
 @item
-@dfn{tinitial} define o valor inicial da vari@'{a}vel @mvar{t} usada
+@dfn{tinitial} define o valor inicial da vari@'{a}vel @var{t} usada
 para calcular curva integral. Uma vez que equa@value{cedilha}@~{o}es diferenciais forem
 aut@^{o}nomas, aquela esxolha ir@'{a} aparecer somente no gr@'{a}fico das curvas como
-fun@value{cedilha}@~{o}es de @mvar{t}. 
+fun@value{cedilha}@~{o}es de @var{t}. 
 O valor padr@~{a}o @'{e} 0.
 
 @item
 @dfn{versus_t} @'{e} usado para criar uma segunda janela de gr@'{a}fico, com um
-gr@'{a}fico de uma curva integral, como duas fun@value{cedilha}@~{o}es @mvar{x}, @mvar{y}, da
-vari@'{a}vel independente @mvar{t}. Se para @code{versus_t} for atribu@'{i}do qualquer valor
+gr@'{a}fico de uma curva integral, como duas fun@value{cedilha}@~{o}es @var{x}, @var{y}, da
+vari@'{a}vel independente @var{t}. Se para @code{versus_t} for atribu@'{i}do qualquer valor
 diferente de 0, a segunda janela de gr@'{a}fico ser@'{a} mostrada. A segunda
 janela de gr@'{a}fico inclui outro menu, semelhante ao menu da janela de gr@'{a}fico
 principal.
 O valor padr@~{a}o @'{e} 0.
 
 @item
-@dfn{trajectory_at} define as coordenadas @mvar{xinitial} e
-@mvar{yinitial} para o ponto de partida de uma curva integral.
+@dfn{trajectory_at} define as coordenadas @var{xinitial} e
+@var{yinitial} para o ponto de partida de uma curva integral.
 A op@value{cedilha}@~{a}o est@'{a} vazia por padr@~{a}o.
 
 @item
@@ -178,7 +178,7 @@ seq@"{u}@^{e}ncia de caracteres com uma seq@"{u}@^{e}ncia de elementos  @code{na
 
 @item
 @dfn{xfun} define uma seq@"{u}@^{e}ncia de caracteres com uma seq@"{u}@^{e}ncia de fun@value{cedilha}@~{o}es separadas com
-ponto e v@'{i}rgula @mvar{x} para serem mostradas, no topo do campo de dire@value{cedilha}@~{a}o.
+ponto e v@'{i}rgula @var{x} para serem mostradas, no topo do campo de dire@value{cedilha}@~{a}o.
 Essas fun@value{cedilha}@~{o}es ir@~{a}o ser passadas pelo Tcl e n@~{a}o pelo Maxima.
 
 @item

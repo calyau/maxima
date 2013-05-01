@@ -52,12 +52,12 @@ Newton法の実装です。
 
 @c -----------------------------------------------------------------------------
 @anchor{function_mnewton}
-@deffn {関数} mnewton (@mvar{FuncList},@mvar{VarList},@mvar{GuessList})
+@deffn {関数} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
 
 Newton法を使った複数非線形関数の解。
-@mvar{FuncList}は解くべき関数のリスト、
-@mvar{VarList}は変数名のリスト、
-@mvar{GuessList}は初期近似のリストです。
+@var{FuncList}は解くべき関数のリスト、
+@var{VarList}は変数名のリスト、
+@var{GuessList}は初期近似のリストです。
 
 解は
 @code{solve()}が返すのと同じフォーマットで返されます。

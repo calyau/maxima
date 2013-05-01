@@ -5,27 +5,27 @@
 @node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Functions and Variables for augmented_lagrangian
 
-@deffn  {関数} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {関数} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
-@deffnx {関数} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {関数} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
+@deffn  {関数} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {関数} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffnx {関数} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
+@deffnx {関数} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
-ゼロに等しい制約@mvar{C}を保ちながら、
-式@mvar{FOM}の変数@mvar{xx}に関する近似最小を返します。
-@mvar{yy}は
-@mvar{xx}の初期推量のリストです。
+ゼロに等しい制約@var{C}を保ちながら、
+式@var{FOM}の変数@var{xx}に関する近似最小を返します。
+@var{yy}は
+@var{xx}の初期推量のリストです。
 利用した方法は拡張Lagrange法です。(文献[1]と[2]を参照してください。)
 
-もしあるなら、@mvar{grad}は
-@mvar{FOM}の@mvar{xx}に関するグラディエントであり、
-@mvar{xx}の変数それぞれに関する式のリストとして表されます。
+もしあるなら、@var{grad}は
+@var{FOM}の@var{xx}に関するグラディエントであり、
+@var{xx}の変数それぞれに関する式のリストとして表されます。
 もしないなら、グラディエントは自動的に構成されます。
 
-@mvar{FOM}と、もしあるなら@mvar{grad}の要素それぞれは、
+@var{FOM}と、もしあるなら@var{grad}の要素それぞれは、
 関数名やラムダ式ではなく、通常の式でなければいけません。
 
 @code{optional_args}は、
-@code{@mvar{symbol} = @mvar{value}}として指定される、
+@code{@var{symbol} = @var{value}}として指定される、
 追加の引数を表します。
 認識されるオプション引数は以下の通りです:
 

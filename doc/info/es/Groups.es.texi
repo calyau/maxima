@@ -6,10 +6,10 @@
 @node Funciones y variables para grupos,  , Grupos, Grupos
 @section Funciones y variables para grupos
 
-@deffn {Funci@'on} todd_coxeter (@mvar{relaciones}, @mvar{subgrupo})
-@deffnx {Funci@'on} todd_coxeter (@mvar{relaciones})
+@deffn {Funci@'on} todd_coxeter (@var{relaciones}, @var{subgrupo})
+@deffnx {Funci@'on} todd_coxeter (@var{relaciones})
 
-Busca el orden de G/H donde G es el m@'odulo del Grupo Libre de @mvar{relations}, y H es el subgrupo de G generado por @code{subgrupo}. @code{subgrupo} es un argumento opcional, cuyo valor por defecto es []. 
+Busca el orden de G/H donde G es el m@'odulo del Grupo Libre de @var{relations}, y H es el subgrupo de G generado por @code{subgrupo}. @code{subgrupo} es un argumento opcional, cuyo valor por defecto es []. 
 
 En este proceso se obtiene una tabla de multiplicaci@'on para la acci@'on correcta de G sobre G/H, donde los co-cojuntos son enumerados [H,Hg2,Hg3,...]. Esto puede ser observado internamente en el @code{todd_coxeter_state}.
 

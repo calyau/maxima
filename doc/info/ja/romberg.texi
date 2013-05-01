@@ -5,27 +5,27 @@
 @node Functions and Variables for romberg, , Top, Top
 @section Functions and Variables for romberg
 
-@deffn {関数} romberg (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
-@deffnx {関数} romberg (@mvar{F}, @mvar{a}, @mvar{b})
+@deffn {関数} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {関数} romberg (@var{F}, @var{a}, @var{b})
 
 Romberg法による数値積分を計算します。
 
-@code{romberg(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}は
-積分@code{integrate(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}の概算を返します。
+@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}は
+積分@code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}の概算を返します。
 
-@mvar{expr}は、
-@mvar{x}が浮動小数点値にバインドされた時
+@var{expr}は、
+@var{x}が浮動小数点値にバインドされた時
 浮動小数点値に評価される
 式でなければいけません。
 
-@code{romberg(@mvar{F}, @mvar{a}, @mvar{b})}は
-積分@code{integrate(@mvar{F}(x), x, @mvar{a}, @mvar{b})}の概算を返します。
-ここで、@code{x}は@mvar{F}の名付けられない唯一の引数を表します;
+@code{romberg(@var{F}, @var{a}, @var{b})}は
+積分@code{integrate(@var{F}(x), x, @var{a}, @var{b})}の概算を返します。
+ここで、@code{x}は@var{F}の名付けられない唯一の引数を表します;
 実際の引数は@code{x}と名付けられません。
-@mvar{F}は、
+@var{F}は、
 引数が浮動小数点値の時、浮動小数点値を返す
 MaximaかLispの関数でなければいけません。
-@mvar{F}は翻訳またはコンパイルされたMaxima関数を指定することができます。
+@var{F}は翻訳またはコンパイルされたMaxima関数を指定することができます。
 
 @code{romberg}の精度は
 グローバル変数@code{rombergabs}と@code{rombergtol}によって決定されます。

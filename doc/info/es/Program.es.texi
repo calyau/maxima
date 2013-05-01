@@ -71,7 +71,7 @@ Un identificador Lisp el cual esta escrito mezclando letras may@'usculas y min@'
 E.g., el identificador Lisp @code{|$Foo|} corresponde a el identificador Maxima @code{Foo}. 
 @end enumerate
 
-La macro Lisp @code{#$} permite el uso de expresiones Maxima dentro de c@'odigo Lisp. @code{#$@mvar{expr}$} extiende a una expresi@'on Lisp equivalente a la expresi@'on Maxima @mvar{expr}.   
+La macro Lisp @code{#$} permite el uso de expresiones Maxima dentro de c@'odigo Lisp. @code{#$@var{expr}$} extiende a una expresi@'on Lisp equivalente a la expresi@'on Maxima @var{expr}.   
 
 @example
 (msetq $foo #$[x, y]$)
@@ -167,7 +167,7 @@ Maxima dispone de los bucles @code{do} para hacer iteraciones, as@'{@dotless{i}}
 @section Funciones y variables para la programaci@'on
 
 @deffn {Funci@'on} backtrace ()
-@deffnx {Funci@'on} backtrace (@mvar{n})
+@deffnx {Funci@'on} backtrace (@var{n})
 Devuelve la pila de llamadas, esto es, la lista de funciones que han llamado a la funci@'on actualmente activa.
 
 La llamada a @code{backtrace()} devuelve la pila completa de llamadas.
@@ -189,7 +189,7 @@ Ejemplos:
                                49
 @end example
 
-La llamada @code{backtrace (@mvar{n})} devuelve las @mvar{n} funciones m@'as recientes, incluyendo a la funci@'on actualmente activa.
+La llamada @code{backtrace (@var{n})} devuelve las @var{n} funciones m@'as recientes, incluyendo a la funci@'on actualmente activa.
 
 Ejemplos:
 
@@ -217,17 +217,17 @@ Hay tres variantes de esta sentencia que se diferencian entre s@'{@dotless{i}} @
 
 @itemize @bullet
 @item
-@code{for @mvar{variable}: @mvar{valor_inicial} step @mvar{incremento}
-      thru @mvar{l@'{@dotless{i}}mite} do @mvar{cuerpo}}
+@code{for @var{variable}: @var{valor_inicial} step @var{incremento}
+      thru @var{l@'{@dotless{i}}mite} do @var{cuerpo}}
 @item
-@code{for @mvar{variable}: @mvar{valor_inicial} step @mvar{incremento}
-      while @mvar{condici@'on} do @mvar{cuerpo}}
+@code{for @var{variable}: @var{valor_inicial} step @var{incremento}
+      while @var{condici@'on} do @var{cuerpo}}
 @item
-@code{for @mvar{variable}: @mvar{valor_inicial} step @mvar{incremento}
-      unless @mvar{condici@'on} do @mvar{cuerpo}}
+@code{for @var{variable}: @var{valor_inicial} step @var{incremento}
+      unless @var{condici@'on} do @var{cuerpo}}
 @end itemize
 
-El @mvar{valor_inicial}, el @mvar{incremento}, el @mvar{l@'{@dotless{i}}mite} y el @mvar{cuerpo} pueden ser cualquier tipo de expresi@'on v@'alida de Maxima. Si el incremento es igual a la unidad (1) entonces "@code{step 1}" puede omitirse.
+El @var{valor_inicial}, el @var{incremento}, el @var{l@'{@dotless{i}}mite} y el @var{cuerpo} pueden ser cualquier tipo de expresi@'on v@'alida de Maxima. Si el incremento es igual a la unidad (1) entonces "@code{step 1}" puede omitirse.
 
 La ejecuci@'on de la sentencia @code{do} se realiza asignando el valor_inicial a la variable (llamada de aqu@'{@dotless{i}} en adelante variable-control). A continuaci@'on: (1) si la variable-control ha excedido el l@'{@dotless{i}}mite de la especificaci@'on dada por un @code{thru}, o si la condici@'on impuesta por @code{unless} es verdadera (@code{true}), o si la condici@'on dada por @code{while} es falsa (@code{false}) entonces la iteraci@'on @code{do} termina. (2) El cuerpo se eval@'ua.  (3) El incremento es sumado a la variable-control. El proceso de (1) a (3) se repite hasta que la condici@'on de fin de iteraci@'on se satisfaga. Tambi@'en es posible especificar varias condiciones de terminaci@'on del bucle, en cuyo caso @code{do} terminar@'a cuando se satisfaga alguna de ellas.
 
@@ -296,7 +296,7 @@ lo que da ocho t@'erminos del desarrollo de Taylor de la funci@'on @code{e^sin(x
 
 Este ejemplo calcula la ra@'{@dotless{i}}z cuadrada negativa de 10 haciendo 10 iteraciones del m@'etodo de Newton-Raphson. De no haberse alcanzado el criterio de convergencia el valor devuelto hubiese sido @code{done}.
 
-En lugar de a@~nadir siempre una cantidad a la variable-control a veces se puede querer que cambie en cada iteraci@'on siguiendo alg@'un otro criterio. En tal caso se puede hacer uso de @code{next @mvar{expresi@'on}} en lugar de @code{step @mvar{incremento}}. Esto har@'a que a la variable-control se le asigne el resultado de evaluar la expresi@'on en cada iteraci@'on del bucle.
+En lugar de a@~nadir siempre una cantidad a la variable-control a veces se puede querer que cambie en cada iteraci@'on siguiendo alg@'un otro criterio. En tal caso se puede hacer uso de @code{next @var{expresi@'on}} en lugar de @code{step @var{incremento}}. Esto har@'a que a la variable-control se le asigne el resultado de evaluar la expresi@'on en cada iteraci@'on del bucle.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -318,7 +318,7 @@ En ocasiones puede interesar realizar una iteraci@'on en la que la variable-cont
 (%o4)                   2.23606797749979
 @end example
 
-Si as@'{@dotless{i}} se quiere, incluso es posible omitir las condiciones de terminaci@'on completamente y escribir @'unicamente @code{do @mvar{body}}, lo que provocar@'a entrar en un bucle infinito. En tal caso, deber@'{@dotless{i}}a usarse la funci@'on @code{return} a fin de terminar con la ejecuci@'on de @code{do}.
+Si as@'{@dotless{i}} se quiere, incluso es posible omitir las condiciones de terminaci@'on completamente y escribir @'unicamente @code{do @var{body}}, lo que provocar@'a entrar en un bucle infinito. En tal caso, deber@'{@dotless{i}}a usarse la funci@'on @code{return} a fin de terminar con la ejecuci@'on de @code{do}.
 
 @example
 (%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
@@ -334,10 +334,10 @@ Si as@'{@dotless{i}} se quiere, incluso es posible omitir las condiciones de ter
 Hay todav@'{@dotless{i}}a otra forma de @code{do} en Maxima. Su sintaxis es:
 
 @example
-for @mvar{variable} in @mvar{lista} @mvar{test_de_parada} do @mvar{cuerpo}
+for @var{variable} in @var{lista} @var{test_de_parada} do @var{cuerpo}
 @end example
 
-Los elementos de @mvar{list} son cualesquiera expresiones que se ir@'an asignando sucesivamente a la variable en cada repetici@'on del cuerpo. El test de parada @mvar{end_tests} (que es opcional) puede usarse para terminar la ejecuci@'on de @code{do}; de otro modo las iteraciones se parar@'an cuando la lista se haya agotado o cuando se ejecute un @code{return} dentro del cuerpo.  (De hecho, la lista puede ser cualquier expresi@'on no at@'omica, de la cual se ir@'an extrayendo de forma sucesiva sus diferentes partes.)
+Los elementos de @var{list} son cualesquiera expresiones que se ir@'an asignando sucesivamente a la variable en cada repetici@'on del cuerpo. El test de parada @var{end_tests} (que es opcional) puede usarse para terminar la ejecuci@'on de @code{do}; de otro modo las iteraciones se parar@'an cuando la lista se haya agotado o cuando se ejecute un @code{return} dentro del cuerpo.  (De hecho, la lista puede ser cualquier expresi@'on no at@'omica, de la cual se ir@'an extrayendo de forma sucesiva sus diferentes partes.)
 
 @example
 (%i1)  for f in [log, rho, atan] do ldisp(f(1))$
@@ -354,18 +354,18 @@ Los elementos de @mvar{list} son cualesquiera expresiones que se ir@'an asignand
 
 
 
-@deffn {Funci@'on} errcatch (@mvar{expr_1}, ..., @mvar{expr_n})
-Eval@'ua las expresiones @mvar{expr_1}, ..., @mvar{expr_n} una a una y devuelve @code{[@mvar{expr_n}]} (una lista) en caso de que no ocurra ning@'un error. En caso de aparecer alg@'un error durante el c@'alculo de alguno de los argumentos, @code{errcatch} evita que el error se propague y devuelve la lista vac@'{@dotless{i}}a @code{[]} sin evaluar m@'as argumentos.
+@deffn {Funci@'on} errcatch (@var{expr_1}, ..., @var{expr_n})
+Eval@'ua las expresiones @var{expr_1}, ..., @var{expr_n} una a una y devuelve @code{[@var{expr_n}]} (una lista) en caso de que no ocurra ning@'un error. En caso de aparecer alg@'un error durante el c@'alculo de alguno de los argumentos, @code{errcatch} evita que el error se propague y devuelve la lista vac@'{@dotless{i}}a @code{[]} sin evaluar m@'as argumentos.
 
 La funci@'on @code{errcatch} es @'util en ficheros @code{batch} donde se sospeche que pueda aparecer alg@'un error, el cual provocar@'{@dotless{i}}a la terminaci@'on de la ejecuci@'on del @code{batch} de no ser previamente detectado.
 
 @end deffn
 
-@deffn {Funci@'on} error (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} error (@var{expr_1}, ..., @var{expr_n})
 @deffnx {Variable del sistema} error
-Calcula y devuelve @mvar{expr_1}, ..., @mvar{expr_n}, enviando posteriormente una se@~al de error a Maxima o al @code{errcatch} m@'as cercano. 
+Calcula y devuelve @var{expr_1}, ..., @var{expr_n}, enviando posteriormente una se@~al de error a Maxima o al @code{errcatch} m@'as cercano. 
 
-A la variable @code{error} se le asigna una lista con la descripci@'on del error. El primer elemento de @code{error} es una cadena de formato, la cual une todas las cadenas de los argumentos @mvar{expr_1}, ..., @mvar{expr_n}, siendo los dem@'as elementos de la lista los valores de los argumentos que no son cadenas.
+A la variable @code{error} se le asigna una lista con la descripci@'on del error. El primer elemento de @code{error} es una cadena de formato, la cual une todas las cadenas de los argumentos @var{expr_1}, ..., @var{expr_n}, siendo los dem@'as elementos de la lista los valores de los argumentos que no son cadenas.
 
 La llamada a @code{errormsg()} formatea e imprime @code{error}. Se reimprime as@'{@dotless{i}} el mensaje de error m@'as reciente.
 
@@ -430,7 +430,7 @@ Valor por defecto: @code{[errexp1, errexp2, errexp3]}
 
 En los mensajes de error, las expresiones mayores que @code{error_size} son reemplazadas por s@'{@dotless{i}}mbolos a los cuales se les asignas estas expresiones.  Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}. La primera expresi@'on que resulte ser demasiado larga se reemplaza por @code{error_syms[1]}, la segunda por @code{error_syms[2]} y as@'{@dotless{i}} sucesivamente.
 
-Si hay m@'as expresiones largas que elementos en @code{error_syms}, los s@'{@dotless{i}}mbolos se construyen autom@'aticamente, siendo el @mvar{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @mvar{n})}.
+Si hay m@'as expresiones largas que elementos en @code{error_syms}, los s@'{@dotless{i}}mbolos se construyen autom@'aticamente, siendo el @var{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @var{n})}.
 
 V@'eanse tambi@'en @code{error} y @code{error_size}.
 
@@ -509,7 +509,7 @@ Utilizado en las iteraciones. V@'ease @code{do} para una descripci@'on de las t@
 
 @end deffn
 
-@deffn {Funci@'on} go (@mvar{etiqueta})
+@deffn {Funci@'on} go (@var{etiqueta})
 Se utiliza dentro de un bloque (@code{block}) para transferir el control a la sentencia del bloque que est@'e etiquetada con el argumento de @code{go}. Una sentencia queda etiquetada cuando est@'a precedida por un argumento de tipo @'atomo como cualquier otra sentencia de @code{block}.  Por ejemplo:
 
 @example
@@ -523,29 +523,29 @@ El argumento de @code{go} debe ser el nombre de una etiqueta que aparezca en el 
 @deffn {Operador especial} if
 Evaluaci@'on condicionada. Se reconocen varias formas de expresiones @code{if}.
 
-La expresi@'on @code{if @mvar{cond_1} then @mvar{expr_1} else @mvar{expr_0}}
-devuelve @mvar{expr_1} si @mvar{cond_1} vale @code{true},
+La expresi@'on @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
+devuelve @var{expr_1} si @var{cond_1} vale @code{true},
 en caso contrario la respuesta es @code{expr_0}.
 
-La expresi@'on @code{if @mvar{cond_1} then @mvar{expr_1} elseif @mvar{cond_2}
-then @mvar{expr_2} elseif ... else @mvar{expr_0}}
-devuelve @mvar{expr_k} si @mvar{cond_k} vale @code{true} y todas las
+La expresi@'on @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2}
+then @var{expr_2} elseif ... else @var{expr_0}}
+devuelve @var{expr_k} si @var{cond_k} vale @code{true} y todas las
 condiciones anteriores toman el valor @code{false}.
 Si ninguna de las condiciones vale @code{true}, la respuesta es @code{expr_0}.
 
 La falta de un @code{else} final se interpreta como un @code{else false};
-esto es, la expresi@'on @code{if @mvar{cond_1} then @mvar{expr_1}}
-equivale a @code{if @mvar{cond_1} then @mvar{expr_1} else false},
-y @code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n}}
+esto es, la expresi@'on @code{if @var{cond_1} then @var{expr_1}}
+equivale a @code{if @var{cond_1} then @var{expr_1} else false},
+y @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
 equivale a su vez a
-@code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then @mvar{expr_n} else false}.
+@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
 
-Las alternativas @mvar{expr_0}, ..., @mvar{expr_n} pueden ser expresiones
+Las alternativas @var{expr_0}, ..., @var{expr_n} pueden ser expresiones
 v@'alidas de Maxima, incluidas expresiones @code{if} anidadas.
 Las alternativas ni se simplifican ni se eval@'uan, a menos que su
 condici@'on asociada valga @code{true}.
 
-Las condiciones @mvar{cond_1}, ..., @mvar{cond_n} deben ser expresiones 
+Las condiciones @var{cond_1}, ..., @var{cond_n} deben ser expresiones 
 capaces de dar como resultado @code{true} o @code{false} al ser
 evaluadas. Si en un momento dado una condici@'on no da como resultado 
 un valor de verdad (@code{true} o @code{false}), el comportamiento de @code{if} se controla
@@ -577,11 +577,11 @@ no                      not         operador l@'ogico prefijo
 
 @end deffn
 
-@deffn {Funci@'on} map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {Funci@'on} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Devuelve una expresi@'on cuyo operador principal es el mismo 
-que aparece en las expresiones @mvar{expr_1}, ..., @mvar{expr_n} 
-pero cuyas subpartes son los resultados de aplicar @mvar{f} 
-a cada una de las subpartes de las expresiones;  @mvar{f} puede ser 
+que aparece en las expresiones @var{expr_1}, ..., @var{expr_n} 
+pero cuyas subpartes son los resultados de aplicar @var{f} 
+a cada una de las subpartes de las expresiones;  @var{f} puede ser 
 tanto el nombre de una funci@'on de @math{n} argumentos como
 una expresi@'on @code{lambda} de @math{n} argumentos.
 
@@ -610,8 +610,8 @@ en el espacio de almacenamiento durante el curso de un c@'alculo.
 V@'ease tambi@'en @code{maperror} .
 @end deffn
 
-@deffn {Funci@'on} mapatom (@mvar{expr})
-Devuelve @code{true} si y s@'olo @mvar{expr} es tratado por las rutinas de mapeo como un @'atomo.
+@deffn {Funci@'on} mapatom (@var{expr})
+Devuelve @code{true} si y s@'olo @var{expr} es tratado por las rutinas de mapeo como un @'atomo.
 @end deffn
 
 @defvr {Variable opcional} maperror
@@ -621,10 +621,10 @@ Cuando @code{maperror} toma el valor @code{false},
 hace que todas las funciones de mapeo, como por ejemplo
 
 @example
-map (f, @mvar{expr_1}, @mvar{expr_2}, ...)
+map (f, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
-(1) paren cuando hayan terminado de procesar la @mvar{expr_i} m@'as corta,
+(1) paren cuando hayan terminado de procesar la @var{expr_i} m@'as corta,
 a menos que todas ellas sean del mismo tama@~no y (2) apliquen  @code{f}
 a @code{[expr_1, expr_2, ...]} si es el caso que las @code{expr_i}
 no son todas del mismo tipo de objeto.
@@ -648,10 +648,10 @@ Si @code{mapprint} vale @code{false}, no se emitir@'an tales mensajes.
 
 
 
-@deffn {Funci@'on} maplist (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
-Devuelve una lista con las aplicaciones de @mvar{f} a las partes de las expresiones @mvar{expr_1}, ..., @mvar{expr_n}; @mvar{f} es el nombre de una funci@'on ou una expresi@'on lambda.
+@deffn {Funci@'on} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Devuelve una lista con las aplicaciones de @var{f} a las partes de las expresiones @var{expr_1}, ..., @var{expr_n}; @var{f} es el nombre de una funci@'on ou una expresi@'on lambda.
 
-La funci@'on @code{maplist} difiere de @code{map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})}, la cual devuelve una expresi@'on con el mismo operador principal que tenga @mvar{expr_i}, excepto en simplificaciones y en el caso en el que @code{map} hace un @code{apply}.
+La funci@'on @code{maplist} difiere de @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}, la cual devuelve una expresi@'on con el mismo operador principal que tenga @var{expr_i}, excepto en simplificaciones y en el caso en el que @code{map} hace un @code{apply}.
 
 @end deffn
 
@@ -672,9 +672,9 @@ V@'ease @code{block} para m@'as informaci@'on.
 
 @end deffn
 
-@deffn {Funci@'on} scanmap (@mvar{f}, @mvar{expr})
-@deffnx {Funci@'on} scanmap (@mvar{f}, @mvar{expr}, bottomup)
-Aplica recursivamente @mvar{f} sobre @mvar{expr}, de arriba hacia abajo. Esto es m@'as @'util cuando se busca una factorizaci@'on completa, por ejemplo:
+@deffn {Funci@'on} scanmap (@var{f}, @var{expr})
+@deffnx {Funci@'on} scanmap (@var{f}, @var{expr}, bottomup)
+Aplica recursivamente @var{f} sobre @var{expr}, de arriba hacia abajo. Esto es m@'as @'util cuando se busca una factorizaci@'on completa, por ejemplo:
 
 @example
 (%i1) exp:(a^2+2*a+1)*y + x^2$
@@ -683,7 +683,7 @@ Aplica recursivamente @mvar{f} sobre @mvar{expr}, de arriba hacia abajo. Esto es
 (%o2)                         (a + 1)  y + x
 @end example
 
-N@'otese que c@'omo @code{scanmap} aplica la funci@'on dada @code{factor} a las subexpresiones que forman a @mvar{expr}; si se presenta otra forma de @mvar{expr} a @code{scanmap} entonces el resultado puede ser diferente. As@'{@dotless{i}}, @code{%o2} no se restaura cuando @code{scanmap} se aplica a la forma expandida de exp:
+N@'otese que c@'omo @code{scanmap} aplica la funci@'on dada @code{factor} a las subexpresiones que forman a @var{expr}; si se presenta otra forma de @var{expr} a @code{scanmap} entonces el resultado puede ser diferente. As@'{@dotless{i}}, @code{%o2} no se restaura cuando @code{scanmap} se aplica a la forma expandida de exp:
 
 @example
 (%i3) scanmap(factor,expand(exp));
@@ -700,7 +700,7 @@ Aqu@'{@dotless{i}} hay otro ejemplo de la forma en que @code{scanmap} aplica rec
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
 
-@code{scanmap (@mvar{f}, @mvar{expr}, bottomup)} aplica @mvar{f} a @mvar{expr} de abajo hacia arriba. Por ejemplo, para @code{f} no definida,
+@code{scanmap (@var{f}, @var{expr}, bottomup)} aplica @var{f} a @var{expr} de abajo hacia arriba. Por ejemplo, para @code{f} no definida,
 
 @example
 scanmap(f,a*x+b) ->
@@ -714,8 +714,8 @@ En este caso se obtiene la misma respuesta por cualquiera de los dos m@'etodos.
 
 @end deffn
 
-@deffn {Funci@'on} throw (@mvar{expr})
-Eval@'ua @mvar{expr} y devuelve el valor del @code{catch} m@'as reciente. La funci@'on @code{throw} se utiliza junto con @code{catch} como un mecanismo de retorno no local.
+@deffn {Funci@'on} throw (@var{expr})
+Eval@'ua @var{expr} y devuelve el valor del @code{catch} m@'as reciente. La funci@'on @code{throw} se utiliza junto con @code{catch} como un mecanismo de retorno no local.
 
 @end deffn
 
@@ -728,27 +728,27 @@ V@'ease @code{do}.
 @end deffn
 
 
-@deffn {Funci@'on} outermap (@mvar{f}, @mvar{a_1}, ..., @mvar{a_n})
-Aplica la funci@'on @mvar{f} a cada uno de los elementos del producto vectorial @mvar{a_1} por @mvar{a_2} ... por @mvar{a_n}.
+@deffn {Funci@'on} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+Aplica la funci@'on @var{f} a cada uno de los elementos del producto vectorial @var{a_1} por @var{a_2} ... por @var{a_n}.
 
-El argumento @mvar{f} debe ser el nombre de una funci@'on de @math{n} argumentos,
+El argumento @var{f} debe ser el nombre de una funci@'on de @math{n} argumentos,
 o una expresi@'on lambda de @math{n} argumentos.
-Cada uno de los argumentos @mvar{a_k} puede ser una lista, una lista anidada, 
+Cada uno de los argumentos @var{a_k} puede ser una lista, una lista anidada, 
 una matriz o cualquier otro tipo de expresi@'on.
 
-El valor devuelto por @code{outermap} es una estructura anidada. Si @mvar{x} es la
+El valor devuelto por @code{outermap} es una estructura anidada. Si @var{x} es la
 respuesta dada por @code{outermap}, entonces tiene la misma estructura que la primera lista,
-lista anidada o matriz, @code{@mvar{x}[i_1]...[i_m]} tiene la misma estructura que la
-segunda lista, lista anidada o matriz, @code{@mvar{x}[i_1]...[i_m][j_1]...[j_n]} tiene 
+lista anidada o matriz, @code{@var{x}[i_1]...[i_m]} tiene la misma estructura que la
+segunda lista, lista anidada o matriz, @code{@var{x}[i_1]...[i_m][j_1]...[j_n]} tiene 
 la misma estructura que la tercera lista, lista anidada o matriz, y as@'{@dotless{i}}
-sucesivamente, siendo @mvar{m}, @mvar{n}, ... los n@'umeros @'{@dotless{i}}ndice
+sucesivamente, siendo @var{m}, @var{n}, ... los n@'umeros @'{@dotless{i}}ndice
 necesarios para acceder a los elementos de cada argumento: uno para las listas,
 dos para las matrices y uno o m@'as para las listas anidadas. 
 Aquellos argumentos que no sean listas ni matrices no tienen efecto alguno sobre
 la estructura del valor retornado.
 
 N@'otese que el efecto producido por @code{outermap} es diferente del que
-se obtiene al aplicar @mvar{f} a cada uno de los elementos del producto
+se obtiene al aplicar @var{f} a cada uno de los elementos del producto
 devuelto por @code{cartesian_product}. La funci@'on @code{outermap}
 mantiene la estructura de los argumentos en la respuesta, miemtras que
 @code{cartesian_product} no lo hace.

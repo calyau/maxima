@@ -60,16 +60,16 @@ Obere Grenze f@"ur die Anzahl an Iterationen, falls die Funktion
 
 @c --- 15.09.2011 DK -----------------------------------------------------------
 @anchor{function_mnewton}
-@deffn {Funktion} mnewton (@mvar{FuncList}, @mvar{VarList}, @mvar{GuessList})
+@deffn {Funktion} mnewton (@var{FuncList}, @var{VarList}, @var{GuessList})
 
-@c Multiple nonlinear functions solution using the Newton method. @mvar{FuncList}
-@c is the list of functions to solve, @mvar{VarList} is the list of variable
-@c names, and @mvar{GuessList} is the list of initial approximations.
+@c Multiple nonlinear functions solution using the Newton method. @var{FuncList}
+@c is the list of functions to solve, @var{VarList} is the list of variable
+@c names, and @var{GuessList} is the list of initial approximations.
 
 Implementation des Newton-Verfahrens f@"ur das numerische L@"osen von
-Gleichungen in mehreren Variablen.  Das Argument @mvar{FuncList} ist die Liste
+Gleichungen in mehreren Variablen.  Das Argument @var{FuncList} ist die Liste
 der Gleichungen, f@"ur die eine numerische L@"osung gesucht wird.  Das Argument
-@mvar{VarList} ist eine Liste der Variablen und das Argument @mvar{GuessList}
+@var{VarList} ist eine Liste der Variablen und das Argument @var{GuessList}
 ist eine Liste mit den Startwerten des Newton-Verfahrens.
 
 @c The solution is returned in the same format that @code{solve()} returns.
@@ -127,30 +127,30 @@ wird.
 
 @c --- 16.09.2011 DK -----------------------------------------------------------
 @anchor{newton}
-@deffn {Funktion} newton (@mvar{expr}, @mvar{x}, @mvar{x_0}, @mvar{eps})
+@deffn {Funktion} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 
-@c Returns an approximate solution of @code{@mvar{expr} = 0} by Newton's method,
-@c considering @mvar{expr} to be a function of one variable, @mvar{x}.
-@c The search begins with @code{@mvar{x} = @mvar{x_0}}
-@c and proceeds until @code{abs(@mvar{expr}) < @mvar{eps}}
-@c (with @mvar{expr} evaluated at the current value of @mvar{x}).
+@c Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
+@c considering @var{expr} to be a function of one variable, @var{x}.
+@c The search begins with @code{@var{x} = @var{x_0}}
+@c and proceeds until @code{abs(@var{expr}) < @var{eps}}
+@c (with @var{expr} evaluated at the current value of @var{x}).
 
 Die Funktion @code{newton} gibt eine N@"aherungsl@"osung der Gleichung
-@code{@mvar{expr} = 0} zur@"uck, die mit dem Newton-Verfahren berechnet wird.
-Der Ausdruck @mvar{expr} ist eine Funktion einer Variablen @mvar{x}.  Der
-Anfangswert ist @code{ @mvar{x} = @mvar{x_0}}.  Der Algorithmus bricht ab, wenn
-@code{abs(@mvar{expr}) < @mvar{eps}}, wobei der Ausdruck @mvar{expr} f@"ur den
-aktuellen N@"aherungswert @mvar{x} ausgewertet wird.
+@code{@var{expr} = 0} zur@"uck, die mit dem Newton-Verfahren berechnet wird.
+Der Ausdruck @var{expr} ist eine Funktion einer Variablen @var{x}.  Der
+Anfangswert ist @code{ @var{x} = @var{x_0}}.  Der Algorithmus bricht ab, wenn
+@code{abs(@var{expr}) < @var{eps}}, wobei der Ausdruck @var{expr} f@"ur den
+aktuellen N@"aherungswert @var{x} ausgewertet wird.
 
-@c @code{newton} allows undefined variables to appear in @mvar{expr},
-@c so long as the termination test @code{abs(@mvar{expr}) < @mvar{eps}} evaluates
+@c @code{newton} allows undefined variables to appear in @var{expr},
+@c so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
 @c to @code{true} or @code{false}.
-@c Thus it is not necessary that @mvar{expr} evaluate to a number.
+@c Thus it is not necessary that @var{expr} evaluate to a number.
 
-@code{newton} erlaubt symbolische Variablen im Ausdruck @mvar{expr}, wenn der
-Ausdruck @code{abs(@mvar{expr}) < @mvar{eps}} zu @code{true} oder @code{false}
+@code{newton} erlaubt symbolische Variablen im Ausdruck @var{expr}, wenn der
+Ausdruck @code{abs(@var{expr}) < @var{eps}} zu @code{true} oder @code{false}
 ausgewertet werden kann.  Daher ist es nicht notwendig, dass der Ausdruck
-@mvar{expr} zu einer Zahl ausgewertet werden kann.
+@var{expr} zu einer Zahl ausgewertet werden kann.
 
 @c @code{load(newton1)} loads this function.
 

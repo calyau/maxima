@@ -637,9 +637,9 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {Function} constvalue (@mvar{x})
-@deffnx {Function} declare_constvalue (@mvar{a}, @mvar{x})
-@deffnx {Function} remove_constvalue (@mvar{a})
+@deffn {Function} constvalue (@var{x})
+@deffnx {Function} declare_constvalue (@var{a}, @var{x})
+@deffnx {Function} remove_constvalue (@var{a})
 
 @c REWORK THIS STATEMENT !!
 Returns the declared constant value of a symbol,
@@ -704,18 +704,18 @@ Declaring a new constant.
 
 @end deffn
 
-@deffn {Function} units (@mvar{x})
-@deffnx {Function} declare_units (@mvar{a}, @mvar{u})
+@deffn {Function} units (@var{x})
+@deffnx {Function} declare_units (@var{a}, @var{u})
 
-Returns the units of a dimensional quantity @mvar{x},
-or returns 1 if @mvar{x} is nondimensional.
+Returns the units of a dimensional quantity @var{x},
+or returns 1 if @var{x} is nondimensional.
 
-@mvar{x} may be a literal dimensional expression @math{a ` b},
+@var{x} may be a literal dimensional expression @math{a ` b},
 a symbol with declared units via @code{declare_units}, 
 or an expression containing either or both of those.
 
-@code{declare_units} declares that @code{units(@mvar{a})} should return @mvar{u},
-where @mvar{u} is an expression.
+@code{declare_units} declares that @code{units(@var{a})} should return @var{u},
+where @var{u} is an expression.
 
 @code{load(ezunits)} loads these functions.
 
@@ -794,17 +794,17 @@ Examples:
 
 @end deffn
 
-@deffn {Function} qty (@mvar{x})
-@deffnx {Function} declare_qty (@mvar{a}, @mvar{x})
+@deffn {Function} qty (@var{x})
+@deffnx {Function} declare_qty (@var{a}, @var{x})
 
-@code{qty} returns the nondimensional part of a dimensional quantity @mvar{x},
-or returns @mvar{x} if @mvar{x} is nondimensional.
-@mvar{x} may be a literal dimensional expression @math{a ` b},
+@code{qty} returns the nondimensional part of a dimensional quantity @var{x},
+or returns @var{x} if @var{x} is nondimensional.
+@var{x} may be a literal dimensional expression @math{a ` b},
 a symbol with declared quantity, 
 or an expression containing either or both of those.
 
-@code{declare_qty} declares that @code{qty(@mvar{a})} should return @mvar{x},
-where @mvar{x} is a nondimensional quantity.
+@code{declare_qty} declares that @code{qty(@var{a})} should return @var{x},
+where @var{x} is a nondimensional quantity.
 
 @code{load(ezunits)} loads these functions.
 
@@ -870,9 +870,9 @@ Examples:
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
-@deffn {Function} unitp (@mvar{x})
+@deffn {Function} unitp (@var{x})
 
-Returns @code{true} if @mvar{x} is a literal dimensional expression,
+Returns @code{true} if @var{x} is a literal dimensional expression,
 a symbol declared dimensional,
 or an expression in which the main operator is declared dimensional.
 @code{unitp} returns @code{false} otherwise.
@@ -935,11 +935,11 @@ Examples:
 
 @end deffn
 
-@deffn {Function} declare_unit_conversion (@mvar{u} = @mvar{v}, ...)
+@deffn {Function} declare_unit_conversion (@var{u} = @var{v}, ...)
 
-Appends equations @mvar{u} = @mvar{v}, ... to the list of unit conversions
+Appends equations @var{u} = @var{v}, ... to the list of unit conversions
 known to the unit conversion operator @math{`@w{}`}.
-@mvar{u} and @mvar{v} are both multiplicative terms,
+@var{u} and @var{v} are both multiplicative terms,
 in which any variables are units,
 or both literal dimensional expressions.
 
@@ -1001,14 +1001,14 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {Function} declare_dimensions (@mvar{a_1}, @mvar{d_1}, ..., @mvar{a_n}, @mvar{d_n})
-@deffnx {Function} remove_dimensions (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Function} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
-@code{declare_dimensions} declares @mvar{a_1}, ..., @mvar{a_n}
-to have dimensions @mvar{d_1}, ..., @mvar{d_n}, respectively.
+@code{declare_dimensions} declares @var{a_1}, ..., @var{a_n}
+to have dimensions @var{d_1}, ..., @var{d_n}, respectively.
 
-Each @mvar{a_k} is a symbol or a list of symbols.
-If it is a list, then every symbol in @mvar{a_k} is declared to have dimension @mvar{d_k}.
+Each @var{a_k} is a symbol or a list of symbols.
+If it is a list, then every symbol in @var{a_k} is declared to have dimension @var{d_k}.
 
 @code{remove_dimensions} reverts the effect of @code{declare_dimensions}.
 
@@ -1045,12 +1045,12 @@ Examples:
 
 @end deffn
 
-@deffn {Function} declare_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
-@deffnx {Function} remove_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
+@deffn {Function} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Function} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Global variable} fundamental_dimensions
 
 @code{declare_fundamental_dimensions} declares fundamental dimensions.
-Symbols @mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ... are appended to the list of
+Symbols @var{d_1}, @var{d_2}, @var{d_3}, ... are appended to the list of
 fundamental dimensions, if they are not already on the list.
 
 @code{remove_fundamental_dimensions} reverts the effect of @code{declare_fundamental_dimensions}.
@@ -1091,16 +1091,16 @@ Examples:
 
 @end deffn
 
-@deffn {Function} declare_fundamental_units (@mvar{u_1}, @mvar{d_1}, ..., @mvar{u_n}, @mvar{d_n})
-@deffnx {Function} remove_fundamental_units (@mvar{u_1}, ..., @mvar{u_n})
+@deffn {Function} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {Function} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
 
-@code{declare_fundamental_units} declares @mvar{u_1}, ..., @mvar{u_n}
-to have dimensions @mvar{d_1}, ..., @mvar{d_n}, respectively.
+@code{declare_fundamental_units} declares @var{u_1}, ..., @var{u_n}
+to have dimensions @var{d_1}, ..., @var{d_n}, respectively.
 All arguments must be symbols.
 
 After calling @code{declare_fundamental_units},
-@code{dimensions(@mvar{u_k})} returns @mvar{d_k} for each argument @mvar{u_1}, ..., @mvar{u_n},
-and @code{fundamental_units(@mvar{d_k})} returns @mvar{u_k} for each argument @mvar{d_1}, ..., @mvar{d_n}.
+@code{dimensions(@var{u_k})} returns @var{d_k} for each argument @var{u_1}, ..., @var{u_n},
+and @code{fundamental_units(@var{d_k})} returns @var{u_k} for each argument @var{d_1}, ..., @var{d_n}.
 
 @code{remove_fundamental_units} reverts the effect of @code{declare_fundamental_units}.
 
@@ -1146,15 +1146,15 @@ Examples:
 
 @end deffn
 
-@deffn {Function} dimensions (@mvar{x})
-@deffnx {Function} dimensions_as_list (@mvar{x})
+@deffn {Function} dimensions (@var{x})
+@deffnx {Function} dimensions_as_list (@var{x})
 
-@code{dimensions} returns the dimensions of the dimensional quantity @mvar{x}
+@code{dimensions} returns the dimensions of the dimensional quantity @var{x}
 as an expression comprising products and powers of base dimensions.
 
-@code{dimensions_as_list} returns the dimensions of the dimensional quantity @mvar{x}
+@code{dimensions_as_list} returns the dimensions of the dimensional quantity @var{x}
 as a list, in which each element is an integer which indicates the power of the
-corresponding base dimension in the dimensions of @mvar{x}.
+corresponding base dimension in the dimensions of @var{x}.
 
 @code{load(ezunits)} loads these functions.
 
@@ -1212,14 +1212,14 @@ Examples:
 
 @end deffn
 
-@deffn {Function} fundamental_units (@mvar{x})
+@deffn {Function} fundamental_units (@var{x})
 @deffnx {Function} fundamental_units ()
 
-@code{fundamental_units(@mvar{x})} returns the units
-associated with the fundamental dimensions of @mvar{x}.
-as determined by @code{dimensions(@mvar{x})}.
+@code{fundamental_units(@var{x})} returns the units
+associated with the fundamental dimensions of @var{x}.
+as determined by @code{dimensions(@var{x})}.
 
-@mvar{x} may be a literal dimensional expression @math{a ` b},
+@var{x} may be a literal dimensional expression @math{a ` b},
 a symbol with declared units via @code{declare_units}, 
 or an expression containing either or both of those.
 
@@ -1263,10 +1263,10 @@ Examples:
 
 @end deffn
 
-@deffn {Function} dimensionless (@mvar{L})
+@deffn {Function} dimensionless (@var{L})
 
 Returns a basis for the dimensionless quantities which can be formed
-from a list @mvar{L} of dimensional quantities.
+from a list @var{L} of dimensional quantities.
 
 @code{load(ezunits)} loads this function.
 
@@ -1314,10 +1314,10 @@ is proportional to the fine-structure constant.
 @end deffn
 
 @c NEED TO FILL IN !!
-@deffn {Function} natural_unit (@mvar{expr}, [@mvar{v_1}, ..., @mvar{v_n}])
+@deffn {Function} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
 
-Finds exponents @mvar{e_1}, ..., @mvar{e_n} such that
-@code{dimension(@mvar{expr}) = dimension(@mvar{v_1}^@mvar{e_1} ... @mvar{v_n}^@mvar{e_n})}.
+Finds exponents @var{e_1}, ..., @var{e_n} such that
+@code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
 
 @code{load(ezunits)} loads this function.
 

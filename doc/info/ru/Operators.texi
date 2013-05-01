@@ -593,9 +593,9 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 Обозначает отрицание синтаксического равенства @code{=}.
 
 Заметим, что из-за правил для вычисления предикатных выражений
-(в частности из-за того, что @code{not @mvar{expr}} вызывает вычисление  @mvar{expr}),
-@code{not @mvar{a} = @mvar{b}} эквивалентно @code{is(@mvar{a} # @mvar{b})},
-вместо @code{@mvar{a} # @mvar{b}}.
+(в частности из-за того, что @code{not @var{expr}} вызывает вычисление  @var{expr}),
+@code{not @var{a} = @var{b}} эквивалентно @code{is(@var{a} # @var{b})},
+вместо @code{@var{a} # @var{b}}.
 
 Примеры:
 
@@ -964,23 +964,23 @@ x is equal to 1234 - 1729 w
 
 Оператор определения функции.
 
-@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}) := @mvar{expr}}
-определяет функцию с именем @mvar{f}, аргументами @mvar{x_1}, ..., @mvar{x_n} и телом функции @mvar{expr}.
+@code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}}
+определяет функцию с именем @var{f}, аргументами @var{x_1}, ..., @var{x_n} и телом функции @var{expr}.
 Оператор @code{:=} никогда не вычисляет тело функции (если только вычисление не задано явно оператором
 кавычка-кавычка @code{'@w{}'}).
 Функция заданная таким образом может быть обыкновенной Maxima функцией (с аргументами, заключенными в скобки)
 или функцией массивом (с аргументами, заключенными в квадратные скобки).
 
-Когда последний или единственный аргумент функции @mvar{x_n} есть список из одного элемента,
+Когда последний или единственный аргумент функции @var{x_n} есть список из одного элемента,
 функция, заданная @code{:=} принимает переменное число аргументов.
-Фактические аргументы присваиваются один-в-один формальным аргументам @mvar{x_1}, ..., @mvar{x_(n - 1)},
-и любые дальнейшие фактические аргументы, если присутствуют, присваиваются к @mvar{x_n} как список.
+Фактические аргументы присваиваются один-в-один формальным аргументам @var{x_1}, ..., @var{x_(n - 1)},
+и любые дальнейшие фактические аргументы, если присутствуют, присваиваются к @var{x_n} как список.
 
 Все определения функций появляются в том же пространстве имен;
 задав функцию @code{f} внутри другой функции @code{g}, определение
 не ограничивает зону видимости @code{f} в @code{g}.
 
-Если некоторый формальный аргумент @mvar{x_k} есть экранированный (quoted) символ,
+Если некоторый формальный аргумент @var{x_k} есть экранированный (quoted) символ,
 функция, заданная с помощью @code{:=}, не вычисляет соответствующий фактический аргумент.
 В противном случае, все фактические аргументы вычисляются.
 
@@ -1024,7 +1024,7 @@ x is equal to 1234 - 1729 w
                        x, y
 @end example
 
-Когда последний или единственный аргумент функции @mvar{x_n} есть список из одного элемента,
+Когда последний или единственный аргумент функции @var{x_n} есть список из одного элемента,
 функция, заданная @code{:=}, принимает переменное число аргументов.
 
 @c ===beg===
@@ -1051,24 +1051,24 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 Оператор равенства.
 
-Выражение @code{@mvar{a} = @mvar{b}}, само по себе, представляет собой
+Выражение @code{@var{a} = @var{b}}, само по себе, представляет собой
 невычисляемое уравнение, которое может или может не выполняться.
 Невычисляемые уравнения могут появляться как аргументы в @code{solve} и @code{algsys},
 или в некоторых других функциях.
 
 Функция @code{is} вычисляет @code{=} до логического значения.
-@code{is(@mvar{a} = @mvar{b})} вычисляет @code{@mvar{a} = @mvar{b}} в @code{true}, когда @mvar{a} и @mvar{b}
-тождественны. То есть, @mvar{a} и @mvar{b} есть атомы, которые идентичны,
+@code{is(@var{a} = @var{b})} вычисляет @code{@var{a} = @var{b}} в @code{true}, когда @var{a} и @var{b}
+тождественны. То есть, @var{a} и @var{b} есть атомы, которые идентичны,
 или они не атомы и их операторы идентичны и их аргументы идентичны.
-В противном случае, @code{is(@mvar{a} = @mvar{b})} вычисляется в @code{false};
+В противном случае, @code{is(@var{a} = @var{b})} вычисляется в @code{false};
 он никогда не вычисляется в @code{unknown}.
-Когда @code{is(@mvar{a} = @mvar{b})} есть @code{true}, говорят что @mvar{a} и @mvar{b} синтаксически равны,
-в противоположность эквивалентным выражениям, для которых @code{is(equal(@mvar{a}, @mvar{b}))} есть @code{true}.
+Когда @code{is(@var{a} = @var{b})} есть @code{true}, говорят что @var{a} и @var{b} синтаксически равны,
+в противоположность эквивалентным выражениям, для которых @code{is(equal(@var{a}, @var{b}))} есть @code{true}.
 Выражения могут быть равны, но синтаксически не равны.
 
 Отрицание @code{=} представляется как @code{#}.
-Как и в случае с @code{=}, выражение @code{@mvar{a} # @mvar{b}}, само по себе, не вычисляется.
-@code{is(@mvar{a} # @mvar{b})} вычисляется @code{@mvar{a} # @mvar{b}} до
+Как и в случае с @code{=}, выражение @code{@var{a} # @var{b}}, само по себе, не вычисляется.
+@code{is(@var{a} # @var{b})} вычисляется @code{@var{a} # @var{b}} до
 @code{true} или @code{false}.
 
 Кроме @code{is},
@@ -1076,9 +1076,9 @@ x is equal to 1234 - 1729 w
 а именно @code{if}, @code{and}, @code{or} и @code{not}.
 
 Заметим, что из-за правил для вычисления предикатных выражений
-(в частности из-за того, что @code{not @mvar{expr}} вызывает вычисление @mvar{expr}),
-@code{not @mvar{a} = @mvar{b}} эквивалентно @code{is(@mvar{a} # @mvar{b})},
-а не @code{@mvar{a} # @mvar{b}}.
+(в частности из-за того, что @code{not @var{expr}} вызывает вычисление @var{expr}),
+@code{not @var{a} = @var{b}} эквивалентно @code{is(@var{a} # @var{b})},
+а не @code{@var{a} # @var{b}}.
 
 @code{rhs} и @code{lhs} возвращают правую и левую часть
 уравнения или неравенства соответственно.
@@ -1087,7 +1087,7 @@ x is equal to 1234 - 1729 w
 
 Примеры:
 
-Выражение @code{@mvar{a} = @mvar{b}}, само по себе, представляет
+Выражение @code{@var{a} = @var{b}}, само по себе, представляет
 невычисляемое уравнение, которое может или может не выполняться.
 
 @c ===beg===
@@ -1117,8 +1117,8 @@ x is equal to 1234 - 1729 w
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@mvar{a} = @mvar{b})} вычисляет @code{@mvar{a} = @mvar{b}} в @code{true}, 
-когда @mvar{a} и @mvar{b} тождественны (синтаксически равны).
+@code{is(@var{a} = @var{b})} вычисляет @code{@var{a} = @var{b}} в @code{true}, 
+когда @var{a} и @var{b} тождественны (синтаксически равны).
 Выражения могут быть равны, но синтаксически не равны.
 
 @c ===beg===
@@ -1161,8 +1161,8 @@ x is equal to 1234 - 1729 w
 (%o4)                  [false, true, true]
 @end example
 
-Из-за того, что @code{not @mvar{expr}} вызывает вычисление @mvar{expr},
-@code{not @mvar{a} = @mvar{b}} эквивалентно @code{is(@mvar{a} # @mvar{b})}.
+Из-за того, что @code{not @var{expr}} вызывает вычисление @var{expr},
+@code{not @var{a} = @var{b}} эквивалентно @code{is(@var{a} # @var{b})}.
 
 @c ===beg===
 @c [2 * x # 3 * x, not (2 * x = 3 * x)];
@@ -1269,9 +1269,9 @@ x is equal to 1234 - 1729 w
 
 @end deffn
 
-@deffn {Функция} abs (@mvar{expr})
-Возвращает абсолютное значение @mvar{expr} (модуль выражения). 
-Если @mvar{expr} - комплексное, возвращается комплексный модуль @mvar{expr}.
+@deffn {Функция} abs (@var{expr})
+Возвращает абсолютное значение @var{expr} (модуль выражения). 
+Если @var{expr} - комплексное, возвращается комплексный модуль @var{expr}.
 
 @opencatbox
 @category{Математические функции}
@@ -1343,8 +1343,8 @@ x is equal to 1234 - 1729 w
 (%o1)                   [aa, bb, 33, 44]
 @end example
 
-@code{kill(allbut(@mvar{a_1}, @mvar{a_2}, ...))} имеет тот же эффект, что  @code{kill(all)}
-за исключением того, что это не очищает символы @mvar{a_1}, @mvar{a_2}, ... .
+@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} имеет тот же эффект, что  @code{kill(all)}
+за исключением того, что это не очищает символы @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
@@ -1361,8 +1361,8 @@ x is equal to 1234 - 1729 w
 
 @end defvr
 
-@deffn {Функция} cabs (@mvar{expr})
-Возвращает комплексное абсолютное значение (комплексный модуль) @mvar{expr}.
+@deffn {Функция} cabs (@var{expr})
+Возвращает комплексное абсолютное значение (комплексный модуль) @var{expr}.
 
 @opencatbox
 @category{Комплексные переменные}
@@ -1370,13 +1370,13 @@ x is equal to 1234 - 1729 w
 
 @end deffn
 
-@deffn {Функция} ceiling (@mvar{x})
+@deffn {Функция} ceiling (@var{x})
 
-Когда @mvar{x} есть вещественное число - возвращает наименьшее целое, которое 
-больше чем или равно @mvar{x}.  
+Когда @var{x} есть вещественное число - возвращает наименьшее целое, которое 
+больше чем или равно @var{x}.  
 
-Если @mvar{x} - константное выражение (@code{10 * %pi}, например), 
-@code{ceiling} вычисляет @mvar{x} используя большие числа с плавающей точкой и 
+Если @var{x} - константное выражение (@code{10 * %pi}, например), 
+@code{ceiling} вычисляет @var{x} используя большие числа с плавающей точкой и 
 применяет @code{ceiling} к конечному большому числу с плавающей точкой. 
 Из-за того, что @code{ceiling} использует вычисления
 с числами с плавающей точкой, возможно, хотя маловероятно, 
@@ -1440,9 +1440,9 @@ $$\left \lceil a \right \rceil$$
 
 @end deffn
 
-@deffn {Функция} charfun (@mvar{p})
+@deffn {Функция} charfun (@var{p})
 
-Возвращает 0, когда предикат @mvar{p} вычисляется как @code{false}; возвращает
+Возвращает 0, когда предикат @var{p} вычисляется как @code{false}; возвращает
 1, когда предикат вычисляется как @code{true}.  Когда предикат
 вычисляется до чего-то другого, чем @code{true} или @code{false} (unknown), 
 возвращает невычисляемую форму.
@@ -1482,13 +1482,13 @@ $$\left \lceil a \right \rceil$$
 
 @end defvr
 
-@deffn {Функция} compare (@mvar{x}, @mvar{y})
+@deffn {Функция} compare (@var{x}, @var{y})
 
-Возвращает оператор отношения @mvar{op}
+Возвращает оператор отношения @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=} или @code{#}) так что
-@code{is (@mvar{x} @mvar{op} @mvar{y})} вычисляется до @code{true};
-когда @mvar{x} или @mvar{y} зависит от @code{%i} и
-@code{@mvar{x} # @mvar{y}}, возвращает @code{notcomparable};
+@code{is (@var{x} @var{op} @var{y})} вычисляется до @code{true};
+когда @var{x} или @var{y} зависит от @code{%i} и
+@code{@var{x} # @var{y}}, возвращает @code{notcomparable};
 когда нет такого оператора или
 Maxima не может определить оператор, возвращает @code{unknown}.
 
@@ -1537,10 +1537,10 @@ Maxima не может определить оператор, возвращает @code{unknown}.
 
 @end deffn
 
-@deffn {Функция} entier (@mvar{x})
-Возвращает наибольшее целое меньше или равное чем @mvar{x}, где @mvar{x} - численное.  
+@deffn {Функция} entier (@var{x})
+Возвращает наибольшее целое меньше или равное чем @var{x}, где @var{x} - численное.  
 Функция @code{fix} (как и в @code{fixnum}) есть синоним, 
-так что @code{fix(@mvar{x})} в точности тоже самое.
+так что @code{fix(@var{x})} в точности тоже самое.
 
 @opencatbox
 @category{Математические функции} 
@@ -1548,15 +1548,15 @@ Maxima не может определить оператор, возвращает @code{unknown}.
 
 @end deffn
 
-@deffn {Функция} equal (@mvar{a}, @mvar{b})
+@deffn {Функция} equal (@var{a}, @var{b})
 Представляет эквивалентность, то есть, равное значение.
 
 Само по себе, @code{equal} не вычисляется или упрощается.
 Функция @code{is} пытается вычислить @code{equal} до логического значения.
-Функция @code{is(equal(@mvar{a}, @mvar{b}))} 
+Функция @code{is(equal(@var{a}, @var{b}))} 
 возвращает @code{true} (или @code{false}), если
-и только если, @mvar{a} и @mvar{b} равны (или не равны) для всех возможных
-значений своих переменных, как определено вычислением @code{ratsimp(@mvar{a} - @mvar{b})}.
+и только если, @var{a} и @var{b} равны (или не равны) для всех возможных
+значений своих переменных, как определено вычислением @code{ratsimp(@var{a} - @var{b})}.
 Если @code{ratsimp} возвращает 0, два выражения рассматриваются эквивалентными.
 Два выражения могут быть эквивалентными даже если они не являются синтаксически равными (то есть, идентичными).
 
@@ -1572,7 +1572,7 @@ Maxima не может определить оператор, возвращает @code{unknown}.
 
 @c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
 @c Declarations (integer, complex, etc)
-@c for variables appearing in @mvar{a} and @mvar{b} are ignored by @code{equal}.
+@c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
 @c All variables are effectively assumed to be real-valued.
 
 Отрицанием @code{equal} является @code{notequal}.
@@ -1597,7 +1597,7 @@ Maxima не может определить оператор, возвращает @code{unknown}.
 @end example
 
 Функция @code{is} пытается вычислить @code{equal} до логического значения.
-@code{is(equal(@mvar{a}, @mvar{b}))} возвращает @code{true} когда @code{ratsimp(@mvar{a} - @mvar{b})} возвращает 0.
+@code{is(equal(@var{a}, @var{b}))} возвращает @code{true} когда @code{ratsimp(@var{a} - @var{b})} возвращает 0.
 Два выражения могут быть эквивалентными даже если они синтаксически не равны (то есть, не идентичны).
 
 @c ===beg===
@@ -1682,8 +1682,8 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 (%o4)                  [false, true, true]
 @end example
 
-Из-за того, что @code{not @mvar{expr}} вызывает вычисление @mvar{expr},
-@code{not equal(@mvar{a}, @mvar{b})} эквивалентно @code{is(notequal(@mvar{a}, @mvar{b}))}.
+Из-за того, что @code{not @var{expr}} вызывает вычисление @var{expr},
+@code{not equal(@var{a}, @var{b})} эквивалентно @code{is(notequal(@var{a}, @var{b}))}.
 
 @c ===beg===
 @c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1702,13 +1702,13 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 
 @end deffn
 
-@deffn {Функция} floor (@mvar{x})
+@deffn {Функция} floor (@var{x})
 
-Когда @mvar{x} есть вещественное число - возвращает наибольшее целое, которое 
-меньше или равно @mvar{x}.
+Когда @var{x} есть вещественное число - возвращает наибольшее целое, которое 
+меньше или равно @var{x}.
 
-Если @mvar{x} есть константное выражение (@code{10 * %pi}, например), 
-@code{floor} вычисляет @mvar{x} используя большие числа с плавающей точкой и 
+Если @var{x} есть константное выражение (@code{10 * %pi}, например), 
+@code{floor} вычисляет @var{x} используя большие числа с плавающей точкой и 
 применяет @code{floor} к результирующему значению. 
 Из-за того, что @code{floor} использует вычисления с числами с плавающей точкой, возможно, хотя маловероятно, 
 что @code{floor} может вернуть ошибочное значение для константных 
@@ -1770,8 +1770,8 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} notequal (@mvar{a}, @mvar{b})
-Представляет собой отрицание @code{equal(@mvar{a}, @mvar{b})}.
+@deffn {Функция} notequal (@var{a}, @var{b})
+Представляет собой отрицание @code{equal(@var{a}, @var{b})}.
 
 Примеры:
 
@@ -1820,8 +1820,8 @@ $$\left \lfloor a \right \rfloor$$
 @c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
 @deffn {Оператор} eval
-Как аргумент в вызове к @code{ev (@mvar{expr})},
-@code{eval} вызывает дополнительное вычисление @mvar{expr}.
+Как аргумент в вызове к @code{ev (@var{expr})},
+@code{eval} вызывает дополнительное вычисление @var{expr}.
 См. @code{ev}.
 
 @opencatbox
@@ -1830,8 +1830,8 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} evenp (@mvar{expr})
-Возвращает @code{true} если @mvar{expr} есть четное целое.
+@deffn {Функция} evenp (@var{expr})
+Возвращает @code{true} если @var{expr} есть четное целое.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} возвращается во всех других случаях.
 
@@ -1841,8 +1841,8 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} fix (@mvar{x})
-Синоним для @code{entier (@mvar{x})}.
+@deffn {Функция} fix (@var{x})
+Синоним для @code{entier (@var{x})}.
 
 @opencatbox
 @category{Математические функции} 
@@ -1850,7 +1850,7 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} fullmap (@mvar{f}, @mvar{expr_1}, ...)
+@deffn {Функция} fullmap (@var{f}, @var{expr_1}, ...)
 Аналогично @code{map}, но @code{fullmap} продолжает процедуру распространения 
 для всех подвыражений до тех пор, пока основные операторы более не остаются теми же самыми.
 
@@ -1880,7 +1880,7 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} fullmapl (@mvar{f}, @mvar{list_1}, ...)
+@deffn {Функция} fullmapl (@var{f}, @var{list_1}, ...)
 Аналогично @code{fullmap}, но @code{fullmapl} только распространяется на
 списки и матрицы.
 
@@ -1900,8 +1900,8 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
-@deffn {Функция} is (@mvar{expr})
-Пытается определить, является ли предикат @mvar{expr} 
+@deffn {Функция} is (@var{expr})
+Пытается определить, является ли предикат @var{expr} 
 доказуемым из фактов в базе данных @code{assume}.
 
 Если этот предикат является доказуемым как @code{true} или @code{false},
@@ -1911,9 +1911,9 @@ $$\left \lfloor a \right \rfloor$$
 @code{is} выдает сообщение об ошибке.
 Иначе, @code{is} возвращает @code{unknown}.
 
-Выражение @code{ev(@mvar{expr}, pred)}
-(который можно переписать как @code{@mvar{expr}, pred} в интерактивной строке)
-эквивалентно @code{is(@mvar{expr})}.
+Выражение @code{ev(@var{expr}, pred)}
+(который можно переписать как @code{@var{expr}, pred} в интерактивной строке)
+эквивалентно @code{is(@var{expr})}.
 
 См. также @code{assume}, @code{facts} и @code{maybe}.
 
@@ -1983,8 +1983,8 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} maybe (@mvar{expr})
-Пытается определить, является ли предикат @mvar{expr} 
+@deffn {Функция} maybe (@var{expr})
+Пытается определить, является ли предикат @var{expr} 
  доказуемым исходя из фактов в базе данных @code{assume}.
 
 Если этот предикат доказуем как @code{true} или @code{false},
@@ -2018,9 +2018,9 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} isqrt (@mvar{x})
+@deffn {Функция} isqrt (@var{x})
 Возвращает "целый квадратный корень"
-абсолютного значения @mvar{x},
+абсолютного значения @var{x},
 которое есть целое.
 
 @opencatbox
@@ -2029,9 +2029,9 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} lmax (@mvar{L})
+@deffn {Функция} lmax (@var{L})
 
-Когда @mvar{L} есть список или множество, возвращает @code{apply ('max, args (@mvar{L}))}.  Когда @mvar{L} не является 
+Когда @var{L} есть список или множество, возвращает @code{apply ('max, args (@var{L}))}.  Когда @var{L} не является 
 списком или множеством, выдает ошибку.
 
 @opencatbox
@@ -2040,9 +2040,9 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} lmin (@mvar{L})
+@deffn {Функция} lmin (@var{L})
 
-Когда @mvar{L} есть список или множество, возвращает @code{apply ('min, args (@mvar{L}))}. Когда @mvar{L} не является 
+Когда @var{L} есть список или множество, возвращает @code{apply ('min, args (@var{L}))}. Когда @var{L} не является 
 списком или множеством, выдает ошибку.
 
 @opencatbox
@@ -2051,11 +2051,11 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} max (@mvar{x_1}, ..., @mvar{x_n})
+@deffn {Функция} max (@var{x_1}, ..., @var{x_n})
 
-Возвращает упрощенное значение максимума выражений от @mvar{x_1} до @mvar{x_n}.
+Возвращает упрощенное значение максимума выражений от @var{x_1} до @var{x_n}.
 Когда @code{get (trylevel, maxmin)} есть 2 или больше, @code{max} использует  упрощение 
-@code{max (e, -e) --> |e|}.  Когда @code{get (trylevel, maxmin)} есть 3 или больше, @mvar{max} старается
+@code{max (e, -e) --> |e|}.  Когда @code{get (trylevel, maxmin)} есть 3 или больше, @var{max} старается
 исключить выражения, заключенные по значению между двумя другими аргументами. Например,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Для установки значения  @code{trylevel} в 2, используется
 @code{put (trylevel, 2, maxmin)}.
@@ -2066,11 +2066,11 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} min (@mvar{x_1}, ..., @mvar{x_n})
+@deffn {Функция} min (@var{x_1}, ..., @var{x_n})
 
-Возвращает упрощенное значение минимума выражений от @mvar{x_1} до @mvar{x_n}.
+Возвращает упрощенное значение минимума выражений от @var{x_1} до @var{x_n}.
 Когда @code{get (trylevel, maxmin)} есть 2 или больше, @code{min} использует  упрощение
-@code{min (e, -e) --> -|e|}.  Когда @code{get (trylevel, maxmin)} есть 3 или больше, @mvar{min} старается
+@code{min (e, -e) --> -|e|}.  Когда @code{get (trylevel, maxmin)} есть 3 или больше, @var{min} старается
 исключить выражения, заключенные по значению между двумя другими аргументами. Например,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Для установки значения  @code{trylevel} в 2, используется
 @code{put (trylevel, 2, maxmin)}.
@@ -2081,13 +2081,13 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} polymod (@mvar{p})
-@deffnx {Функция} polymod (@mvar{p}, @mvar{m})
-Конвертирует многочлен @mvar{p} в модулярное представление,
+@deffn {Функция} polymod (@var{p})
+@deffnx {Функция} polymod (@var{p}, @var{m})
+Конвертирует многочлен @var{p} в модулярное представление,
 с учетом текущего модуля, которое является значением переменной
 @code{modulus}.  
 
-@code{polymod (@mvar{p}, @mvar{m})} определяет модуль @mvar{m}, который будет использоваться 
+@code{polymod (@var{p}, @var{m})} определяет модуль @var{m}, который будет использоваться 
 вместо текущего значения @code{modulus}.
 
 См. @code{modulus}.
@@ -2098,25 +2098,25 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} mod (@mvar{x}, @mvar{y})
+@deffn {Функция} mod (@var{x}, @var{y})
 
-Если @mvar{x} и @mvar{y} есть вещественные числа и @mvar{y} не отрицательно,
-возвращает @code{@mvar{x} - @mvar{y} * floor(@mvar{x} / @mvar{y})}.
-Далее для всех вещественных @mvar{x} имеем @code{mod (@mvar{x}, 0) = @mvar{x}}. Подробное обсуждение 
-определения @code{mod (@mvar{x}, 0) = @mvar{x}} есть в разделе 3.4 "Concrete Mathematics," 
-авторов Graham, Knuth и Patashnik. Функция @code{mod (@mvar{x}, 1)} 
+Если @var{x} и @var{y} есть вещественные числа и @var{y} не отрицательно,
+возвращает @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
+Далее для всех вещественных @var{x} имеем @code{mod (@var{x}, 0) = @var{x}}. Подробное обсуждение 
+определения @code{mod (@var{x}, 0) = @var{x}} есть в разделе 3.4 "Concrete Mathematics," 
+авторов Graham, Knuth и Patashnik. Функция @code{mod (@var{x}, 1)} 
 есть пилообразная функция с периодом 1, @code{mod (1, 1) = 0} и 
 @code{mod (0, 1) = 0}.
 
 Чтобы найти главный аргумент (число в интервале @code{(-%pi, %pi]}) для комплексного числа, 
-используется функция @code{@mvar{x} |-> %pi - mod (%pi - @mvar{x}, 2*%pi)}, где 
-@mvar{x} есть аргумент.
+используется функция @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, где 
+@var{x} есть аргумент.
 
-Когда @mvar{x} и @mvar{y} есть константные выражения (например @code{10 * %pi}), @code{mod}
+Когда @var{x} и @var{y} есть константные выражения (например @code{10 * %pi}), @code{mod}
 использует то же вычисления с числами с плавающей точкой повышенной точности, что и,  @code{floor} и @code{ceiling}.
 Опять же, возможно, хотя маловероятно, что @code{mod} может вернуть ошибочное значение в таких случаях.
 
-Для не численных аргументов @mvar{x} или @mvar{y}, @code{mod} знает несколько правил упрощения:
+Для не численных аргументов @var{x} или @var{y}, @code{mod} знает несколько правил упрощения:
 
 @c ===beg===
 @c mod (x, 0);
@@ -2138,8 +2138,8 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} oddp (@mvar{expr})
-есть @code{true} если @mvar{expr} есть нечетное целое.
+@deffn {Функция} oddp (@var{expr})
+есть @code{true} если @var{expr} есть нечетное целое.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} возвращается во всех других случаях.
 
@@ -2153,7 +2153,7 @@ a > 0
 @c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
 @deffn {Оператор} pred
-В качестве аргумента в вызове @code{ev (@mvar{expr})},
+В качестве аргумента в вызове @code{ev (@var{expr})},
 @code{pred} вызывает вычисление предикатов (выражений, которые вычисляются в @code{true}
 или @code{false}) .
 См. @code{ev}.
@@ -2164,25 +2164,25 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} make_random_state (@mvar{n})
-@deffnx {Функция} make_random_state (@mvar{s})
+@deffn {Функция} make_random_state (@var{n})
+@deffnx {Функция} make_random_state (@var{s})
 @deffnx {Функция} make_random_state (true)
 @deffnx {Функция} make_random_state (false)
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
-@c @defunx make_random_state (@mvar{a})
+@c @defunx make_random_state (@var{a})
 
 Объект случайного состояния представляет собой состояние генератора случайных чисел.
 Оно содержит 627 32-битных слова.
 
-@code{make_random_state (@mvar{n})} возвращает новое случайное состояние объекта
-созданного из затравочного целого числа, равного @mvar{n} по модулю 2^32.
-@mvar{n} может быть отрицательным.
+@code{make_random_state (@var{n})} возвращает новое случайное состояние объекта
+созданного из затравочного целого числа, равного @var{n} по модулю 2^32.
+@var{n} может быть отрицательным.
 
 @c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
-@c @code{make_random_state (@mvar{a})} returns a new random state object
-@c created from an array @mvar{a}, which must be a Lisp array of 32 unsigned bytes.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
 
-@code{make_random_state (@mvar{s})} возвращает копию случайного состояния @mvar{s}.
+@code{make_random_state (@var{s})} возвращает копию случайного состояния @var{s}.
 
 @code{make_random_state (true)} возвращает новое случайное состояние объекта,
 используя текущее значение часов компьютера в качестве затравочного числа.
@@ -2196,8 +2196,8 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} set_random_state (@mvar{s})
-Копирует @mvar{s} в состояние генератора случайных чисел.
+@deffn {Функция} set_random_state (@var{s})
+Копирует @var{s} в состояние генератора случайных чисел.
 
 @code{set_random_state} всегда возвращает @code{done}.
 
@@ -2207,12 +2207,12 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} random (@mvar{x})
-Возвращает псевдослучайное число. Если @mvar{x} есть целое, @code{random (@mvar{x})} возвращает 
-целое в пределах от 0 до @code{@mvar{x} - 1} включительно. Если @mvar{x} есть число с плавающей точкой,
-@code{random (@mvar{x})} возвращает неотрицательное число с плавающей точкой меньше чем @mvar{x}.
-Функция @code{random} выдает сообщение об ошибке, если @mvar{x} не есть целое, или не число с плавающей точкой, 
-или если @mvar{x} неположительное.
+@deffn {Функция} random (@var{x})
+Возвращает псевдослучайное число. Если @var{x} есть целое, @code{random (@var{x})} возвращает 
+целое в пределах от 0 до @code{@var{x} - 1} включительно. Если @var{x} есть число с плавающей точкой,
+@code{random (@var{x})} возвращает неотрицательное число с плавающей точкой меньше чем @var{x}.
+Функция @code{random} выдает сообщение об ошибке, если @var{x} не есть целое, или не число с плавающей точкой, 
+или если @var{x} неположительное.
 
 Функции @code{make_random_state} и @code{set_random_state}
 сохраняют состояние генератора случайных чисел.
@@ -2269,10 +2269,10 @@ a > 0
 
 @end deffn
 
-@deffn {Функция} rationalize (@mvar{expr})
+@deffn {Функция} rationalize (@var{expr})
 
 Конвертирует все числа с плавающей точкой двойной точности и повышенной точности в выражении
-@mvar{expr} в рациональные эквивалентны. Если вы не знакомы с
+@var{expr} в рациональные эквивалентны. Если вы не знакомы с
 бинарным представлением чисел с плавающей точкой, вы может
 быть удивлены тем, что @code{rationalize (0.1)} не равно 1/10.  Это поведение
 имеет место не только в Maxima -- число 1/10 имеет периодическое, не заканчивающееся,
@@ -2379,19 +2379,19 @@ reverse(uf))
 @end deffn
 
 
-@deffn {Функция} round (@mvar{x})
+@deffn {Функция} round (@var{x})
 
-Если @mvar{x} является вещественным числом, то возвращает ближайшее к @mvar{x}
+Если @var{x} является вещественным числом, то возвращает ближайшее к @var{x}
 целое.  Числа, кратные 1/2, округляются до ближайшего четного целого.
-Вычисление @mvar{x} аналогично функциям @code{floor} и @code{ceiling}.
+Вычисление @var{x} аналогично функциям @code{floor} и @code{ceiling}.
 
 @opencatbox
 @category{Математические функции}
 @closecatbox
 @end deffn
 
-@deffn {Функция} sign (@mvar{expr})
-Пытается определить знак @mvar{expr}
+@deffn {Функция} sign (@var{expr})
+Пытается определить знак @var{expr}
 на основе фактов в текущей базе данных. Она возвращает один из
 следующих ответов: @code{pos} (положительное), @code{neg} (отрицательное), @code{zero} (нулевое), @code{pz}
 (положительное или ноль), @code{nz} (отрицательное или ноль), @code{pn} (положительное или отрицательное),
@@ -2403,11 +2403,11 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} signum (@mvar{x})
-Для численного значения @mvar{x}, возвращает 0, если @mvar{x} есть 0, иначе возвращает -1 или +1,
-когда @mvar{x} меньше чем или больше чем 0, соответственно.
+@deffn {Функция} signum (@var{x})
+Для численного значения @var{x}, возвращает 0, если @var{x} есть 0, иначе возвращает -1 или +1,
+когда @var{x} меньше чем или больше чем 0, соответственно.
 
-Если @mvar{x} не есть численное значение, то возвращается эквивалентная, но упрощенная форма.
+Если @var{x} не есть численное значение, то возвращается эквивалентная, но упрощенная форма.
 Например, @code{signum(-x)} дает @code{-signum(x)}.
 @c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
 
@@ -2417,10 +2417,10 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} sort (@mvar{L}, @mvar{P})
-@deffnx {Функция} sort (@mvar{L})
-Сортирует список @mvar{L} согласно предикату @code{P} двух аргументов,
-так чтобы @code{@mvar{P} (@mvar{L}[k], @mvar{L}[k + 1])} было равно @code{true}
+@deffn {Функция} sort (@var{L}, @var{P})
+@deffnx {Функция} sort (@var{L})
+Сортирует список @var{L} согласно предикату @code{P} двух аргументов,
+так чтобы @code{@var{P} (@var{L}[k], @var{L}[k + 1])} было равно @code{true}
 для любых двух последовательных элементов.
 Предикат может быть задан как имя функции или бинарный инфиксный оператор,
 или как лямбда-выражение.
@@ -2428,19 +2428,19 @@ reverse(uf))
 это имя берется в "двойные кавычки".
 
 Отсортированный список возвращается как новый объект;
-аргумент @mvar{L} не изменяется.
+аргумент @var{L} не изменяется.
 При возврате значения,
-@code{sort} делает копию верхнего уровня (shallow copy) элементов @mvar{L}.
+@code{sort} делает копию верхнего уровня (shallow copy) элементов @var{L}.
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
 @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-Если предикат @mvar{P} не задает полное упорядочивание элементов @mvar{L},
+Если предикат @var{P} не задает полное упорядочивание элементов @var{L},
 то @code{sort} может пробежать до конца без ошибки,
 но результат будет неопределенный.
 @code{sort} выдает сообщение, если предикат вычисляется до чего-то отличного
 от @code{true} или @code{false}.
 
-@code{sort (@mvar{L})} эквивалентно @code{sort (@mvar{L}, orderlessp)}.
+@code{sort (@var{L})} эквивалентно @code{sort (@var{L}, orderlessp)}.
 То есть, порядок сортировки по умолчанию будет восходящим,
 как определено для @code{orderlessp}.
 Все Maxima атомы и выражения сравнимы по @code{orderlessp},
@@ -2491,9 +2491,9 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} sqrt (@mvar{x})
-Квадратный корень @mvar{x}. Внутренне представляется как
-@code{@mvar{x}^(1/2)}.  См. также @code{rootscontract}.
+@deffn {Функция} sqrt (@var{x})
+Квадратный корень @var{x}. Внутренне представляется как
+@code{@var{x}^(1/2)}.  См. также @code{rootscontract}.
 
 @code{radexpand}, если @code{true}, вызовет то, что n-ные корни множителей произведения,
 которые есть степени n, будут вынесены за пределы радикала. Например,
@@ -2520,7 +2520,7 @@ reverse(uf))
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
-@deffn {Функция} sublis (@mvar{list}, @mvar{expr})
+@deffn {Функция} sublis (@var{list}, @var{expr})
 Производит множественные параллельные подстановки в выражение.
 
 Переменная @code{sublis_apply_lambda} управляет упрощением после
@@ -2542,8 +2542,8 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} sublist (@mvar{list}, @mvar{p})
-Возвращает список элементов @mvar{list}, для которого 
+@deffn {Функция} sublist (@var{list}, @var{p})
+Возвращает список элементов @var{list}, для которого 
 предикат @code{p} возвращает @code{true}.
 
 Пример:
@@ -2580,15 +2580,15 @@ reverse(uf))
 @end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
-@deffn {Функция} subst (@mvar{a}, @mvar{b}, @mvar{c})
-Делает подстановку @mvar{a} для @mvar{b} в @mvar{c}.  
-@mvar{b} должен быть атомом или полным подвыражением в @mvar{c}.  Например, @code{x+y+z} есть полное
-подвыражение @code{2*(x+y+z)/w}, а @code{x+y} нет. Когда @mvar{b} не имеет
+@deffn {Функция} subst (@var{a}, @var{b}, @var{c})
+Делает подстановку @var{a} для @var{b} в @var{c}.  
+@var{b} должен быть атомом или полным подвыражением в @var{c}.  Например, @code{x+y+z} есть полное
+подвыражение @code{2*(x+y+z)/w}, а @code{x+y} нет. Когда @var{b} не имеет
 эти характеристики, можно иногда использовать @code{substpart} или @code{ratsubst}
-(см. ниже).  Альтернативно, если @mvar{b} задано в форме @code{e/f}, то можно
-использовать @code{subst (a*f, e, c)}, в то время как, если @mvar{b} задано в  форме @code{e^(1/f)}, то можно 
+(см. ниже).  Альтернативно, если @var{b} задано в форме @code{e/f}, то можно
+использовать @code{subst (a*f, e, c)}, в то время как, если @var{b} задано в  форме @code{e^(1/f)}, то можно 
 использовать @code{subst (a^f, e, c)}.  @code{subst} также различает @code{x^y} в @code{x^-y},
-так что @code{subst (a, sqrt(x), 1/sqrt(x))} дает @code{1/a}.  Аргументы @mvar{a} и @mvar{b} могут также быть
+так что @code{subst (a, sqrt(x), 1/sqrt(x))} дает @code{1/a}.  Аргументы @var{a} и @var{b} могут также быть
 операторами выражения, заключенными в двойные кавычки @code{"}, или могут быть именами функций. 
 Если есть желание подставить независимую переменную в
 производных формах, то следует использовать функцию @code{at} (см. ниже).
@@ -2596,10 +2596,10 @@ reverse(uf))
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} - это псевдоним для @code{substitute}.
 
-Выражения @code{subst (@mvar{eq_1}, @mvar{expr})} или @code{subst ([@mvar{eq_1}, ..., @mvar{eq_k}], @mvar{expr})}
+Выражения @code{subst (@var{eq_1}, @var{expr})} или @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
 - есть другие допустимые формы.  
-@mvar{eq_i} - уравнения, указывающие какие подстановки нужно сделать.
-Для каждого уравнения, правая сторона будет подставлена вместо левой в выражении @mvar{expr}.
+@var{eq_i} - уравнения, указывающие какие подстановки нужно сделать.
+Для каждого уравнения, правая сторона будет подставлена вместо левой в выражении @var{expr}.
 
 Если @code{exptsubst} равно @code{true}, то позволяются подстановки,
 на подобии @code{y} для @code{%e^x} в @code{%e^(a*x)}.
@@ -2633,9 +2633,9 @@ reverse(uf))
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} substinpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
+@deffn {Функция} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Аналогично @code{substpart}, но @code{substinpart} работает с 
-внутренним представление @mvar{expr}.
+внутренним представление @var{expr}.
 
 Примеры:
 
@@ -2717,11 +2717,11 @@ reverse(uf))
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Функция} substpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
-Делает подстановку @mvar{x} в подвыражение,
+@deffn {Функция} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Делает подстановку @var{x} в подвыражение,
 выбираемое последними аргументами, как в @code{part}. Возвращает 
-новое значение @mvar{expr}.  @mvar{x} может быть некоторым оператором для подстановки вместо
-оператора в @mvar{expr}. В некоторых случаях @mvar{x} нужно заключать в двойной кавычки @code{"}
+новое значение @var{expr}.  @var{x} может быть некоторым оператором для подстановки вместо
+оператора в @var{expr}. В некоторых случаях @var{x} нужно заключать в двойной кавычки @code{"}
 (Например, @code{substpart ("+", a*b, 0)} дает @code{b + a}).
 
 @c ===beg===
@@ -2757,8 +2757,8 @@ reverse(uf))
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@deffn {Функция} subvarp (@mvar{expr})
-Возвращает @code{true}, если @mvar{expr} есть переменная с индексом,
+@deffn {Функция} subvarp (@var{expr})
+Возвращает @code{true}, если @var{expr} есть переменная с индексом,
 например @code{a[i]}.
 
 @opencatbox
@@ -2767,8 +2767,8 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} symbolp (@mvar{expr})
-Возвращает @code{true}, если @mvar{expr} есть символ, иначе @code{false}.
+@deffn {Функция} symbolp (@var{expr})
+Возвращает @code{true}, если @var{expr} есть символ, иначе @code{false}.
 На самом деле, @code{symbolp(x)} эквивалентно предикату @code{atom(x) and not numberp(x)}.
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
@@ -2823,7 +2823,7 @@ reverse(uf))
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
-@deffn {Функция} vectorpotential (@mvar{givencurl})
+@deffn {Функция} vectorpotential (@var{givencurl})
 Возвращает векторный потенциал заданного
 вектора кручения, в текущей системе координат.
 @code{potentialzeroloc} имеет аналогичную роль для @code{potential}, но порядок 
@@ -2836,8 +2836,8 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Функция} xthru (@mvar{expr})
-Объединяет все члены @mvar{expr} (которое должно быть суммой) для общего знаменателя 
+@deffn {Функция} xthru (@var{expr})
+Объединяет все члены @var{expr} (которое должно быть суммой) для общего знаменателя 
 без раскрытия произведений и степеней сумм,
 что делает @code{ratsimp}.  Функция @code{xthru} сокращает общие множители в числителе и
 знаменателе рациональных выражений, но только если эти множители явные.
@@ -2874,9 +2874,9 @@ reverse(uf))
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
 @c DUNNO WHETHER WE CAN CLEAR THIS UP
-@deffn {Функция} zeroequiv (@mvar{expr}, @mvar{v})
-Проверяет эквивалентно ли выражение @mvar{expr} в переменной
-@mvar{v} нулю, возвращает @code{true}, @code{false} или
+@deffn {Функция} zeroequiv (@var{expr}, @var{v})
+Проверяет эквивалентно ли выражение @var{expr} в переменной
+@var{v} нулю, возвращает @code{true}, @code{false} или
 @code{dontknow}.
 
 @code{zeroequiv} имеет следующие ограничения:

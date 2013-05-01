@@ -9,69 +9,69 @@
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
-@deffn {Function} append (@mvar{list_1}, ..., @mvar{list_n})
+@deffn {Function} append (@var{list_1}, ..., @var{list_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} assoc (@mvar{key}, @mvar{list}, @mvar{default})
-@deffnx {Function} assoc (@mvar{key}, @mvar{list})
+@deffn {Function} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Function} assoc (@var{key}, @var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} atom (@mvar{expr})
+@deffn {Function} atom (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cons (@mvar{expr}, @mvar{list})
+@deffn {Function} cons (@var{expr}, @var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} copylist (@mvar{list})
+@deffn {Function} copylist (@var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} create_list (@mvar{form}, @mvar{x_1}, @mvar{list_1}, ..., @mvar{x_n}, @mvar{list_n})
+@deffn {Function} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} delete (@mvar{expr_1}, @mvar{expr_2})
-@deffnx {Function} delete (@mvar{expr_1}, @mvar{expr_2}, @mvar{n})
+@deffn {Function} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} eighth (@mvar{expr})
+@deffn {Function} eighth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} endcons (@mvar{expr}, @mvar{list})
+@deffn {Function} endcons (@var{expr}, @var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fifth (@mvar{expr})
+@deffn {Function} fifth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} first (@mvar{expr})
+@deffn {Function} first (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourth (@mvar{expr})
+@deffn {Function} fourth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} get (@mvar{a}, @mvar{i})
+@deffn {Function} get (@var{a}, @var{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} join (@mvar{l}, @mvar{m})
+@deffn {Function} join (@var{l}, @var{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} last (@mvar{expr})
+@deffn {Function} last (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} length (@mvar{expr})
+@deffn {Function} length (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -79,49 +79,49 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} listp (@mvar{expr})
+@deffn {Function} listp (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
-@deffnx {Function} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
+@deffn {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Function} makelist (@var{expr}, @var{x}, @var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} member (@mvar{expr_1}, @mvar{expr_2})
+@deffn {Function} member (@var{expr_1}, @var{expr_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ninth (@mvar{expr})
+@deffn {Function} ninth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rest (@mvar{expr}, @mvar{n})
-@deffnx {Function} rest (@mvar{expr})
+@deffn {Function} rest (@var{expr}, @var{n})
+@deffnx {Function} rest (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} reverse (@mvar{list})
+@deffn {Function} reverse (@var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} second (@mvar{expr})
+@deffn {Function} second (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} seventh (@mvar{expr})
+@deffn {Function} seventh (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sixth (@mvar{expr})
+@deffn {Function} sixth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tenth (@mvar{expr})
+@deffn {Function} tenth (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} third (@mvar{expr})
+@deffn {Function} third (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -213,18 +213,18 @@ Rastros extensivos de depura@value{cedilha}@~{a}o mensagens s@~{a}o mostradas se
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode, Possibilidades de melhorias em contrib_ode, Introdu@value{cedilha}@~{a}o a contrib_ode, contrib_ode
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode
 
-@deffn {Fun@value{cedilha}@~{a}o} contrib_ode (@mvar{eqn}, @mvar{y}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
-Retorna uma lista de solu@value{cedilha}@~{o}es da EDO @mvar{eqn} com
-vari@'{a}vel independente @mvar{x} e vari@'{a}vel dependente @mvar{y}.
+Retorna uma lista de solu@value{cedilha}@~{o}es da EDO @var{eqn} com
+vari@'{a}vel independente @var{x} e vari@'{a}vel dependente @var{y}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} odelin (@mvar{eqn}, @mvar{y}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} odelin (@var{eqn}, @var{y}, @var{x})
 
 @code{odelin} resolve EDO's lineares homog@^{e}neas de primeira e 
 segunda ordem com
-vari@'{a}vel independente @mvar{x} e vari@'{a}vel dependente @mvar{y}.  
+vari@'{a}vel independente @var{x} e vari@'{a}vel dependente @var{y}.  
 @code{odelin} retorna um conjunto solu@value{cedilha}@~{a}o fundamental da EDO.
 
 para EDO's de segunda ordem, @code{odelin} usa um m@'{e}todo, devido a Bronstein
@@ -260,11 +260,11 @@ especiais dadas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ode_check (@mvar{eqn}, @mvar{sol})
+@deffn {Fun@value{cedilha}@~{a}o} ode_check (@var{eqn}, @var{sol})
 
-Retorna o valor da EDO @mvar{eqn} ap@'{o}s substituir uma
-poss@'{i}vel solu@value{cedilha}@~{a}o @mvar{sol}.  O valor @'{e} igual a
-zero se @mvar{sol} for uma solu@value{cedilha}@~{a}o of @mvar{eqn}.
+Retorna o valor da EDO @var{eqn} ap@'{o}s substituir uma
+poss@'{i}vel solu@value{cedilha}@~{a}o @var{sol}.  O valor @'{e} igual a
+zero se @var{sol} for uma solu@value{cedilha}@~{a}o of @var{eqn}.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -326,7 +326,7 @@ uma dada EDO.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} gauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} e @code{gauss_b(a,b,c,x)} s@~{a}o fun@value{cedilha}@~{o}es
 hipergeom@'{e}tricas 2F1.  Elas represetnam quaisquer duas solu@value{cedilha}@~{o}es
@@ -341,20 +341,20 @@ Veja tamb@'{e}m @code{gauss_b}, @code{dgauss_a} e @code{gauss_b}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 Veja @code{gauss_a}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dgauss_a (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 A derivada em rela@value{cedilha}@~{a}o a x de @code{gauss_a(a,b,c,x)}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dgauss_b (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 A derivada em rela@value{cedilha}@~{a}o a x de @code{gauss_b(a,b,c,x)}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} kummer_m (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} kummer_m (@var{a}, @var{b}, @var{x})
 
 A fun@value{cedilha}@~{a}o  M de Kummer, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2.
@@ -366,7 +366,7 @@ fun@value{cedilha}@~{o}es pode mudar em futuras vers@~{o}es do maxima.
 Veja tamb@'{e}m @code{kummer_u}, @code{dkummer_m} e @code{dkummer_u}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} kummer_u (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} kummer_u (@var{a}, @var{b}, @var{x})
 
 A fun@value{cedilha}@~{a}o U de Kummer, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
@@ -374,11 +374,11 @@ A fun@value{cedilha}@~{a}o U de Kummer, como definida em Abramowitz e Stegun,
 Veja @code{kummer_m}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dkummer_m (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} dkummer_m (@var{a}, @var{b}, @var{x})
 A derivada com rela@value{cedilha}@~{a}o a x de @code{kummer_m(a,b,x)}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dkummer_u (@mvar{a}, @mvar{b}, @mvar{x})
+@deffn {Fun@value{cedilha}@~{a}o} dkummer_u (@var{a}, @var{b}, @var{x})
 A derivada com rela@value{cedilha}@~{a}o a x de  @code{kummer_u(a,b,x)}.
 @end deffn
 

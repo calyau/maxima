@@ -70,7 +70,7 @@ e
 @vrindex Express@~ao de entrada actual
 @end ifinfo
 @code{__} @'e a express@~ao de entrada actualmente sendo avaliada.
-Isto @'e, enquanto um express@~ao de entrada @mvar{expr} est@'a sendo avaliada, @code{__} @'e @mvar{expr}.
+Isto @'e, enquanto um express@~ao de entrada @var{expr} est@'a sendo avaliada, @code{__} @'e @var{expr}.
 
 @code{__} @'e atribu@'{@dotless{i}}da @`a express@~ao de entrada antes de a entrada ser simplificada ou avaliada.
 Todavia, o valor de @code{__} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
@@ -82,8 +82,8 @@ Em um ficheiro processado por @code{load},
 @code{__} est@'a associado @`a express@~ao de entrada mais recentemente informada no prompt interativo
 ou em um ficheiro de lote (batch);
 @code{__} n@~ao @'e associado @`a express@~oes de entrada no ficheiro que est@'a sendo processado.
-Em particular, quando @code{load (@mvar{nomeficheiro})} for chamado a partir da linha de comando interativa,
-@code{__} @'e associado a @code{load (@mvar{filename})}
+Em particular, quando @code{load (@var{nomeficheiro})} for chamado a partir da linha de comando interativa,
+@code{__} @'e associado a @code{load (@var{filename})}
 enquanto o ficheiro est@'a sendo processado.
 
 Veja tamb@'em @code{_} e @code{%}.
@@ -209,7 +209,7 @@ Veja tamb@'em @code{_}, @code{%%}, e @code{%th}
 @vrindex Resultado anterior em express@~ao composta
 @end ifinfo
 Em declara@,{c}@~ao composta,
-a saber @code{block}, @code{lambda}, ou @code{(@mvar{s_1}, ..., @mvar{s_n})},
+a saber @code{block}, @code{lambda}, ou @code{(@var{s_1}, ..., @var{s_n})},
 @code{%%} @'e os valor da declara@,{c}@~ao anterior.
 Por exemplo,
 
@@ -261,13 +261,13 @@ Por exemplo, @code{%e^-x} @'e mostrado como @code{1/%e^x}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} %th (@mvar{i})
+@deffn {Fun@,{c}@~ao} %th (@var{i})
 @ifinfo
 @fnindex N'@'esima sa@'{@dotless{i}}da anterior
 @end ifinfo
-O valor da @mvar{i}'@'esima express@~ao pr@'evia de sa@'{@dotless{i}}da.
-Isto @'e, se a pr@'oxima express@~ao a ser calculada for a @mvar{n}'@'esima sa@'{@dotless{i}}da,
-@code{%th (@mvar{m})} ser@'a a (@mvar{n} - @mvar{m})'@'esima sa@'{@dotless{i}}da.
+O valor da @var{i}'@'esima express@~ao pr@'evia de sa@'{@dotless{i}}da.
+Isto @'e, se a pr@'oxima express@~ao a ser calculada for a @var{n}'@'esima sa@'{@dotless{i}}da,
+@code{%th (@var{m})} ser@'a a (@var{n} - @var{m})'@'esima sa@'{@dotless{i}}da.
 
 @code{%th} @'e @'util em ficheiros @code{batch} ou para referir-se a um grupo de express@~oes de sa@'{@dotless{i}}da.
 Por exemplo,
@@ -343,8 +343,8 @@ e @code{tex} e @code{appendfile} sempre anexam ao final.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} appendfile (@mvar{filename})
-Adiciona ao final de @mvar{filename} uma transcri@,{c}@~ao do console.
+@deffn {Fun@,{c}@~ao} appendfile (@var{filename})
+Adiciona ao final de @var{filename} uma transcri@,{c}@~ao do console.
 @code{appendfile} @'e o mesmo que @code{writefile}, 
 excepto que o ficheiro transcrito, se j@'a existe, ter@'a sempre alguma coisa adicionada ao seu final.
 
@@ -355,12 +355,12 @@ excepto que o ficheiro transcrito, se j@'a existe, ter@'a sempre alguma coisa ad
 @c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
 @c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
 @c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
-@deffn {Fun@,{c}@~ao} batch (@mvar{filename})
-L@^e express@~oes Maxima do ficheiro @mvar{filename} e as avalia.
-@code{batch} procura pelo ficheiro @mvar{filename} na lista @code{file_search_maxima}.
+@deffn {Fun@,{c}@~ao} batch (@var{filename})
+L@^e express@~oes Maxima do ficheiro @var{filename} e as avalia.
+@code{batch} procura pelo ficheiro @var{filename} na lista @code{file_search_maxima}.
 Veja @code{file_search}.
 
-@mvar{filename} compreende uma sequ@^encia de express@~oes Maxima,
+@var{filename} compreende uma sequ@^encia de express@~oes Maxima,
 cada uma terminada com @code{;} ou @code{$}.
 A var@'avel especial @code{%} e a fun@,{c}@~ao @code{%th}
 referem-se a resultados pr@'evios dentro do ficheiro.
@@ -368,7 +368,7 @@ O ficheiro pode incluir constru@,{c}@~oes @code{:lisp}.
 Espa@,{c}os, tabula@,{c}@~oes, e o caracter de nova linha no ficheiro ser@~ao ignorados.
 um ficheiro de entrada conveniente pode ser criado por um editor de texto ou pela fun@,{c}@~ao @code{stringout}.
 
-@code{batch} l@^e cada express@~ao de entrada de @mvar{filename},
+@code{batch} l@^e cada express@~ao de entrada de @var{filename},
 mostra a entrada para o console, 
 calcula a correspondente express@~ao de sa@'{@dotless{i}}da,
 e mostra a express@~ao de sa@'{@dotless{i}}da.
@@ -398,8 +398,8 @@ Veja tamb@'em @code{load}, @code{batchload}, e @code{demo}.
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
-@deffn {Fun@,{c}@~ao} batchload (@mvar{filename})
-L@^e express@~oes Maxima de @mvar{filename} e as avalia,
+@deffn {Fun@,{c}@~ao} batchload (@var{filename})
+L@^e express@~oes Maxima de @var{filename} e as avalia,
 sem mostrar a entrada ou express@~oes de sa@'{@dotless{i}}da
 e sem atribuir r@'otulos para express@~oes de sa@'{@dotless{i}}da.
 Sa@'{@dotless{i}}das impressas (tais como produzidas por @code{print} ou @code{describe})
@@ -410,7 +410,7 @@ referem-se a resultados anteriores do interpretador interativo,
 n@~ao a resultados dentro do ficheiro.
 O ficheiro n@~ao pode incluir constru@,{c}@~oes @code{:lisp}.
 
-@code{batchload} retorna o caminho de @mvar{filename}, como uma sequ@^encia de caracteres.
+@code{batchload} retorna o caminho de @var{filename}, como uma sequ@^encia de caracteres.
 @code{batchload} avalia seu argumento.
 
 Veja tamb@'em @code{batch} e @code{load}.
@@ -424,19 +424,19 @@ Fecha o ficheiro transcrito aberto por @code{writefile} ou @code{appendfile}.
 @end deffn
 
 @c NEEDS CLARIFICATION !!!
-@deffn {Fun@,{c}@~ao} collapse (@mvar{expr})
-Reduz @mvar{expr} fazendo com que todas as suas subexpress@~oes comuns
+@deffn {Fun@,{c}@~ao} collapse (@var{expr})
+Reduz @var{expr} fazendo com que todas as suas subexpress@~oes comuns
 (i.e., iguais) serem compartilhadas (i.e., usam a mesma c@'elulas),
 dessa forma exonomizando espa@,{c}o.  (@code{collapse} @'e uma subrotina
 usada pelo comando @code{optimize}.)  Dessa forma, chamar
 @code{collapse} pode ser @'util ap@'os um @code{save} ficheiro.  Pode
 diminuir muitas express@~oes juntas pelo uso de @code{collapse
-([@mvar{expr_1}, ..., @mvar{expr_n}])}.  Similarmente, pode diminuir os
+([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, pode diminuir os
 elementos de um array @code{A} fazendo @code{collapse (listarray ('A))}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} concat (@mvar{arg_1}, @mvar{arg_2}, ...)
+@deffn {Fun@,{c}@~ao} concat (@var{arg_1}, @var{arg_2}, ...)
 Concatena seus argumentos.
 Os argumentos devem obrigat@'oriamente serem avaliados para atomos.
 O valor de retorno @'e um s@'{@dotless{i}}mbolo se o primeiro argumento for um s@'{@dotless{i}}mbolo
@@ -482,7 +482,7 @@ Note que embora @code{concat (1, 2)} seja visto como um n@'umeros, isso @'e uma 
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} sconcat (@mvar{arg_1}, @mvar{arg_2}, ...)
+@deffn {Fun@,{c}@~ao} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
 Concatena seus argumentos em uma sequ@^encia de caracteres.
 Ao contr@'ario de @code{concat}, os argumentos arrumados @i{n@~ao} precisam ser at@^omicos.
@@ -513,7 +513,7 @@ O resultado @'e uma sequ@^encia de caracteres no format do Lisp.
 @c @end defvar
 
 @c REPHRASE, NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} disp (@mvar{expr_1}, @mvar{expr_2}, ...)
+@deffn {Fun@,{c}@~ao} disp (@var{expr_1}, @var{expr_2}, ...)
 @'e como @code{display} mas somente os valores dos
 argumentos s@~ao mostrados em lugar de equa@,{c}@~oes.  Isso @'e @'util para
 argumentos complicados que n@~ao possuem nomes ou onde somente o valor
@@ -523,7 +523,7 @@ do argumento @'e de interesse e n@~ao o nome.
 
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
 @c DOES ITS DESCRIPTION WANT TO BE ELSEWHERE ???
-@deffn {Fun@,{c}@~ao} dispcon (@mvar{tensor_1}, @mvar{tensor_2}, ...)
+@deffn {Fun@,{c}@~ao} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
 @deffnx {Fun@,{c}@~ao} dispcon (all)
 Mostram as propriedades de contra@,{c}@~ao de
 seus argumentos como foram dados para @code{defcon}.  @code{dispcon (all)} mostra todas as
@@ -532,9 +532,9 @@ propriedades de contra@,{c}@~ao que foram definidas.
 @end deffn
 
 @c REPHRASE, MORE EXAMPLES
-@deffn {Fun@,{c}@~ao} display (@mvar{expr_1}, @mvar{expr_2}, ...)
+@deffn {Fun@,{c}@~ao} display (@var{expr_1}, @var{expr_2}, ...)
 Mostra equa@,{c}@~oes cujo lado esquerdo @'e
-@mvar{expr_i} n@~ao avaliado, e cujo lado direito @'e o valor da express@~ao
+@var{expr_i} n@~ao avaliado, e cujo lado direito @'e o valor da express@~ao
 centrada na linha.  Essa fun@,{c}@~ao @'e @'util em blocos e em @code{for}
 declara@,{c}@~oes com o objectivo de ter resultados interm@'edios mostrados.  The
 Os argumentos para @code{display} s@~ao usualmente @'atomos, vari@'aveis subscritas, ou
@@ -587,11 +587,11 @@ X*4/3;    ---        - X
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} dispterms (@mvar{expr})
-Mostra @mvar{expr} em partes uma abaixo da outra.
-Isto @'e, primeiro o operador de @mvar{expr} @'e mostrado, ent@~ao cada parcela em
+@deffn {Fun@,{c}@~ao} dispterms (@var{expr})
+Mostra @var{expr} em partes uma abaixo da outra.
+Isto @'e, primeiro o operador de @var{expr} @'e mostrado, ent@~ao cada parcela em
 uma adi@,{c}@~ao, ou factores em um produto, ou parte de uma express@~ao mais geral @'e
-mostrado separadamente.  Isso @'e @'util se @mvar{expr} @'e muito larga para ser
+mostrado separadamente.  Isso @'e @'util se @var{expr} @'e muito larga para ser
 mostrada de outra forma.  Por exemplo se @code{P1}, @code{P2}, ...  s@~ao express@~oes
 muito largas ent@~ao o programa visualizador pode sair fora do espa@,{c}o de armazenamento na
 tentativa de mostrar @code{P1 + P2 + ...}  tudo de uma vez.  Todavia,
@@ -669,16 +669,16 @@ a segunda por @code{error_syms[2]}, e assim por diante.
 
 Se houverem mais express@~oes muito largas que h@'a elementos em @code{error_syms},
 s@'{@dotless{i}}mbolos s@~ao constru@'{@dotless{i}}dos automaticamente,
-com o @mvar{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @mvar{n})}.
+com o @var{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @var{n})}.
 
 Veja tamb@'em @code{error} e @code{error_size}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} expt (@mvar{a}, @mvar{b})
+@deffn {Fun@,{c}@~ao} expt (@var{a}, @var{b})
 Se uma express@~ao exponencial @'e muito alta para ser mostrada
-cmo @code{@mvar{a}^@mvar{b}} isso aparece como @code{expt (@mvar{a}, @mvar{b})} (ou como @code{ncexpt (@mvar{a}, @mvar{b})} no caso de
-@code{@mvar{a}^^@mvar{b}}).
+cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou como @code{ncexpt (@var{a}, @var{b})} no caso de
+@code{@var{a}^^@var{b}}).
 
 @c THIS SEEMS LIKE A BUG TO ME.  expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
 @c ITSELF PRINTS THEM SOMETIMES.  THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
@@ -695,29 +695,29 @@ com expoente negativo usando quocientes, e.g., @code{X^(-1)} como @code{1/X}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} filename_merge (@mvar{path}, @mvar{filename})
-Constroem um caminho modificado de @mvar{path} e @mvar{filename}.
-Se o componente final de @mvar{path} @'e da forma @code{###.@mvar{algumacoisa}},
-o componente @'e substitu@'{@dotless{i}}do com @code{@mvar{filename}.@mvar{algumacoisa}}.
-De outra forma, o componente final @'e simplesmente substitu@'{@dotless{i}}do por @mvar{filename}.
+@deffn {Fun@,{c}@~ao} filename_merge (@var{path}, @var{filename})
+Constroem um caminho modificado de @var{path} e @var{filename}.
+Se o componente final de @var{path} @'e da forma @code{###.@var{algumacoisa}},
+o componente @'e substitu@'{@dotless{i}}do com @code{@var{filename}.@var{algumacoisa}}.
+De outra forma, o componente final @'e simplesmente substitu@'{@dotless{i}}do por @var{filename}.
 
 @c SAY SOMETHING ABOUT ARG TYPE -- LISP STRINGS WORK BETTER THAN MAXIMA STRINGS
 @c SAY SOMETHING ABOUT RETURN TYPE
 @end deffn
 
-@deffn {Fun@,{c}@~ao} file_search (@mvar{filename})
-@deffnx {Fun@,{c}@~ao} file_search (@mvar{filename}, @mvar{pathlist})
+@deffn {Fun@,{c}@~ao} file_search (@var{filename})
+@deffnx {Fun@,{c}@~ao} file_search (@var{filename}, @var{pathlist})
 
-@code{file_search} procura pelo ficheiro @mvar{filename} e retorna o caminho para o ficheiro
+@code{file_search} procura pelo ficheiro @var{filename} e retorna o caminho para o ficheiro
 (como uma sequ@^encia de caracteres) se ele for achado; de outra forma @code{file_search} retorna @code{false}.
-@code{file_search (@mvar{filename})} procura nos direct@'orios padr@~oes de busca,
+@code{file_search (@var{filename})} procura nos direct@'orios padr@~oes de busca,
 que s@~ao especificados pelas vari@'aveis @code{file_search_maxima}, @code{file_search_lisp}, e @code{file_search_demo}.
 
 @code{file_search} primeiro verifica se o nome actual passado existe,
 antes de tentar coincidir esse nome actual com o modelo ``coringa'' de busca do ficheiro.
 Veja @code{file_search_maxima} concernente a modelos de busca de ficheiros.
 
-O argumento @mvar{filename} pode ser um caminho e nome de ficheiro,
+O argumento @var{filename} pode ser um caminho e nome de ficheiro,
 ou apenas um nome de ficheiro, ou, se um direct@'orio de busca de ficheiro inclui um modelo de busca de ficheiro,
 apenas a base do nome de ficheiro (sem uma extens@~ao).
 Por exemplo,
@@ -731,13 +731,13 @@ file_search ("zeta");
 todos acham o mesmo ficheiro, assumindo que o ficheiro exista e @code{/home/wfs/special/###.mac}
 est@'a em @code{file_search_maxima}.
 
-@code{file_search (@mvar{filename}, @mvar{pathlist})} procura somente nesses direct@'orios
-especificados por @mvar{pathlist},
+@code{file_search (@var{filename}, @var{pathlist})} procura somente nesses direct@'orios
+especificados por @var{pathlist},
 que @'e uma lista de sequ@^encias de caracteres.
-O argumento @mvar{pathlist} substitui os direct@'orios de busca padr@~ao,
+O argumento @var{pathlist} substitui os direct@'orios de busca padr@~ao,
 ent@~ao se a lista do caminho @'e dada, @code{file_search} procura somente nesses especificados,
 e n@~ao qualquer dos direct@'orios padr@~ao de busca.
-Mesmo se existe somente um direct@'orio em @mvar{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
+Mesmo se existe somente um direct@'orio em @var{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
 
 O utilizador pode modificar o direct@'orio de busca padr@~ao.  Veja @code{file_search_maxima}.
 
@@ -790,10 +790,10 @@ expande em @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} file_type (@mvar{filename})
-Retorna uma suposta informa@,{c}@~ao sobre o conte@'udo de @mvar{filename},
+@deffn {Fun@,{c}@~ao} file_type (@var{filename})
+Retorna uma suposta informa@,{c}@~ao sobre o conte@'udo de @var{filename},
 baseada na extens@~ao do ficheiro.
-@mvar{filename} n@~ao precisa referir-se a um ficheiro actual;
+@var{filename} n@~ao precisa referir-se a um ficheiro actual;
 nenhuma tentativa @'e feita para abrir o ficheiro e inspecionar seu conte@'udo.
 
 O valor de retorno @'e um s@'{@dotless{i}}mbolo, qualquer um entre @code{object}, @code{lisp}, ou @code{maxima}.
@@ -803,13 +803,13 @@ Se nenhum dos acima, @code{file_type} retorna @code{object}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} grind (@mvar{expr})
+@deffn {Fun@,{c}@~ao} grind (@var{expr})
 @deffnx {Vari@'avel de op@,{c}@~ao} grind
-A fun@,{c}@~ao @code{grind} imprime @mvar{expr}
+A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
 
-Quando @mvar{expr} for um nome de uma fun@,{c}@~ao ou o nome de uma macro,
+Quando @var{expr} for um nome de uma fun@,{c}@~ao ou o nome de uma macro,
 @code{grind} mostra na tela a defini@,{c}@~ao da fun@,{c}@~ao ou da macro em lugar de apenas o nome.
 
 Veja tamb@'em @code{string}, que retorna uma sequ@^encia de caracteres em lugar de imprimir sua sa@'{@dotless{i}}da.
@@ -969,8 +969,8 @@ Veja tamb@'em @code{labels}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} ldisp (@mvar{expr_1}, ..., @mvar{expr_n})
-Mostra express@~oes @mvar{expr_1}, ..., @mvar{expr_n} para o console
+@deffn {Fun@,{c}@~ao} ldisp (@var{expr_1}, ..., @var{expr_n})
+Mostra express@~oes @var{expr_1}, ..., @var{expr_n} para o console
 como sa@'{@dotless{i}}da impressa na tela.
 @code{ldisp} atribue um r@'otulo de express@~ao interm@'edia a cada argumento
 e retorna a lista de r@'otulos.
@@ -1002,8 +1002,8 @@ Veja tamb@'em @code{disp}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ldisplay (@mvar{expr_1}, ..., @mvar{expr_n})
-Mostra express@~oes @mvar{expr_1}, ..., @mvar{expr_n} para o console
+@deffn {Fun@,{c}@~ao} ldisplay (@var{expr_1}, ..., @var{expr_n})
+Mostra express@~oes @var{expr_1}, ..., @var{expr_n} para o console
 como sa@'{@dotless{i}}da impressa na tela.
 Cada express@~ao @'e impressa como uma equa@,{c}@~ao da forma @code{lhs = rhs}
 na qual @code{lhs} @'e um dos argumentos de @code{ldisplay}
@@ -1091,10 +1091,10 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} load (@mvar{nomeficheiro})
-Avalia express@~oes em @mvar{nomeficheiro}, 
+@deffn {Fun@,{c}@~ao} load (@var{nomeficheiro})
+Avalia express@~oes em @var{nomeficheiro}, 
 dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objectos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objecto existente @'e substitu@'{@dotless{i}}da pela associa@,{c}@~ao recuperada de @mvar{nomeficheiro}.  
+A associa@,{c}@~ao de qualquer objecto existente @'e substitu@'{@dotless{i}}da pela associa@,{c}@~ao recuperada de @var{nomeficheiro}.  
 Para achar o ficheiro,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como direct@'orios de busca.
@@ -1108,7 +1108,7 @@ podem ser processadas por @code{load}.
 @code{load} chama @code{loadfile} para carregar ficheiros Lisp e @code{batchload} para carregar ficheiros Maxima.
 
 @code{load} n@~ao reconhece constru@,{c}@~oes @code{:lisp} em ficheiros do Maxima,
-e quando processando @mvar{nomeficheiro},
+e quando processando @var{nomeficheiro},
 as vari@'aveis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@,{c}@~oes
 que possuiam quando @code{load} foi chamada.
 
@@ -1123,8 +1123,8 @@ Veja @code{file_search} para mais detalhes sobre o mecanismo de busca de ficheir
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Fun@,{c}@~ao} loadfile (@mvar{nomeficheiro})
-Avalia express@~oes Lisp em @mvar{nomeficheiro}.
+@deffn {Fun@,{c}@~ao} loadfile (@var{nomeficheiro})
+Avalia express@~oes Lisp em @var{nomeficheiro}.
 @code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomeficheiro} deve obrigat@'oriamente incluir
 a extens@~ao do ficheiro e tanto quanto o caminho como necess@'ario para achar o ficheiro.
 
@@ -1243,8 +1243,8 @@ e um denominador inteiro @code{n}
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} print (@mvar{expr_1}, ..., @mvar{expr_n})
-Avalia e mostra @mvar{expr_1}, ..., @mvar{expr_n}
+@deffn {Fun@,{c}@~ao} print (@var{expr_1}, ..., @var{expr_n})
+Avalia e mostra @var{expr_1}, ..., @var{expr_n}
 uma ap@'os a outra, da esquerda para a direita,
 iniciando no lado esquerdo do console.
 
@@ -1283,22 +1283,22 @@ Para mostrar o conte@'udo de um ficheiro, veja @code{printfile}.
 @c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
 @c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
 @c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
-@deffn {Fun@,{c}@~ao} tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})
-@deffnx {Fun@,{c}@~ao} tcl_output (@mvar{list}, @mvar{i0})
-@deffnx {Fun@,{c}@~ao} tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})
+@deffn {Fun@,{c}@~ao} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Fun@,{c}@~ao} tcl_output (@var{list}, @var{i0})
+@deffnx {Fun@,{c}@~ao} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
 
 Imprime os elementos de uma lista entre chaves @code{@{ @}},
 conveniente como parte de um programa na linguagem Tcl/Tk.
 
-@code{tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})}
-imprime @mvar{list}, come@,{c}ando com o elemento @mvar{i0} e imprimindo elementos
-@code{@mvar{i0} + @mvar{skip}}, @code{@mvar{i0} + 2 @mvar{skip}}, etc.
+@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
+imprime @var{list}, come@,{c}ando com o elemento @var{i0} e imprimindo elementos
+@code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
 
-@code{tcl_output (@mvar{list}, @mvar{i0})}
-@'e equivalente a @code{tcl_output (@mvar{list}, @mvar{i0}, 2)}.
+@code{tcl_output (@var{list}, @var{i0})}
+@'e equivalente a @code{tcl_output (@var{list}, @var{i0}, 2)}.
 
-@code{tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})}
-imprime os @mvar{i}'@'esimos elementos de @mvar{list_1}, ..., @mvar{list_n}.
+@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
+imprime os @var{i}'@'esimos elementos de @var{list_1}, ..., @var{list_n}.
 
 Exemplos:
 @c EXAMPLE INPUT
@@ -1337,8 +1337,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read (@mvar{expr_1}, ..., @mvar{expr_n})
-Imprime @mvar{expr_1}, ..., @mvar{expr_n}, ent@~ao l@^e uma express@~ao do console
+@deffn {Fun@,{c}@~ao} read (@var{expr_1}, ..., @var{expr_n})
+Imprime @var{expr_1}, ..., @var{expr_n}, ent@~ao l@^e uma express@~ao do console
 e retorna a express@~ao avaliada.
 A express@~ao @'e terminada com um ponto e v@'{@dotless{i}}rgula @code{;} ou o sinal de d@'olar @code{$}.
 
@@ -1356,8 +1356,8 @@ foo is 42  -- enter new value.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} readonly (@mvar{expr_1}, ..., @mvar{expr_n})
-Imprime @mvar{expr_1}, ..., @mvar{expr_n}, ent@~ao l@^e uma express@~ao do console
+@deffn {Fun@,{c}@~ao} readonly (@var{expr_1}, ..., @var{expr_n})
+Imprime @var{expr_1}, ..., @var{expr_n}, ent@~ao l@^e uma express@~ao do console
 e retorna a express@~ao (sem avalia@,{c}@~ao).
 A express@~ao @'e terminada com um @code{;} (ponto e v@'{@dotless{i}}rgula) ou @code{$} (sinal de d@'olar).
 
@@ -1378,17 +1378,17 @@ Veja tamb@'em @code{read}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} reveal (@mvar{expr}, @mvar{depth})
-Substitue partes de @mvar{expr} no inteiro especificado @mvar{depth}
+@deffn {Fun@,{c}@~ao} reveal (@var{expr}, @var{depth})
+Substitue partes de @var{expr} no inteiro especificado @var{depth}
 com sum@'ario descritivo.
 
 @itemize @bullet
 @item
-Somas e diferen@,{c}as s@~ao substitu@'{@dotless{i}}das por @code{sum(@mvar{n})}
-onde @mvar{n} @'e o n@'umero de operandos do produto.
+Somas e diferen@,{c}as s@~ao substitu@'{@dotless{i}}das por @code{sum(@var{n})}
+onde @var{n} @'e o n@'umero de operandos do produto.
 @item
-Produtos s@~ao substitu@'{@dotless{i}}dos por @code{product(@mvar{n})}
-onde @mvar{n} @'e o n@'umero de operandos da multiplica@,{c}@~ao.
+Produtos s@~ao substitu@'{@dotless{i}}dos por @code{product(@var{n})}
+onde @var{n} @'e o n@'umero de operandos da multiplica@,{c}@~ao.
 @item
 Exponenciais s@~ao substitu@'{@dotless{i}}dos por @code{expt}.  
 @item
@@ -1397,8 +1397,8 @@ Quocientes s@~ao substitu@'{@dotless{i}}dos por @code{quotient}.
 Nega@,{c}@~ao un@'aria @'e substitu@'{@dotless{i}}da por @code{negterm}.
 @end itemize
 
-Quando @mvar{depth} @'e maior que ou igual @`a m@'axima intensidade de @mvar{expr},
-@code{reveal (@mvar{expr}, @mvar{depth})} retornam @mvar{expr} sem modifica@,{c}@~oes.
+Quando @var{depth} @'e maior que ou igual @`a m@'axima intensidade de @var{expr},
+@code{reveal (@var{expr}, @var{depth})} retornam @var{expr} sem modifica@,{c}@~oes.
 
 @code{reveal} avalia seus argumentos.
 @code{reveal} retorna express@~ao sumarizada.
@@ -1454,20 +1454,20 @@ Veja tamb@'em @code{lmxchar}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} save (@mvar{filename}, @mvar{nome_1}, @mvar{nome_2}, @mvar{nome_3}, ...)
-@deffnx {Fun@,{c}@~ao} save (@mvar{filename}, values, functions, labels, ...)
-@deffnx {Fun@,{c}@~ao} save (@mvar{filename}, [@mvar{m}, @mvar{n}])
-@deffnx {Fun@,{c}@~ao} save (@mvar{filename}, @mvar{nome_1}=@mvar{expr_1}, ...)
-@deffnx {Fun@,{c}@~ao} save (@mvar{filename}, all)
-@deffnx {Fun@,{c}@~ao} save (@mvar{filename}, @mvar{nome_1}=@mvar{expr_1}, @mvar{nome_2}=@mvar{expr_2}, ...)
+@deffn {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}, @var{nome_2}, @var{nome_3}, ...)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}=@var{expr_1}, ...)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, all)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)
 
-Armazena os valores correntes de @mvar{nome_1}, @mvar{nome_2}, @mvar{nome_3}, ..., em @mvar{filename}.
+Armazena os valores correntes de @var{nome_1}, @var{nome_2}, @var{nome_3}, ..., em @var{filename}.
 Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objectos.
 Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
-@code{save} retorna @mvar{filename}.
+@code{save} retorna @var{filename}.
 
 @code{save} armazena dados na forma de express@~oes Lisp.
-Os dados armazenados por @code{save} podem ser recuperados por @code{load (@mvar{filename})}.
+Os dados armazenados por @code{save} podem ser recuperados por @code{load (@var{filename})}.
 
 O sinalizador global @code{file_output_append} governa
 se @code{save} anexa ao final ou trunca o ficheiro de sa@'{@dotless{i}}da.
@@ -1476,30 +1476,30 @@ Quando @code{file_output_append} for @code{true},
 De outra forma, @code{save} trunca o ficheiro de sa@'{@dotless{i}}da.
 Nesse caso, @code{save} cria o ficheiro se ele n@~ao existir ainda.
 
-A forma especial @code{save (@mvar{filename}, values, functions, labels, ...)}
+A forma especial @code{save (@var{filename}, values, functions, labels, ...)}
 armazena os @'{@dotless{i}}tens nomeados por @code{values}, @code{fun@,{c}@~oes}, @code{labels}, etc.
 Os nomes podem ser quaisquer especificados pela vari@'avel @code{infolists}.
 @code{values} compreende todas as vari@'aveis definidas pelo utilizador.
 
-A forma especial @code{save (@mvar{filename}, [@mvar{m}, @mvar{n}])} armazena os valores de
-r@'otulos de entrada e sa@'{@dotless{i}}da de @mvar{m} at@'e @mvar{n}.
-Note que @mvar{m} e @mvar{n} devem obrigat@'oriamente ser inteiros literais.
+A forma especial @code{save (@var{filename}, [@var{m}, @var{n}])} armazena os valores de
+r@'otulos de entrada e sa@'{@dotless{i}}da de @var{m} at@'e @var{n}.
+Note que @var{m} e @var{n} devem obrigat@'oriamente ser inteiros literais.
 R@'otulos de entrada e sa@'{@dotless{i}}da podem tamb@'em ser armazenados um a um, e.g., @code{save ("foo.1", %i42, %o42)}.
-@code{save (@mvar{filename}, labels)} armazena todos os r@'otulos de entrada e sa@'{@dotless{i}}da.
+@code{save (@var{filename}, labels)} armazena todos os r@'otulos de entrada e sa@'{@dotless{i}}da.
 Quando r@'otulos armazenados s@~ao recuperados, eles substituem r@'otulos existentes.
 
-A forma especial @code{save (@mvar{filename}, @mvar{nome_1}=@mvar{expr_1}, @mvar{nome_2}=@mvar{expr_2}, ...)}
-armazena os valores de @mvar{expr_1}, @mvar{expr_2}, ...,
-com nomes @mvar{nome_1}, @mvar{nome_2}, ....
+A forma especial @code{save (@var{filename}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)}
+armazena os valores de @var{expr_1}, @var{expr_2}, ...,
+com nomes @var{nome_1}, @var{nome_2}, ....
 Isso @'e @'util para aplicar essa forma para r@'otulos de entrada e sa@'{@dotless{i}}da, e.g., @code{save ("foo.1", aa=%o88)}.
 O lado direito dessa igualdade nessa forma pode ser qualquer express@~ao, que @'e avaliada.
 Essa forma n@~ao introduz os novos nomes no ambiente corrente do Maxima,
-mas somente armazena-os em @mvar{filename}.
+mas somente armazena-os em @var{filename}.
 
 Essa forma especial e a forma geral de @code{save} podem ser misturados.
-Por exemplo, @code{save (@mvar{filename}, aa, bb, cc=42, fun@,{c}@~oes, [11, 17])}.
+Por exemplo, @code{save (@var{filename}, aa, bb, cc=42, fun@,{c}@~oes, [11, 17])}.
 
-A forma especial @code{save (@mvar{filename}, all)} armazena o estado corrente do Maxima.
+A forma especial @code{save (@var{filename}, all)} armazena o estado corrente do Maxima.
 Isso inclui todas as vari@'aveis definidas pelo utilizador, fun@,{c}@~oes, arrays, etc., bem como
 alguns @'{@dotless{i}}tens definidos automaticamente.
 Os @'{@dotless{i}}tes salvos incluem vari@'aveis de sistema,
@@ -1507,7 +1507,7 @@ tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido a
 veja @code{myoptions}.
 
 @code{save} avalia seus argumentos.  
-@mvar{filename} deve obrigat@'oriamente ser uma sequ@^encia de caracteres, n@~ao uma vari@'avel tipo sequ@^encia de caracteres.
+@var{filename} deve obrigat@'oriamente ser uma sequ@^encia de caracteres, n@~ao uma vari@'avel tipo sequ@^encia de caracteres.
 O primeiro e o @'ultimo r@'otulos a salvar, se especificado, devem obrigat@'oriamente serem inteiros.
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} avalia uma vari@'avel tipo sequ@^encia de caracteres para seu valor sequ@^encia de caracteres,
 e.g., @code{s: "foo.1"$ save (''s, all)$},
@@ -1539,7 +1539,7 @@ removidos da lista de @code{fun@,{c}@~oes}.
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
-@deffn {Fun@,{c}@~ao} show (@mvar{expr})
+@deffn {Fun@,{c}@~ao} show (@var{expr})
 Mostra @code{expr} com os objectos indexados
 tendo @'{@dotless{i}}ndices covariantes como subscritos, @'{@dotless{i}}ndices contravariantes como
 sobrescritos.  Os @'{@dotless{i}}ndices derivativos s@~ao mostrados como subscritos,
@@ -1547,7 +1547,7 @@ separados dos @'{@dotless{i}}ndices covariantes por uma v@'{@dotless{i}}rgula.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} showratvars (@mvar{expr})
+@deffn {Fun@,{c}@~ao} showratvars (@var{expr})
 Retorna uma lista de vari@'aveis express@~ao racional can@'onica (CRE) na express@~ao @code{expr}.
 
 Veja tamb@'em @code{ratvars}.
@@ -1563,7 +1563,7 @@ mostrada com um asterisco @code{*} entre os operandos.
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} string (@mvar{expr})
+@deffn {Fun@,{c}@~ao} string (@var{expr})
 Converte @code{expr} para a nota@,{c}@~ao linear do Maxima
 apenas como se tivesse sido digitada.
 
@@ -1607,11 +1607,11 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} stringout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
-@deffnx {Fun@,{c}@~ao} stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])
-@deffnx {Fun@,{c}@~ao} stringout (@mvar{filename}, input)
-@deffnx {Fun@,{c}@~ao} stringout (@mvar{filename}, functions)
-@deffnx {Fun@,{c}@~ao} stringout (@mvar{filename}, values)
+@deffn {Fun@,{c}@~ao} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, input)
+@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, functions)
+@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, values)
 
 @code{stringout} escreve express@~oes para um ficheiro na mesma forma de
 express@~oes que foram digitadas para entrada.  O ficheiro pode ent@~ao ser usado
@@ -1634,16 +1634,16 @@ r@'otulos de entrada (@code{%i1}, @code{%i2}, @code{%i3}, ...) ou r@'otulos de s
 Se @code{grind} @'e @code{true}, @code{stringout} formata a sa@'{@dotless{i}}da usando o formato 
 @code{grind}.  De outra forma o formato @code{string} @'e usado.  Veja @code{grind} e @code{string}.
 
-A forma especial @code{stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])} escreve os
+A forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escreve os
 valores dos r@'otulos de entrada de m at@'e n, inclusive.  
 
-A forma especial @code{stringout (@mvar{filename}, input)} escreve todos
+A forma especial @code{stringout (@var{filename}, input)} escreve todos
 os r@'otulos de entrada para o ficheiro.
 
-A forma especial @code{stringout (@mvar{filename}, functions)} escreve todas
+A forma especial @code{stringout (@var{filename}, functions)} escreve todas
 as fun@,{c}@~oes definidas pelo utilizador (nomeadas pela lista global @code{functions}) para o ficheiro.
 
-A forma especial @code{stringout (@mvar{filename}, values)} escreve todas as
+A forma especial @code{stringout (@var{filename}, values)} escreve todas as
 vari@'aveis atribu@'{@dotless{i}}das pelo utilizador (nomeadas pela lista global @code{values})
 para o ficheiro.  Cada vari@'avel @'e impressa como uma
 declara@,{c}@~ao de atribui@,{c}@~ao, com o nome da vari@'avel seguida de dois pontos, e seu
@@ -1653,10 +1653,10 @@ vari@'aveis como declara@,{c}@~oes de atribui@,{c}@~ao.
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@,{c}@~ao} tex (@mvar{expr})
-@deffnx {Fun@,{c}@~ao} tex (@mvar{r@'otulo})
-@deffnx {Fun@,{c}@~ao} tex (@mvar{expr}, @mvar{momeficheiro})
-@deffnx {Fun@,{c}@~ao} tex (@mvar{label}, @mvar{nomeficheiro})
+@deffn {Fun@,{c}@~ao} tex (@var{expr})
+@deffnx {Fun@,{c}@~ao} tex (@var{r@'otulo})
+@deffnx {Fun@,{c}@~ao} tex (@var{expr}, @var{momeficheiro})
+@deffnx {Fun@,{c}@~ao} tex (@var{label}, @var{nomeficheiro})
 
 Imprime uma representa@,{c}@~ao de uma express@~ao
 adequada para o sistema TeX  de prepara@,{c}@~ao de documento.
@@ -1664,21 +1664,21 @@ O resultado @'e um fragmento de um documento,
 que pode ser copiado dentro de um documento maior.
 Esse fragmento n@~ao pode ser processado de forma directa e isolada.
 
-@code{tex (@mvar{expr})} imprime uma representa@,{c}@~ao TeX da @mvar{expr} no console.
+@code{tex (@var{expr})} imprime uma representa@,{c}@~ao TeX da @var{expr} no console.
 
-@code{tex (@mvar{r@'otulo})} imprime uma representa@,{c}@~ao TeX de uma express@~ao chamada @mvar{r@'otulo}
+@code{tex (@var{r@'otulo})} imprime uma representa@,{c}@~ao TeX de uma express@~ao chamada @var{r@'otulo}
 e atribui a essa um r@'otulo de equa@,{c}@~ao (a ser mostrado @`a esquerda da express@~ao).
 O r@'otulo de equa@,{c}@~ao TeX @'e o mesmo que o r@'otulo da equa@,{c}@~ao no Maxima.
 
-@code{tex (@mvar{expr}, @mvar{nomeficheiro})} anexa ao final uma representa@,{c}@~ao TeX de @mvar{expr}
-no ficheiro @mvar{nomeficheiro}.
-@code{tex} n@~ao avalia o argumento @mvar{nomeficheiro}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
+@code{tex (@var{expr}, @var{nomeficheiro})} anexa ao final uma representa@,{c}@~ao TeX de @var{expr}
+no ficheiro @var{nomeficheiro}.
+@code{tex} n@~ao avalia o argumento @var{nomeficheiro}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
 
-@code{tex (@mvar{r@'otulo}, @mvar{nomeficheiro})} anexa ao final uma representa@,{c}@~ao TeX da
-express@~ao chamada de @mvar{r@'otulo}, com um r@'otulo de equa@,{c}@~ao, ao ficheiro @mvar{nomeficheiro}.
+@code{tex (@var{r@'otulo}, @var{nomeficheiro})} anexa ao final uma representa@,{c}@~ao TeX da
+express@~ao chamada de @var{r@'otulo}, com um r@'otulo de equa@,{c}@~ao, ao ficheiro @var{nomeficheiro}.
 
 
-@code{tex} n@~ao avalia o argumento @mvar{nomeficheiro}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
+@code{tex} n@~ao avalia o argumento @var{nomeficheiro}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
 @code{tex} avalia seus argumentos ap@'os testar esse argumento para ver se @'e um r@'otulo.
 duplo ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao do argumento, desse modo frustrando o teste
 e prevenindo o r@'otulo.
@@ -1708,31 +1708,31 @@ $$-\cos x$$
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} texput (@mvar{a}, @mvar{s})
-@deffnx {Fun@,{c}@~ao} texput (@mvar{a}, @mvar{s}, @mvar{operator_type})
-@deffnx {Fun@,{c}@~ao} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)
-@deffnx {Fun@,{c}@~ao} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)
+@deffn {Fun@,{c}@~ao} texput (@var{a}, @var{s})
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Atribui a sa@'{@dotless{i}}da TeX para o @'atomo @mvar{a},
+Atribui a sa@'{@dotless{i}}da TeX para o @'atomo @var{a},
 que pode ser um s@'{@dotless{i}}mbolo ou o nome de um operador.
 
-@code{texput (@mvar{a}, @mvar{s})} faz com que a fun@,{c}@~ao @code{tex}
-interpole a sequ@^encia de caracteres @mvar{s} dentro da sa@'{@dotless{i}}da TeX em lugar de @mvar{a}.
+@code{texput (@var{a}, @var{s})} faz com que a fun@,{c}@~ao @code{tex}
+interpole a sequ@^encia de caracteres @var{s} dentro da sa@'{@dotless{i}}da TeX em lugar de @var{a}.
 
-@code{texput (@mvar{a}, @mvar{s}, @mvar{operator_type})},
-onde @mvar{operator_type} @'e @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, ou @code{nofix},
-faz com que a fun@,{c}@~ao @code{tex} interpole @mvar{s} dentro da sa@'{@dotless{i}}da TeX em lugar de @mvar{a},
+@code{texput (@var{a}, @var{s}, @var{operator_type})},
+onde @var{operator_type} @'e @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, ou @code{nofix},
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s} dentro da sa@'{@dotless{i}}da TeX em lugar de @var{a},
 e coloca o texto interpolado na posi@,{c}@~ao apropriada.
 
-@code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)}
-faz com que a fun@,{c}@~ao @code{tex} interpole @mvar{s_1} e @mvar{s_2} dentro da sa@'{@dotless{i}}da TeX
-sobre qualquer lado dos argumentos de @mvar{a}.
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{@dotless{i}}da TeX
+sobre qualquer lado dos argumentos de @var{a}.
 Os argumentos (se mais de um) s@~ao separados por v@'{@dotless{i}}rgulas.
 
-@code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)}
-faz com que a fun@,{c}@~ao @code{tex} interpole @mvar{s_1} e @mvar{s_2} dentro da sa@'{@dotless{i}}da TeX
-sobre qualquer lado dos argumentos de @mvar{a},
-com @mvar{s_3} separando os argumentos.
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{@dotless{i}}da TeX
+sobre qualquer lado dos argumentos de @var{a},
+com @var{s_3} separando os argumentos.
 
 Exemplos:
 
@@ -1884,8 +1884,8 @@ $$ \langle a \, | \,b \rangle $$
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@,{c}@~ao} system (@mvar{comando})
-Executa @mvar{comando} como um processo separado.
+@deffn {Fun@,{c}@~ao} system (@var{comando})
+Executa @var{comando} como um processo separado.
 O comando @'e passado ao shell padra@~o para execu@,{c}@~ao.
 @code{system} n@~ao @'e suportado por todos os sistemas
 operacionais, mas geralmente existe em ambientes Unix e Unix-like.
@@ -1920,12 +1920,12 @@ n@~ao s@~ao afectadas por @code{ttyoff}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} with_stdout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
-Abre @mvar{filename} e ent@~ao avalia @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ....
-Os valores dos argumentos n@~ao s@~ao armazenados em @mvar{filename},
+@deffn {Fun@,{c}@~ao} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Abre @var{filename} e ent@~ao avalia @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
+Os valores dos argumentos n@~ao s@~ao armazenados em @var{filename},
 mas qualquer sa@'{@dotless{i}}da impressa gerada pela avalia@,{c}@~ao dos argumentos
 (de @code{print}, @code{display}, @code{disp}, ou @code{grind}, por exemplo)
-vai para @mvar{filename} em lugar do console.
+vai para @var{filename} em lugar do console.
 
 O sinalizador global @code{file_output_append} governa
 se @code{with_stdout} anexa ao final ou trunca o ficheiro de sa@'{@dotless{i}}da.
@@ -1966,8 +1966,8 @@ Veja tamb@'em @code{writefile}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} writefile (@mvar{filename})
-Come@,{c}a escrevendo uma transcri@,{c}@~ao da sess@~ao Maxima para @mvar{filename}.
+@deffn {Fun@,{c}@~ao} writefile (@var{filename})
+Come@,{c}a escrevendo uma transcri@,{c}@~ao da sess@~ao Maxima para @var{filename}.
 Toda intera@,{c}@~ao entre o utilizador e Maxima @'e ent@~ao gravada nesse ficheiro,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
 da mesma forma que aparece no console.
@@ -1978,7 +1978,7 @@ Para fazer um ficheiro contendo express@~oes que podem ser reaproveitadas,
 veja @code{save} e @code{stringout}.
 @code{save} armazena express@~oes no formato Lisp, enquanto @code{stringout} armazena express@~oes no formato Maxima.
 
-O efeito de executar @code{writefile} quando @mvar{filename} ainda existe
+O efeito de executar @code{writefile} quando @var{filename} ainda existe
 depende da implementa@,{c}@~ao Lisp subjacente;
 o ficheiro transcrito pode ser substitu@'{@dotless{i}}do, ou o ficheiro pode receber um anexo.
 @code{appendfile} sempre anexa para o ficheiro transcrito.

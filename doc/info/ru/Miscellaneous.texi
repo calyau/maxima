@@ -51,8 +51,8 @@ Maxima директория "share" содержит программы и другие полезные для
 
 @defvr {Декларация} alphabetic
 @code{alphabetic} является декларацией типа, распознаваемой функцией @code{declare}.
-Декларация @code{declare(@mvar{s}, alphabetic)} говорит Maxima рассматривать все 
-символы, входящие в @mvar{s} (должен быть строкой), как буквенные.
+Декларация @code{declare(@var{s}, alphabetic)} говорит Maxima рассматривать все 
+символы, входящие в @var{s} (должен быть строкой), как буквенные.
 
 См. также @ref{Identifiers}.
 
@@ -83,8 +83,8 @@ Maxima директория "share" содержит программы и другие полезные для
 
 @c REPHRASE
 @c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@deffn {Функция} apropos (@mvar{string})
-Ищет имена объектов  Maxima, содержащие @mvar{string} в качестве подстроки.  
+@deffn {Функция} apropos (@var{string})
+Ищет имена объектов  Maxima, содержащие @var{string} в качестве подстроки.  
 Например, вызов @code{apropos (exp)} возвращает список всех переменных и функций,
 имеющих @code{exp} в качестве части своего имени, такие как @code{expand},
 @code{exp} и @code{exponentialize}. Таким образом, если вы помните только часть имени
@@ -99,7 +99,7 @@ Maxima директория "share" содержит программы и другие полезные для
 @closecatbox
 @end deffn
 
-@deffn {Функция} args (@mvar{expr})
+@deffn {Функция} args (@var{expr})
 Возвращает список аргументов параметра @code{expr}, который может быть
 любым отличным от атома выражением.
 Возвращаются только аргументы оператора самого верхнего уровня.
@@ -108,7 +108,7 @@ Maxima директория "share" содержит программы и другие полезные для
 
 Порядок выражений в возвращаемом списке может зависеть от глобального флага @code{inflag}.
 
-Вызов @code{args (@mvar{expr})} эквивалентен @code{substpart ("[", @mvar{expr}, 0)}.
+Вызов @code{args (@var{expr})} эквивалентен @code{substpart ("[", @var{expr}, 0)}.
 См. также @code{substpart} и @code{op}.
 
 @c NEEDS EXAMPLES
@@ -194,8 +194,8 @@ Maxima директория "share" содержит программы и другие полезные для
 @closecatbox
 @end defvr
 
-@deffn {Функция} integerp (@mvar{expr})
-Возвращает @code{true}, если @mvar{expr} является буквальным целым числом, 
+@deffn {Функция} integerp (@var{expr})
+Возвращает @code{true}, если @var{expr} является буквальным целым числом, 
 и @code{false} в противном случае.
 
 Функция @code{integerp} возвращает @code{false}, если аргумент является символом,
@@ -255,8 +255,8 @@ m1pbranch:false          m1pbranch:true
 @closecatbox
 @end defvr
 
-@deffn {Функция} numberp (@mvar{expr})
-Возвращает @code{true}, если @mvar{expr} есть буквальное целое число, рациональное число, 
+@deffn {Функция} numberp (@var{expr})
+Возвращает @code{true}, если @var{expr} есть буквальное целое число, рациональное число, 
 число с плавающей точкой или число с плавающей точкой высокой точности, 
 иначе возвращается @code{false}.
 
@@ -292,9 +292,9 @@ m1pbranch:false          m1pbranch:true
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Функция} properties (@mvar{a})
+@deffn {Функция} properties (@var{a})
 Возвращает список имен всех свойств, ассоциированных
-с атомом @mvar{a}.
+с атомом @var{a}.
 
 @opencatbox
 @category{Факты и выводы}
@@ -316,9 +316,9 @@ m1pbranch:false          m1pbranch:true
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Функция} propvars (@mvar{prop})
+@deffn {Функция} propvars (@var{prop})
 Возвращает список атомов из списка @code{props}, которые имеют 
-свойство, обозначаемое @mvar{prop}.  Т.е. @code{propvars (atvalue)}
+свойство, обозначаемое @var{prop}.  Т.е. @code{propvars (atvalue)}
 возвращает список атомов, имеющих свойство @code{atvalue}.
 
 @opencatbox
@@ -330,13 +330,13 @@ m1pbranch:false          m1pbranch:true
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-@deffn {Функция} put (@mvar{atom}, @mvar{value}, @mvar{indicator})
-Присваивает атому @mvar{atom} значение  свойства @mvar{indicator}, равное @mvar{value}.
-@mvar{indicator} может быть не только системным свойством, но любым другим именем
+@deffn {Функция} put (@var{atom}, @var{value}, @var{indicator})
+Присваивает атому @var{atom} значение  свойства @var{indicator}, равное @var{value}.
+@var{indicator} может быть не только системным свойством, но любым другим именем
 свойства.
 
 Функция @code{put} вычисляет свои аргументы. 
-@code{put} возвращает @mvar{value}.
+@code{put} возвращает @var{value}.
 
 Примеры:
 
@@ -360,8 +360,8 @@ m1pbranch:false          m1pbranch:true
 @closecatbox
 @end deffn
 
-@deffn {Функция} qput (@mvar{atom}, @mvar{value}, @mvar{indicator})
-Присваивает атому @mvar{atom} значение  свойства @mvar{indicator}, равное @mvar{value}.
+@deffn {Функция} qput (@var{atom}, @var{value}, @var{indicator})
+Присваивает атому @var{atom} значение  свойства @var{indicator}, равное @var{value}.
 Аналогично @code{put}, но не вычисляет свои аргументы.
 
 Примеры:
@@ -393,8 +393,8 @@ m1pbranch:false          m1pbranch:true
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
-@deffn {Функция} rem (@mvar{atom}, @mvar{indicator})
-Удаляет свойство @mvar{indicator} у атома @mvar{atom}.
+@deffn {Функция} rem (@var{atom}, @var{indicator})
+Удаляет свойство @var{indicator} у атома @var{atom}.
 
 @opencatbox
 @category{Факты и выводы}
@@ -405,23 +405,23 @@ m1pbranch:false          m1pbranch:true
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@deffn {Функция} remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})
-@deffnx {Функция} remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)
-@deffnx {Функция} remove ("@mvar{a}", operator)
-@deffnx {Функция} remove (@mvar{a}, transfun)
-@deffnx {Функция} remove (all, @mvar{p})
+@deffn {Функция} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Функция} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Функция} remove ("@var{a}", operator)
+@deffnx {Функция} remove (@var{a}, transfun)
+@deffnx {Функция} remove (all, @var{p})
 Удаляет свойства, ассоциированные с атомами.
 
-Вызов @code{remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})}
+Вызов @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
 удаляет свойство @code{p_k} у атома @code{a_k}.
 
-Вызов @code{remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
-удаляет свойства @code{@mvar{p_1}, ..., @mvar{p_n}}
-у атомов @mvar{a_1}, ..., @mvar{a_m}.
+Вызов @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+удаляет свойства @code{@var{p_1}, ..., @var{p_n}}
+у атомов @var{a_1}, ..., @var{a_m}.
 Может быть более чем одна пара списков.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-Вызов @code{remove (all, @mvar{p})} удаляет все свойства @mvar{p} у всех имеющих его атомов.
+Вызов @code{remove (all, @var{p})} удаляет все свойства @var{p} у всех имеющих его атомов.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 Удаляемые свойства могут быть как системными, такими как 
@@ -433,8 +433,8 @@ m1pbranch:false          m1pbranch:true
 После удаления этого свойства, вместо транслированной Lisp версии функции будет 
 выполняться Maxima версия.
 
-Вызов @code{remove ("@mvar{a}", operator)} или, эквивалентно, @code{remove ("@mvar{a}", op)},
-удаляет у @mvar{a} операторные свойства, декларированные функциями @code{prefix}, @code{infix}, 
+Вызов @code{remove ("@var{a}", operator)} или, эквивалентно, @code{remove ("@var{a}", op)},
+удаляет у @var{a} операторные свойства, декларированные функциями @code{prefix}, @code{infix}, 
 @code{nary}, @code{postfix}, @code{matchfix} или @code{nofix}.
 Отметим, что имя оператора должно быть записано в виде строки с двойными кавычками.
 
@@ -450,9 +450,9 @@ m1pbranch:false          m1pbranch:true
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} remvalue (@mvar{name_1}, ..., @mvar{name_n})
+@deffn {Функция} remvalue (@var{name_1}, ..., @var{name_n})
 @deffnx {Функция} remvalue (all)
-Удаляет из системы значения пользовательских переменных @mvar{name_1}, ..., @mvar{name_n}
+Удаляет из системы значения пользовательских переменных @var{name_1}, ..., @var{name_n}
 (могут быть переменными с индексом).
 
 Вызов @code{remvalue (all)} удаляет все значения всех переменных из списка определенных
@@ -467,8 +467,8 @@ Maxima).
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} rncombine (@mvar{expr})
-Преобразует выражение @mvar{expr}, комбинируя слагаемые @mvar{expr}, имеющие
+@deffn {Функция} rncombine (@var{expr})
+Преобразует выражение @var{expr}, комбинируя слагаемые @var{expr}, имеющие
 одинаковые знаменатели или знаменатели отличающиеся только на числовой множитель.
 Это поведение несколько отличается от поведения функции @code{combine}, 
 которая собирает члены с идентичными знаменателями.
@@ -486,8 +486,8 @@ Maxima).
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Функция} scalarp (@mvar{expr})
-Возвращает @code{true} если @mvar{expr} является числом, константой или переменной,
+@deffn {Функция} scalarp (@var{expr})
+Возвращает @code{true} если @var{expr} является числом, константой или переменной,
 объявленной @code{scalar} при помощи @code{declare}, или выражением, полностью состоящим
 из чисел, констант и скалярных переменных, но не содержащим матрицы или списки.
 
@@ -496,11 +496,11 @@ Maxima).
 @closecatbox
 @end deffn
 
-@deffn {Функция} setup_autoload (@mvar{filename}, @mvar{function_1}, ..., @mvar{function_n})
-Определяет то, что если любая из функций @mvar{function_1}, ..., @mvar{function_n} 
-вызывается, но еще не определена в момент вызова, то файл @mvar{filename} загружается 
+@deffn {Функция} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
+Определяет то, что если любая из функций @var{function_1}, ..., @var{function_n} 
+вызывается, но еще не определена в момент вызова, то файл @var{filename} загружается 
 при помощи @code{load}.
-Файл @mvar{filename} обычно содержит определения указанных функций,
+Файл @var{filename} обычно содержит определения указанных функций,
 хотя это и не обязательно.
 
 @code{setup_autoload} не работает для функций-массивов.

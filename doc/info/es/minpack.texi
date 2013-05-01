@@ -17,20 +17,20 @@ obtener de Netlib.
 
 
 
-@deffn {Funci@'on} minpack_lsquares (@mvar{flist}, @mvar{varlist}, @mvar{guess} [, @mvar{tolerance}, @mvar{jacobian}])
+@deffn {Funci@'on} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
 Calcula el punto @code{x} que minimiza la suma de los cuadrados de las
-funciones de la lista @mvar{flist}. Las variables se escriben en
-la lista @code{varlist}. El argumento @mvar{guess} debe guardar una
+funciones de la lista @var{flist}. Las variables se escriben en
+la lista @code{varlist}. El argumento @var{guess} debe guardar una
 estimaci@'on inicial del punto @'optimo.
 
-Los argumentos opcionales @mvar{tolerance} y @mvar{jacobian} permiten
-mantener cierto control sobre el algoritmo; @mvar{tolerance} es el
+Los argumentos opcionales @var{tolerance} y @var{jacobian} permiten
+mantener cierto control sobre el algoritmo; @var{tolerance} es el
 error relativo estimado que se desea en la suma de cuadrados,
-mientras que @mvar{jacobian} puede utilizarse para especificar el
-jacobiano. Si @mvar{jacobian} no se suministra, o se le da el valor
+mientras que @var{jacobian} puede utilizarse para especificar el
+jacobiano. Si @var{jacobian} no se suministra, o se le da el valor
 @code{true}, el que ya tiene por defecto, el jacobiano se calcula
-a partir de @mvar{flist}. Si @mvar{jacobian} vale @code{false}, se
+a partir de @var{flist}. Si @var{jacobian} vale @code{false}, se
 utilizar@'a una aproximaci@'on num@'erica.
 
 @code{minpack_lsquares} devuelve una lista, siendo su primer 
@@ -45,12 +45,12 @@ N@'umero incorrecto de par@'ametros.
 El algoritmo estima que el error relativo de la suma de cuadrados
 es, como mucho, igual a @code{tolerance}.
 @item 2
-El algoritmo estima que el error relativo entre @mvar{x} y la soluci@'on es,
+El algoritmo estima que el error relativo entre @var{x} y la soluci@'on es,
 como mucho, igual a @code{tolerance}.
 @item 3
 Las dos condiciones anteriores se cumplen.
 @item 4
-El vector formado por las funciones evaluadas en el punto @mvar{x} es
+El vector formado por las funciones evaluadas en el punto @var{x} es
 ortogonal a las columnas del jacobiano dentro de la precisi@'on de la
 m@'aquina. 
 @item 5
@@ -61,7 +61,7 @@ La tolerancia es demasiado peque@~na, no siendo posible reducir m@'as la
 suma de cuadrados.
 @item 7
 La tolerancia es demasiado peque@~na, no siendo posible mejorar la
-soluci@'on aproximada @mvar{x}.
+soluci@'on aproximada @var{x}.
 @end table
 
 @example
@@ -89,20 +89,20 @@ soluci@'on aproximada @mvar{x}.
 
 
 
-@deffn {Funci@'on} minpack_solve (@mvar{flist}, @mvar{varlist}, @mvar{guess} [, @mvar{tolerance}, @mvar{jacobian}])
+@deffn {Funci@'on} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
 Resuelve un sistema de @code{n} ecuaciones con @code{n} inc@'ognitas.
-Las @code{n} ecuaciones forman la lista @mvar{flist}, estando la
-lista @mvar{varlist} formada por las inc@'ognitas. El argumento
-@mvar{guess} es una estimaci@'on inicial de la soluci@'on.
+Las @code{n} ecuaciones forman la lista @var{flist}, estando la
+lista @var{varlist} formada por las inc@'ognitas. El argumento
+@var{guess} es una estimaci@'on inicial de la soluci@'on.
 
-Los argumentos opcionales @mvar{tolerance} y @mvar{jacobian} permiten
-mantener cierto control sobre el algoritmo; @mvar{tolerance} es el
+Los argumentos opcionales @var{tolerance} y @var{jacobian} permiten
+mantener cierto control sobre el algoritmo; @var{tolerance} es el
 error relativo estimado que se desea en la suma de cuadrados,
-mientras que @mvar{jacobian} puede utilizarse para especificar el
-jacobiano. Si @mvar{jacobian} no se suministra, o se le da el valor
+mientras que @var{jacobian} puede utilizarse para especificar el
+jacobiano. Si @var{jacobian} no se suministra, o se le da el valor
 @code{true}, el que ya tiene por defecto, el jacobiano se calcula
-a partir de @mvar{flist}. Si @mvar{jacobian} vale @code{false}, se
+a partir de @var{flist}. Si @var{jacobian} vale @code{false}, se
 utilizar@'a una aproximaci@'on num@'erica.
 
 @code{minpack_solve} devuelve una lista, siendo su primer 

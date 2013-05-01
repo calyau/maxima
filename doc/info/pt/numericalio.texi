@@ -25,15 +25,15 @@ e o ponto de interroga@value{cedilha}@~ao @code{?} @'e reconhecido no in@'{@dotl
 para significar um s@'{@dotless{i}}mbolo do Lisp (em oposi@value{cedilha}@~ao a um s@'{@dotless{i}}mbolo do Maxima).
 Nenhum caractere de continua@value{cedilha}@~ao (para continuar linhas quebradas) @'e reconhecido.
 
-@mvar{separator_flag} diz que caracteres separa elementos.
-@mvar{separator_flag} @'e um argumento opcional para todas as fun@value{cedilha}@~oes de leitura e escrita.
+@var{separator_flag} diz que caracteres separa elementos.
+@var{separator_flag} @'e um argumento opcional para todas as fun@value{cedilha}@~oes de leitura e escrita.
 
-Para entrada, os valores de @mvar{separator_flag} reconhecidos s@~ao:
+Para entrada, os valores de @var{separator_flag} reconhecidos s@~ao:
 @code{comma} para valores separados por v@'{@dotless{i}}rgula,
 @code{pipe} para valores separados pelo caractere barra vertical @code{|},
 @code{semicolon} para valores separados por ponto e v@'{@dotless{i}}rgula @code{;}, 
 e @code{space} para valores separados pelos caracteres de espa@value{cedilha}o e de tabula@value{cedilha}@~ao.
-Se o nome do ficheiro a ser lido/escrito termina em @code{.csv} e @mvar{separator_flag} n@~ao for especificado,
+Se o nome do ficheiro a ser lido/escrito termina em @code{.csv} e @var{separator_flag} n@~ao for especificado,
 @code{comma} @'e assumido.
 Se o nome do ficheiro termina em alguma outra coisa que n@~ao @code{.csv} e @code{separator_flag} n@~ao for especificado,
 @code{space} @'e assumido.
@@ -53,10 +53,10 @@ e n@~ao @'e tentado colapsar a sa@'{@dotless{i}}da para @code{1234,,Foo}.
 @node Defini@value{cedilha}@~oes para numericalio,  , Introdu@value{cedilha}@~ao a numericalio, numericalio
 @section Defini@value{cedilha}@~oes para numericalio
 
-   @deffn {Fun@value{cedilha}@~ao} read_matrix (@mvar{nomeficheiro})
-@deffnx {Fun@value{cedilha}@~ao} read_matrix (@mvar{nomeficheiro}, @mvar{separator_flag})
-L@^e o ficheiro @mvar{nomeficheiro} e retorna seu conte@'udo completo como uma matriz.
-Se @mvar{separator_flag} n@~ao for especificado, o ficheiro @'e assumido como delimitado por espa@value{cedilha}os em branco.
+   @deffn {Fun@value{cedilha}@~ao} read_matrix (@var{nomeficheiro})
+@deffnx {Fun@value{cedilha}@~ao} read_matrix (@var{nomeficheiro}, @var{separator_flag})
+L@^e o ficheiro @var{nomeficheiro} e retorna seu conte@'udo completo como uma matriz.
+Se @var{separator_flag} n@~ao for especificado, o ficheiro @'e assumido como delimitado por espa@value{cedilha}os em branco.
 
 @code{read_matrix} infere o tamanho da matriz dos dados de entrada.
 Cada linha do ficheiro inicia uma linha da matriz.
@@ -64,8 +64,8 @@ Se algumas linhas possuirem diferentes comprimentos, @code{read_matrix} reclama.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} read_lisp_array (@mvar{nomeficheiro}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~ao} read_lisp_array (@mvar{nomeficheiro}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} read_lisp_array (@var{nomeficheiro}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_lisp_array (@var{nomeficheiro}, @var{A}, @var{separator_flag})
 
 @code{read_lisp_array} exige que o array
 seja declarado atrav@'es de @code{make_array} antes de chamar
@@ -78,8 +78,8 @@ ficheiro de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} read_maxima_array (@mvar{nomeficheiro}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~ao} read_maxima_array (@mvar{nomeficheiro}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} read_maxima_array (@var{nomeficheiro}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_maxima_array (@var{nomeficheiro}, @var{A}, @var{separator_flag})
 
 @code{read_maxima_array} requer que o array
 seja declarado atrav@'es de @code{array} antes de chamar
@@ -92,8 +92,8 @@ ficheiro de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} read_hashed_array (@mvar{nomeficheiro}, @mvar{A})
-@deffnx {Fun@value{cedilha}@~ao} read_hashed_array (@mvar{nomeficheiro}, @mvar{A}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} read_hashed_array (@var{nomeficheiro}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_hashed_array (@var{nomeficheiro}, @var{A}, @var{separator_flag})
 
 @code{read_hashed_array} trata o primeiro item sobre uma linha como uma
 chave hash, e associa o restante da linha (como uma lista) com a chava.
@@ -103,8 +103,8 @@ Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} read_nested_list (@mvar{nomeficheiro})
-@deffnx {Fun@value{cedilha}@~ao} read_nested_list (@mvar{nomeficheiro}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} read_nested_list (@var{nomeficheiro})
+@deffnx {Fun@value{cedilha}@~ao} read_nested_list (@var{nomeficheiro}, @var{separator_flag})
 
 @code{read_nested_list} retorna uma lista que tem uma sublista para cada
 linha de entrada. Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
@@ -112,18 +112,18 @@ Linhas vazias @i{n@~ao} s@~ao ignoradas: uma linha vazia retorna uma sublista va
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} read_list (@mvar{nomeficheiro})
-@deffnx {Fun@value{cedilha}@~ao} read_list (@mvar{nomeficheiro}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} read_list (@var{nomeficheiro})
+@deffnx {Fun@value{cedilha}@~ao} read_list (@var{nomeficheiro}, @var{separator_flag})
 
 @code{read_list} l@^e todas as entradas em uma lista mon@'otona.
 @code{read_list} ignora o caractere de fim de linha.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} write_data (@mvar{X}, @mvar{nomeficheiro})
-@deffnx {Fun@value{cedilha}@~ao} write_data (@mvar{object}, @mvar{nomeficheiro}, @mvar{separator_flag})
+@deffn {Fun@value{cedilha}@~ao} write_data (@var{X}, @var{nomeficheiro})
+@deffnx {Fun@value{cedilha}@~ao} write_data (@var{object}, @var{nomeficheiro}, @var{separator_flag})
 
-@code{write_data} escreve o objecto @mvar{X} no ficheiro @mvar{nomeficheiro}.
+@code{write_data} escreve o objecto @var{X} no ficheiro @var{nomeficheiro}.
 
 @code{write_data} escreve matrizes da forma usual,
 com uma linha por fileira.
