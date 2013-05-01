@@ -30,7 +30,7 @@ END-INFO-DIR-ENTRY
 @end ifinfo
 
 @ifinfo 
-@macro mvar {expr}
+@macro var {expr}
 <\expr\>
 @end macro
 @end ifinfo
