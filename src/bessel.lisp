@@ -772,8 +772,8 @@
 
 ;; Integral of the Bessel I function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselI/21/01/01/
-(defun bessel-i-integral-2 (n z)
-  (case n
+(defun bessel-i-integral-2 (v z)
+  (case v
 	(0
 	 ;; integrate(bessel_i(0,z)
 	 ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
@@ -790,9 +790,26 @@
 	(1
 	 ;; integrate(bessel_i(1,z) = bessel_i(0,z)
 	 `((%bessel_i) 0 ,z))
-	(otherwise nil)))
+	(otherwise
+         ;; http://functions.wolfram.com/03.02.21.0002.01
+         ;; integrate(bessel_i(v,z)
+         ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
+         ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],z^2/4)
+         ;;  = 2^(-v)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],z^2/4)
+         ;;   / gamma(v+2)
+         `((mtimes)
+           (($hypergeometric)
+	    ((mlist)
+	     ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) ,v)))
+	    ((mlist)
+	     ((mplus) ((rat) 3 2) ((mtimes) ((rat) 1 2) ,v))
+	     ((mplus) 1 ,v))
+	    ((mtimes) ((rat) 1 4) ((mexpt) ,z 2)))
+           ((mexpt) 2 ((mtimes) -1 ,v))
+           ((mexpt) ((%gamma) ((mplus) 2 ,v)) -1) 
+           ((mexpt) z ((mplus) 1 ,v))))))
 
-(putprop '%bessel_i `((n z) nil ,#'bessel-i-integral-2) 'integral)
+(putprop '%bessel_i `((v z) nil ,#'bessel-i-integral-2) 'integral)
 
 ;; Support a simplim%bessel_i function to handle specific limits
 
