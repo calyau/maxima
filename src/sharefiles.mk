@@ -368,7 +368,6 @@ contrib/noninteractive/noninteractive.lisp \
 contrib/noninteractive/noninteractive.mac \
 contrib/noninteractive/rtest_noninteractive.mac \
 contrib/opsubst.lisp \
-contrib/powers.lisp \
 contrib/prim/prim-ex1.mac \
 contrib/prim/prim-ex.mac \
 contrib/prim/prim.mac \
