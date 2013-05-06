@@ -7,15 +7,15 @@
 
 @section Funciones y variables para Afines
 
-@deffn {Funci@'on} fast_linsolve ([@mvar{expr_1}, ..., @mvar{expr_m}], [@mvar{x_1}, ..., @mvar{x_n}])
-Resuelve las ecuaciones lineales simult@'aneas @mvar{expr_1}, ..., @mvar{expr_m}
-para las variables @mvar{x_1}, ..., @mvar{x_n}.
-Cada @mvar{expr_i} puede ser una ecuaci@'on o una expresi@'on general;
-en caso de tratarse de una expresi@'on general, ser@'a tratada como una ecuaci@'on de la forma @code{@mvar{expr_i} = 0}.
+@deffn {Funci@'on} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Resuelve las ecuaciones lineales simult@'aneas @var{expr_1}, ..., @var{expr_m}
+para las variables @var{x_1}, ..., @var{x_n}.
+Cada @var{expr_i} puede ser una ecuaci@'on o una expresi@'on general;
+en caso de tratarse de una expresi@'on general, ser@'a tratada como una ecuaci@'on de la forma @code{@var{expr_i} = 0}.
 
 El valor que devuelve es una lista de ecuaciones de la forma
-@code{[@mvar{x_1} = @mvar{a_1}, ..., @mvar{x_n} = @mvar{a_n}]}
-donde todas las @mvar{a_1}, ..., @mvar{a_n} est@'an exentas de @mvar{x_1}, ..., @mvar{x_n}.
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]}
+donde todas las @var{a_1}, ..., @var{a_n} est@'an exentas de @var{x_1}, ..., @var{x_n}.
 
 La funci@'on @code{fast_linsolve} es m@'as r@'apida que @code{linsolve} para sistemas de ecuaciones con coeficientes
 dispersos.
@@ -23,8 +23,8 @@ dispersos.
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} grobner_basis ([@mvar{expr_1}, ..., @mvar{expr_m}])
-Devuelve una base de Groebner para las ecuaciones @mvar{expr_1}, ..., @mvar{expr_m}.
+@deffn {Funci@'on} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+Devuelve una base de Groebner para las ecuaciones @var{expr_1}, ..., @var{expr_m}.
 La funci@'on @code{polysimp} puede ser entonces utilizada para simplificar
 otras funciones relativas a las ecuaciones.
 
@@ -34,19 +34,19 @@ grobner_basis ([3*x^2+1, y*x])$
 polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end example
 
-@code{polysimp(f)} alcanza 0 si y s@'olo si @mvar{f} est@'a en el ideal generado por
-@mvar{expr_1}, ..., @mvar{expr_m}, es decir, si y s@'olo si @mvar{f} es una
+@code{polysimp(f)} alcanza 0 si y s@'olo si @var{f} est@'a en el ideal generado por
+@var{expr_1}, ..., @var{expr_m}, es decir, si y s@'olo si @var{f} es una
 combinaci@'on  polin@'omica de los elementos de 
-@mvar{expr_1}, ..., @mvar{expr_m}.
+@var{expr_1}, ..., @var{expr_m}.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
-@deffn {Funci@'on} set_up_dot_simplifications (@mvar{eqns}, @mvar{check_through_degree})
-@deffnx {Funci@'on} set_up_dot_simplifications (@mvar{eqns})
+@deffn {Funci@'on} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Funci@'on} set_up_dot_simplifications (@var{eqns})
 
-Las @mvar{eqns} son ecuaciones polin@'omicas de variables no conmutativas.
+Las @var{eqns} son ecuaciones polin@'omicas de variables no conmutativas.
 El valor de @code{current_variables} es la lista de variables utilizadas para
 el c@'alculo de los grados. Las ecuaciones deben ser homog@'eneas, al objeto de 
 completar el procedimiento.
@@ -59,30 +59,30 @@ de las variables individuales.
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} declare_weights (@mvar{x_1}, @mvar{w_1}, ..., @mvar{x_n}, @mvar{w_n})
-Asigna los pesos @mvar{w_1}, ..., @mvar{w_n} a @mvar{x_1}, ..., @mvar{x_n}, respectivamente.
+@deffn {Funci@'on} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+Asigna los pesos @var{w_1}, ..., @var{w_n} a @var{x_1}, ..., @var{x_n}, respectivamente.
 Estos pesos son los utilizados en el c@'alculo de @code{nc_degree}.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} nc_degree (@mvar{p})
-Devuelve el grado de un polinomio no conmutativo @mvar{p}. V@'ease @code{declare_weights}.
+@deffn {Funci@'on} nc_degree (@var{p})
+Devuelve el grado de un polinomio no conmutativo @var{p}. V@'ease @code{declare_weights}.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
-@deffn {Funci@'on} dotsimp (@mvar{f})
-Devuelve 0 si y s@'olo si  @mvar{f} est@'a en el ideal generado por las ecuaciones, esto es,
-si y s@'olo si @mvar{f} es una combinaci@'on lineal de los elementos de las ecuaciones.
+@deffn {Funci@'on} dotsimp (@var{f})
+Devuelve 0 si y s@'olo si  @var{f} est@'a en el ideal generado por las ecuaciones, esto es,
+si y s@'olo si @var{f} es una combinaci@'on lineal de los elementos de las ecuaciones.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} fast_central_elements ([@mvar{x_1}, ..., @mvar{x_n}], @mvar{n})
+@deffn {Funci@'on} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
 Si se ha ejecutado @code{set_up_dot_simplifications} con antelaci@'on, obtiene los 
-polinomios centrales de grado @mvar{n} de variables @mvar{x_1}, ..., @mvar{x_n}.
+polinomios centrales de grado @var{n} de variables @var{x_1}, ..., @var{x_n}.
 
 Por ejemplo:
 @example
@@ -95,8 +95,8 @@ Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
-@deffn {Funci@'on} check_overlaps (@mvar{n}, @mvar{add_to_simps})
-Revisa la superposici@'on hasta el grado @mvar{n},
+@deffn {Funci@'on} check_overlaps (@var{n}, @var{add_to_simps})
+Revisa la superposici@'on hasta el grado @var{n},
 asegur@'andose de que el usuario tiene suficientes reglas de simplificaci@'on en cada
 grado para que @code{dotsimp} trabaje correctamente. Este proceso puede acelerarse
 si se conoce de antemano cu@'al es la dimensi@'on del espacio de monomios.
@@ -107,31 +107,31 @@ Un tercer argumento opcional es @code{reset}.
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} mono ([@mvar{x_1}, ..., @mvar{x_n}], @mvar{n})
+@deffn {Funci@'on} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
 Devuelve la lista de monomios independientes. @c FALTA COMPLETAR ESTE PARRAFO (Mario)
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
 
-@deffn {Funci@'on} monomial_dimensions (@mvar{n})
-Calcula el desarrollo de Hilbert de grado @mvar{n} para el algebra actual.
+@deffn {Funci@'on} monomial_dimensions (@var{n})
+Calcula el desarrollo de Hilbert de grado @var{n} para el algebra actual.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} extract_linear_equations ([@mvar{p_1}, ..., @mvar{p_n}], [@mvar{m_1}, ..., @mvar{m_n}])
-Hace una lista de los coeficientes de los polinomios no conmutativos @mvar{p_1}, ..., @mvar{p_n}  
-de los monomios no conmutativos @mvar{m_1}, ..., @mvar{m_n}. Los coeficientes deben escalares. H@'agase uso 
+@deffn {Funci@'on} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+Hace una lista de los coeficientes de los polinomios no conmutativos @var{p_1}, ..., @var{p_n}  
+de los monomios no conmutativos @var{m_1}, ..., @var{m_n}. Los coeficientes deben escalares. H@'agase uso 
 de @code{list_nc_monomials} para construir la lista de monomios.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn
 
-@deffn {Funci@'on} list_nc_monomials ([@mvar{p_1}, ..., @mvar{p_n}])
-@deffnx {Funci@'on} list_nc_monomials (@mvar{p})
-Devuelve  una lista de los monomios no conmutativos que aparecen en el polinomio  @mvar{p}
-o una lista de polinomios en @mvar{p_1}, ..., @mvar{p_n}.
+@deffn {Funci@'on} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Funci@'on} list_nc_monomials (@var{p})
+Devuelve  una lista de los monomios no conmutativos que aparecen en el polinomio  @var{p}
+o una lista de polinomios en @var{p_1}, ..., @var{p_n}.
 
 Antes de utilizar esta funci@'on ejec@'utese @code{load(affine)}.
 @end deffn

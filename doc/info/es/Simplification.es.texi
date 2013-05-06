@@ -196,8 +196,8 @@ Ejemplos:
 @end defvr
 
 
-@deffn {Funci@'on} combine (@mvar{expr})
-Simplifica la suma @mvar{expr} combinando t@'erminos de con igual denominador reduci@'endolos a un @'unico t@'ermino.
+@deffn {Funci@'on} combine (@var{expr})
+Simplifica la suma @var{expr} combinando t@'erminos de con igual denominador reduci@'endolos a un @'unico t@'ermino.
 
 @end deffn
 
@@ -210,7 +210,7 @@ que @code{h} es una funci@'on conmutaiva. Por ejemplo, @code{h(x,z,y)} se simpli
 @end defvr
 
 
-@deffn {Funci@'on} demoivre (@mvar{expr})
+@deffn {Funci@'on} demoivre (@var{expr})
 @deffnx {Variable opcional} demoivre
 
 La funci@'on @code{demoivre (expr)} convierte una expresi@'on sin modificar la variable global @code{demoivre}.
@@ -226,7 +226,7 @@ La funci@'on @code{exponentialize} convierte funciones trigonom@'etricas e hiper
 @end deffn
 
 
-@deffn {Funci@'on} distrib (@mvar{expr})
+@deffn {Funci@'on} distrib (@var{expr})
 Distribuye sumas sobre productos. Difiere de @code{expand}
 en que trabaja s@'olo al nivel superior de una expresi@'on, siendo m@'as r@'apida que @code{expand}.  Difiere de  @code{multthru} en que expande todas las sumas del nivel superior.
 
@@ -368,15 +368,15 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} expand (@mvar{expr})
-@deffnx {Funci@'on} expand (@mvar{expr}, @mvar{p}, @mvar{n})
-Expande la expresi@'on @mvar{expr}. Los productos de sumas y de sumas con exponentes se multiplican, los numeradores de las expresiones racionales que son sumas se separan en sus respectivos t@'erminos, y las multiplicaciones (tanto las que son conmutativas como las que no) se distribuyen sobre las sumas en todos los niveles de @mvar{expr}.
+@deffn {Funci@'on} expand (@var{expr})
+@deffnx {Funci@'on} expand (@var{expr}, @var{p}, @var{n})
+Expande la expresi@'on @var{expr}. Los productos de sumas y de sumas con exponentes se multiplican, los numeradores de las expresiones racionales que son sumas se separan en sus respectivos t@'erminos, y las multiplicaciones (tanto las que son conmutativas como las que no) se distribuyen sobre las sumas en todos los niveles de @var{expr}.
 
 En el caso de los polinomios es m@'as aconsejable utilizar @code{ratexpand}, que utiliza un algoritmo m@'as eficiente.
 
 Las variables @code{maxnegex} y @code{maxposex} controlan los m@'aximos exponentes negativos y positivos que se van a expandir.
 
-La llamada @code{expand (@mvar{expr}, @mvar{p}, @mvar{n})} expande @mvar{expr} asignando a @code{maxposex} el valor @mvar{p} y a @code{maxnegex} el @mvar{n}. Esto es @'util para expandir s@'olo parte de la expresi@'on.
+La llamada @code{expand (@var{expr}, @var{p}, @var{n})} expande @var{expr} asignando a @code{maxposex} el valor @var{p} y a @code{maxnegex} el @var{n}. Esto es @'util para expandir s@'olo parte de la expresi@'on.
 
 La variable @code{expon} guarda el mayor exponente negativo que ser@'a expandido autom@'aticamente, independientemente de @code{expand}. Por ejemplo, si @code{expon} vale 4 entonces @code{(x+1)^(-5)} no se expandir@'a autom@'aticamente.
 
@@ -465,9 +465,9 @@ Vuelve a simplificar una expresi@'on pero sin expansi@'on:
 
 
 
-@deffn {Funci@'on} expandwrt (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
-Expande la expresi@'on @code{expr} con respecto a las variables @mvar{x_1}, ..., @mvar{x_n}.
-Todos los productos que contengan a las variables aparecen expl@'{@dotless{i}}citamente. El resultado que se obtenga no tendr'a productos de sumas de expresiones que contengan a las variables. Los argumentos  @mvar{x_1}, ..., @mvar{x_n}
+@deffn {Funci@'on} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+Expande la expresi@'on @code{expr} con respecto a las variables @var{x_1}, ..., @var{x_n}.
+Todos los productos que contengan a las variables aparecen expl@'{@dotless{i}}citamente. El resultado que se obtenga no tendr'a productos de sumas de expresiones que contengan a las variables. Los argumentos  @var{x_1}, ..., @var{x_n}
 pueden ser variables, operadores o expresiones.
 
 Por defecto, no se expanden los denominadores, pero esto puede cambiarse mediante el uso de la variable @code{expandwrt_denom}.
@@ -485,9 +485,9 @@ La variable @code{expandwrt_denom} controla el tratamiento de las expresiones ra
 @end defvr
 
 
-@deffn {Funci@'on} expandwrt_factored (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {Funci@'on} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
 Es similar a @code{expandwrt}, pero trata a las expresiones que son productos de una forma algo diferente. La funci@'on
-@code{expandwrt_factored} expande s@'olo aquellos factores de @code{expr} que contienen a las variables @mvar{x_1}, ..., @mvar{x_n}.
+@code{expandwrt_factored} expande s@'olo aquellos factores de @code{expr} que contienen a las variables @var{x_1}, ..., @var{x_n}.
 
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 Esta funci@'on se carga autom@'aticamente de @file{simplification/stopex.mac}.
@@ -504,10 +504,10 @@ La variable @code{expon} guarda el mayor exponente negativo que ser@'a expandido
 
 
 
-@deffn {Funci@'on} exponentialize (@mvar{expr})
+@deffn {Funci@'on} exponentialize (@var{expr})
 @deffnx {Variable opcional} exponentialize
 
-La funci@'on @code{exponentialize (expr)} convierte las funciones trigonom@'etricas e hiperb@'olicas de @mvar{expr} a exponenciales, sin alterar la variable global @code{exponentialize}.
+La funci@'on @code{exponentialize (expr)} convierte las funciones trigonom@'etricas e hiperb@'olicas de @var{expr} a exponenciales, sin alterar la variable global @code{exponentialize}.
 
 Cuando la variable @code{exponentialize} vale @code{true}, todas las funciones trigonom@'etricas e hiperb@'olicas se convierten a forma exponencial. El valor por defecto es @code{false}.
 
@@ -625,11 +625,11 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} multthru (@mvar{expr})
-@deffnx {Funci@'on} multthru (@mvar{expr_1}, @mvar{expr_2})
-Multiplica un factor (que deber@'{@dotless{i}}a ser una suma) de @mvar{expr} por los otros factores de @mvar{expr}.  Esto es, @mvar{expr} es @code{@mvar{f_1} @mvar{f_2} ... @mvar{f_n}}, donde al menos un factor, por ejemplo @mvar{f_i}, es una suma de t@'erminos.  Cada t@'ermino en esta suma se multiplica por los otros factores del producto, excepto el propio @mvar{f_i}. La funci@'on  @code{multthru} no expande sumas elevadas a exponentes, siendo el m@'etodo m@'as r@'apido para distribuir productos (sean o no conmutativos) sobre sumas. Puesto que los cocientes se representan como productos, puede utilizarse@code{multthru} para dividir sumas entre productos.
+@deffn {Funci@'on} multthru (@var{expr})
+@deffnx {Funci@'on} multthru (@var{expr_1}, @var{expr_2})
+Multiplica un factor (que deber@'{@dotless{i}}a ser una suma) de @var{expr} por los otros factores de @var{expr}.  Esto es, @var{expr} es @code{@var{f_1} @var{f_2} ... @var{f_n}}, donde al menos un factor, por ejemplo @var{f_i}, es una suma de t@'erminos.  Cada t@'ermino en esta suma se multiplica por los otros factores del producto, excepto el propio @var{f_i}. La funci@'on  @code{multthru} no expande sumas elevadas a exponentes, siendo el m@'etodo m@'as r@'apido para distribuir productos (sean o no conmutativos) sobre sumas. Puesto que los cocientes se representan como productos, puede utilizarse@code{multthru} para dividir sumas entre productos.
 
-La llamada @code{multthru (@mvar{expr_1}, @mvar{expr_2})} multiplica cada t@'ermino de @mvar{expr_2} (que deber@'{@dotless{i}}a ser una suma o una ecuaci@'on) por @mvar{expr_1}.  Si @mvar{expr_1} no es ella misma una suma, entonces la llamada es equivalente a @code{multthru (@mvar{expr_1}*@mvar{expr_2})}.
+La llamada @code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada t@'ermino de @var{expr_2} (que deber@'{@dotless{i}}a ser una suma o una ecuaci@'on) por @var{expr_1}.  Si @var{expr_1} no es ella misma una suma, entonces la llamada es equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -754,8 +754,8 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} radcan (@mvar{expr})
-Simplifica la expresi@'on @mvar{expr}, que puede contener logaritmos, exponenciales y
+@deffn {Funci@'on} radcan (@var{expr})
+Simplifica la expresi@'on @var{expr}, que puede contener logaritmos, exponenciales y
 radicales, convirti@'endola a una forma can@'onica, lo que significa que todas las expresiones funcionalmente equivalentes
 se reducen a una forma @'unica.  Ciertas expresiones, sin embargo, son reducidas por @code{radcan} a una forma regular, lo que significa que dos expresiones equivalentes no tienen necesariamente el mismo aspecto, pero su diferencia puede ser reducida por @code{radcan} a cero.
 
@@ -790,7 +790,7 @@ Valor por defecto: @code{true}
 
 La variable @code{radexpand} controla algunas simplificaciones de radicales.
 
-Si @code{radexpand} vale @code{all}, las ra@'{@dotless{i}}ces @mvar{n}-@'esimas de los factores de un producto que sean potencias de @mvar{n} se extraen del s@'{@dotless{i}}mbolo radical. Por ejemplo, si @code{radexpand} vale @code{all}, @code{sqrt (16*x^2)} se reduce a @code{4*x}.
+Si @code{radexpand} vale @code{all}, las ra@'{@dotless{i}}ces @var{n}-@'esimas de los factores de un producto que sean potencias de @var{n} se extraen del s@'{@dotless{i}}mbolo radical. Por ejemplo, si @code{radexpand} vale @code{all}, @code{sqrt (16*x^2)} se reduce a @code{4*x}.
 
 @c EXPRESS SIMPLIFICATON RULES IN GENERAL CASE, NOT SPECIAL CASE
 M@'as concretamente, consid@'erese @code{sqrt (x^2)}.
@@ -819,9 +819,9 @@ La instrucci@'on @code{declare (g, rassociative)} le indica al simplificador de 
 @end defvr
 
 
-@deffn {Funci@'on} scsimp (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Funci@'on} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Es el "Sequential Comparative Simplification" (m@'etodo debido a Stoute).
-La funci@'on @code{scsimp} intenta simplificar @mvar{expr} de acuerdo con las reglas @mvar{rule_1}, ..., @mvar{rule_n}.
+La funci@'on @code{scsimp} intenta simplificar @var{expr} de acuerdo con las reglas @var{rule_1}, ..., @var{rule_n}.
 Si se obtiene una expresi@'on m@'as peque@~na, el proceso se repite. En caso contrario, despu@'es de que se hayan intentado todas las simplificaciones, devuelve la respuesta original.
 
 La instrucci@'on @code{example (scsimp)} muestra algunos ejemplos.
@@ -895,8 +895,8 @@ El nombre @code{commutative} es sin@'onimo de @code{symmetric}.
 
 
 
-@deffn {Funci@'on} xthru (@mvar{expr})
-Combina todos los t@'erminos de @mvar{expr} (la cual debe ser una suma) sobre un com@'un denominador sin expandir productos ni sumas elevadas a exponentes al modo que lo hace @code{ratsimp}. La funci@'on @code{xthru} cancela factores comunes en el numerador y denominador de expresiones racionales, pero s@'olo si los factores son expl@'{@dotless{i}}citos.
+@deffn {Funci@'on} xthru (@var{expr})
+Combina todos los t@'erminos de @var{expr} (la cual debe ser una suma) sobre un com@'un denominador sin expandir productos ni sumas elevadas a exponentes al modo que lo hace @code{ratsimp}. La funci@'on @code{xthru} cancela factores comunes en el numerador y denominador de expresiones racionales, pero s@'olo si los factores son expl@'{@dotless{i}}citos.
 
 En ocasiones puede ser @'util el uso de @code{xthru} antes de la llamada a @code{ratsimp} a fin de cancelar factores expl@'{@dotless{i}}citos del m@'aximo com@'un divisor del numerador y denominador y as@'{@dotless{i}} simplificar la expresi@'on a la que se va a aplicar @code{ratsimp}.
 

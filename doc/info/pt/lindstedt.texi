@@ -7,11 +7,11 @@
 @section Defini@value{cedilha}@~oes para lindstedt
 
 
-@deffn {Fun@value{cedilha}@~ao} Lindstedt (@mvar{eq},@mvar{pvar},@mvar{torder},@mvar{ic})
+@deffn {Fun@value{cedilha}@~ao} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
 Esse @'e um primeiro passo para um c@'odigo de Lindstedt.  Esse c@'odigo pode resolver problemas
 com condi@value{cedilha}@~oes iniciais fornecidas, @`as quais podem ser constantes arbitr@'arias,
-(n@~ao apenas @mvar{%k1} e @mvar{%k2}) onde as condi@value{cedilha}@~oes iniciais sobre as equa@value{cedilha}@~oes
-de perturba@value{cedilha}@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}. @mvar{ic} @'e a lista de 
+(n@~ao apenas @var{%k1} e @var{%k2}) onde as condi@value{cedilha}@~oes iniciais sobre as equa@value{cedilha}@~oes
+de perturba@value{cedilha}@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'e a lista de 
 condi@value{cedilha}@~oes iniciais.
 
 Problemas ocorrem quando condi@value{cedilha}@~oes iniciais n@~ao forem dadas, como as constantes

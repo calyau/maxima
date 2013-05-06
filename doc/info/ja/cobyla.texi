@@ -56,26 +56,26 @@ the phrase Constrained Optimization BY Linear Approximations(線形近似によ�
 @node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
 @section Functions and Variables for cobyla
 
-@deffn {関数} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {関数} fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn {関数} fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {関数} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
-オプションの制約の組を条件として多変数@mvar{X}に関する式@mvar{F}の近似的最小を返します。
-@mvar{Y}は@mvar{X}に対する初期推測のリストです。
+オプションの制約の組を条件として多変数@var{X}に関する式@var{F}の近似的最小を返します。
+@var{Y}は@var{X}に対する初期推測のリストです。
 
-@mvar{F}は関数名やラムダ式ではなく、通常の式でなければいけません。
+@var{F}は関数名やラムダ式ではなく、通常の式でなければいけません。
 
 @code{optional_args}は、
-@code{@mvar{symbol} = @mvar{value}}のように指定される付加的な引数を表します。
+@code{@var{symbol} = @var{value}}のように指定される付加的な引数を表します。
 認識されるオプションの引数は以下の通りです:
 
 @table @code
 @item constraints
-@mvar{X}が満たさなければいけない不等式と等式の制約のリスト。
+@var{X}が満たさなければいけない不等式と等式の制約のリスト。
 不等式制約は、
-形式@code{g(@mvar{X}) >= h(@mvar{X})}もしくは@code{g(@mvar{X}) <= h(@mvar{X})}の
+形式@code{g(@var{X}) >= h(@var{X})}もしくは@code{g(@var{X}) <= h(@var{X})}の
 実際の不等式でなければいけません。
 等式制約は
-形式@code{g(@mvar{X}) = h(@mvar{X})}のものでなければいけません。
+形式@code{g(@var{X}) = h(@var{X})}のものでなければいけません。
 @item rhobeg
 単体のサイズを制御する内部RHO変数の初期値(デフォルトは1.0)。
 @item rhoend 
@@ -103,8 +103,8 @@ RHOとSIGMAのそれぞれの新しい値が印字されます。
 @item
 最小を与える変数の値。
 これは
-@mvar{X}の中にリストされた変数のそれぞれに関する
-形式@code{@mvar{var} = @mvar{value}}の
+@var{X}の中にリストされた変数のそれぞれに関する
+形式@code{@var{var} = @var{value}}の
 要素のリストです。
 @item
 最小化された函数値
@@ -126,12 +126,12 @@ RHOとSIGMAのそれぞれの新しい値が印字されます。
 
 @end deffn
 
-@deffn {関数} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y})
-@deffnx {関数} bf_fmin_cobyla (@mvar{F}, @mvar{X}, @mvar{Y}, optional_args)
+@deffn {関数} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {関数} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
 この関数は、
 多倍長浮動小数点演算が使われること、
-@mvar{rhoend}のデフォルト値が@code{10^(fpprec/2)}であることを除いて、
+@var{rhoend}のデフォルト値が@code{10^(fpprec/2)}であることを除いて、
 @code{fmin_cobyla}と同一です。
 
 更に知るには@code{fmin_cobyla}を参照してください。

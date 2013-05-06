@@ -228,8 +228,8 @@ January 20, 1999
 Они осуществляются над внутренним представлением, но результат
 преобразуется обратно в выражение @emph{maxima}.
 
-@deffn {Функция} poly_add (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Складывает два многочлена @mvar{poly1} и @mvar{poly2}.
+@deffn {Функция} poly_add (@var{poly1}, @var{poly2}, @var{varlist})
+Складывает два многочлена @var{poly1} и @var{poly2}.
 @example
 
 (%i1) poly_add(z+x^2*y,x-z,[x,y,z]);
@@ -243,8 +243,8 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_subtract (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Вычитает многочлен @mvar{poly2} из @mvar{poly1}.
+@deffn {Функция} poly_subtract (@var{poly1}, @var{poly2}, @var{varlist})
+Вычитает многочлен @var{poly2} из @var{poly1}.
 @example
 
 (%i1) poly_subtract(z+x^2*y,x-z,[x,y,z]);
@@ -258,8 +258,8 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_multiply (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Возвращает произведение многочленов @mvar{poly1} и @mvar{poly2}.
+@deffn {Функция} poly_multiply (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает произведение многочленов @var{poly1} и @var{poly2}.
 @example
 
 (%i2) poly_multiply(z+x^2*y,x-z,[x,y,z])-(z+x^2*y)*(x-z),expand;
@@ -272,8 +272,8 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_s_polynomial (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Возвращает S-многочлен (@emph{syzygy polynomial}) двух многочленов @mvar{poly1} и @mvar{poly2}.
+@deffn {Функция} poly_s_polynomial (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает S-многочлен (@emph{syzygy polynomial}) двух многочленов @var{poly1} и @var{poly2}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -281,8 +281,8 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_primitive_part (@mvar{poly1}, @mvar{varlist})
-Возвращает многочлен @mvar{poly} деленный на НОД своих коэффициентов. 
+@deffn {Функция} poly_primitive_part (@var{poly1}, @var{varlist})
+Возвращает многочлен @var{poly} деленный на НОД своих коэффициентов. 
 
 @example
 (%i1) poly_primitive_part(35*y+21*x,[x,y]);
@@ -295,8 +295,8 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_normalize (@mvar{poly}, @mvar{varlist})
-Возвращает многочлен @mvar{poly} деленный на свой старший коэффициент.
+@deffn {Функция} poly_normalize (@var{poly}, @var{varlist})
+Возвращает многочлен @var{poly} деленный на свой старший коэффициент.
 Подразумевается, что деление возможно, что может быть не всегда верно в случае
 колец не являющихся полями.
 
@@ -308,11 +308,11 @@ January 20, 1999
 
 @subsection Другие функции пакета grobner
 
-@deffn {Функция} poly_expand (@mvar{poly}, @mvar{varlist})
+@deffn {Функция} poly_expand (@var{poly}, @var{varlist})
 Эта функция преобразует многочлен во внутреннее представление и обратно. 
-Она эквивалентна @code{expand(@mvar{poly})}, если @mvar{poly} корректно 
+Она эквивалентна @code{expand(@var{poly})}, если @var{poly} корректно 
 преобразуется в многочлен. Если представление не совместимо
-с многочленом от переменных @mvar{varlist}, то это приводит к ошибке.
+с многочленом от переменных @var{varlist}, то это приводит к ошибке.
 Данная функция может быть использована для проверки, возможно ли
 преобразование выражения во внутреннее представление.
 Нижеследующие примеры демонстрируют, что допустимы переменные
@@ -346,9 +346,9 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_expt (@mvar{poly}, @mvar{number}, @mvar{varlist})
-возводит многочлен @mvar{poly} в положительную целую степень @mvar{number}. 
-Если @mvar{number} не есть целое положительное число, то сигнализируется ошибка.
+@deffn {Функция} poly_expt (@var{poly}, @var{number}, @var{varlist})
+возводит многочлен @var{poly} в положительную целую степень @var{number}. 
+Если @var{number} не есть целое положительное число, то сигнализируется ошибка.
 @example
 
 (%i1) poly_expt(x-y,3,[x,y])-(x-y)^3,expand;
@@ -361,7 +361,7 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_content (@mvar{poly}. @mvar{varlist})
+@deffn {Функция} poly_content (@var{poly}. @var{varlist})
 @code{poly_content} вычисляет НОД коэффициентов многочлена
 @example
 
@@ -375,12 +375,12 @@ January 20, 1999
 
 @end deffn
 
-@deffn {Функция} poly_pseudo_divide (@mvar{poly}, @mvar{polylist}, @mvar{varlist})
-Псевдо-деление многочлена @mvar{poly} на список из @math{n} многочленов @mvar{polylist}. 
+@deffn {Функция} poly_pseudo_divide (@var{poly}, @var{polylist}, @var{varlist})
+Псевдо-деление многочлена @var{poly} на список из @math{n} многочленов @var{polylist}. 
 Возвращает несколько значений. Первое значение -- список частных @math{a}. 
 Второе значение -- остаток @math{r}. 
 Третье значение -- скалярный коэффициент @math{c}, такой что @math{c*poly} делимо
-на @mvar{polylist} в кольце коэффициентов, не обязательно являющимся полем. 
+на @var{polylist} в кольце коэффициентов, не обязательно являющимся полем. 
 И наконец, четвертое значение -- целое число, дающее число
 выполненных приведение. Результирующие величины удовлетворяют выражению:
 
@@ -399,8 +399,8 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 
 @end deffn
 
-@deffn {Функция} poly_exact_divide (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Делит многочлен @mvar{poly1} на многочлен @mvar{poly2}. 
+@deffn {Функция} poly_exact_divide (@var{poly1}, @var{poly2}, @var{varlist})
+Делит многочлен @var{poly1} на многочлен @var{poly2}. 
 Предполагается, что деление без остатка возможно.
 Возвращает частное.
 
@@ -410,9 +410,9 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 
 @end deffn
 
-@deffn {Функция} poly_normal_form (@mvar{poly}, @mvar{polylist}, @mvar{varlist})
-Функция @code{poly_normal_form} вычисляет нормальную форму многочлена @mvar{poly} 
-по отношению к множеству многочленов @mvar{polylist}.
+@deffn {Функция} poly_normal_form (@var{poly}, @var{polylist}, @var{varlist})
+Функция @code{poly_normal_form} вычисляет нормальную форму многочлена @var{poly} 
+по отношению к множеству многочленов @var{polylist}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -420,11 +420,11 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 
 @end deffn
 
-@deffn {Функция} poly_buchberger_criterion (@mvar{polylist}, @mvar{varlist})
-Возвращает @code{true} если @mvar{polylist} является базисом Гребнера с учетом текущего упорядочивания членов.
+@deffn {Функция} poly_buchberger_criterion (@var{polylist}, @var{varlist})
+Возвращает @code{true} если @var{polylist} является базисом Гребнера с учетом текущего упорядочивания членов.
 Использует критерий Бухбергера:
-для любых двух многочленов @math{h1} и @math{h2} из @mvar{polylist} e
-S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @mvar{polylist}.
+для любых двух многочленов @math{h1} и @math{h2} из @var{polylist} e
+S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @var{polylist}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -432,7 +432,7 @@ S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @mvar{polylist}.
 
 @end deffn
 
-@deffn {Функция} poly_buchberger (@mvar{polylist_fl} @mvar{varlist})
+@deffn {Функция} poly_buchberger (@var{polylist_fl} @var{varlist})
 @code{poly_buchberger} применяет алгоритм Бухбергера к списку многочленов
 и возвращает результирующий базис Гребнера.
 
@@ -481,8 +481,8 @@ h^n \in I \}$.@*
 @end ifnottex
 
 @noindent
-@deffn {Функция} poly_reduction (@mvar{polylist}, @mvar{varlist})
-@code{poly_reduction} приводит список многочленов @mvar{polylist}, так что каждый
+@deffn {Функция} poly_reduction (@var{polylist}, @var{varlist})
+@code{poly_reduction} приводит список многочленов @var{polylist}, так что каждый
 многочлен полностью приведен по отношению к другим.
 
 @opencatbox
@@ -491,9 +491,9 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_minimization (@mvar{polylist}, @mvar{varlist})
-Возвращает подмножество списка многочленов @mvar{polylist}, порождающих 
-тот же мономиальный идеал, что и @mvar{polylist} но минимальный, 
+@deffn {Функция} poly_minimization (@var{polylist}, @var{varlist})
+Возвращает подмножество списка многочленов @var{polylist}, порождающих 
+тот же мономиальный идеал, что и @var{polylist} но минимальный, 
 т.е. старшие одночлены многочленов из подмножества не делят ни один из
 других старших одночленов других многочленов этого подмножества.
 
@@ -504,9 +504,9 @@ h^n \in I \}$.@*
 @end deffn
 
 
-@deffn {Функция} poly_normalize_list (@mvar{polylist}, @mvar{varlist})
+@deffn {Функция} poly_normalize_list (@var{polylist}, @var{varlist})
 @code{poly_normalize_list} применяет @code{poly_normalize} к каждому многочлену в списке.
-Т.е. делит каждый из многочленов списка @mvar{polylist} на его старший коэффициент.
+Т.е. делит каждый из многочленов списка @var{polylist} на его старший коэффициент.
 
 @opencatbox
 @category{Пакет grobner}
@@ -514,8 +514,8 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_grobner (@mvar{polylist}, @mvar{varlist})
-Возвращает базис Гребнера идеала, порожденного многочленами @mvar{polylist}. 
+@deffn {Функция} poly_grobner (@var{polylist}, @var{varlist})
+Возвращает базис Гребнера идеала, порожденного многочленами @var{polylist}. 
 Зависит от глобальных флагов.
 
 @opencatbox
@@ -524,8 +524,8 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_reduced_grobner (@mvar{polylist}, @mvar{varlist})
-Возвращает приведенный базис Гребнера идеала, порожденного многочленами @mvar{polylist}. 
+@deffn {Функция} poly_reduced_grobner (@var{polylist}, @var{varlist})
+Возвращает приведенный базис Гребнера идеала, порожденного многочленами @var{polylist}. 
 Зависит от глобальных флагов.
 
 @opencatbox
@@ -535,8 +535,8 @@ h^n \in I \}$.@*
 @end deffn
 
 
-@deffn {Функция} poly_depends_p (@mvar{poly}, @mvar{var}, @mvar{varlist})
-@code{poly_depends} проверяет, зависит ли многочлен от переменной @mvar{var}.
+@deffn {Функция} poly_depends_p (@var{poly}, @var{var}, @var{varlist})
+@code{poly_depends} проверяет, зависит ли многочлен от переменной @var{var}.
 
 @opencatbox
 @category{Пакет grobner} @category{Функции предикаты}
@@ -545,7 +545,7 @@ h^n \in I \}$.@*
 @end deffn
 
 
-@deffn {Функция} poly_elimination_ideal (@mvar{polylist}, @mvar{number}, @mvar{varlist})
+@deffn {Функция} poly_elimination_ideal (@var{polylist}, @var{number}, @var{varlist})
 
 
 @code{poly_elimination_ideal} возвращает базис Гребнера идеала @math{number}-го исключения идеала,
@@ -557,7 +557,7 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_colon_ideal (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
+@deffn {Функция} poly_colon_ideal (@var{polylist1}, @var{polylist2}, @var{varlist})
 
 Возвращает приведенный базис Гребнера частного идеала  
 
@@ -572,7 +572,7 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_ideal_intersection (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
+@deffn {Функция} poly_ideal_intersection (@var{polylist1}, @var{polylist2}, @var{varlist})
 
 @code{poly_ideal_intersection} возвращает пересечение двух идеалов.
 
@@ -583,8 +583,8 @@ h^n \in I \}$.@*
 @end deffn
 
 
-@deffn {Функция} poly_lcm (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Возвращает наименьший общий множитель многочленов @mvar{poly1} и @mvar{poly2}.
+@deffn {Функция} poly_lcm (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает наименьший общий множитель многочленов @var{poly1} и @var{poly2}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -592,8 +592,8 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_gcd (@mvar{poly1}, @mvar{poly2}, @mvar{varlist})
-Возвращает наибольший общий делитель многочленов @mvar{poly1} и @mvar{poly2}.
+@deffn {Функция} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает наибольший общий делитель многочленов @var{poly1} и @var{poly2}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -601,9 +601,9 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_grobner_equal (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
+@deffn {Функция} poly_grobner_equal (@var{polylist1}, @var{polylist2}, @var{varlist})
 @code{poly_grobner_equal} проверяет порождают ли два базиса Гребнера один и тот же идеал.
-Возвращает @code{true} если два списка многочленов @mvar{polylist1} и @mvar{polylist2}, 
+Возвращает @code{true} если два списка многочленов @var{polylist1} и @var{polylist2}, 
 предполагаемые базисами Гребнера, порождают один и тот же идеал, и @code{false} в противном случае.
 Это эквивалентно проверке, что каждый многочлен первого базиса приводится к 0
 по модулю второго и обратно. Заметим, что в примере ниже первый список не есть базис Гребнера,
@@ -620,11 +620,11 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_grobner_subsetp (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
+@deffn {Функция} poly_grobner_subsetp (@var{polylist1}, @var{polylist2}, @var{varlist})
 
-@code{poly_grobner_subsetp} проверяет содержится ли идеал, порожденный @mvar{polylist1},
-в идеале, порожденном @mvar{polylist2}. 
-Чтобы тест всегда выполнялся, нужно чтобы @mvar{polylist2} был бы базисом Гребнера.
+@code{poly_grobner_subsetp} проверяет содержится ли идеал, порожденный @var{polylist1},
+в идеале, порожденном @var{polylist2}. 
+Чтобы тест всегда выполнялся, нужно чтобы @var{polylist2} был бы базисом Гребнера.
 
 @opencatbox
 @category{Пакет grobner} @category{Функции предикаты}
@@ -632,10 +632,10 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_grobner_member (@mvar{poly}, @mvar{polylist}, @mvar{varlist})
+@deffn {Функция} poly_grobner_member (@var{poly}, @var{polylist}, @var{varlist})
 
-Возвращает @code{true}, если многочлен @mvar{poly} принадлежит к идеалу, порожденному списком
-многочленов @mvar{polylist}, который предполагается базисом Гребнера. 
+Возвращает @code{true}, если многочлен @var{poly} принадлежит к идеалу, порожденному списком
+многочленов @var{polylist}, который предполагается базисом Гребнера. 
 Иначе возвращает @code{false}.
 
 @opencatbox
@@ -644,7 +644,7 @@ h^n \in I \}$.@*
 
 @end deffn
 
-@deffn {Функция} poly_ideal_saturation1 (@mvar{polylist}, @mvar{poly}, @mvar{varlist})
+@deffn {Функция} poly_ideal_saturation1 (@var{polylist}, @var{poly}, @var{varlist})
 Возвращает приведенный базис Гребнера насыщения идеала
 @iftex
 @tex
@@ -658,8 +658,8 @@ I(polylist):poly^inf
 
 @noindent
 Геометрически, над алгебраически замкнутым полем, это есть 
-множество многочленов в идеале, порожденном @mvar{polylist},
-которые не исчезают на многообразии @mvar{poly}.
+множество многочленов в идеале, порожденном @var{polylist},
+которые не исчезают на многообразии @var{poly}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -667,7 +667,7 @@ I(polylist):poly^inf
 
 @end deffn
 
-@deffn {Функция} poly_ideal_saturation (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
+@deffn {Функция} poly_ideal_saturation (@var{polylist1}, @var{polylist2}, @var{varlist})
 Возвращает приведенный базис Гребнера насыщения идеала
 @iftex
 @tex
@@ -681,8 +681,8 @@ I(polylist1):I(polylist2)^inf
 
 @noindent
 Геометрически, над алгебраически замкнутым полем, это есть 
-множество многочленов в идеале, порожденном @mvar{polylist1},
-которые не исчезают на многообразии @mvar{polylist2}.
+множество многочленов в идеале, порожденном @var{polylist1},
+которые не исчезают на многообразии @var{polylist2}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -690,8 +690,8 @@ I(polylist1):I(polylist2)^inf
 
 @end deffn
 
-@deffn {Функция} poly_ideal_polysaturation1 (@mvar{polylist1}, @mvar{polylist2}, @mvar{varlist})
-@mvar{polylist2} -- есть список n многочленов @code{[poly1,...,polyn]}.
+@deffn {Функция} poly_ideal_polysaturation1 (@var{polylist1}, @var{polylist2}, @var{varlist})
+@var{polylist2} -- есть список n многочленов @code{[poly1,...,polyn]}.
 Возвращает приведенный базис Гребнера идеала
 @iftex
 @tex
@@ -705,7 +705,7 @@ I(polylist):poly1^inf:...:polyn^inf
 
 @noindent
 полученного последовательным насыщением многочленами из списка
-@mvar{polylist2} идеала, порожденного списком многочленов @mvar{polylist1}.
+@var{polylist2} идеала, порожденного списком многочленов @var{polylist1}.
 
 @opencatbox
 @category{Пакет grobner}
@@ -713,8 +713,8 @@ I(polylist):poly1^inf:...:polyn^inf
 
 @end deffn
 
-@deffn {Функция} poly_ideal_polysaturation (@mvar{polylist}, @mvar{polylistlist}, @mvar{varlist})
-@mvar{polylistlist} -- есть список n списков многочленов @code{[polylist1,...,polylistn]}.
+@deffn {Функция} poly_ideal_polysaturation (@var{polylist}, @var{polylistlist}, @var{varlist})
+@var{polylistlist} -- есть список n списков многочленов @code{[polylist1,...,polylistn]}.
 Возвращает приведенный базис Гребнера насыщения идеала
 @iftex
 @tex
@@ -732,7 +732,7 @@ I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 
 @end deffn
 
-@deffn {Функция} poly_saturation_extension (@mvar{poly}, @mvar{polylist}, @mvar{varlist1}, @mvar{varlist2})
+@deffn {Функция} poly_saturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
 
 @code{poly_saturation_extension} реализует знаменитый трюк Рабиновича.
 
@@ -742,7 +742,7 @@ I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 
 @end deffn
 
-@deffn {Функция} poly_polysaturation_extension (@mvar{poly}, @mvar{polylist}, @mvar{varlist1}, @mvar{varlist2})
+@deffn {Функция} poly_polysaturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
 
 @opencatbox
 @category{Пакет grobner}

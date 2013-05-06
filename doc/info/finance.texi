@@ -8,9 +8,9 @@
 
 This is the Finance Package (Ver 0.1).
 
-In all the functions, @mvar{rate} is the compound interest
-rate, @mvar{num} is the number of periods and must be
-postivive and @mvar{flow} refers to cash flow so if you
+In all the functions, @var{rate} is the compound interest
+rate, @var{num} is the number of periods and must be
+postivive and @var{flow} refers to cash flow so if you
 have an Output the flow is negative and positive
 for Inputs.
 
@@ -23,7 +23,7 @@ Author: Nicolas Guarin Zapata.
 @section Functions and Variables for finance
 
 
-@deffn {Function} days360 (@mvar{year1},@mvar{month1},@mvar{day1},@mvar{year2},@mvar{month2},@mvar{day2})
+@deffn {Function} days360 (@var{year1},@var{month1},@var{day1},@var{year2},@var{month2},@var{day2})
 
 Calculates the distance between 2 dates, assuming 360 days years, 30 days months.
 
@@ -42,10 +42,10 @@ Example:
 @end deffn
 
 
-@deffn {Function} fv (@mvar{rate},@mvar{PV},@mvar{num})
+@deffn {Function} fv (@var{rate},@var{PV},@var{num})
 
 We can calculate the future value of a Present one given a certain interest rate.
-@mvar{rate} is the interest rate, @mvar{PV} is the present value and @mvar{num} is
+@var{rate} is the interest rate, @var{PV} is the present value and @var{num} is
 the number of periods.
 
 Example:
@@ -63,10 +63,10 @@ Example:
 @end deffn
 
 
-@deffn {Function} pv (@mvar{rate},@mvar{FV},@mvar{num})
+@deffn {Function} pv (@var{rate},@var{FV},@var{num})
 
 We can calculate the present value of a Future one given a certain interest rate.
-@mvar{rate} is the interest rate, @mvar{FV} is the future value and @mvar{num} is
+@var{rate} is the interest rate, @var{FV} is the future value and @var{num} is
 the number of periods.
 
 Example:
@@ -84,12 +84,12 @@ Example:
 @end deffn
 
 
-@deffn {Function} graph_flow (@mvar{val})
+@deffn {Function} graph_flow (@var{val})
 
 Plots the money flow in a time line, the positive values are in blue
 and upside; the negative ones are in red and downside.
 The direction of the flow is given by the sign of the value.
-@mvar{val} is a list of flow values.
+@var{val} is a list of flow values.
 
 Example:
 
@@ -105,11 +105,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} annuity_pv (@mvar{rate},@mvar{PV},@mvar{num})
+@deffn {Function} annuity_pv (@var{rate},@var{PV},@var{num})
 
 We can calculate the annuity knowing the present value (like an ammount),
-it is a constant and periodic payment. @mvar{rate} is the interest rate,
-@mvar{PV} is the present value and @mvar{num} is the number of periods.
+it is a constant and periodic payment. @var{rate} is the interest rate,
+@var{PV} is the present value and @var{num} is the number of periods.
 
 Example:
 
@@ -126,11 +126,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} annuity_fv (@mvar{rate},@mvar{FV},@mvar{num})
+@deffn {Function} annuity_fv (@var{rate},@var{FV},@var{num})
 
 We can calculate the annuity knowing the desired value (future value),
-it is a constant and periodic payment. @mvar{rate} is the interest rate,
-@mvar{FV} is the future value and @mvar{num} is the number of periods.
+it is a constant and periodic payment. @var{rate} is the interest rate,
+@var{FV} is the future value and @var{num} is the number of periods.
 
 Example:
 
@@ -147,11 +147,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} geo_annuity_pv (@mvar{rate},@mvar{growing_rate},@mvar{PV},@mvar{num})
+@deffn {Function} geo_annuity_pv (@var{rate},@var{growing_rate},@var{PV},@var{num})
 
 We can calculate the annuity knowing the present value (like an ammount),
-in a growing periodic payment. @mvar{rate} is the interest rate, @mvar{growing_rate}
-is the growing rate, @mvar{PV} is the present value and @mvar{num} is the number of periods.
+in a growing periodic payment. @var{rate} is the interest rate, @var{growing_rate}
+is the growing rate, @var{PV} is the present value and @var{num} is the number of periods.
 
 Example:
 
@@ -168,11 +168,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} geo_annuity_fv (@mvar{rate},@mvar{growing_rate},@mvar{FV},@mvar{num})
+@deffn {Function} geo_annuity_fv (@var{rate},@var{growing_rate},@var{FV},@var{num})
 
 We can calculate the annuity knowing the desired value (future value),
-in a growing periodic payment. @mvar{rate} is the interest rate, @mvar{growing_rate}
-is the growing rate, @mvar{FV} is the future value and @mvar{num} is the number of periods.
+in a growing periodic payment. @var{rate} is the interest rate, @var{growing_rate}
+is the growing rate, @var{FV} is the future value and @var{num} is the number of periods.
 
 Example:
 
@@ -188,11 +188,11 @@ Example:
 
 @end deffn
 
-@deffn {Function} amortization (@mvar{rate},@mvar{ammount},@mvar{num})
+@deffn {Function} amortization (@var{rate},@var{ammount},@var{num})
 
 Amortization table determinated by a specific rate.
-@mvar{rate} is the interest rate, @mvar{ammount} is the ammount value,
-and @mvar{num} is the number of periods.
+@var{rate} is the interest rate, @var{ammount} is the ammount value,
+and @var{num} is the number of periods.
 
 Example:
 
@@ -222,15 +222,15 @@ Example:
 @end deffn
 
 
-@deffn {Function} arit_amortization (@mvar{rate},@mvar{increment},@mvar{ammount},@mvar{num})
+@deffn {Function} arit_amortization (@var{rate},@var{increment},@var{ammount},@var{num})
 
 The amortization table determinated by a specific rate and with growing payment
 can be claculated by @code{arit_amortization}.
 Notice that the payment is not constant, it presents
 an arithmetic growing, increment is then the difference between two
 consecutive rows in the "Payment" column.
-@mvar{rate} is the interest rate, @mvar{increment} is the increment, @mvar{ammount}
-is the ammount value, and @mvar{num} is the number of periods.
+@var{rate} is the interest rate, @var{increment} is the increment, @var{ammount}
+is the ammount value, and @var{num} is the number of periods.
 
 Example:
 
@@ -260,15 +260,15 @@ Example:
 @end deffn
 
 
-@deffn {Function} geo_amortization (@mvar{rate},@mvar{growing_rate},@mvar{ammount},@mvar{num})
+@deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{ammount},@var{num})
 
 The amortization table determinated by rate, ammount,
 and number of periods can be found by @code{geo_amortization}.
 Notice that the payment is not constant, it presents
-a geometric growing, @mvar{growing_rate} is then the quotient between two
+a geometric growing, @var{growing_rate} is then the quotient between two
 consecutive rows in the "Payment" column.
-@mvar{rate} is the interest rate, @mvar{ammount}
-is the ammount value, and @mvar{num} is the number of periods.
+@var{rate} is the interest rate, @var{ammount}
+is the ammount value, and @var{num} is the number of periods.
 
 Example:
 
@@ -298,11 +298,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} saving (@mvar{rate},@mvar{ammount},@mvar{num})
+@deffn {Function} saving (@var{rate},@var{ammount},@var{num})
 
 The table that represents the values in a constant and periodic
 saving can be found by @code{saving}.
-@mvar{ammount} represents the desired quantity and num the number
+@var{ammount} represents the desired quantity and num the number
 of periods to save.
 
 Example:
@@ -336,11 +336,11 @@ Example:
 @end deffn
 
 
-@deffn {Function} npv (@mvar{rate},@mvar{val})
+@deffn {Function} npv (@var{rate},@var{val})
 
 Calculates de present value of a value series to evaluate the viability in a
 project.
-@mvar{flowValues} es una lista con los valores para cada periodo.
+@var{flowValues} es una lista con los valores para cada periodo.
 
 Example:
 
@@ -357,12 +357,12 @@ Example:
 @end deffn
 
 
-@deffn {Function} irr (@mvar{val},@mvar{IO})
+@deffn {Function} irr (@var{val},@var{IO})
 
 IRR (Internal Rate of Return) is the value of rate which makes Net Present Value
 zero.
-@mvar{flowValues} los valores para cada periodo (para periodos mayores a 0) y
-@mvar{I0} el valor para el periodo cero.
+@var{flowValues} los valores para cada periodo (para periodos mayores a 0) y
+@var{I0} el valor para el periodo cero.
 
 Example:
 
@@ -380,14 +380,14 @@ Example:
 @end deffn
 
 
-@deffn {Function} benefit_cost (@mvar{rate},@mvar{input},@mvar{output})
+@deffn {Function} benefit_cost (@var{rate},@var{input},@var{output})
 
 Calculates the ratio Benefit/Cost. Benefit is the Net Present Value (NPV)
 of the inputs, and Cost is the Net Present Value (NPV) of the outputs.
 Notice that if there is not an input or output value in a specific period,
 the input/output would be a zero for that period.
-@mvar{rate} is the interest rate, @mvar{input} is a list of input values,
-and @mvar{output} is a list of output values.
+@var{rate} is the interest rate, @var{input} is a list of input values,
+and @var{output} is a list of output values.
 
 Example:
 

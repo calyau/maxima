@@ -30,10 +30,10 @@ Ejemplo:
 @section Funciones y variables para solve_rec
 
 
-@deffn {Funci@'on} reduce_order (@mvar{rec}, @mvar{sol}, @mvar{var})
+@deffn {Funci@'on} reduce_order (@var{rec}, @var{sol}, @var{var})
 
-Reduce el orden de la expresi@'on recurrente lineal @mvar{rec} cuando
-se conoce una soluci@'on particular @mvar{sol}. La recurrencia
+Reduce el orden de la expresi@'on recurrente lineal @var{rec} cuando
+se conoce una soluci@'on particular @var{sol}. La recurrencia
 reducida puede utilizarse para obterner m@'as soluciones.
 
 Ejemplo:
@@ -94,9 +94,9 @@ V@'ease tambi@'en @code{solve_rec}.
 
 
 
-@deffn {Funci@'on} simplify_sum (@mvar{expr})
+@deffn {Funci@'on} simplify_sum (@var{expr})
 
-Intenta reducir todas las sumas que aparecen en @mvar{expr} a una forma
+Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
 cerrada.
 
 Para utilizar esta funci@'on c@'arguese previamente el paquete @code{simplify_sum}
@@ -133,11 +133,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} solve_rec (@mvar{eqn}, @mvar{var}, [@mvar{init}])
+@deffn {Funci@'on} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 
-Obtiene las soluciones hipergeom@'etricas de la expresi@'on recurrente @mvar{eqn}
-con coeficientes lineales en la variable @mvar{var}. Los argumentos opcionales
-@mvar{init} son condiciones iniciales.
+Obtiene las soluciones hipergeom@'etricas de la expresi@'on recurrente @var{eqn}
+con coeficientes lineales en la variable @var{var}. Los argumentos opcionales
+@var{init} son condiciones iniciales.
 
 La funci@'on @code{solve_rec} puede resolver expresiones recurrentes con
 coeficientes constantes, encuentra soluciones hipergeom@'etricas de
@@ -205,7 +205,7 @@ V@'eanse tambi@'en @code{solve_rec_rat}, @code{simplify_products} y @code{produc
 
 @end deffn
 
-@deffn {Funci@'on} solve_rec_rat (@mvar{eqn}, @mvar{var}, [@mvar{init}])
+@deffn {Funci@'on} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
 Calcula las soluciones racionales de las expresiones recurrentes lineales. 
 V@'ease @code{solve_rec} para la descripci@'on de sus argumentos.
@@ -242,7 +242,7 @@ V@'eanse tambi@'en @code{simplify_products} y @code{solve_rec}.
 
 @end defvr
 
-@deffn {Funci@'on} summand_to_rec (@mvar{summand}, @mvar{k}, @mvar{n})
+@deffn {Funci@'on} summand_to_rec (@var{summand}, @var{k}, @var{n})
 
 Devuelve la expresi@'on recurrente que satisface la suma
 
@@ -256,7 +256,7 @@ Devuelve la expresi@'on recurrente que satisface la suma
   k = minf
 @end example
 
-donde el sumando es hipergeom@'etrico en  @mvar{k} y @mvar{n}.
+donde el sumando es hipergeom@'etrico en  @var{k} y @var{n}.
 
 Para hacer uso de esta funci@'on deben cargarse previamente los paquetes
 @code{zeilberger} y @code{solve_rec} mediante la ejecuci@'on de las sentencias

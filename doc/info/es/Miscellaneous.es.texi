@@ -74,7 +74,7 @@ La variable @code{gensumnum} es el sufijo num@'erico utilizado para generar la s
 
 
 @deffn  {Funci@'on} gensym ()
-@deffnx {Funci@'on} gensym (@mvar{x})
+@deffnx {Funci@'on} gensym (@var{x})
 
 @code{gensym()} crea y devuelve una nueva s@'{@dotless{i}}mbolo o
 variable sin valor asignado.
@@ -84,11 +84,11 @@ concatenaci@'on de un prefijo, cuyo valor por defecto es "g", y de
 un sufijo, el cual es la representaci@'on decimal de un n@'umero que
 coincide, por defecto, con el valor de un contador interno de Lisp.
 
-En caso de suministrar el argumento @mvar{x}, siendo este una cadena,
+En caso de suministrar el argumento @var{x}, siendo este una cadena,
 se utilizar@'a como prefijo en lugar de "g", lo cual tendr@'a efecto
 s@'olo para esta llamada a @code{gensym}·
 
-En caso de suministrar el argumento @mvar{x}, siendo este un n@'umero
+En caso de suministrar el argumento @var{x}, siendo este un n@'umero
 entero, se utilizar@'a como sufijo en lugar del contador interno de
 Lisp, lo cual tendr@'a efecto s@'olo para esta llamada a @code{gensym}·
 
@@ -126,10 +126,10 @@ con informaci@'on del sistema de Maxima, como @code{values} o @code{functions}.
 
 
 
-@deffn {Funci@'on} remvalue (@mvar{nombre_1}, ..., @mvar{nombre_n})
+@deffn {Funci@'on} remvalue (@var{nombre_1}, ..., @var{nombre_n})
 @deffnx {Funci@'on} remvalue (all)
 
-Elimina del sistema los valores de las variable de usuario @mvar{nombre_1}, ..., @mvar{nombre_n} (incluso las que tienen sub@'{@dotless{i}}ndices).
+Elimina del sistema los valores de las variable de usuario @var{nombre_1}, ..., @var{nombre_n} (incluso las que tienen sub@'{@dotless{i}}ndices).
 
 La llamada @code{remvalue (all)} elimina los valores de todas las variables en @code{values}, la lista de todas las variables a las que el usuario a dado alg@'un nombre, pero no de aqu@'ellas a las que Maxima asigna autom@'aticamente un valor.
 
@@ -139,9 +139,9 @@ V@'ease tambi@'en @code{values}.
 
 
 
-@deffn {Funci@'on} rncombine (@mvar{expr})
+@deffn {Funci@'on} rncombine (@var{expr})
 
-Transforma @mvar{expr} combinando todos los t@'erminos de @mvar{expr} que tengan denominadores id@'enticos o que difieran unos de otros por factores num@'ericos. Su comportamiento es diferente al de la funci@'on @code{combine}, que combina t@'erminos con iguales denominadores.
+Transforma @var{expr} combinando todos los t@'erminos de @var{expr} que tengan denominadores id@'enticos o que difieran unos de otros por factores num@'ericos. Su comportamiento es diferente al de la funci@'on @code{combine}, que combina t@'erminos con iguales denominadores.
 
 Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aqu@'ellos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores num@'ericos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
 
@@ -152,9 +152,9 @@ Antes de utilizar esta funci@'on ejec@'utese @code{load(rncomb)}.
 
 
 
-@deffn {Funci@'on} setup_autoload (@mvar{nombre_fichero}, @mvar{funci@'on_1}, ..., @mvar{funci@'on_n})
+@deffn {Funci@'on} setup_autoload (@var{nombre_fichero}, @var{funci@'on_1}, ..., @var{funci@'on_n})
 
-Especifica que si alguna de las funciones @mvar{function_1}, ..., @mvar{function_n} es referenciada pero todav@'{@dotless{i}}a no ha sido definida, se cargar@'a @mvar{nombre_fichero} mediante una llamada a @code{load}. El @mvar{nombre_fichero} normalmente contendr@'a las definiciones de las funciones especificadas, aunque esto no es imperativo.
+Especifica que si alguna de las funciones @var{function_1}, ..., @var{function_n} es referenciada pero todav@'{@dotless{i}}a no ha sido definida, se cargar@'a @var{nombre_fichero} mediante una llamada a @code{load}. El @var{nombre_fichero} normalmente contendr@'a las definiciones de las funciones especificadas, aunque esto no es imperativo.
 
 La funci@'on @code{setup_autoload} no opera con arreglos de funciones.
 
@@ -188,22 +188,22 @@ Warning - you are redefining the Macsyma function legendre_p
 
 
 
-@deffn  {Funci@'on} tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})
-@deffnx {Funci@'on} tcl_output (@mvar{list}, @mvar{i0})
-@deffnx {Funci@'on} tcl_output ([@mvar{list_1}, @dots{}, @mvar{list_n}], @mvar{i})
+@deffn  {Funci@'on} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Funci@'on} tcl_output (@var{list}, @var{i0})
+@deffnx {Funci@'on} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
 
 Imprime los elementos de una lista encerr@'andolos con llaves @code{@{ @}},
 de forma apropiada para ser utilizado en un programa en el lenguaje Tcl/Tk.
 
-@code{tcl_output (@mvar{list}, @mvar{i0}, @mvar{skip})}
-imprime @mvar{list}, empezando por el elemento @mvar{i0} siguiendo luego con los
-elementos @code{@mvar{i0} + @mvar{skip}}, @code{@mvar{i0} + 2 @mvar{skip}}, etc.
+@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
+imprime @var{list}, empezando por el elemento @var{i0} siguiendo luego con los
+elementos @code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
 
-@code{tcl_output (@mvar{list}, @mvar{i0})}
-equivale a @code{tcl_output (@mvar{list}, @mvar{i0}, 2)}.
+@code{tcl_output (@var{list}, @var{i0})}
+equivale a @code{tcl_output (@var{list}, @var{i0}, 2)}.
 
-@code{tcl_output ([@mvar{list_1}, ..., @mvar{list_n}], @mvar{i})}
-imprime los @mvar{i}-@'esimos elementos de @mvar{list_1}, @dots{}, @mvar{list_n}.
+@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
+imprime los @var{i}-@'esimos elementos de @var{list_1}, @dots{}, @var{list_n}.
 
 Ejemplos:
 

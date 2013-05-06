@@ -136,7 +136,7 @@ y;
 @closecatbox
 @end deffn
 
-@deffn {関数} cmetric (@mvar{dis})
+@deffn {関数} cmetric (@var{dis})
 @deffnx {関数} cmetric ()
 計量の逆元を計算し、将来の計算のためパッケージを設定する
 @code{ctensor}(成分テンソル)パッケージの関数
@@ -145,7 +145,7 @@ y;
 関数は逆計量@code{ug}を(ユーザー定義の)行列@code{lg}から計算します。
 計量の行列式も計算され、変数@code{gdet}に保存されます。
 更に、パッケージは計量が対角的か調べ、結果に従って@code{diagmetric}の値を設定します。
-もしオプション引数@mvar{dis}が渡されて、それが@code{false}でないなら、
+もしオプション引数@var{dis}が渡されて、それが@code{false}でないなら、
 ユーザーは計量の逆元を見るように促されます。
 
 もし@code{cframe_flag}が@code{true}なら、
@@ -157,10 +157,10 @@ y;
 @closecatbox
 @end deffn
 
-@deffn {関数} ct_coordsys (@mvar{coordinate_system}, @mvar{extra_arg})
-@deffnx {関数} ct_coordsys (@mvar{coordinate_system})
+@deffn {関数} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
+@deffnx {関数} ct_coordsys (@var{coordinate_system})
 あらかじめ定義された座標系と計量を設定します。
-引数@mvar{coordinate_system}は以下のシンボルのいずれかです:
+引数@var{coordinate_system}は以下のシンボルのいずれかです:
 
 @example
 
@@ -254,7 +254,7 @@ y;
 
 @end example
 
-オプションの引数 @mvar{extra_arg}は以下のいずれかです:
+オプションの引数 @var{extra_arg}は以下のいずれかです:
 @c LOOKING AT share/tensor/ctensor.mac CIRCA LINE 837, misner IS RECOGNIZED ALSO; WHAT EFFECT DOES IT HAVE ??
 
 @code{cylindrical}は @code{ct_coordsys}に追加の極座標を結びつけるように言います。
@@ -335,10 +335,10 @@ y;
 
 @end example
 
-@deffn {関数} christof (@mvar{dis})
+@deffn {関数} christof (@var{dis})
 @code{ctensor} (成分テンソル)パッケージの関数。
 各種Christoffel記号を計算します。
-引数 @mvar{dis}は
+引数 @var{dis}は
 どの結果をすぐに表示するか決めます。
 第一種と第二種Christoffel記号は
 それぞれ配列 @code{lcs[i,j,k]}と @code{mcs[i,j,k]}に格納され、
@@ -358,11 +358,11 @@ y;
 @closecatbox
 @end deffn
 
-@deffn {関数} ricci (@mvar{dis})
+@deffn {関数} ricci (@var{dis})
 @code{ctensor} (成分テンソル)パッケージの関数。
 @code{ricci}は
 Ricciテンソルの共変(対称)成分 @code{ric[i,j]}を計算します。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 非零成分が表示されます。
 
 @opencatbox
@@ -370,10 +370,10 @@ Ricciテンソルの共変(対称)成分 @code{ric[i,j]}を計算します。
 @closecatbox
 @end deffn
 
-@deffn {関数} uricci (@mvar{dis})
+@deffn {関数} uricci (@var{dis})
 この関数は最初にRicciテンソルの共変成分 @code{ric[i,j]}を計算します。
 そして、混合 Ricciテンソルが反変計量テンソルを使って計算されます。
-もし引数 @mvar{dis}の値が @code{true}なら
+もし引数 @var{dis}の値が @code{true}なら
 これらの(添字 @code{i}は共変で、添字 @code{j}は反変の)混合成分 @code{uric[i,j]} 
 は直接表示されます。
 そうでないなら、 @code{ricci(false)}は
@@ -393,13 +393,13 @@ Ricciテンソルの共変(対称)成分 @code{ric[i,j]}を計算します。
 @closecatbox
 @end deffn
 
-@deffn {関数} einstein (@mvar{dis})
+@deffn {関数} einstein (@var{dis})
 @code{ctensor} (成分テンソル)パッケージの関数。
 @code{einstein}は、
 (関数 @code{christof}と @code{ricci}を使って)
 Christoffel記号と Ricciテンソルを得られた後、
 混合 Einsteinテンソルを計算します。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 混合 Einsteinテンソル @code{ein[i,j]}の非零値が表示されます。
 ここで @code{j}は反変添字です。
 変数 @code{rateinstein}は
@@ -412,14 +412,14 @@ Christoffel記号と Ricciテンソルを得られた後、
 @closecatbox
 @end deffn
 
-@deffn {関数} leinstein (@mvar{dis})
+@deffn {関数} leinstein (@var{dis})
 共変 Einsteinテンソル。
 @code{leinstein}は
 配列 @code{lein}に共変 Einsteinテンソルの値を格納します。
 共変 Einsteinテンソルは、
 計量テンソルを掛けることで
 混合 Einsteinテンソル @code{ein}から計算されます。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 共変 Einsteinテンソルの非零値が表示されます。
 
 @opencatbox
@@ -427,7 +427,7 @@ Christoffel記号と Ricciテンソルを得られた後、
 @closecatbox
 @end deffn
 
-@deffn {関数} riemann (@mvar{dis})
+@deffn {関数} riemann (@var{dis})
 @code{ctensor} (成分テンソル)パッケージの関数。
 @code{riemann}は
 与えられた計量と対応するChristoffel記号から
@@ -443,7 +443,7 @@ Riemann曲率テンソルを計算します。
 この表記法は
 @code{itensor}パッケージとその @code{icurvature}関数で使われる表記法と
 一致しています。
-もしオプション引数 @mvar{dis}が @code{true}なら、
+もしオプション引数 @var{dis}が @code{true}なら、
 固有の非零成分 @code{riem[i,j,k,l]}が表示されます。
 Einsteinテンソルと同様に
 ユーザーが設定する様々なスイッチが
@@ -465,12 +465,12 @@ Christoffel記号から直接計算されます。
 @closecatbox
 @end deffn
 
-@deffn {関数} lriemann (@mvar{dis})
+@deffn {関数} lriemann (@var{dis})
 共変 Riemannテンソル (@code{lriem[]}).
 
 配列 @code{lriem}として
 共変 Riemannテンソルを計算します。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 固有の非零値が表示されます。
 
 もし変数 @code{cframe_flag}が @code{true}なら、
@@ -486,10 +486,10 @@ Christoffel記号から直接計算されます。
 @closecatbox
 @end deffn
 
-@deffn {関数} uriemann (@mvar{dis})
+@deffn {関数} uriemann (@var{dis})
 配列要素 @code{uriem[i,j,k,l]}として
 Riemann曲率テンソルの反変成分を計算します。
-もし @mvar{dis}が @code{true}なら、これらが表示されます。
+もし @var{dis}が @code{true}なら、これらが表示されます。
 
 @opencatbox
 @category{Package ctensor}
@@ -511,9 +511,9 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 @closecatbox
 @end deffn
 
-@deffn {関数} weyl (@mvar{dis})
+@deffn {関数} weyl (@var{dis})
 Weylの共形テンソルを計算します。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 非零成分 @code{weyl[i,j,k,l]}がユーザーに表示されます。
 そうでないなら、これらの成分は
 単に計算され、格納されます。
@@ -704,7 +704,7 @@ Minkowski計量の置換である簡単な計量を考えます。
 @code{ctensor}パッケージは
 動標構(moving frame)を使って計算を実行します。
 
-@deffn {関数} frame_bracket (@mvar{fr}, @mvar{fri}, @mvar{diagframe})
+@deffn {関数} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
 標構(frame)ブラケット (@code{fb[]}).
 
 以下の定義に従って標構ブラケットを計算します:
@@ -760,7 +760,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 @closecatbox
 @end deffn
 
-@deffn {関数} psi (@mvar{dis})
+@deffn {関数} psi (@var{dis})
 5つの Newman-Penrose係数 @code{psi[0]}...@code{psi[4]}を計算します。
 もし @code{dis}が @code{true}に設定されているなら、
 係数が表示されます。
@@ -942,9 +942,9 @@ nmc  = ------------------------------
 @code{kt}と @code{nm}を計算するために
 関数 @code{contortion}と @code{nonmetricity}をコールします。
 
-@deffn {関数} contortion (@mvar{tr})
+@deffn {関数} contortion (@var{tr})
 
-ねじれテンソル @mvar{tr}から(2,1)コントーション(contortion)係数を計算します。
+ねじれテンソル @var{tr}から(2,1)コントーション(contortion)係数を計算します。
 
 
 @opencatbox
@@ -952,9 +952,9 @@ nmc  = ------------------------------
 @closecatbox
 @end deffn
 
-@deffn {関数} nonmetricity (@mvar{nm})
+@deffn {関数} nonmetricity (@var{nm})
 
-非計量性ベクトル @mvar{nm}から(2,1)非計量性係数を計算します。
+非計量性ベクトル @var{nm}から(2,1)非計量性係数を計算します。
 
 @opencatbox
 @category{Package ctensor}
@@ -965,8 +965,8 @@ nmc  = ------------------------------
 
 @subsection Miscellaneous features
 
-@deffn {関数} ctransform (@mvar{M})
-任意の平方対称行列 @mvar{M}上で座標変換を実行する
+@deffn {関数} ctransform (@var{M})
+任意の平方対称行列 @var{M}上で座標変換を実行する
 @code{ctensor} (成分テンソル)パッケージの関数。
 ユーザーは変換を定義する函数を入力しなければいけません。
 (以前@code{transform}と呼ばれていました。)
@@ -976,14 +976,14 @@ nmc  = ------------------------------
 @closecatbox
 @end deffn
 
-@deffn {関数} findde (@mvar{A}, @mvar{n})
+@deffn {関数} findde (@var{A}, @var{n})
 
-@mvar{n}次元の平方配列 @mvar{A}要素に対応する
+@var{n}次元の平方配列 @var{A}要素に対応する
 独自の(unique)微分方程式(式)のリストを返します。
-現在、 @mvar{n}は2か3を指定できます
+現在、 @var{n}は2か3を指定できます
 @code{deindex}は
 これらの独自の微分方程式に従う
-@mvar{A}の添字を含む
+@var{A}の添字を含む
 グローバルリストです。
 2次元配列であるEinsteinテンソル (@code{ein})に関して、
 もし以下の例で計量に関して計算するなら、
@@ -1125,12 +1125,12 @@ Einsteinテンソルの発散が形成され、零にならなければいけま
 @closecatbox
 @end deffn
 
-@deffn {関数} cgeodesic (@mvar{dis})
+@deffn {関数} cgeodesic (@var{dis})
 @code{ctensor} (成分テンソル)パッケージの関数。
 @code{cgeodesic}は
 与えられた計量での運動の測地方程式を計算します。
 それらは配列 @code{geod[i]}に格納されます。
-もし引数 @mvar{dis}が @code{true}なら、
+もし引数 @var{dis}が @code{true}なら、
 これらの方程式が表示されます。
 
 @opencatbox
@@ -1139,13 +1139,13 @@ Einsteinテンソルの発散が形成され、零にならなければいけま
 @end deffn
 
 
-@deffn {関数} bdvac (@mvar{f})
+@deffn {関数} bdvac (@var{f})
 
 Brans- Dicke重力理論の
 真空場の方程式の
 共変成分を生成します。
-スカラ場は引数 @mvar{f}で指定されます。
-@mvar{f}は、
+スカラ場は引数 @var{f}で指定されます。
+@var{f}は、
 例えば、@code{'p(x)}のように、
 関数依存性を持つ(クォートされた)関数名でなければいけません。
 
@@ -1193,9 +1193,9 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 
 @subsection Utility functions
 
-@deffn {関数} diagmatrixp (@mvar{M})
+@deffn {関数} diagmatrixp (@var{M})
 
-もし @mvar{M}が対角行列か対角 (2D) 配列なら
+もし @var{M}が対角行列か対角 (2D) 配列なら
 @code{true}を返します。
 
 @opencatbox
@@ -1204,9 +1204,9 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 
 @end deffn
 
-@deffn {関数} symmetricp (@mvar{M})
+@deffn {関数} symmetricp (@var{M})
 
-もし @mvar{M}が対称行列か対称 (2D) 配列なら
+もし @var{M}が対称行列か対称 (2D) 配列なら
 @code{true}を返します。
 
 @opencatbox
@@ -1215,9 +1215,9 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 
 @end deffn
 
-@deffn {関数} ntermst (@mvar{f})
+@deffn {関数} ntermst (@var{f})
 ユーザーに
-二重に下付き添字テンソル(配列) @mvar{f}の「サイズ」のquick pictureを与えます。
+二重に下付き添字テンソル(配列) @var{f}の「サイズ」のquick pictureを与えます。
 二番目の要素が
 一番目の要素が指定する成分のNTERMSに対応する2つの要素のリストを印字します。
 この方法で、
@@ -1228,9 +1228,9 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 @closecatbox
 @end deffn
 
-@deffn {関数} cdisplay (@mvar{ten})
+@deffn {関数} cdisplay (@var{ten})
 多次元配列で表されるように、
-テンソル @mvar{ten}の要素すべてを表示します。
+テンソル @var{ten}の要素すべてを表示します。
 他のタイプの変数はもちろん、
 階数0と1のテンソルが
 @code{ldisplay}を使ったように表示されます。
@@ -1454,8 +1454,8 @@ riem     = [        0         - -------------         0         0 ]
 @closecatbox
 @end deffn
 
-@deffn {関数} deleten (@mvar{L}, @mvar{n})
-@mvar{n}番目の要素を削除した@mvar{L}から成る新しいリストを返します。
+@deffn {関数} deleten (@var{L}, @var{n})
+@var{n}番目の要素を削除した@var{L}から成る新しいリストを返します。
 
 @opencatbox
 @category{Package ctensor}

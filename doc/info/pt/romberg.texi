@@ -6,23 +6,23 @@
 @node Defini@value{cedilha}@~oes para romberg, , Top, Top
 @section Defini@value{cedilha}@~oes para romberg
 
-@deffn {Fun@value{cedilha}@~ao} romberg (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
-@deffnx {Fun@value{cedilha}@~ao} romberg (@mvar{F}, @mvar{a}, @mvar{b})
+@deffn {Fun@value{cedilha}@~ao} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {Fun@value{cedilha}@~ao} romberg (@var{F}, @var{a}, @var{b})
 
 Calcula uma integra@value{cedilha}@~ao num@'erica pelo m@'etodo de Romberg.
 
-@code{romberg(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}
-retorna uma estimativa da integral @code{integrate(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
-@mvar{expr} deve ser uma express@~ao que avalie para um valor em ponto flutuante
-quando @mvar{x} estiver associado a um valor em ponto flutuante.
+@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
+retorna uma estimativa da integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
+@var{expr} deve ser uma express@~ao que avalie para um valor em ponto flutuante
+quando @var{x} estiver associado a um valor em ponto flutuante.
 
-@code{romberg(@mvar{F}, @mvar{a}, @mvar{b})}
-retorna uma estimativa da integral @code{integrate(@mvar{F}(x), x, @mvar{a}, @mvar{b})}
-onde @code{x} representa o n@~ao nomeado, isolado argumeno de @mvar{F};
+@code{romberg(@var{F}, @var{a}, @var{b})}
+retorna uma estimativa da integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}
+onde @code{x} representa o n@~ao nomeado, isolado argumeno de @var{F};
 o actual argumento n@~ao @'e chamado @code{x}.
-@mvar{F} deve ser uma fun@value{cedilha}@~ao do Maxima ou do Lisp que retorne um valor em ponto flutuante
+@var{F} deve ser uma fun@value{cedilha}@~ao do Maxima ou do Lisp que retorne um valor em ponto flutuante
 quando o argumento for um n@'umero em ponto flutuante.
-@mvar{F} pode nomear uma fun@value{cedilha}@~ao traduzida ou compilada do Maxima.
+@var{F} pode nomear uma fun@value{cedilha}@~ao traduzida ou compilada do Maxima.
 
 A precis@~ao de @code{romberg} @'e governada pelas vari@'aveis globais
 @code{rombergabs} e @code{rombergtol}.

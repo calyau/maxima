@@ -80,14 +80,14 @@ By tanrule1 , tan(x) --> sin(x)/cos(x)
 
 @c --- 17.08.2011 DK -----------------------------------------------------------
 @anchor{apply1}
-@deffn {Funktion} apply1 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
+@deffn {Funktion} apply1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Wendet die Regel @mvar{rule_1} auf den Ausdruck @mvar{expr} solange an, bis sich
+Wendet die Regel @var{rule_1} auf den Ausdruck @var{expr} solange an, bis sich
 das Ergebnis nicht mehr @"andert.  Die Regel wird zuerst auf der obersten Ebene
 des Ausdrucks und dann nacheinander von links nach rechts auf die
-Teilausdr@"ucke angewendet.  Ist @mvar{expr_1} das Ergebnis der Anwendung der
-Regel @mvar{rule_1}, dann wird die Regel @mvar{rule_2} auf gleiche Weise auf den
-Ausdruck @mvar{expr_1} angewendet.  Zuletzt wird die Regel @mvar{rule_n}
+Teilausdr@"ucke angewendet.  Ist @var{expr_1} das Ergebnis der Anwendung der
+Regel @var{rule_1}, dann wird die Regel @var{rule_2} auf gleiche Weise auf den
+Ausdruck @var{expr_1} angewendet.  Zuletzt wird die Regel @var{rule_n}
 angewendet.  Das letzte Ergebnis wird zur@"uckgegeben.
 
 Die Optionsvariable @mref{maxapplydepth} enth@"alt die gr@"o@ss{}te
@@ -153,12 +153,12 @@ auf die Teilausdr@"ucke angewendet wird.
 
 @c --- 17.08.2011 DK -----------------------------------------------------------
 @anchor{apply2}
-@deffn {Funktion} apply2 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
+@deffn {Funktion} apply2 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Zun@"achst werden nacheinander die Regeln @mvar{rule_1}, @mvar{rule_2}, @dots{}
-auf den Ausdruck @mvar{expr} angewendet.  Schl@"agt die Anwendung aller Regeln
+Zun@"achst werden nacheinander die Regeln @var{rule_1}, @var{rule_2}, @dots{}
+auf den Ausdruck @var{expr} angewendet.  Schl@"agt die Anwendung aller Regeln
 fehl, werden die Regeln nacheinander auf die Teilausdr@"ucke des Argumentes
-@mvar{expr} angewendet.  Kann eine der Regeln erfolgreich angewendet werden,
+@var{expr} angewendet.  Kann eine der Regeln erfolgreich angewendet werden,
 wird die Anwendung aller Regeln auf den Teilausdruck wiederholt.
 
 Im Unterschied zur Funktion @mref{apply1} werden von der Funktion @code{apply2}
@@ -234,14 +234,14 @@ Reihenfolge der Anwendung der Regeln ab.  Die Anwendung der Funktion
 
 @c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{applyb1}
-@deffn {Funktion} applyb1 (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
+@deffn {Funktion} applyb1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Wendet die Regel @mvar{rule_1} auf den tiefsten Teilausdruck in der Baumstruktur
+Wendet die Regel @var{rule_1} auf den tiefsten Teilausdruck in der Baumstruktur
 eines Ausdrucks an.  Schl@"agt die Anwendung fehl, wird der Teilausdruck eine
-Ebene h@"oher betrachtet, bis @mvar{rule_1} auf die oberste Ebene des Ausdrucks
-@mvar{expr} angewendet wird.  Danach wird auf gleiche Weise die Regel
-@mvar{rule_2} auf den Ausdruck @mvar{expr} angewendet.  Nachdem die letzte Regel
-@mvar{rule_n} angewendet wurde, wird das Ergebnis zur@"uckgegeben.
+Ebene h@"oher betrachtet, bis @var{rule_1} auf die oberste Ebene des Ausdrucks
+@var{expr} angewendet wird.  Danach wird auf gleiche Weise die Regel
+@var{rule_2} auf den Ausdruck @var{expr} angewendet.  Nachdem die letzte Regel
+@var{rule_n} angewendet wurde, wird das Ergebnis zur@"uckgegeben.
 
 @code{applyb1} ist vergleichbar mit @mref{apply1} mit dem Unterschied, dass
 die Regeln Bottom-Up angewendet werden.
@@ -399,27 +399,27 @@ nicht ge@"andert wurde.
 
 @c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{defmatch}
-@deffn  {Funktion} defmatch (@mvar{progname}, @mvar{pattern}, @mvar{x_1}, @dots{}, @mvar{x_n})
-@deffnx {Funktion} defmatch (@mvar{progname}, @mvar{pattern})
+@deffn  {Funktion} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
+@deffnx {Funktion} defmatch (@var{progname}, @var{pattern})
 
-Definiert eine Aussagefunktion @code{@mvar{progname}(@mvar{expr})} oder
-@code{@mvar{progname}(@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}, die einen
-Ausdruck @mvar{expr} testet, um zu pr@"ufen, ob dieser das Muster @mvar{pattern}
+Definiert eine Aussagefunktion @code{@var{progname}(@var{expr})} oder
+@code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}, die einen
+Ausdruck @var{expr} testet, um zu pr@"ufen, ob dieser das Muster @var{pattern}
 enth@"alt.
 
-Das Argument @mvar{pattern} ist ein Ausdruck mit den Musterargumenten @mvar{x_1},
-@dots{}, @mvar{x_n}.  Die Musterargumente k@"onnen entfallen.  Der Ausdruck kann
+Das Argument @var{pattern} ist ein Ausdruck mit den Musterargumenten @var{x_1},
+@dots{}, @var{x_n}.  Die Musterargumente k@"onnen entfallen.  Der Ausdruck kann
 weiterhin Mustervariablen enthalten, die mit der Funktion
 @mref{matchdeclare} definiert sind.  Alle anderen Variablen und Bezeichner
 entsprechen sich selbst bei einem Musterabgleich.
 
-Das erste Argument der Aussagefunktion @mvar{progname} ist ein Ausdruck
-@mvar{expr}, f@"ur den gepr@"uft wird, ob das Muster @mvar{pattern} enthalten ist.
+Das erste Argument der Aussagefunktion @var{progname} ist ein Ausdruck
+@var{expr}, f@"ur den gepr@"uft wird, ob das Muster @var{pattern} enthalten ist.
 Die weiteren Argumente der Funktion @code{progname} sind die Variablen, die den
-Musterargumenten @mvar{x_1}, @dots{}, @mvar{x_n} des Musters @mvar{pattern}
+Musterargumenten @var{x_1}, @dots{}, @var{x_n} des Musters @var{pattern}
 entsprechen.
 
-Ist der Musterabgleich erfolgreich, gibt die Aussagefunktion @mvar{progname} eine
+Ist der Musterabgleich erfolgreich, gibt die Aussagefunktion @var{progname} eine
 Liste mit Gleichungen zur@"uck.  Die linken Seiten der Gleichungen sind die
 Musterargumente und Mustervariablen und die rechten Seiten sind die
 Teilausdr@"ucke, f@"ur die der Musterabgleich eine @"Ubereinstimmung gefunden
@@ -440,9 +440,9 @@ Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defrule}@w{}
 Beispiele:
 
 Definition einer Funktion @code{linearp(expr, x)}, die pr@"uft, ob ein Ausdruck
-@mvar{expr} die Form @code{a*x+b} hat, wobei @code{a} und @code{b} die Variable
-@mvar{x} nicht enthalten und @code{a} von Null verschieden ist.  Die Definition
-enth@"alt das Musterargument @mvar{x}, so dass die Linearit@"at des Ausdrucks
+@var{expr} die Form @code{a*x+b} hat, wobei @code{a} und @code{b} die Variable
+@var{x} nicht enthalten und @code{a} von Null verschieden ist.  Die Definition
+enth@"alt das Musterargument @var{x}, so dass die Linearit@"at des Ausdrucks
 f@"ur eine beliebige Variable getestet werden kann.  Den Mustervariablen
 @code{a} und @code{b} werden die Teilausdr@"ucke des Musterabgleichs zugewiesen,
 nicht jedoch dem Musterargument @code{x}.
@@ -468,9 +468,9 @@ nicht jedoch dem Musterargument @code{x}.
 @end example
 
 Wie im letzten Beispiel wird eine Aussagefunktion definiert, die pr@"uft, ob ein
-Ausdruck @mvar{expr} linear ist.  In diesem Fall wird kein Musterargument
+Ausdruck @var{expr} linear ist.  In diesem Fall wird kein Musterargument
 angegeben.  Der Musterabgleich kann nur feststellen, ob ein Ausdruck linear in
-der Variablen @mvar{x} ist.  Eine andere Variable ist nicht m@"oglich.
+der Variablen @var{x} ist.  Eine andere Variable ist nicht m@"oglich.
 
 @example
 (%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b,
@@ -486,7 +486,7 @@ der Variablen @mvar{x} ist.  Eine andere Variable ist nicht m@"oglich.
 @end example
 
 Definition eine Aussagefunktion @code{checklimits(expr)}, die pr@"uft, ob ein
-Ausdruck @mvar{expr} ein bestimmtes Integral ist.
+Ausdruck @var{expr} ein bestimmtes Integral ist.
 
 @example
 (%i1) matchdeclare ([a, f], true);
@@ -518,17 +518,17 @@ Ausdruck @mvar{expr} ein bestimmtes Integral ist.
 
 @c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{defrule}
-@deffn {Funktion} defrule (@mvar{rulename}, @mvar{pattern}, @mvar{replacement})
+@deffn {Funktion} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 
-Definiert eine Regel, um das Muster @mvar{pattern} durch den Ausdruck
-@mvar{replacement} zu ersetzen.  Wird die Regel mit dem Namen @mvar{rulename}
+Definiert eine Regel, um das Muster @var{pattern} durch den Ausdruck
+@var{replacement} zu ersetzen.  Wird die Regel mit dem Namen @var{rulename}
 mit den Funktionen @mrefcomma{apply1} @mref{apply2} oder @mref{applyb1} auf
 einen Ausdruck angewendet, werden alle Teilausdr@"ucke, die dem Muster
-@mvar{pattern} entsprechen, durch den Ausdruck @mvar{replacement} ersetzt.  Sind
+@var{pattern} entsprechen, durch den Ausdruck @var{replacement} ersetzt.  Sind
 Mustervariablen vorhanden, die durch den Musterabgleich einen Wert erhalten
 haben, werden die Werte eingesetzt und der Ausdruck wird vereinfacht.
 
-Die Regel @mvar{rulename} kann als eine Funktion aufgefasst werden, die einen
+Die Regel @var{rulename} kann als eine Funktion aufgefasst werden, die einen
 Ausdruck durch Anwendung eines Musterabgleichs transformiert.  Die Regel kann
 wie ein Funktionsaufruf auf einen Ausdruck angewendet werden.
 
@@ -588,10 +588,10 @@ wobei Teilausdr@"ucke, die das Muster enthalten transformiert werden.
 
 @c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{disprule}
-@deffn  {Funktion} disprule (@mvar{rulename_1}, @dots{}, @mvar{rulename_n})
+@deffn  {Funktion} disprule (@var{rulename_1}, @dots{}, @var{rulename_n})
 @deffnx {Funktion} disprule (all)
 
-Zeigt die Regeln mit den Namen @mvar{rulename_1}, @dots{}, @mvar{rulename_n} an,
+Zeigt die Regeln mit den Namen @var{rulename_1}, @dots{}, @var{rulename_n} an,
 die mit den Funktionen @mrefcomma{defrule} @mref{tellsimp} oder
 @mref{tellsimpafter} definiert sind, oder ein Muster, das mit der
 Funktion @mref{defmatch} definiert ist.  Die Regeln werden mit einer
@@ -632,13 +632,13 @@ Beispiele:
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{let}
-@deffn  {Funktion} let (@mvar{prod}, @mvar{repl})
-@deffnx {Funktion} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
-@deffnx {Funktion} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, @dots{}, @mvar{arg_n}], @mvar{package_name})
+@deffn  {Funktion} let (@var{prod}, @var{repl})
+@deffnx {Funktion} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffnx {Funktion} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}], @var{package_name})
 
 Definiert eine Regel, die mit der Funktion @mref{letsimp} auf einen Ausdruck
-angewendet werden kann, so dass @mvar{prod} durch @mvar{repl} ersetzt wird.
-Das Argument @mvar{prod} ist ein Produkt von positiven oder negativen Potenzen
+angewendet werden kann, so dass @var{prod} durch @var{repl} ersetzt wird.
+Das Argument @var{prod} ist ein Produkt von positiven oder negativen Potenzen
 der folgenden Terme:
 
 @itemize @bullet
@@ -664,15 +664,15 @@ einen Term mit einer negativen Potenz, dass dieser dann mit einem Ausdruck
 negative Potenzen wird eine @"Ubereinstimmung nur dann gefunden, wenn
 die Optionsvariable @mref{letrat} den Wert @code{true} hat.
 
-Hat die Funktion @code{let} eine Aussagefunktion @mvar{predname} als Argument
-mit den Argumenten @mvar{arg_1}, @dots{}, @mvar{arg_n}, wird eine
+Hat die Funktion @code{let} eine Aussagefunktion @var{predname} als Argument
+mit den Argumenten @var{arg_1}, @dots{}, @var{arg_n}, wird eine
 @"Ubereinstimmung dann festgestellt, wenn der Ausdruck
 @code{predname(arg_1', ..., arg_n')} das Ergebnis @code{true} hat.  Dabei sind
-die Argumente @mvar{arg_i'} die Werte aus dem Musterabgleich.  Die Argumente
-@mvar{arg_i} k@"onnen die Namen von Variablen oder Termen sein, die im Ausdruck
-@mvar{pred} auftreten.  @mvar{repl} kann ein beliebiger rationaler Ausdruck sein.
-Treten irgendwelche der Symbole oder Argumente aus @mvar{prod} im Argument
-@mvar{repl} auf, wird die entsprechende Substitution ausgef@"uhrt.
+die Argumente @var{arg_i'} die Werte aus dem Musterabgleich.  Die Argumente
+@var{arg_i} k@"onnen die Namen von Variablen oder Termen sein, die im Ausdruck
+@var{pred} auftreten.  @var{repl} kann ein beliebiger rationaler Ausdruck sein.
+Treten irgendwelche der Symbole oder Argumente aus @var{prod} im Argument
+@var{repl} auf, wird die entsprechende Substitution ausgef@"uhrt.
 
 Die Optionsvariable @mref{letrat} kontrolliert die Vereinfachung von Quotienten
 durch @mrefdot{letsimp}  Hat @code{letrat} den Wert @code{false}, werden der
@@ -683,14 +683,14 @@ vereinfacht.
 
 Die Funktion @mref{letsimp} kann mit verschiedenen Regelpaketen arbeiten.  Jedes
 Regelpaket kann eine beliebige Anzahl an Regeln enthalten.  Das Kommando
-@code{let([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ...,
-@mvar{arg_n}], @mvar{package_name})} f@"ugt die Regel @mvar{predname} dem Paket
-@mvar{package_name} hinzu.
+@code{let([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ...,
+@var{arg_n}], @var{package_name})} f@"ugt die Regel @var{predname} dem Paket
+@var{package_name} hinzu.
 
 Die Optionsvariable @mref{current_let_rule_package} enth@"alt den Namen des
 Regelpaketes, das aktuell von der Funktion @code{letsimp} verwendet wird.  Der
 Optionsvariablen kann jedes mit dem Kommando @code{let} definierte Regelpaket 
-zugewiesen werden.  Wird mit @code{letsimp(@mvar{expr}, @mvar{package_name})}
+zugewiesen werden.  Wird mit @code{letsimp(@var{expr}, @var{package_name})}
 ein Regelpaket als Argument @"ubergeben, wird dieses anstatt dem in 
 @code{current_let_rule_package} enthaltene Regelpaket f@"ur die Vereinfachung
 verwendet.  Wenn nicht anders spezifiziert, hat @code{current_let_rule_package}
@@ -789,13 +789,13 @@ Beispiele:
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{letrules}
 @deffn  {Funktion} letrules ()
-@deffnx {Funktion} letrules (@mvar{package_name})
+@deffnx {Funktion} letrules (@var{package_name})
 
 Zeigt die Regeln eines Regelpaketes an.  Das Kommando @code{letrules()} zeigt
 die Regeln des aktuellen Regelpaketes an, das durch die Optionsvariable
 @mref{current_let_rule_package} bezeichnet wird.  Das Kommando
-@code{letrules(@mvar{package_name})} zeigt die Regeln des Paketes
-@mvar{package_name} an.
+@code{letrules(@var{package_name})} zeigt die Regeln des Paketes
+@var{package_name} an.
 
 Wenn der Optionsvariablen @code{current_let_rule_package} kein Name eines
 Paketes zugewiesen wurde, enth@"alt es den Standardwert
@@ -852,19 +852,19 @@ wird, dann werden die Regeln auch mit dem Kommando @code{letrules()} angezeigt.
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{letsimp}
-@deffn  {Funktion} letsimp (@mvar{expr})
-@deffnx {Funktion} letsimp (@mvar{expr}, @mvar{package_name})
-@deffnx {Funktion} letsimp (@mvar{expr}, @mvar{package_name_1}, @dots{}, @mvar{package_name_n})
+@deffn  {Funktion} letsimp (@var{expr})
+@deffnx {Funktion} letsimp (@var{expr}, @var{package_name})
+@deffnx {Funktion} letsimp (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
 
 Wendet die Regeln, die mit der Funktion @mref{let} definiert sind,
-solange an, bis sich das Argument @mvar{expr} nicht mehr @"andert.
-@code{letsimp(@mvar{expr})} wendet die aktuellen Regeln an, die mit der
+solange an, bis sich das Argument @var{expr} nicht mehr @"andert.
+@code{letsimp(@var{expr})} wendet die aktuellen Regeln an, die mit der
 Optionsvariablen @mref{current_let_rule_package} bezeichnet werden.
 
-@code{letsimp(@mvar{expr}, @mvar{package_name})} wendet die Regeln des
-Argumentes @mvar{package_name} an.  Die Optionsvariable
+@code{letsimp(@var{expr}, @var{package_name})} wendet die Regeln des
+Argumentes @var{package_name} an.  Die Optionsvariable
 @code{current_let_rule_package} @"andert ihren Wert nicht.  Es k@"onnen auch
-mehrere Regelpakete @mvar{package_name_1}, @dots{}, @mvar{package_name_n}
+mehrere Regelpakete @var{package_name_1}, @dots{}, @var{package_name_n}
 angegeben werden.
 
 Die Optionsvariable @mref{letrat} kontrolliert die Vereinfachung von Quotienten
@@ -877,15 +877,15 @@ vereinfacht.
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{matchdeclare}
-@deffn {Funktion} matchdeclare (@mvar{a_1}, @mvar{pred_1}, @dots{}, @mvar{a_n}, @mvar{pred_n})
+@deffn {Funktion} matchdeclare (@var{a_1}, @var{pred_1}, @dots{}, @var{a_n}, @var{pred_n})
 
 Mit der Funktion @code{matchdeclare} werden Mustervariablen definiert.
-@code{matchdeclare} ordnet eine Aussagefunktion @mvar{pred_k} einer Variable
-oder eine Liste von Variablen @mvar{a_k} zu, so dass @mvar{a_k} bei einem
+@code{matchdeclare} ordnet eine Aussagefunktion @var{pred_k} einer Variable
+oder eine Liste von Variablen @var{a_k} zu, so dass @var{a_k} bei einem
 Musterabgleich mit Ausdr@"ucken @"ubereinstimmt, f@"ur die die Aussage ein
 anderes Ergebnis als @code{false} hat.
 
-Eine Aussagefunktion @mvar{pred_i} kann durch den Namen einer Funktion, einen
+Eine Aussagefunktion @var{pred_i} kann durch den Namen einer Funktion, einen
 Lambda-Ausdruck, einen Funktionsaufruf, einen Lambda-Ausdruck, dem das letzte
 Argument fehlt, oder die Werte @code{true} oder @code{all} bezeichnet werden.
 Ist die Aussagefunktion ein Funktionsaufruf oder ein Lambda-Aufruf, dann wird
@@ -929,7 +929,7 @@ Muster oder im zu pr@"ufenden Ausdruck abh@"angen.  Solange sich jedoch die
 einzelnen Aussagefunktionen gegeneinander ausschlie@ss{}en, wird das Ergebnis
 nicht von der Reihenfolge der Argumente beeinflu@ss{}t.
 
-Der Aufruf von @code{matchdeclare} f@"ur eine Variable @mvar{a} @"uberschreibt
+Der Aufruf von @code{matchdeclare} f@"ur eine Variable @var{a} @"uberschreibt
 eine vorhergehende Definition f@"ur diese Variable.  Wird eine Regel definiert,
 ist die letzte mit @code{matchdeclare} definierte Zuordnung zu einer
 Aussagefunktion wirksam.  Der erneute Aufruf von @code{matchdeclare} f@"ur eine
@@ -937,10 +937,10 @@ Variable hat keinen Einfluss auf bereits vorhandene Regeln.
 
 Das Kommando @code{propvars(matchdeclare)} gibt eine Liste der Variablen
 zur@"uck, die mit @code{matchdeclare} als Mustervariable definiert sind.
-@code{printprops(@mvar{a}, matchdeclare)} gibt die der Variable @mvar{a}
+@code{printprops(@var{a}, matchdeclare)} gibt die der Variable @var{a}
 zugeordnete Aussagefunktion zur@"uck.  @code{printprops(all, matchdeclare)}
 gibt die Aussagefunktionen aller Mustervariablen zur@"uck.  Mit dem Kommando
-@code{remove(@mvar{a}, matchdeclare)} wird die Definition von @mvar{a} als
+@code{remove(@var{a}, matchdeclare)} wird die Definition von @var{a} als
 Mustervariable entfernt.  Siehe auch die Funktionen @mrefcomma{propvars}@w{}
 @mref{printprops} und @mrefdot{remove}
 
@@ -1075,13 +1075,13 @@ angewendet wird.
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{remlet}
-@deffn  {Funktion} remlet (@mvar{prod}, @mvar{package_name})
+@deffn  {Funktion} remlet (@var{prod}, @var{package_name})
 @deffnx {Funktion} remlet ()
 @deffnx {Funktion} remlet (all)
-@deffnx {Funktion} remlet (all, @mvar{package_name})
+@deffnx {Funktion} remlet (all, @var{package_name})
 
-Entfernt die Regel @mvar{prod} --> @mvar{repl}, die zuletzt mit der Funktion
-@mref{let} definiert wurde.  Wird mit dem Argument @mvar{package_name}
+Entfernt die Regel @var{prod} --> @var{repl}, die zuletzt mit der Funktion
+@mref{let} definiert wurde.  Wird mit dem Argument @var{package_name}
 ein Paket angegeben, wird die Regeln aus dem entsprechenden Paket entfernt.
 
 @code{remlet()} und @code{remlet(all)} entfernen alle Regeln aus dem aktuellen
@@ -1101,19 +1101,19 @@ den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} definiert sind.
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{remrule}
-@deffn  {Funktion} remrule (@mvar{op}, @mvar{rulename})
-@deffnx {Funktion} remrule (@mvar{op}, all)
+@deffn  {Funktion} remrule (@var{op}, @var{rulename})
+@deffnx {Funktion} remrule (@var{op}, all)
 
 Entfernt Regeln, die mit den Funktionen @mref{tellsimp} oder 
 @mref{tellsimpafter} definiert sind.
 
-@code{remrule(@mvar{op}, @mvar{rulename})} entfernt die Regel mit dem Namen
-@mvar{rulename} vom Operator @mvar{op}.  Ist der Operator @mvar{op} ein 
+@code{remrule(@var{op}, @var{rulename})} entfernt die Regel mit dem Namen
+@var{rulename} vom Operator @var{op}.  Ist der Operator @var{op} ein 
 Maxima-Operator oder ein nutzerdefinierter Operator, der mit Funktionen wie
 @mref{infix} oder @mref{prefix} definiert wurde, muss der Name des Operators
-@mvar{op} als eine Zeichenkette in Anf@"uhrungszeichen angegeben werden.
+@var{op} als eine Zeichenkette in Anf@"uhrungszeichen angegeben werden.
 
-@code{remrule(@mvar{op}, all)} entfernt alle Regeln des Operators @mvar{op}.
+@code{remrule(@var{op}, all)} entfernt alle Regeln des Operators @var{op}.
 
 Siehe auch die Funktion @mrefcomma{remlet} um Regeln zu entfernen, die mit der
 Funktion @mref{let} definiert sind.
@@ -1172,7 +1172,7 @@ Siehe auch die Systemvariable @mrefdot{infolists}
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{tellsimp}
-@deffn {Funktion} tellsimp (@mvar{pattern}, @mvar{replacement})
+@deffn {Funktion} tellsimp (@var{pattern}, @var{replacement})
 
 @code{tellsimp} ist vergleichbar mit der Funktion @mrefcomma{tellsimpafter}@w{}
 wobei mit @code{tellsimp} Regeln f@"ur die Vereinfachung von Ausdr@"ucken
@@ -1185,7 +1185,7 @@ dieser Regeln den Ausdruck auf eine andere Art zu modifizieren.  F@"ur den Fall
 das Maxima den Ausdruck nicht ausreichend vereinfacht, kann es besser sein, eine
 Regel mit der Funktion @mref{tellsimpafter} zu definieren.
 
-Das Argument @mvar{pattern} kann keine Summe, kein Produkt, keine einzelne
+Das Argument @var{pattern} kann keine Summe, kein Produkt, keine einzelne
 Variable und keine Zahl sein.
 
 Regeln die mit @code{tellsimp} definiert werden, werden in die Informationsliste
@@ -1237,26 +1237,26 @@ Beispiele:
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{tellsimpafter}
-@deffn {Funktion} tellsimpafter (@mvar{pattern}, @mvar{replacement})
+@deffn {Funktion} tellsimpafter (@var{pattern}, @var{replacement})
 
 Definiert eine Regel f@"ur die Vereinfachung eines Ausdrucks, die nach Anwendung
-der Regeln angewendet wird, die Maxima intern kennt.  @mvar{pattern} ist ein
+der Regeln angewendet wird, die Maxima intern kennt.  @var{pattern} ist ein
 Ausdruck, der Mustervariablen enth@"alt, die mit der Funktion
 @mref{matchdeclare} definiert sind und weitere Symbole und Operatoren, f@"ur
 die die w@"ortliche @"Ubereinstimmung bei einem Musterabgleich angenommen wird.
-@mvar{replacement} wird in den Ausdruck substituiert, wenn der Musterabgleich
-das Muster @mvar{pattern} im Ausdruck findet.  Den Mustervariablen in
-@mvar{replacement} werden die Werte des Musterabgleichs zugewiesen.
+@var{replacement} wird in den Ausdruck substituiert, wenn der Musterabgleich
+das Muster @var{pattern} im Ausdruck findet.  Den Mustervariablen in
+@var{replacement} werden die Werte des Musterabgleichs zugewiesen.
 
-Das Muster @mvar{pattern} kann ein beliebiger Ausdruck sein, in dem der 
+Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der 
 Hauptoperator keine Mustervariable ist.  Die neue Regel wird nach dem
 Hauptoperator des Musters benannt und diesem zugeordnet.  Der Name von
 Funktionen, mit einer unten beschriebenen Ausnahme, Listen und Arrays k@"onnen
-in @mvar{pattern} nicht als eine Mustervariable auftreten.  Daher k@"onnen
+in @var{pattern} nicht als eine Mustervariable auftreten.  Daher k@"onnen
 Ausdr@"ucke wie @code{aa(x)} oder @code{bb[y]} nicht als Muster verwendet
 werden, wenn @code{aa} oder @code{bb} Mustervariablen sind.  Die Namen
 von Funktionen, Listen und Arrays, welche Mustervariablen sind, k@"onnen dann
-in dem Muster @mvar{pattern} auftreten, wenn sie nicht der Hauptoperator sind.
+in dem Muster @var{pattern} auftreten, wenn sie nicht der Hauptoperator sind.
 
 Es gibt eine Ausnahme der oben genannten Einschr@"ankung f@"ur die Verwendung
 von Funktionsnamen.  Der Name einer indizierten Funktion wie @code{aa[x](y)}
@@ -1285,7 +1285,7 @@ zum Beispiel auch mit der Funktion @mref{put} definiert werden k@"onnen, global
 in Maxima.
 
 Eine mit @code{tellsimpafter} definierte Regel wird nach dem Hauptoperator des
-Musters @mvar{pattern} benannt.  Regeln f@"ur Maxima-Operatoren und f@"ur
+Musters @var{pattern} benannt.  Regeln f@"ur Maxima-Operatoren und f@"ur
 Funktionen, die mit @mrefcomma{infix} @mrefcomma{prefix} @mrefcomma{postfix}@w{}
 @mref{matchfix} und @mref{nofix} als Operator definiert sind, haben einen
 Lisp-Bezeichner als Namen.  Alle anderen Regeln erhalten einen Maxima-Bezeichner
@@ -1309,7 +1309,7 @@ als Namen.
 
 @code{tellsimpafter} wertet die Argumente nicht aus.  @code{tellsimpafter} gibt
 eine Liste der Regeln zur@"uck, die f@"ur den Hauptoperator des Musters
-@mvar{pattern} definiert sind.
+@var{pattern} definiert sind.
 
 Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defmatch}@w{}
 @mrefcomma{defrule} @mrefcomma{tellsimp} @mref{remrule} und
@@ -1317,7 +1317,7 @@ Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defmatch}@w{}
 
 Beispiele:
 
-Das Muster @mvar{pattern} kann ein beliebiger Ausdruck sein, in dem der
+Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der
 Hauptoperator keine Mustervariable ist.
 
 @example

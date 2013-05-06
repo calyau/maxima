@@ -16,9 +16,9 @@ Hay otros mecanismos para las reglas; las relativas a polinomios se controlan me
 @node Funciones y variables sobre reglas y patrones,  , Introducci@'on a reglas y patrones, Reglas y patrones
 @section Funciones y variables sobre reglas y patrones
 
-@deffn {Funci@'on} apply1 (@mvar{expr}, @mvar{regla_1}, ..., @mvar{regla_n})
+@deffn {Funci@'on} apply1 (@var{expr}, @var{regla_1}, ..., @var{regla_n})
 
-Aplica de forma repetida la @mvar{regla_1} a @mvar{expr} hasta que falla, a continuaci@'on aplica repetidamente la misma regla a todas las subexpresiones de @mvar{expr}, de izquierda a derecha, hasta que la @mvar{regla_1} haya fallado en todas las subexpresiones. Ll@'amese @mvar{expr_2} al resultado de transformar @mvar{expr} de esta forma. Entonces la @mvar{regla_2} se aplica de la misma manera comenzando en el nivel superior de @mvar{expr_2}. Cuando la @mvar{regla_n} falla en la @'ultima expresi@'on, se devuelve el resultado.
+Aplica de forma repetida la @var{regla_1} a @var{expr} hasta que falla, a continuaci@'on aplica repetidamente la misma regla a todas las subexpresiones de @var{expr}, de izquierda a derecha, hasta que la @var{regla_1} haya fallado en todas las subexpresiones. Ll@'amese @var{expr_2} al resultado de transformar @var{expr} de esta forma. Entonces la @var{regla_2} se aplica de la misma manera comenzando en el nivel superior de @var{expr_2}. Cuando la @var{regla_n} falla en la @'ultima expresi@'on, se devuelve el resultado.
 
 @code{maxapplydepth} es el nivel de las subexpresiones m@'as internas procesadas por @code{apply1} y @code{apply2}.
 
@@ -26,9 +26,9 @@ V@'ease tambi@'en @code{applyb1}, @code{apply2} y @code{let}.
 
 @end deffn
 
-@deffn {Funci@'on} apply2 (@mvar{expr}, @mvar{regla_1}, ..., @mvar{regla_n})
+@deffn {Funci@'on} apply2 (@var{expr}, @var{regla_1}, ..., @var{regla_n})
 
-Si la @mvar{regla_1} falla en una subexpresi@'on dada, entonces se aplica la @mvar{regla_2} repetidamente, etc. S@'olo si todas las reglas fallan en una subexpresi@'on ser@'an aplicadas todas las reglas de forma repetida a la siguiente subexpresi@'on. Si alguna de las reglas tiene @'exito entonces la misma subexpresi@'on es reprocesada, comenzando por la primera regla.
+Si la @var{regla_1} falla en una subexpresi@'on dada, entonces se aplica la @var{regla_2} repetidamente, etc. S@'olo si todas las reglas fallan en una subexpresi@'on ser@'an aplicadas todas las reglas de forma repetida a la siguiente subexpresi@'on. Si alguna de las reglas tiene @'exito entonces la misma subexpresi@'on es reprocesada, comenzando por la primera regla.
 
 @code{maxapplydepth} es el nivel de las subexpresiones m@'as internas procesadas por @code{apply1} y @code{apply2}.
 
@@ -36,9 +36,9 @@ V@'ease tambi@'en @code{applyb1} y @code{let}.
 
 @end deffn
 
-@deffn {Funci@'on} applyb1 (@mvar{expr}, @mvar{regla_1}, ..., @mvar{regla_n})
+@deffn {Funci@'on} applyb1 (@var{expr}, @var{regla_1}, ..., @var{regla_n})
 
-Aplica la @mvar{regla_1} reiteradamente hasta la subexpresi@'on m@'as interna de @mvar{expr} hasta que falle, a continuaci@'on pasa a aplicar la misma regla en un nivel superior (esto es, en subexpresiones m@'as grandes), hasta que la @mvar{regla_1} falle en la expresi@'on de nivel m@'as alto. Despu@'es se aplica la @mvar{regla_2} de la misma manera al resultado obtenido de @mvar{regla_1}. Tras la aplicaci@'on de la @mvar{regla_n} a la expresi@'on de mayor nivel, se devuelve el resultado.
+Aplica la @var{regla_1} reiteradamente hasta la subexpresi@'on m@'as interna de @var{expr} hasta que falle, a continuaci@'on pasa a aplicar la misma regla en un nivel superior (esto es, en subexpresiones m@'as grandes), hasta que la @var{regla_1} falle en la expresi@'on de nivel m@'as alto. Despu@'es se aplica la @var{regla_2} de la misma manera al resultado obtenido de @var{regla_1}. Tras la aplicaci@'on de la @var{regla_n} a la expresi@'on de mayor nivel, se devuelve el resultado.
 
 La funci@'on @code{applyb1} es similar a @code{apply1} pero opera de abajo-arriba, en lugar de arriba-abajo.
 
@@ -66,13 +66,13 @@ La variable @code{default_let_rule_package} es el nombre del paquete de reglas u
 
 @end defvr
 
-@deffn {Funci@'on} defmatch (@mvar{nombre_prog}, @mvar{patr@'on}, @mvar{x_1}, ..., @mvar{x_n})
-@deffnx {Funci@'on} defmatch (@mvar{progname}, @mvar{pattern})
+@deffn {Funci@'on} defmatch (@var{nombre_prog}, @var{patr@'on}, @var{x_1}, ..., @var{x_n})
+@deffnx {Funci@'on} defmatch (@var{progname}, @var{pattern})
 
-Define una funci@'on @code{@mvar{nombre_prog}(@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})} que analiza si @mvar{expr} coincide con el @mvar{patr@'on}.
+Define una funci@'on @code{@var{nombre_prog}(@var{expr}, @var{x_1}, ..., @var{x_n})} que analiza si @var{expr} coincide con el @var{patr@'on}.
 
-El argumento @mvar{patr@'on} es una expresi@'on que contiene los
-argumentos de patr@'on @mvar{x_1}, ..., @mvar{x_n} y algunas variables de patr@'on.
+El argumento @var{patr@'on} es una expresi@'on que contiene los
+argumentos de patr@'on @var{x_1}, ..., @var{x_n} y algunas variables de patr@'on.
 Los argumentos de patr@'on se dan de forma expl@'{@dotless{i}}cita
 como argumentos a @code{defmatch}, mientras que las variables de patr@'on
 se declaran mediante la funci@'on @code{matchdeclare}.
@@ -80,16 +80,16 @@ Cualquier variable no declarada bien como variable patr@'on en @code{matchdeclar
 bien como argumento patr@'on en @code{defmatch} se hace coincidir con ella
 misma.
 
-El primer argumento de la funci@'on definida @mvar{nombre_prog} es una expresi@'on
+El primer argumento de la funci@'on definida @var{nombre_prog} es una expresi@'on
 a ser comparada con el patr@'on y los dem@'as argumentos son los argumentos 
-que se corresponden con las variables ficticias @mvar{x_1}, ..., @mvar{x_n} del patr@'on.
+que se corresponden con las variables ficticias @var{x_1}, ..., @var{x_n} del patr@'on.
 
-Si el resultado de la comparaci@'on es positivo, @mvar{nombre_prog} devuelve
+Si el resultado de la comparaci@'on es positivo, @var{nombre_prog} devuelve
 una lista de ecuaciones cuyos miembros izquierdos son los argumentos y variables de
 patr@'on, y cuyos miembros derechos son las subexpresiones en las que se han 
 producido las coincidencias con patrones. A las variables de patr@'on, no a los
 argumentos, se les asignan las subexpresiones con las que coinciden. Si la 
-comparaci@'on falla, @mvar{nombre_prog} devuelve @code{false}.  
+comparaci@'on falla, @var{nombre_prog} devuelve @code{false}.  
 
 Un patr@'on literal, es decir, que no contiene ni argumentos ni variables de patr@'on,
 devuelve @code{true} en caso de coincidencia.
@@ -208,19 +208,19 @@ Define una funci@'on @code{checklimits(expr)} que comprueba si
 
 @end deffn
 
-@deffn {Funci@'on} defrule (@mvar{nombre_regla}, @mvar{patr@'on}, @mvar{reemplazamiento})
+@deffn {Funci@'on} defrule (@var{nombre_regla}, @var{patr@'on}, @var{reemplazamiento})
 
-Define y da nombre a una regla de reemplazamiento para el patr@'on dado. Si la regla @mvar{nombre_regla} es aplicada a una expresi@'on (por @code{apply1}, @code{applyb1} o @code{apply2}), cada subexpresi@'on que coincida con el patr@'on ser@'a reemplazada por el contenido de @mvar{reemplazamiento}.
+Define y da nombre a una regla de reemplazamiento para el patr@'on dado. Si la regla @var{nombre_regla} es aplicada a una expresi@'on (por @code{apply1}, @code{applyb1} o @code{apply2}), cada subexpresi@'on que coincida con el patr@'on ser@'a reemplazada por el contenido de @var{reemplazamiento}.
 
 Las propias reglas pueden ser tratadas como funciones que transforman una expresi@'on mediante una operaci@'on consistente en la b@'usqueda de una coincidencia y posterior aplicaci@'on de un reemplazamiento. Si la comparaci@'on falla, la funci@'on que implementa la regla devuelve @code{false}.
 
 
 @end deffn
 
-@deffn {Funci@'on} disprule (@mvar{nombre_regla_1}, ..., @mvar{nombre_regla_n})
+@deffn {Funci@'on} disprule (@var{nombre_regla_1}, ..., @var{nombre_regla_n})
 @deffnx {Funci@'on} disprule (all)
 
-Muestra las reglas de @mvar{nombre_regla_1}, ..., @mvar{nombre_regla_n}, tal como son devueltas por @code{defrule}, @code{tellsimp} o @code{tellsimpafter}, o un patr@'on definido por @code{defmatch}.
+Muestra las reglas de @var{nombre_regla_1}, ..., @var{nombre_regla_n}, tal como son devueltas por @code{defrule}, @code{tellsimp} o @code{tellsimpafter}, o un patr@'on definido por @code{defmatch}.
 Cada regla se muestra con una etiqueta de expresi@'on intermedia (@code{%t}).
 
 La llamada @code{disprule (all)} muestra todas las reglas.
@@ -260,10 +260,10 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n})
-@deffnx {Funci@'on} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{nombre_paquete})
+@deffn {Funci@'on} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Funci@'on} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{nombre_paquete})
 
-Define una regla de sustituci@'on para @code{letsimp} tal que @mvar{prod} es sustituido por @mvar{repl}, donde @mvar{prod} es un producto de potencias positivas o negativas de los t@'erminos siguientes:
+Define una regla de sustituci@'on para @code{letsimp} tal que @var{prod} es sustituido por @var{repl}, donde @var{prod} es un producto de potencias positivas o negativas de los t@'erminos siguientes:
 
 @itemize @bullet
 @item
@@ -272,17 +272,17 @@ Define una regla de sustituci@'on para @code{letsimp} tal que @mvar{prod} es sus
 Expresiones b@'asicas como @code{sin(x)}, @code{n!}, @code{f(x,y)}, etc.  Como en el caso anterior, @code{letsimp} buscar@'a coincidencias exactas, a menos que se utilice @code{matchdeclare} para asociar un predicado con el argumento de la expresi@'on b@'asica (@code{sin(x)}, @code{n!}, @code{f(x,y)}, ...).
 @end itemize
 
-Si se incluye un predicado en la funci@'on @code{let} seguido de una lista de argumentos, una coincidencia aceptable  (es decir, una que fuese aceptada si se hubiese omitido el predicado) se aceptar@'a s@'olo si @code{predname (arg_1', ..., arg_n')} vale @code{true}, donde @mvar{arg_i'} es el valor coincidente con @mvar{arg_i}.  El argumento @mvar{arg_i} puede ser el nombre de cualquier @'atomo o el argumento de cualquier expresi@'on b@'asica que aparezca en @mvar{prod}. 
-@mvar{repl} puede ser cualquier expresi@'on racional. @c ONLY RATIONAL -- REALLY ??
-Si cualquiera de los @'atomos o argumentos de @mvar{prod} aparece en @mvar{repl} se llevan a cabo las sustituciones correspondientes.
+Si se incluye un predicado en la funci@'on @code{let} seguido de una lista de argumentos, una coincidencia aceptable  (es decir, una que fuese aceptada si se hubiese omitido el predicado) se aceptar@'a s@'olo si @code{predname (arg_1', ..., arg_n')} vale @code{true}, donde @var{arg_i'} es el valor coincidente con @var{arg_i}.  El argumento @var{arg_i} puede ser el nombre de cualquier @'atomo o el argumento de cualquier expresi@'on b@'asica que aparezca en @var{prod}. 
+@var{repl} puede ser cualquier expresi@'on racional. @c ONLY RATIONAL -- REALLY ??
+Si cualquiera de los @'atomos o argumentos de @var{prod} aparece en @var{repl} se llevan a cabo las sustituciones correspondientes.
 
-La variable global @code{letrat} controla la simplificaci@'on de los cocientes por @code{letsimp}. Cuando @code{letrat} vale  @code{false}, @code{letsimp} simplifica separadamente el numerador y denominador de  @mvar{expr} y no simplifica el cociente. Sustituciones como que @code{n!/n} se reduzca a @code{(n-1)!} ya no se realizar@'an. Cuando  @code{letrat} vale  @code{true}, entonces se simplifican el numerador, el denominador y el cociente, en este orden.
+La variable global @code{letrat} controla la simplificaci@'on de los cocientes por @code{letsimp}. Cuando @code{letrat} vale  @code{false}, @code{letsimp} simplifica separadamente el numerador y denominador de  @var{expr} y no simplifica el cociente. Sustituciones como que @code{n!/n} se reduzca a @code{(n-1)!} ya no se realizar@'an. Cuando  @code{letrat} vale  @code{true}, entonces se simplifican el numerador, el denominador y el cociente, en este orden.
 
 Estas funciones de sustituci@'on permiten al usuario trabajar con varios paquetes de reglas al mismo tiempo. Cada paquete de reglas puede contener cierto n@'umero de reglas @code{let} que son referenciadas por un nombre dado por el usuario. 
-@code{let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{nombre_paquete})} a@~nade la regla  @mvar{predname} al paquete de reglas  @mvar{nombre_paquete}. @code{letsimp (@mvar{expr}, @mvar{package_name})} aplica las reglas de @mvar{nombre_paquete}. La llamada @code{letsimp (@mvar{expr}, @mvar{nombre_paquete1}, @mvar{nombre_paquete2}, ...)}
-es equivalente a @code{letsimp (@mvar{expr}, @mvar{nombre_paquete1})} seguida de @code{letsimp (%, @mvar{nombre_paquete2})}, ....
+@code{let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{nombre_paquete})} a@~nade la regla  @var{predname} al paquete de reglas  @var{nombre_paquete}. @code{letsimp (@var{expr}, @var{package_name})} aplica las reglas de @var{nombre_paquete}. La llamada @code{letsimp (@var{expr}, @var{nombre_paquete1}, @var{nombre_paquete2}, ...)}
+es equivalente a @code{letsimp (@var{expr}, @var{nombre_paquete1})} seguida de @code{letsimp (%, @var{nombre_paquete2})}, ....
 
-@code{current_let_rule_package} es el nombre del paquete de reglas que se est@'a utilizando. A esta variable se le puede asignar el nombre de cualquier paquete de reglas definido mediante el comando @code{let}. Siempre que una de las funciones incluidas en el paquete  @code{let} sean invocadas sin nombre de paquete, se utilizar@'a el paquete cuyo nombre se guarde en @code{current_let_rule_package}. Si se hace una llamada tal como @code{letsimp (@mvar{expr}, @mvar{rule_pkg_name})}, el paquete de reglas @mvar{rule_pkg_name} es utilizado solamente para ese comando @code{letsimp}, sin efectuarse cambios en 
+@code{current_let_rule_package} es el nombre del paquete de reglas que se est@'a utilizando. A esta variable se le puede asignar el nombre de cualquier paquete de reglas definido mediante el comando @code{let}. Siempre que una de las funciones incluidas en el paquete  @code{let} sean invocadas sin nombre de paquete, se utilizar@'a el paquete cuyo nombre se guarde en @code{current_let_rule_package}. Si se hace una llamada tal como @code{letsimp (@var{expr}, @var{rule_pkg_name})}, el paquete de reglas @var{rule_pkg_name} es utilizado solamente para ese comando @code{letsimp}, sin efectuarse cambios en 
 @code{current_let_rule_package}. A menos que se indique otra cosa, @code{current_let_rule_package} toma por defecto el valor de @code{default_let_rule_package}.
 
 @example
@@ -333,9 +333,9 @@ Cuando @code{letrat} vale @code{true}, se simplifican el numerador, denominador 
 @end defvr
 
 @deffn {Funci@'on} letrules ()
-@deffnx {Funci@'on} letrules (@mvar{nombre_paquete})
+@deffnx {Funci@'on} letrules (@var{nombre_paquete})
 
-Muestra las reglas de un paquete de reglas. La llamada @code{letrules ()} muestra las reglas del paquete de reglas actual. La llamada @code{letrules (@mvar{nombre_paquete})} muestra las reglas de @mvar{nombre_paquete}.
+Muestra las reglas de un paquete de reglas. La llamada @code{letrules ()} muestra las reglas del paquete de reglas actual. La llamada @code{letrules (@var{nombre_paquete})} muestra las reglas de @var{nombre_paquete}.
 
 El paquete de reglas actual tiene su nombre almacenado en by @code{current_let_rule_package}. A menos que se indique de otra manera, @code{current_let_rule_package} toma por defecto el valor de @code{default_let_rule_package}.
 
@@ -343,18 +343,18 @@ V@'ease tambi@'en @code{disprule}, que muestra las reglas definidas por @code{te
 
 @end deffn
 
-@deffn {Funci@'on} letsimp (@mvar{expr})
-@deffnx {Funci@'on} letsimp (@mvar{expr}, @mvar{nombre_paquete})
-@deffnx {Funci@'on} letsimp (@mvar{expr}, @mvar{nombre_paquete_1}, ..., @mvar{nombre_paquete_n})
+@deffn {Funci@'on} letsimp (@var{expr})
+@deffnx {Funci@'on} letsimp (@var{expr}, @var{nombre_paquete})
+@deffnx {Funci@'on} letsimp (@var{expr}, @var{nombre_paquete_1}, ..., @var{nombre_paquete_n})
 
-Aplica repetidamente las reglas definidas por @code{let} hasta que no se puedan hacer m@'as cambios en @mvar{expr}.
+Aplica repetidamente las reglas definidas por @code{let} hasta que no se puedan hacer m@'as cambios en @var{expr}.
 
-La llamada @code{letsimp (@mvar{expr})} utiliza las reglas de @code{current_let_rule_package}.
+La llamada @code{letsimp (@var{expr})} utiliza las reglas de @code{current_let_rule_package}.
 
-La llamada @code{letsimp (@mvar{expr}, @mvar{nombre_paquete})} utiliza las reglas de @mvar{nombre_paquete} sin efectuar cambios en @code{current_let_rule_package}.
+La llamada @code{letsimp (@var{expr}, @var{nombre_paquete})} utiliza las reglas de @var{nombre_paquete} sin efectuar cambios en @code{current_let_rule_package}.
 
-La llamada @code{letsimp (@mvar{expr}, @mvar{nombre_paquete_1}, ..., @mvar{nombre_paquete_n})}
-es equivalente a @code{letsimp (@mvar{expr}, @mvar{nombre_paquete_1}}, seguida de  @code{letsimp (%, @mvar{nombre_paquete_2})} y as@'{@dotless{i}} sucesivamente.
+La llamada @code{letsimp (@var{expr}, @var{nombre_paquete_1}, ..., @var{nombre_paquete_n})}
+es equivalente a @code{letsimp (@var{expr}, @var{nombre_paquete_1}}, seguida de  @code{letsimp (%, @var{nombre_paquete_2})} y as@'{@dotless{i}} sucesivamente.
 
 @end deffn
 
@@ -365,8 +365,8 @@ La variable @code{let_rule_packages} guarda una lista con todos los paquetes de 
 
 @end defvr
 
-@deffn {Funci@'on} matchdeclare (@mvar{a_1}, @mvar{pred_1}, ..., @mvar{a_n}, @mvar{pred_n})
-Asocia un predicado @mvar{pred_k} con una variable o lista de variables  @mvar{a_k}, de forma que  @mvar{a_k} se comparar@'a con expresiones para las cuales el predicado devuelva algo que no sea @code{false}.
+@deffn {Funci@'on} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+Asocia un predicado @var{pred_k} con una variable o lista de variables  @var{a_k}, de forma que  @var{a_k} se comparar@'a con expresiones para las cuales el predicado devuelva algo que no sea @code{false}.
 
 Un predicado puede ser el nombre de una funci@'on, una expresi@'on lambda, una
 llamada a funci@'on, una llamada a una expresi@'on lambda sin
@@ -393,10 +393,10 @@ En el caso de sumas y multiplicaciones, a la variable de comparaci@'on se le pue
 
 El algoritmo para procesar patrones de suma y multiplicaci@'on hace que los resultados de algunas comparaciones dependan del orden de los t@'erminos en el patr@'on de comparaci@'on y en la expresi@'on a ser comparada. Sin embargo, si todos los predicados de comparaci@'on son mutuamente excluyentes, el resultado de la comparaci@'on no depende para nada de la ordenaci@'on, puesto que un predicado de comparaci@'on no puede aceptar t@'erminos aceptados por otros predicados.
 
-Invocando @code{matchdeclare} con una variable @mvar{a} como argumento cambia la propiedad de @code{matchdeclare} para  @mvar{a}, si ya hab@'{@dotless{i}}a una declarada; solamente el @code{matchdeclare} m@'as reciente est@'a activo cuando se define una regla. Cambios posteriores en la propiedad de @code{matchdeclare} (via @code{matchdeclare} o @code{remove}) no afectan a las reglas existentes.
+Invocando @code{matchdeclare} con una variable @var{a} como argumento cambia la propiedad de @code{matchdeclare} para  @var{a}, si ya hab@'{@dotless{i}}a una declarada; solamente el @code{matchdeclare} m@'as reciente est@'a activo cuando se define una regla. Cambios posteriores en la propiedad de @code{matchdeclare} (via @code{matchdeclare} o @code{remove}) no afectan a las reglas existentes.
 
-@code{propvars (matchdeclare)} devuelve la lista de todas las variables para las cuales hay una propiedad de @code{matchdeclare}. La llamada @code{printprops (@mvar{a}, matchdeclare)} devuelve el predicado para la variable @code{a}.
-La llamada @code{printprops (all, matchdeclare)} devuelve la lista de predicados de todas las variables de @code{matchdeclare}. La llamada @code{remove (@mvar{a}, matchdeclare)} borra la propiedad @code{matchdeclare} de @mvar{a}.
+@code{propvars (matchdeclare)} devuelve la lista de todas las variables para las cuales hay una propiedad de @code{matchdeclare}. La llamada @code{printprops (@var{a}, matchdeclare)} devuelve el predicado para la variable @code{a}.
+La llamada @code{printprops (all, matchdeclare)} devuelve la lista de predicados de todas las variables de @code{matchdeclare}. La llamada @code{remove (@var{a}, matchdeclare)} borra la propiedad @code{matchdeclare} de @var{a}.
 
 Las funciones @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter} y @code{let} construyen reglas que analizan expresiones mediante patrones.
 
@@ -496,31 +496,31 @@ La variable @code{maxapplyheight} es la m2'axima altura a la que escalar@'a @cod
 @end defvr
 
 
-@deffn {Funci@'on} remlet (@mvar{prod}, @mvar{nombre})
+@deffn {Funci@'on} remlet (@var{prod}, @var{nombre})
 @deffnx {Funci@'on} remlet ()
 @deffnx {Funci@'on} remlet (all)
-@deffnx {Funci@'on} remlet (all, @mvar{nombre})
+@deffnx {Funci@'on} remlet (all, @var{nombre})
 
-Elimina la @'ultima regla de sustituci@'on @mvar{prod} --> repl que haya sido definida por la funci@'on @code{let}. Si se suministar el nombre la regla ser@'a borrada del paquete con ese mismo nombre.
+Elimina la @'ultima regla de sustituci@'on @var{prod} --> repl que haya sido definida por la funci@'on @code{let}. Si se suministar el nombre la regla ser@'a borrada del paquete con ese mismo nombre.
 
-Las llamadas @code{remlet()} y @code{remlet(all)} eliminan todas las reglas de sustituci@'on del paquete de reglas actual. Si se suministra el nombre de un paquete de reglas, como en @code{remlet (all, @mvar{nombre})}, el paquete de reglas con ese  @mvar{nombre} es tambi@'en eliminado.
+Las llamadas @code{remlet()} y @code{remlet(all)} eliminan todas las reglas de sustituci@'on del paquete de reglas actual. Si se suministra el nombre de un paquete de reglas, como en @code{remlet (all, @var{nombre})}, el paquete de reglas con ese  @var{nombre} es tambi@'en eliminado.
 
-Si es necesario cambiar una sustituci@'on haciendo uso de la misma producci@'on, no es necesario llamar a  @code{remlet}, simplemente redef@'{@dotless{i}}nase la sustituci@'on utilizando la misma producci@'on con la funci@'on  @code{let} junto con el nuevo reemplazamiento y/o nombre de predicado. De ser llamado nuevamente @code{remlet (@mvar{prod})} la sustituci@'on original ser@'{@dotless{i}}a recuperada.
+Si es necesario cambiar una sustituci@'on haciendo uso de la misma producci@'on, no es necesario llamar a  @code{remlet}, simplemente redef@'{@dotless{i}}nase la sustituci@'on utilizando la misma producci@'on con la funci@'on  @code{let} junto con el nuevo reemplazamiento y/o nombre de predicado. De ser llamado nuevamente @code{remlet (@var{prod})} la sustituci@'on original ser@'{@dotless{i}}a recuperada.
 
 V@'ease tambi@'en @code{remrule}, que elimina una regla definida por  @code{tellsimp} o @code{tellsimpafter}.
 
 @end deffn
 
-@deffn {Funci@'on} remrule (@mvar{op}, @mvar{nombre_regla})
-@deffnx {Funci@'on} remrule (@mvar{op}, all)
+@deffn {Funci@'on} remrule (@var{op}, @var{nombre_regla})
+@deffnx {Funci@'on} remrule (@var{op}, all)
 
 Elimina las reglas previamente definidas por @code{tellsimp} o @code{tellsimpafter}.
 
-La llamada @code{remrule (@mvar{op}, @mvar{nombre_regla})} elimina la regla de nombre  @mvar{nombre_regla} del operador @mvar{op}.
+La llamada @code{remrule (@var{op}, @var{nombre_regla})} elimina la regla de nombre  @var{nombre_regla} del operador @var{op}.
 
-Independientemente de que  @mvar{op} sea un operador propio de Maxima o haya sido definido por el usario (como los establecidos por @code{infix}, @code{prefix}, etc.), tanto @mvar{op} como @mvar{rulename} deben ir encerrados entre comillas dobles.
+Independientemente de que  @var{op} sea un operador propio de Maxima o haya sido definido por el usario (como los establecidos por @code{infix}, @code{prefix}, etc.), tanto @var{op} como @var{rulename} deben ir encerrados entre comillas dobles.
 
-La llamada @code{remrule (@mvar{function}, all)} borra todas las reglas para el operador @mvar{op}.
+La llamada @code{remrule (@var{function}, all)} borra todas las reglas para el operador @var{op}.
 
 V@'ease tambi@'en @code{remlet}, que elimina una regla definida mediante @code{let}.
 
@@ -577,7 +577,7 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} tellsimp (@mvar{patr@'on}, @mvar{reemplazamiento})
+@deffn {Funci@'on} tellsimp (@var{patr@'on}, @var{reemplazamiento})
 
 La funci@'on @code{tellsimp} es similar a  @code{tellsimpafter} pero coloca nueva informaci@'on antes que la antigua, de manera que se aplica antes que las reglas de simplificaci@'on de Maxima.
 
@@ -633,11 +633,11 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} tellsimpafter (@mvar{patr@'on}, @mvar{reemplazamiento})
+@deffn {Funci@'on} tellsimpafter (@var{patr@'on}, @var{reemplazamiento})
 
-Define una regla de simplificaci@'on que el simplificador aplicar@'a despu@'es de las reglas de simplificaci@'on propias de de Maxima. El @mvar{patr@'on} es una expresi@'on que contiene variables de patr@'on (declaradas por @code{matchdeclare}) junto con otros @'atomos y operadores. El contenido de @mvar{reemplazamiento} sustituye una expresi@'on que coincida con el patr@'on; a las variables de patr@'on en @mvar{reemplazamiento} se les asignan los valores coincidentes en la expresi@'on.
+Define una regla de simplificaci@'on que el simplificador aplicar@'a despu@'es de las reglas de simplificaci@'on propias de de Maxima. El @var{patr@'on} es una expresi@'on que contiene variables de patr@'on (declaradas por @code{matchdeclare}) junto con otros @'atomos y operadores. El contenido de @var{reemplazamiento} sustituye una expresi@'on que coincida con el patr@'on; a las variables de patr@'on en @var{reemplazamiento} se les asignan los valores coincidentes en la expresi@'on.
 
-El @mvar{patr@'on} puede ser una expresi@'on no at@'omica en la que el operador principal no sea una variable de patr@'on; la regla de simplificaci@'on se asocia con el operador principal. Los nombres de las funciones (con una excepci@'on que se indica m@'as abajo), listas y arrays pueden aparecer en el @mvar{patr@'on} como operador principal s@'olo como literales (no variables de patrones); esto excluye expresiones como  @code{aa(x)} y @code{bb[y]}, si tanto @code{aa} como @code{bb} son patrones de variables. Nombres de funciones, listas y arrays que sean variables de patr@'on pueden aparecer como operadores que no sean el operador principal de  @mvar{patr@'on}.
+El @var{patr@'on} puede ser una expresi@'on no at@'omica en la que el operador principal no sea una variable de patr@'on; la regla de simplificaci@'on se asocia con el operador principal. Los nombres de las funciones (con una excepci@'on que se indica m@'as abajo), listas y arrays pueden aparecer en el @var{patr@'on} como operador principal s@'olo como literales (no variables de patrones); esto excluye expresiones como  @code{aa(x)} y @code{bb[y]}, si tanto @code{aa} como @code{bb} son patrones de variables. Nombres de funciones, listas y arrays que sean variables de patr@'on pueden aparecer como operadores que no sean el operador principal de  @var{patr@'on}.
 
 Hay una excepci@'on a la regla indicada m@'as arriba concerniente a los nombres de funciones. El nombre de una funci@'on subindicada en una expresi@'on tal como @code{aa[x](y)} puede ser una variable de patr@'on porque el operador principal no es  @code{aa} sino el @'atomo de Lisp  @code{mqapply}. Esta es una consecuencia de la representaci@'on de expresiones que contienen funciones subindicadas.
 
@@ -645,20 +645,20 @@ Las reglas de simplificaci@'on se aplican tras las evaluaciones (a menos que se 
 
 Las variables de patr@'on se tratan como variables locales en las reglas de simplificaci@'on. Una vez definida una regla, el valor de una variable de patr@'on no afecta a la regla, ni se ve influenciada poe @'esta. Una asignaci@'on a una variable de patr@'on que resulta de la aplicaci@'on exitosa de una regla no afecta a la asignaci@'on actual de la variable de patr@'on. Sin embargo, como cualquier otro @'atomo de Maxima, las propiedades de las variables de patr@'on (tal como se definen con @code{put} y sus funciones relacionadas) son globales.
 
-La regla construida por  @code{tellsimpafter} es nombrada detr@'as del operador principal de @mvar{patr@'on}. Reglas para operadores de Maxima y operadores definidos por el usuario con @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix} y @code{nofix}, tienen nombres que son cadenas alfanum@'ericas de Maxima. Reglas para otras funciones tienen nombres que son identificadores ordinarios de Maxima.
+La regla construida por  @code{tellsimpafter} es nombrada detr@'as del operador principal de @var{patr@'on}. Reglas para operadores de Maxima y operadores definidos por el usuario con @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix} y @code{nofix}, tienen nombres que son cadenas alfanum@'ericas de Maxima. Reglas para otras funciones tienen nombres que son identificadores ordinarios de Maxima.
 
 El tratamiento de formas nominales y verbales es hasta cierto punto confuso. Si se define una regla para una forma nominal (o verbal)  y ya existe una regla para la correspondiente forma verbal (o nominal), la regla reci@'en definida se aplica a ambas formas (nominal y verbal). Si no existe regla para una forma verbal (o nominal) la regla reci@'en definida se aplica @'unicamente a la forma nominal (o verbal).
 
 La regla construida por  @code{tellsimpafter} es una t@'{@dotless{i}}pica funci@'on de Lisp. Si el nombre de la regla es @code{$foorule1}, la sentencia @code{:lisp (trace $foorule1)} hace una traza de la funci@'on y  @code{:lisp (symbol-function '$foorule1)} muestra su definici@'on.
 
-La funci@'on @code{tellsimpafter} no eval@'ua sus argumentos y devuelve la lista de reglas para el operador principal de  @mvar{patr@'on}, incluida la regla reci@'en establecida.
+La funci@'on @code{tellsimpafter} no eval@'ua sus argumentos y devuelve la lista de reglas para el operador principal de  @var{patr@'on}, incluida la regla reci@'en establecida.
 
 V@'eanse tambi@'en @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{let},
 @code{kill}, @code{remrule} y @code{clear_rules}.
 
 Ejemplos:
 
-@mvar{pattern} puede ser cualquier expresi@'on no at@'omica en la que el operador principal no sea una variable de patr@'on.
+@var{pattern} puede ser cualquier expresi@'on no at@'omica en la que el operador principal no sea una variable de patr@'on.
 
 @example
 (%i1) matchdeclare (aa, atom, [ll, mm], listp, xx, true)$

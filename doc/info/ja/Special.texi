@@ -58,7 +58,7 @@ parabolic_cylinder_d (v,z)     放物円筒D関数
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_j}
-@deffn {関数} bessel_j (@mvar{v}, @mvar{z})
+@deffn {関数} bessel_j (@var{v}, @var{z})
 
 次数@math{v}と独立変数@math{z}の第一種ベッセル関数。
 
@@ -90,7 +90,7 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_y}
-@deffn {関数} bessel_y (@mvar{v}, @mvar{z})
+@deffn {関数} bessel_y (@var{v}, @var{z})
 
 次数@math{v}と独立変数@math{z}の第二種ベッセル関数
 
@@ -119,7 +119,7 @@ $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_i}
-@deffn {関数} bessel_i (@mvar{v}, @mvar{z})
+@deffn {関数} bessel_i (@var{v}, @var{z})
 
 次数@math{v}、独立変数@math{z}の第一種変形ベッセル関数
 
@@ -150,7 +150,7 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
 
 @c -----------------------------------------------------------------------------
 @anchor{bessel_k}
-@deffn {関数} bessel_k (@mvar{v}, @mvar{z})
+@deffn {関数} bessel_k (@var{v}, @var{z})
 
 次数@math{v}、独立変数@math{z}の第二種変形ベッセル関数
 
@@ -177,7 +177,7 @@ $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel_1}
-@deffn {関数} hankel_1 (@mvar{v}, @mvar{z})
+@deffn {関数} hankel_1 (@var{v}, @var{z})
 
 次数@math{v}、独立変数@math{z}の第一種ハンケル関数 (A&S 9.1.3)。
 @code{hankel_1}は以下のように定義されます。
@@ -261,7 +261,7 @@ Maximaは名詞形を返します:
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel_2}
-@deffn {関数} hankel_2 (@mvar{v}, @mvar{z})
+@deffn {関数} hankel_2 (@var{v}, @var{z})
 
 次数@math{v}、独立変数@math{z}の第二種ハンケル関数 (A&S 9.1.4)。
 @code{hankel_2}は以下のように定義されます。
@@ -322,7 +322,7 @@ Maximaは@code{hankel_2}の独立変数@math{z}に関する導関数を知って
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} scaled_bessel_i (@mvar{v}, @mvar{z}) 
+@deffn {関数} scaled_bessel_i (@var{v}, @var{z}) 
 
 次数@math{v}、独立変数@math{z}のスケールされた第一種変形ベッセル関数。
 すなわち、@math{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}。
@@ -336,7 +336,7 @@ Maximaは@code{hankel_2}の独立変数@math{z}に関する導関数を知って
 @closecatbox
 @end deffn
 
-@deffn {関数} scaled_bessel_i0 (@mvar{z}) 
+@deffn {関数} scaled_bessel_i0 (@var{z}) 
 
 @code{scaled_bessel_i(0,z)}と同一です。
 
@@ -346,7 +346,7 @@ Maximaは@code{hankel_2}の独立変数@math{z}に関する導関数を知って
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} scaled_bessel_i1 (@mvar{z}) 
+@deffn {関数} scaled_bessel_i1 (@var{z}) 
 
 @code{scaled_bessel_i(1,z)}と同一です。
 @opencatbox
@@ -355,7 +355,7 @@ Maximaは@code{hankel_2}の独立変数@math{z}に関する導関数を知って
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} %s [@mvar{u},@mvar{v}] (@mvar{z}) 
+@deffn {関数} %s [@var{u},@var{v}] (@var{z}) 
 Lommelの小s[u,v](z)関数。
 多分Gradshteyn & Ryzhik 8.570.1.
 @opencatbox
@@ -378,7 +378,7 @@ Lommelの小s[u,v](z)関数。
 もし引数@code{x}が実数もしくは複素数の浮動小数点数なら、
 関数の数値が返されます。
 
-@deffn {関数} airy_ai (@mvar{x})
+@deffn {関数} airy_ai (@var{x})
 エアリー関数Ai(x)。  (A&S 10.4.2)
 
 導関数@code{diff (airy_ai(x), x)}は、@code{airy_dai(x)}です。
@@ -391,7 +391,7 @@ Lommelの小s[u,v](z)関数。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} airy_dai (@mvar{x})
+@deffn {関数} airy_dai (@var{x})
 エアリー関数Ai @code{airy_ai(x)}の導関数。
 
 @code{airy_ai}を参照してください。
@@ -402,7 +402,7 @@ Lommelの小s[u,v](z)関数。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} airy_bi (@mvar{x})
+@deffn {関数} airy_bi (@var{x})
 エアリー関数Bi(x)。 (A&S 10.4.3)
 
 導関数@code{diff (airy_bi(x), x)}は@code{airy_dbi(x)}です。
@@ -416,7 +416,7 @@ Lommelの小s[u,v](z)関数。
 
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} airy_dbi (@mvar{x})
+@deffn {関数} airy_dbi (@var{x})
 エアリーBi関数@code{airy_bi(x)}の導関数。
 
 @code{airy_ai}と@code{airy_bi}を参照してください。
@@ -447,7 +447,7 @@ Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{bffac}
-@deffn {関数} bffac (@mvar{expr}, @mvar{n})
+@deffn {関数} bffac (@var{expr}, @var{n})
 階乗（シフトガンマ）関数の多倍長浮動小数点バージョン。
 ２番目の引数は、保持し返すディジットの数です。
 少しの余分を要請するのはいい考えです。
@@ -459,14 +459,14 @@ Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{bfpsi}
-@deffn  {関数} bfpsi (@mvar{n}, @mvar{z}, @mvar{fpprec})
-@deffnx {関数} bfpsi0 (@mvar{z}, @mvar{fpprec})
-@code{bfpsi}は、実引数@mvar{z}と整数次数@mvar{n}の多ガンマ関数です。
+@deffn  {関数} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {関数} bfpsi0 (@var{z}, @var{fpprec})
+@code{bfpsi}は、実引数@var{z}と整数次数@var{n}の多ガンマ関数です。
 @code{bfpsi0}はディガンマ関数です。
-@code{bfpsi0 (@mvar{z}, @mvar{fpprec})}は@code{bfpsi (0, @mvar{z}, @mvar{fpprec})}と同値です。
+@code{bfpsi0 (@var{z}, @var{fpprec})}は@code{bfpsi (0, @var{z}, @var{fpprec})}と同値です。
 
 これらの関数は多倍長浮動小数点値を返します。
-@mvar{fpprec}は戻り値の多倍長浮動小数点精度です。
+@var{fpprec}は戻り値の多倍長浮動小数点精度です。
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
@@ -479,7 +479,7 @@ Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{cbffac}
-@deffn {関数} cbffac (@mvar{z}, @mvar{fpprec})
+@deffn {関数} cbffac (@var{z}, @var{fpprec})
 複素多倍長浮動小数点の階乗です。
 
 @code{load ("bffac")}はこの関数をロードします。
@@ -491,7 +491,7 @@ Abramowitz and Stegun,
 
 @c -----------------------------------------------------------------------------
 @anchor{gamma}
-@deffn {関数} gamma (@mvar{z})
+@deffn {関数} gamma (@var{z})
 
 ガンマ関数の基本的な定義 (A&S 6.1.1) は、
 
@@ -602,7 +602,7 @@ Maximaは、@code{gamma(z+n)}と@code{gamma(z-n)}を展開します:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} log_gamma (@mvar{z})
+@deffn {関数} log_gamma (@var{z})
 
 ガンマ関数の自然対数。
 
@@ -612,7 +612,7 @@ Maximaは、@code{gamma(z+n)}と@code{gamma(z-n)}を展開します:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gamma_incomplete (@mvar{a},@mvar{z})
+@deffn {関数} gamma_incomplete (@var{a},@var{z})
 
 第二種不完全ガンマ関数 A&S 6.5.2:
 
@@ -637,7 +637,7 @@ $$¥Gamma¥left(a , z¥right)=¥int_{z}^{¥infty }{t^{a-1}¥,e^ {- t }¥;dt}$$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gamma_incomplete_regularized (@mvar{a}, @mvar{z})
+@deffn {関数} gamma_incomplete_regularized (@var{a}, @var{z})
 
 正則第二種不完全ガンマ関数 A&S 6.5.1:
 
@@ -659,7 +659,7 @@ $${¥it Q}¥left(a , z¥right)={{¥Gamma¥left(a , z¥right)}¥over{¥Gamma¥lef
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gamma_incomplete_generalized (@mvar{a},@mvar{z1},@mvar{z1} )
+@deffn {関数} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1} )
 一般化不完全ガンマ関数
 
 @ifnottex
@@ -708,8 +708,8 @@ $$¥Gamma¥left(a , z_{1}, z_{2}¥right)=¥int_{z_{1}}^{z_{2}}{t^{a-1}¥,e^ {- t
 
 @c -----------------------------------------------------------------------------
 @anchor{makegamma}
-@deffn {関数} makegamma (@mvar{expr})
-@mvar{expr}の中の２項、階乗、ベータ関数のインスタンスをガンマ関数に変換します。
+@deffn {関数} makegamma (@var{expr})
+@var{expr}の中の２項、階乗、ベータ関数のインスタンスをガンマ関数に変換します。
 
 @code{makefact}も参照してください。
 
@@ -719,7 +719,7 @@ $$¥Gamma¥left(a , z_{1}, z_{2}¥right)=¥int_{z_{1}}^{z_{2}}{t^{a-1}¥,e^ {- t
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} beta (@mvar{a}, @mvar{b})
+@deffn {関数} beta (@var{a}, @var{b})
 ベータ関数は、@code{gamma(a) gamma(b)/gamma(a+b)} 
 (A&S 6.2.1)として定義されます。
 
@@ -727,10 +727,10 @@ Maximaは、正の整数と、合計すると整数になる有理数につい�
 @code{beta_args_sum_to_integer}が@code{true}の時、
 Maximaは、和が整数になる一般式も整理します。
 
-@mvar{a}もしくは@mvar{b}がゼロに等しい時には、ベータ関数は未定義です。
+@var{a}もしくは@var{b}がゼロに等しい時には、ベータ関数は未定義です。
 
 一般にベータ関数は、負の整数の引数で未定義です。
-例外は、@mvar{a=-n}―@mvar{n}は正の整数―かつ@mvar{b}が@mvar{b<=n}の正の整数で、
+例外は、@var{a=-n}―@var{n}は正の整数―かつ@var{b}が@var{b<=n}の正の整数で、
 解析接続を定義することが可能です。
 Maximaはこの場合結果を与えます。
 
@@ -749,7 +749,7 @@ Maximaは、実数値と複素数値のベータ関数を浮動小数点と多�
 
 Maximaは、ベータ関数が対称で、鏡像対称性を持つことを知っています。
 
-Maximaは、@mvar{a}または@mvar{b}に関するベータ関数の導関数を知っています。
+Maximaは、@var{a}または@var{b}に関するベータ関数の導関数を知っています。
 
 ベータ関数をガンマ関数の比として表現するには、@code{makegamma}を参照してください。
 
@@ -852,7 +852,7 @@ beta: expected nonzero arguments; found 0, b
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} beta_incomplete (@mvar{a}, @mvar{b}, @mvar{z})
+@deffn {関数} beta_incomplete (@var{a}, @var{b}, @var{z})
 
 不完全ベータ関数の基本定義(A&S 6.6.1)は、以下の通りです。
 
@@ -892,16 +892,16 @@ beta: expected nonzero arguments; found 0, b
 @end example
 
 Maximaは、
-負の整数@mvar{a}に関する@code{beta_incomplete}を整理するために、この定義を使います。
+負の整数@var{a}に関する@code{beta_incomplete}を整理するために、この定義を使います。
 
-@mvar{a}が正の整数の時、
-任意の引数@mvar{b}, @mvar{z}に関して、
-@mvar{b}が正の整数の時、
-非負の整数@mvar{a}, 任意の@mvar{z}に関して、
+@var{a}が正の整数の時、
+任意の引数@var{b}, @var{z}に関して、
+@var{b}が正の整数の時、
+非負の整数@var{a}, 任意の@var{z}に関して、
 @code{beta_incomplete}は整理されます。
 
 @math{z=0}かつ@math{realpart(a)>0}の時、@code{beta_incomplete}は特別な値ゼロを取ります。
-@mvar{z=1}かつ@math{realpart(b)>0}の時、
+@var{z=1}かつ@math{realpart(b)>0}の時、
 @code{beta_incomplete}はベータ関数@code{beta(a,b)}に整理されます。
 
 Maximaは、浮動小数点か多倍長浮動小数点精度の実数値と複素数値に対して、
@@ -912,12 +912,12 @@ Maximaは、浮動小数点か多倍長浮動小数点精度の実数値と複�
 オプション変数@code{beta_expand}が@code{true}の時、
 Maximaは@code{beta_incomplete(a+n,b,z)}や@code{beta_incomplete(a-n,b,z)}のような式を展開します。ここでnは正の整数です。
 
-Maximaは@code{beta_incomplete}の変数@mvar{a}, @mvar{b}, @mvar{z}についての導関数と
-変数@mvar{z}についての積分を知っています。
+Maximaは@code{beta_incomplete}の変数@var{a}, @var{b}, @var{z}についての導関数と
+変数@var{z}についての積分を知っています。
 
 例:
 
-正の整数@mvar{a}に関する整理:
+正の整数@var{a}に関する整理:
 
 @example
 (%i1) beta_incomplete(2,b,z);
@@ -927,7 +927,7 @@ Maximaは@code{beta_incomplete}の変数@mvar{a}, @mvar{b}, @mvar{z}について
                                   b (b + 1)
 @end example
 
-正の整数@mvar{b}に関する整理:
+正の整数@var{b}に関する整理:
 
 @example
 (%i2) beta_incomplete(a,2,z);
@@ -937,7 +937,7 @@ Maximaは@code{beta_incomplete}の変数@mvar{a}, @mvar{b}, @mvar{z}について
                                   a (a + 1)
 @end example
 
-正の整数@mvar{a}, @mvar{b}に関する整理:
+正の整数@var{a}, @var{b}に関する整理:
 
 @example
 (%i3) beta_incomplete(3,2,z);
@@ -949,7 +949,7 @@ Maximaは@code{beta_incomplete}の変数@mvar{a}, @mvar{b}, @mvar{z}について
 @end group
 @end example
 
-@mvar{a}が負の整数かつ@math{b<=(-a)}の時、Maximaは整理します:
+@var{a}が負の整数かつ@math{b<=(-a)}の時、Maximaは整理します:
 
 @example
 (%i4) beta_incomplete(-3,1,z);
@@ -1038,7 +1038,7 @@ Maximaは@code{beta_incomplete}の変数@mvar{a}, @mvar{b}, @mvar{z}について
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} beta_incomplete_regularized (@mvar{a}, @mvar{b}, @mvar{z})
+@deffn {関数} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 
 @example
 beta_incomplete_regularized(a, b, z) = 
@@ -1051,12 +1051,12 @@ beta_incomplete_regularized(a, b, z) =
 @code{beta_incomplete}同様、この定義は完全ではありません。
 @code{beta_incomplete_regularized}の完全な定義については、functions.wolfram.comを参照してください。
 
-@code{beta_incomplete_regularized}は、@mvar{a}または@mvar{b}が正の整数の時
+@code{beta_incomplete_regularized}は、@var{a}または@var{b}が正の整数の時
 整理されます。
 
 @math{z=0}かつ@math{realpart(a)>0}の時、
 @code{beta_incomplete_regularized}は、具体的な値0を持ちます。
-@mvar{z=1}かつ@math{realpart(b)>0}の時、
+@var{z=1}かつ@math{realpart(b)>0}の時、
 @code{beta_incomplete_regularized}は、1に整理されます。
 
 Maximaは、実数と複素数の引数について、
@@ -1067,13 +1067,13 @@ Maximaは、
 nは整数として、引数@math{a+n}または@math{a-n}に関して
 @code{beta_incomplete_regularized}を展開します。
 
-Maximaは、変数@mvar{a}, @mvar{b}, @mvar{z}に関する
+Maximaは、変数@var{a}, @var{b}, @var{z}に関する
 @code{beta_incomplete_regularized}の導関数と、
-変数@mvar{z}に関する積分を知っています。
+変数@var{z}に関する積分を知っています。
 
 例:
 
-@mvar{a}または@mvar{b}が正の整数の時の整理:
+@var{a}または@var{b}が正の整数の時の整理:
 
 @example
 (%i1) beta_incomplete_regularized(2,b,z);
@@ -1130,7 +1130,7 @@ Maximaは、変数@mvar{a}, @mvar{b}, @mvar{z}に関する
                                            beta(a, b) (b + a - 1)
 @end example
 
-@mvar{z}に関する微分と積分:
+@var{z}に関する微分と積分:
 
 @example
 (%i15) diff(beta_incomplete_regularized(a,b,z),z);
@@ -1154,7 +1154,7 @@ Maximaは、変数@mvar{a}, @mvar{b}, @mvar{z}に関する
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} beta_incomplete_generalized (@mvar{a}, @mvar{b}, @mvar{z1}, @mvar{z2})
+@deffn {関数} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
 
 一般化不完全ベータ関数の基本的な定義は、以下の通りです。
 
@@ -1171,31 +1171,31 @@ Maximaは、変数@mvar{a}, @mvar{b}, @mvar{z}に関する
 @end example
 
 Maximaは、
-@mvar{a}と@mvar{b}が正の整数の時、
+@var{a}と@var{b}が正の整数の時、
 @code{beta_incomplete_regularized}を整理します。
 
 @math{realpart(a)>0}かつ@math{z1=0}または@math{z2=0}の時、
 Maximaは、
 @code{beta_incomplete_generalized}を@code{beta_incomplete}に整理します。
-@math{realpart(b)>0}かつ@math{z1=1}または@mvar{z2=1}の時、
+@math{realpart(b)>0}かつ@math{z1=1}または@var{z2=1}の時、
 Maximaは、@code{beta}と@code{beta_incomplete}を含む式に整理します。
 
 Maximaは、実数値と複素数値に関して、浮動小数点と多倍長浮動小数点精度で
 @code{beta_incomplete_regularized}を評価します。
 
 @code{beta_expand}が@code{true}の時、
-@mvar{n}を正の整数とすると、
+@var{n}を正の整数とすると、
 Maximaは、@math{a+n}や@math{a-n}に関して@code{beta_incomplete_generalized}
 を整理します。
 
 Maximaは、
-変数@mvar{a}, @mvar{b}, @mvar{z1}, @mvar{z2}に関する
+変数@var{a}, @var{b}, @var{z1}, @var{z2}に関する
 @code{beta_incomplete_generalized}の微分を知っており、
-変数@mvar{z1}や@mvar{z2}に関する積分を知っています。
+変数@var{z1}や@var{z2}に関する積分を知っています。
 
 例:
 
-Maximaは、@mvar{a}と@mvar{b}が正の整数の時、
+Maximaは、@var{a}と@var{b}が正の整数の時、
 @code{beta_incomplete_generalized}を整理します:
 
 @example
@@ -1257,7 +1257,7 @@ Maximaは、@mvar{a}と@mvar{b}が正の整数の時、
 @end example
 
 @code{beta_expand}が@code{true}の時、
-@mvar{n}を正の整数とする、
+@var{n}を正の整数とする、
 @math{a+n}または@math{a-n}に関する整理:
 
 @example
@@ -1283,7 +1283,7 @@ Maximaは、@mvar{a}と@mvar{b}が正の整数の時、
                                             1 - a
 @end example
 
-変数@mvar{z1}に関する微分と@mvar{z1}や@mvar{z2}に関する積分:
+変数@var{z1}に関する微分と@var{z1}や@var{z2}に関する積分:
 
 @example
 (%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
@@ -1319,7 +1319,7 @@ Maximaは、@mvar{a}と@mvar{b}が正の整数の時、
 デフォルト値: false
 
 @code{beta_args_sum_to_integer}が@code{true}の時、
-引数@mvar{a}と@mvar{b}の和が整数の時、
+引数@var{a}と@var{b}の和が整数の時、
 Maximaは@code{beta(a,b)}を整理します。
 
 @opencatbox
@@ -1330,22 +1330,22 @@ Maximaは@code{beta(a,b)}を整理します。
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {関数} psi (@mvar{x})
-@c @deffnx {関数} psi [@mvar{n}](@mvar{x})
-@deffn {関数} psi [@mvar{n}](@mvar{x})
+@c @deffn {関数} psi (@var{x})
+@c @deffnx {関数} psi [@var{n}](@var{x})
+@deffn {関数} psi [@var{n}](@var{x})
 
-@code{log (gamma (@mvar{x}))}の次数@code{@mvar{n}+1}の導関数。
+@code{log (gamma (@var{x}))}の次数@code{@var{n}+1}の導関数。
 例えば、
-@code{psi[0](@mvar{x})}は１階微分、
-@code{psi[1](@mvar{x})}は２階微分など。
+@code{psi[0](@var{x})}は１階微分、
+@code{psi[1](@var{x})}は２階微分など。
 
 Maximaは、一般に、@code{psi}の数値を計算する方法を知りませんが、
 有理数の引数に関してはいくつかの厳密な値を計算することができます。
 いくつの変数は、@code{psi}が可能なら厳密な値を返す有理数の引数の範囲を制御します。
 @code{maxpsiposint},
 @code{maxpsinegint}, @code{maxpsifracnum}, @code{maxpsifracdenom}を参照してください。
-すなわち、@mvar{x}は、@code{maxpsinegint}と@code{maxpsiposint}の間になければいけません。
-もし@mvar{x}の小数部分の絶対値が有理数で、かつ分子が@code{maxpsifracnum}より小さく、
+すなわち、@var{x}は、@code{maxpsinegint}と@code{maxpsiposint}の間になければいけません。
+もし@var{x}の小数部分の絶対値が有理数で、かつ分子が@code{maxpsifracnum}より小さく、
 分母が@code{maxpsifracdenom}より小さければ、
 @code{psi}は厳密な値を返します。
 
@@ -1377,9 +1377,9 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 @code{psi[n](x)}が厳密な値を計算しようとする
 最も大きな負の値です。
 従って、もし
-@mvar{x}が@code{maxnegint}よりも小さければ、
+@var{x}が@code{maxnegint}よりも小さければ、
 たとえ可能でも、
-@code{psi[n](@mvar{x})}は整理された答えを返しません。
+@code{psi[n](@var{x})}は整理された答えを返しません。
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -1390,9 +1390,9 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 @defvr {オプション変数} maxpsifracnum
 デフォルト値: 6
 
-@mvar{x}を１より小さい、形式@code{p/q}の有理数とします。
+@var{x}を１より小さい、形式@code{p/q}の有理数とします。
 もし@code{p}が@code{maxpsifracnum}より大きいなら
-@code{psi[@mvar{n}](@mvar{x})}は、
+@code{psi[@var{n}](@var{x})}は、
 整理された値を返そうとしません。
 
 @opencatbox
@@ -1404,9 +1404,9 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 @defvr {オプション変数} maxpsifracdenom
 デフォルト値: 6
 
-@mvar{x}を１より小さい、形式@code{p/q}の有理数とします。
+@var{x}を１より小さい、形式@code{p/q}の有理数とします。
 もし@code{q}が@code{maxpsifracdenom}より大きいなら
-@code{psi[@mvar{n}](@mvar{x})}は、
+@code{psi[@var{n}](@var{x})}は、
 整理された値を返そうとしません。
 
 @opencatbox
@@ -1417,8 +1417,8 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {関数} makefact (@mvar{expr})
-@mvar{expr}の中の二項、ガンマ、ベータ関数のインスタンスを階乗に変換します。
+@deffn {関数} makefact (@var{expr})
+@var{expr}の中の二項、ガンマ、ベータ関数のインスタンスを階乗に変換します。
 
 @code{makegamma}も参照してください。
 
@@ -1429,9 +1429,9 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@deffn {関数} numfactor (@mvar{expr})
-式@mvar{expr}を掛ける数値因子を返します。
-式@mvar{expr}は単一項でなければいけません。
+@deffn {関数} numfactor (@var{expr})
+式@var{expr}を掛ける数値因子を返します。
+式@var{expr}は単一項でなければいけません。
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
 @code{content}は、輪の中のすべての項の最大公約数を返します。
@@ -1460,56 +1460,56 @@ Maximaは、一般に、@code{psi}の数値を計算する方法を知りませ�
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, 5章の中で定義されています。
 
-@deffn {関数} expintegral_e1 (@mvar{z})
+@deffn {関数} expintegral_e1 (@var{z})
 指数積分E1(z) (A&S 5.1.1)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_ei (@mvar{z})
+@deffn {関数} expintegral_ei (@var{z})
 指数積分Ei(z) (A&S 5.1.2)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_li (@mvar{z})
+@deffn {関数} expintegral_li (@var{z})
 指数積分Li(z)  (A&S 5.1.3)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_e (@mvar{n},@mvar{z})
+@deffn {関数} expintegral_e (@var{n},@var{z})
 指数積分 En(z)  (A&S 5.1.4)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_si (@mvar{z})
+@deffn {関数} expintegral_si (@var{z})
 指数積分 Si(z) (A&S 5.2.1)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_ci (@mvar{z})
+@deffn {関数} expintegral_ci (@var{z})
 指数積分 Ci(z) (A&S 5.2.2)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_shi (@mvar{z})
+@deffn {関数} expintegral_shi (@var{z})
 指数積分 Shi(z) (A&S 5.2.3)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} expintegral_chi (@mvar{z})
+@deffn {関数} expintegral_chi (@var{z})
 指数積分 Chi(z) (A&S 5.2.4)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1547,7 +1547,7 @@ Expand the Exponential Integral
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, 7章で定義されています。
 
-@deffn {関数} erf (@mvar{z})
+@deffn {関数} erf (@var{z})
 誤差関数erf(z) (A&S 7.1.1)
 
 See also flag @code{erfflag}.
@@ -1556,7 +1556,7 @@ See also flag @code{erfflag}.
 @closecatbox
 @end deffn
 
-@deffn {関数} erfc (@mvar{z})
+@deffn {関数} erfc (@var{z})
 相補誤差関数erfc(z) (A&S 7.1.2)
 
 @code{erfc(z) = 1-erf(z)}
@@ -1565,7 +1565,7 @@ See also flag @code{erfflag}.
 @closecatbox
 @end deffn
 
-@deffn {関数} erfi (@mvar{z})
+@deffn {関数} erfi (@var{z})
 虚数誤差関数
 
 @code{erfi(z) = -%i*erf(%i*z)}
@@ -1574,14 +1574,14 @@ See also flag @code{erfflag}.
 @closecatbox
 @end deffn
 
-@deffn {関数} erf_generalized (@mvar{z1},@mvar{z2})
+@deffn {関数} erf_generalized (@var{z1},@var{z2})
 一般化誤差関数Erf(z1,z2)
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} fresnel_c (@mvar{z})
+@deffn {関数} fresnel_c (@var{z})
 フレネル積分C(z) = integrate(cos((%pi/2)*t^2),t,0,z) (A&S 7.3.1)
 
 フラグ@code{trigsign}が@code{true}の時、
@@ -1599,7 +1599,7 @@ See also flag @code{erfflag}.
 @closecatbox
 @end deffn
 
-@deffn {関数} fresnel_s (@mvar{z})
+@deffn {関数} fresnel_s (@var{z})
 フレネル積分S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
 
 フラグ@code{trigsign}が@code{true}の時、
@@ -1639,7 +1639,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 それらは、関数@code{hgfred}から返されることができます。
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} struve_h (@mvar{v}, @mvar{z})
+@deffn {関数} struve_h (@var{v}, @var{z})
 次数v, 独立変数zのシュトルーベ関数H (A&S 12.1.1)
 
 @opencatbox
@@ -1649,7 +1649,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} struve_l (@mvar{v}, @mvar{z})
+@deffn {関数} struve_l (@var{v}, @var{z})
 次数v、独立変数zの変形シュトルーベ関数L (A&S 12.2.1)
 
 @opencatbox
@@ -1668,7 +1668,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 Maximaは、これらの関数の非常に限られた知識を持っています。
 それらは、関数@code{hgfred}から返されることができます。
 
-@deffn {関数} %m [@mvar{k},@mvar{u}] (@mvar{z}) 
+@deffn {関数} %m [@var{k},@var{u}] (@var{z}) 
 Whittaker M関数
 @code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
 (A&S 13.1.32)
@@ -1677,7 +1677,7 @@ Whittaker M関数
 @closecatbox
 @end deffn
 
-@deffn {関数} %w [@mvar{k},@mvar{u}] (@mvar{z}) 
+@deffn {関数} %w [@var{k},@var{u}] (@var{z}) 
 Whittaker W関数  (A&S 13.1.33)
 @opencatbox
 @category{Special functions}
@@ -1685,7 +1685,7 @@ Whittaker W関数  (A&S 13.1.33)
 @end deffn
 
 
-@deffn {関数} %f [@mvar{p},@mvar{q}] (@mvar{[a],[b],z}) 
+@deffn {関数} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
 pFq(a1,a2,..ap;b1,b2,..bq;z)超幾何関数。
 ここで、@code{a}は長さ@code{p}のリストで、
 @code{b}は長さ@code{q}のリストです。
@@ -1694,7 +1694,7 @@ pFq(a1,a2,..ap;b1,b2,..bq;z)超幾何関数。
 @closecatbox
 @end deffn
 
-@deffn {関数} hypergeometric ([@mvar{a1}, ..., @mvar{ap}],[@mvar{b1}, ... ,@mvar{bq}], x)
+@deffn {関数} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
 超幾何関数。
 Maximaの@code{%f}超幾何関数と違って，
 関数@code{hypergeometric}は整理関数です;
@@ -1747,7 +1747,7 @@ Maximaの@code{%f}超幾何関数と違って，
 Maximaは、これらの関数の非常に限られた知識を持っています。
 それらは、関数@code{hgfred}から返されることができます。
 
-@deffn {関数} parabolic_cylinder_d (@mvar{v}, @mvar{z}) 
+@deffn {関数} parabolic_cylinder_d (@var{v}, @var{z}) 
 放物円筒関数@code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 @opencatbox
 @category{Special functions}
@@ -1759,9 +1759,9 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 
 
 
-@deffn {関数} specint (exp(- s*@mvar{t}) * @mvar{expr}, @mvar{t})
+@deffn {関数} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
-@mvar{expr}の変数@mvar{t}に関するラプラス変換を計算します。
+@var{expr}の変数@var{t}に関するラプラス変換を計算します。
 以下の特殊関数は@code{specint}で扱われます:
 不完全ベータ関数、誤差関数
 （誤差関数@code{erfi}ではないです。@code{erfi}は例えば、@code{erf}に変換することは簡単です。）、
@@ -1865,15 +1865,15 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @closecatbox
 @end deffn
 
-@deffn {関数} hgfred (@mvar{a}, @mvar{b}, @mvar{t})
+@deffn {関数} hgfred (@var{a}, @var{b}, @var{t})
 
 一般化超幾何関数を他のより簡単な形式に整理します。
-@mvar{a}は分子パラメータのリストで、@mvar{b}は分母パラメータのリストです。
+@var{a}は分子パラメータのリストで、@var{b}は分母パラメータのリストです。
 
 もし@code{hgfred}が超幾何関数を整理できなければ、
 形式@code{%f[p,q]([a], [b], x)}の式を返します。
-ここで@mvar{p}は@mvar{a}の中の要素の数で、
-@mvar{q}は@mvar{b}の中の要素の数です。
+ここで@var{p}は@var{a}の中の要素の数で、
+@var{q}は@var{b}の中の要素の数です。
 これは、通常の@code{pFq}一般化超幾何関数です。
 
 @example
@@ -1901,7 +1901,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @end example
 
 以下の例が示すように、orthopolyもロードすることは有益なことがあります。
-@mvar{L}は、一般化ラーゲル多項式であることに注意してください。
+@var{L}は、一般化ラーゲル多項式であることに注意してください。
 
 @example
 (%i5) load(orthopoly)$
@@ -1924,7 +1924,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @end example
 @end deffn
 
-@deffn {関数} lambert_w (@mvar{z})
+@deffn {関数} lambert_w (@var{z})
 ランバートW関数W(z)の主枝、
 @code{z = W(z) * exp(W(z))}の解。
 @opencatbox
@@ -1932,7 +1932,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @closecatbox
 @end deffn
 
-@deffn {関数} nzeta (@mvar{z})
+@deffn {関数} nzeta (@var{z})
 プラズマ分散関数
 @code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
 @opencatbox
@@ -1940,14 +1940,14 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @closecatbox
 @end deffn
 
-@deffn {関数} nzetar (@mvar{z})
+@deffn {関数} nzetar (@var{z})
 @code{realpart(nzeta(z))}を返します。
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {関数} nzetai (@mvar{z})
+@deffn {関数} nzetai (@var{z})
 @code{imagpart(nzeta(z))}を返します。
 @opencatbox
 @category{Special functions}

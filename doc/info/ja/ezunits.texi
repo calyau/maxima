@@ -630,9 +630,9 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} constvalue (@mvar{x})
-@deffnx {関数} declare_constvalue (@mvar{a}, @mvar{x})
-@deffnx {関数} remove_constvalue (@mvar{a})
+@deffn {関数} constvalue (@var{x})
+@deffnx {関数} declare_constvalue (@var{a}, @var{x})
+@deffnx {関数} remove_constvalue (@var{a})
 
 @c REWORK THIS STATEMENT !!
 シンボルの宣言された定数や、
@@ -697,18 +697,18 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} units (@mvar{x})
-@deffnx {関数} declare_units (@mvar{a}, @mvar{u})
+@deffn {関数} units (@var{x})
+@deffnx {関数} declare_units (@var{a}, @var{u})
 
-次元量@mvar{x}の単位を返します。
-もし@mvar{x}が無次元なら、1を返します。
+次元量@var{x}の単位を返します。
+もし@var{x}が無次元なら、1を返します。
 
-@mvar{x}は、文字通り次元式 @math{a ` b}かもしれませんし、
+@var{x}は、文字通り次元式 @math{a ` b}かもしれませんし、
 @code{declare_units}を介して宣言された単位を持つシンボルかもしれませんし、
 それらの一方または両方を含む式かもしれません。
 
 @code{declare_units}は、
-@code{units(@mvar{a})}は式@mvar{u}を返さなければいけないことを宣言します。
+@code{units(@var{a})}は式@var{u}を返さなければいけないことを宣言します。
 
 @code{load(ezunits)}はこれらの関数をロードします。
 
@@ -787,17 +787,17 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} qty (@mvar{x})
-@deffnx {関数} declare_qty (@mvar{a}, @mvar{x})
+@deffn {関数} qty (@var{x})
+@deffnx {関数} declare_qty (@var{a}, @var{x})
 
-@code{qty}は次元量@mvar{x}の無次元パーツを返します。
-もし @mvar{x}が無次元なら、@mvar{x}を返します。
-@mvar{x}は文字通り次元式 @math{a ` b}かも知れませんし、
+@code{qty}は次元量@var{x}の無次元パーツを返します。
+もし @var{x}が無次元なら、@var{x}を返します。
+@var{x}は文字通り次元式 @math{a ` b}かも知れませんし、
 宣言された量のシンボルかもしれませんし、
 それらの一方または両方を含む式かもしれません。
 
 @code{declare_qty}は、
-@code{qty(@mvar{a})}は無次元量@mvar{x}を返さなければいけないことを宣言します。
+@code{qty(@var{a})}は無次元量@var{x}を返さなければいけないことを宣言します。
 
 @code{load(ezunits)}はこれらの関数をロードします。
 
@@ -863,9 +863,9 @@ Computing conversions to base units; may take a moment.
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
-@deffn {関数} unitp (@mvar{x})
+@deffn {関数} unitp (@var{x})
 
-もし@mvar{x}が文字通り次元式か、
+もし@var{x}が文字通り次元式か、
 次元的と宣言されたシンボルか、
 主演算子が次元的宣言された式なら、
 @code{true}を返します。
@@ -929,11 +929,11 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} declare_unit_conversion (@mvar{u} = @mvar{v}, ...)
+@deffn {関数} declare_unit_conversion (@var{u} = @var{v}, ...)
 
-式 @mvar{u} = @mvar{v}, ... を
+式 @var{u} = @var{v}, ... を
 単位変換演算子 @math{`@w{}`}が知っている単位変換のリストに追加します。
-@mvar{u}と @mvar{v}はともにその中のいかなる変数も単位である乗法の項か、
+@var{u}と @var{v}はともにその中のいかなる変数も単位である乗法の項か、
 文字通り次元式です。
 
 現在、
@@ -993,17 +993,17 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} declare_dimensions (@mvar{a_1}, @mvar{d_1}, ..., @mvar{a_n}, @mvar{d_n})
-@deffnx {関数} remove_dimensions (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {関数} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {関数} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
 @code{declare_dimensions}は
-@mvar{a_1}, ..., @mvar{a_n}を
-それぞれ、次元@mvar{d_1}, ..., @mvar{d_n}を持つと
+@var{a_1}, ..., @var{a_n}を
+それぞれ、次元@var{d_1}, ..., @var{d_n}を持つと
 宣言します。
 
-@mvar{a_k}それぞれはシンボルかシンボルのリストです。
-もしリストなら、@mvar{a_k}内のすべてのシンボルは
-次元 @mvar{d_k}を持つように宣言されます。
+@var{a_k}それぞれはシンボルかシンボルのリストです。
+もしリストなら、@var{a_k}内のすべてのシンボルは
+次元 @var{d_k}を持つように宣言されます。
 
 @code{remove_dimensions}は @code{declare_dimensions}の効果を戻します。
 
@@ -1040,12 +1040,12 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} declare_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
-@deffnx {関数} remove_fundamental_dimensions (@mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ...)
+@deffn {関数} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {関数} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {グローバル変数} fundamental_dimensions
 
 @code{declare_fundamental_dimensions}は基本次元を宣言します。
-シンボル @mvar{d_1}, @mvar{d_2}, @mvar{d_3}, ... は、
+シンボル @var{d_1}, @var{d_2}, @var{d_3}, ... は、
 もしそれらがまだリストの中にないなら、基本次元のリストに追加されます。
 
 @code{remove_fundamental_dimensions}は
@@ -1087,21 +1087,21 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} declare_fundamental_units (@mvar{u_1}, @mvar{d_1}, ..., @mvar{u_n}, @mvar{d_n})
-@deffnx {関数} remove_fundamental_units (@mvar{u_1}, ..., @mvar{u_n})
+@deffn {関数} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {関数} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
 
 @code{declare_fundamental_units}は
-@mvar{u_1}, ..., @mvar{u_n}を
-それぞれ、次元@mvar{d_1}, ..., @mvar{d_n}を持つように宣言します。
+@var{u_1}, ..., @var{u_n}を
+それぞれ、次元@var{d_1}, ..., @var{d_n}を持つように宣言します。
 引数すべてはシンボルでなければいけません。
 
 @code{declare_fundamental_units}をコールした後、
-@code{dimensions(@mvar{u_k})}は
-引数@mvar{u_1}, ..., @mvar{u_n}それぞれに対して
-@mvar{d_k}を返し、
-@code{fundamental_units(@mvar{d_k})}は
-引数@mvar{d_1}, ..., @mvar{d_n}それぞれに対して
-@mvar{u_k}を返します。
+@code{dimensions(@var{u_k})}は
+引数@var{u_1}, ..., @var{u_n}それぞれに対して
+@var{d_k}を返し、
+@code{fundamental_units(@var{d_k})}は
+引数@var{d_1}, ..., @var{d_n}それぞれに対して
+@var{u_k}を返します。
 
 
 @code{remove_fundamental_units}は
@@ -1147,15 +1147,15 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} dimensions (@mvar{x})
-@deffnx {関数} dimensions_as_list (@mvar{x})
+@deffn {関数} dimensions (@var{x})
+@deffnx {関数} dimensions_as_list (@var{x})
 
 @code{dimensions}は
 基礎次元の積と冪で構成された式として
-次元量@mvar{x}の次元を返します。
+次元量@var{x}の次元を返します。
 
 @code{dimensions_as_list}は
-それぞれの要素が@mvar{x}の次元に関して対応する基礎次元の冪を示す整数であるようなリストとして次元量@mvar{x}の次元を返します。
+それぞれの要素が@var{x}の次元に関して対応する基礎次元の冪を示す整数であるようなリストとして次元量@var{x}の次元を返します。
 
 
 @code{load(ezunits)}はこれらの関数をロードします。
@@ -1214,15 +1214,15 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} fundamental_units (@mvar{x})
+@deffn {関数} fundamental_units (@var{x})
 @deffnx {関数} fundamental_units ()
 
-@code{fundamental_units(@mvar{x})}は
-@code{dimensions(@mvar{x})}が決定するように
-@mvar{x}の基本次元に関連付けられた
+@code{fundamental_units(@var{x})}は
+@code{dimensions(@var{x})}が決定するように
+@var{x}の基本次元に関連付けられた
 単位を返します。
 
-@mvar{x}は文字通り次元式@math{a ` b}か、
+@var{x}は文字通り次元式@math{a ` b}か、
 @code{declare_units}を介して宣言された単位を持つシンボルか
 それらのいずれかもしくは両方を含む式かもしれません。
 
@@ -1268,9 +1268,9 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {関数} dimensionless (@mvar{L})
+@deffn {関数} dimensionless (@var{L})
 
-次元量のリスト@mvar{L}から形成できる
+次元量のリスト@var{L}から形成できる
 無次元量の基底を返します。
 
 @code{load(ezunits)}はこの関数をロードします。
@@ -1319,10 +1319,10 @@ is proportional to the fine-structure constant.
 @end deffn
 
 @c NEED TO FILL IN !!
-@deffn {関数} natural_unit (@mvar{expr}, [@mvar{v_1}, ..., @mvar{v_n}])
+@deffn {関数} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
 
-@code{dimension(@mvar{expr}) = dimension(@mvar{v_1}^@mvar{e_1} ... @mvar{v_n}^@mvar{e_n})}であるような
-指数@mvar{e_1}, ..., @mvar{e_n}を見つけます。
+@code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}であるような
+指数@var{e_1}, ..., @var{e_n}を見つけます。
 
 @code{load(ezunits)}はこの関数をロードします。
 

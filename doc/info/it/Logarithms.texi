@@ -9,11 +9,11 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} li [@mvar{s}] (@mvar{z})
+@deffn {Function} li [@var{s}] (@var{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} log (@mvar{x})
+@deffn {Function} log (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -22,7 +22,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
 @defvr {Option variable} logarc
-@defvrx {Function} logarc (@mvar{expr})
+@defvrx {Function} logarc (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
@@ -30,7 +30,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} logcontract (@mvar{expr})
+@deffn {Function} logcontract (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -50,7 +50,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} plog (@mvar{x})
+@deffn {Function} plog (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

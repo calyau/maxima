@@ -1088,19 +1088,19 @@ x is equal to 1234 - 1729 w
 
 Ist der Operator f@"ur Funktionsdefinitionen.
 
-@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} := @mvar{expr} definiert eine Funktion
-mit dem Namen @mvar{f}, den Argumenten @mvar{x_1}, @dots{}, @mvar{x_n} und der
-Funktionsdefinition @mvar{expr}.  Der Operator @code{:=} wertet die 
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} := @var{expr} definiert eine Funktion
+mit dem Namen @var{f}, den Argumenten @var{x_1}, @dots{}, @var{x_n} und der
+Funktionsdefinition @var{expr}.  Der Operator @code{:=} wertet die 
 Funktionsdefinition nicht aus.  Die Auswertung kann mit dem
 @nxref{'', Quote-Quote-Operator} @code{''} erzwungen werden.  Die definierte
 Funktion kann eine gew@"ohnliche Maxima-Funktion @code{f(x)} sein oder eine
 Array-Funktion @code{f[i](x)}.
 
-Ist das letzte oder das einzige Argument der Funktion @mvar{x_n} eine Liste mit
+Ist das letzte oder das einzige Argument der Funktion @var{x_n} eine Liste mit
 einem Element, dann akzeptiert die mit @code{:=} definierte Funktion eine
 variable Anzahl an Argumenten.  Die Argumente werden zun@"achst nacheinander den
-Argumenten @mvar{x_1}, @dots{}, @mvar{x_(n - 1)} zugewiesen.  Sind weitere
-Argumente vorhanden, werden diese @mvar{x_n} als Liste zugewiesen.
+Argumenten @var{x_1}, @dots{}, @var{x_(n - 1)} zugewiesen.  Sind weitere
+Argumente vorhanden, werden diese @var{x_n} als Liste zugewiesen.
 
 Funktionsdefinitionen erscheinen im globalen Namensraum.  Wird eine Funktion
 @code{f} innerhalb einer Funktion @code{g} definiert, wird die Reichweite der
@@ -1143,7 +1143,7 @@ Maxima-Funktion oder eine Array-Funktion sein.
                        x, y
 @end example
 
-Ist das letzte oder einzige Argument @mvar{x_n} eine Liste mit einem Element,
+Ist das letzte oder einzige Argument @var{x_n} eine Liste mit einem Element,
 dann akzeptiert die Funktion eine variable Anzahl an Argumenten.
 
 @example
@@ -1210,10 +1210,10 @@ Maxima kennt die folgenden Funktionen, um Operatoren zu definieren:
 @code{prefix}, @code{postfix}, @code{infix}, @code{nary}, @code{matchfix} und
 @code{nofix}.
 
-Der Vorrang eines Operators @mvar{op} vor anderen Operatoren leitet sich aus dem
+Der Vorrang eines Operators @var{op} vor anderen Operatoren leitet sich aus dem
 links- und rechtsseitigen Vorrang des Operators ab.  Sind die links- und
-rechtsseitigen Vorr@"ange von @mvar{op} beide gr@"o@ss{}er als der links-
-und rechtsseitige Vorrang eines anderen Operators, dann hat @mvar{op} 
+rechtsseitigen Vorr@"ange von @var{op} beide gr@"o@ss{}er als der links-
+und rechtsseitige Vorrang eines anderen Operators, dann hat @var{op} 
 Vorrang vor diesem Operator.  Sind die Vorr@"ange nicht beide gr@"o@ss{}er oder
 kleiner, werden weitere Regeln zur Bestimmung des Vorrangs herangezogen.
 
@@ -1224,22 +1224,22 @@ algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
 Mit Hilfe der f@"ur einen Operator definierten Wortart kann der Parser beim 
 Einlesen eines Ausdrucks Syntaxfehler feststellen.
 
-Die Assoziativit@"at eines Operators @mvar{op} h@"angt ab von seinem Vorrang.
+Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seinem Vorrang.
 Ein gr@"o@ss{}erer linksseitiger Vorrang hat zur Folge, dass der Operator
-@mvar{op} vor einem anderen Operator auf seiner linken Seite ausgewertet wird.
+@var{op} vor einem anderen Operator auf seiner linken Seite ausgewertet wird.
 W@"ahrend ein gr@"o@ss{}erer rechtsseitiger Vorrang zur Folge hat, dass der
 Operator vor anderen Operatoren auf der rechten Seite ausgewertet wird.  Daraus
-folgt, dass ein gr@"o@ss{}erer linksseitiger Vorrang @mvar{lbp} einen Operator
-@mvar{op} rechts-assoziativ und eine gr@"o@ss{}erer rechtsseitiger Vorrang
-@mvar{rbp} den Operator links-assoziativ macht.  Sind der links- und
-rechtsseitige Vorrang gleich gro@ss{}, ist der Operator @mvar{op}
+folgt, dass ein gr@"o@ss{}erer linksseitiger Vorrang @var{lbp} einen Operator
+@var{op} rechts-assoziativ und eine gr@"o@ss{}erer rechtsseitiger Vorrang
+@var{rbp} den Operator links-assoziativ macht.  Sind der links- und
+rechtsseitige Vorrang gleich gro@ss{}, ist der Operator @var{op}
 links-assoziativ.
 
 Mit den Befehlen @mref{remove} und @mref{kill} k@"onnen Operatoreigenschaften
-von einem Symbol entfernt werden.  @code{remove("@mvar{a}", op)} entfernt
-die Operatoreigenschaften des Symbols @mvar{a}.  @code{kill("@mvar{a}")} entfernt
+von einem Symbol entfernt werden.  @code{remove("@var{a}", op)} entfernt
+die Operatoreigenschaften des Symbols @var{a}.  @code{kill("@var{a}")} entfernt
 alle Eigenschaften einschlie@ss{}ich der Operator-Eigenschaften des Symbols 
-@mvar{a}.  In diesem Fall steht der Name des Symbols in Anf@"uhrungszeichen.
+@var{a}.  In diesem Fall steht der Name des Symbols in Anf@"uhrungszeichen.
 
 @example
 (%i1) infix ("##");
@@ -1278,31 +1278,31 @@ Incorrect syntax: # is not a prefix operator
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{infix}
-@deffn  {Funktion} infix (@mvar{op})
-@deffnx {Funktion} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
-@deffnx {Funktion} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
+@deffn  {Funktion} infix (@var{op})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
-Deklariert @mvar{op} als einen Infix-Operator.  Ein Infix-Operator hat eine 
+Deklariert @var{op} als einen Infix-Operator.  Ein Infix-Operator hat eine 
 Funktionsdefinition mit zwei Argumenten.  Der Infix-Operator steht zwischen den
 Operanden.  Zum Beispiel ist die Subtraktion @mref{-} ein Infix-Operator.
 
-@code{infix(@mvar{op})} deklariert @mvar{op} als einen Infix-Operator mit einem
+@code{infix(@var{op})} deklariert @var{op} als einen Infix-Operator mit einem
 links- und rechtsseitigen Vorrang von jeweils 180.
 
-@code{infix(@mvar{op}, @mvar{lbp}, @mvar{rbp})} deklariert @mvar{op} als einen
+@code{infix(@var{op}, @var{lbp}, @var{rbp})} deklariert @var{op} als einen
 Infix-Operator mit den angegebenen Werten f@"ur den links- und rechtsseitigen
 Vorrang.
 
-@code{infix(@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})}
-deklariert @mvar{op} als einen Infix-Operator mit den angegebenen
-Vorr@"angen sowie den Wortarten @mvar{lpos}, @mvar{rpos} und @mvar{pos} f@"ur
+@code{infix(@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+deklariert @var{op} als einen Infix-Operator mit den angegebenen
+Vorr@"angen sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur
 den linken und den rechten Operanden sowie das Ergebnis des Operators.
 
 Beispiele:
 
 Sind die rechtsseitigen und linksseitigen Vorr@"ange eines Operators
-@mvar{op} gr@"o@ss{}er als die entsprechenden Vorr@"ange eines anderen
-Operators, dann hat der Operator @mvar{op} Vorrang.
+@var{op} gr@"o@ss{}er als die entsprechenden Vorr@"ange eines anderen
+Operators, dann hat der Operator @var{op} Vorrang.
 
 @example
 (%i1) :lisp (get '$+ 'lbp)
@@ -1321,9 +1321,9 @@ Operators, dann hat der Operator @mvar{op} Vorrang.
 (%o5)                       (a+1,b+2)
 @end example
 
-Ein gr@"o@ss{}erer linksseitige Vorrang @mvar{lbp} bewirkt, dass der
-Operator @mvar{op} rechts-assoziativ ist.  Ein gr@"o@ss{}erer rechtsseitiger
-Vorrang macht dagegen den Operator @mvar{op} links-as@-so@-zia@-tiv.
+Ein gr@"o@ss{}erer linksseitige Vorrang @var{lbp} bewirkt, dass der
+Operator @var{op} rechts-assoziativ ist.  Ein gr@"o@ss{}erer rechtsseitiger
+Vorrang macht dagegen den Operator @var{op} links-as@-so@-zia@-tiv.
 
 @example
 (%i1) infix ("##", 100, 99);
@@ -1357,11 +1357,11 @@ if x ## y then
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Funktion} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
-@deffnx {Funktion} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
+@deffn  {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
 Deklariert einen Matchfix-Operator mit dem linksseitigen Begrenzungszeichen 
-@mvar{ldelimiter} und dem rechtsseitigen Begrenzungszeichen @mvar{rdelimiter}.
+@var{ldelimiter} und dem rechtsseitigen Begrenzungszeichen @var{rdelimiter}.
 
 Ein Matchfix-Operator hat eine beliebige Anzahl an Argumenten, die zwischen
 dem linksseitigen und dem rechtsseitigen Begrenzungszeichen stehen.  Das
@@ -1376,14 +1376,14 @@ Maxima-Operatoren k@"onnen als Matchfix-Operatoren definiert werden, ohne
 dass sich die sonstigen Operatoreigenschaften @"andern.  So kann zum Beispiel
 der Operator @code{+} als Matchfix-Operator definiert werden.
 
-@code{matchfix(@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})}
-definiert die Wortarten f@"ur die Argumente @mvar{arg_pos} und das Ergebnis
-@mvar{pos} sowie das linksseitige @mvar{ldelimiter} und rechtsseitige
-@mvar{rdelimiter} Begrenzungszeichen.
+@code{matchfix(@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})}
+definiert die Wortarten f@"ur die Argumente @var{arg_pos} und das Ergebnis
+@var{pos} sowie das linksseitige @var{ldelimiter} und rechtsseitige
+@var{rdelimiter} Begrenzungszeichen.
 
 Die zu einem Matchfix-Operator zugeh@"orige Funktion kann jede 
 nutzerdefinierte Funktion sein, die mit @mref{:=} oder @mref{define} definiert
-wird.  Die Definition der Funktion kann mit @code{dispfun(@mvar{ldelimiter})} 
+wird.  Die Definition der Funktion kann mit @code{dispfun(@var{ldelimiter})} 
 ausgegeben werden.
 
 Maxima kennt nur den Operator f@"ur Listen @code{[ ]} als Matchfix-Operator.
@@ -1392,7 +1392,7 @@ Matchfix-Operatoren, werden aber vom Parser nicht als Matchfix-Operatoren
 behandelt.
 
 @mref{matchfix} wertet die Argumente aus.  @code{matchfix} gibt das erste
-Argument @mvar{ldelimiter} als Ergebnis zur@"uck.
+Argument @var{ldelimiter} als Ergebnis zur@"uck.
 
 Beispiele:
 
@@ -1454,15 +1454,15 @@ werden.
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{nary}
-@deffn  {Funktion} nary (@mvar{op})
-@deffnx {Funktion} nary (@mvar{op}, @mvar{bp}, @mvar{arg_pos}, @mvar{pos})
+@deffn  {Funktion} nary (@var{op})
+@deffnx {Funktion} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
 
-@code{nary(@mvar{op})} definiert einen @code{N-ary}-Operator @mvar{op} mit einem
+@code{nary(@var{op})} definiert einen @code{N-ary}-Operator @var{op} mit einem
 linksseitigen Vorrang von 180.  Der rechtsseitige Vorrang wird nicht ben@"otigt.
 
-@code{nary(@mvar{op}, @mvar{bp}, @mvar{arg_pos}, @mvar{pos})} definiert einen
-@code{N-ary}-Operator @mvar{op} mit einem rechtsseitigen Vorrang von @mvar{bp} und
-der Wortart @mvar{arg_pos} f@"ur den Operanden und der Wortart @mvar{pos} für das
+@code{nary(@var{op}, @var{bp}, @var{arg_pos}, @var{pos})} definiert einen
+@code{N-ary}-Operator @var{op} mit einem rechtsseitigen Vorrang von @var{bp} und
+der Wortart @var{arg_pos} f@"ur den Operanden und der Wortart @var{pos} für das
 Ergebnis.
 
 Ein @code{N-ary}-Operator ist ein Operator, der eine beliebige Anzahl an 
@@ -1478,13 +1478,13 @@ wird ein Ausdruck @code{j(j(a,b),j(c,d)} zu @code{j(a,b,c,d)} vereinfacht.
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{nofix}
-@deffn  {Funktion} nofix (@mvar{op})
-@deffnx {Funktion} nofix (@mvar{op}, @mvar{pos})
+@deffn  {Funktion} nofix (@var{op})
+@deffnx {Funktion} nofix (@var{op}, @var{pos})
 
-@code{nofix(@mvar{op})} definiert den Operator @mvar{op} als einen Nofix-Operator.
+@code{nofix(@var{op})} definiert den Operator @var{op} als einen Nofix-Operator.
 
-@code{nofix(@mvar{op}, @mvar{pos})} definiert einen Nofix-Operator mit der
-Wortart @mvar{pos} f@"ur das Ergebnis.
+@code{nofix(@var{op}, @var{pos})} definiert einen Nofix-Operator mit der
+Wortart @var{pos} f@"ur das Ergebnis.
 
 Nofix-Operatoren sind Operatoren, die kein Argument haben.  Tritt ein solcher 
 Operator allein auf, wird die dazugeh@"orige Funktion ausgewertet.  Zum Beispiel
@@ -1495,14 +1495,14 @@ Eingabe von @code{quit}, um eine Maxima-Sitzung zu beenden.
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{postfix}
-@deffn  {Funktion} postfix (@mvar{op})
-@deffnx {Funktion} postfix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})
+@deffn  {Funktion} postfix (@var{op})
+@deffnx {Funktion} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
 
-@code{postfix (@mvar{op})} definiert einen Postfix-Operator @mvar{op}.
+@code{postfix (@var{op})} definiert einen Postfix-Operator @var{op}.
 
-@code{postfix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})} definiert einen
-Postfix-Operator @mvar{op} mit einem linksseitigem Vorrang von @mvar{lbp} sowie
-den Wortarten @mvar{lpos} f@"ur den Operanden und @mvar{pos} f@"ur das Ergebnis.
+@code{postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})} definiert einen
+Postfix-Operator @var{op} mit einem linksseitigem Vorrang von @var{lbp} sowie
+den Wortarten @var{lpos} f@"ur den Operanden und @var{pos} f@"ur das Ergebnis.
 
 Ein Postfix-Operator hat einen Operanden, der dem Operator vorangestellt ist.
 Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
@@ -1512,14 +1512,14 @@ Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
 
 @c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{prefix}
-@deffn  {Funktion} prefix (@mvar{op})
-@deffnx {Funktion} prefix (@mvar{op}, @mvar{rbp}, @mvar{rpos}, @mvar{pos})
+@deffn  {Funktion} prefix (@var{op})
+@deffnx {Funktion} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
 
-@code{prefix (@mvar{op})} definiert einen Prefix-Operator @mvar{op}.
+@code{prefix (@var{op})} definiert einen Prefix-Operator @var{op}.
 
-@code{prefix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})} definiert einen
-Prefix-Operator @mvar{op} mit einem rechtsseitigem Vorrang von @mvar{rbp} sowie
-den Wortarten @mvar{rpos} f@"ur den Operanden und @mvar{pos} f@"ur das Ergebnis.
+@code{prefix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})} definiert einen
+Prefix-Operator @var{op} mit einem rechtsseitigem Vorrang von @var{rbp} sowie
+den Wortarten @var{rpos} f@"ur den Operanden und @var{pos} f@"ur das Ergebnis.
 
 Ein Prefix-Operator hat einen Operanden, der dem Operator nachfolgt.  Mit
 @code{prefix("x")} wird die Maxima-Syntax um einen Prefix-Operator @code{x}

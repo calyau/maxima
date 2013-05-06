@@ -24,7 +24,7 @@
 @end ifinfo
 
 @code{__}は、現在評価中の入力式です。
-すなわち、入力式 @mvar{expr}が評価されている間、 @code{__}は @mvar{expr}です。
+すなわち、入力式 @var{expr}が評価されている間、 @code{__}は @var{expr}です。
 
 @code{__}は、入力が整理されたり評価されたりする前に入力式に割り当てられます。
 しかし表示される時、@code{__}の値は（評価はされませんが）整理されます。
@@ -35,9 +35,9 @@
 @code{load}が処理するファイル内では、
 @code{__}は対話プロンプトやバッチファイルの中で直前に入力された入力式にバインドされています;
 @code{__}は処理中のファイル内の入力式にはバインドされません。
-特に、 @code{load (@mvar{filename})}が対話プロンプトからコールされた時、
+特に、 @code{load (@var{filename})}が対話プロンプトからコールされた時、
 @code{__}は、ファイルが処理されている間、
-@code{load (@mvar{filename})}にバインドされます。
+@code{load (@var{filename})}にバインドされます。
 
 @mref{_}や @mref{%}も参照してください。
 
@@ -179,7 +179,7 @@ Current input expression = --------------
 @end ifinfo
 
 合成文、すなわち@code{block}, @code{lambda},
-もしくは@code{(@mvar{s_1}, ..., @mvar{s_n})}の中で、 @code{%%}は前の文の値です。
+もしくは@code{(@var{s_1}, ..., @var{s_n})}の中で、 @code{%%}は前の文の値です。
 
 合成文の最初の文もしくは合成文の外側では@code{%%}は未定義です。
 
@@ -235,14 +235,14 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{%th}
-@deffn {関数} %th (@mvar{i})
+@deffn {関数} %th (@var{i})
 @ifinfo
 @fnindex N'th previous output
 @end ifinfo
 
-@mvar{i}番前の出力式の値。
-すなわち、計算される次の式を@mvar{n}番目の出力とすると
-@code{%th (@mvar{m})}は、(@mvar{n} - @mvar{m})番目の出力です。
+@var{i}番前の出力式の値。
+すなわち、計算される次の式を@var{n}番目の出力とすると
+@code{%th (@var{m})}は、(@var{n} - @var{m})番目の出力です。
 
 @code{batch}と@code{load}は@code{%th}を認識されます。
 @code{batch}が処理するファイル内では、
@@ -415,18 +415,18 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 
 @c -----------------------------------------------------------------------------
 @anchor{kill}
-@deffn  {関数} kill (@mvar{a_1}, @dots{}, @mvar{a_n})
+@deffn  {関数} kill (@var{a_1}, @dots{}, @var{a_n})
 @deffnx {関数} kill (labels)
 @deffnx {関数} kill (inlabels, outlabels, linelabels)
-@deffnx {関数} kill (@mvar{n})
-@deffnx {関数} kill ([@mvar{m}, @mvar{n}])
+@deffnx {関数} kill (@var{n})
+@deffnx {関数} kill ([@var{m}, @var{n}])
 @deffnx {関数} kill (values, functions, arrays, @dots{})
 @deffnx {関数} kill (all)
-@deffnx {関数} kill (allbut (@mvar{a_1}, @dots{}, @mvar{a_n}))
+@deffnx {関数} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
-引数@mvar{a_1}, @dots{}, @mvar{a_n}からすべてのバインド（値、関数、配列、ルール）を解除します。
-引数@mvar{a_k}はシンボルか配列要素を取り得ます。
-@mvar{a_k}が配列要素の時、@code{kill}は配列の他の要素には影響することなくその要素をアンバインドします。
+引数@var{a_1}, @dots{}, @var{a_n}からすべてのバインド（値、関数、配列、ルール）を解除します。
+引数@var{a_k}はシンボルか配列要素を取り得ます。
+@var{a_k}が配列要素の時、@code{kill}は配列の他の要素には影響することなくその要素をアンバインドします。
 
 いくつかの特殊な引数が認識されます。
 例えば、@code{kill (inlabels, functions, allbut (foo, bar))}のように、異なる引数の種類が組み合わされます。
@@ -439,10 +439,10 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 
 @code{kill (}@emph{n}@code{)}（nは整数）は入力、出力ラベルの最近のn個をアンバインドします。
 
-@code{kill ([@mvar{m}, @mvar{n}])}は入力、出力ラベル@mvar{m}から@mvar{n}までをアンバインドします。
+@code{kill ([@var{m}, @var{n}])}は入力、出力ラベル@var{m}から@var{n}までをアンバインドします。
 
-@code{kill (@mvar{infolist})}は @mvar{infolist}の中のすべての項目をアンバインドします。
-ここで、@mvar{infolist}は（@mref{values}, @mref{functions}, @mref{arrays}のような)
+@code{kill (@var{infolist})}は @var{infolist}の中のすべての項目をアンバインドします。
+ここで、@var{infolist}は（@mref{values}, @mref{functions}, @mref{arrays}のような)
 @code{infolists}の中の任意の項目です。
 @code{infolists}も参照してください。
 
@@ -450,11 +450,11 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @code{kill (all)}はグローバル変数をデフォルト値にリセットしません;
 この点に関しては@mref{reset}を参照してください。
 
-@code{kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))}は、
-@mvar{a_1}, ..., @mvar{a_n}を除いて
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}は、
+@var{a_1}, ..., @var{a_n}を除いて
 すべてのinfolistsの中のすべての項目をアンバインドします。
-@code{kill (allbut (@mvar{infolist}))}は
-@mvar{infolist}（@mvar{infolist}は@mref{values}, @mref{functions}, @mref{arrays}など）
+@code{kill (allbut (@var{infolist}))}は
+@var{infolist}（@var{infolist}は@mref{values}, @mref{functions}, @mref{arrays}など）
 上の項目を除いてすべての項目をアンバインドします。
 
 バインドされたプロパティによって使われたメモリは、すべてのシンボルがプロパティからアンバインドされるまで解放されません。
@@ -464,7 +464,7 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @code{kill}は引数をクォートします。
 引数を評価するにはクォートクォート演算子@code{'@w{}'}を使います。
 
-@code{kill (@mvar{symbol})}はシンボルのすべてのプロパティをアンバインドします。
+@code{kill (@var{symbol})}はシンボルのすべてのプロパティをアンバインドします。
 対照的に、関数@mref{remvalue}, @mref{remfunction}, @mref{remarray},
 @mref{remrule}は特定のプロパティをアンバインドします。
 
@@ -477,15 +477,15 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn {関数} labels (@mvar{symbol})
+@deffn {関数} labels (@var{symbol})
 @deffnx {システム変数} labels
 
-@mvar{symbol}で始まる入力、出力、中間式ラベルのリストを返します。
-@mvar{symbol}は、@mref{inchar}, @mref{outchar}, もしくは@mref{linechar}の値が典型的です。
+@var{symbol}で始まる入力、出力、中間式ラベルのリストを返します。
+@var{symbol}は、@mref{inchar}, @mref{outchar}, もしくは@mref{linechar}の値が典型的です。
 ラベル文字はパーセント記号ありでもあしでもかまいませんので、
 例えば、@code{i}と@code{%i}は同じ結果になります。
 
-もし@mvar{symbol}で始まるラベルがなければ、@code{labels}は空のリストを返します。
+もし@var{symbol}で始まるラベルがなければ、@code{labels}は空のリストを返します。
 
 関数@code{labels}は引数をクォートします。
 引数を評価するにはクォートクォート演算子@code{'@w{}'}を使います。
@@ -656,9 +656,9 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @c -----------------------------------------------------------------------------
 @anchor{playback}
 @deffn  {関数} playback ()
-@deffnx {関数} playback (@mvar{n})
-@deffnx {関数} playback ([@mvar{m}, @mvar{n}])
-@deffnx {関数} playback ([@mvar{m}])
+@deffnx {関数} playback (@var{n})
+@deffnx {関数} playback ([@var{m}, @var{n}])
+@deffnx {関数} playback ([@var{m}])
 @deffnx {関数} playback (input)
 @deffnx {関数} playback (slow)
 @deffnx {関数} playback (time)
@@ -677,13 +677,13 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 たとえ計算時に@code{$}終端子で出力が抑制されていても、
 出力式は表示されます。
 
-@code{playback (@mvar{n})}は最近の@mvar{n}個の式を表示します。
+@code{playback (@var{n})}は最近の@var{n}個の式を表示します。
 入力、出力、中間式それぞれを１と数えます。
 
-@code{playback ([@mvar{m}, @mvar{n}])}は
-@mvar{m}番目から@mvar{n}番目までの入力、出力、中間式を表示します。
+@code{playback ([@var{m}, @var{n}])}は
+@var{m}番目から@var{n}番目までの入力、出力、中間式を表示します。
 
-@code{playback ([@mvar{m}])}は @code{playback ([@mvar{m}, @mvar{m}])}と同値です;
+@code{playback ([@var{m}])}は @code{playback ([@var{m}, @var{m}])}と同値です;
 これは普通、入力と出力の式のペアを１つ表示します。
 
 @code{playback (input)}は今までに生成された入力式をすべて表示します。
@@ -747,9 +747,9 @@ Maximaセッションを終了します。
 
 @c -----------------------------------------------------------------------------
 @anchor{read}
-@deffn {関数} read (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {関数} read (@var{expr_1}, @dots{}, @var{expr_n})
 
-@mvar{expr_1}, @dots{}, @mvar{expr_n}を表示し、
+@var{expr_1}, @dots{}, @var{expr_n}を表示し、
 コンソールから式１つを読み込み、評価された式を返します。
 式はセミコロン@code{;}もしくはドル記号@code{$}で終了します。
 
@@ -772,9 +772,9 @@ foo is 42  -- enter new value.
 
 @c -----------------------------------------------------------------------------
 @anchor{readonly}
-@deffn {関数} readonly (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {関数} readonly (@var{expr_1}, @dots{}, @var{expr_n})
 
-@mvar{expr_1}, @dots{}, @mvar{expr_n}を表示し、
+@var{expr_1}, @dots{}, @var{expr_n}を表示し、
 コンソールから式を１つ読み込み、
 式を（評価せずに）返します。
 式はセミコロン@code{;}もしくはドル記号@code{$}で終了します。
@@ -991,7 +991,7 @@ Maximaは @code{%e}の負の指数乗を商として表示します。
 
 @c -----------------------------------------------------------------------------
 @anchor{disp}
-@deffn {関数} disp (@mvar{expr_1}, @mvar{expr_2}, @dots{})
+@deffn {関数} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
 @mref{display}のようですが、
 等式ではなく引数の値だけが表示されます。
@@ -1028,9 +1028,9 @@ Maximaは @code{%e}の負の指数乗を商として表示します。
 
 @c -----------------------------------------------------------------------------
 @anchor{display}
-@deffn {関数} display (@mvar{expr_1}, @mvar{expr_2}, @dots{})
+@deffn {関数} display (@var{expr_1}, @var{expr_2}, @dots{})
 
-左辺が未評価の@mvar{expr_i}で、右辺が式の値の等式を行の中央に表示します。
+左辺が未評価の@var{expr_i}で、右辺が式の値の等式を行の中央に表示します。
 この関数は、中間結果を表示するのにブロックや@mref{for}文の中で役立ちます。
 @code{display}の引数は、通常アトムや、添字付き変数、関数コールです。
 @code{disp}も参照してください。
@@ -1131,11 +1131,11 @@ X*4/3;    ---        - X
 
 @c -----------------------------------------------------------------------------
 @anchor{dispterms}
-@deffn {関数} dispterms (@mvar{expr})
-@mvar{expr}をパーツ毎に一行ずつ使って表示します。
-すなわち、最初に@mvar{expr}の演算子が表示され、
+@deffn {関数} dispterms (@var{expr})
+@var{expr}をパーツ毎に一行ずつ使って表示します。
+すなわち、最初に@var{expr}の演算子が表示され、
 それぞれの項が別々に表示されます。
-もし@mvar{expr}が他の方法で表示するには大きすぎるなら、
+もし@var{expr}が他の方法で表示するには大きすぎるなら、
 これは役に立ちます。
 例えば、もし@code{P1}, @code{P2}, ...が非常に大きな式なら、
 @code{P1 + P2 + ...}を一度に表示しようとする場合、
@@ -1156,12 +1156,12 @@ X*4/3;    ---        - X
 @c -----------------------------------------------------------------------------
 @anchor{expt}
 @anchor{ncexpt}
-@deffn  {関数} expt (@mvar{a}, @mvar{b})
-@deffnx {関数} ncexpt (@mvar{a}, @mvar{b})
+@deffn  {関数} expt (@var{a}, @var{b})
+@deffnx {関数} ncexpt (@var{a}, @var{b})
 
-もし指数式が@code{@mvar{a}^@mvar{b}}のように表示するには広すぎるなら、
-@code{expt (@mvar{a}, @mvar{b})}
-(もしくは、@code{@mvar{a}^^@mvar{b}}の場合、@code{ncexpt (@mvar{a}, @mvar{b})}
+もし指数式が@code{@var{a}^@var{b}}のように表示するには広すぎるなら、
+@code{expt (@var{a}, @var{b})}
+(もしくは、@code{@var{a}^^@var{b}}の場合、@code{ncexpt (@var{a}, @var{b})}
 のように現れます。
 
 @c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
@@ -1203,14 +1203,14 @@ Maximaは式を商を使って負の指数の式を表示します。
 
 @c -----------------------------------------------------------------------------
 @anchor{grind}
-@deffn {関数} grind (@mvar{expr})
+@deffn {関数} grind (@var{expr})
 @deffnx {オプション変数} grind
 
 関数@code{grind}は
-コンソールにMaximaへの入力に適した形で@mvar{expr}を印刷します。
+コンソールにMaximaへの入力に適した形で@var{expr}を印刷します。
 @code{grind}はいつも@code{done}を返します。
 
-@mvar{expr}が関数名やマクロ名の時、
+@var{expr}が関数名やマクロ名の時、
 @code{grind}は、名前だけでなく関数やマクロ定義を出力します。
 
 @mref{string}も参照してください。
@@ -1428,9 +1428,9 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisp}
-@deffn {関数} ldisp (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {関数} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
 
-式@mvar{expr_1}, ..., @mvar{expr_n}をコンソールに印刷出力として表示します。
+式@var{expr_1}, ..., @var{expr_n}をコンソールに印刷出力として表示します。
 @code{ldisp}は
 引数それぞれに中間式ラベルを割り当て、ラベルのリストを返します。
 
@@ -1468,9 +1468,9 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisplay}
-@deffn {関数} ldisplay (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {関数} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
 
-式@mvar{expr_1}, ..., @mvar{expr_n}をコンソールに印刷出力として表示します。
+式@var{expr_1}, ..., @var{expr_n}をコンソールに印刷出力として表示します。
 式それぞれは、
 @code{lhs}が@code{ldisplay}の引数の１つで、@code{rhs}がその値の、
 形式@code{lhs = rhs}の等式として表示されます。
@@ -1679,9 +1679,9 @@ Lispシンボルはクエスチョンマーク@code{?}を先頭文字として�
 
 @c -----------------------------------------------------------------------------
 @anchor{print}
-@deffn {関数} print (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {関数} print (@var{expr_1}, @dots{}, @var{expr_n})
 
-@mvar{expr_1}, @dots{}, @mvar{expr_n}を１つ１つ、左から右へ評価し、
+@var{expr_1}, @dots{}, @var{expr_n}を１つ１つ、左から右へ評価し、
 コンソールディスプレイの左端から表示します。
 
 @code{print}が返す値は最後の引数の値です。

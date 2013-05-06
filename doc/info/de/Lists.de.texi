@@ -180,10 +180,10 @@ Beispiele:
 
 @c --- 14.03.2011 DK -----------------------------------------------------------
 @anchor{append}
-@deffn {Funktion} append (@mvar{list_1}, @dots{}, @mvar{list_n})
+@deffn {Funktion} append (@var{list_1}, @dots{}, @var{list_n})
 
-Gibt eine Liste mit den Elementen der Listen @mvar{list_1}, @dots{}, @mvar{list_n}
-zur@"uck.  Ist eines der Argumente @mvar{list_1}, @dots{}, @mvar{list_n} keine
+Gibt eine Liste mit den Elementen der Listen @var{list_1}, @dots{}, @var{list_n}
+zur@"uck.  Ist eines der Argumente @var{list_1}, @dots{}, @var{list_n} keine
 Liste meldet Maxima einen Fehler.
 
 @code{append} kann auch f@"ur allgemeine Ausdr@"ucke genutzt werden.
@@ -214,13 +214,13 @@ Additionen zusammenzusetzen.
 
 @c --- 14.03.2011 DK -----------------------------------------------------------
 @anchor{assoc}
-@deffn  {Funktion} assoc (@mvar{key}, @mvar{list}, @mvar{default})
-@deffnx {Funktion} assoc (@mvar{key}, @mvar{list})
+@deffn  {Funktion} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Funktion} assoc (@var{key}, @var{list})
 
 Ist das Argument @code{list} eine Liste mit paarweisen Elementen der Form
-@code{[[key_1, value_1], [key_2, value_2], ...]}, wobei @mvar{key_i} ein
-Schl@"ussel und @mvar{value_i} der dazugeh@"orige Wert ist, dann gibt die
-Funktion @code{assoc} den zum Schl@"ussel @mvar{key} geh@"orenden Wert
+@code{[[key_1, value_1], [key_2, value_2], ...]}, wobei @var{key_i} ein
+Schl@"ussel und @var{value_i} der dazugeh@"orige Wert ist, dann gibt die
+Funktion @code{assoc} den zum Schl@"ussel @var{key} geh@"orenden Wert
 @code{value} zur@"uck.  Wird der Schl@"ussel nicht gefunden, wird das Argument
 @code{default} zur@"uckgegeben, wenn es vorhanden ist, oder der Wert
 @code{false}.
@@ -258,13 +258,13 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{cons}
-@deffn {Funktion} cons (@mvar{expr}, @mvar{list})
+@deffn {Funktion} cons (@var{expr}, @var{list})
 
-F@"ugt den Ausdruck @mvar{expr} als erstes Element der Liste @mvar{list} hinzu.
+F@"ugt den Ausdruck @var{expr} als erstes Element der Liste @var{list} hinzu.
 
-@code{cons} arbeitet auch mit allgemeinen Ausdr@"ucken als Argument @mvar{list}.
-In diesem Fall wird dem Hauptoperator des Arguments @mvar{list} der Ausdruck
-@mvar{expr} als erstes Argument hinzugef@"ugt.
+@code{cons} arbeitet auch mit allgemeinen Ausdr@"ucken als Argument @var{list}.
+In diesem Fall wird dem Hauptoperator des Arguments @var{list} der Ausdruck
+@var{expr} als erstes Argument hinzugef@"ugt.
 
 Siehe auch die Funktion @mrefcomma{endcons} um ein Element an das Ende einer
 Liste anzuh@"angen sowie die Funktion @mrefcomma{append} um zwei Listen
@@ -290,9 +290,9 @@ Beispiele:
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{copylist}
 @need 800
-@deffn {Funktion} copylist (@mvar{list})
+@deffn {Funktion} copylist (@var{list})
 
-Gibt eine Kopie der Liste @mvar{list} zur@"uck.
+Gibt eine Kopie der Liste @var{list} zur@"uck.
 
 Im Unterschied zur Funktion @code{copylist} wird mit dem Zuweisungsoperator
 @mref{:} keine Kopie, sondern eine Referenz auf das Original zugewiesen.  Das
@@ -319,18 +319,18 @@ modifiziert wird.
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{create_list}
-@deffn {Funktion} create_list (@mvar{expr}, @mvar{x_1}, @mvar{list_1}, @dots{}, @mvar{x_n}, @mvar{list_n})
+@deffn {Funktion} create_list (@var{expr}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
 
-Erzeugt eine Liste, indem der Ausdruck @mvar{expr} zun@"achst f@"ur die Variable
-@mvar{x_1} ausgewertet wird.  Der Variablen @mvar{x_1} werden f@"ur die Auswertung 
-nacheinander die Werte der Liste @mvar{list_1} zugewiesen.  Dann wird der
-Ausdruck @mvar{expr} f@"ur die Variable @mvar{x_2} mit den Werten der Liste
-@mvar{list_2} ausgewertet u.s.w.  Die Anzahl der Elemente der Ergebnisliste ist
-das Produkt der Anzahl der Elemente der einzelnen Listen @mvar{list_i}.  Die
-Variablen @mvar{x_i} m@"ussen Symbole sein, die nicht ausgewertet werden.  Die 
-Elemente der Listen @mvar{list_i} werden vor der Iteration ausgewertet.
+Erzeugt eine Liste, indem der Ausdruck @var{expr} zun@"achst f@"ur die Variable
+@var{x_1} ausgewertet wird.  Der Variablen @var{x_1} werden f@"ur die Auswertung 
+nacheinander die Werte der Liste @var{list_1} zugewiesen.  Dann wird der
+Ausdruck @var{expr} f@"ur die Variable @var{x_2} mit den Werten der Liste
+@var{list_2} ausgewertet u.s.w.  Die Anzahl der Elemente der Ergebnisliste ist
+das Produkt der Anzahl der Elemente der einzelnen Listen @var{list_i}.  Die
+Variablen @var{x_i} m@"ussen Symbole sein, die nicht ausgewertet werden.  Die 
+Elemente der Listen @var{list_i} werden vor der Iteration ausgewertet.
 
-Anstatt einer Liste @mvar{list_i} mit den Elementen f@"ur die Iteration kann auch
+Anstatt einer Liste @var{list_i} mit den Elementen f@"ur die Iteration kann auch
 eine untere und obere Grenze angegeben werden.  Die Grenzen k@"onnen ganze
 Zahlen oder Gleitkommazahlen sowie Ausdr@"ucke sein, die zu einer Zahl
 auswerten.  Die Schrittweite ist immer 1.  Siehe auch das Beispiel weiter unten.
@@ -350,7 +350,7 @@ In diesem Beispiel wird f@"ur zwei Listen iteriert.
 (%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
 @end example
 
-Anstatt einer Liste @mvar{list_i} k@"onnen auch zwei Argumente @"ubergeben 
+Anstatt einer Liste @var{list_i} k@"onnen auch zwei Argumente @"ubergeben 
 werden, die jedes zu einer Nummer auswerten.  Diese Werte sind die untere und
 die obere Grenze f@"ur die Iteration.
 
@@ -362,14 +362,14 @@ die obere Grenze f@"ur die Iteration.
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{delete}
-@deffn  {Funktion} delete (@mvar{expr}, @mvar{list})
-@deffnx {Funktion} delete (@mvar{expr}, @mvar{list}, @mvar{n})
+@deffn  {Funktion} delete (@var{expr}, @var{list})
+@deffnx {Funktion} delete (@var{expr}, @var{list}, @var{n})
 
-@code{delete(@mvar{expr}, @mvar{list})} entfernt aus der Liste @mvar{list} die
-Elemente, die gleich dem Ausdruck @mvar{expr} sind.  Mit dem Argument @mvar{n}
+@code{delete(@var{expr}, @var{list})} entfernt aus der Liste @var{list} die
+Elemente, die gleich dem Ausdruck @var{expr} sind.  Mit dem Argument @var{n}
 kann die Anzahl der Elemente spezifiziert werden, die aus der Liste entfernt
 werden sollen.  @code{delete} gibt eine neue Liste zur@"uck.  Das Argument
-@mvar{list} wird nicht modifiziert.
+@var{list} wird nicht modifiziert.
 
 Die Gleichheit wird mit dem Operator @mref{=} gepr@"uft.  Daher werden nur
 Ausdr@"ucke als gleich erkannt, die syntaktisch @"ubereinstimmen.  @"Aquivalente
@@ -377,7 +377,7 @@ Ausdr@"ucke, die syntaktisch voneinander verschieden sind, werden nicht aus der
 Liste entfernt.  Zum Beispiel sind die Ausdr@"ucke @code{x^2-1} und
 @code{(x+1)*(x-1)} @"aquivalent, aber syntaktisch verschieden.
 
-Das zweite Argument @mvar{list} kann auch ein allgemeiner Ausdruck sein.  In 
+Das zweite Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  In 
 diesem Fall werden die Argumente des Hauptoperators als die Elemente einer Liste
 angenommen.
 
@@ -442,13 +442,13 @@ Die Gleichheit wird mit dem Operator @code{=} gepr@"uft.
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{endcons}
-@deffn {Funktion} endcons (@mvar{expr}, @mvar{list})
+@deffn {Funktion} endcons (@var{expr}, @var{list})
 
-F@"ugt den Ausdruck @mvar{expr} als letztes Element der Liste @mvar{list} hinzu.
+F@"ugt den Ausdruck @var{expr} als letztes Element der Liste @var{list} hinzu.
 
 @code{endcons} arbeitet auch mit allgemeinen Ausdr@"ucken als Argument
-@mvar{list}.  In diesem Fall wird dem Hauptoperator des Arguments @mvar{list} der
-Ausdruck @mvar{expr} als letztes Argument hinzugef@"ugt.
+@var{list}.  In diesem Fall wird dem Hauptoperator des Arguments @var{list} der
+Ausdruck @var{expr} als letztes Argument hinzugef@"ugt.
 
 Siehe auch die Funktion @mrefcomma{cons} um ein Element am Anfang einer
 Liste einzuf@"ugen sowie die Funktion @mrefcomma{append} um zwei Listen
@@ -473,11 +473,11 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{first}
-@deffn {Funktion} first (@mvar{list})
+@deffn {Funktion} first (@var{list})
 
-Gibt das erste Element der Liste @mvar{list} zur@"uck.
+Gibt das erste Element der Liste @var{list} zur@"uck.
 
-Das Argument @mvar{list} kann auch ein allgemeiner Ausdruck wie zum Beispiel
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck wie zum Beispiel
 der Term einer Summe, der Faktor eines Produktes oder die erste Spalte einer
 Matrix sein.  Die Funktion @code{first} und verwandte Funktionen wie
 @mref{last} oder @mref{rest} arbeiten mit der externen Darstellung eines
@@ -506,17 +506,17 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{join}
-@deffn {Funktion} join (@mvar{list_1}, @mvar{list_2})
+@deffn {Funktion} join (@var{list_1}, @var{list_2})
 
-Erzeugt eine neue Liste aus den Elementen der Listen @mvar{list_1} und
-@mvar{list_2}, wobei die Elemente abwechselnd @"ubernommen werden.  Das Ergebnis
-hat die Form @code{[@mvar{list_1}[1], @mvar{list_2}[1], @mvar{list_1}[2],
-@mvar{list_2}[2], ...]}.
+Erzeugt eine neue Liste aus den Elementen der Listen @var{list_1} und
+@var{list_2}, wobei die Elemente abwechselnd @"ubernommen werden.  Das Ergebnis
+hat die Form @code{[@var{list_1}[1], @var{list_2}[1], @var{list_1}[2],
+@var{list_2}[2], ...]}.
 
 Haben die Listen verschiedene L@"angen, werden die zus@"atzlichen Elemente der
 l@"angeren Liste ignoriert.
 
-Sind @mvar{list_1} oder @mvar{list_2} keine Listen, gibt Maxima einen Fehler aus.
+Sind @var{list_1} oder @var{list_2} keine Listen, gibt Maxima einen Fehler aus.
 
 Beispiele:
 
@@ -532,11 +532,11 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{last}
-@deffn {Funktion} last (@mvar{list})
+@deffn {Funktion} last (@var{list})
 
-Gibt das letzte Element der Liste @mvar{list} zur@"uck.
+Gibt das letzte Element der Liste @var{list} zur@"uck.
 
-Das Argument @mvar{list} kann auch ein allgemeiner Ausdruck sein.  Siehe
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Siehe
 @mref{first} f@"ur weitere Erl@"auterungen.
 
 Beispiele:
@@ -555,11 +555,11 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{length}
-@deffn {Funktion} length (@mvar{list})
+@deffn {Funktion} length (@var{list})
 
-Gibt die Anzahl der Elemente der Liste @mvar{list} zur@"uck.
+Gibt die Anzahl der Elemente der Liste @var{list} zur@"uck.
 
-Das Argument @mvar{list} kann auch ein allgemeiner Ausdruck sein.  Wie bei
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Wie bei
 anderen Funktionen f@"ur Listen wird auch von der Funktion @code{length} die
 externe Darstellung eines Ausdrucks betrachtet, wie sie f@"ur die Ausgabe
 vorliegt.  Die Optionsvariable @mref{inflag} hat daher Einfluss auf das Ergebnis
@@ -617,22 +617,22 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{listp}
-@deffn {Funktion} listp (@mvar{expr})
+@deffn {Funktion} listp (@var{expr})
 
-Gibt @code{true} zur@"uck, wenn @mvar{expr} eine Liste ist.  Ansonsten ist der 
+Gibt @code{true} zur@"uck, wenn @var{expr} eine Liste ist.  Ansonsten ist der 
 R@"uckgabewert @code{false}.
 @end deffn
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{makelist}
-@deffn  {Funktion} makelist (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
-@deffnx {Funktion} makelist (@mvar{expr}, @mvar{x}, @mvar{list})
+@deffn  {Funktion} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Funktion} makelist (@var{expr}, @var{x}, @var{list})
 
-Erzeugt eine Liste, indem der Ausdruck @mvar{expr} f@"ur die Variable @mvar{i}
-ausgewertet wird.  Die Variable @mvar{i} nimmt nacheinander die Werte von
-@mvar{i_0} bis @mvar{i_1} an, wobei die Schrittweite 1 ist.  Alternativ kann eine
-Liste @mvar{list} als Argument @"ubergeben werden.  In diesem Fall nimmt die
-Variable @mvar{i} nacheinander die Werte der Liste @mvar{list} an.
+Erzeugt eine Liste, indem der Ausdruck @var{expr} f@"ur die Variable @var{i}
+ausgewertet wird.  Die Variable @var{i} nimmt nacheinander die Werte von
+@var{i_0} bis @var{i_1} an, wobei die Schrittweite 1 ist.  Alternativ kann eine
+Liste @var{list} als Argument @"ubergeben werden.  In diesem Fall nimmt die
+Variable @var{i} nacheinander die Werte der Liste @var{list} an.
 
 Siehe auch die Funktion @mrefcomma{create_list} um eine Liste zu generieren.
 
@@ -648,10 +648,10 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{member}
-@deffn {Funktion} member (@mvar{expr}, @mvar{list})
+@deffn {Funktion} member (@var{expr}, @var{list})
 
-Gibt @code{true} zur@"uck, wenn der Ausdruck @mvar{expr} gleich einem Element in
-der Liste @mvar{list} ist.  Die Gleichheit wird dem Operator
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} gleich einem Element in
+der Liste @var{list} ist.  Die Gleichheit wird dem Operator
 @mref{=} festgestellt.
 
 Die Gleichheit wird mit dem Operator @mref{=} gepr@"uft.  Daher werden nur
@@ -660,7 +660,7 @@ Ausdr@"ucke, die syntaktisch voneinander verschieden sind, werden nicht aus der
 Liste entfernt.  Zum Beispiel sind die Ausdr@"ucke @code{x^2-1} und
 @code{(x+1)*(x-1)} @"aquivalent, aber syntaktisch verschieden.
 
-Das Argument @mvar{list} kann auch ein allgemeiner Ausdruck sein.  Dabei werden
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Dabei werden
 die Argumente des Hauptoperators betrachtet.
 
 Siehe auch die Funktion @mrefdot{elementp}
@@ -691,13 +691,13 @@ Beispiele:
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{pop}
-@deffn {Funktion} pop (@mvar{list})
+@deffn {Funktion} pop (@var{list})
 
-Die Funktion @code{pop} entfernt das erste Element der Liste @mvar{list} und
-gibt dieses Element zur@"uck.  @mvar{list} muss ein Symbol sein, dem eine Liste
+Die Funktion @code{pop} entfernt das erste Element der Liste @var{list} und
+gibt dieses Element zur@"uck.  @var{list} muss ein Symbol sein, dem eine Liste
 zugewiesen wurde, und kann nicht selbst eine Liste sein.
 
-Ist dem Argument @mvar{list} keine Liste zugewiesen, gibt Maxima eine
+Ist dem Argument @var{list} keine Liste zugewiesen, gibt Maxima eine
 Fehlermeldung aus.
 
 Siehe auch die Funktion @mref{push} f@"ur Beispiele.
@@ -707,15 +707,15 @@ Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{push}
-@deffn {Funktion} push (@mvar{item}, @mvar{list})
+@deffn {Funktion} push (@var{item}, @var{list})
 
-Die Funktion @code{push} f@"ugt das Argument @mvar{item} als erstes Element der
-Liste @mvar{list} hinzu und gibt die neue Liste zur@"uck.  Das Argument
-@mvar{list} muss ein Symbol sein, dem eine Liste zugewiesen wurde, und kann nicht
-selbst eine Liste sein.  Das Argument @mvar{item} kann ein beliebiger Ausdruck
+Die Funktion @code{push} f@"ugt das Argument @var{item} als erstes Element der
+Liste @var{list} hinzu und gibt die neue Liste zur@"uck.  Das Argument
+@var{list} muss ein Symbol sein, dem eine Liste zugewiesen wurde, und kann nicht
+selbst eine Liste sein.  Das Argument @var{item} kann ein beliebiger Ausdruck
 sein.
 
-Ist dem Argument @mvar{list} keine Liste zugewiesen, gibt Maxima eine 
+Ist dem Argument @var{list} keine Liste zugewiesen, gibt Maxima eine 
 Fehlermeldung aus.
 
 Siehe auch die Funktion @mrefcomma{pop} um das erste Element einer Liste zu
@@ -753,15 +753,15 @@ Beispiele:
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{rest}
-@deffn  {Funktion} rest (@mvar{list}, @mvar{n})
-@deffnx {Funktion} rest (@mvar{list})
+@deffn  {Funktion} rest (@var{list}, @var{n})
+@deffnx {Funktion} rest (@var{list})
 
-Entfernt das erste Element oder, wenn @mvar{n} eine positive ganze Zahl ist, die
-ersten @mvar{n} Elemente der Liste @mvar{list} und gibt den Rest der Liste als
-Ergebnis zur@"uck.  Ist @mvar{n} eine negative Zahl, werden die letzten @mvar{n}
+Entfernt das erste Element oder, wenn @var{n} eine positive ganze Zahl ist, die
+ersten @var{n} Elemente der Liste @var{list} und gibt den Rest der Liste als
+Ergebnis zur@"uck.  Ist @var{n} eine negative Zahl, werden die letzten @var{n}
 Elemente von der Liste entfernt und der Rest als Ergebnis zur@"uckgegeben.
 
-Das Argument @mvar{list} kann auch ein allgemeiner Ausdruck sein.
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.
 
 Siehe auch die Funktionen @mref{first} und @mrefdot{last}
 
@@ -777,10 +777,10 @@ Beispiele:
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{reverse}
-@deffn {Funktion} reverse (@mvar{list})
+@deffn {Funktion} reverse (@var{list})
 
-Kehrt die Anordnung der Elemente einer Liste @mvar{list} um und gibt die
-Ergebnisliste zur@"uck.  Das Argument @mvar{list} kann auch ein allgemeiner
+Kehrt die Anordnung der Elemente einer Liste @var{list} um und gibt die
+Ergebnisliste zur@"uck.  Das Argument @var{list} kann auch ein allgemeiner
 Ausdruck sein.
 
 Beispiele:
@@ -804,30 +804,30 @@ Beispiele:
 @anchor{eighth}
 @anchor{ninth}
 @anchor{tenth}
-@deffn  {Funktion} second (@mvar{list})
-@deffnx {Funktion} third (@mvar{list})
-@deffnx {Funktion} fourth (@mvar{list})
-@deffnx {Funktion} fifth (@mvar{list})
-@deffnx {Funktion} sixth (@mvar{list})
-@deffnx {Funktion} seventh (@mvar{list})
-@deffnx {Funktion} eighth (@mvar{list})
-@deffnx {Funktion} ninth (@mvar{list})
-@deffnx {Funktion} tenth (@mvar{list})
+@deffn  {Funktion} second (@var{list})
+@deffnx {Funktion} third (@var{list})
+@deffnx {Funktion} fourth (@var{list})
+@deffnx {Funktion} fifth (@var{list})
+@deffnx {Funktion} sixth (@var{list})
+@deffnx {Funktion} seventh (@var{list})
+@deffnx {Funktion} eighth (@var{list})
+@deffnx {Funktion} ninth (@var{list})
+@deffnx {Funktion} tenth (@var{list})
 
 Die Funktionen @code{second} bis @code{tenth} geben das 2. bis 10. Element eines
-Ausdrucks oder einer Liste @mvar{list} zur@"uck.  Siehe @mrefdot{first}
+Ausdrucks oder einer Liste @var{list} zur@"uck.  Siehe @mrefdot{first}
 @end deffn
 
 @c --- 20.03.2011 DK -----------------------------------------------------------
 @anchor{sort}
-@deffn  {Funktion} sort (@mvar{L}, @mvar{P})
-@deffnx {Funktion} sort (@mvar{L})
+@deffn  {Funktion} sort (@var{L}, @var{P})
+@deffnx {Funktion} sort (@var{L})
 
-Sortiert eine Liste @mvar{L} und gibt die sortierte Liste zur@"uck.  Das
-optionale Argument @mvar{P} ist eine Aussagefunktion mit zwei Argumenten, die
+Sortiert eine Liste @var{L} und gibt die sortierte Liste zur@"uck.  Das
+optionale Argument @var{P} ist eine Aussagefunktion mit zwei Argumenten, die
 eine Ordnung der Elemente definiert.  Die Aussagefunktion kann eine Funktion,
 ein bin@"arer Operator oder ein Lambda-Ausdruck sein.  Wird kein Argument
-@mvar{P} angegeben, werden die Elemente der Liste mit der Aussagefunktion
+@var{P} angegeben, werden die Elemente der Liste mit der Aussagefunktion
 @mref{orderlessp} geordnet.
 
 Die Aussagefunktion @mref{orderlessp} sortiert eine List aufsteigend.  Mit der
@@ -880,9 +880,9 @@ Alle anderen Elemente werden aufsteigend sortiert.
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{sublist}
-@deffn {Funktion} sublist (@mvar{L}, @mvar{P})
+@deffn {Funktion} sublist (@var{L}, @var{P})
 
-Gibt die Elemente der Liste @mvar{L} als eine Liste zur@"uck, f@"ur die die
+Gibt die Elemente der Liste @var{L} als eine Liste zur@"uck, f@"ur die die
 Aussagefunktion @code{P} das Ergebnis @code{true} hat.  @code{P} ist eine
 Funktion mit einem Argument wie zum Beispiel die Funktion
 @mrefdot{integerp}  Siehe auch die Funktion @mrefdot{sublist_indices}
@@ -899,9 +899,9 @@ Beispiele:
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{sublist_indices}
-@deffn {Funktion} sublist_indices (@mvar{L}, @mvar{P})
+@deffn {Funktion} sublist_indices (@var{L}, @var{P})
 
-Gibt die Indizes der Elemente der Liste @mvar{L} zur@"uck, f@"ur die die
+Gibt die Indizes der Elemente der Liste @var{L} zur@"uck, f@"ur die die
 Aussagefunktion @code{P} das Ergebnis @code{true} hat.  @code{P} ist eine
 Funktion mit einem Argument wie zum Beispiel die Funktion
 @mrefdot{integerp}  Siehe auch die Funktion @mrefdot{sublist}
@@ -928,12 +928,12 @@ Beispiele:
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{unique}
-@deffn {Funktion} unique (@mvar{L})
+@deffn {Funktion} unique (@var{L})
 
-Gibt eine Liste mit den Elementen der Liste @mvar{L} zur@"uck, die sich
-voneinander unterscheiden.  Sind alle Elemente der Liste @mvar{L} verschieden,
-gibt @code{unique} eine Kopie der Liste @mvar{L} und nicht die Liste selbst
-zur@"uck.  Ist @mvar{L} keine Liste, gibt @code{unique} den Ausdruck @mvar{L}
+Gibt eine Liste mit den Elementen der Liste @var{L} zur@"uck, die sich
+voneinander unterscheiden.  Sind alle Elemente der Liste @var{L} verschieden,
+gibt @code{unique} eine Kopie der Liste @var{L} und nicht die Liste selbst
+zur@"uck.  Ist @var{L} keine Liste, gibt @code{unique} den Ausdruck @var{L}
 zur@"uck.
 
 Beispiel:

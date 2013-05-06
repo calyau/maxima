@@ -5,7 +5,7 @@
 @node Definitions for Floating Point,  , Floating Point, Floating Point
 @section Definitions for Floating Point
 
-@deffn {Function} bffac (@mvar{expr}, @mvar{n})
+@deffn {Function} bffac (@var{expr}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -13,16 +13,16 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} bfloat (@mvar{expr})
+@deffn {Function} bfloat (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bfloatp (@mvar{expr})
+@deffn {Function} bfloatp (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bfpsi (@mvar{n}, @mvar{z}, @mvar{fpprec})
-@deffnx {Function} bfpsi0 (@mvar{z}, @mvar{fpprec})
+@deffn {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -34,11 +34,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} cbffac (@mvar{z}, @mvar{fpprec})
+@deffn {Function} cbffac (@var{z}, @var{fpprec})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} float (@mvar{expr})
+@deffn {Function} float (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -46,7 +46,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} floatnump (@mvar{expr})
+@deffn {Function} floatnump (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -17,7 +17,7 @@ Junto con el c@'odigo fuente se distribuyen tres conjuntos de datos:
 
 Cualquier manual de estad@'{@dotless{i}}stica se puede utilizar como referencia al paquete @code{descriptive}.
 
-Para comentarios, fallos y sugerencias, por favor contactar con @mvar{'mario AT edu DOT xunta DOT es'}.
+Para comentarios, fallos y sugerencias, por favor contactar con @var{'mario AT edu DOT xunta DOT es'}.
 
 Aqu@'{@dotless{i}} un sencillo ejemplo sobre c@'omo operan las funciones de @code{descriptive}, dependiendo de la naturaleza de sus argumentos, listas o matrices,
 
@@ -135,7 +135,7 @@ A fin de leer estos d@'{@dotless{i}}gitos desde Maxima,
 @end group
 @end example
 
-Por otro lado, el archivo @code{wind.data} contiene los promedios diarios de la velocidad del viento en cinco estaciones meteorol@'ogicas en Irlanda (esta muestra es parte de un conjunto de datos correspondientes a 12 estaciones meteorol@'ogicas. El fichero original se puede descargar libremente del 'StatLib Data Repository' y se analiza en  Haslett, J., Raftery, A. E. (1989) @mvar{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). As@'{@dotless{i}} se leen los datos:
+Por otro lado, el archivo @code{wind.data} contiene los promedios diarios de la velocidad del viento en cinco estaciones meteorol@'ogicas en Irlanda (esta muestra es parte de un conjunto de datos correspondientes a 12 estaciones meteorol@'ogicas. El fichero original se puede descargar libremente del 'StatLib Data Repository' y se analiza en  Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). As@'{@dotless{i}} se leen los datos:
 
 @c ===beg===
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -197,8 +197,8 @@ Debe tenerse cuidado cuando se trabaje con datos categ@'oricos. En el siguiente 
 
 
 
-@deffn {Funci@'on} build_sample (@mvar{list})
-@deffnx {Funci@'on} build_sample (@mvar{matrix})
+@deffn {Funci@'on} build_sample (@var{list})
+@deffnx {Funci@'on} build_sample (@var{matrix})
 Construye una muestra a partir de una tabla de frecuencias absolutas.
 La tabla de entrada puede ser una una matriz o una lista de listas,
 todas ellas de igual tama@~no. El n@'umero de columnas o la longitud de
@@ -270,8 +270,8 @@ Tabla de frecuencias multivariante.
 
 
 
-@deffn {Funci@'on} continuous_freq (@mvar{list})
-@deffnx {Funci@'on} continuous_freq (@mvar{list}, @mvar{m})
+@deffn {Funci@'on} continuous_freq (@var{list})
+@deffnx {Funci@'on} continuous_freq (@var{list}, @var{m})
 El argumento de @code{continuous_freq} debe ser una lista de n@'umeros.
 Divide el rango en intervalos y cuenta cu@'antos valores hay en ellos.
 El segundo argumento es opcional y puede ser el n@'umero de clases 
@@ -338,7 +338,7 @@ de clases y l@'{@dotless{i}}mites -2 y 12:
 
 
 
-@deffn {Funci@'on} discrete_freq (@mvar{list})
+@deffn {Funci@'on} discrete_freq (@var{list})
 Calcula las frecuencias absolutas en muestras discretas, tanto num@'ericas como categ@'oricas. Su @'unico argumento debe ser una lista.
 
 @c ===beg===
@@ -363,8 +363,8 @@ La primera lista son los valores de la muestra y la segunda sus frecuencias abso
 
 
 
-@deffn {Funci@'on} standardize (@mvar{list})
-@deffnx {Funci@'on} standardize (@mvar{matrix})
+@deffn {Funci@'on} standardize (@var{list})
+@deffnx {Funci@'on} standardize (@var{matrix})
 
 Resta a cada elemento de la lista la media muestral y luego divide el resultado por
 la desviaci@'on t@'{@dotless{i}}pica. Si la entrada es una matriz, @code{standardize} 
@@ -376,8 +376,8 @@ desviaci@'on t@'{@dotless{i}}pica correspondiente.
 
 
 
-@deffn {Funci@'on} subsample (@mvar{data_matrix}, @mvar{predicate_function})
-@deffnx {Funci@'on} subsample (@mvar{data_matrix}, @mvar{predicate_function}, @mvar{col_num}, @mvar{col_num}, ...)
+@deffn {Funci@'on} subsample (@var{data_matrix}, @var{predicate_function})
+@deffnx {Funci@'on} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num}, @var{col_num}, ...)
 Esta es una variante de la funci@'on @code{submatrix} de Maxima.
 El primer argumento es una matriz de datos, el segundo es una 
 funci@'on de predicado y el resto de argumentos opcionales son
@@ -385,7 +385,7 @@ los n@'umeros de las columnas a tomar en consideraci@'on.
 
 Estos son los registros multivariantes en los que la velocidad del viento
 en la primera estaci@'on meteorol@'ogica fue menor de 18 nudos. V@'ease 
-c@'omo en la expresi@'on lambda la @mvar{i}-@'esima componente 
+c@'omo en la expresi@'on lambda la @var{i}-@'esima componente 
 se la referencia como @code{v[i]}.
 @c ===beg===
 @c load (descriptive)$
@@ -540,10 +540,10 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 
 
 
-@deffn {Funci@'on} tranform_sample (@mvar{matriz}, @mvar{varlist}, @mvar{exprlist})
+@deffn {Funci@'on} tranform_sample (@var{matriz}, @var{varlist}, @var{exprlist})
 
-Transforma la @mvar{matriz} de datos, en la que a cada columna se le asigna
-un nombre de acuerdo con la lista @mvar{varlist}, seg@'un las expresiones de @mvar{exprlist}.
+Transforma la @var{matriz} de datos, en la que a cada columna se le asigna
+un nombre de acuerdo con la lista @var{varlist}, seg@'un las expresiones de @var{exprlist}.
 
 Ejemplos:
 
@@ -591,8 +591,8 @@ Add a constant column and remove the third variable.
 @section Funciones y variables de par@'ametros descriptivos
 
 
-@deffn {Funci@'on} mean (@mvar{list})
-@deffnx {Funci@'on} mean (@mvar{matrix})
+@deffn {Funci@'on} mean (@var{list})
+@deffnx {Funci@'on} mean (@var{matrix})
 Es la media muestral, definida como
 @ifnottex
 @example
@@ -644,8 +644,8 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} var (@mvar{list})
-@deffnx {Funci@'on} var (@mvar{matrix})
+@deffn {Funci@'on} var (@var{list})
+@deffnx {Funci@'on} var (@var{matrix})
 Es la varianza muestral, definida como
 @ifnottex
 @example
@@ -684,8 +684,8 @@ V@'ease tambi@'en @code{var1}.
 
 
 
-@deffn {Funci@'on} var1 (@mvar{list})
-@deffnx {Funci@'on} var1 (@mvar{matrix})
+@deffn {Funci@'on} var1 (@var{list})
+@deffnx {Funci@'on} var1 (@var{matrix})
 Es la cuasivarianza muestral, definida como
 @ifnottex
 @example
@@ -732,8 +732,8 @@ V@'ease tambi@'en @code{var}.
 
 
 
-@deffn {Funci@'on} std (@mvar{list})
-@deffnx {Funci@'on} std (@mvar{matrix})
+@deffn {Funci@'on} std (@var{list})
+@deffnx {Funci@'on} std (@var{matrix})
 Es la desviaci@'on t@'{@dotless{i}}pica muestral, ra@'{@dotless{i}}z cuadrada de @code{var}.
 
 Ejemplo:
@@ -765,8 +765,8 @@ V@'eanse tambi@'en @code{var} y @code{std1}.
 
 
 
-@deffn {Funci@'on} std1 (@mvar{list})
-@deffnx {Funci@'on} std1 (@mvar{matrix})
+@deffn {Funci@'on} std1 (@var{list})
+@deffnx {Funci@'on} std1 (@var{matrix})
 Es la cuasidesviaci@'on t@'{@dotless{i}}pica muestral, ra@'{@dotless{i}}z cuadrada de @code{var1}.
 
 Ejemplo:
@@ -798,8 +798,8 @@ V@'eanse tambi@'en @code{var1} y @code{std}.
 
 
 
-@deffn {Funci@'on} noncentral_moment (@mvar{list}, @mvar{k})
-@deffnx {Funci@'on} noncentral_moment (@mvar{matrix}, @mvar{k})
+@deffn {Funci@'on} noncentral_moment (@var{list}, @var{k})
+@deffnx {Funci@'on} noncentral_moment (@var{matrix}, @var{k})
 Es el momento no central de orden @math{k}, definido como
 @ifnottex
 @example
@@ -846,8 +846,8 @@ V@'ease tambi@'en @code{central_moment}.
 
 
 
-@deffn {Funci@'on} central_moment (@mvar{list}, @mvar{k})
-@deffnx {Funci@'on} central_moment (@mvar{matrix}, @mvar{k})
+@deffn {Funci@'on} central_moment (@var{list}, @var{k})
+@deffnx {Funci@'on} central_moment (@var{matrix}, @var{k})
 Es el momento central de orden @math{k}, definido como
 @ifnottex
 @example
@@ -893,8 +893,8 @@ V@'eanse tambi@'en @code{central_moment} y @code{mean}.
 @end deffn
 
 
-@deffn {Funci@'on} cv (@mvar{list})
-@deffnx {Funci@'on} cv (@mvar{matrix})
+@deffn {Funci@'on} cv (@var{list})
+@deffnx {Funci@'on} cv (@var{matrix})
 Es el coeficiente de variaci@'on, o cociente entre la desviaci@'on t@'{@dotless{i}}pica muestral (@code{std}) y la media (@code{mean}),
 
 @c ===beg===
@@ -924,9 +924,9 @@ V@'eanse tambi@'en @code{std} y @code{mean}.
 
 
 
-@deffn {Funci@'on} smin (@mvar{list})
-@deffnx {Funci@'on} smin (@mvar{matrix})
-Es el valor m@'{@dotless{i}}nimo de la muestra @mvar{list}.
+@deffn {Funci@'on} smin (@var{list})
+@deffnx {Funci@'on} smin (@var{matrix})
+Es el valor m@'{@dotless{i}}nimo de la muestra @var{list}.
 Cuando el argumento es una matriz, @code{smin} devuelve
 una lista con los valores m@'{@dotless{i}}nimos de las
 columnas, las cuales est@'an asociadas a variables
@@ -958,9 +958,9 @@ V@'ease tambi@'en @code{smax}.
 
 
 
-@deffn {Funci@'on} smax (@mvar{list})
-@deffnx {Funci@'on} smax (@mvar{matrix})
-Es el valor m@'aximo de la muestra @mvar{list}.
+@deffn {Funci@'on} smax (@var{list})
+@deffnx {Funci@'on} smax (@var{matrix})
+Es el valor m@'aximo de la muestra @var{list}.
 Cuando el argumento es una matriz, @code{smax} devuelve
 una lista con los valores m@'aximos de las
 columnas, las cuales est@'an asociadas a variables
@@ -992,8 +992,8 @@ V@'ease tambi@'en @code{smin}.
 
 
 
-@deffn {Funci@'on} range (@mvar{list})
-@deffnx {Funci@'on} range (@mvar{matrix})
+@deffn {Funci@'on} range (@var{list})
+@deffnx {Funci@'on} range (@var{matrix})
 Es la diferencia entre los valores extremos.
 
 Ejemplo:
@@ -1023,10 +1023,10 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} quantile (@mvar{list}, @mvar{p})
-@deffnx {Funci@'on} quantile (@mvar{matrix}, @mvar{p})
-Es el @mvar{p}-cuantil, siendo @mvar{p} un n@'umero del intervalo @math{[0, 1]}, de la muestra @mvar{list}.
-Aunque existen varias definiciones para el cuantil muestral (Hyndman, R. J., Fan, Y. (1996) @mvar{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), la programada en el paquete  @code{descriptive} es la basada en la interpolaci@'on lineal.
+@deffn {Funci@'on} quantile (@var{list}, @var{p})
+@deffnx {Funci@'on} quantile (@var{matrix}, @var{p})
+Es el @var{p}-cuantil, siendo @var{p} un n@'umero del intervalo @math{[0, 1]}, de la muestra @var{list}.
+Aunque existen varias definiciones para el cuantil muestral (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), la programada en el paquete  @code{descriptive} es la basada en la interpolaci@'on lineal.
 
 Ejemplo:
 
@@ -1057,8 +1057,8 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} median (@mvar{list})
-@deffnx {Funci@'on} median (@mvar{matrix})
+@deffn {Funci@'on} median (@var{list})
+@deffnx {Funci@'on} median (@var{matrix})
 Una vez ordenada una muestra, si el tama@~no muestral es impar la mediana es el valor central, en caso contrario ser@'a la media de los dos valores centrales.
 
 Ejemplo:
@@ -1093,10 +1093,10 @@ V@'ease tambi@'en @code{quantile}.
 
 
 
-@deffn {Funci@'on} qrange (@mvar{list})
-@deffnx {Funci@'on} qrange (@mvar{matrix})
+@deffn {Funci@'on} qrange (@var{list})
+@deffnx {Funci@'on} qrange (@var{matrix})
 El rango intercuart@'{@dotless{i}}lico es la diferencia entre el tercer y primer cuartil,
-@code{quantile(@mvar{list},3/4) - quantile(@mvar{list},1/4)},
+@code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
 @c load (descriptive)$
@@ -1127,8 +1127,8 @@ V@'ease tambi@'en @code{quantile}.
 
 
 
-@deffn {Funci@'on} mean_deviation (@mvar{list})
-@deffnx {Funci@'on} mean_deviation (@mvar{matrix})
+@deffn {Funci@'on} mean_deviation (@var{list})
+@deffnx {Funci@'on} mean_deviation (@var{matrix})
 Es la desviaci@'on media, definida como
 @ifnottex
 @example
@@ -1177,8 +1177,8 @@ V@'ease tambi@'en @code{mean}.
 
 
 
-@deffn {Funci@'on} median_deviation (@mvar{list})
-@deffnx {Funci@'on} median_deviation (@mvar{matrix})
+@deffn {Funci@'on} median_deviation (@var{list})
+@deffnx {Funci@'on} median_deviation (@var{matrix})
 Es la desviaci@'on mediana, definida como
 @ifnottex
 @example
@@ -1195,7 +1195,7 @@ Es la desviaci@'on mediana, definida como
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
 
-siendo @code{med} la mediana de @mvar{list}.
+siendo @code{med} la mediana de @var{list}.
 
 Ejemplo:
 
@@ -1227,8 +1227,8 @@ V@'ease tambi@'en @code{mean}.
 
 
 
-@deffn {Funci@'on} harmonic_mean (@mvar{list})
-@deffnx {Funci@'on} harmonic_mean (@mvar{matrix})
+@deffn {Funci@'on} harmonic_mean (@var{list})
+@deffnx {Funci@'on} harmonic_mean (@var{matrix})
 Es la media arm@'onica, definida como
 @ifnottex
 @example
@@ -1277,8 +1277,8 @@ V@'eanse tambi@'en @code{mean} y @code{geometric_mean}.
 
 
 
-@deffn {Funci@'on} geometric_mean (@mvar{list})
-@deffnx {Funci@'on} geometric_mean (@mvar{matrix})
+@deffn {Funci@'on} geometric_mean (@var{list})
+@deffnx {Funci@'on} geometric_mean (@var{matrix})
 Es la media geom@'etrica, definida como
 @ifnottex
 @example
@@ -1325,8 +1325,8 @@ V@'eanse tambi@'en @code{mean} y @code{harmonic_mean}.
 
 
 
-@deffn {Funci@'on} kurtosis (@mvar{list})
-@deffnx {Funci@'on} kurtosis (@mvar{matrix})
+@deffn {Funci@'on} kurtosis (@var{list})
+@deffnx {Funci@'on} kurtosis (@var{matrix})
 Es el coeficiente de curtosis, definido como
 @ifnottex
 @example
@@ -1373,8 +1373,8 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{skewness}.
 
 
 
-@deffn {Funci@'on} skewness (@mvar{list})
-@deffnx {Funci@'on} skewness (@mvar{matrix})
+@deffn {Funci@'on} skewness (@var{list})
+@deffnx {Funci@'on} skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a, definido como
 @ifnottex
 @example
@@ -1421,8 +1421,8 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{kurtosis}.
 
 
 
-@deffn {Funci@'on} pearson_skewness (@mvar{list})
-@deffnx {Funci@'on} pearson_skewness (@mvar{matrix})
+@deffn {Funci@'on} pearson_skewness (@var{list})
+@deffnx {Funci@'on} pearson_skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a de Pearson, definido como
 @ifnottex
 @example
@@ -1436,7 +1436,7 @@ Es el coeficiente de asimetr@'{@dotless{i}}a de Pearson, definido como
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
 
-siendo @mvar{med} la mediana de @mvar{list}.
+siendo @var{med} la mediana de @var{list}.
 
 Ejemplo:
 
@@ -1467,8 +1467,8 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{median}.
 
 
 
-@deffn {Funci@'on} quartile_skewness (@mvar{list})
-@deffnx {Funci@'on} quartile_skewness (@mvar{matrix})
+@deffn {Funci@'on} quartile_skewness (@var{list})
+@deffnx {Funci@'on} quartile_skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a cuart@'{@dotless{i}}lico, definido como
 @ifnottex
 @example
@@ -1484,7 +1484,7 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
 
-siendo @math{c_p} el @mvar{p}-cuantil de la muestra @mvar{list}.
+siendo @math{c_p} el @var{p}-cuantil de la muestra @var{list}.
 
 Ejemplo:
 
@@ -1516,7 +1516,7 @@ V@'ease tambi@'en @code{quantile}.
 
 
 
-@deffn {Funci@'on} cov (@mvar{matrix})
+@deffn {Funci@'on} cov (@var{matrix})
 Es la matriz de covarianzas de una muestra multivariante, definida como
 @ifnottex
 @example
@@ -1564,7 +1564,7 @@ V@'ease tambi@'en @code{cov1}.
 
 
 
-@deffn {Funci@'on} cov1 (@mvar{matrix})
+@deffn {Funci@'on} cov1 (@var{matrix})
 Es la matriz de cuasivarianzas de una muestra multivariante, definida como
 @ifnottex
 @example
@@ -1612,25 +1612,25 @@ V@'ease tambi@'en @code{cov}.
 
 
 
-@deffn {Funci@'on} global_variances (@mvar{matrix})
-@deffnx {Funci@'on} global_variances (@mvar{matrix}, @mvar{options} ...)
+@deffn {Funci@'on} global_variances (@var{matrix})
+@deffnx {Funci@'on} global_variances (@var{matrix}, @var{options} ...)
 La funci@'on @code{global_variances} devuelve una lista de medidas globales de variabilidad:
 
 @itemize @bullet
 @item
-@mvar{varianza total}: @code{trace(S_1)},
+@var{varianza total}: @code{trace(S_1)},
 @item
-@mvar{varianza media}: @code{trace(S_1)/p},
+@var{varianza media}: @code{trace(S_1)/p},
 @item
-@mvar{varianza generalizada}: @code{determinant(S_1)},
+@var{varianza generalizada}: @code{determinant(S_1)},
 @item
-@mvar{desviaci@'on t@'{@dotless{i}}pica generalizada}: @code{sqrt(determinant(S_1))},
+@var{desviaci@'on t@'{@dotless{i}}pica generalizada}: @code{sqrt(determinant(S_1))},
 @item
-@mvar{varianza efectiva} @code{determinant(S_1)^(1/p)}, (definida en: Pe@~na, D. (2002) @mvar{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{varianza efectiva} @code{determinant(S_1)^(1/p)}, (definida en: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@mvar{desviaci@'on t@'{@dotless{i}}pica efectiva}: @code{determinant(S_1)^(1/(2*p))}.
+@var{desviaci@'on t@'{@dotless{i}}pica efectiva}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-donde @mvar{p} es la dimensi@'on de la variable aleatoria multivariante y @math{S_1} la matriz de covarianzas devuelta por la funci@'on @code{cov1}.
+donde @var{p} es la dimensi@'on de la variable aleatoria multivariante y @math{S_1} la matriz de covarianzas devuelta por la funci@'on @code{cov1}.
 
 Opci@'on:
 
@@ -1682,8 +1682,8 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 
 
 
-@deffn {Funci@'on} cor (@mvar{matrix})
-@deffnx {Funci@'on} cor (@mvar{matrix}, @mvar{options} ...)
+@deffn {Funci@'on} cor (@var{matrix})
+@deffnx {Funci@'on} cor (@var{matrix}, @var{options} ...)
 Es la matriz de correlaciones de la muestra multivariante.
 
 Opci@'on:
@@ -1752,14 +1752,14 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 
 
 
-@deffn {Funci@'on} list_correlations (@mvar{matrix})
-@deffnx {Funci@'on} list_correlations (@mvar{matrix}, @mvar{options} ...)
+@deffn {Funci@'on} list_correlations (@var{matrix})
+@deffnx {Funci@'on} list_correlations (@var{matrix}, @var{options} ...)
 La funci@'on @code{list_correlations} devuelve una lista con medidas de correlaci@'on:
 
 @itemize @bullet
 
 @item
-@mvar{matriz de precisi@'on}: es la inversa de la matriz de covarianzas @math{S_1},
+@var{matriz de precisi@'on}: es la inversa de la matriz de covarianzas @math{S_1},
 @ifnottex
 @example
        -1     ij
@@ -1772,7 +1772,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@mvar{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
+@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
 @ifnottex
 @example
        2          1
@@ -1788,7 +1788,7 @@ $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 es un indicador de la bondad de ajuste del modelo de regresi@'on lineal multivariante de @math{X_i} cuando el resto de variables se utilizan como regresores.
 
 @item
-@mvar{matriz de correlaciones parciales}: en la que el elemento @math{(i, j)} es
+@var{matriz de correlaciones parciales}: en la que el elemento @math{(i, j)} es
 @ifnottex
 @example
                          ij
@@ -1857,8 +1857,8 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 
 
 
-@deffn {Funci@'on} principal_components (@mvar{matrix})
-@deffnx {Funci@'on} principal_components (@mvar{matrix}, @mvar{options} ...)
+@deffn {Funci@'on} principal_components (@var{matrix})
+@deffnx {Funci@'on} principal_components (@var{matrix}, @var{options} ...)
 Calcula las componentes principales de una muestra multivariante. Las componentes
 principales se utilizan en el an@'alisis estad@'{@dotless{i}}stico multivariante
 para reducir la dimensionalidad de la muestra.
@@ -1966,53 +1966,53 @@ a la funci@'on, pero debe utilizarse la opci@'on @code{data=false}.
 @section Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos
 
 
-@deffn {Funci@'on} barsplot (@mvar{data1}, @mvar{data2}, @dots{}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} barsplot_description (@dots{})
 
 Dibuja diagramas de barras para variables estad@'{@dotless{i}}sticas
 discretas, tanto para una como para m@'as muestras.
 
-@mvar{data} puede ser una lista de resultados provenientes de una muestra
-o una matriz de @mvar{m} filas y @mvar{n} columnas, representando @mvar{n} 
-muestras de tama@~no @mvar{m} cada una.
+@var{data} puede ser una lista de resultados provenientes de una muestra
+o una matriz de @var{m} filas y @var{n} columnas, representando @var{n} 
+muestras de tama@~no @var{m} cada una.
 
 Las opciones disponibles son:
 
 @itemize @bullet
 
-@mvar{box_width} (valor por defecto, @code{3/4}): ancho relativo de los rect@'angulos. Este 
+@var{box_width} (valor por defecto, @code{3/4}): ancho relativo de los rect@'angulos. Este 
 valor debe pertenecer al rango @code{[0,1]}.
 
 @item
-@mvar{grouping} (valor por defecto, @code{clustered}): indica c@'omo se agrupan las 
+@var{grouping} (valor por defecto, @code{clustered}): indica c@'omo se agrupan las 
 diferentes muestras. Son valores v@'alidos: @code{clustered} y @code{stacked}.
 
 @item
-@mvar{groups_gap} (valor por defecto, @code{1}): un n@'umero positivo que representa
+@var{groups_gap} (valor por defecto, @code{1}): un n@'umero positivo que representa
 la separaci@'on entre dos grupos consecutivos de barras.
 
 @item
-@mvar{bars_colors} (valor por defecto, @code{[]}): una lista de colores para m@'ultiples 
+@var{bars_colors} (valor por defecto, @code{[]}): una lista de colores para m@'ultiples 
 muestras. Cuando el n@'umero de muestras sea mayor que el de colores especificados, 
 los colores adicionales necesarios se seleccionan aleatoriamente. V@'ease @code{color} para m@'as
 informaci@'on.
 
 @item
-@mvar{frequency} (valor por defecto, @code{absolute}): indica la escala de las ordenadas.
+@var{frequency} (valor por defecto, @code{absolute}): indica la escala de las ordenadas.
 Valores admitidos son:  @code{absolute}, @code{relative} y and @code{percent}.
 
 @item
-@mvar{ordering} (valor por defecto, @code{orderlessp}): los valores admitidos para esta 
+@var{ordering} (valor por defecto, @code{orderlessp}): los valores admitidos para esta 
 opci@'on son: @code{orderlessp} y @code{ordergreatp}, indicando c@'omo se deben ordenar
-los resultados muestrales sobre el eje-@mvar{x}.
+los resultados muestrales sobre el eje-@var{x}.
 
 @item
-@mvar{sample_keys} (valor por defecto, @code{[]}): es una lista de cadenas de 
+@var{sample_keys} (valor por defecto, @code{[]}): es una lista de cadenas de 
 texto a usar como leyendas. Cuando la lista tenga una longitud diferente de cero o 
 del n@'umero de muestras, se devolver@'a un mensaje de error.
 
 @item
-@mvar{start_at} (valor por defecto, @code{0}): indica a qu@'e altura comienza 
+@var{start_at} (valor por defecto, @code{0}): indica a qu@'e altura comienza 
 a dibujarse el gr@'afico de barra sobre el eje de abscisas.
 
 @item
@@ -2183,15 +2183,15 @@ V@'eanse tambi@'en las funciones @code{histogram} y @code{piechart}.
 
 
 
-@deffn {Funci@'on} boxplot (@mvar{data})
-@deffnx {Funci@'on} boxplot (@mvar{data}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} boxplot (@var{data})
+@deffnx {Funci@'on} boxplot (@var{data}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} boxplot_description (@dots{})
 
-Dibuja diagramas de cajas (box-and-whishker). El argumento @mvar{data} puede
+Dibuja diagramas de cajas (box-and-whishker). El argumento @var{data} puede
 ser una lista, lo cual no es de gran inter@'es, puesto que estos gr@'aficos 
 se utilizan principalmente para comparar distintas muestras, o una matriz,
 de manera que sea posible comparar dos o m@'as componentes de una muestra
-multivariante. Tambi@'en se permite que @mvar{data} sea una lista de muestras
+multivariante. Tambi@'en se permite que @var{data} sea una lista de muestras
 con posibles tama@~nos diferentes; de hecho, esta es la @'unica funci@'on
 del paquete @code{descriptive} que admite esta estructura de datos.
 
@@ -2200,11 +2200,11 @@ Opciones disponibles:
 @itemize @bullet
 
 @item
-@mvar{box_width} (valor por defecto, @code{3/4}): ancho relativo de las cajas.
+@var{box_width} (valor por defecto, @code{3/4}): ancho relativo de las cajas.
 This  value must be in the range @code{[0,1]}.
 
 @item
-@mvar{box_orientation} (valor por defecto, @code{vertical}): valores posibles: @code{vertical}
+@var{box_orientation} (valor por defecto, @code{vertical}): valores posibles: @code{vertical}
 y @code{horizontal}.
 
 @item
@@ -2277,12 +2277,12 @@ Diagrama de cajas de tres muestras de tama@~nos diferentes.
 
 
 
-@deffn {Funci@'on} histogram (@mvar{list})
-@deffnx {Funci@'on} histogram (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
-@deffnx {Funci@'on} histogram (@mvar{one_column_matrix})
-@deffnx {Funci@'on} histogram (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
-@deffnx {Funci@'on} histogram (@mvar{one_row_matrix})
-@deffnx {Funci@'on} histogram (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} histogram (@var{list})
+@deffnx {Funci@'on} histogram (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {Funci@'on} histogram (@var{one_column_matrix})
+@deffnx {Funci@'on} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {Funci@'on} histogram (@var{one_row_matrix})
+@deffnx {Funci@'on} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} histogram_description (@dots{})
 
 Dibuja un histograma a partir de una muestra continua. Los datos
@@ -2294,17 +2294,17 @@ Opciones dispponibles:
 @itemize @bullet
 
 @item
-@mvar{nclasses} (valor por defecto, @code{10}): n@'umero de clases del histograma, o
+@var{nclasses} (valor por defecto, @code{10}): n@'umero de clases del histograma, o
 una lista indicando los l@'{@dotless{i}}mites de las clases y su n@'umero,
 o solamente los l@'{@dotless{i}}mites.
 
 @item
-@mvar{frequency} (valor por defecto, @code{absolute}): indica la escala de las ordenadas.
+@var{frequency} (valor por defecto, @code{absolute}): indica la escala de las ordenadas.
 Valores admitidos son:  @code{absolute}, @code{relative}, @code{percent} y @code{density}.
 Con @code{density}, el histograma adquiere un @'area total igual a uno.
 
 @item
-@mvar{htics} (valor por defecto, @code{auto}): formato para las marcas sobre el
+@var{htics} (valor por defecto, @code{auto}): formato para las marcas sobre el
 eje de las abscisas. Valores admitidos son: @code{auto}, @code{endpoints}, 
 @code{intervals} o una lista de etiquetas. 
 
@@ -2396,12 +2396,12 @@ expl@'{@dotless{i}}cita a la escena:
 
 
 
-@deffn {Funci@'on} piechart (@mvar{list})
-@deffnx {Funci@'on} piechart (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
-@deffnx {Funci@'on} piechart (@mvar{one_column_matrix})
-@deffnx {Funci@'on} piechart (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
-@deffnx {Funci@'on} piechart (@mvar{one_row_matrix})
-@deffnx {Funci@'on} piechart (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} piechart (@var{list})
+@deffnx {Funci@'on} piechart (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {Funci@'on} piechart (@var{one_column_matrix})
+@deffnx {Funci@'on} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {Funci@'on} piechart (@var{one_row_matrix})
+@deffnx {Funci@'on} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} piechart_description (@dots{})
 
 Similar a @code{barsplot}, pero dibuja sectores en lugar de rect@'angulos.
@@ -2412,16 +2412,16 @@ Opciones disponibles:
 @itemize @bullet
 
 @item
-@mvar{sector_colors} (valor por defecto, @code{[]}): una lista de colores para los
+@var{sector_colors} (valor por defecto, @code{[]}): una lista de colores para los
 sectores. Cuando el n@'umero de sectores sea mayor que el de colores especificados, 
 los colores adicionales necesarios se seleccionan aleatoriamente. V@'ease @code{color} para m@'as
 informaci@'on.
 
 @item
-@mvar{pie_center} (valor por defecto, @code{[0,0]}): centro del diagrama
+@var{pie_center} (valor por defecto, @code{[0,0]}): centro del diagrama
 
 @item
-@mvar{pie_radius} (valor por defecto, @code{1}): radio del diagrama.
+@var{pie_radius} (valor por defecto, @code{1}): radio del diagrama.
 
 @item
 Todas las opciones globales de @code{draw}, excepto @code{key}, que se asigna
@@ -2467,14 +2467,14 @@ V@'ease tambi@'en la funci@'on @code{barsplot}.
 
 
 
-@deffn {Funci@'on} scatterplot (@mvar{list})
-@deffnx {Funci@'on} scatterplot (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
-@deffnx {Funci@'on} scatterplot (@mvar{matrix})
-@deffnx {Funci@'on} scatterplot (@mvar{matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} scatterplot (@var{list})
+@deffnx {Funci@'on} scatterplot (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {Funci@'on} scatterplot (@var{matrix})
+@deffnx {Funci@'on} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} scatterplot_description (@dots{})
 
-Dibuja diagramas de dispersi@'on, tanto de muestras univariantes (@mvar{list})
-como multivariantes (@mvar{matrix}). 
+Dibuja diagramas de dispersi@'on, tanto de muestras univariantes (@var{list})
+como multivariantes (@var{matrix}). 
 
 Las opciones disponibles son las mismas que admite @code{histogram}.
 
@@ -2582,45 +2582,45 @@ V@'ease tambi@'en @code{histogram}.
 
 
 
-@deffn {Funci@'on} starplot (@mvar{data1}, @mvar{data2}, @dots{}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffn {Funci@'on} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Funci@'on} starplot_description (@dots{})
 
 Dibuja diagramas de estrellas para variables estad@'{@dotless{i}}sticas
 discretas, tanto para una como para m@'as muestras.
 
-@mvar{data} puede ser una lista de resultados provenientes de una muestra
-o una matriz de @mvar{m} filas y @mvar{n} columnas, representando @mvar{n} 
-muestras de tama@~no @mvar{m} cada una.
+@var{data} puede ser una lista de resultados provenientes de una muestra
+o una matriz de @var{m} filas y @var{n} columnas, representando @var{n} 
+muestras de tama@~no @var{m} cada una.
 
 Las opciones disponibles son:
 
 @itemize @bullet
 
 @item
-@mvar{stars_colors} (valor por defecto, @code{[]}): una lista de colores para muestras
+@var{stars_colors} (valor por defecto, @code{[]}): una lista de colores para muestras
 m@'ultiples. Cuando haya m@'as muestras que colores especificados, los colores que faltan
 se eligen aleatoriamente. V@'ease @code{color} para m@'as informaci@'on.
 
 @item
-@mvar{frequency} (valor por defecto, @code{absolute}): indica la escala de los radios.
+@var{frequency} (valor por defecto, @code{absolute}): indica la escala de los radios.
 Valores admitidos son:  @code{absolute} y @code{relative}.
 
 @item
-@mvar{ordering} (valor por defecto, @code{orderlessp}): los valores admitidos para esta 
+@var{ordering} (valor por defecto, @code{orderlessp}): los valores admitidos para esta 
 opci@'on son: @code{orderlessp} y @code{ordergreatp}, indicando c@'omo se deben ordenar
-los resultados muestrales sobre el eje-@mvar{x}.
+los resultados muestrales sobre el eje-@var{x}.
 
 
 @item
-@mvar{sample_keys} (valor por defecto, @code{[]}): es una lista de cadenas de 
+@var{sample_keys} (valor por defecto, @code{[]}): es una lista de cadenas de 
 texto a usar como leyendas. Cuando la lista tenga una longitud diferente de cero o 
 del n@'umero de muestras, se devolver@'a un mensaje de error.
 
 @item
-@mvar{star_center} (valor por defecto, @code{[0,0]}): centro del diagrama.
+@var{star_center} (valor por defecto, @code{[0,0]}): centro del diagrama.
 
 @item
-@mvar{star_radius} (valor por defecto, @code{1}): radio del diagrama.
+@var{star_radius} (valor por defecto, @code{1}): radio del diagrama.
 
 @item
 Todas las opciones globales de @code{draw}, excepto @code{points_joined}, @code{point_type}, 
@@ -2663,8 +2663,8 @@ el radios lo define el usuario.
 
 
 
-@deffn {Funci@'on} stemplot (@mvar{m})
-@deffnx {Funci@'on} stemplot (@mvar{m}, @mvar{option})
+@deffn {Funci@'on} stemplot (@var{m})
+@deffnx {Funci@'on} stemplot (@var{m}, @var{option})
 
 Dibuja diagrama de tallos y hojas.
 
@@ -2673,7 +2673,7 @@ La @'unica opci@'on disponible es:
 @itemize @bullet
 
 @item
-@mvar{leaf_unit} (valor por defecto, @code{1}): indica la unidad de las hojas; debe ser
+@var{leaf_unit} (valor por defecto, @code{1}): indica la unidad de las hojas; debe ser
 una potencia de 10.
 
 @end itemize

@@ -49,9 +49,9 @@ and additional output.
 
 @c -----------------------------------------------------------------------------
 @anchor{apropos}
-@deffn {Function} apropos (@mvar{string})
+@deffn {Function} apropos (@var{string})
 
-Searches for Maxima names which have @mvar{string} appearing anywhere within
+Searches for Maxima names which have @var{string} appearing anywhere within
 them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
 which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
 and @code{exponentialize}.  Thus if you can only remember part of the name of
@@ -86,9 +86,9 @@ gamma_incomplete_generalized_regularized]
 
 @c -----------------------------------------------------------------------------
 @anchor{demo}
-@deffn {Function} demo (@mvar{filename})
+@deffn {Function} demo (@var{filename})
 
-Evaluates Maxima expressions in @mvar{filename} and displays the results.
+Evaluates Maxima expressions in @var{filename} and displays the results.
 @code{demo} pauses after evaluating each expression and continues after the
 user enters a carriage return.  (If running in Xmaxima, @code{demo} may need
 to see a semicolon @code{;} followed by a carriage return.)
@@ -131,21 +131,21 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{describe}
-@deffn  {Function} describe (@mvar{string})
-@deffnx {Function} describe (@mvar{string}, exact)
-@deffnx {Function} describe (@mvar{string}, inexact)
+@deffn  {Function} describe (@var{string})
+@deffnx {Function} describe (@var{string}, exact)
+@deffnx {Function} describe (@var{string}, inexact)
 @ifinfo
 @fnindex Help
 @end ifinfo
 
-@code{describe(@mvar{string})} is equivalent to
-@code{describe(@mvar{string}, exact)}.
+@code{describe(@var{string})} is equivalent to
+@code{describe(@var{string}, exact)}.
 
-@code{describe(@mvar{string}, exact)} finds an item with title equal
-(case-insensitive) to @mvar{string}, if there is any such item.
+@code{describe(@var{string}, exact)} finds an item with title equal
+(case-insensitive) to @var{string}, if there is any such item.
 
-@code{describe(@mvar{string}, inexact)} finds all documented items which contain
-@mvar{string} in their titles.  If there is more than one such item, Maxima asks
+@code{describe(@var{string}, inexact)} finds all documented items which contain
+@var{string} in their titles.  If there is more than one such item, Maxima asks
 the user to select an item or items to display.
 
 At the interactive prompt, @code{? foo} (with a space between @code{?} and
@@ -208,10 +208,10 @@ respectively.
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
-@deffn  {Function} example (@mvar{topic})
+@deffn  {Function} example (@var{topic})
 @deffnx {Function} example ()
 
-@code{example (@mvar{topic})} displays some examples of @mvar{topic}, which is a
+@code{example (@var{topic})} displays some examples of @var{topic}, which is a
 symbol or a string.  To get examples for operators like @code{if}, @code{do},
 or @code{lambda} the argument must be a string, e.g. @code{example ("do")}.
 @code{example} is not case sensitive.  Most topics are function names.

@@ -9,25 +9,25 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} openplot_curves (@mvar{list}, @mvar{rest_options})
+@deffn {Function} openplot_curves (@var{list}, @var{rest_options})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} plot2d (@mvar{expr}, @mvar{range}, ..., @mvar{options}, ...)
-@deffnx {Function} plot2d (@mvar{parametric_expr})
-@deffnx {Function} plot2d (@mvar{discrete_expr})
-@deffnx {Function} plot2d ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{x_range}, @mvar{y_range})
-@deffnx {Function} plot2d ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{x_range})
-@deffnx {Function} plot2d (@mvar{expr}, @mvar{x_range}, @mvar{y_range})
-@deffnx {Function} plot2d (@mvar{expr}, @mvar{x_range})
-@deffnx {Function} plot2d ([@mvar{name_1}, ..., @mvar{name_n}], @mvar{x_range}, @mvar{y_range})
-@deffnx {Function} plot2d ([@mvar{name_1}, ..., @mvar{name_n}], @mvar{x_range})
-@deffnx {Function} plot2d (@mvar{name}, @mvar{x_range}, @mvar{y_range})
-@deffnx {Function} plot2d (@mvar{name}, @mvar{x_range})
+@deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
+@deffnx {Function} plot2d (@var{parametric_expr})
+@deffnx {Function} plot2d (@var{discrete_expr})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range})
+@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
+@deffnx {Function} plot2d (@var{name}, @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d (@var{name}, @var{x_range})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} xgraph_curves (@mvar{list})
+@deffn {Function} xgraph_curves (@var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -35,17 +35,17 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} plot3d (@mvar{expr}, @mvar{x_range}, @mvar{y_range}, ..., @mvar{options}, ...)
-@deffnx {Function} plot3d (@mvar{name}, @mvar{x_range}, @mvar{y_range}, ..., @mvar{options}, ...)
-@deffnx {Function} plot3d ([@mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}], @mvar{x_rge}, @mvar{y_rge})
-@deffnx {Function} plot3d ([@mvar{name_1}, @mvar{name_2}, @mvar{name_3}], @mvar{x_range}, @mvar{y_range}, ..., @mvar{options}, ...)
+@deffn {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Function} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} make_transform (@mvar{vars}, @mvar{fx}, @mvar{fy}, @mvar{fz})
+@deffn {Function} make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} set_plot_option (@mvar{option})
+@deffn {Function} set_plot_option (@var{option})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

@@ -109,18 +109,18 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{algsys}
-@deffn  {関数} algsys ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
-@deffnx {関数} algsys ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn  {関数} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffnx {関数} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
-同時多項式@mvar{expr_1}, @dots{}, @mvar{expr_m}
-または多項式方程式@mvar{eqn_1}, @dots{}, @mvar{eqn_m}
-を変数@mvar{x_1}, @dots{}, @mvar{x_n}について解きます。
-式@mvar{expr}は、等式@code{@mvar{expr} = 0}と同値です。
+同時多項式@var{expr_1}, @dots{}, @var{expr_m}
+または多項式方程式@var{eqn_1}, @dots{}, @var{eqn_m}
+を変数@var{x_1}, @dots{}, @var{x_n}について解きます。
+式@var{expr}は、等式@code{@var{expr} = 0}と同値です。
 変数より等式が多い場合も逆もあります。
 
 @code{algsys}は、解のリストを返します。
 ここで、それぞれの解は、
-方程式系を満たす変数@mvar{x_1}, @dots{}, @mvar{x_n}の値を指定する等式のリストとして
+方程式系を満たす変数@var{x_1}, @dots{}, @var{x_n}の値を指定する等式のリストとして
 与えられます。
 もし@code{algsys}が解を見つけられなければ、
 空のリスト@code{[]}が返されます。
@@ -136,14 +136,14 @@
 最初に、方程式は因数分解され、サブシステムに分割されます。
 
 @item
-それぞれのサブシステム@mvar{S_i}に関して、等式@mvar{E}と変数@mvar{x}が選択されます。
+それぞれのサブシステム@var{S_i}に関して、等式@var{E}と変数@var{x}が選択されます。
 変数はゼロでない最低次を持つよう選ばれます。
 そして、
-@mvar{x}に関する@mvar{E}と@mvar{E_j}の終結式が
-サブシステム@mvar{S_i}の中の残っている等式群@mvar{E_j}のそれぞれに関して計算されます。
+@var{x}に関する@var{E}と@var{E_j}の終結式が
+サブシステム@var{S_i}の中の残っている等式群@var{E_j}のそれぞれに関して計算されます。
 
-これは、@mvar{x}が消去されるので、
-１つ変数の少ない新しいサブシステム@mvar{S_i'}をもたらします
+これは、@var{x}が消去されるので、
+１つ変数の少ない新しいサブシステム@var{S_i'}をもたらします
 ここでプロセスは(1)に戻ります。
 
 @item
@@ -235,10 +235,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{allroots}
-@deffn  {関数} allroots (@mvar{expr})
-@deffnx {関数} allroots (@mvar{eqn})
+@deffn  {関数} allroots (@var{expr})
+@deffnx {関数} allroots (@var{eqn})
 
-1変数多項式@mvar{expr}もしくは1変数多項式方程式@mvar{eqn}の実数と複素数の根の数値近似を
+1変数多項式@var{expr}もしくは1変数多項式方程式@var{eqn}の実数と複素数の根の数値近似を
 計算する。
 
 フラグ@mref{polyfactor}が@code{true}の時、
@@ -246,8 +246,8 @@
 多項式が複素数なら複素数上で因数分解します。
 
 @code{allroots}は、多重根の場合、不正確な結果をもたらすことがあります。
-もし多項式が実数なら、@code{allroots (%i*@mvar{p})}は、
-@code{allroots (@mvar{p})}より精確な近似を生成します。
+もし多項式が実数なら、@code{allroots (%i*@var{p})}は、
+@code{allroots (@var{p})}より精確な近似を生成します。
 @code{allroots}はこの場合異なるアルゴリズムを呼ぶので。
 
 @code{allroots}は非多項式を却下します。
@@ -311,10 +311,10 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @c -----------------------------------------------------------------------------
 @anchor{bfallroots}
-@deffn  {関数} bfallroots (@mvar{expr})
-@deffnx {関数} bfallroots (@mvar{eqn})
+@deffn  {関数} bfallroots (@var{expr})
+@deffnx {関数} bfallroots (@var{eqn})
 
-１変数の多項式@mvar{expr}または多項式等式@mvar{eqn}の実数根と複素数根の数値近似
+１変数の多項式@var{expr}または多項式等式@var{eqn}の実数根と複素数根の数値近似
 を計算します。
 
 @code{bfallroots}は多倍長浮動小数点を使って根を計算する以外の
@@ -442,8 +442,8 @@ Solution:
 
 @c -----------------------------------------------------------------------------
 @anchor{dimension}
-@deffn  {関数} dimension (@mvar{eqn})
-@deffnx {関数} dimension (@mvar{eqn_1}, ..., @mvar{eqn_n})
+@deffn  {関数} dimension (@var{eqn})
+@deffnx {関数} dimension (@var{eqn_1}, ..., @var{eqn_n})
 
 @code{dimen}は、次元解析パッケージです。
 @code{load ("dimen")}はこのパッケージをロードします。
@@ -475,12 +475,12 @@ Solution:
 
 @c -----------------------------------------------------------------------------
 @anchor{funcsolve}
-@deffn {関数} funcsolve (@mvar{eqn}, @mvar{g}(@mvar{t}))
+@deffn {関数} funcsolve (@var{eqn}, @var{g}(@var{t}))
 
-@mvar{eqn}を満たす有理関数@code{@mvar{g}(@mvar{t})}が存在するかどうかに依存して、
-@code{[@mvar{g}(@mvar{t}) = ...]}または@code{[]}を返します。
-ここで、@mvar{eqn}は（この場合）
-@code{@mvar{g}(@mvar{t})}と@code{@mvar{g}(@mvar{t}+1)}に関して
+@var{eqn}を満たす有理関数@code{@var{g}(@var{t})}が存在するかどうかに依存して、
+@code{[@var{g}(@var{t}) = ...]}または@code{[]}を返します。
+ここで、@var{eqn}は（この場合）
+@code{@var{g}(@var{t})}と@code{@var{g}(@var{t}+1)}に関して
 一次、線形多項式でなければいけません。
 
 @example
@@ -580,39 +580,39 @@ Solution
 
 @c -----------------------------------------------------------------------------
 @anchor{ieqn}
-@deffn {関数} ieqn (@mvar{ie}, @mvar{unk}, @mvar{tech}, @mvar{n}, @mvar{guess})
+@deffn {関数} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
 
 @code{inteqn}は、積分方程式を解くためのパッケージです。
 @code{load ("inteqn")}はこのパッケージをロードします。
 
-@mvar{ie}は、積分方程式です;
-@mvar{unk}は、未知の関数です;
-@mvar{tech}は、上で与えられたこれらから試される手法です;
+@var{ie}は、積分方程式です;
+@var{unk}は、未知の関数です;
+@var{tech}は、上で与えられたこれらから試される手法です;
  is the
 technique to be tried from those given above
- (@mvar{tech} = @code{first}は以下を意味します: 解を見つける最初の手法を試みる;
-@mvar{tech} = @code{all}は以下を意味します: 適用可能な手法すべてを試みる);
-@mvar{n}は、
+ (@var{tech} = @code{first}は以下を意味します: 解を見つける最初の手法を試みる;
+@var{tech} = @code{all}は以下を意味します: 適用可能な手法すべてを試みる);
+@var{n}は、
 @code{taylor}, @code{neumann}, @code{firstkindseries}, または@code{fredseries}
 に関して扱う項の最大数です (微分法に関する再帰の最大深度でもあります);
-@mvar{guess}は、@code{neumann}または@code{firstkindseries}に関する
+@var{guess}は、@code{neumann}または@code{firstkindseries}に関する
 初期の推測です。
 
 ２番目から５番目までのパラメータのデフォルト値は、以下の通りです:
 
-@mvar{unk}: @code{@mvar{p}(@mvar{x})}。
-ここで、@mvar{p}は被積分関数の中で出会うMaximaが知らない最初の関数であり、
-@mvar{x}は、@code{secondkind}方程式の場合の積分の外側で見つかった@mvar{p}
+@var{unk}: @code{@var{p}(@var{x})}。
+ここで、@var{p}は被積分関数の中で出会うMaximaが知らない最初の関数であり、
+@var{x}は、@code{secondkind}方程式の場合の積分の外側で見つかった@var{p}
 の最初の出現時の引数、または、@code{firstkind}方程式の中の積分変数を除いた唯一の残りの変数
 です。
-もし@mvar{x}を探す企てが失敗したら、ユーザーは独立変数を供給するよう尋ねられるでしょう。
+もし@var{x}を探す企てが失敗したら、ユーザーは独立変数を供給するよう尋ねられるでしょう。
 
 tech: @code{first}
 
 n: 1
 
 guess: @code{neumann}と@code{firstkindseries}が
-初期推測として@code{@mvar{f}(@mvar{x})}を使うようにする@code{none}
+初期推測として@code{@var{f}(@var{x})}を使うようにする@code{none}
 
 @opencatbox
 @category{Integral equations}
@@ -628,15 +628,15 @@ guess: @code{neumann}と@code{firstkindseries}が
 @code{ieqnprint}が@code{false}の時、
 @mref{ieqn}関数が返すリストは、形式
 
-   [@mvar{solution}, @mvar{technique used}, @mvar{nterms}, @mvar{flag}]
+   [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
 
 を取ります。
 
-ここで、もし解が厳密なら@mvar{flag}はありません。
+ここで、もし解が厳密なら@var{flag}はありません。
 
 そうでなければ、厳密でない解か閉じていない形の解かに対応して、それぞれ、単語@code{approximate}または@code{incomplete}です。
 もし級数法が使われたら、
-@mvar{nterms}は、取った項の数を与えます。
+@var{nterms}は、取った項の数を与えます。
 （項の数は、もしエラーが更なる項の生成を防いだなら、@code{ieqn}に与えられたnよりも小さいこともあり得ます。）
 
 @opencatbox
@@ -646,17 +646,17 @@ guess: @code{neumann}と@code{firstkindseries}が
 
 @c -----------------------------------------------------------------------------
 @anchor{lhs}
-@deffn {関数} lhs (@mvar{expr})
+@deffn {関数} lhs (@var{expr})
 
-@mvar{expr}の演算子が関係演算子@code{< <= = # equal notequal >= >}の１つ、
+@var{expr}の演算子が関係演算子@code{< <= = # equal notequal >= >}の１つ、
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 割り当て演算子@code{:= ::= : ::}の１つ、
 または@mref{infix}で宣言されたユーザー定義の二項中置演算子の時、
-式@mvar{expr}の左辺(すなわち、最初の項)
+式@var{expr}の左辺(すなわち、最初の項)
 を返します。
 
-@mvar{expr}がアトムか、演算子が上で記載したもの以外の何かの時、
-@code{lhs}は@mvar{expr}を返します。
+@var{expr}がアトムか、演算子が上で記載したもの以外の何かの時、
+@code{lhs}は@var{expr}を返します。
 
 @mref{rhs}も参照してください。
 
@@ -716,7 +716,7 @@ guess: @code{neumann}と@code{firstkindseries}が
 
 @c -----------------------------------------------------------------------------
 @anchor{linsolve}
-@deffn {関数} linsolve ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn {関数} linsolve ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
 変数のリストに関して同時線形方程式のリストを解きます。
 それぞれの式は変数に関する多項式でなければならず、等式も取り得ます。
@@ -859,10 +859,10 @@ Solution
 
 @c -----------------------------------------------------------------------------
 @anchor{nroots}
-@deffn {関数} nroots (@mvar{p}, @mvar{low}, @mvar{high})
+@deffn {関数} nroots (@var{p}, @var{low}, @var{high})
 
-半開区間@code{(@mvar{low}, @mvar{high}]}の中の
-実数一変数多項式@mvar{p}の実根の数を返します。
+半開区間@code{(@var{low}, @var{high}]}の中の
+実数一変数多項式@var{p}の実根の数を返します。
 区間の端点は@code{minf}もしくは@code{inf}、無限大かもしれません。
 マイナス無限大とプラス無限大。
 
@@ -883,7 +883,7 @@ Solution
 
 @c -----------------------------------------------------------------------------
 @anchor{nthroot}
-@deffn {関数} nthroot (@mvar{p}, @mvar{n})
+@deffn {関数} nthroot (@var{p}, @var{n})
 pは整数係数多項式で、
 nは正の整数ですが、
 q^n=pのような整数上の多項式qを返すか、
@@ -949,14 +949,14 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 
 @c -----------------------------------------------------------------------------
 @anchor{realroots}
-@deffn  {関数} realroots (@mvar{expr}, @mvar{bound})
-@deffnx {関数} realroots (@mvar{eqn}, @mvar{bound})
-@deffnx {関数} realroots (@mvar{expr})
-@deffnx {関数} realroots (@mvar{eqn})
+@deffn  {関数} realroots (@var{expr}, @var{bound})
+@deffnx {関数} realroots (@var{eqn}, @var{bound})
+@deffnx {関数} realroots (@var{expr})
+@deffnx {関数} realroots (@var{eqn})
 
-変数多項式@mvar{expr}もしくは1変数多項方程式@mvar{eqn}の実根の有理近似を、
+変数多項式@var{expr}もしくは1変数多項方程式@var{eqn}の実根の有理近似を、
 @code{bound}の許容誤差の範囲内で計算します。
-@mvar{expr}もしくは@mvar{eqn}の係数はリテラル数でなければなりません。
+@var{expr}もしくは@var{eqn}の係数はリテラル数でなければなりません。
 @code{%pi}のようなシンボル定数は却下されます。
 
 @code{realroots}は、みつけた根の多様性を
@@ -969,11 +969,11 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 たとえ係数が浮動小数点でも、
 （@mref{float}もしくは@mref{numer}フラグによって浮動小数点が強要されない限り）結果は有理数です。
 
-@mvar{bound}が1よりも小さい時、全ての整数根は正確に計算されます。
-@mvar{bound}がしてされない時、グローバル変数@mref{rootsepsilon}と等しいと仮定されます。
+@var{bound}が1よりも小さい時、全ての整数根は正確に計算されます。
+@var{bound}がしてされない時、グローバル変数@mref{rootsepsilon}と等しいと仮定されます。
 
 グローバル変数@mref{programmode}が@code{true}の時、
-@code{realroots}は形式@code{[x = @mvar{x_1}, x = @mvar{x_2}, @dots{}]}のリストを
+@code{realroots}は形式@code{[x = @var{x_1}, x = @var{x_2}, @dots{}]}のリストを
 返します。
 @code{programmode}が@code{false}の時、@code{realroots}は
 中間式ラベル@code{%t1}, @code{%t2}, @dots{}を生成し、
@@ -1017,16 +1017,16 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 
 @c -----------------------------------------------------------------------------
 @anchor{rhs}
-@deffn {関数} rhs (@mvar{expr})
+@deffn {関数} rhs (@var{expr})
 
-@mvar{expr}の演算子が関係演算子@code{< <= = # equal notequal >= >}の１つ、
+@var{expr}の演算子が関係演算子@code{< <= = # equal notequal >= >}の１つ、
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
 割り当て演算子@code{:= ::= : ::}の１つ、または、
 @mref{infix}で宣言されたユーザー定義の二項中置演算子の時
-式@mvar{expr}の右辺(すなわち、二番目の項)を返します。
+式@var{expr}の右辺(すなわち、二番目の項)を返します。
 
-@mvar{expr}がアトムか、演算子が上で記載したもの以外の何かの時、
-@code{rhs}は@mvar{expr}を返します。
+@var{expr}がアトムか、演算子が上で記載したもの以外の何かの時、
+@code{rhs}は@var{expr}を返します。
 
 @mref{lhs}も参照してください。
 
@@ -1101,7 +1101,7 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 
 @c -----------------------------------------------------------------------------
 @anchor{rootscontract}
-@deffn {関数} rootscontract (@mvar{expr})
+@deffn {関数} rootscontract (@var{expr})
 
 根の積を積の根に変換します。
 例えば、
@@ -1206,33 +1206,33 @@ x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 
 @c -----------------------------------------------------------------------------
 @anchor{solve}
-@deffn  {関数} solve (@mvar{expr}, @mvar{x})
-@deffnx {関数} solve (@mvar{expr})
-@deffnx {関数} solve ([@mvar{eqn_1}, @dots{}, @mvar{eqn_n}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffn  {関数} solve (@var{expr}, @var{x})
+@deffnx {関数} solve (@var{expr})
+@deffnx {関数} solve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
-代数等式@mvar{expr}を@mvar{x}について解き、@mvar{x}の解等式のリストを返します。
-もし@mvar{expr}の等式でなければ、等式@code{@mvar{expr} = 0}が仮定されます。
-@mvar{x}は関数(例えば@code{f(x)})でも他のアトムでない式でも問題ありません。
-（sumやproductは除きます。）@mvar{expr}が変数を１つだけ含む場合、@mvar{x}は省略できます。
-@mvar{expr}は有理式でも、三角関数や指数関数を含むことができます。
+代数等式@var{expr}を@var{x}について解き、@var{x}の解等式のリストを返します。
+もし@var{expr}の等式でなければ、等式@code{@var{expr} = 0}が仮定されます。
+@var{x}は関数(例えば@code{f(x)})でも他のアトムでない式でも問題ありません。
+（sumやproductは除きます。）@var{expr}が変数を１つだけ含む場合、@var{x}は省略できます。
+@var{expr}は有理式でも、三角関数や指数関数を含むことができます。
 
 以下の方法が使われます:
 
-@mvar{E}を式、@mvar{X}を変数とします。
-もし@mvar{E}が@mvar{X}に関して線形なら、@mvar{X}について自明に解かれます。
-そうでなければ、もし@mvar{E}が@code{A*X^N + B}の形なら、
+@var{E}を式、@var{X}を変数とします。
+もし@var{E}が@var{X}に関して線形なら、@var{X}について自明に解かれます。
+そうでなければ、もし@var{E}が@code{A*X^N + B}の形なら、
 結果は、@code{(-B/A)^(1/N)}かける1の@code{N}乗根です。
 
-もし@mvar{E}が@mvar{X}について線形でなければ、
-@mvar{E}の中の@mvar{X}の指数のgcd(以下@mvar{N}とする）が指数に割られ、
-根に@mvar{N}がかけられます。
+もし@var{E}が@var{X}について線形でなければ、
+@var{E}の中の@var{X}の指数のgcd(以下@var{N}とする）が指数に割られ、
+根に@var{N}がかけられます。
 その後、結果に対して@code{solve}が再びコールされます。
-もし@mvar{E}が因数分解されるなら、@code{solve}は因子のそれぞれに対してコールされます。
+もし@var{E}が因数分解されるなら、@code{solve}は因子のそれぞれに対してコールされます。
 最後に、@code{solve}は２次方程式、３次方程式、4次方程式の解の公式を必要に応じて使います。
 
-@mvar{E}が解くべき変数のある関数（以下@code{F(X)})の多項式の場合，
-最初に@code{F(X)}について解かれ（結果を@mvar{C}と呼ぶ）、
-関数@mvar{F}の逆関数がわかっている場合、等式@code{F(X)=C}が@mvar{X}について解かれます。
+@var{E}が解くべき変数のある関数（以下@code{F(X)})の多項式の場合，
+最初に@code{F(X)}について解かれ（結果を@var{C}と呼ぶ）、
+関数@var{F}の逆関数がわかっている場合、等式@code{F(X)=C}が@var{X}について解かれます。
 
 @mref{breakup}が@code{false}なら、
 @code{solve}は３次もしくは４次方程式の解を、
@@ -1245,7 +1245,7 @@ x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 もしスイッチの目的がはっきりしないなら、
 個々のスイッチ名について@mref{describe}を使うことができます。
 
-@code{solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])}
+@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 は、@mref{linsolve}もしくは@mref{algsys}をコールすることで，
 同時（線形もしくは非線形）代数方程式系を解き、変数の解リストのリストを返します。
 @code{linsolve}の場合、このリストは解の単一リストを含みます。

@@ -54,14 +54,14 @@ No continuation character (to join broken lines) is recognized.
 @subsection Separator flag values for input
 
 The functions for plain-text input and output take an optional argument,
-@mvar{separator_flag}, that tells what character separates data.
+@var{separator_flag}, that tells what character separates data.
 
-For plain-text input, these values of @mvar{separator_flag} are recognized:
+For plain-text input, these values of @var{separator_flag} are recognized:
 @code{comma} for comma separated values,
 @code{pipe} for values separated by the vertical bar character @code{|},
 @code{semicolon} for values separated by semicolon @code{;}, 
 and @code{space} for values separated by space or tab characters.
-If the file name ends in @code{.csv} and @mvar{separator_flag} is not specified,
+If the file name ends in @code{.csv} and @var{separator_flag} is not specified,
 @code{comma} is assumed.
 If the file name ends in something other than @code{.csv} and @code{separator_flag} is not specified,
 @code{space} is assumed.
@@ -76,7 +76,7 @@ For example, @code{1234,,Foo} is treated the same as @code{1234,false,Foo}.
 @subsection Separator flag values for output
 
 For plain-text output, @code{tab}, for values separated by the tab character,
-is recognized as a value of @mvar{separator_flag},
+is recognized as a value of @var{separator_flag},
 as well as @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
 
 In plain-text output, @code{false} atoms are written as such;
@@ -105,26 +105,26 @@ The effect of reading such values with @code{numericalio} is undefined.
 @section Functions and Variables for plain-text input and output
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_matrix (@mvar{S})
-@deffnx {Function} read_matrix (@mvar{S}, @mvar{M})
-@deffnx {Function} read_matrix (@mvar{S}, @mvar{separator_flag})
-@deffnx {Function} read_matrix (@mvar{S}, @mvar{M}, @mvar{separator_flag})
+@deffn {Function} read_matrix (@var{S})
+@deffnx {Function} read_matrix (@var{S}, @var{M})
+@deffnx {Function} read_matrix (@var{S}, @var{separator_flag})
+@deffnx {Function} read_matrix (@var{S}, @var{M}, @var{separator_flag})
 
-@code{read_matrix(@mvar{S})} reads the source @mvar{S} and returns its entire content as a matrix.
+@code{read_matrix(@var{S})} reads the source @var{S} and returns its entire content as a matrix.
 The size of the matrix is inferred from the input data;
 each line of the file becomes one row of the matrix.
 If some lines have different lengths, @code{read_matrix} complains.
 
-@code{read_matrix(@mvar{S}, @mvar{M})} read the source @mvar{S} into the matrix @mvar{M},
-until @mvar{M} is full or the source is exhausted.
+@code{read_matrix(@var{S}, @var{M})} read the source @var{S} into the matrix @var{M},
+until @var{M} is full or the source is exhausted.
 Input data are read into the matrix in row-major order;
-the input need not have the same number of rows and columns as @mvar{M}.
+the input need not have the same number of rows and columns as @var{M}.
 
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -132,19 +132,19 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_array (@mvar{S}, @mvar{A})
-@deffnx {Function} read_array (@mvar{S}, @mvar{A}, @mvar{separator_flag})
+@deffn {Function} read_array (@var{S}, @var{A})
+@deffnx {Function} read_array (@var{S}, @var{A}, @var{separator_flag})
 
-Reads the source @mvar{S} into the array @mvar{A},
-until @mvar{A} is full or the source is exhausted.
+Reads the source @var{S} into the array @var{A},
+until @var{A} is full or the source is exhausted.
 Input data are read into the array in row-major order;
-the input need not conform to the dimensions of @mvar{A}.
+the input need not conform to the dimensions of @var{A}.
 
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -152,11 +152,11 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_hashed_array (@mvar{S}, @mvar{A})
-@deffnx {Function} read_hashed_array (@mvar{S}, @mvar{A}, @mvar{separator_flag})
+@deffn {Function} read_hashed_array (@var{S}, @var{A})
+@deffnx {Function} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
 
-Reads the source @mvar{S} and returns its entire content as a hashed array.
-The source @mvar{S} may be a file name or a stream.
+Reads the source @var{S} and returns its entire content as a hashed array.
+The source @var{S} may be a file name or a stream.
 
 @code{read_hashed_array} treats the first item on each line as a hash key,
 and associates the remainder of the line (as a list) with the key.
@@ -164,9 +164,9 @@ For example,
 the line @code{567 12 17 32 55} is equivalent to @code{A[567]: [12, 17, 32, 55]$}.
 Lines need not have the same numbers of elements.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -174,19 +174,19 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_nested_list (@mvar{S})
-@deffnx {Function} read_nested_list (@mvar{S}, @mvar{separator_flag})
+@deffn {Function} read_nested_list (@var{S})
+@deffnx {Function} read_nested_list (@var{S}, @var{separator_flag})
 
-Reads the source @mvar{S} and returns its entire content as a nested list.
-The source @mvar{S} may be a file name or a stream.
+Reads the source @var{S} and returns its entire content as a nested list.
+The source @var{S} may be a file name or a stream.
 
 @code{read_nested_list} returns a list which has a sublist for each
 line of input. Lines need not have the same numbers of elements.
 Empty lines are @i{not} ignored: an empty line yields an empty sublist.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -194,21 +194,21 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_list (@mvar{S})
-@deffnx {Function} read_list (@mvar{S}, @mvar{L})
-@deffnx {Function} read_list (@mvar{S}, @mvar{separator_flag})
-@deffnx {Function} read_list (@mvar{S}, @mvar{L}, @mvar{separator_flag})
+@deffn {Function} read_list (@var{S})
+@deffnx {Function} read_list (@var{S}, @var{L})
+@deffnx {Function} read_list (@var{S}, @var{separator_flag})
+@deffnx {Function} read_list (@var{S}, @var{L}, @var{separator_flag})
 
-@code{read_list(@mvar{S})} reads the source @mvar{S} and returns its entire content as a flat list.
+@code{read_list(@var{S})} reads the source @var{S} and returns its entire content as a flat list.
 
-@code{read_list(@mvar{S}, @mvar{L})} reads the source @mvar{S} into the list @mvar{L},
-until @mvar{L} is full or the source is exhausted.
+@code{read_list(@var{S}, @var{L})} reads the source @var{S} into the list @var{L},
+until @var{L} is full or the source is exhausted.
 
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -216,10 +216,10 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} write_data (@mvar{X}, @mvar{D})
-@deffnx {Function} write_data (@mvar{X}, @mvar{D}, @mvar{separator_flag})
+@deffn {Function} write_data (@var{X}, @var{D})
+@deffnx {Function} write_data (@var{X}, @var{D}, @var{separator_flag})
 
-Writes the object @mvar{X} to the destination @mvar{D}.
+Writes the object @var{X} to the destination @var{D}.
 
 @code{write_data} writes a matrix in row-major order,
 with one line per row.
@@ -235,7 +235,7 @@ its associated list on one line.
 
 @code{write_data} writes a flat list all on one line.
 
-The destination @mvar{D} may be a file name or a stream.
+The destination @var{D} may be a file name or a stream.
 When the destination is a file name,
 the global variable @code{file_output_append} governs
 whether the output file is appended or truncated.
@@ -243,9 +243,9 @@ When the destination is a stream,
 no special action is taken by @code{write_data} after all the data are written;
 in particular, the stream remains open.
 
-The recognized values of @mvar{separator_flag} are
+The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, @code{space}, and @code{tab}.
-If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File output}
@@ -257,9 +257,9 @@ If @mvar{separator_flag} is not specified, the file is assumed space-delimited.
 @section Functions and Variables for binary input and output
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} assume_external_byte_order (@mvar{byte_order_flag})
+@deffn {Function} assume_external_byte_order (@var{byte_order_flag})
 Tells @code{numericalio} the byte order for reading and writing binary data.
-Two values of @mvar{byte_order_flag} are recognized:
+Two values of @var{byte_order_flag} are recognized:
 @code{lsb} which indicates least-significant byte first, also called little-endian byte order;
 and @code{msb} which indicates most-significant byte first, also called big-endian byte order.
 
@@ -271,8 +271,8 @@ If not specified, @code{numericalio} assumes the external byte order is most-sig
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} openr_binary (@mvar{file_name})
-Returns an input stream of 8-bit unsigned bytes to read the file named by @mvar{file_name}.
+@deffn {Function} openr_binary (@var{file_name})
+Returns an input stream of 8-bit unsigned bytes to read the file named by @var{file_name}.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File input}
@@ -280,8 +280,8 @@ Returns an input stream of 8-bit unsigned bytes to read the file named by @mvar{
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} openw_binary (@mvar{file_name})
-Returns an output stream of 8-bit unsigned bytes to write the file named by @mvar{file_name}.
+@deffn {Function} openw_binary (@var{file_name})
+Returns an output stream of 8-bit unsigned bytes to write the file named by @var{file_name}.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File output}
@@ -289,8 +289,8 @@ Returns an output stream of 8-bit unsigned bytes to write the file named by @mva
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} opena_binary (@mvar{file_name})
-Returns an output stream of 8-bit unsigned bytes to append the file named by @mvar{file_name}.
+@deffn {Function} opena_binary (@var{file_name})
+Returns an output stream of 8-bit unsigned bytes to append the file named by @var{file_name}.
 
 @c @opencatbox
 @c @category{Package numericalio} @category{File output}
@@ -298,12 +298,12 @@ Returns an output stream of 8-bit unsigned bytes to append the file named by @mv
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_binary_matrix (@mvar{S}, @mvar{M})
-Reads binary 8-byte floating point numbers from the source @mvar{S} into the matrix @mvar{M}
-until @mvar{M} is full, or the source is exhausted.
-Elements of @mvar{M} are read in row-major order.
+@deffn {Function} read_binary_matrix (@var{S}, @var{M})
+Reads binary 8-byte floating point numbers from the source @var{S} into the matrix @var{M}
+until @var{M} is full, or the source is exhausted.
+Elements of @var{M} are read in row-major order.
 
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
 The byte order in elements of the source is specified by @code{assume_external_byte_order}.
 
@@ -313,13 +313,13 @@ The byte order in elements of the source is specified by @code{assume_external_b
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_binary_array (@mvar{S}, @mvar{A})
-Reads binary 8-byte floating point numbers from the source @mvar{S} into the array @mvar{A}
-until @mvar{A} is full, or the source is exhausted.
-@mvar{A} must be an array created by @code{array} or @code{make_array}.
-Elements of @mvar{A} are read in row-major order.
+@deffn {Function} read_binary_array (@var{S}, @var{A})
+Reads binary 8-byte floating point numbers from the source @var{S} into the array @var{A}
+until @var{A} is full, or the source is exhausted.
+@var{A} must be an array created by @code{array} or @code{make_array}.
+Elements of @var{A} are read in row-major order.
 
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
 The byte order in elements of the source is specified by @code{assume_external_byte_order}.
 
@@ -329,14 +329,14 @@ The byte order in elements of the source is specified by @code{assume_external_b
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} read_binary_list (@mvar{S})
-@deffnx {Function} read_binary_list (@mvar{S}, @mvar{L})
-@code{read_binary_list(@mvar{S})} reads the entire content of the source @mvar{S}
+@deffn {Function} read_binary_list (@var{S})
+@deffnx {Function} read_binary_list (@var{S}, @var{L})
+@code{read_binary_list(@var{S})} reads the entire content of the source @var{S}
 as a sequence of binary 8-byte floating point numbers, and returns it as a list.
-The source @mvar{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream.
 
-@code{read_binary_list(@mvar{S}, @mvar{L})} reads 8-byte binary floating point numbers
-from the source @mvar{S} until the list @mvar{L} is full, or the source is exhausted.
+@code{read_binary_list(@var{S}, @var{L})} reads 8-byte binary floating point numbers
+from the source @var{S} until the list @var{L} is full, or the source is exhausted.
 
 The byte order in elements of the source is specified by @code{assume_external_byte_order}.
 
@@ -346,19 +346,19 @@ The byte order in elements of the source is specified by @code{assume_external_b
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} write_binary_data (@mvar{X}, @mvar{D})
+@deffn {Function} write_binary_data (@var{X}, @var{D})
 
-Writes the object @mvar{X}, comprising binary 8-byte IEEE 754 floating-point numbers,
-to the destination @mvar{D}.
+Writes the object @var{X}, comprising binary 8-byte IEEE 754 floating-point numbers,
+to the destination @var{D}.
 Other kinds of numbers are coerced to 8-byte floats.
 @code{write_binary_data} cannot write non-numeric data.
 
-The object @mvar{X} may be a list, a nested list, a matrix,
+The object @var{X} may be a list, a nested list, a matrix,
 or an array created by @code{array} or @code{make_array};
-@mvar{X} cannot be an undeclared array or any other type of object.
+@var{X} cannot be an undeclared array or any other type of object.
 @code{write_binary_data} writes nested lists, matrices, and arrays in row-major order.
 
-The destination @mvar{D} may be a file name or a stream.
+The destination @var{D} may be a file name or a stream.
 When the destination is a file name,
 the global variable @code{file_output_append} governs
 whether the output file is appended or truncated.

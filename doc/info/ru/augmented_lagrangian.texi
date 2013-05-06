@@ -11,16 +11,16 @@
 @node Функции и переменные пакета augmented_lagrangian,  , Пакет augmented_lagrangian, Пакет augmented_lagrangian
 @section Функции и переменные пакета augmented_lagrangian
 
-@deffn {Функция} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {Функция} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
+@deffn {Функция} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Функция} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
 
-Возвращает приближенный минимум выражения @mvar{FOM}
-по переменным @mvar{xx}, при связях @mvar{C}, равных нулю.
-@mvar{yy} -- список затравочных начальных значений @mvar{xx}.
+Возвращает приближенный минимум выражения @var{FOM}
+по переменным @var{xx}, при связях @var{C}, равных нулю.
+@var{yy} -- список затравочных начальных значений @var{xx}.
 Для нахождения минимума используется метод расширенного лагранжиана (см. [1] и [2]).
 
 @code{optional_args} -- дополнительные аргументы,
-задаваемые в форме @code{@mvar{symbol} = @mvar{value}}.
+задаваемые в форме @code{@var{symbol} = @var{value}}.
 Допустимы следующие дополнительные аргументы:
 
 @table @code

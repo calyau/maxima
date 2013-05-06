@@ -5,12 +5,12 @@
 @node Functions and Variables for stirling,  , stirling, stirling
 @section Functions and Variables for stirling
 
-@deffn {関数} stirling (@mvar{z},@mvar{n})
-@deffnx {関数} stirling (@mvar{z},@mvar{n},@mvar{pred})
+@deffn {関数} stirling (@var{z},@var{n})
+@deffnx {関数} stirling (@var{z},@var{n},@var{pred})
 
 @code{gamma(x)}を
 @math{O(1/x^(2n-1))}Stirling公式で置き換えます。
-@mvar{n}が非負の整数の時、エラーを知らせます。
+@var{n}が非負の整数の時、エラーを知らせます。
 オプションの三番目の引数@code{pred}があると、
 @code{pred}がtrueの時だけ
 Stirling公式は適用されます。

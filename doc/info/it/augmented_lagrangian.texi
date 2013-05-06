@@ -5,8 +5,8 @@
 @node Definitions for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Definitions for augmented_lagrangian
 
-@deffn {Function} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {Function} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
+@deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

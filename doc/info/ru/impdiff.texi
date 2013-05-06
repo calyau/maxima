@@ -11,11 +11,11 @@
 @node Функции и переменные пакета impdiff,  , Пакет impdiff, Пакет impdiff
 @section Функции и переменные пакета impdiff
 
-@deffn {Функция} implicit_derivative (@mvar{f},@mvar{indvarlist},@mvar{orderlist},@mvar{depvar})
+@deffn {Функция} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
 Эта процедура вычисляет неявную производную функции многих переменных.
-@mvar{f} -- функция-массив, с индексами, обозначающими порядок производных по переменным из @mvar{indvarlist};
-@mvar{indvarlist} -- список независимых переменных; @mvar{orderlist} -- требуемый порядок; и
-@mvar{depvar} -- зависимая переменная.
+@var{f} -- функция-массив, с индексами, обозначающими порядок производных по переменным из @var{indvarlist};
+@var{indvarlist} -- список независимых переменных; @var{orderlist} -- требуемый порядок; и
+@var{depvar} -- зависимая переменная.
 
 Для того, чтобы использовать эту функцию, сначала напишите @code{load("impdiff")}.
 

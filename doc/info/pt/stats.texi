@@ -30,19 +30,19 @@ O pacote @code{stats} precisa dos pacotes @code{descriptive}, @code{distrib} e
 
 Para coment@'arios, erros ou sugest@~oes, por favor contate o autor em
 
-@mvar{'mario AT edu DOT xunta DOT es'}.
+@var{'mario AT edu DOT xunta DOT es'}.
 
 
 @node Defini@value{cedilha}@~oes para inference_result, Defini@value{cedilha}@~oes para stats, Introdu@value{cedilha}@~ao a stats, Top
 @section Defini@value{cedilha}@~oes para inference_result
 
-@deffn {Fun@value{cedilha}@~ao} inference_result (@mvar{t@'{@dotless{i}}tulo}, @mvar{valores}, @mvar{n@'umeros})
+@deffn {Fun@value{cedilha}@~ao} inference_result (@var{t@'{@dotless{i}}tulo}, @var{valores}, @var{n@'umeros})
 
 Constr@'oi um objecto @code{inference_result} do tipo retornado pelas
-fun@value{cedilha}@~oes stats. O argumento @mvar{t@'{@dotless{i}}tulo} @'e uma
-sequ@^encia de caracteres do Maxima co o nome do procedimento; @mvar{valores} @'e uma lissta com
-elementos da forma @code{s@'{@dotless{i}}mbolo = valor} e @mvar{n@'umeros} @'e uma lista
-com n@'umeros inteiros positivos no intervalo de um para @code{length(@mvar{valores})},
+fun@value{cedilha}@~oes stats. O argumento @var{t@'{@dotless{i}}tulo} @'e uma
+sequ@^encia de caracteres do Maxima co o nome do procedimento; @var{valores} @'e uma lissta com
+elementos da forma @code{s@'{@dotless{i}}mbolo = valor} e @var{n@'umeros} @'e uma lista
+com n@'umeros inteiros positivos no intervalo de um para @code{length(@var{valores})},
 indicando que valores ser@~ao mostrados por padr@~ao.
 
 Exemplo:
@@ -98,9 +98,9 @@ Veja tamb@'em @code{take_inference}.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} inferencep (@mvar{obj})
+@deffn {Fun@value{cedilha}@~ao} inferencep (@var{obj})
 
-Retorna @code{true} ou @code{false}, dependendo se @mvar{obj} @'e
+Retorna @code{true} ou @code{false}, dependendo se @var{obj} @'e
 um objecto @code{inference_result} ou n@~ao.
 
 @end deffn
@@ -110,9 +110,9 @@ um objecto @code{inference_result} ou n@~ao.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} items_inference (@mvar{obj})
+@deffn {Fun@value{cedilha}@~ao} items_inference (@var{obj})
 
-Retorna uma lista com os nomes dos itens em @mvar{obj}, que devem
+Retorna uma lista com os nomes dos itens em @var{obj}, que devem
 ser um objecto @code{inference_result}.
 
 Exemplo:
@@ -143,12 +143,12 @@ de todos os itens, n@~ao importa se eles s@~ao ou n@~ao mostrados.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} take_inference (@mvar{n}, @mvar{obj})
-@deffnx {Fun@value{cedilha}@~ao} take_inference (@mvar{nome}, @mvar{obj})
-@deffnx {Fun@value{cedilha}@~ao} take_inference (@mvar{lista}, @mvar{obj})
+@deffn {Fun@value{cedilha}@~ao} take_inference (@var{n}, @var{obj})
+@deffnx {Fun@value{cedilha}@~ao} take_inference (@var{nome}, @var{obj})
+@deffnx {Fun@value{cedilha}@~ao} take_inference (@var{lista}, @var{obj})
 
-Retorna o @mvar{n}-@'esimo valor armazenado em @mvar{obj} se @mvar{n} for um inteiro positivo,
-ou o item chamado @mvar{nome} se esse for o nome de um item. Se o primeiro
+Retorna o @var{n}-@'esimo valor armazenado em @var{obj} se @var{n} for um inteiro positivo,
+ou o item chamado @var{nome} se esse for o nome de um item. Se o primeiro
 argumento for uma lista de n@'umeros e/ou s@'{@dotless{i}}mbolos, a fun@value{cedilha}@~ao @code{take_inference} retorna
 uma lista com os resultados correspondentes.
 
@@ -226,10 +226,10 @@ resultados s@~ao fornecidos em formato simb@'olico e racional.
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~ao} test_mean (@mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} test_mean (@mvar{x}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_mean (@var{x})
+@deffnx {Fun@value{cedilha}@~ao} test_mean (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
-Esse @'e o teste-@mvar{t} de m@'edia. O argumento @mvar{x} @'e uma lista ou uma matriz coluna
+Esse @'e o teste-@var{t} de m@'edia. O argumento @var{x} @'e uma lista ou uma matriz coluna
 contendo uma amostra unidimensional. @code{test_mean} tamb;em executa um teste assint@'otico
 baseado no @i{Teorema do Limite Central} se a op@value{cedilha}@~ao @code{'asymptotic} for
 @code{true}.
@@ -254,7 +254,7 @@ conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 ser uma express@~ao que toma um valor em (0,1).
 
 @item
-@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_mean} exeecuta um teste-@mvar{t} exato ou
+@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_mean} exeecuta um teste-@var{t} exato ou
 um teste assint@'otico baseando-se no @i{Teorema do Limite Central};
 valores v@'alidos s@~ao @code{true} e @code{false}.
 
@@ -293,7 +293,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Executa um teste-@mvar{t} exato com vari@^ancia desconhecida. A hip@'otese do nulo
+Executa um teste-@var{t} exato com vari@^ancia desconhecida. A hip@'otese do nulo
 @'e @math{H_0: mean=50} contra a alternativa unilatera @math{H_1: mean<50};
 conforme os resultados, o valor de @math{p} @'e muito grande, n@~ao existem
 evid@^encias paa rejeitar @math{H_0}.
@@ -372,11 +372,11 @@ esse procedimento pode ser aplicado a grandes amostras.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_means_difference (@mvar{x1}, @mvar{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_means_difference (@mvar{x1}, @mvar{x2}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_means_difference (@var{x1}, @var{x2})
+@deffnx {Fun@value{cedilha}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
-Esse @'e o teste-@mvar{t} de diferen@value{cedilha}a de m@'edias entre duas amostras.
-Os argumentos @mvar{x1} e @mvar{x2} s@~ao listas ou matrizes colunas
+Esse @'e o teste-@var{t} de diferen@value{cedilha}a de m@'edias entre duas amostras.
+Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
 contendo duas amostras independentes. No caso de diferentes vari@^ancias desconhecidas
 (veja op@value{cedilha}@~oes @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
 os graus de liberdade s@~ao calculados por meio da aproxima@value{cedilha}@~ao de Welch.
@@ -396,11 +396,11 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
 @code{'dev1}, o valor padr@~ao @'e @code{'unknown}, @'e o valor do desvio padr@~ao
-da amostra @mvar{x1} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
+da amostra @var{x1} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 
 @item
 @code{'dev2}, o valor padr@~ao @'e @code{'unknown}, @'e o valor do desvio padr@~ao
-da amostra @mvar{x2} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
+da amostra @var{x2} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 
 @item
 @code{'varequal}, o valor padr@~ao @'e @code{false}, se vari@^ancias podem serem consideradas como iguais ou n@~ao;
@@ -413,7 +413,7 @@ ser uma express@~ao que toma valores em (0,1).
 Nota de Tradu@value{cedilha}@~ao: (0,1) representa intervalo aberto.
 
 @item
-@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_means_difference} executa um teste-@mvar{t} exato ou
+@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_means_difference} executa um teste-@var{t} exato ou
 um teste ass@'{@dotless{i}}nt@'otico baseando-se no @i{Teorema do Limite Central};
 valores v@'alidos s@~ao @code{true} e @code{false}.
 
@@ -452,7 +452,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-A igualdade de m@'edias @'e testada com duas pequenas amostras @mvar{x} e @mvar{y},
+A igualdade de m@'edias @'e testada com duas pequenas amostras @var{x} e @var{y},
 contra a alternativa @math{H_1: m_1>m_2}, sendo @math{m_1} e @math{m_2}
 as m@'edias das popula@value{cedilha}@~oes; vari@^ancias s@~ao desconhecidas e supostamente admitidas para serem diferentes.
 
@@ -537,10 +537,10 @@ iguais.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_variance (@mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} test_variance (@mvar{x}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_variance (@var{x})
+@deffnx {Fun@value{cedilha}@~ao} test_variance (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
-Esse @'e o teste da vari@^ancia @mvar{chi^2}. O argumento @mvar{x} @'e uma lista ou uma matriz coluna
+Esse @'e o teste da vari@^ancia @var{chi^2}. O argumento @var{x} @'e uma lista ou uma matriz coluna
 contendo uma amostra unidimensional tomada entre a popula@value{cedilha}@~ao normal.
 
 Op@value{cedilha}@~oes:
@@ -635,11 +635,11 @@ for igual ou maior que 200.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_variance_ratio (@mvar{x1}, @mvar{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_variance_ratio (@mvar{x1}, @mvar{x2}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {Fun@value{cedilha}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
-Isso @'e o teste @mvar{F} da raz@~ao de vari@^ancia para duas popula@value{cedilha}@~oes normais.
-Os argumentos @mvar{x1} e @mvar{x2} s@~ao listas ou matrizes colunas
+Isso @'e o teste @var{F} da raz@~ao de vari@^ancia para duas popula@value{cedilha}@~oes normais.
+Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
 contendo duas amostras independentes.
 
 Op@value{cedilha}@~oes:
@@ -652,11 +652,11 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
 @code{'mean1}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
-popula@value{cedilha}@~ao da qual @mvar{x1} foi tomada.
+popula@value{cedilha}@~ao da qual @var{x1} foi tomada.
 
 @item
 @code{'mean2}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
-popula@value{cedilha}@~ao da qual @mvar{x2} foi tomada.
+popula@value{cedilha}@~ao da qual @var{x2} foi tomada.
 
 @item
 @code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'{@dotless{i}}vel de confid@^encia para o intervalo de confid@^encia da
@@ -743,11 +743,11 @@ contra a alternativa que a primeira @'e maior que a segunda.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_sign (@mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} test_sign (@mvar{x}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_sign (@var{x})
+@deffnx {Fun@value{cedilha}@~ao} test_sign (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
 Esse @'e o teste de sinal n@~ao param@'etrico para a mediana de uma popula@value{cedilha}@~ao cont@'{@dotless{i}}nua.
-O argumento @mvar{x} @'e uma lista ou uma matriz coluna contendo uma amostra unidimensional.
+O argumento @var{x} @'e uma lista ou uma matriz coluna contendo uma amostra unidimensional.
 
 Op@value{cedilha}@~oes:
 
@@ -826,11 +826,11 @@ contra a alternativa @math{H_1: median > 6}.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_signed_rank (@mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} test_signed_rank (@mvar{x}, @mvar{op@value{cedilha}@~ao_1}, @mvar{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@value{cedilha}@~ao} test_signed_rank (@var{x})
+@deffnx {Fun@value{cedilha}@~ao} test_signed_rank (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
 
 Esse @'e o teste de ranque sinalizado de Wilcoxon para fazer infer@^encias sobre a mediana de uma
-popula@value{cedilha}@~ao cont@'{@dotless{i}}nua. O argumento @mvar{x} @'e uma lista ou uma matriz coluna
+popula@value{cedilha}@~ao cont@'{@dotless{i}}nua. O argumento @var{x} @'e uma lista ou uma matriz coluna
 contendo uma amostra unidimensional. Executa uma aproxima@value{cedilha}@~ao normal se o
 tamanho da amostra for maior que 20, ou se existirem zeros ou houverem empates.
 
@@ -948,11 +948,11 @@ uma vez que ocorrem empates.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_rank_sum (@mvar{x1}, @mvar{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_rank_sum (@mvar{x1}, @mvar{x2}, @mvar{op@value{cedilha}@~ao_1})
+@deffn {Fun@value{cedilha}@~ao} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {Fun@value{cedilha}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1})
 
 Esse @'e o teste de Wilcoxon-Mann-Whitney para compara@value{cedilha}@~ao das medianas de duas
-popula@value{cedilha}@~oes cont@'{@dotless{i}}nuas. Os primeiros dois argumentos @mvar{x1} e @mvar{x2} s@~ao listas
+popula@value{cedilha}@~oes cont@'{@dotless{i}}nuas. Os primeiros dois argumentos @var{x1} e @var{x2} s@~ao listas
 ou matrizes colunas com os dados de duas amostras independentes. Executa aproxima@value{cedilha}@~ao
 normal se quaisquer dos tamanhos de amostra for maior que 10, ou se houverem empates.
 
@@ -1063,9 +1063,9 @@ aproxima@value{cedilha}@~ao norma. A hip@'otese alternativa @'e
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_normality (@mvar{x})
+@deffn {Fun@value{cedilha}@~ao} test_normality (@var{x})
 
-Teste de Shapiro-Wilk para normalidade. O argumento @mvar{x} @'e uma lista de n@'umeros, e o tamanho
+Teste de Shapiro-Wilk para normalidade. O argumento @var{x} @'e uma lista de n@'umeros, e o tamanho
 da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a fun@value{cedilha}@~ao
 @code{test_normality} sinaliza com um erro.
 
@@ -1079,7 +1079,7 @@ com os seguintes resultados:
 @enumerate
 
 @item
-@code{'statistic}: valor do @mvar{W} estat@'{@dotless{i}}stico.
+@code{'statistic}: valor do @var{W} estat@'{@dotless{i}}stico.
 
 @item
 @code{'p_value}: valor de @math{p} sob a hip@'otese de normalidade.
@@ -1120,11 +1120,11 @@ Verifica a normalidade de uma popula@value{cedilha}@~ao, baseada em uma amostra 
 
 
 
-@deffn {Fun@value{cedilha}@~ao} simple_linear_regression (@mvar{x})
-@deffnx {Fun@value{cedilha}@~ao} simple_linear_regression (@mvar{x} @mvar{op@value{cedilha}@~ao_1})
+@deffn {Fun@value{cedilha}@~ao} simple_linear_regression (@var{x})
+@deffnx {Fun@value{cedilha}@~ao} simple_linear_regression (@var{x} @var{op@value{cedilha}@~ao_1})
 
 Regress@~ao linear simples, @math{y_i=a+b x_i+e_i}, onde os @math{e_i} s@~ao @math{N(0,sigma)}
-vari@'aveis aleat@'orias independentes. O argumento @mvar{x} deve ser uma matriz de duas colunas ou uma lista de
+vari@'aveis aleat@'orias independentes. O argumento @var{x} deve ser uma matriz de duas colunas ou uma lista de
 pares.
 
 Op@value{cedilha}@~oes:
@@ -1161,19 +1161,19 @@ com os seguintes resultados:
 @code{'adc}: coeficiente de determina@value{cedilha}@~ao ajustado.
 
 @item
-@code{'a_estimation}: estimador do par@^ametro @mvar{a}.
+@code{'a_estimation}: estimador do par@^ametro @var{a}.
 
 @item
-@code{'a_conf_int}: intervalo de confid@^encia do par@^ametro @mvar{a}.
+@code{'a_conf_int}: intervalo de confid@^encia do par@^ametro @var{a}.
 
 @item
-@code{'b_estimation}: estimador do par@^ametro @mvar{b}.
+@code{'b_estimation}: estimador do par@^ametro @var{b}.
 
 @item
-@code{'b_conf_int}: intervalo de confid@^encia do par@^ametro @mvar{b}.
+@code{'b_conf_int}: intervalo de confid@^encia do par@^ametro @var{b}.
 
 @item
-@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa sobre o par@^ametro @mvar{b}.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa sobre o par@^ametro @var{b}.
 
 @item
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
@@ -1182,7 +1182,7 @@ com os seguintes resultados:
 @code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu par@^ametro.
 
 @item
-@code{'p_value}: o valor de @math{p} do teste sobre @mvar{b}.
+@code{'p_value}: o valor de @math{p} do teste sobre @var{b}.
 
 @item
 @code{'v_estimation}: estimador de vari@^ancia imparcial, ou vari@^ancia residual.
@@ -1292,34 +1292,34 @@ intervalo de confid@^encia para uma nova previs@~ao quando @code{x=113} s@~ao ta
 @section Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais
 
 
-@deffn {Fun@value{cedilha}@~ao} pdf_signed_rank (@mvar{x}, @mvar{n})
+@deffn {Fun@value{cedilha}@~ao} pdf_signed_rank (@var{x}, @var{n})
 Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
-estat@'{@dotless{i}}stica do rank sinalizado. O argumento @mvar{x} @'e um n@'umero
-real e @mvar{n} um inteiro positivo.
+estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
+real e @var{n} um inteiro positivo.
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cdf_signed_rank (@mvar{x}, @mvar{n})
+@deffn {Fun@value{cedilha}@~ao} cdf_signed_rank (@var{x}, @var{n})
 Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
-estat@'{@dotless{i}}stica do rank sinalizado. O argumento @mvar{x} @'e um n@'umero
-real e @mvar{n} um inteiro positivo. 
+estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
+real e @var{n} um inteiro positivo. 
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} pdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
+@deffn {Fun@value{cedilha}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
 Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
-estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @mvar{x} @'e um n@'umero
-real e @mvar{n} e @mvar{m} s@~ao ambos inteiros positivos. 
+estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
+real e @var{n} e @var{m} s@~ao ambos inteiros positivos. 
 
 Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
+@deffn {Fun@value{cedilha}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
 Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
-estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @mvar{x} @'e um n@'umero
-real e @mvar{n} e @mvar{m} s@~ao ambos inteiro positivos. 
+estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
+real e @var{n} e @var{m} s@~ao ambos inteiro positivos. 
 
 Veja tamb@'em @code{test_rank_sum}.
 @end deffn

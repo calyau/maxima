@@ -9,15 +9,15 @@
 @node Definitions for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
 @section Definitions for Rules and Patterns
 
-@deffn {Function} apply1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} apply2 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Function} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} applyb1 (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Function} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -29,21 +29,21 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} defmatch (@mvar{progname}, @mvar{pattern}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} defrule (@mvar{rulename}, @mvar{pattern}, @mvar{replacement})
+@deffn {Function} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} disprule (@mvar{rulename_1}, ..., @mvar{rulename_2})
+@deffn {Function} disprule (@var{rulename_1}, ..., @var{rulename_2})
 @deffnx {Function} disprule (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} let (@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n})
-@deffnx {Function} let ([@mvar{prod}, @mvar{repl}, @mvar{predname}, @mvar{arg_1}, ..., @mvar{arg_n}], @mvar{package_name})
+@deffn {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -52,13 +52,13 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
 @deffn {Function} letrules ()
-@deffnx {Function} letrules (@mvar{package_name})
+@deffnx {Function} letrules (@var{package_name})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} letsimp (@mvar{expr})
-@deffnx {Function} letsimp (@mvar{expr}, @mvar{package_name})
-@deffnx {Function} letsimp (@mvar{expr}, @mvar{package_name_1}, ..., @mvar{package_name_n})
+@deffn {Function} letsimp (@var{expr})
+@deffnx {Function} letsimp (@var{expr}, @var{package_name})
+@deffnx {Function} letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -66,32 +66,32 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} matchdeclare (@mvar{a_1}, @mvar{pred_1}, ..., @mvar{a_n}, @mvar{pred_n})
+@deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
-@deffnx {Function} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
+@deffn {Function} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Function} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remlet (@mvar{prod}, @mvar{name})
+@deffn {Function} remlet (@var{prod}, @var{name})
 @deffnx {Function} remlet ()
 @deffnx {Function} remlet (all)
-@deffnx {Function} remlet (all, @mvar{name})
+@deffnx {Function} remlet (all, @var{name})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remrule (@mvar{op}, @mvar{rulename})
-@deffnx {Function} remrule (@mvar{op}, all)
+@deffn {Function} remrule (@var{op}, @var{rulename})
+@deffnx {Function} remrule (@var{op}, all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tellsimp (@mvar{pattern}, @mvar{replacement})
+@deffn {Function} tellsimp (@var{pattern}, @var{replacement})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tellsimpafter (@mvar{pattern}, @mvar{replacement})
+@deffn {Function} tellsimpafter (@var{pattern}, @var{replacement})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

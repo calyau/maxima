@@ -35,11 +35,11 @@ integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{changevar}
-@deffn {Function} changevar (@mvar{expr}, @mvar{f(x,y)}, @mvar{y}, @mvar{x})
+@deffn {Function} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 
-Makes the change of variable given by @code{@mvar{f(x,y)} = 0} in all integrals
-occurring in @mvar{expr} with integration with respect to @mvar{x}.
-The new variable is @mvar{y}.
+Makes the change of variable given by @code{@var{f(x,y)} = 0} in all integrals
+occurring in @var{expr} with integration with respect to @var{x}.
+The new variable is @var{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -111,7 +111,7 @@ higher degree function.  E.g.,
 
 @c -----------------------------------------------------------------------------
 @anchor{dblint}
-@deffn {Function} dblint (@mvar{f}, @mvar{r}, @mvar{s}, @mvar{a}, @mvar{b})
+@deffn {Function} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 
 A double-integral routine which was written in
 top-level Maxima and then translated and compiled to machine code.
@@ -133,29 +133,29 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @end example
 @end ifnottex
 
-The function @mvar{f} must be a translated or compiled function of two variables,
-and @mvar{r} and @mvar{s} must each be a translated or compiled function of one
-variable, while @mvar{a} and @mvar{b} must be floating point numbers.  The routine
+The function @var{f} must be a translated or compiled function of two variables,
+and @var{r} and @var{s} must each be a translated or compiled function of one
+variable, while @var{a} and @var{b} must be floating point numbers.  The routine
 has two global variables which determine the number of divisions of the x and y
 intervals: @code{dblint_x} and @code{dblint_y}, both of which are initially 10,
 and can be changed independently to other integer values (there are
 @code{2*dblint_x+1} points computed in the x direction, and @code{2*dblint_y+1}
 in the y direction).  The routine subdivides the X axis and then for each value
-of X it first computes @code{@mvar{r}(x)} and @code{@mvar{s}(x)}; then the Y axis
-between @code{@mvar{r}(x)} and @code{@mvar{s}(x)} is subdivided and the integral
+of X it first computes @code{@var{r}(x)} and @code{@var{s}(x)}; then the Y axis
+between @code{@var{r}(x)} and @code{@var{s}(x)} is subdivided and the integral
 along the Y axis is performed using Simpson's rule; then the integral along the
 X axis is done using Simpson's rule with the function values being the
 Y-integrals.  This procedure may be numerically unstable for a great variety of
 reasons, but is reasonably fast: avoid using it on highly oscillatory functions
 and functions with singularities (poles or branch points in the region).  The Y
-integrals depend on how far apart @code{@mvar{r}(x)} and @code{@mvar{s}(x)} are,
-so if the distance @code{@mvar{s}(x) - @mvar{r}(x)} varies rapidly with X, there
+integrals depend on how far apart @code{@var{r}(x)} and @code{@var{s}(x)} are,
+so if the distance @code{@var{s}(x) - @var{r}(x)} varies rapidly with X, there
 may be substantial errors arising from truncation with different step-sizes in
 the various Y integrals.  One can increase @code{dblint_x} and @code{dblint_y}
 in an effort to improve the coverage of the region, at the expense of
 computation time.  The function values are not saved, so if the function is very
 time-consuming, you will have to wait for re-computation if you change anything
-(sorry).  It is required that the functions @mvar{f}, @mvar{r}, and @mvar{s} be
+(sorry).  It is required that the functions @var{f}, @var{r}, and @var{s} be
 either translated or compiled prior to calling @code{dblint}.  This will result
 in orders of magnitude speed improvement over interpreted code in many cases!
 
@@ -171,12 +171,12 @@ example problem.
 
 @c -----------------------------------------------------------------------------
 @anchor{defint}
-@deffn {Function} defint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffn {Function} defint (@var{expr}, @var{x}, @var{a}, @var{b})
 
 Attempts to compute a definite integral.  @code{defint} is called by
 @code{integrate} when limits of integration are specified, i.e., when
 @code{integrate} is called as
-@code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
+@code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 Thus from the user's point of view, it is sufficient to call @code{integrate}.
 @c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
 
@@ -207,10 +207,10 @@ begin with.
 
 @c -----------------------------------------------------------------------------
 @anchor{ilt}
-@deffn {Function} ilt (@mvar{expr}, @mvar{s}, @mvar{t})
+@deffn {Function} ilt (@var{expr}, @var{s}, @var{t})
 
-Computes the inverse Laplace transform of @mvar{expr} with
-respect to @mvar{s} and parameter @mvar{t}.  @mvar{expr} must be a ratio of
+Computes the inverse Laplace transform of @var{expr} with
+respect to @var{s} and parameter @var{t}.  @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors.
 By using the functions @code{laplace} and @code{ilt} together with the
 @code{solve} or @code{linsolve} functions the user can solve a single
@@ -321,16 +321,16 @@ The number 1 isn't in the domain of atanh
 
 @c -----------------------------------------------------------------------------
 @anchor{integrate}
-@deffn  {Function} integrate (@mvar{expr}, @mvar{x})
-@deffnx {Function} integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffn  {Function} integrate (@var{expr}, @var{x})
+@deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Attempts to symbolically compute the integral of @mvar{expr} with respect to
-@mvar{x}.  @code{integrate (@mvar{expr}, @mvar{x})} is an indefinite integral,
-while @code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})} is a definite
-integral, with limits of integration @mvar{a} and @mvar{b}.  The limits should
-not contain @mvar{x}, although @code{integrate} does not enforce this
-restriction.  @mvar{a} need not be less than @mvar{b}.
-If @mvar{b} is equal to @mvar{a}, @code{integrate} returns zero.
+Attempts to symbolically compute the integral of @var{expr} with respect to
+@var{x}.  @code{integrate (@var{expr}, @var{x})} is an indefinite integral,
+while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite
+integral, with limits of integration @var{a} and @var{b}.  The limits should
+not contain @var{x}, although @code{integrate} does not enforce this
+restriction.  @var{a} need not be less than @var{b}.
+If @var{b} is equal to @var{a}, @code{integrate} returns zero.
 
 See @code{quad_qag} and related functions for numerical approximation of
 definite integrals.  See @code{residue} for computation of residues
@@ -345,10 +345,10 @@ The noun form of @code{integrate} is displayed with an integral sign.
 
 In some circumstances it is useful to construct a noun form by hand, by quoting
 @code{integrate} with a single quote, e.g.,
-@code{'integrate (@mvar{expr}, @mvar{x})}.  For example, the integral may depend
+@code{'integrate (@var{expr}, @var{x})}.  For example, the integral may depend
 on some parameters which are not yet computed.
-The noun may be applied to its arguments by @code{ev (@mvar{i}, nouns)}
-where @mvar{i} is the noun form of interest.
+The noun may be applied to its arguments by @code{ev (@var{i}, nouns)}
+where @var{i} is the noun form of interest.
 
 @c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} handles definite integrals separately from indefinite, and
@@ -378,8 +378,8 @@ See also @code{changevar} and @code{antid}.
 If none of the preceding heuristics find the indefinite integral, the Risch
 algorithm is executed.  The flag @code{risch} may be set as an @code{evflag},
 in a call to @code{ev} or on the command line, e.g.,
-@code{ev (integrate (@mvar{expr}, @mvar{x}), risch)} or
-@code{integrate (@mvar{expr}, @mvar{x}), risch}.  If @code{risch} is present,
+@code{ev (integrate (@var{expr}, @var{x}), risch)} or
+@code{integrate (@var{expr}, @var{x}), risch}.  If @code{risch} is present,
 @code{integrate} calls the @code{risch} function without attempting heuristics
 first.  See also @code{risch}.
 @c END EXPOSITION ON HEURISTICS
@@ -719,17 +719,17 @@ Sometimes this will help Maxima obtain a more useful result.
 
 @c -----------------------------------------------------------------------------
 @anchor{ldefint}
-@deffn {Function} ldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffn {Function} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Attempts to compute the definite integral of @mvar{expr} by using @code{limit}
-to evaluate the indefinite integral of @mvar{expr} with respect to @mvar{x}
-at the upper limit @mvar{b} and at the lower limit @mvar{a}.
+Attempts to compute the definite integral of @var{expr} by using @code{limit}
+to evaluate the indefinite integral of @var{expr} with respect to @var{x}
+at the upper limit @var{b} and at the lower limit @var{a}.
 If it fails to compute the definite integral,
 @code{ldefint} returns an expression containing limits as noun forms.
 
 @code{ldefint} is not called from @code{integrate}, so executing
-@code{ldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})} may yield a different
-result than @code{integrate (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
+@code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different
+result than @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 @code{ldefint} always uses the same method to evaluate the definite integral,
 while @code{integrate} may employ various heuristics and may recognize some
 special cases.
@@ -744,7 +744,7 @@ special cases.
 
 @c -----------------------------------------------------------------------------
 @anchor{potential}
-@deffn {Function} potential (@mvar{givengradient})
+@deffn {Function} potential (@var{givengradient})
 
 The calculation makes use of the global variable @code{potentialzeroloc[0]}
 which must be @code{nonlist} or of the form
@@ -762,11 +762,11 @@ to 0.
 
 @c -----------------------------------------------------------------------------
 @anchor{residue}
-@deffn {Function} residue (@mvar{expr}, @mvar{z}, @mvar{z_0})
+@deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
 
-Computes the residue in the complex plane of the expression @mvar{expr} when the
-variable @mvar{z} assumes the value @mvar{z_0}.  The residue is the coefficient of
-@code{(@mvar{z} - @mvar{z_0})^(-1)} in the Laurent series for @mvar{expr}.
+Computes the residue in the complex plane of the expression @var{expr} when the
+variable @var{z} assumes the value @var{z_0}.  The residue is the coefficient of
+@code{(@var{z} - @var{z_0})^(-1)} in the Laurent series for @var{expr}.
 
 @example
 @group
@@ -791,9 +791,9 @@ variable @mvar{z} assumes the value @mvar{z_0}.  The residue is the coefficient 
 
 @c -----------------------------------------------------------------------------
 @anchor{risch}
-@deffn {Function} risch (@mvar{expr}, @mvar{x})
+@deffn {Function} risch (@var{expr}, @var{x})
 
-Integrates @mvar{expr} with respect to @mvar{x} using the
+Integrates @var{expr} with respect to @var{x} using the
 transcendental case of the Risch algorithm.  (The algebraic case of
 the Risch algorithm has not been implemented.)  This currently
 handles the cases of nested exponentials and logarithms which the main
@@ -829,7 +829,7 @@ with.
 
 @c -----------------------------------------------------------------------------
 @anchor{tldefint}
-@deffn {Function} tldefint (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffn {Function} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
 Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
@@ -965,8 +965,8 @@ for the integrator to produce a good solution.
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qag}
-@deffn  {Function} quad_qag (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{key}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qag (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{key}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.  @code{quad_qag}
 implements a simple globally adaptive integrator using the strategy of Aind
@@ -983,11 +983,11 @@ are suitable for strongly oscillating integrands.
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-The function to be integrated is @mvar{f(x)}, with dependent
-variable @mvar{x}, and the function is to be integrated between the
-limits @mvar{a} and @mvar{b}.  @mvar{key} is the integrator to be used
+The function to be integrated is @var{f(x)}, with dependent
+variable @var{x}, and the function is to be integrated between the
+limits @var{a} and @var{b}.  @var{key} is the integrator to be used
 and should be an integer between 1 and 6, inclusive.  The value of
-@mvar{key} selects the order of the Gauss-Kronrod integration rule.
+@var{key} selects the order of the Gauss-Kronrod integration rule.
 High-order rules are suitable for strongly oscillating integrands.
 
 The integrand may be specified as the name of a Maxima or Lisp function or
@@ -1006,7 +1006,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit} is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1066,8 +1066,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qags}
-@deffn  {Function} quad_qags (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qags (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qags} implements globally adaptive interval subdivision with
@@ -1082,9 +1082,9 @@ extrapolation (de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-The function to be integrated is @mvar{f(x)}, with
-dependent variable @mvar{x}, and the function is to be integrated
-between the limits @mvar{a} and @mvar{b}.
+The function to be integrated is @var{f(x)}, with
+dependent variable @var{x}, and the function is to be integrated
+between the limits @var{a} and @var{b}.
 
 The integrand may be specified as the name of a Maxima or Lisp function or
 operator, a Maxima lambda expression, or a general Maxima expression.
@@ -1098,7 +1098,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit} is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1157,8 +1157,8 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qagi}
-@deffn  {Function} quad_qagi (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qagi (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over an infinite or semi-infinite interval.
 The interval is mapped onto a finite interval and
@@ -1188,7 +1188,7 @@ $$\int_{-\infty}^\infty {f(x) \, dx}$$
 @end tex
 
 using the Quadpack QAGI routine.  The function to be integrated is
-@mvar{f(x)}, with dependent variable @mvar{x}, and the function is to
+@var{f(x)}, with dependent variable @var{x}, and the function is to
 be integrated over an infinite range.
 
 The integrand may be specified as the name of a Maxima or Lisp function or
@@ -1206,7 +1206,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit} is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1270,8 +1270,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawc}
-@deffn  {Function} quad_qawc (@mvar{f(x)}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qawc (@mvar{f}, @mvar{x}, @mvar{c}, @mvar{a}, @mvar{b}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite
 interval.  The strategy is globally adaptive, and modified
@@ -1288,8 +1288,8 @@ $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
 using the Quadpack QAWC routine.  The function to be integrated is
-@code{@mvar{f(x)}/(@mvar{x} - @mvar{c})}, with dependent variable @mvar{x}, and the
-function is to be integrated over the interval @mvar{a} to @mvar{b}.
+@code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and the
+function is to be integrated over the interval @var{a} to @var{b}.
 
 The integrand may be specified as the name of a Maxima or Lisp function or
 operator, a Maxima lambda expression, or a general Maxima expression.
@@ -1303,7 +1303,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit} is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1381,8 +1381,8 @@ Principal Value
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawf}
-@deffn  {Function} quad_qawf (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, [@mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst}])
-@deffnx {Function} quad_qawf (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{omega}, @mvar{trig}, [@mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst}])
+@deffn  {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite
 interval using the Quadpack QAWF function.  The same approach as in
@@ -1399,7 +1399,7 @@ series of the integral contributions.
 $$\int_a^\infty f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @mvar{trig}:
+The weight function @math{w} is selected by @var{trig}:
 
 @table @code
 @item cos
@@ -1418,7 +1418,7 @@ They all take the form @code{key=val}.  The keyword arguments are:
 @item epsabs
 Desired absolute error of approximation.  Default is 1d-10.
 @item limit
-Size of internal work array.  (@mvar{limit} - @mvar{limlst})/2 is the
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
 maximum number of subintervals to use.  Default is 200.
 @item maxp1
 Maximum number of Chebyshev moments.  Must be greater than 0.  Default
@@ -1487,8 +1487,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawo}
-@deffn  {Function} quad_qawo (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst}])
-@deffnx {Function} quad_qawo (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{omega}, @mvar{trig}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}, @mvar{maxp1}, @mvar{limlst}])
+@deffn  {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Integration of
 @ifnottex
@@ -1526,7 +1526,7 @@ routine:
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @mvar{trig}:
+The weight function @math{w} is selected by @var{trig}:
 
 @table @code
 @item cos
@@ -1557,7 +1557,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit}/2 is the
+Size of internal work array.  @var{limit}/2 is the
 maximum number of subintervals to use.  Default is 200.
 @item maxp1
 Maximum number of Chebyshev moments.  Must be greater than 0.  Default
@@ -1628,8 +1628,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qaws}
-@deffn  {Function} quad_qaws (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qaws (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{alpha}, @mvar{beta}, @mvar{wfun}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of @math{w(x) f(x)} over a finite interval, where @math{w(x)} is a
 certain algebraic or logarithmic function.  A globally adaptive subdivision
@@ -1645,7 +1645,7 @@ subintervals which contain the endpoints of the interval of integration.
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @mvar{wfun}:
+The weight function @math{w} is selected by @var{wfun}:
 
 @table @code
 @item 1
@@ -1690,7 +1690,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit}is the
+Size of internal work array.  @var{limit}is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1759,8 +1759,8 @@ pos;
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qagp}
-@deffn  {Function} quad_qagp (@mvar{f(x)}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{points}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
-@deffnx {Function} quad_qagp (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b}, @mvar{points}, [@mvar{epsrel}, @mvar{epsabs}, @mvar{limit}])
+@deffn  {Function} quad_qagp (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qagp (@var{f}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qagp} implements globally adaptive interval subdivision with
@@ -1775,9 +1775,9 @@ extrapolation (de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-The function to be integrated is @mvar{f(x)}, with
-dependent variable @mvar{x}, and the function is to be integrated
-between the limits @mvar{a} and @mvar{b}.
+The function to be integrated is @var{f(x)}, with
+dependent variable @var{x}, and the function is to be integrated
+between the limits @var{a} and @var{b}.
 
 The integrand may be specified as the name of a Maxima or Lisp function or
 operator, a Maxima lambda expression, or a general Maxima expression.
@@ -1794,7 +1794,7 @@ Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  @mvar{limit} is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1856,7 +1856,7 @@ more accurate and more efficient that @mrefdot{quad_qags}
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_control}
-@deffn  {Function} quad_control (@mvar{parameter}, [@mvar{value}])
+@deffn  {Function} quad_control (@var{parameter}, [@var{value}])
 
 Control error handling for quadpack.  The parameter should be one of
 the following symbols:
@@ -1871,9 +1871,9 @@ less, messages are suppressed.
 The maximum number of times any message is to be printed.
 @end table
 
-If @mvar{value} is not given, then the current value of the
-@mvar{parameter} is returned.  If @mvar{value} is given, the value of
-@mvar{parameter} is set to the given value.
+If @var{value} is not given, then the current value of the
+@var{parameter} is returned.  If @var{value} is given, the value of
+@var{parameter} is set to the given value.
 
 @opencatbox
 @category{Numerical methods} @category{Package quadpack}

@@ -14,22 +14,22 @@
 @node Definitions for Numerical, Definitions for Fourier Series, Fourier packages, Numerical
 @section Definitions for Numerical
 
-@deffn {Function} polartorect (@mvar{magnitude_array}, @mvar{phase_array})
+@deffn {Function} polartorect (@var{magnitude_array}, @var{phase_array})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} recttopolar (@mvar{real_array}, @mvar{imaginary_array})
+@deffn {Function} recttopolar (@var{real_array}, @var{imaginary_array})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ift (@mvar{real_array}, @mvar{imaginary_array})
+@deffn {Function} ift (@var{real_array}, @var{imaginary_array})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fft (@mvar{real_array}, @mvar{imaginary_array})
-@deffnx {Function} ift (@mvar{real_array}, @mvar{imaginary_array})
-@deffnx {Function} recttopolar (@mvar{real_array}, @mvar{imaginary_array})
-@deffnx {Function} polartorect (@mvar{magnitude_array}, @mvar{phase_array})
+@deffn {Function} fft (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} ift (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} polartorect (@var{magnitude_array}, @var{phase_array})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -37,7 +37,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} fortran (@mvar{expr})
+@deffn {Function} fortran (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -45,13 +45,13 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} horner (@mvar{expr}, @mvar{x})
-@deffnx {Function} horner (@mvar{expr})
+@deffn {Function} horner (@var{expr}, @var{x})
+@deffnx {Function} horner (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} find_root (@mvar{f}(@mvar{x}), @mvar{x}, @mvar{a}, @mvar{b})
-@deffnx {Function} find_root (@mvar{f}, @mvar{a}, @mvar{b})
+@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -67,38 +67,38 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} newton (@mvar{expr}, @mvar{x}, @mvar{x_0}, @mvar{eps})
+@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
 @node Definitions for Fourier Series, , Definitions for Numerical, Numerical
 @section Definitions for Fourier Series
 
-@deffn {Function} equalp (@mvar{x}, @mvar{y})
+@deffn {Function} equalp (@var{x}, @var{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remfun (@mvar{f}, @mvar{expr})
-@deffnx {Function} remfun (@mvar{f}, @mvar{expr}, @mvar{x})
+@deffn {Function} remfun (@var{f}, @var{expr})
+@deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} funp (@mvar{f}, @mvar{expr})
-@deffnx {Function} funp (@mvar{f}, @mvar{expr}, @mvar{x})
+@deffn {Function} funp (@var{f}, @var{expr})
+@deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} absint (@mvar{f}, @mvar{x}, @mvar{halfplane})
-@deffnx {Function} absint (@mvar{f}, @mvar{x})
-@deffnx {Function} absint (@mvar{f}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffn {Function} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Function} absint (@var{f}, @var{x})
+@deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourier (@mvar{f}, @mvar{x}, @mvar{p})
+@deffn {Function} fourier (@var{f}, @var{x}, @var{p})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} foursimp (@mvar{l})
+@deffn {Function} foursimp (@var{l})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -110,31 +110,31 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} fourexpand (@mvar{l}, @mvar{x}, @mvar{p}, @mvar{limit})
+@deffn {Function} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourcos (@mvar{f}, @mvar{x}, @mvar{p})
+@deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} foursin (@mvar{f}, @mvar{x}, @mvar{p})
+@deffn {Function} foursin (@var{f}, @var{x}, @var{p})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} totalfourier (@mvar{f}, @mvar{x}, @mvar{p})
+@deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourint (@mvar{f}, @mvar{x})
+@deffn {Function} fourint (@var{f}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourintcos (@mvar{f}, @mvar{x})
+@deffn {Function} fourintcos (@var{f}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} fourintsin (@mvar{f}, @mvar{x})
+@deffn {Function} fourintsin (@var{f}, @var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -28,9 +28,9 @@ the form:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-and the function @mvar{F} should be given as the argument for
-@code{plotdf}. If the independent and dependent variables are not @mvar{x},
-and @mvar{y}, as in the equation above, then those two variables should
+and the function @var{F} should be given as the argument for
+@code{plotdf}. If the independent and dependent variables are not @var{x},
+and @var{y}, as in the equation above, then those two variables should
 be named explicitly in a list given as an argument to the plotdf command
 (see the examples).
 
@@ -48,11 +48,11 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 and the argument for @code{plotdf} should be a list with the two
-functions @mvar{G} and @mvar{F}, in that order; namely, the first
+functions @var{G} and @var{F}, in that order; namely, the first
 expression in the list will be taken to be the time derivative of the
 variable represented on the horizontal axis, and the second expression
 will be the time derivative of the variable represented on the vertical
-axis. Those two variables do not have to be @mvar{x} and @mvar{y}, but if
+axis. Those two variables do not have to be @var{x} and @var{y}, but if
 they are not, then the second argument given to plotdf must be another
 list naming the two variables, first the one on the horizontal axis and
 then the one on the vertical axis.
@@ -68,20 +68,20 @@ equation into a system of two autonomous equations.
 @node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
 @section Functions and Variables for plotdf
 
-@deffn {Function} plotdf (@mvar{dydx}, ...options...)
-@deffnx {Function} plotdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
+@deffn {Function} plotdf (@var{dydx}, ...options...)
+@deffnx {Function} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
 
-Displays a direction field in two dimensions @mvar{x} and @mvar{y}.
+Displays a direction field in two dimensions @var{x} and @var{y}.
 
-@mvar{dydx}, @mvar{dxdt} and @mvar{dydt} are expressions that depend on
-@mvar{x} and @mvar{y}. @mvar{dvdu}, @mvar{dudt} and @mvar{dvdt} are
-expressions that depend on @mvar{u} and @mvar{v}. In addition to those two
+@var{dydx}, @var{dxdt} and @var{dydt} are expressions that depend on
+@var{x} and @var{y}. @var{dvdu}, @var{dudt} and @var{dvdt} are
+expressions that depend on @var{u} and @var{v}. In addition to those two
 variables, the expressions can also depend on a set of parameters, with
 numerical values given with the @code{parameters} option (the option
 syntax is given below), or with a range of allowed values specified by a
-@mvar{sliders} option.
+@var{sliders} option.
 
 Several other options can be given within the command, or selected in
 the menu. Integral curves can be obtained by clicking on the plot, or
@@ -114,7 +114,7 @@ the last integral curve entered will be shown.
 
 Holding the right mouse button down while the cursor is moved, can be
 used to drag the plot sideways or up and down. Additional
-parameters such as the number of steps, the initial value of @mvar{t}
+parameters such as the number of steps, the initial value of @var{t}
 and the x and y centers and radii, may be set in the Config menu.
 
 A copy of the plot can be saved as a postscript file, using the menu
@@ -131,9 +131,9 @@ The options which are recognized by @code{plotdf} are the following:
 @itemize @bullet
 @item
 @dfn{tstep} defines the length of the increments on the
-independent variable @mvar{t}, used to compute an integral curve. If only
-one expression @mvar{dydx} is given to @code{plotdf}, the @mvar{x}
-variable will be directly proportional to @mvar{t}.
+independent variable @var{t}, used to compute an integral curve. If only
+one expression @var{dydx} is given to @code{plotdf}, the @var{x}
+variable will be directly proportional to @var{t}.
 The default value is 0.1.
 
 @item
@@ -154,24 +154,24 @@ synonyms for @code{forward} and @code{backward}.
 The default value is @code{both}.
 
 @item
-@dfn{tinitial} defines the initial value of variable @mvar{t} used
+@dfn{tinitial} defines the initial value of variable @var{t} used
 to compute integral curves. Since the differential equations are
 autonomous, that setting will only appear in the plot of the curves as
-functions of @mvar{t}. 
+functions of @var{t}. 
 The default value is 0.
 
 @item
 @dfn{versus_t} is used to create a second plot window, with a
-plot of an integral curve, as two functions @mvar{x}, @mvar{y}, of the
-independent variable @mvar{t}. If @code{versus_t} is given any value
+plot of an integral curve, as two functions @var{x}, @var{y}, of the
+independent variable @var{t}. If @code{versus_t} is given any value
 different from 0, the second plot window will be displayed. The second
 plot window includes another menu, similar to the menu of the main plot
 window.
 The default value is 0.
 
 @item
-@dfn{trajectory_at} defines the coordinates @mvar{xinitial} and
-@mvar{yinitial} for the starting point of an integral curve.
+@dfn{trajectory_at} defines the coordinates @var{xinitial} and
+@var{yinitial} for the starting point of an integral curve.
 The option is empty by default.
 
 @item
@@ -188,20 +188,20 @@ string with a comma-separated sequence of elements @code{name=min:max}
 
 @item
 @dfn{xfun} defines a string with semi-colon-separated sequence
-of functions of @mvar{x} to be displayed, on top of the direction field.
+of functions of @var{x} to be displayed, on top of the direction field.
 Those functions will be parsed by Tcl and not by Maxima.
 
 @item
 @dfn{x} should be followed by two numbers, which will set up the minimum
 and maximum values shown on the horizontal axis. If the variable on the
-horizontal axis is not @mvar{x}, then this option should have the name of
+horizontal axis is not @var{x}, then this option should have the name of
 the variable on the horizontal axis.
 The default horizontal range is from -10 to 10.
 
 @item
 @dfn{y} should be followed by two numbers, which will set up the minimum
 and maximum values shown on the vertical axis. If the variable on the
-vertical axis is not @mvar{y}, then this option should have the name of
+vertical axis is not @var{y}, then this option should have the name of
 the variable on the vertical axis.
 The default vertical range is from -10 to 10.
 @end itemize

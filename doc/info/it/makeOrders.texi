@@ -5,7 +5,7 @@
 @node Definitions for makeOrders,  , makeOrders, makeOrders
 @section Definitions for makeOrders
 
-@deffn {Function} makeOrders (@mvar{indvarlist},@mvar{orderlist})
+@deffn {Function} makeOrders (@var{indvarlist},@var{orderlist})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -162,8 +162,8 @@ functions to be a simplification.
 The quote-quote operator @code{'@w{}'} (two single quote marks) modifies
 evaluation in input expressions.
 
-Applied to a general expression @mvar{expr}, quote-quote causes the value of
-@mvar{expr} to be substituted for @mvar{expr} in the input expression.
+Applied to a general expression @var{expr}, quote-quote causes the value of
+@var{expr} to be substituted for @var{expr} in the input expression.
 
 Applied to the operator of an expression, quote-quote changes the operator from
 a noun to a verb (if it is not already a verb).
@@ -181,8 +181,8 @@ See also the single-quote operator @mxref{quote, '} and @mrefdot{nouns}
 
 Examples:
 
-Applied to a general expression @mvar{expr}, quote-quote causes the value of
-@mvar{expr} to be substituted for @mvar{expr} in the input expression.
+Applied to a general expression @var{expr}, quote-quote causes the value of
+@var{expr} to be substituted for @var{expr} in the input expression.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -351,10 +351,10 @@ quote @code{'}.
 
 @c -----------------------------------------------------------------------------
 @anchor{ev}
-@deffn {Function} ev (@mvar{expr}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
+@deffn {Function} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
-Evaluates the expression @mvar{expr} in the environment specified by the
-arguments @mvar{arg_1}, @dots{}, @mvar{arg_n}.  The arguments are switches
+Evaluates the expression @var{expr} in the environment specified by the
+arguments @var{arg_1}, @dots{}, @var{arg_n}.  The arguments are switches
 (Boolean flags), assignments, equations, and functions.  @code{ev} returns the
 result (another expression) of the evaluation.
 
@@ -367,31 +367,31 @@ be any or all of the following.
 
 @itemize @bullet
 @item
-@mref{simp} causes @mvar{expr} to be simplified regardless of the setting of the
+@mref{simp} causes @var{expr} to be simplified regardless of the setting of the
 switch @code{simp} which inhibits simplification if @code{false}.
 @item
 @mref{noeval} suppresses the evaluation phase of @code{ev} (see step (4) below).
 This is useful in conjunction with the other switches and in causing
-@mvar{expr} to be resimplified without being reevaluated.
+@var{expr} to be resimplified without being reevaluated.
 @item
 @mref{nouns} causes the evaluation of noun forms (typically unevaluated
-functions such as @code{'integrate} or @code{'diff}) in @mvar{expr}.
+functions such as @code{'integrate} or @code{'diff}) in @var{expr}.
 @item
 @mref{expand} causes expansion.
 @item
-@code{expand (@mvar{m}, @mvar{n})} causes expansion, setting the values of
-@mref{maxposex} and @mref{maxnegex} to @mvar{m} and @mvar{n} respectively.
+@code{expand (@var{m}, @var{n})} causes expansion, setting the values of
+@mref{maxposex} and @mref{maxnegex} to @var{m} and @var{n} respectively.
 @item
-@mref{detout} causes any matrix inverses computed in @mvar{expr} to have their
+@mref{detout} causes any matrix inverses computed in @var{expr} to have their
 determinant kept outside of the inverse rather than dividing through
 each element.
 @item
-@mref{diff} causes all differentiations indicated in @mvar{expr} to be performed.
+@mref{diff} causes all differentiations indicated in @var{expr} to be performed.
 @item
-@code{derivlist (@mvar{x}, @mvar{y}, @mvar{z}, ...)} causes only differentiations
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causes only differentiations
 with respect to the indicated variables.  See also @mrefdot{derivlist}
 @item
-@code{risch} causes integrals in @mvar{expr} to be evaluated using the Risch
+@code{risch} causes integrals in @var{expr} to be evaluated using the Risch
 algorithm.  See @mrefdot{risch}  The standard integration routine is invoked
 when using the special symbol @mrefdot{nouns}
 @item
@@ -400,36 +400,36 @@ point.
 @item
 @mref{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point.  It causes
-variables in @mvar{expr} which have been given numervals to be replaced by
+variables in @var{expr} which have been given numervals to be replaced by
 their values.  It also sets the @mref{float} switch on.
 @item
 @mref{pred} causes predicates (expressions which evaluate to @code{true} or
 @code{false}) to be evaluated.
 @item
-@mref{eval} causes an extra post-evaluation of @mvar{expr} to occur.
+@mref{eval} causes an extra post-evaluation of @var{expr} to occur.
 (See step (5) below.)
 @code{eval} may occur multiple times.  For each instance of @code{eval}, the
 expression is evaluated again.
 @item
 @code{A} where @code{A} is an atom declared to be an evaluation flag
 @mref{evflag} causes @code{A} to be bound to @code{true} during the evaluation
-of @mvar{expr}.
+of @var{expr}.
 @item
 @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to be
-bound to the value of @code{expression} during the evaluation of @mvar{expr}.
+bound to the value of @code{expression} during the evaluation of @var{expr}.
 Note that if @code{V} is a Maxima option, then @code{expression} is used for
-its value during the evaluation of @mvar{expr}.  If more than one argument to
+its value during the evaluation of @var{expr}.  If more than one argument to
 @code{ev} is of this type then the binding is done in parallel.  If @code{V} is
 a non-atomic expression then a substitution rather than a binding is performed.
 @item
 @code{F} where @code{F}, a function name, has been declared to be an evaluation
-function @mref{evfun} causes @code{F} to be applied to @mvar{expr}.
+function @mref{evfun} causes @code{F} to be applied to @var{expr}.
 @item
 Any other function names, e.g. @mrefcomma{sum} cause evaluation of occurrences
-of those names in @mvar{expr} as though they were verbs.
+of those names in @var{expr} as though they were verbs.
 @item
-In addition a function occurring in @mvar{expr} (say @code{F(x)}) may be defined
-locally for the purpose of this evaluation of @mvar{expr} by giving
+In addition a function occurring in @var{expr} (say @code{F(x)}) may be defined
+locally for the purpose of this evaluation of @var{expr} by giving
 @code{F(x) := expression} as an argument to @code{ev}.
 @item
 If an atom not mentioned above or a subscripted variable or subscripted
@@ -444,14 +444,14 @@ returned by @mrefdot{solve}
 
 The arguments of @code{ev} may be given in any order with the exception of
 substitution equations which are handled in sequence, left to right, and
-evaluation functions which are composed, e.g., @code{ev (@mvar{expr}, ratsimp,
-realpart)} is handled as @code{realpart (ratsimp (@mvar{expr}))}.
+evaluation functions which are composed, e.g., @code{ev (@var{expr}, ratsimp,
+realpart)} is handled as @code{realpart (ratsimp (@var{expr}))}.
 
 The @mrefcomma{simp} @mrefcomma{numer} and @mref{float} switches may also be set
 locally in a block, or globally in Maxima so that they will remain in effect
 until being reset.
 
-If @mvar{expr} is a canonical rational expression (CRE), then the expression
+If @var{expr} is a canonical rational expression (CRE), then the expression
 returned by @code{ev} is also a CRE, provided the @code{numer} and @code{float}
 switches are not both @code{true}.
 
@@ -460,8 +460,8 @@ During step (1), a list is made of the non-subscripted variables appearing on
 the left side of equations in the arguments or in the value of some arguments
 if the value is an equation.  The variables (subscripted variables which do not
 have associated array functions as well as non-subscripted variables) in the
-expression @mvar{expr} are replaced by their global values, except for those
-appearing in this list.  Usually, @mvar{expr} is just a label or @code{%} (as in
+expression @var{expr} are replaced by their global values, except for those
+appearing in this list.  Usually, @var{expr} is just a label or @code{%} (as in
 @code{%i2} in the example below), so this step simply retrieves the expression
 named by the label, so that @code{ev} may work on it.
 
@@ -471,7 +471,7 @@ If any substitutions are indicated by the arguments, they are carried out now.
 @item
 The resulting expression is then re-evaluated (unless one of the arguments was
 @mref{noeval}) and simplified according to the arguments.  Note that any
-function calls in @mvar{expr} will be carried out after the variables in it are
+function calls in @var{expr} will be carried out after the variables in it are
 evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
 @item
@@ -500,7 +500,7 @@ may just type in its arguments, without the @code{ev()}.  That is, one may
 write simply
 
 @example
-@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
 This is not permitted as part of another expression, e.g., in functions,
@@ -547,8 +547,8 @@ Solution
 @anchor{eval}
 @defvr {Special symbol} eval
 
-As an argument in a call to @code{ev (@mvar{expr})}, @code{eval} causes an extra
-evaluation of @mvar{expr}.  See @mrefdot{ev}
+As an argument in a call to @code{ev (@var{expr})}, @code{eval} causes an extra
+evaluation of @var{expr}.  See @mrefdot{ev}
 
 Example:
 
@@ -581,13 +581,13 @@ Example:
 @anchor{evflag}
 @defvr {Property} evflag
 
-When a symbol @mvar{x} has the @code{evflag} property, the expressions
-@code{ev(@mvar{expr}, @mvar{x})} and @code{@mvar{expr}, @mvar{x}} (at the
-interactive prompt) are equivalent to @code{ev(@mvar{expr}, @mvar{x} = true)}.
-That is, @mvar{x} is bound to @code{true} while @mvar{expr} is evaluated.
+When a symbol @var{x} has the @code{evflag} property, the expressions
+@code{ev(@var{expr}, @var{x})} and @code{@var{expr}, @var{x}} (at the
+interactive prompt) are equivalent to @code{ev(@var{expr}, @var{x} = true)}.
+That is, @var{x} is bound to @code{true} while @var{expr} is evaluated.
 
-The expression @code{declare(@mvar{x}, evflag)} gives the @code{evflag} property
-to the variable @mvar{x}.
+The expression @code{declare(@var{x}, evflag)} gives the @code{evflag} property
+to the variable @var{x}.
 
 The flags which have the @code{evflag} property by default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
@@ -671,15 +671,15 @@ Examples:
 @anchor{evfun}
 @defvr {Property} evfun
 
-When a function @mvar{F} has the @code{evfun} property, the expressions
-@code{ev(@mvar{expr}, @mvar{F})} and @code{@mvar{expr}, @mvar{F}} (at the
-interactive prompt) are equivalent to @code{@mvar{F}(ev(@mvar{expr}))}.
+When a function @var{F} has the @code{evfun} property, the expressions
+@code{ev(@var{expr}, @var{F})} and @code{@var{expr}, @var{F}} (at the
+interactive prompt) are equivalent to @code{@var{F}(ev(@var{expr}))}.
 
-If two or more @code{evfun} functions @mvar{F}, @mvar{G}, etc., are specified,
+If two or more @code{evfun} functions @var{F}, @var{G}, etc., are specified,
 the functions are applied in the order that they are specified.
 
-The expression @code{declare(@mvar{F}, evfun)} gives the @code{evfun} property
-to the function @mvar{F}.  The functions which have the @code{evfun} property by
+The expression @code{declare(@var{F}, evfun)} gives the @code{evfun} property
+to the function @var{F}.  The functions which have the @code{evfun} property by
 default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
@@ -821,7 +821,7 @@ being @code{ev}'d to "verbs", i.e., evaluates them.  See also
 @anchor{pred}
 @defvr {Special symbol} pred
 
-As an argument in a call to @code{ev (@mvar{expr})}, @code{pred} causes 
+As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
 predicates (expressions which evaluate to @code{true} or @code{false}) to be 
 evaluated.  See @mrefdot{ev}
 

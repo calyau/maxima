@@ -17,7 +17,7 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} featurep (@mvar{a}, @mvar{f})
+@deffn {Function} featurep (@var{a}, @var{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -36,7 +36,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
 @deffn {Function} status (feature)
-@deffnx {Function} status (feature, @mvar{putative_feature})
+@deffnx {Function} status (feature, @var{putative_feature})
 @deffnx {Function} status (status)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

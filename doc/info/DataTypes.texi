@@ -46,9 +46,9 @@ functions.
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloat}
-@deffn {Function} bfloat (@mvar{expr})
+@deffn {Function} bfloat (@var{expr})
 
-Converts all numbers and functions of numbers in @mvar{expr} to bigfloat numbers.
+Converts all numbers and functions of numbers in @var{expr} to bigfloat numbers.
 The number of significant digits in the resulting bigfloats is specified by the
 global variable @mrefdot{fpprec}
 
@@ -63,9 +63,9 @@ this may lead to loss of precision).
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloatp}
-@deffn {Function} bfloatp (@mvar{expr})
+@deffn {Function} bfloatp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a bigfloat number, otherwise @code{false}.
+Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 
 @opencatbox
 @category{Numerical evaluation} @category{Predicate functions}
@@ -125,9 +125,9 @@ displays as @code{1.000000000000000B0}.  Otherwise, this is displayed as
 
 @c -----------------------------------------------------------------------------
 @anchor{evenp}
-@deffn {Function} evenp (@mvar{expr})
+@deffn {Function} evenp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is an even integer.
+Returns @code{true} if @var{expr} is an even integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
 
@@ -138,9 +138,9 @@ Returns @code{true} if @mvar{expr} is an even integer.
 
 @c -----------------------------------------------------------------------------
 @anchor{float}
-@deffn {Function} float (@mvar{expr})
+@deffn {Function} float (@var{expr})
 
-Converts integers, rational numbers and bigfloats in @mvar{expr} to floating
+Converts integers, rational numbers and bigfloats in @var{expr} to floating
 point numbers.  It is also an @mrefcomma{evflag} @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to floating
 point.
@@ -166,9 +166,9 @@ this may lead to loss of precision).
 
 @c -----------------------------------------------------------------------------
 @anchor{floatnump}
-@deffn {Function} floatnump (@mvar{expr})
+@deffn {Function} floatnump (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a floating point number, otherwise
+Returns @code{true} if @var{expr} is a floating point number, otherwise
 @code{false}.
 
 @opencatbox
@@ -221,9 +221,9 @@ and the number of digits printed is equal to @code{fpprec}.
 
 @c -----------------------------------------------------------------------------
 @anchor{integerp}
-@deffn {Function} integerp (@mvar{expr})
+@deffn {Function} integerp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a literal numeric integer, otherwise
+Returns @code{true} if @var{expr} is a literal numeric integer, otherwise
 @code{false}.
 
 @code{integerp} returns @code{false} if its argument is a symbol,
@@ -285,9 +285,9 @@ m1pbranch:false          m1pbranch:true
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} nonnegintegerp (@mvar{n})
+@deffn {Function} nonnegintegerp (@var{n})
 
-Return @code{true} if and only if @code{@mvar{n} >= 0} and @mvar{n} is an integer.
+Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 
 @opencatbox
 @category{Package linearalgebra} @category{Predicate functions}
@@ -296,9 +296,9 @@ Return @code{true} if and only if @code{@mvar{n} >= 0} and @mvar{n} is an intege
 
 @c -----------------------------------------------------------------------------
 @anchor{numberp}
-@deffn {Function} numberp (@mvar{expr})
+@deffn {Function} numberp (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a literal integer, rational number, 
+Returns @code{true} if @var{expr} is a literal integer, rational number, 
 floating point number, or bigfloat, otherwise @code{false}.
 
 @code{numberp} returns @code{false} if its argument is a symbol, even if the
@@ -415,9 +415,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{numerval}
-@deffn {Function} numerval (@mvar{x_1}, @mvar{expr_1}, @dots{}, @mvar{var_n}, @mvar{expr_n})
+@deffn {Function} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
 
-Declares the variables @code{x_1}, @dots{}, @mvar{x_n} to have
+Declares the variables @code{x_1}, @dots{}, @var{x_n} to have
 numeric values equal to @code{expr_1}, @dots{}, @code{expr_n}.
 The numeric value is evaluated and substituted for the variable
 in any expressions in which the variable occurs if the @code{numer} flag is
@@ -433,9 +433,9 @@ not necessarily numeric.
 
 @c -----------------------------------------------------------------------------
 @anchor{oddp}
-@deffn {Function} oddp (@mvar{expr})
+@deffn {Function} oddp (@var{expr})
 
-is @code{true} if @mvar{expr} is an odd integer.
+is @code{true} if @var{expr} is an odd integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
 
@@ -460,9 +460,9 @@ of floating point numbers to rational numbers, when the option variable
 
 @c -----------------------------------------------------------------------------
 @anchor{rationalize}
-@deffn {Function} rationalize (@mvar{expr})
+@deffn {Function} rationalize (@var{expr})
 
-Convert all double floats and big floats in the Maxima expression @mvar{expr} to
+Convert all double floats and big floats in the Maxima expression @var{expr} to
 their exact rational equivalents.  If you are not familiar with the binary
 representation of floating point numbers, you might be surprised that
 @code{rationalize (0.1)} does not equal 1/10.  This behavior isn't special to
@@ -510,9 +510,9 @@ representation.
 
 @c -----------------------------------------------------------------------------
 @anchor{ratnump}
-@deffn {Function} ratnump (@mvar{expr})
+@deffn {Function} ratnump (@var{expr})
 
-Returns @code{true} if @mvar{expr} is a literal integer or ratio of literal
+Returns @code{true} if @var{expr} is a literal integer or ratio of literal
 integers, otherwise @code{false}.
 
 @opencatbox
@@ -616,7 +616,7 @@ this string.";
 
 @c -----------------------------------------------------------------------------
 @anchor{concat}
-@deffn {Function} concat (@mvar{arg_1}, @mvar{arg_2}, @dots{})
+@deffn {Function} concat (@var{arg_1}, @var{arg_2}, @dots{})
 
 Concatenates its arguments.  The arguments must evaluate to atoms.  The return
 value is a symbol if the first argument is a symbol and a string otherwise.
@@ -668,7 +668,7 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 
 @c -----------------------------------------------------------------------------
 @anchor{sconcat}
-@deffn {Function} sconcat (@mvar{arg_1}, @mvar{arg_2}, @dots{})
+@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
 Concatenates its arguments into a string.  Unlike @mrefcomma{concat} the
 arguments do @i{not} need to be atoms.
@@ -687,7 +687,7 @@ arguments do @i{not} need to be atoms.
 
 @c -----------------------------------------------------------------------------
 @anchor{string}
-@deffn {Function} string (@mvar{expr})
+@deffn {Function} string (@var{expr})
 
 Converts @code{expr} to Maxima's linear notation just as if it had been typed
 in.

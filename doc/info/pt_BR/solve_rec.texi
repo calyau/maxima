@@ -28,10 +28,10 @@ Exemplo:
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec,  , Introdu@value{cedilha}@~{a}o a solve_rec, solve_rec
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec
 
-@deffn {Fun@value{cedilha}@~{a}o} reduce_order (@mvar{rec}, @mvar{sol}, @mvar{var})
+@deffn {Fun@value{cedilha}@~{a}o} reduce_order (@var{rec}, @var{sol}, @var{var})
 
-Reduz a ordem de recorr@^{e}ncia linear @mvar{rec} quando uma solu@value{cedilha}@~{a}o particular
-@mvar{sol} for conhecida. A recorr@^{e}ncia reduzida pode ser usada para pegar outras solu@value{cedilha}@~{o}es.
+Reduz a ordem de recorr@^{e}ncia linear @var{rec} quando uma solu@value{cedilha}@~{a}o particular
+@var{sol} for conhecida. A recorr@^{e}ncia reduzida pode ser usada para pegar outras solu@value{cedilha}@~{o}es.
 
 Exemplo:
 
@@ -89,9 +89,9 @@ Veja tamb@'{e}m: @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} simplify_sum (@mvar{expr})
+@deffn {Fun@value{cedilha}@~{a}o} simplify_sum (@var{expr})
 
-Tenta simplificar todos os somat@'{o}rios que aparecem na @mvar{expr} para uma forma a mais simplificada poss@'{i}vel.
+Tenta simplificar todos os somat@'{o}rios que aparecem na @var{expr} para uma forma a mais simplificada poss@'{i}vel.
 
 @code{simplify_sum} usa os algor@'{i}tmos de Gosper e de Zeilberger para simplificar somat@'{o}rios.
 
@@ -119,9 +119,9 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} solve_rec (@mvar{eqn}, @mvar{var}, [@mvar{init}])
-Encontra solu@value{cedilha}@~{o}es hipergeom@'{e}tricas para a recorr@^{e}ncia linear @mvar{eqn} com
-coeficientes polinomiais na vari@'{a}vel @mvar{var}. Argumentos opcionais @mvar{init}
+@deffn {Fun@value{cedilha}@~{a}o} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+Encontra solu@value{cedilha}@~{o}es hipergeom@'{e}tricas para a recorr@^{e}ncia linear @var{eqn} com
+coeficientes polinomiais na vari@'{a}vel @var{var}. Argumentos opcionais @var{init}
 s@~{a}o as condi@value{cedilha}@~{o}es iniciais.
 
 @code{solve_rec} pode resolver recorr@^{e}ncias lineares com coeficientes constantes,
@@ -190,7 +190,7 @@ Veja tamb@'{e}m: @code{solve_rec_rat}, @code{simplify_products}, e @code{product
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} solve_rec_rat (@mvar{eqn}, @mvar{var}, [@mvar{init}])
+@deffn {Fun@value{cedilha}@~{a}o} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
 Encontra solu@value{cedilha}@~{o}es racionais para recorr@^{e}ncias lineares. Veja solve_rec para
 uma descri@value{cedilha}@~{a}o dos argumentos.
@@ -228,8 +228,8 @@ Veja tamb@'{e}m: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} summand_to_rec (@mvar{summand}, @mvar{k}, @mvar{n})
-@deffnx {Fun@value{cedilha}@~{a}o} summand_to_rec (@mvar{summand}, [@mvar{k}, @mvar{lo}, @mvar{hi}], @mvar{n})
+@deffn {Fun@value{cedilha}@~{a}o} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
 Retorna a recorr@^{e}ncia satisfeita pelo somat@'{o}rio
 
@@ -243,7 +243,7 @@ Retorna a recorr@^{e}ncia satisfeita pelo somat@'{o}rio
   k = inf
 @end example
 
-onde x @'{e} hipergeom@'{e}trico em @mvar{k} e @mvar{n}. SE @mvar{inf} e @mvar{sup}
+onde x @'{e} hipergeom@'{e}trico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
 forem omitidos, s@~{a}o assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
 Para usar essa fun@value{cedilha}@~{a}o primeiro chame o pacote @code{simplify_sum} com

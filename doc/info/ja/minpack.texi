@@ -17,21 +17,21 @@ Netlibから得られるFortranライブラリ MINPACKの
 @node Functions and Variables for minpack, , ,
 @section Functions and Variables for minpack
 
-@deffn {関数} minpack_lsquares (@mvar{flist}, @mvar{varlist}, @mvar{guess} [, @mvar{tolerance}, @mvar{jacobian}])
+@deffn {関数} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
-リスト @mvar{flist}の関数の平方の和を最小化する
+リスト @var{flist}の関数の平方の和を最小化する
 点を計算します。
-変数はリスト @mvar{varlist}の中にあります。
-最適点の初期推測は@mvar{guess}で供給されなければいけません
+変数はリスト @var{varlist}の中にあります。
+最適点の初期推測は@var{guess}で供給されなければいけません
 
-オプションのキーワード引数 @mvar{tolerance}と @mvar{jacobian}は
+オプションのキーワード引数 @var{tolerance}と @var{jacobian}は
 アルゴリズム上のある制御を提供します。
-@mvar{tolerance}は平方の和に関する相対誤差を見積もられます。
-@mvar{jacobian}はJacobianを指定するのにつかうことができます。
-もし @mvar{jacobian}が与えられず、l
+@var{tolerance}は平方の和に関する相対誤差を見積もられます。
+@var{jacobian}はJacobianを指定するのにつかうことができます。
+もし @var{jacobian}が与えられず、l
 (デフォルト)@code{true} なら、
-@mvar{flist}から計算されます。
-もし @mvar{jacobian}が @code{false}なら数値近似が使われます。
+@var{flist}から計算されます。
+もし @var{jacobian}が @code{false}なら数値近似が使われます。
 
 @code{minpack_lsquares}はリストを返します。
 最初の項目は見積もられた解です;
@@ -81,20 +81,20 @@ tolが小さすぎます。近似解xの更なる改善は不可能です。
 
 @end deffn
 
-@deffn {関数} minpack_solve (@mvar{flist}, @mvar{varlist}, @mvar{guess} [, @mvar{tolerance}, @mvar{jacobian}])
+@deffn {関数} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 @code{n}個の未知数に関する
 @code{n}個の方程式系を解きます。
-@code{n}個の方程式形がリスト @mvar{flist}で
+@code{n}個の方程式形がリスト @var{flist}で
 与えられます。
-解の初期推測は@mvar{guess}の中で提供されます。
+解の初期推測は@var{guess}の中で提供されます。
 
-オプションのキーワード引数、 @mvar{tolerance}と @mvar{jacobian}は
+オプションのキーワード引数、 @var{tolerance}と @var{jacobian}は
 アルゴリズム上のある制御を提供します。
-@mvar{tolerance}は、平方の和に関して宣言された見積もられた相対誤差です。
-@mvar{jacobian}はJacobianを指定するのに使うことができます。
-もし@mvar{jacobian}が与えらないか、@code{true}(デフォルト)なら、
-Jacobianを@mvar{flist}から計算します。
-もし@mvar{jacobian}が@code{false}なら、数値近似が使われます。
+@var{tolerance}は、平方の和に関して宣言された見積もられた相対誤差です。
+@var{jacobian}はJacobianを指定するのに使うことができます。
+もし@var{jacobian}が与えらないか、@code{true}(デフォルト)なら、
+Jacobianを@var{flist}から計算します。
+もし@var{jacobian}が@code{false}なら、数値近似が使われます。
 
 @code{minpack_solve}はリストを返します。
 最初の項は見積もられた解です;

@@ -9,12 +9,12 @@
 @node Definitions for atensor,  , Introduction to atensor, atensor
 @section Definitions for atensor
 
-@deffn {Function} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
-@deffnx {Function} init_atensor (@mvar{alg_type})
+@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Function} init_atensor (@var{alg_type})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} atensimp (@mvar{expr})
+@deffn {Function} atensimp (@var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -34,19 +34,19 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} sf (@mvar{u}, @mvar{v})
+@deffn {Function} sf (@var{u}, @var{v})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} af (@mvar{u}, @mvar{v})
+@deffn {Function} af (@var{u}, @var{v})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} av (@mvar{u}, @mvar{v})
+@deffn {Function} av (@var{u}, @var{v})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} abasep (@mvar{v})
+@deffn {Function} abasep (@var{v})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

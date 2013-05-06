@@ -29,9 +29,9 @@ deber@'a escribirse en la forma siguiente:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-y la funci@'on @mvar{F} ser@'a dada como argumento para el comando
-@code{plotdf}. La variable independiente tiene que ser siempre @mvar{x} y la
-variable dependiente @mvar{y}. A esas dos variables no podr@'a estar asociado
+y la funci@'on @var{F} ser@'a dada como argumento para el comando
+@code{plotdf}. La variable independiente tiene que ser siempre @var{x} y la
+variable dependiente @var{y}. A esas dos variables no podr@'a estar asociado
 ning@'un valor num@'erico.
 
 Para dibujar el campo de direcciones de un sistema aut@'onomo de dos EDO's,
@@ -48,7 +48,7 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 y el argumento para el comando @code{plotdf} ser@'a una lista con dos
-expresiones para las funciones @mvar{F} y @mvar{G}.
+expresiones para las funciones @var{F} y @var{G}.
 
 Cuando se trabaja con una @'unica ecuaci@'on, @code{plotdf} asume
 impl@'{@dotless{i}}citamente que @code{x=t} y @code{G(x,y)=1}, transformando la
@@ -57,17 +57,17 @@ ecuaci@'on en un sistema aut@'onomo con dos ecuaciones.
 @node Funciones y variables para plotdf,  , Introducci@'on a plotdf, plotdf
 @section Funciones y variables para plotdf
 
-@deffn {Function} plotdf (@mvar{dydx},...opciones...)
-@deffnx {Function} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]},...opciones...)
+@deffn {Function} plotdf (@var{dydx},...opciones...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opciones...)
 
-Dibuja un campo de direcciones en dos dimensiones @mvar{x} y @mvar{y}.
+Dibuja un campo de direcciones en dos dimensiones @var{x} y @var{y}.
 
-@mvar{dydx}, @mvar{dxdt} y @mvar{dydt} son expresiones que dependen de @mvar{x} y
-@mvar{y}. Adem@'as de esas dos variables, las dos expresiones pueden depender de
+@var{dydx}, @var{dxdt} y @var{dydt} son expresiones que dependen de @var{x} y
+@var{y}. Adem@'as de esas dos variables, las dos expresiones pueden depender de
 un conjunto de par@'ametros, con valores num@'ericos que son dados por medio
 de la opci@'on @code{parameters} (la sintaxis de esa opci@'on se explica mas al
 frente), o con un rango de posibles valores definidos con la opci@'on
-@mvar{sliders}.
+@var{sliders}.
 
 Varias otras opciones se pueden incluir dentro del comando, o
 seleccionadas en el men@'u.  Haciendo click en un punto del gr@'afico se
@@ -106,7 +106,7 @@ mostrar@'a la @'ultima curva integral seleccionada.
 Manteniendo pulsado el bot@'on derecho del rat@'on mientras se mueve el
 cursor, se puede arrastrar el gr@'afico horizontal y verticalmente.
 Otros par@'ametros, como pueden ser el n@'umero de pasos, el valor
-inicial de @mvar{t}, las coordenadas del centro y el radio, pueden
+inicial de @var{t}, las coordenadas del centro y el radio, pueden
 cambiarse en el submen@'u de la opci@'on @emph{Config}.
 
 Con la opci@'on @emph{Save}, se puede obtener una copia del gr@'afico en
@@ -129,9 +129,9 @@ La funci@'on @code{plotdf} reconoce las siguientes opciones:
 @itemize @bullet
 @item
 @dfn{tstep} establece la amplitud de los incrementos en la
-variable independiente @mvar{t}, utilizados para calcular la curva
-integral. Si se aporta s@'olo una expresi@'on @mvar{dydx}, la variable
-@mvar{x} ser@'a directamente proporcional a @mvar{t}.
+variable independiente @var{t}, utilizados para calcular la curva
+integral. Si se aporta s@'olo una expresi@'on @var{dydx}, la variable
+@var{x} ser@'a directamente proporcional a @var{t}.
 El valor por defecto es 0.1.
 
 @item
@@ -154,23 +154,23 @@ El valor por defecto es @code{both}.
 
 @item
 @dfn{tinitial} establece el valor inicial de la variable
-@mvar{t} utilizado para calcular curvas integrales. Puesto que las
+@var{t} utilizado para calcular curvas integrales. Puesto que las
 ecuaciones diferenciales son aut@'onomas, esta opci@'on s@'olo
-aparecer@'a en los gr@'aficos de las curvas como funciones de @mvar{t}.
+aparecer@'a en los gr@'aficos de las curvas como funciones de @var{t}.
 El valor por defecto es 0.
 
 @item
 @dfn{versus_t} se utiliza para crear una segunda ventana
 gr@'afica, con el gr@'afico de una curva integral, como dos funciones
-@mvar{x}, @mvar{y}, de variable independiente @mvar{t}. Si se le da a
+@var{x}, @var{y}, de variable independiente @var{t}. Si se le da a
 @code{versus_t} cualquier valor diferente de 0, se mostrar@'a la
 segunda ventana gr@'afica, la cual incluye otro men@'u, similar
 al de la ventana principal.
 El valor por defecto es 0.
 
 @item
-@dfn{trajectory_at} establece las coordenadas @mvar{xinitial}
-y @mvar{yinitial} para el extremo inicial de la curva integral.
+@dfn{trajectory_at} establece las coordenadas @var{xinitial}
+y @var{yinitial} para el extremo inicial de la curva integral.
 No tiene asignado valor por defecto.
 
 @item
@@ -191,7 +191,7 @@ separados por comas.
 
 @item
 @dfn{xfun} establece una cadena de caracteres con funciones
-de @mvar{x} separadas por puntos y comas para ser representadas por
+de @var{x} separadas por puntos y comas para ser representadas por
 encima del campo de direcciones. Estas funciones ser@'an interpretadas
 por Tcl, no por Maxima.
 

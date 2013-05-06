@@ -20,25 +20,25 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{augmented_lagrangian_method}
-@deffn {Function} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {Function} augmented_lagrangian_method (@mvar{FOM}, @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
-@deffnx {Function} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy})
-@deffnx {Function} augmented_lagrangian_method ([@mvar{FOM}, @mvar{grad}], @mvar{xx}, @mvar{C}, @mvar{yy}, optional_args)
+@deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
+@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
-Returns an approximate minimum of the expression @mvar{FOM} with respect to the 
-variables @mvar{xx}, holding the constraints @mvar{C} equal to zero.  @mvar{yy} is 
-a list of initial guesses for @mvar{xx}.  The method employed is the augmented 
+Returns an approximate minimum of the expression @var{FOM} with respect to the 
+variables @var{xx}, holding the constraints @var{C} equal to zero.  @var{yy} is 
+a list of initial guesses for @var{xx}.  The method employed is the augmented 
 Lagrangian method (see Refs [1] and [2]).
 
-@mvar{grad}, if present, is the gradient of @mvar{FOM} with respect to @mvar{xx},
-represented as a list of expressions, one for each variable in @mvar{xx}.
+@var{grad}, if present, is the gradient of @var{FOM} with respect to @var{xx},
+represented as a list of expressions, one for each variable in @var{xx}.
 If not present, the gradient is constructed automatically.
 
-@mvar{FOM} and each element of @mvar{grad}, if present, must be ordinary 
+@var{FOM} and each element of @var{grad}, if present, must be ordinary 
 expressions, not names of functions or lambda expressions.
 
 @code{optional_args} represents additional arguments, specified as 
-@code{@mvar{symbol} = @mvar{value}}.  The optional arguments recognized are:
+@code{@var{symbol} = @var{value}}.  The optional arguments recognized are:
 
 @table @code
 @item niter

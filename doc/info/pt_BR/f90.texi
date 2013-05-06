@@ -8,7 +8,7 @@
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para f90
 
 
-@deffn {Fun@value{cedilha}@~{a}o} f90 (@mvar{expr})
+@deffn {Fun@value{cedilha}@~{a}o} f90 (@var{expr})
 O comando f90 @'{e} uma atualiza@value{cedilha}@~{a}o para o comando @code{fortran} original do
 maxima. A diferen@value{cedilha}a prim@'{a}ria @'{e} o caminho atrav@'{e}s do qual linhas longas s@~{a}o quebradas.
 

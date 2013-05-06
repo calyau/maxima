@@ -23,27 +23,27 @@ Antigamente, era poss@'{@dotless{i}}vel para um utilizador inspecionar
 @end defvr
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@deffn {Fun@value{cedilha}@~ao} askinteger (@mvar{expr}, integer)
-@deffnx {Fun@value{cedilha}@~ao} askinteger (@mvar{expr})
-@deffnx {Fun@value{cedilha}@~ao} askinteger (@mvar{expr}, even)
-@deffnx {Fun@value{cedilha}@~ao} askinteger (@mvar{expr}, odd)
+@deffn {Fun@value{cedilha}@~ao} askinteger (@var{expr}, integer)
+@deffnx {Fun@value{cedilha}@~ao} askinteger (@var{expr})
+@deffnx {Fun@value{cedilha}@~ao} askinteger (@var{expr}, even)
+@deffnx {Fun@value{cedilha}@~ao} askinteger (@var{expr}, odd)
 
-@code{askinteger (@mvar{expr}, integer)} tenta determinar a partir da
-base de dados do @code{assume} se @mvar{expr} @'e um inteiro. Se n@~ao conseguir,
+@code{askinteger (@var{expr}, integer)} tenta determinar a partir da
+base de dados do @code{assume} se @var{expr} @'e um inteiro. Se n@~ao conseguir,
 @code{askinteger} perguntar@'a ao utilizador, na linha de comandos,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume DATABASE !!!
 e inserir@'a essa informa@value{cedilha}@~ao na base de dados do
 @code{assume}, se for poss@'{@dotless{i}}vel.  @code{askinteger
-(@mvar{expr})} @'e equivalente a @code{askinteger (@mvar{expr}, integer)}.
+(@var{expr})} @'e equivalente a @code{askinteger (@var{expr}, integer)}.
 
-Da mesma forma, @code{askinteger (@mvar{expr}, even)} e @code{askinteger
-(@mvar{expr}, odd)} tentam determinar se @mvar{expr} @'e um inteiro par ou
+Da mesma forma, @code{askinteger (@var{expr}, even)} e @code{askinteger
+(@var{expr}, odd)} tentam determinar se @var{expr} @'e um inteiro par ou
 inteiro @'{@dotless{i}}mpar, respectivamente.
 
 @end deffn
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@deffn {Fun@value{cedilha}@~ao} asksign (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} asksign (@var{expr})
 Primeiro tenta determinar se a express@~ao especificada @'e positiva,
 negativa, ou zero. Se isso n@~ao for poss@'{@dotless{i}}vel,
 @code{asksign} perguntar@'a ao utilizador as quest@~oes necess@'arias
@@ -55,7 +55,7 @@ actual. O valor de retorno de @code{asksign} ser@'a @code{pos},
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} demoivre (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} demoivre (@var{expr})
 @deffnx {Vari@'avel de op@value{cedilha}@~ao} demoivre
 
 A fun@value{cedilha}@~ao @code{demoivre (expr)} transforma uma
@@ -89,14 +89,14 @@ permanecer@'a @code{sqrt (x^2)} em lugar de retornar @code{abs(x)}.
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} expand (@mvar{expr})
-@deffnx {Fun@value{cedilha}@~ao} expand (@mvar{expr}, @mvar{p}, @mvar{n})
-Expande a express@~ao @mvar{expr}.  Nos rodutos de somas e exponenciais
+@deffn {Fun@value{cedilha}@~ao} expand (@var{expr})
+@deffnx {Fun@value{cedilha}@~ao} expand (@var{expr}, @var{p}, @var{n})
+Expande a express@~ao @var{expr}.  Nos rodutos de somas e exponenciais
 de somas s@~ao expandidos os produtos, os numeradores de express@~oes
 racionais que incluirem somas ser@~ao quebrados nas suas respectivas
 parcelas, e os produtos (comutativos e n@~ao comutativos) s@~ao
 distribu@'{@dotless{i}}dos sobre as somas em todos os
-n@'{@dotless{i}}veis de @mvar{expr}.
+n@'{@dotless{i}}veis de @var{expr}.
 
 Para polin@'omios se pode usar frequ@^entemente @code{ratexpand} que
 possui um algoritmo mais eficiente.
@@ -104,8 +104,8 @@ possui um algoritmo mais eficiente.
 @code{maxnegex} e @code{maxposex} controlam o m@'aximo expoente negativo
 e o m@'aximo expoente positivo, respectivamente, que ir@~ao expandir.
 
-@code{expand (@mvar{expr}, @mvar{p}, @mvar{n})} expande @mvar{expr}, usando
-@mvar{p} para @code{maxposex} e @mvar{n} para @code{maxnegex}.  Isso @'e
+@code{expand (@var{expr}, @var{p}, @var{n})} expande @var{expr}, usando
+@var{p} para @code{maxposex} e @var{n} para @code{maxnegex}.  Isso @'e
 @'util para expandir partes numa express@~ao mas n@~ao toda.
 
 @code{expon} - o expoente da maior pot@^encia negativa que @'e
@@ -141,12 +141,12 @@ uma demonstra@,{c}@~ao dispon@'{@dotless{i}}vel com o comando
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} expandwrt (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {Fun@value{cedilha}@~ao} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
 Expande a express@~ao @code{expr} com rela@value{cedilha}@~ao @`as
-vari@'aveis @mvar{x_1}, ..., @mvar{x_n}.  Todos os produtos que encvolvam
+vari@'aveis @var{x_1}, ..., @var{x_n}.  Todos os produtos que encvolvam
 as vari@'aveis aparecer@~ao explicitamente. O resultado estar@'a livre
 de produtos de somas de express@~oes que n@~ao estejam livres das
-vari@'aveis.  @mvar{x_1}, ..., @mvar{x_n} podem ser vari@'aveis,
+vari@'aveis.  @var{x_1}, ..., @var{x_n} podem ser vari@'aveis,
 operadores, ou express@~oes.
 
 Por omiss@~ao, os denominadores n@~ao s@~ao expandidos, mas isso pode ser
@@ -172,11 +172,11 @@ ser@'a expandido.
 
 @c NEEDS A STAND-ALONE DESCRIPTION (NOT "IS SIMILAR TO")
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} expandwrt_factored (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {Fun@value{cedilha}@~ao} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'e similar a @code{expandwrt}, mas trata os produtos numa forma
 diferente.  @code{expandwrt_factored} expande somente sobre esses
-factores de @code{expr} que contiverem as vari@'aveis @mvar{x_1}, ...,
-@mvar{x_n}.
+factores de @code{expr} que contiverem as vari@'aveis @var{x_1}, ...,
+@var{x_n}.
 
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 Esta fun@value{cedilha}@~ao @'e carregada automaticamente a partir de
@@ -194,11 +194,11 @@ ser@'a automaticamente expandido.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} exponentialize (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} exponentialize (@var{expr})
 @deffnx {Vari@'avel de op@value{cedilha}@~ao} exponentialize
 
 A fun@value{cedilha}@~ao @code{exponentialize (expr)} converte as
-fun@value{cedilha}@~oes circulares e hiperb@'olicas em @mvar{expr} para
+fun@value{cedilha}@~oes circulares e hiperb@'olicas em @var{expr} para
 exponenciais, sem modificar a vari@'avel global @code{exponentialize}.
 
 Quando a vari@'avel @code{exponentialize} for @code{true}, todas as
@@ -235,7 +235,7 @@ expandido. Se for -1 ent@~ao todos os inteiros s@~ao expandidos.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} intosum (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} intosum (@var{expr})
 Move factores multiplicativos fora de um somat@'orio para dentro.  Se um
 @'{@dotless{i}}ndice for usado na express@~ao de fora, ent@~ao a
 fun@value{cedilha}@~ao tentar@'a achar um @'{@dotless{i}}ndice
@@ -246,7 +246,7 @@ com que seja ignorada.
 
 @c WHAT ARE THESE CASES ??
 Em alguns casos, poder@'a ser necess@'ario um
-@code{scanmap(multthru,@mvar{expr})} antes de @code{intosum}.
+@code{scanmap(multthru,@var{expr})} antes de @code{intosum}.
 
 @end deffn
 
@@ -435,8 +435,8 @@ substitu@'{@dotless{i}}das pelos seus valores correspondentes.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
-@deffn {Fun@value{cedilha}@~ao} numerval (@mvar{x_1}, @mvar{expr_1}, ..., @mvar{var_n}, @mvar{expr_n})
-Declara as vari@'aveis @code{x_1}, ..., @mvar{x_n} com valores
+@deffn {Fun@value{cedilha}@~ao} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+Declara as vari@'aveis @code{x_1}, ..., @var{x_n} com valores
 num@'ericos iguais a @code{expr_1}, ..., @code{expr_n}.  O valor
 num@'erico @'e avaliado e substituido para a vari@'avel em quaisquer
 express@~oes em que a vari@'avel aparecer, se o sinalizador @code{numer}
@@ -502,8 +502,8 @@ positiva.  @code{is (f(x) > 0)} retorna @code{true}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} radcan (@mvar{expr})
-Simplifica @mvar{expr}, que pode conter logaritmos,
+@deffn {Fun@value{cedilha}@~ao} radcan (@var{expr})
+Simplifica @var{expr}, que pode conter logaritmos,
 exponenciais, e radicais, convertendo essa express@~ao numa forma
 can@'onica sobre uma ampla classe de express@~oes e com uma dada
 ordena@value{cedilha}@~ao de vari@'aveis; isto @'e, todas as formas
@@ -586,10 +586,10 @@ simplifica para @code{g(a, g(b, g(c, d)))}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} scsimp (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {Fun@value{cedilha}@~ao} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Simplifica@value{cedilha}@~ao Sequ@^encial Comparativa (m@'etodo devido
-a Stoute).  @code{scsimp} tenta simplificar @mvar{expr} conforme as
-regras @mvar{rule_1}, ..., @mvar{rule_n}.  Se uma express@~ao pequena for
+a Stoute).  @code{scsimp} tenta simplificar @var{expr} conforme as
+regras @var{rule_1}, ..., @var{rule_n}.  Se uma express@~ao pequena for
 obtida, o processo repete-se.  De outra forma ap@'os todas as
 simplifica@value{cedilha}@~oes serem tentadas, @code{scsimp} retorna a
 resposta original.
@@ -614,7 +614,7 @@ matem@'atica.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} sumcontract (@mvar{expr})
+@deffn {Fun@value{cedilha}@~ao} sumcontract (@var{expr})
 Combina v@'arios somat@'orios que possuem limites superiores e inferiores
 que diferem por constantes. O resultado @'e uma express@~ao que cont@'em
 apenas um somat@'orio mais todos os termos adicionais que tiveram de ser
@@ -624,7 +624,7 @@ das somas, se puder, ou tenta formar um @'{@dotless{i}}ndice razo@'avel
 se n@~ao poder usar nenhum dos que foram fornecidos.
 
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
-Poder@'a ser necess@'ario usar @code{intosum (@mvar{expr})} antes de
+Poder@'a ser necess@'ario usar @code{intosum (@var{expr})} antes de
 @code{sumcontract}.
 
 @end deffn
@@ -681,8 +681,8 @@ Quando @code{sumsplitfact} for @code{false},
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~ao} unknown (@mvar{expr})
-Retorna @code{true} se e somente se @mvar{expr} cont@'em um operador ou
+@deffn {Fun@value{cedilha}@~ao} unknown (@var{expr})
+Retorna @code{true} se e somente se @var{expr} cont@'em um operador ou
 fun@value{cedilha}@~ao n@~ao reconhecida pelo simplificador do Maxima.
 
 @end deffn

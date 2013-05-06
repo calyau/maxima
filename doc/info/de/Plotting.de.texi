@@ -43,7 +43,7 @@ Dateiendungen sind: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot} oder
 @code{gnuplot_pipes}.
 
 @c The @code{maxout.interface} file, in the cases when it is used, is created 
-@c in the directory specified by the system variable @mvar{maxima_tempdir}. That 
+@c in the directory specified by the system variable @var{maxima_tempdir}. That 
 @c location can be changed; by assigning to that variable a string that 
 @c represents a valid directory where Maxima can create new files.
 
@@ -172,15 +172,15 @@ Dieser Name wird weiterhin als ein Synonym f@"ur @code{xmaxima} akzeptiert.
 
 @c --- 03.11.2010 DK -----------------------------------------------------------
 @anchor{contour_plot}
-@deffn {Funktion} contour_plot (@mvar{expr}, @mvar{x_range}, @mvar{y_range}, @mvar{options}, @dots{})
+@deffn {Funktion} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
 
-@c It plots the contours (curves of equal value) of @mvar{expr} over the 
-@c region @mvar{x_range} by @mvar{y_range}. Any additional arguments are treated 
+@c It plots the contours (curves of equal value) of @var{expr} over the 
+@c region @var{x_range} by @var{y_range}. Any additional arguments are treated 
 @c the same as in @code{plot3d}.
 
-Zeichnet einen Konturgraphen (die Isolinien einer Funktion) von @mvar{expr} im 
-Bereich @mvar{x_range} und @mvar{y_range} mit den Optionen @mvar{options}. 
-@mvar{expr} ist ein Ausdruck oder der Name einer Funktion @code{f(x,y)} mit zwei
+Zeichnet einen Konturgraphen (die Isolinien einer Funktion) von @var{expr} im 
+Bereich @var{x_range} und @var{y_range} mit den Optionen @var{options}. 
+@var{expr} ist ein Ausdruck oder der Name einer Funktion @code{f(x,y)} mit zwei
 Argumenten.  Alle weiteren Argumente entsprechen denen der Funktion 
 @mrefdot{plot3d}
 
@@ -250,17 +250,17 @@ gezeichnet und die Legende ist entfernt.
 
 @c --- 04.11.2010 DK -----------------------------------------------------------
 @anchor{get_plot_option}
-@deffn {Funktion} get_plot_option (@mvar{keyword}, @mvar{index})
+@deffn {Funktion} get_plot_option (@var{keyword}, @var{index})
 
-@c Returns a value of the option with name @mvar{keyword}, stored in the
+@c Returns a value of the option with name @var{keyword}, stored in the
 @c global variable @code{plot_options}. A value of 1 for the index will
 @c return the keyword itself; a value of 2 turn returns the first parameter
 @c following the keyword, and so on.
 
-Gibt die Werte der Parameter der Option mit dem Namen @mvar{keyword} zur@"uck. 
+Gibt die Werte der Parameter der Option mit dem Namen @var{keyword} zur@"uck. 
 Die Optionen und ihre Parameter sind in der Variablen @code{plot_options} 
-gespeichert.  Hat @mvar{index} den Wert 1 wird der Name der Option @mvar{keyword}
-zur@"uckgeben.  Der Wert 2 f@"ur @mvar{index} gibt den Wert des ersten Parameters
+gespeichert.  Hat @var{index} den Wert 1 wird der Name der Option @var{keyword}
+zur@"uckgeben.  Der Wert 2 f@"ur @var{index} gibt den Wert des ersten Parameters
 zur@"uck, und so weiter.
 
 @c See also @code{plot_options}, @code{set_plot_option} and the section on
@@ -288,29 +288,29 @@ Beispiel:
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{implicit_plot}
-@deffn  {Funktion} implicit_plot (@mvar{expr}, @mvar{x_range}, @mvar{y_range})
-@deffnx {Funktion} implicit_plot ([@mvar{expr_1}, @dots{}, @mvar{expr_n}], @mvar{x_range}, @mvar{y_range})
+@deffn  {Funktion} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Funktion} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
 
 @c Displays a plot of one or more expressions in implicit
-@c form. @mvar{expr} is the expression to be plotted, @mvar{x_range} the
-@c range of the horizontal axis and @mvar{y_range} the range of vertical
+@c form. @var{expr} is the expression to be plotted, @var{x_range} the
+@c range of the horizontal axis and @var{y_range} the range of vertical
 @c axis. @code{implicit_plot} respects global setting for the gnuplot
-@c driver set by the @mvar{set_plot_option} function. Options can also be passed 
+@c driver set by the @var{set_plot_option} function. Options can also be passed 
 @c to @code{implicit_plot} function as optional arguments.
 
 Zeichnet den Graphen eines oder mehrerer Ausdr@"ucke, die implizit gegeben sind.
-@mvar{expr} ist der Ausdruck der gezeichnet werden soll, @mvar{x_range} ist der
-Wertebereich der x-Achse und @mvar{y_range} der Wertebereich der y-Achse.  Die
+@var{expr} ist der Ausdruck der gezeichnet werden soll, @var{x_range} ist der
+Wertebereich der x-Achse und @var{y_range} der Wertebereich der y-Achse.  Die
 Funktion @code{implicit_plot} beachtet die Werte der Parameter der 
 Grafikoptionen, die in der Systemvariablen @code{plot_options} enthalten sind.
 Grafikoptionen k@"onnen auch als Argumente @"ubergeben werden.
 
 @c @code{implicit_plot} works by tracking sign changes on the area
-@c given by @mvar{x_range} and @mvar{y_range} and can fail for complicated
+@c given by @var{x_range} and @var{y_range} and can fail for complicated
 @c expressions.
 
 Der Algorithmus von @code{implicit_plot} stellt Vorzeichenwechsel der Funktion
-in den Bereichen @mvar{x_range} und @mvar{y_range} fest.  F@"ur komplizierte
+in den Bereichen @var{x_range} und @var{y_range} fest.  F@"ur komplizierte
 Fl@"achen kann der Algorithmus versagen.
 
 @c @code{load(implicit_plot)} loads this function.
@@ -330,25 +330,25 @@ Beispiel:
 
 @c --- 04.11.2010 DK -----------------------------------------------------------
 @anchor{make_transform}
-@deffn {Funktion} make_transform ([@mvar{var1}, @mvar{var2}, @mvar{var3}], @mvar{fx}, @mvar{fy}, @mvar{fz})
+@deffn {Funktion} make_transform ([@var{var1}, @var{var2}, @var{var3}], @var{fx}, @var{fy}, @var{fz})
 
 @c Returns a function suitable to be used in the option @code{transform_xy}
-@c of plot3d. The three variables @mvar{var1}, @mvar{var2}, @mvar{var3} are
+@c of plot3d. The three variables @var{var1}, @var{var2}, @var{var3} are
 @c three dummy variable names, which represent the 3 variables given by the
 @c plot3d command (first the two independent variables and then the
 @c function that depends on those two variables). The three functions
-@c @mvar{fx}, @mvar{fy}, @mvar{fz} must depend only on those 3 variables, and
+@c @var{fx}, @var{fy}, @var{fz} must depend only on those 3 variables, and
 @c will give the corresponding x, y and z coordinates that should be
 @c plotted. There are two transformations defined by default:
 @c @code{polar_to_xy} and @code{spherical_to_xyz}; see the documentation
 @c for those two transformations.
 
 Gibt eine Funktion zur@"uck, die als Parameter f@"ur die Grafikoption 
-@code{transform_xy} geeignet ist.  Die zwei Argumente @mvar{var1} und @mvar{var2} 
+@code{transform_xy} geeignet ist.  Die zwei Argumente @var{var1} und @var{var2} 
 repr@"asentieren die zwei unabh@"angigen Variablen der Funktion @code{plot3d}.  
-Das dritte Argument @mvar{var3} ist die Funktion, die von den zwei Variablen 
-abh@"angt.  Die drei Funktionen @mvar{fx}, @mvar{fy} und @mvar{fz} m@"ussen von 
-den drei Argumenten @mvar{var1}, @mvar{var2} und @mvar{var3} abh@"angen und die 
+Das dritte Argument @var{var3} ist die Funktion, die von den zwei Variablen 
+abh@"angt.  Die drei Funktionen @var{fx}, @var{fy} und @var{fz} m@"ussen von 
+den drei Argumenten @var{var1}, @var{var2} und @var{var3} abh@"angen und die 
 Argumente der Funktion @code{plot3d} in kartesische Koordinaten f@"ur die 
 Ausgabe des Graphen transformieren. 
 
@@ -397,52 +397,52 @@ F@"ur ein Beispiele siehe @mrefdot{make_transform}
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot2d}
-@deffn  {Funktion} plot2d (@mvar{plot}, @mvar{x_range}, @dots{}, @mvar{options}, @dots{})
-@deffnx {Funktion} plot2d ([@mvar{plot_1}, @dots{}, @mvar{plot_n}], @dots{}, @mvar{options}, @dots{})
-@deffnx {Funktion} plot2d ([@mvar{plot_1}, @dots{}, @mvar{plot_n}], @mvar{x_range}, @dots{}, @mvar{options}, @dots{})
+@deffn  {Funktion} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
 
-@c Where @mvar{plot}, @mvar{plot_1}, ..., @mvar{plot_n} can be either
+@c Where @var{plot}, @var{plot_1}, ..., @var{plot_n} can be either
 @c expressions, function names or a list with
-@c the any of the forms: @code{[discrete, [@mvar{x1}, ..., @mvar{xn}],
-@c [@mvar{y1}, ..., @mvar{yn}]]}, @code{[discrete, [[@mvar{x1}, @mvar{y1}],
-@c ..., [@mvar{xn}, ..., @mvar{yn}]]} or @code{[parametric, @mvar{x_expr},
-@c @mvar{y_expr}, @mvar{t_range}]}.
+@c the any of the forms: @code{[discrete, [@var{x1}, ..., @var{xn}],
+@c [@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
+@c ..., [@var{xn}, ..., @var{yn}]]} or @code{[parametric, @var{x_expr},
+@c @var{y_expr}, @var{t_range}]}.
 
-@mvar{plot}, @mvar{plot_1}, @dots{}, @mvar{plot_n} sind Ausdr@"ucke, Namen von 
+@var{plot}, @var{plot_1}, @dots{}, @var{plot_n} sind Ausdr@"ucke, Namen von 
 Funktionen oder Listen, mit denen diskrete Punkte oder Funktionen in einer
 parametrischen Darstellung angegeben werden.  Diskrete Punkte k@"onnen als
-@code{[discrete, [@mvar{x1}, ..., @mvar{xn}], [@mvar{y1}, ..., @mvar{yn}]]} oder als 
-@code{[discrete, [[@mvar{x1}, @mvar{y1}], ..., [@mvar{xn}, ..., @mvar{yn}]]}
+@code{[discrete, [@var{x1}, ..., @var{xn}], [@var{y1}, ..., @var{yn}]]} oder als 
+@code{[discrete, [[@var{x1}, @var{y1}], ..., [@var{xn}, ..., @var{yn}]]}
 angegeben werden.  Eine parametrische Darstellung hat die Form
-@code{[parametric, @mvar{x_expr}, @mvar{y_expr}, @mvar{t_range}]}.
+@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}]}.
 
 @c Displays a plot of one or more expressions as a function of one
 @c variable or parameter.
 @c @code{plot2d} displays one or several plots in two dimensions. When
 @c expressions or function name are used to define the plots,
-@c they should all depend on only one variable @mvar{var} and the use of
-@c @mvar{x_range} will be mandatory, to provide the name of the variable and
-@c its minimum and maximum values; the syntax for @mvar{x_range} is:
-@c @code{[@mvar{variable}, @mvar{min}, @mvar{max}]}.
+@c they should all depend on only one variable @var{var} and the use of
+@c @var{x_range} will be mandatory, to provide the name of the variable and
+@c its minimum and maximum values; the syntax for @var{x_range} is:
+@c @code{[@var{variable}, @var{min}, @var{max}]}.
 
 Die Funktion @code{plot2d} zeichnet einen zweidimensionalen Graphen einer oder 
 mehrerer Ausdr@"ucke als Funktion einer Variablen oder eines Parameters.  Mit 
-der Grafikoption @mvar{x_range} wird der Name der unabh@"angigen Variablen und 
-deren Bereich angegeben.  Die Syntax der Grafikoption @mvar{x_range} ist: 
-@code{[@mvar{variable}, @mvar{min}, @mvar{max}]}.
+der Grafikoption @var{x_range} wird der Name der unabh@"angigen Variablen und 
+deren Bereich angegeben.  Die Syntax der Grafikoption @var{x_range} ist: 
+@code{[@var{variable}, @var{min}, @var{max}]}.
 
 @c A plot can also be defined in the discrete or parametric forms. The
 @c discrete form is used to plot a set of points with given coordinates. A
 @c discrete plot is defined by a list starting with the keyword
-@c @mvar{discrete}, followed by one or two lists of values. If two lists are
+@c @var{discrete}, followed by one or two lists of values. If two lists are
 @c given, they must have the same length; the first list will be
 @c interpreted as the x coordinates of the points to be plotted and the
 @c second list as the y coordinates. If only one list is given after the
-@c @mvar{discrete} keyword, each element on the list should also be a list
+@c @var{discrete} keyword, each element on the list should also be a list
 @c with two values that correspond to the x and y coordinates of a point.
 
 Ein diskreter Graph wird durch eine Liste definiert, die mit dem
-Schl@"usselwort @w{@mvar{disrecte}} beginnt.  Es folgen ein oder zwei Listen mit 
+Schl@"usselwort @w{@var{disrecte}} beginnt.  Es folgen ein oder zwei Listen mit 
 den Werten.  Werden zwei Listen @"ubergeben, m@"ussen diese dieselbe L@"ange 
 haben.  Die Daten der ersten Listen werden als die x-Koordinaten der Punkte und 
 die der zweiten als die y-Koordinaten der Punkte interpretiert.  Wird nur eine 
@@ -450,23 +450,23 @@ Liste @"ubergeben, sind die Elemente Listen mit je zwei Elementen, die die x-
 und y-Koordinaten der Punkte repr@"asentieren.
 
 @c A parametric plot is defined by a list starting with the keyword
-@c @mvar{parametric}, followed by two expressions or function names and a
+@c @var{parametric}, followed by two expressions or function names and a
 @c range for the parameter. The range for the parameter must be a list with
 @c the name of the parameter followed by its minimum and maximum values:
-@c @code{[@mvar{param}, @mvar{min}, @mvar{max}]}. The plot will show the path
+@c @code{[@var{param}, @var{min}, @var{max}]}. The plot will show the path
 @c traced out by the point with coordinates given by the two expressions or
-@c functions, as @mvar{param} increases from @mvar{min} to @mvar{max}.
+@c functions, as @var{param} increases from @var{min} to @var{max}.
 
 Ein parametrischer Graph wird durch eine Liste definiert, die mit dem
-Schl@"usselwort @mvar{parametric} beginnt.  Es folgen zwei Ausdr@"ucke oder 
+Schl@"usselwort @var{parametric} beginnt.  Es folgen zwei Ausdr@"ucke oder 
 Namen von Funktionen und ein Parameter.  Der Bereich f@"ur den Parameter muss 
 eine Liste sein, die den Namen des Parameters, seinen gr@"o@ss{}ten und seinen 
-kleinsten Wert enth@"alt: @code{[@mvar{parameter}, @mvar{min}, @mvar{max}]}.  Der 
+kleinsten Wert enth@"alt: @code{[@var{parameter}, @var{min}, @var{max}]}.  Der 
 Graph ist der Weg f@"ur die zwei Ausdr@"ucke oder Namen von Funktionen, wenn 
-der Parameter @mvar{parameter} von @mvar{min} nach @mvar{max} zunimmt.
+der Parameter @var{parameter} von @var{min} nach @var{max} zunimmt.
 
 @c A range for the vertical axis is an optional argument with the form:
-@c @code{[y, @mvar{min}, @mvar{max}]} (the keyword @mvar{y} is always used for
+@c @code{[y, @var{min}, @var{max}]} (the keyword @var{y} is always used for
 @c the vertical axis). If that option is used, the plot will show that
 @c exact vertical range, independently of the values reached by the plot.
 @c If the vertical range is not specified, it will be set up according to
@@ -475,7 +475,7 @@ der Parameter @mvar{parameter} von @mvar{min} nach @mvar{max} zunimmt.
 
 Als optionales Argument kann ein Wertebereich f@"ur die vertikale 
 Koordinatenachse mit der Grafikoption @code{y} angegeben werden: 
-@code{[y, @mvar{min}, @mvar{max}]}.  Die vertikale Achse wird immer mit dem 
+@code{[y, @var{min}, @var{max}]}.  Die vertikale Achse wird immer mit dem 
 Schl@"usselwort @code{y} bezeichnet.  Wird kein Wertebereich @code{y} angegeben, 
 wird dieser durch den gr@"o@ss{}ten und kleinsten @code{y}-Wert des zu 
 zeichnenden Graphen festgelegt.
@@ -489,12 +489,12 @@ Schl@"usselwort beginnen, auf das die Parameter der Grafikoption folgen.  Siehe
 
 @c If there are several plots to be plotted, a legend will be
 @c written to identiy each of the expressions. The labels that should be
-@c used in that legend can be given with the option @mvar{legend}. If that
+@c used in that legend can be given with the option @var{legend}. If that
 @c option is not used, Maxima will create labels from the expressions or
 @c function names.
 
 Werden mehrere Graphen gezeichnet, wird eine Legende hinzugef@"ugt, die die 
-einzelnen Graphen unterscheidet.  Mit der Grafikoption @mvar{legend} k@"onnen die
+einzelnen Graphen unterscheidet.  Mit der Grafikoption @var{legend} k@"onnen die
 Bezeichnungen f@"ur die Legende festgelegt werden.  Wird diese Option nicht 
 genutzt, generiert Maxima die Bezeichnungen der Legende aus den Ausdr@"ucken 
 oder Namen der Funktionen, die als Argument @"ubergeben wurden.
@@ -769,8 +769,8 @@ Funktion, die die Daten beschreibt.
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot3d}
-@deffn {Funktion} plot3d (@mvar{expr}, @mvar{x_range}, @mvar{y_range}, @dots{}, @mvar{options}, @dots{})
-@deffnx {Funktion} plot3d ([@mvar{expr_1}, @dots{}, @mvar{expr_n}], @mvar{x_range}, @mvar{y_range}, @dots{}, @mvar{options}, @dots{})
+@deffn {Funktion} plot3d (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot3d ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
 
 @c Displays a plot of one or more surfaces defined as functions of two
 @c variables or in parametric form.
@@ -1088,7 +1088,7 @@ Kapitel @nrefdot{Grafikoptionen}
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{set_plot_option}
-@deffn {Funktion} set_plot_option (@mvar{option})
+@deffn {Funktion} set_plot_option (@var{option})
 
 @c Accepts most of the options listed in the section Plotting Options, and
 @c saves them into the global variable @code{plot_options}.
@@ -1160,8 +1160,8 @@ werden.
 
 @c All options consist of a list starting with one of the keywords in this
 @c section, followed by one or more values. Most of the options can be used
-@c in any of the plotting commands (@mvar{plot2d}, @mvar{plot3d}, @mvar{contour_plot},
-@c @mvar{implicit_plot}) or in the function @mvar{set_plot_option}; the
+@c in any of the plotting commands (@var{plot2d}, @var{plot3d}, @var{contour_plot},
+@c @var{implicit_plot}) or in the function @var{set_plot_option}; the
 @c exceptions will be specified in the following list.
 
 Die Grafikoptionen bestehen aus einer Liste, die mit einem Schl@"usselwort 
@@ -1173,7 +1173,7 @@ hingewiesen.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{adapt_depth}
-@defvr {Grafikoption} adapt_depth [adapt_depth, @mvar{integer}]
+@defvr {Grafikoption} adapt_depth [adapt_depth, @var{integer}]
 Standardwert: @code{5}
 
 @c The maximum number of splittings used by the adaptive plotting routine.
@@ -1186,10 +1186,10 @@ gezeichnet wird.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{axes}
-@defvr {Grafikoption} axes [axes, @mvar{symbol}]
+@defvr {Grafikoption} axes [axes, @var{symbol}]
 Standardwert: @code{true}
 
-@c Where @mvar{symbol} can be either @code{true}, @code{false}, @code{x} or
+@c Where @var{symbol} can be either @code{true}, @code{false}, @code{x} or
 @c @code{y}.  If @code{false}, no axes will be shown; if equal to @code{x}
 @c or @code{y} only the x or y axis will be shown, and if it is equal to
 @c @code{true}, both axes will be shown. This option is used only by plot2d
@@ -1204,7 +1204,7 @@ Funktionen @mref{plot2d} und @mref{implicit_plot} beachtet.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{azimuth}
-@defvr {Grafikoption} azimuth [azimuth, @mvar{number}]
+@defvr {Grafikoption} azimuth [azimuth, @var{number}]
 Standardwert: @code{30}
 
 @c A plot3d plot can be thought of as starting with its x and y axis
@@ -1220,7 +1220,7 @@ dreidimensionalen Grafik.  Siehe auch @mrefdot{elevation}
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{plot_option_box}
-@defvr {Grafikoption} box [box, @mvar{symbol}]
+@defvr {Grafikoption} box [box, @var{symbol}]
 Standardwert: @code{true}
 
 @c If set to @code{true}, a bounding box will be drawn for the plot; if set
@@ -1232,13 +1232,13 @@ Rahmen.  Ist der Wert @code{false}, wird kein Rahmen gezeichnet.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{color}
-@defvr {Grafikoption} color [color, @mvar{color_1}, @dots{}, @mvar{color_n}]
+@defvr {Grafikoption} color [color, @var{color_1}, @dots{}, @var{color_n}]
 Standardwert: @code{[blue, red, green, magenta, black, cyan]}
 
 @c In plot2d and implicit_plot, it defines the color (or colors) for the
 @c various curves. In plot3d, it defines the colors used for the mesh lines
 @c of the surfaces, when no palette is being used; one side of the surface
-@c will have color @mvar{color_1} and the other @mvar{color_2} (or the same
+@c will have color @var{color_1} and the other @var{color_2} (or the same
 @c color if there is only one color).
 
 Wenn die Funktionen @mref{plot2d} oder @mref{implicit_plot} mehrere Graphen
@@ -1267,10 +1267,10 @@ Siehe auch @mrefdot{style}
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{colorbox}
-@defvr {Grafikoption} colorbox [colorbox, @mvar{symbol}]
+@defvr {Grafikoption} colorbox [colorbox, @var{symbol}]
 Standardwert: @code{false}
 
-@c Where @mvar{symbol} can be either @code{true} or @code{false}. If
+@c Where @var{symbol} can be either @code{true} or @code{false}. If
 @c @code{true}, whenever plot3d uses a palette of different colors to
 @c represent the different values of z, a box will be shown on the right,
 @c indicating the colors used according to the scale of values of z. This
@@ -1284,7 +1284,7 @@ dazugeh@"orenden z-Werten angezeigt.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{elevation}
-@defvr {Grafikoption} elevation [elevation, @mvar{number}]
+@defvr {Grafikoption} elevation [elevation, @var{number}]
 Standardwert: @code{60}
 
 @c A plot3d plot can be thought of as starting with its x and y axis
@@ -1300,7 +1300,7 @@ dreidimensionalen Grafik.  Siehe auch @mrefdot{azimuth}
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{grid}
-@defvr {Grafikoption} grid [grid, @mvar{integer}, @mvar{integer}]
+@defvr {Grafikoption} grid [grid, @var{integer}, @var{integer}]
 Standardwert: @code{[30, 30]}
 
 @c Sets the number of grid points to use in the x- and y-directions
@@ -1312,15 +1312,15 @@ dreidimensionalen Grafik.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{legend}
-@defvr  {Grafikoption} legend [legend, @mvar{string_1}, @dots{}, @mvar{string_n}]
-@defvrx {Grafikoption} legend [legend, @mvar{false}]
+@defvr  {Grafikoption} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
+@defvrx {Grafikoption} legend [legend, @var{false}]
 
 @c It specifies the labels for the plots when various plots are shown. If
 @c there are more plots than the number of labels given, they will be
 @c repeated. If given the value @code{false}, no legends will be shown. By
 @c default, the names of the expressions or functions will be used, or the
 @c words discrete1, discrete2, ..., for discrete sets of points. This
-@c option can not be set with @mvar{set_plot_option}.
+@c option can not be set with @var{set_plot_option}.
 
 Definiert die Eintr@"age einer Legende, wenn mehrere Graphen gezeichnet 
 werden.  Sind mehr Graphen als Eintr@"age vorhanden, werden die Eintr@"age 
@@ -1336,7 +1336,7 @@ kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
 @defvr {Grafikoption} logx [logx]
 
 @c Makes the horizontal axes to be scaled logarithmically. It can not be
-@c used with @mvar{set_plot_option}.
+@c used with @var{set_plot_option}.
 
 Bewirkt, dass die horizontale Achse logarithmisch skaliert wird.  Diese 
 Grafikoption kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
@@ -1348,7 +1348,7 @@ Siehe auch @mrefdot{logy}
 @defvr {Grafikoption} logy [logy]
 
 @c Makes the vertical axes to be scaled logarithmically. It can not be used
-@c with @mvar{set_plot_option}.
+@c with @var{set_plot_option}.
 
 Bewirkt, dass die vertikale Achse logarithmisch skaliert wird.  Diese 
 Grafikoption kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
@@ -1357,7 +1357,7 @@ Siehe auch @mrefdot{logx}
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{mesh_lines_color}
-@defvr {Grafikoption} mesh_lines_color [mesh_lines_color, @mvar{color}]
+@defvr {Grafikoption} mesh_lines_color [mesh_lines_color, @var{color}]
 Standardwert: @code{black}
 
 @c It sets the color used by plot3d to draw the mesh lines, when a palette is
@@ -1373,7 +1373,7 @@ f@"ur die Grafikoption @mrefdot{color} Hat @code{mesh_lines_color} Wert
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{nticks}
-@defvr {Grafikoption} nticks [nticks, @mvar{integer}]
+@defvr {Grafikoption} nticks [nticks, @var{integer}]
 Standardwert: @code{29}
 
 @c When plotting functions with plot2d, it is gives the initial number of
@@ -1393,8 +1393,8 @@ darauf, wie glatt der Graph gezeichnet wird.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{palette}
-@defvr  {Grafikoption} palette [palette, [@mvar{palette_1}], @dots{}, [@mvar{palette_n}]]
-@defvrx {Grafikoption} palette [palette, @mvar{false}]
+@defvr  {Grafikoption} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
+@defvrx {Grafikoption} palette [palette, @var{false}]
 @flushleft
 Standardwert: @code{[hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], 
 [hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]}
@@ -1444,11 +1444,11 @@ wird in diesem Fall mit der Grafikoption @mref{color} festgelegt.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{plot_format}
-@defvr {Grafikoption} plot_format [plot_format, @mvar{format}]
+@defvr {Grafikoption} plot_format [plot_format, @var{format}]
 Standardwert: @code{gnuplot} f@"ur Windows, ansonsten @code{gnuplot_pipes}
 
 @c It sets the format to be used for plotting.
-@c Where @mvar{format} is one of the following: gnuplot, xmaxima, mgnuplot or
+@c Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot or
 @c gnuplot_pipes.
 
 Setzt das Grafikformat f@"ur die Ausgabe einer Grafik.  @code{format} kann die 
@@ -1458,12 +1458,12 @@ annehmen.  Siehe das Kapitel @nrefdot{Grafikformate}
 
 @c --- 16.10.2011 DK -----------------------------------------------------------
 @anchor{plot_realpart}
-@defvr {Grafikoption} plot_realpart [plot_realpart, @mvar{symbol}]
+@defvr {Grafikoption} plot_realpart [plot_realpart, @var{symbol}]
 Standardwert: @code{false}
 
 @c When set to @code{true}, the functions to be plotted will be considered
 @c as complex functions whose real value should be plotted; this is
-@c equivalent to plotting @code{realpart(@mvar{function})}. If set to
+@c equivalent to plotting @code{realpart(@var{function})}. If set to
 @c @code{false}, nothing will be plotted when the function does not give a
 @c real value. For instance, when @code{x} is negative, @code{log(x)} gives
 @c a complex value, with real value equal to @code{log(abs(x))}; if
@@ -1473,17 +1473,17 @@ Standardwert: @code{false}
 
 Hat @code{plot_realpart} den Wert @code{true}, werden Funktionen als komplex
 angenommen und der Realteil wird gezeichnet.  Das entspricht dem Aufruf der
-Grafikfunktion mit dem Ausdruck @code{realpart(@mvar{function})}.  Hat
+Grafikfunktion mit dem Ausdruck @code{realpart(@var{function})}.  Hat
 @code{plot_realpart} den Wert @code{false}, wird keine Grafik gezeichnet, wenn
 die Funktion keinen Realteil hat.  Zum Beispiel ist @code{log(x)} komplex, wenn
-@mvar{x} negativ ist.  Hat @code{plot_realpart} den Wert @code{true}, wird der
+@var{x} negativ ist.  Hat @code{plot_realpart} den Wert @code{true}, wird der
 Wert @code{log(-5)} als @code{log(5)} gezeichnet.  Hat @code{plot_realpart}
 den Wert @code{false} wird kein Wert gezeichnet.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{point_type}
-@defvr {Grafikoption} point_type [point_type, @mvar{type_1}, @dots{}, @mvar{type_n}]
+@defvr {Grafikoption} point_type [point_type, @var{type_1}, @dots{}, @var{type_n}]
 @flushleft
 Standardwert: @code{[bullet, circle, plus, times, asterisk, box, square, 
 triangle, delta, wedge, nabla, diamond, lozenge]}
@@ -1505,15 +1505,15 @@ mehr Datens@"atze als Symbole, werden diese wiederholt.  Siehe auch
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{psfile}
-@defvr {Grafikoption} psfile [psfile, @mvar{filename}]
+@defvr {Grafikoption} psfile [psfile, @var{filename}]
 
-@c Saves the plot into a Postscript file with name equal to @mvar{string},
+@c Saves the plot into a Postscript file with name equal to @var{string},
 @c rather than showing it in the screen. By default, the file will be
-@c created in the directory defined by the variable @mvar{maxima_tempdir};
+@c created in the directory defined by the variable @var{maxima_tempdir};
 @c the value of that variable can be changed to save the file in a
 @c different directory.
 
-Speichert die Grafik in eine Postscript-Datei mit den Namen @mvar{filename}.  Die
+Speichert die Grafik in eine Postscript-Datei mit den Namen @var{filename}.  Die
 Grafik wird nicht auf dem Bildschirm ausgegeben.  Standardm@"a@ss{}ig wird die 
 Datei in dem Ordner abgespeichert, dessen Namen in der Optionsvariablen
 @code{maxima_tempdir} enthalten ist.
@@ -1521,7 +1521,7 @@ Datei in dem Ordner abgespeichert, dessen Namen in der Optionsvariablen
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{run_viewer}
-@defvr {Grafikoption} run_viewer [run_viewer, @mvar{symbol}]
+@defvr {Grafikoption} run_viewer [run_viewer, @var{symbol}]
 
 @c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? 
 @c OR IS NOTHING GENERATED ??
@@ -1535,17 +1535,17 @@ Kontrolliert, ob die Bildschirmausgabe des Grafikformats gestartet wird.
 
 @c --- 05.02.2011 DK -----------------------------------------------------------
 @anchor{style}
-@defvr  {Grafikoption} style [style, @mvar{type_1}, @dots{}, @mvar{type1_n}]
-@defvrx {Grafikoption} style [style, [@mvar{style_1}], @dots{}, [@mvar{style_n}]]
+@defvr  {Grafikoption} style [style, @var{type_1}, @dots{}, @var{type1_n}]
+@defvrx {Grafikoption} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
 Standardwert: @code{lines}
 
 @c The styles that will be used for the various functions or sets of data
-@c in a 2d plot.  The word @mvar{style} must be followed by one or more
+@c in a 2d plot.  The word @var{style} must be followed by one or more
 @c styles.  If there are more functions and data sets than the styles
 @c given, the styles will be repeated.  Each style can be either
-@c @mvar{lines} for line segments, @mvar{points} for isolated points,
-@c @mvar{linespoints} for segments and points, or @mvar{dots} for small
-@c isolated dots.  Gnuplot accepts also an @mvar{impulses} style.
+@c @var{lines} for line segments, @var{points} for isolated points,
+@c @var{linespoints} for segments and points, or @var{dots} for small
+@c isolated dots.  Gnuplot accepts also an @var{impulses} style.
 
 Bestimmt den Stil f@"ur das Zeichnen von Funktionen oder Datens@"atzen mit der
 Funktion @code{plot2d}.  Werden mehr Graphen gezeichnet, als Stile vorhanden
@@ -1555,12 +1555,12 @@ Punkten oder @code{dots} f@"ur kleine Punkte.  Das Grafikformat Gnuplot
 akzeptiert zus@"atzlich den Stil @code{impulses}.
 
 @c Each of the styles can be enclosed inside a list with some aditional
-@c parameters. @mvar{lines} accepts one or two numbers: the width of the
+@c parameters. @var{lines} accepts one or two numbers: the width of the
 @c line and an integer that identifies a color. The default color codes
 @c are: 1: blue, 2: red, 3: magenta, 4: orange, 5: brown, 6: lime and 7:
 @c aqua. If you use Gnuplot with a terminal different than X11,
 @c those colors might be different; for example, if you use the option
-@c [@mvar{gnuplot_term},@mvar{ps}], color index 4 will correspond to black,
+@c [@var{gnuplot_term},@var{ps}], color index 4 will correspond to black,
 @c instead of orange.
 
 Jeder Stil kann weitere Parameter erhalten, die zusammen mit dem Stil als eine
@@ -1569,12 +1569,12 @@ Breite der Linie und deren Farbe angegeben.  Die Standardfarben haben die
 Zahlenwerte: 1: @code{blue}, 2: @code{red}, 3: @code{magenta}, 4: @code{orange},
 5: @code{brown}, 6: @code{lime} und 7: @code{aqua}.  Im Grafikformat Gnuplot 
 kann die Kodierung der Farben f@"ur verschiedene Terminals abweichend sein.  
-Wird zum Beispiel das Terminal [@mvar{gnuplot_term},@mvar{ps}] verwendet, 
+Wird zum Beispiel das Terminal [@var{gnuplot_term},@var{ps}] verwendet, 
 entspricht dem Zahlenwert 4 die Farbe @code{black}.
 
-@c @mvar{points} accepts one two or three parameters; the first parameter
+@c @var{points} accepts one two or three parameters; the first parameter
 @c is the radius of the points, the second parameter is an integer that
-@c selects the color, using the same code used for @mvar{lines} and the
+@c selects the color, using the same code used for @var{lines} and the
 @c third parameter is currently used only by Gnuplot and it corresponds
 @c to several objects instead of points. The default types of
 @c objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
@@ -1591,7 +1591,7 @@ Darstellung der Punkte ausgew@"ahlt werden k@"onnen: 1: @code{bullet},
 6: @code{box}, 7: @code{square}, 8: @code{triangle}, 9: @code{delta}, 
 10: @code{wedge}, 11: @code{nabla}, 12: @code{diamond}, 13: @code{lozenge}.
 
-@c @mvar{linesdots} accepts up to four parameters: line width, points
+@c @var{linesdots} accepts up to four parameters: line width, points
 @c radius, color and type of object to replace the points.
 
 Der Stil @code{linesdots} akzeptiert bis zu vier Parameter: die Breite der 
@@ -1605,7 +1605,7 @@ Siehe auch die Grafikoptionen @mref{color} und @mrefdot{point_type}
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{t}
-@defvr {Grafikoption} t [t, @mvar{min}, @mvar{max}]
+@defvr {Grafikoption} t [t, @var{min}, @var{max}]
 
 @c Default range for parametric plots.
 
@@ -1616,14 +1616,14 @@ Funktion @mrefdot{plot2d}  Die Variable einer parametrischen Kurve muss mit
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{transform_xy}
-@defvr {Grafikoption} transform_xy [transform_xy, @mvar{symbol}]
+@defvr {Grafikoption} transform_xy [transform_xy, @var{symbol}]
 Standardwert: @code{false}
 
-@c Where @mvar{symbol} is either @code{false} or the result obtained by
+@c Where @var{symbol} is either @code{false} or the result obtained by
 @c using the function @code{transform_xy}. If different from @code{false},
 @c it will be used to transform the 3 coordinates in plot3d.
 
-@mvar{symbol} hat entweder den Wert @code{false} oder ist das Ergebnis der 
+@var{symbol} hat entweder den Wert @code{false} oder ist das Ergebnis der 
 Funktion @mrefdot{make_transform}  Wenn verschieden von @code{false}, wird die
 Funktion genutzt, um die drei Koordinaten einer dreidimensionalen Grafik zu
 transformieren.
@@ -1634,7 +1634,7 @@ vordefinierte Koordinatentransformationen.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{x}
-@defvr {Grafikoption} x [x, @mvar{min}, @mvar{max}]
+@defvr {Grafikoption} x [x, @var{min}, @var{max}]
 
 @c When used as the first option in a 2d-plotting command (or any of the
 @c first two in plot3d), it indicates that the first independent variable
@@ -1645,7 +1645,7 @@ vordefinierte Koordinatentransformationen.
 Die erste Grafikoption der Funktionen @code{plot2d} oder @code{plot3d} 
 bezeichnet die un@-ab@-h@"ang@-ige Variable.  Die unabh@"angige Variable muss 
 nicht mit @code{x} bezeichnet werden, sondern kann ein beliebiges von @code{x} 
-verschiedenes Symbol sein.  Die Werte @mvar{min} und @mvar{max} geben in diesem
+verschiedenes Symbol sein.  Die Werte @var{min} und @var{max} geben in diesem
 Fall den Wertebereich der unabh@"angigen Variablen an.  Die Grafikoption 
 @code{x} kann ein zweites Mal angegeben werden, um den Bereich f@"ur die x-Achse
 festzulegen.
@@ -1653,17 +1653,17 @@ festzulegen.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{xlabel}
-@defvr {Grafikoption} xlabel [xlabel, @mvar{string}]
+@defvr {Grafikoption} xlabel [xlabel, @var{string}]
 Standardwert: @code{"x"}
 
-@c Specifies the @mvar{string} that will label the first axis; if this
+@c Specifies the @var{string} that will label the first axis; if this
 @c option is not used, that label will be the name of the independent
 @c variable, when plotting functions with plot2d or implicit_plot, or the
 @c name of the first variable, when plotting surfaces with plot3d or
 @c contours with contour_plot, or the first expression in the case of a
-@c parametric plot. It can not be used with @mvar{set_plot_option}.
+@c parametric plot. It can not be used with @var{set_plot_option}.
 
-Legt die Zeichenkette @mvar{string} fest, mit der die x-Achse der Grafik 
+Legt die Zeichenkette @var{string} fest, mit der die x-Achse der Grafik 
 bezeichnet wird.  Der Standardwert ist @code{"x"} oder der Name der ersten
 unabh@"angigen Variablen.  Diese Grafikoption kann nicht mit dem Kommando 
 @code{set_plot_option} gesetzt werden.
@@ -1671,7 +1671,7 @@ unabh@"angigen Variablen.  Diese Grafikoption kann nicht mit dem Kommando
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{y}
-@defvr {Grafikoption} y [y, @mvar{min}, @mvar{max}]
+@defvr {Grafikoption} y [y, @var{min}, @var{max}]
 
 @c When used as one of the first two options in plot3d, it indicates that
 @c one of the independent variables is y and it sets its range. Otherwise,
@@ -1681,7 +1681,7 @@ unabh@"angigen Variablen.  Diese Grafikoption kann nicht mit dem Kommando
 F@"ur einen dreidimensionalen Graphen legt diese Grafikoption die zweite 
 unabh@"angige Variable fest.  Die unabh@"angige Variable muss nicht mit @code{y} 
 bezeichnet werden, sondern kann ein beliebiges von @code{y} verschiedenes Symbol
-sein.  Die Werte @mvar{min} und @mvar{max} geben in diesem Fall den Wertebereich 
+sein.  Die Werte @var{min} und @var{max} geben in diesem Fall den Wertebereich 
 der Variablen an.  Wird die Grafikoption f@"ur einen zweidimensionalen Graphen 
 verwendet oder f@"ur einen dreidimensionalen Graphen ein zweites Mal eingesetzt, 
 dann wird der Bereich f@"ur die y-Achse festgelegt.
@@ -1689,17 +1689,17 @@ dann wird der Bereich f@"ur die y-Achse festgelegt.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{ylabel}
-@defvr {Grafikoption} ylabel [ylabel, @mvar{string}]
+@defvr {Grafikoption} ylabel [ylabel, @var{string}]
 Standardwert: @code{"y"}
 
-@c Specifies the @mvar{string} that will label the second axis; if this
+@c Specifies the @var{string} that will label the second axis; if this
 @c option is not used, that label will be ``y'', when plotting functions
 @c with plot2d or implicit_plot, or the name of the second variable, when
 @c plotting surfaces with plot3d or contours with contour_plot, or the
 @c second expression in the case of a parametric plot. It can not be used
-@c with @mvar{set_plot_option}.
+@c with @var{set_plot_option}.
 
-Legt die Zeichenkette @mvar{string} fest, mit der die y-Achse der Grafik 
+Legt die Zeichenkette @var{string} fest, mit der die y-Achse der Grafik 
 bezeichnet wird.  Der Standardwert ist @code{"y"} oder f@"ur den Fall einer
 dreidimensionalen Grafik der Name der zweiten unabh@"angigen Variablen.  Diese 
 Grafikoption kann nicht mit dem Kommando @code{set_plot_option} gesetzt werden.
@@ -1707,7 +1707,7 @@ Grafikoption kann nicht mit dem Kommando @code{set_plot_option} gesetzt werden.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{z}
-@defvr {Grafikoption} z [z, @mvar{min}, @mvar{max}]
+@defvr {Grafikoption} z [z, @var{min}, @var{max}]
 
 @c Used in plot3d to set the effective range of values of z that will be
 @c shown in the plot.
@@ -1717,16 +1717,16 @@ Legt f@"ur eine dreidimensionalen Grafik den Bereich f@"ur die z-Achse fest.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{zlabel}
-@defvr {Grafikoption} zlabel [zlabel, @mvar{string}]
+@defvr {Grafikoption} zlabel [zlabel, @var{string}]
 Standardwert: @code{"z"}
 
-@c Specifies the @mvar{string} that will label the third axis, when using
+@c Specifies the @var{string} that will label the third axis, when using
 @c plot3d. If this option is not used, that label will be ``z'', when
 @c plotting surfaces, or the third expression in the case of a parametric
-@c plot. It can not be used with @mvar{set_plot_option} and it will be
+@c plot. It can not be used with @var{set_plot_option} and it will be
 @c ignored by plot2d and implicit_plot.
 
-Legt die Zeichenkette @mvar{string} fest, mit der die z-Achse der Grafik 
+Legt die Zeichenkette @var{string} fest, mit der die z-Achse der Grafik 
 bezeichnet wird.  Der Standardwert ist @code{"z"}.  Diese Grafikoption kann 
 nicht mit dem Kommando @code{set_plot_option} gesetzt werden und wird von den
 Funktionen @code{plot2d} sowie @code{implicit_plot} ignoriert.
@@ -1775,15 +1775,15 @@ Die Ausgabe von Gnuplot wird in einem separatem Fenster angezeigt.
 Die Ausgabe von Gnuplot wird in der Maxima Konsole mit Ascii-Zeichen angezeigt.
 
 @c Gnuplot generates commands in the PostScript page description language.
-@c If the option @code{gnuplot_out_file} is set to @mvar{filename}, gnuplot
-@c writes the PostScript commands to @mvar{filename}.  Otherwise, it is
+@c If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot
+@c writes the PostScript commands to @var{filename}.  Otherwise, it is
 @c saved as @code{maxplot.ps} file.
 
 @item @strong{ps}
 
 Gnuplot generiert PostScript-Kommandos.  Mit der Grafikoption 
 @code{gnuplot_out_file} werden die PostScript-Kommandos in eine Datei
-@mvar{filename} geschrieben.  Ansonsten werden die Kommandos in die Datei
+@var{filename} geschrieben.  Ansonsten werden die Kommandos in die Datei
 @code{maxplot.ps} geschrieben.
 
 @c any other valid gnuplot term specification
@@ -1798,9 +1798,9 @@ Gnuplot generiert PostScript-Kommandos.  Mit der Grafikoption
 @c For example @code{[gnuplot_term,png]} creates output in PNG (Portable
 @c Network Graphics) format while @code{[gnuplot_term,"png size 1000,1000"]}
 @c creates PNG of 1000x1000 pixels size. 
-@c If the option @code{gnuplot_out_file} is set to @mvar{filename}, gnuplot 
-@c writes the output to @mvar{filename}. Otherwise, it is saved as 
-@c @code{maxplot.@mvar{term}} file, where @mvar{term} is gnuplot 
+@c If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot 
+@c writes the output to @var{filename}. Otherwise, it is saved as 
+@c @code{maxplot.@var{term}} file, where @var{term} is gnuplot 
 @c terminal name.
 
 Gnuplot kann Ausgaben in verschiedenen Formaten wie zum Beispiel PNG, JPEG, SVG
@@ -1809,9 +1809,9 @@ angegeben.  Weiterhin kann jedes g@"ultige Kommando als Zeichenkette @"ubergeben
 werden.  Zum Beispiel generiert @code{[gnuplot_term, png]} eine Grafik im 
 PNG-Format.  Das Kommando @code{[gnuplot_term, "png size 1000, 1000"]} generiert
 eine Grafik im PNG-Format mit dem Format 1000@ x@ 1000 Punkte.  Erh@"alt die 
-Grafikoption @code{gnuplot_out_file} den Wert @mvar{filename}, wird die Ausgabe 
-in die Datei @mvar{filename} geschrieben.  Ansonsten werden die Kommandos in die 
-Datei @code{maxplot.@mvar{term}} geschrieben, wobei @mvar{term} das verwendete 
+Grafikoption @code{gnuplot_out_file} den Wert @var{filename}, wird die Ausgabe 
+in die Datei @var{filename} geschrieben.  Ansonsten werden die Kommandos in die 
+Datei @code{maxplot.@var{term}} geschrieben, wobei @var{term} das verwendete 
 Grafikformat ist.
 @end defvr
 
@@ -1967,14 +1967,14 @@ Austausch der Daten genutzt wird, und @"offnet eine neue Pipe.
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{gnuplot_replot}
 @deffn  {Funktion} gnuplot_replot ()
-@deffnx {Funktion} gnuplot_replot (@mvar{string})
+@deffnx {Funktion} gnuplot_replot (@var{string})
 
 @c Updates the gnuplot window. If @code{gnuplot_replot} is called with a
-@c gnuplot command in a string @mvar{s}, then @code{s} is sent to gnuplot
+@c gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
 @c before reploting the window.
 
 Aktualisiert die Ausgabe von Gnuplot.  Wird @code{gnuplot_replot} mit einer
-Zeichenkette @mvar{string} aufgerufen, die Gnuplot-Kommandos enth@"alt, dann 
+Zeichenkette @var{string} aufgerufen, die Gnuplot-Kommandos enth@"alt, dann 
 werden die Kommandos vor der Aktualisierung an Gnuplot gesendet.
 @end deffn
 

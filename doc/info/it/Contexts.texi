@@ -5,7 +5,7 @@
 @node Definitions for Contexts,  , Contexts, Contexts
 @section Definitions for Contexts
 
-@deffn {Function} activate (@mvar{context_1}, ..., @mvar{context_n})
+@deffn {Function} activate (@var{context_1}, ..., @var{context_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -13,7 +13,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} assume (@mvar{pred_1}, ..., @mvar{pred_n})
+@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -37,11 +37,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} deactivate (@mvar{context_1}, ..., @mvar{context_n})
+@deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} facts (@mvar{item})
+@deffn {Function} facts (@var{item})
 @deffnx {Function} facts ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -50,21 +50,21 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} forget (@mvar{pred_1}, ..., @mvar{pred_n})
-@deffnx {Function} forget (@mvar{L})
+@deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Function} forget (@var{L})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} killcontext (@mvar{context_1}, ..., @mvar{context_n})
+@deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} newcontext (@mvar{name})
+@deffn {Function} newcontext (@var{name})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} supcontext (@mvar{name}, @mvar{context})
-@deffnx {Function} supcontext (@mvar{name})
+@deffn {Function} supcontext (@var{name}, @var{context})
+@deffnx {Function} supcontext (@var{name})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

@@ -90,30 +90,30 @@ e @code{similaritytransform}.
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear,  , Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear
 
-@deffn {Fun@value{cedilha}@~{a}o} addcol (@mvar{M}, @mvar{list_1}, ..., @mvar{list_n})
+@deffn {Fun@value{cedilha}@~{a}o} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Anexa a(s) coluna(s) dadas por uma
-ou mais listas (ou matrizes) sobre a matriz @mvar{M}.
+ou mais listas (ou matrizes) sobre a matriz @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} addrow (@mvar{M}, @mvar{list_1}, ..., @mvar{list_n})
+@deffn {Fun@value{cedilha}@~{a}o} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
 Anexa a(s) linha(s) dadas por uma ou
-mais listas (ou matrizes) sobre a matriz @mvar{M}.
+mais listas (ou matrizes) sobre a matriz @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} adjoint (@mvar{M})
-Retorna a matriz adjunta da matriz @mvar{M}.
-A matriz adjunta @'{e} a transposta da matriz dos cofatores de @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} adjoint (@var{M})
+Retorna a matriz adjunta da matriz @var{M}.
+A matriz adjunta @'{e} a transposta da matriz dos cofatores de @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} augcoefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Fun@value{cedilha}@~{a}o} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Retorna a matriz dos coeficientes
-aumentada para as vari@'{a}veis @mvar{x_1}, ..., @mvar{x_n} do sistema de equa@value{cedilha}@~{o}es lineares
-@mvar{eqn_1}, ..., @mvar{eqn_m}.  Essa @'{e} a matriz dos coeficientes com uma coluna anexada para
+aumentada para as vari@'{a}veis @var{x_1}, ..., @var{x_n} do sistema de equa@value{cedilha}@~{o}es lineares
+@var{eqn_1}, ..., @var{eqn_m}.  Essa @'{e} a matriz dos coeficientes com uma coluna anexada para
 os termos independentes em cada equa@value{cedilha}@~{a}o (i.e., esses termos n@~{a}o dependem de
-@mvar{x_1}, ..., @mvar{x_n}).
+@var{x_1}, ..., @var{x_n}).
 
 @example
 (%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
@@ -125,10 +125,10 @@ os termos independentes em cada equa@value{cedilha}@~{a}o (i.e., esses termos n@
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} charpoly (@mvar{M}, @mvar{x})
-Retorna um polin@^{o}mio caracter@'{i}stico para a matriz @mvar{M}
-em rela@value{cedilha}@~{a}o @`a vari@'{a}vel @mvar{x}.  Que @'{e},
-@code{determinant (@mvar{M} - diagmatrix (length (@mvar{M}), @mvar{x}))}.
+@deffn {Fun@value{cedilha}@~{a}o} charpoly (@var{M}, @var{x})
+Retorna um polin@^{o}mio caracter@'{i}stico para a matriz @var{M}
+em rela@value{cedilha}@~{a}o @`a vari@'{a}vel @var{x}.  Que @'{e},
+@code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
 
 @example
 (%i1) a: matrix ([3, 1], [2, 4]);
@@ -165,10 +165,10 @@ em rela@value{cedilha}@~{a}o @`a vari@'{a}vel @mvar{x}.  Que @'{e},
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} coefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Fun@value{cedilha}@~{a}o} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Retorna a matriz dos coeficientes para as
-vari@'{a}veis @mvar{x_1}, ..., @mvar{x_n} do sistema de equa@value{cedilha}@~{o}es lineares
-@mvar{eqn_1}, ..., @mvar{eqn_m}.
+vari@'{a}veis @var{x_1}, ..., @var{x_n} do sistema de equa@value{cedilha}@~{o}es lineares
+@var{eqn_1}, ..., @var{eqn_m}.
 
 @example
 (%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
@@ -179,17 +179,17 @@ vari@'{a}veis @mvar{x_1}, ..., @mvar{x_n} do sistema de equa@value{cedilha}@~{o}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} col (@mvar{M}, @mvar{i})
-Reorna a @mvar{i}'@'{e}sima coluna da matriz @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} col (@var{M}, @var{i})
+Reorna a @var{i}'@'{e}sima coluna da matriz @var{M}.
 O valor de retorno @'{e} uma matriz.
 @c EXAMPLE HERE
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} columnvector (@mvar{L})
-@deffnx {Fun@value{cedilha}@~{a}o} covect (@mvar{L})
-Retorna uma matriz de uma coluna e @code{length (@mvar{L})} linhas,
-contendo os elementos da lista @mvar{L}.
+@deffn {Fun@value{cedilha}@~{a}o} columnvector (@var{L})
+@deffnx {Fun@value{cedilha}@~{a}o} covect (@var{L})
+Retorna uma matriz de uma coluna e @code{length (@var{L})} linhas,
+contendo os elementos da lista @var{L}.
 
 @code{covect} @'{e} um sin@^{o}nimo para @code{columnvector}.
 
@@ -219,8 +219,8 @@ Warning - you are redefining the Macsyma function autovetores
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} conjugate (@mvar{x})
-Retorna o conjugado complexo de @mvar{x}.
+@deffn {Fun@value{cedilha}@~{a}o} conjugate (@var{x})
+Retorna o conjugado complexo de @var{x}.
 
 @c ===beg===
 @c declare ([aa, bb], real, cc, complex, ii, imaginary);
@@ -249,9 +249,9 @@ Retorna o conjugado complexo de @mvar{x}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} copymatrix (@mvar{M})
-Retorna uma c@'{o}pia da matriz @mvar{M}.  Esse @'{e} o @'{u}nico
-para fazer uma copia separada copiando @mvar{M} elemento a elemento.
+@deffn {Fun@value{cedilha}@~{a}o} copymatrix (@var{M})
+Retorna uma c@'{o}pia da matriz @var{M}.  Esse @'{e} o @'{u}nico
+para fazer uma copia separada copiando @var{M} elemento a elemento.
 
 Note que uma atribui@value{cedilha}@~{a}o de uma matriz para outra, como em @code{m2: m1},
 n@~{a}o copia @code{m1}.
@@ -261,8 +261,8 @@ criando uma c@'{o}pia com @code{copymatrix} e ent@~{a}o usando atribu@value{cedi
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} determinant (@mvar{M})
-Calcula o determinante de @mvar{M} por um m@'{e}todo similar @`a
+@deffn {Fun@value{cedilha}@~{a}o} determinant (@var{M})
+Calcula o determinante de @var{M} por um m@'{e}todo similar @`a
 elimina@value{cedilha}@~{a}o de Gauss.
 
 @c JUST HOW DOES ratmx AFFECT THE RESULT ??
@@ -309,15 +309,15 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} diagmatrix (@mvar{n}, @mvar{x})
-Retorna uma matriz diagonal de tamanho @mvar{n} por @mvar{n} com os
-elementos da diagonal todos iguais a @mvar{x}.
-@code{diagmatrix (@mvar{n}, 1)} retorna uma matriz identidade (o mesmo que @code{ident (@mvar{n})}).
+@deffn {Fun@value{cedilha}@~{a}o} diagmatrix (@var{n}, @var{x})
+Retorna uma matriz diagonal de tamanho @var{n} por @var{n} com os
+elementos da diagonal todos iguais a @var{x}.
+@code{diagmatrix (@var{n}, 1)} retorna uma matriz identidade (o mesmo que @code{ident (@var{n})}).
 
-@mvar{n} deve avaliar para um inteiro, de outra forma @code{diagmatrix} reclama com uma mensagem de erro.
+@var{n} deve avaliar para um inteiro, de outra forma @code{diagmatrix} reclama com uma mensagem de erro.
 
-@mvar{x} pode ser qualquer tipo de expres@~{a}o, incluindo outra matriz.
-Se @mvar{x} @'{e} uma matriz, isso n@~{a}o @'{e} copiado; todos os elementos da diagonal referem-se @`a mesma inst@^{a}ncia, @mvar{x}.
+@var{x} pode ser qualquer tipo de expres@~{a}o, incluindo outra matriz.
+Se @var{x} @'{e} uma matriz, isso n@~{a}o @'{e} copiado; todos os elementos da diagonal referem-se @`a mesma inst@^{a}ncia, @var{x}.
 
 @c NEED EXAMPLE HERE
 @end deffn
@@ -338,13 +338,13 @@ comutadores individuais @code{dot} governam quais opera@value{cedilha}@~{o}es s@
 Valor padr@~{a}o: @code{true}
 
 Quando @code{domxexpt} @'{e} @code{true},
-uma matriz exponencial, @code{exp (@mvar{M})} onde @mvar{M} @'{e} a matriz,
+uma matriz exponencial, @code{exp (@var{M})} onde @var{M} @'{e} a matriz,
 @'{e} interpretada como uma matriz com elementos @code{[i,j} iguais a @code{exp (m[i,j])}.
-de outra forma @code{exp (@mvar{M})} avalia para @code{exp (@mvar{ev(M)}}.
+de outra forma @code{exp (@var{M})} avalia para @code{exp (@var{ev(M)}}.
 
 @code{domxexpt}
-afeta todas as expres@~{o}es da forma @code{@mvar{base}^@mvar{expoente}} onde @mvar{base} @'{e} uma
-expres@~{a}o assumida escalar ou constante, e @mvar{expoente} @'{e} uma lista ou
+afeta todas as expres@~{o}es da forma @code{@var{base}^@var{expoente}} onde @var{base} @'{e} uma
+expres@~{a}o assumida escalar ou constante, e @var{expoente} @'{e} uma lista ou
 matriz.
 
 Exemplo:
@@ -512,10 +512,10 @@ para @code{SC*A} e @code{A.(SC*B)} simplifica para @code{SC*(A.B)}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} echelon (@mvar{M})
-Retorna a forma escalonada da matriz @mvar{M},
+@deffn {Fun@value{cedilha}@~{a}o} echelon (@var{M})
+Retorna a forma escalonada da matriz @var{M},
 como produzido atrav@'{e}s da elimina@value{cedilha}@~{a}o de Gauss.
-A forma escalonada @'{e} calculada de @mvar{M}
+A forma escalonada @'{e} calculada de @var{M}
 por opera@value{cedilha}@~{o}es elementares de linha tais que o primeiro
 elemento n@~{a}o zero em cada linha na matriz resultante seja o n@'{u}mero um e os
 elementos da coluna abaixo do primeiro n@'{u}mero um em cada linha sejam todos zero.
@@ -550,11 +550,11 @@ mas n@~{a}o normaliza o elemento l@'{i}der n@~{a}o nulo em cada linha.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} eigenvalues (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} eivals (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} eigenvalues (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} eivals (@var{M})
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
-Retorna uma lista de duas listas contendo os autovalores da matriz @mvar{M}.
+Retorna uma lista de duas listas contendo os autovalores da matriz @var{M}.
 A primeira sublista do valor de retorno @'{e} a lista de autovalores da
 matriz, e a segunda sublista @'{e} a lista de
 multiplicidade dos autovalores na ordem correspondente.
@@ -587,9 +587,9 @@ Ap@'{o}s ser chamado, todas as fun@value{cedilha}@~{o}es e vari@'{a}veis no paco
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} eigenvectors (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} eivects (@mvar{M})
-pegam uma matriz @mvar{M} como seu argumento e retorna uma lista
+@deffn {Fun@value{cedilha}@~{a}o} eigenvectors (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} eivects (@var{M})
+pegam uma matriz @var{M} como seu argumento e retorna uma lista
 de listas cuja primeira sublista @'{e} a sa@'{i}da de @code{eigenvalues}
 e as outras sublistas s@~{a}o os autovetores da
 matriz correspondente para esses autovalores respectivamente.
@@ -627,22 +627,22 @@ com o sinalizador @code{knowneigvals} escolhido para @code{true}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ematrix (@mvar{m}, @mvar{n}, @mvar{x}, @mvar{i}, @mvar{j})
-Retorna uma matriz @mvar{m} por @mvar{n}, todos os elementos da qual
-s@~{a}o zero exceto para o elemento @code{[@mvar{i}, @mvar{j}]} que @'{e} @mvar{x}.
+@deffn {Fun@value{cedilha}@~{a}o} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+Retorna uma matriz @var{m} por @var{n}, todos os elementos da qual
+s@~{a}o zero exceto para o elemento @code{[@var{i}, @var{j}]} que @'{e} @var{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} entermatrix (@mvar{m}, @mvar{n})
-Retorna uma matriz @mvar{m} por @mvar{n}, lendo os elementos interativamente.
+@deffn {Fun@value{cedilha}@~{a}o} entermatrix (@var{m}, @var{n})
+Retorna uma matriz @var{m} por @var{n}, lendo os elementos interativamente.
 
-Se @mvar{n} @'{e} igual a @mvar{m},
+Se @var{n} @'{e} igual a @var{m},
 Maxima pergunta pelo tipo de matriz (diagonal, sim@'{e}trica, antisim@'{e}trica, ou gen@'{e}rica)
 e por cada elemento.
 Cada resposta @'{e} terminada por um ponto e v@'{i}rgula @code{;} ou sinal de d@'{o}lar @code{$}.
 
-Se @mvar{n} n@~{a}o @'{e} igual a @mvar{m},
+Se @var{n} n@~{a}o @'{e} igual a @var{m},
 Maxima pergunta por cada elemento.
 
 Os elementos podem ser quaisquer express@~{o}es, que s@~{a}o avaliadas.
@@ -676,25 +676,25 @@ Matriz entered.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1}, @mvar{j_1})
-@deffnx {Fun@value{cedilha}@~{a}o} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1})
-@deffnx {Fun@value{cedilha}@~{a}o} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2})
-Retorna uma matriz gerada de @mvar{a},
-pegando o elemento @code{@mvar{a}[@mvar{i_1},@mvar{j_1}]}
-como o elemento do canto superior esquerdo e @code{@mvar{a}[@mvar{i_2},@mvar{j_2}]}
+@deffn {Fun@value{cedilha}@~{a}o} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@deffnx {Fun@value{cedilha}@~{a}o} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
+@deffnx {Fun@value{cedilha}@~{a}o} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+Retorna uma matriz gerada de @var{a},
+pegando o elemento @code{@var{a}[@var{i_1},@var{j_1}]}
+como o elemento do canto superior esquerdo e @code{@var{a}[@var{i_2},@var{j_2}]}
 como o elemento do canto inferior direto da matriz.
-Aqui @mvar{a} @'{e} um array declarado (criado atrav@'{e}s de @code{array} mas n@~{a}o por meio de @code{make_array})
+Aqui @var{a} @'{e} um array declarado (criado atrav@'{e}s de @code{array} mas n@~{a}o por meio de @code{make_array})
 ou um array n@~{a}o declarado,
 ou uma fun@value{cedilha}@~{a}o array,
 ou uma express@~{a}o lambda de dois argumentos.
 (Uma fun@value{cedilha}@~{a}O array @'{e} criado como outras fun@value{cedilha}@~{o}es com @code{:=} ou @code{define},
 mas os argumentos s@~{a}o colocados entre colch@^{e}tes em lugar de par@^{e}ntesis.)
 
-Se @mvar{j_1} @'{e} omitido, isso @'{e} assumido ser igual a @mvar{i_1}.
-Se ambos @mvar{j_1} e @mvar{i_1} s@~{a}o omitidos, ambos s@~{a}o assumidos iguais a 1.
+Se @var{j_1} @'{e} omitido, isso @'{e} assumido ser igual a @var{i_1}.
+Se ambos @var{j_1} e @var{i_1} s@~{a}o omitidos, ambos s@~{a}o assumidos iguais a 1.
 
 Se um elemento selecionado @code{i,j} de um array for indefinido,
-a matriz conter@'{a} um elemento simb@'{o}lico @code{@mvar{a}[i,j]}.
+a matriz conter@'{a} um elemento simb@'{o}lico @code{@var{a}[i,j]}.
 
 Exemplos:
 
@@ -751,19 +751,19 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gramschmidt (@mvar{x})
-@deffnx {Fun@value{cedilha}@~{a}o} gschmit (@mvar{x})
-Realiza o algor@'{i}tmo de ortonaliza@value{cedilha}@~{a}o de Gram-Schmidt sobre @mvar{x},
+@deffn {Fun@value{cedilha}@~{a}o} gramschmidt (@var{x})
+@deffnx {Fun@value{cedilha}@~{a}o} gschmit (@var{x})
+Realiza o algor@'{i}tmo de ortonaliza@value{cedilha}@~{a}o de Gram-Schmidt sobre @var{x},
 seja ela uma matriz ou uma lista de listas.
-@mvar{x} n@~{a}o @'{e} modificado por @code{gramschmidt}.
+@var{x} n@~{a}o @'{e} modificado por @code{gramschmidt}.
 
-Se @mvar{x} @'{e} uma matriz, o algor@'{i}tmo @'{e} aplicado para as linhas de @mvar{x}.
-Se @mvar{x} @'{e} uma lista de listas, o algor@'{i}tmo @'{e} aplicado @`as sublistas,
+Se @var{x} @'{e} uma matriz, o algor@'{i}tmo @'{e} aplicado para as linhas de @var{x}.
+Se @var{x} @'{e} uma lista de listas, o algor@'{i}tmo @'{e} aplicado @`as sublistas,
 que devem ter igual n@'{u}meros de elementos.
 Nos dois casos,
 o valor de retorno @'{e} uma lista de listas, as sublistas das listas s@~{a}o ortogonais
-e gera o mesmo spa@value{cedilha}o que @mvar{x}.
-Se a dimens@~{a}o do conjunto gerador de @mvar{x} @'{e} menor que o n@'{u}mero de linhas ou sublistas,
+e gera o mesmo spa@value{cedilha}o que @var{x}.
+Se a dimens@~{a}o do conjunto gerador de @var{x} @'{e} menor que o n@'{u}mero de linhas ou sublistas,
 algumas sublistas do valor de retorno s@~{a}o zero.
 
 @code{factor} @'{e} chamada a cada est@'{a}gio do algor@'{i}tmo para simplificar resultados intermedi@'{a}rios.
@@ -797,14 +797,14 @@ Warning - you are redefining the Macsyma function autovetores
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ident (@mvar{n})
-Retorna uma matriz identidade @mvar{n} por @mvar{n}.
+@deffn {Fun@value{cedilha}@~{a}o} ident (@var{n})
+Retorna uma matriz identidade @var{n} por @var{n}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} innerproduct (@mvar{x}, @mvar{y})
-@deffnx {Fun@value{cedilha}@~{a}o} inprod (@mvar{x}, @mvar{y})
-Retorna o produto interno (tamb@'{e}m chamado produto escalar ou produto do ponto) de @mvar{x} e @mvar{y},
+@deffn {Fun@value{cedilha}@~{a}o} innerproduct (@var{x}, @var{y})
+@deffnx {Fun@value{cedilha}@~{a}o} inprod (@var{x}, @var{y})
+Retorna o produto interno (tamb@'{e}m chamado produto escalar ou produto do ponto) de @var{x} e @var{y},
 que s@~{a}o listas de igual comprimento, ou ambas matrizes 1-coluna ou 1-linha de igual comprimento.
 O valor de retorno @'{e} @code{conjugate (x) . y},
 onde @code{.} @'{e} o operador de multiplica@value{cedilha}@~{a}o n@~{a}o comutativa.
@@ -817,8 +817,8 @@ onde @code{.} @'{e} o operador de multiplica@value{cedilha}@~{a}o n@~{a}o comuta
 @end deffn
 
 @c THIS DESCRIPTION NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} invert (@mvar{M})
-Retorna a inversa da matriz @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} invert (@var{M})
+Retorna a inversa da matriz @var{M}.
 A inversa @'{e} calculada pelo m@'{e}todo adjunto.
 
 Isso permite a um usu@'{a}rio calcular a inversa de uma matriz com
@@ -836,7 +836,7 @@ Quando @code{detout} @'{e} @code{true}, o determinante @'{e} fatorado fora da
 inversa.
 
 Os elementos da inversa n@~{a}o s@~{a}o automaticamente expandidos.
-Se @mvar{M} tem elementos polinomiais, melhor apar@^{e}ncia de sa@'{i}da pode ser
+Se @var{M} tem elementos polinomiais, melhor apar@^{e}ncia de sa@'{i}da pode ser
 gerada por @code{expand (invert (m)), detout}.
 Se isso @'{e} desej@'{a}vel para ela
 divis@~{a}o at@'{e} pelo determinante pode ser excelente por @code{xthru (%)}
@@ -873,8 +873,8 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} matrix (@mvar{row_1}, ..., @mvar{row_n})
-Retorna uma matriz retangular que tem as linhas @mvar{row_1}, ..., @mvar{row_n}.
+@deffn {Fun@value{cedilha}@~{a}o} matrix (@var{row_1}, ..., @var{row_n})
+Retorna uma matriz retangular que tem as linhas @var{row_1}, ..., @var{row_n}.
 Cada linha @'{e} uma lista de express@~{o}es.
 Todas as linhas devem ter o mesmo comprimento.
 
@@ -891,8 +891,8 @@ incluindo @code{.} (multiplica@value{cedilha}@~{a}o n@~{a}o comutativa).
 
 Multiplica@value{cedilha}@~{a}o de matrizes @'{e} representada pelo operador de multiplica@value{cedilha}@~{a}o n@~{a}o comutativa @code{.}.
 O correspondente operador de exponencia@value{cedilha}@~{a}o n@~{a}o comutativa @'{e} @code{^^}.
-Para uma matriz @code{@mvar{A}}, @code{@mvar{A}.@mvar{A} = @mvar{A}^^2} e
-@code{@mvar{A}^^-1} @'{e} a inversa de @mvar{A}, se existir.
+Para uma matriz @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2} e
+@code{@var{A}^^-1} @'{e} a inversa de @var{A}, se existir.
 
 Existem comutadores para controlar a simplifica@value{cedilha}@~{a}o de expres@~{o}es
 envolvendo opera@value{cedilha}@~{o}es escalar e matriz-lista.
@@ -1029,7 +1029,7 @@ Multiplica@value{cedilha}@~{a}o n@~{a}o comutativa de matrizes.
 @itemize @bullet
 @item
 Exponencia@value{cedilha}@~{a}o n@~{a}o comutativa de matrizes.
-Uma base escalar @mvar{b} para uma pot@^{e}ncia matriz @mvar{M}
+Uma base escalar @var{b} para uma pot@^{e}ncia matriz @var{M}
 @'{e} realizada elemento por elemento e ent@~{a}o @code{b^^m} @'{e} o mesmo que @code{b^m}.
 @end itemize
 @example
@@ -1066,16 +1066,16 @@ se existir.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} matrixmap (@mvar{f}, @mvar{M})
-Retorna uma matriz com elemento @code{i,j} igual a @code{@mvar{f}(@mvar{M}[i,j])}.
+@deffn {Fun@value{cedilha}@~{a}o} matrixmap (@var{f}, @var{M})
+Retorna uma matriz com elemento @code{i,j} igual a @code{@var{f}(@var{M}[i,j])}.
 
 Veja tamb@'{e}m @code{map}, @code{fullmap}, @code{fullmapl}, e @code{apply}.
 
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} matrixp (@mvar{expr})
-Retorna @code{true} se @mvar{expr} @'{e} uma matriz, de outra forma retorna @code{false}.
+@deffn {Fun@value{cedilha}@~{a}o} matrixp (@var{expr})
+Retorna @code{true} se @var{expr} @'{e} uma matriz, de outra forma retorna @code{false}.
 
 @end deffn
 
@@ -1215,9 +1215,9 @@ Exemplos:
 @end defvr
 
 @c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
-@deffn {Fun@value{cedilha}@~{a}o} mattrace (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} mattrace (@var{M})
 Retorna o tra@value{cedilha}o (que @'{e}, a soma dos elementos sobre a diagonal principal) da
-matriz quadrada @mvar{M}.  
+matriz quadrada @var{M}.  
 
 @code{mattrace} @'{e} chamada por @code{ncharpoly},
 uma alternativa para @code{charpoly} do Maxima.
@@ -1227,24 +1227,24 @@ uma alternativa para @code{charpoly} do Maxima.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} minor (@mvar{M}, @mvar{i}, @mvar{j})
-Retorna o @mvar{i}, @mvar{j} menor do elemento localizado na linha @mvar{i} coluna @mvar{j} da matriz @mvar{M}.  Que @'{e} @mvar{M}
-com linha @mvar{i} e coluna @mvar{j} ambas removidas.
+@deffn {Fun@value{cedilha}@~{a}o} minor (@var{M}, @var{i}, @var{j})
+Retorna o @var{i}, @var{j} menor do elemento localizado na linha @var{i} coluna @var{j} da matriz @var{M}.  Que @'{e} @var{M}
+com linha @var{i} e coluna @var{j} ambas removidas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ncexpt (@mvar{a}, @mvar{b})
+@deffn {Fun@value{cedilha}@~{a}o} ncexpt (@var{a}, @var{b})
 Se uma express@~{a}o exponencial n@~{a}o comutativa @'{e} muito
-alta para ser mostrada como @code{@mvar{a}^^@mvar{b}} aparecer@'{a} como @code{ncexpt (@mvar{a},@mvar{b})}.
+alta para ser mostrada como @code{@var{a}^^@var{b}} aparecer@'{a} como @code{ncexpt (@var{a},@var{b})}.
 
 @code{ncexpt} n@~{a}o @'{e} o nome de uma fun@value{cedilha}@~{a}o ou operador;
 o nome somente aparece em sa@'{i}das, e n@~{a}o @'{e} reconhecido em entradas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ncharpoly (@mvar{M}, @mvar{x})
-Retorna o polin@^{o}mio caracter@'{i}stico da matriz @mvar{M}
-com rela@value{cedilha}@~{a}o a @mvar{x}.  Essa @'{e} uma alternativa para @code{charpoly} do Maxima.
+@deffn {Fun@value{cedilha}@~{a}o} ncharpoly (@var{M}, @var{x})
+Retorna o polin@^{o}mio caracter@'{i}stico da matriz @var{M}
+com rela@value{cedilha}@~{a}o a @var{x}.  Essa @'{e} uma alternativa para @code{charpoly} do Maxima.
 
 @code{ncharpoly} trabalha pelo c@'{a}lculo dos tra@value{cedilha}os das pot@^{e}ncias na dada matriz,
 que s@~{a}o sabidos serem iguais a somas de pot@^{e}ncias das ra@'{i}zes do
@@ -1252,7 +1252,7 @@ polin@^{o}mio caracter@'{i}stico.  Para essas quantidade a fun@value{cedilha}@~{
 sim@'{e}trica das ra@'{i}zes pode ser calculada, que nada mais s@~{a}o que
 os coeficientes do polin@^{o}mio caracter@'{i}stico.  @code{charpoly} trabalha
 @c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
-formatando o determinante de @code{@mvar{x} * ident [n] - a}.  Dessa forma @code{ncharpoly} @'{e} vencedor,
+formatando o determinante de @code{@var{x} * ident [n] - a}.  Dessa forma @code{ncharpoly} @'{e} vencedor,
 por exemplo, no caso de largas e densas matrizes preencidas com inteiros,
 desde que isso evite inteiramente a aritm@'{e}tica polinomial.
 
@@ -1260,11 +1260,11 @@ desde que isso evite inteiramente a aritm@'{e}tica polinomial.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} newdet (@mvar{M}, @mvar{n})
-Calcula o determinante de uma matriz ou array @mvar{M} pelo
+@deffn {Fun@value{cedilha}@~{a}o} newdet (@var{M}, @var{n})
+Calcula o determinante de uma matriz ou array @var{M} pelo
 algor@'{i}tmo da @'{a}rvore menor de Johnson-Gentleman.
 @c UGH -- ARRAYS ARE SUCH A MESS
-O argumento @mvar{n} @'{e} a ordem; isso @'{e} opcional se @mvar{M} for uma matriz.
+O argumento @var{n} @'{e} a ordem; isso @'{e} opcional se @var{M} for uma matriz.
 
 @end deffn
 
@@ -1275,24 +1275,24 @@ operador do ponto.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} nonscalarp (@mvar{expr})
-Retorna @code{true} se @mvar{expr} @'{e} um n@~{a}o escalar, i.e., isso cont@'{e}m
+@deffn {Fun@value{cedilha}@~{a}o} nonscalarp (@var{expr})
+Retorna @code{true} se @var{expr} @'{e} um n@~{a}o escalar, i.e., isso cont@'{e}m
 @'{a}tomos declarados como n@~{a}o escalares, listas, ou matrizes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} permanent (@mvar{M}, @mvar{n})
-Calcula o permanente da matriz @mvar{M}.  Um permanente
+@deffn {Fun@value{cedilha}@~{a}o} permanent (@var{M}, @var{n})
+Calcula o permanente da matriz @var{M}.  Um permanente
 @'{e} como um determinante mas sem mudan@value{cedilha}a de sinal.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} rank (@mvar{M})
-Calcula o posto da matriz @mvar{M}.  Que @'{e}, a ordem do
-mais largo determinante n@~{a}o singular de @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} rank (@var{M})
+Calcula o posto da matriz @var{M}.  Que @'{e}, a ordem do
+mais largo determinante n@~{a}o singular de @var{M}.
 
 @c STATEMENT NEEDS CLARIFICATION
-@mvar{rank} pode retornar uma
+@var{rank} pode retornar uma
 resposta ruim se n@~{a}o puder determinar que um elemento da matriz que @'{e}
 equivalente a zero @'{e} realmente isso.
 
@@ -1314,8 +1314,8 @@ o que pode n@~{a}o ser desejado sempre.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} row (@mvar{M}, @mvar{i})
-retorna a @mvar{i}'@'{e}sima linha da matriz @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} row (@var{M}, @var{i})
+retorna a @var{i}'@'{e}sima linha da matriz @var{M}.
 O valor de retorno @'{e} uma matriz.
 
 @end deffn
@@ -1335,7 +1335,7 @@ Quando @code{scalarmatrixp} @'{e} @code{false}, matrizes 1 x 1 n@~{a}o s@~{a}o s
 @end defvr
 
 @c I WONDER WHAT THIS IS ABOUT
-@deffn {Fun@value{cedilha}@~{a}o} scalefactors (@mvar{coordinatetransform})
+@deffn {Fun@value{cedilha}@~{a}o} scalefactors (@var{coordinatetransform})
 Aqui coordinatetransform
 avalia para a forma [[expres@~{a}o1, expres@~{a}o2, ...],
 indetermina@value{cedilha}@~{a}o1, indetermina@value{cedilha}@~{a}o2, ...], onde indetermina@value{cedilha}@~{a}o1,
@@ -1354,24 +1354,24 @@ corrente , existe uma fun@value{cedilha}@~{a}o com uso da forma
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} setelmx (@mvar{x}, @mvar{i}, @mvar{j}, @mvar{M})
-Atribue @mvar{x} para o (@mvar{i}, @mvar{j})'@'{e}simo elemento da matriz @mvar{M},
+@deffn {Fun@value{cedilha}@~{a}o} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+Atribue @var{x} para o (@var{i}, @var{j})'@'{e}simo elemento da matriz @var{M},
 e retorna a matriz alterada.
 
-@code{@mvar{M} [@mvar{i}, @mvar{j}]: @mvar{x}} tem o mesmo efeito,
-mas retorna @mvar{x} em lugar de @mvar{M}.
+@code{@var{M} [@var{i}, @var{j}]: @var{x}} tem o mesmo efeito,
+mas retorna @var{x} em lugar de @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} similaritytransform (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} simtran (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} similaritytransform (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} simtran (@var{M})
 @code{similaritytransform} calcula uma transforma@value{cedilha}@~{a}o homot@'{e}tica da matriz @code{M}.
 Isso retorna uma lista que @'{e} a sa@'{i}da do
 comando @code{uniteigenvectors}.  Em adi@value{cedilha}@~{a}o se o sinalizador @code{nondiagonalizable}
 @'{e} @code{false} duas matrizes globais @code{leftmatrix} e @code{rightmatrix} s@~{a}o calculadas.
 Essas matrizes possuem a propriedade de
-@code{leftmatrix . @mvar{M} . rightmatrix} @'{e} uma matriz diagonal com os autovalores
-de @mvar{M} sobre a diagonal.  Se @code{nondiagonalizable} @'{e} @code{true} as matrizes esquerda e
+@code{leftmatrix . @var{M} . rightmatrix} @'{e} uma matriz diagonal com os autovalores
+de @var{M} sobre a diagonal.  Se @code{nondiagonalizable} @'{e} @code{true} as matrizes esquerda e
 direita n@~{a}o s@~{a}o computadas.
 
 Se o sinalizador @code{hermitianmatrix} @'{e} @code{true}
@@ -1379,7 +1379,7 @@ ent@~{a}o @code{leftmatrix} @'{e} o conjugado complexo da transposta de
 @code{rightmatrix}.  De outra forma @code{leftmatrix} @'{e} a inversa de @code{rightmatrix}.
 
 @code{rightmatrix} @'{e} a matriz cujas colunas s@~{a}o os autovetores
-unit@'{a}rios de @mvar{M}.  Os outros sinalizadores (veja @code{eigenvalues} e
+unit@'{a}rios de @var{M}.  Os outros sinalizadores (veja @code{eigenvalues} e
 @code{eigenvectors}) possuem o mesmo efeito desde que
 @code{similaritytransform} chama as outras fun@value{cedilha}@~{o}es no pacote com o objetivo de
 estar habilitado para a forma @code{rightmatrix}.
@@ -1398,29 +1398,29 @@ usar@'{a} rotinas especiais para calcular determinantes esparsos.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
-@deffnx {Fun@value{cedilha}@~{a}o} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} submatrix (@mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
+@deffn {Fun@value{cedilha}@~{a}o} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
+@deffnx {Fun@value{cedilha}@~{a}o} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
 Retorna uma nova matriz formada pela
-matrix @mvar{M} com linhas @mvar{i_1}, ..., @mvar{i_m} exclu@'{i}das, e colunas @mvar{j_1}, ..., @mvar{j_n} exclu@'{i}das.
+matrix @var{M} com linhas @var{i_1}, ..., @var{i_m} exclu@'{i}das, e colunas @var{j_1}, ..., @var{j_n} exclu@'{i}das.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} transpose (@mvar{M})
-Retorna a transposta de @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} transpose (@var{M})
+Retorna a transposta de @var{M}.
 
-Se @mvar{M} @'{e} uma matriz, o valor de retorno @'{e} outra matriz @mvar{N}
+Se @var{M} @'{e} uma matriz, o valor de retorno @'{e} outra matriz @var{N}
 tal que @code{N[i,j] = M[j,i]}.
 
-Se @mvar{M} for uma lista, o valor de retorno @'{e} uma matrix @mvar{N}
+Se @var{M} for uma lista, o valor de retorno @'{e} uma matrix @var{N}
 de @code{length (m)} linhas e 1 coluna, tal que @code{N[i,1] = M[i]}.
 
-De outra forma @mvar{M} @'{e} um s@'{i}mbolo,
-e o valor de retorno @'{e} uma express@~{a}o substantiva @code{'transpose (@mvar{M})}.
+De outra forma @var{M} @'{e} um s@'{i}mbolo,
+e o valor de retorno @'{e} uma express@~{a}o substantiva @code{'transpose (@var{M})}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} triangularize (@mvar{M})
+@deffn {Fun@value{cedilha}@~{a}o} triangularize (@var{M})
 Retorna a maior forma triangular da matriz @code{M}, como produzido atrav@'{e}s da elimina@value{cedilha}@~{a}o de Gauss.
 O valor de retorno @'{e} o mesmo que @code{echelon},
 exceto que o o coeficiente lider n@~{a}o nulo em cada linha n@~{a}o @'{e} normalizado para 1.
@@ -1448,9 +1448,9 @@ exceto que o o coeficiente lider n@~{a}o nulo em cada linha n@~{a}o @'{e} normal
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} uniteigenvectors (@mvar{M})
-@deffnx {Fun@value{cedilha}@~{a}o} ueivects (@mvar{M})
-Calcula autovetores unit@'{a}rios da matriz @mvar{M}.
+@deffn {Fun@value{cedilha}@~{a}o} uniteigenvectors (@var{M})
+@deffnx {Fun@value{cedilha}@~{a}o} ueivects (@var{M})
+Calcula autovetores unit@'{a}rios da matriz @var{M}.
 O valor de retorno @'{e} uma lista de listas, a primeiro sublista @'{e} a
 sa@'{i}da do comando @code{eigenvalues}, e as outras sublistas s@~{a}o
 os autovetores unit@'{a}rios da matriz correspondente a esses autovalores
@@ -1479,10 +1479,10 @@ dimens@~{a}o apropriada.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} unitvector (@mvar{x})
-@deffnx {Fun@value{cedilha}@~{a}o} uvect (@mvar{x})
-Retorna @math{@mvar{x}/norm(@mvar{x})};
-isso @'{e} um vetor unit@'{a}rio na mesma dire@value{cedilha}@~{a}o que @mvar{x}.
+@deffn {Fun@value{cedilha}@~{a}o} unitvector (@var{x})
+@deffnx {Fun@value{cedilha}@~{a}o} uvect (@var{x})
+Retorna @math{@var{x}/norm(@var{x})};
+isso @'{e} um vetor unit@'{a}rio na mesma dire@value{cedilha}@~{a}o que @var{x}.
 
 @code{load ("eigen")} chama essa fun@value{cedilha}@~{a}o.
 
@@ -1491,7 +1491,7 @@ isso @'{e} um vetor unit@'{a}rio na mesma dire@value{cedilha}@~{a}o que @mvar{x}
 @end deffn
 
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
-@deffn {Fun@value{cedilha}@~{a}o} vectorsimp (@mvar{expr})
+@deffn {Fun@value{cedilha}@~{a}o} vectorsimp (@var{expr})
 Aplica simplifica@value{cedilha}@~{o}es e expans@~{o}es conforme
 os seguintes sinalizadores globais:
 
@@ -1541,8 +1541,8 @@ Quando @code{vect_cross} @'{e} @code{true}, isso permite DIFF(X~Y,T) trabalhar o
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} zeromatrix (@mvar{m}, @mvar{n})
-Retorna um matriz @mvar{m} por @mvar{n}, com todos os elementos sendo zero.
+@deffn {Fun@value{cedilha}@~{a}o} zeromatrix (@var{m}, @var{n})
+Retorna um matriz @var{m} por @var{n}, com todos os elementos sendo zero.
 
 @end deffn
 

@@ -20,7 +20,7 @@
 Package @code{interpol} defines the Lagrangian, the linear and the cubic 
 splines methods for polynomial interpolation.
 
-For comments, bugs or suggestions, please contact me at @mvar{'mario AT edu DOT xunta DOT es'}.
+For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
 
 @c @opencatbox
 @c @category{Numerical methods} @category{Share packages} @category{Package interpol}
@@ -31,10 +31,10 @@ For comments, bugs or suggestions, please contact me at @mvar{'mario AT edu DOT 
 @section Functions and Variables for interpol
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lagrange (@mvar{points})
-@deffnx {Function} lagrange (@mvar{points}, @mvar{option})
+@deffn {Function} lagrange (@var{points})
+@deffnx {Function} lagrange (@var{points}, @var{option})
 
-Computes the polynomial interpolation by the Lagrangian method. Argument @mvar{points} must be either:
+Computes the polynomial interpolation by the Lagrangian method. Argument @var{points} must be either:
 
 @itemize @bullet
 @item
@@ -47,7 +47,7 @@ a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assign
 
 In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
 
-With the @mvar{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
+With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
 
 Note that when working with high degree polynomials, floating point evaluations are unstable.
 
@@ -134,9 +134,9 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} charfun2 (@mvar{x}, @mvar{a}, @mvar{b})
+@deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
 
-Returns @code{true} if number @mvar{x} belongs to the interval @math{[a, b)}, 
+Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, 
 and @code{false} otherwise.
 
 @c @opencatbox
@@ -145,11 +145,11 @@ and @code{false} otherwise.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} linearinterpol (@mvar{points})
-@deffnx {Function} linearinterpol (@mvar{points}, @mvar{option})
+@deffn  {Function} linearinterpol (@var{points})
+@deffnx {Function} linearinterpol (@var{points}, @var{option})
 
 Computes the polynomial interpolation by the linear method. Argument 
-@mvar{points} must be either:
+@var{points} must be either:
 
 @itemize @bullet
 @item
@@ -162,7 +162,7 @@ a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assign
 
 In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
 
-With the @mvar{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
+With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
 
 Examples:
 @example
@@ -219,11 +219,11 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} cspline (@mvar{points})
-@deffnx {Function} cspline (@mvar{points}, @mvar{option1}, @mvar{option2}, ...)
+@deffn  {Function} cspline (@var{points})
+@deffnx {Function} cspline (@var{points}, @var{option1}, @var{option2}, ...)
 
 Computes the polynomial interpolation by the cubic splines method. Argument 
-@mvar{points} must be either:
+@var{points} must be either:
 
 @itemize @bullet
 @item
@@ -326,12 +326,12 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratinterpol (@mvar{points}, @mvar{numdeg})
-@deffnx {Function} ratinterpol (@mvar{points}, @mvar{numdeg}, @mvar{option1})
+@deffn  {Function} ratinterpol (@var{points}, @var{numdeg})
+@deffnx {Function} ratinterpol (@var{points}, @var{numdeg}, @var{option1})
 
-Generates a rational interpolator for data given by @mvar{points} and the degree of the numerator
-being equal to @mvar{numdeg}; the degree of the denominator is calculated
-automatically. Argument @mvar{points} must be either:
+Generates a rational interpolator for data given by @var{points} and the degree of the numerator
+being equal to @var{numdeg}; the degree of the denominator is calculated
+automatically. Argument @var{points} must be either:
 
 @itemize @bullet
 @item

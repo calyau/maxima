@@ -86,7 +86,7 @@ TODO : 次元機能、温度の扱い、略語表示、仲間。単位を含む�
 @node Functions and Variables for Units,  , Introduction to Units, unit
 @section Functions and Variables for Units
 
-@deffn {関数} setunits (@mvar{list})
+@deffn {関数} setunits (@var{list})
 デフォルトでは、 @emph{unit}パッケージは
 組み立てられた次元はどんなものでも使いませんが、
 MKS単位を使ってすべての単位を7つの基本的な次元に変換します。
@@ -260,7 +260,7 @@ uforgetコマンドを使います:
 
 @end deffn
 
-@deffn {関数} uforget (@mvar{list})
+@deffn {関数} uforget (@var{list})
 デフォルトでは、 @emph{unit}パッケージは
 、NKS単位を使って、単位すべてを7つの基本次元に変換します。
 この振る舞いは
@@ -306,7 +306,7 @@ uforgetコマンドを使います:
 
 @end deffn
 
-@deffn {関数} convert (@mvar{expr}, @mvar{list})
+@deffn {関数} convert (@var{expr}, @var{list})
 グローバル環境をリセットすることがやりすぎの時、
 @code{convert}コマンドがあります。
 これは1回変換を許します。
@@ -724,9 +724,9 @@ setunits([unit]) to select a unit.
 @end defvr
 
 
-@deffn {関数} metricexpandall (@mvar{x})
+@deffn {関数} metricexpandall (@var{x})
 望みの計量単位すべてを自動的に生成するグローバル単位リストを再構築します。
-@mvar{x}は
+@var{x}は
 ユーザーがいくつの計量接頭子の定義を望むか指定するのに使われる数値引数です。
 引数は、より低い数字の単位を定義するより高い数字それぞれを持つような
 以下のようなものです:
@@ -745,7 +745,7 @@ setunits([unit]) to select a unit.
 これは非常にたくさんの数の単位をもたらすので、完全な展開を定義しませんが、
 多少なりとも完全な方法でリストを再構築するのに
 @code{metricexpandall}を使うことができます。
-@emph{unit.mac}ファイルの中の適切な変数は @mvar{%unitexpand}です。
+@emph{unit.mac}ファイルの中の適切な変数は @var{%unitexpand}です。
 @c This should be made configurable as a maxima-init.mac controllable option.
 
 @opencatbox
@@ -769,7 +769,7 @@ setunits([unit]) to select a unit.
 @end defvr
 
 
-@c @deffn {関数} functionname (@mvar{arg1}, @mvar{arg2}, ..., @mvar{argn})
+@c @deffn {関数} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
 @c @end deffn
 
 @c @defvr {オプション変数} variablename

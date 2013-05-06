@@ -145,8 +145,8 @@ O ap@'{o}strofo n@~{a}o evita simplifica@value{cedilha}@~{a}o.
 @end ifinfo
 O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} (dois ap@'{o}strofost) modifica avalia@value{cedilha}@~{a}o em express@~{o}es de entrada.
 
-Aplicado a uma express@~{a}o geral @mvar{expr}, ap@'{o}strofo-ap@'{o}strofo faz com que o valor de @mvar{expr}
-seja substitu@'{i}do por @mvar{expr} na express@~{a}o de entrada.
+Aplicado a uma express@~{a}o geral @var{expr}, ap@'{o}strofo-ap@'{o}strofo faz com que o valor de @var{expr}
+seja substitu@'{i}do por @var{expr} na express@~{a}o de entrada.
 
 Aplicado ao operadro de uma express@~{a}o,
 ap@'{o}strofo-ap@'{o}strofo modifica o operadro de um susbstantivo para um verbo (se esse operador n@~{a}o for j@'{a} um verbo).
@@ -164,8 +164,8 @@ Veja tamb@'{e}m o operador ap@'{o}strofo @code{'} e @code{nouns}.
 
 Exemplos:
 
-Aplicado a uma express@~{a}o geral @mvar{expr}, ap@'{o}strofo-ap@'{o}strofo fazem com que o valor de @mvar{expr}
-seja substituido por @mvar{expr} na express@~{a}o de entrada.
+Aplicado a uma express@~{a}o geral @var{expr}, ap@'{o}strofo-ap@'{o}strofo fazem com que o valor de @var{expr}
+seja substituido por @var{expr} na express@~{a}o de entrada.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -335,7 +335,7 @@ da mesma forma que em defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o, 
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} alias (@mvar{new_name_1}, @mvar{old_name_1}, ..., @mvar{new_name_n}, @mvar{old_name_n})
+@deffn {Fun@value{cedilha}@~{a}o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 prov@^{e} um
 nome alternativo para uma fun@value{cedilha}@~{a}o (de usu@'{a}rio ou de sistema), vari@'{a}vel, array, etc.
 Qualquer n@'{u}mero de argumentos pode ser usado.
@@ -357,9 +357,9 @@ Habilitando @code{debugmode} por meio da altera@value{cedilha}@~{a}o de seu valo
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@deffn {Fun@value{cedilha}@~{a}o} ev (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
-Avalia a express@~{a}o @mvar{expr} no ambiente
-especificado pelos argumentos @mvar{arg_1}, ..., @mvar{arg_n}.
+@deffn {Fun@value{cedilha}@~{a}o} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Avalia a express@~{a}o @var{expr} no ambiente
+especificado pelos argumentos @var{arg_1}, ..., @var{arg_n}.
 Os argumentos s@~{a}o comutadores (sinalizadores Booleanos), atribui@value{cedilha}@~{o}es, equa@value{cedilha}@~{o}es, e fun@value{cedilha}@~{o}es.
 @code{ev} retorna o resultado (outra express@~{a}o) da avalia@value{cedilha}@~{a}o.
 
@@ -372,29 +372,29 @@ ser quaisquer ou todos os seguintes.
 
 @itemize @bullet
 @item
-@code{simp} faz com que @mvar{expr} seja simplificado independentemente da posi@value{cedilha}@~{a}o do
+@code{simp} faz com que @var{expr} seja simplificado independentemente da posi@value{cedilha}@~{a}o do
 comutador @code{simp} que inibe simplifica@value{cedilha}@~{a}o se @code{false}.
 @item
 @code{noeval} suprime a fase de avalia@value{cedilha}@~{a}o de @code{ev} (veja passo (4) adiante).
 Isso @'{e} @'{u}til juntamente com outros comutadores e faz com que
-@mvar{expr} seja simplificado novamente sem ser reavaliado.
+@var{expr} seja simplificado novamente sem ser reavaliado.
 @item
 @code{nouns} causa a avalia@value{cedilha}@~{a}o de formas substantivas
 (tipicamente fun@value{cedilha}@~{o}es n@~{a}o avaliadas tais como @code{'integrate} ou @code{'diff})
-em @mvar{expr}.
+em @var{expr}.
 @item
 @code{expand} causa expans@~{a}o.
 @item
-@code{expand (@mvar{m}, @mvar{n})} causa expans@~{a}o, alterando os valores de @code{maxposex} e
-@code{maxnegex} para @mvar{m} e @mvar{n} respectivamente.
+@code{expand (@var{m}, @var{n})} causa expans@~{a}o, alterando os valores de @code{maxposex} e
+@code{maxnegex} para @var{m} e @var{n} respectivamente.
 @item
-@code{detout} faz com que qualquer matriz inversa calculada em @mvar{expr} tenha seu
+@code{detout} faz com que qualquer matriz inversa calculada em @var{expr} tenha seu
 determinante mantido fora da inversa ao inv@'{e}s de dividindo a
 cada elemento.
 @item
-@code{diff} faz com que todas as diferencia@value{cedilha}@~{o}es indicadas em @mvar{expr} sejam executadas.
+@code{diff} faz com que todas as diferencia@value{cedilha}@~{o}es indicadas em @var{expr} sejam executadas.
 @item
-@code{derivlist (@mvar{x}, @mvar{y}, @mvar{z}, ...)} causa somente diferencia@value{cedilha}@~{o}es referentes @`as
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia@value{cedilha}@~{o}es referentes @`as
 vari@'{a}veis indicadas.
 @item
 @code{float} faz com que n@'{u}meros racionais n@~{a}o inteiros sejam convertidos para ponto 
@@ -402,37 +402,37 @@ flutuante.
 @item
 @code{numer} faz com que algumas fun@value{cedilha}@~{o}es matem@'{a}ticas (incluindo a exponencia@value{cedilha}@~{a}o)
 com argumentos sejam valiadas em ponto flutuante.  Isso faz com que
-vari@'{a}vels em @mvar{expr} que tenham sido dados numervals (valores num@'{e}ricos) sejam substitu@'{i}das por
+vari@'{a}vels em @var{expr} que tenham sido dados numervals (valores num@'{e}ricos) sejam substitu@'{i}das por
 seus valores.  Isso tamb@'{e}m modifica o comutador @code{float} para ativado.
 @item
 @code{pred} faz com que predicados (express@~{o}es que podem ser avaliados em @code{true} ou @code{false})
 sejam avaliadas.
 @item
-@code{eval} faz com que uma avalia@value{cedilha}@~{a}o posterior de @mvar{expr} ocorra.  (Veja passo (5)
+@code{eval} faz com que uma avalia@value{cedilha}@~{a}o posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
 @code{eval} pode ocorrer multiplas vezes.
 Para cada inst@^{a}ncia de @code{eval}, a express@~{a}o @'{e} avaliada novamente.
 @item
 @code{A} onde @code{A} @'{e} um @'{a}tomo declarado seja um sinalizador de avalia@value{cedilha}@~{a}o (veja @code{evflag})
 faz com que @code{A} seja associado a
-@code{true} durante a avalia@value{cedilha}@~{a}o de @mvar{expr}.
+@code{true} durante a avalia@value{cedilha}@~{a}o de @var{expr}.
 @item
 @code{V: expres@~{a}o} (ou alternativamente @code{V=express@~{a}o}) faz com que @code{V} seja associado ao
-valor de @code{express@~{a}o} durante a avalia@value{cedilha}@~{a}o de @mvar{expr}.  Note que se @code{V} @'{e} uma
+valor de @code{express@~{a}o} durante a avalia@value{cedilha}@~{a}o de @var{expr}.  Note que se @code{V} @'{e} uma
 op@value{cedilha}@~{a}o do Maxima, ent@~{a}o @code{expression} @'{e} usada para seu valor durante a
-avalia@value{cedilha}@~{a}o de @mvar{expr}.  Se mais que um argumento para @code{ev} @'{e} desse tipo
+avalia@value{cedilha}@~{a}o de @var{expr}.  Se mais que um argumento para @code{ev} @'{e} desse tipo
 ent@~{a}o a associa@value{cedilha}@~{a}o termina em paralelo.  Se @code{V} @'{e} uma express@~{a}o n@~{a}o at@^{o}mica
 ent@~{a}o a substitui@value{cedilha}@~{a}o, ao inv@'{e}s de uma associa@value{cedilha}@~{a}o, @'{e} executada.
 @item
 @code{F} onde @code{F}, um nome de fun@value{cedilha}@~{a}o, tenha sido declarado para ser uma fun@value{cedilha}@~{a}o de avalia@value{cedilha}@~{a}o (veja @code{evfun})
 faz com que @code{F}
-seja aplicado a @mvar{expr}.
+seja aplicado a @var{expr}.
 @item
 Qualquer outro nome de fun@value{cedilha}@~{a}o (e.g., @code{sum}) causa a avalia@value{cedilha}@~{a}o de ocorr@^{e}ncias
-desses nomes em @mvar{expr} mesmo que eles tenham sido verbos.
+desses nomes em @var{expr} mesmo que eles tenham sido verbos.
 @item
-De forma adicional uma fun@value{cedilha}@~{a}o ocorrendo em @mvar{expr} (digamos @code{F(x)}) pode ser definida
-localmente para o prop@'{o}sito dessa avalia@value{cedilha}@~{a}o de @mvar{expr} dando
+De forma adicional uma fun@value{cedilha}@~{a}o ocorrendo em @var{expr} (digamos @code{F(x)}) pode ser definida
+localmente para o prop@'{o}sito dessa avalia@value{cedilha}@~{a}o de @var{expr} dando
 @code{F(x) := express@~{a}o} como um argumento para @code{ev}.
 @item
 Se um @'{a}tomo n@~{a}o mensionado acima ou uma vari@'{a}vel subscrita ou
@@ -447,14 +447,14 @@ ou que seja dado uma lista de nomes de equa@value{cedilha}@~{o}es (e.g., @code{[
 
 Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce@value{cedilha}@~{a}o de
 substitui@value{cedilha}@~{o}es de equa@value{cedilha}@~{o}es que s@~{a}o manuseadas em seq@"{u}@^{e}ncia, da esquerda para a direita,
-e fun@value{cedilha}@~{o}es de avalia@value{cedilha}@~{a}o que s@~{a}o compostas, e.g., @code{ev (@mvar{expr}, ratsimp, realpart)} s@~{a}o
-manuseadas como @code{realpart (ratsimp (@mvar{expr}))}.
+e fun@value{cedilha}@~{o}es de avalia@value{cedilha}@~{a}o que s@~{a}o compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s@~{a}o
+manuseadas como @code{realpart (ratsimp (@var{expr}))}.
 
 Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tamb@'{e}m ser alterados localmente em um
 bloco, ou globalmente no Maxima dessa forma eles ir@~{a}
 permanecer em efeito at@'{e} serem resetados ao t@'{e}rmino da execu@value{cedilha}@~{a}o do bloco.
 
-Se @mvar{expr} for uma express@~{a}o racional can@^{o}nica (CRE),
+Se @var{expr} for uma express@~{a}o racional can@^{o}nica (CRE),
 ent@~{a}o a express@~{a}o retornada por @code{ev} @'{e} tamb@'{e}m uma CRE,
 contanto que os comutadores @code{numer} e @code{float} n@~{a}o sejam ambos @code{true}.
 
@@ -463,9 +463,9 @@ Durante o passo (1), @'{e} feito uma lista  de vari@'{a}veis n@~{a}o subscritas
 aparecendo do lado esquerdo das equa@value{cedilha}@~{o}es nos argumentos ou nos
 valores de alguns argumentos se o valor for uma equa@value{cedilha}@~{a}o.  As vari@'{a}veis
 (vari@'{a}veis subscritas que n@~{a}o possuem fun@value{cedilha}@~{o}es array
-associadas bem como vari@'{a}veis n@~{a}o subscritas) na express@~{a}o @mvar{expr} s@~{a}o
+associadas bem como vari@'{a}veis n@~{a}o subscritas) na express@~{a}o @var{expr} s@~{a}o
 substitu@'{i}das por seus valores globais, exceto para esse aparecendo nessa 
-lista.  Usualmente, @mvar{expr} @'{e} apenas um r@'{o}tulo ou @code{%}
+lista.  Usualmente, @var{expr} @'{e} apenas um r@'{o}tulo ou @code{%}
 (como em @code{%i2} no exemplo adiante), ent@~{a}o esse 
 passo simplesmente repete a express@~{a}o nomeada pelo r@'{o}tulo, de modo que @code{ev}
 possa trabalhar sobre isso.
@@ -477,7 +477,7 @@ realizadas agora.
 @item
 A express@~{a}o resultante @'{e} ent@~{a}o reavaliada (a menos que um dos
 argumentos seja @code{noeval}) e simplificada conforme os argumentos.  Note que
-qualquer chamada de fun@value{cedilha}@~{a}o em @mvar{expr} ser@'{a} completada depois das vari@'{a}veis
+qualquer chamada de fun@value{cedilha}@~{a}o em @var{expr} ser@'{a} completada depois das vari@'{a}veis
 nela serem avalidas e que @code{ev(F(x))} dessa forma possa comportar-se como @code{F(ev(x))}.
 
 @item
@@ -501,7 +501,7 @@ se pode apenas digitar seus argumentos, sem o @code{ev()}.  Isto @'{e}, se pode
 escrever simplesmente
 
 @example
-@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
 Isso n@~{a}o @'{e} permitido como parte de
@@ -542,13 +542,13 @@ Solution
 @end deffn
 
 @defvr {Propriedade} evflag
-Quando um s@'{i}mbolo @mvar{x} tem a propriedade @code{evflag},
-as express@~{o}es @code{ev(@mvar{expr}, @mvar{x})} e @code{@mvar{expr}, @mvar{x}}
-(na linha de comando interativa) s@~{a}o equivalentes a @code{ev(@mvar{expr}, @mvar{x} = true)}.
-Isto @'{e}, @mvar{x} est@'{a} associada a @code{true} enquanto @mvar{expr} for avaliada.
+Quando um s@'{i}mbolo @var{x} tem a propriedade @code{evflag},
+as express@~{o}es @code{ev(@var{expr}, @var{x})} e @code{@var{expr}, @var{x}}
+(na linha de comando interativa) s@~{a}o equivalentes a @code{ev(@var{expr}, @var{x} = true)}.
+Isto @'{e}, @var{x} est@'{a} associada a @code{true} enquanto @var{expr} for avaliada.
 
-A express@~{a}o @code{declare(@mvar{x}, evflag)}
-fornece a propriedade @code{evflag} para a vari@'{a}vel @mvar{x}.
+A express@~{a}o @code{declare(@var{x}, evflag)}
+fornece a propriedade @code{evflag} para a vari@'{a}vel @var{x}.
 
 Os sinalizadores que possuem a propriedade @code{evflag} por padr@~{a}o s@~{a}o os seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
@@ -644,16 +644,16 @@ Exemplos:
 @end defvr
 
 @defvr {Propriedade}  evfun
-Quando uma fun@value{cedilha}@~{a}o @mvar{F} tem a propriedade @code{evfun},
-as express@~{o}es @code{ev(@mvar{expr}, @mvar{F})} e @code{@mvar{expr}, @mvar{F}}
+Quando uma fun@value{cedilha}@~{a}o @var{F} tem a propriedade @code{evfun},
+as express@~{o}es @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}}
 (na linha de comando interativa)
-s@~{a}o equivalentes a @code{@mvar{F}(ev(@mvar{expr}))}.
+s@~{a}o equivalentes a @code{@var{F}(ev(@var{expr}))}.
 
-Se duas ou mais fun@value{cedilha}@~{o}es @mvar{F}, @mvar{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
+Se duas ou mais fun@value{cedilha}@~{o}es @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
 as fun@value{cedilha}@~{o}es ser@~{a}o aplicadas na ordem em que forem especificadas.
 
-A express@~{a}o @code{declare(@mvar{F}, evfun)}
-fornece a propriedade @code{evfun} para a fun@value{cedilha}@~{a}o @mvar{F}.
+A express@~{a}o @code{declare(@var{F}, evfun)}
+fornece a propriedade @code{evfun} para a fun@value{cedilha}@~{a}o @var{F}.
 
 As fun@value{cedilha}@~{o}es que possuem a propriedade @code{evfun} por padr@~{a}o s@~{a}o as seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
@@ -756,19 +756,19 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~{o}es 
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} kill (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Fun@value{cedilha}@~{a}o} kill (@var{a_1}, ..., @var{a_n})
 @deffnx {Fun@value{cedilha}@~{a}o} kill (labels)
 @deffnx {Fun@value{cedilha}@~{a}o} kill (inlabels, outlabels, linelabels)
-@deffnx {Fun@value{cedilha}@~{a}o} kill (@mvar{n})
-@deffnx {Fun@value{cedilha}@~{a}o} kill ([@mvar{m}, @mvar{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} kill (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} kill ([@var{m}, @var{n}])
 @deffnx {Fun@value{cedilha}@~{a}o} kill (values, functions, arrays, ...)
 @deffnx {Fun@value{cedilha}@~{a}o} kill (all)
-@deffnx {Fun@value{cedilha}@~{a}o} kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))
+@deffnx {Fun@value{cedilha}@~{a}o} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
 Remove todas as associa@value{cedilha}@~{o}es (valor, fun@value{cedilha}@~{o}es, array, ou regra) dos argumentos
-@mvar{a_1}, ..., @mvar{a_n}.
-Um argumento @mvar{a_k} pode ser um s@'{i}mbolo ou um elemento de array simples.
-Quando @mvar{a_k} for um elemento de array simples, @code{kill} remove a associa@value{cedilha}@~{a}o daquele elemento
+@var{a_1}, ..., @var{a_n}.
+Um argumento @var{a_k} pode ser um s@'{i}mbolo ou um elemento de array simples.
+Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associa@value{cedilha}@~{a}o daquele elemento
 sem afetar qualquer outro elemento do array.
 
 Muitos argumentos especiais s@~{a}o reconhecidos.  
@@ -784,24 +784,24 @@ que come@value{cedilha}am com o valor corrente de @code{outchar},
 e @code{kill (linelabels)} libera somente r@'{o}tulos de express@~{o}es intermedi@'{a}rias
 que come@value{cedilha}am com o valor corrente de @code{linechar}.
 
-@code{kill (@mvar{n})}, onde @mvar{n} @'{e} um inteiro,
-libera os @mvar{n} mais recentes r@'{o}tulos de entrada e sa@'{i}da.
+@code{kill (@var{n})}, onde @var{n} @'{e} um inteiro,
+libera os @var{n} mais recentes r@'{o}tulos de entrada e sa@'{i}da.
 
-@code{kill ([@mvar{m}, @mvar{n}])} libera r@'{o}tulos de entrada e sa@'{i}da de @mvar{m} at@'{e} @mvar{n}.
+@code{kill ([@var{m}, @var{n}])} libera r@'{o}tulos de entrada e sa@'{i}da de @var{m} at@'{e} @var{n}.
 
-@code{kill (@mvar{infolist})}, onde @mvar{infolist} @'{e} um item em @code{infolists}
+@code{kill (@var{infolist})}, onde @var{infolist} @'{e} um item em @code{infolists}
 (tais como @code{values}, @code{functions}, ou @code{arrays})
-libera todos os @'{i}tens em @mvar{infolist}.
+libera todos os @'{i}tens em @var{infolist}.
 Veja tamb@'{e}m @code{infolists}.
 
 @code{kill (all)} liberar todos os @'{i}tens em todas as infolists.
 @code{kill (all)} n@~{a}o retorna vari@'{a}veis globais para seus valores padr@~{o}es;
 Veja @code{reset} sobre esse ponto.
 
-@code{kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))}
-remove a associa@value{cedilha}@~{a}o de todos os itens sobre todas as infolistas exceto para @mvar{a_1}, ..., @mvar{a_n}.
-@code{kill (allbut (@mvar{infolist}))} libera todos os @'{i}tens exceto para si pr@'{o}prio em @mvar{infolist},
-onde @mvar{infolist} @'{e} @code{values}, @code{functions}, @code{arrays}, etc.
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+remove a associa@value{cedilha}@~{a}o de todos os itens sobre todas as infolistas exceto para @var{a_1}, ..., @var{a_n}.
+@code{kill (allbut (@var{infolist}))} libera todos os @'{i}tens exceto para si pr@'{o}prio em @var{infolist},
+onde @var{infolist} @'{e} @code{values}, @code{functions}, @code{arrays}, etc.
 
 A mem@'{o}ria usada por uma propriedade de associa@value{cedilha}@~{a}o n@~{a}o ser@'{a} liberada at@'{e} que todos os s@'{i}mbolos
 sejam liberados disso.
@@ -811,7 +811,7 @@ deve-se liberar o r@'{o}tulo de sa@'{i}da que mosta o valor associado, bem como 
 @code{kill} coloca um ap@'{o}stro em seus argumentos (n@~{a}o os avalia).
 O operador ap@'{o}strofo-ap@'{o}strofo, @code{'@w{}'}, faz com que ocorra avalia@value{cedilha}@~{a}o.
 
-@code{kill (@mvar{s@'{i}mbolo})} libera todas as propriedades de @mvar{s@'{i}mbolo}.
+@code{kill (@var{s@'{i}mbolo})} libera todas as propriedades de @var{s@'{i}mbolo}.
 Em oposi@value{cedilha}@~{a}o, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
 liberam uma propriedade espec@'{i}fica.
 
@@ -819,14 +819,14 @@ liberam uma propriedade espec@'{i}fica.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} labels (@mvar{s@'{i}mbolo})
+@deffn {Fun@value{cedilha}@~{a}o} labels (@var{s@'{i}mbolo})
 @deffnx {Vari@'{a}vel de sistema} labels
-Retorna a lista de r@'{o}tulos de entradas, de sa@'{i}da, de express@~{o}es intermedi@'{a}rias que come@value{cedilha}am com @mvar{s@'{i}mbolo}.
-Tipicamente @mvar{s@'{i}mbolo} @'{e} o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
+Retorna a lista de r@'{o}tulos de entradas, de sa@'{i}da, de express@~{o}es intermedi@'{a}rias que come@value{cedilha}am com @var{s@'{i}mbolo}.
+Tipicamente @var{s@'{i}mbolo} @'{e} o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
 O caracter r@'{o}tulo pode ser dado com ou sem o sinal de porcentagem,
 ent@~{a}o, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
 
-Se nenhum r@'{o}tulo come@value{cedilha}a com @mvar{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
+Se nenhum r@'{o}tulo come@value{cedilha}a com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
 
 A fun@value{cedilha}@~{a}o @code{labels} n@~{a}o avalia seu argumento.
 O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~{a}o.
@@ -905,9 +905,9 @@ que a vari@'{a}vel por ele atribu@'{i}do um valor foi realmente uma vari@'{a}vel
 @end defvr
 
 @deffn {Fun@value{cedilha}@~{a}o} playback ()
-@deffnx {Fun@value{cedilha}@~{a}o} playback (@mvar{n})
-@deffnx {Fun@value{cedilha}@~{a}o} playback ([@mvar{m}, @mvar{n}])
-@deffnx {Fun@value{cedilha}@~{a}o} playback ([@mvar{m}])
+@deffnx {Fun@value{cedilha}@~{a}o} playback (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} playback ([@var{m}, @var{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} playback ([@var{m}])
 @deffnx {Fun@value{cedilha}@~{a}o} playback (input)
 @deffnx {Fun@value{cedilha}@~{a}o} playback (slow)
 @deffnx {Fun@value{cedilha}@~{a}o} playback (time)
@@ -928,14 +928,14 @@ geradas at@'{e} ent@~{a}o.
 Uma express@~{a}o de sa@'{i}da @'{e} mostrada mesmo se for suprimida pelo terminador @code{$}
 quando ela tiver sido originalmente calculada.
 
-@code{playback (@mvar{n})} mostra as mais recentes @mvar{n} express@~{o}es.
+@code{playback (@var{n})} mostra as mais recentes @var{n} express@~{o}es.
 Cada entrada, sa@'{i}da e express@~{a}o intermedi@'{a}ria
 conta como um.
 
-@code{playback ([@mvar{m}, @mvar{n}])} mostra entradas, sa@'{i}das e express@~{o}es intermedi@'{a}rias
-com os n@'{u}meros de @mvar{m} at@'{e} @mvar{n}, inclusive.
+@code{playback ([@var{m}, @var{n}])} mostra entradas, sa@'{i}das e express@~{o}es intermedi@'{a}rias
+com os n@'{u}meros de @var{m} at@'{e} @var{n}, inclusive.
 
-@code{playback ([@mvar{m}])} @'{e} equivalente a @code{playback ([@mvar{m}, @mvar{m}])};
+@code{playback ([@var{m}])} @'{e} equivalente a @code{playback ([@var{m}, @var{m}])};
 isso usualmente imprime um par de express@~{o}es de entrada e sa@'{i}da.
 
 @code{playback (input)} mostra todas as express@~{o}es de entrada geradas at@'{e} ent@~{a}o.
@@ -964,11 +964,11 @@ Argumentos podem ser combinados, e.g.,
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@deffn {Fun@value{cedilha}@~{a}o} printprops (@mvar{a}, @mvar{i})
-@deffnx {Fun@value{cedilha}@~{a}o} printprops ([@mvar{a_1}, ..., @mvar{a_n}], @mvar{i})
-@deffnx {Fun@value{cedilha}@~{a}o} printprops (all, @mvar{i})
-Mostra a propriedade como o indicador @mvar{i}
-associada com o @'{a}tomo @mvar{a}.  @mvar{a} pode tamb@'{e}m ser uma lista de @'{a}tomos ou o @'{a}tomo
+@deffn {Fun@value{cedilha}@~{a}o} printprops (@var{a}, @var{i})
+@deffnx {Fun@value{cedilha}@~{a}o} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Fun@value{cedilha}@~{a}o} printprops (all, @var{i})
+Mostra a propriedade como o indicador @var{i}
+associada com o @'{a}tomo @var{a}.  @var{a} pode tamb@'{e}m ser uma lista de @'{a}tomos ou o @'{a}tomo
 @code{all} nesse caso todos os @'{a}tomos com a propriedade dada ser@~{a}o
 usados.  Por exemplo, @code{printprops ([f, g], atvalue)}.  @code{printprops} @'{e} para
 propriedades que n@~{a}o podem  ser mostradas de outra forma, i.e. para
@@ -998,9 +998,9 @@ Veja tamb@'{e}m @code{debugging}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} remfunction (@mvar{f_1}, ..., @mvar{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} remfunction (all)
-Desassocia as defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o dos s@'{i}bolos @mvar{f_1}, ..., @mvar{f_n}.
+Desassocia as defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o dos s@'{i}bolos @var{f_1}, ..., @var{f_n}.
 Os argumentos podem ser os nomes de fun@value{cedilha}@~{o}es comuns (criadas por meio de @code{:=} ou @code{define})
 ou fun@value{cedilha}@~{o}es macro (criadas por meio de @code{::=}).
 
@@ -1039,10 +1039,10 @@ Veja tamb@'{e}m @code{timer}.
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {Fun@value{cedilha}@~{a}o} sstatus (@mvar{recurso}, @mvar{pacote})
-Altera o status de @mvar{recurso} em @mvar{pacote}.
-Ap@'{o}s @code{sstatus (@mvar{recurso}, @mvar{pacote})} ser executado,
-@code{status (@mvar{recurso}, @mvar{pacote})} retorna @code{true}.
+@deffn {Fun@value{cedilha}@~{a}o} sstatus (@var{recurso}, @var{pacote})
+Altera o status de @var{recurso} em @var{pacote}.
+Ap@'{o}s @code{sstatus (@var{recurso}, @var{pacote})} ser executado,
+@code{status (@var{recurso}, @var{pacote})} retorna @code{true}.
 Isso pode ser @'{u}til para quem escreve pacotes, para
 manter um registro de quais recursos os pacotes usam.
 

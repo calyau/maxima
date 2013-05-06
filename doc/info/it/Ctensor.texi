@@ -13,13 +13,13 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cmetric (@mvar{dis})
+@deffn {Function} cmetric (@var{dis})
 @deffnx {Function} cmetric ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ct_coordsys (@mvar{coordinate_system}, @mvar{extra_arg})
-@deffnx {Function} ct_coordsys (@mvar{coordinate_system})
+@deffn {Function} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
+@deffnx {Function} ct_coordsys (@var{coordinate_system})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -27,15 +27,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} christof (@mvar{dis})
+@deffn {Function} christof (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ricci (@mvar{dis})
+@deffn {Function} ricci (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} uricci (@mvar{dis})
+@deffn {Function} uricci (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -43,23 +43,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} einstein (@mvar{dis})
+@deffn {Function} einstein (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} leinstein (@mvar{dis})
+@deffn {Function} leinstein (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} riemann (@mvar{dis})
+@deffn {Function} riemann (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lriemann (@mvar{dis})
+@deffn {Function} lriemann (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} uriemann (@mvar{dis})
+@deffn {Function} uriemann (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -67,7 +67,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} weyl (@mvar{dis})
+@deffn {Function} weyl (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -75,7 +75,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} frame_bracket (@mvar{fr}, @mvar{fri}, @mvar{diagframe})
+@deffn {Function} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -83,7 +83,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} psi (@mvar{dis})
+@deffn {Function} psi (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -91,19 +91,19 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} contortion (@mvar{tr})
+@deffn {Function} contortion (@var{tr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} nonmetricity (@mvar{nm})
+@deffn {Function} nonmetricity (@var{nm})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ctransform (@mvar{M})
+@deffn {Function} ctransform (@var{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} findde (@mvar{A}, @mvar{n})
+@deffn {Function} findde (@var{A}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -123,11 +123,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cgeodesic (@mvar{dis})
+@deffn {Function} cgeodesic (@var{dis})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bdvac (@mvar{f})
+@deffn {Function} bdvac (@var{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -143,23 +143,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} diagmatrixp (@mvar{M})
+@deffn {Function} diagmatrixp (@var{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} symmetricp (@mvar{M})
+@deffn {Function} symmetricp (@var{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ntermst (@mvar{f})
+@deffn {Function} ntermst (@var{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cdisplay (@mvar{ten})
+@deffn {Function} cdisplay (@var{ten})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} deleten (@mvar{L}, @mvar{n})
+@deffn {Function} deleten (@var{L}, @var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

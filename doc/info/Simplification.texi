@@ -91,9 +91,9 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} combine (@mvar{expr})
+@deffn {Function} combine (@var{expr})
 
-Simplifies the sum @mvar{expr} by combining terms with the same
+Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
 @c NEED EXAMPLE HERE
@@ -119,7 +119,7 @@ If @code{declare(h, commutative)} is done, this tells the simplifier that
 
 @c -----------------------------------------------------------------------------
 @anchor{demoivre}
-@deffn  {Function} demoivre (@mvar{expr})
+@deffn  {Function} demoivre (@var{expr})
 @deffnx {Option variable} demoivre
 
 The function @code{demoivre (expr)} converts one expression
@@ -145,7 +145,7 @@ time.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_distrib}
-@deffn {Function} distrib (@mvar{expr})
+@deffn {Function} distrib (@var{expr})
 
 Distributes sums over products.  It differs from @code{expand} in that it works
 at only the top level of an expression, i.e., it doesn't recurse and it is
@@ -301,15 +301,15 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{expand}
-@deffn  {Function} expand (@mvar{expr})
-@deffnx {Function} expand (@mvar{expr}, @mvar{p}, @mvar{n})
+@deffn  {Function} expand (@var{expr})
+@deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
 
-Expand expression @mvar{expr}.
+Expand expression @var{expr}.
 Products of sums and exponentiated sums are
 multiplied out, numerators of rational expressions which are sums are
 split into their respective terms, and multiplication (commutative
 and non-commutative) are distributed over addition at all levels of
-@mvar{expr}.
+@var{expr}.
 
 For polynomials one should usually use @code{ratexpand} which uses a
 more efficient algorithm.
@@ -317,8 +317,8 @@ more efficient algorithm.
 @code{maxnegex} and @code{maxposex} control the maximum negative and
 positive exponents, respectively, which will expand.
 
-@code{expand (@mvar{expr}, @mvar{p}, @mvar{n})} expands @mvar{expr}, 
-using @mvar{p} for @code{maxposex} and @mvar{n} for @code{maxnegex}.
+@code{expand (@var{expr}, @var{p}, @var{n})} expands @var{expr}, 
+using @var{p} for @code{maxposex} and @var{n} for @code{maxnegex}.
 This is useful in order to expand part but not all of an expression.
 
 @code{expon} - the exponent of the largest negative power which is
@@ -424,13 +424,13 @@ Resimplify an expression without expansion:
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt}
-@deffn {Function} expandwrt (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} expandwrt (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 Expands expression @code{expr} with respect to the 
-variables @mvar{x_1}, @dots{}, @mvar{x_n}.
+variables @var{x_1}, @dots{}, @var{x_n}.
 All products involving the variables appear explicitly.  The form returned
 will be free of products of sums of expressions that are not free of
-the variables.  @mvar{x_1}, @dots{}, @mvar{x_n}
+the variables.  @var{x_1}, @dots{}, @var{x_n}
 may be variables, operators, or expressions.
 
 By default, denominators are not expanded, but this can be controlled by
@@ -465,11 +465,11 @@ then only the numerator will be expanded in that way.
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt_factored}
-@deffn {Function} expandwrt_factored (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} expandwrt_factored (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 is similar to @code{expandwrt}, but treats expressions that are products
 somewhat differently.  @code{expandwrt_factored} expands only on those factors
-of @code{expr} that contain the variables @mvar{x_1}, @dots{}, @mvar{x_n}.
+of @code{expr} that contain the variables @var{x_1}, @dots{}, @var{x_n}.
 
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 This function is autoloaded from @file{simplification/stopex.mac}.
@@ -496,11 +496,11 @@ expanded.
 
 @c -----------------------------------------------------------------------------
 @anchor{exponentialize}
-@deffn  {Function} exponentialize (@mvar{expr})
+@deffn  {Function} exponentialize (@var{expr})
 @deffnx {Option variable} exponentialize
 
 The function @code{exponentialize (expr)} converts 
-circular and hyperbolic functions in @mvar{expr} to exponentials,
+circular and hyperbolic functions in @var{expr} to exponentials,
 without setting the global variable @code{exponentialize}.
 
 When the variable @code{exponentialize} is @code{true},
@@ -682,22 +682,22 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{multthru}
-@deffn  {Function} multthru (@mvar{expr})
-@deffnx {Function} multthru (@mvar{expr_1}, @mvar{expr_2})
+@deffn  {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
 
-Multiplies a factor (which should be a sum) of @mvar{expr} by the other factors
-of @mvar{expr}.  That is, @mvar{expr} is @code{@mvar{f_1} @mvar{f_2} ... @mvar{f_n}}
-where at least one factor, say @mvar{f_i}, is a sum of terms.  Each term in that
+Multiplies a factor (which should be a sum) of @var{expr} by the other factors
+of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
+where at least one factor, say @var{f_i}, is a sum of terms.  Each term in that
 sum is multiplied by the other factors in the product.  (Namely all the factors
-except @mvar{f_i}).  @code{multthru} does not expand exponentiated sums.
+except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
 This function is the fastest way to distribute products (commutative or
 noncommutative) over sums.  Since quotients are represented as products
 @code{multthru} can be used to divide sums by products as well.
 
-@code{multthru (@mvar{expr_1}, @mvar{expr_2})} multiplies each term in
-@mvar{expr_2} (which should be a sum or an equation) by @mvar{expr_1}.  If
-@mvar{expr_1} is not itself a sum then this form is equivalent to
-@code{multthru (@mvar{expr_1}*@mvar{expr_2})}.
+@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in
+@var{expr_2} (which should be a sum or an equation) by @var{expr_1}.  If
+@var{expr_1} is not itself a sum then this form is equivalent to
+@code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -846,9 +846,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{radcan}
-@deffn {Function} radcan (@mvar{expr})
+@deffn {Function} radcan (@var{expr})
 
-Simplifies @mvar{expr}, which can contain logs, exponentials, and radicals, by 
+Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
 converting it into a form which is canonical over a large class of expressions 
 and a given ordering of variables; that is, all functionally equivalent forms 
 are mapped into a unique form.  For a somewhat larger class of expressions, 
@@ -955,11 +955,11 @@ simplifier that @code{g} is right-associative.  E.g.,
 
 @c -----------------------------------------------------------------------------
 @anchor{scsimp}
-@deffn {Function} scsimp (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
+@deffn {Function} scsimp (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
 Sequential Comparative Simplification (method due to Stoute).
-@code{scsimp} attempts to simplify @mvar{expr}
-according to the rules @mvar{rule_1}, @dots{}, @mvar{rule_n}.
+@code{scsimp} attempts to simplify @var{expr}
+according to the rules @var{rule_1}, @dots{}, @var{rule_n}.
 If a smaller expression is obtained, the process repeats.  Otherwise after all
 simplifications are tried, it returns the original answer.
 
@@ -1047,9 +1047,9 @@ simplifies to @code{h (x, y, z)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{xthru}
-@deffn {Function} xthru (@mvar{expr})
+@deffn {Function} xthru (@var{expr})
 
-Combines all terms of @mvar{expr} (which should be a sum) over a common
+Combines all terms of @var{expr} (which should be a sum) over a common
 denominator without expanding products and exponentiated sums as @code{ratsimp}
 does.  @code{xthru} cancels common factors in the numerator and denominator of
 rational expressions but only if the factors are explicit.

@@ -131,11 +131,11 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{addmatrices}
-@deffn {Function} addmatrices (@mvar{f}, @mvar{M_1}, @dots{}, @mvar{M_n})
+@deffn {Function} addmatrices (@var{f}, @var{M_1}, @dots{}, @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
-Using the function @mvar{f} as the addition function, return the sum of the
-matrices @mvar{M_1}, @dots{}, @mvar{M_n}.  The function @mvar{f} must accept any
+Using the function @var{f} as the addition function, return the sum of the
+matrices @var{M_1}, @dots{}, @var{M_n}.  The function @var{f} must accept any
 number of arguments (a Maxima nary function).
 
 Examples:
@@ -162,10 +162,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{blockmatrixp}
-@deffn {Function} blockmatrixp (@mvar{M})
+@deffn {Function} blockmatrixp (@var{M})
 
-Return true if and only if @mvar{M} is a matrix and every entry of 
-@mvar{M} is a matrix.
+Return true if and only if @var{M} is a matrix and every entry of 
+@var{M} is a matrix.
 
 @opencatbox
 @category{Package linearalgebra} @category{Predicate functions}
@@ -174,11 +174,11 @@ Return true if and only if @mvar{M} is a matrix and every entry of
 
 @c -----------------------------------------------------------------------------
 @anchor{columnop}
-@deffn {Function} columnop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
+@deffn {Function} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
-If @mvar{M} is a matrix, return the matrix that results from doing the column
-operation @code{C_i <- C_i - @mvar{theta} * C_j}. If @mvar{M} doesn't have a row
-@mvar{i} or @mvar{j}, signal an error.
+If @var{M} is a matrix, return the matrix that results from doing the column
+operation @code{C_i <- C_i - @var{theta} * C_j}. If @var{M} doesn't have a row
+@var{i} or @var{j}, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -187,10 +187,10 @@ operation @code{C_i <- C_i - @mvar{theta} * C_j}. If @mvar{M} doesn't have a row
 
 @c -----------------------------------------------------------------------------
 @anchor{columnswap}
-@deffn {Function} columnswap (@mvar{M}, @mvar{i}, @mvar{j})
+@deffn {Function} columnswap (@var{M}, @var{i}, @var{j})
 
-If @mvar{M} is a matrix, swap columns @mvar{i} and @mvar{j}.  If @mvar{M} doesn't
-have a column @mvar{i} or @mvar{j}, signal an error.
+If @var{M} is a matrix, swap columns @var{i} and @var{j}.  If @var{M} doesn't
+have a column @var{i} or @var{j}, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -199,10 +199,10 @@ have a column @mvar{i} or @mvar{j}, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{columnspace}
-@deffn {Function} columnspace (@mvar{M})
+@deffn {Function} columnspace (@var{M})
 
-If @mvar{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set
-@code{@{v_1, ..., v_n@}} is a basis for the column space of @mvar{M}.  The span 
+If @var{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set
+@code{@{v_1, ..., v_n@}} is a basis for the column space of @var{M}.  The span 
 of the empty set is @code{@{0@}}.  Thus, when the column space has only
 one member, return @code{span ()}.
 
@@ -213,10 +213,10 @@ one member, return @code{span ()}.
 
 @c -----------------------------------------------------------------------------
 @anchor{copy}
-@deffn {Function} copy (@mvar{e})
+@deffn {Function} copy (@var{e})
 
-Return a copy of the Maxima expression @mvar{e}.  Although @mvar{e} can be any
-Maxima expression, the copy function is the most useful when @mvar{e} is either 
+Return a copy of the Maxima expression @var{e}.  Although @var{e} can be any
+Maxima expression, the copy function is the most useful when @var{e} is either 
 a list or a matrix; consider:
 
 @c ===beg===
@@ -236,7 +236,7 @@ a list or a matrix; consider:
 (%o5)                      [1,[x,3]]
 @end example
 
-Let's try the same experiment, but this time let @mvar{mm} be a copy of @mvar{m}
+Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 
 @c ===beg===
 @c m : [1,[2,3]]$
@@ -255,7 +255,7 @@ Let's try the same experiment, but this time let @mvar{mm} be a copy of @mvar{m}
 (%o10)                    [1,[x,3]]
 @end example
 
-This time, the assignment to @mvar{mm} does not change the value of @mvar{m}.
+This time, the assignment to @var{mm} does not change the value of @var{m}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -264,12 +264,12 @@ This time, the assignment to @mvar{mm} does not change the value of @mvar{m}.
 
 @c -----------------------------------------------------------------------------
 @anchor{cholesky}
-@deffn  {Function} cholesky (@mvar{M})
-@deffnx {Function} cholesky (@mvar{M}, @mvar{field})
+@deffn  {Function} cholesky (@var{M})
+@deffnx {Function} cholesky (@var{M}, @var{field})
 
 Return the Cholesky factorization of the matrix selfadjoint (or hermitian)
-matrix @mvar{M}.  The second argument defaults to 'generalring.' For a
-description of the possible values for @mvar{field}, see @code{lu_factor}.
+matrix @var{M}.  The second argument defaults to 'generalring.' For a
+description of the possible values for @var{field}, see @code{lu_factor}.
 
 @opencatbox
 @category{Matrix decompositions} @category{Package linearalgebra}
@@ -278,9 +278,9 @@ description of the possible values for @mvar{field}, see @code{lu_factor}.
 
 @c -----------------------------------------------------------------------------
 @anchor{ctranspose}
-@deffn {Function} ctranspose (@mvar{M})
+@deffn {Function} ctranspose (@var{M})
 
-Return the complex conjugate transpose of the matrix @mvar{M}.  The function
+Return the complex conjugate transpose of the matrix @var{M}.  The function
 @code{ctranspose} uses @code{matrix_element_transpose} to transpose each matrix
 element.
 
@@ -291,10 +291,10 @@ element.
 
 @c -----------------------------------------------------------------------------
 @anchor{diag_matrix}
-@deffn {Function} diag_matrix (@mvar{d_1}, @mvar{d_2}, @dots{}, @mvar{d_n})
+@deffn {Function} diag_matrix (@var{d_1}, @var{d_2}, @dots{}, @var{d_n})
 
-Return a diagonal matrix with diagonal entries @mvar{d_1}, @mvar{d_2}, @dots{},
-@mvar{d_n}.  When the diagonal entries are matrices, the zero entries of the
+Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2}, @dots{},
+@var{d_n}.  When the diagonal entries are matrices, the zero entries of the
 returned matrix are zero matrices of the appropriate size; for example:
 
 @c ===beg===
@@ -325,11 +325,11 @@ returned matrix are zero matrices of the appropriate size; for example:
 
 @c -----------------------------------------------------------------------------
 @anchor{dotproduct}
-@deffn {Function} dotproduct (@mvar{u}, @mvar{v})
+@deffn {Function} dotproduct (@var{u}, @var{v})
 
-Return the dotproduct of vectors @mvar{u} and @mvar{v}.  This is the same as
-@code{conjugate (transpose (@mvar{u})) .  @mvar{v}}.  The arguments @mvar{u} and
-@mvar{v} must be column vectors.
+Return the dotproduct of vectors @var{u} and @var{v}.  This is the same as
+@code{conjugate (transpose (@var{u})) .  @var{v}}.  The arguments @var{u} and
+@var{v} must be column vectors.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -338,17 +338,17 @@ Return the dotproduct of vectors @mvar{u} and @mvar{v}.  This is the same as
 
 @c -----------------------------------------------------------------------------
 @anchor{eigens_by_jacobi}
-@deffn  {Function} eigens_by_jacobi (@mvar{A})
-@deffnx {Function} eigens_by_jacobi (@mvar{A}, @mvar{field_type})
+@deffn  {Function} eigens_by_jacobi (@var{A})
+@deffnx {Function} eigens_by_jacobi (@var{A}, @var{field_type})
 
-Computes the eigenvalues and eigenvectors of @mvar{A} by the method of Jacobi
-rotations.  @mvar{A} must be a symmetric matrix (but it need not be positive
-definite nor positive semidefinite).  @mvar{field_type} indicates the
+Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi
+rotations.  @var{A} must be a symmetric matrix (but it need not be positive
+definite nor positive semidefinite).  @var{field_type} indicates the
 computational field, either @code{floatfield} or @code{bigfloatfield}.
-If @mvar{field_type} is not specified, it defaults to @code{floatfield}.
+If @var{field_type} is not specified, it defaults to @code{floatfield}.
 
-The elements of @mvar{A} must be numbers or expressions which evaluate to numbers
-via @code{float} or @code{bfloat} (depending on @mvar{field_type}).
+The elements of @var{A} must be numbers or expressions which evaluate to numbers
+via @code{float} or @code{bfloat} (depending on @var{field_type}).
 
 Examples:
 
@@ -414,12 +414,12 @@ number of rotations: 1
 
 @c -----------------------------------------------------------------------------
 @anchor{get_lu_factors}
-@deffn {Function} get_lu_factors (@mvar{x}) 
+@deffn {Function} get_lu_factors (@var{x}) 
 
-When @code{@mvar{x} = lu_factor (@mvar{A})}, then @code{get_lu_factors} returns a
-list of the form @code{[P, L, U]}, where @mvar{P} is a permutation matrix,
-@mvar{L} is lower triangular with ones on the diagonal, and @mvar{U} is upper
-triangular, and @code{@mvar{A} = @mvar{P} @mvar{L} @mvar{U}}.
+When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a
+list of the form @code{[P, L, U]}, where @var{P} is a permutation matrix,
+@var{L} is lower triangular with ones on the diagonal, and @var{U} is upper
+triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -428,12 +428,12 @@ triangular, and @code{@mvar{A} = @mvar{P} @mvar{L} @mvar{U}}.
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel}
-@deffn  {Function} hankel (@mvar{col})
-@deffnx {Function} hankel (@mvar{col}, @mvar{row})
+@deffn  {Function} hankel (@var{col})
+@deffnx {Function} hankel (@var{col}, @var{row})
 
-Return a Hankel matrix @mvar{H}.  The first column of @mvar{H} is @mvar{col};
-except for the first entry, the last row of @mvar{H} is @mvar{row}.  The
-default for @mvar{row} is the zero vector with the same length as @mvar{col}.
+Return a Hankel matrix @var{H}.  The first column of @var{H} is @var{col};
+except for the first entry, the last row of @var{H} is @var{row}.  The
+default for @var{row} is the zero vector with the same length as @var{col}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -442,11 +442,11 @@ default for @mvar{row} is the zero vector with the same length as @mvar{col}.
 
 @c -----------------------------------------------------------------------------
 @anchor{hessian}
-@deffn {Function} hessian (@mvar{f}, @mvar{x})
+@deffn {Function} hessian (@var{f}, @var{x})
 
-Returns the Hessian matrix of @mvar{f} with respect to the list of variables
-@mvar{x}.  The @code{(i, j)}-th element of the Hessian matrix is
-@code{diff(@mvar{f}, @mvar{x}[i], 1, @mvar{x}[j], 1)}.
+Returns the Hessian matrix of @var{f} with respect to the list of variables
+@var{x}.  The @code{(i, j)}-th element of the Hessian matrix is
+@code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
 
 Examples:
 
@@ -483,9 +483,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{hilbert_matrix}
-@deffn {Function} hilbert_matrix (@mvar{n})
+@deffn {Function} hilbert_matrix (@var{n})
 
-Return the @mvar{n} by @mvar{n} Hilbert matrix.  When @mvar{n} isn't a positive
+Return the @var{n} by @var{n} Hilbert matrix.  When @var{n} isn't a positive
 integer, signal an error.
 
 @opencatbox
@@ -495,17 +495,17 @@ integer, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{identfor}
-@deffn  {Function} identfor (@mvar{M})
-@deffnx {Function} identfor (@mvar{M}, @mvar{fld})
+@deffn  {Function} identfor (@var{M})
+@deffnx {Function} identfor (@var{M}, @var{fld})
 
 Return an identity matrix that has the same shape as the matrix
-@mvar{M}.  The diagonal entries of the identity matrix are the 
-multiplicative identity of the field @mvar{fld}; the default for
-@mvar{fld} is @mvar{generalring}.
+@var{M}.  The diagonal entries of the identity matrix are the 
+multiplicative identity of the field @var{fld}; the default for
+@var{fld} is @var{generalring}.
 
-The first argument @mvar{M} should be a square matrix or a non-matrix.  When
-@mvar{M} is a matrix, each entry of @mvar{M} can be a square matrix -- thus
-@mvar{M} can be a blocked Maxima matrix.  The matrix can be blocked to any
+The first argument @var{M} should be a square matrix or a non-matrix.  When
+@var{M} is a matrix, each entry of @var{M} can be a square matrix -- thus
+@var{M} can be a blocked Maxima matrix.  The matrix can be blocked to any
 (finite) depth.
 
 See also @code{zerofor}
@@ -517,10 +517,10 @@ See also @code{zerofor}
 
 @c -----------------------------------------------------------------------------
 @anchor{invert_by_lu}
-@deffn {Function} invert_by_lu (@mvar{M}, @mvar{(rng generalring)})
+@deffn {Function} invert_by_lu (@var{M}, @var{(rng generalring)})
 
-Invert a matrix @mvar{M} by using the LU factorization.  The LU factorization
-is done using the ring @mvar{rng}.
+Invert a matrix @var{M} by using the LU factorization.  The LU factorization
+is done using the ring @var{rng}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -529,11 +529,11 @@ is done using the ring @mvar{rng}.
 
 @c -----------------------------------------------------------------------------
 @anchor{jacobian}
-@deffn {Function} jacobian (@mvar{f}, @mvar{x})
+@deffn {Function} jacobian (@var{f}, @var{x})
 
-Returns the Jacobian matrix of the list of functions @mvar{f} with respect to
-the list of variables @mvar{x}.  The @code{(i, j)}-th element of the Jacobian
-matrix is @code{diff(@mvar{f}[i], @mvar{x}[j])}.
+Returns the Jacobian matrix of the list of functions @var{f} with respect to
+the list of variables @var{x}.  The @code{(i, j)}-th element of the Jacobian
+matrix is @code{diff(@var{f}[i], @var{x}[j])}.
 
 Examples:
 
@@ -566,9 +566,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{kronecker_product}
-@deffn {Function} kronecker_product (@mvar{A}, @mvar{B})
+@deffn {Function} kronecker_product (@var{A}, @var{B})
 
-Return the Kronecker product of the matrices @mvar{A} and @mvar{B}.
+Return the Kronecker product of the matrices @var{A} and @var{B}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -577,12 +577,12 @@ Return the Kronecker product of the matrices @mvar{A} and @mvar{B}.
 
 @c -----------------------------------------------------------------------------
 @anchor{listp}
-@deffn  {Function} listp (@mvar{e}, @mvar{p})
-@deffnx {Function} listp (@mvar{e})
+@deffn  {Function} listp (@var{e}, @var{p})
+@deffnx {Function} listp (@var{e})
 
-Given an optional argument @mvar{p}, return @code{true} if @mvar{e} is a Maxima
-list and @mvar{p} evaluates to @code{true} for every list element.  When
-@code{listp} is not given the optional argument, return @code{true} if @mvar{e}
+Given an optional argument @var{p}, return @code{true} if @var{e} is a Maxima
+list and @var{p} evaluates to @code{true} for every list element.  When
+@code{listp} is not given the optional argument, return @code{true} if @var{e}
 is a Maxima list.  In all other cases, return @code{false}.
 
 @opencatbox
@@ -592,29 +592,29 @@ is a Maxima list.  In all other cases, return @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{locate_matrix_entry}
-@deffn {Function} locate_matrix_entry (@mvar{M}, @mvar{r_1}, @mvar{c_1}, @mvar{r_2}, @mvar{c_2}, @mvar{f}, @mvar{rel})
+@deffn {Function} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
 The first argument must be a matrix; the arguments
-@mvar{r_1} through @mvar{c_2} determine a sub-matrix of @mvar{M} that consists of
-rows @mvar{r_1} through @mvar{r_2} and columns @mvar{c_1} through @mvar{c_2}.
+@var{r_1} through @var{c_2} determine a sub-matrix of @var{M} that consists of
+rows @var{r_1} through @var{r_2} and columns @var{c_1} through @var{c_2}.
 
-Find a entry in the sub-matrix @mvar{M} that satisfies some property.
+Find a entry in the sub-matrix @var{M} that satisfies some property.
 Three cases:
 
-(1) @code{@mvar{rel} = 'bool} and @mvar{f} a predicate: 
+(1) @code{@var{rel} = 'bool} and @var{f} a predicate: 
 
 Scan the sub-matrix from left to right then top to bottom,
 and return the index of the first entry that satisfies the 
-predicate @mvar{f}.  If no matrix entry satisfies @mvar{f}, return @code{false}.
+predicate @var{f}.  If no matrix entry satisfies @var{f}, return @code{false}.
 
-(2) @code{@mvar{rel} = 'max} and @mvar{f} real-valued:
+(2) @code{@var{rel} = 'max} and @var{f} real-valued:
 
-Scan the sub-matrix looking for an entry that maximizes @mvar{f}.
+Scan the sub-matrix looking for an entry that maximizes @var{f}.
 Return the index of a maximizing entry.
 
-(3) @code{@mvar{rel} = 'min} and @mvar{f} real-valued:
+(3) @code{@var{rel} = 'min} and @var{f} real-valued:
 
-Scan the sub-matrix looking for an entry that minimizes @mvar{f}.
+Scan the sub-matrix looking for an entry that minimizes @var{f}.
 Return the index of a minimizing entry.
 
 @opencatbox
@@ -624,11 +624,11 @@ Return the index of a minimizing entry.
 
 @c -----------------------------------------------------------------------------
 @anchor{lu_backsub}
-@deffn {Function} lu_backsub (@mvar{M}, @mvar{b})
+@deffn {Function} lu_backsub (@var{M}, @var{b})
 
-When @code{@mvar{M} = lu_factor (@mvar{A}, @mvar{field})},
-then @code{lu_backsub (@mvar{M}, @mvar{b})} solves the linear
-system @code{@mvar{A} @mvar{x} = @mvar{b}}.
+When @code{@var{M} = lu_factor (@var{A}, @var{field})},
+then @code{lu_backsub (@var{M}, @var{b})} solves the linear
+system @code{@var{A} @var{x} = @var{b}}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -637,30 +637,30 @@ system @code{@mvar{A} @mvar{x} = @mvar{b}}.
 
 @c -----------------------------------------------------------------------------
 @anchor{lu_factor}
-@deffn {Function} lu_factor (@mvar{M}, @mvar{field})
+@deffn {Function} lu_factor (@var{M}, @var{field})
 
-Return a list of the form @code{[@mvar{LU}, @mvar{perm}, @mvar{fld}]}, or
-@code{[@mvar{LU}, @mvar{perm}, @mvar{fld}, @mvar{lower-cnd} @mvar{upper-cnd}]}, where
+Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, or
+@code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, where
 
-(1) The matrix @mvar{LU} contains the factorization of @mvar{M} in a packed form.
-    Packed form means three things: First, the rows of @mvar{LU} are permuted
-    according to the list @mvar{perm}.  If, for example, @mvar{perm} is the list
-    @code{[3,2,1]}, the actual first row of the @mvar{LU} factorization is the
-    third row of the matrix @mvar{LU}.  Second, the lower triangular factor of
-    m is the lower triangular part of @mvar{LU} with the diagonal entries
-    replaced by all ones.  Third, the upper triangular factor of @mvar{M} is the
-    upper triangular part of @mvar{LU}.
+(1) The matrix @var{LU} contains the factorization of @var{M} in a packed form.
+    Packed form means three things: First, the rows of @var{LU} are permuted
+    according to the list @var{perm}.  If, for example, @var{perm} is the list
+    @code{[3,2,1]}, the actual first row of the @var{LU} factorization is the
+    third row of the matrix @var{LU}.  Second, the lower triangular factor of
+    m is the lower triangular part of @var{LU} with the diagonal entries
+    replaced by all ones.  Third, the upper triangular factor of @var{M} is the
+    upper triangular part of @var{LU}.
 
 (2) When the field is either @code{floatfield} or @code{complexfield}, the
-    numbers @mvar{lower-cnd} and @mvar{upper-cnd} are lower and upper bounds for
-    the infinity norm condition number of @mvar{M}.  For all fields, the
+    numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds for
+    the infinity norm condition number of @var{M}.  For all fields, the
     condition number might not be estimated; for such fields, @code{lu_factor}
     returns a two item list.  Both the lower and upper bounds can differ from
     their true values by arbitrarily large factors.  (See also @code{mat_cond}.)
    
-  The argument @mvar{M} must be a square matrix.
+  The argument @var{M} must be a square matrix.
 
-  The optional argument @mvar{fld} must be a symbol that determines a ring or
+  The optional argument @var{fld} must be a symbol that determines a ring or
   field.  The pre-defined fields and rings are:
 
   (a) @code{generalring}      -- the ring of Maxima expressions,
@@ -690,7 +690,7 @@ Floating point addition arithmetic isn't associative, so the meaning
 of 'field' differs from the mathematical definition.
 
 A member of the field @code{runningerror} is a two member Maxima list
-of the form @code{[x,n]},where @mvar{x} is a floating point number and
+of the form @code{[x,n]},where @var{x} is a floating point number and
 @code{n} is an integer.  The relative difference between the 'true'
 value of @code{x} and @code{x} is approximately bounded by the machine
 epsilon times @code{n}.  The running error bound drops some terms that
@@ -773,12 +773,12 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_cond}
-@deffn  {Function} mat_cond (@mvar{M}, 1)
-@deffnx {Function} mat_cond (@mvar{M}, inf)
+@deffn  {Function} mat_cond (@var{M}, 1)
+@deffnx {Function} mat_cond (@var{M}, inf)
 
-Return the @mvar{p}-norm matrix condition number of the matrix
-@mvar{m}.  The allowed values for @mvar{p} are 1 and @mvar{inf}.  This
-function uses the LU factorization to invert the matrix @mvar{m}.  Thus
+Return the @var{p}-norm matrix condition number of the matrix
+@var{m}.  The allowed values for @var{p} are 1 and @var{inf}.  This
+function uses the LU factorization to invert the matrix @var{m}.  Thus
 the running time for @code{mat_cond} is proportional to the cube of
 the matrix size; @code{lu_factor} determines lower and upper bounds
 for the infinity norm condition number in time proportional to the
@@ -791,13 +791,13 @@ square of the matrix size.
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_norm}
-@deffn  {Function} mat_norm (@mvar{M}, 1)
-@deffnx {Function} mat_norm (@mvar{M}, inf)
-@deffnx {Function} mat_norm (@mvar{M}, frobenius)
+@deffn  {Function} mat_norm (@var{M}, 1)
+@deffnx {Function} mat_norm (@var{M}, inf)
+@deffnx {Function} mat_norm (@var{M}, frobenius)
 
-Return the matrix @mvar{p}-norm of the matrix @mvar{M}.  The allowed values for
-@mvar{p} are 1, @code{inf}, and @code{frobenius} (the Frobenius matrix norm).
-The matrix @mvar{M} should be an unblocked matrix.
+Return the matrix @var{p}-norm of the matrix @var{M}.  The allowed values for
+@var{p} are 1, @code{inf}, and @code{frobenius} (the Frobenius matrix norm).
+The matrix @var{M} should be an unblocked matrix.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -806,11 +806,11 @@ The matrix @mvar{M} should be an unblocked matrix.
 
 @c -----------------------------------------------------------------------------
 @anchor{linearalgebra_matrixp}
-@deffn  {Function} matrixp (@mvar{e}, @mvar{p})
-@deffnx {Function} matrixp (@mvar{e})
+@deffn  {Function} matrixp (@var{e}, @var{p})
+@deffnx {Function} matrixp (@var{e})
 
-Given an optional argument @mvar{p}, return @code{true} if @mvar{e} is 
-a matrix and @mvar{p} evaluates to @code{true} for every matrix element.
+Given an optional argument @var{p}, return @code{true} if @var{e} is 
+a matrix and @var{p} evaluates to @code{true} for every matrix element.
 When @code{matrixp} is not given an optional argument, return @code{true} 
 if @code{e} is a matrix.  In all other cases, return @code{false}.
 
@@ -823,10 +823,10 @@ See also @code{blockmatrixp}
 
 @c -----------------------------------------------------------------------------
 @anchor{matrix_size}
-@deffn {Function} matrix_size (@mvar{M})
+@deffn {Function} matrix_size (@var{M})
 
 Return a two member list that gives the number of rows and columns, respectively
-of the matrix @mvar{M}.
+of the matrix @var{M}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -835,10 +835,10 @@ of the matrix @mvar{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_fullunblocker}
-@deffn {Function} mat_fullunblocker (@mvar{M})
+@deffn {Function} mat_fullunblocker (@var{M})
 
-If @mvar{M} is a block matrix, unblock the matrix to all levels.  If @mvar{M} is
-a matrix, return @mvar{M}; otherwise, signal an error.
+If @var{M} is a block matrix, unblock the matrix to all levels.  If @var{M} is
+a matrix, return @var{M}; otherwise, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -847,10 +847,10 @@ a matrix, return @mvar{M}; otherwise, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_trace}
-@deffn {Function} mat_trace (@mvar{M})
+@deffn {Function} mat_trace (@var{M})
 
-Return the trace of the matrix @mvar{M}.  If @mvar{M} isn't a matrix, return a
-noun form.  When @mvar{M} is a block matrix, @code{mat_trace(M)} returns
+Return the trace of the matrix @var{M}.  If @var{M} isn't a matrix, return a
+noun form.  When @var{M} is a block matrix, @code{mat_trace(M)} returns
 the same value as does @code{mat_trace(mat_unblocker(m))}.
 
 @opencatbox
@@ -860,13 +860,13 @@ the same value as does @code{mat_trace(mat_unblocker(m))}.
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_unblocker}
-@deffn {Function} mat_unblocker (@mvar{M})
+@deffn {Function} mat_unblocker (@var{M})
 
-If @mvar{M} is a block matrix, unblock @mvar{M} one level.  If @mvar{M} is a
-matrix, @code{mat_unblocker (M)} returns @mvar{M}; otherwise, signal an error.
+If @var{M} is a block matrix, unblock @var{M} one level.  If @var{M} is a
+matrix, @code{mat_unblocker (M)} returns @var{M}; otherwise, signal an error.
 
-Thus if each entry of @mvar{M} is matrix, @code{mat_unblocker (M)} returns an 
-unblocked matrix, but if each entry of @mvar{M} is a block matrix,
+Thus if each entry of @var{M} is matrix, @code{mat_unblocker (M)} returns an 
+unblocked matrix, but if each entry of @var{M} is a block matrix,
 @code{mat_unblocker (M)} returns a block matrix with one less level of blocking.
 
 If you use block matrices, most likely you'll want to set
@@ -909,10 +909,10 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{nullspace}
-@deffn {Function} nullspace (@mvar{M})
+@deffn {Function} nullspace (@var{M})
 
-If @mvar{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set
-@code{@{v_1, ..., v_n@}} is a basis for the nullspace of @mvar{M}.  The span of
+If @var{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set
+@code{@{v_1, ..., v_n@}} is a basis for the nullspace of @var{M}.  The span of
 the empty set is @code{@{0@}}.  Thus, when the nullspace has only one member,
 return @code{span ()}.
 
@@ -923,9 +923,9 @@ return @code{span ()}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nullity}
-@deffn {Function} nullity (@mvar{M})
+@deffn {Function} nullity (@var{M})
 
-If @mvar{M} is a matrix, return the dimension of the nullspace of @mvar{M}.
+If @var{M} is a matrix, return the dimension of the nullspace of @var{M}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -934,12 +934,12 @@ If @mvar{M} is a matrix, return the dimension of the nullspace of @mvar{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{orthogonal_complement}
-@deffn {Function} orthogonal_complement (@mvar{v_1}, @dots{}, @mvar{v_n})
+@deffn {Function} orthogonal_complement (@var{v_1}, @dots{}, @var{v_n})
 
 Return @code{span (u_1, ..., u_m)}, where the set @code{@{u_1, ..., u_m@}} is a 
 basis for the orthogonal complement of the set @code{(v_1, ..., v_n)}.
 
-Each vector @mvar{v_1} through @mvar{v_n} must be a column vector.
+Each vector @var{v_1} through @var{v_n} must be a column vector.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -948,22 +948,22 @@ Each vector @mvar{v_1} through @mvar{v_n} must be a column vector.
 
 @c -----------------------------------------------------------------------------
 @anchor{polynomialp}
-@deffn  {Function} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, @mvar{exponp})
-@deffnx {Function} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})
-@deffnx {Function} polynomialp (@mvar{p}, @mvar{L})
+@deffn  {Function} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {Function} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {Function} polynomialp (@var{p}, @var{L})
 
-Return @code{true} if @mvar{p} is a polynomial in the variables in the list
-@mvar{L}.  The predicate @mvar{coeffp} must evaluate to @code{true} for each
-coefficient, and the predicate @mvar{exponp} must evaluate to @code{true} for all
-exponents of the variables in @mvar{L}.  If you want to use a non-default value
-for @mvar{exponp}, you must supply @mvar{coeffp} with a value even if you want
-to use the default for @mvar{coeffp}.
+Return @code{true} if @var{p} is a polynomial in the variables in the list
+@var{L}.  The predicate @var{coeffp} must evaluate to @code{true} for each
+coefficient, and the predicate @var{exponp} must evaluate to @code{true} for all
+exponents of the variables in @var{L}.  If you want to use a non-default value
+for @var{exponp}, you must supply @var{coeffp} with a value even if you want
+to use the default for @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-The command @code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})} is equivalent to
-@code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, 'nonnegintegerp)} and the
-command @code{polynomialp (@mvar{p}, @mvar{L})} is equivalent to
-@code{polynomialp (@mvar{p}, L@mvar{,} 'constantp, 'nonnegintegerp)}.
+The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)} and the
+command @code{polynomialp (@var{p}, @var{L})} is equivalent to
+@code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
 The polynomial needn't be expanded:
 
@@ -1013,13 +1013,13 @@ Polynomials with two variables:
 
 @c -----------------------------------------------------------------------------
 @anchor{polytocompanion}
-@deffn {Function} polytocompanion (@mvar{p}, @mvar{x})
+@deffn {Function} polytocompanion (@var{p}, @var{x})
 
-If @mvar{p} is a polynomial in @mvar{x}, return the companion matrix of @mvar{p}.
-For a monic polynomial @mvar{p} of degree @mvar{n}, we have
-@code{@mvar{p} = (-1)^@mvar{n} charpoly (polytocompanion (@mvar{p}, @mvar{x}))}.
+If @var{p} is a polynomial in @var{x}, return the companion matrix of @var{p}.
+For a monic polynomial @var{p} of degree @var{n}, we have
+@code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
 
-When @mvar{p} isn't a polynomial in @mvar{x}, signal an error.
+When @var{p} isn't a polynomial in @var{x}, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -1028,20 +1028,20 @@ When @mvar{p} isn't a polynomial in @mvar{x}, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{ptringularize}
-@deffn {Function} ptriangularize (@mvar{M}, @mvar{v})
+@deffn {Function} ptriangularize (@var{M}, @var{v})
 
-If @mvar{M} is a matrix with each entry a polynomial in @mvar{v}, return 
-a matrix @mvar{M2} such that
+If @var{M} is a matrix with each entry a polynomial in @var{v}, return 
+a matrix @var{M2} such that
 
-(1) @mvar{M2} is upper triangular,
+(1) @var{M2} is upper triangular,
 
-(2) @code{@mvar{M2} = @mvar{E_n} ... @mvar{E_1} @mvar{M}},
-where @mvar{E_1} through @mvar{E_n} are elementary matrices 
-whose entries are polynomials in @mvar{v},
+(2) @code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}},
+where @var{E_1} through @var{E_n} are elementary matrices 
+whose entries are polynomials in @var{v},
 
-(3) @code{|det (@mvar{M})| = |det (@mvar{M2})|},
+(3) @code{|det (@var{M})| = |det (@var{M2})|},
 
-Note: This function doesn't check that every entry is a polynomial in @mvar{v}.
+Note: This function doesn't check that every entry is a polynomial in @var{v}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -1050,11 +1050,11 @@ Note: This function doesn't check that every entry is a polynomial in @mvar{v}.
 
 @c -----------------------------------------------------------------------------
 @anchor{rowp}
-@deffn {Function} rowop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
+@deffn {Function} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
 
-If @mvar{M} is a matrix, return the matrix that results from doing the
-row operation @code{R_i <- R_i - theta * R_j}.  If @mvar{M} doesn't have a row
-@mvar{i} or @mvar{j}, signal an error.
+If @var{M} is a matrix, return the matrix that results from doing the
+row operation @code{R_i <- R_i - theta * R_j}.  If @var{M} doesn't have a row
+@var{i} or @var{j}, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -1062,9 +1062,9 @@ row operation @code{R_i <- R_i - theta * R_j}.  If @mvar{M} doesn't have a row
 
 @end deffn
 
-@deffn {Function} rank (@mvar{M})
+@deffn {Function} rank (@var{M})
 
-Return the rank of that matrix @mvar{M}.  The rank is the dimension of the
+Return the rank of that matrix @var{M}.  The rank is the dimension of the
 column space.  Example:
 
 @c ===beg===
@@ -1086,10 +1086,10 @@ Proviso:  @{d - b c # 0@}
 
 @c -----------------------------------------------------------------------------
 @anchor{rowswap}
-@deffn {Function} rowswap (@mvar{M}, @mvar{i}, @mvar{j})
+@deffn {Function} rowswap (@var{M}, @var{i}, @var{j})
 
-If @mvar{M} is a matrix, swap rows @mvar{i} and @mvar{j}.  If @mvar{M} doesn't
-have a row @mvar{i} or @mvar{j}, signal an error.
+If @var{M} is a matrix, swap rows @var{i} and @var{j}.  If @var{M} doesn't
+have a row @var{i} or @var{j}, signal an error.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -1098,12 +1098,12 @@ have a row @mvar{i} or @mvar{j}, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{toeplitz}
-@deffn  {Function} toeplitz (@mvar{col})
-@deffnx {Function} toeplitz (@mvar{col}, @mvar{row})
+@deffn  {Function} toeplitz (@var{col})
+@deffnx {Function} toeplitz (@var{col}, @var{row})
 
-Return a Toeplitz matrix @mvar{T}.  The first first column of @mvar{T} is
-@mvar{col}; except for the first entry, the first row of @mvar{T} is @mvar{row}.
-The default for @mvar{row} is complex conjugate of @mvar{col}.  Example:
+Return a Toeplitz matrix @var{T}.  The first first column of @var{T} is
+@var{col}; except for the first entry, the first row of @var{T} is @var{row}.
+The default for @var{row} is complex conjugate of @var{col}.  Example:
 
 @c ===beg===
 @c toeplitz([1,2,3],[x,y,z]);
@@ -1132,10 +1132,10 @@ The default for @mvar{row} is complex conjugate of @mvar{col}.  Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{vandermonde_matrix}
-@deffn {Function} vandermonde_matrix ([@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {Function} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
-Return a @mvar{n} by @mvar{n} matrix whose @mvar{i}-th row is 
-@code{[1, @mvar{x_i}, @mvar{x_i}^2, ... @mvar{x_i}^(@mvar{n}-1)]}.
+Return a @var{n} by @var{n} matrix whose @var{i}-th row is 
+@code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}.
 
 @opencatbox
 @category{Package linearalgebra}
@@ -1144,17 +1144,17 @@ Return a @mvar{n} by @mvar{n} matrix whose @mvar{i}-th row is
 
 @c -----------------------------------------------------------------------------
 @anchor{zerofor}
-@deffn  {Function} zerofor (@mvar{M})
-@deffnx {Function} zerofor (@mvar{M}, @mvar{fld})
+@deffn  {Function} zerofor (@var{M})
+@deffnx {Function} zerofor (@var{M}, @var{fld})
 
 Return a zero  matrix that has the same shape as the matrix
-@mvar{M}.  Every entry of the zero matrix is the
-additive identity of the field @mvar{fld}; the default for
-@mvar{fld} is @mvar{generalring}.
+@var{M}.  Every entry of the zero matrix is the
+additive identity of the field @var{fld}; the default for
+@var{fld} is @var{generalring}.
 
-The first argument @mvar{M} should be a square matrix or a
-non-matrix.  When @mvar{M} is a matrix, each entry of @mvar{M} can be a
-square matrix -- thus @mvar{M} can be a blocked Maxima matrix.  The
+The first argument @var{M} should be a square matrix or a
+non-matrix.  When @var{M} is a matrix, each entry of @var{M} can be a
+square matrix -- thus @var{M} can be a blocked Maxima matrix.  The
 matrix can be blocked to any (finite) depth.
 
 See also @code{identfor}
@@ -1166,12 +1166,12 @@ See also @code{identfor}
 
 @c -----------------------------------------------------------------------------
 @anchor{zeromatrixp}
-@deffn {Function} zeromatrixp (@mvar{M})
+@deffn {Function} zeromatrixp (@var{M})
 
-If @mvar{M} is not a block matrix, return @code{true} if
-@code{is (equal (@mvar{e}, 0))} is true for each element @mvar{e} of the matrix
-@mvar{M}.  If @mvar{M} is a block matrix, return @code{true} if @code{zeromatrixp}
-evaluates to @code{true} for each element of @mvar{e}.
+If @var{M} is not a block matrix, return @code{true} if
+@code{is (equal (@var{e}, 0))} is true for each element @var{e} of the matrix
+@var{M}.  If @var{M} is a block matrix, return @code{true} if @code{zeromatrixp}
+evaluates to @code{true} for each element of @var{e}.
 
 @opencatbox
 @category{Package linearalgebra} @category{Predicate functions}

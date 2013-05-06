@@ -51,12 +51,12 @@ See also @code{mnewton}.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_mnewton}
-@deffn {Function} mnewton (@mvar{FuncList},@mvar{VarList},@mvar{GuessList})
+@deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
 
 Multiple nonlinear functions solution using the Newton method.
-@mvar{FuncList} is the list of functions to solve,
-@mvar{VarList} is the list of variable names, and
-@mvar{GuessList} is the list of initial approximations.
+@var{FuncList} is the list of functions to solve,
+@var{VarList} is the list of variable names, and
+@var{GuessList} is the list of initial approximations.
 
 The solution is returned in the same format that @code{solve()} returns.
 If the solution is not found, @code{[]} is returned.

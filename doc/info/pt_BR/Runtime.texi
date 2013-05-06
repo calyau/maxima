@@ -82,13 +82,13 @@ Veja Tamb@'{e}m @code{features} e @code{featurep} para informa@value{cedilha}@~{
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-@deffn {Fun@value{cedilha}@~{a}o} featurep (@mvar{a}, @mvar{f})
-Tenta determinar se o objeto @mvar{a} tem o
-recurso @mvar{f} na base dos fatos dentro base de dados corrente.  Se possue,
+@deffn {Fun@value{cedilha}@~{a}o} featurep (@var{a}, @var{f})
+Tenta determinar se o objeto @var{a} tem o
+recurso @var{f} na base dos fatos dentro base de dados corrente.  Se possue,
 @'{e} retornado @code{true}, de outra forma @'{e} retornado @code{false}.
 
-Note que @code{featurep} retorna @code{false} quando nem @mvar{f}
-nem a nega@value{cedilha}@~{a}o de @mvar{f} puderem ser estabelecidas.
+Note que @code{featurep} retorna @code{false} quando nem @var{f}
+nem a nega@value{cedilha}@~{a}o de @var{f} puderem ser estabelecidas.
 
 @code{featurep} avalia seus argumentos.
 
@@ -149,7 +149,7 @@ mesmo nome.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~{a}o} status (feature)
-@deffnx {Fun@value{cedilha}@~{a}o} status (feature, @mvar{recurso_ativo})
+@deffnx {Fun@value{cedilha}@~{a}o} status (feature, @var{recurso_ativo})
 @deffnx {Fun@value{cedilha}@~{a}o} status (status)
 Retorna informa@value{cedilha}@~{o}es sobre a presen@value{cedilha}a ou aus@^{e}ncia de certos
 recursos dependentes do sistema operacional.
@@ -159,9 +159,9 @@ recursos dependentes do sistema operacional.
 @code{status (feature)} retorna uma lista dos recursos do sistema.
 Inclui a vers@~{a}o do Lisp, tipo de sistema operacional, etc.
 A lista pode variar de um tipo de Lisp para outro.
-@item @code{status (feature, @mvar{recurso_ativo})} retorna @code{true} se @mvar{recurso_ativo}
+@item @code{status (feature, @var{recurso_ativo})} retorna @code{true} se @var{recurso_ativo}
 est@'{a} na lista de @'{i}tens retornada atrav@'{e}s de @code{status (feature)} e @code{false} de outra forma.
-@code{status} n@~{a}o avalia o argumento @mvar{recurso_ativo}.
+@code{status} n@~{a}o avalia o argumento @var{recurso_ativo}.
 O operador ap@'{o}strofo-ap@'{o}strofo, @code{'@w{}'}, evita a avalia@value{cedilha}@~{a}o.
 Um recurso cujo nome cont@'{e}m um caractere especial, tal como um h@'{i}fem,
 deve ser fornecido como um argumento em forma de seq@"{u}@^{e}ncia de caracteres. Por Exemplo,

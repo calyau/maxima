@@ -95,7 +95,7 @@ lambda ([i], i+1)
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
-とします。 @mvar{exprn}の値が関数が返すものになります。
+とします。 @var{exprn}の値が関数が返すものになります。
 
 もし関数内部のある式から@code{return}したいなら、
 @code{block}と@code{return}を使わなければいけません。
@@ -181,20 +181,20 @@ Inside functions, when the right hand side of a definition, may be computed at r
 通常の関数に対する@code{apply}のように、
 配列関数をその引数に適用します。
 配列関数に対して、@code{map}に厳密に似たものはありません。
-@code{map(lambda([@mvar{x}], @mvar{a}[@mvar{x}]), @mvar{L})}または
-@code{makelist(@mvar{a}[@mvar{x}], @mvar{x}, @mvar{L})}
-―@mvar{L}はリストです―は、目的からそれほど遠くありませんけれども。
+@code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})}または
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}
+―@var{L}はリストです―は、目的からそれほど遠くありませんけれども。
 
 @code{remarray}は、
 通常の関数に対する@code{remfunction}のように、
 (記憶された関数値も含めて、)配列関数の定義を削除します。
 
-@code{kill(@mvar{a}[@mvar{x}])}は、配列関数@mvar{a}の引数@mvar{x}に関して記憶された
+@code{kill(@var{a}[@var{x}])}は、配列関数@var{a}の引数@var{x}に関して記憶された
 値を削除します;
-次回、引数@mvar{x}で@mvar{a}がコールされた時、
+次回、引数@var{x}で@var{a}がコールされた時、
 関数値は再計算されます。
 しかしながら、
-関数定義も削除する@code{kill(@mvar{a})}または@code{remarray(@mvar{a})}を除いて、
+関数定義も削除する@code{kill(@var{a})}または@code{remarray(@var{a})}を除いて、
 記憶された値すべてを一度に削除する方法はありません。
 
 @c -----------------------------------------------------------------------------
@@ -204,32 +204,32 @@ Inside functions, when the right hand side of a definition, may be computed at r
 
 @c -----------------------------------------------------------------------------
 @anchor{buildq}
-@deffn {関数} buildq (@mvar{L}, @mvar{expr})
+@deffn {関数} buildq (@var{L}, @var{expr})
 
-リスト@mvar{L}で指名された変数を式 @mvar{expr}に
-並列に代入します。@mvar{expr}は評価しません。
+リスト@var{L}で指名された変数を式 @var{expr}に
+並列に代入します。@var{expr}は評価しません。
 @code{buildq}が代入を実行した後、
 結果の式は整理はされますが、評価されません。
 
-@mvar{L}の要素はシンボルまたは割り当て式@code{@mvar{symbol}: @mvar{value}}です。
+@var{L}の要素はシンボルまたは割り当て式@code{@var{symbol}: @var{value}}です。
 割り当て式は並列に評価されます。
 すなわち、ある変数が割り当ての右辺へバインドされるのは、
 @code{buildq}がコールされた文脈でのバインドです。
-変数リスト@mvar{L}内でその変数がバインドされるのではありません。
-もし@mvar{L}の中のある変数に明示的な割り当てがないなら、
+変数リスト@var{L}内でその変数がバインドされるのではありません。
+もし@var{L}の中のある変数に明示的な割り当てがないなら、
 @code{buildq}でのバインドは、
 @code{buildq}がコールされた文脈でのそれと同じです。
 
-そして、@mvar{L}で指名された変数は並列に@mvar{expr}に代入されます。
+そして、@var{L}で指名された変数は並列に@var{expr}に代入されます。
 すなわち、すべての変数への代入は他の代入がされる前に決まります。
 だから、１つの変数の代入は他には一切効果を持ちません。
 
 もし
-任意の変数 @mvar{x}が @mvar{expr}の中で @code{splice (@mvar{x})}のように現れるなら、
-@mvar{x}はリストにバインドされなければいけませんし、
-リストは、代入の代わりに@mvar{expr} に接合(内挿)されます。
+任意の変数 @var{x}が @var{expr}の中で @code{splice (@var{x})}のように現れるなら、
+@var{x}はリストにバインドされなければいけませんし、
+リストは、代入の代わりに@var{expr} に接合(内挿)されます。
 
-@mvar{expr}の中の@mvar{L}に現れない任意の変数は、
+@var{expr}の中の@var{L}に現れない任意の変数は、
 たとえそれらが@code{buildq}がコールされた文脈の中でバインドを持っていても、
 逐語的に結果に繰り越されます。
 
@@ -281,7 +281,7 @@ Inside functions, when the right hand side of a definition, may be computed at r
 (%o2)                        2 a b c
 @end example
 
-@mvar{L}の中の変数は並列にバインドされます;
+@var{L}の中の変数は並列にバインドされます;
 もし順次バインドされたなら、
 最初の結果は、@code{foo (b, b)}になったはずです。
 代入は並列に実行されます;
@@ -350,13 +350,13 @@ Inside functions, when the right hand side of a definition, may be computed at r
 
 @c -----------------------------------------------------------------------------
 @anchor{macroexpand}
-@deffn {関数} macroexpand (@mvar{expr})
+@deffn {関数} macroexpand (@var{expr})
 
 @code{expr}がマクロ関数コールの時、
-@mvar{expr}のマクロ展開を、評価はせずに、返します。
-そうでなければ、@code{macroexpand}は@mvar{expr}を返します。
+@var{expr}のマクロ展開を、評価はせずに、返します。
+そうでなければ、@code{macroexpand}は@var{expr}を返します。
 
-もし@mvar{expr}の展開が別のマクロ関数コールをもたらすなら、
+もし@var{expr}の展開が別のマクロ関数コールをもたらすなら、
 そのマクロ関数コールも展開されます。
 
 @code{macroexpand}は引数をクォートします。
@@ -400,17 +400,17 @@ Inside functions, when the right hand side of a definition, may be computed at r
 
 @c -----------------------------------------------------------------------------
 @anchor{macroexpand1}
-@deffn {関数} macroexpand1 (@mvar{expr})
+@deffn {関数} macroexpand1 (@var{expr})
 
 @code{expr}がマクロ関数コールの時、
-@mvar{expr}のマクロ展開を、評価せずに、返します。
-そうでなければ、@code{macroexpand1}は@mvar{expr}を返します。
+@var{expr}のマクロ展開を、評価せずに、返します。
+そうでなければ、@code{macroexpand1}は@var{expr}を返します。
 
 @code{macroexpand}は引数をクォートします。
 しかしながら、もしマクロ関数コールの展開が副作用を持つなら，
 それらの副作用が実行されます。
 
-もし@mvar{expr}の展開が別のマクロ関数コールをもたらすなら、
+もし@var{expr}の展開が別のマクロ関数コールをもたらすなら、
 そのマクロ関数コールは展開されません。
 
 @code{::=}, @code{macros}, @code{macroexpand}も参照してください。
@@ -464,25 +464,25 @@ Inside functions, when the right hand side of a definition, may be computed at r
 
 @c -----------------------------------------------------------------------------
 @anchor{splice}
-@deffn {関数} splice (@mvar{a})
+@deffn {関数} splice (@var{a})
 
 @code{splice}が@code{buildq}内部に現れた時だけ、
-アトム@mvar{a}で指名されたリストを式に接合(内挿)します;
+アトム@var{a}で指名されたリストを式に接合(内挿)します;
 そうでなければ、@code{splice}は未定義関数として扱われます。
 もし
 @code{buildq}内部で
-@mvar{a}単独として(@code{splice}なしに)現れたら、
-@mvar{a}はリストとして、結果の中に代入されます(内挿されません)。
+@var{a}単独として(@code{splice}なしに)現れたら、
+@var{a}はリストとして、結果の中に代入されます(内挿されません)。
 @code{splice}の引数はアトムだけを取り得ます;
 リストリテラルやリストをもたらす式を取ることはできません。
 
 通常、@code{splice}は、関数や演算子の引数を提供します。
 関数@code{f}に対して、
-@code{buildq}内部の式@code{f (splice (@mvar{a}))}は、
-@code{f (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}に展開されます。
+@code{buildq}内部の式@code{f (splice (@var{a}))}は、
+@code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}に展開されます。
 演算子@code{o}に対して、
-@code{buildq}内部の式@code{"o" (splice (@mvar{a})}は、
-@code{"o" (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}に展開されます。
+@code{buildq}内部の式@code{"o" (splice (@var{a})}は、
+@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}に展開されます。
 ここで@code{o}は、任意のタイプの演算子を取り得ます(通常は複数の引数を取るものです)。
 演算子はダブルクォート@code{"}でくくられなければいけないことに注意してください。
 
@@ -523,12 +523,12 @@ Inside functions, when the right hand side of a definition, may be computed at r
 
 @c -----------------------------------------------------------------------------
 @anchor{apply}
-@deffn {関数} apply (@mvar{F}, [@mvar{x_1}, ..., @mvar{x_n}])
+@deffn {関数} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 
-@code{@mvar{F}(@mvar{x_1}, ..., @mvar{x_n})}を構成、評価します。
+@code{@var{F}(@var{x_1}, ..., @var{x_n})}を構成、評価します。
 
 @code{apply}は、配列関数を通常の関数と区別しようとはしません;
-@mvar{F}が配列関数の名前の時、@code{apply}は@code{@mvar{F}(...)}(カギ括弧の代わりに括弧での関数コール）を評価します。
+@var{F}が配列関数の名前の時、@code{apply}は@code{@var{F}(...)}(カギ括弧の代わりに括弧での関数コール）を評価します。
 @code{arrayapply}は、この場合、カギ括弧ありで関数コールを評価します。
 
 例:
@@ -547,7 +547,7 @@ Inside functions, when the right hand side of a definition, may be computed at r
 (%o2)                        - 10.2
 @end example
 
-@code{apply}は、たとえ関数@mvar{F}が引数をクォートする場合でも、引数を評価します。
+@code{apply}は、たとえ関数@var{F}が引数をクォートする場合でも、引数を評価します。
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -581,7 +581,7 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@code{apply}は関数名@mvar{F}を評価します。
+@code{apply}は関数名@var{F}を評価します。
 シングルクオート@code{'}は評価を無効にします。
 @code{demoivre}はグローバル変数の名前であり、また、関数でもあります。
 
@@ -611,25 +611,25 @@ Improper name or value in functional position.
 
 @c -----------------------------------------------------------------------------
 @anchor{block}
-@deffn  {関数} block ([@mvar{v_1}, ..., @mvar{v_m}], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {関数} block (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn  {関数} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} block (@var{expr_1}, ..., @var{expr_n})
 
-@code{block}は@mvar{expr_1}, ..., @mvar{expr_n}を順に評価し、評価された最後の式の値を返します。
+@code{block}は@var{expr_1}, ..., @var{expr_n}を順に評価し、評価された最後の式の値を返します。
 順序は@code{go}, @code{throw}, @code{return}関数によって変更することができます。
-最後の式は、@code{return}もしくは@code{throw}を含む式が評価されないなら、@mvar{expr_n}です。
-いくつかの変数@mvar{v_1}, ..., @mvar{v_m}がブロックにローカルに宣言できます;
+最後の式は、@code{return}もしくは@code{throw}を含む式が評価されないなら、@var{expr_n}です。
+いくつかの変数@var{v_1}, ..., @var{v_m}がブロックにローカルに宣言できます;
 これらは同じ名前のグローバル変数と区別されます。
 変数がローカルに宣言されないなら、リストは省略できます。
-ブロック内では、@mvar{v_1}, ..., @mvar{v_m}以外の変数はグローバル変数です。
+ブロック内では、@var{v_1}, ..., @var{v_m}以外の変数はグローバル変数です。
 
-@code{block}は（存在するなら）変数@mvar{v_1}, ..., @mvar{v_m}の現在の値を保存し、
+@code{block}は（存在するなら）変数@var{v_1}, ..., @var{v_m}の現在の値を保存し、
 変数がそれ自身に評価されるよう変数のバインドを解除します。
 ローカル変数はブロック内部で任意の値にバインドできますが、
 ブロックが終了するとき保存された値が戻され、
 ブロック内で割り当てられた値は失われます。
 
-@code{block}内部の宣言@code{local(@mvar{v_1}, ..., @mvar{v_m})}は
-シンボル@mvar{v_1}, ..., @mvar{v_m}に関連付けられた性質を保存し、
+@code{block}内部の宣言@code{local(@var{v_1}, ..., @var{v_m})}は
+シンボル@var{v_1}, ..., @var{v_m}に関連付けられた性質を保存し、
 他の式を評価する前に、性質を取り除き、ブロック終了時に元に戻します。
 いくつかの宣言は、@code{:=}、@code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
 @code{atomgrad}, @code{constant}, @code{nonscalar}その他を含むシンボルの性質として実装されます。
@@ -660,9 +660,9 @@ Improper name or value in functional position.
 
 @c -----------------------------------------------------------------------------
 @anchor{break}
-@deffn {関数} break (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {関数} break (@var{expr_1}, ..., @var{expr_n})
 
-@mvar{expr_1}, ..., @mvar{expr_n}を評価し、印字し、それから
+@var{expr_1}, ..., @var{expr_n}を評価し、印字し、それから
 ユーザーが環境を検査し変更できるところでMaximaブレイクを引き起こします。
 @code{exit;}をタイプすると、計算が再開されます。
 
@@ -676,9 +676,9 @@ Improper name or value in functional position.
 
 @c -----------------------------------------------------------------------------
 @anchor{catch}
-@deffn {関数} catch (@mvar{expr_1}, ..., @mvar{expr_n})
+@deffn {関数} catch (@var{expr_1}, ..., @var{expr_n})
 
-@mvar{expr_1}, ..., @mvar{expr_n}を１つずつ評価します;
+@var{expr_1}, ..., @var{expr_n}を１つずつ評価します;
 もしどれかが形式@code{throw (arg)}の式の評価に至るなら、
 @code{catch}の値は@code{throw (arg)}の値であり、もう式は評価されません。
 これの「非局所的リターン」は
@@ -688,7 +688,7 @@ Improper name or value in functional position.
 
 もし引数の評価が
 いかなる@code{throw}の評価にも至らないなら、
-@code{catch}の値は@mvar{expr_n}の値です。
+@code{catch}の値は@var{expr_n}の値です。
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -713,16 +713,16 @@ first negative element of
 
 @c -----------------------------------------------------------------------------
 @anchor{compfile}
-@deffn  {関数} compfile (@mvar{filename}, @mvar{f_1}, @dots{}, @mvar{f_n})
-@deffnx {関数} compfile (@mvar{filename}, functions)
-@deffnx {関数} compfile (@mvar{filename}, all)
+@deffn  {関数} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} compfile (@var{filename}, functions)
+@deffnx {関数} compfile (@var{filename}, all)
 
-Maxima関数をLispに翻訳し、翻訳したコードをファイル@mvar{filename}に書き込みます。
+Maxima関数をLispに翻訳し、翻訳したコードをファイル@var{filename}に書き込みます。
 
-@code{compfile(@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})}は
+@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})}は
 指定された関数を翻訳します。
-@code{compfile (@mvar{filename}, functions)}と
-@code{compfile (@mvar{filename}, all)}はユーザー定義関数をすべて翻訳します。
+@code{compfile (@var{filename}, functions)}と
+@code{compfile (@var{filename}, all)}はユーザー定義関数をすべて翻訳します。
 
 Lisp翻訳は評価されず、出力ファイルはLispコンパイラによって処理もされません。
 @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
@@ -749,11 +749,11 @@ Lisp翻訳は評価されず、出力ファイルはLispコンパイラによっ
 
 @c -----------------------------------------------------------------------------
 @anchor{compile}
-@deffn  {関数} compile (@mvar{f_1}, ..., @mvar{f_n})
+@deffn  {関数} compile (@var{f_1}, ..., @var{f_n})
 @deffnx {関数} compile (functions)
 @deffnx {関数} compile (all)
 
-Maxima関数@mvar{f_1}, ..., @mvar{f_n}をLispに翻訳し、
+Maxima関数@var{f_1}, ..., @var{f_n}をLispに翻訳し、
 Lisp翻訳を評価し、
 翻訳された関数それぞれについてLisp関数@code{COMPILE}をコールします。
 @code{compile}は、コンパイルされた関数名のリストを返します。
@@ -771,26 +771,26 @@ Lisp翻訳を評価し、
 
 @c -----------------------------------------------------------------------------
 @anchor{define}
-@deffn  {関数} define (@mvar{f}(@mvar{x_1}, @dots{}, @mvar{x_n}), @mvar{expr})
-@deffnx {関数} define (@mvar{f}[@mvar{x_1}, @dots{}, @mvar{x_n}], @mvar{expr})
-@deffnx {関数} define (funmake (@mvar{f}, [@mvar{x_1}, @dots{}, @mvar{x_n}]), @mvar{expr})
-@deffnx {関数} define (arraymake (@mvar{f}, [@mvar{x_1}, @dots{}, @mvar{x_n}]), @mvar{expr})
-@deffnx {関数} define (ev (@mvar{expr_1}), @mvar{expr_2})
+@deffn  {関数} define (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr})
+@deffnx {関数} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr})
+@deffnx {関数} define (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {関数} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {関数} define (ev (@var{expr_1}), @var{expr_2})
 
-引数@mvar{x_1}, @dots{}, @mvar{x_n}を持ち、
-@mvar{expr}の中身を持つ@mvar{f}という名前の関数を定義します。
+引数@var{x_1}, @dots{}, @var{x_n}を持ち、
+@var{expr}の中身を持つ@var{f}という名前の関数を定義します。
 @code{define}は、いつも（陽にクオートされていない限り）、２番目の引数を評価します。
 定義された関数は、（かっこでくくられた引数を持つ）通常のMaxima関数
 もしくは（カギ括弧でくくられた引数を持つ）配列関数です。
 
-最後の関数の引数@mvar{x_n}が要素１つのリストの時、
+最後の関数の引数@var{x_n}が要素１つのリストの時、
 @code{define}によって定義される関数は、可変な数の引数を受け入れます。
-実際の引数は、形式的な引数, @mvar{x_1}, ..., @mvar{x_(n - 1)}に１対１に割り当てられます。
-実際の引数がさらに存在するなら@mvar{x_n}にリストとして割り当てられます。
+実際の引数は、形式的な引数, @var{x_1}, ..., @var{x_(n - 1)}に１対１に割り当てられます。
+実際の引数がさらに存在するなら@var{x_n}にリストとして割り当てられます。
 
-@code{define}の最初の引数が@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})}もしくは
-@code{@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}]}の形の式の時、
-関数の引数は評価されますが、既にその名前の関数や変数があったとしても@mvar{f}は評価されません。
+@code{define}の最初の引数が@code{@var{f}(@var{x_1}, ..., @var{x_n})}もしくは
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]}の形の式の時、
+関数の引数は評価されますが、既にその名前の関数や変数があったとしても@var{f}は評価されません。
 
 最初の引数が演算子@code{funmake}もしくは@code{arraymake}, @code{ev}を伴う式の時、
 最初の引数は評価されます；これは、本体だけでなく、関数名が計算されることを許します。
@@ -800,7 +800,7 @@ Lisp翻訳を評価し、
 しかしながら、@code{local(f)}は、関数@code{f}の定義を、
 @code{local}が現れたブロックや他の合成式内部でのみ有効とします。
 
-もしある形式的な引数@mvar{x_k}が（評価の後）クォートされたシンボルならば、
+もしある形式的な引数@var{x_k}が（評価の後）クォートされたシンボルならば、
 @code{define}によって定義される関数は、対応する実際の引数を評価しません。
 そうでければ、すべての実際の引数は評価されます。
 
@@ -844,7 +844,7 @@ Lisp翻訳を評価し、
                        x, y
 @end example
 
-最後の、または唯一の引数@mvar{x_n}が１要素のリストの時、
+最後の、または唯一の引数@var{x_n}が１要素のリストの時、
 @code{define}が定義した関数は可変の数の引数を受け付けます。
 
 @c ===beg===
@@ -892,11 +892,11 @@ Lisp翻訳を評価し、
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {関数} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode}, @mvar{documentation})
+@c @deffn {関数} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 
 @c -----------------------------------------------------------------------------
 @anchor{define_variable}
-@deffn {関数} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
+@deffn {関数} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 グローバル変数をMaxima環境に導入します。
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable
@@ -908,21 +908,21 @@ Lisp翻訳を評価し、
 
 @enumerate
 @item
-@code{mode_declare (@mvar{name}, @mvar{mode})}は、
-@mvar{name}のモードを翻訳器に宣言します。
+@code{mode_declare (@var{name}, @var{mode})}は、
+@var{name}のモードを翻訳器に宣言します。
 可能なモードのリストについては、@code{mode_declare}を参照してください。
 
 @item
-もし変数がバインドされていなければ、@mvar{default_value}が@mvar{name}に割り当てられます。
+もし変数がバインドされていなければ、@var{default_value}が@var{name}に割り当てられます。
 
 @item
-@code{declare (@mvar{name}, special)}はそれをspecialと宣言します。
+@code{declare (@var{name}, special)}はそれをspecialと宣言します。
 @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
-@mvar{name}が宣言されたモードのただ１つの割り当てられた値であることを
+@var{name}が宣言されたモードのただ１つの割り当てられた値であることを
 保証するために、
-@mvar{name}をテスト関数に関連づけます。
+@var{name}をテスト関数に関連づけます。
 
 @end enumerate
 
@@ -1052,10 +1052,10 @@ Cannot assign to `baz_quux'.
 
 @c -----------------------------------------------------------------------------
 @anchor{dispfun}
-@deffn  {関数} dispfun (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn  {関数} dispfun (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} dispfun (all)
 
-ユーザー定義関数@mvar{f_1}, ..., @mvar{f_n}の定義を表示します。
+ユーザー定義関数@var{f_1}, ..., @var{f_n}の定義を表示します。
 引数それぞれは、(@code{::=}で定義された)マクロ名、
 (@code{:=}や@code{define}で定義された)通常の関数、
 (@code{:=}y@code{define}で定義された、しかし引数をカギ括弧@code{[ ]}でくくった)
@@ -1157,7 +1157,7 @@ Cannot assign to `baz_quux'.
 
 @c -----------------------------------------------------------------------------
 @anchor{fullmap}
-@deffn {関数} fullmap (@mvar{f}, @mvar{expr_1}, @dots{})
+@deffn {関数} fullmap (@var{f}, @var{expr_1}, @dots{})
 
 @code{map}と似ていますが、@code{fullmap}は、主演算子が同じでなくなるまで、
 部分式すべてに再帰的にマッピングを続けます。
@@ -1189,7 +1189,7 @@ Cannot assign to `baz_quux'.
 
 @c -----------------------------------------------------------------------------
 @anchor{fullmapl}
-@deffn {関数} fullmapl (@mvar{f}, @mvar{list_1}, @dots{})
+@deffn {関数} fullmapl (@var{f}, @var{list_1}, @dots{})
 
 @code{fullmap}に似ていますが、@code{fullmapl}はリストや行列にのみマップします。
 
@@ -1274,9 +1274,9 @@ Lisp関数はどのリストにも保持されません。
 
 @c -----------------------------------------------------------------------------
 @anchor{fundef}
-@deffn {関数} fundef (@mvar{f})
+@deffn {関数} fundef (@var{f})
 
-関数@mvar{f}の定義を返します。
+関数@var{f}の定義を返します。
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 引数は、(@code{::=}で定義された）マクロの名前か、
@@ -1288,8 +1288,8 @@ Lisp関数はどのリストにも保持されません。
 @code{fundef}は引数をクォートします;
 クォートクォート演算子@code{'@w{}'}はクォートに優先します。
 
-@code{fundef (@mvar{f})}は@mvar{f}の定義を返します。
-対照的に、@code{dispfun (@mvar{f})}は中間式ラベルを生成し、ラベルに定義を割り当てます。
+@code{fundef (@var{f})}は@var{f}の定義を返します。
+対照的に、@code{dispfun (@var{f})}は中間式ラベルを生成し、ラベルに定義を割り当てます。
 
 @c PROBABLY NEED SOME EXAMPLES HERE
 @opencatbox
@@ -1299,15 +1299,15 @@ Lisp関数はどのリストにも保持されません。
 
 @c -----------------------------------------------------------------------------
 @anchor{funmake}
-@deffn {関数} funmake (@mvar{F}, [@mvar{arg_1}, @dots{}, @mvar{arg_n}])
+@deffn {関数} funmake (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
 
-式@code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}を返します。
+式@code{@var{F}(@var{arg_1}, ..., @var{arg_n})}を返します。
 戻り値は整理されますが、評価されません。
-だから関数@mvar{F}はたとえ存在してもコールされません。
+だから関数@var{F}はたとえ存在してもコールされません。
 
 @code{funmake}は配列関数と通常の関数を区別しようとしません;
-@mvar{F}が配列関数名の時、
-@code{funmake}は@code{@mvar{F}(...)}を返します
+@var{F}が配列関数名の時、
+@code{funmake}は@code{@var{F}(...)}を返します
 (すなわち、カギ括弧の代わりに括弧での関数コール)。
 @code{arraymake}は、この場合，カギ括弧での関数コールを返します。
 
@@ -1435,18 +1435,18 @@ Maximaは@code{funmake}の戻り値を整理します。
 
 @c -----------------------------------------------------------------------------
 @anchor{lambda}
-@deffn  {関数} lambda ([@mvar{x_1}, ..., @mvar{x_m}], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {関数} lambda ([[@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
-@deffnx {関数} lambda ([@mvar{x_1}, ..., @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffn  {関数} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
 ラムダ式 (すなわち、匿名関数)を定義し返します。
-関数は要求された引数@mvar{x_1}, ..., @mvar{x_m}を持ち、
-また、オプション引数@mvar{L}を持つかもしれません。オプション引数は関数本体の中にリストとして現れます。
-関数の戻り値は@mvar{expr_n}です。
+関数は要求された引数@var{x_1}, ..., @var{x_m}を持ち、
+また、オプション引数@var{L}を持つかもしれません。オプション引数は関数本体の中にリストとして現れます。
+関数の戻り値は@var{expr_n}です。
 ラムダ式は変数に割り当てることができ、通常の関数のように評価できます。
 ラムダ式は関数名が期待されるいくつかのコンテキストで現れるかもしれません。
 
 関数が評価される時、
-バインドされていないローカル変数@mvar{x_1}, ..., @mvar{x_m}が生成されます。
+バインドされていないローカル変数@var{x_1}, ..., @var{x_m}が生成されます。
 @code{lambda}は
 @code{block}の中や別の@code{lambda}の中で現れるかもしれません;
 ローカル変数は、別の@code{block}や@code{lambda}が評価される度に毎回確立されます。
@@ -1457,14 +1457,14 @@ Maximaは@code{funmake}の戻り値を整理します。
 このポリシーは「動的スコープ」の普通の理解と一致するかもしれません。
 
 ローカル変数が確立された後、
-@mvar{expr_1}から@mvar{expr_n}までが順に評価されます。
+@var{expr_1}から@var{expr_n}までが順に評価されます。
 特殊変数@code{%%}―直前の式の値を表します―が認識されます。
 @code{throw}と@code{catch}も式のリストの中に現れるかもしれません。
 
 @code{block}で囲まれない限り
 @code{return}はラムダ式の中には現れません。
 @code{block}で囲まれた場合、
-ブロックがたまたま @mvar{expr_n}に至るということでない限り、
+ブロックがたまたま @var{expr_n}に至るということでない限り、
 @code{return}はラムダ式の戻り値ではなくブロックの戻り値を定義します。
 同様に、@code{go}は、@code{block}で囲まれない限りラムダ式の中に現れません。
 
@@ -1605,7 +1605,7 @@ Maximaは@code{funmake}の戻り値を整理します。
 @itemize @bullet
 @item
 ラムダ式は、可変の数の引数を取ることができます。
-それは、唯一のまたは最後の引数として@code{[@mvar{L}]}で指定されます。
+それは、唯一のまたは最後の引数として@code{[@var{L}]}で指定されます。
 引数は関数本体の中にリストとして現れます。
 @end itemize
 
@@ -1635,9 +1635,9 @@ Maximaは@code{funmake}の戻り値を整理します。
 
 @c -----------------------------------------------------------------------------
 @anchor{local}
-@deffn {関数} local (@mvar{v_1}, @dots{}, @mvar{v_n})
+@deffn {関数} local (@var{v_1}, @dots{}, @var{v_n})
 
-シンボル@mvar{v_1}, ..., @mvar{v_n}に関連付けられた性質を保存し、
+シンボル@var{v_1}, ..., @var{v_n}に関連付けられた性質を保存し、
 他の式を評価する前にすべての性質を取り除き、
 @code{local}が現れたブロックや他の合成式の終了時に保存した性質を元に戻します。
 
@@ -1912,7 +1912,7 @@ x + 99 is equal to x
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_declare}
-@deffn {関数} mode_declare (@mvar{y_1}, @mvar{mode_1}, @dots{}, @mvar{y_n}, @mvar{mode_n})
+@deffn {関数} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
 
 @code{mode_declare}は、
 その後の関数の翻訳やコンパイルのために
@@ -1981,7 +1981,7 @@ mode_declare ([function (f_1, f_2, ...)], fixnum)
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_identity}
-@deffn {関数} mode_identity (@mvar{arg_1}, @mvar{arg_2})
+@deffn {関数} mode_identity (@var{arg_1}, @var{arg_2})
 
 @code{mode_declare}と@code{macros}で
 例えば、flonumsのリストのリストや他の合成データオブジェクトを宣言するのに
@@ -2013,10 +2013,10 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, x));
 
 @c -----------------------------------------------------------------------------
 @anchor{remfunction}
-@deffn  {関数} remfunction (@mvar{f_1}, ..., @mvar{f_n})
+@deffn  {関数} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {関数} remfunction (all)
 
-シンボル@mvar{f_1}, ..., @mvar{f_n}の関数定義をアンバインドします。
+シンボル@var{f_1}, ..., @var{f_n}の関数定義をアンバインドします。
 引数は、（@code{:=}もしくは@code{define}で生成された）通常の関数名もしくは（@code{::=}で生成された）マクロ関数をとります。
 
 @code{remfunction (all)}は関数定義すべてをアンバインドします。
@@ -2075,11 +2075,11 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, x));
 
 @c -----------------------------------------------------------------------------
 @anchor{translate}
-@deffn {関数} translate (@mvar{f_1}, @dots{}, @mvar{f_n})
+@deffn {関数} translate (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {関数} translate (functions)
 @deffnx {関数} translate (all)
 
-ユーザー定義関数@mvar{f_1}, @dots{}, @mvar{f_n}をMaxima言語からLispに翻訳し、
+ユーザー定義関数@var{f_1}, @dots{}, @var{f_n}をMaxima言語からLispに翻訳し、
 Lisp翻訳を評価します。
 通常、翻訳された関数は元の関数より速く実行されます。
 
@@ -2098,8 +2098,8 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @noindent
 
-ここで、@mvar{x_1}, @mvar{x_2}, ... は関数のパラメータであり、
-@mvar{v_1}, @mvar{v_2}, ...はローカル変数です。
+ここで、@var{x_1}, @var{x_2}, ... は関数のパラメータであり、
+@var{v_1}, @var{v_2}, ...はローカル変数です。
 
 もし@code{savedef}が@code{false}なら(以下を参照してください)
 翻訳された関数の名前は、@code{functions}リストから削除され、
@@ -2145,8 +2145,8 @@ LispとMaximaのバージョンの間である非互換性が存在する可能�
 
 @c -----------------------------------------------------------------------------
 @anchor{translate_file}
-@deffn  {関数} translate_file (@mvar{maxima_filename})
-@deffnx {関数} translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})
+@deffn  {関数} translate_file (@var{maxima_filename})
+@deffnx {関数} translate_file (@var{maxima_filename}, @var{lisp_filename})
 
 MaximaコードのファイルをLispコードのファイルに翻訳します。
 @code{translate_file}は３つのファイル名のリストを返します:
@@ -2158,15 +2158,15 @@ Maximaファイル名、Lispファイル名、翻訳についての追加情報�
 コマンド@code{batch ("foo.mac")}と同じです。
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-@code{translate_file (@mvar{maxima_filename})}は
-Maximaファイル@mvar{maxima_filename}を
+@code{translate_file (@var{maxima_filename})}は
+Maximaファイル@var{maxima_filename}を
 同様に名付けらたLispファイルに翻訳します。
 例えば、@code{foo.mac}は@code{foo.LISP}に翻訳されます。
 Maximaのファイル名はディレクトリ名を含むかもしれません。
 その場合、Lisp出力ファイルは、Maxima入力が来たのと同じディレクトリに書かれます。
 
-@code{translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})}は、
-Maximaファイル@mvar{maxima_filename}をLispファイル@mvar{lisp_filename}に翻訳します。
+@code{translate_file (@var{maxima_filename}, @var{lisp_filename})}は、
+Maximaファイル@var{maxima_filename}をLispファイル@var{lisp_filename}に翻訳します。
 @code{translate_file}は、どんなものでも、@code{lisp_filename}の
 ファイル名の拡張子を無視します;
 Lisp出力ファイルのファイル名の拡張子は、いつも@code{LISP}です。
@@ -2502,11 +2502,11 @@ FEXPRは、通常、翻訳コードの中で出力されるべきではありま
 
 @c -----------------------------------------------------------------------------
 @anchor{compile_file}
-@deffn  {関数} compile_file (@mvar{filename})
-@deffnx {関数} compile_file (@mvar{filename}, @mvar{compiled_filename})
-@deffnx {関数} compile_file (@mvar{filename}, @mvar{compiled_filename}, @mvar{lisp_filename})
+@deffn  {関数} compile_file (@var{filename})
+@deffnx {関数} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {関数} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 
-Maximaファイル@mvar{filename}をLispに翻訳し、Lispコンパイラを実行し、
+Maximaファイル@var{filename}をLispに翻訳し、Lispコンパイラを実行し、
 もし翻訳とコンパイルが成功したら、コンパイルされたコードをMaximaにロードします。
 
 @code{compile_file}は４つのファイル名のリストを返します:
@@ -2535,7 +2535,7 @@ Lispコードがコンパイルされると(コンパイルされたコードを
 @c the compilation succeeded. This is a bug. 
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@mvar{filename}は@code{:lisp}文を含むことができません。
+@var{filename}は@code{:lisp}文を含むことができません。
 
 @code{compile_file}は引数を評価します。
 
@@ -2548,7 +2548,7 @@ Lispコードがコンパイルされると(コンパイルされたコードを
 
 @c -----------------------------------------------------------------------------
 @anchor{declare_translated}
-@deffn {関数} declare_translated (@mvar{f_1}, @mvar{f_2}, @dots{})
+@deffn {関数} declare_translated (@var{f_1}, @var{f_2}, @dots{})
 
 MaximaコードのファイルをLispに翻訳する時、
 ファイルの中で見る関数が翻訳された関数としてコールされるか、コンパイルされた関数としてコールされるか、また、どの関数がMaxima関数か未定義なのか、翻訳器が知ることは重要です。

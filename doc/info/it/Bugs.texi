@@ -6,9 +6,9 @@
 @section Definitions for Bug Detection and Reporting
 
 @deffn {Function} run_testsuite ()
-@deffnx {Function} run_testsuite (@mvar{boolean})
-@deffnx {Function} run_testsuite (@mvar{boolean}, @mvar{boolean})
-@deffnx {Function} run_testsuite (@mvar{boolean}, @mvar{boolean}, @mvar{list})
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

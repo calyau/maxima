@@ -7,9 +7,9 @@
 @section Funciones y variables para f90
 
 
-@deffn {Funci@'on} f90 (@mvar{expr_1}, @dots{}, @mvar{expr_n})
+@deffn {Funci@'on} f90 (@var{expr_1}, @dots{}, @var{expr_n})
 
-Imprime una o m@'as expresiones @mvar{expr_1}, @dots{}, @mvar{expr_n}
+Imprime una o m@'as expresiones @var{expr_1}, @dots{}, @var{expr_n}
 como un programa Fortran 90. El programa se obtiene a trav@'es de
 la salida est@'andar.
 

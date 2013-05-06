@@ -133,7 +133,7 @@ that governs the distribution of Maxima.
 
 @section Functions and Variables for Elliptic Functions
 
-@deffn {Function} jacobi_sn (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_sn (@var{u}, @var{m})
 The Jacobian elliptic function @math{sn(u,m)}.
 
 @opencatbox
@@ -141,7 +141,7 @@ The Jacobian elliptic function @math{sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_cn (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_cn (@var{u}, @var{m})
 The Jacobian elliptic function @math{cn(u,m)}.
 
 @opencatbox
@@ -149,7 +149,7 @@ The Jacobian elliptic function @math{cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_dn (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_dn (@var{u}, @var{m})
 The Jacobian elliptic function @math{dn(u,m)}.
 
 @opencatbox
@@ -157,7 +157,7 @@ The Jacobian elliptic function @math{dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_ns (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_ns (@var{u}, @var{m})
 The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
 
 @opencatbox
@@ -165,7 +165,7 @@ The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_sc (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_sc (@var{u}, @var{m})
 The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 
 @opencatbox
@@ -173,7 +173,7 @@ The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_sd (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_sd (@var{u}, @var{m})
 The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 
 @opencatbox
@@ -181,7 +181,7 @@ The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_nc (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_nc (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 
 @opencatbox
@@ -189,7 +189,7 @@ The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_cs (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_cs (@var{u}, @var{m})
 The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 
 @opencatbox
@@ -197,7 +197,7 @@ The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_cd (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_cd (@var{u}, @var{m})
 The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 
 @opencatbox
@@ -205,7 +205,7 @@ The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_nd (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_nd (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 
 @opencatbox
@@ -213,7 +213,7 @@ The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_ds (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_ds (@var{u}, @var{m})
 The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 
 @opencatbox
@@ -221,7 +221,7 @@ The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} jacobi_dc (@mvar{u}, @mvar{m})
+@deffn {Function} jacobi_dc (@var{u}, @var{m})
 The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 
 @opencatbox
@@ -229,7 +229,7 @@ The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_sn (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sn(u,m)}.
 
 @opencatbox
@@ -237,7 +237,7 @@ The inverse of the Jacobian elliptic function @math{sn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_cn (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cn(u,m)}.
 
 @opencatbox
@@ -245,7 +245,7 @@ The inverse of the Jacobian elliptic function @math{cn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_dn (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dn(u,m)}.
 
 @opencatbox
@@ -253,7 +253,7 @@ The inverse of the Jacobian elliptic function @math{dn(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_ns (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_ns (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ns(u,m)}.
 
 @opencatbox
@@ -261,7 +261,7 @@ The inverse of the Jacobian elliptic function @math{ns(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_sc (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_sc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sc(u,m)}.
 
 @opencatbox
@@ -269,7 +269,7 @@ The inverse of the Jacobian elliptic function @math{sc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_sd (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_sd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sd(u,m)}.
 
 @opencatbox
@@ -277,7 +277,7 @@ The inverse of the Jacobian elliptic function @math{sd(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_nc (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_nc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 
 @opencatbox
@@ -285,7 +285,7 @@ The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_cs (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_cs (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cs(u,m)}.
 
 @opencatbox
@@ -293,7 +293,7 @@ The inverse of the Jacobian elliptic function @math{cs(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_cd (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_cd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cd(u,m)}.
 
 @opencatbox
@@ -301,7 +301,7 @@ The inverse of the Jacobian elliptic function @math{cd(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_nd (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_nd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 
 @opencatbox
@@ -309,7 +309,7 @@ The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_ds (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_ds (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ds(u,m)}.
 
 @opencatbox
@@ -317,7 +317,7 @@ The inverse of the Jacobian elliptic function @math{ds(u,m)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} inverse_jacobi_dc (@mvar{u}, @mvar{m})
+@deffn {Function} inverse_jacobi_dc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 
 @opencatbox
@@ -332,7 +332,7 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @section Functions and Variables for Elliptic Integrals
 
 @anchor{elliptic_f}
-@deffn {Function} elliptic_f (@mvar{phi}, @mvar{m})
+@deffn {Function} elliptic_f (@var{phi}, @var{m})
 The incomplete elliptic integral of the first kind, defined as
 
 @ifhtml
@@ -354,7 +354,7 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 @end deffn
 
 @anchor{elliptic_e}
-@deffn {Function} elliptic_e (@mvar{phi}, @mvar{m})
+@deffn {Function} elliptic_e (@var{phi}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
@@ -375,7 +375,7 @@ See also @ref{elliptic_e} and @ref{elliptic_ec}.
 @end deffn
 
 @anchor{elliptic_eu}
-@deffn {Function} elliptic_eu (@mvar{u}, @mvar{m})
+@deffn {Function} elliptic_eu (@var{u}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
@@ -414,7 +414,7 @@ See also @ref{elliptic_e}.
 @closecatbox
 @end deffn
 
-@deffn {Function} elliptic_pi (@mvar{n}, @mvar{phi}, @mvar{m})
+@deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
 The incomplete elliptic integral of the third kind, defined as
 
 @ifhtml
@@ -435,7 +435,7 @@ Only the derivative with respect to @math{phi} is known by Maxima.
 @end deffn
 
 @anchor{elliptic_kc}
-@deffn {Function} elliptic_kc (@mvar{m})
+@deffn {Function} elliptic_kc (@var{m})
 The complete elliptic integral of the first kind, defined as
 
 @ifhtml
@@ -457,7 +457,7 @@ terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @end deffn
 
 @anchor{elliptic_ec}
-@deffn {Function} elliptic_ec (@mvar{m})
+@deffn {Function} elliptic_ec (@var{m})
 The complete elliptic integral of the second kind, defined as
 
 @ifhtml

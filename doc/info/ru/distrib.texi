@@ -19,8 +19,8 @@
 
 Далее следует краткий обзор основных понятий по вероятностным распределениям.
 
-Пусть @math{f(x)} есть @mvar{функция плотности вероятности} непрерывной случайной величины @math{X}. 
-Тогда @mvar{функция распределения} определяется как
+Пусть @math{f(x)} есть @var{функция плотности вероятности} непрерывной случайной величины @math{X}. 
+Тогда @var{функция распределения} определяется как
 @ifnottex
 @example
                        x
@@ -35,9 +35,9 @@
 @tex
 $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 @end tex
-что равно вероятности @mvar{Pr(X <= x)}
+что равно вероятности @var{Pr(X <= x)}
 
-@mvar{Среднее} значение характеризует локализацию и определено как
+@var{Среднее} значение характеризует локализацию и определено как
 @ifnottex
 @example
                      inf
@@ -53,7 +53,7 @@ $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 $$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
 @end tex
 
-@mvar{Дисперсия} характеризует изменчивость распределения
+@var{Дисперсия} характеризует изменчивость распределения
 @ifnottex
 @example
                  inf
@@ -70,9 +70,9 @@ $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
  -E\left[X\right]\right)^2\;dx}$$
 @end tex
 что есть положительное вещественное число. Квадратный корень дисперсии называется 
-@mvar{стандартным отклонением}, @math{D[X]=sqrt(V[X])}, и является иной мерой изменчивости.
+@var{стандартным отклонением}, @math{D[X]=sqrt(V[X])}, и является иной мерой изменчивости.
 
-@mvar{Коэффициент асимметрии} является мерой асимметрии распределения
+@var{Коэффициент асимметрии} является мерой асимметрии распределения
 @ifnottex
 @example
                  inf
@@ -89,7 +89,7 @@ $$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 
-@mvar{Коэффициент куртозиса} является мерой остроты распределения
+@var{Коэффициент куртозиса} является мерой остроты распределения
 @ifnottex
 @example
                  inf
@@ -109,7 +109,7 @@ $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
 Фактически, коэффициенты асимметрии и куртозиса являются 
 параметрами формы и измеряют степень не-гауссовости распределения.
 
-Если случайная переменная @math{X} является дискретной, то плотность, или @mvar{вероятность}, 
+Если случайная переменная @math{X} является дискретной, то плотность, или @var{вероятность}, 
 @math{f(x)} принимает положительные значения на некотором счетном множестве чисел @math{x_i}, 
 и равна нулю в противном случае. В этом случае функция распределения есть 
 @ifnottex
@@ -207,8 +207,8 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 
 Пакет @code{distrib} включает функции для моделирования случайных переменных. 
 Некоторые из этих функций используют управляющие переменные, указывающие используемый алгоритм.
-В большинстве случаев реализован общий метод обращения, который основан на факте, что если @mvar{u} случайная
-величина с равномерным распределением в интервале @math{(0,1)}, то @mvar{F^(-1)(u)} есть случайная величина
+В большинстве случаев реализован общий метод обращения, который основан на факте, что если @var{u} случайная
+величина с равномерным распределением в интервале @math{(0,1)}, то @var{F^(-1)(u)} есть случайная величина
 с распределением @math{F}.  Этот метод недостаточно эффективен с точки зрения времени вычисления,
 но полезен для сравнения с другими алгоритмами. В этом примере сравнивается производительность алгоритмов 
 @code{ahrens_cheng} и @code{inverse} при вычислении гистограмм для Хи-квадрат случайной переменной:
@@ -284,10 +284,10 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end example
 
 Например, @code{pdf_student_t(x,n)} -- плотность распределения Стьюдента
-с @mvar{n} степенями свободы, @code{std_pareto(a,b)} 
--- стандартное отклонение распределения Парето с параметрами @mvar{a} и @mvar{b}, 
+с @var{n} степенями свободы, @code{std_pareto(a,b)} 
+-- стандартное отклонение распределения Парето с параметрами @var{a} и @var{b}, 
 и @code{kurtosis_poisson(m)} -- коэффициент куртозиса распределения Пуассона 
-со средним @mvar{m}.
+со средним @var{m}.
 
 
 Для использования пакет @code{distrib} необходимо загрузить командой
@@ -295,7 +295,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 (%i1) load(distrib)$
 @end example
 
-Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу @mvar{'mario AT edu DOT xunta DOT es'}.
+Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу @var{'mario AT edu DOT xunta DOT es'}.
 
 @opencatbox
 @category{Статистические функции} @category{Пакеты библиотеки share} @category{Пакет distrib}
@@ -306,9 +306,9 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @section Функции и переменные для непрерывных распределений
 
 
-@deffn {Функция} pdf_normal (@mvar{x},@mvar{m},@mvar{s})
+@deffn {Функция} pdf_normal (@var{x},@var{m},@var{s})
 Возвращает значение функции плотности вероятности нормального распределения @math{Normal(m,s)}
-с @math{s>0} в точке @mvar{x}.
+с @math{s>0} в точке @var{x}.
 
 Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
 
@@ -319,9 +319,9 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} cdf_normal (@mvar{x},@mvar{m},@mvar{s})
+@deffn {Функция} cdf_normal (@var{x},@var{m},@var{s})
 Возвращает значение функции распределения нормального распределения @math{Normal(m,s)}
-с @math{s>0} в точке @mvar{x}.
+с @math{s>0} в точке @var{x}.
 
 Эта функция определена в терминах встроенной Maxima функции @code{erf}.
 
@@ -348,10 +348,10 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} quantile_normal (@mvar{q},@mvar{m},@mvar{s})
-Возвращает @mvar{q}-квантиль нормального распределения @math{Normal(m,s)} с @math{s>0}, 
+@deffn {Функция} quantile_normal (@var{q},@var{m},@var{s})
+Возвращает @var{q}-квантиль нормального распределения @math{Normal(m,s)} с @math{s>0}, 
 т.е. значение функции обратной @code{cdf_normal}.
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}.
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
 Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
 
@@ -362,8 +362,8 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} mean_normal (@mvar{m},@mvar{s})
-Возвращает среднее значение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @mvar{m}.
+@deffn {Функция} mean_normal (@var{m},@var{s})
+Возвращает среднее значение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{m}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -374,8 +374,8 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} var_normal (@mvar{m},@mvar{s})
-Возвращает дисперсию нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @mvar{s^2}.
+@deffn {Функция} var_normal (@var{m},@var{s})
+Возвращает дисперсию нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{s^2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -385,8 +385,8 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 @end deffn
 
-@deffn {Функция} std_normal (@mvar{m},@mvar{s})
-Возвращает стандартное отклонение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @mvar{s}.
+@deffn {Функция} std_normal (@var{m},@var{s})
+Возвращает стандартное отклонение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{s}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -397,7 +397,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} skewness_normal (@mvar{m},@mvar{s})
+@deffn {Функция} skewness_normal (@var{m},@var{s})
 Возвращает коэффициент асимметрии нормального распределения @math{Normal(m,s)} с @math{s>0},
 котрый всегда равен 0.
 
@@ -410,7 +410,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} kurtosis_normal (@mvar{m},@mvar{s})
+@deffn {Функция} kurtosis_normal (@var{m},@var{s})
 Возвращает коэффициент куртозиса нормального распределения @math{Normal(m,s)} с @math{s>0},
 котрый всегда равен 0.
 
@@ -431,7 +431,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @itemize @bullet
 @item
 @code{box_mueller} -- основан на алгоритме описанном в Knuth, D.E. (1981) 
-@mvar{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
+@var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
 @item
 @code{inverse} -- основан на общем методе обращения.
@@ -446,10 +446,10 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end defvr
 
 
-@deffn {Функция} random_normal (@mvar{m},@mvar{s})
-@deffnx {Функция} random_normal (@mvar{m},@mvar{s},@mvar{n})
+@deffn {Функция} random_normal (@var{m},@var{s})
+@deffnx {Функция} random_normal (@var{m},@var{s},@var{n})
 Возвращает значение симулированной случайной переменной нормального распределения @math{Normal(m,s)} с @math{s>0}. 
-Вызов @code{random_normal} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_normal} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для этой функции реализовано два алгоритма. 
 Используемый алгоритм определяется значением глобальной переменной
@@ -466,8 +466,8 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} pdf_student_t (@mvar{x},@mvar{n})
-Возвращает значение функции плотности вероятности распределения Стюдента @math{t(n)} с @math{n>0} в точке @mvar{x}.
+@deffn {Функция} pdf_student_t (@var{x},@var{n})
+Возвращает значение функции плотности вероятности распределения Стюдента @math{t(n)} с @math{n>0} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -478,8 +478,8 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} cdf_student_t (@mvar{x},@mvar{n})
-Возвращает значение функции распределения Стюдента @math{t(n)} с @math{n>0} в точке @mvar{x}.
+@deffn {Функция} cdf_student_t (@var{x},@var{n})
+Возвращает значение функции распределения Стюдента @math{t(n)} с @math{n>0} в точке @var{x}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -507,10 +507,10 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} quantile_student_t (@mvar{q},@mvar{n})
-Возвращает @mvar{q}-квантиль распределения Стюдента @math{t(n)} с @math{n>0}, 
+@deffn {Функция} quantile_student_t (@var{q},@var{n})
+Возвращает @var{q}-квантиль распределения Стюдента @math{t(n)} с @math{n>0}, 
 т.е. значение функции обратной @code{cdf_student_t}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -521,7 +521,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} mean_student_t (@mvar{n})
+@deffn {Функция} mean_student_t (@var{n})
 Возвращает среднее значение распределения Стюдента @math{t(n)} с @math{n>0}, 
 которое всегда равное 0.
 
@@ -534,7 +534,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} var_student_t (@mvar{n})
+@deffn {Функция} var_student_t (@var{n})
 Возвращает дисперсию распределения Стюдента @math{t(n)} с @math{n>2}. 
 
 @c ===beg===
@@ -556,7 +556,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} std_student_t (@mvar{n})
+@deffn {Функция} std_student_t (@var{n})
 Возвращает стандартное отклонение распределения Стюдента @math{t(n)} с @math{n>2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -568,7 +568,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} skewness_student_t (@mvar{n})
+@deffn {Функция} skewness_student_t (@var{n})
 Возвращает коэффициент ассиметрии распределения Стюдента @math{t(n)} с @math{n>3},
 который всегда равен 0.
 
@@ -581,7 +581,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end deffn
 
 
-@deffn {Функция} kurtosis_student_t (@mvar{n})
+@deffn {Функция} kurtosis_student_t (@var{n})
 Возвращает коэффициент куртозиса распределения Стюдента @math{t(n)} с @math{n>4}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -604,9 +604,9 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 
 @item
-@code{ratio} -- основан на факте, что если @mvar{Z} есть нормальная
+@code{ratio} -- основан на факте, что если @var{Z} есть нормальная
 случайная переменная @math{N(0,1)} и @math{S^2} есть Хи-квадрат случайная переменная
-с @mvar{n} степенями свободы @math{Chi^2(n)}, то
+с @var{n} степенями свободы @math{Chi^2(n)}, то
 @ifhtml
 @example
                            Z
@@ -630,7 +630,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-есть случайная переменная распределения Стюдента @math{t(n)} с @mvar{n} степенями свободы.
+есть случайная переменная распределения Стюдента @math{t(n)} с @var{n} степенями свободы.
 @end itemize
 
 См. также @code{random_student_t}.
@@ -642,10 +642,10 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end defvr
 
 
-@deffn {Функция} random_student_t (@mvar{n})
-@deffnx {Функция} random_student_t (@mvar{n},@mvar{m})
+@deffn {Функция} random_student_t (@var{n})
+@deffnx {Функция} random_student_t (@var{n},@var{m})
 Возвращает значение симулированной случайной переменной распределение Стьюдента @math{t(n)} с @math{n>0}. 
-Вызов @code{random_student_t} со вторым аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+Вызов @code{random_student_t} со вторым аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для этой функции реализовано два алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -662,8 +662,8 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} pdf_chi2 (@mvar{x},@mvar{n})
-Возвращает значение функции плотности вероятности распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0} в точке @mvar{x}.
+@deffn {Функция} pdf_chi2 (@var{x},@var{n})
+Возвращает значение функции плотности вероятности распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0} в точке @var{x}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -696,8 +696,8 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} cdf_chi2 (@mvar{x},@mvar{n})
-Возвращает значение функции распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0} в точке @mvar{x}.
+@deffn {Функция} cdf_chi2 (@var{x},@var{n})
+Возвращает значение функции распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0} в точке @var{x}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -724,10 +724,10 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} quantile_chi2 (@mvar{q},@mvar{n})
-Возвращает @mvar{q}-квантиль распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}, 
+@deffn {Функция} quantile_chi2 (@var{q},@var{n})
+Возвращает @var{q}-квантиль распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}, 
 т.е. значение функции обратной @code{cdf_chi2}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}.
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -756,7 +756,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} mean_chi2 (@mvar{n})
+@deffn {Функция} mean_chi2 (@var{n})
 Возвращает среднее значение распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
@@ -785,7 +785,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} var_chi2 (@mvar{n})
+@deffn {Функция} var_chi2 (@var{n})
 Возвращает дисперсию распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
@@ -814,7 +814,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} std_chi2 (@mvar{n})
+@deffn {Функция} std_chi2 (@var{n})
 Возвращает стандартное отклонение распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
@@ -843,7 +843,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} skewness_chi2 (@mvar{n})
+@deffn {Функция} skewness_chi2 (@var{n})
 Возвращает коэффициент асимметрии распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
@@ -874,7 +874,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} kurtosis_chi2 (@mvar{n})
+@deffn {Функция} kurtosis_chi2 (@var{n})
 Возвращает коэффициент куртозиса распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}.
 
 Случайная переменная @math{Chi^2(n)} эквивалентна случайной переменной @math{Gamma(n/2,2)}.
@@ -930,10 +930,10 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end defvr
 
 
-@deffn {Функция} random_chi2 (@mvar{n})
-@deffnx {Функция} random_chi2 (@mvar{n},@mvar{m})
+@deffn {Функция} random_chi2 (@var{n})
+@deffnx {Функция} random_chi2 (@var{n},@var{m})
 Возвращает значение симулированной случайной переменной распределения Хи-квадрат @math{Chi^2(n)} с @math{n>0}. 
-Вызов @code{random_chi2} со вторым аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+Вызов @code{random_chi2} со вторым аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для этой функции реализовано два алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -950,8 +950,8 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} pdf_f (@mvar{x},@mvar{m},@mvar{n})
-Возвращает значение функции плотности вероятности распределения @math{F(m,n)} с @math{m,n>0} в точке @mvar{x}.
+@deffn {Функция} pdf_f (@var{x},@var{m},@var{n})
+Возвращает значение функции плотности вероятности распределения @math{F(m,n)} с @math{m,n>0} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -962,8 +962,8 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} cdf_f (@mvar{x},@mvar{m},@mvar{n})
-Возвращает значение функции распределения @math{F(m,n)} с @math{m,n>0} в точке @mvar{x}.
+@deffn {Функция} cdf_f (@var{x},@var{m},@var{n})
+Возвращает значение функции распределения @math{F(m,n)} с @math{m,n>0} в точке @var{x}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -991,10 +991,10 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} quantile_f (@mvar{q},@mvar{m},@mvar{n})
-Возвращает @mvar{q}-квантиль распределения @math{F(m,n)} с @math{m,n>0},
+@deffn {Функция} quantile_f (@var{q},@var{m},@var{n})
+Возвращает @var{q}-квантиль распределения @math{F(m,n)} с @math{m,n>0},
 т.е. значение функции обратной @code{cdf_f}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}.
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -1022,7 +1022,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} mean_f (@mvar{m},@mvar{n})
+@deffn {Функция} mean_f (@var{m},@var{n})
 Возвращает среднее значение распределения @math{F(m,n)} с @math{m>0, n>2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1034,7 +1034,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} var_f (@mvar{m},@mvar{n})
+@deffn {Функция} var_f (@var{m},@var{n})
 Возвращает дисперсию распределения @math{F(m,n)} с @math{m>0, n>4}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1046,7 +1046,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} std_f (@mvar{m},@mvar{n})
+@deffn {Функция} std_f (@var{m},@var{n})
 Возвращает стандартное отклонение распределения @math{F(m,n)} с @math{m>0, n>4}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1058,7 +1058,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} skewness_f (@mvar{m},@mvar{n})
+@deffn {Функция} skewness_f (@var{m},@var{n})
 Возвращает коэффициент асимметрии распределения @math{F(m,n)} с @math{m>0, n>6}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1070,7 +1070,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end deffn
 
 
-@deffn {Функция} kurtosis_f (@mvar{m},@mvar{n})
+@deffn {Функция} kurtosis_f (@var{m},@var{n})
 Возвращает коэффициент куртозиса распределения @math{F(m,n)} с @math{m>0, n>8}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1090,7 +1090,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @itemize @bullet
 
 @item
-@code{ratio} -- основан на факте, что если @mvar{X} есть @math{Chi^2(m)} 
+@code{ratio} -- основан на факте, что если @var{X} есть @math{Chi^2(m)} 
 случайная переменная и есть @math{Chi^2(n)} случайная переменная, то 
 @ifhtml
 @example
@@ -1109,7 +1109,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @tex
 $$F={{n X}\over{m Y}}$$
 @end tex
-есть F случайная переменная @math{F(m,n)} с @mvar{m} и @mvar{n} степенями свободы.
+есть F случайная переменная @math{F(m,n)} с @var{m} и @var{n} степенями свободы.
 
 @item
 @code{inverse}  -- основан на методе обращения.
@@ -1125,10 +1125,10 @@ $$F={{n X}\over{m Y}}$$
 @end defvr
 
 
-@deffn {Функция} random_f (@mvar{m},@mvar{n})
-@deffnx {Функция} random_f (@mvar{m},@mvar{n},@mvar{k})
+@deffn {Функция} random_f (@var{m},@var{n})
+@deffnx {Функция} random_f (@var{m},@var{n},@var{k})
 Возвращает значение симулированной случайной переменной распределения @math{F(m,n)} с @math{m,n>0}. 
-Вызов @code{random_f} с третьим аргументом @mvar{k} дает случайную выборку размера @mvar{k}.
+Вызов @code{random_f} с третьим аргументом @var{k} дает случайную выборку размера @var{k}.
 
 Для этой функции реализовано два алгоритма. 
 Используемый алгоритм определяется значением глобальной переменной
@@ -1145,9 +1145,9 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} pdf_exp (@mvar{x},@mvar{m})
+@deffn {Функция} pdf_exp (@var{x},@var{m})
 Возвращает значение функции плотности вероятности экспоненциального распределения @math{Exponential(m)}
-с @math{m>0} в точке @mvar{x}.
+с @math{m>0} в точке @var{x}.
 
 Случайная переменная @math{Exponential(m)} эквивалентна случайной переменной @math{Weibull(1,1/m)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -1176,9 +1176,9 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} cdf_exp (@mvar{x},@mvar{m})
+@deffn {Функция} cdf_exp (@var{x},@var{m})
 Возвращает значение функции распределения экспоненциального распределения @math{Exponetial(m)} 
-с @math{m>0} в точке @mvar{x}.
+с @math{m>0} в точке @var{x}.
 
 Случайная переменная @math{Exponential(m)} эквивалентна случайной переменной @math{Weibull(1,1/m)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -1207,10 +1207,10 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} quantile_exp (@mvar{q},@mvar{m})
-Возвращает @mvar{q}-квантиль экспоненциального распределения @math{Exponetial(m)} с @math{m>0}, 
+@deffn {Функция} quantile_exp (@var{q},@var{m})
+Возвращает @var{q}-квантиль экспоненциального распределения @math{Exponetial(m)} с @math{m>0}, 
 т.е. значение функции обратной @code{cdf_exp}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}.
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
 Случайная переменная @math{Exponential(m)} эквивалентна случайной переменной @math{Weibull(1,1/m)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -1238,7 +1238,7 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} mean_exp (@mvar{m})
+@deffn {Функция} mean_exp (@var{m})
 Возвращает среднее значение экспоненциального распределения @math{Exponetial(m)} 
 с @math{m>0}. 
 
@@ -1270,7 +1270,7 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} var_exp (@mvar{m})
+@deffn {Функция} var_exp (@var{m})
 Возвращает дисперсию экспоненциального распределения @math{Exponetial(m)} 
 с @math{m>0}. 
 
@@ -1303,7 +1303,7 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} std_exp (@mvar{m})
+@deffn {Функция} std_exp (@var{m})
 Возвращает стандартное отклонение экспоненциального распределения @math{Exponetial(m)} 
 с @math{m>0}. 
 
@@ -1335,7 +1335,7 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} skewness_exp (@mvar{m})
+@deffn {Функция} skewness_exp (@var{m})
 Возвращает коэффициент асимметрии экспоненциального распределения @math{Exponetial(m)} 
 с @math{m>0}. 
 
@@ -1365,7 +1365,7 @@ $$F={{n X}\over{m Y}}$$
 @end deffn
 
 
-@deffn {Функция} kurtosis_exp (@mvar{m})
+@deffn {Функция} kurtosis_exp (@var{m})
 Возвращает коэффициент куртозиса экспоненциального распределения @math{Exponetial(m)} 
 с @math{m>0}. 
 
@@ -1412,7 +1412,7 @@ $$F={{n X}\over{m Y}}$$
 @item
 @code{ahrens_dieter} -- основан на алгоритме, описанном в  
 Ahrens, J.H. and Dieter, U. (1972) 
-@mvar{Computer methods for sampling from the exponential and normal distributions.} 
+@var{Computer methods for sampling from the exponential and normal distributions.} 
 Comm, ACM, 15, Oct.,  873-882.
 
 @end itemize
@@ -1426,10 +1426,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end defvr
 
 
-@deffn {Функция} random_exp (@mvar{m})
-@deffnx {Функция} random_exp (@mvar{m},@mvar{k})
+@deffn {Функция} random_exp (@var{m})
+@deffnx {Функция} random_exp (@var{m},@var{k})
 Возвращает значение симулированной случайной переменной экспоненциального распределения @math{Exponential(m)} с @math{m>0}. 
-Вызов @code{random_exp} со вторым аргументом @mvar{k} дает случайную выборку размера @mvar{k}.
+Вызов @code{random_exp} со вторым аргументом @var{k} дает случайную выборку размера @var{k}.
 
 Для этой функции реализовано три алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -1446,9 +1446,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_lognormal (@mvar{x},@mvar{m},@mvar{s})
+@deffn {Функция} pdf_lognormal (@var{x},@var{m},@var{s})
 Возвращает значение функции плотности вероятности логнормального распределения @math{Lognormal(m,s)} 
-с @math{s>0} в точке @mvar{x}.
+с @math{s>0} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1459,9 +1459,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_lognormal (@mvar{x},@mvar{m},@mvar{s})
+@deffn {Функция} cdf_lognormal (@var{x},@var{m},@var{s})
 Возвращает значение функции распределения логнормального распределения @math{Lognormal(m,s)} 
-с @math{s>0} в точке @mvar{x}.
+с @math{s>0} в точке @var{x}.
 
 Эта функция определена в терминах встроенной Maxima функции @code{erf}.
 
@@ -1488,11 +1488,11 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_lognormal (@mvar{q},@mvar{m},@mvar{s})
-Возвращает @mvar{q}-квантиль логнормального распределения @math{Lognormal(m,s)} 
+@deffn {Функция} quantile_lognormal (@var{q},@var{m},@var{s})
+Возвращает @var{q}-квантиль логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}, 
 т.е. значение функции обратной @code{cdf_lognormal}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1503,7 +1503,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_lognormal (@mvar{m},@mvar{s})
+@deffn {Функция} mean_lognormal (@var{m},@var{s})
 Возвращает среднее значение логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
@@ -1516,7 +1516,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_lognormal (@mvar{m},@mvar{s})
+@deffn {Функция} var_lognormal (@var{m},@var{s})
 Возвращает дисперсию логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
@@ -1528,7 +1528,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_lognormal (@mvar{m},@mvar{s})
+@deffn {Функция} std_lognormal (@var{m},@var{s})
 Возвращает стандартное отклонение логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
@@ -1541,7 +1541,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_lognormal (@mvar{m},@mvar{s})
+@deffn {Функция} skewness_lognormal (@var{m},@var{s})
 Возвращает коэффициент асимметрии логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
@@ -1554,7 +1554,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_lognormal (@mvar{m},@mvar{s})
+@deffn {Функция} kurtosis_lognormal (@var{m},@var{s})
 Возвращает коэффициент куртозиса логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
@@ -1567,10 +1567,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_lognormal (@mvar{m},@mvar{s})
-@deffnx {Функция} random_lognormal (@mvar{m},@mvar{s},@mvar{n})
+@deffn {Функция} random_lognormal (@var{m},@var{s})
+@deffnx {Функция} random_lognormal (@var{m},@var{s},@var{n})
 Возвращает значение симулированной случайной переменной логнормального распределения @math{Lognormal(m,s)} с @math{s>0}. 
-Вызов @code{random_lognormal} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_lognormal} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Логнормальное распределение симулируется при помощи нормального распределения.
 Для этой функции реализовано два алгоритма.
@@ -1588,9 +1588,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_gamma (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_gamma (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности гамма распределения @math{Gamma(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1601,9 +1601,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_gamma (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_gamma (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения гамма распределения @math{Gamma(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -1629,10 +1629,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_gamma (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль гамма распределения @math{Gamma(a,b)} с @math{a,b>0}, 
+@deffn {Функция} quantile_gamma (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль гамма распределения @math{Gamma(a,b)} с @math{a,b>0}, 
 т.е. значение функции обратной @code{cdf_gamma}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1643,7 +1643,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_gamma (@mvar{a},@mvar{b})
+@deffn {Функция} mean_gamma (@var{a},@var{b})
 Возвращает среднее значение гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1655,7 +1655,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_gamma (@mvar{a},@mvar{b})
+@deffn {Функция} var_gamma (@var{a},@var{b})
 Возвращает дисперсию гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1666,7 +1666,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_gamma (@mvar{a},@mvar{b})
+@deffn {Функция} std_gamma (@var{a},@var{b})
 Возвращает стандартное отклонение гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1678,7 +1678,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_gamma (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_gamma (@var{a},@var{b})
 Возвращает коэффициент асимметрии гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1690,7 +1690,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_gamma (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_gamma (@var{a},@var{b})
 Возвращает коэффициент куртозиса гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1710,13 +1710,13 @@ Comm, ACM, 15, Oct.,  873-882.
 @itemize @bullet
 
 @item
-@code{ahrens_cheng} -- это комбинация двух процедур, в зависимости от значения параметра @mvar{a}:
+@code{ahrens_cheng} -- это комбинация двух процедур, в зависимости от значения параметра @var{a}:
 
 Для @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). 
-@mvar{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
+@var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
 Для @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). 
-@mvar{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
+@var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
 @item
 @code{inverse} -- основан на методе обращения.
@@ -1732,10 +1732,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end defvr
 
 
-@deffn {Функция} random_gamma (@mvar{a},@mvar{b})
-@deffnx {Функция} random_gamma (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_gamma (@var{a},@var{b})
+@deffnx {Функция} random_gamma (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной гамма распределения @math{Gamma(a,b)} с @math{a,b>0}. 
-Вызов @code{random_gamma} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_gamma} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для этой функции реализовано два алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -1752,8 +1752,8 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_beta (@mvar{x},@mvar{a},@mvar{b})
-Возвращает значение функции плотности вероятности бета распределения @math{Beta(a,b)} с @math{a,b>0} в точке @mvar{x}.
+@deffn {Функция} pdf_beta (@var{x},@var{a},@var{b})
+Возвращает значение функции плотности вероятности бета распределения @math{Beta(a,b)} с @math{a,b>0} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1764,8 +1764,8 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_beta (@mvar{x},@mvar{a},@mvar{b})
-Возвращает значение функции распределения бета распределения @math{Beta(a,b)} с @math{a,b>0} в точке @mvar{x}.
+@deffn {Функция} cdf_beta (@var{x},@var{a},@var{b})
+Возвращает значение функции распределения бета распределения @math{Beta(a,b)} с @math{a,b>0} в точке @var{x}.
 
 Эта функция не имеет замкнутой формы и вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -1793,10 +1793,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_beta (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль бета распределения @math{Beta(a,b)} с @math{a,b>0}, 
+@deffn {Функция} quantile_beta (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль бета распределения @math{Beta(a,b)} с @math{a,b>0}, 
 т.е. значение функции обратной @code{cdf_beta}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1807,7 +1807,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_beta (@mvar{a},@mvar{b})
+@deffn {Функция} mean_beta (@var{a},@var{b})
 Возвращает среднее значение бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1819,7 +1819,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_beta (@mvar{a},@mvar{b})
+@deffn {Функция} var_beta (@var{a},@var{b})
 Возвращает дисперсию бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1830,7 +1830,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_beta (@mvar{a},@mvar{b})
+@deffn {Функция} std_beta (@var{a},@var{b})
 Возвращает стандартное отклонение бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1842,7 +1842,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_beta (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_beta (@var{a},@var{b})
 Возвращает коэффициент асимметрии бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1854,7 +1854,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_beta (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_beta (@var{a},@var{b})
 Возвращает коэффициент куртозиса бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -1875,14 +1875,14 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @item
 @code{cheng} -- алгоритм, описанный в Cheng, R.C.H.  (1978). 
-@mvar{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
+@var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 
 @item
 @code{inverse} -- основан на методе обращения.
 
 @item
-@code{ratio}  -- основан на факте, что если @mvar{X} 
-есть случайная переменная @math{Gamma(a,1)} и @mvar{Y} есть случайная переменная @math{Gamma(b,1)},
+@code{ratio}  -- основан на факте, что если @var{X} 
+есть случайная переменная @math{Gamma(a,1)} и @var{Y} есть случайная переменная @math{Gamma(b,1)},
 то отношение @math{X/(X+Y)} распределено как @math{Beta(a,b)}.
 
 @end itemize
@@ -1896,10 +1896,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end defvr
 
 
-@deffn {Функция} random_beta (@mvar{a},@mvar{b})
-@deffnx {Функция} random_beta (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_beta (@var{a},@var{b})
+@deffnx {Функция} random_beta (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной бета распределения @math{Beta(a,b)} с @math{a,b>0}. 
-Вызов @code{random_beta} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_beta} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для этой функции реализовано три алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -1915,9 +1915,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} pdf_continuous_uniform (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_continuous_uniform (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности равномерного непрерывного распределения @math{Continuous Uniform(a,b)} с @math{a<b}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1928,9 +1928,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_continuous_uniform (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_continuous_uniform (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения равномерного непрерывного распределения @math{Continuous Uniform(a,b)}
-с @math{a<b} в точке @mvar{x}.
+с @math{a<b} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1941,11 +1941,11 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_continuous_uniform (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
+@deffn {Функция} quantile_continuous_uniform (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b},  
 т.е. значение функции обратной @code{cdf_continuous_uniform}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -1956,7 +1956,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_continuous_uniform (@mvar{a},@mvar{b})
+@deffn {Функция} mean_continuous_uniform (@var{a},@var{b})
 Возвращает среднее значение равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
@@ -1969,7 +1969,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_continuous_uniform (@mvar{a},@mvar{b})
+@deffn {Функция} var_continuous_uniform (@var{a},@var{b})
 Возвращает дисперсию равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
@@ -1981,7 +1981,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_continuous_uniform (@mvar{a},@mvar{b})
+@deffn {Функция} std_continuous_uniform (@var{a},@var{b})
 Возвращает стандартное отклонение равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
@@ -1994,7 +1994,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_continuous_uniform (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_continuous_uniform (@var{a},@var{b})
 Возвращает коэффициент ассиметрии равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
@@ -2007,7 +2007,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_continuous_uniform (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_continuous_uniform (@var{a},@var{b})
 Возвращает коэффициент куртозиса равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
@@ -2020,10 +2020,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_continuous_uniform (@mvar{a},@mvar{b})
-@deffnx {Функция} random_continuous_uniform (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_continuous_uniform (@var{a},@var{b})
+@deffnx {Функция} random_continuous_uniform (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной равномерного непрерывного распределения @math{Continuous Uniform(a,b)} с @math{a<b}. 
-Вызов @code{random_continuous_uniform} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_continuous_uniform} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для вычисления используется встроенная Maxima функция @code{random}.
 
@@ -2038,9 +2038,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_logistic (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_logistic (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности логистического распределения @math{Logistic(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2051,9 +2051,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_logistic (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_logistic (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения логистического распределения @math{Logistic(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2064,10 +2064,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_logistic (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль логистического распределения @math{Logistic(a,b)} с @math{b>0}, 
+@deffn {Функция} quantile_logistic (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль логистического распределения @math{Logistic(a,b)} с @math{b>0}, 
 т.е. значение функции обратной @code{cdf_logistic}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2078,7 +2078,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_logistic (@mvar{a},@mvar{b})
+@deffn {Функция} mean_logistic (@var{a},@var{b})
 Возвращает среднее значение логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2090,7 +2090,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_logistic (@mvar{a},@mvar{b})
+@deffn {Функция} var_logistic (@var{a},@var{b})
 Возвращает дисперсию логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2102,7 +2102,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_logistic (@mvar{a},@mvar{b})
+@deffn {Функция} std_logistic (@var{a},@var{b})
 Возвращает стандартное отклонение логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2114,7 +2114,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_logistic (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_logistic (@var{a},@var{b})
 Возвращает коэффициент асимметрии логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2126,7 +2126,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_logistic (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_logistic (@var{a},@var{b})
 Возвращает коэффициент куртозиса логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2138,10 +2138,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_logistic (@mvar{a},@mvar{b})
-@deffnx {Функция} random_logistic (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_logistic (@var{a},@var{b})
+@deffnx {Функция} random_logistic (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной логистического распределения @math{Logistic(a,b)} с @math{b>0}. 
-Вызов @code{random_logistic} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_logistic} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2154,9 +2154,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_pareto (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_pareto (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности распределения Парето @math{Pareto(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2167,9 +2167,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_pareto (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_pareto (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения Парето @math{Pareto(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2180,10 +2180,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_pareto (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Парето @math{Pareto(a,b)} с @math{a,b>0}, 
+@deffn {Функция} quantile_pareto (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль распределения Парето @math{Pareto(a,b)} с @math{a,b>0}, 
 т.е. значение функции обратной @code{cdf_pareto}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2194,7 +2194,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_pareto (@mvar{a},@mvar{b})
+@deffn {Функция} mean_pareto (@var{a},@var{b})
 Возвращает среднее значение распределения Парето @math{Pareto(a,b)} с @math{a>1,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2205,7 +2205,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} var_pareto (@mvar{a},@mvar{b})
+@deffn {Функция} var_pareto (@var{a},@var{b})
 Возвращает дисперсию распределения Парето @math{Pareto(a,b)} с @math{a>2,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2216,7 +2216,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_pareto (@mvar{a},@mvar{b})
+@deffn {Функция} std_pareto (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Парето @math{Pareto(a,b)} с @math{a>2,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2227,7 +2227,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} skewness_pareto (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_pareto (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Парето @math{Pareto(a,b)} с @math{a>3,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2238,7 +2238,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} kurtosis_pareto (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_pareto (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Парето @math{Pareto(a,b)} с @math{a>4,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2249,10 +2249,10 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} random_pareto (@mvar{a},@mvar{b})
-@deffnx {Функция} random_pareto (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_pareto (@var{a},@var{b})
+@deffnx {Функция} random_pareto (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Парето @math{Pareto(a,b)} с @math{a>0,b>0}. 
-Вызов @code{random_pareto} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_pareto} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2265,9 +2265,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} pdf_weibull (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_weibull (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2278,9 +2278,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_weibull (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_weibull (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2291,10 +2291,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_weibull (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}, 
+@deffn {Функция} quantile_weibull (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}, 
 т.е. значение функции обратной @code{cdf_weibull}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2305,7 +2305,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_weibull (@mvar{a},@mvar{b})
+@deffn {Функция} mean_weibull (@var{a},@var{b})
 Возвращает среднее значение распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2317,7 +2317,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_weibull (@mvar{a},@mvar{b})
+@deffn {Функция} var_weibull (@var{a},@var{b})
 Возвращает дисперсию распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2328,7 +2328,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} std_weibull (@mvar{a},@mvar{b})
+@deffn {Функция} std_weibull (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2339,7 +2339,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} skewness_weibull (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_weibull (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2350,7 +2350,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} kurtosis_weibull (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_weibull (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2362,10 +2362,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_weibull (@mvar{a},@mvar{b})
-@deffnx {Функция} random_weibull (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_weibull (@var{a},@var{b})
+@deffnx {Функция} random_weibull (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}. 
-Вызов @code{random_continuous_weibull} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_continuous_weibull} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2379,9 +2379,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 
 
-@deffn {Функция} pdf_rayleigh (@mvar{x},@mvar{b})
+@deffn {Функция} pdf_rayleigh (@var{x},@var{b})
 Возвращает значение функции плотности вероятности распределения Релея @math{Rayleigh(b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -2411,9 +2411,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_rayleigh (@mvar{x},@mvar{b})
+@deffn {Функция} cdf_rayleigh (@var{x},@var{b})
 Возвращает значение функции распределения Релея @math{Rayleigh(b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -2443,10 +2443,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_rayleigh (@mvar{q},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Релея @math{Rayleigh(b)} с @math{b>0}, 
+@deffn {Функция} quantile_rayleigh (@var{q},@var{b})
+Возвращает @var{q}-квантиль распределения Релея @math{Rayleigh(b)} с @math{b>0}, 
 т.е. значение функции обратной @code{cdf_rayleigh}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}.
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -2476,7 +2476,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_rayleigh (@mvar{b})
+@deffn {Функция} mean_rayleigh (@var{b})
 Возвращает среднее значение распределения Релея @math{Rayleigh(b)} с @math{b>0}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
@@ -2507,7 +2507,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_rayleigh (@mvar{b})
+@deffn {Функция} var_rayleigh (@var{b})
 Возвращает дисперсию распределения Релея @math{Rayleigh(b)} с @math{b>0}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
@@ -2541,7 +2541,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_rayleigh (@mvar{b})
+@deffn {Функция} std_rayleigh (@var{b})
 Возвращает стандартное отклонение распределения Релея @math{Rayleigh(b)} с @math{b>0}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
@@ -2574,7 +2574,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_rayleigh (@mvar{b})
+@deffn {Функция} skewness_rayleigh (@var{b})
 Возвращает коэффициент асимметрии распределения Релея @math{Rayleigh(b)} с @math{b>0}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
@@ -2610,7 +2610,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_rayleigh (@mvar{b})
+@deffn {Функция} kurtosis_rayleigh (@var{b})
 Возвращает коэффициент куртозиса распределения Релея @math{Rayleigh(b)} с @math{b>0}.
 
 Случайная переменная @math{Rayleigh(b)} эквивалентна случайной переменной @math{Weibull(2,1/b)}.
@@ -2646,10 +2646,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_rayleigh (@mvar{b})
-@deffnx {Функция} random_rayleigh (@mvar{b},@mvar{n})
+@deffn {Функция} random_rayleigh (@var{b})
+@deffnx {Функция} random_rayleigh (@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Релея @math{Rayleigh(b)} с @math{b>0}. 
-Вызов @code{random_rayleigh} со вторым аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_rayleigh} со вторым аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2663,9 +2663,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 
 
-@deffn {Функция} pdf_laplace (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_laplace (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности распределения Лапласа @math{Laplace(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2677,9 +2677,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_laplace (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_laplace (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения Лапласа @math{Laplace(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2690,10 +2690,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_laplace (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Лапласа @math{Laplace(a,b)} с @math{b>0}, 
+@deffn {Функция} quantile_laplace (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль распределения Лапласа @math{Laplace(a,b)} с @math{b>0}, 
 т.е. значение функции обратной @code{cdf_laplace}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2704,7 +2704,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_laplace (@mvar{a},@mvar{b})
+@deffn {Функция} mean_laplace (@var{a},@var{b})
 Возвращает среднее значение распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2716,7 +2716,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_laplace (@mvar{a},@mvar{b})
+@deffn {Функция} var_laplace (@var{a},@var{b})
 Возвращает дисперсию распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2728,7 +2728,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_laplace (@mvar{a},@mvar{b})
+@deffn {Функция} std_laplace (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2740,7 +2740,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_laplace (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_laplace (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2752,7 +2752,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_laplace (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_laplace (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2764,10 +2764,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_laplace (@mvar{a},@mvar{b})
-@deffnx {Функция} random_laplace (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_laplace (@var{a},@var{b})
+@deffnx {Функция} random_laplace (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Лапласа @math{Laplace(a,b)} с @math{b>0}. 
-Вызов @code{random_laplace} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_laplace} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2781,9 +2781,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 
 
-@deffn {Функция} pdf_cauchy (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_cauchy (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности распределения Коши @math{Cauchy(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2794,9 +2794,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_cauchy (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_cauchy (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения Коши @math{Cauchy(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2807,10 +2807,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_cauchy (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Коши @math{Cauchy(a,b)} с @math{b>0}, 
+@deffn {Функция} quantile_cauchy (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль распределения Коши @math{Cauchy(a,b)} с @math{b>0}, 
 т.е. значение функции обратной @code{cdf_cauchy}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2821,10 +2821,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_cauchy (@mvar{a},@mvar{b})
-@deffnx {Функция} random_cauchy (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_cauchy (@var{a},@var{b})
+@deffnx {Функция} random_cauchy (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Коши @math{Cauchy(a,b)} с @math{b>0}. 
-Вызов @code{random_cauchy} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_cauchy} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения.
 
@@ -2838,9 +2838,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 
 
-@deffn {Функция} pdf_gumbel (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} pdf_gumbel (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2852,9 +2852,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_gumbel (@mvar{x},@mvar{a},@mvar{b})
+@deffn {Функция} cdf_gumbel (@var{x},@var{a},@var{b})
 Возвращает значение функции распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2865,10 +2865,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_gumbel (@mvar{q},@mvar{a},@mvar{b})
-Возвращает @mvar{q}-квантиль распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}, 
+@deffn {Функция} quantile_gumbel (@var{q},@var{a},@var{b})
+Возвращает @var{q}-квантиль распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}, 
 т.е. значение функции обратной @code{cdf_gumbel}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -2879,7 +2879,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_gumbel (@mvar{a},@mvar{b})
+@deffn {Функция} mean_gumbel (@var{a},@var{b})
 Возвращает среднее значение распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 @c ===beg===
@@ -2900,7 +2900,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_gumbel (@mvar{a},@mvar{b})
+@deffn {Функция} var_gumbel (@var{a},@var{b})
 Возвращает дисперсию распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2912,7 +2912,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_gumbel (@mvar{a},@mvar{b})
+@deffn {Функция} std_gumbel (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2924,7 +2924,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_gumbel (@mvar{a},@mvar{b})
+@deffn {Функция} skewness_gumbel (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 @c ===beg===
@@ -2951,7 +2951,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_gumbel (@mvar{a},@mvar{b})
+@deffn {Функция} kurtosis_gumbel (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2963,10 +2963,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} random_gumbel (@mvar{a},@mvar{b})
-@deffnx {Функция} random_gumbel (@mvar{a},@mvar{b},@mvar{n})
+@deffn {Функция} random_gumbel (@var{a},@var{b})
+@deffnx {Функция} random_gumbel (@var{a},@var{b},@var{n})
 Возвращает значение симулированной случайной переменной распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}. 
-Вызов @code{random_gumbel} с третьим аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_gumbel} с третьим аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Реализован только метод обращения. 
 
@@ -2983,9 +2983,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @section Функции и переменные для дискретных распределений
 
 
-@deffn {Функция} pdf_binomial (@mvar{x},@mvar{n},@mvar{p})
+@deffn {Функция} pdf_binomial (@var{x},@var{n},@var{p})
 Возвращает значение функции плотности вероятности биномиального распределения @math{Binomial(n,p)}
-с @math{0<p<1} и положительным целым @math{n} в точке @mvar{x}.
+с @math{0<p<1} и положительным целым @math{n} в точке @var{x}.
 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -2997,9 +2997,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_binomial (@mvar{x},@mvar{n},@mvar{p})
+@deffn {Функция} cdf_binomial (@var{x},@var{n},@var{p})
 Возвращает значение функции распределения биномиального распределения @math{Binomial(n,p)}
-с @math{0<p<1} и положительным целым @math{n} в точке @mvar{x}.
+с @math{0<p<1} и положительным целым @math{n} в точке @var{x}.
 
 Эта функция вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -3027,11 +3027,11 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_binomial (@mvar{q},@mvar{n},@mvar{p})
-Возвращает @mvar{q}-квантиль биномиального распределения @math{Binomial(n,p)} 
+@deffn {Функция} quantile_binomial (@var{q},@var{n},@var{p})
+Возвращает @var{q}-квантиль биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n},
 т.е. значение функции обратной @code{cdf_binomial}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3042,7 +3042,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} mean_binomial (@var{n},@var{p})
 Возвращает среднее значение биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -3055,7 +3055,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} var_binomial (@var{n},@var{p})
 Возвращает дисперсию биномиального распределения @math{Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -3068,7 +3068,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} std_binomial (@var{n},@var{p})
 Возвращает стандартное отклонение биномиального распределения @math{Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -3081,7 +3081,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} skewness_binomial (@var{n},@var{p})
 Возвращает коэффициент асимметрии биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -3094,7 +3094,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} kurtosis_binomial (@var{n},@var{p})
 Возвращает коэффициент куртозиса биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -3116,7 +3116,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @item
 @code{kachit} -- основан на алгоритме, описанном в Kachitvichyanukul, V. and Schmeiser, B.W. (1988) 
-@mvar{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
+@var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
 @item
 @code{bernoulli} -- основан на моделировании опытов Бернулли.
@@ -3135,11 +3135,11 @@ Comm, ACM, 15, Oct.,  873-882.
 @end defvr
 
 
-@deffn {Функция} random_binomial (@mvar{n},@mvar{p})
-@deffnx {Функция} random_binomial (@mvar{n},@mvar{p},@mvar{m})
+@deffn {Функция} random_binomial (@var{n},@var{p})
+@deffnx {Функция} random_binomial (@var{n},@var{p},@var{m})
 Возвращает значение симулированной случайной переменной биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}. 
-Вызов @code{random_binomial} с третьим аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+Вызов @code{random_binomial} с третьим аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для этой функции реализовано три алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -3155,9 +3155,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end deffn
 
-@deffn {Функция} pdf_poisson (@mvar{x},@mvar{m})
+@deffn {Функция} pdf_poisson (@var{x},@var{m})
 Возвращает значение функции плотности вероятности распределения Пуассона @math{Poisson(m)} с @math{m>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3168,9 +3168,9 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} cdf_poisson (@mvar{x},@mvar{m})
+@deffn {Функция} cdf_poisson (@var{x},@var{m})
 Возвращает значение функции распределения Пуассона @math{Poisson(m)} с @math{m>0}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Эта функция вычисляется численно,
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -3196,10 +3196,10 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} quantile_poisson (@mvar{q},@mvar{m})
-Возвращает @mvar{q}-квантиль распределения Пуассона @math{Poisson(m)} с @math{m>0}, 
+@deffn {Функция} quantile_poisson (@var{q},@var{m})
+Возвращает @var{q}-квантиль распределения Пуассона @math{Poisson(m)} с @math{m>0}, 
 т.е. значение функции обратной @code{cdf_poisson}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3210,7 +3210,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} mean_poisson (@mvar{m})
+@deffn {Функция} mean_poisson (@var{m})
 Возвращает среднее значение распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3222,7 +3222,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} var_poisson (@mvar{m})
+@deffn {Функция} var_poisson (@var{m})
 Возвращает дисперсию распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3234,7 +3234,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} std_poisson (@mvar{m})
+@deffn {Функция} std_poisson (@var{m})
 Возвращает стандартное отклонение распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3246,7 +3246,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} skewness_poisson (@mvar{m})
+@deffn {Функция} skewness_poisson (@var{m})
 Возвращает коэффициент асимметрии распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3258,7 +3258,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end deffn
 
 
-@deffn {Функция} kurtosis_poisson (@mvar{m})
+@deffn {Функция} kurtosis_poisson (@var{m})
 Возвращает коэффициент куртозиса распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3279,7 +3279,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @item
 @code{ahrens_dieter} -- основан на алгоритме, описанном в Ahrens, J.H. and Dieter, U. (1982) 
-@mvar{Computer Generation of Poisson Deviates From Modified Normal Distributions}. 
+@var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. 
 ACM Trans. Math. Software, 8, 2, June,163-179.
 
 @item
@@ -3296,10 +3296,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end defvr
 
 
-@deffn {Функция} random_poisson (@mvar{m})
-@deffnx {Функция} random_poisson (@mvar{m},@mvar{n})
+@deffn {Функция} random_poisson (@var{m})
+@deffnx {Функция} random_poisson (@var{m},@var{n})
 Возвращает значение симулированной случайной переменной распределения Пуассона @math{Poisson(m)} с @math{m>0}. 
-Вызов @code{random_poisson} со вторым аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_poisson} со вторым аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для этой функции реализовано два алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -3316,9 +3316,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} pdf_bernoulli (@mvar{x},@mvar{p})
+@deffn {Функция} pdf_bernoulli (@var{x},@var{p})
 Возвращает значение функции плотности вероятности распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
 Таким образом, если недостаточно информации для вычисления результата,
@@ -3344,9 +3344,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} cdf_bernoulli (@mvar{x},@mvar{p})
+@deffn {Функция} cdf_bernoulli (@var{x},@var{p})
 Возвращает значение функции распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3357,10 +3357,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} quantile_bernoulli (@mvar{q},@mvar{p})
-Возвращает @mvar{q}-квантиль распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}, 
+@deffn {Функция} quantile_bernoulli (@var{q},@var{p})
+Возвращает @var{q}-квантиль распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}, 
 т.е. значение функции обратной @code{cdf_bernoulli}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3371,7 +3371,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} mean_bernoulli (@mvar{p})
+@deffn {Функция} mean_bernoulli (@var{p})
 Возвращает среднее значение распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
@@ -3398,7 +3398,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} var_bernoulli (@mvar{p})
+@deffn {Функция} var_bernoulli (@var{p})
 Возвращает дисперсию распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
@@ -3425,7 +3425,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} std_bernoulli (@mvar{p})
+@deffn {Функция} std_bernoulli (@var{p})
 Возвращает стандартное отклонение распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
@@ -3452,7 +3452,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} skewness_bernoulli (@mvar{p})
+@deffn {Функция} skewness_bernoulli (@var{p})
 Возвращает коэффициент асимметрии распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
@@ -3481,7 +3481,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} kurtosis_bernoulli (@mvar{p})
+@deffn {Функция} kurtosis_bernoulli (@var{p})
 Возвращает коэффициент куртозиса распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}.
 
 Случайная переменная @math{Bernoulli(p)} эквивалентна случайной переменной @math{Binomial(1,p)}.
@@ -3510,10 +3510,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} random_bernoulli (@mvar{p})
-@deffnx {Функция} random_bernoulli (@mvar{p},@mvar{n})
+@deffn {Функция} random_bernoulli (@var{p})
+@deffnx {Функция} random_bernoulli (@var{p},@var{n})
 Возвращает значение симулированной случайной переменной распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}. 
-Вызов @code{random_bernoulli} со вторым аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_bernoulli} со вторым аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для вычисления используется встроенная Maxima функция @code{random}.
 
@@ -3528,9 +3528,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} pdf_geometric (@mvar{x},@mvar{p})
+@deffn {Функция} pdf_geometric (@var{x},@var{p})
 Возвращает значение функции плотности вероятности геометрического распределения @math{Geometric(p)} с @math{0<p<1}
-в точке @mvar{x}.
+в точке @var{x}.
 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3542,9 +3542,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} cdf_geometric (@mvar{x},@mvar{p})
+@deffn {Функция} cdf_geometric (@var{x},@var{p})
 Возвращает значение функции распределения геометрического распределения @math{Geometric(p)} с @math{0<p<1}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3555,10 +3555,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} quantile_geometric (@mvar{q},@mvar{p})
-Возвращает @mvar{q}-квантиль геометрического распределения @math{Geometric(p)} с @math{0<p<1}, 
+@deffn {Функция} quantile_geometric (@var{q},@var{p})
+Возвращает @var{q}-квантиль геометрического распределения @math{Geometric(p)} с @math{0<p<1}, 
 т.е. значение функции обратной @code{cdf_geometric}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3569,7 +3569,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} mean_geometric (@mvar{p})
+@deffn {Функция} mean_geometric (@var{p})
 Возвращает среднее значение геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3581,7 +3581,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} var_geometric (@mvar{p})
+@deffn {Функция} var_geometric (@var{p})
 Возвращает дисперсию геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3593,7 +3593,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} std_geometric (@mvar{p})
+@deffn {Функция} std_geometric (@var{p})
 Возвращает стандартное отклонение геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3605,7 +3605,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} skewness_geometric (@mvar{p})
+@deffn {Функция} skewness_geometric (@var{p})
 Возвращает коэффициент асимметрии геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3617,7 +3617,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} kurtosis_geometric (@mvar{p})
+@deffn {Функция} kurtosis_geometric (@var{p})
 Возвращает коэффициент куртозиса геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
@@ -3641,7 +3641,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 @item
 @code{devroye} -- основан на алгоритме, описанном в Devroye, L. (1986) 
-@mvar{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
+@var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
 
 @item
 @code{inverse} -- основан на методе обращения.
@@ -3657,10 +3657,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end defvr
 
 
-@deffn {Функция} random_geometric (@mvar{p})
-@deffnx {Функция} random_geometric (@mvar{p},@mvar{n})
+@deffn {Функция} random_geometric (@var{p})
+@deffnx {Функция} random_geometric (@var{p},@var{n})
 Возвращает значение симулированной случайной переменной геометрического распределения @math{Geometric(p)} с @math{0<p<1}. 
-Вызов @code{random_geometric} со вторым аргументом @mvar{n} дает случайную выборку размера @mvar{n}.
+Вызов @code{random_geometric} со вторым аргументом @var{n} дает случайную выборку размера @var{n}.
 
 Для этой функции реализовано три алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -3677,9 +3677,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} pdf_discrete_uniform (@mvar{x},@mvar{n})
+@deffn {Функция} pdf_discrete_uniform (@var{x},@var{n})
 Возвращает значение функции плотности вероятности равномерного дискретного распределения @math{Discrete Uniform(n)}
-со строго положительным целым @math{n} в точке @mvar{x}.
+со строго положительным целым @math{n} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3690,9 +3690,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} cdf_discrete_uniform (@mvar{x},@mvar{n})
+@deffn {Функция} cdf_discrete_uniform (@var{x},@var{n})
 Возвращает значение функции распределения равномерного дискретного распределения @math{Discrete Uniform(n)}
-со строго положительным целым @math{n} в точке @mvar{x}.
+со строго положительным целым @math{n} в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3703,11 +3703,11 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} quantile_discrete_uniform (@mvar{q},@mvar{n})
-Возвращает @mvar{q}-квантиль равномерного дискретного распределения @math{Discrete Uniform(n)}
+@deffn {Функция} quantile_discrete_uniform (@var{q},@var{n})
+Возвращает @var{q}-квантиль равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n},
 т.е. значение функции обратной @code{cdf_discrete_uniform}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3718,7 +3718,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} mean_discrete_uniform (@mvar{n})
+@deffn {Функция} mean_discrete_uniform (@var{n})
 Возвращает среднее значение равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
@@ -3731,7 +3731,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} var_discrete_uniform (@mvar{n})
+@deffn {Функция} var_discrete_uniform (@var{n})
 Возвращает дисперсию равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n}.
 
@@ -3744,7 +3744,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} std_discrete_uniform (@mvar{n})
+@deffn {Функция} std_discrete_uniform (@var{n})
 Возвращает стандартное отклонение равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n}.
 
@@ -3757,7 +3757,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} skewness_discrete_uniform (@mvar{n})
+@deffn {Функция} skewness_discrete_uniform (@var{n})
 Возвращает коэффициент асимметрии равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
@@ -3770,7 +3770,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} kurtosis_discrete_uniform (@mvar{n})
+@deffn {Функция} kurtosis_discrete_uniform (@var{n})
 Возвращает коэффициент куртозиса равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
@@ -3783,11 +3783,11 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} random_discrete_uniform (@mvar{n})
-@deffnx {Функция} random_discrete_uniform (@mvar{n},@mvar{m})
+@deffn {Функция} random_discrete_uniform (@var{n})
+@deffnx {Функция} random_discrete_uniform (@var{n},@var{m})
 Возвращает значение симулированной случайной переменной равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}. 
-Вызов @code{random_discrete_uniform} со вторым аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+Вызов @code{random_discrete_uniform} со вторым аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для вычисления используется встроенная Maxima функция @code{random}.
 
@@ -3802,10 +3802,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} pdf_hypergeometric (@mvar{x},@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
 Возвращает значение функции плотности вероятности гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}
-в точке @mvar{x}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3816,10 +3816,10 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} cdf_hypergeometric (@mvar{x},@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
 Возвращает значение функции распределения гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}
-в точке @mvar{x}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3830,11 +3830,11 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} quantile_hypergeometric (@mvar{q},@mvar{n1},@mvar{n2},@mvar{n})
-Возвращает @mvar{q}-квантиль гипергеометрического распределения @math{Hypergeometric(n1,n2,n)} 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}, 
+@deffn {Функция} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
+Возвращает @var{q}-квантиль гипергеометрического распределения @math{Hypergeometric(n1,n2,n)} 
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}, 
 т.е. значение функции обратной @code{cdf_hypergeometric}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3845,9 +3845,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} mean_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} mean_hypergeometric (@var{n1},@var{n2},@var{n})
 Возвращает среднее значение гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3858,9 +3858,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} var_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} var_hypergeometric (@var{n1},@var{n2},@var{n})
 Возвращает дисперсию гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3871,9 +3871,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} std_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} std_hypergeometric (@var{n1},@var{n2},@var{n})
 Возвращает стандартное отклонение гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3884,9 +3884,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} skewness_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
 Возвращает коэффициент асимметрии гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3897,9 +3897,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @end deffn
 
 
-@deffn {Функция} kurtosis_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
+@deffn {Функция} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
 Возвращает коэффициент куртозиса гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
-с неотрицательными целыми @mvar{n1}, @mvar{n2}, @mvar{n} при условии @math{n<=n1+n2}.
+с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3918,7 +3918,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 @item
 @code{kachit} -- основан на алгоритме, описанном в Kachitvichyanukul, V., Schmeiser, B.W. (1985) 
-@mvar{Computer generation of hypergeometric random variates.} 
+@var{Computer generation of hypergeometric random variates.} 
 Journal of Statistical Computation and Simulation 22, 127-145.
 
 @item
@@ -3935,11 +3935,11 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end defvr
 
 
-@deffn {Функция} random_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n})
-@deffnx {Функция} random_hypergeometric (@mvar{n1},@mvar{n2},@mvar{n},@mvar{m})
+@deffn {Функция} random_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffnx {Функция} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
 Возвращает значение симулированной случайной переменной гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}
-с неотрицательными целыми @mvar{n1}, @mvar{n2},@mvar{n} при условии @math{n<=n1+n2}. 
-Вызов @code{random_hypergeometric} с четвертым аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+с неотрицательными целыми @var{n1}, @var{n2},@var{n} при условии @math{n<=n1+n2}. 
+Вызов @code{random_hypergeometric} с четвертым аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для этой функции реализовано два алгоритма.
 Используемый алгоритм определяется значением глобальной переменной
@@ -3956,10 +3956,10 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} pdf_negative_binomial (@mvar{x},@mvar{n},@mvar{p})
+@deffn {Функция} pdf_negative_binomial (@var{x},@var{n},@var{p})
 Возвращает значение функции плотности вероятности отрицательного биномиального распределения @math{Negative Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -3970,10 +3970,10 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} cdf_negative_binomial (@mvar{x},@mvar{n},@mvar{p})
+@deffn {Функция} cdf_negative_binomial (@var{x},@var{n},@var{p})
 Возвращает значение функции распределения отрицательного биномиального распределения @math{Negative Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}
-в точке @mvar{x}.
+в точке @var{x}.
 
 Эта функция вычисляется численно, 
 если значение глобальной переменной @code{numer} рано @code{true},  
@@ -4001,11 +4001,11 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} quantile_negative_binomial (@mvar{q},@mvar{n},@mvar{p})
-Возвращает @mvar{q}-квантиль отрицательного биномиального распределения @math{Negative Binomial(n,p)}
+@deffn {Функция} quantile_negative_binomial (@var{q},@var{n},@var{p})
+Возвращает @var{q}-квантиль отрицательного биномиального распределения @math{Negative Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}, 
 т.е. значение функции обратной @code{cdf_negative_binomial}. 
-Значение аргумента @mvar{q} должно быть в интервале @math{[0,1]}. 
+Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
@@ -4016,7 +4016,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} mean_negative_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} mean_negative_binomial (@var{n},@var{p})
 Возвращает среднее значение отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -4029,7 +4029,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} var_negative_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} var_negative_binomial (@var{n},@var{p})
 Возвращает дисперсию отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -4042,7 +4042,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} std_negative_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} std_negative_binomial (@var{n},@var{p})
 Возвращает стандартное отклонение отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -4055,7 +4055,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} skewness_negative_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} skewness_negative_binomial (@var{n},@var{p})
 Возвращает коэффициент асимметрии отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -4068,7 +4068,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end deffn
 
 
-@deffn {Функция} kurtosis_negative_binomial (@mvar{n},@mvar{p})
+@deffn {Функция} kurtosis_negative_binomial (@var{n},@var{p})
 Возвращает коэффициент куртозиса отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
@@ -4090,7 +4090,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 @item
 @code{devroye} -- основан на алгоритме, описанном в Devroye, L. (1986) 
-@mvar{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
+@var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
 @item
 @code{bernoulli} -- основан на моделировании опытов Бернулли.
@@ -4109,11 +4109,11 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 @end defvr
 
 
-@deffn {Функция} random_negative_binomial (@mvar{n},@mvar{p})
-@deffnx {Функция} random_negative_binomial (@mvar{n},@mvar{p},@mvar{m})
+@deffn {Функция} random_negative_binomial (@var{n},@var{p})
+@deffnx {Функция} random_negative_binomial (@var{n},@var{p},@var{m})
 Возвращает значение симулированной случайной переменной отрицательного биномиального распределения @math{Negative Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}. 
-Вызов @code{random_negative_binomial} с третьим аргументом @mvar{m} дает случайную выборку размера @mvar{m}.
+Вызов @code{random_negative_binomial} с третьим аргументом @var{m} дает случайную выборку размера @var{m}.
 
 Для этой функции реализовано три алгоритма.
 Используемый алгоритм определяется значением глобальной переменной

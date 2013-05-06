@@ -118,13 +118,13 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Operator} %if (@mvar{bool}, @mvar{a}, @mvar{b})
+@deffn {Operator} %if (@var{bool}, @var{a}, @var{b})
 @ifinfo
 @fnindex conditional evaluation
 @end ifinfo
 
 The operator @code{%if} is a simplifying conditional.  The
-@i{conditional} @mvar{bool} should be boolean-valued.  When the
+@i{conditional} @var{bool} should be boolean-valued.  When the
 conditional is true, return the second argument; when the conditional is
 false, return the third; in all other cases, return a noun form.
 
@@ -269,7 +269,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} complex_number_p (@mvar{x})
+@deffn {Function} complex_number_p (@var{x})
 
 The predicate @code{complex_number_p} returns true if its argument is
 either @code{a + %i * b}, @code{a}, @code{%i b}, or @code{%i},
@@ -296,10 +296,10 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} compose_functions (@mvar{l})
+@deffn {Function} compose_functions (@var{l})
 
 The function call @code{compose_functions(l)} returns a lambda form that is
-the @i{composition} of the functions in the list @mvar{l}.  The functions are
+the @i{composition} of the functions in the list @var{l}.  The functions are
 applied from @i{right} to @i{left}; for example
 
 @example
@@ -363,7 +363,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
-@deffn {Function} dfloat (@mvar{x})
+@deffn {Function} dfloat (@var{x})
 
 The function @code{dfloat} is a similar to @code{float}, but the function
 @code{dfloat} applies @code{rectform} when @code{float} fails to evaluate
@@ -402,7 +402,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} elim (@mvar{l}, @mvar{x})
+@deffn {Function} elim (@var{l}, @var{x})
 
 The function @code{elim} eliminates the variables in the set or list
 @code{x} from the equations in the set or list @code{l}.  Each member
@@ -475,7 +475,7 @@ other Maxima functions.
 
 @end deffn
  
-@deffn {Function} elim_allbut (@mvar{l}, @mvar{x})
+@deffn {Function} elim_allbut (@var{l}, @var{x})
 
 This function is similar to @code{elim}, except that it eliminates all the
 variables in the list of equations @code{l} @i{except} for those variables that
@@ -500,7 +500,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} eliminate_using (@mvar{l}, @mvar{e}, @mvar{x})
+@deffn {Function} eliminate_using (@var{l}, @var{e}, @var{x})
 
 Using @code{e} as the pivot, eliminate the symbol @code{x} from the
 list or set of equations in @code{l}.  The function @code{eliminate_using}
@@ -536,7 +536,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} fourier_elim ([@mvar{eq1}, @mvar{eq2}, @dots{}], [@mvar{var1}, @mvar{var}, @dots{}])
+@deffn {Function} fourier_elim ([@var{eq1}, @var{eq2}, @dots{}], [@var{var1}, @var{var}, @dots{}])
 
 Fourier elimination is the analog of Gauss elimination for linear inequations
 (equations or inequalities).  The function call @code{fourier_elim([eq1, eq2,
@@ -625,7 +625,7 @@ handles some expressions that are the product or quotient of linear terms:
 
 @end deffn
 
-@deffn {Function} isreal_p (@mvar{e})
+@deffn {Function} isreal_p (@var{e})
 
 The predicate @code{isreal_p} returns true when Maxima is able to
 determine that @code{e} is real-valued on the @i{entire} real line; it
@@ -750,7 +750,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} parg (@mvar{x})
+@deffn {Function} parg (@var{x})
 
 The function @code{parg} is a simplifying version of the complex argument function 
 @code{carg}; thus
@@ -805,7 +805,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} real_imagpart_to_conjugate (@mvar{e})
+@deffn {Function} real_imagpart_to_conjugate (@var{e})
 
 The function @code{real_imagpart_to_conjugate} replaces all occurrences
 of @code{realpart} and @code{imagpart} to algebraically equivalent expressions
@@ -828,7 +828,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} rectform_log_if_constant (@mvar{e})
+@deffn {Function} rectform_log_if_constant (@var{e})
 
 The function @code{rectform_log_if_constant} converts all terms of the form
 @code{ log(c)} to  @code{rectform(log(c))}, where @code{c} is
@@ -856,7 +856,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} simp_inequality (@mvar{e})
+@deffn {Function} simp_inequality (@var{e})
 
 The function @code{simp_inequality} applies some simplifications to
 conjunctions and disjunctions of inequations.
@@ -888,7 +888,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} standardize_inverse_trig (@mvar{e})
+@deffn {Function} standardize_inverse_trig (@var{e})
 
 This function applies the identities @code{cot(x) = atan(1/x),
 acsc(x) = asin(1/x),} and similarly for @code{asec, acoth, acsch}
@@ -902,7 +902,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
-@deffn {Function} subst_parallel (@mvar{l}, @mvar{e})
+@deffn {Function} subst_parallel (@var{l}, @var{e})
 
 When @code{l} is a single equation or a list of equations, substitute
 the right hand side of each equation for the left hand side.  The
@@ -969,13 +969,13 @@ functionality might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Function} to_poly (@mvar{e}, @mvar{l})
+@deffn {Function} to_poly (@var{e}, @var{l})
 
 The function @code{to_poly} attempts to convert the equation @code{e}
 into a polynomial system along with inequality constraints; the
 solutions to the polynomial system that satisfy the constraints are
 solutions to the equation @code{e}.  Informally, @code{to_poly}
-attempts to polynomialize the equation @mvar{e}; an example might
+attempts to polynomialize the equation @var{e}; an example might
 clarify:
 
 @example
@@ -1038,7 +1038,7 @@ other Maxima functions.
 
 @end deffn
 
-@deffn {Function} to_poly_solve (@mvar{e}, @mvar{l}, [options])
+@deffn {Function} to_poly_solve (@var{e}, @var{l}, [options])
 
 The function @code{to_poly_solve} tries to solve the equations @math{e}
 for the variables @math{l}.  The equation(s) @math{e} can either be a

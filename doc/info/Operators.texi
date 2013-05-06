@@ -126,8 +126,8 @@ Operator   lbp     rbp
 @end example
 
 @mref{remove} and @mref{kill} remove operator properties from an atom.
-@code{remove ("@mvar{a}", op)} removes only the operator properties of @mvar{a}.
-@code{kill ("@mvar{a}")} removes all properties of @mvar{a}, including the
+@code{remove ("@var{a}", op)} removes only the operator properties of @var{a}.
+@code{kill ("@var{a}")} removes all properties of @var{a}, including the
 operator properties.  Note that the name of the operator must be enclosed in
 quotation marks.
 
@@ -735,9 +735,9 @@ due to the treatment of indeterminate operands.
 Represents the negation of syntactic equality @mrefdot{=}
 
 Note that because of the rules for evaluation of predicate expressions
-(in particular because @code{not @mvar{expr}} causes evaluation of @mvar{expr}),
-@code{not @mvar{a} = @mvar{b}} is equivalent to @code{is(@mvar{a} # @mvar{b})},
-instead of @code{@mvar{a} # @mvar{b}}.
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+instead of @code{@var{a} # @var{b}}.
 
 Examples:
 
@@ -779,24 +779,24 @@ Examples:
 
 The equation operator.
 
-An expression @code{@mvar{a} = @mvar{b}}, by itself, represents an unevaluated
+An expression @code{@var{a} = @var{b}}, by itself, represents an unevaluated
 equation, which might or might not hold.  Unevaluated equations may appear as
 arguments to @mref{solve} and @mref{algsys} or some other functions.
 
 The function @mref{is} evaluates @code{=} to a Boolean value.
-@code{is(@mvar{a} = @mvar{b})} evaluates @code{@mvar{a} = @mvar{b}} to @code{true}
-when @mvar{a} and @mvar{b} are identical.  That is, @mvar{a} and @mvar{b} are atoms
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true}
+when @var{a} and @var{b} are identical.  That is, @var{a} and @var{b} are atoms
 which are identical, or they are not atoms and their operators are identical and
-their arguments are identical.  Otherwise, @code{is(@mvar{a} = @mvar{b})}
+their arguments are identical.  Otherwise, @code{is(@var{a} = @var{b})}
 evaluates to @code{false}; it never evaluates to @code{unknown}.  When
-@code{is(@mvar{a} = @mvar{b})} is @code{true}, @mvar{a} and @mvar{b} are said to be
+@code{is(@var{a} = @var{b})} is @code{true}, @var{a} and @var{b} are said to be
 syntactically equal, in contrast to equivalent expressions, for which
-@code{is(equal(@mvar{a}, @mvar{b}))} is @code{true}.  Expressions can be
+@code{is(equal(@var{a}, @var{b}))} is @code{true}.  Expressions can be
 equivalent and not syntactically equal.
 
 The negation of @code{=} is represented by @mrefdot{#}
-As with @code{=}, an expression @code{@mvar{a} # @mvar{b}}, by itself, is not
-evaluated.  @code{is(@mvar{a} # @mvar{b})} evaluates @code{@mvar{a} # @mvar{b}} to
+As with @code{=}, an expression @code{@var{a} # @var{b}}, by itself, is not
+evaluated.  @code{is(@var{a} # @var{b})} evaluates @code{@var{a} # @var{b}} to
 @code{true} or @code{false}.
 
 In addition to @code{is}, some other operators evaluate @code{=} and @code{#}
@@ -804,9 +804,9 @@ to @code{true} or @code{false}, namely @mrefcomma{if} @mrefcomma{and}@w{}
 @mrefcomma{or} and @mrefdot{not}
 
 Note that because of the rules for evaluation of predicate expressions
-(in particular because @code{not @mvar{expr}} causes evaluation of @mvar{expr}),
-@code{not @mvar{a} = @mvar{b}} is equivalent to @code{is(@mvar{a} # @mvar{b})},
-instead of @code{@mvar{a} # @mvar{b}}.
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+instead of @code{@var{a} # @var{b}}.
 
 @mref{rhs} and @mref{lhs} return the right-hand and left-hand sides,
 respectively, of an equation or inequation.
@@ -815,7 +815,7 @@ See also @mref{equal} and @mrefdot{notequal}
 
 Examples:
 
-An expression @code{@mvar{a} = @mvar{b}}, by itself, represents
+An expression @code{@var{a} = @var{b}}, by itself, represents
 an unevaluated equation, which might or might not hold.
 
 @c ===beg===
@@ -847,8 +847,8 @@ an unevaluated equation, which might or might not hold.
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@mvar{a} = @mvar{b})} evaluates @code{@mvar{a} = @mvar{b}} to @code{true}
-when @mvar{a} and @mvar{b} are syntactically equal (that is, identical).
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true}
+when @var{a} and @var{b} are syntactically equal (that is, identical).
 Expressions can be equivalent and not syntactically equal.
 
 @c ===beg===
@@ -891,8 +891,8 @@ Some operators evaluate @code{=} and @code{#} to @code{true} or @code{false}.
 (%o4)                  [false, true, true]
 @end example
 
-Because @code{not @mvar{expr}} causes evaluation of @mvar{expr},
-@code{not @mvar{a} = @mvar{b}} is equivalent to @code{is(@mvar{a} # @mvar{b})}.
+Because @code{not @var{expr}} causes evaluation of @var{expr},
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})}.
 
 @c ===beg===
 @c [2 * x # 3 * x, not (2 * x = 3 * x)];
@@ -1214,18 +1214,18 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 
 The function definition operator.
-@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}) := @mvar{expr}} defines a function named
-@mvar{f} with arguments @mvar{x_1}, @dots{}, @mvar{x_n} and function body
-@mvar{expr}.  @code{:=} never evaluates the function body (unless explicitly
+@code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} defines a function named
+@var{f} with arguments @var{x_1}, @dots{}, @var{x_n} and function body
+@var{expr}.  @code{:=} never evaluates the function body (unless explicitly
 evaluated by quote-quote @code{'@w{}'}).  The function so defined may be an
 ordinary Maxima function (with arguments enclosed in parentheses) or an array
 function (with arguments enclosed in square brackets).
 
-When the last or only function argument @mvar{x_n} is a list of one element, the
+When the last or only function argument @var{x_n} is a list of one element, the
 function defined by @code{:=} accepts a variable number of arguments.  Actual
-arguments are assigned one-to-one to formal arguments @mvar{x_1}, @dots{},
-@mvar{x_(n - 1)}, and any further actual arguments, if present, are assigned to
-@mvar{x_n} as a list.
+arguments are assigned one-to-one to formal arguments @var{x_1}, @dots{},
+@var{x_(n - 1)}, and any further actual arguments, if present, are assigned to
+@var{x_n} as a list.
 
 All function definitions appear in the same namespace; defining a function
 @code{f} within another function @code{g} does not automatically limit the scope
@@ -1233,7 +1233,7 @@ of @code{f} to @code{g}.  However, @code{local(f)} makes the definition of
 function @code{f} effective only within the block or other compound expression
 in which @mref{local} appears.
 
-If some formal argument @mvar{x_k} is a quoted symbol, the function defined by
+If some formal argument @var{x_k} is a quoted symbol, the function defined by
 @code{:=} does not evaluate the corresponding actual argument.  Otherwise all
 actual arguments are evaluated.
 
@@ -1279,7 +1279,7 @@ array function.
                        x, y
 @end example
 
-When the last or only function argument @mvar{x_n} is a list of one element,
+When the last or only function argument @var{x_n} is a list of one element,
 the function defined by @code{:=} accepts a variable number of arguments.
 
 @c ===beg===
@@ -1324,26 +1324,26 @@ the function defined by @code{:=} accepts a variable number of arguments.
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {Function} infix (@mvar{op})
-@deffnx {Function} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
-@deffnx {Function} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
+@deffn  {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
-Declares @mvar{op} to be an infix operator.  An infix operator is a function of
+Declares @var{op} to be an infix operator.  An infix operator is a function of
 two arguments, with the name of the function written between the arguments.
 For example, the subtraction operator @code{-} is an infix operator.
 
-@code{infix (@mvar{op})} declares @mvar{op} to be an infix operator with default
+@code{infix (@var{op})} declares @var{op} to be an infix operator with default
 binding powers (left and right both equal to 180) and parts of speech (left and
 right both equal to @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})} declares @mvar{op} to be an infix
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an infix
 operator with stated left and right binding powers and default parts of speech
 (left and right both equal to @code{any}).
 
-@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})}
-declares @mvar{op} to be an infix operator with stated left and right binding
-powers and parts of speech @mvar{lpos}, @mvar{rpos}, and @mvar{pos} for the left
+@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+declares @var{op} to be an infix operator with stated left and right binding
+powers and parts of speech @var{lpos}, @var{rpos}, and @var{pos} for the left
 operand, the right operand, and the operator result, respectively.
 
 "Part of speech", in reference to operator declarations, means expression type.
@@ -1352,28 +1352,28 @@ indicating an algebraic expression, a Boolean expression, or any kind of
 expression, respectively.  Maxima can detect some syntax errors by comparing the
 declared part of speech to an actual expression.
 
-The precedence of @mvar{op} with respect to other operators derives from the left
+The precedence of @var{op} with respect to other operators derives from the left
 and right binding powers of the operators in question.  If the left and right
-binding powers of @mvar{op} are both greater the left and right binding powers of
-some other operator, then @mvar{op} takes precedence over the other operator.
+binding powers of @var{op} are both greater the left and right binding powers of
+some other operator, then @var{op} takes precedence over the other operator.
 If the binding powers are not both greater or less, some more complicated
 relation holds.
 
-The associativity of @mvar{op} depends on its binding powers.  Greater left
-binding power (@mvar{lbp}) implies an instance of @mvar{op} is evaluated before
+The associativity of @var{op} depends on its binding powers.  Greater left
+binding power (@var{lbp}) implies an instance of @var{op} is evaluated before
 other operators to its left in an expression, while greater right binding power
-(@mvar{rbp}) implies  an instance of @mvar{op} is evaluated before other operators
-to its right in an expression.  Thus greater @mvar{lbp} makes @mvar{op}
-right-associative, while greater @mvar{rbp} makes @mvar{op} left-associative.
-If @mvar{lbp} is equal to @mvar{rbp}, @mvar{op} is left-associative.
+(@var{rbp}) implies  an instance of @var{op} is evaluated before other operators
+to its right in an expression.  Thus greater @var{lbp} makes @var{op}
+right-associative, while greater @var{rbp} makes @var{op} left-associative.
+If @var{lbp} is equal to @var{rbp}, @var{op} is left-associative.
 
 See also @ref{Introduction to operators}.
 
 Examples:
 
-If the left and right binding powers of @mvar{op} are both greater
+If the left and right binding powers of @var{op} are both greater
 the left and right binding powers of some other operator,
-then @mvar{op} takes precedence over the other operator.
+then @var{op} takes precedence over the other operator.
 
 @c ===beg===
 @c :lisp (get '$+ 'lbp)
@@ -1401,8 +1401,8 @@ then @mvar{op} takes precedence over the other operator.
 (%o5)                       (a+1,b+2)
 @end example
 
-Greater @mvar{lbp} makes @mvar{op} right-associative,
-while greater @mvar{rbp} makes @mvar{op} left-associative.
+Greater @var{lbp} makes @var{op} right-associative,
+while greater @var{rbp} makes @var{op} left-associative.
 
 @c ===beg===
 @c infix ("##", 100, 99);
@@ -1453,11 +1453,11 @@ if x ## y then
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Function} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
-@deffnx {Function} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
+@deffn  {Function} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Function} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
-Declares a matchfix operator with left and right delimiters @mvar{ldelimiter}
-and @mvar{rdelimiter}.  The delimiters are specified as strings.
+Declares a matchfix operator with left and right delimiters @var{ldelimiter}
+and @var{rdelimiter}.  The delimiters are specified as strings.
 
 A "matchfix" operator is a function of any number of arguments,
 such that the arguments occur between matching left and right delimiters.
@@ -1478,10 +1478,10 @@ In particular, built-in operators such as addition @code{+} can
 be declared matchfix,
 but operator functions cannot be defined for built-in operators.
 
-The command @code{matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos},
-@mvar{pos})} declares the argument part-of-speech @mvar{arg_pos} and result
-part-of-speech @mvar{pos}, and the delimiters @mvar{ldelimiter} and
-@mvar{rdelimiter}.
+The command @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos},
+@var{pos})} declares the argument part-of-speech @var{arg_pos} and result
+part-of-speech @var{pos}, and the delimiters @var{ldelimiter} and
+@var{rdelimiter}.
 
 "Part of speech", in reference to operator declarations, means expression type.
 Three types are recognized: @code{expr}, @code{clause}, and @code{any},
@@ -1505,7 +1505,7 @@ with the function definition operator @code{:=} or @code{define}.
 The arguments may be written between the delimiters,
 or with the left delimiter as a quoted string and the arguments
 following in parentheses.
-@code{dispfun (@mvar{ldelimiter})} displays the function definition.
+@code{dispfun (@var{ldelimiter})} displays the function definition.
 
 The only built-in matchfix operator is the list constructor @code{[ ]}.
 Parentheses @code{( )} and double-quotes @code{" "} 
@@ -1513,7 +1513,7 @@ act like matchfix operators,
 but are not treated as such by the Maxima parser.
 
 @code{matchfix} evaluates its arguments.
-@code{matchfix} returns its first argument, @mvar{ldelimiter}.
+@code{matchfix} returns its first argument, @var{ldelimiter}.
 @c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
 
 Examples:
@@ -1588,8 +1588,8 @@ Matchfix operators are ordinary user-defined functions.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_nary}
-@deffn  {Function} nary (@mvar{op})
-@deffnx {Function} nary (@mvar{op}, @mvar{bp}, @mvar{arg_pos}, @mvar{pos})
+@deffn  {Function} nary (@var{op})
+@deffnx {Function} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
 
 An @code{nary} operator is used to denote a function of any number of arguments,
 each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
@@ -1607,8 +1607,8 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {Function} nofix (@mvar{op})
-@deffnx {Function} nofix (@mvar{op}, @mvar{pos})
+@deffn  {Function} nofix (@var{op})
+@deffnx {Function} nofix (@var{op}, @var{pos})
 
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
@@ -1626,8 +1626,8 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {Function} postfix (@mvar{op})
-@deffnx {Function} postfix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})
+@deffn  {Function} postfix (@var{op})
+@deffnx {Function} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
 
 @code{postfix} operators like the @code{prefix} variety denote functions of a
 single argument, but in this case the argument immediately precedes an
@@ -1644,8 +1644,8 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {Function} prefix (@mvar{op})
-@deffnx {Function} prefix (@mvar{op}, @mvar{rbp}, @mvar{rpos}, @mvar{pos})
+@deffn  {Function} prefix (@var{op})
+@deffnx {Function} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
 
 A @code{prefix} operator is one which signifies a function of one argument,
 which argument immediately follows an occurrence of the operator.

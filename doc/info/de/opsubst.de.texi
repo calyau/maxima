@@ -20,14 +20,14 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{function_opsubst}
-@deffn  {Function} opsubst (@mvar{f}, @mvar{g}, @mvar{e})
-@deffnx {Function} opsubst (@mvar{g} = @mvar{f}, @mvar{e})
-@deffnx {Function} opsubst ([@mvar{g1} = @mvar{f1}, @mvar{g2} = @mvar{f2}, @dots{}, @mvar{gn} = @mvar{fn}], @mvar{e})
+@deffn  {Function} opsubst (@var{f}, @var{g}, @var{e})
+@deffnx {Function} opsubst (@var{g} = @var{f}, @var{e})
+@deffnx {Function} opsubst ([@var{g1} = @var{f1}, @var{g2} = @var{f2}, @dots{}, @var{gn} = @var{fn}], @var{e})
 
 The function @code{opsubst} is similar to the function @code{subst}, except that
 @code{opsubst} only makes substitutions for the operators in an expression.  In
-general, when @mvar{f} is an operator in the expression @mvar{e}, substitute
-@mvar{g} for @mvar{f} in the expression @mvar{e}.
+general, when @var{f} is an operator in the expression @var{e}, substitute
+@var{g} for @var{f} in the expression @var{e}.
 
 To determine the operator, @code{opsubst} sets @code{inflag} to true.  This
 means @code{opsubst} substitutes for the internal, not the displayed, operator

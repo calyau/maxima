@@ -6,9 +6,9 @@
 @section Functions and Variables for diag
 
 
-@deffn {関数} diag (@mvar{lm})
-@mvar{lm}の行列を対角に持つ平方行列を構成します。
-@mvar{lm}は行列かスカラーのリストです。
+@deffn {関数} diag (@var{lm})
+@var{lm}の行列を対角に持つ平方行列を構成します。
+@var{lm}は行列かスカラーのリストです。
 
 例:
 @example
@@ -41,8 +41,8 @@
 @end deffn
 
 
-@deffn {関数} JF (@mvar{lambda},@mvar{n})
-固有値@mvar{lambda}を持つ次数@mvar{n}のJordan細胞を返します。
+@deffn {関数} JF (@var{lambda},@var{n})
+固有値@var{lambda}を持つ次数@var{n}のJordan細胞を返します。
 
 例:
 @example
@@ -73,8 +73,8 @@
 @end deffn
 
 
-@deffn {関数} jordan (@mvar{mat})
-行列@mvar{mat}のJordan形を返しますが、それはMaximaリストでコード化されます。
+@deffn {関数} jordan (@var{mat})
+行列@var{mat}のJordan形を返しますが、それはMaximaリストでコード化されます。
 対応する行列を得るには、
 @code{jordan}の出力を引数として使って関数@code{dispJordan}をコールしてください。
 
@@ -121,9 +121,9 @@
 @end deffn
 
 
-@deffn {関数} dispJordan (@mvar{l})
+@deffn {関数} dispJordan (@var{l})
 関数@code{jordan}によって与えられる出力である
-Maximaリスト@mvar{l}で与えられたコードに関連付けられた
+Maximaリスト@var{l}で与えられたコードに関連付けられた
 Jordan行列を返します。
 
 例:
@@ -160,9 +160,9 @@ Jordan行列を返します。
 @end deffn
 
 
-@deffn {関数} minimalPoly (@mvar{l})
+@deffn {関数} minimalPoly (@var{l})
 関数@code{jordan}によって与えられる出力である
-Maximaリスト@mvar{l}で与えられたコードに関連付けられた
+Maximaリスト@var{l}で与えられたコードに関連付けられた
 最小多項式を返します。
 
 例:
@@ -190,13 +190,13 @@ Maximaリスト@mvar{l}で与えられたコードに関連付けられた
 
 @end deffn
 
-@deffn {関数} ModeMatrix (@mvar{A},@mvar{l})
+@deffn {関数} ModeMatrix (@var{A},@var{l})
 Returns the matrix 
 @math{(M^^-1).A.M=J}―
-ただし@mvar{J}は@mvar{A}のJordan形とする―
+ただし@var{J}は@var{A}のJordan形とする―
 のような
-行列@mvar{M}を返します。
-Maximaリスト@mvar{l}は
+行列@var{M}を返します。
+Maximaリスト@var{l}は
 関数@code{jordan}が返すようなJordan形のコード化された形式です。
 
 例:
@@ -240,9 +240,9 @@ Maximaリスト@mvar{l}は
 @end deffn
 
 
-@deffn {関数} mat_function (@mvar{f},@mvar{mat})
+@deffn {関数} mat_function (@var{f},@var{mat})
 @math{f(mat)}を返します。
-ここで、@mvar{f}は解析関数で@mvar{mat}は行列です。
+ここで、@var{f}は解析関数で@var{mat}は行列です。
 この計算はCauchyの積分公式に基づきます。
 積分公式は、
 もし@code{f(x)}が解析的、かつ、

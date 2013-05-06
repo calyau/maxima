@@ -7,12 +7,12 @@
 @section Funciones y variables para stirling
 
 
-@deffn {Funci@'on} stirling (@mvar{z},@mvar{n})
-@deffnx {Funci@'on} stirling (@mvar{z},@mvar{n},@mvar{pred})
+@deffn {Funci@'on} stirling (@var{z},@var{n})
+@deffnx {Funci@'on} stirling (@var{z},@var{n},@var{pred})
 
 
 Sustituye @code{gamma(x)} por la f@'ormula de Stirling @math{O(1/x^(2n-1))}.
-Si @mvar{n} no es un entero no negativo, emite un mensaje de error. Con el
+Si @var{n} no es un entero no negativo, emite un mensaje de error. Con el
 tercer argumento opcional @code{pred}, la f@'ormula de Stirling s@'olo se aplica 
 si @code{pred} vale @code{true}.
 

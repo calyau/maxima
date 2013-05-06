@@ -45,8 +45,8 @@
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} combine (@mvar{expr})
-同じ分母を持つ項を単一の項に結合することによって和@mvar{expr}を整理します。
+@deffn {関数} combine (@var{expr})
+同じ分母を持つ項を単一の項に結合することによって和@var{expr}を整理します。
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -72,7 +72,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{demoivre}
-@deffn  {関数} demoivre (@mvar{expr})
+@deffn  {関数} demoivre (@var{expr})
 @deffnx {オプション変数} demoivre
 
 関数@code{demoivre (expr)}は、
@@ -98,7 +98,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{function_distrib}
-@deffn {関数} distrib (@mvar{expr})
+@deffn {関数} distrib (@var{expr})
 
 和を積上に分配します。
 式のトップレベルのみで働き、すなわち、再帰的でなく、
@@ -255,19 +255,19 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{expand}
-@deffn  {関数} expand (@mvar{expr})
-@deffnx {関数} expand (@mvar{expr}, @mvar{p}, @mvar{n})
+@deffn  {関数} expand (@var{expr})
+@deffnx {関数} expand (@var{expr}, @var{p}, @var{n})
 
-式@mvar{expr}を展開します。
+式@var{expr}を展開します。
 指数和や和の積の積を実行し、有理式の分子をそれぞれの項に分割し、
-（可換、非可換な）積が@mvar{expr}のすべてのレベルの和で分配されます。
+（可換、非可換な）積が@var{expr}のすべてのレベルの和で分配されます。
 
 多項式の場合、もっと効率的なアルゴリズムの@code{ratexpand}を普通使うべきです。
 
 @code{maxnegex}と@code{maxposex}はそれぞれ、展開される最大の負と正の指数を制御します。
 
 @code{expand (expr, p, n)}は、
-@mvar{expr}を、@code{maxposex}に@mvar{p}を@code{maxnegex}に@mvar{n}を使って展開します。
+@var{expr}を、@code{maxposex}に@var{p}を@code{maxnegex}に@var{n}を使って展開します。
 これは、式のすべてではなく、一部を展開するために役立ちます。
 
 @code{expon} - 自動的に展開される最大の負のべきの指数（@code{expand}のコールに独立して）。
@@ -365,12 +365,12 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt}
-@deffn {関数} expandwrt (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {関数} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
 
-式@code{expr}を、変数@mvar{x_1}, ..., @mvar{x_n}に関して展開します。
+式@code{expr}を、変数@var{x_1}, ..., @var{x_n}に関して展開します。
 変数を含む積すべては陽に現れます。
 返される形式は、変数を含む式の和の積を含みません。
-@mvar{x_1}, ..., @mvar{x_n}は、変数、演算子、式であり得ます。
+@var{x_1}, ..., @var{x_n}は、変数、演算子、式であり得ます。
 
 デフォルトでは、分母は展開されませんが、これは、スイッチ@code{expandwrt_denom}によって
 制御することができます。
@@ -400,11 +400,11 @@
 @c NEEDS EXAMPLES
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt_factored}
-@deffn {関数} expandwrt_factored (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+@deffn {関数} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
 
 @code{expandwrt}に似ていますが、積の式を幾分違って扱います。
 @code{expandwrt_factored}は、@code{expr}の、
-変数@mvar{x_1}, ..., @mvar{x_n}を含む因子上でだけ展開します。
+変数@var{x_1}, ..., @var{x_n}を含む因子上でだけ展開します。
 
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 この関数は、@file{simplification/stopex.mac}から自動ロードされます。
@@ -432,11 +432,11 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{exponentialize}
-@deffn {関数} exponentialize (@mvar{expr})
+@deffn {関数} exponentialize (@var{expr})
 @deffnx {オプション変数} exponentialize
 
 関数@code{exponentialize (expr)}は、
-@mvar{expr}の中の円関数や双曲関数を指数関数に変換します。
+@var{expr}の中の円関数や双曲関数を指数関数に変換します。
 グローバル変数@code{exponentialize}を設定する必要はありません。
 
 変数@code{exponentialize}が@code{true}の時、
@@ -576,23 +576,23 @@ Maximaの演算子のプロパティの１つ。
 
 @c -----------------------------------------------------------------------------
 @anchor{multthru}
-@deffn  {関数} multthru (@mvar{expr})
-@deffnx {関数} multthru (@mvar{expr_1}, @mvar{expr_2})
+@deffn  {関数} multthru (@var{expr})
+@deffnx {関数} multthru (@var{expr_1}, @var{expr_2})
 
-@mvar{expr}の（和の）因子に@mvar{expr}の他の因子を掛ける。
-すなわち、@mvar{expr}は@code{@mvar{f_1} @mvar{f_2} ... @mvar{f_n}}です。
-ここで、少なくとも１つの因子、@mvar{f_i}としましょう、は項の和です。
+@var{expr}の（和の）因子に@var{expr}の他の因子を掛ける。
+すなわち、@var{expr}は@code{@var{f_1} @var{f_2} ... @var{f_n}}です。
+ここで、少なくとも１つの因子、@var{f_i}としましょう、は項の和です。
 この和の各項に、積の中の他の因子を掛けます。
-（すなわち、@mvar{f_i}を除いた因子すべてです。）
+（すなわち、@var{f_i}を除いた因子すべてです。）
 @code{multthru}は、指数化された和を展開しません。
 この関数は、（可換であれ非可換であれ）積を和上に分配する最も速い方法です。
 割り算は積として表現されるので、
 @code{multthru}は積によって和を割ることにも使うことができます。
 
-@code{multthru (@mvar{expr_1}, @mvar{expr_2})}は、
-（和もしくは等式の）@mvar{expr_2}の中の各項に@mvar{expr_1}を掛けます。
-もし@mvar{expr_1}がそれ自身和でなければ、
-この形式は@code{multthru (@mvar{expr_1}*@mvar{expr_2})}と同値です。
+@code{multthru (@var{expr_1}, @var{expr_2})}は、
+（和もしくは等式の）@var{expr_2}の中の各項に@var{expr_1}を掛けます。
+もし@var{expr_1}がそれ自身和でなければ、
+この形式は@code{multthru (@var{expr_1}*@var{expr_2})}と同値です。
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -724,9 +724,9 @@ outativityは、@code{sum}や@code{integrate}の場合のように定義され�
 
 @c -----------------------------------------------------------------------------
 @anchor{radcan}
-@deffn {関数} radcan (@mvar{expr})
+@deffn {関数} radcan (@var{expr})
 
-対数関数、指数関数、累乗根を含む@mvar{expr}を、与えられ場変数の順序で式の大きなクラス上の標準形式に整理します;
+対数関数、指数関数、累乗根を含む@var{expr}を、与えられ場変数の順序で式の大きなクラス上の標準形式に整理します;
 関数的に同値な形式は特殊な形式にマップされます。
 式の幾分大きなクラスのため、@code{radcan}は正規の形式を生成します。
 このクラスの２つの式は、必ずしも、同じ結果ではありませんが、それらの差は@code{radcan}によって0に整理されます。
@@ -834,12 +834,12 @@ Maximaの整理器に
 
 @c -----------------------------------------------------------------------------
 @anchor{scsimp}
-@deffn {関数} scsimp (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
+@deffn {関数} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 
 順次的な相対整理(Sequential Comparative Simplification) (Stouteによる方法)。
 @code{scsimp}は、
-規則@mvar{rule_1}, ..., @mvar{rule_n}に従って、
-@mvar{expr}を整理しようとします。
+規則@var{rule_1}, ..., @var{rule_n}に従って、
+@var{expr}を整理しようとします。
 もしより小さな式が得られたら、
 プロセスは繰り返されます。
 そうでなければ、すべての整理が試された後、
@@ -933,9 +933,9 @@ Maximaの整理器に
 
 @c -----------------------------------------------------------------------------
 @anchor{xthru}
-@deffn {関数} xthru (@mvar{expr})
+@deffn {関数} xthru (@var{expr})
 
-（和でなければいけない）@mvar{expr}のすべての項を、
+（和でなければいけない）@var{expr}のすべての項を、
 共通分母上で、@code{ratsimp}がするように積や指数和を展開することなしに結合させます。
 @code{xthru}は、因子が陽であるときだけ、有理式の分子と分母の共通因子を消去します。
 

@@ -58,14 +58,14 @@ once, simplification eliminates the redundant member.
 (%o8)                       @{a, [b]@}
 @end example
 
-Two would-be elements @mvar{x} and @mvar{y} are redundant
+Two would-be elements @var{x} and @var{y} are redundant
 (i.e., considered the same for the purpose of set construction)
-if and only if @code{is(@mvar{x} = @mvar{y})} yields @code{true}.
+if and only if @code{is(@var{x} = @var{y})} yields @code{true}.
 @c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-Note that @code{is(equal(@mvar{x}, @mvar{y}))} can yield @code{true}
-while @code{is(@mvar{x} = @mvar{y})} yields @code{false};
-in that case the elements @mvar{x} and @mvar{y} are considered distinct.
+Note that @code{is(equal(@var{x}, @var{y}))} can yield @code{true}
+while @code{is(@var{x} = @var{y})} yields @code{false};
+in that case the elements @var{x} and @var{y} are considered distinct.
 
 @c ===beg===
 @c x: a/c + b/c;
@@ -250,7 +250,7 @@ There two ways to to iterate over set members. One way is the use
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
-The other way is to use @code{for @mvar{x} in @mvar{s} do}
+The other way is to use @code{for @var{x} in @var{s} do}
 
 @c ===beg===
 @c s: {a, b, c};
@@ -420,13 +420,13 @@ documentation.
 @section Functions and Variables for Sets
 
 @anchor{adjoin}
-@deffn {Function} adjoin (@mvar{x}, @mvar{a}) 
+@deffn {Function} adjoin (@var{x}, @var{a}) 
 
-Returns the union of the set @mvar{a} with @code{@{@mvar{x}@}}.
+Returns the union of the set @var{a} with @code{@{@var{x}@}}.
 
-@code{adjoin} complains if @mvar{a} is not a literal set.
+@code{adjoin} complains if @var{a} is not a literal set.
 
-@code{adjoin(@mvar{x}, @mvar{a})} and @code{union(set(@mvar{x}), @mvar{a})}
+@code{adjoin(@var{x}, @var{a})} and @code{union(set(@var{x}), @var{a})}
 are equivalent;
 however, @code{adjoin} may be somewhat faster than @code{union}.
 
@@ -452,13 +452,13 @@ Examples:
 @end deffn
 
 @anchor{belln}
-@deffn {Function} belln (@mvar{n})
+@deffn {Function} belln (@var{n})
 
 Represents the @math{n}-th Bell number.
-@code{belln(n)} is the number of partitions of a set with @mvar{n} members.
+@code{belln(n)} is the number of partitions of a set with @var{n} members.
 
-For nonnegative integers @mvar{n},
-@code{belln(@mvar{n})} simplifies to the @math{n}-th Bell number.
+For nonnegative integers @var{n},
+@code{belln(@var{n})} simplifies to the @math{n}-th Bell number.
 @code{belln} does not simplify for any other arguments.
 
 @code{belln} distributes over equations, lists, matrices, and sets.
@@ -500,9 +500,9 @@ Examples:
 @end deffn
 
 @anchor{cardinality}
-@deffn {Function} cardinality (@mvar{a})
+@deffn {Function} cardinality (@var{a})
 
-Returns the number of distinct elements of the set @mvar{a}. 
+Returns the number of distinct elements of the set @var{a}. 
 
 @code{cardinality} ignores redundant elements
 even when simplification is disabled.
@@ -533,9 +533,9 @@ Examples:
 @end deffn
 
 @anchor{cartesian_product}
-@deffn {Function} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
-Returns a set of lists of the form @code{[@mvar{x_1}, ..., @mvar{x_n}]}, where
-@mvar{x_1}, ..., @mvar{x_n} are elements of the sets @mvar{b_1}, ... , @mvar{b_n},
+@deffn {Function} cartesian_product (@var{b_1}, ... , @var{b_n})
+Returns a set of lists of the form @code{[@var{x_1}, ..., @var{x_n}]}, where
+@var{x_1}, ..., @var{x_n} are elements of the sets @var{b_1}, ... , @var{b_n},
 respectively.
 
 @code{cartesian_product} complains if any argument is not a literal set.
@@ -567,14 +567,14 @@ Examples:
 
 
 @anchor{disjoin}
-@deffn {Function} disjoin (@mvar{x}, @mvar{a})
-Returns the set @mvar{a} without the member @mvar{x}.
-If @mvar{x} is not a member of @mvar{a}, return @mvar{a} unchanged.
+@deffn {Function} disjoin (@var{x}, @var{a})
+Returns the set @var{a} without the member @var{x}.
+If @var{x} is not a member of @var{a}, return @var{a} unchanged.
 
-@code{disjoin} complains if @mvar{a} is not a literal set.
+@code{disjoin} complains if @var{a} is not a literal set.
 
-@code{disjoin(@mvar{x}, @mvar{a})}, @code{delete(@mvar{x}, @mvar{a})}, and
-@code{setdifference(@mvar{a}, set(@mvar{x}))} are all equivalent. 
+@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}, and
+@code{setdifference(@var{a}, set(@var{x}))} are all equivalent. 
 Of these, @code{disjoin} is generally faster than the others.
 
 Examples:
@@ -600,10 +600,10 @@ Examples:
 @end deffn
 
 @anchor{disjointp}
-@deffn {Function} disjointp (@mvar{a}, @mvar{b}) 
-Returns @code{true} if and only if the sets @mvar{a} and @mvar{b} are disjoint.
+@deffn {Function} disjointp (@var{a}, @var{b}) 
+Returns @code{true} if and only if the sets @var{a} and @var{b} are disjoint.
 
-@code{disjointp} complains if either @mvar{a} or @mvar{b} is not a literal set.
+@code{disjointp} complains if either @var{a} or @var{b} is not a literal set.
 
 Examples:
 
@@ -625,13 +625,13 @@ Examples:
 @end deffn
 
 @anchor{divisors}
-@deffn {Function} divisors (@mvar{n})
+@deffn {Function} divisors (@var{n})
 
-Represents the set of divisors of @mvar{n}.
+Represents the set of divisors of @var{n}.
 
-@code{divisors(@mvar{n})} simplifies to a set of integers
-when @mvar{n} is a nonzero integer.
-The set of divisors includes the members 1 and @mvar{n}.
+@code{divisors(@var{n})} simplifies to a set of integers
+when @var{n} is a nonzero integer.
+The set of divisors includes the members 1 and @var{n}.
 The divisors of a negative integer are the divisors of its absolute value.
 
 @code{divisors} distributes over equations, lists, matrices, and sets.
@@ -695,11 +695,11 @@ yields the divisors without reevaluating @code{divisors(8)}.
 @end deffn
 
 @anchor{elementp}
-@deffn {Function} elementp (@mvar{x}, @mvar{a})
-Returns @code{true} if and only if @mvar{x} is a member of the 
-set @mvar{a}.
+@deffn {Function} elementp (@var{x}, @var{a})
+Returns @code{true} if and only if @var{x} is a member of the 
+set @var{a}.
 
-@code{elementp} complains if @mvar{a} is not a literal set.
+@code{elementp} complains if @var{a} is not a literal set.
 
 Examples:
 
@@ -721,8 +721,8 @@ Examples:
 @end deffn
 
 @anchor{emptyp}
-@deffn {Function} emptyp (@mvar{a})
-Return @code{true} if and only if @mvar{a} is the empty set or
+@deffn {Function} emptyp (@var{a})
+Return @code{true} if and only if @var{a} is the empty set or
 the empty list.
 
 Examples:
@@ -745,20 +745,20 @@ Examples:
 @end deffn
        
 @anchor{equiv_classes}
-@deffn {Function} equiv_classes (@mvar{s}, @mvar{F})
-Returns a set of the equivalence classes of the set @mvar{s} with respect
-to the equivalence relation @mvar{F}.
+@deffn {Function} equiv_classes (@var{s}, @var{F})
+Returns a set of the equivalence classes of the set @var{s} with respect
+to the equivalence relation @var{F}.
 
-@mvar{F} is a function of two variables defined on the Cartesian product of @mvar{s} with @mvar{s}.
-The return value of @mvar{F} is either @code{true} or @code{false},
-or an expression @mvar{expr} such that @code{is(@mvar{expr})} is either @code{true} or @code{false}.
+@var{F} is a function of two variables defined on the Cartesian product of @var{s} with @var{s}.
+The return value of @var{F} is either @code{true} or @code{false},
+or an expression @var{expr} such that @code{is(@var{expr})} is either @code{true} or @code{false}.
 
-When @mvar{F} is not an equivalence relation,
+When @var{F} is not an equivalence relation,
 @code{equiv_classes} accepts it without complaint,
 but the result is generally incorrect in that case.
 
 @c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
-@c @mvar{F} may be a relational operator (built-in or user-defined),
+@c @var{F} may be a relational operator (built-in or user-defined),
 @c an ordinary Maxima function, a Lisp function, a lambda expression,
 @c a macro, or a subscripted function.
 
@@ -806,35 +806,35 @@ The equivalence classes are numbers which differ by a multiple of 3.
 @end deffn
 
 @anchor{every}
-@deffn {Function} every (@mvar{f}, @mvar{s})
-@deffnx {Function} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
+@deffn {Function} every (@var{f}, @var{s})
+@deffnx {Function} every (@var{f}, @var{L_1}, ..., @var{L_n})
 
-Returns @code{true} if the predicate @mvar{f} is @code{true} for all given arguments.
+Returns @code{true} if the predicate @var{f} is @code{true} for all given arguments.
 
 Given one set as the second argument, 
-@code{every(@mvar{f}, @mvar{s})} returns @code{true}
-if @code{is(@mvar{f}(@mvar{a_i}))} returns @code{true} for all @mvar{a_i} in @mvar{s}.
-@code{every} may or may not evaluate @mvar{f} for all @mvar{a_i} in @mvar{s}.
+@code{every(@var{f}, @var{s})} returns @code{true}
+if @code{is(@var{f}(@var{a_i}))} returns @code{true} for all @var{a_i} in @var{s}.
+@code{every} may or may not evaluate @var{f} for all @var{a_i} in @var{s}.
 Since sets are unordered,
-@code{every} may evaluate @code{@mvar{f}(@mvar{a_i})} in any order.
+@code{every} may evaluate @code{@var{f}(@var{a_i})} in any order.
 
 Given one or more lists as arguments,
-@code{every(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} returns @code{true}
-if @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} returns @code{true} 
-for all @mvar{x_1}, ..., @mvar{x_n} in @mvar{L_1}, ..., @mvar{L_n}, respectively.
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
+if @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} returns @code{true} 
+for all @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
 @code{every} may or may not evaluate 
-@mvar{f} for every combination @mvar{x_1}, ..., @mvar{x_n}.
+@var{f} for every combination @var{x_1}, ..., @var{x_n}.
 @code{every} evaluates lists in the order of increasing index.
 
 Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
 @code{every} returns @code{false}.
 
 When the global flag @code{maperror} is @code{true}, all lists 
-@mvar{L_1}, ..., @mvar{L_n} must have equal lengths.
+@var{L_1}, ..., @var{L_n} must have equal lengths.
 When @code{maperror} is @code{false}, list arguments are
 effectively truncated to the length of the shortest list. 
 
-Return values of the predicate @mvar{f} which evaluate (via @code{is})
+Return values of the predicate @var{f} which evaluate (via @code{is})
 to something other than @code{true} or @code{false}
 are governed by the global flag @code{prederror}.
 When @code{prederror} is @code{true},
@@ -874,7 +874,7 @@ The predicate is a function of two arguments.
 (%o2)                         false
 @end example
 
-Return values of the predicate @mvar{f} which evaluate
+Return values of the predicate @var{f} which evaluate
 to something other than @code{true} or @code{false}
 are governed by the global flag @code{prederror}.
 
@@ -907,16 +907,16 @@ are governed by the global flag @code{prederror}.
 @end deffn
  
 @anchor{extremal_subset}
-@deffn {Function} extremal_subset (@mvar{s}, @mvar{f}, max)
-@deffnx {Function} extremal_subset (@mvar{s}, @mvar{f}, min)
+@deffn {Function} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {Function} extremal_subset (@var{s}, @var{f}, min)
 
-Returns the subset of @mvar{s} for which the function @mvar{f} takes on maximum or minimum values.
+Returns the subset of @var{s} for which the function @var{f} takes on maximum or minimum values.
 
-@code{extremal_subset(@mvar{s}, @mvar{f}, max)} returns the subset of the set or 
-list @mvar{s} for which the real-valued function @mvar{f} takes on its maximum value.
+@code{extremal_subset(@var{s}, @var{f}, max)} returns the subset of the set or 
+list @var{s} for which the real-valued function @var{f} takes on its maximum value.
 
-@code{extremal_subset(@mvar{s}, @mvar{f}, min)} returns the subset of the set or 
-list @mvar{s} for which the real-valued function @mvar{f} takes on its minimum value.
+@code{extremal_subset(@var{s}, @var{f}, min)} returns the subset of the set or 
+list @var{s} for which the real-valued function @var{f} takes on its minimum value.
 
 Examples:
 
@@ -938,9 +938,9 @@ Examples:
 @end deffn
 
 @anchor{flatten}
-@deffn {Function} flatten (@mvar{expr})
+@deffn {Function} flatten (@var{expr})
 
-Collects arguments of subexpressions which have the same operator as @mvar{expr}
+Collects arguments of subexpressions which have the same operator as @var{expr}
 and constructs an expression from these collected arguments.
 
 Subexpressions in which the operator is different from the main operator of @code{expr}
@@ -1034,8 +1034,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{full_listify}
-@deffn {Function} full_listify (@mvar{a})
-Replaces every set operator in @mvar{a} by a list operator,
+@deffn {Function} full_listify (@var{a})
+Replaces every set operator in @var{a} by a list operator,
 and returns the result.
 @code{full_listify} replaces set operators in nested subexpressions,
 even if the main operator is not @code{set}.
@@ -1062,10 +1062,10 @@ Examples:
 @end deffn
 
 @anchor{fullsetify}
-@deffn {Function} fullsetify (@mvar{a})
-When @mvar{a} is a list, replaces the list operator with a set operator,
+@deffn {Function} fullsetify (@var{a})
+When @var{a} is a list, replaces the list operator with a set operator,
 and applies @code{fullsetify} to each member which is a set.
-When @mvar{a} is not a list, it is returned unchanged.
+When @var{a} is not a list, it is returned unchanged.
 
 @code{setify} replaces only the main operator.
 
@@ -1092,9 +1092,9 @@ because the main operator of @code{f([b])} isn't a list.
 @end deffn
 
 @anchor{identity}
-@deffn {Function} identity (@mvar{x})
+@deffn {Function} identity (@var{x})
 
-Returns @mvar{x} for any argument @mvar{x}.
+Returns @var{x} for any argument @var{x}.
 
 Examples:
 
@@ -1111,20 +1111,20 @@ are already Boolean values.
 @end deffn
 
 @anchor{integer_partitions}
-@deffn {Function} integer_partitions (@mvar{n})
-@deffnx {Function} integer_partitions (@mvar{n}, @mvar{len})
+@deffn {Function} integer_partitions (@var{n})
+@deffnx {Function} integer_partitions (@var{n}, @var{len})
 
-Returns integer partitions of @mvar{n}, that is,
-lists of integers which sum to @mvar{n}.
+Returns integer partitions of @var{n}, that is,
+lists of integers which sum to @var{n}.
 
-@code{integer_partitions(@mvar{n})} returns the set of
-all partitions of the integer @mvar{n}.
+@code{integer_partitions(@var{n})} returns the set of
+all partitions of the integer @var{n}.
 Each partition is a list sorted from greatest to least.
 
-@code{integer_partitions(@mvar{n}, @mvar{len})}
-returns all partitions that have length @mvar{len} or less; in this
-case, zeros are appended to each partition with fewer than @mvar{len}
-terms to make each partition have exactly @mvar{len} terms.
+@code{integer_partitions(@var{n}, @var{len})}
+returns all partitions that have length @var{len} or less; in this
+case, zeros are appended to each partition with fewer than @var{len}
+terms to make each partition have exactly @var{len} terms.
 Each partition is a list sorted from greatest to least.
 
 A list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
@@ -1180,7 +1180,7 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 @end deffn
 
 @anchor{intersect}
-@deffn {Function} intersect (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
 
 @code{intersect} is the same as @code{intersection}, which see.
 
@@ -1191,9 +1191,9 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 @end deffn
 
 @anchor{intersection}
-@deffn {Function} intersection (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Function} intersection (@var{a_1}, ..., @var{a_n})
 Returns a set containing the elements that are common to the 
-sets @mvar{a_1} through @mvar{a_n}.
+sets @var{a_1} through @var{a_n}.
 
 @code{intersection} complains if any argument is not a literal set.
 
@@ -1234,13 +1234,13 @@ Examples:
 
 @end deffn
 
-@deffn {Function} kron_delta (@mvar{x1}, @mvar{x2}, @dots{}, @mvar{xp})
+@deffn {Function} kron_delta (@var{x1}, @var{x2}, @dots{}, @var{xp})
 
 Represents the Kronecker delta function.
 
-@code{kron_delta} simplifies to 1 when @mvar{xi} and @mvar{yj} are equal
-for all pairs of arguments, and it simplifies to 0 when @mvar{xi} and
-@mvar{yj} are not equal for some pair of arguments. Equality is
+@code{kron_delta} simplifies to 1 when @var{xi} and @var{yj} are equal
+for all pairs of arguments, and it simplifies to 0 when @var{xi} and
+@var{yj} are not equal for some pair of arguments. Equality is
 determined using @code{is(equal(xi,xj))} and inequality by
 @code{is(notequal(xi,xj))}. For exactly one argument, @code{kron_delta}
 signals an error.
@@ -1271,12 +1271,12 @@ Examples:
 @end deffn
 
 @anchor{listify}
-@deffn {Function} listify (@mvar{a})
+@deffn {Function} listify (@var{a})
 
-Returns a list containing the members of @mvar{a} when @mvar{a} is a set.
-Otherwise, @code{listify} returns @mvar{a}.
+Returns a list containing the members of @var{a} when @var{a} is a set.
+Otherwise, @code{listify} returns @var{a}.
 
-@code{full_listify} replaces all set operators in @mvar{a} by list operators.
+@code{full_listify} replaces all set operators in @var{a} by list operators.
 
 Examples:
 
@@ -1298,17 +1298,17 @@ Examples:
 @end deffn
 
 @anchor{lreduce}
-@deffn {Function} lreduce (@mvar{F}, @mvar{s})
-@deffnx {Function} lreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Function} lreduce (@var{F}, @var{s})
+@deffnx {Function} lreduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the binary function @mvar{F} to an n-ary function by composition,
-where @mvar{s} is a list.
+Extends the binary function @var{F} to an n-ary function by composition,
+where @var{s} is a list.
 
-@code{lreduce(@mvar{F}, @mvar{s})} returns @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
-When the optional argument @mvar{s_0} is present,
-the result is equivalent to @code{lreduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s}))}.
+@code{lreduce(@var{F}, @var{s})} returns @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
+When the optional argument @var{s_0} is present,
+the result is equivalent to @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 
-The function @mvar{F} is first applied to the
+The function @var{F} is first applied to the
 @i{leftmost} list elements, thus the name "lreduce". 
 
 See also @code{rreduce}, @code{xreduce}, and @code{tree_reduce}.
@@ -1362,22 +1362,22 @@ Examples:
 @end deffn
 
 @anchor{makeset}
-@deffn {Function} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
+@deffn {Function} makeset (@var{expr}, @var{x}, @var{s})
 
-Returns a set with members generated from the expression @mvar{expr},
-where @mvar{x} is a list of variables in @mvar{expr},
-and @mvar{s} is a set or list of lists.
+Returns a set with members generated from the expression @var{expr},
+where @var{x} is a list of variables in @var{expr},
+and @var{s} is a set or list of lists.
 To generate each set member,
-@mvar{expr} is evaluated with the variables @mvar{x} bound in parallel to a member of @mvar{s}.
+@var{expr} is evaluated with the variables @var{x} bound in parallel to a member of @var{s}.
 
-Each member of @mvar{s} must have the same length as @mvar{x}.
-The list of variables @mvar{x} must be a list of symbols, without subscripts.
-Even if there is only one symbol, @mvar{x} must be a list of one element,
-and each member of @mvar{s} must be a list of one element.
+Each member of @var{s} must have the same length as @var{x}.
+The list of variables @var{x} must be a list of symbols, without subscripts.
+Even if there is only one symbol, @var{x} must be a list of one element,
+and each member of @var{s} must be a list of one element.
 
 @c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
-@c @code{makeset(@mvar{expr}, @mvar{x}, @mvar{s})} returns the same result as
-@c @code{setify(map(lambda([L], sublis(map("=", ''@mvar{x}, L), ''@mvar{expr})), args(@mvar{s})))}.
+@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
 
 See also @code{makelist}.
 
@@ -1417,13 +1417,13 @@ Examples:
 @end deffn
 
 @anchor{moebius}
-@deffn {Function} moebius (@mvar{n})
+@deffn {Function} moebius (@var{n})
 
 Represents the Moebius function.
 
-When @mvar{n} is product of @math{k} distinct primes,
-@code{moebius(@mvar{n})} simplifies to @math{(-1)^k};
-when @math{@mvar{n} = 1}, it simplifies to 1;
+When @var{n} is product of @math{k} distinct primes,
+@code{moebius(@var{n})} simplifies to @math{(-1)^k};
+when @math{@var{n} = 1}, it simplifies to 1;
 and it simplifies to 0 for all other positive integers. 
 
 @code{moebius} distributes over equations, lists, matrices, and sets.
@@ -1471,16 +1471,16 @@ Examples:
 @end deffn
  
 @anchor{multinomial_coeff}
-@deffn {Function} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
+@deffn {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
 @deffnx {Function} multinomial_coeff ()
 
 Returns the multinomial coefficient.
 
-When each @mvar{a_k} is a nonnegative integer, the multinomial coefficient
-gives the number of ways of placing @code{@mvar{a_1} + ... + @mvar{a_n}} 
-distinct objects into @math{n} boxes with @mvar{a_k} elements in the 
-@math{k}'th box. In general, @code{multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})}
-evaluates to @code{(@mvar{a_1} + ... + @mvar{a_n})!/(@mvar{a_1}! ... @mvar{a_n}!)}.
+When each @var{a_k} is a nonnegative integer, the multinomial coefficient
+gives the number of ways of placing @code{@var{a_1} + ... + @var{a_n}} 
+distinct objects into @math{n} boxes with @var{a_k} elements in the 
+@math{k}'th box. In general, @code{multinomial_coeff (@var{a_1}, ..., @var{a_n})}
+evaluates to @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
 
 @code{multinomial_coeff()} (with no arguments) evaluates to 1.
 
@@ -1518,19 +1518,19 @@ Examples:
 @end deffn
 
 @anchor{num_distinct_partitions}
-@deffn {Function} num_distinct_partitions (@mvar{n})
-@deffnx {Function} num_distinct_partitions (@mvar{n}, list)
+@deffn {Function} num_distinct_partitions (@var{n})
+@deffnx {Function} num_distinct_partitions (@var{n}, list)
 
-Returns the number of distinct integer partitions of @mvar{n}
-when @mvar{n} is a nonnegative integer.
+Returns the number of distinct integer partitions of @var{n}
+when @var{n} is a nonnegative integer.
 Otherwise, @code{num_distinct_partitions} returns a noun expression.
 
-@code{num_distinct_partitions(@mvar{n}, list)} returns a 
-list of the number of distinct partitions of 1, 2, 3, ..., @mvar{n}. 
+@code{num_distinct_partitions(@var{n}, list)} returns a 
+list of the number of distinct partitions of 1, 2, 3, ..., @var{n}. 
 
-A distinct partition of @mvar{n} is
+A distinct partition of @var{n} is
 a list of distinct positive integers @math{k_1}, ..., @math{k_m}
-such that @math{@mvar{n} = k_1 + ... + k_m}.
+such that @math{@var{n} = k_1 + ... + k_m}.
 
 Examples:
 
@@ -1555,18 +1555,18 @@ Examples:
 @end deffn
 
 @anchor{num_partitions}
-@deffn {Function} num_partitions (@mvar{n})
-@deffnx {Function} num_partitions (@mvar{n}, list)
+@deffn {Function} num_partitions (@var{n})
+@deffnx {Function} num_partitions (@var{n}, list)
 
-Returns the number of integer partitions of @mvar{n}
-when @mvar{n} is a nonnegative integer.
+Returns the number of integer partitions of @var{n}
+when @var{n} is a nonnegative integer.
 Otherwise, @code{num_partitions} returns a noun expression.
 
-@code{num_partitions(@mvar{n}, list)} returns a
-list of the number of integer partitions of 1, 2, 3, ..., @mvar{n}.
+@code{num_partitions(@var{n}, list)} returns a
+list of the number of integer partitions of 1, 2, 3, ..., @var{n}.
 
-For a nonnegative integer @mvar{n}, @code{num_partitions(@mvar{n})} is equal to
-@code{cardinality(integer_partitions(@mvar{n}))}; however, @code{num_partitions} 
+For a nonnegative integer @var{n}, @code{num_partitions(@var{n})} is equal to
+@code{cardinality(integer_partitions(@var{n}))}; however, @code{num_partitions} 
 does not actually construct the set of partitions, so it is much faster.
 
 Examples:
@@ -1594,16 +1594,16 @@ Examples:
 
 
 @anchor{partition_set}
-@deffn {Function} partition_set (@mvar{a}, @mvar{f})
+@deffn {Function} partition_set (@var{a}, @var{f})
 
-Partitions the set @mvar{a} according to the predicate @mvar{f}.
+Partitions the set @var{a} according to the predicate @var{f}.
 
 @code{partition_set} returns a list of two sets.
-The first set comprises the elements of @mvar{a} for which @mvar{f} evaluates to @code{false},
-and the second comprises any other elements of @mvar{a}.
-@code{partition_set} does not apply @code{is} to the return value of @mvar{f}.
+The first set comprises the elements of @var{a} for which @var{f} evaluates to @code{false},
+and the second comprises any other elements of @var{a}.
+@code{partition_set} does not apply @code{is} to the return value of @var{f}.
 
-@code{partition_set} complains if @mvar{a} is not a literal set.
+@code{partition_set} complains if @var{a} is not a literal set.
 
 See also @code{subset}.
 
@@ -1629,15 +1629,15 @@ Examples:
 @end deffn
 
 @anchor{permutations}
-@deffn {Function} permutations (@mvar{a})
+@deffn {Function} permutations (@var{a})
 
 Returns a set of all distinct permutations of the members of 
-the list or set @mvar{a}. Each permutation is a list, not a set. 
+the list or set @var{a}. Each permutation is a list, not a set. 
 
-When @mvar{a} is a list, duplicate members of @mvar{a} are included
+When @var{a} is a list, duplicate members of @var{a} are included
 in the permutations.
 
-@code{permutations} complains if @mvar{a} is not a literal list or set.
+@code{permutations} complains if @var{a} is not a literal list or set.
 
 See also @code{random_permutation}.
 
@@ -1661,19 +1661,19 @@ Examples:
 @end deffn
 
 @anchor{powerset}
-@deffn {Function} powerset (@mvar{a})
-@deffnx {Function} powerset (@mvar{a}, @mvar{n})
+@deffn {Function} powerset (@var{a})
+@deffnx {Function} powerset (@var{a}, @var{n})
 
-Returns the set of all subsets of @mvar{a}, or a subset of that set.
+Returns the set of all subsets of @var{a}, or a subset of that set.
 
-@code{powerset(@mvar{a})} returns the set of all subsets of the set @mvar{a}.
-@code{powerset(@mvar{a})} has @code{2^cardinality(@mvar{a})} members.
+@code{powerset(@var{a})} returns the set of all subsets of the set @var{a}.
+@code{powerset(@var{a})} has @code{2^cardinality(@var{a})} members.
 
-@code{powerset(@mvar{a}, @mvar{n})} returns the set of all subsets of @mvar{a} that have 
-cardinality @mvar{n}.
+@code{powerset(@var{a}, @var{n})} returns the set of all subsets of @var{a} that have 
+cardinality @var{n}.
 
-@code{powerset} complains if @mvar{a} is not a literal set,
-or if @mvar{n} is not a nonnegative integer.
+@code{powerset} complains if @var{a} is not a literal set,
+or if @var{n} is not a nonnegative integer.
 
 Examples:
 
@@ -1706,9 +1706,9 @@ Examples:
 
 @end deffn
 
-@deffn {Function} random_permutation (@mvar{a})
+@deffn {Function} random_permutation (@var{a})
 
-Returns a random permutation of the set or list @mvar{a},
+Returns a random permutation of the set or list @var{a},
 as constructed by the Knuth shuffle algorithm.
 
 The return value is a new list, which is distinct
@@ -1741,17 +1741,17 @@ Examples:
 @end deffn
 
 @anchor{rreduce}
-@deffn {Function} rreduce (@mvar{F}, @mvar{s})
-@deffnx {Function} rreduce (@mvar{F}, @mvar{s}, @mvar{s_@{n + 1@}})
+@deffn {Function} rreduce (@var{F}, @var{s})
+@deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
 
-Extends the binary function @mvar{F} to an n-ary function by composition,
-where @mvar{s} is a list.
+Extends the binary function @var{F} to an n-ary function by composition,
+where @var{s} is a list.
 
-@code{rreduce(@mvar{F}, @mvar{s})} returns @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-When the optional argument @mvar{s_@{n + 1@}} is present,
-the result is equivalent to @code{rreduce(@mvar{F}, endcons(@mvar{s_@{n + 1@}}, @mvar{s}))}.
+@code{rreduce(@var{F}, @var{s})} returns @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
+When the optional argument @var{s_@{n + 1@}} is present,
+the result is equivalent to @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
 
-The function @mvar{F} is first applied to the
+The function @var{F} is first applied to the
 @i{rightmost} list elements, thus the name "rreduce". 
 
 See also @code{lreduce}, @code{tree_reduce}, and @code{xreduce}.
@@ -1807,12 +1807,12 @@ Examples:
 @end deffn
 
 @anchor{setdifference}
-@deffn {Function}  setdifference (@mvar{a}, @mvar{b})
+@deffn {Function}  setdifference (@var{a}, @var{b})
 
-Returns a set containing the elements in the set @mvar{a} that are
-not in the set @mvar{b}.
+Returns a set containing the elements in the set @var{a} that are
+not in the set @var{b}.
 
-@code{setdifference} complains if either @mvar{a} or @mvar{b} is not a literal set.
+@code{setdifference} complains if either @var{a} or @var{b} is not a literal set.
 
 Examples:
 
@@ -1849,14 +1849,14 @@ Examples:
 @end deffn
 
 @anchor{setequalp}
-@deffn {Function} setequalp (@mvar{a}, @mvar{b})
+@deffn {Function} setequalp (@var{a}, @var{b})
 
-Returns @code{true} if sets @mvar{a} and @mvar{b} have the same number of elements
+Returns @code{true} if sets @var{a} and @var{b} have the same number of elements
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-and @code{is(@mvar{x} = @mvar{y})} is @code{true}
-for @code{x} in the elements of @mvar{a}
-and @code{y} in the elements of @mvar{b},
+and @code{is(@var{x} = @var{y})} is @code{true}
+for @code{x} in the elements of @var{a}
+and @code{y} in the elements of @var{b},
 considered in the order determined by @code{listify}.
 Otherwise, @code{setequalp} returns @code{false}.
 
@@ -1883,13 +1883,13 @@ Examples:
 @end deffn
 
 @anchor{setify}
-@deffn {Function} setify (@mvar{a})
+@deffn {Function} setify (@var{a})
 
-Constructs a set from the elements of the list @mvar{a}. Duplicate
-elements of the list @mvar{a} are deleted and the elements
+Constructs a set from the elements of the list @var{a}. Duplicate
+elements of the list @var{a} are deleted and the elements
 are sorted according to the predicate @code{orderlessp}.
 
-@code{setify} complains if @mvar{a} is not a literal list.
+@code{setify} complains if @var{a} is not a literal list.
 
 Examples:
 
@@ -1914,9 +1914,9 @@ Examples:
 @end deffn
 
 @anchor{setp}
-@deffn {Function} setp (@mvar{a})
+@deffn {Function} setp (@var{a})
 
-Returns @code{true} if and only if @mvar{a} is a Maxima set.
+Returns @code{true} if and only if @var{a} is a Maxima set.
 
 @code{setp} returns @code{true} for unsimplified sets (that is, sets with redundant members)
 as well as simplified sets.
@@ -1948,15 +1948,15 @@ Examples:
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Function} set_partitions (@mvar{a})
-@deffnx {Function} set_partitions (@mvar{a}, @mvar{n})
+@deffn {Function} set_partitions (@var{a})
+@deffnx {Function} set_partitions (@var{a}, @var{n})
 
-Returns the set of all partitions of @mvar{a}, or a subset of that set.
+Returns the set of all partitions of @var{a}, or a subset of that set.
 
-@code{set_partitions(@mvar{a}, @mvar{n})} returns a set of all
-decompositions of @mvar{a} into @mvar{n} nonempty disjoint subsets.
+@code{set_partitions(@var{a}, @var{n})} returns a set of all
+decompositions of @var{a} into @var{n} nonempty disjoint subsets.
 
-@code{set_partitions(@mvar{a})} returns the set of all partitions.
+@code{set_partitions(@var{a})} returns the set of all partitions.
 
 @code{stirling2} returns the cardinality of the set of partitions of a set.
 
@@ -1997,7 +1997,7 @@ The cardinality of the set of partitions of a set can be found using @code{stirl
 (%o3)                        90 = 90
 @end example
 
-Each member of @code{p} should have @mvar{n} = 3 members; let's check.
+Each member of @code{p} should have @var{n} = 3 members; let's check.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
@@ -2033,35 +2033,35 @@ equal @code{s}; again let's check.
 @end deffn
 
 @anchor{some}
-@deffn {Function} some (@mvar{f}, @mvar{a})
-@deffnx {Function} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
+@deffn {Function} some (@var{f}, @var{a})
+@deffnx {Function} some (@var{f}, @var{L_1}, ..., @var{L_n})
 
-Returns @code{true} if the predicate @mvar{f} is @code{true} for one or more given arguments.
+Returns @code{true} if the predicate @var{f} is @code{true} for one or more given arguments.
 
 Given one set as the second argument, 
-@code{some(@mvar{f}, @mvar{s})} returns @code{true}
-if @code{is(@mvar{f}(@mvar{a_i}))} returns @code{true} for one or more @mvar{a_i} in @mvar{s}.
-@code{some} may or may not evaluate @mvar{f} for all @mvar{a_i} in @mvar{s}.
+@code{some(@var{f}, @var{s})} returns @code{true}
+if @code{is(@var{f}(@var{a_i}))} returns @code{true} for one or more @var{a_i} in @var{s}.
+@code{some} may or may not evaluate @var{f} for all @var{a_i} in @var{s}.
 Since sets are unordered,
-@code{some} may evaluate @code{@mvar{f}(@mvar{a_i})} in any order.
+@code{some} may evaluate @code{@var{f}(@var{a_i})} in any order.
 
 Given one or more lists as arguments,
-@code{some(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} returns @code{true}
-if @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} returns @code{true} 
-for one or more @mvar{x_1}, ..., @mvar{x_n} in @mvar{L_1}, ..., @mvar{L_n}, respectively.
+@code{some(@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
+if @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} returns @code{true} 
+for one or more @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
 @code{some} may or may not evaluate 
-@mvar{f} for some combinations @mvar{x_1}, ..., @mvar{x_n}.
+@var{f} for some combinations @var{x_1}, ..., @var{x_n}.
 @code{some} evaluates lists in the order of increasing index.
 
 Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
 @code{some} returns @code{false}.
 
 When the global flag @code{maperror} is @code{true}, all lists 
-@mvar{L_1}, ..., @mvar{L_n} must have equal lengths.
+@var{L_1}, ..., @var{L_n} must have equal lengths.
 When @code{maperror} is @code{false}, list arguments are
 effectively truncated to the length of the shortest list. 
 
-Return values of the predicate @mvar{f} which evaluate (via @code{is})
+Return values of the predicate @var{f} which evaluate (via @code{is})
 to something other than @code{true} or @code{false}
 are governed by the global flag @code{prederror}.
 When @code{prederror} is @code{true},
@@ -2099,7 +2099,7 @@ The predicate is a function of two arguments.
 (%o2)                         false
 @end example
 
-Return values of the predicate @mvar{f} which evaluate
+Return values of the predicate @var{f} which evaluate
 to something other than @code{true} or @code{false}
 are governed by the global flag @code{prederror}.
 
@@ -2138,16 +2138,16 @@ are governed by the global flag @code{prederror}.
 @end deffn
 
 @anchor{stirling1}
-@deffn {Function} stirling1 (@mvar{n}, @mvar{m})
+@deffn {Function} stirling1 (@var{n}, @var{m})
 
 Represents the Stirling number of the first kind.
 
-When @mvar{n} and @mvar{m} are nonnegative 
-integers, the magnitude of @code{stirling1 (@mvar{n}, @mvar{m})} is the number of 
-permutations of a set with @mvar{n} members that have @mvar{m} cycles.
+When @var{n} and @var{m} are nonnegative 
+integers, the magnitude of @code{stirling1 (@var{n}, @var{m})} is the number of 
+permutations of a set with @var{n} members that have @var{m} cycles.
 For details, see Graham, Knuth and Patashnik @i{Concrete Mathematics}.
-Maxima uses a recursion relation to define @code{stirling1 (@mvar{n}, @mvar{m})} for
-@mvar{m} less than 0; it is undefined for @mvar{n} less than 0 and for non-integer
+Maxima uses a recursion relation to define @code{stirling1 (@var{n}, @var{m})} for
+@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
 arguments.
 
 @code{stirling1} is a simplifying function.
@@ -2228,15 +2228,15 @@ Maxima applies identities to @code{stirling1}.
 @end deffn
 
 @anchor{stirling2}
-@deffn {Function} stirling2 (@mvar{n}, @mvar{m})
+@deffn {Function} stirling2 (@var{n}, @var{m})
 
 Represents the Stirling number of the second kind.
 
-When @mvar{n} and @mvar{m} are nonnegative 
-integers, @code{stirling2 (@mvar{n}, @mvar{m})} is the number of ways a set with 
-cardinality @mvar{n} can be partitioned into @mvar{m} disjoint subsets.
-Maxima uses a recursion relation to define @code{stirling2 (@mvar{n}, @mvar{m})} for
-@mvar{m} less than 0; it is undefined for @mvar{n} less than 0 and for non-integer
+When @var{n} and @var{m} are nonnegative 
+integers, @code{stirling2 (@var{n}, @var{m})} is the number of ways a set with 
+cardinality @var{n} can be partitioned into @var{m} disjoint subsets.
+Maxima uses a recursion relation to define @code{stirling2 (@var{n}, @var{m})} for
+@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
 arguments.
 
 @code{stirling2} is a simplifying function.
@@ -2327,15 +2327,15 @@ Maxima applies identities to @code{stirling2}.
 @end deffn
 
 @anchor{subset}
-@deffn {Function} subset (@mvar{a}, @mvar{f})
+@deffn {Function} subset (@var{a}, @var{f})
 
-Returns the subset of the set @mvar{a} that satisfies the predicate @mvar{f}. 
+Returns the subset of the set @var{a} that satisfies the predicate @var{f}. 
 
-@code{subset} returns a set which comprises the elements of @mvar{a}
-for which @mvar{f} returns anything other than @code{false}.
-@code{subset} does not apply @code{is} to the return value of @mvar{f}.
+@code{subset} returns a set which comprises the elements of @var{a}
+for which @var{f} returns anything other than @code{false}.
+@code{subset} does not apply @code{is} to the return value of @var{f}.
 
-@code{subset} complains if @mvar{a} is not a literal set.
+@code{subset} complains if @var{a} is not a literal set.
 
 See also @code{partition_set}.
 
@@ -2359,11 +2359,11 @@ Examples:
 @end deffn
 
 @anchor{subsetp}
-@deffn {Function} subsetp (@mvar{a}, @mvar{b})
+@deffn {Function} subsetp (@var{a}, @var{b})
 
-Returns @code{true} if and only if the set @mvar{a} is a subset of @mvar{b}.
+Returns @code{true} if and only if the set @var{a} is a subset of @var{b}.
 
-@code{subsetp} complains if either @mvar{a} or @mvar{b} is not a literal set.
+@code{subsetp} complains if either @var{a} or @var{b} is not a literal set.
 
 Examples:
 
@@ -2385,13 +2385,13 @@ Examples:
 @end deffn
 
 @anchor{symmdifference}
-@deffn {Function} symmdifference (@mvar{a_1}, @dots{}, @mvar{a_n})
+@deffn {Function} symmdifference (@var{a_1}, @dots{}, @var{a_n})
 
-Returns the symmetric difference of sets @mvar{a_1}, @dots{}, @mvar{a_n}.
+Returns the symmetric difference of sets @var{a_1}, @dots{}, @var{a_n}.
 
-Given two arguments, @code{symmdifference (@mvar{a}, @mvar{b})} is the same as
-@code{union (setdifference (@mvar{a}, @mvar{b}), setdifference (@mvar{b},
-@mvar{a}))}.
+Given two arguments, @code{symmdifference (@var{a}, @var{b})} is the same as
+@code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b},
+@var{a}))}.
 
 @code{symmdifference} complains if any argument is not a literal set.
 
@@ -2434,26 +2434,26 @@ Examples:
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
-@deffn {Function} tree_reduce (@mvar{F}, @mvar{s})
-@deffnx {Function} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Function} tree_reduce (@var{F}, @var{s})
+@deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the binary function @mvar{F} to an n-ary function by composition,
-where @mvar{s} is a set or list.
+Extends the binary function @var{F} to an n-ary function by composition,
+where @var{s} is a set or list.
 
 @code{tree_reduce} is equivalent to the following:
-Apply @mvar{F} to successive pairs of elements
-to form a new list @code{[@mvar{F}(@mvar{s_1}, @mvar{s_2}), @mvar{F}(@mvar{s_3}, @mvar{s_4}), ...]},
+Apply @var{F} to successive pairs of elements
+to form a new list @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
 carrying the final element unchanged if there are an odd number of elements.
 Then repeat until the list is reduced to a single element, which is the return value.
 
-When the optional argument @mvar{s_0} is present,
-the result is equivalent @code{tree_reduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s})}.
+When the optional argument @var{s_0} is present,
+the result is equivalent @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
 
 For addition of floating point numbers,
 @code{tree_reduce} may return a sum that has a smaller rounding error
 than either @code{rreduce} or @code{lreduce}.
 
-The elements of @mvar{s} and the partial results may be arranged in a minimum-depth binary tree,
+The elements of @var{s} and the partial results may be arranged in a minimum-depth binary tree,
 thus the name "tree_reduce".
 
 Examples:
@@ -2485,8 +2485,8 @@ Examples:
 @end deffn
 
 @anchor{union}
-@deffn {Function} union (@mvar{a_1}, ..., @mvar{a_n})
-Returns the union of the sets @mvar{a_1} through @mvar{a_n}. 
+@deffn {Function} union (@var{a_1}, ..., @var{a_n})
+Returns the union of the sets @var{a_1} through @var{a_n}. 
 
 @code{union()} (with no arguments) returns the empty set.
 
@@ -2531,28 +2531,28 @@ Examples:
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
-@deffn {Function} xreduce (@mvar{F}, @mvar{s})
-@deffnx {Function} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
+@deffn {Function} xreduce (@var{F}, @var{s})
+@deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the function @mvar{F} to an n-ary function by composition,
-or, if @mvar{F} is already n-ary, applies @mvar{F} to @mvar{s}.
-When @mvar{F} is not n-ary, @code{xreduce} is the same as @code{lreduce}.
-The argument @mvar{s} is a list.
+Extends the function @var{F} to an n-ary function by composition,
+or, if @var{F} is already n-ary, applies @var{F} to @var{s}.
+When @var{F} is not n-ary, @code{xreduce} is the same as @code{lreduce}.
+The argument @var{s} is a list.
 
 Functions known to be n-ary include
 addition @code{+}, multiplication @code{*}, @code{and}, @code{or}, @code{max},
 @code{min}, and @code{append}.
-Functions may also be declared n-ary by @code{declare(@mvar{F}, nary)}.
+Functions may also be declared n-ary by @code{declare(@var{F}, nary)}.
 For these functions,
 @code{xreduce} is expected to be faster than either @code{rreduce} or @code{lreduce}.
 
-When the optional argument @mvar{s_0} is present,
-the result is equivalent to @code{xreduce(@mvar{s}, cons(@mvar{s_0}, @mvar{s}))}.
+When the optional argument @var{s_0} is present,
+the result is equivalent to @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
 
 @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
 @c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
 Floating point addition is not exactly associative; be that as it may,
-@code{xreduce} applies Maxima's n-ary addition when @mvar{s} contains floating point numbers.
+@code{xreduce} applies Maxima's n-ary addition when @var{s} contains floating point numbers.
 
 Examples:
 

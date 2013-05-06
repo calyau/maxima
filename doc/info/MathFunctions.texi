@@ -14,11 +14,11 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{abs}
-@deffn {Function} abs (@mvar{z})
+@deffn {Function} abs (@var{z})
 
 The @code{abs} function represents the mathematical absolute value function and
-works for both numerical and symbolic values. If the argument, @mvar{z}, is a
-real or complex number, @code{abs} returns the absolute value of @mvar{z}. If
+works for both numerical and symbolic values. If the argument, @var{z}, is a
+real or complex number, @code{abs} returns the absolute value of @var{z}. If
 possible, symbolic expressions using the absolute value function are
 also simplified.
 
@@ -114,13 +114,13 @@ transform of @code{abs}: see @mrefdot{laplace}
 
 @c -----------------------------------------------------------------------------
 @anchor{ceiling}
-@deffn {Function} ceiling (@mvar{x})
+@deffn {Function} ceiling (@var{x})
 
-When @mvar{x} is a real number, return the least integer that 
-is greater than or equal to @mvar{x}.
+When @var{x} is a real number, return the least integer that 
+is greater than or equal to @var{x}.
 
-If @mvar{x} is a constant expression (@code{10 * %pi}, for example), 
-@code{ceiling} evaluates @mvar{x} using big floating point numbers, and 
+If @var{x} is a constant expression (@code{10 * %pi}, for example), 
+@code{ceiling} evaluates @var{x} using big floating point numbers, and 
 applies @code{ceiling} to the resulting big float.  Because @code{ceiling} uses
 floating point evaluation, it's possible, although unlikely, that @code{ceiling}
 could return an erroneous value for constant inputs.  To guard against errors,
@@ -235,11 +235,11 @@ Example use:
 
 @c -----------------------------------------------------------------------------
 @anchor{entier}
-@deffn {Function} entier (@mvar{x})
+@deffn {Function} entier (@var{x})
 
-Returns the largest integer less than or equal to @mvar{x} where @mvar{x} is
+Returns the largest integer less than or equal to @var{x} where @var{x} is
 numeric.  @mref{fix} (as in @code{fixnum}) is a synonym for this, so
-@code{fix(@mvar{x})} is precisely the same.
+@code{fix(@var{x})} is precisely the same.
 
 @opencatbox
 @category{Mathematical functions}
@@ -248,13 +248,13 @@ numeric.  @mref{fix} (as in @code{fixnum}) is a synonym for this, so
 
 @c -----------------------------------------------------------------------------
 @anchor{floor}
-@deffn {Function} floor (@mvar{x})
+@deffn {Function} floor (@var{x})
 
-When @mvar{x} is a real number, return the largest integer that is less than or
-equal to @mvar{x}.
+When @var{x} is a real number, return the largest integer that is less than or
+equal to @var{x}.
 
-If @mvar{x} is a constant expression (@code{10 * %pi}, for example), @code{floor}
-evaluates @mvar{x} using big floating point numbers, and applies @code{floor} to
+If @var{x} is a constant expression (@code{10 * %pi}, for example), @code{floor}
+evaluates @var{x} using big floating point numbers, and applies @code{floor} to
 the resulting big float. Because @code{floor} uses floating point evaluation,
 it's possible, although unlikely, that @code{floor} could return an erroneous
 value for constant inputs.  To guard against errors, the floating point
@@ -316,9 +316,9 @@ can use this information; for example:
 
 @c -----------------------------------------------------------------------------
 @anchor{fix}
-@deffn {Function} fix (@mvar{x})
+@deffn {Function} fix (@var{x})
 
-A synonym for @code{entier (@mvar{x})}.
+A synonym for @code{entier (@var{x})}.
 
 @opencatbox
 @category{Mathematical functions}
@@ -327,10 +327,10 @@ A synonym for @code{entier (@mvar{x})}.
 
 @c -----------------------------------------------------------------------------
 @anchor{lmax}
-@deffn {Function} lmax (@mvar{L})
+@deffn {Function} lmax (@var{L})
 
-When @mvar{L} is a list or a set, return @code{apply ('max, args (@mvar{L}))}.
-When @mvar{L} is not a list or a set, signal an error.
+When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.
+When @var{L} is not a list or a set, signal an error.
 See also @mref{lmin} and @mrefdot{max}
 
 @opencatbox
@@ -340,10 +340,10 @@ See also @mref{lmin} and @mrefdot{max}
 
 @c -----------------------------------------------------------------------------
 @anchor{lmin}
-@deffn {Function} lmin (@mvar{L})
+@deffn {Function} lmin (@var{L})
 
-When @mvar{L} is a list or a set, return @code{apply ('min, args (@mvar{L}))}.
-When @mvar{L} is not a list or a set, signal an error.
+When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}.
+When @var{L} is not a list or a set, signal an error.
 See also @mref{lmax} and @mrefdot{min}
 
 @opencatbox
@@ -353,12 +353,12 @@ See also @mref{lmax} and @mrefdot{min}
 
 @c -----------------------------------------------------------------------------
 @anchor{max}
-@deffn {Function} max (@mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} max (@var{x_1}, @dots{}, @var{x_n})
 
-Return a simplified value for the maximum of the expressions @mvar{x_1} through
-@mvar{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max}
+Return a simplified value for the maximum of the expressions @var{x_1} through
+@var{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max}
 uses the simplification @code{max (e, -e) --> |e|}.  When
-@code{get (trylevel, maxmin)} is 3 or greater, @mvar{max} tries to eliminate
+@code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries to eliminate
 expressions that are between two other arguments; for example,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}.  To set the value of @code{trylevel}
 to 2, use @code{put (trylevel, 2, maxmin)}.
@@ -372,7 +372,7 @@ See also @mref{min} and @mrefdot{lmax}
 
 @c -----------------------------------------------------------------------------
 @anchor{min}
-@deffn {Function} min (@mvar{x_1}, @dots{}, @mvar{x_n})
+@deffn {Function} min (@var{x_1}, @dots{}, @var{x_n})
 
 Return a simplified value for the minimum of the expressions @code{x_1} through
 @code{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min}
@@ -391,11 +391,11 @@ See also @mref{max} and @mrefdot{lmin}
 
 @c -----------------------------------------------------------------------------
 @anchor{round}
-@deffn {Function} round (@mvar{x})
+@deffn {Function} round (@var{x})
 
-When @mvar{x} is a real number, returns the closest integer to @mvar{x}.
+When @var{x} is a real number, returns the closest integer to @var{x}.
 Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
-@mvar{x} is similar to @mref{floor} and @mrefdot{ceiling}
+@var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
 @opencatbox
 @category{Mathematical functions}
@@ -404,10 +404,10 @@ Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
 
 @c -----------------------------------------------------------------------------
 @anchor{signum}
-@deffn {Function} signum (@mvar{x})
+@deffn {Function} signum (@var{x})
 
-For either real or complex numbers @mvar{x}, the signum function returns
-0 if @mvar{x} is zero; for a nonzero numeric input @mvar{x}, the signum function
+For either real or complex numbers @var{x}, the signum function returns
+0 if @var{x} is zero; for a nonzero numeric input @var{x}, the signum function
 returns @code{x/abs(x)}.
 
 For non-numeric inputs, Maxima attempts to determine the sign of the input.
@@ -432,7 +432,7 @@ equation.  See @mrefdot{distribute_over}
 
 @c -----------------------------------------------------------------------------
 @anchor{cabs}
-@deffn {Function} cabs (@mvar{expr})
+@deffn {Function} cabs (@var{expr})
 
 Calculates the absolute value of an expression representing a complex
 number.  Unlike the function @mrefcomma{abs} the @code{cabs} function always
@@ -509,11 +509,11 @@ example for @mrefdot{bessel_j}
 
 @c -----------------------------------------------------------------------------
 @anchor{carg}
-@deffn {Function} carg (@mvar{z})
+@deffn {Function} carg (@var{z})
 
-Returns the complex argument of @mvar{z}.  The complex argument is an angle
-@code{theta} in @code{(-%pi, %pi]} such that @code{r exp (theta %i) = @mvar{z}}
-where @code{r} is the magnitude of @mvar{z}.
+Returns the complex argument of @var{z}.  The complex argument is an angle
+@code{theta} in @code{(-%pi, %pi]} such that @code{r exp (theta %i) = @var{z}}
+where @code{r} is the magnitude of @var{z}.
 
 @code{carg} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
@@ -557,9 +557,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{conjugate}
-@deffn {Function} conjugate (@mvar{x})
+@deffn {Function} conjugate (@var{x})
 
-Returns the complex conjugate of @mvar{x}.
+Returns the complex conjugate of @var{x}.
 
 @c ===beg===
 @c declare ([aa, bb], real, cc, complex, ii, imaginary);
@@ -593,9 +593,9 @@ Returns the complex conjugate of @mvar{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{imagpart}
-@deffn {Function} imagpart (@mvar{expr})
+@deffn {Function} imagpart (@var{expr})
 
-Returns the imaginary part of the expression @mvar{expr}.
+Returns the imaginary part of the expression @var{expr}.
 
 @code{imagpart} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
@@ -614,9 +614,9 @@ See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{polarform}
-@deffn {Function} polarform (@mvar{expr})
+@deffn {Function} polarform (@var{expr})
 
-Returns an expression @code{r %e^(%i theta)} equivalent to @mvar{expr},
+Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
 such that @code{r} and @code{theta} are purely real.
 
 @opencatbox
@@ -628,9 +628,9 @@ such that @code{r} and @code{theta} are purely real.
 
 @c -----------------------------------------------------------------------------
 @anchor{realpart}
-@deffn {Function} realpart (@mvar{expr})
+@deffn {Function} realpart (@var{expr})
 
-Returns the real part of @mvar{expr}.  @code{realpart} and @mref{imagpart} will
+Returns the real part of @var{expr}.  @code{realpart} and @mref{imagpart} will
 work on expressions involving trigonometric and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
@@ -643,10 +643,10 @@ as well as square root, logarithm, and exponentiation.
 
 @c -----------------------------------------------------------------------------
 @anchor{rectform}
-@deffn {Function} rectform (@mvar{expr})
+@deffn {Function} rectform (@var{expr})
 
-Returns an expression @code{a + b %i} equivalent to @mvar{expr},
-such that @mvar{a} and @mvar{b} are purely real.
+Returns an expression @code{a + b %i} equivalent to @var{expr},
+such that @var{a} and @var{b} are purely real.
 
 @opencatbox
 @category{Complex variables}
@@ -690,11 +690,11 @@ yields a noun form @code{genfact (n, n/2, 2)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{binomial}
-@deffn {Function} binomial (@mvar{x}, @mvar{y})
+@deffn {Function} binomial (@var{x}, @var{y})
 
-The binomial coefficient @code{@mvar{x}!/(@mvar{y}! (@mvar{x} - @mvar{y})!)}.
-If @mvar{x} and @mvar{y} are integers, then the numerical value of the binomial
-coefficient is computed.  If @mvar{y}, or @mvar{x - y}, is an integer, the
+The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
+If @var{x} and @var{y} are integers, then the numerical value of the binomial
+coefficient is computed.  If @var{y}, or @var{x - y}, is an integer, the
 binomial coefficient is expressed as a polynomial.
 
 Examples:
@@ -730,9 +730,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{factcomb}
-@deffn {Function} factcomb (@mvar{expr})
+@deffn {Function} factcomb (@var{expr})
 
-Tries to combine the coefficients of factorials in @mvar{expr}
+Tries to combine the coefficients of factorials in @var{expr}
 with the factorials themselves by converting, for example, @code{(n + 1)*n!}
 into @code{(n + 1)!}.
 
@@ -756,8 +756,8 @@ applied after a @code{factcomb}.
 @deffn  {Function} factorial
 @deffnx {Operator} !
 
-Represents the factorial function.  Maxima treats @code{factorial (@mvar{x})}
-the same as @code{@mvar{x}!}.
+Represents the factorial function.  Maxima treats @code{factorial (@var{x})}
+the same as @code{@var{x}!}.
 
 For any complex number @code{x}, except for negative integers, @code{x!} is 
 defined as @code{gamma(x+1)}.
@@ -921,10 +921,10 @@ See @mref{factorial} for an example.
 
 @c -----------------------------------------------------------------------------
 @anchor{genfact}
-@deffn {Function} genfact (@mvar{x}, @mvar{y}, @mvar{z})
+@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
 
 Returns the generalized factorial, defined as
-@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @mvar{x},
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
 @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
 
 @opencatbox
@@ -934,9 +934,9 @@ Returns the generalized factorial, defined as
 
 @c -----------------------------------------------------------------------------
 @anchor{minfactorial}
-@deffn {Function} minfactorial (@mvar{expr})
+@deffn {Function} minfactorial (@var{expr})
 
-Examines @mvar{expr} for occurrences of two factorials
+Examines @var{expr} for occurrences of two factorials
 which differ by an integer.
 @code{minfactorial} then turns one into a polynomial times the other.
 
@@ -1045,10 +1045,10 @@ See also @mref{ev} and @mrefdot{numer}
 
 @c -----------------------------------------------------------------------------
 @anchor{exp}
-@deffn {Function} exp (@mvar{x})
+@deffn {Function} exp (@var{x})
 
-Represents the exponential function.  Instances of @code{exp (@mvar{x})} in input
-are simplified to @code{%e^@mvar{x}}; @code{exp} does not appear in simplified
+Represents the exponential function.  Instances of @code{exp (@var{x})} in input
+are simplified to @code{%e^@var{x}}; @code{exp} does not appear in simplified
 expressions.
 
 @code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
@@ -1070,9 +1070,9 @@ See @mrefdot{%emode}
 
 @c -----------------------------------------------------------------------------
 @anchor{li}
-@deffn {Function} li [@mvar{s}] (@mvar{z})
+@deffn {Function} li [@var{s}] (@var{z})
 
-Represents the polylogarithm function of order @mvar{s} and argument @mvar{z},
+Represents the polylogarithm function of order @var{s} and argument @var{z},
 defined by the infinite series
 
 @tex
@@ -1094,12 +1094,12 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
 dilogarithm and trilogarithm functions, respectively.
 
 When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)}, which
-in turn simplifies to a numerical value if @mvar{z} is a real or complex floating
+in turn simplifies to a numerical value if @var{z} is a real or complex floating
 point number or the @code{numer} evaluation flag is present.
 
 When the order is 2 or 3,
 the polylogarithm simplifies to a numerical value
-if @mvar{z} is a real floating point number
+if @var{z} is a real floating point number
 or the @code{numer} evaluation flag is present.
 
 Examples:
@@ -1158,9 +1158,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{log}
-@deffn {Function} log (@mvar{x})
+@deffn {Function} log (@var{x})
 
-Represents the natural (base @math{e}) logarithm of @mvar{x}.
+Represents the natural (base @math{e}) logarithm of @var{x}.
 
 Maxima does not have a built-in function for the base 10 logarithm or other 
 bases. @code{log10(x) := log(x) / log(10)} is a useful definition.
@@ -1219,15 +1219,15 @@ endpoints is often needed.
 @c -----------------------------------------------------------------------------
 @anchor{logarc}
 @defvr  {Option variable} logarc
-@defvrx {Function} logarc (@mvar{expr})
+@defvrx {Function} logarc (@var{expr})
 
 When the global variable @code{logarc} is @code{true},
 inverse circular and hyperbolic functions are replaced by
 equivalent logarithmic functions.
 The default value of @code{logarc} is @code{false}.
 
-The function @code{logarc(@mvar{expr})} carries out that replacement for
-an expression @mvar{expr}
+The function @code{logarc(@var{expr})} carries out that replacement for
+an expression @var{expr}
 without setting the global variable @code{logarc}.
 
 @opencatbox
@@ -1254,9 +1254,9 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 
 @c -----------------------------------------------------------------------------
 @anchor{logcontract}
-@deffn {Function} logcontract (@mvar{expr})
+@deffn {Function} logcontract (@var{expr})
 
-Recursively scans the expression @mvar{expr}, transforming
+Recursively scans the expression @var{expr}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
@@ -1331,10 +1331,10 @@ power containing @code{log}'s is done.
 
 @c -----------------------------------------------------------------------------
 @anchor{plog}
-@deffn {Function} plog (@mvar{x})
+@deffn {Function} plog (@var{x})
 
 Represents the principal branch of the complex-valued natural
-logarithm with @code{-%pi} < @code{carg(@mvar{x})} <= @code{+%pi} .
+logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Complex variables}
@@ -1343,10 +1343,10 @@ logarithm with @code{-%pi} < @code{carg(@mvar{x})} <= @code{+%pi} .
 
 @c -----------------------------------------------------------------------------
 @anchor{sqrt}
-@deffn {Function} sqrt (@mvar{x})
+@deffn {Function} sqrt (@var{x})
 
-The square root of @mvar{x}.  It is represented internally by
-@code{@mvar{x}^(1/2)}.  See also @code{rootscontract}.
+The square root of @var{x}.  It is represented internally by
+@code{@var{x}^(1/2)}.  See also @code{rootscontract}.
 
 @code{radexpand} if @code{true} will cause nth roots of factors of a product
 which are powers of n to be pulled outside of the radical, e.g.
@@ -1387,7 +1387,7 @@ and @code{tanh}.  There are a number of commands especially for
 handling trigonometric functions, see @code{trigexpand},
 @code{trigreduce}, and the switch @code{trigsign}.  Two share
 packages extend the simplification rules built into Maxima,
-@code{ntrig} and @code{atrig1}.  Do @code{describe(@mvar{command})}
+@code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
 @opencatbox
@@ -1564,7 +1564,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acos (@mvar{x})
+@deffn {Function} acos (@var{x})
 
 -- Arc Cosine.
 
@@ -1574,7 +1574,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acosh (@mvar{x})
+@deffn {Function} acosh (@var{x})
 
 -- Hyperbolic Arc Cosine.
 
@@ -1584,7 +1584,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acot (@mvar{x})
+@deffn {Function} acot (@var{x})
 
 -- Arc Cotangent.
 
@@ -1594,7 +1594,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acoth (@mvar{x})
+@deffn {Function} acoth (@var{x})
 
 -- Hyperbolic Arc Cotangent.
 
@@ -1604,7 +1604,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acsc (@mvar{x})
+@deffn {Function} acsc (@var{x})
 
 -- Arc Cosecant.
 
@@ -1614,7 +1614,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acsch (@mvar{x})
+@deffn {Function} acsch (@var{x})
 
 -- Hyperbolic Arc Cosecant.
 
@@ -1624,7 +1624,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asec (@mvar{x})
+@deffn {Function} asec (@var{x})
 
 -- Arc Secant.
 
@@ -1634,7 +1634,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asech (@mvar{x})
+@deffn {Function} asech (@var{x})
 
 -- Hyperbolic Arc Secant.
 
@@ -1644,7 +1644,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asin (@mvar{x})
+@deffn {Function} asin (@var{x})
 
 -- Arc Sine.
 
@@ -1654,7 +1654,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asinh (@mvar{x})
+@deffn {Function} asinh (@var{x})
 
 -- Hyperbolic Arc Sine.
 
@@ -1664,7 +1664,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} atan (@mvar{x})
+@deffn {Function} atan (@var{x})
 
 -- Arc Tangent.
 
@@ -1675,9 +1675,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 @c -----------------------------------------------------------------------------
 @anchor{atan2}
-@deffn {Function} atan2 (@mvar{y}, @mvar{x})
+@deffn {Function} atan2 (@var{y}, @var{x})
 
--- yields the value of @code{atan(@mvar{y}/@mvar{x})} in the interval @code{-%pi}
+-- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
 to @code{%pi}.
 
 @opencatbox
@@ -1686,7 +1686,7 @@ to @code{%pi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} atanh (@mvar{x})
+@deffn {Function} atanh (@var{x})
 
 -- Hyperbolic Arc Tangent.
 
@@ -1714,7 +1714,7 @@ Do @code{load(atrig1);} to use them.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cos (@mvar{x})
+@deffn {Function} cos (@var{x})
 
 -- Cosine.
 
@@ -1724,7 +1724,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cosh (@mvar{x})
+@deffn {Function} cosh (@var{x})
 
 -- Hyperbolic Cosine.
 
@@ -1734,7 +1734,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cot (@mvar{x})
+@deffn {Function} cot (@var{x})
 
 -- Cotangent.
 
@@ -1744,7 +1744,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} coth (@mvar{x})
+@deffn {Function} coth (@var{x})
 
 -- Hyperbolic Cotangent.
 
@@ -1754,7 +1754,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} csc (@mvar{x})
+@deffn {Function} csc (@var{x})
 
 -- Cosecant.
 
@@ -1764,7 +1764,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} csch (@mvar{x})
+@deffn {Function} csch (@var{x})
 
 -- Hyperbolic Cosecant.
 
@@ -1779,9 +1779,9 @@ Do @code{load(atrig1);} to use them.
 Default value: @code{false}
 
 When @code{halfangles} is @code{true}, trigonometric functions of arguments 
-@code{@mvar{expr}/2} are simplified to functions of @mvar{expr}.
+@code{@var{expr}/2} are simplified to functions of @var{expr}.
 
-For a real argument @mvar{x} in the interval @code{0 < x < 2*%pi} the sine of 
+For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
 the half-angle simplifies to a simple formula:
 
 @example
@@ -1791,7 +1791,7 @@ the half-angle simplifies to a simple formula:
 @end example
 
 A complicated factor is needed to make this formula correct for all complex 
-arguments @mvar{z}:
+arguments @var{z}:
 
 @verbatim
            realpart(z)
@@ -1855,7 +1855,7 @@ Examples:
 
 The @code{ntrig} package contains a set of simplification rules that are
 used to simplify trigonometric function whose arguments are of the form
-@code{@mvar{f}(@mvar{n} %pi/10)} where @mvar{f} is any of the functions
+@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
@@ -1865,7 +1865,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sec (@mvar{x})
+@deffn {Function} sec (@var{x})
 
 -- Secant.
 
@@ -1875,7 +1875,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sech (@mvar{x})
+@deffn {Function} sech (@var{x})
 
 -- Hyperbolic Secant.
 
@@ -1886,7 +1886,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 @c -----------------------------------------------------------------------------
 @anchor{sin}
-@deffn {Function} sin (@mvar{x})
+@deffn {Function} sin (@var{x})
 
 -- Sine.
 
@@ -1896,7 +1896,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sinh (@mvar{x})
+@deffn {Function} sinh (@var{x})
 
 -- Hyperbolic Sine.
 
@@ -1906,7 +1906,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} tan (@mvar{x})
+@deffn {Function} tan (@var{x})
 
 -- Tangent.
 
@@ -1916,7 +1916,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} tanh (@mvar{x})
+@deffn {Function} tanh (@var{x})
 
 -- Hyperbolic Tangent.
 
@@ -1929,11 +1929,11 @@ used to simplify trigonometric function whose arguments are of the form
 
 @c -----------------------------------------------------------------------------
 @anchor{trigexpand}
-@deffn {Function} trigexpand (@mvar{expr})
+@deffn {Function} trigexpand (@var{expr})
 
 Expands trigonometric and hyperbolic functions of
-sums of angles and of multiple angles occurring in @mvar{expr}.  For best
-results, @mvar{expr} should be expanded.  To enhance user control of
+sums of angles and of multiple angles occurring in @var{expr}.  For best
+results, @var{expr} should be expanded.  To enhance user control of
 simplification, this function expands only one level at a time,
 expanding sums of angles or multiple angles.  To obtain full expansion
 into sines and cosines immediately, set the switch @code{trigexpand: true}.
@@ -2018,15 +2018,15 @@ Default value: @code{true}
 composition of trigonometric and hyperbolic functions with their inverse
 functions.
 
-If @code{all}, both e.g. @code{atan(tan(@mvar{x}))}
-and @code{tan(atan(@mvar{x}))} simplify to @mvar{x}.
+If @code{all}, both e.g. @code{atan(tan(@var{x}))}
+and @code{tan(atan(@var{x}))} simplify to @var{x}.
 
-If @code{true}, the @code{@mvar{arcfun}(@mvar{fun}(@mvar{x}))}
+If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))}
 simplification is turned off.
 
 If @code{false}, both the
-@code{@mvar{arcfun}(@mvar{fun}(@mvar{x}))} and
-@code{@mvar{fun}(@mvar{arcfun}(@mvar{x}))}
+@code{@var{arcfun}(@var{fun}(@var{x}))} and
+@code{@var{fun}(@var{arcfun}(@var{x}))}
 simplifications are turned off.
 
 @opencatbox
@@ -2036,13 +2036,13 @@ simplifications are turned off.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigreduce}
-@deffn  {Function} trigreduce (@mvar{expr}, @mvar{x})
-@deffnx {Function} trigreduce (@mvar{expr})
+@deffn  {Function} trigreduce (@var{expr}, @var{x})
+@deffnx {Function} trigreduce (@var{expr})
 
 Combines products and powers of trigonometric
-and hyperbolic sin's and cos's of @mvar{x} into those of multiples of @mvar{x}.
+and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
 It also tries to eliminate these functions when they occur in
-denominators.  If @mvar{x} is omitted then all variables in @mvar{expr} are used.
+denominators.  If @var{x} is omitted then all variables in @var{expr} are used.
 
 See also @code{poissimp}.
 
@@ -2102,7 +2102,7 @@ arguments to trigonometric functions.  E.g., @code{sin(-x)} will become
 
 @c -----------------------------------------------------------------------------
 @anchor{trigsimp}
-@deffn {Function} trigsimp (@mvar{expr})
+@deffn {Function} trigsimp (@var{expr})
 
 @iftex
 Employs the identities
@@ -2137,12 +2137,12 @@ able to further simplify the result.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigrat}
-@deffn {Function} trigrat (@mvar{expr})
+@deffn {Function} trigrat (@var{expr})
 
 Gives a canonical simplified quasilinear form of a trigonometrical expression;
-@mvar{expr} is a rational fraction of several @code{sin}, @code{cos} or
+@var{expr} is a rational fraction of several @code{sin}, @code{cos} or
 @code{tan}, the arguments of them are linear forms in some variables (or
-kernels) and @code{%pi/@mvar{n}} (@mvar{n} integer) with integer coefficients.
+kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients.
 The result is a simplified fraction with numerator and denominator linear in
 @code{sin} and @code{cos}.  Thus @code{trigrat} linearize always when it is
 possible.
@@ -2235,26 +2235,26 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c -----------------------------------------------------------------------------
 @anchor{make_random_state}
-@deffn  {Function} make_random_state (@mvar{n})
-@deffnx {Function} make_random_state (@mvar{s})
+@deffn  {Function} make_random_state (@var{n})
+@deffnx {Function} make_random_state (@var{s})
 @deffnx {Function} make_random_state (true)
 @deffnx {Function} make_random_state (false)
 
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
-@c @defunx make_random_state (@mvar{a})
+@c @defunx make_random_state (@var{a})
 
 A random state object represents the state of the random number generator.
 The state comprises 627 32-bit words.
 
-@code{make_random_state (@mvar{n})} returns a new random state object
-created from an integer seed value equal to @mvar{n} modulo 2^32.
-@mvar{n} may be negative.
+@code{make_random_state (@var{n})} returns a new random state object
+created from an integer seed value equal to @var{n} modulo 2^32.
+@var{n} may be negative.
 
 @c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
-@c @code{make_random_state (@mvar{a})} returns a new random state object
-@c created from an array @mvar{a}, which must be a Lisp array of 32 unsigned bytes.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
 
-@code{make_random_state (@mvar{s})} returns a copy of the random state @mvar{s}.
+@code{make_random_state (@var{s})} returns a copy of the random state @var{s}.
 
 @code{make_random_state (true)} returns a new random state object,
 using the current computer clock time as the seed.
@@ -2269,9 +2269,9 @@ of the random number generator.
 
 @c -----------------------------------------------------------------------------
 @anchor{set_random_state}
-@deffn {Function} set_random_state (@mvar{s})
+@deffn {Function} set_random_state (@var{s})
 
-Copies @mvar{s} to the random number generator state.
+Copies @var{s} to the random number generator state.
 
 @code{set_random_state} always returns @code{done}.
 
@@ -2282,14 +2282,14 @@ Copies @mvar{s} to the random number generator state.
 
 @c -----------------------------------------------------------------------------
 @anchor{random}
-@deffn {Function} random (@mvar{x})
+@deffn {Function} random (@var{x})
 
-Returns a pseudorandom number.  If @mvar{x} is an integer,
-@code{random (@mvar{x})} returns an integer from 0 through @code{@mvar{x} - 1}
-inclusive.  If @mvar{x} is a floating point number, @code{random (@mvar{x})}
-returns a nonnegative floating point number less than @mvar{x}.  @code{random}
-complains with an error if @mvar{x} is neither an integer nor a float, or if
-@mvar{x} is not positive.
+Returns a pseudorandom number.  If @var{x} is an integer,
+@code{random (@var{x})} returns an integer from 0 through @code{@var{x} - 1}
+inclusive.  If @var{x} is a floating point number, @code{random (@var{x})}
+returns a nonnegative floating point number less than @var{x}.  @code{random}
+complains with an error if @var{x} is neither an integer nor a float, or if
+@var{x} is not positive.
 
 The functions @code{make_random_state} and @code{set_random_state}
 maintain the state of the random number generator.

@@ -6,13 +6,13 @@
 @section Functions and Variables for diag
 
 
-@deffn {Function} diag (@mvar{lm})
+@deffn {Function} diag (@var{lm})
 Constructs a matrix that is the block sum of the elements of
-@mvar{lm}. The elements of @mvar{lm} are assumed to be matrices; if an
+@var{lm}. The elements of @var{lm} are assumed to be matrices; if an
 element is scalar, it treated as a 1 by 1 matrix.
 
 The resulting matrix will be square if each of the elements of
-@mvar{lm} is square.
+@var{lm} is square.
 
 Example:
 @example
@@ -49,8 +49,8 @@ To use this function write first @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} JF (@mvar{lambda},@mvar{n})
-Returns the Jordan cell of order @mvar{n} with eigenvalue @mvar{lambda}.
+@deffn {Function} JF (@var{lambda},@var{n})
+Returns the Jordan cell of order @var{n} with eigenvalue @var{lambda}.
 
 Example:
 @example
@@ -81,13 +81,13 @@ To use this function write first @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} jordan (@mvar{mat})
-Returns the Jordan form of matrix @mvar{mat}, encoded as a list in a
+@deffn {Function} jordan (@var{mat})
+Returns the Jordan form of matrix @var{mat}, encoded as a list in a
 particular format. To get the corresponding matrix, call the function
 @code{dispJordan} using the output of @code{jordan} as the argument.
 
 The elements of the returned list are themselves lists. The first
-element of each is an eigenvalue of @mvar{mat}. The remaining elements
+element of each is an eigenvalue of @var{mat}. The remaining elements
 are positive integers which are the lengths of the Jordan blocks for
 this eigenvalue. These integers are listed in decreasing
 order. Eigenvalues are not repeated.
@@ -156,9 +156,9 @@ To use this function write first @code{load("diag")}. See also @code{dispJordan}
 @end deffn
 
 
-@deffn {Function} dispJordan (@mvar{l})
+@deffn {Function} dispJordan (@var{l})
 Returns a matrix in Jordan canonical form (JCF) corresponding to the
-list of eigenvalues and multiplicities given by @mvar{l}. This list
+list of eigenvalues and multiplicities given by @var{l}. This list
 should be in the format given by the @code{jordan} function. See
 @code{jordan} for details of this format.
 
@@ -195,9 +195,9 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 @end deffn
 
 
-@deffn {Function} minimalPoly (@mvar{l})
+@deffn {Function} minimalPoly (@var{l})
 Returns the minimal polynomial of the matrix whose Jordan form is
-described by the list @mvar{l}. This list should be in the format given
+described by the list @var{l}. This list should be in the format given
 by the @code{jordan} function. See @code{jordan} for details of this
 format.
 
@@ -225,14 +225,14 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 
 @end deffn
 
-@deffn {Function} ModeMatrix (@mvar{A}, [@mvar{jordan_info}])
-Returns an invertible matrix @mvar{M} such that @math{(M^^-1).A.M} is
-the Jordan form of @mvar{A}.
+@deffn {Function} ModeMatrix (@var{A}, [@var{jordan_info}])
+Returns an invertible matrix @var{M} such that @math{(M^^-1).A.M} is
+the Jordan form of @var{A}.
 
-To calculate this, Maxima must find the Jordan form of @mvar{A}, which
+To calculate this, Maxima must find the Jordan form of @var{A}, which
 might be quite computationally expensive. If that has already been
 calculated by a previous call to @code{jordan}, pass it as a second
-argument, @mvar{jordan_info}. See @code{jordan} for details of the
+argument, @var{jordan_info}. See @code{jordan} for details of the
 required format.
 
 Example:
@@ -280,10 +280,10 @@ To use this function write first @code{load("diag")}. See also
 @end deffn
 
 
-@deffn {Function} mat_function (@mvar{f},@mvar{A})
-Returns @math{f(A)}, where @mvar{f} is an analytic function and @mvar{A}
+@deffn {Function} mat_function (@var{f},@var{A})
+Returns @math{f(A)}, where @var{f} is an analytic function and @var{A}
 a matrix. This computation is based on the Taylor expansion of
-@mvar{f}. It is not efficient for numerical evaluation, but can give
+@var{f}. It is not efficient for numerical evaluation, but can give
 symbolic answers for small matrices.
 
 @c What other methods do we have in Maxima at the moment? We should

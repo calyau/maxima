@@ -93,7 +93,7 @@ units.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} setunits (@mvar{list})
+@deffn {Function} setunits (@var{list})
 
 By default, the @emph{unit} package does not use any derived dimensions, but
 will convert all units to the seven fundamental dimensions using MKS units.
@@ -261,7 +261,7 @@ See also @code{uforget}.  To use this function write first @code{load("unit")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} uforget (@mvar{list})
+@deffn {Function} uforget (@var{list})
 
 By default, the @emph{unit} package converts all units to the seven fundamental
 dimensions using MKS units.  This behavior can be changed with the
@@ -300,7 +300,7 @@ See also @code{setunits}.  To use this function write first @code{load("unit")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} convert (@mvar{expr}, @mvar{list})
+@deffn {Function} convert (@var{expr}, @var{list})
 
 When resetting the global environment is overkill, there is the @code{convert}
 command, which allows one time conversions.  It can accept either a single
@@ -694,10 +694,10 @@ control over their working environment.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} metricexpandall (@mvar{x})
+@deffn {Function} metricexpandall (@var{x})
 
 Rebuilds global unit lists automatically creating all desired metric units.
-@mvar{x} is a numerical argument which is used to specify how many metric
+@var{x} is a numerical argument which is used to specify how many metric
 prefixes the user wishes defined.  The arguments are as follows, with each
 higher number defining all lower numbers' units:
 
@@ -716,7 +716,7 @@ higher number defining all lower numbers' units:
 Normally, Maxima will not define the full expansion since this results in a
 very large number of units, but @code{metricexpandall} can be used to
 rebuild the list in a more or less complete fashion.  The relevant variable
-in the @emph{unit.mac} file is @mvar{%unitexpand}.
+in the @emph{unit.mac} file is @var{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
 @end deffn
 

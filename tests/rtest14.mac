@@ -1794,6 +1794,12 @@ x*(bessel_i(0,x)*(%pi*struve_l(1,x)+2)-%pi*bessel_i(1,x)*struve_l(0,x))/2;
 integrate(bessel_i(1,x),x);
 bessel_i(0,x);
 
+integrate(bessel_i(2,x),x);
+hypergeometric([3/2],[5/2,3],x^2/4)*x^3/24;
+
+integrate(bessel_i(1/2,x),x);
+2^(3/2)*hypergeometric([3/4],[3/2,7/4],x^2/4)*x^(3/2)/(3*sqrt(%pi));
+
 /* http://functions.wolfram.com/Bessel-TypeFunctions/BesselK/21/01/01/ */
 integrate(bessel_k(0,x),x);
 %pi*x*(bessel_k(1,x)*struve_l(0,x)+bessel_k(0,x)*struve_l(-1,x))/2;
