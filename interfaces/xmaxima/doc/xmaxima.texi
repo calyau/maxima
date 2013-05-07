@@ -35,8 +35,8 @@ END-INFO-DIR-ENTRY
 @end ifinfo
 
 @titlepage
-@title{Xmaxima Manual}
-@author{Jaime E. Villate}
+@title Xmaxima Manual
+@author Jaime E. Villate
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 2006 Jaime E. Villate
