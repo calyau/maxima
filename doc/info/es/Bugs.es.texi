@@ -15,7 +15,7 @@ fallos conocidos.
 
 @code{run_testsuite} admite las siguientes opciones:
 
-@table @var
+@table @code
 @item display_all
 Muestra todas las pruebas. Normalmente no se muestran las pruebas,
 a menos que produzcan fallos. (Su valor por defecto es @code{false}).

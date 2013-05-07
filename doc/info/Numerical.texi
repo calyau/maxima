@@ -422,7 +422,7 @@ The accuracy of @code{find_root} is governed by @code{abserr} and
 @code{find_root}.  These keyword arguments take the form
 @code{key=val}.  The keyword arguments are
 
-@table @var
+@table @code
 @item abserr
 Desired absolute error of function value at root.  Default is
 @code{find_root_abs}.

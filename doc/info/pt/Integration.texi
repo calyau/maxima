@@ -1070,7 +1070,7 @@ uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
 
 Os argumentos opcionais s@~ao:
 
-@table @var
+@table @code
 @item epsabs
 Erro absoluto de aproxima@value{cedilha}@~ao desejado.  Padr@~ao @'e 1d-10.
 @item limit
@@ -1172,7 +1172,7 @@ uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
 
 Os argumentos opcionais s@~ao:
 
-@table @var
+@table @code
 @item epsabs
 Erro absoluto desejado de aproxima@value{cedilha}@~ao.  O Padr@~ao @'e 1d-10.
 @item limite
@@ -1279,7 +1279,7 @@ uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
 
 O argumentos opcionais s@~ao:
 
-@table @var
+@table @code
 @item epsabs
 Erro absoluto desejado de aproxima@value{cedilha}@~ao.  O padr@~ao @'e 1d-10.
 @item limite

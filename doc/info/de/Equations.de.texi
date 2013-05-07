@@ -688,7 +688,7 @@ der Startwert der Methoden @code{neumann} oder @code{firstkindseries}.
 
 Die Standardwerte der Argumente sind:
 
-@table @var
+@table @code
 @item unk 
 @code{@var{p}(@var{x})}, wobei @var{p} die erste im Integranden aufgefundene
 Funktion ist, die Maxima unbekannt ist, und @var{x} die Variable ist, die im

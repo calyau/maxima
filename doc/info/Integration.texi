@@ -1000,7 +1000,7 @@ achieved.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1092,7 +1092,7 @@ operator, a Maxima lambda expression, or a general Maxima expression.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1200,7 +1200,7 @@ One of the limits of integration must be infinity.  If not, then
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1297,7 +1297,7 @@ operator, a Maxima lambda expression, or a general Maxima expression.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1414,7 +1414,7 @@ operator, a Maxima lambda expression, or a general Maxima expression.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsabs
 Desired absolute error of approximation.  Default is 1d-10.
 @item limit
@@ -1551,7 +1551,7 @@ operator, a Maxima lambda expression, or a general Maxima expression.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1684,7 +1684,7 @@ operator, a Maxima lambda expression, or a general Maxima expression.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs
@@ -1788,7 +1788,7 @@ the integrand is singular or discontinous.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs

@@ -2165,7 +2165,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
 Die Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsabs
 Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist 
 @code{1.0e-10}.
@@ -2440,7 +2440,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
 Die Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert ist
 @code{1.0e-8}
@@ -2535,7 +2535,7 @@ the integrand is singular or discontinous.
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item epsrel
 Desired relative error of approximation.  Default is 1d-8.
 @item epsabs

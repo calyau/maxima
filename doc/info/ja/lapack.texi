@@ -439,7 +439,7 @@ All elements of
 それらはすべて、形式 @code{key=val}を取ります。
 キーワード引数は以下の通りです:
 
-@table @var
+@table @code
 @item C
 足すべき行列 @var{C}。
 デフォルトは @code{false}であり、行列を足さないことを意味します。

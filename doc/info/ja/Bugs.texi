@@ -17,7 +17,7 @@ Maximaのテストスイートを走らせます。
 
 @code{run_testsuite}は、以下のオプションキーワード引数を取ります。
 
-@table @var
+@table @code
 @item display_all
 テストすべてを表示します。
 通常は、テストが失敗しない限りテストを表示しません。

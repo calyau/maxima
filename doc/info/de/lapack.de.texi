@@ -373,7 +373,7 @@ specifed by optional keyword arguments: The keyword arguments are
 optional and may be specified in any order.  They all take the form
 @code{key=val}.  The keyword arguments are:
 
-@table @var
+@table @code
 @item C
 The matrix @var{C} that should be added.  The default is @code{false},
 which means no matrix is added.

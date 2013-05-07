@@ -697,7 +697,7 @@ La integraci@'on num@'erica se hace de forma adaptativa particionando la regi@'o
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -780,7 +780,7 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -888,7 +888,7 @@ as@'{@dotless{i}}, @code{quad_qagi} devolver@'a una forma nominal.
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -976,7 +976,7 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -1082,7 +1082,7 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsabs
 El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-10.
 @item limit
@@ -1174,7 +1174,7 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -1276,7 +1276,7 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
-@table @var
+@table @code
 @item epsrel
 El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
@@ -1369,7 +1369,7 @@ Las opciones se suministran como argumentos y se pueden escribir en
 cualquier orden. Deben tomar la forma @code{opci@'on=valor}. Las 
 opciones son:
 
-@table @var
+@table @code
 @item epsrel
 Error relativo de aproximaci@'on deseado. Valor por defecto es 1d-8.
 @item epsabs

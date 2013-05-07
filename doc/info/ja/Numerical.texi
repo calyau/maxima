@@ -492,7 +492,7 @@ Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価�
 それらは@code{fine_root}へのオプションのキーワード引数です。
 これらのキーワード引数は形式@code{key=val}を取ります。
 キーワード引数は
-@table @var
+@table @code
 @item abserr
 根での関数値の望まれる絶対エラー。デフォルトは、@code{find_root_abs}です。
 @item relerr

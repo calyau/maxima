@@ -383,7 +383,7 @@ La precisi@'on de @code{find_root} est@'a controlada por @code{abserr} y
 @code{relerr}, que son claves opcionales para @code{find_root}. 
 Estas claves toman la forma @code{key=val}. Las claves disponibles son:
 
-@table @var
+@table @code
 @item abserr
 Error absoluto deseado de la funci@'on en la ra@'{@dotless{i}}z. El
 valor por defecto es @code{find_root_abs}. 

@@ -413,7 +413,7 @@ pueden transponerse antes de calcular su producto. Los par@'ametros adicionales
 se pueden especificar en cualquier orden, siendo su sintaxis de la forma
 @code{clave=valor}. Las claves reconocidas son:
 
-@table @var
+@table @code
 @item C
 La matriz @var{C} que debe ser sumada. El valor por defecto es @code{false},
 lo que significa que no se sumar@'a ninguna matriz.

@@ -17,7 +17,7 @@ answer, but are marked as known bugs.
 
 @code{run_testsuite} takes the following optional keyword arguments
 
-@table @var
+@table @code
 @item display_all
 Display all tests.  Normally, the tests are not displayed, unless the test
 fails.  (Defaults to @code{false}).

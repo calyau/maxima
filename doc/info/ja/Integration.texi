@@ -1041,7 +1041,7 @@ $$\int_a^b {f(x) \, dx}$$
 キーワード引数はオプションで、どの次数においても指定できます。
 それらは形式@code{key=val}を取ります。キーワード引数は：
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1131,7 +1131,7 @@ $$\int_a^b {f(x) \, dx}$$
 キーワード引数はオプションで、どの次数においても指定できます。
 それらは形式@code{key=val}を取ります。キーワード引数は：
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1240,7 +1240,7 @@ Maximaのラムダ式またはMaximaの一般式として指定されるかも�
 それらすべては形式@code{key=val}を取ります。
 キーワード引数は:
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1340,7 +1340,7 @@ Maximaのラムダ式またはMaximaの一般式として指定されるかも�
 それらすべては形式@code{key=val}を取ります。
 キーワード引数は:
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1460,7 +1460,7 @@ Maximaのラムダ式またはMaximaの一般式として指定されるかも�
 それらすべては形式@code{key=val}を取ります。
 キーワード引数は:
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1606,7 +1606,7 @@ Maximaのラムダ式またはMaximaの一般式として指定されるかも�
 それらすべては形式@code{key=val}を取ります。
 キーワード引数は:
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
@@ -1746,7 +1746,7 @@ Maximaのラムダ式またはMaximaの一般式として指定されるかも�
 それらすべては形式@code{key=val}を取ります。
 キーワード引数は:
 
-@table @var
+@table @code
 @item epsrel
 望まれる近似の相対誤差。デフォルトは1d-8。
 @item epsabs
