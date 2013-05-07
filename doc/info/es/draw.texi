@@ -3561,7 +3561,7 @@ Reproduce una imagen en 2D.
 @b{2D}
 
 @code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})}:
-dibuja la imagen @var{im} en la regi@'on rectangular desde el v@'ertice @var{(@var{x0},@var{y0})}
+dibuja la imagen @var{im} en la regi@'on rectangular desde el v@'ertice @code{(@var{x0},@var{y0})}
 hasta el @code{(x0+@var{width},y0+@var{height})} del plano real. El argumento @var{im} debe ser una
 matriz de n@'umeros reales, una matriz de vectores de longitud tres o un objeto
 de tipo @code{picture}.
