@@ -68,7 +68,7 @@
 (defun parse-template (template)
   (let (op name formatter)
     (flet ((getform (symbol)
-	     (and (setq formatter (or ($get symbol '$formatter)(get symbol 'formatter)))
+	     (and (setq formatter (or ($get symbol '$formatter)(get symbol 'share-formatter)))
 		  (setq name symbol))))
       (cond (($numberp template) nil)
 	    ((atom template) (values (getform template) formatter nil nil))
@@ -90,10 +90,10 @@
   (let* ((names (if (listp names) names (list names)))
 	 (fmtr (if (atom parms) parms
 		   (make-symbol (concatenate 'string (string (car names))
-					     (symbol-name '#:-formatter))))))
+					     (symbol-name '#:-share-formatter))))))
     `(progn
        ,(unless (atom parms) `(defun ,fmtr ,parms ,@body))
-       ,@(mapcar #'(lambda (name) `(setf (get ',name 'formatter) ',fmtr)) names))))
+       ,@(mapcar #'(lambda (name) `(setf (get ',name 'share-formatter) ',fmtr)) names))))
 
 ;;;;******************************************************************************************
 ;;; Subtemplate aids.
