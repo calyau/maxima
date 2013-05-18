@@ -265,7 +265,7 @@
                    (mapcar #'(lambda (x) (* 1/6 x)) k4)))
       (setq r 
         (concatenate 'list
-           `(,(* (1+ m) (caddr it)))
+           `(,(+ (car it) (* (1+ m) (caddr it))))
             (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (caddr it) x)) u))))
       (push (cons '(mlist) r) traj)))
   (cons '(mlist) (nreverse traj)))

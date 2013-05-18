@@ -36,6 +36,7 @@
 (defprop %airy_ai $airy_ai reversealias)
 (defprop %airy_ai $airy_ai noun)
 (defprop %airy_ai simp-%airy_ai operators)
+(defprop %airy_ai simplim%airy_ai simplim%function)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
 ;; airy_ai distributes over lists, matrices, and equations
@@ -74,6 +75,16 @@
 
 (setf (gethash '%airy_ai *flonum-op*) #'airy-ai)
 
+(defun simplim%airy_ai (expr var val)
+  ; Look for the limit of the argument
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond ((or (eq z '$inf)   ; A&S 10.4.59
+	       (eq z '$minf)) ; A&S 10.4.60
+	   0)
+	  (t
+	   ; Handle other cases with the function simplifier
+	   (simplify (list '(%airy_ai) z))))))
+
 (defmfun simp-%airy_ai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -96,6 +107,7 @@
 (defprop %airy_dai $airy_dai reversealias)
 (defprop %airy_dai $airy_dai noun)
 (defprop %airy_dai simp-%airy_dai operators)
+(defprop %airy_dai simplim%airy_dai simplim%function)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 (defprop %airy_dai ((z) ((%airy_ai) z)) integral)
 
@@ -110,6 +122,17 @@
 	((complexp z) (airy-dai-complex z))))
 
 (setf (gethash '%airy_dai *flonum-op*) #'airy-dai)
+
+(defun simplim%airy_dai (expr var val)
+  ; Look for the limit of the argument
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond ((eq z '$inf) ; A&S 10.4.61
+	   0)
+	  ((eq z '$minf) ; A&S 10.4.62
+	   '$und)
+	  (t
+	   ; Handle other cases with the function simplifier
+	   (simplify (list '(%airy_dai) z))))))
 
 (defmfun simp-%airy_dai (form unused x)
   (declare (ignore unused))
@@ -132,6 +155,7 @@
 (defprop %airy_bi $airy_bi reversealias)
 (defprop %airy_bi $airy_bi noun)
 (defprop %airy_bi simp-%airy_bi operators)
+(defprop %airy_bi simplim%airy_bi simplim%function)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
 
 ;; airy_bi distributes over lists, matrices, and equations
@@ -170,6 +194,17 @@
 
 (setf (gethash '%airy_bi *flonum-op*) #'airy-bi)
 
+(defun simplim%airy_bi (expr var val)
+  ; Look for the limit of the argument
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond ((eq z '$inf) ; A&S 10.4.63
+	   '$inf)
+	  ((eq z '$minf) ; A&S 10.4.64
+	   0)
+	  (t
+	   ; Handle other cases with the function simplifier
+	   (simplify (list '(%airy_bi) z))))))
+
 (defmfun simp-%airy_bi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -191,6 +226,7 @@
 (defprop %airy_dbi $airy_dbi reversealias)
 (defprop %airy_dbi $airy_dbi noun)
 (defprop %airy_dbi simp-%airy_dbi operators)
+(defprop %airy_dbi simplim%airy_dbi simplim%function)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 (defprop %airy_dbi ((z) ((%airy_bi) z)) integral)
 
@@ -205,6 +241,17 @@
 	((complexp z) (airy-dbi-complex z))))
 
 (setf (gethash '%airy_dbi *flonum-op*) #'airy-dbi)
+
+(defun simplim%airy_dbi (expr var val)
+  ; Look for the limit of the argument
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond ((eq z '$inf) ; A&S 10.4.66
+	   '$inf)
+	  ((eq z '$minf) ; A&S 10.4.67
+	   '$und)
+	  (t
+	   ; Handle other cases with the function simplifier
+	   (simplify (list '(%airy_dbi) z))))))
 
 (defmfun simp-%airy_dbi (form unused x)
   (declare (ignore unused))
