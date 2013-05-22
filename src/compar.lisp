@@ -891,7 +891,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	((null odds)
 	 (setq $askexp (lmul evens)
 	       sign (cdr (assol $askexp *local-signs*)))
-         (ensure-sign $askexp '$znz))
+         (ensure-sign $askexp '$znz t))
 	(t
          (if minus (setq sign (flip sign)))
          (setq $askexp
@@ -900,36 +900,48 @@ relational knowledge is contained in the default context GLOBAL.")
            (setf sign (assol $askexp *local-signs*))
            (ensure-sign $askexp domain)))))
 
-(defun match-sign (sgn domain expression)
+(defun match-sign (sgn domain expression squared)
   "If SGN makes sense for DOMAIN store the result (see ENSURE-SIGN) and return
-it. Otherwise, return NIL."
-  ;; We have a hit if the answer (sign) is one of the first list and the
-  ;; question (domain) was one of the second.
+it. Otherwise, return NIL. If SQUARED is true, we are actually looking for the
+sign of the square, so any negative results are converted to positive."
+  ;; The entries in BEHAVIOUR are of the form
+  ;;   (MATCH DOMAINS REGISTRAR SIGN SIGN-SQ)
+  ;;
+  ;; The algorithm goes as follows:
+  ;;
+  ;; Look for SGN in MATCH. If found, use REGISTRAR to store SIGN for the
+  ;; expression and then return SIGN if SQUARED is false or SIGN-SQ if it is
+  ;; true.
   (let* ((behaviour
-          '((($pos |$P| |$p| $positive) (nil $znz $pz $pn $pnz) tdpos $pos)
-            (($neg |$N| |$n| $negative) (nil $znz $nz $pn $pnz) tdneg $neg)
-            (($zero |$Z| |$z| 0 0.0) (nil $znz $pz $nz $pnz) tdzero $zero)
-            (($pn $nonzero $nz $nonz $non0) ($znz) tdpn $pn)))
+          '((($pos |$P| |$p| $positive) (nil $znz $pz $pn $pnz) tdpos $pos $pos)
+            (($neg |$N| |$n| $negative) (nil $znz $nz $pn $pnz) tdneg $neg $pos)
+            (($zero |$Z| |$z| 0 0.0) (nil $znz $pz $nz $pnz) tdzero $zero $zero)
+            (($pn $nonzero $nz $nonz $non0) ($znz) tdpn $pn $pos)))
          (hit (find-if (lambda (bh)
                          (and (member sgn (first bh) :test #'equal)
                               (member domain (second bh) :test #'eq)))
                        behaviour)))
     (when hit
-      (funcall (third hit) expression)
-      (setq sign
-            (if minus (flip (fourth hit)) (fourth hit))))))
+      (let ((registrar (third hit))
+            (found-sign (if squared (fifth hit) (fourth hit))))
+        (funcall registrar expression)
+        (setq sign
+              (if (and minus (not squared)) (flip found-sign) found-sign))))))
 
-(defun ensure-sign (expr &optional domain)
+(defun ensure-sign (expr &optional domain squared)
   "Try to determine the sign of EXPR. If DOMAIN is not one of the special values
 described below, we try to tell whether EXPR is positive, negative or zero. It
 can be more specialised ($pz => positive or zero; $nz => negative or zero; $pn
 => positive or negative; $znz => zero or nonzero).
 
+If SQUARED is true, then we're actually interested in the sign of EXPR^2. As
+such, a nonzero sign should be regarded as positive.
+
 When calling ENSURE-SIGN, set the special variable SIGN to the best current
 guess for the sign of EXPR. The function returns the sign, calls one of (TDPOS
 TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (loop
-     (let ((new-sign (match-sign sign domain expr)))
+     (let ((new-sign (match-sign sign domain expr squared)))
        (when new-sign (return new-sign)))
      (setf sign (retrieve
                  (list '(mtext)
