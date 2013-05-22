@@ -886,19 +886,22 @@ relational knowledge is contained in the default context GLOBAL.")
   (let ($radexpand)
     (declare (special $radexpand))
     (sign1 $askexp))
-  (cond ((has-int-symbols $askexp) '$pnz)
-	((member sign '($pos $neg $zero $imaginary) :test #'eq) sign)
-	((null odds)
-	 (setq $askexp (lmul evens)
-	       sign (cdr (assol $askexp *local-signs*)))
-         (ensure-sign $askexp '$znz t))
-	(t
-         (if minus (setq sign (flip sign)))
-         (setq $askexp
-               (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))
-         (let ((domain sign))
-           (setf sign (assol $askexp *local-signs*))
-           (ensure-sign $askexp domain)))))
+  (cond
+    ((has-int-symbols $askexp) '$pnz)
+    ((member sign '($pos $neg $zero $imaginary) :test #'eq) sign)
+    (t
+     (let ((domain sign) (squared nil))
+       (cond
+         ((null odds)
+          (setq $askexp (lmul evens)
+                domain '$znz
+                squared t))
+         (t
+          (if minus (setq sign (flip sign)))
+          (setq $askexp
+                (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))))
+       (setq sign (cdr (assol $askexp *local-signs*)))
+       (ensure-sign $askexp domain squared)))))
 
 (defun match-sign (sgn domain expression squared)
   "If SGN makes sense for DOMAIN store the result (see ENSURE-SIGN) and return
