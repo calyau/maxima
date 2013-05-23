@@ -27,3 +27,10 @@ true$
 is(part(?complex(1,2),0)="+");
 true$
 
+/* bug reported to mailing list 2013-05-22 */
+
+block ([a, L],
+  a : make_array (fixnum, 3),
+  L : buildq ([a], lambda ([x], a[x])),
+  print (L, L(0))); /* print(L) --> calls NFORMAT and therefore tickles bug */
+0;

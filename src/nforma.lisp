@@ -53,7 +53,7 @@
 	
 	;; this next section is for the ordinary maxima objects that are tagged by
 	;; their main operator or CAAR,  e.g. ((mplus) a b) has CAAR mplus ...
-	((setf p (get (caar form) 'formatter)) ;; find the formatter.  If there is one, call it.
+	((and (symbolp (caar form)) (setf p (get (caar form) 'formatter))) ;; find the formatter.  If there is one, call it.
 	 (funcall p form))
 	(t form)))			; if there is no formatter. Just return form unchanged.
 
