@@ -1005,9 +1005,6 @@ false;
 (declare (x, constant), declare (y, constant), assume (x > y), is (x>y));
 true$
 
-kill(all);
-done$
-
 /* facts in assume database not cleaned up by 'sign' */
 
 (kill (foo), foo : %e^(abs(uu)+uu)*(uu/abs(uu)+1)+%e^(abs(uu)-uu)*(uu/abs(uu)-1), 0);
@@ -1026,3 +1023,12 @@ map('sign,[sqrt(x),x]);
  buddy(sqrt(x),abs(x)));
 abs(x);
 
+/* Ensure that asksign1 deals correctly with squared expressions */
+(assume (notequal(n, 1)), 0);
+0$
+
+is ((n-1)^2 > 0);
+true$
+
+kill(all);
+done$
