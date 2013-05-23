@@ -371,7 +371,7 @@
 	   ((mget (setq name (caar pt)) 'matchdeclare)
 	    (merror (intl:gettext "tellsimp: main operator of pattern must not be match variable; found: ~A") (fullstrip1 (getop name))))
 	   ((member name '(mplus mtimes) :test #'eq)
-	    (mtell (intl:gettext "tellsimp: warning: putting rules on '+' or '*' is inefficient, and may not work.~%"))))
+	    (mtell (intl:gettext "tellsimp: warning: rule will treat '~M' as noncommutative and nonassociative.~%") name)))
      (setq a (genref))
      (cond ((atom (errset (compileeach a (cdr pt))))
 	    (merror (intl:gettext "tellsimp: failed to compile match for pattern ~M") (cdr pt))))
