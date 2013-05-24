@@ -236,3 +236,10 @@ compile (faa, gaa, fbb, gbb, fcc, gcc);
 [faa (4), fbb (4), fcc (4)];
 [444, 444, 444];
 
+/* SF bug # 2569: "translate rat(1,x) and rat([1]) incorrect" */
+
+(kill (f), f () := rat (x, x), translate (f), f ());
+''(rat (x, x));
+
+(kill (f), f () := rat ([1]), translate (f), f ());
+''(rat ([1]));

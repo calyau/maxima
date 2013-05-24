@@ -1339,11 +1339,6 @@ APPLY means like APPLY.")
 	   (setq val (translate val))
 	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
 
-(def%tr $rat (form)
-  (cond ((null (cddr form)) (cons '$cre (dconv-$cre (translate (cadr form)))))
-	(t (setq tr-abort t) (cons '$any form))))
-
-
 (def%tr $max (x) (translate-$max-$min x))
 (def%tr $min (x) (translate-$max-$min x))
 (def%tr %max (x) (translate-$max-$min x))
