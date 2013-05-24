@@ -242,7 +242,7 @@
 			  ((eq (mlsp y-val (m* 2 '$%pi)) t) (m- (m* 2 '$%pi) y-val)))))))
 	((and (eq $triginverses '$all) (not (atom y))
 	      (if (eq '%cos (caar y)) (cadr y))))
-	((and (eq $triginverses t) (not (atom y)) (eq (caar y) '%sin)
+	((and (eq $triginverses t) (not (atom y)) (eq (caar y) '%cos)
 	      (if (and (member (csign (m- (cadr y) '$%pi)) '($nz $neg) :test #'eq)
 		       (member (csign (cadr y)) '($pz $pos) :test #'eq))
 		  (cadr y))))

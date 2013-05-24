@@ -523,3 +523,18 @@ atan2((1-u)^(1/2^10)*(u-1),1)$
 /* Restore global flags */
 (halfangles:old_halfangles,%iargs:old_%iargs,done);
 done;
+
+/* SF bug # 2570: "Make acos(cos(x)) simplify to x when on correct interval" */
+
+(kill (foo),
+ acos (cos (foo)));
+acos (cos (foo));
+
+(ctxt : gensym (),
+ newcontext (ctxt),
+ assume (0 <= foo and foo <= %pi),
+ acos (cos (foo)));
+foo;
+
+killcontext (ctxt);
+done;
