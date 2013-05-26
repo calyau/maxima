@@ -157,6 +157,16 @@ g(x)$
 done$
 is(f(x) > 0);
 true$
+
+(kill (foo), declare (foo, [nary, symmetric]));
+done;
+
+foo (a, 1, h, 2, z, d, %pi);
+foo (1, 2, %pi, a, d, h, z);
+
+foo (a, foo (1, foo (h, 2), z), foo (d, %pi));
+foo (1, 2, %pi, a, d, h, z);
+
 (kill(all),b[1,x]:1);
 1$
 
