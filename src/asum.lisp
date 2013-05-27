@@ -1030,8 +1030,7 @@ summation when necessary."
     ((null l)
      (if some-change
        (nary2 (cons (car e) (nreverse ans)) z)
-       (let ((w (get (caar e) 'operators)))
-         (if w (funcall w e 1 z) (simpargs e z)))))
+       (simpargs e z)))
 
     (setq
       ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
