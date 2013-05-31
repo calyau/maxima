@@ -712,7 +712,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	(not x)
 	`((mnot) ,x))))
 
-;;;Toplevel functions- $ASKSIGN, $SIGN.
+;;;Toplevel functions- $askequal, $asksign, and $sign.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special
 ;;;		     symbols such as EPSILON, $INF, $MINF and attempt
 ;;;		     to do the correct thing. In addition calls to
@@ -724,6 +724,22 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;;		     case they call $RECTFORM.
 
 (setq limitp nil)
+
+(defun $askequal (a b)
+  (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
+    (setq answer
+	  (cond ((eq answer t) '$yes)
+		((eq answer nil) '$no)
+		(t (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?")) nil))))
+    (cond ((member answer '($no |$n| |$N|) :test #'eq)
+	   (tdpn (sub b a))
+	   '$no)
+	  ((member answer '($yes |$y| |$Y|) :test #'eq)
+	   (tdzero (sub a b))
+	   '$yes)
+	  (t  
+	   (mtell (intl:gettext "Acceptable answers are yes, y, Y, no, n, N. ~%"))
+	   ($askequal a b)))))
 
 (defmfun $asksign (exp)
   (let (sign minus odds evens factored)
