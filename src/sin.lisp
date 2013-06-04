@@ -676,8 +676,7 @@
 (defprop %csch ((x) ((%log) ((%tanh) ((mtimes) ((rat simp) 1 2) x)))) integral)
 
 ;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else logmabs(x).
-
-(defun integrate-mexpt (x n)
+(defun integrate-mexpt-1 (x n)
   (let ((n-is-minus-one ($askequal n -1)))
     (cond ((eq '$yes n-is-minus-one)
 	   (take '(%log) (if $logabs (take '(mabs) x) x)))
@@ -685,7 +684,11 @@
 	   (setq n (add n 1))
 	   (div (take '(mexpt) x n) n)))))
 
-(putprop 'mexpt `((x n) ,#'integrate-mexpt) 'integral)
+;; integrate(a^x,x) = a^x/log(a).
+(defun integrate-mexpt-2 (a x)
+  (div (take '(mexpt) a x) (take '(%log) a)))
+  
+(putprop 'mexpt `((x n) ,#'integrate-mexpt-1 ,#'integrate-mexpt-2) 'integral)
 
 (defun rat10 (ex)
   (cond ((freevar ex) t)

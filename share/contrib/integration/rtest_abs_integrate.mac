@@ -460,8 +460,7 @@ e : sublis([x=%pi],e) - sublis([x=0],e);
 %if(a#0,-((sqrt(%pi)*%e^(-b^2/(4*a))*erf((2*a*x+b)/(2*sqrt(-a))))/(2*sqrt(-a))),%if(b#0,%e^(b*x)/b,x))$
 
 'integrate(bessel_j(b-1,a*x),x);
-%if((a#0) %and (b#0),(2^(1-b)*hypergeometric([b/2],[b,(b+2)/2],-(a^2*x^2)/4)*(a*x)^b)/(a*b*gamma(b)),
-%if((a#0) %and (b=0),%if(a#0,bessel_j(0,a*x)/a,0),%if((a=0) %and (b#0),bessel_j(b-1,0)*x,0)))$
+%if(a # 0, 2^(1-b)*hypergeometric([b/2],[b,(b+2)/2],-a^2*x^2/4)*(a*x)^b/(a*gamma(b+1)),bessel_j(b-1,0)*x)$
 
 ratexpand(sublis([m=42, n = 42], 'integrate(cos(m*x) * cos(n * x),x)));
 sin(84*x)/168+x/2$

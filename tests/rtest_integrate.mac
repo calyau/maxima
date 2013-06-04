@@ -1688,7 +1688,7 @@ integrate(a^(d*z)*b^(e*z)*c^(f*z),z);
  * Change example to a real variable x. 
  */
 integrate(%e^(c*x)*(%e^(a*x))^v,x);
- %e^((a*v+c)*x)/(a*v+c)$
+%e^(a*v*x+c*x)/(a*v+c)$
 
 /* ----- %e^(c*z+d)*(%e^(a*z))^v -------------------------------------------- */
 
@@ -1696,7 +1696,7 @@ integrate(%e^(c*x)*(%e^(a*x))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x+d)*(%e^(a*x))^v,x);
-%e^((a*v+c)*x+d)/(a*v+c)$
+%e^(a*v*x+c*x+d)/(a*v+c)$
 
 /* ----- %e^(c*z)*(%e^(a*z+b))^v -------------------------------------------- */
 
@@ -1704,7 +1704,7 @@ integrate(%e^(c*x+d)*(%e^(a*x))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x)*(%e^(a*x+b))^v,x);
-%e^((a*v+c)*x+b*v)/(a*v+c)$
+%e^(v*(a*x+b)+c*x)/(a*v+c)$
 
 /* ----- %e^(c*z+d)*(%e^(a*z+b))^v ------------------------------------------ */
 
@@ -1712,7 +1712,7 @@ integrate(%e^(c*x)*(%e^(a*x+b))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x+d)*(%e^(a*x+b))^v,x);
-%e^((a*v+c)*x+b*v+d)/(a*v+c)$
+%e^(v*(a*x+b)+c*x+d)/(a*v+c)$
 
 /* ----- %e^(b*z^r)*(%e^(c*z))^v -------------------------------------------- */
 
@@ -2141,19 +2141,19 @@ diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
 
 /* Problem 383: OK */
 integrate((%e^(c*x))^u*(%e^(a*x))^v,x);
-%e^((a*v+c*u)*x)/(a*v+c*u)$
+%e^(a*v*x+c*u*x)/(a*v+c*u)$
 
 /* ----- (%e^(c*z))^u*(%e^(a*z+b)^v ----------------------------------------- */
 
 /* Problem 384: OK */
 integrate((%e^(c*x))^u*(%e^(a*x+b))^v,x);
-%e^((a*v+c*u)*x+b*v)/(a*v+c*u)$
+%e^(v*(a*x+b)+c*u*x)/(a*v+c*u)$
 
 /* ----- (%e^(c*z+d))^u*(%e^(a*z+b)^v --------------------------------------- */
 
 /* Problem 385: OK */
 integrate((%e^(c*x+d))^u*(%e^(a*x+b))^v,x);
-%e^((a*v+c*u)*x+b*v+d*u)/(a*v+c*u)$
+%e^(u*(c*x+d)+v*(a*x+b))/(a*v+c*u)$
 
 /* ----- (%e^(b*z))^u*(%e^(c*z^r)^v ----------------------------------------- */
 
