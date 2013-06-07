@@ -6,17 +6,33 @@ INTRODUCTION
 Maxima is written in Common Lisp. For details about supported Common
 Lisp implementations, please see the file README.lisps.
 
-Maxima can be built in two ways.
+Maxima can be built in three ways.
 
-(1) Win32 build and install
+(1) Lisp-only build
+    
+    Lisp-only build is suitable for systems lacking GNU Autotools,
+    e.g. MS Windows systems. Lisp-only build creates a Maxima
+    executable image, but it does not create the Maxima texinfo
+    documentation, it does not adjust various pathnames and other
+    environmental variables in the maxima and xmaxima scripts,
+    it does not install Gnuplot, and it does not create an 
+    installer file (neither RPM or Windows installer).
+
+(2) Win32 build and install
 
     Win32 build and install is suitable for MS Windows systems
     with GNU Autotools (Mingw or otherwise).
 
-(2) Unix GNU Autotools build and install
+(3) Unix GNU Autotools build and install
 
     Unix GNU Autotools build and install is suitable for Unix and
     Unix-like systems (e.g. Linux) with GNU Autotools.
+
+
+LISP-ONLY BUILD
+===============
+
+See: INSTALL.lisp
 
 
 WIN32 BUILD AND INSTALL
