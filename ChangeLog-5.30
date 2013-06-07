@@ -1,0 +1,56 @@
+   Maxima 5.30 change log
+
+   Changes not backward compatible:
+
+ * function gf_set: renamed to gf_set_data
+
+
+   Other changes:
+
+ * function bfzeta: extend to complex plane
+ * function gf_set: return a structure
+ * function gf_exp: allow negative exponents
+ * functions plot2d, plot3d: accept subscripted variables as independent variables
+ * package dynamics: revise function rk
+ * package ezunits: new functions expand_dimensional, solve_dimensional, other changes
+ * package linearalgebra(??): revise mat_function
+ * ??: revise functions jordan, JF, diag
+
+
+   Bug fixes:
+
+ ??: limit((log(y+h)-log(y))/h,h,0,plus)
+ 2561: limit(log(x^2),x,-20) gives 2*log(-20)
+ 2559:
+ 2557: abs_integrate leaks assumptions into enclosing context
+ 2547:
+ 2542:
+ 2541: (FIXED??)
+ 2540:
+ 2531: Integration with inf
+ 2529: limit(x^n,x,minf) gives minf for n positive
+ 2528: imagpart etc. wrong when var declared real and complex
+ 2527: exponent too big in limit
+ 2517:
+ 2509: fresnel_s incorrect for small values
+ 2496:
+ 2458: to_poly_solve gives a wrong solution for cos(x)=sin(3x)
+ 2449: cabs(expr) fails when expr is 0
+ 2442: arrayinfo gives a Lisp error
+ 2441: 
+ 2412: Problems with integral (x/(exp(x)+1),x,0,inf)
+ 2362:
+ 2350:
+ 2279:
+ 2219: tex2ooo literals format
+  472: ctrl-D causes Maxima debugger to loop endlessly (clisp only)
+
+
+ unnumbered bugs:
+
+ mailing list circa 2013-03-30: load_pathname unset with maxima -b
+ mailing list 2013-02-21: gamma_incomplete_regularized(a,0) returning the wrong noun form
+ mailing list 2012-12-23: "let(simp) behaves different when loaded from batch file"
+ mailing list 2012-12-14: "Maxima won,t pull out a constant from a linear function"
+ bern() with zerobern:false
+ clean up facts introduced by sign functions

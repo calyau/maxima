@@ -16,7 +16,7 @@ EXTRA_DIST = \
   ChangeLog-5.16 ChangeLog-5.17 ChangeLog-5.17-special-functions \
   ChangeLog-5.18 ChangeLog-5.19 ChangeLog-5.20 ChangeLog-5.21 ChangeLog-5.22 \
   ChangeLog-5.23 ChangeLog-5.24 ChangeLog-5.25 ChangeLog-5.26 ChangeLog-5.27 \
-  ChangeLog-5.28
+  ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30
 
 include common.mk
 
