@@ -712,7 +712,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	(not x)
 	`((mnot) ,x))))
 
-;;;Toplevel functions- $ASKSIGN, $SIGN.
+;;;Toplevel functions- $askequal, $asksign, and $sign.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special
 ;;;		     symbols such as EPSILON, $INF, $MINF and attempt
 ;;;		     to do the correct thing. In addition calls to
@@ -725,6 +725,22 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (setq limitp nil)
 
+(defun $askequal (a b)
+  (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
+    (cond ((eq answer t) '$yes)
+	  ((eq answer nil) '$no)
+	  (t
+	   (setq answer (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?")) nil))
+	   (cond ((member answer '($no |$n| |$N|) :test #'eq)
+		  (tdpn (sub b a))
+		  '$no)
+		 ((member answer '($yes |$y| |$Y|) :test #'eq)
+		  (tdzero (sub a b))
+		  '$yes)
+		 (t  
+		  (mtell (intl:gettext "Acceptable answers are yes, y, Y, no, n, N. ~%"))
+		  ($askequal a b)))))))
+	   
 (defmfun $asksign (exp)
   (let (sign minus odds evens factored)
     (asksign01 (cond (limitp (restorelim exp))
@@ -1949,23 +1965,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                 (return (evod (cadr fact))))
                                (t (return nil)))))))))))
 
-(defmfun nonintegerp (e)
-  (let (num)
-    (cond ((integerp e) nil)
-	  ((mnump e) t)
-          ((atom e)
-           (or (kindp e '$noninteger)
-               (check-noninteger-facts e)))
-	  ((specrepp e) (nonintegerp (specdisrep e)))
-	  ((and (eq (caar e) 'mplus) (ratnump (cadr e)) (intp (cdr e))) t)
-	  ((and (integerp (setq num ($num e)))
-		(prog2
-		    (setq e ($denom e))
-		    (or (eq (csign (sub e num)) '$pos)
-			(eq (csign (add2 e num)) '$neg)))) t)
-          ;; Assumes a simplified sqrt of a number is not an integer.
-          ((and (mexptp e) (mnump (second e)) (alike1 (third e) 1//2)) t)
-	  (t nil))))
+(defun nonintegerp (e)
+  (cond ((and (symbolp e) (or (kindp e '$noninteger) (check-noninteger-facts e) (kindp e '$irrational)))) ;declared noninteger
+    ((mnump e)
+     (if (integerp e) nil t)) ;all floats are noninteger and integers are not nonintegers
+    (($ratp e)
+     (nonintegerp ($ratdisrep e)))
+    (t (eq t (mgrp e (take '($floor) e))))))
+
 
 ;; Look into the database for symbols which are declared to be equal 
 ;; to a noninteger or an expression which is a noninteger.
@@ -2460,7 +2467,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           (kind $%gamma $real)
           (kind $%phi   $noninteger)
           (kind $%phi   $real)
-          
+          (kind $%pi $irrational)
+	  (kind $%e $irrational)
+	  (kind $%phi $irrational)
+	  
           ;; Declarations for functions
 	  (kind %log $increasing)
 	  (kind %atan $increasing) (kind %atan $oddfun)

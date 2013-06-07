@@ -1329,13 +1329,17 @@ integrate((%e^(c+b/z^2+a*z^2))^v,z);
 /* Problem 265: OK 
  * In this example we have a substitution of a^(d*z).
  * We get a question about the sign of an expression.
+
+  The expand(XXX,0,0) is due to a bug--the antiderivative is unsimplified.
  */
-assume(notequal(log(a)*d*(c*log(h)+log(a)*d),0));
-[notequal(log(a)*d*(c*log(h)+log(a)*d),0)];
-integrate(a^(d*z)*h^(c*z),z),factor;
-a^(d*z)*(a^(d*z))^(c*log(h)/(log(a)*d))/(c*log(h)+log(a)*d)$
-forget(notequal(log(a)*d*(c*log(h)+log(a)*d),0));
-[notequal(log(a)*d*(c*log(h)+log(a)*d),0)];
+(assume(notequal((c * log(h))/(d * log(a)),-1)),0);
+0$
+
+expand(integrate(a^(d*z)*h^(c*z),z),0,0);
+(a^(d*z))^(c*log(h)/(log(a)*d)+1)/(log(a)*(c*log(h)/(log(a)*d)+1)*d)$
+
+(forget(notequal((c * log(h))/(d * log(a)),-1)),0);
+0$
 
 /* ----- a^(d*z)*h^(c*z+g) -------------------------------------------------- */
 
@@ -1668,15 +1672,15 @@ gamma_incomplete(1,
 /* Problem 309: OK 
  * This example does not simplify in a product of three power functions.
  */
-assume(notequal(log(a)*d*(log(c)*f+log(b)*e+log(a)*d),0));
-[notequal(log(a)*d*(log(c)*f+log(b)*e+log(a)*d),0)];
 
-expand(integrate(a^(d*z)*b^(e*z)*c^(f*z),z));
-(a^(d*z))^(log(c)*f/(log(a)*d)+log(b)*e/(log(a)*d)+1)
- /(log(c)*f+log(b)*e+log(a)*d);
+(assume(notequal(ratsimp((log(c)*f+log(b)*e)/(log(a)*d)),-1)),0);
+0$
 
-forget(notequal(log(a)*d*(log(c)*f+log(b)*e+log(a)*d),0));
-[notequal(log(a)*d*(log(c)*f+log(b)*e+log(a)*d),0)];
+integrate(a^(d*z)*b^(e*z)*c^(f*z),z);
+(a^(d*z))^(log(c)*f/(log(a)*d)+log(b)*e/(log(a)*d)+1)/(log(a)*d*(log(c)*f/(log(a)*d)+log(b)*e/(log(a)*d)+1))$
+
+(forget(notequal(log(c)*f/(log(a)*d)+log(b)*e/(log(a)*d),-1)),0);
+0$
 
 /* ----- %e^(c*z)*(%e^(a*z))^v ---------------------------------------------- */
 
@@ -1684,7 +1688,7 @@ forget(notequal(log(a)*d*(log(c)*f+log(b)*e+log(a)*d),0));
  * Change example to a real variable x. 
  */
 integrate(%e^(c*x)*(%e^(a*x))^v,x);
-(%e^(a*x))^v*%e^(c*x)/(a*v+c);
+%e^(a*v*x+c*x)/(a*v+c)$
 
 /* ----- %e^(c*z+d)*(%e^(a*z))^v -------------------------------------------- */
 
@@ -1692,7 +1696,7 @@ integrate(%e^(c*x)*(%e^(a*x))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x+d)*(%e^(a*x))^v,x);
-(%e^(a*x))^v*%e^(c*x+d)/(a*v+c);
+%e^(a*v*x+c*x+d)/(a*v+c)$
 
 /* ----- %e^(c*z)*(%e^(a*z+b))^v -------------------------------------------- */
 
@@ -1700,7 +1704,7 @@ integrate(%e^(c*x+d)*(%e^(a*x))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x)*(%e^(a*x+b))^v,x);
-(%e^(a*x+b))^v*%e^(c*x)/(a*v+c);
+%e^(v*(a*x+b)+c*x)/(a*v+c)$
 
 /* ----- %e^(c*z+d)*(%e^(a*z+b))^v ------------------------------------------ */
 
@@ -1708,7 +1712,7 @@ integrate(%e^(c*x)*(%e^(a*x+b))^v,x);
  * Change example to a real variable x.
  */
 integrate(%e^(c*x+d)*(%e^(a*x+b))^v,x);
-(%e^(a*x+b))^v*%e^(c*x+d)/(a*v+c);
+%e^(v*(a*x+b)+c*x+d)/(a*v+c)$
 
 /* ----- %e^(b*z^r)*(%e^(c*z))^v -------------------------------------------- */
 
@@ -2137,19 +2141,19 @@ diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
 
 /* Problem 383: OK */
 integrate((%e^(c*x))^u*(%e^(a*x))^v,x);
-(%e^(a*x))^v*(%e^(c*x))^u/(a*v+c*u);
+%e^(a*v*x+c*u*x)/(a*v+c*u)$
 
 /* ----- (%e^(c*z))^u*(%e^(a*z+b)^v ----------------------------------------- */
 
 /* Problem 384: OK */
 integrate((%e^(c*x))^u*(%e^(a*x+b))^v,x);
-(%e^(a*x+b))^v*(%e^(c*x))^u/(a*v+c*u);
+%e^(v*(a*x+b)+c*u*x)/(a*v+c*u)$
 
 /* ----- (%e^(c*z+d))^u*(%e^(a*z+b)^v --------------------------------------- */
 
 /* Problem 385: OK */
 integrate((%e^(c*x+d))^u*(%e^(a*x+b))^v,x);
-(%e^(a*x+b))^v*(%e^(c*x+d))^u/(a*v+c*u);
+%e^(u*(c*x+d)+v*(a*x+b))/(a*v+c*u)$
 
 /* ----- (%e^(b*z))^u*(%e^(c*z^r)^v ----------------------------------------- */
 

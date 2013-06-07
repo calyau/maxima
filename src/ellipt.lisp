@@ -2448,7 +2448,7 @@ first kind:
 			 (zerop1 const))
 		    `((mexpt) ((%jacobi_cn) ,u ,m) -1))
 		   (t
-		    (eqtest (list '(%jacobi_cn) u m) form)))))
+		    (eqtest (list '(%jacobi_nc) u m) form)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_nc) u m) form)))))
