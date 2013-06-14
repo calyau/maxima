@@ -546,7 +546,6 @@ Top reduction means that division algorithm stops after the first reduction.")
 
 (defstruct (term
 	    (:constructor make-term (monom coeff))
-	    (:constructor make-term-variable)
 	    ;;(:type list)
 	    )
   (monom (make-monom 0) :type monom)
