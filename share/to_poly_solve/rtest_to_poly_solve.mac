@@ -103,7 +103,7 @@ subst(a=2, sol);
 to_poly_solve(max(2 - x^2, x) = max(-x, x^3/9), x);
 %union([x=-1] , [x=3])$
 
-block([algexact : false], to_poly_solve(max(2 - x^2, x) = x^3/9, x));
+to_poly_solve(max(2 - x^2, x) = x^3/9, x, 'algexact = false);
 %union([x=-3] , [x=-1.55489417989418] , [x=3])$
 
 to_poly_solve(max(x,x^2)=1, x);
@@ -563,7 +563,7 @@ to_poly_solve(x - 2 * sqrt (x) = 10,x);
 to_poly_solve(sin(x)+cos(x)=0,x, 'simpfuncs = ['nicedummies,'expand]);
 %union([x=2*%pi*%z0-%pi/4],[x=2*%pi*%z0+(3*%pi)/4])$
 
-/* Fri Feb 1 05:31:56 CST 2008 9changed 0.05 to 5/100) */
+/* Fri Feb 1 05:31:56 CST 2008 changed 0.05 to 5/100) */
 to_poly_solve(x*exp(-x)-5/100 = 0,x); 
 %union([x = -lambert_w(-1/20)])$
 
@@ -576,7 +576,7 @@ to_poly_solve([log(y^2+x^2)+2*x^2/(y^2+x^2)=0,2*x*y/(y^2+x^2)],[x,y]);
 %union([x=0,y=-1],[x=0,y=1],[x=-%e^(-1),y=0],[x=%e^(-1),y=0])$
 
 /* Wed Oct 25 06:00:39 CDT 2006 */
-block([algexact : false], to_poly_solve([10*q/sqrt(q^2 + 3) - 5*q^3/(q^2+3)^(3/2) = 5.07],[q]));
+to_poly_solve([10*q/sqrt(q^2 + 3) - 5*q^3/(q^2+3)^(3/2) = 5.07],[q], 'algexact=false);
 %union([q = 1.423962227031281],
        [q = 10.01077844311377],
        [q = -2.201201253088263*%i])$
@@ -586,7 +586,7 @@ to_poly_solve([x2=x*cos(phi)-y*sin(phi), y2=x*sin(phi)+y*cos(phi)], [x,y], 'simp
 %union([x=sin(phi)*y2+cos(phi)*x2,y=cos(phi)*y2-sin(phi)*x2])$
 
 /* Thu May 25 09:22:09 CDT 2006 */
-block([algexact:true],to_poly_solve(1+x^(5/2),x, 'simpfuncs = ['expand]));
+to_poly_solve(1+x^(5/2),x, 'simpfuncs = ['expand],'algexact=true);
 %union([x = -sqrt(5-sqrt(5))*sqrt(5)*%i/2^(5/2)
                 -sqrt(5-sqrt(5))*%i/2^(5/2)+sqrt(5)/4-1/4],
              [x = sqrt(5-sqrt(5))*sqrt(5)*%i/2^(5/2)
@@ -601,8 +601,8 @@ nicedummies(to_poly_solve([a1+b2=r2,a1*b2=r3,a3*b1+a2*b2=r4,r4+a5+a3*b2=d5,a5*b1
                b1 = %c6,b2 = %c7,r2 = %c7+%c4,r3 = %c4*%c7,r4 = d5-%c5*%c7])$
 
 /* Sun Apr 2 08:31:17 CDT 2006 */
-block([algexact : true, eq : x^3-8*x^2-197*x-502], 
-   every(lambda([s], is(abs(subst(s,eq)) < 1.0e-12)), args(to_poly_solve(eq,x, simpfuncs = ['dfloat]))));
+block([eq : x^3-8*x^2-197*x-502], 
+   every(lambda([s], is(abs(subst(s,eq)) < 1.0e-12)), args(to_poly_solve(eq,x, simpfuncs = ['dfloat],algexact = true))));
 true$
 
 
@@ -611,7 +611,7 @@ to_poly_solve([x^2+y^2=2^2,(x-1)^2+(y-1)^2=2^2],[x,y], 'use_grobner = true, 'sim
 %union([x=1/2-sqrt(7)/2,y=sqrt(7)/2+1/2],[x=sqrt(7)/2+1/2,y=1/2-sqrt(7)/2])$
 
 /* Wed Mar 28 16:33:34 CDT 2007 */
-block([algexact : false], to_poly_solve([(2*x+1)^3=13.5*(x^5+1)],[x],'simpfuncs=['rationalize]));
+to_poly_solve([(2*x+1)^3=13.5*(x^5+1)],[x],'simpfuncs=['rationalize], 'algexact=false);
 %union([x=-2287278158804185/2251799813685248],[x=7473047756518961/9007199254740992],[x=1],[x=-(135947138237407*%i)/140737488355328-3665567315448253/9007199254740992],[x=(135947138237407*%i)/140737488355328-3665567315448253/9007199254740992])$
 
 nicedummies(to_poly_solve(sin(x)=sin(x),x));
@@ -657,7 +657,7 @@ to_poly_solve(x^8=1,x, simpfuncs = ['rectform]);
 %union([x=-1],[x=1],[x=-%i],[x=%i],[x=-%i/sqrt(2)-1/sqrt(2)],[x=1/sqrt(2)-%i/sqrt(2)],
 [x=%i/sqrt(2)-1/sqrt(2)],[x=%i/sqrt(2)+1/sqrt(2)])$
 
-block([algexact:true],to_poly_solve(sqrt(x)+x^(3/2)=1,x, simpfuncs = ['expand]));
+to_poly_solve(sqrt(x)+x^(3/2)=1,x, simpfuncs = ['expand]);
 %union([x = sqrt(31)/(3*2^(2/3)*(sqrt(31)+3^(3/2))^(1/3))
                 +sqrt(3)/(2^(2/3)*(sqrt(31)+3^(3/2))^(1/3))
                 +2^(2/3)/(3*(sqrt(31)+3^(3/2))^(2/3))-2/3])$
@@ -783,7 +783,7 @@ to_poly_solve([x=1,x=2],x);
 %union()$
 
 /* [ 1452341 ] solve(x^(5/2)+1,x) produces incorrect roots */
-block([algexact:true],to_poly_solve(1+x^(5/2),x, 'simpfuncs = ['expand]));
+to_poly_solve(1+x^(5/2),x, 'simpfuncs = ['expand]);
 %union([x = -sqrt(5-sqrt(5))*sqrt(5)*%i/2^(5/2)
                 -sqrt(5-sqrt(5))*%i/2^(5/2)+sqrt(5)/4-1/4],
              [x = sqrt(5-sqrt(5))*sqrt(5)*%i/2^(5/2)
@@ -799,9 +799,9 @@ nicedummies(to_poly_solve(rat(a+c,a,b,c,d),[a,b]));
 %union([a=-c,b=%c0])$
 
 /* [ 826915 ] Solve wrong with irreducible polydecomp */
-block([algexact : false, sol, eq], 
+block([sol, eq], 
    eq :  (x^5+x-3)^5+x^5+x-6, 
-   sol : to_poly_solve(eq,x, 'simpfuncs = ['dfloat]),
+   sol : to_poly_solve(eq,x, 'simpfuncs = ['dfloat],'algexact=false),
    every(lambda([s], is(cabs(subst(s, eq)) < 1.0e-6)), args(sol)));
 true$
 
