@@ -1,6 +1,6 @@
 /*  Author Barton Willis
     University of Nebraska at Kearney
-    Copyright (C) 2008, 2009, 2010 Barton Willis
+    Copyright (C) 2008, 2009, 2010, 2013 Barton Willis
 
     This program is free software: you can redistribute it or modify
     it under the terms of the GNU General Public License version two.
@@ -392,8 +392,8 @@ lambertify(e,vars) := block([ee, eee, expargs : set(), cexpargs, nexpargs,
 alias(%solve, to_poly_solve);
 
 simp_%solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
+                algexact : assoc('algexact,extraargs,true),
                 alias_solver : false, use_grobner, maxdepth, cntx : false, simpfuncs, ratprint : false],
- 
   simpfuncs : assoc('simpfuncs, extraargs, []),
   if not(member('rectform_log_if_constant, simpfuncs)) then
     simpfuncs : append(simpfuncs,['real_imagpart_to_conjugate,'rectform_log_if_constant]),
@@ -464,7 +464,7 @@ simp_%solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter
     conjugate_solver(e,v,vc,simpfuncs, maxdepth))
   
   else (
-    sol : errcatch(to_poly_solve_h(e,v, simpfuncs, maxdepth, use_grobner)),
+    sol : errcatch(to_poly_solve_h(e,v, simpfuncs, maxdepth, use_grobner,algexact)),
     if emptyp(sol) then simpfunmake('%solve, cons(e,(cons(v,extraargs)))) else first(sol)));
     
 simplifying('%solve, 'simp_%solve);
@@ -478,7 +478,7 @@ simplifying('%solve, 'simp_%solve);
    Users should call to_poly_solve, not to_poly_solve_h.
 */
 
-to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : set(), listconstvars : false,
+to_poly_solve_h(e,v, simpfuncs, maxdepth, grob,use_algexact) := block([eqs : set(), nonalg : set(), listconstvars : false,
   %gvars, evars, sol, vars, freevars, eqs_vars, non_free, true_sol, %ivar, esave, %sol_vars, %cnds, 
   xsol, nsol, inflag : true, cnds : set(), nonfree, eq, lambert_subs, var_exception, simpfuncs_lambda,
   nsol_vars],
@@ -533,7 +533,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
    nonfree : setdifference(nonfree, var_exception),
    nonfree : subset(nonfree, lambda([s], not featurep(s,'integer))),
    esave : union(set_of_variables(eqs), nonfree),
-   sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth-1, 'use_grobner = grob),
+   sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth-1, 'use_grobner = grob, 'algexact=use_algexact),
    if opequal_p(sol, '%solve) then error("Unable to solve"),
 
    /* The solve process introduces new variables. Let %sol_vars be the set 

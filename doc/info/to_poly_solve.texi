@@ -1037,15 +1037,10 @@ can either be a single symbol or a list of set of symbols.  When
 a member of @math{e} isn't explicitly an equation, for example @math{x^2 -1},
 the solver asummes that the expression vanishes.
 
-The basic strategy of @code{to_poly_solve} is use @code{to_poly} to
-convert the input into a polynomial form and call @code{algsys} on the
-polynomial system.  Thus user options that affect @code{algsys},
-especially @code{algexact}, also affect @code{to_poly_solve}.  The
-default for @code{algexact} is false, but for @code{to_poly_solve},
-generally @code{algexact} should be true.  The function
-@code{to_poly_solve} does not locally set @code{algexact} to true
-because this would make it impossible to find approximate solutions when
-the @code{algsys} is unable to determine an exact solution.
+The basic strategy of @code{to_poly_solve} is to convert the input into a polynomial form and to 
+call @code{algsys} on the polynomial system. Internally,  @code{to_poly_solve} defaults @code{algexact} 
+to true. To change the default for @code{algexact}, append 'algexact=false to the @code{to_poly_solve} 
+argument list.
 
 When @code{to_poly_solve} is able to determine the solution set, each
 member of the solution set is a list in a @code{%union} object:
