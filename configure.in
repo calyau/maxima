@@ -608,7 +608,7 @@ AC_ARG_ENABLE(chm,
    [chm=false])
 AM_CONDITIONAL(CHM, test x$chm = xtrue)
 dnl hhc is the HTML Help Compiler for CHM documentation
-hhc_default_name=hhc
+hhc_default_name=hhc$EXEEXT
 AC_ARG_WITH(hhc,
 	[  --with-hhc=<prog>            Use HTML Help Compiler executable <prog> (default hhc)],
 	[hhc=true
@@ -619,11 +619,11 @@ AC_ARG_WITH(hhc,
 	fi],
 	[HHC="${hhc_default_name}"])
 
-# check that hhc exists
+# Check that hhc exists, using AC_CHECK_PROG
 if test x$chm = xtrue; then
-  if ! test -x "${HHC}"; then
-    AC_MSG_ERROR(HTML Help Compiler executable "${HHC}" not found)
-  fi
+  AC_CHECK_PROG(hhc_found,$HHC,
+                true,
+                AC_MSG_ERROR([HTML Help Compiler executable "${HHC}" not found]))
 fi
 
 dnl Optionally build xmaxima.exe under windows
