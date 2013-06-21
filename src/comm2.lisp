@@ -240,21 +240,34 @@
                (t (logcon e))))
 	(t (recur-apply #'logcon e))))
 
+;; The logcontract algorithm for a sum.
+;;
+;; The function accumulates the arguments of things like log(a)+log(b) into a
+;; list called LOG. It calls out to lgctimes to deal with things like
+;; a*log(b). When all the arguments have been processed, it simplifies all the
+;; logarithmic arguments using sratsimp.
 (defun lgcplus (e)
-  (do ((x (cdr e) (cdr x)) (log) (notlogs) (y))
-      ((null x)
-       (cond ((null log) (subst0 (cons '(mplus) (nreverse notlogs)) e))
-             (t
-              (setq log (let (($ratfac t)) (sratsimp (muln log t))))
-              (addn (cons (lgcsimp log) notlogs) t))))
-    (cond ((atom (car x)) (setq notlogs (cons (car x) notlogs)))
-	  ((eq (caaar x) '%log) (setq log (cons (logcon (cadar x)) log)))
-	  ((eq (caaar x) 'mtimes)
-	   (setq y (lgctimes (car x)))
-	   (cond ((or (atom y) (not (eq (caar y) '%log)))
-		  (setq notlogs (cons y notlogs)))
-		 (t (setq log (cons (cadr y) log)))))
-	  (t (setq notlogs (cons (logcon (car x)) notlogs))))))
+  (let ((log) (notlogs))
+    (dolist (arg (cdr e))
+      (cond
+        ((atom arg) (push arg notlogs))
+        ((eq (caar arg) '%log)
+         (push (logcon (second arg)) log))
+        ((eq (caar arg) 'mtimes)
+         (let ((y (lgctimes arg)))
+           (if (or (atom y) (not (eq (caar y) '%log)))
+               (push y notlogs)
+               (push (cadr y) log))))
+        (t
+         (push (logcon arg) notlogs))))
+    (cond
+      ((null log)
+       (subst0 (cons '(mplus) (nreverse notlogs)) e))
+      (t
+       (let ((simplified-log (lgcsimp
+                              (let (($ratfac t))
+                                (sratsimp (muln log t))))))
+         (addn (cons simplified-log notlogs) t))))))
 
 (defun lgctimes (e)
   (setq e (subst0 (cons '(mtimes) (mapcar 'logcon (cdr e))) e))
