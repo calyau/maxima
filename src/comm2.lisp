@@ -251,7 +251,11 @@
     (dolist (arg (cdr e))
       (cond
         ((atom arg) (push arg notlogs))
-        ((eq (caar arg) '%log)
+        ;; Only gather up log(x), not log[x]. It's not particularly obvious
+        ;; whether log(x)+log[y] should become log(x*y) or log[x*y], so we just
+        ;; ignore the fact that log[x] is a logarithm.
+        ((and (eq (caar arg) '%log)
+              (not (member 'array (car arg))))
          (push (logcon (second arg)) log))
         ((eq (caar arg) 'mtimes)
          (let ((y (lgctimes arg)))

@@ -290,6 +290,10 @@ log(2/3*((x-1)^3)^(a/b)*(2*y-3)^(b/a)), domain:complex, logexpand:super;
 log(1/(1+%i)),logexpand:false;
 -log(1+%i);
 
+/* Bug 2597: logcontract(42+log[x]) was returning 42+log(x) */
+is(logcontract(42+log[x]) = 42+log[x]);
+true$
+
 /* ----- Complex characteristics -------------------------------------------- */
 
 realpart(log(x+%i*y));
