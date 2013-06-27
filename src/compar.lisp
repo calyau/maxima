@@ -1872,8 +1872,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (setf (get '$floor 'integer-valued) t)
 (setf (get '$ceiling 'integer-valued) t)
-(setf (get '%signum  'integer-valued) t)
-(setf (get '$signum 'integer-valued) t)
 (setf (get '$charfun 'integer-valued) t)
 
 (defun maxima-integerp (x)
