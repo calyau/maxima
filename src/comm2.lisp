@@ -225,8 +225,6 @@
 (declare-top (special $ratfac genvar varlist $keepfloat *e*))
 
 (defmvar $logconcoeffp nil)
-(defmvar superlogcon t)
-(defmvar $superlogcon t)
 
 (defmfun $logcontract (e)
   (lgccheck (logcon e))) ; E is assumed to be simplified.
@@ -234,7 +232,7 @@
 (defun logcon (e)
   (cond ((atom e) e)
 	((member (caar e) '(mplus mtimes) :test #'eq)
-	 (if (and $superlogcon (not (lgcsimplep e))) (setq e (lgcsort e)))
+	 (if (not (lgcsimplep e)) (setq e (lgcsort e)))
          (cond ((mplusp e) (lgcplus e))
                ((mtimesp e) (lgctimes e))
                (t (logcon e))))
