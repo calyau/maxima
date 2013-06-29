@@ -329,20 +329,22 @@
     (and (eq (caar e) 'mplus)
          (not (find-if #'lgc-nonsimple-arg-p (cdr e))))))
 
+;; Sort the argument so that coefficients come before logarithms and logarithms
+;; come before everything else.
 (defun lgcsort (e)
-  (let (genvar varlist ($keepfloat t) vl e1)
-    (newvar e)
-    (setq vl (do ((vl varlist (cdr vl)) (logs) (notlogs) (decints))
-		 ((null vl)
-		  (setq logs (sort logs #'great))
-		  (nreconc decints (nconc logs (nreverse notlogs))))
-	       (cond ((and (not (atom (car vl))) (eq (caaar vl) '%log))
-		      (setq logs (cons (car vl) logs)))
-		     ((logconcoeffp (car vl))
-		      (setq decints (cons (car vl) decints)))
-		     (t (setq notlogs (cons (car vl) notlogs))))))
-    (setq e1 (ratdisrep (ratrep e vl)))
-    (if (alike1 e e1) e e1)))
+  (let ((logs) (notlogs) (decints) (varlist))
+    ;; Split the variables in E into logs, notlogs and coefficients. The list of
+    ;; variables is calculated by NEWVAR (and stored in the special variable
+    ;; VARLIST, which is why we have to bind it above).
+    (dolist (var (newvar e))
+      (cond
+        ((and (not (atom var)) (eq (caar var) '%log)) (push var logs))
+        ((logconcoeffp var) (push var decints))
+        (t (push var notlogs))))
+    (let* ((vl (nreconc decints (nconc (sort logs #'great)
+                                       (nreverse notlogs))))
+           (e1 (ratdisrep (ratrep e vl))))
+      (if (alike1 e e1) e e1))))
 
 (defun lgccheck (e)
   (let (num denom)
