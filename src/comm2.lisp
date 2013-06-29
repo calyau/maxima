@@ -309,18 +309,25 @@
         (t
          (list '(%log simp) e))))
 
+;; Tests that its argument is a sum of terms that are "simple".
+;;
+;; A "simple" term is either completely free of logarithms, is a logarithm
+;; itself, or is a number times a logarithm.
+;;
+;; This function assumes that its argument is not an atom.
 (defun lgcsimplep (e)
-  (and (eq (caar e) 'mplus)
-       (not (do ((l (cdr e) (cdr l))) ((null l))
-	      (cond ((not (or (atom (car l))
-			      (not (isinop (car l) '%log))
-			      (eq (caaar l) '%log)
-			      (and (eq (caaar l) 'mtimes)
-				   (null (cdddar l))
-				   (mnump (cadar l))
-				   (not (atom (caddar l)))
-				   (eq (caar (caddar l)) '%log))))
-		     (return t)))))))
+  (flet ((lgc-nonsimple-arg-p (arg)
+           (not (or (atom arg)
+                    (eq (caar arg) '%log)
+                    (not (isinop arg '%log))
+                    ;; Product of a number with a logarithm e.g. 3*log(x)
+                    (and (eq (caar arg) 'mtimes)
+                         (null (cdddr arg))
+                         (mnump (cadr arg))
+                         (not (atom (caddr arg)))
+                         (eq (caar (caddr arg)) '%log))))))
+    (and (eq (caar e) 'mplus)
+         (not (find-if #'lgc-nonsimple-arg-p (cdr e))))))
 
 (defun lgcsort (e)
   (let (genvar varlist ($keepfloat t) vl e1)
