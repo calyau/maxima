@@ -273,20 +273,31 @@
                                 (sratsimp (muln log t))))))
          (addn (cons simplified-log notlogs) t))))))
 
+;; The logcontract algorithm for a product
+;;
+;; The main transformation this does is of the form 3*log(x) => log(x^3). To
+;; make this work, we find the first %log term and insert any coefficients we
+;; find into that. Coefficients are identified by LOGCONCOEFFP, which checks the
+;; $LOGCONCOEFFP user variable.
 (defun lgctimes (e)
+  ;; Apply logcontract to the arguments. It's possible that the subsequent
+  ;; simplification means that the result isn't a product any more. In that
+  ;; case, just return it.
   (setq e (subst0 (cons '(mtimes) (mapcar 'logcon (cdr e))) e))
-  (cond ((not (mtimesp e)) e)
-	(t (do ((x (cdr e) (cdr x)) (log) (notlogs) (decints))
-	       ((null x)
-		(cond ((or (null log) (null decints)) e)
-		      (t (muln (cons (lgcsimp (power log (muln decints t)))
-				     notlogs)
-			       t))))
-	     (cond ((and (null log) (not (atom (car x)))
-			 (eq (caaar x) '%log) (not (equal (cadar x) -1)))
-		    (setq log (cadar x)))
-		   ((logconcoeffp (car x)) (setq decints (cons (car x) decints)))
-		   (t (setq notlogs (cons (car x) notlogs))))))))
+  (if (not (mtimesp e))
+      e
+      (let ((log) (notlogs) (decints))
+        (dolist (arg (cdr e))
+          (cond ((and (null log) (not (atom arg))
+                      (eq (caar arg) '%log) (not (equal (cadr arg) -1)))
+                 (setq log (cadr arg)))
+                ((logconcoeffp arg) (push arg decints))
+                (t (setq notlogs (push arg notlogs)))))
+        (cond
+          ((or (null log) (null decints)) e)
+          (t (muln (cons (lgcsimp (power log (muln decints t)))
+                         notlogs)
+                   t))))))
 
 (defun lgcsimp (e)
   (cond ((atom e)
