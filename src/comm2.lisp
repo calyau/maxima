@@ -222,7 +222,7 @@
   (do ((llist llist (cdr llist)) (l nil (cons 0 l)))
       ((null llist) l)))
 
-(declare-top (special $ratfac genvar varlist $keepfloat *e*))
+(declare-top (special $ratfac genvar varlist $keepfloat))
 
 (defmvar $logconcoeffp nil)
 
@@ -355,7 +355,9 @@
 	  (t (recur-apply #'lgccheck e)))))
 
 (defun logconcoeffp (e)
-  (if $logconcoeffp (let ((*e* e)) (is '(($logconcoeffp) *e*))) (maxima-integerp e)))
+  (if $logconcoeffp
+      (is `(($logconcoeffp) ,e))
+      (maxima-integerp e)))
 
 ;;;; RTCON
 
