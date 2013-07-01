@@ -227,7 +227,7 @@
 (defmvar $logconcoeffp nil)
 
 (defmfun $logcontract (e)
-  (lgccheck (logcon e))) ; E is assumed to be simplified.
+  (lgcreciprocal (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
   (cond ((atom e) e)
@@ -344,15 +344,17 @@
            (e1 (ratdisrep (ratrep e vl))))
       (if (alike1 e e1) e e1))))
 
-(defun lgccheck (e)
+;; lgcreciprocal performs the transformation log(1/x) => -log(x)
+(defun lgcreciprocal (e)
   (let (num denom)
-    (cond ((atom e) e)
-	  ((and (eq (caar e) '%log)
-		(setq num (member ($num (cadr e)) '(1 -1) :test #'equal))
-		(not (equal (setq denom ($denom (cadr e))) 1)))
-	   (list '(mtimes simp) -1
-		 (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
-	  (t (recur-apply #'lgccheck e)))))
+    (cond
+      ((atom e) e)
+      ((and (eq (caar e) '%log)
+            (setq num (member ($num (cadr e)) '(1 -1) :test #'equal))
+            (not (equal (setq denom ($denom (cadr e))) 1)))
+       (list '(mtimes simp) -1
+             (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
+      (t (recur-apply #'lgcreciprocal e)))))
 
 (defun logconcoeffp (e)
   (if $logconcoeffp
