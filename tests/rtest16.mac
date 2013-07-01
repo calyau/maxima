@@ -1853,4 +1853,6 @@ map(lambda([x], featurep(x, noninteger)),[0,1,2013]);
 block([domain : 'real], integrate(x^(8*%i-1),x));
 -%i*x^(8*%i)/8$
 
-
+/* #2602: some-bfloatp and some-floatp recursed wrongly on rat expressions */
+?some\-bfloatp(rat(1/2));
+false$
