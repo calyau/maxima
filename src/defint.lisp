@@ -210,10 +210,11 @@ in the interval of integration.")
 			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
-	     (cond ((not (equal (sratsimp ($imagpart ll)) 0))
-		    (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
-		   ((not (equal (sratsimp ($imagpart ul)) 0))
-		    (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul)))
+             (unless (lenient-extended-realp ll)
+               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
+             (unless (lenient-extended-realp ul)
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ll))
+
 	     ;; Distribute $defint over equations, lists, and matrices.
 	     (cond ((mbagp exp)
 	            (return-from $defint
