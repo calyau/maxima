@@ -174,21 +174,76 @@
 	 (sp1tlin1 (rplacd l (cddr l))))
 	((sp1tlin1 (cdr l)))))
 
+;; Rewrite a product of sines and cosines as a sum
+;;
+;; L is a list of sines and cosines. For example, consider the list
+;;
+;;  sin(x), sin(2*x), sin(3*x)
+;;
+;; This represents the product sin(x)*sin(2*x)*sin(3*x).
+;;
+;; ANS starts as sin(x). Then for each term in the rest of the list, we multiply
+;; the answer that we have found so far by that term. The result will be a sum
+;; of sines. In this example, sin(x)*sin(2*x) gives us
+;;
+;;  1/2 * (cos(x) - cos(3*x))
+;;
+;; In fact we don't calculate the 1/2 coefficient in sp1sintcos: you always get
+;; a factor of 2^(k-1), where k is the length of the list, so this is calculated
+;; at the bottom of sp1tplus. Anyway, next we calculate cos(x)*sin(3*x) and
+;; -cos(3*x)*sin(3*x) and sum the answers. Note that -cos(3*x) will crop up
+;; represented as ((mtimes) -1 ((%cos) ((mtimes) 3 $x))). See note in the let
+;; form for info on what form ANS must take.
 (defun sp1tplus (l *trig)
-  (cond ((or (null l) (null (cdr l))) l)
-	((do ((c (list '(rat) 1 (expt 2 (1- (length l)))))
-	      (ans (list (car l)))
-	      (l (cdr l) (cdr l)))
-	     ((null l) (list c (m+l ans)))
-	   (setq ans
-		 (m+l
-		  (mapcar #'(lambda (q)
-			      (cond ((mtimesp q)
-				     (m* (cadr q) (sp1sintcos (caddr q) (car l))))
-				    ((sp1sintcos q (car l)))))
-			  ans)))
-	   (setq ans (if (mplusp ans) (cdr ans) (ncons ans)))))))
+  (if (or (null l) (null (cdr l)))
+      l
+      ;; ANS is a list containing the terms in a sum for the expanded
+      ;; expression. Each element in this list is either of the form sc(x),
+      ;; where sc is sin or cos, or of the form ((mtimes) coeff ((sc) $x)),
+      ;; where coeff is some coefficient.
+      ;;
+      ;; multiply-sc-terms rewrites a*sc as a sum of sines and cosines. The
+      ;; result is a list containing the terms in a sum which is
+      ;; mathematically equal to a*sc. Assuming that term is of one of the
+      ;; forms described for ANS below and that SC is of the form sc(x), the
+      ;; elements of the resulting list will all be of suitable form for
+      ;; inclusion into ANS.
+      (flet ((multiply-sc-terms (term sc)
+               (let* ((coefficient (when (mtimesp term) (cadr term)))
+                      (term-sc (if (mtimesp term) (caddr term) term))
+                      (expanded (sp1sintcos term-sc sc)))
+                 ;; expanded will now either be sin(foo) or cos(foo) OR it
+                 ;; will be a sum of such terms.
+                 (cond
+                   ((not coefficient) (list expanded))
+                   ((or (atom expanded)
+                        (member (caar expanded) '(%sin %cos %sinh %cosh)
+                                :test 'eq))
+                    (list (m* coefficient expanded)))
+                   ((mplusp expanded)
+                    (mapcar (lambda (summand) (m* coefficient summand))
+                            (cdr expanded)))
+                   (t
+                    (error "Unrecognised output from sp1sintcos.")))))
+             ;; Treat EXPR as a sum and return a list of its terms
+             (terms-of-sum (expr)
+               (if (mplusp expr) (cdr expr) (ncons expr))))
 
+        (let ((ans (list (first l))))
+          (dolist (sc (rest l))
+            (setq ans (terms-of-sum
+                       (m+l (mapcan (lambda (q)
+                                      (multiply-sc-terms q sc)) ans)))))
+          (list (list '(rat) 1 (expt 2 (1- (length l))))
+                (m+l ans))))))
+
+;; The core of trigreduce. Performs transformations like sin(x)*cos(x) =>
+;; sin(2*x)
+;;
+;; This function only does something non-trivial if both a and b have one of
+;; sin, cos, sinh and cosh as top-level operators. (Note the first term in the
+;; cond: we assume that if a,b are non-atomic and not both of them are
+;; hyperbolic/trigonometric then we can just multiply the two terms)
 (defun sp1sintcos (a b)
   (let* ((x nil)
          (y nil))
