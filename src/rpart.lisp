@@ -329,16 +329,35 @@
   (destructuring-bind (real . imag) sp
     (let* ((abs2 (spabs sp)) (abs (power abs2 (1//2)))
            (n (abs (cadr power)))
-           (pos? (> (cadr power) -1)))
+           (pos? (> (cadr power) -1))
+           (imag-sign ($sign imag)))
       (cond
-        ((member ($sign imag) '($neg $pos))
+        ((member imag-sign '($neg $pos))
+         ;; Here, we use the half-angle formulas for cos and sin. Assuming we
+         ;; are always taking the "principal square root" (that with argument
+         ;; less than equal to the argument of base), these come out as
+         ;;
+         ;;   cos(arg/2) = +- sqrt((1+real/abs)/2)
+         ;;   sin(arg/2) = +- sqrt((1-real/abs)/2)
+         ;;
+         ;; We know that real+%i*imag = abs*exp(%i*arg). Taking square roots,
+         ;; you get that
+         ;;
+         ;;   sqrt(real+%i*imag) = sqrt(abs)*exp(%i*arg/2).
+         ;;                      = sqrt(abs)*cos(arg/2) +
+         ;;                           %i * sqrt(abs)*sin(arg/2)
+         ;;                      = (sqrt(abs+real) + %i*sqrt(abs-real))/sqrt(2)
+         ;;
+         ;; but possibly with signs on the square roots. This function always
+         ;; chooses the square root with the non-negative real part. As such, we
+         ;; have to switch the sign of the sine term when we are raising to a
+         ;; positive power and imag < 0 or if raising to a negative power and
+         ;; imag > 0. To see that the first argument of the PORM call below is
+         ;; correct, write out the 2x2 truth table...
          (divcarcdr
           (expanintexpt
            (cons (power (add abs real) (1//2))
-                 (porm (let ((a pos?)
-                             (b (eq (asksign imag) '$negative)))
-                         (cond (a (not b))
-                               (b t)))
+                 (porm (eq (eq imag-sign '$pos) pos?)
                        (power (sub abs real) (1//2))))
            n)
           (if pos?
