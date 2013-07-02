@@ -1860,3 +1860,7 @@ false$
 /* #2594: Error in trigreduce for complicated expressions */
 subst(0, x, trigreduce(product(cos(k*x), k, 1, 8)));
 1$
+
+/* #2591: Risch gives lisp error */
+(risch(asinh((z^2-1)/z)/z,z), 0);
+0$
