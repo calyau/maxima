@@ -198,7 +198,7 @@ When the data @var{x} are real,
 real coefficients @code{a} and @code{b} can be computed such that
 
 @example
-x[j] = sum(a[k]*cos(2*%pi*j*k/n)+b[k]*sin(2*%pi*j*k/n), k, 0, n/2)
+x[j] = sum(a[k]*cos(-2*%pi*j*k/n)+b[k]*sin(-2*%pi*j*k/n), k, 0, n/2)
 @end example
 
 with
@@ -301,7 +301,7 @@ Computation of sine and cosine coefficients.
 @c b[n/2] : 0 $
 @c listarray (a);
 @c listarray (b);
-@c f(j) := sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2) $
+@c f(j) := sum (a[k] * cos (- 2*%pi*j*k / n) + b[k] * sin (- 2*%pi*j*k / n), k, 0, n/2) $
 @c makelist (float (f (j)), j, 0, n - 1);
 @c ===end===
 @example
@@ -326,7 +326,7 @@ Computation of sine and cosine coefficients.
 (%o15)          [4.5, - 1.0, - 1.0, - 1.0, - 0.5]
 (%i16) listarray (b);
 (%o16)           [0, - 2.414, - 1.0, - .4142, 0]
-(%i17) f(j) := sum (a[k]*cos(2*%pi*j*k/n) + b[k]*sin(2*%pi*j*k/n), 
+(%i17) f(j) := sum (a[k]*cos(-2*%pi*j*k/n) + b[k]*sin(-2*%pi*j*k/n), 
                     k, 0, n/2) $
 (%i18) makelist (float (f (j)), j, 0, n - 1);
 (%o18)      [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
