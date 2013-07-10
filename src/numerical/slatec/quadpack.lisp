@@ -337,17 +337,56 @@
 (defun $quad_control (parameter &rest new-value)
   (quad-control parameter (if new-value (car new-value))))
 
+
+;; Defines a function named NAME that checks that the number of
+;; arguments is correct.  If the number of actual arguments is
+;; incorrect, a maxima error is signaled.
+;;
+;; The required arguments is given by REQUIRED-ARG-LIST.  Allowed
+;; (maxima) keyword arguments is given by KEYWORD-ARG-LIST.
+;;
+;; The body of the function can refer to KEYLIST which is the list of
+;; maxima keyword arguments converted to lisp keyword arguments.
+
+(defmacro defun-checked (name ((&rest required-arg-list)
+			       (&rest keyword-arg-list))
+			 &body body)
+  (let ((number-of-required-args (length required-arg-list))
+	(number-of-keyword-args (length keyword-arg-list))
+	(arg-list (gensym "ARG-LIST-"))
+	(helper-fun (gensym "REAL-FUN-"))
+	(options (gensym "OPTIONS-ARG-")))
+    `(defun ,name (&rest ,arg-list)
+       ;; Check that the required number of arguments is given and
+       ;; that we don't supply too many arguments.
+       ;;
+       ;; NOTE: The check when keyword args are given is a little too
+       ;; tight.  It's valid to have duplicate keyword args, but we
+       ;; disallow that if the number of arguments exceed the limit.
+       (when (or (> (length ,arg-list) ,(+ number-of-required-args number-of-keyword-args))
+		 (< (length ,arg-list) ,number-of-required-args))
+	 (merror (intl:gettext "~M arguments supplied to ~M: found ~M")
+		 (if (< (length ,arg-list) ,number-of-required-args)
+		     (intl:gettext "Too few")
+		     (if (> (length ,arg-list) ,(+ number-of-required-args
+						   number-of-keyword-args))
+			 (intl:gettext "Too many")
+			 (intl:gettext "Incorrect number of")))
+		 `((,',name) ,@',required-arg-list ((mlist simp) ,@',keyword-arg-list))
+		 (cons '(mlist) ,arg-list)))
+       (flet ((,helper-fun (,@required-arg-list &rest ,options)
+	      (let ((keylist (lispify-maxima-keyword-options ,options
+							     ',keyword-arg-list)))
+	      ,@body)))
+	 (apply #',helper-fun ,arg-list)))))
+
 (macrolet
     ((frob (mname iname args valid-keys)
-       (let* ((keylist (gensym "KEY-LIST-"))
-	      (options (gensym "OPTIONS-")))
-	 `(defun ,mname (,@args &rest ,options)
-	    (let
-		((,keylist (lispify-maxima-keyword-options ,options ',valid-keys))
-		 ;; BIND EVIL SPECIAL VARIABLE *PLOT-REALPART* HERE ...
-		 (*plot-realpart* nil))
-	      (declare (special *plot-realpart*))
-	      (apply ',iname ,@args ,keylist))))))
+       `(defun-checked ,mname ((,@args) (,@valid-keys))
+	  ;; BIND EVIL SPECIAL VARIABLE *PLOT-REALPART* HERE ...
+	  (let ((*plot-realpart* nil))
+	    (declare (special *plot-realpart*))
+	    (apply ',iname ,@args keylist)))))
   (frob $quad_qag quad-qag (fun var a b key) ($epsrel $limit $epsabs))
   (frob $quad_qags quad-qags (fun var a b) ($epsrel $limit $epsabs))
   (frob $quad_qagi quad-qagi (fun var a b) ($epsrel $limit $epsabs))
@@ -356,7 +395,7 @@
   (frob $quad_qawo quad-qawo (fun var a b omega trig) ($epsrel $limit $epsabs $maxp1))
   (frob $quad_qaws quad-qaws (fun var a b alfa beta wfun) ($epsrel $limit $epsabs))
   (frob $quad_qagp quad-qagp (fun var a b points) ($epsrel $limit $epsabs)))
-  
+
 ;; Tests
 ;;
 ;; These tests were taken from the QUADPACK book.
