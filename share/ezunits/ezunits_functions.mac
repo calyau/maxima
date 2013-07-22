@@ -483,7 +483,9 @@ block
  */
 
 derived_units () :=
-    listify (map (lhs, conversions_to_base_units));
+   (if conversions_to_base_units = 'conversions_to_base_units
+        then compute_conversions_to_base_units (),
+    listify (map (lhs, conversions_to_base_units)));
 
 known_units () :=
     sort (append (fundamental_units (), derived_units ()));
