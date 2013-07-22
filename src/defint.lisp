@@ -210,10 +210,11 @@ in the interval of integration.")
 			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
-	     (cond ((not (equal (sratsimp ($imagpart ll)) 0))
-		    (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
-		   ((not (equal (sratsimp ($imagpart ul)) 0))
-		    (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul)))
+             (unless (lenient-extended-realp ll)
+               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
+             (unless (lenient-extended-realp ul)
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ll))
+
 	     ;; Distribute $defint over equations, lists, and matrices.
 	     (cond ((mbagp exp)
 	            (return-from $defint
@@ -2879,6 +2880,7 @@ in the interval of integration.")
 ;; use the substitution s+1=exp(k*x) to get
 ;; integrate(f(s+1)/(s+1),s,0,inf).
 (defun dintexp (exp arg &aux ans)
+  (declare (ignore arg))
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp var)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))

@@ -171,7 +171,7 @@
 
 (defun hypertrigint1 (exp var hyperfunc)
   (let ((result (if hyperfunc
-                    (integrator (resimplify exp) var)
+                    (sinint (resimplify exp) var)
                     (rischint (resimplify exp) var))))
     ;; The result can contain solveable integrals. Look for this case.
     (if (isinop result '%integrate)

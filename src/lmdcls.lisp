@@ -87,7 +87,7 @@
 	  $solveradcan $solvetrigwarn $sparse
 	  $sqrtdispflag $stardisp $sublis_apply_lambda
 	  $subnumsimp $sumexpand $sumsplitfact
-	  $superlogcon $suspend $taylor_logexpand
+	  $suspend $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $to_call_lisp_compiler $trace $trace_break_arg $trace_max_indent
 	  $trace_safety $transcompile $translate $transrun

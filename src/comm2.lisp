@@ -222,19 +222,17 @@
   (do ((llist llist (cdr llist)) (l nil (cons 0 l)))
       ((null llist) l)))
 
-(declare-top (special $ratfac genvar varlist $keepfloat *e*))
+(declare-top (special $ratfac genvar varlist $keepfloat))
 
 (defmvar $logconcoeffp nil)
-(defmvar superlogcon t)
-(defmvar $superlogcon t)
 
 (defmfun $logcontract (e)
-  (lgccheck (logcon e))) ; E is assumed to be simplified.
+  (lgcreciprocal (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
   (cond ((atom e) e)
 	((member (caar e) '(mplus mtimes) :test #'eq)
-	 (if (and $superlogcon (not (lgcsimplep e))) (setq e (lgcsort e)))
+	 (if (not (lgcsimplep e)) (setq e (lgcsort e)))
          (cond ((mplusp e) (lgcplus e))
                ((mtimesp e) (lgctimes e))
                (t (logcon e))))
@@ -273,20 +271,31 @@
                                 (sratsimp (muln log t))))))
          (addn (cons simplified-log notlogs) t))))))
 
+;; The logcontract algorithm for a product
+;;
+;; The main transformation this does is of the form 3*log(x) => log(x^3). To
+;; make this work, we find the first %log term and insert any coefficients we
+;; find into that. Coefficients are identified by LOGCONCOEFFP, which checks the
+;; $LOGCONCOEFFP user variable.
 (defun lgctimes (e)
+  ;; Apply logcontract to the arguments. It's possible that the subsequent
+  ;; simplification means that the result isn't a product any more. In that
+  ;; case, just return it.
   (setq e (subst0 (cons '(mtimes) (mapcar 'logcon (cdr e))) e))
-  (cond ((not (mtimesp e)) e)
-	(t (do ((x (cdr e) (cdr x)) (log) (notlogs) (decints))
-	       ((null x)
-		(cond ((or (null log) (null decints)) e)
-		      (t (muln (cons (lgcsimp (power log (muln decints t)))
-				     notlogs)
-			       t))))
-	     (cond ((and (null log) (not (atom (car x)))
-			 (eq (caaar x) '%log) (not (equal (cadar x) -1)))
-		    (setq log (cadar x)))
-		   ((logconcoeffp (car x)) (setq decints (cons (car x) decints)))
-		   (t (setq notlogs (cons (car x) notlogs))))))))
+  (if (not (mtimesp e))
+      e
+      (let ((log) (notlogs) (decints))
+        (dolist (arg (cdr e))
+          (cond ((and (null log) (not (atom arg))
+                      (eq (caar arg) '%log) (not (equal (cadr arg) -1)))
+                 (setq log (cadr arg)))
+                ((logconcoeffp arg) (push arg decints))
+                (t (setq notlogs (push arg notlogs)))))
+        (cond
+          ((or (null log) (null decints)) e)
+          (t (muln (cons (lgcsimp (power log (muln decints t)))
+                         notlogs)
+                   t))))))
 
 (defun lgcsimp (e)
   (cond ((atom e)
@@ -298,46 +307,59 @@
         (t
          (list '(%log simp) e))))
 
+;; Tests that its argument is a sum of terms that are "simple".
+;;
+;; A "simple" term is either completely free of logarithms, is a logarithm
+;; itself, or is a number times a logarithm.
+;;
+;; This function assumes that its argument is not an atom.
 (defun lgcsimplep (e)
-  (and (eq (caar e) 'mplus)
-       (not (do ((l (cdr e) (cdr l))) ((null l))
-	      (cond ((not (or (atom (car l))
-			      (not (isinop (car l) '%log))
-			      (eq (caaar l) '%log)
-			      (and (eq (caaar l) 'mtimes)
-				   (null (cdddar l))
-				   (mnump (cadar l))
-				   (not (atom (caddar l)))
-				   (eq (caar (caddar l)) '%log))))
-		     (return t)))))))
+  (flet ((lgc-nonsimple-arg-p (arg)
+           (not (or (atom arg)
+                    (eq (caar arg) '%log)
+                    (not (isinop arg '%log))
+                    ;; Product of a number with a logarithm e.g. 3*log(x)
+                    (and (eq (caar arg) 'mtimes)
+                         (null (cdddr arg))
+                         (mnump (cadr arg))
+                         (not (atom (caddr arg)))
+                         (eq (caar (caddr arg)) '%log))))))
+    (and (eq (caar e) 'mplus)
+         (not (find-if #'lgc-nonsimple-arg-p (cdr e))))))
 
+;; Sort the argument so that coefficients come before logarithms and logarithms
+;; come before everything else.
 (defun lgcsort (e)
-  (let (genvar varlist ($keepfloat t) vl e1)
-    (newvar e)
-    (setq vl (do ((vl varlist (cdr vl)) (logs) (notlogs) (decints))
-		 ((null vl)
-		  (setq logs (sort logs #'great))
-		  (nreconc decints (nconc logs (nreverse notlogs))))
-	       (cond ((and (not (atom (car vl))) (eq (caaar vl) '%log))
-		      (setq logs (cons (car vl) logs)))
-		     ((logconcoeffp (car vl))
-		      (setq decints (cons (car vl) decints)))
-		     (t (setq notlogs (cons (car vl) notlogs))))))
-    (setq e1 (ratdisrep (ratrep e vl)))
-    (if (alike1 e e1) e e1)))
+  (let ((logs) (notlogs) (decints) (varlist))
+    ;; Split the variables in E into logs, notlogs and coefficients. The list of
+    ;; variables is calculated by NEWVAR (and stored in the special variable
+    ;; VARLIST, which is why we have to bind it above).
+    (dolist (var (newvar e))
+      (cond
+        ((and (not (atom var)) (eq (caar var) '%log)) (push var logs))
+        ((logconcoeffp var) (push var decints))
+        (t (push var notlogs))))
+    (let* ((vl (nreconc decints (nconc (sort logs #'great)
+                                       (nreverse notlogs))))
+           (e1 (ratdisrep (ratrep e vl))))
+      (if (alike1 e e1) e e1))))
 
-(defun lgccheck (e)
+;; lgcreciprocal performs the transformation log(1/x) => -log(x)
+(defun lgcreciprocal (e)
   (let (num denom)
-    (cond ((atom e) e)
-	  ((and (eq (caar e) '%log)
-		(setq num (member ($num (cadr e)) '(1 -1) :test #'equal))
-		(not (equal (setq denom ($denom (cadr e))) 1)))
-	   (list '(mtimes simp) -1
-		 (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
-	  (t (recur-apply #'lgccheck e)))))
+    (cond
+      ((atom e) e)
+      ((and (eq (caar e) '%log)
+            (setq num (member ($num (cadr e)) '(1 -1) :test #'equal))
+            (not (equal (setq denom ($denom (cadr e))) 1)))
+       (list '(mtimes simp) -1
+             (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
+      (t (recur-apply #'lgcreciprocal e)))))
 
 (defun logconcoeffp (e)
-  (if $logconcoeffp (let ((*e* e)) (is '(($logconcoeffp) *e*))) (maxima-integerp e)))
+  (if $logconcoeffp
+      (is `(($logconcoeffp) ,e))
+      (maxima-integerp e)))
 
 ;;;; RTCON
 

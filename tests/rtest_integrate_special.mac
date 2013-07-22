@@ -148,7 +148,7 @@ integrate(expintegral_shi(z),z);
 z*expintegral_shi(z)-cosh(z);
 
 integrate(z*expintegral_shi(z),z);
-z^2*expintegral_shi(z)/2 - ((z-1)*%e^z+(z+1)*%e^(-z))/4;
+z^2*expintegral_shi(z)/2 - ((z-1)*%e^z-(-z-1)*%e^(-z))/4;
 
 /* Integrals for Exponential Integral Chi(z) */
 
