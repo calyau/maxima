@@ -390,7 +390,7 @@
     (parse-tyi)))
 
 (defun scan-number-after-dot (data)
-  (scan-digits data '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s) #'scan-number-exponent))
+  (scan-digits data '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s #\L #\l #+cmu #\W #+cmu #\w) #'scan-number-exponent))
 
 (defun scan-number-exponent (data)
   (push (ncons (if (or (char= (parse-tyipeek) #\+)
@@ -550,7 +550,7 @@
     (cond ((member c '(#\.))
 	   ;; We found a dot
 	   (scan-number-after-dot data))
-	  ((member c '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s))
+	  ((member c '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s #\L #\l #+cmu #\W #+cmu #\w))
 	   ;; Dot missing but found exponent marker.  Fake it.
 	   (setf data (push (ncons #\.) (rest data)))
 	   (push (ncons #\0) data)
@@ -558,7 +558,7 @@
 	   (scan-number-exponent data)))))
 
 (defun scan-number-before-dot (data)
-  (scan-digits data '(#\. #\E #\e #\F #\f #\B #\b #\D #\d #\S #\s)
+  (scan-digits data '(#\. #\E #\e #\F #\f #\B #\b #\D #\d #\S #\s #\L #\l #+cmu #\W #+cmu #\w)
 	       #'scan-number-rest))
 
 
