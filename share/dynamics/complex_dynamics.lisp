@@ -1,6 +1,6 @@
 ;; complex_dynamics.lisp - functions julia, mandelbrot and rk
 ;;   
-;; Copyright (C) 2006 Jaime E. Villate <villate@fe.up.pt>
+;; Copyright (C) 2006-2013 Jaime E. Villate <villate@fe.up.pt>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 ;; MA 02110-1301, USA.
 ;;
-;; $Id: complex_dynamics.lisp,v 1.1 2007-04-01 22:46:42 villate Exp $
 
 (in-package :maxima)
 
@@ -244,9 +243,9 @@
   (setq vars (concatenate 'list '((mlist)) (list (cadr domain)) (cdr vars)))
   (setq r (concatenate 'list `(,(car it)) (mapcar #'coerce-float (cdr initial))))
   (setq fun (mapcar #'(lambda (x) (coerce-float-fun x vars)) (cdr exprs)))
-  (setq d (floor (/ (- (cadr it) (car it)) (caddr it))))
+  (setq d (/ (- (cadr it) (car it)) (caddr it)))
   (setq traj (list (cons '(mlist) r)))
-  (dotimes (m d)
+  (do ((m 1 (1+ m))) ((> m d))
     (ignore-errors
       (setq k1 (mapcar #'(lambda (x) (apply x r)) fun))
       (setq r1 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (/ (caddr it) 2) x)) k1)))
@@ -265,7 +264,30 @@
                    (mapcar #'(lambda (x) (* 1/6 x)) k4)))
       (setq r 
         (concatenate 'list
-           `(,(+ (car it) (* (1+ m) (caddr it))))
+           `(,(+ (car it) (* m (caddr it))))
             (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (caddr it) x)) u))))
       (push (cons '(mlist) r) traj)))
+  (when (< (car r) (cadr it))
+    (let ((s (- (cadr it) (car r))))
+      (ignore-errors
+        (setq k1 (mapcar #'(lambda (x) (apply x r)) fun))
+        (setq r1 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (/ s 2) x)) k1)))
+        (push (+ (car r) (/ s 2)) r1)
+        (setq k2 (mapcar #'(lambda (x) (apply x r1)) fun))
+        (setq r2 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (/ s 2) x)) k2)))
+        (push (+ (car r) (/ s 2)) r2)
+        (setq k3 (mapcar #'(lambda (x) (apply x r2)) fun))
+        (setq r3 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* s x)) k3)))
+        (push (+ (car r) s) r3)
+        (setq k4 (mapcar #'(lambda (x) (apply x r3)) fun))
+        (setq u (map 'list #'+
+                     (mapcar #'(lambda (x) (* 1/6 x)) k1)
+                     (mapcar #'(lambda (x) (* 1/3 x)) k2)
+                     (mapcar #'(lambda (x) (* 1/3 x)) k3)
+                     (mapcar #'(lambda (x) (* 1/6 x)) k4)))
+        (setq r 
+              (concatenate 'list
+                           `(,(cadr it))
+                           (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* s x)) u))))
+      (push (cons '(mlist) r) traj))))
   (cons '(mlist) (nreverse traj)))
