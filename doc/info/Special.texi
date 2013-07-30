@@ -763,7 +763,7 @@ is expanded in terms of
 @c -----------------------------------------------------------------------------
 @anchor{gammalim}
 @defvr {Option variable} gammalim
-Default value: 1000000
+Default value: 10000
 
 @c REPHRASE
 @code{gammalim} controls simplification of the gamma
@@ -1672,7 +1672,7 @@ The Fresnel Integral S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
 The simplification fresnel_s(-x) = -fresnel_s(x) is applied when
 flag @code{trigsign} is true.
 
-The simplification fresnel_s(%i*x) =  %i*fresnel_s(x) is applied when
+The simplification fresnel_s(%i*x) =  -%i*fresnel_s(x) is applied when
 flag @code{%iargs} is true.
 
 See flags @code{erf_representation} and @code{hypergeometric_representation}.
