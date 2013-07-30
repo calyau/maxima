@@ -396,17 +396,16 @@ Example: See @mref{ifactors}.
 @deffn {Function} fib (@var{n})
 
 Returns the @var{n}'th Fibonacci number.
-@code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
-and
+@code{fib(0)} is equal to 0 and @code{fib(1)} equal to 1, and 
 @code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
 After calling @code{fib},
-@code{prevfib} is equal to @code{fib (@var{x} - 1)},
+@code{prevfib} is equal to @code{fib(@var{n} - 1)},
 the Fibonacci number preceding the last one computed.
 
 @example
-(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+(%i1) map (fib, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+(%o1)           [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
 @end example
 
 @opencatbox
@@ -545,7 +544,7 @@ if @var{n} is a zero divisor modulo @var{m}.
 @example
 (%i1) inv_mod(3, 41);
 (%o1)                           14
-(%i2) ratsimp(3^-1), modulus=41;
+(%i2) ratsimp(3^-1), modulus = 41;
 (%o2)                           14
 (%i3) inv_mod(3, 42);
 (%o3)                          false
@@ -593,6 +592,37 @@ Returns the least common multiple of its arguments.
 The arguments may be general expressions as well as integers.
 
 @code{load ("functs")} loads this function.
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lucas}
+@deffn {Function} lucas (@var{n})
+
+Returns the @var{n}'th Lucas number.
+@code{lucas(0)} is equal to 2 and @code{lucas(1)} equal to 1, and 
+@code{lucas(-@var{n})} equal to @code{(-1)^(-@var{n}) * lucas(@var{n})}.
+
+@example
+(%i1) map (lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+(%o1)             [7, - 4, 3, - 1, 2, 1, 3, 4, 7, 11, 18, 29, 47]
+@end example
+
+After calling @code{lucas}, the global variable
+@code{next_lucas} is equal to @code{lucas (@var{n} + 1)},
+the Lucas number following the last returned. The example shows 
+how Fibonacci numbers can be computed via @code{lucas} and @code{next_lucas}. 
+
+@example
+(%i1) fib_via_lucas(n) := 
+         block([lucas : lucas(n)],
+         signum(n) * (2*next_lucas - lucas)/5 )$
+(%i2) map (fib_via_lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+(%o2)             [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
+@end example
 
 @opencatbox
 @category{Number theory}
@@ -892,6 +922,91 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{zn_add_table}
+@deffn {Function} zn_add_table (@var{n}) 
+
+Shows an addition table of all elements in (Z/@var{n}Z).
+
+See also @mref{zn_mult_table}, @mref{zn_power_table}.
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_determinant}
+@deffn {Function} zn_determinant (@var{matrix}, @var{p}) 
+
+Uses the technique of LU-decomposition to compute the determinant of @var{matrix} 
+over (Z/@var{p}Z). @var{p} must be a prime. 
+
+However if the determinant is equal to zero the LU-decomposition might fail. 
+In that case @code{zn_determinant} computes the determinant non-modular 
+and reduces thereafter.
+
+See also @mref{zn_invert_by_lu}.
+
+Examples:
+
+@example
+(%i1) m : matrix([1,3],[2,4]);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 2  4 ]
+(%i2) zn_determinant(m, 5);
+(%o2)                               3
+(%i3) m : matrix([2,4,1],[3,1,4],[4,3,2]);
+                               [ 2  4  1 ]
+                               [         ]
+(%o3)                          [ 3  1  4 ]
+                               [         ]
+                               [ 4  3  2 ]
+(%i4) zn_determinant(m, 5);
+(%o4)                               0
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_invert_by_lu}
+@deffn {Function} zn_invert_by_lu (@var{matrix}, @var{p}) 
+
+Uses the technique of LU-decomposition to compute the modular inverse of 
+@var{matrix} over (Z/@var{p}Z). @var{p} must be a prime and @var{matrix} 
+invertible. @code{zn_invert_by_lu} returns @code{false} if @var{matrix} 
+is not invertible.
+
+See also @mref{zn_determinant}.
+
+Example:
+
+@example
+(%i1) m : matrix([1,3],[2,4]);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 2  4 ]
+(%i2) zn_determinant(m, 5);
+(%o2)                               3
+(%i3) mi : zn_invert_by_lu(m, 5);
+                                [ 3  4 ]
+(%o3)                           [      ]
+                                [ 1  2 ]
+(%i4) matrixmap(lambda([a], mod(a, 5)), m . mi);
+                                [ 1  0 ]
+(%o4)                           [      ]
+                                [ 0  1 ]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{zn_log}
 @deffn {Function} zn_log (@var{a}, @var{g}, @var{n}) 
 @deffnx {Function} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
@@ -957,6 +1072,40 @@ The run time primarily depends on the bitlength of the totient's greatest prime 
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{zn_mult_table}
+@deffn {Function} zn_mult_table (@var{n}) 
+@deffnx {Function} zn_mult_table (@var{n}, all)
+
+Without the optional argument @var{all} @code{zn_mult_table(n)} 
+shows a multiplication table of all elements in (Z/@var{n}Z)* 
+which are all elements invertible modulo @var{n}.
+
+The optional argument @var{all} causes the table to be printed for all 
+non-zero elements.
+
+See also @mref{zn_add_table}, @mref{zn_power_table}.
+
+Examples:
+
+@example
+(%i1) zn_mult_table(4);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 3  1 ]
+(%i2) zn_mult_table(4, all);
+                               [ 1  2  3 ]
+                               [         ]
+(%o2)                          [ 2  0  2 ]
+                               [         ]
+                               [ 3  2  1 ]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{zn_order}
 @deffn {Function} zn_order (@var{x}, @var{n}) 
 @deffnx {Function} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
@@ -1007,6 +1156,47 @@ The optional third argument must be of the same form as the list returned by
 (%o4)                             true
 (%i5) map(lambda([x], ord_3/zn_order(x, p, ifs)), makelist(i,i,2,15));
 (%o5)        [22, 1, 44, 10, 5, 2, 22, 2, 8, 2, 1, 1, 20, 1]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_power_table}
+@deffn {Function} zn_power_table (@var{n}) 
+@deffnx {Function} zn_power_table (@var{n}, all)
+
+Without the optional argument @var{all} @code{zn_power_table(n)} 
+shows a power table of all elements in (Z/@var{n}Z)* 
+which are all elements invertible modulo @var{n}. 
+The exponent loops from @code{1} to @code{totient(n)} and the table ends with 
+a column of ones on the right side.
+
+The optional argument @var{all} causes the table to be printed for all 
+non-zero elements. In this case the exponent loops from @code{1} to 
+@code{totient(n) + 1} and the last column is therefore equal to the first.
+
+See also @mref{zn_add_table}, @mref{zn_mult_table}.
+
+Examples:
+
+@example
+(%i1) zn_power_table(6);
+                                [ 1  1 ]
+(%o1)                           [      ]
+                                [ 5  1 ]
+(%i2) zn_power_table(6, all);
+                               [ 1  1  1 ]
+                               [         ]
+                               [ 2  4  2 ]
+                               [         ]
+(%o2)                          [ 3  3  3 ]
+                               [         ]
+                               [ 4  4  4 ]
+                               [         ]
+                               [ 5  1  5 ]
 @end example
 
 @opencatbox
