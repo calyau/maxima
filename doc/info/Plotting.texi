@@ -168,9 +168,9 @@ number of levels, it is necessary to specify a custom gnuplot preamble:
 @c ===end===
 @example
 @group
-(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
-                    [legend,false],
-                    [gnuplot_preamble, "set cntrparam levels 12"])$
+(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4],
+              [legend,false],
+              [gnuplot_preamble, "set cntrparam levels 12"])$
 @end group
 @end example
 @ifnotinfo
@@ -194,6 +194,84 @@ following the keyword, and so on.
 See also @mrefcomma{plot_options} @mref{set_plot_option} and the section on
 Plotting Options.
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_command}
+@defvr {System variable} gnuplot_command
+
+This variable stores the name of the command used to run the gnuplot
+program when the plot format is @code{gnuplot}. Its default value is
+"wgnuplot" in Windows and "gnuplot" in other systems. If the gnuplot
+program is not found unless you give its complete path or if you want
+to try a different version of it, you may change the value of this
+variable. For instance,
+
+@c ===beg===
+@c gnuplot_command: "/usr/local/bin/my_gnuplot"$
+@c ===end===
+@example
+(%i1) gnuplot_command: "/usr/local/bin/my_gnuplot"$
+@end example
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_file_args}
+@defvr {System variable} gnuplot_file_args
+
+When the plot format is @code{gnuplot} and a plotting command is going
+to save the plot in a file, this variable is used to specify the way the
+file name should be passed to gnuplot. Its default value is "~s", which
+means that that the name of the file will be passed directly. If you
+want to add some options before the file name, you should change the
+value of this variable adding the options before "~s".
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_view_args}
+@defvr {System variable} gnuplot_view_args
+
+This variable is used to parse the argument that will be passed to the
+gnuplot program when the plot format is @code{gnuplot}. Its default
+value is "-persist ~s", where "~s" will be replaced with the name of the
+temporary file where the gnuplot commands have been written (usually
+"maxout.gnuplot"). The option @code{-persist} tells gnuplot to exit
+after the commands in the file have been executed, without closing the
+window where the plot has been shown.
+
+If you are familiar with gnuplot, you might want to change the value of
+this variable. For example, if you do:
+
+@c ===beg===
+@c gnuplot_view_args: "~s -"$
+@c ===end===
+@example
+(%i1) gnuplot_view_args: "~s -"$
+@end example
+
+gnuplot will not be closed after the commands in the file have been
+executed; thus, the window with the plot will remain, as well as the
+gnuplot interactive shell where you can issue other additional commands
+to modify the plot.
+
+In Windows versions of gnuplot older than 4.6.3 the behavior of "~s -"
+and "-persist ~s" were the opposite; namely, "-persist ~s" made the plot
+window and the gnuplot interactive shell remain, while "~s -" closed the
+gnuplot shell keeping the plot window. Therefore, if you are using
+old gnuplot versions in Windows, you might have to adjust the value of
+@code{gnuplot_view_args}.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{implicit_plot}
@@ -364,7 +442,7 @@ plot the axes using arrows:
 @example
 @group
 (%i1) plot2d ( x^2-1, [x, -3, 3], [y, -2, 10],
-                      [box, false], [plot_format, xmaxima])$
+                [box, false], [plot_format, xmaxima])$
 @end group
 @end example
 
@@ -416,8 +494,10 @@ A plot of the butterfly curve, defined parametrically:
 @c ===end===
 @example
 (%i1) r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
-(%i2) plot2d([parametric, r*sin(t), r*cos(t), 
-             [t, -8*%pi, 8*%pi], [nticks, 2000]])$
+@group
+(%i2) plot2d([parametric, r*sin(t), r*cos(t),
+       [t, -8*%pi, 8*%pi], [nticks, 2000]])$
+@end group
 @end example
 
 @ifnotinfo
@@ -433,7 +513,7 @@ A ``circle'' with two turns, when plotted with only 7 points:
 @example
 @group
 (%i1) plot2d ([parametric, cos(t), sin(t),
-              [t, -2*%pi, 2*%pi], [nticks, 8]])$
+        [t, -2*%pi, 2*%pi], [nticks, 8]])$
 @end group
 @end example
 
@@ -455,7 +535,7 @@ plot; you might have to adjust the values for your screen.
 @example
 @group
 (%i1) plot2d([[parametric, cos(t), sin(t),
-              [t,0,2*%pi], [nticks, 80]],
+        [t,0,2*%pi], [nticks, 80]],
         abs(x)], [x,-2,2], [y, -1.5, 1.5])$
 plot2d: some values were clipped.
 @end group
@@ -474,7 +554,7 @@ A plot of a discrete set of points, defining x and y coordinates separately:
 @example
 @group
 (%i1) plot2d ([discrete, [10, 20, 30, 40, 50],
-                         [.6, .9, 1.1, 1.3, 1.4]])$
+                   [.6, .9, 1.1, 1.3, 1.4]])$
 @end group
 @end example
 
@@ -493,8 +573,8 @@ separately and without any lines joining the points:
 @example
 @group
 (%i1) plot2d([discrete, [[10, .6], [20, .9], [30, 1.1],
-                         [40, 1.3], [50, 1.4]]],
-                        [style, points])$
+                   [40, 1.3], [50, 1.4]]],
+                  [style, points])$
 @end group
 @end example
 
@@ -514,8 +594,10 @@ plotted on the two axes:
 @c   [style,points], [point_type,diamond], [color,red])$
 @c ===end===
 @example
-(%i1) with_stdout ("data.txt", for x:0 thru 10 do 
-                                   print (x, x^2, x^3))$
+@group
+(%i1) with_stdout ("data.txt", for x:0 thru 10 do
+                             print (x, x^2, x^3))$
+@end group
 (%i2) data: read_matrix ("data.txt")$
 @group
 (%i3) plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
@@ -598,8 +680,10 @@ shows how to plot with only lines and no shading:
 @c          [palette, false], [color, magenta, blue])$
 @c ===end===
 @example
+@group
 (%i1) plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
-               [palette, false], [color, magenta, blue])$
+         [palette, false], [color, magenta, blue])$
+@end group
 @end example
 
 @ifnotinfo
@@ -617,9 +701,9 @@ one of the predefined palettes, in this case the fourth one:
 @c ===end===
 @example
 @group
-(%i1) plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2], 
-         [grid, 29, 29],
-         [palette, get_plot_option(palette,5)])$
+(%i1) plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2],
+   [grid, 29, 29],
+   [palette, get_plot_option(palette,5)])$
 @end group
 @end example
 
@@ -635,8 +719,10 @@ two surfaces will use the same palette:
 @c         [x, -3, 3], [y, -2, 2]])$
 @c ===end===
 @example
+@group
 (%i1) plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2),
-              [x, -3, 3], [y, -2, 2]])$
+        [x, -3, 3], [y, -2, 2]])$
+@end group
 @end example
 
 @ifnotinfo
@@ -655,8 +741,8 @@ the option palette:
 @example
 @group
 (%i1) plot3d ([[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]],
-         4*sin(3*(x^2+y^2))/(x^2+y^2),
-         [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
+   4*sin(3*(x^2+y^2))/(x^2+y^2),
+   [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
 @end group
 @end example
 
@@ -674,8 +760,8 @@ Plot of a Klein bottle, defined parametrically:
 @c         [y, -%pi, %pi], [grid, 40, 40])$
 @c ===end===
 @example
-(%i1) expr_1:5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0)-10.0$
-(%i2) expr_2:-5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
+(%i1) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
+(%i2) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
 (%i3) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
 @group
 (%i4) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
@@ -699,8 +785,8 @@ coordinates.  See the documentation for @mrefdot{spherical_to_xyz}
 @example
 @group
 (%i1) plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
-              [phi, 0, 2*%pi],
-              [transform_xy, spherical_to_xyz], [grid,30,60])$
+        [phi, 0, 2*%pi],
+        [transform_xy, spherical_to_xyz], [grid,30,60])$
 @end group
 @end example
 
@@ -722,9 +808,9 @@ bounding box and the legend.
 @example
 @group
 (%i1) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-         [grid, 12, 80],
-         [transform_xy, polar_to_xy], [box, false],
-         [legend,false])$
+   [grid, 12, 80],
+   [transform_xy, polar_to_xy], [box, false],
+   [legend,false])$
 @end group
 @end example
 
@@ -746,9 +832,9 @@ different shades of a single color is used:
 @example
 @group
 (%i1) plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi],
-         [plot_format,xmaxima],
-         [transform_xy, spherical_to_xyz],
-         [palette,[value,0.65,0.7,0.1,0.9]])$
+   [plot_format,xmaxima],
+   [transform_xy, spherical_to_xyz],
+   [palette,[value,0.65,0.7,0.1,0.9]])$
 @end group
 @end example
 
@@ -767,8 +853,10 @@ failing when it realizes that the matrix will require integer indices.
 @c plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
 @c ===end===
 @example
+@group
 (%i1) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
-                [1, 2, 3, 3])$
+          [1, 2, 3, 3])$
+@end group
 (%i2) f(x, y) := float('M [round(x), round(y)])$
 @group
 (%i3) plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
@@ -856,7 +944,6 @@ Modification of the @mref{grid} values.
 @c ===end===
 @example
 (%i1) set_plot_option ([grid, 30, 40]);
-@group
 (%o1) [[t, - 3, 3], [grid, 30, 40], [transform_xy, false], 
 [run_viewer, true], [axes, true], [plot_format, gnuplot_pipes], 
 [color, blue, red, green, magenta, black, cyan], 
@@ -870,7 +957,6 @@ triangle, delta, wedge, nabla, diamond, lozenge],
 set term pop], [gnuplot_dumb_term_command, set term dumb 79 22], 
 [gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript \
 eps enhanced color solid 24], [plot_realpart, false]]
-@end group
 @end example
 
 @opencatbox
