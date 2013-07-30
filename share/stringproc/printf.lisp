@@ -440,7 +440,7 @@
 ;; wd: nil or width
 ;; dd: nil or decimal digits behind floating point
 ;; ed: nil or minimal exponent digits
-;; xp: nil or prefered exponent
+;; xp: nil or preferred exponent
 ;; ov: nil or overflow character
 ;; pc: nil or padding character
 ;; at: nil or true; sets "+" if true
@@ -458,7 +458,8 @@
       (setq bf (meval `((%round) ,(bcons bf))))
       (setq bf (bcons (fpquotient (intofp bf) m))) ))  
 ;;
-  (let* ((s (string-left-trim "-" ($sconcat bf)))
+  (let* (($fpprintprec 0) 
+         (s (string-left-trim "-" ($sconcat bf)))
          (sgn (signum (cadr bf)))
          (part1 (subseq s 0 1))
          (pos (position #\b s))
@@ -492,16 +493,16 @@
     (if (or ed xp)
       (let (xps xpl)
         (if (not xp) (setq xp 0))
-        (setq xps (meval `(($string) ,xp)))
+        (setq xps (mfuncall '$string xp))
         (if (minusp xp)
           (setq xps (subseq xps 1)))
         (setq xpl (length xps))
-        (if (and ed (plusp (- ed xpl 1)))
-          (setq xps (concatenate 'string (make-string (- ed xpl 1) :initial-element #\0) xps)))
+        (if (and ed (plusp (- ed xpl)))
+          (setq xps (concatenate 'string (make-string (- ed xpl) :initial-element #\0) xps)))
         (setq s (concatenate 'string s "b" (if (minusp xp) "-" "+") xps))))
 ;;
     (setq len (length s))
-    (and wd ov (> len wd)
+    (and wd ov (= (length ov) 1) (> len wd) 
       (setq s (make-string wd :initial-element (character ov))))
     (and wd (> wd len)
       (setq s (concatenate 'string (make-string (- wd len) :initial-element (if pc (character pc) #\ )) s)))
