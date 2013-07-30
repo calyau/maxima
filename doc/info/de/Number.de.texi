@@ -6,8 +6,7 @@
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.01.2011
 @c Revision    : 26.02.2011
-@c Revision    : 27.03.2012
-@c Revision    : 29.03.2012
+@c Revision    : 27.03.2012, 29.03.2012, 23.03.2013, 27.7.2013 VvN
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -241,15 +240,24 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 23.11.2010 DK -----------------------------------------------------------
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{factors_only}
+@defvr {Optionsvariable} factors_only
+Standardwert: @code{false}
+
+Hat @code{factors_only} den Standardwert @code{false}, werden von der 
+Funktion @mref{ifactors} zusammen mit den berechneten Primfaktoren auch deren 
+Multiplizit@"aten angegeben. Hat @code{factors_only} den Wert @code{true}, 
+werden nur die Primfaktoren zur@"uck gegeben.
+
+Beispiel: Siehe @mref{ifactors}.
+@end defvr
+
+@c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{fib}
 @deffn {Funktion} fib (@var{n})
 
-@c Returns the @var{n}'th Fibonacci number. @code{fib(0)} equal to 0 and 
-@c @code{fib(1)} equal to 1, and @code{fib (-@var{n})} equal to 
-@c @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
-
-Gibt die @var{n-te} Fibonacci-Zahl zur@"uck.  Die Fibonacci-Folge ist rekursiv 
+Gibt die @var{n}-te Fibonacci-Zahl zur@"uck.  Die Fibonacci-Folge ist rekursiv 
 definiert:
 
 @example
@@ -258,11 +266,11 @@ definiert:
    fib(n) = fib(n-1) + fib(n-2)
 @end example
 
-F@"ur negative ganze Zahlen kann die Fibonacci-Folge erweitert wird mit:
+F@"ur negative ganze Zahlen kann die Fibonacci-Folge wie folgt erweitert werden:
 
 @example
                    n + 1
-   fib(- n) = (- 1)      f(n)
+   fib(- n) = (- 1)      fib(n)
 @end example 
 
 @c After calling @code{fib}, @code{prevfib} is equal to @code{fib(@var{x} - 1)},
@@ -445,6 +453,45 @@ k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
 @c @code{load ("functs")} loads this function.
 
 Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
+@end deffn
+
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{lucas}
+@deffn {Funktion} lucas (@var{n})
+
+Gibt die @var{n}-te Lucas-Zahl zur@"uck.  Die Lucas-Folge ist rekursiv 
+definiert:
+
+@example
+   lucas(0) = 0
+   lucas(1) = 1
+   lucas(n) = lucas(n-1) + lucas(n-2)
+@end example
+
+F@"ur negative ganze Zahlen kann die Lucas-Folge wie folgt erweitert werden:
+
+@example
+                     -n
+   lucas(- n) = (- 1)   lucas(n)
+@end example 
+
+@example
+(%i1) map (lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+(%o1)             [7, - 4, 3, - 1, 2, 1, 3, 4, 7, 11, 18, 29, 47]
+@end example
+
+Nach einem Aufruf von @code{lucas} enth@"alt die globale Variable 
+@code{next_lucas} den Nachfolger der zuletzt zur@"ck gegebenen Lucas-Zahl.
+Das Beispiel zeigt, wie Fibonacci-Zahlen mit Hilfe von @code{lucas} 
+und @code{next_lucas} berechnet werden k@"onnen.
+
+@example
+(%i1) fib_via_lucas(n) := 
+         block([lucas : lucas(n)],
+         signum(n) * (2*next_lucas - lucas)/5 )$
+(%i2) map (fib_via_lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+(%o2)             [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
+@end example
 @end deffn
 
 @c --- 23.03.2013 VN -----------------------------------------------------------
@@ -773,6 +820,81 @@ Beispiele:
 @end example
 @end defvr
 
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{zn_add_table}
+@deffn {Funktion} zn_add_table (@var{n}) 
+
+zeigt eine Additionstabelle von allen Elementen in (Z/@var{n}Z).
+
+Siehe auch @mref{zn_mult_table}, @mref{zn_power_table}.
+@end deffn
+
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{zn_determinant}
+@deffn {Funktion} zn_determinant (@var{matrix}, @var{p}) 
+
+verwendet die Technik der LR-Dekomposition, um die Determinante der 
+Matrix @var{matrix} @"uber (Z/@var{p}Z) zu berechnen, wobei @var{p} 
+eine Primzahl sein muss. 
+
+Ist die Determinante nicht von Null verschieden, kann es sein, dass die 
+LR-Dekomposition nicht m@"oglich ist. @code{zn_determinant} berechnet 
+diesem Fall die Determinante nicht-modular und reduziert im Nachhinein.
+
+Siehe auch @mref{zn_invert_by_lu}.
+
+Beispiel:
+
+@example
+(%i1) m : matrix([1,3],[2,4]);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 2  4 ]
+(%i2) zn_determinant(m, 5);
+(%o2)                               3
+(%i3) m : matrix([2,4,1],[3,1,4],[4,3,2]);
+                               [ 2  4  1 ]
+                               [         ]
+(%o3)                          [ 3  1  4 ]
+                               [         ]
+                               [ 4  3  2 ]
+(%i4) zn_determinant(m, 5);
+(%o4)                               0
+@end example
+@end deffn
+
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{zn_invert_by_lu}
+@deffn {Funktion} zn_invert_by_lu (@var{matrix}, @var{p}) 
+
+verwendet die Technik der LR-Dekomposition, um ein modulares Inverses der 
+Matrix @var{matrix} @"uber (Z/@var{p}Z) zu berechnen. Voraussetzung ist, 
+dass @var{matrix} invertierbar und @var{p} eine Primzahl ist. 
+Sollte @var{matrix} nicht invertierbar sein, gibt @code{zn_invert_by_lu} 
+@code{false} zur@"ck.
+
+Siehe auch @mref{zn_determinant}.
+
+Beispiele:
+
+@example
+(%i1) m : matrix([1,3],[2,4]);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 2  4 ]
+(%i2) zn_determinant(m, 5);
+(%o2)                               3
+(%i3) mi : zn_invert_by_lu(m, 5);
+                                [ 3  4 ]
+(%o3)                           [      ]
+                                [ 1  2 ]
+(%i4) matrixmap(lambda([a], mod(a, 5)), m . mi);
+                                [ 1  0 ]
+(%o4)                           [      ]
+                                [ 0  1 ]
+@end example
+@end deffn
+
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_log}
 @deffn {Funktion} zn_log (@var{a}, @var{g}, @var{n}) 
@@ -838,6 +960,36 @@ Primfaktors des Totienten ab.
 @end example
 @end deffn
 
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{zn_mult_table}
+@deffn {Funktion} zn_mult_table (@var{n}) 
+@deffnx {Funktion} zn_mult_table (@var{n}, all)
+
+Ohne das optionale Argument @var{all} zeigt @code{zn_mult_table(n)} 
+eine Multiplikationstabelle von allen Elementen in (Z/@var{n}Z)*, 
+d.h. von allen modulo @var{n} invertierbaren Elementen.
+
+Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
+verschiedenen Elemente gezeigt wird.
+
+Siehe auch @mref{zn_add_table}, @mref{zn_power_table}.
+
+Beispiele:
+
+@example
+(%i1) zn_mult_table(4);
+                                [ 1  3 ]
+(%o1)                           [      ]
+                                [ 3  1 ]
+(%i2) zn_mult_table(4, all);
+                               [ 1  2  3 ]
+                               [         ]
+(%o2)                          [ 2  0  2 ]
+                               [         ]
+                               [ 3  2  1 ]
+@end example
+@end deffn
+
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_order}
 @deffn {Funktion} zn_order (@var{x}, @var{n}) 
@@ -892,6 +1044,44 @@ entsprechen.
 (%o4)                             true
 (%i5) map(lambda([x], ord_3/zn_order(x, p, ifs)), makelist(i,i,2,15));
 (%o5)        [22, 1, 44, 10, 5, 2, 22, 2, 8, 2, 1, 1, 20, 1]
+@end example
+@end deffn
+
+@c --- 27.07.2013 VvN ----------------------------------------------------------
+@anchor{zn_power_table}
+@deffn {Funktion} zn_power_table (@var{n}) 
+@deffnx {Funktion} zn_power_table (@var{n}, all)
+
+Ohne das optionale Argument @var{all} zeigt @code{zn_power_table(n)} 
+eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
+d.h. von allen modulo @var{n} invertierbaren Elementen. 
+Der Exponent @var{n} variiert jeweils zwischen @code{1} und @code{totient(n)}, 
+so dass die Tabelle rechts mit einer Spalte von Einsen endet.
+
+Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
+verschiedenen Elemente gezeigt wird. In diesem Fall 
+variiert der Exponent @var{n} zwischen @code{1} und @code{totient(n) + 1}. 
+Die erste und letzte Spalte stimmen dadurch @"uberein.
+
+Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
+
+Beispiele:
+
+@example
+(%i1) zn_power_table(6);
+                                [ 1  1 ]
+(%o1)                           [      ]
+                                [ 5  1 ]
+(%i2) zn_power_table(6, all);
+                               [ 1  1  1 ]
+                               [         ]
+                               [ 2  4  2 ]
+                               [         ]
+(%o2)                          [ 3  3  3 ]
+                               [         ]
+                               [ 4  4  4 ]
+                               [         ]
+                               [ 5  1  5 ]
 @end example
 @end deffn
 
