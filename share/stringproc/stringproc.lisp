@@ -86,7 +86,9 @@
   (or (ignore-errors 
         (if pos
           (file-position stream (1- pos))
-          (1+ (file-position stream))))
+          (progn 
+            (setq pos (file-position stream))
+            (when pos (1+ pos)) )))
       (merror "fposition: improper position index ~m" pos)))
 
 
@@ -95,6 +97,13 @@
     (merror "readline: argument must be a stream."))
   (let ((line (read-line stream nil nil)))
     (if line line)))
+
+
+(defun $readchar (stream) 
+  (if (not (streamp stream))
+    (merror "readchar: argument must be a stream.") )
+  (let ((c (read-char stream nil nil)))
+    (when c (m-char c)) ))
 
 
 (defun $freshline (&optional (stream)) 
