@@ -98,12 +98,12 @@
                     (setq ch (subseq params p (1+ p))) ))
                 (setq radix
                   (cond
-                    ((string= ch ",") 10)
+                    ((string= ch ",") 10.)
                     ((string-equal ch "v") arg)
                     ((string= ch "#") (length todo))
                     ((or (string= ch "@") (string= ch ":")) (parse-integer n))
                     (t (parse-integer (concatenate 'string n ch))) ))
-                (if (or (< radix 2) (> radix 36))
+                (if (or (< radix 2.) (> radix 36.))
                   (merror "printf: illegal radix in r-directive: ~m" radix)) ))))
 ;;
 ;; handle some special directives:
@@ -225,7 +225,7 @@
             (cond 
               ((string= "" params)
                  (setq pos2 (cadr (iter-positions ctrls pos1)))
-                 (setq subctrls (subseq ctrls pos1a (- pos2 2)))
+                 (setq subctrls (subseq ctrls pos1a (- pos2 2.)))
                  (setq done (cons (prepare-args subctrls (cdr arg) nil t) done))
                  (and loops (setq loops nil)) )
               ((string= ":" params)
@@ -391,7 +391,7 @@
              (setq smarap (reverse params))
              (if (and (string/= "" smarap) 
                       (string= (subseq smarap 0 1) "@") 
-                      (or (= 1 (length smarap)) (string/= (subseq smarap 1 2) "'")))
+                      (or (= 1 (length smarap)) (string/= (subseq smarap 1 2.) "'")))
                (setq at t))
              (setq arg 
                (let ((wd (if (and wd (string/= "" wd)) (parse-integer wd)))
@@ -449,11 +449,11 @@
 ;;
   (and xp (not (zerop xp))
     (setq bf (bcons (if (minusp xp) 
-                      (fptimes* (cdr bf) (intofp (expt 10 (- xp))))
-                      (fpquotient (cdr bf) (intofp (expt 10 xp))) ))))
+                      (fptimes* (cdr bf) (intofp (expt 10. (- xp))))
+                      (fpquotient (cdr bf) (intofp (expt 10. xp))) ))))
 ;;
   (and dd
-    (let ((m (intofp (expt 10 dd))))
+    (let ((m (intofp (expt 10. dd))))
       (setq bf (fptimes* (cdr bf) m))
       (setq bf (meval `((%round) ,(bcons bf))))
       (setq bf (bcons (fpquotient (intofp bf) m))) ))  
@@ -463,7 +463,7 @@
          (sgn (signum (cadr bf)))
          (part1 (subseq s 0 1))
          (pos (position #\b s))
-         (part2 (string-right-trim "0" (subseq s 2 pos)))
+         (part2 (string-right-trim "0" (subseq s 2. pos)))
          (len (length part2))
          (pow (parse-integer (subseq s (1+ pos) nil))))
     (cond ((and (> pow 0) (> len pow))

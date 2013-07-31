@@ -168,7 +168,7 @@
 ;;
 (defun $digitcharp (mc)
   (let ((nr (char-int (l-char mc))))
-    (and (> nr 47) (< nr 58))))
+    (and (> nr 47.) (< nr 58.))))
 
 
 ;;  ascii-char <-> index
@@ -179,7 +179,7 @@
   (char-code (character mc)))
 ;;
 (defun $ascii (int) 
-  (if (or (not (integerp int)) (< int 0) (> int 255))
+  (if (or (not (integerp int)) (< int 0) (> int 255.))
     (merror "ascii: argument must be zero or a positve integer less than 256."))
   (m-char (code-char int)))
 
