@@ -88,21 +88,21 @@
 ;; pre-test for ~nr, ~vr, ~#r :
 ;; check if radix is legal (Maxima 5.14 gcl segfaults when radix=1)
         (if (and (string-equal spec "r") (string/= "" params))
-          (let ((c (subseq params 0 1)) (n "") (len (length params)) radix)
-            (if (or ($digitcharp c) (search c "v#V"))
+          (let ((ch (subseq params 0 1)) (n "") (len (length params)) radix)
+            (if (or ($digitcharp ch) (search ch "v#V"))
               (progn
                 (do ((p 1 (1+ p)))
-                    ((or (= p len)(search c ",@:v#V")))
+                    ((or (= p len)(search ch ",@:v#V")))
                   (progn
-                    (setq n (concatenate 'string n c))
-                    (setq c (subseq params p (1+ p))) ))
+                    (setq n (concatenate 'string n ch))
+                    (setq ch (subseq params p (1+ p))) ))
                 (setq radix
                   (cond
-                    ((string= c ",") 10)
-                    ((string-equal c "v") arg)
-                    ((string= c "#") (length todo))
-                    ((or (string= c "@") (string= c ":")) (parse-integer n))
-                    (t (parse-integer (concatenate 'string n c))) ))
+                    ((string= ch ",") 10)
+                    ((string-equal ch "v") arg)
+                    ((string= ch "#") (length todo))
+                    ((or (string= ch "@") (string= ch ":")) (parse-integer n))
+                    (t (parse-integer (concatenate 'string n ch))) ))
                 (if (or (< radix 2) (> radix 36))
                   (merror "printf: illegal radix in r-directive: ~m" radix)) ))))
 ;;
@@ -198,29 +198,29 @@
 ;; ~n{ and ~v{ etc. , set number of loops
             (if (and (string/= "" params) 
                      (string/= ":" params) (string/= "@" params) (string/= ":@" params))
-              (let ((c (subseq params 0 1)) (n "") (len (length params)))
+              (let ((ch (subseq params 0 1)) (n "") (len (length params)))
                 (do ((p 1 (1+ p)))
-                    ((or (= p len)(search c "@:v#V"))
+                    ((or (= p len)(search ch "@:v#V"))
                        (setq params
-                         (if (or (string= c "@") (string= c ":"))
+                         (if (or (string= ch "@") (string= ch ":"))
                            (subseq params (1- p))
                            (subseq params p))))
                   (progn
-                    (setq n (concatenate 'string n c))
-                    (setq c (subseq params p (1+ p))) ))
+                    (setq n (concatenate 'string n ch))
+                    (setq ch (subseq params p (1+ p))) ))
                 (and (not loops) 
                   (cond
-                    ((string-equal c "v") 
+                    ((string-equal ch "v") 
                        (setq loops arg)
                        (setq done (cons arg done))
                        (setq arg (car (setq todo (cdr todo))))
                        (setq index (1+ index)) )
-                    ((string= c "#") 
+                    ((string= ch "#") 
                        (setq loops (length todo)) )
-                    ((or (string= c "@") (string= c ":")) 
+                    ((or (string= ch "@") (string= ch ":")) 
                        (setq loops (parse-integer n)) )
                     (t 
-                       (setq loops (parse-integer (concatenate 'string n c))) ))) ))
+                       (setq loops (parse-integer (concatenate 'string n ch))) ))) ))
 ;; ~{ and ~:{ and ~@{ and  ~:@{ 
             (cond 
               ((string= "" params)
@@ -386,19 +386,19 @@
                (t
                  (merror "printf: argument can't be supplied to h-directive: ~m" arg))))
            (let ((prms (split-at-comma params))
-                  w d e x o p at smarap)
-             (multiple-value-setq (w d e x o p) (apply #'values prms))
+                  wd dd ed xp ov pc at smarap)
+             (multiple-value-setq (wd dd ed xp ov pc) (apply #'values prms))
              (setq smarap (reverse params))
              (if (and (string/= "" smarap) 
                       (string= (subseq smarap 0 1) "@") 
                       (or (= 1 (length smarap)) (string/= (subseq smarap 1 2) "'")))
                (setq at t))
              (setq arg 
-               (let ((w (if (and w (string/= "" w)) (parse-integer w)))
-                     (d (if (and d (string/= "" d)) (parse-integer d)))
-                     (e (if (and e (string/= "" e)) (parse-integer e))) 
-                     (x (if (and x (string/= "" x)) (parse-integer x))) )
-                 (bprintf arg w d e x o p at))) ))
+               (let ((wd (if (and wd (string/= "" wd)) (parse-integer wd)))
+                     (dd (if (and dd (string/= "" dd)) (parse-integer dd)))
+                     (ed (if (and ed (string/= "" ed)) (parse-integer ed))) 
+                     (xp (if (and xp (string/= "" xp)) (parse-integer xp))) )
+                 (bprintf arg wd dd ed xp ov pc at))) ))
 ;; ~E, ~F, ~G
         ((search spec "efg" :test #'string-equal)
            (if (not (floatp arg))

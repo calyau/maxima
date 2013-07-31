@@ -102,8 +102,8 @@
 (defun $readchar (stream) 
   (if (not (streamp stream))
     (merror "readchar: argument must be a stream.") )
-  (let ((c (read-char stream nil nil)))
-    (when c (m-char c)) ))
+  (let ((lc (read-char stream nil nil)))
+    (when lc (m-char lc)) ))
 
 
 (defun $freshline (&optional (stream)) 
@@ -141,12 +141,12 @@
 
 ;;  converts a Lisp character into a Maxima string of length 1
 ;;
-(defun $cunlisp (c) ;; at Maxima level only for testing
-  (if (not (characterp c))
+(defun $cunlisp (lc) ;; at Maxima level only for testing
+  (if (not (characterp lc))
     (merror "cunlisp: argument must be a Lisp character"))
-  (m-char c))
+  (m-char lc))
 ;;
-(defun m-char (c) (make-string 1 :initial-element c))
+(defun m-char (lc) (make-string 1 :initial-element lc))
 
 
 ;;  tests, if object is Lisp character
@@ -254,7 +254,7 @@
 (defun $charlist (s)
   (if (not (stringp s))
     (merror "charlist: argument must be a string."))
-  (cons '(mlist) (mapcar #'(lambda (c) (m-char c)) (coerce s 'list))))
+  (cons '(mlist) (mapcar #'(lambda (lc) (m-char lc)) (coerce s 'list))))
 
 
 (putprop '$sexplode '$charlist 'alias)
