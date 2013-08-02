@@ -320,7 +320,7 @@ Most directives use one or more elements of the arguments
 If @var{dest} is a stream or @code{true}, then @code{printf} returns @code{false}.
 Otherwise, @code{printf} returns a string containing the output.
 
-@code{printf} provides the Common Lisp Funktion @code{format} in Maxima. 
+@code{printf} provides the Common Lisp function @code{format} in Maxima. 
 The following example illustrates the general relation between these two 
 functions.
 
@@ -443,7 +443,7 @@ The directive ~h has been introduced to handle bigfloats.
 
 @c -----------------------------------------------------------------------------
 @anchor{readchar}
-@deffn {Funktion} readchar (@var{stream})
+@deffn {Function} readchar (@var{stream})
 
 Removes and returns the first character in @var{stream}. 
 If the end of file is encountered @code{readchar} returns @code{false}.
