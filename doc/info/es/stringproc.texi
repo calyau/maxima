@@ -1,4 +1,4 @@
-@c English version: 2013-07-30
+@c English version: 2013-08-02
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
@@ -371,14 +371,14 @@ En otro caso, @code{printf} devuelve una cadena conteniendo la salida.
 La directiva @code{~h} se ha introducido para formatear decimales grandes. 
 
 @example
-~w,d,e,x,o,p@H
+~w,d,e,x,o,p@@H
  w : width
  d : decimal digits behind floating point
  e : minimal exponent digits
  x : preferred exponent
  o : overflow character
  p : padding character
- @ : display sign for positive numbers
+ @@ : display sign for positive numbers
 @end example
 
 @example
