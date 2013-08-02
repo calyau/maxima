@@ -281,7 +281,7 @@ Die Buchstaben des Kontrollparameters @var{string} werden der Reihe nach ausgege
 wobei jedoch eine Tilde eine Direktive einleitet. Die Direktiven verwenden 
 dann im Allgemeinen die nachstehenden Parameter @var{expr_1}, @dots{}, @var{expr_n}, 
 um die Ausgabe zu erzeugen. Der Buchstabe nach der Tilde gibt dabei an, 
-welche Art der Formatierung gewünscht ist. 
+welche Art der Formatierung gew@"unscht ist. 
 
 @code{printf} stellt die Common Lisp Funktion @code{format} in Maxima zur Verf@"ugung. 
 Das folgende Beispiel zeigt die grunds@"atzliche Beziehung zwischen diesen 
@@ -355,14 +355,14 @@ Die Direktive ~h wurde f@"ur Gleitkommazahlen mit beliebiger Genauigkeit
 eingef@"uhrt.
 
 @example
-~w,d,e,x,o,p@H
+~w,d,e,x,o,p@@H
  w : width
  d : decimal digits behind floating point
  e : minimal exponent digits
  x : preferred exponent
  o : overflow character
  p : padding character
- @ : display sign for positive numbers
+ @@ : display sign for positive numbers
 @end example
 
 @example

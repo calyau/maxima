@@ -399,14 +399,14 @@ Otherwise, @code{printf} returns a string containing the output.
 The directive ~h has been introduced to handle bigfloats. 
 
 @example
-~w,d,e,x,o,p@H
+~w,d,e,x,o,p@@H
  w : width
  d : decimal digits behind floating point
  e : minimal exponent digits
  x : preferred exponent
  o : overflow character
  p : padding character
- @ : display sign for positive numbers
+ @@ : display sign for positive numbers
 @end example
 
 @example
