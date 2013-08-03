@@ -23,7 +23,7 @@
    md5sum(string) returns the md5 checksum of a string. 
    
    The return value is a string to guarantee 32 hex characters. To parse it 
-   into an integer please set the input base to 16 and prefix the string by '0'.
+   into an integer please set the input base to 16 and prefix the string by zero.
    
    (%i2) string : md5sum("foo bar baz");
    (%o2)                  ab07acbb1e496801937adfa772424bf7
@@ -147,6 +147,8 @@
 
 
 (defmfun $md5sum (s)
+  (unless (stringp s)
+    (merror "`md5sum': Argument must be a string.") )
   (let* ((bytes (mapcar #'(lambda (ch) (char-code ch)) (coerce s 'list)))
          (len (length bytes)) )
     (setq *a5* #x67452301

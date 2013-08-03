@@ -678,6 +678,26 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{md5sum}
+@deffn {Funktion} md5sum (@var{string})
+
+Gibt die md5-Pr@"ufsumme von @var{string} als String zur@"uck. 
+Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
+setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
+
+Beispiel:
+
+@example
+(%i1) string : md5sum("foo bar baz");
+(%o1)               ab07acbb1e496801937adfa772424bf7
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)              0ab07acbb1e496801937adfa772424bf7
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{parse_string}
 @deffn {Function} parse_string (@var{str})
 

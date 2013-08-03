@@ -793,6 +793,31 @@ See also @code{parse_string}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{md5sum}
+@deffn {Function} md5sum (@var{string})
+
+Returns the md5 checksum of a @var{string} as a string. To parse the returned 
+value into an integer please set the input base to 16 and prefix the string by zero.
+
+Example:
+
+@example
+(%i1) string : md5sum("foo bar baz");
+(%o1)                  ab07acbb1e496801937adfa772424bf7
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)                 0ab07acbb1e496801937adfa772424bf7
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} parse_string (@var{str})
 Parse the string @var{str} as a Maxima expression (do not evaluate it).
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
