@@ -844,7 +844,7 @@ Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
 
 @code{subvar} evaluates its arguments.
 
-@code{arraymake (@var{x}, [@var{i}]} constructs the expression
+@code{arraymake (@var{x}, [@var{i}])} constructs the expression
 @code{@var{x}[@var{i}]}, but does not evaluate it.
 
 Examples:

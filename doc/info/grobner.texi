@@ -42,7 +42,7 @@ Marek Rychlik
 @url{http://alamos.math.arizona.edu}
 
 @noindent
-and is released 2002-05-24 under the terms of the General Public License(GPL) (see file @file{grobner.lisp}.
+and is released 2002-05-24 under the terms of the General Public License(GPL) (see file @file{grobner.lisp}).
 This documentation was extracted from the files
 @flushleft
 @file{README}, @file{grobner.lisp}, @file{grobner.demo}, @file{grobner-demo.output}

@@ -107,10 +107,10 @@
 @macro mrefparen {nodename}
 @c *****
 @ifhtml
-@code{@ref{\nodename\}})
+@code{@ref{\nodename\}}
 @end ifhtml
 @ifnothtml
-@code{\nodename\})
+@code{\nodename\}
 @end ifnothtml
 @c *****
 @end macro
