@@ -113,6 +113,7 @@
        $get_output_stream_string
        $printf
        $sprint
+       $readchar
        $readline
        $alphacharp
        $alphanumericp
@@ -134,6 +135,9 @@
        $stringp
        $charat
        $charlist
+       $eval_string
+       $md5sum
+       $parse_string
        $scopy
        $sdowncase
        $sequal
