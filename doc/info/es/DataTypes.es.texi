@@ -1,4 +1,4 @@
-@c English version 2011-11-03
+@c English version 2013-04-04
 @menu
 * N@'umeros::
 * Cadenas de texto::
@@ -459,57 +459,6 @@ Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (b
                               x    28
 (%o7)                     sin(-- + --)
                               10   5
-@end example
-
-Ejemplo de uso:
-
-@c ===beg===
-@c unitfrac(r) := block([uf : [], q],
-@c     if not(ratnump(r)) then 
-@c        error("The input to 'unitfrac' must be a rational number"),
-@c     while r # 0 do (
-@c         uf : cons(q : 1/ceiling(1/r), uf),
-@c         r : r - q),
-@c     reverse(uf));
-@c unitfrac (9/10);
-@c apply ("+", %);
-@c unitfrac (-9/10);
-@c apply ("+", %);
-@c unitfrac (36/37);
-@c apply ("+", %);
-@c ===end===
-@example
-(%i1) unitfrac(r) := block([uf : [], q],
-    if not(ratnump(r)) then
-       error("The input to 'unitfrac' must be a rational number"),
-    while r # 0 do (
-        uf : cons(q : 1/ceiling(1/r), uf),
-        r : r - q),
-    reverse(uf))$
-(%i2) unitfrac (9/10);
-                            1  1  1
-(%o2)                      [-, -, --]
-                            2  3  15
-(%i3) apply ("+", %);
-                               9
-(%o3)                          --
-                               10
-(%i4) unitfrac (-9/10);
-                                  1
-(%o4)                       [- 1, --]
-                                  10
-(%i5) apply ("+", %);
-                                9
-(%o5)                         - --
-                                10
-(%i6) unitfrac (36/37);
-                        1  1  1  1    1
-(%o6)                  [-, -, -, --, ----]
-                        2  3  8  69  6808
-(%i7) apply ("+", %);
-                               36
-(%o7)                          --
-                               37
 @end example
 @end deffn
 
