@@ -3670,6 +3670,14 @@ relerror(
  1b-23);
 true;
 
+/* Bug #2619
+ * Function inverse_erf - error in numerical evaluation 
+ */
+relerror(inverse_erf(0.7715),
+ .8515204685911937,
+ 1d-15);
+true;
+
 (fpprec:oldfpprec,done);
 done;
 

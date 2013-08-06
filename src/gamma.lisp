@@ -2758,7 +2758,7 @@
 		   ;; Newton iteration.
 		   (cond ((<= (abs z) 1)
 			  (typecase z
-			    (cl:real (* 2 maxima::flonum-epsilon))
+			    (cl:real (* 3 maxima::flonum-epsilon))
 			    (t (* maxima::*newton-epsilon-factor* (epsilon z)))))
 			 (t
 			  (* maxima::*newton-epsilon-factor* (epsilon z))))))
