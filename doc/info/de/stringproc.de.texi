@@ -616,35 +616,68 @@ Returns @code{true} if @var{char} is an uppercase character.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@anchor{stringp}
-@deffn {Function} stringp (@var{obj})
+@anchor{base64}
+@deffn {Funktion} base64 (@var{string})
 
-Returns @code{true} if @var{obj} is a string.
-See introduction for example.
+Gibt einen String zur@"uck, der die Base64-Darstellung von @var{string} zeigt. 
+
+Sind in @var{string} Umlaute oder Eszett enthalten, ist das Ergebnis von der 
+verwendeten Plattform abh@"angig. Es wird aber durch eine Anwendung von 
+@ref{base64_decode} in jedem Fall wieder in den urspr@"unglichen String 
+zur@"uck verwandelt.
+
+Beispiel:
+
+@example
+(%i1) base64 : base64("foo bar baz");
+(%o1)                       Zm9vIGJhciBiYXo=
+(%i2) string : base64_decode(base64);
+(%o2)                          foo bar baz
+(%i3) base64_decode(base64("@"a@"o@"u"));
+(%o3)                            @"a@"o@"u
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{base64_decode}
+@deffn {Funktion} base64_decode (@var{base64-string})
+
+Dekodiert den Base64-kodierten String @var{base64-string} wieder zur@"uck in 
+den urspr@"unglichen String.
+
+Beispiel: Siehe @ref{base64}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charat}
-@deffn {Function} charat (@var{string}, @var{n})
+@deffn {Funktion} charat (@var{string}, @var{n})
 
-Returns the @var{n}-th character of @var{string}.
-The first character in @var{string} is returned with @var{n} = 1.
+Gibt den @var{n}-ten Buchstaben in @var{string} zur@"uck.
+Den ersten Buchstaben in @var{string} erh@"alt man mit @var{n} = 1. 
 
-Example:
+Auf Plattformen, die eine UTF8-Kodierung verwenden, darf @var{string} nur 
+aus US-ASCII-Buchstaben bestehen, darf also insbesondere keine Umlaute oder 
+Eszett enthalten.
+
+Beispiel:
 
 @example
-(%i1) charat("Lisp",1);
+(%i1) charat("Lisp", 1);
 (%o1)                           L
 @end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charlist}
-@deffn {Function} charlist (@var{string})
+@deffn {Funktion} charlist (@var{string})
 
-Returns the list of all characters in @var{string}.
+Gibt eine Liste mit allen Buchstaben in @var{string} zur@"uck.
 
-Example:
+Auf Plattformen, die eine UTF8-Kodierung verwenden, darf @var{string} nur 
+aus US-ASCII-Buchstaben bestehen, darf also insbesondere keine Umlaute oder 
+Eszett enthalten.
+
+Beispiel:
 
 @example
 (%i1) charlist("Lisp");
@@ -1040,6 +1073,14 @@ Like @mref{strim} except that only the left end of @var{string} is trimmed.
 @deffn {Function} strimr (@var{seq}, @var{string}) 
 
 Like @mref{strim} except that only the right end of string is trimmed.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{stringp}
+@deffn {Function} stringp (@var{obj})
+
+Returns @code{true} if @var{obj} is a string.
+See introduction for example.
 @end deffn
 
 @c -----------------------------------------------------------------------------

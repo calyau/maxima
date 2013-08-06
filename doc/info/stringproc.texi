@@ -714,19 +714,46 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
 @section Functions and Variables for strings
 
-@deffn {Function} stringp (@var{obj}) 
-Returns @code{true} if @var{obj} is a string.
-See introduction for example.
+@c -----------------------------------------------------------------------------
+@anchor{base64}
+@deffn {Function} base64 (@var{string})
+
+Returns the base64-representation of @var{string} as a string.
+
+Example:
+
+@example
+(%i1) base64 : base64("foo bar baz");
+(%o1)                       Zm9vIGJhciBiYXo=
+(%i2) string : base64_decode(base64);
+(%o2)                          foo bar baz
+@end example
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{base64_decode}
+@deffn {Function} base64_decode (@var{base64-string})
+
+@c Decodes the string @var{base64-string} coded in base64 back to the original string.
+
+Example: See @ref{base64}.
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} charat (@var{string}, @var{n}) 
 Returns the @var{n}-th character of @var{string}.
 The first character in @var{string} is returned with @var{n} = 1.
@@ -745,6 +772,7 @@ The first character in @var{string} is returned with @var{n} = 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} charlist (@var{string}) 
 Returns the list of all characters in @var{string}. 
 
@@ -1224,6 +1252,18 @@ Like @code{strim} except that only the right end of string is trimmed.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} stringp (@var{obj}) 
+Returns @code{true} if @var{obj} is a string.
+See introduction for example.
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} substring (@var{string}, @var{start})
 @deffnx {Function} substring (@var{string}, @var{start}, @var{end}) 
 Returns the substring of @var{string} beginning at position @var{start} and ending at position @var{end}.
