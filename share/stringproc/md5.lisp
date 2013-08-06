@@ -149,7 +149,7 @@
 (defmfun $md5sum (s)
   (unless (stringp s)
     (merror "`md5sum': Argument must be a string.") )
-  (let* ((bytes (mapcar #'(lambda (ch) (char-code ch)) (coerce s 'list)))
+  (let* ((bytes (mapcar #'char-code (coerce s 'list)))
          (len (length bytes)) )
     (setq *a5* #x67452301
           *b5* #xEFCDAB89 

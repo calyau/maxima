@@ -254,7 +254,7 @@
 (defun $charlist (s)
   (if (not (stringp s))
     (merror "charlist: argument must be a string."))
-  (cons '(mlist) (mapcar #'(lambda (lc) (m-char lc)) (coerce s 'list))))
+  (cons '(mlist) (mapcar #'m-char (coerce s 'list))))
 
 
 (putprop '$sexplode '$charlist 'alias)

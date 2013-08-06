@@ -133,6 +133,8 @@
        $lowercasep
        $uppercasep
        $stringp
+       $base64
+       $base64_decode
        $charat
        $charlist
        $eval_string
