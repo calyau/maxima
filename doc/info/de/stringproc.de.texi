@@ -655,10 +655,6 @@ Beispiel: Siehe @ref{base64}.
 Gibt den @var{n}-ten Buchstaben in @var{string} zur@"uck.
 Den ersten Buchstaben in @var{string} erh@"alt man mit @var{n} = 1. 
 
-Auf Plattformen, die eine UTF8-Kodierung verwenden, darf @var{string} nur 
-aus US-ASCII-Buchstaben bestehen, darf also insbesondere keine Umlaute oder 
-Eszett enthalten.
-
 Beispiel:
 
 @example
@@ -672,10 +668,6 @@ Beispiel:
 @deffn {Funktion} charlist (@var{string})
 
 Gibt eine Liste mit allen Buchstaben in @var{string} zur@"uck.
-
-Auf Plattformen, die eine UTF8-Kodierung verwenden, darf @var{string} nur 
-aus US-ASCII-Buchstaben bestehen, darf also insbesondere keine Umlaute oder 
-Eszett enthalten.
 
 Beispiel:
 
