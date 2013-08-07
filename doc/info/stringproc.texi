@@ -743,7 +743,7 @@ Example:
 @anchor{base64_decode}
 @deffn {Function} base64_decode (@var{base64-string})
 
-@c Decodes the string @var{base64-string} coded in base64 back to the original string.
+Decodes the string @var{base64-string} coded in base64 back to the original string.
 
 Example: See @ref{base64}.
 
