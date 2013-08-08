@@ -1,4 +1,4 @@
-@c English version: 2013-08-02
+@c English version: 2013-08-07
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
@@ -573,10 +573,30 @@ Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
 @node Funciones y variables para cadenas,  , Funciones y variables para caracteres, stringproc
 @section Funciones y variables para cadenas
 
-@deffn {Funci@'on} stringp (@var{obj}) 
-Devuelve @code{true} si @var{obj} es una cadena.
-V@'ease un ejemplo en la introducci@'on.
+
+
+@deffn {Funci@'on} base64 (@var{string})
+Devuelve la representaci@'on en base 64 de @var{string} en formato de
+cadena de caracteres.
+
+Ejemplo:
+
+@example
+(%i1) base64 : base64("foo bar baz");
+(%o1)                       Zm9vIGJhciBiYXo=
+(%i2) string : base64_decode(base64);
+(%o2)                          foo bar baz
+@end example
 @end deffn
+
+
+@deffn {Funci@'on} base64_decode (@var{base64-string})
+Decodifica la cadena de caracteres @var{base64-string}, codificada
+en base 64, y devuelve la cadena original.
+
+Para un ejemplo, v@'ease @code{base64}.
+@end deffn
+
 
 @deffn {Funci@'on} charat (@var{string}, @var{n})
 Devuelve el @var{n}-@'esimo car@'acter de @var{string}.
@@ -631,6 +651,33 @@ Ejemplos:
 
 V@'ease tambi@'en @code{parse_string}.
 @end deffn
+
+
+
+
+
+@deffn {Funci@'on} md5sum (@var{string})
+Devuelve, en formato de cadena de caracteres, el resultado de la suma de verificaci@'on
+md5 del argumento @var{string}. Para obtener el valor devuelto por la funci@'on como
+n@'umero entero, fijar la base num@'erica de entrada a 16 y a~nadir como prefijo
+el cero.
+
+Ejemplo:
+
+@example
+(%i1) string : md5sum("foo bar baz");
+(%o1)                  ab07acbb1e496801937adfa772424bf7
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)                 0ab07acbb1e496801937adfa772424bf7
+@end example
+@end deffn
+
+
+
+
+
 
 @deffn {Funci@'on} parse_string (@var{str})
 Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima,
@@ -957,6 +1004,11 @@ en el extremo final de @var{string}.
 @deffn {Funci@'on} strimr (@var{seq}, @var{string}) 
 Act@'ua de forma similar a @code{strim}, pero s@'olo recorta
 en el extremo inicial de @var{string}.
+@end deffn
+
+@deffn {Funci@'on} stringp (@var{obj}) 
+Devuelve @code{true} si @var{obj} es una cadena.
+V@'ease un ejemplo en la introducci@'on.
 @end deffn
 
 @deffn {Funci@'on} substring (@var{string}, @var{start})
