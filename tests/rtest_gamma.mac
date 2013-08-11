@@ -3678,6 +3678,11 @@ relerror(inverse_erf(0.7715),
  1d-15);
 true;
 
+relerror(inverse_erf(- .9763545580611441 ),
+ -1.600070795398459,
+ 1d-15);
+true;
+
 (fpprec:oldfpprec,done);
 done;
 
