@@ -556,20 +556,20 @@
 
 
 ;; Define the actual functions for the user
-(defmfun $jacobi_sn (u m)
+(defun-checked $jacobi_sn ((u m))
   (simplify (list '(%jacobi_sn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_cn (u m)
+(defun-checked $jacobi_cn ((u m))
   (simplify (list '(%jacobi_cn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_dn (u m)
+(defun-checked $jacobi_dn ((u m))
   (simplify (list '(%jacobi_dn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_sn (u m)
+(defun-checked $inverse_jacobi_sn ((u m))
   (simplify (list '(%inverse_jacobi_sn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_cn (u m)
+(defun-checked $inverse_jacobi_cn ((u m))
   (simplify (list '(%inverse_jacobi_cn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_dn (u m)
+(defun-checked $inverse_jacobi_dn ((u m))
   (simplify (list '(%inverse_jacobi_dn) (resimplify u) (resimplify m))))
 
 ;; Possible forms of a complex number:
