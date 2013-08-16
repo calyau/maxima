@@ -113,7 +113,7 @@ will protect the external value of @code{a} from being altered, but
 would let you access what that value was.  Thus the right hand
 side of the assignments, is evaluated in the entering context, before
 any binding occurs.
-Using just @code{block ([x], ...} would cause the @code{x} to have itself
+Using just @code{block ([x], ...)} would cause the @code{x} to have itself
 as value, just as if it would have if you entered a fresh Maxima
 session.
 

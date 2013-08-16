@@ -516,7 +516,7 @@ contraction properties with @code{defcon}.
 @deffn {Function} remcon (@var{tensor_1}, ..., @var{tensor_n})
 @deffnx {Function} remcon (all)
 removes all the contraction properties
-from the @var{tensor_1}, ..., @var{tensor_n}). @code{remcon(all)} removes all contraction
+from the (@var{tensor_1}, ..., @var{tensor_n}). @code{remcon(all)} removes all contraction
 properties from all indexed objects.
 
 @opencatbox
