@@ -40,11 +40,11 @@
 
 ;; encode :  0 (6bit) --> base64 = *chr64*[0] = 'A' = 65  : number --> character
 
-(defvar *chr64* (make-array 64. :element-type 'char :initial-element #\0))
+(defvar *chr64* (make-array 64. :element-type 'character :initial-element #\0))
 
 (do ((i 0 (1+ i)) (ch (coerce *str64* 'list) (cdr ch)))
     ((= i 64.))
-  (setf (svref *chr64* i) (car ch)) )
+  (setf (char *chr64* i) (car ch)) )
 
 
 ;; decode :  'A' = 65 --> *num64*[65] = 0 (6bit)  : character --> number
@@ -55,7 +55,7 @@
 
 (do ((i 0 (1+ i)))
     ((= i 64.))
-  (setf (svref *num64* (char-code (svref *chr64* i))) i) )
+  (setf (svref *num64* (char-code (char *chr64* i))) i) )
 
 
 (defmfun $base64 (s) 
@@ -63,7 +63,7 @@
     (merror "`base64': Argument must be a string.") )
   (let* ((bytes (mapcar #'char-code (coerce s 'list)))
          (len (length s))
-         (base64 (make-array (* 4. (floor (+ len 2.) 3.)) :element-type 'char :initial-element #\0))
+         (base64 (make-array (* 4. (floor (+ len 2.) 3.)) :element-type 'character :initial-element #\0))
          (k 0) b ind )
     (do ()
         ((null bytes))
@@ -77,11 +77,11 @@
                 ,(logand      (svref b 2)    #x3f)                                    ))
       (do ((i 0 (1+ i)))
           ((= i 4.))
-        (setf (svref base64 k) (svref *chr64* (svref ind i)))
+        (setf (char base64 k) (char *chr64* (svref ind i)))
         (incf k) ))
     (setq len (mod len 3))
-    (unless (= len 0) (setf (svref base64 (decf k)) #\=))
-    (when (= len 1) (setf (svref base64 (decf k)) #\=))
+    (unless (= len 0) (setf (char base64 (decf k)) #\=))
+    (when (= len 1) (setf (char base64 (decf k)) #\=))
     (coerce base64 'string) ))
 
 
