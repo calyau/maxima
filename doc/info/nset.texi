@@ -2447,7 +2447,7 @@ carrying the final element unchanged if there are an odd number of elements.
 Then repeat until the list is reduced to a single element, which is the return value.
 
 When the optional argument @var{s_0} is present,
-the result is equivalent @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+the result is equivalent @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 
 For addition of floating point numbers,
 @code{tree_reduce} may return a sum that has a smaller rounding error
