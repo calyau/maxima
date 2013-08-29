@@ -32,7 +32,7 @@
    
    All functions are compiled when loading aes2.mac. Takes a few seconds.
    
-   Maxima version 5.29 or higher.
+   Maxima version 5.31 or higher.
    (Or download, compile and load a recent version of src/numth.lisp.)
 */
 
@@ -41,7 +41,7 @@
 
 gf_set_data(2, x^8+x^4+x^3+x+1)$
 
-gf_make_arrays()$
+gf_make_logs()$
 
 mult_by_table(a, b) := 
    if a = 0 or b = 0 then 0
@@ -143,7 +143,7 @@ mix_columns(state) := block([mat],
 /* inv_mix_columns ********************************************************** */
 
 %_INV_MIX_COLUMNS : 
-   matrixmap('gf_p2n, gf_matinv( matrixmap('gf_n2p, %_MIX_COLUMNS) ) )$
+   matrixmap('gf_p2n, gf_invert_by_lu( matrixmap('gf_n2p, %_MIX_COLUMNS) ) )$
 
 inv_mix_columns(state) := block([mat],
    mat : %_INV_MIX_COLUMNS . genmatrix(state, 3,3,0,0),

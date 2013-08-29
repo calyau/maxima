@@ -1,4 +1,4 @@
-@c English version 2011-12-01
+@c English version 2013-04-04
 @menu
 * Funciones para los n@'umeros::
 * Funciones para los n@'umeros complejos::
@@ -163,6 +163,58 @@ Si el rango de una funci@'on es subconjunto de los n@'umeros enteros, entonces p
 (%o3)                       f(x) - 1
 @end example
 
+Ejemplo de uso:
+
+@c ===beg===
+@c unitfrac(r) := block([uf : [], q],
+@c     if not(ratnump(r)) then 
+@c        error("unitfrac: argument must be a rational number"),
+@c     while r # 0 do (
+@c         uf : cons(q : 1/ceiling(1/r), uf),
+@c         r : r - q),
+@c     reverse(uf));
+@c unitfrac (9/10);
+@c apply ("+", %);
+@c unitfrac (-9/10);
+@c apply ("+", %);
+@c unitfrac (36/37);
+@c apply ("+", %);
+@c ===end===
+@example
+@group
+(%i1) unitfrac(r) := block([uf : [], q],
+    if not(ratnump(r)) then
+       error("unitfrac: argument must be a rational number"),
+    while r # 0 do (
+        uf : cons(q : 1/ceiling(1/r), uf),
+        r : r - q),
+    reverse(uf))$
+@end group
+(%i2) unitfrac (9/10);
+                            1  1  1
+(%o2)                      [-, -, --]
+                            2  3  15
+(%i3) apply ("+", %);
+                               9
+(%o3)                          --
+                               10
+(%i4) unitfrac (-9/10);
+                                  1
+(%o4)                       [- 1, --]
+                                  10
+(%i5) apply ("+", %);
+                                9
+(%o5)                         - --
+                                10
+(%i6) unitfrac (36/37);
+                        1  1  1  1    1
+(%o6)                  [-, -, -, --, ----]
+                        2  3  8  69  6808
+(%i7) apply ("+", %);
+                               36
+(%o7)                          --
+                               37
+@end example
 @end deffn
 
 
@@ -285,7 +337,7 @@ La evaluaci@'on de @var{x} es similar a @code{floor} y @code{ceiling}.
 
 @deffn {Funci@'on} signum (@var{x})
 Tanto sea @var{x} real o complejo, la funci@'on @code{signum} devuelve 0 si @var{x}
-es cero. Para un valor no nulo de @var{x}, la funci@'on devuelve @code{abs(x)/x}.
+es cero. Para un valor no nulo de @var{x}, la funci@'on devuelve @code{x/abs(x)}.
 
 Para valores no num@'ericos de @var{x}, Maxima intenta determinar el
 signo del argumento. Cuando es negativo, cero o positivo, @code{signum}

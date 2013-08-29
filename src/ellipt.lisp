@@ -556,20 +556,20 @@
 
 
 ;; Define the actual functions for the user
-(defmfun $jacobi_sn (u m)
+(defun-checked $jacobi_sn ((u m))
   (simplify (list '(%jacobi_sn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_cn (u m)
+(defun-checked $jacobi_cn ((u m))
   (simplify (list '(%jacobi_cn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_dn (u m)
+(defun-checked $jacobi_dn ((u m))
   (simplify (list '(%jacobi_dn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_sn (u m)
+(defun-checked $inverse_jacobi_sn ((u m))
   (simplify (list '(%inverse_jacobi_sn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_cn (u m)
+(defun-checked $inverse_jacobi_cn ((u m))
   (simplify (list '(%inverse_jacobi_cn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_dn (u m)
+(defun-checked $inverse_jacobi_dn ((u m))
   (simplify (list '(%inverse_jacobi_dn) (resimplify u) (resimplify m))))
 
 ;; Possible forms of a complex number:
@@ -1006,18 +1006,39 @@
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
+    ;; To numerically evaluate inverse_jacobi_sn (asn), use
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;
+    ;; But F(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1).  Thus
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;          = x*rf(1-x^2,1-m*x^2,1)
+    ;;
+    ;; I (rtoy) am not 100% about the first identity above for all
+    ;; complex values of x and m, but tests seem to indicate that it
+    ;; produces the correct value as verified by verifying
+    ;; jacobi_sn(inverse_jacobi_sn(x,m),m) = x.
     (cond ((float-numerical-eval-p u m)
-	   ;; Numerically evaluate asn
-	   ;;
-	   ;; asn(x,m) = F(asin(x),m)
-	   (complexify (elliptic-f (cl:asin ($float u)) ($float m))))
+	   (complexify (* u (bigfloat::bf-rf (bigfloat:to (float (- 1 (* u u))))
+					     (bigfloat:to (float (- 1 (* m u u))))
+					     1))))
 	  ((complex-float-numerical-eval-p u m)
-	   (complexify (elliptic-f (cl:asin (complex ($realpart u) ($imagpart u)))
-				   (complex ($realpart m) ($imagpart m)))))
+	   (let ((uu (complex ($float ($realpart u))
+			      ($float ($imagpart u))))
+		 (mm (complex ($float ($realpart m))
+			      ($float ($imagpart m)))))
+	     (complexify (* uu (bigfloat::bf-rf (- 1 (* uu uu))
+						(- 1 (* mm uu uu))
+						1)))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
-	   (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:to u))
-					(bigfloat:to m))))
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat:* uu
+			     (bigfloat::bf-rf (bigfloat:- 1 (bigfloat:* uu uu))
+					      (bigfloat:- 1 (bigfloat:* mm uu uu))
+					      1)))))
 	  ((zerop1 u)
 	   ;; asn(0,m) = 0
 	   0)

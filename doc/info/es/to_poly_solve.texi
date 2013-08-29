@@ -1,4 +1,4 @@
-@c English version 2011-10-30
+@c English version 2013-06-15
 @menu
 * Funciones y variables para to_poly_solve::
 @end menu
@@ -642,7 +642,6 @@ La funci@'on @code{isreal_p} consulta los hechos almacenados en la base de datos
 (%o4)                      isreal_p(z)
 @end example
 
-@b{Limitaciones}
 Con frecuencia, @code{isreal_p} devuelve una forma nominal cuando deber@'{@dotless{i}}a
 devolver @code{false}; por ejemplo, la funci@'on logar@'{@dotless{i}}tmica no toma valores
 reales en toda la recta real, por lo que  @code{isreal_p(log(x))} deber@'{@dotless{i}}a
@@ -657,6 +656,9 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'ease tambi@'en @code{complex_number_p}.
 
+La funci@'on @code{isreal_p} es experimental; sus
+especificaciones pueden cambiar y su funcionalidad puede incorporarse a otras funciones
+de Maxima.
 @end deffn
 
 
@@ -820,7 +822,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 @deffn {Funci@'on} rectform_log_if_constant (@var{e})
 
-La funci@'on @code{rectform_if_constant} convierte todos los t@'erminos
+La funci@'on @code{rectform_log_if_constant} convierte todos los t@'erminos
 de la forma @code{log(c)} a @code{rectform(log(c))}, siendo @code{c} 
 una expresi@'on constante o declarada como tal.
 
@@ -982,10 +984,10 @@ comportamiento:
                        2                                 2
 @end example
 
-Las condiciones @code{-%pi/2<parg(%g6),parg(%g6)<=%pi/2} dicen que
-@code{%g6} est@'a en el rango de la funci@'on radical; cuando eso se
+Las condiciones @code{-%pi/2<parg(%g130),parg(%g130)<=%pi/2} dicen que
+@code{%g130} est@'a en el rango de la funci@'on radical; cuando eso se
 cumpla, el conjunto de ecuaciones de @code{sqrt(x) = 3} coincide con
-el de @code{%g6-3,x=%g6^2}.
+el de @code{%g130-3,x=%g130^2}.
 
 Para convertir a forma polin@'omica una expresi@'on trigonom@'etrica,
 es necesario introducir una sustituci@'on no algebraica; tal sustituci@'on
@@ -1041,16 +1043,10 @@ s@'{@dotless{i}}mbolo o una lista o conjunto de s@'{@dotless{i}}mbolos. Cuando
 uno de los elementos de @var{e} no sea una igualdad, como @math{x^2 -1},
 se supodr@'a que es igual a cero.
 
-La estrategia b@'asica de @code{to_poly_solve} consiste en utilizar
-@code{to_poly} para convertir la entrada a su forma polinomial e invocar
-posteriormente @code{algsys}. As@'{@dotless{i}}, las variables opcionales
-que afectan a @code{algsys}, especialmente @code{algexact}, tambi@'en
-afectan a @code{to_poly_solve}. El valor por defecto de @code{algexact} es
-@code{false}, pero para @code{to_poly_solve} se recomienda que tome el 
-valor @code{true}. La funci@'on @code{to_poly_solve} no asigna localmente
-a @code{algexact} el valor @code{true}, lo que imposibilitar@'{@dotless{i}}a
-encontrar soluciones aproximadas cuando @code{algsys} sea incapaz de encontrar
-las exactas.
+La estrategia b@'asica de @code{to_poly_solve} consiste en convertir la entrada en un
+polinomio y luego invocar a la funci@'on @code{algsys}. Internamente,  @code{to_poly_solve}
+asigna a @code{algexact} el valor @code{true}. Para cambiar el valor de @code{algexact},
+debe an@~nadirse @code{'algexact=false} a la lista de argumentos de @code{to_poly_solve}.
 
 Cuando @code{to_poly_solve} consigue determinar el conjunto de soluciones, cada
 miembro del conjunto de soluciones es una lista en un objeto  @code{%union}:

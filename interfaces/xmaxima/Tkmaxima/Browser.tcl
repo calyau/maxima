@@ -397,7 +397,7 @@ proc decodeURL { name } {
     }
 
 
-    if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/([^ ]+)$} $name all type port path ] } {
+    if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/(.+)$} $name all type port path ] } {
 	lappend answer type $type
     } else {
 	set path $name ; set type ""

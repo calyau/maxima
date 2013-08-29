@@ -1,4 +1,4 @@
-@c English version 2012-07-24
+@c English version 2013-08-03
 @page
 @node Arrays, Estructuras, Listas, Tipos de datos y estructuras
 @section Arrays
@@ -369,7 +369,7 @@ Ejemplos:
 Asigna @var{x} a @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
 siendo @var{A} un array y @var{i_1}, @dots{}, @var{i_n} enteros.
 
-@code{arraysetapply} eval@'ua sus argumentos..
+@code{arraysetapply} eval@'ua sus argumentos.
 @end deffn
 
 
@@ -671,7 +671,7 @@ Eval@'ua la expresi@'on subindicada @code{@var{x}[@var{i}]}.
 
 La funci@'on @code{subvar} eval@'ua sus argumentos.
 
-La instrucci@'on @code{arraymake (@var{x}, [@var{i}]} construye la expresi@'on @code{@var{x}[@var{i}]},
+La instrucci@'on @code{arraymake (@var{x}, [@var{i}])} construye la expresi@'on @code{@var{x}[@var{i}]},
 pero no la eval@'ua.
 
 Ejemplos:

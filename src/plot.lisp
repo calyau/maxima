@@ -77,9 +77,8 @@ sin(y)*(10.0+6*cos(x)),
     ;; adaptive-plotting will do.
     ((mlist) $adapt_depth 5)
     ((mlist) $gnuplot_preamble "")
-    ((mlist) $gnuplot_default_term_command ,(if (string= *autoconf-win32* "true") "set term windows" "set term pop"))
-    ((mlist) $gnuplot_dumb_term_command
-     "set term dumb 79 22")
+    ((mlist) $gnuplot_default_term_command "set term pop")
+    ((mlist) $gnuplot_dumb_term_command "set term dumb 79 22")
     ((mlist) $gnuplot_ps_term_command
      "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
     ((mlist) $plot_realpart nil)))
@@ -1150,9 +1149,7 @@ sin(y)*(10.0+6*cos(x)),
              (setq ymax (car l)))))
     (list '(mlist) ymin ymax)))
 
-(defvar $gnuplot_view_args (if (string= *autoconf-win32* "true")
-                               "~s -"
-                               "-persist ~s"))
+(defvar $gnuplot_view_args "-persist ~s")
 
 (defvar $gnuplot_file_args "~s")
 

@@ -1,4 +1,4 @@
-@c English version: 2011-06-11
+@c English version: 2013-08-03
 @menu
 * Introducci@'on a contrib_ode::
 * Funciones y variables para contrib_ode::
@@ -348,7 +348,7 @@ orden.
 @code{gauss_a(a,b,c,x)} y @code{gauss_b(a,b,c,x)} son funciones
 geom@'etricas 2F1 . Representan dos soluciones independientes
 cualesquiera de la ecuaci@'on diferencial hipergeom@'etrica
-@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} (A&S 15.5.1).  
+@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x] diff(y,x) - aby = 0} (A&S 15.5.1).
 
 El @'unico uso que se hace de estas funciones es en las soluciones de
 EDOs que devuelven @code{odelin} y @code{contrib_ode}. La definici@'on

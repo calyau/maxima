@@ -1,4 +1,4 @@
-@c English version 2011-09-03
+@c English version 2013-03-31
 @menu
 * Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::  
@@ -344,7 +344,7 @@ Si @code{domain} vale @code{complex}, @code{sqrt (x^2)} permanecer@'a como
 @defvr  {Propiedad} evenfun
 @defvrx {Propiedad} oddfun
 
-@code{declare(f, evenfun} o @code{declare(f, oddfun} indican a Maxima que reconozca
+@code{declare(f, evenfun} o @code{declare(f, oddfun)} indican a Maxima que reconozca
 la funci@'on @code{f} como par o impar, respectivamente.
 
 Ejemplos:

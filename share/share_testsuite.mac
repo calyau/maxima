@@ -45,7 +45,7 @@ block
         rtest_numericalio,
         [rtest_simplify_sum, 57],
         rtest_solve_rec,
-        [rteststringproc, 16],
+        [rteststringproc, 12, 14],
         rtest_opproperties,
         rtest_stats,
         rtest_distrib,
@@ -70,15 +70,13 @@ block
         rtest_wilcoxon, 
         rtest_bitwise,
         /* symtest, -- many bugs */
-        /* gf_test, -- many bugs */
-        /* gf_roots_test, -- many bugs */
-        /* gf_hard_test, -- many bugs  */
+        gf_test,
         rtest_namespaces,
         arag_test, 
         /* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
         rtest_to_poly, 
-        [rtestprintf, 29, 38, 39, 40, 41, 47, 48],
+        [rtestprintf, 27, 29, 38, 39, 40, 47, 48, 54],
         rtest_simplex,
         rtest_graphs,
         rtest_abs_integrate,

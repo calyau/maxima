@@ -24,7 +24,7 @@
 @code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
 and adds some useful functions for file in/output.
 
-For questions and bugs please mail to van.nek at arcor.de .
+For questions and bugs please mail to volkervannek at gmail dot com .
 
 In Maxima a string is easily constructed by typing "text".
 @mref{stringp} tests for strings.
@@ -146,7 +146,8 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @anchor{flength}
 @deffn {Function} flength (@var{stream})
 
-Returns the number of elements in @var{stream}.
+Returns the number of elements in @var{stream} 
+where @var{stream} has to be a stream from or to a file.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -154,10 +155,11 @@ Returns the number of elements in @var{stream}.
 @deffn  {Function} fposition (@var{stream})
 @deffnx {Function} fposition (@var{stream}, @var{pos})
 
-Returns the current position in @var{stream}, if @var{pos} is not used.  If 
-@var{pos} is used, @code{fposition} sets the position in @var{stream}.
-@var{pos} has to be a positive number, the first element in @var{stream} is in 
-position 1.
+Returns the current position in @var{stream}, if @var{pos} is not used. 
+If @var{pos} is used, @code{fposition} sets the position in @var{stream}.
+@var{stream} has to be a stream from or to a file and 
+@var{pos} has to be a positive number where the first element in @var{stream} 
+is in position 1.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -167,6 +169,66 @@ position 1.
 
 Writes a new line (to @var{stream}), if the position is not at the beginning of 
 a line.  See also @mrefdot{newline}
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{get_output_stream_string}
+@deffn {Funktion} get_output_stream_string (@var{stream})
+
+Gibt Buchstaben, aktuell in dem ge@"offneten Datenstrom @var{stream} 
+enthalten sind, in einer Zeichenkette zur@"uck. Die zur@"uck gegebenen 
+Buchstaben werden dabei aus dem Datenstrom entfernt. @var{stream} muss durch 
+@code{make_string_output_stream} erzeugt worden sein.
+
+Beispiel: Siehe @ref{make_string_output_stream} .
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{make_string_input_stream}
+@deffn {Funktion} make_string_input_stream (@var{string})
+@deffnx {Funktion} make_string_input_stream (@var{string}, @var{start})
+@deffnx {Funktion} make_string_input_stream (@var{string}, @var{start}, @var{end})
+
+Gibt einen Datenstrom zur@"uck, der Teile der Zeichenkette @var{string} 
+und ein Dateiende enth@"alt. 
+Ohne optionale Argumente enth@"alt der Strom die gesamte Zeichenkette 
+und ist vor dem ersten Buchstaben positioniert. Mit den optionalen Argumenten 
+@var{start} und @var{end} l@"asst sich der Abschnitt der Zeichenkette festlegen, 
+den der Datenstrom enth@"alt. Der erste Buchstabe befindet sich dabei an der 
+Position 1.
+ 
+@example
+(%i1) istream : make_string_input_stream("text", 1, 4);
+(%o1)              #<string-input stream from "text">
+(%i2) (while (c : readchar(istream)) # false do sprint(c), newline())$
+t e x 
+(%i3) close(istream)$
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{make_string_output_stream}
+@deffn {Funktion} make_string_output_stream ()
+
+Gibt einen Datenstrom zur@"uck, der Buchstaben aufnehmen kann. Die aktuell  
+im Strom enthaltenden Buchstaben k@"onnen mit @ref{get_output_stream_string} 
+entnommen werden.
+ 
+@example
+(%i1) ostream : make_string_output_stream();
+(%o1)               #<string-output stream 09622ea0>
+(%i2) printf(ostream, "foo")$
+
+(%i3) printf(ostream, "bar")$
+
+(%i4) string : get_output_stream_string(ostream);
+(%o4)                            foobar
+(%i5) printf(ostream, "baz")$
+
+(%i6) string : get_output_stream_string(ostream);
+(%o6)                              baz
+(%i7) close(ostream)$
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -209,15 +271,36 @@ If an existing file is opened, @code{openw} destructively modifies @var{file}.
 @deffn  {Function} printf (@var{dest}, @var{string})
 @deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, @dots{}, @var{expr_n})
 
-Makes the Common Lisp function FORMAT available in Maxima.
-(From gcl.info: "format produces formatted output by outputting the characters
-of control-string string and observing that a tilde introduces a directive.
-The character after the tilde, possibly preceded by prefix parameters and 
-modifiers, specifies what kind of formatting is desired.  Most directives use 
-one or more elements of args to create their output.")
+Erzeugt eine formatierte Ausgabe. Der Zielparameter @var{dest} gibt an, wo die 
+Ausgabe erfolgen soll. M@"oglich sind hier ein Ausgabestrom oder die globalen 
+Variablen @code{true} und @code{false}. @code{true} bewirkt eine Ausgabe im Terminal. 
+Der R@"uckgabewert von @code{printf} ist in diesem Fall @code{false}. 
+@code{false} als Zielparameter bewirkt die Ausgabe im R@"uckgabewert. 
 
-The following description and the examples may give an idea of using 
-@code{printf}.  See a Lisp reference for more information.
+Die Buchstaben des Kontrollparameters @var{string} werden der Reihe nach ausgegeben, 
+wobei jedoch eine Tilde eine Direktive einleitet. Die Direktiven verwenden 
+dann im Allgemeinen die nachstehenden Parameter @var{expr_1}, @dots{}, @var{expr_n}, 
+um die Ausgabe zu erzeugen. Der Buchstabe nach der Tilde gibt dabei an, 
+welche Art der Formatierung gew@"unscht ist. 
+
+@code{printf} stellt die Common Lisp Funktion @code{format} in Maxima zur Verf@"ugung. 
+Das folgende Beispiel zeigt die grunds@"atzliche Beziehung zwischen diesen 
+beiden Funktionen.
+
+@example
+(%i1) printf(true, "R~dD~d~%", 2, 2);
+R2D2
+(%o1)                                false
+(%i2) :lisp (format t "R~dD~d~%" 2 2)
+R2D2
+NIL
+@end example
+
+Die folgende Beschreibung und die Beispiele beschr@"anken sich auf eine grobe 
+Skizze der Verwendungsm@"oglichkeiten von @code{printf}.  
+Die Lisp Funktion @code{format} ist in vielen Referenzb@"uchern ausf@"uhrlich 
+beschrieben. Eine hilfreiche Quelle ist z.B. das frei verf@"ugbare Online-Manual 
+"Common Lisp the Language" von Guy L. Steele. Siehe dort das Kapitel 22.3.3. 
 
 @example
    ~%       new line
@@ -244,8 +327,13 @@ The following description and the examples may give an idea of using
    ~@{       iteration, ~@} terminates
 @end example
 
-Note that the selection directive @code{~[} is zero indexed.
-Also note that the directive ~* is not supported.
+Die Direktive ~h f@"ur Gleitkommazahlen mit beliebiger Genauigkeit 
+entspricht nicht dem Lisp-Standard und wird daher unten n@"aher beschrieben. 
+
+Die Direktive ~* wird nicht unterst@"utzt.
+
+Ist @var{dest} ein Datenstrom oder @code{true}, gibt @code{printf} 
+@code{false} zur@"uck. Andernfalls ist der R@"uckgabewert eine Zeichenkette.
 
 @example
 (%i1) printf( false, "~a ~a ~4f ~a ~@@r", 
@@ -253,18 +341,67 @@ Also note that the directive ~* is not supported.
 (%o1)                 String sym 1.23 2*sqrt(3) CXLIV
 (%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
 (%o2)                          one 2 THREE 
-(%i3) printf(true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+(%i3) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
           mat = args(matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]))$
       1.1       2.0       3.3 
       4.0       5.0       6.0 
       7.0       8.9       9.0 
 (%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
-(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%i5) printf( false, control, n,n, if n = 1 then 1 else 2 ), n = 2;
 (%o5)                    Two birds are singing.
 @end example
 
-If @var{dest} is a stream or @code{true}, then @code{printf} returns
-@code{false}.  Otherwise, @code{printf} returns a string containing the output.
+Die Direktive ~h wurde f@"ur Gleitkommazahlen mit beliebiger Genauigkeit 
+eingef@"uhrt.
+
+@example
+~w,d,e,x,o,p@@H
+ w : width
+ d : decimal digits behind floating point
+ e : minimal exponent digits
+ x : preferred exponent
+ o : overflow character
+ p : padding character
+ @@ : display sign for positive numbers
+@end example
+
+@example
+(%i1) fpprec : 1000$
+(%i2) printf(true, "|~h|~%", 2.b0^-64)$
+|0.0000000000000000000542101086242752217003726400434970855712890625|
+(%i3) fpprec : 26$
+(%i4) printf(true, "|~h|~%", sqrt(2))$
+|1.4142135623730950488016887|
+(%i5) fpprec : 24$
+(%i6) printf(true, "|~h|~%", sqrt(2))$
+|1.41421356237309504880169|
+(%i7) printf(true, "|~28h|~%", sqrt(2))$
+|   1.41421356237309504880169|
+(%i8) printf(true, "|~28,,,,,'*h|~%", sqrt(2))$
+|***1.41421356237309504880169|
+(%i9) printf(true, "|~,18h|~%", sqrt(2))$
+|1.414213562373095049|
+(%i10) printf(true, "|~,,,-3h|~%", sqrt(2))$
+|1414.21356237309504880169b-3|
+(%i11) printf(true, "|~,,2,-3h|~%", sqrt(2))$
+|1414.21356237309504880169b-03|
+(%i12) printf(true, "|~20h|~%", sqrt(2))$
+|1.41421356237309504880169|
+(%i13) printf(true, "|~20,,,,'+h|~%", sqrt(2))$
+|++++++++++++++++++++|
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{readchar}
+@deffn {Funktion} readchar (@var{stream})
+
+Entfernt und gibt den ersten Buchstaben in @var{stream} zur@"uck. 
+Falls das Ende des Streams erreicht sein sollte, gibt @code{readchar} 
+@code{false} zur@"uck.
+
+Beispiel: Siehe @ref{make_string_input_stream}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -272,7 +409,7 @@ If @var{dest} is a stream or @code{true}, then @code{printf} returns
 @deffn {Function} readline (@var{stream})
 
 Returns a string containing the characters from the current position in 
-@var{stream} up to the end of the line or @var{false} if the end of the file 
+@var{stream} up to the end of the line or @code{false} if the end of the file 
 is encountered.
 @end deffn
 
@@ -479,35 +616,60 @@ Returns @code{true} if @var{char} is an uppercase character.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@anchor{stringp}
-@deffn {Function} stringp (@var{obj})
+@anchor{base64}
+@deffn {Funktion} base64 (@var{string})
 
-Returns @code{true} if @var{obj} is a string.
-See introduction for example.
+Gibt einen String zur@"uck, der die Base64-Darstellung von @var{string} zeigt. 
+
+Sind in @var{string} Umlaute oder Eszett enthalten, ist das Ergebnis von der 
+verwendeten Plattform abh@"angig. Es wird aber durch eine Anwendung von 
+@ref{base64_decode} in jedem Fall wieder in den urspr@"unglichen String 
+zur@"uck verwandelt.
+
+Beispiel:
+
+@example
+(%i1) base64 : base64("foo bar baz");
+(%o1)                       Zm9vIGJhciBiYXo=
+(%i2) string : base64_decode(base64);
+(%o2)                          foo bar baz
+(%i3) base64_decode(base64("@"a@"o@"u"));
+(%o3)                            @"a@"o@"u
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{base64_decode}
+@deffn {Funktion} base64_decode (@var{base64-string})
+
+Dekodiert den Base64-kodierten String @var{base64-string} wieder zur@"uck in 
+den urspr@"unglichen String.
+
+Beispiel: Siehe @ref{base64}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charat}
-@deffn {Function} charat (@var{string}, @var{n})
+@deffn {Funktion} charat (@var{string}, @var{n})
 
-Returns the @var{n}-th character of @var{string}.
-The first character in @var{string} is returned with @var{n} = 1.
+Gibt den @var{n}-ten Buchstaben in @var{string} zur@"uck.
+Den ersten Buchstaben in @var{string} erh@"alt man mit @var{n} = 1. 
 
-Example:
+Beispiel:
 
 @example
-(%i1) charat("Lisp",1);
+(%i1) charat("Lisp", 1);
 (%o1)                           L
 @end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charlist}
-@deffn {Function} charlist (@var{string})
+@deffn {Funktion} charlist (@var{string})
 
-Returns the list of all characters in @var{string}.
+Gibt eine Liste mit allen Buchstaben in @var{string} zur@"uck.
 
-Example:
+Beispiel:
 
 @example
 (%i1) charlist("Lisp");
@@ -537,6 +699,26 @@ Examples:
 (%o1)                       42
 (%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
 (%o2)                   baz + 1764
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{md5sum}
+@deffn {Funktion} md5sum (@var{string})
+
+Gibt die md5-Pr@"ufsumme von @var{string} als String zur@"uck. 
+Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
+setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
+
+Beispiel:
+
+@example
+(%i1) string : md5sum("foo bar baz");
+(%o1)               ab07acbb1e496801937adfa772424bf7
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)              0ab07acbb1e496801937adfa772424bf7
 @end example
 @end deffn
 
@@ -883,6 +1065,14 @@ Like @mref{strim} except that only the left end of @var{string} is trimmed.
 @deffn {Function} strimr (@var{seq}, @var{string}) 
 
 Like @mref{strim} except that only the right end of string is trimmed.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{stringp}
+@deffn {Function} stringp (@var{obj})
+
+Returns @code{true} if @var{obj} is a string.
+See introduction for example.
 @end deffn
 
 @c -----------------------------------------------------------------------------

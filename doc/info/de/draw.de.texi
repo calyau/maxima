@@ -1923,7 +1923,7 @@ Multiplot.
              xrange = [0,1],
              yrange = [0,2],
              proportional_axes=xy),
-        gr2d(explicit(x^2,x,0,1))
+        gr2d(explicit(x^2,x,0,1)))$
 @end example
 @end defvr
 

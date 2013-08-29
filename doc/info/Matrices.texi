@@ -458,8 +458,8 @@ Default value: @code{true}
 
 When @code{domxexpt} is @code{true},
 a matrix exponential, @code{exp (@var{M})} where @var{M} is a matrix, is
-interpreted as a matrix with element @code{[i,j} equal to @code{exp (m[i,j])}.
-Otherwise @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)}}.
+interpreted as a matrix with element @code{[i,j]} equal to @code{exp (m[i,j])}.
+Otherwise @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)})}.
 
 @code{domxexpt} affects all expressions of the form
 @code{@var{base}^@var{power}} where @var{base} is an expression assumed scalar

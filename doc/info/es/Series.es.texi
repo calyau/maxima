@@ -1,16 +1,18 @@
-@c English version 2011-06-13
+@c English version 2013-04-02
 @menu
-* Sumas y productos::
+* Funciones y variables para sumas y productos::
 * Introducci@'on a las series::
 * Funciones y variables para las series::
-* Series de Poisson::
+* Introducci@'on a las series de Fourier::
+* Funciones y variables para series de Fourier::
+* Funciones y variables para series de Poisson::
 @end menu
 
 
 
 
-@node Sumas y productos, Introducci@'on a las series, Series, Series
-@section Sumas y productos
+@node Funciones y variables para sumas y productos, Introducci@'on a las series, Sumas productos y series, Sumas productos y series
+@section Funciones y variables para sumas y productos
 
 
 
@@ -366,11 +368,22 @@ Ejemplos:
 
 
 
-@node Introducci@'on a las series, Funciones y variables para las series, Sumas y productos, Series
+
+
+
+
+
+
+
+@node Introducci@'on a las series, Funciones y variables para las series, Funciones y variables para sumas y productos, Sumas productos y series
 @section Introducci@'on a las series
 
-Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular las series de las funciones diferenciables. Tambi@'en tiene herramientas como @code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en el contexto de las series. Esta secci@'on presenta las variables globales que controlan la expansi@'on.
-@c end concepts Series
+Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular
+las series de las funciones diferenciables. Tambi@'en tiene herramientas como 
+@code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. 
+Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en 
+el contexto de las series. Esta secci@'on presenta las variables globales que 
+controlan la expansi@'on.
 
 
 
@@ -381,7 +394,7 @@ Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular
 
 
 
-@node Funciones y variables para las series, Series de Poisson, Introducci@'on a las series, Series
+@node Funciones y variables para las series, Introducci@'on a las series de Fourier, Introducci@'on a las series, Sumas productos y series
 @section Funciones y variables para las series
 
 @defvr {Variable opcional} cauchysum
@@ -1090,8 +1103,144 @@ Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimien
 
 
 
-@node Series de Poisson, , Funciones y variables para las series, Series
-@section Series de Poisson
+@node Introducci@'on a las series de Fourier, Funciones y variables para series de Fourier, Funciones y variables para las series, Sumas productos y series
+@section Introducci@'on a las series de Fourier
+
+El paquete @code{fourie} contiene funciones para el c@'alculo simb@'olico de
+series de Fourier. Hay funciones en el paquete @code{fourie} para calcular los
+coeficientes y para manipular las expresiones.
+
+
+
+
+
+
+
+
+
+
+
+@node Funciones y variables para series de Fourier, Funciones y variables para series de Poisson, Introducci@'on a las series de Fourier, Sumas productos y series
+@section Funciones y variables para series de Fourier
+
+
+@deffn {Funci@'on} equalp (@var{x}, @var{y})
+Devuelve @code{true} si @code{equal (@var{x}, @var{y})}, en otro caso devuelve @code{false}. No devuelve el mensaje de error que se obtiene de  @code{equal (x, y)} en un caso como @'este.
+@end deffn
+
+
+@deffn {Funci@'on} remfun (@var{f}, @var{expr})
+@deffnx {Funci@'on} remfun (@var{f}, @var{expr}, @var{x})
+La llamada @code{remfun (@var{f}, @var{expr})} reemplaza todas las subexpresiones @code{@var{f} (@var{arg})} por @var{arg} en @var{expr}.
+
+La llamada @code{remfun (@var{f}, @var{expr}, @var{x})} reemplaza todas las subexpresiones @code{@var{f} (@var{arg})} por @var{arg} en @var{expr} s@'olo si @var{arg} contiene a la variable @var{x}.
+@end deffn
+
+
+@deffn {Funci@'on} funp (@var{f}, @var{expr})
+@deffnx {Funci@'on} funp (@var{f}, @var{expr}, @var{x})
+La llamada @code{funp (@var{f}, @var{expr})} devuelve @code{true} si @var{expr} contiene la funci@'on @var{f}.
+
+La llamada @code{funp (@var{f}, @var{expr}, @var{x})} devuelve @code{true} si @var{expr} contiene la funci@'on @var{f} y la variable @var{x} est@'a presente en el argumento de alguna de las presencias de @var{f}.
+@end deffn
+
+
+@deffn {Funci@'on} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Funci@'on} absint (@var{f}, @var{x})
+@deffnx {Funci@'on} absint (@var{f}, @var{x}, @var{a}, @var{b})
+La llamada @code{absint (@var{f}, @var{x}, @var{halfplane})} devuelve la integral indefinida de @var{f} con respecto a 
+@var{x} en el semiplano dado (@code{pos}, @code{neg} o @code{both}). La funci@'on @var{f} puede contener expresiones de la forma @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
+
+La llamada @code{absint (@var{f}, @var{x})} equivale a @code{absint (@var{f}, @var{x}, pos)}.
+
+La llamada @code{absint (@var{f}, @var{x}, @var{a}, @var{b})} devuelve la integral definida de @var{f} con respecto a  @var{x} de @var{a} a @var{b}.
+@end deffn
+
+
+@deffn {Funci@'on} fourier (@var{f}, @var{x}, @var{p})
+Devuelve una lista con los coeficientes de Fourier de 
+@code{@var{f}(@var{x})} definida en el intervalo @code{[-p, p]}.
+@end deffn
+
+
+
+@deffn {Funci@'on} foursimp (@var{l})
+Simplifica @code{sin (n %pi)} a 0 si @code{sinnpiflag} vale @code{true} y
+@code{cos (n %pi)} a @code{(-1)^n} si @code{cosnpiflag} vale @code{true}.
+@end deffn
+
+
+
+@defvr {Variable opcional} sinnpiflag
+Valor por defecto: @code{true}
+
+V@'ease @code{foursimp}.
+@end defvr
+
+
+@defvr {Variable opcional} cosnpiflag
+Valor por defecto: @code{true}
+
+V@'ease @code{foursimp}.
+
+@end defvr
+
+
+
+@deffn {Funci@'on} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+Calcula y devuelve la serie de Fourier a partir de la lista de los coeficientes de Fourier @var{l} hasta el t@'ermino @var{limit} (@var{limit} puede ser @code{inf}). Los argumentos @var{x} y @var{p} tienen el mismo significado que en
+@code{fourier}.
+@end deffn
+
+
+
+@deffn {Funci@'on} fourcos (@var{f}, @var{x}, @var{p})
+Devuelve los coeficientes de los cosenos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
+@end deffn
+
+
+
+@deffn {Funci@'on} foursin (@var{f}, @var{x}, @var{p})
+Devuelve los coeficientes de los senos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
+@end deffn
+
+
+
+@deffn {Funci@'on} totalfourier (@var{f}, @var{x}, @var{p})
+Devuelve @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
+@end deffn
+
+
+
+@deffn {Funci@'on} fourint (@var{f}, @var{x})
+Calcula y devuelve la lista de los coeficientes integrales de Fourier de @code{@var{f}(@var{x})} definida en @code{[minf, inf]}.
+@end deffn
+
+
+
+@deffn {Funci@'on} fourintcos (@var{f}, @var{x})
+Devuelve los coeficientes integrales de los cosenos  @code{@var{f}(@var{x})} en @code{[0, inf]}.
+@end deffn
+
+
+
+@deffn {Funci@'on} fourintsin (@var{f}, @var{x})
+Devuelve los coeficientes integrales de los senos  @code{@var{f}(@var{x})} en @code{[0, inf]}.
+@end deffn
+
+
+
+
+
+
+
+
+
+
+
+
+@node Funciones y variables para series de Poisson, , Funciones y variables para series de Fourier, Sumas productos y series
+@section Funciones y variables para series de Poisson
 
 
 @deffn {Funci@'on} intopois (@var{a})

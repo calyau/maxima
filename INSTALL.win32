@@ -160,8 +160,10 @@ Download img.kit from <http://www.tcl.tk/starkits/> and put it in
 <http://www.jrsoftware.org/isinfo.php>. 
 
 7) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
-Version 4.6 patchlevel 0 works. 
-Install in your MSYS user home directory in ~/programs/gnuplot 
+It is recomended to use version 4.6 patchlevel 3 or more recent (If you
+do have to use an older version, read the Maxima documentation for variable
+gnuplot_view_args).  
+Install gnuplot in your MSYS user home directory in ~/programs/gnuplot 
 
 8) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
 Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 

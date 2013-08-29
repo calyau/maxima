@@ -34,7 +34,7 @@
    
    All functions are compiled when loading aes.mac. Takes a few seconds.
    
-   Functions in this file work in Maxima version 5.29 or higher.
+   Functions in this file work in Maxima version 5.31 or higher.
    (Or download from git, compile and load src/numth.lisp.)
 */
 
@@ -112,7 +112,7 @@ mix_columns(state) := block([mixed],
 
 /* inv_mix_columns ********************************************************** */
 
-%_INV_MIX_COLUMNS : gf_matinv(%_MIX_COLUMNS)$
+%_INV_MIX_COLUMNS : gf_invert_by_lu(%_MIX_COLUMNS)$
 
 inv_mix_columns(state) := block([mixed],
    state : mat_n2p(state),

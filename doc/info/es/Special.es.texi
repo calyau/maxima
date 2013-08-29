@@ -1,4 +1,4 @@
-@c English version 2012-07-30
+@c English version 2013-07-30
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -29,9 +29,9 @@ struve_l (v,z)            Funci@'on L de Struve
 %p[u,v] (z)               Funci@'on de Legendre de primera especie
 %q[u,v] (z)               Funci@'on de Legendre de segunda especie
 %f[p,q] ([], [], expr)    Funci@'on hipergeom@'etrica generalizada
-gamma()                   Funci@'on Gamma
+gamma(z)                  Funci@'on Gamma
 gammagreek(a,z)           Funci@'on Gamma incompleta
-gammaincomplete(a,z)      Extremo de la funci@'on Gamma incompleta
+gamma_incomplete (a,z)    Extremo de la funci@'on Gamma incompleta
 hypergeometric(l1, l2, z) Funci@'on hipergeom@'etrica
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
@@ -526,8 +526,34 @@ La constante de Euler-Mascheroni es @code{%gamma}.
 Logaritmo natural de la funci@'on gamma.
 @end deffn
 
+
+
+@deffn {Funci@'on} gamma_greek (@var{a}, @var{z})
+
+Funci@'on gamma incompleta inferior (A&S 6.5.2):
+
+@ifnottex
+@example
+                         z
+                        /
+                        [  a - 1   - t
+    gamma_greek(a, z) = I t      %e    dt
+                        ]
+                        /
+                         0
+@end example
+@end ifnottex
+@tex
+$$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
+
+V@'ease tambi@'en @code{gamma_incomplete} (funci@'on gamma incompleta superior).
+@end deffn
+
+
+
 @deffn {Funci@'on} gamma_incomplete (@var{a},@var{z})
-Funci@'on gamma incompleta superior, A&S 6.5.2:
+Funci@'on gamma incompleta superior, A&S 6.5.3:
 
 @ifnottex
 @example
@@ -623,7 +649,7 @@ se expande en t@'erminos de
 
 
 @defvr {Variable optativa} gammalim
-Valor por defecto: 1000000
+Valor por defecto: 10000
 
 La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma con argumentos enteros o racionales. Si el valor absoluto del argumento no es mayor que @code{gammalim}, entonces se realizar@'a la simplificaci@'on. N@'otese que la variable @code{factlim} tambi@'en controla la simplificaci@'on del resultado de @code{gamma} con argumento entero.
 
@@ -1404,12 +1430,12 @@ Funci@'on de error generalizada Erf(z1,z2)
 
 
 @deffn {Funci@'on} fresnel_c (@var{z})
-Integral de Fresnel C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
+Integral de Fresnel @code{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}. (A&S 7.3.1)
 
-La simplificaci@'on fresnel_c(-x) = -fresnel_c(x) se aplica cuando
+La simplificaci@'on @code{fresnel_c(-x) = -fresnel_c(x)} se aplica cuando
 la variable global @code{trigsign} vale @code{true}.
 
-La simplificaci@'on fresnel_c(%i*x) =  %i*fresnel_c(x) se aplica cuando
+La simplificaci@'on @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} se aplica cuando
 la variable global @code{%iargs} vale @code{true}.
 
 V@'eanse tambi@'en @code{erf_representation} y

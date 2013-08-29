@@ -17,7 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
-Ver. 5.30
+Ver. 5.31
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -170,7 +170,7 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * itensor::                            Manipulaci@'on indexada de tensores
 * ctensor::                            Manipulaci@'on por componentes de tensores
 * atensor::                            Manipulaci@'on algebraica de tensores
-* Series::                             Series de potencias y de Taylor.
+* Sumas productos y series::           Sumas, productos, Taylor y series de potencias.
 * Teor@'{@dotless{i}}a de N@'umeros::  Teor@'ia de n@'umeros.
 * Simetr@'{@dotless{i}}as::     
 * Grupos::                             @'Algebra abstracta.
@@ -219,7 +219,6 @@ Paquetes adicionales
 * numericalio::                 Lectura y escritura de ficheros.
 * opsubst::                     Utilidad para sustituciones.
 * orthopoly::                   Polinomios ortogonales.
-* plotdf::                      Dibuja campos de direcciones con Openmath.
 * romberg::                     Integraci@'on num@'erica por el m@'etodo de Romberg.
 * simplex::                     Programaci@'on lineal.
 * simplification::              Reglas y funciones de simplificaci@'on.
@@ -376,10 +375,11 @@ Ecuaciones Diferenciales
 
 M@'etodos num@'ericos
 
-* Introducci@'on a los m@'etodos num@'ericos::
-* Series de Fourier::
-* Funciones y variables para los m@'etodos num@'ericos::
-* Funciones y variables para las series de Fourier::
+* Introducci@'on a la transformada r@'apida de Fourier::
+* Funciones y variables para la transformada r@'apida de Fourier::
+* Funciones para la resoluci@'on num@'erica de ecuaciones::
+* Introducci@'on a la resoluci@'on num@'erica de ecuaciones diferenciales::
+* Funciones para la resoluci@'on num@'erica de ecuaciones diferenciales::
 
 Matrices y @'Algebra Lineal
 
@@ -405,12 +405,14 @@ atensor
 * Introducci@'on a atensor::
 * Funciones y variables para atensor::
 
-Series
+Sumas productos y series
 
-* Sumas y productos::
+* Funciones y variables para sumas y productos::
 * Introducci@'on a las series::
 * Funciones y variables para las series::
-* Series de Poisson::
+* Introducci@'on a las series de Fourier
+* Funciones y variables para series de Fourier::
+* Funciones y variables para series de Poisson::
 
 Teor@'{@dotless{i}}a de N@'umeros
 
@@ -623,10 +625,6 @@ orthopoly
 * Introducci@'on a polinomios ortogonales::
 * Funciones y variables para polinomios ortogonales::
 
-plotdf
-
-* Funciones y variables para plotdf::
-
 romberg
 
 * Funciones y variables para romberg::
@@ -800,15 +798,15 @@ zeilberger
 @chapter ctensor
 @include Ctensor.es.texi
 
-@node atensor, Series, ctensor, Top
+@node atensor, Sumas productos y series, ctensor, Top
 @chapter atensor
 @include Atensor.es.texi
 
-@node Series, Teor@'{@dotless{i}}a de N@'umeros, atensor, Top
-@chapter Series
+@node Sumas productos y series, Teor@'{@dotless{i}}a de N@'umeros, atensor, Top
+@chapter Sumas productos y series
 @include Series.es.texi
 
-@node Teor@'{@dotless{i}}a de N@'umeros, Simetr@'{@dotless{i}}as, Series, Top
+@node Teor@'{@dotless{i}}a de N@'umeros, Simetr@'{@dotless{i}}as, Sumas productos y series, Top
 @chapter Teor@'{@dotless{i}}a de N@'umeros
 @include Number.es.texi
 
@@ -968,15 +966,11 @@ zeilberger
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly, plotdf, opsubst, Top
+@node orthopoly, romberg, opsubst, Top
 @chapter orthopoly
 @include orthopoly.texi
 
-@node plotdf, romberg, orthopoly, Top
-@chapter plotdf
-@include plotdf.texi
-
-@node romberg, simplex, plotdf, Top
+@node romberg, simplex, orthopoly, Top
 @chapter romberg
 @include romberg.texi
 

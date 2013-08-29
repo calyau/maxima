@@ -1,4 +1,4 @@
-@c english version 1.11
+@c English version 2013-08-03
 @menu
 * Introducci@'on a simplification::
 * Paquete absimp::
@@ -285,21 +285,37 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
 @deffn {Funci@'on} linear (@var{expr}, @var{x})
-Si @var{expr} es una expresi@'on lineal respecto de la variable @var{x},
-@code{linear} devuelve @code{@var{a}*@var{x} + @var{b}}, siendo @var{a}
-no nula y, junto con @var{b}, no incluye a @var{x}. En otro caso, 
-@code{linear} devuelve @var{expr}.
+Si @var{expr} es una expresi@'on de la forma @code{@var{a}*@var{x} + @var{b}},
+siendo @var{a} no nulo y los argumentos @var{a} y @var{b} no contienen a @var{x},
+@code{linear} devuelve una lista con tres ecuaciones, una por cada variable
+@var{b}, @var{a} y @var{x}. Si no se cumple la condici@'on anterior, 
+@code{linear} devuelve @code{false}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+
+Ejemplo:
+
+@c ===beg===
+@c load (antid);
+@c linear ((1 - w)*(1 - x)*z, z);
+@c linear (cos(u - v) + cos(u + v), u);
+@c ===end===
+@example
+(%i1) load (antid);
+(%o1)        /usr/share/maxima/5.29.1/share/integration/antid.mac
+(%i2) linear ((1 - w)*(1 - x)*z, z);
+(%o2)  [bargumentb = 0, aargumenta = (w - 1) x - w + 1, xargumentx = z]
+(%i3) linear (cos(u - v) + cos(u + v), u);
+(%o3)                                false
+@end example
 @end deffn
 
 @deffn {Funci@'on} gcdivide (@var{p}, @var{q})
-Si @code{takegcd} vale @code{true}, que es su valor por defecto, 
+Si la variable opcional @code{takegcd} vale @code{true}, que es su valor por defecto, 
 @code{gcdivide} divide los polinomios @var{p} y @var{q} por su
 m@'aximo com@'un divisor y devuelve el cociente de los resultados.
 @code{gcdivide} hace una llamada a la funci@'on @code{ezgcd} para
 dividir los polinomios por su m@'aximo com@'un divisor.
-
 
 Si @code{takegcd} vale @code{false}, @code{gcdivide} devuelve
 el cociente @code{@var{p}/@var{q}}.
@@ -393,7 +409,7 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 
 @deffn {Funci@'on} agd (@var{x})
 Devuelve la inversa de la funci@'on de Gudermann,
-@code{log (tan (%pi/4 + x/2)))}.
+@code{log (tan (%pi/4 + x/2))}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn

@@ -47,7 +47,7 @@
 \end{tabular}
 }
 
-\date{April, 2008 - March, 2013}
+\date{April, 2008 - July, 2013}
 
 \begin{document}
 \maketitle
@@ -62,9 +62,9 @@ Meanwhile it contains lots of new features
 and optimizations implemented by Fabrizio Caruso and Jacopo D'Aurizio.
 
 
-A full review was done in 2012 by Volker van Nek. Most of the functions described below 
+A full review was done in 2012 and 2013 by Volker van Nek. Most of the functions described below 
 became core functions and some function names have been modified. 
-If you use a version of Maxima prior to 5.30 please refer to an appropriate 
+If you use a version of Maxima prior to 5.31 please refer to an appropriate 
 version of this file or alternatively load the necessary files from current sources. 
 These are \texttt{src/numth.lisp} (all basic Galois Fields functions) 
 and \texttt{share/contrib/gf/gf.mac} (square and cubic roots). 
@@ -112,10 +112,11 @@ modulo $p$, and multiplication and division modulo $m(x)$.
 Given a prime number $p$ and a polynomial $m(x)$ 
 you can create a field by using the command ``\verb!gf_set_data(p, m(x))!''.
 \verb!gf_set_data! checks that $p$ is prime, and it also checks 
-whether $m(x)$ is irreducible. If these conditions are met, 
-a primitive element in this field will be computed. 
-Maxima then returns a structure containing the fields data which is 
-suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again.
+whether $m(x)$ is irreducible over $\mathbb{F}_p$. If these conditions are met, 
+a primitive element in this field is computed and some pre-calculations are performed.
+Maxima returns a Lisp structure containing the fields data which is 
+suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again (see below).
+Some of these data can be viewed by ``\verb!gf_info()!'' and ``\verb!gf_infolist()!''.
 
 %\begin{maximasession}
 %  \maximaoutput*
@@ -125,15 +126,19 @@ suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again.
 %
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i1)}# gf_set_data(2, x^4+x+1);
-  #\tr{(\%o1)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 4, reduction = x^4+x+1,}$}\ec#
-  #\bc\rb{$\tb{primitive = x, cardinality = 16, order = 15, 
-  factors\_of\_order = [\,[\,3, 1\,], [\,5, 1\,]\,])}$}\ec#
+  #\tr{(\%i1)}# F16 : gf_set_data(2, x^4+x+1);
+  #\tr{(\%o1)}\bc\rb{$\tb{Structure [GF-DATA]}$}\ec#
+  #\vspace{2mm}\tr{(\%i2)}# gf_info()$
+  #\rb{$\tb{characteristic\ =\ 2}$}#
+  #\rb{$\tb{reduction\ polynomial\ =\ x^4+x+1}$}#
+  #\rb{$\tb{primitive\ element\ =\ x}$}#
+  #\rb{$\tb{nr\ of\ elements\ =\ 16}$}#
+  #\rb{$\tb{nr\ of\ units\ =\ 15}$}#
+  #\rb{$\tb{nr\ of\ primitive\ elements\ =\ 8}$}#
 \end{lstlisting}
 
-In case there is no polynomial $m(x)$ irreducible over $\mathbb{F}_p$ available 
-a field can be created by ``\verb!gf_set_data(p, n)!''. 
-A suitable $m(x)$ will be computed and returned along with a primitive element. 
+In case there is no irreducible polynomial $m(x)$ available 
+it is sufficient to set an exponent instead. 
 E.g. ``\verb!gf_set_data(2, 4)!'' returns the same as ``\verb!gf_set_data(2, x^4+x+1)!''.
 
 In addition to \verb!gf_set_data! there is a command ``\verb!gf_minimal_set(p, m(x))!'' 
@@ -154,12 +159,12 @@ performed modulo 2, addition and subtraction are equivalent:
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i2)}# a : x^3+x;
-  #\tr{(\%o2)}\bc\rb{$\tb{x^4+x^2}$}\ec#
-  #\tr{(\%i3)}# b : x^3+x^2+1;
-  #\tr{(\%o3)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
-  #\tr{(\%i4)}# gf_add(a, b);
-  #\tr{(\%o4)}\bc\rb{$\tb{x^2+x+1}$}\ec#
+  #\tr{(\%i3)}# a : x^3+x;
+  #\tr{(\%o3)}\bc\rb{$\tb{x^4+x^2}$}\ec#
+  #\tr{(\%i4)}# b : x^3+x^2+1;
+  #\tr{(\%o4)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
+  #\tr{(\%i5)}# gf_add(a, b);
+  #\tr{(\%o5)}\bc\rb{$\tb{x^2+x+1}$}\ec#
 \end{lstlisting}
 
 
@@ -169,15 +174,15 @@ This is performed with the command ``\verb!gf_mult!'':
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i5)}# gf_mult(a, b);
-  #\tr{(\%o5)}\bc\rb{$\tb{x^3+x+1}$}\ec#
+  #\tr{(\%i6)}# gf_mult(a, b);
+  #\tr{(\%o6)}\bc\rb{$\tb{x^3+x+1}$}\ec#
 \end{lstlisting}
 
 
 \paragraph{Inversion and division.}
 
 The inverse of a field element $p(x)$ is the element $q(x)$ for which their
-product is equal to 1 (modulo $m(x)$).  This is performed using
+product is equal to 1 (modulo $m(x)$).  This is performed by
 ``\verb!gf_inv!''.  In a finite field, division is defined as multiplying by
 the inverse; thus
 \[
@@ -188,12 +193,12 @@ These operations are performed with the commands ``\verb!gf_inv!'' and
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i6)}# gf_inv(b);
-  #\tr{(\%o6)}\bc\rb{$\tb{x^2}$}\ec#
-  #\tr{(\%i7)}# gf_div(a, b);
-  #\tr{(\%o7)}\bc\rb{$\tb{x^3+x^2+x}$}\ec#
-  #\tr{(\%i8)}# gf_mult(a, gf_inv(b));
+  #\tr{(\%i7)}# gf_inv(b);
+  #\tr{(\%o7)}\bc\rb{$\tb{x^2}$}\ec#
+  #\tr{(\%i8)}# gf_div(a, b);
   #\tr{(\%o8)}\bc\rb{$\tb{x^3+x^2+x}$}\ec#
+  #\tr{(\%i9)}# gf_mult(a, gf_inv(b));
+  #\tr{(\%o9)}\bc\rb{$\tb{x^3+x^2+x}$}\ec#
 \end{lstlisting}
 
 
@@ -203,10 +208,10 @@ To raise a field element to an integer power, use ``\verb!gf_exp!'':
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i9)}# gf_exp(a, 14);
-  #\tr{(\%o9)}\bc\rb{$\tb{x^3+x^2}$}\ec#
-  #\tr{(\%i10)}# gf_exp(a, 15);
-  #\tr{(\%o10)}\bc\rb{$\tb{1}$}\ec#
+  #\tr{(\%i10)}# gf_exp(a, 14);
+  #\tr{(\%o10)}\bc\rb{$\tb{x^3+x^2}$}\ec#
+  #\tr{(\%i11)}# gf_exp(a, 15);
+  #\tr{(\%o11)}\bc\rb{$\tb{1}$}\ec#
 \end{lstlisting}
 
 
@@ -216,20 +221,15 @@ Finally, a random element can be obtained with ``\verb!gf_random()!'':
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i11)}# makelist(gf_random(), i,1,4);
-  #\tr{(\%o11)}\bc\rb{$\tb{[\,x^3+x^2,\ x^2+x,\ x^3+x^2+x,\ x^3+1\,]}$}\ec#
-  #\tr{(\%i12)}# mat : genmatrix(lambda([i,j], gf_random()), 3,3);
-  #\tr{(\%o12)}\bc\rbb{$\tb{\D{\left(
-  \begin{array}[h]{ccc}
-  x^3+x^2&x^3+x^2+x+1&x^2+1 \\ 1&x^3+x&x^3+x+1 \\ x+1&x^2+1&x^2
-  \end{array}\right)}}$}\vspace{1mm}\ec#
+  #\tr{(\%i12)}# makelist(gf_random(), i,1,3);
+  #\tr{(\%o12)}\bc\rb{$\tb{[\,x^2+x+1,\ x^2+x,\ x^3\,]}$}\ec#
 \end{lstlisting}
 
 
 \section*{Primitive elements, powers and logarithms}
 
 The non-zero elements of a finite field form a multiplicative group; a
-generator of this group is a \emph{primitive element} of the field.  The
+generator of this group is a \emph{primitive element} in the field.  The
 command ``\verb!gf_primitive()!'' returns the already computed primitive element:
 
 \vspace*{2mm}
@@ -272,7 +272,7 @@ The reverse direction is given by ``\texttt{gf\_n2p}''.
 Since every non-zero field element $a=a(x)$ is both equivalent to a number $A$
 and a power $i$ of a primitive element $e$, we can create an array of powers
 corresponding to particular numbers.  This array, \texttt{gf\_powers},
-which is created by \verb!gf_make_arrays!, 
+which is created by \verb!gf_make_logs!, 
 is defined as follows: 
 its $i$-th element (starting with zero) is the numerical form of the $i$-th power of the 
 primitive element.  Thus, if
@@ -291,7 +291,7 @@ corresponding to that element:
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i17)}# gf_make_arrays();
+  #\tr{(\%i17)}# gf_make_logs();
   #\vspace{-4mm}#
   #\tr{(\%o17)}\bc\rb{$\tb{
     [\,\{Lisp Array: \#(1\ 2\ 4\ 8\ 3\ 6\ 12\ 11\ 5\ 10\ 7\ 14\ 15\ 13\ 9\ 1)\}, 
@@ -328,7 +328,7 @@ command ``\verb!gf_log!'':
   #\tr{(\%i23)}# a : x^3+x#\$#
   #\tr{(\%i24)}# b : x^3+x^2+1#\$#
   #\tr{(\%i25)}# gf_log(a, b);
-  #\tr{(\%o25)}\bc\rb{$\tb{3}$}\ec#
+  #\tr{(\%o25)}\vspace*{2mm}\bc\rb{$\tb{3}$}\ec#
   #\tr{(\%i26)}# is(a = gf_exp(b, 3));
   #\tr{(\%o26)}\bc\rb{$\tb{true}$}\ec#
 \end{lstlisting}
@@ -438,8 +438,6 @@ $d$ is 1702.
 
 First, Alice must compute her public key:
 
-%  #\tr{(\%o35)}\bc\rb{$\tb{    }$}\ec#
-
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i35)}# gf_set_data(7, x^4+3*x^3+5*x^2+6*x+2)#\$#
@@ -466,11 +464,11 @@ $[1,0,1,1,0,0,1]$, which is a block of length 7 which contains exactly 4 ones.
 
 This last value is the ciphertext.  Alice now needs to decrypt it:
 
-\vspace*{2mm}
+\vspace*{-4mm}
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i43)}# r : mod(c - gf_exp() * d, gf_order());
   #\tr{(\%o43)}\bc\rb{$\tb{1913}$}\ec#
-  #\tr{(\%i44)}# u : gf_exp(g, r);
+  #\tr{(\%i44)}# u : gf_exponent(g, r);
   #\tr{(\%o44)}\bc\rb{$\tb{x^3+3\,x^2+2\,x+5}$}\ec#
   #\tr{(\%i45)}# s : u + gf_reduction();
   #\tr{(\%o45)}\bc\rb{$\tb{x^4+4\,x^3+8\,x^2+8\,x+7}$}\ec#
@@ -480,23 +478,26 @@ This last value is the ciphertext.  Alice now needs to decrypt it:
 
 The $t_i$ values are $0,2,3,6$ and these are the positions of the ones in $M$.
 
-
+\vspace*{-3mm}
 \section*{Matrices}
 
-There are two commands for dealing with matrices over finite fields:
-``\verb!gf_matinv!'' for inverting a matrix, and ``\verb!gf_matmult!'' for
-multiplying matrices.  Using the matrix \texttt{mat} generated previously:
+There are commands for dealing with matrices over finite fields. E.g.
+``\verb!gf_invert_by_lu!'' for inverting a matrix, and ``\verb!gf_matmult!'' for
+multiplying matrices.
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i47)}# mat_inv : gf_matinv(mat);
-  #\tr{(\%o47)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}x^3&x^3+x^2+1&x\\1&1&x^3+x\\x^3+x&x^3+x^2+1&x^2\end{array}\right)}}$}\vspace{3mm}\ec#
-  #\tr{(\%i48)}# gf_matmult(mat, mat_inv);
-  #\tr{(\%o48)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right)}}$}\vspace{1mm}\ec#
+  #\tr{(\%i47)}# gf_set_again(F16)#\$#
+  #\tr{(\%i48)}# m : matrix([1,x^3+1], [x^2+1,x]);
+  #\tr{(\%o48)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{cc}1&x^3+1\\x^2+1&x\end{array}\right)}}$}\vspace{3mm}\ec#
+  #\tr{(\%i49)}# m_inv : gf_invert_by_lu(m);
+  #\tr{(\%o49)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{cc}x^2&1\\x^3+x&x\end{array}\right)}}$}\vspace{3mm}\ec#
+  #\tr{(\%i50)}# gf_matmult(m, m_inv);
+  #\tr{(\%o50)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{cc}1&0\\0&1\end{array}\right)}}$}\vspace{0mm}\ec#
 \end{lstlisting}
 
-
-\section*{Normal Bases}
+\vspace*{-3mm}
+\section*{Normal bases}
 
 Any field $GF(p^n)$ may be considered as a vector space over
 $\mathbb{F}_p$; one basis is the set
@@ -513,13 +514,12 @@ and bases.  The command ``\verb!gf_random_normal()!'' finds a normal element by
 simply picking field elements at random and testing each one for normality.
 Although this is a probabilistic algorithm, in practice it works very quickly:
 
-%  #\tr{(\%o49)}\bc\rb{$\tb{   }$}\ec#
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i49)}# gf_set_data(2, x^10+x^3+1)#\$#
-  #\tr{(\%i50)}# p : gf_random_normal();
-  #\tr{(\%o50)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2+x+1}$}\ec#
+  #\tr{(\%i51)}# gf_set_data(2, x^10+x^3+1)#\$#
+  #\tr{(\%i52)}# p : gf_random_normal();
+  #\tr{(\%o52)}\vspace{0mm}\bc\rb{$\tb{x^9+x^8+x^7+x^6+x^5+x}$}\ec#
 \end{lstlisting}
 
 The command ``\verb!gf_normal()!'' is a brute force search through all
@@ -542,41 +542,100 @@ coefficients:
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i51)}# mat : gf_normal_basis(p)#\$#
-  #\tr{(\%i52)}# a : gf_random();
-  #\tr{(\%o52)}\vspace{0mm}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2}$}\ec#
-  #\tr{(\%i53)}# gf_normal_basis_rep(a, mat);
-  #\tr{(\%o53)}\bc\rb{$\tb{[\,1,\,1,\,1,\,1,\,0,\,0,\,1,\,1,\,1,\,0\,]}$}\ec#
-  #\tr{(\%i54)}# gf_normal_basis_rep(gf_exp(a, 2), mat);
-  #\tr{(\%o54)}\bc\rb{$\tb{[\,1,\,1,\,1,\,0,\,0,\,1,\,1,\,1,\,0,\,1\,]}$}\ec#
+  #\tr{(\%i53)}# m : gf_normal_basis(p)#\$#
+  #\tr{(\%i54)}# a : gf_random();
+  #\tr{(\%o54)}\vspace{0mm}\bc\rb{$\tb{x^9+x^5+x^3+x^2+1}$}\ec#
+  #\tr{(\%i55)}# gf_normal_basis_rep(a, m);
+  #\tr{(\%o55)}\bc\rb{$\tb{[\,1,\,0,\,1,\,0,\,0,\,1,\,1,\,0,\,0,\,0\,]}$}\ec#
+  #\tr{(\%i56)}# gf_normal_basis_rep(gf_exp(a, 2), m);
+  #\tr{(\%o56)}\bc\rb{$\tb{[\,1,\,1,\,0,\,1,\,0,\,1,\,0,\,1,\,1,\,1\,]}$}\ec#
 \end{lstlisting}
 
 
 \section*{Large fields}
 
-\texttt{gf\_set} always computes a primitive element but it  
-does not create look up tables of powers and logarithms. 
-It is the user to decide to call \verb!gf_make_arrays! to compute these tables. 
-
-In case these two arrays were created the commands \verb!gf_exp!, 
-\verb!gf_index! and \verb!gf_log! will use them. Otherwise \verb!gf_exp! uses 
-``repeated squaring'' and \verb!gf_index! resp. \verb!gf_log! uses a 
+\texttt{gf\_set\_data} computes and stores powers $x^{p^k}$. 
+In case \texttt{gf\_set\_data} was called \verb!gf_exp! uses the technique 
+of modular composition. Otherwise \verb!gf_exp! performs ``repeated squaring''. 
+\verb!gf_index! resp. \verb!gf_log! use a 
 Pohlig-Hellman reduction and Brent's version of Pollard Rho. 
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i55)}# gf_set_data(2, x^20+x^3+1);
-  #\tr{(\%o55)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 20, reduction = x^{20}+x^3+1, }$}\ec#
-  #\bc\rb{$\tb{primitive = x, cardinality = 1048576, order = 1048575, }$}\ec#
-  #\bc\rb{$\tb{factors\_of\_order = [\,[3, 1], [5, 2], [11, 1], [31, 1], [41, 1]\,]) }$}\ec#
-  #\tr{(\%i56)}# a : x^15+x^5+1;
-  #\tr{(\%o56)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
-  #\tr{(\%i57)}# index : gf_index(a);
-  #\tr{(\%o57)}\bc\rb{$\tb{720548}$}\ec#
-  #\tr{(\%i58)}# gf_exp(gf_primitive(), index);
-  #\tr{(\%o58)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
-  #\tr{(\%i59)}# gf_exp(a, 3^12);
-  #\tr{(\%o59)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
+  #\tr{(\%i57)}# gf_set_data(2, x^20+x^3+1);
+  #\tr{(\%o57)}\bc\rb{$\tb{Structure [GF-DATA]}$}\ec#
+  #\vspace{2mm}\tr{(\%i58)}# gf_info()$
+  #\rb{$\tb{characteristic\ =\ 2}$}#
+  #\rb{$\tb{reduction\ polynomial\ =\ x^{20}+x^3+1}$}#
+  #\rb{$\tb{primitive\ element\ =\ x}$}#
+  #\rb{$\tb{nr\ of\ elements\ =\ 1048576}$}#
+  #\rb{$\tb{nr\ of\ units\ =\ 1048575}$}#
+  #\rb{$\tb{nr\ of\ primitive\ elements\ =\ 480000}$}#
+  #\tr{(\%i59)}# a : x^15+x^5+1;
+  #\tr{(\%o59)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
+  #\tr{(\%i60)}# index : gf_index(a);
+  #\tr{(\%o60)}\bc\rb{$\tb{720548}$}\ec#
+  #\tr{(\%i61)}# gf_exp(gf_primitive(), index);
+  #\tr{(\%o61)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
+  #\tr{(\%i62)}# gf_exp(a, 3^12);
+  #\tr{(\%o62)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
+\end{lstlisting}
+
+
+\section*{Field extensions - the AES mixed columns operation}
+
+Above we described that an element of a finite field $GF(p^n)$ can be interpreted as a polynomial 
+$f(x) = c_{n-1}\,x^{n-1} + c_{n-2}\,x^{n-2} + \cdot \cdot +\,c_1\,x + c_0$
+of degree $n-1$ with coefficients in the prime field $GF(p)$. 
+
+An element of an extension field $GF(q^k)$ where $q$ is a power of $p$, $q = p^n$, 
+can be interpreted as a polynomial of degree $k-1$ with coefficients in 
+the base field $GF(p^n)$ which means that the coefficients itself can be interpreted 
+as polynomials of degree $n-1$ over $GF(p)$ and all coefficient arithmetic 
+is carried out in $GF(p^n)$. 
+
+The reduction polynomial of degree $k$ used to define $GF(q^k)$ 
+must be irreducible over $GF(p^n)$. Otherwise the defined extension is no field and 
+not every non-zero element is invertible. 
+
+The AES mixed columns operation is for example defined by a multiplication 
+in $GF(256^4)$ where the non-irreducible polynomial $x^4+1$ is used for reduction. 
+The element $a = 3\,x^3+x^2+x+2$ used for the mixed columns multiplication is invertible,  
+$a^{-1} = B\,x^3+D\,x^2+9\,x+E$ in base $16$, so the inverse operation is guaranteed. 
+
+The following session shows the mixed columns operation applied to one column represented 
+by the list $[30, 5D, BF, D4]$. (These four bytes are taken from the example on page 33 of the 
+AES specification document fips-197.pdf and they are the first four bytes that are modified 
+by the mixed columns operation there.) 
+
+User commands for field extensions are prefixed with ``\verb!ef_!'' and for nearly every 
+\texttt{gf}-function there is a corresponding \texttt{ef}-function.
+The polynomial \texttt{m(x)} used for reduction can be defined by 
+``\verb!ef_minimal_set(m(x))!'' or ``\verb!ef_set_data(m(x))!''.
+The \texttt{ef}-functions then refer to the 
+previously by \texttt{gf\_set\_data} defined field as the base field. 
+
+\vspace*{4mm}
+\begin{lstlisting}[escapechar=\#]
+  #\tr{(\%i1)}# gf_set_data(2, x^8+x^4+x^3+x+1)#\$#
+  #\tr{(\%i2)}# ef_irreducible_p(x^4+1);
+  #\tr{(\%o2)}\bc\rb{$\tb{false}$}\ec#
+  #\tr{(\%i3)}# ef_minimal_set(x^4+1);
+  #\tr{(\%o3)}\bc\rb{$\tb{reduction\ polynomial\ =\ x^4+1}$}\ec#
+  #\tr{(\%i4)}# ibase : obase : 16#\$#
+  #\tr{(\%i5)}# p : ef_l2p([30, 5D, 0BF, 0D4]);
+  #\tr{(\%o5)}\bc\rb{$\tb{30\ x^3+5D\ x^2+0BF\ x+0D4}$}\ec#
+  #\tr{(\%i6)}# a : 3*x^3+x^2+x+2;
+  #\tr{(\%o6)}\bc\rb{$\tb{3\ x^3+x^2+x+2}$}\ec#
+  #\tr{(\%i7)}# ef_p2l(pa : ef_mult(p, a));
+  #\tr{(\%o7)}\bc\rb{$\tb{[0E5,\ 81,\ 66,\ 4]}$}\ec#
+  #\tr{(\%i8)}# ai : ef_inv(a);
+  #\tr{(\%o8)}\bc\rb{$\tb{0B\ x^3+0D\ x^2+9\ x+0E}$}\ec#
+  #\tr{(\%i9)}# ef_mult(ai, a);
+  #\tr{(\%o9)}\bc\rb{$\tb{1}$}\ec#
+  #\tr{(\%i10)}# ef_mult(ai, pa);
+  #\tr{(\%o10)}\bc\rb{$\tb{30\ x^3+5D\ x^2+0BF\ x+0D4}$}\ec#
+  #\tr{(\%i11)}# ibase : obase : 10.#\$#
 \end{lstlisting}
 
 
@@ -606,9 +665,10 @@ In Maxima 5.29 and later \verb!lucas! is a core function.
   #\tr{(\%o1)}\bc\rb{$\tb{293263001536128903730947142076}$}\ec#
 \end{lstlisting}
 
+\vspace*{4mm}
 All the other functions listed above need to be loaded by ``\verb!load(gf)!'':
 
-\vspace*{2mm}
+\pagebreak
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i2)}# load(gf)#\$#
   #\tr{(\%i3)}# msqrt(64, 1789); ssqrt(64, 1789); gf_sqrt(64, 1789);
