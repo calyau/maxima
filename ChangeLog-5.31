@@ -1,0 +1,53 @@
+   Maxima 5.31 change log
+
+
+   Changes in core:
+
+ * Galois fields: revision, introduction of extension fields
+ * inverse_jacobi_sn: improve accuracy
+ * Bessel functions: integral of bessel_i, bessel_j of arbitrary order
+ * matrix functions: revise ModeMatrix, mat_function, dispJordan, diag, JF
+ * signum: do not declare signum real- or integer-valued
+ * carg: declare carg real-valued
+ * parser: add L, l, W, and w to list of exponent marker characters
+
+
+   Changes in share:
+
+ * package stringproc: new functions readchar, md5sum, base64
+
+
+   Other changes:
+
+ * documentation: minor changes to make Texinfo 5 happy
+ * build system: changes to make Maxima build correctly on Windows
+
+
+   Bug fixes:
+
+ * 2622 base64 type warnings
+ * 2619 Function inverse_erf - error in numerical evaluation
+ * 2612 known_units() broken
+ * 2608 quad_qags(x,x) generates a lisp error
+ * 2607 lbfgs documentation is incomplete
+ * 2604 fft.dem is out of date
+ * 2603 fft documentation
+ * 2602 lu_factor regression
+ * 2599 cl-info error handling
+ * 2597 logcontract and subscripted log
+ * 2594 Incorrect integration of product of cosines
+ * 2591 risch gives Lisp error for sinh expression
+ * 2583 sign error for integrate(x^(8*%i-1),x);
+ * 2570 Make acos(cos(x)) simplify to x when on correct interval
+ * 2569 translate rat(1,x) and rat([1]) incorrect
+ * 2536 Lisp error in limit: \
+ * 2501 %pi/8 is definitely not an integer
+ * 2475 limit(x^(mu/x^g),x,inf) --> error
+
+ unnumbered bugs:
+
+ * mailing list 2013-05-22: "array-lambda error with 5.30.0"
+ * mailing list 2013-05-07: "defrule regression compare to version 5.29.1"
+ * fix rk() when the independent variable's initial value is nonzero
+ * fix bug in asksign
+ * fix wrong noun form returned for jacobi_nc(elliptic_kc(m)/n,m)
