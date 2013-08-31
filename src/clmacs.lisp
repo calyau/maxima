@@ -618,5 +618,4 @@
 			`((keylist (lispify-maxima-keyword-options ,options
 								   ',keyword-arg-list))))
 	      ,@body)))
-	 (,helper-fun ,@arg-list)))))
-
+	 (apply #',helper-fun ,arg-list)))))
