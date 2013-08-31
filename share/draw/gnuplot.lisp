@@ -241,20 +241,29 @@
 ;;     yaxis_secondary
 ;;     transform
 (defun points-command ()
-  (let ((opt (get-option '$points_joined)))
+  (let ((pj (get-option '$points_joined))
+        (ps (get-option '$point_size))
+        (pt (get-option '$point_type)) )
     (cond
-      ((null opt) ; draws isolated points
+      ((null pj) ; draws isolated points
          (format nil " ~a w p ps ~a pt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
-                 (get-option '$point_size)
-                 (get-option '$point_type)
+                 ps
+                 pt
                  (hex-to-rgb (get-option '$color))
                  (axes-to-plot)))
-      ((eq opt t) ; draws joined points
+      ((and (eq pj t) (or (= ps 0.0) (= pt 0)) ) ; draws joined points without symbols
+         (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (hex-to-rgb (get-option '$color))
+                 (axes-to-plot)))
+      ((eq pj t) ; draws joined points
          (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
-                 (get-option '$point_size)
-                 (get-option '$point_type)
+                 ps
+                 pt
                  (get-option '$line_width)
                  (get-option '$line_type)
                  (hex-to-rgb (get-option '$color))
@@ -263,7 +272,7 @@
          (format nil " ~a w i lw ~a lt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
-                 (get-option '$line_type)
+                 pt
                  (hex-to-rgb (get-option '$color))
                  (axes-to-plot))))) )
 
@@ -432,22 +441,30 @@
 ;;     enhanced3d
 ;;     transform
 (defun points3d-command ()
-  (let ((opt (get-option '$points_joined))
+  (let ((pj (get-option '$points_joined))
+        (ps (get-option '$point_size))
+        (pt (get-option '$point_type))
         (pal (if (> *draw-enhanced3d-type* 0)
                  "palette"
                  (hex-to-rgb (get-option '$color)) )))
     (cond
-      ((null opt) ; draws isolated points
+      ((null pj) ; draws isolated points
          (format nil " ~a w p ps ~a pt ~a lc ~a"
                  (make-obj-title (get-option '$key))
-                 (get-option '$point_size)
-                 (get-option '$point_type)
+                 ps
+                 pt
                  pal ))
-      ((eq opt t) ; draws joined points
+      ((and (eq pj t) (or (= ps 0.0) (= pt 0)) ) ; draws joined points without symbols
+         (format nil " ~a w l lw ~a lt ~a lc ~a "
+                 (make-obj-title (get-option '$key))
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (hex-to-rgb (get-option '$color))))
+      ((eq pj t) ; draws joined points
          (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc ~a"
                  (make-obj-title (get-option '$key))
-                 (get-option '$point_size)
-                 (get-option '$point_type)
+                 ps
+                 pt
                  (get-option '$line_width)
                  (get-option '$line_type)
                  pal ))
