@@ -325,7 +325,7 @@
 		    ($control 2)
 		    ($max_message 4)
 		    (otherwise
-		     (merror "Parameter should be current_error, control, or max_mmessage")))
+		     (merror "Parameter should be current_error, control, or max_message")))
 		  (or new-value 0)
 		  (if new-value t nil))))
 

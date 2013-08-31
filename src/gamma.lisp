@@ -952,7 +952,7 @@
 	       ((> i gm-maxit)
 		(merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
 	    (when *debug-gamma* 
-	      (format t "~&in coninued fractions:~%")
+	      (format t "~&in continued fractions:~%")
 	      (mformat t "~&   : i = ~M~%" i)
 	      (mformat t "~&   : h = ~M~%" h))
 	    (setq d (add (mul an d) b))

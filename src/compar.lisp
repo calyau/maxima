@@ -1225,7 +1225,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (setq x (infsimp* x))
   (when (and *complexsign* (atom x) (eq x '$infinity))
     ;; In Complex Mode the sign of infinity is complex.
-    (when *debug-compar* (format t "~& in sign1 detect $infintiy.~%"))
+    (when *debug-compar* (format t "~& in sign1 detect $infinity.~%"))
     (return-from sign1 '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror (intl:gettext "sign: sign of ~:M is undefined.") x)))
