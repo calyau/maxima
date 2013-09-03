@@ -16,6 +16,21 @@
 	v
 	(error (intl:gettext "~A is not a real floating-point number") val))))
 
+;; Convert the maxima function FUN of the one variable VAR to a
+;; compiled lisp function returning a float that is suitable for use
+;; as the integrand for the quadpack routines.  If the integrand
+;; cannot be evaluated at the specified point, signal an error.
+(defmacro float-integrand-or-lose (name fun var)
+  (let ((f (gensym "COMPILED-FUN-"))
+	(x (gensym "VAR-"))
+	(result (gensym "RESULT-")))
+    `(let ((,f (get-integrand ,fun ,var)))
+       (lambda (,x)
+	 (let ((,result (funcall ,f ,x)))
+	   (unless (cl:numberp ,result)
+	     (merror (intl:gettext "~M: Cannot numerically evaluate ~M at ~M") ,name ,fun ,x))
+	   (float ,result))))))
+     
 (defun quad-qag (fun var a b key &key
 		 (epsrel 1e-8)
 		 (limit 200)
@@ -23,13 +38,11 @@
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
 				   z-limit z-lenw last)
-	    (slatec:dqag #'(lambda (x)
-			     (float (funcall f x)))
+	    (slatec:dqag (float-integrand-or-lose '$quad_qag fun var)
 			 (float-or-lose a)
 			 (float-or-lose b)
 			 (float-or-lose epsabs)
@@ -52,13 +65,11 @@
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
 				   z-limit z-lenw last)
-	    (slatec:dqags #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqags (float-integrand-or-lose '$quad_qags fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
 			  (float-or-lose epsabs)
@@ -94,11 +105,7 @@
 		    (setq bnd ($float low))
 		    (setq inf high))
 		   (t
-		    (return-from quad-qagi
-		      `(($quad_qagi) ,fun ,var ,a ,b
-			((mequal) $epsrel ,epsrel)
-			((mequal) $epsabs ,epsabs)
-			((mequal) $limit ,limit)))))
+		    (merror "~M: Unexpected limits of integration: ~M, ~M~%" '$quad_qagi low high)))
 	     (values bnd inf))))
 
     (multiple-value-bind (bound inf-type)
@@ -106,7 +113,6 @@
       (let* ((lenw (* 4 limit))
 	     (work (make-array lenw :element-type 'flonum))
 	     (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	     (f (get-integrand fun var))
 	     (infinity (ecase inf-type
 			 ((1 $inf)
 			  ;; Interval is [bound, infinity]
@@ -121,8 +127,7 @@
 	    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel
 				       result abserr neval ier
 				       z-limit z-lenw last)
-		(slatec:dqagi #'(lambda (x)
-				  (float (funcall f x)))
+		(slatec:dqagi (float-integrand-or-lose '$quad_qagi fun var)
 			      (float-or-lose bound)
 			      infinity
 			      (float-or-lose epsabs)
@@ -145,13 +150,11 @@
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
 				   z-limit z-lenw last)
-	    (slatec:dqawc #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqawc (float-integrand-or-lose '$quad_qawc fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
 			  (float-or-lose c)
@@ -176,7 +179,6 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
@@ -185,8 +187,7 @@
 				   epsabs result abserr neval ier
 				   z-limlst z-lst
 				   z-leniw z-maxp1 z-lenw)
-	    (slatec:dqawf #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqawf (float-integrand-or-lose '$quad_qawf fun var)
 			  (float-or-lose a)
 			  (float-or-lose omega)
 			  integr
@@ -213,7 +214,6 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
@@ -221,8 +221,7 @@
 	(multiple-value-bind (junk z-a z-b z-omega z-integr z-epsabs z-epsrel
 				   result abserr neval ier
 				   z-leniw z-maxp1 z-lenw z-lst)
-	    (slatec:dqawo #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqawo (float-integrand-or-lose '$quad_qawo fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
 			  (float-or-lose omega)
@@ -248,14 +247,12 @@
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 				   result abserr neval ier
 				   z-limit z-lenw last)
-	    (slatec:dqaws #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqaws (float-integrand-or-lose '$quad_qaws fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
 			  (float-or-lose alfa)
@@ -282,15 +279,13 @@
 	 (leniw (max limit (- (* 3 npts2) 2)))
 	 (lenw (- (* 2 leniw) npts2))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
     (map-into p #'float-or-lose (cdr points))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel
 				   result abserr neval ier
 				   z-leniw z-lenw last)
-	    (slatec:dqagp #'(lambda (x)
-			      (float (funcall f x)))
+	    (slatec:dqagp (float-integrand-or-lose '$quad_qagp fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
 			  npts2
@@ -330,7 +325,7 @@
 		    ($control 2)
 		    ($max_message 4)
 		    (otherwise
-		     (merror "Parameter should be current_error, control, or max_mmessage")))
+		     (merror "Parameter should be current_error, control, or max_message")))
 		  (or new-value 0)
 		  (if new-value t nil))))
 
