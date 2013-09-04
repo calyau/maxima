@@ -1292,11 +1292,7 @@ first kind:
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
   (declare (type flonum m))
-  (cond ((> m 1)
-	 ;; A&S 17.4.15
-	 (complexify (/ (elliptic-f (cl:asin (sqrt m)) (/ m))
-			(sqrt m))))
-	((< m 0)
+  (cond ((< m 0)
 	 ;; A&S 17.4.17
 	 (let* ((m (- m))
 		(m+1 (+ 1 m))
@@ -1313,10 +1309,8 @@ first kind:
 	 (maxima::merror
 	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
 	(t
-	 (let ((k (sqrt m)))
-	   (to (bigfloat::bf-rf 0.0 (* (- 1 k)
-				       (+ 1 k))
-				1.0))))))
+	 (to (bigfloat::bf-rf 0.0 (- 1 m)
+			      1.0)))))
 
 ;; Elliptic integral of the second kind (Legendre's form):
 ;;

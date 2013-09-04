@@ -433,3 +433,7 @@ elliptic_e(x, 1);
 
 elliptic_e(3,1/2);
 elliptic_e(3-%pi,1/2)+2*elliptic_ec(1/2);
+
+/* Bug #2629: elliptic_kc(3.0) not accurate */
+test_table('elliptic_kc, [[[3.0], elliptic_kc(3b0)]], 1b-15);
+[];
