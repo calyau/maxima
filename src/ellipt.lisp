@@ -1267,7 +1267,10 @@ first kind:
 						     1.0)))))
 			  ((< phi pi)
 			   (+ (* 2 (elliptic-k m))
-			      (elliptic-f (- phi (float pi)) m))))))
+			      (elliptic-f (- phi (float pi)) m)))
+			  (t
+			   (error "Shouldn't happen! Unhandled case in elliptic-f: ~S ~S~%"
+				  phi-arg m-arg)))))
 		 (t
 		  (let ((phi (coerce phi-arg '(complex flonum)))
 			(m (coerce m-arg '(complex flonum))))
@@ -1283,11 +1286,11 @@ first kind:
     ;;
     ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
     (let ((period (round (realpart phi-arg) pi)))
-      (add (base (- phi-arg (* pi period)) m-arg)
-	   (if (zerop period)
-	       0
-	       (mul (mul 2 period)
-		    (elliptic-k m-arg)))))))
+      (+ (base (- phi-arg (* pi period)) m-arg)
+	 (if (zerop period)
+	     0
+	     (* 2 period
+		(bigfloat:to (elliptic-k m-arg))))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
