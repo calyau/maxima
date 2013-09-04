@@ -326,11 +326,47 @@
                  (t e)))
           (t e))))
 
-(defun affine-expression-p (e v)
-  ($polynomialp ($expand e) v 
-		`((lambda) ((mlist) s) ($lfreeof ,v s))
-		`((lambda) ((mlist) s) ((mor) ((mequal) s 0) ((mequal) s 1)))))
- 
+;; affine_p(p,vars) returns true iff p is an affine polynomial in vars, that is,
+;; that it is a polynomial in vars (a list) whose total degree in vars is no greater than 1.
+
+;; Stavros Macrakis wrote $affine_p and the tests (see rtest_fourier_elim.mac) for this function.
+
+(defun $affine_p (p vl)
+  (setq vl (require-list vl "affine_p"))
+  (let* (($ratfac nil)
+	 ($ratprint nil)
+	 (rat ($rat p)))
+    (and (eq (caar rat) 'mrat) ; don't handle bags etc.
+	 (not (memq 'trunc (car rat))) ; don't handle taylor series (even in other vars)
+	 (let* (;; in affine poly, only numer can include vars
+		(num ($ratnumer rat))
+		;; (what vars are actually used; cf. $ratfreeof/$showratvars)
+		(numvars (caddar (minimize-varlist num)))
+		;; ... and denominator cannot depend on vars at all
+		(den ($ratdenom rat))
+		(denvars (caddar (minimize-varlist den)))
+		(truncnum))
+	   (and
+	    ;; everything in denvars must be freeof vl
+	    (every #'(lambda (term)
+		       (every #'(lambda (var) (freeof var term)) vl)) 
+		   denvars)
+	    ;; everything in numvars must be either in vl or freeof vl
+	    (every #'(lambda (term)
+		       (or (memalike term vl)
+			   (every #'(lambda (var) (freeof var term)) vl)))
+		   numvars)
+	    ;; there must be no terms of degree > 1
+	    (progn
+	      ;; calculate p without terms of degree > 1
+	      (let (($ratwtlvl 1)
+		    ;; ignore prevailing *ratweights (don't append to new ones)
+		    (*ratweights (mapcar #'(lambda (x) (cons x 1)) vl)))
+		;; adding ($rat 0) performs the truncation; just ($rat num) does not
+		(setq truncnum (add ($rat 0) num)))
+	      ;; subtract out: any terms of degree > 1?
+	      (equal 0 (ratdisrep (sub num truncnum)))))))))
+
 (defun linear-elimination (l v)
   (let (($linsolve_params nil) ($backsubst t) ($programmode t) 
 	($linsolvewarn nil) ($globalsolve nil) (subs) (vars))
@@ -379,7 +415,7 @@
            ;; into other-list. 
 
 	   (dolist (li l)
-	     (cond ((not (affine-expression-p ($lhs li) ($listofvars li))) (push li other-list))
+	     (cond ((not ($affine_p ($lhs li) ($listofvars li))) (push li other-list))
                    ((op-equalp li 'mequal) (push li eq-list))
 		   ((op-equalp li 'mgreaterp) (push ($lhs li) pos-list))
                    (t (push li other-list))))
