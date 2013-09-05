@@ -442,3 +442,9 @@ test_table('elliptic_kc, [[[3.0], elliptic_kc(3b0)]], 1b-15);
 test_table('inverse_jacobi_cn, [[[-2.0, 3.0], 2.002154760912212-3.202503914656527*%i]],
   1b-15);
 [];
+
+/* Bug #2615: Numeric evaluation of inverse Jacobi elliptic functions is wrong for some inputs 
+*/
+is(abs(jacobi_dn(inverse_jacobi_dn(-2.0,3.0), 3.0) + 2) < 1d-14);
+true;
+

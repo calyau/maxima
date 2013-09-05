@@ -1103,40 +1103,25 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
 
-;;
-;; adn(u) = x.
-;; u = dn(x) = sqrt(1-m*sn(x)^2)
-;; sn(x)^2 = (1-u^2)/m
-;; sn(x) = sqrt((1-u^2)/m)
-;; x = asn(sqrt((1-u^2)/m))
-;; x = adn(u) = asn(sqrt((1-u^2)/m))
-
 (defmfun simp-%inverse_jacobi_dn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
     (cond ((float-numerical-eval-p u m)
-	   ;; Numerically evaluate adn
-	   (let* ((u ($float u))
-		  (m ($float m))
-		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
-			  (sqrt m))))
-	     (complexify (elliptic-f (cl:asin phi) m))))
+	   (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to (float u))
+					       (bigfloat:to (float m)))))
 	  ((complex-float-numerical-eval-p u m)
-	   (let* ((u (complex ($realpart u) ($imagpart u)))
-		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
-			 (sqrt m))))
-	     (complexify (elliptic-f (cl:asin phi)
-				     (complex ($realpart m) ($imagpart m))))))
+	   (let ((uu (complex ($float ($realpart u))
+			      ($float ($imagpart u))))
+		 (mm (complex ($float ($realpart m))
+			      ($float ($imagpart m)))))
+	     (to (bigfloat::bf-inverse-jacobi-dn uu mm))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
-	   (let* ((u (bigfloat:to ($bfloat u)))
-		  (phi (bigfloat:/ (bigfloat:* (bigfloat:sqrt (bigfloat:- 1 u))
-					       (bigfloat:sqrt (bigfloat:+ 1 u)))
-				   (bigfloat:sqrt (bigfloat:to ($bfloat m))))))
-	     (to (bigfloat::bf-elliptic-f (bigfloat:asin phi)
-					  (bigfloat:to m)))))
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat::bf-inverse-jacobi-dn uu mm))))
 	  ((onep1 m)
 	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
 	   `((%asech) ,u))
@@ -2194,6 +2179,37 @@ first kind:
        (* (/ nn 3) (expt sin-phi 3)
 	  (bf-rj (expt cos-phi 2) k2sin 1.0
 		 (- 1 (* n (expt sin-phi 2))))))))
+
+;; Compute inverse_jacobi_sn, for float or bigfloat args.
+(defun bf-inverse-jacobi-sn (u m)
+  (* u (bf-rf (- 1 (* u u))
+	      (- 1 (* m u u))
+	      1)))
+
+;; Compute inverse_jacobi_dn.  We use the following identity
+;; (http://functions.wolfram.com/09.29.27.0022.01):
+;;
+;;   w = dn(z|m) = sqrt(1-m) * sn(-%i*z + K(1-m) - %i*K(m) | 1-m)
+;;
+;; Solve for z to get
+;;
+;;   z = inverse_jacobi_dn(w|m)
+;;     = %i*inverse_jacobi_sn(w/sqrt(1-m) | 1-m) - %i*K(1-m) -K(m)
+;;
+
+(defun bf-inverse-jacobi-dn (w m)
+  (cond ((= w 1)
+	 (float 0 w))
+	((= m 1)
+	 ;; jacobi_dn(x,1) = sech(x) so the inverse is asech(x)
+	 (maxima::take '(maxima::%asech) (maxima::to w)))
+	(t
+	 ;; We should do something better to make sure that things
+	 ;; that should be real are real.
+	 (let ((1-m (- 1 m)))
+	   (- (* #C(0 1) (bf-inverse-jacobi-sn (/ w (sqrt 1-m)) 1-m))
+	      (* #c(0 1) (bf-elliptic-k 1-m))
+	      (bf-elliptic-k m))))))
 
 (in-package :maxima)
 
