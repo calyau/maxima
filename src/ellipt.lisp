@@ -2187,16 +2187,14 @@ first kind:
 	      1)))
 
 ;; Compute inverse_jacobi_dn.  We use the following identity
-;; (http://functions.wolfram.com/09.29.27.0022.01):
+;; from Gradshteyn & Ryzhik, 8.153.6
 ;;
-;;   w = dn(z|m) = sqrt(1-m) * sn(-%i*z + K(1-m) - %i*K(m) | 1-m)
+;;   w = dn(z|m) = cn(sqrt(m)*z, 1/m)
 ;;
 ;; Solve for z to get
 ;;
-;;   z = inverse_jacobi_dn(w|m)
-;;     = %i*inverse_jacobi_sn(w/sqrt(1-m) | 1-m) - %i*K(1-m) -K(m)
-;;
-
+;;   z = inverse_jacobi_dn(w,m)
+;;     = 1/sqrt(m) * inverse_jacobi_cn(w, 1/m)
 (defun bf-inverse-jacobi-dn (w m)
   (cond ((= w 1)
 	 (float 0 w))
@@ -2206,16 +2204,10 @@ first kind:
 	(t
 	 ;; We should do something better to make sure that things
 	 ;; that should be real are real.
-	 (let* ((1-m (- 1 m))
-		(result (- (* #C(0 1)
-			      (- (bf-inverse-jacobi-sn (/ w (sqrt 1-m)) 1-m)
-				 (bf-elliptic-k 1-m)))
-			   (bf-elliptic-k m))))
-	   (cond ((and (realp w) (realp m)
-		       (>= w (sqrt 1-m)))
-		  (realpart result))
-		 (t
-		  result))))))
+	 (/ (to (maxima::take '(maxima::%inverse_jacobi_cn)
+			      (maxima::to w)
+			      (maxima::to (/ m))))
+	    (sqrt m)))))
 
 (in-package :maxima)
 
