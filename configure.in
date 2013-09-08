@@ -621,9 +621,18 @@ AC_ARG_WITH(hhc,
 
 # Check that hhc exists, using AC_CHECK_PROG
 if test x$chm = xtrue; then
-  AC_CHECK_PROG(hhc_found,$HHC,
-                true,
-                AC_MSG_ERROR([HTML Help Compiler executable "${HHC}" not found]))
+  if test -x "${HHC}"; then
+    # HHC was a path to the executable, and it existed, which is
+    # great! We still say something to the caller, since this is
+    # probably less confusing.
+    AC_MSG_CHECKING([for hhc])
+    AC_MSG_RESULT([yes])
+  else
+    AC_CHECK_PROG(hhc_found, ${HHC}, yes)
+    if test x"${hhc_found}" != x"yes"; then
+      AC_MSG_ERROR([HTML Help Compiler executable ${HHC} not found])
+    fi
+  fi
 fi
 
 dnl Optionally build xmaxima.exe under windows
