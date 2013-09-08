@@ -107,7 +107,7 @@ clispexeflag =
 WEIRD_INSTALL_TARGETS += install-clisp-copy
 WEIRD_UNINSTALL_TARGETS += uninstall-clisp-copy
 install-clisp-copy:
-	$(mkinstalldirs) $(clisplibdir)
+	$(mkinstalldirs) $(DESTDIR)$(clisplibdir)
 	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(clisplibdir)/@CLISP_RUNTIME@"
 uninstall-clisp-copy:
 	rm -f "$(DESTDIR)$(clisplibdir)/@CLISP_RUNTIME@"
@@ -203,7 +203,7 @@ binary-scl/maxima.core:
 WEIRD_INSTALL_TARGETS += install-scl-copy
 WEIRD_UNINSTALL_TARGETS += uninstall-scl-copy
 install-scl-copy:
-	$(mkinstalldirs) $(scllibdir)
+	$(mkinstalldirs) $(DESTDIR)$(scllibdir)
 	$(INSTALL_PROGRAM) @SCL_RUNTIME_PATH@ "$(DESTDIR)$(scllibdir)/@SCL_RUNTIME@"
 uninstall-scl-copy:
 	rm -f "$(DESTDIR)$(scllibdir)/@SCL_RUNTIME@"
