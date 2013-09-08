@@ -1100,7 +1100,7 @@ echo "wish executable name: \"${WISH}\""
 
 if test x"${chm}" = xtrue ; then
   echo "CHM help files enabled"
-  echo "    HHC: \"${HHC}\""
+  echo "  HHC: \"${HHC}\""
 fi
 if test x"${xmaxima_exe}" = xtrue ; then
    echo "Windows xmaxima.exe enabled"
