@@ -370,6 +370,76 @@ fourier_elim([f(abs(x)) > 0],[x]);
 fourier_elim([log(x) < log(a)],[x,a]);
 [0 < x, x < a, 0 < a]$
 
+/* affine_p tests */
+
+affine_p(0,[]);
+true$
+
+affine_p(2*%pi*%i,[x,y,z]);
+true$
+
+affine_p(0,[x]);
+true$
+
+affine_p(x,[x]);
+true$
+
+affine_p(x[1],[x[1]]);
+true$
+
+affine_p(y,[x]);
+true$
+
+affine_p(a*x,[x]);
+true$
+
+affine_p(a*x,[x,y]);
+true$
+
+affine_p(a*x+y,[x,y]);
+true$
+
+affine_p(a*x+y*sin(q),[x,y]);
+true$
+
+affine_p((x-y)/(a-b),[x,y]);
+true$
+
+affine_p((x^2-y^2)/(x-y),[x,y]);
+true$
+
+affine_p(sin(x),[x]);
+false$
+
+affine_p(x*y,[x,y]);
+false$
+
+affine_p(1/x,[x]);
+false$
+
+affine_p([1,2],[]);
+false$
+
+affine_p(x=y,[]);
+false$
+
+affine_p(taylor(x,x,0,1),[x]);
+false$
+
+affine_p((x^2+y^2)/(x-y),[x,y]);
+false$
+
+affine_p(x[1]^2,[x[1]]);
+false$
+
+affine_p(x[1]*y[1],[x[1],y[1]]);
+false$
+
+/* actual regressions */
+
+fourier_elim(x = y*z,[x,y,z]); /* #2628 fourier elimination on equality */
+[y*z-x=0]$
+
 /* known bugs!  */
 fourier_elim([x < 1/a],[x]);
 [x < 1/a]$

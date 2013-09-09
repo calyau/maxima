@@ -21,10 +21,10 @@ EXTRA_DIST = \
 include common.mk
 
 extradocinstall:
-	test -d "$(docdir)" || mkdir -p "$(docdir)"
+	test -d "$(DESTDIR)$(docdir)" || mkdir -p "$(DESTDIR)$(docdir)"
 	for file in AUTHORS COPYING INSTALL README README.lisps ; \
             do \
-            $(INSTALL_DATA) $$file "$(docdir)" ; \
+            $(INSTALL_DATA) $$file "$(DESTDIR)$(docdir)" ; \
             done
 
 $(distdir).tar.gz: Makefile.am

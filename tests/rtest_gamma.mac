@@ -2794,6 +2794,18 @@ map(fresnel_s,[0,0.0,0.0b0]);
 map(fresnel_c,[0,0.0,0.0b0]);
 [0,0.0,0.b0];
 
+limit(fresnel_c(x),x,inf);
+1/2;
+
+limit(fresnel_s(x),x,inf);
+1/2;
+
+limit(fresnel_c(x),x,minf);
+-1/2;
+
+limit(fresnel_s(x),x,minf);
+-1/2;
+
 /* Simplification of infinities 
    The rules for an odd function and the simplifaction for imaginary
    arguments are applied too.

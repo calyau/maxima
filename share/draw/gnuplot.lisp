@@ -3209,7 +3209,8 @@
                      (incf nilcounter)))
                 (format cmdstorage "~%set size ~a, ~a~%" size1 size2)
                 (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
-                (when (not (member (get-option '$terminal) '($epslatex $epslatex_standalone)))
+                (when (and (not *multiplot-is-active*)
+                           (not (member (get-option '$terminal) '($epslatex $epslatex_standalone))))
                   (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
                                      origin1 origin2 (+ origin1 size1 ) (+ origin2 size2)))  ))
         (setf is1stobj t

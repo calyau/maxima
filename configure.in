@@ -621,9 +621,18 @@ AC_ARG_WITH(hhc,
 
 # Check that hhc exists, using AC_CHECK_PROG
 if test x$chm = xtrue; then
-  AC_CHECK_PROG(hhc_found,$HHC,
-                true,
-                AC_MSG_ERROR([HTML Help Compiler executable "${HHC}" not found]))
+  if test -x "${HHC}"; then
+    # HHC was a path to the executable, and it existed, which is
+    # great! We still say something to the caller, since this is
+    # probably less confusing.
+    AC_MSG_CHECKING([for hhc])
+    AC_MSG_RESULT([yes])
+  else
+    AC_CHECK_PROG(hhc_found, ${HHC}, yes)
+    if test x"${hhc_found}" != x"yes"; then
+      AC_MSG_ERROR([HTML Help Compiler executable ${HHC} not found])
+    fi
+  fi
 fi
 
 dnl Optionally build xmaxima.exe under windows
@@ -976,10 +985,10 @@ else
 fi
 expanded_top_srcdir="`(cd \"$top_srcdir\" 1>/dev/null 2>/dev/null; pwd)`"
 expanded_exec_prefix="${tmp_exec_prefix}"
-expanded_libdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libdir}\"`"
-expanded_libexecdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libexecdir}\"`"
-expanded_datadir="`eval \"prefix=${tmp_prefix};datarootdir=${datarootdir};echo ${datadir}\"`"
-expanded_infodir="`eval \"prefix=${tmp_prefix};datarootdir=${datarootdir};echo ${infodir}\"`"
+expanded_libdir="`eval \"exec_prefix=\\\"${tmp_exec_prefix}\\\";echo ${libdir}\"`"
+expanded_libexecdir="`eval \"exec_prefix=\\\"${tmp_exec_prefix}\\\";echo ${libexecdir}\"`"
+expanded_datadir="`eval \"prefix=\\\"${tmp_prefix}\\\";datarootdir=\\\"${datarootdir}\\\";echo ${datadir}\"`"
+expanded_infodir="`eval \"prefix=\\\"${tmp_prefix}\\\";datarootdir=\\\"${datarootdir}\\\";echo ${infodir}\"`"
 
 
 dnl Find all the directories in share, but remove the share directory
@@ -1091,7 +1100,7 @@ echo "wish executable name: \"${WISH}\""
 
 if test x"${chm}" = xtrue ; then
   echo "CHM help files enabled"
-  echo "    HHC: \"${HHC}\""
+  echo "  HHC: \"${HHC}\""
 fi
 if test x"${xmaxima_exe}" = xtrue ; then
    echo "Windows xmaxima.exe enabled"
