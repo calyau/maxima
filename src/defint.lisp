@@ -1876,7 +1876,7 @@ in the interval of integration.")
 ;; Return the integer part of r.
 (defun igprt (r)
   ;; r - fpart(r)
-  (pretty-good-floor-or-ceiling r '$floor))
+  (mfuncall '$floor r))
 
 
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral

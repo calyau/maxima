@@ -1449,3 +1449,13 @@ integrate( erf(x+a)-erf(x-a), x, minf, inf);
 /* Wrong result for definite integral - ID: 3538167 */
 integrate(cos(3*x)/(5-4*cos(x)),x,0,2*%pi);
 %pi/12;
+
+/* SF # 2633: ev(integrate,numer) gives strange result */
+(foo : ev(integrate(sin(2*%pi*x),x,0,1),numer), 0);
+0;
+
+freeof (false, foo);
+true;
+
+float (foo);
+0.0;
