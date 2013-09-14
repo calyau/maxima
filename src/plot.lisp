@@ -832,6 +832,11 @@ sin(y)*(10.0+6*cos(x)),
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will be pushed plot_options
 
+;; TODO: This should be removed after some time, once adaptive
+;; plotting has received enough testing and debugging.
+(defmvar $use_adaptive_parametric_plot t
+  "If true, parametric plots use adaptive plotting")
+
 (defun draw2d-parametric (param range1 &aux range tem)
   (cond ((and ($listp (setq tem (nth 4 param)))
               (symbolp (cadr tem))
@@ -880,6 +885,124 @@ sin(y)*(10.0+6*cos(x)),
            (if (>= tt tmax) (setq tt tmax))
            )))
   )
+
+(defun draw2d-parametric-adaptive (param range1 &aux range tem)
+  (cond ((and ($listp (setq tem (nth 4 param)))
+              (symbolp (cadr tem))
+              (eql ($length tem) 3))
+         ;; sure looks like a range
+         (setq range tem)))
+  (let* (($plot_options ($append ($rest param 3)
+                                 (if range1
+                                     ($cons range1 $plot_options)
+                                     $plot_options)))
+         (nticks (third($get_plot_option '$nticks)))
+         (trange (or range ($get_plot_option '$t)))
+         (xrange ($get_plot_option '$x))
+         (yrange ($get_plot_option '$y))
+         (tmin (coerce-float (third trange)))
+         (tmax (coerce-float (fourth trange)))
+         (xmin (coerce-float (third xrange)))
+         (xmax (coerce-float (fourth xrange)))
+         (ymin (coerce-float (third yrange)))
+         (ymax (coerce-float (fourth yrange)))
+         (x 0.0)         ; have to initialize to some floating point..
+         (y 0.0)
+         (tt tmin)
+         (eps (/ (- tmax tmin) (- nticks 1)))
+         f1 f2 in-range-y in-range-x in-range last-ok 
+         )
+    (declare (type flonum x y tt ymin ymax xmin xmax tmin tmax eps))
+    (setq f1 (coerce-float-fun (third param) `((mlist), (second trange))))
+    (setq f2 (coerce-float-fun (fourth param) `((mlist), (second trange))))
+    ;; We should probably do the same thing as draw2d and divide the
+    ;; region into NTICKS regions and do adaptive plotting in each
+    ;; region.
+
+    (let ((n-clipped 0) (n-non-numeric 0)
+	  (t-step (/ (- tmax tmin) (coerce-float nticks) 2))
+	  t-samples x-samples y-samples result)
+      (dotimes (k (1+ (* 2 nticks)))
+	(let ((tpar (+ tmin (* k t-step))))
+	  (push tpar t-samples)
+	  (push (funcall f1 tpar) x-samples)
+	  (push (funcall f2 tpar) y-samples)))
+      (setf t-samples (nreverse t-samples))
+      (setf x-samples (nreverse x-samples))
+      (setf y-samples (nreverse y-samples))
+
+      (do ((t-start t-samples (cddr t-start))
+	   (t-mid (cdr t-samples) (cddr t-mid))
+	   (t-end (cddr t-samples) (cddr t-end))
+	   (x-start x-samples (cddr x-start))
+	   (x-mid (cdr x-samples) (cddr x-mid))
+	   (x-end (cddr x-samples) (cddr x-end))
+	   (y-start y-samples (cddr y-start))
+	   (y-mid (cdr y-samples) (cddr y-mid))
+	   (y-end (cddr y-samples) (cddr y-end)))
+	  ((null t-end))
+	(setf result
+	      (if result
+		  (append result
+			  (cddr (adaptive-parametric-plot f1 f2
+							  (car t-start) (car t-mid) (car t-end)
+							  (car x-start) (car x-mid) (car x-end)
+							  (car y-start) (car y-mid) (car y-end)
+							  (third ($get_plot_option '$adapt_depth))
+							  1e-5)))
+		  (adaptive-parametric-plot f1 f2
+					    (car t-start) (car t-mid) (car t-end)
+					    (car x-start) (car x-mid) (car x-end)
+					    (car y-start) (car y-mid) (car y-end)
+					    (third ($get_plot_option '$adapt_depth))
+					    1e-5))))
+      ;; Fix up out-of-range values and clobber non-numeric values.
+      (do ((x result (cddr x))
+	   (y (cdr result) (cddr y)))
+	  ((null y))
+	(if (numberp (car y))
+            (unless (<= ymin (car y) ymax)
+              (incf n-clipped)
+              (setf (car x) 'moveto)
+              (setf (car y) 'moveto))
+            (progn
+              (incf n-non-numeric)
+              (setf (car x) 'moveto)
+              (setf (car y) 'moveto))))
+      ;; Filter out any MOVETO's which do not precede a number.
+      ;; Code elsewhere in this file expects MOVETO's to
+      ;; come in pairs, so leave two MOVETO's before a number.
+      (let ((n (length result)))
+	(dotimes (i n)
+	  (when
+              (and
+	       (evenp i)
+	       (eq (nth i result) 'moveto)
+	       (eq (nth (1+ i) result) 'moveto)
+	       (or 
+		(eq i (- n 2))
+		(eq (nth (+ i 2) result) 'moveto)))
+	    (setf (nth i result) nil)
+	    (setf (nth (1+ i) result) nil))))
+
+      (let ((result-sans-nil (delete nil result)))
+	(if (null result-sans-nil)
+            (cond
+              ((= n-non-numeric 0)
+               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
+              ((= n-clipped 0)
+               (mtell (intl:gettext
+		       "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
+              (t
+	       (mtell (intl:gettext
+		       "plot2d: all values are non-numeric, or clipped.~%"))))
+            (progn
+              (if (> n-non-numeric 0)
+		  (mtell (intl:gettext
+			  "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
+              (if (> n-clipped 0)
+		  (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
+	(cons '(mlist) result-sans-nil)))))
 
 (defun draw2d-discrete (f)
   (let* ((f (copy-tree f))              ; Copy all of F because we destructively modify it below.
@@ -1009,9 +1132,57 @@ sin(y)*(10.0+6*cos(x)),
                  (right (adaptive-plot fcn b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
              (append left (cddr right)))))))
 
+(defun adaptive-parametric-plot (x-fcn y-fcn a b c x-a x-b x-c y-a y-b y-c depth eps)
+  ;; Step 1:  Split the interval [a, c] into 5 points
+  (let* ((a1 (/ (+ a b) 2))
+         (b1 (/ (+ b c) 2))
+         (x-a1 (funcall x-fcn a1))
+         (x-b1 (funcall x-fcn b1))
+         (y-a1 (funcall y-fcn a1))
+         (y-b1 (funcall y-fcn b1))
+         )
+    (cond ((or (not (plusp depth))
+               (and (slow-oscillation-p y-a y-a1 y-b y-b1 y-c)
+		    (slow-oscillation-p x-a x-a1 x-b x-b1 x-c)
+                    (smooth-enough-p y-a y-a1 y-b y-b1 y-c eps)
+		    (smooth-enough-p x-a x-a1 x-b x-b1 x-c eps)))
+           ;; Everything is nice and smooth so we're done.  Don't
+           ;; refine anymore.
+           (list x-a y-a
+                 x-a1 y-a1
+                 x-b y-b
+                 x-b1 y-b1
+                 x-c y-c))
+          ;; We are not plotting the real part of the function and the
+          ;; function is undefined at all points - assume it has complex value
+          ;; on [a,b]. Maybe we should refine it a couple of times just to make sure?
+          ((and (null *plot-realpart*)
+                (null y-a) (null y-a1) (null y-b) (null y-b1) (null y-c)
+		(null x-a) (null x-a1) (null x-b) (null x-b1) (null x-c))
+           (list x-a y-a
+                 x-a1 y-a1
+                 x-b y-b
+                 x-b1 y-b1
+                 x-c y-c))
+          (t
+           ;; Need to refine.  Split the interval in half, and try to plot each half.  
+           (let ((left (adaptive-parametric-plot x-fcn y-fcn
+						 a a1 b
+						 x-a x-a1 x-b
+						 y-a y-a1 y-b
+						 (1- depth) (* 2 eps)))
+                 (right (adaptive-parametric-plot x-fcn y-fcn
+						  b b1 c
+						  x-b x-b1 x-c
+						  y-b y-b1 y-c
+						  (1- depth) (* 2 eps))))
+             (append left (cddr right)))))))
+
 (defun draw2d (fcn range features)
   (if (and ($listp fcn) (equal '$parametric (cadr fcn)))
-      (return-from draw2d (draw2d-parametric fcn range)))
+      (return-from draw2d (if $use_adaptive_parametric_plot
+			      (draw2d-parametric-adaptive fcn range)
+			      (draw2d-parametric fcn range))))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (third ($get_plot_option '$nticks)))
