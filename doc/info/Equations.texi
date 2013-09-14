@@ -238,7 +238,7 @@ the polynomial over the real numbers if the polynomial is real, or over the
 complex numbers, if the polynomial is complex.
 
 @code{allroots} may give inaccurate results in case of multiple roots.
-If the polynomial is real, @code{allroots (%i*@var{p})}) may yield
+If the polynomial is real, @code{allroots (%i*@var{p})} may yield
 more accurate approximations than @code{allroots (@var{p})}, as @code{allroots}
 invokes a different algorithm in that case.
 
