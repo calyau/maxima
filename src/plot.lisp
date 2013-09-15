@@ -910,13 +910,12 @@ sin(y)*(10.0+6*cos(x)),
     (declare (type flonum ymin ymax xmin xmax tmin tmax))
     (setq f1 (coerce-float-fun (third param) `((mlist), (second trange))))
     (setq f2 (coerce-float-fun (fourth param) `((mlist), (second trange))))
-    ;; We should probably do the same thing as draw2d and divide the
-    ;; region into NTICKS regions and do adaptive plotting in each
-    ;; region.
 
     (let ((n-clipped 0) (n-non-numeric 0)
 	  (t-step (/ (- tmax tmin) (coerce-float nticks) 2))
 	  t-samples x-samples y-samples result)
+      ;; Divide the range into 2*NTICKS regions that we then
+      ;; adaptively plot over.
       (dotimes (k (1+ (* 2 nticks)))
 	(let ((tpar (+ tmin (* k t-step))))
 	  (push tpar t-samples)
@@ -926,6 +925,7 @@ sin(y)*(10.0+6*cos(x)),
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
 
+      ;; Adaptively plot over each region
       (do ((t-start t-samples (cddr t-start))
 	   (t-mid (cdr t-samples) (cddr t-mid))
 	   (t-end (cddr t-samples) (cddr t-end))
@@ -939,18 +939,20 @@ sin(y)*(10.0+6*cos(x)),
 	(setf result
 	      (if result
 		  (append result
-			  (cddr (adaptive-parametric-plot f1 f2
-							  (car t-start) (car t-mid) (car t-end)
-							  (car x-start) (car x-mid) (car x-end)
-							  (car y-start) (car y-mid) (car y-end)
-							  (third ($get_plot_option '$adapt_depth))
-							  1e-5)))
-		  (adaptive-parametric-plot f1 f2
-					    (car t-start) (car t-mid) (car t-end)
-					    (car x-start) (car x-mid) (car x-end)
-					    (car y-start) (car y-mid) (car y-end)
-					    (third ($get_plot_option '$adapt_depth))
-					    1e-5))))
+			  (cddr (adaptive-parametric-plot
+				 f1 f2
+				 (car t-start) (car t-mid) (car t-end)
+				 (car x-start) (car x-mid) (car x-end)
+				 (car y-start) (car y-mid) (car y-end)
+				 (third ($get_plot_option '$adapt_depth))
+				 1e-5)))
+		  (adaptive-parametric-plot
+		   f1 f2
+		   (car t-start) (car t-mid) (car t-end)
+		   (car x-start) (car x-mid) (car x-end)
+		   (car y-start) (car y-mid) (car y-end)
+		   (third ($get_plot_option '$adapt_depth))
+		   1e-5))))
       ;; Fix up out-of-range values and clobber non-numeric values.
       (do ((x result (cddr x))
 	   (y (cdr result) (cddr y)))
@@ -1135,9 +1137,11 @@ sin(y)*(10.0+6*cos(x)),
          (x-a1 (funcall x-fcn a1))
          (x-b1 (funcall x-fcn b1))
          (y-a1 (funcall y-fcn a1))
-         (y-b1 (funcall y-fcn b1))
-         )
+         (y-b1 (funcall y-fcn b1)))
     (cond ((or (not (plusp depth))
+	       ;; Should we have a different algorithm to determine
+	       ;; slow oscillation and smooth-enough for parametric
+	       ;; plots?
                (and (slow-oscillation-p y-a y-a1 y-b y-b1 y-c)
 		    (slow-oscillation-p x-a x-a1 x-b x-b1 x-c)
                     (smooth-enough-p y-a y-a1 y-b y-b1 y-c eps)
@@ -1172,6 +1176,9 @@ sin(y)*(10.0+6*cos(x)),
 						  x-b x-b1 x-c
 						  y-b y-b1 y-c
 						  (1- depth) (* 2 eps))))
+	     ;; (cddr right) to skip over the point that is duplicated
+	     ;; between the right end-point of the left region and the
+	     ;; left end-point of the right
              (append left (cddr right)))))))
 
 (defun draw2d (fcn range features)
