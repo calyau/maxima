@@ -50,10 +50,6 @@
   "The infinitesimals recognized by Maxima. ZEROA zero from above,
    ZEROB zero from below")
 
-(defmvar rd* nil
-  "The full implications of this flag have yet to be determined.
-It appears in LIMIT and DEFINT.......")
-
 (defmvar simplimplus-problems ()
   "A list of all problems in the stack of recursive calls to simplimplus.")
 
@@ -109,7 +105,7 @@ It appears in LIMIT and DEFINT.......")
       (setq integer-info ()))
 
     (unwind-protect
-	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (*behavior-count-now* 0)
+	 (let ((exp1 ()) (lhcount $lhospitallim) (*behavior-count-now* 0)
 	       (exp ()) (var ()) (val ()) (dr ())
 	       (*indicator ()) (taylored ()) (origval ())
 	       (logcombed ()) (lhp? ())
@@ -2061,10 +2057,11 @@ ignoring dummy variables and array indices."
   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
   e)
 
+;; simple radical
+;; returns true if exp is a polynomial raised to a numeric power
 (defun simplerd (exp)
   (and (mexptp exp)
-       (or (and rd* (not (among var (caddr exp))))
-	   (mnump (caddr exp)))
+       (mnump (caddr exp))	;; exponent must be a number - no variables
        (polyp (cadr exp))))
 
 (defun branch1 (exp val)

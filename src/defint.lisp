@@ -125,7 +125,7 @@
 
 (declare-top (special *def2* pcprntd *mtoinf* rsn*
 		      sn* sd* leadcoef checkfactors
-		      *nodiverg rd* exp1
+		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
@@ -570,7 +570,7 @@ in the interval of integration.")
 		(setq result (ratfnt exp))))
 	  ((and (not *scflag*)
 		(not (eq ul '$inf))
-		(radic exp var)
+		(radicalp exp var)
 		(kindp34)
 		(setq result (cv exp))))
 	  (t ()))))
@@ -1632,12 +1632,6 @@ in the interval of integration.")
 (defun ggrm1 (d k a b)
   (setq b (m// (m+t 1. d) b))
   (m* k `((%gamma) ,b) (m^ a (m- b))))
-
-(defun radic (e v)
-  ;;If rd* is t the m^ts must just be free of var.
-  ;;If rd* is () the m^ts must be mnump's.
-  (let ((rd* ()))
-    (radicalp e v)))
 
 ;; Compute the integral(n/d,x,0,inf) by computing the negative of the
 ;; sum of residues of log(-x)*n/d over the poles of n/d inside the
