@@ -906,13 +906,8 @@ sin(y)*(10.0+6*cos(x)),
          (xmax (coerce-float (fourth xrange)))
          (ymin (coerce-float (third yrange)))
          (ymax (coerce-float (fourth yrange)))
-         (x 0.0)         ; have to initialize to some floating point..
-         (y 0.0)
-         (tt tmin)
-         (eps (/ (- tmax tmin) (- nticks 1)))
-         f1 f2 in-range-y in-range-x in-range last-ok 
-         )
-    (declare (type flonum x y tt ymin ymax xmin xmax tmin tmax eps))
+         f1 f2)
+    (declare (type flonum ymin ymax xmin xmax tmin tmax))
     (setq f1 (coerce-float-fun (third param) `((mlist), (second trange))))
     (setq f2 (coerce-float-fun (fourth param) `((mlist), (second trange))))
     ;; We should probably do the same thing as draw2d and divide the
@@ -961,7 +956,8 @@ sin(y)*(10.0+6*cos(x)),
 	   (y (cdr result) (cddr y)))
 	  ((null y))
 	(if (numberp (car y))
-            (unless (<= ymin (car y) ymax)
+            (unless (and (<= ymin (car y) ymax)
+			 (<= xmin (car x) xmax))
               (incf n-clipped)
               (setf (car x) 'moveto)
               (setf (car y) 'moveto))
