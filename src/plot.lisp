@@ -955,7 +955,7 @@ sin(y)*(10.0+6*cos(x)),
       (do ((x result (cddr x))
 	   (y (cdr result) (cddr y)))
 	  ((null y))
-	(if (numberp (car y))
+	(if (and (numberp (car x)) (numberp (car y)))
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
               (incf n-clipped)
