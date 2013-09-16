@@ -532,6 +532,13 @@ limit ((sin(n*x) - n*x*cos(n*x))/n^2, x, %pi);
 limit((2^n+3^n)^(1/n), n,inf);
 3;
 
+/* #2624 Erroneous limit result */
+(assume(n>2), limit(x-x*(1-1/x)^n, x, inf));
+n;
+
+forget(n>2),0;
+0;
+
 /* Bug ID: 593351 - limit/sin(inf)etc. should give 0, not IND
  */
 limit(cos(1/x)*sin(x)-sin(x),x,inf);
