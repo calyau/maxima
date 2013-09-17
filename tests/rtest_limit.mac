@@ -536,7 +536,7 @@ limit((2^n+3^n)^(1/n), n,inf);
 (assume(n>2), limit(x-x*(1-1/x)^n, x, inf));
 n;
 
-forget(n>2),0;
+(forget(n>2),0);
 0;
 
 /* Bug ID: 593351 - limit/sin(inf)etc. should give 0, not IND
