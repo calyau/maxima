@@ -530,7 +530,7 @@ other Maxima functions.
 
 Fourier elimination is the analog of Gauss elimination for linear inequations
 (equations or inequalities).  The function call @code{fourier_elim([eq1, eq2,
-...], [var1, var2, ...]} does Fourier elimination on a list of linear
+...], [var1, var2, ...])} does Fourier elimination on a list of linear
 inequations @code{[eq1, eq2, ...]} with respect to the variables
 @code{[var1, var2, ...]}; for example
 
