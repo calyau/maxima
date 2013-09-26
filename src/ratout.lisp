@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic errrjfflag varlist ss *y* f $factorflag modulus hmodulus
+(declare-top (special $algebraic errrjfflag varlist ss *y* f $factorflag modulus
 		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
 		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
 
@@ -27,7 +27,7 @@
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
 
-(defun newgcd (x y modulus &aux hmodulus)
+(defun newgcd (x y modulus)
   (setqmodulus modulus)
   (let ((a (cond ((pcoefp x)
 		  (cond ((zerop x) y)
@@ -140,7 +140,7 @@
 	 h2star		xv		e		b
 	 gbar		nubar		nu1bar		nu2bar
 	 gtilde		f1tilde		f2tilde		biggtilde
-	 degree		f1		f1f2		hmodulus)
+	 degree		f1		f1f2)
      (setqmodulus modulus)
      (cond ((and (univar (cdr bigf1)) (univar (cdr bigf2)))
 	    (setq q (pgcdu bigf1 bigf2))
@@ -225,7 +225,7 @@
   (prog (c c1		c2		f1		f2	n
 	 e		degree		mubar		p
 	 nonlindeg	gtilde		h1tilde		h2tilde
-	 modulus	hmodulus	bigf1tilde	bigf2tilde
+	 modulus	bigf1tilde	bigf2tilde
 	 biggtilde	q		h1star		h2star
 	 gstar		xv              gbar)
      (setq p *alpha)

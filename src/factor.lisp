@@ -293,7 +293,7 @@
 
 (defun z1 (poly fact1 fact2)
   (prog (res hsteps steps kterm a b c d *ab* m df1 df2 dlr step *sharpa *sharpb)
-     (let ((modulus) (hmodulus))
+     (let ((modulus))
        (setqmodulus *prime)
        (setq *sharpb (fact20 fact1 fact2 limk)))
      (setq *sharpa (car *sharpb))
@@ -771,7 +771,7 @@
     (push (random 1000.) l)))
 
 (defun trufac (v lp olfact many* modulus)
-  (prog (ans olc lc af qnt factor lfunct hmodulus)
+  (prog (ans olc lc af qnt factor lfunct)
      (setq lc 1 olc 1)
      (setqmodulus modulus)
      (setq lfunct (setq olfact (cons nil olfact)))
@@ -859,7 +859,7 @@
 
 (defun nprod (lc u lfunct)
   (prog (stage v d2 af0 r lcindex factor llc ltuple lprod lindex qnt af
-	 funct tuple ltemp lpr f l li lf modulus hmodulus)
+	 funct tuple ltemp lpr f l li lf modulus)
      (setq lpr (copy-tree (setq ltemp (cons nil nil))))
      (setq lprod (cons nil lfunct))
      (setq d2 (ash (cadr u) -1))
@@ -1346,7 +1346,7 @@
 
 
 (defun factor1972 (p)
-  (let ((modulu* modulus) many* *stop* modulus hmodulus mcflag *negflag*)
+  (let ((modulu* modulus) many* *stop* modulus mcflag *negflag*)
     (if (or (atom p) (numberp p) (and algfac* (alg p)))
 	(list p)
 	(factor72 p))))

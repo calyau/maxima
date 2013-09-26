@@ -30,7 +30,6 @@
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
-(defmvar hmodulus nil "Half of `modulus'")
 (defmvar errrjfflag nil "Controls action of `errrjf' (`maxima-error' or throw)")
 
 (defmacro bctimes (&rest l)
@@ -149,10 +148,9 @@
 (defun setqmodulus (m)
   (cond ((numberp m)
 	 (cond ((> m 0)
-		(setq hmodulus (truncate m 2))
 		(setq modulus m))
 	       (t (merror (intl:gettext "assignment: modulus must be a positive number; found: ~M") m))))
-	(t (setq hmodulus (setq modulus nil)))))
+	(t (setq modulus nil))))
 
 (defmfun pcoefadd (e c x)
   (cond ((pzerop c) x)
