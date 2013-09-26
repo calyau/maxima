@@ -101,10 +101,10 @@
   (prog (zz)
      (cond ((null p) (return *res))
 	   ((pcoefp (cadr p))
-	    (cond ((eqn *max 0) (setq zz (cadr p)) (go add)) (t (go ret))))
+	    (cond ((equal *max 0) (setq zz (cadr p)) (go add)) (t (go ret))))
 	   ((eq (caadr p) *var) (setq zz (pterm (cdadr p) *max)) (go add)))
-     (cond ((eqn *max 0) (setq zz (cadr p))) (t (go ret)))
-     add  (cond ((eqn zz 0) (go ret)))
+     (cond ((equal *max 0) (setq zz (cadr p))) (t (go ret)))
+     add  (cond ((equal zz 0) (go ret)))
      (setq *res (pplus *res (psimp *chk (list (car p) zz))))
      ret  (return (pgath3 (cddr p)))))
 
@@ -126,7 +126,7 @@
 	((pointergp (car x)(car y))t)
 	((not (eq (car x)(car y)))nil)
 	((> (cadr x)(cadr y)) t)
-	((eqn (cadr x)(cadr y))(vgreat (cddr x)(cddr y)))
+	((equal (cadr x)(cadr y))(vgreat (cddr x)(cddr y)))
 	(t nil)))
 
 (defun pdegreer (x)
@@ -212,7 +212,7 @@
 
 
 (defun monicgcd (gcd x y lcf)
-  (cond ((eqn lcf 1) (list gcd x y))
+  (cond ((equal lcf 1) (list gcd x y))
 	(t (list	(ptimes (crecip lcf) gcd)
 			(ptimes lcf x)
 			(ptimes lcf y) )) ))
@@ -322,7 +322,7 @@
 	 (go b)
 	 (setq factor (car factor)))
      (when (or (pcoefp factor)
-	       (not (eqn (car p) (car factor)))
+	       (not (equal (car p) (car factor)))
 	       (not (pzerop (prem p factor))))
        (go b))
      (cond (modulus (pmonicize (cdr factor)))
@@ -330,7 +330,7 @@
      (setq p (pquotient p factor))
      (setq maxexp (quotient (cadr p) 2))
      (setq factors (cons factor factors))
-     (when (or (eqn p 1) (eqn p -1)) (return factors))
+     (when (or (equal p 1) (equal p -1)) (return factors))
      (go a)
      d    (incf i)
      (go a)))
@@ -372,7 +372,7 @@
 	(t (cons (ptimes x (car l)) (ap1 x (cdr l))))))
 
 (defun ptts1 (x n y)
-  (cond ((eqn n 1) (list y))
+  (cond ((equal n 1) (list y))
 	(t (cons y (ptts1 x (1- n) (ptimes x y))))))
 
 (defun p1 (l)
@@ -541,7 +541,7 @@
      (setq c (wtptimes (cadr y) (cadr *x*) (+ wtsofar (* xweight e))))
      (cond ((pzerop c) (setq y (cddr y)) (go a1))
 	   ((or (null v) (> e (car v))) (setq u* (setq v (pplus1 u* (list e c)))) (setq y (cddr y)) (go a1))
-	   ((eqn e (car v))
+	   ((equal e (car v))
 	    (setq c (pplus c (cadr v)))
 	    (cond ((pzerop c) (setq u* (setq v (pdiffer1 u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
 	    (setq y (cddr y))

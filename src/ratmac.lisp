@@ -160,11 +160,6 @@
 (defmacro algv (v)
   `(and $algebraic (get ,v 'tellrat)))
 
-;; EQN
-;;
-;; A macro for testing whether the arguments are EQUAL. 
-(defmacro eqn (&rest l) `(equal . ,l))
-
 (defmacro rzero () ''(0 . 1))
 (defmacro rzerop (a) `(pzerop (car ,a)))
 

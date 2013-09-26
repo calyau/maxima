@@ -30,7 +30,7 @@
 	(t (gcd a b))))
 
 (defmfun pquotientchk (a b)
-  (if (eqn b 1) a (pquotient a b)))
+  (if (equal b 1) a (pquotient a b)))
 
 ;; divides polynomial x by polynomial y
 ;; avoids error "quotient by polynomial of higher degree"
@@ -40,8 +40,8 @@
     (catch 'raterr (pquotientchk x y))))
 
 (defun ptimeschk (a b)
-  (cond ((eqn a 1) b)
-	((eqn b 1) a)
+  (cond ((equal a 1) b)
+	((equal b 1) a)
 	(t (ptimes a b))))
 
 (defun pfloatp (x)
@@ -361,7 +361,7 @@
 (defun pcontent (x)
   (cond ((pcoefp x) (list x 1))
 	(t (let ((u (pcontentz x)))
-	     (if (eqn u 1) (list 1 x)
+	     (if (equal u 1) (list 1 x)
 		 (list u (pcquotient x u)))))))
 
 (defun pcontent1 (x gcd)

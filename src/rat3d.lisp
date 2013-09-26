@@ -219,7 +219,7 @@
      (setq l (pdegreevector p))
      (cond ((not (member 2 l :test #'equal)) (return (list p))))
      (setq l (nreverse l) v (reverse genvar)) ;FIND MOST MAIN VAR
-     loop (cond ((eqn (car l) 2) (setq v (car v)))
+     loop (cond ((equal (car l) 2) (setq v (car v)))
 		(t (setq l (cdr l)) (setq v (cdr v)) (go loop)))
      (desetq (a . c) (bothprodcoef (make-poly v 2 1) p))
      (desetq (b . c) (bothprodcoef (make-poly v 1 1) c))
