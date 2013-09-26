@@ -12,7 +12,8 @@
 
 (macsyma-module ratmac macro)
 
-;; Polynomials are stored in the following format:
+;; Polynomials
+;; ===========
 ;;
 ;; A polynomial in a single variable is stored as a sparse list of coefficients,
 ;; whose first element is the polynomial's variable. The rest of the elements
@@ -55,9 +56,16 @@
 ;; the list of powers and coefficients except the leading coefficient,
 ;; respectively).
 ;;
-;; This format is also documented in the "Introduction to Polynomials" page of
+;; Rational expressions
+;; ====================
+;;
+;; A rational expression is just a quotient of two polynomials p/q and, as such,
+;; is stored as a cons pair (p . q), where p and q are in the format described
+;; above. Since bare coefficients are allowed as polynomials, we can represent
+;; zero as (0 . 1), which literally means 0/1.
+;;
+;; These format are also documented in the "Introduction to Polynomials" page of
 ;; the manual.
-
 
 ;; PCOEFP
 ;;
@@ -160,49 +168,111 @@
 (defmacro algv (v)
   `(and $algebraic (get ,v 'tellrat)))
 
+;; RZERO
+;;
+;; Expands to the zero rational expression (literally 0/1)
 (defmacro rzero () ''(0 . 1))
+
+;; RZEROP
+;;
+;; Test whether a rational expression is zero. A quotient p/q is zero iff p is
+;; zero.
 (defmacro rzerop (a) `(pzerop (car ,a)))
 
-(defmacro primpart (p) `(cadr (oldcontent ,p)))
+;; PRIMPART
+;;
+;; Calculate the primitive part of a polynomial. This is the polynomial divided
+;; through by the greatest common divisor of its coefficients.
+(defmacro primpart (p) `(second (oldcontent ,p)))
 
-;;poly constructor
-
+;; MAKE-POLY
+;;
+;; A convenience macro for constructing polynomials. VAR is the main variable
+;; and should be a symbol. With no other arguments, it constructs the polynomial
+;; representing the linear polynomial "VAR".
+;;
+;; A single optional argument is taken to be a coefficient list and, if the list
+;; is known at compile time, some tidying up is done with PSIMP.
+;;
+;; With two optional arguments, they are taken to be an exponent/coefficient
+;; pair. So (make-poly 'x 3 2) represents 2*x^3.
+;;
+;; With all three optional arguments, the first two are interpreted as above,
+;; but this coefficient is prepended to an existing list of terms passed in the
+;; third argument.
+;;
+;; Note: Polynomials are normally assumed to have terms listed in descending
+;;       order of exponent. MAKE-POLY does not ensure this, so
+;;       (make-poly 'x 1 2 '(2 1)) results in '(x 1 2 2 1), for example.
 (defmacro make-poly (var &optional (terms-or-e nil options?) (c nil e-c?) (terms nil terms?))
   (cond ((null options?) `(cons ,var '(1 1)))
 	((null e-c?) `(psimp ,var ,terms-or-e))
 	((null terms?) `(list ,var ,terms-or-e ,c))
 	(t `(psimp ,var (list* ,terms-or-e ,c ,terms)))))
 
-;;Poly selector functions
-
+;; P-VAR
+;;
+;; Extract the main variable from the polynomial P. Note: this does not work for
+;; a bare coefficient.
 (defmacro p-var (p) `(car ,p))
 
+;; P-TERMS
+;;
+;; Extract the list of terms from the polynomial P. Note: this does not work for
+;; a bare coefficient.
 (defmacro p-terms (p) `(cdr ,p))
 
-(defmacro p-lc (p) `(caddr ,p))		;leading coefficient
+;; P-LC
+;;
+;; Extract the leading coefficient of the polynomial P. Note: this does not work for
+;; a bare coefficient.
+(defmacro p-lc (p) `(caddr ,p))
 
+;; P-LE
+;;
+;; Extract the leading exponent or degree of the polynomial P. Note: this does
+;; not work for a bare coefficient.
 (defmacro p-le (p) `(cadr ,p))
 
+;; P-RED
+;;
+;; Extract the terms of the polynomial P, save the leading term.
 (defmacro p-red (p) `(cdddr ,p))
 
-;;poly terms selectors
-
+;; PT-LC
+;;
+;; Extract the leading coefficient from TERMS, a list of polynomial terms.
 (defmacro pt-lc (terms) `(cadr ,terms))
 
+;; PT-LE
+;;
+;; Extract the leading exponent (or degree) from TERMS, a list of polynomial
+;; terms.
 (defmacro pt-le (terms) `(car ,terms))
 
+;; PT-RED
+;;
+;; Return all but the leading term of TERMS, a list of polynomial terms.
 (defmacro pt-red (terms) `(cddr ,terms))
 
-;; Taken from SININT and RISCH.  Somebody document these please.
-
+;; R+
+;;
+;; Sum one or more rational expressions with RATPL
 (defmacro r+ (r . l)
   (cond ((null l) r)
 	(t `(ratpl ,r (r+ ,@l)))))
 
+;; R*
+;;
+;; Take the product of one or more rational expressions with RATTI.
 (defmacro r* (r . l)
   (cond ((null l) r)
 	(t `(ratti ,r (r* ,@l) t))))
 
+;; R-
+;;
+;; Subtract the sum of the second and following rational expressions from the
+;; first, using RATDIF.
 (defmacro r- (r . l)
   (cond ((null l) `(ratminus (ratfix ,r)))
 	(t `(ratdif (ratfix ,r) (r+ ,@l)))))
