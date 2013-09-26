@@ -113,7 +113,7 @@
 	  bindlist bvars *mdebug*
 	  declares defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
+	  dumping envlist errorsw evarrp evp expandflag expandp
 	  exprs exptrlsw factlist featurel fexprs fmaplvl
 	  forms-to-compile-queue fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
