@@ -12,6 +12,52 @@
 
 (macsyma-module ratmac macro)
 
+;; Polynomials are stored in the following format:
+;;
+;; A polynomial in a single variable is stored as a sparse list of coefficients,
+;; whose first element is the polynomial's variable. The rest of the elements
+;; form a plist with keys the powers (in descending order) and values the
+;; coefficients.
+;;
+;; For example, 42*x^2 + 1 might be stored as ($x 2 42 0 1). If, say,
+;; x*sin(x)+x^2 is respresented as a polynomial in x, we might expect it to come
+;; out as something like
+;;
+;;    ($x 2 1 1 ((%sin) $x)),
+;;
+;; but to make it easier to work with polynomials we don't allow arbitrary
+;; conses as coefficients. What actually happens is that the expression is
+;; thought of as a polynomial in two variables x and "sin(x)". More on that
+;; below.
+;;
+;; Multivariate polynomials are stored in basically the same way as single
+;; variable polynomials, using the observation that a polynomial in X and Y with
+;; coefficients in K is the same as a polynomial in X with coefficients in K[Y].
+;;
+;; Specifically, the coefficient terms can be polynomials themselves (in other
+;; variables). So x^2 + x*y could be rperesented as (($x 2 1 1 ($y 1 1))) or
+;; alternatively as (($y 1 ($x 1 1) 0 ($x 2 1))), depending on whether x or y
+;; was taken as the primary variable.
+;;
+;; In the x*sin(x) + x^2 example above, the expression can be represented as
+;; something like ($x 2 1 1 (sinx 1 1)). When passed around as expressions
+;; outside of the core rational function code, polynomials come with some header
+;; information that explains what the variables are. In this case, it would be
+;; responsible for remembering that "sinx" means sin(x).
+;;
+;; As a slightly special case, a polynomial can also be an atom, in which case
+;; it is treated as a degree zero polynomial in no particular variable. Test for
+;; this using the pcoefp macro defined below.
+;;
+;; There are accessor macros for the parts of a polynomial defined below: p-var,
+;; p-terms, p-lc, p-le and p-red (which extract the primary variable, the list
+;; of powers and coefficients, the leading coefficient, the leading exponent and
+;; the list of powers and coefficients except the leading coefficient,
+;; respectively).
+;;
+;; This format is also documented in the "Introduction to Polynomials" page of
+;; the manual.
+
 ;; Macros for manipulating rational functions.
 
 (defmacro pcoefp (e) `(atom ,e))
