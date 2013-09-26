@@ -58,25 +58,50 @@
 ;; This format is also documented in the "Introduction to Polynomials" page of
 ;; the manual.
 
-;; Macros for manipulating rational functions.
 
+;; PCOEFP
+;;
+;; Returns true if E (which is hopefully a polynomial expression) should be
+;; thought of as a bare coefficient.
 (defmacro pcoefp (e) `(atom ,e))
 
+;; PZEROP
+;;
+;; Return true iff the polynomial X is syntactically the zero polynomial. This
+;; only happens when the polynomial is a bare coefficient and that coefficient
+;; is zero.
 (declaim (inline pzerop))
 (defun pzerop (x)
-  (if (fixnump x)
-      (zerop (the fixnum x))
-      (if (consp x)
-	  nil
-	  (and (floatp x) (zerop x)))))
+  (cond
+    ((fixnump x) (zerop x))
+    ((consp x) nil)
+    ((floatp x) (zerop x))))
 
+;; PZERO
+;;
+;; A simple macro that evaluates to the zero polynomial.
 (defmacro pzero () 0)
-(defmacro ptzerop (terms) `(null ,terms)) ;for poly terms
+
+;; PTZEROP
+;;
+;; TERMS should be a list of terms of a polynomial. Returns T if that list is
+;; empty, so the polynomial has no terms.
+(defmacro ptzerop (terms) `(null ,terms))
+
+;; PTZERO
+;;
+;; A simple macro that evaluates to an empty list of polynomial terms,
+;; representing the zero polynomial.
 (defmacro ptzero () '())
 
-(defmacro czerop (c) `(pzerop ,c))
-
+;; CMINUS
+;;
+;; Return the negation of a coefficient, which had better be numeric.
 (defmacro cminus (c) `(- ,c))
+
+;; CMINUSP
+;;
+;; Return T if the coefficient C is negative. Only works if C is a real number.
 (defmacro cminusp (c) `(minusp ,c))
 
 ;; the rational function package uses GENSYM's to represent variables.
