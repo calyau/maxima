@@ -104,47 +104,65 @@
 ;; Return T if the coefficient C is negative. Only works if C is a real number.
 (defmacro cminusp (c) `(minusp ,c))
 
-;; the rational function package uses GENSYM's to represent variables.
-;; The PDP-10 implementation used to use the PRINTNAME of the gensym
-;; as a place to store a VALUE. Somebody changed this to value-cell instead,
-;; even though using the value-cell costs more. Anyway, in NIL I want it
-;; to use the property list, as thats a lot cheaper than creating a value
-;; cell. Actually, better to use the PACKAGE slot, a kludge is a kludge right?
 
+;; VALGET
+;;
+;; Retrieve a stored value from the given symbol, stored by VALPUT. This is used
+;; in the rational function code, which uses it to store information on gensyms
+;; that represent variables.
+;;
+;; Historical note from 2000 (presumably wfs):
+;;
+;;   The PDP-10 implementation used to use the PRINTNAME of the gensym as a
+;;   place to store a VALUE. Somebody changed this to value-cell instead, even
+;;   though using the value-cell costs more. Anyway, in NIL I want it to use the
+;;   property list, as thats a lot cheaper than creating a value cell. Actually,
+;;   better to use the PACKAGE slot, a kludge is a kludge right?
 (defmacro valget (item)
   `(symbol-value ,item))
 
+;; VALPUT
+;;
+;; Store a value on the given symbol, which can be later retrieved by
+;; valget. This is used by the rational function code.
 (defmacro valput (item val)
   `(setf (symbol-value ,item) ,val))
 
-;; A historical note from Richard Fateman, on the maxima list,
-;; 2006/03/17:
+;; POINTERGP
 ;;
-;; "The name pointerp comes from the original hack when we wanted a
-;; bunch of atoms that could be ordered fast, we just generated, say,
-;; 10 gensyms.  Then we sorted them by the addresses of the symbols in
-;; memory.  Then we associated them with x,y,z,....  This meant that
-;; pointergp was one or two instructions on a PDP-10, in assembler."
+;; Test whether one symbol should occur before another in a canonical ordering.
 ;;
-;; "That version of pointergp turned out to be more trouble than it was
-;; worth because we sometimes had to interpolate between two gensym
-;; "addresses" and to do that we had to kind of renumber too much of
-;; the universe.  Or maybe we just weren't clever enough to do it
-;; without introducing bugs."
+;; A historical note from Richard Fateman, on the maxima list, 2006/03/17:
 ;;
-;; Richard Fateman also says pointergp needs to be fast because it's
-;; called a lot.  So if you get an error from pointergp, it's probably
-;; because someone forgot to initialize things correctly.
-
+;;   "The name pointergp comes from the original hack when we wanted a bunch of
+;;   atoms that could be ordered fast, we just generated, say, 10 gensyms.  Then
+;;   we sorted them by the addresses of the symbols in memory.  Then we
+;;   associated them with x,y,z,....  This meant that pointergp was one or two
+;;   instructions on a PDP-10, in assembler."
+;;
+;;   "That version of pointergp turned out to be more trouble than it was worth
+;;   because we sometimes had to interpolate between two gensym "addresses" and
+;;   to do that we had to kind of renumber too much of the universe.  Or maybe
+;;   we just weren't clever enough to do it without introducing bugs."
+;;
+;; Richard Fateman also says pointergp needs to be fast because it's called a
+;; lot.  So if you get an error from pointergp, it's probably because someone
+;; forgot to initialize things correctly.
 (declaim (inline pointergp))
 (defun pointergp (a b)
   (> (symbol-value a) (symbol-value b)))
 
-;;(macro ALGV (L) `(AND $ALGEBRAIC (GET ,(CADR L) 'TELLRAT)))
+;; ALGV
+;;
+;; V should be a symbol. If V has an "algebraic value" (stored in the TELLRAT
+;; property) then return it, provided that the $ALGEBRAIC flag is
+;; true. Otherwise, return NIL.
 (defmacro algv (v)
   `(and $algebraic (get ,v 'tellrat)))
 
-
+;; EQN
+;;
+;; A macro for testing whether the arguments are EQUAL. 
 (defmacro eqn (&rest l) `(equal . ,l))
 
 (defmacro rzero () ''(0 . 1))
