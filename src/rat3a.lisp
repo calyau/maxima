@@ -17,7 +17,7 @@
 ;; by the rest of the functions.  Certain specialized functions are found
 ;; elsewhere.  Most low-level utility programs are also in this file.
 
-(declare-top (special u* *a* *var* *x* v*))
+(declare-top (special *a* *x*))
 
 (declare-top (unspecial coef var exp p y))
 
@@ -608,4 +608,4 @@
 ;; (and others) are really special and which are used just for dynamic
 ;; scoping.  -- cwh
 
-(declare-top (unspecial v* *a* u* *var*))
+(declare-top (unspecial *a* *x*))
