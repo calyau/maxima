@@ -283,7 +283,12 @@
      (go a)))
 
 (defun prem (p q)
-  (cond ((pcoefp p) (if (pcoefp q) (cremainder p q) p))
+  (cond ((pcoefp p)
+         (if (pcoefp q)
+             (if (or modulus (floatp p) (floatp q))
+                 0
+                 (rem p q))
+             p))
 	((pcoefp q) (pzero))
 	(t (psimp (p-var p) (pgcd1 (p-terms p) (p-terms q))))))
 

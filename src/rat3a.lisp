@@ -29,13 +29,13 @@
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
 
-
 ;; CQUOTIENT
 ;;
-;; Calculate the quotient of two coefficients. If MODULUS is non-nil, we try to
-;; take the reciprocal of A with respect to the modulus (using CRECIP) and then
-;; multiply by B. Note that this fails if B divides A as an integer, but B is
-;; not a unit in the ring of integers modulo MODULUS. For example,
+;; Calculate the quotient of two coefficients, which should be numbers. If
+;; MODULUS is non-nil, we try to take the reciprocal of A with respect to the
+;; modulus (using CRECIP) and then multiply by B. Note that this fails if B
+;; divides A as an integer, but B is not a unit in the ring of integers modulo
+;; MODULUS. For example,
 ;;
 ;;   (let ((modulus 20)) (cquotient 10 5)) => ERROR
 ;;
@@ -46,24 +46,34 @@
 (defun cquotient (a b)
   (cond ((equal a 0) 0)
 	((null modulus)
-         (if (zerop (cremainder a b))
+         (if (or (floatp a) (floatp b)
+                 (zerop (rem a b)))
              (/ a b)
              (rat-error "quotient is not exact")))
 	(t (ctimes a (crecip b)))))
 
+;; ALG
+;;
+;; Get any value stored on the tellrat property of (car l). Returns NIL if L
+;; turns out not to be a list or if $ALGEBRAIC is false.
 (defun alg (l)
-  (and $algebraic (not (atom l)) (get (car l) 'tellrat)))
+  (unless (atom l) (algv (car l))))
 
+;; PACOEFP
+;;
+;; Return T if either X is a bare coefficient or X is a polynomial whose main
+;; variable has a declared value as an algebraic integer. Otherwise return NIL.
 (defun pacoefp (x)
-  (or (pcoefp x) (alg x)))
+  (and (or (pcoefp x) (alg x))
+       T))
 
+;; LEADTERM
+;;
+;; Return the leading term of POLY as a polynomial itself.
 (defun leadterm (poly)
-  (cond ((pcoefp poly) poly)
-	(t (make-poly (p-var poly) (p-le poly) (p-lc poly)))))
-
-(defun cremainder (a b)
-  (cond ((or modulus (floatp a) (floatp b)) 0) 
-	((rem a b))))
+  (if (pcoefp poly)
+      poly
+      (make-poly (p-var poly) (p-le poly) (p-lc poly))))
 
 ;; CBEXPT
 ;;
