@@ -29,13 +29,26 @@
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
 
-;; coefficient quotient a / b
-;; a and b may be integers (possibly with modulus) or floats if keepfloat=true
+
+;; CQUOTIENT
+;;
+;; Calculate the quotient of two coefficients. If MODULUS is non-nil, we try to
+;; take the reciprocal of A with respect to the modulus (using CRECIP) and then
+;; multiply by B. Note that this fails if B divides A as an integer, but B is
+;; not a unit in the ring of integers modulo MODULUS. For example,
+;;
+;;   (let ((modulus 20)) (cquotient 10 5)) => ERROR
+;;
+;; If MODULUS is nil, then we work over the ring of integers when A and B are
+;; integers, and raise a RAT-ERROR if A is not divisible by B. If either A or B
+;; is a float then the division is done in floating point. Floats can get as far
+;; as the rational function code if $KEEPFLOAT is true.
 (defun cquotient (a b)
   (cond ((equal a 0) 0)
 	((null modulus)
-	 (cond ((equal 0 (cremainder a b)) (/ a b))
-	       (t (rat-error "quotient is not exact"))))
+         (if (zerop (cremainder a b))
+             (/ a b)
+             (rat-error "quotient is not exact")))
 	(t (ctimes a (crecip b)))))
 
 (defun alg (l)
