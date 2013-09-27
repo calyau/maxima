@@ -18,8 +18,6 @@
 		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
 		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
 
-(load-macsyma-macros ratmac)
-
 (declare-top (special $gcd xv bigf1 bigf2 nonlindeg $linhack
 		      $intfaclim bigf1tilde bigf2tilde
 		      gcd $factorflag *gcdl* last-good-prime))
