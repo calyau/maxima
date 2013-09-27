@@ -29,9 +29,6 @@
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
 
-(defmacro bctimes (&rest l)
-  `(rem (* ,@l) modulus))
-
 ;; coefficient quotient a / b
 ;; a and b may be integers (possibly with modulus) or floats if keepfloat=true
 (defun cquotient (a b)
@@ -55,13 +52,17 @@
   (cond ((or modulus (floatp a) (floatp b)) 0) 
 	((rem a b))))
 
+;; CBEXPT
+;;
+;; Raise an number to a positive integral power. P should be a number (and
+;; really only makes sense if it is an integer). N should be a non-negative
+;; integer.
 (defun cbexpt (p n)
   (do ((n (ash n -1) (ash n -1))
        (s (if (oddp n) p 1)))
       ((zerop n) s)
-    (setq p (bctimes p p))
-    (and (oddp n) (setq s (bctimes s p)))))
-
+    (setq p (rem (* p p) modulus))
+    (when (oddp n) (setq s (rem (* s p) modulus)))))
 
 ;; Coefficient Arithmetic -- coefficients are assumed to be something
 ;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
