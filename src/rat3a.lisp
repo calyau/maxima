@@ -25,8 +25,6 @@
 ;;slow it down on lispm. We also eliminated the special
 ;;from ptimes2--wfs
 
-(load-macsyma-macros ratmac)
-
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")

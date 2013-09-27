@@ -15,8 +15,6 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 3.
 ;;	IT INCLUDES THE GCD ROUTINES AND THEIR SUPPORTING FUNCTIONS
 
-(load-macsyma-macros ratmac)
-
 (declare-top (special $float $keepfloat $algebraic $ratfac genvar))
 
 ;; List of GCD algorithms.  Default one is first.
