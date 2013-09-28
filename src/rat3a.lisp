@@ -243,25 +243,33 @@
   (cond ((pcoefp x) (pcplus x y))
 	((pcoefp y) (pcplus y x))
 	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
+	 (psimp (p-var x) (ptptplus (p-terms y) (p-terms x))))
 	((pointergp (p-var x) (p-var y))
 	 (psimp (p-var x) (ptcplus y (p-terms x))))
 	(t (psimp (p-var y) (ptcplus x (p-terms y))))))
 
-(defun pplus1 (x y)
+;; PTPTPLUS
+;;
+;; Add together two lists of polynomial terms.
+(defun ptptplus (x y)
   (cond ((ptzerop x) y)
 	((ptzerop y) x)
 	((= (pt-le x) (pt-le y))
 	 (pcoefadd (pt-le x)
 		   (pplus (pt-lc x) (pt-lc y))
-		   (pplus1 (pt-red x) (pt-red y))))
+		   (ptptplus (pt-red x) (pt-red y))))
 	((> (pt-le x) (pt-le y))
-	 (cons (pt-le x) (cons (pt-lc x) (pplus1 (pt-red x) y))))
-	(t (cons (pt-le y) (cons (pt-lc y) (pplus1 x (pt-red y))))))) 
+	 (cons (pt-le x) (cons (pt-lc x) (ptptplus (pt-red x) y))))
+	(t (cons (pt-le y) (cons (pt-lc y) (ptptplus x (pt-red y)))))))
 
+;; PCPLUS
+;;
+;; Add a coefficient to a polynomial
 (defun pcplus (c p)
-  (cond ((pcoefp p) (cplus p c))
-	(t (psimp (p-var p) (ptcplus c (p-terms p))))))
+  (if (pcoefp p)
+      (cplus p c)
+      (psimp (p-var p)
+             (ptcplus c (p-terms p)))))
 
 ;; PTCPLUS
 ;;
@@ -556,7 +564,7 @@
        (setq c (ptimes (cadr y) xc))
        (cond ((pzerop c) (setq y (cddr y)) (go a1))
 	     ((or (null vvv) (> e (car vvv)))
-	      (setq uuu (setq vvv (pplus1 uuu (list e c))))
+	      (setq uuu (setq vvv (ptptplus uuu (list e c))))
 	      (setq y (cddr y)) (go a1))
 	     ((= e (car vvv))
 	      (setq c (pplus c (cadr vvv)))
@@ -616,7 +624,7 @@
        (b p a))
       ((or (null a) (< (pt-le a) deg))
        (rplacd (cdr b) nil)
-       (pplus1 (pctimes1 kernel p) a))
+       (ptptplus (pctimes1 kernel p) a))
     (rplaca a (- (pt-le a) deg))))
 
 (defmfun monize (p) 

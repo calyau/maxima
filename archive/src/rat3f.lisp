@@ -118,7 +118,7 @@
 (proclaim '(function pctimes1 (t t) t))
 
 (proclaim '(function pplus (t t) t))
-(proclaim '(function pplus1 (t t) t))
+(proclaim '(function ptptplus (t t) t))
 (proclaim '(function pcplus (t t) t))
 (proclaim '(function pcplus1 (t t) t))
 

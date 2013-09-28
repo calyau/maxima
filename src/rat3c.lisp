@@ -501,9 +501,9 @@
 	((eq (p-var p) v) (p-terms p))
 	((loop with ans
 		for (exp coef) on (p-terms p) by #'cddr
-		do (setq ans (pplus1 ans
-				     (everysubst2 (poly-in-var coef v)
-						  (list (p-var p) exp 1))))
+		do (setq ans (ptptplus ans
+                                       (everysubst2 (poly-in-var coef v)
+                                                    (list (p-var p) exp 1))))
 		finally (return ans)))))
 
 (defun univar (x)

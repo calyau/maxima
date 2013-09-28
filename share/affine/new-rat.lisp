@@ -306,7 +306,7 @@ into genvar ordering and adds to genpairs"
     (cond ((pcoefp x) (pcplus x y))
 	  ((pcoefp y) (pcplus y x))
 	  ((eq (p-var x) (p-var y))
-	   (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
+	   (psimp (p-var x) (ptptplus (p-terms y) (p-terms x))))
 	  ((pointergp (p-var x) (p-var y))
 	   (psimp (p-var x) (ptcplus y (p-terms x))))
 	  (t (psimp (p-var y) (ptcplus x (p-terms y))))))
