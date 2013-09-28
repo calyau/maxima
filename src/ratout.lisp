@@ -26,7 +26,7 @@
 ;;	(GCD, X/GCD, Y/GCD)
 
 (defun newgcd (x y modulus)
-  (setqmodulus modulus)
+  (set-modulus modulus)
   (let ((a (cond ((pcoefp x)
 		  (cond ((zerop x) y)
 			((pcoefp y) (cgcd x y))
@@ -139,7 +139,7 @@
 	 gbar		nubar		nu1bar		nu2bar
 	 gtilde		f1tilde		f2tilde		biggtilde
 	 degree		f1		f1f2)
-     (setqmodulus modulus)
+     (set-modulus modulus)
      (cond ((and (univar (cdr bigf1)) (univar (cdr bigf2)))
 	    (setq q (pgcdu bigf1 bigf2))
 	    (return (list q (pquotient bigf1 q) (pquotient bigf2 q)))))
@@ -252,7 +252,7 @@
      step6a
      (cond ((or (zerop (rem f1 p)) (zerop (rem f2 p)))
 	    (go step6)))
-     (setqmodulus p)
+     (set-modulus p)
      ;; Step 7
      (setq gtilde (pmod gbar))
      ;; Step 8
@@ -276,7 +276,7 @@
 	   ((vgreat e degree) (setq n 0) (setq e degree)))
      (setq n (1+ n))
      ;; Step 11
-     (setqmodulus nil)
+     (set-modulus nil)
      (cond ((equal n 1) (setq q p)
 	    (setq gstar biggtilde)
 	    (setq h1star h1tilde)
@@ -291,7 +291,7 @@
 			 (* gtilde (maxcoefficient h2star))))
 	       q)
 	    (go step6)))
-     (setqmodulus nil)
+     (set-modulus nil)
      (setq gstar (cadr (pcontent gstar)))
      step15
      (setq last-good-prime p)

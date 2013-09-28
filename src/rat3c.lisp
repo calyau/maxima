@@ -512,7 +512,7 @@
 ;;**THE CHINESE REMAINDER ALGORITHM IS A SPECIAL CASE OF LAGRANGE INTERPOLATION
 
 (defun lagrange3 (u uk p qk)
-  (setqmodulus p)
+  (set-modulus p)
   (setq uk (pdifference uk (pmod u)))
   (cond ((pzerop uk) (setq modulus nil) u)
 	(t (setq uk (pctimes (crecip (cmod qk)) uk))

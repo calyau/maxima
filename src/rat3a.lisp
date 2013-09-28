@@ -209,12 +209,18 @@
 (defun ctimes      (a b) (cmod (* a b)))
 (defun cdifference (a b) (cmod (- a b)))
 
-(defun setqmodulus (m)
-  (cond ((numberp m)
-	 (cond ((> m 0)
-		(setq modulus m))
-	       (t (merror (intl:gettext "assignment: modulus must be a positive number; found: ~M") m))))
-	(t (setq modulus nil))))
+;; SET-MODULUS
+;;
+;; Set the base in which the rational function package works. This does
+;; sanity-checking on the value chosen and is probably the way you should set
+;; the global value.
+;;
+;; Valid values for M are either a positive integer or NULL.
+(defun set-modulus (m)
+  (if (or (null m) (typep m '(integer 0)))
+      (setq modulus m)
+      (error "modulus must be a positive number or nil"))
+  (values))
 
 (defmfun pcoefadd (e c x)
   (cond ((pzerop c) x)
