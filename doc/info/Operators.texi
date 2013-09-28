@@ -1123,7 +1123,7 @@ Examples
 
 A macro function quotes its arguments, so message (1) shows @code{y - z}, not
 the value of @code{y - z}.  The macro expansion (the quoted expression
-@code{'(print ("(2) x is equal to", x))} is evaluated in the context from which
+@code{'(print ("(2) x is equal to", x))}) is evaluated in the context from which
 the macro was called, printing message (2).
 
 @c ===beg===
