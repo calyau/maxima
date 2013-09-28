@@ -75,11 +75,6 @@
       poly
       (make-poly (p-var poly) (p-le poly) (p-lc poly))))
 
-;; Coefficient Arithmetic -- coefficients are assumed to be something
-;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
-;; are assumed to be less than its value.  Some functions use LOGAND
-;; when MODULUS = 2.  This will not work with bignum coefficients.
-
 ;; CRECIP
 ;;
 ;; Takes the inverse of an integer N mod MODULUS. If there is a modulus then the
