@@ -459,7 +459,7 @@
      (setq b
 	   (fptimes1 (ptptplus (car f) (cdr f)) (pplus1 (car g) (cdr g))))
      (setq c (fptimes1 (cdr f) (cdr g)))
-     (setq b (pdiffer1 (pdiffer1 b a) c))
+     (setq b (ptptdiffer (pdiffer1 b a) c))
      (return (ptptplus (lsft a (ash d 1)) (pplus1 (lsft b d) c)))))
 
 (defun halfsplit (p d)
@@ -540,7 +540,7 @@
 	   ((or (null v) (> e (car v))) (setq u* (setq v (ptptplus u* (list e c)))) (setq y (cddr y)) (go a1))
 	   ((equal e (car v))
 	    (setq c (pplus c (cadr v)))
-	    (cond ((pzerop c) (setq u* (setq v (pdiffer1 u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
+	    (cond ((pzerop c) (setq u* (setq v (ptptdiffer u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
 	    (setq y (cddr y))
 	    (go a1)))
      a    (cond ((and (cddr v) (> (caddr v) e)) (setq v (cddr v)) (go a)))

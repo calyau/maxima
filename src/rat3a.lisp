@@ -287,42 +287,92 @@
     (t
      (cons (pt-le terms) (cons (pt-lc terms) (ptcplus c (pt-red terms)))))))
 
+;; PDIFFERENCE
+;;
+;; Compute the difference of two polynomials
 (defmfun pdifference (x y)
-  (cond ((pcoefp x) (pcdiffer x y))
-	((pcoefp y) (pcplus (cminus y) x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
-	(t (psimp (p-var y) (pcdiffer1 x (p-terms y))))))
+  (cond
+    ;; If Y is a coefficient, it's a number, so we can just add -Y to X using
+    ;; pcplus. If, however, X is the coefficient, we have to negate all the
+    ;; coefficients in Y, so defer to a utility function.
+    ((pcoefp x) (pcdiffer x y))
+    ((pcoefp y) (pcplus (cminus y) x))
+    ;; If X and Y have the same variable, work down their lists of terms.
+    ((eq (p-var x) (p-var y))
+     (psimp (p-var x) (ptptdiffer (p-terms x) (p-terms y))))
+    ;; Treat Y as a coefficient in the main variable of X.
+    ((pointergp (p-var x) (p-var y))
+     (psimp (p-var x) (ptcdiffer-minus (p-terms x) y)))
+    ;; Treat X as a coefficient in the main variable of Y.
+    (t (psimp (p-var y) (ptcdiffer x (p-terms y))))))
 
-(defun pdiffer1 (x y)
-  (cond ((ptzerop x) (pminus1 y))
-	((ptzerop y) x)
-	((= (pt-le x) (pt-le y))
-	 (pcoefadd (pt-le x)
-		   (pdifference (pt-lc x) (pt-lc y))
-		   (pdiffer1 (pt-red x) (pt-red y))))
-	((> (pt-le x) (pt-le y))
-	 (cons (pt-le x) (cons (pt-lc x) (pdiffer1 (pt-red x) y))))
-	(t (cons (pt-le y) (cons (pminus (pt-lc y))
-				 (pdiffer1 x (pt-red y)))))))
-
+;; PTPTDIFFER
+;;
+;; Compute the difference of two lists of polynomial terms (assumed to represent
+;; two polynomials in the same variable).
+(defun ptptdiffer (x y)
+  (cond
+    ((ptzerop x) (ptminus y))
+    ((ptzerop y) x)
+    ((= (pt-le x) (pt-le y))
+     (pcoefadd (pt-le x)
+               (pdifference (pt-lc x) (pt-lc y))
+               (ptptdiffer (pt-red x) (pt-red y))))
+    ((> (pt-le x) (pt-le y))
+     (cons (pt-le x) (cons (pt-lc x) (ptptdiffer (pt-red x) y))))
+    (t (cons (pt-le y) (cons (pminus (pt-lc y))
+                             (ptptdiffer x (pt-red y)))))))
+;; PCDIFFER
+;;
+;; Subtract the polynomial P from the coefficient C to form c - p.
 (defun pcdiffer (c p)
-  (cond ((pcoefp p) (cdifference c p))
-	(t (psimp (car p) (pcdiffer1 c (cdr p))))))	 
+  (if (pcoefp p)
+      (cdifference c p)
+      (psimp (p-var p) (ptcdiffer c (p-terms p)))))
 
-(defun pcdiffer1 (c x)
-  (cond ((null x) (cond ((pzerop c) nil) (t (list 0 c))))
-	((pzerop (car x))
-	 (pcoefadd 0 (pdifference c (cadr x)) nil))
-	(t (cons (car x)
-		 (cons (pminus (cadr x)) (pcdiffer1 c (cddr x)))))))
+;; PTCDIFFER
+;;
+;; Subtract a polynomial represented by the list of terms, TERMS, from the
+;; coefficient C.
+(defun ptcdiffer (c terms)
+  (cond
+    ;; Unlike in the plus case or in PTCDIFFER-MINUS, we don't have a shortcut
+    ;; if C=0. However, if TERMS is null then we are calculating C-0, which is
+    ;; easy:
+    ((null terms)
+     (if (pzerop c) nil (list 0 c)))
+    ;; If the leading exponent is zero (in the main variable), then we can
+    ;; subtract the coefficients. Of course, these might actually be polynomials
+    ;; in other variables, so do this using pdifference.
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pdifference c (pt-lc terms)) nil))
+    ;; Otherwise we have to negate the leading coefficient (using pminus of
+    ;; course, because it might be a polynomial in other variables) and recurse.
+    (t
+     (cons (pt-le terms)
+           (cons (pminus (pt-lc terms)) (ptcdiffer c (pt-red terms)))))))
 
-(defun pcdiffer2 (x c)
-  (cond ((null x) (cond ((pzerop c) nil) (t (list 0 (pminus c)))))
-	((pzerop (car x)) (pcoefadd 0 (pdifference (cadr x) c) nil))
-	(t (cons (car x) (cons (cadr x) (pcdiffer2 (cddr x) c))))))
+;; PTCDIFFER-MINUS
+;;
+;; Subtract a coefficient, C, from a polynomial represented by a list of terms,
+;; TERMS, to form "p-c". This is the same as PTCDIFFER but the opposite sign (we
+;; don't implement it by (pminus (ptcdiffer c terms)) because that would require
+;; walking the polynomial twice)
+(defun ptcdiffer-minus (terms c)
+  (cond
+    ;; We're subtracting zero from a polynomial, which is easy!
+    ((pzerop c) terms)
+    ;; We're subtracting a coefficient from zero, which just comes out as the
+    ;; negation of the coefficient (compute it using pminus)
+    ((null terms) (list 0 (pminus c)))
+    ;; If the leading exponent is zero, subtract the coefficients just like in
+    ;; PTCDIFFER.
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pdifference (pt-lc terms) c) nil))
+    ;; Otherwise recurse.
+    (t
+     (cons (pt-le terms)
+           (cons (pt-lc terms) (ptcdiffer-minus (pt-red terms) c))))))
 
 (defun pcsubsty (vals vars p)		;list of vals for vars
   (cond ((null vars) p)
@@ -444,9 +494,9 @@
 
 (defmfun pminus (p)
   (if (pcoefp p) (cminus p)
-      (cons (p-var p) (pminus1 (p-terms p)))))
+      (cons (p-var p) (ptminus (p-terms p)))))
 
-(defun pminus1 (x)
+(defun ptminus (x)
   (loop for (exp coef) on x by #'cddr
 	 nconc (list exp (pminus coef))))
 
@@ -566,7 +616,7 @@
 	     ((= e (car vvv))
 	      (setq c (pplus c (cadr vvv)))
 	      (cond ((pzerop c)
-		     (setq uuu (setq vvv (pdiffer1 uuu (list (car vvv) (cadr vvv))))))
+		     (setq uuu (setq vvv (ptptdiffer uuu (list (car vvv) (cadr vvv))))))
 		    (t (rplaca (cdr vvv) c)))
 	      (setq y (cddr y))
 	      (go a1)))
