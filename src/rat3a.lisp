@@ -75,18 +75,6 @@
       poly
       (make-poly (p-var poly) (p-le poly) (p-lc poly))))
 
-;; CBEXPT
-;;
-;; Raise an number to a positive integral power. P should be a number (and
-;; really only makes sense if it is an integer). N should be a non-negative
-;; integer.
-(defun cbexpt (p n)
-  (do ((n (ash n -1) (ash n -1))
-       (s (if (oddp n) p 1)))
-      ((zerop n) s)
-    (setq p (rem (* p p) modulus))
-    (when (oddp n) (setq s (rem (* s p) modulus)))))
-
 ;; Coefficient Arithmetic -- coefficients are assumed to be something
 ;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
 ;; are assumed to be less than its value.  Some functions use LOGAND
@@ -189,9 +177,21 @@
 
        finally (return (cmod a)))))
 
-(defun cexpt (n e)
-  (cond	((null modulus) (expt n e))
-	(t (cmod (cbexpt n e)))))
+;; CEXPT
+;;
+;; Raise an coefficient to a positive integral power. BASE should be a
+;; number. POW should be a non-negative integer.
+(defun cexpt (base pow)
+  (unless (typep pow '(integer 0))
+    (error "CEXPT only defined for non-negative integral exponents."))
+  (if (not modulus)
+      (expt base pow)
+      (do ((pow (ash pow -1) (ash pow -1))
+           (s (if (oddp pow) base 1)))
+          ((zerop pow) s)
+        (setq base (rem (* base base) modulus))
+        (when (oddp pow) (setq s (rem (* s base) modulus))))))
+
 
 ;;the following definitions are ok for 3600 and more transparent
 ;;and quicker.  Note for kcl, we provide some c definitions.
