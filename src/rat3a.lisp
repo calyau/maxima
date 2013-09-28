@@ -92,49 +92,102 @@
 ;; are assumed to be less than its value.  Some functions use LOGAND
 ;; when MODULUS = 2.  This will not work with bignum coefficients.
 
-;; Takes the inverse of an integer N mod P.  Solve N*X + P*Y = 1 
-;; I suspect that N is guaranteed to be less than P, since in the case
-;; where P is a fixnum, N is also assumed to be one.
+;; CRECIP
+;;
+;; Takes the inverse of an integer N mod MODULUS. If there is a modulus then the
+;; result is constrained to lie in (-modulus/2, modulus/2]
+;;
+;; This just uses the extended Euclidean algorithm: once you have found a,b such
+;; that a*n + b*modulus = 1 then a must be the reciprocal you're after.
+;;
+;; When MODULUS is greater than 2^15, we use exactly the same algorithm in
+;; CRECIP-GENERAL, but it can't use fixnum arithmetic. Note: There's no
+;; particular reason to target 32 bits except that trying to work out the right
+;; types on the fly looks complicated and this lisp compiler, at least, uses 32
+;; bit words. Since we have to take a product, we constrain the types to 16 bit
+;; numbers.
+(defun crecip (n)
+  ;; Punt on anything complicated
+  (unless (and modulus (typep modulus '(unsigned-byte 15)))
+    (return-from crecip (crecip-general n)))
 
-(defmfun crecip (n)
-  (cond ((bignump modulus)	;; Have to use bignum arithmetic if modulus is a bignum
-	 (prog (a1 a2 y1 y2 q (big-n n))
-	    (if (minusp big-n) (setq big-n (+ big-n modulus)))
-	    (setq a1 modulus a2 big-n)
-	    (setq y1 0 y2 1)
-	    (go step3)
-	    step2 (setq q (truncate a1 a2))
-	    (psetq a1 a2 a2 (- a1 (* a2 q)))
-	    (psetq y1 y2 y2 (- y1 (* y2 q)))
-	    step3 (cond ((zerop a2) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
-			((not (equal a2 1)) (go step2)))
-	    (return (cmod y2))))
-	;; Here we can use fixnum arithmetic
-	(t (prog ((a1 0) (a2 0) (y1 0) (y2 0) (q 0) (nn 0) (pp 0))
-	      (declare (fixnum a1 a2 y1 y2 q nn pp))
-	      (setq nn n pp modulus)
-	      (cond ((minusp nn) (setq nn (+ nn pp))))
-	      (setq a1 pp a2 nn)
-	      (setq y1 0 y2 1)
-	      (go step3)
-	      step2 (setq q (truncate a1 a2))
-	      (psetq a1 a2 a2 (rem a1 a2))
-	      (psetq y1 y2 y2 (- y1 (* y2 q)))
-	      step3 (cond ((= a2 0) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
-			  ((not (= a2 1)) (go step2)))
-	      ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
-	      (return  (cmod y2)
-		       ;;                    (COND ((= PP 2) (LOGAND 1 Y2))
-		       ;;			   (T (LET ((NN (rem Y2 PP)))
-		       ;;				(DECLARE (FIXNUM NN))
-		       ;;				(COND ((MINUSP NN)
-		       ;;				       (AND (< NN (- (ASH PP -1)))
-		       ;;					    (SETQ NN (+ NN PP))))
-		       ;;				      ((> NN (ASH PP -1))
-		       ;;				       (SETQ NN (- NN PP))))
-		       ;;				NN)))
-		       )
-	      ))))
+  ;; And make sure that -MODULUS < N < MODULUS
+  (unless (<= (- modulus) n modulus)
+    (merror "N is out of range [-MODULUS, MODULUS] in crecip."))
+
+  ;; N in [0, MODULUS]
+  (when (minusp n) (setf n (+ n modulus)))
+
+  ;; The mod-copy parameter stores a copy of MODULUS on the stack, which is
+  ;; useful because the lisp implementation doesn't know that the special
+  ;; variable MODULUS is still an (unsigned-byte 15) when we get to the end
+  ;; (since it can't tell that our function calls don't change it behind our
+  ;; backs, I guess)
+  (let ((mod modulus) (remainder n) (a 1) (b 0)
+        (mod-copy modulus))
+    ;; On SBCL in 2013 at least, the compiler doesn't spot that MOD and
+    ;; REMAINDER are unsigned and bounded above by MODULUS, a 16-bit integer. So
+    ;; we have to tell it. Also, the lisp implementation can't really be
+    ;; expected to know that Bezout coefficients are bounded by the modulus and
+    ;; remainder, so we have to tell it that too.
+    (declare (type (unsigned-byte 15) mod mod-copy remainder)
+             (type (signed-byte 16) a b))
+
+    (loop
+       until (= remainder 1)
+
+       when (zerop remainder) do
+         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
+                 mod)
+       doing
+         (multiple-value-bind (quot rem)
+             (truncate mod remainder)
+           (setf mod remainder
+                 remainder rem)
+           (psetf a (- b (* a quot))
+                  b a))
+
+       finally
+         ;; Since this isn't some general purpose Euclidean algorithm, but
+         ;; instead is trying to find a modulo inverse, we need to ensure that
+         ;; the Bezout coefficient we found (called A) is actually in [0,
+         ;; MODULUS).
+         ;;
+         ;; The general code calls CMOD here, but that doesn't know about the
+         ;; types of A and MODULUS, so we do it by hand, special-casing the easy
+         ;; case of modulus=2.
+         (return
+           (if (= mod-copy 2)
+               (logand a 1)
+               (let ((nn (mod a mod-copy)))
+                 ;; nn here is in [0, modulus)
+                 (if (<= (* 2 nn) mod-copy)
+                     nn
+                     (- nn mod-copy))))))))
+
+;; CRECIP-GENERAL
+;;
+;; The general algorithm for CRECIP, valid when the modulus is any integer. See
+;; CRECIP for more details.
+(defun crecip-general (n)
+  ;; We assume that |n| < modulus, so n+modulus is always positive
+  (let ((mod modulus)
+        (remainder (if (minusp n) (+ n modulus) n))
+        (a 1) (b 0))
+    (loop
+       until (= remainder 1)
+
+       when (zerop remainder) do
+         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
+                 mod)
+       doing
+         (let ((quotient (truncate mod remainder)))
+           (psetf mod remainder
+                  remainder (- mod (* quotient remainder)))
+           (psetf a (- b (* a quotient))
+                  b a))
+
+       finally (return (cmod a)))))
 
 (defun cexpt (n e)
   (cond	((null modulus) (expt n e))
