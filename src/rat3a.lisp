@@ -222,9 +222,19 @@
       (error "modulus must be a positive number or nil"))
   (values))
 
-(defmfun pcoefadd (e c x)
-  (cond ((pzerop c) x)
-	(t (cons e (cons c x)))))
+;; PCOEFADD
+;;
+;; Prepend a term to an existing polynomial. EXPONENT should be the exponent of
+;; the term to add; COEFF should be its coefficient; REMAINDER is a list of
+;; polynomial terms. The function returns polynomial terms that correspond to
+;; adding the given term.
+;;
+;; The function doesn't check that EXPONENT is higher than the highest exponent
+;; in REMAINDER, so you have to do this yourself.
+(defmfun pcoefadd (exponent coeff remainder)
+  (if (pzerop coeff)
+      remainder
+      (cons exponent (cons coeff remainder))))
 
 (defmfun pplus (x y)
   (cond ((pcoefp x) (pcplus x y))
