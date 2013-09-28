@@ -192,26 +192,22 @@
         (setq base (rem (* base base) modulus))
         (when (oddp pow) (setq s (rem (* s base) modulus))))))
 
-(defmacro mcmod (n) ;;; gives answers from -modulus/2 ...0 1 2 +modulus/2
-  `(let ((.n. (mod ,n modulus)))
-     (cond ((<= (* 2 .n.) modulus) .n.)
-           (t (- .n. modulus)))))
-
-(defun cplus (a b)
-  (cond ((null modulus)(+ a b))
-        (t (mcmod (+ a b)))))
-
+;; CMOD
+;;
+;; When MODULUS is null, this is the identity. Otherwise, it normalises N, which
+;; should be a number, to lie in the range (-modulus/2, modulus/2].
 (defun cmod (n)
-  (cond ((null modulus) n)
-        (t (mcmod n))))
+  (declare (type number n))
+  (if (not modulus)
+      n
+      (let ((rem (mod n modulus)))
+        (if (<= (* 2 rem) modulus)
+            rem
+            (- rem modulus)))))
 
-(defun ctimes (a b)
-  (cond ((null modulus) (* a b))
-        (t (mcmod (* a b)))))
-
-(defun cdifference (a b)
-  (cond ((null modulus) (- a b))
-        (t (mcmod (- a b)))))
+(defun cplus       (a b) (cmod (+ a b)))
+(defun ctimes      (a b) (cmod (* a b)))
+(defun cdifference (a b) (cmod (- a b)))
 
 (defun setqmodulus (m)
   (cond ((numberp m)
