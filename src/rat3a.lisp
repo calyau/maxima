@@ -192,32 +192,26 @@
         (setq base (rem (* base base) modulus))
         (when (oddp pow) (setq s (rem (* s base) modulus))))))
 
+(defmacro mcmod (n) ;;; gives answers from -modulus/2 ...0 1 2 +modulus/2
+  `(let ((.n. (mod ,n modulus)))
+     (cond ((<= (* 2 .n.) modulus) .n.)
+           (t (- .n. modulus)))))
 
-;;the following definitions are ok for 3600 and more transparent
-;;and quicker.  Note for kcl, we provide some c definitions.
+(defun cplus (a b)
+  (cond ((null modulus)(+ a b))
+        (t (mcmod (+ a b)))))
 
-#-kcl
-(progn
-  (defmacro mcmod (n) ;;; gives answers from -modulus/2 ...0 1 2 +modulus/2
-    `(let ((.n. (mod ,n modulus)))
-      (cond ((<= (* 2 .n.) modulus) .n.)
-	    (t (- .n. modulus)))))
+(defun cmod (n)
+  (cond ((null modulus) n)
+        (t (mcmod n))))
 
-  (defun cplus (a b)
-    (cond ((null modulus)(+ a b))
-	  (t (mcmod (+ a b)))))
+(defun ctimes (a b)
+  (cond ((null modulus) (* a b))
+        (t (mcmod (* a b)))))
 
-  (defun cmod (n)
-    (cond ((null modulus ) n)
-	  (t (mcmod n))))
-
-  (defun ctimes (a b)
-    (cond ((null modulus) (* a b))
-	  (t (mcmod (* a b)))))
-
-  (defun cdifference (a b)
-    (cond ((null modulus) (- a b))
-	  (t (mcmod (- a b))))))
+(defun cdifference (a b)
+  (cond ((null modulus) (- a b))
+        (t (mcmod (- a b)))))
 
 (defun setqmodulus (m)
   (cond ((numberp m)
