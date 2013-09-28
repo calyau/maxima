@@ -268,8 +268,10 @@
 
 ;; PTCPLUS
 ;;
-;; Add a coefficient to a list of terms. C should be a coefficient; TERMS is a
-;; list of a polynomial's terms.
+;; Add a coefficient to a list of terms. C should be a used as a coefficient;
+;; TERMS is a list of a polynomial's terms. Note that we don't assume that C is
+;; a number: it might be a polynomial in a variable that isn't the main variable
+;; of the polynomial.
 (defun ptcplus (c terms)
   (cond
     ;; Adding zero doesn't do anything.
