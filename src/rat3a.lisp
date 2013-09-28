@@ -236,14 +236,17 @@
       remainder
       (cons exponent (cons coeff remainder))))
 
+;; PPLUS
+;;
+;; Add together two polynomials.
 (defmfun pplus (x y)
   (cond ((pcoefp x) (pcplus x y))
 	((pcoefp y) (pcplus y x))
 	((eq (p-var x) (p-var y))
 	 (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
 	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcplus1 y (p-terms x))))
-	(t (psimp (p-var y) (pcplus1 x (p-terms y))))))
+	 (psimp (p-var x) (ptcplus y (p-terms x))))
+	(t (psimp (p-var y) (ptcplus x (p-terms y))))))
 
 (defun pplus1 (x y)
   (cond ((ptzerop x) y)
@@ -258,14 +261,26 @@
 
 (defun pcplus (c p)
   (cond ((pcoefp p) (cplus p c))
-	(t (psimp (p-var p) (pcplus1 c (p-terms p))))))
+	(t (psimp (p-var p) (ptcplus c (p-terms p))))))
 
-(defun pcplus1 (c x)
-  (cond ((null x)
-	 (cond ((pzerop c) nil) (t (cons 0 (cons c nil)))))
-	((pzerop (car x)) (pcoefadd 0 (pplus c (cadr x)) nil))
-	(t (cons (car x) (cons (cadr x) (pcplus1 c (cddr x)))))))
-	 
+;; PTCPLUS
+;;
+;; Add a coefficient to a list of terms. C should be a coefficient; TERMS is a
+;; list of a polynomial's terms.
+(defun ptcplus (c terms)
+  (cond
+    ;; Adding zero doesn't do anything.
+    ((pzerop c) terms)
+    ;; Adding to zero, you just get the coefficient.
+    ((null terms) (list 0 c))
+    ;; If terms are from a constant polynomial, we can just add C to its leading
+    ;; coefficient (which might not be a number in the multivariate case, so you
+    ;; have to use PPLUS)
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pplus c (pt-lc terms)) nil))
+    ;; If TERMS is a polynomial with degree > 0, recurse.
+    (t
+     (cons (pt-le terms) (cons (pt-lc terms) (ptcplus c (pt-red terms)))))))
 
 (defmfun pdifference (x y)
   (cond ((pcoefp x) (pcdiffer x y))

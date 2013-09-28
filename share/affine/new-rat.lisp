@@ -308,8 +308,8 @@ into genvar ordering and adds to genpairs"
 	  ((eq (p-var x) (p-var y))
 	   (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
 	  ((pointergp (p-var x) (p-var y))
-	   (psimp (p-var x) (pcplus1 y (p-terms x))))
-	  (t (psimp (p-var y) (pcplus1 x (p-terms y))))))
+	   (psimp (p-var x) (ptcplus y (p-terms x))))
+	  (t (psimp (p-var y) (ptcplus x (p-terms y))))))
 
   (defmfun ptimes (x y)
     (cond ((pcoefp x) (if (pzerop x) 0 (pctimes x y)))
