@@ -1,2 +1,9 @@
 Makefile
 Makefile.in
+img.vfs
+tclwinkill.dll
+winkill.exe
+xmaxima.exe
+xmaxima.kit
+xmaxima.tcl
+xmaxima.vfs

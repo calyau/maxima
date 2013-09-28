@@ -15,8 +15,6 @@
 (declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag
 		      $radexpand $logsimp *v *var fr-factor radcanp ratsubvl))
 
-(load-macsyma-macros rzmac ratmac)
-
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
 
@@ -159,17 +157,19 @@
      (when (pminusp (car b))
        (setq b (ratminus b))
        (setq a (ratminus a)))
-     (when (and (eqn 1 (car b)) (not (eqn 1 (cdr b)))(not (eqn (car a) 0)))
+     (when (and (equal 1 (car b))
+                (not (equal 1 (cdr b)))
+                (not (equal 0 (car a))))
        (setq a (ratinvert a))
        (setq b (ratinvert b)))
-     (cond ((not (eqn 1 (cdr b)))
+     (cond ((not (equal 1 (cdr b)))
 	    (setq a (rattimes a (cons (cdr b) 1) t))
 	    (setq b (cons (car b) 1))))
      (setq c
 	   (cond ((member (car b) '(0 1) :test #'equal)
 		  (ratf (maxima-substitute (rdis a) b (rdis c))))
 		 (t (cons (list 'mrat 'simp varlist genvar)
-			  (if (eqn (cdr a) 1)
+			  (if (equal (cdr a) 1)
 			      (ratreduce (everysubst0 (car a) (car b) (car c))
 					 (everysubst0 (car a) (car b) (cdr c)))
 			      (allsubst00 a b c))))))
@@ -222,13 +222,13 @@
 
 (defun everysubst (a b maxpow)
   (cond ((pcoefp a)
-	 (cond ((eqn a 1) (list maxpow b))
+	 (cond ((equal a 1) (list maxpow b))
 	       ((pcoefp b)
 		(list (setq maxpow
 			    (do ((b b (quotient b a))
 				 (ans 0 (1+ ans)))
 				((or (> (abs a) (abs b))
-				     (eqn maxpow ans))
+				     (equal maxpow ans))
 				 ans)))
 		      (quotient b (setq maxpow (expt a maxpow)))
 		      0
@@ -247,7 +247,7 @@
 	 (setq k (car x))
 	 (setq x (cdr x))
 	 l    (setq q (min maxpow (quotient (car x) n)))
-	 m    (when (eqn q 0)
+	 m    (when (equal q 0)
 		(return (if (null x)
 			    ans
 			    (cons 0 (cons (psimp k x) ans)))))
@@ -271,9 +271,9 @@
        (quot) (zl-rem) (ans))
       ((not (< pow maxpow)) (list* maxpow b ans))
     (desetq (quot zl-rem) (pdivide b a))
-    (unless (and (eqn (cdr quot) 1)
+    (unless (and (equal (cdr quot) 1)
 		 (not (pzerop (car quot)))
-		 (eqn (cdr zl-rem) 1))
+		 (equal (cdr zl-rem) 1))
       (return (cons pow (cons b ans))))
     (unless (pzerop (car zl-rem))
       (setq ans (cons pow (cons (car zl-rem) ans))))

@@ -51,7 +51,10 @@ iss: extradocinstall gnuplot wxmaxima win32-lisp-runtime
 # Install the gnuplot binary files
 gnuplot: 
 	mkdir -p $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/bin/* $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/bin $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/share $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/etc $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/license $(prefix)/gnuplot
 
 # Install wxMaxima
 wxmaxima:

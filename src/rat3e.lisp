@@ -20,8 +20,6 @@
 		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 
-(load-macsyma-macros rzmac ratmac)
-
 (defmvar genvar nil
   "List of gensyms used to point to kernels from within polynomials.
 	 The values cell and property lists of these symbols are used to
@@ -389,7 +387,7 @@
      (setq h (car x))
      (setq x (cdr x))
      (setq y (cdr (ratrep* y)))
-     (cond ((and (eqn (setq tt (cdr x)) 1) (eqn (cdr y) 1))
+     (cond ((and (equal (setq tt (cdr x)) 1) (equal (cdr y) 1))
 	    (setq x (pdivide (car x) (car y))))
 	   (t (setq ty (cdr y))
 	      (setq x (ptimes (car x) (cdr y)))
@@ -915,11 +913,11 @@
 
 (defun pdisrep! (n var)
   (cond ((zerop n) 1)
-	((eqn n 1) (cond ((atom var) var)
-			 ((or (eq (caar var) 'mtimes)
-			      (eq (caar var) 'mplus))
-			  (copy-list var))
-			 (t var)))
+	((equal n 1) (cond ((atom var) var)
+                           ((or (eq (caar var) 'mtimes)
+                                (eq (caar var) 'mplus))
+                            (copy-list var))
+                           (t var)))
 	(t (list '(mexpt ratsimp) var n))))
 
 (defun pdisrep+ (p)
@@ -931,8 +929,8 @@
 	     (cons '(mplus ratsimp) p)))))
 
 (defun pdisrep* (a b)
-  (cond ((eqn a 1) b)
-	((eqn b 1) a)
+  (cond ((equal a 1) b)
+	((equal b 1) a)
 	(t (cons '(mtimes ratsimp) (nconc (pdisrep*chk a) (pdisrep*chk b))))))
 
 (defun pdisrep*chk (a)
@@ -956,12 +954,12 @@
 	(ratdisrep (ratf x)))))
 
 (defun pdisrep*expand (a b)
-  (cond ((eqn a 1) (list b))
-	((eqn b 1) (list a))
+  (cond ((equal a 1) (list b))
+	((equal b 1) (list a))
 	((or (atom a) (not (eq (caar a) 'mplus)))
 	 (list (cons (quote (mtimes ratsimp))
 		     (nconc (pdisrep*chk a) (pdisrep*chk b)))))
-	(t (mapcar #'(lambda (z) (if (eqn z 1) b
+	(t (mapcar #'(lambda (z) (if (equal z 1) b
 				     (cons '(mtimes ratsimp)
 					   (nconc (pdisrep*chk z)
 						  (pdisrep*chk b)))))
@@ -1000,7 +998,7 @@
 
 (defun cdisrep (x &aux n d sign)
   (cond ((pzerop (car x)) 0)
-	((or (eqn 1 (cdr x)) (floatp (cdr x))) (pdisrep (car x)))
+	((or (equal 1 (cdr x)) (floatp (cdr x))) (pdisrep (car x)))
 	(t (setq sign (cond ($ratexpand (setq n (pdisrep (car x))) 1)
 			    ((pminusp (car x))
 			     (setq n (pdisrep (pminus (car x)))) -1)
@@ -1015,13 +1013,13 @@
 		 ((numberp d)
 		  (list '(mtimes ratsimp)
 			(list '(rat) sign d) n))
-		 ((eqn sign -1)
+		 ((equal sign -1)
 		  (cons '(mtimes ratsimp)
 			(cond ((numberp n)
 			       (list (* n -1)
 				     (list '(mexpt ratsimp) d -1)))
 			      (t (list sign n (list '(mexpt ratsimp) d -1))))))
-		 ((eqn n 1)
+		 ((equal n 1)
 		  (list '(mexpt ratsimp) d -1))
 		 (t (list '(mtimes ratsimp) n
 			  (list '(mexpt ratsimp) d -1)))))))
