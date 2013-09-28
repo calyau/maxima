@@ -173,6 +173,7 @@
 (defun firstn (n lis)
   (subseq lis 0 n))
 
+(declaim (inline fixnump))
 (defun fixnump (n)
   (typep n 'fixnum))
 
