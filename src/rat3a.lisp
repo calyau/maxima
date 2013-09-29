@@ -466,29 +466,51 @@
      (let ((pairs (sort (mapcar #'cons vars vals) #'pointergp :key #'car)))
        (pcsub p (mapcar #'cdr pairs) (mapcar #'car pairs))))))
 
-
+;; PDERIVATIVE
+;;
+;; Compute the derivative of the polynomial P with respect to the variable VARI.
 (defmfun pderivative (p vari)
-  (if (pcoefp p)
-      0
-      (psimp (p-var p) (cond ((eq vari (p-var p))
-			      (pderivative2 (p-terms p)))
-			     ((pointergp vari (p-var p))
-			      (ptzero))
-			     (t (pderivative3 (p-terms p) vari))))))
+  (cond
+    ;; The derivative of a constant is zero.
+    ((pcoefp p) 0)
+    ;; If we have the same variable, do the differentiation term-by-term.
+    ((eq vari (p-var p))
+     (psimp (p-var p) (ptderivative (p-terms p))))
+    ;; If VARI > (P-VAR P) then we know it doesn't occur in any of the
+    ;; coefficients either, so return zero. This test comes after the one above
+    ;; because we expect more univariate polynomials and eq is cheaper than
+    ;; pointergp.
+    ((pointergp vari (p-var p)) 0)
+    ;; The other possibility is that (P-VAR P) > VARI, so the coefficients might
+    ;; need differentiating.
+    (t
+     (psimp (p-var p) (ptderivative-coeffs (p-terms p) vari)))))
 
-(defun pderivative2 (x)
-  (cond ((null x) nil)
-	((zerop (pt-le x)) nil)
-	(t (pcoefadd (1- (pt-le x))
-		     (pctimes (cmod (pt-le x)) (pt-lc x))
-		     (pderivative2 (pt-red x))))))
+;; PTDERIVATIVE
+;;
+;; Formally differentiate TERMS, which is a list of the terms of some
+;; polynomial, with respect to that polynomial's main variable.
+(defun ptderivative (terms)
+  (if (or (null terms) (zerop (pt-le terms)))
+      ;; Zero or constant polynomials -> 0
+      nil
+      ;; Recurse, adding up "k . x^(k-1)" each time.
+      (pcoefadd (1- (pt-le terms))
+                (pctimes (cmod (pt-le terms)) (pt-lc terms))
+                (ptderivative (pt-red terms)))))
 
-(defun pderivative3 (x vari)
-  (cond ((null x) nil)
-	(t (pcoefadd
-	    (pt-le x)
-	    (pderivative (pt-lc x) vari)
-	    (pderivative3 (pt-red x) vari)))))
+;; PTDERIVATIVE-COEFFS
+;;
+;; Differentiate TERMS, which is a list of the terms of some polynomial, with
+;; respect to the variable VARI. We assume that VARI is not the main variable of
+;; the polynomial, but it might crop up in the coefficients.
+(defun ptderivative-coeffs (terms vari)
+  (and terms
+       ;; Recurse down the list of terms, calling PDERIVATIVE to actually
+       ;; differentiate each coefficient, then PTDERIVATIVE-COEFFS to do the rest.
+       (pcoefadd (pt-le terms)
+                 (pderivative (pt-lc terms) vari)
+                 (ptderivative-coeffs (pt-red terms) vari))))
 
 (defmfun pdivide (x y)
   (cond ((pzerop y) (rat-error "Quotient by zero"))
