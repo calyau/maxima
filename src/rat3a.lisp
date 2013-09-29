@@ -374,43 +374,97 @@
      (cons (pt-le terms)
            (cons (pt-lc terms) (ptcdiffer-minus (pt-red terms) c))))))
 
-(defun pcsubsty (vals vars p)		;list of vals for vars
-  (cond ((null vars) p)
-	((atom vars) (pcsub p (list vals) (list vars)))	;one val hack
-	(t (setq vars (sort (mapcar #'cons vars vals) #'pointergp :key #'car))
-	   (pcsub p (mapcar (function cdr) vars)
-		  (mapcar (function car) vars)))))
-
-(defun pcsubst (p val var)		;one val for one var
-  (cond ((pcoefp p) p)
-	((eq (car p) var) (pcsub1 (cdr p) val () ()))
-	((pointergp var (car p)) p)
-	(t (psimp (car p) (pcsub2 (cdr p) (ncons val) (ncons var)))))) 
-
-(defun pcsub1 (a val vals vars)
-  (if (equal val 0) (pcsub (pterm a 0) vals vars)
-      (do ((p (pt-red a) (pt-red p))
-	   (ans (pcsub (pt-lc a) vals vars)
-		(pplus (ptimes ans
-			       (pexpt val (- ld (pt-le p))))
-		       (pcsub (pt-lc p) vals vars)))
-	   (ld (pt-le a) (pt-le p)))
-	  ((null p) (ptimes ans (pexpt val ld))))))
-
+;; PCSUB
+;;
+;; Substitute values for variables in the polynomial P. VARS and VALS should be
+;; list of variables to substitute for and values to substitute, respectively.
+;;
+;; The code assumes that if VAR1 precedes VAR2 in the list then (POINTERGP VAR1
+;; VAR2). As such, VAR1 won't appear in the coefficients of a polynomial whose
+;; main variable is VAR2.
 (defun pcsub (p vals vars)
-  (cond ((null vals) p)
-	((pcoefp p) p)
-	((eq (p-var p) (car vars)) (pcsub1 (p-terms p) (car vals)
-					   (cdr vals) (cdr vars)))
-	((pointergp (car vars) (p-var p))
-	 (pcsub p (cdr vals) (cdr vars)))
-	(t (psimp (p-var p) (pcsub2 (p-terms p) vals vars)))))
+  (cond
+    ;; Nothing to substitute, or P has no variables in it.
+    ((or (null vals) (pcoefp p)) p)
+    ;; The first variable in our list is the main variable of P.
+    ((eq (p-var p) (first vars))
+     (ptcsub (p-terms p) (first vals)
+             (cdr vals) (cdr vars)))
+    ;; If the first var should appear before the main variable of P, we know it
+    ;; doesn't appear in any of the coefficients, so can (tail-)recurse on vals
+    ;; + vars.
+    ((pointergp (car vars) (p-var p))
+     (pcsub p (cdr vals) (cdr vars)))
+    ;; Else, the main variable shouldn't get clobbered, but maybe we should
+    ;; replace variables in the coefficients.
+    (t (psimp (p-var p) (ptcsub-args (p-terms p) vals vars)))))
 
-(defun pcsub2 (terms vals vars)
-  (loop for (exp coef) on terms by #'cddr
-	 unless (pzerop (setq coef (pcsub coef vals vars)))
-	 nconc (list exp coef)))
+;; PCSUBST
+;;
+;; Substitute VAL for VAR in a polynomial. Like PCSUB, but with only a single
+;; var to be substituted.
+;;
+;; (The logic of this function is exactly the same as PCSUB, but is marginally
+;;  simpler because there are no more vars afterwards. Presumably, it was
+;;  thought worth separating this case out from PCSUB to avoid spurious
+;;  consing. I'm not convinced. RJS)
+(defun pcsubst (p val var)
+  (cond ((pcoefp p) p)
+	((eq (p-var p) var) (ptcsub (cdr p) val nil nil))
+	((pointergp var (p-var p)) p)
+	(t (psimp (car p) (ptcsub-args (cdr p) (list val) (list var))))))
 
+;; PTCSUB
+;;
+;; Substitute a constant, VAL, for the main variable in TERMS, which represent
+;; the terms of a polynomial. The coefficients might themselves be polynomials
+;; and, if so, we might substitute values for them too. To do so, pass VALS and
+;; VARS, with the same ordering requirements as in PCSUB.
+(defun ptcsub (terms val vals vars)
+  (if (eql val 0)
+      ;; If we're substituting 0 for the value, then we just extract the
+      ;; constant term.
+      (pcsub (pterm terms 0) vals vars)
+      ;; Otherwise, walk through the polynomial using Horner's scheme to
+      ;; evaluate it. Because the polynomial is sparse, you can't just multiply
+      ;; by VAL every step, and instead have to keep track of the jump in
+      ;; exponents, which is what the LAST-LE variable does.
+      (do ((terms (pt-red terms) (pt-red terms))
+	   (ans (pcsub (pt-lc terms) vals vars)
+		(pplus (ptimes ans (pexpt val (- last-le (pt-le terms))))
+		       (pcsub (pt-lc terms) vals vars)))
+	   (last-le (pt-le terms) (pt-le terms)))
+	  ((null terms)
+           (ptimes ans (pexpt val last-le))))))
+
+;; PTCSUB-ARGS
+;;
+;; Substitute values for vars in TERMS, which should be the terms of some
+;; polynomial. Unlike PTCSUB, we assume that the main variable of the polynomial
+;; isn't being substituted. VARS and VALS should be ordered as in PCSUB.
+(defun ptcsub-args (terms vals vars)
+  (loop
+     for (exp coef) on terms by #'cddr
+     unless (pzerop (setq coef (pcsub coef vals vars)))
+     nconc (list exp coef)))
+
+;; PCSUBSTY
+;;
+;; Like PCSUB, but with arguments in a different order and with a special case
+;; that you can pass atoms for VALS and VARS, in which case they will be treated
+;; as one-element lists. The big difference with PCSUB is that we don't assume
+;; that VARS and VALS come pre-sorted, and sort them here.
+(defun pcsubsty (vals vars p)
+  (cond
+    ;; If there is nothing to do, the answer is just P.
+    ((null vars) p)
+    ;; When there's only one variable, we don't need to do any sorting, so skip
+    ;; it and call PCSUB directly.
+    ((atom vars) (pcsub p (list vals) (list vars)))
+    ;; Otherwise, call PCSUB with a sorted list of VARS and VALS.
+    (t
+     (let ((pairs (sort (mapcar #'cons vars vals) #'pointergp :key #'car)))
+       (pcsub p (mapcar #'cdr pairs) (mapcar #'car pairs))))))
 
 
 (defmfun pderivative (p vari)
