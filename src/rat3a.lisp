@@ -512,28 +512,54 @@
                  (pderivative (pt-lc terms) vari)
                  (ptderivative-coeffs (pt-red terms) vari))))
 
+;; PDIVIDE
+;;
+;; Polynomial division with remainder. X and Y should be polynomials. If V
+;; denotes the main variable of X, then we are carrying out the division in a
+;; ring of polynomials over Q where all variables that occur after V have been
+;; formally inverted. This is a Euclidean ring, and PDIVIDE implements division
+;; with remainder in this ring.
+;;
+;; The result is a list of two elements (Q R). Each is a rational function (a
+;; cons pair of polynomials), representing an element of F[V].
 (defmfun pdivide (x y)
-  (cond ((pzerop y) (rat-error "Quotient by zero"))
-	((pacoefp y) (list (ratreduce x y) (rzero)))
-	((pacoefp x) (list (rzero) (cons x 1)))
-	((pointergp (car x) (car y)) (list (ratreduce x y) (rzero)))
-	(t (pdivide1 x y))))
+  (cond
+    ((pzerop y) (rat-error "Quotient by zero"))
+    ;; If Y is a coefficient, it doesn't matter what X is: we can always do the
+    ;; division.
+    ((pacoefp y) (list (ratreduce x y) (rzero)))
+    ;; If X is a coefficient but Y isn't then the quotient must be zero
+    ((pacoefp x) (list (rzero) (cons x 1)))
+    ;; If neither is a coefficient then compare the variables. If V is greater
+    ;; than the main variable of Y, then Y is invertible in F[V].
+    ((pointergp (p-var x) (p-var y)) (list (ratreduce x y) (rzero)))
+    ;; If we've got to here, V might occur in the coefficients of Y, but it
+    ;; needn't be the main variable.
+    (t
+     (do* ((lcy (cons (p-lc y) 1))
+           (q (rzero))
+           (r (cons x 1))
+           (k (- (pdegree x (p-var y)) (p-le y))
+              (- (pdegree (car r) (p-var y)) (p-le y))))
 
-(defun pdivide1 (u v)
-  (prog (k inc lcu lcv q r)
-     (setq lcv (cons (caddr v) 1))
-     (setq q (rzero))
-     (setq r (cons u 1) )
-     a    (setq k (- (pdegree (car r) (p-var v)) (p-le v)))
-     (if (minusp k) (return (list q r)))
-     (setq lcu (cons (p-lc (car r)) (cdr r)))
-     (setq inc (ratquotient lcu lcv))
-     (setq inc (cons (psimp (car v) (list k (car inc)))
-		     (cdr inc)))
-     (setq q (ratplus q inc))
-     (setq r (ratplus r  (rattimes (cons (pminus v) 1) inc t)))
-     (go a)))
-	 
+          ;; k is the degree of the numerator of the remainder minus the degree
+          ;; of y, both in the leading variable of y. For there to be further
+          ;; factors of y to subtract from q, this must be non-negative.
+          ((minusp k) (list q r))
+
+       ;; Divide the leading coefficient of r (which means the leading term of
+       ;; the numerator, divided by the denominator) by the leading coefficient
+       ;; of y.
+       ;;
+       ;; The quotient gets added to q and gets multiplied back up by y and the
+       ;; result is subtracted from r.
+       (let* ((lcr (cons (p-lc (car r)) (cdr r)))
+              (quot (ratquotient lcr lcy))
+              (quot-simp (cons (psimp (p-var y) (list k (car quot)))
+                               (cdr quot))))
+         (setf q (ratplus q quot-simp)
+               r (ratplus r (rattimes (cons (pminus y) 1) quot-simp t))))))))
+
 (defmfun pexpt (p n)
   (cond ((= n 0) 1)
 	((= n 1) p)
