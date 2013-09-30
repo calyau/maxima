@@ -522,7 +522,8 @@ APPLY means like APPLY.")
 
 
 (defun trfail (x)
-  (tr-format x (intl:gettext "error: failed to translate.~%")) nil)
+  (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
+  nil)
 
 (defmfun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
