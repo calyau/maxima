@@ -148,7 +148,7 @@
 
 (defun ufact-strip-zeroes (l)
   (do ((l l (cdr l)))
-      ((null (czerop (car l))) l)))
+      ((null (pzerop (car l))) l)))
 
 (defun cpres1 (a b)
   (prog (res (v 0) a3) (declare (fixnum v))

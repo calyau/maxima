@@ -212,17 +212,14 @@
   (every #'zerop1 a))
 
 (defmfun testdivide (x y)
-  (let ((errrjfflag t))
-    (cond (algfac* (algtestd x y))
-	  ((or (pcoefp x)
-	       (pcoefp y)
-	       (catch 'raterr (pquotient (car (last x)) (car (last y)))))
-	   (catch 'raterr (pquotient x y))))))
+  (if algfac*
+      (algtestd x y)
+      (eztestdivide x y)))
 
 (defun algtestd (x y)
   (and (div-deg-chk (nreverse (pdegreevector x)) (nreverse (pdegreevector y))
 		    (reverse genvar))
-       (cond ((setq x (catch 'raterr (rquotient x y)))
+       (cond ((setq x (ignore-rat-err (rquotient x y)))
 	      (setq adn* (* adn* (cdr x)))
 	      (car x)) )))
 
@@ -293,7 +290,7 @@
 
 (defun z1 (poly fact1 fact2)
   (prog (res hsteps steps kterm a b c d *ab* m df1 df2 dlr step *sharpa *sharpb)
-     (let ((modulus) (hmodulus))
+     (let ((modulus))
        (setqmodulus *prime)
        (setq *sharpb (fact20 fact1 fact2 limk)))
      (setq *sharpa (car *sharpb))
@@ -771,7 +768,7 @@
     (push (random 1000.) l)))
 
 (defun trufac (v lp olfact many* modulus)
-  (prog (ans olc lc af qnt factor lfunct hmodulus)
+  (prog (ans olc lc af qnt factor lfunct)
      (setq lc 1 olc 1)
      (setqmodulus modulus)
      (setq lfunct (setq olfact (cons nil olfact)))
@@ -859,7 +856,7 @@
 
 (defun nprod (lc u lfunct)
   (prog (stage v d2 af0 r lcindex factor llc ltuple lprod lindex qnt af
-	 funct tuple ltemp lpr f l li lf modulus hmodulus)
+	 funct tuple ltemp lpr f l li lf modulus)
      (setq lpr (copy-tree (setq ltemp (cons nil nil))))
      (setq lprod (cons nil lfunct))
      (setq d2 (ash (cadr u) -1))
@@ -902,7 +899,8 @@
 	    (cond ((setq qnt (testdivide v af))
 		   (cond (llc (setq af (oldcontent af))
 			      (setq v (ptimes (car af) qnt)af (cadr af))
-			      (setq u (cond (algfac*(car (catch 'raterr (rquotient u af))))
+			      (setq u (cond (algfac*(car (ignore-rat-err
+                                                           (rquotient u af))))
 					    (t (pquotient u af)))))
 			 (t (setq u qnt v qnt)))
 		   (setq factor (cons af factor))
@@ -1346,7 +1344,7 @@
 
 
 (defun factor1972 (p)
-  (let ((modulu* modulus) many* *stop* modulus hmodulus mcflag *negflag*)
+  (let ((modulu* modulus) many* *stop* modulus mcflag *negflag*)
     (if (or (atom p) (numberp p) (and algfac* (alg p)))
 	(list p)
 	(factor72 p))))

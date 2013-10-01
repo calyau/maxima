@@ -2003,8 +2003,7 @@
 ;;where zi=qi(x1,x2,  xn)/gp and xi=pi(z1,..,zn)/gq
 
 (defmfun my-testdivide (x y)
-  (let ((errrjfflag t))
-	   (catch 'raterr (pquotient x y))))
+  (ignore-rat-err (pquotient x y)))
 
 (defun new-testdivide (f g &aux quot)
   (setq quot (ratreduce f g))

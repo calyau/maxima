@@ -17,6 +17,7 @@ distribution, I do the following in a MSYS window:
 ./configure --prefix=c:/maxima \
     --enable-chm \
     --enable-xmaxima-exe \
+    --with-hhc=hhc \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install
@@ -247,13 +248,15 @@ directory (c:/maxima above) before testing the installation.
     - compile(f);
     - f(2);
  o Test the graphics systems in both xmaxima and wxmaxima
-    - plot2d(sin(x),[x,0,10]);
-    - plot3d(x*y,[x,-1,1],[y,-1,1]);
-    - load(draw)$
-      draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
+    plot2d(sin(x),[x,0,10]);
+    plot3d(x*y,[x,-1,1],[y,-1,1]);
+    load(draw)$
+    draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
           parametric_surface(cos(phi) * sin(theta),
                        sin(phi) * sin(theta),
                        cos(theta),
                        theta, 0, %pi, phi, 0, 2 * %pi))$
+ o Check that plotting to Postscript works
+    plot2d(sin(x),[x,0,10],[psfile,"pstest.ps"]);
  o Try out the on-line help: describe(sin)
 

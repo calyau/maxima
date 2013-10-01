@@ -143,7 +143,7 @@
 	  (t (cpres x y (car varl) (cdr varl))) ))
 
   (defun pres (a b xr1 varl)
-    (prog (m n f a* b* c* p q c modulus hmodulus)
+    (prog (m n f a* b* c* p q c modulus)
        (setq m (cadr a))
        (setq n (cadr b))
        (setq f (coefbound m n (maxnorm (cdr a)) (maxnorm (cdr b)) ))
