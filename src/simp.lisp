@@ -109,7 +109,7 @@
 
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
-(defmvar $rootsepsilon 1e-7)
+(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
 (defmvar $algepsilon 100000000)
 (defmvar $true t)

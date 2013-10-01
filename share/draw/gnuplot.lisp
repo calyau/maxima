@@ -1499,7 +1499,7 @@
 (defun sample-data (expr xmin xmax ymin ymax sample grid)
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
 	 (ydelta (/ (- ymax ymin) ($second grid)))
-	 (epsilon 1e-6))
+	 (epsilon #+gcl (float 1/1000000) #-gcl 1e-6))
     (do ((x-val xmin (+ x-val xdelta))
 	 (i 0 (1+ i)))
 	((> i ($first grid)))
