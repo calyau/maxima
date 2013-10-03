@@ -177,7 +177,7 @@ f(2);
 4;
 
 /* gcl 2.6.8 sets small floats to 0.0 in compiled code */
-(g():=1e-6,compile(g),is(g()>0));
+(f():=1e-6,compile(f),is(f()>0));
 true;
 
 /* some tests for lambda expressions.
