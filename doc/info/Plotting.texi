@@ -350,7 +350,7 @@ Where @var{plot}, @var{plot_1}, @dots{}, @var{plot_n} can be either
 expressions, function names or a list with
 the any of the forms: @code{[discrete, [@var{x1}, ..., @var{xn}],
 [@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
-..., [@var{xn}, ..., @var{yn}]]} or @code{[parametric, @var{x_expr},
+..., [@var{xn}, ..., @var{yn}]]]} or @code{[parametric, @var{x_expr},
 @var{y_expr}, @var{t_range}]}.
 
 Displays a plot of one or more expressions as a function of one
