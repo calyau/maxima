@@ -987,7 +987,7 @@ them into x, y and z coordinates.
 
 All options consist of a list starting with one of the keywords in this
 section, followed by one or more values.  Most of the options can be used
-in any of the plotting commands (@mrefcomma{plot2d} @mrefcomma{plot3d}@w{}
+in any of the plotting commands @mrefcomma{plot2d} @mrefcomma{plot3d}@w{}
 @mrefcomma{contour_plot} @mrefparen{implicit_plot} or in the function
 @mrefdot{set_plot_option}  The exceptions will be specified in the following
 list.
