@@ -175,6 +175,11 @@ compile(f);
 [f];
 f(2);
 4;
+
+/* gcl 2.6.8 sets small floats to 0.0 in compiled code */
+(f():=1e-6,compile(f),is(f()>0));
+true;
+
 /* some tests for lambda expressions.
   we test for both translate and compile because there are some compiler
   macros for translated code */

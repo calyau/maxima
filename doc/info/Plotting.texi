@@ -350,7 +350,7 @@ Where @var{plot}, @var{plot_1}, @dots{}, @var{plot_n} can be either
 expressions, function names or a list with
 the any of the forms: @code{[discrete, [@var{x1}, ..., @var{xn}],
 [@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
-..., [@var{xn}, ..., @var{yn}]]} or @code{[parametric, @var{x_expr},
+..., [@var{xn}, ..., @var{yn}]]]} or @code{[parametric, @var{x_expr},
 @var{y_expr}, @var{t_range}]}.
 
 Displays a plot of one or more expressions as a function of one
@@ -987,7 +987,7 @@ them into x, y and z coordinates.
 
 All options consist of a list starting with one of the keywords in this
 section, followed by one or more values.  Most of the options can be used
-in any of the plotting commands (@mrefcomma{plot2d} @mrefcomma{plot3d}@w{}
+in any of the plotting commands @mrefcomma{plot2d} @mrefcomma{plot3d}@w{}
 @mrefcomma{contour_plot} @mrefparen{implicit_plot} or in the function
 @mrefdot{set_plot_option}  The exceptions will be specified in the following
 list.
