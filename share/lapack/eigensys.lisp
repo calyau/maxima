@@ -12,11 +12,11 @@
 	(return-from complex-maxima-matrix-p t))))
   nil)
 
-(defun lapack-lispify-matrix (a nrow ncol)
+(defun lapack-lispify-matrix (a nrow ncol &optional (assume-complex-maxima-matrix-p nil))
   "Convert a Maxima matrix A of dimension NROW and NCOL to Lisp matrix
   suitable for use with LAPACK"
   (setq a ($float a))
-  (let* ((array-type (if (complex-maxima-matrix-p a)
+  (let* ((array-type (if (or assume-complex-maxima-matrix-p (complex-maxima-matrix-p a))
 			 '(complex flonum)
 			 'flonum))
 	 (mat (make-array (* nrow ncol)
@@ -329,7 +329,7 @@ eigenvectors."
 			    w))))
     
     (let* ((n (maxima-matrix-dims a))
-	   (a-mat (lapack-lispify-matrix a n n))
+	   (a-mat (lapack-lispify-matrix a n n t))
 	   (w (make-array n :element-type '(complex flonum)))
 	   (vl (make-array (if left-vec-p (* n n) 0)
 			   :element-type '(complex flonum)))
