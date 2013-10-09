@@ -72,8 +72,10 @@ uninstall-hook: $(WEIRD_UNINSTALL_TARGETS)
 ## A rule to build binary directories of the form binary-<lispname>
 ## and subdirectories ./numerical and ./numerical/slatec
 binary_subdirs = / /numerical /numerical/slatec
-bd_%:
-	$(MKDIR_P) $(addprefix $(subst bd_,binary-,$@),$(binary_subdirs))
+lisps_enabled = @lisps_enabled@
+.PHONY: bd
+bd:
+	for l in $(lisps_enabled); do for d in $(binary_subdirs); do $(MKDIR_P) binary-$$l$$d; done; done
 
 ## Some hunks of lisp that get used by more than one implementation
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
@@ -122,7 +124,7 @@ CLEAN_TARGETS += clean-clisp
 clisp: $(CLISP_MAXIMA)
 
 $(CLISP_MAXIMA):
-	$(MAKE) bd_clisp
+	$(MAKE) bd
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag)))'
 
@@ -168,7 +170,7 @@ CLEAN_TARGETS += clean-cmucl
 cmucl: $(CMU_MAXIMA)
 
 $(CMU_MAXIMA):
-	$(MAKE) bd_cmucl
+	$(MAKE) bd
 	$(CMU_BUILD)
 
 clean-cmucl:
@@ -193,7 +195,7 @@ scllib_DATA = binary-scl/maxima.core
 scl: binary-scl/maxima.core
 
 binary-scl/maxima.core:
-	$(MAKE) bd_scl
+	$(MAKE) bd
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTESCL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-scl/maxima.core"))' | $(EXECUTESCL))
 
@@ -232,7 +234,7 @@ acllib_DATA = binary-acl/maxima.dxl
 acl: binary-acl/maxima.dxl
 
 binary-acl/maxima.dxl:
-	$(MAKE) bd_acl
+	$(MAKE) bd
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl"))' | $(EXECUTEACL))
 
@@ -273,7 +275,7 @@ BUILD_SBCL = $(COMPILE_SBCL) && $(WRITE_SBCL)
 sbcl: $(SBCL_MAXIMA)
 
 $(SBCL_MAXIMA):
-	$(MAKE) bd_sbcl
+	$(MAKE) bd
 	$(BUILD_SBCL)
 
 clean-sbcl:
@@ -309,7 +311,7 @@ export WITH_SYS_PROCLAIM = true
 sys-proclaim.lisp:
 	rm -rf binary-gcl
 	touch sys-proclaim.lisp
-	$(MAKE) bd_gcl
+	$(MAKE) bd
 	$(EXECUTEGCL) '(progn (load "generate-sys-proclaim.lisp"))'
 	rm -rf binary-gcl
 else !SYS_PROCLAIM
@@ -320,7 +322,7 @@ endif
 gcl: binary-gcl/maxima
 
 binary-gcl/maxima: $(sys_proc_dependency)
-	$(MAKE) bd_gcl
+	$(MAKE) bd
 if GCL_ALT_LINK
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTEGCL) '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l))))'
@@ -398,7 +400,7 @@ CLEAN_TARGETS += clean-ecl
 ecl:binary-ecl/maxima
 
 binary-ecl/maxima:
-	$(MAKE) bd_ecl
+	$(MAKE) bd
 	$(EXECUTEECL) \
            -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib))' \
            -eval '(ext:quit)'
