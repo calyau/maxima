@@ -26,9 +26,6 @@
 ;;; mario @@@ edu DOT xunta DOT es
 
 
-($put '$vtk 1 '$version)
-
-
 ;;; AUXILIARY FUNCTIONS
 
 ;; Global variables

@@ -33,9 +33,6 @@
 ;;; mario @@@ edu DOT xunta DOT es
 
 
-($put '$draw 2 '$version)
-
-
 ;; Possible draw renderers:
 ;;      gnuplot_pipes (default)
 ;;      gnuplot
