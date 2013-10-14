@@ -867,7 +867,6 @@ macro/packg.mac \
 macro/sum1.mac \
 matrix/eigen_1.dem \
 matrix/eigen.dem \
-matrix/eigeni.mac \
 matrix/eigen.mac \
 matrix/invert.mac \
 matrix/invert.usg \
