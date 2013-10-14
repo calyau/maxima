@@ -5,7 +5,7 @@
  *
  */
 
-if not get('draw,'version) then load("draw") $
+load("draw") $
 
 
 ("Axes with different styles")$

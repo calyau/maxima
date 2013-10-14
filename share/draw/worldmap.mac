@@ -43,9 +43,9 @@ to contact me at
 mario AT edu DOT xunta DOT es
 */
 
-put('worldmap, 1, 'version) $
+?defvar(worldmap_version, 1) $
 
-if not get('draw,'version) then load("draw") $
+load("draw") $
 
 load("wbd.lisp")$
 
