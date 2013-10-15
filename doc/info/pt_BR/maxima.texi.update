@@ -1,0 +1,4 @@
+\input texinfo
+@setfilename  maxima-pt_BR.info
+@include include-maxima.texi
+@bye
