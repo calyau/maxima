@@ -11,8 +11,6 @@
 (in-package :maxima)
 (macsyma-module ufact)
 
-(declare-top (special modulus coef-type))
-
 (load-macsyma-macros ratmac rzmac)
 
 ;; Dense Polynomial Representation
