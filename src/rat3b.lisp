@@ -17,6 +17,8 @@
 
 (declare-top (special $algebraic $ratfac $keepfloat $float))
 
+(load-macsyma-macros ratmac)
+
 (defmvar $ratwtlvl nil) 
 (defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
 

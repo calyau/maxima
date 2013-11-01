@@ -514,8 +514,7 @@
 				     (:file "rat3c") 
 				     (:file "rat3e") 
 				     (:file "nrat4") 
-				     (:file "ratout"))
-                        :depends-on (rat-macros other-macros))
+				     (:file "ratout")))
 	       (:module maxima-language-compiler :source-pathname ""
 			:components ((:file "transl") 
 				     (:file "transs") 

@@ -12,6 +12,9 @@
 
 (macsyma-module rat3d)
 
+(load-macsyma-macros ratmac)
+
+
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
