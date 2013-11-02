@@ -176,6 +176,7 @@
 		    ;; *atp* prevents substitution from applying to vars 
 		    ;; bound by %sum, %product, %integrate, %limit
 		    (setq var (gensym))
+		    (putprop var t 'internal)
 		    (setq exp (maxima-substitute (m+ val var) realvar exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
