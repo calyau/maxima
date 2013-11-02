@@ -15,7 +15,7 @@
 ;; this is the mat package
 
 (declare-top (special *ech* *tri* $algebraic $multiplicities equations
-		      mul* $dispflag $nolabels *det*
+		      mul* $dispflag $nolabels errrjfflag *det*
 		      xm* xn* varlist ax *linelabel*))
 
 ;;these are arrays.
@@ -44,7 +44,7 @@
 	   (rdis (ratplus m (rattimes (ratminus answer) cc t))))
      (if (or (not (freeof *c leftover))
 	     (dependsall (rdis answer) varl))
-         (rat-error "`non-linear'"))
+	 (errrjf "`non-linear'"))
      (return answer)))
 
 (defun formx (flag nam eql varl)

@@ -36,7 +36,8 @@
 ;; avoids error "quotient by polynomial of higher degree"
 ;;  (returns nil in this case)
 (defun pquotientchk-safe (x y)
-  (ignore-rat-err (pquotientchk x y)))
+  (let ((errrjfflag t))
+    (catch 'raterr (pquotientchk x y))))
 
 (defun ptimeschk (a b)
   (cond ((equal a 1) b)
@@ -205,9 +206,9 @@
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
 	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" $gcd))))
-  ;; Check for gcd that simplifies to 0. SourceForge bugs 831445 and 1313987
-  (unless (ignore-rat-err (rainv s))
-    (setq s 1))
+  (let ((errrjfflag t))			;; check for gcd that simplifies to 0
+    (if (not (catch 'raterr (rainv s))) ;; sourceforge bugs 831445 and 1313987
+	(setq s 1)))
   (unless (equal s 1)
     (setq s (pexpon*// (primpart
 			(if $algebraic s

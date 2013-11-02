@@ -27,7 +27,7 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw origval $lhospitallim low*
+(declare-top (special errorsw errrjfflag raterr origval $lhospitallim low*
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $tlimswitch $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar
@@ -1044,7 +1044,7 @@ ignoring dummy variables and array indices."
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
 
 (defun no-err-sub (v e &aux ans)
-  (let ((errorsw t) (*zexptsimp? t)
+  (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
 	(errcatch t)
 	;; Don't print any error messages
 	($errormsg nil))
@@ -1054,8 +1054,8 @@ ignoring dummy variables and array indices."
     ;; actually show up instead of being silently discarded.
     (handler-case
 	(setq ans (catch 'errorsw
-                    (ignore-rat-err
-                      (sratsimp (subin v e)))))
+		    (catch 'raterr
+		      (sratsimp (subin v e)))))
       (maxima-$error ()
 	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.

@@ -20,7 +20,7 @@
 
 (declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
 
-(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac))
+(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac errrjfflag))
 
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss genvar minpoly*))
@@ -264,7 +264,8 @@
     (merror (intl::gettext "nthroot: ~M is not a positive integer") n)))
 
 (defun pnthrootp (p n)
-  (ignore-rat-err (pnthroot p n)))
+  (let ((errrjfflag t))
+    (catch 'raterr (pnthroot p n))))
 
 (defun pnthroot (poly n)
   (cond ((equal n 1) poly)
@@ -278,17 +279,17 @@
 		 ((pzerop p) ans)
 	       (cond ((or (pcoefp p) (not (eq (p-var p) var))
 			  (> (car ae) (p-le p)))
-                      (rat-error "pnthroot error (should have been caught)")))
+		      (throw 'raterr nil)))
 	       (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
 	       )))))
 
 (defun cnthroot(c n)
   (cond ((minusp c)
 	 (cond ((oddp n) (- (cnthroot (- c) n)))
-	       (t (rat-error "cnthroot error (should have been caught"))))
+	       (t (throw 'raterr nil))))
 	((zerop c) c)
 	((zerop (cadr (setq c (iroot c n)))) (car c))
-	(t (rat-error "cnthroot error2 (should have been caught"))))
+	(t (throw 'raterr nil))))
 
 
 (defmfun pabs (x) (cond ((pminusp x) (pminus x)) (t x)))
