@@ -1725,6 +1725,40 @@ first kind:
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  ((onep1 m)
 	   1)
+	  ((alike1 m 1//2)
+	   ;; elliptic_ec(1/2). Use the identity
+	   ;;
+	   ;;   elliptic_ec(z)*elliptic_kc(1-z) - elliptic_kc(z)*elliptic_kc(1-z)
+	   ;;     + elliptic_ec(1-z)*elliptic_kc(z) = %pi/2;
+	   ;;
+	   ;; Let z = 1/2 to get
+	   ;;
+	   ;;   %pi^(3/2)*'elliptic_ec(1/2)/gamma(3/4)^2-%pi^3/(4*gamma(3/4)^4) = %pi/2
+	   ;;
+	   ;; since we know that elliptic_kc(1/2) = %pi^(3/2)/(2*gamma(3/4)^2).  Hence
+	   ;;
+	   ;;   elliptic_ec(1/2)
+	   ;;      = (2*%pi*gamma(3/4)^4+%pi^3)/(4*%pi^(3/2)*gamma(3/4)^2)
+	   ;;      = gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2)
+	   ;;
+	   (add (div (power (take '($gamma) (div 3 4)) 2)
+		     (mul 2 (power '$%pi 1//2)))
+		(div (power '$%pi (div 3 2))
+		     (mul 4 (power (take '($gamma) (div 3 4)) 2)))))
+	  ((zerop1 (add 1 m))
+	   ;; elliptic_ec(-1). Use the identity
+	   ;; http://functions.wolfram.com/08.01.17.0002.01
+	   ;;
+	   ;;
+	   ;;   elliptic_ec(z) = sqrt(1 - z)*elliptic_ec(z/(z-1))
+	   ;;
+	   ;; Let z = -1 to get
+	   ;;
+	   ;;   elliptic_ec(-1) = sqrt(2)*elliptic_ec(1/2)
+	   ;;
+	   ;; Should we expand out elliptic_ec(1/2) using the above result?
+	   (mul (power 2 1//2)
+		(take '($elliptic_ec) 1//2)))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_ec) m) form)))))
