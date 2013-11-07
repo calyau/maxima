@@ -115,7 +115,7 @@
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  dumping envlist errorsw evarrp evp expandflag expandp
 	  exprs exptrlsw factlist featurel fexprs fmaplvl
-	  forms-to-compile-queue fourth%pi fr-factor gauss
+	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
 	  integerl *islinp* lexprs limit-answers limitp linel

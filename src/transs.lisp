@@ -357,9 +357,6 @@ translated."
 		 (t
 		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
 
-
-(declare-top (special forms-to-compile-queue))
-
 (defmspec $compile (form)
   (let ((l (meval `(($translate),@(cdr form)))))
     (let ((forms-to-compile-queue ()))
