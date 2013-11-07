@@ -154,7 +154,6 @@
 
 ;;; If TRFLAG is TRUE, we are in the translator, if NIL, we are in the
 ;;; interpreter.
-(declare-top (special trflag mode form))
 
 (defun declmode (form mode trflag)
   (cond ((atom form)
@@ -187,8 +186,6 @@
 	 (mapc #'(lambda (l) (mputprop l mode 'arrayfun-mode)) (cdr form)))
 	(t
 	 (declfun (caar form) mode))))
-
-(declare-top (unspecial trflag mode form))
 
 (defun declvalue (v mode trflag)
   (when trflag (setq v (teval v)))
