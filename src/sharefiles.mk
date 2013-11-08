@@ -30,7 +30,6 @@ affine/sub-proj.lisp \
 affine/sys-declaim.lisp \
 affine/sysdef.lisp \
 affine/sys-proclaim.lisp \
-affine/todd-coxeter.lisp \
 algebra/charsets/charsets.mac \
 algebra/charsets/flatten.lisp \
 algebra/charsets/README \
