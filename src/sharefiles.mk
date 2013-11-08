@@ -223,6 +223,7 @@ contrib/diffequations/tests/rtest_sym2.mac \
 contrib/diffequations/tests/rtest_sym.mac \
 contrib/diffequations/tests/testsuite.lisp \
 contrib/f90.lisp \
+contrib/fad/fad.lisp \
 contrib/floatproperties.lisp \
 contrib/format/autoload-m.macsyma \
 contrib/format/autoload-mp.macsyma \
@@ -452,6 +453,8 @@ contrib/sarag/topology_examples.mac \
 contrib/sarag/topology.mac \
 contrib/sarag/whatsnew.txt \
 contrib/simplifying.lisp \
+contrib/smath/smath.lisp \
+contrib/smath/smath.mac \
 contrib/state/a.cir \
 contrib/state/b.cir \
 contrib/state/c.cir \

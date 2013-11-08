@@ -145,7 +145,7 @@
 		      $trigsign $savefactors $radexpand $breakup $%emode
 		      $float $exptsubst dosimp context rp-polylogp
 		      %p%i half%pi %pi2 half%pi3 varlist genvar
-		      $domain $m1pbranch errorsw
+		      $domain $m1pbranch errorsw errrjfflag raterr
 		      limitp $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf

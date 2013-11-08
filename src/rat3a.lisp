@@ -30,6 +30,7 @@
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
+(defmvar errrjfflag nil "Controls action of `errrjf' (`maxima-error' or throw)")
 
 (defmacro bctimes (&rest l)
   `(rem (* ,@l) modulus))
@@ -40,7 +41,7 @@
   (cond ((equal a 0) 0)
 	((null modulus)
 	 (cond ((equal 0 (cremainder a b)) (/ a b))
-	       (t (rat-error "quotient is not exact"))))
+	       (t (errrjf "quotient is not exact"))))
 	(t (ctimes a (crecip b)))))
 
 (defun alg (l)
@@ -286,7 +287,7 @@
 	    (pderivative3 (pt-red x) vari)))))
 
 (defmfun pdivide (x y)
-  (cond ((pzerop y) (rat-error "Quotient by zero"))
+  (cond ((pzerop y) (errrjf "Quotient by zero"))
 	((pacoefp y) (list (ratreduce x y) (rzero)))
 	((pacoefp x) (list (rzero) (cons x 1)))
 	((pointergp (car x) (car y)) (list (ratreduce x y) (rzero)))
@@ -361,16 +362,16 @@
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
 	       ((alg y) (paquo x y))
-	       (t (rat-error "Quotient by a polynomial of higher degree"))))
-	((pcoefp y) (cond ((pzerop y) (rat-error "Quotient by zero"))
+	       (t (errrjf "Quotient by a polynomial of higher degree"))))
+	((pcoefp y) (cond ((pzerop y) (errrjf "Quotient by zero"))
 			  (modulus (pctimes (crecip y) x))
 			  (t (pcquotient x y))))
-	((alg y) (or (let ($algebraic)
-                       (ignore-rat-err (pquotient x y)))
+	((alg y) (or (let ((errrjfflag t) $algebraic)
+		       (catch 'raterr (pquotient x y)))
 		     (patimes x (rainv y))))
 	((pointergp (p-var x) (p-var y)) (pcquotient x y))
 	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
-	 (rat-error "Quotient by a polynomial of higher degree"))
+	 (errrjf "Quotient by a polynomial of higher degree"))
 	(t (psimp (p-var x) (pquotient1 (p-terms x) (p-terms y))))))
 
 (defun pcquotient (p q)
@@ -386,7 +387,7 @@
 (defun pquotient1 (u v &aux q* (k 0))
   (declare (fixnum k))
   (loop do (setq  k (- (pt-le u) (pt-le v)))
-	 when (minusp k) do (rat-error "Polynomial quotient is not exact")
+	 when (minusp k) do (errrjf "Polynomial quotient is not exact")
 	 nconc (list k (setq q* (pquotient (pt-lc u) (pt-lc v))))
 	 until (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))))
 
@@ -566,7 +567,7 @@
 		  (setq q (ptimes q (car a)))
 		  (setq a (cdr a)) ))
 	   (cond ((minusp (setq e (+ 1 (- (cadr q)) (pdegree p (car q)))))
-		  (rat-error "Quotient by a polynomial of higher degree")))
+		  (errrjf "Quotient by a polynomial of higher degree")))
 	   (setq a (pexpt a e))
 	   (ratreduce (or (testdivide (ptimes a p) q)
 			  (prog2 (setq a (pexpt (p-lc q) e))

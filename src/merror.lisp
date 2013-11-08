@@ -169,26 +169,21 @@
 
 (defprop $error read-only-assign  assign)
 
-;; RAT-ERROR (condition)
-;;
-;; This condition is raised on an error in the rational function code. Various
-;; callers can catch this if they know they are doing something potentially
-;; dubious. If it percolates back up to the top-level, the error is displayed by
-;; applying MERROR to MERROR-ARGS.
-(define-condition rat-error (error)
-  ((merror-args :initarg :merror-args :reader merror-args)))
+;; THIS THROWS TO  (CATCH 'RATERR ...), WHEN A PROGRAM ANTICIPATES
+;; AN ERROR (E.G. ZERO-DIVIDE) BY SETTING UP A CATCH  AND SETTING
+;; ERRRJFFLAG TO T.  Someday this will be replaced with SIGNAL.
+;; Such skill with procedure names!  I'd love to see how he'd do with
+;; city streets.
 
-;; RAT-ERROR (function)
-;;
-;; Raise a RAT-ERROR. See the condition documentation for more information.
-(defun rat-error (&rest error-args)
-  (error 'rat-error :merror-args error-args))
+;;; N.B. I think the above comment is by CWH, this function used
+;;; to be in RAT;RAT3A. Its not a bad try really, one of the better
+;;; in macsyma. Once all functions of this type are rounded up
+;;; I'll see about implementing signaling. -GJC
 
-;; IGNORE-RAT-ERR
-;;
-;; Evaluate BODY. If a RAT-ERR is raised during evaluation, stop and return NIL.
-(defmacro ignore-rat-err (&body body)
-  `(handler-case (progn ,@body) (rat-error () nil)))
+(defmfun errrjf (&rest args)
+  (if errrjfflag
+      (throw 'raterr nil)
+      (apply #'merror args)))
 
 ;;; The user-error function is called on "strings" and expressions.
 ;;; Cons up a format string so that $ERROR can be bound.
