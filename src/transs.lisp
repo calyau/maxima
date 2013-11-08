@@ -12,10 +12,6 @@
 
 (macsyma-module transs)
 
-(defmvar *transl-file-debug* nil
-  "set this to T if you don't want to have the temporary files
-	used automaticaly deleted in case of errors.")
-
 ;;; User-hacking code, file-io, translator toplevel.
 ;;; There are various macros to cons-up filename TEMPLATES
 ;;; which to mergef into. The filenames should be the only

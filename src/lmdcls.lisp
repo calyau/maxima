@@ -105,7 +105,7 @@
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-$batchload* *in-compile*
 	  *in-macsyma-indexer* *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
-	  *transl-debug* *transl-file-debug* *warned-fexprs*
+	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* arrays aryp assigns *atp* atvars *baktrcl*
