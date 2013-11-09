@@ -1,0 +1,273 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 777136e393f9239882b6510534f1d813  Help.texi
+@c
+@menu       
+* Documentation::               
+* Functions and Variables for Help::        
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Documentation, Functions and Variables for Help, Help, Help
+@section Documentation
+@c -----------------------------------------------------------------------------
+
+@c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
+
+O manual on-line de usu@'{a}rio do Maxima pode ser visto de diferentes formas.  A partir do
+prompt interativo do Maxima, o manual de usu@'{a}rio @'{e} visto no formato texto simples por meio do
+comando @mref{?} (i.e., a fun@,{c}@~{a}o @mref{describe}).  O manual de usu@'{a}rio @'{e}
+visto como hipertexto no formato @code{info} por meio do programa visualizador @code{info} e como uma
+p@'{a}gina web atrav@'{e}s de qualquer navegador comum.
+
+O comando @mref{example} mostra exemplos de muitas fun@,{c}@~{o}es do Maxima.  Por exemplo,
+
+@example
+(%i1) example (integrate);
+@end example
+
+retorna
+
+@example
+(%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o2) test(f) := block([u], u : integrate(f, x),
+                                         ratsimp(f - diff(u, x)))
+(%i3) test(sin(x))
+(%o3)                           0
+(%i4) test(1/(x+1))
+(%o4)                           0
+(%i5) test(1/(x^2+1))
+(%o5)                           0
+@end example
+
+e um pouco mais.
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Help,  , Documentation, Help
+@section Functions and Variables for Help
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{apropos}
+@deffn {Function} apropos (@var{seqcaracteres})
+
+Buscas por nomes do Maxima que possuem @var{seqcaracteres} aparecendo em qualquer lugar dentro
+delas.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores e fun@,{c}@~{o}es
+que possuem @code{exp} como parte de seus nomes, tais como @code{expand}, @code{exp},
+e @code{exponentialize}.  Desse modo se voc@^{e} lembra somente um peda@,{c}o do nome de
+alguma coisa voc@^{e} pode usar esse comando para encontrar o restante do nome.  Da mesma forma, voc@^{e}
+pode dizer @code{apropos (tr_)} para encontrar uma lista de muitos dos comutadores relacionados
+ao tradutor lisp, a maioria dos quais iniciam-se com @code{tr_}.
+
+@code{apropos("")} retorna uma lista com todos os nomes do Maxima.
+
+@code{apropos} retorna uma lista vazia @code{[]}, se nenhum nome for encontrado.
+
+Exemplo:
+
+Mostra todos os s@'{i}bolos do Maxima que possuem @code{"gamma"} no nome:
+
+@c ===beg===
+@c apropos("gamma");
+@c ===end===
+@example
+(%i1) apropos("gamma");
+(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
+gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
+prefer_gamma_incomplete, 
+gamma_incomplete_generalized_regularized]
+@end example
+
+@opencatbox
+@category{Help}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{demo}
+@deffn {Function} demo (@var{nomearquivo})
+
+Avalia express@~{o}es do Maxima dentro de @var{nomearquivo} e mostra os resultados.
+@code{demo} interrompe a execu@,{c}@~{a}o ap@'{o}s avalizr cada express@~{a}o e continua ap@'{o}s o
+usu@'{a}rio pressionar a tecla enter.  (Se o Xmaxima estiver sendo usado, @code{demo} pode precisar
+ver um ponto e v@'{i}rgula @code{;} seguido por um enter.)
+
+A fun@,{c}@~{a}o @code{demo} busca a lista de diret@'{o}rios @mref{file_search_demo} para encontrar
+@code{nomearquivo}.  Se o arquivo tiver o sufixo @code{dem}, o sufixo pode ser
+omitido.  Veja tambẽm @mrefdot{file_search}.
+
+@code{demo} avalia seus argumento.
+@code{demo} retorna o nome do arquivo de demonstra@,{c}@~{a}o.
+
+Exemplo:
+
+@example
+(%i1) demo ("disol");
+
+batching /home/wfs/maxima/share/simplification/disol.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i2)                      load(disol)
+
+_
+(%i3)           exp1 : a (e (g + f) + b (d + c))
+(%o3)               a (e (g + f) + b (d + c))
+
+_
+(%i4)                disolate(exp1, a, b, e)
+(%t4)                         d + c
+
+(%t5)                         g + f
+
+(%o5)                   a (%t5 e + %t4 b)
+
+_
+@end example
+
+@opencatbox
+@category{Help} @category{Console interaction} @category{File input}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{describe}
+@deffn  {Function} describe (@var{seqcaracteres})
+@deffnx {Function} describe (@var{seqcaracteres}, exact)
+@deffnx {Function} describe (@var{seqcaracteres}, inexact)
+@ifinfo
+@fnindex Help
+@end ifinfo
+
+@code{describe(@var{seqcaracteres})} @'{e} equivalente a
+@code{describe(@var{seqcaracteres}, exact)}.
+
+@code{describe(@var{seqcaracteres}, exact)} encontra um item com t@'{i}tulo igual
+(sens@'{i}vel @`{a} caixa alta ou baixa) a @var{seqcaracteres}, se existir qualquer tal item.
+
+@code{describe(@var{seqcaracteres}, inexact)} encontra todos os itens documentados que possuirem
+@var{seqcaracteres} em seus t@'{i}tulos.  Caso hajam mais de um tal item, Maxima pede
+ao usu@'{a}rio para selecionar um ou mais itens para mostrar.
+
+No prompt interativo, @code{? qualquercoisa} (com um espa@,{c}o em branco entre @code{?} e
+@code{qualquercoisa}) @'{e} equivalente a @code{describe("qualquercoisa", exact)}, e @code{?? qualquercoisa}
+@'{e} equivalente a @code{describe("qualquercoisa", inexact)}.
+
+@code{describe("", inexact)} retorna uma lista de todos os t@'{o}picos documentados no
+manual on-line.
+
+A fun@,{c}@~{a}o @code{describe}  exige que seus argumentos sejam delimitados por aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  @code{describe} retorna @code{true} se
+alguma documenta@,{c}@~{a}o for encontrada, de outra forma retorna @code{false}.
+
+Veja tamb@'{e}m @ref{Documentation}.
+
+Exemplo:
+
+@example
+(%i1) ?? integ
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for
+    Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
+Enter space-separated numbers, `all' or `none': 7 8
+
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a
+     definite integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of
+     a rational function cannot be factored, `integrate' returns
+     the integral in a form which is a sum over the roots (not yet
+     known) of the denominator.
+     [...]
+@end example
+
+Nesse exemplo, os itens 7 e 8 foram selecionados (a sa@'{i}da @'{e} encurtada como indicado
+atrav@'{e}s de @code{[...]}).  Todos ou nenhum dos itens podem ter sido selecionados pela digita@,{c}@~{a}o de
+@code{all} ou de @code{none}, os quais podem ser abreviados para @code{a} ou @code{n},
+respectivamente.@footnote{Nota do tradutor: a dupla interroga@,{c}@~{a}o @'{e} um atalho para describe}
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{example}
+@deffn  {Function} example (@var{t@'{o}pico})
+@deffnx {Function} example ()
+
+@code{example (@var{t@'{o}pico})} alguns exemplos de @var{t@'{o}pico}, que pode ser
+um s@'{i}mbolo ou uma sequ@^{e}ncia de caracteres.  Para ver exemplos de operadores como @code{if}, @code{do},
+ou @code{lambda} o argumento de ve ser uma sequ@^{e}ncia de caracteres, e.g. @code{example ("do")}.
+A fun@,{c}@~{a}o @code{example} n@~{a}o @'{e} sens@'{i}vel @`{a} caixa alta ou baixa.  A maioria dos t@'{o}picos s@~{a}o nomes de fun@,{c}@~{a}o.
+
+@code{example ()} retorna uma lista de todos os topicos reconhecidos.
+
+O nome do arquivo contendo os exemplos @'{e} dado pela vari@'{a}vel global de
+op@,{c}@~{a}o @mrefcomma{manual_demo} cujo padr@~{a}o @'{e} @code{"manual.demo"}.
+
+A fun@,{c}@~{a}o @code{example} exige que seus argumentos sejam delimitados por aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  A fun@,{c}@~{a}o @code{example} retorna @code{done} a menos que
+nenhum exemplo seja encontrado ou n@~{a}o exista argumento, nesse caso @code{example}
+retorna a lista de todos os t@'{o}picos reconhecidos.
+
+Exemplos:
+
+@c ===beg===
+@c example(append);
+@c example("lambda");
+@c ===end===
+@example
+(%i1) example(append);
+(%i2) append([x+y,0,-3.2],[2.5e+20,x])
+(%o2)             [y + x, 0, - 3.2, 2.5e+20, x]
+(%o2)                         done
+(%i3) example("lambda");
+
+(%i4) lambda([x,y,z],z^2+y^2+x^2)
+                                    2    2    2
+(%o4)            lambda([x, y, z], z  + y  + x )
+(%i5) %(1,2,a)
+                              2
+(%o5)                        a  + 5
+(%i6) a+2+1
+(%o6)                         a + 3
+(%o6)                         done
+@end example
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{manual_demo}
+@defvr {Option variable} manual_demo
+Valor padr@~{a}o: @code{"manual.demo"}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{manual_demo} especifica o nome do arquivo contendo os exemplos para 
+a fun@,{c}@~{a}o @code{example}.  Veja @mrefdot{example}
+
+@opencatbox
+@category{Help} @category{Global variables}
+@closecatbox
+@end defvr
+
