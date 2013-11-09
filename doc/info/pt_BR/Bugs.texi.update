@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c ec3ef5c900a029f7c32d9784b2969f1d  Bugs.texi
+@c 317105385ccfe3ae53448fa1969c6ccb  Bugs.texi
 @c
 @menu
 * Functions and Variables for Bug Detection and Reporting::
@@ -19,7 +19,7 @@ Executa os aplicativos de teste do Maxima.  Testes que produzem as respostas des
 considerados ``passes,''  e tamb@'{e}m os testes que n@~{a}o produzem a resposta
 desejada mas que forem marcados como erros conhecidos.
 
-@code{run_testsuite} pode ser usado com as seguintes palavras chave opcionais como argumento
+A fun@,{c}@~{a}o @code{run_testsuite} pode ser usada com as seguintes palavras chave opcionais como argumento
 
 @table @code
 @item display_all
@@ -61,8 +61,8 @@ e ent@~{a}o define fun@,{c}@~{o}es e vari@'{a}veis apropriadas para o teste.
 @anchor{testsuite_files}
 @defvr {Option variable} testsuite_files
 
-@code{testsuite_files} @'{e} o conjunto de testes a serem executaos por
-@mrefdot{run_testsuite}.  @'{E} uma lista de nomes de arquivos contendo
+A vari@'{a}vel de op@,{c}@~{a}o @code{testsuite_files} cont@'{e}m o conjunto de testes a serem executados por
+@mrefdot{run_testsuite}  @'{E} uma lista de nomes de arquivos contendo
 os testes a serem executados.  Se algum dos testes em um dos arquivos forem falhas conhecidas,
 ent@~{a}o ao inv@'{e}s de listar o nome do arquivo, uma lista contendo o
 nome do arquivo e os n@'{u}meros dos testes que falham @'{e} usada.
