@@ -58,7 +58,7 @@ and then defines functions and variables appropriate to the test.
 @defvr {Option variable} testsuite_files
 
 @code{testsuite_files} is the set of tests to be run by
-@mrefdot{run_testsuite}.  It is a list of names of the files containing
+@mrefdot{run_testsuite}  It is a list of names of the files containing
 the tests to run.  If some of the tests in a file are known to fail,
 then instead of listing the name of the file, a list containing the
 file name and the test numbers that fail is used.
