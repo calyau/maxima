@@ -352,9 +352,9 @@
     ($batch tem	'$demo)))
 
 (defmfun $bug_report ()
-  (format t (intl:gettext "~%The Maxima bug database is available at~%"))
-  (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
-  (format t (intl:gettext "Submit bug reports by following the 'Add new' link on that page.~%"))
+  (format t (intl:gettext "~%Please report bugs to:~%"))
+  (format t "    http://sourceforge.net/p/maxima/bugs~%")
+  (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
   (displa ($build_info))
