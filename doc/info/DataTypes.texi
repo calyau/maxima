@@ -142,7 +142,7 @@ Returns @code{true} if @var{expr} is an even integer.
 
 Converts integers, rational numbers and bigfloats in @var{expr} to floating
 point numbers.  It is also an @mrefcomma{evflag} @code{float} causes
-non-integers rational numbers and bigfloat numbers to be converted to floating
+non-integral rational numbers and bigfloat numbers to be converted to floating
 point.
 
 @opencatbox
