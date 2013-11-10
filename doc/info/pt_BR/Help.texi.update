@@ -14,8 +14,8 @@
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
-O manual on-line de usu@'{a}rio do Maxima pode ser visto de diferentes formas.  A partir do
-prompt interativo do Maxima, o manual de usu@'{a}rio @'{e} visto no formato texto simples por meio do
+O manual on-line de usu@'{a}rio do Maxima pode ser visto de diferentes formas.  A partir da
+linha de comando interativa do Maxima, o manual de usu@'{a}rio @'{e} visto no formato texto simples por meio do
 comando @mref{?} (i.e., a fun@,{c}@~{a}o @mref{describe}).  O manual de usu@'{a}rio @'{e}
 visto como hipertexto no formato @code{info} por meio do programa visualizador @code{info} e como uma
 p@'{a}gina web atrav@'{e}s de qualquer navegador comum.
@@ -152,7 +152,7 @@ _
 @var{seqcaracteres} em seus t@'{i}tulos.  Caso hajam mais de um tal item, Maxima pede
 ao usu@'{a}rio para selecionar um ou mais itens para mostrar.
 
-No prompt interativo, @code{? qualquercoisa} (com um espa@,{c}o em branco entre @code{?} e
+Na linha de comando interativa, @code{? qualquercoisa} (com um espa@,{c}o em branco entre @code{?} e
 @code{qualquercoisa}) @'{e} equivalente a @code{describe("qualquercoisa", exact)}, e @code{?? qualquercoisa}
 @'{e} equivalente a @code{describe("qualquercoisa", inexact)}.
 
@@ -203,7 +203,7 @@ Enter space-separated numbers, `all' or `none': 7 8
 Nesse exemplo, os itens 7 e 8 foram selecionados (a sa@'{i}da @'{e} encurtada como indicado
 atrav@'{e}s de @code{[...]}).  Todos ou nenhum dos itens podem ter sido selecionados pela digita@,{c}@~{a}o de
 @code{all} ou de @code{none}, os quais podem ser abreviados para @code{a} ou @code{n},
-respectivamente.@footnote{Nota do tradutor: a dupla interroga@,{c}@~{a}o @'{e} um atalho para describe}
+respectivamente.
 
 @opencatbox
 @category{Help} @category{Console interaction}
