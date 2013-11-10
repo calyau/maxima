@@ -567,7 +567,7 @@ ignoring dummy variables and array indices."
     (t (putlimval exp (cond ((and limit-using-taylor
 				  (null taylored)
 				  (tlimp exp))
-			     (taylim exp *i*))
+			     (taylim exp var val *i*))
 			    ((ratp exp var) (ratlim exp))
 			    ((or (eq *i* t) (radicalp exp var))
 			     (limit1 exp var val))
