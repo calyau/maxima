@@ -48,15 +48,7 @@
 		      *in-translate-file*
 		      *in-translate*
 		      *pre-transl-forms*
-		      *untranslated-functions-called*)
-
-
-	     ;; these special declarations are for before DEFMVAR
-	     (special $errexp $loadprint $numer $savedef $nolabels $functions $props
-		      munbound $values $transrun
-		      st oldst  $version
-		      rephrase $packagefile
-		      dskfnp))
+		      *untranslated-functions-called*))
 
 (defmacro bind-transl-state (&rest forms)
   ;; this binds all transl state variables to NIL.
