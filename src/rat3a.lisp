@@ -25,169 +25,95 @@
 ;;slow it down on lispm. We also eliminated the special
 ;;from ptimes2--wfs
 
+(load-macsyma-macros ratmac)
+
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
+(defmvar errrjfflag nil "Controls action of `errrjf' (`maxima-error' or throw)")
 
-;; CQUOTIENT
-;;
-;; Calculate the quotient of two coefficients, which should be numbers. If
-;; MODULUS is non-nil, we try to take the reciprocal of A with respect to the
-;; modulus (using CRECIP) and then multiply by B. Note that this fails if B
-;; divides A as an integer, but B is not a unit in the ring of integers modulo
-;; MODULUS. For example,
-;;
-;;   (let ((modulus 20)) (cquotient 10 5)) => ERROR
-;;
-;; If MODULUS is nil, then we work over the ring of integers when A and B are
-;; integers, and raise a RAT-ERROR if A is not divisible by B. If either A or B
-;; is a float then the division is done in floating point. Floats can get as far
-;; as the rational function code if $KEEPFLOAT is true.
+(defmacro bctimes (&rest l)
+  `(rem (* ,@l) modulus))
+
+;; coefficient quotient a / b
+;; a and b may be integers (possibly with modulus) or floats if keepfloat=true
 (defun cquotient (a b)
   (cond ((equal a 0) 0)
 	((null modulus)
-         (if (or (floatp a) (floatp b)
-                 (zerop (rem a b)))
-             (/ a b)
-             (rat-error "quotient is not exact")))
+	 (cond ((equal 0 (cremainder a b)) (/ a b))
+	       (t (errrjf "quotient is not exact"))))
 	(t (ctimes a (crecip b)))))
 
-;; ALG
-;;
-;; Get any value stored on the tellrat property of (car l). Returns NIL if L
-;; turns out not to be a list or if $ALGEBRAIC is false.
 (defun alg (l)
-  (unless (atom l) (algv (car l))))
+  (and $algebraic (not (atom l)) (get (car l) 'tellrat)))
 
-;; PACOEFP
-;;
-;; Return T if either X is a bare coefficient or X is a polynomial whose main
-;; variable has a declared value as an algebraic integer. Otherwise return NIL.
 (defun pacoefp (x)
-  (and (or (pcoefp x) (alg x))
-       T))
+  (or (pcoefp x) (alg x)))
 
-;; LEADTERM
-;;
-;; Return the leading term of POLY as a polynomial itself.
 (defun leadterm (poly)
-  (if (pcoefp poly)
-      poly
-      (make-poly (p-var poly) (p-le poly) (p-lc poly))))
+  (cond ((pcoefp poly) poly)
+	(t (make-poly (p-var poly) (p-le poly) (p-lc poly)))))
 
-;; CBEXPT
-;;
-;; Raise an number to a positive integral power. P should be a number (and
-;; really only makes sense if it is an integer). N should be a non-negative
-;; integer.
+(defun cremainder (a b)
+  (cond ((or modulus (floatp a) (floatp b)) 0) 
+	((rem a b))))
+
 (defun cbexpt (p n)
   (do ((n (ash n -1) (ash n -1))
        (s (if (oddp n) p 1)))
       ((zerop n) s)
-    (setq p (rem (* p p) modulus))
-    (when (oddp n) (setq s (rem (* s p) modulus)))))
+    (setq p (bctimes p p))
+    (and (oddp n) (setq s (bctimes s p)))))
+
 
 ;; Coefficient Arithmetic -- coefficients are assumed to be something
 ;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
 ;; are assumed to be less than its value.  Some functions use LOGAND
 ;; when MODULUS = 2.  This will not work with bignum coefficients.
 
-;; CRECIP
-;;
-;; Takes the inverse of an integer N mod MODULUS. If there is a modulus then the
-;; result is constrained to lie in (-modulus/2, modulus/2]
-;;
-;; This just uses the extended Euclidean algorithm: once you have found a,b such
-;; that a*n + b*modulus = 1 then a must be the reciprocal you're after.
-;;
-;; When MODULUS is greater than 2^15, we use exactly the same algorithm in
-;; CRECIP-GENERAL, but it can't use fixnum arithmetic. Note: There's no
-;; particular reason to target 32 bits except that trying to work out the right
-;; types on the fly looks complicated and this lisp compiler, at least, uses 32
-;; bit words. Since we have to take a product, we constrain the types to 16 bit
-;; numbers.
-(defun crecip (n)
-  ;; Punt on anything complicated
-  (unless (and modulus (typep modulus '(unsigned-byte 15)))
-    (return-from crecip (crecip-general n)))
+;; Takes the inverse of an integer N mod P.  Solve N*X + P*Y = 1 
+;; I suspect that N is guaranteed to be less than P, since in the case
+;; where P is a fixnum, N is also assumed to be one.
 
-  ;; And make sure that -MODULUS < N < MODULUS
-  (unless (<= (- modulus) n modulus)
-    (merror "N is out of range [-MODULUS, MODULUS] in crecip."))
-
-  ;; N in [0, MODULUS]
-  (when (minusp n) (setf n (+ n modulus)))
-
-  ;; The mod-copy parameter stores a copy of MODULUS on the stack, which is
-  ;; useful because the lisp implementation doesn't know that the special
-  ;; variable MODULUS is still an (unsigned-byte 15) when we get to the end
-  ;; (since it can't tell that our function calls don't change it behind our
-  ;; backs, I guess)
-  (let ((mod modulus) (remainder n) (a 1) (b 0)
-        (mod-copy modulus))
-    ;; On SBCL in 2013 at least, the compiler doesn't spot that MOD and
-    ;; REMAINDER are unsigned and bounded above by MODULUS, a 16-bit integer. So
-    ;; we have to tell it. Also, the lisp implementation can't really be
-    ;; expected to know that Bezout coefficients are bounded by the modulus and
-    ;; remainder, so we have to tell it that too.
-    (declare (type (unsigned-byte 15) mod mod-copy remainder)
-             (type (signed-byte 16) a b))
-
-    (loop
-       until (= remainder 1)
-
-       when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
-       doing
-         (multiple-value-bind (quot rem)
-             (truncate mod remainder)
-           (setf mod remainder
-                 remainder rem)
-           (psetf a (- b (* a quot))
-                  b a))
-
-       finally
-         ;; Since this isn't some general purpose Euclidean algorithm, but
-         ;; instead is trying to find a modulo inverse, we need to ensure that
-         ;; the Bezout coefficient we found (called A) is actually in [0,
-         ;; MODULUS).
-         ;;
-         ;; The general code calls CMOD here, but that doesn't know about the
-         ;; types of A and MODULUS, so we do it by hand, special-casing the easy
-         ;; case of modulus=2.
-         (return
-           (if (= mod-copy 2)
-               (logand a 1)
-               (let ((nn (mod a mod-copy)))
-                 ;; nn here is in [0, modulus)
-                 (if (<= (* 2 nn) mod-copy)
-                     nn
-                     (- nn mod-copy))))))))
-
-;; CRECIP-GENERAL
-;;
-;; The general algorithm for CRECIP, valid when the modulus is any integer. See
-;; CRECIP for more details.
-(defun crecip-general (n)
-  ;; We assume that |n| < modulus, so n+modulus is always positive
-  (let ((mod modulus)
-        (remainder (if (minusp n) (+ n modulus) n))
-        (a 1) (b 0))
-    (loop
-       until (= remainder 1)
-
-       when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
-       doing
-         (let ((quotient (truncate mod remainder)))
-           (psetf mod remainder
-                  remainder (- mod (* quotient remainder)))
-           (psetf a (- b (* a quotient))
-                  b a))
-
-       finally (return (cmod a)))))
+(defmfun crecip (n)
+  (cond ((bignump modulus)	;; Have to use bignum arithmetic if modulus is a bignum
+	 (prog (a1 a2 y1 y2 q (big-n n))
+	    (if (minusp big-n) (setq big-n (+ big-n modulus)))
+	    (setq a1 modulus a2 big-n)
+	    (setq y1 0 y2 1)
+	    (go step3)
+	    step2 (setq q (truncate a1 a2))
+	    (psetq a1 a2 a2 (- a1 (* a2 q)))
+	    (psetq y1 y2 y2 (- y1 (* y2 q)))
+	    step3 (cond ((zerop a2) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
+			((not (equal a2 1)) (go step2)))
+	    (return (cmod y2))))
+	;; Here we can use fixnum arithmetic
+	(t (prog ((a1 0) (a2 0) (y1 0) (y2 0) (q 0) (nn 0) (pp 0))
+	      (declare (fixnum a1 a2 y1 y2 q nn pp))
+	      (setq nn n pp modulus)
+	      (cond ((minusp nn) (setq nn (+ nn pp))))
+	      (setq a1 pp a2 nn)
+	      (setq y1 0 y2 1)
+	      (go step3)
+	      step2 (setq q (truncate a1 a2))
+	      (psetq a1 a2 a2 (rem a1 a2))
+	      (psetq y1 y2 y2 (- y1 (* y2 q)))
+	      step3 (cond ((= a2 0) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
+			  ((not (= a2 1)) (go step2)))
+	      ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
+	      (return  (cmod y2)
+		       ;;                    (COND ((= PP 2) (LOGAND 1 Y2))
+		       ;;			   (T (LET ((NN (rem Y2 PP)))
+		       ;;				(DECLARE (FIXNUM NN))
+		       ;;				(COND ((MINUSP NN)
+		       ;;				       (AND (< NN (- (ASH PP -1)))
+		       ;;					    (SETQ NN (+ NN PP))))
+		       ;;				      ((> NN (ASH PP -1))
+		       ;;				       (SETQ NN (- NN PP))))
+		       ;;				NN)))
+		       )
+	      ))))
 
 (defun cexpt (n e)
   (cond	((null modulus) (expt n e))
@@ -361,7 +287,7 @@
 	    (pderivative3 (pt-red x) vari)))))
 
 (defmfun pdivide (x y)
-  (cond ((pzerop y) (rat-error "Quotient by zero"))
+  (cond ((pzerop y) (errrjf "Quotient by zero"))
 	((pacoefp y) (list (ratreduce x y) (rzero)))
 	((pacoefp x) (list (rzero) (cons x 1)))
 	((pointergp (car x) (car y)) (list (ratreduce x y) (rzero)))
@@ -436,16 +362,16 @@
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
 	       ((alg y) (paquo x y))
-	       (t (rat-error "Quotient by a polynomial of higher degree"))))
-	((pcoefp y) (cond ((pzerop y) (rat-error "Quotient by zero"))
+	       (t (errrjf "Quotient by a polynomial of higher degree"))))
+	((pcoefp y) (cond ((pzerop y) (errrjf "Quotient by zero"))
 			  (modulus (pctimes (crecip y) x))
 			  (t (pcquotient x y))))
-	((alg y) (or (let ($algebraic)
-                       (ignore-rat-err (pquotient x y)))
+	((alg y) (or (let ((errrjfflag t) $algebraic)
+		       (catch 'raterr (pquotient x y)))
 		     (patimes x (rainv y))))
 	((pointergp (p-var x) (p-var y)) (pcquotient x y))
 	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
-	 (rat-error "Quotient by a polynomial of higher degree"))
+	 (errrjf "Quotient by a polynomial of higher degree"))
 	(t (psimp (p-var x) (pquotient1 (p-terms x) (p-terms y))))))
 
 (defun pcquotient (p q)
@@ -461,7 +387,7 @@
 (defun pquotient1 (u v &aux q* (k 0))
   (declare (fixnum k))
   (loop do (setq  k (- (pt-le u) (pt-le v)))
-	 when (minusp k) do (rat-error "Polynomial quotient is not exact")
+	 when (minusp k) do (errrjf "Polynomial quotient is not exact")
 	 nconc (list k (setq q* (pquotient (pt-lc u) (pt-lc v))))
 	 until (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))))
 
@@ -641,7 +567,7 @@
 		  (setq q (ptimes q (car a)))
 		  (setq a (cdr a)) ))
 	   (cond ((minusp (setq e (+ 1 (- (cadr q)) (pdegree p (car q)))))
-		  (rat-error "Quotient by a polynomial of higher degree")))
+		  (errrjf "Quotient by a polynomial of higher degree")))
 	   (setq a (pexpt a e))
 	   (ratreduce (or (testdivide (ptimes a p) q)
 			  (prog2 (setq a (pexpt (p-lc q) e))

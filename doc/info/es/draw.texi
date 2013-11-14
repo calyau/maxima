@@ -1,4 +1,4 @@
-@c English version 2012-12-29
+@c English version 2013-10-29
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2231,7 +2231,7 @@ Traslaci@'on en 3D.
 @defvr {Opci@'on gr@'afica} transparent
 Valor por defecto: @code{false}
 
-Cuando @code{transparent} vale @code{true}, las regiones internas de 
+Cuando @code{transparent} vale @code{false}, las regiones internas de 
 los pol@'{@dotless{i}}gonos se rellenan de acuerdo con @code{fill_color}.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:

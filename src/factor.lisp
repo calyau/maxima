@@ -212,14 +212,17 @@
   (every #'zerop1 a))
 
 (defmfun testdivide (x y)
-  (if algfac*
-      (algtestd x y)
-      (eztestdivide x y)))
+  (let ((errrjfflag t))
+    (cond (algfac* (algtestd x y))
+	  ((or (pcoefp x)
+	       (pcoefp y)
+	       (catch 'raterr (pquotient (car (last x)) (car (last y)))))
+	   (catch 'raterr (pquotient x y))))))
 
 (defun algtestd (x y)
   (and (div-deg-chk (nreverse (pdegreevector x)) (nreverse (pdegreevector y))
 		    (reverse genvar))
-       (cond ((setq x (ignore-rat-err (rquotient x y)))
+       (cond ((setq x (catch 'raterr (rquotient x y)))
 	      (setq adn* (* adn* (cdr x)))
 	      (car x)) )))
 
@@ -899,8 +902,7 @@
 	    (cond ((setq qnt (testdivide v af))
 		   (cond (llc (setq af (oldcontent af))
 			      (setq v (ptimes (car af) qnt)af (cadr af))
-			      (setq u (cond (algfac*(car (ignore-rat-err
-                                                           (rquotient u af))))
+			      (setq u (cond (algfac*(car (catch 'raterr (rquotient u af))))
 					    (t (pquotient u af)))))
 			 (t (setq u qnt v qnt)))
 		   (setq factor (cons af factor))

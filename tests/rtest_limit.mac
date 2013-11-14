@@ -386,6 +386,10 @@ minf;
 limit((sin(x)-tan(x))/(x*(cos(x)-1)),x,0);
 1;
 
+/* #2639 limit asks about internal variable */
+limit(tan(x)/sqrt(tan(x)^2+1),x,%pi/2,plus);
+-1;
+
 limit(1/psi[1](x), x, inf);
 inf;
 
