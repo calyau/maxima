@@ -25,7 +25,7 @@
 ;; These operators aren't killed by the function kill-operator.
 (defvar *mopl* nil)
 
-(declare-top  (special bindlist loclist errset lf tab ff cr
+(declare-top  (special bindlist loclist errset
 		       $values $functions $arrays $gradefs $dependencies
 		       $rules $props $ratvars
 		       varlist genvar
@@ -35,12 +35,6 @@
 		       opers *ratweights $ratweights
 		       $stringdisp $lispdisp
 		       transp $contexts $setcheck $macros autoload))
-
-(mapc #'(lambda (x) (setf (symbol-value (car x))
-			 (cond ((char< (cadr x) #.(code-char 160.))
-				(ascii (cadr x)))
-			       (t (cadr x)))))
-      '((tab #\tab) (lf #\linefeed) (ff #\page) (cr #\return) (sp #\space)))
 
 (defvar thistime 0)
 (defvar *refchkl* nil)
