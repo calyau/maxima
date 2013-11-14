@@ -1,0 +1,332 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 4b98d132d7c2de9717140889fadec7d0  Constants.texi
+@c
+@c -----------------------------------------------------------------------------
+@page
+@node Constants, Lists, Strings, Data Types and Structures
+@section Constants
+@c -----------------------------------------------------------------------------
+
+@menu
+* Functions and Variables for Constants::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Constants,  , Constants, Constants
+@subsection Functions and Variables for Constants
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%e}
+@defvr {Constant} %e
+@ifinfo
+@vrindex e
+@vrindex Constante de Euler
+@vrindex Base dos logarítmos naturais
+@vrindex Número de Euler
+@end ifinfo
+
+@code{%e} representa a base dos logarítmos natuais, também conhecido como número de
+Euler.  O valor numéricos de @code{%e} é o valor em precisão dupla e em ponto flutuante
+2.718281828459045d0.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%i}
+@defvr {Constant} %i
+@ifinfo
+@vrindex i
+@vrindex Unidade imaginária
+@end ifinfo
+
+@code{%i} representa a unidade imaginária, @math{sqrt(- 1)}.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{false}
+@defvr {Constant} false
+
+A constante @code{false} representa a constante Booleana de mesmo nome.
+Maxima implementa @code{false} através do valor @code{NIL} do Lisp.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%gamma}
+@defvr {Constant} %gamma
+@ifinfo
+@vrindex Constante de Euler-Mascheroni
+@end ifinfo
+
+A constante de Euler-Mascheroni, 0.5772156649015329 ....
+@c DOUBTLESS THERE IS MORE TO SAY HERE.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ind}
+@defvr {Constant} ind
+@ifinfo
+@vrindex Indeterminado
+@end ifinfo
+
+@code{ind} representa um resultado associado e indefinido.
+
+Veja também @mrefdot{limit}
+
+Exemplo:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{inf}
+@defvr {Constant} inf
+@ifinfo
+@vrindex Infinito real
+@end ifinfo
+
+@code{inf} representa o infnito real positivo.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{infinity}
+@defvr {Constant}  infinity
+@ifinfo
+@vrindex Infinito complexo
+@end ifinfo
+
+@code{infinity} representa o infinito complexo.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{minf}
+@defvr {Constant} minf
+@ifinfo
+@vrindex Menos infinito
+@vrindex Infinito negativo
+@end ifinfo
+
+@code{minf} representa menos infinito real (i.e., negativo).
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%phi}
+@defvr {Constant} %phi
+@ifinfo
+@vrindex phi
+@vrindex Média áurea
+@vrindex Número áureo
+@vrindex Número de ouro
+@end ifinfo
+
+@code{%phi} representa a chamada @i{média áurea}, @math{(1 + sqrt(5))/2}.
+O valor numérico de @code{%phi} é o valor em precisão dupla e em ponto flutuante
+1.618033988749895d0.
+
+@mref{fibtophi} representa os números de Fibonacci @code{fib(n)} em termos de
+@code{%phi}.
+
+Por padrão, Maxima não conhece as propriedades algébricas de @code{%phi}.
+Após avaliar @code{tellrat(%phi^2 - %phi - 1)} e @code{algebraic: true},
+@mref{ratsimp} pode simplificar algumas expressões contendo @code{%phi}.
+
+Exemplos:
+
+@code{fibtophi} expressa números de Fibonacci @code{fib(n)} em termos de @code{%phi}.
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+Por padrão, Maxima não conhece as propriedades algébricas de @code{%phi}.
+Após avaliar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
+@code{ratsimp} pode simplificar algumas expressões contendo @code{%phi}.
+
+@c ===beg===
+@c e : expand ((%phi^2 - %phi - 1) * (A + 1));
+@c ratsimp (e);
+@c tellrat (%phi^2 - %phi - 1);
+@c algebraic : true;
+@c ratsimp (e);
+@c ===end===
+@example
+(%i1) e : expand ((%phi^2 - %phi - 1) * (A + 1));
+                 2                      2
+(%o1)        %phi  A - %phi A - A + %phi  - %phi - 1
+(%i2) ratsimp (e);
+                  2                     2
+(%o2)        (%phi  - %phi - 1) A + %phi  - %phi - 1
+(%i3) tellrat (%phi^2 - %phi - 1);
+                            2
+(%o3)                  [%phi  - %phi - 1]
+(%i4) algebraic : true;
+(%o4)                         true
+(%i5) ratsimp (e);
+(%o5)                           0
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%pi}
+@defvr {Constant} %pi
+@ifinfo
+@vrindex pi
+@end ifinfo
+
+@code{%pi} representa a razão entre a medida do perímetro de um círculo e a medida de seu diâmetro.
+O valor numérico de @code{%pi} é o valor em precisão dupla e em ponto flutuante
+3.141592653589793d0.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{true}
+@defvr {Constant} true
+
+@code{true} representa a constante Boolean de mesmo nome.
+Maxima implementa @code{true} através do valor @code{T} do Lisp.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{und}
+@defvr {Constant} und
+@ifinfo
+@vrindex Não definido
+@end ifinfo
+
+@code{und} representa um resultado não definido.
+
+Veja também @mrefdot{limit}
+
+Exemplo:
+
+@c ===beg===
+@c limit (x*sin(x), x, inf);
+@c ===end===
+@example
+(%i1) limit (x*sin(x), x, inf);
+(%o1)                          und
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zeroa}
+@defvr {Constant} zeroa
+
+@code{zeroa} representa uma quantidade extremamente pequena maior que zero (estritamente positiva).  A constante @code{zeroa} pode ser usada
+em expressões.  A função @code{limit} simplifica expressões que possuem
+infinitesimais.
+
+Veja tambẽm @mref{zerob} e @mrefdot{limit}
+
+Exemplo:
+
+@code{limit} simplifica expressões que possuem infinitesimais:
+
+@c ===beg===
+@c limit(zeroa);
+@c limit(zeroa+x);
+@c ===end===
+@example
+(%i1) limit(zeroa);
+(%o1)                           0
+(%i2) limit(x+zeroa);
+(%o2)                           x
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zerob}
+@defvr {Constant} zerob
+
+@code{zerob} representa uma quantidade extremamente pequena menor que zero (estritamente negativa).  A constante @code{zerob} pode ser usada
+em expressões.  A função @code{limit} simplifica expressões que possuem
+infinitesimais.
+
+Veja também @mref{zeroa} e @mrefdot{limit}
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
