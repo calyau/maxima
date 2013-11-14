@@ -7,7 +7,7 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp 20e (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
