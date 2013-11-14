@@ -130,7 +130,7 @@
 	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack typel user-mesfile user-timesofar varlist wflag
+	  tstack typel user-mesfile varlist wflag
 	  $wtlevel $cflength $weightlevels *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable $infolists))
