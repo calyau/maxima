@@ -380,7 +380,8 @@ eigenvectors."
 	   (a-mat (lapack-lispify-matrix a n n t))
 	   (w (make-array n :element-type 'flonum))
 	   (work (make-array 1 :element-type '(complex flonum)))
-	   (rwork (make-array 1 :element-type 'flonum)))
+	   (rwork (make-array (max 1 (- (* 3 n) 2))
+			      :element-type 'flonum)))
       ;; XXX: FIXME: We need to do more error checking in the calls to
       ;; zgeev!
       (multiple-value-bind (z-jobz z-uplo z-n z-a z-lda z-w z-work
@@ -397,14 +398,12 @@ eigenvectors."
 			rwork
 			0)
 	(declare (ignore z-jobz z-uplo z-n z-a z-lda z-w z-work
-			 z-lwork z-rwork info))
+			 z-lwork z-rwork))
 	(format t "info = ~S~%" info)
-	
-	(let* ((opt-lwork (and (truncate (realpart (aref w 0)))
-			       (- (* 2 n) 1)))
-	       (work (make-array opt-lwork :element-type '(complex flonum)))
-	       (rwork (make-array (max 1 (- (* 3 n) 2))
-				  :element-type 'flonum)))
+	(format t "w[0] = ~S~%" (aref work 0))
+
+	(let* ((opt-lwork (truncate (realpart (aref work 0))))
+	       (work (make-array opt-lwork :element-type '(complex flonum))))
 	  (format t "opt-lwork = ~S~%" opt-lwork)
 	  ;; Now do the work with the optimum size of the work space.
 	  (multiple-value-bind (z-jobz z-uplo z-n z-a z-lda z-w z-work
