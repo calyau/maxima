@@ -440,6 +440,9 @@ limit(sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2))
 radcan(limit((-4*x^2-10*x+24)/((4*x+8)^(1/3)+2), x, -4));
 66;
 
+limit(-(3*n^2 + 1)*(-1)^n/sqrt(n^5 + 8*n^3 + 8),n,inf);
+0;
+
 /*
  * Bug ID: 1315837 limit(?foo)
  * Bug ID: 1119228 limit(1/zeraoa)

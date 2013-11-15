@@ -1425,11 +1425,7 @@ ignoring dummy variables and array indices."
      (cond (ind (let ((ans (limit2 n d var val)))
 		  (if ans (m* const ans))))
 	   (t (let ((ans (limit
-			  (cond ((mplusp n)
-				 (m+l (mapcar #'(lambda (x)
-						  (sratsimp (m// x d)))
-					      (cdr n))))
-				(t ($multthru (sratsimp (m// n d)))))
+			  ($multthru (sratsimp (m// n d)))
 			  var val 'think)))
 		(if ans (m* const ans))))))))
 
