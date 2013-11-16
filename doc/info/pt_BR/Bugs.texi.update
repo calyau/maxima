@@ -108,7 +108,7 @@ Retorna um resumo dos par@^{a}metros de compila@,{c}@~{a}o do Maxima,
 na forma de uma estrutura do Maxima (definida por @code{defstruct}).
 Os campos da estrutura s@~{a}o:
 @code{version}, @code{timestamp}, @code{host}, @code{lisp_name}, e @code{lisp_version}.
-Quando a op@,{c}@~{a}o pretty-printer is enabled (via @code{display2d}@footnote{Nota de tradu@,{c}@~{a}o: ``display2d : true''.}),
+Quando a op@,{c}@~{a}o pretty-printer estiver habilitada (via @code{display2d}@footnote{Nota do tradutor: ``display2d : true''.}),
 a estrutura @'{e} mostrada como uma tabela curta.
 
 Veja tamb@'{e}m @mrefdot{bug_report}
