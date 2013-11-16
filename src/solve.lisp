@@ -16,15 +16,14 @@
 
 (declare-top (special expsumsplit $dispflag checkfactors *g
 		      $algebraic equations ;List of E-labels
-		      *power *varb *flg $derivsubst $numer $float
+		      *power *varb *flg $derivsubst
 		      $%emode genvar genpairs varlist broken-not-freeof
-		      $factorflag
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
 		      *myvar $listconstvars
-		      *has*var *var $dontfactor $linenum $linechar
-		      *linelabel* $keepfloat $ratfac
+		      *has*var *var $dontfactor
+		      $keepfloat $ratfac
 		      errrjfflag  ;A substitute for condition binding.
 		      xm* xn* mul*))
 
@@ -198,10 +197,6 @@
     (cond ((atom (setq fl (car l)))
 	   (unless (maxima-constantp fl) (push fl vl)))
 	  ((every #'$constantp (cdr fl)) (push fl vl)))))
-
-;; List of multiplicities.  Why is this special?
-
-(declare-top (special multi)) 
 
 ;; Solve a single equation for a single unknown.
 ;; Obtains roots via solve and prints them.
