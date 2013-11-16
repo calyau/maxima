@@ -334,6 +334,9 @@
 (setf (get '$truncate 'verb) '%truncate)
 (setf (get '%truncate 'noun) '$truncate)
 
+;; truncate distributes over lists, matrices, and equations.
+(setf (get '%truncate 'distribute_over) '(mlist $matrix mequal))
+
 (defun simp-truncate (e yy z)
   (oneargcheck e)
   (setq yy (caar e)) ;; find a use for the otherwise unused YY.
