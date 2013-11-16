@@ -357,7 +357,7 @@
                 (rplacd lpart
                         (list (list* lg ; passer de $S_p$ a $S_n$
 ; Pour des coefficients de la transformation numeriques :   ($mult_sym
-                                      (times
+                                      (m*
                                          (* (binomial (- n lg) (- p lg)) 
                                             ($multinomial poids_init
                                                    (cons '(mlist) 
@@ -404,7 +404,7 @@
 (defun ev_forme_monomiale (permut_coeff part)
      (eval (cons 'add
                 (mapcar #'(lambda (coeff)
-                              (eval (cons 'times
+                              (eval (cons 'm*
                                        (mapcar #'(lambda (var expo) 
                                                     (expt var expo))
                                              coeff part))))
