@@ -399,12 +399,8 @@ eigenvectors."
 			0)
 	(declare (ignore z-jobz z-uplo z-n z-a z-lda z-w z-work
 			 z-lwork z-rwork))
-	(format t "info = ~S~%" info)
-	(format t "w[0] = ~S~%" (aref work 0))
-
 	(let* ((opt-lwork (truncate (realpart (aref work 0))))
 	       (work (make-array opt-lwork :element-type '(complex flonum))))
-	  (format t "opt-lwork = ~S~%" opt-lwork)
 	  ;; Now do the work with the optimum size of the work space.
 	  (multiple-value-bind (z-jobz z-uplo z-n z-a z-lda z-w z-work
 				z-lwork z-rwork info)
