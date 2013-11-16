@@ -303,8 +303,8 @@
 (setf (get '$round 'verb) '%round)
 (setf (get '%round 'noun) '$round)
 
-;; $round distributes over lists, matrices, and equations.
-(setf (get '$round 'distribute_over) '(mlist $matrix mequal))
+;; round distributes over lists, matrices, and equations.
+(setf (get '%round 'distribute_over) '(mlist $matrix mequal))
 
 (defun simp-round (e yy z)
   (oneargcheck e)
