@@ -84,7 +84,6 @@
                  work)
               (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6
                                var-8))
-	      (format t "zlarf var-7 = ~D~%" var-7)
               (setf lda var-7))
             (zscal
              (f2cl-lib:int-sub (f2cl-lib:int-add (f2cl-lib:int-sub m n) ii) 1)
