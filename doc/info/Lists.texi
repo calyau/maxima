@@ -175,6 +175,26 @@ the search stops at the first term starting with @code{z} and returns
 @code{2}. In @code{assoc(x, [[y,1]])}, there is no matching element,
 so @code{assoc} returns @code{false}.
 
+@c ===beg===
+@c assoc (y, [[x,1], [y,2],[z,3]]);
+@c assoc (z, [[x,1], [z,2], [z,3]]);
+@c assoc (x, [[y,1]]);
+@c ===end===
+@example
+@group
+(%i1)                 assoc(y, [[x, 1], [y, 2], [z, 3]])
+(%o1)                                  2
+@end group
+@group
+(%i2)                 assoc(z, [[x, 1], [z, 2], [z, 3]])
+(%o2)                                  2
+@end group
+@group
+(%i3)                         assoc(x, [[y, 1]])
+(%o3)                                false
+@end group
+@end example
+
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
