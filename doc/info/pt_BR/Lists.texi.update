@@ -1,0 +1,1253 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c f0f1ce68ebaf21d903376e0bfc8a04a3  Lists.texi
+@c
+@c -----------------------------------------------------------------------------
+@page
+@node Lists, Arrays, Constants, Data Types and Structures
+@section Lists
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Lists::
+* Functions and Variables for Lists::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Lists, Functions and Variables for Lists, Lists, Lists
+@subsection Introduction to Lists
+@c -----------------------------------------------------------------------------
+
+Listas s@~{a}o o bloco b@'{a}sico de constru@,{c}@~{a}o para o Maxima e para o Lisp.  Todos os tipos de dados
+que n@~{a}o vetores est@'{a}ticos, tabelas hash e n@'{u}meros s@~{a}o representados como listas Lisp,
+Essas listas Lisp possuem a forma
+
+@example
+((MPLUS) $A 2)
+@end example
+
+@noindent
+para indicar para indicar uma express@~{a}o @code{a+2}.  A n@'{i}vel de Maxima se pode ver
+a nota@,{c}@~{a}o com infixo @code{a+2}.  Maxima tamb@'{e}m tem listas que s@~{a}o mostradas
+como
+
+@example
+[1, 2, 7, x+y]
+@end example
+
+@noindent
+para uma lista com 4 elementos.  Internamente essa lista de 4 elementos corresponde a uma lista Lisp
+da forma
+
+@example
+((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
+@end example
+
+@noindent
+O sinalizador que denota o tipo de campo da express@~{a}o do Maxima @'{e} uma lista
+propriamente dita, uma vez que essa lista tenha estado no simplificador a lista pode tornar-se
+
+@example
+((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
+@end example
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Lists,  , Introduction to Lists, Lists
+@subsection Functions and Variables for Lists
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{[}
+@anchor{]}
+@defvr  {Operator} [
+@defvrx {Operator} ]
+@ifinfo
+@fnindex List delimiters
+@fnindex Subscript operator
+@end ifinfo
+
+Os operadores @code{[} e @code{]} delimitam o in@'{i}cio e o fim, respectivamente, de uma lista.
+
+Os operadores @code{[} e @code{]} tamb@'{e}m delimitam os subscritos de
+uma lista, vetor est@'{a}tico, vetor est@'{a}tico hash, ou fun@,{c}@~{a}o de vetor est@'{a}tico.
+
+Exemplos:
+
+@c ===beg===
+@c x: [a, b, c];
+@c x[3];
+@c array (y, fixnum, 3);
+@c y[2]: %pi;
+@c y[2];
+@c z['foo]: 'bar;
+@c z['foo];
+@c g[k] := 1/(k^2+1);
+@c g[10];
+@c ===end===
+@example
+@group
+(%i1) x: [a, b, c];
+(%o1)                       [a, b, c]
+@end group
+@group
+(%i2) x[3];
+(%o2)                           c
+@end group
+@group
+(%i3) array (y, fixnum, 3);
+(%o3)                           y
+@end group
+@group
+(%i4) y[2]: %pi;
+(%o4)                          %pi
+@end group
+@group
+(%i5) y[2];
+(%o5)                          %pi
+@end group
+@group
+(%i6) z['foo]: 'bar;
+(%o6)                          bar
+@end group
+@group
+(%i7) z['foo];
+(%o7)                          bar
+@end group
+@group
+(%i8) g[k] := 1/(k^2+1);
+                                  1
+(%o8)                     g  := ------
+                           k     2
+                                k  + 1
+@end group
+@group
+(%i9) g[10];
+                                1
+(%o9)                          ---
+                               101
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Operators}
+@closecatbox
+@end defvr
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{append}
+@deffn {Function} append (@var{list_1}, @dots{}, @var{list_n})
+
+Retorna uma lista simples contendo os elementos de @var{list_1} seguidos
+pelos elementos de @var{list_2}, @dots{}  A fun@,{c}@~{a}o @code{append} tamb@'{e}m funciona sobre
+express@~{o}es gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
+@code{f(a,b,c,d,e)}.
+
+Fa@,{c}a @code{example(append);} para um exemplo.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{assoc}
+@deffn  {Function} assoc (@var{chave}, @var{lista}, @var{retorno})
+@deffnx {Function} assoc (@var{chave}, @var{lista})
+
+Essa fun@,{c}@~{a}o busca por @var{chave} no lado esquerdo da
+@var{lista} informada. A @var{lista} argumento deve ser uma lista, cada um dos
+elementos dessa lista @'{e} uma express@~{a}o com exatamente duas partes. Na maioria dos casos,
+os elementos de @var{lista} s@~{a}o tamb@'{e}m listas, cada lista com dois
+elementos.
+
+A fun@,{c}@~{a}o @code{assoc} iterage percorrendo toda @var{lista}, procurando pela
+primeira parte de cada elemento que seja igual a @var{chave}. Se um elemento
+for encontrado onde a compara@,{c}@~{a}o @'{e} verdadeira, @code{assoc} retorna a segunda
+parte daquele elemento. Se n@~{a}o houver tal elemento na lista,
+@code{assoc} retorna ou @code{false} ou @var{retorno}, se este for informado.
+
+Por exemplo, na express@~{a}o @code{assoc (y, [[x,1], [y,2],
+[z,3]])}, a fun@,{c}@~{a}o @code{assoc} busca por @code{x} no lado
+esquerdo da lista @code{[[y,1],[x,2]]} e encontra @code{x} no segundo
+termo, retornando @code{2}. Em @code{assoc (z, [[x,1], [z,2], [z,3]])},
+a busca para no primeiro termo iniciando com @code{z} e retorna
+@code{2}. Em @code{assoc (x, [[y,1]])}, n@~{a}o existe elemento coincidente,
+ent@~{a}o @code{assoc} retorna @code{false}.
+
+@c ===beg===
+@c assoc (y, [[x,1], [y,2],[z,3]]);
+@c assoc (z, [[x,1], [z,2], [z,3]]);
+@c assoc (x, [[y,1]]);
+@c ===end===
+@example
+@group
+(%i1)                 assoc(y, [[x, 1], [y, 2], [z, 3]])
+(%o1)                                  2
+@end group
+@group
+(%i2)                 assoc(z, [[x, 1], [z, 2], [z, 3]])
+(%o2)                                  2
+@end group
+@group
+(%i3)                         assoc(x, [[y, 1]])
+(%o3)                                false
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{cons}
+@deffn {Function} cons (@var{expr}, @var{lista})
+
+Retorna uma nova lista cujo primeiro elemento @'{e} @var{expr},
+seguido pelos elementos de @var{lista}.  A fun@,{c}@~{a}o @code{cons} tamb@'{e}m trabalha sobre outras
+express@~{o}es, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{copylist}
+@deffn {Function} copylist (@var{lista})
+
+Retorna uma c@'{o}pia da lista @var{lista}.
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{create_list}
+@deffn {Function} create_list (@var{formula}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
+
+Cria uma lista avaliando @var{formula} com @var{x_1} associado a
+cada elemento de @var{list_1}, e para cada tal associa@,{c}@~{a}o associa @var{x_2}
+a cada elemento de @var{list_2}, @dots{}
+O n@'{u}mero de elementos no resultado ir@'{a} ser
+o produto do n@'{u}mero de elementos em cada lista.
+Cada vari@'{a}vel @var{x_i} deve atualmente ser um s@'{i}mbolo -- esse s@'{i}mbolo n@~{a}o ir@'{a} ser avaliado.
+Os argumentos da lista ir@~{a}o ser avaliados uma @'{u}nica vez no in@'{i}cio da
+itera@,{c}@~{a}o @footnote{Nota do tradutor: tem-se a f@'{o}rmula da qual fazem
+parte as vari@'{a}veis @var{x_1} @dots{} @var{x_n}.  
+A vari@'{a}vel @var{x_1} varia dentro de @var{list_1}, @dots{}, 
+a vari@'{a}vel @var{x_n} varia dentro de @var{list_n}.}.
+
+@c ===beg===
+@c create_list (x^i, i, [1, 3, 7]);
+@c ===end===
+@example
+@group
+(%i1) create_list (x^i, i, [1, 3, 7]);
+                                3   7
+(%o1)                      [x, x , x ]
+@end group
+@end example
+
+@noindent
+Com uma itera@,{c}@~{a}o dupla:
+
+@c ===beg===
+@c create_list ([i, j], i, [a, b], j, [e, f, h]);
+@c ===end===
+@example
+@group
+(%i1) create_list ([i, j], i, [a, b], j, [e, f, h]);
+(%o1)   [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
+@end group
+@end example
+
+Ao inv@'{e}s de @var{list_i} dois argumentos podem ser fornecidos cada um dos quais deve
+avaliar para um n@'{u}mero.  Esses dois argumentos fornecidos ir@~{a}o ser associados aos limites inferior e superior, respecivamente e
+inclusive ambos, da itera@,{c}@~{a}o.
+
+@c ===beg===
+@c create_list ([i, j], i, [1, 2, 3], j, 1, i);
+@c ===end===
+@example
+@group
+(%i1) create_list ([i, j], i, [1, 2, 3], j, 1, i);
+(%o1)   [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
+@end group
+@end example
+
+Note que os limites ou lista para a vari@'{a}vel @code{j} pode
+depender do valor atual de @code{i}.
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{delete}
+@deffn  {Function} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
+
+A fun@,{c}@~{a}o usada na forma @code{delete(@var{expr_1}, @var{expr_2})}
+remove da @var{expr_2} quaisquer argumentos de seu operador de n@'{i}vel mais alto
+que @'{e} o mesmo (como determinado por "=") que se encontra em @var{expr_1}.
+Note que "=" testa para a igualdade comum, n@~{a}o para equival@^{e}ncia.
+Note tamb@'{e}m que argumentos de subexpress@~{o}es n@~{a}o s@~{a}o afetados.
+
+A @var{expr_1} pode ser um @'{a}tomo ou pode ser uma express@~{a}o n@~{a}o at@^{o}mica.
+A @var{expr_2} pode ser uma express@~{a}o n@~{a}o at@^{o}mica.
+A fun@,{c}@~{a}o @code{delete} retorna uma nova express@~{a}o;
+A fun@,{c}@~{a}o @code{delete} n@~{a}o modifica a @var{expr_2}.
+
+A fun@,{c}@~{a}o usada na forma @code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
+remove de @var{expr_2} os primeiros @var{n} argumentos do operador de n@'{i}vel mais alto
+que @'{e} o mesmo que se encontra em @var{expr_1}.
+Se houverem menos argumentos que os @var{n} informados,
+ent@~{a}o todos os argumentos ser@~{a}o removidos.
+
+Exemplos:
+
+Removendo elementos de uma lista.
+
+@c ===beg===
+@c delete (y, [w, x, y, z, z, y, x, w]);
+@c ===end===
+@example
+@group
+(%i1) delete (y, [w, x, y, z, z, y, x, w]);
+(%o1)                  [w, x, z, z, x, w]
+@end group
+@end example
+
+Removendo parcelas de uma soma.
+
+@c ===beg===
+@c delete (sin(x), x + sin(x) + y);
+@c ===end===
+@example
+@group
+(%i1) delete (sin(x), x + sin(x) + y);
+(%o1)                         y + x
+@end group
+@end example
+
+Removendo fatores de um produto.
+
+@c ===beg===
+@c delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+@c ===end===
+@example
+@group
+(%i1) delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+(%o1)                (u - w) (u - y) (u - z)
+@end group
+@end example
+
+Removendo argumentos de uma express@~{a}o arbitr@'{a}ria.
+
+@c ===beg===
+@c delete (a, foo (a, b, c, d, a));
+@c ===end===
+@example
+@group
+(%i1) delete (a, foo (a, b, c, d, a));
+(%o1)                     foo(b, c, d)
+@end group
+@end example
+
+Limitando o n@'{u}mero de argumentos removidos.
+
+@c ===beg===
+@c delete (a, foo (a, b, a, c, d, a), 2);
+@c ===end===
+@example
+@group
+(%i1) delete (a, foo (a, b, a, c, d, a), 2);
+(%o1)                    foo(b, c, d, a)
+@end group
+@end example
+
+A fun@,{c}@~{a}o usada na forma @code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
+remove de @var{expr_2} os primeiros @var{n} argumentos do operador de n@'{i}vel mais alto
+que @'{e} o mesmo que se encontra em @var{expr_1}.
+Argumentos que s@~{a}o @code{equal} mas n@~{a}o forem "=" n@~{a}o s@~{a}o removidos.
+
+@c ===beg===
+@c [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+@c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+@c delete (0, [0, 0.0, 0b0]);
+@c is (equal ((x + y)*(x - y), x^2 - y^2));
+@c is ((x + y)*(x - y) = x^2 - y^2);
+@c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+@c ===end===
+@example
+@group
+(%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+rat: replaced 0.0 by 0/1 = 0.0
+`rat' replaced 0.0B0 by 0/1 = 0.0B0
+(%o1)                  [true, true, true]
+@end group
+@group
+(%i2) [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+(%o2)                 [true, false, false]
+@end group
+@group
+(%i3) delete (0, [0, 0.0, 0b0]);
+(%o3)                     [0.0, 0.0b0]
+@end group
+@group
+(%i4) is (equal ((x + y)*(x - y), x^2 - y^2));
+(%o4)                         true
+@end group
+@group
+(%i5) is ((x + y)*(x - y) = x^2 - y^2);
+(%o5)                         false
+@end group
+@group
+(%i6) delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+                              2    2
+(%o6)                       [x  - y ]
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{eighth}
+@deffn {Function} eighth (@var{expr})
+
+Retorna o oitavo item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para maiores detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{endcons}
+@deffn {Function} endcons (@var{expr}, @var{lista})
+
+Retorna uma nova lista consistindo dos elementos de @code{lista} seguido de
+@var{expr}.  A fun@,{c}@~{a}o @code{endcons} tamb@'{e}m trabalha sobre express@~{o}es em geral, e.g.
+@code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fifth}
+@deffn {Function} fifth (@var{expr})
+
+Retorna o quinto item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para maiores detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{first}
+@deffn {Function} first (@var{expr})
+
+Retorna a primeira parte de @var{expr} que pode resultar no primeiro elemento de uma
+lista, a primeira linha de uma matriz, a primeira parcela de uma soma, etc.  Note que
+@code{first} e suas fun@,{c}@~{o}es semelhantes, @code{rest} e @code{last}, trabalham 
+sobre a forma de @var{expr} que @'{e} mostrada e n@~{a}o na forma que @'{e} digitada na
+entrada.  Se a vari@'{a}vel @mref{inflag} for ajstada para @code{true} todavia, essas
+fun@,{c}@~{o}es ir@~{a}o trabalhar sobre a forma interna de @var{expr}.  Note que o
+simplificador reordena express@~{o}es.  Dessa forma @code{first(x+y)} ir@'{a} retornar @code{x} se
+@code{inflag} for @code{true} e @code{y} se @code{inflag} for @code{false}
+(@code{first(y+x)} retorna o mesmo resultado independentemente do valor de @code{inflag}).  A fun@,{c}@~{a}o @code{second} @dots{}
+@code{tenth} retornam da segunda at@'{e} a d@'{e}cima parte de seu argumento de entrada.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fourth}
+@deffn {Function} fourth (@var{expr})
+
+Retorna o quarto item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para maiores detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{join}
+@deffn {Function} join (@var{l}, @var{m})
+
+Cria uma nova lista contendo elementos das listas @var{l} e @var{m},
+interspersed.  The result has elements @code{[@var{l}[1], @var{m}[1],
+@var{l}[2], @var{m}[2], ...]}.  The lists @var{l} and @var{m} may contain any
+type of elements.
+
+If the lists are different lengths, @code{join} ignores elements of the longer
+list.
+
+Maxima complains if @var{l} or @var{m} is not a list.
+
+Exemplos:
+
+@c ===beg===
+@c L1: [a, sin(b), c!, d - 1];
+@c join (L1, [1, 2, 3, 4]);
+@c join (L1, [aa, bb, cc, dd, ee, ff]);
+@c ===end===
+@example
+@group
+(%i1) L1: [a, sin(b), c!, d - 1];
+(%o1)                [a, sin(b), c!, d - 1]
+@end group
+@group
+(%i2) join (L1, [1, 2, 3, 4]);
+(%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+@end group
+@group
+(%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
+(%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
+@end group
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+@c HOW IS "LAST" PART DETERMINED ??
+
+@c -----------------------------------------------------------------------------
+@anchor{last}
+@deffn {Function} last (@var{expr})
+
+retorna a @'{u}ltima parte (termo, linha, elemento, etc.) de @var{expr}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{length}
+@deffn {Function} length (@var{expr})
+
+Retorna (por padr@~{a}o) o n@'{u}mero de partes na forma
+externa (mostrada) de @var{expr}.  No caso de listas corresponde ao n@'{u}mero de elementos,
+para matrizes corresponde ao n@'{u}mero de linhas, e para somas corresponde ao n@'{u}mero de
+parcelas (veja @mref{dispform}).
+
+A fun@,{c}@~{a}o @code{length} @'{e} afetada pela vari@'{a}vel @mref{inflag}.  Ent@~{a}o, e.g.
+@code{length(a/(b*c));} fornece 2 se @code{inflag} for @code{false} (Assumindo
+que @mref{exptdispflag} @'{e} @code{true}), mas 3 se @code{inflag} for @code{true} (a
+representa@,{c}@~{a}o interna @'{e} essencialmente @code{a*b^-1*c^-1}).
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{listarith}
+@defvr {Option variable} listarith
+Valor padr@~{a}o: @code{true} 
+
+Se @code{false} faz com que quaisquer opera@,{c}@~{o}es aritm@'{e}ticas com listas sejam suprimidas;
+quando @code{true}, opera@,{c}@~{o}es lista-matriz s@~{a}o contagiosas fazendo com que listas sejam
+convertidas em matrizes retornando um resultado que @'{e} sempre uma matriz.  Todavia,
+opera@,{c}@~{o}es lista-lista devem retornar listas.
+
+@opencatbox
+@category{Lists} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} listp (@var{expr})
+
+Retorna @code{true} se @var{expr} for uma lista e @code{false} caso n@~{a}o seja.
+
+@opencatbox
+@category{Lists} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{makelist}
+@deffn  {Function} makelist ()
+@deffnx {Function} makelist (@var{expr}, @var{n})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_max})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{incr})
+@deffnx {Function} makelist (@var{expr}, @var{x}, @var{lista})
+
+A primeira forma, @code{makelist ()}, cria uma lista vazia. A segunda forma,
+@code{makelist (@var{expr})}, cria uma lista com @var{expr} sendo seu @'{u}nico
+elemento. A forma @code{makelist (@var{expr}, @var{n})} cria uma lista de @var{n}
+elementos gerados a partir de @var{expr}.
+
+A forma mais geral, @code{makelist (@var{expr}, @var{i}, @var{i_0},
+@var{i_max}, @var{step})}, retorna a lista de elementos obtidos quando
+@code{ev (@var{expr}, @var{i}=@var{j})} @'{e} aplicada aos elementos
+@var{j} da sequ@^{e}ncia: @var{i_0}, @var{i_0} + @var{step}, @var{i_0} +
+2*@var{step}, ..., com @var{|j|} menor que ou igual a @var{|i_max|}.
+
+O incremento @var{incr} pode ser um n@'{u}mero (positivo ou negativo) ou uma
+express@~{a}o. Se fo omitido, o valor padr@~{a}o 1 ir@'{a} ser usado. Se ambos
+@var{i_0} e @var{incr} forem omitidos, eles ir@~{a}o ambos terem o valor
+padr@~{a}o 1.
+
+@code{makelist (@var{expr}, @var{x}, @var{lista})} retorna uma lista, o
+@code{j}'@'{e}simo elemento dessa lista @'{e} igual a
+@code{ev (@var{expr}, @var{x}=@var{lista}[j])} para @code{j} variando de 1 a
+@code{length (@var{lista})}.
+
+Exemplos:
+
+@c ===beg===
+@c makelist (concat (x,i), i, 6);
+@c makelist (x=y, y, [a, b, c]);
+@c makelist (x^2, x, 3, 2*%pi, 2);
+@c makelist (random(6), 4);
+@c flatten (makelist (makelist (i^2, 3), i, 4));
+@c flatten (makelist (makelist (i^2, i, 3), 4));
+@c ===end===
+@example
+@group
+(%i1) makelist (concat (x,i), i, 6);
+(%o1)               [x1, x2, x3, x4, x5, x6]
+@end group
+@group
+(%i2) makelist (x=y, y, [a, b, c]);
+(%o2)                 [x = a, x = b, x = c]
+@end group
+@group
+(%i3) makelist (x^2, x, 3, 2*%pi, 2);
+(%o3)                        [9, 25]
+@end group
+@group
+(%i4) makelist (random(6), 4);
+(%o4)                     [2, 0, 2, 5]
+@end group
+@group
+(%i5) flatten (makelist (makelist (i^2, 3), i, 4));
+(%o5)        [1, 1, 1, 4, 4, 4, 9, 9, 9, 16, 16, 16]
+@end group
+@group
+(%i6) flatten (makelist (makelist (i^2, i, 3), 4));
+(%o6)         [1, 4, 9, 1, 4, 9, 1, 4, 9, 1, 4, 9]
+@end group
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{member}
+@deffn {Function} member (@var{expr_1}, @var{expr_2})
+
+Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
+para algum elemento @var{a} em @code{args(@var{expr_2})},
+de outra forma retorna @code{false}.
+
+A @code{expr_2} @'{e} tipicamente uma lista, nesse caso
+@code{args(@var{expr_2}) = @var{expr_2}} e @code{is(@var{expr_1} = @var{a})}
+para algum elemento @var{a} em @code{expr_2} @'{e} testado.
+
+A fun@,{c}@~{a}o @code{member} n@~{a}o inspeciona partes dos elementos de @code{expr_2}, de forma que a fun@,{c}@~{a}o @code{member}
+pode retornar @code{false} mesmo que @code{expr_1} seja uma parte de algum argumento de
+@code{expr_2}.
+
+Veja tamb@'{e}m @mrefdot{elementp}
+
+Exemplos:
+
+@c ===beg===
+@c member (8, [8, 8.0, 8b0]);
+@c member (8, [8.0, 8b0]);
+@c member (b, [a, b, c]);
+@c member (b, [[a, b], [b, c]]);
+@c member ([b, c], [[a, b], [b, c]]);
+@c F (1, 1/2, 1/4, 1/8);
+@c member (1/8, %);
+@c member ("ab", ["aa", "ab", sin(1), a + b]);
+@c ===end===
+@example
+@group
+(%i1) member (8, [8, 8.0, 8b0]);
+(%o1)                         true
+@end group
+@group
+(%i2) member (8, [8.0, 8b0]);
+(%o2)                         false
+@end group
+@group
+(%i3) member (b, [a, b, c]);
+(%o3)                         true
+@end group
+@group
+(%i4) member (b, [[a, b], [b, c]]);
+(%o4)                         false
+@end group
+@group
+(%i5) member ([b, c], [[a, b], [b, c]]);
+(%o5)                         true
+@end group
+@group
+(%i6) F (1, 1/2, 1/4, 1/8);
+                               1  1  1
+(%o6)                     F(1, -, -, -)
+                               2  4  8
+@end group
+@group
+(%i7) member (1/8, %);
+(%o7)                         true
+@end group
+@group
+(%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
+(%o8)                         true
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ninth}
+@deffn {Function} ninth (@var{expr})
+
+Retorna o nono item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para maiores detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{pop}
+@deffn {Function} pop (@var{lista})
+
+A fun@,{c}@~{a}o @code{pop} remove o primeiro elemento da @var{lista} e retorna esse 
+elemento.  O argumento @var{lista} deve ser um s@'{i}mbolo, que esteja associado a uma lista e n@~{a}o a
+lista propriamente dita.
+
+Se o argumento @var{lista} n@~{a}o estiver associado a uma lista ou a lista estiver vazia, Maxima
+gera uma mensagem de erro.
+
+Veja tamb@'{e}m @mref{push} para exemplos.
+
+Para usar essa fun@,{c}@~{a}o, o pacote adicional "basic" deve ser primeiramente
+carregado: @code{load("basic")}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{push}
+@deffn {Function} push (@var{item}, @var{lista})
+
+A fun@,{c}@~{a}o @code{push} coloca no in@'{i}cio da @var{lista} o @var{item} e retorna uma
+c@'{o}pia da nova lista.  A @var{lista} deve ser um s@'{i}mbolo, que estja associado a uma lista e
+n@~{a}o a lista propriamente dita.  O @var{item} pode ser qualquer s@'{i}mbo ou express@~{a}o do Maxima.
+
+Se o argumento @var{lista} n@~{a}o esitver associado a uma lista, Maxima gera uma mensagem de
+erro.
+
+Veja tamb@'{e}m @mref{pop} para remover o primeiro item de uma lista.
+
+O comando @code{load("basic")} torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
+
+Exemplos:
+
+@c ===beg===
+@c load ("basic")$
+@c ll: [];
+@c push (x, ll);
+@c push (x^2+y, ll);
+@c a: push ("string", ll);
+@c pop (ll);
+@c pop (ll);
+@c pop (ll);
+@c ll;
+@c a;
+@c ===end===
+@example
+(%i1) load ("basic")$
+@group
+(%i2) ll: [];
+(%o2)                          []
+@end group
+@group
+(%i3) push (x, ll);
+(%o3)                          [x]
+@end group
+@group
+(%i4) push (x^2+y, ll);
+                                 2
+(%o4)                      [y + x , x]
+@end group
+@group
+(%i5) a: push ("string", ll);
+                                     2
+(%o5)                  [string, y + x , x]
+@end group
+@group
+(%i6) pop (ll);
+(%o6)                        string
+@end group
+@group
+(%i7) pop (ll);
+                                  2
+(%o7)                        y + x
+@end group
+@group
+(%i8) pop (ll);
+(%o8)                           x
+@end group
+@group
+(%i9) ll;
+(%o9)                          []
+@end group
+@group
+(%i10) a;
+                                     2
+(%o10)                 [string, y + x , x]
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rest}
+@deffn  {Function} rest (@var{expr}, @var{n})
+@deffnx {Function} rest (@var{expr})
+
+Retorna @var{expr} com seus primeiros @var{n} elementos removidos se @var{n} for
+positivo e seus @'{u}ltimos @code{- @var{n}} elementos removidos se @var{n} for negativo.
+Se @var{n} for 1 ent@~{a}o @var{n} pode ser omitido.  A @var{expr} pode ser uma lista, matriz, ou outra
+express@~{a}o.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{reverse}
+@deffn {Function} reverse (@var{lista})
+
+Reverte a ordem dos elementos de @var{lista} (n@~{a}o
+os membros propriamente ditos).  A fun@,{c}@~{a}o @code{reverse} tamb@'{e}m trabalha sobre express@~{o}es gerais,
+e.g.  @code{reverse(a=b);} fornece @code{b=a}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{second}
+@deffn {Function} second (@var{expr})
+
+Retorna o segundo item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para mais detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{seventh}
+@deffn {Function} seventh (@var{expr})
+
+Retorna o s@'{e}timo item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para mais detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sixth}
+@deffn {Function} sixth (@var{expr})
+
+Retorna o sexto item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para mais detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sort}
+@deffn  {Function} sort (@var{L}, @var{P})
+@deffnx {Function} sort (@var{L})
+
+O comando @code{sort(@var{L}, @var{P})} ordena a lista @var{L} conforme o predicado @code{P} de dois argumentos
+que definem uma ordena@,{c}@~{a}o estrita fraca @footnote{Nota do tradutor: ordena@,{c}@`{a}o estrita fraca usa o menor/maior
+ou igual. A ordena@,{c}@~{a}o estrita forte n@~{a}o tem o igual. Dicotomia e tricotomia.}sobre os elementos de @var{L}.
+Se @code{@var{P}(a, b)} for @code{true}, ent@~{a}o @code{a} aparece antes de @code{b} no resultado.
+Se nem @code{@var{P}(a, b)} e nem @code{@var{P}(b, a)} forem @code{true},
+ent@~{a}o @code{a} e @code{b} s@~{a}o equivalentes, e aparecem no resultado na mesma ordem que aparecem na entrada.
+Isto @'{e}, @code{sort} @'{e} uma ordena@,{c}@~{a}o est@'{a}vel.
+
+Se @code{@var{P}(a, b)} e @code{@var{P}(b, a)} forem ambos @code{true} para algum elementos de @var{L},
+ent@~{a}o @var{P} n@~{a}o @'{e} um predicado de ordena@,{c}@~{a}o v@'{a}lido, e o resultado @'{e} indefinido.
+Se @code{@var{P}(a, b)} for alguma outra coisa al@'{e}m de @code{true} ou @code{false}, @code{sort} sinaliza um erro.
+
+O predicado pode ser um nome de fun@,{c}@~{a}o 
+ou um operador bin@'{a}rio infixo, ou uma express@~{a}o @code{lambda}.  Se especificado como
+o nome de um operador, o nome deve ser informado entre aspas duplas.
+
+A lista ordenada @'{e} retornada como um novo objeto; o argumento @var{L} n@~{a}o @'{e} modificado.
+
+A entrada @code{sort(@var{L})} @'{e} equivalente a @code{sort(@var{L}, orderlessp)}.
+
+A ordem padr@~{a}o de montagem de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp} O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
+
+Todos os @'{a}tomos e express@~{o}es do Maxima s@~{a}o compar@'{a}veis tanto por @code{orderlessp} quanto por @code{ordergreatp}.
+
+Operadores @code{<} e @code{>} ordenam n@'{u}meros, constantes, e express@~{o}es constantes em magnitude.
+Note que @code{orderlessp} e @code{ordergreatp} n@~{a}o ordenam n@'{u}meros, constantes, e nem express@~{o}es constantes em magnitude.
+
+O predicado @code{ordermagnitudep} ordena n@'{u}meros, constantes, e express@~{o}es constantes da mesma forma que @code{<},
+e todos os outros elementos da mesma forma que @code{orderlessp}.
+
+Exemplos:
+
+A fun@,{c}@~{a}o @code{sort} ordena uma lista conforme um predicado de dosi argumentos
+que definem uma ordem estrita fraca sobre os elementos da lista.
+
+@c ===beg===
+@c sort ([1, a, b, 2, 3, c], 'orderlessp);
+@c sort ([1, a, b, 2, 3, c], 'ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) sort ([1, a, b, 2, 3, c], 'orderlessp);
+(%o1)                  [1, 2, 3, a, b, c]
+(%i2) sort ([1, a, b, 2, 3, c], 'ordergreatp);
+(%o2)                  [c, b, a, 3, 2, 1]
+@end group
+@end example
+
+O preicado pode ser um nome de fun@,{c}@~{a}o 
+ou oerador bin@'{a}rio infixo, ou uma express@~{a}o @code{lambda}.  Se for
+o nome de umoperador, o nome deve ser informado entre aspas duplas.
+
+@c ===beg===
+@c L : [[1, x], [3, y], [4, w], [2, z]];
+@c foo (a, b) := a[1] > b[1];
+@c sort (L, 'foo);
+@c infix (">>");
+@c a >> b := a[1] > b[1];
+@c sort (L, ">>");
+@c sort (L, lambda ([a, b], a[1] > b[1]));
+@c ===end===
+@example
+@group
+(%i1) L : [[1, x], [3, y], [4, w], [2, z]];
+(%o1)           [[1, x], [3, y], [4, w], [2, z]]
+(%i2) foo (a, b) := a[1] > b[1];
+(%o2)                 foo(a, b) := a  > b
+                                    1    1
+(%i3) sort (L, 'foo);
+(%o3)           [[4, w], [3, y], [2, z], [1, x]]
+(%i4) infix (">>");
+(%o4)                          >>
+(%i5) a >> b := a[1] > b[1];
+(%o5)                   a >> b := a  > b
+                                   1    1
+(%i6) sort (L, ">>");
+(%o6)           [[4, w], [3, y], [2, z], [1, x]]
+(%i7) sort (L, lambda ([a, b], a[1] > b[1]));
+(%o7)           [[4, w], [3, y], [2, z], [1, x]]
+@end group
+@end example
+
+O comando @code{sort(@var{L})} @'{e} equivalente a @code{sort(@var{L}, orderlessp)}.
+
+@c ===beg===
+@c L : [a, 2*b, -5, 7, 1 + %e, %pi];
+@c sort (L);
+@c sort (L, 'orderlessp);
+@c ===end===
+@example
+@group
+(%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
+(%o1)             [a, 2 b, - 5, 7, %e + 1, %pi]
+(%i2) sort (L);
+(%o2)             [- 5, 7, %e + 1, %pi, a, 2 b]
+(%i3) sort (L, 'orderlessp);
+(%o3)             [- 5, 7, %e + 1, %pi, a, 2 b]
+@end group
+@end example
+
+A ordem padr@~{a}o de ordena@,{c}@~{a}o de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp} O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
+
+@c ===beg===
+@c L : [a, 2*b, -5, 7, 1 + %e, %pi];
+@c sort (L);
+@c sort (L, 'ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
+(%o1)                    [a, 2 b, - 5, 7, %e + 1, %pi]
+(%i2) sort (L);
+(%o2)                    [- 5, 7, %e + 1, %pi, a, 2 b]
+(%i3) sort (L, 'ordergreatp);
+(%o3)                    [2 b, a, %pi, %e + 1, 7, - 5]
+@end group
+@end example
+
+Todos os @'{a}tomos e expres@~{o}es do Maxima s@~{a}o compar@'{a}veis tanto por @code{orderlessp} quanto por @code{ordergreatp}.
+
+@c ===beg===
+@c L : [11, -17, 29b0, 9*c, 7.55, foo(x, y), -5/2, b + a];
+@c sort (L, orderlessp);
+@c sort (L, ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [11, -17, 29b0, 9*c, 7.55, foo(x, y), -5/2, b + a];
+                                                 5
+(%o1)  [11, - 17, 2.9b1, 9 c, 7.55, foo(x, y), - -, b + a]
+                                                 2
+(%i2) sort (L, orderlessp);
+                5
+(%o2)  [- 17, - -, 7.55, 11, 2.9b1, b + a, 9 c, foo(x, y)]
+                2
+(%i3) sort (L, ordergreatp);
+                                                  5
+(%o3)  [foo(x, y), 9 c, b + a, 2.9b1, 11, 7.55, - -, - 17]
+                                                  2
+@end group
+@end example
+
+Operadores @code{<} e @code{>} ordenam n@'{u}meros, constantes e express@~{o}es constates em magnitude.
+Note que @code{orderlessp} e @code{ordergreatp} n@~{a}o ordenam n@'{u}meros, constantes, express@~{o}es constantes em magnitude.
+
+@c ===beg===
+@c L : [%pi, 3, 4, %e, %gamma];
+@c sort (L, ">");
+@c sort (L, ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [%pi, 3, 4, %e, %gamma];
+(%o1)                [%pi, 3, 4, %e, %gamma]
+(%i2) sort (L, ">");
+(%o2)                [4, %pi, 3, %e, %gamma]
+(%i3) sort (L, ordergreatp);
+(%o3)                [%pi, %gamma, %e, 4, 3]
+@end group
+@end example
+
+O predicado @code{ordermagnitudep} ordena n@'{u}meros, constantes, e exress@~{o}es constantes da mesma forma que @code{<},
+e todos os outros elementos da mesma forma que @code{orderlessp}.
+
+@c ===beg===
+@c L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+@c sort (L, ordermagnitudep);
+@c sort (L, orderlessp);
+@c ===end===
+@example
+@group
+(%i1) L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+(%o1) [%i, %i + 1, 2 x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 
+                                                           1.0b0]
+(%i2) sort (L, ordermagnitudep);
+(%o2) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+                                                     %i + 1, 2 x]
+(%i3) sort (L, orderlessp);
+(%o3) [0, 1, 1.0, 2, 3, %e, %i, %i + 1, inf, minf, sin(1), 
+                                                      1.0b0, 2 x]
+@end group
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sublist}
+@deffn {Function} sublist (@var{lista}, @var{p})
+
+Retorna a lista dos elementos de @var{lista} para os quais o predicado @code{p}
+retorna @code{true}.
+
+Exemplo:
+
+@c ===beg===
+@c L: [1, 2, 3, 4, 5, 6];
+@c sublist (L, evenp);
+@c ===end===
+@example
+@group
+(%i1) L: [1, 2, 3, 4, 5, 6];
+(%o1)                  [1, 2, 3, 4, 5, 6]
+@end group
+@group
+(%i2) sublist (L, evenp);
+(%o2)                       [2, 4, 6]
+@end group
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sublist_indices}
+@deffn {Function} sublist_indices (@var{L}, @var{P})
+
+Retorna os @'{i}ndices dos elementos @code{x} da lista @var{L} para os quais
+o predicado @code{maybe(@var{P}(x))} retornar @code{true};
+Esse retorno exclui @code{unknown} (desconhecido) bem como @code{false}.
+O predicado @var{P} pode ser o nome de uma fun@,{c}@~{a}o ou uma express@~{a}o @code{lambda}.
+A lista @var{L} deve ser uma lista literal.
+
+Exemplos:
+
+@c ===beg===
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], 
+@c                        lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], 
+@c                        identity);
+@c assume (x < -1);
+@c map (maybe, [x > 0, x < 0, x < -2]);
+@c sublist_indices ([x > 0, x < 0, x < -2], identity);
+@c ===end===
+@example
+@group
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+                       lambda ([x], x='b));
+(%o1)                     [2, 3, 7, 9]
+@end group
+@group
+(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+(%o2)                  [1, 2, 3, 4, 7, 9]
+@end group
+@group
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
+                       identity);
+(%o3)                       [1, 4, 5]
+@end group
+@group
+(%i4) assume (x < -1);
+(%o4)                       [x < - 1]
+@end group
+@group
+(%i5) map (maybe, [x > 0, x < 0, x < -2]);
+(%o5)                [false, true, unknown]
+@end group
+@group
+(%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
+(%o6)                          [2]
+@end group
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unique}
+@deffn {Function} unique (@var{L})
+
+Retorna os elementos da lista @var{L} sem repeti@,{c}@~{o}es.
+
+Quando a lista @var{L} n@~{a}o tem elementos repetidos,
+@code{unique} retorna uma mera c@'{o}pia de @var{L},
+not @var{L} itself.
+
+Se @var{L} n@~{a}o for uma lista, @code{unique} retorna @var{L}.
+
+Exemplo:
+
+@c ===beg===
+@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+@c ===end===
+@example
+@group
+(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+(%o1)              [1, 2, %e, %pi, [1], b + a]
+@end group
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{tenth}
+@deffn {Function} tenth (@var{expr})
+
+Retorna o d@'{e}cimo item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para mais detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{third}
+@deffn {Function} third (@var{expr})
+
+Retorna o terceiro item da express@~{a}o ou lista @var{expr}.
+Veja @mref{first} para mais detalhes.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
