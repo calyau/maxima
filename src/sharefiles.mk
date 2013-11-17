@@ -701,7 +701,9 @@ lapack/lapack/dlabrd.lisp \
 lapack/lapack/dlacon.lisp \
 lapack/lapack/dlacpy.lisp \
 lapack/lapack/dladiv.lisp \
+lapack/lapack/dlae2.lisp \
 lapack/lapack/dlaed6.lisp \
+lapack/lapack/dlaev2.lisp \
 lapack/lapack/dlaexc.lisp \
 lapack/lapack/dlahqr.lisp \
 lapack/lapack/dlahrd.lisp \
@@ -765,6 +767,7 @@ lapack/lapack/dormbr.lisp \
 lapack/lapack/dorml2.lisp \
 lapack/lapack/dormlq.lisp \
 lapack/lapack/dormqr.lisp \
+lapack/lapack/dsterf.lisp \
 lapack/lapack/dtrevc.lisp \
 lapack/lapack/dtrexc.lisp \
 lapack/lapack/dtrsna.lisp \
@@ -783,6 +786,9 @@ lapack/lapack/zgebal.lisp \
 lapack/lapack/zgeev.lisp \
 lapack/lapack/zgehd2.lisp \
 lapack/lapack/zgehrd.lisp \
+lapack/lapack/zheev.lisp \
+lapack/lapack/zhetd2.lisp \
+lapack/lapack/zhetrd.lisp \
 lapack/lapack/zhseqr.lisp \
 lapack/lapack/zlacgv.lisp \
 lapack/lapack/zlacpy.lisp \
@@ -790,6 +796,7 @@ lapack/lapack/zladiv.lisp \
 lapack/lapack/zlahqr.lisp \
 lapack/lapack/zlahr2.lisp \
 lapack/lapack/zlange.lisp \
+lapack/lapack/zlanhe.lisp \
 lapack/lapack/zlaqr0.lisp \
 lapack/lapack/zlaqr1.lisp \
 lapack/lapack/zlaqr2.lisp \
@@ -803,14 +810,20 @@ lapack/lapack/zlarft.lisp \
 lapack/lapack/zlartg.lisp \
 lapack/lapack/zlascl.lisp \
 lapack/lapack/zlaset.lisp \
+lapack/lapack/zlasr.lisp \
 lapack/lapack/zlassq.lisp \
+lapack/lapack/zlatrd.lisp \
 lapack/lapack/zlatrs.lisp \
 lapack/lapack/zrot.lisp \
+lapack/lapack/zsteqr.lisp \
 lapack/lapack/ztrevc.lisp \
 lapack/lapack/ztrexc.lisp \
+lapack/lapack/zung2l.lisp \
 lapack/lapack/zung2r.lisp \
 lapack/lapack/zunghr.lisp \
+lapack/lapack/zungql.lisp \
 lapack/lapack/zungqr.lisp \
+lapack/lapack/zungtr.lisp \
 lapack/lapack/zunm2r.lisp \
 lapack/lapack/zunmhr.lisp \
 lapack/lapack/zunmqr.lisp \
