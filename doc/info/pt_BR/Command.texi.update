@@ -1,0 +1,1835 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 786d77a56c4570c12cfe3a154639b230  Command.texi
+@c
+@menu
+* Introduction to Command Line::
+* Functions and Variables for Command Line::
+* Functions and Variables for Display::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Command Line, Functions and Variables for Command Line, Command Line, Command Line
+@section Introduction to Command Line
+@c -----------------------------------------------------------------------------
+
+@c end concepts Command Line
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Command Line, Functions and Variables for Display, Introduction to Command Line, Command Line
+@section Functions and Variables for Command Line
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{__}
+@defvr {System variable} __
+@ifinfo
+@vrindex Current input expression
+@end ifinfo
+
+A vari@'{a}vel de sistema @code{__} representa a express@~{a}o de entrada sendo avaliada atualmente.  Isto @'{e}, enquanto uma
+express@~{a}o de entrada @var{expr} est@'{a} sendo avaliada, o valor de @code{__} @'{e} @var{expr}.
+
+A express@~{a}o de entrada @'{e} atribu@'{i}da @`{a} vari@'{a}vel de sistema @code{__} antes da entrada ser simplificada ou
+avaliada.  Todavia, o valor de @code{__} @'{e} simplificado (mas n@~{a}o avaliado)
+quando esse valor @'{e} mostrado.
+
+A vari@'{a}vel de sistema @code{__} @'{e} reconhecida por @mref{batch} e @mrefdot{load}  Em um arquivo processado
+por @code{batch}, @code{__} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load}, @code{__} @'{e} associada @`{a} express@~{a}o de entrada
+mais recentemente informada no linha de comando interativa ou em um arquivo de lote; @code{__}
+n@~{a}o @'{e} associada @`{a} express@~{a}o de entrada em um arquivo sendo processado.  Em
+particular, quando @code{load (@var{nomearquivo})} @'{e} chamado a partir do linha de comando
+interativa, @code{__} @'{e} associada a @code{load (@var{nomearquivo})} enquanto o arquivo est@'{a}
+sendo processado.
+
+Veja tamb@'{e}m @mref{_} e @mrefdot{%}
+
+Exemplos:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{_}
+@defvr {System variable} _
+@ifinfo
+@vrindex Previous input
+@end ifinfo
+
+A vari@'{a}vel de sistema @code{_} @'{e} a express@~{a}o de entrada mais recente (e.g., @code{%i1}, @code{%i2},
+@code{%i3}, @dots{}).
+
+A express@~{a}o de entrada @'{e} atribu@'{i}da @`{a} vari@'{a}vel de sistema @code{_} antes de a entrada ser simplificada ou
+avaliada.  Todavia, O valor de @code{_} @'{e} simplificado (mas n@~{a}o avaliado)
+quando esse valor @'{e} mostrado.
+
+A vari@'{a}vel de sistema @code{_} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+por @code{batch}, @code{_} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load}, @code{_} @'{e} associada @`{a} express@~{a}o de entrada
+mais recentemente avaliada no linha de comando interativa ou em um arquivo de lote; @code{_}
+n@~{a}o @'{e} associada a express@~{o}es de entrada no arquivo sendo processado.
+
+Veja tamb@'{e}m @mref{__} e @mrefdot{%}
+
+Exemplos:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%}
+@defvr {System variable} %
+@ifinfo
+@vrindex Previous input
+@end ifinfo
+
+A vari@'{a}vel de sistema @code{%} representa a express@~{a}o de sa@'{i}da (e.g., @code{%o1}, @code{%o2}, @code{%o3},
+@dots{}) mais recentemente calculada pelo Maxima, tenha essa entrada sido mostrada ou n@~{a}o.
+
+A vari@'{a}vel de sistema @code{%} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+por @code{batch}, @code{%} tem o mesmo signficado que na linha de comando interativa.
+Em um arquivo processado por @code{load}, @code{%} @'{e} associada @`{a} express@~{a}o de sa@'{i}da
+mais recentemente calculada no linha de comando interativa ou em um arquivo de lote; @code{%}
+n@~{a}o @'{e} associada a express@~{o}es de sa@'{i}da no arquivo sendo processado.
+
+Veja tamb@'{e}m @mrefcomma{_} @mrefcomma{%%} e @mrefdot{%th}
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%%}
+@defvr {System variable} %%
+@ifinfo
+@vrindex Previous result in compound expression
+@end ifinfo
+
+Em declara@,{c}@~{o}es compostas, a saber @mrefcomma{block} @mrefcomma{lambda} ou
+@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} representa o valor da declara@,{c}@~{a}o
+anterior.
+
+Na primeira declara@,{c}@~{a}o em uma declara@,{c}@~{a}o composta, ou fora de uma declara@,{c}@~{a}o
+composta, @code{%%} @'{e} indefinida.
+
+A vari@'{a}vel de sistema @code{%%} @'{e} reconhecida por @mref{batch} e por @mrefcomma{load} e tem o
+mesmo significado que na linha de comando interativa.
+
+Veja tamb@'{e}m @mrefdot{%}
+
+Exemplos:
+
+Os seguintes dois exemplos retornam o mesmo resultado.
+
+@example
+(%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+                               21
+(%o1)                          --
+                               2
+(%i2) block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+                               21
+(%o2)                          --
+                               2
+
+@end example
+
+Uma declara@,{c}@~{a}o composta pode compreender outras declara@,{c}@~{o}es compostas.  Seja uma
+declara@,{c}@~{a}o simples ou composta, @code{%%} representa o valor da declara@,{c}@~{a}o
+anterior.
+
+@example
+(%i3) block (block (a^n, %%*42), %%/6);
+                                 n
+(%o3)                         7 a
+@end example
+
+Dentro de uma declara@,{c}@~{a}o composta, o valor de @code{%%} pode ser inspecionado em uma linha de comando interativa
+de parada, que @'{e} aberta executando a fun@,{c}@~{a}o @mref{break}.  Por exemplo,
+inserindo @code{%%;} no seguinte exemplo retorna @code{42}.
+
+@example
+(%i4) block (a: 42, break ())$
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_%%;
+42
+_
+@end example
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%th}
+@deffn {Function} %th (@var{i})
+@ifinfo
+@fnindex N'@'{e}sima sa@'{i}da anterior
+@end ifinfo
+
+O valor da @var{i}'@'{e}sima express@~{a}o de sa@'{i}da anterior.  Isto @'{e}, se a express@~{a}o
+seguinte for a @var{n}'@'{e}sima sa@'{i}da, @code{%th (@var{m})} @'{e} a
+(@var{n} - @var{m})'@'{e}sima sa@'{i}da.
+
+A fun@,{c}@~{a}o @code{%th} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+por @code{batch}, @code{%th} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load}, @code{%th} refere-se a express@~{o}es de sa@'{i}da mais
+recentemente calculadas na linha de comando interativa ou em um arquivo de lote; @code{%th} n@~{a}o
+se refere a express@~{o}es de sa@'{i}da no arquivo sendo processado.
+
+Veja tamb@'{e}m @mref{%} e @mrefdot{%%}
+
+Exemplo:
+
+A fun@,{c}@~{a}o @code{%th} @'{e} @'{u}til em arquivos de lote @code{batch} ou para referir-se a um grupo de
+express@~{o}es de sa@'{i}da.  O exemplo adiante ajusta @code{s} para o somat@'{o}rio das @'{u}ltimas cinco
+express@~{o}es de sa@'{i}da.
+
+@example
+(%i1) 1;2;3;4;5;
+(%o1)                           1
+(%o2)                           2
+(%o3)                           3
+(%o4)                           4
+(%o5)                           5
+(%i6) block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
+(%o6)                          15
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{?}
+@deffn {Special symbol} ?
+@ifinfo
+@fnindex Documenta@,{c}@~{a}o, mostrando
+@end ifinfo
+
+Como prefixo de uma fun@,{c}@~{a}o ou nome de vari@'{a}vel, @code{?} significa que o nome @'{e} um
+nome do Lisp, n@~{a}o um nome do Maxima.  Por exemplo, @code{?round} significa A fun@,{c}@~{a}o
+Lisp @code{ROUND}.  Veja @ref{Lisp and Maxima} para mais informa@,{c}@~{a}o.
+
+A nota@,{c}@~{a}o @code{? palavra} (uma interrroga@,{c}@~{a}o seguida por um espa@,{c}o em branco e uma
+palavra) @'{e} equivalente a @code{describe("palavra")}.  A interroga@,{c}@~{a}o deve
+ocorrer no in@'{i}cio de uma linha de entrada; de outra forma a interroga@,{c}@~{a}o n@~{a}o @'{e} reconhecida como uma
+requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.  Veja tamb@'{e}m @mrefdot{describe}
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{??}
+@deffn {Special symbol} ??
+@ifinfo
+@fnindex Documenta@,{c}@~{a}o, mostrando (busca inexata)
+@end ifinfo
+
+A nota@,{c}@~{a}o @code{?? palavra} (@code{??} seguida por um espa@,{c}o em branco e uma palavra)
+@'{e} equivalente a @code{describe("palavra", inexact)}.  A interroga@,{c}@~{a}o deve ocorrer
+no in@'{i}cio de uma linha de entrada; de outra forma a interroga@,{c}@~{a}o n@~{a}o @'{e} reconhecida como uma
+requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inchar}
+@defvr {Option variable} inchar
+Valor padr@~{a}o: @code{%i}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{inchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es inseridas pelo usu@'{a}rio.
+Maxima automaticamente constr@'{o}i um r@'{o}tulo para cada express@~{a}o de entrada
+concatenando @code{inchar} e @mrefdot{linenum}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{inchar} pode receber qualquer sequ@^{e}ncia de cracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
+sozinho.  Pelo fato de m@'{a}xima internamente levar em considera@,{c}@~{a}o somente o primeiro caractere do
+prefixo, os prefixos @code{inchar}, @mrefcomma{outchar} e
+@mref{linechar} devem ter um primeiro caractere diferente.  Se isso n@~{a}o ocorrer alguns comandos
+como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
+
+Veja tamb@'{e}m @code{labels}.
+
+Exemplo:
+
+@c ===beg===
+@c inchar: "input";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) inchar: "input";
+(%o1)                         input
+(input2) expand((a+b)^3);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(input3)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{infolists}
+@defvr {System variable} infolists
+Valor padr@~{a}o: @code{[]}
+
+A vari@'{a}vel de sistema @code{infolists} @'{e} uma lista dos nomes de todas as listas de
+informa@,{c}@~{a}o no Maxima.  S@~{a}o elas:
+
+@table @code
+@item labels
+Todos os r@'{o}tulos @code{%i}, @code{%o}, e @code{%t} associados.
+@item values
+Todos os @'{a}timos associados que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do Maxima ou comutadores,
+criados por @mref{:} ou por @mref{::} ou por associa@,{c}@~{a}o funcional.
+@c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
+@item functions
+Todas as fun@,{c}@~{o}es definidas pelo usu@'{a}rio, criadas por @mref{:=} ou por @mrefdot{define}
+@item arrays
+Todos os vetores est@'{a}ticos declarados e n@~{a}o declarados, criados por @code{:}, por @code{::}, ou por
+@code{:=}.
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+Todas as fun@,{c}@~{o}es de macro definidas pelo usu@'{a}rio, criadas por @mrefdot{::=}
+@item myoptions
+Todas as op@,{c}@~{o}es mesmo zeradas pelo usu@'{a}rio (mesmo que elas sejam ou n@~{a}o
+futuramente retornadas a seus valores padr@~{a}o).
+@item rules
+Todas as m@'{a}caras de coincid@^{e}ncia e regras de simplifica@,{c}@~{a}o, criadas
+por @mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mrefcomma{defmatch} ou por
+@mrefdot{defrule}
+@item aliases
+Todos os @'{a}tomos ue tiverem um apelido definido pelo usu@'{a}rio, criados pela fun@,{c}@~{o}es
+@mrefcomma{alias}@w{} @mrefcomma{ordergreat} @mref{orderless} ou por meio da declara@,{c}@~{a}o de @'{a}tomos como
+@mref{noun} usando @mrefdot{declare}
+@item dependencies
+Todos os @'{a}tomos que possu@'{i}rem depend@^{e}ncias funcionais, criadas pelas
+fun@,{c}@~{o}es @mref{depends}, @mref{dependencies}, ou @mref{gradef}.
+@item gradefs
+Todas as fun@,{c}@~{o}es que tiverem derivadas definidas pelo usu@'{a}rio, criadas pela
+fun@,{c}@~{a}o @mref{gradef}.
+@c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
+@item props
+Todos os @'{a}tomos que possu@'{i}rem qualuer propriedade outra que n@~{a}o aquelas mencionadas acima, tais como
+propriedades estabelecidas por @mref{atvalue} ou por @mref{matchdeclare}, etc.,
+bem como propriedades estabelecidas na fun@,{c}@~{a}o @mref{declare}.
+@item let_rule_packages
+Todas os pacotes de regra @mref{let} definidos pelo usu@'{a}rio
+al@'{e}m do pacote especial @mrefdot{default_let_rule_package}
+(@code{default_let_rule_package} @'{e} o nome do pacote de regras usado quando
+um n@~{a}o for explicitamente ajustado pelo usu@'{a}rio.)
+@end table
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c REVIEW FOR ACCURACY AND COMPLETENESS
+@c THIS ITEM IS VERY IMPORTANT !!
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{kill}
+@deffn  {Function} kill (@var{a_1}, @dots{}, @var{a_n})
+@deffnx {Function} kill (labels)
+@deffnx {Function} kill (inlabels, outlabels, linelabels)
+@deffnx {Function} kill (@var{n})
+@deffnx {Function} kill ([@var{m}, @var{n}])
+@deffnx {Function} kill (values, functions, arrays, @dots{})
+@deffnx {Function} kill (all)
+@deffnx {Function} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+
+Remove todas as associa@,{c}@~{o}es (de valor, de fun@,{c}@~{a}o, de vetor est@'{a}tico, ou de regra) dos argumentos
+@var{a_1}, @dots{}, @var{a_n}.  Um argumento @var{a_k} pode ser um s@'{i}mbolo ou um
+elemento de vetor est@'{a}tico sozinho.  Quando @var{a_k} for um elemento de vetor est@'{a}tico, @code{kill}
+desassocia aquele elemento sem afetar quaisquer outros elementos do vetor est@'{a}tico.
+
+Muitos argumentos especiais s@~{a}o reconhecidos.  Diferentes tipos de argumentos
+podem ser combinados, e.g., @code{kill (inlabels, functions, allbut (quaquercoisa, outracoisa))}.
+
+@code{kill (labels)} desassocia todos os r@'{o}tulos de entrada, todos os r@'{o}tulos de sa@'{i}das, e todos os r@'{o}tulos de express@~{o}es intermedi@'{a}rias
+criados at@'{e} o presente momento.  O comando @code{kill (inlabels)} desassocia somente r@'{o}tulos de entrada que
+que iniciam com o valor atual de @mrefdot{inchar}  Da mesma forma,
+@code{kill (outlabels)} desassocia somente r@'{o}tulos de sa@'{i}da que iniciam com o atual
+valor de @mrefcomma{outchar} e @code{kill (linelabels)} desassocia somente
+r@'{o}tulos de express@~{o}es intermedi@'{a}rias que iniciam com o valor atual de
+@mrefdot{linechar}
+
+O comando @code{kill (@var{n})}, onde @var{n} @'{e} um inteiro,
+desassocia os @var{n} r@'{o}tulos mais recentes de entrada e sa@'{i}da.
+
+@code{kill ([@var{m}, @var{n}])} desassocia r@'{o}tulos de entrada e sa@'{i}da que v@~{a}o de @var{m} at@'{e}
+@var{n}.
+
+O comando @code{kill (@var{infolist})}, onde @var{infolist} @'{e} qualquer item em
+@code{infolists} (tais como @mrefcomma{values} @mrefcomma{functions} ou como
+@mref{arrays}) desassocia todos os itens em @var{infolist}.
+Veja tamb@'{e}m @mrefdot{infolists}
+
+@code{kill (all)} desassocia todos os itens em todas as infolistas.  O comando @code{kill (all)} n@~{a}o
+ajusta vari@'{a}veis globais para seus valores padr@~{a}o; veja @mref{reset} nesse
+ponto.
+
+O comando @code{kill (allbut (@var{a_1}, ..., @var{a_n}))} desassocia all items on all
+infolists except for @var{a_1}, @dots{}, @var{a_n}.
+O comando @code{kill (allbut (@var{infolist}))} desassocia todos os itens exceto aqueles em
+@var{infolist}, onde @var{infolist} @'{e} @mrefcomma{values}@w{}
+@mrefcomma{functions} @mrefcomma{arrays} etc.
+
+A mem@'{o}ria ocupada por uma propriedade associada n@~{a}o @'{e} liberada at@'{e} que todos os s@'{i}mbolos sejam
+desassociados dessa propriedade.  Em particular, para liberar a memŕia ocupada pelo valor de
+um s@'{i}mbolo, se desassocia o r@'{o}tulo de sa@'{i}da que mostra o valor associado, bem como
+desassocia-se tamb@'{e}m o s@'{i}mbolo propriamente dito.
+
+O comando @code{kill} n@~{a}o avalia seus argumentos.  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
+evita que as aspas duplas sejam colocadas.
+
+O comando @code{kill (@var{s@'{i}mbolo})} desassocia todas as propriedades de @var{s@'{i}mbolo}.  De forma oposta,
+as fun@,{c}@~{o}es @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
+@mrefcomma{remarray} e @mref{remrule} desassociam uma propriedade espec@'{i}fica.
+
+O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o tenha associa@,{c}@~{o}es.
+
+@opencatbox
+@category{Evaluation} @category{Console interaction} @category{Session management}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{labels}
+@deffn  {Function} labels (@var{s@'{i}mbolo})
+@deffnx {System variable} labels
+
+Retorna a lista de r@'{o}tulos de entrada, sa@'{i}da, ou de express@~{o}es intermediarias que se iniciam
+com @var{s@'{i}mbolo}.  Tipicamente @var{s@'{i}mbolo} @'{e} o valor de
+@mrefcomma{inchar} @mrefcomma{outchar} ou de @mrefdot{linechar}  O caractere de
+r@'{o}tulo pode ser dado com ou sem o sinal de porcentagem, de forma que, por exemplo, @code{i}
+e @code{%i} retornem o mesmo resultado.
+
+Se nenhum r@'{o}tulo iniciar-se com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
+
+A fun@,{c}@~{a}o @code{labels} coloca seus argumentos entre aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
+evita que as aspas duplas sejam colocadas.  Por exemplo, @code{labels (''inchar)} retorna
+os r@'{o}tulos de entrada que iniciam-se com o atual caractere de r@'{o}tulo de entrada.
+
+A vari@'{a}vel @code{labels} @'{e} a lista de r@'{o}tulos de entrada, de sa@'{i}da, e de express@~{o}es
+intermedi@'{a}rias, incluindo todos os r@'{o}tulos anteriores se @code{inchar},
+@code{outchar}, ou @code{linechar} forem redefinidas.
+
+Por padr@~{a}o, Maxima mostra o resultado de cada express@~{a}o de entrada de usu@'{a}rio, fornecendo ao
+resultado um r@'{o}tulo de sa@'{i}da.  A exibi@,{c}@~{a}o da sa@'{i}da @'{e} omitida terminando a entrada
+com @code{$} (sinal de d@'{o}lar) ao inv@'{e}s do @code{;} (ponto e v@'{i}rgula).  Um r@'{o}tulo
+de sa@'{i}da @'{e} constru@'{i}do e associado ao resultado, mas n@~{a}o @'{e} mostrado, e o r@'{o}tulo
+pode ser referenciado da mesma forma que os r@'{o}tulos de sa@'{i}da que s@~{a}o mostrados.  Veja tamb@'{e}m
+@mrefcomma{%} @mrefcomma{%%} e @mrefdot{%th}
+
+R@'{o}tulos de express@~{o}es intermedi@'{a}rias podem ser gerados por algumas fun@,{c}@~{o}es.  A vari@'{a}vel de
+op@,{c}@~{a}o @mref{programmode} controla se @mref{solve} e algumas outras
+fun@,{c}@~{o}es geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias ao inv@'{e}s de retornar uma lista de
+express@~{o}es.  Algumas outras fun@,{c}@~{o}es, tais como @mrefcomma{ldisplay} sempre geram
+r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
+
+Veja tamb@'{e}m @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} e
+@mrefdot{infolists}
+
+@opencatbox
+@category{Display functions} @category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{linechar}
+@defvr {Option variable} linechar
+Valor padr@~{a}o: @code{%t}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{linechar} cont@'{e}m o prefixo dos r@'{o}tulos de express@~{o}es intermedi@'{a}rias 
+gerados pelo Maxima.  Maxima consstr@'{o}i um r@'{o}tulo para cada express@~{a}o intermedi@'{a}ria 
+(se for mostrada) concatenando @code{linechar} e @mrefdot{linenum}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{linechar} pode receber qualquer sequ@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
+@'{u}nico.  Devido ao fato de Maxima internamente considerar somente o primeiro caractere do
+prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar} e
+@code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
+como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
+
+Express@~{o}es intermedi@'{a}rias podem ou n@~{a}o serem mostradas.
+Veja @mref{programmode} e @mrefdot{labels}
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
+
+@c -----------------------------------------------------------------------------
+@anchor{linenum}
+@defvr {System variable} linenum
+
+O n@'{u}mero de linha do par atual de express@~{o}es de entrada e sa@'{i}da.
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{myoptions}
+@defvr {System variable} myoptions
+Valor padr@~{a}o: @code{[]}
+
+A vari@'{a}vel de sistema @code{myoptions} @'{e} a lista de todas as op@,{c}@~{o}es mesmo alteradas pelo usu@'{a}rio,
+seja essa altera@,{c}@~{a}o para o seu valor padr@~{a}o ou n@~{a}o.
+
+@opencatbox
+@category{Global variables} @category{Session management} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nolabels}
+@defvr {Option variable} nolabels
+Valor padr@~{a}o: @code{false}
+
+Quando @code{nolabels} for @code{true}, r@'{o}tulos de resultado de entrada e sa@'{i}da (@code{%i}
+e @code{%o}, respectivamente) s@~{a}o mostrados, mas os r@'{o}tulos n@~{a}o s@~{a}o associados ao
+resultado, e os r@'{o}tulos n@~{a}o s@~{a}o anexados ao final da lista @mref{labels}.  Uma vez que
+r@'{o}tulos n@~{a}o s@~{a}o associados a resultados, as fun@,{c}@~{o}es de recupera@,{c}@~{a}o de mem@'{o}ria podem recuperar a mem@'{o}ria
+usada pelos resultados.
+
+De outra forma r@'{o}tulos de resultado de entrada e sa@'{i}da s@~{a}o associados aos resultados, e os r@'{o}tulos
+s@~{a}o anexados ao final da lista @code{labels}.
+
+R@'{o}tulos de express@~{o}es intermedi@'{a}rias (@code{%t}) n@~{a}o s@~{a}o afetados por @code{nolabels};
+independente de @code{nolabels} ser @code{true} ou @code{false}, r@'{o}tulos de express@~{o}es
+intermedi@'{a}rias s@~{a}o associados e anexados ao final da lista @code{labels}.
+
+Veja tamb@'{e}m @mrefcomma{batch} @mrefcomma{load} e @mrefdot{labels}
+
+@opencatbox
+@category{Global flags} @category{Session management}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{optionset}
+@defvr {Option variable} optionset
+Valor padr@~{a}o: @code{false}
+
+Quando @code{optionset} for @code{true}, Maxima mostra uma mensagem sempre que uma
+op@,{c}@~{a}o do Maxima for alterada.  Isso @'{e} @'{u}til se o usu@'{a}rio estiver cheio de d@'{u}vidas sobre a sintaxe
+de alguma op@,{c}@~{a}o e deseja garantir que aquela vari@'{a}vel a qual ele atribuiu um valor
+era realmente uma vari@'{a}vel de op@,{c}@~{a}o.
+
+Exemplo:
+
+@example
+(%i1) optionset:true;
+assignment: assigning to option optionset
+(%o1)                         true
+(%i2) gamma_expand:true;
+assignment: assigning to option gamma_expand
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Global flags} @category{Session management} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{outchar}
+@defvr {Option variable} outchar
+Valor padr@~{a}o: @code{%o}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{outchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es calculadas pelo Maxima.
+Maxima automaticamente constr@'{o}i um r@'{o}tulo para cada exrpess@~{a}o calculada pela
+concatena@,{c}@~{a}o de @code{outchar} com @mrefdot{linenum}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{outchar} pode receber como valor qualquer sequ@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
+@'{u}nico.  Devido ao fato de Maxima internamente considerar somente o primeiro caractere do
+prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar} e
+@code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
+como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
+
+Veja tamb@'{e}m @code{labels}.
+
+Exemplo:
+
+@c ===beg===
+@c outchar: "output";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) outchar: "output";
+(output1)                    output
+(%i2) expand((a+b)^3);
+                     3        2      2      3
+(output2)           b  + 3 a b  + 3 a  b + a
+(%i3)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{playback}
+@deffn  {Function} playback ()
+@deffnx {Function} playback (@var{n})
+@deffnx {Function} playback ([@var{m}, @var{n}])
+@deffnx {Function} playback ([@var{m}])
+@deffnx {Function} playback (input)
+@deffnx {Function} playback (slow)
+@deffnx {Function} playback (time)
+@deffnx {Function} playback (grind)
+
+Mostra as entradas, as sa@'{i}das, e as express@~{o}es intermedi@'{a}rias, sem recalcul@'{a}-las.
+A fun@,{c}@~{a}o @code{playback} somente mostra as express@~{o}es associadas a r@'{o}tulos; quaisquer outras sa@'{i}das
+(tais como textos mostrados atrav@'{e}s da fun@,{c}@~{a}o @mref{print} ou da fun@,{c}@~{a}o @mrefcomma{describe} ou mensagens de erro)
+n@~{a}o @'{e} mostrado.  Veja tamb@'{e}m @mrefdot{labels}
+
+A fun@,{c}@~{a}o @code{playback} n@~{a}o avalia seus argumentos.  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
+evita que as aspas duplas sejam colocadas.  A fun@,{c}@~{a}o @code{playback} sempre retorna @code{done}.
+
+Executando @code{playback ()} (sem argumentos) mostra todas as esntradas, sa@'{i}das, e
+express@~{o}es intermedi@'{a}rias geradas at@'{e} agora.  Uma express@~{a}o de sa@'{i}da @'{e} mesmtrada
+mesmo se tifer sido suprimida pelo terminador @code{$} quando foi originalmente
+calculada.
+
+@code{playback (@var{n})} mostra as @'{u}ltimas @var{n} express@~{o}es.
+Cada entrada, sa@'{i}da, e cada express@~{a}o intermedi@'{a}ria conta como um.
+
+@code{playback ([@var{m}, @var{n}])} mostra entradas, sa@'{i}das, e express@~{o}es
+intermedi@'{a}rias com n@'{u}meros de @var{m} at@'{e} @var{n}, inclusive.
+
+@code{playback ([@var{m}])} @'{e} equivalente a
+@code{playback ([@var{m}, @var{m}])}; esse comando mostra um par de express@~{o}es de
+entrada e sa@'{i}da.
+
+@code{playback (input)} mostra todas as express@~{o}es de entrada geradas at@'{e} agora.
+
+@code{playback (slow)} d@'{a} uma pausa entre as express@~{o}es e espera que o usu@'{a}rio
+pressione @code{enter}.  Esse comportamento @'{e} similar ao comportamento de @mrefdot{demo}
+@c WHAT DOES THE FOLLOWING MEAN ???
+@code{playback (slow)} @'{e} @'{u}til em conjun@,{c}@~{a}o com @code{save} ou com
+@mref{stringout} na cria@,{c}@~{a}o de um arquivo secund@'{a}rio de armazenagem com o objetivo de selecionar
+express@~{o}es @'{u}teis.
+
+@code{playback (time)} mostra o tempo de computa@,{c}@~{a}o para cada express@~{a}o.
+@c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
+
+@code{playback (grind)} mostra express@~{o}es de entrada no mesmo formato que a
+fun@,{c}@~{a}o @code{grind}.  Express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o afetadas ppela op@,{c}@~{a}o
+@code{grind}.  Veja @mrefdot{grind}
+
+Argumentos podem ser combinados, e.g., @code{playback ([5, 10], grind, time, slow)}.
+@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+
+@opencatbox
+@category{Display functions} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{prompt}
+@defvr {Option variable} prompt
+Valor padr@~{a}o: @code{_}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@,{c}@~{a}o @mref{demo},
+modo @code{playback (slow)}, e do la@,{c}o de parada do Maxima (da forma invocada por
+@mref{break}).
+
+@opencatbox
+@category{Global variables} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{quit}
+@deffn {Function} quit ()
+
+Encerra a sess@~{a}o do Maxima.  Note que a fun@,{c}@~{a}o deve ser chamada como
+@code{quit();} ou como @code{quit()$}, n@~{a}o como @code{quit} somente.
+
+Para parar um c@'{a}lculo muito demorado, aperte @code{control-C}.  O comportamento padr@~{a}o @'{e}
+retornar paa a linha de comando do Maxima.  Se @code{*debugger-hook*} for @code{nil},
+@code{control-C} abre o depurador Lisp.  Veja tamb@'{e}m @ref{Debugging}.
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{read}
+@deffn {Function} read (@var{expr_1}, @dots{}, @var{expr_n})
+
+Mostra @var{expr_1}, @dots{}, @var{expr_n}, a seguir l@^{e} uma express@~{a}o a partir do
+console e retorna a express@~{a}o avaliada.  A express@~{a}o @'{e} terminada com
+um ponto e v@'{i}rgula @code{;} ou com o @code{$} (sinal de d@'{o}lar).
+
+Veja tamb@'{e}m @mref{readonly}
+
+Exemplo:
+
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo is", foo, " -- enter new value.")$
+foo is 42  -- enter new value. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{readonly}
+@deffn {Function} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+
+Mostra @var{expr_1}, @dots{}, @var{expr_n}, a seguir l@^{e} uma express@~{a}o a partir do
+console e retorna a express@~{a}o (sem avalia@,{c}@~{a}o).  A express@~{a}o @'{e}
+terminada com um @code{;} (ponto e v@'{i}rgula) ou com um @code{$} (sinal de d@'{o}lar).
+
+Veja tamb@'{e}m @mrefdot{read}
+
+Exemplos:
+
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Enter an expression:");
+Enter an expression: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Enter an expression:");
+Enter an expression: 
+2^aa;
+(%o3)                            128
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{reset}
+@deffn {Function} reset ()
+
+Volta muitas vari@'{a}veis globais e de op@,{c}@~{a}o, e algumas outras vari@'{a}veis, para seus
+valores padr@~{a}o.
+
+A fun@,{c}@~{a}o @code{reset} processa as vari@'{a}veis na lista Lisp
+@code{*variable-initial-values*}.  A macro Lisp @code{defmvar} coloca vari@'{a}veis
+nessa lista (entre outras a@,{c}@~{o}es).  Muitas, mas n@~{a}o todas, vari@'{a}veis globais e
+vari@'{a}veis de op@,{c}@~{a}o s@~{a}o definidas por @code{defmvar}, e algumas vari@'{a}veis definidas por
+@code{defmvar} n@~{a}o s@~{a}o vari@'{a}veis globais nem vari@'{a}veis de op@,{c}@~{a}o.
+
+@opencatbox
+@category{Session management}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{showtime}
+@defvr {Option variable} showtime
+Valor padr@~{a}o: @code{false}
+
+Quando @code{showtime} for @code{true}, o tempo de c@'{a}lculo e o tempo decorrido ambos s@~{a}o
+mostrados com cada express@~{a}o de sa@'{i}da.
+
+O tempo de c@'{a}lculo @'{e} sempre gravado, de forma que @mref{time} e @mref{playback} possam
+mostrar o tempo de c@'{a}lculo mesmo quando @code{showtime} for @code{false}.
+
+Veja tamb@'{e}m @mrefdot{timer}
+
+@opencatbox
+@category{Display flags and variables} @category{Debugging}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{to_lisp}
+@deffn {Function} to_lisp ()
+
+Insere o sistema Lisp em uma sess@~{a}o do Maxima.  A fun@,{c}@~{a}o @code{(to-maxima)} retorna ao Maxima.
+
+Exemplo:
+
+Define a function and enter the Lisp system under Maxima.  The definition is
+inspected on the property list, then the function definition is extracted,
+factored and stored in the variable $result.  The variable can be used in Maxima
+after returning to Maxima.
+
+@example
+(%i1) f(x):=x^2+x;
+                                  2
+(%o1)                    f(x) := x  + x
+(%i2) to_lisp();
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+MAXIMA> (symbol-plist '$f)
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) 
+                             ((MPLUS) ((MEXPT) $X 2) $X))))
+MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
+((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o2)                         true
+(%i3) result;
+(%o3)                       x (x + 1)
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{values}
+@defvr {System variable} values
+Valor inicial: @code{[]}
+
+A vari@'{a}vel de sistema @code{values} @'{e} uma lista de todas as vari@'{a}veis de usu@'{a}rio associadas (n@~{a}o op@,{c}@~{o}es do Maxima ou
+comutadores).  A lsita compreende s@'{i}mbolos associados por @mrefcomma{:} ou por @mrefdot{::}
+
+Se o valor de uma vari@'{a}vel @'{e} removido com os comandos @code{kill}, 
+@mrefcomma{remove} ou @mref{remvalue} a vari@'{a}vel @'{e} apagada de
+@code{values}.
+
+Veja @mref{functions} para uma lista de fun@,{c}@~{o}es definidas pelo usu@'{a}rio.
+
+Exemplos:
+
+Primeiramente, @code{values} mostra os s@'{i}mbolos @code{a}, @code{b}, 3 @code{c}, mas
+n@~{a}o mostra o s@'{i}mbolo @code{d}, ele n@~{a}o est@'{a} associado a um valor, e n@~{a}o mostra a fun@,{c}@~{a}o de usu@'{a}rio @code{f}.
+A seguir os valores s@~{a}o removidos das vari@'{a}veis.  A partir de agora a vari@'{a}vel de sistema @code{values} cont@'{e}m uma lista vazia.
+
+@c ===beg===
+@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
+@c values;
+@c [kill(a), remove(b,value), remvalue(c)];
+@c values;
+@c ===end===
+@example
+(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+                                           2
+(%o1)              [99, 9, 90, d, f(x) := x ]
+(%i2) values;
+(%o2)                       [a, b, c]
+(%i3) [kill(a), remove(b,value), remvalue(c)];
+(%o3)                   [done, done, [c]]
+(%i4) values;
+(%o4)                          []
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Display, , Functions and Variables for Command Line, Command Line
+@section Functions and Variables for Display
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%edispflag}
+@defvr {Option variable} %edispflag
+Valor padr@~{a}o: @code{false}
+
+Quando @code{%edispflag} for @code{true}, Maxima mostra a base @code{%e} com um expoente
+negativo como um quociente.  Por exemplo, @code{%e^-x} is displayed as
+@code{1/%e^x}.  Veja tamb@'{e}m @mrefdot{exptdispflag}
+
+Exemplo:
+
+@c ===beg===
+@c %e^-10;
+@c %edispflag:true$
+@c %e^-10;
+@c ===end===
+@example
+(%i1) %e^-10;
+                               - 10
+(%o1)                        %e
+(%i2) %edispflag:true$
+(%i3) %e^-10;
+                               1
+(%o3)                         ----
+                                10
+                              %e
+@end example
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{absboxchar}
+@defvr {Option variable} absboxchar
+Valor padr@~{a}o: @code{!}
+
+@code{absboxchar} @'{e} o caractere usado para desenhar o sinal de valor
+absoluto que envolve express@~{o}es que s@~{a}o de comprimento maor que o de uma linha.
+
+Exemplo:
+
+@example
+(%i1) abs((x^3+1));
+                            ! 3    !
+(%o1)                       !x  + 1!
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
+@c CUT IT ON THE NEXT PASS
+@c @defvar cursordisp
+@c Valor padr@~{a}o: @code{true}
+@c 
+@c When @code{cursordisp} is @code{true}, expressions are drawn by
+@c the displayer in logical sequence.  This only works with a console
+@c which can do cursor movement.  If @code{false}, expressions are
+@c printed line by line.
+@c 
+@c @code{cursordisp} is always @code{false} when a @code{writefile} is in
+@c effect.
+@c 
+@c @end defvar
+
+@c -----------------------------------------------------------------------------
+@anchor{disp}
+@deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
+
+Essa fun@,{c}@~{a}o @'{e} como @mref{display} mas somente o valor dos argumentos @'{e} mostrado ao inv@'{e}s das
+equa@,{c}@~{o}es.  @'{E} @'{u}til para argumentos complicados que n@~{a}o possuem nomes 
+ou onde somente o valor do argumento @'{e} de interesse e n@~{a}o o nome.
+
+Veja tamb@'{e}m @mref{ldisp} e @mrefdot{print}
+
+Exemplo:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c disp(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) disp(x, b[1,2], sin(1.0));
+                               123
+
+                                  2
+                             x - x
+
+                        .8414709848078965
+
+(%o3)                         done
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{display}
+@deffn {Function} display (@var{expr_1}, @var{expr_2}, @dots{})
+
+Mostra equa@,{c}@~{o}es cujo primeiro membro @'{e} @var{expr_i} n@~{a}o avaliado, e cujo segundo
+membro seja o valor da express@~{a}o de forma que ambos sejam centralizados na linha.  Essa fun@,{c}@~{a}o @'{e}
+@'{u}til em blocos e em declara@,{c}@~{o}es @mref{for} com o objetivo de ter resultados resultados intermedi@'{a}rios
+mostrados.  Os argumentos a @code{display} s@~{a}o normalmente @'{a}tomos, subscritos 
+vari@'{a}veis, ou chamadas a fun@,{c}@~{o}es.
+
+Veja tamb@'{e}m @mrefcomma{ldisplay} @mrefcomma{disp} e @mrefdot{ldisp}
+
+Exemplo:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c display(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) display(x, b[1,2], sin(1.0));
+                             x = 123
+
+                                      2
+                         b     = x - x
+                          1, 2
+
+                  sin(1.0) = .8414709848078965
+
+(%o3)                         done
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{display2d}
+@defvr {Option variable} display2d
+Valor padr@~{a}o: @code{true}
+
+Quando @code{display2d} for @code{false}, o console de exibi@,{c}@~{a}o @'{e} uma sequ@^{e}ncia de caracteres
+na forma unidimensional ao inv@'{e}s de um de exibi@,{c}@~{a}o na forma bidimensional.
+
+Veja tamb@'{e}m @mref{leftjust} para allternar entre um console de exibi@,{c}@~{a}o de equa@,{c}@~{o}es
+alinhado @`{a} esquerda e um console de exibi@,{c}@~{a}o de equa@,{c}@~{o}es centralizado.
+
+Exemplo:
+
+@c ===beg===
+@c x/(x^2+1);
+@c display2d:false$
+@c x/(x^2+1);
+@c ===end===
+@example
+(%i1) x/(x^2+1);
+                               x
+(%o1)                        ------
+                              2
+                             x  + 1
+(%i2) display2d:false$
+(%i3) x/(x^2+1);
+(%o3) x/(x^2+1)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{display_format_internal}
+@defvr {Option variable} display_format_internal
+Valor padr@~{a}o: @code{false}
+
+Quando @code{display_format_internal} for @code{true}, express@~{o}es s@~{a}o msotradas
+sem serem transformadas em formas que escondam a representa@,{c}@~{a}o matem@'{a}tica
+interna.  A exibi@,{c}@~{a}o ent@~{a}o corresponde ao retorno de @mref{inpart} 
+ao inv@'{e}s de corresponder ao retorno de @mrefdot{part}
+
+Exemplos:
+
+@example
+User     part       inpart
+a-b;      a - b     a + (- 1) b
+
+           a            - 1
+a/b;       -         a b
+           b
+                       1/2
+sqrt(x);   sqrt(x)    x
+
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c IS THIS FUNCTION STILL USEFUL ???
+@c REPHRASE, NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{dispterms}
+@deffn {Function} dispterms (@var{expr})
+
+Mostra @var{expr} em partes uma abaixo da outra.  Isto @'{e}, primeiramente o operador
+de @var{expr} @'{e} mostrado, a seguir cada parcela em uma soma, ou cada fator em um produto, ou
+parte de uma express@~{a}o mais geral @'{e} mostrada separadamente.  @'{E} @'{u}til se
+@var{expr} for muito grande para ser mostrada de outra forma.  Por exemplo se @code{P1},
+@code{P2}, @dots{}  forem espress@~{o}es muito grande ent@~{a}o o programa de exibi@,{c}@~{a}o pode executar
+fora do espa@,{c}o de armazenagem na tentativa de mostra @code{P1 + P2 + ...}  toda de uma vez.
+Todavia, @code{dispterms (P1 + P2 + ...)} mostra @code{P1}, ent@~{a}o abaixo dela
+mostra @code{P2}, etc.  Quando n@~{a}o se usa @code{dispterms}, se uma express@~{a}o exponencial
+@'{e} muito larga para ser mostrada como @code{A^B} aparece como @code{expt (A, B)} (ou
+como @code{ncexpt (A, B)} no caso de @code{A^^B})@footnote{Nota do tradutor: exponencial n@~{a}o comutativa.}.
+
+Exemplo:
+
+@example
+(%i1) dispterms(2*a*sin(x)+%e^x);
+
++
+
+2 a sin(x)
+
+  x
+%e
+
+(%o1)                         done
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{expt}
+@anchor{ncexpt}
+@deffn  {Special symbol} expt (@var{a}, @var{b})
+@deffnx {Special symbol} ncexpt (@var{a}, @var{b})
+
+Se uma express@~{a}o exponencial @'{e} muito larga para ser mostrada como
+@code{@var{a}^@var{b}} ela aparece como @code{expt (@var{a}, @var{b})} (ou como
+@code{ncexpt (@var{a}, @var{b})} no caso de @code{@var{a}^^@var{b}}).
+
+@c THIS SEEMS LIKE A BUG TO ME.  expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES.  THESE SHOULD JUST SIMPLIFY TO ^ AND ^^,
+@c RESPECTIVELY.
+Os s@'{i}mbolos especiais @code{expt} e @code{ncexpt} n@~{a}o s@~{a}o reconhecidos na entrada de dados.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{exptdispflag}
+@defvr {Option variable} exptdispflag
+Valor padr@~{a}o: @code{true}
+
+Quando @code{exptdispflag} for @code{true}, Maxima mostra express@~{o}es
+com expoentes negatovos usando quocientes.  Veja tamb@'{e}m @mrefdot{%edispflag}
+
+Exemplo:
+
+@example
+(%i1) exptdispflag:true;
+(%o1)                         true
+(%i2) 10^-x;
+                                1
+(%o2)                          ---
+                                 x
+                               10
+(%i3) exptdispflag:false;
+(%o3)                         false
+(%i4) 10^-x;
+                                - x
+(%o4)                         10
+@end example
+
+@opencatbox
+@category{Expressions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{grind}
+@deffn  {Function} grind (@var{expr})
+@deffnx {Option variable} grind
+
+A fun@,{c}@~{a}o @code{grind} mostra @var{expr} no console de forma adequada a ser usada
+em uma entrada do Maxima.  A fun@,{c}@~{a}o @code{grind} sempre retorna @code{done}.
+
+Quando @var{expr} for o nome de uma fun@,{c}@~{a}o ou de uma macro, @code{grind} mostra a
+fun@,{c}@~{a}o ou defini@,{c}@~{a}o de macro ao inv@'{e}s de mostrar apenas o nome.
+
+Veja tamb@'{e}m @mrefcomma{string} que retorna uma sequ@^{e}ncia de caracteres ao inv@'{e}s de mostrar sua
+sa@'{i}da.  A fun@,{c}@~{a}o @code{grind} tenta mostrar a express@~{a}o de uma maneira que a torna
+levemente mais f@'{a}cil de ler que a sa@'{i}da de @code{string}.
+
+Quando a vari@'{a}vel @code{grind} for @code{true}, a sa@'{i}da de @code{string} e a sa@'{i}da de
+@mref{stringout} possuem o mesmo formato que a sa@'{i}da de @code{grind}; de outra forma nenhuma
+tentativa @'{e} feita para formatar de forma especial a sa@'{i}da de @code{string} e de @code{stringout}.  O valor
+padr@~{a}o da vari@'{a}vel @code{grind} @'{e} @code{false}.
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{grind} pode tamb@'{e}m ser especificada como um argumento a @mrefdot{playback}  Quando
+@code{grind} estiver presente, @code{playback} mostra express@~{o}es de sa@'{i}da no mesmo
+formato que a fun@,{c}@~{a}o @code{grind}.  De outra forma, nenhuma tentativa @'{e} feita para formatar
+especialmente express@~{o}es de netrada.
+
+A fun@,{c}@~{a}o @code{grind} avalia seus argumentos.
+
+Exemplos:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c cholesky (A):= block ([n : length (A), L : copymatrix (A),
+@c   p : makelist (0, i, 1, length (A))], 
+@c   for i thru n do for j : i thru n do
+@c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
+@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   for i thru n do L[i, i] : 1 / p[i],
+@c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c grind (cholesky);
+@c string (fundef (cholesky));
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+@group
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+@end group
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+(%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
+  p : makelist (0, i, 1, length (A))], for i thru n do
+  for j : i thru n do
+  (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+  if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
+  for i thru n do L[i, i] : 1 / p[i],
+  for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+(%i15) grind (cholesky);
+cholesky(A):=block(
+         [n:length(A),L:copymatrix(A),
+          p:makelist(0,i,1,length(A))],
+         for i thru n do
+             (for j from i thru n do
+                  (x:L[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),
+                   if i = j then p[i]:1/sqrt(x)
+                       else L[j,i]:x*p[i])),
+         for i thru n do L[i,i]:1/p[i],
+         for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
+(%o15)                        done
+(%i16) string (fundef (cholesky));
+(%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
+t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
+[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
+) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
+n do (for j from i+1 thru n do L[i,j]:0),L)
+@end example
+
+@opencatbox
+@category{Display functions} @category{Display flags and variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ibase}
+@defvr {Option variable} ibase
+Valor padr@~{a}o: @code{10}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{ibase} define a base do sistema de numera@,{c}@~{a}o para os inteiros lidos pelo Maxima.
+
+@`{A} vari@'{a}vel de op@,{c}@~{a}o @code{ibase} pode ser atribu@'{i}do qualquer inteiro entre 2 e 36 (decimal), inclusive.
+Quando @code{ibase} for maior que 10,
+os numerais compreendem os algarismos de 0 a 9
+bem como as letras do alfabeto A, B, C, @dots{},
+da forma que @'{e} preciso para completar @code{ibase} d@'{i}gitos completamente.
+Letras s@~{a}o interpretadas como d@'{i}gitos somente se o primeiro d@'{i}gito for um dos algarismos de 0 a 9.
+Letras em caixa alta ou baixa s@~{a}o tratadas igualmente.
+Os numerais na base 36, a maior base aceit@'{a}vel,
+compreendem os algarismos de 0 a 9 e de A a Z.
+
+Qualquer que seja o valor de @code{ibase},
+quando um inteiro @'{e} terminado por um ponto decimal,
+@'{e} interpretado como sendo de base 10.
+
+Veja tamb@'{e}m @mrefdot{obase}
+
+Exemplos:
+
+@code{ibase} less than 10.
+
+@c ===beg===
+@c ibase : 2 $
+@c obase;
+@c 1111111111111111;
+@c ===end===
+@example
+(%i1) ibase : 2 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1111111111111111;
+(%o3)                         65535
+@end example
+
+Vari@'{a}vel de op@,{c}@~{a}o @code{ibase} maior que 10.
+Letras s@~{a}o interpretadas como d@'{i}gitos somente se o primeiro d´igito for um algarismo de 0 a 9.
+
+@c ===beg===
+@c ibase : 16 $
+@c obase;
+@c 1000;
+@c abcd;
+@c symbolp (abcd);
+@c 0abcd;
+@c symbolp (0abcd);
+@c ===end===
+@example
+(%i1) ibase : 16 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1000;
+(%o3)                         4096
+(%i4) abcd;
+(%o4)                         abcd
+(%i5) symbolp (abcd);
+(%o5)                         true
+(%i6) 0abcd;
+(%o6)                         43981
+(%i7) symbolp (0abcd);
+(%o7)                         false
+@end example
+
+Quando um inteiro for terminado por um ponto decimal,
+@'{e} interpretado como sendo de base 10.
+
+@c ===beg===
+@c ibase : 36 $
+@c obase;
+@c 1234;
+@c 1234.;
+@c ===end===
+@example
+(%i1) ibase : 36 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1234;
+(%o3)                         49360
+(%i4) 1234.;
+(%o4)                         1234
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ldisp}
+@deffn {Function} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
+
+Mostra as express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma que
+elas foram mostradas na sa@'{i}da.  A fun@,{c}@~{a}o @code{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada
+argumento e retorna a lista de r@'{o}tulos.
+
+Veja tamb@'{e}m @mrefcomma{disp} @mrefcomma{display} e @mrefdot{ldisplay}
+
+Exemplos:
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisp (e, f);
+                                   3
+(%t3)                       (b + a)
+
+                     3        2      2      3
+(%t4)               b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                   3
+(%o4)                       (b + a)
+(%i5) %t4;
+                     3        2      2      3
+(%o5)               b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ldisplay}
+@deffn {Function} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
+
+Mostra express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma que
+elas foram mostradas na sa@'{i}da.  Cada express@~{a}o @'{e} mostrada como uma equa@,{c}@~{a}o da forma
+@code{primeiromembro = segundomembro} na qual @code{primeiromembro} @'{e} um dos argumentos de @code{ldisplay}
+e @code{segundomembro} @'{e} seu valor.  Tipicamente cada argumento @'{e} uma vari@'{a}vel.
+A fun@,{c}@~{a}o @mref{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada equa@,{c}@~{a}o e
+retorna a lista de r@'{o}tulos.
+
+Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp} e @mrefdot{ldisp}
+
+Exemplos:
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisplay (e, f);
+                                     3
+(%t3)                     e = (b + a)
+
+                       3        2      2      3
+(%t4)             f = b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                     3
+(%o4)                     e = (b + a)
+(%i5) %t4;
+                       3        2      2      3
+(%o5)             f = b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{leftjust}
+@defvr {Option variable} leftjust
+Valor padr@~{a}o: @code{false}
+
+Quando @code{leftjust} for @code{true}, equa@,{c}@~{o}es no console 2D s@~{a}o desenhadas alinhadas
+@`{a} esquerda ao inv@'{e}s de centralizadas.
+
+Veja tamb@'{e}m @mref{display2d} para alternar entre o console de exibi@,{c}@~{a}o 1D e o console de exibi@,{c}@~{a}o 2D.
+
+Exemplo:
+
+@example
+(%i1) expand((x+1)^3);
+                        3      2
+(%o1)                  x  + 3 x  + 3 x + 1
+(%i2) leftjust:true$
+(%i3) expand((x+1)^3);
+       3      2
+(%o3) x  + 3 x  + 3 x + 1
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{linel}
+@defvr {Option variable} linel
+Valor padr@~{a}o: @code{79}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{linel} @'{e} a largura assumida (em caracteres) do console de exibi@,{c}@~{a}o com
+a finalidade de mstrar express@~{o}es.  @`{A} vari@'{a}vel de op@,{c}@~{a}o @code{linel} pode ser atribu@'{i}do qualquer valor pelo
+usu@'{a}rio, embora valores muito pequenos ou muito grandes sejam impratic@'{a}veis.  Texto
+mostradaos pelas fun@,{c}@~{o}es embutidas do Maxima, tais como mensagens de erro e a sa@'{i}da de
+@mrefcomma{describe} n@~{a}o s@~{a}o afetadas por @code{linel}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{lispdisp}
+@defvr {Option variable} lispdisp
+Valor padr@~{a}o: @code{false}
+
+Quandon @code{lispdisp} for @code{true}, s@'{i}mbolos Lisp s@~{a}o mostrados com uma interroga@,{c}@~{a}o
+@code{?} no in@'{i}cio.  De outra forma, s@'{i}mbolos Lisp s@~{a}o mostrados sem nada no
+in@'{i}cio.
+
+Exemplos:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{negsumdispflag}
+@defvr {Option variable} negsumdispflag
+Valor padr@~{a}o: @code{true}
+
+Quando @code{negsumdispflag} for @code{true}, @code{x - y} @'{e} exibido como @code{x - y}
+masmo ao inv@'{e}s de ser exibido como @code{- y + x}.  Ajustando @code{negsumdispflag} para @code{false} faz com que a
+verifica@,{c}@~{a}o especial na exibi@,{c}@~{a}o de diferen@,{c}as entre duas express@~{o}es n@~{a}o seja feita.  Uma
+aplica@,{c}@~{a}o @'{e} que dessa forma @code{a + %i*b} e @code{a - %i*b} podem ambas serem
+mostradas da mesma maneira.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{obase}
+@defvr {Option variable} obase
+Valor padr@~{a}o: @code{10}
+
+@code{obase} is the base for integers displayed by Maxima.
+
+@code{obase} may be assigned any integer between 2 and 36 (decimal), inclusive.
+When @code{obase} is greater than 10,
+the numerals comprise the decimal numerals 0 through 9
+plus capital letters of the alphabet A, B, C, @dots{}, as needed.
+A leading 0 digit is displayed if the leading digit is otherwise a letter.
+The numerals for base 36, the largest acceptable base,
+comprise 0 through 9, and A through Z.
+
+Veja tamb@'{e}m @mrefdot{ibase}
+
+Exemplos:
+
+@c ===beg===
+@c obase : 2;
+@c 2^8 - 1;
+@c obase : 8;
+@c 8^8 - 1;
+@c obase : 16;
+@c 16^8 - 1;
+@c obase : 36;
+@c 36^8 - 1;
+@c ===end===
+@example
+(%i1) obase : 2;
+(%o1)                          10
+(%i2) 2^8 - 1;
+(%o10)                      11111111
+(%i3) obase : 8;
+(%o3)                          10
+(%i4) 8^8 - 1;
+(%o4)                       77777777
+(%i5) obase : 16;
+(%o5)                          10
+(%i6) 16^8 - 1;
+(%o6)                       0FFFFFFFF
+(%i7) obase : 36;
+(%o7)                          10
+(%i8) 36^8 - 1;
+(%o8)                       0ZZZZZZZZ
+@end example
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{pfeformat}
+@defvr {Option variable} pfeformat
+Valor padr@~{a}o: @code{false}
+
+Quando @code{pfeformat} for @code{true}, uma raz@~{a}o entre inteiros @'{e} mostrada com a
+barra normal representando o tra@,{c}o de fra@,{c}@~{a}o, e um denominador inteiro @code{n} @'{e}
+mostrado como um termo multipllicativo @code{1/n} no in@'{i}cio.
+
+Exemplos:
+
+@example
+(%i1) pfeformat: false$
+(%i2) 2^16/7^3;
+                              65536
+(%o2)                         -----
+                               343
+(%i3) (a+b)/8;
+                              b + a
+(%o3)                         -----
+                                8
+(%i4) pfeformat: true$ 
+(%i5) 2^16/7^3;
+(%o5)                       65536/343
+(%i6) (a+b)/8;
+(%o6)                      1/8 (b + a)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{powerdisp}
+@defvr {Option variable} powerdisp
+Valor padr@~{a}o: @code{false}
+
+Quando @code{powerdisp} for @code{true},
+uma soma @'{e} mostrada com seus termos em ordem crescente de expoente.
+Dessa forma um polin@^{o}mio @'{e} mostrado como uma s@'{e}rie de pot@^{e}ncia truncada,
+com os termos constantes na frente e o maior expoente por @'{u}ltimo.
+
+Por padr@~{a}o, termos de uma soma s@~{a}o mostrados em ordem decrescente de expoente.
+
+Exemplo:
+
+@example
+(%i1) powerdisp:true;
+(%o1)                         true
+(%i2) x^2+x^3+x^4;
+                           2    3    4
+(%o2)                     x  + x  + x
+(%i3) powerdisp:false;
+(%o3)                         false
+(%i4) x^2+x^3+x^4;
+                           4    3    2
+(%o4)                     x  + x  + x
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{print}
+@deffn {Function} print (@var{expr_1}, @dots{}, @var{expr_n})
+
+Avalia e mostra @var{expr_1}, @dots{}, @var{expr_n} uma ap@'{o}s a outra,
+da esquerda para a direita, iniciando a partir do canto esquerdo do console de exibi@,{c}@~{a}o.
+
+O valor retornado por @code{print} @'{e} o valor de seu @'{u}ltimo argumento.
+A fun@,{c}@~{a}o @code{print} n@~{a}o gera r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
+
+Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp} @mrefcomma{ldisplay} ae
+@mrefdot{ldisp}  Essas fun@,{c}@~{o}es mostram uma express@~{a}o por linha, enquanto
+@code{print} tenta mostrar duas ou mais express@~{o}es por linha.
+
+Para mostrar o conte@'{u}do de um arquivo, veja @mrefdot{printfile}
+
+Exemplos:
+
+@example
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+            3        2      2      3
+(a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
+
+                                              10 log(a) - log(b) 
+(%i2) r;
+(%o2)                  10 log(a) - log(b)
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+                           (a+b)^3 is
+
+                     3        2      2      3
+                    b  + 3 a b  + 3 a  b + a
+
+                         log (a^10/b) is
+
+                       10 log(a) - log(b)
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
+@defvr {Option variable} sqrtdispflag
+Valor padr@~{a}o: @code{true}
+
+Quando @code{sqrtdispflag} for @code{false}, faz com que @code{sqrt} seja mostrado com
+expoente 1/2.
+@c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Mathematical functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{stardisp}
+@defvr {Option variable} stardisp
+Valor padr@~{a}o: @code{false}
+
+Quando @code{stardisp} for @code{true}, multiplica@,{c}@~{a}o @'{e}
+mostrada com um asterisco @code{*} entre os fatores.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ttyoff}
+@defvr {Option variable} ttyoff
+Valor padr@~{a}o: @code{false}
+
+Quando @code{ttyoff} for @code{true}, express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o mostradas.
+Mesmo assim elas ainda ser@~{a}o calculadas e ainda receber@~{a}o r@'{o}tulos de sa@'{i}da.  Veja @mrefdot{labels}
+
+Texto mostrados pela fun@,{c}@~{o}es embutidas no Maxima, tais como mensagens de erro e a sa@'{i}da
+de @mrefcomma{describe} n@~{a}o s@~{a}o afetadas por @code{ttyoff}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
