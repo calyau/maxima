@@ -216,12 +216,17 @@
     
     (if ($get_plot_option '$gnuplot_out_file 2)
         (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-        ;; default output file name for for all formats except default
-    (if (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
-             (null gnuplot-out-file))
-        (setq gnuplot-out-file 
-              (plot-temp-file (format nil "maxplot.~(~a~)" 
-                                          (get-gnuplot-term ($get_plot_option '$gnuplot_term 2)))) ))
+    ;; default output file name for all formats except default
+    (when (not (eq ($get_plot_option '$gnuplot_term 2) '$default))
+      (cond ((null gnuplot-out-file)
+	     (setq gnuplot-out-file
+		   (plot-temp-file
+		    (format nil "maxplot.~(~a~)"
+			    (get-gnuplot-term 
+			     ($get_plot_option '$gnuplot_term 2))))))
+	    ((not (search "/" gnuplot-out-file))
+	     (setq gnuplot-out-file (plot-temp-file gnuplot-out-file)))))
+    ;; set the gnuplot terminal
     (case ($get_plot_option '$gnuplot_term 2)
       ($default
        (format dest "~a~%" 
@@ -269,7 +274,8 @@
         ($x (format dest "set xzeroaxis~%"))
         ($y (format dest "set yzeroaxis~%"))
         (t (format dest "set zeroaxis~%"))))
-    (format dest "set datafile missing ~s~%" *missing-data-indicator*)))
+    (format dest "set datafile missing ~s~%" *missing-data-indicator*)
+  (or gnuplot-out-file "")))
 
 (defun gnuplot-plot3d-command (file titles n) 
 (let (title (style "with pm3d")

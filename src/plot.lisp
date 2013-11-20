@@ -1323,9 +1323,11 @@ sin(y)*(10.0+6*cos(x)),
              (setq ymax (car l)))))
     (list '(mlist) ymin ymax)))
 
-(defvar $gnuplot_view_args "-persist ~s")
+#+sbcl (defvar $gnuplot_view_args "-persist ~a")
+#-sbcl (defvar $gnuplot_view_args "-persist ~s")
 
-(defvar $gnuplot_file_args "~s")
+#+sbcl (defvar $gnuplot_file_args "~a")
+#-sbcl (defvar $gnuplot_file_args "~s")
 
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
@@ -1345,32 +1347,34 @@ sin(y)*(10.0+6*cos(x)),
         (gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
         (view-file))
     ;; default output file name for for all formats except default
-    (when (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
-               (null gnuplot-out-file))
-      (setq gnuplot-out-file 
-        (plot-temp-file (format nil "maxplot.~(~a~)" (get-gnuplot-term gnuplot-term))))
-      (setq gnuplot-out-file-string gnuplot-out-file)) 
+    (when (not (eq gnuplot-term '$default))
+      (cond ((null gnuplot-out-file)
+	     (setq gnuplot-out-file
+		   (plot-temp-file (format nil "maxplot.~(~a~)"
+					   (get-gnuplot-term gnuplot-term)))))
+	    ((not (search "/" gnuplot-out-file))
+	      (setq gnuplot-out-file (plot-temp-file gnuplot-out-file))))
+      (setq gnuplot-out-file-string gnuplot-out-file))
+
     ;; run gnuplot in batch mode if necessary before viewing
-    (if (and gnuplot-out-file (not (eq gnuplot-term '$default)))
-        ($system (format nil "~a ~s" $gnuplot_command file)))
+    (when (and gnuplot-out-file (not (eq gnuplot-term '$default)))
+      ($system (format nil "~a ~a" $gnuplot_command
+		       (format nil $gnuplot_file_args file))))
     (when run-viewer
       (if (eq gnuplot-term '$default)
           (setf view-file file)
-          (setf view-file gnuplot-out-file-string))
+	(setf view-file gnuplot-out-file-string))
       (case gnuplot-term
         ($default
-         ($system (format nil "~a ~a" $gnuplot_command
-                          (format nil (if (search "set out " gnuplot-preamble) 
-                                         $gnuplot_file_args 
-                                         $gnuplot_view_args)
-                                      view-file))))
+         ($system 
+	  (format nil "~a ~a" $gnuplot_command
+		  (format nil (if (search "set out " gnuplot-preamble) 
+				  $gnuplot_file_args $gnuplot_view_args)
+			  view-file))))
         ($dumb
          (if gnuplot-out-file
              ($printfile view-file)
-             (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))
-    (if gnuplot-out-file
-        gnuplot-out-file-string
-        "")))
+             (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
 (defun plot-options-parser (options features)
 ;; Given a maxima list with options, it creates a lisp list with
@@ -1408,14 +1412,16 @@ sin(y)*(10.0+6*cos(x)),
 	   (setf (getf features :legend)
 		 (if ($listp (third v)) (cdr (third v)) (cddr v))))
           ($psfile
-           ($set_plot_option '((mlist simp) $gnuplot_term $ps))
-           ($set_plot_option `((mlist simp) $gnuplot_out_file ,(third v)))
+           ($set_plot_option '((mlist) $gnuplot_term $ps))
+           ($set_plot_option `((mlist) $gnuplot_out_file ,(third v)))
            (setf (getf features :psfile) (ensure-string (third v))))
           (t ($set_plot_option v)))
         (merror (intl:gettext "plotting: argument must be a list; found: ~M") v)))
   (when ($get_plot_option '$axes 2)
     (setf (getf features :axes) ($get_plot_option '$axes 2)))
   (setf (getf features :grid) ($get_plot_option '$grid))
+  (when (eq ($get_plot_option '$gnuplot_term 2) '$dumb)
+    ($set_plot_option '((mlist) $plot_format $gnuplot)))
   (if ($get_plot_option '$plot_format 2)
       (setf (getf features :plot-format) ($get_plot_option '$plot_format 2))
       (setf (getf features :plot-format) '$gnuplot))
@@ -1566,13 +1572,12 @@ sin(y)*(10.0+6*cos(x)),
     (if ($get_plot_option '$gnuplot_out_file 2)
       (setq gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     (if (and (eq (getf features :plot-format) '$gnuplot)
-             (eq gnuplot-term '$default) 
-             gnuplot-out-file)
-      (setq file gnuplot-out-file)
-      (setq file
-            (plot-temp-file
-             (format nil "maxout.~(~a~)"
-                     (ensure-string (getf features :plot-format))))))
+             (eq gnuplot-term '$default) gnuplot-out-file)
+        (setq file gnuplot-out-file)
+        (setq file
+              (plot-temp-file
+               (format nil "maxout.~(~a~)"
+                       (ensure-string (getf features :plot-format))))))
 
     ;; old function $plot2dopen incorporated here
     (case (getf features :plot-format)
@@ -1646,7 +1651,7 @@ sin(y)*(10.0+6*cos(x)),
        (with-open-file (st file :direction :output :if-exists :supersede)
          (case (getf features :plot-format)
            ($gnuplot
-            (gnuplot-print-header st features)
+            (setq output-file (gnuplot-print-header st features))
             (format st "plot")
             (when (and (getf features :xmin)(getf features :xmax))
               (format st " [~g:~g]" (getf features :xmin)(getf features :xmax)))
@@ -1657,7 +1662,7 @@ sin(y)*(10.0+6*cos(x)),
            ($gnuplot_pipes
             (check-gnuplot-process)
             ($gnuplot_reset)
-            (gnuplot-print-header *gnuplot-stream* features)
+            (setq output-file (gnuplot-print-header *gnuplot-stream* features))
             (setq *gnuplot-command* (format nil "plot"))
             (when (and (getf features :xmin)(getf features :xmax))
               (setq
@@ -1784,14 +1789,13 @@ sin(y)*(10.0+6*cos(x)),
 
     (case (getf features :plot-format)
       ($gnuplot 
-       (setq output-file (gnuplot-process file)))
+       (gnuplot-process file))
       ($gnuplot_pipes
        (send-gnuplot-command *gnuplot-command*))
       ($mgnuplot 
        ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
                 (format nil " -plot2d ~s -title ~s" file "Fun1"))))
-output-file))
-
+    (format nil "~a~&~a" file output-file)))
 
 (defun msymbolp (x)
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
@@ -2188,12 +2192,12 @@ Several functions depending on the two variables v1 and v2:
     (unwind-protect
          (case (getf features :plot-format)
            ($gnuplot
-            (gnuplot-print-header $pstream features)
+            (setq output-file (gnuplot-print-header $pstream features))
             (format $pstream "~a" (gnuplot-plot3d-command "-" titles n)))
            ($gnuplot_pipes
-            (setq output-file (check-gnuplot-process))
+            (check-gnuplot-process)
             ($gnuplot_reset)
-            (gnuplot-print-header *gnuplot-stream* features)
+            (setq output-file (gnuplot-print-header *gnuplot-stream* features))
             (setq *gnuplot-command* (gnuplot-plot3d-command file titles n)))
            ($xmaxima
             (xmaxima-print-header $pstream features))
@@ -2283,7 +2287,7 @@ Several functions depending on the two variables v1 and v2:
                    (concatenate
                     'string *maxima-plotdir* "/" $mgnuplot_command)
                    (format nil " -parametric3d \"~a\"" file))))))))
-  output-file)
+    (format nil "~a~&~a" file output-file))
 
 ;; Given a Maxima list with 3 elements, checks whether it represents a function
 ;; defined in a 2-dimensional domain or a parametric representation of a
