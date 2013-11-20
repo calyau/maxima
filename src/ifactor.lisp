@@ -170,7 +170,7 @@
 
 (defun cfactor (x)
   (cond ((null $factorflag) (return-from cfactor (list x 1)))
-	((floatp x) (errrjf "`factor' given floating arg"))
+	((floatp x) (rat-error "`factor' given floating arg"))
 	((pzerop x) (return-from cfactor (list (pzero) 1)))
 	((equal x -1) (return-from cfactor (list -1 1)))
 	((minusp x) (return-from cfactor (cons -1 (cons 1 (cfactor (- x))))))

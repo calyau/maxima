@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic errrjfflag varlist ss *y* f $factorflag modulus
+(declare-top (special $algebraic varlist ss *y* f $factorflag modulus
 		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
 		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
 
@@ -305,7 +305,7 @@
 ;;	THE FUNCTIONS ON THIS PAGE ARE USED BY KRONECKER FACTORING
 
 (defun pkroneck (p)
-  (prog (maxexp i l *p factors factor errrjfflag)
+  (prog (maxexp i l *p factors factor)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
      a    (when (> i maxexp) (return (cons p factors)))
@@ -314,9 +314,8 @@
      b    (when (null l) (go d))
      (setq *l (car l))
      (setq *p (car p))
-     (setq errrjfflag t)
-     (setq factor (errset (pinterpolate *l *p) nil))
-     (setq errrjfflag nil)
+     (ignore-rat-err
+       (setq factor (errset (pinterpolate *l *p) nil)))
      (setq l (cdr l))
      (if (atom factor)
 	 (go b)

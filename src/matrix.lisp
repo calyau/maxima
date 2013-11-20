@@ -12,7 +12,7 @@
 
 (macsyma-module matrix)
 
-(declare-top (special errrjfflag *ech* *tri* *inv*
+(declare-top (special *ech* *tri* *inv*
 		      mdl $detout vlist mul* top* *det* genvar $ratfac
 		      varlist header $scalarmatrixp $sparse
 		      $algebraic *rank* *mat*))
@@ -307,9 +307,8 @@
 (defun ritediv (x m n a)
   (declare (fixnum m n))
   (setq x (get-array-pointer x))
-  (prog ((j 0) (i 0) d errrjfflag)
+  (prog ((j 0) (i 0) d)
      (declare (fixnum i j))
-     (setq errrjfflag t)
      (setq i m)
      loop1 (when (zerop i) (return nil))
      (setf (aref x i i) nil)
@@ -319,7 +318,7 @@
      (cond ((equal a 1)
 	    (setf (aref x i j) (cons (aref x i j) 1))
 	    (go loop)))
-     (setq d (catch 'raterr (pquotient (aref x i j) a)))
+     (setq d (ignore-rat-err (pquotient (aref x i j) a)))
      (setq d (cond (d (cons d 1))
 		   (t (ratreduce (aref x i j) a))))
      (setf (aref x i j) d)

@@ -49,15 +49,18 @@
 	    (print-invert-case (stripdollar $prompt))
 	    *prompt-suffix*)))
 
-;; there is absoletely no need to catch errors here, because
-;; they are caught by the macsyma-listener window process on
-;; the lisp machine, or by setting the single toplevel process in Maclisp. -gjc
-
-;; Replacing the defmacro definition with a defun version, in order to
-;; allow more flexibility with evaluation order via redefinition
-;;(defmacro toplevel-macsyma-eval (x) `(meval* ,x))
-
-(defun toplevel-macsyma-eval (x) (meval* x))
+(defun toplevel-macsyma-eval (x)
+  ;; Catch rat-err's here.
+  ;;
+  ;; The idea is that eventually there will be quite a few "maybe catch this"
+  ;; errors, which will be raised and might well get eaten before they get as far
+  ;; as here. However, we want to display them nicely like merror rather than
+  ;; letting a lisp error percolate to the debugger and, as such, we catch them
+  ;; here and replace them with an merror call.
+  ;;
+  ;; Other random errors get to the lisp debugger, which is normally set to print
+  ;; them and continue, via *debugger-hook*.
+  (rat-error-to-merror (meval* x)))
 
 (defmvar $_ '$_ "last thing read in, corresponds to lisp +")
 (defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")

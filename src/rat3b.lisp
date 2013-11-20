@@ -147,7 +147,7 @@
 
 (defun ratinvert (y)
   (ratalgdenom
-   (cond ((pzerop (car y)) (errrjf "`quotient' by `zero'"))
+   (cond ((pzerop (car y)) (rat-error "`quotient' by `zero'"))
 	 ((and modulus (pcoefp (car y)))
 	  (cons (pctimes (crecip (car y)) (cdr y)) 1))
 	 ((and $keepfloat (floatp (car y)))
@@ -162,14 +162,13 @@
   (cond ((not $ratalgdenom) x)
 	((pcoefp (cdr x)) x)
 	((and (alg (cdr x))
-	      (let ((errrjfflag t))
-		(catch 'raterr
-		  (rattimes (cons (car x) 1)
-			    (rainv (cdr x)) t)))))
+	      (ignore-rat-err
+                (rattimes (cons (car x) 1)
+                          (rainv (cdr x)) t))))
 	(t x)))
 
 (defmfun ratreduce (x y &aux b)
-  (cond ((pzerop y) (errrjf "`quotient' by `zero'"))
+  (cond ((pzerop y) (rat-error "`quotient' by `zero'"))
 	((pzerop x) (rzero))
 	((equal y 1) (cons x 1))
 	((and $keepfloat (pcoefp y) (or $float (floatp y) (pfloatp x)))
