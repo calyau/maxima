@@ -144,7 +144,6 @@
 	(when (or (not (checklabel $inchar))
 		  (not (checklabel $outchar)))
 	  (incf $linenum))
-	#+akcl(si::reset-stack-limits)
 	(setq c-tag (makelabel $inchar))
 	(let ((*mread-prompt* (if batch-or-demo-flag nil (main-prompt)))
 	      (eof-count 0))
