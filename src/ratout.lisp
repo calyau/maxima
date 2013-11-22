@@ -14,11 +14,9 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic errrjfflag varlist ss *y* f $factorflag modulus
+(declare-top (special $algebraic varlist ss *y* f $factorflag modulus
 		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
 		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
-
-(load-macsyma-macros ratmac)
 
 (declare-top (special $gcd xv bigf1 bigf2 nonlindeg $linhack
 		      $intfaclim bigf1tilde bigf2tilde
@@ -28,7 +26,7 @@
 ;;	(GCD, X/GCD, Y/GCD)
 
 (defun newgcd (x y modulus)
-  (setqmodulus modulus)
+  (set-modulus modulus)
   (let ((a (cond ((pcoefp x)
 		  (cond ((zerop x) y)
 			((pcoefp y) (cgcd x y))
@@ -141,7 +139,7 @@
 	 gbar		nubar		nu1bar		nu2bar
 	 gtilde		f1tilde		f2tilde		biggtilde
 	 degree		f1		f1f2)
-     (setqmodulus modulus)
+     (set-modulus modulus)
      (cond ((and (univar (cdr bigf1)) (univar (cdr bigf2)))
 	    (setq q (pgcdu bigf1 bigf2))
 	    (return (list q (pquotient bigf1 q) (pquotient bigf2 q)))))
@@ -254,7 +252,7 @@
      step6a
      (cond ((or (zerop (rem f1 p)) (zerop (rem f2 p)))
 	    (go step6)))
-     (setqmodulus p)
+     (set-modulus p)
      ;; Step 7
      (setq gtilde (pmod gbar))
      ;; Step 8
@@ -278,7 +276,7 @@
 	   ((vgreat e degree) (setq n 0) (setq e degree)))
      (setq n (1+ n))
      ;; Step 11
-     (setqmodulus nil)
+     (set-modulus nil)
      (cond ((equal n 1) (setq q p)
 	    (setq gstar biggtilde)
 	    (setq h1star h1tilde)
@@ -293,7 +291,7 @@
 			 (* gtilde (maxcoefficient h2star))))
 	       q)
 	    (go step6)))
-     (setqmodulus nil)
+     (set-modulus nil)
      (setq gstar (cadr (pcontent gstar)))
      step15
      (setq last-good-prime p)
@@ -305,7 +303,7 @@
 ;;	THE FUNCTIONS ON THIS PAGE ARE USED BY KRONECKER FACTORING
 
 (defun pkroneck (p)
-  (prog (maxexp i l *p factors factor errrjfflag)
+  (prog (maxexp i l *p factors factor)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
      a    (when (> i maxexp) (return (cons p factors)))
@@ -314,9 +312,8 @@
      b    (when (null l) (go d))
      (setq *l (car l))
      (setq *p (car p))
-     (setq errrjfflag t)
-     (setq factor (errset (pinterpolate *l *p) nil))
-     (setq errrjfflag nil)
+     (ignore-rat-err
+       (setq factor (errset (pinterpolate *l *p) nil)))
      (setq l (cdr l))
      (if (atom factor)
 	 (go b)
@@ -460,10 +457,10 @@
      (setq f (halfsplit f d) g (halfsplit g d))
      (setq a (fptimes1 (car f) (car g)))
      (setq b
-	   (fptimes1 (pplus1 (car f) (cdr f)) (pplus1 (car g) (cdr g))))
+	   (fptimes1 (ptptplus (car f) (cdr f)) (pplus1 (car g) (cdr g))))
      (setq c (fptimes1 (cdr f) (cdr g)))
-     (setq b (pdiffer1 (pdiffer1 b a) c))
-     (return (pplus1 (lsft a (ash d 1)) (pplus1 (lsft b d) c)))))
+     (setq b (ptptdiffer (pdiffer1 b a) c))
+     (return (ptptplus (lsft a (ash d 1)) (pplus1 (lsft b d) c)))))
 
 (defun halfsplit (p d)
   (do ((a) (p p (cddr p)))
@@ -540,10 +537,10 @@
      (setq e (+ (car *x*) (car y)))
      (setq c (wtptimes (cadr y) (cadr *x*) (+ wtsofar (* xweight e))))
      (cond ((pzerop c) (setq y (cddr y)) (go a1))
-	   ((or (null v) (> e (car v))) (setq u* (setq v (pplus1 u* (list e c)))) (setq y (cddr y)) (go a1))
+	   ((or (null v) (> e (car v))) (setq u* (setq v (ptptplus u* (list e c)))) (setq y (cddr y)) (go a1))
 	   ((equal e (car v))
 	    (setq c (pplus c (cadr v)))
-	    (cond ((pzerop c) (setq u* (setq v (pdiffer1 u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
+	    (cond ((pzerop c) (setq u* (setq v (ptptdiffer u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
 	    (setq y (cddr y))
 	    (go a1)))
      a    (cond ((and (cddr v) (> (caddr v) e)) (setq v (cddr v)) (go a)))

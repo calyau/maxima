@@ -20,8 +20,6 @@
 		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 
-(load-macsyma-macros rzmac ratmac)
-
 (defmvar genvar nil
   "List of gensyms used to point to kernels from within polynomials.
 	 The values cell and property lists of these symbols are used to

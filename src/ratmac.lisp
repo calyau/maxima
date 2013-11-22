@@ -38,7 +38,11 @@
 ;; Specifically, the coefficient terms can be polynomials themselves (in other
 ;; variables). So x^2 + x*y could be rperesented as (($x 2 1 1 ($y 1 1))) or
 ;; alternatively as (($y 1 ($x 1 1) 0 ($x 2 1))), depending on whether x or y
-;; was taken as the primary variable.
+;; was taken as the primary variable. If you add together two polynomials in
+;; different variables (say x+1 and y+2) in the rational function code, then it
+;; decides on the main variable using POINTERGP. This only works if the
+;; variables have already been given a numbering by the rest of the rational
+;; function code.
 ;;
 ;; In the x*sin(x) + x^2 example above, the expression can be represented as
 ;; something like ($x 2 1 1 (sinx 1 1)). When passed around as expressions

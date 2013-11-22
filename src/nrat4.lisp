@@ -15,8 +15,6 @@
 (declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag
 		      $radexpand $logsimp *v *var fr-factor radcanp ratsubvl))
 
-(load-macsyma-macros rzmac ratmac)
-
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
 

@@ -49,15 +49,18 @@
 	    (print-invert-case (stripdollar $prompt))
 	    *prompt-suffix*)))
 
-;; there is absoletely no need to catch errors here, because
-;; they are caught by the macsyma-listener window process on
-;; the lisp machine, or by setting the single toplevel process in Maclisp. -gjc
-
-;; Replacing the defmacro definition with a defun version, in order to
-;; allow more flexibility with evaluation order via redefinition
-;;(defmacro toplevel-macsyma-eval (x) `(meval* ,x))
-
-(defun toplevel-macsyma-eval (x) (meval* x))
+(defun toplevel-macsyma-eval (x)
+  ;; Catch rat-err's here.
+  ;;
+  ;; The idea is that eventually there will be quite a few "maybe catch this"
+  ;; errors, which will be raised and might well get eaten before they get as far
+  ;; as here. However, we want to display them nicely like merror rather than
+  ;; letting a lisp error percolate to the debugger and, as such, we catch them
+  ;; here and replace them with an merror call.
+  ;;
+  ;; Other random errors get to the lisp debugger, which is normally set to print
+  ;; them and continue, via *debugger-hook*.
+  (rat-error-to-merror (meval* x)))
 
 (defmvar $_ '$_ "last thing read in, corresponds to lisp +")
 (defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
@@ -560,19 +563,22 @@
 (defun $system (&rest args)
   ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
   ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
-  (let ((s (and (boundp '*socket-connection*) *socket-connection*)))
+  (let ((s (and (boundp '*socket-connection*) *socket-connection*))
+	shell shell-opt)
+    (cond ((string= *autoconf-win32* "true")
+	   (setf shell "cmd") (setf shell-opt "/c"))
+	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
+
     #+(or gcl ecl clisp lispworks)
     (declare (ignore s))
     
     #+gcl (lisp:system (apply '$sconcat args))
     #+ecl (si:system (apply '$concat args))
     #+clisp (ext:run-shell-command (apply '$sconcat args))
-    #+(or cmu scl) (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
+    #+(or cmu scl) (ext:run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
-    #+sbcl (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
-    #+openmcl (if (member :windows *features*)
-		  (ccl::run-program "cmd" (list "/c" (apply '$sconcat args)) :output (or s t))
-		  (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t)))
+    #+sbcl (sb-ext:run-program shell (list shell-opt (apply '$sconcat args)) :search t :output (or s t))
+    #+openmcl (ccl::run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))
     #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 
