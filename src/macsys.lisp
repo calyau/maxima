@@ -565,13 +565,13 @@
   ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
   (let ((s (and (boundp '*socket-connection*) *socket-connection*))
 	shell shell-opt)
+    #+(or gcl ecl clisp lispworks)
+    (declare (ignore s))
+
     (cond ((string= *autoconf-win32* "true")
 	   (setf shell "cmd") (setf shell-opt "/c"))
 	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
 
-    #+(or gcl ecl clisp lispworks)
-    (declare (ignore s))
-    
     #+gcl (lisp:system (apply '$sconcat args))
     #+ecl (si:system (apply '$concat args))
     #+clisp (ext:run-shell-command (apply '$sconcat args))
