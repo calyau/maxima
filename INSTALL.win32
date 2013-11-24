@@ -260,3 +260,17 @@ directory (c:/maxima above) before testing the installation.
     plot2d(sin(x),[x,0,10],[psfile,"pstest.ps"]);
  o Try out the on-line help: describe(sin)
 
+
+Troubleshooting
+===============
+
+The Windows installer for gcl-based maxima requires gcc and as.  The gcc 
+files required depend on the version of gcc used. If compilation fails
+then some troubleshooting is required.
+
+One way to do this is to generate the .c file within maxima, and 
+get get gcl to save it.
+  f(x):=x+2$
+  :lisp (setq compiler::*keep-gaz* t)
+  compile(f);
+then open a cmd window and run the gcc from the command line. 
