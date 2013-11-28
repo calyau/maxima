@@ -716,10 +716,9 @@
 	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
 	    (cl:namestring truename)))))
 
-(defmspec $labels (char)
-  (setq char (fexprcheck char))
-  (nonsymchk char '$labels)
-  (cons '(mlist simp) (nreverse (getlabels* char nil))))
+(defmfun $labels (label-prefix)
+  (nonsymchk label-prefix '$labels)
+  (cons '(mlist simp) (nreverse (getlabels* label-prefix nil))))
 
 (defmfun $%th (x)
   (prog (l outchar)
@@ -745,13 +744,18 @@
       (if (boundp (setq z (implode (append (car l) x))))
 	  (setq l1 (cons z l1))))))
 
-(defmfun getlabels* (char flag)		; FLAG = T only for STRINGOUT
-  (do ((l (if flag (cddr $labels) (cdr $labels)) (cdr l))
-       (char (getlabcharn char)) (l1))
-      ((null l) l1)
-    (if (char= (getlabcharn (car l)) char)
-					; Only the 1st alphabetic character is tested.
-	(setq l1 (cons (car l) l1)))))
+(defmfun getlabels* (label-prefix flag)		; FLAG = T only for STRINGOUT
+  (let*
+    ((label-prefix-name (symbol-name label-prefix))
+     (label-prefix-length (length label-prefix-name)))
+    (do ((l (if flag (cddr $labels) (cdr $labels)) (cdr l)) (l1))
+        ((null l) l1)
+        (let ((label-name-1 (symbol-name (car l))))
+          (if
+            (and 
+              (<= label-prefix-length (length label-name-1))
+              (string= label-name-1 label-prefix-name :end1 label-prefix-length))
+            (setq l1 (cons (car l) l1)))))))
 
 (defmfun getlabcharn (label)
   (let ((c (char (symbol-name label) 1)))
