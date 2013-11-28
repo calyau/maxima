@@ -354,6 +354,9 @@
 		 (euler (* 2 %n))))))
   (simplify s))
 
+(defun nxtbincoef (m nom)
+  (truncate (* nom (- *a* m)) m))
+
 (defun euler (%a*)
   (prog (nom %k e fl $zerobern *a*)
      (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *a* (1+ %a*))

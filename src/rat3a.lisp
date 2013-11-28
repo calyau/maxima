@@ -17,8 +17,6 @@
 ;; by the rest of the functions.  Certain specialized functions are found
 ;; elsewhere.  Most low-level utility programs are also in this file.
 
-(declare-top (special *a* *x*))
-
 (declare-top (unspecial coef var exp p y))
 
 ;;These do not need to be special for this file and they
@@ -560,35 +558,69 @@
          (setf q (ratplus q quot-simp)
                r (ratplus r (rattimes (cons (pminus y) 1) quot-simp t))))))))
 
+;; PEXPT
+;;
+;; Polynomial exponentiation. Raise the polynomial P to the power N (which
+;; should be an integer)
 (defmfun pexpt (p n)
-  (cond ((= n 0) 1)
-	((= n 1) p)
-	((minusp n) (pquotient 1 (pexpt p (- n))))
-	((pcoefp p) (cexpt p n))
-	((alg p) (pexptsq p n))
-	((null (p-red p))
-	 (psimp (p-var p)
-		(pcoefadd (* n (p-le p)) (pexpt (p-lc p) n) nil)))
-	(t (let ((*a* (1+ n))
-		 (*x* (psimp (p-var p) (p-red p)))
-		 (b (make-poly (p-var p) (p-le p) (p-lc p))))
-	     (do ((bl (list (pexpt b 2) b)
-		      (cons (ptimes b (car bl)) bl))
-		  (m 2 (1+ m)))
-		 ((= m n) (pplus (car bl)
-				 (pexpt2 1 1 *x* (cdr bl)))))))))
+  (cond
+    ;; p^0 = 1; p^1 = p
+    ((= n 0) 1)
+    ((= n 1) p)
+    ;; p^(-n) = 1/p^n
+    ((minusp n) (pquotient 1 (pexpt p (- n))))
+    ;; When p is a coefficient, we can the simpler cexpt (which expects n >= 0,
+    ;; guaranteed by the previous clause)
+    ((pcoefp p) (cexpt p n))
+    ;; If the main variable of P is an algebraic integer, calculate the power by
+    ;; repeated squaring (which will correctly take the remainder wrt the
+    ;; minimal polynomial for the variable)
+    ((alg p) (pexptsq p n))
+    ;; If p is a monomial in the main variable, we're doing something like
+    ;; (x^2(y+1))^n, which is x^2n (y+1)^n, exponentiate the coefficient by
+    ;; recursion and just multiply the exponent. The call to PCOEFADD is just to
+    ;; ensure that we get zero if the coefficient raises to the power
+    ;; zero. (Possible when the coefficient is an algebraic integer)
+    ((null (p-red p))
+     (psimp (p-var p)
+            (pcoefadd (* n (p-le p)) (pexpt (p-lc p) n) nil)))
+    ;; In the general case, expand using the binomial theorem. Write the
+    ;; calculation as
+    ;;
+    ;;    (b + rest)^n  = sum (binomial (n,k) * rest^k * b^(n-k), k, 0, n)
+    ;;
+    ;; We pre-compute a list of descending powers of B and use the formula
+    ;;
+    ;;    binomial(n,k)/binomial(n,k-1) = (n+1-k) / k
+    ;;
+    ;; to keep track of the binomial coefficient.
+    (t
+     (let ((descending-powers (p-descending-powers
+                               (make-poly (p-var p) (p-le p) (p-lc p)) n))
+           (rest (psimp (p-var p) (p-red p))))
+       (do* ((b-list descending-powers (rest b-list))
+             (k 0 (1+ k))
+             (n-choose-k 1 (truncate (* n-choose-k (- (1+ n) k)) k))
+             (rest-pow 1 (case k
+                           (1 rest)
+                           (2 (pexpt rest 2))
+                           (t (ptimes rest rest-pow))))
+             (sum (first descending-powers)
+                  (pplus sum
+                         (if b-list
+                             (ptimes (pctimes (cmod n-choose-k) rest-pow)
+                                     (first b-list))
+                             (pctimes (cmod n-choose-k) rest-pow)))))
+            ((> k n) sum))))))
 
-(defun nxtbincoef (m nom)
-  (truncate (* nom (- *a* m)) m))
-
-(defun pexpt2 (m nom b l)
-  (if (null l) b
-      (pplus (ptimes (pctimes (cmod (setq nom (nxtbincoef m nom))) b) (car l))
-	     (pexpt2 (1+ m)
-		     nom
-		     (if (eq *x* b) (pexpt b 2)
-			 (ptimes *x* b))
-		     (cdr l)))))
+;; P-DESCENDING-POWERS
+;;
+;; Return a list of the powers of the polynomial P in descending order, starting
+;; with P^N and ending with P.
+(defun p-descending-powers (p n)
+  (let ((lst (list p)))
+    (dotimes (i (1- n)) (push (ptimes p (car lst)) lst))
+    lst))
 
 (defmfun pminusp (p)
   (if (realp p) (minusp p)
@@ -855,9 +887,3 @@
     (and (oddp n) (setq s (ptimes s p))) ))
 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 1.
-
-;; Someone should determine which of the variables special in this file
-;; (and others) are really special and which are used just for dynamic
-;; scoping.  -- cwh
-
-(declare-top (unspecial *a* *x*))
