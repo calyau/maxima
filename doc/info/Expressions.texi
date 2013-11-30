@@ -848,10 +848,13 @@ with respect to products.  E.g. compare both settings of the switch on
 @defvr {Option variable} listconstvars
 Default value: @code{false}
 
-When @code{listconstvars} is @code{true}, it will cause @mref{listofvars} to
-include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in
-the list it returns if they appear in the expression @code{listofvars} is called
-on.  The default is to omit these.
+When @code{listconstvars} is @code{true} the list returned by
+@code{listofvars} contains constant variables, such as @code{%e},
+@code{%pi}, @code{%i} or any variables declared as constant that
+occur in @var{expr}. A variable is declared as @code{constant}
+type via @mref{declare}, and @mref{constantp} returns @code{true}
+for all variables declared as @code{constant}. The default is to
+omit constant variables from @code{listofvars} return value.
 
 @opencatbox
 @category{Expressions}
