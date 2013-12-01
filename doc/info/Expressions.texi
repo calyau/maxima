@@ -602,7 +602,39 @@ Default value: @code{false}
 @code{exptsubst}, when @code{true}, permits substitutions such as @code{y}
 for @code{%e^x} in @code{%e^(a x)}.
 
-@c NEED EXAMPLES HERE
+@c ===beg===
+@c %e^(a*x);
+@c exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c exptsubst: not exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c ===end===
+@example
+@group
+(%i1) %e^(a*x);
+                                       a x
+(%o1)                                %e
+@end group
+@group
+(%i2) exptsubst;
+(%o2)                                false
+@end group
+@group
+(%i3) subst(y, %e^x, %e^(a*x));
+                                       a x
+(%o3)                                %e
+@end group
+@group
+(%i4) exptsubst: not exptsubst;
+(%o4)                                true
+@end group
+@group
+(%i5) subst(y, %e^x, %e^(a*x));
+                                       a
+(%o5)                                 y
+@end group
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions} @category{Expressions}
 @closecatbox
