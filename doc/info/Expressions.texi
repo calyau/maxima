@@ -1209,6 +1209,41 @@ When @code{opsubst} is @code{false}, @mref{subst} does not attempt to
 substitute into the operator of an expression.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
+@c ===beg===
+@c r+r[0];
+@c opsubst;
+@c subst (x^2, r, r+r[0]);
+@c opsubst: not opsubst;
+@c subst (x^2, r, r+r[0]);
+@c ===end===
+@example
+@group
+(%i1) r+r[0];
+(%o1)                               r + r
+                                         0
+@end group
+@group
+(%i2) opsubst;
+(%o2)                                true
+@end group
+@group
+(%i3) subst (x^2, r, r+r[0]);
+                                   2     2
+(%o3)                             x  + (x )
+                                           0
+@end group
+@group
+(%i4) opsubst: not opsubst;
+(%o4)                                false
+@end group
+@group
+(%i5) subst (x^2, r, r+r[0]);
+                                     2
+(%o5)                               x  + r
+                                          0
+@end group
+@end example
+
 @opencatbox
 @category{Expressions}
 @closecatbox
