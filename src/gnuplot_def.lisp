@@ -137,8 +137,8 @@
             (setq range (fifth palette)))
          (t (merror
              (intl:gettext
-              "palette: ~M must be followed by four numbers."
-              (first palette)))))
+              "palette: ~M must be followed by four numbers.")
+              (first palette))))
        (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
        (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))       
@@ -175,7 +175,7 @@
              (setq map (cons (nth i colors)
                              (cons (/ i (1- n)) map))))
            (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
-           (format st "defined (~a)" fun))
+           (format st "defined (~a)" fun)))
         (t
          (merror
           (intl:gettext
