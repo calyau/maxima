@@ -553,6 +553,7 @@ ezunits/rtest_ezunits_frink.mac \
 ezunits/rtestezunits.mac \
 ezunits/rtest_ezunits_solve.mac \
 finance/finance.mac \
+finance/rtest_finance.mac \
 fourier_elim/fourier_elim.lisp \
 fourier_elim/rtest_fourier_elim.mac \
 fractals/fractals.mac \
