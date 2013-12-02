@@ -19,8 +19,11 @@
 (in-package :maxima)
 
 (defun gnuplot-color (color)
-  (case color
-    ($red 1) ($green 2) ($blue 3) ($magenta 4) ($cyan 5) ($black -1) (t -1)))
+  (if (and (stringp color) (string= (subseq color 0 1) "#")
+           (= (length color) 7))
+      (format nil "rgb ~s" color)
+      (case color
+        ($red 1) ($green 2) ($blue 3) ($magenta 4) ($cyan 5) ($black -1) (t -1))))
 
 (defun gnuplot-colors (n)
   (let ((colors (cddr ($get_plot_option '$color))))
@@ -100,7 +103,7 @@
 
 (defun gnuplot-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,
-;; saturation, value or gray.
+;; saturation, value, gray or color.
 ;;
 ;; If the symbol is gray, it should be followed by two floating point
 ;; numbers that indicate the initial gray level and the interval of 
@@ -110,20 +113,32 @@
 ;; by three numbers that specify the hue, saturation and value for the
 ;; initial color, and a fourth number that gives the range of values for
 ;; the increment of hue, saturation or value.
-;; 
 ;; The values for the initial hue, saturation, value and grayness should
-;; be within 0 and 1, while the range can be higher or even negative. 
+;; be within 0 and 1, while the range can be higher or even negative.
+;;
+;; If the symbol is color, following that symbol there should be a list
+;; of several colors in the form #rrggbb
+
   (let (hue sat val gray range fun)
-    (case (length (rest palette))
-      (2
-       (setq gray (second palette))
-       (setq range (third palette))
-       (when (or (< gray 0) (> gray 1)) (setq gray (- gray (floor gray)))))
-      (4
-       (setq hue (second palette))
-       (setq sat (third palette))
-       (setq val (fourth palette))
-       (setq range (fifth palette))
+    (case (first palette)
+      ($gray
+       (case (length (rest palette))
+         (2 (setq gray (second palette)) (setq range (third palette)))
+         (t (merror
+             (intl:gettext
+              "palette: gray must be followed by two numbers."))))
+       (when (or (< gray 0) (> gray 1))
+         (setq gray (- gray (floor gray)))))
+      (($hue $saturation $value)
+       (case (length (rest palette))
+         (4 (setq hue (second palette))
+            (setq sat (third palette))
+            (setq val (fourth palette))
+            (setq range (fifth palette)))
+         (t (merror
+             (intl:gettext
+              "palette: ~M must be followed by four numbers."
+              (first palette)))))
        (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
        (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))       
@@ -154,10 +169,17 @@
              (setq fun (format nil "~,3f+~,3f*gray-floor(~,3f+~,3f*gray)"
                                gray range gray range)))
          (format st "model RGB functions ~a, ~a, ~a" fun fun fun))
+        ($color 
+         (let* ((colors (rest palette)) (n (length colors)) (map nil))
+           (dotimes (i n)
+             (setq map (cons (nth i colors)
+                             (cons (/ i (1- n)) map))))
+           (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
+           (format st "defined (~a)" fun))
         (t
          (merror
           (intl:gettext
-           "palette: wrong keyword ~M. Must be hue, saturation, value or gray")
+           "palette: wrong keyword ~M. Must be hue, saturation, value, gray or color.")
           (first palette)))))))
 
 (defun gnuplot-print-header (dest features)

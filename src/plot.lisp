@@ -216,74 +216,75 @@ sin(y)*(10.0+6*cos(x)),
      (merror (intl:gettext "set_plot_option: expected only ~M items in the ~M list; found a ~M.") type name (type-of v))
      collect v)))
 
-(defun $set_plot_option ( value)
-  (setq $plot_options ($copylist $plot_options))
-  (unless (and ($listp value) (symbolp (setq name (second value))))
-    (merror
-     (intl:gettext
-      "set_plot_option: plot option must be a list whose first element is a symbol; found: ~M")
-     value))
-  (setq value
-        (case name
-          (($x $y $z $t)
-           (check-range value)
-           )
-          ($grid  (check-list-items name (cddr value) 'fixnum 2))
-          ($nticks  (check-list-items name (cddr value) 'fixnum 1))
-          (($run_viewer $transform_xy $gnuplot_pm3d $box $colorbox $gnuplot_4_0)
-           (check-list-items name (cddr value) 't 1))
-          ($axes
-           (unless (member (third value) '($x $y t nil))
-             (merror
-              (intl:gettext "set_plot_option: axes must be either true, false, x or y; found: ~M") (third value)))
-           value)
-          ($plot_format
-           (case (third value) ($openmath (setf (third value) '$xmaxima)))
-           (unless (member (third value)
-                       (if (string= *autoconf-win32* "true")
-                           '($geomview $gnuplot $mgnuplot $xmaxima)
-                           '($geomview $gnuplot $gnuplot_pipes
-                             $mgnuplot $xmaxima)))
-             (merror
-              (intl:gettext
-               "set_plot_option: plot_format must be either gnuplot, mgnuplot, xmaxima, or geomview; found: ~M") (third value)))
-           value)
-          (($color $point_type $palette) value)
-          (($azimuth $elevation)
-           (unless (integerp (third value))
-             (merror (intl:gettext "set_plot_option: azimuth must be an integer; found: ~M") (third value)))
-           value)
-          ($mesh_lines_color
-           (unless (or (symbolp (third value)) (stringp (third value)))
-             (merror (intl:gettext "set_plot_option: mesh_lines_color must be a symbol or string; found: ~M") (third value)))
-           value)
-          ($gnuplot_term
-           (unless (or (symbolp (third value)) (stringp (third value)))
+(defun $set_plot_option (value)
+  (let (name)
+    (setq $plot_options ($copylist $plot_options))
+    (unless (and ($listp value) (symbolp (setq name (second value))))
+      (merror
+       (intl:gettext
+        "set_plot_option: plot option must be a list whose first element is a symbol; found: ~M")
+       value))
+    (setq value
+          (case name
+            (($x $y $z $t)
+             (check-range value)
+             )
+            ($grid  (check-list-items name (cddr value) 'fixnum 2))
+            ($nticks  (check-list-items name (cddr value) 'fixnum 1))
+            (($run_viewer $transform_xy $gnuplot_pm3d $box $colorbox $gnuplot_4_0)
+             (check-list-items name (cddr value) 't 1))
+            ($axes
+             (unless (member (third value) '($x $y t nil))
+               (merror
+                (intl:gettext "set_plot_option: axes must be either true, false, x or y; found: ~M") (third value)))
+             value)
+            ($plot_format
+             (case (third value) ($openmath (setf (third value) '$xmaxima)))
+             (unless (member (third value)
+                             (if (string= *autoconf-win32* "true")
+                                 '($geomview $gnuplot $mgnuplot $xmaxima)
+                                 '($geomview $gnuplot $gnuplot_pipes
+                                   $mgnuplot $xmaxima)))
+               (merror
+                (intl:gettext
+                 "set_plot_option: plot_format must be either gnuplot, mgnuplot, xmaxima, or geomview; found: ~M") (third value)))
+             value)
+            (($color $point_type $palette) value)
+            (($azimuth $elevation)
+             (unless (integerp (third value))
+               (merror (intl:gettext "set_plot_option: azimuth must be an integer; found: ~M") (third value)))
+             value)
+            ($mesh_lines_color
+             (unless (or (symbolp (third value)) (stringp (third value)))
+               (merror (intl:gettext "set_plot_option: mesh_lines_color must be a symbol or string; found: ~M") (third value)))
+             value)
+            ($gnuplot_term
+             (unless (or (symbolp (third value)) (stringp (third value)))
                (merror (intl:gettext "set_plot_option: gnuplot_term must be a symbol or string; found: ~M") (third value)))
-           value)
-          ($gnuplot_out_file value)
-          ($gnuplot_curve_titles (if ($listp value)
-                                     value
-                                     `((mlist) ,value)))
-          ($gnuplot_curve_styles (if ($listp value)
-                                     value
-                                     `((mlist) ,value)))
-          ($gnuplot_preamble value)
-          ($gnuplot_default_term_command value)
-          ($gnuplot_dumb_term_command value)
-          ($gnuplot_ps_term_command value)
-          ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
-          ($plot_realpart value)
-          (t
-           (merror
-            (intl:gettext "set_plot_option: unknown plot option: ~M")
-            name))))
+             value)
+            ($gnuplot_out_file value)
+            ($gnuplot_curve_titles (if ($listp value)
+                                       value
+                                       `((mlist) ,value)))
+            ($gnuplot_curve_styles (if ($listp value)
+                                       value
+                                       `((mlist) ,value)))
+            ($gnuplot_preamble value)
+            ($gnuplot_default_term_command value)
+            ($gnuplot_dumb_term_command value)
+            ($gnuplot_ps_term_command value)
+            ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
+            ($plot_realpart value)
+            (t
+             (merror
+              (intl:gettext "set_plot_option: unknown plot option: ~M")
+              name))))
 
-  (let ((v (rassoc name (cdr $plot_options) :test #'(lambda (a b) (eq a (car b))))))
-    (if v
-        (setf (cdr v) (cdr value))
-        (nconc $plot_options (list value))))  
-  $plot_options)
+    (let ((v (rassoc name (cdr $plot_options) :test #'(lambda (a b) (eq a (car b))))))
+      (if v
+          (setf (cdr v) (cdr value))
+          (nconc $plot_options (list value))))  
+    $plot_options))
 
 (defun get-gnuplot-term (term)
   (let* ((sterm (string-downcase (ensure-string term)))
@@ -1245,7 +1246,7 @@ sin(y)*(10.0+6*cos(x)),
           ;; that adaptive plot returns. But on the first iteration,
           ;; result is empty, so we don't want the cddr because we want
           ;; all the samples returned from adaptive-plot.  On subsequent
-          ;; iterations, it's a duplicate of the last ponit of the
+          ;; iterations, it's a duplicate of the last point of the
           ;; previous interval.
           (setf result
                 (if result
@@ -1386,9 +1387,12 @@ sin(y)*(10.0+6*cos(x)),
           ($logx (setf (getf features :log-x) t))
           ($logy (setf (getf features :log-y) t))
           ($box (setf (getf features :box) (cddr v)))
-          ($xlabel (setf (getf features :xlabel) (ensure-string (third v))))
-          ($ylabel (setf (getf features :ylabel) (ensure-string (third v))))
-          ($zlabel (setf (getf features :zlabel) (ensure-string (third v))))
+          ($xlabel
+           (setf (getf features :xlabel) (ensure-string (third v))))
+          ($ylabel
+           (setf (getf features :ylabel) (ensure-string (third v))))
+          ($zlabel
+           (setf (getf features :zlabel) (ensure-string (third v))))
           ($x
            (setq v (check-range v))
            (setf (getf features :xmin) (third v))
@@ -1411,6 +1415,10 @@ sin(y)*(10.0+6*cos(x)),
           ($legend
 	   (setf (getf features :legend)
 		 (if ($listp (third v)) (cdr (third v)) (cddr v))))
+          ($iterations
+           (setf (getf features :iterations)
+                 (third (check-list-items (second v) (cddr v)
+                                          'fixnum 1))))
           ($psfile
            ($set_plot_option '((mlist) $gnuplot_term $ps))
            ($set_plot_option `((mlist) $gnuplot_out_file ,(third v)))
@@ -1963,7 +1971,7 @@ sin(y)*(10.0+6*cos(x)),
           (apply #'$plot3d
                  (append (list expr)
                          args-sans-preamble
-			 (list '((mlist simp) $palette nil))
+			 (list '((mlist) $palette nil))
                          (list `((mlist) $gnuplot_preamble ,preamble-in-arguments)))))
 
         (let (($plot_options $plot_options))
@@ -1977,7 +1985,7 @@ sin(y)*(10.0+6*cos(x)),
           (apply #'$plot3d 
 		 (cons expr
 		       (append optional-args
-			       (list '((mlist simp) $palette nil))))))))))
+			       (list '((mlist) $palette nil))))))))))
  
 ;; plot3d
 ;;

@@ -19,7 +19,8 @@
 (in-package :maxima)
 
 (defun xmaxima-color (color)
-  (if (and (stringp color)(string= (subseq color 0 1) "#")(= (length color) 7))
+  (if (and (stringp color) (string= (subseq color 0 1) "#")
+           (= (length color) 7))
       color
       (case color
 	($red "#ff0000") ($green "#00ff00") ($blue "#0000ff")
@@ -97,7 +98,7 @@
 ;; 
 ;; The values for the initial hue, saturation, value and grayness should
 ;; be within 0 and 1, while the range can be higher or even negative. 
-  (let (hue sat val gray range fun)
+  (let (hue sat val gray range)
     (with-output-to-string
         (st)
       (case (length (rest palette))
