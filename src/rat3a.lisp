@@ -622,18 +622,35 @@
     (dotimes (i (1- n)) (push (ptimes p (car lst)) lst))
     lst))
 
+;; PMINUSP
+;;
+;; Returns true if the coefficient of the leading monomial of the polynomial is
+;; negative. Note that this depends on the variable ordering (for example,
+;; consider x-y).
+;;
+;;   (pminusp '(y 1 -1 0 (x 1 1))) => T     but
+;;   (pminusp '(x 1 1 0 (y 1 -1))) => NIL
 (defmfun pminusp (p)
   (if (realp p) (minusp p)
       (pminusp (p-lc p))))
 
+;; PMINUS
+;;
+;; Unary negation for polynomials.
 (defmfun pminus (p)
   (if (pcoefp p) (cminus p)
       (cons (p-var p) (ptminus (p-terms p)))))
 
+;; PTMINUS
+;;
+;; Negate a list of polynomial terms.
 (defun ptminus (x)
   (loop for (exp coef) on x by #'cddr
 	 nconc (list exp (pminus coef))))
 
+;; PMOD
+;;
+;; Reduce a polynomial modulo the current value of MODULUS.
 (defmfun pmod (p)
   (if (pcoefp p) (cmod p)
       (psimp (car p)
