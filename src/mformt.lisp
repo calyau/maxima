@@ -103,19 +103,16 @@
 ;; standard output not a string  
 ;;note: compile whole file, incremental compiling will not work.
 
-(defmfun aformat n
-  (unless (> n 1)
-      ;; make error message without new symbols.
-      ;; This error should not happen in compiled code because
-      ;; this check is done at compile time too.
-      (maxima-error "MFORMAT: expected two or more arguments."))
-  (let ((stream (arg 1))
-	(sstring (exploden (arg 2)))
-	(arg-index 2))
-    (if (null stream)
-	(with-output-to-string (stream) (mformat-loop (output-text)))
-	(mformat-loop (output-text)))))
-
+;; AFORMAT
+;;
+;; Basically the same as MFORMAT, which is a "souped-up" FORMAT implementation
+;; with support for the ~M control string. However, unlike MFORMAT, when
+;; DESTINATION is NIL, the function writes its result to a string.
+(defmfun aformat (destination control-string &rest arguments)
+  (if destination
+      (apply 'mformat destination control-string arguments)
+      (with-output-to-string (stream)
+        (apply 'mformat stream control-string arguments))))
 
 (defun output-text* (stream text displa-p pre-%-p post-%-p)
   (setq text (nreverse text))

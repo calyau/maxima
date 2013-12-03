@@ -611,7 +611,7 @@ When one changes, the other does too."
   (setf *debugger-hook* #'maxima-lisp-debugger-repl)
   (loop
      (catch 'to-maxima-repl
-       (format t "~a~%~a> ~a" *prompt-prefix* (package-name *package*) *prompt-suffix*)
+       (format-prompt t "~%~A> " (package-name *package*))
        (finish-output)
        (format t "~{~&~S~}" (multiple-value-list (eval (read)))))))
 
