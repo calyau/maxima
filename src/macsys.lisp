@@ -22,6 +22,10 @@
 (defmvar $prompt '_
   "Prompt symbol of the demo function, playback, and the Maxima break loop.")
 
+;; This variable is bound to T when we are displaying one of the "(%i3)"-style
+;; prompts, and enables the printing of notes.
+(defvar *displaying-input-prompt* nil)
+
 ;; A prefix and suffix that are wrapped around every prompt that Maxima
 ;; emits. This is designed for use with text-based interfaces that drive Maxima
 ;; through standard input and output and need to decorate prompts to make the
@@ -30,16 +34,69 @@
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
 
+;; This should be a list of notes to append to a prompt. Each element can either
+;; be a string or something that is funcallable using MFUNCALL. It should take
+;; no arguments and return an object that will be PRINC'ed to display it.
+;;
+;; Add and remove notes with $PROMPT_PREPEND_NOTE and
+;; $PROMPT_REMOVE_NOTE. Unlike *PROMPT-PREFIX* and *PROMPT-SUFFIX* these notes
+;; are intended for human consumption, rather than to aid machine interfaces.
+(defvar *prompt-notes* nil)
+
+(defun $prompt_remove_note (note)
+  (setf *prompt-notes* (delete note *prompt-notes* :test 'equal))
+  (values))
+
+(defun $prompt_prepend_note (note)
+  ($prompt_remove_note note)
+  (push note *prompt-notes*)
+  (values))
+
+;; Return a string formed of the notes in *prompt-notes*
+(defun prompt-notes ()
+  (labels ((note-funcall (note)
+             ;; This code tries to call MFUNCALL on a note, but will remove any
+             ;; note that doesn't work. We have to do this to avoid an infinite
+             ;; loop when someone does something like "prompt_prepend_note(1);"
+             (let ((failed t))
+               (unwind-protect
+                    (prog1 (mfuncall note)
+                      (setq failed nil))
+                 (when failed
+                   (setf *prompt-notes*
+                         (delete note *prompt-notes*))))))
+           (eval-note (note)
+             (if (stringp note) note (note-funcall note))))
+
+    (let ((evalled (delete nil (mapcar #'eval-note *prompt-notes*))))
+      (cond
+        ((null evalled) "")
+        (t
+         (with-output-to-string (stream)
+           (princ "[" stream)
+           (princ (first evalled) stream)
+           (loop
+              for note in (rest evalled)
+              do (princ "; " stream)
+              do (princ note stream))
+           (princ "] " stream)))))))
+
 (defvar *general-display-prefix* "")
 
 (defun format-prompt (destination control-string &rest arguments)
   "Like AFORMAT, but add the prefix and suffix configured for a prompt. This
 function deals correctly with the ~M control character, but only when
-DESTINATION is an actual stream (rather than nil for a string)."
+DESTINATION is an actual stream (rather than nil for a string).
+
+This function also obeys the special variable *DISPLAYING-INPUT-PROMPT*. If that
+is true, it also shows prompt notes, as set with prompt_prepend_note()."
   (let ((*print-circle* nil))
     (concatenate 'string
                  *prompt-prefix*
                  (apply 'aformat destination control-string arguments)
+                 (if *displaying-input-prompt*
+                     (prompt-notes)
+                     "")
                  *prompt-suffix*)))
 
 ;;  "When time began" (or at least the start of version control history),
@@ -55,11 +112,12 @@ DESTINATION is an actual stream (rather than nil for a string)."
 ;;  don't deal correctly with ~M plus a string output stream.
 (defun main-prompt ()
   (declare (special *display-labels-p*))
-  (if *display-labels-p*
-      (format-prompt nil "(~A~A) "
-                     (print-invert-case (stripdollar $inchar))
-                     $linenum)
-      ""))
+  (let ((*displaying-input-prompt* t))
+    (if *display-labels-p*
+        (format-prompt nil "(~A~A) "
+                       (print-invert-case (stripdollar $inchar))
+                       $linenum)
+        "")))
 
 (defun break-prompt ()
   (format-prompt nil "~A"
