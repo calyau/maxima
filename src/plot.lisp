@@ -64,10 +64,9 @@ sin(y)*(10.0+6*cos(x)),
      $asterisk $box $square $triangle $delta $wedge
      $nabla $diamond $lozenge)
     ((mlist) $palette
-     ((mlist) $hue 0.25 0.7 0.8 0.5)
-     ((mlist) $hue 0.65 0.8 0.9 0.55)
-     ((mlist) $hue 0.55 0.8 0.9 0.4)
-     ((mlist) $hue 0.95 0.7 0.8 0.5))
+     ((mlist) $gradient $green $cyan $blue $violet)
+     ((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
+      $orange $red $brown $black))
     ((mlist) $gnuplot_term $default)
     ((mlist) $gnuplot_out_file nil)
     ;; With adaptive plotting, 100 is probably too
@@ -1891,6 +1890,24 @@ sin(y)*(10.0+6*cos(x)),
                          (setq j -1)))))
            )))
 
+(defun output-points-tcl (dest pl m)
+  (format dest " {matrix_mesh ~%")
+  ;; x y z are done separately:
+  (loop for off from 0 to 2
+     with ar = (polygon-pts pl)
+     with  i of-type fixnum = 0
+     do (setq i off)
+       (format dest "~%{")
+       (loop 
+	  while (< i (length ar))
+	  do (format dest "~% {")
+	    (loop for j to m
+	       do (print-pt (aref ar i))
+		 (setq i (+ i 3)))
+	    (format dest "}~%"))
+       (format dest "}~%"))
+  (format dest "}~%"))
+
 (defun show-open-plot (ans)
   (cond ($show_openplot
          (with-open-file (st1 (plot-temp-file "maxout.xmaxima") :direction :output :if-exists :supersede)
@@ -2256,10 +2273,13 @@ Several functions depending on the two variables v1 and v2:
                (when (> i 1) (format $pstream "~%~%"))
                (output-points pl (third (getf features :grid))))
               ($mgnuplot
-               (when (> i 1) (format st "~%~%# \"Fun~a\"~%" i))
+               (when (> i 1) (format $pstream "~%~%# \"Fun~a\"~%" i))
                (output-points pl (third (getf features :grid))))
               ($xmaxima
-               (output-points-tcl $pstream pl (third (getf features :grid)) i))
+               (if ($get_plot_option '$palette 2)
+                   (format $pstream " ~a~%" (xmaxima-palletes i))
+                   (format $pstream " {mesh_lines ~a}" (xmaxima-colors i)))
+               (output-points-tcl $pstream pl (third (getf features :grid))))
               ($geomview
                (format $pstream "{ appearance { +smooth }~%MESH ~a ~a ~%"
                        (+ 1 (third (getf features :grid)))

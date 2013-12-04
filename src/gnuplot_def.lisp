@@ -21,14 +21,27 @@
 (defun gnuplot-color (color)
   (if (and (stringp color) (string= (subseq color 0 1) "#")
            (= (length color) 7))
-      (format nil "rgb ~s" color)
+      color
       (case color
-        ($red 1) ($green 2) ($blue 3) ($magenta 4) ($cyan 5) ($black -1) (t -1))))
+	($red "#ff0000")
+        ($green "#00ff00")
+        ($blue "#0000ff")
+	($magenta "#ff00ff")
+        ($cyan "#00ffff")
+        ($yellow "#ffff00")
+        ($orange "#ffa500")
+        ($violet "#ee82ee")
+        ($brown "#a52a2a")
+        ($gray "#bebebe")
+        ($black "#000000")
+        ($white "#ffffff")
+	(t "#000000"))))
 
 (defun gnuplot-colors (n)
   (let ((colors (cddr ($get_plot_option '$color))))
     (unless (integerp n) (setq n (round n)))
-    (gnuplot-color (nth (mod (- n 1) (length colors)) colors))))
+    (format nil "rgb ~s"
+            (gnuplot-color (nth (mod (- n 1) (length colors)) colors)))))
 
 (defun gnuplot-pointtype (type)
   (case type
@@ -178,7 +191,7 @@
              ((listp (first colors))
               (setq colors (sort colors #'< :key #'cadr))
               (dotimes (i n)
-                (setq map (cons (third (nth i colors))           ;; color i
+                (setq map (cons (gnuplot-color (third (nth i colors))) ;; color
                                 (cons
                                  (/ (- (second (nth i colors))   ;; ni minus
                                        (second (first colors)))  ;; smallest ni
@@ -187,12 +200,13 @@
                                  map)))))
              ;; list of only colors
              (t (dotimes (i n)
-                  (setq map (cons (nth i colors) (cons (/ i (1- n)) map))))))
+                  (setq map (cons (gnuplot-color (nth i colors))  ;; color i
+                                  (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
            (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
            ;; outputs the string: defined (nj, "cj", ...,n1, "c1")
-                (format st "defined (~a)" fun)))
+           (format st "defined (~a)" fun)))
         (t
          (merror
           (intl:gettext
@@ -201,7 +215,6 @@
 
 (defun gnuplot-print-header (dest features)
   (let ((gnuplot-out-file nil) (meshcolor '$black) (colorbox nil)
-	(colors (cddr ($get_plot_option '$color)))
         preamble palette meshcolor_opt colorbox_opt)
     (setq preamble (get-plot-option-string '$gnuplot_preamble))
     (if (and ($get_plot_option '$gnuplot_preamble) (> (length preamble) 0))
@@ -215,7 +228,7 @@
                   (setq meshcolor (third meshcolor_opt)))
                 (if meshcolor
                     (progn
-                      (format dest "set style line 100 lt ~d lw 1~%"
+                      (format dest "set style line 100 lt rgb ~s lw 1~%"
                               (gnuplot-color meshcolor))
                       (format dest "set pm3d hidden3d 100~%")
                       (unless ($get_plot_option '$gnuplot_4_0 2)
@@ -227,9 +240,7 @@
 		(unless colorbox (format dest "unset colorbox~%"))
                 (format dest "set palette ~a~%"
                         (gnuplot-palette (rest palette))))
-              (format dest "set hidden3d offset ~d~%"
-		      (- (gnuplot-color (nth (mod 1 (length colors)) colors))
-			 (gnuplot-color (first colors)))))
+              (format dest "set hidden3d~%"))
           (let ((elev ($get_plot_option '$elevation))
                 (azim ($get_plot_option '$azimuth)))
               (when (or elev azim)

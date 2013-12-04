@@ -23,8 +23,18 @@
            (= (length color) 7))
       color
       (case color
-	($red "#ff0000") ($green "#00ff00") ($blue "#0000ff")
-	($magenta "#ff00ff") ($cyan "#00ffff") ($black "#000000")
+	($red "#ff0000")
+        ($green "#00ff00")
+        ($blue "#0000ff")
+	($magenta "#ff00ff")
+        ($cyan "#00ffff")
+        ($yellow "#ffff00")
+        ($orange "#ffa500")
+        ($violet "#ee82ee")
+        ($brown "#a52a2a")
+        ($gray "#bebebe")
+        ($black "#000000")
+        ($white "#ffffff")
 	(t "#000000"))))
 
 (defun xmaxima-colors (n)
@@ -141,9 +151,9 @@
            (cond
              ;; Maxima list of numbers and colors (((mlist) ni ci) ...)
              ((listp (first colors))
-              (setq  colors (sort colors #'< :key #'cadr))
+              (setq colors (sort colors #'< :key #'cadr))
               (dotimes (i n)
-                (setq map (cons (third (nth i colors))           ;; color i
+                (setq map (cons (gnuplot-color (third (nth i colors))) ;; color
                                 (cons
                                  (/ (- (second (nth i colors))   ;; ni minus
                                        (second (first colors)))  ;; smallest ni
@@ -152,13 +162,14 @@
                                  map)))))
              ;; list of only colors
              (t (dotimes (i n)
-                  (setq map (cons (nth i colors) (cons (/ i (1- n)) map))))))
+                  (setq map (cons (gnuplot-color (nth i colors))  ;; color i
+                                  (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
            (setq fun (format nil "~{{ ~f ~s}~^ ~}" (reverse map)))
-                (format st "~&{colorscheme gradient} ")
-                ;; writes: {gradlist {{nj "cj"} ...{n1 "c1"}}}
-                (format st "{gradlist {~a}}" fun)))
+           (format st "~&{colorscheme gradient} ")
+           ;; writes: {gradlist {{nj "cj"} ...{n1 "c1"}}}
+           (format st "{gradlist {~a}}" fun)))
         (t
          (merror
           (intl:gettext
@@ -169,28 +180,6 @@
   (unless (integerp n) (setq n (round n)))
     (xmaxima-palette (rest (nth (mod (- n 1) (length palettes)) palettes))))
 			 
-(defun output-points-tcl (dest pl m i
-			  &aux (palette ($get_plot_option '$palette 2)))
-  (if palette
-      (format dest " ~a~%" (xmaxima-palletes i))
-      (format dest " {mesh_lines ~a}" (xmaxima-colors i)))
-  (format dest " {matrix_mesh ~%")
-  ;; we do the x y z  separately:
-  (loop for off from 0 to 2
-     with ar = (polygon-pts pl)
-     with  i of-type fixnum = 0
-     do (setq i off)
-       (format dest "~%{")
-       (loop 
-	  while (< i (length ar))
-	  do (format dest "~% {")
-	    (loop for j to m
-	       do (print-pt (aref ar i))
-		 (setq i (+ i 3)))
-	    (format dest "}~%"))
-       (format dest "}~%"))
-  (format dest "}~%"))
-
 (defun xmaxima-print-header (dest features)
   (cond ($show_openplot (format dest "~a -data {~%" (getf features :type)))
 	(t (format dest "{~a " (getf features :type))))
