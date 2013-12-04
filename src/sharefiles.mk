@@ -326,6 +326,7 @@ contrib/Grobner/grobner.demo \
 contrib/Grobner/grobner-demo.output \
 contrib/Grobner/grobner.lisp \
 contrib/Grobner/README \
+contrib/ibase_warn.mac \
 contrib/impdiff.mac \
 contrib/implicit_plot.lisp \
 contrib/integration/abs_integrate.html \
