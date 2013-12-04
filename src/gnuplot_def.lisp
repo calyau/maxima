@@ -103,7 +103,7 @@
 
 (defun gnuplot-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,
-;; saturation, value, gray or color.
+;; saturation, value, gray or gradient.
 ;;
 ;; If the symbol is gray, it should be followed by two floating point
 ;; numbers that indicate the initial gray level and the interval of 
@@ -116,8 +116,8 @@
 ;; The values for the initial hue, saturation, value and grayness should
 ;; be within 0 and 1, while the range can be higher or even negative.
 ;;
-;; If the symbol is color, following that symbol there should be a list
-;; of several colors in the form #rrggbb
+;; If the symbol is gradient, it must be followed by either a list of valid
+;; colors or by a list of lists with two elements, a number and a valid color.
 
   (let (hue sat val gray range fun)
     (case (first palette)
@@ -141,9 +141,8 @@
               (first palette))))
        (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
-       (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))       
-    (with-output-to-string
-        (st)
+       (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))
+    (with-output-to-string (st)
       (case (first palette)
         ($hue
          (if (or (< (+ hue range) 0) (> (+ hue range) 1))
@@ -169,17 +168,35 @@
              (setq fun (format nil "~,3f+~,3f*gray-floor(~,3f+~,3f*gray)"
                                gray range gray range)))
          (format st "model RGB functions ~a, ~a, ~a" fun fun fun))
-        ($color 
+
+        ($gradient
          (let* ((colors (rest palette)) (n (length colors)) (map nil))
-           (dotimes (i n)
-             (setq map (cons (nth i colors)
-                             (cons (/ i (1- n)) map))))
+           ;; map is constructed as (n1 c1 n2 c2 ... nj cj) where ni is a
+           ;; decreasing sequence of numbers (n1=1, nj=0) and ci are colors
+           (cond
+             ;; Maxima list of numbers and colors (((mlist) ni ci) ...)
+             ((listp (first colors))
+              (setq colors (sort colors #'< :key #'cadr))
+              (dotimes (i n)
+                (setq map (cons (third (nth i colors))           ;; color i
+                                (cons
+                                 (/ (- (second (nth i colors))   ;; ni minus
+                                       (second (first colors)))  ;; smallest ni
+                                    (- (second (nth (- n 1) colors));; biggest
+                                       (second (first colors)))) ;; - smallest
+                                 map)))))
+             ;; list of only colors
+             (t (dotimes (i n)
+                  (setq map (cons (nth i colors) (cons (/ i (1- n)) map))))))
+
+           ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
            (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
-           (format st "defined (~a)" fun)))
+           ;; outputs the string: defined (nj, "cj", ...,n1, "c1")
+                (format st "defined (~a)" fun)))
         (t
          (merror
           (intl:gettext
-           "palette: wrong keyword ~M. Must be hue, saturation, value, gray or color.")
+           "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient.")
           (first palette)))))))
 
 (defun gnuplot-print-header (dest features)
