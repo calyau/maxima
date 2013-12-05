@@ -658,53 +658,122 @@
 		    unless (pzerop (setq coef (pmod coef)))
 		    nconc (list exp coef)))))
 
+;; PQUOTIENT
+;;
+;; Calculate x/y in the polynomial ring over the integers. Y should divide X
+;; without remainder.
 (defmfun pquotient (x y)
   (cond ((pcoefp x)
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
 	       ((alg y) (paquo x y))
 	       (t (rat-error "Quotient by a polynomial of higher degree"))))
-	((pcoefp y) (cond ((pzerop y) (rat-error "Quotient by zero"))
-			  (modulus (pctimes (crecip y) x))
-			  (t (pcquotient x y))))
+
+	((pcoefp y)
+         (cond ((pzerop y) (rat-error "Quotient by zero"))
+               (modulus (pctimes (crecip y) x))
+               (t (pcquotient x y))))
+
+        ;; If (alg y) is true, then y is a polynomial in some variable that
+        ;; itself has a minimum polynomial. Moreover, the $algebraic flag must
+        ;; be true. We first try to compute an exact quotient ignoring that
+        ;; minimal polynomial, by binding $algebraic to nil. If that fails, we
+        ;; try to invert y and then multiply the results together.
 	((alg y) (or (let ($algebraic)
                        (ignore-rat-err (pquotient x y)))
 		     (patimes x (rainv y))))
+
+        ;; If the main variable of Y comes after the main variable of X, Y must
+        ;; be free of that variable, so must divide each coefficient in X. Thus
+        ;; we can use PCQUOTIENT.
 	((pointergp (p-var x) (p-var y)) (pcquotient x y))
+
+        ;; Either Y contains a variable that is not in X, or they have the same
+        ;; main variable and Y has a higher degree. There can't possibly be an
+        ;; exact quotient.
 	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
 	 (rat-error "Quotient by a polynomial of higher degree"))
-	(t (psimp (p-var x) (pquotient1 (p-terms x) (p-terms y))))))
 
+        ;; If we got to here then X and Y have the same main variable and Y has
+        ;; a degree less than or equal to that of X. We can now forget about the
+        ;; main variable and work on the terms, with PTPTQUOTIENT.
+	(t
+         (psimp (p-var x) (ptptquotient (p-terms x) (p-terms y))))))
+
+;; PCQUOTIENT
+;;
+;; Divide the polynomial P by Q. Q should be either a coefficient (so that
+;; (pcoefp q) => T), or should be a polynomial in a later variable than the main
+;; variable of P. Either way, Q is free of the main variable of P. The division
+;; is done at each coefficient.
 (defun pcquotient (p q)
-  (psimp (p-var p) (pcquotient1 (p-terms p) q)))
+  (psimp (p-var p)
+         (loop
+            for (exp coef) on (p-terms p) by #'cddr
+            nconc (list exp (pquotient coef q)))))
 
-(defun pcquotient1 (p1 q)
-  (loop for (exp coef) on p1 by #'cddr
-	 nconc (list exp (pquotient coef q))))
+;; PTPTQUOTIENT
+;;
+;; Exactly divide two polynomials in the same variable, represented here by the
+;; list of their terms.
+(defun ptptquotient (u v &aux q* (k 0))
+  ;; The algorithm is classic long division. You notice that if X/Y = Q then X =
+  ;; QY, so lc(X) = lc(Q)lc(Y) (where lc(Q)=Q when Q is a bare coefficient). Now
+  ;; divide again in the ring of coefficients to see that lc(X)/lc(Y) =
+  ;; lc(Q). Of course, you also know that le(Q) = le(X) - le(Y).
+  ;;
+  ;; Once you know lc(Q), you can subtract Y * lc(Q)*(var^le(Q)) from X and
+  ;; repeat. You know that you'll remove the leading term, so the algorithm will
+  ;; always terminate. To do the subtraction, use PTPT-SUBTRACT-POWERED-PRODUCT.
+  (do ((q-terms nil)
+       (u u (ptpt-subtract-powered-product (pt-red u) (pt-red v)
+                                           (first q-terms) (second q-terms))))
+      ((ptzerop u)
+       (nreverse q-terms))
+    ;; If B didn't divide A after all, then eventually we'll end up with the
+    ;; remainder in u, which has lower degree than that of B.
+    (when (< (pt-le u) (pt-le v))
+      (rat-error "Polynomial quotient is not exact"))
+    (let ((le-q (- (pt-le u) (pt-le v)))
+          (lc-q (pquotient (pt-lc u) (pt-lc v))))
+      ;; We've calculated the leading exponent and coefficient of q. Push them
+      ;; backwards onto q-terms (which holds the terms in reverse order).
+      (setf q-terms (cons lc-q (cons le-q q-terms))))))
 
-(declare-top(special k q*)
-	    (fixnum k i))
-
-(defun pquotient1 (u v &aux q* (k 0))
-  (declare (fixnum k))
-  (loop do (setq  k (- (pt-le u) (pt-le v)))
-	 when (minusp k) do (rat-error "Polynomial quotient is not exact")
-	 nconc (list k (setq q* (pquotient (pt-lc u) (pt-lc v))))
-	 until (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))))
-
-(defun pquotient2 (x y &aux (i 0))	;X-v^k*Y*Q*
-  (cond ((null y) x)
-	((null x) (pcetimes1 y k (pminus q*)))
-	((minusp (setq i (- (pt-le x) (pt-le y) k)))
-	 (pcoefadd (+ (pt-le y) k)
-		   (ptimes q* (pminus (pt-lc y)))
-		   (pquotient2 x (pt-red y))))
-	((zerop i) (pcoefadd (pt-le x)
-			     (pdifference (pt-lc x) (ptimes q* (pt-lc y)))
-			     (pquotient2 (pt-red x) (pt-red y))))
-	(t (cons (pt-le x) (cons (pt-lc x) (pquotient2 (pt-red x) y))))))
-
-(declare-top (unspecial k q*))
+;; PTPT-SUBTRACT-POWERED-PRODUCT
+;;
+;; U and V are the terms of two polynomials, A and B, in the same variable, x. Q
+;; is free of x. This function computes the terms of A - x^k * B * Q. This
+;; rather specialised function is used to update a numerator when doing
+;; polynomial long division.
+(defun ptpt-subtract-powered-product (u v q k)
+  (cond
+    ;; A - x^k * 0 * Q = A
+    ((null v) u)
+    ;; 0 - x^k * B * Q = x^k * B * (- Q)
+    ((null u) (pcetimes1 v k (pminus q)))
+    (t
+     ;; hipow is the highest exponent in x^k*B*Q.
+     (let ((hipow (+ (pt-le v) k)))
+       (cond
+         ;; If hipow is greater than the highest exponent in A, we have to
+         ;; prepend the first coefficient, which will be Q * lc(B). We can then
+         ;; recurse to this function to sort out the rest of the sum.
+         ((> hipow (pt-le u))
+          (pcoefadd hipow
+                    (ptimes q (pminus (pt-lc v)))
+                    (ptpt-subtract-powered-product u (pt-red v) q k)))
+         ;; If hipow is equal to the highest exponent in A, we can just subtract
+         ;; the two leading coefficients and recurse to sort out the rest.
+         ((= hipow (pt-le u))
+          (pcoefadd hipow
+                    (pdifference (pt-lc u) (ptimes q (pt-lc v)))
+                    (ptpt-subtract-powered-product (pt-red u) (pt-red v) q k)))
+         ;; If hipow is lower than the highest exponent in A then keep the first
+         ;; term of A and recurse.
+         (t
+          (list* (pt-le u) (pt-lc u)
+                 (ptpt-subtract-powered-product (pt-red u) v q k))))))))
 
 (defun algord (var)
   (and $algebraic (get var 'algord)))

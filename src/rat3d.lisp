@@ -276,7 +276,7 @@
 	       (cond ((or (pcoefp p) (not (eq (p-var p) var))
 			  (> (car ae) (p-le p)))
                       (rat-error "pnthroot error (should have been caught)")))
-	       (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
+	       (setq ans (nconc ans (ptptquotient (cdr (leadterm p)) ae)))
 	       )))))
 
 (defun cnthroot(c n)
