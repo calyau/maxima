@@ -16,7 +16,7 @@
 		      valflag $gcd pl0 d0 degd0 var
 		      many* tempprime ovarlist valist modulus
 		      zl *prime plim nn* ne nn*-1 dlp
-		      ez1skip svalsl nsvals errrjfflag $algebraic
+		      ez1skip svalsl nsvals $algebraic
 		      lc1 oldlc limk *alpha $ratfac))
 
 (load-macsyma-macros ratmac)
@@ -360,10 +360,9 @@
      (go loop)))
 
 (defun eztestdivide (x y)
-  (let ((errrjfflag t))
-    (cond ((or (pcoefp x) (pcoefp y)
-	       (catch 'raterr (pquotient (car (last x)) (car (last y)))))
-	   (catch 'raterr (pquotient x y))))))
+  (when (or (pcoefp x) (pcoefp y)
+            (ignore-rat-err (pquotient (car (last x)) (car (last y)))))
+    (ignore-rat-err (pquotient x y))))
 
 (defun noterms (p)
   (cond ((pcoefp p) 1)

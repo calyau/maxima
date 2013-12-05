@@ -22,7 +22,7 @@
                       expstuff liflag intvar switch varlist nogood genvar
                       $erfflag $liflag rischp $factorflag alphar m simp
                       genpairs hypertrigint *mosesflag yyy *exp y $algebraic
-                      implicit-real errrjfflag $%e_to_numlog generate-atan2
+                      implicit-real $%e_to_numlog generate-atan2
                       context bigfloatzero rp-polylogp *in-risch-p*))
 
 (defmvar $liflag t "Controls whether `risch' generates polylogs")

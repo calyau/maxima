@@ -24,7 +24,6 @@
 		      *myvar $listconstvars
 		      *has*var *var $dontfactor
 		      $keepfloat $ratfac
-		      errrjfflag  ;A substitute for condition binding.
 		      xm* xn* mul*))
 
 (defmvar $breakup t
@@ -917,8 +916,7 @@
   (prog (*varl ans varlist genvar xm* xn* mul*)
      (setq *varl varl)
      (setq eql (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x))) eql))
-     (cond ((atom (let ((errrjfflag t))
-		    (catch 'raterr (formx flag 'xa* eql varl))))
+     (cond ((atom (ignore-rat-err (formx flag 'xa* eql varl)))
 	    ;; This flag is T if called from SOLVE
 	    ;; and NIL if called from LINSOLVE.
 	    (cond (flag (return ($algsys (make-mlist-l eql)

@@ -118,14 +118,14 @@
 (proclaim '(function pctimes1 (t t) t))
 
 (proclaim '(function pplus (t t) t))
-(proclaim '(function pplus1 (t t) t))
+(proclaim '(function ptptplus (t t) t))
 (proclaim '(function pcplus (t t) t))
 (proclaim '(function pcplus1 (t t) t))
 
 (proclaim '(function pdifference (t t) t))
-(proclaim '(function pdiffer1 (t t) t))
+(proclaim '(function ptptdiffer (t t) t))
 (proclaim '(function pcdiffer (t t) t))
-(proclaim '(function pcdiffer1 (t t) t))
+(proclaim '(function ptcdiffer (t t) t))
 
 
 (proclaim '(function psimp1 (t t) t))
