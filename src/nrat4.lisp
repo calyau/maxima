@@ -13,7 +13,7 @@
 (macsyma-module nrat4)
 
 (declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag
-		      $radexpand $logsimp *v *var fr-factor radcanp ratsubvl))
+		      $logsimp *v *var radcanp))
 
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
@@ -107,7 +107,7 @@
 	((zerop (car p)) (cadr p))
 	(t (constcoef (cddr p)))))
 
-(setq *radsubst nil ratsubvl t)         ; SUBST ON VARLIST
+(setq *radsubst nil)
 
 (defmfun $ratsubst (a b c)              ; NEEDS CODE FOR FAC. FORM
   (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat)
@@ -134,7 +134,6 @@
      (newvar c)
      (setq
       newvarlist
-      (if ratsubvl
 	  (mapcar
 	   #'(lambda (z)
 	       (cond ((atom z) z)
@@ -146,8 +145,7 @@
 						 (t ($ratdisrep
 						     ($ratsubst a b zz)))))
 				       (cdr z)))))))
-	   varlist)
-	  varlist))
+	   varlist))
      (newvar a) (newvar b)
      (setq newvarlist (reverse (pairoff (reverse varlist)
 					(reverse newvarlist))))
