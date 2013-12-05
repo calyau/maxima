@@ -778,31 +778,63 @@
 (defun algord (var)
   (and $algebraic (get var 'algord)))
 
+;; PSIMP
+;;
+;; Return a "simplified" polynomial whose main variable is VAR and whose terms
+;; are given by X.
+;;
+;; If the polynomial is free of X, the result is the zero'th order coefficient:
+;; either a polynomial in later variables or a number. PSIMP also deals with
+;; reordering variables when $ALGEBRAIC is true, behaviour which is triggered by
+;; the ALGORD property on the main variable.
 (defun psimp (var x)
   (cond ((ptzerop x) 0)
 	((atom x) x)
 	((zerop (pt-le x)) (pt-lc x))
-	((algord var)			;wrong alg ordering
-	 (do ((p x (cddr p)) (sum 0))
-	     ((null p) (cond ((pzerop sum) (cons var x))
-			     (t (pplus sum (psimp2 var x)))))
-	   (unless (or (pcoefp (cadr p)) (pointergp var (caadr p)))
-	     (setq sum (pplus sum
-			      (if (zerop (pt-le p)) (pt-lc p)
-				  (ptimes 
-				   (make-poly var (pt-le p) 1)
-				   (pt-lc p)))))
-	     (setf (pt-lc p) 0))))
-	(t (cons var x))))
+	((algord var)
+         ;; Fix wrong alg ordering: We deal with the case that the main variable
+         ;; of a coefficient should precede VAR.
+         (do ((p x (cddr p)) (sum 0))
+             ((null p)
+              (if (pzerop sum)
+                  (cons var x)
+                  (pplus sum (p-delete-zeros var x))))
+           ;; We only need to worry about the wrong ordering if a coefficient is
+           ;; a polynomial in another variable, and that variable should precede
+           ;; VAR.
+           (unless (or (pcoefp (pt-lc p))
+                       (pointergp var (p-var (pt-lc p))))
+             (setq sum (pplus sum
+                              (if (zerop (pt-le p)) (pt-lc p)
+                                  (ptimes (make-poly var (pt-le p) 1)
+                                          (pt-lc p)))))
+             ;; When we finish, we'll call PPLUS to add SUM and the remainder of
+             ;; X, and this line zeroes out this term in X (through P) to avoid
+             ;; double counting. The term will be deleted by the call to
+             ;; P-DELETE-ZEROS later.
+             (setf (pt-lc p) 0))))
 
-(defun psimp1 (var x)
-  (let ($algebraic) (psimp var x)))
+        (t
+         (cons var x))))
 
-(defun psimp2 (var x)
-  (do ((p (setq x (cons nil x)) ))
-      ((null (cdr p)) (psimp1 var (cdr x)))
-    (cond ((pzerop (caddr p)) (rplacd p (cdddr p)))
-	  (t (setq p (cddr p))))))
+;; P-DELETE-ZEROS
+;;
+;; Destructively operate on X, deleting any terms that have a zero coefficient.
+(defun p-delete-zeros (var x)
+  ;; Switch off $algebraic so that we can recurse to PSIMP without any fear of
+  ;; an infinite recursion - PSIMP only calls this function when (ALGORD VAR) is
+  ;; true, and that only happens when $algebraic is true.
+  (let (($algebraic))
+    ;; The idea is that P always points one before the term in which we're
+    ;; interested. When that term has zero coefficient, it is trimmed from P by
+    ;; replacing the cdr. Consing NIL to the front of X allows us to throw away
+    ;; the first term if necessary.
+    (do ((p (setq x (cons nil x))))
+        ((null (cdr p))
+         (psimp var (cdr x)))
+      (if (pzerop (pt-lc (cdr p)))
+          (setf (cdr p) (pt-red (cdr p)))
+          (setq p (cddr p))))))
 
 (defun pterm  (p n)
   (do ((p p (pt-red p)))
