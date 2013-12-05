@@ -728,6 +728,28 @@ Default value: @code{_}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@deffn {Function} prompt_prepend_note (note)
+
+Add a note that is displayed after every input prompt. This note must
+either be a string or it should be something that can be called as a
+function. In the latter case, the function should return either a
+string or a number (for technical implementation reasons, arbitrary
+expressions might not be printed correctly). If the function call
+raises an error then the note is removed from the list to be
+displayed from then on.
+
+There can be more than one note displayed after a prompt, and this
+adds the given note to the left hand end of the list. To remove a note
+from the list, use @mref{prompt_remove_note}.
+@end deffn
+
+@deffn {Function} prompt_remove_note (note)
+
+Remove a note from the list of objects to display after a prompt. See
+@mref{prompt_prepend_note} for how to add one.
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{quit}
 @deffn {Function} quit ()
 

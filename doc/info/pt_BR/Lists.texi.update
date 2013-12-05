@@ -979,7 +979,7 @@ que definem uma ordem estrita fraca sobre os elementos da lista.
 
 O preicado pode ser um nome de fun@,{c}@~{a}o 
 ou oerador bin@'{a}rio infixo, ou uma express@~{a}o @code{lambda}.  Se for
-o nome de umoperador, o nome deve ser informado entre aspas duplas.
+o nome de um operador, o nome deve ser informado entre aspas duplas.
 
 @c ===beg===
 @c L : [[1, x], [3, y], [4, w], [2, z]];

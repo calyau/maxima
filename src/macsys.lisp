@@ -22,32 +22,106 @@
 (defmvar $prompt '_
   "Prompt symbol of the demo function, playback, and the Maxima break loop.")
 
+;; This variable is bound to T when we are displaying one of the "(%i3)"-style
+;; prompts, and enables the printing of notes.
+(defvar *displaying-input-prompt* nil)
+
+;; A prefix and suffix that are wrapped around every prompt that Maxima
+;; emits. This is designed for use with text-based interfaces that drive Maxima
+;; through standard input and output and need to decorate prompts to make the
+;; output easier to parse. There are some more notes in
+;; doc/implementation/external-interface.txt.
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
+
+;; This should be a list of notes to append to a prompt. Each element can either
+;; be a string or something that is funcallable using MFUNCALL. It should take
+;; no arguments and return an object that will be PRINC'ed to display it.
+;;
+;; Add and remove notes with $PROMPT_PREPEND_NOTE and
+;; $PROMPT_REMOVE_NOTE. Unlike *PROMPT-PREFIX* and *PROMPT-SUFFIX* these notes
+;; are intended for human consumption, rather than to aid machine interfaces.
+(defvar *prompt-notes* nil)
+
+(defun $prompt_remove_note (note)
+  (setf *prompt-notes* (delete note *prompt-notes* :test 'equal))
+  (values))
+
+(defun $prompt_prepend_note (note)
+  ($prompt_remove_note note)
+  (push note *prompt-notes*)
+  (values))
+
+;; Return a string formed of the notes in *prompt-notes*
+(defun prompt-notes ()
+  (labels ((note-funcall (note)
+             ;; This code tries to call MFUNCALL on a note, but will remove any
+             ;; note that doesn't work. We have to do this to avoid an infinite
+             ;; loop when someone does something like "prompt_prepend_note(1);"
+             (let ((failed t))
+               (unwind-protect
+                    (prog1 (mfuncall note)
+                      (setq failed nil))
+                 (when failed
+                   (setf *prompt-notes*
+                         (delete note *prompt-notes*))))))
+           (eval-note (note)
+             (if (stringp note) note (note-funcall note))))
+
+    (let ((evalled (delete nil (mapcar #'eval-note *prompt-notes*))))
+      (cond
+        ((null evalled) "")
+        (t
+         (with-output-to-string (stream)
+           (princ "[" stream)
+           (princ (first evalled) stream)
+           (loop
+              for note in (rest evalled)
+              do (princ "; " stream)
+              do (princ note stream))
+           (princ "] " stream)))))))
+
 (defvar *general-display-prefix* "")
 
+(defun format-prompt (destination control-string &rest arguments)
+  "Like AFORMAT, but add the prefix and suffix configured for a prompt. This
+function deals correctly with the ~M control character, but only when
+DESTINATION is an actual stream (rather than nil for a string).
+
+This function also obeys the special variable *DISPLAYING-INPUT-PROMPT*. If that
+is true, it also shows prompt notes, as set with prompt_prepend_note()."
+  (let ((*print-circle* nil))
+    (concatenate 'string
+                 *prompt-prefix*
+                 (apply 'aformat destination control-string arguments)
+                 (if *displaying-input-prompt*
+                     (prompt-notes)
+                     "")
+                 *prompt-suffix*)))
+
+;;  "When time began" (or at least the start of version control history),
+;;  the following comment was made at this point:
+;;
+;;     instead of using this STRIPDOLLAR hackery, the
+;;     MREAD function should call MFORMAT to print the prompt,
+;;     and take a format string and format arguments.
+;;     Even easier and more general is for MREAD to take
+;;     a FUNARG as the prompt. -gjc
+;;
+;;  I guess we're still failing miserably, but unfortunately MFORMAT/AFORMAT
+;;  don't deal correctly with ~M plus a string output stream.
 (defun main-prompt ()
-  ;; instead off using this STRIPDOLLAR hackery, the
-  ;; MREAD function should call MFORMAT to print the prompt,
-  ;; and take a format string and format arguments.
-  ;; Even easier and more general is for MREAD to take
-  ;; a FUNARG as the prompt. -gjc
   (declare (special *display-labels-p*))
-  (if *display-labels-p*
-      (let ((*print-circle* nil))
-	(format nil "~A(~A~D) ~A"
-		*prompt-prefix*
-		(print-invert-case (stripdollar $inchar))
-		$linenum
-		*prompt-suffix*))
-    ""))
+  (let ((*displaying-input-prompt* t))
+    (if *display-labels-p*
+        (format-prompt nil "(~A~A) "
+                       (print-invert-case (stripdollar $inchar))
+                       $linenum)
+        "")))
 
 (defun break-prompt ()
-  (let ((*print-circle* nil))
-    (format nil "~A~A~A"
-	    *prompt-prefix*
-	    (print-invert-case (stripdollar $prompt))
-	    *prompt-suffix*)))
+  (format-prompt nil "~A"
+                 (print-invert-case (stripdollar $prompt))))
 
 (defun toplevel-macsyma-eval (x)
   ;; Catch rat-err's here.
@@ -286,23 +360,17 @@
   (or (eq flag 'noprint) (setq print? t))
   (cond ((not print?)
 	 (setq print? t)
-	 (princ *prompt-prefix*)
-	 (princ *prompt-suffix*))
+         (format-prompt t ""))
 	((null msg)
-	 (princ *prompt-prefix*)
-	 (princ *prompt-suffix*))
+         (format-prompt t ""))
 	((atom msg)
-	 (format t "~a~a~a" *prompt-prefix* msg *prompt-suffix*)
-	 (mterpri))
+         (format-prompt t "~A" msg)
+	 (terpri))
 	((eq flag t)
-	 (princ *prompt-prefix*)
-	 (mapc #'princ (cdr msg))
-	 (princ *prompt-suffix*)
+         (format-prompt t "~{~A~}" (cdr msg))
 	 (mterpri))
 	(t
-	 (princ *prompt-prefix*)
-	 (displa msg)
-	 (princ *prompt-suffix*)
+         (format-prompt t "~M" msg)
 	 (mterpri)))
   (let ((res (mread-noprompt *query-io* nil)))
     (princ *general-display-prefix*)
@@ -317,7 +385,7 @@
 	     (string-right-trim '(#\n)
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
-    (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
+    (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
     (third (mread *query-io*))))
 
 ;; FUNCTION BATCH APPARENTLY NEVER CALLED. OMIT FROM GETTEXT SWEEP AND DELETE IT EVENTUALLY

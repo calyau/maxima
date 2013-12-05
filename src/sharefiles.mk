@@ -326,6 +326,7 @@ contrib/Grobner/grobner.demo \
 contrib/Grobner/grobner-demo.output \
 contrib/Grobner/grobner.lisp \
 contrib/Grobner/README \
+contrib/ibase_warn.mac \
 contrib/impdiff.mac \
 contrib/implicit_plot.lisp \
 contrib/integration/abs_integrate.html \
@@ -553,6 +554,7 @@ ezunits/rtest_ezunits_frink.mac \
 ezunits/rtestezunits.mac \
 ezunits/rtest_ezunits_solve.mac \
 finance/finance.mac \
+finance/rtest_finance.mac \
 fourier_elim/fourier_elim.lisp \
 fourier_elim/rtest_fourier_elim.mac \
 fractals/fractals.mac \

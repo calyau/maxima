@@ -337,7 +337,8 @@
 		    checkfactors nil greatorder nil lessorder nil $gensumnum 0
 		    $weightlevels '((mlist)) *ratweights nil $ratweights
 		    '((mlist simp))
-		    tellratlist nil $dontfactor '((mlist)) $setcheck nil)
+		    tellratlist nil $dontfactor '((mlist)) $setcheck nil
+                    *prompt-notes* nil)
 	      (killallcontexts))
 	     ((setq z (assoc x '(($inlabels . $inchar) ($outlabels . $outchar) ($linelabels . $linechar)) :test #'eq))
 	      (mapc #'(lambda (y) (remvalue y '$kill))

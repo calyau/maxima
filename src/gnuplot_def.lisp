@@ -19,13 +19,29 @@
 (in-package :maxima)
 
 (defun gnuplot-color (color)
-  (case color
-    ($red 1) ($green 2) ($blue 3) ($magenta 4) ($cyan 5) ($black -1) (t -1)))
+  (if (and (stringp color) (string= (subseq color 0 1) "#")
+           (= (length color) 7))
+      color
+      (case color
+	($red "#ff0000")
+        ($green "#00ff00")
+        ($blue "#0000ff")
+	($magenta "#ff00ff")
+        ($cyan "#00ffff")
+        ($yellow "#ffff00")
+        ($orange "#ffa500")
+        ($violet "#ee82ee")
+        ($brown "#a52a2a")
+        ($gray "#bebebe")
+        ($black "#000000")
+        ($white "#ffffff")
+	(t "#000000"))))
 
 (defun gnuplot-colors (n)
   (let ((colors (cddr ($get_plot_option '$color))))
     (unless (integerp n) (setq n (round n)))
-    (gnuplot-color (nth (mod (- n 1) (length colors)) colors))))
+    (format nil "rgb ~s"
+            (gnuplot-color (nth (mod (- n 1) (length colors)) colors)))))
 
 (defun gnuplot-pointtype (type)
   (case type
@@ -100,7 +116,7 @@
 
 (defun gnuplot-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,
-;; saturation, value or gray.
+;; saturation, value, gray or gradient.
 ;;
 ;; If the symbol is gray, it should be followed by two floating point
 ;; numbers that indicate the initial gray level and the interval of 
@@ -110,25 +126,36 @@
 ;; by three numbers that specify the hue, saturation and value for the
 ;; initial color, and a fourth number that gives the range of values for
 ;; the increment of hue, saturation or value.
-;; 
 ;; The values for the initial hue, saturation, value and grayness should
-;; be within 0 and 1, while the range can be higher or even negative. 
+;; be within 0 and 1, while the range can be higher or even negative.
+;;
+;; If the symbol is gradient, it must be followed by either a list of valid
+;; colors or by a list of lists with two elements, a number and a valid color.
+
   (let (hue sat val gray range fun)
-    (case (length (rest palette))
-      (2
-       (setq gray (second palette))
-       (setq range (third palette))
-       (when (or (< gray 0) (> gray 1)) (setq gray (- gray (floor gray)))))
-      (4
-       (setq hue (second palette))
-       (setq sat (third palette))
-       (setq val (fourth palette))
-       (setq range (fifth palette))
+    (case (first palette)
+      ($gray
+       (case (length (rest palette))
+         (2 (setq gray (second palette)) (setq range (third palette)))
+         (t (merror
+             (intl:gettext
+              "palette: gray must be followed by two numbers."))))
+       (when (or (< gray 0) (> gray 1))
+         (setq gray (- gray (floor gray)))))
+      (($hue $saturation $value)
+       (case (length (rest palette))
+         (4 (setq hue (second palette))
+            (setq sat (third palette))
+            (setq val (fourth palette))
+            (setq range (fifth palette)))
+         (t (merror
+             (intl:gettext
+              "palette: ~M must be followed by four numbers.")
+              (first palette))))
        (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
-       (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))       
-    (with-output-to-string
-        (st)
+       (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))))
+    (with-output-to-string (st)
       (case (first palette)
         ($hue
          (if (or (< (+ hue range) 0) (> (+ hue range) 1))
@@ -154,15 +181,40 @@
              (setq fun (format nil "~,3f+~,3f*gray-floor(~,3f+~,3f*gray)"
                                gray range gray range)))
          (format st "model RGB functions ~a, ~a, ~a" fun fun fun))
+
+        ($gradient
+         (let* ((colors (rest palette)) (n (length colors)) (map nil))
+           ;; map is constructed as (n1 c1 n2 c2 ... nj cj) where ni is a
+           ;; decreasing sequence of numbers (n1=1, nj=0) and ci are colors
+           (cond
+             ;; Maxima list of numbers and colors (((mlist) ni ci) ...)
+             ((listp (first colors))
+              (setq colors (sort colors #'< :key #'cadr))
+              (dotimes (i n)
+                (setq map (cons (gnuplot-color (third (nth i colors))) ;; color
+                                (cons
+                                 (/ (- (second (nth i colors))   ;; ni minus
+                                       (second (first colors)))  ;; smallest ni
+                                    (- (second (nth (- n 1) colors));; biggest
+                                       (second (first colors)))) ;; - smallest
+                                 map)))))
+             ;; list of only colors
+             (t (dotimes (i n)
+                  (setq map (cons (gnuplot-color (nth i colors))  ;; color i
+                                  (cons (/ i (1- n)) map))))))    ;; number i
+
+           ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
+           (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
+           ;; outputs the string: defined (nj, "cj", ...,n1, "c1")
+           (format st "defined (~a)" fun)))
         (t
          (merror
           (intl:gettext
-           "palette: wrong keyword ~M. Must be hue, saturation, value or gray")
+           "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient.")
           (first palette)))))))
 
 (defun gnuplot-print-header (dest features)
   (let ((gnuplot-out-file nil) (meshcolor '$black) (colorbox nil)
-	(colors (cddr ($get_plot_option '$color)))
         preamble palette meshcolor_opt colorbox_opt)
     (setq preamble (get-plot-option-string '$gnuplot_preamble))
     (if (and ($get_plot_option '$gnuplot_preamble) (> (length preamble) 0))
@@ -176,7 +228,7 @@
                   (setq meshcolor (third meshcolor_opt)))
                 (if meshcolor
                     (progn
-                      (format dest "set style line 100 lt ~d lw 1~%"
+                      (format dest "set style line 100 lt rgb ~s lw 1~%"
                               (gnuplot-color meshcolor))
                       (format dest "set pm3d hidden3d 100~%")
                       (unless ($get_plot_option '$gnuplot_4_0 2)
@@ -188,9 +240,7 @@
 		(unless colorbox (format dest "unset colorbox~%"))
                 (format dest "set palette ~a~%"
                         (gnuplot-palette (rest palette))))
-              (format dest "set hidden3d offset ~d~%"
-		      (- (gnuplot-color (nth (mod 1 (length colors)) colors))
-			 (gnuplot-color (first colors)))))
+              (format dest "set hidden3d~%"))
           (let ((elev ($get_plot_option '$elevation))
                 (azim ($get_plot_option '$azimuth)))
               (when (or elev azim)

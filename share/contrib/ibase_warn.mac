@@ -1,0 +1,14 @@
+/*
+  An almost trivial package that adds a little note to the right of
+  the input prompt when the input base is anything other than
+  decimal. Otherwise, you can do things like adding 100 to 200 and
+  getting 768, which is confusing if you changed ibase the previous
+  evening...
+*/
+
+ibase_warn () :=
+  if is (ibase = 10) then false
+  else sconcat ("ib:", ibase)$
+
+ibase_warn_enable () := prompt_prepend_note (ibase_warn)$
+ibase_warn_disable () := prompt_remove_note (ibase_warn)$
