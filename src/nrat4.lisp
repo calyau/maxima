@@ -286,7 +286,7 @@
 	((pointergp (car a) (car b)) (pzero))
 	((eq (car a) (car b))
 	 (cond ((null (cdddr a))
-		(prodcoef (caddr a) (pterm (cdr b) (cadr a))))
+		(prodcoef (caddr a) (ptterm (cdr b) (cadr a))))
 	       (t (sumcoef a b))))
 	(t (prodcoef1 a b))))
 

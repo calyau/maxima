@@ -336,8 +336,8 @@
 		   p (pquotient p (list (car gv) (car dl) 1)))))))
 
 (defun factorout (p)
-  (cond ((and (pcoefp (pterm (cdr p) 0))
-	      (not (zerop (pterm (cdr p) 0))))
+  (cond ((and (pcoefp (ptterm (cdr p) 0))
+	      (not (zerop (ptterm (cdr p) 0))))
 	 (list nil p))
 	(t (factorout1 (pmindegvec p) p))))
 

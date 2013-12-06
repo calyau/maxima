@@ -1469,11 +1469,11 @@
 					   (cons (ratplus
 						  (rattimes
 						   (cadr l)
-						   (cons (pterm (cdaadr a) 1)
+						   (cons (ptterm (cdaadr a) 1)
 							 (cdadr a))
 						   t)
 						  (cons
-						   (pterm (cdaadr a) 0)
+						   (ptterm (cdaadr a) 0)
 						   (cdadr a)))
 						 (cddr l))))
 				  ((equal (cadr a)
@@ -1509,11 +1509,11 @@
 				     (cons (ratplus
 					    (rattimes
 					     (cadr l)
-					     (cons (pterm (cdaadr a) 1)
+					     (cons (ptterm (cdaadr a) 1)
 						   (cdadr a))
 					     t)
 					    (cons
-					     (pterm (cdaadr a) 0)
+					     (ptterm (cdaadr a) 0)
 					     (cdadr a)))
 					   (cddr l))))
 			    ((equal (cadr a)
@@ -1545,7 +1545,7 @@
 		   (t (return nil)))))))
 
 (defun pdecomp (p *var*)
-  (let ((c (pterm (cdr p) 0))
+  (let ((c (ptterm (cdr p) 0))
 	(a) (*x* (list *var* 1 1)))
     (cons (pcplus c (car (setq a (pdecomp* (pdifference p c)))))
 	  (cdr a))))

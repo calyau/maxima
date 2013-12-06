@@ -153,7 +153,7 @@
 
 (defun estcheck (p)
   (prog (lc c d)
-     (cond ((or (atom p) (null (cddr p)) (equal (pterm p 0) 0))
+     (cond ((or (atom p) (null (cddr p)) (equal (ptterm p 0) 0))
 	    (return nil)))
      (setq lc (cadr p))
      (setq p (nreverse (cdr (oddelm (cdr p)))))
@@ -276,7 +276,7 @@
 
 (defun consta (p)
   (cond ((or (pcoefp p) (alg p)) p)
-	(t (consta (pterm (cdr p) 0)))))
+	(t (consta (ptterm (cdr p) 0)))))
 
 (defun constacl (p)			;NO LONGER USED?
   (cond ((atom p)
@@ -594,7 +594,7 @@
      (go a)))
 
 (defun sqfrp (u var)
-  (cond ((and (equal 0 (pterm (cdr u) 0)) (equal 0 (pterm (cdr u) 1)))
+  (cond ((and (equal 0 (ptterm (cdr u) 0)) (equal 0 (ptterm (cdr u) 1)))
 	 nil)
 	((onevarp u)
 	 (setq u (pgcd u (pderivative u var)))

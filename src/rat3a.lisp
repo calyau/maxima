@@ -422,7 +422,7 @@
   (if (eql val 0)
       ;; If we're substituting 0 for the value, then we just extract the
       ;; constant term.
-      (pcsub (pterm terms 0) vals vars)
+      (pcsub (ptterm terms 0) vals vars)
       ;; Otherwise, walk through the polynomial using Horner's scheme to
       ;; evaluate it. Because the polynomial is sparse, you can't just multiply
       ;; by VAL every step, and instead have to keep track of the jump in
@@ -835,12 +835,15 @@
         (setf (cdr p) (pt-red (cdr p)))
         (setq p (cddr p)))))
 
-(defun pterm  (p n)
-  (do ((p p (pt-red p)))
-      ((ptzerop p) (pzero))
-    (cond ((< (pt-le p) n) (return (pzero)))
-	  ((= (pt-le p) n) (return (pt-lc p))))))
-
+;; PTTERM
+;;
+;; Given X representing the terms of a polynomial in a variable z, return the
+;; coefficient of z^n.
+(defun ptterm (x n)
+  (do ((x x (pt-red x)))
+      ((ptzerop x) (pzero))
+    (cond ((< (pt-le x) n) (return (pzero)))
+	  ((= (pt-le x) n) (return (pt-lc x))))))
 
 (defmfun ptimes (x y)
   (cond ((pcoefp x) (if (pzerop x) (pzero) (pctimes x y)))

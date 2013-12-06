@@ -3520,7 +3520,7 @@
 
 (defmfun polcoef (l n) (cond ((or (atom l) (pointergp var (car l)))
 			      (cond ((equal n 0) l) (t 0)))
-			     (t (pterm (cdr l) n))))
+			     (t (ptterm (cdr l) n))))
 
 (defun disrep (l) (cond ((equal (ratnumerator l) l)
 			 ($ratdisrep (cons ratform (cons l 1))))
