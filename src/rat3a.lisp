@@ -821,20 +821,19 @@
 ;;
 ;; Destructively operate on X, deleting any terms that have a zero coefficient.
 (defun p-delete-zeros (var x)
-  ;; Switch off $algebraic so that we can recurse to PSIMP without any fear of
-  ;; an infinite recursion - PSIMP only calls this function when (ALGORD VAR) is
-  ;; true, and that only happens when $algebraic is true.
-  (let (($algebraic))
-    ;; The idea is that P always points one before the term in which we're
-    ;; interested. When that term has zero coefficient, it is trimmed from P by
-    ;; replacing the cdr. Consing NIL to the front of X allows us to throw away
-    ;; the first term if necessary.
-    (do ((p (setq x (cons nil x))))
-        ((null (cdr p))
-         (psimp var (cdr x)))
-      (if (pzerop (pt-lc (cdr p)))
-          (setf (cdr p) (pt-red (cdr p)))
-          (setq p (cddr p))))))
+  ;; The idea is that P always points one before the term in which we're
+  ;; interested. When that term has zero coefficient, it is trimmed from P by
+  ;; replacing the cdr. Consing NIL to the front of X allows us to throw away
+  ;; the first term if necessary.
+  (do ((p (setq x (cons nil x))))
+      ((null (cdr p))
+       ;; Switch off $algebraic so that we can recurse to PSIMP without any fear
+       ;; of an infinite recursion - PSIMP only calls this function when (ALGORD
+       ;; VAR) is true, and that only happens when $algebraic is true.
+       (let (($algebraic)) (psimp var (cdr x))))
+    (if (pzerop (pt-lc (cdr p)))
+        (setf (cdr p) (pt-red (cdr p)))
+        (setq p (cddr p)))))
 
 (defun pterm  (p n)
   (do ((p p (pt-red p)))
