@@ -716,7 +716,7 @@
 ;;
 ;; Exactly divide two polynomials in the same variable, represented here by the
 ;; list of their terms.
-(defun ptptquotient (u v &aux q* (k 0))
+(defun ptptquotient (u v)
   ;; The algorithm is classic long division. You notice that if X/Y = Q then X =
   ;; QY, so lc(X) = lc(Q)lc(Y) (where lc(Q)=Q when Q is a bare coefficient). Now
   ;; divide again in the ring of coefficients to see that lc(X)/lc(Y) =
