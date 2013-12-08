@@ -378,21 +378,40 @@
            ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
            ;; and an argument up to about 500.0 the accuracy of the result is
            ;; better than 10^(-$fpprec).
-	   (let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
-	     ;; bigfloatp will round the result to the correct fpprec
-	     (bigfloatp result)))
+	   (let ((z (bigfloat:to ($bfloat j))))
+	     (cond
+	       ((bigfloat:<= (bigfloat:abs z) (bigfloat:sqrt (bigfloat:epsilon z)))
+		;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+		(div (mfuncall '$bffac
+			       ($bfloat j)
+			       (+ $fpprec 4))
+		     ($bfloat j)))
+	       (t
+		(let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
+		  ;; bigfloatp will round the result to the correct fpprec
+		  (bigfloatp result))))))
 	  ((complex-float-numerical-eval-p j)
            (complexify (gamma-lanczos (complex ($float ($realpart j))
                                                ($float ($imagpart j))))))
           ((complex-bigfloat-numerical-eval-p j)
-           ;; Adding 4 digits in the call to cbffac. See comment above.
-	   (let ((result
-		  (mfuncall '$cbffac 
-			    (add -1 ($bfloat ($realpart j)) 
-				 (mul '$%i ($bfloat ($imagpart j))))
-			    (+ $fpprec 4))))
-	     (add (bigfloatp ($realpart result))
-		  (mul '$%i (bigfloatp ($imagpart result))))))
+	   (let ((z (bigfloat:to ($bfloat j))))
+	     (cond
+	       ((bigfloat:<= (bigfloat:abs z)
+			     (bigfloat:sqrt (bigfloat:epsilon z)))
+		;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+		(to (bigfloat:/ (bigfloat:to (mfuncall '$cbffac 
+						       (to z)
+						       (+ $fpprec 4)))
+				z)))
+	       (t
+		;; Adding 4 digits in the call to cbffac. See comment above.
+		(let ((result
+		       (mfuncall '$cbffac 
+				 (add -1 ($bfloat ($realpart j)) 
+				      (mul '$%i ($bfloat ($imagpart j))))
+				 (+ $fpprec 4))))
+		  (add (bigfloatp ($realpart result))
+		       (mul '$%i (bigfloatp ($imagpart result)))))))))
           ((taylorize (mop x) (cadr x)))
           ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
           ((and $gamma_expand
@@ -510,51 +529,63 @@
 			 -.26190838401581408670e-4
 			 .36899182659531622704e-5))))
     (declare (type (simple-array flonum (15)) c))
-    (if (minusp (realpart z))
-	;; Use the reflection formula
-	;; -z*Gamma(z)*Gamma(-z) = pi/sin(pi*z)
-	;; or
-	;; Gamma(z) = pi/z/sin(pi*z)/Gamma(-z)
-	;;
-	;; If z is a negative integer, Gamma(z) is infinity.  Should
-	;; we test for this?  Throw an error?
-        ;; The test must be done by the calling routine.
-	(/ (float pi)
-	   (* (- z) (sin (* (float pi) z))
-	      (gamma-lanczos (- z))))
-	(let* ((z (- z 1))
-	       (zh (+ z 1/2))
-	       (zgh (+ zh 607/128))
-	       (ss 
-		(do ((sum 0.0)
-		     (pp (1- (length c)) (1- pp)))
-		    ((< pp 1)
-		     sum)
-		  (incf sum (/ (aref c pp) (+ z pp))))))
-          (let ((result 
-                 ;; We check for an overflow. The last positive value in 
-                 ;; double-float precicsion for which Maxima can calculate 
-                 ;; gamma is ~171.6243 (CLISP 2.46 and GCL 2.6.8)
-                 (ignore-errors
-		   (let ((zp (expt zgh (/ zh 2))))
-		     (* (sqrt (float (* 2 pi)))
-			(+ ss (aref c 0))
-			(* (/ zp (exp zgh)) zp))))))
-            (cond ((null result)
-                   ;; No result. Overflow.
-                   (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
-                  ((or (float-nan-p (realpart result))
-                       (float-inf-p (realpart result)))
-                   ;; Result, but beyond extreme values. Overflow.
-                   (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
-                  (t result)))))))
+    (cond
+      ((minusp (realpart z))
+       ;; Use the reflection formula
+       ;; -z*Gamma(z)*Gamma(-z) = pi/sin(pi*z)
+       ;; or
+       ;; Gamma(z) = pi/z/sin(pi*z)/Gamma(-z)
+       ;;
+       ;; If z is a negative integer, Gamma(z) is infinity.  Should
+       ;; we test for this?  Throw an error?
+       ;; The test must be done by the calling routine.
+       (/ (float pi)
+	  (* (- z) (sin (* (float pi) z))
+	     (gamma-lanczos (- z)))))
+      ((<= (abs z) (sqrt flonum-epsilon))
+       ;; For |z| small, use Gamma(z) = Gamma(z+1)/z
+       (/ (gamma-lanczos (+ 1 z))
+	  z))
+      (t
+       (let* ((z (- z 1))
+	      (zh (+ z 1/2))
+	      (zgh (+ zh 607/128))
+	      (ss 
+	       (do ((sum 0.0)
+		    (pp (1- (length c)) (1- pp)))
+		   ((< pp 1)
+		    sum)
+		 (incf sum (/ (aref c pp) (+ z pp))))))
+	 (let ((result 
+		;; We check for an overflow. The last positive value in 
+		;; double-float precicsion for which Maxima can calculate 
+		;; gamma is ~171.6243 (CLISP 2.46 and GCL 2.6.8)
+		(ignore-errors
+		  (let ((zp (expt zgh (/ zh 2))))
+		    (* (sqrt (float (* 2 pi)))
+		       (+ ss (aref c 0))
+		       (* (/ zp (exp zgh)) zp))))))
+	   (cond ((null result)
+		  ;; No result. Overflow.
+		  (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
+		 ((or (float-nan-p (realpart result))
+		      (float-inf-p (realpart result)))
+		  ;; Result, but beyond extreme values. Overflow.
+		  (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
+		 (t result))))))))
 
 (defun gammafloat (a)
   (let ((a (float a)))
     (cond ((minusp a)
+	   ;; Reflection formula to make it positive: gamma(x) =
+	   ;; %pi/sin(%pi*x)/x/gamma(-x)
 	   (/ (float (- pi))
 	      (* a (sin (* (float pi) a)))
 	      (gammafloat (- a))))
+	  ((<= a (sqrt flonum-epsilon))
+	   ;; Use gamma(x) = gamma(1+x)/x when x is very small
+	   (/ (gammafloat (+ 1 a))
+	      a))
 	  ((< a 10)
 	   (slatec::dgamma a))
 	  (t

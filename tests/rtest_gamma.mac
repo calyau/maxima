@@ -3695,6 +3695,29 @@ relerror(inverse_erf(- .9763545580611441 ),
  1d-15);
 true;
 
+/* Bug #2668 Bigfloat Gamma inaccurae for small inputs
+ *
+ * For these small values, gamma(z) = gamma(z+1)/z = 1/z
+ * since 1+z = 1 and gamma(1) = 1.
+ */
+relerror(gamma(2.0^-256), 2.0^256, 1d-14);
+true;
+
+relerror(gamma(2b0^-256), 2b0^256, 10^(-fpprec+1));
+true;
+
+closeto(
+  gamma(2.0^-256 + 1d-200*%i),
+  rectform(1/(2.0^-256 + 1d-200*%i)),
+  2d-15);
+true;
+
+closeto(
+  gamma(2b0^-256 + 1b-500*%i),
+  rectform(1/(2b0^-256 + 1b-500*%i)),
+  2d-15);
+true;
+
 (fpprec:oldfpprec,done);
 done;
 

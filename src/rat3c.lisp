@@ -417,7 +417,8 @@
     (loop until (minusp (setq k (- (pt-le u) (pt-le v))))
 	   do (setq q* (ptimes invv (pt-lc u)))
 	   if pquo* do (setq quo (nconc quo (list k q*)))
-	   when (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))
+	   when (ptzerop (setq u (ptpt-subtract-powered-product
+                                  (pt-red u) (pt-red v) q* k)))
 	   return (ptzero)
 	   finally (return u))))
 

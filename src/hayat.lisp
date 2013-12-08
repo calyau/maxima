@@ -745,7 +745,7 @@
 (defun psfind-s1 (r)
    (cond ((null (atom (cdr r))) (rczero))
 	 ((atom (car r)) r)
-	 (t (do ((p (pterm (cdar r) 0) (pterm (cdr p) 0)))
+	 (t (do ((p (ptterm (cdar r) 0) (ptterm (cdr p) 0)))
 		((atom p) (cons p (cdr r)))))))
 
 (defun psexpt (p n)

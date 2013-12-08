@@ -771,9 +771,9 @@
 ;; This function is called for side-effect only.
 
 (defun solvelin (exp) 
-  (cond ((equal 0 (pterm (cdr exp) 0))
+  (cond ((equal 0 (ptterm (cdr exp) 0))
 	 (solve1a (caddr exp) mult)))
-  (solve3 (rdis (ratreduce (pminus (pterm (cdr exp) 0))
+  (solve3 (rdis (ratreduce (pminus (ptterm (cdr exp) 0))
 			   (caddr exp)))
 	  mult))
 
@@ -784,8 +784,8 @@
 
 (defun solvequad (exp &aux discrim a b c)
   (setq a (caddr exp))
-  (setq b (pterm (cdr exp) 1.))
-  (setq c (pterm (cdr exp) 0.))
+  (setq b (ptterm (cdr exp) 1.))
+  (setq c (ptterm (cdr exp) 0.))
   (setq discrim (simplify (pdis (pplus (pexpt b 2.)
 				       (pminus (ptimes 4. (ptimes a c)))))))
   (setq b (pdis (pminus b)))
