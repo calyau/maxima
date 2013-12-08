@@ -189,7 +189,7 @@ eine bestehende Datei an.
 
 Setzt einen Pfad aus @var{path} und @var{filename} zusammen.  Endet @var{path}
 mit einer Zeichenkette der Form @code{###.@var{something}}, wird diese 
-Zeichenkette durch @code{@var{filename.@var{something}}} ersetzt.  Ansonsten 
+Zeichenkette durch @code{@var{filename.something}} ersetzt.  Ansonsten 
 wird der Endbestandteil durch @var{filename} ersetzt.
 
 Die R@"uckgabe ist ein Lisp-Dateiname.
