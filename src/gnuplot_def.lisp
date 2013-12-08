@@ -255,13 +255,13 @@
     ;; with a division by 0.  Explicitly assigning cbrange prevents
     ;; the error. Also set zrange to match cbrange.
     ;; When the bug is fixed in Gnuplot (maybe 4.1 ?) this hack can go away.
-    (when (floatp (getf features :const-expr))
+    (when (floatp (getf features :const_expr))
       (format
        dest "set cbrange [~a : ~a]~%"
-       (1- (getf features :const-expr)) (1+ (getf features :const-expr)))
+       (1- (getf features :const_expr)) (1+ (getf features :const_expr)))
       (format
        dest "set zrange [~a : ~a]~%"
-       (1- (getf features :const-expr)) (1+ (getf features :const-expr))))
+       (1- (getf features :const_expr)) (1+ (getf features :const_expr))))
     ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
     
     (if ($get_plot_option '$gnuplot_out_file 2)

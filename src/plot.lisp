@@ -1430,8 +1430,8 @@ sin(y)*(10.0+6*cos(x)),
   (when (eq ($get_plot_option '$gnuplot_term 2) '$dumb)
     ($set_plot_option '((mlist) $plot_format $gnuplot)))
   (if ($get_plot_option '$plot_format 2)
-      (setf (getf features :plot-format) ($get_plot_option '$plot_format 2))
-      (setf (getf features :plot-format) '$gnuplot))
+      (setf (getf features :plot_format) ($get_plot_option '$plot_format 2))
+      (setf (getf features :plot_format) '$gnuplot))
   features)
 
 
@@ -1538,7 +1538,7 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; Remove axes labels when no box is used in gnuplot
     (unless (or (null (getf features :box)) (first (getf features :box))
-		(eq (getf features :plot-format) '$xmaxima))
+		(eq (getf features :plot_format) '$xmaxima))
       (remf features :xlabel)
       (remf features :ylabel))
 
@@ -1578,16 +1578,16 @@ sin(y)*(10.0+6*cos(x)),
     (setq gnuplot-term ($get_plot_option '$gnuplot_term 2))
     (if ($get_plot_option '$gnuplot_out_file 2)
       (setq gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-    (if (and (eq (getf features :plot-format) '$gnuplot)
+    (if (and (eq (getf features :plot_format) '$gnuplot)
              (eq gnuplot-term '$default) gnuplot-out-file)
         (setq file gnuplot-out-file)
         (setq file
               (plot-temp-file
                (format nil "maxout.~(~a~)"
-                       (ensure-string (getf features :plot-format))))))
+                       (ensure-string (getf features :plot_format))))))
 
     ;; old function $plot2dopen incorporated here
-    (case (getf features :plot-format)
+    (case (getf features :plot_format)
       ($xmaxima
        (show-open-plot
         (with-output-to-string
@@ -1653,10 +1653,11 @@ sin(y)*(10.0+6*cos(x)),
                         ;; remove the moveto
                           (setq lis (cddr lis))))
                    (format st "}"))))
-          (format st "} "))))
+          (format st "} "))
+        file))
       (t
        (with-open-file (st file :direction :output :if-exists :supersede)
-         (case (getf features :plot-format)
+         (case (getf features :plot_format)
            ($gnuplot
             (setq output-file (gnuplot-print-header st features))
             (format st "plot")
@@ -1691,7 +1692,7 @@ sin(y)*(10.0+6*cos(x)),
                 (styles (getf features :styles)) style plot-name)
            (loop for v in (cdr fun) for points-list in points-lists do
                 (when points-list
-                  (case (getf features :plot-format)
+                  (case (getf features :plot_format)
                     ($gnuplot_pipes
                      (if (> i 0)
                          (setq *gnuplot-command*
@@ -1734,7 +1735,7 @@ sin(y)*(10.0+6*cos(x)),
                                                (coerce (mstring v) 'string))))
                                   (cond ((< (length string) 80) string)
                                         (t (format nil "fun~a" i)))))))
-                  (case (getf features :plot-format)
+                  (case (getf features :plot_format)
                     ($gnuplot
                      (when (> i 1) (format st ","))
                      (format st " '-'")
@@ -1751,7 +1752,7 @@ sin(y)*(10.0+6*cos(x)),
                                         (gnuplot-curve-style style i))
                                 (format nil " notitle ~a"
                                         (gnuplot-curve-style style i))))))))))
-         (case (getf features :plot-format)
+         (case (getf features :plot_format)
            ($gnuplot
             (format st "~%"))
            ($gnuplot_pipes
@@ -1760,7 +1761,7 @@ sin(y)*(10.0+6*cos(x)),
          (loop for v in (cdr fun) for points-list in points-lists do
               (when points-list
            (incf i)
-           (case (getf features :plot-format)
+           (case (getf features :plot_format)
              ($gnuplot
               (if (> i 1)
                   (format st "e~%")))
@@ -1775,13 +1776,13 @@ sin(y)*(10.0+6*cos(x)),
                 do
                   (cond ((eq v 'moveto)
                          (cond 
-                           ((find (getf features :plot-format) '($gnuplot_pipes $gnuplot))
+                           ((find (getf features :plot_format) '($gnuplot_pipes $gnuplot))
                             ;; A blank line means a discontinuity
                             (if (null in-discontinuity)
                                 (progn
                                   (format st "~%")
                                   (setq in-discontinuity t))))
-                           ((equal (getf features :plot-format) '$mgnuplot)
+                           ((equal (getf features :plot_format) '$mgnuplot)
                             ;; A blank line means a discontinuity
                             (format st "~%"))
                            (t
@@ -1794,7 +1795,7 @@ sin(y)*(10.0+6*cos(x)),
                   st "~g ~g ~%"
                   (getf features :xmin)(getf features :ymin)))))))))
 
-    (case (getf features :plot-format)
+    (case (getf features :plot_format)
       ($gnuplot 
        (gnuplot-process file))
       ($gnuplot_pipes
@@ -1908,14 +1909,14 @@ sin(y)*(10.0+6*cos(x)),
        (format dest "}~%"))
   (format dest "}~%"))
 
-(defun show-open-plot (ans)
+(defun show-open-plot (ans file)
   (cond ($show_openplot
          (with-open-file (st1 (plot-temp-file "maxout.xmaxima") :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
-                                       (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
-                                       $xmaxima_plot_command)
-                  (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima"))))
+                               (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
+                               $xmaxima_plot_command)
+                  (format nil " ~s &" file)))
         (t (princ ans) "")))
 
 
@@ -2101,7 +2102,7 @@ Several functions depending on the two variables v1 and v2:
                       ;; ----- GNUPLOT 4.0 WORK-AROUND -----
                       (when (and ($constantp (fourth exprn))
                                  ($get_plot_option '$gnuplot_4_0 2))
-                        (setf (getf features :const-expr)
+                        (setf (getf features :const_expr)
                               ($float (meval (fourth exprn))))))
                     (merror
                      (intl:gettext "plot3d: there must be at most two variables; found: ~M")
@@ -2154,7 +2155,7 @@ Several functions depending on the two variables v1 and v2:
            ;; ----- GNUPLOT 4.0 WORK-AROUND -----
            (when (and ($constantp exprn)
                       ($get_plot_option '$gnuplot_4_0 2))
-             (setf (getf features :const-expr) ($float (meval exprn))))
+             (setf (getf features :const_expr) ($float (meval exprn))))
            ;; push the function and its domain into the functions stack
            (push `(,exprn ,xrange ,yrange) functions)
            ;; push a title for this plot into the titles stack
@@ -2193,16 +2194,16 @@ Several functions depending on the two variables v1 and v2:
   (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
   (if ($get_plot_option '$gnuplot_out_file 2)
       (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-  (if (and (eq (getf features :plot-format) '$gnuplot) 
+  (if (and (eq (getf features :plot_format) '$gnuplot) 
            (eq gnuplot-term '$default) 
            gnuplot-out-file)
       (setf file gnuplot-out-file)
       (setf file 
             (plot-temp-file
              (format nil "maxout.~(~a~)"
-                     (ensure-string (getf features :plot-format))))))
+                     (ensure-string (getf features :plot_format))))))
   (and $in_netmath 
-       (setq $in_netmath (eq (getf features :plot-format) '$xmaxima)))
+       (setq $in_netmath (eq (getf features :plot_format) '$xmaxima)))
   
   ;; Set up the output file stream
   (let (($pstream
@@ -2215,7 +2216,7 @@ Several functions depending on the two variables v1 and v2:
     (when (first legend) (setq titles legend))
 
     (unwind-protect
-         (case (getf features :plot-format)
+         (case (getf features :plot_format)
            ($gnuplot
             (setq output-file (gnuplot-print-header $pstream features))
             (format $pstream "~a" (gnuplot-plot3d-command "-" titles n)))
@@ -2265,7 +2266,7 @@ Several functions depending on the two variables v1 and v2:
             (if trans (mfuncall trans ar))
             (if tem (mfuncall tem ar))
             
-            (case (getf features :plot-format)
+            (case (getf features :plot_format)
               ($gnuplot
                (when (> i 1) (format $pstream "e~%"))
                (output-points pl (third (getf features :grid))))
@@ -2289,22 +2290,22 @@ Several functions depending on the two variables v1 and v2:
       
       ;; close the stream and plot..
       (cond ($in_netmath (format $pstream "}~%") (return-from $plot3d ""))
-            ((eql (getf features :plot-format) '$xmaxima)
+            ((eql (getf features :plot_format) '$xmaxima)
              (format $pstream "}~%")
              (close $pstream))
             (t (close $pstream)
                (setq $pstream nil))))
-    (if (eql (getf features :plot-format) '$gnuplot)
+    (if (eql (getf features :plot_format) '$gnuplot)
         (gnuplot-process file)
         (cond (($get_plot_option '$run_viewer 2)
-               (case (getf features :plot-format)
+               (case (getf features :plot_format)
                  ($xmaxima
                   ($system
                    (concatenate
                     'string *maxima-prefix* 
                     (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
                     $xmaxima_plot_command) 
-                   (format nil " \"~a\"" file)))
+                   (format nil " ~s &" file)))
                  ($geomview 
                   ($system $geomview_command
                            (format nil " \"~a\"" file)))
@@ -2350,3 +2351,4 @@ Several functions depending on the two variables v1 and v2:
                 (return-from check-list-plot3d nil)
                 ;; we do have a parametric representation. Return an empty list
                 (return-from check-list-plot3d '((mlist))))))))
+
