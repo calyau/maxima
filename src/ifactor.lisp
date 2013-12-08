@@ -463,7 +463,7 @@
 (defun $inv_mod (a m)
   (unless (and (integerp a) (integerp m))
       (merror (intl:gettext "inv_mod: arguments must be integers; found: ~M, ~M") a m))
-  (inv-mod a m))
+  (unless (= 0 a) (inv-mod a m)) )
 
 ;;; computations on the elliptic curve:
 ;;; we use the elliptic curve in projective coordinates (x,y,z), but only
