@@ -364,7 +364,7 @@ informa@,{c}@~{a}o no Maxima.  S@~{a}o elas:
 @item labels
 Todos os r@'{o}tulos @code{%i}, @code{%o}, e @code{%t} associados.
 @item values
-Todos os @'{a}timos associados que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do Maxima ou comutadores,
+Todos os @'{a}tomos associados que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do Maxima ou comutadores,
 criados por @mref{:} ou por @mref{::} ou por associa@,{c}@~{a}o funcional.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
 @item functions
@@ -487,15 +487,9 @@ O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o 
 
 Retorna a lista de r@'{o}tulos de entrada, sa@'{i}da, ou de express@~{o}es intermediarias que se iniciam
 com @var{s@'{i}mbolo}.  Tipicamente @var{s@'{i}mbolo} @'{e} o valor de
-@mrefcomma{inchar} @mrefcomma{outchar} ou de @mrefdot{linechar}  O caractere de
-r@'{o}tulo pode ser dado com ou sem o sinal de porcentagem, de forma que, por exemplo, @code{i}
-e @code{%i} retornem o mesmo resultado.
+@mrefcomma{inchar} @mrefcomma{outchar} ou de @mrefdot{linechar} 
 
 Se nenhum r@'{o}tulo iniciar-se com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
-
-A fun@,{c}@~{a}o @code{labels} coloca seus argumentos entre aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
-evita que as aspas duplas sejam colocadas.  Por exemplo, @code{labels (''inchar)} retorna
-os r@'{o}tulos de entrada que iniciam-se com o atual caractere de r@'{o}tulo de entrada.
 
 A vari@'{a}vel @code{labels} @'{e} a lista de r@'{o}tulos de entrada, de sa@'{i}da, e de express@~{o}es
 intermedi@'{a}rias, incluindo todos os r@'{o}tulos anteriores se @code{inchar},
@@ -737,6 +731,28 @@ modo @code{playback (slow)}, e do la@,{c}o de parada do Maxima (da forma invocad
 @category{Global variables} @category{Console interaction}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} prompt_prepend_note (nota)
+
+Adiciona uma nota que é mostrada após cada prompt de entrada. Essa nota deve
+ou ser uma sequência de caracteres ou deve ser alguma coisa que possa ser chamada como uma
+função. No caso de ser chamada como função, a função deve retornar ou uma
+sequência de caracteres ou um número (por razões técnicas decorrentes da implementação, expressões
+arbitrárias podem não serem impressas corretamente). Se a chamada à função
+retornar um erro então a nota é removida da lista a ser
+mostrada a partir da chamada à função.
+
+Pode ter mais de uma nota mostrada após o prompt, e a função @code{prompt_prepend_note}
+adiciona a nota fornecida ao lado direito no final da lista. Para remover uma nota
+da lista, use @mref{prompt_remove_note}.
+@end deffn
+
+@deffn {Function} prompt_remove_note (nota)
+
+Remove uma nota da lista de objetos a serem exibidos após cada prompt. Veja
+@mref{prompt_prepend_note} para como adicionar uma nota.
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{quit}
