@@ -139,7 +139,7 @@ _
 @deffnx {Function} describe (@var{seqcaracteres}, exact)
 @deffnx {Function} describe (@var{seqcaracteres}, inexact)
 @ifinfo
-@fnindex Help
+@fnindex Ajuda
 @end ifinfo
 
 @code{describe(@var{seqcaracteres})} @'{e} equivalente a

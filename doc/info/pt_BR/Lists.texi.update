@@ -62,8 +62,8 @@ propriamente dita, uma vez que essa lista tenha estado no simplificador a lista 
 @defvr  {Operator} [
 @defvrx {Operator} ]
 @ifinfo
-@fnindex List delimiters
-@fnindex Subscript operator
+@fnindex Delimitadores de lista
+@fnindex Operador de subscrito
 @end ifinfo
 
 Os operadores @code{[} e @code{]} delimitam o in@'{i}cio e o fim, respectivamente, de uma lista.
