@@ -816,6 +816,7 @@
 
 (defun gf-cminus-b (c) ;; assumes that 0 <= c < *gf-char* 
   (cond
+    ((= 0 c) 0)
     ((= 2 *gf-char*) c)
     (*ef-arith?* (ef-cminus-b c))
     (t (maybe-char-is-fixnum-let ((c c))
@@ -868,6 +869,7 @@
  
 (defun ef-cminus-b (a)
   (cond 
+    ((= 0 a) 0)
     ((= 2 *gf-char*) a)
     ($ef_coeff_mult (mfuncall '$ef_coeff_mult (1- *gf-char*) a))
     (*gf-logs?* (ef-cminus-by-table a))
@@ -965,6 +967,7 @@
  
     (define-compiler-macro gf-cminus-b (a) ;; assumes that 0 <= a < *gf-char* 
       `(cond 
+        ((= 0 ,a) 0)
         (*ef-arith?* 
           (ef-cminus-b ,a) )
         ((typep *gf-char* 'fixnum)
@@ -1029,6 +1032,7 @@
  
     (si::define-compiler-macro gf-cminus-b (a) ;; assume that 0 <= a < *gf-char* :
       `(cond 
+        ((= 0 ,a) 0)
         (*ef-arith?* 
           (ef-cminus-b ,a) )
         ((typep *gf-char* 'fixnum)
@@ -1088,16 +1092,15 @@
            (fs (get-factor-list *gf-ord*)) ) 
       (setq *gf-fs-ord* (sort fs #'(lambda (a b) (< (car a) (car b))))) )   ;; .. [pi, ei] .. 
 
+    (when *gf-irred?* (gf-precomp))
+    
     (setq *gf-prim* ;; primitive element
       (cond 
         ((= 1 *gf-exp*)
           (if (= 2 *gf-char*) (list 0 1)
             (list 0 (zn-primroot p *gf-ord* (mapcar #'car *gf-fs-ord*))) )) ;; .. pi ..  (factors_only:true)
         (t
-          (gf-precomp)
-          (if *gf-irred?*
-            (gf-prim)
-            '$unknown ))))
+          (if *gf-irred?* (gf-prim) '$unknown) )))
 
     (setq *gf-char?* t *gf-red?* t *gf-data?* t) ;; global flags
     ($gf_get_data) )) ;; data structure
@@ -1135,7 +1138,7 @@
     (let* (($intfaclim)
            (fs (get-factor-list *ef-ord*)) ) 
       (setq *ef-fs-ord* (sort fs #'(lambda (a b) (< (car a) (car b))))) ) 
-    (ef-precomp)
+    (when *ef-irred?* (ef-precomp))
     (setq *ef-data?* t
           *ef-red?* t
           *ef-prim* (if (= 1 *ef-exp*) 
@@ -1694,7 +1697,7 @@
         (when a ($gf_exp (gf-x2p a) (neg n))) ) ;; a is nil in case the inverse does not exist
       (*gf-logs?*
         (gf-x2p (gf-pow-by-table (gf-p2x a) n)) )
-      (*gf-x^p-powers*
+      ((and *gf-irred?* *gf-x^p-powers*)
         (gf-x2p (gf-pow$ (gf-p2x a) n *gf-red*)) )
       (t 
         (setq a (gf-p2x a))
@@ -1768,7 +1771,7 @@
           (gf-merror (intl:gettext "`ef_exp': Unknown reduction polynomial.")) )
         (setq a (gf-inv (gf-p2x a) *ef-red*))
         (when a ($ef_exp (gf-x2p a) (neg n))) ) 
-      (*ef-x^q-powers*  
+      ((and *ef-irred?* *ef-x^q-powers*)  
         (gf-x2p (gf-pow$ (gf-p2x a) n *ef-red*)) )
       (t  
         (setq a (gf-p2x a))
@@ -2088,12 +2091,16 @@
          (setq n (ash n -1) 
                x (gf-sq x red)) ))))
 
-;; use precomputed *gf-x^p-powers* resp. *ef-x^q-powers*
+;; in a field use precomputed *gf-x^p-powers* resp. *ef-x^q-powers*
 
 (defun gf-pow$ (x n red) 
   (if *ef-arith?* 
-    (*f-pow$ x n red *gf-card* *ef-card* *ef-x^q-powers*)
-    (*f-pow$ x n red *gf-char* *gf-card* *gf-x^p-powers*) ))
+    (if *ef-irred?* 
+      (*f-pow$ x n red *gf-card* *ef-card* *ef-x^q-powers*)
+      (gf-pow x n red) )
+    (if *gf-irred?* 
+      (*f-pow$ x n red *gf-char* *gf-card* *gf-x^p-powers*)
+      (gf-pow x n red) )))
 
 (defun *f-pow$ (x n red p card x^p-powers) 
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
@@ -2564,19 +2571,33 @@
 ;;
 
 (defun gf-prim-p (x) 
-  (*f-prim-p x *gf-irred?* *gf-char* *gf-red* *gf-fsx* *gf-fsx-base-p* *gf-x^p-powers*) )
+  (cond 
+    (*gf-irred?*
+      (*f-prim-p-2 x *gf-char* *gf-red* *gf-fsx* *gf-fsx-base-p* *gf-x^p-powers*) )
+    ((gf-unit-p x *gf-red*)
+      (*f-prim-p-1 x *gf-red* *gf-ord* *gf-fs-ord*) )
+    (t nil) ))
 
 (defun ef-prim-p (x) 
-  (*f-prim-p x *ef-irred?* *gf-card* *ef-red* *ef-fsx* *ef-fsx-base-q* *ef-x^q-powers*) )
+  (cond 
+    (*ef-irred?*
+      (*f-prim-p-2 x *gf-card* *ef-red* *ef-fsx* *ef-fsx-base-q* *ef-x^q-powers*) )
+    ((gf-unit-p x *ef-red*)
+      (*f-prim-p-1 x *ef-red* *ef-ord* *ef-fs-ord*) )
+    (t nil) ))
 ;; 
-;; *f-prim-p uses precomputations
+;; *f-prim-p-1 
 ;;
-(defun *f-prim-p (x irr? q red fs fs-base-q x^q-powers) 
+(defun *f-prim-p-1 (x red ord fs-ord) 
+  (dolist (pe fs-ord t) 
+    (when (equal '(0 1) (gf-pow x (truncate ord (car pe)) red)) (return)) ))
+;; 
+;; *f-prim-p-2 uses precomputations and exponentiation by composition
+;;
+(defun *f-prim-p-2 (x q red fs fs-base-q x^q-powers) 
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (unless (or irr? (gf-unit-p x red))
-    (return-from *f-prim-p) )
   (unless (or (= 2 *gf-char*) (= -1 (gf-jacobi x red q)))
-    (return-from *f-prim-p) )
+    (return-from *f-prim-p-2) )
   (let ((exponent (car red))
         (x+c? (and (= (car x) 1) (= (cadr x) 1)))
         y prod -c z )
@@ -2584,7 +2605,7 @@
         ((= i lf) t)
         (declare (fixnum i j lf))
       (cond 
-        ((and irr? x+c? (cadr (svref fs i)))                ;; linear and pi|ord and pi|p-1
+        ((and x+c? (cadr (svref fs i)))                ;; linear and pi|ord and pi|p-1
           (setq -c (if (= 2 (length x)) 0 (gf-cminus-b (car (last x)))) 
                 z (list 0 (gf-at red -c)) )
           (when (oddp exponent) (setq z (gf-minus z)))      ;;  (-1)^n * red(-c)
@@ -2599,7 +2620,7 @@
                   prod (gf-times prod y red)  
                   j (1+ j) ))
           (when (or (null prod) (equal prod '(0 1)))        ;; prod(f(x^q^j)^aij, j,0,m)
-            (return nil) )) )))) 
+            (return nil) )) ))))
 
 
 ;; generalized Jacobi-symbol (Bach-Shallit, Theorem 6.7.1)
