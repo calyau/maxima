@@ -47,7 +47,8 @@ proc getoptions {} {
     set tmp gnu-optionsxx
     file delete -force $tmp
     sendgnu "save '$tmp'\n"
-    while {[file exists $tmp] <= 0} {after 50} # sleep for 50 ms
+    # 50 ms delay in loop is arbitrary, was "exec sleep 0"
+    while {[file exists $tmp] <= 0} {after 50}
     set at [.fra.options nearest 0]
     set f [ open gnu-optionsxx ]
     .fra.options delete 0 end
