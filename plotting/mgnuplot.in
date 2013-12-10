@@ -45,9 +45,9 @@ text .text
 proc getoptions {} {
 #    unlink gnu-optionsxx
     set tmp gnu-optionsxx
-    exec rm -f $tmp
+    file delete -force $tmp
     sendgnu "save '$tmp'\n"
-    while {[file exists $tmp] <= 0} {exec sleep 0}
+    while {[file exists $tmp] <= 0} {after 50} # sleep for 50 ms
     set at [.fra.options nearest 0]
     set f [ open gnu-optionsxx ]
     .fra.options delete 0 end
