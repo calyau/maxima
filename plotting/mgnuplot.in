@@ -2,6 +2,17 @@
 # comment \
 exec @WISH@ "$0" "$@"
 
+# Set path to gnuplot on windows, if required
+if { $tcl_platform(platform) eq "windows"} {
+  # If gnuplot isn't in the path, then guess location and add to path
+  if { [auto_execok gnuplot] eq "" } {
+    # Path to mgnuplot executable
+    set mypath [file dirname $argv0]
+    # gnuplot.exe location relative to mgnuplot.exe in windows installer
+    set gnuplotpath [file normalize "${mypath}/../../../../gnuplot/bin"]
+    set ::env(PATH) "$::env(PATH);$gnuplotpath"
+  }
+}
 
 #set gnuPlotstream [open {|  gnuplot /d19/staff/wfs/tmp/jo } w]
 set gnuPlotstream [open {|  gnuplot  } r+]
