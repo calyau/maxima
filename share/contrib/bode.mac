@@ -45,7 +45,7 @@
  * Uncomment next two lines to load plot.lisp.
  */
 /* load("/tmp/plot.lisp"); */     /* change /tmp if you put plot.lisp someplace else */
-/* plot_options : cons ([logx, false], plot_options); */
+/* plot_options : set_plot_option ([logx, false]); */
 
 /* If running 5.9.2, uncomment next line to load conjugate from share/linearalgebra */
 /* load (conjugate); */

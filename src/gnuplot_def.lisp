@@ -18,7 +18,11 @@
 
 (in-package :maxima)
 
-(defun gnuplot-color (color)
+;; Checks that color is a six-digit hexadecimal number with the prefix #,
+;; or a symbol for one of the 12 pre-defined colors, in which case the
+;; hexadecimal code for that color will be returned. Unknown colors are
+;; converted into black.
+(defun rgb-color (color)
   (if (and (stringp color) (string= (subseq color 0 1) "#")
            (= (length color) 7))
       color
@@ -37,11 +41,16 @@
         ($white "#ffffff")
 	(t "#000000"))))
 
-(defun gnuplot-colors (n)
-  (let ((colors (cddr ($get_plot_option '$color))))
-    (unless (integerp n) (setq n (round n)))
-    (format nil "rgb ~s"
-            (gnuplot-color (nth (mod (- n 1) (length colors)) colors)))))
+;; Given a list of valid colors (see rgb-color function) and an object c
+;; that can be a real number or a string, produces a gnuplot color
+;; specification for c; when c is real, its nearest integer is assigned
+;; to one of the numbers in the list, using modulo length of the list.
+(defun gnuplot-color (colors c)
+  (unless (listp colors) (setq colors (list colors)))
+  (when (realp c)
+    (unless (integerp c) (setq c (round c)))
+    (setq c (nth (mod (1- c) (length colors)) colors)))
+  (format nil "rgb ~s" (rgb-color c)))
 
 (defun gnuplot-pointtype (type)
   (case type
@@ -49,12 +58,11 @@
     ($square 4) ($triangle 9) ($delta 8) ($wedge 11) ($nabla 10)
     ($diamond 13) ($lozenge 12) (t 7)))
 
-(defun gnuplot-pointtypes (n)
-  (let ((types (cddr ($get_plot_option '$point_type))))
-    (unless (integerp n) (setq n (round n)))
-    (gnuplot-pointtype (nth (mod (- n 1) (length types)) types))))
+(defun gnuplot-pointtypes (types n)
+  (unless (integerp n) (setq n (round n)))
+  (unless (listp types) (setq types (list types)))
+  (gnuplot-pointtype (nth (mod (- n 1) (length types)) types)))
 
-(defun gnuplot-curve-style (style i)
 ;; style is a list starting with one of the symbols: points, lines,
 ;; linespoints or dots,
 ;; The meaning of the numbers that follow the symbol are:
@@ -67,52 +75,58 @@
 ;; linewidth and radius are measured in the same units and can be
 ;; floating-point numbers.
 ;;
-;; color and pointtype must be an integers.
+;; type must be an integer
+;; color can be an integer, used as index to get one of the colors defined
+;; by the color option, or a 6-digit hexadecimal number #rrggbb
+
+(defun gnuplot-curve-style (style colors types i)
+  (unless (listp style) (setq style (list style)))
+  (unless (listp colors) (setq colors (list colors)))
   (with-output-to-string
     (st)
     (case (first style)
       ($dots
        (format st "with dots")
-       (if (integerp (second style))
-         (format st " lt ~d" (gnuplot-colors (second style)))
-         (format st " lt ~d" (gnuplot-colors i))))
+       (if (second style)
+         (format st " lt ~d" (gnuplot-color colors (second style)))
+         (format st " lt ~d" (gnuplot-color colors i))))
       ($impulses
        (format st "with impulses")
        (if (integerp (second style))
-         (format st " lt ~d" (gnuplot-colors (second style)))
-         (format st " lt ~d" (gnuplot-colors i))))
+         (format st " lt ~d" (gnuplot-color colors (second style)))
+         (format st " lt ~d" (gnuplot-color colors i))))
       ($lines
        (format st "with lines")
-       (if (numberp (second style))
+       (if (realp (second style))
          (format st " lw ~,2f" (second style)))
-       (if (integerp (third style))
-         (format st " lt ~d" (gnuplot-colors (third style)))
-         (format st " lt ~d" (gnuplot-colors i))))
+       (if (third style)
+         (format st " lt ~d" (gnuplot-color colors (third style)))
+         (format st " lt ~d" (gnuplot-color colors i))))
       ($points
        (format st "with points")
-       (if (numberp (second style))
+       (if (realp (second style))
          (format st " ps ~,2f" (/ (second style) 2))
          (format st " ps 1.5"))
-       (if (integerp (third style))
-         (format st " lt ~d" (gnuplot-colors (third style)))
-         (format st " lt ~d" (gnuplot-colors i)))
+       (if (third style)
+         (format st " lt ~d" (gnuplot-color colors (third style)))
+         (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fourth style))
-         (format st " pt ~d" (gnuplot-pointtypes (fourth style)))
-         (format st " pt ~d" (gnuplot-pointtypes i))))
+         (format st " pt ~d" (gnuplot-pointtypes types (fourth style)))
+         (format st " pt ~d" (gnuplot-pointtypes types i))))
       ($linespoints
        (format st "with linespoints")
-       (if (numberp (second style))
+       (if (realp (second style))
          (format st " lw ~,2f" (second style)))
-       (if (numberp (third style))
+       (if (realp (third style))
          (format st " ps ~,2f" (/ (third style) 2))
          (format st " ps 1.5"))
-       (if (integerp (fourth style))
-         (format st " lt ~d" (gnuplot-colors (fourth style)))
-         (format st " lt ~d" (gnuplot-colors i)))
+       (if (fourth style)
+         (format st " lt ~d" (gnuplot-color colors (fourth style)))
+         (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fifth style))
-         (format st " pt ~d" (gnuplot-pointtypes (fifth style)))
-         (format st " pt ~d" (gnuplot-pointtypes i))))
-      (t (format st "with lines lt ~d" (gnuplot-colors i))))))
+         (format st " pt ~d" (gnuplot-pointtypes types (fifth style)))
+         (format st " pt ~d" (gnuplot-pointtypes types i))))
+      (t (format st "with lines lt ~d" (gnuplot-color colors i))))))
 
 (defun gnuplot-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,
@@ -132,6 +146,7 @@
 ;; If the symbol is gradient, it must be followed by either a list of valid
 ;; colors or by a list of lists with two elements, a number and a valid color.
 
+  (unless (listp palette) (setq palette (list palette)))
   (let (hue sat val gray range fun)
     (case (first palette)
       ($gray
@@ -191,7 +206,7 @@
              ((listp (first colors))
               (setq colors (sort colors #'< :key #'cadr))
               (dotimes (i n)
-                (setq map (cons (gnuplot-color (third (nth i colors))) ;; color
+                (setq map (cons (rgb-color (third (nth i colors))) ;; color
                                 (cons
                                  (/ (- (second (nth i colors))   ;; ni minus
                                        (second (first colors)))  ;; smallest ni
@@ -200,7 +215,7 @@
                                  map)))))
              ;; list of only colors
              (t (dotimes (i n)
-                  (setq map (cons (gnuplot-color (nth i colors))  ;; color i
+                  (setq map (cons (rgb-color (nth i colors))  ;; color i
                                   (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
@@ -213,41 +228,42 @@
            "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient.")
           (first palette)))))))
 
-(defun gnuplot-print-header (dest features)
-  (let ((gnuplot-out-file nil) (meshcolor '$black) (colorbox nil)
-        preamble palette meshcolor_opt colorbox_opt)
-    (setq preamble (get-plot-option-string '$gnuplot_preamble))
-    (if (and ($get_plot_option '$gnuplot_preamble) (> (length preamble) 0))
+(defun gnuplot-print-header (dest plot-options)
+  (let ((gnuplot-out-file (getf plot-options :gnuplot_out_file))
+        (preamble (getf plot-options :gnuplot_preamble))
+        (palette (getf plot-options :palette))
+        (colorbox (getf plot-options :colorbox))
+        (meshcolor (if (member :mesh_lines_color plot-options)
+                       (getf plot-options :mesh_lines_color)
+                       '$black)))
+    (if (find 'mlist palette :key #'car) (setq palette (list palette)))
+    (if (and preamble (> (length preamble) 0))
       (format dest "~a~%" preamble)
       (progn
-        (when (string= (getf features :type) "plot3d")
+        (when (string= (getf plot-options :type) "plot3d")
           (format dest "set ticslevel 0~%")
-          (if (setq palette ($get_plot_option '$palette 2))
+          (if palette
               (progn
-                (when (setq meshcolor_opt ($get_plot_option '$mesh_lines_color))
-                  (setq meshcolor (third meshcolor_opt)))
                 (if meshcolor
                     (progn
                       (format dest "set style line 100 lt rgb ~s lw 1~%"
-                              (gnuplot-color meshcolor))
+                              (rgb-color meshcolor))
                       (format dest "set pm3d hidden3d 100~%")
-                      (unless ($get_plot_option '$gnuplot_4_0 2)
+                      (unless (getf plot-options :gnuplot_4_0)
                         (format dest "set pm3d depthorder~%")))
                     (format dest "set pm3d~%"))
                 (format dest "unset hidden3d~%")
-                (when (setq colorbox_opt ($get_plot_option '$colorbox))
-                  (setq colorbox (third colorbox_opt)))
 		(unless colorbox (format dest "unset colorbox~%"))
                 (format dest "set palette ~a~%"
-                        (gnuplot-palette (rest palette))))
+                        (gnuplot-palette (rest (first palette)))))
               (format dest "set hidden3d~%"))
-          (let ((elev ($get_plot_option '$elevation))
-                (azim ($get_plot_option '$azimuth)))
+          (let ((elev (getf plot-options :elevation))
+                (azim (getf plot-options :azimuth)))
               (when (or elev azim)
                 (if elev
-                    (format dest "set view ~d" (third elev))
+                    (format dest "set view ~d" elev)
                     (format dest "set view "))
-                (when azim (format dest ", ~d" (third azim)))
+                (when azim (format dest ", ~d" azim))
                 (format dest "~%"))))))
 
     ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
@@ -255,90 +271,89 @@
     ;; with a division by 0.  Explicitly assigning cbrange prevents
     ;; the error. Also set zrange to match cbrange.
     ;; When the bug is fixed in Gnuplot (maybe 4.1 ?) this hack can go away.
-    (when (floatp (getf features :const_expr))
+    (when (floatp (getf plot-options :const_expr))
       (format
        dest "set cbrange [~a : ~a]~%"
-       (1- (getf features :const_expr)) (1+ (getf features :const_expr)))
+       (1- (getf plot-options :const_expr))
+       (1+ (getf plot-options :const_expr)))
       (format
        dest "set zrange [~a : ~a]~%"
-       (1- (getf features :const_expr)) (1+ (getf features :const_expr))))
+       (1- (getf plot-options :const_expr))
+       (1+ (getf plot-options :const_expr))))
     ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
     
-    (if ($get_plot_option '$gnuplot_out_file 2)
-        (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     ;; default output file name for all formats except default
-    (when (not (eq ($get_plot_option '$gnuplot_term 2) '$default))
+    (when (not (eq (getf plot-options :gnuplot_term) '$default))
       (cond ((null gnuplot-out-file)
 	     (setq gnuplot-out-file
 		   (plot-temp-file
 		    (format nil "maxplot.~(~a~)"
 			    (get-gnuplot-term 
-			     ($get_plot_option '$gnuplot_term 2))))))
+			     (getf plot-options :gnuplot_term))))))
 	    ((not (search "/" gnuplot-out-file))
 	     (setq gnuplot-out-file (plot-temp-file gnuplot-out-file)))))
     ;; set the gnuplot terminal
-    (case ($get_plot_option '$gnuplot_term 2)
+    (case (getf plot-options :gnuplot_term)
       ($default
        (format dest "~a~%" 
-               (get-plot-option-string '$gnuplot_default_term_command)))
+               (getf plot-options :gnuplot_default_term_command)))
       ($ps
        (format dest "~a~%" 
-               (get-plot-option-string '$gnuplot_ps_term_command))
+               (getf plot-options :gnuplot_ps_term_command))
        (if gnuplot-out-file
            (format dest "set out ~s~%" gnuplot-out-file)))
       ($dumb
        (format dest "~a~%" 
-               (get-plot-option-string '$gnuplot_dumb_term_command))
+               (getf plot-options :gnuplot_dumb_term_command))
        (if gnuplot-out-file
            (format dest "set out ~s~%" gnuplot-out-file)))
       (t
        (format dest "set term ~a~%" 
-               (get-plot-option-string '$gnuplot_term))
+               (getf plot-options :gnuplot_term))
        (if gnuplot-out-file
            (format dest "set out ~s~%" gnuplot-out-file))) )
-    (when (getf features :log-x) (format dest "set log x~%"))
-    (when (getf features :log-y) (format dest "set log y~%"))
-    (when (getf features :xlabel)
-      (format dest "set xlabel ~s~%" (getf features :xlabel)))
-    (when (getf features :ylabel)
-      (format dest "set ylabel ~s~%" (getf features :ylabel)))
-    (when (getf features :zlabel)
-      (format dest "set zlabel ~s~%" (getf features :zlabel)))
-    (when
-        (and (getf features :legend)
-             (not (first (getf features :legend))))
+    (when (getf plot-options :log-x) (format dest "set log x~%"))
+    (when (getf plot-options :log-y) (format dest "set log y~%"))
+    (when (getf plot-options :xlabel)
+      (format dest "set xlabel ~s~%" (getf plot-options :xlabel)))
+    (when (getf plot-options :ylabel)
+      (format dest "set ylabel ~s~%" (getf plot-options :ylabel)))
+    (when (getf plot-options :zlabel)
+      (format dest "set zlabel ~s~%" (getf plot-options :zlabel)))
+    (when (and (member :legend plot-options) 
+               (not (first (getf plot-options :legend))))
       (format dest "unset key~%"))
-    (when (and (getf features :box) (not (first (getf features :box))))
+    (when (and (member :box plot-options) (not (getf plot-options :box)))
       (format dest "unset border; unset xtics; unset ytics; unset ztics~%"))
-    (when (and (getf features :xmin) (getf features :xmax))
-      (format dest "set xrange [~g : ~g]~%"
-              (getf features :xmin) (getf features :xmax)))
-    (when (and (getf features :ymin) (getf features :ymax))
-      (format dest "set yrange [~g : ~g]~%"
-              (getf features :ymin) (getf features :ymax)))
-    (when (and (getf features :zmin) (getf features :zmax))
-      (format dest "set zrange [~g : ~g]~%"
-              (getf features :zmin) (getf features :zmax)))
-    (when (and (string= (getf features :type) "plot2d") (getf features :axes))
-      (case (getf features :axes)
+    (when (getf plot-options :x)
+      (format dest "set xrange [~{~f~^ : ~}]~%" (getf plot-options :x)))
+    (when (getf plot-options :y)
+      (format dest "set yrange [~{~f~^ : ~}]~%" (getf plot-options :y)))
+    (when (getf plot-options :z)
+      (format dest "set zrange [~{~f~^ : ~}]~%" (getf plot-options :z)))
+    (when (and (string= (getf plot-options :type) "plot2d")
+               (getf plot-options :axes))
+      (case (getf plot-options :axes)
         ($x (format dest "set xzeroaxis~%"))
         ($y (format dest "set yzeroaxis~%"))
         (t (format dest "set zeroaxis~%"))))
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
   (or gnuplot-out-file "")))
 
-(defun gnuplot-plot3d-command (file titles n) 
-(let (title (style "with pm3d")
-	    (palette ($get_plot_option '$palette 2))
-	    (gstyles (cddr ($get_plot_option '$gnuplot_curve_styles))))
+(defun gnuplot-plot3d-command (file palette gstyles colors titles n) 
+(let (title (style "with pm3d"))
   (with-output-to-string (out)
     (format out "splot ")
   (do ((i 1 (+ i 1))) ((> i n) (format out "~%"))
     (unless palette
       (if gstyles
 	  (setq style (ensure-string (nth (mod i (length gstyles)) gstyles)))
-	  (setq style (format nil "with lines lt ~a" (gnuplot-colors i)))))
+	  (setq style
+                (format nil "with lines lt ~a" (gnuplot-color colors i)))))
     (when (> i 1) (format out ", "))
-    (setq title (nth (mod i (length titles)) titles))
+    (if titles
+        (setq title (nth (mod i (length titles)) titles))
+        (setq title ""))
     (format out "~s title ~s ~a" file title style)))))
+
 
