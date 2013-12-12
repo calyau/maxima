@@ -4,7 +4,7 @@ verpkglibexec_SCRIPTS = mgnuplot
 
 ##### Windows only ####
 if XMAXIMA_EXE
-verpkglibexec_SCRIPTS += mgnuplot$(EXEEXT)
+verpkglibexec_SCRIPTS += mgnuplot.exe
 endif
 
 mgnuplot.exe: mgnuplot.vfs mgnuplot.kit
