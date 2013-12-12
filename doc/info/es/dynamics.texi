@@ -164,53 +164,7 @@ despu@'es de dejarla evolucionar durante @var{n1} iteraciones iniciales.
 
 @end deffn
 
-@deffn {Funci@'on} rk (EDO, var, inicial, dominio)
-@deffnx {Funci@'on} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], dominio)
 
-La primera forma se usa para resolver num@'ericamente una ecuaci@'on
-diferencial ordinaria de primer orden (EDO), y la segunda forma resuelve
-num@'ericamente un sistema de @var{m} de esas ecuaciones, usando el m@'etodo
-de Runge-Kutta de cuarto orden. @var{var} representa la variable dependiente.
-EDO debe ser una expresi@'on que dependa @'unicamente de las variables
-independiente y dependente, y define la derivada de la variable dependiente
-en funci@'on de la variable independiente.
-
-La variable independiente se representa con @var{dominio}, que debe ser
-una lista con cuatro elementos, como por ejemplo:
-@example
-[t, 0, 10, 0.1]
-@end example
-el primer elemento de la lista identifica la variable independiente, el
-segundo y tercer elementos son los valores inicial y final para esa
-variable, y el @'ultimo elemento da el valor de los incrementos que
-deber@'an ser usados dentro de ese intervalo.
-
-Si se van a resolver @var{m} ecuaciones, deber@'a haber @var{m}
-variables dependientes @var{v1}, @var{v2}, ..., @var{vm}. Los valores
-iniciales para esas variables ser@'an @var{inic1},
-@var{inic2}, ..., @var{inicm}. Continuar@'a existiendo apenas una
-variable independiente definida por la lista @var{domain}, como en
-el caso anterior. @var{EDO1}, ..., @var{EDOm} son las expresiones que
-definen las derivadas de cada una de las variables dependientes en
-funci@'on de la variable independiente. Las @'unicas variables que
-pueden aparecer en cada una de esas expresiones son la variable
-independiente y cualquiera de las variables dependientes. Es importante
-que las derivadas @var{EDO1}, ..., @var{EDOm} sean colocadas en la lista
-en el mismo orden en que fueron agrupadas las variables dependientes;
-por ejemplo, el tercer elemento de la lista ser@'a interpretado como la
-derivada de la tercera variable dependiente.
-
-El programa intenta integrar las ecuaciones desde el valor inicial de la
-variable independiente, hasta el valor final, usando incrementos
-fijos. Si en alg@'un paso una de las variables dependientes toma un
-valor absoluto muy grande, la integraci@'on ser@'a suspendida en ese
-punto.  El resultado ser@'a una lista con un n@'umero de elementos igual
-al n@'umero de iteraciones realizadas. Cada elemento en la lista de
-resultados es tambi@'en una lista con @var{m}+1 elementos: el valor de
-la variable independiente, seguido de los valores de las variables
-dependientes correspondientes a ese punto.
-
-@end deffn
 
 @deffn {Funci@'on} staircase (@var{F}, @var{y0}, @var{n}, ...opciones...);
 

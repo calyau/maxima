@@ -25,7 +25,7 @@
 ;; These operators aren't killed by the function kill-operator.
 (defvar *mopl* nil)
 
-(declare-top  (special bindlist loclist errset *rset ^q lf tab ff cr
+(declare-top  (special bindlist loclist errset
 		       $values $functions $arrays $gradefs $dependencies
 		       $rules $props $ratvars
 		       varlist genvar
@@ -33,14 +33,8 @@
 		       $weightlevels tellratlist $dontfactor
 		       dispflag savefile $%% $error
 		       opers *ratweights $ratweights
-		       $stringdisp $lispdisp command
+		       $stringdisp $lispdisp
 		       transp $contexts $setcheck $macros autoload))
-
-(mapc #'(lambda (x) (setf (symbol-value (car x))
-			 (cond ((char< (cadr x) #.(code-char 160.))
-				(ascii (cadr x)))
-			       (t (cadr x)))))
-      '((tab #\tab) (lf #\linefeed) (ff #\page) (cr #\return) (sp #\space)))
 
 (defvar thistime 0)
 (defvar *refchkl* nil)
@@ -51,20 +45,10 @@
 (defvar mcatch nil)
 (defvar brklvl -1)
 (defvar allbutl nil)
-(defvar loadf nil)
 (defvar lessorder nil)
 (defvar greatorder nil)
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
-(defvar rephrase nil)
-(defvar st nil)
-(defvar oldst nil)
-(defvar reprint nil)
-(defvar pos nil)
-(defvar dcount 0)
-(defvar dskfnp nil)
-(defvar saveno 0)
-(defvar quitmsg  " ")
 (defvar lisperrprint t)
 
 (defvar state-pdl (ncons 'lisp-toplevel))
@@ -104,8 +88,6 @@
 
 (defmvar $file_output_append nil
   "Flag to tell file-writing functions whether to append or clobber the output file.")
-
-(defmvar user-timesofar nil)
 
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; *local-signs* are cleared with a call to clearsign. The facts are added by
@@ -226,7 +208,7 @@
   (or (mgetl func '(mexpr mmacro))
       (getl func '(translated-mmacro mfexpr* mfexpr*s))))
 
-(defmfun loadfile (file findp printp &aux (saveno 0))
+(defmfun loadfile (file findp printp)
   (and findp (member $loadprint '(nil $loadfile) :test #'equal) (setq printp nil))
   ;; Should really get the truename of FILE.
   (if printp (format t (intl:gettext "loadfile: loading ~A.~%") file))
@@ -336,7 +318,7 @@
 		       (setq z (nconc z (ncons u))))
 		      (t (makunbound u) (remprop u 'time)
 			 (remprop u 'nodisp))))
-	      (setq $labels (cons '(mlist simp) z) $linenum 0 dcount 0))
+	      (setq $labels (cons '(mlist simp) z) $linenum 0))
 	     ((member x '($values $arrays $aliases $rules $props
 			$let_rule_packages) :test #'equal)
 	      (mapc #'kill1 (cdr (symbol-value x))))
@@ -399,9 +381,7 @@
 		      (member x (cdr $labels) :test #'equal))
 		  (cond (y (setf $values (delete x $values :count 1 :test #'eq)))
 			(t (setf $labels (delete x $labels :count 1 :test #'eq))
-			   (remprop x 'time) (remprop x 'nodisp)
-			   (if (not (zerop dcount))
-			       (setq dcount (1- dcount)))))
+			   (remprop x 'time) (remprop x 'nodisp)))
 		  (makunbound x)
 		  (when (member x *builtin-symbols-with-values* :test #'equal)
 		    (setf (symbol-value x)
@@ -437,7 +417,7 @@
 
 (defun debugmode1 (assign-var y)
   (declare (ignore assign-var))
-  (setq *mdebug* (setq *rset y)))
+  (setq *mdebug* y))
 
 (defun errbreak1 (ign)
   (declare (ignore ign))
@@ -644,7 +624,7 @@
 (defmspec $string (form)
   (setq form (strmeval (fexprcheck form)))
   (setq form (if $grind (strgrind form) (mstring form)))
-  (setq st (reverse form) rephrase t)
+  (setq st (reverse form))
   (coerce form 'string))
 
 (defmfun makstring (x)
@@ -666,7 +646,6 @@
 	($subst $substitute subst)
 	($go mgo go) ($signum %signum signum)
 	($return mreturn return) ($factorial mfactorial factorial)
-	($nouuo nouuo nouuo) ($rset *rset rset)
         ($ibase *read-base* *read-base*) ($obase *print-base* obase)
         ($nopoint *nopoint nopoint)
 	($modulus modulus modulus) ($zunderflow zunderflow zunderflow)
@@ -737,10 +716,9 @@
 	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
 	    (cl:namestring truename)))))
 
-(defmspec $labels (char)
-  (setq char (fexprcheck char))
-  (nonsymchk char '$labels)
-  (cons '(mlist simp) (nreverse (getlabels* char nil))))
+(defmfun $labels (label-prefix)
+  (nonsymchk label-prefix '$labels)
+  (cons '(mlist simp) (nreverse (getlabels* label-prefix nil))))
 
 (defmfun $%th (x)
   (prog (l outchar)
@@ -766,13 +744,18 @@
       (if (boundp (setq z (implode (append (car l) x))))
 	  (setq l1 (cons z l1))))))
 
-(defmfun getlabels* (char flag)		; FLAG = T only for STRINGOUT
-  (do ((l (if flag (cddr $labels) (cdr $labels)) (cdr l))
-       (char (getlabcharn char)) (l1))
-      ((null l) l1)
-    (if (char= (getlabcharn (car l)) char)
-					; Only the 1st alphabetic character is tested.
-	(setq l1 (cons (car l) l1)))))
+(defmfun getlabels* (label-prefix flag)		; FLAG = T only for STRINGOUT
+  (let*
+    ((label-prefix-name (symbol-name label-prefix))
+     (label-prefix-length (length label-prefix-name)))
+    (do ((l (if flag (cddr $labels) (cdr $labels)) (cdr l)) (l1))
+        ((null l) l1)
+        (let ((label-name-1 (symbol-name (car l))))
+          (if
+            (and 
+              (<= label-prefix-length (length label-name-1))
+              (string= label-name-1 label-prefix-name :end1 label-prefix-length))
+            (setq l1 (cons (car l) l1)))))))
 
 (defmfun getlabcharn (label)
   (let ((c (char (symbol-name label) 1)))

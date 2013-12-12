@@ -12,10 +12,6 @@
 
 (macsyma-module transs)
 
-(defmvar *transl-file-debug* nil
-  "set this to T if you don't want to have the temporary files
-	used automaticaly deleted in case of errors.")
-
 ;;; User-hacking code, file-io, translator toplevel.
 ;;; There are various macros to cons-up filename TEMPLATES
 ;;; which to mergef into. The filenames should be the only
@@ -356,9 +352,6 @@ translated."
 		    (if it (push it v))))
 		 (t
 		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
-
-
-(declare-top (special forms-to-compile-queue))
 
 (defmspec $compile (form)
   (let ((l (meval `(($translate),@(cdr form)))))

@@ -1,4 +1,4 @@
-@c English version: 2010-10-10
+@c English version: 2012-11-28
 @menu
 * Introducci@'on a simplex::
 * Funciones y variables para simplex::

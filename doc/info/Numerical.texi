@@ -636,41 +636,43 @@ the menu. Integral curves can be obtained by clicking on the plot, or
 with the option @code{trajectory_at}. The direction of the integration
 can be controlled with the @code{direction} option, which can have
 values of @emph{forward}, @emph{backward} or @emph{both}. The number of
-integration steps is given by @code{nsteps} and the time interval
-between them is set up with the @code{tstep} option. The Adams Moulton
-method is used for the integration; it is also possible to switch to an
-adaptive Runge-Kutta 4th order method.
+integration steps is given by @code{nsteps}; at each integration
+step the time increment will be adjusted automatically to produce
+displacements much smaller than the size of the plot window. The
+numerical method used is 4th order Runge-Kutta with variable time steps.
 
 @b{Plot window menu:}
 
-The menu in the plot window has the following options: @emph{Zoom}, will
-change the behavior of the mouse so that it will allow you to zoom in on
-a region of the plot by clicking with the left button. Each click near a
-point magnifies the plot, keeping the center at the point where you
-clicked. Holding the @key{Shift} key while clicking, zooms out to the
-previous magnification. To resume computing trajectories when you click
-on a point, select @emph{Integrate} from the menu.
+The menu bar of the plot window has the following seven icons:
 
-The option @emph{Config} in the menu can be used to change the ODE(s) in
-use and various other settings. After configuration changes are made,
-the menu option @emph{Replot} should be selected, to activate the new
-settings.  If a pair of coordinates are entered in the field
-@emph{Trajectory at} in the @emph{Config} dialog menu, and the
+An X. Can be used to close the plot window.
+
+A wrench and a screwdriver. Opens the configuration menu with several
+fields that show the ODE(s) in use and various other settings. If a pair
+of coordinates are entered in the field @emph{Trajectory at} and the
 @key{enter} key is pressed, a new integral curve will be shown, in
-addition to the ones already shown. When @emph{Replot} is selected, only
-the last integral curve entered will be shown.
+addition to the ones already shown.
 
-Holding the right mouse button down while the cursor is moved, can be
-used to drag the plot sideways or up and down. Additional
-parameters such as the number of steps, the initial value of @var{t}
-and the x and y centers and radii, may be set in the Config menu.
+Two arrows following a circle. Replots the direction field with the
+new settings defined in the configuration menu and replots only the last
+integral curve that was previously plotted.
 
-A copy of the plot can be saved as a postscript file, using the menu
-option @emph{Save}.
+Hard disk drive with an arrow. Used to save a copy of the
+plot, in Postscript format, in the file specified in a field of the
+box that appears when that icon is clicked.
+
+Magnifying glass with a plus sign. Zooms in the plot.
+
+Magnifying glass with a minus sign. Zooms out the plot. The plot can be
+displaced by holding down the right mouse button while the mouse is
+moved.
+
+Icon of a plot. Opens another window with a plot of the two variables
+in terms of time, for the last integral curve that was plotted.
 
 @b{Plot options:}
 
-The @code{plotdf} command may include several options, each one being
+Options can also be given within the @code{plotdf} itself, each one being
 a list of two or more elements. The first element in each option is the name
 of the option, and the remainder is the value or values assigned to the
 option.
@@ -679,17 +681,9 @@ The options which are recognized by @code{plotdf} are the following:
 
 @itemize @bullet
 @item
-@dfn{tstep} defines the length of the increments on the
-independent variable @var{t}, used to compute an integral curve. If only
-one expression @var{dydx} is given to @code{plotdf}, the @var{x}
-variable will be directly proportional to @var{t}.
-The default value is 0.1.
-
-@item
-@dfn{nsteps} defines the number of steps of length @code{tstep}
-that will be used for the independent variable, to compute an integral
-curve.
-The default value is 100.
+@dfn{nsteps} defines the number of steps that will be used for the
+independent variable, to compute an integral curve. The default value is
+100.
 
 @item
 @dfn{direction} defines the direction of the independent

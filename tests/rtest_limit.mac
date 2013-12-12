@@ -386,6 +386,10 @@ minf;
 limit((sin(x)-tan(x))/(x*(cos(x)-1)),x,0);
 1;
 
+/* #2639 limit asks about internal variable */
+limit(tan(x)/sqrt(tan(x)^2+1),x,%pi/2,plus);
+-1;
+
 limit(1/psi[1](x), x, inf);
 inf;
 
@@ -435,6 +439,9 @@ limit(sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2))
 /* Inaccurate Limit Evaluation - ID: 3276461 */
 radcan(limit((-4*x^2-10*x+24)/((4*x+8)^(1/3)+2), x, -4));
 66;
+
+limit(-(3*n^2 + 1)*(-1)^n/sqrt(n^5 + 8*n^3 + 8),n,inf);
+0;
 
 /*
  * Bug ID: 1315837 limit(?foo)
@@ -531,6 +538,13 @@ limit ((sin(n*x) - n*x*cos(n*x))/n^2, x, %pi);
 /* #2503 Declaring x as an integer changes result of limit from 3 to inf */
 limit((2^n+3^n)^(1/n), n,inf);
 3;
+
+/* #2624 Erroneous limit result */
+(assume(n>2), limit(x-x*(1-1/x)^n, x, inf));
+n;
+
+(forget(n>2),0);
+0;
 
 /* Bug ID: 593351 - limit/sin(inf)etc. should give 0, not IND
  */

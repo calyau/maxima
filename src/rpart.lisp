@@ -230,115 +230,144 @@
 	     (psetq rpart (sub (mul rpart (caar m)) (mul ipart (cdar m)))
 		    ipart (add (mul ipart (caar m)) (mul rpart (cdar m)))))))))
 
+;; Split L = ((mexpt) BASE POW) into real and imaginary parts.
 (defun risplit-expt (l)
-  (let ((pow (caddr l))
-	($radexpand nil)
-	(ris nil))		   ; Don't want 'simplifications' like
-    (cond ((fixnump pow)	   ; Sqrt(-x) -> %i*sqrt(x)
-	   (let ((sp (risplit (cadr l))))
-	     (cond ((= pow -1)
-		    ;; Handle the case of 1/(x+%i*y) carefully.  This
-		    ;; is needed if x and y are (Lisp) numbers to
-		    ;; prevent spurious underflows/overflows.  See Bug
-		    ;; 2954472.
-		    ;; https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2954472&group_id=4933.
-		    ;;
-		    (if (and (or (numberp (car sp))
-				 (ratnump (car sp)))
-			     (or (numberp (cdr sp))
-				 (ratnump (cdr sp))))
-			(sprecip sp)
-			(let ((a2+b2 (spabs sp)))
-			  (cons (div (car sp) a2+b2)
-				(mul -1 (div (cdr sp) a2+b2))))))
-		   ((> (abs pow) $maxposex)
-		    (cond ((=0 (cdr sp))
-			   (cons (powers (car sp) pow) 0))
-			  (t
-			   (let ((abs^n (powers (add (powers (car sp) 2)
-						     (powers (cdr sp) 2))
-						(*red pow 2)))
-				 (natan (mul pow (genatan (cdr sp) (car sp)))))
-			     (cons (mul abs^n (take '(%cos) natan))
-				   (mul abs^n (take '(%sin) natan)))))))
-		   ((> pow 0)
-		    (expanintexpt sp pow))
-		   (t
-		    (let ((abbas (powers (spabs sp) (- pow)))
-			  (basspli (expanintexpt sp (- pow))))
-		      (cons (div (car basspli) abbas)
-			    (neg (div (cdr basspli) abbas))))))))
-	  ((and (ratnump pow)
-		(fixnump (cadr pow))
-		(not (< (cadr pow) (- $maxnegex)))
-		(not (> (cadr pow) $maxposex))
-		(prog2
-		    (setq ris (risplit (cadr l)))
-		    (or (= (caddr pow) 2) (=0 (cdr ris)))))
-	   (cond ((=0 (cdr ris))
-		  (case (cond ((mnegp (car ris)) '$neg)
-			      (implicit-real '$pos)
-			      (t ($sign (car ris)))) ; Use $sign not asksign
-		    ($neg (risplit (mul2 (power -1 pow) 
-                                         (power (neg (car ris)) pow))))
-		    ($zero (cons (power 0 pow) 0))
-                    ($pos (cons (power (car ris) pow) 0)) ; Add the case $pos
-                    (t
-                     ;; The sign is unknown. Return a general form.
-                     (let ((sp (risplit (caddr l)))
-		           (aa (absarg1 (cadr l))))
-                       (let ((pre (mul (powers '$%e (mul (cdr aa) (mul (cdr sp) -1)))
-                                       (powers (car aa) (car sp))))
-                             (post (add (mul (cdr sp) (take '(%log) (car aa)))
-                                        (mul (car sp) (cdr aa)))))
-                       (cons (mul pre (take '(%cos) post))
-                             (mul pre (take '(%sin) post))))))))
-		 (t
-		  (let ((abs2 (spabs ris))
-			(n (abs (cadr pow)))
-			(pos? (> (cadr pow) -1)))
-		    (let ((abs (power abs2 (1//2)))
-                          (sign-imagpart ($sign (cdr ris)))) ; Do we know the sign?
-                      (cond ((member sign-imagpart '($neg $pos))
-                             (divcarcdr
-                               (expanintexpt
-                                 (cons (power (add abs (car ris)) (1//2))
-                                       (porm (let ((a pos?)
-                                                   (b (eq (asksign (cdr ris)) 
-                                                          '$negative)))
-                                               (cond (a (not b))
-                                                     (b t)))
-                                             (power (sub abs (car ris)) (1//2))))
-                                 n)
-                               (if pos?
-                                   (power 2 (div n 2))
-                                   (power (mul 2 abs2) (div n 2)))))
-                            (t
-                             ;; The sign is unknown. Return a general form.
-                             (let ((sp (risplit (caddr l)))
-                                   (aa (absarg1 (cadr l))))
-                               (let ((pre (mul (powers '$%e 
-                                                       (mul (cdr aa) 
-                                                       (mul (cdr sp) -1)))
-                                               (powers (car aa) (car sp))))
-                                     (post (add (mul (cdr sp) 
-                                                     (take '(%log) (car aa)))
-                                                (mul (car sp) (cdr aa)))))
-                                 (cons (mul pre (take '(%cos) post))
-                                       (mul pre (take '(%sin) post))))))))))))
-	  ((and (floatp (setq ris (cadr l))) (floatp pow))
-	   (risplit (let (($numer t))
-		      (exptrl ris pow))))
-	  (t
-	   (let ((sp (risplit (caddr l)))
-		 (aa (absarg1 (cadr l))))
-	     ;;If all else fails, we use the trigonometric form.
-	     (let ((pre (mul (powers '$%e (mul (cdr aa) (mul (cdr sp) -1)))
-			     (powers (car aa) (car sp))))
-		   (post (add (mul (cdr sp) (take '(%log) (car aa)))
-			      (mul (car sp) (cdr aa)))))
-	       (cons (mul pre (take '(%cos) post))
-		     (mul pre (take '(%sin) post)))))))))
+  (let* ((base (cadr l)) (pow (caddr l))
+         ;; Disable 'simplifications' like sqrt(-x) -> %i*sqrt(x)
+         ($radexpand nil)
+         (sp (risplit base)))
+    (cond
+      ((fixnump pow)
+       (risplit-expt-fixnum-pow sp pow))
+
+      ((and (ratnump pow)
+            (fixnump (cadr pow))
+            (not (< (cadr pow) (- $maxnegex)))
+            (not (> (cadr pow) $maxposex))
+            (or (= (caddr pow) 2) (=0 (cdr sp))))
+       (if (=0 (cdr sp))
+           (risplit-expt-real^rat base pow)
+           (risplit-expt-sqrt-pow base sp pow)))
+
+      ((and (floatp base) (floatp pow))
+       (risplit (let (($numer t)) (exptrl base pow))))
+
+      (t
+       (destructuring-bind (alpha . beta) (risplit pow)
+         (destructuring-bind (r . theta) (absarg1 base)
+           (risplit-expt-general-form r theta alpha beta)))))))
+
+;; Split BASE^POWER into real and imaginary parts. POWER is assumed to be a
+;; fixnum. SP is (RISPLIT BASE)
+(defun risplit-expt-fixnum-pow (sp power)
+  ;; We use the squared absolute value of BASE several times
+  ;; below. Unfortunately, we can't calculate it at the start, since that causes
+  ;; floating point under/overflows in the case mentioned in the comment
+  ;; below. Instead, we calculate it when it's needed (a maximum of once).
+  (destructuring-bind (real . imag) sp
+    (cond
+      ((= power -1)
+       ;; Handle the case of 1/(x+%i*y) carefully.  This
+       ;; is needed if x and y are (Lisp) numbers to
+       ;; prevent spurious underflows/overflows. See bug 1908.
+       (if (and (or (numberp real) (ratnump real))
+                (or (numberp imag) (ratnump imag)))
+           (sprecip sp)
+           (let ((abs2 (spabs sp)))
+             (cons (div real abs2) (mul -1 (div imag abs2))))))
+
+      ((> (abs power) $maxposex)
+       (if (=0 imag)
+           (cons (powers real power) 0)
+           (let ((abs^n (powers (spabs sp) (*red power 2)))
+                 (natan (mul power (genatan imag real))))
+             (cons (mul abs^n (take '(%cos) natan))
+                   (mul abs^n (take '(%sin) natan))))))
+
+      ((> power 0)
+       (expanintexpt sp power))
+
+      (t
+       (let ((abbas (powers (spabs sp) (- power)))
+             (basspli (expanintexpt sp (- power))))
+         (cons (div (car basspli) abbas)
+               (neg (div (cdr basspli) abbas))))))))
+
+;; Return the "general form" for RISPLIT applied to
+;; (r*exp(%i*theta))^(alpha+%i*beta), whose rectform is
+;;
+;;   pre * cos(post) + %i * pre * sin(post)
+;;
+;; where pre  = exp(-theta*beta) * r^alpha
+;; and   post = beta*log(r) + alpha*theta
+(defun risplit-expt-general-form (r theta alpha beta)
+  (let ((pre (mul (powers '$%e (mul -1 theta beta))
+                  (powers r alpha)))
+        (post (add (mul beta (take '(%log) r))
+                   (mul alpha theta))))
+    (cons (mul pre (take '(%cos) post))
+          (mul pre (take '(%sin) post)))))
+
+;; Split BASE^POWER into real and imaginary parts. We assume that BASE is real
+;; and that POWER is a rational number.
+(defun risplit-expt-real^rat (base power)
+  (case (cond ((mnegp base) '$neg)
+              (implicit-real '$pos)
+              (t ($sign base)))    ; Use $sign not asksign
+    ($neg (risplit (mul2 (power -1 power) (power (neg base) power))))
+    ($zero (cons (power 0 power) 0))
+    ($pos (cons (power base power) 0))
+    (t
+     (destructuring-bind (r . theta) (absarg1 base)
+       (risplit-expt-general-form r theta power 0)))))
+
+;; Split BASE^POWER into real and imaginary parts. SP is (RISPLIT BASE). We
+;; assume that POWER is a rational number. Moreover, we assume that the
+;; denominator of POWER is 2.
+(defun risplit-expt-sqrt-pow (base sp power)
+  ;; n = abs(2*power) is a non-negative integer
+  (destructuring-bind (real . imag) sp
+    (let* ((abs2 (spabs sp)) (abs (power abs2 (1//2)))
+           (n (abs (cadr power)))
+           (pos? (> (cadr power) -1))
+           (imag-sign ($sign imag)))
+      (cond
+        ((member imag-sign '($neg $pos))
+         ;; Here, we use the half-angle formulas for cos and sin. Assuming we
+         ;; are always taking the "principal square root" (that with argument
+         ;; less than equal to the argument of base), these come out as
+         ;;
+         ;;   cos(arg/2) = +- sqrt((1+real/abs)/2)
+         ;;   sin(arg/2) = +- sqrt((1-real/abs)/2)
+         ;;
+         ;; We know that real+%i*imag = abs*exp(%i*arg). Taking square roots,
+         ;; you get that
+         ;;
+         ;;   sqrt(real+%i*imag) = sqrt(abs)*exp(%i*arg/2).
+         ;;                      = sqrt(abs)*cos(arg/2) +
+         ;;                           %i * sqrt(abs)*sin(arg/2)
+         ;;                      = (sqrt(abs+real) + %i*sqrt(abs-real))/sqrt(2)
+         ;;
+         ;; but possibly with signs on the square roots. This function always
+         ;; chooses the square root with the non-negative real part. As such, we
+         ;; have to switch the sign of the sine term when we are raising to a
+         ;; positive power and imag < 0 or if raising to a negative power and
+         ;; imag > 0. To see that the first argument of the PORM call below is
+         ;; correct, write out the 2x2 truth table...
+         (divcarcdr
+          (expanintexpt
+           (cons (power (add abs real) (1//2))
+                 (porm (eq (eq imag-sign '$pos) pos?)
+                       (power (sub abs real) (1//2))))
+           n)
+          (if pos?
+              (power 2 (div n 2))
+              (power (mul 2 abs2) (div n 2)))))
+
+        (t
+         (destructuring-bind (alpha . beta) (risplit power)
+           (destructuring-bind (r . theta) (absarg1 base)
+             (risplit-expt-general-form r theta alpha beta))))))))
 
 (defun risplit-noun (l)
   (cons (simplify (list '(%realpart) l)) (simplify (list '(%imagpart) l))))

@@ -211,14 +211,14 @@
 
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that
-;; $rectform has. So it goes. The functions floor, ceiling, carg, and signum
-;; aren't defined off the real-axis. I suppose these functions could be given the
+;; $rectform has. So it goes. The functions floor and ceiling also aren't
+;; defined off the real-axis. I suppose these functions could be given the
 ;; real-valued property.
 
 (setf (get '%imagpart 'real-valued) t)
 (setf (get 'mabs 'real-valued) t)
 (setf (get '%realpart 'real-valued) t)
-(setf (get '%signum 'real-valued) t)
+(setf (get '%carg 'real-valued) t)
 
 ;; manifestly-real-p isn't a great name, but it's OK. Since (manifestly-real-p '$inf) --> true
 ;; it might be called manifestly-extended-real-p. A nonscalar isn't real.

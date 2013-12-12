@@ -132,6 +132,37 @@ block ([a : b, b : c, c: d, d : 1], matrix ([a, b], [c, d]), [op (%%), args (%%)
 block ([a : b, b : c, c: d, d : 1, L1 : '[a, b], L2 : '[c, d]], matrix (L1, L2), [op (%%), args (%%)]);
 [matrix, '[[a, b], [c, d]]];
 
+/* another evaluation puzzle, derived from discussion on mailing list circa 2013-10-28 */
+
+(kill (q, x),
+ q : '[[x]],
+ x : 3,
+ apply (matrix, q));
+matrix ([x]);
+
+/* a more elaborate version of the preceding evaluation puzzle;
+ * result not checked for correctness
+ */
+
+(kill (all),
+ load (diag),
+ A : matrix ([a, 1], [1, 0]),
+ integer_pow(x) := block ([k], declare (k, integer), x^k),
+ mat_function (integer_pow, A));
+
+matrix([(sqrt(a^2+4)-a)^k*(1-(sqrt(a^2+4)+a)/(2*((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)))*(-1)^k/2^k
+               +(sqrt(a^2+4)+a)^(k+1)*2^(-k-1)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2),
+              (sqrt(a^2+4)+a)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)*2^k)
+               -(sqrt(a^2+4)-a)^k*(-1)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)*2^k)],
+             [(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^(k+1)*2^(-k-2)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+               -(sqrt(a^2+4)-a)^k*(sqrt(a^2+4)+a)*(1-(sqrt(a^2+4)+a)/(2*((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)))
+                                 *2^(-k-1)*(-1)^k,
+              (sqrt(a^2+4)-a)^k*(sqrt(a^2+4)+a)*2^(-k-1)*(-1)^k/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+               +(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^k*2^(-k-1)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)]);
+
+kill (all);
+done;
+
 /* should trigger an error */
 errcatch (matrix ([1], [1, 2]));
 [];

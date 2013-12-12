@@ -12,15 +12,12 @@
 
 (macsyma-module rat3d)
 
-(load-macsyma-macros ratmac)
-
-
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
 (declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
 
-(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac errrjfflag))
+(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac))
 
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss genvar minpoly*))
@@ -219,7 +216,7 @@
      (setq l (pdegreevector p))
      (cond ((not (member 2 l :test #'equal)) (return (list p))))
      (setq l (nreverse l) v (reverse genvar)) ;FIND MOST MAIN VAR
-     loop (cond ((eqn (car l) 2) (setq v (car v)))
+     loop (cond ((equal (car l) 2) (setq v (car v)))
 		(t (setq l (cdr l)) (setq v (cdr v)) (go loop)))
      (desetq (a . c) (bothprodcoef (make-poly v 2 1) p))
      (desetq (b . c) (bothprodcoef (make-poly v 1 1) c))
@@ -264,8 +261,7 @@
     (merror (intl::gettext "nthroot: ~M is not a positive integer") n)))
 
 (defun pnthrootp (p n)
-  (let ((errrjfflag t))
-    (catch 'raterr (pnthroot p n))))
+  (ignore-rat-err (pnthroot p n)))
 
 (defun pnthroot (poly n)
   (cond ((equal n 1) poly)
@@ -279,17 +275,17 @@
 		 ((pzerop p) ans)
 	       (cond ((or (pcoefp p) (not (eq (p-var p) var))
 			  (> (car ae) (p-le p)))
-		      (throw 'raterr nil)))
-	       (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
+                      (rat-error "pnthroot error (should have been caught)")))
+	       (setq ans (nconc ans (ptptquotient (cdr (leadterm p)) ae)))
 	       )))))
 
 (defun cnthroot(c n)
   (cond ((minusp c)
 	 (cond ((oddp n) (- (cnthroot (- c) n)))
-	       (t (throw 'raterr nil))))
+	       (t (rat-error "cnthroot error (should have been caught"))))
 	((zerop c) c)
 	((zerop (cadr (setq c (iroot c n)))) (car c))
-	(t (throw 'raterr nil))))
+	(t (rat-error "cnthroot error2 (should have been caught"))))
 
 
 (defmfun pabs (x) (cond ((pminusp x) (pminus x)) (t x)))
@@ -340,8 +336,8 @@
 		   p (pquotient p (list (car gv) (car dl) 1)))))))
 
 (defun factorout (p)
-  (cond ((and (pcoefp (pterm (cdr p) 0))
-	      (not (zerop (pterm (cdr p) 0))))
+  (cond ((and (pcoefp (ptterm (cdr p) 0))
+	      (not (zerop (ptterm (cdr p) 0))))
 	 (list nil p))
 	(t (factorout1 (pmindegvec p) p))))
 

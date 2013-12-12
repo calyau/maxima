@@ -12,7 +12,7 @@
 
 (macsyma-module trgred)
 
-(declare-top (special var $verbose ans *trigred *noexpand *lin *trig half%pi))
+(declare-top (special var $verbose ans *trigred *noexpand *lin half%pi))
 
 (load-macsyma-macros rzmac)
 
@@ -127,18 +127,21 @@
          (tr nil)
          (hyp nil)
          (*lin '(0)))
-    (do ((e (cdr e) (cdr e)))
-	((null e) (setq g (mapcar #'sp1 g)))
-      (cond ((or (mnump (car e))
-		 (and (not (eq var '*novar)) (free (car e) var)))
-	     (setq fr (cons (car e) fr)))
-	    ((atom (car e)) (setq g (cons (car e) g)))
-	    ((or (trigfp (car e))
-		 (and (eq (caaar e) 'mexpt) (trigfp (cadar e))))
-	     (sp1add (car e)))
-	    ((setq g (cons (car e) g)))))
-    (mapcar #'(lambda (q)  (sp1sincos q t)) *trigbuckets*)
-    (mapcar #'(lambda (q) (sp1sincos q nil)) *hyperbuckets*)
+    (dolist (factor (cdr e))
+      (cond ((or (mnump factor)
+		 (and (not (eq var '*novar)) (free factor var)))
+	     (push factor fr))
+	    ((atom factor) (push factor g))
+	    ((or (trigfp factor)
+		 (and (eq (caar factor) 'mexpt)
+                      (trigfp (cadr factor))))
+	     (sp1add factor))
+	    (t
+             (push factor g))))
+    (setq g (mapcar #'sp1 g))
+
+    (mapc #'(lambda (q)  (sp1sincos q t)) *trigbuckets*)
+    (mapc #'(lambda (q) (sp1sincos q nil)) *hyperbuckets*)
     (setq fr (cons (m^ (1//2) (m+l *lin)) fr)
 	  *lin nil)
     (setq tr (cons '* (mapcan #'sp1untrep *trigbuckets*)))
@@ -154,39 +157,91 @@
         (setq g (list (sp1 g))))
     (m*l (cons 1 (nconc g fr (cdr tr) (cdr hyp))))))
 
-(defun sp1tlin (l *trig)
-  (sp1tlin1 l))
-
-(defun sp1tlin1 (l)
+(defun sp1tlin (l trig)
   (cond ((null (cdr l)) nil)
 	((and (eq (caaadr l) 'mexpt)
 	      (integerp (caddr (cadr l)))
 	      (member (caaadr (cadr l))
-		    (if *trig '(%sin %cos) '(%sinh %cosh)) :test #'eq))
+		    (if trig '(%sin %cos) '(%sinh %cosh)) :test #'eq))
 	 (cons (funcall (cdr (assoc (caaadr (cadr l)) *sc^ndisp* :test #'eq))
 			(caddr (cadr l)) (cadadr (cadr l)))
-	       (sp1tlin1 (rplacd l (cddr l)))))
-	((member (caaadr l) (if *trig '(%sin %cos) '(%sinh %cosh)) :test #'eq)
+	       (sp1tlin (rplacd l (cddr l)) trig)))
+	((member (caaadr l) (if trig '(%sin %cos) '(%sinh %cosh)) :test #'eq)
 	 (push (cadr l) *lin)
-	 (sp1tlin1 (rplacd l (cddr l))))
-	((sp1tlin1 (cdr l)))))
+	 (sp1tlin (rplacd l (cddr l)) trig))
+	((sp1tlin (cdr l) trig))))
 
-(defun sp1tplus (l *trig)
-  (cond ((or (null l) (null (cdr l))) l)
-	((do ((c (list '(rat) 1 (expt 2 (1- (length l)))))
-	      (ans (list (car l)))
-	      (l (cdr l) (cdr l)))
-	     ((null l) (list c (m+l ans)))
-	   (setq ans
-		 (m+l
-		  (mapcar #'(lambda (q)
-			      (cond ((mtimesp q)
-				     (m* (cadr q) (sp1sintcos (caddr q) (car l))))
-				    ((sp1sintcos q (car l)))))
-			  ans)))
-	   (setq ans (if (mplusp ans) (cdr ans) (ncons ans)))))))
+;; Rewrite a product of sines and cosines as a sum
+;;
+;; L is a list of sines and cosines. For example, consider the list
+;;
+;;  sin(x), sin(2*x), sin(3*x)
+;;
+;; This represents the product sin(x)*sin(2*x)*sin(3*x).
+;;
+;; ANS starts as sin(x). Then for each term in the rest of the list, we multiply
+;; the answer that we have found so far by that term. The result will be a sum
+;; of sines. In this example, sin(x)*sin(2*x) gives us
+;;
+;;  1/2 * (cos(x) - cos(3*x))
+;;
+;; In fact we don't calculate the 1/2 coefficient in sp1sintcos: you always get
+;; a factor of 2^(k-1), where k is the length of the list, so this is calculated
+;; at the bottom of sp1tplus. Anyway, next we calculate cos(x)*sin(3*x) and
+;; -cos(3*x)*sin(3*x) and sum the answers. Note that -cos(3*x) will crop up
+;; represented as ((mtimes) -1 ((%cos) ((mtimes) 3 $x))). See note in the let
+;; form for info on what form ANS must take.
+(defun sp1tplus (l trig)
+  (if (or (null l) (null (cdr l)))
+      l
+      ;; ANS is a list containing the terms in a sum for the expanded
+      ;; expression. Each element in this list is either of the form sc(x),
+      ;; where sc is sin or cos, or of the form ((mtimes) coeff ((sc) $x)),
+      ;; where coeff is some coefficient.
+      ;;
+      ;; multiply-sc-terms rewrites a*sc as a sum of sines and cosines. The
+      ;; result is a list containing the terms in a sum which is
+      ;; mathematically equal to a*sc. Assuming that term is of one of the
+      ;; forms described for ANS below and that SC is of the form sc(x), the
+      ;; elements of the resulting list will all be of suitable form for
+      ;; inclusion into ANS.
+      (flet ((multiply-sc-terms (term sc)
+               (let* ((coefficient (when (mtimesp term) (cadr term)))
+                      (term-sc (if (mtimesp term) (caddr term) term))
+                      (expanded (sp1sintcos term-sc sc trig)))
+                 ;; expanded will now either be sin(foo) or cos(foo) OR it
+                 ;; will be a sum of such terms.
+                 (cond
+                   ((not coefficient) (list expanded))
+                   ((or (atom expanded)
+                        (member (caar expanded) '(%sin %cos %sinh %cosh)
+                                :test 'eq))
+                    (list (m* coefficient expanded)))
+                   ((mplusp expanded)
+                    (mapcar (lambda (summand) (m* coefficient summand))
+                            (cdr expanded)))
+                   (t
+                    (error "Unrecognised output from sp1sintcos.")))))
+             ;; Treat EXPR as a sum and return a list of its terms
+             (terms-of-sum (expr)
+               (if (mplusp expr) (cdr expr) (ncons expr))))
 
-(defun sp1sintcos (a b)
+        (let ((ans (list (first l))))
+          (dolist (sc (rest l))
+            (setq ans (terms-of-sum
+                       (m+l (mapcan (lambda (q)
+                                      (multiply-sc-terms q sc)) ans)))))
+          (list (list '(rat) 1 (expt 2 (1- (length l))))
+                (m+l ans))))))
+
+;; The core of trigreduce. Performs transformations like sin(x)*cos(x) =>
+;; sin(2*x)
+;;
+;; This function only does something non-trivial if both a and b have one of
+;; sin, cos, sinh and cosh as top-level operators. (Note the first term in the
+;; cond: we assume that if a,b are non-atomic and not both of them are
+;; hyperbolic/trigonometric then we can just multiply the two terms)
+(defun sp1sintcos (a b trig)
   (let* ((x nil)
          (y nil))
     (cond ((or (atom a) (atom b)
@@ -195,14 +250,14 @@
 	   (mul3 2 a b))
 	  ((prog2 (setq x (m+ (cadr a) (cadr b)) y (m- (cadr a) (cadr b)))
 	       (null (eq (caar a) (caar b))))
-	   (setq b (if *trig '(%sin) '(%sinh)))
+	   (setq b (if trig '(%sin) '(%sinh)))
 	   (or (eq (caar a) '%sin) (eq (caar a) '%sinh)
 	       (setq y (m- y)))
 	   (m+ (list b x) (list b y)))
 	  ((member (caar a) '(%cos %cosh) :test #'eq)
 	   (m+ (list (list (caar a)) x)
 	       (list (list (caar a)) y)))
-	  (*trig
+	  (trig
 	   (m- (list '(%cos) y) (list '(%cos) x)))
 	  ((m- (list '(%cosh) x) (list '(%cosh) y))))))
 
@@ -310,29 +365,29 @@
 	   (cons (cadr e) (m*l (cddr e))))
       (cons 1 e)))
 
-(defun sp1sincos (l *trig)
-  (mapcar #'(lambda (q) (sp1sincos2 (m* (car l) (car q)) q)) (cdr l)))
+(defun sp1sincos (l trig)
+  (mapcar #'(lambda (q) (sp1sincos2 (m* (car l) (car q)) q trig)) (cdr l)))
 
-(defun sp1sincos2 (arg l)
+(defun sp1sincos2 (arg l trig)
   (let* ((a nil))
     (cond ((null (cdr l)))
 	  ((and
 	    (setq a (member (caadr l)
-                            (if (null *trig)
+                            (if (null trig)
                                 '(%sinh %cosh %sinh %csch %sech %csch)
 				'(%sin %cos %sin %csc %sec %csc)) :test #'eq))
 	    (cddr l))		 ;THERE MUST BE SOMETHING TO MATCH TO.
-	   (sp1sincos1 (cadr a) l arg))
-	  ((sp1sincos2 arg (cdr l))))))
+	   (sp1sincos1 (cadr a) l arg trig))
+	  ((sp1sincos2 arg (cdr l) trig)))))
 
-(defun sp1sincos1 (s l arg)
+(defun sp1sincos1 (s l arg trig)
   (let* ((g nil)
          (e 1))
     (do ((ll (cdr l) (cdr ll)))
 	((null (cdr ll)) t)
       (cond ((eq s (caadr ll))
 	     (setq arg (m* 2 arg))
-	     (cond (*trig
+	     (cond (trig
 		    (cond ((member s '(%sin %cos) :test #'eq)
 			   (setq s '%sin))
 			  ((setq s '%csc e -1))))

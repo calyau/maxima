@@ -14,8 +14,6 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special varlist errorsw))
-
 (defmfun simp-%sinh (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))

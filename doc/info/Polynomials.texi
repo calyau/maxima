@@ -1446,7 +1446,8 @@ maintained as fully factored as possible without an actual call to the
 factor package.  This should always save space and may save some time
 in some computations.  The numerator and denominator are still made
 relatively prime
-(e.g.  @code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
+(e.g.,  @code{rat((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2}
+when @code{ratfac} is @code{true}),
 but the factors within each part may not be relatively prime.
 
 @code{ratprint} if @code{false} suppresses the printout of the message
@@ -1794,7 +1795,7 @@ During rational operations the expression is maintained as fully factored as
 possible without calling @code{factor}.
 This should always save space and may save time in some computations.
 The numerator and denominator are made relatively prime, for example
-@code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
+@code{factor ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2},
 but the factors within each part may not be relatively prime.
 
 In the @code{ctensr} (Component Tensor Manipulation) package,

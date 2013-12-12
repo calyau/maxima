@@ -173,7 +173,7 @@ nutzt, um den linearen Anteil eines Ausdrucks zu ermitteln.
 @end example
 @end deffn
 
-@c --- 23.03.2013 VN -----------------------------------------------------------
+@c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{coeff}
 @deffn  {Funktion} coeff (@var{expr}, @var{x}, @var{n})
 @deffnx {Funktion} coeff (@var{expr}, @var{x})
@@ -283,18 +283,21 @@ auf die beiden Seiten angewendet.
 
 Die folgende Definition der Funktion @code{coeff_list} liefert eine Liste mit
 den Koeffizienten, die in einem Polynom auftreten.  Neben der Funktion
-@code{coeff} kommt die Funktion @mref{hipow} zum Einsatz, um den h@"ochsten
-Exponenten zu ermitteln und @mref{reverse}, um die Liste (falls gew@"unscht) 
-herum zu drehen.
+@code{coeff} kommt hier die Funktion @mref{hipow} zum Einsatz, um den h@"ochsten
+Exponenten zu ermitteln. @mref{rat} und @mref{ratdisrep} werden verwendet, 
+um das Polynom zwischenzeitlich in die kanonische Form (CRE) zu bringen.
 
 @example
-coeff_list(a, x) := 
-   reverse( makelist(coeff(a, x, i), i,0, hipow(a, x)) )$
-@end example
+(%i1) b : (x-y)^2;
+                                       2
+(%o1)                           (x - y)
+(%i2) coeff_list(a, x) := (
+   a : rat(a),
+   reverse( makelist(ratdisrep(coeff(a, x, i)), i,0, hipow(a, x)) ))$
 
-@example
-(%i1) coeff_list(2*x^4+3*x^2+1,x);
-(%o1)                    [2, 0, 3, 0, 1]
+(%i3) coeff_list(b, x);
+                                         2
+(%o3)                        [1, - 2 y, y ]
 @end example
 @end deffn
 

@@ -169,21 +169,49 @@
 
 (defprop $error read-only-assign  assign)
 
-;; THIS THROWS TO  (CATCH 'RATERR ...), WHEN A PROGRAM ANTICIPATES
-;; AN ERROR (E.G. ZERO-DIVIDE) BY SETTING UP A CATCH  AND SETTING
-;; ERRRJFFLAG TO T.  Someday this will be replaced with SIGNAL.
-;; Such skill with procedure names!  I'd love to see how he'd do with
-;; city streets.
+;; RAT-ERROR (function)
+;;
+;; Throw to the nearest enclosing RAT-ERR tag (set by IGNORE-RAT-ERROR or
+;; RAT-ERROR-TO-MERROR). If ERROR-ARGS is nonzero, they are thrown. The
+;; RAT-ERROR-TO-MERROR form applies the MERROR function to them.
+;;
+;; The obvious way to make RAT-ERROR work is to raise a condition. On the lisp
+;; implementations we support other than CMUCL, this runs perfectly
+;; fast. Unfortunately, on CMUCL there's a performance bug which turns out to be
+;; very costly when you raise lots of the condition. There are lots and lots of
+;; rat-error calls running the test suite (10s of thousands), and this turns out
+;; to be hilariously slow.
+;;
+;; Thus we do the (catch .... (throw .... )) thing instead. Other error handling
+;; should be able to use conditions with impunity: the only reason that the
+;; performance was so critical with rat error is the sheer number of them that
+;; are thrown.
+(defun rat-error (&rest error-args)
+  (throw 'rat-err error-args))
 
-;;; N.B. I think the above comment is by CWH, this function used
-;;; to be in RAT;RAT3A. Its not a bad try really, one of the better
-;;; in macsyma. Once all functions of this type are rounded up
-;;; I'll see about implementing signaling. -GJC
+;; IGNORE-RAT-ERR
+;;
+;; Evaluate BODY with the RAT-ERR tag set. If something in BODY throws to
+;; RAT-ERR (happens upon calling the RAT-ERROR function), this form evaluates to
+;; NIL.
+(defmacro ignore-rat-err (&body body)
+  (let ((result (gensym)) (error-p (gensym)))
+    `(let ((,result) (,error-p t))
+       (catch 'rat-err
+         (setf ,result (progn ,@body))
+         (setf ,error-p nil))
+       (unless ,error-p ,result))))
 
-(defmfun errrjf (&rest args)
-  (if errrjfflag
-      (throw 'raterr nil)
-      (apply #'merror args)))
+(defmacro rat-error-to-merror (&body body)
+  (let ((result (gensym)) (error-args (gensym)) (error-p (gensym)))
+    `(let ((,result) (,error-p t))
+       (let ((,error-args
+              (catch 'rat-err
+                (setf ,result (progn ,@body))
+                (setf ,error-p nil))))
+         (when ,error-p
+           (apply #'merror ,error-args)))
+       ,result)))
 
 ;;; The user-error function is called on "strings" and expressions.
 ;;; Cons up a format string so that $ERROR can be bound.

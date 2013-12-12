@@ -52,11 +52,6 @@
 	    $scalarmatrix $simp $ttyoff $underflow $infeval
 	    $xaxis $yaxis $ratfac))
 
-    (mapc #'(lambda (x) (putprop x (stripdollar x) 'lisp-function-to-use))
-	  '(%log %sin %cos %tan %cot %csc %sec %acot
-	    %asin %acos %acsc %asec
-	    %sinh %cosh %tanh %coth %csch %sech %asinh %acsch %erf))
-
     (mapc #'(lambda (x) (putprop x t 'implied-quotep))
 	  '($eval $done $%i $%pi $%e $%phi $%gamma
 	    mqapply	; important for array referencing conventions.
@@ -77,6 +72,4 @@
 	  '($print $num $denom $lhs $rhs $part
 	    $cons $reverse $endcons $append
 	    $union $intersection $setdiff $symdiff
-	    $mapset $predset |${| $elementof))
-
-    (defprop $realpart $realpart lisp-function-to-use))
+	    $mapset $predset |${| $elementof)))

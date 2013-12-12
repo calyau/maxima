@@ -712,7 +712,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	(not x)
 	`((mnot) ,x))))
 
-;;;Toplevel functions- $ASKSIGN, $SIGN.
+;;;Toplevel functions- $askequal, $asksign, and $sign.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special
 ;;;		     symbols such as EPSILON, $INF, $MINF and attempt
 ;;;		     to do the correct thing. In addition calls to
@@ -725,6 +725,22 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (setq limitp nil)
 
+(defun $askequal (a b)
+  (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
+    (cond ((eq answer t) '$yes)
+	  ((eq answer nil) '$no)
+	  (t
+	   (setq answer (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?")) nil))
+	   (cond ((member answer '($no |$n| |$N|) :test #'eq)
+		  (tdpn (sub b a))
+		  '$no)
+		 ((member answer '($yes |$y| |$Y|) :test #'eq)
+		  (tdzero (sub a b))
+		  '$yes)
+		 (t  
+		  (mtell (intl:gettext "Acceptable answers are yes, y, Y, no, n, N. ~%"))
+		  ($askequal a b)))))))
+	   
 (defmfun $asksign (exp)
   (let (sign minus odds evens factored)
     (asksign01 (cond (limitp (restorelim exp))
@@ -760,22 +776,20 @@ relational knowledge is contained in the default context GLOBAL.")
     ($sign z)))
 
 (defmfun $sign (x)
-  (unwind-protect
-    (let ((x (specrepcheck x))
-	  sign minus odds evens factored)
-      (sign01 (cond (limitp (restorelim x))
-		    (*complexsign*
-		     ;; No rectform in Complex mode. Rectform ask unnecessary
-		     ;; questions about complex expressions and can not handle
-		     ;; imaginary expressions completely. Thus $csign can not
-		     ;; handle something like (1+%i)*(1-%i) which is real.
-		     ;; After improving rectform, we can change this. (12/2008)
-		     (when *debug-compar*
-		       (format t "~&$SIGN with ~A~%" x))
-		     x)
-		    ((not (free x '$%i)) ($rectform x))
-		    (t x))))
-    (clearsign)))
+  (let ((x (specrepcheck x))
+	sign minus odds evens factored)
+    (sign01 (cond (limitp (restorelim x))
+		  (*complexsign*
+		   ;; No rectform in Complex mode. Rectform ask unnecessary
+		   ;; questions about complex expressions and can not handle
+		   ;; imaginary expressions completely. Thus $csign can not
+		   ;; handle something like (1+%i)*(1-%i) which is real.
+		   ;; After improving rectform, we can change this. (12/2008)
+		   (when *debug-compar*
+		     (format t "~&$SIGN with ~A~%" x))
+		   x)
+		  ((not (free x '$%i)) ($rectform x))
+		  (t x)))))
 
 (defun sign01 (a)
   (let ((e (sign-prep a)))
@@ -1209,7 +1223,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (setq x (infsimp* x))
   (when (and *complexsign* (atom x) (eq x '$infinity))
     ;; In Complex Mode the sign of infinity is complex.
-    (when *debug-compar* (format t "~& in sign1 detect $infintiy.~%"))
+    (when *debug-compar* (format t "~& in sign1 detect $infinity.~%"))
     (return-from sign1 '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror (intl:gettext "sign: sign of ~:M is undefined.") x)))
@@ -1588,13 +1602,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((and (eq sign-base '$zero)
 		(member sign-expt '($zero $neg) :test #'eq))
 	   (dbzs-err x))
-	  ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
+	  ((eq sign-expt '$zero) (setq sign '$pos))
 	  ((eq sign-base '$pos))
-	  ((eq sign-base '$zero) (tdpos expt))
+	  ((eq sign-base '$zero))
 	  ((eq evod '$even)
 	   (cond ((eq sign-expt '$neg)
-		  (setq sign '$pos minus nil evens (ncons base1) odds nil)
-		  (tdpn base1))
+		  (setq sign '$pos minus nil evens (ncons base1) odds nil))
 		 ((member sign-base '($pn $neg) :test #'eq)
 		  (setq sign '$pos minus nil
 			evens (nconc odds evens)
@@ -1604,7 +1617,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  odds nil))))
 	  ((and (member sign-expt '($neg $nz) :test #'eq)
 		(member sign-base '($nz $pz $pnz) :test #'eq))
-	   (tdpn base1)
 	   (setq sign (cond ((eq sign-base '$pnz) '$pn)
 			    ((eq sign-base '$pz) '$pos)
 			    ((eq sign-expt '$neg) '$neg)
@@ -1634,24 +1646,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			 (setq sign-base (setq sign-expt '$pnz)))
 			((eq sign-base '$neg) (imag-err x))
 			((eq sign-base '$pn)
-			 (setq sign-base '$pos)
-			 (tdpos base1))
+			 (setq sign-base '$pos))
 			((eq sign-base '$nz)
-			 (setq sign-base '$zero)
-			 (tdzero base1))
-			(t (setq sign-base '$pz)
-			   (tdpz base1)))))
+			 (setq sign-base '$zero))
+			(t (setq sign-base '$pz)))))
 	   (cond ((eq sign-expt '$neg)
 		  (cond ((eq sign-base '$zero) (dbzs-err x))
 			((eq sign-base '$pz)
-			 (setq sign-base '$pos)
-			 (tdpos base1))
+			 (setq sign-base '$pos))
 			((eq sign-base '$nz)
-			 (setq sign-base '$neg)
-			 (tdneg base1))
+			 (setq sign-base '$neg))
 			((eq sign-base '$pnz)
-			 (setq sign-base '$pn)
-			 (tdpn base1)))))
+			 (setq sign-base '$pn)))))
 	   (setq sign sign-base))
 	  ((eq sign-base '$pos)
 	   (setq sign '$pos))
@@ -1856,8 +1862,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (setf (get '$floor 'integer-valued) t)
 (setf (get '$ceiling 'integer-valued) t)
-(setf (get '%signum  'integer-valued) t)
-(setf (get '$signum 'integer-valued) t)
 (setf (get '$charfun 'integer-valued) t)
 
 (defun maxima-integerp (x)
@@ -1949,23 +1953,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                 (return (evod (cadr fact))))
                                (t (return nil)))))))))))
 
-(defmfun nonintegerp (e)
-  (let (num)
-    (cond ((integerp e) nil)
-	  ((mnump e) t)
-          ((atom e)
-           (or (kindp e '$noninteger)
-               (check-noninteger-facts e)))
-	  ((specrepp e) (nonintegerp (specdisrep e)))
-	  ((and (eq (caar e) 'mplus) (ratnump (cadr e)) (intp (cdr e))) t)
-	  ((and (integerp (setq num ($num e)))
-		(prog2
-		    (setq e ($denom e))
-		    (or (eq (csign (sub e num)) '$pos)
-			(eq (csign (add2 e num)) '$neg)))) t)
-          ;; Assumes a simplified sqrt of a number is not an integer.
-          ((and (mexptp e) (mnump (second e)) (alike1 (third e) 1//2)) t)
-	  (t nil))))
+(defun nonintegerp (e)
+  (cond ((and (symbolp e) (or (kindp e '$noninteger) (check-noninteger-facts e) (kindp e '$irrational)))) ;declared noninteger
+    ((mnump e)
+     (if (integerp e) nil t)) ;all floats are noninteger and integers are not nonintegers
+    (($ratp e)
+     (nonintegerp ($ratdisrep e)))
+    (t (eq t (mgrp e (take '($floor) e))))))
+
 
 ;; Look into the database for symbols which are declared to be equal 
 ;; to a noninteger or an expression which is a noninteger.
@@ -2460,7 +2455,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           (kind $%gamma $real)
           (kind $%phi   $noninteger)
           (kind $%phi   $real)
-          
+          (kind $%pi $irrational)
+	  (kind $%e $irrational)
+	  (kind $%phi $irrational)
+	  
           ;; Declarations for functions
 	  (kind %log $increasing)
 	  (kind %atan $increasing) (kind %atan $oddfun)

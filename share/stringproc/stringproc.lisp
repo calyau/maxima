@@ -86,7 +86,9 @@
   (or (ignore-errors 
         (if pos
           (file-position stream (1- pos))
-          (1+ (file-position stream))))
+          (progn 
+            (setq pos (file-position stream))
+            (when pos (1+ pos)) )))
       (merror "fposition: improper position index ~m" pos)))
 
 
@@ -95,6 +97,13 @@
     (merror "readline: argument must be a stream."))
   (let ((line (read-line stream nil nil)))
     (if line line)))
+
+
+(defun $readchar (stream) 
+  (if (not (streamp stream))
+    (merror "readchar: argument must be a stream.") )
+  (let ((lc (read-char stream nil nil)))
+    (when lc (m-char lc)) ))
 
 
 (defun $freshline (&optional (stream)) 
@@ -132,12 +141,12 @@
 
 ;;  converts a Lisp character into a Maxima string of length 1
 ;;
-(defun $cunlisp (c) ;; at Maxima level only for testing
-  (if (not (characterp c))
+(defun $cunlisp (lc) ;; at Maxima level only for testing
+  (if (not (characterp lc))
     (merror "cunlisp: argument must be a Lisp character"))
-  (m-char c))
+  (m-char lc))
 ;;
-(defun m-char (c) (make-string 1 :initial-element c))
+(defun m-char (lc) (make-string 1 :initial-element lc))
 
 
 ;;  tests, if object is Lisp character
@@ -159,7 +168,7 @@
 ;;
 (defun $digitcharp (mc)
   (let ((nr (char-int (l-char mc))))
-    (and (> nr 47) (< nr 58))))
+    (and (> nr 47.) (< nr 58.))))
 
 
 ;;  ascii-char <-> index
@@ -170,7 +179,7 @@
   (char-code (character mc)))
 ;;
 (defun $ascii (int) 
-  (if (or (not (integerp int)) (< int 0) (> int 255))
+  (if (or (not (integerp int)) (< int 0) (> int 255.))
     (merror "ascii: argument must be zero or a positve integer less than 256."))
   (m-char (code-char int)))
 
@@ -245,7 +254,7 @@
 (defun $charlist (s)
   (if (not (stringp s))
     (merror "charlist: argument must be a string."))
-  (cons '(mlist) (mapcar #'(lambda (c) (m-char c)) (coerce s 'list))))
+  (cons '(mlist) (mapcar #'m-char (coerce s 'list))))
 
 
 (putprop '$sexplode '$charlist 'alias)

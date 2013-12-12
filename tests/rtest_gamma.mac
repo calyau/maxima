@@ -2794,6 +2794,18 @@ map(fresnel_s,[0,0.0,0.0b0]);
 map(fresnel_c,[0,0.0,0.0b0]);
 [0,0.0,0.b0];
 
+limit(fresnel_c(x),x,inf);
+1/2;
+
+limit(fresnel_s(x),x,inf);
+1/2;
+
+limit(fresnel_c(x),x,minf);
+-1/2;
+
+limit(fresnel_s(x),x,minf);
+-1/2;
+
 /* Simplification of infinities 
    The rules for an odd function and the simplifaction for imaginary
    arguments are applied too.
@@ -3668,6 +3680,42 @@ relerror(
  expand(bfloat(erf((sqrt(2)*%i-sqrt(2))/2))),
  4.74147636640994245161681b-1 * %i - 9.69264211944215930381491b-1,
  1b-23);
+true;
+
+/* Bug #2619
+ * Function inverse_erf - error in numerical evaluation 
+ */
+relerror(inverse_erf(0.7715),
+ .8515204685911937,
+ 1d-15);
+true;
+
+relerror(inverse_erf(- .9763545580611441 ),
+ -1.600070795398459,
+ 1d-15);
+true;
+
+/* Bug #2668 Bigfloat Gamma inaccurae for small inputs
+ *
+ * For these small values, gamma(z) = gamma(z+1)/z = 1/z
+ * since 1+z = 1 and gamma(1) = 1.
+ */
+relerror(gamma(2.0^-256), 2.0^256, 1d-14);
+true;
+
+relerror(gamma(2b0^-256), 2b0^256, 10^(-fpprec+1));
+true;
+
+closeto(
+  gamma(2.0^-256 + 1d-200*%i),
+  rectform(1/(2.0^-256 + 1d-200*%i)),
+  2d-15);
+true;
+
+closeto(
+  gamma(2b0^-256 + 1b-500*%i),
+  rectform(1/(2b0^-256 + 1b-500*%i)),
+  2d-15);
 true;
 
 (fpprec:oldfpprec,done);

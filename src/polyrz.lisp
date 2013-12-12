@@ -12,7 +12,7 @@
 
 (macsyma-module polyrz)
 
-(declare-top (special errrjfflag $programmode varlist
+(declare-top (special $programmode varlist
 		      $ratepsilon $ratprint $factorflag genvar
 		      equations $keepfloat $ratfac $rootsepsilon
 		      $multiplicities))
@@ -148,7 +148,7 @@
 
 (defun reval (p r)
   (cond ((pcoefp p) (signum p))
-	((zerop (car r)) (signum (pterm (cdr p) 0)))
+	((zerop (car r)) (signum (ptterm (cdr p) 0)))
 	(t (prog (a b bi v m c)
 	      (setq bi 1)
 	      (setq v 0)

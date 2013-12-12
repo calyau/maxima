@@ -20,10 +20,11 @@
 ;;; some floating point translations. with tricks.
 
 (def%tr %log (form)
-  (let   (arg)
+  (declare (special *flonum-op*))
+  (let (arg (lisp-function (gethash (caar form) *flonum-op*)))
     (setq arg (translate (cadr form)))
-    (cond ((and (eq (car arg) '$float) (get (caar form) 'lisp-function-to-use))
-	   `($float ,(get (caar form) 'lisp-function-to-use) ,(cdr arg)))
+    (cond ((and (eq (car arg) '$float) lisp-function)
+	   `($float (lambda (x) (funcall ,lisp-function x)) ,(cdr arg)))
 	  (t `($any simplify (list ',(list (caar form)) ,(cdr arg)))))))
 
 (def-same%tr %sin %log)
@@ -51,14 +52,15 @@
 	 if and only if X is of mode FLOAT.")
 
 (def%tr %acos (form)
-  (let ((arg (translate (cadr form))))
-    (cond ((and (eq (car arg) '$float)
-		(get (caar form) 'lisp-function-to-use))
+  (declare (special *flonum-op*))
+  (let
+    ((arg (translate (cadr form)))
+     (lisp-function (gethash (caar form) *flonum-op*)))
+    (cond ((and (eq (car arg) '$float) lisp-function)
 	   `(,(cond ($tr_float_can_branch_complex
 		     '$any)
 		    (t '$float))
-	     . (,(get (caar form) 'lisp-function-to-use)
-		,(cdr arg))))
+	     . ((lambda (x) (complexify (funcall ,lisp-function x))) ,(cdr arg))))
 	  (t
 	   `($any . (simplify (list '(,(caar form)) ,(cdr arg))))))))
 

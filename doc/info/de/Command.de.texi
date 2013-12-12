@@ -342,7 +342,7 @@ wurde.
 Siehe auch die Systemvariablen @mrefcomma{_} @mref{__} und @mrefdot{%th}
 @end defvr
 
-@c --- 29.12.2010 DK -----------------------------------------------------------
+@c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{%%}
 @defvr {Systemvariable} %%
 @ifinfo
@@ -350,8 +350,8 @@ Siehe auch die Systemvariablen @mrefcomma{_} @mref{__} und @mrefdot{%th}
 @end ifinfo
 
 In zusammengesetzten Ausdr@"ucken, wie in Ausdr@"ucken mit @mref{block} oder
-@mref{lambda} oder in Ausdr@"ucken der Gestalt @code{(@var{s_1}, ...,
-@var{s_n})}, enth@"alt die Systemvariable @code{%%} das Ergebnis des 
+@mref{lambda} oder in Ausdr@"ucken der Gestalt @code{(@var{s_1}, ..., @var{s_n})},
+enth@"alt die Systemvariable @code{%%} das Ergebnis des 
 vorhergehenden Ausdrucks.  F@"ur den ersten Ausdruck oder au@ss{}erhalb eines
 zusammengesetzten Ausdrucks ist @code{%%} nicht definiert.
 

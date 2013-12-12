@@ -2,16 +2,13 @@
 
 (defvar *info-tables* (make-hash-table :test 'equal))
 
-(defvar *prompt-prefix* "")
-(defvar *prompt-suffix* "")
-
 (defun print-prompt (prompt-count)
-  (format t "~&~a~a~a"
-	  *prompt-prefix*
-	  (if (zerop prompt-count)
+  (fresh-line)
+  (maxima::format-prompt
+   t "~a"
+   (if (zerop prompt-count)
 	      (intl:gettext "Enter space-separated numbers, `all' or `none': ")
-	      (intl:gettext "Still waiting: "))
-	  *prompt-suffix*))
+	      (intl:gettext "Still waiting: "))))
 
 (defvar +select-by-keyword-alist+
   '((noop "") (all "a" "al" "all") (none "n" "no" "non" "none")))
@@ -58,12 +55,14 @@
   ;; with-standard-io-syntax.  Is just binding *read-base* enough?  Is
   ;; with-standard-io-syntax too much for what we want?
   (let*
-    ((subdir-bit (or maxima::*maxima-lang-subdir* "."))
-     (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp")))
-    #-gcl
-    (with-standard-io-syntax (load path-to-index))
-    #+gcl
-    (let ((*read-base* 10.)) (load path-to-index))))
+      ((subdir-bit (or maxima::*maxima-lang-subdir* "."))
+       (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp")))
+    (handler-case
+	#-gcl
+      (with-standard-io-syntax (load path-to-index))
+      #+gcl
+      (let ((*read-base* 10.)) (load path-to-index))
+      (error (condition) (warn (intl:gettext (format nil "~&Maxima is unable to set up the help system.~&(Details: CL-INFO::LOAD-PRIMARY-INDEX: ~a)~&" condition)))))))
 
 (defun info-exact (x)
   (let ((exact-matches (exact-topic-match x)))

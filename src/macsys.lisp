@@ -22,42 +22,61 @@
 (defmvar $prompt '_
   "Prompt symbol of the demo function, playback, and the Maxima break loop.")
 
+;; A prefix and suffix that are wrapped around every prompt that Maxima
+;; emits. This is designed for use with text-based interfaces that drive Maxima
+;; through standard input and output and need to decorate prompts to make the
+;; output easier to parse. There are some more notes in
+;; doc/implementation/external-interface.txt.
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
+
 (defvar *general-display-prefix* "")
 
+(defun format-prompt (destination control-string &rest arguments)
+  "Like AFORMAT, but add the prefix and suffix configured for a prompt. This
+function deals correctly with the ~M control character, but only when
+DESTINATION is an actual stream (rather than nil for a string)."
+  (let ((*print-circle* nil))
+    (concatenate 'string
+                 *prompt-prefix*
+                 (apply 'aformat destination control-string arguments)
+                 *prompt-suffix*)))
+
+;;  "When time began" (or at least the start of version control history),
+;;  the following comment was made at this point:
+;;
+;;     instead of using this STRIPDOLLAR hackery, the
+;;     MREAD function should call MFORMAT to print the prompt,
+;;     and take a format string and format arguments.
+;;     Even easier and more general is for MREAD to take
+;;     a FUNARG as the prompt. -gjc
+;;
+;;  I guess we're still failing miserably, but unfortunately MFORMAT/AFORMAT
+;;  don't deal correctly with ~M plus a string output stream.
 (defun main-prompt ()
-  ;; instead off using this STRIPDOLLAR hackery, the
-  ;; MREAD function should call MFORMAT to print the prompt,
-  ;; and take a format string and format arguments.
-  ;; Even easier and more general is for MREAD to take
-  ;; a FUNARG as the prompt. -gjc
   (declare (special *display-labels-p*))
   (if *display-labels-p*
-      (let ((*print-circle* nil))
-	(format nil "~A(~A~D) ~A"
-		*prompt-prefix*
-		(print-invert-case (stripdollar $inchar))
-		$linenum
-		*prompt-suffix*))
-    ""))
+      (format-prompt nil "(~A~A) "
+                     (print-invert-case (stripdollar $inchar))
+                     $linenum)
+      ""))
 
 (defun break-prompt ()
-  (let ((*print-circle* nil))
-    (format nil "~A~A~A"
-	    *prompt-prefix*
-	    (print-invert-case (stripdollar $prompt))
-	    *prompt-suffix*)))
+  (format-prompt nil "~A"
+                 (print-invert-case (stripdollar $prompt))))
 
-;; there is absoletely no need to catch errors here, because
-;; they are caught by the macsyma-listener window process on
-;; the lisp machine, or by setting the single toplevel process in Maclisp. -gjc
-
-;; Replacing the defmacro definition with a defun version, in order to
-;; allow more flexibility with evaluation order via redefinition
-;;(defmacro toplevel-macsyma-eval (x) `(meval* ,x))
-
-(defun toplevel-macsyma-eval (x) (meval* x))
+(defun toplevel-macsyma-eval (x)
+  ;; Catch rat-err's here.
+  ;;
+  ;; The idea is that eventually there will be quite a few "maybe catch this"
+  ;; errors, which will be raised and might well get eaten before they get as far
+  ;; as here. However, we want to display them nicely like merror rather than
+  ;; letting a lisp error percolate to the debugger and, as such, we catch them
+  ;; here and replace them with an merror call.
+  ;;
+  ;; Other random errors get to the lisp debugger, which is normally set to print
+  ;; them and continue, via *debugger-hook*.
+  (rat-error-to-merror (meval* x)))
 
 (defmvar $_ '$_ "last thing read in, corresponds to lisp +")
 (defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
@@ -144,7 +163,6 @@
 	(when (or (not (checklabel $inchar))
 		  (not (checklabel $outchar)))
 	  (incf $linenum))
-	#+akcl(si::reset-stack-limits)
 	(setq c-tag (makelabel $inchar))
 	(let ((*mread-prompt* (if batch-or-demo-flag nil (main-prompt)))
 	      (eof-count 0))
@@ -284,23 +302,17 @@
   (or (eq flag 'noprint) (setq print? t))
   (cond ((not print?)
 	 (setq print? t)
-	 (princ *prompt-prefix*)
-	 (princ *prompt-suffix*))
+         (format-prompt t ""))
 	((null msg)
-	 (princ *prompt-prefix*)
-	 (princ *prompt-suffix*))
+         (format-prompt t ""))
 	((atom msg)
-	 (format t "~a~a~a" *prompt-prefix* msg *prompt-suffix*)
-	 (mterpri))
+         (format-prompt t "~A" msg)
+	 (terpri))
 	((eq flag t)
-	 (princ *prompt-prefix*)
-	 (mapc #'princ (cdr msg))
-	 (princ *prompt-suffix*)
+         (format-prompt t "~{~A~}" (cdr msg))
 	 (mterpri))
 	(t
-	 (princ *prompt-prefix*)
-	 (displa msg)
-	 (princ *prompt-suffix*)
+         (format-prompt t "~M" msg)
 	 (mterpri)))
   (let ((res (mread-noprompt *query-io* nil)))
     (princ *general-display-prefix*)
@@ -315,7 +327,7 @@
 	     (string-right-trim '(#\n)
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
-    (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
+    (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
     (third (mread *query-io*))))
 
 ;; FUNCTION BATCH APPARENTLY NEVER CALLED. OMIT FROM GETTEXT SWEEP AND DELETE IT EVENTUALLY
@@ -352,9 +364,9 @@
     ($batch tem	'$demo)))
 
 (defmfun $bug_report ()
-  (format t (intl:gettext "~%The Maxima bug database is available at~%"))
-  (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
-  (format t (intl:gettext "Submit bug reports by following the 'Add new' link on that page.~%"))
+  (format t (intl:gettext "~%Please report bugs to:~%"))
+  (format t "    http://sourceforge.net/p/maxima/bugs~%")
+  (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
   (displa ($build_info))
@@ -560,19 +572,22 @@
 (defun $system (&rest args)
   ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
   ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
-  (let ((s (and (boundp '*socket-connection*) *socket-connection*)))
+  (let ((s (and (boundp '*socket-connection*) *socket-connection*))
+	shell shell-opt)
     #+(or gcl ecl clisp lispworks)
     (declare (ignore s))
-    
+
+    (cond ((string= *autoconf-win32* "true")
+	   (setf shell "cmd") (setf shell-opt "/c"))
+	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
+
     #+gcl (lisp:system (apply '$sconcat args))
     #+ecl (si:system (apply '$concat args))
     #+clisp (ext:run-shell-command (apply '$sconcat args))
-    #+(or cmu scl) (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
+    #+(or cmu scl) (ext:run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
-    #+sbcl (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
-    #+openmcl (if (member :windows *features*)
-		  (ccl::run-program "cmd" (list "/c" (apply '$sconcat args)) :output (or s t))
-		  (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t)))
+    #+sbcl (sb-ext:run-program shell (list shell-opt (apply '$sconcat args)) :search t :output (or s t))
+    #+openmcl (ccl::run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))
     #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 

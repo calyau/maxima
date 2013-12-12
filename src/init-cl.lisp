@@ -300,7 +300,8 @@ When one changes, the other does too."
 	      #+openmcl (pathname-type ccl::*.fasl-pathname*)
 	      #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
 	      #+ecl "fas"
-	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl)
+              #+abcl "abcl"
+	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl abcl)
 	      "")
 	 (lisp-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp}"))
 	 (maxima-patterns "$$$.{mac,mc}")
@@ -610,7 +611,7 @@ When one changes, the other does too."
   (setf *debugger-hook* #'maxima-lisp-debugger-repl)
   (loop
      (catch 'to-maxima-repl
-       (format t "~a~%~a> ~a" *prompt-prefix* (package-name *package*) *prompt-suffix*)
+       (format-prompt t "~%~A> " (package-name *package*))
        (finish-output)
        (format t "~{~&~S~}" (multiple-value-list (eval (read)))))))
 

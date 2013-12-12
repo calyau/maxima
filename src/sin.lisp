@@ -675,22 +675,20 @@
 (defprop %sech ((x) ((%atan) ((%sinh)x))) integral)
 (defprop %csch ((x) ((%log) ((%tanh) ((mtimes) ((rat simp) 1 2) x)))) integral)
 
-;; Integral of a^b == ((mexpt) a b)
-(putprop 'mexpt
-  `((a b)
-  ;;integrate(a^b,a);
-  ,(lambda (a b)
-    (cond
-      ((or (equal b -1)
-	   (and (not (mnump b))
-		(freeof '$%i b)
-		(eq (asksign (power (add b 1) 2)) '$zero)))
-         (logmabs a))
-      (t
-       '((mtimes) ((mexpt) a ((mplus) b 1)) ((mexpt) ((mplus) b 1) -1)))))
-  ;; integrate(a^b,b);
-  ((mtimes) ((mexpt) a b) ((mexpt) ((%log) a) -1)))
-  'integral)
+;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else logmabs(x).
+(defun integrate-mexpt-1 (x n)
+  (let ((n-is-minus-one ($askequal n -1)))
+    (cond ((eq '$yes n-is-minus-one)
+	   (take '(%log) (if $logabs (take '(mabs) x) x)))
+	  (t
+	   (setq n (add n 1))
+	   (div (take '(mexpt) x n) n)))))
+
+;; integrate(a^x,x) = a^x/log(a).
+(defun integrate-mexpt-2 (a x)
+  (div (take '(mexpt) a x) (take '(%log) a)))
+  
+(putprop 'mexpt `((x n) ,#'integrate-mexpt-1 ,#'integrate-mexpt-2) 'integral)
 
 (defun rat10 (ex)
   (cond ((freevar ex) t)

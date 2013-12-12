@@ -104,7 +104,7 @@
   (prog nil
    loop (when (zerop n) (return vec))
    (decf n)
-   (push (pterm p n) vec)
+   (push (ptterm p n) vec)
    (go loop)))
 
 (defun zassg (g f var)

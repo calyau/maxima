@@ -101,32 +101,35 @@ zp_binomial(m, n, p) :=
 
 /* Inversion through Itoh-Tsujii algorithm -- Highly Experimental 
 */
-gf_HTinv(poly) := block([r, s, t, u, gf_rat:false],
-   r : gf_ord()/(gf_char() - 1),
+gf_inv_ITA(poly) := block([p, r, s, t, u, gf_rat:false],
+   p : gf_characteristic(),
+   r : gf_order()/(p - 1),
    s : gf_exp(poly, r - 1),
-   t : gf_mul(poly, s), 
-   u : inv_mod(t, gf_char()),
-   gf_mul(s, u) )$
+   t : gf_mult(poly, s), 
+   u : inv_mod(t, p),
+   gf_mult(s, u) )$
 
 /* Remark (VvN): 
 A possible Lisp-implementation is listed below. 
 However it is much slower than $gf_inv in src (e.g. 30 times in F3^102).
 
-(defmfun $gf_inv_ht (a) 
-  (gf-set?) 
-  (setq a (gf-inv-ht (gf-p2x a)))
-  (when a (gf-x2p a)) ) 
+(defmfun $gf_inv_ita (a) 
+  (gf-red? "gf_inv_ita") 
+  (let ((*ef-arith?*))
+    (setq a (gf-inv-ita (gf-p2x a) *gf-red*))
+    (when a (gf-x2p a)) )) 
 
-(defun gf-inv-ht (y) 
+(defun gf-inv-ita (y red) 
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (when (null y) (errrjf "Quotient by zero"))
+  (when (null y) 
+    (gf-merror (intl:gettext "gf arithmetic: Quotient by zero")) )
   (let (($gf_rat) r x c)
     (setq r (truncate *gf-ord* (1- *gf-char*))
-          x (gf-pow y (1- r))
-          y (gf-xtimes x y) ) ;; y is (0 n) or nil
-    (unless y (return-from gf-inv-ht))
+          x (gf-pow y (1- r) red)
+          y (gf-times x y red) ) ;; y is (0 n) or nil
+    (unless y (return-from gf-inv-ita))
     (setq c (inv-mod (cadr y) *gf-char*))
-    (when c (gf-nxctimes c x)) ))
+    (when c (gf-xctimes x c)) ))
 */
 
 
@@ -282,7 +285,7 @@ lmp(a, p, m) := block([d1:a, d2:a^2 - 2, j],
  
 
 gf_sqrt([ap]) :=
-   if length(ap) = 1 then gsqrt(ap[1], gf_char())
+   if length(ap) = 1 then gsqrt(ap[1], gf_characteristic())
    else gsqrt(ap[1], ap[2]);
 
 
@@ -305,7 +308,7 @@ gsqrt(a, p) := block([t:0, s:-4, term],
 
 
 gf_cbrt([ap]) :=
-   if length(ap) = 1 then gcbrt(ap[1], gf_char())
+   if length(ap) = 1 then gcbrt(ap[1], gf_characteristic())
    else gcbrt(ap[1], ap[2]);
 
 

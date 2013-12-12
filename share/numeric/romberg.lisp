@@ -16,8 +16,6 @@
 
 (load-macsyma-macros transm)
 
-(declare-top(special user-timesofar))
-
 (defmvar  $rombergit 11 "the maximum number of iterations")
 (defmvar  $rombergmin 0 "the minimum number of iterations")
 (defmvar  $rombergtol 1e-4 "the relative tolerance of error")	

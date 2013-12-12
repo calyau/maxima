@@ -273,8 +273,8 @@
   (cond ((pconstp poly) nil)
 	((pconstp (caddr poly))
 	 (cons (cons (car poly) (cadr poly))
-	       (getvardegs (pterm (cdr poly) 0))))
-	(t (getvardegs (pterm (cdr poly) 0)))))
+	       (getvardegs (ptterm (cdr poly) 0))))
+	(t (getvardegs (ptterm (cdr poly) 0)))))
 
 (declare-top (unspecial *vardegs*))
 

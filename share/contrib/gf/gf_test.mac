@@ -1,6 +1,9 @@
 
 /* Roots in finite fields */
 
+(load(gf), 0);
+0;
+
 /* msqrt */
 msqrt(289, 1789);
 [1772, 17];

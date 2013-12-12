@@ -166,7 +166,7 @@ See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 Reads Maxima expressions from @var{filename} and evaluates them, without
 displaying the input or output expressions and without assigning labels to
 output expressions.  Printed output (such as produced by @mref{print} or
-@mrefparen{describe} is displayed, however.
+@mrefparen{describe}) is displayed, however.
 
 The special variable @mref{%} and the function @mref{%th} refer to previous
 results from the interactive interpreter, not results within the file.
@@ -667,11 +667,11 @@ The special form @code{stringout (@var{filename}, input)} writes all
 input labels to the file.
 
 The special form @code{stringout (@var{filename}, functions)} writes all
-user-defined functions (named by the global list @mrefparen{functions} to the
+user-defined functions (named by the global list @mrefparen{functions}) to the
 file.
 
 The special form @code{stringout (@var{filename}, values)} writes all
-user-assigned variables (named by the global list @mrefparen{values} to the file.
+user-assigned variables (named by the global list @mrefparen{values}) to the file.
 Each variable is printed as an assignment statement, with the name of the
 variable, a colon, and its value.  Note that the general form of
 @code{stringout} does not print variables as assignment statements.

@@ -125,7 +125,7 @@
 
 (declare-top (special *def2* pcprntd *mtoinf* rsn*
 		      sn* sd* leadcoef checkfactors
-		      *nodiverg rd* exp1
+		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
@@ -145,7 +145,7 @@
 		      $trigsign $savefactors $radexpand $breakup $%emode
 		      $float $exptsubst dosimp context rp-polylogp
 		      %p%i half%pi %pi2 half%pi3 varlist genvar
-		      $domain $m1pbranch errorsw errrjfflag raterr
+		      $domain $m1pbranch errorsw
 		      limitp $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
@@ -210,10 +210,11 @@ in the interval of integration.")
 			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
-	     (cond ((not (equal (sratsimp ($imagpart ll)) 0))
-		    (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
-		   ((not (equal (sratsimp ($imagpart ul)) 0))
-		    (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul)))
+             (unless (lenient-extended-realp ll)
+               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
+             (unless (lenient-extended-realp ul)
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ll))
+
 	     ;; Distribute $defint over equations, lists, and matrices.
 	     (cond ((mbagp exp)
 	            (return-from $defint
@@ -569,7 +570,7 @@ in the interval of integration.")
 		(setq result (ratfnt exp))))
 	  ((and (not *scflag*)
 		(not (eq ul '$inf))
-		(radic exp var)
+		(radicalp exp var)
 		(kindp34)
 		(setq result (cv exp))))
 	  (t ()))))
@@ -1394,7 +1395,7 @@ in the interval of integration.")
 			`((%log) ,var))
 		(not (atom (cdr exp)))
 		(equal (cadr (cdr exp)) 2.)
-		(not (equal (pterm (cddr exp) 0.) 0.)))
+		(not (equal (ptterm (cddr exp) 0.) 0.)))
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
 (defun mtoinf (grand var)
@@ -1631,12 +1632,6 @@ in the interval of integration.")
 (defun ggrm1 (d k a b)
   (setq b (m// (m+t 1. d) b))
   (m* k `((%gamma) ,b) (m^ a (m- b))))
-
-(defun radic (e v)
-  ;;If rd* is t the m^ts must just be free of var.
-  ;;If rd* is () the m^ts must be mnump's.
-  (let ((rd* ()))
-    (radicalp e v)))
 
 ;; Compute the integral(n/d,x,0,inf) by computing the negative of the
 ;; sum of residues of log(-x)*n/d over the poles of n/d inside the
@@ -1875,7 +1870,7 @@ in the interval of integration.")
 ;; Return the integer part of r.
 (defun igprt (r)
   ;; r - fpart(r)
-  (pretty-good-floor-or-ceiling r '$floor))
+  (mfuncall '$floor r))
 
 
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral
@@ -2638,7 +2633,7 @@ in the interval of integration.")
 
 (defun coefsolve (n cl e)
   (do (($breakup)
-       (eql (ncons (pdis (pterm e n))) (cons (pdis (pterm e m)) eql))
+       (eql (ncons (pdis (ptterm e n))) (cons (pdis (ptterm e m)) eql))
        (m (m+ n -1) (m+ m -1)))
       ((signp l m) (solvex eql cl nil nil))))
 
@@ -2879,6 +2874,7 @@ in the interval of integration.")
 ;; use the substitution s+1=exp(k*x) to get
 ;; integrate(f(s+1)/(s+1),s,0,inf).
 (defun dintexp (exp arg &aux ans)
+  (declare (ignore arg))
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp var)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
@@ -3214,9 +3210,9 @@ in the interval of integration.")
      (setq varlist (list var))
      (newvar e)
      (setq e (cdadr (ratrep* e)))
-     (setq c (pdis (pterm e 0)))
-     (setq b (m*t (m//t 1 2) (pdis (pterm e 1))))
-     (setq a (pdis (pterm e 2)))
+     (setq c (pdis (ptterm e 0)))
+     (setq b (m*t (m//t 1 2) (pdis (ptterm e 1))))
+     (setq a (pdis (ptterm e 2)))
      (cond ((and (eq ($asksign (m+ b (m^ (m* a c)
 					 '((rat) 1 2))))
 		     '$pos)

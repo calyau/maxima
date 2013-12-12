@@ -528,7 +528,7 @@ until no further change is made to @var{expr}.
 @var{package_name} without changing @code{current_let_rule_package}.
 
 @code{letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}
-is equivalent to @code{letsimp (@var{expr}, @var{package_name_1}},
+is equivalent to @code{letsimp (@var{expr}, @var{package_name_1})},
 followed by @code{letsimp (%, @var{package_name_2})}, and so on.
 
 @c NEEDS EXAMPLES

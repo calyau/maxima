@@ -52,7 +52,6 @@
         "rtest_elliptic"
         "rtest_integrate"
         "rtest_integrate_special"
-        "rtest_ask"
         ((mlist simp) "rtest_sqrt" 89)
         ((mlist simp) "rtest_carg" 40 41)
         ((mlist simp) "rtest_log")

@@ -392,7 +392,7 @@ ratsimp(hgfred([-3/2,1],[-1/2], t));
 integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
  -(g32475^(2*n+1)*(g32475*n-n-1)/(g32475-1)^2+g32475^(n+1)/(g32475-1)^2)
   /(1-g32475),g32475,0,1);
-(n+1)^2/2-1/2;
+n^2/2+n;
 
 kill(all);
 done;
@@ -1831,4 +1831,36 @@ errcatch(elliptic_f(2,1));
 [foo, 0]$
 
 (kill(foo), 0);
+0$
+
+map(lambda([x], featurep(x, 'irrational)),[42,%pi,%phi,%e]);
+[false, true, true, true]$
+
+/* #2501 %pi/8 is definitely not an integer */
+integrate(log(cot(x)-1),x,0,%pi/4);
+(%i*li[2]((%i+1)/2)-%i*li[2](-((%i-1)/2)))/2 -(%i*(2*li[2](%i+1)-2*li[2](1-%i))+%pi*log(2))/4$
+
+integrate(log(cos(x)),x,0,%pi/2);
+%i*%pi^2/24-(6*%pi*log(4)+%i*%pi^2)/24$
+
+map(lambda([x], featurep(x, noninteger)),[sqrt(5),%pi,%pi/3, %pi/8,log(42),99/2013]);
+[true,true,true,true,true,true]$
+
+map(lambda([x], featurep(x, noninteger)),[0,1,2013]);
+[false,false,false]$
+
+/* #2583 sign error for integrate(x^(8*%i-1),x) */
+block([domain : 'real], integrate(x^(8*%i-1),x));
+-%i*x^(8*%i)/8$
+
+/* #2602: some-bfloatp and some-floatp recursed wrongly on rat expressions */
+?some\-bfloatp(rat(1/2));
+false$
+
+/* #2594: Error in trigreduce for complicated expressions */
+subst(0, x, trigreduce(product(cos(k*x), k, 1, 8)));
+1$
+
+/* #2591: Risch gives lisp error */
+(risch(asinh((z^2-1)/z)/z,z), 0);
 0$

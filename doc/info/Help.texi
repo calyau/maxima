@@ -197,7 +197,7 @@ Enter space-separated numbers, `all' or `none': 7 8
 @end example
 
 In this example, items 7 and 8 were selected (output is shortened as indicated
-by @code{[...]}.  All or none of the items could have been selected by entering
+by @code{[...]}).  All or none of the items could have been selected by entering
 @code{all} or @code{none}, which can be abbreviated @code{a} or @code{n},
 respectively.
 

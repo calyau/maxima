@@ -216,7 +216,7 @@
 (let ((ccol 1))
   (defun reset-ccol () (setq ccol 1))
 
-  (defun myprinc (chstr texport)
+  (defun myprinc (chstr &optional (texport nil))
     (prog (chlst)
        (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) 70.)
                    (or (stringp chstr) (equal chstr '| |)))

@@ -423,13 +423,37 @@ sec(phi)^2/(1+tan(phi)^2/4);
 diff(elliptic_pi(1,phi,0),phi);
 sec(phi)^2;
 
-
+/* Special values */
 elliptic_ec(1);
 1;
+
+elliptic_ec(0);
+%pi/2;
+
+elliptic_ec(1/2);
+gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2);
+
+elliptic_ec(-1);
+sqrt(2)*elliptic_ec(1/2);
 
 /* Test periodicity of elliptic_e */
 elliptic_e(x, 1);
 2*round(x/%pi)+sin(x);
 
-elliptic_e(3,1/2);
-elliptic_e(3-%pi,1/2)+2*elliptic_ec(1/2);
+elliptic_e(3,1/3);
+elliptic_e(3-%pi,1/3)+2*elliptic_ec(1/3);
+
+/* Bug #2629: elliptic_kc(3.0) not accurate */
+test_table('elliptic_kc, [[[3.0], elliptic_kc(3b0)]], 1b-15);
+[];
+
+/* Bug #2630: inverse_jacobi_cn(-2.0, 3.0) generates an error */
+test_table('inverse_jacobi_cn, [[[-2.0, 3.0], 2.002154760912212-3.202503914656527*%i]],
+  1b-15);
+[];
+
+/* Bug #2615: Numeric evaluation of inverse Jacobi elliptic functions is wrong for some inputs 
+*/
+is(abs(jacobi_dn(inverse_jacobi_dn(-2.0,3.0), 3.0) + 2) < 1d-14);
+true;
+

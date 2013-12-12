@@ -556,20 +556,22 @@
 
 
 ;; Define the actual functions for the user
-(defmfun $jacobi_sn (u m)
+(defun-checked $jacobi_sn ((u m))
   (simplify (list '(%jacobi_sn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_cn (u m)
+
+(defun-checked $jacobi_cn ((u m))
   (simplify (list '(%jacobi_cn) (resimplify u) (resimplify m))))
-(defmfun $jacobi_dn (u m)
+
+(defun-checked $jacobi_dn ((u m))
   (simplify (list '(%jacobi_dn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_sn (u m)
+(defun-checked $inverse_jacobi_sn ((u m))
   (simplify (list '(%inverse_jacobi_sn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_cn (u m)
+(defun-checked $inverse_jacobi_cn ((u m))
   (simplify (list '(%inverse_jacobi_cn) (resimplify u) (resimplify m))))
 
-(defmfun $inverse_jacobi_dn (u m)
+(defun-checked $inverse_jacobi_dn ((u m))
   (simplify (list '(%inverse_jacobi_dn) (resimplify u) (resimplify m))))
 
 ;; Possible forms of a complex number:
@@ -1006,18 +1008,39 @@
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
+    ;; To numerically evaluate inverse_jacobi_sn (asn), use
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;
+    ;; But F(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1).  Thus
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;          = x*rf(1-x^2,1-m*x^2,1)
+    ;;
+    ;; I (rtoy) am not 100% about the first identity above for all
+    ;; complex values of x and m, but tests seem to indicate that it
+    ;; produces the correct value as verified by verifying
+    ;; jacobi_sn(inverse_jacobi_sn(x,m),m) = x.
     (cond ((float-numerical-eval-p u m)
-	   ;; Numerically evaluate asn
-	   ;;
-	   ;; asn(x,m) = F(asin(x),m)
-	   (complexify (elliptic-f (cl:asin ($float u)) ($float m))))
+	   (complexify (* u (bigfloat::bf-rf (bigfloat:to (float (- 1 (* u u))))
+					     (bigfloat:to (float (- 1 (* m u u))))
+					     1))))
 	  ((complex-float-numerical-eval-p u m)
-	   (complexify (elliptic-f (cl:asin (complex ($realpart u) ($imagpart u)))
-				   (complex ($realpart m) ($imagpart m)))))
+	   (let ((uu (complex ($float ($realpart u))
+			      ($float ($imagpart u))))
+		 (mm (complex ($float ($realpart m))
+			      ($float ($imagpart m)))))
+	     (complexify (* uu (bigfloat::bf-rf (- 1 (* uu uu))
+						(- 1 (* mm uu uu))
+						1)))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
-	   (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:to u))
-					(bigfloat:to m))))
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat:* uu
+			     (bigfloat::bf-rf (bigfloat:- 1 (bigfloat:* uu uu))
+					      (bigfloat:- 1 (bigfloat:* mm uu uu))
+					      1)))))
 	  ((zerop1 u)
 	   ;; asn(0,m) = 0
 	   0)
@@ -1052,10 +1075,10 @@
 	   ;; Numerically evaluate acn
 	   ;;
 	   ;; acn(x,m) = F(acos(x),m)
-	   (complexify (elliptic-f (cl:acos ($float u)) ($float m))))
+	   (to (elliptic-f (cl:acos ($float u)) ($float m))))
 	  ((complex-float-numerical-eval-p u m)
-	   (complexify (elliptic-f (cl:acos (complex ($realpart u) ($imagpart u)))
-				   (complex ($realpart m) ($imagpart m)))))
+	   (to (elliptic-f (cl:acos (complex ($realpart u) ($imagpart u)))
+			   (complex ($realpart m) ($imagpart m)))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
 	   (to (bigfloat::bf-elliptic-f (bigfloat:acos (bigfloat:to u))
@@ -1080,40 +1103,25 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
 
-;;
-;; adn(u) = x.
-;; u = dn(x) = sqrt(1-m*sn(x)^2)
-;; sn(x)^2 = (1-u^2)/m
-;; sn(x) = sqrt((1-u^2)/m)
-;; x = asn(sqrt((1-u^2)/m))
-;; x = adn(u) = asn(sqrt((1-u^2)/m))
-
 (defmfun simp-%inverse_jacobi_dn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
     (cond ((float-numerical-eval-p u m)
-	   ;; Numerically evaluate adn
-	   (let* ((u ($float u))
-		  (m ($float m))
-		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
-			  (sqrt m))))
-	     (complexify (elliptic-f (cl:asin phi) m))))
+	   (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to (float u))
+					       (bigfloat:to (float m)))))
 	  ((complex-float-numerical-eval-p u m)
-	   (let* ((u (complex ($realpart u) ($imagpart u)))
-		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
-			 (sqrt m))))
-	     (complexify (elliptic-f (cl:asin phi)
-				     (complex ($realpart m) ($imagpart m))))))
+	   (let ((uu (complex ($float ($realpart u))
+			      ($float ($imagpart u))))
+		 (mm (complex ($float ($realpart m))
+			      ($float ($imagpart m)))))
+	     (to (bigfloat::bf-inverse-jacobi-dn uu mm))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
-	   (let* ((u (bigfloat:to ($bfloat u)))
-		  (phi (bigfloat:/ (bigfloat:* (bigfloat:sqrt (bigfloat:- 1 u))
-					       (bigfloat:sqrt (bigfloat:+ 1 u)))
-				   (bigfloat:sqrt (bigfloat:to ($bfloat m))))))
-	     (to (bigfloat::bf-elliptic-f (bigfloat:asin phi)
-					  (bigfloat:to m)))))
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat::bf-inverse-jacobi-dn uu mm))))
 	  ((onep1 m)
 	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
 	   `((%asech) ,u))
@@ -1204,8 +1212,8 @@ first kind:
 			   ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
 			   ;;
 			   ;; with sin(theta) = sqrt(m)*sin(phi)
-			   (complexify (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
-					  (sqrt m))))
+			   (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
+					  (sqrt m)))
 			  ((< m 0)
 			   ;; A&S 17.4.17
 			   (let* ((m (- m))
@@ -1222,7 +1230,7 @@ first kind:
 			  ((= m 1)
 			   ;; A&S 17.4.21
 			   ;;
-			   ;; F(phi,1) = log(sec(phi)+tan(phi))
+1			   ;; F(phi,1) = log(sec(phi)+tan(phi))
 			   ;;          = log(tan(pi/4+pi/2))
 			   (log (cl:tan (+ (/ phi 2) (float (/ pi 4))))))
 			  ((minusp phi)
@@ -1237,14 +1245,17 @@ first kind:
 			   (let ((sin-phi (sin phi))
 				 (cos-phi (cos phi))
 				 (k (sqrt m)))
-			     (to (* sin-phi
-				    (bigfloat::bf-rf (* cos-phi cos-phi)
-						     (* (- 1 (* k sin-phi))
-							(+ 1 (* k sin-phi)))
-						     1.0)))))
+			     (* sin-phi
+				(bigfloat::bf-rf (* cos-phi cos-phi)
+						 (* (- 1 (* k sin-phi))
+						    (+ 1 (* k sin-phi)))
+						 1.0))))
 			  ((< phi pi)
 			   (+ (* 2 (elliptic-k m))
-			      (elliptic-f (- phi (float pi)) m))))))
+			      (elliptic-f (- phi (float pi)) m)))
+			  (t
+			   (error "Shouldn't happen! Unhandled case in elliptic-f: ~S ~S~%"
+				  phi-arg m-arg)))))
 		 (t
 		  (let ((phi (coerce phi-arg '(complex flonum)))
 			(m (coerce m-arg '(complex flonum))))
@@ -1260,40 +1271,37 @@ first kind:
     ;;
     ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
     (let ((period (round (realpart phi-arg) pi)))
-      (add (base (- phi-arg (* pi period)) m-arg)
-	   (if (zerop period)
-	       0
-	       (mul (mul 2 period)
-		    (elliptic-k m-arg)))))))
+      (+ (base (- phi-arg (* pi period)) m-arg)
+	 (if (zerop period)
+	     0
+	     (* 2 period
+		(bigfloat:to (elliptic-k m-arg))))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
-  (declare (type flonum m))
-  (cond ((> m 1)
-	 ;; A&S 17.4.15
-	 (complexify (/ (elliptic-f (cl:asin (sqrt m)) (/ m))
-			(sqrt m))))
-	((< m 0)
-	 ;; A&S 17.4.17
-	 (let* ((m (- m))
-		(m+1 (+ 1 m))
-		(root (sqrt m+1))
-		(m/m+1 (/ m m+1)))
-	   (- (/ (elliptic-k m/m+1)
-		 root)
-	      (/ (elliptic-f 0.0 m/m+1)
-		 root))))
-	((= m 0)
-	 ;; A&S 17.4.19
-	 (float (/ pi 2)))
-	((= m 1)
-	 (maxima::merror
-	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
+  (cond ((realp m)
+	 (cond ((< m 0)
+		;; A&S 17.4.17
+		(let* ((m (- m))
+		       (m+1 (+ 1 m))
+		       (root (sqrt m+1))
+		       (m/m+1 (/ m m+1)))
+		  (- (/ (elliptic-k m/m+1)
+			root)
+		     (/ (elliptic-f 0.0 m/m+1)
+			root))))
+	       ((= m 0)
+		;; A&S 17.4.19
+		(float (/ pi 2)))
+	       ((= m 1)
+		(maxima::merror
+		 (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
+	       (t
+		(bigfloat::bf-rf 0.0 (- 1 m)
+				 1.0))))
 	(t
-	 (let ((k (sqrt m)))
-	   (to (bigfloat::bf-rf 0.0 (* (- 1 k)
-				       (+ 1 k))
-				1.0))))))
+	 (bigfloat::bf-rf 0.0 (- 1 m)
+			  1.0))))
 
 ;; Elliptic integral of the second kind (Legendre's form):
 ;;
@@ -1529,10 +1537,10 @@ first kind:
 	(m (simpcheck (caddr form) z)))
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
-	   (elliptic-f ($float phi) ($float m)))
+	   (to (elliptic-f ($float phi) ($float m))))
 	  ((complex-float-numerical-eval-p phi m)
-	   (complexify (elliptic-f (complex ($float ($realpart phi)) ($float ($imagpart phi)))
-				   (complex ($float ($realpart m)) ($float ($imagpart m))))))
+	   (to (elliptic-f (complex ($float ($realpart phi)) ($float ($imagpart phi)))
+			   (complex ($float ($realpart m)) ($float ($imagpart m))))))
 	  ((or (bigfloat-numerical-eval-p phi m)
 	       (complex-bigfloat-numerical-eval-p phi m))
 	   (to (bigfloat::bf-elliptic-f (bigfloat:to ($bfloat phi))
@@ -1662,7 +1670,7 @@ first kind:
              m))
           ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
-	   (elliptic-k ($float m)))
+	   (to (elliptic-k ($float m))))
 	  ((complex-float-numerical-eval-p m)
 	   (complexify (bigfloat::bf-elliptic-k (complex ($float ($realpart m)) ($float ($imagpart m))))))
 	  ((complex-bigfloat-numerical-eval-p m)
@@ -1717,6 +1725,40 @@ first kind:
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  ((onep1 m)
 	   1)
+	  ((alike1 m 1//2)
+	   ;; elliptic_ec(1/2). Use the identity
+	   ;;
+	   ;;   elliptic_ec(z)*elliptic_kc(1-z) - elliptic_kc(z)*elliptic_kc(1-z)
+	   ;;     + elliptic_ec(1-z)*elliptic_kc(z) = %pi/2;
+	   ;;
+	   ;; Let z = 1/2 to get
+	   ;;
+	   ;;   %pi^(3/2)*'elliptic_ec(1/2)/gamma(3/4)^2-%pi^3/(4*gamma(3/4)^4) = %pi/2
+	   ;;
+	   ;; since we know that elliptic_kc(1/2) = %pi^(3/2)/(2*gamma(3/4)^2).  Hence
+	   ;;
+	   ;;   elliptic_ec(1/2)
+	   ;;      = (2*%pi*gamma(3/4)^4+%pi^3)/(4*%pi^(3/2)*gamma(3/4)^2)
+	   ;;      = gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2)
+	   ;;
+	   (add (div (power (take '($gamma) (div 3 4)) 2)
+		     (mul 2 (power '$%pi 1//2)))
+		(div (power '$%pi (div 3 2))
+		     (mul 4 (power (take '($gamma) (div 3 4)) 2)))))
+	  ((zerop1 (add 1 m))
+	   ;; elliptic_ec(-1). Use the identity
+	   ;; http://functions.wolfram.com/08.01.17.0002.01
+	   ;;
+	   ;;
+	   ;;   elliptic_ec(z) = sqrt(1 - z)*elliptic_ec(z/(z-1))
+	   ;;
+	   ;; Let z = -1 to get
+	   ;;
+	   ;;   elliptic_ec(-1) = sqrt(2)*elliptic_ec(1/2)
+	   ;;
+	   ;; Should we expand out elliptic_ec(1/2) using the above result?
+	   (mul (power 2 1//2)
+		(take '($elliptic_ec) 1//2)))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_ec) m) form)))))
@@ -2175,6 +2217,35 @@ first kind:
 	  (bf-rj (expt cos-phi 2) k2sin 1.0
 		 (- 1 (* n (expt sin-phi 2))))))))
 
+;; Compute inverse_jacobi_sn, for float or bigfloat args.
+(defun bf-inverse-jacobi-sn (u m)
+  (* u (bf-rf (- 1 (* u u))
+	      (- 1 (* m u u))
+	      1)))
+
+;; Compute inverse_jacobi_dn.  We use the following identity
+;; from Gradshteyn & Ryzhik, 8.153.6
+;;
+;;   w = dn(z|m) = cn(sqrt(m)*z, 1/m)
+;;
+;; Solve for z to get
+;;
+;;   z = inverse_jacobi_dn(w,m)
+;;     = 1/sqrt(m) * inverse_jacobi_cn(w, 1/m)
+(defun bf-inverse-jacobi-dn (w m)
+  (cond ((= w 1)
+	 (float 0 w))
+	((= m 1)
+	 ;; jacobi_dn(x,1) = sech(x) so the inverse is asech(x)
+	 (maxima::take '(maxima::%asech) (maxima::to w)))
+	(t
+	 ;; We should do something better to make sure that things
+	 ;; that should be real are real.
+	 (/ (to (maxima::take '(maxima::%inverse_jacobi_cn)
+			      (maxima::to w)
+			      (maxima::to (/ m))))
+	    (sqrt m)))))
+
 (in-package :maxima)
 
 ;; Define Carlson's elliptic integrals so we can test their
@@ -2204,7 +2275,7 @@ first kind:
 ;;; Other Jacobian elliptic functions
 
 ;; jacobi_ns(u,m) = 1/jacobi_sn(u,m)
-(defmfun  $jacobi_ns (u m)
+(defun-checked  $jacobi_ns ((u m))
   (simplify (list '(%jacobi_ns) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_ns simp-%jacobi_ns operators)
@@ -2327,7 +2398,7 @@ first kind:
 
 ;; jacobi_nc(u,m) = 1/jacobi_cn(u,m)
 
-(defmfun  $jacobi_nc (u m)
+(defun-checked $jacobi_nc ((u m))
   (simplify (list '(%jacobi_nc) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_nc simp-%jacobi_nc operators)
@@ -2448,13 +2519,13 @@ first kind:
 			 (zerop1 const))
 		    `((mexpt) ((%jacobi_cn) ,u ,m) -1))
 		   (t
-		    (eqtest (list '(%jacobi_cn) u m) form)))))
+		    (eqtest (list '(%jacobi_nc) u m) form)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_nc) u m) form)))))
 
 ;; jacobi_nd(u,m) = 1/jacobi_dn(u,m)
-(defmfun  $jacobi_nd (u m)
+(defun-checked $jacobi_nd ((u m))
   (simplify (list '(%jacobi_nd) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_nd simp-%jacobi_nd operators)
@@ -2564,7 +2635,7 @@ first kind:
 	   (eqtest (list '(%jacobi_nd) u m) form)))))
 
 ;; jacobi_sc(u,m) = jacobi_sn/jacobi_cn
-(defmfun  $jacobi_sc (u m)
+(defun-checked $jacobi_sc ((u m))
   (simplify (list '(%jacobi_sc) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_sc simp-%jacobi_sc operators)
@@ -2692,7 +2763,7 @@ first kind:
 	   (eqtest (list '(%jacobi_sc) u m) form)))))
 
 ;; jacobi_sd(u,m) = jacobi_sn/jacobi_dn
-(defmfun  $jacobi_sd (u m)
+(defun-checked $jacobi_sd ((u m))
   (simplify (list '(%jacobi_sd) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_sd simp-%jacobi_sd operators)
@@ -2849,7 +2920,7 @@ first kind:
 	   (eqtest (list '(%jacobi_sd) u m) form)))))
 
 ;; jacobi_cs(u,m) = jacobi_cn/jacobi_sn
-(defmfun  $jacobi_cs (u m)
+(defun-checked $jacobi_cs ((u m))
   (simplify (list '(%jacobi_cs) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_cs simp-%jacobi_cs operators)
@@ -2982,7 +3053,7 @@ first kind:
 	   (eqtest (list '(%jacobi_cs simp) u m) form)))))
 
 ;; jacobi_cd(u,m) = jacobi_cn/jacobi_dn
-(defmfun  $jacobi_cd (u m)
+(defun-checked $jacobi_cd ((u m))
   (simplify (list '(%jacobi_cd) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_cd simp-%jacobi_cd operators)
@@ -3128,7 +3199,7 @@ first kind:
 	   (eqtest (list '(%jacobi_cd) u m) form)))))
 
 ;; jacobi_ds(u,m) = jacobi_dn/jacobi_sn
-(defmfun  $jacobi_ds (u m)
+(defun-checked $jacobi_ds ((u m))
   (simplify (list '(%jacobi_ds) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_ds simp-%jacobi_ds operators)
@@ -3285,7 +3356,7 @@ first kind:
 	   (eqtest (list '(%jacobi_ds) u m) form)))))
 
 ;; jacobi_dc(u,m) = jacobi_dn/jacobi_cn
-(defmfun  $jacobi_dc (u m)
+(defun-checked $jacobi_dc ((u m))
   (simplify (list '(%jacobi_dc) (resimplify u) (resimplify m))))
 
 (defprop %jacobi_dc simp-%jacobi_dc operators)
@@ -3440,7 +3511,7 @@ first kind:
 ;;
 ;; so u = inverse_jacobi_sn(1/x)
 
-(defmfun $inverse_jacobi_ns (u m)
+(defun-checked $inverse_jacobi_ns ((u m))
   (simplify (list '(%inverse_jacobi_ns) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_ns
@@ -3470,11 +3541,11 @@ first kind:
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (complexify (elliptic-f (cl:asin (/ (float u))) (float m))))
+	   (to (elliptic-f (cl:asin (/ (float u))) (float m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
-	   (complexify (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
-				   (complex ($realpart m) ($imagpart m)))))
+	   (to (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
+			   (complex ($realpart m) ($imagpart m)))))
 	  ((or (bigfloat-numerical-eval-p u m)
 	       (complex-bigfloat-numerical-eval-p u m))
 	   (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:/ (bigfloat:to ($bfloat u))))
@@ -3508,7 +3579,7 @@ first kind:
 ;;
 ;; so u = inverse_jacobi_cn(1/x)
 
-(defmfun $inverse_jacobi_nc (u m)
+(defun-checked $inverse_jacobi_nc ((u m))
   (simplify (list '(%inverse_jacobi_nc) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_nc
@@ -3563,7 +3634,7 @@ first kind:
 ;;
 ;; so u = inverse_jacobi_dn(1/x)
 
-(defmfun $inverse_jacobi_nd (u m)
+(defun-checked $inverse_jacobi_nd ((u m))
   (simplify (list '(%inverse_jacobi_nd) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_nd
@@ -3626,7 +3697,7 @@ first kind:
 ;; u = inverse_sn(x/sqrt(1+x^2))
 ;;
 
-(defmfun $inverse_jacobi_sc (u m)
+(defun-checked $inverse_jacobi_sc ((u m))
   (simplify (list '(%inverse_jacobi_sc) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_sc
@@ -3686,7 +3757,7 @@ first kind:
 ;; u = inverse_sn(x/sqrt(1+m*x^2))
 ;;
 
-(defmfun $inverse_jacobi_sd (u m)
+(defun-checked $inverse_jacobi_sd ((u m))
   (simplify (list '(%inverse_jacobi_sd) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_sd
@@ -3745,7 +3816,7 @@ first kind:
 ;; u = inverse_sc(1/x)
 ;;
 
-(defmfun $inverse_jacobi_cs (u m)
+(defun-checked $inverse_jacobi_cs ((u m))
   (simplify (list '(%inverse_jacobi_cs) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_cs
@@ -3798,7 +3869,7 @@ first kind:
 ;; u = inverse_sn(sqrt(1-x^2)/sqrt(1-m*x^2))
 ;;
 
-(defmfun $inverse_jacobi_cd (u m)
+(defun-checked $inverse_jacobi_cd ((u m))
   (simplify (list '(%inverse_jacobi_cd) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_cd
@@ -3852,7 +3923,7 @@ first kind:
 ;; u = inverse_sd(1/x)
 ;;
 
-(defmfun $inverse_jacobi_ds (u m)
+(defun-checked $inverse_jacobi_ds ((u m))
   (simplify (list '(%inverse_jacobi_ds) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_ds
@@ -3912,7 +3983,7 @@ first kind:
 ;; u = inverse_cd(1/x)
 ;;
 
-(defmfun $inverse_jacobi_dc (u m)
+(defun-checked $inverse_jacobi_dc ((u m))
   (simplify (list '(%inverse_jacobi_dc) (resimplify u) (resimplify m))))
 
 (defprop %inverse_jacobi_dc
@@ -4093,7 +4164,7 @@ first kind:
 (defun elliptic-eu (u m)
   (cond ((realp u)
 	 ;; E(u + 2*n*K) = E(u) + 2*n*E
-	 (let ((ell-k (elliptic-k m))
+	 (let ((ell-k (to (elliptic-k m)))
 	       (ell-e (elliptic-ec m)))
 	   (multiple-value-bind (n u-rem)
 	       (floor u (* 2 ell-k))

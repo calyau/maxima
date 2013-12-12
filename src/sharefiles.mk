@@ -30,7 +30,6 @@ affine/sub-proj.lisp \
 affine/sys-declaim.lisp \
 affine/sysdef.lisp \
 affine/sys-proclaim.lisp \
-affine/todd-coxeter.lisp \
 algebra/charsets/charsets.mac \
 algebra/charsets/flatten.lisp \
 algebra/charsets/README \
@@ -453,6 +452,8 @@ contrib/sarag/topology_examples.mac \
 contrib/sarag/topology.mac \
 contrib/sarag/whatsnew.txt \
 contrib/simplifying.lisp \
+contrib/smath/smath.lisp \
+contrib/smath/smath.mac \
 contrib/state/a.cir \
 contrib/state/b.cir \
 contrib/state/c.cir \
@@ -552,6 +553,7 @@ ezunits/rtest_ezunits_frink.mac \
 ezunits/rtestezunits.mac \
 ezunits/rtest_ezunits_solve.mac \
 finance/finance.mac \
+finance/rtest_finance.mac \
 fourier_elim/fourier_elim.lisp \
 fourier_elim/rtest_fourier_elim.mac \
 fractals/fractals.mac \
@@ -700,7 +702,9 @@ lapack/lapack/dlabrd.lisp \
 lapack/lapack/dlacon.lisp \
 lapack/lapack/dlacpy.lisp \
 lapack/lapack/dladiv.lisp \
+lapack/lapack/dlae2.lisp \
 lapack/lapack/dlaed6.lisp \
+lapack/lapack/dlaev2.lisp \
 lapack/lapack/dlaexc.lisp \
 lapack/lapack/dlahqr.lisp \
 lapack/lapack/dlahrd.lisp \
@@ -764,6 +768,7 @@ lapack/lapack/dormbr.lisp \
 lapack/lapack/dorml2.lisp \
 lapack/lapack/dormlq.lisp \
 lapack/lapack/dormqr.lisp \
+lapack/lapack/dsterf.lisp \
 lapack/lapack/dtrevc.lisp \
 lapack/lapack/dtrexc.lisp \
 lapack/lapack/dtrsna.lisp \
@@ -782,6 +787,9 @@ lapack/lapack/zgebal.lisp \
 lapack/lapack/zgeev.lisp \
 lapack/lapack/zgehd2.lisp \
 lapack/lapack/zgehrd.lisp \
+lapack/lapack/zheev.lisp \
+lapack/lapack/zhetd2.lisp \
+lapack/lapack/zhetrd.lisp \
 lapack/lapack/zhseqr.lisp \
 lapack/lapack/zlacgv.lisp \
 lapack/lapack/zlacpy.lisp \
@@ -789,6 +797,7 @@ lapack/lapack/zladiv.lisp \
 lapack/lapack/zlahqr.lisp \
 lapack/lapack/zlahr2.lisp \
 lapack/lapack/zlange.lisp \
+lapack/lapack/zlanhe.lisp \
 lapack/lapack/zlaqr0.lisp \
 lapack/lapack/zlaqr1.lisp \
 lapack/lapack/zlaqr2.lisp \
@@ -802,14 +811,20 @@ lapack/lapack/zlarft.lisp \
 lapack/lapack/zlartg.lisp \
 lapack/lapack/zlascl.lisp \
 lapack/lapack/zlaset.lisp \
+lapack/lapack/zlasr.lisp \
 lapack/lapack/zlassq.lisp \
+lapack/lapack/zlatrd.lisp \
 lapack/lapack/zlatrs.lisp \
 lapack/lapack/zrot.lisp \
+lapack/lapack/zsteqr.lisp \
 lapack/lapack/ztrevc.lisp \
 lapack/lapack/ztrexc.lisp \
+lapack/lapack/zung2l.lisp \
 lapack/lapack/zung2r.lisp \
 lapack/lapack/zunghr.lisp \
+lapack/lapack/zungql.lisp \
 lapack/lapack/zungqr.lisp \
+lapack/lapack/zungtr.lisp \
 lapack/lapack/zunm2r.lisp \
 lapack/lapack/zunmhr.lisp \
 lapack/lapack/zunmqr.lisp \
@@ -867,7 +882,6 @@ macro/packg.mac \
 macro/sum1.mac \
 matrix/eigen_1.dem \
 matrix/eigen.dem \
-matrix/eigeni.mac \
 matrix/eigen.mac \
 matrix/invert.mac \
 matrix/invert.usg \
@@ -1057,7 +1071,9 @@ stats/inference_result.lisp \
 stats/numstats.lisp \
 stats/rtest_stats.mac \
 stats/stats.mac \
+stringproc/base64.lisp \
 stringproc/eval_string.lisp \
+stringproc/md5.lisp \
 stringproc/pregexp.lisp \
 stringproc/printf.lisp \
 stringproc/rtestprintf.mac \

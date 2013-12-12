@@ -952,7 +952,7 @@
 	       ((> i gm-maxit)
 		(merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
 	    (when *debug-gamma* 
-	      (format t "~&in coninued fractions:~%")
+	      (format t "~&in continued fractions:~%")
 	      (mformat t "~&   : i = ~M~%" i)
 	      (mformat t "~&   : h = ~M~%" h))
 	    (setq d (add (mul an d) b))
@@ -2678,6 +2678,7 @@
 (defvar *debug-newton* nil)
 (defvar *newton-maxcount* 1000)
 (defvar *newton-epsilon-factor* 50)
+(defvar *newton-epsilon-factor-float* 10)
 
 (defun float-newton (expr var x0 eps)
   (do ((s (sdiff expr var))
@@ -2758,7 +2759,8 @@
 		   ;; Newton iteration.
 		   (cond ((<= (abs z) 1)
 			  (typecase z
-			    (cl:real (* 2 maxima::flonum-epsilon))
+			    (cl:real (* maxima::*newton-epsilon-factor-float*
+					maxima::flonum-epsilon))
 			    (t (* maxima::*newton-epsilon-factor* (epsilon z)))))
 			 (t
 			  (* maxima::*newton-epsilon-factor* (epsilon z))))))
@@ -2826,8 +2828,8 @@
 	   (> count maxima::*newton-maxcount*))
        (if (> count maxima::*newton-maxcount*)
 	   (maxima::merror 
-	    (intl:gettext "bf-newton: failed to converge after ~M iterations: delta = ~S,  x = ~S")
-	    count delta x)
+	    (intl:gettext "bf-newton: failed to converge after ~M iterations: delta = ~S,  x = ~S eps = ~S")
+	    count delta x eps)
 	   x))
     (when maxima::*debug-newton*
       (format t "x = ~S, abs(delta) = ~S relerr = ~S~%"
@@ -2901,6 +2903,18 @@
          ((mexpt) $%pi -1)
          ((%cos) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
   integral)
+
+;;; Limits of the Fresnel Integral S
+
+(defprop %fresnel_s simplim%fresnel_s simplim%function)
+(defun simplim%fresnel_s (exp var val)
+  (let ((arg (limit (cadr exp) var val 'think)))
+    (cond ((eq arg '$inf)
+           '((rat simp) 1 2))
+          ((eq arg '$minf)
+           '((rat simp) -1 2))
+          (t
+           `((%fresnel_s) ,arg)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3097,6 +3111,18 @@
          ((mexpt) $%pi -1)
          ((%sin) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
   integral)
+
+;;; Limits of the Fresnel Integral C
+
+(defprop %fresnel_c simplim%fresnel_c simplim%function)
+(defun simplim%fresnel_c (exp var val)
+  (let ((arg (limit (cadr exp) var val 'think)))
+    (cond ((eq arg '$inf)
+           '((rat simp) 1 2))
+          ((eq arg '$minf)
+           '((rat simp) -1 2))
+          (t
+           `((%fresnel_c) ,arg)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

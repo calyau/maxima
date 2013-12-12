@@ -602,7 +602,39 @@ Default value: @code{false}
 @code{exptsubst}, when @code{true}, permits substitutions such as @code{y}
 for @code{%e^x} in @code{%e^(a x)}.
 
-@c NEED EXAMPLES HERE
+@c ===beg===
+@c %e^(a*x);
+@c exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c exptsubst: not exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c ===end===
+@example
+@group
+(%i1) %e^(a*x);
+                                       a x
+(%o1)                                %e
+@end group
+@group
+(%i2) exptsubst;
+(%o2)                                false
+@end group
+@group
+(%i3) subst(y, %e^x, %e^(a*x));
+                                       a x
+(%o3)                                %e
+@end group
+@group
+(%i4) exptsubst: not exptsubst;
+(%o4)                                true
+@end group
+@group
+(%i5) subst(y, %e^x, %e^(a*x));
+                                       a
+(%o5)                                 y
+@end group
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions} @category{Expressions}
 @closecatbox
@@ -848,10 +880,35 @@ with respect to products.  E.g. compare both settings of the switch on
 @defvr {Option variable} listconstvars
 Default value: @code{false}
 
-When @code{listconstvars} is @code{true}, it will cause @mref{listofvars} to
-include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in
-the list it returns if they appear in the expression @code{listofvars} is called
-on.  The default is to omit these.
+When @code{listconstvars} is @code{true} the list returned by
+@code{listofvars} contains constant variables, such as @code{%e},
+@code{%pi}, @code{%i} or any variables declared as constant that
+occur in @var{expr}. A variable is declared as @code{constant}
+type via @mref{declare}, and @mref{constantp} returns @code{true}
+for all variables declared as @code{constant}. The default is to
+omit constant variables from @code{listofvars} return value.
+
+Example:
+
+@c ===beg===
+@c lfreeof ([ a, x], x^2+b);
+@c lfreeof ([ b, x], x^2+b);
+@c lfreeof ([ a, y], x^2+b);
+@c ===end===
+@example
+@group
+(%i1) lfreeof ([ a, x], x^2+b);
+(%o1)                                false
+@end group
+@group
+lfreeof ([ b, x], x^2+b);
+(%o2)                                false
+@end group
+@group
+lfreeof ([ a, y], x^2+b);
+(%o3)                                true
+@end group
+@end example
 
 @opencatbox
 @category{Expressions}
@@ -1151,6 +1208,41 @@ Default value: @code{true}
 When @code{opsubst} is @code{false}, @mref{subst} does not attempt to
 substitute into the operator of an expression.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+@c ===beg===
+@c r+r[0];
+@c opsubst;
+@c subst (x^2, r, r+r[0]);
+@c opsubst: not opsubst;
+@c subst (x^2, r, r+r[0]);
+@c ===end===
+@example
+@group
+(%i1) r+r[0];
+(%o1)                               r + r
+                                         0
+@end group
+@group
+(%i2) opsubst;
+(%o2)                                true
+@end group
+@group
+(%i3) subst (x^2, r, r+r[0]);
+                                   2     2
+(%o3)                             x  + (x )
+                                           0
+@end group
+@group
+(%i4) opsubst: not opsubst;
+(%o4)                                false
+@end group
+@group
+(%i5) subst (x^2, r, r+r[0]);
+                                     2
+(%o5)                               x  + r
+                                          0
+@end group
+@end example
 
 @opencatbox
 @category{Expressions}

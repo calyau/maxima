@@ -27,7 +27,7 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw errrjfflag raterr origval $lhospitallim low*
+(declare-top (special errorsw origval $lhospitallim low*
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $tlimswitch $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar
@@ -49,10 +49,6 @@
 (defmvar infinitesimals '($zeroa $zerob)
   "The infinitesimals recognized by Maxima. ZEROA zero from above,
    ZEROB zero from below")
-
-(defmvar rd* nil
-  "The full implications of this flag have yet to be determined.
-It appears in LIMIT and DEFINT.......")
 
 (defmvar simplimplus-problems ()
   "A list of all problems in the stack of recursive calls to simplimplus.")
@@ -109,7 +105,7 @@ It appears in LIMIT and DEFINT.......")
       (setq integer-info ()))
 
     (unwind-protect
-	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (*behavior-count-now* 0)
+	 (let ((exp1 ()) (lhcount $lhospitallim) (*behavior-count-now* 0)
 	       (exp ()) (var ()) (val ()) (dr ())
 	       (*indicator ()) (taylored ()) (origval ())
 	       (logcombed ()) (lhp? ())
@@ -180,6 +176,7 @@ It appears in LIMIT and DEFINT.......")
 		    ;; *atp* prevents substitution from applying to vars 
 		    ;; bound by %sum, %product, %integrate, %limit
 		    (setq var (gensym))
+		    (putprop var t 'internal)
 		    (setq exp (maxima-substitute (m+ val var) realvar exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
@@ -570,7 +567,7 @@ ignoring dummy variables and array indices."
     (t (putlimval exp (cond ((and limit-using-taylor
 				  (null taylored)
 				  (tlimp exp))
-			     (taylim exp *i*))
+			     (taylim exp var val *i*))
 			    ((ratp exp var) (ratlim exp))
 			    ((or (eq *i* t) (radicalp exp var))
 			     (limit1 exp var val))
@@ -1048,7 +1045,7 @@ ignoring dummy variables and array indices."
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
 
 (defun no-err-sub (v e &aux ans)
-  (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
+  (let ((errorsw t) (*zexptsimp? t)
 	(errcatch t)
 	;; Don't print any error messages
 	($errormsg nil))
@@ -1058,8 +1055,8 @@ ignoring dummy variables and array indices."
     ;; actually show up instead of being silently discarded.
     (handler-case
 	(setq ans (catch 'errorsw
-		    (catch 'raterr
-		      (sratsimp (subin v e)))))
+                    (ignore-rat-err
+                      (sratsimp (subin v e)))))
       (maxima-$error ()
 	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
@@ -1428,11 +1425,7 @@ ignoring dummy variables and array indices."
      (cond (ind (let ((ans (limit2 n d var val)))
 		  (if ans (m* const ans))))
 	   (t (let ((ans (limit
-			  (cond ((mplusp n)
-				 (m+l (mapcar #'(lambda (x)
-						  (sratsimp (m// x d)))
-					      (cdr n))))
-				(t ($multthru (sratsimp (m// n d)))))
+			  ($multthru (sratsimp (m// n d)))
 			  var val 'think)))
 		(if ans (m* const ans))))))))
 
@@ -2061,10 +2054,11 @@ ignoring dummy variables and array indices."
   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
   e)
 
+;; simple radical
+;; returns true if exp is a polynomial raised to a numeric power
 (defun simplerd (exp)
   (and (mexptp exp)
-       (or (and rd* (not (among var (caddr exp))))
-	   (mnump (caddr exp)))
+       (mnump (caddr exp))	;; exponent must be a number - no variables
        (polyp (cadr exp))))
 
 (defun branch1 (exp val)

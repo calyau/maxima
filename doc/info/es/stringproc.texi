@@ -1,4 +1,4 @@
-@c English version: 2011-05-31
+@c English version: 2013-08-07
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
@@ -13,7 +13,7 @@ El paquete @code{stringproc} ampl@'{@dotless{i}}a las capacidades de
 Maxima para manipular cadenas de caracteres, al tiempo que a@~nade algunas
 funciones @'utiles para la lectura y escritura de ficheros.
 
-Para dudas y fallos, por favor cont@'actese con van.nek at arcor.de .
+Para dudas y fallos, por favor cont@'actese con @code{volkervannek at gmail dot com}.
 
 En Maxima, una cadena de caracteres se construye f@'acilmente 
 escribi@'endola entre comillas dobles, como en @code{"texto"}.
@@ -171,17 +171,17 @@ sido abierto.
 @end deffn
 
 @deffn {Funci@'on} flength (@var{stream})
-Devuelve el n@'umero de elementos en el flujo de datos @var{stream}. 
-
+Devuelve el n@'umero de elementos en @var{stream},
+el cual debe ser un flujo de datos desde o hacia un fichero.
 @end deffn
 
 @deffn {Funci@'on} fposition (@var{stream})
 @deffnx {Funci@'on} fposition (@var{stream}, @var{pos})
 Devuelve la posici@'on actual en el flujo de datos @var{stream} si no se utiliza @var{pos}.
-Si se utiliza @var{pos}, @code{fposition} ajusta la posici@'on en @var{stream}. 
-El argumento @var{pos} debe ser un n@'umero positivo,
-ocupando el primer elemento en @var{stream} la posici@'on 1.
-
+Si se utiliza @var{pos}, @code{fposition} fija la posici@'on en @var{stream}.
+@var{stream} debe ser un flujo de datos desde o hacia un fichero y @var{pos} 
+debe ser un entero positivo que hace corresponder al primer elemento de
+@var{stream} la posici@'on 1.
 @end deffn
 
 @deffn {Funci@'on} freshline () 
@@ -190,8 +190,64 @@ Escribe una nueva l@'{@dotless{i}}nea (en el flujo de datos @var{stream})
 si la posici@'on actual no corresponde al inicio de la l@'{@dotless{i}}nea.
 
 V@'ease tambi@'en @code{newline}.
-
 @end deffn
+
+
+@deffn {Funci@'on} get_output_stream_string (@var{stream})
+Devuelve una cadena con todos los caracteres presentes en @var{stream},
+que debe ser un flujo de datos de salida abiero.
+Los caracteres devueltos son eliminados de @var{stream}.
+
+Para un ejemplo, v@'ease @code{make_string_output_stream} .
+@end deffn
+
+
+@deffn {Funci@'on} make_string_input_stream (@var{string})
+@deffnx {Funci@'on} make_string_input_stream (@var{string}, @var{start})
+@deffnx {Funci@'on} make_string_input_stream (@var{string}, @var{start}, @var{end})
+Devuelve un flujo de entrada que contiene partes de @var{string} junto con
+el car@'acter de final de fichero. Sin argumentos opcionales, el flujo contiene
+la cadena entera y se posiciona frente al primer car@'acter.
+Los argumentos @var{start} y @var{end} definen la subcadena contenida en el
+flujo. El primer car@'acter est@'a disponible en la posici@'on 1.
+
+Ejemplo:
+
+@example
+(%i1) istream : make_string_input_stream("text", 1, 4);
+(%o1)              #<string-input stream from "text">
+(%i2) (while (c : readchar(istream)) # false do sprint(c), newline())$
+t e x 
+(%i3) close(istream)$
+@end example
+@end deffn
+
+
+
+@deffn {Funci@'on} make_string_output_stream ()
+Devuelve un flujo de salida que acepta caracteres. Los caracteres de
+este flujo podr@'an obtenerse con @code{get_output_stream_string}.
+
+Ejemplo:
+
+@example
+(%i1) ostream : make_string_output_stream();
+(%o1)               #<string-output stream 09622ea0>
+(%i2) printf(ostream, "foo")$
+
+(%i3) printf(ostream, "bar")$
+
+(%i4) string : get_output_stream_string(ostream);
+(%o4)                            foobar
+(%i5) printf(ostream, "baz")$
+
+(%i6) string : get_output_stream_string(ostream);
+(%o6)                              baz
+(%i7) close(ostream)$
+@end example
+@end deffn
+
+
 
 @deffn {Funci@'on} newline () 
 @deffnx {Funci@'on} newline (@var{stream}) 
@@ -225,11 +281,32 @@ borrando el contenido anterior.
 
 @deffn {Funci@'on} printf (@var{dest}, @var{string})
 @deffnx {Funci@'on} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
-Pone al alcance de Maxima la funci@'on FORMAT de Common Lisp.
+Genera una cadena de caracteres a partir de la cadena de control @var{string},
+teniendo en cuenta que las tildes introducen directivas. El car@'acter que
+va despu@'es de la tilde, posiblemente precedido por par@'ametros y modificadores,
+especifica el tipo de formato que se desea. La mayor parte de las directivas usan
+uno o m@'as elementos de los argumentos @var{expr_1}, ..., @var{expr_n}
+para crear la salida.
 
-V@'eanse las referencias de Lisp para m@'as informaci@'on.
+Si @var{dest} es un flujo o vale @code{true}, entonces @code{printf} devuelve @code{false}.
+En otro caso, @code{printf} devuelve una cadena conteniendo la salida.
 
-La siguiente descripci@'on y los ejemplos pueden dar una idea de c@'omo usar @code{printf}.
+@code{printf} da acceso a la funci@'on @code{format} de Common Lisp.
+El siguiente ejemplo muestra la relaci@'on entre estas dos funciones.
+
+@example
+(%i1) printf(true, "R~dD~d~%", 2, 2);
+R2D2
+(%o1)                                false
+(%i2) :lisp (format t "R~dD~d~%" 2 2)
+R2D2
+NIL
+@end example
+
+La siguiente descripci@'on es un simple resumen de las posibilidades de @code{printf}.
+La funci@'on @code{format} de Common Lisp se encuentra descrita en detalle en muchas
+referencias, como el manual libre "Common Lisp the Language" de Guy L. Steele; en
+particular, el cap@'{@dotless{i}}tulo 22.3.3.
 
 @example
    ~%       nueva l@'{@dotless{i}}nea
@@ -256,8 +333,15 @@ La siguiente descripci@'on y los ejemplos pueden dar una idea de c@'omo usar @co
    ~@{       iteraci@'on, ~@} termina
 @end example
 
-La directiva @code{~[} est@'a indexada a partir del cero.
-T@'engase en cuenta que la directiva @code{~*} no est@'a soportada.
+La directiva @code{~h} para n@'umeros decimales grandes no pertenece al est@'andar
+de Lisp, por lo que se ilustra m@'as abajo.
+
+La directiva @code{~*} no est@'a soportada.
+
+Ejemplos:
+
+Si @var{dest} es un flujo o vale @code{true}, entonces @code{printf} devuelve @code{false}.
+En otro caso, @code{printf} devuelve una cadena conteniendo la salida.
 
 @c ===beg===
 @c printf( false, "~a ~a ~4f ~a ~@@r", 
@@ -266,7 +350,7 @@ T@'engase en cuenta que la directiva @code{~*} no est@'a soportada.
 @c printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
 @c         mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
 @c control: "~:(~r~) bird~p ~[is~;are~] singing."$
-@c printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+@c printf( false,control, n,n,if n=1 then 1 else 2 ), n=2;
 @c ===end===
 @example
 (%i1) printf( false, "~a ~a ~4f ~a ~@@r", 
@@ -274,25 +358,70 @@ T@'engase en cuenta que la directiva @code{~*} no est@'a soportada.
 (%o1)                 String sym 1.23 2*sqrt(3) CXLIV
 (%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
 (%o2)                          one 2 THREE 
-(%i3) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
-              mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+(%i3) printf(true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+          mat = args(matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]))$
       1.1       2.0       3.3 
       4.0       5.0       6.0 
       7.0       8.9       9.0 
 (%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
-(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%i5) printf( false,control, n,n,if n=1 then 1 else 2 ), n=2;
 (%o5)                    Two birds are singing.
 @end example
 
-Si @var{dest} es un flujo de datos o @code{true}, entonces @code{printf}
-devuelve @code{false}. En otro caso, @code{printf} devuelve una cadena
-con la salida.
+La directiva @code{~h} se ha introducido para formatear decimales grandes. 
+
+@example
+~w,d,e,x,o,p@@H
+ w : width
+ d : decimal digits behind floating point
+ e : minimal exponent digits
+ x : preferred exponent
+ o : overflow character
+ p : padding character
+ @@ : display sign for positive numbers
+@end example
+
+@example
+(%i1) fpprec : 1000$
+(%i2) printf(true, "|~h|~%", 2.b0^-64)$
+|0.0000000000000000000542101086242752217003726400434970855712890625|
+(%i3) fpprec : 26$
+(%i4) printf(true, "|~h|~%", sqrt(2))$
+|1.4142135623730950488016887|
+(%i5) fpprec : 24$
+(%i6) printf(true, "|~h|~%", sqrt(2))$
+|1.41421356237309504880169|
+(%i7) printf(true, "|~28h|~%", sqrt(2))$
+|   1.41421356237309504880169|
+(%i8) printf(true, "|~28,,,,,'*h|~%", sqrt(2))$
+|***1.41421356237309504880169|
+(%i9) printf(true, "|~,18h|~%", sqrt(2))$
+|1.414213562373095049|
+(%i10) printf(true, "|~,,,-3h|~%", sqrt(2))$
+|1414.21356237309504880169b-3|
+(%i11) printf(true, "|~,,2,-3h|~%", sqrt(2))$
+|1414.21356237309504880169b-03|
+(%i12) printf(true, "|~20h|~%", sqrt(2))$
+|1.41421356237309504880169|
+(%i13) printf(true, "|~20,,,,'+h|~%", sqrt(2))$
+|++++++++++++++++++++|
+@end example
 @end deffn
+
+
+
+@deffn {Funci@'on} readchar (@var{stream})
+Elimina y devuelve el primer car@'acter de @var{stream}. 
+Si se ha alcanzado el final del fichero, @code{readchar} devuelve @code{false}.
+
+Para un ejemplo, v@'ease @code{make_string_input_stream}.
+@end deffn
+
 
 @deffn {Funci@'on} readline (@var{stream}) 
 Devuelve una cadena con los caracteres desde la posici@'on actual en el flujo
 de datos @var{stream} hasta el final de la l@'{@dotless{i}}nea, o @code{false}
-si est@'a al final del fichero.
+si se ha alcanzado el final del fichero.
 @end deffn
 
 @deffn {Funci@'on} sprint (@var{expr_1}, ..., @var{expr_n})
@@ -444,10 +573,30 @@ Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
 @node Funciones y variables para cadenas,  , Funciones y variables para caracteres, stringproc
 @section Funciones y variables para cadenas
 
-@deffn {Funci@'on} stringp (@var{obj}) 
-Devuelve @code{true} si @var{obj} es una cadena.
-V@'ease un ejemplo en la introducci@'on.
+
+
+@deffn {Funci@'on} base64 (@var{string})
+Devuelve la representaci@'on en base 64 de @var{string} en formato de
+cadena de caracteres.
+
+Ejemplo:
+
+@example
+(%i1) base64 : base64("foo bar baz");
+(%o1)                       Zm9vIGJhciBiYXo=
+(%i2) string : base64_decode(base64);
+(%o2)                          foo bar baz
+@end example
 @end deffn
+
+
+@deffn {Funci@'on} base64_decode (@var{base64-string})
+Decodifica la cadena de caracteres @var{base64-string}, codificada
+en base 64, y devuelve la cadena original.
+
+Para un ejemplo, v@'ease @code{base64}.
+@end deffn
+
 
 @deffn {Funci@'on} charat (@var{string}, @var{n})
 Devuelve el @var{n}-@'esimo car@'acter de @var{string}.
@@ -502,6 +651,33 @@ Ejemplos:
 
 V@'ease tambi@'en @code{parse_string}.
 @end deffn
+
+
+
+
+
+@deffn {Funci@'on} md5sum (@var{string})
+Devuelve, en formato de cadena de caracteres, el resultado de la suma de verificaci@'on
+md5 del argumento @var{string}. Para obtener el valor devuelto por la funci@'on como
+n@'umero entero, fijar la base num@'erica de entrada a 16 y a~nadir como prefijo
+el cero.
+
+Ejemplo:
+
+@example
+(%i1) string : md5sum("foo bar baz");
+(%o1)                  ab07acbb1e496801937adfa772424bf7
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)                 0ab07acbb1e496801937adfa772424bf7
+@end example
+@end deffn
+
+
+
+
+
 
 @deffn {Funci@'on} parse_string (@var{str})
 Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima,
@@ -828,6 +1004,11 @@ en el extremo final de @var{string}.
 @deffn {Funci@'on} strimr (@var{seq}, @var{string}) 
 Act@'ua de forma similar a @code{strim}, pero s@'olo recorta
 en el extremo inicial de @var{string}.
+@end deffn
+
+@deffn {Funci@'on} stringp (@var{obj}) 
+Devuelve @code{true} si @var{obj} es una cadena.
+V@'ease un ejemplo en la introducci@'on.
 @end deffn
 
 @deffn {Funci@'on} substring (@var{string}, @var{start})

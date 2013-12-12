@@ -109,7 +109,7 @@
 
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
-(defmvar $rootsepsilon 1e-7)
+(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
 (defmvar $algepsilon 100000000)
 (defmvar $true t)
@@ -205,17 +205,24 @@
       (and (not (atom x)) (not (atom (car x)))
 	   (member (caar x) '(rat bigfloat)))))
 
-;; is there a bfloat anywhere in x?
-(defun some-bfloatp (x)
-  (or ($bfloatp x)
+;; Does X or a subexpression match PREDICATE?
+;;
+;; If X is a tree then we recurse depth-first down its arguments. The specrep
+;; check is because rat forms are built rather differently from normal Maxima
+;; expressions so we need to unpack them for the recursion to work properly.
+(defun subexpression-matches-p (predicate x)
+  (or (funcall predicate x)
       (and (consp x)
-	   (some #'some-bfloatp (cdr x)))))
+           (if (specrepp x)
+               (subexpression-matches-p predicate (specdisrep x))
+               (some (lambda (arg) (subexpression-matches-p predicate arg))
+                     (cdr x))))))
 
-;; is there a float anywhere in x?
-(defun some-floatp (x)
-  (or (floatp x)
-      (and (consp x)
-	   (some #'some-floatp (cdr x)))))
+;; Is there a bfloat anywhere in X?
+(defun some-bfloatp (x) (subexpression-matches-p '$bfloatp x))
+
+;; Is there a float anywhere in X?
+(defun some-floatp (x) (subexpression-matches-p 'floatp x))
 
 ;; EVEN works for any arbitrary lisp object since it does an integer
 ;; check first.  In other cases, you may want the Lisp EVENP function
@@ -3513,7 +3520,7 @@
 
 (defmfun polcoef (l n) (cond ((or (atom l) (pointergp var (car l)))
 			      (cond ((equal n 0) l) (t 0)))
-			     (t (pterm (cdr l) n))))
+			     (t (ptterm (cdr l) n))))
 
 (defun disrep (l) (cond ((equal (ratnumerator l) l)
 			 ($ratdisrep (cons ratform (cons l 1))))

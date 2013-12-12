@@ -521,7 +521,7 @@ To use this function write first @code{load(functs)}.
 
 @deffn {Function} agd (@var{x})
 Returns the inverse Gudermannian function
-@code{log (tan (%pi/4 + x/2)))}.
+@code{log (tan (%pi/4 + x/2))}.
 
 To use this function write first @code{load(functs)}.
 

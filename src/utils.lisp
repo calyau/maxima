@@ -34,6 +34,7 @@
   #+clisp   (ext:getenv envvar)
   #+(or openmcl mcl)     (ccl::getenv envvar)
   #+lispworks (hcl:getenv envvar)
+  #+abcl (ext:getenv envvar)
   )
 
 ;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
@@ -46,6 +47,7 @@
   #+gcl                (lisp:quit)
   #+ecl                (si:quit)
   #+lispworks          (lispworks:quit)
+  #+abcl               (cl-user::quit)
   )
 
 

@@ -27,8 +27,8 @@ done
 
 cat *.texi\
   | awk '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)'\
-  | sed -f $d/extract_categories1.sed \
-  | awk -F'$' -f $d/extract_categories1.awk \
+  | sed -f "$d/extract_categories1.sed" \
+  | awk -F'$' -f "$d/extract_categories1.awk" \
   > tmp-make-categories.py
 
 ${PYTHONBIN:-python} tmp-make-categories.py
@@ -40,8 +40,8 @@ for f in Category-*.texi; do echo '@include' $f; done >> tmp-target.texi
 echo '@bye' >> tmp-target.texi
 mv tmp-target.texi $TARGET_TEXI
 
-perl $d/texi2html -split_chapter --lang=en --output=. \
- --css-include=$d/manual.css --init-file $d/texi2html.init $TARGET_TEXI
+perl "$d/texi2html" -split_chapter --lang=en --output=. \
+ --css-include="$d/manual.css" --init-file "$d/texi2html.init" $TARGET_TEXI
 
 # Now clean up the texi2html output. I'm going to burn in Hell for this (and much else).
 
@@ -75,7 +75,7 @@ do
     fi
 done
 
-mv *.html $d
+mv *.html "$d"
 
-cd $d
+cd "$d"
 set +x

@@ -155,13 +155,45 @@ Do @code{example(append);} for an example.
 @deffn  {Function} assoc (@var{key}, @var{list}, @var{default})
 @deffnx {Function} assoc (@var{key}, @var{list})
 
-This function searches for the @var{key} in the left hand side of the input
-@var{list} of the form @code{[x,y,z,...]} where each of the @var{list} elements
-is an expression of a binary operand and 2 elements.  For example @code{x=1},
-@code{2^3}, @code{[a,b]} etc.  The @var{key} is checked against the first
-operand.  @code{assoc} returns the second operand if the @code{key} is found.
-If the @code{key} is not found it either returns the @var{default} value.
-@var{default} is optional and defaults to @code{false}.
+This function searches for @var{key} in the left hand side of the
+input @var{list}. The @var{list} argument should be a list, each of
+whose elements is an expression with exactly two parts. Most usually,
+the elements of @var{list} are themselves lists, each with two
+elements.
+
+The @code{assoc} function iterates along @var{list}, checking the
+first part of each element for equality with @var{key}. If an element
+is found where the comparison is true, @code{assoc} returns the second
+part of that element. If there is no such element in the list,
+@code{assoc} returns either @code{false} or @var{default}, if given.
+
+For example, in the expression @code{assoc (y, [[x,1], [y,2],
+[z,3]])}, the @code{assoc} function searches for @code{x} in the left
+hand side of the list @code{[[y,1],[x,2]]} and finds it at the second
+term, returning @code{2}. In @code{assoc (z, [[x,1], [z,2], [z,3]])},
+the search stops at the first term starting with @code{z} and returns
+@code{2}. In @code{assoc(x, [[y,1]])}, there is no matching element,
+so @code{assoc} returns @code{false}.
+
+@c ===beg===
+@c assoc (y, [[x,1], [y,2],[z,3]]);
+@c assoc (z, [[x,1], [z,2], [z,3]]);
+@c assoc (x, [[y,1]]);
+@c ===end===
+@example
+@group
+(%i1)                 assoc(y, [[x, 1], [y, 2], [z, 3]])
+(%o1)                                  2
+@end group
+@group
+(%i2)                 assoc(z, [[x, 1], [z, 2], [z, 3]])
+(%o2)                                  2
+@end group
+@group
+(%i3)                         assoc(x, [[y, 1]])
+(%o3)                                false
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}

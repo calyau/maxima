@@ -15,8 +15,6 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 3.
 ;;	IT INCLUDES THE GCD ROUTINES AND THEIR SUPPORTING FUNCTIONS
 
-(load-macsyma-macros ratmac)
-
 (declare-top (special $float $keepfloat $algebraic $ratfac genvar))
 
 ;; List of GCD algorithms.  Default one is first.
@@ -30,18 +28,17 @@
 	(t (gcd a b))))
 
 (defmfun pquotientchk (a b)
-  (if (eqn b 1) a (pquotient a b)))
+  (if (equal b 1) a (pquotient a b)))
 
 ;; divides polynomial x by polynomial y
 ;; avoids error "quotient by polynomial of higher degree"
 ;;  (returns nil in this case)
 (defun pquotientchk-safe (x y)
-  (let ((errrjfflag t))
-    (catch 'raterr (pquotientchk x y))))
+  (ignore-rat-err (pquotientchk x y)))
 
 (defun ptimeschk (a b)
-  (cond ((eqn a 1) b)
-	((eqn b 1) a)
+  (cond ((equal a 1) b)
+	((equal b 1) a)
 	(t (ptimes a b))))
 
 (defun pfloatp (x)
@@ -206,9 +203,9 @@
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
 	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" $gcd))))
-  (let ((errrjfflag t))			;; check for gcd that simplifies to 0
-    (if (not (catch 'raterr (rainv s))) ;; sourceforge bugs 831445 and 1313987
-	(setq s 1)))
+  ;; Check for gcd that simplifies to 0. SourceForge bugs 831445 and 1313987
+  (unless (ignore-rat-err (rainv s))
+    (setq s 1))
   (unless (equal s 1)
     (setq s (pexpon*// (primpart
 			(if $algebraic s
@@ -286,7 +283,12 @@
      (go a)))
 
 (defun prem (p q)
-  (cond ((pcoefp p) (if (pcoefp q) (cremainder p q) p))
+  (cond ((pcoefp p)
+         (if (pcoefp q)
+             (if (or modulus (floatp p) (floatp q))
+                 0
+                 (rem p q))
+             p))
 	((pcoefp q) (pzero))
 	(t (psimp (p-var p) (pgcd1 (p-terms p) (p-terms q))))))
 
@@ -361,7 +363,7 @@
 (defun pcontent (x)
   (cond ((pcoefp x) (list x 1))
 	(t (let ((u (pcontentz x)))
-	     (if (eqn u 1) (list 1 x)
+	     (if (equal u 1) (list 1 x)
 		 (list u (pcquotient x u)))))))
 
 (defun pcontent1 (x gcd)
@@ -415,7 +417,8 @@
     (loop until (minusp (setq k (- (pt-le u) (pt-le v))))
 	   do (setq q* (ptimes invv (pt-lc u)))
 	   if pquo* do (setq quo (nconc quo (list k q*)))
-	   when (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))
+	   when (ptzerop (setq u (ptpt-subtract-powered-product
+                                  (pt-red u) (pt-red v) q* k)))
 	   return (ptzero)
 	   finally (return u))))
 
@@ -499,9 +502,9 @@
 	((eq (p-var p) v) (p-terms p))
 	((loop with ans
 		for (exp coef) on (p-terms p) by #'cddr
-		do (setq ans (pplus1 ans
-				     (everysubst2 (poly-in-var coef v)
-						  (list (p-var p) exp 1))))
+		do (setq ans (ptptplus ans
+                                       (everysubst2 (poly-in-var coef v)
+                                                    (list (p-var p) exp 1))))
 		finally (return ans)))))
 
 (defun univar (x)
@@ -510,7 +513,7 @@
 ;;**THE CHINESE REMAINDER ALGORITHM IS A SPECIAL CASE OF LAGRANGE INTERPOLATION
 
 (defun lagrange3 (u uk p qk)
-  (setqmodulus p)
+  (set-modulus p)
   (setq uk (pdifference uk (pmod u)))
   (cond ((pzerop uk) (setq modulus nil) u)
 	(t (setq uk (pctimes (crecip (cmod qk)) uk))

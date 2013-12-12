@@ -126,286 +126,304 @@
 
 (mk:defsystem lapack
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :depends-on ("lapack-package" "blas")
   :components
   (
    (:module lapack
-	    :components
+    :components
 	    ((:file "dgeev"
-		    :depends-on ("dlartg" "dlapy2" "dgebak" "dtrevc" "dhseqr"
-					  "dorghr" "dlacpy" "dgehrd" "dgebal"
-					  "dlascl" "dlange" "dlabad" "dlamch"
-					  "ilaenv"))
+	      :depends-on ("dlartg" "dlapy2" "dgebak" "dtrevc" "dhseqr"
+				    "dorghr" "dlacpy" "dgehrd" "dgebal"
+				    "dlascl" "dlange" "dlabad" "dlamch"
+				    "ilaenv"))
 	     (:file "dgebak")
  	     (:file "dgebal")
  	     (:file "dgehrd"
-		    :depends-on ("dlahrd" "dlarfb" "dgehd2" "ilaenv"))
+	      :depends-on ("dlahrd" "dlarfb" "dgehd2" "ilaenv"))
  	     (:file "dhseqr"
-		    :depends-on ("dlarfx" "dlarfg" "dlapy2" "dlacpy" "dlanhs"
-					  "dlabad" "dlamch" "dlahqr" "ilaenv"
-					  "dlaset"))
+	      :depends-on ("dlarfx" "dlarfg" "dlapy2" "dlacpy" "dlanhs"
+				    "dlabad" "dlamch" "dlahqr" "ilaenv"
+				    "dlaset"))
  	     (:file "dlabad")
  	     (:file "dlacpy")
  	     (:file "dlamch"
-		    :depends-on ("dlamc2" "dlamc3" "dlamc4" "dlamc5"))
+	      :depends-on ("dlamc2" "dlamc3" "dlamc4" "dlamc5"))
 	     (:file "dlamc1"
-		    :depends-on ("dlamc3"))
+	      :depends-on ("dlamc3"))
 	     (:file "dlamc2"
-		    :depends-on ("dlamc1" "dlamc3" "dlamc4" "dlamc5"))
+	      :depends-on ("dlamc1" "dlamc3" "dlamc4" "dlamc5"))
 	     (:file "dlamc3")
 	     (:file "dlamc4")
 	     (:file "dlamc5")
  	     (:file "dlange"
-		    :depends-on ("dlassq"))
+	      :depends-on ("dlassq"))
  	     (:file "dlapy2")
  	     (:file "dlartg"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
  	     (:file "dlascl"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
  	     (:file "dorghr"
-		    :depends-on ("dorgqr" "ilaenv"))
+	      :depends-on ("dorgqr" "ilaenv"))
 	     (:file "dtrevc"
-		    :depends-on ("dlabad" "dlamch" "dlaln2"))
+	      :depends-on ("dlabad" "dlamch" "dlaln2"))
  	     (:file "ilaenv"
-		    :depends-on ("ieeeck"))
+	      :depends-on ("ieeeck"))
 	     (:file "dlahrd"
-		    :depends-on ("dlarfg"))
+	      :depends-on ("dlarfg"))
 	     (:file "dlarfb")
 	     (:file "dgehd2"
-		    :depends-on ("dlarfg" "dlarf"))
+	      :depends-on ("dlarfg" "dlarf"))
 	     (:file "dlaset")
 	     (:file "dlahqr"
-		    :depends-on ("dlanhs" "dlarfg" "dlanv2" "dlabad" "dlamch"))
+	      :depends-on ("dlanhs" "dlarfg" "dlanv2" "dlabad" "dlamch"))
 	     (:file "dlanhs"
-		    :depends-on ("dlassq"))
+	      :depends-on ("dlassq"))
 	     (:file "dlarfg"
-		    :depends-on ("dlapy2" "dlamch"))
+	      :depends-on ("dlapy2" "dlamch"))
 	     (:file "dlarfx")
 	     (:file "dlassq")
 	     (:file "dorgqr"
-		    :depends-on ("dorg2r" "dlarft" "dlarfb" "ilaenv"))
+	      :depends-on ("dorg2r" "dlarft" "dlarfb" "ilaenv"))
 	     (:file "dlaln2"
-		    :depends-on ("dladiv"
-				 "dlamch"))
+	      :depends-on ("dladiv"
+			   "dlamch"))
 	     (:file "ieeeck")
 	     (:file "dlarf")
 	     (:file "dlanv2"
-		    :depends-on ("dlapy2" "dlamch"))
+	      :depends-on ("dlapy2" "dlamch"))
 	     (:file "dorg2r"
-		    :depends-on ("dlarf"))
+	      :depends-on ("dlarf"))
 	     (:file "dlarft")
 	     (:file "dladiv")
 
 	     ;; DGEEVX
 	     (:file "dgeevx"
-		    :depends-on ("dlartg" "dlapy2" "dgebak" "dtrsna" "dtrevc"
-					  "dhseqr" "dorghr" "dlacpy" "dgehrd"
-					  "dgebal" "dlascl" "dlange" "dlabad"
-					  "dlamch" "ilaenv"))
+	      :depends-on ("dlartg" "dlapy2" "dgebak" "dtrsna" "dtrevc"
+				    "dhseqr" "dorghr" "dlacpy" "dgehrd"
+				    "dgebal" "dlascl" "dlange" "dlabad"
+				    "dlamch" "ilaenv"))
 	     (:file "dtrsna"
-		    :depends-on ("dtrexc" "dlacon" "dlaqtr"
-					  "dlacpy" "dlapy2" "dlamch"))
+	      :depends-on ("dtrexc" "dlacon" "dlaqtr"
+				    "dlacpy" "dlapy2" "dlamch"))
 	     (:file "dtrexc"
-		    :depends-on ("dlaexc"))
+	      :depends-on ("dlaexc"))
 	     (:file "dlacon")
 	     (:file "dlaqtr"
-		    :depends-on ("dladiv" "dlaln2" "dlange" "dlamch"))
+	      :depends-on ("dladiv" "dlaln2" "dlange" "dlamch"))
 	     (:file "dlaexc"
-		    :depends-on ("dlasy2" "dlanv2" "dlarfg" "dlamch" "dlange"
-					  "dlacpy" "dlartg"))
+	      :depends-on ("dlasy2" "dlanv2" "dlarfg" "dlamch" "dlange"
+				    "dlacpy" "dlartg"))
 	     (:file "dlasy2"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
 
 	     ;; DGESV
 	     (:file "dgesv"
-		    :depends-on ("dgetrf" "dgetrs"))
+	      :depends-on ("dgetrf" "dgetrs"))
 	     (:file "dgetrf"
-		    :depends-on ("dgetf2" "dlaswp" "ilaenv"))
+	      :depends-on ("dgetf2" "dlaswp" "ilaenv"))
 	     (:file "dgetrs"
-		    :depends-on ("dlaswp"))
+	      :depends-on ("dlaswp"))
 	     (:file "dgetf2")
 	     (:file "dlaswp")
 
 	     ;; DGESDD
 	     (:file "dgesdd"
-		    :depends-on ("dorglq" "dgelqf" "dorgbr" "dormbr" "dorgqr"
-					  "dlacpy" "dbdsdc" "dgebrd" "dlaset"
-					  "dgeqrf" "dlascl" "dlange" "dlamch"
-					  "ilaenv"))
+	      :depends-on ("dorglq" "dgelqf" "dorgbr" "dormbr" "dorgqr"
+				    "dlacpy" "dbdsdc" "dgebrd" "dlaset"
+				    "dgeqrf" "dlascl" "dlange" "dlamch"
+				    "ilaenv"))
 	     (:file "dbdsdc"
-		    :depends-on ("dlasr" "dlasda" "dlasd0" "dlamch" "dlascl"
-					 "dlanst" "dlaset" "dlasdq"
-					 "dlartg" "ilaenv"))
+	      :depends-on ("dlasr" "dlasda" "dlasd0" "dlamch" "dlascl"
+				   "dlanst" "dlaset" "dlasdq"
+				   "dlartg" "ilaenv"))
 	     (:file "dgebrd"
-		    :depends-on ("dlabrd" "dgebd2" "ilaenv"))
+	      :depends-on ("dlabrd" "dgebd2" "ilaenv"))
 	     (:file "dgelqf"
-		    :depends-on ("dgelq2" "dlarfb" "dlarft" "ilaenv"))
+	      :depends-on ("dgelq2" "dlarfb" "dlarft" "ilaenv"))
 	     (:file "dorgbr"
-		    :depends-on ("dorglq" "dorgqr" "ilaenv"))
+	      :depends-on ("dorglq" "dorgqr" "ilaenv"))
 	     (:file "dorglq"
-		    :depends-on ("dorgl2" "dlarfb" "dlarft" "ilaenv"))
+	      :depends-on ("dorgl2" "dlarfb" "dlarft" "ilaenv"))
 	     (:file "dorgl2"
-		    :depends-on ("dlarf"))
+	      :depends-on ("dlarf"))
 	     (:file "dormbr"
-		    :depends-on ("dormqr" "dormlq" "ilaenv"))
+	      :depends-on ("dormqr" "dormlq" "ilaenv"))
 	     (:file "dlasdq"
-		    :depends-on ("dlasr" "dbdsqr" "dlartg"))
+	      :depends-on ("dlasr" "dbdsqr" "dlartg"))
 	     (:file "dlanst"
-		    :depends-on ("dlassq"))
+	      :depends-on ("dlassq"))
 	     (:file "dlasd0"
-		    :depends-on ("dlasdt" "dlasd1" "dlasdq"))
+	      :depends-on ("dlasdt" "dlasd1" "dlasdq"))
 	     (:file "dlasda"
-		    :depends-on ("dlasd6" "dlaset" "dlasdq" "dlasdt"))
+	      :depends-on ("dlasd6" "dlaset" "dlasdq" "dlasdt"))
 	     (:file "dlasr")
 	     (:file "dlabrd"
-		    :depends-on ("dlarfg"))
+	      :depends-on ("dlarfg"))
 	     (:file "dgebd2"
-		    :depends-on ("dlarf" "dlarfg"))
+	      :depends-on ("dlarf" "dlarfg"))
 	     (:file "dgelq2"
-		    :depends-on ("dlarf" "dlarfg"))
+	      :depends-on ("dlarf" "dlarfg"))
 	     (:file "dormqr"
-		    :depends-on ("dorm2r" "dlarfb" "dlarft" "ilaenv"))
+	      :depends-on ("dorm2r" "dlarfb" "dlarft" "ilaenv"))
 	     (:file "dormlq"
-		    :depends-on ("dorml2" "dlarfb" "dlarft" "ilaenv"))
+	      :depends-on ("dorml2" "dlarfb" "dlarft" "ilaenv"))
 	     (:file "dgeqrf"
-		    :depends-on ("dgeqr2" "dlarfb" "dlarft" "ilaenv"))
+	      :depends-on ("dgeqr2" "dlarfb" "dlarft" "ilaenv"))
 	     (:file "dbdsqr"
-		    :depends-on ("dlasq1" "dlasv2" "dlas2" "dlasr" "dlartg"
-					  "dlamch"))
+	      :depends-on ("dlasq1" "dlasv2" "dlas2" "dlasr" "dlartg"
+				    "dlamch"))
 	     (:file "dlasq1"
-		    :depends-on ("dlas2" "dlasrt" "dlasq2" "dlascl"))
+	      :depends-on ("dlas2" "dlasrt" "dlasq2" "dlascl"))
 	     (:file "dlasv2"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
 	     (:file "dlas2")
 	     (:file "dlasdt")
 	     (:file "dlasd1"
-		    :depends-on ("dlasd2" "dlasd3" "dlamrg" "dlascl"))
+	      :depends-on ("dlasd2" "dlasd3" "dlamrg" "dlascl"))
 	     (:file "dlasrt")
 	     (:file "dlasq2"
-		    :depends-on ("dlasq3" "ilaenv" "dlasrt" "dlamch"))
+	      :depends-on ("dlasq3" "ilaenv" "dlasrt" "dlamch"))
 	     (:file "dlasd2"
-		    :depends-on ("dlamrg" "dlacpy" "dlaset" "dlapy2" "dlamch"
-					  "dlamrg"))
+	      :depends-on ("dlamrg" "dlacpy" "dlaset" "dlapy2" "dlamch"
+				    "dlamrg"))
 	     (:file "dlasd3"
-		    :depends-on ("dlasd4" "dlacpy" "dlascl" "dlamch"))
+	      :depends-on ("dlasd4" "dlacpy" "dlascl" "dlamch"))
 	     (:file "dlamrg")
 	     (:file "dlasd6"
-		    :depends-on ("dlasd7" "dlasd8"))
+	      :depends-on ("dlasd7" "dlasd8"))
 	     (:file "dorml2")
 	     (:file "dgeqr2"
-		    :depends-on ("dlarf" "dlarfg"))
+	      :depends-on ("dlarf" "dlarfg"))
 	     (:file "dorm2r"
-		    :depends-on ("dlarf"))
+	      :depends-on ("dlarf"))
 	     (:file "dlasd4"
-		    :depends-on ("dlasd5" "dlaed6"))
+	      :depends-on ("dlasd5" "dlaed6"))
 	     (:file "dlasd7"
-		    :depends-on ("dlapy2" "dlamch" "dlamrg"))
+	      :depends-on ("dlapy2" "dlamch" "dlamrg"))
 	     (:file "dlasd8"
-		    :depends-on ("dlasd4" "dlaset" "dlascl" "dlamch"))
+	      :depends-on ("dlasd4" "dlaset" "dlascl" "dlamch"))
 	     (:file "dlasq3"
-		    :depends-on ("dlasq4" "dlasq5" "dlasq6" "dlamch"))
+	      :depends-on ("dlasq4" "dlasq5" "dlasq6" "dlamch"))
 	     (:file "dlasq4")
 	     (:file "dlasq5")
 	     (:file "dlasq6"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
 	     (:file "dlasd5")
 	     (:file "dlaed6"
-		    :depends-on ("dlamch"))
+	      :depends-on ("dlamch"))
 
 	     ;; DGESVD
 	     (:file "dgesvd"
-		    :depends-on ("dorglq" "dgelqf" "dormbr" "dorgqr" "dlacpy"
-					  "dbdsqr" "dorgbr" "dgebrd" "dlaset"
-					  "dgeqrf" "dlascl" "dlange" "dlamch"
-					  "ilaenv"))
+	      :depends-on ("dorglq" "dgelqf" "dormbr" "dorgqr" "dlacpy"
+				    "dbdsqr" "dorgbr" "dgebrd" "dlaset"
+				    "dgeqrf" "dlascl" "dlange" "dlamch"
+				    "ilaenv"))
 
 	     ;; For condition numbers of the singular vectors
 	     (:file "ddisna")
 	     
 	     (:file "zlange"
-		    :depends-on ("zlassq"))
+	      :depends-on ("zlassq"))
 	     (:file "zlassq")
 	     ;; Complex eigen problems
 	     (:file "zgeev"
-		    :depends-on ("zhseqr" "zlange" "zlascl" "zgebal" "zlacpy" "zunghr"
-					  "ztrevc" "zgebak" "zgehrd"))
+	      :depends-on ("zhseqr" "zlange" "zlascl" "zgebal" "zlacpy" "zunghr"
+				    "ztrevc" "zgebak" "zgehrd"))
 	     (:file "zhseqr"
-		    :depends-on ("zlaqr0" "zlaset" "zlahqr" "zlacpy"))
+	      :depends-on ("zlaqr0" "zlaset" "zlahqr" "zlacpy"))
 	     (:file "zlange"
-		    :depends-on ("zlassq"))
+	      :depends-on ("zlassq"))
 	     (:file "zlascl"
-		    :depends-on ("disnan"))
+	      :depends-on ("disnan"))
 	     (:file "zgebal")
 	     (:file "zlacpy"
-		    :depends-on ("disnan"))
+	      :depends-on ("disnan"))
 	     (:file "zunghr"
-		    :depends-on ("zungqr"))
+	      :depends-on ("zungqr"))
 	     (:file "ztrevc"
-		    :depends-on ("zlatrs"))
+	      :depends-on ("zlatrs"))
 	     (:file "zgebak"
-		    :depends-on ("zlatrs"))
+	      :depends-on ("zlatrs"))
 	     (:file "zlatrs"
-		    :depends-on ("zladiv"))
+	      :depends-on ("zladiv"))
 	     (:file "zungqr"
-		    :depends-on ("zung2r" "zlarft" "zlarfb"))
+	      :depends-on ("zung2r" "zlarft" "zlarfb"))
 	     (:file "disnan"
-		    :depends-on ("dlaisnan"))
+	      :depends-on ("dlaisnan"))
 	     (:file "dlaisnan")
 	     (:file "zlassq")
 	     (:file "zladiv")
 	     (:file "zung2r"
-		    :depends-on ("zlarf"))
+	      :depends-on ("zlarf"))
 	     (:file "zlarft"
-		    :depends-on ("zlacgv"))
+	      :depends-on ("zlacgv"))
 	     (:file "zlarfb"
-		    :depends-on ("ilazlr" "ilazlc" "zlacgv"))
+	      :depends-on ("ilazlr" "ilazlc" "zlacgv"))
 	     (:file "ilazlr")
 	     (:file "ilazlc")
 	     (:file "zlacgv")
 	     (:file "zlarf"
-		    :depends-on ("ilazlc" "ilazlr"))
+	      :depends-on ("ilazlc" "ilazlr"))
 	     (:file "zlaqr0"
-		    :depends-on ("zlahqr" "zlaqr3" "zlaqr4" "zlaqr5" "zlacpy"))
+	      :depends-on ("zlahqr" "zlaqr3" "zlaqr4" "zlaqr5" "zlacpy"))
 	     (:file "zlaset")
 	     (:file "zlaqr3"
-		    :depends-on ("zgehrd" "zunmhr" "zlahqr" "ztrexc" "zlarfg"
-					  "zlaqr4" "zlacpy" "zlaset"))
+	      :depends-on ("zgehrd" "zunmhr" "zlahqr" "ztrexc" "zlarfg"
+				    "zlaqr4" "zlacpy" "zlaset"))
 	     (:file "zlaqr4"
-		    :depends-on ("zlaqr2" "zlahqr" "zlacpy" "zlaqr5"))
+	      :depends-on ("zlaqr2" "zlahqr" "zlacpy" "zlaqr5"))
 	     (:file "zlaqr5"
-		    :depends-on ("zlaqr1" "zlarfg" "zlaset" "zlacpy"))
+	      :depends-on ("zlaqr1" "zlarfg" "zlaset" "zlacpy"))
 	     (:file "zlaqr1")
 	     (:file "zlaqr2"
-		    :depends-on ("zunmhr" "ztrexc" "zlacpy" "zlaset"))
+	      :depends-on ("zunmhr" "ztrexc" "zlacpy" "zlaset"))
 	     (:file "zlarfg"
-		    :depends-on ("dlapy3" "zladiv"))
+	      :depends-on ("dlapy3" "zladiv"))
 	     (:file "zlahqr"
-		    :depends-on ("zlarfg" "zladiv"))
+	      :depends-on ("zlarfg" "zladiv"))
 	     (:file "zgehrd"
-		    :depends-on ("zlahr2" "zgehd2" "zlarfb"))
+	      :depends-on ("zlahr2" "zgehd2" "zlarfb"))
 	     (:file "zunmhr"
-		    :depends-on ("zunmqr"))
+	      :depends-on ("zunmqr"))
 	     (:file "ztrexc"
-		    :depends-on ("zlartg" "zrot" "zunm2r"))
+	      :depends-on ("zlartg" "zrot" "zunm2r"))
 	     (:file "dlapy3")
 	     (:file "zlartg")
 	     (:file "zrot")
 	     (:file "zunmqr"
-		    :depends-on ("zunm2r" "zlarft" "zlarfb"))
+	      :depends-on ("zunm2r" "zlarft" "zlarfb"))
 	     (:file "zlahr2"
-		    :depends-on ("zlacgv" "zlacpy"))
+	      :depends-on ("zlacgv" "zlacpy"))
 	     (:file "zgehd2"
-		    :depends-on ("zlarfg" "zlarf"))
+	      :depends-on ("zlarfg" "zlarf"))
 	     (:file "zunm2r")
+	     ;; zheev
+	     (:file "zheev"
+	      :depends-on ("dsterf" "zhetrd" "zlanhe" "zsteqr" "zungtr"))
+	     (:file "dsterf"
+	      :depends-on ("dlae2"))
+	     (:file "zhetrd"
+	      :depends-on ("zlatrd" "zhetd2"))
+	     (:file "zsteqr"
+	      :depends-on ("dlaev2" "zlasr" "dlae2"))
+	     (:file "zlanhe")
+	     (:file "zungtr"
+	      :depends-on ("zungql"))
+	     (:file "dlae2")
+	     (:file "dlaev2")
+	     (:file "zhetd2")
+	     (:file "zlasr")
+	     (:file "zlatrd")
+	     (:file "zungql"
+	      :depends-on ("zung2l"))
+	     (:file "zung2l")
 	     ))))
 
 (mk:defsystem lapack-interface
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :depends-on ("lapack")
   :components

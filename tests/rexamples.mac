@@ -204,9 +204,8 @@ done;
 (kill(all),example(isolate));
 done;
 
-/* not found
 (kill(all),example(lambda));
-done; */
+done;
 
 (kill(all),example(laplace));
 done;

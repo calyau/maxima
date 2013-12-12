@@ -240,10 +240,10 @@ true$
 0$
 
 ceiling(signum(x));
-signum(x)$
+ceiling(signum(x))$
 
 ceiling(5 * signum(x));
-5 * signum(x)$
+ceiling(5 * signum(x))$
 
 ceiling(charfun(x < 5) + 7);
 charfun(x < 5) + 7$
@@ -926,7 +926,7 @@ featurep(-x,integer);
 false$
 
 featurep(signum(x),integer);
-true$
+false$
 
 featurep(charfun(a < b),integer);
 true$

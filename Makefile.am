@@ -16,15 +16,15 @@ EXTRA_DIST = \
   ChangeLog-5.16 ChangeLog-5.17 ChangeLog-5.17-special-functions \
   ChangeLog-5.18 ChangeLog-5.19 ChangeLog-5.20 ChangeLog-5.21 ChangeLog-5.22 \
   ChangeLog-5.23 ChangeLog-5.24 ChangeLog-5.25 ChangeLog-5.26 ChangeLog-5.27 \
-  ChangeLog-5.28
+  ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30
 
 include common.mk
 
 extradocinstall:
-	test -d "$(docdir)" || mkdir -p "$(docdir)"
+	test -d "$(DESTDIR)$(docdir)" || mkdir -p "$(DESTDIR)$(docdir)"
 	for file in AUTHORS COPYING INSTALL README README.lisps ; \
             do \
-            $(INSTALL_DATA) $$file "$(docdir)" ; \
+            $(INSTALL_DATA) $$file "$(DESTDIR)$(docdir)" ; \
             done
 
 $(distdir).tar.gz: Makefile.am
@@ -51,7 +51,10 @@ iss: extradocinstall gnuplot wxmaxima win32-lisp-runtime
 # Install the gnuplot binary files
 gnuplot: 
 	mkdir -p $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/bin/* $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/bin $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/share $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/etc $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/license $(prefix)/gnuplot
 
 # Install wxMaxima
 wxmaxima:
@@ -103,7 +106,7 @@ gcccopy:
 else # GCC331
 
 GCCPREFIX=$(MINGW)
-# New (June 1012) gcc/mingw/msys install using gcc-4.6.2
+# New (November 2013) gcc/mingw/msys install using gcc-4.8.1
 gcccopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
 	test -d "$(prefix)/include" || mkdir -p "$(prefix)/include"
@@ -115,8 +118,8 @@ gcccopy:
 	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
 	cp $(MINGW)/bin/mingwm10.dll $(prefix)/bin
 	cp $(GCCPREFIX)/bin/libgmp-10.dll $(prefix)/bin
-	cp $(GCCPREFIX)/bin/libmpc-2.dll $(prefix)/bin
-	cp $(GCCPREFIX)/bin/libmpfr-1.dll $(prefix)/bin
+	cp $(GCCPREFIX)/bin/libmpc-3.dll $(prefix)/bin
+	cp $(GCCPREFIX)/bin/libmpfr-4.dll $(prefix)/bin
 	cp /c/tcl/bin/tclpip85.dll $(prefix)/bin
 	cp $(MINGW)/include/stdio.h $(prefix)/include
 	cp $(MINGW)/include/stdlib.h $(prefix)/include
@@ -134,7 +137,7 @@ gcccopy:
 	cp $(GCCPREFIX)/libexec/gcc/mingw32/$(GCCVER)/liblto_plugin-0.dll \
 		$(prefix)/libexec/gcc/mingw32/$(GCCVER)
 	cp $(MINGW)/bin/as.exe \
-		$(prefix)/lib/gcc/mingw32/$(GCCVER)
+		$(prefix)/libexec/gcc
 	cp $(GCCPREFIX)/lib/gcc/mingw32/$(GCCVER)/include/*.h  \
 		$(prefix)/lib/gcc/mingw32/$(GCCVER)/include
 

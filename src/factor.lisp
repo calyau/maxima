@@ -153,7 +153,7 @@
 
 (defun estcheck (p)
   (prog (lc c d)
-     (cond ((or (atom p) (null (cddr p)) (equal (pterm p 0) 0))
+     (cond ((or (atom p) (null (cddr p)) (equal (ptterm p 0) 0))
 	    (return nil)))
      (setq lc (cadr p))
      (setq p (nreverse (cdr (oddelm (cdr p)))))
@@ -212,17 +212,14 @@
   (every #'zerop1 a))
 
 (defmfun testdivide (x y)
-  (let ((errrjfflag t))
-    (cond (algfac* (algtestd x y))
-	  ((or (pcoefp x)
-	       (pcoefp y)
-	       (catch 'raterr (pquotient (car (last x)) (car (last y)))))
-	   (catch 'raterr (pquotient x y))))))
+  (if algfac*
+      (algtestd x y)
+      (eztestdivide x y)))
 
 (defun algtestd (x y)
   (and (div-deg-chk (nreverse (pdegreevector x)) (nreverse (pdegreevector y))
 		    (reverse genvar))
-       (cond ((setq x (catch 'raterr (rquotient x y)))
+       (cond ((setq x (ignore-rat-err (rquotient x y)))
 	      (setq adn* (* adn* (cdr x)))
 	      (car x)) )))
 
@@ -279,7 +276,7 @@
 
 (defun consta (p)
   (cond ((or (pcoefp p) (alg p)) p)
-	(t (consta (pterm (cdr p) 0)))))
+	(t (consta (ptterm (cdr p) 0)))))
 
 (defun constacl (p)			;NO LONGER USED?
   (cond ((atom p)
@@ -293,8 +290,8 @@
 
 (defun z1 (poly fact1 fact2)
   (prog (res hsteps steps kterm a b c d *ab* m df1 df2 dlr step *sharpa *sharpb)
-     (let ((modulus) (hmodulus))
-       (setqmodulus *prime)
+     (let ((modulus))
+       (set-modulus *prime)
        (setq *sharpb (fact20 fact1 fact2 limk)))
      (setq *sharpa (car *sharpb))
      (setq *sharpb (cadr *sharpb))
@@ -356,7 +353,7 @@
      (setq b (cadr reml))
      sharp   (cond ((> k limk) (return (list a b))))
      (setq pk modulus)
-     (setqmodulus (* modulus modulus))
+     (set-modulus (* modulus modulus))
      (setq f(pmod f1) g (pmod g1))
      (setq h (pquo (pmod (pdifference (pplus (ptimes a f) (ptimes b g))
 				      1))
@@ -540,7 +537,7 @@
 (defun zfact (u fl limk many*)
   (prog (fcs* prodl)
      (when many*
-       (setqmodulus plim)
+       (set-modulus plim)
        (setq dlp (reduce #'max (mapcar #'multideg (cdr (oddelm u))))))
      (when (= (length fl) 1) (return (list u)))
      (setq prodl (fsplit fl 'v))
@@ -597,7 +594,7 @@
      (go a)))
 
 (defun sqfrp (u var)
-  (cond ((and (equal 0 (pterm (cdr u) 0)) (equal 0 (pterm (cdr u) 1)))
+  (cond ((and (equal 0 (ptterm (cdr u) 0)) (equal 0 (ptterm (cdr u) 1)))
 	 nil)
 	((onevarp u)
 	 (setq u (pgcd u (pderivative u var)))
@@ -771,9 +768,9 @@
     (push (random 1000.) l)))
 
 (defun trufac (v lp olfact many* modulus)
-  (prog (ans olc lc af qnt factor lfunct hmodulus)
+  (prog (ans olc lc af qnt factor lfunct)
      (setq lc 1 olc 1)
-     (setqmodulus modulus)
+     (set-modulus modulus)
      (setq lfunct (setq olfact (cons nil olfact)))
      test (cond
 	    ((equal v 1) (setq ans factor) (go out))
@@ -859,7 +856,7 @@
 
 (defun nprod (lc u lfunct)
   (prog (stage v d2 af0 r lcindex factor llc ltuple lprod lindex qnt af
-	 funct tuple ltemp lpr f l li lf modulus hmodulus)
+	 funct tuple ltemp lpr f l li lf modulus)
      (setq lpr (copy-tree (setq ltemp (cons nil nil))))
      (setq lprod (cons nil lfunct))
      (setq d2 (ash (cadr u) -1))
@@ -893,16 +890,17 @@
      (cond ((and (not (member l tuple :test #'equal))
 		 (not (> (+ (cadr f) (cadr funct)) d2))
 		 (not (member (setq l (orde l tuple)) ltemp :test #'equal)))
-	    (setqmodulus plim)
+	    (set-modulus plim)
 	    (setq af0 (setq af (ptimes(pmod f) (pmod funct))))
 	    (cond (llc (setq af (ptimes (pmod (lchk llc lcindex l)) af))))
 	    (cond (many* (setq af (dropterms af)))
 		  ((and algfac* (not (equal intbs* 1)))(setq af (intbasehk af))))
-	    (setqmodulus nil)
+	    (set-modulus nil)
 	    (cond ((setq qnt (testdivide v af))
 		   (cond (llc (setq af (oldcontent af))
 			      (setq v (ptimes (car af) qnt)af (cadr af))
-			      (setq u (cond (algfac*(car (catch 'raterr (rquotient u af))))
+			      (setq u (cond (algfac*(car (ignore-rat-err
+                                                           (rquotient u af))))
 					    (t (pquotient u af)))))
 			 (t (setq u qnt v qnt)))
 		   (setq factor (cons af factor))
@@ -1038,7 +1036,7 @@
 (defun fact5mod (u)
   (prog (lc poly)
      (setq poly (copy-list u))
-     (setqmodulus modulu*)
+     (set-modulus modulu*)
      (setq poly (pmod poly))
      (setq lc (caddr poly))
      (pmonicize (cdr poly))
@@ -1125,7 +1123,7 @@
      (setq b (pplus b (npctimes mpk b1)))
      (setq h nil b1 nil qlp nil)
      (go sharp)
-     on   (setqmodulus p)
+     on   (set-modulus p)
      (return (list f g))))
 
 
@@ -1346,7 +1344,7 @@
 
 
 (defun factor1972 (p)
-  (let ((modulu* modulus) many* *stop* modulus hmodulus mcflag *negflag*)
+  (let ((modulu* modulus) many* *stop* modulus mcflag *negflag*)
     (if (or (atom p) (numberp p) (and algfac* (alg p)))
 	(list p)
 	(factor72 p))))

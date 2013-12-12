@@ -45,7 +45,7 @@ block ([D1, uv], local (dmatrix),
  /* diag_matrix and diag involve loading big blobs of stuff, and diagmatrix isn't suitable ... sigh. */
  dmatrix (L) := block ([M, n : length (L)], M : zeromatrix (n, n), for i thru n do M[i, i] : L[i], M),
  D1 : matrix ([3, 2, 1, -5], [-1, 2, 1, -3], [5, -1, 2, 4], [3, 1, -1, 5]),
- uv : similaritytransform (D1),
+ uv : block([ratmx : true], similaritytransform (D1)),
  /* ratsimp or radcan could help here, but ratsimp simplifies leftmatrix . D1 . rightmatrix
   * incorrectly ... sigh. Also mat_norm could help but it's embedded in a big blob ... sigh.
   */

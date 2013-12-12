@@ -11,7 +11,7 @@ OBJS=	amacros.o dummy-gc.o polybas.o sparsemat.o \
 	aquotient.o new-rat.o    polya.o \
 	polyb.o \
 	polysmp.o sub-proj.o polyc.o polyd.o sheafa.o sheafb.o sheafc.o \
-	dim-3.o ndotsimp.o modsimp.o todd-coxeter.o
+	dim-3.o ndotsimp.o modsimp.o
 
 .PRECIOUS: ${OBJS}
 

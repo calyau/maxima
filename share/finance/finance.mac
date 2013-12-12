@@ -34,17 +34,17 @@ http://www.gnu.org/copyleft/gpl.html
 load(draw)$
 
 /*
-Returns the amortization table determinated by rate, Ammount,
+Returns the amortization table determinated by rate, Amount,
 and number of periods.
 */
-amortization(rate,Ammount,num):=
+amortization(rate,Amount,num):=
 block([result,A,payment,k,a],
 	if num<0 then error("num must be a positive value")
 	else A:genmatrix(a, num+2, 5),
-	payment:Ammount*rate*((1+rate)^(num)/((1+rate)^num-1)),
+	payment:Amount*rate*((1+rate)^(num)/((1+rate)^num-1)),
 	A[1]:["n", "Balance", "Interest", "Amortization","Payment"],
 	A[2]:[0,0,0,0,0],
-	A[2,2]:Ammount,
+	A[2,2]:Amount,
 	for k:3 thru num+2 step 1 do (
 		A[k,5]:payment,
 		A[k,1]:k-2,
@@ -65,25 +65,25 @@ it is a constant and periodic payment.
 annuity_fv(rate,FV,num):=FV*rate/((1+rate)^num-1)$
 
 /*
-Returns the annuity knowing the present value (like an ammount),
+Returns the annuity knowing the present value (like an amount),
 it is a constant and periodic payment.
 */
 annuity_pv(rate,PV,num):=PV*rate*((1+rate)^(num)/((1+rate)^num-1))$
 
 /*
-Returns the amortization table determinated by rate, Ammount,
+Returns the amortization table determinated by rate, Amount,
 and number of periods. The payment is not constant, it presents
 an arithmetic growing, increment is then the difference between two
 consecutive rows in the "Payment" column.
 */
-arit_amortization(rate,increment,Ammount,num):=
+arit_amortization(rate,increment,Amount,num):=
 block([result,A,payment,k,a],
 	if num<0 then error("num must be a positive value")
 	else A:genmatrix(a, num+2, 5),
-	payment:(rate^2*(rate+1)^num*Ammount+(rate*num-(1+rate)^num+1)*increment)/(rate*(rate+1)^num-rate),
+	payment:(rate^2*(rate+1)^num*Amount+(rate*num-(1+rate)^num+1)*increment)/(rate*(rate+1)^num-rate),
 	A[1]:["n", "Balance", "Interest", "Amortization","Payment"],
 	A[2]:[0,0,0,0,0],
-	A[2,2]:Ammount,
+	A[2,2]:Amount,
 	A[3,5]:payment,
 	for k:4 thru num+2 step 1 do (A[k,5]:A[k-1,5]+increment),
 	for k:3 thru num+2 step 1 do (
@@ -153,20 +153,20 @@ block([vectors, options],
 )$
 
 /*
-Returns the amortization table determinated by rate, Ammount,
+Returns the amortization table determinated by rate, Amount,
 and number of periods. The payment is not constant, it presents
 ah geometric growing, growinRate is then the cocient between two
 consecutive rows in the "Payment" column.
 */
-geo_amortization(rate,growing_rate,Ammount,num):=
+geo_amortization(rate,growing_rate,Amount,num):=
 block([result,A,payment,k,a],
 	if num<0 then error("num must be a positive value")
 	else
 	A:genmatrix(a,num+2, 5),
-	payment:Ammount*(rate-growing_rate)/(1-(1+growing_rate)^(num)/((1+rate)^num)),
+	payment:Amount*(rate-growing_rate)/(1-(1+growing_rate)^(num)/((1+rate)^num)),
 	A[1]:["n", "Balance", "Interest", "Amortization","Payment"],
 	A[2]:[0,0,0,0,0],
-	A[2,2]:Ammount,
+	A[2,2]:Amount,
 	A[3,5]:payment,
 	for k:4 thru num+2 step 1 do (A[k,5]:A[k-1,5]*(1+growing_rate)),
 	for k:3 thru num+2 step 1 do (
@@ -188,7 +188,7 @@ it is a growing payment.
 geo_annuity_fv(rate,growing_rate,FV,num):=FV*(rate-growing_rate)/((1+rate)^num-(1+growing_rate)^(num))$
 
 /*
-Returns the growing annuity knowing the desired value (like an ammount),
+Returns the growing annuity knowing the desired value (like an amount),
 it is a growing payment.
 */
 geo_annuity_pv(rate,growing_rate,PV,num):=PV*(rate-growing_rate)/(1-(1+growing_rate)^(num)/((1+rate)^num))$
@@ -198,11 +198,9 @@ IRR (Internal Rate of Return), is the value of rate wich makes Net Present Value
 zero.
 */
 irr(flowValues,I0):=
-block([r,sum],
+block([r,sum, realonly: true],
 	sum:npv(r,flowValues)-I0,
-	realonly:true,
 	result:float(algsys([sum=0],[r])),
-	realonly:false,
 	result
 )$
 
@@ -226,14 +224,14 @@ pv(rate,FV,num):=FV/(1+rate)^num$
 
 /*
 Returns a table that represent the values in a constant an periodic
-saving. Ammount represent the desired quantity and num the number
+saving. Amount represent the desired quantity and num the number
 of periods to save.
 */
-saving(rate,Ammount,num):=
+saving(rate,Amount,num):=
 block([result,A,payment,k,a],
 	if num<0 then error("num must be a positive value")
 	else A:genmatrix(a,num+2, 4),
-	payment:Ammount*rate/((1+rate)^num-1),
+	payment:Amount*rate/((1+rate)^num-1),
 	A[1]:["n", "Balance", "Interest","Payment"],
 	A[2]:[0,0,0,0],
 	A[2,2]:0,

@@ -362,7 +362,7 @@ method.
 @code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
 geometric functions.  They represent any two independent
 solutions of the hypergeometric differential equation 
-@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} (A&S 15.5.1).  
+@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x] diff(y,x) - aby = 0} (A&S 15.5.1).  
 
 The only use of these functions is in solutions of ODEs returned by 
 @code{odelin} and @code{contrib_ode}.  The definition and use of these 
