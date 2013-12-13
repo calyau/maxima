@@ -872,7 +872,7 @@ the two state variables as a function of time:
 
 Plots equipotential curves for @var{exp}, which should be an expression
 depending on two variables. The curves are obtained by integrating the
-differential equation that define the ortogonal trajetories to the solutions
+differential equation that define the orthogonal trajectories to the solutions
 of the autonomous system obtained from the gradient of the expression given.
 The plot can also show the integral curves for that gradient system (option
 fieldlines).
@@ -896,8 +896,8 @@ Example:
 (%i2) ploteq(V,[x,-2,2],[y,-2,2],[fieldlines,"blue"])$
 @end example
 
-clicking on a point will plot the equipotential curve that passes by that point
-(in red) and the ortogonal trajectory (in blue).
+Clicking on a point will plot the equipotential curve that passes by that point
+(in red) and the orthogonal trajectory (in blue).
 
 @opencatbox
 @category{Differential equations} @category{Plotting} @category{Numerical methods}
