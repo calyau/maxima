@@ -153,10 +153,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Function} amortization (@var{rate},@var{ammount},@var{num})
+@deffn {Function} amortization (@var{rate},@var{amount},@var{num})
 
 La tabla de amortizaci@'on determinada por una tasa.
-Siendo @var{rate} es la tasa de inter@'es, @var{ammount} es el valor de la deuda,
+Siendo @var{rate} es la tasa de inter@'es, @var{amount} es el valor de la deuda,
 and @var{num} es el n@'umero de periodos.
 
 Ejemplo:
@@ -182,14 +182,14 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} arit_amortization (@var{rate},@var{increment},@var{ammount},@var{num})
+@deffn {Function} arit_amortization (@var{rate},@var{increment},@var{amount},@var{num})
 
 La tabla de amortizaci@'on determinada por una tasa espec@'{@dotless{i}}fica y unos pagos crecientes
 se puede hallar con @code{arit_amortization}.
 N@'otese que los pagos no son constantes, estos presentan
 un crecimiento aritm@'etico, el incremento es la diferencia entre dos
 filas consecutivas en la columna "Payment".
-@var{rate} es la tasa de inter@'es, @var{increment} es el incremento, @var{ammount}
+@var{rate} es la tasa de inter@'es, @var{increment} es el incremento, @var{amount}
 es el valor de la deuda, and @var{num} es el n@'umero de periodos.
 
 Ejemplo:
@@ -215,14 +215,14 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{ammount},@var{num})
+@deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{amount},@var{num})
 
 La tabla de amortizaci@'on determinada por la tasa, el valor de la deuda,
 y el n@'umero de periodos se puede hallar con @code{geo_amortization}.
 N@'otese que los pagos no son constantes, estos presentan un
 crecimiento geom@'etrico, growin_rate es entonces el cociente entre
 dos filas consecutivas de la columna "Payment".
-@var{rate} es la tasa de inter@'es, @var{growing_rate} es el crecimeinto de los pagos, @var{ammount}
+@var{rate} es la tasa de inter@'es, @var{growing_rate} es el crecimeinto de los pagos, @var{amount}
 es el valor de la deuda, y @var{num} es el numero de periodos.
 
 Ejemplo:
@@ -248,11 +248,11 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Function} saving (@var{rate},@var{ammount},@var{num})
+@deffn {Function} saving (@var{rate},@var{amount},@var{num})
 
 La tabla que presenta los valores para un ahorro constante y
 peri@'odico se pueden hallar con @code{saving}.
-@var{ammount} representa la cantidad deseada y @var{num} el n@'umero de
+@var{amount} representa la cantidad deseada y @var{num} el n@'umero de
 periodos durante los que se ahorrar@'a.
 
 Ejemplo:
