@@ -1,0 +1,16 @@
+TODO
+====
+
+In the next release:
+
+  * a xor not a => true.
+  * a eq not a => false.
+
+  * Implement minimization (Quine-McCluskey, ESPRESSO).
+
+  * Add higher orders / mixed case to logic_diff.
+
+  * Check binding powers. Now Maxima can't parse
+      "y eq not z nand t nor not x or not t"
+
+  * Merge logic_simp with the basic Maxima simplifier (?)
