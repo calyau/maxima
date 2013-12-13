@@ -269,7 +269,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	  (declare (ignore a))
 	  (if (not (and (atom b) (integerp b)))
 	      (progn
-		(mtell "The value of `pochhammer_max_index' must be an integer.")
+		(mtell "The value of `pochhammer_max_index' must be an integer.~%")
 		'munbindp))))
 
 (defun $pochhammer (x n)
