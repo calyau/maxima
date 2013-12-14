@@ -1176,7 +1176,7 @@ The exponent loops from @code{1} to the greatest characteristic factor of
 
 The optional argument @var{all} causes the table to be printed for all 
 non-zero elements. The exponent now loops from @code{1} to 
-@code{totient(n) + 1} and in case the modulus factors into two different primes 
+@code{totient(n) + 1} and in case the modulus factors into different primes 
 the last column is equal to the first.
 
 See also @mref{zn_add_table}, @mref{zn_mult_table}.

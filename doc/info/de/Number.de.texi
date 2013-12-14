@@ -1062,7 +1062,7 @@ so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
 verschiedenen Elemente gezeigt wird. In diesem Fall 
 variiert der Exponent zwischen @code{1} und @code{totient(n) + 1}. 
-Ist der Modulus aus zwei Primzahlen zusammen gesetzt, stimmen dann 
+Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, stimmen dann 
 die erste und letzte Spalte @"uberein.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
