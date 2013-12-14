@@ -571,6 +571,59 @@
         (values (mod (* g b) n) (mod (+ y 1) ord)   z                ) ) )))
 
 
+;; characteristic factors:
+
+(defmfun $zn_characteristic_factors (m)
+  (unless (integerp m)
+    (gf-merror (intl:gettext "`zn_characteristic_factors': Argument must be an integer.")) )
+  (cons '(mlist simp) (zn-characteristic-factors m)) )
+
+;; D. Shanks - Solved and unsolved problems in number theory, 2. ed
+;; definition 29 and 30 (p. 92 - 94)
+;;
+;; (zn-characteristic-factors 104) --> (2 2 12)
+;; => Z104* is isomorphic to M2 x M2 x M12
+;;    the direct product of modulo multiplication groups of order 2 resp. 12
+;;
+(defun zn-characteristic-factors (m) 
+  (let* (($intfaclim) 
+         (pe-list (get-factor-list m)) ;; def. 29 part A
+         (shanks-phi                   ;;         part D
+           (sort 
+             (apply #'nconc (mapcar #'zn-shanks-phi-step-bc pe-list))
+             #'zn-pe> )))
+    ;; def. 30 :
+    (do ((todo shanks-phi (nreverse left)) 
+         (p 0 0) (f 1 1) (left nil nil)
+         fs q d )
+        ((null todo) fs)
+      (dolist (qd todo)
+        (setq q (car qd) d (cadr qd))
+        (if (= q p) 
+          (push qd left)
+          (setq p q f (* f (expt q d))) ))
+      (push f fs) )))
+
+;; definition 29 parts B,C (p. 92)
+(defun zn-shanks-phi-step-bc (pe) 
+  (let ((p (car pe)) (e (cadr pe)) qd)
+    (cond
+      ((= 2 p)
+        (setq qd (list '(2 1)))
+        (when (> e 2) 
+          (setq qd (nconc qd (list `(2 ,(- e 2))))) ))
+      (t 
+        (setq qd (let (($intfaclim)) (get-factor-list (1- p))))
+        (when (> e 1) 
+          (setq qd (nconc qd (list `(,p ,(1- e))))) )))
+    qd ))
+
+(defun zn-pe> (a b)
+  (cond ((> (car a) (car b)) t)
+        ((< (car a) (car b)) nil)
+        (t (> (cadr a) (cadr b))) ))
+
+
 ;; for educational puposes: tables of small residue class rings
 
 (defun zn-table-errchk (n fun)
@@ -608,13 +661,14 @@
 
 (defmfun $zn_power_table (n &optional all?)
   (zn-table-errchk n "zn_power_table")
-  (let ((tn ($totient n)))
-    (when (equal all? '$all) (incf tn))
+  (let ((jj (if (equal all? '$all) 
+              (1+ ($totient n)) 
+              (car (last (zn-characteristic-factors n))) )))
     (do ((i 1 (1+ i)) res)
         ((= i n) 
           (cons '($matrix simp) (nreverse res)) )
       (when (or (equal all? '$all) (= 1 (gcd i n))) 
-        (push (mfuncall '$makelist `(power-mod ,i $j ,n) '$j 1 tn) res) ))))
+        (push (mfuncall '$makelist `(power-mod ,i $j ,n) '$j 1 jj) res) ))))
 
 
 ;; $zn_invert_by_lu (m p) 
