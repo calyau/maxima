@@ -286,7 +286,7 @@
     (setq fs (copy-tree fs)) ;; this deep copy is a workaround to avoid references 
                              ;; to the list returned by ifactor.lisp/get-factor-list.
                              ;; see bug 3510983
-    (setq fs (sort fs #'(lambda (a b) (< (car a) (car b)))))
+    (setq fs (sort fs #'< :key #'car))
     (setq g (car fs))
     (dolist (f (cdr fs) (cons phi (reverse (cons g fs-phi))))
       (if (= (car f) (car g)) 
@@ -1090,7 +1090,7 @@
         (t (1- (expt p *gf-exp*))) ))
     (let* (($intfaclim)
            (fs (get-factor-list *gf-ord*)) ) 
-      (setq *gf-fs-ord* (sort fs #'(lambda (a b) (< (car a) (car b))))) )   ;; .. [pi, ei] .. 
+      (setq *gf-fs-ord* (sort fs #'< :key #'car)) )                         ;; .. [pi, ei] .. 
 
     (when *gf-irred?* (gf-precomp))
     
@@ -1137,7 +1137,7 @@
                      (gf-group-order *gf-card* *ef-red*) ))
     (let* (($intfaclim)
            (fs (get-factor-list *ef-ord*)) ) 
-      (setq *ef-fs-ord* (sort fs #'(lambda (a b) (< (car a) (car b))))) ) 
+      (setq *ef-fs-ord* (sort fs #'< :key #'car)) ) 
     (when *ef-irred?* (ef-precomp))
     (setq *ef-data?* t
           *ef-red?* t
@@ -2785,7 +2785,7 @@
         fs-list
         ($intfaclim) )
     (setq fs-q-1 
-      (sort (get-factor-list q-1) #'(lambda (a b) (< (car a) (car b)))) )        ;; .. [pi, ei] ..
+      (sort (get-factor-list q-1) #'< :key #'car) )        ;; .. [pi, ei] ..
     (dolist (fj fs-q-1) 
       (setq fs-ord (remove-if #'(lambda (sj) (= (car fj) (car sj))) fs-ord :count 1)) )
     (setq fs-q-1 
