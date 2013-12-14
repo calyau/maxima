@@ -23,12 +23,12 @@
 @ifinfo
 @vrindex e
 @vrindex Constante de Euler
-@vrindex Base dos logarítmos naturais
-@vrindex Número de Euler
+@vrindex Base dos logar@'{i}tmos naturais
+@vrindex N@'{u}mero de Euler
 @end ifinfo
 
-@code{%e} representa a base dos logarítmos natuais, também conhecido como número de
-Euler.  O valor numéricos de @code{%e} é o valor em precisão dupla e em ponto flutuante
+@code{%e} representa a base dos logar@'{i}tmos natuais, tamb@'{e}m conhecido como n@'{u}mero de
+Euler.  O valor num@'{e}ricos de @code{%e} @'{e} o valor em precis@~{a}o dupla e em ponto flutuante
 2.718281828459045d0.
 
 @opencatbox
@@ -41,10 +41,10 @@ Euler.  O valor numéricos de @code{%e} é o valor em precisão dupla e em ponto
 @defvr {Constant} %i
 @ifinfo
 @vrindex i
-@vrindex Unidade imaginária
+@vrindex Unidade imagin@'{a}ria
 @end ifinfo
 
-@code{%i} representa a unidade imaginária, @math{sqrt(- 1)}.
+@code{%i} representa a unidade imagin@'{a}ria, @math{sqrt(- 1)}.
 
 @opencatbox
 @category{Constants}
@@ -56,7 +56,7 @@ Euler.  O valor numéricos de @code{%e} é o valor em precisão dupla e em ponto
 @defvr {Constant} false
 
 A constante @code{false} representa a constante Booleana de mesmo nome.
-Maxima implementa @code{false} através do valor @code{NIL} do Lisp.
+Maxima implementa @code{false} atrav@'{e}s do valor @code{NIL} do Lisp.
 
 @opencatbox
 @category{Constants}
@@ -87,7 +87,7 @@ A constante de Euler-Mascheroni, 0.5772156649015329 ....
 
 @code{ind} representa um resultado associado e indefinido.
 
-Veja também @mrefdot{limit}
+Veja tamb@'{e}m @mrefdot{limit}
 
 Exemplo:
 
@@ -152,25 +152,25 @@ Exemplo:
 @defvr {Constant} %phi
 @ifinfo
 @vrindex phi
-@vrindex Média áurea
-@vrindex Número áureo
-@vrindex Número de ouro
+@vrindex M@'{e}dia @'{a}urea
+@vrindex N@'{u}mero @'{a}ureo
+@vrindex N@'{u}mero de ouro
 @end ifinfo
 
-@code{%phi} representa a chamada @i{média áurea}, @math{(1 + sqrt(5))/2}.
-O valor numérico de @code{%phi} é o valor em precisão dupla e em ponto flutuante
+@code{%phi} representa a chamada @i{m@'{e}dia @'{a}urea}, @math{(1 + sqrt(5))/2}.
+O valor num@'{e}rico de @code{%phi} @'{e} o valor em precis@~{a}o dupla e em ponto flutuante
 1.618033988749895d0.
 
-@mref{fibtophi} representa os números de Fibonacci @code{fib(n)} em termos de
+@mref{fibtophi} representa os n@'{u}meros de Fibonacci @code{fib(n)} em termos de
 @code{%phi}.
 
-Por padrão, Maxima não conhece as propriedades algébricas de @code{%phi}.
-Após avaliar @code{tellrat(%phi^2 - %phi - 1)} e @code{algebraic: true},
-@mref{ratsimp} pode simplificar algumas expressões contendo @code{%phi}.
+Por padr@~{a}o, Maxima n@~{a}o conhece as propriedades alg@'{e}bricas de @code{%phi}.
+Ap@'{o}s avaliar @code{tellrat(%phi^2 - %phi - 1)} e @code{algebraic: true},
+@mref{ratsimp} pode simplificar algumas express@~{o}es contendo @code{%phi}.
 
 Exemplos:
 
-@code{fibtophi} expressa números de Fibonacci @code{fib(n)} em termos de @code{%phi}.
+@code{fibtophi} expressa n@'{u}meros de Fibonacci @code{fib(n)} em termos de @code{%phi}.
 
 @c ===beg===
 @c fibtophi (fib (n));
@@ -199,9 +199,9 @@ Exemplos:
 (%o4)                           0
 @end example
 
-Por padrão, Maxima não conhece as propriedades algébricas de @code{%phi}.
-Após avaliar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
-@code{ratsimp} pode simplificar algumas expressões contendo @code{%phi}.
+Por padr@~{a}o, Maxima n@~{a}o conhece as propriedades alg@'{e}bricas de @code{%phi}.
+Ap@'{o}s avaliar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
+@code{ratsimp} pode simplificar algumas express@~{o}es contendo @code{%phi}.
 
 @c ===beg===
 @c e : expand ((%phi^2 - %phi - 1) * (A + 1));
@@ -238,8 +238,8 @@ Após avaliar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
 @vrindex pi
 @end ifinfo
 
-@code{%pi} representa a razão entre a medida do perímetro de um círculo e a medida de seu diâmetro.
-O valor numérico de @code{%pi} é o valor em precisão dupla e em ponto flutuante
+@code{%pi} representa a raz@~{a}o entre a medida do per@'{i}metro de um c@'{i}rculo e a medida de seu di@^{a}metro.
+O valor num@'{e}rico de @code{%pi} @'{e} o valor em precis@~{a}o dupla e em ponto flutuante
 3.141592653589793d0.
 
 @opencatbox
@@ -252,7 +252,7 @@ O valor numérico de @code{%pi} é o valor em precisão dupla e em ponto flutuan
 @defvr {Constant} true
 
 @code{true} representa a constante Boolean de mesmo nome.
-Maxima implementa @code{true} através do valor @code{T} do Lisp.
+Maxima implementa @code{true} atrav@'{e}s do valor @code{T} do Lisp.
 
 @opencatbox
 @category{Constants}
@@ -263,12 +263,12 @@ Maxima implementa @code{true} através do valor @code{T} do Lisp.
 @anchor{und}
 @defvr {Constant} und
 @ifinfo
-@vrindex Não definido
+@vrindex N@~{a}o definido
 @end ifinfo
 
-@code{und} representa um resultado não definido.
+@code{und} representa um resultado n@~{a}o definido.
 
-Veja também @mrefdot{limit}
+Veja tamb@'{e}m @mrefdot{limit}
 
 Exemplo:
 
@@ -290,14 +290,14 @@ Exemplo:
 @defvr {Constant} zeroa
 
 @code{zeroa} representa uma quantidade extremamente pequena maior que zero (estritamente positiva).  A constante @code{zeroa} pode ser usada
-em expressões.  A função @code{limit} simplifica expressões que possuem
+em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
 infinitesimais.
 
-Veja tambẽm @mref{zerob} e @mrefdot{limit}
+Veja tamb@'{e}m @mref{zerob} e @mrefdot{limit}
 
 Exemplo:
 
-@code{limit} simplifica expressões que possuem infinitesimais:
+@code{limit} simplifica express@~{o}es que possuem infinitesimais:
 
 @c ===beg===
 @c limit(zeroa);
@@ -320,10 +320,10 @@ Exemplo:
 @defvr {Constant} zerob
 
 @code{zerob} representa uma quantidade extremamente pequena menor que zero (estritamente negativa).  A constante @code{zerob} pode ser usada
-em expressões.  A função @code{limit} simplifica expressões que possuem
+em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
 infinitesimais.
 
-Veja também @mref{zeroa} e @mrefdot{limit}
+Veja tamb@'{e}m @mref{zeroa} e @mrefdot{limit}
 
 @opencatbox
 @category{Constants}

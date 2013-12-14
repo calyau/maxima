@@ -68,7 +68,7 @@ termo na @i{comma expression} que atualmente retorna o valor.
 Maxima faz distin@,{c}@~{a}o entre operadores que s@~{a}o "substantivos" e operadores que s@~{a}o
 "verbos".  Um verbo @'{e} um operador que pode ser executao.  Um substantivo @'{e} um operador
 que aparece como um s@'{i}mbolo em uma express@~{a}o, sem ser executado.  Por padr@~{a}o,
-nomes de fun@,{c}@~{a}o s@~{a}o verbos.  Um verbo pode ser transformado em substantivo pela coloca@,{c}@~{a}o de um ap@'{o}sstrofo
+nomes de fun@,{c}@~{a}o s@~{a}o verbos.  Um verbo pode ser transformado em substantivo pela coloca@,{c}@~{a}o de um ap@'{o}strofo
 no nome da fun@,{c}@~{a}o ou aplicando a fun@,{c}@~{a}o @mrefdot{nounify}  Um substantivo pode ser transformado
 em um verbo por meio da fun@,{c}@~{a}o @mrefdot{verbify}  O sinalizador de avalia@,{c}@~{a}o
 @mref{nouns} faz com que a fun@,{c}@~{a}o @mref{ev} seja usada para avaliar substantivos em uma express@~{a}o.
