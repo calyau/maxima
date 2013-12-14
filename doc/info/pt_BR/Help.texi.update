@@ -16,11 +16,14 @@
 
 O manual on-line de usu@'{a}rio do Maxima pode ser visto de diferentes formas.  A partir da
 linha de comando interativa do Maxima, o manual de usu@'{a}rio @'{e} visto no formato texto simples por meio do
-comando @mref{?} (i.e., a fun@,{c}@~{a}o @mref{describe}).  O manual de usu@'{a}rio @'{e}
+comando @mref{?}
+(i.e., a fun@,{c}@~{a}o @mref{describe})
+.  O manual de usu@'{a}rio @'{e}
 visto como hipertexto no formato @code{info} por meio do programa visualizador @code{info} e como uma
 p@'{a}gina web atrav@'{e}s de qualquer navegador comum.
 
-O comando @mref{example} mostra exemplos de muitas fun@,{c}@~{o}es do Maxima.  Por exemplo,
+O comando @mref{example}
+mostra exemplos de muitas fun@,{c}@~{o}es do Maxima.  Por exemplo,
 
 @example
 (%i1) example (integrate);
@@ -97,9 +100,11 @@ Avalia express@~{o}es do Maxima dentro de @var{nomearquivo} e mostra os resultad
 usu@'{a}rio pressionar a tecla enter.  (Se o Xmaxima estiver sendo usado, @code{demo} pode precisar
 ver um ponto e v@'{i}rgula @code{;} seguido por um enter.)
 
-A fun@,{c}@~{a}o @code{demo} busca a lista de diret@'{o}rios @mref{file_search_demo} para encontrar
+A fun@,{c}@~{a}o @code{demo} busca a lista de diret@'{o}rios @mref{file_search_demo}
+para encontrar
 @code{nomearquivo}.  Se o arquivo tiver o sufixo @code{dem}, o sufixo pode ser
-omitido.  Veja tambẽm @mrefdot{file_search}.
+omitido.  Veja tambẽm @mrefdot{file_search}
+.
 
 @code{demo} avalia seus argumento.
 @code{demo} retorna o nome do arquivo de demonstra@,{c}@~{a}o.
@@ -223,7 +228,8 @@ A fun@,{c}@~{a}o @code{example} n@~{a}o @'{e} sens@'{i}vel @`{a} caixa alta ou b
 @code{example ()} retorna uma lista de todos os topicos reconhecidos.
 
 O nome do arquivo contendo os exemplos @'{e} dado pela vari@'{a}vel global de
-op@,{c}@~{a}o @mrefcomma{manual_demo} cujo padr@~{a}o @'{e} @code{"manual.demo"}.
+op@,{c}@~{a}o @mrefcomma{manual_demo}
+cujo padr@~{a}o @'{e} @code{"manual.demo"}.
 
 A fun@,{c}@~{a}o @code{example} exige que seus argumentos sejam delimitados por aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  A fun@,{c}@~{a}o @code{example} retorna @code{done} a menos que
 nenhum exemplo seja encontrado ou n@~{a}o exista argumento, nesse caso @code{example}

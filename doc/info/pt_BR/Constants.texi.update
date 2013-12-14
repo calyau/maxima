@@ -161,12 +161,14 @@ Exemplo:
 O valor num@'{e}rico de @code{%phi} @'{e} o valor em precis@~{a}o dupla e em ponto flutuante
 1.618033988749895d0.
 
-@mref{fibtophi} representa os n@'{u}meros de Fibonacci @code{fib(n)} em termos de
+A função @mref{fibtophi}
+representa os n@'{u}meros de Fibonacci @code{fib(n)} em termos de
 @code{%phi}.
 
 Por padr@~{a}o, Maxima n@~{a}o conhece as propriedades alg@'{e}bricas de @code{%phi}.
 Ap@'{o}s avaliar @code{tellrat(%phi^2 - %phi - 1)} e @code{algebraic: true},
-@mref{ratsimp} pode simplificar algumas express@~{o}es contendo @code{%phi}.
+@mref{ratsimp}
+pode simplificar algumas express@~{o}es contendo @code{%phi}.
 
 Exemplos:
 
@@ -293,7 +295,8 @@ Exemplo:
 em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
 infinitesimais.
 
-Veja tamb@'{e}m @mref{zerob} e @mrefdot{limit}
+Veja tamb@'{e}m @mref{zerob}
+e @mrefdot{limit}
 
 Exemplo:
 
@@ -323,7 +326,8 @@ Exemplo:
 em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
 infinitesimais.
 
-Veja tamb@'{e}m @mref{zeroa} e @mrefdot{limit}
+Veja tamb@'{e}m @mref{zeroa}
+e @mrefdot{limit}
 
 @opencatbox
 @category{Constants}

@@ -46,7 +46,8 @@ erros conhecidos.
 executar os testes @code{rtest1} e @code{rtest2}, e mostrar cada teste.
 
 @code{run_testsuite} muda o ambiente de trabalho do Maxima.
-Tipicamente um acript de teste executa um @mref{kill} para estabelecer um ambiente conhecido
+Tipicamente um acript de teste executa um @mref{kill}
+para estabelecer um ambiente conhecido
 (isto @'{e}, um ambiente sem fun@,{c}@~{o}es e vari@'{a}veis definidas pelo usu@'{a}rio)
 e ent@~{a}o define fun@,{c}@~{o}es e vari@'{a}veis apropriadas para o teste.
 
@@ -62,7 +63,8 @@ e ent@~{a}o define fun@,{c}@~{o}es e vari@'{a}veis apropriadas para o teste.
 @defvr {Option variable} testsuite_files
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{testsuite_files} cont@'{e}m o conjunto de testes a serem executados por
-@mrefdot{run_testsuite}  @'{E} uma lista de nomes de arquivos contendo
+@mrefdot{run_testsuite}
+@'{E} uma lista de nomes de arquivos contendo
 os testes a serem executados.  Se algum dos testes em um dos arquivos forem falhas conhecidas,
 ent@~{a}o ao inv@'{e}s de listar o nome do arquivo, uma lista contendo o
 nome do arquivo e os n@'{u}meros dos testes que falham @'{e} usada.

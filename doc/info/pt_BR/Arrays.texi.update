@@ -64,7 +64,8 @@ declarado.
 Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 onde @var{A} @'{e} um vetor est@'{a}tico e @var{i_1}, @dots{}, @var{i_n} s@~{a}o inteiros.
 
-@'{E} um clone de @mrefcomma{apply} com a exce@,{c}@~{a}o de que o primeiro argumento @'{e} um vetor est@'{a}tico
+@'{E} um clone de @mrefcomma{apply}
+com a exce@,{c}@~{a}o de que o primeiro argumento @'{e} um vetor est@'{a}tico
 ao inv@'{e}s de uma fun@,{c}@~{a}o.
 
 @opencatbox
@@ -256,7 +257,8 @@ A @code{arrayinfo} e a @code{listarray} aplicadas a uma fun@,{c}@~{a}o de subscr
 Retorna a express@~{a}o @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
 O resultado @'{e} uma refer@^{e}ncia de vetor est@'{a}tico n@~{a}o declarado.
 
-A @code{arraymake} @'{e} semelhante a @mrefcomma{funmake} exceto que o valor de retorno
+A @code{arraymake} @'{e} semelhante a @mrefcomma{funmake}
+exceto que o valor de retorno
 @'{e} uma referencia de vetor est@'{a}tico n@~{a}o declarado ao inv@'{e}s de uma chamada de fun@,{c}@~{a}o n@~{a}o avaliada.
 
 Exemplos:
@@ -355,12 +357,13 @@ A vari@'{a}vel de sistema @code{arrays} @'{e} uma lista de vetores est@'{a}ticos
 Essa lista compreende vetores est@'{a}ticos declarados por @code{array}, vetores est@'{a}ticos adapt@'{a}veis constru@'{i}dos por
 defini@,{c}@~{a}o inpl@'{i}cita (atribuindo alguma coisa ao elemento do vetor est@'{a}tico),
 e fun@,{c}@~{o}es de vetor est@'{a}tico definidas por @code{:=} e por @code{define}.
-Vetores est@'{a}ticos definidos por @mref{make_array} n@~{a}o est@~{a}o incl@'{i}dos.
+Vetores est@'{a}ticos definidos por @mref{make_array}
+n@~{a}o est@~{a}o incl@'{i}dos.
 
 Veja tamb@'{e}m
-@mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo}@w{}
-@mrefcomma{arraymake} @mrefcomma{fillarray} @mrefcomma{listarray} e
-@mrefdot{rearray}
+@mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo}
+@w{} @mrefcomma{arraymake} @mrefcomma{fillarray} @mrefcomma{listarray}
+e @mrefdot{rearray}
 @c IS THIS AN EXHAUSTIVE LIST ??
 
 Exemplos:
@@ -710,7 +713,8 @@ ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou
 Exitem @math{n} @'{i}ndices,
 e o @math{i}'-@'{e}simo @'{i}ndice vai de 0 a @math{@var{dim_i} - 1}.
 
-A vantagem de @code{make_array} sobre @mref{array} @'{e} que o valor de retorno
+A vantagem de @code{make_array} sobre @mref{array}
+@'{e} que o valor de retorno
 n@~{a}o tem um nome, e uma vez que um apontador para @code{make_array} se propaga, @code{make_array} ir@'{a} tambẽm se propagar.
 Por exemplo, se @code{y: make_array (...)} ent@~{a}o @code{y} aponta para um objeto 
 que ocupa espa@,{c}o, mas ap@'{o}s @code{y: false}, @code{y} n@~{a}o mais
