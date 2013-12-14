@@ -1,5 +1,5 @@
-;; gnuplot.lisp: routines for Maxima's interface to gnuplot 4.0
-;; Copyright (C) 2007 J. Villate
+;; gnuplot.lisp: routines for Maxima's interface to gnuplot
+;; Copyright (C) 2007-2013 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -23,9 +23,7 @@
 ;; hexadecimal code for that color will be returned. Unknown colors are
 ;; converted into black.
 (defun rgb-color (color)
-  (if (and (stringp color) (string= (subseq color 0 1) "#")
-           (= (length color) 7))
-      color
+  (if (plotcolorp color)
       (case color
 	($red "#ff0000")
         ($green "#00ff00")
@@ -39,7 +37,8 @@
         ($gray "#bebebe")
         ($black "#000000")
         ($white "#ffffff")
-	(t "#000000"))))
+        (t color))
+      "#000000"))
 
 ;; Given a list of valid colors (see rgb-color function) and an object c
 ;; that can be a real number or a string, produces a gnuplot color
@@ -232,39 +231,36 @@
   (let ((gnuplot-out-file (getf plot-options :gnuplot_out_file))
         (preamble (getf plot-options :gnuplot_preamble))
         (palette (getf plot-options :palette))
-        (colorbox (getf plot-options :colorbox))
         (meshcolor (if (member :mesh_lines_color plot-options)
                        (getf plot-options :mesh_lines_color)
                        '$black)))
     (if (find 'mlist palette :key #'car) (setq palette (list palette)))
-    (if (and preamble (> (length preamble) 0))
-      (format dest "~a~%" preamble)
-      (progn
-        (when (string= (getf plot-options :type) "plot3d")
-          (format dest "set ticslevel 0~%")
-          (if palette
-              (progn
-                (if meshcolor
-                    (progn
-                      (format dest "set style line 100 lt rgb ~s lw 1~%"
-                              (rgb-color meshcolor))
-                      (format dest "set pm3d hidden3d 100~%")
-                      (unless (getf plot-options :gnuplot_4_0)
-                        (format dest "set pm3d depthorder~%")))
-                    (format dest "set pm3d~%"))
-                (format dest "unset hidden3d~%")
-		(unless colorbox (format dest "unset colorbox~%"))
-                (format dest "set palette ~a~%"
-                        (gnuplot-palette (rest (first palette)))))
-              (format dest "set hidden3d~%"))
-          (let ((elev (getf plot-options :elevation))
-                (azim (getf plot-options :azimuth)))
-              (when (or elev azim)
-                (if elev
-                    (format dest "set view ~d" elev)
-                    (format dest "set view "))
-                (when azim (format dest ", ~d" azim))
-                (format dest "~%"))))))
+    (when (string= (getf plot-options :type) "plot3d")
+      (format dest "set ticslevel 0~%")
+      (if palette
+          (progn
+            (if meshcolor
+                (progn
+                  (format dest "set style line 100 lt rgb ~s lw 1~%"
+                          (rgb-color meshcolor))
+                  (format dest "set pm3d hidden3d 100~%")
+                  (unless (getf plot-options :gnuplot_4_0)
+                    (format dest "set pm3d depthorder~%")))
+                (format dest "set pm3d~%"))
+            (format dest "unset hidden3d~%")
+            (unless (getf plot-options :colorbox)
+              (format dest "unset colorbox~%"))
+            (format dest "set palette ~a~%"
+                    (gnuplot-palette (rest (first palette)))))
+          (format dest "set hidden3d~%"))
+      (let ((elev (getf plot-options :elevation))
+            (azim (getf plot-options :azimuth)))
+        (when (or elev azim)
+          (if elev
+              (format dest "set view ~d" elev)
+              (format dest "set view "))
+          (when azim (format dest ", ~d" azim))
+          (format dest "~%"))))
 
     ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
     ;; When the expression to be plotted is a constant, Gnuplot fails
@@ -292,10 +288,11 @@
 			     (getf plot-options :gnuplot_term))))))
 	    ((not (search "/" gnuplot-out-file))
 	     (setq gnuplot-out-file (plot-temp-file gnuplot-out-file)))))
-    ;; set the gnuplot terminal
+
+    ;; selects gnuplot terminal
     (case (getf plot-options :gnuplot_term)
       ($default
-       (format dest "~a~%" 
+       (format dest "set term wxt size 640,480; ~a~%" 
                (getf plot-options :gnuplot_default_term_command)))
       ($ps
        (format dest "~a~%" 
@@ -312,8 +309,12 @@
                (getf plot-options :gnuplot_term))
        (if gnuplot-out-file
            (format dest "set out ~s~%" gnuplot-out-file))) )
-    (when (getf plot-options :log-x) (format dest "set log x~%"))
-    (when (getf plot-options :log-y) (format dest "set log y~%"))
+
+    ;; logarithmic plots
+    (when (getf plot-options :logx) (format dest "set log x~%"))
+    (when (getf plot-options :logy) (format dest "set log y~%"))
+
+    ;; axes labels and legend
     (when (getf plot-options :xlabel)
       (format dest "set xlabel ~s~%" (getf plot-options :xlabel)))
     (when (getf plot-options :ylabel)
@@ -323,22 +324,105 @@
     (when (and (member :legend plot-options) 
                (not (first (getf plot-options :legend))))
       (format dest "unset key~%"))
+
+    ;; plotting box
     (when (and (member :box plot-options) (not (getf plot-options :box)))
-      (format dest "unset border; unset xtics; unset ytics; unset ztics~%"))
-    (when (getf plot-options :x)
+      (format dest "unset border~%")
+      (if (and (getf plot-options :axes)
+               (string= (getf plot-options :type) "plot2d"))
+          (format dest "set xtics axis~%set ytics axis~%set ztics axis~%")
+          (format dest "unset xtics~%unset ytics~%unset ztics~%")))
+
+    (when (string= (getf plot-options :type) "plot2d")
+
+      ;; 2d grid (specific to plot2d)
+      (format dest "set grid front~%")
+      (if (getf plot-options :grid2d)
+          (format dest "set grid~%")
+          (format dest "unset grid~%"))
+
+      ;; plot size and aspect ratio for plot2d
+      (if (getf plot-options :samexy)
+          (format dest "set size ratio -1~%")
+          (if (getf plot-options :yxratio)
+              (format dest "set size ratio ~f~%" (getf plot-options :yxratio))
+              (format dest "set size ratio 0.75~%")))
+      (if (and (getf plot-options :xyscale)
+               (listp (getf plot-options :xyscale)))
+          (format dest "set size ~{~f~^, ~}~%" (getf plot-options :xyscale))))
+
+    ;; plot size and aspect ratio for plot3d
+    (when (string= (getf plot-options :type) "plot3d")
+      (when (getf plot-options :samexy)
+        (format dest "set view equal xy~%"))
+      (when (getf plot-options :samexyz)
+        (format dest "set view equal xyz~%"))
+      (when (getf plot-options :zmin)
+        (format dest "set xyplane at ~f~%" (getf plot-options :zmin))))
+
+    ;; axes tics
+    (when (member :xtics plot-options)
+      (let ((xtics (getf plot-options :xtics)))
+        (if (consp xtics)
+            (format dest "set xtics ~{~f~^, ~}~%" xtics)
+            (if xtics
+                (format dest "set xtics ~f~%" xtics)
+                (format dest "unset xtics~%")))))
+    (when (member :ytics plot-options)
+      (let ((ytics (getf plot-options :ytics)))
+        (if (consp ytics)
+            (format dest "set ytics ~{~f~^, ~}~%" ytics)
+            (if ytics
+                (format dest "set ytics ~f~%" ytics)
+                (format dest "unset ytics~%")))))
+    (when (member :ztics plot-options)
+      (let ((ztics (getf plot-options :ztics)))
+        (if (consp ztics)
+            (format dest "set ztics ~{~f~^, ~}~%" ztics)
+            (if ztics
+                (format dest "set ztics ~f~%" ztics)
+                (format dest "unset ztics~%")))))
+    (when (member :cbtics plot-options)
+      (let ((cbtics (getf plot-options :cbtics)))
+        (if (consp cbtics)
+            (format dest "set cbtics ~{~f~^, ~}~%" cbtics)
+            (if cbtics
+                (format dest "set cbtics ~f~%" cbtics)
+                (format dest "unset cbtics~%")))))
+
+    ;; axes ranges and style
+    (when (and (getf plot-options :x) (listp (getf plot-options :x)))
       (format dest "set xrange [~{~f~^ : ~}]~%" (getf plot-options :x)))
-    (when (getf plot-options :y)
+    (when (and (getf plot-options :y) (listp (getf plot-options :y)))
       (format dest "set yrange [~{~f~^ : ~}]~%" (getf plot-options :y)))
-    (when (getf plot-options :z)
+    (when (and (getf plot-options :z) (listp (getf plot-options :z)))
       (format dest "set zrange [~{~f~^ : ~}]~%" (getf plot-options :z)))
     (when (and (string= (getf plot-options :type) "plot2d")
-               (getf plot-options :axes))
-      (case (getf plot-options :axes)
-        ($x (format dest "set xzeroaxis~%"))
-        ($y (format dest "set yzeroaxis~%"))
-        (t (format dest "set zeroaxis~%"))))
+               (member :axes plot-options))
+      (if (getf plot-options :axes)
+          (case (getf plot-options :axes)
+            ($x (format dest "set xzeroaxis~%"))
+            ($y (format dest "set yzeroaxis~%"))
+            ($solid (format dest "set zeroaxis lt -1~%"))
+            (t (format dest "set zeroaxis~%")))))
+
+    ;; title and labels
+    (when (getf plot-options :title)
+      (format dest "set title ~s~%" (getf plot-options :title)))
+    (when (getf plot-options :label)
+      (dolist (label (getf plot-options :label))
+        (when (and (listp label) (= (length label) 4))
+          (format dest "set label ~s at ~{~f~^, ~}~%"
+                  (cadr label) (cddr label)))))
+
+    ;; identifier for missing data
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
-  (or gnuplot-out-file "")))
+
+    ;; user's preamble. It may overule any of the previous settings
+    (when (and preamble (> (length preamble) 0)) (format dest "~a~%" preamble))
+
+    ;;returns the name of the file created
+    (or gnuplot-out-file "")))
 
 (defun gnuplot-plot3d-command (file palette gstyles colors titles n) 
 (let (title (style "with pm3d"))
