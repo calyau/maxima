@@ -195,7 +195,7 @@ sin(y)*(10.0+6*cos(x)),
       (setq key
             (intern (concatenate 'string "$" 
                                  (symbol-name (nth (* i 2) *plot-options*)))))
-      (setq value (quote-strings (nth (+ (* i 2) 1) *plot-options*)))
+      (setq value (nth (+ (* i 2) 1) *plot-options*))
       (if (consp value)
           (push (cons '(mlist) (cons key value)) options)
           (push (list '(mlist) key value) options)))
