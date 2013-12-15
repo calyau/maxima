@@ -227,7 +227,7 @@ sin(y)*(10.0+6*cos(x)),
   (remf *plot-options*
         (case name
           ($adapt_depth :adapt_depth) ($axes :axes) ($azimuth :azimuth)
-          ($box :box) ($color :color) ($colorbox :colorbox)
+          ($box :box) ($cbtics :cbtics) ($color :color) ($colorbox :colorbox)
           ($elevation :elevation) ($grid :grid) ($grid2d :grid2d)
           ($iterations :iterations) ($label :label) ($legend :legend)
           ($logx :logx) ($logy :logy) ($mesh_lines_color :mesh_lines_color)

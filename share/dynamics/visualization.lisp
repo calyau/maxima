@@ -37,22 +37,26 @@
 
 ;; parses a scene object into text for tcl scripts passed to Xmaxima
 (defun scene-object-to-tcl (value)
-  (let (vv)
+  (let (vv v)
     (unless (and  ($listp value)
                   (symbolp (setq name (second value))))
       (merror
        (intl:gettext "~M is not an object option. Must be [property,value]")
        value))
-    (setq value
-      (case name
-        (($azimuth $elevation $tstep)
-         (check-list-items name (rest (rest value)) 'number 1))
-        (($width $height $restart)
-         (check-list-items name (rest (rest value)) 'fixnum 1))
-        ($background
-         (check-list-items name (rest (rest value)) 'number 3))
-        (($windowtitle $windowname $animate) value)
-        (t (merror (intl:gettext "Unknown property ~M") name))))
+    (case name
+      (($azimuth $elevation $tstep)
+       (setq v (check-option (cdr value) #'realp "a real number" 1))
+       (setq value (list '(mlist) name v)))
+      (($width $height $restart)
+       (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
+       (setq value (list '(mlist) name v)))
+      ($background
+       (setq v (check-option (cdr value) #'realp "a real number" 3))
+       (setq value (list '(mlist) name v)))
+      (($windowtitle $windowname $animate)
+       (setq v (check-option (cdr value) #'stringp "a string" 1))
+       (setq value (list '(mlist) name v)))
+      (t (merror (intl:gettext "Unknown property ~M") name)))
     (setq vv (mapcar #'stripdollar (rest value)))
     (with-output-to-string (st)
       (format st "-~(~a~) " (first vv))
@@ -60,22 +64,26 @@
 
 ;; parses a scene option into a command-line option passed to Xmaxima
 (defun scene-option-to-tcl (value)
-  (let (vv)
+  (let (v vv)
     (unless (and  ($listp value)
                   (symbolp (setq name (second value))))
       (merror
        (intl:gettext "~M is not a scene option. Must be [symbol,...data]")
        value))
-    (setq value
-      (case name
-        (($azimuth $elevation $tstep)
-         (check-list-items name (rest (rest value)) 'number 1))
-        (($width $height $restart)
-         (check-list-items name (rest (rest value)) 'fixnum 1))
-        ($background
-         (check-list-items name (rest (rest value)) 'number 3))
-        (($windowtitle $windowname $animate) value)
-        (t (merror (intl:gettext "Unknown option ~M") name))))
+    (case name
+      (($azimuth $elevation $tstep)
+       (setq v (check-option (cdr value) #'realp "a real number" 1))
+       (setq value (list '(mlist) name v)))
+      (($width $height $restart)
+       (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
+       (setq value (list '(mlist) name v)))
+      ($background
+       (setq v (check-option (cdr value) #'realp "a real number" 3))
+       (setq value (list '(mlist) name v)))
+      (($windowtitle $windowname $animate)
+       (setq v (check-option (cdr value) #'stringp "a string" 1))
+       (setq value (list '(mlist) name v)))
+      (t (merror (intl:gettext "Unknown property ~M") name)))
     (setq vv (mapcar #'stripdollar (rest value)))
     (with-output-to-string (st)
       (format st "-~(~a~) " (first vv))

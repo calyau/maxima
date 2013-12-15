@@ -248,8 +248,6 @@
                     (format dest "set pm3d depthorder~%")))
                 (format dest "set pm3d~%"))
             (format dest "unset hidden3d~%")
-            (unless (getf plot-options :colorbox)
-              (format dest "unset colorbox~%"))
             (format dest "set palette ~a~%"
                     (gnuplot-palette (rest (first palette)))))
           (format dest "set hidden3d~%"))
@@ -261,6 +259,10 @@
               (format dest "set view "))
           (when azim (format dest ", ~d" azim))
           (format dest "~%"))))
+
+    ;; colorbox can be used by plot3d or plot2d
+    (unless (getf plot-options :colorbox)
+      (format dest "unset colorbox~%"))
 
     ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
     ;; When the expression to be plotted is a constant, Gnuplot fails
