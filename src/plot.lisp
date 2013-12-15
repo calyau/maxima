@@ -72,7 +72,7 @@ sin(y)*(10.0+6*cos(x)),
     "set size 1.5, 1.5;set term postscript eps enhanced color solid 24"))
 
 (defvar $plot_options 
-  `((mlist)
+  `((mlist) ((mlist) $gnuplot_preamble "")
     ((mlist) $plot_format
      ,(if (string= *autoconf-win32* "true")
           '$gnuplot
