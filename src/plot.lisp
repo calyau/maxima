@@ -970,32 +970,101 @@ sin(y)*(10.0+6*cos(x)),
 		  (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
 	(cons '(mlist) result-sans-nil)))))
 
+;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
+;; or [discrete,[[x1,y1]...] and returns [x1,y1,...] or nil, if
+;; non of the points have real values.
+;; Currently any options given are being ignored, because there
+;; are no options specific to the generation of the points.
 (defun draw2d-discrete (f)
-  (let* ((f (copy-tree f))              ; Copy all of F because we destructively modify it below.
-         (x (third f))
-         (y (fourth f)))
-    (let
-      ((data
-         (cond
-           ((= (length f) 4)                 ; [discrete,x,y]
-            (if (not ($listp x))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
-            (if (not ($listp y))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") y))
-            (cons '(mlist) (mapcan #'list (rest x) (rest y))))
-           ((= (length f) 3)                 ; [discrete,xy]
-            (if (not ($listp x))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
-            (let ((tmp (mapcar #'rest (rest x))))
-              (cons '(mlist) (mapcan #'append tmp))))
-           (t                                ; error
-             (merror
-               (intl:gettext "draw2d (discrete): argument must be [discrete, x, y] or [discrete, xy]; found: ~M") f)))))
+  (let ((x (third f)) (y (fourth f)) data gaps)
+    (cond
+      (($listp x)            ; x is a list
+       (cond
+         (($listp (cadr x))     ; x1 is a list
+          (cond
+            ((= (length (cadr x)) 3) ; x1 is a 2D point
+             (setq data (parse-points-xy x)))
+            (t                      ; x1 is not a 2D point
+             (merror (intl:gettext "draw2d-discrete: Expecting a point with 2 coordinates; found ~M~%") (cadr x)))))
+         (t                     ; x1 is not a list
+          (cond
+            (($listp y)             ; y is a list
+             (cond
+               ((symbolp (coerce-float (cadr y))); y is an option
+                (setq data (parse-points-y x)))
+               (t                            ; y is not an option
+                (cond
+                  (($listp (cadr y))            ; y1 is a list
+                   (merror (intl:gettext "draw2d-discrete: Expecting a y coordinate; found ~M~%") (cadr y)))
+                  (t                            ; y1 not a list
+                   (cond
+                     ((= (length x) (length y))     ; case [x][y]
+                      (setq data (parse-points-x-y x y)))
+                     (t                             ; wrong
+                      (merror (intl:gettext "draw2d-discrete: The number of x and y coordinates do not match.~%")))))))))
+            (t                      ; y is not a list
+             (setq data (parse-points-y x)))))))
+      (t                     ; x is not a list
+       (merror (intl:gettext "draw2d-discrete: Expecting a list of x coordinates or points; found ~M~%") x)))
 
-      ;; Encourage non-floats to become floats here.
+    ;; checks for non-real values
+    (cond
+      ((some #'realp data)
+       (setq gaps (count-if #'(lambda (x) (eq x 'moveto)) data))
+       (when (> gaps 0)
+         ;; some points have non-real values
+         (mtell (intl:gettext "Warning: excluding ~M points with non-numerical values.~%") (/ gaps 2))))
+      (t
+       ;; none of the points have real values
+       (mtell (intl:gettext "Warning: none of the points have numerical values.~%"))
+       (setq data nil)))
+    data))
 
-      ($float data))))
+;; Two lists [x1...xn] and [y1...yn] are joined as
+;; [x1 y1...xn yn], converting all expressions to real numbers.
+;; If either xi or yi are not real, both are replaced by 'moveto
+(defun parse-points-x-y (x y)
+  (do ((a (rest x) (cdr a))
+       (b (rest y) (cdr b))
+       c af bf)
+      ((null b) (cons '(mlist) (reverse c)))
+    (setq af (coerce-float (car a)))
+    (setq bf (coerce-float (car b)))
+    (cond
+      ((or (not (realp af)) (not (realp bf)))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons af c)))))))
 
+;; One list [y1...yn] becomes the list [1 y1...n yn], 
+;; converting all expressions to real numbers.
+;; If yi is not real, both i and yi are replaced by 'moveto
+(defun parse-points-y (y)
+  (do ((a 1 (1+ a))
+       (b (rest y) (cdr b))
+       c bf)
+      ((null b) (cons '(mlist) (reverse c)))
+    (setq bf (coerce-float (car b)))
+    (cond
+      ((not (realp bf))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons a c)))))))
+
+;; List [[x1,y1]...[xn,yn]] is transformed into
+;; [x1 y1...xn yn], converting all expressions to real numbers.
+;; If either xi or yi are not real, both are replaced by 'moveto
+(defun parse-points-xy (xy)
+  (do ((ab (rest xy) (cdr ab))
+       c af bf)
+      ((null ab) (cons '(mlist) (reverse c)))
+    (setq af (coerce-float (cadar ab)))
+    (setq bf (coerce-float (caddar ab)))
+    (cond
+      ((or (not (realp af)) (not (realp bf)))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons af c)))))))
 
 ;;; Adaptive plotting, based on the adaptive plotting code from
 ;;; YACAS. See http://yacas.sourceforge.net/Algo.html#c3s1 for a

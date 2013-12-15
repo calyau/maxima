@@ -863,6 +863,15 @@ linearalgebra/test-linalg.mac \
 linearalgebra/test-lu.mac \
 linearalgebra/test-matrixexp.mac \
 linearalgebra/test-polynomialp.mac \
+logic/COPYING \
+logic/logic.dem \
+logic/logic.html \
+logic/logic.info \
+logic/logic.lisp \
+logic/logic.mac \
+logic/logic.pdf \
+logic/logic.texi \
+logic/TODO \
 lsquares/lsquares.mac \
 lsquares/plsquares.mac \
 lsquares/rtest_lsquares.mac \
