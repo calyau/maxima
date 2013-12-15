@@ -72,7 +72,7 @@ sin(y)*(10.0+6*cos(x)),
     "set size 1.5, 1.5;set term postscript eps enhanced color solid 24"))
 
 (defvar $plot_options 
-  `((mlist) ((mlist) $gnuplot_preamble "")
+  `((mlist)
     ((mlist) $plot_format
      ,(if (string= *autoconf-win32* "true")
           '$gnuplot
@@ -241,6 +241,7 @@ sin(y)*(10.0+6*cos(x)),
           ($ylabel :ylabel) ($ytics :ytics) ($yvar :yvar) ($z :z)
           ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
           ($gnuplot_4_0 :gnuplot_4_0)
+          ($gnuplot_epilogue :gnuplot_epilogue)
           ($gnuplot_curve_titles :gnuplot_curve_titles)
           ($gnuplot_curve_styles :gnuplot_curve_styles)
           ($gnuplot_default_term_command :gnuplot_default_term_command)
@@ -1526,6 +1527,9 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($gnuplot_4_0 (setf (getf options :gnuplot_4_0)
                           (check-option-boole (cdr opt))))
+      ($gnuplot_epilogue
+       (setf (getf options :gnuplot_epilogue)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_curve_titles
        (setf (getf options :gnuplot_curve_titles)
              (check-option (cdr opt) #'stringp "a string")))

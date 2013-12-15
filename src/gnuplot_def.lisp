@@ -235,30 +235,33 @@
                        (getf plot-options :mesh_lines_color)
                        '$black)))
     (if (find 'mlist palette :key #'car) (setq palette (list palette)))
-    (when (string= (getf plot-options :type) "plot3d")
-      (format dest "set ticslevel 0~%")
-      (if palette
-          (progn
-            (if meshcolor
+    (if (and preamble (> (length preamble) 0))
+        (format dest "~a~%" preamble)
+        (progn
+          (when (string= (getf plot-options :type) "plot3d")
+            (format dest "set ticslevel 0~%")
+            (if palette
                 (progn
-                  (format dest "set style line 100 lt rgb ~s lw 1~%"
-                          (rgb-color meshcolor))
-                  (format dest "set pm3d hidden3d 100~%")
-                  (unless (getf plot-options :gnuplot_4_0)
-                    (format dest "set pm3d depthorder~%")))
-                (format dest "set pm3d~%"))
-            (format dest "unset hidden3d~%")
-            (format dest "set palette ~a~%"
-                    (gnuplot-palette (rest (first palette)))))
-          (format dest "set hidden3d~%"))
-      (let ((elev (getf plot-options :elevation))
-            (azim (getf plot-options :azimuth)))
-        (when (or elev azim)
-          (if elev
-              (format dest "set view ~d" elev)
-              (format dest "set view "))
-          (when azim (format dest ", ~d" azim))
-          (format dest "~%"))))
+                  (if meshcolor
+                      (progn
+                        (format dest "set style line 100 lt rgb ~s lw 1~%"
+                                (rgb-color meshcolor))
+                        (format dest "set pm3d hidden3d 100~%")
+                        (unless (getf plot-options :gnuplot_4_0)
+                          (format dest "set pm3d depthorder~%")))
+                      (format dest "set pm3d~%"))
+                  (format dest "unset hidden3d~%")
+                  (format dest "set palette ~a~%"
+                          (gnuplot-palette (rest (first palette)))))
+                (format dest "set hidden3d~%"))
+            (let ((elev (getf plot-options :elevation))
+                  (azim (getf plot-options :azimuth)))
+              (when (or elev azim)
+                (if elev
+                    (format dest "set view ~d" elev)
+                    (format dest "set view "))
+                (when azim (format dest ", ~d" azim))
+                (format dest "~%"))))))
 
     ;; colorbox can be used by plot3d or plot2d
     (unless (getf plot-options :colorbox)
@@ -420,8 +423,9 @@
     ;; identifier for missing data
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
 
-    ;; user's preamble. It may overule any of the previous settings
-    (when (and preamble (> (length preamble) 0)) (format dest "~a~%" preamble))
+    ;; user's commands; may overule any of the previous settings
+    (when (getf plot-options :gnuplot_epilogue)
+      (format dest "~a~%" (getf plot-options :gnuplot_epilogue)))
 
     ;;returns the name of the file created
     (or gnuplot-out-file "")))
