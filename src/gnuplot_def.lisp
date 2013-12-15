@@ -311,7 +311,7 @@
            (format dest "set out ~s~%" gnuplot-out-file)))
       (t
        (format dest "set term ~a~%" 
-               (getf plot-options :gnuplot_term))
+               (ensure-string (getf plot-options :gnuplot_term)))
        (if gnuplot-out-file
            (format dest "set out ~s~%" gnuplot-out-file))) )
 

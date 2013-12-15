@@ -1438,7 +1438,8 @@ sin(y)*(10.0+6*cos(x)),
              (check-option (cdr opt) #'naturalp "a natural number" 1)))
       ($axes (setf (getf options :axes)
                    (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
-      ($azimuth (if (caddr opt) (setf (caddr opt) (parse-azimuth (caddr opt))))
+      ($azimuth (if (caddr opt)
+                    (setf (caddr opt) (parse-azimuth (caddr opt))))
                 (setf (getf options :azimuth)
                       (check-option (cdr opt) #'realp "a real number" 1)))
       ($box (setf (getf options :box)
@@ -1449,8 +1450,8 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option (cdr opt) #'plotcolorp "a color")))
       ($colorbox  (setf (getf options :colorbox)
                         (check-option-boole (cdr opt))))
-      ($elevation (if (caddr opt) (setf (caddr opt)
-                                        (parse-elevation (caddr opt))))
+      ($elevation (if (caddr opt)
+                      (setf (caddr opt) (parse-elevation (caddr opt))))
                   (setf (getf options :elevation)
                         (check-option (cdr opt) #'realp "a real number" 1)))
       ($grid (setf (getf options :grid)
@@ -1553,10 +1554,20 @@ sin(y)*(10.0+6*cos(x)),
              (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_ps_term_command
        (setf (getf options :gnuplot_ps_term_command)
-             (check-option (cdr opt) #'string "a string" 1)))
-      ($gnuplot_term (setf
-                      (getf options :gnuplot_term)
-                      (check-option (cdr opt) #'symbolp "a symbol" 1)))
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ;; gnuplot_term is a tricky one: when it is just default, dumb or
+      ;; ps, we want it to be a symbol, but when it is more complicated,
+      ;; i.e. "ps; size 16cm, 12cm", it must be a string and not a symbol
+      ($gnuplot_term 
+       (let ((s (caddr opt)))
+         (when (stringp s)
+           (cond ((string= s "default") (setq s '$default))
+                 ((string= s "dumb") (setq s '$dumb))
+                 ((string= s "ps") (setq s '$ps))))
+         (if (atom s)
+             (setf (getf options :gnuplot_term) s)
+             (merror
+              (intl:gettext "Wrong argument for plot option \"gnuplot_term\". Expecting a string or a symbol but found \"~M\".") s))))
       (t
        (merror
         (intl:gettext "plot-options-parser: unknown plot option: ~M") opt))))
