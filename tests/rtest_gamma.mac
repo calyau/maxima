@@ -3706,7 +3706,7 @@ true;
 relerror(gamma(2b0^-256), 2b0^256, 10^(-fpprec+1));
 true;
 
-closeto(
+relerror(
   gamma(2.0^-256 + 1d-200*%i),
   rectform(1/(2.0^-256 + 1d-200*%i)),
   2d-15);
