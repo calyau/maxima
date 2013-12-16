@@ -241,7 +241,6 @@ sin(y)*(10.0+6*cos(x)),
           ($ylabel :ylabel) ($ytics :ytics) ($yvar :yvar) ($z :z)
           ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
           ($gnuplot_4_0 :gnuplot_4_0)
-          ($gnuplot_epilogue :gnuplot_epilogue)
           ($gnuplot_curve_titles :gnuplot_curve_titles)
           ($gnuplot_curve_styles :gnuplot_curve_styles)
           ($gnuplot_default_term_command :gnuplot_default_term_command)
@@ -249,7 +248,9 @@ sin(y)*(10.0+6*cos(x)),
           ($gnuplot_out_file :gnuplot_out_file)
           ($gnuplot_pm3d :gnuplot_pm3d)
           ($gnuplot_preamble :gnuplot_preamble)
+          ($gnuplot_prefix :gnuplot_prefix)
           ($gnuplot_ps_term_command :gnuplot_ps_term_command)
+          ($gnuplot_suffix :gnuplot_prefix)
           ($gnuplot_term :gnuplot_term))))
 
 (defun get-gnuplot-term (term)
@@ -1528,9 +1529,6 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($gnuplot_4_0 (setf (getf options :gnuplot_4_0)
                           (check-option-boole (cdr opt))))
-      ($gnuplot_epilogue
-       (setf (getf options :gnuplot_epilogue)
-             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_curve_titles
        (setf (getf options :gnuplot_curve_titles)
              (check-option (cdr opt) #'stringp "a string")))
@@ -1552,8 +1550,14 @@ sin(y)*(10.0+6*cos(x)),
       ($gnuplot_preamble
        (setf (getf options :gnuplot_preamble)
              (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_prefix
+       (setf (getf options :gnuplot_prefix)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_ps_term_command
        (setf (getf options :gnuplot_ps_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_suffix
+       (setf (getf options :gnuplot_suffix)
              (check-option (cdr opt) #'stringp "a string" 1)))
       ;; gnuplot_term is a tricky one: when it is just default, dumb or
       ;; ps, we want it to be a symbol, but when it is more complicated,

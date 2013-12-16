@@ -234,12 +234,14 @@
         (meshcolor (if (member :mesh_lines_color plot-options)
                        (getf plot-options :mesh_lines_color)
                        '$black)))
-    (if (find 'mlist palette :key #'car) (setq palette (list palette)))
+    (when (find 'mlist palette :key #'car) (setq palette (list palette)))
+    (when (getf plot-options :prefix)
+      (format dest "~a~%" (getf plot-options prefix)))
     (if (and preamble (> (length preamble) 0))
         (format dest "~a~%" preamble)
         (progn
           (when (string= (getf plot-options :type) "plot3d")
-            (format dest "set ticslevel 0~%")
+            (format dest "set xyplane relative 0~%")
             (if palette
                 (progn
                   (if meshcolor
@@ -424,8 +426,8 @@
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
 
     ;; user's commands; may overule any of the previous settings
-    (when (getf plot-options :gnuplot_epilogue)
-      (format dest "~a~%" (getf plot-options :gnuplot_epilogue)))
+    (when (getf plot-options :gnuplot_suffix)
+      (format dest "~a~%" (getf plot-options :gnuplot_suffix)))
 
     ;;returns the name of the file created
     (or gnuplot-out-file "")))
