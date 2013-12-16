@@ -250,7 +250,7 @@ sin(y)*(10.0+6*cos(x)),
           ($gnuplot_preamble :gnuplot_preamble)
           ($gnuplot_prefix :gnuplot_prefix)
           ($gnuplot_ps_term_command :gnuplot_ps_term_command)
-          ($gnuplot_suffix :gnuplot_prefix)
+          ($gnuplot_suffix :gnuplot_suffix)
           ($gnuplot_term :gnuplot_term))))
 
 (defun get-gnuplot-term (term)
