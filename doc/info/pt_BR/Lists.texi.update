@@ -430,7 +430,8 @@ rat: replaced 0.0 by 0/1 = 0.0
 @deffn {Function} eighth (@var{expr})
 
 Retorna o oitavo item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para maiores detalhes.
+Veja @mref{first}
+para maiores detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -458,7 +459,8 @@ Retorna uma nova lista consistindo dos elementos de @code{lista} seguido de
 @deffn {Function} fifth (@var{expr})
 
 Retorna o quinto item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para maiores detalhes.
+Veja @mref{first}
+para maiores detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -475,7 +477,8 @@ Retorna a primeira parte de @var{expr} que pode resultar no primeiro elemento de
 lista, a primeira linha de uma matriz, a primeira parcela de uma soma, etc.  Note que
 @code{first} e suas fun@,{c}@~{o}es semelhantes, @code{rest} e @code{last}, trabalham 
 sobre a forma de @var{expr} que @'{e} mostrada e n@~{a}o na forma que @'{e} digitada na
-entrada.  Se a vari@'{a}vel @mref{inflag} for ajstada para @code{true} todavia, essas
+entrada.  Se a vari@'{a}vel @mref{inflag}
+for ajstada para @code{true} todavia, essas
 fun@,{c}@~{o}es ir@~{a}o trabalhar sobre a forma interna de @var{expr}.  Note que o
 simplificador reordena express@~{o}es.  Dessa forma @code{first(x+y)} ir@'{a} retornar @code{x} se
 @code{inflag} for @code{true} e @code{y} se @code{inflag} for @code{false}
@@ -492,7 +495,8 @@ simplificador reordena express@~{o}es.  Dessa forma @code{first(x+y)} ir@'{a} re
 @deffn {Function} fourth (@var{expr})
 
 Retorna o quarto item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para maiores detalhes.
+Veja @mref{first}
+para maiores detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -563,11 +567,13 @@ retorna a @'{u}ltima parte (termo, linha, elemento, etc.) de @var{expr}.
 Retorna (por padr@~{a}o) o n@'{u}mero de partes na forma
 externa (mostrada) de @var{expr}.  No caso de listas corresponde ao n@'{u}mero de elementos,
 para matrizes corresponde ao n@'{u}mero de linhas, e para somas corresponde ao n@'{u}mero de
-parcelas (veja @mref{dispform}).
+parcelas (veja @mref{dispform}
+).
 
-A fun@,{c}@~{a}o @code{length} @'{e} afetada pela vari@'{a}vel @mref{inflag}.  Ent@~{a}o, e.g.
-@code{length(a/(b*c));} fornece 2 se @code{inflag} for @code{false} (Assumindo
-que @mref{exptdispflag} @'{e} @code{true}), mas 3 se @code{inflag} for @code{true} (a
+A fun@,{c}@~{a}o @code{length} @'{e} afetada pela vari@'{a}vel @mrefdot{inflag}
+.  Ent@~{a}o, e.g. @code{length(a/(b*c));} fornece 2 se @code{inflag} for @code{false} (Assumindo
+que @mref{exptdispflag}
+@'{e} @code{true}), mas 3 se @code{inflag} for @code{true} (a
 representa@,{c}@~{a}o interna @'{e} essencialmente @code{a*b^-1*c^-1}).
 
 @opencatbox
@@ -749,7 +755,8 @@ Exemplos:
 @deffn {Function} ninth (@var{expr})
 
 Retorna o nono item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para maiores detalhes.
+Veja @mref{first}
+para maiores detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -767,7 +774,8 @@ lista propriamente dita.
 Se o argumento @var{lista} n@~{a}o estiver associado a uma lista ou a lista estiver vazia, Maxima
 gera uma mensagem de erro.
 
-Veja tamb@'{e}m @mref{push} para exemplos.
+Veja tamb@'{e}m @mref{push}
+para exemplos.
 
 Para usar essa fun@,{c}@~{a}o, o pacote adicional "basic" deve ser primeiramente
 carregado: @code{load("basic")}.
@@ -788,7 +796,8 @@ n@~{a}o a lista propriamente dita.  O @var{item} pode ser qualquer s@'{i}mbo ou 
 Se o argumento @var{lista} n@~{a}o esitver associado a uma lista, Maxima gera uma mensagem de
 erro.
 
-Veja tamb@'{e}m @mref{pop} para remover o primeiro item de uma lista.
+Veja tamb@'{e}m @mref{pop}
+para remover o primeiro item de uma lista.
 
 O comando @code{load("basic")} torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
 
@@ -893,7 +902,8 @@ e.g.  @code{reverse(a=b);} fornece @code{b=a}.
 @deffn {Function} second (@var{expr})
 
 Retorna o segundo item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para mais detalhes.
+Veja @mref{first}
+para mais detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -905,7 +915,8 @@ Veja @mref{first} para mais detalhes.
 @deffn {Function} seventh (@var{expr})
 
 Retorna o s@'{e}timo item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para mais detalhes.
+Veja @mref{first}
+para mais detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -917,7 +928,8 @@ Veja @mref{first} para mais detalhes.
 @deffn {Function} sixth (@var{expr})
 
 Retorna o sexto item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para mais detalhes.
+Veja @mref{first}
+para mais detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -949,7 +961,8 @@ A lista ordenada @'{e} retornada como um novo objeto; o argumento @var{L} n@~{a}
 
 A entrada @code{sort(@var{L})} @'{e} equivalente a @code{sort(@var{L}, orderlessp)}.
 
-A ordem padr@~{a}o de montagem de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp} O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
+A ordem padr@~{a}o de montagem de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp}
+O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
 
 Todos os @'{a}tomos e express@~{o}es do Maxima s@~{a}o compar@'{a}veis tanto por @code{orderlessp} quanto por @code{ordergreatp}.
 
@@ -1029,7 +1042,8 @@ O comando @code{sort(@var{L})} @'{e} equivalente a @code{sort(@var{L}, orderless
 @end group
 @end example
 
-A ordem padr@~{a}o de ordena@,{c}@~{a}o de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp} O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
+A ordem padr@~{a}o de ordena@,{c}@~{a}o de uma lista @'{e} a ascendente, como determinado por @mrefdot{orderlessp}
+O predicado @code{ordergreatp} ordena uma lista em ordem descendente.
 
 @c ===beg===
 @c L : [a, 2*b, -5, 7, 1 + %e, %pi];
@@ -1232,7 +1246,8 @@ Exemplo:
 @deffn {Function} tenth (@var{expr})
 
 Retorna o d@'{e}cimo item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para mais detalhes.
+Veja @mref{first}
+para mais detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -1244,7 +1259,8 @@ Veja @mref{first} para mais detalhes.
 @deffn {Function} third (@var{expr})
 
 Retorna o terceiro item da express@~{a}o ou lista @var{expr}.
-Veja @mref{first} para mais detalhes.
+Veja @mref{first}
+para mais detalhes.
 
 @opencatbox
 @category{Lists} @category{Expressions}

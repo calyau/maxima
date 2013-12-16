@@ -196,15 +196,21 @@ sin(y)*(10.0+6*cos(x)),
             (intern (concatenate 'string "$" 
                                  (symbol-name (nth (* i 2) *plot-options*)))))
       (setq value (nth (+ (* i 2) 1) *plot-options*))
-      (if (listp value)
+      (if (consp value)
           (push (cons '(mlist) (cons key value)) options)
-          (progn
-            (when (stringp value) (setq value (format nil "~s" value)))
-            (push (list '(mlist) key value) options))))
+          (push (list '(mlist) key value) options)))
     (if name
         (loop for v in (cdr options)
            when (eq (second v) name) do (return (if n (nth n  v) v)))
         (reverse options))))
+
+(defun quote-strings (opt)
+  (if (atom opt)
+      (if (stringp opt)
+          (format nil "~s" opt)
+          opt)
+      (cons (quote-strings (car opt))
+            (quote-strings (cdr opt)))))
 
 (defun get-plot-option-string (option &optional (index 1))
   (let* ((val ($get_plot_option option 2))
@@ -213,13 +219,38 @@ sin(y)*(10.0+6*cos(x)),
                        `(,val))))
     (ensure-string (nth (mod (- index 1) (length val-list)) val-list))))
 
-(defun $set_plot_option (value)
-  (unless ($listp value)
-    (merror
-     (intl:gettext
-      "set_plot_option: expecting a list; found: ~M") value))
-  (setq *plot-options* (plot-options-parser (list value) *plot-options*))
+(defun $set_plot_option (&rest value)
+  (setq *plot-options* (plot-options-parser value *plot-options*))
   ($get_plot_option))
+
+(defun $rem_plot_option (name)
+  (remf *plot-options*
+        (case name
+          ($adapt_depth :adapt_depth) ($axes :axes) ($azimuth :azimuth)
+          ($box :box) ($cbtics :cbtics) ($color :color) ($colorbox :colorbox)
+          ($elevation :elevation) ($grid :grid) ($grid2d :grid2d)
+          ($iterations :iterations) ($label :label) ($legend :legend)
+          ($logx :logx) ($logy :logy) ($mesh_lines_color :mesh_lines_color)
+          ($nticks :nticks) ($palette :palette) ($plot_format :plot_format)
+          ($plot_realpart :plot_realpart) ($point_type :point_type)
+          ($psfile :psfile) ($run_viewer :run_viewer) ($samexy :samexy)
+          ($samexyz :samexyz) ($style :style) ($t :t) ($title :title)
+          ($transform_xy :transform_xy) ($x :x) ($xbounds :xbounds)
+          ($xlabel :xlabel) ($xvar :xvar) ($xyratio :xyratio)
+          ($xyscale :xyscale) ($y :y) ($xtics :xtics) ($ybounds :ybounds)
+          ($ylabel :ylabel) ($ytics :ytics) ($yvar :yvar) ($z :z)
+          ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
+          ($gnuplot_4_0 :gnuplot_4_0)
+          ($gnuplot_epilogue :gnuplot_epilogue)
+          ($gnuplot_curve_titles :gnuplot_curve_titles)
+          ($gnuplot_curve_styles :gnuplot_curve_styles)
+          ($gnuplot_default_term_command :gnuplot_default_term_command)
+          ($gnuplot_dumb_term_command :gnuplot_dumb_term_command)
+          ($gnuplot_out_file :gnuplot_out_file)
+          ($gnuplot_pm3d :gnuplot_pm3d)
+          ($gnuplot_preamble :gnuplot_preamble)
+          ($gnuplot_ps_term_command :gnuplot_ps_term_command)
+          ($gnuplot_term :gnuplot_term))))
 
 (defun get-gnuplot-term (term)
   (let* ((sterm (string-downcase (ensure-string term)))
@@ -940,32 +971,101 @@ sin(y)*(10.0+6*cos(x)),
 		  (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
 	(cons '(mlist) result-sans-nil)))))
 
+;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
+;; or [discrete,[[x1,y1]...] and returns [x1,y1,...] or nil, if
+;; non of the points have real values.
+;; Currently any options given are being ignored, because there
+;; are no options specific to the generation of the points.
 (defun draw2d-discrete (f)
-  (let* ((f (copy-tree f))              ; Copy all of F because we destructively modify it below.
-         (x (third f))
-         (y (fourth f)))
-    (let
-      ((data
-         (cond
-           ((= (length f) 4)                 ; [discrete,x,y]
-            (if (not ($listp x))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
-            (if (not ($listp y))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") y))
-            (cons '(mlist) (mapcan #'list (rest x) (rest y))))
-           ((= (length f) 3)                 ; [discrete,xy]
-            (if (not ($listp x))
-              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
-            (let ((tmp (mapcar #'rest (rest x))))
-              (cons '(mlist) (mapcan #'append tmp))))
-           (t                                ; error
-             (merror
-               (intl:gettext "draw2d (discrete): argument must be [discrete, x, y] or [discrete, xy]; found: ~M") f)))))
+  (let ((x (third f)) (y (fourth f)) data gaps)
+    (cond
+      (($listp x)            ; x is a list
+       (cond
+         (($listp (cadr x))     ; x1 is a list
+          (cond
+            ((= (length (cadr x)) 3) ; x1 is a 2D point
+             (setq data (parse-points-xy x)))
+            (t                      ; x1 is not a 2D point
+             (merror (intl:gettext "draw2d-discrete: Expecting a point with 2 coordinates; found ~M~%") (cadr x)))))
+         (t                     ; x1 is not a list
+          (cond
+            (($listp y)             ; y is a list
+             (cond
+               ((symbolp (coerce-float (cadr y))); y is an option
+                (setq data (parse-points-y x)))
+               (t                            ; y is not an option
+                (cond
+                  (($listp (cadr y))            ; y1 is a list
+                   (merror (intl:gettext "draw2d-discrete: Expecting a y coordinate; found ~M~%") (cadr y)))
+                  (t                            ; y1 not a list
+                   (cond
+                     ((= (length x) (length y))     ; case [x][y]
+                      (setq data (parse-points-x-y x y)))
+                     (t                             ; wrong
+                      (merror (intl:gettext "draw2d-discrete: The number of x and y coordinates do not match.~%")))))))))
+            (t                      ; y is not a list
+             (setq data (parse-points-y x)))))))
+      (t                     ; x is not a list
+       (merror (intl:gettext "draw2d-discrete: Expecting a list of x coordinates or points; found ~M~%") x)))
 
-      ;; Encourage non-floats to become floats here.
+    ;; checks for non-real values
+    (cond
+      ((some #'realp data)
+       (setq gaps (count-if #'(lambda (x) (eq x 'moveto)) data))
+       (when (> gaps 0)
+         ;; some points have non-real values
+         (mtell (intl:gettext "Warning: excluding ~M points with non-numerical values.~%") (/ gaps 2))))
+      (t
+       ;; none of the points have real values
+       (mtell (intl:gettext "Warning: none of the points have numerical values.~%"))
+       (setq data nil)))
+    data))
 
-      ($float data))))
+;; Two lists [x1...xn] and [y1...yn] are joined as
+;; [x1 y1...xn yn], converting all expressions to real numbers.
+;; If either xi or yi are not real, both are replaced by 'moveto
+(defun parse-points-x-y (x y)
+  (do ((a (rest x) (cdr a))
+       (b (rest y) (cdr b))
+       c af bf)
+      ((null b) (cons '(mlist) (reverse c)))
+    (setq af (coerce-float (car a)))
+    (setq bf (coerce-float (car b)))
+    (cond
+      ((or (not (realp af)) (not (realp bf)))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons af c)))))))
 
+;; One list [y1...yn] becomes the list [1 y1...n yn], 
+;; converting all expressions to real numbers.
+;; If yi is not real, both i and yi are replaced by 'moveto
+(defun parse-points-y (y)
+  (do ((a 1 (1+ a))
+       (b (rest y) (cdr b))
+       c bf)
+      ((null b) (cons '(mlist) (reverse c)))
+    (setq bf (coerce-float (car b)))
+    (cond
+      ((not (realp bf))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons a c)))))))
+
+;; List [[x1,y1]...[xn,yn]] is transformed into
+;; [x1 y1...xn yn], converting all expressions to real numbers.
+;; If either xi or yi are not real, both are replaced by 'moveto
+(defun parse-points-xy (xy)
+  (do ((ab (rest xy) (cdr ab))
+       c af bf)
+      ((null ab) (cons '(mlist) (reverse c)))
+    (setq af (coerce-float (cadar ab)))
+    (setq bf (coerce-float (caddar ab)))
+    (cond
+      ((or (not (realp af)) (not (realp bf)))
+       (setq c (cons 'moveto (cons 'moveto c))))
+      (t
+       (setq c (cons bf (cons af c)))))))
 
 ;;; Adaptive plotting, based on the adaptive plotting code from
 ;;; YACAS. See http://yacas.sourceforge.net/Algo.html#c3s1 for a
@@ -1150,16 +1250,16 @@ sin(y)*(10.0+6*cos(x)),
       ;; NTICKS too big.  Since adaptive plotting splits the sections
       ;; in half, it's also probably not a good idea to have NTICKS be
       ;; a power of two.
-      (when (getf plot-options :log-x)
+      (when (getf plot-options :logx)
         (setf x-start (log x-start))
         (setf xend (log xend))
         (setf x-step (/ (- xend x-start) (coerce-float nticks) 2)))
 
       (flet ((fun (x)
-               (let ((y (if (getf plot-options :log-x)
+               (let ((y (if (getf plot-options :logx)
                             (funcall fcn (exp x))
                             (funcall fcn x))))
-                 (if (getf plot-options :log-y)
+                 (if (getf plot-options :logy)
                      (log y)
                      y))))
         
@@ -1203,9 +1303,9 @@ sin(y)*(10.0+6*cos(x)),
         (do ((x result (cddr x))
              (y (cdr result) (cddr y)))
             ((null y))
-          (when (getf plot-options :log-x)
+          (when (getf plot-options :logx)
             (setf (car x) (exp (car x))))
-          (when (getf plot-options :log-y)
+          (when (getf plot-options :logy)
             (setf (car y) (exp (car y))))
           (if (numberp (car y))
             (unless (<= ymin (car y) ymax)
@@ -1323,195 +1423,317 @@ sin(y)*(10.0+6*cos(x)),
 ;; returns:
 ;;  (:XLABEL "x" :XMAX 2.0 :XMIN -2.0 :NTICKS 30)
 
-(defun plot-options-parser (maxima-options options-plist &aux name)
-  (dolist (opt maxima-options)
-    (unless (and ($listp opt) (symbolp (setq name (second opt))))
+(defun plot-options-parser (maxopts options &aux name)
+  (unless (every #'$listp maxopts)
+    (setq maxopts
+          (mapcar #'(lambda (x) (if ($listp x) x (list '(mlist) x))) maxopts)))
+  (dolist (opt maxopts)
+    (unless ($symbolp (setq name (second opt)))
       (merror
        (intl:gettext
-        "plot-option-parser: plot option must be a list with a symbol in the first position; found: ~M") opt))
+        "plot-options-parser: Expecting a symbol for the option name, found: \"~M\"") opt))
     (case name
-      ($adapt_depth
-       (setf (getf options-plist :depth)
-             (check-option-naturals (cdr opt) 1)))
-      ($axes
-       (setf (getf options-plist :axes) (check-option-axes (cdr opt))))
-      ($azimuth
-       (setf (getf options-plist :azimuth)
-             (check-option-items (cdr opt) 'integer 1)))
-      ($box (setf (getf options-plist :box) (check-option-box (cdr opt))))
-      ($color
-       (setf (getf options-plist :color) (check-option-color (cdr opt))))
-      ($colorbox
-       (setf (getf options-plist :colorbox)
-             (check-option-items (cdr opt) 't 1)))
-      ($elevation
-       (setf (getf options-plist :elevation)
-             (check-option-items (cdr opt) 'integer 1)))
-      ($grid
-       (setf (getf options-plist :grid) (check-option-naturals (cdr opt) 2)))
+      ($adapt_depth 
+       (setf (getf options :depth)
+             (check-option (cdr opt) #'naturalp "a natural number" 1)))
+      ($axes (setf (getf options :axes)
+                   (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
+      ($azimuth (if (caddr opt)
+                    (setf (caddr opt) (parse-azimuth (caddr opt))))
+                (setf (getf options :azimuth)
+                      (check-option (cdr opt) #'realp "a real number" 1)))
+      ($box (setf (getf options :box)
+                  (check-option-boole (cdr opt))))
+      ($cbtics (setf (getf options :cbtics)
+                    (check-option-b (cdr opt) #'realp "a real number" 3)))
+      ($color (setf (getf options :color)
+                    (check-option (cdr opt) #'plotcolorp "a color")))
+      ($colorbox  (setf (getf options :colorbox)
+                        (check-option-boole (cdr opt))))
+      ($elevation (if (caddr opt)
+                      (setf (caddr opt) (parse-elevation (caddr opt))))
+                  (setf (getf options :elevation)
+                        (check-option (cdr opt) #'realp "a real number" 1)))
+      ($grid (setf (getf options :grid)
+                   (check-option (cdr opt) #'naturalp "a natural number" 2)))
+      ($grid2d (setf (getf options :grid2d)
+                     (check-option-boole (cdr opt))))
       ($iterations
-       (setf (getf options-plist :iterations)
-             (check-option-naturals (cdr opt) 1)))
-      ($legend
-       (setf (getf options-plist :legend) (check-option-legend (cdr opt))))
-      ($logx (setf (getf options-plist :log-x) t))
-      ($logy (setf (getf options-plist :log-y) t))
+       (setf (getf options :iterations)
+             (check-option (cdr opt) #'naturalp "a natural number" 1)))
+      ($label (setf (getf options :label)
+                    (check-option-label (cdr opt))))
+      ($legend (setf (getf options :legend)
+                     (check-option-b (cdr opt) #'stringp "a string")))
+      ($logx (setf (getf options :logx)
+                   (check-option-boole (cdr opt))))
+      ($logy (setf (getf options :logy)
+                   (check-option-boole (cdr opt))))
       ($mesh_lines_color
-       (setf (getf options-plist :mesh_lines_color)
-             (check-option-color (cdr opt))))
-      ($nticks
-       (setf (getf options-plist :nticks) (check-option-naturals (cdr opt) 1)))
-      ($palette
-       (setf (getf options-plist :palette) (check-option-palette (cdr opt))))
-      ($plot_format
-       (setf (getf options-plist :plot_format) (check-option-format (cdr opt))))
-      ($plot_realpart
-       (setf (getf options-plist :plot_realpart)
-             (check-option-items (cdr opt) 't 1)))
-      ($point_type
-       (setf (getf options-plist :point_type) (check-option-point (cdr opt))))
-      ($psfile
-       (setf (getf options-plist :gnuplot_out_file)
-             (ensure-string (check-option-items (cdr opt) 'atom 1)))
-       (setf (getf options-plist :gnuplot_term) '$ps))
-      ($run_viewer
-       (setf (getf options-plist :run_viewer)
-             (check-option-items (cdr opt) 't 1)))
-      ($style
-       (setf (getf options-plist :style) (check-option-style (cdr opt))))
-      ($t (setf (getf options-plist :t) (cddr (check-range opt))))
-      ($transform_xy
-       (setf (getf options-plist :transform_xy)
-             (check-option-items (cdr opt) 't 1)))
-      ($x (setf (getf options-plist :x) (cddr (check-range opt)))
-          (unless (getf options-plist :xlabel)
-            (setf (getf options-plist :xlabel) "x")))
-      ($xbounds (setf (getf options-plist :xbounds) (cddr (check-range opt))))
-      ($xlabel
-       (setf (getf options-plist :xlabel)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
-      ($xvar
-       (setf (getf options-plist :xvar)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
-      ($y (setf (getf options-plist :y) (cddr (check-range opt)))
-          (unless (getf options-plist :ylabel)
-            (setf (getf options-plist :ylabel) "y")))
-      ($ybounds (setf (getf options-plist :ybounds) (cddr (check-range opt))))
-      ($ylabel
-       (setf (getf options-plist :ylabel)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
-      ($yvar
-       (setf (getf options-plist :yvar)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
-      ($z (setf (getf options-plist :z) (cddr (check-range opt)))
-          (unless (getf options-plist :zlabel)
-            (setf (getf options-plist :zlabel) "z")))
-      ($zlabel
-       (setf (getf options-plist :zlabel)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
-      ($gnuplot_4_0
-       (setf (getf options-plist :gnuplot_4_0)
-             (check-option-items (cdr opt) 't 1)))
+       (setf (getf options :mesh_lines_color)
+             (check-option-b (cdr opt) #'plotcolorp "a color" 1)))
+      ($nticks (setf (getf options :nticks)
+                     (check-option (cdr opt) #'naturalp "a natural number" 1)))
+      ($palette (setf (getf options :palette)
+                      (check-option-palette (cdr opt))))
+      ($plot_format (setf (getf options :plot_format)
+                          (check-option-format (cdr opt))))
+      ($plot_realpart (setf (getf options :plot_realpart)
+                            (check-option-boole (cdr opt))))
+      ($point_type (setf (getf options :point_type)
+                         (check-option (cdr opt) #'pointtypep "a point type")))
+      ($psfile (setf (getf options :psfile)
+                     (check-option (cdr opt) #'stringp "a string" 1)))
+      ($run_viewer (setf (getf options :run_viewer)
+                         (check-option-boole (cdr opt))))
+      ($samexy (setf (getf options :samexy)
+                     (check-option-boole (cdr opt))))
+      ($samexyz (setf (getf options :samexyz)
+                      (check-option-boole (cdr opt))))
+      ($style (setf (getf options :style)
+                    (check-option-style (cdr opt))))
+      ($t (setf (getf options :t) (cddr (check-range opt))))
+      ($title (setf (getf options :title)
+                    (check-option (cdr opt) #'stringp "a string" 1)))
+      ($transform_xy (setf (getf options :transform_xy)
+                           (check-option-b (cdr opt) #'symbolp "a symbol" 1)))
+      ($x (setf (getf options :x) (cddr (check-range opt))))
+      ($xbounds (setf (getf options :xbounds) (cddr (check-range opt))))
+      ($xlabel (setf (getf options :xlabel)
+                     (check-option (cdr opt) #'string "a string" 1)))
+      ($xtics (setf (getf options :xtics)
+                    (check-option-b (cdr opt) #'realp "a real number" 3)))
+      ($xvar (setf (getf options :xvar)
+                   (check-option (cdr opt) #'string "a string" 1)))
+      ($xyscale (setf (getf options :xyscale)
+                      (check-option (cdr opt) #'realpositivep
+                                    "a positive real number" 2)))
+      ($y (setf (getf options :y) (cddr (check-range opt))))
+      ($ybounds (setf (getf options :ybounds) (cddr (check-range opt))))
+      ($ylabel (setf (getf options :ylabel)
+                     (check-option (cdr opt) #'string "a string" 1)))
+      ($ytics (setf (getf options :ytics)
+                    (check-option-b (cdr opt) #'realp "a real number" 3)))
+      ($yvar (setf (getf options :yvar)
+                   (check-option (cdr opt) #'string "a string" 1)))
+      ($yxratio (setf (getf options :yxratio)
+                      (check-option (cdr opt) #'realp
+                                    "a real number" 1)))
+      ($z (setf (getf options :z) (cddr (check-range opt))))
+      ($zlabel (setf (getf options :zlabel)
+                     (check-option (cdr opt) #'string "a string" 1)))
+      ($zmin (setf (getf options :zmin)
+                   (check-option-b (cdr opt) #'realp "a real number" 1)))
+      ($ztics (setf (getf options :ztics)
+                    (check-option-b (cdr opt) #'realp "a real number" 3)))
+      ($gnuplot_4_0 (setf (getf options :gnuplot_4_0)
+                          (check-option-boole (cdr opt))))
+      ($gnuplot_epilogue
+       (setf (getf options :gnuplot_epilogue)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_curve_titles
-       (setf (getf options-plist :gnuplot_curve_titles)
-             (check-option-items (cdr opt) 'string)))
+       (setf (getf options :gnuplot_curve_titles)
+             (check-option (cdr opt) #'stringp "a string")))
       ($gnuplot_curve_styles
-       (setf (getf options-plist :gnuplot_curve_styles)
-             (check-option-items (cdr opt) 'string)))
+       (setf (getf options :gnuplot_curve_styles)
+             (check-option (cdr opt) #'stringp "a string")))
       ($gnuplot_default_term_command
-       (setf (getf options-plist :gnuplot_default_term_command)
-             (check-option-items (cdr opt) 'string 1)))
+       (setf (getf options :gnuplot_default_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_dumb_term_command
-       (setf (getf options-plist :gnuplot_dumb_term_command)
-             (check-option-items (cdr opt) 'string 1)))
-      ($gnuplot_out_file
-       (setf (getf options-plist :gnuplot_out_file)
-             (ensure-string (check-option-items (cdr opt) 'atom 1))))
+       (setf (getf options :gnuplot_dumb_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_out_file 
+       (setf (getf options :gnuplot_out_file)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_pm3d
-       (setf (getf options-plist :gnuplot_pm3d)
-             (check-option-items (cdr opt) 't 1)))
+       (setf (getf options :gnuplot_pm3d)
+             (check-option-boole (cdr opt))))
       ($gnuplot_preamble
-       (setf (getf options-plist :gnuplot_preamble)
-             (check-option-items (cdr opt) 'string 1)))
+       (setf (getf options :gnuplot_preamble)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_ps_term_command
-       (setf (getf options-plist :gnuplot_ps_term_command)
-             (check-option-items (cdr opt) 'string 1)))
-      ($gnuplot_term
-       (setf (getf options-plist :gnuplot_term)
-             (check-option-items (cdr opt) 'symbol 1)))
+       (setf (getf options :gnuplot_ps_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ;; gnuplot_term is a tricky one: when it is just default, dumb or
+      ;; ps, we want it to be a symbol, but when it is more complicated,
+      ;; i.e. "ps; size 16cm, 12cm", it must be a string and not a symbol
+      ($gnuplot_term 
+       (let ((s (caddr opt)))
+         (when (stringp s)
+           (cond ((string= s "default") (setq s '$default))
+                 ((string= s "dumb") (setq s '$dumb))
+                 ((string= s "ps") (setq s '$ps))))
+         (if (atom s)
+             (setf (getf options :gnuplot_term) s)
+             (merror
+              (intl:gettext "Wrong argument for plot option \"gnuplot_term\". Expecting a string or a symbol but found \"~M\".") s))))
       (t
        (merror
         (intl:gettext "plot-options-parser: unknown plot option: ~M") opt))))
-  options-plist)
+  options)
 
-;; The check-option-... functions take as input a plot option with the form
-;; (keyword v1 ... vn) and if value passes some test, return v1, if n=1,
-;; or (v1 ... vn) if n is greater than 1.
+;; natural numbers predicate
+(defun naturalp (n) (or (and (integerp n) (> n 0)) nil))
 
-;; options that only accept a single parameter
+;; positive real numbers predicate
+(defun realpositivep (x) (or (and (realp x) (> x 0)) nil))
 
-(defun check-option-axes (option)
-      (cadr option))
+;; posible values for the axes option
+(defun axesoptionp (o) (if (member o '($x $y $solid)) t nil))
 
-(defun check-option-format (option)
-      (cadr option))
+;; the 13 possibilities for the point types
+(defun pointtypep (p)
+  (if (member p  '($bullet $circle $plus $times $asterisk $box $square
+                  $triangle $delta $wedge $nabla $diamond $lozenge)) t nil))
 
-;; options that accept several parameters
-(defun check-option-items (option type &optional count)
+;; Colors can only one of the named colors or a six-digit hexadecimal
+;; number with a # suffix.
+(defun plotcolorp (color)
+  (cond ((and (stringp color)
+              (string= (subseq color 0 1) "#")
+              (= (length color) 7)
+              (ignore-errors (parse-integer (subseq color 1 6) :radix 16)))
+         t)
+        ((member color '($red $green $blue $magenta $cyan $yellow
+                         $orange $violet $brown $gray $black $white))
+         t)
+        (t nil)))
+
+;; tries to convert az into a floating-point number between 0 and 360
+(defun parse-azimuth (az) (mod ($float (meval* az)) 360))
+
+;; tries to convert el into a floating-poitn number between -180 and 180
+(defun parse-elevation (el) (- (mod (+ 180 ($float (meval* el))) 360) 180))
+
+;; The following functions check the value of an option returning an atom
+;;  when there is only one argument or a list when there are several arguments
+
+
+;; Checks for one or more items of the same type, using the test given
+(defun check-option (option test type &optional count)
   (when count
-    (or (eql (1- (length option)) count)
-        (merror (intl:gettext "plot-option-parser: expected ~M items in the ~M list;~% found ~M items.") count (first option) (1- (length option)))))
-  (dolist (item (rest option))
-    (when (not (typep item type))
+    (unless (= (1- (length option)) count)
       (merror
-       (intl:gettext "plot-options-parser: expected only ~M items in the ~M option;~% found a ~M.") type (first option) (type-of item))))
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
-
-(defun check-option-naturals (option &optional count)
-  (when count
-    (or (eql (1- (length option)) count)
-        (merror (intl:gettext "plot-options-parser: expected ~M items in the ~M option;~% found ~M items.") count (first option) (1- (length option)))))
-  (dolist (item (rest option))
-    (when (not (and (integerp item) (> item 0)))
+       (intl:gettext
+        "Wrong number of arguments for plot option \"~M\". Expecting ~M but found ~M.")
+       (car option) count (1- (length option)))))
+  (dolist (item (cdr option))
+    (when (not (funcall test item))
       (merror
-       (intl:gettext "plot-options-parser: expected only natural numbers in the ~M list;~% found a ~M.") (first option) (type-of item))))
-  (if (eql (1- (length option)) 1)
+       (intl:gettext "Wrong argument for plot option \"~M\". Expecting ~M but found \"~M\".") (car option) type item)))
+  (if (= (length option) 2)
       (cadr option)
       (cdr option)))
 
-(defun check-option-box (option)
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
+;; Accepts one or more items of the same type or true or false.
+;; When given, n is the maximum number of items.
+(defun check-option-b (option test type &optional count)
+  (let ((n (- (length option) 1)))
+    (when count
+      (unless (< n (1+ count))
+        (merror
+         (intl:gettext
+          "Wrong number of arguments for plot option \"~M\". Expecting ~M but found ~M.")
+         (car option) count (1- (length option)))))
+    (cond 
+      ((= n 0) t)
+      ((= n 1) (if (or (funcall test (cadr option)) (null (cadr option))
+                       (eq (cadr option) t))
+                   (cadr option)
+                   (merror (intl:gettext "Wrong argument for plot option \"~M\". Expecting ~M, true or false but found \"~M\".") (car option) type (cadr option))))
+      ((> n 1)
+       (dotimes (i n)
+         (unless (funcall test (nth (+ i 1) option))
+           (merror
+          (intl:gettext "Wrong argument for plot option \"~M\". Expecting ~M but found \"~M\".") (car option) type (nth (+ i 1) option))))
+       (cdr option)))))
 
-;; options that accept a Maxima list
+;; Boolean options can be [option], [option,true] or [option,false]
+(defun check-option-boole (option)
+  (if (= 1 (length option))
+      t
+      (if (and (= 2 (length option))
+               (or (eq (cadr option) t) (null (cadr option))))
+          (cadr option) 
+          (merror (intl:gettext "plot option ~M must be either true or false.")
+                  (car option)))))
 
-(defun check-option-style (option)
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
+;; label can be either [label, string, real, real] or
+;; [label, [string_1, real, real],...,[string_n, real, real]]
+(defun check-option-label (option &aux opt)
+  (if (not ($listp (cadr option)))
+      (setq opt (list (cons '(mlist) (cdr option))))
+      (setq opt (cdr option)))
+  (dolist (item opt)
+    (when (not (and ($listp item) (= 4 (length item)) (stringp (second item))
+                    (realp (third item)) (realp (fourth item))))
+      (merror
+       (intl:gettext
+        "Wrong argumet ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
+       item (car option))))
+  (cdr option))
 
-(defun check-option-legend (option)
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
+;; one of the possible formats
+(defun check-option-format (option &aux formats)
+  (if (string= *autoconf-win32* "true")
+      (setq formats '($geomview $gnuplot $mgnuplot $xmaxima))
+      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $xmaxima)))
+  (unless (member (cadr option) formats)
+    (merror
+     (intl:gettext
+      "Wrong argumet ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
+     (cadr option) (car option)))
+  (cadr option))
 
-(defun check-option-color (option)
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
-
-(defun check-option-point (option)
-  (if (eql (1- (length option)) 1)
-      (cadr option)
-      (cdr option)))
-
+; palette most be one or more Maxima lists starting with the name of one
+;; of the 5 kinds: hue, saturation, value, gray or gradient.
 (defun check-option-palette (option)
-  (if (eql (1- (length option)) 1)
+  (if (and (= (length option) 2) (null (cadr option)))
+      nil
+      (progn
+        (dolist (item (cdr option))
+          (when (not (and ($listp item)
+                          (member (cadr item)
+                                  '($hue $saturation $value $gray $gradient))))
+            (merror
+             (intl:gettext
+              "Wrong argumet ~M for option ~M. Not a valid palette.")
+             item (car option))))
+        (cdr option))))
+
+;; style can be one or several of the names of the styles or one or several
+;; Maxima lists starting with the name of one of the styles. 
+(defun check-option-style (option)
+  (if (not ($listp (cadr option)))
+      (dolist (item (rest option))
+        (when (not (member item 
+                           '($lines $points $linespoints $dots $impulses)))
+          (merror
+           (intl:gettext
+            "Wrong argumet ~M for option ~M. Not a valid style")
+             item (car option))))
+      (dolist (item (rest option))
+        (when (not
+               (and ($listp item)
+                    (member (cadr item)
+                            '($lines $points $linespoints $dots $impulses))))
+          (merror
+           (intl:gettext
+            "Wrong argumet ~M for option ~M. Not a valid style.")
+           item (car option)))))
+  (if (= (length option) 2)
       (cadr option)
       (cdr option)))
+
+;; Transform can be false or the name of a function fot the transformation.
+(defun check-option-transform (option)
+  (if (and (= (length option) 2)
+           (or (atom (cadr option)) (null (cadr option))))
+      (cadr option)
+      (merror
+       (intl:gettext
+        "Wrong argumet ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
 
 ;; plot2d
 ;;
@@ -1621,7 +1843,7 @@ sin(y)*(10.0+6*cos(x)),
 
     (let ((xmin (first (getf options :x))) (xmax (second (getf options :x))))
       (when
-          (and (getf options :log-x) xmin xmax)
+          (and (getf options :logx) xmin xmax)
         (if (> xmax 0)
             (when (<= xmin 0)
               (let ((revised-xmin (/ xmax 1000)))
@@ -1632,7 +1854,7 @@ sin(y)*(10.0+6*cos(x)),
 
     (let ((ymin (first (getf options :y)))
           (ymax (first (getf options :y))))
-      (when (and (getf options :log-y) ymin ymax)
+      (when (and (getf options :logy) ymin ymax)
         (if (> ymax 0)
             (when (<= ymin 0)
               (let ((revised-ymin (/ ymax 1000)))
@@ -1899,6 +2121,30 @@ sin(y)*(10.0+6*cos(x)),
     (format nil "~a~&~a" file output-file)))
 
 
+(defun msymbolp (x)
+  (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
+
+
+(defun $tcl_output (lis i &optional (skip 2))
+  (when (not (typep i 'fixnum))
+    (merror
+      (intl:gettext "tcl_ouput: second argument must be an integer; found ~M")
+                    i))
+  (when (not ($listp lis))
+    (merror
+      (intl:gettext "tcl_output: first argument must be a list; found ~M") lis))
+  (format *standard-output* "~% {")
+  (cond (($listp (second lis))
+         (loop for v in lis
+                do
+                (format *standard-output* "~,10g " (nth i v))))
+        (t
+         (setq lis (nthcdr i lis))
+         (loop  with v = lis  while v
+                 do
+                 (format *standard-output* "~,10g " (car v))
+                 (setq v (nthcdr skip v)))))
+  (format *standard-output* "~% }"))
 (defun tcl-output-list ( st lis )
   (cond ((null lis) )
         ((atom (car lis))

@@ -68,21 +68,28 @@ termo na @i{comma expression} que atualmente retorna o valor.
 Maxima faz distin@,{c}@~{a}o entre operadores que s@~{a}o "substantivos" e operadores que s@~{a}o
 "verbos".  Um verbo @'{e} um operador que pode ser executao.  Um substantivo @'{e} um operador
 que aparece como um s@'{i}mbolo em uma express@~{a}o, sem ser executado.  Por padr@~{a}o,
-nomes de fun@,{c}@~{a}o s@~{a}o verbos.  Um verbo pode ser transformado em substantivo pela coloca@,{c}@~{a}o de um ap@'{o}sstrofo
-no nome da fun@,{c}@~{a}o ou aplicando a fun@,{c}@~{a}o @mrefdot{nounify}  Um substantivo pode ser transformado
-em um verbo por meio da fun@,{c}@~{a}o @mrefdot{verbify}  O sinalizador de avalia@,{c}@~{a}o
-@mref{nouns} faz com que a fun@,{c}@~{a}o @mref{ev} seja usada para avaliar substantivos em uma express@~{a}o.
+nomes de fun@,{c}@~{a}o s@~{a}o verbos.  Um verbo pode ser transformado em substantivo pela coloca@,{c}@~{a}o de um ap@'{o}strofo
+no nome da fun@,{c}@~{a}o ou aplicando a fun@,{c}@~{a}o @mrefdot{nounify}
+Um substantivo pode ser transformado
+em um verbo por meio da fun@,{c}@~{a}o @mrefdot{verbify}
+O sinalizador de avalia@,{c}@~{a}o
+@mref{nouns}
+faz com que a fun@,{c}@~{a}o @mref{ev}
+seja usada para avaliar substantivos em uma express@~{a}o.
 
 A forma verbal @'{e} distinguida por meio de um sinal de d@'{o}lar @code{$} no in@'{i}cio do
 s@'{i}mbolo Lisp correspondente.  De forma semelhante, a forma substantiva @'{e} distinguida por um
 sinal de porcentagem @code{%} colocado no in@'{i}co do s@'{i}mbolo Lisp correspondente.  Alguns substantivos possuem
 propriedades de exibi@,{c}@~{a}o especiais, s@'{i}mbolos tais como @code{'integrate} e @code{'derivative}
-(retornado por @mref{diff}), mas a maioria dos s@'{i}mbolos n@~{a}o tem propriedades especiais de exibi@,{c}@~{a}o.  Por padr@~{a}o, as formas verbais e substantivas
+(retornado por @mref{diff}
+), mas a maioria dos s@'{i}mbolos n@~{a}o tem propriedades especiais de exibi@,{c}@~{a}o.  Por padr@~{a}o, as formas verbais e substantivas
 de uma fun@,{c}@~{a}o s@~{a}o id@^{e}nticas quando mostradas.  O sinalizador global @mref{noundisp}@w{}
 faz com que Maxima mostre substantivos com um ap@'{o}strofo no in@'{i}cio @code{'}.
 
-Veja tamb@'{e}m @mrefcomma{noun} @mrefcomma{nouns} @mrefcomma{nounify} e
-@mrefdot{verbify}
+Veja tamb@'{e}m @mrefcomma{noun}
+@mrefcomma{nouns}
+@mrefcomma{nounify}
+e @mrefdot{verbify}
 
 Exemplos:
 
@@ -248,8 +255,12 @@ etc.  Qualquer n@'{u}mero de argumentos pode ser usado.
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{aliases} cont@'{e}m a lista de @'{a}tomos que possuem um apelido definido pelo usu@'{a}rio (ajustado por meio das
-fun@,{c}@~{o}es @mrefcomma{alias} @mrefcomma{ordergreat} @mref{orderless} ou por meio
-da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun} usando @mrefdot{declare}).
+fun@,{c}@~{o}es @mrefcomma{alias}
+@mrefcomma{ordergreat}
+@mref{orderless}
+ou por meio
+da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun}
+usando @mrefdot{declare}).
 
 @opencatbox
 @category{Declarations and inferences} @category{Global variables}
@@ -263,9 +274,15 @@ da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun} usando @mrefdot{dec
 @anchor{allbut}
 @defvr {Keyword} allbut
 
-Trabalha juntamente com os comandos @code{part} commands (i.e.  @mrefcomma{part}@w{}
-@mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}@w{}
-@mrefcomma{dpart} e @mref{lpart}).
+Trabalha juntamente com os comandos @code{part} (i.e.  @mrefcomma{part}
+@w{}
+@mrefcomma{inpart}
+@mrefcomma{substpart}
+@mrefcomma{substinpart}
+@w{}
+@mrefcomma{dpart}
+e @mref{lpart})
+.
 Por exemplo,
 
 @c ===beg===
@@ -326,7 +343,8 @@ A ordem dos itens na lista vai depender da sinalizador global
 @mrefdot{inflag}
 
 O comando @code{args (@var{expr})} @'{e} equivalente a @code{substpart ("[", @var{expr}, 0)}.
-Veja tamb@'{e}m @mrefcomma{substpart} e @mrefdot{op}
+Veja tamb@'{e}m @mrefcomma{substpart}
+e @mrefdot{op}
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -368,8 +386,11 @@ A fun@,{c}@~{a}o @code{box} avalia seus argumentos.  Todavia, uma express@~{a}o 
 n@~{a}o avalia para seu conte@'{u}do, ent@~{a}o express@~{o}es dentro de caixas s@~{a}o efetivamente exclu@'{i}das dos
 c@'{a}lculos.
 
-A vari@'{a}vel de op@,{c}@~{a}o @mref{boxchar} cont@'{e}m o caractere usado para desenhar a caixa com a fun@,{c}@~{a}o @code{box} e nas
-fun@,{c}@~{o}es @mref{dpart} e @mrefdot{lpart}.
+A vari@'{a}vel de op@,{c}@~{a}o @mref{boxchar}
+cont@'{e}m o caractere usado para desenhar a caixa com a fun@,{c}@~{a}o @code{box} e nas
+fun@,{c}@~{o}es @mref{dpart}
+e @mrefdot{lpart}
+.
 
 Exemplos:
 
@@ -426,7 +447,9 @@ Exemplos:
 Valor padr@~{a}o: @code{"}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{boxchar} cont@'{e}m o caractere usado para desenhar a caixa nas fun@,{c}ẽos
-@mref{box}@w{} e nas fun@,{c}@~{o}es @mref{dpart} e @mrefdot{lpart}
+@mref{box}@w{}
+e nas fun@,{c}@~{o}es @mref{dpart}
+e @mrefdot{lpart}
 
 Todas as caixas em uma express@~{a}o s@~{a}o desenhadas com o atual conte@'{u}do de @code{boxchar};
 o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o dentro da caixa.
@@ -444,8 +467,10 @@ o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o dentro da ca
 
 Reduz @var{expr} fazendo com que todas as suas subexpress@~{o}es comuns (i.e., iguais)
 compartilhem (i.e., usem as mesmas c@'{e}lulas), economizando espa@,{c}o.  A fun@,{c}@~{a}o (@code{collapse} @'{e}
-uma sub-rotina usada pela fun@,{c}@~{a}o @mref{optimize}.)  Dessa forma, chamar
-@code{collapse} pode ser @'{u}til ap@'{o}s usar fun@,{c}@~{a}o @mref{save} em um arquivo.  Voc@^{e} pode
+uma sub-rotina usada pela fun@,{c}@~{a}o @mref{optimize}
+.)  Dessa forma, chamar
+@code{collapse} pode ser @'{u}til ap@'{o}s usar fun@,{c}@~{a}o @mref{save}
+em um arquivo.  Voc@^{e} pode
 reduzir muitas express@~{o}es juntas usando
 @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, voc@^{e} pode
 reduzir os elementos do vetor est@'{a}tico @code{A} fazendo
@@ -485,7 +510,9 @@ O comando @code{dispform(@var{expr})} retorna a representa@,{c}@~{a}o externa co
 o operador principal ( o de n@'{i}vel mais alto).  O comando @code{dispform(@var{expr}, all)} retorna a
 representa@,{c}@~{a}o externa considerando todos os operadores em @var{expr}.
 
-Veja tamb@'{e}m @mrefcomma{part} @mrefcomma{inpart} e @mrefdot{inflag}
+Veja tamb@'{e}m @mrefcomma{part}
+@mrefcomma{inpart}
+e @mrefdot{inflag}
 
 Exemplos:
 
@@ -563,7 +590,8 @@ Uso do argumento opcional @code{all}.
 @anchor{dpart}
 @deffn {Function} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-Seleciona a mesma subexpress@~{a}o que @mrefcomma{part} mas ao inv@'{e}s de apenas retornar
+Seleciona a mesma subexpress@~{a}o que @mrefcomma{part}
+mas ao inv@'{e}s de apenas retornar
 aquela subexpress@~{a}o como seu valor, retorna a express@~{a}o completa com a
 subexpress@~{a}o selecionada mostrada dentro de uma caixa.  A caixa @'{e} agora parte da
 express@~{a}o.
@@ -669,9 +697,13 @@ forma original de @var{expr}.
 
 Uma vari@'{a}vel @'{e} uma vari@'{a}vel dummy em uma express@~{a}o se n@~{a}o tiver nenhuma associa@,{c}@~{a}o fora da 
 express@~{a}o.  Vari@'{a}veis dummy reconhecidas por @code{freeof} s@~{a}o o @'{i}ndice de uma 
-soma ou de um produto, a vari@'{a}vel de limite em @mrefcomma{limit} a vari@'{a}vel de integra@,{c}@~{a}o 
-na forma da integral definida de @mref{integrate}, a vari@'{a}vel original em
-@mrefcomma{laplace} vari@'{a}veis formais em express@~{o}es @mrefcomma{at} e argumentos em 
+soma ou de um produto, a vari@'{a}vel de limite em @mrefcomma{limit}
+a vari@'{a}vel de integra@,{c}@~{a}o 
+na forma da integral definida de @mref{integrate}
+, a vari@'{a}vel original em
+@mrefcomma{laplace}
+vari@'{a}veis formais em express@~{o}es @mrefcomma{at}
+e argumentos em 
 express@~{o}es @mrefdot{lambda}
 
 A forma indefinida de @code{integrate} @i{n@~{a}o} @'{e} livre de sua vari@'{a}vel de 
@@ -761,14 +793,19 @@ Note que o simplificador reordena express@~{o}es.  Dessa forma @code{first (x + 
 retorna @code{x} se @code{inflag} for @code{true} e @code{y} se @code{inflag}
 for @code{false}.  O comando (@code{first (y + x)} retorna o mesmo resultado sendo independente de @code{inflag}.)
 
-Tamb@'{e}m, ajustando @code{inflag} para @code{true} e chamando @mref{part} ou
-@mref{substpart} @'{e} o mesmo que chamar @mref{inpart} ou @mrefdot{substinpart}
+Tamb@'{e}m, ajustando @code{inflag} para @code{true} e chamando @mref{part}
+ou @mref{substpart}
+@'{e} o mesmo que chamar @mref{inpart}
+ou @mrefdot{substinpart}
 
-Fun@,{c}@~{o}es afetadas pelo ajuste de @code{inflag} s@~{a}o: @mrefcomma{part}@w{}
-@mrefcomma{substpart} @mrefcomma{first} @mrefcomma{rest} @mrefcomma{last}@w{}
-@mrefcomma{length} a constru@,{c}@~{a}o @mref{for} @dots{} @code{in},
-@mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{maplist} @mref{reveal} e
-@mrefdot{pickapart}
+Fun@,{c}@~{o}es afetadas pelo ajuste de @code{inflag} s@~{a}o: @mrefcomma{part}
+@w{}
+@mrefcomma{substpart} @mrefcomma{first} @mrefcomma{rest} @mrefcomma{last}
+@w{} @mrefcomma{length}
+a constru@,{c}@~{a}o @mref{for}
+@dots{} @code{in},
+@mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{maplist} @mref{reveal}
+e @mrefdot{pickapart}
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -782,7 +819,8 @@ Fun@,{c}@~{o}es afetadas pelo ajuste de @code{inflag} s@~{a}o: @mrefcomma{part}@
 @anchor{inpart}
 @deffn {Function} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-@'{E} similar a @mref{part} mas trabalha sobre a representa@,{c}@~{a}o interna da
+@'{E} similar a @mref{part}
+mas trabalha sobre a representa@,{c}@~{a}o interna da
 express@~{a}o ao inv@'{e}s de trabalhar na forma mostrada e dessa forma pode ser mais r@'{a}pida uma vez que nenhuma
 formata@,{c}@~{a}o @'{e} feita.  Cuidado deve ser tomado com rela@,{c}@~{a}o @`{a} ordem das
 subexpress@~{o}es em somas e produtos (uma vez que a ordem das vari@'{a}veis na
@@ -827,12 +865,13 @@ expans@~{o}es desnecess@'{a}rias de subexpress@~{o}es que n@~{a}o possuem a vari
 interesse.  Uma vez que r@'{o}tulos intermedi@'{a}rios s@~{a}o associados a subexpress@~{o}es eles
 podem todos serem recolocados de volta por meio de avalia@,{c}@~{a}o da express@~{a}o na qual eles ocorrerem.
 
-A vari@'{a}vel de op@,{c}@~{a}o @mref{exptisolate} (valor padr@~{a}o: @code{false}) se for @code{true} far@'{a} com que
+A vari@'{a}vel de op@,{c}@~{a}o @mref{exptisolate}
+(valor padr@~{a}o: @code{false}) se for @code{true} far@'{a} com que
 @code{isolate} examine expoente de @'{a}tomos (com @code{%e}) que venham a conter
 @var{var}.
 
-A vari@'{a}vel de op@,{c}@~{a}o @code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate
-with respect to products.  See @mrefdot{isolate_wrt_times}
+A vari@'{a}vel de op@,{c}@~{a}o @code{isolate_wrt_times} se @code{true}, então @code{isolate} irá também isolar
+com relação aos produtos.  Veja @mrefdot{isolate_wrt_times}
 
 Fa@,{c}a @code{example (isolate)} para ver exemplos.
 
@@ -900,9 +939,9 @@ chamada.  O padr@~{a}o @'{e} omitir as constantes.
 Valor padr@~{a}o: @code{true}
 
 Quando @code{listdummyvars} for @code{false}, "vari@'{a}veis dummy" na express@~{a}o
-n@~{a}o ser@~{a}o inclu@'{i}das na lista retornada por @mrefdot{listofvars}  (O significado
-de "vari@'{a}vel dummy" @'{e} o informado em @mrefdot{freeof}  "Vari@'{a}veis dummy" s@~{a}o
-entidades matem@'{a}ticas como o @'{i}ndice de uma soma ou produto, a vari@'{a}vel do limite,
+n@~{a}o ser@~{a}o inclu@'{i}das na lista retornada por @mrefdot{listofvars}
+(O significado de "vari@'{a}vel dummy" @'{e} o informado em @mrefdot{freeof}
+"Vari@'{a}veis dummy" s@~{a}o entidades matem@'{a}ticas como o @'{i}ndice de uma soma ou produto, a vari@'{a}vel do limite,
 e a vari@'{a}vel da integral definida.)
 
 Exemplo:
@@ -933,12 +972,13 @@ Quando @code{listconstvars} for @code{true} a lista retornada por
 @code{listofvars} conter@'{a} as vari@'{a}veis do tipo constante, tais como @code{%e},
 @code{%pi}, @code{%i} ou quaisquer vari@'{a}veis declaradas como sendo do tipo contantes que
 ocorrerem em @var{expr}. Uma vari@'{a}vel @'{e} declarada como sendo do tipo
-@code{constant} via @mref{declare}, e @mref{constantp} retorna @code{true}
-para todas as vari@'{a}veis declaradas @code{constant}. O padr@~{a}o @'{e}
+@code{constant} via @mrefdot{declare}
+e @mref{constantp}
+retorna @code{true} para todas as vari@'{a}veis declaradas @code{constant}. O padr@~{a}o @'{e}
 omitir vari@'{a}veis do tipo constante da express@~{a}o de retorno em @code{listofvars}.
 
-Veja tamb@'{e}m a vari@'{a}vel de op@,{c}@~{a}o @mref{listdummyvars} para incluir ou excluir
-"vari@'{a}veis dummy" na lista de vari@'{a}veis.
+Veja tamb@'{e}m a vari@'{a}vel de op@,{c}@~{a}o @mref{listdummyvars}
+para incluir ou excluir "vari@'{a}veis dummy" na lista de vari@'{a}veis.
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
@@ -959,7 +999,8 @@ Veja tamb@'{e}m a vari@'{a}vel de op@,{c}@~{a}o @mref{listdummyvars} para inclui
 
 Para cada membro @var{m} de @var{lista}, chama
 @code{freeof (@var{m}, @var{expr})}.  Retorna @code{false} se qualquer chamada a
-@mref{freeof} tamb@'{e}m retornar @code{false} e @code{true} de outra forma.
+@mref{freeof}
+tamb@'{e}m retornar @code{false} e @code{true} de outra forma.
 
 @c ===beg===
 @c lfreeof ([ a, x], x^2+b);
@@ -992,7 +1033,8 @@ lfreeof ([ a, y], x^2+b);
 @anchor{lpart}
 @deffn {Function} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-@'{E} similar a @mref{dpart} mas usa uma caixa com r@'{o}tulo.  Uma caixa com r@'{o}tulo @'{e} similar
+@'{E} similar a @mref{dpart}
+mas usa uma caixa com r@'{o}tulo.  Uma caixa com r@'{o}tulo @'{e} similar
 a aquela produzida por @code{dpart} mas tem um nome na linha do topo.
 
 @opencatbox
@@ -1027,8 +1069,8 @@ necess@'{a}ria se for para ocorrer algum cancelamento.  Tamb@'{e}m, se voc@^{e} 
 @anchor{noun}
 @defvr {Property} noun
 
-A propriedade @code{noun} @'{e} uma das op@,{c}@~{o}es da fun@,{c}@~{a}o @mref{declare}.  A @mref{declare} faz uma
-fun@,{c}@~{a}o ser um "noun", significando que essa fun@,{c}@~{a}o agora declarada "substantivo" n@~{a}o seja avaliada
+A propriedade @code{noun} @'{e} uma das op@,{c}@~{o}es da fun@,{c}@~{a}o @mrefdot{declare}
+A @mref{declare} faz uma fun@,{c}@~{a}o ser um "noun", significando que essa fun@,{c}@~{a}o agora declarada "substantivo" n@~{a}o seja avaliada
 automaticamente.
 
 Exemplo:
@@ -1208,7 +1250,8 @@ operador de @var{expr}.
 @defvr {Option variable} opsubst
 Valor padr@~{a}o: @code{true}
 
-Quando @code{opsubst} for @code{false}, @mref{subst} n@~{a}o tenta
+Quando @code{opsubst} for @code{false}, @mref{subst}
+n@~{a}o tenta
 substituir dentro do operador de uma express@~{a}o.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
@@ -1276,7 +1319,7 @@ sejam compartilhadas.  Fa@,{c}a @code{example (optimize)} para exemplos.
 Valor padr@~{a}o: @code{%}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{optimprefix} cont@'{e}m o prefixo usado para gerar
-s@'{i}mbolos atrav@'{e}s do comando @mref{optimize}.
+s@'{i}mbolos atrav@'{e}s do comando @mrefdot{optimize}
 
 @opencatbox
 @category{Expressions}
@@ -1298,7 +1341,8 @@ tal que @var{v_1} precede @var{v_2} que precede @dots{} que precede @var{v_n},
 e @var{v_n} precede quqlquer outra vari@'{a}vel n@~{a}o mencionada como um argumento.
 
 A ordem estabelecida por @code{ordergreat} e por @code{orderless} @'{e} dissolvida
-por @mrefdot{unorder}  @code{ordergreat} e @code{orderless} pode ser chamada somente
+por @mrefdot{unorder}
+@code{ordergreat} e @code{orderless} pode ser chamada somente
 uma vez para cada, a menos que @code{unorder} seja chamada; somente a @'{u}ltima chamada a
 @code{ordergreat} e a @code{orderless} tem qualquer efeito.
 
@@ -1330,9 +1374,11 @@ seguinte.
 
 (n@'{u}meros inteiros e n@'{u}meros em ponto flutuante) precedem (grandes n@'{u}meros em ponto flutuante) que precedem
 (constantes declaradas) que precedem (sequ@^{e}ncias de caractere) que precedem (escalares declarados)
-que precedem (primeiro argumento de @mref{orderless}) que precede @dots{} que precede
+que precedem (primeiro argumento de @mref{orderless}
+) que precede @dots{} que precede
 (@'{u}ltimo argumento de @code{orderless}) que precede (outros s@'{i}mbolos) que precedem
-(@'{u}ltimo argumento de @mref{ordergreat}) que precede @dots{} que precede
+(@'{u}ltimo argumento de @mref{ordergreat}
+) que precede @dots{} que precede
 (primeiro argumento de @code{ordergreat}) que precede (vari@'{a}veis principais declaradas)
 
 Para express@~{o}es n@~{a}o at@^{o}micas, a ordena@,{c}@~{a}o can@^{o}nica @'{e} derivada da ordena@,{c}@~{a}o
@@ -1344,8 +1390,11 @@ fun@,{c}@~{a}o.  No caso de express@~{o}es envolvendo subscritos, o s@'{i}mbolo 
 considerado o operador e o subscrito @'{e} considerado um argumento.
 
 A ordena@,{c}@~{a}o can@^{o}nica de expres@~{o}es @'{e} modificada atrav@'{e}s das fun@,{c}@~{o}es
-@mref{ordergreat} e @mrefcomma{orderless} e as declara@,{c}@~{o}es @mrefcomma{mainvar}@w{}
-@mrefcomma{constant} e @code{scalar}.
+@mref{ordergreat}
+e @mrefcomma{orderless}
+e as declara@,{c}@~{o}es @mrefcomma{mainvar}
+@w{} @mrefcomma{constant}
+e @code{scalar}.
 
 Veja tamb@'{e}m @mrefdot{sort}
 
@@ -1448,16 +1497,21 @@ Se o @'{u}ltimo argumento para uma fun@,{c}@~{a}o @code{part} for uma lista de @
 muitas subexpress@~{o}es s@~{a}o selecionadas, cada uma correspondendo a um
 @'{i}ndice da lista.  Dessa forma @code{part (x + y + z, [1, 3])} @'{e} @code{z+x}.
 
-A vari@'{a}vel de sistema @mref{piece} mant@'{e}m a @'{u}ltima express@~{a}o selecionada quando forem usadas as fun@,{c}ẽos
-@code{part}.  A vari@'{a}vel de sistema @mref{piece} @'{e} ajustada durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e dessa forma
+A vari@'{a}vel de sistema @mref{piece}
+mant@'{e}m a @'{u}ltima express@~{a}o selecionada quando forem usadas as fun@,{c}ẽos
+@code{part}.  A vari@'{a}vel de sistema @mref{piece}
+@'{e} ajustada durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e dessa forma
 pode ser referenciado na fun@,{c}@~{a}o propriamente dita como mostrado adiante.
 
-Se a vari@'{a}vel de op@,{c}@~{a}o @mref{partswitch} for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
+Se a vari@'{a}vel de op@,{c}@~{a}o @mref{partswitch}
+for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
 parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem de erro @'{e}
 retornada.
 
-Veja tamb@'{e}m @mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}@w{}
-@mrefcomma{dpart} e @mrefdot{lpart}
+Veja tamb@'{e}m @mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}
+@w{}
+@mrefcomma{dpart}
+e @mrefdot{lpart}
 
 Exemplos:
 
@@ -1534,8 +1588,10 @@ Atribui r@'{o}tulos de express@~{o}es intermedi@'{a}rias a subexpress@~{o}es de 
 atribui@,{c}@~{a}o de r@'{o}tulos.  A fun@,{c}@~{a}o @code{pickapart} retorna uma express@~{a}o em termos de
 express@~{o}es intermedi@'{a}rias equivalentes @`{a} express@~{a}o original @var{expr}.
 
-Veja tamb@'{e}m @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart}@w{}
-@mrefcomma{inpart} e @mrefdot{reveal}
+Veja tamb@'{e}m @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart}
+@w{}
+@mrefcomma{inpart}
+e @mrefdot{reveal}
 
 Exemplos:
 
@@ -1629,10 +1685,13 @@ Exemplos:
 @anchor{piece}
 @defvr {System variable} piece
 
-Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mref{part}.
+Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mref{part}
+.
 @c WHAT DOES THIS MEAN EXACTLY ??
-A vari@'{a}vel de sistema @code{piece} @'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @mref{part} e dessa forma a ultima express@~{a}o selecionada pode ser referenciada nas
-pr@'{o}prias fun@,{c}@~{o}es @mref{part}.
+A vari@'{a}vel de sistema @code{piece} @'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @mref{part}
+e dessa forma a ultima express@~{a}o selecionada pode ser referenciada nas
+pr@'{o}prias fun@,{c}@~{o}es @mref{part}
+.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
@@ -1652,7 +1711,8 @@ O comando @code{psubst(@var{a}, @var{b}, @var{expr})} @'{e} simliar a @code{subs
 O que distingue a fun@,{c}@~{a}o @code{subst} da fun@,{c}@~{a}o @code{psubst} @'{e} que a @code{psubst} faz substitui@,{c}@~{o}es
 paralelas, se o primeiro argumento @var{lista} for uma lista de equa@,{c}@~{o}es.
 
-Veja tamb@'{e}m @mref{sublis} para fazer substitui@,{c}@~{o}es paralelas.
+Veja tamb@'{e}m @mref{sublis}
+para fazer substitui@,{c}@~{o}es paralelas.
 
 Exemplo:
 
@@ -1691,8 +1751,9 @@ O comando @code{rembox (@var{expr}, @var{r@'{o}tulo})} remove somente caixas que
 
 O comando @code{rembox (@var{expr})} remove todas as caixas, com ou sem r@'{o}tulos.
 
-Caixas s@~{a}o desenhadas pelas fun@,{c}@~{o}es @mrefcomma{box} @mrefcomma{dpart} e
-@mref{lpart}@w{}.
+Caixas s@~{a}o desenhadas pelas fun@,{c}@~{o}es @mrefcomma{box} @mrefcomma{dpart}
+e @mref{lpart}
+@w{}.
 
 Exemplos:
 
@@ -1860,10 +1921,12 @@ Exemplo:
 Faz substitui@,{c}@~{o}es paralelas m@'{u}ltiplas em uma express@~{a}o.  O argumento @var{lista}
 @'{e} uma lista de equa@,{c}@~{o}es.  O primeiro membro das equa@,{c}@~{o}es deve ser um @'{a}tomo.
 
-A vari@'{a}vel @mref{sublis_apply_lambda} controla a simplifica@,{c}@~{a}o ap@'{o}s
+A vari@'{a}vel @mref{sublis_apply_lambda}
+controla a simplifica@,{c}@~{a}o ap@'{o}s
 @code{sublis}.
 
-Veja tamb@'{e}m @mref{psubst} para fazer substitui@,{c}@~{o}es paralelas.
+Veja tamb@'{e}m @mref{psubst}
+para fazer substitui@,{c}@~{o}es paralelas.
 
 Exemplo:
 
@@ -1886,7 +1949,8 @@ Exemplo:
 Valor padr@~{a}o: @code{true}
 
 Controla se substitui@,{c}@~{a}o de @code{lambda} @'{e} aplicada na simplifica@,{c}@~{a}o ap@'{o}s
-@code{sublis} ser usada ou se voc@^{e} tem que fazer um @mref{ev} para pegar coisas para
+@code{sublis} ser usada ou se voc@^{e} tem que fazer um @mref{ev}
+para pegar coisas para
 aplicar a substitui@,{c}@~{a}o de @code{lambda}.  O valor @code{true} significa fazer a aplica@,{c}@~{a}o.
 
 @opencatbox
@@ -1899,7 +1963,9 @@ aplicar a substitui@,{c}@~{a}o de @code{lambda}.  O valor @code{true} significa 
 @defvr {Option variable} subnumsimp
 Valor padr@~{a}o: @code{false}
 
-Se @code{true} net@~{a}o as fun@,{c}@~{o}es @mref{subst} e @mref{psubst} podem substituir
+Se @code{true} net@~{a}o as fun@,{c}@~{o}es @mref{subst}
+e @mref{psubst}
+podem substituir
 uma vari@'{a}vel de subscrito @code{f[x]} por um n@'{u}mero, quando somente o s@'{i}mbolo @code{f}
 for fornecido.
 
@@ -1930,8 +1996,9 @@ subst: cannot substitute 100 for operator g in expression g
 Substitui @var{a} por @var{b} em @var{c}.  O argumento @var{b} deve ou ser um @'{a}tomo ou uma
 subexpress@~{a}o completa de @var{c}.  Por exemplo, @code{x+y+z} @'{e} uma subexpress@~{a}o
 completa de @code{2*(x+y+z)/w} enquanto @code{x+y} n@~{a}o @'{e}.  Quando @var{b} n@~{a}o
-tem essas caracter@'{i}sticas, se pode algumas vezes usar @mref{substpart} ou
-@mref{ratsubst} (veja abaixo).  Alternativamente, se @var{b} for da forma
+tem essas caracter@'{i}sticas, se pode algumas vezes usar @mref{substpart}
+ou @mref{ratsubst}
+(veja abaixo).  Alternativamente, se @var{b} for da forma
 @code{e/f} ent@~{a}o se deve usar @code{subst (a*f, e, c)} enquanto se @var{b} for da
 forma @code{e^(1/f)} ent@~{a}o se pode usar @code{subst (a^f, e, c)}.  A
 fun@,{c}@~{a}o @code{subst} tambẽm diferencia o @code{x^y} em @code{x^-y} de forma que
@@ -1952,7 +2019,8 @@ express@~{a}o @var{expr}.  As equa@,{c}@~{o}es s@~{a}o substitu@'{i}das em s@'{e
 a direita em @var{expr}.  Veja as fun@,{c}@~{o}es @code{sublis} e @code{psubst} para 
 fazer substitui@,{c}@~{o}es paralelass.
 
-A vari@'{a}vel de op@,{c}@~{a}o @mref{exptsubst} se @code{true} permite que a substitui@,{c}@~{a}o
+A vari@'{a}vel de op@,{c}@~{a}o @mref{exptsubst}
+se @code{true} permite que a substitui@,{c}@~{a}o
 por @code{y} o @code{%e^x} em @code{%e^(a*x)} ocorra.
 
 @c WHAT IS THIS ABOUT ??
@@ -2002,7 +2070,8 @@ Para exemplos adicionais, fa@,{c}a @code{example (subst)}.
 @anchor{substinpart}
 @deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-Similar a @mrefcomma{substpart} mas @code{substinpart} trabalha na
+Similar a @mrefcomma{substpart}
+mas @code{substinpart} trabalha na
 representa@,{c}@~{a}o interna de @var{expr}.
 
 Exemplos:
@@ -2038,10 +2107,13 @@ muitas subexpress@~{o}es s@~{a}o selecionadas, cada uma correspondendo a um
 (%o1)                         z + x
 @end example
 
-A vari@'{a}vel de sistema @mref{piece} mant@'{e}m o valor da @'{u}ltima express@~{a}o selecionada quando se usam
-as fun@,{c}@~{o}es @code{part}.  A vari@'{a}vel de sistema @mref{piece} @'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @code{part} e
+A vari@'{a}vel de sistema @mref{piece}
+mant@'{e}m o valor da @'{u}ltima express@~{a}o selecionada quando se usam
+as fun@,{c}@~{o}es @code{part}.  A vari@'{a}vel de sistema @mref{piece}
+@'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @code{part} e
 dessa forma pode ser referenciado na fun@,{c}@~{o}es @code{part} propriamente ditas como mostrado abaixo.
-Se @mref{partswitch} for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
+Se @mref{partswitch}
+for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
 parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem de erro
 @'{e} retornada.
 
@@ -2075,8 +2147,11 @@ parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensa
                               x     z
 @end example
 
-Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag} para @code{true} e chamando @mref{part}
-ou @mref{substpart} @'{e} o mesmo que chamar @mref{inpart} ou @code{substinpart}.
+Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag}
+para @code{true} e chamando @mref{part}
+ou @mref{substpart}
+@'{e} o mesmo que chamar @mref{inpart}
+ou @code{substinpart}.
 
 @opencatbox
 @category{Expressions}
@@ -2090,7 +2165,8 @@ ou @mref{substpart} @'{e} o mesmo que chamar @mref{inpart} ou @code{substinpart}
 @deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Substitue @var{x} na subexpress@~{a}o selecionada atrav@'{e}s dos restantes
-argumentos como em @mrefdot{part}  A @code{substpart} retorna o novo valor de @var{expr}.  O argumento @var{x}
+argumentos como em @mrefdot{part}
+A @code{substpart} retorna o novo valor de @var{expr}.  O argumento @var{x}
 pode ser algum operador a ser substitu@'{i}do por um operador de @var{expr}.  Em alguns
 casos @var{x} precisa ser colocado entre aspas duplas @code{"} (e.g.
 @code{substpart ("+", a*b, 0)} retorna @code{b + a}).
@@ -2120,7 +2196,8 @@ Exemplo:
 (%o4)                    x + f(b, y) + a
 @end example
 
-Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag} para @code{true} e chamando @mref{part}
+Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag}
+para @code{true} e chamando @mref{part}
 ou @code{substpart} @'{e} o mesmo que chamar @code{inpart} ou
 @mrefdot{substinpart}
 

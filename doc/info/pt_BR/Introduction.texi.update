@@ -27,11 +27,13 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima pode buscar p@'{a}ginas de manual no formato info.  Use o comando @mref{describe} para mostrar
+Maxima pode buscar p@'{a}ginas de manual no formato info.  Use o comando @mref{describe}
+para mostrar
 informa@,{c}@~{a}o sotre o comando ou todos os comandos e vari@'{a}veis contendo
 uma sequ@^{e}ncia de caracteres.
-O ponto de interroga@,{c}@~{a}o simples @mref{?} (busca exata) e a dupla interroga@,{c}@~{a}o @mref{??}@w{}
-(busca inexata) s@~{a}o abrevia@,{c}@~{o}es para @code{describe}:
+O ponto de interroga@,{c}@~{a}o simples @mref{?}
+(busca exata) e a dupla interroga@,{c}@~{a}o @mref{??}
+@w{} (busca inexata) s@~{a}o abrevia@,{c}@~{o}es para @code{describe}:
 
 @example
 (%i1) ?? integ
@@ -105,8 +107,8 @@ Enter space-separated numbers, `all' or `none': 15 5
 @end example
 
 Para usar um resultado em c@'{a}lculos posteriores, voc@^{e} pode atribuir esse resultado a uma vari@'{a}vel ou
-fazer uma refer@^{e}ncia a exxe c@'{a}lculo anterior por meio de seu r@'{o}tulo fornecido automaticamente.  Adicionalmente, @mref{%}@w{}
-(sinal de porcentagem) refere-se ao resultado calculado mais recentemente:
+fazer uma refer@^{e}ncia a exxe c@'{a}lculo anterior por meio de seu r@'{o}tulo fornecido automaticamente.  Adicionalmente, @mref{%}
+@w{}(sinal de porcentagem) refere-se ao resultado calculado mais recentemente:
 
 @example
 (%i1) u: expand ((x + y)^6);

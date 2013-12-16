@@ -56,7 +56,8 @@ Converte todos os n@'{u}meros e fun@,{c}@~{o}es de n@'{u}meros em @var{expr} par
 O n@'{u}mero de d@'{i}gitos significativos nos bigfloats resultantes @'{e} especificado pela
 vari@'{a}vel global @mrefdot{fpprec}
 
-Quando @mref{float2bf} for @code{false} uma mensagem de alerta @'{e} mostrada quando
+Quando @mref{float2bf}
+for @code{false} uma mensagem de alerta @'{e} mostrada quando
 um n@'{u}mero em ponto flutuante @'{e} convertido em um n@'{u}mero bigfloat (uma vez que
 isso pode levar a perda de precis@~{a}o).
 
@@ -82,7 +83,8 @@ Retorna @code{true} se @var{expr} for um n@'{u}mero bigfloat, de outra forma ret
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{bftorat} controla a convers@~{a}o de bfloats para n@'{u}meros racionais.  Quando
-@code{bftorat} for @code{false}, @mref{ratepsilon} ser@'{a} usada para controlar a
+@code{bftorat} for @code{false}, @mref{ratepsilon}
+ser@'{a} usada para controlar a
 convers@~{a}o (esse resulta n@'{u}meros racionais relativamente pequenos).  Quando
 @code{bftorat} for @code{true}, o n@'{u}mero racional gerado representar@'{a} o bfloat
 de forma precisa.
@@ -145,7 +147,8 @@ Retorna @code{true} se @var{expr} for um inteiro para.
 @deffn {Function} float (@var{expr})
 
 Converte n@'{u}meros inteiros, n@'{u}meros racionais e bigfloats em @var{expr} para n@'{u}meros em
-ponto flutuante.  Da mesma forma um @mrefcomma{evflag} @code{float} faz com que
+ponto flutuante.  Da mesma forma um @mrefcomma{evflag}
+@code{float} faz com que
 n@'{u}meros racionais n@~{a}o inteiros e n@'{u}meros bigfloat sejam convertidos para n@'{u}meros em
 ponto flutuante.
 
@@ -189,7 +192,8 @@ Valor padr@~{a}o: 16
 bigfloat.  A vari@'{a}vel de op@,{c}@~{a}o @code{fpprec} n@~{a}o afeta c@'{a}lculos computacionais sobre n@'{u}meros comuns
 em ponto flutuante.
 
-Veja tamb@'{e}m @mref{bfloat} e @mrefdot{fpprintprec}
+Veja tamb@'{e}m @mref{bfloat}
+e @mrefdot{fpprintprec}
 
 @opencatbox
 @category{Numerical evaluation}
@@ -347,7 +351,8 @@ Exemplos:
 A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que algumas fun@,{c}@~{o}es matem@'{a}ticas (incluindo exponencia@,{c}@~{a}o)
 com argumentos num@'{e}ricos sejam tratadas como n@'{u}meros em ponto flutuante.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que
 vari@'{a}veis em @code{expr} que resultem em n@'{u}meros sejam substitu@'{i}das pelos
-seus valores.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} tamb@'{e}m ajusta o comutador @mref{float} para "on".
+seus valores.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} tamb@'{e}m ajusta o comutador @mref{float}
+para "on".
 
 Veja tamb@'{e}m @mrefdot{%enumer}
 
@@ -379,7 +384,8 @@ Valor padr@~{a}o: @code{false}
 A vari@'{a}vel de op@,{c}@~{a}o @code{numer_pbranch} controla a avalia@,{c}@~{a}o num@'{e}rica da 
 de um inteiro negativo elevado a um expoente, de um racional elevado a um expoente, ou de um n@'{u}mero em ponto flutuante elevado a um expoente.  Quando
 @code{numer_pbranch} for @code{true} e o expoente for um n@'{u}mero em ponto flutuante
-ou a vari@'{a}vel de op@,{c}@~{a}o @mref{numer} for @code{true} tamb@'{e}m, Maxima avalia
+ou a vari@'{a}vel de op@,{c}@~{a}o @mref{numer}
+for @code{true} tamb@'{e}m, Maxima avalia
 o resultado num@'{e}rico usando o ramo principal.  De outra forma um resultado simplificado, mas
 n@~{a}o um resultado avaliado, @'{e} retornado.
 
@@ -455,7 +461,8 @@ Valor padr@~{a}o: @code{2.0e-15}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{ratepsilon} @'{e} a toler@^{a}ncia usada na convers@~{a}o
 de n@'{u}meros em ponto flutuante em n@'{u}meros racionais, quando a vari@'{a}vel de op@,{c}@~{a}o
-@mref{bftorat} tiver o valor @code{false}.  Veja @code{bftorat} para um exemplo.
+@mref{bftorat}
+tiver o valor @code{false}.  Veja @code{bftorat} para um exemplo.
 
 @opencatbox
 @category{Numerical evaluation} @category{Rational expressions}
@@ -638,7 +645,8 @@ avalia@,{c}@~{a}o.
 @end example
 
 Um s@'{i}mbolo constru@'{i}do atrav@'{e}s de @code{concat} pode receber um valor e aparecer em
-express@~{o}es.  O operador de atribui@,{c}@~{a}o @mref{::} (duplo dois pontos) avalia seu
+express@~{o}es.  O operador de atribui@,{c}@~{a}o @mref{::}
+(duplo dois pontos) avalia seu
 lado direito.
 
 @example
@@ -674,8 +682,8 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 @anchor{sconcat}
 @deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
-Concatena seus argmentos em uma sequ@^{e}ncia de caracteres.  A menos que @mrefcomma{concat} os
-argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
+Concatena seus argmentos em uma sequ@^{e}ncia de caracteres.  A menos que @mrefcomma{concat}
+os argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));

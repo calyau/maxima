@@ -1055,13 +1055,15 @@ entsprechen.
 Ohne das optionale Argument @var{all} zeigt @code{zn_power_table(n)} 
 eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
 d.h. von allen modulo @var{n} invertierbaren Elementen. 
-Der Exponent @var{n} variiert jeweils zwischen @code{1} und @code{totient(n)}, 
+Der Exponent variiert dabei jeweils zwischen @code{1} und 
+dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}, 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
 Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
 verschiedenen Elemente gezeigt wird. In diesem Fall 
-variiert der Exponent @var{n} zwischen @code{1} und @code{totient(n) + 1}. 
-Die erste und letzte Spalte stimmen dadurch @"uberein.
+variiert der Exponent zwischen @code{1} und @code{totient(n) + 1}. 
+Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, stimmen dann 
+die erste und letzte Spalte @"uberein.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
 
@@ -1092,8 +1094,8 @@ Beispiele:
 
 Ist die multiplikative Gruppe (Z/@var{n}Z)* zyklisch, berechnet @code{zn_primroot} 
 die kleinste Primitivwurzel modulo @var{n}.  Dies ist der Fall, wenn @var{n} gleich 
-@code{2}, @code{4}, @code{p^k} oder @code{2*p^k} ist, wobei @code{p} prim und 
-gr@"osser @code{2} und @code{k} eine nat@"urliche Zahl ist.  @code{zn_primroot} 
+@code{2}, @code{4}, @code{p^k} oder @code{2*p^k} ist, wobei @code{p} ungerade und 
+prim und @code{k} eine nat@"urliche Zahl ist.  @code{zn_primroot} 
 f@"uhrt einen entsprechenden Pr@"atest durch, wenn die Optionsvariable 
 @mref{zn_primroot_pretest} (Standardwert: @code{false}) @code{true} gesetzt wurde.
 In jedem Fall wird die Suche durch die obere Schranke @mref{zn_primroot_limit} begrenzt.
