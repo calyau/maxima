@@ -90,7 +90,7 @@
       (format st "{~{~a~^ ~}}" (rest vv)))))
 
 (defun $scene (objects &rest options)
-  (let ((objs "") (opts " ") name vtkname prop (lf (format NIL "~%"))
+  (let (file (objs "") (opts " ") name vtkname prop (lf (format NIL "~%"))
         (classes '(($cube . "Cube") ($sphere . "Sphere")
                      ($cylinder . "Cylinder") ($cone . "Cone")))
         ;; VTK methods for the objects in classes
@@ -130,6 +130,9 @@
         (amethods '(($origin . "Origin") ($scale . "Scale")
                     ($position . "Position") ($orientation . "Orientation")
                     ($usertransform . "UserTransform"))))
+    ;; set up file name
+    (setq file (plot-temp-file "maxout.xmaxima"))
+
     ;; prepare list of objects
     (if ($listp objects)
         (if ($listp (second objects))
@@ -190,5 +193,6 @@
      (with-output-to-string (st)
                   (cond ($show_openplot
                          (format st "scene ~a -objects {~a}~%" opts objs))
-                        (t (format st "{scene ~a -objects {~a}}" opts objs)))))))
+                        (t (format st "{scene ~a -objects {~a}}" opts objs))))
+     file)))
 
