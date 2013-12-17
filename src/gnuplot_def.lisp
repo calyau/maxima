@@ -235,8 +235,8 @@
                        (getf plot-options :mesh_lines_color)
                        '$black)))
     (when (find 'mlist palette :key #'car) (setq palette (list palette)))
-    (when (getf plot-options :prefix)
-      (format dest "~a~%" (getf plot-options prefix)))
+    (when (getf plot-options :gnuplot_prefix)
+      (format dest "~a~%" (getf plot-options :gnuplot_prefix)))
     (if (and preamble (> (length preamble) 0))
         (format dest "~a~%" preamble)
         (progn
