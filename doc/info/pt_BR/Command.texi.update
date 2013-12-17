@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 786d77a56c4570c12cfe3a154639b230  Command.texi
+@c 253575dbd76c58df776752fb4f9c0467  Command.texi
 @c
 @menu
 * Introduction to Command Line::
@@ -34,7 +34,9 @@ A express@~{a}o de entrada @'{e} atribu@'{i}da @`{a} vari@'{a}vel de sistema @co
 avaliada.  Todavia, o valor de @code{__} @'{e} simplificado (mas n@~{a}o avaliado)
 quando esse valor @'{e} mostrado.
 
-A vari@'{a}vel de sistema @code{__} @'{e} reconhecida por @mref{batch} e @mrefdot{load}  Em um arquivo processado
+A vari@'{a}vel de sistema @code{__} @'{e} reconhecida por @mref{batch}
+e @mrefdot{load}
+Em um arquivo processado
 por @code{batch}, @code{__} tem o mesmo significado que na linha de comando interativa.
 Em um arquivo processado por @code{load}, @code{__} @'{e} associada @`{a} express@~{a}o de entrada
 mais recentemente informada no linha de comando interativa ou em um arquivo de lote; @code{__}
@@ -43,7 +45,8 @@ particular, quando @code{load (@var{nomearquivo})} @'{e} chamado a partir do lin
 interativa, @code{__} @'{e} associada a @code{load (@var{nomearquivo})} enquanto o arquivo est@'{a}
 sendo processado.
 
-Veja tamb@'{e}m @mref{_} e @mrefdot{%}
+Veja tamb@'{e}m @mref{_}
+e @mrefdot{%}
 
 Exemplos:
 
@@ -92,13 +95,16 @@ A express@~{a}o de entrada @'{e} atribu@'{i}da @`{a} vari@'{a}vel de sistema @co
 avaliada.  Todavia, O valor de @code{_} @'{e} simplificado (mas n@~{a}o avaliado)
 quando esse valor @'{e} mostrado.
 
-A vari@'{a}vel de sistema @code{_} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+A vari@'{a}vel de sistema @code{_} @'{e} reconhecida por @mref{batch}
+e por @mrefdot{load}
+Em um arquivo processado
 por @code{batch}, @code{_} tem o mesmo significado que na linha de comando interativa.
 Em um arquivo processado por @code{load}, @code{_} @'{e} associada @`{a} express@~{a}o de entrada
 mais recentemente avaliada no linha de comando interativa ou em um arquivo de lote; @code{_}
 n@~{a}o @'{e} associada a express@~{o}es de entrada no arquivo sendo processado.
 
-Veja tamb@'{e}m @mref{__} e @mrefdot{%}
+Veja tamb@'{e}m @mref{__}
+e @mrefdot{%}
 
 Exemplos:
 
@@ -159,13 +165,15 @@ Exemplos:
 A vari@'{a}vel de sistema @code{%} representa a express@~{a}o de sa@'{i}da (e.g., @code{%o1}, @code{%o2}, @code{%o3},
 @dots{}) mais recentemente calculada pelo Maxima, tenha essa entrada sido mostrada ou n@~{a}o.
 
-A vari@'{a}vel de sistema @code{%} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+A vari@'{a}vel de sistema @code{%} @'{e} reconhecida por @mref{batch}
+e por @mrefdot{load}  Em um arquivo processado
 por @code{batch}, @code{%} tem o mesmo signficado que na linha de comando interativa.
 Em um arquivo processado por @code{load}, @code{%} @'{e} associada @`{a} express@~{a}o de sa@'{i}da
 mais recentemente calculada no linha de comando interativa ou em um arquivo de lote; @code{%}
 n@~{a}o @'{e} associada a express@~{o}es de sa@'{i}da no arquivo sendo processado.
 
-Veja tamb@'{e}m @mrefcomma{_} @mrefcomma{%%} e @mrefdot{%th}
+Veja tamb@'{e}m @mrefcomma{_} @mrefcomma{%%}
+e @mrefdot{%th}
 
 @opencatbox
 @category{Console interaction} @category{Global variables}
@@ -179,15 +187,16 @@ Veja tamb@'{e}m @mrefcomma{_} @mrefcomma{%%} e @mrefdot{%th}
 @vrindex Previous result in compound expression
 @end ifinfo
 
-Em declara@,{c}@~{o}es compostas, a saber @mrefcomma{block} @mrefcomma{lambda} ou
-@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} representa o valor da declara@,{c}@~{a}o
+Em declara@,{c}@~{o}es compostas, a saber @mrefcomma{block} @mrefcomma{lambda}
+ou @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} representa o valor da declara@,{c}@~{a}o
 anterior.
 
 Na primeira declara@,{c}@~{a}o em uma declara@,{c}@~{a}o composta, ou fora de uma declara@,{c}@~{a}o
 composta, @code{%%} @'{e} indefinida.
 
-A vari@'{a}vel de sistema @code{%%} @'{e} reconhecida por @mref{batch} e por @mrefcomma{load} e tem o
-mesmo significado que na linha de comando interativa.
+A vari@'{a}vel de sistema @code{%%} @'{e} reconhecida por @mref{batch}
+e por @mrefcomma{load}
+e tem o mesmo significado que na linha de comando interativa.
 
 Veja tamb@'{e}m @mrefdot{%}
 
@@ -219,8 +228,8 @@ anterior.
 @end example
 
 Dentro de uma declara@,{c}@~{a}o composta, o valor de @code{%%} pode ser inspecionado em uma linha de comando interativa
-de parada, que @'{e} aberta executando a fun@,{c}@~{a}o @mref{break}.  Por exemplo,
-inserindo @code{%%;} no seguinte exemplo retorna @code{42}.
+de parada, que @'{e} aberta executando a fun@,{c}@~{a}o @mref{break}
+.  Por exemplo, inserindo @code{%%;} no seguinte exemplo retorna @code{42}.
 
 @example
 (%i4) block (a: 42, break ())$
@@ -247,13 +256,16 @@ O valor da @var{i}'@'{e}sima express@~{a}o de sa@'{i}da anterior.  Isto @'{e}, s
 seguinte for a @var{n}'@'{e}sima sa@'{i}da, @code{%th (@var{m})} @'{e} a
 (@var{n} - @var{m})'@'{e}sima sa@'{i}da.
 
-A fun@,{c}@~{a}o @code{%th} @'{e} reconhecida por @mref{batch} e por @mrefdot{load}  Em um arquivo processado
+A fun@,{c}@~{a}o @code{%th} @'{e} reconhecida por @mref{batch}
+e por @mrefdot{load}
+Em um arquivo processado
 por @code{batch}, @code{%th} tem o mesmo significado que na linha de comando interativa.
 Em um arquivo processado por @code{load}, @code{%th} refere-se a express@~{o}es de sa@'{i}da mais
 recentemente calculadas na linha de comando interativa ou em um arquivo de lote; @code{%th} n@~{a}o
 se refere a express@~{o}es de sa@'{i}da no arquivo sendo processado.
 
-Veja tamb@'{e}m @mref{%} e @mrefdot{%%}
+Veja tamb@'{e}m @mref{%}
+e @mrefdot{%%}
 
 Exemplo:
 
@@ -326,8 +338,9 @@ concatenando @code{inchar} e @mrefdot{linenum}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{inchar} pode receber qualquer sequ@^{e}ncia de cracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
 sozinho.  Pelo fato de m@'{a}xima internamente levar em considera@,{c}@~{a}o somente o primeiro caractere do
-prefixo, os prefixos @code{inchar}, @mrefcomma{outchar} e
-@mref{linechar} devem ter um primeiro caractere diferente.  Se isso n@~{a}o ocorrer alguns comandos
+prefixo, os prefixos @code{inchar}, @mrefcomma{outchar}
+e @mref{linechar}
+devem ter um primeiro caractere diferente.  Se isso n@~{a}o ocorrer alguns comandos
 como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
 
 Veja tamb@'{e}m @code{labels}.
@@ -364,11 +377,14 @@ informa@,{c}@~{a}o no Maxima.  S@~{a}o elas:
 @item labels
 Todos os r@'{o}tulos @code{%i}, @code{%o}, e @code{%t} associados.
 @item values
-Todos os @'{a}timos associados que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do Maxima ou comutadores,
-criados por @mref{:} ou por @mref{::} ou por associa@,{c}@~{a}o funcional.
+Todos os @'{a}tomos associados que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do Maxima ou comutadores,
+criados por @mref{:}
+ou por @mref{::}
+ou por associa@,{c}@~{a}o funcional.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
 @item functions
-Todas as fun@,{c}@~{o}es definidas pelo usu@'{a}rio, criadas por @mref{:=} ou por @mrefdot{define}
+Todas as fun@,{c}@~{o}es definidas pelo usu@'{a}rio, criadas por @mref{:=}
+ou por @mrefdot{define}
 @item arrays
 Todos os vetores est@'{a}ticos declarados e n@~{a}o declarados, criados por @code{:}, por @code{::}, ou por
 @code{:=}.
@@ -380,27 +396,34 @@ Todas as op@,{c}@~{o}es mesmo zeradas pelo usu@'{a}rio (mesmo que elas sejam ou 
 futuramente retornadas a seus valores padr@~{a}o).
 @item rules
 Todas as m@'{a}caras de coincid@^{e}ncia e regras de simplifica@,{c}@~{a}o, criadas
-por @mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mrefcomma{defmatch} ou por
-@mrefdot{defrule}
+por @mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mrefcomma{defmatch}
+ou por @mrefdot{defrule}
 @item aliases
 Todos os @'{a}tomos ue tiverem um apelido definido pelo usu@'{a}rio, criados pela fun@,{c}@~{o}es
-@mrefcomma{alias}@w{} @mrefcomma{ordergreat} @mref{orderless} ou por meio da declara@,{c}@~{a}o de @'{a}tomos como
+@mrefcomma{alias}
+@w{} @mrefcomma{ordergreat} @mref{orderless}
+ou por meio da declara@,{c}@~{a}o de @'{a}tomos como
 @mref{noun} usando @mrefdot{declare}
 @item dependencies
 Todos os @'{a}tomos que possu@'{i}rem depend@^{e}ncias funcionais, criadas pelas
-fun@,{c}@~{o}es @mref{depends}, @mref{dependencies}, ou @mref{gradef}.
+fun@,{c}@~{o}es @mrefcomma{depends} @mrefcomma{dependencies}
+ou @mrefdot{gradef}
 @item gradefs
 Todas as fun@,{c}@~{o}es que tiverem derivadas definidas pelo usu@'{a}rio, criadas pela
-fun@,{c}@~{a}o @mref{gradef}.
+fun@,{c}@~{a}o @mrefdot{gradef}
 @c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
 @item props
 Todos os @'{a}tomos que possu@'{i}rem qualuer propriedade outra que n@~{a}o aquelas mencionadas acima, tais como
-propriedades estabelecidas por @mref{atvalue} ou por @mref{matchdeclare}, etc.,
-bem como propriedades estabelecidas na fun@,{c}@~{a}o @mref{declare}.
+propriedades estabelecidas por @mref{atvalue}
+ou por @mrefcomma{matchdeclare}
+etc.,
+bem como propriedades estabelecidas na fun@,{c}@~{a}o @mrefdot{declare}
 @item let_rule_packages
-Todas os pacotes de regra @mref{let} definidos pelo usu@'{a}rio
+Todas os pacotes de regra @mref{let}
+definidos pelo usu@'{a}rio
 al@'{e}m do pacote especial @mrefdot{default_let_rule_package}
-(@code{default_let_rule_package} @'{e} o nome do pacote de regras usado quando
+(@code{default_let_rule_package}
+@'{e} o nome do pacote de regras usado quando
 um n@~{a}o for explicitamente ajustado pelo usu@'{a}rio.)
 @end table
 
@@ -434,9 +457,11 @@ podem ser combinados, e.g., @code{kill (inlabels, functions, allbut (quaquercois
 
 @code{kill (labels)} desassocia todos os r@'{o}tulos de entrada, todos os r@'{o}tulos de sa@'{i}das, e todos os r@'{o}tulos de express@~{o}es intermedi@'{a}rias
 criados at@'{e} o presente momento.  O comando @code{kill (inlabels)} desassocia somente r@'{o}tulos de entrada que
-que iniciam com o valor atual de @mrefdot{inchar}  Da mesma forma,
+que iniciam com o valor atual de @mrefdot{inchar}
+Da mesma forma,
 @code{kill (outlabels)} desassocia somente r@'{o}tulos de sa@'{i}da que iniciam com o atual
-valor de @mrefcomma{outchar} e @code{kill (linelabels)} desassocia somente
+valor de @mrefcomma{outchar}
+e @code{kill (linelabels)} desassocia somente
 r@'{o}tulos de express@~{o}es intermedi@'{a}rias que iniciam com o valor atual de
 @mrefdot{linechar}
 
@@ -447,19 +472,21 @@ desassocia os @var{n} r@'{o}tulos mais recentes de entrada e sa@'{i}da.
 @var{n}.
 
 O comando @code{kill (@var{infolist})}, onde @var{infolist} @'{e} qualquer item em
-@code{infolists} (tais como @mrefcomma{values} @mrefcomma{functions} ou como
-@mref{arrays}) desassocia todos os itens em @var{infolist}.
+@code{infolists} (tais como @mrefcomma{values} @mrefcomma{functions}
+ou como @mref{arrays}
+) desassocia todos os itens em @var{infolist}.
 Veja tamb@'{e}m @mrefdot{infolists}
 
 @code{kill (all)} desassocia todos os itens em todas as infolistas.  O comando @code{kill (all)} n@~{a}o
-ajusta vari@'{a}veis globais para seus valores padr@~{a}o; veja @mref{reset} nesse
-ponto.
+ajusta vari@'{a}veis globais para seus valores padr@~{a}o; veja @mref{reset}
+nesse ponto.
 
 O comando @code{kill (allbut (@var{a_1}, ..., @var{a_n}))} desassocia all items on all
 infolists except for @var{a_1}, @dots{}, @var{a_n}.
 O comando @code{kill (allbut (@var{infolist}))} desassocia todos os itens exceto aqueles em
-@var{infolist}, onde @var{infolist} @'{e} @mrefcomma{values}@w{}
-@mrefcomma{functions} @mrefcomma{arrays} etc.
+@var{infolist}, onde @var{infolist} @'{e} @mrefcomma{values}
+@w{} @mrefcomma{functions} @mrefcomma{arrays}
+etc.
 
 A mem@'{o}ria ocupada por uma propriedade associada n@~{a}o @'{e} liberada at@'{e} que todos os s@'{i}mbolos sejam
 desassociados dessa propriedade.  Em particular, para liberar a memŕia ocupada pelo valor de
@@ -470,8 +497,10 @@ O comando @code{kill} n@~{a}o avalia seus argumentos.  O operador ap@'{o}strofo-
 evita que as aspas duplas sejam colocadas.
 
 O comando @code{kill (@var{s@'{i}mbolo})} desassocia todas as propriedades de @var{s@'{i}mbolo}.  De forma oposta,
-as fun@,{c}@~{o}es @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
-@mrefcomma{remarray} e @mref{remrule} desassociam uma propriedade espec@'{i}fica.
+as fun@,{c}@~{o}es @mrefcomma{remvalue} @mrefcomma{remfunction}
+@w{}@mrefcomma{remarray}
+e @mref{remrule}
+desassociam uma propriedade espec@'{i}fica.
 
 O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o tenha associa@,{c}@~{o}es.
 
@@ -487,15 +516,10 @@ O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o 
 
 Retorna a lista de r@'{o}tulos de entrada, sa@'{i}da, ou de express@~{o}es intermediarias que se iniciam
 com @var{s@'{i}mbolo}.  Tipicamente @var{s@'{i}mbolo} @'{e} o valor de
-@mrefcomma{inchar} @mrefcomma{outchar} ou de @mrefdot{linechar}  O caractere de
-r@'{o}tulo pode ser dado com ou sem o sinal de porcentagem, de forma que, por exemplo, @code{i}
-e @code{%i} retornem o mesmo resultado.
+@mrefcomma{inchar} @mrefcomma{outchar}
+ou de @mrefdot{linechar}
 
 Se nenhum r@'{o}tulo iniciar-se com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
-
-A fun@,{c}@~{a}o @code{labels} coloca seus argumentos entre aspas duplas (isso faz com que o argumento n@~{a}o seja avaliado).  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
-evita que as aspas duplas sejam colocadas.  Por exemplo, @code{labels (''inchar)} retorna
-os r@'{o}tulos de entrada que iniciam-se com o atual caractere de r@'{o}tulo de entrada.
 
 A vari@'{a}vel @code{labels} @'{e} a lista de r@'{o}tulos de entrada, de sa@'{i}da, e de express@~{o}es
 intermedi@'{a}rias, incluindo todos os r@'{o}tulos anteriores se @code{inchar},
@@ -506,16 +530,19 @@ resultado um r@'{o}tulo de sa@'{i}da.  A exibi@,{c}@~{a}o da sa@'{i}da @'{e} omi
 com @code{$} (sinal de d@'{o}lar) ao inv@'{e}s do @code{;} (ponto e v@'{i}rgula).  Um r@'{o}tulo
 de sa@'{i}da @'{e} constru@'{i}do e associado ao resultado, mas n@~{a}o @'{e} mostrado, e o r@'{o}tulo
 pode ser referenciado da mesma forma que os r@'{o}tulos de sa@'{i}da que s@~{a}o mostrados.  Veja tamb@'{e}m
-@mrefcomma{%} @mrefcomma{%%} e @mrefdot{%th}
+@mrefcomma{%} @mrefcomma{%%}
+e @mrefdot{%th}
 
 R@'{o}tulos de express@~{o}es intermedi@'{a}rias podem ser gerados por algumas fun@,{c}@~{o}es.  A vari@'{a}vel de
-op@,{c}@~{a}o @mref{programmode} controla se @mref{solve} e algumas outras
+op@,{c}@~{a}o @mref{programmode}
+controla se @mref{solve}
+e algumas outras
 fun@,{c}@~{o}es geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias ao inv@'{e}s de retornar uma lista de
-express@~{o}es.  Algumas outras fun@,{c}@~{o}es, tais como @mrefcomma{ldisplay} sempre geram
-r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
+express@~{o}es.  Algumas outras fun@,{c}@~{o}es, tais como @mrefcomma{ldisplay}
+sempre geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
 
-Veja tamb@'{e}m @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} e
-@mrefdot{infolists}
+Veja tamb@'{e}m @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar}
+e @mrefdot{infolists}
 
 @opencatbox
 @category{Display functions} @category{Display flags and variables} @category{Console interaction}
@@ -533,12 +560,13 @@ gerados pelo Maxima.  Maxima consstr@'{o}i um r@'{o}tulo para cada express@~{a}o
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{linechar} pode receber qualquer sequ@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
 @'{u}nico.  Devido ao fato de Maxima internamente considerar somente o primeiro caractere do
-prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar} e
-@code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
+prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar}
+e @code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
 como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
 
 Express@~{o}es intermedi@'{a}rias podem ou n@~{a}o serem mostradas.
-Veja @mref{programmode} e @mrefdot{labels}
+Veja @mref{programmode}
+e @mrefdot{labels}
 
 @opencatbox
 @category{Display flags and variables}
@@ -580,8 +608,8 @@ Valor padr@~{a}o: @code{false}
 
 Quando @code{nolabels} for @code{true}, r@'{o}tulos de resultado de entrada e sa@'{i}da (@code{%i}
 e @code{%o}, respectivamente) s@~{a}o mostrados, mas os r@'{o}tulos n@~{a}o s@~{a}o associados ao
-resultado, e os r@'{o}tulos n@~{a}o s@~{a}o anexados ao final da lista @mref{labels}.  Uma vez que
-r@'{o}tulos n@~{a}o s@~{a}o associados a resultados, as fun@,{c}@~{o}es de recupera@,{c}@~{a}o de mem@'{o}ria podem recuperar a mem@'{o}ria
+resultado, e os r@'{o}tulos n@~{a}o s@~{a}o anexados ao final da lista @mrefdot{labels}
+Uma vez que r@'{o}tulos n@~{a}o s@~{a}o associados a resultados, as fun@,{c}@~{o}es de recupera@,{c}@~{a}o de mem@'{o}ria podem recuperar a mem@'{o}ria
 usada pelos resultados.
 
 De outra forma r@'{o}tulos de resultado de entrada e sa@'{i}da s@~{a}o associados aos resultados, e os r@'{o}tulos
@@ -591,7 +619,8 @@ R@'{o}tulos de express@~{o}es intermedi@'{a}rias (@code{%t}) n@~{a}o s@~{a}o afe
 independente de @code{nolabels} ser @code{true} ou @code{false}, r@'{o}tulos de express@~{o}es
 intermedi@'{a}rias s@~{a}o associados e anexados ao final da lista @code{labels}.
 
-Veja tamb@'{e}m @mrefcomma{batch} @mrefcomma{load} e @mrefdot{labels}
+Veja tamb@'{e}m @mrefcomma{batch} @mrefcomma{load}
+e @mrefdot{labels}
 
 @opencatbox
 @category{Global flags} @category{Session management}
@@ -638,8 +667,8 @@ concatena@,{c}@~{a}o de @code{outchar} com @mrefdot{linenum}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{outchar} pode receber como valor qualquer sequ@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere
 @'{u}nico.  Devido ao fato de Maxima internamente considerar somente o primeiro caractere do
-prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar} e
-@code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
+prefixo, os prefixos @mrefcomma{inchar} @mrefcomma{outchar}
+e @code{linechar} devem ter um primeiro caractere diferente.  De outra forma alguns comandos
 como @code{kill(inlables)} n@~{a}o ir@~{a}o trabalhar como esperado.
 
 Veja tamb@'{e}m @code{labels}.
@@ -677,7 +706,9 @@ Exemplo:
 
 Mostra as entradas, as sa@'{i}das, e as express@~{o}es intermedi@'{a}rias, sem recalcul@'{a}-las.
 A fun@,{c}@~{a}o @code{playback} somente mostra as express@~{o}es associadas a r@'{o}tulos; quaisquer outras sa@'{i}das
-(tais como textos mostrados atrav@'{e}s da fun@,{c}@~{a}o @mref{print} ou da fun@,{c}@~{a}o @mrefcomma{describe} ou mensagens de erro)
+(tais como textos mostrados atrav@'{e}s da fun@,{c}@~{a}o @mref{print}
+ou da fun@,{c}@~{a}o @mrefcomma{describe}
+ou mensagens de erro)
 n@~{a}o @'{e} mostrado.  Veja tamb@'{e}m @mrefdot{labels}
 
 A fun@,{c}@~{a}o @code{playback} n@~{a}o avalia seus argumentos.  O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}
@@ -704,7 +735,8 @@ entrada e sa@'{i}da.
 pressione @code{enter}.  Esse comportamento @'{e} similar ao comportamento de @mrefdot{demo}
 @c WHAT DOES THE FOLLOWING MEAN ???
 @code{playback (slow)} @'{e} @'{u}til em conjun@,{c}@~{a}o com @code{save} ou com
-@mref{stringout} na cria@,{c}@~{a}o de um arquivo secund@'{a}rio de armazenagem com o objetivo de selecionar
+@mref{stringout}
+na cria@,{c}@~{a}o de um arquivo secund@'{a}rio de armazenagem com o objetivo de selecionar
 express@~{o}es @'{u}teis.
 
 @code{playback (time)} mostra o tempo de computa@,{c}@~{a}o para cada express@~{a}o.
@@ -729,14 +761,38 @@ Argumentos podem ser combinados, e.g., @code{playback ([5, 10], grind, time, slo
 @defvr {Option variable} prompt
 Valor padr@~{a}o: @code{_}
 
-A vari@'{a}vel de op@,{c}@~{a}o @code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@,{c}@~{a}o @mref{demo},
+A vari@'{a}vel de op@,{c}@~{a}o @code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@,{c}@~{a}o @mrefcomma{demo}
 modo @code{playback (slow)}, e do la@,{c}o de parada do Maxima (da forma invocada por
-@mref{break}).
+@mref{break}
+).
 
 @opencatbox
 @category{Global variables} @category{Console interaction}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} prompt_prepend_note (nota)
+
+Adiciona uma nota que é mostrada após cada prompt de entrada. Essa nota deve
+ou ser uma sequência de caracteres ou deve ser alguma coisa que possa ser chamada como uma
+função. No caso de ser chamada como função, a função deve retornar ou uma
+sequência de caracteres ou um número (por razões técnicas decorrentes da implementação, expressões
+arbitrárias podem não serem impressas corretamente). Se a chamada à função
+retornar um erro então a nota é removida da lista a ser
+mostrada a partir da chamada à função.
+
+Pode ter mais de uma nota mostrada após o prompt, e a função @code{prompt_prepend_note}
+adiciona a nota fornecida ao lado direito no final da lista. Para remover uma nota
+da lista, use @mrefdot{prompt_remove_note}
+@end deffn
+
+@deffn {Function} prompt_remove_note (nota)
+
+Remove uma nota da lista de objetos a serem exibidos após cada prompt. Veja
+@mref{prompt_prepend_note}
+para como adicionar uma nota.
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{quit}
@@ -837,8 +893,9 @@ Valor padr@~{a}o: @code{false}
 Quando @code{showtime} for @code{true}, o tempo de c@'{a}lculo e o tempo decorrido ambos s@~{a}o
 mostrados com cada express@~{a}o de sa@'{i}da.
 
-O tempo de c@'{a}lculo @'{e} sempre gravado, de forma que @mref{time} e @mref{playback} possam
-mostrar o tempo de c@'{a}lculo mesmo quando @code{showtime} for @code{false}.
+O tempo de c@'{a}lculo @'{e} sempre gravado, de forma que @mref{time}
+e @mref{playback}
+possam mostrar o tempo de c@'{a}lculo mesmo quando @code{showtime} for @code{false}.
 
 Veja tamb@'{e}m @mrefdot{timer}
 
@@ -889,13 +946,16 @@ Returning to Maxima
 Valor inicial: @code{[]}
 
 A vari@'{a}vel de sistema @code{values} @'{e} uma lista de todas as vari@'{a}veis de usu@'{a}rio associadas (n@~{a}o op@,{c}@~{o}es do Maxima ou
-comutadores).  A lsita compreende s@'{i}mbolos associados por @mrefcomma{:} ou por @mrefdot{::}
+comutadores).  A lsita compreende s@'{i}mbolos associados por @mrefcomma{:}
+ou por @mrefdot{::}
 
 Se o valor de uma vari@'{a}vel @'{e} removido com os comandos @code{kill}, 
-@mrefcomma{remove} ou @mref{remvalue} a vari@'{a}vel @'{e} apagada de
-@code{values}.
+@mrefcomma{remove}
+ou @mref{remvalue}
+a vari@'{a}vel @'{e} apagada de @code{values}.
 
-Veja @mref{functions} para uma lista de fun@,{c}@~{o}es definidas pelo usu@'{a}rio.
+Veja @mref{functions}
+para uma lista de fun@,{c}@~{o}es definidas pelo usu@'{a}rio.
 
 Exemplos:
 
@@ -1004,11 +1064,13 @@ Exemplo:
 @anchor{disp}
 @deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
-Essa fun@,{c}@~{a}o @'{e} como @mref{display} mas somente o valor dos argumentos @'{e} mostrado ao inv@'{e}s das
+Essa fun@,{c}@~{a}o @'{e} como @mref{display}
+mas somente o valor dos argumentos @'{e} mostrado ao inv@'{e}s das
 equa@,{c}@~{o}es.  @'{E} @'{u}til para argumentos complicados que n@~{a}o possuem nomes 
 ou onde somente o valor do argumento @'{e} de interesse e n@~{a}o o nome.
 
-Veja tamb@'{e}m @mref{ldisp} e @mrefdot{print}
+Veja tamb@'{e}m @mref{ldisp}
+e @mrefdot{print}
 
 Exemplo:
 
@@ -1042,11 +1104,13 @@ Exemplo:
 
 Mostra equa@,{c}@~{o}es cujo primeiro membro @'{e} @var{expr_i} n@~{a}o avaliado, e cujo segundo
 membro seja o valor da express@~{a}o de forma que ambos sejam centralizados na linha.  Essa fun@,{c}@~{a}o @'{e}
-@'{u}til em blocos e em declara@,{c}@~{o}es @mref{for} com o objetivo de ter resultados resultados intermedi@'{a}rios
+@'{u}til em blocos e em declara@,{c}@~{o}es @mref{for}
+com o objetivo de ter resultados resultados intermedi@'{a}rios
 mostrados.  Os argumentos a @code{display} s@~{a}o normalmente @'{a}tomos, subscritos 
 vari@'{a}veis, ou chamadas a fun@,{c}@~{o}es.
 
-Veja tamb@'{e}m @mrefcomma{ldisplay} @mrefcomma{disp} e @mrefdot{ldisp}
+Veja tamb@'{e}m @mrefcomma{ldisplay} @mrefcomma{disp}
+e @mrefdot{ldisp}
 
 Exemplo:
 
@@ -1083,7 +1147,8 @@ Valor padr@~{a}o: @code{true}
 Quando @code{display2d} for @code{false}, o console de exibi@,{c}@~{a}o @'{e} uma sequ@^{e}ncia de caracteres
 na forma unidimensional ao inv@'{e}s de um de exibi@,{c}@~{a}o na forma bidimensional.
 
-Veja tamb@'{e}m @mref{leftjust} para allternar entre um console de exibi@,{c}@~{a}o de equa@,{c}@~{o}es
+Veja tamb@'{e}m @mref{leftjust}
+para allternar entre um console de exibi@,{c}@~{a}o de equa@,{c}@~{o}es
 alinhado @`{a} esquerda e um console de exibi@,{c}@~{a}o de equa@,{c}@~{o}es centralizado.
 
 Exemplo:
@@ -1116,7 +1181,7 @@ Valor padr@~{a}o: @code{false}
 
 Quando @code{display_format_internal} for @code{true}, express@~{o}es s@~{a}o msotradas
 sem serem transformadas em formas que escondam a representa@,{c}@~{a}o matem@'{a}tica
-interna.  A exibi@,{c}@~{a}o ent@~{a}o corresponde ao retorno de @mref{inpart} 
+interna.  A exibi@,{c}@~{a}o ent@~{a}o corresponde ao retorno de @mref{inpart}
 ao inv@'{e}s de corresponder ao retorno de @mrefdot{part}
 
 Exemplos:
@@ -1236,17 +1301,19 @@ em uma entrada do Maxima.  A fun@,{c}@~{a}o @code{grind} sempre retorna @code{do
 Quando @var{expr} for o nome de uma fun@,{c}@~{a}o ou de uma macro, @code{grind} mostra a
 fun@,{c}@~{a}o ou defini@,{c}@~{a}o de macro ao inv@'{e}s de mostrar apenas o nome.
 
-Veja tamb@'{e}m @mrefcomma{string} que retorna uma sequ@^{e}ncia de caracteres ao inv@'{e}s de mostrar sua
+Veja tamb@'{e}m @mrefcomma{string}
+que retorna uma sequ@^{e}ncia de caracteres ao inv@'{e}s de mostrar sua
 sa@'{i}da.  A fun@,{c}@~{a}o @code{grind} tenta mostrar a express@~{a}o de uma maneira que a torna
 levemente mais f@'{a}cil de ler que a sa@'{i}da de @code{string}.
 
 Quando a vari@'{a}vel @code{grind} for @code{true}, a sa@'{i}da de @code{string} e a sa@'{i}da de
-@mref{stringout} possuem o mesmo formato que a sa@'{i}da de @code{grind}; de outra forma nenhuma
+@mref{stringout}
+possuem o mesmo formato que a sa@'{i}da de @code{grind}; de outra forma nenhuma
 tentativa @'{e} feita para formatar de forma especial a sa@'{i}da de @code{string} e de @code{stringout}.  O valor
 padr@~{a}o da vari@'{a}vel @code{grind} @'{e} @code{false}.
 
-A vari@'{a}vel de op@,{c}@~{a}o @code{grind} pode tamb@'{e}m ser especificada como um argumento a @mrefdot{playback}  Quando
-@code{grind} estiver presente, @code{playback} mostra express@~{o}es de sa@'{i}da no mesmo
+A vari@'{a}vel de op@,{c}@~{a}o @code{grind} pode tamb@'{e}m ser especificada como um argumento a @mrefdot{playback}
+Quando @code{grind} estiver presente, @code{playback} mostra express@~{o}es de sa@'{i}da no mesmo
 formato que a fun@,{c}@~{a}o @code{grind}.  De outra forma, nenhuma tentativa @'{e} feita para formatar
 especialmente express@~{o}es de netrada.
 
@@ -1460,7 +1527,8 @@ Mostra as express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma
 elas foram mostradas na sa@'{i}da.  A fun@,{c}@~{a}o @code{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada
 argumento e retorna a lista de r@'{o}tulos.
 
-Veja tamb@'{e}m @mrefcomma{disp} @mrefcomma{display} e @mrefdot{ldisplay}
+Veja tamb@'{e}m @mrefcomma{disp} @mrefcomma{display}
+e @mrefdot{ldisplay}
 
 Exemplos:
 
@@ -1500,10 +1568,12 @@ Mostra express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma qu
 elas foram mostradas na sa@'{i}da.  Cada express@~{a}o @'{e} mostrada como uma equa@,{c}@~{a}o da forma
 @code{primeiromembro = segundomembro} na qual @code{primeiromembro} @'{e} um dos argumentos de @code{ldisplay}
 e @code{segundomembro} @'{e} seu valor.  Tipicamente cada argumento @'{e} uma vari@'{a}vel.
-A fun@,{c}@~{a}o @mref{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada equa@,{c}@~{a}o e
+A fun@,{c}@~{a}o @mref{ldisp}
+atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada equa@,{c}@~{a}o e
 retorna a lista de r@'{o}tulos.
 
-Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp} e @mrefdot{ldisp}
+Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp}
+e @mrefdot{ldisp}
 
 Exemplos:
 
@@ -1543,7 +1613,8 @@ Valor padr@~{a}o: @code{false}
 Quando @code{leftjust} for @code{true}, equa@,{c}@~{o}es no console 2D s@~{a}o desenhadas alinhadas
 @`{a} esquerda ao inv@'{e}s de centralizadas.
 
-Veja tamb@'{e}m @mref{display2d} para alternar entre o console de exibi@,{c}@~{a}o 1D e o console de exibi@,{c}@~{a}o 2D.
+Veja tamb@'{e}m @mref{display2d}
+para alternar entre o console de exibi@,{c}@~{a}o 1D e o console de exibi@,{c}@~{a}o 2D.
 
 Exemplo:
 
@@ -1571,7 +1642,8 @@ A vari@'{a}vel de op@,{c}@~{a}o @code{linel} @'{e} a largura assumida (em caract
 a finalidade de mstrar express@~{o}es.  @`{A} vari@'{a}vel de op@,{c}@~{a}o @code{linel} pode ser atribu@'{i}do qualquer valor pelo
 usu@'{a}rio, embora valores muito pequenos ou muito grandes sejam impratic@'{a}veis.  Texto
 mostradaos pelas fun@,{c}@~{o}es embutidas do Maxima, tais como mensagens de erro e a sa@'{i}da de
-@mrefcomma{describe} n@~{a}o s@~{a}o afetadas por @code{linel}.
+@mrefcomma{describe}
+n@~{a}o s@~{a}o afetadas por @code{linel}.
 
 @opencatbox
 @category{Display flags and variables}
@@ -1756,8 +1828,9 @@ da esquerda para a direita, iniciando a partir do canto esquerdo do console de e
 O valor retornado por @code{print} @'{e} o valor de seu @'{u}ltimo argumento.
 A fun@,{c}@~{a}o @code{print} n@~{a}o gera r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
 
-Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp} @mrefcomma{ldisplay} ae
-@mrefdot{ldisp}  Essas fun@,{c}@~{o}es mostram uma express@~{a}o por linha, enquanto
+Veja tamb@'{e}m @mrefcomma{display} @mrefcomma{disp} @mrefcomma{ldisplay}
+e @mrefdot{ldisp}
+Essas fun@,{c}@~{o}es mostram uma express@~{a}o por linha, enquanto
 @code{print} tenta mostrar duas ou mais express@~{o}es por linha.
 
 Para mostrar o conte@'{u}do de um arquivo, veja @mrefdot{printfile}
@@ -1826,7 +1899,8 @@ Quando @code{ttyoff} for @code{true}, express@~{o}es de sa@'{i}da n@~{a}o s@~{a}
 Mesmo assim elas ainda ser@~{a}o calculadas e ainda receber@~{a}o r@'{o}tulos de sa@'{i}da.  Veja @mrefdot{labels}
 
 Texto mostrados pela fun@,{c}@~{o}es embutidas no Maxima, tais como mensagens de erro e a sa@'{i}da
-de @mrefcomma{describe} n@~{a}o s@~{a}o afetadas por @code{ttyoff}.
+de @mrefcomma{describe}
+n@~{a}o s@~{a}o afetadas por @code{ttyoff}.
 
 @opencatbox
 @category{Display flags and variables}

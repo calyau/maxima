@@ -1,4 +1,4 @@
-@c English version: 2012-12-29
+@c English version: 2013-12-13
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -540,7 +540,7 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 
 
 
-@deffn {Funci@'on} tranform_sample (@var{matriz}, @var{varlist}, @var{exprlist})
+@deffn {Funci@'on} transform_sample (@var{matriz}, @var{varlist}, @var{exprlist})
 
 Transforma la @var{matriz} de datos, en la que a cada columna se le asigna
 un nombre de acuerdo con la lista @var{varlist}, seg@'un las expresiones de @var{exprlist}.
@@ -554,7 +554,7 @@ define la transformaci@'on de la muestra.
 (%i1) load (descriptive)$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
 @group
-(%i3) tranform_sample(data, [a,b,c], [c, a*b, log(a)]);
+(%i3) transform_sample(data, [a,b,c], [c, a*b, log(a)]);
                                [ 7  6   log(3) ]
                                [               ]
                                [ 2  21  log(3) ]
@@ -565,12 +565,12 @@ define la transformaci@'on de la muestra.
 @end group
 @end example
 
-Add a constant column and remove the third variable.
+A@~nade una columna constante y elimina la tercera variable.
 
 @example
 (%i1) load (descriptive)$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
-(%i3) tranform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
+(%i3) transform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
 @group
                                   [ 1  3  2 ]
                                   [         ]

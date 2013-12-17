@@ -28,7 +28,7 @@
   (cond ((pcoefp p) p) ;;expression for any var in p
 	((eq var (car p))
 	 (cond ((pzerop val)
-		(pterm (cdr p) 0))
+		(ptterm (cdr p) 0))
 	       ((do ((ld (cadr p) (car a))
 		     (a (cdddr p) (cddr a))
 		     (ans (caddr p)
@@ -293,8 +293,8 @@
 		       prim (car temp))))))))
 
 (defun plsolve (p)
-  (ratreduce (pterm (cdr p) 0)
-	     (pminus (pterm (cdr p) 1))))
+  (ratreduce (ptterm (cdr p) 0)
+	     (pminus (ptterm (cdr p) 1))))
 
 
 (defun psplit-field1 (p)
@@ -363,7 +363,7 @@
 	 (cons p 1)) ;;expression for any var in p
 	((eq var (car p))
 	 (cond ((pzerop val)
-		(cons (pterm (cdr p) 0) 1))
+		(cons (ptterm (cdr p) 0) 1))
 	       ((do ((ld (cadr p) (car a))
 		     (a (cdddr p) (cddr a))
 		     (ans (cons (caddr p) 1)

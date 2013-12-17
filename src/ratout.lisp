@@ -100,7 +100,7 @@
      (cond ((null p) (return *res))
 	   ((pcoefp (cadr p))
 	    (cond ((equal *max 0) (setq zz (cadr p)) (go add)) (t (go ret))))
-	   ((eq (caadr p) *var) (setq zz (pterm (cdadr p) *max)) (go add)))
+	   ((eq (caadr p) *var) (setq zz (ptterm (cdadr p) *max)) (go add)))
      (cond ((equal *max 0) (setq zz (cadr p))) (t (go ret)))
      add  (cond ((equal zz 0) (go ret)))
      (setq *res (pplus *res (psimp *chk (list (car p) zz))))

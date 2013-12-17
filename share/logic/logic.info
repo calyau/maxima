@@ -1,0 +1,28 @@
+\input texinfo
+@c logic.mac--Logic algebra package for Maxima CAS.
+@c Copyright (c) 2008--2009 Alexey Beshenov <al@beshenov.ru>.
+@c
+@c Version 2.1. Last modified 2009-01-07
+@c
+@c logic.mac is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU Lesser General Public License as published
+@c by the Free Software Foundation; either version 2.1 of the License,
+@c or (at your option) any later version.
+@c
+@c logic.mac is distributed in the hope that it will be useful, but
+@c WITHOUT ANY WARRANTY; without even the implied warranty of
+@c MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+@c General Public License for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with the logic.mac; see the file COPYING. If not, write to the
+@c Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+@c Boston, MA 02110-1301, USA.
+
+
+@setfilename logic.info
+@settitle Logic algebra package for Maxima
+
+@include logic.texi
+
+@bye

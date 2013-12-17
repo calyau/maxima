@@ -565,7 +565,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 
 
 
-@deffn {Function} tranform_sample (@var{matrix}, @var{varlist}, @var{exprlist})
+@deffn {Function} transform_sample (@var{matrix}, @var{varlist}, @var{exprlist})
 
 Transforms the sample @var{matrix}, where each column is called according to
 @var{varlist}, following expressions in @var{exprlist}.
@@ -579,7 +579,7 @@ a list of expressions define the transformation of the sample.
 (%i1) load (descriptive)$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
 @group
-(%i3) tranform_sample(data, [a,b,c], [c, a*b, log(a)]);
+(%i3) transform_sample(data, [a,b,c], [c, a*b, log(a)]);
                                [ 7  6   log(3) ]
                                [               ]
                                [ 2  21  log(3) ]
@@ -595,7 +595,7 @@ Add a constant column and remove the third variable.
 @example
 (%i1) load (descriptive)$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
-(%i3) tranform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
+(%i3) transform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
 @group
                                   [ 1  3  2 ]
                                   [         ]

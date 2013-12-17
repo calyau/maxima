@@ -1021,14 +1021,16 @@ summation when necessary."
       *opers-list (cons '($nary . nary1) *opers-list))
 
 (defun nary1 (e z)
+  (oper-apply (nary2 e z) z))
+
+(defun nary2 (e z)
   (do
     ((l (cdr e) (cdr l)) (ans) (some-change))
 
     ((null l)
      (if some-change
-       (nary1 (cons (car e) (nreverse ans)) z)
-       (let ((w (get (caar e) 'operators)))
-         (if w (funcall w e 1 z) (simpargs e z)))))
+       (nary2 (cons (car e) (nreverse ans)) z)
+       (simpargs e z)))
 
     (setq
       ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))

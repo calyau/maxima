@@ -405,9 +405,10 @@
       (catch *quit-tag*
 	(unwind-protect
 	     (do () (())
-	       (format-prompt *debug-io* "~&~@[(~a:~a) ~]"
-                              (unless (stringp at) "dbm")
-                              (length *quit-tags*))
+	       (format-prompt *debug-io* "~a"
+			      (format nil "~&~@[(~a:~a) ~]"
+				      (unless (stringp at) "dbm")
+				      (length *quit-tags*)))
 	       (finish-output *debug-io*)
 	       (setq val
 		     (catch 'macsyma-quit

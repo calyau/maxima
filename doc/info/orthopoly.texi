@@ -804,7 +804,7 @@ Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 @end deffn
 
 @deffn {Function} legendre_q (@var{n}, @var{x})
-The Legendre polynomial of the first kind.
+The Legendre polynomial of the second kind.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
 

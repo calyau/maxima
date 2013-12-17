@@ -111,8 +111,8 @@
           (t
            expr1))))
 
-(defun $implicit_plot (expr xrange yrange &rest options)
-  (let* (($numer t) ($plot_options $plot_options)
+(defun $implicit_plot (expr xrange yrange &rest extra-options)
+  (let* (($numer t) (options (copy-tree *plot-options*))
          (plot-name)
          (i 0)
          (xmin ($second xrange))
@@ -125,31 +125,28 @@
                                ,(1+ ($second $ip_grid)))))
          (ssample (make-array `(,(1+ ($first $ip_grid_in))
                                 ,(1+ ($second $ip_grid_in)))))
-         file-name gnuplot-out-file gnuplot-term features
-         (xmaxima-titles ()))
+         file-name gnuplot-out-file gnuplot-term
+         (xmaxima-titles nil))
     
-    ;; Parse the given options into the list features
-    (setf (getf features :type) "plot2d")
-    (setq features (plot-options-parser options features))
+    ;; Parse the given options into the list options
+    (setf (getf options :type) "plot2d")
+    (setq options (plot-options-parser extra-options options))
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
-    (setf (getf features :xmin) (third xrange))
-    (setf (getf features :xmax) (fourth xrange))
-    (setf (getf features :ymin) (third yrange))
-    (setf (getf features :ymax) (fourth yrange))
-    (unless (getf features :xlabel)
-      (setf (getf features :xlabel) (ensure-string (second xrange))))
-    (unless (getf features :ylabel)
-      (setf (getf features :ylabel) (ensure-string (second yrange))))
-
-;    ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
+    (setf (getf options :x) (cddr xrange))
+    (setf (getf options :y) (cddr yrange))
     
+    (unless (getf options :xlabel)
+      (setf (getf options :xlabel) (ensure-string (second xrange))))
+    (unless (getf options :ylabel)
+      (setf (getf options :ylabel) (ensure-string (second yrange))))
+
     (if (not ($listp expr))
         (setq expr `((mlist simp) ,expr)))
 
-    (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
+    (setf gnuplot-term (getf options :gnuplot_term))
     
-    (if (eq (getf features :plot-format) '$xmaxima)
+    (if (eq (getf options :plot-format) '$xmaxima)
         (setq ip-gnuplot nil)
         (setq ip-gnuplot t))
 
@@ -165,16 +162,23 @@
         (file file-name :direction :output :if-exists :supersede)
       (if ip-gnuplot
           (progn
-            (gnuplot-print-header file features)
+            (gnuplot-print-header file options)
             (format file "set style data lines~%")
             (format file "plot"))
-            (xmaxima-print-header file features))
-      (let ((legend (getf features :legend))
-            (styles (getf features :styles)))
+          (xmaxima-print-header file options))
+      (let ((legend (getf options :legend))
+            (colors (getf options :color))
+            (types (getf options :point_type))
+            (styles (getf options :styles)))
+        (unless (listp legend) (setq legend (list legend)))
+        (unless (listp colors) (setq colors (list colors)))
+        (unless (listp types) (setq types (list types)))
+        (unless (listp styles) (setq colors (list styles)))
         (dolist (v (cdr expr))
           (incf i)
           (setq plot-name nil)
-          (if legend        ; legend in the command line has priority
+          (if (member :legend options)
+              ;; a legend has been given in the options
               (setq plot-name
                     (if (first legend)
                         (ensure-string
@@ -193,19 +197,20 @@
               (progn
                 (if (> i 1)
                     (format file ","))
-                (let ((title (get-plot-option-string '$gnuplot_curve_titles i))
-                      (style (get-plot-option-string '$gnuplot_curve_styles i)))
-                  (when (or (equal title "false") (equal title "default"))
+                (let ((title (nth (1- i) (getf options :gnuplot_curve_titles)))
+                      (style (nth (1- i)
+                                  (getf options :gnuplot_curve_styles))))
+                  (when (or (not title) (equal title "default"))
                     (if plot-name
                         (setq title (format nil " title \"~a\"" plot-name))
                         (setq title " notitle")))
-                  (when (equal style "false")
+                  (when (not style)
                     (if styles
                         (progn
                           (setq style (nth (mod i (length styles)) styles))
                           (setq style (if ($listp style) (cdr style) `(,style))))
                         (setq style nil))
-                    (setq style (gnuplot-curve-style style i)))
+                    (setq style (gnuplot-curve-style style colors types i)))
                   (format file " '-' ~a ~a" title style)))
               (progn
                 (let (title style)
@@ -216,7 +221,7 @@
                         (setq style (nth (mod i (length styles)) styles))
                         (setq style (if ($listp style) (cdr style) `(,style))))
                       (setq style nil))
-                  (setq style (xmaxima-curve-style style i))
+                  (setq style (xmaxima-curve-style style colors i))
                   (setq xmaxima-titles (cons (format nil "~a ~a~%" title style)
                                              xmaxima-titles)))))))
       (format file "~%")
@@ -251,7 +256,7 @@
     
     ;; call plotter
     (if ip-gnuplot
-        (gnuplot-process file-name)
+        (gnuplot-process options file-name)
         ($system (concatenate 'string *maxima-prefix*
                               "/bin/" $xmaxima_plot_command)
                  (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima")))))

@@ -2,6 +2,17 @@
 # comment \
 exec @WISH@ "$0" "$@"
 
+# Set path to gnuplot on windows, if required
+if { $tcl_platform(platform) eq "windows"} {
+  # If gnuplot isn't in the path, then guess location and add to path
+  if { [auto_execok gnuplot] eq "" } {
+    # Path to mgnuplot executable
+    set mypath [file dirname $argv0]
+    # gnuplot.exe location relative to mgnuplot.exe in windows installer
+    set gnuplotpath [file normalize "${mypath}/../../../../gnuplot/bin"]
+    set ::env(PATH) "$::env(PATH);$gnuplotpath"
+  }
+}
 
 #set gnuPlotstream [open {|  gnuplot /d19/staff/wfs/tmp/jo } w]
 set gnuPlotstream [open {|  gnuplot  } r+]
@@ -45,9 +56,10 @@ text .text
 proc getoptions {} {
 #    unlink gnu-optionsxx
     set tmp gnu-optionsxx
-    exec rm -f $tmp
+    file delete -force $tmp
     sendgnu "save '$tmp'\n"
-    while {[file exists $tmp] <= 0} {exec sleep 0}
+    # 50 ms delay in loop is arbitrary, was "exec sleep 0"
+    while {[file exists $tmp] <= 0} {after 50}
     set at [.fra.options nearest 0]
     set f [ open gnu-optionsxx ]
     .fra.options delete 0 end

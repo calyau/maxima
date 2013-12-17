@@ -276,7 +276,7 @@
 	       (cond ((or (pcoefp p) (not (eq (p-var p) var))
 			  (> (car ae) (p-le p)))
                       (rat-error "pnthroot error (should have been caught)")))
-	       (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
+	       (setq ans (nconc ans (ptptquotient (cdr (leadterm p)) ae)))
 	       )))))
 
 (defun cnthroot(c n)
@@ -336,8 +336,8 @@
 		   p (pquotient p (list (car gv) (car dl) 1)))))))
 
 (defun factorout (p)
-  (cond ((and (pcoefp (pterm (cdr p) 0))
-	      (not (zerop (pterm (cdr p) 0))))
+  (cond ((and (pcoefp (ptterm (cdr p) 0))
+	      (not (zerop (ptterm (cdr p) 0))))
 	 (list nil p))
 	(t (factorout1 (pmindegvec p) p))))
 
