@@ -609,9 +609,8 @@
   (let ((p (car pe)) (e (cadr pe)) qd)
     (cond
       ((= 2 p)
-        (setq qd (list '(2 1)))
-        (when (> e 2) 
-          (setq qd (nconc qd (list `(2 ,(- e 2))))) ))
+        (when (> e 1) (setq qd (list '(2 1))))
+        (when (> e 2) (setq qd (nconc qd (list `(2 ,(- e 2)))))) )
       (t 
         (setq qd (let (($intfaclim)) (get-factor-list (1- p))))
         (when (> e 1) 
