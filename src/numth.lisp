@@ -241,7 +241,7 @@
       (if fs-phi 
         (list '($zn_order) x n fs-phi)
         (list '($zn_order) x n) )))
-  (when (minusp x) (setq x (mod x n)))
+  (setq x (mod x n))
   (cond 
     ((= 0 x) nil)
     ((= 1 x) (if (= n 1) nil 1))
@@ -319,12 +319,11 @@
       (if fs-phi 
         (list '($zn_primroot_p) x n fs-phi)
         (list '($zn_primroot_p) x n) )))
-  (when (minusp x) (setq x (mod x n)))
+  (setq x (mod x n))
   (cond 
     ((= 0 x) nil)
     ((= 1 x) (if (= n 2) t nil))
     ((<= n 2) nil)
-    ((= 0 (mod x n)) nil)
     (t 
       (if fs-phi
          (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
