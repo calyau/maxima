@@ -1379,6 +1379,12 @@ sin(y)*(10.0+6*cos(x)),
     (format nil "~a/~a" *maxima-tempdir* file)
     file))
 
+;; If no file path is given, uses temporary directory path
+(defun plot-file-path (file)
+  (if (search "/" file)
+      file
+      (plot-temp-file file)))
+
 (defun gnuplot-process (plot-options &optional file out-file)
   (let ((gnuplot-term (getf plot-options :gnuplot_term))
         (run-viewer (getf plot-options :run_viewer))
@@ -1893,9 +1899,9 @@ sin(y)*(10.0+6*cos(x)),
         (setf gnuplot-out-file (getf options :gnuplot_out_file)))
     (if (and (eq (getf options :plot_format) '$gnuplot)
              (eq gnuplot-term '$default) gnuplot-out-file)
-        (setq file gnuplot-out-file)
+        (setq file (plot-file-path gnuplot-out-file))
         (setq file
-              (plot-temp-file
+              (plot-file-path
                (format nil "maxout.~(~a~)"
                        (ensure-string (getf options :plot_format))))))
 
@@ -2512,14 +2518,14 @@ Several functions depending on the two variables v1 and v2:
   (setf gnuplot-term (getf options :gnuplot_term))
   (if (getf options :gnuplot_out_file)
       (setf gnuplot-out-file (getf options :gnuplot_out_file)))
-  (if (and (eq (getf options :plot_format) '$gnuplot) 
-           (eq gnuplot-term '$default) 
-           gnuplot-out-file)
-      (setf file gnuplot-out-file)
-      (setf file 
-            (plot-temp-file
+  (if (and (eq (getf options :plot_format) '$gnuplot)
+           (eq gnuplot-term '$default) gnuplot-out-file)
+      (setq file (plot-file-path gnuplot-out-file))
+      (setq file
+            (plot-file-path
              (format nil "maxout.~(~a~)"
                      (ensure-string (getf options :plot_format))))))
+
   (and $in_netmath 
        (setq $in_netmath (eq (getf options :plot_format) '$xmaxima)))
   

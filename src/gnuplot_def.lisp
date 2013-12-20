@@ -456,7 +456,7 @@
      (if (getf plot-options :gnuplot_ps_term_command)
          (setq terminal-command
                (getf plot-options :gnuplot_ps_term_command))
-         (setq terminal-command "set size 1.3,1.3; set term postscript eps color solid lw 2.5 30"))
+         (setq terminal-command "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""))
      (if (getf plot-options :gnuplot_out_file)
          (setq out-file (getf plot-options :gnuplot_out_file))
          (setq out-file "maxplot.ps")))
@@ -484,7 +484,5 @@
           (format nil "maxplot.~(~a~)"
                   (get-gnuplot-term (getf plot-options :gnuplot_term)))))))
 
-  ;; If no file path is given, create file in the temporary directory
-  (when (and (not (null out-file)) (not (search "/" out-file)))
-    (setq out-file (plot-temp-file out-file)))
+  (unless (null out-file) (setq out-file (plot-file-path out-file)))
   (list terminal-command out-file)))
