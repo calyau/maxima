@@ -183,10 +183,15 @@
 ;; up by the log(x).  The "size" of a is, basically, the exponent of
 ;; a. If a = 2^n*f where |f| < 1, then the size is abs(n) because
 ;; that's how many extra bits are added to the integer part of
-;; a*log(x).
+;; a*log(x).  If either |x| or |a| < 1, the size is 0, since no
+;; additional bits are taken up.
 (defun expt-extra-bits (x a)
-  (max 1 (+ (integer-length (max-exponent x))
-	    (max-exponent a))))
+  (max 1 (+ (if (< (abs x) 1)
+		0
+		(integer-length (max-exponent x)))
+	    (if (< (abs a) 1)
+		0
+		(max-exponent a)))))
 
 ;;; WITH-EXTRA-PRECISION - Internal
 ;;;
