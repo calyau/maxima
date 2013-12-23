@@ -33,6 +33,12 @@ $section_cnt = 0;
 open (FH, "<" . $infofile_encoding, $main_info);
 read (FH, $stuff, -s FH);
 
+# check which version of makeinfo produced $main_info
+# for purposes of bug workaround
+($makeinfo_major_version, $makeinfo_minor_version) = 
+    $stuff =~ /makeinfo version (\d+)\.(\d+)/;
+# print STDERR "makeinfo version $makeinfo_major_version . $makeinfo_minor_version\n";
+
 $filename = $main_info;
 push @info_filenames, $filename;
 
@@ -257,29 +263,31 @@ sub seek_lines {
     #  -- Function: setup_autoload (<filename>, <function_1>, ...,
     #            <function_n>)
     #
-    # BUG IS PRESENT IN MAKEINFO 4.8; FOLLOWING CAN GO AWAY WHEN BUG IS FIXED
+    # BUG IS PRESENT IN MAKEINFO 4.8, NOT PRESENT IN MAKEINFO 5.1
     
-    my $x = -1;
-    my $x_maybe;
+    my $x;
+    if ($makeinfo_major_version == 4) {
+	$x = -1;
+	my $x_maybe;
 
-    for (1 .. $lines_offset + 1) {
-        $x_maybe = tell FH;
-        my $line = <FH>;
-        if ($line =~ /^ -- \S/) {
-            $x = $x_maybe;
-        }
+	for (1 .. $lines_offset + 1) {
+	    $x_maybe = tell FH;
+	    my $line = <FH>;
+	    if ($line =~ /^ -- \S/) {
+		$x = $x_maybe;
+	    }
+	}
+	
+	if ($x == -1) {
+	    # We didn't encounter any match for "^ -- \S".
+	    $x = $x_maybe;
+	}
+    } else {
+	# VERSION WITHOUT BUG WORKAROUND,
+	# FOR MAKEINFO VERSION 5
+	<FH> for 1 .. $lines_offset;
+	$x = tell FH;
     }
-
-    if ($x == -1) {
-        # We didn't encounter any match for "^ -- \S".
-        $x = $x_maybe;
-    }
-
-    # END OF MAKEINFO BUG WORKAROUND
-    # WHEN WORKAROUND IS NO LONGER NEEDED, ENABLE THE FOLLOWING LINES:
-
-    # <FH> for 1 .. $lines_offset;
-    # $x = tell FH;
 
     close FH;
     return $x;
