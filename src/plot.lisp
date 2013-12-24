@@ -150,24 +150,13 @@ sin(y)*(10.0+6*cos(x)),
 (defun send-gnuplot-command (command)
   (if (null *gnuplot-stream*)
       (start-gnuplot-process $gnuplot_command))
-  (format *gnuplot-stream* "~a ~%" command)
-  (force-output *gnuplot-stream*))
+  (when (not (null command))
+    (format *gnuplot-stream* "~a ~%" command)
+    (force-output *gnuplot-stream*)))
 
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
-  (send-gnuplot-command (translate-gnuplot-term-option))
   (send-gnuplot-command "reset"))
-
-;; If embedded in output, the gnuplot_term option makes Gnuplot unhappy,
-;; so translate gnuplot_term into something Gnuplot actually wants to see.
-;; Logic copied from GNUPLOT-PRINT-HEADER.
-
-(defun translate-gnuplot-term-option ()
-  (case (getf *plot-options* :gnuplot_term)
-    ($default (getf *plot-options* :gnuplot_default_term_command))
-    ($ps (getf *plot-options* :gnuplot_ps_term_command))
-    ($dumb (getf *plot-options* :gnuplot_dumb_term_command))
-    (t (format nil "set term ~a" (getf *plot-options* :gnuplot_term)))))
 
 (defun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
