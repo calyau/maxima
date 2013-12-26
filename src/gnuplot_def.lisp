@@ -475,8 +475,10 @@
          (setq terminal-command
                "set term wxt size 640,480 font \",12\"; set term pop")))
     ((getf plot-options :gnuplot_term)
-     (setq terminal-command
-           (ensure-string (getf plot-options :gnuplot_term)))
+     (setq
+      terminal-command
+          (format nil "set term ~(~a~)"
+           (ensure-string (getf plot-options :gnuplot_term))))
      (if (getf plot-options :gnuplot_out_file)
          (setq out-file (getf plot-options :gnuplot_out_file))
          (setq
