@@ -1901,6 +1901,9 @@
          (eq z '$zeroa)
          (eq z '$zerob))
      '$minf)
+    ((or (eq z '$inf)
+         (eq z '$minf))
+     '$inf)
     (t
      ;; All other cases are handled by the simplifier of the function.
      (take '(%expintegral_chi) z)))))

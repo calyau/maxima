@@ -189,6 +189,14 @@ inf;
 limit(expintegral_shi(x),x,minf);
 minf;
 
+/* Limits of expintegral_chi */
+
+limit(expintegral_chi(x),x,inf);
+inf;
+
+limit(expintegral_chi(x),x,minf);
+inf;
+
 /*******************************************************************************
    For a negative integer parameter we expand in a series
 *******************************************************************************/
