@@ -1068,10 +1068,18 @@
        (simp-domain-error 
          (intl:gettext "expintegral_ei: expintegral_ei(~:M) is undefined.") 
          arg))
-      ((eq arg '$inf) '$inf)
-      ((or (eq arg '$minf) (alike1 arg '((mtimes) -1 $inf))) 0)
-      ((alike1 arg '((mtimes) $%i $inf)) (mul '$%i '$%pi))
-      ((alike1 arg '((mtimes) -1 $%i $inf)) (mul -1 '$%i '$%pi))
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       '$inf)
+      ((or (eq arg '$minf)
+           (alike1 arg '((mtimes) -1 $inf)))
+       0)
+      ((or (alike1 arg '((mtimes) $%i $inf))
+           (alike1 arg '((mtimes) -1 $%i $minf)))
+       (mul '$%i '$%pi))
+      ((or (alike1 arg '((mtimes) $%i $minf))
+           (alike1 arg '((mtimes) -1 $%i $inf)))
+       (mul -1 '$%i '$%pi))
 
       ;; Check numerical evaluation
       ((complex-float-numerical-eval-p arg)
@@ -1253,7 +1261,9 @@
       ((onep1 arg)
        (simp-domain-error
 	(intl:gettext "expintegral_li: expintegral_li(~:M) is undefined.") arg))
-      ((eq arg '$inf) '$inf)
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       '$inf)
       ((eq arg '$infinity) '$infinity)
 
       ((complex-float-numerical-eval-p arg)
@@ -1391,9 +1401,12 @@
     (cond
       ;; Check for special values
       ((zerop1 arg) arg)
-      ((eq arg '$inf) (div '$%pi 2))
-      ((eq arg '$minf) (mul -1 (div '$%pi 2)))
-      ((alike1 arg '((mtimes) -1 $inf)) (mul -1 (div '$%pi 2)))
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       (div '$%pi 2))
+      ((or (eq arg '$minf)
+           (alike1 arg '((mtimes) -1 $inf)))
+       (mul -1 (div '$%pi 2)))
 
       ;; Check for numerical evaluation     
       ((complex-float-numerical-eval-p arg)
@@ -1560,8 +1573,12 @@
     (cond
       ;; Check for special values
       ((zerop1 arg) arg)
-      ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%i '$%pi) 2))
-      ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%i '$%pi) 2))
+      ((or (alike1 arg '((mtimes) $%i $inf))
+           (alike1 arg '((mtimes) -1 $%i $minf)))
+       (div (mul '$%i '$%pi) 2))
+      ((or (alike1 arg '((mtimes) $%i $minf))
+           (alike1 arg '((mtimes) -1 $%i $inf)))
+       (div (mul -1 '$%i '$%pi) 2))
 
       ;; Check for numrical evaluation
       ((float-numerical-eval-p arg)
@@ -1734,7 +1751,9 @@
       ((zerop1 arg)
        (simp-domain-error
 	(intl:gettext "expintegral_ci: expintegral_ci(~:M) is undefined.") arg))
-      ((eq arg '$inf) 0)
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       0)
       ((or (eq arg '$minf)
            (alike1 arg '((mtimes) -1 $inf)))
        (mul '$%i '$%pi))
@@ -1922,8 +1941,12 @@
        (simp-domain-error
 	(intl:gettext "expintegral_chi: expintegral_chi(~:M) is undefined.") 
         arg))
-      ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%pi '$%i) 2))
-      ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%pi '$%i) 2))
+      ((or (alike1 arg '((mtimes) $%i $inf))
+           (alike1 arg '((mtimes) -1 $%i $minf)))
+       (div (mul '$%pi '$%i) 2))
+      ((or (alike1 arg '((mtimes) $%i $minf))
+           (alike1 arg '((mtimes) -1 $%i $inf)))
+       (div (mul -1 '$%pi '$%i) 2))
 
       ;; Check for numerical evaluation
       ((complex-float-numerical-eval-p arg)
