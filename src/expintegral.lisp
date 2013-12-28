@@ -1560,8 +1560,8 @@
     (cond
       ;; Check for special values
       ((zerop1 arg) arg)
-      ((alike1 arg '((mtimes) '$%i $inf)) (div (mul '$%i '$%pi) 2))
-      ((alike1 arg '((mtimes) -1 '$%i $inf)) (div (mul -1 '$%i '$%pi) 2))
+      ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%i '$%pi) 2))
+      ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%i '$%pi) 2))
 
       ;; Check for numrical evaluation
       ((float-numerical-eval-p arg)
