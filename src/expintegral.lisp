@@ -1372,6 +1372,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; We support a simplim%function.
+
+(defprop %expintegral_si simplim%expintegral_si simplim%function)
+
+(defun simplim%expintegral_si (expr var val)
+  ;; Look for the limit of the argument.
+  (let ((z (limit (cadr expr) var val 'think)))
+    ;; All cases are handled by the simplifier of the function.
+    (take '(%expintegral_si) z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun simp-expintegral-si (expr ignored z)
   (declare (ignore ignored))
   (oneargcheck expr)

@@ -173,6 +173,14 @@ realpart(expintegral_si(1+%i));
 imagpart(expintegral_si(1+%i));
 1/2*%i*(expintegral_si(1-%i)-expintegral_si(1+%i));
 
+/* Limits of expintegral_si */
+
+limit(expintegral_si(x),x,inf);
+%pi/2;
+
+limit(expintegral_si(x),x,minf);
+-%pi/2;
+
 /*******************************************************************************
    For a negative integer parameter we expand in a series
 *******************************************************************************/
