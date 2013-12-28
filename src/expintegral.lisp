@@ -1533,6 +1533,26 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %expintegral_shi simplim%expintegral_shi simplim%function)
+
+(defun simplim%expintegral_shi (expr var val)
+  ;; Look for the limit of the argument.
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond
+      ;; Handle infinities at this place
+      ((eq z '$inf)
+       '$inf)
+      ((eq z '$minf)
+       '$minf)
+      (t
+       ;; All other cases are handled by the simplifier of the function.
+       (take '(%expintegral_shi) z)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun simp-expintegral-shi (expr ignored z)
   (declare (ignore ignored))
   (oneargcheck expr)
