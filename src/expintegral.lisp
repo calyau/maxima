@@ -1735,8 +1735,9 @@
        (simp-domain-error
 	(intl:gettext "expintegral_ci: expintegral_ci(~:M) is undefined.") arg))
       ((eq arg '$inf) 0)
-      ((eq arg '$minf) (mul '$%i '$%pi))
-      ((alike1 arg '((mtimes) -1 $inf)) (mul '$%pi '$%pi))
+      ((or (eq arg '$minf)
+           (alike1 arg '((mtimes) -1 $inf)))
+       (mul '$%i '$%pi))
 
       ;; Check for numerical evaluation
       ((complex-float-numerical-eval-p arg)
