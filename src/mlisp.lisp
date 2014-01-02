@@ -868,6 +868,8 @@ wrapper for this."
 ;; !! (define-symbol "@") 
 (defprop $@ dimension-infix dimension) 
 (defprop $@ (#\@) dissym) 
+(defprop $@ tex-infix tex)
+(defprop $@ ("@") texsym)
 (defprop $@ msize-infix grind) 
 (defprop $@ 200 lbp) 
 (defprop $@ 201 rbp) 
