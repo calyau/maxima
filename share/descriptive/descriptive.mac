@@ -1293,7 +1293,7 @@ starplot_description([args]):=
           my_star_radius*cpnts),
 
       [apply(label, maplist(cons,
-                            samplespace,
+                            maplist(string, samplespace),
                             map(lambda([z], z+my_star_center), 1.05*my_star_radius*cpnts)))],
 
       before,
