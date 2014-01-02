@@ -325,7 +325,15 @@ values")
 						   (t 1)))))
 			   (t
 			    (values "~ve" (+ 5 effective-printprec))))
-		   (setq string (format nil form width symb))))
+		   (setq string (format nil form width a))
+                   ;; Ensure result has a leading zero if it needs one.
+                   (if (eq (aref string 0) #\.)
+                     (setq string (concatenate 'string "0" string)))
+                   ;; EXPLODEN is often called after NFORMAT, so it doesn't
+                   ;; usually see a negative argument. I can't guarantee
+                   ;; a non-negative argument, so handle negative here.
+                   (if (< symb 0)
+                     (setq string (concatenate 'string "-" string)))))
 	     (setq string (string-trim " " string))))
 
       ((integerp symb)
