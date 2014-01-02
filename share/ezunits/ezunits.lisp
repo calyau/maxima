@@ -3,6 +3,8 @@
 ;; I release this program under the terms of the
 ;; GNU General Public License.
 
+(defprop $\`\` tex-infix tex)
+
 ;; Process tex(a`b): throw away the backtick, texify a,
 ;; and texify b with all symbols in b output as mathrm.
 
