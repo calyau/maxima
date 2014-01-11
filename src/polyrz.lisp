@@ -13,7 +13,7 @@
 (macsyma-module polyrz)
 
 (declare-top (special $programmode varlist
-		      $ratepsilon $ratprint $factorflag genvar
+		      $ratprint $factorflag genvar
 		      equations $keepfloat $ratfac $rootsepsilon
 		      $multiplicities))
 
