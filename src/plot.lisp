@@ -41,9 +41,8 @@ sin(y)*(10.0+6*cos(x)),
 (defvar *maxima-plotdir* "")
 (declare-top (special *maxima-tempdir* *maxima-prefix*))
 
-(defvar *z-range* nil)
-(defvar *original-points* nil)
-(defvar $axes_length 4.0)
+;; *ROT* AND FRIENDS ($ROT, $ROTATE_PTS, $ROTATE_LIST) CAN PROBABLY GO AWAY !!
+;; THEY ARE UNDOCUMENTED AND UNUSED !!
 (defvar *rot* (make-array 9 :element-type 'flonum))
 (defvar $rot nil)
 
@@ -355,7 +354,6 @@ sin(y)*(10.0+6*cos(x)),
        ,cosph))))
    
 ;; pts is a vector of bts [x0,y0,z0,x1,y1,z1,...] and each tuple xi,yi,zi is rotated
-;; also the *z-range* is computed.
 #-abcl (defun $rotate_pts(pts rotation-matrix)
   (or ($matrixp rotation-matrix) (merror (intl:gettext "rotate_pts: second argument must be a matrix.")))
   (let* ((rot *rot*)
@@ -2169,16 +2167,6 @@ sin(y)*(10.0+6*cos(x)),
         (t (tcl-output-list st (car lis))
            (tcl-output-list st (cdr lis)))))
 
-(defvar *some-colours*
-  ;; from rgb.txt
-  '(135 206 250         lightskyblue
-    70 130 180          steelblue
-    205  92  92         indianred
-    178  34  34         firebrick
-    176  48  96         maroon
-    221 160 221         plum
-    238 130 238         violet))
-
 (defun check-range (range &aux tem a b)
   (or (and ($listp range)
            (setq tem (cdr range))
@@ -2348,7 +2336,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun $plot3d
     (fun &rest extra-options
      &aux
-       lvars trans xrange yrange *original-points*
+       lvars trans xrange yrange
        functions exprn domain tem (options (copy-tree *plot-options*))
        ($in_netmath $in_netmath)
        (*plot-realpart* *plot-realpart*)
@@ -2362,7 +2350,6 @@ A parametric representation of a surface with parameters v1 and v2:
 Several functions depending on the two variables v1 and v2:
   plot3d ([f1, f2, ..., fn, [v1, min, max], [v2, min, max]], options)")))
   
-  (declare (special *original-points*))
   (setf (getf options :type) "plot3d")
   
   ;; Ensure that fun is a list of expressions and maxima lists, followed
