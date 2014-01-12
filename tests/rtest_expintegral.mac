@@ -156,9 +156,9 @@ imagpart(expintegral_ei(1+%i));
    for a pure imaginary argument the result is pure imaginary */
 
 /* a real value */
-realpart(expintegral_ei(x));
-expintegral_ei(x);
-imagpart(expintegral_ei(x));
+realpart(expintegral_si(x));
+expintegral_si(x);
+imagpart(expintegral_si(x));
 0;
 
 /* an imaginary value */
