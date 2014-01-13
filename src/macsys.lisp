@@ -29,10 +29,24 @@
 ;; doc/implementation/external-interface.txt.
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
-
 (defvar *general-display-prefix* "")
+(defvar $alt_format_prompt nil "If NIL, use DEFAULT-FORMAT-PROMPT to print input prompt; if a function, use it to print input prompt.")
 
 (defun format-prompt (destination control-string &rest arguments)
+  "If $ALT_FORMAT_PROMPT is NIL, use DEFAULT-FORMAT-PROMPT to print
+prompt; otherwise MFUNCALL $ALT_FORMAT_PROMPT to print prompt."
+  (funcall (if $alt_format_prompt #'alt-format-prompt #'default-format-prompt)
+	   destination control-string arguments))
+
+(defun alt-format-prompt (destination control-string arguments)
+  "MFUNCALL $ALT_FORMAT_PROMPT with a heavy coating of error protection."
+  (handler-bind ((error (lambda(msg) (setq $alt_format_prompt nil)
+			       (format t (intl:gettext "Error in printing prompt; reverting to default.~%~a") msg)
+			       (throw 'macsyma-quit 'maxima-error))))
+    (with-$error (let ((prompt (mfuncall $alt_format_prompt destination control-string arguments)))
+		   (if (stringp prompt) prompt (merror "alt_format_prompt returned an object of type ~a, needed a string." (type-of prompt)))))))
+
+(defun default-format-prompt (destination control-string arguments)
   "Like AFORMAT, but add the prefix and suffix configured for a prompt. This
 function deals correctly with the ~M control character, but only when
 DESTINATION is an actual stream (rather than nil for a string)."
@@ -41,6 +55,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
                  *prompt-prefix*
                  (apply 'aformat destination control-string arguments)
                  *prompt-suffix*)))
+
+(defvar $default_format_prompt (symbol-function 'default-format-prompt))
 
 ;;  "When time began" (or at least the start of version control history),
 ;;  the following comment was made at this point:
