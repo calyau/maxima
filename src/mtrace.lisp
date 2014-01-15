@@ -500,8 +500,6 @@
     (if (funcall predicate ans) (return ans))
     (mtell "PRED-$READ: unacceptable input: ~A~%" bad-message)))
 
-(declare-top (special upper))
-
 (defun ask-choicep (llist &rest header-message)
   (do ((j 0 (1+ j))
        (dlist nil (list* #\newline `((marrow) ,j ,(car ilist)) dlist))
@@ -515,8 +513,6 @@
 			      (<= val upper)))
 		     dlist
 		     "please reply with an integer from the menue.")))))
-
-(declare-top (unspecial upper))
 
 ;; I GUESS ALL OF THE STRINGS IN THIS FUNCTION NEED TO BE GETTEXT'D TOO
 ;; JUST CAN'T BRING MYSELF TO DO IT

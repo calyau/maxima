@@ -228,43 +228,53 @@
           (first palette)))))))
 
 (defun gnuplot-print-header (dest plot-options)
-  (let ((gnuplot-out-file (getf plot-options :gnuplot_out_file))
-        (preamble (getf plot-options :gnuplot_preamble))
-        (palette (getf plot-options :palette))
+  (let (terminal-file (palette (getf plot-options :palette))
         (meshcolor (if (member :mesh_lines_color plot-options)
                        (getf plot-options :mesh_lines_color)
                        '$black)))
-    (if (find 'mlist palette :key #'car) (setq palette (list palette)))
-    (if (and preamble (> (length preamble) 0))
-        (format dest "~a~%" preamble)
-        (progn
-          (when (string= (getf plot-options :type) "plot3d")
-            (format dest "set ticslevel 0~%")
-            (if palette
-                (progn
-                  (if meshcolor
-                      (progn
-                        (format dest "set style line 100 lt rgb ~s lw 1~%"
-                                (rgb-color meshcolor))
-                        (format dest "set pm3d hidden3d 100~%")
-                        (unless (getf plot-options :gnuplot_4_0)
-                          (format dest "set pm3d depthorder~%")))
-                      (format dest "set pm3d~%"))
-                  (format dest "unset hidden3d~%")
-                  (format dest "set palette ~a~%"
-                          (gnuplot-palette (rest (first palette)))))
-                (format dest "set hidden3d~%"))
-            (let ((elev (getf plot-options :elevation))
-                  (azim (getf plot-options :azimuth)))
-              (when (or elev azim)
-                (if elev
-                    (format dest "set view ~d" elev)
-                    (format dest "set view "))
-                (when azim (format dest ", ~d" azim))
-                (format dest "~%"))))))
+    (when (find 'mlist palette :key #'car) (setq palette (list palette)))
+    ;; user's preamble
+    (when (and (getf plot-options :gnuplot_preamble)
+               (> (length  (getf plot-options :gnuplot_preamble)) 0))
+      (format dest "~a~%" (getf plot-options :gnuplot_preamble)))
 
-    ;; colorbox can be used by plot3d or plot2d
-    (unless (getf plot-options :colorbox)
+    ;; sets-up terminal command and output file name
+    (setq terminal-file (gnuplot-terminal-and-file plot-options))
+
+    ;; prints terminal and output commands
+    (when (first terminal-file)
+      (format dest "~a~%" (first terminal-file)))
+    (when (second terminal-file)
+      (format dest "set output ~s~%" (second terminal-file)))
+
+    ;; options specific to plot3d
+    (when (string= (getf plot-options :type) "plot3d")
+      (format dest "set xyplane relative 0~%")
+      (if palette
+          (progn
+            (if meshcolor
+                (progn
+                  (format dest "set style line 100 lt rgb ~s lw 1~%"
+                          (rgb-color meshcolor))
+                  (format dest "set pm3d hidden3d 100~%")
+                  (unless (getf plot-options :gnuplot_4_0)
+                    (format dest "set pm3d depthorder~%")))
+                (format dest "set pm3d~%"))
+            (format dest "unset hidden3d~%")
+            (format dest "set palette ~a~%"
+                    (gnuplot-palette (rest (first palette)))))
+          (format dest "set hidden3d~%"))
+      (let ((elev (getf plot-options :elevation))
+            (azim (getf plot-options :azimuth)))
+        (when (or elev azim)
+          (if elev
+              (format dest "set view ~d" elev)
+              (format dest "set view "))
+          (when azim (format dest ", ~d" azim))
+          (format dest "~%"))))
+
+    ;; color_bar can be used by plot3d or plot2d
+    (unless (getf plot-options :color_bar)
       (format dest "unset colorbox~%"))
 
     ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
@@ -283,38 +293,6 @@
        (1+ (getf plot-options :const_expr))))
     ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
     
-    ;; default output file name for all formats except default
-    (when (not (eq (getf plot-options :gnuplot_term) '$default))
-      (cond ((null gnuplot-out-file)
-	     (setq gnuplot-out-file
-		   (plot-temp-file
-		    (format nil "maxplot.~(~a~)"
-			    (get-gnuplot-term 
-			     (getf plot-options :gnuplot_term))))))
-	    ((not (search "/" gnuplot-out-file))
-	     (setq gnuplot-out-file (plot-temp-file gnuplot-out-file)))))
-
-    ;; selects gnuplot terminal
-    (case (getf plot-options :gnuplot_term)
-      ($default
-       (format dest "set term wxt size 640,480; ~a~%" 
-               (getf plot-options :gnuplot_default_term_command)))
-      ($ps
-       (format dest "~a~%" 
-               (getf plot-options :gnuplot_ps_term_command))
-       (if gnuplot-out-file
-           (format dest "set out ~s~%" gnuplot-out-file)))
-      ($dumb
-       (format dest "~a~%" 
-               (getf plot-options :gnuplot_dumb_term_command))
-       (if gnuplot-out-file
-           (format dest "set out ~s~%" gnuplot-out-file)))
-      (t
-       (format dest "set term ~a~%" 
-               (ensure-string (getf plot-options :gnuplot_term)))
-       (if gnuplot-out-file
-           (format dest "set out ~s~%" gnuplot-out-file))) )
-
     ;; logarithmic plots
     (when (getf plot-options :logx) (format dest "set log x~%"))
     (when (getf plot-options :logy) (format dest "set log y~%"))
@@ -347,20 +325,20 @@
           (format dest "unset grid~%"))
 
       ;; plot size and aspect ratio for plot2d
-      (if (getf plot-options :samexy)
+      (if (getf plot-options :same_xy)
           (format dest "set size ratio -1~%")
-          (if (getf plot-options :yxratio)
-              (format dest "set size ratio ~f~%" (getf plot-options :yxratio))
+          (if (getf plot-options :yx_ratio)
+              (format dest "set size ratio ~f~%" (getf plot-options :yx_ratio))
               (format dest "set size ratio 0.75~%")))
-      (if (and (getf plot-options :xyscale)
-               (listp (getf plot-options :xyscale)))
-          (format dest "set size ~{~f~^, ~}~%" (getf plot-options :xyscale))))
+      (if (and (getf plot-options :xy_scale)
+               (listp (getf plot-options :xy_scale)))
+          (format dest "set size ~{~f~^, ~}~%" (getf plot-options :xy_scale))))
 
     ;; plot size and aspect ratio for plot3d
     (when (string= (getf plot-options :type) "plot3d")
-      (when (getf plot-options :samexy)
+      (when (getf plot-options :same_xy)
         (format dest "set view equal xy~%"))
-      (when (getf plot-options :samexyz)
+      (when (getf plot-options :same_xyz)
         (format dest "set view equal xyz~%"))
       (when (getf plot-options :zmin)
         (format dest "set xyplane at ~f~%" (getf plot-options :zmin))))
@@ -387,8 +365,8 @@
             (if ztics
                 (format dest "set ztics ~f~%" ztics)
                 (format dest "unset ztics~%")))))
-    (when (member :cbtics plot-options)
-      (let ((cbtics (getf plot-options :cbtics)))
+    (when (member :color_bar_tics plot-options)
+      (let ((cbtics (getf plot-options :color_bar_tics)))
         (if (consp cbtics)
             (format dest "set cbtics ~{~f~^, ~}~%" cbtics)
             (if cbtics
@@ -424,11 +402,12 @@
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
 
     ;; user's commands; may overule any of the previous settings
-    (when (getf plot-options :gnuplot_epilogue)
-      (format dest "~a~%" (getf plot-options :gnuplot_epilogue)))
+    (when (and (getf plot-options :gnuplot_postamble)
+               (> (length  (getf plot-options :gnuplot_postamble)) 0))
+      (format dest "~a~%" (getf plot-options :gnuplot_postamble)))
 
     ;;returns the name of the file created
-    (or gnuplot-out-file "")))
+    (or (second terminal-file) "")))
 
 (defun gnuplot-plot3d-command (file palette gstyles colors titles n) 
 (let (title (style "with pm3d"))
@@ -446,4 +425,66 @@
         (setq title ""))
     (format out "~s title ~s ~a" file title style)))))
 
+(defun gnuplot-terminal-and-file (plot-options)
+(let (terminal-command out-file)
+  (cond
+    ((getf plot-options :svg_file)
+     (if (getf plot-options :gnuplot_svg_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_svg_term_command))
+         (setq terminal-command "set term svg font \",14\""))
+     (setq out-file (getf plot-options :svg_file)))
+    ((getf plot-options :png_file)
+     (if (getf plot-options :gnuplot_png_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_png_term_command))
+         (setq terminal-command "set term pngcairo font \",12\""))
+     (setq out-file (getf plot-options :png_file)))
+    ((getf plot-options :pdf_file)
+     (if (getf plot-options :gnuplot_pdf_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_pdf_term_command))
+         (setq terminal-command "set term pdfcairo color solid lw 3 size 17.2 cm, 12.9 cm font \",18\""))
+     (setq out-file (getf plot-options :pdf_file)))
+    ((getf plot-options :ps_file)
+     (if (getf plot-options :gnuplot_ps_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_ps_term_command))
+         (setq terminal-command "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""))
+     (setq out-file (getf plot-options :ps_file)))
+    ((eq (getf plot-options :gnuplot_term) '$ps)
+     (if (getf plot-options :gnuplot_ps_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_ps_term_command))
+         (setq terminal-command "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""))
+     (if (getf plot-options :gnuplot_out_file)
+         (setq out-file (getf plot-options :gnuplot_out_file))
+         (setq out-file "maxplot.ps")))
+    ((eq (getf plot-options :gnuplot_term) '$dumb)
+     (if (getf plot-options :gnuplot_dumb_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_ps_term_command))
+         (setq terminal-command "set term dumb 79 22"))
+     (if (getf plot-options :gnuplot_out_file)
+         (setq out-file (getf plot-options :gnuplot_out_file))
+         (setq out-file "maxplot.txt")))
+    ((eq (getf plot-options :gnuplot_term) '$default)
+     (if (getf plot-options :gnuplot_default_term_command)
+         (setq terminal-command
+               (getf plot-options :gnuplot_default_term_command))
+         (setq terminal-command
+               "set term wxt size 640,480 font \",12\"; set term pop")))
+    ((getf plot-options :gnuplot_term)
+     (setq
+      terminal-command
+          (format nil "set term ~(~a~)"
+           (ensure-string (getf plot-options :gnuplot_term))))
+     (if (getf plot-options :gnuplot_out_file)
+         (setq out-file (getf plot-options :gnuplot_out_file))
+         (setq
+          out-file
+          (format nil "maxplot.~(~a~)"
+                  (get-gnuplot-term (getf plot-options :gnuplot_term)))))))
 
+  (unless (null out-file) (setq out-file (plot-file-path out-file)))
+  (list terminal-command out-file)))

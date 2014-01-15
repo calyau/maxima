@@ -12,7 +12,7 @@
 
 (macsyma-module newinv)
 
-(declare-top (special *ptr* *ptc* *iar* *nonz* detl* mul* $sparse *det* *rr* ax))
+(declare-top (special *ptr* *ptc* *iar* *nonz* detl* *rr*))
 
 (defun multbk (l ax m)
   (prog (e)
@@ -48,7 +48,7 @@
      (setq ro (cdr ro))
      (go loop2)))
 
-(defun prodhk (ri d r m)
+(defun prodhk (ax ri d r m)
   (declare (fixnum r m))
   (prog (ei e *rr* *r0 co)
      (setq *r0 r ei ri)
@@ -59,7 +59,7 @@
 			       (mapcar #'(lambda (x y) (nconc x (list y)))
 				       ri (nreverse *rr*))))))
      (setq e (car ei) ei (cdr ei))
-     (setq co (cons (bmhk e d co r detl* *r0) co))
+     (setq co (cons (bmhk ax e d co r detl* *r0) co))
      (go loop)))
 
 (defun obmtrx (ax r s i j)
@@ -81,7 +81,7 @@
      (setq dr (cons d dr))
      (go loop1)))
 
-(defun bmhk (da b nc c0 detl *r0)
+(defun bmhk (ax da b nc c0 detl *r0)
   (prog (c a sum det dy *nonz* x y)
      (setq det (car b) b (cdr b) a (car da) da (cdr da))
      (setq nc (reverse nc))
@@ -142,10 +142,10 @@
 		 (setq ei (list ei))(go next)))
      (setq d (tmlin '*iar* dm dm dm))
      (setq d (cons (caar d) (cdr d)))
-     (setq ei (prodhk ei d r m))
+     (setq ei (prodhk ax ei d r m))
      (setq d nil)
      next  (incf r (car bl))
      (setq bl (cdr bl))
      (go loop1)))
 
-(declare-top (unspecial *nonz* detl* mul* *det* *rr* ax))
+(declare-top (unspecial *nonz* detl* *rr*))

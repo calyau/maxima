@@ -60,16 +60,11 @@ sin(y)*(10.0+6*cos(x)),
     ;; controls the number of splittings adaptive-plotting will do.
     :nticks 29 :adapt_depth 5
     :color ($blue $red $green $magenta $black $cyan)
-    :point_type ($bullet $circle $plus $times $asterisk $box $square
-                 $triangle $delta $wedge $nabla $diamond $lozenge)
+    :point_type ($bullet $box $triangle $plus $times $asterisk)
     :palette (((mlist) $gradient $green $cyan $blue $violet)
               ((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
                $orange $red $brown $black))   
-    :gnuplot_preamble "" :gnuplot_term $default
-    :gnuplot_default_term_command "set term pop"
-    :gnuplot_dumb_term_command "set term dumb 79 22"
-    :gnuplot_ps_term_command
-    "set size 1.5, 1.5;set term postscript eps enhanced color solid 24"))
+    :gnuplot_preamble "" :gnuplot_term $default))
 
 (defvar $plot_options 
   `((mlist)
@@ -155,24 +150,13 @@ sin(y)*(10.0+6*cos(x)),
 (defun send-gnuplot-command (command)
   (if (null *gnuplot-stream*)
       (start-gnuplot-process $gnuplot_command))
-  (format *gnuplot-stream* "~a ~%" command)
-  (force-output *gnuplot-stream*))
+  (when (not (null command))
+    (format *gnuplot-stream* "~a ~%" command)
+    (force-output *gnuplot-stream*)))
 
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
-  (send-gnuplot-command (translate-gnuplot-term-option))
   (send-gnuplot-command "reset"))
-
-;; If embedded in output, the gnuplot_term option makes Gnuplot unhappy,
-;; so translate gnuplot_term into something Gnuplot actually wants to see.
-;; Logic copied from GNUPLOT-PRINT-HEADER.
-
-(defun translate-gnuplot-term-option ()
-  (case (getf *plot-options* :gnuplot_term)
-    ($default (getf *plot-options* :gnuplot_default_term_command))
-    ($ps (getf *plot-options* :gnuplot_ps_term_command))
-    ($dumb (getf *plot-options* :gnuplot_dumb_term_command))
-    (t (format nil "set term ~a" (getf *plot-options* :gnuplot_term)))))
 
 (defun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
@@ -223,25 +207,27 @@ sin(y)*(10.0+6*cos(x)),
   (setq *plot-options* (plot-options-parser value *plot-options*))
   ($get_plot_option))
 
-(defun $rem_plot_option (name)
+(defun $remove_plot_option (name)
   (remf *plot-options*
         (case name
           ($adapt_depth :adapt_depth) ($axes :axes) ($azimuth :azimuth)
-          ($box :box) ($cbtics :cbtics) ($color :color) ($colorbox :colorbox)
-          ($elevation :elevation) ($grid :grid) ($grid2d :grid2d)
-          ($iterations :iterations) ($label :label) ($legend :legend)
-          ($logx :logx) ($logy :logy) ($mesh_lines_color :mesh_lines_color)
-          ($nticks :nticks) ($palette :palette) ($plot_format :plot_format)
+          ($box :box) ($color :color) ($color_bar :color_bar)
+          ($color_bar_tics :color_bar_tics) ($elevation :elevation)
+          ($grid :grid) ($grid2d :grid2d) ($iterations :iterations)
+          ($label :label) ($legend :legend) ($logx :logx) ($logy :logy)
+          ($mesh_lines_color :mesh_lines_color) ($nticks :nticks)
+          ($palette :palette) ($plot_format :plot_format)
           ($plot_realpart :plot_realpart) ($point_type :point_type)
-          ($psfile :psfile) ($run_viewer :run_viewer) ($samexy :samexy)
-          ($samexyz :samexyz) ($style :style) ($t :t) ($title :title)
-          ($transform_xy :transform_xy) ($x :x) ($xbounds :xbounds)
-          ($xlabel :xlabel) ($xvar :xvar) ($xyratio :xyratio)
-          ($xyscale :xyscale) ($y :y) ($xtics :xtics) ($ybounds :ybounds)
-          ($ylabel :ylabel) ($ytics :ytics) ($yvar :yvar) ($z :z)
-          ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
+          ($pdf_file :pdf_file) ($png_file :png_file) ($ps_file :ps_file)
+          ($run_viewer :run_viewer) ($same_xy :samexy)
+          ($same_xyz :same_xyz) ($style :style) ($svg_file :svg_file)
+          ($t :t) ($title :title) ($transform_xy :transform_xy)
+          ($x :x) ($xbounds :xbounds) ($xlabel :xlabel)
+          ($xtics :xtics) ($xvar :xvar) ($xy_scale :xy_scale)
+          ($y :y) ($ybounds :ybounds) ($ylabel :ylabel) ($ytics :ytics)
+          ($yvar :yvar) ($yx_ratio :yx_ratio)
+          ($z :z) ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
           ($gnuplot_4_0 :gnuplot_4_0)
-          ($gnuplot_epilogue :gnuplot_epilogue)
           ($gnuplot_curve_titles :gnuplot_curve_titles)
           ($gnuplot_curve_styles :gnuplot_curve_styles)
           ($gnuplot_default_term_command :gnuplot_default_term_command)
@@ -249,7 +235,11 @@ sin(y)*(10.0+6*cos(x)),
           ($gnuplot_out_file :gnuplot_out_file)
           ($gnuplot_pm3d :gnuplot_pm3d)
           ($gnuplot_preamble :gnuplot_preamble)
+          ($gnuplot_postamble :gnuplot_postamble)
+          ($gnuplot_pdf_term_command :gnuplot_pdf_term_command)
+          ($gnuplot_png_term_command :gnuplot_png_term_command)
           ($gnuplot_ps_term_command :gnuplot_ps_term_command)
+          ($gnuplot_svg_term_command :gnuplot_svg_term_command)
           ($gnuplot_term :gnuplot_term))))
 
 (defun get-gnuplot-term (term)
@@ -1378,41 +1368,38 @@ sin(y)*(10.0+6*cos(x)),
     (format nil "~a/~a" *maxima-tempdir* file)
     file))
 
-(defun gnuplot-process (plot-options &optional file)
-  (let ((gnuplot-term (getf plot-options :gnuplot_term))
-        (gnuplot-out-file (getf plot-options :gnuplot_out_file))
-        (gnuplot-out-file-string (getf plot-options :gnuplot_out_file))
-        (run-viewer (getf plot-options :run_viewer))
-        (gnuplot-preamble (string-downcase (getf plot-options :gnuplot_preamble)))
-        (view-file))
-    ;; default output file name for for all formats except default
-    (when (not (eq gnuplot-term '$default))
-      (cond ((null gnuplot-out-file)
-	     (setq gnuplot-out-file
-		   (plot-temp-file (format nil "maxplot.~(~a~)"
-					   (get-gnuplot-term gnuplot-term)))))
-	    ((not (search "/" gnuplot-out-file))
-	      (setq gnuplot-out-file (plot-temp-file gnuplot-out-file))))
-      (setq gnuplot-out-file-string gnuplot-out-file))
+;; If no file path is given, uses temporary directory path
+(defun plot-file-path (file)
+  (if (search "/" file)
+      file
+      (plot-temp-file file)))
 
-    ;; run gnuplot in batch mode if necessary before viewing
-    (when (and gnuplot-out-file (not (eq gnuplot-term '$default)))
+(defun gnuplot-process (plot-options &optional file out-file)
+  (let ((gnuplot-term (getf plot-options :gnuplot_term))
+        (run-viewer (getf plot-options :run_viewer))
+        (gnuplot-preamble
+         (string-downcase (getf plot-options :gnuplot_preamble))))
+
+    ;; creates the output file, when there is one to be created
+    (when (and out-file (not (eq gnuplot-term '$default)))
       ($system (format nil "~a ~a" $gnuplot_command
 		       (format nil $gnuplot_file_args file))))
+
+    ;; displays contents of the output file, when gnuplot-term is dumb,
+    ;; or runs gnuplot when gnuplot-term is default
     (when run-viewer
-      (if (eq gnuplot-term '$default)
-          (setf view-file file)
-	(setf view-file gnuplot-out-file-string))
       (case gnuplot-term
         ($default
+         ;; the options given to gnuplot will be different when the user
+         ;; redirects the output by using "set output" in the preamble
          ($system 
 	  (format nil "~a ~a" $gnuplot_command
-		  (format nil (if (search "set out " gnuplot-preamble) 
+		  (format nil (if (search "set out" gnuplot-preamble) 
 				  $gnuplot_file_args $gnuplot_view_args)
-			  view-file))))
+			  file))))
         ($dumb
-         (if gnuplot-out-file
-             ($printfile view-file)
+         (if out-file
+             ($printfile out-file)
              (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
 ;; plot-options-parser puts the plot options given into a property list.
@@ -1434,7 +1421,7 @@ sin(y)*(10.0+6*cos(x)),
         "plot-options-parser: Expecting a symbol for the option name, found: \"~M\"") opt))
     (case name
       ($adapt_depth 
-       (setf (getf options :depth)
+       (setf (getf options :adapt_depth)
              (check-option (cdr opt) #'naturalp "a natural number" 1)))
       ($axes (setf (getf options :axes)
                    (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
@@ -1444,11 +1431,11 @@ sin(y)*(10.0+6*cos(x)),
                       (check-option (cdr opt) #'realp "a real number" 1)))
       ($box (setf (getf options :box)
                   (check-option-boole (cdr opt))))
-      ($cbtics (setf (getf options :cbtics)
+      ($color_bar_tics (setf (getf options :color_bar_tics)
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($color (setf (getf options :color)
                     (check-option (cdr opt) #'plotcolorp "a color")))
-      ($colorbox  (setf (getf options :colorbox)
+      ($color_bar  (setf (getf options :color_bar)
                         (check-option-boole (cdr opt))))
       ($elevation (if (caddr opt)
                       (setf (caddr opt) (parse-elevation (caddr opt))))
@@ -1482,16 +1469,22 @@ sin(y)*(10.0+6*cos(x)),
                             (check-option-boole (cdr opt))))
       ($point_type (setf (getf options :point_type)
                          (check-option (cdr opt) #'pointtypep "a point type")))
-      ($psfile (setf (getf options :psfile)
+      ($pdf_file (setf (getf options :pdf_file)
+                     (check-option (cdr opt) #'stringp "a string" 1)))
+      ($png_file (setf (getf options :png_file)
+                     (check-option (cdr opt) #'stringp "a string" 1)))
+      ($ps_file (setf (getf options :ps_file)
                      (check-option (cdr opt) #'stringp "a string" 1)))
       ($run_viewer (setf (getf options :run_viewer)
                          (check-option-boole (cdr opt))))
-      ($samexy (setf (getf options :samexy)
+      ($same_xy (setf (getf options :same_xy)
                      (check-option-boole (cdr opt))))
-      ($samexyz (setf (getf options :samexyz)
+      ($same_xyz (setf (getf options :same_xyz)
                       (check-option-boole (cdr opt))))
       ($style (setf (getf options :style)
                     (check-option-style (cdr opt))))
+      ($svg_file (setf (getf options :svg_file)
+                     (check-option (cdr opt) #'stringp "a string" 1)))
       ($t (setf (getf options :t) (cddr (check-range opt))))
       ($title (setf (getf options :title)
                     (check-option (cdr opt) #'stringp "a string" 1)))
@@ -1505,7 +1498,7 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($xvar (setf (getf options :xvar)
                    (check-option (cdr opt) #'string "a string" 1)))
-      ($xyscale (setf (getf options :xyscale)
+      ($xy_scale (setf (getf options :xy_scale)
                       (check-option (cdr opt) #'realpositivep
                                     "a positive real number" 2)))
       ($y (setf (getf options :y) (cddr (check-range opt))))
@@ -1516,7 +1509,7 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($yvar (setf (getf options :yvar)
                    (check-option (cdr opt) #'string "a string" 1)))
-      ($yxratio (setf (getf options :yxratio)
+      ($yx_ratio (setf (getf options :yx_ratio)
                       (check-option (cdr opt) #'realp
                                     "a real number" 1)))
       ($z (setf (getf options :z) (cddr (check-range opt))))
@@ -1528,9 +1521,6 @@ sin(y)*(10.0+6*cos(x)),
                     (check-option-b (cdr opt) #'realp "a real number" 3)))
       ($gnuplot_4_0 (setf (getf options :gnuplot_4_0)
                           (check-option-boole (cdr opt))))
-      ($gnuplot_epilogue
-       (setf (getf options :gnuplot_epilogue)
-             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_curve_titles
        (setf (getf options :gnuplot_curve_titles)
              (check-option (cdr opt) #'stringp "a string")))
@@ -1552,8 +1542,20 @@ sin(y)*(10.0+6*cos(x)),
       ($gnuplot_preamble
        (setf (getf options :gnuplot_preamble)
              (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_postamble
+       (setf (getf options :gnuplot_postamble)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_pdf_term_command
+       (setf (getf options :gnuplot_pdf_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_png_term_command
+       (setf (getf options :gnuplot_png_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
       ($gnuplot_ps_term_command
        (setf (getf options :gnuplot_ps_term_command)
+             (check-option (cdr opt) #'stringp "a string" 1)))
+      ($gnuplot_svg_term_command
+       (setf (getf options :gnuplot_svg_term_command)
              (check-option (cdr opt) #'stringp "a string" 1)))
       ;; gnuplot_term is a tricky one: when it is just default, dumb or
       ;; ps, we want it to be a symbol, but when it is more complicated,
@@ -1571,6 +1573,14 @@ sin(y)*(10.0+6*cos(x)),
       (t
        (merror
         (intl:gettext "plot-options-parser: unknown plot option: ~M") opt))))
+
+  ;; plots that create a file work better in gnuplot than gnuplot_pipes
+  (when (and (eq (getf options :plot_format) '$gnuplot_pipes)
+             (or (eq (getf options :gnuplot_term) '$dumb)
+                 (getf options :pdf_file) (getf options :png_file)
+                 (getf options :ps_file) (getf options :svg_file)))
+    (setf (getf options :plot_format) '$gnuplot))
+
   options)
 
 ;; natural numbers predicate
@@ -1832,7 +1842,7 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; Parse the given options into the options list
     (setq options (plot-options-parser extra-options options))
-    (when (getf options :y) (setf (getf options :ybound) (getf options :y)))
+    (when (getf options :y) (setf (getf options :ybounds) (getf options :y)))
 
     ;; Remove axes labels when no box is used in gnuplot
     (when (and (member :box options) (not (getf options :box))
@@ -1878,9 +1888,9 @@ sin(y)*(10.0+6*cos(x)),
         (setf gnuplot-out-file (getf options :gnuplot_out_file)))
     (if (and (eq (getf options :plot_format) '$gnuplot)
              (eq gnuplot-term '$default) gnuplot-out-file)
-        (setq file gnuplot-out-file)
+        (setq file (plot-file-path gnuplot-out-file))
         (setq file
-              (plot-temp-file
+              (plot-file-path
                (format nil "maxout.~(~a~)"
                        (ensure-string (getf options :plot_format))))))
 
@@ -2112,7 +2122,7 @@ sin(y)*(10.0+6*cos(x)),
     
     (case (getf options :plot_format)
       ($gnuplot 
-       (gnuplot-process options file))
+       (gnuplot-process options file output-file))
       ($gnuplot_pipes
        (send-gnuplot-command *gnuplot-command*))
       ($mgnuplot 
@@ -2497,14 +2507,14 @@ Several functions depending on the two variables v1 and v2:
   (setf gnuplot-term (getf options :gnuplot_term))
   (if (getf options :gnuplot_out_file)
       (setf gnuplot-out-file (getf options :gnuplot_out_file)))
-  (if (and (eq (getf options :plot_format) '$gnuplot) 
-           (eq gnuplot-term '$default) 
-           gnuplot-out-file)
-      (setf file gnuplot-out-file)
-      (setf file 
-            (plot-temp-file
+  (if (and (eq (getf options :plot_format) '$gnuplot)
+           (eq gnuplot-term '$default) gnuplot-out-file)
+      (setq file (plot-file-path gnuplot-out-file))
+      (setq file
+            (plot-file-path
              (format nil "maxout.~(~a~)"
                      (ensure-string (getf options :plot_format))))))
+
   (and $in_netmath 
        (setq $in_netmath (eq (getf options :plot_format) '$xmaxima)))
   
@@ -2614,7 +2624,7 @@ Several functions depending on the two variables v1 and v2:
             (t (close $pstream)
                (setq $pstream nil))))
     (if (eql (getf options :plot_format) '$gnuplot)
-        (gnuplot-process options file)
+        (gnuplot-process options file output-file)
         (cond ((getf options :run_viewer)
                (case (getf options :plot_format)
                  ($xmaxima

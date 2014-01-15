@@ -156,9 +156,9 @@ imagpart(expintegral_ei(1+%i));
    for a pure imaginary argument the result is pure imaginary */
 
 /* a real value */
-realpart(expintegral_ei(x));
-expintegral_ei(x);
-imagpart(expintegral_ei(x));
+realpart(expintegral_si(x));
+expintegral_si(x);
+imagpart(expintegral_si(x));
 0;
 
 /* an imaginary value */
@@ -172,6 +172,30 @@ realpart(expintegral_si(1+%i));
 1/2*(expintegral_si(1-%i)+expintegral_si(1+%i));
 imagpart(expintegral_si(1+%i));
 1/2*%i*(expintegral_si(1-%i)-expintegral_si(1+%i));
+
+/* Limits of expintegral_si */
+
+limit(expintegral_si(x),x,inf);
+%pi/2;
+
+limit(expintegral_si(x),x,minf);
+-%pi/2;
+
+/* Limits of expintegral_shi */
+
+limit(expintegral_shi(x),x,inf);
+inf;
+
+limit(expintegral_shi(x),x,minf);
+minf;
+
+/* Limits of expintegral_chi */
+
+limit(expintegral_chi(x),x,inf);
+inf;
+
+limit(expintegral_chi(x),x,minf);
+inf;
 
 /*******************************************************************************
    For a negative integer parameter we expand in a series

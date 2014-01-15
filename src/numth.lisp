@@ -241,7 +241,7 @@
       (if fs-phi 
         (list '($zn_order) x n fs-phi)
         (list '($zn_order) x n) )))
-  (when (minusp x) (setq x (mod x n)))
+  (setq x (mod x n))
   (cond 
     ((= 0 x) nil)
     ((= 1 x) (if (= n 1) nil 1))
@@ -319,12 +319,11 @@
       (if fs-phi 
         (list '($zn_primroot_p) x n fs-phi)
         (list '($zn_primroot_p) x n) )))
-  (when (minusp x) (setq x (mod x n)))
+  (setq x (mod x n))
   (cond 
     ((= 0 x) nil)
     ((= 1 x) (if (= n 2) t nil))
     ((<= n 2) nil)
-    ((= 0 (mod x n)) nil)
     (t 
       (if fs-phi
          (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
@@ -609,9 +608,8 @@
   (let ((p (car pe)) (e (cadr pe)) qd)
     (cond
       ((= 2 p)
-        (setq qd (list '(2 1)))
-        (when (> e 2) 
-          (setq qd (nconc qd (list `(2 ,(- e 2))))) ))
+        (setq qd (list (if (> e 1) '(2 1) '(1 1))))
+        (when (> e 2) (setq qd (nconc qd (list `(2 ,(- e 2)))))) )
       (t 
         (setq qd (let (($intfaclim)) (get-factor-list (1- p))))
         (when (> e 1) 

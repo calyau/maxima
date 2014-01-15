@@ -74,13 +74,16 @@
                    (*standard-output* working-stream))
                   (handler-case (cl-user::run)
                     (error nil t)))
-                (format t "SERVER-RUN RETURNED (OK, BUT USUALLY SERVER-RUN CALLS EXIT)~%")
-                (sb-bsd-sockets:socket-close working-socket))
+                (format t "SERVER-RUN RETURNED; GRANDCHILD NOW QUITS~%")
+                (sb-bsd-sockets:socket-close working-socket)
+                (sb-ext:quit))
               (progn
                 ; Child process: I exit immediately.
                 (format t "CHILD: IMMEDIATE EXIT; GRANDCHILD PID = ~S~%" grandchild-pid)
+                (sb-bsd-sockets:socket-close working-socket)
                 (sb-ext:quit))))
           (progn
             (format t "PARENT: WAIT FOR CHILD; CHILD PID = ~S~%" child-pid)
+            (sb-bsd-sockets:socket-close working-socket)
             (sb-posix:waitpid child-pid 0)))))))
   

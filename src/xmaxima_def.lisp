@@ -1,5 +1,5 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
-;; Copyright (C) 2007,2009 J. Villate
+;; Copyright (C) 2007-2013 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -195,8 +195,8 @@
       (when azim (format dest " {az ~d}" azim))
       (format dest "~%")))
 
-  (when (getf plot-options :psfile)
-    (format dest " {psfile ~s}" (getf plot-options :psfile)))
+  (when (getf plot-options :ps_file)
+    (format dest " {psfile ~s}" (getf plot-options :ps_file)))
   (when (member :legend plot-options)
     (unless (getf plot-options :legend)
       (format dest " {nolegend 1}")))

@@ -53,7 +53,7 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
   implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
   asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi fractals.texi finance.texi\
-  bernstein.texi to_poly_solve.texi defstruct.texi
+  bernstein.texi to_poly_solve.texi defstruct.texi alt-display.texi
 
 figurefiles = \
 figures/introduction1.gif\
@@ -131,7 +131,8 @@ figures/bodephase5.gif\
 figures/bodephase6.gif\
 figures/bodephase7.gif\
 figures/bodephase8.gif\
-figures/bodephase9.gif
+figures/bodephase9.gif\
+figures/color_terminal.gif
 
 pdffigures = \
 figures/introduction1.pdf\
@@ -194,7 +195,8 @@ figures/bodephase5.pdf\
 figures/bodephase6.pdf\
 figures/bodephase7.pdf\
 figures/bodephase8.pdf\
-figures/bodephase9.pdf
+figures/bodephase9.pdf\
+figures/color_terminal.pdf
 
 if CHM
 MAXIMA_CHM = maxima.chm

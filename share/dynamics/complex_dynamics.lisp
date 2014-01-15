@@ -32,7 +32,7 @@
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
     (unless (getf options :xlabel) (setf (getf options :xlabel) "x"))
     (unless (getf options :ylabel) (setf (getf options :ylabel) "y"))
-    (unless (member :colorbox options) (setf (getf options :colorbox) t))
+    (unless (member :color_bar options) (setf (getf options :color_bar) t))
     (setf (getf options :palette)
           '(((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
             $orange $red $brown $black)))
@@ -40,7 +40,7 @@
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
     (setf file-name (plot-temp-file "maxout.gnuplot"))
-    (unless (getf options :yxratio) (setf (getf options :samexy) t))
+    (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
     (setq xmin (car (getf options :x))) 
     (setq xmax (cadr (getf options :x)))
@@ -91,7 +91,7 @@
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
     (unless (getf options :xlabel) (setf (getf options :xlabel) "x"))
     (unless (getf options :ylabel) (setf (getf options :ylabel) "y"))
-    (unless (member :colorbox options) (setf (getf options :colorbox) t))
+    (unless (member :color_bar options) (setf (getf options :color_bar) t))
     (setf (getf options :palette)
           '(((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
             $orange $red $brown $black)))
@@ -99,7 +99,7 @@
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
     (setf file-name (plot-temp-file "maxout.gnuplot"))
-    (unless (getf options :yxratio) (setf (getf options :samexy) t))
+    (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
     (setq xmin (car (getf options :x))) 
     (setq xmax (cadr (getf options :x)))

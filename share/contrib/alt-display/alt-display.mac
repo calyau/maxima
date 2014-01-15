@@ -1,0 +1,37 @@
+/* -*- Mode: maxima; Package: MAXIMA -*- */
+/*
+;; Copyright Leo Butler (l_butler@users.sourceforge.net) 2013
+;; Released under the terms of GPLv2+
+*/
+
+if ?fboundp(printf)=false then load("stringproc");  /* needed for printf */
+if ?fboundp(mathml)=false then load("mathml.lisp"); /* share/contrib/lurkmathml/mathml.lisp */
+load("tex-display.lisp");
+load("alt-display.lisp");
+
+define_alt_display(f,body) ::= buildq(
+  [f:f,
+  body:psubst([
+    alt_display1d='?\*alt\-display1d\*,
+    alt_display2d='?\*alt\-display2d\*,
+    prompt_prefix='?\*prompt\-prefix\*,
+    prompt_suffix='?\*prompt\-suffix\*,
+    displa='?displa,
+    linear_displa='?linear\-displa
+    ],
+    body)],
+  f := block([simp:false], body));
+
+define_alt_display(info_display(x),block([alt_display1d:false,alt_display2d:false],linear_displa(x)));
+define_alt_display(tex_display(x),block([alt_display1d:false,alt_display2d:false],printf(true,"~a",tex_displa(x))));
+define_alt_display(mathml_display(x),block([alt_display1d:false,alt_display2d:false],mathml(x)));
+
+define_alt_display(multi_display_for_texinfo(x),
+  block([alt_display1d:false,alt_display2d:false],
+    printf(true,"~&@iftex~%@tex~%")      ,tex_display(x)    ,printf(true,"~&@end tex~%@end iftex~%"),
+    printf(true,"~&@ifhtml~%@html~%")    ,mathml_display(x) ,printf(true,"~&@end html~%@end ifhtml~%"),
+    printf(true,"~&@ifinfo~%@example~%") ,info_display(x)   ,printf(true,"~&@end example~%@end ifinfo~%")));
+
+reset_displays() := (reset_prompts(), set_alt_display(1,false), set_alt_display(2,false));
+
+/* end of alt-display.mac */

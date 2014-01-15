@@ -1,0 +1,71 @@
+   Maxima 5.32 change log
+
+
+   Changes not backward compatible:
+
+ * share function graph2d: removed in favor of plot2d
+
+
+   New items in core:
+
+ * function limit: limits for fresnel_c and fresnel_s
+ * function plot2d: adaptive plotting for parametric plots
+ * functions round, truncate: distribute over lists and other aggregate types
+ * function zn_characteristic_factors: Shanks characteristic factors
+
+
+   New items in share:
+
+ * new package smath: glue code for SMath Studio (notebook interface)
+ * new package logic: some functions for Boolean expressions
+ * package lapack: new function zheev (eigenvalues of Hermitian matrix)
+
+
+   Changes in core:
+
+ * function labels: make 'labels' an ordinary function (not argument-quoting)
+ * plotting: more general color specification
+ * plotting: rework plot options machinery
+ * plotting: introduce some new options
+
+
+   Other changes:
+
+ * Build and install mgnuplot.exe under windows
+
+
+   Bug fixes:
+
+ 2668 Bigfloat Gamma Inaccurate for Small Inputs
+ 2666 plotdf ignores first of [x, ...] or [y, ...] if there are no other options
+ 2662 Maxima manual adjust
+ 2660 lapack puts binary files in binary/binary-$foo/share/lapack/binary-$foo/lapack
+ 2659 bug_report() directions for creating ticket need updating
+ 2649 Correction for $matrix evaluation
+ 2639 limit asks about internal variable
+ 2634 zgeev does not operate on real matrices
+ 2633 ev(integrate,numer) gives strange result
+ 2630 inverse_jacobi_cn(-2.0, 3.0) generates an error
+ 2629 elliptic_kc(3.0) not accurate
+ 2628 fourier elimination on equality
+ 2624 Erroneous limit result
+ 2615 Numeric evaluation of inverse Jacobi elliptic functions is wrong for some inputs
+ 2282 Problem in LISP with times function in sym
+
+
+ unnumbered bugs:
+
+ mailing list 2013-09-26: transcendental functions and compilation
+ mailing list 2007-04-02: fixes a bug in plot2d-discrete
+ GCL bug #40646 fixed (problem actually in Maxima)
+ workaround GCL bug #40154 (some float literals parsed incorrectly)
+ ensure that 'sign' does not make any changes to assume database.
+ fix Postscript plotting on windows
+ fix limit(-(3*n^2 + 1)*(-1)^n/sqrt(n^5 + 8*n^3 + 8),n,inf);
+ fix bug in ldisplay and ldisp: need to display %t label
+ fix: inv_mod(0,1) should return false
+ fix cyclic-p, gf-eval, gf-irr-p
+ fix gf-cminus-b, gf-prim-p
+ fix bug in computing (.75b0+%i*1.5b0)^(%i/4)
+ fix "describe" returning wrong entry with texinfo version 5
+ plots using the dumb gnuplot terminal were not being displayed in the terminal when the gnuplot_pipes is used

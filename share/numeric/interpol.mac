@@ -297,7 +297,7 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*          title = concat("Degree of numerator = ",k),                        */
 /*          yrange=[0,10])$                                                    */
 ratinterpol(tab,r,[select]) :=
-  block([n,m,coef,unk,sol,lov,options,defaults,ratprint:false],
+  block([n,m,coef,unk,sol,lovtab,lov,options,defaults,ratprint:false],
     tab: interpol_check_input(tab,"ratinterpol"),
     options:  ['varname],
     defaults: ['x],
@@ -325,7 +325,9 @@ ratinterpol(tab,r,[select]) :=
                          p, tab)),
     unk: makelist(gensym(), k, r+m+2),
     sol: map(last, linsolve(flatten(args(coef.unk)),unk)),
+    lovtab : listofvars(tab),
     lov: listofvars(sol),
+    lov: listify(setdifference(setify(lov),setify(lovtab))),
     sol: subst(map(lambda([z1,z2], z1=z2), lov, makelist(1, k, length(lov))), sol),
     makelist(sol[k],k,1,r+1) . makelist(defaults[1]^k,k,0,r) / 
         makelist(sol[k],k,r+2,r+2+m) . makelist(defaults[1]^k,k,0,m) )$
