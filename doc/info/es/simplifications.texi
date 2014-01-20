@@ -254,24 +254,6 @@ expresi@'on en formato com@'un.
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} logand (@var{x},@var{y})
-Devuelve el "y" l@'ogico binario de los argumentos @var{x} e @var{y}.
-
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
-@end deffn
-
-@deffn {Funci@'on} logor (@var{x},@var{y})
-Devuelve el "o" l@'ogico binario de los argumentos @var{x} e @var{y}.
-
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
-@end deffn
-
-@deffn {Funci@'on} logxor (@var{x},@var{y})
-Devuelve el "o-excusivo" l@'ogico binario de los argumentos @var{x} e @var{y}.
-
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
-@end deffn
-
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp

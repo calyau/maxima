@@ -280,33 +280,6 @@ To use this function write first @code{load(functs)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{logand}
-@deffn {Function} logand (@code{x},@code{y})
-
-Returns logical (bit-wise) "and" of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{logor}
-@deffn {Function} logor (@code{x},@code{y})
-
-Returns logical (bit-wise) "or" of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{logxor}
-@deffn {Function} logxor (@code{x},@code{y})
-
-Returns logical (bit-wise) exclusive-or of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{nonzeroandfreeof}
 @deffn {Function} nonzeroandfreeof (@var{x}, @var{expr})
 

@@ -314,39 +314,6 @@ Wronskian行列の行列式は、
 
 @end deffn
 
-@deffn {関数} logand (@code{x},@code{y})
-引数x, yの(ビット)論理"積"を返します。
-
-この関数を使うには、最初に@code{load(functs)}を書いてください。
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
-@deffn {関数} logor (@code{x},@code{y})
-引数x, yの(ビット)論理"和"を返します。
-
-この関数を使うには、最初に@code{load(functs)}を書いてください。
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
-@deffn {関数} logxor (@code{x},@code{y})
-引数x, yの(ビット)"排他的論理和"を返します。
-
-この関数を使うには、最初に@code{load(functs)}を書いてください。
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp
