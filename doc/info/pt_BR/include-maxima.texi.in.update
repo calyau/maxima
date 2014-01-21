@@ -2,7 +2,7 @@
 
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 4204953b9bb6bfaf9ff1c46e05fbe590  include-maxima.texi.in
+@c f0cbbbfa2603be4fc6c95aa533b97c47  include-maxima.texi.in
 @c
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -135,6 +135,7 @@ Recursos avan@,{c}ados e programa@,{c}@~{a}o
 * Debugging::                   Depurando programas do Maxima.
 
 Pacotes adicionais
+* alt-display::                 Alternative display package.
 * asympa::                      Pacote de an@'{a}lise assint@'{o}tica
 * augmented_lagrangian::        pacote augmented_lagrangian.
 * Bernstein::                   Polin@^{o}mios de Bernstein.
@@ -375,6 +376,10 @@ Fluxo de Programa
 
 Depurando
 * Functions and Variables for Debugging::   
+
+alt-display
+* Introduction to alt-display::
+* Functions and Variables for alt-display::
 
 asympa
 * Introduction to asympa::
@@ -717,9 +722,13 @@ zeilberger
 @chapter Program Flow
 @include Program.texi
 
-@node Debugging, asympa, Program Flow, Top
+@node Debugging, alt-display, Program Flow, Top
 @chapter Debugging
 @include Debugging.texi
+
+@node alt-display, asympa, Debugging, Top
+@chapter alt-display
+@include alt-display.texi
 
 @node asympa, augmented_lagrangian, Debugging, Top
 @chapter asympa

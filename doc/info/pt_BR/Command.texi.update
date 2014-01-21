@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 253575dbd76c58df776752fb4f9c0467  Command.texi
+@c e3a597bdd98d74ba261f6aaad3915f71  Command.texi
 @c
 @menu
 * Introduction to Command Line::
@@ -770,29 +770,6 @@ modo @code{playback (slow)}, e do la@,{c}o de parada do Maxima (da forma invocad
 @category{Global variables} @category{Console interaction}
 @closecatbox
 @end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} prompt_prepend_note (nota)
-
-Adiciona uma nota que é mostrada após cada prompt de entrada. Essa nota deve
-ou ser uma sequência de caracteres ou deve ser alguma coisa que possa ser chamada como uma
-função. No caso de ser chamada como função, a função deve retornar ou uma
-sequência de caracteres ou um número (por razões técnicas decorrentes da implementação, expressões
-arbitrárias podem não serem impressas corretamente). Se a chamada à função
-retornar um erro então a nota é removida da lista a ser
-mostrada a partir da chamada à função.
-
-Pode ter mais de uma nota mostrada após o prompt, e a função @code{prompt_prepend_note}
-adiciona a nota fornecida ao lado direito no final da lista. Para remover uma nota
-da lista, use @mrefdot{prompt_remove_note}
-@end deffn
-
-@deffn {Function} prompt_remove_note (nota)
-
-Remove uma nota da lista de objetos a serem exibidos após cada prompt. Veja
-@mref{prompt_prepend_note}
-para como adicionar uma nota.
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{quit}
