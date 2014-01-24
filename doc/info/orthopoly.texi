@@ -713,7 +713,7 @@ Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 @end deffn
 
 @deffn {Function} chebyshev_t (@var{n}, @var{x})
-The Chebyshev function of the first kind.
+The Chebyshev polynomial of the first kind of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
 
@@ -724,7 +724,7 @@ Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
 @end deffn
 
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
-The Chebyshev function of the second kind.
+The Chebyshev polynomial of the second kind of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
 
@@ -746,7 +746,7 @@ Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 @end deffn
 
 @deffn {Function} hermite (@var{n}, @var{x})
-The Hermite polynomial.
+The Hermite polynomial of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 
@@ -782,7 +782,7 @@ Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
 @end deffn
 
 @deffn {Function} laguerre (@var{n}, @var{x})
-The Laguerre polynomial.
+The Laguerre polynomial of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
 
@@ -793,7 +793,7 @@ Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
 @end deffn
 
 @deffn {Function} legendre_p (@var{n}, @var{x})
-The Legendre polynomial of the first kind.
+The Legendre polynomial of the first kind of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 
@@ -804,7 +804,7 @@ Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 @end deffn
 
 @deffn {Function} legendre_q (@var{n}, @var{x})
-The Legendre polynomial of the second kind.
+The Legendre function of the second kind of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
 
