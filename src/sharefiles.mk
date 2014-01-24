@@ -156,6 +156,9 @@ colnew/prob2.mac \
 colnew/prob3.mac \
 colnew/prob4.mac \
 combinatorics/README \
+contrib/alt-display/alt-display.lisp \
+contrib/alt-display/alt-display.mac \
+contrib/alt-display/tex-display.lisp \
 contrib/altsimp/altsimp.lisp \
 contrib/augmented_lagrangian.mac \
 contrib/bitwise/bitwise.lisp \
