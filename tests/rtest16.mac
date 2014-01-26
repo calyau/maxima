@@ -1864,3 +1864,7 @@ subst(0, x, trigreduce(product(cos(k*x), k, 1, 8)));
 /* #2591: Risch gives lisp error */
 (risch(asinh((z^2-1)/z)/z,z), 0);
 0$
+
+/* #2682: Function zeta fails numerically for large numbers */
+closeto(zeta(40.0) - 1, 1e-12);
+true$
