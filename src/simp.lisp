@@ -670,6 +670,49 @@
 				  (cdr x)))))
 	  x))
 
+;; Try to evaluate FIRST-TRY. If there's a floating point overflow (or any old
+;; error if we're on a Lisp where they're harder to catch), evaluate
+;; ALTERNATIVE, which should try to do the same computation, but with bigfloats.
+(defmacro bigfloat-alternative (first-try alternative)
+  `(handler-case
+       #-(or gcl ecl) ,first-try
+       #+(or gcl ecl)
+       (let ((result ,first-try))
+         (if (float-inf-p result)
+             ,alternative
+             result))
+     (floating-point-overflow () ,alternative)
+     (type-error (e)
+       (if (member (type-error-expected-type e)
+                   '(double-float single-float))
+           ,alternative
+           (error e)))))
+
+;; Try to evaluate (,cl-op ,arg1 ,arg2), but correctly handle floating point
+;; overflows. When one occurs, use bfloats to return a sensible answer.
+(defmacro cl-or-bfloat-binary-op (maxima-op cl-op arg1 arg2)
+  `(let ((a ,arg1) (b ,arg2))
+     (cond
+       ;; If one or more of the operands is a float, the result might produce a
+       ;; floating point overflow. In that case, catch it and switch to
+       ;; bigfloats. FLOATP works fine for real values, but we have to work a
+       ;; bit harder to catch the complex ones :-/
+       ((or (floatp a) (floatp b)
+            (and (complexp a)
+                 (or (typep a '(complex single-float))
+                     (typep a '(complex double-float))))
+            (and (complexp b)
+                 (or (typep b '(complex single-float))
+                     (typep b '(complex double-float)))))
+
+        (bigfloat-alternative (,cl-op a b)
+                              ($bfloat (list '(,maxima-op) a b))))
+
+       ;; Otherwise (assuming that the arguments were in fact numbers), we won't
+       ;; get any sort of floating point overflow and can just trust CL to do
+       ;; the right thing.
+       (t (,cl-op a b)))))
+
 ;;;-----------------------------------------------------------------------------
 ;;; ADDK (X Y)                                                   27.09.2010/DK
 ;;;
@@ -710,7 +753,8 @@
 (defun addk (x y)
   (cond ((eql x 0) y)
 	((eql y 0) x)
-	((and (numberp x) (numberp y)) (+ x y))
+	((and (numberp x) (numberp y))
+         (cl-or-bfloat-binary-op mplus + x y))
 	((or ($bfloatp x) ($bfloatp y)) ($bfloat (list '(mplus) x y)))
 	(t (prog (g a b)
 	      (cond ((numberp x)
@@ -821,7 +865,8 @@
 (defun timesk (x y)     ; X and Y are assumed to be already reduced
   (cond ((equal x 1) y)
 	((equal y 1) x)
-	((and (numberp x) (numberp y)) (* x y))
+	((and (numberp x) (numberp y))
+         (cl-or-bfloat-binary-op mtimes * x y))
 	((or ($bfloatp x) ($bfloatp y)) ($bfloat (list '(mtimes) x y)))
 	((floatp x) (* x (fpcofrat y)))
 	((floatp y) (* y (fpcofrat x)))
@@ -925,15 +970,16 @@
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
-;;;   Computes A^B, where A is a float or an integer number and B is an 
-;;;   integer number. The result is an integer, float, or Maxima
-;;;   rational number.
+;;;   Computes A^B, where A is a float or an integer number and B is an integer
+;;;   number. The result is an integer, float, bigfloat or Maxima rational
+;;;   number.
 ;;;
 ;;; Examples:
 ;;;   (exptb 3 2)   -> 9
 ;;;   (exptb 3.0 2) -> 9.0
 ;;;   (exptb 3 -2)  -> ((RAT SiMP) 1 9)
 ;;;   (let (($float t)) (exptb 3 -2)) -> 0.1111111111111111
+;;;   (exptb 2.0 1000) -> 1.995063116880758b3010
 ;;;
 ;;; Affected by:
 ;;;   The option variable $FLOAT.
@@ -943,19 +989,21 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun exptb (a b)
-  (cond ((equal a %e-val)
-	 ;; Make B a float so we'll get double-precision result.
-         (exp (float b)))
-        ((or (floatp a) (not (minusp b)))
-         #+gcl
-         (if (float-inf-p (setq b (expt a b)))
-             (merror (intl:gettext "EXPT: floating point overflow."))
-             b)
-         #-gcl
-         (expt a b))
-	(t
-	 (setq b (expt a (- b)))
-	 (*red 1 b))))
+  (bigfloat-alternative
+   (cond ((equal a %e-val)
+          ;; Make B a float so we'll get double-precision result.
+          (exp (float b)))
+         ((or (floatp a) (not (minusp b)))
+          #+gcl
+          (if (float-inf-p (setq b (expt a b)))
+              (merror (intl:gettext "EXPT: floating point overflow."))
+              b)
+          #-gcl
+          (expt a b))
+         (t
+          (setq b (expt a (- b)))
+          (*red 1 b)))
+   ($bfloat `((mexpt) ,a ,b))))
 
 ;;;-----------------------------------------------------------------------------
 ;;; SIMPLUS (X W Z)                                                27.09.2010/DK
@@ -1494,7 +1542,7 @@
   (cond ((and (integerp (cadr x)) (integerp (caddr x)) (not (zerop (caddr x))))
 	 (*red (cadr x) (caddr x)))
 	((and (numberp (cadr x)) (numberp (caddr x)) (not (zerop (caddr x))))
-	 (/ (cadr x) (caddr x)))
+         (cl-or-bfloat-binary-op mquotient / (cadr x) (caddr x)))
 	(t (setq y (simplifya (cadr x) z))
 	   (setq x (simplifya (list '(mexpt) (caddr x) -1) z))
 	   (if (equal y 1) x (simplifya (list '(mtimes) y x) t)))))
@@ -2078,7 +2126,7 @@
 	 (exptb (float r1) (floor r2)))
 	((or $numer (and (floatp r2) (or (plusp (num1 r1)) $numer_pbranch)))
 	 (let (y  #+kcl(r1 r1) #+kcl(r2 r2))
-	   (cond ((minusp (setq r1 (addk 0.0 r1)))
+	   (cond ((mnegp (setq r1 (addk 0.0 r1)))
 		  (cond ((or $numer_pbranch (eq $domain '$complex))
 		         ;; for R1<0:
 		         ;; R1^R2 = (-R1)^R2*cos(pi*R2) + i*(-R1)^R2*sin(pi*R2)
