@@ -730,7 +730,7 @@ zeilberger
 @chapter alt-display
 @include alt-display.texi
 
-@node asympa, augmented_lagrangian, Debugging, Top
+@node asympa, augmented_lagrangian, alt-display, Top
 @chapter asympa
 @include asympa.texi
 
