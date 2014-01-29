@@ -96,7 +96,23 @@ Examples:
 Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
-@c NEED EXAMPLE HERE
+Example:
+
+@c ===beg===
+@c 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+@c combine (%);
+@c ===end===
+@example
+(%i1) 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+                             5 b f   a b c   2 a c
+(%o1)                        ----- + ----- + -----
+                               4       5       3
+(%i2) combine (%);
+                         75 b f + 4 (3 a b c + 10 a c)
+(%o2)                    -----------------------------
+                                      60
+@end example
+
 @opencatbox
 @category{Expressions}
 @closecatbox
