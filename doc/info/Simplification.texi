@@ -96,7 +96,23 @@ Examples:
 Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
-@c NEED EXAMPLE HERE
+Example:
+
+@c ===beg===
+@c 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+@c combine (%);
+@c ===end===
+@example
+(%i1) 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+                             5 b f   a b c   2 a c
+(%o1)                        ----- + ----- + -----
+                               4       5       3
+(%i2) combine (%);
+                         75 b f + 4 (3 a b c + 10 a c)
+(%o2)                    -----------------------------
+                                      60
+@end example
+
 @opencatbox
 @category{Expressions}
 @closecatbox
@@ -109,6 +125,31 @@ denominator into a single term.
 If @code{declare(h, commutative)} is done, this tells the simplifier that
 @code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
 @code{h(x, y, z)}.  This is the same as @code{symmetric}.
+
+Exemplo:
+
+@c ===beg===
+@c S (b, a);
+@c S (a, b) + S (b, a);
+@c declare (S, commutative);
+@c S (b, a);
+@c S (a, b) + S (b, a);
+@c S (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                               S(b, a)
+(%i2) S (a, b) + S (b, a);
+(%o2)                          S(b, a) + S(a, b)
+(%i3) declare (S, commutative);
+(%o3)                                done
+(%i4) S (b, a);
+(%o4)                               S(a, b)
+(%i5) S (a, b) + S (b, a);
+(%o5)                              2 S(a, b)
+(%i6) S (a, c, e, d, b);
+(%o6)                          S(a, b, c, d, e)
+@end example
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
