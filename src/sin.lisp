@@ -1629,19 +1629,49 @@
 		 (list '(%integrate) exp var)
 		 ans))))))
 
+;; SUM-OF-INTSP
+;;
+;; This is a heuristic that SININT uses to work out whether the result from
+;; INTEGRATOR is worth returning or whether just to return a noun form. If this
+;; function returns T, then SININT will return a noun form.
+;;
+;; The logic, as I understand it (Rupert 01/2014):
+;;
+;;   (1) If I integrate f(x) wrt x and get an atom other than x, either
+;;       something's gone horribly wrong, or this is part of a larger
+;;       expression. In the latter case, we can return T here because hopefully
+;;       something else interesting will make the top-level return NIL.
+;;
+;;   (2) If I get a sum, return a noun form if every one of the summands is no
+;;       better than what I started with. (Presumably this is where the name
+;;       came from)
+;;
+;;   (3) If this is a noun form, it doesn't convey much information on its own,
+;;       so return T.
+;;
+;;   (4) If this is a product, something interesting has probably happened. But
+;;       I still want a noun form if the result is like 2*'integrate(f(x),x), so
+;;       I'm only interested in terms in the product that are not free of
+;;       VAR. If one of those terms is worthy of report, that's great: return
+;;       NIL. Otherwise, return T if we saw at least two things (eg splitting an
+;;       integral into a product of two integrals)
+;;
+;;   (5) If the result is free of VAR, we're in a similar position to (1).
+;;
+;;   (6) Otherwise something interested (and hopefully useful) has
+;;       happened. Return NIL to tell SININT to report it.
 (defun sum-of-intsp (ans)
   (cond ((atom ans) (not (eq ans var)))
 	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
 	((eq (caar ans) '%integrate) t)
 	((mtimesp ans)
-	 (do ((facs (cdr ans) (cdr facs))
-	      (ints))
-	     ((null facs)
-	      (< (length ints) 2))
-	   (unless (freeof var (car facs))
-	     (if (sum-of-intsp (car facs))
-		 (push (car facs) ints)
-		 (return nil)))))
+         (let ((int-factors 0))
+           (not (or (dolist (factor (cdr ans))
+                      (unless (freeof var factor)
+                        (if (sum-of-intsp factor)
+                            (incf int-factors)
+                            (return t))))
+                    (<= 2 int-factors)))))
 	((freeof var ans) t)
 	(t nil)))
 
