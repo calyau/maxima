@@ -1096,7 +1096,7 @@
 ;; Convenience function to allow user to process expression X
 ;; and get a string (TeX output for X) in return.
 
-(defun $tex1 (x) (apply #'strcat (tex x nil nil 'mparen 'mparen)))
+(defun $tex1 (x) (reduce #'strcat (tex x nil nil 'mparen 'mparen)))
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
