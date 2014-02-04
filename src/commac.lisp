@@ -345,27 +345,22 @@ values")
     ;; Fortran's exponent markers are the same as Lisp's so
     ;; we just need to make sure the exponent marker is
     ;; printed.
-    ;;
-    ;; Also, for normal output, we basically want to use
-    ;; prin1, but we can't because we want fpprintprec to control
-    ;; how many digits are printed.  So we have to check for
-    ;; the size of the number and use ~e or ~f appropriately.
     (if *fortran-print*
         (setq string (format nil "~e" symb))
-        (multiple-value-bind (form width)
-            (cond ((or (zerop a)
-                       (<= 1 a 1e7))
-                   (values "~vf" (+ 1 effective-printprec)))
-                  ((<= 0.001 a 1)
-                   (values "~vf" (+ effective-printprec
-                                    (cond ((< a 0.01)
-                                           3)
-                                          ((< a 0.1)
-                                           2)
-                                          (t 1)))))
-                  (t
-                   (values "~ve" (+ 5 effective-printprec))))
-          (setq string (format nil form width a))
+        (multiple-value-bind (form digits)
+          (cond
+            ((zerop a)
+             (values "~,vf" 1))
+            ((<= 0.001 a 1e7)
+             (let*
+               ((integer-log10 (floor (/ (log a) #.(log 10.0))))
+                (scale (1+ integer-log10)))
+               (if (< scale effective-printprec)
+                 (values "~,vf" (- effective-printprec scale))
+                 (values "~,ve" (1- effective-printprec)))))
+            (t
+              (values "~,ve" (1- effective-printprec))))
+          (setq string (format nil form digits a))
           ;; Ensure result has a leading zero if it needs one.
           (if (eq (aref string 0) #\.)
             (setq string (concatenate 'string "0" string)))
