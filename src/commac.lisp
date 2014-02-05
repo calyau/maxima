@@ -331,6 +331,8 @@ values")
     (assert (stringp string))
     (coerce string 'list)))
 
+(defvar *exploden-strip-float-zeros* t) ;; NIL => allow trailing zeros
+
 (defun exploden-format-float (symb)
   (declare (special $maxfpprintprec))
   (let ((a (abs symb))
@@ -360,16 +362,41 @@ values")
                  (values "~,ve" (1- effective-printprec)))))
             (t
               (values "~,ve" (1- effective-printprec))))
+
+          ;; Call FORMAT using format string chosen above.
           (setq string (format nil form digits a))
-          ;; Ensure result has a leading zero if it needs one.
-          (if (eq (aref string 0) #\.)
-            (setq string (concatenate 'string "0" string)))
+
           ;; EXPLODEN is often called after NFORMAT, so it doesn't
           ;; usually see a negative argument. I can't guarantee
           ;; a non-negative argument, so handle negative here.
           (if (< symb 0)
             (setq string (concatenate 'string "-" string)))))
-    (string-trim " " string)))
+
+    (if *exploden-strip-float-zeros*
+      (or (strip-float-zeros string) string)
+      string)))
+
+(defvar trailing-zeros-regex-f-0 (coerce (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$") 'function))
+(defvar trailing-zeros-regex-f-1 (coerce (maxima-nregex::regex-compile "^(.*\\.0)00*$") 'function))
+(defvar trailing-zeros-regex-e-0 (coerce (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$") 'function))
+(defvar trailing-zeros-regex-e-1 (coerce (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$") 'function))
+
+;; Return S with trailing zero digits stripped off, or NIL if there are none.
+
+(defun strip-float-zeros (s)
+  (cond
+    ((or (funcall trailing-zeros-regex-f-0 s) (funcall trailing-zeros-regex-f-1 s))
+     (let
+       ((group1 (aref maxima-nregex::*regex-groups* 1)))
+       (subseq s (first group1) (second group1))))
+    ((or (funcall trailing-zeros-regex-e-0 s) (funcall trailing-zeros-regex-e-1 s))
+     (let*
+       ((group1 (aref maxima-nregex::*regex-groups* 1))
+        (s1 (subseq s (first group1) (second group1)))
+        (group2 (aref maxima-nregex::*regex-groups* 2))
+        (s2 (subseq s (first group2) (second group2))))
+       (concatenate 'string s1 s2)))
+    (t nil)))
 
 (defun explodec (symb)		;is called for symbols and numbers
   (loop for v in (coerce (print-invert-case symb) 'list)
