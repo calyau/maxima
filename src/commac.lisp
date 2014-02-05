@@ -376,10 +376,10 @@ values")
       (or (strip-float-zeros string) string)
       string)))
 
-(defvar trailing-zeros-regex-f-0 (coerce (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$") 'function))
-(defvar trailing-zeros-regex-f-1 (coerce (maxima-nregex::regex-compile "^(.*\\.0)00*$") 'function))
-(defvar trailing-zeros-regex-e-0 (coerce (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$") 'function))
-(defvar trailing-zeros-regex-e-1 (coerce (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$") 'function))
+(defparameter trailing-zeros-regex-f-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$")))
+(defparameter trailing-zeros-regex-f-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*$")))
+(defparameter trailing-zeros-regex-e-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")))
+(defparameter trailing-zeros-regex-e-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$")))
 
 ;; Return S with trailing zero digits stripped off, or NIL if there are none.
 
