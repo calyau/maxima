@@ -291,6 +291,26 @@ Check if a function has the property distribute_over:
 (%o7) [integral, distributes over bags, noun, rule, gradef]
 @end example
 
+The mapping of functions is switched off, when setting @code{distribute_over} 
+to the value @code{false}.
+
+@c ===beg===
+@c distribute_over;
+@c sin([x,1,1.0]);
+@c distribute_over : not distribute_over;
+@c ===end===
+@example
+(%i1) distribute_over;
+(%o1)                                true
+(%i2) sin([x,1,1.0]);
+(%o2)                [sin(x), sin(1), 0.8414709848078965]
+(%i3) distribute_over : not distribute_over;
+(%o3)                                false
+(%i4) sin([x,1,1.0]);
+(%o4)                          sin([x, 1, 1.0])
+(%i5)
+@end example
+
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
