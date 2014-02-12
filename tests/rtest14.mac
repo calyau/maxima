@@ -1181,7 +1181,7 @@ sqrt(-(-1)^(1/6));
 /* Further tests of bessel functions */
 /* The following numerical values are evaluated with the evaluation tool
    of the website www.functions.wolfram.com with a precision of 16 digits
-   1998-2008 Wolfram Research, Inc. */
+   1998-2014 Wolfram Research, Inc. */
 
 (test_bessel(actual, ref, digits) := closeto(realpart(actual)-realpart(ref), 10^(-digits)) and closeto(imagpart(actual)-imagpart(ref), 10^(-digits)), 0);
 0;
@@ -1288,6 +1288,24 @@ true;
 
 test_bessel
   (bessel_j(-2.3,1.0+%i),0.1920598664138632 - 0.5158676904105332 * %i,14);
+true;
+
+/* Numerical values for the bessel function J with complex order */
+
+test_bessel
+  (bessel_j(%i,1.0),1.641024179495082 - 0.437075010213683*%i,15);
+true;
+
+test_bessel
+  (bessel_j(%i,1.5),1.401883276281807 + 0.473362399311655*%i,15);
+true;
+
+test_bessel
+  (bessel_j(1.0+%i,-1.0),-0.01142279482478010 + 0.02390070064911069*%i,15);
+true;
+
+test_bessel
+  (bessel_j(1.5*%i,-2.0),0.01925195427338360 + 0.01442616961986814*%i,15);
 true;
 
 /******************************************************************/
@@ -1400,6 +1418,23 @@ test_bessel
   (bessel_y(-2.3,1.0+%i),-0.1570442638685963 + 0.5821870838327466 * %i,14);
 true;
 
+/* Numerical values for the bessel function Y with complex order */
+
+test_bessel
+  (bessel_y(%i,1.0),-0.476556612479964 - 1.505069159110387*%i,14);
+true;
+
+test_bessel
+  (bessel_y(%i,1.5),0.5161218926267688 - 1.2857405211747503*%i,14);
+true;
+
+test_bessel
+  (bessel_y(1.0+%i,-1.0),7.708594946281541 + 1.233384674244926*%i,14);
+true;
+
+test_bessel
+  (bessel_y(1.5*%i,-2.0),3.226466016458932 + 4.267260420563194*%i,13);
+true;
 
 /******************************************************************/
 /* Numerical values for the bessel function I with negative order */
@@ -1507,6 +1542,24 @@ test_bessel
   (bessel_i(-2.3,1.0+%i),-0.4053256245784623 - 0.3724481230406298 * %i,14);
 true;
 
+/* Numerical values for the bessel function I with complex order */
+
+test_bessel
+  (bessel_i(%i,1.0),1.900799675819425 - 1.063960013554441*%i,14);
+true;
+
+test_bessel
+  (bessel_i(%i,1.5),2.495473638417463 - 0.601347501920535*%i,14);
+true;
+
+test_bessel
+  (bessel_i(1.0+%i,-1.0),-0.01096313515009349 + 0.03043920114776303*%i,15);
+true;
+
+test_bessel
+  (bessel_i(1.5*%i,-2.0),0.04238259669782487 - 0.01125055344512197*%i,15);
+true;
+
 /******************************************************************/
 /* Numerical values for the bessel function K with negative order */
 
@@ -1608,6 +1661,24 @@ true;
 
 test_bessel
   (bessel_k(-2.3,1.0+%i),-0.6635905911278042 - 1.0258894849569300 * %i,13);
+true;
+
+/* Numerical values for the bessel function K with complex order */
+
+test_bessel
+  (bessel_k(%i,1.0),0.2894280370259921,14);
+true;
+
+test_bessel
+  (bessel_k(%i,1.5),0.1635839926633096,14);
+true;
+
+test_bessel
+  (bessel_k(1.0+%i,-1.0),-9.744252766030894 - 7.494570149760043*%i,14);
+true;
+
+test_bessel
+  (bessel_k(1.5*%i,-2.0),3.93512366711118 - 14.82183468316553*%i,13);
 true;
 
 kill(closeto, test_bessel);
