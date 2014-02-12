@@ -627,6 +627,25 @@ place where @code{a} is a "constant".  For functions of two or more arguments,
 i.e., @code{f (a*x + b, x)} yields @code{a*f(x,x) + b*f(1,x)}
 for @code{a} and @code{b} free of @code{x}.
 
+Example:
+
+@c ===beg===
+@c declare (f, linear);
+@c f(x+y);
+@c declare (a, constant);
+@c f(a*x);
+@c ===end===
+@example
+(%i1) declare (f, linear);
+(%o1)                                done
+(%i2) f(x+y);
+(%o2)                             f(y) + f(x)
+(%i3) declare (a, constant);
+(%o3)                                done
+(%i4) f(a*x);
+(%o4)                               a f(x)
+@end example
+
 @code{linear} is equivalent to @code{additive} and @code{outative}.
 See also @code{opproperties}.
 
@@ -834,6 +853,25 @@ but be very careful: like the @code{simp} flag, this is one flag you do not
 want to set to @code{false} as a matter of course or necessarily for other
 than local use in your Maxima.
 
+Example:
+
+@c ===beg===
+@c negdistrib;
+@c -(x+y);
+@c negdistrib : not negdistrib ;
+@c -(x+y);
+@c ===end===
+@example
+(%i1) negdistrib;
+(%o1)                                true
+(%i2) -(x+y);
+(%o2)                               - y - x
+(%i3) negdistrib : not negdistrib ;
+(%o3)                                false
+(%i4) -(x+y);
+(%o4)                              - (y + x)
+@end example
+
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
@@ -845,9 +883,17 @@ than local use in your Maxima.
 
 @code{opproperties} is the list of the special operator properties recognized
 by the Maxima simplifier:
-@code{linear}, @code{additive}, @code{multiplicative}, @code{outative},
-@code{evenfun}, @code{oddfun}, @code{commutative}, @code{symmetric},
-@code{antisymmetric}, @code{nary}, @code{lassociative}, @code{rassociative}.
+
+Example:
+
+@c ===beg===
+@c opproperties;
+@c ===end===
+@example
+(%i1) opproperties;
+(%o1) [linear, additive, multiplicative, outative, evenfun, oddfun,.
+       commutative, symmetric, antisymmetric, nary, lassociative, rassociative]
+@end example
 
 @opencatbox
 @category{Global variables} @category{Operators}
