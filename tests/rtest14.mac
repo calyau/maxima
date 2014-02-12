@@ -1180,13 +1180,13 @@ sqrt(-(-1)^(1/6));
 
 /* Further tests of bessel functions */
 /* The following numerical values are evaluated with the evaluation tool
-   of the website wwww.functions.wolfram.com with a precision of 16 digits
+   of the website www.functions.wolfram.com with a precision of 16 digits
    1998-2008 Wolfram Research, Inc. */
 
 (test_bessel(actual, ref, digits) := closeto(realpart(actual)-realpart(ref), 10^(-digits)) and closeto(imagpart(actual)-imagpart(ref), 10^(-digits)), 0);
 0;
 
-/* Numerical values for the bessel functions J with negative order */
+/* Numerical values for the bessel function J with negative order */
 
 test_bessel(bessel_j(-1,-2.0),0.5767248077568734, 15);
 true;
@@ -1232,7 +1232,7 @@ true;
 test_bessel(bessel_j(-2.3,1.5), 1.012178926325313, 14);
 true;
 
-/* Numerical values for the bessel functions J with positiv order */
+/* Numerical values for the bessel function J with positive order */
 
 test_bessel(bessel_j(1.5,1.0), 0.2402978391234270, 15);
 true;
@@ -1259,7 +1259,7 @@ true;
 test_bessel(bessel_j(2.5,-1.0),0.04949681022847794 * %i,15);
 true;
 
-/* Numerical values for the bessel functions J with complex arg 
+/* Numerical values for the bessel function J with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1291,7 +1291,7 @@ test_bessel
 true;
 
 /******************************************************************/
-/* Numerical values for the bessel functions Y with negativ order */
+/* Numerical values for the bessel function Y with negative order */
 
 test_bessel
   (bessel_y(-1,-2.0),-0.1070324315409375 + 1.1534496155137468 * %i,14);
@@ -1340,7 +1340,7 @@ true;
 test_bessel(bessel_y(-2.3,1.5),-0.5356668704355646,14);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function Y with positive order */
 
 test_bessel(bessel_y(1.5,1.0),-1.102495575160179,14);
 true;
@@ -1369,7 +1369,7 @@ test_bessel(bessel_y(2.5,-1.0),2.876387857462161 * %i,14);
 true;
 
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function Y with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1402,7 +1402,7 @@ true;
 
 
 /******************************************************************/
-/* Numerical values for the bessel functions I with negativ order */
+/* Numerical values for the bessel function I with negative order */
 
 test_bessel(bessel_i(-1,-2.0),-1.590636854637329,15);
 true;
@@ -1448,7 +1448,7 @@ true;
 test_bessel(bessel_i(-2.3,1.5),0.6352567117441516,15);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function I with positive order */
 
 test_bessel(bessel_i(1.5,1.0),0.2935253263474798,15);
 true;
@@ -1476,7 +1476,7 @@ test_bessel(bessel_i(2.5,-1.0),0.05709890920304825 * %i,15);
 true;
 
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function I with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1508,7 +1508,7 @@ test_bessel
 true;
 
 /******************************************************************/
-/* Numerical values for the bessel functions I with negativ order */
+/* Numerical values for the bessel function K with negative order */
 
 test_bessel
   (bessel_k(-1,-2.0),-0.139865881816522-4.997133057057809*%i,14);
@@ -1551,7 +1551,7 @@ true;
 test_bessel(bessel_k(-2.3,1.5),0.7921237520153218,15);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function K with positive order */
 
 test_bessel(bessel_k(1.5,1.0),0.9221370088957891,14);
 true;
@@ -1579,7 +1579,7 @@ true;
 test_bessel(bessel_k(2.5,-1.0),-3.406861044815549*%i,14);
 true;
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function K with complex arg 
    and positive or negative order*/
 
 test_bessel
