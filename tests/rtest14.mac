@@ -1821,6 +1821,36 @@ test_wronskian(w_ik, lambda([n,z], 1/z), 1e-10, 5);
 test_wronskian(lambda([n,z], w_ik(n,z*%i)), lambda([n,z], 1/(z*%i)), 1e-12, 5);
 [];
 
+/*******************************************************************************
+
+   Test Wronskian w_h1h2
+
+   A&S 9.1.17: H1[v+1](z)*H2[v](z)-H1[v](z)*H2[v+1](z) = -4*%i/(%pi*z)
+
+*******************************************************************************/
+
+w_h1h2(v,z) := hankel_1(v+1,z)*hankel_2(v,z) - hankel_1(v,z)*hankel_2(v+1,z);
+w_h1h2(v,z) := hankel_1(v+1,z)*hankel_2(v,z) - hankel_1(v,z)*hankel_2(v+1,z);
+
+/* Calculation of w_h1h2 for real argument */
+
+test_wronskian(w_h1h2, lambda([v,z], -4*%i/(%pi*z)), 1e-14, 5);
+[];
+
+/* Calculation of w_h1h2 for complex argument */
+
+test_wronskian(lambda([v,z], w_h1h2(v,z*%i)),
+               lambda([v,z], -4/(%pi*z)),
+               1e-13, 5);
+[];
+
+/* Calculation of w_h1h2 for complex order and argument */
+
+test_wronskian(lambda([v,z], w_h1h2(v*%i,z*%i)),
+               lambda([v,z], -4/(%pi*z)),
+               1e-10, 5);
+[];
+
 /******************************************************************************
 
     Integrals of Bessel functions
