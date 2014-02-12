@@ -1698,13 +1698,26 @@
        (simp-domain-error
          (intl:gettext "hankel_1: hankel_1(~:M,~:M) is undefined.")
          order arg))
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order))
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (hankel-1 order arg)))
-         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (hankel-1 order arg)))
+                (add (mul '$%i (imagpart result)) (realpart result))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_1(v,z) = bessel_j(v,z) + %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (add (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 
@@ -1785,13 +1798,26 @@
        (simp-domain-error
          (intl:gettext "hankel_2: hankel_2(~:M,~:M) is undefined.")
          order arg))
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order))
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (hankel-2 order arg)))
-         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (hankel-2 order arg)))
+                (add (mul '$%i (imagpart result)) (realpart result))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_2(v,z) = bessel_j(v,z) - %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (sub (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 

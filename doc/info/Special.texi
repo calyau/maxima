@@ -196,9 +196,9 @@ The Hankel function of the first kind of order @math{v} and argument @math{z}
    bessel_j(v,z) + %i * bessel_y(v,z)
 @end example
 
-Maxima evaluates @code{hankel_1} numerically for a real order @math{v} and 
+Maxima evaluates @code{hankel_1} numerically for a complex order @math{v} and 
 complex argument @math{z} in float precision. The numerical evaluation in 
-bigfloat precision and for a complex order @math{v} is not supported.
+bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
@@ -215,20 +215,14 @@ Numerical evaluation:
 @c hankel_1(1,0.5+%i);
 @c ===end===
 @example
+@group
 (%i1) hankel_1(1,0.5);
-(%o1)              .2422684576748738 - 1.471472392670243 %i
+(%o1)        0.24226845767487 - 1.471472392670243 %i
+@end group
+@group
 (%i2) hankel_1(1,0.5+%i);
-(%o2)             - .2558287994862166 %i - 0.239575601883016
-@end example
-
-A complex order @math{v} is not supported. Maxima returns a noun form:
-
-@c ===beg===
-@c hankel_1(%i,0.5+%i);
-@c ===end===
-@example
-(%i3) hankel_1(%i,0.5+%i);
-(%o3)                       hankel_1(%i, %i + 0.5)
+(%o2)       - 0.25582879948621 %i - 0.23957560188301
+@end group
 @end example
 
 Expansion of @code{hankel_1} when @code{besselexpand} is @code{true}:
@@ -237,10 +231,12 @@ Expansion of @code{hankel_1} when @code{besselexpand} is @code{true}:
 @c hankel_1(1/2,z),besselexpand:true;
 @c ===end===
 @example
-(%i4) hankel_1(1/2,z),besselexpand:true;
-                      sqrt(2) sin(z) - sqrt(2) %i cos(z)
-(%o4)                 ----------------------------------
-                              sqrt(%pi) sqrt(z)
+@group
+(%i1) hankel_1(1/2,z),besselexpand:true;
+               sqrt(2) sin(z) - sqrt(2) %i cos(z)
+(%o1)          ----------------------------------
+                       sqrt(%pi) sqrt(z)
+@end group
 @end example
 
 Derivative of @code{hankel_1} wrt the argument @math{z}. The derivative wrt the 
@@ -251,14 +247,18 @@ order @math{v} is not supported. Maxima returns a noun form:
 @c diff(hankel_1(v,z),v);
 @c ===end===
 @example
-(%i5) diff(hankel_1(v,z),z);
-                    hankel_1(v - 1, z) - hankel_1(v + 1, z)
-(%o5)               ---------------------------------------
-                                       2
-(%i6) diff(hankel_1(v,z),v);
-                             d
-(%o6)                        -- (hankel_1(v, z))
-                             dv
+@group
+(%i1) diff(hankel_1(v,z),z);
+             hankel_1(v - 1, z) - hankel_1(v + 1, z)
+(%o1)        ---------------------------------------
+                                2
+@end group
+@group
+(%i2) diff(hankel_1(v,z),v);
+                       d
+(%o2)                  -- (hankel_1(v, z))
+                       dv
+@end group
 @end example
 
 @opencatbox
@@ -277,9 +277,9 @@ The Hankel function of the second kind of order @math{v} and argument @math{z}
    bessel_j(v,z) - %i * bessel_y(v,z)
 @end example
 
-Maxima evaluates @code{hankel_2} numerically for a real order @math{v} and 
+Maxima evaluates @code{hankel_2} numerically for a complex order @math{v} and 
 complex argument @math{z} in float precision. The numerical evaluation in 
-bigfloat precision and for a complex order @math{v} is not supported.
+bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
@@ -1854,15 +1854,17 @@ Examples:
 @c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) 
 @c               * exp(-p*t), t);
 @c ===end===
-
 @example
 (%i1) assume (p > 0, a > 0)$
+@group
 (%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
                            sqrt(%pi)
 (%o2)                     ------------
                                  a 3/2
                           2 (p + -)
                                  4
+@end group
+@group
 (%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
               * exp(-p*t), t);
                                    - a/p
@@ -1870,6 +1872,7 @@ Examples:
 (%o3)                    ---------------
                                 2
                                p
+@end group
 @end example
 
 Examples for exponential integrals:
