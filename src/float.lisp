@@ -829,7 +829,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; fpe1 is the bigfloat part of the bfloat(%e) computation
 ;;
 (defun fpe1 nil
-  (bcons (list (fpround (compe (+ fpprec 12))) (+ -12 *m))))
+  (bcons (list (fpround (compe (+ fpprec 24))) (+ -24 *m))))
 ;;
 ;; compe is the bignum part of the bfloat(%e) computation
 ;; (compe N)/(2.0^N) is an approximation to E
@@ -872,7 +872,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (bcons
     (fpquotient
       (fprt18231_)
-      (list (fpround (comppi (+ fpprec 12))) (+ -12 *m)) )))
+      (list (fpround (comppi (+ fpprec 24))) (+ -24 *m)) )))
 ;;
 ;; comppi is the bignum part of the bfloat(%pi) computation
 ;; (comppi N)/(2.0^N) is an approximation to 640320^(3/2)/12 * 1/PI
@@ -884,17 +884,19 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf )
 ;;
 (defun comppi (prec)
-  (let (s h n d)
-     (setq s (ash 13591409 prec))
-     (setq h (neg (truncate (ash 67047785160 prec) 262537412640768000)))
-     (setq s (+ s h))
-     (do ((i 2 (1+ i)))
-	 ((zerop h))
-       (setq n (* 12 (- (* 6 i) 5) (- (* 6 i) 4) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
-       (setq d (* (- (* 3 i) 2) (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
-       (setq h (neg (truncate (* h n) d)))
-       (setq s (+ s h)))
-     s ))
+  (let (s1 s2 h n d)
+    (setq s1 (ash 1 prec) 
+          h (neg (truncate s1 2187811772006400))
+          s1 (+ s1 h) 
+          s2 h )
+    (do ((i 2 (1+ i)))
+        ((zerop h))
+      (setq n (* 24 (- (* 6 i) 5) (- (* 2 i) 1) (- (* 6 i) 1))
+            d (* (expt i 3) 262537412640768000)
+            h (neg (truncate (* h n) d))
+            s1 (+ s1 h) 
+            s2 (+ s2 (* i h)) ))
+    (+ (* 13591409 s1)  (* 545140134 s2)) ))
 ;;
 ;; fprt18231_ computes sqrt(640320^3/12^2)
 ;;                   = sqrt(1823176476672000) = 42698670.666333...
