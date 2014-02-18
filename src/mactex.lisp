@@ -250,13 +250,16 @@
                       ((stringp x)
                        (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x))))
                       ((characterp x) (tex-char x))
+		      ((not ($mapatom x))
+		       (let ((x ($sconcat x)))
+			 (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x)))))
 		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
 	  r))
 
 (defun tex-string (x)
   (cond ((equal x "") "")
 	((eql (elt x 0) #\\) x)
-	(t (concatenate 'string "\\mbox{{}" x "{}}"))))
+	(t (concatenate 'string "\\mbox{ " x " }"))))
 
 (defun tex-char (x)
   (if (eql x #\|) "\\mbox{\\verb/|/}"
