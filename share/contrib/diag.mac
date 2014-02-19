@@ -187,7 +187,10 @@ diag_sorted_list_histogram (list) :=
 */
 diag_kernel_element (A) :=
   block ([vars: makelist (gensym (), length (first (A))), eqns, soln],
-    eqns: map (first, args (A . apply (matrix, map("[", vars)))),
+    if length (vars) = 1 then
+      eqns: [first(vars) * first (first (A))]
+    else
+      eqns: map (first, args (A . apply (matrix, map("[", vars)))),
     soln: algsys (eqns, vars),
     if emptyp (soln) then error ("Could not solve for the kernel of ", A),
     map (rhs, first (soln)))$
