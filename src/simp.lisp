@@ -2156,7 +2156,14 @@
 	         ((and (equal (setq y (* 2.0 r2)) (float (floor y)))
 	               (not (equal r1 %e-val)))
 		  (exptb (sqrt r1) (floor y)))
-		 (t (exp (* r2 (log r1)))))))
+                 ;; If bfloat conversion turned r1 or r2 into a bigfloat, we
+                 ;; can't call cl:exp or cl:log here, but we *can* safely
+                 ;; recurse (which will usually give a noun form that then gets
+                 ;; simplified)
+                 ((or ($bfloatp r1) ($bfloatp r2))
+                  (exptrl r1 r2))
+		 (t
+                  (exp (* r2 (log r1)))))))
 	((floatp r2) (list '(mexpt simp) r1 r2))
 	((integerp r2)
 	 (cond ((minusp r2)
