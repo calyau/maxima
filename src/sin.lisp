@@ -1607,23 +1607,42 @@
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))
     (declare (special *integrator-level*))
-    (cond ((mnump var) (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
-	  (($ratp var) (sinint exp (ratdisrep var)))
-	  (($ratp exp) (sinint (ratdisrep exp) var))
-	  ((mxorlistp exp)    ;; if exp is an mlist or matrix
-	   (cons (car exp)
-		 (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
-	  ;; if exp is an equality, integrate both sides
-	  ;; and add an integration constant
-	  ((mequalp exp)
-	   (list (car exp) (sinint (cadr exp) var)
-		 (add (sinint (caddr exp) var)
-	      ($concat $integration_constant (incf $integration_constant_counter)))))
-	  ((and (atom var)
-		(isinop exp var))
-	   (list '(%integrate) exp var))
-	  ((let ((ans (simplify
-		       (let ($opsubst varlist genvar stack)
+
+    ;; Sanity checks for variables
+    (when (mnump var)
+      (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
+    (when ($ratp var) (setf var (ratdisrep var)))
+    (when ($ratp exp) (setf exp (ratdisrep exp)))
+
+    (cond
+      ;; Distribute over lists and matrices
+      ((mxorlistp exp)
+       (cons (car exp)
+             (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
+
+      ;; The symbolic integration code doesn't really deal very well with
+      ;; subscripted variables, so if we have one then replace occurrences of var
+      ;; with an atomic gensym and recurse.
+      ((and (not (atom var))
+            (member 'array (cdar var)))
+       (let ((dummy-var (gensym)))
+         (maxima-substitute var dummy-var
+                            (sinint (maxima-substitute dummy-var var exp) dummy-var))))
+
+      ;; If exp is an equality, integrate both sides and add an integration
+      ;; constant
+      ((mequalp exp)
+       (list (car exp) (sinint (cadr exp) var)
+             (add (sinint (caddr exp) var)
+                  ($concat $integration_constant (incf $integration_constant_counter)))))
+
+      ;; If var is an atom which occurs as an operator in exp, then return a noun form.
+      ((and (atom var)
+            (isinop exp var))
+       (list '(%integrate) exp var))
+
+      ((let ((ans (simplify
+                   (let ($opsubst varlist genvar stack)
 			 (integrator exp var)))))
 	     (if (sum-of-intsp ans)
 		 (list '(%integrate) exp var)

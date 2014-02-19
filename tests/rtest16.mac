@@ -1884,3 +1884,7 @@ integrate(exp(-(1+%i)*x[1]),x[1],0,inf);
 /* #2688: %e^^A returns element by element exponent */
 is(%e^^matrix([1,2],[3,4]) = %e^matrix([1,2],[3,4]));
 false$
+
+/* #2676: Integral incorrect when variable is subscripted */
+integrate(x[1]*exp(x[1]), x[1]);
+exp(x[1])*(x[1]-1)$
