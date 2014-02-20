@@ -19,14 +19,14 @@ indefinidos.
 
 @code{load (zeilberger)} torna esse pacote dispon@'{i}vel para uso.
 
-@subsubsection O problema dos somat@'{o}rios hipergeom@'{e}tricos indefinidos
+@subsection O problema dos somat@'{o}rios hipergeom@'{e}tricos indefinidos
 
 @code{zeilberger} implementa o algor@'{i}tmo de Gosper
 para somat@'{o}rio hipergeom@'{e}trico indefinido.
 Dado um termo hipergeom@'{e}trico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@value{cedilha}a
 hipergeom@'{e}trica, isto @'{e}, um termo hipergeom@'{e}trico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
 
-@subsubsection O problema dos somat@'{o}rios hipergeom@'{e}tricos definidos
+@subsection O problema dos somat@'{o}rios hipergeom@'{e}tricos definidos
 
 @code{zeilberger} implementa o algor@'{i}tmo de Zeilberger
 para somat@'{o}rio hipergeom@'{e}trico definido.
