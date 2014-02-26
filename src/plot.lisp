@@ -1685,14 +1685,17 @@ sin(y)*(10.0+6*cos(x)),
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
   (if (string= *autoconf-win32* "true")
-      (setq formats '($geomview $gnuplot $mgnuplot $xmaxima))
-      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $xmaxima)))
+      (setq formats '($geomview $gnuplot $mgnuplot $openmath $xmaxima))
+      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $openmath $xmaxima)))
   (unless (member (cadr option) formats)
     (merror
      (intl:gettext
       "Wrong argumet ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
      (cadr option) (car option)))
-  (cadr option))
+  ; $openmath is just a synonym for $xmaxima
+  (if (eq (cadr option) '$openmath)
+    '$xmaxima
+    (cadr option)))
 
 ; palette most be one or more Maxima lists starting with the name of one
 ;; of the 5 kinds: hue, saturation, value, gray or gradient.
