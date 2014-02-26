@@ -1678,7 +1678,7 @@ sin(y)*(10.0+6*cos(x)),
                     (realp (third item)) (realp (fourth item))))
       (merror
        (intl:gettext
-        "Wrong argumet ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
+        "Wrong argument ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
        item (car option))))
   (cdr option))
 
@@ -1690,7 +1690,7 @@ sin(y)*(10.0+6*cos(x)),
   (unless (member (cadr option) formats)
     (merror
      (intl:gettext
-      "Wrong argumet ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
+      "Wrong argument ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
      (cadr option) (car option)))
   ; $openmath is just a synonym for $xmaxima
   (if (eq (cadr option) '$openmath)
@@ -1709,7 +1709,7 @@ sin(y)*(10.0+6*cos(x)),
                                   '($hue $saturation $value $gray $gradient))))
             (merror
              (intl:gettext
-              "Wrong argumet ~M for option ~M. Not a valid palette.")
+              "Wrong argument ~M for option ~M. Not a valid palette.")
              item (car option))))
         (cdr option))))
 
@@ -1722,7 +1722,7 @@ sin(y)*(10.0+6*cos(x)),
                            '($lines $points $linespoints $dots $impulses)))
           (merror
            (intl:gettext
-            "Wrong argumet ~M for option ~M. Not a valid style")
+            "Wrong argument ~M for option ~M. Not a valid style")
              item (car option))))
       (dolist (item (rest option))
         (when (not
@@ -1731,7 +1731,7 @@ sin(y)*(10.0+6*cos(x)),
                             '($lines $points $linespoints $dots $impulses))))
           (merror
            (intl:gettext
-            "Wrong argumet ~M for option ~M. Not a valid style.")
+            "Wrong argument ~M for option ~M. Not a valid style.")
            item (car option)))))
   (if (= (length option) 2)
       (cadr option)
@@ -1744,7 +1744,7 @@ sin(y)*(10.0+6*cos(x)),
       (cadr option)
       (merror
        (intl:gettext
-        "Wrong argumet ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
+        "Wrong argument ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
 
 ;; plot2d
 ;;
