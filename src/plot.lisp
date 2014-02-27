@@ -1680,7 +1680,7 @@ sin(y)*(10.0+6*cos(x)),
        (intl:gettext
         "Wrong argument ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
        item (car option))))
-  (cdr option))
+  opt)
 
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
