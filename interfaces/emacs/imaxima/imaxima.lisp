@@ -198,6 +198,7 @@ nor Gnuplot is not recognized by maxima"))))
   (setq str (unquote-%-internal str #\%))
   (setq str (unquote-%-internal str #\&))
   (setq str (unquote-%-internal str #\_))
+  (setq str (unquote-%-internal str #\#))
   str)
 
 (defun tex-string (x)
