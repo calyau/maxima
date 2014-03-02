@@ -618,9 +618,10 @@ limit(log(-1/3125*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) +
 1/2)^(8*n))*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) + 1/2)^n) -
 1/5*((-1/2*sqrt(5) + 1/2)^(9*n) - (1/2*sqrt(5) +
 1/2)^(9*n))*sqrt(5)),n,inf);
-'limit(log(-1/3125*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) +
-1/2)^n)^9*sqrt(5))/log(-1/5*((-1/2*sqrt(5) + 1/2)^(8*n) - (1/2*sqrt(5) +
-1/2)^(8*n))*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) + 1/2)^n) -
-1/5*((-1/2*sqrt(5) + 1/2)^(9*n) - (1/2*sqrt(5) +
-1/2)^(9*n))*sqrt(5)),n,inf);
+1;
+
+/* #2675 maxima will not do the simplest of definite integrals 
+   and will not factor otherwise */
+limit(x^2*exp(-%i*x - x), x, inf);
+0;
 

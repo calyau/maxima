@@ -896,8 +896,10 @@ ignoring dummy variables and array indices."
 				 var
 				 val))
 	 (cond ((member answer '($ind $und) :test #'equal)
+		;; cannot handle limit(exp(x*%i)*x, x, inf);
 		(return nil))
-	       ((member answer '($inf $minf 0) :test #'equal) ;Really? ZEROA ZEROB?
+	       ((member answer '($inf $minf) :test #'equal)
+		;; 0, zeroa, zerob are passed through to next iteration 
 		(return (simplimtimes (list (m// numerator denominator) answer)))))))))
 
 (defun exppoly (exp)	   ;RETURNS EXPRESSION WITH UNRATTED EXPONENTS
@@ -1245,6 +1247,8 @@ ignoring dummy variables and array indices."
 			 (if (alike1 red-log x) x (log-reduce red-log))))))))
 	(t x)))
 
+;; this function is responsible for the following bug:
+;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
   (cond ((member val '($inf $infinity) :test #'eq)
 	 (setq e (maxima-substitute (m^t 'x -1) var e)))
