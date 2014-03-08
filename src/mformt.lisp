@@ -111,8 +111,9 @@
 (defmfun aformat (destination control-string &rest arguments)
   (if destination
       (apply 'mformat destination control-string arguments)
-      (with-output-to-string (stream)
-        (apply 'mformat stream control-string arguments))))
+      (with-output-to-string (st)
+			     (let ((*standard-output* st))
+			       (apply 'mformat t control-string arguments)))))
 
 (defun output-text* (stream text displa-p pre-%-p post-%-p)
   (setq text (nreverse text))
