@@ -884,8 +884,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; have 9 to 0 roundings at their ends. In this range with (+ fpprec 10) all digits 
 ;; are rounded correctly.
 
-;; 1. non-sbcl-version:
-#-sbcl
+;; Version 1:
+#- (or sbcl clisp)
 (defun comppi nil
   ;; STEP 1:
   ;; compute sqrt(640320^3/12^2)
@@ -934,14 +934,30 @@ One extra decimal digit in actual representation for rounding purposes.")
       (setq s (+ s h)))
     s ))
 ;;
-;; 2. sbcl-version (by Raymond Toy, October 2008):
+;; Version 2: (originally by Raymond Toy)
 ;;
-;; See this email thread on this topic for an explanation of why there
-;; are two routines and timing measurements that were done:
+;; The following timing measurements show why there are two versions of comppi. 
+;; (1.6 GHz DualCore, Maxima 5.32 with Lisps from Lubuntu 13.10, 32 and 64 Bit) 
+;; 
+;; $fpprec = 1000, runtime for 1000 runs in secs:
+;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
+;;          ccl   :  3.076 |  4.968 |  1.875 |  2.880
+;;          ecl   :  0.583 |  0.882 |  0.344 |  0.411
+;;          gcl   :  0.560 |  0.810 |  0.370 |  0.379
+;;          cmucl :  1.3   |  1.28  |  1.22  |  1.24
+;;          clisp :  0.916 |  0.755 |  0.777 |  0.661
+;;          sbcl  :  0.733 |  0.725 |  0.325 |  0.330
+;; 
+;; $fpprec = 1000000, runtime in secs:
+;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
+;;          ccl   : 28.527 | 47.322 | 17.793 | 27.308
+;;          ecl   :  3.249 |  3.609 |  1.520 |  1.669
+;;          gcl   :  1.820 |  1.980 |  0.970 |  1.039
+;;          cmucl :  8.41  | 10.41  |  8.27  | 10.05 
+;;          clisp :  4.836 |  4.772 |  4.249 |  4.463
+;;          sbcl  :  7.270 |  6.079 |  2.815 |  2.618
 ;;
-;; http://www.math.utexas.edu/pipermail/maxima/2008/013946.html
-;;
-#+sbcl
+#+ (or sbcl clisp)
 (defun comppi nil
   ;; STEP 1:
   (let ((a 1823176476672000) sqrt-a)
