@@ -3027,11 +3027,13 @@
   (and (symbolp e)
        (kindp e '$complex)))
 
-;; TRUE, if the symbol e is declared to be $integer, $rational, or $real
+;; TRUE, if the symbol e is declared to be $real, $rational, $irrational
+;; or $integer
 (defun decl-realp (e)
   (and (symbolp e)
        (or (kindp e '$real)
            (kindp e '$rational)
+           (kindp e '$irrational)
            (kindp e '$integer))))
 
 ;; WARNING:  Exercise extreme caution when modifying this function!
