@@ -1864,7 +1864,7 @@ sin(y)*(10.0+6*cos(x)),
             (merror (intl:gettext "plot2d: upper bound must be positive when 'logx' in effect; found: ~M") xmax))))
 
     (let ((ymin (first (getf options :y)))
-          (ymax (first (getf options :y))))
+          (ymax (second (getf options :y))))
       (when (and (getf options :logy) ymin ymax)
         (if (> ymax 0)
             (when (<= ymin 0)
