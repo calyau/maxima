@@ -74,7 +74,7 @@ plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
 
 "To save a plot ..." $
 
-plot2d (sin(x), [x, 0, 2*%pi], [psfile, concat (maxima_tempdir, "/sin.eps")])$
+plot2d (sin(x), [x, 0, 2*%pi], [ps_file, concat (maxima_tempdir, "/sin.eps")])$
 
 "The next example uses the y option ..." $
 
@@ -96,7 +96,7 @@ my_preamble: "set xtics ('-2{/Symbol p}' \
 '{/Symbol p}' 3.1415,'3{/Symbol p}/2' 4.712, '2{/Symbol p}' \
 6.283)"$
 plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
- [y, -2, 2], [gnuplot_preamble, my_preamble], [psfile, concat (maxima_tempdir, "/trig.eps")]);
+ [y, -2, 2], [gnuplot_preamble, my_preamble], [ps_file, concat (maxima_tempdir, "/trig.eps")]);
 
 /* Examples copied from plot3d documentation */
 
