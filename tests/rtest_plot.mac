@@ -281,7 +281,7 @@ plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]);
 
 "verify that nested numerical integral is handled correctly";
 
-plot2d (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 0]);
+plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]);
 
 "another nested numerical integral";
 
@@ -289,7 +289,7 @@ plot2d (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 0])
  W(t) := 95*sqrt(t)*sin(t/6)^2,
  R(t) := 275*sin(t/3)^2,
  A(t) := 1200 + quad_qags (W(x) - R(x), x, 0, t) [1],
- plot2d (A(t), [t, 0, 18], [adapt_depth, 0]));
+ plot2d (A(t), [t, 0, 18], [adapt_depth, 1]));
 
 "plotting realpart and imagpart";
 
@@ -322,9 +322,9 @@ plot2d (sqrt (x), [x, -1, 1], [y, -2, -1]); /* all non-numeric or clipped */
 /* from the mailing list "plot numerical question" 2009-03-11 */
 
 (r4(s) := block ([s : bfloat(s)], s!/(((s/4)!)^4 * 4^s)),
- plot2d (r4, [s, 200, 300], [adapt_depth, 0], [nticks, 5]));
+ plot2d (r4, [s, 200, 300], [adapt_depth, 1], [nticks, 5]));
 
-plot2d ('r4(s), [s, 200, 300], [adapt_depth, 0], [nticks, 5]);
+plot2d ('r4(s), [s, 200, 300], [adapt_depth, 1], [nticks, 5]);
 
 /* from mailing list 2009-02-18
  * "Re: [Maxima] I want to tell maxima (-1)^0.33333333333333=-1, what should i do?"
@@ -344,10 +344,10 @@ plot2d (foo29, [u, -1, 0]);
 
 (kill(f),
  f(k) := integrate (exp(%i*k*x)*sin(x)/x, x, minf, inf),
- plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+ plot2d (f, [x, -3, 3], [adapt_depth, 1], [nticks, 5]));
 
 (translate(f),
- plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+ plot2d (f, [x, -3, 3], [adapt_depth, 1], [nticks, 5]));
 
 /* bug report "xlabel and ylabel don't change plot3d axis labels" - ID: 3020589 */
 
