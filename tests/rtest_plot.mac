@@ -12,6 +12,20 @@
 
 /* Examples copied from plot2d documentation */
 
+"Regression for f0 issue"$
+plot2d(x^2,[x,-1,1],[yx_ratio,1]);
+plot2d(x^2,[x,-1,1],[xy_scale,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[zmin,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[xtics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ytics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ztics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[xtics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ytics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ztics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[color_bar_tics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[label,"tako",1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[label,["tako",1,1],["surume",1,1],["ika",1,1]]);
+
 "Plots of common functions." $
 
 plot2d (sin(x), [x, -5, 5])$
