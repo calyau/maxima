@@ -44,8 +44,9 @@ plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]], [x, -4/3, 4/3])$
 
 "If we repeat that plot with only 8 points ..." $
+"As parametric plot uses adaptive method, nticks=4 and adapt_depth=1 is for 8 point drawing" $
 
-plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 4], [adapt_depth,1]], [x, -2, 2], [y, -1.5, 1.5])$
 
 "Combination of an ordinary plot ..." $
 
@@ -370,7 +371,7 @@ block (local (fn, Fn, pw, fbn, fbnxcy, loww),
  fbn(x,y,r):=1/(2*%pi*sqrt(1-r^2))*exp((-(x^2-2*r*x*y+y^2))/(2*(1-r^2))),
  fbnxcy(x,y,r) := fbn(x,y,r) / fn(y),
  loww(rs2, ro, r, s1, s2) := quad_qagi(fbnxcy(rs1, rs2, r)*pw(rs1, ro, s1, s2), rs1, minf, inf),
- plot3d( loww(rs2, 0, r, 1, 1)[1] , [rs2, -1.5, 2.5], [r, 0.1, 0.9] ));
+ plot3d( 'loww(rs2, 0, r, 1, 1)[1] , [rs2, -1.5, 2.5], [r, 0.1, 0.9] ));
 
 /* simpler version of the preceding one */
 
