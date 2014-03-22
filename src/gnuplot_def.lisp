@@ -305,7 +305,7 @@
     (when (getf plot-options :zlabel)
       (format dest "set zlabel ~s~%" (getf plot-options :zlabel)))
     (when (and (member :legend plot-options) 
-               (not (first (getf plot-options :legend))))
+               (null (getf plot-options :legend)))
       (format dest "unset key~%"))
 
     ;; plotting box
