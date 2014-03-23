@@ -905,10 +905,6 @@ the translator.  See @code{mode_declare} for a list of the possible modes.
 If the variable is unbound, @var{default_value} is assigned to @var{name}.
 
 @item
-@code{declare (@var{name}, special)} declares it special.
-@c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
-
-@item
 Associates @var{name} with a test function
 to ensure that @var{name} is only assigned values of the declared mode.
 @end enumerate
