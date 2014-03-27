@@ -23,7 +23,7 @@
 ;;****************************************************************************
 ;;Generatig MathML presenation codes for the expr 
 ;;This is a maxima top-level function used  the form
-;;              prmathml(expr, [,filename[,t (d)]])  on the C-line
+;;              prmathml(expr, [,(filename|stream)[,t (d)]])  on the C-line
 
 (defmfun $prmathml (&rest margs)
          (prog (ccol *row* *indent* filename mexplabel mexpress mPrport x y)
@@ -33,12 +33,17 @@
              ((null mexpress) (princ " NO EXPRESSION GIVEN ")
               (return nil))
              ((null (cdr margs)) (setq filename nil) (setq mPrport t))
-             ((null (cddr margs)) (setq filename (cadr margs))
+             ((null (cddr margs))
               (setq mPrport
-                    (open (fullstrip1 (cadr margs))
-                        :direction :output 
-                        :if-exists :append
-                        :if-does-not-exist :create)))
+                    (if (stringp (cadr margs))
+                      (progn
+                        (setq filename (cadr margs))
+                        (open (cadr margs)
+                            :direction :output 
+                            :if-exists :append
+                            :if-does-not-exist :create))
+                      ;; otherwise, assume (cadr margs) is a stream.
+                      (cadr margs))))
              (t (princ " wrong No. of Arguments given ")))
            (cond
              ((member mexpress $labels :test #'eq)
@@ -608,12 +613,13 @@
   (let (r firstpart exponent)
     (cond
       ((integerp atom) (tprinc "<mn>") (tprinc atom) (tprinc "</mn>"))
-      (t (setq r (explode atom))
-         (setq exponent (member 'e r :test #'eq))
+      (t (setq r (exploden atom))
+         ;; Hmm. What if the exponent marker is something other than 'e' or 'E' ??
+         (setq exponent (or (member #\e r :test #'eq) (member #\E r :test #'eq)))
          (cond
            ((null exponent) (tprinc "<mn>") (tprinc atom) (tprinc "</mn>"))
            (t (setq firstpart
-                    (nreverse (cdr (member 'e (reverse r) :test #'eq))))
+                    (nreverse (cdr (or (member #\e (reverse r) :test #'eq) (member #\E (reverse r) :test #'eq)))))
               (tprinc "<mn>") 
 	      (mapc #'tpchar firstpart) (tprinc "</mn>") 
 	      (tprinc "<mo>&CenterDot;</mo><msup><mn>10</mn> <mn>")
@@ -726,6 +732,25 @@
 ;;      mPr-times a function handle multiplication
 (defun mPr-times (mexpress)
   (let ((lop 'mtimes) (rop 'mtimes)) (mPr-infix mexpress)))
+
+(defun mathml-presentation-lambda (mexpress)
+  (let
+    ((op (caar mexpress))
+     (args (cdr (cadr mexpress)))
+     (body (cddr mexpress)))
+    (mPr_engine op 'mparen 'mparen)
+    (if (= (length args) 1)
+      (mPr_engine (car args) 'mparen 'mparen)
+      (mPr-listparen args))
+    (mPr_engine "." 'mparen 'mparen)
+    (if (= (length body) 1)
+      (mPr_engine (car body) 'mparen 'mparen)
+      (mPr-listparen body))))
+
+;; An improvement on the default, but not much.
+;; Could benefit from just a little more attention.
+(defun mathml-presentation-buildinfo (mexpress)
+  (mPr_engine `(($matrix) ,@(mapcar #'(lambda (e) `((mlist) ,e)) (cdr mexpress))) 'mparen 'mparen))
 
 ;;;;;;; Operators
 
@@ -859,6 +884,10 @@
 (setup '(mmfunct (mPrprocess mPr-funct))) 
 
 (setup '($matrix (mPrprocess mPr-matrix)))
+
+(setup '(lambda (mPrprocess mathml-presentation-lambda)))
+
+(setup '(%build_info (mPrprocess mathml-presentation-buildinfo)))
 
 (setup '($%pi (chchr "&pi;")))
 
