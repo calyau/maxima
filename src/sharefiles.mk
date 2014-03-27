@@ -1082,6 +1082,7 @@ solve_rec/simplify_sum.mac \
 solve_rec/simplify_sum_test.mac \
 solve_rec/solve_rec.dem \
 solve_rec/solve_rec.mac \
+sound/sound.lisp \
 specfun.lisp \
 stats/inference_result.lisp \
 stats/numstats.lisp \
