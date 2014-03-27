@@ -409,3 +409,10 @@ todd_coxeter (symet (4));
 todd_coxeter (symet (5));
 120;
 
+/* SF bug #2695: 'kill' kills built-in properties of operator after user-defined property */
+
+(kill (a, b), string (a*b));
+"a*b";
+
+(put ("*", 'bar, 'foo), kill (all), string (a*b));
+"a*b";
