@@ -36,6 +36,9 @@
 ;; load package 'numericalio'
 ($load "numericalio")
 
+;; load package 'stringproc'
+($load "stringproc")
+
 
 
 (defvar $sound_sample_rate 16384)
@@ -57,9 +60,9 @@
    (let* ((n ($sound_sample_size))
           (arr (make-array n
                           :element-type 'flonum
-                          :initial-element 0)))
+                          :initial-element 0.0)))
       (declare (type fixnum n)
-               (type (simple-array fixnum *) arr))
+               (type (simple-array flonum (*)) arr))
       (dotimes (s n)
          (setf (aref arr s) (aref $sound_sample 0 s)))
       ($listarray arr)))
@@ -105,6 +108,7 @@
     (gethash '$attenuation_coef *sound-options*)  '((mlist) 1.0)
     (gethash '$normalize *sound-options*)         '$auto
     (gethash '$player *sound-options*)            '$none
+    (gethash '$player_options *sound-options*)    '$none
     (gethash '$draw_wave_options *sound-options*) '((mlist))
     (gethash '$draw_wave *sound-options*)         nil
 ))
@@ -251,6 +255,9 @@
                    (merror "sound: illegal attenuation coefficients specification")))))
 
       ($player
+         (setf (gethash opt *sound-options*) val))
+
+      ($player_options
          (setf (gethash opt *sound-options*) val))
 
       ($draw_wave_options
@@ -478,12 +485,79 @@
 
 
 
+;; draw_sound for wxMaxima
+(defun $wxdraw_sound ()
+   (let* ((num-chn (array-dimension $sound_sample 0))
+          (num-sam (array-dimension $sound_sample 1))
+          (time (coerce (/ num-sam $sound_sample_rate) 'flonum))
+          (array1d (make-array num-sam :element-type 'flonum)))
+      (declare (type fixnum num-chn num-sam)
+               (type flonum time)
+               (type (simple-array flonum *) array1d))
+      ($apply
+         '$wxdraw
+         (cons '(mlist simp)
+               (loop for c from 0 below num-chn
+                do (loop for s from 0 below num-sam
+                      do (setf (aref array1d s) (aref $sound_sample c s)))
+                collect ($apply 
+                            '$gr2d
+                            ($append
+                                `((mlist)
+                                  ((mequal) $points_joined t)
+                                  ((mequal) $point_size 0)
+                                  ((mequal) $xrange_secondary ((mlist) 0 ,time))
+                                  ((mequal) $xtics_secondary $auto)
+                                  ((mequal) $color $blue)
+                                  ((mequal) $title ,($sconcat
+                                                       "Sound wave. Channel-"
+                                                       (1+ c)))  )
+                                (loop for x in (get-sound-option '$draw_wave_options) 
+                                    unless (or (equal '$terminal (nth 1 x)) 
+                                               (equal '$file_name (nth 1 x))) 
+                                    collect x)
+                                (list
+                                   '(mlist simp)
+                                   (list '($points) ($listarray array1d))))))))))
+
+
+
+
 (defun $play_sound ()
    (when (and (equal (get-sound-option '$file_format) '$wav)
               (not (equal (get-sound-option '$player) '$none)))
-       ($system (format nil "~a \"~a.wav\""
-                        (get-sound-option '$player)
-                        (plot-temp-file (get-sound-option '$file_name))))))
+       (let 
+          ((str (get-sound-option '$player))
+           (res1 nil)
+           (res2 nil))
+          (cond 
+              ((string= *autoconf-win32* "true")
+                 (setf res1 ($ssearch ":" str))
+                 (setf res2 ($ssearch "\\" str))
+                 (if (and res2 (>= res2 1) (not (and res1 (= res1 2))))
+                    (setf res1 1)
+                    (setf res1 nil)))
+              (t 
+                 (setf res1 ($ssearch "/" str))
+                 (if (and res1 (> res1 1) (not (= res1 1)))
+                    (setf res1 1)
+                    (setf res1 nil))))
+          (setf res2 (get-sound-option '$player_options))
+          (if (equal res2 '$none)
+             (setf res2 ""))
+          (if res1
+             ($system (format nil "\"~a~a\" ~a \"~a.wav\""
+                            ($first ($directory ($pathname_directory str)))
+                            ($sconcat ($pathname_name str)
+                                (if (null ($pathname_type str))
+                                    ""
+                                    ($sconcat "." ($pathname_type str))))
+                            res2
+                            (plot-temp-file (get-sound-option '$file_name))))
+             ($system (format nil "\"~a\" ~a \"~a.wav\""
+                            str
+                            res2
+                            (plot-temp-file (get-sound-option '$file_name))))))))
 
 
 
@@ -996,3 +1070,33 @@
       ($play_sound)
 
       '$done))
+
+
+
+;; get $draw_wave from user defaults
+(defun get-draw-wave-from-user-defaults ()
+   (loop for x in *user-sound-default-options*
+         unless (not (equal '$draw_wave (nth 1 x))) collect x))
+
+;; get other options from user defaults
+(defun get-others-from-user-defaults ()
+   (loop for x in *user-sound-default-options*
+         unless (equal '$draw_wave (nth 1 x)) collect x))
+
+;; play & draw_sound for wxMaxima
+(defun $wxplay (&rest args)
+   (cond 
+      ((nth 2 (nth 0 (get-draw-wave-from-user-defaults)))
+         (setf *user-sound-default-options* 
+            (append
+               '(((mequal simp) $draw_wave nil))
+               (get-others-from-user-defaults)))
+         (apply #'$play (nth 0 (list args)))
+         (setf *user-sound-default-options* 
+            (append
+               '(((mequal simp) $draw_wave t))
+               (get-others-from-user-defaults))))
+      (t
+         (apply #'$play (nth 0 (list args)))))
+   ; always draw the waveform
+   ($wxdraw_sound))
