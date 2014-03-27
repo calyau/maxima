@@ -1678,21 +1678,24 @@ sin(y)*(10.0+6*cos(x)),
                     (realp (third item)) (realp (fourth item))))
       (merror
        (intl:gettext
-        "Wrong argumet ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
+        "Wrong argument ~M for option ~M. Must be either [label,\"text\",x,y] or [label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]")
        item (car option))))
-  (cdr option))
+  opt)
 
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
   (if (string= *autoconf-win32* "true")
-      (setq formats '($geomview $gnuplot $mgnuplot $xmaxima))
-      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $xmaxima)))
+      (setq formats '($geomview $gnuplot $mgnuplot $openmath $xmaxima))
+      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $openmath $xmaxima)))
   (unless (member (cadr option) formats)
     (merror
      (intl:gettext
-      "Wrong argumet ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
+      "Wrong argument ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
      (cadr option) (car option)))
-  (cadr option))
+  ; $openmath is just a synonym for $xmaxima
+  (if (eq (cadr option) '$openmath)
+    '$xmaxima
+    (cadr option)))
 
 ; palette most be one or more Maxima lists starting with the name of one
 ;; of the 5 kinds: hue, saturation, value, gray or gradient.
@@ -1706,7 +1709,7 @@ sin(y)*(10.0+6*cos(x)),
                                   '($hue $saturation $value $gray $gradient))))
             (merror
              (intl:gettext
-              "Wrong argumet ~M for option ~M. Not a valid palette.")
+              "Wrong argument ~M for option ~M. Not a valid palette.")
              item (car option))))
         (cdr option))))
 
@@ -1719,7 +1722,7 @@ sin(y)*(10.0+6*cos(x)),
                            '($lines $points $linespoints $dots $impulses)))
           (merror
            (intl:gettext
-            "Wrong argumet ~M for option ~M. Not a valid style")
+            "Wrong argument ~M for option ~M. Not a valid style")
              item (car option))))
       (dolist (item (rest option))
         (when (not
@@ -1728,7 +1731,7 @@ sin(y)*(10.0+6*cos(x)),
                             '($lines $points $linespoints $dots $impulses))))
           (merror
            (intl:gettext
-            "Wrong argumet ~M for option ~M. Not a valid style.")
+            "Wrong argument ~M for option ~M. Not a valid style.")
            item (car option)))))
   (if (= (length option) 2)
       (cadr option)
@@ -1741,7 +1744,7 @@ sin(y)*(10.0+6*cos(x)),
       (cadr option)
       (merror
        (intl:gettext
-        "Wrong argumet ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
+        "Wrong argument ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
 
 ;; plot2d
 ;;
@@ -1861,7 +1864,7 @@ sin(y)*(10.0+6*cos(x)),
             (merror (intl:gettext "plot2d: upper bound must be positive when 'logx' in effect; found: ~M") xmax))))
 
     (let ((ymin (first (getf options :y)))
-          (ymax (first (getf options :y))))
+          (ymax (second (getf options :y))))
       (when (and (getf options :logy) ymin ymax)
         (if (> ymax 0)
             (when (<= ymin 0)
@@ -1973,11 +1976,11 @@ sin(y)*(10.0+6*cos(x)),
             (setq output-file (gnuplot-print-header st options))
             (format st "plot")
             (when (getf options :x)
-              (format st " [~{~f~^ : ~}]" (getf options :x)))
+              (format st " [~{~,8f~^ : ~}]" (getf options :x)))
             (when (getf options :y)
               (unless (getf options :x)
                 (format st " []")) 
-              (format st " [~{~f~^ : ~}]" (getf options :y))))
+              (format st " [~{~,8f~^ : ~}]" (getf options :y))))
            ($gnuplot_pipes
             (check-gnuplot-process)
             ($gnuplot_reset)
@@ -1988,7 +1991,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~f~^ : ~}]" (getf options :x)))))
+                (format nil " [~{~,8f~^ : ~}]" (getf options :x)))))
             (when (getf options :y) 
               (unless (getf options :x)
                 (setq *gnuplot-command*
@@ -1997,7 +2000,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~f~^ : ~}]"  (getf options :y)))))))
+                (format nil " [~{~,8f~^ : ~}]"  (getf options :y)))))))
          (let ((legend (getf options :legend))
                (colors (getf options :color))
                (types (getf options :point_type))
@@ -2114,7 +2117,7 @@ sin(y)*(10.0+6*cos(x)),
                            (first (getf options :x))
                            (first (getf options :y)))
                       (format
-                       st "~f ~f ~%"
+                       st "~,8f ~,8f ~%"
                        (first (getf options :x))
                        (first (getf options :y))))))))))
     

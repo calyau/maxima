@@ -2313,6 +2313,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 					      ($decreasing . $increasing)
 					      ($symmetric . $antisymmetric)
 					      ($antisymmetric . $symmetric)
+					      ($rational . $irrational)
+					      ($irrational . $rational)
 					      ($oddfun . $evenfun)
 					      ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))

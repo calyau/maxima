@@ -51,10 +51,22 @@ prompt; otherwise MFUNCALL $ALT_FORMAT_PROMPT to print prompt."
 function deals correctly with the ~M control character, but only when
 DESTINATION is an actual stream (rather than nil for a string)."
   (let ((*print-circle* nil))
-    (concatenate 'string
-                 *prompt-prefix*
-                 (apply 'aformat destination control-string arguments)
-                 *prompt-suffix*)))
+    (if (null destination)
+	;; return value string is important
+	(concatenate 'string
+		     *prompt-prefix*		     
+		     (apply #'aformat destination
+			    control-string
+			    arguments)
+		     *prompt-suffix*)
+      (progn
+	(format destination "~A~A~A"
+		*prompt-prefix*		     
+		(apply #'aformat nil
+		       control-string
+		       arguments)
+		*prompt-suffix*)))))
+    
 
 (defvar $default_format_prompt (symbol-function 'default-format-prompt))
 

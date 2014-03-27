@@ -218,7 +218,7 @@
                                   (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
-           (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
+           (setq fun (format nil "~{~,8f ~s~^, ~}" (reverse map)))
            ;; outputs the string: defined (nj, "cj", ...,n1, "c1")
            (format st "defined (~a)" fun)))
         (t
@@ -305,7 +305,7 @@
     (when (getf plot-options :zlabel)
       (format dest "set zlabel ~s~%" (getf plot-options :zlabel)))
     (when (and (member :legend plot-options) 
-               (not (first (getf plot-options :legend))))
+               (null (getf plot-options :legend)))
       (format dest "unset key~%"))
 
     ;; plotting box
@@ -328,11 +328,11 @@
       (if (getf plot-options :same_xy)
           (format dest "set size ratio -1~%")
           (if (getf plot-options :yx_ratio)
-              (format dest "set size ratio ~f~%" (getf plot-options :yx_ratio))
+              (format dest "set size ratio ~,8f~%" (getf plot-options :yx_ratio))
               (format dest "set size ratio 0.75~%")))
       (if (and (getf plot-options :xy_scale)
                (listp (getf plot-options :xy_scale)))
-          (format dest "set size ~{~f~^, ~}~%" (getf plot-options :xy_scale))))
+          (format dest "set size ~{~,8f~^, ~}~%" (getf plot-options :xy_scale))))
 
     ;; plot size and aspect ratio for plot3d
     (when (string= (getf plot-options :type) "plot3d")
@@ -341,45 +341,45 @@
       (when (getf plot-options :same_xyz)
         (format dest "set view equal xyz~%"))
       (when (getf plot-options :zmin)
-        (format dest "set xyplane at ~f~%" (getf plot-options :zmin))))
+        (format dest "set xyplane at ~,8f~%" (getf plot-options :zmin))))
 
     ;; axes tics
     (when (member :xtics plot-options)
       (let ((xtics (getf plot-options :xtics)))
         (if (consp xtics)
-            (format dest "set xtics ~{~f~^, ~}~%" xtics)
+            (format dest "set xtics ~{~,8f~^, ~}~%" xtics)
             (if xtics
-                (format dest "set xtics ~f~%" xtics)
+                (format dest "set xtics ~,8f~%" xtics)
                 (format dest "unset xtics~%")))))
     (when (member :ytics plot-options)
       (let ((ytics (getf plot-options :ytics)))
         (if (consp ytics)
-            (format dest "set ytics ~{~f~^, ~}~%" ytics)
+            (format dest "set ytics ~{~,8f~^, ~}~%" ytics)
             (if ytics
-                (format dest "set ytics ~f~%" ytics)
+                (format dest "set ytics ~,8f~%" ytics)
                 (format dest "unset ytics~%")))))
     (when (member :ztics plot-options)
       (let ((ztics (getf plot-options :ztics)))
         (if (consp ztics)
-            (format dest "set ztics ~{~f~^, ~}~%" ztics)
+            (format dest "set ztics ~{~,8f~^, ~}~%" ztics)
             (if ztics
-                (format dest "set ztics ~f~%" ztics)
+                (format dest "set ztics ~,8f~%" ztics)
                 (format dest "unset ztics~%")))))
     (when (member :color_bar_tics plot-options)
       (let ((cbtics (getf plot-options :color_bar_tics)))
         (if (consp cbtics)
-            (format dest "set cbtics ~{~f~^, ~}~%" cbtics)
+            (format dest "set cbtics ~{~,8f~^, ~}~%" cbtics)
             (if cbtics
-                (format dest "set cbtics ~f~%" cbtics)
+                (format dest "set cbtics ~,8f~%" cbtics)
                 (format dest "unset cbtics~%")))))
 
     ;; axes ranges and style
     (when (and (getf plot-options :x) (listp (getf plot-options :x)))
-      (format dest "set xrange [~{~f~^ : ~}]~%" (getf plot-options :x)))
+      (format dest "set xrange [~{~,8f~^ : ~}]~%" (getf plot-options :x)))
     (when (and (getf plot-options :y) (listp (getf plot-options :y)))
-      (format dest "set yrange [~{~f~^ : ~}]~%" (getf plot-options :y)))
+      (format dest "set yrange [~{~,8f~^ : ~}]~%" (getf plot-options :y)))
     (when (and (getf plot-options :z) (listp (getf plot-options :z)))
-      (format dest "set zrange [~{~f~^ : ~}]~%" (getf plot-options :z)))
+      (format dest "set zrange [~{~,8f~^ : ~}]~%" (getf plot-options :z)))
     (when (and (string= (getf plot-options :type) "plot2d")
                (member :axes plot-options))
       (if (getf plot-options :axes)
@@ -395,7 +395,7 @@
     (when (getf plot-options :label)
       (dolist (label (getf plot-options :label))
         (when (and (listp label) (= (length label) 4))
-          (format dest "set label ~s at ~{~f~^, ~}~%"
+          (format dest "set label ~s at ~{~,8f~^, ~}~%"
                   (cadr label) (cddr label)))))
 
     ;; identifier for missing data
