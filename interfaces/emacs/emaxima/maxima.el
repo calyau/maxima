@@ -2559,7 +2559,7 @@ if completion is ambiguous."
   (make-local-variable 'comment-column)
   (setq comment-column 40)
   (make-local-variable 'comment-indent-function)
-  (setq comment-indent-function 'maxima-comment-indent)
+  (setq comment-indent-function 'comment-indent-default)
   (setq imenu-generic-expression 
         (list '(nil "^ *\\([a-zA-Z0-9_]*\\) *(.*) *:=" 1))))
 
