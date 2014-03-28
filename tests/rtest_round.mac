@@ -19,9 +19,6 @@ round(zerob);
 round(-3);
 -3$
 
-round(0);
-0$
-
 round(42);
 42$
 
@@ -156,9 +153,6 @@ truncate(zerob);
 
 truncate(-3);
 -3$
-
-truncate(0);
-0$
 
 truncate(42);
 42$
