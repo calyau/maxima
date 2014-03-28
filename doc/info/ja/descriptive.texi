@@ -2069,7 +2069,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
 @c   title      = "Asking for something to four groups",
 @c   ylabel     = "# of individuals",
-@c   grouping   = stacked,,
+@c   grouping   = stacked,
 @c   fill_density = 0.5,
 @c   ordering = ordergreatp)$
 @c ===end===
@@ -2083,7 +2083,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
         makelist([Yes, No, Maybe][random(3)+1],k,1,50),
         title  = "Asking for something to four groups",
         ylabel = "# of individuals",
-        grouping     = stacked,,
+        grouping     = stacked,
         fill_density = 0.5,
         ordering     = ordergreatp)$
 @end group
