@@ -318,7 +318,7 @@ output}.
 @ifinfo
 @c  (%i2) set_prompt('prefix,"[1;31m",'suffix,"[0;32m",'general,"[1;34m",'epilog,"[00;m")$
 @example
-(%i1) load("alt-display.mac)$
+(%i1) load("alt-display.mac")$
 
 (%i2) cs(s) := printf(false,"~c[~am",ascii(27),s)$
 
