@@ -503,6 +503,8 @@ contrib/Zeilberger/zeilberger.mac \
 descriptive/biomed.data \
 descriptive/descriptive.mac \
 descriptive/pidigits.data \
+descriptive/rtest_descriptive.mac \
+descriptive/rtest_statgraph.mac \
 descriptive/wind.data \
 diffequations/abel.mac \
 diffequations/desoln.mac \
