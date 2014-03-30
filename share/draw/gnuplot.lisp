@@ -3084,6 +3084,11 @@
                            (round (/ (first (get-option '$dimensions)) 10))
                            (round (/ (second (get-option '$dimensions)) 10))
                            (get-option '$file_name)))
+ 	($canvas (format cmdstorage "set terminal canvas enhanced ~a size ~a, ~a~%set out '~a.html'"
+ 			 (write-font-type)
+ 			 (round (first (get-option '$dimensions)))
+ 			 (round (second (get-option '$dimensions)))
+ 			 (get-option '$file_name)))
         ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3364,6 +3369,11 @@
          (update-gr-option ($lhs x) ($rhs x))
          (merror "draw: item ~M is not recognized as an option assignment" x)))
    (case (get-option '$terminal)
+      ($canvas (setf str (format nil "set terminal canvas enhanced ~a size ~a, ~a~%set out '~a.html'"
+				 (write-font-type)
+				 (round (first (get-option '$dimensions)))
+				 (round (second (get-option '$dimensions)))
+				 (get-option '$file_name))))
       ($png (setf str (format nil "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))

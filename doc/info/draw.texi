@@ -2282,7 +2282,7 @@ Default value: @code{screen}
 Selects the terminal to be used by Gnuplot; possible values are:
 @code{screen} (default), @code{png}, @code{pngcairo}, @code{jpg}, @code{gif}, 
 @code{eps}, @code{eps_color}, @code{epslatex}, @code{epslatex_standalone}, 
-@code{svg}, @code{dumb}, @code{dumb_file}, @code{pdf}, @code{pdfcairo}, 
+@code{svg}, @code{canvas}, @code{dumb}, @code{dumb_file}, @code{pdf}, @code{pdfcairo}, 
 @code{wxt}, @code{animated_gif}, @code{multipage_pdfcairo}, @code{multipage_pdf}, 
 @code{multipage_eps}, @code{multipage_eps_color}, and @code{aquaterm}.
 
