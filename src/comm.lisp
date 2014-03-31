@@ -1023,7 +1023,7 @@
 (defun mcons-exp-args (e args)
   (if (eq (caar e) 'mqapply)
       (list* (delsimp (car e)) (cadr e) args)
-      (cons (if (eq (caar e) 'mlist) (car e) (delsimp (car e))) args)))
+      (cons (delsimp (car e)) args)))
 
 (defmfun $member (x e)
   (atomchk (setq e ($totaldisrep e)) '$member t)
