@@ -49,6 +49,8 @@ block
         rtest_opproperties,
         rtest_stats,
         rtest_distrib,
+        rtest_descriptive.mac,
+        rtest_statgraph.mac,
         rtest_interpol,
         rtest_levin,
         rtest_fractals,

@@ -342,7 +342,7 @@
 (defvar *draw-terminal-number* "")
 
 (defun update-terminal (val)
-  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color 
+  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $canvas
                  $epslatex $epslatex_standalone $svg $x11
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 

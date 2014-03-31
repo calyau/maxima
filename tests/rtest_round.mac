@@ -10,11 +10,14 @@ round(0.0);
 round(0.0b0);
 0$
 
+round(zeroa);
+0$
+
+round(zerob);
+0$
+
 round(-3);
 -3$
-
-round(0);
-0$
 
 round(42);
 42$
@@ -142,11 +145,14 @@ truncate(0.0);
 truncate(0.0b0);
 0$
 
+truncate(zeroa);
+0$
+
+truncate(zerob);
+0$
+
 truncate(-3);
 -3$
-
-truncate(0);
-0$
 
 truncate(42);
 42$

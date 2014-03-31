@@ -154,7 +154,9 @@ $$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
-The function @code{ceiling} does not automatically map over lists or matrices.
+The @code{ceiling} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 Finally, for all inputs that are manifestly complex, @code{ceiling} returns 
 a noun form.
 
@@ -288,7 +290,9 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-The function @code{floor} does not automatically map over lists or matrices.
+The @code{floor} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 Finally, for all inputs that are manifestly complex, @code{floor} returns 
 a noun form.
 
@@ -397,6 +401,9 @@ When @var{x} is a real number, returns the closest integer to @var{x}.
 Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
 @var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
+The @code{round} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -419,6 +426,22 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 
 The @code{signum} function distributes over a list, a matrix, or an
 equation.  See @mrefdot{distribute_over}
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{truncate}
+@deffn {Function} truncate (@var{x})
+
+When @var{x} is a real number, return the closest integer to @var{x} not
+greater in absolute value than @var{x}.  Evaluation of @var{x} is similar
+to @mref{floor} and @mrefdot{ceiling}
+
+The @code{truncate} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
