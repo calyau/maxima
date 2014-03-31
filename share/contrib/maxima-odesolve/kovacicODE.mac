@@ -1,0 +1,1068 @@
+/* kovacic.mac
+
+  Solve second order linear ODEs with Liouvillian solutions using Kovacic' algorithm
+
+  References:
+  [1] Carolyn J. Smith A discussion and implementation of Kovacic' algorithm, 
+      MSC thesis university of waterloo, 1984
+      https://cs.uwaterloo.ca/research/tr/1984/CS-84-35.pdf
+  [2] B.D. Saunders An implementation of Kovacic's algorithm for solving second order linear homogeneous differential equations 
+  SYMSAC '81 Proceedings of the fourth ACM symposium on Symbolic and algebraic computation
+  Pages 105-108 
+  [3] Jerald J. Kovacic, An algorithm for solving second order linear homogeneous differential equations, Journal of Symbolic Computation, v.2 n.1, p.3-43, March 1986 
+
+
+  Copyright (C) 2014 Nijso Beishuizen          
+                                                                                
+  This program is free software; you can redistribute it and/or modify  
+  it under the terms of the GNU General Public License as published by  
+  the Free Software Foundation; either version 2 of the License, or             
+  (at your option) any later version.                                   
+                                                                                
+  This program is distributed in the hope that it will be useful,               
+  but WITHOUT ANY WARRANTY; without even the implied warranty of                
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         
+  GNU General Public License for more details.                          
+                                                                                
+  You should have received a copy of the GNU General Public License     
+  along with this program; if not, write to the Free Software           
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*/
+
+/*****************************************************************************************************/
+put('kovacic,001,'version)$
+/*****************************************************************************************************/
+
+/* ----- print everything with flag lower than DEBUGFLAG ----- */
+DEBUGFLAG:1$
+
+/* load absimp to get rid of abs(a) when a>0 */
+/*load(absimp)$*/
+
+/* NOTES */
+/* remember: one of the necessary conditions might be too strict, see kovacic, compare with Saunders !!!*/
+/* we should check for linear independence by checking that the wronskian has nonzero determinant*/
+/*     y1 y2  */
+/* W = y1' y2'*/
+/*            */
+/* (det(W))  = (y1y2' -y1'y2')  */
+/* (det(W))' = (y1y2' -y1'y2')' */
+/* so detW is in C */
+/* 1a. check the paper of Ulmer & Weil */
+/* 1b. check paper of Man, combining with Prelle-Singer algorithm */
+/* 2: check if linearizable by lie point transformation */
+/* 3. check if linearizable by generalized Sundman transformation */
+/* 4. check if linearizable by euler-Liouville transformation */
+/* 5. check if linearizable by cartan equivalence      */
+/* 6. check if transformable from linear second order without liouvillian  */ 
+/*      _solutions to linear second order with liouvillian _solutions  */
+/*      for this we need to have a mapping to a set of standard linear equations */
+/*      for instance, how does y"=xy transform into y"=0 ?*/
+
+
+/*****************************************************************************************************/
+/* ----- Check if y(x)=_solution is a _solution of (differential) equation                     ----- */
+/*****************************************************************************************************/
+isSolution(_solution,_equation):=block([_eq,_subs1],
+  /* assumes equation contains "=" */
+  _eq:rhs(_equation)-lhs(_equation),
+  /* assumes _solution has the form y(x)=expression */
+  _subs1:subst(_solution,_equation),
+  return(ratsimp(ev(_subs1,diff)))
+)$
+/*****************************************************************************************************/
+
+
+
+/*****************************************************************************************************/
+/* ----- Check if expr is an equation (containing a "=" )                                      ----- */
+/*****************************************************************************************************/
+isEquation(_expr) := block([],
+  if freeof("=",_expr) then return(false) else return(true)
+)$
+
+/* rules for linear second order equation: */
+/*   y'' = b(x)*y'+c(x)*y + d(x)                 */
+
+/*****************************************************************************************************/
+matchdeclare ([_b,_c,_d],freeof(_dy))$
+matchdeclare ([_c1,_c2],freeof(_x))$
+
+/* match for linear second order equation - can match dependencies:
+  depends(y,x)
+  ode2_linear(a*diff(y,x),y,x)
+as well as regular _variables:
+  ode2_linear(a*diff(y(x),x),y(x),x)    */
+defmatch (ode2_linear, _b*'diff(_dy,_x)+_c*_dy+_d,_dy,_x)$
+defmatch (linear, _c1*_x+_c2,_x)$
+
+
+
+/*****************************************************************************************************/
+/*****************************************************************************************************/
+kovacicODE(_expr,_y1,_x1) := block([_y,_x,_var,_ode_order,_ddy,_ode,_phi,_b,_c,_d,_s,_t,_r,_ord_inf,_l,_m,_n,_j,_trial,_squo,_srem,_tcont,_nu],
+/*****************************************************************************************************/
+/*****************************************************************************************************/
+  /* ----- substitute our own local _variables ----- */
+  _expr:subst(_y,_y1,_expr),
+  _expr:subst(_x,_x1,_expr),
+
+  /* what do we know about _x */
+  /*print(facts(_x1)), */
+
+  _var:_x,
+
+  dprint(0,"equation: ",_expr,", degree = ",derivdegree(_expr,_y,_x)),
+  /* ----- first check if it is an equation (we only check for equal sign) ----- */
+  if isEquation(_expr)=false then (
+    dprint(0,_expr, " is not an equation."),
+    return(false)
+  ),
+
+  /* ----- find the order of the ODE ----- */
+  _ode_order : derivdegree(_expr,_y,_x),
+  if (_ode_order=2) then (
+    dprint(0,"Second order ODE found.")
+  )
+  else (
+    dprint(0,_expr," is not a second order ODE."),
+    return(false)
+  ),
+ 
+
+  /* ----- make sure the equation is in the form y'' = F(x,y,y') ----- */
+  _ddy: 'diff(_y,_x,2),
+  /* we only take the first _solution, in general, loop over the _solutions! */
+  _ode: solve(_expr,_ddy)[1],
+  _phi : rhs(_ode),
+  if (lhs(_ode)=_ddy) and (freeof(_ddy,_phi)) then (
+    dprint(1,"ODE: ",grind(_ode))
+  )
+  else (
+    dprint(0,"could not separate second order differential operator ",_ode),
+    return(false)
+  ),
+
+  
+  /*print("is ode2 linear: ",ode2_linear(_phi,_y,_x)),*/
+  /* ----- check if the equation is linear ----- */
+  if (ode2_linear(_phi,_y,_x)=false) then (
+    dprint(0,"ODE is not linear!"),
+    return(false)
+  )
+  else (
+    dprint(1,"ODE is linear: ",_b,_c,_d),
+    _b:-_b,
+    _c:-_c,
+    _d:-_d
+  ),
+
+  /*print(ev(_phi,_y=0)),*/
+
+  /* ----- check if equation is homogeneous ----- */
+  if (ev(_phi,_y = 0)=0) then (
+    dprint(1,"ODE is homogeneous:")
+  )
+  else (
+    dprint(1,"equation is nonhomogeneous, first trying homogeneous case")
+    /*_d : 0*/   
+    /* could be transformed to third order homogeneous ode l(y)=0 */
+    /* L(y)=b  --->   l(y) = b*(L(y))' -b'*L(y) = 0  */
+    /*return(false)*/
+  ),
+
+  /* ----- Transform to normal form y''= (s/t)*y, ----- */
+  _s : 2*diff(_b,_x) + _b*_b - 4*_c,
+  _t : 4,
+  dprint(5,"s = ",_s),
+  dprint(5,"t = ",_t),
+ 
+ 
+  /* remember, maple's normal(in expanded form) is like maxima's ratsimp */
+  _r : ratsimp(_s/_t),
+  dprint(5,"normal = ",_r),
+  _s : ratexpand(num(_r)),
+  _t : ratexpand(denom(_r)),
+  dprint(5,"s=",_s),
+  dprint(5,"t=",_t),
+
+  /* ----- determine the quotient and remainder of _s/_t for the main _variable _x ----- */
+  /* catch this because divide is not exactly polynomial long division and the quotient is not uniquely determined */
+  if freeof(_x,_s) and freeof(_x,_t) and (_t#0) then (
+    [_squo,_srem] : [_s/_t,0]
+  )
+  else (
+    [_squo,_srem] : divide(_s,_t,_x),
+    _squo:ratexpand(_squo), /* we need to do a ratexpand because we want to get the coefficient correctly*/
+    _srem:ratexpand(_srem) /* we need to do a ratexpand because we want to get the coefficient correctly*/
+  ),
+  dprint(5,"quo = ",_squo),
+  dprint(5,"rem = ",_srem),
+
+  /* ----- compute a square free factorization ----- */
+  [_sdec,_tcont] : sqfree(_t,_var),
+  dprint(5,"_sdec square free = ",_sdec),
+
+  /* this is the order*/
+  _m : length(_sdec),
+  dprint(5,"m = ",_m),
+
+  _t : _tcont,
+
+
+  /* TODO: can we replace part(_sdec,i) with _sdec[i] ? */
+  for _i:1 thru _m do (
+    _t : _t*part(_sdec,_i)^_i
+  ),
+
+  if _m>0 then (
+    _t1 : part(_sdec,1)
+  )
+  else (
+    _t1 : 1
+  ),
+
+  if _m>1 then (
+    _t2: part(_sdec,2)
+  )
+  else (
+   _t2 : 1
+  ),
+
+  dprint(5,"_t2 = ",_t2),
+  dprint(5,"t = ",_t),
+  dprint(5,"_t1 = ",_t1),
+  dprint(5,"_t2 = ",_t2),
+  dprint(5,"s = ",_s),
+
+  /* this does not give the same results as kovacic examples in the 1986 paper: is Smith wrong? */
+  _ord_inf : hipow(ratexpand(_t),_var) - hipow(ratexpand(_s),_var),
+  dprint(1,"order at infinity = ",_ord_inf),
+
+  _listl : [],
+  
+  _oddti : true,
+  for _i from 3 step 2 thru _m do (
+    if (part(_sdec,_i)#1) then (
+      dprint(2,"_oddti is false, it cannot be case 1"),
+      _oddti : false
+    )
+  ),
+
+  if _oddti and (featurep(_ord_inf/2,integer) or (_ord_inf>2)) then (
+    dprint(2,"case 1 applies"),
+    _listl : append(_listl,[1])
+  ),
+
+  if not _oddti or (_t2 # 1) then (
+    dprint(2,"case 2 applies"),
+    _listl : append(_listl,[2])
+  ),
+
+  if (_m <= 2) and (_ord_inf >= 2) then (
+    _listl : append(_listl,[4,6,12])
+  ),
+
+  dprint(1,"list of cases that apply: L=",_listl),
+
+  if length(_listl)=0 then (
+    dprint(0,"No Liouvillian solutions exist!"),
+    return(false)
+  ),
+
+
+/* ************************************************* */
+  print("end of preliminaries..."),
+/* ************************************************* */
+
+  /* STEP 1 PART (a) */
+  _dfix : (min(_ord_inf,2) - hipow(ratexpand(_t),_var) - 3*hipow(ratexpand(_t1),_var))/4,
+  _thetafix : ratsimp((diff(_t,_var)/_t + 3*diff(_t1,_var)/_t1)/4),
+  dprint(5,"_dfix=",_dfix),
+  dprint(5,"_thetafix=",_thetafix),
+
+  /* STEP 1 PART (b) */
+  /* Poles of order 2: find the roots c1,...,c_k2 of _t2 */
+  /* first, get a list of all the unique roots */
+  _rlist2 : rootz(_t2,_var),
+  dprint(5,"_rlist2 = ",_rlist2),
+
+  /* find the leading coefficient of _t2 */
+  /*lcoeff : ratcoef(ratexpand(_t2),_var,hipow(ratexpand(_t2),_var)),*/
+  _t2 : _t2/lcoeff(_t2,_var), 
+  dprint(5,"_t2=",_t2),
+
+  /* k2 is the number of roots of _t2*/
+  _k2:length(_rlist2),
+  dprint(5,"_k2 = ",_k2),
+
+  /* loop over all roots */
+  for _i:1 thru _k2 do (
+    dprint(5,"i=",_i),
+
+    trest : _t/_t2^2 * product((_var-_rlist2[_j])^2,_j,1,_i-1) * product((_var-_rlist2[_j])^2,_j,_i+1,_k2),
+    dprint(5,"srem  = ",_srem),
+    dprint(5,"trest = ",trest),
+    dprint(5,"var = ",_var),
+    dprint(5,"_rlist2 = ",_rlist2[_i]),
+    
+    _sol:undetcoeff(_srem,trest,_var,_rlist2[_i],2,2),
+    dprint(5,"_sol:",_sol),
+    _dd[_i] : ratsimp(1+4*_sol)^(1/2),
+    _theta[_i] : ratsimp(_dd[_i]/(_var-_rlist2[_i])),
+    dprint(5,"d1 = ",_dd[_i]),
+    dprint(5,"_theta1 = ",_theta[_i])
+  ),
+
+  dprint(5,"m = ",_m),
+
+  /* high order poles */
+  /* STEP 3 PART (c) */
+  _k1 : _k2,
+
+if member(1,_listl) then (
+  dprint(1,"1 is in L so we calculate higher order poles"),
+  for _i:4 thru _m step 2 do (
+    dprint(5,"_i = ",_i, "/",_m),
+    L_i : _sdec[_i],
+    dprint(5,"L_i=",L_i),
+    _rlisthigher : rootz(L_i,_var),
+    /*lcoeff : ratcoef(ratexpand(L_i),_var,hipow(ratexpand(L_i),_var)),*/
+    dprint(5,"sdec = ",_sdec),
+    dprint(5,"_i-1:",_i-1),
+    dprint(5,"_m:",_m),
+    dprint(5,"part1 = ",create_list(_sdec[ii],ii,1,_i-1)),
+    dprint(5,"part2 = ",L_i/lcoeff(L_i,_var)),
+    dprint(5,"part3 = ",create_list(_sdec[ii],ii,_i+1,_m)),
+    /* */
+    _sdec : append(create_list(_sdec[ii],ii,1,_i-1), [L_i/lcoeff(L_i,_var)], create_list(_sdec[ii],ii,_i+1,_m)),
+    dprint(5,"sdec = ",_sdec), 
+    _nu : _i/2,
+    /* we could do for rt in _rlisthigher ??? */
+    for _j from 1 thru length(_rlisthigher) do (
+      _k1 : _k1 + 1,
+      rt : _rlisthigher[_j], /* !!! */
+      dprint(5,_t,_sdec[_i],_i),
+      trest : _t/_sdec[_i]^_i * product((_var-_rlisthigher[_l])^_i,_l,1,_j-1) * product((_var-_rlisthigher[_l])^_i,_l,_j+1,length(_rlisthigher)),
+      dprint(5,_srem,trest), 
+      /* method of undetermined coefficients */
+      _sol:undetcoeff(_srem,trest,_var,rt,2*_nu,2*_nu),
+      if (_sol=0) then (
+        dprint(0,"No Liouvillian solutions exist"),
+        return(false)
+      ),
+      print("_sol = ",_sol),
+      _ac[_nu] : ratsimp(_sol^(1/2)),
+      for _k from _nu-1 thru 2 step -1 do (
+        _ac[_k] : _vtemp,
+        result : sum(_ac[_l]*_ac[_nu+_k-_l],_l,_k,_nu), 
+
+        /* can we do _ac[k]=undetcoeff directly because result is already solved?*/
+        undet : undetcoeff(_srem,trest,_var,rt,2*_nu,_k+_nu),
+	dprint(5,"result:",result),
+	dprint(5,"undet:",undet),
+        _ac[_k] : rhs(solve(result=undet,_vtemp)[1]),
+        dprint(5,"_ac[_k]=",_ac[_k]) 
+      ), 
+
+      /* sum of _ac[k]*_ac[_nu+1-k] */
+      result : sum(_ac[_k]*_ac[_nu+1-_k],_k,2,_nu-1), 
+
+      _dd[_k1] : (undetcoeff(_srem,trest,_var,rt,2*_nu,_nu+1)-result)/_ac[_nu],
+
+      result : sum(_ac[_k]/(_var-rt)^_k,_k,2,_nu), 
+
+      _theta[_k1] : 2*result + _dd[_k1]/(_var-rt)
+
+    )
+  )
+
+),
+dprint(3,"_dd = ",_dd),
+
+if _ord_inf>2 then (
+  dprint(1,"_ord_inf > 2"),
+  _dd[0]:1,
+  _theta[0]:0
+) else 
+if _ord_inf = 2 then (
+  dprint(1,"_ord_inf=2"),
+  dprint(5,"s=",_s),
+  dprint(5,"t=",_t),
+
+  _sol:lcoeff(_s,_var)/lcoeff(_t,_var),
+  _dd[0]:ratsimp((1+4*_sol)^(1/2)),
+  _theta[0]:0
+)
+else if member(1,_listl) then (
+  dprint(1,"1 is in L"),
+  _nu:(-_ord_inf)/2,
+  dprint(5,"_nu = ",_nu),
+  dprint(5,"_squo = ",_squo),
+  dprint(5,"_var = ",_var),
+  dprint(5,"coeff=",coeff(_squo,_var,2*_nu)),          /* should we just use lcoeff? it uses ratexpand..*/
+  _ac[_nu]:ratsimp(coeff(_squo,_var,2*_nu)^(1/2)),
+  dprint(5,"_ac[_nu]=",_ac[_nu]),
+  for _i from _nu-1 thru 0 step -1 do (
+    _ac[_i]:_vtemp,
+    dprint(5,"_i=",_i),
+    dprint(5,"_ac[_i]=",_ac[_i]),
+
+    _temp_var : sum(_ac[_j]*_ac[_i+_nu-_j],_j,_i,_nu),
+
+    dprint(5,"_temp_var = ",_temp_var),
+    dprint(5,"coeff = ",coeff(_squo,_var,_i+_nu)),
+    _ac[_i]:rhs(solve(_temp_var=coeff(_squo,_var,_i+_nu),_vtemp)[1]),
+    dprint(5,"_ac[_i]=",_ac[_i]) 
+  ),
+  /* note: ac is not a list, we have just defined ac[1],ac[2]*/
+  dprint(5,"1.ac = ",_ac),
+  
+  dprint(5,"_nu = ",_nu),
+  _temp_var : sum(_ac[_l]*_ac[_nu-_l-1],_l,0,_nu-1),
+  dprint(5,"tempvar = ",_temp_var),
+
+  if _nu=0 then (
+    _t : ratexpand(_t), 
+    _srem : ratexpand(_srem),
+    _squo : ratexpand(_squo),
+    dprint(5,"lcoeff=",lcoeff(_t,_var)),
+    dprint(5,"degree = ",hipow(_t,_var)),
+    dprint(5,"coeff=",coeff(_srem,_var,hipow(_t,_var)-1)),
+    _aa: coeff(_srem,_var,hipow(_t,_var)-1),
+    _bb: lcoeff(_t,_var),
+    if (_bb#0) then (
+      _tmp1:_aa/_bb - _temp_var
+    )
+    else (
+      /* or should we simply bail out when the denominator=0?*/
+      _tmp1: -_temp_var
+    )
+  )
+  else (
+    _tmp1:coeff(_squo,_var,_nu-1) - _temp_var
+  ),
+  dprint(5,"_tmp1=",_tmp1),
+
+  /* the denominator can be zero - we catch it by saying that d[0] should be zero then */
+  /* but is this true?*/
+  if (_tmp1=0 or _ac[_nu]=0) then (
+    _dd[0]:0
+  )
+  else (
+    _dd[0]:_tmp1/_ac[_nu]
+  ),
+  print("_dd[0] = ",_dd[0]), 
+
+  _tmp2 : sum(_ac[_l]*_var^_l,_l,0,_nu),
+
+  _theta[0]:2*_tmp2
+)
+else (
+  dprint(2,"otherwise"),
+  _dd[0]:0,
+  _theta[0]:0
+),
+
+
+dprint(3,"d0 = ",_dd[0]),
+dprint(3,"_theta0 = ",_theta[0]),
+
+/* ************************************************* */
+/* *****  step 2 - form trial d's and _theta's ***** */
+/* ************************************************* */
+dprint(1,"Now entering step 2: forming trial ds and _thetas, length= ",length(_listl)),
+
+_solfound:0,
+ 
+for i from 1 thru length(_listl) do (
+  dprint(1,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+  dprint(1,"!!!   CASE ",_listl[i], " ",i,"/",length(_listl),"      !!!"),
+  dprint(1,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+
+  _n:_listl[i],
+ 
+  /* Saunders */
+  if _n = 1 then (
+    _m : _k1
+  )
+  else (
+    _m : _k2
+  ),
+
+  dprint(3,"m = ",_m),
+  
+  if (_n=2) and (_ord_inf<2) then (
+    _dd[0]:0,
+    _theta[0]:0
+  ),
+
+  /* s = (-n/2,-n/2+1,...n/2)*/
+  for _j from 0 thru _m do (
+    dprint(5,"entering loop!"),
+    /* -n/2, -n/2, -n/2, -n/2, ... */ 
+    sq[_j]:-1/2 * _n
+  ),
+  /* in case of n=1 (case 1) this is (-1/2, +1/2) */
+  _solution:[],
+  alls:false,
+  /* for all sequences s={-n/2, -n/2+1, ..., n/2}*/
+
+  /* preliminary: d0 should be */
+  _dslist:[],
+  while (alls # true) do (
+    dprint(5,"entering do loop"),
+
+    /*tezt : sq[0]*d[0] - sum(sq[_l]*d[_l],_l,1,_m),*/
+    tezt : sq[0]*_dd[0],
+    for _l from 1 thru _m do (
+      tezt : tezt - sq[_l]*_dd[_l]
+    ), 
+
+    ds:ratsimp(_n*_dfix+tezt),
+    if not member(ds,_dslist) then (
+      _dslist:append(_dslist,[ds]),
+      dprint(3,"dslist:",_dslist),
+      dprint(3,"ds = ",ds, ", should be integer and >=0",featurep(ds,integer), " ",is(ds>=0)),
+      if (integerp(ds)=true) then (
+        if (ds>=0) then (
+        dprint(1,"ds is a positive or zero integer"),
+        tmp : sum(sq[_l]*_theta[_l],_l,0,_m),
+        dprint(5,"tmp : ",tmp),
+        _thetas:ratsimp(_n*_thetafix+tmp),
+        dprint(5,"_thetas = ",_thetas),
+        /* step3 - determine polynomial P if possible and hence omega and _solution */
+        dprint(5,"step 3"),
+        _soln:step3(_n,ds,_thetas,_s/_t,_var),
+        dprint(5,"finished step 3"),
+        _soln : radcan(_soln), /* to simplify */
+        dprint(3,"_soln = ",_soln,length([_soln])),
+      
+        if _soln#false then (
+          print("finding sol2"),
+          ratio:_b, 
+
+          /*gamma_expand:true, */ /* to get rid of incomplete gamma in saunders ex. 1 */
+          /* actually, better to work with gamma to prevent complex logarithms like kamke196 */
+          /* kamke 2.111: we should get exp(-x)/x here */
+
+          _soln1:exp(integrate(-1/2*ratio,_var))*_soln, /* list [soln] necessary?*/
+          dprint(5,"_soln1 = ",_soln1),
+
+          /* kill the impaginary part so we don't have to cancel out all the imaginary bits */
+          _soln1:trigsimp(radcan(_soln1)),
+          if not(freeof(%i,_soln1)) then (
+            _soln1 : trigsimp(realpart(_soln1))
+          ),
+          _soln1:factor(_soln1),
+          _soln1:ev(_soln1,integrate), 
+       
+          /* logarc gets rid of arcsinh stuff inside exponentials */
+          /* sometimes this increases the complexity of the solution, so do a check afterwards */
+          _soln11:radcan(logarc(_soln1)),
+
+          /* if logarc has lead to a better solution, then use it */
+          _nrOps11 : nrOps(_soln11),
+          _nrOps1 : nrOps(_soln1),
+
+          /* use the radcan-logarc solution when the expression contains less operations 
+             or less types of operations */
+          if ((length(_nrOps11) <= length(_nrOps1)) or (length(unique(_nrOps11))<=length(unique(_nrOps1))) ) then (
+            _soln1 : _soln11
+          ),
+
+          _soln1:radcan(_soln1),
+
+          dprint(3,"x. _soln1 = ",_soln1),
+
+          /*soln2 :radcan(soln1*integrate((exp(-integrate(ratio,_var))/(soln1*soln1)),_var)),*/
+          _soln2:-integrate(ratio,_var),
+          _soln2:exp(_soln2)/(_soln1*_soln1),
+          _soln22:radcan(logarc(_soln2)),
+
+          /* if logarc has lead to a better solution, then use it */
+          _nrOps22 : nrOps(_soln22),
+          _nrOps2 : nrOps(_soln2),
+
+          /* use the radcan-logarc solution when the expression contains less operations 
+             or less types of operations */
+          if ((length(_nrOps22) <= length(_nrOps2)) or (length(unique(_nrOps22))<=length(unique(_nrOps2))) ) then (
+            _soln2 : _soln22
+          ),
+
+          dprint(3,"x1. _soln2 = ",_soln2,", ",_var),
+
+          _soln2:integrate(_soln2,_var),
+          dprint(3,"x2. _soln2 = ",_soln2),
+          _soln2:trigsimp(radcan(_soln1*_soln2)),
+          dprint(3,"x3. _soln2 = ",_soln2),
+          if not(freeof(%i,_soln2)) then (
+          dprint(3,"x3a. _soln2 = ",_soln2),
+
+            _soln2:trigsimp(realpart(_soln2))  /* take the real part and drop the imaginary part */ 
+          ),
+          dprint(3,"x4. _soln2 = ",_soln2),
+          _soln2 : radcan(_soln2), /*  to further simplify - we still have exp(2^(3/2)*x-sqrt(2)*x) here */
+          dprint(3,"x5. _soln2 = ",_soln2),
+          _soln2 : ev(_soln2,nouns),
+          dprint(3,"length=",length([_soln])),
+          if length([_soln]) = 1 then (
+            dprint(3,"_soln 1"), 
+            _solution: [ratsimp(_soln1),ratsimp(_soln2)], /* realpart because we can have imaginary solutions for y'' + y = 0  and we don't want to deal with the trouble of cancelling them out elegantly by itself, so we just delete them*/
+            dprint(3,"homogeneous solution:",_solution),
+            _solfound : 1,
+            return(true)
+          )
+          else (
+            dprint(3,"_soln 2"), 
+            _solution: [ratsimp(_soln1),ratsimp(_soln2)],op(2,[_soln]),
+            _solfound:1,
+            return(true)
+          )
+        )
+        else (
+          dprint(0,"No Liouvillian solutions exist"),
+          _solution: false
+        ),
+
+      dprint(5,"alls:",alls)
+      )
+    )
+  ), /* end of dsloop*/  
+
+  _jj : _m-1,
+  dprint(5,"sq_jj = ",sq),
+  for _j from _m thru 0 step -1 do (
+      /*print("j = ",_j,"/",_m), */
+      if (sq[_j] = (1/2 * _n)) then (
+        _jj : _jj - 1,
+        sq[_j]: -1/2 * _n
+      )
+      else (
+        _jj : 0,
+        sq[_j] : sq[_j] + 1,
+        /* exit (the for loop) */
+        return(true)
+      )
+    ),
+
+    if (_jj < 0) then (
+      dprint(0,"No Liouvillian solutions exist"),
+      _solution: false,
+      alls:true
+    )
+
+  ),
+
+  if _solfound=1 then (
+    return(true)
+  )
+),
+
+
+  if (alls=false) then (
+  /* ----- nonhomogeneous _solution -----*/
+  dprint(1,"checking if a nonhomogeneous part exists"),
+  _P:0,
+  if (_d#0) then (
+    /* 2 independent _solutions of the homogeneous equation */
+    _s : _solution,
+    dprint(1,"nonhomogeneous part found - looking for particular solution"),
+    /* -------------------------------------------------- */
+    /* ----- METHOD 1                                     */
+    /* -------------------------------------------------- */
+    _E : exp(integrate(_b,_var)),
+    _PP : integrate(_E*_s[1]*_d,_var), 
+    /* we need radcan because of the quotient by zero bug */
+    _PP : (_PP/(_E*_s[1]*_s[1])), 
+    _PP : radcan(_PP),
+    /* there is an error somewhere - see kamke 184*/ 
+    _PP : -_s[1]*integrate(_PP,_var), 
+
+    /* perform the simplification after we have compared the two solutions */
+    /* we do this because simplification can lead to expression swell, like for */
+    /* example kamke 2.234 */
+    /* so we hope that simplification of the smallest term will still lead to */
+    /* a simpler expression than simplification of the largest term */
+    /* -------------------------------------------------- */
+    /* ----- METHOD 2                                     */
+    /* -------------------------------------------------- */
+    /* Determinant of the Wronskian */
+    _W : _s[2]*diff(_s[1],_var) - diff(_s[2],_var)*_s[1],
+    _W : ratexpand(_W),
+    _W : radcan(_W),
+    _W : trigsimp(_W),
+    _W : trigreduce(_W),
+    _W : ratsimp(_W),
+    dprint(5,"5. wronskian : ", _W),
+    dprint(1,"nonhomogeneous part : ", _d),
+    /* particular _solution of the ODE */
+    _P : _s[2]*integrate(_s[1]*_d/_W,_var) - _s[1]*integrate(_s[2]*_d/_W,_var),
+
+    dprint(1,"0. particular solution : ", _P),
+    /*_P : ratexpand(_P),*/
+    /*_P : trigexpand(_P),*/
+    /*
+    _P : trigreduce(_P),
+    print("1.  particular solution : ", _P),
+    _P : trigsimp(_P),
+    print("2. particular solution : ", _P),
+    _P : radcan(_P), 
+    print("3. particular solution : ", _P),
+    */
+    /* substitute back the original _variables */
+    /* -------------------------------------------------- */
+
+
+    /*_P : subst([_x=_x1],_P),*/
+    /* use method one, because it supposedly can give less complicated particular solutions */
+    /*print("x=",_x),*/
+    /*print("x1=",_x1),*/
+
+    /*
+    print("complexity of method 1 for particular solution: ",length(nrOps(_PP))),
+    print("complexity of method 2 for particular solution: ",length(nrOps(_P))),
+    */
+    /* if method 1 has less operation than method 2, use method 1 */
+    if (length(nrOps(_PP)) <= length(nrOps(_P)) ) then (
+      _P : subst([_x=_x1],_PP)
+    )
+    else (
+      _P : subst([_x=_x1],_P)
+    ),
+
+    _P : trigreduce(_P),
+    _P : trigsimp(_P),
+    _P : radcan(_P), 
+    dprint(5,"3. particular solution : ", _P)
+  ), 
+
+
+  dprint(1,"substituting original variables back"),
+  _solution[1]:subst([_x=_x1,_y=_y1], _solution[1]),
+  _solution[2]:subst([_x=_x1,_y=_y1], _solution[2]),
+
+/*
+  _solution[1]:trigsimp(trigreduce(_solution[1])), 
+  _solution[2]:trigsimp(trigreduce(_solution[2])),
+  _solution[1]:ev(_solution[1],nouns), 
+  _solution[2]:ev(_solution[2],nouns),
+  _solution[1]:trigsimp(trigreduce(_solution[1])),
+  _solution[2]:trigsimp(trigreduce(_solution[2])),
+*/
+
+  _C1 : constant_factors(factor(_solution[1])), 
+  _C2 : constant_factors(factor(_solution[2])),
+  _solution[1] : ratsimp(_solution[1]/_C1), /* ratsimp necessary for kamke 2.286*/ 
+  _solution[2] : ratsimp(_solution[2]/_C2), 
+  _solution: [_y1 = _solution[1]*%k1 + _solution[2]*%k2 + _P],
+
+/*_solution:[subst([_x=_x1,_y=_y1], _y = _solution[1]*%k1 + _solution[2]*%k2 + _P)],*/
+
+
+  
+
+  dprint(1,"11d:",grind(_solution)) 
+  ),
+
+  dprint(1,"solution:",grind(_solution)), 
+  /* also return the method used to solve the ode */
+  method : 'kovacic,
+  return(_solution)
+)$
+
+
+
+
+/*****************************************************************************************************/
+step3(_n,_d,_theta,rhs1,_var):=block([_p,_listv,_i,_a,_a0,_a1,_a2,_a3,_a4,_a5,_pr,_sete,_soln,_trial,_w],
+/*****************************************************************************************************/
+/* ************************************************* */
+/* *****   step 3 -                            ***** */
+/* ************************************************* */
+
+  /*# form P in terms of undetermined coefficients a_i */
+  /*# P = a-{d}*x^{d} + a_{d-1}*x^{d-1} + ... + a_0*/
+  dprint(3,"_var=",_var),
+  dprint(3,"degree of polynomial = ",_d),
+  dprint(3,"n=",_n),
+  dprint(3,"_theta=",_theta),
+  dprint(3,"rhs1=",rhs1),
+
+  /* start with highest order*/
+  _p:_var^_d,
+  dprint(3,"P = ",_p),
+
+  /* [a_d-1, a_d-2, ..., a_2, a_1, a_0] */
+  _listv : makelist(concat(_a,_d-1 -_i),_i,_d-1,0,-1),
+
+  _p : _p + sum(_listv[_i]*_var^(_i-1),_i,1,length(_listv)),
+  
+  dprint(3,"_listv=",_listv),
+ 
+  /*# generate recursive relations P_i */
+  _pr[_n]: -_p,
+  for _i from _n thru 0 step -1 do (
+    _pr[_i-1]: ratsimp(-diff(_pr[_i],_var) - _theta * _pr[_i] - (_n-_i)*(_i+1)*rhs1*_pr[_i+1])
+  ),
+
+  dprint(3,"P-1 = ",_pr[-1]),
+  _trial:ratexpand(num(ratsimp(_pr[-1]))),
+  dprint(3,"_trial = ",_trial),
+
+  if _trial # 0 then (
+    _sete : [], /* */
+    dprint(3,"low degree = ",lopow(_trial,_var)),
+    dprint(3,"high degree = ",hipow(_trial,_var)),
+
+    for _i from lopow(_trial,_var) thru hipow(_trial,_var) do (
+      lset:coeff(_trial,_var,_i),
+      dprint(3,"lset:",lset),
+      if (lset # []) then (
+        _sete:endcons(lset,_sete) /* create list as [sete,lset] */
+      )
+    ),   
+    dprint(5,"sete = ",_sete),   
+    dprint(5,"_listv = ",_listv),  
+
+    if(length(_listv)=0) then (
+      dprint(0,"No Liouvillian solutions exist"),
+      return(false)
+    ), 
+
+    dprint(5,"a0 = ",_a0), 
+    _soln:solve(_sete,_listv),
+    
+    dprint(1,"_soln=",_soln),
+    /*if (_soln[1]=[] or length(_soln)=0 ) then (*/
+    if (length(_soln)=0 ) then (
+      dprint(1,"no solutions"),
+      return(false)
+    ),
+
+    /* for more than 1 element, the solution has two brackets: [[1,2,3,...]]*/
+    if (length(_listv)#1) then (
+      _soln:_soln[1]
+    ),
+    /*_soln:_soln[1],*/
+    dprint(5,"determining ais"),
+    /* ai = _soln[d-_i] */
+    /* finally, we are getting some stuff here for kamke 2.129 */
+    for _i from _d-1 thru 0 step -1 do(
+      map(":",[concat(_a,_i)],[rhs(_soln[_d-_i])])
+    )
+  ),
+  dprint(5,"a0 = ",_a0), 
+  dprint(5,"P = ",_p),  
+  _trial : sum(_pr[_i]*_w^_i/(_n-_i)!,_i,0,_n), 
+
+
+  dprint(3,"_trial = ",grind(_trial)),
+  dprint(3,"w = ",_w),
+ 
+  _solution:solve(ev(_trial),_w), 
+   
+  if _solution=[] then (
+    dprint(2,"w is empty: ",_w),
+    dprint(2,"NOTE: we still need to correct the return value!"),
+    return(exp(int(_w,_var)),_trial=0)
+  ),
+  dprint(1,"we have a genuine _solution:",_solution),
+  
+  _w:ratsimp(factor(_solution[1])), /* we need factor, it's like bringing it in normal form */
+  
+/* this call to ratexpand causes radcan to behave strangely (doesn't simplify certain things) later on */
+/*  print("expanded = ",ratexpand(_w)),*/
+  dprint(3,"w=",_w),
+  sol:exp(integrate(rhs(_w),_var)),
+  dprint(3,"sol=",sol),
+  return(sol)
+)$
+
+
+
+/*****************************************************************************************************/
+/*****************************************************************************************************/
+lcoeff(_t2,_var):=block([],
+ return(ratcoef(ratexpand(_t2),_var,hipow(ratexpand(_t2),_var)))
+)$
+
+
+/*****************************************************************************************************/
+/* ----- calculate the roots and expand the multiple roots                                     ----- */
+/*****************************************************************************************************/
+rootz(_expr,_var):=block([_sol,_mult,_rlist2,_j,_i],
+  /* note: this has the potential to fail */
+  _sol:solve(_expr,_var),
+  /* get the multiplicities of the roots*/
+  _mult:multiplicities,
+  /* create a list of roots including multiple roots */
+  _rlist2: flatten( makelist( makelist(rhs(_sol[_j]),_i,1,_mult[_j]),_j,1,length(_sol))),
+  return(_rlist2)
+)$
+
+
+/*****************************************************************************************************/
+/* ----- determine coefficient of a factor in a partial fraction expansion                     ----- */
+/*****************************************************************************************************/
+undetcoeff(_num,_rden,_var,_root,_m,_ex):=block([_k,_p,_er],
+  print("undetcoeff:",_m-_ex,_rden,_num),
+  _k : _m - _ex,
+  _p : _num/_rden,
+
+  /* differentiate p with respect to _var k times */
+  _p : ratsimp(diff(_p,_var,_k)),
+  dprint(5,"_p:",_p),
+  /* catch errors, it now returns empty when an error occurs (e.g. when we have non-polynomial expressions)  */
+  _er: errcatch(subst(_root,_var,_p)/_k!),
+  if (_er=[]) then (
+    _er:0
+  ) else (
+    _er:_er[1]
+  ),
+  print("_er:",_er),
+  return(_er)
+)$
+
+
+/*****************************************************************************************************/
+/* ----- Transform second order ode y"=f(x)y'+g(x)y to normal form y"=F(x)y ----- */
+/*****************************************************************************************************/
+Normalform(_phi,_y,_x) := block([_f,_g,_df,_F],
+  _f : coeff(ratexpand(_phi),_y), 
+  _g : coeff(ratexpand(_phi),'diff(_y,_x)),
+  _df : diff(_f,_x),
+  _F: radcan(ratsimp(_g - _f*_f/4 - _df/2)),
+  return(_F) 
+)$
+
+
+/*****************************************************************************************************/
+/* ----- transforms _expr from normal form solution to actual solution using rhs of the ode    ----- */
+/*****************************************************************************************************/
+NormalSolutionToActualSolution(_expr,_phi) :=block([_f,_g,_df,_sol],
+  _f : coeff(ratexpand(_phi),_y), 
+  _g : coeff(ratexpand(_phi),'diff(_y,_x)),
+  _df : diff(_f,_x),
+  _sol : radcan(ratsimp(_expr*exp(integrate(_f,_x)/2))),
+  return(_sol)
+)$
+
+
+/*****************************************************************************************************/
+/* ----- return the primary part of the polynomial                                              -----*/
+/*****************************************************************************************************/
+primpart(_expr,_x):=block([],
+  return(_expr/content(_expr,_x))
+)$
+
+
+/*****************************************************************************************************/
+/* ----- Squar-free decomposition (Yun, On square free decomposition algorithms)               ----- */
+/*****************************************************************************************************/
+sqfree(_expr,_var):=block([_i,_signp,_tc,_tlist1,_c,_d,_n,_cc,_re,_pp,_cont,_g,_PPP],
+
+  /* if polynomial is a constant, then return the constant */
+  if freeof(_var,_expr) then (
+    print("polynomial is constant"),
+    return[_expr,0]
+  ),
+ 
+  _expr:ratexpand(_expr),
+
+  /* get the highest power of the expression, sorted by leading terms first, then get the operator */
+  _n:hipow(_expr,_var),
+
+  if atom(_expr) then (
+    _signp:1
+  )
+  else (
+    _cc:coeff(_expr,_var,_n),
+    if atom(_cc) then (
+      _signp:1
+    )
+    else (
+      if op(_cc)="-" then (
+        _signp:-1
+      ) 
+      else (
+        _signp:1
+      )
+    )
+  ),
+
+  _re: ratexpand(_expr)/_signp,
+  /* --- */
+  _pp: primpart(_re,_var)[1],
+  _tc:content(_re,_var)[1],
+  _cont:_tc*_signp,
+  /*--- */
+
+  _tlist1:[],
+
+  _re:ratexpand(diff(_pp,_var)),
+  _g:gcd(_pp,_re),
+  [_PPP,_c,_d]:[_g,ratsimp(_pp/_g),ratsimp(_re/_g)],
+
+  while _c#1 do (
+    _re: ratexpand(_d-diff(_c,_var)),
+    _g:gcd(_c,_re),
+    [_PPP,_c,_d]:[_g,ratsimp(_c/_g),ratsimp(_re/_g)],
+    _tlist1 : append(_tlist1,[_PPP])
+  ),
+
+  return([_tlist1,_cont])
+)$
+
+
+/*****************************************************************************************************/
+/* ----- simple method of finding the constant factor in front of an equation                  ----- */
+/*****************************************************************************************************/
+constant_factors(_expr) := block([inflag:true],
+           if not mapatom(_expr) and op(_expr)="*"
+           then xreduce("*",listify(subset(setify(args(_expr)),'constantp)))
+           else 1
+)$
+
+
+
+/*****************************************************************************************************/
+/* ----- calculates the number of operators in the expression ----- */
+/* ----- this is a simple measure of complexity               ----- */
+/*****************************************************************************************************/
+nrOps(expression):=
+ block( [ ],
+        print("expression:",expression),
+        allOpsPriv (expression, [])
+       )$
+
+allOpsPriv(expression, opList) :=
+ block ( [x, args, newList],
+        /* if expression is an atom, then we return opList */  
+        if atom(expression)
+           then opList
+           else (
+              x:    op(expression),
+              args: args(expression),
+              /* add the operators to the opList */
+              newList: cons(x, opList),
+              for arg in args do
+                /* also expand all the subexpressions and count the operators */
+                newList: allOpsPriv(arg, newList),
+              newList
+             )
+        )$
+
+
+/*****************************************************************************************************/
+/* ----- dprint(flag,expr) is debuggingprint. It only prints expr when flag<DEBUGFLAG          ----- */
+/*****************************************************************************************************/
+dprint(flag,[expr]):=
+ block([exprs:""],
+ if (flag<DEBUGFLAG) then (
+ for i:1 thru length(expr) do(
+   exprs:sconcat(exprs,expr[i])
+ ),
+ print(exprs))
+ /*return(exprs)) else ( return(""))*/
+)$
