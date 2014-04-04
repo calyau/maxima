@@ -1038,7 +1038,7 @@ a member of @math{e} isn't explicitly an equation, for example @math{x^2 -1},
 the solver asummes that the expression vanishes.
 
 The basic strategy of @code{to_poly_solve} is to convert the input into a polynomial form and to 
-call @code{algsys} on the polynomial system. Internally,  @code{to_poly_solve} defaults @code{algexact} 
+call @code{algsys} on the polynomial system. Internally  @code{to_poly_solve} defaults @code{algexact} 
 to true. To change the default for @code{algexact}, append 'algexact=false to the @code{to_poly_solve} 
 argument list.
 
