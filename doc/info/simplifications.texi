@@ -301,39 +301,6 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
-@deffn {Function} logand (@code{x},@code{y})
-Returns logical (bit-wise) "and" of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
-@deffn {Function} logor (@code{x},@code{y})
-Returns logical (bit-wise) "or" of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
-@deffn {Function} logxor (@code{x},@code{y})
-Returns logical (bit-wise) exclusive-or of arguments x and y.
-
-To use this function write first @code{load(functs)}.
-
-@opencatbox
-@category{Package functs} @category{Mathematical functions}
-@closecatbox
-
-@end deffn
-
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp

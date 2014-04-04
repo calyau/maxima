@@ -825,116 +825,153 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 ;;....................................................................................................... ;;
 ;;
-;; (fpe1) returns a bigfloat approximation to E.
-;; fpe1 is the bigfloat part of the bfloat(%e) computation
+;; (fpe1) returns a bigfloat approximation to E
+;;   (where the last digits are rounded, not truncated).
 ;;
 (defun fpe1 nil
-  (bcons (list (fpround (compe (+ fpprec 12))) (+ -12 *m))))
+  (bcons 
+    (let ((tmp (let ((fpprec (+ fpprec 14)))             ;; compute 4 additional decimal digits 
+                 (list (fpround (compe fpprec)) *m) )))  
+      (list (fpround (car tmp)) (cadr tmp)) )))          ;; round to fpprec
+;; I checked the results for all fpprec in [10, 5010] : 
+;; Without extra digits 417 results differ in their last digit from the correctly 
+;; rounded approximation. 51 differ in two and 5 in three digits. These cases 
+;; have 9 to 0 roundings at their ends. In this range with (+ fpprec 10) all digits 
+;; are rounded correctly.
 ;;
-;; compe is the bignum part of the bfloat(%e) computation
-;; (compe N)/(2.0^N) is an approximation to E
-;; The algorithm is based on the series
-;;
-;; %e = sum( 1/i! ,i,0,inf )
-;;
-;; but adds up k summands to one, for e.g. k=4 that means
-;;
-;;    1          1          1       1      1 + n*(1 + (n - 1)*(1 + (n - 2)))
-;; -------- + -------- + -------- + --  =  ---------------------------------
-;; (n - 3)!   (n - 2)!   (n - 1)!   n!                    n!
-;;
-;; The number of added summands should depend on the current precision. 
-;; k = isqrt(prec) seems to fit here.
-;;
-(defun compe (prec)
+(defun compe (prec) ;; use fixed point arithmetic
+   ;; compe is the bignum part of the bfloat(%e) computation
+   ;; (compe fpprec)/2^fpprec is an approximation to E
+   ;; The algorithm is based on the series
+   ;;
+   ;; %e = sum( 1/i! ,i,0,inf )
+   ;;
+   ;; but adds up k summands to one, for e.g. k=4 that means
+   ;;
+   ;;    1          1          1       1      1 + n*(1 + (n - 1)*(1 + (n - 2)))
+   ;; -------- + -------- + -------- + --  =  ---------------------------------
+   ;; (n - 3)!   (n - 2)!   (n - 1)!   n!                    n!
+   ;;
+   ;; The number of added summands should depend on the current precision. 
+   ;; k = isqrt(prec) seems to fit here.
+   ;;
   (let (s h (n 1) d (k (isqrt prec))) 
      (setq h (ash 1 prec))
      (setq s h)
      (do ((i k (+ i k)))
-	      ((zerop h))
+         ((zerop h))
        (setq d (do ((j 1 (1+ j)) (p i))
-		   ((> j (1- k)) (* p n))
-		 (setq p (* p (- i j)))) )
+                   ((> j (1- k)) (* p n))
+                 (setq p (* p (- i j)))) )
        (setq n (do ((j (- k 2) (1- j)) (p 1))
-		   ((< j 0) p)
-		 (setq p (1+ (* p (- i j))))) )
+                   ((< j 0) p)
+                 (setq p (1+ (* p (- i j))))) )
        (setq h (truncate (* h n) d))
        (setq s (+ s h)))
      s))
-;;................................................................................ Volker van Nek 2007 .. ;;
 
-;;....................................................................................................... ;;
 ;;
-;; (fppi1) returns a bigfloat approximation to PI.
-;; fppi1 is the bigfloat part of the bfloat(%pi) computation
+;; (fppi1) returns a bigfloat approximation to PI
+;;   (where the last digits are rounded, not truncated).
 ;;
 (defun fppi1 nil
   (bcons
-    (fpquotient
-      (fprt18231_)
-      (list (fpround (comppi (+ fpprec 12))) (+ -12 *m)) )))
+    (let ((tmp (let ((fpprec (+ fpprec 14))) (comppi)))) ;; compute 4 additional decimal digits 
+      (list (fpround (car tmp)) (cadr tmp)) )))          ;; round to fpprec
+;; I checked the results for all fpprec in [10, 5010] : 
+;; Without extra digits 117 results differ in their last digit from the correctly 
+;; rounded approximation. 15 differ in two and 1 in three digits. These cases 
+;; have 9 to 0 roundings at their ends. In this range with (+ fpprec 10) all digits 
+;; are rounded correctly.
+
+;; Version 1:
+#- (or sbcl clisp)
+(defun comppi nil
+  ;; STEP 1:
+  ;; compute sqrt(640320^3/12^2)
+  ;;       = sqrt(1823176476672000) = 42698670.666333...
+  ;;
+  ;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
+  ;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
+  ;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
+  (let ((a 1823176476672000)
+        (n 42698670666)
+        (d 1000)
+         h )
+    (do ((prec 32 (* 2 prec)))
+        ((> prec fpprec))
+      (setq h n)
+      (setq n (+ (* n n) (* a d d)))
+      (setq d (* 2 h d)) )
+  ;; STEP 2:
+  ;; divide n/d = sqrt(640320^3/12^2) by Chudnovsky-sum:
+  ;; pi = n/(d*sum)
+    (fpquotient (intofp n) 
+                (list (fpround (* d (chudnovsky-series fpprec))) *m) )))
 ;;
-;; comppi is the bignum part of the bfloat(%pi) computation
-;; (comppi N)/(2.0^N) is an approximation to 640320^(3/2)/12 * 1/PI
+;; (chudnovsky-series fpprec)/2^fpprec is an approximation to 640320^(3/2)/12 * 1/%pi
 ;;
 ;; Chudnovsky & Chudnovsky (1987):
 ;;
 ;; 640320^(3/2) / (12 * %pi) =
 ;;
-;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf )
+;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf ) 
 ;;
-(defun comppi (prec)
+(defun chudnovsky-series (prec)                   ;; use fixed point arithmetic
   (let (s h n d)
-     (setq s (ash 13591409 prec))
-     (setq h (neg (truncate (ash 67047785160 prec) 262537412640768000)))
-     (setq s (+ s h))
-     (do ((i 2 (1+ i)))
-	 ((zerop h))
-       (setq n (* 12 (- (* 6 i) 5) (- (* 6 i) 4) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
-       (setq d (* (- (* 3 i) 2) (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
-       (setq h (neg (truncate (* h n) d)))
-       (setq s (+ s h)))
-     s ))
+    ;; i = 0:
+    (setq s (ash 13591409 prec))                  ;; 13591409 * 2^prec
+    ;; i = 1:             
+    (setq h (neg (truncate (ash 67047785160 prec) ;; - 6!/3!*(545140134+13591409) * 2^prec
+                           262537412640768000 ))) ;; 640320^3
+    (setq s (+ s h))
+    (do ((i 2 (1+ i)))
+        ((zerop h))
+      (setq n (* 24 (- (* 6 i) 5) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
+      (setq d (* (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
+      ;;             i^3   *(545140134 *(i-1) + 13591409)*     640320^3
+      (setq h (neg (truncate (* h n) d)))
+      (setq s (+ s h)))
+    s ))
 ;;
-;; fprt18231_ computes sqrt(640320^3/12^2)
-;;                   = sqrt(1823176476672000) = 42698670.666333...
+;; Version 2: (originally by Raymond Toy)
 ;;
-;; See this email thread on this topic for an explanation of why there
-;; are two routines and timing measurements that were done:
+;; The following timing measurements show why there are two versions of comppi. 
+;; (1.6 GHz DualCore, Maxima 5.32 with Lisps from Lubuntu 13.10, 32 and 64 Bit) 
+;; 
+;; $fpprec = 1000, runtime for 1000 runs in secs:
+;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
+;;          ccl   :  3.076 |  4.968 |  1.875 |  2.880
+;;          ecl   :  0.583 |  0.882 |  0.344 |  0.411
+;;          gcl   :  0.560 |  0.810 |  0.370 |  0.379
+;;          cmucl :  1.3   |  1.28  |  1.22  |  1.24
+;;          clisp :  0.916 |  0.755 |  0.777 |  0.661
+;;          sbcl  :  0.733 |  0.725 |  0.325 |  0.330
+;; 
+;; $fpprec = 1000000, runtime in secs:
+;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
+;;          ccl   : 28.527 | 47.322 | 17.793 | 27.308
+;;          ecl   :  3.249 |  3.609 |  1.520 |  1.669
+;;          gcl   :  1.820 |  1.980 |  0.970 |  1.039
+;;          cmucl :  8.41  | 10.41  |  8.27  | 10.05 
+;;          clisp :  4.836 |  4.772 |  4.249 |  4.463
+;;          sbcl  :  7.270 |  6.079 |  2.815 |  2.618
 ;;
-;; http://www.math.utexas.edu/pipermail/maxima/2008/013946.html
-;;
-;; Basically, using isqrt is faster than Heron's algorithm for
-;; everyone except gcl.
-;;
-;; 1. gcl-version:
-;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
-;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
-;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
-#+gcl
-(defun fprt18231_ ()
-  (let ((a 1823176476672000)
-	(n 42698670666)
-	(d 1000)
-	h )
-    (do ((prec 32 (* 2 prec)))
-	((> prec fpprec))
-      (setq h n)
-      (setq n (+ (* n n) (* a d d)))
-      (setq d (* 2 h d)) )
-    (fpquotient (intofp n) (intofp d))))
-;;
-;; 2. non-gcl-version (by Raymond Toy, October 2008):
-;;
-#-gcl
-(defun fprt18231_ ()
-  (let ((a 1823176476672000))
+#+ (or sbcl clisp)
+(defun comppi nil
+  ;; STEP 1:
+  (let ((a 1823176476672000) sqrt-a)
     ;; sqrt(a) = sqrt(a*2^(2*n))/(2^n).  Use isqrt to compute the sqrt.
     (setq a (ash a (* 2 fpprec)))
-    (destructuring-bind (mantissa exp)
-	(intofp (isqrt a))
-      (list mantissa (- exp fpprec)))))
-;;................................................................................ Volker van Nek 2007 .. ;;
+    (setq sqrt-a (intofp (isqrt a)))
+    ;; STEP 2:
+    ;; divide
+    (fpquotient
+    ;; sqrt(640320^3/12^2)
+      (list (car sqrt-a) (- (cadr sqrt-a) fpprec)) ;; mantissa exponent
+    ;; by Chudnovsky-sum:
+      (list (fpround (chudnovsky-series fpprec)) *m) )))
+;;.............................................................................. Volker van Nek, Feb 2014 .. ;;
 
 
 ;; Compute the main part of the Euler-Mascheroni constant using the

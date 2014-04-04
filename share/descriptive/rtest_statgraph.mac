@@ -1,0 +1,136 @@
+/* execute this script
+ *
+ * (1) wait for user between examples:
+ *  demo ("rtest_statgraph.mac")
+ *
+ * (2) or noninteractively:
+ *  batch ("rtest_statgraph.mac");
+ *
+ * Maxima waits for the user to close the Openmath window
+ * before proceeding, but otherwise it just blazes through.
+ */
+
+load("descriptive");
+load("distrib");
+
+barsplot(
+                  col(m,2),
+                  title        = "Ages",
+                  xlabel       = "years",
+                  box_width    = 1/2,
+                  fill_density = 3/4), m : read_matrix (file_search ("biomed.data"));
+
+
+barsplot(
+                  l1,l2,
+                  box_width    = 1,
+                  fill_density = 1,
+                  bars_colors  = [black, grey],
+                  frequency = relative,
+                  sample_keys = ["A", "B"]),
+                l1:makelist(random(10),k,1,50),
+                l2:makelist(random(10),k,1,100);
+
+
+barsplot(
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  title  = "Asking for something to four groups",
+                  ylabel = "# of individuals",
+                  groups_gap   = 3,
+                  fill_density = 0.5,
+                  ordering     = ordergreatp);
+
+barsplot(
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+                  title  = "Asking for something to four groups",
+                  ylabel = "# of individuals",
+                  grouping     = stacked,
+                  fill_density = 0.5,
+                  ordering     = ordergreatp);
+
+block([l1:makelist(random(10),k,1,50),
+  l2:makelist(random(10),k,1,100),
+  bp1, bp2],
+  bp1 :
+                  barsplot_description(
+                   l1,
+                   box_width = 1,
+                   fill_density = 0.5,
+                   bars_colors = [blue],
+                   frequency = relative),
+  bp2 :
+                  barsplot_description(
+                   l2,
+                   box_width = 1,
+                   fill_density = 0.5,
+                   bars_colors = [red],
+                   frequency = relative),
+  draw(gr2d(bp1), gr2d(bp2)));
+
+
+boxplot(s2,
+                  box_width  = 0.2,
+                  title      = "Windspeed in knots",
+                  xlabel     = "Stations",
+                  color      = red,
+                  line_width = 2), s2 : read_matrix(file_search("wind.data"));
+
+boxplot (A, box_orientation = horizontal), A :
+                 [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+                  [8, 10, 7, 9, 12, 8, 10],
+                  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]];
+
+
+histogram (
+                     s1,
+                     nclasses     = 8,
+                     title        = "pi digits",
+                     xlabel       = "digits",
+                     ylabel       = "Absolute frequency",
+                     fill_color   = grey,
+                     fill_density = 0.6), s1 : read_list (file_search ("pidigits.data"));
+
+block([m: 14, s: 2, s2],
+  s2: random_normal(m, s, 1000),
+  draw2d(
+    grid   = true,
+    xrange = [5, 25],
+    histogram_description(
+      s2,
+      nclasses     = 9,
+      frequency    = density,
+      fill_density = 0.5),
+    explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s)));
+
+piechart(
+                  s1,
+                  xrange  = [-1.1, 1.3],
+                  yrange  = [-1.1, 1.1],
+                  title   = "Digit frequencies in pi"), s1 : read_list (file_search ("pidigits.data"));
+
+scatterplot(
+                  random_normal(0,1,200),
+                  xaxis      = true,
+                  point_size = 2,
+                  dimensions = [600,150])$
+
+block([l1: makelist(random(10),k,1,50),
+  l2: makelist(random(10),k,1,200)],
+          starplot(
+                  l1, l2,
+                  stars_colors = [blue,red],
+                  sample_keys = ["1st sample", "2nd sample"],
+                  star_center = [1,2],
+                  star_radius = 4,
+                  proportional_axes = xy,
+                  line_width = 2 ));
+
+stemplot(
+                  random_normal(15, 6, 100),
+                  leaf_unit = 0.1);

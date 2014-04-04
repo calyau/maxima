@@ -1171,12 +1171,13 @@ The optional third argument must be of the same form as the list returned by
 Without the optional argument @var{all} @code{zn_power_table(n)} 
 shows a power table of all elements in (Z/@var{n}Z)* 
 which are all elements invertible modulo @var{n}. 
-The exponent loops from @code{1} to @code{totient(n)} and the table ends with 
-a column of ones on the right side.
+The exponent loops from @code{1} to the greatest characteristic factor of 
+@code{totient(n)} and the table ends with a column of ones on the right side.
 
 The optional argument @var{all} causes the table to be printed for all 
-non-zero elements. In this case the exponent loops from @code{1} to 
-@code{totient(n) + 1} and the last column is therefore equal to the first.
+non-zero elements. The exponent now loops from @code{1} to 
+@code{totient(n) + 1} and in case the modulus factors into different primes 
+the last column is equal to the first.
 
 See also @mref{zn_add_table}, @mref{zn_mult_table}.
 

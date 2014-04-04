@@ -30,7 +30,6 @@ affine/sub-proj.lisp \
 affine/sys-declaim.lisp \
 affine/sysdef.lisp \
 affine/sys-proclaim.lisp \
-affine/todd-coxeter.lisp \
 algebra/charsets/charsets.mac \
 algebra/charsets/flatten.lisp \
 algebra/charsets/README \
@@ -157,6 +156,9 @@ colnew/prob2.mac \
 colnew/prob3.mac \
 colnew/prob4.mac \
 combinatorics/README \
+contrib/alt-display/alt-display.lisp \
+contrib/alt-display/alt-display.mac \
+contrib/alt-display/tex-display.lisp \
 contrib/altsimp/altsimp.lisp \
 contrib/augmented_lagrangian.mac \
 contrib/bitwise/bitwise.lisp \
@@ -352,6 +354,8 @@ contrib/maximaMathML/mathml-maxima.lisp \
 contrib/maximaMathML/mathml.readme \
 contrib/maximaMathML/maximaMathML.lisp \
 contrib/maximaMathML/PrMathML.lisp \
+contrib/maxima-odesolve/kovacicODE.mac \
+contrib/maxima-odesolve/README \
 contrib/maxima-server.lisp \
 contrib/mcclim/formula.lisp \
 contrib/mcclim/listeneroutput.png \
@@ -367,6 +371,8 @@ contrib/noninteractive/asksign1.lisp \
 contrib/noninteractive/noninteractive.lisp \
 contrib/noninteractive/noninteractive.mac \
 contrib/noninteractive/rtest_noninteractive.mac \
+contrib/odes/odes-doc.pdf \
+contrib/odes/odes.mac \
 contrib/opsubst.lisp \
 contrib/prim/prim-ex1.mac \
 contrib/prim/prim-ex.mac \
@@ -453,6 +459,8 @@ contrib/sarag/topology_examples.mac \
 contrib/sarag/topology.mac \
 contrib/sarag/whatsnew.txt \
 contrib/simplifying.lisp \
+contrib/smath/smath.lisp \
+contrib/smath/smath.mac \
 contrib/state/a.cir \
 contrib/state/b.cir \
 contrib/state/c.cir \
@@ -465,6 +473,8 @@ contrib/state/tree.mac \
 contrib/stirling.mac \
 contrib/tex2ooo.lisp \
 contrib/tocl.lisp \
+contrib/trigtools/trigtools-doc.pdf \
+contrib/trigtools/trigtools.mac \
 contrib/unit/unit-functions.lisp \
 contrib/unit/unit.mac \
 contrib/unit/unit.texi \
@@ -495,6 +505,8 @@ contrib/Zeilberger/zeilberger.mac \
 descriptive/biomed.data \
 descriptive/descriptive.mac \
 descriptive/pidigits.data \
+descriptive/rtest_descriptive.mac \
+descriptive/rtest_statgraph.mac \
 descriptive/wind.data \
 diffequations/abel.mac \
 diffequations/desoln.mac \
@@ -552,6 +564,7 @@ ezunits/rtest_ezunits_frink.mac \
 ezunits/rtestezunits.mac \
 ezunits/rtest_ezunits_solve.mac \
 finance/finance.mac \
+finance/rtest_finance.mac \
 fourier_elim/fourier_elim.lisp \
 fourier_elim/rtest_fourier_elim.mac \
 fractals/fractals.mac \
@@ -700,7 +713,9 @@ lapack/lapack/dlabrd.lisp \
 lapack/lapack/dlacon.lisp \
 lapack/lapack/dlacpy.lisp \
 lapack/lapack/dladiv.lisp \
+lapack/lapack/dlae2.lisp \
 lapack/lapack/dlaed6.lisp \
+lapack/lapack/dlaev2.lisp \
 lapack/lapack/dlaexc.lisp \
 lapack/lapack/dlahqr.lisp \
 lapack/lapack/dlahrd.lisp \
@@ -764,6 +779,7 @@ lapack/lapack/dormbr.lisp \
 lapack/lapack/dorml2.lisp \
 lapack/lapack/dormlq.lisp \
 lapack/lapack/dormqr.lisp \
+lapack/lapack/dsterf.lisp \
 lapack/lapack/dtrevc.lisp \
 lapack/lapack/dtrexc.lisp \
 lapack/lapack/dtrsna.lisp \
@@ -782,6 +798,9 @@ lapack/lapack/zgebal.lisp \
 lapack/lapack/zgeev.lisp \
 lapack/lapack/zgehd2.lisp \
 lapack/lapack/zgehrd.lisp \
+lapack/lapack/zheev.lisp \
+lapack/lapack/zhetd2.lisp \
+lapack/lapack/zhetrd.lisp \
 lapack/lapack/zhseqr.lisp \
 lapack/lapack/zlacgv.lisp \
 lapack/lapack/zlacpy.lisp \
@@ -789,6 +808,7 @@ lapack/lapack/zladiv.lisp \
 lapack/lapack/zlahqr.lisp \
 lapack/lapack/zlahr2.lisp \
 lapack/lapack/zlange.lisp \
+lapack/lapack/zlanhe.lisp \
 lapack/lapack/zlaqr0.lisp \
 lapack/lapack/zlaqr1.lisp \
 lapack/lapack/zlaqr2.lisp \
@@ -802,14 +822,20 @@ lapack/lapack/zlarft.lisp \
 lapack/lapack/zlartg.lisp \
 lapack/lapack/zlascl.lisp \
 lapack/lapack/zlaset.lisp \
+lapack/lapack/zlasr.lisp \
 lapack/lapack/zlassq.lisp \
+lapack/lapack/zlatrd.lisp \
 lapack/lapack/zlatrs.lisp \
 lapack/lapack/zrot.lisp \
+lapack/lapack/zsteqr.lisp \
 lapack/lapack/ztrevc.lisp \
 lapack/lapack/ztrexc.lisp \
+lapack/lapack/zung2l.lisp \
 lapack/lapack/zung2r.lisp \
 lapack/lapack/zunghr.lisp \
+lapack/lapack/zungql.lisp \
 lapack/lapack/zungqr.lisp \
+lapack/lapack/zungtr.lisp \
 lapack/lapack/zunm2r.lisp \
 lapack/lapack/zunmhr.lisp \
 lapack/lapack/zunmqr.lisp \
@@ -848,6 +874,15 @@ linearalgebra/test-linalg.mac \
 linearalgebra/test-lu.mac \
 linearalgebra/test-matrixexp.mac \
 linearalgebra/test-polynomialp.mac \
+logic/COPYING \
+logic/logic.dem \
+logic/logic.html \
+logic/logic.info \
+logic/logic.lisp \
+logic/logic.mac \
+logic/logic.pdf \
+logic/logic.texi \
+logic/TODO \
 lsquares/lsquares.mac \
 lsquares/plsquares.mac \
 lsquares/rtest_lsquares.mac \
@@ -867,7 +902,6 @@ macro/packg.mac \
 macro/sum1.mac \
 matrix/eigen_1.dem \
 matrix/eigen.dem \
-matrix/eigeni.mac \
 matrix/eigen.mac \
 matrix/invert.mac \
 matrix/invert.usg \
@@ -1052,6 +1086,7 @@ solve_rec/simplify_sum.mac \
 solve_rec/simplify_sum_test.mac \
 solve_rec/solve_rec.dem \
 solve_rec/solve_rec.mac \
+sound/sound.lisp \
 specfun.lisp \
 stats/inference_result.lisp \
 stats/numstats.lisp \

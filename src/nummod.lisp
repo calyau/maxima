@@ -303,8 +303,8 @@
 (setf (get '$round 'verb) '%round)
 (setf (get '%round 'noun) '$round)
 
-;; $round distributes over lists, matrices, and equations.
-(setf (get '$round 'distribute_over) '(mlist $matrix mequal))
+;; round distributes over lists, matrices, and equations.
+(setf (get '%round 'distribute_over) '(mlist $matrix mequal))
 
 (defun simp-round (e yy z)
   (oneargcheck e)
@@ -312,6 +312,8 @@
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
 	((member e '($inf $minf $und $ind) :test #'eq) e)
+	((eq e '$zerob) 0)
+	((eq e '$zeroa) 0)
 	(t 
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
@@ -334,12 +336,17 @@
 (setf (get '$truncate 'verb) '%truncate)
 (setf (get '%truncate 'noun) '$truncate)
 
+;; truncate distributes over lists, matrices, and equations.
+(setf (get '%truncate 'distribute_over) '(mlist $matrix mequal))
+
 (defun simp-truncate (e yy z)
   (oneargcheck e)
   (setq yy (caar e)) ;; find a use for the otherwise unused YY.
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
 	((member e '($inf $minf $und $ind) :test #'eq) e)
+	((eq e '$zerob) 0)
+	((eq e '$zeroa) 0)
 	(t
 	 (let ((sgn (csign e)))
 	   (cond ((member sgn '($neg $nz) :test #'eq) (take '($ceiling) e))

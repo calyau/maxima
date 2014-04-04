@@ -52,7 +52,6 @@
 
 (in-package :maxima)
 
-(defvar *old-tex-atom* #'tex-atom)
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 (defmvar $wxplot_size '((mlist simp) 400 250))
 (defmvar $wxplot_old_gnuplot nil)
@@ -186,30 +185,23 @@ nor Gnuplot is not recognized by maxima"))))
 
 ;; (defun tex (... is removed
 
-#|
-(defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
-  (append l 
-	  (list (cond ((numberp x) (texnumformat x))
-		      ((and (symbolp x) (or (get x 'texword) (get (get x 'reversealias) 'texword))))
-		      ;; This is different from the one in mactex.lisp
-                      ((mstringp x) (texstring x))
-                      ((characterp x) (texchar x))
-		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
-	  
-	  r))
-|#
+(defun unquote-%-internal (str c)
+  (let* ((qstr (format nil "~A~A" #\\ c))
+	 (pos (search qstr str)))
+    (if pos
+	(concatenate 'string (subseq str 0 pos) (format nil "~A" c)
+		     (unquote-%-internal (subseq str (+ pos 2)) c))
+      str)))
 
-(defun tex-atom (x l r &aux other-case) ;; atoms: note: can we lose by leaving out {}s ?
-  (let ((result (append l
-			(list (cond ((mstringp x) (texstring x))
-				    ((characterp x) (texchar x))
-				    (t (setq other-case t))))
-			r)))
-    (if other-case
-	(funcall *old-tex-atom* x l r)
-      result)))
+(defun unquote-% (str)
+  (setq str (unquote-%-internal str #\$))
+  (setq str (unquote-%-internal str #\%))
+  (setq str (unquote-%-internal str #\&))
+  (setq str (unquote-%-internal str #\_))
+  (setq str (unquote-%-internal str #\#))
+  str)
 
-(defun texstring (x)
+(defun tex-string (x)
   (let ((sym-name
 	 (if (symbolp x)
 	     (print-case-sensitive x)
@@ -217,9 +209,10 @@ nor Gnuplot is not recognized by maxima"))))
     (cond ((equal sym-name "") "")
 	  ((eql (elt sym-name 0) #\\) sym-name)
 	  ((memq (elt sym-name 0) '(#\$ #\&))
-	   (setq sym-name (subseq sym-name 1))
+	   (setq sym-name (unquote-% (subseq sym-name 1)))
 	   (concatenate 'string "\\verb|   " (verb-quote sym-name) "|"))
-	  (t (concatenate 'string "\\verb|" (verb-quote sym-name) "|")))))
+	  (t (setq sym-name (unquote-% sym-name))
+	     (concatenate 'string "\\verb|" (verb-quote sym-name) "|")))))
 
 (defun verb-quote (str)
   (let ((var "") (charlist
@@ -232,7 +225,7 @@ nor Gnuplot is not recognized by maxima"))))
   var))
 
 
-(defun texchar (x)
+(defun tex-char (x)
   (if (eql x #\|) "\\verb/|/"
     (concatenate 'string "\\verb|" (string x) "|")))
 

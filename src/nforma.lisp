@@ -12,7 +12,7 @@
 
 (macsyma-module nforma)
 
-(declare-top (special 1//2 -1//2 displayp in-p))
+(declare-top (special 1//2 -1//2 in-p))
 
 (defmvar $powerdisp nil)
 (defmvar $pfeformat nil)

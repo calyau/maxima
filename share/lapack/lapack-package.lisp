@@ -53,5 +53,6 @@
    #:dlange
    #:zlange
    #:zgeev
+   #:zheev
    )
   (:documentation "Package for LAPACK routines"))

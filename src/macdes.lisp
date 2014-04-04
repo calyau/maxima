@@ -14,9 +14,9 @@
   (declare (special *need-prompt*))
   (let ((example (second l)))
     (when (symbolp example)
-      ;; Coerce a symbol to be a string. Remove the first character,
-      ;; it is a $-char.
-      (setq example (coerce (cdr (exploden example)) 'string)))
+      ;; Coerce a symbol to be a string.
+      ;; Remove the first character if it is a dollar sign.
+      (setq example (coerce (exploden (stripdollar example)) 'string)))
     (unless (stringp example)
       (merror 
         (intl:gettext "example: argument must be a symbol or a string; found: ~M") example))
@@ -117,9 +117,7 @@
 
 (defmspec $describe (x)
   (let ((topic ($sconcat (cadr x)))
-	(exact-p (or (null (caddr x)) (eq (caddr x) '$exact)))
-	(cl-info::*prompt-prefix* *prompt-prefix*)
-	(cl-info::*prompt-suffix* *prompt-suffix*))
+	(exact-p (or (null (caddr x)) (eq (caddr x) '$exact))))
     (if exact-p
 	(cl-info::info-exact topic)
 	(cl-info::info-inexact topic))))

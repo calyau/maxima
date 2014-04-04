@@ -1,0 +1,1697 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 88be232340acaae28a1ffc543c6d7ea6  maxima.texi
+@c
+@menu     
+* Introduction to operators::      
+* Arithmetic operators::
+* Relational operators::
+* Logical operators::
+* Operators for Equations::
+* Assignment operators::
+* User defined operators::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to operators, Arithmetic operators, Operators, Operators
+@section Introduction to operators
+@c -----------------------------------------------------------------------------
+
+@'{E} poss@'{i}vel definir novos operadores com determinada preced@^{e}ncia, para remover a defini@,{c}@~{a}o de
+operadores j@'{a} existentes, ou para redefinir a precedencia de operadores existentes.  Um
+operador pode ser un@'{a}rio pr@'{e}fixado ou un@'{a}rio p@'{o}sfixado, bin@'{a}rio infixo, en@'{a}rio infixo,
+matchfix, ou nofix.  "Matchfix" significa um par de s@'{i}mbolos que abra@,{c}a seu argumento
+ou seus argumentos, e "nofix" significa um operador sem argumentos.
+Como exemplo de diferentes tipos de operadores, existe o seguinte.
+
+@table @asis
+@item un@'{a}rio prefixado
+nega@,{c}@~{a}o @code{- a}
+@item un@'{a}rio p@'{o}sfixado
+fatorial @code{a!}
+@item bin@'{a}rio infixo
+exponencia@,{c}@~{a}o @code{a^b}
+@item en@'{a}rio infixo
+adi@,{c}@~{a}o @code{a + b}
+@item matchfix
+os colch@^{e}tes envolvendo uma lista @code{[a, b]}
+@end table
+
+(N@~{a}o existe operadores internos "nofix"; para um exemplo de tal operador,
+veja @code{nofix}.)
+
+O mecanismo para definir um novo operador @'{e} direto.  @'{E} somente necess@'{a}rio
+declarar uma fun@,{c}@~{a}o como um operador; a fun@,{c}@~{a}o operador pode ou n@~{a}o
+ser definida.
+
+Um exemplo de operadores definidos pelo usu@'{a}rio @'{e} o seguinte.  Note que que a chamada expl@'{i}cita de
+da fun@,{c}@~{a}o @code{"dd" (a)} @'{e} equivalente a @code{dd a}, da mesma forma
+@code{"<-" (a, b)} @'{e} equivalente a @code{a <- b}.  Note tamb@'{e}m que as fun@,{c}@~{o}es
+@code{"dd"} e @code{"<-"} n@~{a}o est@~{a}o definidas no exemplo. 
+
+@c ===beg===
+@c prefix ("dd");
+@c dd a;
+@c "dd" (a);
+@c infix ("<-");
+@c a <- dd b;
+@c "<-" (a, "dd" (b));
+@c ===end===
+@example
+(%i1) prefix ("dd");
+(%o1)                          dd
+(%i2) dd a;
+(%o2)                         dd a
+(%i3) "dd" (a);
+(%o3)                         dd a
+(%i4) infix ("<-");
+(%o4)                          <-
+(%i5) a <- dd b;
+(%o5)                      a <- dd b
+(%i6) "<-" (a, "dd" (b));
+(%o6)                      a <- dd b
+@end example
+
+As fun@,{c}@~{o}es do Maxima que definem novos operadores s@~{a}o sumarizadas na tabela adiante,
+equilibrando (padr@~{a}o) poder associado à esquerda e poder associada à direita (left binding power, right binding power, lbp e rbp, respectivamente).
+@c REWORK FOLLOWING COMMENT.
+@c IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
+(Força associada determina a preced@^{e}ncia do operador.  Todavia, uma vez que o poder associado à esquerda e o poder
+associado à direita podem ser diferentes, associar poder @'{e} um pouco mais complicado que
+preced@^{e}ncia.) Alguma das fun@,{c}@~{o}es de defini@,{c}@~{a}o de opera@,{c}@~{a}o recebem argumentos
+adicionais; veja as descri@,{c}@~{o}es de fun@,{c}@~{a}o para detalhes.
+
+@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
+@table @code
+@item prefix
+rbp=180
+@item postfix
+lbp=180
+@item infix
+lbp=180, rbp=180
+@item nary
+lbp=180, rbp=180
+@item matchfix
+(poder associado n@~{a}o aplic@'{a}vel)
+@item nofix
+(poder associado n@~{a}o aplic@'{a}vel)
+@end table
+
+Para compara@,{c}@~{a}o, aqui est@'{a} alguns operadores internos e seus poderes associados
+esquerdo e direito.
+
+@example
+Operator   lbp     rbp
+
+  :        180     20 
+  ::       180     20 
+  :=       180     20 
+  ::=      180     20 
+  !        160
+  !!       160
+  ^        140     139 
+  .        130     129 
+  *        120
+  /        120     120 
+  +        100     100 
+  -        100     134 
+  =        80      80 
+  #        80      80 
+  >        80      80 
+  >=       80      80 
+  <        80      80 
+  <=       80      80 
+  not              70 
+  and      65
+  or       60
+  ,        10
+  $        -1
+  ;        -1
+@end example
+
+As fun@,{c}@~{o}es @mref{remove}
+e @mref{kill}
+removem propriedades de operador de um @'{a}tomo.
+O comando @code{remove ("@var{a}", op)} remove as propriedades de operador de @var{a}.
+O comando @code{kill ("@var{a}")} remove todas as propriedades de @var{a}, incluindo as
+propriedades de operador.  Note que o nome do operador deve estar entre
+aspas aspas duplas.
+
+@c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
+@c ===beg===
+@c infix ("##");
+@c "##" (a, b) := a^b;
+@c 5 ## 3;
+@c remove ("##", op);
+@c 5 ## 3;
+@c "##" (5, 3);
+@c infix ("##");
+@c 5 ## 3;
+@c kill ("##");
+@c 5 ## 3;
+@c "##" (5, 3);
+@c ===end===
+@example
+(%i1) infix ("##");
+(%o1)                          ##
+(%i2) "##" (a, b) := a^b;
+                                     b
+(%o2)                     a ## b := a
+(%i3) 5 ## 3;
+(%o3)                          125
+(%i4) remove ("##", op);
+(%o4)                         done
+(%i5) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i5) "##" (5, 3);
+(%o5)                          125
+(%i6) infix ("##");
+(%o6)                          ##
+(%i7) 5 ## 3;
+(%o7)                          125
+(%i8) kill ("##");
+(%o8)                         done
+(%i9) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i9) "##" (5, 3);
+(%o9)                       ##(5, 3)
+@end example
+
+@opencatbox
+@category{Operators} @category{Syntax}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Arithmetic operators, Relational operators, Introduction to operators, Operators
+@section Arithmetic operators
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{+}
+@anchor{-}
+@anchor{*}
+@anchor{/}
+@anchor{^}
+@deffn {Operator} +
+@ifinfo
+@fnindex Adi@,{c}@~{a}o
+@end ifinfo
+@deffnx {Operator} -
+@ifinfo
+@fnindex Subtra@,{c}@~{a}o
+@end ifinfo
+@deffnx {Operator} *
+@ifinfo
+@fnindex Multiplica@,{c}@~{a}o
+@end ifinfo
+@deffnx {Operator} /
+@ifinfo
+@fnindex Divis@~{a}o
+@end ifinfo
+@deffnx {Operator} ^
+@ifinfo
+@fnindex Exponencia@,{c}@~{a}o
+@end ifinfo
+
+Os s@'{i}mbolos @code{+} @code{*} @code{/} e @code{^} representam adi@,{c}@~{a}o,
+multiplica@,{c}@~{a}o, divis@~{a}o, e exponencia@,{c}@~{a}o, respectivamente.  Os nomes desses
+operadores s@~{a}o @code{"+"} @code{"*"} @code{"/"} e @code{"^"}, que podem aparecer
+onde o nome de uma fun@,{c}@~{a}o ou operador for necess@'{a}rio.
+
+Os simbolos @code{+} e @code{-} representam adi@,{c}@~{a}o un@'{a}ria e nega@,{c}@~{a}o,
+respectivamente, e os nomes desses operadores s@~{a}o @code{"+"} e @code{"-"},
+respectivamente.
+
+Subtra@,{c}@~{a}o @code{a - b} @'{e} representado internamente no Maxima como adi@,{c}@~{a}o,
+@code{a + (- b)}.  Express@~{o}es tais como @code{a + (- b)} s@~{a}o mostradas como
+subtra@,{c}@~{a}o.  Maxima reconhece @code{"-"} somente como o nome do operador
+un@'{a}rio de nega@,{c}@~{a}o, e n@~{a}o como o nome do operador bin@'{a}rio de subtra@,{c}@~{a}o.
+
+Divis@~{a}o @code{a / b} @'{e} representado internamente no Maxima como multiplica@,{c}@~{a}o,
+@code{a * b^(- 1)}.  Express@~{o}es tais como @code{a * b^(- 1)} s@~{a}o mostradas como
+divis@~{a}o.  Maxima reconhece @code{"/"} como o nome do operador de divis@~{a}o.
+
+Adi@,{c}@~{a}o e multiplica@,{c}@~{a}o s@~{a}o operadores en@'{a}rios comutativos.
+Divis@~{a}o e exponencia@,{c}@~{a}o s@~{a}o operadores bin@'{a}rios n@~{a}o comutativos.
+
+Maxima ordena os operandos de operadores comutativos para construir uma
+representa@,{c}@~{a}o can@^{o}nica.  Para armazenamento interno, a ordena@,{c}@~{a}o @'{e} determinada por
+@mrefdot{orderlessp}
+Para exibi@,{c}@~{a}o, a ordena@,{c}@~{a}o da adi@,{c}@~{a}o @'{e} determinada por
+@mrefcomma{ordergreatp}
+e para a multiplica@,{c}@~{a}o, @'{e} a mesma que a ordena@,{c}@~{a}o interna.
+
+Computa@,{c}@~{o}es aritm@'{e}ticas s@~{a}o realizadas sobre n@'{u}meros literais (inteiros, racionais,
+em ponto flutuantes comuns, e grandes n@'{u}meros em ponto flutuante).  Exceto para exponencia@,{c}@~{a}o, todas as opera@,{c}@~{o}es
+aritm@'{e}ticas sobre n@'{u}meros s@~{a}o simplificadas para n@'{u}meros.  Exponencia@,{c}@~{a}o @'{e} simplificada
+para um n@'{u}mero se ou o operando for um n@'{u}mero em ponto flutuante comum ou um grande n@'{u}mero em ponto flutuante ou se o resultado
+for um inteiro exato ou um racional; de outra forma uma exponencia@,{c}@~{a}o pode ser simplificada
+para @mref{sqrt}
+ou outra exponencia@,{c}@~{a}o ou esquerda sem modifica@,{c}@~{a}o.
+
+Propaga@,{c}@~{a}o de ponto flutuante se aplica a c@'{a}lculos aritm@'{e}ticos: se qualquer operando for
+um grande n@'{u}mero em ponto flutuante, o resultado @'{e} um grande n@'{u}mero em ponto flutuante; de outra forma, se um operando for um n@'{u}mero em ponto
+flutuante comum, o resultado @'{e} um n@'{u}mero em ponto flutuante comum; de outra forma, os operandos s@~{a}o racionais
+ou inteiros e o resultado @'{e} um racional ou um inteiro.
+
+Computa@,{c}@~{o}es aritm@'{e}ticas s@~{a}o uma simplifica@,{c}@~{a}o, n@~{a}o uma avalia@,{c}@~{a}o.
+Dessa forma a aritm@'{e}tica @'{e} realizada em express@~{o}es entre aspas duplas (mas simplificadas).
+
+Opera@,{c}@~{o}es aritm@'{e}ticas s@~{a}o aplicadas elemento-a-elemento para listas quando o sinalizador
+global @mref{listarith}
+for @code{true}, e sempre aplicada elemento-a-elemento para
+matrizes.  Quando um operando for uma lista ou matriz e o outro for um operando de
+algum outro tipo, o outro operando @'{e} combinado com cada um dos elementos da
+lista ou matriz.
+
+Exemplos:
+
+Adi@,{c}@~{a}o e multiplica@,{c}@~{a}o s@~{a}o operadores en@'{a}rios comutativos.
+Maxima ordena os operando para construir uma representa@,{c}@~{a}o can@^{o}nica.
+Os nomes desses operadores s@~{a}o @code{"+"} e @code{"*"}.
+
+@c ===beg===
+@c c + g + d + a + b + e + f;
+@c [op (%), args (%)];
+@c c * g * d * a * b * e * f;
+@c [op (%), args (%)];
+@c apply ("+", [a, 8, x, 2, 9, x, x, a]);
+@c apply ("*", [a, 8, x, 2, 9, x, x, a]);
+@c ===end===
+@example
+(%i1) c + g + d + a + b + e + f;
+(%o1)               g + f + e + d + c + b + a
+(%i2) [op (%), args (%)];
+(%o2)              [+, [g, f, e, d, c, b, a]]
+(%i3) c * g * d * a * b * e * f;
+(%o3)                     a b c d e f g
+(%i4) [op (%), args (%)];
+(%o4)              [*, [a, b, c, d, e, f, g]]
+(%i5) apply ("+", [a, 8, x, 2, 9, x, x, a]);
+(%o5)                    3 x + 2 a + 19
+(%i6) apply ("*", [a, 8, x, 2, 9, x, x, a]);
+                                 2  3
+(%o6)                       144 a  x
+@end example
+
+Divis@~{a}o e exponencia@,{c}@~{a}o s@~{a}o operadores bin@'{a}rios n@~{a}o comutativos.
+Os nomes desses operadores s@~{a}o @code{"/"} e @code{"^"}.
+
+@c ===beg===
+@c [a / b, a ^ b];
+@c [map (op, %), map (args, %)];
+@c [apply ("/", [a, b]), apply ("^", [a, b])];
+@c ===end===
+@example
+(%i1) [a / b, a ^ b];
+                              a   b
+(%o1)                        [-, a ]
+                              b
+(%i2) [map (op, %), map (args, %)];
+(%o2)              [[/, ^], [[a, b], [a, b]]]
+(%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
+                              a   b
+(%o3)                        [-, a ]
+                              b
+@end example
+
+Subtra@,{c}@~{a}o e divis@~{a}o s@~{a}o representadas internamente
+em termos de adi@,{c}@~{a}o e multiplica@,{c}@~{a}o, respectivamente.
+
+@c ===beg===
+@c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+@c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+@c ===end===
+@example
+(%i1) [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+(%o1)                      [+, a, - b]
+(%i2) [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+                                   1
+(%o2)                       [*, a, -]
+                                   b
+@end example
+
+Computa@,{c}@~{o}es s@~{a}o realizadas sobre n@'{u}meros literais.
+Aplica-se propaga@,{c}@~{a}o de n@'{u}meros em ponto flutuante.
+
+@c ===beg===
+@c 17 + b - (1/2)*29 + 11^(2/4);
+@c [17 + 29, 17 + 29.0, 17 + 29b0];
+@c ===end===
+@example
+(%i1) 17 + b - (1/2)*29 + 11^(2/4);
+                                       5
+(%o1)                   b + sqrt(11) + -
+                                       2
+(%i2) [17 + 29, 17 + 29.0, 17 + 29b0];
+(%o2)                   [46, 46.0, 4.6b1]
+@end example
+
+Computa@,{c}@~{a}o aritm@'{e}ticas s@~{a}o uma simplifica@,{c}@~{a}o, n@~{a}o uma avalia@,{c}@~{a}o.
+
+@c ===beg===
+@c simp : false;
+@c '(17 + 29*11/7 - 5^3);
+@c simp : true;
+@c '(17 + 29*11/7 - 5^3);
+@c ===end===
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) '(17 + 29*11/7 - 5^3);
+                              29 11    3
+(%o2)                    17 + ----- - 5
+                                7
+(%i3) simp : true;
+(%o3)                         true
+(%i4) '(17 + 29*11/7 - 5^3);
+                                437
+(%o4)                         - ---
+                                 7
+@end example
+
+Aritm@'{e}tica @'{e} realizada elemento-a-elemento em listas (dependendo de
+@code{listarith}) e matrizes.
+
+@c ===beg===
+@c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@c 5 * matrix ([a, x], [h, u]);
+@c listarith : false;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c listarith : true;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c ===end===
+@example
+(%i1) matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@group
+                        [ a - 1  x - 2 ]
+(%o1)                   [              ]
+                        [ h - 3  u - 4 ]
+@end group
+(%i2) 5 * matrix ([a, x], [h, u]);
+                          [ 5 a  5 x ]
+(%o2)                     [          ]
+                          [ 5 h  5 u ]
+(%i3) listarith : false;
+(%o3)                         false
+(%i4) [a, c, m, t] / [1, 7, 2, 9];
+                          [a, c, m, t]
+(%o4)                     ------------
+                          [1, 7, 2, 9]
+(%i5) [a, c, m, t] ^ x;
+                                      x
+(%o5)                     [a, c, m, t]
+(%i6) listarith : true;
+(%o6)                         true
+(%i7) [a, c, m, t] / [1, 7, 2, 9];
+                              c  m  t
+(%o7)                     [a, -, -, -]
+                              7  2  9
+(%i8) [a, c, m, t] ^ x;
+                          x   x   x   x
+(%o8)                   [a , c , m , t ]
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{**}
+@deffn {Operator} **
+
+Operador de exponencia@,{c}@~{a}o.
+Maxima reconhece @code{**} como o mesmo operador que @mref{^}
+na entrada,
+e @code{**} @'{e} mostrado como @code{^} na sa@'{i}da unidimensional,
+ou colocando o expoente como um super-escrito na sa@'{i}da bidimensional.
+
+A fun@,{c}@~{a}o @mref{fortran}
+mostra o operador de exponencia@,{c}@~{a}o como @code{**},
+independente de esse operador de exponencia@,{c}@~{a}o vir de uma entrada @code{**} ou de uma entrada @code{^}.
+
+Exemplos:
+
+@c ===beg===
+@c is (a**b = a^b);
+@c x**y + x^z;
+@c string (x**y + x^z);
+@c fortran (x**y + x^z);
+@c ===end===
+@example
+(%i1) is (a**b = a^b);
+(%o1)                         true
+(%i2) x**y + x^z;
+                              z    y
+(%o2)                        x  + x
+(%i3) string (x**y + x^z);
+(%o3)                        x^z+x^y
+(%i4) fortran (x**y + x^z);
+      x**z+x**y
+(%o4)                         done
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{^^}
+@deffn {Operator} ^^
+@ifinfo
+@fnindex Exponencia@,{c}@~{a}o n@~{a}o comutativa
+@end ifinfo
+
+Operador de exponencia@,{c}@~{a}o n@~{a}o comutativa.
+O operador @code{^^} @'{e} o operador de exponencia@,{c}@~{a}o n@~{a}o comutativa que corresponde @`{a} multiplica@,{c}@~{a}o
+n@~{a}o comutativa @code{.}, da mesma forma que o operador de exponencia@,{c}@~{a}o comum @code{^}
+corresponde ao operador de multiplica@,{c}@~{a}o comutativa @code{*}.
+
+A exponencia@,{c}@~{a}o n@~{a}o comutativa @'{e} mostrada como @code{^^} na sa@'{i}da unidimensional,
+e pela comoca@,{c}@~{a}o do expoente como um super-escrito entre os sinais de "menor que" e "maior que" @code{< >}
+na sa@'{i}da bidimensional.
+
+Exemplos:
+
+@c ===beg===
+@c a . a . b . b . b + a * a * a * b * b;
+@c string (a . a . b . b . b + a * a * a * b * b);
+@c ===end===
+@example
+(%i1) a . a . b . b . b + a * a * a * b * b;
+                        3  2    <2>    <3>
+(%o1)                  a  b  + a    . b
+(%i2) string (a . a . b . b . b + a * a * a * b * b);
+(%o2)                  a^3*b^2+a^^2 . b^^3
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{.}
+@deffn {Operator} .
+@ifinfo
+@fnindex Multiplica@,{c}@~{a}o n@~{a}o comutativa
+@end ifinfo
+
+O operador ponto, para multiplica@,{c}@~{a}o (n@~{a}o comutativa) de matrizes.
+Quando @code{"."} for usado nessa situa@,{c}@~{a}o, deve ter um espa@,{c}o em branco antes e outro depois
+do ponto, e.g.  @code{A . B}.  Esse procedimento distingue o ponto da multiplica@,{c}@~{a}o n@~{a}o comutativa do ponto
+decimal de um n@'{u}mero em ponto flutuante de forma clara.
+
+Veja tamb@'{e}m
+@code{dot},
+@code{dot0nscsimp},
+@code{dot0simp},
+@code{dot1simp},
+@code{dotassoc},
+@code{dotconstrules},
+@code{dotdistrib},
+@code{dotexptsimp},
+@code{dotident},
+e
+@code{dotscrules}.
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Relational operators, Logical operators, Arithmetic operators, Operators
+@section Relational operators
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{<}
+@anchor{<=}
+@anchor{>=}
+@anchor{>}
+@deffn {Operator} <
+@ifinfo
+@fnindex Menor que
+@end ifinfo
+@deffnx {Operator} <=
+@ifinfo
+@fnindex Menor que ou equal
+@end ifinfo
+@deffnx {Operator} >=
+@ifinfo
+@fnindex Maior que ou equal
+@end ifinfo
+@deffnx {Operator} >
+@ifinfo
+@fnindex Maior que
+@end ifinfo
+
+Os s@'{i}mbolos @code{<} @code{<=} @code{>=} e @code{>} representam menor que, menor
+que ou igual a, maior que ou igual a, e maior que, respectivamente.  Os nomes
+desses operadores s@~{a}o @code{"<"} @code{"<="} @code{">="} e @code{">"}, os quais
+podem aparecer onde o nome de uma fun@,{c}@~{a}o ou operador seja necess@'{a}rio.
+
+Esses operadores relacionais s@~{a}o todos operadores bin@'{a}rios; constru@,{c}@~{o}es tais como
+@code{a < b < c} n@~{a}o s@~{a}o reconhecidas pelo Maxima.
+
+Express@~{o}es relacionais s@~{a}o avaliadas para valores Booleanos @footnote{Nota do tradutor: George Boole - 1815/1864 - Lincoln, Inglaterra.} atrav@'{e}s das fun@,{c}@~{o}es
+@mref{is}
+e @mrefcomma{maybe}
+e atrav@'{e}s das constru@,{c}@~{o}es de programa@,{c}@~{a}o
+@mrefcomma{if} @mrefcomma{while}
+e @mrefdot{unless}
+Express@~{o}es relacionais
+n@~{a}o s@~{a}o avaliadas de outra forma ou simplificadas para valores Booleanos, embora os
+argumentos de express@~{o}es relacionais sejam avaliados (quando avalia@,{c}@~{a}o n@~{a}o for
+de outra forma evitada atrav@'{e}s do uso do ap@'{o}strofo).
+
+Quando uma express@~{a}o relacional n@~{a}o puder ser avaliada para @code{true} ou @code{false},
+o comportamento de @code{is} e @code{if} @'{e} governado pelo sinalizador global
+@mrefdot{prederror}
+Quando @code{prederror} for @code{true}, @code{is} e
+@code{if} dispara um erro.  Quando @code{prederror} for @code{false}, @code{is}
+retorna @code{unknown}, e @code{if} retorna uma express@~{a}o condicional
+parcialmente avaliada.
+
+A fun@,{c}@~{a}o @code{maybe} sempre comporta-se como @code{prederror} onde @code{false}, e
+@code{while} e @code{unless} sempre comporta-se como @code{prederror} onde
+@code{true}.
+
+Operadores relacionais n@~{a}o s@~{a}o distributivos sobre listas ou outras agrega@,{c}@~{o}es.
+
+Veja tamb@'{e}m @mrefcomma{=} @mrefcomma{#} @mrefcomma{equal}
+e @mrefdot{notequal}
+
+Exemplos:
+
+Express@~{o}es relacionais s@~{a}o avaliadas para valores Booleanos atrav@'{e}s de algumas fun@,{c}@~{o}es e
+constru@,{c}@~{o}es de programa@,{c}@~{a}o.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c is (x < y);
+@c maybe (y > z);
+@c if x >= z then 1 else 0;
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, 
+@c        return (S));
+@c ===end===
+@example
+(%i1) [x, y, z] : [123, 456, 789];
+(%o1)                    [123, 456, 789]
+(%i2) is (x < y);
+(%o2)                         true
+(%i3) maybe (y > z);
+(%o3)                         false
+(%i4) if x >= z then 1 else 0;
+(%o4)                           0
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, 
+             return (S));
+(%o5)                         5050
+@end example
+
+Espress@~{o}es relacionais n@~{a}o s@~{a}o avaliadas ou simplificadas de outra forma para vlores
+Booleanos, embora os argumentos de express@~{o}es relacionais sejam avaliados.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c [x < y, y <= z, z >= y, y > z];
+@c map (is, %);
+@c ===end===
+@example
+(%o1)                    [123, 456, 789]
+(%i2) [x < y, y <= z, z >= y, y > z];
+(%o2)    [123 < 456, 456 <= 789, 789 >= 456, 456 > 789]
+(%i3) map (is, %);
+(%o3)               [true, true, true, false]
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Logical operators, Operators for Equations, Relational operators, Operators
+@section Logical operators
+@c -----------------------------------------------------------------------------
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{and}
+@deffn {Operator} and
+@ifinfo
+@fnindex Conjun@,{c}@~{a}o l@'{o}gica
+@end ifinfo
+
+O operador l@'{o}gico de conjun@,{c}@~{a}o.  O operador @code{and} @'{e} um operador en@'{a}rio infixo;
+seus operandos s@~{a}o express@~{o}es Booleanas, e seu resultado @'{e} um valor Booleano.
+
+O operador @code{and} for@,{c}a avalia@,{c}@~{a}o de um ou mais de seus operandos (da mesma forma que @mref{is}
+), e pode for@,{c}ar a avalia@,{c}@~{a}o de todos os operandos.
+
+Operandos s@~{a}o avaliados na ordem em que aparecerem.  O operador @code{and} avalia
+somente a quantidade de operandos necess@'{a}rias para determinar o resultado.  Se qualquer
+operando for @code{false}, o resultado @'{e} @code{false} e nenhum operando da@'{i} em diante @'{e}
+avaliado.
+
+O sinalizador global @mref{prederror}
+governa o comportamento de @code{and} quando um
+operando avaliado n@~{a}o puder ser determinado @code{true} ou @code{false}.
+O operador @code{and} mostra uma mensagem de erro quando @code{prederror} for @code{true}.
+De outra forma, operandos que n@~{a}o avaliam para @code{true} ou @code{false} s@~{a}o
+aceitos, e o resultado @'{e} uma express@~{a}o Booleana.
+
+O operador @code{and} n@~{a}o @'{e} comutativo: @code{a and b} pode n@~{a}o ser igual a
+@code{b and a} devido ao tratamento de operandos indeterminados.
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{not}
+@deffn {Operator} not
+@ifinfo
+@fnindex Nega@,{c}@~{a}o l@'{o}gica
+@end ifinfo
+
+O operador de nega@,{c}@~{a}o l@'{o}gica.  O operador @code{not} @'{e} um operador prefixado;
+seu operando @'{e} uma express@~{a}o Booleana, e seu resultado @'{e} um valor Booleano.
+
+O operador @code{not} for@,{c}a avalia@,{c}@~{a}o de seus operandos (da mesma forma que @code{is}).
+
+O sinalizador global @mref{prederror}
+governa o comportamento de @code{not} quando seu
+operando n@~{a}o puder ser determinado @code{true} ou @code{false}.  O operador @code{not}
+mostra uma mensagem de erro quando @code{prederror} for @code{true}.  De outra forma,
+operandos que n@~{a}o avaliam para @code{true} ou @code{false} s@~{a}o aceitos,
+e o resultado @'{e} uma express@~{a}o Booleana.
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{or}
+@deffn {Operator} or
+@ifinfo
+@fnindex Disjun@,{c}@~{a}o l@'{o}gica
+@end ifinfo
+
+O operador de disjun@,{c}@~{a}o l@'{o}gica.  O operador @code{or} @'{e} um operador en@'{a}rio infixo;
+seus operandos s@~{a}o express@~{o}es Booleana, e seu resultado @'{e} um valor Booleano.
+
+O operador @code{or} for@,{c}a avalia@,{c}@~{a}o de um ou mais de seus operandos (da mesma forma que @mref{is}
+), e pode for@,{c}ar a avalia@,{c}@~{a}o de todos os operandos.
+
+Operandos s@~{a}o avaliados na ordem em que eles aparecem.  O operador @code{or} avalia
+somente a quantidade de operandos necess@'{a}ria para determinar o resultado.  Se qualquer
+operando for @code{true}, o resultado @'{e} @code{true} e nenhum operando adicional @'{e}
+avaliado.
+
+O sinalizador global @mref{prederror}
+governa o comportamento de @code{or} quando um
+operando avaliado n@~{a}o pode ser determinado @code{true} ou @code{false}.
+O operando @code{or} mostra uma mensagem de erro quando @code{prederror} for @code{true}.
+De outra forma, operandos que n@~{a}o avaliam para @code{true} ou @code{false} s@~{a}o
+aceitos, e o resultado @'{e} uma express@~{a}o Booleana.
+
+O operando @code{or} n@~{a}o @'{e} comutativo: @code{a or b} pode n@~{a}o ser igual a @code{b or a}
+devido ao tratamento de operandos indeterminados.
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Operators for Equations, Assignment operators, Logical operators, Operators
+@section Operators for Equations
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{#}
+@deffn {Operator} #
+@ifinfo
+@fnindex Diferente (desigualdade sint@'{a}tica)
+@end ifinfo
+
+Representa a nega@,{c}@~{a}o da igualdade sint@'{a}tica @mrefdot{=}
+
+Note que devido @`{a}s regras para avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular devido a @code{not @var{expr}} ocasionar a avalia@,{c}@~{a}o de @var{expr}),
+@code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})},
+ao inv@'{e}s de ser equivalente a @code{@var{a} # @var{b}}.
+
+Exemplos:
+
+@c ===beg===
+@c a = b;
+@c is (a = b);
+@c a # b;
+@c not a = b;
+@c is (a # b);
+@c is (not a = b);
+@c ===end===
+@example
+(%i1) a = b;
+(%o1)                         a = b
+(%i2) is (a = b);
+(%o2)                         false
+(%i3) a # b;
+(%o3)                         a # b
+(%i4) not a = b;
+(%o4)                         true
+(%i5) is (a # b);
+(%o5)                         true
+(%i6) is (not a = b);
+(%o6)                         true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{=}
+@deffn {Operator} =
+@ifinfo
+@fnindex Operador de equa@,{c}@~{a}o
+@fnindex Igual (igualdade sint@'{a}tica)
+@end ifinfo
+
+O operador de equa@,{c}@~{a}o.
+
+Uma express@~{a}o @code{@var{a} = @var{b}}, por si mesma, representa uma equa@,{c}@~{a}o
+n@~{a}o avaliada, que pode ou n@~{a}o manter-se.  Equa@,{c}@~{o}es n@~{a}o avaliadas podem aparecer como
+argumentos a @mref{solve}
+e a @mref{algsys}
+ou a alguma outra fun@,{c}@~{a}o.
+
+A fun@,{c}@~{a}o @mref{is}
+avalia @code{=} para um valor Booleano.
+O comando @code{is(@var{a} = @var{b})} avalia @code{@var{a} = @var{b}} para @code{true}
+quando @var{a} e @var{b} forem identicos.  Isto @'{e}, @var{a} e @var{b} s@~{a}o @'{a}tomos
+que s@~{a}o identicos, ou eles n@~{a}o s@~{a}o @'{a}tomos e seus operadores s@~{a}o identicos e
+seus argumentos s@~{a}o identicos.  De outra forma, @code{is(@var{a} = @var{b})}
+avalia para @code{false}; @code{is(@var{a} = @var{b})} nunca avalia para @code{unknown}.  Quando
+@code{is(@var{a} = @var{b})} for @code{true}, @var{a} e @var{b} s@~{a}o ditos serem
+sintaticamente iguais, em oposi@,{c}@~{a}o a express@~{o}es equivalentes, para o que
+@code{is(equal(@var{a}, @var{b}))} @'{e} @code{true}.  Express@~{o}es podem ser
+equivalentes e n@~{a}o sintaticamente iguais.
+
+A nega@,{c}@~{a}o de @code{=} @'{e} representada por @mrefdot{#}
+Da mesma forma que o @code{=}, uma express@~{a}o @code{@var{a} # @var{b}}, por si mesma, n@~{a}o @'{e}
+avaliada.  O comando @code{is(@var{a} # @var{b})} avalia @code{@var{a} # @var{b}} para
+@code{true} ou @code{false}.
+
+Al@'{e}m de @code{is}, alguns outros oeradores avaliam @code{=} e @code{#}
+para @code{true} ou @code{false}, s@~{a}o eles @mrefcomma{if} @mrefcomma{and}
+@w{}@mrefcomma{or}
+e @mrefdot{not}
+
+Note que pelo fato de as regras para avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular pelo fato de @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr}),
+@code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})},
+ao inv@'{e}s de ser equivalente a @code{@var{a} # @var{b}}.
+
+As fun@,{c}@~{o}es @mref{rhs}
+e @mref{lhs}
+retornam o primeiro membro e o segundo membro da equa@,{c}@~{a}o,
+respectivamente, de uma equa@,{c}@~{a}o ou inequa@,{c}@~{a}o.
+
+Veja tamb@'{e}m @mref{equal}
+e @mrefdot{notequal}
+
+Exemplos:
+
+Uma express@~{a}o @code{@var{a} = @var{b}}, por si mesma, representa
+uma equa@,{c}@~{a}o n@~{a}o avaliada, que pode ou n@~{a}o se manter.
+
+@c ===beg===
+@c eq_1 : a * x - 5 * y = 17;
+@c eq_2 : b * x + 3 * y = 29;
+@c solve ([eq_1, eq_2], [x, y]);
+@c subst (%, [eq_1, eq_2]);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) eq_1 : a * x - 5 * y = 17;
+(%o1)                    a x - 5 y = 17
+(%i2) eq_2 : b * x + 3 * y = 29;
+(%o2)                    3 y + b x = 29
+(%i3) solve ([eq_1, eq_2], [x, y]);
+                        196         29 a - 17 b
+(%o3)          [[x = ---------, y = -----------]]
+                     5 b + 3 a       5 b + 3 a
+(%i4) subst (%, [eq_1, eq_2]);
+@group
+         196 a     5 (29 a - 17 b)
+(%o4) [--------- - --------------- = 17, 
+       5 b + 3 a      5 b + 3 a
+                                  196 b     3 (29 a - 17 b)
+                                --------- + --------------- = 29]
+                                5 b + 3 a      5 b + 3 a
+@end group
+(%i5) ratsimp (%);
+(%o5)                  [17 = 17, 29 = 29]
+@end example
+
+O comando @code{is(@var{a} = @var{b})} avalia @code{@var{a} = @var{b}} para @code{true}
+quando @var{a} e @var{b} forem sintaticamente iguais (isto @'{e}, identicos).
+Express@~{o}es podem ser equivalentes e n@~{a}o sintaticamente iguais.
+
+@c ===beg===
+@c a : (x + 1) * (x - 1);
+@c b : x^2 - 1;
+@c [is (a = b), is (a # b)];
+@c [is (equal (a, b)), is (notequal (a, b))];
+@c ===end===
+@example
+(%i1) a : (x + 1) * (x - 1);
+(%o1)                    (x - 1) (x + 1)
+(%i2) b : x^2 - 1;
+                              2
+(%o2)                        x  - 1
+(%i3) [is (a = b), is (a # b)];
+(%o3)                     [false, true]
+(%i4) [is (equal (a, b)), is (notequal (a, b))];
+(%o4)                     [true, false]
+@end example
+
+Alguns operadores avaliam @code{=} e @code{#} para @code{true} ou @code{false}.
+
+@c ===beg===
+@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else 
+@c       BAR;
+@c eq_3 : 2 * x = 3 * x;
+@c eq_4 : exp (2) = %e^2;
+@c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
+@c ===end===
+@example
+(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else
+      BAR;
+(%o1)                          FOO
+(%i2) eq_3 : 2 * x = 3 * x;
+(%o2)                       2 x = 3 x
+(%i3) eq_4 : exp (2) = %e^2;
+                              2     2
+(%o3)                       %e  = %e
+(%i4) [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
+(%o4)                  [false, true, true]
+@end example
+
+Devido a @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr},
+@code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})}.
+
+@c ===beg===
+@c [2 * x # 3 * x, not (2 * x = 3 * x)];
+@c is (2 * x # 3 * x);
+@c ===end===
+@example
+(%i1) [2 * x # 3 * x, not (2 * x = 3 * x)];
+(%o1)                   [2 x # 3 x, true]
+(%i2) is (2 * x # 3 * x);
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Assignment operators, User defined operators, Operators for Equations, Operators
+@section Assignment operators
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{:}
+@deffn {Operator} :
+@ifinfo
+@fnindex Operador de atribui@,{c}@~{a}o
+@end ifinfo
+
+Operador de atribui@,{c}@~{a}o.
+
+Quando o primeiro membro @'{e} uma vari@'{a}vel simples (n@~{a}o uma vari@'{a}vel de subscrito), @code{:}
+avalia seu segundo membro e associa aquele valor ao primeiro membro da equa@,{c}@~{a}o.
+
+Quando o primeiro membro for um elemento subscrito de uma lista, matriz, Vetor est@'{a}tico do
+Maxima explicitamente declarado, ou um vetor est@'{a}tico do Lisp, o segundo membro @'{e} atribu@'{i}do @`{a}quele elemento.
+O subscrito deve dar nome a um elemento existente; tais objetos n@~{a}o podem ser extendidos
+dando nome a elementos n@~{a}o existentes.
+
+Quando o primeiro membro da igualdade for um elemento com subscrito de um vetor est@'{a}tico do Maxima n@~{a}o declarado,
+o segundo emebro @'{e} atribu@'{i}do a aquele elemento, se esse elemento j@'{a} existia anteriormente,
+ou um novo elemento @'{e} alocado, se ele n@~{a}o existir anteriormente.
+
+Quando o primeiro membro for uma lista de vari@'{a}veis simples e/ou de vari@'{a}veis de subscritos, o
+segundo membro deve avaliar para uma lista, e os elementos do segundo membro
+s@~{a}o atribu@'{i}dos a elementos do primeiro membro, paralelamente.
+
+Veja tamb@'{e}m @mref{kill}
+e @mrefcomma{remvalue} que removem associa@,{c}@~{o}es entre
+o primeiro membro e seu valor.
+
+Exemplos:
+
+Atribui@,{c}@~{a}o a uma vari@'{a}vel simples.
+
+@c ===beg===
+@c a;
+@c a : 123;
+@c a;
+@c ===end===
+@example
+(%i1) a;
+(%o1)                           a
+(%i2) a : 123;
+(%o2)                          123
+(%i3) a;
+(%o3)                          123
+@end example
+
+Atribui@,{c}@~{a}o a um elemento de uma lista.
+
+@c ===beg===
+@c b : [1, 2, 3];
+@c b[3] : 456;
+@c b;
+@c ===end===
+@example
+(%i1) b : [1, 2, 3];
+(%o1)                       [1, 2, 3]
+(%i2) b[3] : 456;
+(%o2)                          456
+(%i3) b;
+(%o3)                      [1, 2, 456]
+@end example
+
+Atribui@,{c}@~{a}o cria um vetor est@'{a}tico n@~{a}o declarado.
+
+@c ===beg===
+@c c[99] : 789;
+@c c[99];
+@c c;
+@c arrayinfo (c);
+@c listarray (c);
+@c ===end===
+@example
+(%i1) c[99] : 789;
+(%o1)                          789
+(%i2) c[99];
+(%o2)                          789
+(%i3) c;
+(%o3)                           c
+(%i4) arrayinfo (c);
+(%o4)                   [hashed, 1, [99]]
+(%i5) listarray (c);
+(%o5)                         [789]
+@end example
+
+Atribui@,{c}@~{a}o multipla.
+
+@c ===beg===
+@c [a, b, c] : [45, 67, 89];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) [a, b, c] : [45, 67, 89];
+(%o1)                     [45, 67, 89]
+(%i2) a;
+(%o2)                          45
+(%i3) b;
+(%o3)                          67
+(%i4) c;
+(%o4)                          89
+@end example
+
+Atribui@,{c}@~{a}o m@'{u}ltipla @'{e} realizada paralelamente.
+Os valores de @code{a} e @code{b} s@~{a}o comutados nesse exemplo.
+
+@c ===beg===
+@c [a, b] : [33, 55];
+@c [a, b] : [b, a];
+@c a;
+@c b;
+@c ===end===
+@example
+(%i1) [a, b] : [33, 55];
+(%o1)                       [33, 55]
+(%i2) [a, b] : [b, a];
+(%o2)                       [55, 33]
+(%i3) a;
+(%o3)                          55
+(%i4) b;
+(%o4)                          33
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@need 900
+@anchor{::}
+@deffn {Operator} ::
+@ifinfo
+@fnindex Operador de atribui@,{c}@~{a}o (avalia o primeiro membro da igualdade)
+@end ifinfo
+
+Operador de atribui@,{c}@~{a}o.
+
+O operador @code{::} funciona da mesma forma que @mref{:}
+(o que se pode concluir pela leitura do t@'{o}pico correspondente a @mref{:}
+) exceto que @code{::} avalia
+o primeiro e o segundo membros da atribui@,{c}@~{a}o.
+
+Exemplos:
+
+@c ===beg===
+@c x : 'foo;
+@c x :: 123;
+@c foo;
+@c x : '[a, b, c];
+@c x :: [11, 22, 33];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) x : 'foo;
+(%o1)                          foo
+(%i2) x :: 123;
+(%o2)                          123
+(%i3) foo;
+(%o3)                          123
+(%i4) x : '[a, b, c];
+(%o4)                       [a, b, c]
+(%i5) x :: [11, 22, 33];
+(%o5)                     [11, 22, 33]
+(%i6) a;
+(%o6)                          11
+(%i7) b;
+(%o7)                          22
+(%i8) c;
+(%o8)                          33
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{::=}
+@deffn {Operator} ::=
+@ifinfo
+@fnindex Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o macro
+@end ifinfo
+
+Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o de Macro.
+O operador @code{::=} define uma fun@,{c}@~{a}o (chamada uma "macro" por raz@~{o}es hist@'{o}ricas) a qual
+n@~{a}o avalia seus argumentos, e a express@~{a}o que o @code{::=} retorna (chamada "expans@~{a}o de
+macro") @'{e} avaliada no contexto a partor do qual a macro foi chamada.
+Uma fun@,{c}@~{a}o de macro @'{e}, em outras ocasi@~{o}es, a mesma coisa que uma defini@,{c}@~{a}o de fun@,{c}@~{a}o comum.
+
+A fun@,{c}@~{a}o @mref{macroexpand}  
+retorna uma expans@~{a}o de macro (sem que essa expans@~{a}o seja avaliada).
+A fun@,{c}@~{a}o @code{macroexpand (qualquercoisa (x))} seguida por @code{''%} @'{e} equivalente a
+@code{qualquercoisa (x)} quando @code{qualquercoisa} for uma fun@,{c}@~{a}o de macro.
+
+O operador @code{::=} coloca o nome de fun@,{c}@~{a}o de nova macro dentro da lista global
+@mrefdot{macros}  @mrefcomma{kill} @mrefcomma{remove}
+e @mref{remfunction}
+@w{} desassociam defini@,{c}@~{o}es de fun@,{c}@~{a}o de macro e remove nomes da lista global @code{macros}.
+
+A fun@,{c}@~{a}o @mref{fundef}
+retorna uma defini@,{c}@~{a}o de fun@,{c}@~{a}o de macro.  A fun@,{c}@~{a}o @mref{dispfun}
+alem de retornar a defini@,{c}@~{a}o atribui a essa defini@,{c}@~{a}o um r@'{o}tulo.
+
+Fun@,{c}@~{o}es de macro comumente possuem express@~{o}es @mref{buildq}
+e @mref{splice}
+para contruir uma express@~{a}o, que @'{e} ent@~{a}o avaliada.
+
+Exemplos:
+
+A fun@,{c}@~{a}o de macro n@~{a}o avalia seus argumentos, ent@~{a}o a messagem (1) mostra @code{y - z}, n@~{a}o
+o valor de @code{y - z}.  A expans@~{a}o de macro (a express@~{a}o com ap@'{o}strofo
+@code{'(print ("(2) x @'{e} igual a", x))}) @'{e} avaliada no contexto a partir do qual
+a macro foi chamada, mostrando a mensagem (2).
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printq1 (x) ::= block (print ("(1) x @'{e} igual a", x), 
+@c                                 '(print ("(2) x @'{e} igual a", x)))$
+@c printq1 (y - z);
+@c ===end===
+@example
+(%i1) x: %pi$
+(%i2) y: 1234$
+(%i3) z: 1729 * w$
+(%i4) printq1 (x) ::= block (print ("(1) x @'{e} igual a", x),
+      '(print ("(2) x @'{e} igual a", x)))$
+(%i5) printq1 (y - z);
+(1) x @'{e} igual a y - z
+(2) x @'{e} igual a %pi
+(%o5)                                 %pi
+@end example
+
+Uma função comum avalia seus argumentos, então mensagem (1) mostra o valor de
+@code{y - z}.  O valor de retorno não é avaliado, então mensagem (2) não é mostrada
+até a avaliação explícita @code{''%}.
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printe1 (x) := block (print ("(1) x é igual a", x), 
+@c       '(print ("(2) x é igual a", x)))$
+@c printe1 (y - z);
+@c ''%;
+@c ===end===
+@example
+(%i1) x: %pi$
+(%i2) y: 1234$
+(%i3) z: 1729 * w$
+(%i4) printe1 (x) := block (print ("(1) x é igual a", x),
+      '(print ("(2) x é igual a", x)))$
+(%i5) printe1 (y - z);
+(1) x is equal to 1234 - 1729 w
+(%o5)                     print((2) x é igual a, x)
+(%i6) ''%;
+(2) x é igual a %pi
+(%o6)                                 %pi
+@end example
+
+A função @code{macroexpand} retorna uma expansão de macro.
+O comando @code{macroexpand (qualquercoisa (x))} seguido por @code{''%} é equivalente a
+@code{qualquercoisa (x)} quando @code{qualquercoisa} for uma função de macro.
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c g (x) ::= buildq ([x], print ("x é igual a", x))$
+@c macroexpand (g (y - z));
+@c ''%;
+@c g (y - z);
+@c ===end===
+@example
+(%i1) x: %pi$
+(%i2) y: 1234$
+(%i3) z: 1729 * w$
+(%i4) g (x) ::= buildq ([x], print ("x é igual a", x))$
+(%i5) macroexpand (g (y - z));
+(%o5)                     print(x é igual a, y - z)
+(%i6) ''%;
+x is equal to 1234 - 1729 w
+(%o6)                            1234 - 1729 w
+(%i7) g (y - z);
+x is equal to 1234 - 1729 w
+(%o7)                            1234 - 1729 w
+@end example
+
+@opencatbox
+@category{Function definition} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{:=}
+@deffn {Operator} :=
+@ifinfo
+@fnindex Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o
+@end ifinfo
+
+O operador de definição de função.
+O comando @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} define uma função chamada
+@var{f} com argumentos @var{x_1}, @dots{}, @var{x_n} e lei de formação
+@var{expr}.  O operador @code{:=} nunca avalia a lei de formação (a menos que explicitamente
+se avalie a lei de formação via apóstrofo-apóstrofo @code{'@w{}'}).  A função então definida pode ser uma
+função comum do Maxima (com argumentos entre parêntesis) ou uma função de
+vetor estático (com argumetos entre colchêtes).
+
+Quando o último ou único argumento de função @var{x_n} for uma lista de um elemento, a
+função definida por @code{:=} aceita um número de argumentos variável.  Os argumentos
+atuais são atribuídos um-a-um a argumentos formais @var{x_1}, @dots{},
+@var{x_(n - 1)}, e quaisquer argumentos adicionais, se presentes, são atribuídos a
+@var{x_n} como uma lista.
+
+Todas as definições de função aparecem no mesmo espaço de trabalho; definindo uma função
+@code{f} dentro de outra função @code{g} não limita automaticamente o escopo
+de @code{f} ao escopo de @code{g}.  Todavia, @code{local(f)} torna a definição da
+função @code{f} efetiva somente dentro do bloco ou somente dentro de outra expressão composta
+na qual @mref{local}
+apareça.
+
+Se algum argumento formal @var{x_k} for um símbolo com apóstrofo no início, a função definida através de
+@code{:=} não avalia o argumento atual correspondente.  De outra forma todos os
+argumentos atuais são avaliados.
+
+Veja tamb@'{e}m @mref{define}
+e @mrefdot{::=}
+
+Exemplos:
+
+O operador @code{:=} nunca avalia o corpo da função (a menos que explicitamente avaliado por
+apóstrofo-apóstrofo).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c F1 (x, y) := expr;
+@c F1 (a, b);
+@c F2 (x, y) := ''expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) F1 (x, y) := expr;
+(%o2)                   F1(x, y) := expr
+(%i3) F1 (a, b);
+(%o3)                    cos(y) - sin(x)
+(%i4) F2 (x, y) := ''expr;
+(%o4)              F2(x, y) := cos(y) - sin(x)
+(%i5) F2 (a, b);
+(%o5)                    cos(b) - sin(a)
+@end example
+
+A função definida atraes de @code{:=} pode ser uma função comum do Maxima ou uma
+função de vetor estático.
+
+@c ===beg===
+@c G1 (x, y) := x.y - y.x;
+@c G2 [x, y] := x.y - y.x;
+@c ===end===
+@example
+(%i1) G1 (x, y) := x.y - y.x;
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) G2 [x, y] := x.y - y.x;
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+Quando o último ou único argumento da função @var{x_n} for uma lista de um elemento,
+a função definida através de @code{:=} aceita um número variável de argumentos.
+
+@c ===beg===
+@c H ([L]) := apply ("+", L);
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) H ([L]) := apply ("+", L);
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+A declaração @code{local} torna uma definição de função válida apenas localmente.
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
+
+@opencatbox
+@category{Function definition} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node User defined operators, , Assignment operators, Operators
+@section User defined operators
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{infix}
+@deffn  {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+
+Declara que o operador @var{op} é um operador infixo.  Um operador infixo é uma função de
+dois argumentos, com o nome da função escrito entre os argumentos.
+Por exemplo, o operador de substração @code{-} é um operador infixo.
+
+O comando @code{infix (@var{op})} declara que o operador @var{op} é um operador infixo com poder
+associado padrão de (esquerda e direita ambas iguais a 180) e classe gramatical (esquerda e
+direita ambas iguais a @code{any}).
+@c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+
+O comando @code{infix (@var{op}, @var{lbp}, @var{rbp})} declara que @var{op} é um operador
+infixo com poder associado direito e poder associado esquerdo ambos estabelecidos e classe gramatical padrão
+(esquedo e direito ambos iguais a @code{any}).
+
+O comando @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+declara que o operador @var{op} é um operador infixo com poder associado direito e poder associado
+esquerdo ambos estabelecidos e classes gramaticais @var{lpos}, @var{rpos}, e @var{pos} para o operando
+esquerdo, o operando direito, e o resultado do operador, respectivamente.
+
+"Classe gramatical", referindo-se a declarações de operador, significa tipo de expressão.
+Três tipos de expressão são reconhecidos: @code{expr}, @code{clause}, e @code{any},
+indicando uma expressão algébrica, uma expressão Booleana, ou qualquer tipo de
+expressão, respectivamente.  Maxima pode detectar alguns erros de sintaxe comparando a
+classe gramatical declarada com uma expressão atual.
+
+A precedência do operador @var{op} em relação a outro operador vem dos poderes
+associados esquerdo  e direito dos operadores em questão.  Se os poderes associados
+esquerdo e direito of @var{op} forem ambos maiores que os oderes associados esquerdo e direito de
+algum outro operador, então o operador @var{op} tem precedência sobre o outro operador.
+Se os poderes associados de um deles não forem ambos não forem ambos maiores ou menores, alguma relação mais
+complicada acontece.
+
+A associatividade de @var{op} depende de seus poderes associados.  Maior poder
+associado esquerdo (@var{lbp}) implica que uma instância de @var{op} é avaliada antes de
+outros operadores para sua esquerda em uma expressão, enquanto maior poder associado esquerdo
+(@var{rbp}) imprica que uma instância de @var{op} é avaliado antes de outros operadores
+para sua direita em uma expressão.  Deesa forma maior poder associado esquerdo (@var{lbp}) torna @var{op}
+associativo à direita, enquanto maior poder associado direito (@var{rbp}) torna @var{op} associativo à esquerda.
+Se @var{lbp} for igual a @var{rbp}, o operador @var{op} é associativo à esquerda.
+
+Veja tamb@'{e}m @ref{Introduction to operators}.
+
+Exemplos:
+
+Se os poderes associados esqeurdo e direito de @var{op} forem ambos maiores
+que os poderes associados esquerdo e direito de algum outro operador,
+então @var{op} tem precedência sobre o outro operador.
+
+@c ===beg===
+@c :lisp (get '$+ 'lbp)
+@c :lisp (get '$+ 'rbp)
+@c infix ("##", 101, 101);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")");
+@c 1 + a ## b + 2;
+@c infix ("##", 99, 99);
+@c 1 + a ## b + 2;
+@c ===end===
+@example
+(%i1) :lisp (get '$+ 'lbp)
+100
+(%i1) :lisp (get '$+ 'rbp)
+100
+(%i1) infix ("##", 101, 101);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")");
+(%o2)       (a ## b) := sconcat("(", a, ",", b, ")")
+(%i3) 1 + a ## b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("##", 99, 99);
+(%o4)                          ##
+(%i5) 1 + a ## b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+Maior @var{lbp} torna @var{op} associativo à direita,
+enquanto maior @var{rbp} torna @var{op} associativo à esquerda.
+
+@c ===beg===
+@c infix ("##", 100, 99);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")")$
+@c foo ## bar ## baz;
+@c infix ("##", 100, 101);
+@c foo ## bar ## baz;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i3) foo ## bar ## baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("##", 100, 101);
+(%o4)                          ##
+(%i5) foo ## bar ## baz;
+(%o5)                    ((foo,bar),baz)
+@end example
+
+Maxima pode detectar alguns erros de sintaxe comparando a
+classe gramatical declarada com uma expressão atual.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical
+expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
+@end example
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences} @category{Syntax}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matchfix}
+@deffn  {Function} matchfix (@var{de}, @var{dd})
+@deffnx {Function} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
+
+Declara um operador matchfix com delimitadores esquerdo e direito @var{de}
+e @var{dd}.  Os delimitadores são especificados como sequências de caractere.
+
+Um operador "matchfix" é uma função com qualquer número de argumentos,
+tal que os argumentos ocorrem entre os delimitadores esquerdo e direito.
+Os delimitadores podem ser sequencias de caractere, tão longas quanto o analizador possa
+os delimitadores dos operandos 
+e de outras expressões e operadores.
+Na prática isso inviabiliza delimitadores não analisáveis tais como
+@code{%}, @code{,}, @code{$} e @code{;}, 
+e pode exigir isolamento de delimitadores com espaço em branco.
+O delimitador da direita pode ser igual ou diferente do delimitador da esquerda.
+
+Umdelimitador esquerdo pode ser associado a somente um delimitador direito;
+dois diferentes operadores matchfix não podem ter o mesmo delimitador esquerdo.
+
+Um operador existente pode ser declarado novamente como sendo um operador matchfix
+sem modificar suas outras propriedades.
+Em particular, operadores embutidos como adição @code{+} podem
+ser declarados matchfix,
+mas funções de operador não podem ser definidas para operadores embutidos.
+
+O comando @code{matchfix (@var{de}, @var{dd}, @var{clgr_arg},
+@var{clgr})} declara que o argumento tem a classe gramatical @var{clgr_arg} e resultado
+tem a classe gramatical @var{clgr}, e os delimitadores @var{de} e
+@var{dd}.
+
+"Classe gramatical", referindo-se a declarações de operador, significa tipo de expressão.
+Três tipos são reconhecidos: @code{expr}, @code{clause}, e @code{any},
+indicando uma expressão algébrica, uma expressão Booleana, ou qualquer tipo de
+expressão, respectivamente.
+Maxima pode detectar alguns erros de sintaxe comparando a
+classe gramatical declarada com uma expressão atual.
+
+@c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
+@c An operator declared by @code{matchfix} is assigned a low binding power.
+@c Since a matchfix operator must be evaluated before any expression
+@c which contains it,
+@c binding power is effectively irrelevant
+@c to the declaration of a matchfix operator.
+
+A função para realizar uma operação matchfix é uma função
+comum definida pelo usuário.
+A função de operador é definida
+da forma usual
+com o operador de definição de função @code{:=} ou com @code{define}.
+Os argumentos podem ser escritos entre os delimitadores,
+ou com o delimitador esquerdo como uma sequência de caracteres entre aspas duplas e os argumentos
+em seguida entre parêntesis.
+O comando @code{dispfun (@var{de})} mostra a definição da função.
+
+O único operador matchfix embutido é o construtor de listas @code{[ ]}.
+Os parêntesis @code{( )} e as aspas duplas @code{" "} 
+atuam como operadores matchfix,
+mas não são tratados como tais pelo analisador do Maxima.
+
+O comando @code{matchfix} avalia seus argumentos.
+O comando @code{matchfix} retorna seu primeiro argumento, @var{de}.
+@c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
+
+Exemplos:
+
+Delimitadores podem ser quase qualquer sequência de caracteres.
+
+@c ===beg===
+@c matchfix ("@@", "~");
+@c @@ a, b, c ~;
+@c matchfix (">>", "<<");
+@c >> a, b, c <<;
+@c matchfix ("foo", "oof");
+@c foo a, b, c oof;
+@c >> w + foo x, y oof + z << / @@ p, q ~;
+@c ===end===
+@example
+(%i1) matchfix ("@@@@", "~");
+(%o1)                          @@@@
+(%i2) @@@@ a, b, c ~;
+(%o2)                      @@@@a, b, c~
+(%i3) matchfix (">>", "<<");
+(%o3)                          >>
+(%i4) >> a, b, c <<;
+(%o4)                      >>a, b, c<<
+(%i5) matchfix ("foo", "oof");
+(%o5)                          foo
+(%i6) foo a, b, c oof;
+(%o6)                     fooa, b, coof
+(%i7) >> w + foo x, y oof + z << / @@@@ p, q ~;
+                     >>z + foox, yoof + w<<
+(%o7)                ----------------------
+                            @@@@p, q~
+@end example
+
+Operadores matchfix são funções comuns definidas pelo usuário.
+
+@example
+(%i1) matchfix ("!-", "-!");
+(%o1)                         "!-"
+(%i2) !- x, y -! := x/y - y/x;
+                                    x   y
+(%o2)                   !-x, y-! := - - -
+                                    y   x
+(%i3) define (!-x, y-!, x/y - y/x);
+                                    x   y
+(%o3)                   !-x, y-! := - - -
+                                    y   x
+(%i4) define ("!-" (x, y), x/y - y/x);
+                                    x   y
+(%o4)                   !-x, y-! := - - -
+                                    y   x
+(%i5) dispfun ("!-");
+                                    x   y
+(%t5)                   !-x, y-! := - - -
+                                    y   x
+
+(%o5)                         done
+(%i6) !-3, 5-!;
+                                16
+(%o6)                         - --
+                                15
+(%i7) "!-" (3, 5);
+                                16
+(%o7)                         - --
+                                15
+@end example
+
+@opencatbox
+@category{Syntax} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{function_nary}
+@deffn  {Function} nary (@var{op})
+@deffnx {Function} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
+
+An @code{nary} operator is used to denote a function of any number of arguments,
+each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
+The @code{nary("x")} function is a syntax extension function to declare @code{x}
+to be an @code{nary} operator.  Functions may be declared to be @code{nary}.  If
+@code{declare(j,nary);} is done, this tells the simplifier to simplify, e.g.
+@code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
+
+Veja tamb@'{e}m @ref{Introduction to operators}.
+
+@opencatbox
+@category{Operators} @category{Syntax}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{nofix}
+@deffn  {Function} nofix (@var{op})
+@deffnx {Function} nofix (@var{op}, @var{clgr})
+
+@code{nofix} operators are used to denote functions of no arguments.
+The mere presence of such an operator in a command will cause the
+corresponding function to be evaluated.  Por exemplo, when one types
+"exit;" to exit from a Maxima break, "exit" is behaving similar to a
+@code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
+function which declares @code{x} to be a @code{nofix} operator.
+
+Veja tamb@'{e}m @ref{Introduction to operators}.
+
+@opencatbox
+@category{Operators} @category{Syntax}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{postfix}
+@deffn  {Function} postfix (@var{op})
+@deffnx {Function} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
+
+Operadores @code{postfix} como a variedade @code{prefix} denota funções de um
+único argumento, mas nesse caso o argumento precede uma
+ocorrência do operador na sequência de caracteres de entrada, e.g. 3!.  A
+função @code{postfix("x")} é uma função de extensão de sintaxe para declarar que @code{x}
+é um operador @code{postfix}.
+
+Veja tamb@'{e}m @ref{Introduction to operators}.
+
+@opencatbox
+@category{Operators} @category{Syntax}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{prefix}
+@deffn  {Function} prefix (@var{op})
+@deffnx {Function} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
+
+Um operador @code{prefix} significa uma função de um argumento,
+o qual segue imediatamente uma ocorrência do operador.
+O comando @code{prefix("x")} é uma função de extensão de sintaxe para declarar que @code{x} é um
+operador @code{prefix}.
+
+Veja tamb@'{e}m @ref{Introduction to operators}.
+
+@opencatbox
+@category{Operators} @category{Syntax}
+@closecatbox
+@end deffn
+

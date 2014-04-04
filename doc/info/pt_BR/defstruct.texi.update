@@ -1,0 +1,230 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 1cc1e3dc0675e563a1ce3e0a1b690465  defstruct.texi
+@c
+@c -----------------------------------------------------------------------------
+@page
+@node Structures, , Arrays, Data Types and Structures
+@section Structures
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Structures::       
+* Functions and Variables for Structures::       
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Structures, Functions and Variables for Structures, Structures, Structures
+@subsection Introduction to Structures
+@c -----------------------------------------------------------------------------
+
+Maxima fornece uma agrega@,{c}@~{a}o simples de dados chamada de uma estrutura.
+Uma estrutura @'{e} uma express@~{a}o na qual argumentos s@~{a}o identificados pelo nome (o campo nome)
+e a express@~{a}o como um todo @'{e} identificada por seu operador (o nome da estrutura).
+Um valor de campo pode ser qualquer express@~{a}o.
+
+Uma estrutura @'{e} definida pela fun@,{c}@~{a}o @code{defstruct};
+A vari@'{a}vel global @code{structures} @'{e} a lista das estruturas definidas pelo usu@'{a}rio.
+A fun@,{c}@~{a}o @code{new} cria inst@^{a}ncias de estruturas.
+O operador @code{@@} refere-se a campos.
+O comando @code{kill(@var{S})} remove a defini@,{c}@~{a}o da estrutura @var{S},
+e @code{kill(@var{x}@@ @var{a})} desassocia o campo @var{a} da inst@^{a}ncia de estrutura chamada @var{x}.
+
+Na impress@~{a}o bonita do console de exibi@,{c}@~{a}o (com @code{display2d} igual a @code{true}),
+inst@^{a}ncias de estruturas s@~{a}o mostradas com o valor de cada campo
+representado como uma equa@,{c}@~{a}o, com o nome do campo no primeiro membro da equa@,{c}@~{a}o
+e o valor no segundo membro.
+(A equ@,{c}@~{a}o @'{e} somente uma constru@,{c}@~{a}o visual; somente o valor @'{e} armazenado atualmente.)
+Na exibi@,{c}@~{a}o em uma linha (via @code{grind} ou com @code{display2d} igual a @code{false}),
+inst@^{a}ncias de estrutura s@~{a}o mostradas sem os nomes dos capos.
+
+N@~{a}o existe maneira de usar um nome de campo como um nome de fun@,{c}@~{a}o,
+embora um valor de campo possa ser uma express@~{a}o lambda.
+Tamb@'{e}m n@~{a}o podem os valores de campo serem restricos a certos tipos; qualquer campo pode receber qualqur tipo de express@~{a}o.
+N@~{a}o existe maneira de fazer alguns campos acess@'{i}veis ou bloqueados em contextos diferentes;
+todos os campos s@~{a}o sempre vis@'{i}veis.
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Structures,  , Introduction to Structures, Structures
+@subsection Functions and Variables for Structures
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@defvr {Global variable} structures
+
+A vari@'{a}vel global @code{structures} @'{e} a lista de estruturas definidas pelo usu@'{a}rio e @'{e} criada por @code{defstruct}.
+
+@opencatbox
+@category{Structures} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn  {Function} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {Function} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+
+Define uma estrutura, que @'{e} uma lista de campos nomeados como @var{a_1}, @dots{},
+@var{a_n} associada a um s@'{i}mbolo @var{S}.
+Uma inst@^{a}ncia de uma estrutura @'{e} apenas uma express@~{a}o que tem um operador @var{S}
+e exatamente @code{n} argumentos.
+O comando @code{new(@var{S})} cria uma nova inst@^{a}ncia da estrutura @var{S}.
+
+Um argumento que seja apenas um s@'{i}mbolo @var{a} especifica o nome de um campo.
+Um argumento que @'{e} uma equa@,{c}@~{a}o @code{@var{a} = @var{v}} especifica o nome de campo @var{a}
+e seu valor padr@~{a}o @var{v}.
+O valor padr@~{a}o pode ser qualquer express@~{a}o.
+
+A fun@,{c}@~{a}o @code{defstruct} coloca @var{S} na lista de estruturas definidas pelo usu@'{a}rio, @code{structures}.
+
+O comando @code{kill(@var{S})} remove @var{S} da lista de estruturas definidas pelo usu@'{a}rio,
+e remove a defini@,{c}@~{a}o da estrutura.
+
+Exemplos:
+
+@c ===beg===
+@c defstruct (foo (a, b, c));
+@c structures;
+@c new (foo);
+@c defstruct (bar (v, w, x = 123, y = %pi));
+@c structures;
+@c new (bar);
+@c kill (foo);
+@c structures;
+@c ===end===
+@example
+(%i1) defstruct (foo (a, b, c));
+(%o1)                    [foo(a, b, c)]
+(%i2) structures;
+(%o2)                    [foo(a, b, c)]
+(%i3) new (foo);
+(%o3)                     foo(a, b, c)
+(%i4) defstruct (bar (v, w, x = 123, y = %pi));
+(%o4)             [bar(v, w, x = 123, y = %pi)]
+(%i5) structures;
+(%o5)      [foo(a, b, c), bar(v, w, x = 123, y = %pi)]
+(%i6) new (bar);
+(%o6)              bar(v, w, x = 123, y = %pi)
+(%i7) kill (foo);
+(%o7)                         done
+(%i8) structures;
+(%o8)             [bar(v, w, x = 123, y = %pi)]
+@end example
+
+@opencatbox
+@category{Structures}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {Function} new (@var{S})
+@deffnx {Function} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+
+A fun@,{c}@~{a}o @code{new} cria novas inst@^{a}ncias de estruturas.
+
+O comando @code{new(@var{S})} cria uma nova inst@^{a}ncia da estrutura @var{S}
+na qual a cada campo @'{e} atribu@'{i}do seu valor padr@~{a}o, se ouver algum,
+ou nenhum valor se nenhum valor padr@~{a}o for especificado na defini@,{c}@~{a}o da estrutura.
+
+O comando @code{new(@var{S}(@var{v_1}, ..., @var{v_n}))} cria uma nova inst@^{a}ncia de @var{S}
+na qual a campos s@~{a}o atribu@'{i}dos os valores @var{v_1}, @dots{}, @var{v_n}.
+
+Exemplos:
+
+@c ===beg===
+@c defstruct (foo (w, x = %e, y = 42, z));
+@c new (foo);
+@c new (foo (1, 2, 4, 8));
+@c ===end===
+@example
+(%i1) defstruct (foo (w, x = %e, y = 42, z));
+(%o1)              [foo(w, x = %e, y = 42, z)]
+(%i2) new (foo);
+(%o2)               foo(w, x = %e, y = 42, z)
+(%i3) new (foo (1, 2, 4, 8));
+(%o3)            foo(w = 1, x = 2, y = 4, z = 8)
+@end example
+
+@opencatbox
+@category{Structures}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Operator} @@
+
+O operador @code{@@} @'{e} o operador de acesso a campo de estrutura.
+A express@~{a}o @code{@var{x}@@ @var{a}} refere-se ao valor do campo @var{a} da inst@^{a}ncia de estrutura @var{x}.
+O nome de campo @var{a} n@~{a}o @'{e} avaliado.
+
+Se ao campo @var{a} na inst@^{a}ncia @var{x} n@~{a}o tiver sido atribu@'{i}do nenhum valor,
+a express@~{a}o @code{@var{x}@@ @var{a}} avalia para si mesma.
+
+O comando @code{kill(@var{x}@@ @var{a})} remove o valor do campo @var{a} na inst@^{a}ncia @var{x}.
+
+Exemplos:
+
+@c ===beg===
+@c defstruct (foo (x, y, z));
+@c u : new (foo (123, a - b, %pi));
+@c u@z;
+@c u@z : %e;
+@c u;
+@c kill (u@z);
+@c u;
+@c u@z;
+@c ===end===
+@example
+(%i1) defstruct (foo (x, y, z));
+(%o1)                    [foo(x, y, z)]
+(%i2) u : new (foo (123, a - b, %pi));
+(%o2)           foo(x = 123, y = a - b, z = %pi)
+(%i3) u@@z;
+(%o3)                          %pi
+(%i4) u@@z : %e;
+(%o4)                          %e
+(%i5) u;
+(%o5)            foo(x = 123, y = a - b, z = %e)
+(%i6) kill (u@@z);
+(%o6)                         done
+(%i7) u;
+(%o7)              foo(x = 123, y = a - b, z)
+(%i8) u@@z;
+(%o8)                          u@@z
+@end example
+
+O nome de campo n@~{a}o @'{e} avaliado.
+
+@c ===beg===
+@c defstruct (bar (g, h));
+@c x : new (bar);
+@c x@h : 42;
+@c h : 123;
+@c x@h;
+@c x@h : 19;
+@c x;
+@c h;
+@c ===end===
+@example
+(%i1) defstruct (bar (g, h));
+(%o1)                      [bar(g, h)]
+(%i2) x : new (bar);
+(%o2)                       bar(g, h)
+(%i3) x@@h : 42;
+(%o3)                          42
+(%i4) h : 123;
+(%o4)                          123
+(%i5) x@@h;
+(%o5)                          42
+(%i6) x@@h : 19;
+(%o6)                          19
+(%i7) x;
+(%o7)                    bar(g, h = 19)
+(%i8) h;
+(%o8)                          123
+@end example
+
+@opencatbox
+@category{Structures} @category{Operators}
+@closecatbox
+@end deffn
+

@@ -53,15 +53,12 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
   implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
   asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi fractals.texi finance.texi\
-  bernstein.texi to_poly_solve.texi defstruct.texi
+  bernstein.texi to_poly_solve.texi defstruct.texi alt-display.texi
 
 figurefiles = \
 figures/introduction1.gif\
 figures/introduction2.gif\
 figures/introduction3.gif\
-figures/contour1.gif\
-figures/contour2.gif\
-figures/contour3.gif\
 figures/dynamics1.gif\
 figures/dynamics2.gif\
 figures/dynamics3.gif\
@@ -70,40 +67,38 @@ figures/dynamics5.gif\
 figures/dynamics6.gif\
 figures/dynamics7.gif\
 figures/dynamics8.gif\
-figures/dynamics9.gif\
-figures/dynamics10.gif\
-figures/implicit_plot.gif\
 figures/plotdf1.gif\
 figures/plotdf2.gif\
 figures/plotdf3.gif\
 figures/plotdf4.gif\
 figures/plotdf5.gif\
 figures/plotdf6.gif\
-figures/plotting1.gif\
-figures/plotting2.gif\
-figures/plotting3.gif\
-figures/plotting4.gif\
-figures/plotting5.gif\
-figures/plotting6.gif\
-figures/plotting7.gif\
-figures/plotting8.gif\
-figures/plotting9.gif\
-figures/plotting10.gif\
-figures/plotting11.gif\
-figures/plotting12.gif\
-figures/plotting13.gif\
-figures/plotting14.gif\
-figures/plotting15.gif\
-figures/plotting16.gif\
-figures/plotting17.gif\
-figures/plotting18.gif\
-figures/plotting19.gif\
-figures/plotting20.gif\
-figures/plotting21.gif\
-figures/plotting22.gif\
-figures/plotting23.gif\
-figures/plotting24.gif\
-figures/plotting25.gif\
+figures/plotting1.png\
+figures/plotting2.png\
+figures/plotting3.png\
+figures/plotting4.png\
+figures/plotting5.png\
+figures/plotting6.png\
+figures/plotting7.png\
+figures/plotting8.png\
+figures/plotting9.png\
+figures/plotting10.png\
+figures/plotting11.png\
+figures/plotting12.png\
+figures/plotting13.png\
+figures/plotting14.png\
+figures/plotting15.png\
+figures/plotting16.png\
+figures/plotting17.png\
+figures/plotting18.png\
+figures/plotting19.png\
+figures/plotting20.png\
+figures/plotting21.png\
+figures/plotting22.png\
+figures/plotting23.png\
+figures/plotting24.png\
+figures/plotting25.png\
+figures/plotting26.png\
 figures/orthopoly1.gif\
 figures/graphs01.gif\
 figures/graphs02.gif\
@@ -136,15 +131,13 @@ figures/bodephase5.gif\
 figures/bodephase6.gif\
 figures/bodephase7.gif\
 figures/bodephase8.gif\
-figures/bodephase9.gif
+figures/bodephase9.gif\
+figures/color_terminal.gif
 
 pdffigures = \
 figures/introduction1.pdf\
 figures/introduction2.pdf\
 figures/introduction3.pdf\
-figures/contour1.pdf\
-figures/contour2.pdf\
-figures/contour3.pdf\
 figures/dynamics1.pdf\
 figures/dynamics2.pdf\
 figures/dynamics3.pdf\
@@ -153,9 +146,6 @@ figures/dynamics5.pdf\
 figures/dynamics6.pdf\
 figures/dynamics7.pdf\
 figures/dynamics8.pdf\
-figures/dynamics9.pdf\
-figures/dynamics10.pdf\
-figures/implicit_plot.pdf\
 figures/plotdf1.pdf\
 figures/plotdf2.pdf\
 figures/plotdf3.pdf\
@@ -187,6 +177,7 @@ figures/plotting22.pdf\
 figures/plotting23.pdf\
 figures/plotting24.pdf\
 figures/plotting25.pdf\
+figures/plotting26.pdf\
 figures/orthopoly1.pdf\
 figures/bodegain1.pdf\
 figures/bodegain2.pdf\
@@ -204,7 +195,8 @@ figures/bodephase5.pdf\
 figures/bodephase6.pdf\
 figures/bodephase7.pdf\
 figures/bodephase8.pdf\
-figures/bodephase9.pdf
+figures/bodephase9.pdf\
+figures/color_terminal.pdf
 
 if CHM
 MAXIMA_CHM = maxima.chm

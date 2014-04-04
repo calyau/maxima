@@ -16,16 +16,14 @@
 
 (declare-top (special expsumsplit $dispflag checkfactors *g
 		      $algebraic equations ;List of E-labels
-		      *power *varb *flg $derivsubst $numer $float
+		      *power *varb *flg $derivsubst
 		      $%emode genvar genpairs varlist broken-not-freeof
-		      $factorflag
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
 		      *myvar $listconstvars
-		      *has*var *var $dontfactor $linenum $linechar
-		      *linelabel* $keepfloat $ratfac
-		      errrjfflag  ;A substitute for condition binding.
+		      *has*var *var $dontfactor
+		      $keepfloat $ratfac
 		      xm* xn* mul*))
 
 (defmvar $breakup t
@@ -198,10 +196,6 @@
     (cond ((atom (setq fl (car l)))
 	   (unless (maxima-constantp fl) (push fl vl)))
 	  ((every #'$constantp (cdr fl)) (push fl vl)))))
-
-;; List of multiplicities.  Why is this special?
-
-(declare-top (special multi)) 
 
 ;; Solve a single equation for a single unknown.
 ;; Obtains roots via solve and prints them.
@@ -777,9 +771,9 @@
 ;; This function is called for side-effect only.
 
 (defun solvelin (exp) 
-  (cond ((equal 0 (pterm (cdr exp) 0))
+  (cond ((equal 0 (ptterm (cdr exp) 0))
 	 (solve1a (caddr exp) mult)))
-  (solve3 (rdis (ratreduce (pminus (pterm (cdr exp) 0))
+  (solve3 (rdis (ratreduce (pminus (ptterm (cdr exp) 0))
 			   (caddr exp)))
 	  mult))
 
@@ -790,8 +784,8 @@
 
 (defun solvequad (exp &aux discrim a b c)
   (setq a (caddr exp))
-  (setq b (pterm (cdr exp) 1.))
-  (setq c (pterm (cdr exp) 0.))
+  (setq b (ptterm (cdr exp) 1.))
+  (setq c (ptterm (cdr exp) 0.))
   (setq discrim (simplify (pdis (pplus (pexpt b 2.)
 				       (pminus (ptimes 4. (ptimes a c)))))))
   (setq b (pdis (pminus b)))
@@ -922,8 +916,7 @@
   (prog (*varl ans varlist genvar xm* xn* mul*)
      (setq *varl varl)
      (setq eql (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x))) eql))
-     (cond ((atom (let ((errrjfflag t))
-		    (catch 'raterr (formx flag 'xa* eql varl))))
+     (cond ((atom (ignore-rat-err (formx flag 'xa* eql varl)))
 	    ;; This flag is T if called from SOLVE
 	    ;; and NIL if called from LINSOLVE.
 	    (cond (flag (return ($algsys (make-mlist-l eql)

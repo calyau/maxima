@@ -12,11 +12,11 @@
 	(return-from complex-maxima-matrix-p t))))
   nil)
 
-(defun lapack-lispify-matrix (a nrow ncol)
+(defun lapack-lispify-matrix (a nrow ncol &optional (assume-complex-maxima-matrix-p nil))
   "Convert a Maxima matrix A of dimension NROW and NCOL to Lisp matrix
   suitable for use with LAPACK"
   (setq a ($float a))
-  (let* ((array-type (if (complex-maxima-matrix-p a)
+  (let* ((array-type (if (or assume-complex-maxima-matrix-p (complex-maxima-matrix-p a))
 			 '(complex flonum)
 			 'flonum))
 	 (mat (make-array (* nrow ncol)
@@ -329,7 +329,7 @@ eigenvectors."
 			    w))))
     
     (let* ((n (maxima-matrix-dims a))
-	   (a-mat (lapack-lispify-matrix a n n))
+	   (a-mat (lapack-lispify-matrix a n n t))
 	   (w (make-array n :element-type '(complex flonum)))
 	   (vl (make-array (if left-vec-p (* n n) 0)
 			   :element-type '(complex flonum)))
@@ -369,3 +369,59 @@ eigenvectors."
 				  (lapack-maxify-matrix n n vl)
 				  nil)))
 	      `((mlist) ,e-val ,e-vec-right ,e-vec-left))))))))
+
+(defun $zheev (a &optional eigen-vector-p)
+  (flet ((make-eigval (w)
+	   `((mlist) ,@(map 'list #'(lambda (z)
+				      (add (realpart z) (mul '$%i (imagpart z))))
+			    w))))
+    
+    (let* ((n (maxima-matrix-dims a))
+	   (a-mat (lapack-lispify-matrix a n n t))
+	   (w (make-array n :element-type 'flonum))
+	   (work (make-array 1 :element-type '(complex flonum)))
+	   (rwork (make-array (max 1 (- (* 3 n) 2))
+			      :element-type 'flonum)))
+      ;; XXX: FIXME: We need to do more error checking in the calls to
+      ;; zgeev!
+      (multiple-value-bind (z-jobz z-uplo z-n z-a z-lda z-w z-work
+			    z-lwork z-rwork info)
+	  ;; Figure out how much space we need in the work array.
+	  (lapack:zheev (if eigen-vector-p "V" "N")
+			"U"
+			n
+			a-mat
+			n
+			w
+			work
+			-1
+			rwork
+			0)
+	(declare (ignore z-jobz z-uplo z-n z-a z-lda z-w z-work
+			 z-lwork z-rwork))
+	(let* ((opt-lwork (truncate (realpart (aref work 0))))
+	       (work (make-array opt-lwork :element-type '(complex flonum))))
+	  ;; Now do the work with the optimum size of the work space.
+	  (multiple-value-bind (z-jobz z-uplo z-n z-a z-lda z-w z-work
+				z-lwork z-rwork info)
+	      (lapack:zheev (if eigen-vector-p "V" "N")
+			    "U"
+			    n
+			    a-mat
+			    n
+			    w
+			    work
+			    opt-lwork
+			    rwork
+			    0)
+	    (declare (ignore z-jobz z-uplo z-n z-a z-lda z-w z-work
+			     z-lwork z-rwork))
+	    (cond ((< info 0)
+		   (merror "ZHEEV: invalid arguments: ~D" info))
+		  ((> info 0)
+		   (merror "ZHEEV: failed to converge: ~D" info)))
+	    (let ((e-val (make-eigval w))
+		  (e-vec (if eigen-vector-p
+				   (lapack-maxify-matrix n n a-mat)
+				   nil)))
+	      `((mlist) ,e-val ,e-vec))))))))

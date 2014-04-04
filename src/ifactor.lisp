@@ -170,9 +170,9 @@
 
 (defun cfactor (x)
   (cond ((null $factorflag) (return-from cfactor (list x 1)))
-	((floatp x) (errrjf "`factor' given floating arg"))
+	((floatp x) (rat-error "`factor' given floating arg"))
 	((pzerop x) (return-from cfactor (list (pzero) 1)))
-	((eqn x -1) (return-from cfactor (list -1 1)))
+	((equal x -1) (return-from cfactor (list -1 1)))
 	((minusp x) (return-from cfactor (cons -1 (cons 1 (cfactor (- x))))))
 	((< x 2) (return-from cfactor (list x 1)))
 	(t (let* ((factor-list (get-factor-list x))
@@ -463,7 +463,7 @@
 (defun $inv_mod (a m)
   (unless (and (integerp a) (integerp m))
       (merror (intl:gettext "inv_mod: arguments must be integers; found: ~M, ~M") a m))
-  (inv-mod a m))
+  (unless (= 0 a) (inv-mod a m)) )
 
 ;;; computations on the elliptic curve:
 ;;; we use the elliptic curve in projective coordinates (x,y,z), but only

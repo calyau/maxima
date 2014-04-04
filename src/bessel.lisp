@@ -219,19 +219,13 @@
                      (realpart result))))
              (t
               ;; order is complex, arg is real or complex
-              ;; Use 1/gamma(v+1)*(z/2)^v*0F1(;v+1;-z^2/4)
               (let (($numer t)
                     ($float t)
                     (order ($float order))
                     (arg ($float arg)))
                 ($float
                   ($rectform
-                    (mul (inv (take '(%gamma) (add order 1.0)))
-                         (power (div arg 2.0) order)
-                         (take '($hypergeometric)
-                               (list '(mlist))
-                               (list '(mlist) (add order 1.0))
-                               (neg (div (mul arg arg) 4.0))))))))))
+                    (bessel-j-hypergeometric order arg)))))))
       
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer.
@@ -267,16 +261,21 @@
 	      (take '(%bessel_i) order x))))
 
       ($hypergeometric_representation
-        ;; Return Hypergeometric representation of bessel_j
-        (mul (inv (take '(%gamma) (add order 1)))
-             (power (div arg 2) order)
-             (take '($hypergeometric)
-                   (list '(mlist))
-                   (list '(mlist) (add order 1))
-                   (neg (div (mul arg arg) 4)))))
-      
+       (bessel-j-hypergeometric order arg))
+
       (t
        (eqtest (list '(%bessel_j) order arg) expr)))))
+
+;; Returns the hypergeometric representation of bessel_j
+(defun bessel-j-hypergeometric (order arg)
+  ;; http://functions.wolfram.com/03.01.26.0002.01
+  ;; hypergeometric([],[v+1],-z^2/4)*(z/2)^v/gamma(v+1)
+  (mul (inv (take '(%gamma) (add order 1)))
+       (power (div arg 2) order)
+       (take '($hypergeometric)
+             (list '(mlist))
+             (list '(mlist) (add order 1))
+             (neg (div (mul arg arg) 4)))))
 
 ;; Compute value of Bessel function of the first kind of order ORDER.
 (defun bessel-j (order arg)
@@ -531,30 +530,10 @@
               (let (($numer t)
                     ($float t)
                     (order ($float order))
-                    (arg ($float arg))
-                    (dpi (coerce pi 'flonum)))
+                    (arg ($float arg)))
                 ($float
                   ($rectform
-                    (add
-                      (mul -1.0
-                           (power 2.0 order)
-                           (inv (power arg order))
-                           (take '(%gamma) order)
-                           (inv dpi)
-                           (take '($hypergeometric)
-                                 (list '(mlist))
-                                 (list '(mlist) (sub 1.0 order))
-                                 (neg (div (mul arg arg) 4.0))))
-                     (mul -1.0
-                          (inv (power 2.0 order))
-                          (power arg order)
-                          (take '(%cos) (mul order dpi))
-                          (take '(%gamma) (neg order))
-                          (inv dpi)
-                          (take '($hypergeometric)
-                                (list '(mlist))
-                                (list '(mlist) (add order 1.0))
-                                (neg (div (mul arg arg) 4.0)))))))))))
+                    (bessel-y-hypergeometric order arg)))))))
       
       ((and (integerp order) (minusp order))
        ;; Special case when the order is an integer.
@@ -585,29 +564,35 @@
             (take '(%bessel_y) (- order 2) arg)))
       
       ($hypergeometric_representation
-        ;; Return Hypergeometric representation of bessel_y
-        (add (mul -1
-                  (power 2 order)
-                  (inv (power arg order))
-                  (take '(%gamma) order)
-                  (inv '$%pi)
-                  (take '($hypergeometric)
-                        (list '(mlist))
-                        (list '(mlist) (sub 1 order))
-                        (mul -1 (div (mul arg arg) 4))))
-             (mul -1
-                  (inv (power 2 order))
-                  (power arg order)
-                  (take '(%cos) (mul order '$%pi))
-                  (take '(%gamma) (neg order))
-                  (inv '$%pi)
-                  (take '($hypergeometric)
-                        (list '(mlist))
-                        (list '(mlist) (add 1 order))
-                        (mul -1 (div (mul arg arg) 4))))))
-      
+       (bessel-y-hypergeometric order arg))
+
       (t
        (eqtest (list '(%bessel_y) order arg) expr)))))
+
+;; Returns the hypergeometric representation of bessel_y
+(defun bessel-y-hypergeometric (order arg)
+  ;; http://functions.wolfram.com/03.03.26.0002.01
+  ;; -hypergeometric([],[1-v],-z^2/4)*(2/z)^v*gamma(v)/%pi
+  ;;   - hypergeometric([],[v+1],-z^2/4)*gamma(-v)*cos(%pi*v)*(z/2)^v/%pi
+  (add (mul -1
+            (power 2 order)
+            (inv (power arg order))
+            (take '(%gamma) order)
+            (inv '$%pi)
+            (take '($hypergeometric)
+                  (list '(mlist))
+                  (list '(mlist) (sub 1 order))
+                  (neg (div (mul arg arg) 4))))
+       (mul -1
+            (inv (power 2 order))
+            (power arg order)
+            (take '(%cos) (mul order '$%pi))
+            (take '(%gamma) (neg order))
+            (inv '$%pi)
+            (take '($hypergeometric)
+                  (list '(mlist))
+                  (list '(mlist) (add 1 order))
+                  (neg (div (mul arg arg) 4))))))
 
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
 (defun bessel-y (order arg)
@@ -893,19 +878,13 @@
                      (realpart result))))
              (t
               ;; order is complex, arg is real or complex
-              ;; Use 1/gamma(v+1)*(z/2)^v*0F1(;v+1;z^2/4)
               (let (($numer t)
                     ($float t)
                     (order ($float order))
                     (arg ($float arg)))
                 ($float
                   ($rectform
-                    (mul (inv (take '(%gamma) (add order 1.0)))
-                         (power (div arg 2.0) order)
-                         (take '($hypergeometric)
-                               (list '(mlist))
-                               (list '(mlist) (add order 1.0))
-                               (div (mul arg arg) 4.0)))))))))
+                    (bessel-i-hypergeometric order arg)))))))
       
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer
@@ -939,17 +918,23 @@
 	 (mul (power (mul '$%i x) order)
 	      (inv (power x order))
 	      (take '(%bessel_j) order x))))
+
       ($hypergeometric_representation
-        ;; Return Hypergeometric representation of bessel_i
-        (mul (inv (take '(%gamma) (add order 1)))
-             (power (div arg 2) order)
-             (take '($hypergeometric)
-                   (list '(mlist))
-                   (list '(mlist) (add order 1))
-                   (div (mul arg arg) 4))))
-      
+       (bessel-i-hypergeometric order arg))
+
       (t
        (eqtest (list '(%bessel_i) order arg) expr)))))
+
+;; Returns the hypergeometric representation of bessel_i
+(defun bessel-i-hypergeometric (order arg)
+  ;; http://functions.wolfram.com/03.02.26.0002.01
+  ;; hypergeometric([],[v+1],z^2/4)*(z/2)^v/gamma(v+1)
+  (mul (inv (take '(%gamma) (add order 1)))
+       (power (div arg 2) order)
+       (take '($hypergeometric)
+             (list '(mlist))
+             (list '(mlist) (add order 1))
+             (div (mul arg arg) 4))))
 
 ;; Compute value of Modified Bessel function of the first kind of order n
 (defun bessel-i (order arg)
@@ -1230,21 +1215,7 @@
                     (arg ($float arg)))
                 ($float
                   ($rectform
-                    (add
-                      (mul (power 2.0 (sub order 1.0))
-                           (take '(%gamma) order)
-                           (inv (power arg order))
-                           (take '($hypergeometric)
-                                 (list '(mlist))
-                                 (list '(mlist) (sub 1.0 order))
-                                 (div (mul arg arg) 4.0)))
-                     (mul (inv (power 2.0 (add order 1.0)))
-                          (power arg order)
-                          (take '(%gamma) (neg order))
-                          (take '($hypergeometric)
-                                (list '(mlist))
-                                (list '(mlist) (add order 1.0))
-                                (div (mul arg arg) 4.0))))))))))
+                    (bessel-k-hypergeometric order arg)))))))
       
       ((mminusp order)
        ;; A&S 9.6.6: K[-v](x) = K[v](x)
@@ -1272,24 +1243,30 @@
             (take '(%bessel_k) (- order 2) arg)))
       
       ($hypergeometric_representation
-        ;; Return Hypergeometric representation of bessel_k
-        (add (mul (power 2 (sub order 1))
-                  (take '(%gamma) order)
-                  (inv (power arg order))
-                  (take '($hypergeometric)
-                        (list '(mlist))
-                        (list '(mlist) (sub 1 order))
-                        (div (mul arg arg) 4)))
-             (mul (inv (power 2 (add order 1)))
-                   (power arg order)
-                   (take '(%gamma) (neg order))
-                   (take '($hypergeometric)
-                         (list '(mlist))
-                         (list '(mlist) (add order 1))
-                         (div (mul arg arg) 4)))))
+       (bessel-k-hypergeometric order arg))
       
       (t
        (eqtest (list '(%bessel_k) order arg) expr)))))
+
+;; Returns the hypergeometric representation of bessel_k
+(defun bessel-k-hypergeometric (order arg)
+  ;; http://functions.wolfram.com/03.04.26.0002.01
+  ;; hypergeometric([],[1-v],z^2/4)*2^(v-1)*gamma(v)/z^v
+  ;;   + hypergeometric([],[v+1],z^2/4)*2^(-v-1)*gamma(-v)*z^v
+  (add (mul (power 2 (sub order 1))
+            (take '(%gamma) order)
+            (inv (power arg order))
+            (take '($hypergeometric)
+                  (list '(mlist))
+                  (list '(mlist) (sub 1 order))
+                  (div (mul arg arg) 4)))
+       (mul (inv (power 2 (add order 1)))
+            (power arg order)
+            (take '(%gamma) (neg order))
+            (take '($hypergeometric)
+                  (list '(mlist))
+                  (list '(mlist) (add order 1))
+                  (div (mul arg arg) 4)))))
 
 ;; Compute value of Modified Bessel function of the second kind of order n
 (defun bessel-k (order arg)
@@ -1721,13 +1698,26 @@
        (simp-domain-error
          (intl:gettext "hankel_1: hankel_1(~:M,~:M) is undefined.")
          order arg))
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order))
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (hankel-1 order arg)))
-         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (hankel-1 order arg)))
+                (add (mul '$%i (imagpart result)) (realpart result))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_1(v,z) = bessel_j(v,z) + %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (add (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 
@@ -1808,13 +1798,26 @@
        (simp-domain-error
          (intl:gettext "hankel_2: hankel_2(~:M,~:M) is undefined.")
          order arg))
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order))
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (hankel-2 order arg)))
-         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (hankel-2 order arg)))
+                (add (mul '$%i (imagpart result)) (realpart result))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_2(v,z) = bessel_j(v,z) - %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (sub (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 

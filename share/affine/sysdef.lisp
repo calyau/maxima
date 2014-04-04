@@ -17,8 +17,7 @@
        polya
        (ndotsimp polyb polysmp sub-proj polyc polyd)
        sheafa sheafb sheafc
-       dim-3 ndotsimp modsimp
-       todd-coxeter))
+       dim-3 ndotsimp modsimp))
 
 (proclaim '(declaration values))
 

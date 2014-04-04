@@ -483,15 +483,8 @@ the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
 
 Returns the list of input, output, or intermediate expression labels which begin
 with @var{symbol}.  Typically @var{symbol} is the value of
-@mrefcomma{inchar} @mrefcomma{outchar} or @mrefdot{linechar}  The label
-character may be given with or without a percent sign, so, for example, @code{i}
-and @code{%i} yield the same result.
-
+@mrefcomma{inchar} @mrefcomma{outchar} or @mrefdot{linechar}
 If no labels begin with @var{symbol}, @code{labels} returns an empty list.
-
-The function @code{labels} quotes its argument.  The quote-quote operator
-@code{'@w{}'} defeats quotation.  For example, @code{labels (''inchar)} returns
-the input labels which begin with the current input label character.
 
 The variable @code{labels} is the list of input, output, and intermediate
 expression labels, including all previous labels if @code{inchar},

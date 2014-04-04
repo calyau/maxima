@@ -358,8 +358,7 @@ proc SetPlotFormat { text } {
     global maxima_default
     
     if { $maxima_default(plotwindow) == "embedded" } {
-	#sendMaxima $text "set_plot_option(\[plot_format,openmath\])\$\n"
-	sendMaxima $text ":lisp-quiet (prog2 (\$set_plot_option '((mlist simp) \$plot_format \$openmath)) nil) \n"
+	sendMaxima $text ":lisp-quiet (prog2 (\$set_plot_option '((mlist simp) \$plot_format \$xmaxima)) nil) \n"
     }
     
 }

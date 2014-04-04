@@ -53,7 +53,7 @@ Example:
 @anchor{bindtest}
 @defvr {Property} bindtest
 
-The command @code{declare(@var{x}, bindtest}) tells Maxima to trigger an error
+The command @code{declare(@var{x}, bindtest)} tells Maxima to trigger an error
 when the symbol @var{x} is evaluated unbound.
 
 @c ===beg===

@@ -776,22 +776,20 @@ relational knowledge is contained in the default context GLOBAL.")
     ($sign z)))
 
 (defmfun $sign (x)
-  (unwind-protect
-    (let ((x (specrepcheck x))
-	  sign minus odds evens factored)
-      (sign01 (cond (limitp (restorelim x))
-		    (*complexsign*
-		     ;; No rectform in Complex mode. Rectform ask unnecessary
-		     ;; questions about complex expressions and can not handle
-		     ;; imaginary expressions completely. Thus $csign can not
-		     ;; handle something like (1+%i)*(1-%i) which is real.
-		     ;; After improving rectform, we can change this. (12/2008)
-		     (when *debug-compar*
-		       (format t "~&$SIGN with ~A~%" x))
-		     x)
-		    ((not (free x '$%i)) ($rectform x))
-		    (t x))))
-    (clearsign)))
+  (let ((x (specrepcheck x))
+	sign minus odds evens factored)
+    (sign01 (cond (limitp (restorelim x))
+		  (*complexsign*
+		   ;; No rectform in Complex mode. Rectform ask unnecessary
+		   ;; questions about complex expressions and can not handle
+		   ;; imaginary expressions completely. Thus $csign can not
+		   ;; handle something like (1+%i)*(1-%i) which is real.
+		   ;; After improving rectform, we can change this. (12/2008)
+		   (when *debug-compar*
+		     (format t "~&$SIGN with ~A~%" x))
+		   x)
+		  ((not (free x '$%i)) ($rectform x))
+		  (t x)))))
 
 (defun sign01 (a)
   (let ((e (sign-prep a)))
@@ -1237,13 +1235,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		(setq exp dum)))
 	   ((eq dum 'float)
 	    (if (and (setq dum (numer x)) (numberp dum)) (setq exp dum)))
+           ;; If numer or symbol, try to evaluate numerically. NUMER returns NIL
+           ;; catches any errors and returns nil. If there would have been a
+           ;; floating point overflow, we might end up with a bigfloat. In that
+           ;; case, or if the result is small enough that we don't really trust
+           ;; it (eek, hack!), try evaluating as a bigfloat.
 	   ((and (member dum '(numer symbol) :test #'eq)
 		 (prog2 (setq dum (numer x))
 		     (or (null dum)
+                         (bigfloatp dum)
 			 (and (numberp dum)
 			      (prog2 (setq exp dum)
 				  (< (abs dum) 1.0e-6))))))
-	    (cond ($signbfloat
+	    (cond ((bigfloatp dum) (setq exp dum))
+                  ($signbfloat
 		   (and (setq dum ($bfloat x)) ($bfloatp dum) (setq exp dum)))
 		  (t (setq sign '$pnz evens nil odds (ncons x) minus nil)
 		     (return sign)))))
@@ -1604,13 +1609,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((and (eq sign-base '$zero)
 		(member sign-expt '($zero $neg) :test #'eq))
 	   (dbzs-err x))
-	  ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
+	  ((eq sign-expt '$zero) (setq sign '$pos))
 	  ((eq sign-base '$pos))
-	  ((eq sign-base '$zero) (tdpos expt))
+	  ((eq sign-base '$zero))
 	  ((eq evod '$even)
 	   (cond ((eq sign-expt '$neg)
-		  (setq sign '$pos minus nil evens (ncons base1) odds nil)
-		  (tdpn base1))
+		  (setq sign '$pos minus nil evens (ncons base1) odds nil))
 		 ((member sign-base '($pn $neg) :test #'eq)
 		  (setq sign '$pos minus nil
 			evens (nconc odds evens)
@@ -1620,7 +1624,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  odds nil))))
 	  ((and (member sign-expt '($neg $nz) :test #'eq)
 		(member sign-base '($nz $pz $pnz) :test #'eq))
-	   (tdpn base1)
 	   (setq sign (cond ((eq sign-base '$pnz) '$pn)
 			    ((eq sign-base '$pz) '$pos)
 			    ((eq sign-expt '$neg) '$neg)
@@ -1650,24 +1653,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			 (setq sign-base (setq sign-expt '$pnz)))
 			((eq sign-base '$neg) (imag-err x))
 			((eq sign-base '$pn)
-			 (setq sign-base '$pos)
-			 (tdpos base1))
+			 (setq sign-base '$pos))
 			((eq sign-base '$nz)
-			 (setq sign-base '$zero)
-			 (tdzero base1))
-			(t (setq sign-base '$pz)
-			   (tdpz base1)))))
+			 (setq sign-base '$zero))
+			(t (setq sign-base '$pz)))))
 	   (cond ((eq sign-expt '$neg)
 		  (cond ((eq sign-base '$zero) (dbzs-err x))
 			((eq sign-base '$pz)
-			 (setq sign-base '$pos)
-			 (tdpos base1))
+			 (setq sign-base '$pos))
 			((eq sign-base '$nz)
-			 (setq sign-base '$neg)
-			 (tdneg base1))
+			 (setq sign-base '$neg))
 			((eq sign-base '$pnz)
-			 (setq sign-base '$pn)
-			 (tdpn base1)))))
+			 (setq sign-base '$pn)))))
 	   (setq sign sign-base))
 	  ((eq sign-base '$pos)
 	   (setq sign '$pos))
@@ -2316,6 +2313,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 					      ($decreasing . $increasing)
 					      ($symmetric . $antisymmetric)
 					      ($antisymmetric . $symmetric)
+					      ($rational . $irrational)
+					      ($irrational . $rational)
 					      ($oddfun . $evenfun)
 					      ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))

@@ -1,0 +1,176 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 317105385ccfe3ae53448fa1969c6ccb  Bugs.texi
+@c
+@menu
+* Functions and Variables for Bug Detection and Reporting::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Bug Detection and Reporting
+@section Functions and Variables for Bug Detection and Reporting
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{run_testsuite}
+@deffn {Function} run_testsuite ([@var{options}])
+
+Executa os aplicativos de teste do Maxima.  Testes que produzem as respostas desejadas s@~{a}o
+considerados ``passes,'' @footnote{Nota do tradutor: aprovado.} e tamb@'{e}m os testes que n@~{a}o produzem a resposta
+desejada mas que forem marcados como erros conhecidos.
+
+A fun@,{c}@~{a}o @code{run_testsuite} pode ser usada com as seguintes palavras chave opcionais como argumento
+
+@table @code
+@item display_all
+Mostra todos os testes.  Normalmente, os testes n@~{a}o s@~{a}o mostrados, a menos que o teste
+falhe.  (O padr@~{a}o @'{e} @code{false}).
+@item display_known_bugs
+Mostra os testes que forem marcados como erros conhecidos.  (O padr@~{a}o @'{e} @code{false}).
+@item tests
+@'{E} um teste @'{u}nico ou uma lista de testes que devem ser executados.  Cada teste pode ser especificado por
+ou uma sequ@^{e}ncia de caracteres ou por um s@'{i}mbolo.  Por padr@~{a}o, todos os testes s@~{a}o executados.  O conjunto completo
+de testes @'{e} especificado por @mrefdot{testsuite_files}
+@item time
+Mostra informa@,{c}@~{o}es de tempo.  Se @code{true}, o tempo gasto em cada
+arquivo de teste @'{e} mostrado.  Se @code{all}, o tempo para cada teste
+individualmente @'{e} mostrado se @code{display_all} for @code{true}.  O padr@~{a}o @'{e}
+@code{false}, ent@~{a}o nenhuma informa@,{c}@~{a}o de tempo @'{e} mostrada.
+@end table
+
+Por exemplo @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
+executa apenas o teste @code{rtest5} e mostra os testes que estiverem marcados como
+erros conhecidos.
+
+@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} ir@'{a}
+executar os testes @code{rtest1} e @code{rtest2}, e mostrar cada teste.
+
+@code{run_testsuite} muda o ambiente de trabalho do Maxima.
+Tipicamente um acript de teste executa um @mref{kill}
+para estabelecer um ambiente conhecido
+(isto @'{e}, um ambiente sem fun@,{c}@~{o}es e vari@'{a}veis definidas pelo usu@'{a}rio)
+e ent@~{a}o define fun@,{c}@~{o}es e vari@'{a}veis apropriadas para o teste.
+
+@code{run_testsuite} retorna @code{done}.
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{testsuite_files}
+@defvr {Option variable} testsuite_files
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{testsuite_files} cont@'{e}m o conjunto de testes a serem executados por
+@mrefdot{run_testsuite}
+@'{E} uma lista de nomes de arquivos contendo
+os testes a serem executados.  Se algum dos testes em um dos arquivos forem falhas conhecidas,
+ent@~{a}o ao inv@'{e}s de listar o nome do arquivo, uma lista contendo o
+nome do arquivo e os n@'{u}meros dos testes que falham @'{e} usada.
+
+Por exemplo, adiante temos uma parte do conjunto padr@~{a}o de testes:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+Essa parte especifica o teste constitu@'{i}do pelos arquivos "rtest13s" e
+"rtest14", mas "rtest14" cont@'{e}m dois testes que falham de forma prevista: 57
+e 63.
+
+@opencatbox
+@category{Debugging} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{bug_report}
+@deffn {Function} bug_report ()
+
+Mostra os n@'{u}meros de vers@~{a}o do Maxima e do Lisp, e fornece um link
+para a p@'{a}gina do relat@'{o}rio de erros do projeto Maxima.
+Essa informa@,{c}@~{a}o de vers@~{a}o @'{e} a mesma informada por @mrefdot{build_info}
+
+Quando um erro @'{e} informado, @'{e} muito @'{u}til copiar as vers@~{o}es
+do Maxima e do Lisp dentro do relat@'{o}rio de erro.
+
+@code{bug_report} retorna uma sequ@^{e}ncia de caracteres vazia @code{""}.
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{build_info}
+@deffn {Function} build_info ()
+
+Retorna um resumo dos par@^{a}metros de compila@,{c}@~{a}o do Maxima,
+na forma de uma estrutura do Maxima (definida por @code{defstruct}).
+Os campos da estrutura s@~{a}o:
+@code{version}, @code{timestamp}, @code{host}, @code{lisp_name}, e @code{lisp_version}.
+Quando a op@,{c}@~{a}o pretty-printer estiver habilitada (via @code{display2d}@footnote{Nota do tradutor: ``display2d : true''.}),
+a estrutura @'{e} mostrada como uma tabela curta.
+
+Veja tamb@'{e}m @mrefdot{bug_report}
+
+Exemplos:
+
+@c ===beg===
+@c build_info ();
+@c x : build_info ()$
+@c x@version;
+@c x@timestamp;
+@c x@host;
+@c x@lisp_name;
+@c x@lisp_version;
+@c x;
+@c ===end===
+@example
+@group
+(%i1) build_info ();
+(%o1) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+(%i2) x : build_info ()$
+@group
+(%i3) x@@version;
+(%o3)               5.26.0_16_gb72c64c_dirty
+@end group
+@group
+(%i4) x@@timestamp;
+(%o4)                  2012-01-29 12:29:04
+@end group
+@group
+(%i5) x@@host;
+(%o5)                   i686-pc-linux-gnu
+@end group
+@group
+(%i6) x@@lisp_name;
+(%o6)                    CMU Common Lisp
+@end group
+@group
+(%i7) x@@lisp_version;
+(%o7) 
+    CVS release-19a 19a-release-20040728 + minimal debian patches
+@end group
+@group
+(%i8) x;
+(%o8) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+@end example
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn

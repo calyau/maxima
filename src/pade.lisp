@@ -12,7 +12,7 @@
 
 (macsyma-module pade)
 
-(declare-top (special varlist genvar tlist tpf))
+(declare-top (special varlist genvar tlist))
 
 (load-macsyma-macros rzmac mhayat ratmac)
 
@@ -40,7 +40,7 @@
 			       (c tm)))
 	  poly))
 
-(defmacro psmake (p)
+(defmacro psmake (p tpf)
   `(make-ps (gvar-o tpf) (poly-data tpf) (reverse ,p)))
 
 (defmfun $pade (taylor-form n-bound d-bound)
@@ -78,9 +78,8 @@
 	  ((or (e0? (pade-lexp (num r2)))
 	       (e>= (pade-lexp (denom r2)) (denom bounds)))
 	   (mapcar #'(lambda (r) ($ratsimp
-				  (m// (srdis (psmake (eshift (num r)
-							      ord)))
-				       (srdis (psmake (denom r))))))
+				  (m// (srdis (psmake (eshift (num r) ord) tpf))
+				       (srdis (psmake (denom r) tpf)))))
 		   ans))
 	(setq r1 (pade1 r1 r2))
 	(exch r1 r2)))))
@@ -125,4 +124,4 @@
 	   (setq p1 (red p1) p2 (red p2))))))
 
 #-nil
-(declare-top(unspecial tlist tpf))
+(declare-top(unspecial tlist))

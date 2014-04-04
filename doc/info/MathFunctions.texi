@@ -154,7 +154,9 @@ $$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
-The function @code{ceiling} does not automatically map over lists or matrices.
+The @code{ceiling} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 Finally, for all inputs that are manifestly complex, @code{ceiling} returns 
 a noun form.
 
@@ -288,7 +290,9 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-The function @code{floor} does not automatically map over lists or matrices.
+The @code{floor} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 Finally, for all inputs that are manifestly complex, @code{floor} returns 
 a noun form.
 
@@ -397,6 +401,9 @@ When @var{x} is a real number, returns the closest integer to @var{x}.
 Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
 @var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
+The @code{round} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -419,6 +426,22 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 
 The @code{signum} function distributes over a list, a matrix, or an
 equation.  See @mrefdot{distribute_over}
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{truncate}
+@deffn {Function} truncate (@var{x})
+
+When @var{x} is a real number, return the closest integer to @var{x} not
+greater in absolute value than @var{x}.  Evaluation of @var{x} is similar
+to @mref{floor} and @mrefdot{ceiling}
+
+The @code{truncate} function distributes over lists, matrices and equations.
+See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
@@ -604,7 +627,25 @@ Returns the imaginary part of the expression @var{expr}.
 See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
 @mrefcomma{rectform} and @mrefdot{realpart}
 
-@c NEED EXAMPLES HERE
+Example:
+
+@c ===beg===
+@c imagpart (a+b*%i);
+@c imagpart (1+sqrt(2)*%i);
+@c imagpart (1);
+@c imagpart (sqrt(2)*%i);
+@c ===end===
+@example
+(%i1) imagpart (a+b*%i);
+(%o1)                                  b
+(%i2) imagpart (1+sqrt(2)*%i);
+(%o2)                               sqrt(2)
+(%i3) imagpart (1);
+(%o3)                                  0
+(%i4) imagpart (sqrt(2)*%i);
+(%o4)                               sqrt(2)
+@end example
+
 @opencatbox
 @category{Complex variables}
 @closecatbox
@@ -618,6 +659,27 @@ See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
 
 Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
 such that @code{r} and @code{theta} are purely real.
+
+Example:
+
+@c ===beg===
+@c polarform(a+b*%i);
+@c polarform(1+%i);
+@c polarform(1+2*%i);
+@c ===end===
+@example
+(%i1) polarform(a+b*%i);
+                              2    2    %i atan2(b, a)
+(%o1)                   sqrt(b  + a ) %e
+(%i2) polarform(1+%i);
+                                         %i %pi
+                                         ------
+                                           4
+(%o2)                          sqrt(2) %e
+(%i3) polarform(1+2*%i);
+                                       %i atan(2)
+(%o3)                        sqrt(5) %e
+@end example
 
 @opencatbox
 @category{Complex variables} @category{Exponential and logarithm functions}
@@ -634,6 +696,25 @@ Returns the real part of @var{expr}.  @code{realpart} and @mref{imagpart} will
 work on expressions involving trigonometric and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
+Example:
+
+@c ===beg===
+@c realpart (a+b*%i);
+@c realpart (1+sqrt(2)*%i);
+@c realpart (sqrt(2)*%i);
+@c realpart (1);
+@c ===end===
+@example
+(%i1) realpart (a+b*%i);
+(%o1)                                  a
+(%i2) realpart (1+sqrt(2)*%i);
+(%o2)                                  1
+(%i3) realpart (sqrt(2)*%i);
+(%o3)                                  0
+(%i4) realpart (1);
+(%o4)                                  1
+@end example
+
 @opencatbox
 @category{Complex variables}
 @closecatbox
@@ -647,6 +728,22 @@ as well as square root, logarithm, and exponentiation.
 
 Returns an expression @code{a + b %i} equivalent to @var{expr},
 such that @var{a} and @var{b} are purely real.
+
+Example:
+
+@c ===beg===
+@c rectform(sqrt(2)*%e^(%i*%pi/4));
+@c rectform(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
+@c rectform(sqrt(5)*%e^(%i*atan(2)));
+@c ===end===
+@example
+(%i1) rectform(sqrt(2)*%e^(%i*%pi/4));
+(%o1)                               %i + 1
+(%i2) rectform(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
+(%o2)                              %i b + a
+(%i3) rectform(sqrt(5)*%e^(%i*atan(2)));
+(%o3)                              2 %i + 1
+@end example
 
 @opencatbox
 @category{Complex variables}
@@ -739,12 +836,33 @@ into @code{(n + 1)!}.
 @mref{sumsplitfact} if set to @code{false} will cause @mref{minfactorial} to be
 applied after a @code{factcomb}.
 
-@c Example:
-@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
-@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
-@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
-@c (n + 1)^b*n!^b;
+Example:
+
+@c ===beg===
+@c sumsplitfact;
+@c (n + 1)*(n + 1)*n!;
 @c factcomb (%);
+@c sumsplitfact: not sumsplitfact;
+@c (n + 1)*(n + 1)*n!;
+@c factcomb (%);
+@c ===end===
+@example
+(%i1) sumsplitfact;
+(%o1)                                true
+(%i2) (n + 1)*(n + 1)*n!;
+                                         2
+(%o2)                             (n + 1)  n!
+(%i3) factcomb (%);
+(%o3)                         (n + 2)! - (n + 1)!
+(%i4) sumsplitfact: not sumsplitfact;
+(%o4)                                false
+(%i5) (n + 1)*(n + 1)*n!;
+                                          2
+(%o5)                             (n + 1)  n!
+(%i6) factcomb (%);
+(%o6)                        n (n + 1)! + (n + 1)!
+@end example
+
 @opencatbox
 @category{Gamma and factorial functions}
 @closecatbox
@@ -924,7 +1042,7 @@ See @mref{factorial} for an example.
 @deffn {Function} genfact (@var{x}, @var{y}, @var{z})
 
 Returns the generalized factorial, defined as
-@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, when @var{x} is an integer,
 @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
 
 @opencatbox

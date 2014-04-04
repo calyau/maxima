@@ -55,13 +55,6 @@
   "This is a key gotten from the infile name, in the interpreter
   other completely hackish things with FSUBRS will go on.")
 
-(defvar forms-to-compile-queue ())
-
-(defun emit-defun (exp)
-  (if $tr_semicompile (setq exp `(progn ,exp)))
-  (let nil
-    (setq forms-to-compile-queue (nconc forms-to-compile-queue (list (copy-tree exp))))))
-
 (defmacro pop-declare-statement (l)
   `(and (not (atom (car ,l)))
     (eq (caar ,l) 'declare)

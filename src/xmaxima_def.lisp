@@ -1,5 +1,5 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
-;; Copyright (C) 2007,2009 J. Villate
+;; Copyright (C) 2007-2013 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -18,20 +18,17 @@
 
 (in-package :maxima)
 
-(defun xmaxima-color (color)
-  (if (and (stringp color)(string= (subseq color 0 1) "#")(= (length color) 7))
-      color
-      (case color
-	($red "#ff0000") ($green "#00ff00") ($blue "#0000ff")
-	($magenta "#ff00ff") ($cyan "#00ffff") ($black "#000000")
-	(t "#000000"))))
+;; Given a list of valid colors (see rgb-color function) and an object c
+;; that can be a real number or a string, produces an rgb color
+;; specification for c; when c is real, its nearest integer is assigned
+;; to one of the numbers in the list, using modulo length of the list.
+(defun xmaxima-color (colors c)
+  (unless (listp colors) (setq colors (list colors)))
+  (when (realp c)
+    (unless (integerp c) (setq c (round c)))
+    (setq c (nth (mod (1- c) (length colors)) colors)))
+  (rgb-color c))
 
-(defun xmaxima-colors (n)
-  (let ((colors (cddr ($get_plot_option '$color))))
-    (unless (integerp n) (setq n (round n)))
-    (xmaxima-color (nth (mod (- n 1) (length colors)) colors))))
-
-(defun xmaxima-curve-style (style i)
 ;; style is a list starting with a symbol from the list: points, lines,
 ;; linespoints or dots,
 ;; The meaning of the numbers that follow the symbol are:
@@ -44,47 +41,53 @@
 ;; linewidth and radius are measured in the same units and can be
 ;; floating-point numbers.
 ;;
-;; color can be given in RGB format as, for instance #f102d2 or as one of
-;; the following colors: red, green, blue, magenta, cyan or black.
+;; type must be an integer
+;; color can be an integer, used as index to get one of the colors defined
+;; by the color option, or a 6-digit hexadecimal number #rrggbb
+
+(defun xmaxima-curve-style (style colors i)
+  (unless (listp style) (setq style (list style)))
+  (unless (listp colors) (setq colors (list colors)))
   (with-output-to-string
     (st)
     (case (first style)
       ($dots
        (format st "\{ nolines 1 \} \{ plotpoints 1 \} \{ pointsize 0.7 \}")
-       (if (integerp (second style))
-	 (format st " \{ color ~a \}" (xmaxima-colors (second style)))
-         (format st " \{ color ~a \}" (xmaxima-colors i))))
+       (if (second style)
+	 (format st " \{ color ~a \}" (xmaxima-color colors (second style)))
+         (format st " \{ color ~a \}" (xmaxima-color colors i))))
       ($lines
        (format st "\{ nolines 0 \} \{ plotpoints 0 \}")
-       (if (numberp (second style))
+       (if (realp (second style))
 	 (format st " \{ linewidth ~,2f \}" (second style)))
-       (if (integerp (third style))
-	 (format st " \{ color ~a \}" (xmaxima-colors (third style)))
-	 (format st " \{ color ~a \}" (xmaxima-colors i))))
+       (if (third style)
+	 (format st " \{ color ~a \}" (xmaxima-color colors (third style)))
+	 (format st " \{ color ~a \}" (xmaxima-color colors i))))
       ($points
        (format st "\{ nolines 1 \} \{ plotpoints 1 \}")
-       (if (numberp (second style))
+       (if (realp (second style))
 	 (format st " \{ pointsize ~,2f \}" (second style))
 	 (format st " \{ pointsize 3 \}"))
-       (if (integerp (third style))
-	 (format st " \{ color ~a \}" (xmaxima-colors (third style)))
-	 (format st " \{ color ~a \}" (xmaxima-colors i))))
+       (if (third style)
+	 (format st " \{ color ~a \}" (xmaxima-color colors (third style)))
+	 (format st " \{ color ~a \}" (xmaxima-color colors i))))
       ($linespoints
        (format st "\{ nolines 0 \} \{ plotpoints 1 \}")
-       (if (numberp (second style))
+       (if (realp (second style))
 	 (format st " \{ linewidth ~,2f \}" (second style)))
-       (if (numberp (third style))
+       (if (realp (third style))
 	 (format st " \{ pointsize ~,2f \}" (third style))
 	 (format st " \{ pointsize 3 \}"))
-       (if (integerp (fourth style))
-	 (format st " \{ color ~a \}" (xmaxima-colors (fourth style)))
-	 (format st " \{ color ~a \}" (xmaxima-colors i))))
+       (if (fourth style)
+	 (format st " \{ color ~a \}" (xmaxima-color colors (fourth style)))
+	 (format st " \{ color ~a \}" (xmaxima-color colors i))))
       (t
-       (format st "\{ nolines 0 \} \{ plotpoints 0 \} \{ color ~a \}" (xmaxima-colors i))))))
+       (format st "\{ nolines 0 \} \{ plotpoints 0 \} \{ color ~a \}"
+               (xmaxima-color colors i))))))
 
 (defun xmaxima-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,
-;; saturation, value or gray.
+;; saturation, value, gray or gradient.
 ;;
 ;; If the symbol is gray, it should be followed by two floating point
 ;; numbers that indicate the initial gray level and the interval of 
@@ -94,111 +97,130 @@
 ;; by three numbers that specify the hue, saturation and value for the
 ;; initial color, and a fourth number that gives the range of values for
 ;; the increment of hue, saturation or value.
-;; 
 ;; The values for the initial hue, saturation, value and grayness should
-;; be within 0 and 1, while the range can be higher or even negative. 
+;; be within 0 and 1, while the range can be higher or even negative.
+;;
+;; If the symbol is gradient, it must be followed by either a list of valid
+;; colors or by a list of lists with two elements, a number and a valid color.
+
+  (unless (listp palette) (setq palette (list palette)))
   (let (hue sat val gray range fun)
-    (with-output-to-string
-        (st)
-      (case (length (rest palette))
-	(2
-	 (setq gray (second palette))
-	 (setq range (third palette))
-	 (when (or (< gray 0) (> gray 1)) (setq gray (- gray (floor gray))))
-	 (format st "\{ value ~,3f \} \{ colorrange ~,3f \}" gray range))
-	(4
-	 (setq hue (second palette))
-	 (setq sat (third palette))
-	 (setq val (fourth palette))
-	 (setq range (fifth palette))
-	 (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
-	 (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
-	 (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))       
-	 (format st
-		 " \{ hue ~,3f \} \{ saturation ~,3f \} \{ value ~,3f \} \{ colorrange ~,3f \}"
-		 hue sat val range)))
+    (case (first palette)
+      ($gray
+       (case (length (rest palette))
+         (2 (setq gray (second palette)) (setq range (third palette)))
+         (t (merror
+             (intl:gettext
+              "palette: gray must be followed by two numbers."))))
+       (when (or (< gray 0) (> gray 1))
+         (setq gray (- gray (floor gray))))
+       (setq fun (format nil "{value ~,8f} {colorrange ~,8f}" gray range)))
+      (($hue $saturation $value)
+       (case (length (rest palette))
+         (4 (setq hue (second palette))
+            (setq sat (third palette))
+            (setq val (fourth palette))
+            (setq range (fifth palette)))
+         (t (merror
+             (intl:gettext
+              "palette: ~M must be followed by four numbers.")
+              (first palette))))
+       (when (or (< hue 0) (> hue 1)) (setq hue (- hue (floor hue))))
+       (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
+       (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))
+       (setq fun
+             (format nil " {hue ~,8f} {saturation ~,8f} {value ~,8f} {colorrange ~,8f}"
+                     hue sat val range))))
+    (with-output-to-string (st)
       (case (first palette)
-        ($hue (format st " \{ colorscheme hue \}"))
-        ($saturation (format st " \{ colorscheme saturation \}"))
-        ($value (format st " \{ colorscheme value \}"))
-        ($gray (format st " \{ colorscheme gray \}"))
+        ($hue (format st "~&~a {colorscheme hue}" fun))
+        ($saturation (format st "~&~a {colorscheme saturation}" fun))
+        ($value (format st "~&~a {colorscheme value}" fun))
+        ($gray (format st "~&~a {colorscheme gray}" fun))
+        ($gradient
+         (let* ((colors (rest palette)) (n (length colors)) (map nil))
+           ;; map is constructed as (n1 c1 n2 c2 ... nj cj) where ni is a
+           ;; decreasing sequence of numbers (n1=1, nj=0) and ci are colors
+           (cond
+             ;; Maxima list of numbers and colors (((mlist) ni ci) ...)
+             ((listp (first colors))
+              (setq colors (sort colors #'< :key #'cadr))
+              (dotimes (i n)
+                (setq map (cons (rgb-color (third (nth i colors))) ;; color
+                                (cons
+                                 (/ (- (second (nth i colors))   ;; ni minus
+                                       (second (first colors)))  ;; smallest ni
+                                    (- (second (nth (- n 1) colors));; biggest
+                                       (second (first colors)))) ;; - smallest
+                                 map)))))
+             ;; list of only colors
+             (t (dotimes (i n)
+                  (setq map (cons (rgb-color (nth i colors))  ;; color i
+                                  (cons (/ i (1- n)) map))))))    ;; number i
+
+           ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
+           (setq fun (format nil "~{{ ~,8f ~s}~^ ~}" (reverse map)))
+           (format st "~&{colorscheme gradient} ")
+           ;; writes: {gradlist {{nj "cj"} ...{n1 "c1"}}}
+           (format st "{gradlist {~a}}" fun)))
         (t
          (merror
           (intl:gettext
-           "palette: no such keyword ~M. Must be hue, saturation, value or gray")
+           "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient.")
           (first palette)))))))
 
-(defun xmaxima-palletes (n &aux (palettes (cddr ($get_plot_option '$palette))))
+(defun xmaxima-palettes (palette n)
   (unless (integerp n) (setq n (round n)))
-    (xmaxima-palette (rest (nth (mod (- n 1) (length palettes)) palettes))))
+  (if (find 'mlist palette :key #'car) (setq palette (list palette)))
+  (xmaxima-palette (rest (nth (mod (- n 1) (length palette)) palette))))
 			 
-(defun output-points-tcl (dest pl m i
-			  &aux (palette ($get_plot_option '$palette 2)))
-  (if palette
-      (format dest " ~a~%" (xmaxima-palletes i))
-      (format dest " {mesh_lines ~a}" (xmaxima-colors i)))
-  (format dest " {matrix_mesh ~%")
-  ;; we do the x y z  separately:
-  (loop for off from 0 to 2
-     with ar = (polygon-pts pl)
-     with  i of-type fixnum = 0
-     do (setq i off)
-       (format dest "~%{")
-       (loop 
-	  while (< i (length ar))
-	  do (format dest "~% {")
-	    (loop for j to m
-	       do (print-pt (aref ar i))
-		 (setq i (+ i 3)))
-	    (format dest "}~%"))
-       (format dest "}~%"))
-  (format dest "}~%"))
-
-(defun xmaxima-print-header (dest features)
-  (cond ($show_openplot (format dest "~a -data {~%" (getf features :type)))
-	(t (format dest "{~a " (getf features :type))))
-  (when (string= (getf features :type) "plot3d")
-    (let ((meshcolor '$black) (elev ($get_plot_option '$elevation))
-	  (azim ($get_plot_option '$azimuth)) palette meshcolor_opt)
-      (if (setq palette ($get_plot_option '$palette 2))
+(defun xmaxima-print-header (dest plot-options)
+  (cond ($show_openplot (format dest "~a -data {~%" (getf plot-options :type)))
+	(t (format dest "{~a " (getf plot-options :type))))
+  (when (string= (getf plot-options :type) "plot3d")
+    (let ((palette (getf plot-options :palette))
+          (meshcolor (if (member :mesh_lines_color plot-options)
+                       (getf plot-options :mesh_lines_color)
+                       '$black))
+          (elev (getf plot-options :elevation))
+          (azim (getf plot-options :azimuth)))
+      (if (find 'mlist palette :key #'car) (setq palette (list palette)))
+      (if palette
 	  (progn
-	    (when (setq meshcolor_opt ($get_plot_option '$mesh_lines_color))
-	      (setq meshcolor (third meshcolor_opt)))
 	    (if meshcolor
-		(format dest " {mesh_lines ~a}" (xmaxima-color meshcolor))
+		(format dest " {mesh_lines ~a}" (rgb-color meshcolor))
 		(format dest " {mesh_lines 0}")))
 	  (format dest " {colorscheme 0}~%"))
-      (when elev (format dest " {el ~d}" (third elev)))
-      (when azim (format dest " {az ~d}" (third azim)))
+      (when elev (format dest " {el ~d}" elev))
+      (when azim (format dest " {az ~d}" azim))
       (format dest "~%")))
 
-  (when (getf features :psfile)
-    (format dest " {psfile ~s}" (getf features :psfile)))
-  (when
-      (and (getf features :legend)(not (first (getf features :legend))))
-    (format dest " {nolegend 1}"))
-  (when (and (getf features :box) (not (first (getf features :box))))
-    (format dest " {nobox 1}"))
-  (if (getf features :axes)
-      (case (getf features :axes)
+  (when (getf plot-options :ps_file)
+    (format dest " {psfile ~s}" (getf plot-options :ps_file)))
+  (when (member :legend plot-options)
+    (unless (getf plot-options :legend)
+      (format dest " {nolegend 1}")))
+  (when (member :box plot-options)
+    (unless (getf plot-options :box)
+      (format dest " {nobox 1}")))
+  (if (getf plot-options :axes)
+      (case (getf plot-options :axes)
 	($x (format dest " {axes {x} }"))
 	($y (format dest " {axes {y} }"))
 	(t (format dest " {axes {xy} }")))
       (format dest " {axes 0}"))
-  (when (and (getf features :xmin) (getf features :xmax))
-    (format dest " {xrange ~g ~g}"
-	    (getf features :xmin) (getf features :xmax)))
-  (when (and (getf features :ymin) (getf features :ymax))
-    (format dest " {yrange ~g ~g}"
-	    (getf features :ymin) (getf features :ymax)))
-  (when (getf features :xlabel)
-    (format dest " {xaxislabel ~s}" (getf features :xlabel)))
-  (when (getf features :ylabel)
-    (format dest " {yaxislabel ~s}" (getf features :ylabel)))
-  (when (and (getf features :zmin) (getf features :zmax))
+  (when (getf plot-options :x)
+    (format dest " {xrange ~{~,8f~^ ~}}" (getf plot-options :x)))
+  (when (getf plot-options :y)
+    (format dest " {yrange ~{~,8f~^ ~}}" (getf plot-options :y)))
+  (when (getf plot-options :xlabel)
+    (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
+  (when (getf plot-options :ylabel)
+    (format dest " {yaxislabel ~s}" (getf plot-options :ylabel)))
+  (when (getf plot-options :z)
     (format $pstream " {zcenter ~g }"
-	    (/ (+ (getf features :zmax) (getf features :zmin)) 2))
+	    (/ (apply #'+ (getf plot-options :z)) 2))
     (format $pstream " {zradius ~g }~%"
-	    (/ (- (getf features :zmax) (getf features :zmin)) 2)))
+	    (/ (apply #'- (getf plot-options :z)) -2)))
   (format dest "~%"))
 

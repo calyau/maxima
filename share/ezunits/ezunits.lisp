@@ -3,6 +3,8 @@
 ;; I release this program under the terms of the
 ;; GNU General Public License.
 
+(defprop $\`\` tex-infix tex)
+
 ;; Process tex(a`b): throw away the backtick, texify a,
 ;; and texify b with all symbols in b output as mathrm.
 
@@ -40,3 +42,8 @@
 
 (defun $evens (a) (cons '(mlist) (odds (cdr a) 0)))
 
+(defun mathml-presentation-ezunits (mexpress)
+  (mPr_engine `((mtimes) ,(second mexpress) ,(third mexpress)) 'mparen 'mparen))
+
+(when (fboundp 'setup)
+  (setup '($\` (mPrprocess mathml-presentation-ezunits))))

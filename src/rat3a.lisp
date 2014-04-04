@@ -17,341 +17,640 @@
 ;; by the rest of the functions.  Certain specialized functions are found
 ;; elsewhere.  Most low-level utility programs are also in this file.
 
-(declare-top (special u* *a* *var* *x* v*))
-
 (declare-top (unspecial coef var exp p y))
 
 ;;These do not need to be special for this file and they
 ;;slow it down on lispm. We also eliminated the special
 ;;from ptimes2--wfs
 
-(load-macsyma-macros ratmac)
-
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
-(defmvar hmodulus nil "Half of `modulus'")
-(defmvar errrjfflag nil "Controls action of `errrjf' (`maxima-error' or throw)")
 
-(defmacro bctimes (&rest l)
-  `(rem (* ,@l) modulus))
-
-;; coefficient quotient a / b
-;; a and b may be integers (possibly with modulus) or floats if keepfloat=true
+;; CQUOTIENT
+;;
+;; Calculate the quotient of two coefficients, which should be numbers. If
+;; MODULUS is non-nil, we try to take the reciprocal of A with respect to the
+;; modulus (using CRECIP) and then multiply by B. Note that this fails if B
+;; divides A as an integer, but B is not a unit in the ring of integers modulo
+;; MODULUS. For example,
+;;
+;;   (let ((modulus 20)) (cquotient 10 5)) => ERROR
+;;
+;; If MODULUS is nil, then we work over the ring of integers when A and B are
+;; integers, and raise a RAT-ERROR if A is not divisible by B. If either A or B
+;; is a float then the division is done in floating point. Floats can get as far
+;; as the rational function code if $KEEPFLOAT is true.
 (defun cquotient (a b)
   (cond ((equal a 0) 0)
 	((null modulus)
-	 (cond ((equal 0 (cremainder a b)) (/ a b))
-	       (t (errrjf "quotient is not exact"))))
+         (if (or (floatp a) (floatp b)
+                 (zerop (rem a b)))
+             (/ a b)
+             (rat-error "quotient is not exact")))
 	(t (ctimes a (crecip b)))))
 
+;; ALG
+;;
+;; Get any value stored on the tellrat property of (car l). Returns NIL if L
+;; turns out not to be a list or if $ALGEBRAIC is false.
 (defun alg (l)
-  (and $algebraic (not (atom l)) (get (car l) 'tellrat)))
+  (unless (atom l) (algv (car l))))
 
+;; PACOEFP
+;;
+;; Return T if either X is a bare coefficient or X is a polynomial whose main
+;; variable has a declared value as an algebraic integer. Otherwise return NIL.
 (defun pacoefp (x)
-  (or (pcoefp x) (alg x)))
+  (and (or (pcoefp x) (alg x))
+       T))
 
+;; LEADTERM
+;;
+;; Return the leading term of POLY as a polynomial itself.
 (defun leadterm (poly)
-  (cond ((pcoefp poly) poly)
-	(t (make-poly (p-var poly) (p-le poly) (p-lc poly)))))
+  (if (pcoefp poly)
+      poly
+      (make-poly (p-var poly) (p-le poly) (p-lc poly))))
 
-(defun cremainder (a b)
-  (cond ((or modulus (floatp a) (floatp b)) 0) 
-	((rem a b))))
+;; CRECIP
+;;
+;; Takes the inverse of an integer N mod MODULUS. If there is a modulus then the
+;; result is constrained to lie in (-modulus/2, modulus/2]
+;;
+;; This just uses the extended Euclidean algorithm: once you have found a,b such
+;; that a*n + b*modulus = 1 then a must be the reciprocal you're after.
+;;
+;; When MODULUS is greater than 2^15, we use exactly the same algorithm in
+;; CRECIP-GENERAL, but it can't use fixnum arithmetic. Note: There's no
+;; particular reason to target 32 bits except that trying to work out the right
+;; types on the fly looks complicated and this lisp compiler, at least, uses 32
+;; bit words. Since we have to take a product, we constrain the types to 16 bit
+;; numbers.
+(defun crecip (n)
+  ;; Punt on anything complicated
+  (unless (and modulus (typep modulus '(unsigned-byte 15)))
+    (return-from crecip (crecip-general n)))
 
-(defun cbexpt (p n)
-  (do ((n (ash n -1) (ash n -1))
-       (s (if (oddp n) p 1)))
-      ((zerop n) s)
-    (setq p (bctimes p p))
-    (and (oddp n) (setq s (bctimes s p)))))
+  ;; And make sure that -MODULUS < N < MODULUS
+  (unless (<= (- modulus) n modulus)
+    (merror "N is out of range [-MODULUS, MODULUS] in crecip."))
 
+  ;; N in [0, MODULUS]
+  (when (minusp n) (setf n (+ n modulus)))
 
-;; Coefficient Arithmetic -- coefficients are assumed to be something
-;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
-;; are assumed to be less than its value.  Some functions use LOGAND
-;; when MODULUS = 2.  This will not work with bignum coefficients.
+  ;; The mod-copy parameter stores a copy of MODULUS on the stack, which is
+  ;; useful because the lisp implementation doesn't know that the special
+  ;; variable MODULUS is still an (unsigned-byte 15) when we get to the end
+  ;; (since it can't tell that our function calls don't change it behind our
+  ;; backs, I guess)
+  (let ((mod modulus) (remainder n) (a 1) (b 0)
+        (mod-copy modulus))
+    ;; On SBCL in 2013 at least, the compiler doesn't spot that MOD and
+    ;; REMAINDER are unsigned and bounded above by MODULUS, a 16-bit integer. So
+    ;; we have to tell it. Also, the lisp implementation can't really be
+    ;; expected to know that Bezout coefficients are bounded by the modulus and
+    ;; remainder, so we have to tell it that too.
+    (declare (type (unsigned-byte 15) mod mod-copy remainder)
+             (type (signed-byte 16) a b))
 
-;; Takes the inverse of an integer N mod P.  Solve N*X + P*Y = 1 
-;; I suspect that N is guaranteed to be less than P, since in the case
-;; where P is a fixnum, N is also assumed to be one.
+    (loop
+       until (= remainder 1)
 
-(defmfun crecip (n)
-  (cond ((bignump modulus)	;; Have to use bignum arithmetic if modulus is a bignum
-	 (prog (a1 a2 y1 y2 q (big-n n))
-	    (if (minusp big-n) (setq big-n (+ big-n modulus)))
-	    (setq a1 modulus a2 big-n)
-	    (setq y1 0 y2 1)
-	    (go step3)
-	    step2 (setq q (truncate a1 a2))
-	    (psetq a1 a2 a2 (- a1 (* a2 q)))
-	    (psetq y1 y2 y2 (- y1 (* y2 q)))
-	    step3 (cond ((zerop a2) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
-			((not (equal a2 1)) (go step2)))
-	    (return (cmod y2))))
-	;; Here we can use fixnum arithmetic
-	(t (prog ((a1 0) (a2 0) (y1 0) (y2 0) (q 0) (nn 0) (pp 0))
-	      (declare (fixnum a1 a2 y1 y2 q nn pp))
-	      (setq nn n pp modulus)
-	      (cond ((minusp nn) (setq nn (+ nn pp))))
-	      (setq a1 pp a2 nn)
-	      (setq y1 0 y2 1)
-	      (go step3)
-	      step2 (setq q (truncate a1 a2))
-	      (psetq a1 a2 a2 (rem a1 a2))
-	      (psetq y1 y2 y2 (- y1 (* y2 q)))
-	      step3 (cond ((= a2 0) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
-			  ((not (= a2 1)) (go step2)))
-	      ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
-	      (return  (cmod y2)
-		       ;;                    (COND ((= PP 2) (LOGAND 1 Y2))
-		       ;;			   (T (LET ((NN (rem Y2 PP)))
-		       ;;				(DECLARE (FIXNUM NN))
-		       ;;				(COND ((MINUSP NN)
-		       ;;				       (AND (< NN (- (ASH PP -1)))
-		       ;;					    (SETQ NN (+ NN PP))))
-		       ;;				      ((> NN (ASH PP -1))
-		       ;;				       (SETQ NN (- NN PP))))
-		       ;;				NN)))
-		       )
-	      ))))
+       when (zerop remainder) do
+         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
+                 mod)
+       doing
+         (multiple-value-bind (quot rem)
+             (truncate mod remainder)
+           (setf mod remainder
+                 remainder rem)
+           (psetf a (- b (* a quot))
+                  b a))
 
-(defun cexpt (n e)
-  (cond	((null modulus) (expt n e))
-	(t (cmod (cbexpt n e)))))
+       finally
+         ;; Since this isn't some general purpose Euclidean algorithm, but
+         ;; instead is trying to find a modulo inverse, we need to ensure that
+         ;; the Bezout coefficient we found (called A) is actually in [0,
+         ;; MODULUS).
+         ;;
+         ;; The general code calls CMOD here, but that doesn't know about the
+         ;; types of A and MODULUS, so we do it by hand, special-casing the easy
+         ;; case of modulus=2.
+         (return
+           (if (= mod-copy 2)
+               (logand a 1)
+               (let ((nn (mod a mod-copy)))
+                 ;; nn here is in [0, modulus)
+                 (if (<= (* 2 nn) mod-copy)
+                     nn
+                     (- nn mod-copy))))))))
 
-;;the following definitions are ok for 3600 and more transparent
-;;and quicker.  Note for kcl, we provide some c definitions.
+;; CRECIP-GENERAL
+;;
+;; The general algorithm for CRECIP, valid when the modulus is any integer. See
+;; CRECIP for more details.
+(defun crecip-general (n)
+  ;; We assume that |n| < modulus, so n+modulus is always positive
+  (let ((mod modulus)
+        (remainder (if (minusp n) (+ n modulus) n))
+        (a 1) (b 0))
+    (loop
+       until (= remainder 1)
 
-#-kcl
-(progn
-  (defmacro mcmod (n) ;;; gives answers from -modulus/2 ...0 1 2 +modulus/2
-    `(let ((.n. (mod ,n modulus)))
-      (cond ((<= (* 2 .n.) modulus) .n.)
-	    (t (- .n. modulus)))))
+       when (zerop remainder) do
+         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
+                 mod)
+       doing
+         (let ((quotient (truncate mod remainder)))
+           (psetf mod remainder
+                  remainder (- mod (* quotient remainder)))
+           (psetf a (- b (* a quotient))
+                  b a))
 
-  (defun cplus (a b)
-    (cond ((null modulus)(+ a b))
-	  (t (mcmod (+ a b)))))
+       finally (return (cmod a)))))
 
-  (defun cmod (n)
-    (cond ((null modulus ) n)
-	  (t (mcmod n))))
+;; CEXPT
+;;
+;; Raise an coefficient to a positive integral power. BASE should be a
+;; number. POW should be a non-negative integer.
+(defun cexpt (base pow)
+  (unless (typep pow '(integer 0))
+    (error "CEXPT only defined for non-negative integral exponents."))
+  (if (not modulus)
+      (expt base pow)
+      (do ((pow (ash pow -1) (ash pow -1))
+           (s (if (oddp pow) base 1)))
+          ((zerop pow) s)
+        (setq base (rem (* base base) modulus))
+        (when (oddp pow) (setq s (rem (* s base) modulus))))))
 
-  (defun ctimes (a b)
-    (cond ((null modulus) (* a b))
-	  (t (mcmod (* a b)))))
+;; CMOD
+;;
+;; When MODULUS is null, this is the identity. Otherwise, it normalises N, which
+;; should be a number, to lie in the range (-modulus/2, modulus/2].
+(defun cmod (n)
+  (declare (type number n))
+  (if (not modulus)
+      n
+      (let ((rem (mod n modulus)))
+        (if (<= (* 2 rem) modulus)
+            rem
+            (- rem modulus)))))
 
-  (defun cdifference (a b)
-    (cond ((null modulus) (- a b))
-	  (t (mcmod (- a b))))))
+(defun cplus       (a b) (cmod (+ a b)))
+(defun ctimes      (a b) (cmod (* a b)))
+(defun cdifference (a b) (cmod (- a b)))
 
-(defun setqmodulus (m)
-  (cond ((numberp m)
-	 (cond ((> m 0)
-		(setq hmodulus (truncate m 2))
-		(setq modulus m))
-	       (t (merror (intl:gettext "assignment: modulus must be a positive number; found: ~M") m))))
-	(t (setq hmodulus (setq modulus nil)))))
+;; SET-MODULUS
+;;
+;; Set the base in which the rational function package works. This does
+;; sanity-checking on the value chosen and is probably the way you should set
+;; the global value.
+;;
+;; Valid values for M are either a positive integer or NULL.
+(defun set-modulus (m)
+  (if (or (null m) (typep m '(integer 0)))
+      (setq modulus m)
+      (error "modulus must be a positive number or nil"))
+  (values))
 
-(defmfun pcoefadd (e c x)
-  (cond ((pzerop c) x)
-	(t (cons e (cons c x)))))
+;; PCOEFADD
+;;
+;; Prepend a term to an existing polynomial. EXPONENT should be the exponent of
+;; the term to add; COEFF should be its coefficient; REMAINDER is a list of
+;; polynomial terms. The function returns polynomial terms that correspond to
+;; adding the given term.
+;;
+;; The function doesn't check that EXPONENT is higher than the highest exponent
+;; in REMAINDER, so you have to do this yourself.
+(defmfun pcoefadd (exponent coeff remainder)
+  (if (pzerop coeff)
+      remainder
+      (cons exponent (cons coeff remainder))))
 
+;; PPLUS
+;;
+;; Add together two polynomials.
 (defmfun pplus (x y)
   (cond ((pcoefp x) (pcplus x y))
 	((pcoefp y) (pcplus y x))
 	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
+	 (psimp (p-var x) (ptptplus (p-terms y) (p-terms x))))
 	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcplus1 y (p-terms x))))
-	(t (psimp (p-var y) (pcplus1 x (p-terms y))))))
+	 (psimp (p-var x) (ptcplus y (p-terms x))))
+	(t (psimp (p-var y) (ptcplus x (p-terms y))))))
 
-(defun pplus1 (x y)
+;; PTPTPLUS
+;;
+;; Add together two lists of polynomial terms.
+(defun ptptplus (x y)
   (cond ((ptzerop x) y)
 	((ptzerop y) x)
 	((= (pt-le x) (pt-le y))
 	 (pcoefadd (pt-le x)
 		   (pplus (pt-lc x) (pt-lc y))
-		   (pplus1 (pt-red x) (pt-red y))))
+		   (ptptplus (pt-red x) (pt-red y))))
 	((> (pt-le x) (pt-le y))
-	 (cons (pt-le x) (cons (pt-lc x) (pplus1 (pt-red x) y))))
-	(t (cons (pt-le y) (cons (pt-lc y) (pplus1 x (pt-red y))))))) 
+	 (cons (pt-le x) (cons (pt-lc x) (ptptplus (pt-red x) y))))
+	(t (cons (pt-le y) (cons (pt-lc y) (ptptplus x (pt-red y)))))))
 
+;; PCPLUS
+;;
+;; Add a coefficient to a polynomial
 (defun pcplus (c p)
-  (cond ((pcoefp p) (cplus p c))
-	(t (psimp (p-var p) (pcplus1 c (p-terms p))))))
-
-(defun pcplus1 (c x)
-  (cond ((null x)
-	 (cond ((pzerop c) nil) (t (cons 0 (cons c nil)))))
-	((pzerop (car x)) (pcoefadd 0 (pplus c (cadr x)) nil))
-	(t (cons (car x) (cons (cadr x) (pcplus1 c (cddr x)))))))
-	 
-
-(defmfun pdifference (x y)
-  (cond ((pcoefp x) (pcdiffer x y))
-	((pcoefp y) (pcplus (cminus y) x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
-	(t (psimp (p-var y) (pcdiffer1 x (p-terms y))))))
-
-(defun pdiffer1 (x y)
-  (cond ((ptzerop x) (pminus1 y))
-	((ptzerop y) x)
-	((= (pt-le x) (pt-le y))
-	 (pcoefadd (pt-le x)
-		   (pdifference (pt-lc x) (pt-lc y))
-		   (pdiffer1 (pt-red x) (pt-red y))))
-	((> (pt-le x) (pt-le y))
-	 (cons (pt-le x) (cons (pt-lc x) (pdiffer1 (pt-red x) y))))
-	(t (cons (pt-le y) (cons (pminus (pt-lc y))
-				 (pdiffer1 x (pt-red y)))))))
-
-(defun pcdiffer (c p)
-  (cond ((pcoefp p) (cdifference c p))
-	(t (psimp (car p) (pcdiffer1 c (cdr p))))))	 
-
-(defun pcdiffer1 (c x)
-  (cond ((null x) (cond ((pzerop c) nil) (t (list 0 c))))
-	((pzerop (car x))
-	 (pcoefadd 0 (pdifference c (cadr x)) nil))
-	(t (cons (car x)
-		 (cons (pminus (cadr x)) (pcdiffer1 c (cddr x)))))))
-
-(defun pcdiffer2 (x c)
-  (cond ((null x) (cond ((pzerop c) nil) (t (list 0 (pminus c)))))
-	((pzerop (car x)) (pcoefadd 0 (pdifference (cadr x) c) nil))
-	(t (cons (car x) (cons (cadr x) (pcdiffer2 (cddr x) c))))))
-
-(defun pcsubsty (vals vars p)		;list of vals for vars
-  (cond ((null vars) p)
-	((atom vars) (pcsub p (list vals) (list vars)))	;one val hack
-	(t (setq vars (sort (mapcar #'cons vars vals) #'pointergp :key #'car))
-	   (pcsub p (mapcar (function cdr) vars)
-		  (mapcar (function car) vars)))))
-
-(defun pcsubst (p val var)		;one val for one var
-  (cond ((pcoefp p) p)
-	((eq (car p) var) (pcsub1 (cdr p) val () ()))
-	((pointergp var (car p)) p)
-	(t (psimp (car p) (pcsub2 (cdr p) (ncons val) (ncons var)))))) 
-
-(defun pcsub1 (a val vals vars)
-  (if (equal val 0) (pcsub (pterm a 0) vals vars)
-      (do ((p (pt-red a) (pt-red p))
-	   (ans (pcsub (pt-lc a) vals vars)
-		(pplus (ptimes ans
-			       (pexpt val (- ld (pt-le p))))
-		       (pcsub (pt-lc p) vals vars)))
-	   (ld (pt-le a) (pt-le p)))
-	  ((null p) (ptimes ans (pexpt val ld))))))
-
-(defun pcsub (p vals vars)
-  (cond ((null vals) p)
-	((pcoefp p) p)
-	((eq (p-var p) (car vars)) (pcsub1 (p-terms p) (car vals)
-					   (cdr vals) (cdr vars)))
-	((pointergp (car vars) (p-var p))
-	 (pcsub p (cdr vals) (cdr vars)))
-	(t (psimp (p-var p) (pcsub2 (p-terms p) vals vars)))))
-
-(defun pcsub2 (terms vals vars)
-  (loop for (exp coef) on terms by #'cddr
-	 unless (pzerop (setq coef (pcsub coef vals vars)))
-	 nconc (list exp coef)))
-
-
-
-(defmfun pderivative (p vari)
   (if (pcoefp p)
-      0
-      (psimp (p-var p) (cond ((eq vari (p-var p))
-			      (pderivative2 (p-terms p)))
-			     ((pointergp vari (p-var p))
-			      (ptzero))
-			     (t (pderivative3 (p-terms p) vari))))))
+      (cplus p c)
+      (psimp (p-var p)
+             (ptcplus c (p-terms p)))))
 
-(defun pderivative2 (x)
-  (cond ((null x) nil)
-	((zerop (pt-le x)) nil)
-	(t (pcoefadd (1- (pt-le x))
-		     (pctimes (cmod (pt-le x)) (pt-lc x))
-		     (pderivative2 (pt-red x))))))
+;; PTCPLUS
+;;
+;; Add a coefficient to a list of terms. C should be a used as a coefficient;
+;; TERMS is a list of a polynomial's terms. Note that we don't assume that C is
+;; a number: it might be a polynomial in a variable that isn't the main variable
+;; of the polynomial.
+(defun ptcplus (c terms)
+  (cond
+    ;; Adding zero doesn't do anything.
+    ((pzerop c) terms)
+    ;; Adding to zero, you just get the coefficient.
+    ((null terms) (list 0 c))
+    ;; If terms are from a constant polynomial, we can just add C to its leading
+    ;; coefficient (which might not be a number in the multivariate case, so you
+    ;; have to use PPLUS)
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pplus c (pt-lc terms)) nil))
+    ;; If TERMS is a polynomial with degree > 0, recurse.
+    (t
+     (cons (pt-le terms) (cons (pt-lc terms) (ptcplus c (pt-red terms)))))))
 
-(defun pderivative3 (x vari)
-  (cond ((null x) nil)
-	(t (pcoefadd
-	    (pt-le x)
-	    (pderivative (pt-lc x) vari)
-	    (pderivative3 (pt-red x) vari)))))
+;; PDIFFERENCE
+;;
+;; Compute the difference of two polynomials
+(defmfun pdifference (x y)
+  (cond
+    ;; If Y is a coefficient, it's a number, so we can just add -Y to X using
+    ;; pcplus. If, however, X is the coefficient, we have to negate all the
+    ;; coefficients in Y, so defer to a utility function.
+    ((pcoefp x) (pcdiffer x y))
+    ((pcoefp y) (pcplus (cminus y) x))
+    ;; If X and Y have the same variable, work down their lists of terms.
+    ((eq (p-var x) (p-var y))
+     (psimp (p-var x) (ptptdiffer (p-terms x) (p-terms y))))
+    ;; Treat Y as a coefficient in the main variable of X.
+    ((pointergp (p-var x) (p-var y))
+     (psimp (p-var x) (ptcdiffer-minus (p-terms x) y)))
+    ;; Treat X as a coefficient in the main variable of Y.
+    (t (psimp (p-var y) (ptcdiffer x (p-terms y))))))
 
+;; PTPTDIFFER
+;;
+;; Compute the difference of two lists of polynomial terms (assumed to represent
+;; two polynomials in the same variable).
+(defun ptptdiffer (x y)
+  (cond
+    ((ptzerop x) (ptminus y))
+    ((ptzerop y) x)
+    ((= (pt-le x) (pt-le y))
+     (pcoefadd (pt-le x)
+               (pdifference (pt-lc x) (pt-lc y))
+               (ptptdiffer (pt-red x) (pt-red y))))
+    ((> (pt-le x) (pt-le y))
+     (cons (pt-le x) (cons (pt-lc x) (ptptdiffer (pt-red x) y))))
+    (t (cons (pt-le y) (cons (pminus (pt-lc y))
+                             (ptptdiffer x (pt-red y)))))))
+;; PCDIFFER
+;;
+;; Subtract the polynomial P from the coefficient C to form c - p.
+(defun pcdiffer (c p)
+  (if (pcoefp p)
+      (cdifference c p)
+      (psimp (p-var p) (ptcdiffer c (p-terms p)))))
+
+;; PTCDIFFER
+;;
+;; Subtract a polynomial represented by the list of terms, TERMS, from the
+;; coefficient C.
+(defun ptcdiffer (c terms)
+  (cond
+    ;; Unlike in the plus case or in PTCDIFFER-MINUS, we don't have a shortcut
+    ;; if C=0. However, if TERMS is null then we are calculating C-0, which is
+    ;; easy:
+    ((null terms)
+     (if (pzerop c) nil (list 0 c)))
+    ;; If the leading exponent is zero (in the main variable), then we can
+    ;; subtract the coefficients. Of course, these might actually be polynomials
+    ;; in other variables, so do this using pdifference.
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pdifference c (pt-lc terms)) nil))
+    ;; Otherwise we have to negate the leading coefficient (using pminus of
+    ;; course, because it might be a polynomial in other variables) and recurse.
+    (t
+     (cons (pt-le terms)
+           (cons (pminus (pt-lc terms)) (ptcdiffer c (pt-red terms)))))))
+
+;; PTCDIFFER-MINUS
+;;
+;; Subtract a coefficient, C, from a polynomial represented by a list of terms,
+;; TERMS, to form "p-c". This is the same as PTCDIFFER but the opposite sign (we
+;; don't implement it by (pminus (ptcdiffer c terms)) because that would require
+;; walking the polynomial twice)
+(defun ptcdiffer-minus (terms c)
+  (cond
+    ;; We're subtracting zero from a polynomial, which is easy!
+    ((pzerop c) terms)
+    ;; We're subtracting a coefficient from zero, which just comes out as the
+    ;; negation of the coefficient (compute it using pminus)
+    ((null terms) (list 0 (pminus c)))
+    ;; If the leading exponent is zero, subtract the coefficients just like in
+    ;; PTCDIFFER.
+    ((zerop (pt-le terms))
+     (pcoefadd 0 (pdifference (pt-lc terms) c) nil))
+    ;; Otherwise recurse.
+    (t
+     (cons (pt-le terms)
+           (cons (pt-lc terms) (ptcdiffer-minus (pt-red terms) c))))))
+
+;; PCSUB
+;;
+;; Substitute values for variables in the polynomial P. VARS and VALS should be
+;; list of variables to substitute for and values to substitute, respectively.
+;;
+;; The code assumes that if VAR1 precedes VAR2 in the list then (POINTERGP VAR1
+;; VAR2). As such, VAR1 won't appear in the coefficients of a polynomial whose
+;; main variable is VAR2.
+(defun pcsub (p vals vars)
+  (cond
+    ;; Nothing to substitute, or P has no variables in it.
+    ((or (null vals) (pcoefp p)) p)
+    ;; The first variable in our list is the main variable of P.
+    ((eq (p-var p) (first vars))
+     (ptcsub (p-terms p) (first vals)
+             (cdr vals) (cdr vars)))
+    ;; If the first var should appear before the main variable of P, we know it
+    ;; doesn't appear in any of the coefficients, so can (tail-)recurse on vals
+    ;; + vars.
+    ((pointergp (car vars) (p-var p))
+     (pcsub p (cdr vals) (cdr vars)))
+    ;; Else, the main variable shouldn't get clobbered, but maybe we should
+    ;; replace variables in the coefficients.
+    (t (psimp (p-var p) (ptcsub-args (p-terms p) vals vars)))))
+
+;; PCSUBST
+;;
+;; Substitute VAL for VAR in a polynomial. Like PCSUB, but with only a single
+;; var to be substituted.
+;;
+;; (The logic of this function is exactly the same as PCSUB, but is marginally
+;;  simpler because there are no more vars afterwards. Presumably, it was
+;;  thought worth separating this case out from PCSUB to avoid spurious
+;;  consing. I'm not convinced. RJS)
+(defun pcsubst (p val var)
+  (cond ((pcoefp p) p)
+	((eq (p-var p) var) (ptcsub (cdr p) val nil nil))
+	((pointergp var (p-var p)) p)
+	(t (psimp (car p) (ptcsub-args (cdr p) (list val) (list var))))))
+
+;; PTCSUB
+;;
+;; Substitute a constant, VAL, for the main variable in TERMS, which represent
+;; the terms of a polynomial. The coefficients might themselves be polynomials
+;; and, if so, we might substitute values for them too. To do so, pass VALS and
+;; VARS, with the same ordering requirements as in PCSUB.
+(defun ptcsub (terms val vals vars)
+  (if (eql val 0)
+      ;; If we're substituting 0 for the value, then we just extract the
+      ;; constant term.
+      (pcsub (ptterm terms 0) vals vars)
+      ;; Otherwise, walk through the polynomial using Horner's scheme to
+      ;; evaluate it. Because the polynomial is sparse, you can't just multiply
+      ;; by VAL every step, and instead have to keep track of the jump in
+      ;; exponents, which is what the LAST-LE variable does.
+      (do ((terms (pt-red terms) (pt-red terms))
+	   (ans (pcsub (pt-lc terms) vals vars)
+		(pplus (ptimes ans (pexpt val (- last-le (pt-le terms))))
+		       (pcsub (pt-lc terms) vals vars)))
+	   (last-le (pt-le terms) (pt-le terms)))
+	  ((null terms)
+           (ptimes ans (pexpt val last-le))))))
+
+;; PTCSUB-ARGS
+;;
+;; Substitute values for vars in TERMS, which should be the terms of some
+;; polynomial. Unlike PTCSUB, we assume that the main variable of the polynomial
+;; isn't being substituted. VARS and VALS should be ordered as in PCSUB.
+(defun ptcsub-args (terms vals vars)
+  (loop
+     for (exp coef) on terms by #'cddr
+     unless (pzerop (setq coef (pcsub coef vals vars)))
+     nconc (list exp coef)))
+
+;; PCSUBSTY
+;;
+;; Like PCSUB, but with arguments in a different order and with a special case
+;; that you can pass atoms for VALS and VARS, in which case they will be treated
+;; as one-element lists. The big difference with PCSUB is that we don't assume
+;; that VARS and VALS come pre-sorted, and sort them here.
+(defun pcsubsty (vals vars p)
+  (cond
+    ;; If there is nothing to do, the answer is just P.
+    ((null vars) p)
+    ;; When there's only one variable, we don't need to do any sorting, so skip
+    ;; it and call PCSUB directly.
+    ((atom vars) (pcsub p (list vals) (list vars)))
+    ;; Otherwise, call PCSUB with a sorted list of VARS and VALS.
+    (t
+     (let ((pairs (sort (mapcar #'cons vars vals) #'pointergp :key #'car)))
+       (pcsub p (mapcar #'cdr pairs) (mapcar #'car pairs))))))
+
+;; PDERIVATIVE
+;;
+;; Compute the derivative of the polynomial P with respect to the variable VARI.
+(defmfun pderivative (p vari)
+  (cond
+    ;; The derivative of a constant is zero.
+    ((pcoefp p) 0)
+    ;; If we have the same variable, do the differentiation term-by-term.
+    ((eq vari (p-var p))
+     (psimp (p-var p) (ptderivative (p-terms p))))
+    ;; If VARI > (P-VAR P) then we know it doesn't occur in any of the
+    ;; coefficients either, so return zero. This test comes after the one above
+    ;; because we expect more univariate polynomials and eq is cheaper than
+    ;; pointergp.
+    ((pointergp vari (p-var p)) 0)
+    ;; The other possibility is that (P-VAR P) > VARI, so the coefficients might
+    ;; need differentiating.
+    (t
+     (psimp (p-var p) (ptderivative-coeffs (p-terms p) vari)))))
+
+;; PTDERIVATIVE
+;;
+;; Formally differentiate TERMS, which is a list of the terms of some
+;; polynomial, with respect to that polynomial's main variable.
+(defun ptderivative (terms)
+  (if (or (null terms) (zerop (pt-le terms)))
+      ;; Zero or constant polynomials -> 0
+      nil
+      ;; Recurse, adding up "k . x^(k-1)" each time.
+      (pcoefadd (1- (pt-le terms))
+                (pctimes (cmod (pt-le terms)) (pt-lc terms))
+                (ptderivative (pt-red terms)))))
+
+;; PTDERIVATIVE-COEFFS
+;;
+;; Differentiate TERMS, which is a list of the terms of some polynomial, with
+;; respect to the variable VARI. We assume that VARI is not the main variable of
+;; the polynomial, but it might crop up in the coefficients.
+(defun ptderivative-coeffs (terms vari)
+  (and terms
+       ;; Recurse down the list of terms, calling PDERIVATIVE to actually
+       ;; differentiate each coefficient, then PTDERIVATIVE-COEFFS to do the rest.
+       (pcoefadd (pt-le terms)
+                 (pderivative (pt-lc terms) vari)
+                 (ptderivative-coeffs (pt-red terms) vari))))
+
+;; PDIVIDE
+;;
+;; Polynomial division with remainder. X and Y should be polynomials. If V
+;; denotes the main variable of X, then we are carrying out the division in a
+;; ring of polynomials over Q where all variables that occur after V have been
+;; formally inverted. This is a Euclidean ring, and PDIVIDE implements division
+;; with remainder in this ring.
+;;
+;; The result is a list of two elements (Q R). Each is a rational function (a
+;; cons pair of polynomials), representing an element of F[V].
 (defmfun pdivide (x y)
-  (cond ((pzerop y) (errrjf "Quotient by zero"))
-	((pacoefp y) (list (ratreduce x y) (rzero)))
-	((pacoefp x) (list (rzero) (cons x 1)))
-	((pointergp (car x) (car y)) (list (ratreduce x y) (rzero)))
-	(t (pdivide1 x y))))
+  (cond
+    ((pzerop y) (rat-error "Quotient by zero"))
+    ;; If Y is a coefficient, it doesn't matter what X is: we can always do the
+    ;; division.
+    ((pacoefp y) (list (ratreduce x y) (rzero)))
+    ;; If X is a coefficient but Y isn't then the quotient must be zero
+    ((pacoefp x) (list (rzero) (cons x 1)))
+    ;; If neither is a coefficient then compare the variables. If V is greater
+    ;; than the main variable of Y, then Y is invertible in F[V].
+    ((pointergp (p-var x) (p-var y)) (list (ratreduce x y) (rzero)))
+    ;; If we've got to here, V might occur in the coefficients of Y, but it
+    ;; needn't be the main variable.
+    (t
+     (do* ((lcy (cons (p-lc y) 1))
+           (q (rzero))
+           (r (cons x 1))
+           (k (- (pdegree x (p-var y)) (p-le y))
+              (- (pdegree (car r) (p-var y)) (p-le y))))
 
-(defun pdivide1 (u v)
-  (prog (k inc lcu lcv q r)
-     (setq lcv (cons (caddr v) 1))
-     (setq q (rzero))
-     (setq r (cons u 1) )
-     a    (setq k (- (pdegree (car r) (p-var v)) (p-le v)))
-     (if (minusp k) (return (list q r)))
-     (setq lcu (cons (p-lc (car r)) (cdr r)))
-     (setq inc (ratquotient lcu lcv))
-     (setq inc (cons (psimp (car v) (list k (car inc)))
-		     (cdr inc)))
-     (setq q (ratplus q inc))
-     (setq r (ratplus r  (rattimes (cons (pminus v) 1) inc t)))
-     (go a)))
-	 
+          ;; k is the degree of the numerator of the remainder minus the degree
+          ;; of y, both in the leading variable of y. For there to be further
+          ;; factors of y to subtract from q, this must be non-negative.
+          ((minusp k) (list q r))
+
+       ;; Divide the leading coefficient of r (which means the leading term of
+       ;; the numerator, divided by the denominator) by the leading coefficient
+       ;; of y.
+       ;;
+       ;; The quotient gets added to q and gets multiplied back up by y and the
+       ;; result is subtracted from r.
+       (let* ((lcr (cons (p-lc (car r)) (cdr r)))
+              (quot (ratquotient lcr lcy))
+              (quot-simp (cons (psimp (p-var y) (list k (car quot)))
+                               (cdr quot))))
+         (setf q (ratplus q quot-simp)
+               r (ratplus r (rattimes (cons (pminus y) 1) quot-simp t))))))))
+
+;; PEXPT
+;;
+;; Polynomial exponentiation. Raise the polynomial P to the power N (which
+;; should be an integer)
 (defmfun pexpt (p n)
-  (cond ((= n 0) 1)
-	((= n 1) p)
-	((minusp n) (pquotient 1 (pexpt p (- n))))
-	((pcoefp p) (cexpt p n))
-	((alg p) (pexptsq p n))
-	((null (p-red p))
-	 (psimp (p-var p)
-		(pcoefadd (* n (p-le p)) (pexpt (p-lc p) n) nil)))
-	(t (let ((*a* (1+ n))
-		 (*x* (psimp (p-var p) (p-red p)))
-		 (b (make-poly (p-var p) (p-le p) (p-lc p))))
-	     (do ((bl (list (pexpt b 2) b)
-		      (cons (ptimes b (car bl)) bl))
-		  (m 2 (1+ m)))
-		 ((= m n) (pplus (car bl)
-				 (pexpt2 1 1 *x* (cdr bl)))))))))
+  (cond
+    ;; p^0 = 1; p^1 = p
+    ((= n 0) 1)
+    ((= n 1) p)
+    ;; p^(-n) = 1/p^n
+    ((minusp n) (pquotient 1 (pexpt p (- n))))
+    ;; When p is a coefficient, we can the simpler cexpt (which expects n >= 0,
+    ;; guaranteed by the previous clause)
+    ((pcoefp p) (cexpt p n))
+    ;; If the main variable of P is an algebraic integer, calculate the power by
+    ;; repeated squaring (which will correctly take the remainder wrt the
+    ;; minimal polynomial for the variable)
+    ((alg p) (pexptsq p n))
+    ;; If p is a monomial in the main variable, we're doing something like
+    ;; (x^2(y+1))^n, which is x^2n (y+1)^n, exponentiate the coefficient by
+    ;; recursion and just multiply the exponent. The call to PCOEFADD is just to
+    ;; ensure that we get zero if the coefficient raises to the power
+    ;; zero. (Possible when the coefficient is an algebraic integer)
+    ((null (p-red p))
+     (psimp (p-var p)
+            (pcoefadd (* n (p-le p)) (pexpt (p-lc p) n) nil)))
+    ;; In the general case, expand using the binomial theorem. Write the
+    ;; calculation as
+    ;;
+    ;;    (b + rest)^n  = sum (binomial (n,k) * rest^k * b^(n-k), k, 0, n)
+    ;;
+    ;; We pre-compute a list of descending powers of B and use the formula
+    ;;
+    ;;    binomial(n,k)/binomial(n,k-1) = (n+1-k) / k
+    ;;
+    ;; to keep track of the binomial coefficient.
+    (t
+     (let ((descending-powers (p-descending-powers
+                               (make-poly (p-var p) (p-le p) (p-lc p)) n))
+           (rest (psimp (p-var p) (p-red p))))
+       (do* ((b-list descending-powers (rest b-list))
+             (k 0 (1+ k))
+             (n-choose-k 1 (truncate (* n-choose-k (- (1+ n) k)) k))
+             (rest-pow 1 (case k
+                           (1 rest)
+                           (2 (pexpt rest 2))
+                           (t (ptimes rest rest-pow))))
+             (sum (first descending-powers)
+                  (pplus sum
+                         (if b-list
+                             (ptimes (pctimes (cmod n-choose-k) rest-pow)
+                                     (first b-list))
+                             (pctimes (cmod n-choose-k) rest-pow)))))
+            ((> k n) sum))))))
 
-(defun nxtbincoef (m nom)
-  (truncate (* nom (- *a* m)) m))
+;; P-DESCENDING-POWERS
+;;
+;; Return a list of the powers of the polynomial P in descending order, starting
+;; with P^N and ending with P.
+(defun p-descending-powers (p n)
+  (let ((lst (list p)))
+    (dotimes (i (1- n)) (push (ptimes p (car lst)) lst))
+    lst))
 
-(defun pexpt2 (m nom b l)
-  (if (null l) b
-      (pplus (ptimes (pctimes (cmod (setq nom (nxtbincoef m nom))) b) (car l))
-	     (pexpt2 (1+ m)
-		     nom
-		     (if (eq *x* b) (pexpt b 2)
-			 (ptimes *x* b))
-		     (cdr l)))))
-
+;; PMINUSP
+;;
+;; Returns true if the coefficient of the leading monomial of the polynomial is
+;; negative. Note that this depends on the variable ordering (for example,
+;; consider x-y).
+;;
+;;   (pminusp '(y 1 -1 0 (x 1 1))) => T     but
+;;   (pminusp '(x 1 1 0 (y 1 -1))) => NIL
 (defmfun pminusp (p)
   (if (realp p) (minusp p)
       (pminusp (p-lc p))))
 
+;; PMINUS
+;;
+;; Unary negation for polynomials.
 (defmfun pminus (p)
   (if (pcoefp p) (cminus p)
-      (cons (p-var p) (pminus1 (p-terms p)))))
+      (cons (p-var p) (ptminus (p-terms p)))))
 
-(defun pminus1 (x)
+;; PTMINUS
+;;
+;; Negate a list of polynomial terms.
+(defun ptminus (x)
   (loop for (exp coef) on x by #'cddr
 	 nconc (list exp (pminus coef))))
 
+;; PMOD
+;;
+;; Reduce a polynomial modulo the current value of MODULUS.
 (defmfun pmod (p)
   (if (pcoefp p) (cmod p)
       (psimp (car p)
@@ -359,89 +658,192 @@
 		    unless (pzerop (setq coef (pmod coef)))
 		    nconc (list exp coef)))))
 
+;; PQUOTIENT
+;;
+;; Calculate x/y in the polynomial ring over the integers. Y should divide X
+;; without remainder.
 (defmfun pquotient (x y)
   (cond ((pcoefp x)
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
 	       ((alg y) (paquo x y))
-	       (t (errrjf "Quotient by a polynomial of higher degree"))))
-	((pcoefp y) (cond ((pzerop y) (errrjf "Quotient by zero"))
-			  (modulus (pctimes (crecip y) x))
-			  (t (pcquotient x y))))
-	((alg y) (or (let ((errrjfflag t) $algebraic)
-		       (catch 'raterr (pquotient x y)))
+	       (t (rat-error "Quotient by a polynomial of higher degree"))))
+
+	((pcoefp y)
+         (cond ((pzerop y) (rat-error "Quotient by zero"))
+               (modulus (pctimes (crecip y) x))
+               (t (pcquotient x y))))
+
+        ;; If (alg y) is true, then y is a polynomial in some variable that
+        ;; itself has a minimum polynomial. Moreover, the $algebraic flag must
+        ;; be true. We first try to compute an exact quotient ignoring that
+        ;; minimal polynomial, by binding $algebraic to nil. If that fails, we
+        ;; try to invert y and then multiply the results together.
+	((alg y) (or (let ($algebraic)
+                       (ignore-rat-err (pquotient x y)))
 		     (patimes x (rainv y))))
+
+        ;; If the main variable of Y comes after the main variable of X, Y must
+        ;; be free of that variable, so must divide each coefficient in X. Thus
+        ;; we can use PCQUOTIENT.
 	((pointergp (p-var x) (p-var y)) (pcquotient x y))
+
+        ;; Either Y contains a variable that is not in X, or they have the same
+        ;; main variable and Y has a higher degree. There can't possibly be an
+        ;; exact quotient.
 	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
-	 (errrjf "Quotient by a polynomial of higher degree"))
-	(t (psimp (p-var x) (pquotient1 (p-terms x) (p-terms y))))))
+	 (rat-error "Quotient by a polynomial of higher degree"))
 
+        ;; If we got to here then X and Y have the same main variable and Y has
+        ;; a degree less than or equal to that of X. We can now forget about the
+        ;; main variable and work on the terms, with PTPTQUOTIENT.
+	(t
+         (psimp (p-var x) (ptptquotient (p-terms x) (p-terms y))))))
+
+;; PCQUOTIENT
+;;
+;; Divide the polynomial P by Q. Q should be either a coefficient (so that
+;; (pcoefp q) => T), or should be a polynomial in a later variable than the main
+;; variable of P. Either way, Q is free of the main variable of P. The division
+;; is done at each coefficient.
 (defun pcquotient (p q)
-  (psimp (p-var p) (pcquotient1 (p-terms p) q)))
+  (psimp (p-var p)
+         (loop
+            for (exp coef) on (p-terms p) by #'cddr
+            nconc (list exp (pquotient coef q)))))
 
-(defun pcquotient1 (p1 q)
-  (loop for (exp coef) on p1 by #'cddr
-	 nconc (list exp (pquotient coef q))))
+;; PTPTQUOTIENT
+;;
+;; Exactly divide two polynomials in the same variable, represented here by the
+;; list of their terms.
+(defun ptptquotient (u v)
+  ;; The algorithm is classic long division. You notice that if X/Y = Q then X =
+  ;; QY, so lc(X) = lc(Q)lc(Y) (where lc(Q)=Q when Q is a bare coefficient). Now
+  ;; divide again in the ring of coefficients to see that lc(X)/lc(Y) =
+  ;; lc(Q). Of course, you also know that le(Q) = le(X) - le(Y).
+  ;;
+  ;; Once you know lc(Q), you can subtract Y * lc(Q)*(var^le(Q)) from X and
+  ;; repeat. You know that you'll remove the leading term, so the algorithm will
+  ;; always terminate. To do the subtraction, use PTPT-SUBTRACT-POWERED-PRODUCT.
+  (do ((q-terms nil)
+       (u u (ptpt-subtract-powered-product (pt-red u) (pt-red v)
+                                           (first q-terms) (second q-terms))))
+      ((ptzerop u)
+       (nreverse q-terms))
+    ;; If B didn't divide A after all, then eventually we'll end up with the
+    ;; remainder in u, which has lower degree than that of B.
+    (when (< (pt-le u) (pt-le v))
+      (rat-error "Polynomial quotient is not exact"))
+    (let ((le-q (- (pt-le u) (pt-le v)))
+          (lc-q (pquotient (pt-lc u) (pt-lc v))))
+      ;; We've calculated the leading exponent and coefficient of q. Push them
+      ;; backwards onto q-terms (which holds the terms in reverse order).
+      (setf q-terms (cons lc-q (cons le-q q-terms))))))
 
-(declare-top(special k q*)
-	    (fixnum k i))
-
-(defun pquotient1 (u v &aux q* (k 0))
-  (declare (fixnum k))
-  (loop do (setq  k (- (pt-le u) (pt-le v)))
-	 when (minusp k) do (errrjf "Polynomial quotient is not exact")
-	 nconc (list k (setq q* (pquotient (pt-lc u) (pt-lc v))))
-	 until (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))))
-
-(defun pquotient2 (x y &aux (i 0))	;X-v^k*Y*Q*
-  (cond ((null y) x)
-	((null x) (pcetimes1 y k (pminus q*)))
-	((minusp (setq i (- (pt-le x) (pt-le y) k)))
-	 (pcoefadd (+ (pt-le y) k)
-		   (ptimes q* (pminus (pt-lc y)))
-		   (pquotient2 x (pt-red y))))
-	((zerop i) (pcoefadd (pt-le x)
-			     (pdifference (pt-lc x) (ptimes q* (pt-lc y)))
-			     (pquotient2 (pt-red x) (pt-red y))))
-	(t (cons (pt-le x) (cons (pt-lc x) (pquotient2 (pt-red x) y))))))
-
-(declare-top (unspecial k q*))
+;; PTPT-SUBTRACT-POWERED-PRODUCT
+;;
+;; U and V are the terms of two polynomials, A and B, in the same variable, x. Q
+;; is free of x. This function computes the terms of A - x^k * B * Q. This
+;; rather specialised function is used to update a numerator when doing
+;; polynomial long division.
+(defun ptpt-subtract-powered-product (u v q k)
+  (cond
+    ;; A - x^k * 0 * Q = A
+    ((null v) u)
+    ;; 0 - x^k * B * Q = x^k * B * (- Q)
+    ((null u) (pcetimes1 v k (pminus q)))
+    (t
+     ;; hipow is the highest exponent in x^k*B*Q.
+     (let ((hipow (+ (pt-le v) k)))
+       (cond
+         ;; If hipow is greater than the highest exponent in A, we have to
+         ;; prepend the first coefficient, which will be Q * lc(B). We can then
+         ;; recurse to this function to sort out the rest of the sum.
+         ((> hipow (pt-le u))
+          (pcoefadd hipow
+                    (ptimes q (pminus (pt-lc v)))
+                    (ptpt-subtract-powered-product u (pt-red v) q k)))
+         ;; If hipow is equal to the highest exponent in A, we can just subtract
+         ;; the two leading coefficients and recurse to sort out the rest.
+         ((= hipow (pt-le u))
+          (pcoefadd hipow
+                    (pdifference (pt-lc u) (ptimes q (pt-lc v)))
+                    (ptpt-subtract-powered-product (pt-red u) (pt-red v) q k)))
+         ;; If hipow is lower than the highest exponent in A then keep the first
+         ;; term of A and recurse.
+         (t
+          (list* (pt-le u) (pt-lc u)
+                 (ptpt-subtract-powered-product (pt-red u) v q k))))))))
 
 (defun algord (var)
   (and $algebraic (get var 'algord)))
 
+;; PSIMP
+;;
+;; Return a "simplified" polynomial whose main variable is VAR and whose terms
+;; are given by X.
+;;
+;; If the polynomial is free of X, the result is the zero'th order coefficient:
+;; either a polynomial in later variables or a number. PSIMP also deals with
+;; reordering variables when $ALGEBRAIC is true, behaviour which is triggered by
+;; the ALGORD property on the main variable.
 (defun psimp (var x)
   (cond ((ptzerop x) 0)
 	((atom x) x)
 	((zerop (pt-le x)) (pt-lc x))
-	((algord var)			;wrong alg ordering
-	 (do ((p x (cddr p)) (sum 0))
-	     ((null p) (cond ((pzerop sum) (cons var x))
-			     (t (pplus sum (psimp2 var x)))))
-	   (unless (or (pcoefp (cadr p)) (pointergp var (caadr p)))
-	     (setq sum (pplus sum
-			      (if (zerop (pt-le p)) (pt-lc p)
-				  (ptimes 
-				   (make-poly var (pt-le p) 1)
-				   (pt-lc p)))))
-	     (setf (pt-lc p) 0))))
-	(t (cons var x))))
+	((algord var)
+         ;; Fix wrong alg ordering: We deal with the case that the main variable
+         ;; of a coefficient should precede VAR.
+         (do ((p x (cddr p)) (sum 0))
+             ((null p)
+              (if (pzerop sum)
+                  (cons var x)
+                  (pplus sum (p-delete-zeros var x))))
+           ;; We only need to worry about the wrong ordering if a coefficient is
+           ;; a polynomial in another variable, and that variable should precede
+           ;; VAR.
+           (unless (or (pcoefp (pt-lc p))
+                       (pointergp var (p-var (pt-lc p))))
+             (setq sum (pplus sum
+                              (if (zerop (pt-le p)) (pt-lc p)
+                                  (ptimes (make-poly var (pt-le p) 1)
+                                          (pt-lc p)))))
+             ;; When we finish, we'll call PPLUS to add SUM and the remainder of
+             ;; X, and this line zeroes out this term in X (through P) to avoid
+             ;; double counting. The term will be deleted by the call to
+             ;; P-DELETE-ZEROS later.
+             (setf (pt-lc p) 0))))
 
-(defun psimp1 (var x)
-  (let ($algebraic) (psimp var x)))
+        (t
+         (cons var x))))
 
-(defun psimp2 (var x)
-  (do ((p (setq x (cons nil x)) ))
-      ((null (cdr p)) (psimp1 var (cdr x)))
-    (cond ((pzerop (caddr p)) (rplacd p (cdddr p)))
-	  (t (setq p (cddr p))))))
+;; P-DELETE-ZEROS
+;;
+;; Destructively operate on X, deleting any terms that have a zero coefficient.
+(defun p-delete-zeros (var x)
+  ;; The idea is that P always points one before the term in which we're
+  ;; interested. When that term has zero coefficient, it is trimmed from P by
+  ;; replacing the cdr. Consing NIL to the front of X allows us to throw away
+  ;; the first term if necessary.
+  (do ((p (setq x (cons nil x))))
+      ((null (cdr p))
+       ;; Switch off $algebraic so that we can recurse to PSIMP without any fear
+       ;; of an infinite recursion - PSIMP only calls this function when (ALGORD
+       ;; VAR) is true, and that only happens when $algebraic is true.
+       (let (($algebraic)) (psimp var (cdr x))))
+    (if (pzerop (pt-lc (cdr p)))
+        (setf (cdr p) (pt-red (cdr p)))
+        (setq p (cddr p)))))
 
-(defun pterm  (p n)
-  (do ((p p (pt-red p)))
-      ((ptzerop p) (pzero))
-    (cond ((< (pt-le p) n) (return (pzero)))
-	  ((= (pt-le p) n) (return (pt-lc p))))))
-
+;; PTTERM
+;;
+;; Given X representing the terms of a polynomial in a variable z, return the
+;; coefficient of z^n.
+(defun ptterm (x n)
+  (do ((x x (pt-red x)))
+      ((ptzerop x) (pzero))
+    (cond ((< (pt-le x) n) (return (pzero)))
+	  ((= (pt-le x) n) (return (pt-lc x))))))
 
 (defmfun ptimes (x y)
   (cond ((pcoefp x) (if (pzerop x) (pzero) (pctimes x y)))
@@ -463,12 +865,12 @@
        (setq c (ptimes (cadr y) xc))
        (cond ((pzerop c) (setq y (cddr y)) (go a1))
 	     ((or (null vvv) (> e (car vvv)))
-	      (setq uuu (setq vvv (pplus1 uuu (list e c))))
+	      (setq uuu (setq vvv (ptptplus uuu (list e c))))
 	      (setq y (cddr y)) (go a1))
 	     ((= e (car vvv))
 	      (setq c (pplus c (cadr vvv)))
 	      (cond ((pzerop c)
-		     (setq uuu (setq vvv (pdiffer1 uuu (list (car vvv) (cadr vvv))))))
+		     (setq uuu (setq vvv (ptptdiffer uuu (list (car vvv) (cadr vvv))))))
 		    (t (rplaca (cdr vvv) c)))
 	      (setq y (cddr y))
 	      (go a1)))
@@ -523,7 +925,7 @@
        (b p a))
       ((or (null a) (< (pt-le a) deg))
        (rplacd (cdr b) nil)
-       (pplus1 (pctimes1 kernel p) a))
+       (ptptplus (pctimes1 kernel p) a))
     (rplaca a (- (pt-le a) deg))))
 
 (defmfun monize (p) 
@@ -569,7 +971,7 @@
 		  (setq q (ptimes q (car a)))
 		  (setq a (cdr a)) ))
 	   (cond ((minusp (setq e (+ 1 (- (cadr q)) (pdegree p (car q)))))
-		  (errrjf "Quotient by a polynomial of higher degree")))
+		  (rat-error "Quotient by a polynomial of higher degree")))
 	   (setq a (pexpt a e))
 	   (ratreduce (or (testdivide (ptimes a p) q)
 			  (prog2 (setq a (pexpt (p-lc q) e))
@@ -605,9 +1007,3 @@
     (and (oddp n) (setq s (ptimes s p))) ))
 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 1.
-
-;; Someone should determine which of the variables special in this file
-;; (and others) are really special and which are used just for dynamic
-;; scoping.  -- cwh
-
-(declare-top (unspecial v* *a* u* *var*))

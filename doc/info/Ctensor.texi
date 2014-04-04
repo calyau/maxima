@@ -737,8 +737,8 @@ in some cases it may be more advantageous to use a coordinate base in the
 first place before the Weyl tensor is computed. Note however, that
 constructing a Newman-Penrose null tetrad requires a frame base. Therefore,
 a meaningful computation sequence may begin with a frame base, which
-is then used to compute @code{lg} (computed automatically by @code{cmetric}
-and then @code{ug}. At this point, you can switch back to a coordinate base
+is then used to compute @code{lg} (computed automatically by @code{cmetric})
+and then @code{ug}. See @code{petrov} for an example. At this point, you can switch back to a coordinate base
 by setting @code{cframe_flag} to false before beginning to compute the
 Christoffel symbols. Changing to a frame base at a later stage could yield
 inconsistent results, as you may end up with a mixed bag of tensors, some

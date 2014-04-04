@@ -189,3 +189,106 @@ a;
 
 (L : '[a, b, c], L :: [11, 22, 33], [a, b, c]);
 [11, 22, 33];
+
+/* example from mailing list 2014-02-27 "assigning to a list of structure fields does not work" */
+
+(kill (P, N, D, Quot), defstruct(Quot(N,D=1)), P:new(Quot));
+Quot(N, 1);
+
+[P@N,P@D]:[3,7];
+[3, 7];
+
+P;
+Quot(3, 7);
+
+/* some more tests */
+
+kill (x, y, z, a, b, c, d);
+done;
+
+(x : [a, b], y : [c, d], 0);
+0;
+
+[x, y] :: [[1, 2], [3, 4]];
+[[1, 2], [3, 4]];
+
+[a, b, c, d];
+[1, 2, 3, 4];
+
+[x[1], y[1]] :: [11, 22];
+[11, 22];
+
+[x, y, a, b, c, d];
+[[a, b], [c, d], 11, 2, 22, 4];
+
+[x[1], y[1]] : [33, 44];
+[33, 44];
+
+[x, y, a, b, c, d];
+[[33, b], [44, d], 11, 2, 22, 4];
+
+(kill (foo), defstruct (foo (a, b)));
+[foo (a, b)];
+
+z : new (foo (-1, -2));
+foo (-1, -2);
+
+[z@b, z@a] : [-3, -4];
+[-3, -4];
+
+z;
+foo (-4, -3);
+
+kill (a, b);
+done;
+
+[a[123], b[456]] : [17, 29];
+[17, 29];
+
+a;
+a;
+
+a[123];
+17;
+
+[arrayinfo (a), listarray (a)];
+[[hashed, 1, [123]], [17]];
+
+[arrayinfo (b), listarray (b)];
+[[hashed, 1, [456]], [29]];
+
+[c[321], d[654]] : [19, 31];
+[19, 31];
+
+[c, d];
+[22, 4];
+
+[arrayinfo (c), arrayinfo (d)];
+[[hashed, 1, [321]], [hashed, 1, [654]]];
+
+[listarray ('c), listarray ('d)];
+[[19], [31]];
+
+[a, [b, [c, [d, [x, [y, [z]]]]]]] : [-1, [-2, [-3, [-4, [-5, [-6, [-7]]]]]]];
+[-1, [-2, [-3, [-4, [-5, [-6, [-7]]]]]]];
+
+[a, b, c, d, x, y, z];
+[-1, -2, -3, -4, -5, -6, -7];
+
+(hash_assign (e, x) := ?marrayset (x, ?meval (first (e)), ?meval (second (e))),
+ translate (hash_assign), /* mset extension op must be a Lisp function */
+ infix ("hash_get"),
+ ?putprop (verbify ("hash_get"), 'hash_assign, '?mset_extension_operator),
+ 0);
+0;
+
+(foo [bar] : 123,
+ foo hash_get bar : 456,
+ foo [bar]);
+456;
+
+[foo hash_get baz] : 789;
+[789];
+
+foo [baz];
+789;

@@ -12,7 +12,7 @@
 
 (macsyma-module option)
 
-(declare-top (special options history cru crf))
+(declare-top (special options history))
 
 (defmspec $options (x)
   (setq x (cdr x))

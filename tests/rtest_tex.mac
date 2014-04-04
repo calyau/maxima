@@ -47,6 +47,10 @@ with_stdout ("tmp-rtest-1.tex",
      * tex (?\*lisp\-symbol\-2\*),
      */
 
+    tex_text ("\\subsection*{Lisp pointers}"),
+    tex(make_array(fixnum,5)),
+    tex(gf_set_data(3,x^4+x+1)),
+
     tex_text ("\\subsection*{Strings}"),
     tex ("riff"),
     tex ("Riff Raff"),

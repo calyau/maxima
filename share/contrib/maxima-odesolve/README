@@ -1,0 +1,18 @@
+maxima-odesolve is a collection of files for maxima that will help in solving linear and nonlinear Ordinary Differential Equations (ODEs).
+
+The goal of the package is to provide the maxima user a collection of individual ODE analysis and solution algorithms that are easy to use and robust.
+
+The contents of the package are currently:
+
+kovacicODE.mac 
+Solves linear second order ODEs that have Liouvillian solutions, using the Kovacic algorithm, modified by Saunders and based on the thesis of Carolyn Smith.  
+
+References:
+[1] Carolyn J. Smith, A discussion and implementation of Kovacic' algorithm, 
+      MSC thesis university of waterloo, 1984
+      https://cs.uwaterloo.ca/research/tr/1984/CS-84-35.pdf
+[2] B.D. Saunders, An implementation of Kovacic's algorithm for solving second order linear homogeneous differential equations, SYMSAC '81 Proceedings of the fourth ACM symposium on Symbolic and algebraic computation
+  Pages 105-108 
+[3] Jerald J. Kovacic, An algorithm for solving second order linear homogeneous differential equations, Journal of Symbolic Computation, v.2 n.1, p.3-43, March 1986 
+
+

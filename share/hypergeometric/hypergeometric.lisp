@@ -25,7 +25,7 @@
 	  (declare (ignore a))
 	  (if (not (and (atom b) (integerp b)))
 	      (progn
-		(mtell "The value of `max_fpprec' must be an integer.")
+		(mtell "The value of `max_fpprec' must be an integer.~%")
 		'munbindp))))
 
 (defmvar $expand_hypergeometric nil)
@@ -35,7 +35,7 @@
 	  (declare (ignore a))
 	  (if (not (or (eq b nil) (eq b t)))
 	      (progn
-		(mtell "The value of `expand_hypergeometric' must be either true or false.")
+		(mtell "The value of `expand_hypergeometric' must be either true or false.~%")
 		'munbindp))))
 
 ;; If the length of l is n, return true; otherwise signal wna-err = (wrong number of arguments, by the way).
@@ -154,7 +154,7 @@
 	(hg-type nil) (dig) (return-type) ($domain '$complex))
     
     (cond ((or (not ($listp a)) (not ($listp b))) 
-	   (mtell "warning: The first two arguments to 'hypergeometric' must be lists.")
+	   (mtell "warning: The first two arguments to 'hypergeometric' must be lists.~%")
 	   `(($hypergeometric simp) ,(tsimpcheck a z) ,(tsimpcheck b z) ,(tsimpcheck x z)))
 	  (t
 	   
@@ -546,7 +546,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	   
 	   (if (>= local-fpprec maxima::$max_fpprec) 
 	       (progn
-		 (maxima::mtell "Exceeded maximum allowed fpprec.")
+		 (maxima::mtell "Exceeded maximum allowed fpprec.~%")
 		 (values nil nil))
 	     (values f d))))))
 

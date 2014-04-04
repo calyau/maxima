@@ -287,46 +287,13 @@ values")
 ;;(defmfun foo a (show a )(show (listify a)) (show (arg 3)))
 
 (defun exploden (symb)
-  (declare (special $maxfpprintprec))
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
 	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
 	   string)
     (cond ((symbolp symb)
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
-	   (let ((a (abs symb))
-		 (effective-printprec (if (or (= $fpprintprec 0)
-					      (> $fpprintprec $maxfpprintprec))
-					  $maxfpprintprec
-					  $fpprintprec)))
-	     ;; When printing out something for Fortran, we want to be
-	     ;; sure to print the exponent marker so that Fortran
-	     ;; knows what kind of number it is.  It turns out that
-	     ;; Fortran's exponent markers are the same as Lisp's so
-	     ;; we just need to make sure the exponent marker is
-	     ;; printed.
-	     ;;
-	     ;; Also, for normal output, we basically want to use
-	     ;; prin1, but we can't because we want fpprintprec to control
-	     ;; how many digits are printed.  So we have to check for
-	     ;; the size of the number and use ~e or ~f appropriately.
-	     (if *fortran-print*
-		 (setq string (format nil "~e" symb))
-		 (multiple-value-bind (form width)
-		     (cond ((or (zerop a)
-				(<= 1 a 1e7))
-			    (values "~vf" (+ 1 effective-printprec)))
-			   ((<= 0.001 a 1)
-			    (values "~vf" (+ effective-printprec
-					     (cond ((< a 0.01)
-						    3)
-						   ((< a 0.1)
-						    2)
-						   (t 1)))))
-			   (t
-			    (values "~ve" (+ 5 effective-printprec))))
-		   (setq string (format nil form width symb))))
-	     (setq string (string-trim " " string))))
+	   (setq string (exploden-format-float symb)))
 
       ((integerp symb)
        ;; When obase > 10, prepend leading zero to
@@ -363,6 +330,51 @@ values")
 	  (t (setq string (format nil "~A" symb))))
     (assert (stringp string))
     (coerce string 'list)))
+
+(defun exploden-format-float (symb)
+  (declare (special $maxfpprintprec))
+  (let ((a (abs symb))
+        string
+        (effective-printprec (if (or (= $fpprintprec 0)
+                                     (> $fpprintprec $maxfpprintprec))
+                                 $maxfpprintprec
+                                 $fpprintprec)))
+    ;; When printing out something for Fortran, we want to be
+    ;; sure to print the exponent marker so that Fortran
+    ;; knows what kind of number it is.  It turns out that
+    ;; Fortran's exponent markers are the same as Lisp's so
+    ;; we just need to make sure the exponent marker is
+    ;; printed.
+    ;;
+    ;; Also, for normal output, we basically want to use
+    ;; prin1, but we can't because we want fpprintprec to control
+    ;; how many digits are printed.  So we have to check for
+    ;; the size of the number and use ~e or ~f appropriately.
+    (if *fortran-print*
+        (setq string (format nil "~e" symb))
+        (multiple-value-bind (form width)
+            (cond ((or (zerop a)
+                       (<= 1 a 1e7))
+                   (values "~vf" (+ 1 effective-printprec)))
+                  ((<= 0.001 a 1)
+                   (values "~vf" (+ effective-printprec
+                                    (cond ((< a 0.01)
+                                           3)
+                                          ((< a 0.1)
+                                           2)
+                                          (t 1)))))
+                  (t
+                   (values "~ve" (+ 5 effective-printprec))))
+          (setq string (format nil form width a))
+          ;; Ensure result has a leading zero if it needs one.
+          (if (eq (aref string 0) #\.)
+            (setq string (concatenate 'string "0" string)))
+          ;; EXPLODEN is often called after NFORMAT, so it doesn't
+          ;; usually see a negative argument. I can't guarantee
+          ;; a non-negative argument, so handle negative here.
+          (if (< symb 0)
+            (setq string (concatenate 'string "-" string)))))
+    (string-trim " " string)))
 
 (defun explodec (symb)		;is called for symbols and numbers
   (loop for v in (coerce (print-invert-case symb) 'list)

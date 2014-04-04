@@ -1,0 +1,2311 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 294673dec00a34bbf8dae4895aa8f4f8  Expressions.texi
+@c
+@menu
+* Introduction to Expressions::
+* Nouns and Verbs::
+* Identifiers::
+* Inequality::
+* Functions and Variables for Expressions::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Expressions, Nouns and Verbs, Expressions, Expressions
+@section Introduction to Expressions
+@c -----------------------------------------------------------------------------
+
+Existe um certo n@'{u}mero de palavras reservadas que n@~{a}o devem ser usadas como nome de vari@'{a}vel.
+Seus uso como nome de vari@'{a}vel causar@'{a} um erro de sintaxe possivelmente cr@'{i}tico.
+
+@example
+integrate            next           from                 diff            
+in                   at             limit                sum             
+for                  and            elseif               then            
+else                 do             or                   if              
+unless               product        while                thru            
+step                                                                     
+@end example
+
+A maioria das coisas no Maxima s@~{a}o express@~{o}es.  Uma sequ@^{e}ncia de express@~{o}es
+pode ser feita dentro de uma express@~{a}o separando-as por v@'{i}rgulas e
+envolvendo cada express@~{a}o entre par@^{e}ntesis.  @'{E} semelhante @`{a}
+@i{comma expression} @footnote{Nota do tradutor: express@~{a}o v@'{i}rgula ou operador v@'{i}rgula. Ver exemplos no anexo xxxx.} da linguagem @b{C}.
+
+@example
+(%i1) x: 3$
+(%i2) (x: x+1, x: x^2);
+(%o2)                          16
+(%i3) (if (x > 17) then 2 else 4);
+(%o3)                           4
+(%i4) (if (x > 17) then x: 2 else y: 4, y+x);
+(%o4)                          20
+@end example
+
+Mesmo la@,{c}os no Maxima s@~{a}o express@~{o}es, embora o valor que as express@~{o}es
+retornem seja o n@~{a}o t@~{a}o @'{u}til @code{done}.
+
+@example
+(%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
+(%i2) y;
+(%o2)                         done
+@end example
+
+Considerando que o que voc@^{e} realmente quer seja provavelmente incluir um terceiro
+termo na @i{comma expression} que atualmente retorna o valor.
+
+@example
+(%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
+(%i4) y;
+(%o4)                        3628800
+@end example
+
+@c -----------------------------------------------------------------------------
+@node Nouns and Verbs, Identifiers, Introduction to Expressions, Expressions
+@section Nouns and Verbs
+@c -----------------------------------------------------------------------------
+
+Maxima faz distin@,{c}@~{a}o entre operadores que s@~{a}o "substantivos" e operadores que s@~{a}o
+"verbos".  Um verbo @'{e} um operador que pode ser executao.  Um substantivo @'{e} um operador
+que aparece como um s@'{i}mbolo em uma express@~{a}o, sem ser executado.  Por padr@~{a}o,
+nomes de fun@,{c}@~{a}o s@~{a}o verbos.  Um verbo pode ser transformado em substantivo pela coloca@,{c}@~{a}o de um ap@'{o}strofo
+no nome da fun@,{c}@~{a}o ou aplicando a fun@,{c}@~{a}o @mrefdot{nounify}
+Um substantivo pode ser transformado
+em um verbo por meio da fun@,{c}@~{a}o @mrefdot{verbify}
+O sinalizador de avalia@,{c}@~{a}o
+@mref{nouns}
+faz com que a fun@,{c}@~{a}o @mref{ev}
+seja usada para avaliar substantivos em uma express@~{a}o.
+
+A forma verbal @'{e} distinguida por meio de um sinal de d@'{o}lar @code{$} no in@'{i}cio do
+s@'{i}mbolo Lisp correspondente.  De forma semelhante, a forma substantiva @'{e} distinguida por um
+sinal de porcentagem @code{%} colocado no in@'{i}co do s@'{i}mbolo Lisp correspondente.  Alguns substantivos possuem
+propriedades de exibi@,{c}@~{a}o especiais, s@'{i}mbolos tais como @code{'integrate} e @code{'derivative}
+(retornado por @mref{diff}
+), mas a maioria dos s@'{i}mbolos n@~{a}o tem propriedades especiais de exibi@,{c}@~{a}o.  Por padr@~{a}o, as formas verbais e substantivas
+de uma fun@,{c}@~{a}o s@~{a}o id@^{e}nticas quando mostradas.  O sinalizador global @mref{noundisp}@w{}
+faz com que Maxima mostre substantivos com um ap@'{o}strofo no in@'{i}cio @code{'}.
+
+Veja tamb@'{e}m @mrefcomma{noun}
+@mrefcomma{nouns}
+@mrefcomma{nounify}
+e @mrefdot{verbify}
+
+Exemplos:
+
+@c ===beg===
+@c foo (x) := x^2;
+@c foo (42);
+@c 'foo (42);
+@c 'foo (42), nouns;
+@c declare (bar, noun);
+@c bar (x) := x/17;
+@c bar (52);
+@c bar (52), nouns;
+@c integrate (1/x, x, 1, 42);
+@c 'integrate (1/x, x, 1, 42);
+@c ev (%, nouns);
+@c ===end===
+@example
+(%i1) foo (x) := x^2;
+                                     2
+(%o1)                     foo(x) := x
+(%i2) foo (42);
+(%o2)                         1764
+(%i3) 'foo (42);
+(%o3)                        foo(42)
+(%i4) 'foo (42), nouns;
+(%o4)                         1764
+(%i5) declare (bar, noun);
+(%o5)                         done
+(%i6) bar (x) := x/17;
+                                     x
+(%o6)                    ''bar(x) := --
+                                     17
+(%i7) bar (52);
+(%o7)                        bar(52)
+(%i8) bar (52), nouns;
+                               52
+(%o8)                          --
+                               17
+(%i9) integrate (1/x, x, 1, 42);
+(%o9)                        log(42)
+(%i10) 'integrate (1/x, x, 1, 42);
+                             42
+                            /
+                            [   1
+(%o10)                      I   - dx
+                            ]   x
+                            /
+                             1
+(%i11) ev (%, nouns);
+(%o11)                       log(42)
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Nouns and verbs}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Identifiers, Inequality, Nouns and Verbs, Expressions
+@section Identifiers
+@c -----------------------------------------------------------------------------
+
+Identificadores do Maxima podem compreender caracteres alfab@'{e}ticos, al@'{e}m dos n@'{u}meros de 0
+a 9, al@'{e}m de qualquer caracteres especial precedido pelo caractere
+contrabarra @code{\}.
+
+Um numeral pode ser o primeiro caractere de um identificador se esse identificador for precedido por uma
+contrabarra.  Numerais que forem o segundo caractere ou @'{u}ltimo caractere n@~{a}o precisam
+serem precedidos por uma contrabarra.
+
+Caracteres podem ser declarados alfab@'{e}ticos atrav@'{e}s da fun@,{c}@~{a}o @code{declare}.
+Se forem declarados serem alfab@'{e}ticos, eles n@~{a}o precisam serem precedidos pela contrabarra em um identificador.
+Os caracteres alfab@'{e}ticos s@~{a}o inicialmente de @code{A} at@'{e} @code{Z}, de @code{a}
+at@'{e} @code{z}, @code{%}, e @code{_}.
+
+Maxima sens@'{i}vel @`{a} caixa alta ou baixa.  Os identificadores @code{qualquercoisa}, @code{QUALQUERCOISA}, e
+@code{Qualquercoisa} s@~{a}o diferentes.  Veja @ref{Lisp and Maxima} para mais detalhes sobre esse ponto.
+
+Um identificador Maxima @'{e} um s@'{i}mbolo Lisp que inicia-se com o sinal de d@'{o}lar @code{$}.
+Qualquer outro s@'{i}mbolo Lisp @'{e} precedido por uma ponto de interroga@,{c}@~{a}o@code{?} quando for configurado para que esse ponto de interroga@,{c}@~{a}o apare@,{c}a
+no Maxima.  Veja @ref{Lisp and Maxima} para mais detalhes sobre esse ponto.
+
+Exemplos:
+
+@c ===beg===
+@c %an_ordinary_identifier42;
+@c embedded\ spaces\ in\ an\ identifier;
+@c symbolp (%);
+@c [foo+bar, foo\+bar];
+@c [1729, \1729];
+@c [symbolp (foo\+bar), symbolp (\1729)];
+@c [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+@c baz\~quux;
+@c declare ("~", alphabetic);
+@c baz~quux;
+@c [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+@c :lisp (defvar *my-lisp-variable* '$foo)
+@c ?\*my\-lisp\-variable\*;
+@c ===end===
+@example
+(%i1) %an_ordinary_identifier42;
+(%o1)               %an_ordinary_identifier42
+(%i2) embedded\ spaces\ in\ an\ identifier;
+(%o2)           embedded spaces in an identifier
+(%i3) symbolp (%);
+(%o3)                         true
+(%i4) [foo+bar, foo\+bar];
+(%o4)                 [foo + bar, foo+bar]
+(%i5) [1729, \1729];
+(%o5)                     [1729, 1729]
+(%i6) [symbolp (foo\+bar), symbolp (\1729)];
+(%o6)                     [true, true]
+(%i7) [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+(%o7)                    [false, false]
+(%i8) baz\~quux;
+(%o8)                       baz~quux
+(%i9) declare ("~", alphabetic);
+(%o9)                         done
+(%i10) baz~quux;
+(%o10)                      baz~quux
+(%i11) [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+(%o11)                [false, false, false]
+(%i12) :lisp (defvar *my-lisp-variable* '$foo)
+*MY-LISP-VARIABLE*
+(%i12) ?\*my\-lisp\-variable\*;
+(%o12)                         foo
+@end example
+
+@opencatbox
+@category{Syntax}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Inequality, Functions and Variables for Expressions, Identifiers, Expressions
+@section Inequality
+@c -----------------------------------------------------------------------------
+
+Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>},
+@code{#}, e @code{notequal} @footnote{Nota do tradutor: um @'{e} a nega@,{c}@~{a}o do "=" e o outro @'{e} a nega@,{c}@~{a}o de "equal(a,b)".}.  Veja @code{if} para uma descri@,{c}@~{a}o de express@~{o}es
+condicionais.
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Expressions,  , Inequality, Expressions
+@section Functions and Variables for Expressions
+@c -----------------------------------------------------------------------------
+
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{alias}
+@deffn {Function} alias (@var{nome_novo_1}, @var{nome_antigo_1}, @dots{}, @var{nome_novo_n}, @var{nome_antigo_n})
+
+Fornece um nome alternativo para uma fun@,{c}@~{a}o (de usu@'{a}rio ou de sistema), vari@'{a}vel, vetor est@'{a}tico,
+etc.  Qualquer n@'{u}mero de argumentos pode ser usado.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{aliases}
+@defvr {System variable} aliases
+Valor padr@~{a}o: @code{[]}
+
+A vari@'{a}vel de sistema @code{aliases} cont@'{e}m a lista de @'{a}tomos que possuem um apelido definido pelo usu@'{a}rio (ajustado por meio das
+fun@,{c}@~{o}es @mrefcomma{alias}
+@mrefcomma{ordergreat}
+@mref{orderless}
+ou por meio
+da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun}
+usando @mrefdot{declare}).
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c NEEDS TO BE REWORKED.  NOT CONVINCED THIS SYMBOL NEEDS ITS OWN ITEM
+@c (SHOULD BE DESCRIBED IN CONTEXT OF EACH FUNCTION WHICH RECOGNIZES IT)
+
+@c -----------------------------------------------------------------------------
+@anchor{allbut}
+@defvr {Keyword} allbut
+
+Trabalha juntamente com os comandos @code{part} (i.e.  @mrefcomma{part}
+@w{}
+@mrefcomma{inpart}
+@mrefcomma{substpart}
+@mrefcomma{substinpart}
+@w{}
+@mrefcomma{dpart}
+e @mref{lpart})
+.
+Por exemplo,
+
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, [2, 5]);
+@c ===end===
+@example
+(%i1) expr : e + d + c + b + a;
+(%o1)                   e + d + c + b + a
+(%i2) part (expr, [2, 5]);
+(%o2)                         d + a
+@end example
+
+enquanto
+
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, allbut (2, 5));
+@c ===end===
+@example
+(%i1) expr : e + d + c + b + a;
+(%o1)                   e + d + c + b + a
+(%i2) part (expr, allbut (2, 5));
+(%o2)                       e + c + b
+@end example
+
+a palavra chave @code{allbut} @'{e} tambẽm reconhecida  por @mrefdot{kill}
+
+@c ===beg===
+@c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
+@c kill (allbut (cc, dd));
+@c [aa, bb, cc, dd];
+@c ===end===
+@example
+(%i1) [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
+(%o1)                 [11, 22, 33, 44, 55]
+(%i2) kill (allbut (cc, dd));
+(%o0)                         done
+(%i1) [aa, bb, cc, dd];
+(%o1)                   [aa, bb, 33, 44]
+@end example
+
+O comando @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} tem o efeito de
+@code{kill(all)} exceto que n@~{a}o elimina s@'{i}mbolos @var{a_1}, @var{a_2},
+@dots{}
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{args}
+@deffn {Function} args (@var{expr})
+
+Retorna a lista dos argumentos de @code{expr}, que pode ser qualquer tipo de
+express@~{a}o outra que n@~{a}o seja um @'{a}tomo.  Somente os argumentos do operador de n@'{i}vel mais alto
+s@~{a}o extra@'{i}dos; subexpress@~{o}es de @code{expr} aparecem como elementos ou
+subexpress@~{o}es de elementos da lista de argumentos.
+
+A ordem dos itens na lista vai depender da sinalizador global
+@mrefdot{inflag}
+
+O comando @code{args (@var{expr})} @'{e} equivalente a @code{substpart ("[", @var{expr}, 0)}.
+Veja tamb@'{e}m @mrefcomma{substpart}
+e @mrefdot{op}
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c REPHRASE
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{atom}
+@deffn {Function} atom (@var{expr})
+
+Retorna @code{true} se @var{expr} for at@^{o}mica (i.e. um n@'{u}mero, um nome ou uma sequ@^{e}ncia de caracteres) caso contr@'{a}rio
+retorna @code{false}.  Dessa forma @code{atom(5)} @'{e} @code{true} enquanto @code{atom(a[1])} e
+@code{atom(sin(x))} s@~{a}o @code{false} (assumindo @code{a[1]} e @code{x} estarem
+sem associa@,{c}@~{a}o).
+
+@opencatbox
+@category{Expressions} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{box}
+@deffn  {Function} box (@var{expr})
+@deffnx {Function} box (@var{expr}, @var{a})
+
+Retorna @var{expr} dentro de uma caixa.  O valor de retorno @'{e} uma express@~{a}o com
+@code{box} como o operador e @var{expr} como argumento.  Uma caixa @'{e} desenhada na
+tela de exibi@,{c}@~{a}o quando @code{display2d} for @code{true}.
+
+O comando @code{box (@var{expr}, @var{a})} coloca @var{expr} em uma caixa rotulada pelo
+s@'{i}mbolo @var{a}.  O r@'{o}tulo @'{e} truncado se for maior que a largura da
+caixa.
+
+A fun@,{c}@~{a}o @code{box} avalia seus argumentos.  Todavia, uma express@~{a}o dentro de uma caixa
+n@~{a}o avalia para seu conte@'{u}do, ent@~{a}o express@~{o}es dentro de caixas s@~{a}o efetivamente exclu@'{i}das dos
+c@'{a}lculos.
+
+A vari@'{a}vel de op@,{c}@~{a}o @mref{boxchar}
+cont@'{e}m o caractere usado para desenhar a caixa com a fun@,{c}@~{a}o @code{box} e nas
+fun@,{c}@~{o}es @mref{dpart}
+e @mrefdot{lpart}
+.
+
+Exemplos:
+
+@c ===beg===
+@c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
+@c box (a^2 + b^2);
+@c box (a^2 + b^2, term_1);
+@c 1729 - box (1729);
+@c boxchar: "-";
+@c box (sin(x) + cos(y));
+@c ===end===
+@example
+(%i1) box (a^2 + b^2);
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{boxchar}
+@defvr {Option variable} boxchar
+Valor padr@~{a}o: @code{"}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{boxchar} cont@'{e}m o caractere usado para desenhar a caixa nas fun@,{c}ẽos
+@mref{box}@w{}
+e nas fun@,{c}@~{o}es @mref{dpart}
+e @mrefdot{lpart}
+
+Todas as caixas em uma express@~{a}o s@~{a}o desenhadas com o atual conte@'{u}do de @code{boxchar};
+o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o dentro da caixa.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{collapse}
+@deffn {Function} collapse (@var{expr})
+
+Reduz @var{expr} fazendo com que todas as suas subexpress@~{o}es comuns (i.e., iguais)
+compartilhem (i.e., usem as mesmas c@'{e}lulas), economizando espa@,{c}o.  A fun@,{c}@~{a}o (@code{collapse} @'{e}
+uma sub-rotina usada pela fun@,{c}@~{a}o @mref{optimize}
+.)  Dessa forma, chamar
+@code{collapse} pode ser @'{u}til ap@'{o}s usar fun@,{c}@~{a}o @mref{save}
+em um arquivo.  Voc@^{e} pode
+reduzir muitas express@~{o}es juntas usando
+@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, voc@^{e} pode
+reduzir os elementos do vetor est@'{a}tico @code{A} fazendo
+@code{collapse (listarray ('A))}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{disolate}
+@deffn {Function} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+
+@'{E} similar a @code{isolate (@var{expr}, @var{x})} exceto que habilita o
+usu@'{a}rio a isolar mais de uma vari@'{a}vel simultaneamente.  Pode ser @'{u}til,
+por exemplo, ao se tentar mudar vari@'{a}veis em uma integral
+multipla, e aquela vari@'{a}vel muda envolvendo duas ou mais das vari@'{a}veis de
+integra@,{c}@~{a}o.  Essa fun@,{c}@~{a}o @'{e} chamada automaticamente a partir de @file{simplification/disol.mac}.
+Uma demonstra@,{c}@~{a}o est@'{a} dispon@'{i}vel atrav@'{e}s de @code{demo("disol")$}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{dispform}
+@deffn  {Function} dispform (@var{expr})
+@deffnx {Function} dispform (@var{expr}, all)
+
+Retorna a representa@,{c}@~{a}o externa de @var{expr}.
+
+O comando @code{dispform(@var{expr})} retorna a representa@,{c}@~{a}o externa considerando
+o operador principal ( o de n@'{i}vel mais alto).  O comando @code{dispform(@var{expr}, all)} retorna a
+representa@,{c}@~{a}o externa considerando todos os operadores em @var{expr}.
+
+Veja tamb@'{e}m @mrefcomma{part}
+@mrefcomma{inpart}
+e @mrefdot{inflag}
+
+Exemplos:
+
+A represetna@,{c}@~{a}o interna de @code{- x} @'{e} "negativo um vezes @code{x}"
+enquanto a representa@,{c}@~{a}o externa @'{e} "menos @code{x}".
+
+@c ===beg===
+@c - x;
+@c ?format (true, "~S~%", %);
+@c dispform (- x);
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) - x;
+(%o1)                          - x
+(%i2) ?format (true, "~S~%", %);
+((MTIMES SIMP) -1 $X)
+(%o2)                         false
+(%i3) dispform (- x);
+(%o3)                          - x
+(%i4) ?format (true, "~S~%", %);
+((MMINUS SIMP) $X)
+(%o4)                         false
+@end example
+
+A representa@,{c}@~{a}o interna de @code{sqrt(x)} @'{e} "@code{x} elevado a 1/2"
+enquanto a represetna@,{c}@~{a}o externa @'{e} "ra@'{i}z quadrada de @code{x}".
+
+@c ===beg===
+@c sqrt (x);
+@c ?format (true, "~S~%", %);
+@c dispform (sqrt (x));
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) sqrt (x);
+(%o1)                        sqrt(x)
+(%i2) ?format (true, "~S~%", %);
+((MEXPT SIMP) $X ((RAT SIMP) 1 2))
+(%o2)                         false
+(%i3) dispform (sqrt (x));
+(%o3)                        sqrt(x)
+(%i4) ?format (true, "~S~%", %);
+((%SQRT SIMP) $X)
+(%o4)                         false
+@end example
+
+Uso do argumento opcional @code{all}.
+
+@c ===beg===
+@c expr : sin (sqrt (x));
+@c freeof (sqrt, expr);
+@c freeof (sqrt, dispform (expr));
+@c freeof (sqrt, dispform (expr, all));
+@c ===end===
+@example
+(%i1) expr : sin (sqrt (x));
+(%o1)                     sin(sqrt(x))
+(%i2) freeof (sqrt, expr);
+(%o2)                         true
+(%i3) freeof (sqrt, dispform (expr));
+(%o3)                         true
+(%i4) freeof (sqrt, dispform (expr, all));
+(%o4)                         false
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{dpart}
+@deffn {Function} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Seleciona a mesma subexpress@~{a}o que @mrefcomma{part}
+mas ao inv@'{e}s de apenas retornar
+aquela subexpress@~{a}o como seu valor, retorna a express@~{a}o completa com a
+subexpress@~{a}o selecionada mostrada dentro de uma caixa.  A caixa @'{e} agora parte da
+express@~{a}o.
+
+@example
+(%i1) dpart (x+y/z^2, 1, 2, 1);
+                             y
+(%o1)                       ---- + x
+                               2
+                            """
+                            "z"
+                            """
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{exptisolate}
+@defvr {Option variable} exptisolate
+Valor padr@~{a}o: @code{false}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+A vari@'{a}vel de op@,{c}@~{a}o @code{exptisolate}, quando @code{true}, faz com que @code{isolate (expr, var)}
+examine expoentes de @'{a}tomos (tais como @code{%e}) que cont@'{e}m @code{var}.
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{exptsubst}
+@defvr {Option variable} exptsubst
+Valor padr@~{a}o: @code{false}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{exptsubst}, quando @code{true}, permite substitui@,{c}@~{o}es tais como substituir por @code{y}
+o @code{%e^x} em @code{%e^(a*x)}.
+
+@c ===beg===
+@c %e^(a*x);
+@c exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c exptsubst: not exptsubst;
+@c subst(y, %e^x, %e^(a*x));
+@c ===end===
+@example
+@group
+(%i1) %e^(a*x);
+                                       a x
+(%o1)                                %e
+@end group
+@group
+(%i2) exptsubst;
+(%o2)                                false
+@end group
+@group
+(%i3) subst(y, %e^x, %e^(a*x));
+                                       a x
+(%o3)                                %e
+@end group
+@group
+(%i4) exptsubst: not exptsubst;
+(%o4)                                true
+@end group
+@group
+(%i5) subst(y, %e^x, %e^(a*x));
+                                       a
+(%o5)                                 y
+@end group
+@end example
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{freeof}
+@deffn {Function} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
+
+O comando @code{freeof (@var{x_1}, @var{expr})} retorna @code{true} se nenhuma subexpress@~{a}o de
+@var{expr} for igual a @var{x_1} ou se @var{x_1} ocorrer somente como uma vari@'{a}vel sem nenhuma associa@,{c}@~{a}o fora de
+@var{expr}, ou se @var{x_1} n@~{a}o estiver nem na forma verbal nem na forma substantiva de qualquer operador
+em @var{expr}, e retorna @code{false} de outra forma.
+
+O comando @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} @'{e} equivalente a 
+@code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n},
+@var{expr})}.
+
+Os argumentos @var{x_1}, @dots{}, @var{x_n} podem ser nomes de fun@,{c}@~{o}es e
+vari@'{a}veis, nomes de subscritos, operadores (entre aspas duplas), ou express@~{o}es
+gerais.  A fun@,{c}@~{a}o @code{freeof} avalia seus argumentos.
+
+A fun@,{c}@~{a}o @code{freeof} atua somente sobre @var{expr} da forma que ela se encontra agora (ap@'{o}s simplifica@,{c}@~{a}o e
+avalia@,{c}@~{a}o) e n@~{a}o tenta determinar se alguma express@~{a}o equivalente 
+pode fornecer um resultado diferente.  Em particular, simplifica@,{c}@~{a}o pode retornar uma
+express@~{a}o equivalente mas diferente que compreende alguns elementos diferentes da
+forma original de @var{expr}.
+
+Uma vari@'{a}vel @'{e} uma vari@'{a}vel dummy em uma express@~{a}o se n@~{a}o tiver nenhuma associa@,{c}@~{a}o fora da 
+express@~{a}o.  Vari@'{a}veis dummy reconhecidas por @code{freeof} s@~{a}o o @'{i}ndice de uma 
+soma ou de um produto, a vari@'{a}vel de limite em @mrefcomma{limit}
+a vari@'{a}vel de integra@,{c}@~{a}o 
+na forma da integral definida de @mref{integrate}
+, a vari@'{a}vel original em
+@mrefcomma{laplace}
+vari@'{a}veis formais em express@~{o}es @mrefcomma{at}
+e argumentos em 
+express@~{o}es @mrefdot{lambda}
+
+A forma indefinida de @code{integrate} @i{n@~{a}o} @'{e} livre de sua vari@'{a}vel de 
+integra@,{c}@~{a}o.
+
+Exemplos:
+
+Argumentos s@~{a}o nomes de fun@,{c}@~{o}es, vari@'{a}veis, nomes de subscritos, operadores, e 
+express@~{o}es.  O comando @code{freeof (a, b, expr)} @'{e} equivalente a 
+@code{freeof (a, expr) and freeof (b, expr)}.
+
+@example
+(%i1) expr: z^3 * cos (a[1]) * b^(c+d);
+                                 d + c  3
+(%o1)                   cos(a ) b      z
+                             1
+(%i2) freeof (z, expr);
+(%o2)                         false
+(%i3) freeof (cos, expr);
+(%o3)                         false
+(%i4) freeof (a[1], expr);
+(%o4)                         false
+(%i5) freeof (cos (a[1]), expr);
+(%o5)                         false
+(%i6) freeof (b^(c+d), expr);
+(%o6)                         false
+(%i7) freeof ("^", expr);
+(%o7)                         false
+(%i8) freeof (w, sin, a[2], sin (a[2]), b*(c+d), expr);
+(%o8)                         true
+@end example
+
+A fun@,{c}@~{a}o @code{freeof} avalia seus argumentos.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) c: a$
+(%i3) freeof (c, expr);
+(%o3)                         false
+@end example
+
+A fun@,{c}@~{a}o @code{freeof} n@~{a}o considera expres@~{o}es equivalentes.
+Simplifica@,{c}@~{a}o pode retornar uma express@~{a}o equivalente mas diferente.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) expand (expr);
+          5        4       2  3       3  2      4      5
+(%o2)    b  + 5 a b  + 10 a  b  + 10 a  b  + 5 a  b + a
+(%i3) freeof (a+b, %);
+(%o3)                         true
+(%i4) freeof (a+b, expr);
+(%o4)                         false
+(%i5) exp (x);
+                                 x
+(%o5)                          %e
+(%i6) freeof (exp, exp (x));
+(%o6)                         true
+@end example
+
+Um somat@'{o}rio ou uma integral definida @'{e} livre de suas vari@'{a}veis dummy.
+Um integral indefinida n@~{a}o @'{e} livre de sua vari@'{a}vel de integra@,{c}@~{a}o.
+
+@example
+(%i1) freeof (i, 'sum (f(i), i, 0, n));
+(%o1)                         true
+(%i2) freeof (x, 'integrate (x^2, x, 0, 1));
+(%o2)                         true
+(%i3) freeof (x, 'integrate (x^2, x));
+(%o3)                         false
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inflag}
+@defvr {Option variable} inflag
+Valor padr@~{a}o: @code{false}
+
+Quando @code{inflag} for @code{true}, fun@,{c}@~{o}es que extraem partes inspecionam a
+forma interna de @code{expr}.
+
+Note que o simplificador reordena express@~{o}es.  Dessa forma @code{first (x + y)}
+retorna @code{x} se @code{inflag} for @code{true} e @code{y} se @code{inflag}
+for @code{false}.  O comando (@code{first (y + x)} retorna o mesmo resultado sendo independente de @code{inflag}.)
+
+Tamb@'{e}m, ajustando @code{inflag} para @code{true} e chamando @mref{part}
+ou @mref{substpart}
+@'{e} o mesmo que chamar @mref{inpart}
+ou @mrefdot{substinpart}
+
+Fun@,{c}@~{o}es afetadas pelo ajuste de @code{inflag} s@~{a}o: @mrefcomma{part}
+@w{}
+@mrefcomma{substpart} @mrefcomma{first} @mrefcomma{rest} @mrefcomma{last}
+@w{} @mrefcomma{length}
+a constru@,{c}@~{a}o @mref{for}
+@dots{} @code{in},
+@mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{maplist} @mref{reveal}
+e @mrefdot{pickapart}
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{inpart}
+@deffn {Function} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+@'{E} similar a @mref{part}
+mas trabalha sobre a representa@,{c}@~{a}o interna da
+express@~{a}o ao inv@'{e}s de trabalhar na forma mostrada e dessa forma pode ser mais r@'{a}pida uma vez que nenhuma
+formata@,{c}@~{a}o @'{e} feita.  Cuidado deve ser tomado com rela@,{c}@~{a}o @`{a} ordem das
+subexpress@~{o}es em somas e produtos (uma vez que a ordem das vari@'{a}veis na
+forma interna @'{e} muitas vezes diferente daquela na forma mostrada) e no tratamento dos operadores
+do menos un@'{a}rio, subtra@,{c}@~{a}o, e divis@~{a}o (uma vez que esses operadores s@~{a}o removidos
+da express@~{a}o).  O comando @code{part (x+y, 0)} ou o comando @code{inpart (x+y, 0)} retornam
+ambos @code{+}, mesmo assim referindo-se ao operador esse mesmo operador deve vir entre aspas duplas.
+Por exemplo @code{... if inpart (%o9,0) = "+" then ...}.
+
+Exemplos:
+
+@example
+(%i1) x + y + w*z;
+(%o1)                      w z + y + x
+(%i2) inpart (%, 3, 2);
+(%o2)                           z
+(%i3) part (%th (2), 1, 2);
+(%o3)                           z
+(%i4) 'limit (f(x)^g(x+1), x, 0, minus);
+                                  g(x + 1)
+(%o4)                 limit   f(x)
+                      x -> 0-
+(%i5) inpart (%, 1, 2);
+(%o5)                       g(x + 1)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{isolate}
+@deffn {Function} isolate (@var{expr}, @var{x})
+
+Retorna @var{expr} com subexpress@~{o}es que s@~{a}o e que n@~{a}o possuem
+@var{var} substitu@'{i}da por r@'{o}tulos de express@~{a}o intermedi@'{a}ria (esses sendo s@'{i}mbolos at@^{o}micos
+como @code{%t1}, @code{%t2}, @dots{}).  @'{E} muitas vezes @'{u}til para evitar
+expans@~{o}es desnecess@'{a}rias de subexpress@~{o}es que n@~{a}o possuem a vari@'{a}vel de
+interesse.  Uma vez que r@'{o}tulos intermedi@'{a}rios s@~{a}o associados a subexpress@~{o}es eles
+podem todos serem recolocados de volta por meio de avalia@,{c}@~{a}o da express@~{a}o na qual eles ocorrerem.
+
+A vari@'{a}vel de op@,{c}@~{a}o @mref{exptisolate}
+(valor padr@~{a}o: @code{false}) se for @code{true} far@'{a} com que
+@code{isolate} examine expoente de @'{a}tomos (com @code{%e}) que venham a conter
+@var{var}.
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{isolate_wrt_times} se @code{true}, então @code{isolate} irá também isolar
+com relação aos produtos.  Veja @mrefdot{isolate_wrt_times}
+
+Fa@,{c}a @code{example (isolate)} para ver exemplos.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{isolate_wrt_times}
+@defvr {Option variable} isolate_wrt_times
+Valor padr@~{a}o: @code{false}
+
+Quando @code{isolate_wrt_times} for @code{true}, @code{isolate} isolar@'{a} tamb@'{e}m
+considerando os produtos.  E.g. compare ambos os ajustes de @code{isolate_wrt_times} em
+
+@example
+(%i1) isolate_wrt_times: true$
+(%i2) isolate (expand ((a+b+c)^2), c);
+
+(%t2)                          2 a
+
+
+(%t3)                          2 b
+
+
+                          2            2
+(%t4)                    b  + 2 a b + a
+
+                     2
+(%o4)               c  + %t3 c + %t2 c + %t4
+(%i4) isolate_wrt_times: false$
+(%i5) isolate (expand ((a+b+c)^2), c);
+                     2
+(%o5)               c  + 2 b c + 2 a c + %t4
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{listconstvars}
+@defvr {Option variable} listconstvars
+Valor padr@~{a}o: @code{false}
+
+Quando @code{listconstvars} for @code{true}, far@'{a} com que @mref{listofvars}
+inclua @code{%e}, @code{%pi}, @code{%i}, e quaisquer vari@'{a}veis declaradas como sendo do tipo constante
+na lista se elas aparecerem no momento em que a @code{listofvars} for
+chamada.  O padr@~{a}o @'{e} omitir as constantes.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{listdummyvars}
+@defvr {Option variable} listdummyvars
+Valor padr@~{a}o: @code{true}
+
+Quando @code{listdummyvars} for @code{false}, "vari@'{a}veis dummy" na express@~{a}o
+n@~{a}o ser@~{a}o inclu@'{i}das na lista retornada por @mrefdot{listofvars}
+(O significado de "vari@'{a}vel dummy" @'{e} o informado em @mrefdot{freeof}
+"Vari@'{a}veis dummy" s@~{a}o entidades matem@'{a}ticas como o @'{i}ndice de uma soma ou produto, a vari@'{a}vel do limite,
+e a vari@'{a}vel da integral definida.)
+
+Exemplo:
+
+@example
+(%i1) listdummyvars: true$
+(%i2) listofvars ('sum(f(i), i, 0, n));
+(%o2)                        [i, n]
+(%i3) listdummyvars: false$
+(%i4) listofvars ('sum(f(i), i, 0, n));
+(%o4)                          [n]
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{listofvars}
+@deffn {Function} listofvars (@var{expr})
+
+Retorna uma lista das vari@'{a}veis em @var{expr}.
+
+Quando @code{listconstvars} for @code{true} a lista retornada por
+@code{listofvars} conter@'{a} as vari@'{a}veis do tipo constante, tais como @code{%e},
+@code{%pi}, @code{%i} ou quaisquer vari@'{a}veis declaradas como sendo do tipo contantes que
+ocorrerem em @var{expr}. Uma vari@'{a}vel @'{e} declarada como sendo do tipo
+@code{constant} via @mrefdot{declare}
+e @mref{constantp}
+retorna @code{true} para todas as vari@'{a}veis declaradas @code{constant}. O padr@~{a}o @'{e}
+omitir vari@'{a}veis do tipo constante da express@~{a}o de retorno em @code{listofvars}.
+
+Veja tamb@'{e}m a vari@'{a}vel de op@,{c}@~{a}o @mref{listdummyvars}
+para incluir ou excluir "vari@'{a}veis dummy" na lista de vari@'{a}veis.
+
+@example
+(%i1) listofvars (f (x[1]+y) / g^(2+a));
+(%o1)                     [g, a, x , y]
+                                  1
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{lfreeof}
+@deffn {Function} lfreeof (@var{lista}, @var{expr})
+
+Para cada membro @var{m} de @var{lista}, chama
+@code{freeof (@var{m}, @var{expr})}.  Retorna @code{false} se qualquer chamada a
+@mref{freeof}
+tamb@'{e}m retornar @code{false} e @code{true} de outra forma.
+
+@c ===beg===
+@c lfreeof ([ a, x], x^2+b);
+@c lfreeof ([ b, x], x^2+b);
+@c lfreeof ([ a, y], x^2+b);
+@c ===end===
+@example
+@group
+(%i1) lfreeof ([ a, x], x^2+b);
+(%o1)                                false
+@end group
+@group
+lfreeof ([ b, x], x^2+b);
+(%o2)                                false
+@end group
+@group
+lfreeof ([ a, y], x^2+b);
+(%o3)                                true
+@end group
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{lpart}
+@deffn {Function} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+@'{E} similar a @mref{dpart}
+mas usa uma caixa com r@'{o}tulo.  Uma caixa com r@'{o}tulo @'{e} similar
+a aquela produzida por @code{dpart} mas tem um nome na linha do topo.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mainvar}
+@defvr {Property} mainvar
+
+Voc@^{e} pode declarar vari@'{a}veis com a propriedade @code{mainvar}.  A escala de ordena@,{c}@~{a}o para @'{a}tomos @'{e}
+essencialmente: n@'{u}meros < constantes (e.g., @code{%e}, @code{%pi}) < escalares < outras
+vari@'{a}veis < mainvars.  E.g., compare @code{expand ((X+Y)^4)} a
+@code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: tenha cuidado se
+voc@^{e} resolver usar o recurso acima.  E.g., se voc@^{e} subtrai uma express@~{a}o na
+qual @code{x} @'{e} uma @code{mainvar} de outras na qual @code{x} n@~{a}o @'{e}
+@code{mainvar}, uma re-simplifica@,{c}@~{a}on e.g. com @code{ev (expr, simp)} pode ser
+necess@'{a}ria se for para ocorrer algum cancelamento.  Tamb@'{e}m, se voc@^{e} gravar uma express@~{a}o na qual
+@code{x} @'{e} uma @code{mainvar}, voc@^{e} provavelmente deve tamb@'{e}mo gravar @code{x}.)
+
+@opencatbox
+@category{Declarations and inferences} @category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{noun}
+@defvr {Property} noun
+
+A propriedade @code{noun} @'{e} uma das op@,{c}@~{o}es da fun@,{c}@~{a}o @mrefdot{declare}
+A @mref{declare} faz uma fun@,{c}@~{a}o ser um "noun", significando que essa fun@,{c}@~{a}o agora declarada "substantivo" n@~{a}o seja avaliada
+automaticamente.
+
+Exemplo:
+
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+@opencatbox
+@category{Nouns and verbs}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{noundisp}
+@defvr {Option variable} noundisp
+Valor padr@~{a}o: @code{false}
+
+Quando @code{noundisp} for @code{true}, substantivos s@~{a}o exibidos entre
+ap@'{o}strofos.  Esse comutador @'{e} sempre @code{true} quando se mostra defini@,{c}@~{o}es
+de fun@,{c}@~{o}es.
+
+@opencatbox
+@category{Display flags and variables} @category{Nouns and verbs}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{nounify}
+@deffn {Function} nounify (@var{f})
+
+Retorna a forma substantiva da fun@,{c}@~{a}o @var{f}.  @'{E}
+necess@'{a}ria ao se fazer refer@^{e}ncia ao nome de uma fun@,{c}@~{a}o verbal como se essa fun@,{c}@~{a}o verbal
+fosse substantiva.  Note que algumas fun@,{c}@~{o}es verbais ir@~{a}o retornar suas formas
+substantivas se n@~{a}o puderem avaliar certos argumentos.  A forma substantiva tamb@'{e}m @'{e}
+a forma retornada se uma chamada de fun@,{c}@~{a}o for precedida por ap@'{o}strofo.
+
+Veja tamb@'{e}m @mrefdot{verbify}
+
+@opencatbox
+@category{Nouns and verbs}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{nterms}
+@deffn {Function} nterms (@var{expr})
+
+Retorna o n@'{u}mero de termos que @var{expr} pode ter se exxa express@~{a}o for completamente
+expandida e nenhum cancelamento ou combina@,{c}@~{a}o de termos ocorrer.
+Note que express@~{o}es como @code{sin (@var{expr})}, @code{sqrt (@var{expr})},
+@code{exp (@var{expr})}, etc. contam como aped=nas um termo independente de quantos
+termos @var{expr} tenha (se for uma soma).
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{op}
+@deffn {Function} op (@var{expr})
+
+Retorna o operadr principal da express@~{a}o @var{expr}.
+O comando @code{op (@var{expr})} @'{e} equivalente aos comando @code{part (@var{expr}, 0)}.
+
+A fun@,{c}@~{a}o @code{op} retorna uma sequ@^{e}ncia de caracteres se o operador principal is a built-in or user-defined
+prefix, binary or n-ary infix, postfix, matchfix, or nofix operator @footnote{Nota do tradutor: clique no link "Operadores" logo adiante para mais esclarecimentos.}. 
+Otherwise, if @var{expr} is a subscripted function expression, @code{op}
+returns the subscripted function; in this case the return value is not an atom.
+Otherwise, @var{expr} is an array function or ordinary function expression,
+and @code{op} returns a symbol.
+
+A fun@,{c}@~{a}o @code{op} observa o valor do sinalizador global @mrefdot{inflag}
+
+A fun@,{c}@~{a}o @code{op} avalia seus argumentos.
+
+Veja tamb@'{e}m: @mrefcomma{args} @mrefdot{Operators}
+
+Exemplos:
+
+@c ===beg===
+@c stringdisp: true$
+@c op (a * b * c);
+@c op (a * b + c);
+@c op ('sin (a + b));
+@c op (a!);
+@c op (-a);
+@c op ([a, b, c]);
+@c op ('(if a > b then c else d));
+@c op ('foo (a));
+@c prefix (foo);
+@c op (foo a);
+@c op (F [x, y] (a, b, c));
+@c op (G [u, v, w]);
+@c ===end===
+@example
+(%i1) stringdisp: true$
+(%i2) op (a * b * c);
+(%o2)                          "*"
+(%i3) op (a * b + c);
+(%o3)                          "+"
+(%i4) op ('sin (a + b));
+(%o4)                          sin
+(%i5) op (a!);
+(%o5)                          "!"
+(%i6) op (-a);
+(%o6)                          "-"
+(%i7) op ([a, b, c]);
+(%o7)                          "["
+(%i8) op ('(if a > b then c else d));
+(%o8)                         "if"
+(%i9) op ('foo (a));
+(%o9)                          foo
+(%i10) prefix (foo);
+(%o10)                        "foo"
+(%i11) op (foo a);
+(%o11)                        "foo"
+(%i12) op (F [x, y] (a, b, c));
+(%o12)                        F
+                               x, y
+(%i13) op (G [u, v, w]);
+(%o13)                          G
+@end example
+
+@opencatbox
+@category{Expressions} @category{Operators}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{operatorp}
+@deffn  {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
+
+O comando @code{operatorp (@var{expr}, @var{op})} retorna @code{true}
+se @var{op} for igual ao operador de @var{expr}.
+
+O comando@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} retorna
+@code{true} se algum elemento @var{op_1}, @dots{}, @var{op_n} for igual ao
+operador de @var{expr}.
+
+@opencatbox
+@category{Operators} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{option_opsubst}
+@defvr {Option variable} opsubst
+Valor padr@~{a}o: @code{true}
+
+Quando @code{opsubst} for @code{false}, @mref{subst}
+n@~{a}o tenta
+substituir dentro do operador de uma express@~{a}o.  E.g., 
+@code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+@c ===beg===
+@c r+r[0];
+@c opsubst;
+@c subst (x^2, r, r+r[0]);
+@c opsubst: not opsubst;
+@c subst (x^2, r, r+r[0]);
+@c ===end===
+@example
+@group
+(%i1) r+r[0];
+(%o1)                               r + r
+                                         0
+@end group
+@group
+(%i2) opsubst;
+(%o2)                                true
+@end group
+@group
+(%i3) subst (x^2, r, r+r[0]);
+                                   2     2
+(%o3)                             x  + (x )
+                                           0
+@end group
+@group
+(%i4) opsubst: not opsubst;
+(%o4)                                false
+@end group
+@group
+(%i5) subst (x^2, r, r+r[0]);
+                                     2
+(%o5)                               x  + r
+                                          0
+@end group
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{optimize}
+@deffn {Function} optimize (@var{expr})
+
+Retorna uma express@~{a}o que produz o mesmo valor e
+os mesmos efeitos que @var{expr} mas o faz de modo mais eficiente evitando o
+rec@'{a}lculo de subexpress@~{o}es comuns.  A fun@,{c}@~{a}o @code{optimize} tamb@'{e}m causa
+o "colapso" de seus argumentos de forma que todas as subexpress@~{o}es comuns
+sejam compartilhadas.  Fa@,{c}a @code{example (optimize)} para exemplos.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+
+@c -----------------------------------------------------------------------------
+@anchor{optimprefix}
+@defvr {Option variable} optimprefix
+Valor padr@~{a}o: @code{%}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{optimprefix} cont@'{e}m o prefixo usado para gerar
+s@'{i}mbolos atrav@'{e}s do comando @mrefdot{optimize}
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ordergreat}
+@anchor{orderless}
+@deffn  {Function} ordergreat (@var{v_1}, @dots{}, @var{v_n})
+@deffnx {Function} orderless (@var{v_1}, @dots{}, @var{v_n})
+
+A fun@,{c}@~{a}o @code{ordergreat} modifica a ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do Maxima
+tal que @var{v_1} sucede @var{v_2} que sucede @dots{} que sucede @var{v_n},
+e @var{v_n} sucede qualquer outro s@'{i}mbolo n@~{a}o mencionado como um argumento.
+
+A fun@,{c}@~{a}o @code{orderless} modifica a ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do Maxima
+tal que @var{v_1} precede @var{v_2} que precede @dots{} que precede @var{v_n},
+e @var{v_n} precede quqlquer outra vari@'{a}vel n@~{a}o mencionada como um argumento.
+
+A ordem estabelecida por @code{ordergreat} e por @code{orderless} @'{e} dissolvida
+por @mrefdot{unorder}
+@code{ordergreat} e @code{orderless} pode ser chamada somente
+uma vez para cada, a menos que @code{unorder} seja chamada; somente a @'{u}ltima chamada a
+@code{ordergreat} e a @code{orderless} tem qualquer efeito.
+
+Veja tamb@'{e}m @mrefdot{ordergreatp}
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ordergreatp}
+@anchor{orderlessp}
+@deffn  {Function} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffnx {Function} orderlessp (@var{expr_1}, @var{expr_2})
+
+A fun@,{c}@~{a}o @code{ordergreatp} retorna @code{true} se @var{expr_1} suceder @var{expr_2} na
+ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do m@'{a}xima, e retorna @code{false} de outra forma.
+
+A fun@,{c}@~{a}o @code{orderlessp} retorna @code{true} se @var{expr_1} precede @var{expr_2} na
+ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do Maxima, e retorna @code{false} de outra forma.
+
+Todos os @'{a}tomos e express@~{o}es do Maxima s@~{a}o compar@'{a}veis atrav@'{e}s de @code{ordergreatp} e de
+@code{orderlessp}, embora existam exemplos isolados de express@~{o}es para as quais
+esses predicados n@~{a}o s@~{a}o transitivos; isso @'{e} um bug.
+
+A ordena@,{c}@~{a}o can@^{o}nica de @'{a}tomos (s@'{i}mbolos, n@'{u}meros literais, e sequ@^{e}ncias de caractere) @'{e} a
+seguinte.
+
+(n@'{u}meros inteiros e n@'{u}meros em ponto flutuante) precedem (grandes n@'{u}meros em ponto flutuante) que precedem
+(constantes declaradas) que precedem (sequ@^{e}ncias de caractere) que precedem (escalares declarados)
+que precedem (primeiro argumento de @mref{orderless}
+) que precede @dots{} que precede
+(@'{u}ltimo argumento de @code{orderless}) que precede (outros s@'{i}mbolos) que precedem
+(@'{u}ltimo argumento de @mref{ordergreat}
+) que precede @dots{} que precede
+(primeiro argumento de @code{ordergreat}) que precede (vari@'{a}veis principais declaradas)
+
+Para express@~{o}es n@~{a}o at@^{o}micas, a ordena@,{c}@~{a}o can@^{o}nica @'{e} derivada da ordena@,{c}@~{a}o
+para @'{a}tomos.  Para os operadores internos @code{+} @code{*} e @code{^},
+a ordena@,{c}@~{a}o n@~{a}o @'{e} facilmente sumarizada.  Para outros operadores internos e todas
+as outras fun@,{c}@~{o}es e operadores, as express@~{o}es s@~{a}o ordenadas atrav@'{e}s de seus argumentos
+(iniciando com o primeiro argumento), a seguir pelo nome do operador ou da
+fun@,{c}@~{a}o.  No caso de express@~{o}es envolvendo subscritos, o s@'{i}mbolo de subscrito @'{e}
+considerado o operador e o subscrito @'{e} considerado um argumento.
+
+A ordena@,{c}@~{a}o can@^{o}nica de expres@~{o}es @'{e} modificada atrav@'{e}s das fun@,{c}@~{o}es
+@mref{ordergreat}
+e @mrefcomma{orderless}
+e as declara@,{c}@~{o}es @mrefcomma{mainvar}
+@w{} @mrefcomma{constant}
+e @code{scalar}.
+
+Veja tamb@'{e}m @mrefdot{sort}
+
+Exemplos:
+
+Ordenando s@'{i}mbolos comuns e constantes.
+Note que @code{%pi} n@~{a}o @'{e} ordenado conforme seu valor num@'{e}rico.
+
+@c ===beg===
+@c stringdisp : true;
+@c sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+@c ===end===
+@example
+(%i1) stringdisp : true;
+(%o1)                         true
+(%i2) sort([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+(%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
+@end example
+
+Efeito das fun@,{c}@~{o}es @code{ordergreat} e @code{orderless}.
+
+@c ===beg===
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ordergreat (S, J);
+@c orderless (M, H);
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ===end===
+@example
+(%i1) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o1)           [A, E, G, H, J, K, M, P, S, T, W]
+(%i2) ordergreat (S, J);
+(%o2)                         done
+(%i3) orderless (M, H);
+(%o3)                         done
+(%i4) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o4)           [M, H, A, E, G, K, P, T, W, J, S]
+@end example
+
+Efeito das declara@,{c}@~{o}es @code{mainvar}, @code{constant}, e @code{scalar}.
+
+@c ===beg===
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c declare (aa, mainvar);
+@c declare ([baz, quux], constant);
+@c declare ([A1, B1], scalar);
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c ===end===
+@example
+(%i1) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o1)   [aa, bar, baz, bb, cc, dd, foo, quux, A1, B1, C1]
+(%i2) declare (aa, mainvar);
+(%o2)                         done
+(%i3) declare ([baz, quux], constant);
+(%o3)                         done
+(%i4) declare ([A1, B1], scalar);
+(%o4)                         done
+(%i5) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
+@end example
+
+Ordena@,{c}@~{a}o de express@~{o}es n@~{a}o at@^{o}micas.
+
+@c ===beg===
+@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), 
+@c        f(n, 1)]);
+@c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+@c ===end===
+@example
+(%i1) sort([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n),
+            f(n, 1)]);
+(%o1) [1, 2, f(1), g(1), g(1, 2), f(2), f(2, 1), n, g(n), 
+                                                         f(n, 1)]
+(%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+(%o2)            [1, foo(1), X , k, foo(k), X ]
+                              1              k
+@end example
+
+@opencatbox
+@category{Expressions} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{part}
+@deffn {Function} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Retorna partes da forma mostrada na tela de @code{expr}.  A fun@,{c}@~{a}o @code{part} obt@'{e}m a parte de
+@code{expr} como especificado pelos @'{i}ndices @var{n_1}, @dots{}, @var{n_k}.  Primeiro
+a parte @var{n_1} de @code{expr} @'{e} obtida, a seguir a parte @var{n_2} de @code{expr} @'{e} obtida, etc.
+O resultado @'{e} parte @var{n_k} de @dots{} parte @var{n_2} da parte @var{n_1} de
+@code{expr}.  Se nenhum @'{i}ndice for especificado @code{expr} @'{e} retornada.
+
+A fun@,{c}@~{a}o @code{part} pode ser usada para obter um elemento de uma lista, uma linha de uma matriz, etc.
+
+@c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
+@c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
+Se o @'{u}ltimo argumento para uma fun@,{c}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
+muitas subexpress@~{o}es s@~{a}o selecionadas, cada uma correspondendo a um
+@'{i}ndice da lista.  Dessa forma @code{part (x + y + z, [1, 3])} @'{e} @code{z+x}.
+
+A vari@'{a}vel de sistema @mref{piece}
+mant@'{e}m a @'{u}ltima express@~{a}o selecionada quando forem usadas as fun@,{c}ẽos
+@code{part}.  A vari@'{a}vel de sistema @mref{piece}
+@'{e} ajustada durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e dessa forma
+pode ser referenciado na fun@,{c}@~{a}o propriamente dita como mostrado adiante.
+
+Se a vari@'{a}vel de op@,{c}@~{a}o @mref{partswitch}
+for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
+parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem de erro @'{e}
+retornada.
+
+Veja tamb@'{e}m @mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}
+@w{}
+@mrefcomma{dpart}
+e @mrefdot{lpart}
+
+Exemplos:
+
+@c ===beg===
+@c part(z+2*y+a,2);
+@c part(z+2*y+a,[1,3]);
+@c part(z+2*y+a,2,1);
+@c ===end===
+@example
+(%i1) part(z+2*y+a,2);
+(%o1)                                 2 y
+(%i2) part(z+2*y+a,[1,3]);
+(%o2)                                z + a
+(%i3) part(z+2*y+a,2,1);
+(%o3)                                  2
+@end example
+
+O comando @code{example (part)} mostra exemplos adicionais.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{partition}
+@deffn {Function} partition (@var{expr}, @var{x})
+
+Retorna uma lista de duas express@~{o}es.  S@~{a}o elas (1) os fatores de @var{expr}
+(se @var{expr} for um produto), os termos de @var{expr} (se @var{expr} for uma soma), ou a lista
+(se @var{expr} for uma lista) que n@~{a}o contenha @var{x} e, (2) os fatores, termos,
+ou lista que cont@'{e}m.
+
+Exemplos:
+
+@example
+(%i1) partition (2*a*x*f(x), x);
+(%o1)                     [2 a, x f(x)]
+(%i2) partition (a+b, x);
+(%o2)                      [b + a, 0]
+(%i3) partition ([a, b, f(a), c], a); 
+(%o3)                  [[b, c], [a, f(a)]]
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLE
+
+@c -----------------------------------------------------------------------------
+@anchor{partswitch}
+@defvr {Option variable} partswitch
+Valor padr@~{a}o: @code{false}
+
+Quando @code{partswitch} for @code{true}, @code{end} @'{e} retornado
+quando uma parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma
+mensagem de erro @'{e} retornada.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{pickapart}
+@deffn {Function} pickapart (@var{expr}, @var{n})
+
+Atribui r@'{o}tulos de express@~{o}es intermedi@'{a}rias a subexpress@~{o}es de @var{expr} no n@'{i}vel
+@var{n}, um inteiro.  Subexpress@~{o}es em maior ou menor n@'{i}vel n@~{a}o recebem
+atribui@,{c}@~{a}o de r@'{o}tulos.  A fun@,{c}@~{a}o @code{pickapart} retorna uma express@~{a}o em termos de
+express@~{o}es intermedi@'{a}rias equivalentes @`{a} express@~{a}o original @var{expr}.
+
+Veja tamb@'{e}m @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart}
+@w{}
+@mrefcomma{inpart}
+e @mrefdot{reveal}
+
+Exemplos:
+
+@example
+(%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+                                          2
+                                     sin(x )   b + a
+(%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+(%i2) pickapart (expr, 0);
+@group
+                                          2
+                                     sin(x )   b + a
+(%t2)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+@end group
+(%o2)                          %t2
+(%i3) pickapart (expr, 1);
+
+(%t3)                - log(sqrt(x + 1) + 1)
+
+
+                                  2
+                             sin(x )
+(%t4)                        -------
+                                3
+
+
+                              b + a
+(%t5)                         -----
+                                2
+
+(%o5)                    %t5 + %t4 + %t3
+(%i5) pickapart (expr, 2);
+
+(%t6)                 log(sqrt(x + 1) + 1)
+
+
+                                  2
+(%t7)                        sin(x )
+
+
+(%t8)                         b + a
+
+                         %t8   %t7
+(%o8)                    --- + --- - %t6
+                          2     3
+(%i8) pickapart (expr, 3);
+
+(%t9)                    sqrt(x + 1) + 1
+
+
+                                2
+(%t10)                         x
+
+                  b + a              sin(%t10)
+(%o10)            ----- - log(%t9) + ---------
+                    2                    3
+(%i10) pickapart (expr, 4);
+
+(%t11)                     sqrt(x + 1)
+@group
+                      2
+                 sin(x )   b + a
+(%o11)           ------- + ----- - log(%t11 + 1)
+                    3        2
+@end group
+(%i11) pickapart (expr, 5);
+
+(%t12)                        x + 1
+
+                   2
+              sin(x )   b + a
+(%o12)        ------- + ----- - log(sqrt(%t12) + 1)
+                 3        2
+(%i12) pickapart (expr, 6);
+                  2
+             sin(x )   b + a
+(%o12)       ------- + ----- - log(sqrt(x + 1) + 1)
+                3        2
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{piece}
+@defvr {System variable} piece
+
+Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mref{part}
+.
+@c WHAT DOES THIS MEAN EXACTLY ??
+A vari@'{a}vel de sistema @code{piece} @'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @mref{part}
+e dessa forma a ultima express@~{a}o selecionada pode ser referenciada nas
+pr@'{o}prias fun@,{c}@~{o}es @mref{part}
+.
+
+@c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{psubst}
+@deffn  {Function} psubst (@var{lista}, @var{expr})
+@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
+
+O comando @code{psubst(@var{a}, @var{b}, @var{expr})} @'{e} simliar a @code{subst}.  Veja 
+@mrefdot{subst}
+
+O que distingue a fun@,{c}@~{a}o @code{subst} da fun@,{c}@~{a}o @code{psubst} @'{e} que a @code{psubst} faz substitui@,{c}@~{o}es
+paralelas, se o primeiro argumento @var{lista} for uma lista de equa@,{c}@~{o}es.
+
+Veja tamb@'{e}m @mref{sublis}
+para fazer substitui@,{c}@~{o}es paralelas.
+
+Exemplo:
+
+O primeiro exemplo mostra substitui@,{c}@~{a}o paralela usando a @code{psubst}.  O segundo exemplo
+mostra o resultado para a fun@,{c}@~{a}o @code{subst}, que faz uma substitui@,{c}@~{a}o
+serial.
+
+@c ===beg===
+@c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c subst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c ===end===
+@example
+(%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o4)                           sin(b) + sin(a)
+(%i5) subst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o5)                              2 sin(a)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rembox}
+@deffn  {Function} rembox (@var{expr}, unlabelled)
+@deffnx {Function} rembox (@var{expr}, @var{r@'{o}tulo})
+@deffnx {Function} rembox (@var{expr})
+
+Remove caixas de @var{expr}.
+
+O comando @code{rembox (@var{expr}, unlabelled)} remove todas as caixas sem r@'{o}tulos de
+@var{expr}.
+
+O comando @code{rembox (@var{expr}, @var{r@'{o}tulo})} remove somente caixas que tenham @var{r@'{o}tulo}.
+
+O comando @code{rembox (@var{expr})} remove todas as caixas, com ou sem r@'{o}tulos.
+
+Caixas s@~{a}o desenhadas pelas fun@,{c}@~{o}es @mrefcomma{box} @mrefcomma{dpart}
+e @mref{lpart}
+@w{}.
+
+Exemplos:
+
+@c ===beg===
+@c expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@c dpart (dpart (expr, 1, 1), 2, 2);
+@c expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+@c rembox (expr2, unlabelled);
+@c rembox (expr2, FOO);
+@c rembox (expr2, BAR);
+@c rembox (expr2);
+@c ===end===
+@example
+(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@group
+                                  a d - b c
+(%o1)                sin(%pi x) + ---------
+                                      2
+                                     h
+@end group
+(%i2) dpart (dpart (expr, 1, 1), 2, 2);
+                        """""""    a d - b c
+(%o2)               sin("%pi x") + ---------
+                        """""""      """"
+                                     " 2"
+                                     "h "
+                                     """"
+(%i3) expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+                  FOO"""""""""""   BAR""""""""
+                  "    """"""" "   "a d - b c"
+(%o3)             "sin("%pi x")" + "---------"
+                  "    """"""" "   "  """"   "
+                  """"""""""""""   "  " 2"   "
+                                   "  "h "   "
+                                   "  """"   "
+                                   """""""""""
+(%i4) rembox (expr2, unlabelled);
+                                  BAR""""""""
+                   FOO"""""""""   "a d - b c"
+(%o4)              "sin(%pi x)" + "---------"
+                   """"""""""""   "    2    "
+                                  "   h     "
+                                  """""""""""
+(%i5) rembox (expr2, FOO);
+                                  BAR""""""""
+                       """""""    "a d - b c"
+(%o5)              sin("%pi x") + "---------"
+                       """""""    "  """"   "
+                                  "  " 2"   "
+                                  "  "h "   "
+                                  "  """"   "
+                                  """""""""""
+(%i6) rembox (expr2, BAR);
+                   FOO"""""""""""
+                   "    """"""" "   a d - b c
+(%o6)              "sin("%pi x")" + ---------
+                   "    """"""" "     """"
+                   """"""""""""""     " 2"
+                                      "h "
+                                      """"
+(%i7) rembox (expr2);
+                                  a d - b c
+(%o7)                sin(%pi x) + ---------
+                                      2
+                                     h
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{reveal}
+@deffn {Function} reveal (@var{expr}, @var{n@'{i}vel})
+
+Substitui partes de @var{expr} no inteiro especificando @var{n@'{i}vel}
+com sum@'{a}rios descritivos.
+
+@itemize @bullet
+@item
+Somas e diferen@,{c}as s@~{a}o substitu@'{i}das por @code{Sum(@var{n})}
+onde @var{n} @'{e} o n@'{u}mero de operandos da soma.
+@item
+Produtos s@~{a}o substitu@'{i}dos por @code{Product(@var{n})}
+onde @var{n} @'{e} o n@'{u}mero de operandos do produto.
+@item
+Exponenciais s@~{a}o substitu@'{i}das por @code{Expt}.
+@item
+Quocientes s@~{a}o substitu@'{i}dos por @code{Quotient}.
+@item
+Nega@,{c}@~{a}o un@'{a}ria @'{e} substitu@'{i}da por @code{Negterm}.
+@item
+Listas s@~{a}o substitu@'{i}das por @code{List(@var{n})} onde @var{n} @'{e} o n@'{u}mero de
+elementos da lista.
+@end itemize
+
+Quando @var{n@'{i}vel} for maior que ou igual ao n@'{i}vel m@'{a}ximao de @var{expr},
+o comando @code{reveal (@var{expr}, @var{n@'{i}vel})} retorna @var{expr} sem modifica@,{c}@~{o}es.
+
+A fun@,{c}@~{a}o @code{reveal} avalia seus argumentos.
+A fun@,{c}@~{a}o @code{reveal} retorna a express@~{a}o sumarizada.
+
+Exemplo:
+
+@c === beg ===
+@c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+@c reveal (e, 1);
+@c reveal (e, 2);
+@c reveal (e, 3);
+@c reveal (e, 4);
+@c reveal (e, 5);
+@c reveal (e, 6);
+@c === end ===
+@example
+(%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+                          2            2
+                         b  - 2 a b + a
+(%o1)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+(%i2) reveal (e, 1);
+(%o2)                       Quotient
+(%i3) reveal (e, 2);
+                             Sum(3)
+(%o3)                        ------
+                             Sum(3)
+(%i4) reveal (e, 3);
+@group
+                     Expt + Negterm + Expt
+(%o4)               ------------------------
+                    Product(2) + Expt + Expt
+@end group
+(%i5) reveal (e, 4);
+                       2                 2
+                      b  - Product(3) + a
+(%o5)         ------------------------------------
+                         Product(2)     Product(2)
+              2 Expt + %e           + %e
+(%i6) reveal (e, 5);
+                         2            2
+                        b  - 2 a b + a
+(%o6)              --------------------------
+                       Sum(2)     2 b     2 a
+                   2 %e       + %e    + %e
+(%i7) reveal (e, 6);
+                          2            2
+                         b  - 2 a b + a
+(%o7)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+@end example
+
+@opencatbox
+@category{Expressions} @category{Display functions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{sublis}
+@deffn {Function} sublis (@var{lista}, @var{expr})
+
+Faz substitui@,{c}@~{o}es paralelas m@'{u}ltiplas em uma express@~{a}o.  O argumento @var{lista}
+@'{e} uma lista de equa@,{c}@~{o}es.  O primeiro membro das equa@,{c}@~{o}es deve ser um @'{a}tomo.
+
+A vari@'{a}vel @mref{sublis_apply_lambda}
+controla a simplifica@,{c}@~{a}o ap@'{o}s
+@code{sublis}.
+
+Veja tamb@'{e}m @mref{psubst}
+para fazer substitui@,{c}@~{o}es paralelas.
+
+Exemplo:
+
+@c ===beg===
+@c sublis ([a=b, b=a], sin(a) + cos(b));
+@c ===end===
+@example
+(%i1) sublis ([a=b, b=a], sin(a) + cos(b));
+(%o1)                    sin(b) + cos(a)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sublis_apply_lambda}
+@defvr {Option variable} sublis_apply_lambda
+Valor padr@~{a}o: @code{true}
+
+Controla se substitui@,{c}@~{a}o de @code{lambda} @'{e} aplicada na simplifica@,{c}@~{a}o ap@'{o}s
+@code{sublis} ser usada ou se voc@^{e} tem que fazer um @mref{ev}
+para pegar coisas para
+aplicar a substitui@,{c}@~{a}o de @code{lambda}.  O valor @code{true} significa fazer a aplica@,{c}@~{a}o.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{subnumsimp}
+@defvr {Option variable} subnumsimp
+Valor padr@~{a}o: @code{false}
+
+Se @code{true} net@~{a}o as fun@,{c}@~{o}es @mref{subst}
+e @mref{psubst}
+podem substituir
+uma vari@'{a}vel de subscrito @code{f[x]} por um n@'{u}mero, quando somente o s@'{i}mbolo @code{f}
+for fornecido.
+
+Veja tamb@'{e}m @mrefdot{subst}
+
+@example
+(%i1) subst(100,g,g[x]+2);
+
+subst: cannot substitute 100 for operator g in expression g
+                                                           x
+ -- an error. To debug this try: debugmode(true);
+
+(%i2) subst(100,g,g[x]+2),subnumsimp:true;
+(%o2)                          102
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, MORE EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subst}
+@deffn {Function} subst (@var{a}, @var{b}, @var{c})
+
+Substitui @var{a} por @var{b} em @var{c}.  O argumento @var{b} deve ou ser um @'{a}tomo ou uma
+subexpress@~{a}o completa de @var{c}.  Por exemplo, @code{x+y+z} @'{e} uma subexpress@~{a}o
+completa de @code{2*(x+y+z)/w} enquanto @code{x+y} n@~{a}o @'{e}.  Quando @var{b} n@~{a}o
+tem essas caracter@'{i}sticas, se pode algumas vezes usar @mref{substpart}
+ou @mref{ratsubst}
+(veja abaixo).  Alternativamente, se @var{b} for da forma
+@code{e/f} ent@~{a}o se deve usar @code{subst (a*f, e, c)} enquanto se @var{b} for da
+forma @code{e^(1/f)} ent@~{a}o se pode usar @code{subst (a^f, e, c)}.  A
+fun@,{c}@~{a}o @code{subst} tambẽm diferencia o @code{x^y} em @code{x^-y} de forma que
+@code{subst (a, sqrt(x), 1/sqrt(x))} retorna @code{1/a}.  Os argumentos @var{a} e @var{b}
+podem tambẽm serem operadores de uma express@~{a}o entre aspas duplas @code{"} ou
+os argumentos @var{a} e @var{b} podem ser nomes de fun@,{c}@~{a}o.  Se o objetivo for substituir a vari@'{a}vel
+independente na forma derivada ent@~{a}o a fun@,{c}@~{a}o @code{at} (veja abaixo) deve ser
+usada.
+
+@c UMM, REVERSE THIS AND MOVE IT TO substitute ??
+A fun@,{c}@~{a}o @code{subst} @'{e} um nome alternativo de @code{substitute}.
+
+Os comandos @code{subst (@var{eq_1}, @var{expr})} ou
+@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} s@~{a}o outras formas
+permitidas.  As @var{eq_i} s@~{a}o equa@,{c}@~{o}es indicando substitui@,{c}@~{o}es a serem feitas.
+Para cada equa@,{c}@~{a}o, o lado direito ir@'{a} ser substitu@'{i}do pelo esquerdo na 
+express@~{a}o @var{expr}.  As equa@,{c}@~{o}es s@~{a}o substitu@'{i}das em s@'{e}rie da esquerda para
+a direita em @var{expr}.  Veja as fun@,{c}@~{o}es @code{sublis} e @code{psubst} para 
+fazer substitui@,{c}@~{o}es paralelass.
+
+A vari@'{a}vel de op@,{c}@~{a}o @mref{exptsubst}
+se @code{true} permite que a substitui@,{c}@~{a}o
+por @code{y} o @code{%e^x} em @code{%e^(a*x)} ocorra.
+
+@c WHAT IS THIS ABOUT ??
+Quando @code{opsubst} for @code{false},
+@code{subst} n@~{a}o tentar@'{a} substituir dentro do operador de uma express@~{a}o.
+E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} ir@'{a} funcionar.
+
+Exemplos:
+
+@c ===beg===
+@c subst (a, x+y, x + (x+y)^2 + y);
+@c subst (-%i, %i, a + b*%i);
+@c ===end===
+@example
+(%i1) subst (a, x+y, x + (x+y)^2 + y);
+                                    2
+(%o1)                      y + x + a
+(%i2) subst (-%i, %i, a + b*%i);
+(%o2)                       a - %i b
+@end example
+
+A substitui@,{c}@~{a}o @'{e} feita em s@'{e}rie para uma lista de equa@,{c}@~{o}es.  Compare isso com
+uma substitui@,{c}@~{a}o paralela:
+
+@c ===beg===
+@c subst([a=b, b=c], a+b);
+@c sublis([a=b, b=c], a+b);
+@c ===end===
+@example
+(%i3) subst([a=b, b=c], a+b);
+(%o3)                                 2 c
+(%i4) sublis([a=b, b=c], a+b);
+(%o4)                                c + b
+@end example
+
+@noindent
+Para exemplos adicionais, fa@,{c}a @code{example (subst)}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c ----------------------------------------------------------------------------
+@anchor{substinpart}
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Similar a @mrefcomma{substpart}
+mas @code{substinpart} trabalha na
+representa@,{c}@~{a}o interna de @var{expr}.
+
+Exemplos:
+
+@c ===beg===
+@c x . 'diff (f(x), x, 2);
+@c substinpart (d^2, %, 2);
+@c substinpart (f1, f[1](x + 1), 0);
+@c ===end===
+@example
+(%i1) x . 'diff (f(x), x, 2);
+                              2
+                             d
+(%o1)                   x . (--- (f(x)))
+                               2
+                             dx
+(%i2) substinpart (d^2, %, 2);
+                                  2
+(%o2)                        x . d
+(%i3) substinpart (f1, f[1](x + 1), 0);
+(%o3)                       f1(x + 1)
+@end example
+
+Se o @'{u}ltimo argumento a uma fun@,{c}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
+muitas subexpress@~{o}es s@~{a}o selecionadas, cada uma correspondendo a um
+@'{i}ndice da lista.  Dessa forma
+
+@c ===beg===
+@c part (x + y + z, [1, 3]);
+@c ===end===
+@example
+(%i1) part (x + y + z, [1, 3]);
+(%o1)                         z + x
+@end example
+
+A vari@'{a}vel de sistema @mref{piece}
+mant@'{e}m o valor da @'{u}ltima express@~{a}o selecionada quando se usam
+as fun@,{c}@~{o}es @code{part}.  A vari@'{a}vel de sistema @mref{piece}
+@'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @code{part} e
+dessa forma pode ser referenciado na fun@,{c}@~{o}es @code{part} propriamente ditas como mostrado abaixo.
+Se @mref{partswitch}
+for ajustada para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
+parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem de erro
+@'{e} retornada.
+
+@c ===beg===
+@c expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+@c part (expr, 2, [1, 3]);
+@c sqrt (piece/54);
+@c substpart (factor (piece), expr, [1, 2, 3, 5]);
+@c expr: 1/x + y/x - 1/z;
+@c substpart (xthru (piece), expr, [2, 3]);
+@c ===end===
+@example
+(%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+              3         2       2            3
+(%o1)     27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+(%i2) part (expr, 2, [1, 3]);
+                                  2
+(%o2)                         54 y
+(%i3) sqrt (piece/54);
+(%o3)                        abs(y)
+(%i4) substpart (factor (piece), expr, [1, 2, 3, 5]);
+                               3
+(%o4)               (3 y + 2 x)  + y + x + 1
+(%i5) expr: 1/x + y/x - 1/z;
+                             1   y   1
+(%o5)                      - - + - + -
+                             z   x   x
+(%i6) substpart (xthru (piece), expr, [2, 3]);
+                            y + 1   1
+(%o6)                       ----- - -
+                              x     z
+@end example
+
+Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag}
+para @code{true} e chamando @mref{part}
+ou @mref{substpart}
+@'{e} o mesmo que chamar @mref{inpart}
+ou @code{substinpart}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{substpart}
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Substitue @var{x} na subexpress@~{a}o selecionada atrav@'{e}s dos restantes
+argumentos como em @mrefdot{part}
+A @code{substpart} retorna o novo valor de @var{expr}.  O argumento @var{x}
+pode ser algum operador a ser substitu@'{i}do por um operador de @var{expr}.  Em alguns
+casos @var{x} precisa ser colocado entre aspas duplas @code{"} (e.g.
+@code{substpart ("+", a*b, 0)} retorna @code{b + a}).
+
+Exemplo:
+
+@c ===beg===
+@c 1/(x^2 + 2);
+@c substpart (3/2, %, 2, 1, 2);
+@c a*x + f(b, y);
+@c substpart ("+", %, 1, 0);
+@c ===end===
+@example
+(%i1) 1/(x^2 + 2);
+                               1
+(%o1)                        ------
+                              2
+                             x  + 2
+(%i2) substpart (3/2, %, 2, 1, 2);
+                               1
+(%o2)                       --------
+                             3/2
+                            x    + 2
+(%i3) a*x + f(b, y);
+(%o3)                     a x + f(b, y)
+(%i4) substpart ("+", %, 1, 0);
+(%o4)                    x + f(b, y) + a
+@end example
+
+Tamb@'{e}m, ajustando a vari@'{a}vel de op@,{c}@~{a}o @mref{inflag}
+para @code{true} e chamando @mref{part}
+ou @code{substpart} @'{e} o mesmo que chamar @code{inpart} ou
+@mrefdot{substinpart}
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{symbolp}
+@deffn {Function} symbolp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um s@'{i}mbolo, de outra forma retorna @code{false}.  Em termos pr@'{a}ticos,
+@code{symbolp(x)} @'{e} equivalente ao predicado
+@code{atom(x) and not numberp(x)}.
+
+@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
+@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
+Veja tamb@'{e}m @ref{Identifiers}.
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unorder}
+@deffn {Function} unorder ()
+
+Desabilita nomes alternativos criados pelo @'{u}ltimo uso dos comandos de ordena@,{c}@~{a}o 
+@code{ordergreat} e @code{orderless}.  As fun@,{c}@~{o}es @code{ordergreat} e @code{orderless} 
+n@~{a}o podem ser usadas mais que uma vez cada sem chamar @code{unorder}.
+A @code{unorder} n@~{a}o substitui de volta em express@~{o}es os s@'{i}mbolos originais para
+os nomes alternativos introduzidos por @code{ordergreat} e por @code{orderless}.  Apesar disso,
+ap@'{o}s a execu@,{c}@~{a}o de @code{unorder} os nomes alternativos aparecem nas express@~{o}es anteriores.
+ 
+Veja tamb@'{e}m @code{ordergreat} e @code{orderless}.
+
+Exemplos:
+
+A @code{ordergreat(a)} coloca um nome alternativo para o s@'{i}mbolo @code{a}.  Apesar disso,
+a diferen@,{c}a de @code{%o2} e @code{%o4} n@~{a}o tende a zero.  A @code{unorder}
+n@~{a}o substitui de volta o s@'{i}mbolo @code{a} e o nome alternativo aparece na
+sa@'{i}da @code{%o7}.
+
+@c ===beg===
+@c unorder();
+@c b*x + a^2;
+@c ordergreat (a);
+@c b*x + a^2;
+@c  %th(1) - %th(3);
+@c unorder();
+@c %th(2);
+@c ===end===
+@example
+(%i1) unorder();
+(%o1)                          []
+(%i2) b*x+a^2;
+                                   2
+(%o2)                       b x + a
+(%i3) ordergreat(a);
+(%o3)                         done
+(%i4) b*x+a^2;
+                             2
+(%o4)                       a  + b x
+(%i5) %th(1)-%th(3);
+                              2    2
+(%o5)                        a  - a
+(%i6) unorder();
+(%o6)                          [a]
+(%i7) %th(2);
+                                2    2
+(%o7)                      _101a  - a
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{verbify}
+@deffn {Function} verbify (@var{f})
+
+Retorna a forma verbal da fun@,{c}@~{a}o chamada @var{f}.
+Veja tamb@'{e}m @code{verb}, @code{noun}, e @code{nounify}.
+
+Exemplos:
+
+@c ===beg===
+@c verbify ('foo);
+@c :lisp $%
+@c nounify (foo);
+@c :lisp $%
+@c ===end===
+@example
+(%i1) verbify ('foo);
+(%o1)                          foo
+(%i2) :lisp $%
+$FOO
+(%i2) nounify (foo);
+(%o2)                          foo
+(%i3) :lisp $%
+%FOO
+@end example
+
+@opencatbox
+@category{Nouns and verbs}
+@closecatbox
+@end deffn
+

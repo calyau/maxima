@@ -26,12 +26,12 @@
 ;;; mario @@@ edu DOT xunta DOT es
 
 
-($put '$gnuplot 1 '$version)
+;; use $draw_version to save package version
+;; and to know whether the package was loaded
+($put '$gnuplot 1 '$version); to be removed in the future
+(defvar $draw_version 2)
 
 
-;; the following variable will be removed in the future,
-;; since some packages are still using it. 
-(defvar $draw_loaded t)
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
@@ -1198,35 +1198,40 @@
          (*plot-realpart* *plot-realpart*)
          x-samples y-samples yy result pltcmd result-array)
     (setq *plot-realpart* (get-option '$draw_realpart))
-    (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
     (if (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
-    (flet ((fun (x) (funcall fcn x)))
-        (dotimes (k (1+ (* 2 nticks)))
-          (let ((x (+ xmin (* k x-step))))
-            (push x x-samples)
-            (push (fun x) y-samples)))
-      (setf x-samples (nreverse x-samples))
-      (setf y-samples (nreverse y-samples))
+    (setf fcn ($float fcn))
+    (cond 
+      ((floatp fcn) ; if function is a constant, we only need the end points
+        (setf result (list xmin fcn xmax fcn)))
+      (t ; if not a constant, call adaptive-plot
+        (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
+        (flet ((fun (x) (funcall fcn x)))
+            (dotimes (k (1+ (* 2 nticks)))
+              (let ((x (+ xmin (* k x-step))))
+                (push x x-samples)
+                (push (fun x) y-samples)))
+          (setf x-samples (nreverse x-samples))
+          (setf y-samples (nreverse y-samples))
 
-      ;; For each region, adaptively plot it.
-      (do ((x-start x-samples (cddr x-start))
-           (x-mid (cdr x-samples) (cddr x-mid))
-           (x-end (cddr x-samples) (cddr x-end))
-           (y-start y-samples (cddr y-start))
-           (y-mid (cdr y-samples) (cddr y-mid))
-           (y-end (cddr y-samples) (cddr y-end)))
-          ((null x-end))
+          ;; For each region, adaptively plot it.
+          (do ((x-start x-samples (cddr x-start))
+               (x-mid (cdr x-samples) (cddr x-mid))
+               (x-end (cddr x-samples) (cddr x-end))
+               (y-start y-samples (cddr y-start))
+               (y-mid (cdr y-samples) (cddr y-mid))
+               (y-end (cddr y-samples) (cddr y-end)))
+              ((null x-end))
 
-        ;; The region is x-start to x-end, with mid-point x-mid.
-        (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
-                                           (car y-start) (car y-mid) (car y-end)
-                                           depth 1e-5)))
-          (when (not (null result))
-            (setf sublst (cddr sublst)))
-          (do ((lst sublst (cddr lst)))
-              ((null lst) 'done)
-            (setf result (append result (list (first lst) (second lst))))))))
+            ;; The region is x-start to x-end, with mid-point x-mid.
+            (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
+                                               (car y-start) (car y-mid) (car y-end)
+                                               depth 1e-5)))
+              (when (not (null result))
+                (setf sublst (cddr sublst)))
+              (do ((lst sublst (cddr lst)))
+                  ((null lst) 'done)
+                (setf result (append result (list (first lst) (second lst))))))))) )
       (cond ((null (get-option '$filled_func))
                (cond
                  ((> *draw-transform-dimensions* 0)
@@ -1499,7 +1504,7 @@
 (defun sample-data (expr xmin xmax ymin ymax sample grid)
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
 	 (ydelta (/ (- ymax ymin) ($second grid)))
-	 (epsilon 1e-6))
+	 (epsilon #+gcl (float 1/1000000) #-gcl 1e-6))
     (do ((x-val xmin (+ x-val xdelta))
 	 (i 0 (1+ i)))
 	((> i ($first grid)))
@@ -3079,6 +3084,11 @@
                            (round (/ (first (get-option '$dimensions)) 10))
                            (round (/ (second (get-option '$dimensions)) 10))
                            (get-option '$file_name)))
+ 	($canvas (format cmdstorage "set terminal canvas enhanced ~a size ~a, ~a~%set out '~a.html'"
+ 			 (write-font-type)
+ 			 (round (first (get-option '$dimensions)))
+ 			 (round (second (get-option '$dimensions)))
+ 			 (get-option '$file_name)))
         ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3209,7 +3219,8 @@
                      (incf nilcounter)))
                 (format cmdstorage "~%set size ~a, ~a~%" size1 size2)
                 (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
-                (when (not (member (get-option '$terminal) '($epslatex $epslatex_standalone)))
+                (when (and (not *multiplot-is-active*)
+                           (not (member (get-option '$terminal) '($epslatex $epslatex_standalone))))
                   (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
                                      origin1 origin2 (+ origin1 size1 ) (+ origin2 size2)))  ))
         (setf is1stobj t
@@ -3358,6 +3369,11 @@
          (update-gr-option ($lhs x) ($rhs x))
          (merror "draw: item ~M is not recognized as an option assignment" x)))
    (case (get-option '$terminal)
+      ($canvas (setf str (format nil "set terminal canvas enhanced ~a size ~a, ~a~%set out '~a.html'"
+				 (write-font-type)
+				 (round (first (get-option '$dimensions)))
+				 (round (second (get-option '$dimensions)))
+				 (get-option '$file_name))))
       ($png (setf str (format nil "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))

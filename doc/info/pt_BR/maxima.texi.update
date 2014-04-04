@@ -1,0 +1,8 @@
+\input texinfo
+@setfilename  maxima-pt_BR.info
+@include include-maxima.texi
+@bye
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c b32976d5a337a6fcbacd91064b33a371  maxima.texi
+@c

@@ -1119,17 +1119,11 @@ Example:
 @deffn  {Function} tokens (@var{string}) 
 @deffnx {Function} tokens (@var{string}, @var{test}) 
 
-@c TODO: IM ORIGINAL WIRD NOCH DIE FUNKTION CHARACTERP GENANNT.
-
-Returns a list of tokens, which have been extracted from the argument
-@var{string}.  The tokens are substrings, whose characters satisfy a certain
-test function.  If the argument @var{test} is not given, the test
-@code{constituent} is used as the default test.  The set of test functions is
-@code{@{@mrefcomma{constituent} @mrefcomma{alphacharp}@w{}
-@mrefcomma{digitcharp} @mrefcomma{lowercasep} @mrefcomma{uppercasep}@w{}
-@mrefcomma{charp} @mref{alphanumericp}@}}.
-(The Lisp-version of @code{tokens} is written by Paul Graham.
-ANSI Common Lisp, 1996, page 67.)
+Returns a list of tokens, which have been extracted from @var{string}.
+The tokens are substrings whose characters satisfy a certain test function.
+If @var{test} is not given, @var{constituent} is used as the default test.
+@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} is the set of test functions. 
+(The Lisp-version of @code{tokens} is written by Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
 Examples:
 

@@ -262,14 +262,14 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 
 (defmvar $pochhammer_max_index 100)
 
-;; This disallows noninteger assignments to $max_pochhammer_index.
+;; This disallows noninteger assignments to $pochhammer_max_index.
 
 (setf (get '$pochhammer_max_index 'assign)
       #'(lambda (a b) 
 	  (declare (ignore a))
 	  (if (not (and (atom b) (integerp b)))
 	      (progn
-		(mtell "The value of `max_pochhammer_index' must be an integer.")
+		(mtell "The value of `pochhammer_max_index' must be an integer.~%")
 		'munbindp))))
 
 (defun $pochhammer (x n)

@@ -39,6 +39,41 @@ functions.
 @category{Complex variables}
 @closecatbox
 
+
+@c -----------------------------------------------------------------------------
+@subheading Floating point numbers
+@c -----------------------------------------------------------------------------
+
+Maxima has two types of floating point number. The first is just
+called a ``float'' (but will be called a ``machine float'' for the
+rest of this section to avoid ambiguity). This is stored in the
+underlying lisp's DOUBLE-FLOAT type which will almost certainly be
+IEEE 754 double precision floating point. To type a literal floating
+point number, just type its decimal expansion (for example,
+@code{0.01}) or type it with an explicit exponent (such as @code{1e-2}
+or @code{0.1e-1}).
+
+The second type of floating point number in Maxima is called a
+``bigfloat''. Bigfloats are stored as a mantissa and exponent in the
+same way as machine floats but the exponent is an arbitrary precision
+integer, so they can represent arbitrarily large or small numbers. The
+user can also customise the precision of bigfloat arithmetic (which
+corresponds to choosing the range of the mantissa). See @mref{fpprec}
+for more information. To type a literal bigfloat, use the exponent
+notation as above but with the character @code{b} in place of
+@code{e}. The example of @code{0.01} from above could be entered as a
+bigfloat with @code{1b-2} or @code{0.001b0}.
+
+Calculations using machine floats can be significantly faster than
+using bigfloats since modern computer processors have dedicated
+hardware for them. This is particularly noticeable with compiled
+Maxima code. However, machine floats suffer from the problem of
+overflow, where a number can become too large for its exponent to be
+represented in the bits available. In interpreted code, the default
+behaviour is that a calculation that would cause a floating point
+overflow instead generates a bigfloat number. To configure this, see
+the @mref{promote_float_to_bigfloat} variable.
+
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Numbers, , Introduction to Numbers, Numbers
 @subsection Functions and Variables for Numbers
@@ -443,6 +478,28 @@ is @code{true} if @var{expr} is an odd integer.
 @category{Predicate functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{promote_float_to_bigfloat}
+@defvr {Option variable} promote_float_to_bigfloat
+Default value: @code{true}
+
+When @code{promote_float_to_bigfloat} is true, the result of any
+floating point calculation that would normally cause a floating point
+overflow is replaced by a bigfloat number that represents the
+result. Note that this automatic promotion only happens in interpreted
+code: compiled code is not affected.
+
+This automatic conversion is often convenient, but can be unhelpful in
+some cases. For example, it can actually cause a loss of precision if
+@mref{fpprec} is currently smaller than the precision in a floating
+point number. To disable this behaviour, set
+@code{promote_float_to_bigfloat} to false.
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
 
 @c --- 03.11.2011 --------------------------------------------------------------
 @anchor{ratepsilon}

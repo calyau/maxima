@@ -2904,6 +2904,18 @@
          ((%cos) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
   integral)
 
+;;; Limits of the Fresnel Integral S
+
+(defprop %fresnel_s simplim%fresnel_s simplim%function)
+(defun simplim%fresnel_s (exp var val)
+  (let ((arg (limit (cadr exp) var val 'think)))
+    (cond ((eq arg '$inf)
+           '((rat simp) 1 2))
+          ((eq arg '$minf)
+           '((rat simp) -1 2))
+          (t
+           `((%fresnel_s) ,arg)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *fresnel-maxit* 1000)
@@ -3099,6 +3111,18 @@
          ((mexpt) $%pi -1)
          ((%sin) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
   integral)
+
+;;; Limits of the Fresnel Integral C
+
+(defprop %fresnel_c simplim%fresnel_c simplim%function)
+(defun simplim%fresnel_c (exp var val)
+  (let ((arg (limit (cadr exp) var val 'think)))
+    (cond ((eq arg '$inf)
+           '((rat simp) 1 2))
+          ((eq arg '$minf)
+           '((rat simp) -1 2))
+          (t
+           `((%fresnel_c) ,arg)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

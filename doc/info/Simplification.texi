@@ -96,7 +96,23 @@ Examples:
 Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
-@c NEED EXAMPLE HERE
+Example:
+
+@c ===beg===
+@c 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+@c combine (%);
+@c ===end===
+@example
+(%i1) 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
+                             5 b f   a b c   2 a c
+(%o1)                        ----- + ----- + -----
+                               4       5       3
+(%i2) combine (%);
+                         75 b f + 4 (3 a b c + 10 a c)
+(%o2)                    -----------------------------
+                                      60
+@end example
+
 @opencatbox
 @category{Expressions}
 @closecatbox
@@ -109,6 +125,31 @@ denominator into a single term.
 If @code{declare(h, commutative)} is done, this tells the simplifier that
 @code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
 @code{h(x, y, z)}.  This is the same as @code{symmetric}.
+
+Exemplo:
+
+@c ===beg===
+@c S (b, a);
+@c S (a, b) + S (b, a);
+@c declare (S, commutative);
+@c S (b, a);
+@c S (a, b) + S (b, a);
+@c S (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                               S(b, a)
+(%i2) S (a, b) + S (b, a);
+(%o2)                          S(b, a) + S(a, b)
+(%i3) declare (S, commutative);
+(%o3)                                done
+(%i4) S (b, a);
+(%o4)                               S(a, b)
+(%i5) S (a, b) + S (b, a);
+(%o5)                              2 S(a, b)
+(%i6) S (a, c, e, d, b);
+(%o6)                          S(a, b, c, d, e)
+@end example
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
@@ -248,6 +289,26 @@ Check if a function has the property distribute_over:
 @example
 (%i7) properties(abs);
 (%o7) [integral, distributes over bags, noun, rule, gradef]
+@end example
+
+The mapping of functions is switched off, when setting @code{distribute_over} 
+to the value @code{false}.
+
+@c ===beg===
+@c distribute_over;
+@c sin([x,1,1.0]);
+@c distribute_over : not distribute_over;
+@c ===end===
+@example
+(%i1) distribute_over;
+(%o1)                                true
+(%i2) sin([x,1,1.0]);
+(%o2)                [sin(x), sin(1), 0.8414709848078965]
+(%i3) distribute_over : not distribute_over;
+(%o3)                                false
+(%i4) sin([x,1,1.0]);
+(%o4)                          sin([x, 1, 1.0])
+(%i5)
 @end example
 
 @opencatbox
@@ -566,6 +627,25 @@ place where @code{a} is a "constant".  For functions of two or more arguments,
 i.e., @code{f (a*x + b, x)} yields @code{a*f(x,x) + b*f(1,x)}
 for @code{a} and @code{b} free of @code{x}.
 
+Example:
+
+@c ===beg===
+@c declare (f, linear);
+@c f(x+y);
+@c declare (a, constant);
+@c f(a*x);
+@c ===end===
+@example
+(%i1) declare (f, linear);
+(%o1)                                done
+(%i2) f(x+y);
+(%o2)                             f(y) + f(x)
+(%i3) declare (a, constant);
+(%o3)                                done
+(%i4) f(a*x);
+(%o4)                               a f(x)
+@end example
+
 @code{linear} is equivalent to @code{additive} and @code{outative}.
 See also @code{opproperties}.
 
@@ -773,6 +853,25 @@ but be very careful: like the @code{simp} flag, this is one flag you do not
 want to set to @code{false} as a matter of course or necessarily for other
 than local use in your Maxima.
 
+Example:
+
+@c ===beg===
+@c negdistrib;
+@c -(x+y);
+@c negdistrib : not negdistrib ;
+@c -(x+y);
+@c ===end===
+@example
+(%i1) negdistrib;
+(%o1)                                true
+(%i2) -(x+y);
+(%o2)                               - y - x
+(%i3) negdistrib : not negdistrib ;
+(%o3)                                false
+(%i4) -(x+y);
+(%o4)                              - (y + x)
+@end example
+
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
@@ -784,9 +883,17 @@ than local use in your Maxima.
 
 @code{opproperties} is the list of the special operator properties recognized
 by the Maxima simplifier:
-@code{linear}, @code{additive}, @code{multiplicative}, @code{outative},
-@code{evenfun}, @code{oddfun}, @code{commutative}, @code{symmetric},
-@code{antisymmetric}, @code{nary}, @code{lassociative}, @code{rassociative}.
+
+Example:
+
+@c ===beg===
+@c opproperties;
+@c ===end===
+@example
+(%i1) opproperties;
+(%o1) [linear, additive, multiplicative, outative, evenfun, oddfun,.
+       commutative, symmetric, antisymmetric, nary, lassociative, rassociative]
+@end example
 
 @opencatbox
 @category{Global variables} @category{Operators}

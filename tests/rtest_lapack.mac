@@ -33,3 +33,9 @@ true;
 
 is(zlange('one_norm, res[2]-eig) < 5e-5);
 true;
+
+/* SF bug # 2634: "zgeev does not operate on real matrices" */
+
+zgeev (matrix ([1, 0], [0, 1]), true, false);
+[[1.0,1.0],matrix([1.0,0.0],[0.0,1.0]),false];
+

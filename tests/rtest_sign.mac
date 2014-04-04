@@ -1030,5 +1030,23 @@ abs(x);
 is ((n-1)^2 > 0);
 true$
 
-kill(all);
-done$
+/* Here are some calls to asksign & askinteger -- these don't cause
+ * an interactive prompt. Interactive examples are in rtest_ask.mac.
+ */
+
+map(askinteger,[0,1/2,sqrt(17)]);
+[yes,no,no]$
+
+/* Known constants */
+map(askinteger,[%pi,%e,%phi,%gamma,%i]);
+[no,no,no,no,no]$
+
+map(asksign,[%pi,%e,%phi,%gamma,inf,minf]);
+[pos,pos,pos,pos,pos,neg]$
+
+errcatch(asksign(%i));
+[]$ /* argument cannot be imaginary. */
+
+errcatch(asksign(infinity));
+[]$ /* sign of infinity is undefined. */
+

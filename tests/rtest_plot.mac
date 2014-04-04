@@ -12,6 +12,20 @@
 
 /* Examples copied from plot2d documentation */
 
+"Regression for f0 issue"$
+plot2d(x^2,[x,-1,1],[yx_ratio,1]);
+plot2d(x^2,[x,-1,1],[xy_scale,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[zmin,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[xtics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ytics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ztics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[xtics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ytics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[ztics,1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[color_bar_tics,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[label,"tako",1,1]);
+plot3d(x^2,[x,-1,1],[y,-1,1],[label,["tako",1,1],["surume",1,1],["ika",1,1]]);
+
 "Plots of common functions." $
 
 plot2d (sin(x), [x, -5, 5])$
@@ -30,8 +44,9 @@ plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]], [x, -4/3, 4/3])$
 
 "If we repeat that plot with only 8 points ..." $
+"As parametric plot uses adaptive method, nticks=4 and adapt_depth=1 is for 8 point drawing" $
 
-plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 4], [adapt_depth,1]], [x, -2, 2], [y, -1.5, 1.5])$
 
 "Combination of an ordinary plot ..." $
 
@@ -60,7 +75,7 @@ plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
 
 "To save a plot ..." $
 
-plot2d (sin(x), [x, 0, 2*%pi], [psfile, concat (maxima_tempdir, "/sin.eps")])$
+plot2d (sin(x), [x, 0, 2*%pi], [ps_file, concat (maxima_tempdir, "/sin.eps")])$
 
 "The next example uses the y option ..." $
 
@@ -82,7 +97,7 @@ my_preamble: "set xtics ('-2{/Symbol p}' \
 '{/Symbol p}' 3.1415,'3{/Symbol p}/2' 4.712, '2{/Symbol p}' \
 6.283)"$
 plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
- [y, -2, 2], [gnuplot_preamble, my_preamble], [psfile, concat (maxima_tempdir, "/trig.eps")]);
+ [y, -2, 2], [gnuplot_preamble, my_preamble], [ps_file, concat (maxima_tempdir, "/trig.eps")]);
 
 /* Examples copied from plot3d documentation */
 
@@ -267,7 +282,7 @@ plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]);
 
 "verify that nested numerical integral is handled correctly";
 
-plot2d (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 0]);
+plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]);
 
 "another nested numerical integral";
 
@@ -275,7 +290,7 @@ plot2d (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 0])
  W(t) := 95*sqrt(t)*sin(t/6)^2,
  R(t) := 275*sin(t/3)^2,
  A(t) := 1200 + quad_qags (W(x) - R(x), x, 0, t) [1],
- plot2d (A(t), [t, 0, 18], [adapt_depth, 0]));
+ plot2d (A(t), [t, 0, 18], [adapt_depth, 1]));
 
 "plotting realpart and imagpart";
 
@@ -308,9 +323,9 @@ plot2d (sqrt (x), [x, -1, 1], [y, -2, -1]); /* all non-numeric or clipped */
 /* from the mailing list "plot numerical question" 2009-03-11 */
 
 (r4(s) := block ([s : bfloat(s)], s!/(((s/4)!)^4 * 4^s)),
- plot2d (r4, [s, 200, 300], [adapt_depth, 0], [nticks, 5]));
+ plot2d (r4, [s, 200, 300], [adapt_depth, 1], [nticks, 5]));
 
-plot2d ('r4(s), [s, 200, 300], [adapt_depth, 0], [nticks, 5]);
+plot2d ('r4(s), [s, 200, 300], [adapt_depth, 1], [nticks, 5]);
 
 /* from mailing list 2009-02-18
  * "Re: [Maxima] I want to tell maxima (-1)^0.33333333333333=-1, what should i do?"
@@ -330,10 +345,10 @@ plot2d (foo29, [u, -1, 0]);
 
 (kill(f),
  f(k) := integrate (exp(%i*k*x)*sin(x)/x, x, minf, inf),
- plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+ plot2d (f, [x, -3, 3], [adapt_depth, 1], [nticks, 5]));
 
 (translate(f),
- plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+ plot2d (f, [x, -3, 3], [adapt_depth, 1], [nticks, 5]));
 
 /* bug report "xlabel and ylabel don't change plot3d axis labels" - ID: 3020589 */
 
@@ -356,7 +371,7 @@ block (local (fn, Fn, pw, fbn, fbnxcy, loww),
  fbn(x,y,r):=1/(2*%pi*sqrt(1-r^2))*exp((-(x^2-2*r*x*y+y^2))/(2*(1-r^2))),
  fbnxcy(x,y,r) := fbn(x,y,r) / fn(y),
  loww(rs2, ro, r, s1, s2) := quad_qagi(fbnxcy(rs1, rs2, r)*pw(rs1, ro, s1, s2), rs1, minf, inf),
- plot3d( loww(rs2, 0, r, 1, 1)[1] , [rs2, -1.5, 2.5], [r, 0.1, 0.9] ));
+ plot3d( 'loww(rs2, 0, r, 1, 1)[1] , [rs2, -1.5, 2.5], [r, 0.1, 0.9] ));
 
 /* simpler version of the preceding one */
 

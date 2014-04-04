@@ -6,7 +6,7 @@
 @node Introduction to lapack, Functions and Variables for lapack, lapack, lapack
 @section Introduction to lapack
 
-@code{lapack} is a Common Lisp translation (via the program @code{f2c}) of the Fortran library LAPACK,
+@code{lapack} is a Common Lisp translation (via the program @code{f2cl}) of the Fortran library LAPACK,
 as obtained from the SLATEC project.
 
 @opencatbox
@@ -525,3 +525,33 @@ for the product.  The default is @code{false}.
 @closecatbox
 
 @end deffn
+
+@deffn {Function} zgeev (@var{A})
+@deffnx {Function} zgeev (@var{A}, @var{right_p}, @var{left_p})
+
+Like @code{dgeev}, but the matrix @var{A} is complex.
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} zheev (@var{A})
+@deffnx {Function} zheev (@var{A}, @var{eigvec_p})
+
+Like @code{zheev}, but the matrix @var{A} is assumed to be a square
+complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
+eigenvectors of the matrix are also computed.
+
+No check is made that the matrix @var{A} is, in fact, Hermitian.
+
+A list of two items is returned, as in @code{dgeev}: a list of
+eigenvalues, and @code{false} or the matrix of the eigenvectors.
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
+

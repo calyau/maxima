@@ -33,7 +33,7 @@
 
 ;;; declarations for the TRANSL PACKAGE.
 
-(declare-top (special *transl-sources*)
+(declare-top
 	     ;; The warning and error subsystem.
 	     (special tr-abort	    ; set this T if you want to abort.
 		      *translation-msgs-files*)	; the stream to print messages to.
@@ -42,24 +42,13 @@
 		      *warned-un-declared-vars*
 		      *warned-fexprs*
 		      *warned-mode-vars*
-		      *warned-undefined-vars*
 		      warned-undefined-variables
-		      tr-abort
 		      transl-file
 		      *in-compfile*
 		      *in-translate-file*
 		      *in-translate*
 		      *pre-transl-forms*
-		      *new-autoload-entries* ; new entries created by TRANSL.
-		      *untranslated-functions-called*)
-
-
-	     ;; these special declarations are for before DEFMVAR
-	     (special $errexp $loadprint $numer $savedef $nolabels $functions $props
-		      munbound $values $transrun
-		      st oldst  $version
-		      rephrase $packagefile
-		      dskfnp))
+		      *untranslated-functions-called*))
 
 (defmacro bind-transl-state (&rest forms)
   ;; this binds all transl state variables to NIL.
@@ -71,7 +60,6 @@
   `(let (*warned-un-declared-vars*
 	 *warned-fexprs*
 	 *warned-mode-vars*
-	 *warned-undefined-vars*
 	 warned-undefined-variables
 	 tr-abort
 	 transl-file
@@ -79,7 +67,6 @@
 	 *in-translate-file*
 	 *in-translate*
 	 *pre-transl-forms*
-	 *new-autoload-entries*
 	 ($tr_semicompile $tr_semicompile)
 	 (arrays nil)
 	 (exprs nil)

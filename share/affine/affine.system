@@ -24,7 +24,6 @@
 		 (:file "sheafb")
 		 (:file "sheafc")
 		 (:file "dim-3")
-		 (:file "todd-coxeter")
 		 (:file "modsimp")))
 
 ;;; affine.system ends here

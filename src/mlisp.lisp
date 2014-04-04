@@ -868,6 +868,8 @@ wrapper for this."
 ;; !! (define-symbol "@") 
 (defprop $@ dimension-infix dimension) 
 (defprop $@ (#\@) dissym) 
+(defprop $@ tex-infix tex)
+(defprop $@ ("@") texsym)
 (defprop $@ msize-infix grind) 
 (defprop $@ 200 lbp) 
 (defprop $@ 201 rbp) 
@@ -910,7 +912,10 @@ wrapper for this."
   (setq tlist
         `((mlist)
           ,@(mapcar
-              #'(lambda (x) (if (or (symbolp x) ($listp x)) x `(,(car x) ((mquote) ,@(mapcar #'meval (cdr x))))))
+              #'(lambda (x)
+                        (if (or (symbolp x) (get (caar x) 'mset_extension_operator))
+                            x
+                            `(,(car x) ,@(mapcar #'meval (cdr x)))))
               (cdr tlist))))
   (unless (and (listp vlist)
 	   (eq (caar vlist) 'mlist))
@@ -1379,7 +1384,9 @@ wrapper for this."
   (unless (or (symbolp ind) (stringp ind))
     (merror (intl:gettext "~:M: indicator must be a symbol or a string; found: ~M") fun ind))
   (unless (symbolp atom)
-    (setq atom (intern atom)))
+    (if (symbolp (getopr atom))
+      (setq atom (getopr atom))
+      (setq atom (intern atom))))
   (unless (symbolp ind)
     (setq ind (intern ind)))
   (let ((u (mget atom '$props)))
@@ -1646,14 +1653,27 @@ wrapper for this."
 (defmfun mgetl (atom inds)
   (let ((props (get atom 'mprops))) (and props (getl props inds))))
 
-(defmspec $matrix (L)
-  (if (null (cdr L))
-    '(($matrix))
-    (let ((rows (mapcar #'meval (cdr L))))
-      (dolist (row rows)
-	(if (not ($listp row)) (merror (intl:gettext "matrix: row must be a list; found: ~M") row)))
-      (matcheck rows)
-      (cons '($matrix) rows))))
+;;; Define $matrix so that apply(matrix,...) does not need to use Lisp
+;;; apply -- in GCL, apply is limited to 63 arguments.
+
+;;; Equivalent to matrix([?rows]) := ?matrixhelper(?rows)$
+#+gcl (mputprop '$matrix '((lambda) ((mlist) ((mlist) rows)) ((matrixhelper) rows)) 'mexpr)
+#+gcl (mputprop '$matrix t 'mlexprp)
+#+gcl (mputprop '$matrix '$matrix 'pname)
+
+#-gcl (defun $matrix (&rest rows) (matrixhelper rows))
+
+;; Call ONLY from $matrix
+(defun matrixhelper (rows)
+  #+gcl
+    (progn
+      (if (not ($listp rows)) (merror "internal error: MATRIXHELPER expects a Maxima list."))
+      (setq rows (cdr rows)))
+  (dolist (row rows)
+    (if (not ($listp row))
+      (merror (intl:gettext "matrix: row must be a list; found: ~M") row)))
+  (matcheck rows)
+  (cons '($matrix) rows))
 
 (defmfun matcheck (l)
   (do ((l1 (cdr l) (cdr l1)) (n (length (car l)))) ((null l1))

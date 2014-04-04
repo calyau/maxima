@@ -372,3 +372,47 @@ sort ([1, 2, 3], "<");
 sort ([1, 2, 3], lambda ([a, b], sin(a) < sin(b)));
 [3, 1, 2];
 
+/* some tests for todd_coxeter; dunno where else to put them
+ * adapted from comments in src/todd-coxeter.lisp
+ */
+
+/* this one seems to run indefinitely or at least a very long time */
+/*
+todd_coxeter([x^^3,y.x.y^^-1 . x^^-1],[]);
+6;
+ */
+
+todd_coxeter([a^^8,b^^7,a.b.a.b,(a^^-1 . b)^^3],[a^^2, a^^-1 . b]);
+448;
+
+(kill (p, symet),
+ p(i,j) :=concat(x,i).concat(x,j),
+ symet(n):=create_list(if (j - i) = 1 then (p(i,j))^^3 else
+   if (not i = j) then (p(i,j))^^2 else p(i,i) , j,1,n-1,i,1,j),
+ 0);
+0;
+
+/* comment says todd_coxeter(symet(n)) == n! */
+
+todd_coxeter (symet (1));
+1;
+
+todd_coxeter (symet (2));
+2;
+
+todd_coxeter (symet (3));
+6;
+
+todd_coxeter (symet (4));
+24;
+
+todd_coxeter (symet (5));
+120;
+
+/* SF bug #2695: 'kill' kills built-in properties of operator after user-defined property */
+
+(kill (a, b), string (a*b));
+"a*b";
+
+(put ("*", 'bar, 'foo), kill (all), string (a*b));
+"a*b";

@@ -522,7 +522,8 @@ APPLY means like APPLY.")
 
 
 (defun trfail (x)
-  (tr-format x (intl:gettext "error: failed to translate.~%")) nil)
+  (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
+  nil)
 
 (defmfun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
@@ -1224,8 +1225,6 @@ APPLY means like APPLY.")
 ;; The MDO and MDOIN translators should be changed to use the TR-LAMBDA.
 ;; Perhaps a mere expansion into an MPROG would be best.
 
-(declare-top (special shit))
-
 (def%tr mdo (form)
   (let (returns assigns return-mode local (inside-mprog t) tem need-prog?)
     (let (mode var init next test action varmode end-var init-end-var)
@@ -1258,11 +1257,7 @@ APPLY means like APPLY.")
 	     (remprop end-var 'tbind)))
       (setq action (translate (cadddr (cddddr form)))
 	    mode (cond ((null returns) '$any)
-		       (t
-			(if shit
-			    (do ((l returns (cdr l))) ((null l))
-			      (rplaca (cdar l) (dconv (cadar l) return-mode))))
-			return-mode)))
+		       (t return-mode)))
       (setq var (tunbind (cond ((cadr form)) (t 'mdo))))
       `(,mode do ((,var ,(cdr init) ,(cdr next))
 		  ,@ init-end-var )
@@ -1270,8 +1265,6 @@ APPLY means like APPLY.")
 	      ,(cond ((atom (cdr action)) nil)
 		     ((eq 'progn (cadr action)) (cddr action))
 		     (t (list (cdr action)))))))))
-
-(setq shit nil)
 
 (def%tr mdoin (form)
   (let (returns assigns return-mode local (inside-mprog t) need-prog?)
@@ -1284,11 +1277,7 @@ APPLY means like APPLY.")
 	      (return `($any meval '((mdoin) . ,(cdr form))))))
        (setq action (translate (cadddr (cddddr form)))
 	     mode (cond ((null returns) '$any)
-			(t
-			 (if shit
-			     (do ((l returns (cdr l))) ((null l))
-			       (rplaca (cdar l) (dconv (cadar l) return-mode))))
-			 return-mode)))
+			(t return-mode)))
        (tunbind 'mdo) (tunbind (cadr form))
        (return
 	 `(,mode do ((,var) (mdo (cdr ,init) (cdr mdo)))

@@ -455,7 +455,7 @@ it cannot be a literal list or an expression which yields a list.
 Typically @code{splice} supplies the arguments for a function or operator.
 For a function @code{f}, the expression @code{f (splice (@var{a}))} within
 @code{buildq} expands to @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
-For an operator @code{o}, the expression @code{"o" (splice (@var{a})} within
+For an operator @code{o}, the expression @code{"o" (splice (@var{a}))} within
 @code{buildq} expands to @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
 where @code{o} may be any type of operator (typically one which takes multiple
 arguments).  Note that the operator must be enclosed in double quotes @code{"}.
@@ -903,10 +903,6 @@ the translator.  See @code{mode_declare} for a list of the possible modes.
 
 @item
 If the variable is unbound, @var{default_value} is assigned to @var{name}.
-
-@item
-@code{declare (@var{name}, special)} declares it special.
-@c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
 Associates @var{name} with a test function

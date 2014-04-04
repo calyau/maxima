@@ -1,0 +1,814 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c b8b70e31d552d83f23f9e369ff880913  DataTypes.texi
+@c
+@menu
+* Numbers::
+* Strings::
+* Constants::
+* Lists::
+* Arrays::
+* Structures::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Numbers, Strings, Data Types and Structures, Data Types and Structures
+@section Numbers
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Numbers::
+* Functions and Variables for Numbers::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Numbers, Functions and Variables for Numbers, Numbers, Numbers
+@subsection Introduction to Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@subheading Complex numbers
+@c -----------------------------------------------------------------------------
+
+Uma express@~{a}o complexa @'{e} especificada em Maxima por meio da adi@,{c}@~{a}o da parte real da
+express@~{a}o a @code{%i} vezes a parte imagin@'{a}ria.  Dessa forma as ra@'{i}zes da
+equa@,{c}@~{a}o @code{x^2 - 4*x + 13 = 0} s@~{a}o @code{2 + 3*%i} e @code{2 - 3*%i}.
+Note que simplifica@,{c}@~{a}o de produtos de express@~{o}es complexas pode ser feita atrav@'{e}s da
+expans@~{a}o do produto.  Simplifica@,{c}@~{a}o de quocientes, ra@'{i}zes, e outras fun@,{c}@~{o}es
+de express@~{o}es complexas pode usualmente ser acompanhada do uso das fun@,{c}@~{o}es @code{realpart},
+@code{imagpart}, @code{rectform}, @code{polarform}, @code{abs},
+@code{carg}.
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+
+
+@c -----------------------------------------------------------------------------
+@subheading Floating point numbers
+@c -----------------------------------------------------------------------------
+
+Maxima tem dois tipos de n@'{u}meros em ponto flutuante. O primeiro @'{e} apenas
+chamado um ``float'' (mas passar@'{a} a se chamar ``float da m@'{a}quina'' de
+agora em diante nessa se@,{c}@~{a}o para evitar ambiquidade). O ``float da m@'{a}quina'' @'{e} armazenado no
+no tipo subjacente tipo DOUBLE-FLOAT do lisp que ir@'{a} quase sempre certamente ser
+o ponto flutuante com precis@~{a}o dupla da IEEE 754. Para digitar um n@'{u}mero em ponto
+flutuante literal, apenas digite sua expans@~{a}o decimal (por exemplo,
+@code{0.01}) ou digite esse n@'{u}mer com um expoente expl@'{i}cito (tal como @code{1e-2}
+ou @code{0.1e-1}).
+
+O segundo tipo de n@'{u}mero em ponto flutuante no Maxima @'{e} chamado um
+``bigfloat''. Bigfloats s@~{a}o armazenados como uma mantissa e um expoente
+da mesma forma que ``floats da m@'{a}quina'' mas o expoente @'{e} um inteiro de precis@~{a}o
+arbitr@'{a}ria, de forma que o ``bigfloat'' pode representar n@'{u}meros
+arbitrariamente grandes ou arbitr@'{a}riamente pequenos. O
+usu@'{a}rio pode tamb@'{e}m personalizar a precis@~{a}o do bigfloat aritim@'{e}tico (o que
+corresponde a mudar o intervalo da mantissa). Veja @mref{fpprec}
+para mais informa@,{c}@~{a}o. Para digitar um bigfloat literal, use a nota@,{c}@~{a}o de
+expoente como acima mas com o caractere @code{b} no lugar do
+@code{e}. O exemplo de @code{0.01} usado acima pode ser informado como um
+bigfloat com @code{1b-2} ou @code{0.001b0}.
+
+C@'{a}lculos usando floats de m@'{a}quina podem ser significativamente mas r@'{a}pidos que
+os mesmo c@'{a}lculos usando bigfloats uma vez que processadores dos computadores modernos possuem
+hardware dedicados aos floats de m@'{a}quina. Essa afirma@,{c}@~{a}o @'{e} particularmente verificada quando o c@'{o}digo do Maxima
+compilado localmente. Todavia, os n@'{u}meros em ponto flutuante de m@'{a}quina posuem o problema do
+overflow, onde um n@'{u}mero pode tornar-se muito grande para seu expoente ser
+representado na mem@'{o}ria dispon@'{i}vel. No c@'{o}digo interpretado, o comportamento
+padr@~{a}o @'{e} que um c@'{a}lculo que pode causar um overflow de ponto
+flutuante ao inv@'{e}s de gerar um n@'{u}mero bigfloat. Para configurar esse comportamento, veja
+a vari@'{a}vel @mref{promote_float_to_bigfloat}.
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Numbers, , Introduction to Numbers, Numbers
+@subsection Functions and Variables for Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{bfloat}
+@deffn {Function} bfloat (@var{expr})
+
+Converte todos os n@'{u}meros e fun@,{c}@~{o}es de n@'{u}meros em @var{expr} para o formato de grandes n@'{u}meros em ponto flutuante.
+O n@'{u}mero de d@'{i}gitos significativos nos bigfloats resultantes @'{e} especificado pela
+vari@'{a}vel global @mrefdot{fpprec}
+
+Quando @mref{float2bf}
+for @code{false} uma mensagem de alerta @'{e} mostrada quando
+um n@'{u}mero em ponto flutuante @'{e} convertido em um n@'{u}mero bigfloat (uma vez que
+isso pode levar a perda de precis@~{a}o).
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bfloatp}
+@deffn {Function} bfloatp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um n@'{u}mero bigfloat, de outra forma retorna @code{false}.
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c --- 03.11.2011 --------------------------------------------------------------
+@anchor{bftorat}
+@defvr {Option variable} bftorat
+Valor padr@~{a}o: @code{false}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{bftorat} controla a convers@~{a}o de bfloats para n@'{u}meros racionais.  Quando
+@code{bftorat} for @code{false}, @mref{ratepsilon}
+ser@'{a} usada para controlar a
+convers@~{a}o (esse resulta n@'{u}meros racionais relativamente pequenos).  Quando
+@code{bftorat} for @code{true}, o n@'{u}mero racional gerado representar@'{a} o bfloat
+de forma precisa.
+
+Nota: @code{bftorat} n@~{a}o tem efeito sobre a transforma@,{c}@~{a}o para n@'{u}meros racionais
+catrav@'{e}s da fun@,{c}@~{a}o @mrefdot{rationalize}
+
+Exemplo:
+
+@example
+(%i1) ratepsilon:1e-4;
+(%o1)                         1.e-4
+(%i2) rat(bfloat(11111/111111)), bftorat:false;
+`rat' replaced 9.99990999991B-2 by 1/10 = 1.0B-1
+                               1
+(%o2)/R/                       --
+                               10
+(%i3) rat(bfloat(11111/111111)), bftorat:true;
+`rat' replaced 9.99990999991B-2 by 11111/111111 = 9.99990999991B-2
+                             11111
+(%o3)/R/                     ------
+                             111111
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{bftrunc}
+@defvr {Option variable} bftrunc
+Valor padr@~{a}o: @code{true}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{bftrunc} faz com que zeros @`{a} direita em n@'{u}meros bigfloat diferentes de zero n@~{a}o sejam
+mostrados.  Dessa forma, se @code{bftrunc} for @code{false}, @code{bfloat (1)}
+@'{e} mostrado como @code{1.000000000000000B0}.  De outra forma, @code{bfloat (1)} @'{e} mostrado como
+@code{1.0B0}.
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evenp}
+@deffn {Function} evenp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um inteiro para.
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@code{false} @'{e} retornado em todos os outros casos.
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{float}
+@deffn {Function} float (@var{expr})
+
+Converte n@'{u}meros inteiros, n@'{u}meros racionais e bigfloats em @var{expr} para n@'{u}meros em
+ponto flutuante.  Da mesma forma um @mrefcomma{evflag}
+@code{float} faz com que
+n@'{u}meros racionais n@~{a}o inteiros e n@'{u}meros bigfloat sejam convertidos para n@'{u}meros em
+ponto flutuante.
+
+@opencatbox
+@category{Numerical evaluation} @category{Evaluation flags}
+@closecatbox
+@end deffn
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{float2bf}
+@defvr {Option variable} float2bf
+Valor padr@~{a}o: @code{true}
+ 
+Quando @code{float2bf} for @code{false}, uma mensagem de alerta @'{e} mostrada sempre que
+um n@'{u}mero em ponto flutuante @'{e} convertido em um n@'{u}mero bigfloat (uma vez que
+isso pode levar a perda de precis@~{a}o).
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{floatnump}
+@deffn {Function} floatnump (@var{expr})
+
+Retorna @code{true} se @var{expr} for um n@'{u}mero em ponto flutuante, de outra forma retorna
+@code{false}.
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fpprec}
+@defvr {Option variable} fpprec
+Valor padr@~{a}o: 16
+
+@code{fpprec} @'{e} o n@'{u}mero de d@'{i}gitos significativos para opera@,{c}@~{o}es aritm@'{e}ticas usando n@'{u}meros
+bigfloat.  A vari@'{a}vel de op@,{c}@~{a}o @code{fpprec} n@~{a}o afeta c@'{a}lculos computacionais sobre n@'{u}meros comuns
+em ponto flutuante.
+
+Veja tamb@'{e}m @mref{bfloat}
+e @mrefdot{fpprintprec}
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fpprintprec}
+@defvr {Option variable} fpprintprec
+Valor padr@~{a}o: 0
+
+@code{fpprintprec} @'{e} o n@'{u}mero de d@'{i}gitos a serem mostrados na exibi@,{c}@~{a}o de n@'{u}meros
+comuns em ponto flutuante ou na exibi@,{c}@~{a}o de n@'{u}meros bigfloat.
+
+Para n@'{u}meros comuns em ponto flutuante,
+quando @code{fpprintprec} tiver um valor entre 2 e 16 (inclusive),
+o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'{e} 0, ou maior que 16,
+e o n@'{u}mero de d@'{i}gitos mostrados @'{e} 16.
+
+Para n@'{u}meros bigfloat,
+quando @code{fpprintprec} tiver um valor entre 2 e @code{fpprec} (inclusive),
+o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'{e} 0, ou maior que @code{fpprec},
+e o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprec}.
+
+@code{fpprintprec} n@~{a}o pode ser 1.
+
+@opencatbox
+@category{Numerical evaluation} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{integerp}
+@deffn {Function} integerp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um inteiro num@'{e}rico literal, de outra forma retorna
+@code{false}.
+
+@code{integerp} retorna @code{false} se seu argumento for um s@'{i}mbolo,
+mesmo se o argumento for declarado inteiro.
+
+Exemplos:
+
+@example
+(%i1) integerp (0);
+(%o1)                         true
+(%i2) integerp (1);
+(%o2)                         true
+(%i3) integerp (-17);
+(%o3)                         true
+(%i4) integerp (0.0);
+(%o4)                         false
+(%i5) integerp (1.0);
+(%o5)                         false
+(%i6) integerp (%pi);
+(%o6)                         false
+(%i7) integerp (n);
+(%o7)                         false
+(%i8) declare (n, integer);
+(%o8)                         done
+(%i9) integerp (n);
+(%o9)                         false
+@end example
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{m1pbranch}
+@defvr {Option variable} m1pbranch
+Valor padr@~{a}o: @code{false}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{m1pbranch} @'{e} o ramo principal para @code{-1} elevado a um expoente.
+Quantidade tais como @code{(-1)^(1/3)} (isto @'{e}, um expoente racional com denominador @'{i}mpar) e 
+@code{(-1)^(1/4)} (isto @'{e}, um expoente racional com denominador par) s@~{a}o tratadas como segue:
+
+@c REDRAW THIS AS A TABLE
+@example
+              dom@'{i}nio:real
+                            
+(-1)^(1/3):      -1         
+(-1)^(1/4):   (-1)^(1/4)   
+
+             dom@'{i}nio:complex
+m1pbranch:false          m1pbranch:true
+(-1)^(1/3)               1/2+%i*sqrt(3)/2
+(-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
+@end example
+
+@opencatbox
+@category{Expressions} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} nonnegintegerp (@var{n})
+
+Retorna @code{true} se e somente se @code{@var{n} >= 0} e @var{n} for um inteiro.
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{numberp}
+@deffn {Function} numberp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um inteiro literal, n@'{u}mero racional, 
+n@'{u}mero em ponto flutuante, ou bigfloat, de outra forma retorna @code{false}.
+
+A fun@,{c}@~{a}o @code{numberp} retorna @code{false} se seu argumento for um s@'{i}mbolo, mesmo se o
+argumento for um n@'{u}mero simb@'{o}lico tal como @code{%pi} ou @code{%i}, ou declarado ser
+@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational},
+@code{real}, @code{imaginary}, ou @code{complex}.
+
+Exemplos:
+
+@example
+(%i1) numberp (42);
+(%o1)                         true
+(%i2) numberp (-13/19);
+(%o2)                         true
+(%i3) numberp (3.14159);
+(%o3)                         true
+(%i4) numberp (-1729b-4);
+(%o4)                         true
+(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+(%o5)      [false, false, false, false, false, false]
+(%i6) declare (a, even, b, odd, c, integer, d, rational,
+     e, irrational, f, real, g, imaginary, h, complex);
+(%o6)                         done
+(%i7) map (numberp, [a, b, c, d, e, f, g, h]);
+(%o7) [false, false, false, false, false, false, false, false]
+@end example
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
+@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
+@c NEED TO MENTION THIS IS AN evflag
+
+@c -----------------------------------------------------------------------------
+@anchor{numer}
+@defvr {Option variable} numer
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que algumas fun@,{c}@~{o}es matem@'{a}ticas (incluindo exponencia@,{c}@~{a}o)
+com argumentos num@'{e}ricos sejam tratadas como n@'{u}meros em ponto flutuante.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que
+vari@'{a}veis em @code{expr} que resultem em n@'{u}meros sejam substitu@'{i}das pelos
+seus valores.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} tamb@'{e}m ajusta o comutador @mref{float}
+para "on".
+
+Veja tamb@'{e}m @mrefdot{%enumer}
+
+Exemplos:
+
+@c ===beg===
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+@c ===end===
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                        1
+(%o1)            [sqrt(2), sin(1), -----------]
+                                   sqrt(3) + 1
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
+
+@opencatbox
+@category{Numerical evaluation} @category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{numer_pbranch}
+@defvr {Option variable} numer_pbranch
+Valor padr@~{a}o: @code{false}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{numer_pbranch} controla a avalia@,{c}@~{a}o num@'{e}rica da 
+de um inteiro negativo elevado a um expoente, de um racional elevado a um expoente, ou de um n@'{u}mero em ponto flutuante elevado a um expoente.  Quando
+@code{numer_pbranch} for @code{true} e o expoente for um n@'{u}mero em ponto flutuante
+ou a vari@'{a}vel de op@,{c}@~{a}o @mref{numer}
+for @code{true} tamb@'{e}m, Maxima avalia
+o resultado num@'{e}rico usando o ramo principal.  De outra forma um resultado simplificado, mas
+n@~{a}o um resultado avaliado, @'{e} retornado.
+
+Examples:
+
+@c ===beg===
+@c (-2)^0.75;
+@c (-2)^0.75,numer_pbranch:true;
+@c (-2)^(3/4);
+@c (-2)^(3/4),numer;
+@c (-2)^(3/4),numer,numer_pbranch:true;
+@c ===end===
+@example
+(%i1) (-2)^0.75;
+(%o1) (-2)^0.75
+
+(%i2) (-2)^0.75,numer_pbranch:true;
+(%o2) 1.189207115002721*%i-1.189207115002721
+
+(%i3) (-2)^(3/4);
+(%o3) (-1)^(3/4)*2^(3/4)
+
+(%i4) (-2)^(3/4),numer;
+(%o4) 1.681792830507429*(-1)^0.75
+
+(%i5) (-2)^(3/4),numer,numer_pbranch:true;
+(%o5) 1.189207115002721*%i-1.189207115002721
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
+
+@c -----------------------------------------------------------------------------
+@anchor{numerval}
+@deffn {Function} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
+
+Declara as vari@'{a}veis @code{x_1}, @dots{}, @var{x_n} como tendo
+valores num@'{e}ricos iguas a @code{expr_1}, @dots{}, @code{expr_n}.
+O valor num@'{e}rico @'{e} avaliado e a vari@'{a}vel @'{e} substitu@'{i}da
+em quaisquer express@~{a}o na qual a vari@'{a}vel ocorra se o sinalizador @code{numer} for
+@code{true}.  Veja tamb@'{e}m @mrefdot{ev}
+
+As express@~{o}es @code{expr_1}, @dots{}, @code{expr_n} podem ser quaisquer express@~{o}es,
+n@~{a}o necess@'{a}riamente num@'{e}ricas.
+
+@opencatbox
+@category{Declarations and inferences} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{oddp}
+@deffn {Function} oddp (@var{expr})
+
+@'{e} @code{true} se @var{expr} for um inteiro @'{i}mpar.
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@code{false} @'{e} retornado em todos os outros casos.
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{promote_float_to_bigfloat}
+@defvr {Option variable} promote_float_to_bigfloat
+Valor padr@~{a}o: @code{true}
+
+Quando @code{promote_float_to_bigfloat} for @code{true}, o resultado de qualquer
+c@'{a}lculo com ponto flutuante que possa vir a causar uma sobrecarga de ponto
+flutuane @'{e} substitu@'{i}do por um n@'{u}mero bigfloat qye representa o
+resultado. Note que essa promo@,{c}@~{a}o @'{e} autom@'{a}tica somente acontece no c@'{o}digo
+interpretado: c@'{o}digo compilado n@~{a}o @'{e} afetado.
+
+Essa convers@~{a}o autom@'{a}tica @'{e} muitas vezes conveniente, mas pode atrapalhar em
+alguns casos. Por exemplo, pode causar perda de precis@~{a}o se
+@mref{fpprec} for atualmente menor que a precis@~{a}o de n@'{u}em em
+ponto flutuante. Para desabilitar esse comportamento, ajuste
+@code{promote_float_to_bigfloat} para @code{false}.
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c --- 03.11.2011 --------------------------------------------------------------
+@anchor{ratepsilon}
+@defvr {Option variable} ratepsilon
+Valor padr@~{a}o: @code{2.0e-15}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{ratepsilon} @'{e} a toler@^{a}ncia usada na convers@~{a}o
+de n@'{u}meros em ponto flutuante em n@'{u}meros racionais, quando a vari@'{a}vel de op@,{c}@~{a}o
+@mref{bftorat}
+tiver o valor @code{false}.  Veja @code{bftorat} para um exemplo.
+
+@opencatbox
+@category{Numerical evaluation} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{rationalize}
+@deffn {Function} rationalize (@var{expr})
+
+Converte todos os n@'{u}meros em ponto flutuante de precis@~{a}o dupla e todos os grandes n@'{u}meros em ponto flutuante (big floats) na express@~{a}o do Maxima @var{expr} para
+seus equivalentes racionais exatos.  Se voc@^{e} n@~{a}o est@'{a} faminiarizado com a representa@,{c}@~{a}o
+bin@'{a}ria de n@'{u}meros em ponto flutuante, voc@^{e} pode se surpreender com o fato de
+@code{rationalize (0.1)} n@~{a}o ser igual a 1/10.  Esse comportamento n@~{a}o ocorre somente com
+Maxima -- o n@'{u}mero 1/10 tem uma repetitiva, infinita, representa@,{c}@~{a}o
+bin@'{a}ria.
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c ===end===
+@example
+(%i1) rationalize (0.5);
+                                1
+(%o1)                           -
+                                2
+(%i2) rationalize (0.1);
+                               1
+(%o2)                          --
+                               10
+(%i3) fpprec : 5$
+(%i4) rationalize (0.1b0);
+                             209715
+(%o4)                        -------
+                             2097152
+(%i5) fpprec : 20$
+(%i6) rationalize (0.1b0);
+                     236118324143482260685
+(%o6)                ----------------------
+                     2361183241434822606848
+(%i7) rationalize (sin (0.1*x + 5.6));
+                              x    28
+(%o7)                     sin(-- + --)
+                              10   5
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ratnump}
+@deffn {Function} ratnump (@var{expr})
+
+Retorna @code{true} se @var{expr} for um inteiro literal ou raz@~{a}o de inteiros
+literais, de outra forma retorna @code{false}.
+
+@opencatbox
+@category{Predicate functions} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+
+@c -----------------------------------------------------------------------------
+@page
+@node Strings, Constants, Numbers, Data Types and Structures
+@section Strings
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Strings::
+* Functions and Variables for Strings::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Strings, Functions and Variables for Strings, Strings, Strings
+@subsection Introduction to Strings
+@c -----------------------------------------------------------------------------
+
+@cindex backslash
+@ifnotinfo
+@cindex \
+@end ifnotinfo
+@ifinfo
+@cindex \\
+@end ifinfo
+Strings (sequ@^{e}ncias de caractere) s@~{a}o colocadas entre aspas duplas @code{"}
+para entrada, e mostradas com ou sem as aspas duplas, dependendo do valor da
+vari@'{a}vel global @mrefdot{stringdisp}
+
+Sequ@^{e}ncias de caractere podem conter quaisquer caracteres, incluindo caracteres detabula@,{c}@~{a}o,
+nova linha, e de retorno de carro.  A sequ@^{e}ncia @code{\"} @'{e} reconhecida como o caractere de aspas duplas
+propriamente ditas, e @code{\\} como o caractere barra invertida.  Quando a barra invertida aparece no
+final de uma linha, a barra invertida e o terminador de linha (ou nova linha ou
+retorno de carro junto com nova linha) s@~{a}o ignorados, de forma que a sequ@^{e}ncia de caracteres continua na
+linha seguinte.  Nenhuma outra combina@,{c}@~{a}o especial de barra invertida com outro caractere
+@'{e} reconhecida; quando a barra invertida aparece antes de qualquer outro caractere que n@~{a}o @code{"},
+@code{\}, ou um terminador de linha, a barra invertida @'{e} ignorada.  N@~{a}o existe uma forma de
+representar um caractere especial (tais como tabula@,{c}@~{a}o, nova linha, ou retorno de carro)
+a n@~{a}o ser o de embutir o caractere literal na sequ@^{e}ncia de caracteres.
+
+N@~{a}o existe o o tipo caracteres no Maxima; um caractere sozinho @'{e} representado como uma
+sequ@^{e}ncia de caracteres de tamanho um.
+
+O pacote adicional @code{stringproc} cont@'{e}m muitas fun@,{c}@~{o}es para trabalhar com
+sequ@^{e}ncias de caractere.
+
+Exemplos:
+
+@c ===beg===
+@c s_1 : "This is a string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c stringdisp : false;
+@c s_1;
+@c stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)                   This is a string.
+(%i7) stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)                  "This is a string."
+@end example
+
+@opencatbox
+@category{Syntax}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Strings, , Introduction to Strings, Strings
+@subsection Functions and Variables for Strings
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{concat}
+@deffn {Function} concat (@var{arg_1}, @var{arg_2}, @dots{})
+
+Concatena seus argumentos.  Os argumentos devem avaliar para @'{a}tomos.  O valor de
+retorno @'{e} um s@'{i}mbolo se o primeiro argumento for um s@'{i}mbolo e o valor de retorno @'{e} uma sequ@^{e}ncia de caracteres nos outros casos.
+
+@code{concat} avalia seus argumentos.  O ap@'{o}strofo @code{'} evita a
+avalia@,{c}@~{a}o.
+
+@example
+(%i1) y: 7$
+(%i2) z: 88$
+(%i3) concat (y, z/2);
+(%o3)                          744
+(%i4) concat ('y, z/2);
+(%o4)                          y44
+@end example
+
+Um s@'{i}mbolo constru@'{i}do atrav@'{e}s de @code{concat} pode receber um valor e aparecer em
+express@~{o}es.  O operador de atribui@,{c}@~{a}o @mref{::}
+(duplo dois pontos) avalia seu
+lado direito.
+
+@example
+(%i5) a: concat ('y, z/2);
+(%o5)                          y44
+(%i6) a:: 123;
+(%o6)                          123
+(%i7) y44;
+(%o7)                          123
+(%i8) b^a;
+@group
+                               y44
+(%o8)                         b
+@end group
+(%i9) %, numer;
+                               123
+(%o9)                         b
+@end example
+
+Note that although @code{concat (1, 2)} looks like a number, it is a string.
+
+@example
+(%i10) concat (1, 2) + 3;
+(%o10)                       12 + 3
+@end example
+
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sconcat}
+@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
+
+Concatena seus argmentos em uma sequ@^{e}ncia de caracteres.  A menos que @mrefcomma{concat}
+os argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
+
+@example
+(%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end example
+
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{string}
+@deffn {Function} string (@var{expr})
+
+Converte @code{expr} para a nota@,{c}@~{a}o linear do Maxima como se @code{expr} tivesse sido
+digitada.
+
+O valor de retorno de @code{string} @'{e} uma sequ@^{e}ncia de caracteres, e n@~{a}o pode ser usado em um
+c@'{a}lculo.
+
+@opencatbox
+@category{Strings}
+@closecatbox
+@end deffn
+
+@c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
+
+@c -----------------------------------------------------------------------------
+@anchor{stringdisp}
+@defvr {Option variable} stringdisp
+Valor padr@~{a}o: @code{false}
+
+Quando @code{stringdisp} for @code{true}, sequ@^{e}ncias de caractere s@~{a}o mostras entre
+aspas duplas.  De outra forma, as aspas duplas n@~{a}o s@~{a}o mostradas.
+
+@code{stringdisp} @'{e} sempre @code{true} na sa@'{i}da que segue imediatamente a uma entrada que define uma fun@,{c}@~{a}o.
+
+Exemplos:
+
+@c ===beg===
+@c stringdisp: false$
+@c "Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo.";
+@c qualquercoisa () := 
+@c       print ("Isso @'{e} uma sequ@^{e}ncia de caracteres dentro de uma defini@,{c}@~{a}o de fun@,{c}@~{a}o.");
+@c stringdisp: true$
+@c "Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo.";
+@c ===end===
+@example
+(%i1) stringdisp: false$
+(%i2) "Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo.";
+(%o2)              Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo.
+@group
+(%i3) qualquercoisa () :=
+      print ("Isso @'{e} uma sequ@^{e}ncia de caracteres dentro de uma defini@,{c}@~{a}o de fun@,{c}@~{a}o.");
+@end group
+(%o3) qualquercoisa() := 
+              print("Isso @'{e} uma sequ@^{e}ncia de caracteres dentro de uma defini@,{c}@~{a}o de fun@,{c}@~{a}o.")
+(%i4) stringdisp: true$
+(%i5) "Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo.";
+(%o5)             "Isso @'{e} uma sequ@^{e}ncia de caracteres exemplo."
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+

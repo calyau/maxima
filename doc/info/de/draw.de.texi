@@ -2104,7 +2104,7 @@ Translation in 3D.
 @defvr {Graphic option} transparent
 Default value: @code{false}
 
-If @code{transparent} is @code{true}, interior regions of polygons are 
+If @code{transparent} is @code{false}, interior regions of polygons are 
 filled according to @code{fill_color}.
 
 This option affects the following graphic objects:

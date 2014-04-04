@@ -306,10 +306,10 @@ into genvar ordering and adds to genpairs"
     (cond ((pcoefp x) (pcplus x y))
 	  ((pcoefp y) (pcplus y x))
 	  ((eq (p-var x) (p-var y))
-	   (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
+	   (psimp (p-var x) (ptptplus (p-terms y) (p-terms x))))
 	  ((pointergp (p-var x) (p-var y))
-	   (psimp (p-var x) (pcplus1 y (p-terms x))))
-	  (t (psimp (p-var y) (pcplus1 x (p-terms y))))))
+	   (psimp (p-var x) (ptcplus y (p-terms x))))
+	  (t (psimp (p-var y) (ptcplus x (p-terms y))))))
 
   (defmfun ptimes (x y)
     (cond ((pcoefp x) (if (pzerop x) 0 (pctimes x y)))
@@ -340,10 +340,10 @@ into genvar ordering and adds to genpairs"
     (cond ((pcoefp x) (pcdiffer x y))
 	  ((pcoefp y) (pcplus (cminus y) x))
 	  ((eq (p-var x) (p-var y))
-	   (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
+	   (psimp (p-var x) (ptptdiffer (p-terms x) (p-terms y))))
 	  ((pointergp (p-var x) (p-var y))
-	   (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
-	  (t (psimp (p-var y) (pcdiffer1 x (p-terms y))))))
+	   (psimp (p-var x) (ptcdiffer-minus (p-terms x) y)))
+	  (t (psimp (p-var y) (ptcdiffer x (p-terms y))))))
 
 
   (defun pfactor (p &aux ($algebraic algfac*))

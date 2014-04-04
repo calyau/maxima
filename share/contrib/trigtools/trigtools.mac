@@ -1,0 +1,189 @@
+
+/*
+trigtools  package for working with expressions with trigonometric and hyperbolic functions.
+version 1.01,  2013.11
+Copyright (C)  A.Domarkas 2013
+rigtools package is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License.
+*/
+
+/*
+The function c2sin convert expression a*cos(x)+b*sin(x)  to r*sin(x+phi).
+*/
+
+c2sin(f):=block([x,a,b,r,phi],
+x:listofvars(f)[1],
+a:coeff(f,cos(x)),b:coeff(f,sin(x)),
+r:signum(b)*sqrt(a^2+b^2),
+phi:atan(a/b),
+r*sin(x+phi)
+)$
+
+/*
+The function c2cos convert expression a*cos(x)+b*sin(x)  to r*cos(x-phi).
+*/
+
+c2cos(f):=block([x,a,b,r,phi],
+x:listofvars(f)[1],
+a:coeff(f,sin(x)),b:coeff(f,cos(x)),
+r:signum(b)*sqrt(a^2+b^2),
+phi:atan(a/b),
+r*cos(x-phi))$
+
+/*
+The function c2trig (convert to trigonometric) reduce expression with hyperbolic functions
+ sinh, cosh, tanh, coth to trigonometric expression with sin, cos, tan, cot.
+*/
+
+c2trig(r):=block([x,i,sinv,cosv,mi,mii,%iargs:false],
+mi(x):=%i*x,
+mii(x):=-%i*x,
+sinv:compose_functions([mii,sin,mi]),
+tanv:compose_functions([mii,tan,mi]),
+cosv:compose_functions([cos,mi]),
+cotv:compose_functions([mi,cot,mi]),
+subst([sinh=sinv,cosh=cosv,tanh=tanv,coth=cotv],r),
+subst(%i=i,%%),
+trigrat(%%),
+trigreduce(%%),
+subst(i=%i,%%)
+)$
+
+/*
+The function c2hyp (convert to hyperbolic) convert expression with exp function
+ to expression with hyperbolic functions sinh, cosh.
+*/
+
+c2hyp(expr):=block([pa,f,e1,e2,S],
+pa(f):=if atom(f) then f else makelist(part(f,k),k,1,length(f)),
+S:[],
+e1:[pa(expr)],
+e2:sublist(%%,listp),
+sublist(e2,lambda ([x], part(x,1)=%e)),
+S:append(S,%%),
+e1:flatten(e2),
+while e1#[] do
+(map(pa,e1),
+e2:sublist(%%,listp),
+sublist(e2,lambda ([x], part(x,1)=%e)),
+S:append(S,%%),
+e1:flatten(e2)),
+makelist(exp(S[k][2])=cosh(S[k][2])+sinh(S[k][2]),k,1,length(S)),
+subst(%%,expr)
+)$
+
+/*
+The function trigfactor factors expressions of form  +-sin(x)+-cos(y)
+*/
+
+trigfactor(f):=block([r,_x,_y,%piargs:false],
+st(f):=block([f0,fun,a1],
+       f0:part(f,0),
+       if f0=sin or f0=cos then return([part(f,0),part(f,1)])
+       elseif f0="-" then
+       f0:part(f,1,0),
+       if f0=sin or f0=cos then
+       return([part(f,1,0),part(f,1,1)])
+       else fail
+       ),
+          cx(x):=%pi/2-x,
+if nterms(f)=2 and op(f)="+" then
+(s1:st(part(f,1))[1], s2:st(part(f,2))[1])
+else return(f),
+if s1#false and f2#false and s1#s2 then
+         (sinv:compose_functions([cos,cx]),f1:subst([sin=sinv],f))
+         else f1:f,
+_x:st(part(f1,1))[2],_y:st(part(f1,2))[2],
+r:[2*sin((_x+_y)/2)*cos((_x-_y)/2),2*sin((_x-_y)/2)*cos((_x+_y)/2),
+2*cos((_x+_y)/2)*cos((_x-_y)/2),2*sin((_x+_y)/2)*sin((_x-_y)/2)],
+r:append(r,-r),
+%piargs:true,
+sublist(r,lambda([x],trigrat(f1-x)=0)),
+expand(%%),
+if length(%%)>=1 then %%[1] else f )$
+
+/*
+The function trigsolve find solutions of trigonometric equation from interval [a, b).
+*/
+
+trigsolve(eq,a,b):=block([s,i,ats,algebraic],
+algebraic:true,
+to_poly_solve([eq], [x],'simpfuncs =
+['rootscontract,'expand,'radcan,'nicedummies]),
+s:makelist(rhs(part(%%,k)[1]),k,1,length(%%)),
+ats:[],
+for i:1 thru length(s) do 
+(makelist(ev(s[i],%z0=k),k,-10,10),
+ats:append(ats,%%)),
+sublist(ats,lambda([e],e>=a and e<b)),
+sort(%%),
+setify(%%)
+)$
+
+/*
+The function trigvalue compute values of sin(m*pi/n), cos(m*pi/n), tan(m*pi/n), cot(m*pi/n) in radicals.
+*/
+
+trigvalue(r):=block(
+[f,x,sol,spr,spr1,solvetrigwarn,algebraic],
+load (sqdnst),
+solvetrigwarn:false,
+algebraic:true,
+if freeof(%pi,r) then return(r),
+f:part(r,0),
+if part(r,0)="-" then f:part(r,1,0),
+if f=cot then f:tan,
+sol:solve(x=r,%pi)[1],
+sol*denom(rhs(sol)),
+map(f,%%),
+trigexpand(%%),
+factor(%%),
+spr:solve(%%,x),
+if (length(spr)<=2 or not freeof(%i,%%)) then return(r),
+spr1:sublist(spr,lambda([e],is(abs(rhs(e)-r)<ratepsilon))),
+if %%=[] then return(r),
+rhs(spr1[1]),
+sqrtdenest(%%),
+factor(%%)
+)$
+
+/*
+The function trigeval compute values of expressions with sin(m*pi/n), cos(m*pi/n), tan(m*pi/n), cot(m*pi/n)
+in radicals.
+*/
+
+trigeval(r):=block([sinv,cosv,tanv,cotv],
+sinv:compose_functions([trigvalue,sin]),
+cosv:compose_functions([trigvalue,cos]),
+tanv:compose_functions([trigvalue,tan]),
+cotv:compose_functions([trigvalue,cot]),
+subst([sin=sinv,cos=cosv, tan=tanv,cot=cotv],r)
+)$
+
+/*
+The function atan_contract contracts atan functions.
+*/
+
+atan_contract(r):=block([],
+if equal(r,%pi/2) then return(%pi/2)
+elseif equal(r,-%pi/2) then return(-%pi/2),
+is(abs(r)<%pi/2),
+if %%=true then
+(
+tan(r),
+trigexpand(%%),
+trigexpand(%%),
+atan(%%)
+)
+else return(r)
+)$
+
+/*
+compose_functions -- function from to_poly_solve package( used for trigeval, c2trig)
+*/
+
+compose_functions(l):=block([z,f],
+if listp(l) then (l:reverse(l),f:z,for lk in l do 
+f:funmake(lk,[f]),buildq([z,f],lambda([z],f))) else 
+error("The argument to 'compose_functions' must be a list."))$
+

@@ -159,6 +159,7 @@
 ;; numbers, we return one more than the max of the exponent of the
 ;; real and imaginary parts.
 (defmethod max-exponent ((x bigfloat))
+  ;; The third element is the exponent of a bigfloat.
   (cl:abs (third (slot-value x 'real))))
 
 (defmethod max-exponent ((x complex-bigfloat))
@@ -166,10 +167,14 @@
 		 (cl:abs (third (slot-value x 'imag))))))
 
 (defmethod max-exponent ((x cl:float))
-  (cl:abs (nth-value 1 (cl:decode-float x))))
+  (if (zerop x)
+      0
+      (cl:abs (nth-value 1 (cl:decode-float x)))))
 
 (defmethod max-exponent ((x cl:rational))
-  (cl:ceiling (cl:log (cl:abs x) 2)))
+  (if (zerop x)
+      0
+      (cl:ceiling (cl:log (cl:abs x) 2))))
 
 (defmethod max-exponent ((x cl:complex))
   (cl:1+ (cl:max (max-exponent (cl:realpart x))
@@ -183,7 +188,8 @@
 ;; up by the log(x).  The "size" of a is, basically, the exponent of
 ;; a. If a = 2^n*f where |f| < 1, then the size is abs(n) because
 ;; that's how many extra bits are added to the integer part of
-;; a*log(x).
+;; a*log(x).  If either |x| or |a| < 1, the size is 0, since no
+;; additional bits are taken up.
 (defun expt-extra-bits (x a)
   (max 1 (+ (integer-length (max-exponent x))
 	    (max-exponent a))))

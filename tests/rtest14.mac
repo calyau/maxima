@@ -489,7 +489,7 @@ ratsimp(specint(t*hankel_1(2/3,t^(1/2))*%e^(-p*t),t));
         /(15*2^(13/3)*4^(1/3)*gamma(1/3)*gamma(2/3)*p^(7/2))/-1;
  
 /*
- * hankel_2(2,t) = bessel_j(3/4,t)-%i*bessel_y(3/4,t)
+ * hankel_2(3/4,t) = bessel_j(3/4,t)-%i*bessel_y(3/4,t)
  *
  * Sec 4.14, formula (9):
  *
@@ -524,7 +524,7 @@ ratsimp(specint(t^(1/2)*hankel_2(3/4,t)*%e^(-p*t),t));
    /(16*(p^2+1)^(3/4))))$
 
 /*
- * hankel_1(1,t) = bessel_j(1/2,t)+%i*bessel_y(1/2,t)
+ * hankel_1(1/2,t) = bessel_j(1/2,t)+%i*bessel_y(1/2,t)
  *
  * So,
  *
@@ -1180,13 +1180,13 @@ sqrt(-(-1)^(1/6));
 
 /* Further tests of bessel functions */
 /* The following numerical values are evaluated with the evaluation tool
-   of the website wwww.functions.wolfram.com with a precision of 16 digits
-   1998-2008 Wolfram Research, Inc. */
+   of the website www.functions.wolfram.com with a precision of 16 digits
+   1998-2014 Wolfram Research, Inc. */
 
 (test_bessel(actual, ref, digits) := closeto(realpart(actual)-realpart(ref), 10^(-digits)) and closeto(imagpart(actual)-imagpart(ref), 10^(-digits)), 0);
 0;
 
-/* Numerical values for the bessel functions J with negative order */
+/* Numerical values for the bessel function J with negative order */
 
 test_bessel(bessel_j(-1,-2.0),0.5767248077568734, 15);
 true;
@@ -1232,7 +1232,7 @@ true;
 test_bessel(bessel_j(-2.3,1.5), 1.012178926325313, 14);
 true;
 
-/* Numerical values for the bessel functions J with positiv order */
+/* Numerical values for the bessel function J with positive order */
 
 test_bessel(bessel_j(1.5,1.0), 0.2402978391234270, 15);
 true;
@@ -1259,7 +1259,7 @@ true;
 test_bessel(bessel_j(2.5,-1.0),0.04949681022847794 * %i,15);
 true;
 
-/* Numerical values for the bessel functions J with complex arg 
+/* Numerical values for the bessel function J with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1290,8 +1290,26 @@ test_bessel
   (bessel_j(-2.3,1.0+%i),0.1920598664138632 - 0.5158676904105332 * %i,14);
 true;
 
+/* Numerical values for the bessel function J with complex order */
+
+test_bessel
+  (bessel_j(%i,1.0),1.641024179495082 - 0.437075010213683*%i,15);
+true;
+
+test_bessel
+  (bessel_j(%i,1.5),1.401883276281807 + 0.473362399311655*%i,15);
+true;
+
+test_bessel
+  (bessel_j(1.0+%i,-1.0),-0.01142279482478010 + 0.02390070064911069*%i,15);
+true;
+
+test_bessel
+  (bessel_j(1.5*%i,-2.0),0.01925195427338360 + 0.01442616961986814*%i,15);
+true;
+
 /******************************************************************/
-/* Numerical values for the bessel functions Y with negativ order */
+/* Numerical values for the bessel function Y with negative order */
 
 test_bessel
   (bessel_y(-1,-2.0),-0.1070324315409375 + 1.1534496155137468 * %i,14);
@@ -1340,7 +1358,7 @@ true;
 test_bessel(bessel_y(-2.3,1.5),-0.5356668704355646,14);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function Y with positive order */
 
 test_bessel(bessel_y(1.5,1.0),-1.102495575160179,14);
 true;
@@ -1369,7 +1387,7 @@ test_bessel(bessel_y(2.5,-1.0),2.876387857462161 * %i,14);
 true;
 
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function Y with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1400,9 +1418,26 @@ test_bessel
   (bessel_y(-2.3,1.0+%i),-0.1570442638685963 + 0.5821870838327466 * %i,14);
 true;
 
+/* Numerical values for the bessel function Y with complex order */
+
+test_bessel
+  (bessel_y(%i,1.0),-0.476556612479964 - 1.505069159110387*%i,14);
+true;
+
+test_bessel
+  (bessel_y(%i,1.5),0.5161218926267688 - 1.2857405211747503*%i,14);
+true;
+
+test_bessel
+  (bessel_y(1.0+%i,-1.0),7.708594946281541 + 1.233384674244926*%i,14);
+true;
+
+test_bessel
+  (bessel_y(1.5*%i,-2.0),3.226466016458932 + 4.267260420563194*%i,13);
+true;
 
 /******************************************************************/
-/* Numerical values for the bessel functions I with negativ order */
+/* Numerical values for the bessel function I with negative order */
 
 test_bessel(bessel_i(-1,-2.0),-1.590636854637329,15);
 true;
@@ -1448,7 +1483,7 @@ true;
 test_bessel(bessel_i(-2.3,1.5),0.6352567117441516,15);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function I with positive order */
 
 test_bessel(bessel_i(1.5,1.0),0.2935253263474798,15);
 true;
@@ -1476,7 +1511,7 @@ test_bessel(bessel_i(2.5,-1.0),0.05709890920304825 * %i,15);
 true;
 
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function I with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1507,8 +1542,26 @@ test_bessel
   (bessel_i(-2.3,1.0+%i),-0.4053256245784623 - 0.3724481230406298 * %i,14);
 true;
 
+/* Numerical values for the bessel function I with complex order */
+
+test_bessel
+  (bessel_i(%i,1.0),1.900799675819425 - 1.063960013554441*%i,14);
+true;
+
+test_bessel
+  (bessel_i(%i,1.5),2.495473638417463 - 0.601347501920535*%i,14);
+true;
+
+test_bessel
+  (bessel_i(1.0+%i,-1.0),-0.01096313515009349 + 0.03043920114776303*%i,15);
+true;
+
+test_bessel
+  (bessel_i(1.5*%i,-2.0),0.04238259669782487 - 0.01125055344512197*%i,15);
+true;
+
 /******************************************************************/
-/* Numerical values for the bessel functions I with negativ order */
+/* Numerical values for the bessel function K with negative order */
 
 test_bessel
   (bessel_k(-1,-2.0),-0.139865881816522-4.997133057057809*%i,14);
@@ -1551,7 +1604,7 @@ true;
 test_bessel(bessel_k(-2.3,1.5),0.7921237520153218,15);
 true;
 
-/* Numerical values for the bessel functions Y with positiv order */
+/* Numerical values for the bessel function K with positive order */
 
 test_bessel(bessel_k(1.5,1.0),0.9221370088957891,14);
 true;
@@ -1579,7 +1632,7 @@ true;
 test_bessel(bessel_k(2.5,-1.0),-3.406861044815549*%i,14);
 true;
 
-/* Numerical values for the bessel functions Y with complex arg 
+/* Numerical values for the bessel function K with complex arg 
    and positive or negative order*/
 
 test_bessel
@@ -1608,6 +1661,24 @@ true;
 
 test_bessel
   (bessel_k(-2.3,1.0+%i),-0.6635905911278042 - 1.0258894849569300 * %i,13);
+true;
+
+/* Numerical values for the bessel function K with complex order */
+
+test_bessel
+  (bessel_k(%i,1.0),0.2894280370259921,14);
+true;
+
+test_bessel
+  (bessel_k(%i,1.5),0.1635839926633096,14);
+true;
+
+test_bessel
+  (bessel_k(1.0+%i,-1.0),-9.744252766030894 - 7.494570149760043*%i,14);
+true;
+
+test_bessel
+  (bessel_k(1.5*%i,-2.0),3.93512366711118 - 14.82183468316553*%i,13);
 true;
 
 kill(closeto, test_bessel);
@@ -1748,6 +1819,36 @@ test_wronskian(w_ik, lambda([n,z], 1/z), 1e-10, 5);
 /* Calculation of w_ik for complex argument */
 
 test_wronskian(lambda([n,z], w_ik(n,z*%i)), lambda([n,z], 1/(z*%i)), 1e-12, 5);
+[];
+
+/*******************************************************************************
+
+   Test Wronskian w_h1h2
+
+   A&S 9.1.17: H1[v+1](z)*H2[v](z)-H1[v](z)*H2[v+1](z) = -4*%i/(%pi*z)
+
+*******************************************************************************/
+
+w_h1h2(v,z) := hankel_1(v+1,z)*hankel_2(v,z) - hankel_1(v,z)*hankel_2(v+1,z);
+w_h1h2(v,z) := hankel_1(v+1,z)*hankel_2(v,z) - hankel_1(v,z)*hankel_2(v+1,z);
+
+/* Calculation of w_h1h2 for real argument */
+
+test_wronskian(w_h1h2, lambda([v,z], -4*%i/(%pi*z)), 1e-14, 5);
+[];
+
+/* Calculation of w_h1h2 for complex argument */
+
+test_wronskian(lambda([v,z], w_h1h2(v,z*%i)),
+               lambda([v,z], -4/(%pi*z)),
+               1e-13, 5);
+[];
+
+/* Calculation of w_h1h2 for complex order and argument */
+
+test_wronskian(lambda([v,z], w_h1h2(v*%i,z*%i)),
+               lambda([v,z], -4/(%pi*z)),
+               1e-10, 5);
 [];
 
 /******************************************************************************

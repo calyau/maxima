@@ -203,12 +203,12 @@ standardize(m) :=
 
 
 /* Returns a new matrix with transformed, repeated, reordered, or removed columns */
-tranform_sample(m, varnames, expressions) :=
+transform_sample(m, varnames, expressions) :=
     block([tm],
         if matrixp(m)
             then (tm: args(transpose(m)),
                      transpose(apply('matrix, psubst(map("=",varnames,tm), expressions))))
-            else error("tranform_sample: argument must be a matrix")) $
+            else error("transform_sample: argument must be a matrix")) $
 
 
 /* Builds a sample from a table of absolute frequencies.      */
@@ -1293,7 +1293,7 @@ starplot_description([args]):=
           my_star_radius*cpnts),
 
       [apply(label, maplist(cons,
-                            samplespace,
+                            maplist(string, samplespace),
                             map(lambda([z], z+my_star_center), 1.05*my_star_radius*cpnts)))],
 
       before,

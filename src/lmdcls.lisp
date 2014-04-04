@@ -105,7 +105,7 @@
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-$batchload* *in-compile*
 	  *in-macsyma-indexer* *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
-	  *transl-debug* *transl-file-debug* *warned-fexprs*
+	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* arrays aryp assigns *atp* atvars *baktrcl*
@@ -113,10 +113,10 @@
 	  bindlist bvars *mdebug*
 	  declares defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
+	  dumping envlist errorsw evarrp evp expandflag expandp
 	  exprs exptrlsw factlist featurel fexprs fmaplvl
-	  forms-to-compile-queue fourth%pi fr-factor gauss
-	  generate-atan2 genpairs genvar half%pi half%pi3 hmodulus
+	  fourth%pi fr-factor gauss
+	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
 	  integerl *islinp* lexprs limit-answers limitp linel
 	  *linelabel* local loclist low* maplp master-mesfile mdop
@@ -130,7 +130,7 @@
 	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack typel user-mesfile user-timesofar varlist wflag
+	  tstack typel user-mesfile varlist wflag
 	  $wtlevel $cflength $weightlevels *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable $infolists))

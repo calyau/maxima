@@ -49,6 +49,8 @@ block
         rtest_opproperties,
         rtest_stats,
         rtest_distrib,
+        rtest_descriptive.mac,
+        rtest_statgraph.mac,
         rtest_interpol,
         rtest_levin,
         rtest_fractals,
@@ -88,5 +90,6 @@ block
         rtest_solve_rat_ineq,
         [rtest_vect, 4, 9, 10, 13, 16, 19, 20, 21, 24, 25],
         rtest_antid],
-        rtest_bffac],
+        rtest_bffac,
+        rtest_finance],
     run_testsuite ());

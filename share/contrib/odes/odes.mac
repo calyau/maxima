@@ -1,0 +1,427 @@
+
+/*
+odes  package for solving ordinary diferential equations
+version 2.01,  2013.11
+Copyright (C)  A.Domarkas 2013
+odes package is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License, 
+*/
+
+/*
+Examples see in odes-doc.pdf
+*/
+
+/*
+1
+*/
+
+odecv(tr,eq,y,x):=block([_n,_t,tr1,itr,eq1,r,solvetrigwarn],
+solvetrigwarn:false,_n:derivdegree(eq,y,x),
+tr1:(solve(tr,x))[1],
+_t:last(listofvars(rhs(tr1))),
+itr:(solve(tr,_t))[1],
+depends(y,_t,_t,x),
+eq1:ev(eq,nouns),
+makelist(diff(itr,x,k),k,1,_n),
+subst(%%,eq1),
+ev(%%,nouns),
+r:subst(tr1,%%),
+remove([y,_t],dependency),
+radcan(r))$
+
+/*
+2
+*/
+
+dchange(tr,eq,fun,var,nfun,nvar):=block(local(T,keit),
+diffpf(f,t,k):=block(
+if k = 0 then f[2] elseif k = 1
+then ratsimp(diff(f[2],t,1)/diff(f[1],t,1))
+else ratsimp(diff(diffpf(f,t,k-1),t,1)/diff(f[1],t,1))),
+T:makelist('diff(fun,var,k)=
+diffpf([rhs(tr),nfun],nvar,k),k,0,derivdegree(eq,fun,var)),
+keit:append(reverse(T),[tr]),
+ev(eq,keit))$
+
+/*
+3
+*/
+
+odeC(eq,r,x):=block([derivsubst,_u,tr,itr,L],
+depends(_u,x),assume(_u>0),
+derivsubst:true,
+L:listofvars(r),
+tr:_u=r, itr:solve(tr,last(L))[1],
+subst(itr,eq),
+ev(%%, nouns), expand(%%),
+ode2(%%,_u,x),
+subst(tr,expand(%%))
+)$
+
+/*
+4
+*/
+
+solvet(eq,x):=block([spr,k,maperror,mapprint],
+maperror:false,mapprint:false,
+spr:solve(eq,x),
+rectform(%%),
+if freeof(sin,%%) then return(sort(%%)) 
+else makelist(x=map(polarform,rhs(spr[k])),k,1,length(spr)),
+rectform(%%),
+trigsimp(%%),
+sort(%%))$
+
+/*
+5
+*/
+
+ode1_ic(eq,y,x,_ic):=block([sol,gsol, spr,ats,p],
+solvetrigwarn:false,
+sol:ode2(eq,y,x),
+if %%=false then return(false),
+trigsimp(sol),
+radcan(%%),
+trigsimp(%%),
+trigreduce(%%), 
+trigexpand(%%),
+gsol:rootscontract(%%),
+subst([x=_ic[1],y=_ic[2]],trigsimp(gsol)),
+solve(%%,%c),
+subst(%%,gsol),
+sol:ratsimp(logcontract(%%)),
+spr:solve(%%,y), 
+if not freeof(y,map(rhs,%%)) then return(sol),
+if length(spr)=1 and freeof(y,rhs(spr[1])) then return(spr[1]),
+sublist(spr,lambda([e],is(radcan(subst([x=_ic[1], y=_ic[2]],e))))),
+trigsimp(%%[1]),
+radcan(%%),
+if not freeof(%e,%%) then
+radcan(%%) else %%,
+if not freeof(%i,%%) then
+ats:rootscontract(subst(%i=sqrt(-1),%%))
+else ats:%%,
+return(ats)
+)$
+
+/*
+6
+*/
+
+ode2_ic(eq,y,x,_ic):=block([p,sol,ats,spr],
+solvetrigwarn:false,
+maperror:false,
+mapprint:false,
+assume(x>_ic[1]),
+sol:ode2(eq,y,x),
+solve(eq,'diff(y,x,2)),
+rhs(%%[1]),
+if listofvars(%%)=[y] and listp(sol) then
+         (
+          subst('diff(y,x,2)=p*'diff(p,y),eq),
+          ode1_ic(%%,p,y,[_ic[2],_ic[3]]),
+          subst(p='diff(y,x),%%),
+          ats:ode1_ic(%%,y,x,[_ic[1],_ic[2]])
+         )
+else
+        (
+         ic2(sol, x=_ic[1], y=_ic[2],'diff(y,x)=_ic[3]),
+         ats:lhs(%%)=map(factor,rhs(%%)),
+         if lhs(%%)#y then
+              (
+               spr:solve(ats,y),
+               if spr#[] then
+                    (
+                     sublist(spr,lambda([e],
+                     _ic[2]=ratsimp(ev(rhs(e),x=_ic[1])) and
+                     _ic[3]=ratsimp(at(diff(rhs(e),x),x=_ic[1])))),
+                     ats:%%[1]
+                    )
+              ),
+        forget(facts(x)),
+        return(ats)
+        )
+)$
+
+/*
+6a
+*/
+
+ode_ic(eq,y,x,_ic):=block([],
+if  derivdegree(eq,y,x)=1 then ode1_ic(eq,y,x,_ic)
+elseif derivdegree(eq,y,x)=2 then ode2_ic(eq,y,x,_ic)
+else error("equation must be the first or second order"),
+rootscontract(%%)
+)$
+
+/*
+7
+*/
+
+P_iter(eq,x,y,x0,y0,n):=block([f,t],
+solve(eq,'diff(y,x,1))[1],
+define(f(x,y),rhs(%%)),
+if n=0 then y0 else 
+(assume(x>x0),
+subst(x=t,f(t,P_iter(eq,x,y,x0,y0,n-1))),
+y0+expand(integrate(%%,t,x0,x))))$
+
+/*
+8
+*/
+
+ode1taylor(eq,x0,y0,n):=block([spr,nezin],
+atvalue(y(x),x=x0,y0),
+spr:taylor(y(x),x,x0,n),
+nezin:at(makelist(diff(y(x),x,k),k,1,n),x=x0),
+makelist(diff(eq,x,k),k,0,n-1),
+at(%%,x=x0),solve(%%,nezin),
+ratexpand(ev(spr,first(%%))),
+taylor(%%,x,x0,n)
+)$
+
+/*
+9
+*/
+
+ode2taylor(eq,x0,y0,y1,n):=block([spr,nezin],
+atvalue(y(x),x=x0,y0),
+atvalue(diff(y(x),x),x=x0,y1),
+spr:taylor(y(x),x,x0,n),
+nezin:at(makelist(diff(y(x),x,k),k,2,n),x=x0),
+makelist(diff(eq,x,k),k,0,n-2),
+at(%%,x=x0),solve(%%,nezin),
+ratexpand(ev(spr,first(%%))),
+taylor(%%,x,x0,n)
+)$
+
+/*
+10
+*/
+
+ode1exact(eq):=block([P,Q,F],
+P:coeff(expand(lhs(eq)-rhs(eq)),dx),
+Q:coeff(expand(lhs(eq)-rhs(eq)),dy),
+if trigsimp(trigexpand(diff(P,y)-diff(Q,x)))=0 then
+(F:integrate(P,x)+g(y),diff(F,y)=Q,
+ode2(%%,g(y),y),
+subst([%%,%c=0],F)=C,
+trigexpand(%%),
+trigsimp(%%),
+expand(%%))
+else false)$
+
+/*
+11
+*/
+
+intfactor1(eq,omega):=block([P,Q,d,t,ans],
+P:coeff(expand(lhs(eq)-rhs(eq)),dx),
+Q:coeff(expand(lhs(eq)-rhs(eq)),dy),
+(diff(P,y)-diff(Q,x))/(Q*diff(omega,x)-P*diff(omega,y)),
+ratsimp(ev(%%,diff)),
+trigexpand(%%),
+ratsubst(t,omega,%%),
+d:map(radcan,expand(%%)),
+if listofvars(%%)=[t] then (
+exp(integrate(d,t)),
+ans:subst(t=omega,%%))
+else return(false),
+if freeof(integrate, ans) then return(ans)
+else return(false)
+)$
+
+/*
+12
+*/
+
+odeL(eq,y,x):=block([n,_yp,gamma_expand,i,_Y,_C],
+gamma_expand:true,
+_Y:fs(eq,y,x),
+n:derivdegree(eq,y,x),
+_yp:partsol(eq,y,x),
+_C:makelist(concat(C,i),i,1,n),
+y=_C._Y+_yp)$
+
+/*
+13
+*/
+
+odeL_ic(eq,y,x,ic):=block(odeL(eq,y,x), icn(%%,y,x,ic))$
+
+icn(sol,y,x,ic):=block([_spr,n],
+_spr:rhs(sol),
+n:length(ic)-1,
+makelist(at(diff(_spr,x,k),x=ic[1])=ic[k+2],k,0,n-1),
+solve(%%,_C:makelist(concat(C,i),i,1,n)),
+y=subst(%%,_spr)
+)$
+
+/*
+14
+*/
+
+fs(eq,y,x):=block([_f,n,j,cr,_k,ce],
+_f(r):=block([a,b,i],
+       a:radcan(realpart(r[1])),
+       b:radcan(imagpart(r[1])),
+       if b=0 then 
+       return(makelist(x^(i-1)*exp(a*x),i,1,r[2]))
+       else
+       join(makelist(x^(i-1)*exp(a*x)*cos(b*x),i,1,r[2]),
+       makelist(x^(i-1)*exp(a*x)*sin(b*x),i,1,r[2]))),
+n:derivdegree(eq,y,x),
+makelist('diff(y,x,j)=_k^j,j,0,n),
+reverse(%%),
+ce:subst(%%,lhs(eq))=0,
+solve(ce,_k),
+map(rhs,%%),
+map(rootssimp,%%),
+makelist([%%[j],multiplicities[j]],j,1,length(%%)),
+cr:sublist(%%,lambda([e],is(radcan(imagpart(e[1]))>=0))),
+map(_f,cr),
+flatten(%%),
+trigreduce(%%),
+sort(%%))$
+
+/*
+15
+*/
+
+partsolL_UC(eq,y,x):=block([spr,u],
+if rhs(eq)=0 then return(0),
+subst(y=u(x),eq),
+rhs(desolve([%%],[u(x)])),
+args(%%),
+sublist(%%,lambda([e],freeof(u,ilt,e))),
+spr:apply("+",%%),
+if not atom(spr) and op(spr)="+" then
+(args(expand(spr)),
+sublist(%%,lambda([e],ode_check(lhs(eq),y=e)#0) ),
+apply("+",%%),return(ratsimp(%%)))
+else
+return(ratsimp(spr))
+)$
+
+partsolL_VP(eq,y,x):=block([W,Wi,_n,_dp],
+if rhs(eq)=0 then return(0),
+FS:fs(eq,y,x),
+F:rhs(eq),
+W:wronskian(FS,x),
+_n:length(FS),
+makelist(0,i,1,_n-1),
+_dp:append(%%,[F]),
+Wi:radcan(trigsimp(invert(W))),
+integrate(Wi._dp,x),
+ratsimp(%%),
+trigsimp(%%),
+logcontract(%%),
+FS.%%,
+ratsimp(%%),
+trigsimp(%%),
+trigreduce(%%),
+ratsimp(%%)
+)$
+
+partsol(eq,y,x):=block([s,eq1],
+eq1:subst(y=y(x),eq),
+if freeof(laplace,laplace(rhs(eq),x,s))
+and freeof(log,tan,atan,sec,csc,rhs(eq))
+then partsolL_UC(eq,y,x) 
+else partsolL_VP(eq,y,x)
+)$
+
+/*
+16
+*/
+
+odeM(A,F,t):=block([W,gamma_expand,n,Ya],
+gamma_expand:true,
+n:length(F),
+W:matrix_exp(A,t),
+W.integrate(trigsimp(invert(W).F),t),
+trigrat(expand(%%)),
+Ya:expand(%%),
+W.transpose(makelist(concat(C,i),i,1,n))+Ya)$
+
+/*
+17
+*/
+
+odeM_ic(A,B,t,t0,Y0):=block([bspr],
+bspr:odeM(A,B,t),
+subst(t=t0,%%)-Y0,
+list_matrix_entries(%%),
+solve(%%,makelist(concat(C,i),i,1,length(Y0))),
+subst(%%[1],bspr),
+expand(%%)
+)$
+
+/*
+18
+*/
+
+matrix_exp(A,r):=block([n,B,s,t,Lap,f],
+n:length(A),
+B:invert(s*ident(n)-A),
+Lap(f):=ilt(f, s, t),
+matrixmap(Lap,B),
+subst(t=r,%%))$
+
+/*
+19
+*/
+
+odelinsys(A,F,t,t0,Y0):=block([s,g,expA],
+assume(t>t0),
+define(g(t),F),
+mat_function(exp,A*t),ratsimp(%%),
+define(Aexp(t),%%),
+Aexp(t-t0).Y0+integrate(Aexp(t-s).g(s),s,t0,t),
+expand(%%)
+)$
+
+/*
+20
+*/
+
+wronskian(functlist,var):=block([end],end:length(functlist)-1,functlist:[
+functlist],thru end do functlist:
+endcons(map(lambda([x],diff(x,var)),last(functlist)),functlist),
+apply('matrix,functlist))$
+
+/*
+etc
+*/
+
+itr2can(eq,y,x):=block(coeff(lhs(eq),'diff(y,x))/coeff(lhs(eq),'diff(y,x,2)),
+t=radcan(integrate(exp(-integrate(%%,x)),x)))$
+
+rootssimp(x):=block([maperror,mapprint],
+maperror:false,
+mapprint:false, 
+map(polarform,x),rectform(%%),trigsimp(%%))$
+
+trigvalue(r):=block(
+[f,x,sol,spr,spr1,solvetrigwarn,algebraic],
+load (sqdnst),
+solvetrigwarn:false,
+algebraic:true,
+if freeof(%pi,r) then return(r),
+f:part(r,0),
+if part(r,0)="-" then f:part(r,1,0),
+if f=cot then f:tan,
+sol:solve(x=r,%pi)[1],
+sol*denom(rhs(sol)),
+map(f,%%),
+trigexpand(%%),
+factor(%%),
+spr:solve(%%,x),
+if (length(spr)<=2 or not freeof(%i,%%)) then return(r),
+spr1:sublist(spr,lambda([e],is(abs(rhs(e)-r)<ratepsilon))),
+if %%=[] then return(r),
+rhs(spr1[1]),
+sqrtdenest(%%),
+factor(%%)
+)$
+

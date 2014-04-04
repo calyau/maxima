@@ -769,7 +769,7 @@ Funktion @mref{gradef} definiert wurde.
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration, Integration
+@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration
 @subsection Einf@"uhrung in die Integration
 @c -----------------------------------------------------------------------------
 

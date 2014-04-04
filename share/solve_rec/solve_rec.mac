@@ -388,51 +388,58 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
   gen_sol : solve_rec_char_gen(coeffs, %f, %n),
 
   if ihom#0 then block(
-    [exps : get_exps(expand(ihom), %n), curr_ihom, pol],
+    [exps : solve_rec_get_exps(expand(ihom), %n), curr_ihom, pol],
 /*
     exps : remove_duplicates(exps),
 */
     for ex in exps do block(
       [base, pow, mul, %emode : false],
       [pol, ex] : ex,
-      
-      if not(numberp(ex)) then (
+
+      if not(numberp(ex)) then
         if part(ex, 0)="^" then
           pow : part(ex, 2)
         else
-          pow : part(ex, 2, 2)),
+          pow : part(ex, 2, 2),
+
       if hipow(pow, %n)>1 then curr_ihom : false
       else (
         mul : coeff(pow, %n),
         if numberp(ex) then base:1
-        else (
+        else
           if part(ex, 0)="^" then
             base : part(ex, 1)
           else
-            base : 1/part(ex, 2, 1)
-        ),
+            base : 1/part(ex, 2, 1),
         base : base^mul,
         if not(freeof(%n, expand(pow-mul*%n))) then curr_ihom : false
-        else (
-          curr_ihom : solve_rec_char_part(coeffs, base, pol, ex*pol, %n)
-        )
-      ),
+        else
+          curr_ihom:
+            solve_rec_char_part(coeffs, base, pol, ex*pol, %n)),
       if curr_ihom#false then (
         gen_sol : gen_sol + curr_ihom,
         ihom : ratexpand(ihom-pol*ex)
       )
     )
-
   ),
-  if ihom#0 and not(rec_polyp(ihom, %n)) then return(false),
-  if ihom#0 then ihom : solve_rec_char_part(coeffs, 1, ihom, ihom, %n),
-  if ihom=false then return(false)
-  else gen_sol : gen_sol+ihom,
-  solve_rec_method : "Characteristic equation method",
-  if length(cond)>0 then
-    solve_rec_ic1(gen_sol, %f, %n, cond, makelist(%k[i], i, 1, length(cond)))
-  else gen_sol
-);
+  /*
+    Try quite hard to see if ihom = 0, since the a^i/b^i => (a/b)^i
+    step in solve_rec_get_exps might have outwitted the simplifier.
+  */
+  block ([ihom_zero: is (0 = radcan (ihom))],
+    if not(ihom_zero) then
+      if not (rec_polyp(ihom, %n)) then
+        return(false)
+      else
+        ihom : solve_rec_char_part(coeffs, 1, ihom, ihom, %n),
+    if ihom=false then
+      return(false)
+    else
+      gen_sol: gen_sol + ihom,
+    solve_rec_method: "Characteristic equation method",
+    if length(cond)>0 then
+      solve_rec_ic1(gen_sol, %f, %n, cond, makelist(%k[i], i, 1, length(cond)))
+    else gen_sol));
 
 solve_rec_char_gen(coeffs, %f, %n) := block(
   [deg : length(coeffs), %x, pol, sol, i, j:1, gen_sol : 0, %k, i%],
@@ -502,33 +509,117 @@ rec_polyp1(p%, %n, hi) := block(
     false
 )$
 
-get_exps(expr, var) :=
-  if atom(expr) then [[expr, 1]]
-  else if op(expr)="+" then apply(append, map(lambda([u], get_exps(u, var)), args(expr)))
-  else if op(expr)="-" then block(
-    [ex:get_exps(-expr, var)],
-    map(lambda([u], [-u[1], u[2]]), ex)
-  )
-  else if op(expr)="/" then block(
-    [dn_exps : get_exps(denom(expr), var), nm_exps : get_exps(num(expr), var)],
-    if length(dn_exps)=0 then nm_exps
-    else if length(dn_exps)>1 then []
-    else if length(nm_exps)=0 then 1/dn_exps[1]
-    else map(lambda([u], u/dn_exps[1]), nm_exps))
-  else if op(expr)="^" then block(
-    [bs : part(expr, 1), pw : part(expr, 2)],
-    if freeof(var, pw) then [[expr, 1]]
-    else if not(freeof(var, pw)) and not(freeof(var, bs)) then [[expr, 1]]
-    else block(
-      [a0,a1],
-      [a1,a0]:bothcoef(pw, var),
-      if not freeof(var, a0) then [[expr, 1]]
-      else [[bs^a0, bs^(a1*var)]]
-    )
-  )
-  else if op(expr)="*" then xreduce("*", map(lambda([u], get_exps(u, var)), args(expr)))
-  else [[expr, 1]]$
+/*
+  If expr is 1 or of the form u^v then return a pair [u,v] such that
+  u^v=expr. If not, raise an error.
+*/
+solve_rec_split_exponent (expr) :=
+  if expr = 1 then [1, 0]
+  else if atom (expr) then
+    error ("Found atom ", expr, " when expecting an exponent")
+  else if (op (expr) = "/" and first (expr) = 1) then
+    block ([split: solve_rec_split_exponent (second (expr))],
+      [1/first (split), second (split)])
+  else if (op (expr) = "^") then
+    [first (expr), second (expr)]
+  else
+    error ("Found ", expr, " when expecting an exponent")$
 
+/*
+  Try to return a list of pairs [u,v] such that the sum of u*v across
+  the list is equal to expr. Moreover, v is always of the form
+  a^(b*var). If a term can't be factored helpfully like this, it is
+  returned in the form [u, 1].
+
+  Examples:
+
+     solve_rec_get_exps(u*v^i, i)      =>  [[u, v^i]]
+     solve_rec_get_exps(u*v^i + w, i)  =>  [[w, 1], [u, v^i]]
+     solve_rec_get_exps(u^i/v^i, i)    =>  [[1, (u/v)^i]]
+*/
+solve_rec_get_exps(expr, var) :=
+  if atom(expr) then [[expr, 1]]
+
+  else if op(expr)="+" then
+    apply(append,
+          map(lambda([u], solve_rec_get_exps(u, var)), args(expr)))
+
+  /* Should only ever see unary minus, but test for length anyway */
+  else if (op(expr) = "-" and length(expr) = 1) then
+    map(lambda([u], [-u[1], u[2]]), solve_rec_get_exps(-expr, var))
+
+  else if op(expr)="^" then
+  block([bs: first (expr), pw: second (expr)],
+    if freeof(var, pw) or not (freeof (var, bs)) then
+      [[expr, 1]]
+    else block([a0,a1],
+      [a1,a0]: bothcoef(pw, var),
+      if not freeof(var, a0) then [[expr, 1]]
+      else [[bs^a0, bs^(a1*var)]]))
+
+  else if op(expr) = "*" then
+    [solve_rec_get_exps_mult (args (expr), var)]
+
+  else if op(expr) = "/" then
+    /*
+      We want to call solve_rec_get_exps_mult with
+      [first(expr),1/second(expr)], but have to avoid an infinite
+      recursion here: if first(expr) = 1, do it by hand.
+    */
+    if first (expr) = 1 then
+      map (lambda ([pair],
+                   [1/first (pair),
+                    if second (pair) = 1 then 1
+                    else
+                      first(second(pair))^(-second(second(pair)))]),
+           solve_rec_get_exps (second (expr), var))
+    else
+      [solve_rec_get_exps_mult([first (expr), 1/second (expr)], var)]$
+
+/*
+  This is the hard case for solve_rec_get_exps. It deals with the
+  multiplication case, taking the terms of the product as the "terms"
+  variable.
+
+  It will always return exactly one pair.
+*/
+solve_rec_get_exps_mult (terms, var) :=
+  block([pair_lists:
+           map (lambda ([term], solve_rec_get_exps (term, var)),
+                terms)],
+    /* If any of these isn't a singleton, we've failed already */
+    if some (lambda ([list], length(list) # 1), pair_lists) then
+      [xreduce("*", terms), 1]
+    /* Split results into "easy" (of form [u,1]) and hard (not!) */
+    else
+    block ([easy: 1, hard: []],
+      for pair in map (first, pair_lists) do
+        block ([split: solve_rec_split_exponent (second (pair))],
+          if second (split) = 0 then
+            easy: first (pair) * easy
+          else
+            hard: cons ([first (pair), split], hard)),
+      /* If everything was easy, we're good! */
+      if length (hard) = 0 then [xreduce("*", terms), 1]
+      /* If there was just one "hard" example, we can use that */
+      else if length (hard) = 1 then
+        [easy * first (hard [1]), apply("^", second (hard [1]))]
+      /*
+        We can deal with the case when all the hard examples are "the
+        same" in the sense that second(second(x)) is constant across
+        hard.
+      */
+      else
+        block([e: second (second (first (hard))),
+               others:
+                 map(lambda ([x], second (second (x))), rest (hard))],
+          if not every (lambda ([ee], is (ee = e)), others) then
+            [xreduce("*", terms), 1]
+          else
+            [easy * xreduce ("*", map (first, hard)),
+             xreduce ("*",
+                      map (lambda ([x],
+                                   first (second(x))), hard)) ^ e])))$
 
 /**************************************************************************
  *
