@@ -102,14 +102,19 @@ rkf45(odes,funcs,initial,interval,[options]):=block(
   if (not(listp(odes))) then odes:[odes],
   if (not(listp(funcs))) then funcs:[funcs],
   if (not(listp(initial))) then initial:[initial],
+  /* coerce odes, interval and initial to floats */
+  [odes,interval,initial]:float([odes,interval,initial]),
   /* Define right-hand-side function */
   local(f_rhs),
-  define(funmake(f_rhs,cons(interval[1],funcs)),odes),
+  block([vars:cons(interval[1],funcs)],
+    define(funmake(f_rhs,vars),buildq([odes:odes,v:funmake(mode_declare,flatten(map(lambda([t],[t,'float]),vars)))],block(v,odes)))),
   translate(f_rhs),
   /* Initialize */
   xi:interval[2], yi:initial,
   /* Check initial values */
-  if member(false,map(numberp,apply(f_rhs,cons(xi,yi)))) then error("Error: initial should be a list of numbers, but found",funcs,"instead."),
+  if not every(map(numberp,initial)) then  error("Error: initial should be a list of numbers, but found",initial,"instead."),
+  block([initial_values:apply(f_rhs,cons(xi,yi))],
+    if not every(map(numberp,initial_values)) then error("Error: odes should evaluate to a list of numbers at initial, but found",initial_values,"instead.")),
   /* Set up the rest */
   estimated_errors:[1e30,-1e30],
   step_extrema:[1e30,-1e30],
