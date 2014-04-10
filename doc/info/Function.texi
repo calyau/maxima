@@ -759,6 +759,7 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 @anchor{define}
 @deffn  {Function} define (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr})
 @deffnx {Function} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr})
+@deffnx {Function} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}](@var{y_1}, @dots{}, @var{y_m}), @var{expr})
 @deffnx {Function} define (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
 @deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
 @deffnx {Function} define (ev (@var{expr_1}), @var{expr_2})

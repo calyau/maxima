@@ -1214,12 +1214,25 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 
 The function definition operator.
+
 @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} defines a function named
 @var{f} with arguments @var{x_1}, @dots{}, @var{x_n} and function body
 @var{expr}.  @code{:=} never evaluates the function body (unless explicitly
-evaluated by quote-quote @code{'@w{}'}).  The function so defined may be an
-ordinary Maxima function (with arguments enclosed in parentheses) or an array
-function (with arguments enclosed in square brackets).
+evaluated by quote-quote @code{'@w{}'}).
+The function body is evaluated every time the function is called.
+
+@code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called array function.
+Its function body is evaluated just once for each distinct value of its arguments,
+and that value is returned, without evaluating the function body,
+whenever the arguments have those values again.
+(A function of this kind is commonly known as a ``memoizing function''.)
+
+@code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
+is a special case of an array function.
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]} is an array function which returns a lambda expression
+with arguments @code{@var{y_1}, ..., @var{y_m}}.
+The function body is evaluated once for each distinct value of @code{@var{x_1}, ..., @var{x_n}},
+and the body of the lambda expression is that value.
 
 When the last or only function argument @var{x_n} is a list of one element, the
 function defined by @code{:=} accepts a variable number of arguments.  Actual
@@ -1264,19 +1277,86 @@ quote-quote).
 (%o5)                    cos(b) - sin(a)
 @end example
 
-The function defined by @code{:=} may be an ordinary Maxima function or an
-array function.
+@code{f(@var{x_1}, ..., @var{x_n}) := ...} defines an ordinary function.
 
 @c ===beg===
-@c G1 (x, y) := x.y - y.x;
-@c G2 [x, y] := x.y - y.x;
+@c G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+@c G1([1, a], [2, b]);
+@c G1([1, a], [2, b]);
 @c ===end===
 @example
-(%i1) G1 (x, y) := x.y - y.x;
-(%o1)               G1(x, y) := x . y - y . x
-(%i2) G2 [x, y] := x.y - y.x;
-(%o2)                G2     := x . y - y . x
-                       x, y
+(%i1) G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+(%o1) G1(x, y) := (print("Evaluating G1 for x=", x, "and y=", 
+                                               y), x . y - y . x)
+(%i2) G1([1, a], [2, b]);
+Evaluating G1 for x= [1, a] and y= [2, b] 
+(%o2)                           0
+(%i3) G1([1, a], [2, b]);
+Evaluating G1 for x= [1, a] and y= [2, b] 
+(%o3)                           0
+@end example
+
+@code{f[@var{x_1}, ..., @var{x_n}] := ...} defines an array function.
+
+@c ===beg===
+@c G2[a] := (print ("Evaluating G2 for a=", a), a^2);
+@c G2[1234];
+@c G2[1234];
+@c G2[2345];
+@c arrayinfo (G2);
+@c listarray (G2);
+@c ===end===
+@example
+(%i1) G2[a] := (print ("Evaluating G2 for a=", a), a^2);
+                                                     2
+(%o1)     G2  := (print("Evaluating G2 for a=", a), a )
+            a
+(%i2) G2[1234];
+Evaluating G2 for a= 1234 
+(%o2)                        1522756
+(%i3) G2[1234];
+(%o3)                        1522756
+(%i4) G2[2345];
+Evaluating G2 for a= 2345 
+(%o4)                        5499025
+(%i5) arrayinfo (G2);
+(%o5)              [hashed, 1, [1234], [2345]]
+(%i6) listarray (G2);
+(%o6)                  [1522756, 5499025]
+@end example
+
+@code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
+is a special case of an array function.
+
+@c ===beg===
+@c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+@c G3[2];
+@c G3[2];
+@c G3[2](1);
+@c arrayinfo (G3);
+@c listarray (G3);
+@c ===end===
+@example
+(%i1) G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+(%o1) G3 (x) := (print("Evaluating G3 for n=", n), 
+        n
+                                                     2
+                                             diff(sin (x), x, n))
+(%i2) G3[2];
+Evaluating G3 for n= 2 
+                                2           2
+(%o2)          lambda([x], 2 cos (x) - 2 sin (x))
+(%i3) G3[2];
+                                2           2
+(%o3)          lambda([x], 2 cos (x) - 2 sin (x))
+(%i4) G3[2](1);
+                           2           2
+(%o4)                 2 cos (1) - 2 sin (1)
+(%i5) arrayinfo (G3);
+(%o5)                   [hashed, 1, [2]]
+(%i6) listarray (G3);
+                                2           2
+(%o6)         [lambda([x], 2 cos (x) - 2 sin (x))]
 @end example
 
 When the last or only function argument @var{x_n} is a list of one element,

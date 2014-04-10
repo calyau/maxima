@@ -47,4 +47,27 @@ rkf45([2+y1^2*y2-(8.533+1)*y1,8.533*y1-y1^2*y2],[y1,y2],[1,4.2665],[x,0,20],
 [20.0,6.871759807473679,6.850927787700432]$
 /* ---------------------------------------------------------------------------*/
 
+/* see thread http://permalink.gmane.org/gmane.comp.mathematics.maxima.general/45146
+   -constants in ode need to be coerced to floats
+   -initial and interval need to be coerced to floats
+*/
+block([vx,x,t,dx_dt,dvx_dt,ode],
+  dx_dt : vx,
+  dvx_dt : -4*%pi^2*x + 100*sin(4*%pi*t + %pi/4)/(0.5 + t^2),
+  ode : [dx_dt,  dvx_dt],
+  errcatch(rkfsoln : rkf45 (ode, [x, vx], [1, 0], [t, 0, 1])),
+  is(%% = []));
+false $
+
+/* Error handling for improper interval argument */
+errcatch (rkf45(y,y,1,[t,0]));
+[]$
+errcatch (rkf45(y,y,1,t,0,1));
+[]$
+
+/* see thread http://permalink.gmane.org/gmane.comp.mathematics.maxima.general/45195
+*/
+is( abs(last(last(rkf45 (-t*y,y,1,[t,0,1,0.01]))) - exp(-0.5)) < 1e-6 );
+true $
+
 /* batch("/pap/Maxima/rkf45/rtest_rkf45.mac",'test); */
