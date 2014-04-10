@@ -2145,38 +2145,30 @@ Represents the Stirling number of the first kind.
 When @var{n} and @var{m} are nonnegative 
 integers, the magnitude of @code{stirling1 (@var{n}, @var{m})} is the number of 
 permutations of a set with @var{n} members that have @var{m} cycles.
-For details, see Graham, Knuth and Patashnik @i{Concrete Mathematics}.
-Maxima uses a recursion relation to define @code{stirling1 (@var{n}, @var{m})} for
-@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
-arguments.
 
 @code{stirling1} is a simplifying function.
-Maxima knows the following identities.
+Maxima knows the following identities:
 
-@c COPIED VERBATIM FROM SRC/NSET.LISP
 @enumerate
 @item
-@math{stirling1(0, n) = kron_delta(0, n)} (Ref. [1])
+@math{stirling1(1,k) = kron_delta(1,k), k >= 0},(see @url{http://dlmf.nist.gov/26.8.E2})
 @item
-@math{stirling1(n, n) = 1} (Ref. [1])
+@math{stirling1(n,n) = 1, n >= 0} (see @url{http://dlmf.nist.gov/26.8.E1})
 @item
-@math{stirling1(n, n - 1) = binomial(n, 2)} (Ref. [1])
+@math{stirling1(n,n-1) = -binomial(n,2), n >= 1}, (see @url{http://dlmf.nist.gov/26.8.E16})
 @item
-@math{stirling1(n + 1, 0) = 0} (Ref. [1])
+@math{stirling1(n,0) = kron_delta(n,0), n >=0}  (see @url{http://dlmf.nist.gov/26.8.E14} and 
+   @url{http://dlmf.nist.gov/26.8.E1})
 @item
-@math{stirling1(n + 1, 1) = n!} (Ref. [1])
+@math{stirling1(n,1) =(-1)^(n-1) (n-1)!, n >= 1} (see @url{http://dlmf.nist.gov/26.8.E14})
 @item
-@math{stirling1(n + 1, 2) = 2^n  - 1} (Ref. [1])
+@math{stirling1(n,k) = 0, n >= 0} and @math{k > n}.
 @end enumerate
 
 These identities are applied when the arguments are literal integers
 or symbols declared as integers, and the first argument is nonnegative.
 @code{stirling1} does not simplify for non-integer arguments.
 
-References:
-
-[1] Donald Knuth, @i{The Art of Computer Programming,}
-third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
 
 Examples:
 
@@ -2192,34 +2184,6 @@ Examples:
 (%o3)                           1
 @end example
 
-@code{stirling1} does not simplify for non-integer arguments.
-
-@c ===beg===
-@c stirling1 (sqrt(2), sqrt(2));
-@c ===end===
-@example
-(%i1) stirling1 (sqrt(2), sqrt(2));
-(%o1)              stirling1(sqrt(2), sqrt(2))
-@end example
-
-Maxima applies identities to @code{stirling1}.
-
-@c ===beg===
-@c declare (n, integer)$
-@c assume (n >= 0)$
-@c stirling1 (n + 1, n);
-@c stirling1 (n + 1, 1);
-@c ===end===
-@example
-(%i1) declare (n, integer)$
-(%i2) assume (n >= 0)$
-(%i3) stirling1 (n + 1, n);
-                            n (n + 1)
-(%o3)                       ---------
-                                2
-(%i4) stirling1 (n + 1, 1);
-(%o4)                          n!
-@end example
 
 @opencatbox
 @category{Integers}
@@ -2235,46 +2199,22 @@ Represents the Stirling number of the second kind.
 When @var{n} and @var{m} are nonnegative 
 integers, @code{stirling2 (@var{n}, @var{m})} is the number of ways a set with 
 cardinality @var{n} can be partitioned into @var{m} disjoint subsets.
-Maxima uses a recursion relation to define @code{stirling2 (@var{n}, @var{m})} for
-@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
-arguments.
 
 @code{stirling2} is a simplifying function.
 Maxima knows the following identities.
 
-@c COPIED VERBATIM FROM SRC/NSET.LISP
 @enumerate
-@item
-@math{stirling2(0, n) = kron_delta(0, n)} (Ref. [1])
-@item
-@math{stirling2(n, n) = 1} (Ref. [1])
-@item
-@math{stirling2(n, n - 1) = binomial(n, 2)} (Ref. [1])
-@item
-@math{stirling2(n + 1, 1) = 1} (Ref. [1])
-@item
-@math{stirling2(n + 1, 2) = 2^n  - 1} (Ref. [1])
-@item
-@math{stirling2(n, 0) = kron_delta(n, 0)} (Ref. [2])
-@item
-@math{stirling2(n, m) = 0} when @math{m > n} (Ref. [2])
-@item
-@math{stirling2(n, m) = sum((-1)^(m - k) binomial(m k) k^n,i,1,m) / m!}
-when @math{m} and @math{n} are integers, and @math{n} is nonnegative. (Ref. [3])
+@item @math{stirling2(n,0) = 1, n >= 1} (see @url{http://dlmf.nist.gov/26.8.E17} and stirling2(0,0) = 1)
+@item @math{stirling2(n,n) = 1, n >= 0}, (see @url{http://dlmf.nist.gov/26.8.E4})
+@item @math{stirling2(n,1) = 1, n >= 1}, (see @url{http://dlmf.nist.gov/26.8.E17} and stirling2(0,1) = 0)
+@item @math{stirling2(n,2) = 2^(n-1) -1, n >= 1}, (see @url{http://dlmf.nist.gov/26.8.E17})
+@item @math{stirling2(n,n-1) = binomial(n,2), n>= 1} (see @url{http://dlmf.nist.gov/26.8.E16})
+@item @math{stirling2(n,k) = 0, n >= 0} and @math{k > n}.
 @end enumerate
 
 These identities are applied when the arguments are literal integers
 or symbols declared as integers, and the first argument is nonnegative.
 @code{stirling2} does not simplify for non-integer arguments.
-
-References:
-
-[1] Donald Knuth. @i{The Art of Computer Programming},
-third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
-
-[2] Graham, Knuth, and Patashnik. @i{Concrete Mathematics}, Table 264.
-
-[3] Abramowitz and Stegun. @i{Handbook of Mathematical Functions}, Section 24.1.4.
 
 Examples:
 
@@ -2298,26 +2238,6 @@ Examples:
 @example
 (%i1) stirling2 (%pi, %pi);
 (%o1)                  stirling2(%pi, %pi)
-@end example
-
-Maxima applies identities to @code{stirling2}.
-
-@c ===beg===
-@c declare (n, integer)$
-@c assume (n >= 0)$
-@c stirling2 (n + 9, n + 8);
-@c stirling2 (n + 1, 2);
-@c ===end===
-@example
-(%i1) declare (n, integer)$
-(%i2) assume (n >= 0)$
-(%i3) stirling2 (n + 9, n + 8);
-                         (n + 8) (n + 9)
-(%o3)                    ---------------
-                                2
-(%i4) stirling2 (n + 1, 2);
-                              n
-(%o4)                        2  - 1
 @end example
 
 @opencatbox

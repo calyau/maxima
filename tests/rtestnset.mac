@@ -1090,6 +1090,69 @@ makelist(subst(n=i,e) - stirling2(i,2),i,-5,5);
 makelist(subst(n=i,e) - stirling2(i,i),i,-5,5);
 ''(makelist(0,i,-5,5))$
 
+(assume(n >=0), declare(n,integer), declare(k,integer), declare(kk,integer), assume(k >=0),0);
+0$
+
+stirling1(n,n);
+1$
+
+stirling1(kk,kk);
+stirling1(kk,kk)$
+
+stirling1(1,kk);
+stirling1(1,kk)$
+
+stirling1(1,k);
+kron_delta(1,k)$
+
+stirling1(n,0);
+stirling1(n,0)$
+
+stirling1(n+1,0);
+0$
+
+stirling1(n,1);
+stirling1(n,1)$
+
+stirling1(n+1,1);
+(-1)^(n) * (n)!$
+
+stirling1(n,n-1);
+stirling1(n,n-1)$
+
+stirling1(n+1,n);
+-binomial(n+1,2)$
+
+stirling2(n,n);
+1$
+
+stirling2(n,0);
+stirling2(n,0)$
+
+stirling2(n+1,0);
+0$
+
+stirling2(n,1);
+stirling2(n,1)$
+
+stirling2(n+1,1);
+1$
+
+stirling2(n,2);
+stirling2(n,2)$
+
+stirling2(n+1,2);
+2^n -1$
+
+stirling2(n,n-1);
+stirling2(n,n-1)$
+
+stirling2(n+1,n);
+binomial(n+1,2)$
+
+(forget(n>=0), forget(k >=0), remove(n,integer),remove(k,integer),remove(kk,integer),0);
+0$
+
 (remvalue(e),0);
 0$
 
