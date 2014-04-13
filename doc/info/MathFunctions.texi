@@ -686,8 +686,6 @@ Example:
 @closecatbox
 @end deffn
 
-@c NEEDS EXAMPLES
-
 @c -----------------------------------------------------------------------------
 @anchor{realpart}
 @deffn {Function} realpart (@var{expr})
