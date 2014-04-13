@@ -2619,7 +2619,7 @@ do gerador de n@'{u}meros aleat@'{o}rios.
 @anchor{set_random_state}
 @deffn {Function} set_random_state (@var{s})
 
-Copies @var{s} to the random number generator state.
+Copia @var{s} para o estado atual do gerador de números aleatórios.
 
 @code{set_random_state} always returns @code{done}.
 
@@ -2642,7 +2642,7 @@ reclama com um erro se @var{x} n@~{a}o for nem inteiro nem um n@'{u}mero em pont
 As fun@,{c}@~{o}es @code{make_random_state} e @code{set_random_state}
 preservam o estado do gerador de n@'{u}meros aleat@'{o}rios.
 
-O geradro de n@'{u}meros aleat@'{o}rios do Maxima @'{e} uma implementa@,{c}@~{a}o de Mersenne twister
+O gerador de n@'{u}meros aleat@'{o}rios do Maxima @'{e} uma implementa@,{c}@~{a}o de Mersenne twister
 MT 19937.
 
 Exemplos:
@@ -2693,5 +2693,3 @@ Exemplos:
 @category{Random numbers} @category{Numerical methods}
 @closecatbox
 @end deffn
-
-@c passar os exemplos para o ingles
