@@ -1273,7 +1273,25 @@ See @mrefdot{%emode}
 @code{%enumer}, when @code{true} causes @code{%e} to be replaced by
 2.718@dots{} whenever @code{numer} is @code{true}.  See @mrefdot{%enumer}
 
-@c NEED EXAMPLES HERE
+@c ===beg===
+@c demoivre;
+@c %e^(a + b*%i);
+@c demoivre: not demoivre;
+@c %e^(a + b*%i);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                                false
+(%i2) %e^(a + b*%i);
+                                    %i b + a
+(%o2)                             %e
+(%i3) demoivre: not demoivre;
+(%o3)                                true
+(%i4) %e^(a + b*%i);
+                             a
+(%o4)                      %e  (%i sin(b) + cos(b))
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions}
 @closecatbox
