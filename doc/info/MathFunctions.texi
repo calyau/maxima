@@ -718,8 +718,6 @@ Example:
 @closecatbox
 @end deffn
 
-@c NEEDS EXAMPLES
-
 @c -----------------------------------------------------------------------------
 @anchor{rectform}
 @deffn {Function} rectform (@var{expr})
@@ -1087,6 +1085,38 @@ When @code{sumsplitfact} is @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
 @mref{minfactorial} is applied after a @mrefdot{factcomb}
 
+@c ===beg===
+@c sumsplitfact;
+@c n!/(n+2)!;   
+@c factcomb(%); 
+@c sumsplitfact: not sumsplitfact ;
+@c n!/(n+2)!;
+@c factcomb(%);
+@c ===end=== 
+
+@example
+(%i1) sumsplitfact
+(%o1)                                true
+(%i2) n!/(2+n)!
+                                      n!
+(%o2)                              --------
+                                   (n + 2)!
+(%i3) factcomb(%)
+                                      n!
+(%o3)                              --------
+                                   (n + 2)!
+(%i4) sumsplitfact:not sumsplitfact
+(%o4)                                false
+(%i5) n!/(2+n)!
+                                      n!
+(%o5)                              --------
+                                   (n + 2)!
+(%i6) factcomb(%)
+                                       1
+(%o6)                           ---------------
+                                (n + 1) (n + 2)
+@end example
+
 @opencatbox
 @category{Gamma and factorial functions} @category{Simplification flags and variables}
 @closecatbox
@@ -1132,7 +1162,41 @@ such that @code{abs(y) < 1}.
 When @code{%emode} is @code{false}, no special simplification of
 @code{%e^(%pi %i x)} is carried out.
 
-@c NEED EXAMPLES HERE
+@c ===beg===
+@c %emode;
+@c %e^(%pi*%i*1);
+@c %e^(%pi*%i*216/144);
+@c %e^(%pi*%i*192/144);
+@c %e^(%pi*%i*180/144);
+@c %e^(%pi*%i*120/144);
+@c %e^(%pi*%i*121/144);
+@c ===end===
+@example
+(%i1) %emode
+(%o1)                                true
+(%i2) %e^(%pi*%i*1)
+(%o2)                                 - 1
+(%i3) %e^(%pi*%i*216/144)
+(%o3)                                - %i
+(%i4) %e^(%pi*%i*192/144)
+                                 sqrt(3) %i   1
+(%o4)                          - ---------- - -
+                                     2        2
+(%i5) %e^(%pi*%i*180/144)
+                                  %i         1
+(%o5)                         - ------- - -------
+                                sqrt(2)   sqrt(2)
+(%i6) %e^(%pi*%i*120/144)
+                                 %i   sqrt(3)
+(%o6)                            -- - -------
+                                 2       2
+(%i7) %e^(%pi*%i*121/144)
+                                   121 %i %pi
+                                   ----------
+                                      144
+(%o7)                            %e
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
@@ -1151,7 +1215,39 @@ only if the exponent in @code{%e^x} evaluates to a number.
 
 See also @mref{ev} and @mrefdot{numer}
 
-@c NEED EXAMPLES HERE
+@c ===beg===
+@c %enumer;
+@c numer;
+@c 2*%e;
+@c %enumer: not %enumer;
+@c 2*%e;
+@c numer: not numer;
+@c 2*%e;    
+@c 2*%e^1;  
+@c 2*%e^x;  
+@c ===end===
+@example
+(%i1) %enumer
+(%o1)                                false
+(%i2) numer
+(%o2)                                false
+(%i3) 2*%e
+(%o3)                                2 %e
+(%i4) %enumer:not %enumer
+(%o4)                                true
+(%i5) 2*%e
+(%o5)                                2 %e
+(%i6) numer:not numer
+(%o6)                                true
+(%i7) 2*%e
+(%o7)                          5.43656365691809
+(%i8) 2*%e^1
+(%o8)                          5.43656365691809
+(%i9) 2*%e^x
+                                               x
+(%o9)                       2 2.718281828459045 
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions} @category{Evaluation flags}
 @closecatbox
