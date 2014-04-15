@@ -1575,7 +1575,7 @@ Default value: @code{false}
 
 When @code{lispdisp} is @code{true}, Lisp symbols are displayed with a leading
 question mark @code{?}.  Otherwise, Lisp symbols are displayed with no leading
-mark.
+mark. This has the same effect for 1-d and 2-d display.
 
 Examples:
 
