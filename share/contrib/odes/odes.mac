@@ -223,7 +223,7 @@ ratsimp(ev(%%,diff)),
 trigexpand(%%),
 ratsubst(t,omega,%%),
 d:map(radcan,expand(%%)),
-if listofvars(%%)=[t] then (
+if listofvars(%%)=[t] or listofvars(%%)=[] then (
 exp(integrate(d,t)),
 ans:subst(t=omega,%%))
 else return(false),
