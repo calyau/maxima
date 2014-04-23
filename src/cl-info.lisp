@@ -211,7 +211,7 @@
 (defun load-info-hashtables (dir-name deffn-defvr-pairs section-pairs)
   (if (and (zerop (length section-pairs)) 
            (zerop (length deffn-defvr-pairs)))
-    (format t (intl:gettext "warning: ignoring an empty documentation index in ~M~%") dir-name)
+    (format t (intl:gettext "warning: ignoring an empty documentation index in ~a~%") dir-name)
     (destructuring-bind
       (section-hashtable deffn-defvr-hashtable)
       (ensure-info-tables dir-name)
