@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 88be232340acaae28a1ffc543c6d7ea6  maxima.texi
+@c f748fdd469c5f84597d4b0d2a63e42a0  Operators.texi
 @c
 @menu     
 * Introduction to operators::      
@@ -1251,9 +1251,21 @@ O operador de definição de função.
 O comando @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} define uma função chamada
 @var{f} com argumentos @var{x_1}, @dots{}, @var{x_n} e lei de formação
 @var{expr}.  O operador @code{:=} nunca avalia a lei de formação (a menos que explicitamente
-se avalie a lei de formação via apóstrofo-apóstrofo @code{'@w{}'}).  A função então definida pode ser uma
-função comum do Maxima (com argumentos entre parêntesis) ou uma função de
-vetor estático (com argumetos entre colchêtes).
+avaliado por apóstrofo-apóstrofo @code{'@w{}'}).
+O corpo da função é avaliado toda vez que a função for camada.
+
+@code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called array function.
+Its function body is evaluated just once for each distinct value of its arguments,
+and that value is returned, without evaluating the function body,
+whenever the arguments have those values again.
+(A function of this kind is commonly known as a ``memoizing function''.)
+
+@code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
+is a special case of an array function.
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]} is an array function which returns a lambda expression
+with arguments @code{@var{y_1}, ..., @var{y_m}}.
+The function body is evaluated once for each distinct value of @code{@var{x_1}, ..., @var{x_n}},
+and the body of the lambda expression is that value.
 
 Quando o último ou único argumento de função @var{x_n} for uma lista de um elemento, a
 função definida por @code{:=} aceita um número de argumentos variável.  Os argumentos
@@ -1300,19 +1312,86 @@ apóstrofo-apóstrofo).
 (%o5)                    cos(b) - sin(a)
 @end example
 
-A função definida atraes de @code{:=} pode ser uma função comum do Maxima ou uma
-função de vetor estático.
+O comando @code{f(@var{x_1}, ..., @var{x_n}) := ...} define uma função comum.
 
 @c ===beg===
-@c G1 (x, y) := x.y - y.x;
-@c G2 [x, y] := x.y - y.x;
+@c G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+@c G1([1, a], [2, b]);
+@c G1([1, a], [2, b]);
 @c ===end===
 @example
-(%i1) G1 (x, y) := x.y - y.x;
-(%o1)               G1(x, y) := x . y - y . x
-(%i2) G2 [x, y] := x.y - y.x;
-(%o2)                G2     := x . y - y . x
-                       x, y
+(%i1) G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+(%o1) G1(x, y) := (print("Evaluating G1 for x=", x, "and y=", 
+                                               y), x . y - y . x)
+(%i2) G1([1, a], [2, b]);
+Evaluating G1 for x= [1, a] and y= [2, b] 
+(%o2)                           0
+(%i3) G1([1, a], [2, b]);
+Evaluating G1 for x= [1, a] and y= [2, b] 
+(%o3)                           0
+@end example
+
+O comando @code{f[@var{x_1}, ..., @var{x_n}] := ...} define uma função array (vetor estático).
+
+@c ===beg===
+@c G2[a] := (print ("Evaluating G2 for a=", a), a^2);
+@c G2[1234];
+@c G2[1234];
+@c G2[2345];
+@c arrayinfo (G2);
+@c listarray (G2);
+@c ===end===
+@example
+(%i1) G2[a] := (print ("Evaluating G2 for a=", a), a^2);
+                                                     2
+(%o1)     G2  := (print("Evaluating G2 for a=", a), a )
+            a
+(%i2) G2[1234];
+Evaluating G2 for a= 1234 
+(%o2)                        1522756
+(%i3) G2[1234];
+(%o3)                        1522756
+(%i4) G2[2345];
+Evaluating G2 for a= 2345 
+(%o4)                        5499025
+(%i5) arrayinfo (G2);
+(%o5)              [hashed, 1, [1234], [2345]]
+(%i6) listarray (G2);
+(%o6)                  [1522756, 5499025]
+@end example
+
+O comando @code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
+é um caso especial de uma função array (vetor estático).
+
+@c ===beg===
+@c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+@c G3[2];
+@c G3[2];
+@c G3[2](1);
+@c arrayinfo (G3);
+@c listarray (G3);
+@c ===end===
+@example
+(%i1) G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+(%o1) G3 (x) := (print("Evaluating G3 for n=", n), 
+        n
+                                                     2
+                                             diff(sin (x), x, n))
+(%i2) G3[2];
+Evaluating G3 for n= 2 
+                                2           2
+(%o2)          lambda([x], 2 cos (x) - 2 sin (x))
+(%i3) G3[2];
+                                2           2
+(%o3)          lambda([x], 2 cos (x) - 2 sin (x))
+(%i4) G3[2](1);
+                           2           2
+(%o4)                 2 cos (1) - 2 sin (1)
+(%i5) arrayinfo (G3);
+(%o5)                   [hashed, 1, [2]]
+(%i6) listarray (G3);
+                                2           2
+(%o6)         [lambda([x], 2 cos (x) - 2 sin (x))]
 @end example
 
 Quando o último ou único argumento da função @var{x_n} for uma lista de um elemento,

@@ -117,12 +117,20 @@ simplify_sum(expr) :=
     [sm1: simplify_sum(split_sum(expand(fibtophi(expr))))],
     if freeof_sum(sm1) then block(
       [algebraic:true],
-      ratsimp(sm1))
-    else expr)
+      ratsimp(sm1)))
 
   /* Check if summand is a logarighm */
-  else if not(atom(part(expr, 1))) and part(expr, 1, 0)=log and part(expr, 2)#minf and part(expr, 3)#inf then
-    log(simplify_product(apply(product, append([exp(part(expr, 1))], rest(args(expr))))))
+  else if not(atom(part(expr, 1))) and part(expr, 1, 0)=log and part(expr, 3)#minf then block(
+    [%up, %sub],
+    if part(expr, 4)=inf then (
+      %sub: log(simplify_product(apply(product,
+            [exp(part(expr, 1)), part(expr, 2), part(expr, 3), %up]))),
+      %sub: limit(%sub, %up, inf),
+      if not(freeof(inf, %sub) and freeof(minf, %sub)) then error("Sum is divergent!")
+      elseif freeof_limit(%sub) then %sub
+      else expr)
+    else (
+      log(simplify_product(apply(product, cons(exp(part(expr, 1)), rest(args(expr))))))))
 
   /* Main summation code starts here */
   else block(
@@ -225,7 +233,7 @@ simplify_sum(expr) :=
       ss_print_message(1, "Trying ratfun -> psi ..."),
       ratfun : part(expr1, 1),
       if hi=inf and hipow(num(ratfun), var) > hipow(denom(ratfun), var)-2 then
-        error("Sum is divergent"),
+        error("Sum is divergent!"),
       polypart : first(divide(num(ratfun), denom(ratfun), var)),
       expr1 : intosum(substpart(ratsimp(ratfun - polypart), expr1, 1)),
       ss_print_message(3, "Polynomial part", polypart),

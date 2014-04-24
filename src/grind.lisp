@@ -18,7 +18,7 @@
 
 (defmspec $grind (x)
   (setq x (cdr x))
-  (let (y)
+  (let (($lispdisp t) y)
     (fresh-line)
     (cond
       ((null x))
@@ -159,7 +159,7 @@
            ((char= #\$ (car y)) (setq y (slash (cdr y))))
            ((member (marray-type x) '(array hash-table $functional))
             (return (msize-array-object x l r)))
-           (t (setq y (cons #\? (slash y)))))
+           (t (setq y (if $lispdisp (cons #\? (slash y)) (slash y)))))
      (return (msz y l r))))
 
 (defun msz (x l r)
