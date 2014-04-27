@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2013 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2014 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -710,11 +710,14 @@
   (cond
     ((atom val)
        (case val
-         ($dots     (setf (gethash opt *gr-options*) 0))
-         ($solid    (setf (gethash opt *gr-options*) 1))
-         ($dashes   (setf (gethash opt *gr-options*) 2))
-         ($dot_dash (setf (gethash opt *gr-options*) 6))
-         ($tube     (setf (gethash opt *gr-options*) -8))
+         ($dots                    (setf (gethash opt *gr-options*) 0))
+         ($solid                   (setf (gethash opt *gr-options*) 1))
+         ($dashes                  (setf (gethash opt *gr-options*) 2))
+         ($short_dashes            (setf (gethash opt *gr-options*) 3))
+         ($short_long_dashes       (setf (gethash opt *gr-options*) 4))
+         ($short_short_long_dashes (setf (gethash opt *gr-options*) 5))
+         ($dot_dash                (setf (gethash opt *gr-options*) 6))
+         ($tube                    (setf (gethash opt *gr-options*) -8))
          (otherwise  (merror "draw: illegal line type: ~M" val) )))
     ((and ($listp val)
           (= ($length val) 2)
