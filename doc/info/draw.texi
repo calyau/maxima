@@ -1753,7 +1753,9 @@ See also @code{label_alignment} and @code{color}.
 Default value: @code{solid}
 
 @code{line_type} indicates how lines are displayed; possible values are
-@code{solid} and @code{dots}.
+@code{solid} and @code{dots}, both available in all terminals, and
+@code{dashes}, @code{short_dashes}, @code{short_long_dashes}, @code{short_short_long_dashes}, 
+and @code{dot_dash}, which are not available in @code{png}, @code{jpg}, and @code{gif} terminals. 
 
 This option affects the following graphic objects:
 @itemize @bullet
@@ -2545,13 +2547,14 @@ does not matter.
 
 Example:
 
-The @i{dumb} terminal is not supported by package @code{draw},
-but it is possible to set it by making use of option @code{user_preamble},
+Tell Gnuplot to draw axes on top of graphics objects,
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
-             parametric(cos(u),sin(u),u,0,2*%pi),
-             user_preamble="set terminal dumb")$
+(%i2) draw2d(
+        xaxis =true, xaxis_type=solid,
+        yaxis =true, yaxis_type=solid,
+        user_preamble="set grid front",
+        region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$
 @end example
 
 @opencatbox

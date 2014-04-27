@@ -1,4 +1,4 @@
-@c English version 2013-10-29
+@c English version 2014-04-27
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1596,7 +1596,10 @@ V@'eanse tambi@'en @code{label_alignment} y @code{color}.
 Valor por defecto: @code{solid}
 
 @code{line_type} indica c@'omo se van a dibujar las l@'{@dotless{i}}neas;
-valores posibles son @code{solid} y @code{dots}.
+valores posibles son @code{solid} y @code{dots}, que est@'an disponibles
+en todos los terminales, y @code{dashes}, @code{short_dashes}, 
+@code{short_long_dashes}, @code{short_short_long_dashes} y @code{dot_dash},
+que no es@'an disponibles en los terminales @code{png}, @code{jpg} y @code{gif}.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -2318,13 +2321,14 @@ descripci@'on de la escena no reviste importancia.
 
 Ejemplo:
 
-El terminal @i{dumb} no est@'a soportado por el paquete @code{draw},
-pero es posible activarlo haciendo uso de la opci@'on @code{user_preamble},
+Se le indica a Gnuplot que dibuje los ejes encima de todos los dem@'as objetos,
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
-             parametric(cos(u),sin(u),u,0,2*%pi),
-             user_preamble="set terminal dumb")$
+(%i2) draw2d(
+        xaxis =true, xaxis_type=solid,
+        yaxis =true, yaxis_type=solid,
+        user_preamble="set grid front",
+        region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$
 @end example
 @end defvr
 
