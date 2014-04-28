@@ -81,6 +81,7 @@
       (gethash '$xyplane *gr-options*)          nil
       (gethash '$font *gr-options*)             "";
       (gethash '$font_size *gr-options*)        10;
+      (gethash '$key_pos *gr-options*)          nil
 
       ; colors are specified by name
       (gethash '$background_color *gr-options*) "#ffffff"
@@ -330,6 +331,24 @@
     (when (correct-color-name str)
       (setf str (gethash str *color-table*)))
     (setf (gethash opt *gr-options*) str)))
+
+
+
+
+;; update option key_pos
+;; ---------------------
+(defun update-key_pos (val)
+  (case val
+    ($top_left      (setf (gethash '$key_pos *gr-options*) "top left"))
+    ($top_center    (setf (gethash '$key_pos *gr-options*) "top center"))
+    ($top_right     (setf (gethash '$key_pos *gr-options*) "top right"))
+    ($center_left   (setf (gethash '$key_pos *gr-options*) "center left"))
+    ($center        (setf (gethash '$key_pos *gr-options*) "center center"))
+    ($center_right  (setf (gethash '$key_pos *gr-options*) "center right"))
+    ($bottom_left   (setf (gethash '$key_pos *gr-options*) "bottom left"))
+    ($bottom_center (setf (gethash '$key_pos *gr-options*) "bottom center"))
+    ($bottom_right  (setf (gethash '$key_pos *gr-options*) "bottom right"))
+    (otherwise (merror "draw: illegal key position specification"))))
 
 
 
@@ -759,11 +778,12 @@
                                                       ; aquaterm. A list of type [term, number]
                                                       ; is also admited if term is screen, wxt
                                                       ; or aquaterm
-      (gethash '$dimensions *gr-options*)   '(600 500)
+      (gethash '$key_pos *gr-options*)            nil
+      (gethash '$dimensions *gr-options*)        '(600 500)
       (gethash '$file_name *gr-options*)         "maxima_out"
       (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
       (gethash '$data_file_name *gr-options*)    "data.gnuplot"
-      (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
+      (gethash '$delay *gr-options*)             5 ; delay for animated gif's, default 5*(1/100) sec
    ))
 
 
@@ -895,6 +915,8 @@
                      (merror "draw: illegal tics allocation: ~M" val)) ))
       ($terminal
         (update-terminal val))
+      ($key_pos
+        (update-key_pos val))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
