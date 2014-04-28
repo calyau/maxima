@@ -1,4 +1,4 @@
-@c English version 2014-04-27
+@c English version 2014-04-28
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1525,6 +1525,42 @@ Ejemplo:
 @end example
 @end defvr
 
+
+
+@defvr {Opci@'on gr@'afica} key_pos
+Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
+
+La opci@'on @code{key_pos} establece en qu@' posici@'on se colocar@'a la leyenda.
+Si @code{key} es una cadena vac@'{@dotless{i}}a, entonces se utilizar@'a por defecto la
+posici@'on @code{"top_right"}.
+Los valores disponibles para esta opci@'on son: @code{top_left}, @code{top_center},
+@code{top_right}, @code{center_left}, @code{center}, @code{center_right},
+@code{bottom_left}, @code{bottom_center} y @code{bottom_right}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplos:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key_pos = top_left,
+        key   = "x",
+        explicit(x,  x,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2,x,0,10))$
+(%i3) draw3d(
+        key_pos = center,
+        key   = "x",
+        explicit(x+y,x,0,10,y,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2+y^2,x,0,10,y,0,10))$
+@end example
+
+@end defvr
 
 
 

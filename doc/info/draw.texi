@@ -1679,6 +1679,47 @@ Example:
 
 
 
+
+@defvr {Graphic option} key_pos
+Default value: @code{""} (empty string)
+
+@code{key_pos} defines at which position the legend will be drawn. If @code{key} is an
+empty string, @code{"top_right"} is used.
+Available position specifiers are: @code{top_left}, @code{top_center}, @code{top_right},
+@code{center_left}, @code{center}, @code{center_right},
+@code{bottom_left}, @code{bottom_center}, and @code{bottom_right}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key_pos = top_left,
+        key   = "x",
+        explicit(x,  x,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2,x,0,10))$
+(%i3) draw3d(
+        key_pos = center,
+        key   = "x",
+        explicit(x+y,x,0,10,y,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2+y^2,x,0,10,y,0,10))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} label_alignment
 Default value: @code{center}
 
