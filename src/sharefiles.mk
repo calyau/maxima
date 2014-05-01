@@ -477,7 +477,6 @@ contrib/trigtools/trigtools-doc.pdf \
 contrib/trigtools/trigtools.mac \
 contrib/unit/unit-functions.lisp \
 contrib/unit/unit.mac \
-contrib/unit/unit.texi \
 contrib/unwind_protect.lisp \
 contrib/vector3d/vector3d.dem \
 contrib/vector3d/vector3d.mac \
