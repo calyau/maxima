@@ -18,9 +18,26 @@
 @c Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 @c Boston, MA 02110-1301, USA.
 
-@top Logic algebra package for Maxima
+@setfilename logic.info
+@settitle logic
 
-@section Introduction
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to logic, (dir), (dir)
+@top
+@menu
+* Introduction to logic::
+* Definitions for logic::
+* Function and variable index::
+@end menu
+@chapter logic
+
+@node Introduction to logic, Definitions for logic, Top, Top
+@section Introduction to logic
 
 This is a draft version of logic algebra package for Maxima.
 It is being developed by Alexey@tie{}Beshenov@tie{}(al@@beshenov.ru).
@@ -133,8 +150,8 @@ $$ \neg \left( \neg a \vee b\right) \vee c$$
 $$a \sim b \sim c$$
 @end tex
 
-@section Functions for logic algebra
-
+@node Definitions for logic, Function and variable index, Introduction to logic, Top
+@section Definitions for logic
 
 @deffn {Function} logic_simp (@var{expr})
 
@@ -624,3 +641,10 @@ Example:
 @end group
 @end example
 @end deffn
+
+@node Function and variable index,  , Definitions for logic, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
