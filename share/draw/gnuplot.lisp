@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2013 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2014 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -50,12 +50,12 @@
       ($screen
         ($multiplot_mode '$none)
         (send-gnuplot-command
-          (format nil "set terminal x11 ~a~%set multiplot~%" (write-font-type)))
+          (format nil "set terminal x11 dashed ~a~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
       ($wxt
         ($multiplot_mode '$none)
         (send-gnuplot-command
-          (format nil "set terminal wxt ~a~%set multiplot~%" (write-font-type)))
+          (format nil "set terminal wxt dashed ~a~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
       ($none
         (send-gnuplot-command
@@ -2754,6 +2754,9 @@
               (if (get-option '$axis_top) (setf suma (+ suma 4)))
               (if (get-option '$axis_right) (setf suma (+ suma 8)))
               (format nil "set border ~a~%" suma) )
+            (if (get-option '$key_pos)
+              (format nil "set key ~a~%" (get-option '$key_pos))
+              (format nil "set key top right~%") )
             (if (get-option '$xaxis)
                (format nil "set xzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$xaxis_width)
@@ -2906,6 +2909,9 @@
             (if (get-option '$logz)
                (format nil "set logscale z~%")
                (format nil "unset logscale z~%"))
+            (if (get-option '$key_pos)
+               (format nil "set key ~a~%" (get-option '$key_pos))
+               (format nil "set key top center~%") )
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
@@ -3094,17 +3100,17 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) )
-        ($pngcairo (format cmdstorage "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
+        ($pngcairo (format cmdstorage "set terminal pngcairo dashed enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) )
-        (($eps $multipage_eps) (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+        (($eps $multipage_eps) (format cmdstorage "set terminal postscript dashed eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        (($eps_color $multipage_eps_color) (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+        (($eps_color $multipage_eps_color) (format cmdstorage "set terminal postscript dashed eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3114,17 +3120,17 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($epslatex_standalone (format cmdstorage "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+        ($epslatex_standalone (format cmdstorage "set terminal epslatex dashed standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        (($pdf $multipage_pdf) (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        (($pdf $multipage_pdf) (format cmdstorage "set terminal pdf dashed enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        (($pdfcairo $multipage_pdfcairo) (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        (($pdfcairo $multipage_pdfcairo) (format cmdstorage "set terminal pdfcairo dashed enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3139,7 +3145,7 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name)))
-        ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
+        ($svg (format cmdstorage "set terminal svg dashed enhanced ~a size ~a, ~a~%set out '~a.svg'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
@@ -3155,12 +3161,12 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-        ($wxt (format cmdstorage "set terminal wxt enhanced ~a ~a size ~a, ~a~%"
+        ($wxt (format cmdstorage "set terminal wxt dashed enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-        ($x11 (format cmdstorage "set terminal x11 enhanced ~a ~a size ~a, ~a~%"
+        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3173,7 +3179,7 @@
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 enhanced ~a ~a size ~a, ~a~%"
+              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3379,37 +3385,37 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) ))
-      ($pngcairo (setf str (format nil "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
+      ($pngcairo (setf str (format nil "set terminal pngcairo dashed enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) ))
-      ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+      ($eps (setf str (format nil "set terminal postscript dashed eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
-      ($epslatex (format str "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
+      ($epslatex (format str "set terminal epslatex ~a color dashed size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-      ($epslatex_standalone (format str "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+      ($epslatex_standalone (format str "set terminal epslatex dashed standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-      ($eps_color (setf str (format nil "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+      ($eps_color (setf str (format nil "set terminal postscript dashed eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
-      ($pdf (setf str (format nil "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+      ($pdf (setf str (format nil "set terminal pdf dashed enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
-      ($pdfcairo (setf str (format nil "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+      ($pdfcairo (setf str (format nil "set terminal pdfcairo dashed enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3424,7 +3430,7 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name))))
-      ($svg (setf str (format nil "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
+      ($svg (setf str (format nil "set terminal svg dashed enhanced ~a size ~a, ~a~%set out '~a.svg'"
 			   (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))

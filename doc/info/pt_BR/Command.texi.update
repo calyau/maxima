@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c e3a597bdd98d74ba261f6aaad3915f71  Command.texi
+@c a2b40b57cdffdd4884173e42ec4679e5  Command.texi
 @c
 @menu
 * Introduction to Command Line::
@@ -1633,9 +1633,9 @@ n@~{a}o s@~{a}o afetadas por @code{linel}.
 @defvr {Option variable} lispdisp
 Valor padr@~{a}o: @code{false}
 
-Quandon @code{lispdisp} for @code{true}, s@'{i}mbolos Lisp s@~{a}o mostrados com uma interroga@,{c}@~{a}o
+Quando @code{lispdisp} for @code{true}, s@'{i}mbolos Lisp s@~{a}o mostrados com uma interroga@,{c}@~{a}o
 @code{?} no in@'{i}cio.  De outra forma, s@'{i}mbolos Lisp s@~{a}o mostrados sem nada no
-in@'{i}cio.
+in@'{i}cio. Tem o mesmo efeito para sa@'{i}das tanto em uma dimens@~{a}o quanto em duas dimens@~{o}es.
 
 Exemplos:
 
