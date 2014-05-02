@@ -332,9 +332,11 @@ contrib/Grobner/README \
 contrib/impdiff.mac \
 contrib/implicit_plot.lisp \
 contrib/integration/abs_integrate.html \
+contrib/integration/abs_integrate.info \
 contrib/integration/abs_integrate.mac \
 contrib/integration/abs_integrate.texi \
 contrib/integration/hyperint.mac \
+contrib/integration/integration-index.lisp \
 contrib/integration/partition.mac \
 contrib/integration/rtest_abs_integrate.mac \
 contrib/levin/levin.dem \
@@ -537,8 +539,10 @@ distrib/distrib.mac \
 distrib/numdistrib.lisp \
 distrib/rtest_distrib.mac \
 draw/draw_gnuplot.dem \
+draw/draw-index.lisp \
 draw/draw.lisp \
 draw/draw.system \
+draw/drawutils.info \
 draw/drawutils.mac \
 draw/drawutils.texi \
 draw/gnuplot.lisp \
@@ -876,6 +880,7 @@ linearalgebra/test-polynomialp.mac \
 logic/COPYING \
 logic/logic.dem \
 logic/logic.html \
+logic/logic-index.lisp \
 logic/logic.info \
 logic/logic.lisp \
 logic/logic.mac \

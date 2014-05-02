@@ -7,3 +7,5 @@ genericdirDATA = \
 $(sharefiles)
 
 EXTRA_DIST = $(genericdirDATA)
+
+SUBDIRS = contrib logic draw
