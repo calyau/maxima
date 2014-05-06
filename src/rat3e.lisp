@@ -16,7 +16,7 @@
 ;;	It includes the conversion and top-level routines used
 ;;	by the rest of the functions.
 
-(declare-top (special intbs* alflag var dosimp alc $myoptions trunclist
+(declare-top (special intbs* alflag var dosimp alc $myoptions
 		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 

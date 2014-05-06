@@ -16,7 +16,7 @@
 @deffn {Function} run_testsuite ([@var{options}])
 
 Executa os aplicativos de teste do Maxima.  Testes que produzem as respostas desejadas s@~{a}o
-considerados ``passes,''  e tamb@'{e}m os testes que n@~{a}o produzem a resposta
+considerados ``passes,'' @footnote{Nota do tradutor: aprovado.} e tamb@'{e}m os testes que n@~{a}o produzem a resposta
 desejada mas que forem marcados como erros conhecidos.
 
 A fun@,{c}@~{a}o @code{run_testsuite} pode ser usada com as seguintes palavras chave opcionais como argumento

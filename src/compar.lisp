@@ -1235,13 +1235,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		(setq exp dum)))
 	   ((eq dum 'float)
 	    (if (and (setq dum (numer x)) (numberp dum)) (setq exp dum)))
+           ;; If numer or symbol, try to evaluate numerically. NUMER returns NIL
+           ;; catches any errors and returns nil. If there would have been a
+           ;; floating point overflow, we might end up with a bigfloat. In that
+           ;; case, or if the result is small enough that we don't really trust
+           ;; it (eek, hack!), try evaluating as a bigfloat.
 	   ((and (member dum '(numer symbol) :test #'eq)
 		 (prog2 (setq dum (numer x))
 		     (or (null dum)
+                         (bigfloatp dum)
 			 (and (numberp dum)
 			      (prog2 (setq exp dum)
 				  (< (abs dum) 1.0e-6))))))
-	    (cond ($signbfloat
+	    (cond ((bigfloatp dum) (setq exp dum))
+                  ($signbfloat
 		   (and (setq dum ($bfloat x)) ($bfloatp dum) (setq exp dum)))
 		  (t (setq sign '$pnz evens nil odds (ncons x) minus nil)
 		     (return sign)))))
@@ -2306,6 +2313,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 					      ($decreasing . $increasing)
 					      ($symmetric . $antisymmetric)
 					      ($antisymmetric . $symmetric)
+					      ($rational . $irrational)
+					      ($irrational . $rational)
 					      ($oddfun . $evenfun)
 					      ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))

@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2013 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2014 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -81,6 +81,7 @@
       (gethash '$xyplane *gr-options*)          nil
       (gethash '$font *gr-options*)             "";
       (gethash '$font_size *gr-options*)        10;
+      (gethash '$key_pos *gr-options*)          nil
 
       ; colors are specified by name
       (gethash '$background_color *gr-options*) "#ffffff"
@@ -334,6 +335,24 @@
 
 
 
+;; update option key_pos
+;; ---------------------
+(defun update-key_pos (val)
+  (case val
+    ($top_left      (setf (gethash '$key_pos *gr-options*) "top left"))
+    ($top_center    (setf (gethash '$key_pos *gr-options*) "top center"))
+    ($top_right     (setf (gethash '$key_pos *gr-options*) "top right"))
+    ($center_left   (setf (gethash '$key_pos *gr-options*) "center left"))
+    ($center        (setf (gethash '$key_pos *gr-options*) "center center"))
+    ($center_right  (setf (gethash '$key_pos *gr-options*) "center right"))
+    ($bottom_left   (setf (gethash '$key_pos *gr-options*) "bottom left"))
+    ($bottom_center (setf (gethash '$key_pos *gr-options*) "bottom center"))
+    ($bottom_right  (setf (gethash '$key_pos *gr-options*) "bottom right"))
+    (otherwise (merror "draw: illegal key position specification"))))
+
+
+
+
 ;; update option terminal
 ;; ----------------------
 ;; *draw-terminal-number* is used when working with
@@ -342,7 +361,7 @@
 (defvar *draw-terminal-number* "")
 
 (defun update-terminal (val)
-  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color 
+  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $canvas
                  $epslatex $epslatex_standalone $svg $x11
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 
@@ -710,11 +729,14 @@
   (cond
     ((atom val)
        (case val
-         ($dots     (setf (gethash opt *gr-options*) 0))
-         ($solid    (setf (gethash opt *gr-options*) 1))
-         ($dashes   (setf (gethash opt *gr-options*) 2))
-         ($dot_dash (setf (gethash opt *gr-options*) 6))
-         ($tube     (setf (gethash opt *gr-options*) -8))
+         ($dots                    (setf (gethash opt *gr-options*) 0))
+         ($solid                   (setf (gethash opt *gr-options*) 1))
+         ($dashes                  (setf (gethash opt *gr-options*) 2))
+         ($short_dashes            (setf (gethash opt *gr-options*) 3))
+         ($short_long_dashes       (setf (gethash opt *gr-options*) 4))
+         ($short_short_long_dashes (setf (gethash opt *gr-options*) 5))
+         ($dot_dash                (setf (gethash opt *gr-options*) 6))
+         ($tube                    (setf (gethash opt *gr-options*) -8))
          (otherwise  (merror "draw: illegal line type: ~M" val) )))
     ((and ($listp val)
           (= ($length val) 2)
@@ -756,11 +778,12 @@
                                                       ; aquaterm. A list of type [term, number]
                                                       ; is also admited if term is screen, wxt
                                                       ; or aquaterm
-      (gethash '$dimensions *gr-options*)   '(600 500)
+      (gethash '$key_pos *gr-options*)            nil
+      (gethash '$dimensions *gr-options*)        '(600 500)
       (gethash '$file_name *gr-options*)         "maxima_out"
       (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
       (gethash '$data_file_name *gr-options*)    "data.gnuplot"
-      (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
+      (gethash '$delay *gr-options*)             5 ; delay for animated gif's, default 5*(1/100) sec
    ))
 
 
@@ -892,6 +915,8 @@
                      (merror "draw: illegal tics allocation: ~M" val)) ))
       ($terminal
         (update-terminal val))
+      ($key_pos
+        (update-key_pos val))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)

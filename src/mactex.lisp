@@ -114,13 +114,16 @@
 	   )
 	  (t (apply 'tex1  args)))))
 
-(defun quote-% (sym)
+(defun quote-chars (sym ch-str)
   (let* ((strsym (string sym))
-         (pos (position-if #'(lambda (c) (find c "$%&_")) strsym)))
+         (pos (position-if #'(lambda (c) (find c ch-str)) strsym)))
     (if pos
       (concatenate 'string (subseq strsym 0 pos) "\\" (subseq strsym pos (1+ pos))
-                           (quote-% (subseq strsym (1+ pos))))
+                           (quote-chars (subseq strsym (1+ pos)) ch-str))
       strsym)))
+
+(defun quote-% (sym)
+  (quote-chars sym "$%&_"))
 
 (defun tex1 (mexplabel &optional filename-or-stream) ;; mexplabel, and optional filename or stream
   (prog (mexp  texport x y itsalabel need-to-close-texport)
@@ -250,13 +253,20 @@
                       ((stringp x)
                        (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x))))
                       ((characterp x) (tex-char x))
+		      ((not ($mapatom x))
+		       (let ((x (if (member (marray-type x) '(array hash-table $functional))
+				    ($sconcat x)
+				  (format nil "~A" x))))
+			 (tex-string (quote-chars (if $stringdisp (concatenate 'string "``" x "''") x)
+						  "#$%&_"))))
+			 
 		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
 	  r))
 
 (defun tex-string (x)
   (cond ((equal x "") "")
 	((eql (elt x 0) #\\) x)
-	(t (concatenate 'string "\\mbox{{}" x "{}}"))))
+	(t (concatenate 'string "\\mbox{ " x " }"))))
 
 (defun tex-char (x)
   (if (eql x #\|) "\\mbox{\\verb/|/}"
@@ -1096,7 +1106,7 @@
 ;; Convenience function to allow user to process expression X
 ;; and get a string (TeX output for X) in return.
 
-(defun $tex1 (x) (apply #'strcat (tex x nil nil 'mparen 'mparen)))
+(defun $tex1 (x) (reduce #'strcat (tex x nil nil 'mparen 'mparen)))
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone

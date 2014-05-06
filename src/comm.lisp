@@ -45,7 +45,11 @@
     (and (symbolp x) (remprop x 'opr))
     (and (stringp x) (remhash x *opr-table*))))
 
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putopr (cadr x) (car x)))
+;; Store build-in operators, which get additional properties.
+;; These operators aren't killed by the function kill-operator.
+(defvar *mopl* nil)
+
+(mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putopr (cadr x) (car x)) (push (cadr x) *mopl*))
       '((mplus "+") (mminus "-") (mtimes "*") (mexpt "**") (mexpt "^")
 	(mnctimes ".") (rat "/") (mquotient "/") (mncexpt "^^")
 	(mequal "=") (mgreaterp ">") (mlessp "<") (mleqp "<=") (mgeqp ">=")
@@ -1019,7 +1023,7 @@
 (defun mcons-exp-args (e args)
   (if (eq (caar e) 'mqapply)
       (list* (delsimp (car e)) (cadr e) args)
-      (cons (if (eq (caar e) 'mlist) (car e) (delsimp (car e))) args)))
+      (cons (delsimp (car e)) args)))
 
 (defmfun $member (x e)
   (atomchk (setq e ($totaldisrep e)) '$member t)

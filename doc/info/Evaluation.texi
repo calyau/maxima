@@ -147,6 +147,54 @@ functions to be a simplification.
 (%o2)                          .8414709848078965
 @end example
 
+When the global flag @mref{noundisp} is @code{true}, nouns display with a single
+quote.
+
+@c ===beg===
+@c x:%pi;
+@c bfloat(x);
+@c sin(x);
+@c noundisp;
+@c 'bfloat(x);
+@c bfloat('x);
+@c sin(x);
+@c sin('x);
+@c noundisp : not noundisp;
+@c 'bfloat(x);
+@c bfloat('x);
+@c sin(x);
+@c sin('x);
+@c ===end===
+@example
+(%i1) x:%pi;
+(%o1)                                 %pi
+(%i2) bfloat(x);
+(%o2)                         3.141592653589793b0
+(%i3) sin(x);
+(%o3)                                  0
+(%i4) noundisp;
+(%o4)                                false
+(%i5) 'bfloat(x);
+(%o5)                             bfloat(%pi)
+(%i6) bfloat('x);
+(%o6)                                  x
+(%i7) 'sin(x);
+(%o7)                                  0
+(%i8) sin('x);
+(%o8)                               sin(x)
+(%i9) noundisp : not noundisp;
+(%o9)                                true
+(%i10) 'bfloat(x);
+(%o10)                           'bfloat(%pi)
+(%i11) bfloat('x);
+(%o11)                                 x
+(%i12) 'sin(x);
+(%o12)                                 0
+(%i13) sin('x);
+(%o13)                              sin(x)
+(%i14)
+@end example
+
 @opencatbox
 @category{Evaluation} @category{Operators}
 @closecatbox

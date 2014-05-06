@@ -1,0 +1,1933 @@
+@c
+@c versao pt_BR baseada no md5sum abaixo:
+@c 0aaa5516409ea54cb76194f078fc6822  Database.texi
+@c
+@menu
+* Introduction to Maximas Database::
+* Functions and Variables for Properties::
+* Functions and Variables for Facts::
+* Functions and Variables for Predicates::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Maximas Database, Functions and Variables for Properties, Maximas Database, Maximas Database
+@section Introduction to Maximas Database
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Properties, Functions and Variables for Facts, Introduction to Maximas Database, Maximas Database
+@section Functions and Variables for Properties
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{alphabetic}
+@defvr {Property} alphabetic
+
+A propriedade @code{alphabetic} @'{e} um tipo de propriedade reconhecido por @mrefdot{declare}@w{}
+A express@~{a}o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
+como alfab@'{e}ticos tos os caracteres em @var{s}, que deve ser uma sequ@^{e}ncia de caracteres.
+
+Veja tamb@'{e}m @ref{Identifiers}.
+
+Exemplo:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{bindtest}
+@defvr {Property} bindtest
+
+O comando @code{declare(@var{x}, bindtest)} dis ao Maxima para disparar um erro
+quando o s@'{i}mbolo @var{x} for avaliado como n@~{a}o associado.
+
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+@end defvr
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+
+@c -----------------------------------------------------------------------------
+@anchor{constant}
+@deffn {Property} constant
+
+O comando @code{declare(@var{a}, constant)} declara que @var{a} seja reconhecido como uma constante.  A
+declara@,{c}@~{a}o de um s@'{i}mbolo para que esse s@'{i}mbolo seja uma constante n@~{a}o impede a atribui@,{c}@~{a}o de um
+valor n@~{a}o constante para o s@'{i}mbolo.
+
+Veja @mref{constantp} e @mrefdot{declare}
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+Exemplo:
+
+@example
+(%i1) declare(c, constant);
+(%o1)                         done
+(%i2) constantp(c);
+(%o2)                         true
+(%i3) c : x;
+(%o3)                           x
+(%i4) constantp(c);
+(%o4)                         false
+@end example
+
+@opencatbox
+@category{Declarations and inferences} @category{Constants}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{constantp}
+@deffn {Function} constantp (@var{expr})
+
+Retorna @code{true} se @var{expr} for uma express@~{a}o constante, de outra forma retorna
+@code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+Uma express@~{a}o @'{e} considerada uma express@~{a}o constante se seus argumentos forem
+n@'{u}meros (incluindo n@'{u}meros racionais, como mostrado com @code{/R/}),
+constantes simb@'{o}licas tais como @mrefcomma{%pi} @mrefcomma{%e} e @mrefcomma{%i}@w{}
+vari@'{a}veis associadas a uma constante ou declaradamente constante por meio de @mrefcomma{declare}@w{}
+ou fun@,{c}@~{o}es cujos argumentos forem constantes.
+
+A fun@,{c}@~{a}o @code{constantp} avalia seus argumentos.
+
+Veja a propriedade @mref{constant} que declara um s@'{i}mbolo como sendo constante.
+
+Exemplos:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Constants}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c THIS ITEM IS EXTREMELY IMPORTANT
+@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
+@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
+
+@c -----------------------------------------------------------------------------
+@anchor{declare}
+@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
+
+Atribui ao @'{a}tomo ou @`{a} lista de @'{a}tomos @var{a_i} a propriedade ou lista de propriedades
+@var{p_i}.  Quando @var{a_i} e/ou @var{p_i} forem listas, cada um dos @'{a}tomos recebe
+todas as propiedades.
+
+A fun@,{c}@~{a}o @code{declare} n@~{a}o avalia seus argumentos.  A fun@,{c}@~{a}o @code{declare} sempre retorna @code{done}.
+
+Como notado na descri@,{c}@~{a}o para cada sinalizador de declara@,{c}@~{a}o, para mesmos sinalizadores
+@code{featurep(@var{objeto}, @var{caracter@'{i}stica})} retorna @code{true} se @var{objeto}
+tiver sido declarado como tendo @var{caracter@'{i}stica}.
+
+Para mais informa@,{c}@~{a}o sobre as caracter@'{i}sticas do sistema, veja @mrefdot{features} Para
+remover uma propriedade de um @'{a}tomo, use @mrefdot{remove}
+
+A fun@,{c}@~{a}o @code{declare} reconhece as seguintes propriedades:
+
+@table @code
+@item additive
+      Diz ao Maxima para simplificar express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
+      @code{@var{a_i}(x + y + z + ...)} @code{-->}
+      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+      A substitui@,{c}@~{a}o @'{e} realizada somente sobre o primeiro argumento.
+
+@item alphabetic
+      Diz ao Maxima para reconhecer todos os caracteres em @var{a_i} (que deve ser uma
+      sequ@^{e}ncia de caracteres) como caracteres alfab@'{e}ticos.
+
+@item antisymmetric, commutative, symmetric
+      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o sim@'{e}trica ou
+      antissim@'{e}trica.  Ter a propriedade @mref{commutative} @'{e} o mesmo que
+      ter a propriedade @code{symmetric}.
+
+@item bindtest
+      Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como
+      sendo n@~{a}o associado.
+
+@item constant
+      Diz ao Maxima para considerar @var{a_i} uma constante simb@'{o}lica.
+      @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+      @c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
+      @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@item even, odd
+      Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira par ou inteira @'{i}mpar.
+
+@item evenfun, oddfun
+      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o @'{i}mpar ou uma fun@,{c}@~{a}o par.
+
+@item evflag
+      Torna @var{a_i} conhecido para a fun@,{c}@~{a}o @code{ev} de forma que @var{a_i} seja associado a
+      @code{true} durante a execu@,{c}@~{a}o de @code{ev} quando @var{a_i} aparecer como
+      um argumento sinalizador de @code{ev}.  Veja @mrefdot{evflag}
+
+@item evfun
+      Torna @var{a_i} conhecido de @code{ev} de forma que a fun@,{c}@~{a}o chamada por @var{a_i}
+      seja aplicada quando @var{a_i} aparecer como um argumento sinalizador de @code{ev}.
+      Veja @mrefdot{evfun}
+
+@item feature
+      Diz ao Maxima para reconhecer @var{a_i} como o nome de uma caracter@'{i}stica.
+      Outros @'{a}tomos podem ser declarados terem a propriedade @var{a_i}.
+
+@item increasing, decreasing
+      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o crescente
+      ou como uma fun@,{c}@~{a}o crescente.
+      @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+      @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+      @c REPORTED AS SF BUG # 1483194
+
+@item integer, noninteger
+      Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira ou uma vari@'{a}vel n@~{a}o inteira.
+
+@item integervalued
+      Diz ao Maxima para reconhecer @var{a_i} cumo uma fun@,{c}@~{a}o cujo valor de retorno @'{e} um inteiro.
+
+@item lassociative, rassociative
+      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o associativa @`{a} direita ou
+      uma fun@,{c}@~{a}o associativa @`{a} esquerda.
+
+@item linear
+      Equivale a declarar @var{a_i} simult@^{a}neamente @code{outative} e
+      @code{additive}.
+
+@item mainvar
+      Diz ao Maxima para considerar @var{a_i} uma "vari@'{a}vel principal".  Uma vari@'{a}vel principal
+      prevalesce sobre todas as outras vari@'{a}veis e constantes na ordena@,{c}@~{a}o can@^{o}nica de
+      express@~{o}es do Maxima, como determinado por @code{ordergreatp}.
+
+@item multiplicative
+      Diz ao Maxima para simplificar as express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
+      @code{@var{a_i}(x * y * z * ...)} @code{-->} 
+      @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+      A substitui@,{c}@~{a}o @'{e} realizada sobre o primeiro argumento somente.
+
+@item nary
+      Diz ao Maxima para reconhecer @var{a_i} as an n-ary function.
+
+      The @code{nary} declaration is not the same as calling the @code{nary}
+      function.  The sole effect of @code{declare(foo, nary)} is to instruct the
+      Maxima simplifier to flatten nested expressions, for example, para simplificar
+      @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
+
+@item nonarray
+      Diz ao Maxima para considerar @var{a_i} not an array.  This declaration
+      prevents multiple evaluation of a subscripted variable name.
+
+@item nonscalar
+      Diz ao Maxima para considerar @var{a_i} a nonscalar variable.  The usual
+      application is to declare a variable as a symbolic vector or matrix.
+
+@item noun
+      Diz ao Maxima to parse @var{a_i} as a noun.  The effect of this is to
+      replace instances of @var{a_i} with @code{'@var{a_i}} or
+      @code{nounify(@var{a_i})}, depending on the context.
+
+@item outative
+      Diz ao Maxima para simplificar @var{a_i} expressions by pulling constant factors
+      out of the first argument.
+
+      When @var{a_i} has one argument, a factor is considered constant if it is
+      a literal or declared constant.
+
+      When @var{a_i} has two or more arguments, a factor is considered constant
+      if the second argument is a symbol and the factor is independente de the second
+      argument.
+
+@item posfun
+      Diz ao Maxima para reconhecer @var{a_i} as a positive function.
+
+@item rational, irrational
+      Diz ao Maxima para reconhecer @var{a_i} as a rational or irrational real
+      variable.
+
+@item real, imaginary, complex
+      Diz ao Maxima para reconhecer @var{a_i} as a real, pure imaginary, or complex
+      variable.
+
+@item scalar
+      Diz ao Maxima para considerar @var{a_i} a scalar variable.
+
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+@end table
+
+Examples of the usage of the properties are available in the documentation
+for each separate description of a property.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{decreasing}
+@anchor{increasing}
+@defvr  {Property} decreasing
+@defvrx {Property} increasing
+
+The commands @code{declare(@var{f}, decreasing)} or
+@code{declare(@var{f}, increasing)} tell Maxima para reconhecer the function
+@var{f} as an decreasing or increasing function.
+
+Veja tamb@'{e}m @mref{declare} for more properties.
+
+Exemplo:
+
+@example
+(%i1) assume(a > b);
+(%o1)                        [a > b]
+(%i2) is(f(a) > f(b));
+(%o2)                        unknown
+(%i3) declare(f, increasing);
+(%o3)                         done
+(%i4) is(f(a) > f(b));
+(%o4)                         true
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{even}
+@anchor{odd}
+@defvr  {Property} even
+@defvrx {Property} odd
+
+@code{declare(@var{a}, even)} or @code{declare(@var{a}, odd)} diz ao Maxima to
+recognize the symbol @var{a} as an even or odd integer variable.  The
+properties @code{even} and @code{odd} are not recognized by the functions
+@mrefcomma{evenp} @mrefcomma{oddp} and @mrefdot{integerp}
+
+Veja tamb@'{e}m @mref{declare} and @mrefdot{askinteger}
+
+Exemplo:
+
+@example
+(%i1) declare(n, even);
+(%o1)                         done
+(%i2) askinteger(n, even);
+(%o2)                          yes
+(%i3) askinteger(n);
+(%o3)                          yes
+(%i4) evenp(n);
+(%o4)                         false
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c NEEDS EXPANSION AND CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{feature}
+@defvr {Property} feature
+
+Maxima understands two distinct types of features, system features and features
+which apply to mathematical expressions.  Veja tamb@'{e}m @mref{status} for information
+about system features.  Veja tamb@'{e}m @mref{features} and @mref{featurep} for
+information about mathematical features.
+@c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
+@c OTHER STUFF ??
+
+@code{feature} itself is not the name of a function or variable.
+@end defvr
+
+@c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
+@c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
+
+@c -----------------------------------------------------------------------------
+@anchor{featurep}
+@deffn {Function} featurep (@var{a}, @var{f})
+
+Attempts to determine whether the object @var{a} has the feature @var{f} on the
+basis of the facts in the current database.  If so, it returns @code{true},
+else @code{false}.
+
+Note that @code{featurep} returns @code{false} when neither @var{f}
+nor the negation of @var{f} can be established.
+
+@code{featurep} evaluates its argument.
+
+Veja tamb@'{e}m @mref{declare} and @mrefdot{features}
+
+@example
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{features}
+@defvr {Declaration} features
+
+Maxima recognizes certain mathematical properties of functions and variables.
+These are called "features".
+
+@code{declare (@var{x}, @var{foo})} gives the property @var{foo}
+to the function or variable @var{x}.
+
+@code{declare (@var{foo}, feature)} declares a new feature @var{foo}.
+Por exemplo,
+@code{declare ([red, green, blue], feature)}
+declares three new features, @code{red}, @code{green}, and @code{blue}.
+
+The predicate @code{featurep (@var{x}, @var{foo})}
+returns @code{true} if @var{x} has the @var{foo} property,
+and @code{false} otherwise.
+
+The infolist @code{features} is a list of known features.  These are
+
+@verbatim
+   integer        noninteger      even
+   odd            rational        irrational
+   real           imaginary       complex
+   analytic       increasing      decreasing
+   oddfun         evenfun         posfun
+   commutative    lassociative    rassociative
+   symmetric      antisymmetric
+@end verbatim
+
+plus any user-defined features.
+
+@code{features} is a list of mathematical features.  There is also a list of
+non-mathematical, system-dependent features.  See @mrefdot{status}
+
+Exemplo:
+
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{get}
+@deffn {Function} get (@var{a}, @var{i})
+
+Retrieves the user property indicated by @var{i} associated with
+atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
+
+@code{get} evaluates its arguments.
+
+Veja tamb@'{e}m @mref{put} and @mrefdot{qput}
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
+@example
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                    transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error(expr,"is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)     [transcendental, [algebraic, transcendental]]
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{integer}
+@anchor{noninteger}
+@defvr  {Property} integer
+@defvrx {Property} noninteger
+
+@code{declare(@var{a}, integer)} or @code{declare(@var{a}, noninteger)} diz
+Maxima para reconhecer @var{a} as an integer or noninteger variable.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+Exemplo:
+
+@example
+(%i1) declare(n, integer, x, noninteger);
+(%o1)                         done
+(%i2) askinteger(n);
+(%o2)                          yes
+(%i3) askinteger(x);
+(%o3)                          no
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{integervalued}
+@defvr {Property} integervalued
+
+@code{declare(@var{f}, integervalued)} diz ao Maxima para reconhecer @var{f} as an
+integer-valued function.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+Exemplo:
+
+@example
+(%i1) exp(%i)^f(x);
+                              %i f(x)
+(%o1)                      (%e  )
+(%i2) declare(f, integervalued);
+(%o2)                         done
+(%i3) exp(%i)^f(x);
+                              %i f(x)
+(%o3)                       %e
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nonarray}
+@deffn {Property} nonarray
+
+The command @code{declare(a, nonarray)} diz ao Maxima para considerar @var{a} not
+an array.  This declaration prevents multiple evaluation, if @var{a} is a
+subscripted variable.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+Exemplo:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{nonscalar}
+@defvr {Property} nonscalar
+
+Makes atoms behave as does a list or matrix with respect to the dot operator.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+@opencatbox
+@category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nonscalarp}
+@deffn {Function} nonscalarp (@var{expr})
+
+Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
+atoms declared as non-scalars, lists, or matrices.
+
+Veja tamb@'{e}m the predicate function @mref{scalarp} and @mrefdot{declare}
+
+@opencatbox
+@category{Predicate functions} @category{Vectors} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{posfun}
+@defvr {Property} posfun
+
+@code{declare (f, posfun)} declares @code{f} to be a positive function.
+@code{is (f(x) > 0)} yields @code{true}.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK ESPECIALLY EXAMPLES
+@c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
+
+@c -----------------------------------------------------------------------------
+@anchor{printprops}
+@deffn  {Function} printprops (@var{a}, @var{i})
+@deffnx {Function} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
+@deffnx {Function} printprops (all, @var{i})
+
+Displays the property with the indicator @var{i} associated with the atom
+@var{a}.  @var{a} may also be a list of atoms or the atom @code{all} in which
+case all of the atoms with the given property will be used.  Por exemplo,
+@code{printprops ([f, g], atvalue)}.  @code{printprops} is for properties that
+cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
+@mrefcomma{atomgrad} @mrefcomma{gradef} and @mrefdot{matchdeclare}
+
+@opencatbox
+@category{Declarations and inferences} @category{Display functions}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{properties}
+@deffn {Function} properties (@var{a})
+
+Returns a list of the names of all the properties associated with the atom
+@var{a}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c WHAT IS HIDDEN IN THE "etc" HERE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{props}
+@defvr {System variable} props
+Valor padr@~{a}o: @code{[]}
+
+@code{props} are atoms which have any property other than those explicitly
+mentioned in @mrefcomma{infolists} such as specified by @mrefcomma{atvalue}@w{}
+@mrefcomma{matchdeclare} etc., as well as properties specified in the
+@mref{declare} function.
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{propvars}
+@deffn {Function} propvars (@var{prop})
+
+Returns a list of those atoms on the @mref{props} list which
+have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
+returns a list of atoms which have atvalues.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
+@c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{put}
+@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
+
+Assigns @var{value} to the property (specified by @var{indicator}) of
+@var{atom}.  @var{indicator} may be the name of any property, not just a
+system-defined property.
+
+@mref{rem} reverses the effect of @code{put}.
+
+@code{put} evaluates its arguments.
+@code{put} returns @var{value}.
+
+Veja tamb@'{e}m @mref{qput} and @mrefdot{get}
+
+Exemplos:
+
+@example
+(%i1) put (foo, (a+b)^5, expr);
+                                   5
+(%o1)                       (b + a)
+(%i2) put (foo, "Hello", str);
+(%o2)                         Hello
+(%i3) properties (foo);
+(%o3)            [[user properties, str, expr]]
+(%i4) get (foo, expr);
+                                   5
+(%o4)                       (b + a)
+(%i5) get (foo, str);
+(%o5)                         Hello
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{qput}
+@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
+
+Assigns @var{value} to the property (specified by @var{indicator}) of
+@var{atom}.  This is the same as @mrefcomma{put} except that the arguments are
+quoted.
+
+Veja tamb@'{e}m @mrefdot{get}
+
+Exemplo:
+
+@example
+(%i1) foo: aa$ 
+(%i2) bar: bb$
+(%i3) baz: cc$
+(%i4) put (foo, bar, baz);
+(%o4)                          bb
+(%i5) properties (aa);
+(%o5)                [[user properties, cc]]
+(%i6) get (aa, cc);
+(%o6)                          bb
+(%i7) qput (foo, bar, baz);
+(%o7)                          bar
+(%i8) properties (foo);
+(%o8)            [value, [user properties, baz]]
+(%i9) get ('foo, 'baz);
+(%o9)                          bar
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rational}
+@anchor{irrational}
+@defvr  {Property} rational
+@defvrx {Property} irrational
+
+@code{declare(@var{a}, rational)} or @code{declare(@var{a}, irrational)} tells
+Maxima para reconhecer @var{a} as a rational or irrational real variable.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{real}
+@anchor{imaginary}
+@anchor{complex}
+@defvr  {Property} real
+@defvrx {Property} imaginary
+@defvrx {Property} complex
+
+@code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)}, or
+@code{declare(@var{a}, complex)} diz ao Maxima para reconhecer @var{a} como real,
+imagin@'{a}rio puro, ou vari@'{a}vel complexa.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM remove ??
+
+@c -----------------------------------------------------------------------------
+@anchor{rem}
+@deffn {Function} rem (@var{atom}, @var{indicador})
+
+Remove a propriedade indicada por @var{indicador} de @var{atom}.
+A fun@,{c}@~{a}o @code{rem} reverte o efeito de @mrefdot{put}
+
+A fun@,{c}@~{a}o @code{rem} retorna @code{done} se @var{atom} tiver a propriedade @var{indicador}
+quando @code{rem} for chamada, ou @code{false} se o @var{atom} n@~{a}o tiver tal propriedade.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM rem ??
+
+@c -----------------------------------------------------------------------------
+@anchor{remove}
+@deffn  {Function} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
+@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
+@deffnx {Function} remove ("@var{a}", operator)
+@deffnx {Function} remove (@var{a}, transfun)
+@deffnx {Function} remove (all, @var{p})
+
+Remove propriedades associadas a @'{a}tomos.
+
+O comando @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+remove a propriedade @code{p_k} do @'{a}tomo @code{a_k}.
+
+O comando @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+remove as propriedades @code{@var{p_1}, ..., @var{p_n}}
+dos @'{a}tomos @var{a_1}, @dots{}, @var{a_m}.
+Pode existir mais que um par de listas.
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+O comando @code{remove (all, @var{p})} remove a propriedade @var{p} de todos os @'{a}tomos que
+a possu@'{i}rem.
+
+@c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
+As propriedades removidas podem ser propriedades definidas pelo sistema tais como
+@code{function}, @code{macro}, ou @code{mode_declare}.
+A fun@,{c}@~{a}o @code{remove} n@~{a}o remove propriedades defiinidas por @mrefdot{put}
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
+Uma propriedade pode ser @code{transfun} para remover
+a vers@~{a}o traduzida do Lisp de uma fun@,{c}@~{a}o.
+Ap@'{o}s a execu@,{c}@~{a}o da fun@,{c}@~{a}o @code{remove} com a propriedade @code{transfun}, a vers@~{a}o do Maxima da fun@,{c}@~{a}o @'{e} executada
+ao inv@'{e}s da vers@~{a}o traduzida.
+
+O comando @code{remove ("@var{a}", operador)} ou, equivalentemente,
+@code{remove ("@var{a}", op)} remove de @var{a} as propriedes de operador
+declaradas por @mrefcomma{prefix} @mrefcomma{infix}@w{}
+@mxrefcomma{function_nary, nary} @mrefcomma{postfix} @mrefcomma{matchfix} ou por
+@mrefdot{nofix}  Note que o nome do operador deve ser escrito como uma sequ@^{e}ncia de caracteres entre
+aspas duplas.
+
+A fun@,{c}@~{a}o @code{remove} sempre retorna @code{done} independente de um @'{a}tomo ter ou n@~{a}o a propriedade
+especificada.  Esse comportamento @'{e} diferente das fun@,{c}@~{o}es de remo@,{c}@~{a}o mais espec@'{i}ficas
+@mrefcomma{remvalue} @mrefcomma{remarray} @mrefcomma{remfunction} e
+@mrefdot{remrule}
+
+A fun@,{c}@~{a}o @code{remove} n@~{a}o avalia seus argumentos.
+
+@c IN SERIOUS NEED OF EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{scalar}
+@defvr {Property} scalar
+
+O comando @code{declare(@var{a}, scalar)} diz ao Maxima para considerar @var{a} uma vari@'{a}vel
+escalar.
+
+Veja tamb@'{e}m @mrefdot{declare}
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{scalarp}
+@deffn {Function} scalarp (@var{expr})
+
+Retorna @code{true} se @var{expr} for um n@'{u}mero, constante, ou vari@'{a}vel declarada como sendo
+@mref{scalar} com @mrefcomma{declare} ou composta inteiramente por n@'{u}meros,
+constantes, e vari@'{a}veis escalares, mas n@~{a}o contendo matrizes ou listas.
+
+Veja tamb@'{e}m fun@,{c}@~{a}o predicado @mrefdot{nonscalarp}
+
+@opencatbox
+@category{Predicate functions} @category{Vectors} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Facts, Functions and Variables for Predicates, Functions and Variables for Properties, Maximas Database
+@section Functions and Variables for Facts
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{activate}
+@deffn {Function} activate (@var{context_1}, @dots{}, @var{context_n})
+
+Ativa os contextos @var{context_1}, @dots{}, @var{context_n}.
+Os fatos nesses contextos estar@~{a}o dispon@'{i}veis para
+fazer dedu@,{c}@~{o}es e recuperar informa@,{c}@~{a}o.
+Os fatos nesses contextos n@~{a}o s@~{a}o listados por @code{facts ()}.
+
+A vari@'{a}vel @mref{activecontexts} @'{e} a lista
+de contextos que est@'{a} ativa por meio da fun@,{c}@~{a}o @code{activate}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{activecontexts}
+@defvr {System variable} activecontexts
+Valor padr@~{a}o: @code{[]}
+
+A vari@'{a}vel de sistema @code{activecontexts} @'{e} uma lista de contextos que est@~{a}o ativos
+por meio da fun@,{c}@~{a}o @mref{activate}, em oposi@,{c}@~{a}o aos que est@~{a}o ativos por
+serem subcontextos do contexto atual.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{askinteger}
+@deffn  {Function} askinteger (@var{expr}, integer)
+@deffnx {Function} askinteger (@var{expr})
+@deffnx {Function} askinteger (@var{expr}, even)
+@deffnx {Function} askinteger (@var{expr}, odd)
+
+O comando @code{askinteger (@var{expr}, integer)} tenta determinar a partir da 
+base de dados de @code{assume} se @var{expr} @'{e} um inteiro.
+A fun@,{c}@~{a}o @code{askinteger} informa ao usu@'{a}rio se @var{expr} n@~{a}o puder ser dito em caso contr@'{a}rio,
+@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
+@c DATABASE !!!
+e tenta instalar a informa@,{c}@~{a}o na base de dados de @code{assume} se isso for permitido.
+O comando @code{askinteger (@var{expr})} @'{e} equivalente ao comando
+@code{askinteger (@var{expr}, integer)}.
+
+Os comandos @code{askinteger (@var{expr}, even)} e @code{askinteger (@var{expr}, odd)}
+da mesma forma tentam determinar se @var{expr} @'{e} um inteiro par ou um inteiro @'{i}mpar,
+respectivamente.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{asksign}
+@deffn {Function} asksign (@var{expr})
+
+Primeiro tenta determinar se a express@~{a}o
+especificada @'{e} positiva, negativa, ou zero.  Se n@~{a}o for poss@'{i}vel, pergunta ao
+usu@'{a}rio as quest@~{o}es necess@'{a}rias para completar sua dedu@,{c}@~{a}o.  As respostas
+do usu@'{a}rio s@~{a}o gravadas na base de dados enquanto durar o
+c@'{a}lculo atual.  O valor de retorna de @code{asksign} @'{e} um entre @code{pos},
+@code{neg}, ou @code{zero}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{assume}
+@deffn {Function} assume (@var{pred_1}, @dots{}, @var{pred_n})
+
+Adiciona os predicados @var{pred_1}, @dots{}, @var{pred_n} ao contexto atual.
+Se um predicado for inconsistente ou redundante em rela@,{c}@~{a}o aos outros predicados no
+contexto atual, n@~{a}o ser@'{a} adicionado ao contexto.  O contexto acumula predicados
+a cada chamada a @code{assume}.
+
+A fun@,{c}@~{a}o @code{assume} returna ou uma lista cujos elementos s@~{a}o os predicados adicionados ao
+contexto ou o @'{a}tomo @code{redundant} ou o @'{a}tomo @code{inconsistent} onde esse retorno for aplic@'{a}vel.
+
+Os predicados @var{pred_1}, @dots{}, @var{pred_n} podem somente ser express@~{o}es
+com os operadores relacionais @code{< <= equal notequal >=} e @code{>}.
+Predicados n@~{a}o podem ser express@~{o}es de igualdade literal @code{=} ou desigualdade
+literal @code{#}, nem podem ser fun@,{c}@~{o}es predicadas tais como @code{integerp}.
+
+Predicados compostos da forma @code{@var{pred_1} and ... and @var{pred_n}}
+s@~{a}o reconhecidos, mas n@~{a}o @code{@var{pred_1} or ... or @var{pred_n}}.
+A forma @code{not @var{pred_k}} @'{e} reconhecida se @var{pred_k} for um predicado relacional.
+Express@~{o}es da forma @code{not (@var{pred_1} and @var{pred_2})}
+e da forma @code{not (@var{pred_1} or @var{pred_2})} n@~{a}o s@~{a}o reconhecidos.
+
+O mecanismo de dedu@,{c}@~{a}o do m@'{a}xima n@~{a}o @'{e} muito forte;
+existem muitas consequ@^{e}ncias @'{o}bvias que n@~{a}o podem ser determindas por @mrefdot{is}
+@'{E} uma fraqueza conhecida.
+
+A fun@,{c}@~{a}o @code{assume} n@~{a}o manipula predicados com n@'{u}meros complexos.  Se um predicado
+contiver um n@'{u}mero complexo @code{assume} retorna @code{inconsistent} ou 
+@code{redunant}.
+
+A fun@,{c}@~{a}o @code{assume} avalia seus argumentos.
+
+Veja tamb@'{e}m @mrefcomma{is} @mrefcomma{facts} @mrefcomma{forget}@w{}
+@mrefcomma{context} e @mrefdot{declare}
+
+Exemplos:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{assumescalar}
+@defvr {Option variable} assumescalar
+Valor padr@~{a}o: @code{true}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{assumescalar} ajuda a decidir se express@~{o}es @code{expr}
+para as quais @code{nonscalarp (expr)} @'{e} @code{false}
+s@~{a}o assumindas comporta-se como escalares para certas transforma@,{c}@~{o}es.
+
+Fa@,{c}amos @code{expr} representar qualquer express@~{a}o que n@~{a}o seja uma lista ou uma matriz,
+e fa@,{c}amos @code{[1, 2, 3]} representar qualquer lista ou matriz.
+Ent@~{a}o @code{expr . [1, 2, 3]} retorna @code{[expr, 2 expr, 3 expr]}
+se @code{assumescalar} for @code{true}, ou @code{scalarp (expr)} for
+@code{true}, ou @code{constantp (expr)} for @code{true}.
+
+Se @code{assumescalar} for @code{true}, tais
+expres@~{o}es ir@~{a}o comportar-se como escalares somente para operadores
+comutativos, mas n@~{a}o se comportar@~{a}o como escalares em uma multiplica@,{c}@~{a}o n@~{a}o comutativa @code{.}.
+
+Quando @code{assumescalar} for @code{false}, tais
+express@~{o}es ir@~{a}o comportar-se como n@~{a}o escalares.
+
+Quando @code{assumescalar} for @code{all}, tais express@~{o}es ir@~{a}o comportar-se como
+escalares para todos os operadores listados acima.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{assume_pos}
+@defvr {Option variable} assume_pos
+Valor padr@~{a}o: @code{false}
+
+Quando @code{assume_pos} for @code{true} e o sinal de um par@^{a}metro @var{x}
+n@~{a}o puder ser determinado a partir do contexto atual
+@c WHAT ARE THOSE OTHER CONSIDERATIONS ??
+ou outras considera@,{c}@~{o}es,
+@code{sign} e @code{asksign (@var{x})} retornam @code{true}.
+Isso pode passar informa@,{c}@~{o}es a alguma busca autom@'{a}tica gerada por @code{asksign},
+tias como as que podem surgir de @code{integrate} ou de outras computa@,{c}@~{o}es.
+
+Por padr@~{a}o, um par@^{a}metro @'{e} @var{x} tal que @code{symbolp (@var{x})} ou
+@code{subvarp (@var{x})} retorne @code{true}.
+A classe de express@~{o}es consideradas par@^{a}metros pode ser modificada para ser extendida
+por meio da vari@'{a}vel @code{assume_pos_pred}.
+
+As fun@,{c}@~{o}es @code{sign} e @code{asksign} tentam deduzir o sinal de express@~{o}es
+a partir do sinal dos operandos dentro da express@~{a}o.
+Por exemplo, se @code{a} e @code{b} forem ambos postivos,
+ent@~{a}o @code{a + b} @'{e} tambẽm positivo.
+
+Todavia, n@~{a}o existe forma de evitar todas as perguntas de @code{asksign}.
+Particularmente, quando o argumento a @code{asksign} for uma
+diferen@,{c}a @code{@var{x} - @var{y}} ou um logaritmo @code{log(@var{x})},
+@code{asksign} sempre requisita uma informa@,{c}@~{a}o ao usu@'{a}rio,
+mesmo quando @code{assume_pos} for @code{true} e @code{assume_pos_pred} for
+uma fun@,{c}@~{a}o que retorna @code{true} para todos os argumentos.
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{assume_pos_pred}
+@defvr {Option variable} assume_pos_pred
+Valor padr@~{a}o: @code{false}
+
+Quando a @code{assume_pos_pred} for atribu@'{i}do o nome de uma fun@,{c}@~{a}o
+ou de uma express@~{a}o lambda de um argumento @var{x},
+a fun@,{c}@~{a}o ou express@~{a}o lambda @'{e} chamada para determinar
+se @var{x} @'{e} considerado um par@^{a}metro para o prop@'{o}sito de @code{assume_pos}.
+A vari@'{a}vel de op@,{c}@~{a}o @code{assume_pos_pred} @'{e} ignorada quando @code{assume_pos} for @code{false}.
+
+A fun@,{c}@~{a}o @code{assume_pos_pred} @'{e} chamada atrav@'{e}s de @code{sign} e de @code{asksign}
+com um argumento @var{x}
+que @'{e} ou um @'{a}tomo, ou uma vari@'{a}vel com subscrito, ou uma express@~{a}o que cont@'{e}m uma chamada de fun@,{c}@~{a}o.
+Se a fun@,{c}@~{a}o @code{assume_pos_pred} retornar @code{true},
+@var{x} @'{e} considerado um par@^{a}metro para o prop@'{o}sito de @code{assume_pos}.
+
+Por padr@~{a}o, um par@^{a}metro @var{x} @'{e} tal que @code{symbolp (@var{x})} ou
+@code{subvarp (@var{x})} retorna @code{true}.
+
+Veja tamb@'{e}m @mref{assume} e @mrefdot{assume_pos}
+
+Exemplos:
+
+@c ===beg===
+@c assume_pos: true$
+@c assume_pos_pred: symbolp$
+@c sign (a);
+@c sign (a[1]);
+@c assume_pos_pred: lambda ([x], display (x), true)$
+@c asksign (a);
+@c asksign (a[1]);
+@c asksign (foo (a));
+@c asksign (foo (a) + bar (b));
+@c asksign (log (a));
+@c asksign (a - b);
+@c ===end===
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: symbolp$
+(%i3) sign (a);
+(%o3)                          pos
+(%i4) sign (a[1]);
+(%o4)                          pnz
+(%i5) assume_pos_pred: lambda ([x], display (x), true)$
+(%i6) asksign (a);
+                              x = a
+
+(%o6)                          pos
+(%i7) asksign (a[1]);
+                             x = a
+                                  1
+
+(%o7)                          pos
+(%i8) asksign (foo (a));
+                           x = foo(a)
+
+(%o8)                          pos
+(%i9) asksign (foo (a) + bar (b));
+                           x = foo(a)
+
+                           x = bar(b)
+
+(%o9)                          pos
+(%i10) asksign (log (a));
+                              x = a
+
+Is  a - 1  positive, negative, or zero?
+
+p;
+(%o10)                         pos
+(%i11) asksign (a - b);
+                              x = a
+
+                              x = b
+
+                              x = a
+
+                              x = b
+
+Is  b - a  positive, negative, or zero?
+
+p;
+(%o11)                         neg
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{context}
+@defvr {Option variable} context
+Valor padr@~{a}o: @code{initial}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{context} representa uma cole@,{c}@~{a}o de fatos mantida por @mref{assume} e por
+@mrefdot{forget}  A fun@,{c}@~{a}o @code{assume} adiciona fatos @`{a} cole@,{c}@~{a}o nomeada por
+@code{context}, enquanto @code{forget} remove fatos.
+
+Associando @code{context} a um nome @var{qualquercoisa} modifica o contexto atual para
+@var{qualquercoisa}.  Se o contexto especificado @var{qualquercoisa} n@~{a}o exite ainda,
+@'{e} criado automaticamente por uma chamada a @mrefdot{newcontext}
+@c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
+O contexto especificado @'{e} ativado automaticamente.
+
+Veja @mref{contexts} para uma descri@,{c}@~{a}o geral do mecanismo de contexto.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
+@c SOME EXAMPLES WILL HELP A LOT HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{contexts}
+@defvr {Option variable} contexts
+Valor padr@~{a}o: @code{[initial, global]}
+
+A vari@'{a}vel de op@,{c}@~{a}o @code{contexts} (no plural) @'{e} uma lista dos contextos que
+existem atualmente, incluindo o contexto ativo atualmente.
+
+O mecanismo de contexto torna poss@'{i}vel para um usu@'{a}rio associar
+um nome a uma cole@,{c}@~{a}o de fatos, chamado contexto.
+Uma vez que isso for feito, o usu@'{a}rio pode ter Maxima assumindo ou esquecendo grande n@'{u}mero
+de fatos meramente pela ativa@,{c}@~{a}o ou desativa@,{c}@~{a}o de seu contexto.
+
+Qualquer @'{a}tomo simb@'{o}lico pode ser um contexto, e os fatos contidos naquele
+contexti ser@'{a} retido em mem@'{o}ria at@'{e} ser destru@'{i}do um por um
+atrav@'{e}s de @mref{forget} ou destru@'{i}do por completo atrav@'{e}s de @mref{kill}@w{}
+para destruir o contexto de dentro do qual foi chamado.
+
+Contextos existem em uma hierarquia, com a ra@'{i}z sempre sendo
+o contexto global @code{global}, que cont@'{e}m informa@,{c}@~{o}es sobre o Maxima que algumas
+fun@,{c}ẽs precisam.  Quando em um dado contexto, todos os fatos naquele
+contexto est@~{a}o "ativos" (significando que eles s@~{a}o usados em dedu@,{c}@~{o}es e
+recupera@,{c}@~{o}es) da mesma forma est@~{a}o tamb@'{e}m ativos em qualquer contexto que seja um subcontexto
+do contexto ativo.
+
+Quando um Maxima leve @'{e} iniciado, o usu@'{a}rio est@'{a} em um
+contexto chamado @code{initial}, que tem @code{global} como um subcontexto.
+
+Veja tamb@'{e}m @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
+@mrefcomma{killcontext} @mrefcomma{activate} @mrefcomma{deactivate}@w{}
+@mrefcomma{assume} e @mrefdot{forget}
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{deactivate}
+@deffn {Function} deactivate (@var{context_1}, @dots{}, @var{context_n})
+
+Desativa os contextos especificados @var{context_1}, @dots{}, @var{context_n}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{facts}
+@deffn  {Function} facts (@var{item})
+@deffnx {Function} facts ()
+
+Se @var{item} for o nome de um contexto, @code{facts (@var{item})} retorna uma
+lista de fatos no contexto especificado.
+
+Se @var{item} n@~{a}o @'{e} um nome de um contexto, @code{facts (@var{item})} retorna uma
+lista de fatos conhecidos sobre @var{item} no contexto atual.  Fatos que
+est@~{a}o ativos, mas em um contexto diferente, n@~{a}o s@~{a}o listados.
+
+O comando @code{facts ()} (i.e., sem argumentos) lista o contexto atual.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{forget}
+@deffn  {Function} forget (@var{pred_1}, @dots{}, @var{pred_n})
+@deffnx {Function} forget (@var{L})
+
+Remove predicados estabelecidos por @mrefdot{assume}
+Os predicados podem ser express@~{o}es equivalentes a (mas n@~{a}o necess@'{a}riamente identicas
+a) outros previamente assumidos.
+
+O comando @code{forget (@var{L})}, onde @var{L} @'{e} uma lista de predicados,
+esquece cada item na lista.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{is}
+@deffn {Function} is (@var{expr})
+
+Tenta determinar se o predicado @var{expr} @'{e} dedut@'{i}vel a partir dos
+fatos na base de dados do @code{assume}.
+
+Se o predicado for provavelmente @code{true} ou @code{false}, @code{is} retorna
+@code{true} ou @code{false}, respectivamente.  De outra forma, o valor de retorno @'{e}
+determinado pelo sinalizador global @mrefdot{prederror}  Quando @code{prederror} for
+@code{true}, @code{is} reclama com uma mensagem de erro.  Nos outros casos, @code{is}
+retorna @code{unknown} @footnote{Nota do tradutor: desconhecido.}.
+
+O comando @code{ev(@var{expr}, pred)} (que pode ser escrito @code{@var{expr}, pred} na
+linha de comando do Maxima) @'{e} equivalente a @code{is(@var{expr})}.
+
+Veja tamb@'{e}m @mrefcomma{assume} @mrefcomma{facts} and @mrefdot{maybe}
+
+Exemplos:
+
+A fun@,{c}@~{a}o @code{is} avalia predicados.
+
+@c ===beg===
+@c %pi > %e;
+@c is (%pi > %e);
+@c ===end===
+@example
+(%i1) %pi > %e;
+(%o1)                       %pi > %e
+(%i2) is (%pi > %e);
+(%o2)                         true
+@end example
+
+A fun@,{c}@~{a}o @code{is} tenta tirar conclus@~{o}es a partir da base de dados de @code{assume}.
+
+@c ===beg===
+@c assume (a > b);
+@c assume (b > c);
+@c is (a < b);
+@c is (a > c);
+@c is (equal (a, c));
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) assume (b > c);
+(%o2)                        [b > c]
+(%i3) is (a < b);
+(%o3)                         false
+(%i4) is (a > c);
+(%o4)                         true
+(%i5) is (equal (a, c));
+(%o5)                         false
+@end example
+
+Se @code{is} n@~{a}o puder provar ou refutar um predicado a partir da base de dados do
+@code{assume}, o sinalizador global @code{prederror} escolhe o comportamento de @code{is}.
+
+@c ===beg===
+@c assume (a > b);
+@c prederror: true$
+@c is (a > 0);
+@c prederror: false$
+@c is (a > 0);
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) prederror: true$
+(%i3) is (a > 0);
+Maxima was unable to evaluate the predicate:
+a > 0
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) prederror: false$
+(%i5) is (a > 0);
+(%o5)                        unknown
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{killcontext}
+@deffn {Function} killcontext (@var{context_1}, @dots{}, @var{context_n})
+
+Apaga dos contextos @var{context_1}, @dots{}, @var{context_n}.
+
+Se um dos contextos for o contexto atual, o novo contexto ser@'{a}
+o primeiro subcontexto dispon@'{i}vel do contexto atual que n@~{a}o tiver sido
+apagado.  Se o primeiro contexto n@~{a}o apagado for @code{global} ent@~{a}o
+@code{initial} @'{e} usado ao inv@'{e}s @code{global}.  Se o contexto @code{initial} for apagado, um
+novo, vazido contexto @code{initial} @'{e} criado.
+
+A fun@,{c}@~{a}o @code{killcontext} recusa apagar um contexto que est@'{a}
+ativo atualmente, ou porque o contexto atual @'{e} um subcontexto do contexto
+atual, ou pelo uso da fun@,{c}@~{a}o @mrefdot{activate}
+
+A fun@,{c}@~{a}o @code{killcontext} avalia seus argumentos.
+A fun@,{c}@~{a}o @code{killcontext} retorna @code{done}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{maybe}
+@deffn {Function} maybe (@var{expr})
+
+Tenta determinar se o predicado @var{expr} @'{e} demonstr@'{a}vel a partir dos
+fatos na base de dados do @code{assume}.
+
+Se o predicado for provavelmente @code{true} ou @code{false}, @code{maybe} retorna
+@code{true} ou @code{false}, respectivamente.  De outra forma, @code{maybe} retorna
+@code{unknown}.
+
+A fun@,{c}@~{a}o @code{maybe} @'{e} funcionalmente equivalente a @code{is} com
+@code{prederror: false}, mas o resultado @'{e} calculado sem atualmente atribuir
+um valor a @code{prederror}.
+
+Veja tamb@'{e}m @mrefcomma{assume} @mrefcomma{facts} e @mrefdot{is}
+
+Exemplos:
+
+@c ===beg===
+@c maybe (x > 0);
+@c assume (x > 1);
+@c maybe (x > 0);
+@c ===end===
+@example
+(%i1) maybe (x > 0);
+(%o1)                        unknown
+(%i2) assume (x > 1);
+(%o2)                        [x > 1]
+(%i3) maybe (x > 0);
+(%o3)                         true
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{newcontext}
+@deffn {Function} newcontext (@var{nome})
+
+Cria um novo contexto, vazio, chamado @var{nome}, que
+tem @code{global} como seu @'{u}nico subcontexto.  O contexto recentemente criado
+torna-se o contexto ativo atual.
+
+A fun@,{c}@~{a}o @code{newcontext} avalia seus argumentos.
+A fun@,{c}@~{a}o @code{newcontext} retorna @var{nome}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sign}
+@deffn {Function} sign (@var{expr})
+
+Tenta determinar o sinal de @var{expr} a partir dos fatos contidos na
+base de dados atual.  Retorna uma das seguintes respostas: @code{pos}
+(positivo), @code{neg} (negativo), @code{zero}, @code{pz} (positivo ou zero),
+@code{nz} (negativo ou zero), @code{pn} (positivo ou negativo), ou @code{pnz}
+(positivo, negativo, ou zero, i.e. nada se pode afirmar).
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{supcontext}
+@deffn  {Function} supcontext (@var{nome}, @var{ctxto})
+@deffnx {Function} supcontext (@var{nome})
+
+Cria um novo contexto, chamado @var{nome}, que tem @var{ctxto} como um
+subcontexto.  O @var{ctxto} deve existir.
+
+Se @var{ctxto} n@~{a}o for especificado, o contexto atual @'{e} usado.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Predicates, , Functions and Variables for Facts, Maximas Database
+@section Functions and Variables for Predicates
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{charfun}
+@deffn {Function} charfun (@var{p})
+
+Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna 1 quando
+o predicado avaliar para @code{true}.  Qaundo o predicado avaliar para
+alguma coisa que n@~{a}o seja @code{true} ou @code{false} (desconhecido),  retorna uma forma substantiva.
+
+Exemplos:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun (x < 1);
+(%o1)                    charfun(x < 1)
+(%i2) subst (x = -1, %);
+(%o2)                           1
+(%i3) e : charfun ('"and" (-1 < x, x < 1))$
+(%i4) [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+(%o4)                       [0, 1, 0]
+@end example
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{compare}
+@deffn {Function} compare (@var{x}, @var{y})
+
+Retorna um operador de compara@,{c}@~{a}o @var{op} (@code{<}, @code{<=}, @code{>}, @code{>=},
+@code{=}, ou @code{#}) tal que @code{is (@var{x} @var{op} @var{y})} avalie
+para @code{true}; quando ou @var{x} ou @var{y} estiver em fun@,{c}@~{a}o de @code{%i} e
+@code{@var{x} # @var{y}}, retorna @code{notcomparable}; quando n@~{a}o houver operador
+adequado ou o Maxima n@~{a}o estiver apto a determinar o operador, retorna @code{unknown}.
+
+Exemplos:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare (1, 2);
+(%o1)                           <
+(%i2) compare (1, x);
+(%o2)                        unknown
+(%i3) compare (%i, %i);
+(%o3)                           =
+(%i4) compare (%i, %i + 1);
+(%o4)                     notcomparable
+(%i5) compare (1/x, 0);
+(%o5)                           #
+(%i6) compare (x, abs(x));
+(%o6)                          <=
+@end example
+
+A fun@,{c}@~{a}o @code{compare} n@~{a}o tenta determinar se o dom@'{i}nio real de
+seus argumentos possuem um ou mais elementos; dessa forma
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+(%o1)                           <
+@end example
+
+@c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
+O dom@'{i}nio real de @code{acos (x^2 + 1)} @'{e} vazio.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{equal}
+@deffn {Function} equal (@var{a}, @var{b})
+
+Representa equival@^{e}ncia, isto @'{e}, valor igual.
+
+Sozinha, @code{equal} n@~{a}o avalia ou simplifica.
+A fun@,{c}@~{a}o @mref{is} tenta avaliar @code{equal} para um valor Booleano.
+O comando @code{is(equal(@var{a}, @var{b}))} retorna @code{true} (ou @code{false}) se
+e somente se @var{a} e @var{b} forem iguais (ou diferentes) para todos os valores
+poss@'{i}veis de suas vari@'{a}veis, como determinado pela avalia@,{c}@~{a}o de
+@code{ratsimp(@var{a} - @var{b})}; se @mref{ratsimp} retornar 0, as duas
+express@~{o}es s@~{a}o consideradas equivalentes.  Duas express@~{o}es podem ser equivalentes mesmo
+se n@~{a}o forem sintaticamente iguais (i.e., identicas).
+
+Quando a fun@,{c}@~{a}o @code{is} falha na tentativa de converter @code{equal} em @code{true} ou @code{false}, o
+resultado @'{e} governado pelo sinalizador global @mrefdot{prederror}  Quando @code{prederror}
+for @code{true}, @code{is} reclama com uma mensagem de erro.  De outra forma, @code{is}
+retorna @code{unknown}.
+
+Al@'{e} da fun@,{c}@~{a}o @code{is}, alguns outros operadores avaliam @code{equal} e
+@code{notequal} para @code{true} ou @code{false}, s@~{a}o eles @mrefcomma{if}@w{}
+@mrefcomma{and} @mrefcomma{or} e @mrefdot{not}
+
+@c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
+@c Declarations (integer, complex, etc)
+@c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
+@c All variables are effectively assumed to be real-valued.
+
+A nega@,{c}@~{a}o de @code{equal} @'{e} @mrefdot{notequal}
+
+Exemplos:
+
+Sozinha, @code{equal} n@~{a}o avalia ou simplifica.
+
+@c ===beg===
+@c equal (x^2 - 1, (x + 1) * (x - 1));
+@c equal (x, x + 1);
+@c equal (x, y);
+@c ===end===
+@example
+(%i1) equal (x^2 - 1, (x + 1) * (x - 1));
+                        2
+(%o1)            equal(x  - 1, (x - 1) (x + 1))
+(%i2) equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) equal (x, y);
+(%o3)                      equal(x, y)
+@end example
+
+A fun@,{c}@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
+O comando @code{is(equal(@var{a}, @var{b}))} retorna @code{true} quando
+@code{ratsimp(@var{a} - @var{b})} retorna 0.  Duas express@~{o}es podem ser equivalentes
+mesmo se n@~{a}o forem sintaticamente iguais (i.e., id@^{e}nticas).
+
+@c ===beg===
+@c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+@c is (equal (x^2 - 1, (x + 1) * (x - 1)));
+@c is (x^2 - 1 = (x + 1) * (x - 1));
+@c ratsimp (x - (x + 1));
+@c is (equal (x, x + 1));
+@c is (x = x + 1);
+@c ratsimp (x - y);
+@c is (equal (x, y));
+@c is (x = y);
+@c ===end===
+@example
+(%i1) ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+(%o1)                           0
+(%i2) is (equal (x^2 - 1, (x + 1) * (x - 1)));
+(%o2)                         true
+(%i3) is (x^2 - 1 = (x + 1) * (x - 1));
+(%o3)                         false
+(%i4) ratsimp (x - (x + 1));
+(%o4)                          - 1
+(%i5) is (equal (x, x + 1));
+(%o5)                         false
+(%i6) is (x = x + 1);
+(%o6)                         false
+(%i7) ratsimp (x - y);
+(%o7)                         x - y
+(%i8) is (equal (x, y));
+(%o8)                        unknown
+(%i9) is (x = y);
+(%o9)                         false
+@end example
+
+Quando @code{is} falha na tentativa de converter @code{equal} em @code{true} ou @code{false},
+o resultado @'{e} governado pelo sinalizador global @code{prederror}.
+
+@c ===beg===
+@c [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+@c ratsimp (aa - bb);
+@c prederror : true;
+@c is (equal (aa, bb));
+@c prederror : false;
+@c is (equal (aa, bb));
+@c ===end===
+@example
+(%i1) [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+                    2             2
+(%o1)             [x  + 2 x + 1, x  - 2 x - 1]
+(%i2) ratsimp (aa - bb);
+(%o2)                        4 x + 2
+(%i3) prederror : true;
+(%o3)                         true
+(%i4) is (equal (aa, bb));
+Maxima was unable to evaluate the predicate:
+       2             2
+equal(x  + 2 x + 1, x  - 2 x - 1)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) prederror : false;
+(%o5)                         false
+(%i6) is (equal (aa, bb));
+(%o6)                        unknown
+@end example
+
+Alguns operadores avaliam @code{equal} e @code{notequal} para @code{true} ou
+@code{false}.
+
+@c ===beg===
+@c if equal (y, y - 1) then FOO else BAR;
+@c eq_1 : equal (x, x + 1);
+@c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+@c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+@c ===end===
+@example
+(%i1) if equal (y, y - 1) then FOO else BAR;
+(%o1)                          BAR
+(%i2) eq_1 : equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+                         2                   2
+(%o3)             equal(y  + 2 y + 1, (y + 1) )
+(%i4) [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+(%o4)                  [false, true, true]
+@end example
+
+Devido a @code{not @var{expr}} fazer com que ocorra avalia@,{c}@~{a}o de @var{expr},
+@code{not equal(@var{a}, @var{b})} @'{e} equivalente a
+@code{is(notequal(@var{a}, @var{b}))}.
+
+@c ===beg===
+@c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+@c is (notequal (2*z, 2*z - 1));
+@c ===end===
+@example
+(%i1) [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+(%o1)            [notequal(2 z, 2 z - 1), true]
+(%i2) is (notequal (2*z, 2*z - 1));
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{notequal}
+@deffn {Function} notequal (@var{a}, @var{b})
+
+Representa a nega@,{c}@~{a}o de @code{equal(@var{a}, @var{b})}.
+
+Exemplos:
+
+@c ===beg===
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c not equal (a, b);
+@c maybe (notequal (a, b));
+@c assume (a > b);
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c maybe (notequal (a, b));
+@c ===end===
+@example
+(%i1) equal (a, b);
+(%o1)                      equal(a, b)
+(%i2) maybe (equal (a, b));
+(%o2)                        unknown
+(%i3) notequal (a, b);
+(%o3)                    notequal(a, b)
+(%i4) not equal (a, b);
+(%o4)                    notequal(a, b)
+(%i5) maybe (notequal (a, b));
+(%o5)                        unknown
+(%i6) assume (a > b);
+(%o6)                        [a > b]
+(%i7) equal (a, b);
+(%o7)                      equal(a, b)
+(%i8) maybe (equal (a, b));
+(%o8)                         false
+(%i9) notequal (a, b);
+(%o9)                    notequal(a, b)
+(%i10) maybe (notequal (a, b));
+(%o10)                        true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unknown}
+@deffn {Function} unknown (@var{expr})
+
+Retorna @code{true} se e somente se @var{expr} contiver um operador ou fun@,{c}@~{a}o
+n@~{a}o reconhecida pelo simplificador do Maxima.
+
+@opencatbox
+@category{Predicate functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
+@c DUNNO WHETHER WE CAN CLEAR THIS UP
+
+@c -----------------------------------------------------------------------------
+@anchor{zeroequiv}
+@deffn {Function} zeroequiv (@var{expr}, @var{v})
+
+Testa se a express@~{a}o @var{expr} na vari@'{a}vel @var{v} @'{e} equivalente
+a zero, retornando @code{true}, @code{false}, ou @code{dontknow} @footnote{Nota do tradutor: n@~{a}o sei.}.
+
+A fun@,{c}@~{a}o @code{zeroequiv} has these restrictions:
+
+@enumerate
+@item
+N@~{a}o use fun@,{c}@~{o}es que Maxima n@~{a}o sabe como
+diferenciar e avaliar.
+@item
+Se a express@~{a}o tem polin@^{o}mios na reta real, podem ocorrer erros
+no resultado (mas isso @'{e} improv@'{a}vel ocorrer).
+@item
+Se a express@~{a}o cont@'{e}m fun@,{c}@~{o}es que n@~{a}o s@~{a}o solu@,{c}@~{o}es de equa@,{c}@~{o}es diferenciais
+de primeira ordem (e.g. fun@,{c}@~{o}es de Bessel) pode ocorrer resultados incorretos.
+@item
+O algoritmo usa avalia@,{c}@~{a}o em pontos escolhidos aleat@'{o}riamente para subexpress@~{o}es cuidadosamente
+selecionadas.  Essa postura @'{e} um tanto quanto perigosa, embora o
+algoritmo tente minimizar o potencial para erro.
+@end enumerate
+
+Por exemplo @code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)} retorna
+@code{true} e @code{zeroequiv (%e^x + x, x)} retorna @code{false}.
+Por outro lado @code{zeroequiv (log(a * b) - log(a) - log(b), a)} retorna 
+@code{dontknow} devido @`{a} presen@,{c}a de um par@^{a}metro extra @code{b}.
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+

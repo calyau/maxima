@@ -36,12 +36,17 @@
              ((null mexpress) (princ " NO EXPRESSION GIVEN ")
               (return nil))
              ((null (cdr margs)) (setq filename nil) (setq mPrport t))
-             ((null (cddr margs)) (setq filename (cadr margs))
+             ((null (cddr margs))
               (setq mPrport
-                    (open (fullstrip1 (cadr margs))
-                        :direction :output 
-                        :if-exists :append
-                        :if-does-not-exist :create)))
+                    (if (stringp (cadr margs))
+		      (progn
+		        (setq filename (cadr margs))
+                        (open (cadr margs)
+                            :direction :output 
+                            :if-exists :append
+                            :if-does-not-exist :create))
+                      ;; otherwise, assume (cadr margs) is a stream.
+                      (cadr margs))))
              (t (princ " wrong No. of Arguments given ")))
            (when (symbolp (setq x mexpress))
              (setq x ($verbify x))

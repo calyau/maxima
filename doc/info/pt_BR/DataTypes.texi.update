@@ -43,6 +43,42 @@ de express@~{o}es complexas pode usualmente ser acompanhada do uso das fun@,{c}@
 @category{Complex variables}
 @closecatbox
 
+
+@c -----------------------------------------------------------------------------
+@subheading Floating point numbers
+@c -----------------------------------------------------------------------------
+
+Maxima tem dois tipos de n@'{u}meros em ponto flutuante. O primeiro @'{e} apenas
+chamado um ``float'' (mas passar@'{a} a se chamar ``float da m@'{a}quina'' de
+agora em diante nessa se@,{c}@~{a}o para evitar ambiquidade). O ``float da m@'{a}quina'' @'{e} armazenado no
+no tipo subjacente tipo DOUBLE-FLOAT do lisp que ir@'{a} quase sempre certamente ser
+o ponto flutuante com precis@~{a}o dupla da IEEE 754. Para digitar um n@'{u}mero em ponto
+flutuante literal, apenas digite sua expans@~{a}o decimal (por exemplo,
+@code{0.01}) ou digite esse n@'{u}mer com um expoente expl@'{i}cito (tal como @code{1e-2}
+ou @code{0.1e-1}).
+
+O segundo tipo de n@'{u}mero em ponto flutuante no Maxima @'{e} chamado um
+``bigfloat''. Bigfloats s@~{a}o armazenados como uma mantissa e um expoente
+da mesma forma que ``floats da m@'{a}quina'' mas o expoente @'{e} um inteiro de precis@~{a}o
+arbitr@'{a}ria, de forma que o ``bigfloat'' pode representar n@'{u}meros
+arbitrariamente grandes ou arbitr@'{a}riamente pequenos. O
+usu@'{a}rio pode tamb@'{e}m personalizar a precis@~{a}o do bigfloat aritim@'{e}tico (o que
+corresponde a mudar o intervalo da mantissa). Veja @mref{fpprec}
+para mais informa@,{c}@~{a}o. Para digitar um bigfloat literal, use a nota@,{c}@~{a}o de
+expoente como acima mas com o caractere @code{b} no lugar do
+@code{e}. O exemplo de @code{0.01} usado acima pode ser informado como um
+bigfloat com @code{1b-2} ou @code{0.001b0}.
+
+C@'{a}lculos usando floats de m@'{a}quina podem ser significativamente mas r@'{a}pidos que
+os mesmo c@'{a}lculos usando bigfloats uma vez que processadores dos computadores modernos possuem
+hardware dedicados aos floats de m@'{a}quina. Essa afirma@,{c}@~{a}o @'{e} particularmente verificada quando o c@'{o}digo do Maxima
+compilado localmente. Todavia, os n@'{u}meros em ponto flutuante de m@'{a}quina posuem o problema do
+overflow, onde um n@'{u}mero pode tornar-se muito grande para seu expoente ser
+representado na mem@'{o}ria dispon@'{i}vel. No c@'{o}digo interpretado, o comportamento
+padr@~{a}o @'{e} que um c@'{a}lculo que pode causar um overflow de ponto
+flutuante ao inv@'{e}s de gerar um n@'{u}mero bigfloat. Para configurar esse comportamento, veja
+a vari@'{a}vel @mref{promote_float_to_bigfloat}.
+
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Numbers, , Introduction to Numbers, Numbers
 @subsection Functions and Variables for Numbers
@@ -453,6 +489,28 @@ n@~{a}o necess@'{a}riamente num@'{e}ricas.
 @category{Predicate functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{promote_float_to_bigfloat}
+@defvr {Option variable} promote_float_to_bigfloat
+Valor padr@~{a}o: @code{true}
+
+Quando @code{promote_float_to_bigfloat} for @code{true}, o resultado de qualquer
+c@'{a}lculo com ponto flutuante que possa vir a causar uma sobrecarga de ponto
+flutuane @'{e} substitu@'{i}do por um n@'{u}mero bigfloat qye representa o
+resultado. Note que essa promo@,{c}@~{a}o @'{e} autom@'{a}tica somente acontece no c@'{o}digo
+interpretado: c@'{o}digo compilado n@~{a}o @'{e} afetado.
+
+Essa convers@~{a}o autom@'{a}tica @'{e} muitas vezes conveniente, mas pode atrapalhar em
+alguns casos. Por exemplo, pode causar perda de precis@~{a}o se
+@mref{fpprec} for atualmente menor que a precis@~{a}o de n@'{u}em em
+ponto flutuante. Para desabilitar esse comportamento, ajuste
+@code{promote_float_to_bigfloat} para @code{false}.
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
 
 @c --- 03.11.2011 --------------------------------------------------------------
 @anchor{ratepsilon}

@@ -1679,6 +1679,47 @@ Example:
 
 
 
+
+@defvr {Graphic option} key_pos
+Default value: @code{""} (empty string)
+
+@code{key_pos} defines at which position the legend will be drawn. If @code{key} is an
+empty string, @code{"top_right"} is used.
+Available position specifiers are: @code{top_left}, @code{top_center}, @code{top_right},
+@code{center_left}, @code{center}, @code{center_right},
+@code{bottom_left}, @code{bottom_center}, and @code{bottom_right}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key_pos = top_left,
+        key   = "x",
+        explicit(x,  x,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2,x,0,10))$
+(%i3) draw3d(
+        key_pos = center,
+        key   = "x",
+        explicit(x+y,x,0,10,y,0,10),
+        color= red,
+        key   = "x squared",
+        explicit(x^2+y^2,x,0,10,y,0,10))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} label_alignment
 Default value: @code{center}
 
@@ -1753,7 +1794,9 @@ See also @code{label_alignment} and @code{color}.
 Default value: @code{solid}
 
 @code{line_type} indicates how lines are displayed; possible values are
-@code{solid} and @code{dots}.
+@code{solid} and @code{dots}, both available in all terminals, and
+@code{dashes}, @code{short_dashes}, @code{short_long_dashes}, @code{short_short_long_dashes}, 
+and @code{dot_dash}, which are not available in @code{png}, @code{jpg}, and @code{gif} terminals. 
 
 This option affects the following graphic objects:
 @itemize @bullet
@@ -2282,7 +2325,7 @@ Default value: @code{screen}
 Selects the terminal to be used by Gnuplot; possible values are:
 @code{screen} (default), @code{png}, @code{pngcairo}, @code{jpg}, @code{gif}, 
 @code{eps}, @code{eps_color}, @code{epslatex}, @code{epslatex_standalone}, 
-@code{svg}, @code{dumb}, @code{dumb_file}, @code{pdf}, @code{pdfcairo}, 
+@code{svg}, @code{canvas}, @code{dumb}, @code{dumb_file}, @code{pdf}, @code{pdfcairo}, 
 @code{wxt}, @code{animated_gif}, @code{multipage_pdfcairo}, @code{multipage_pdf}, 
 @code{multipage_eps}, @code{multipage_eps_color}, and @code{aquaterm}.
 
@@ -2545,13 +2588,14 @@ does not matter.
 
 Example:
 
-The @i{dumb} terminal is not supported by package @code{draw},
-but it is possible to set it by making use of option @code{user_preamble},
+Tell Gnuplot to draw axes on top of graphics objects,
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
-             parametric(cos(u),sin(u),u,0,2*%pi),
-             user_preamble="set terminal dumb")$
+(%i2) draw2d(
+        xaxis =true, xaxis_type=solid,
+        yaxis =true, yaxis_type=solid,
+        user_preamble="set grid front",
+        region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$
 @end example
 
 @opencatbox

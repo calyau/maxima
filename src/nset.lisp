@@ -250,7 +250,7 @@
 ;; Return a list of three sets. The first set is the subset of a for which
 ;; the predicate f evaluates to true, the second is the subset of a
 ;; for which f evaluates to false, and the third is the subset of a
-;; for which f evalute to unknown.
+;; for which f evaluates to unknown.
 
 (defun $partition_set (a f)
   (setq a (require-set a "$partition_set"))
@@ -284,18 +284,20 @@
       (setq u (set-union u lk)))
     (cons '($set simp) (sset-difference u r))))
 
-;; When k is a positive integer, return the set of all subsets of a 
+;; When k is an integer, return the set of all subsets of the set a 
 ;; that have exactly k elements; when k is nil, return the power set
 ;; of a. Signal an error if the first argument isn't a list or a set.
 
 (defun $powerset (a &optional k)
-  (setq a (require-set a "$powerset"))
+  (setq a (require-set a "powerset"))
   (cond ((null k)
 	 (cons `($set simp) 
 	       (mapcar #'(lambda (s) 
 			   (cons '($set simp) s)) (power-set  a))))
-	((and (integerp k) (> k -1))
-	 (powerset-subset a k (length a)))))
+	((integerp k)
+	 (powerset-subset a k (length a)))
+	(t (merror (intl:gettext "The second argument to powerset must be an integer; found ~:M") k))))
+
 
 (defun power-set (a)
   (cond ((null a) `(()))
@@ -812,7 +814,7 @@
 	     `(($num_partitions simp) ,n)))))
 
 (defun $num_distinct_partitions (n &optional lst)
-  (cond ((eq n 0) 1)
+  (cond ((eql n 0) 1)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
 	       (s (make-array (+ n 1)))
@@ -907,37 +909,40 @@
 ;; Stirling numbers of the first kind.
 
 (defprop $stirling1 simp-stirling1 operators)
+;; Stirling numbers of the first kind.
 
-;; Apply the simplifications (See Knuth Third Edition, Volume 1, 
-;; Section 1.2.6, Equations 48, 49, and 50.  For a nonnegative
-;; integer n, we have
+(defprop $stirling1 simp-stirling1 operators)
 
-;; (1) stirling1 (0, n) = kron_delta(0,n),
-;; (2) stirling1 (n, n) = 1,
-;; (3) stirling1 (n, n - 1) = binomial(n,2),
-;; (4) stirling1 (n + 1, 0) = 0,
-;; (5) stirling1 (n + 1, 1) = n!,
-;; (6) stirling1 (n + 1, 2) = 2^n  - 1.
+;; Stirling1 simplifications; for n,k in Z  (Z = set of integers)
+;; (1) stirling1(1,k) = kron_delta(1,k), k >= 0, (http://dlmf.nist.gov/26.8.E2)
+;; (2) stirling1(n,n) = 1, n >= 0 (http://dlmf.nist.gov/26.8.E1)
+;; (3) stirling1(n,n-1) = -binomial(n,2), n >= 1, (http://dlmf.nist.gov/26.8.E16)
+;; (4) stirling1(n,0) = kron_delta(n,0), n >=0  (http://dlmf.nist.gov/26.8.E14 and http://dlmf.nist.gov/26.8.E1)
+;; (5) stirling1(n,1) =(-1)^(n-1) (n-1)!, n >= 1 (http://dlmf.nist.gov/26.8.E14)
+;; (6) stirling1(n,k) = 0, n >= 0 and k > n.
 
-(defun simp-stirling1 (n yy z)
+(defun simp-stirling1 (l yy z)
   (declare (ignore yy))
-  (twoargcheck n)
-  (setq n (mapcar #'(lambda (x) (simplifya x z)) (cdr n)))
-  (let ((m (nth 1 n)))
-    (setq n (nth 0 n))
- (cond ((and (integerp n) (integerp m) (> n -1) (> m -1))
-	   (integer-stirling1 n m))
-	  ((and (nonnegative-integerp n) ($featurep m '$integer))
-	   (cond ((like n 0) (simplify `(($kron_delta) ,m 0)))
-		 ((like n m) 1)
-		 ((like (sub n m) 1) (simplify `((%binomial) ,n 2)))
-		 ((and (like m 0) (nonnegative-integerp (sub n 1))) 0)
-		 ((and (like m 1) (nonnegative-integerp (sub n 1))) 
-		  (simplify `((mfactorial) ,(sub n 1))))
-		 ((and (like m 2) (nonnegative-integerp (sub n 1)))
-		   (sub (power 2 (sub n 1)) 1))
-		 (t  `(($stirling1 simp) ,n ,m))))   
-	  (t `(($stirling1 simp) ,n ,m)))))
+  (let* ((fn (car (pop l)))
+	 (n (if l (simplifya (pop l) z) (wna-err fn)))
+	 (k (if l (simplifya (pop l) z) (wna-err fn)))
+	 (n-is-nonnegative-int (nonnegative-integerp n)))
+    (if l (wna-err fn))
+    (cond ((and (integerp n) (integerp k) (> n -1) (> k -1))
+	   (integer-stirling1 n k))
+	  ((and (eql n 1) ($featurep k '$integer) (eq t (mgrp k -1))) 
+	   (take (list '%kron_delta) 1 k))
+	  ((and n-is-nonnegative-int (like n k))
+	   1)
+	  ((and (nonnegative-integerp (sub n 1)) (like n (add k 1)))
+	   (mul -1 (take (list '%binomial) n 2)))
+	  ((and n-is-nonnegative-int (eql k 0))
+	   (take (list '%kron_delta) n 0))
+	  ((and n-is-nonnegative-int (eql k 1) (eq t (mgqp n 1)))
+	   (mul (power -1 (sub n 1)) (take (list 'mfactorial) (sub n 1))))
+	  ((and n-is-nonnegative-int ($featurep k '$integer) (eq t (mgrp k n)))
+	   0)
+	  (t (list (list fn 'simp) n k)))))
 
 ;; This code is based on Algorithm 3.17 "Combinatorial Algorithms Generation,
 ;; Enumeration, and Search," CRC Press, 1999 by Donald Kreher and Douglas
@@ -962,27 +967,14 @@
 	   (aref s m n)))
 	(t 0)))
 
-;; Apply the simplifications (See Knuth Third Edition, Volume 1, 
-;; Section 1.2.6, Equations 48, 49, and 50.  For a nonnegative
-;; integer n, we have
 
-;; (1) stirling2 (0, n) = kron_delta(0,n),
-;; (2) stirling2 (n, n) = 1,
-;; (3) stirling2 (n, n - 1) = binomial(n,2),
-;; (4) stirling2 (n + 1, 0) = 0,
-;; (5) stirling2 (n + 1, 1) = 1,
-;; (6) stirling2 (n + 1, 2) = 2^n  - 1.
-
-;; Additionally, we use (See Graham, Knuth, and Patashnik, 
-;; "Concrete Mathematics," Table 264)
-
-;; (7) stirling2 (n,0) = kron_delta(n,0),
-;; (8) stirling2 (n,m) = 0 when m > n.
-
-;; Instead of (4), we use (7). We do not extend Stirling2 off the integers
-;; or into the left HP. The recursion relation 
-;;   stirling2(n,m) = stirling2(n-1,m-1) + m * stirling2(n-1,m)
-;; does extend Stirling2 into the lower HP.
+;; Stirling1 simplifications; for n,k in Z  (Z = set of integers)
+;; (1) stirling2(n,0) = 1, n >= 1 (http://dlmf.nist.gov/26.8.E17 and stirling2(0,0) = 1)
+;; (2) stirling2(n,n) = 1, n >= 0, (http://dlmf.nist.gov/26.8.E4)
+;; (3) stirling2(n,1) = 1, n >= 1, (http://dlmf.nist.gov/26.8.E17 and stirling2(0,1) = 0)
+;; (4) stirling2(n,2) = 2^(n-1) -1 , n >= 1, (http://dlmf.nist.gov/26.8.E17)
+;; (5) stirling2(n,n-1) = binomial(n,2), n>= 1 (http://dlmf.nist.gov/26.8.E16)
+;; (6) stirling2(n,k) = 0, n >= 0 and k > n.
 
 (defun nonnegative-integerp (e)
   (and ($featurep e '$integer)
@@ -990,27 +982,37 @@
       
 (defprop $stirling2 simp-stirling2 operators)
 
-(defun simp-stirling2 (n yy z)
+(defun simp-stirling2 (l yy z)
   (declare (ignore yy))
-  (twoargcheck n)
-  (setq n (mapcar #'(lambda (x) (simplifya x z)) (cdr n)))
-  (let ((m (nth 1 n)))
-    (setq n (nth 0 n))
-    (cond ((and (integerp n) (integerp m) (> n -1))
-	   (integer-stirling2 n m))
-	  ((and (nonnegative-integerp n) ($featurep m '$integer))
-	   (cond ((like n 0) (simplify `(($kron_delta) ,m 0)))         ;; (1)
-		 ((like m 0) (simplify `(($kron_delta) ,n 0)))         ;; (7)
-		 ((like n m) 1)                                        ;; (2) 
-		 ((like (sub n m) 1) (simplify `((%binomial) ,n 2)))   ;; (3)
-		 ((and (like m 1) (nonnegative-integerp (sub n 1))) 1) ;; (5)
-		 ((and (like m 2) (nonnegative-integerp (sub n 1)))
-		   (sub (power 2 (sub n 1)) 1))                        ;; (6) 
-		 ((or (eq (csign m) '$neg) (eq (csign (sub m n)) '$pos))
-		  0)                                                   ;; (8)
-		 (t  `(($stirling2 simp) ,n ,m))))
-	  (t `(($stirling2 simp) ,n ,m)))))
-	  
+  (let* ((fn (car (pop l)))
+	 (n (if l (simplifya (pop l) z) (wna-err fn)))
+	 (k (if l (simplifya (pop l) z) (wna-err fn)))
+	 (n-is-nonnegative-int (nonnegative-integerp n))
+	 (n-is-positive-int (nonnegative-integerp (sub n 1))))
+    (if l (wna-err fn))
+    (cond ((and (integerp n) (integerp k) (> n -1) (> k -1))
+	   (integer-stirling2 n k))
+
+	  ((and n-is-positive-int (eql k 0))
+	   0)
+
+	  ((and n-is-positive-int (eql k 1))
+	   1)
+
+	  ((and n-is-positive-int (eql k 2))
+	   (add (power 2 (sub n 1)) -1))
+
+	  ((and n-is-nonnegative-int (like n k))
+	   1)
+
+	  ((and n-is-positive-int (like n (add k 1)))
+	   (take (list '%binomial) n 2))
+
+	  ((and n-is-nonnegative-int ($featurep k '$integer) (eq t (mgrp k n)))
+	   0)
+
+	  (t (list (list fn 'simp) n k)))))
+
 ;; Stirling2(n,m) = sum((-1)^(m - k) binomial(m k) k^n,i,1,m) / m!.
 ;; See A & S 24.1.4, page 824.
 
@@ -1079,7 +1081,7 @@
   (rl-reduce f s t init "$rreduce"))
   
 ;; Extend a function f : S x S -> S to n arguments using left associativity.
-;; Thus lreduce(f,[0,1,2]) -> f(f(0,1),2). Rhe second argument must be a list.
+;; Thus lreduce(f,[0,1,2]) -> f(f(0,1),2). The second argument must be a list.
 
 (defun $lreduce (f s &optional (init 'no-init))
   (rl-reduce f s nil init "$lreduce"))

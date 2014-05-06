@@ -15,12 +15,11 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special $algebraic varlist ss *y* f $factorflag modulus
-		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
-		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
+		      genvar *alpha *x* *p *max *var *res *chk *l
+		      $ratfac u* $ratwtlvl *ratweights $ratweights))
 
-(declare-top (special $gcd xv bigf1 bigf2 nonlindeg $linhack
-		      $intfaclim bigf1tilde bigf2tilde
-		      gcd $factorflag *gcdl* last-good-prime))
+(declare-top (special xv bigf1 bigf2
+		      gcd $factorflag))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
@@ -222,8 +221,8 @@
     (bigf1 bigf2)
   (prog (c c1		c2		f1		f2	n
 	 e		degree		mubar		p
-	 nonlindeg	gtilde		h1tilde		h2tilde
-	 modulus	bigf1tilde	bigf2tilde
+	 gtilde		h1tilde		h2tilde
+	 modulus
 	 biggtilde	q		h1star		h2star
 	 gstar		xv              gbar)
      (setq p *alpha)
@@ -294,7 +293,6 @@
      (set-modulus nil)
      (setq gstar (cadr (pcontent gstar)))
      step15
-     (setq last-good-prime p)
      (setq q (leadcoefficient gstar))
      (return (list (ptimeschk c gstar)
 		   (ptimeschk (cquotient c1 c) (pquotientchk h1star q))
@@ -472,7 +470,7 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar xweight $ratwtlvl v *x* *i*))
+(declare-top (special wtsofar xweight $ratwtlvl v *x*))
 
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
@@ -619,9 +617,9 @@
 				    ans)))))
      (go a)))
 
-(declare-top (special y genvar $savefactors checkfactors w
+(declare-top (special y genvar $savefactors checkfactors
 		      exp var x $factorflag $ratfac
-		      $keepfloat ratform rootfactor
+		      ratform
 		      wholepart parnumer varlist n))
 
 (defmfun $partfrac (exp var)
@@ -679,8 +677,8 @@
 						     content)
 					      bpart)))))))))))
 
-(declare-top (unspecial exp f n ss v var w xv y *a* *chk *l *max *p
-			*res u* *var* *x* *y*))
+(declare-top (unspecial exp f n ss v var xv y *chk *l *max *p
+			*res u* *x* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
 ;; ONLY ENTITY WHICH DEPENDS ON X IS X ITSELF.

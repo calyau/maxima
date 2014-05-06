@@ -45,18 +45,6 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} logand (@code{x},@code{y})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
-@deffn {Function} logor (@code{x},@code{y})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
-@deffn {Function} logxor (@code{x},@code{y})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
 @deffn {Function} nonzeroandfreeof (@var{x}, @var{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

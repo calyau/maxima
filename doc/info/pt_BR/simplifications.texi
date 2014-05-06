@@ -230,24 +230,6 @@ Retorna a forma de express@~{a}o racional can@^{o}nica (CRE) se fornecida uma CR
 Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} logand (@code{x},@code{y})
-Retorna o "e" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
-
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} logor (@code{x},@code{y})
-Retorna o "ou" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
-
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o} logxor (@code{x},@code{y})
-Retorna "ou-exclusivo" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
-
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
-@end deffn
-
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp

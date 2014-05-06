@@ -384,15 +384,17 @@
 ;; the Maxima operator 'op' to the operator in the hash table
 ;; 'flonum-op'. When z isn't a Maxima complex number, return
 ;; nil.
-
 (defun flonum-eval (op z)
-  (let ((op (gethash op *flonum-op*)))
-    (when (and op (complex-number-p z 'float-or-rational-p))
+  (let ((flonum-op (gethash op *flonum-op*)))
+    (when (and flonum-op (complex-number-p z 'float-or-rational-p))
       (let ((x ($realpart z)) (y ($imagpart z)))
 	(when (or $numer (floatp x) (floatp y))
 	  (setq x ($float x))
 	  (setq y ($float y))
-	  (complexify (funcall op (if (zerop y) x (complex x y)))))))))
+          (bigfloat-alternative
+           (complexify
+            (funcall flonum-op (if (zerop y) x (complex x y))))
+           (big-float-eval op z)))))))
 
 ;; For now, big float evaluation of trig-like functions for complex
 ;; big floats uses rectform.  I suspect that for some functions (not
@@ -407,17 +409,19 @@
     (let ((x ($realpart z))
 	  (y ($imagpart z))
 	  (bop (gethash op *big-float-op*)))
-      ;; If bop is non-NIL, we want to try that first.  If bop
-      ;; declines (by returning NIL), we silently give up and use the
-      ;; rectform version.
-      (cond ((and ($bfloatp x) (like 0 y))
-	     (or (and bop (funcall bop x))
-		 ($bfloat `((,op simp) ,x))))
-	    ((or ($bfloatp x) ($bfloatp y))
-	     (or (and bop (funcall bop ($bfloat x) ($bfloat y)))
-		 (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
-		   (setq z ($rectform `((,op simp) ,z)))
-		   ($bfloat z))))))))
+      (macrolet ((afloatp (u)
+                   `(or (floatp ,u) ($bfloatp ,u))))
+        ;; If bop is non-NIL, we want to try that first.  If bop
+        ;; declines (by returning NIL), we silently give up and use the
+        ;; rectform version.
+        (cond ((and (afloatp x) (like 0 y))
+               (or (and bop (funcall bop x))
+                   ($bfloat `((,op simp) ,x))))
+              ((or (afloatp x) (afloatp y))
+               (or (and bop (funcall bop ($bfloat x) ($bfloat y)))
+                   (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
+                     (setq z ($rectform `((,op simp) ,z)))
+                     ($bfloat z)))))))))
 	 
 ;; For complex big float evaluation, it's important to check the 
 ;; simp flag -- otherwise Maxima can get stuck in an infinite loop:

@@ -156,6 +156,9 @@ colnew/prob2.mac \
 colnew/prob3.mac \
 colnew/prob4.mac \
 combinatorics/README \
+contrib/alt-display/alt-display.lisp \
+contrib/alt-display/alt-display.mac \
+contrib/alt-display/tex-display.lisp \
 contrib/altsimp/altsimp.lisp \
 contrib/augmented_lagrangian.mac \
 contrib/bitwise/bitwise.lisp \
@@ -351,6 +354,8 @@ contrib/maximaMathML/mathml-maxima.lisp \
 contrib/maximaMathML/mathml.readme \
 contrib/maximaMathML/maximaMathML.lisp \
 contrib/maximaMathML/PrMathML.lisp \
+contrib/maxima-odesolve/kovacicODE.mac \
+contrib/maxima-odesolve/README \
 contrib/maxima-server.lisp \
 contrib/mcclim/formula.lisp \
 contrib/mcclim/listeneroutput.png \
@@ -500,6 +505,8 @@ contrib/Zeilberger/zeilberger.mac \
 descriptive/biomed.data \
 descriptive/descriptive.mac \
 descriptive/pidigits.data \
+descriptive/rtest_descriptive.mac \
+descriptive/rtest_statgraph.mac \
 descriptive/wind.data \
 diffequations/abel.mac \
 diffequations/desoln.mac \
@@ -1079,6 +1086,7 @@ solve_rec/simplify_sum.mac \
 solve_rec/simplify_sum_test.mac \
 solve_rec/solve_rec.dem \
 solve_rec/solve_rec.mac \
+sound/sound.lisp \
 specfun.lisp \
 stats/inference_result.lisp \
 stats/numstats.lisp \

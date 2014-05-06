@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl If git is available, the version number here is not used.  
 dnl Instead, git is used to derive the version based on the closest
 dnl annotated branch tag.
-AC_INIT([maxima], [5.32post])
+AC_INIT([maxima], [5.33post])
 AC_CONFIG_SRCDIR([src/macsys.lisp])
 AM_INIT_AUTOMAKE([-Wno-portability])
 

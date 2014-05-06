@@ -14,16 +14,16 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special prob rootfac parnumer pardenom logptdx wholepart
+(declare-top (special parnumer pardenom logptdx wholepart
                       $ratalgdenom expexpflag $logsimp switch1 degree cary
                       $ratfac $logexpand ratform genvar *var var rootfactor
                       expint $keepfloat trigint operator $exponentialize $gcd
                       $logarc changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch varlist nogood genvar
-                      $erfflag $liflag rischp $factorflag alphar m simp
-                      genpairs hypertrigint *mosesflag yyy *exp y $algebraic
+                      $erfflag $liflag rischp $factorflag alphar m
+                      genpairs hypertrigint *mosesflag *exp y $algebraic
                       implicit-real $%e_to_numlog generate-atan2
-                      context bigfloatzero rp-polylogp *in-risch-p*))
+                      context rp-polylogp *in-risch-p*))
 
 (defmvar $liflag t "Controls whether `risch' generates polylogs")
 
@@ -1085,5 +1085,5 @@
   (subst '/_101x *var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
-			klth liflag m nogood operator prob
-			r s simp switch switch1 *var var  y yyy))
+			klth liflag m nogood operator
+			r s switch switch1 *var var  y))

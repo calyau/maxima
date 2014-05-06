@@ -30,10 +30,6 @@ rational&&  rational(z):=block([n,d,cd,ratfac],
     d:rat(n/ratdisrep(d*cd)),
     if ratp(z) then d else ratdisrep(d))$
 
-logical&&  logand(x,y):=?boole(?boole\-and,x,y)$
-	logor(x,y):=?boole(?boole\-ior,x,y)$
-	logxor(x,y):=?boole(?boole\-xor,x,y)$
-
 nonzeroandfreeof&&  nonzeroandfreeof(x,e):=is(e#0 and freeof(x,e))$
 
 lcm&& lcm([list]):=block([listconstvars:false],if listofvars(list)=[] then

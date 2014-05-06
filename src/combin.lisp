@@ -608,88 +608,111 @@
 ;;
 ;; zeta(s) = 1/(1-2^(1-s)) *
 ;;            (sum((-1)^(k-1)/k^s,k,1,n) +
-;; 1/2^n*sum((-1)^(k-1)*e(k-n)/k^s,k,n+1,2*n))
+;;             1/2^n*sum((-1)^(k-1)*e(k-n)/k^s,k,n+1,2*n))
 ;;           + g(n,s)
 ;;
-;; where e(k) = sum(binomial(n,j), j, k, n) and
-;; |g(n,s)| <= 1/8^n * 4^abs(sigma)/abs(1-2^(1-s))/abs(gamma(s))
+;; where e(k) = sum(binomial(n,j), j, k, n). Writing s = sigma + %i*t, when
+;; sigma is positive you get an error estimate of
 ;;
-;; with s = sigma + %i*t
+;;   |g(n,s)| <= 1/8^n * h(s)
 ;;
-;; This technique converge for sigma > -(n-1)
+;; where
 ;;
-;; Figure out how many terms we need from |g(n,s)|.  The answer is
+;;   h(s) = ((1 + abs (t / sigma)) exp (abs (t) * %pi / 2)) / abs (1 - 2^(1 - s))
 ;;
-;; n = log(f/eps)/log(8), where f =
-;; 4^abs(sigma)/abs(1-2^(1-s))/abs(gamma(s))
+;; We need to figure out how many terms are required to make |g(n,s)|
+;; sufficiently small. The answer is
 ;;
-;; But for s near 0, the above is not very accurate.  In this case,
-;; use the expansion zeta(s) = -1/2-1/2*log(2*pi)*s.
+;;      n = (log h(s) - log (eps)) / log (8)
+;;
+;; and
+;;
+;;   log (h (s)) = (%pi/2 * abs (t)) + log (1 + t/sigma) - log (abs (1 - 2^(1 - s)))
+;;
+;; Notice that this bound is a bit rubbish when sigma is near zero. In that
+;; case, use the expansion zeta(s) = -1/2-1/2*log(2*pi)*s.
 (defun float-zeta (s)
-  (let ((s (bigfloat:to s)))
-    ;; If s is a rational (real or complex), convert to a float.  This
-    ;; is needed so we can compute a sensible epsilon value.  (What is
-    ;; the epsilon value for an exact rational?)
-    (typecase s
-      (rational
-       (setf s (float s)))
-      ((complex rational)
-       (setf s (coerce s '(complex flonum)))))
-    (cond ((bigfloat:< (bigfloat:abs (bigfloat:* s s)) (bigfloat:epsilon s))
-           ;; abs(s)^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
-           (bigfloat:+ -1/2
-                       (bigfloat:* -1/2
-                                   (bigfloat:log (bigfloat:* 2 (bigfloat:%pi s)))
-                                   s)))
-	  ((bigfloat:minusp (bigfloat:realpart s))
-	   ;; Reflection formula
-	   (bigfloat:* (bigfloat:expt 2 s)
-		       (bigfloat:expt (bigfloat:%pi s)
-				      (bigfloat:- s 1))
-		       (bigfloat:sin (bigfloat:* (bigfloat:/ (bigfloat:%pi s)
-							     2)
-						 s))
-		       (bigfloat:to ($gamma (to (bigfloat:- 1 s))))
-		       (float-zeta (bigfloat:- 1 s))))
-	  (t
-	   (let ((n (bigfloat:ceiling
-		     (bigfloat:/
-		      (bigfloat:log
-		       (bigfloat:/ (bigfloat:expt 4 (bigfloat:abs (bigfloat:realpart s)))
-				   (bigfloat:abs (bigfloat:- 1
-							     (bigfloat:expt 2 (bigfloat:- 1 s))))
-				   (bigfloat:abs (bigfloat:to ($gamma (to s))))
-				   (bigfloat:epsilon s)))
-		      (bigfloat:log 8))))
-		 (sum1 0)
-		 (sum2 0))
-	     (flet ((binsum (k n)
-		      ;; sum(binomial(n,j), j, k, n) = sum(binomial(n,j), j, n, k)
-		      (let ((sum 0)
-			    (term 1))
-			(loop for j from n downto k
-			   do
-			   (progn
-			     (incf sum term)
-			     (setf term (/ (* term j) (+ n 1 (- j))))))
-			sum)))
-	       ;;(format t "n = ~D terms~%" n)
-	       ;; sum1 = sum((-1)^(k-1)/k^s,k,1,n)
-	       ;; sum2 = sum((-1)^(k-1)/e(n,k-n)/k^s, k, n+1, 2*n)
-	       ;;      = (-1)^n*sum((-1)^(m-1)*e(n,m)/(n+k)^s, k, 1, n)
-	       (loop for k from 1 to n
-		  for d = (bigfloat:expt k s)
-		  do (progn
-		       (bigfloat:incf sum1 (bigfloat:/ (cl:expt -1 (- k 1)) d))
-		       (bigfloat:incf sum2 (bigfloat:/ (* (cl:expt -1 (- k 1))
-							  (binsum k n))
-						       (bigfloat:expt (+ k n) s))))
-		  finally (return (values sum1 sum2)))
-	       (when (oddp n)
-		 (setq sum2 (bigfloat:- sum2)))
-	       (bigfloat:/ (bigfloat:+ sum1 
-				       (bigfloat:/ sum2 (bigfloat:expt 2 n)))
-			   (bigfloat:- 1 (bigfloat:expt 2 (bigfloat:- 1 s))))))))))
+  ;; If s is a rational (real or complex), convert to a float.  This
+  ;; is needed so we can compute a sensible epsilon value.  (What is
+  ;; the epsilon value for an exact rational?)
+  (setf s (bigfloat:to s))
+  (typecase s
+    (rational
+     (setf s (float s)))
+    ((complex rational)
+     (setf s (coerce s '(complex flonum)))))
+
+  (let ((sigma (bigfloat:realpart s)))
+    (cond
+      ;; abs(s)^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
+      ((bigfloat:< (bigfloat:abs (bigfloat:* s s)) (bigfloat:epsilon s))
+       (bigfloat:+ -1/2
+                   (bigfloat:* -1/2
+                               (bigfloat:log (bigfloat:* 2 (bigfloat:%pi s)))
+                               s)))
+
+      ;; Reflection formula
+      ((bigfloat:minusp sigma)
+       (bigfloat:* (bigfloat:expt 2 s)
+                   (bigfloat:expt (bigfloat:%pi s)
+                                  (bigfloat:- s 1))
+                   (bigfloat:sin (bigfloat:* (bigfloat:/ (bigfloat:%pi s)
+                                                         2)
+                                             s))
+                   (bigfloat:to ($gamma (to (bigfloat:- 1 s))))
+                   (float-zeta (bigfloat:- 1 s))))
+
+      ;; The general formula from above. Call the imaginary part "tau" rather
+      ;; than the "t" above, because that isn't a CL keyword...
+      (t
+       (let* ((tau (bigfloat:imagpart s))
+              (logh
+               (bigfloat:-
+                (if (bigfloat:zerop tau) 0
+                    (bigfloat:+
+                     (bigfloat:* 1.6 (bigfloat:abs tau))
+                     (bigfloat:log (bigfloat:1+
+                                    (bigfloat:abs
+                                     (bigfloat:/ tau sigma))))))
+                (bigfloat:log
+                 (bigfloat:abs
+                  (bigfloat:- 1 (bigfloat:expt 2 (bigfloat:- 1 s)))))))
+
+              (logeps (bigfloat:log (bigfloat:epsilon s)))
+
+              (n (max (bigfloat:ceiling
+                       (bigfloat:/ (bigfloat:- logh logeps) (bigfloat:log 8)))
+                      1))
+
+              (sum1 0)
+              (sum2 0))
+         (flet ((binsum (k n)
+                  ;; sum(binomial(n,j), j, k, n) = sum(binomial(n,j), j, n, k)
+                  (let ((sum 0)
+                        (term 1))
+                    (loop for j from n downto k
+                       do
+                         (progn
+                           (incf sum term)
+                           (setf term (/ (* term j) (+ n 1 (- j))))))
+                    sum)))
+           ;; (format t "n = ~D terms~%" n)
+           ;; sum1 = sum((-1)^(k-1)/k^s,k,1,n)
+           ;; sum2 = sum((-1)^(k-1)/e(n,k-n)/k^s, k, n+1, 2*n)
+           ;;      = (-1)^n*sum((-1)^(m-1)*e(n,m)/(n+k)^s, k, 1, n)
+           (loop for k from 1 to n
+              for d = (bigfloat:expt k s)
+              do (progn
+                   (bigfloat:incf sum1 (bigfloat:/ (cl:expt -1 (- k 1)) d))
+                   (bigfloat:incf sum2 (bigfloat:/ (* (cl:expt -1 (- k 1))
+                                                      (binsum k n))
+                                                   (bigfloat:expt (+ k n) s))))
+              finally (return (values sum1 sum2)))
+           (when (oddp n)
+             (setq sum2 (bigfloat:- sum2)))
+           (bigfloat:/ (bigfloat:+ sum1 
+                                   (bigfloat:/ sum2 (bigfloat:expt 2 n)))
+                       (bigfloat:- 1 (bigfloat:expt 2 (bigfloat:- 1 s))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,0 +1,64 @@
+   Maxima 5.33 change log
+
+
+   New items in share:
+
+ * package alt-display: hook for nonstandard display functions
+ * package kovacicODE: Kovacic method for ordinary differential equations
+ * package odes: several methods for ordinary differential equations
+ * package trigtools: manipulating trigonometric function expressions
+ * package sound: functions for audio synthesis
+
+
+   Changes in core:
+
+ * promote result to bigfloat on floating point overflow
+ * variables declared to be irrational are considered real
+ * display floats with leading "0." instead of "." only
+ * function tex: accepts Lisp objects now
+ * functions expintegral_shi, expintegral_chi: limits
+ * functions hankel_1, hankel_2: numerically evaluate when the order is complex
+ * function declare: rational and irrational properties mutually exclusive
+ * functions get, put: when first argument is a string, assume it is the name of an operator
+ * functions round, truncate: handle arguments of zeroa and zerob
+ * functions for Galois fields: improve power tables and introduce nth root
+ * operator @: TeX property
+
+
+   Other changes:
+
+ * package ezunits: TeX property for units conversion operator
+ * package maximaMathML: some updates
+ * package draw: support for gnuplot terminal canvas
+ * documentation: updating Brazilian Portuguese translation of user manual
+
+
+   Bug fixes:
+
+ * 2703: plotting option legend causes an error
+ * 2702: plotting option adapt_depth causes an error
+ * 2701: plotting option logy causes an error
+ * 2700: plot option psfile causes an error
+ * 2699: nticks seems ignored
+ * 2696: *prompt-prefix* and *prompt-suffix* not inserted for askinteger / asksign
+ * 2695: kill kills built-in properties of operator after user-defined property
+ * 2687: call-arguments-limit easily exhaustable in tex1
+ * 2682: Function zeta fails numerically for large numbers that aren't even integers
+ * 2681: solve_rec wrong result
+ * 2676: integral incorrect when variable is subscripted
+ * 2675: maxima will not do the simplest of definite integrals and will not factor otherwise
+ * 2671: Since 4833b5 Maxima (with ECL at least) outputs palette numbers gnuplot
+
+
+ unnumbered bugs:
+
+ * bug in gnuplot_term option
+ * bug in starplot
+ * bug in ratinterpol
+ * %e^^A should not simplify to %e^A
+ * %pi is now correctly rounded with high probability
+ * embedded plotting bug in XMaxima
+ * bug in single-label case for plotting option 'label'
+ * bug in comment indentation in Emacs
+ * $CONS and friends should treat lists the same as other expressions
+ * mailing list 2014-02-27: "assigning to a list of structure fields does not work"

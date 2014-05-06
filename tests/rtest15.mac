@@ -1035,25 +1035,6 @@ elliptic_pi (float (1/2), float (1/3), float (1/4));
 (reset (float_approx_equal_tolerance), 0);
 0;
 
-/* disallow bigfloat conversion for floating point infinity and not-a-number.
- * SF bug [ 2013654 ] bfloat(NaN) => finite number
- */
-
-(foo : ?most\-positive\-double\-float,
- bar : ?most\-negative\-double\-float,
- block ([ratepsilon : 0], [bfloat (foo), bfloat (bar)]));
-/* might need to replace the expected result w/ a rat-ified value to ensure equality ... */
-[1.797693134862316b308, - 1.797693134862316b308];
-
-errcatch (bfloat (2*foo));
-[];
-
-errcatch (bfloat (2*bar));
-[];
-
-errcatch (bfloat (2*foo + 3*bar));
-[];
-
 /* Test that sinh(-x) for large x doesn't crash */
 sinh(-100b0)+sinh(100b0);
 0b0;
