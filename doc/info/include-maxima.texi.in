@@ -138,6 +138,7 @@ Additional packages
 * augmented_lagrangian::        augmented_lagrangian package.
 * Bernstein::                   Bernstein polynomials.
 * bode::                        Bode gain and phase plots.
+* clebsch_gordan::              Clebsch-Gordan and Wigner coefficients
 * cobyla::                      Nonlinear optimization with inequality constraints.
 * contrib_ode::                 Additional routines for ODEs
 * descriptive::                 Descriptive statistics.
@@ -391,6 +392,9 @@ Bernstein
 
 bode
 * Functions and Variables for bode::
+
+clebsch_gordan
+* Functions and Variables for clebsch_gordan::
 
 cobyla
 * Introduction to cobyla::
@@ -740,11 +744,15 @@ zeilberger
 @chapter Bernstein
 @include bernstein.texi
 
-@node bode, cobyla, Bernstein, Top
+@node bode
 @chapter bode
 @include bode.texi
 
-@node cobyla, contrib_ode, bode, Top
+@node clebsch_gordan
+@chapter clebsch_gordan
+@include clebsch_gordan.texi
+
+@node cobyla
 @chapter cobyla
 @include cobyla.texi
 
