@@ -893,7 +893,7 @@ in the interval of integration.")
 	((eq (caar exp) 'mtimes)
 	 (m*l (mapcar #'discontinuities-denom (cdr exp))))
 	((and (eq (caar exp) 'mexpt)
-	      (eq ($sign (caddr exp)) '$neg))
+	      (not (member ($sign (caddr exp)) '($pos $pz))))
 	 (m^ (cadr exp) (m- (caddr exp))))
 	(t 1)))
 
