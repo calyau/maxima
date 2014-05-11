@@ -58,9 +58,8 @@ title("bignum arithmetic and arbitrary precision floating point arithmetic")$
 sqrt(%pi),numer;
 fpprec:50;
 bfloat(sqrt(%pi));
-/* at the moment this runs pretty slowly but would be a nice example of bignums
 title("large numbers - the largest known prime number")$
-2^(44497)-1; */
+2^(44497)-1;
 title("vandermond's matrix")$
 mat1:matrix([1,x,x^2,x^3],[1,y,y^2,y^3],[1,z,z^2,z^3],[1,w,w^2,w^3]);
 factor(determinant(mat1));
