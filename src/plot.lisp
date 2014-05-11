@@ -392,47 +392,6 @@ sin(y)*(10.0+6*cos(x)),
          (cond ((> z max) (setq max z))))
   (list min max (- max min)))
 
-
-;; figure out the rotation to make pt the direction from which we view,
-;; and to rotate z axis to vertical.
-;; First get v, so p.v=0 then do u= p X v to give image of y axis
-;; ans = transpose(matrix( v,u,p))
-
-(defun length-one (pt)
-  (flet (($norm (pt) (loop for v in (cdr pt) sum (* v v))))
-    (let ((len (sqrt ($norm pt))))
-      (cons '(mlist) (loop for v in (cdr pt) collect (/  (float v) len))))))
-
-(defun cross-product (u v)
-  (flet ((cp (i j)
-           (- (* (nth i u) (nth j v))
-              (* (nth i v) (nth j u)))))
-    `((mlist) ,(cp 2 3) ,(cp 3 1) ,(cp 1 2))))
-        
-(defun get-rotation (pt)
-  (setq pt (length-one pt))
-  (let (v tem u)
-    (cond((setq tem (position 0.0 pt))
-          (setq v (cons '(mlist) (list 0.0 0.0 0.0)))
-          (setf (nth tem v) 1.0))
-         (t (setq v (length-one `((mlist) ,(- (third pt))      , (second pt) 0.0)))))
-    (setq u (cross-product pt v))
-    (let* (($rot   `(($matrix) ,v,u,pt))
-           (th (get-theta-for-vertical-z
-                (fourth (second $rot))
-                (fourth (third $rot)))))
-      (or (zerop th)
-          (setq $rot (ncmul2 ($rotation1 0.0 th)     $rot)))
-      $rot)))
-
-(defun get-theta-for-vertical-z (z1 z2)
-  (cond ((eql z1 0.0)
-         (if (> z2 0.0)
-             0.0
-             (coerce pi 'flonum)))
-        (t
-         (cl:atan  z2 z1 ))))
-
 (defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
   (declare (type flonum r th))
   (declare (type (cl:array t) pts))
