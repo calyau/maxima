@@ -1,7 +1,5 @@
 /* ============================================================== */
 /* file: ezgcd.dem   */
-/*  execution Ok,  up to the command commentified :  <--------- loop! loop! */
-/*  Very long or loop, I don't know ? Is it due to GC problem ???    */
 
 nolabels:true$
 time:all$
@@ -184,7 +182,7 @@ gcd(f,g);
  f:rat(d*(p^n+c^n+b^n+a^n+z^n+x^n+y^n-2))$
  g:rat((p^(n-1)+c^(n-1)+b^(n-1)+a^(n-1)+z^(n-1)+x^(n-1)-y^(n-1)
 +2)*d)$
- gcd(f,g);  /*   <-------------- loop! loop!  */
+ gcd(f,g);
 
 /* i let the rest of file */
 
