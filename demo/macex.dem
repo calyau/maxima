@@ -1,6 +1,5 @@
 /* ==================================================================== */
 /* file: macex.dem     */
-/* At some point, we get the message: DISPLACE undefined */
 
 
 /* This is a demo of Macsyma's macroexpanding commands and the use of
@@ -100,16 +99,16 @@ form;
 /* if we set macroexpansion to displace however, each macro call will
 be completely replaced by the equivalent code.  */
 
-/* (macroexpansion:displace,ev(form));
+(macroexpansion:displace,ev(form));
 
 form;
-*/
+
 /*  note that once the call is displaced, the original call cannot be
 retrieved by resetting macroexpansion.  */
 
-/* (macroexpansion:false,ev(form));
+(macroexpansion:false,ev(form));
 
 form;
-*/ 
+
 showtime:false$
 
