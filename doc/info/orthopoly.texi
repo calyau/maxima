@@ -907,7 +907,7 @@ signals an error.
 
 @end deffn
 
-@deffn {Function} pochhammer (@var{n}, @var{x})
+@deffn {Function} pochhammer (@var{x}, @var{n})
 The Pochhammer symbol. For nonnegative integers @var{n} with
 @code{@var{n} <= pochhammer_max_index}, the expression @code{pochhammer (@var{x}, @var{n})} 
 evaluates to the product @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)}
