@@ -1897,3 +1897,18 @@ exp(x[1])*(x[1]-1)$
  block([tmp: integrate(exp(-x^2/2)/sqrt(2*%pi) * x^m2726, x, -1/4, 1/4)],
    sign (subst(m2726 = 4, tmp))));
 pos$
+
+/* # 2697: Inconsistent handling of Greek symbols */
+
+integrate(y(%theta)=sin(%theta),%theta,%theta[0], %theta[1]);
+'integrate(y(%theta),%theta,%theta[0],%theta[1]) = cos(%theta[0])-cos(%theta[1])$
+
+integrate(y(t)=sin(t),t,t[0], t[1]);
+'integrate(y(t),t,t[0],t[1]) = cos(t[0])-cos(t[1])$
+
+integrate(y(tau)=sin(tau),tau,tau[0], tau[1]);
+'integrate(y(tau),tau,tau[0],tau[1]) = cos(tau[0])-cos(tau[1])$
+
+integrate ([f(x), g(x)], x, x[1], x[2]);
+['integrate (f(x), x, x[1], x[2]), 'integrate (g(x), x, x[1], x[2])];
+

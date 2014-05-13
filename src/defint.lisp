@@ -182,6 +182,16 @@ in the interval of integration.")
 (defvar *semirat* nil)
 
 (defun $defint (exp var ll ul)
+
+  ;; Distribute $defint over equations, lists, and matrices.
+  (cond ((mbagp exp)
+         (return-from $defint
+           (simplify
+             (cons (car exp)
+                   (mapcar #'(lambda (e)
+                               (simplify ($defint e var ll ul)))
+                           (cdr exp)))))))
+
   (let ((*global-defint-assumptions* ())
 	(integer-info ()) (integerl integerl) (nonintegerl nonintegerl))
     (with-new-context (context)
@@ -215,14 +225,6 @@ in the interval of integration.")
              (unless (lenient-extended-realp ul)
                (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ll))
 
-	     ;; Distribute $defint over equations, lists, and matrices.
-	     (cond ((mbagp exp)
-	            (return-from $defint
-	              (simplify
-	                (cons (car exp)
-	                      (mapcar #'(lambda (e)
-	                                  (simplify ($defint e var ll ul)))
-	                              (cdr exp)))))))
 	     (cond ((setq ans (defint exp var ll ul))
 		    (setq ans (subst orig-var var ans))
 		    (cond ((atom ans)  ans)
