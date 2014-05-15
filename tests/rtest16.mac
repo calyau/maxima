@@ -1469,6 +1469,9 @@ done;
 f[10];
 3628800;
 
+(kill(f), 0);
+0$
+
 (a: make_array(fixnum, 2, 2), done);
 done;
 listarray(a);
@@ -1899,7 +1902,6 @@ exp(x[1])*(x[1]-1)$
 pos$
 
 /* # 2697: Inconsistent handling of Greek symbols */
-
 integrate(y(%theta)=sin(%theta),%theta,%theta[0], %theta[1]);
 'integrate(y(%theta),%theta,%theta[0],%theta[1]) = cos(%theta[0])-cos(%theta[1])$
 
@@ -1909,6 +1911,5 @@ integrate(y(t)=sin(t),t,t[0], t[1]);
 integrate(y(tau)=sin(tau),tau,tau[0], tau[1]);
 'integrate(y(tau),tau,tau[0],tau[1]) = cos(tau[0])-cos(tau[1])$
 
-integrate ([f(x), g(x)], x, x[1], x[2]);
-['integrate (f(x), x, x[1], x[2]), 'integrate (g(x), x, x[1], x[2])];
-
+integrate ([foo(x), bar(x)], x, x[1], x[2]);
+['integrate (foo(x), x, x[1], x[2]), 'integrate (bar(x), x, x[1], x[2])];
