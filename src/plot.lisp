@@ -1206,8 +1206,9 @@ sin(y)*(10.0+6*cos(x)),
                (let ((y (if (getf plot-options :logx)
                             (funcall fcn (exp x))
                             (funcall fcn x))))
-                 (if (getf plot-options :logy)
-                     (log y)
+                 (if (and (getf plot-options :logy)
+                          (numberp y))
+                     (if (> y 0) (log y) 'und)
                      y))))
         
         (dotimes (k (1+ (* 2 nticks)))
@@ -1250,19 +1251,22 @@ sin(y)*(10.0+6*cos(x)),
         (do ((x result (cddr x))
              (y (cdr result) (cddr y)))
             ((null y))
-          (when (getf plot-options :logx)
-            (setf (car x) (exp (car x))))
-          (when (getf plot-options :logy)
-            (setf (car y) (exp (car y))))
           (if (numberp (car y))
-            (unless (<= ymin (car y) ymax)
-              (incf n-clipped)
-              (setf (car x) 'moveto)
-              (setf (car y) 'moveto))
-            (progn
-              (incf n-non-numeric)
-              (setf (car x) 'moveto)
-              (setf (car y) 'moveto))))
+              (unless (<= ymin (car y) ymax)
+                (incf n-clipped)
+                (setf (car x) 'moveto)
+                (setf (car y) 'moveto))
+              (progn
+                (incf n-non-numeric)
+                (setf (car x) 'moveto)
+                (setf (car y) 'moveto)))
+          (when (and (getf plot-options :logx)
+                     (numberp (car x)))
+            (setf (car x) (exp (car x))))
+
+          (when (and (getf plot-options :logy)
+                     (numberp (car y)))
+            (setf (car y) (exp (car y)))))
 
         ;; Filter out any MOVETO's which do not precede a number.
         ;; Code elsewhere in this file expects MOVETO's to
