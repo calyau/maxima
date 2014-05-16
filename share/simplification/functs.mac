@@ -75,18 +75,29 @@ series&&  arithmetic(a,d,n):=a+(n-1)*d$
           geometric(a,r,n):=a*r^(n-1)$
           harmonic(a,b,c,n):=a/(b+(n-1)*c)$
           arithsum(a,d,n):=n*(a+(n-1)*d/2)$
-          geosum(a,r,n):=block([],
-            if r=1
-                then if n='inf
-                        then return(limit(i*a,i,'inf))
-                        else return(n*a),
-            if r=-1
-                then error("The series is not convergent"),
-            if n='inf 
-                then if abs(r) < 1 
-                        then a/(1-r)
-                        else limit(a*(1-r^i)/(1-r),i,'inf)
-                else a*(1-r^n)/(1-r)   )$
+          geosum (a,r,n) :=
+            block([dummyvar: gensym()],
+              if n = 'inf then
+                block ([coef_sign: sign (a)],
+                  if member (sign (r-1), ['pos, 'zero, 'pz]) then
+                    if member (coef_sign, ['pos, 'neg, 'zero]) then
+                      limit (a * inf)
+                    else
+                      'geosum (a, r, n)
+                  else if coef_sign = 'zero then 0
+                  else
+                    block ([sgn_abs: sign (abs (r) - 1)],
+                      if member (sgn_abs, ['pos, 'pz, 'zero]) then
+                        if not (member (coef_sign, ['pz, 'nz, 'pnz])) then
+                          'und
+                        else
+                          'geosum (a, r, n)
+                      else if sgn_abs # 'neg then
+                        'geosum (a, r, n)
+                      else
+                        a/(1 - r)))
+              else
+                a * (1 - r^n) / (1 - r))$
 
 gauss&&  gaussprob(x):=1/sqrt(2*%pi)*%e^(-x^2/2)$
 
