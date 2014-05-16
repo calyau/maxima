@@ -2065,3 +2065,57 @@ imagpart(bessel_i(2,%i*3.0));
 0;
 realpart(bessel_i(3,%i*3.0));
 0;
+
+/*******************************************************/
+/* Check the handling of conjugate on Bessel functions */
+/*******************************************************/
+
+declare([w,z],complex);
+done;
+assume(nonneg>=0,notequal(nonzero,0));
+[nonneg>=0,notequal(nonzero,0)];
+
+conjugate(bessel_j(w,z));
+'(conjugate(bessel_j(w,z)));
+
+conjugate(bessel_y(w,z));
+'(conjugate(bessel_y(w,z)));
+
+conjugate(bessel_i(w,z));
+'(conjugate(bessel_i(w,z)));
+
+conjugate(bessel_k(w,z));
+'(conjugate(bessel_k(w,z)));
+
+/* Bessel functions with arguments off of the negative real axis
+ * commute with conjugate
+ */
+conjugate(bessel_j(z,x+%i*nonzero));
+'(bessel_j(conjugate(z),x-%i*nonzero));
+
+conjugate(bessel_j(z,nonneg));
+'(bessel_j(conjugate(z),nonneg));
+
+conjugate(bessel_y(z,x+%i*nonzero));
+'(bessel_y(conjugate(z),x-%i*nonzero));
+
+conjugate(bessel_y(z,nonneg));
+'(bessel_y(conjugate(z),nonneg));
+
+conjugate(bessel_i(z,x+%i*nonzero));
+'(bessel_i(conjugate(z),x-%i*nonzero));
+
+conjugate(bessel_i(z,nonneg));
+'(bessel_i(conjugate(z),nonneg));
+
+conjugate(bessel_k(z,x+%i*nonzero));
+'(bessel_k(conjugate(z),x-%i*nonzero));
+
+conjugate(bessel_k(z,nonneg));
+'(bessel_k(conjugate(z),nonneg));
+
+remove([w,z],complex);
+done;
+forget(nonneg>=0,notequal(nonzero,0));
+[nonneg>=0,notequal(nonzero,0)];
+
