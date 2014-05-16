@@ -1146,6 +1146,7 @@
                   ":"
                   "::"
                   "::="
+		  ":|="
                   ":="
                   "="
                   "<"
@@ -1400,7 +1401,7 @@
 	 (zarg                spc)
 	 (fopen               (concat spc "(" spc))
 	 (fclose              (concat spc ")" spc))
-	 (defn                ":*:=")
+	 (defn                ":[:|]?=")
 	 (fbegin              (concat lspc fname fopen))
 	 (fend                (concat fclose defn))
 	 (alt                 "\\|")
