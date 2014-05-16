@@ -2070,7 +2070,7 @@ realpart(bessel_i(3,%i*3.0));
 /* Check the handling of conjugate on Bessel functions */
 /*******************************************************/
 
-declare([w,z],complex);
+declare([w,z],complex,n,integer);
 done;
 assume(nonneg>=0,notequal(nonzero,0));
 [nonneg>=0,notequal(nonzero,0)];
@@ -2132,7 +2132,14 @@ conjugate(hankel_2(z,x+%i*nonzero));
 conjugate(hankel_2(z,nonneg));
 '(hankel_1(conjugate(z),nonneg));
 
-remove([w,z],complex);
+/* Bessel functions J and I of integral order commute with conjugate */
+conjugate(bessel_j(n,z));
+'(bessel_j(n,conjugate(z)));
+
+conjugate(bessel_i(n,z));
+'(bessel_i(n,conjugate(z)));
+
+remove([w,z],complex,n,integer);
 done;
 forget(nonneg>=0,notequal(nonzero,0));
 [nonneg>=0,notequal(nonzero,0)];

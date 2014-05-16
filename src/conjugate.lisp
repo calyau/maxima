@@ -190,7 +190,7 @@
 
 (defun conjugate-bessel-j (z)
   (let ((n (first z)) (x (second z)))
-    (if (off-negative-real-axisp x)
+    (if (or ($featurep n '$integer) (off-negative-real-axisp x))
         (take '(%bessel_j) (take '($conjugate) n) (take '($conjugate) x))
        `(($conjugate simp) ((%bessel_j simp) ,@z)))))
 
@@ -202,7 +202,7 @@
 
 (defun conjugate-bessel-i (z)
   (let ((n (first z)) (x (second z)))
-    (if (off-negative-real-axisp x)
+    (if (or ($featurep n '$integer) (off-negative-real-axisp x))
         (take '(%bessel_i) (take '($conjugate) n) (take '($conjugate) x))
        `(($conjugate simp) ((%bessel_i simp) ,@z)))))
 
