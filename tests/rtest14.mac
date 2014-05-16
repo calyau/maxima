@@ -2087,6 +2087,12 @@ conjugate(bessel_i(w,z));
 conjugate(bessel_k(w,z));
 '(conjugate(bessel_k(w,z)));
 
+conjugate(hankel_1(w,z));
+'(conjugate(hankel_1(w,z)));
+
+conjugate(hankel_2(w,z));
+'(conjugate(hankel_2(w,z)));
+
 /* Bessel functions with arguments off of the negative real axis
  * commute with conjugate
  */
@@ -2113,6 +2119,18 @@ conjugate(bessel_k(z,x+%i*nonzero));
 
 conjugate(bessel_k(z,nonneg));
 '(bessel_k(conjugate(z),nonneg));
+
+conjugate(hankel_1(z,x+%i*nonzero));
+'(hankel_2(conjugate(z),x-%i*nonzero));
+
+conjugate(hankel_1(z,nonneg));
+'(hankel_2(conjugate(z),nonneg));
+
+conjugate(hankel_2(z,x+%i*nonzero));
+'(hankel_1(conjugate(z),x-%i*nonzero));
+
+conjugate(hankel_2(z,nonneg));
+'(hankel_1(conjugate(z),nonneg));
 
 remove([w,z],complex);
 done;
