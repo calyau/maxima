@@ -61,11 +61,12 @@
 ;; Return a Maxima gensym.
 (defun $gensym (&optional x)
   (when (and x
-             (not (or (integerp x)
+             (not (or (and (integerp x)
+                           (not (minusp x)))
                       (stringp x))))
     (merror
      (intl:gettext
-      "gensym: Argument must be an integer or a string. Found: ~M") x))
+      "gensym: Argument must be a nonnegative integer or a string. Found: ~M") x))
   (when (stringp x) (setq x (maybe-invert-string-case x)))
   (if x
       (cadr (dollarify (list (gensym x))))
