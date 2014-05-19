@@ -95,9 +95,9 @@ to the value of a Lisp internal counter.
 If @var{x} is supplied, and is a string, then that string is used as a prefix 
 instead of "g" for this call to gensym only.
 
-If @var{x} is supplied, and is an integer, then that integer, instead of the 
-value of the internal Lisp integer, is used as the suffix for this call to 
-gensym only.
+If @var{x} is supplied, and is a nonnegative integer, then that integer, instead
+of the value of the internal Lisp integer, is used as the suffix for this call
+to gensym only.
 
 If and only if no explicit suffix is supplied, the Lisp internal integer is 
 incremented after it is used.

@@ -832,8 +832,8 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
      "\\setlength{\\textheight}{200cm}\n"
      ;; define \boxed from amsmath.sty
      "\\makeatletter
-      \\newcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}
-\\newcommand{\\operatorname}[1]{%
+      \\renewcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}
+\\renewcommand{\\operatorname}[1]{%
 \\mathop{\\relax\\kern\\z@\\operator@font{#1}}}
       \\makeatother
       \\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}

@@ -188,125 +188,125 @@ remove a property from an atom, use @mrefdot{remove}
 
 @table @code
 @item additive
-      Tells Maxima to simplify @var{a_i} expressions by the substitution
-      @code{@var{a_i}(x + y + z + ...)} @code{-->}
-      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
-      The substitution is carried out on the first argument only.
+Tells Maxima to simplify @var{a_i} expressions by the substitution
+@code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+The substitution is carried out on the first argument only.
 
 @item alphabetic
-      Tells Maxima to recognize all characters in @var{a_i} (which must be a
-      string) as alphabetic characters.
+Tells Maxima to recognize all characters in @var{a_i} (which must be a
+string) as alphabetic characters.
 
 @item antisymmetric, commutative, symmetric
-      Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric
-      function.  @mref{commutative} is the same as @code{symmetric}.
+Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric
+function.  @mref{commutative} is the same as @code{symmetric}.
 
 @item bindtest
-      Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
+Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
 
 @item constant
-      Tells Maxima to consider @var{a_i} a symbolic constant.
-      @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
-      @c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
-      @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+Tells Maxima to consider @var{a_i} a symbolic constant.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
 @item even, odd
-      Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
+Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
 
 @item evenfun, oddfun
-      Tells Maxima to recognize @var{a_i} as an odd or even function.
+Tells Maxima to recognize @var{a_i} as an odd or even function.
 
 @item evflag
-      Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound
-      to @code{true} during the execution of @code{ev} when @var{a_i} appears as
-      a flag argument of @code{ev}.  See @mrefdot{evflag}
+Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound
+to @code{true} during the execution of @code{ev} when @var{a_i} appears as
+a flag argument of @code{ev}.  See @mrefdot{evflag}
 
 @item evfun
-      Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
-      is applied when @var{a_i} appears as a flag argument of @code{ev}.
-      See @mrefdot{evfun}
+Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
+is applied when @var{a_i} appears as a flag argument of @code{ev}.
+See @mrefdot{evfun}
 
 @item feature
-      Tells Maxima to recognize @var{a_i} as the name of a feature.
-      Other atoms may then be declared to have the @var{a_i} property.
+Tells Maxima to recognize @var{a_i} as the name of a feature.
+Other atoms may then be declared to have the @var{a_i} property.
 
 @item increasing, decreasing
-      Tells Maxima to recognize @var{a_i} as an increasing or decreasing
-      function.
-      @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
-      @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
-      @c REPORTED AS SF BUG # 1483194
+Tells Maxima to recognize @var{a_i} as an increasing or decreasing
+function.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
 
 @item integer, noninteger
-      Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
+Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
 
 @item integervalued
-      Tells Maxima to recognize @var{a_i} as an integer-valued function.
+Tells Maxima to recognize @var{a_i} as an integer-valued function.
 
 @item lassociative, rassociative
-      Tells Maxima to recognize @var{a_i} as a right-associative or
-      left-associative function.
+Tells Maxima to recognize @var{a_i} as a right-associative or
+left-associative function.
 
 @item linear
-      Equivalent to declaring @var{a_i} both @code{outative} and
-      @code{additive}.
+Equivalent to declaring @var{a_i} both @code{outative} and
+@code{additive}.
 
 @item mainvar
-      Tells Maxima to consider @var{a_i} a "main variable".  A main variable
-      succeeds all other constants and variables in the canonical ordering of
-      Maxima expressions, as determined by @code{ordergreatp}.
+Tells Maxima to consider @var{a_i} a "main variable".  A main variable
+succeeds all other constants and variables in the canonical ordering of
+Maxima expressions, as determined by @code{ordergreatp}.
 
 @item multiplicative
-      Tells Maxima to simplify @var{a_i} expressions by the substitution
-      @code{@var{a_i}(x * y * z * ...)} @code{-->} 
-      @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
-      The substitution is carried out on the first argument only.
+Tells Maxima to simplify @var{a_i} expressions by the substitution
+@code{@var{a_i}(x * y * z * ...)} @code{-->} 
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+The substitution is carried out on the first argument only.
 
 @item nary
-      Tells Maxima to recognize @var{a_i} as an n-ary function.
+Tells Maxima to recognize @var{a_i} as an n-ary function.
 
-      The @code{nary} declaration is not the same as calling the @code{nary}
-      function.  The sole effect of @code{declare(foo, nary)} is to instruct the
-      Maxima simplifier to flatten nested expressions, for example, to simplify
-      @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
+The @code{nary} declaration is not the same as calling the @code{nary}
+function.  The sole effect of @code{declare(foo, nary)} is to instruct the
+Maxima simplifier to flatten nested expressions, for example, to simplify
+@code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
 @item nonarray
-      Tells Maxima to consider @var{a_i} not an array.  This declaration
-      prevents multiple evaluation of a subscripted variable name.
+Tells Maxima to consider @var{a_i} not an array.  This declaration
+prevents multiple evaluation of a subscripted variable name.
 
 @item nonscalar
-      Tells Maxima to consider @var{a_i} a nonscalar variable.  The usual
-      application is to declare a variable as a symbolic vector or matrix.
+Tells Maxima to consider @var{a_i} a nonscalar variable.  The usual
+application is to declare a variable as a symbolic vector or matrix.
 
 @item noun
-      Tells Maxima to parse @var{a_i} as a noun.  The effect of this is to
-      replace instances of @var{a_i} with @code{'@var{a_i}} or
-      @code{nounify(@var{a_i})}, depending on the context.
+Tells Maxima to parse @var{a_i} as a noun.  The effect of this is to
+replace instances of @var{a_i} with @code{'@var{a_i}} or
+@code{nounify(@var{a_i})}, depending on the context.
 
 @item outative
-      Tells Maxima to simplify @var{a_i} expressions by pulling constant factors
-      out of the first argument.
+Tells Maxima to simplify @var{a_i} expressions by pulling constant factors
+out of the first argument.
 
-      When @var{a_i} has one argument, a factor is considered constant if it is
-      a literal or declared constant.
+When @var{a_i} has one argument, a factor is considered constant if it is
+a literal or declared constant.
 
-      When @var{a_i} has two or more arguments, a factor is considered constant
-      if the second argument is a symbol and the factor is free of the second
-      argument.
+When @var{a_i} has two or more arguments, a factor is considered constant
+if the second argument is a symbol and the factor is free of the second
+argument.
 
 @item posfun
-      Tells Maxima to recognize @var{a_i} as a positive function.
+Tells Maxima to recognize @var{a_i} as a positive function.
 
 @item rational, irrational
-      Tells Maxima to recognize @var{a_i} as a rational or irrational real
-      variable.
+Tells Maxima to recognize @var{a_i} as a rational or irrational real
+variable.
 
 @item real, imaginary, complex
-      Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex
-      variable.
+Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex
+variable.
 
 @item scalar
-      Tells Maxima to consider @var{a_i} a scalar variable.
+Tells Maxima to consider @var{a_i} a scalar variable.
 
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)

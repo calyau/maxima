@@ -1,7 +1,5 @@
 /* ===================================================================== */
 /* file: cf.dem    */
-/* the line cf(frac1+frac2) loops !!!!  */
-/* the 2 last lines gives erroneous results  */
 /* CONTINUED FRACTIONS. THIS IS GOOD STUFF. */
 
 frac1:cf([1,2,3,4]);

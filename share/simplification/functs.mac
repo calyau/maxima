@@ -4,15 +4,44 @@
 define_variable(takegcd,true,boolean,"used in gcdivide to decide the
 gcd choice");
 
-rempart&&  rempart(exp,n):=
-    ?append(rest(exp,  /* combine two parts of exp
-	   first part is beginning to part to be removed
-	   specify that the first l-1 parts are retained */
-	(if listp(n) then n[1] else n)-1-length(exp)),
-	block([t],  /* last part is from removed part to end */
-	if atom(t:rest(exp,  /* last m-1 parts are retained */
-	    if listp(n) then n[2] else n))
-	then ?list(t) else ?cdr(t)))$
+rempart&&
+  rempart (expr, n) :=
+    if symbolp (expr) then
+      'rempart (expr, n)
+    else if atom (expr) then
+      error ("rempart expects a compound object as its first argument")
+    else if symbolp (n) then
+      'rempart (expr, n)
+    else
+      block ([elts: args (expr)],
+        local (elts),
+        if numberp (n) then
+          if not integerp (n) then
+            error ("Non-integer n in rempart")
+          else if is (n < 1 or n > length (elts)) then
+            expr
+          else
+            apply (op (expr),
+                   append (makelist (elts[i], i, 1, n-1),
+                           makelist (elts[i], i, n+1, length (elts))))
+        else if not (listp (n)) then
+          'rempart (expr, n)
+        else if not (length (n) = 2) then
+          error ("If second argument to rempart is a list, it should be a pair")
+        else
+          block ([a: first (n), b: second (n)],
+            if not (numberp (a) and numberp (b)) then
+              'rempart (expr, n)
+            else if not (integerp (a) and integerp (b)) then
+              error ("Non-integer [a,b] to remove in rempart")
+            else if is (b < a) then
+              expr
+            else (
+              a: min (max (a, 0), length (elts) + 1),
+              b: min (max (b, 0), length (elts) + 1),
+              apply (op (expr),
+                     append (makelist (elts[i], i, 1, a-1),
+                             makelist (elts[i], i, b+1, length (elts)))))))$
 
 wronskian&&  wronskian(functlist,var):=block([end],
     end:length(functlist)-1,
@@ -75,18 +104,29 @@ series&&  arithmetic(a,d,n):=a+(n-1)*d$
           geometric(a,r,n):=a*r^(n-1)$
           harmonic(a,b,c,n):=a/(b+(n-1)*c)$
           arithsum(a,d,n):=n*(a+(n-1)*d/2)$
-          geosum(a,r,n):=block([],
-            if r=1
-                then if n='inf
-                        then return(limit(i*a,i,'inf))
-                        else return(n*a),
-            if r=-1
-                then error("The series is not convergent"),
-            if n='inf 
-                then if abs(r) < 1 
-                        then a/(1-r)
-                        else limit(a*(1-r^i)/(1-r),i,'inf)
-                else a*(1-r^n)/(1-r)   )$
+          geosum (a,r,n) :=
+            block([dummyvar: gensym()],
+              if n = 'inf then
+                block ([coef_sign: sign (a)],
+                  if member (sign (r-1), ['pos, 'zero, 'pz]) then
+                    if member (coef_sign, ['pos, 'neg, 'zero]) then
+                      limit (a * inf)
+                    else
+                      'geosum (a, r, n)
+                  else if coef_sign = 'zero then 0
+                  else
+                    block ([sgn_abs: sign (abs (r) - 1)],
+                      if member (sgn_abs, ['pos, 'pz, 'zero]) then
+                        if not (member (coef_sign, ['pz, 'nz, 'pnz])) then
+                          'und
+                        else
+                          'geosum (a, r, n)
+                      else if sgn_abs # 'neg then
+                        'geosum (a, r, n)
+                      else
+                        a/(1 - r)))
+              else
+                a * (1 - r^n) / (1 - r))$
 
 gauss&&  gaussprob(x):=1/sqrt(2*%pi)*%e^(-x^2/2)$
 

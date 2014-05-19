@@ -18,16 +18,10 @@
 
 (declare-top (special $true $false))
 
-(declare-top (special var *par* checkcoefsignlist $exponentialize $bestriglim 
+(declare-top (special var *par* checkcoefsignlist $exponentialize
                       $radexpand))
 
 (defvar *debug-hyp* nil)
-
-;; I (rtoy) don't know what the default should be. but $hgfred sets it
-;; to 3.  But we also need to define it because some of the specint
-;; demos need it set.
-;;
-(defmvar $bestriglim 3)
 
 (defmvar $prefer_whittaker nil)
 
