@@ -1681,6 +1681,9 @@ done$
 grind("g"(x)::=x);
 done$
 
+kill ("f", "g");
+done;
+
 /* -----------------------------------------------------------------------------
  * Bug ID: 3396631 - equal terms produce different results
  * Correcting a bug in plusin revision 23.08.2011
