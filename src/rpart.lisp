@@ -39,6 +39,17 @@
 (defprop %realpart $realpart noun)
 (defprop %realpart simp-realpart operators)
 
+(defun risplit-signum (x) ;rectangular form for a signum expression
+  (let*  ((z (risplit (cadr x))) (a (car z)) (b (cdr z)) (r)) ;signum(a+%i b), where a and b are real
+    (cond ((eq t (meqp b 0)) ;signum(a) -> signum(a) + 0 %i
+	   (cons (take '(%signum) a) 0))
+	  ((or (eq t (mnqp a 0)) (eq t (mnqp b 0))) ;signum(a + %i b) --> a/sqrt(a^2+b^2) + %i b/sqrt(a^2+b^2)
+	   (setq r (take '(%sqrt) (add (power a 2) (power b 2))))
+	   (cons (div a r) (div b r)))
+	  (t (cons (take '(%realpart) x) (take '(%imagpart) x)))))) ;nothing known
+
+(setf (get '%signum 'risplit-function) #'risplit-signum)
+
 (defun simp-realpart (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))

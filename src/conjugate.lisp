@@ -30,14 +30,14 @@
 ;; log does not get the commutes-with-conjugate property.  Instead,
 ;; log gets the conjugate-function property.
 
-;; What importation functions have I missed?
+;; What important functions have I missed?
 
 ;; (1) Arithmetic operators
 
 (setf (get 'mplus 'commutes-with-conjugate) t)
 (setf (get 'mtimes 'commutes-with-conjugate) t)
 ;(setf (get 'mnctimes 'commutes-with-conjugate) t) ;; generally I think users will want this
-
+(setf (get '%conjugate 'commutes-with-conjugate) t) ;; x=/=0, conjugate(signum(x)) = conjugate(x/abs(x)) = signum(conjugate(x))
 ;; Trig-like functions and other such functions
 
 (setf (get '%cosh 'commutes-with-conjugate) t)
