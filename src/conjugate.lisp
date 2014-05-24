@@ -37,7 +37,7 @@
 (setf (get 'mplus 'commutes-with-conjugate) t)
 (setf (get 'mtimes 'commutes-with-conjugate) t)
 ;(setf (get 'mnctimes 'commutes-with-conjugate) t) ;; generally I think users will want this
-(setf (get '%conjugate 'commutes-with-conjugate) t) ;; x=/=0, conjugate(signum(x)) = conjugate(x/abs(x)) = signum(conjugate(x))
+(setf (get '%signum 'commutes-with-conjugate) t) ;; x=/=0, conjugate(signum(x)) = conjugate(x/abs(x)) = signum(conjugate(x))
 ;; Trig-like functions and other such functions
 
 (setf (get '%cosh 'commutes-with-conjugate) t)
