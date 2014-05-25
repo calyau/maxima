@@ -385,6 +385,9 @@ matrix([5-%i*6])$
 ctranspose(matrix([1],[%i]));
 matrix([1,-%i])$
 
+(load(unwind_protect), unwind_protect((p[1] : 2014, rowop(matrix([a],[b]),1,2,x)), remarray(p)));
+matrix([a-b*x],[b])$
+
 rowop(matrix([a],[b]),1,2,x);
 matrix([a-b*x],[b]);
 

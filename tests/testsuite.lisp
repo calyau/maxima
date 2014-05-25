@@ -10,7 +10,7 @@
         "rtestnset" "rtest1" "rtest1a" "rtest2" "rtest4"
         "rtest5"
         "rtest6" "rtest6a" "rtest6b" "rtest7"
-        ((mlist simp) "rtest9" 82)
+        "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)
         "rtest11" "rtest13" "rtest13s"
@@ -37,7 +37,7 @@
         "rtestifactor"
         ((mlist simp) "rtest_equal" 157 160)
         "rtest_abs"
-        ((mlist simp) "rtest_taylor" 88 91 94 99 118 119 120 121 123 124)
+        ((mlist simp) "rtest_taylor" 88 91 94 99 123 124)
         ((mlist simp) "rtest_dot")
         "rtest_mset"
         "rtest_boolean"
