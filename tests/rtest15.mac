@@ -1038,3 +1038,113 @@ elliptic_pi (float (1/2), float (1/3), float (1/4));
 /* Test that sinh(-x) for large x doesn't crash */
 sinh(-100b0)+sinh(100b0);
 0b0;
+
+
+/* tests for push and pop */
+errcatch(push());
+[]$
+
+errcatch(push(x,5));
+[]$
+
+errcatch(pop(2014));
+[]$
+
+errcatch(push(2014));
+[]$
+
+errcatch(push(a,b,c));
+[]$
+
+errcatch(push(a,[1,2]));
+[]$
+
+errcatch(pop());
+[]$
+
+errcatch(pop(2014));
+[]$
+
+errcatch(pop([1,2]));
+[]$
+
+(l : [1,2],0);
+0$
+
+errcatch(pop(l,12));
+[]$
+
+errcatch(push(x,l, 2014));
+[]$
+
+(remvalue(k),a[k] : [a], a[k+1] : [b],  push(x, a[k : k+1]), [k,a[k], a[k+1]]);
+[k+1,[b],[x,b]]$
+
+(remvalue(k),0);
+0$
+
+(l : [], push(1,l), push(2,l), push(3,l),l);
+[3,2,1]$
+
+(l : [l : [1]], push(x,l),l);
+[x,[1]]$
+
+(l : [5,6], push(l : [],l),l);
+[[]]$
+
+(l : [1,2], push(x,l),l);
+[x,1,2]$
+
+[pop(l), l];
+[x, [1,2]]$
+
+(l : [false], [pop(l), l]);
+[false,[]]$
+
+(l : [1,2], a : push(0,l), pop(l), [a,l]);
+[[0,1,2],[1,2]]$
+
+(l : [1,2], push(l,l));
+[[1,2],1,2]$
+
+(remvalue(a), a[%pi] : [0,1,[8]], 0);
+0$
+
+(push(2014, a[%pi]), a[%pi]);
+[2014,0,1,[8]]$
+
+(pop(a[%pi]), a[%pi]);
+[0,1,[8]]$
+
+(l1 : [0], l2 : [0,1], l3 : [0,1,2],0);
+0$
+
+map('pop, '[l1,l2,l3]);
+[0,0,0]$
+
+[l1,l2,l3];
+[[],[1],[1,2]]$
+
+(a : b, b : c, c : d, d : e, e : f,0);
+0$
+
+(l : [a,b,c,d,e], push(x,l), pop(l),l);
+[b,c,d,e,f]$
+
+[pop(l),pop(l),pop(l),pop(l),pop(l)];
+[b,c,d,e,f]$
+
+(declare("[", symmetric), l : [3,2,1], push(4,l));
+[1,2,3,4]$
+
+(remove("[", symmetric),0);
+0$
+
+(aa[1] : [1], push(aa[1],aa[1]), [aa[1],pop(aa[1]), aa[1]]);
+[[[1],1],[1],[1]]$
+
+
+(remvalue(a,l,l1,l2,l3,b,c,d,e,f),remarray(aa), remarray(a), 0);
+0$
+
+/* end push and pop tests */
