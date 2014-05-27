@@ -751,17 +751,9 @@ See @mref{first} for more details.
 @anchor{pop}
 @deffn {Function} pop (@var{list})
 
-@code{pop} removes the first element from the list @var{list} and returns this 
-element.  @var{list} must be a symbol, which is bound to a list and not the list
-itself.
-
-If the argument @var{list} is not bound to a list or the list is empty, Maxima
-generates an error message.
-
-See also @mref{push} for examples.
-
-To use this function, the additional package "basic" must be loaded
-first: @code{load("basic")}.
+@code{pop} removes and returns the first element from the list @var{list}. The second argument 
+@var{list} must be a mapatom that is bound to a nonempty list. If the argument @var{list} is 
+not bound to a nonempty list, Maxima signals an error. For examples, see @mref{push}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -772,21 +764,18 @@ first: @code{load("basic")}.
 @anchor{push}
 @deffn {Function} push (@var{item}, @var{list})
 
-@code{push} prepends the item @var{item} to the list @var{list} and returns a
-copy of the new list.  @var{list} must be a symbol, which is bound to a list and
-not the list itself.  @var{item} can be any Maxima symbol or expression.
+@code{push} prepends the item @var{item} to the list @var{list} and returns a copy of the new list. 
+The second argument @var{list} must be a mapatom that is bound to a list. The first argument @var{item} 
+can be any Maxima symbol or expression. If the argument @var{list} is not bound to a list, Maxima 
+signals an error.
 
-If the argument @var{list} is not bound to a list, Maxima generates an error
-message.
 
-See also @mref{pop} to remove the first item from a list.
+To remove the first item from a list, see @mref{pop}.
 
-@code{load("basic")} loads this function.
 
 Examples:
 
 @c ===beg===
-@c load ("basic")$
 @c ll: [];
 @c push (x, ll);
 @c push (x^2+y, ll);
@@ -798,46 +787,27 @@ Examples:
 @c a;
 @c ===end===
 @example
-(%i1) load ("basic")$
 @group
-(%i2) ll: [];
-(%o2)                          []
-@end group
-@group
-(%i3) push (x, ll);
-(%o3)                          [x]
-@end group
-@group
-(%i4) push (x^2+y, ll);
-                                 2
-(%o4)                      [y + x , x]
-@end group
-@group
-(%i5) a: push ("string", ll);
-                                     2
-(%o5)                  [string, y + x , x]
-@end group
-@group
-(%i6) pop (ll);
-(%o6)                        string
-@end group
-@group
-(%i7) pop (ll);
-                                  2
-(%o7)                        y + x
-@end group
-@group
-(%i8) pop (ll);
-(%o8)                           x
-@end group
-@group
-(%i9) ll;
-(%o9)                          []
-@end group
-@group
-(%i10) a;
-                                     2
-(%o10)                 [string, y + x , x]
+(%i1) ll : [];
+(%o1)                                 []
+(%i2) push(x,ll);
+(%o2)                                 [x]
+(%i3) push(x^2+y,ll);
+                                        2
+(%o3)                             [y + x , x]
+(%i4) push("string",ll);
+                                            2
+(%o4)                         [string, y + x , x]
+(%i5) pop(ll);
+(%o5)                               string
+(%i6) pop(ll);
+                                         2
+(%o6)                               y + x
+(%i7) pop(ll);
+(%o7)                                  x
+(%i8) ll;
+(%o8)                                 []
+(%i9)
 @end group
 @end example
 

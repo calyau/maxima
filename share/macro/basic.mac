@@ -21,9 +21,11 @@ prog1(statement1,[statements])::=
 symbolcheck(x):=
  if symbolp(x) then x else error("arg must be a symbol",x)$
 
+/* The functions push and pop are now defined in src/comm.lisp. 
 push(c,l)::=(symbolcheck(l),buildq([c,l],l:cons(c,l)))$
 
 pop(l)::=(symbolcheck(l),buildq([l],prog1(first(l),l:rest(l))))$
+*/
 
 /* TR_EV is a pretty sorry way to get optimization
    by Translation-time evaluation. User directed constant-folding
