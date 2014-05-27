@@ -199,7 +199,7 @@ list of lists call this function on each of the lists independently."
 	(t
 	 (loop for v in (cdr lis)
 	       do (setq v (st-rat v))
-	       (assert (polynomialp v))
+	       (assert (affine-polynomialp v))
 	       (cond ((and zero-row (not (pzerop v)) (setq zero-row nil))))
 	       (setq agcd (cond (agcd (pgcd agcd v))
 				(t v)))
@@ -218,12 +218,12 @@ list of lists call this function on each of the lists independently."
 
 (defun $cancel_pivot(lis piv)
  (setq piv (st-rat piv))
-	   (assert (polynomialp piv))
+	   (assert (affine-polynomialp piv))
   (cond ((mbagp lis)
 	 (cons (car lis) (loop for w in (cdr lis) collect($cancel_pivot  w piv))))
 	(t
 	   (setq lis (st-rat lis))
-	   (assert (polynomialp lis))
+	   (assert (affine-polynomialp lis))
 	   (let ((tem (pgcd lis piv)))
 	     (cond ((numberp tem) (header-poly lis))
 		   (t (header-poly (pquotient lis tem))))))))

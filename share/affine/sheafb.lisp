@@ -258,7 +258,7 @@
 ;				     :already-blown-up *blew-up*)))
 (defun gen-pcomplexity (lis)
   (cond ((null lis) 0)
-	((polynomialp lis) (pcomplexity lis))
+	((affine-polynomialp lis) (pcomplexity lis))
 	((rational-functionp lis) (+ (pcomplexity (num lis))
 				     (pcomplexity (denom lis))))
 	((listp lis) (loop for v in lis summing (gen-pcomplexity v)))
@@ -638,7 +638,7 @@
 ;  "Argument may be list of polys, or rat'l fns, result is always rat'l"
 ;   (cond(subs nil)
 ;	(t  (setq subs(my-pairlis coords-for-fn (rmap-fns rmap)))))
-;  (cond ((polynomialp fns)
+;  (cond ((affine-polynomialp fns)
 ;	 (rsublis subs the-denom fns :reduce t))
 ;	((rational-functionp fns)
 ;	 (ratquotient   (rsublis subs the-denom (num fns) )
@@ -653,7 +653,7 @@
 ;						    :coords-for-fn
 ;							    coords-for-fn
 ;							    :subs subs))))
-;	((or (polynomialp (car fns))
+;	((or (affine-polynomialp (car fns))
 ;	     (rational-functionp (car fns))
 ;	     (ldatap (car fns)))
 ;	 (loop for v in fns
@@ -671,7 +671,7 @@
 ;			       collecting (ratreduce
 ;					    f
 ;					    (rmap-denom rmap)))))))
-;  (cond ((or (polynomialp fns)(rational-functionp fns))
+;  (cond ((or (affine-polynomialp fns)(rational-functionp fns))
 ;	 (simple-rat-sublis subs fns))
 ;	((eq (car fns) 'ldata)
 ;	 (make-ldata eqns (loop for v in (ldata-eqns fns)
@@ -683,7 +683,7 @@
 ;						    :coords-for-fn
 ;							    coords-for-fn
 ;							    :subs subs))))
-;	((or (polynomialp (car fns))
+;	((or (affine-polynomialp (car fns))
 ;	     (rational-functionp (car fns))
 ;	     (ldatap (car fns)))
 ;	 (loop for v in fns
@@ -698,7 +698,7 @@
 	 nil)
 	(t
 	 (setq subs (subs-for-simple-rat-sublis coords-for-fn (rmap-fns rmap)))))
-  (cond ((or (polynomialp fns) (rational-functionp fns))
+  (cond ((or (affine-polynomialp fns) (rational-functionp fns))
 	 (setq answ (simple-rat-sublis subs fns))
 	 (process-sleep 5)
 	 answ)
@@ -713,7 +713,7 @@
 								:coords-for-fn
 								coords-for-fn
 								:subs subs))))
-	((or (polynomialp (car fns))
+	((or (affine-polynomialp (car fns))
 	     (rational-functionp (car fns))
 	     (ldatap (car fns)))
 	 (loop for v in fns
@@ -1120,7 +1120,7 @@
   (let* ((gg (zopen-inequality zopen))
 	 (vari (gm-prepared gmprep-poly :m m :inequal gg)))
     (check-arg zopen (eq (car zopen) 'zopen) "a zopen")
-    (check-arg gmprep-poly polynomialp "poly")
+    (check-arg gmprep-poly affine-polynomialp "poly")
     (setq cofs (loop for v in vari
 		  collecting (pcoeff gmprep-poly (list v 1 1))))
     (setq mzopens
@@ -1144,7 +1144,7 @@
 ;  (let* ((gg (nplcm inequality (ldata-inequality ldata)))
 ;;	 (m (length (any-gm-prepared gmprep-poly gg)))
 ;	 (vari (gm-prepared gmprep-poly :m m :inequal gg)))
-;    (check-arg gmprep-poly polynomialp "poly")
+;    (check-arg gmprep-poly affine-polynomialp "poly")
 ;    (setq cofs (loop for v in vari
 ;		       collecting (pcoeff gmprep-poly (list v 1 1))))
 ;   (setq all-ldata
@@ -1163,7 +1163,7 @@
   (let* (;;(gg (nplcm inequality (ldata-inequality ldata)))
 ;	 (m (length (any-gm-prepared gmprep-poly gg)))
 	 (vari (gm-prepared gmprep-poly :m m :inequal inequality)))
-    (check-arg gmprep-poly polynomialp "poly")
+    (check-arg gmprep-poly affine-polynomialp "poly")
     (setq cofs (loop for v in vari
 		       collecting (pcoeff gmprep-poly (list v 1 1))))
     (eliminate-multiples cofs)
@@ -1181,7 +1181,7 @@
 ;  "Will return m ldata covering the ldata. The open-gs can
 ; be used as the open number for the simplification."
 ;  (declare (values all-data open-gs))
-;    (check-arg gmprep-poly polynomialp "poly")
+;    (check-arg gmprep-poly affine-polynomialp "poly")
 ;    (setq cofs (best-open-cover gmprep-poly inequality))
 ;    (iassert (may-invertp gmprep-poly (car cofs)))
 ;    (setq cofs (cdr cofs))
@@ -1763,7 +1763,7 @@
 	(t answer)))
 
 ;(defun function-numerator (f)
-;  (cond ((polynomialp f) f)
+;  (cond ((affine-polynomialp f) f)
 ;	((rational-functionp f) (num f))
 ;	(t (num (new-rat f)))))
 ;

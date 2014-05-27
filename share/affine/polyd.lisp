@@ -491,7 +491,7 @@ far degree"
 (defun list-variables1 (expr)
   (declare (special *all-vars*))
    (cond   ((atom expr) nil)
-	   ((polynomialp expr)(pushnew (p-var expr) *all-vars*)
+	   ((affine-polynomialp expr)(pushnew (p-var expr) *all-vars*)
 	    (loop for (deg cof) on (cdr expr) by #'cddr
 		  do (list-variables1 cof)))
 	   ((rational-functionp expr)(list-variables1 (car expr))

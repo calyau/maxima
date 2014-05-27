@@ -19,7 +19,7 @@
 	 finally (return
 		   (loop for vv in variable-names
 			 for ww in variable-values
-			 when (and (consp vv) (polynomialp vv)
+			 when (and (consp vv) (affine-polynomialp vv)
 				   (eq (length vv) 3))
 			 collecting (cons (car vv) ww))))))
 
@@ -409,7 +409,7 @@
 	finally (return (new-disrep tra))))
 
 (defun poly-scalar-p (poly)
-  (and (polynomialp poly) (or (atom poly) ($scalarp (get (car poly) 'disrep)))))
+  (and (affine-polynomialp poly) (or (atom poly) ($scalarp (get (car poly) 'disrep)))))
 
 (defun set-up-trace-subs (basis)
     (check-arg basis $listp "maxima list")
@@ -457,7 +457,7 @@
 
 (defun apply-linear-function (fn expr &aux (den 1) result num-answ)
   "fn should be a function which is defined on the monomials and this extends it to all"
-   (cond ((polynomialp expr) (setq den 1))
+   (cond ((affine-polynomialp expr) (setq den 1))
 	 ((rational-functionp expr)   (setq den (denom expr))(setq expr (num expr)))
 	 (t (fsignal "expr must be a polynomial or rational function")))
    (show den)
@@ -624,7 +624,7 @@
 
 (defun extract_cof1 (f vars)
   (cond ((atom f) (list f))
-	((unless (polynomialp f)
+	((unless (affine-polynomialp f)
 	    (progn  (setq f (numerator f)) nil)))
 	((member (car f) vars)
 	 (loop for (deg cof) on (cdr f) by #'cddr

@@ -88,7 +88,7 @@
 ;
 ;(defun list-variables2 (expr)
 ;  (cond ((atom expr) nil)
-;	((polynomialp expr) (list-variables1 expr))
+;	((affine-polynomialp expr) (list-variables1 expr))
 ;	((rational-functionp expr) (list-variables2 (car expr))
 ;	 (list-variables2 (cdr EXPR)))
 ;       (t(loop for v on expr while (listp v) do (list-variables2 (car v))))))
@@ -280,7 +280,7 @@ substituting them to be zero."
 (defun replace-monomial (poly replacement monomial-degs
 			 &optional part-above &aux to-replace denom-replacement)
   "replacement is a poly not a rat-poly"
-  (check-arg poly polynomialp "polynomial")
+  (check-arg poly affine-polynomialp "polynomial")
   (check-arg replacement rational-functionp "rat'l function")
   (cond (part-above (setq to-replace part-above))
 	(t  (setq to-replace (part-above-degree poly monomial-degs))))
@@ -823,7 +823,7 @@ substituting them to be zero."
   (and (not (equal seqa seqb))(not (xyz-order-sequence seqb seqa))))
 
 ;(defun polysimp (poly &aux (changes t) changed tem repl (replaced-th 0))
-;  (cond ((polynomialp poly)(setq poly (cons poly 1)))
+;  (cond ((affine-polynomialp poly)(setq poly (cons poly 1)))
 ;	((rational-functionp poly) nil)
 ;	(t (setq poly (new-rat poly))))
 ;  (cond ((constant-functionp poly) (values  poly nil))
@@ -856,7 +856,7 @@ substituting them to be zero."
 (defun polysimp-ignore-denominator  (poly &aux (changes t) *reduce* changed tem repl)
   "Returns something G where G*unit= poly modulo simplifications"
   (setq poly
-	(cond ((polynomialp poly)(cons poly 1))
+	(cond ((affine-polynomialp poly)(cons poly 1))
 	      ((rational-functionp poly) (cons (num poly ) 1))
 	      (t  (cons (num (new-rat poly)) 1))))
   (cond ((constant-functionp poly) nil)
@@ -874,7 +874,7 @@ substituting them to be zero."
   (function-numerator poly))
 
 (defun polysimp (poly &aux (changes t) changed tem repl)
-  (cond ((polynomialp poly)(setq poly (cons poly 1)))
+  (cond ((affine-polynomialp poly)(setq poly (cons poly 1)))
 	((rational-functionp poly) nil)
 	(t (fsignal "bad-poly ~a" poly) (setq poly (new-rat poly))))
   (cond ((constant-functionp poly)
@@ -893,7 +893,7 @@ substituting them to be zero."
 	       finally (return 'done))
 	 (values poly changed))))
 ;(defun polysimp (poly &aux (changes t) changed tem repl)
-;  (cond ((polynomialp poly)(setq poly (cons poly 1)))
+;  (cond ((affine-polynomialp poly)(setq poly (cons poly 1)))
 ;	((rational-functionp poly) nil)
 ;	(t (setq poly (new-rat poly))))
 ;  (cond ((constant-functionp poly) (values  poly nil))
@@ -911,7 +911,7 @@ substituting them to be zero."
 ;	 (values poly changed))))
 ;
 ;(defun polysimp (poly &aux (changes t) tem)
-;  (cond ((polynomialp poly)nil)
+;  (cond ((affine-polynomialp poly)nil)
 ;	((rational-functionp poly) nil)
 ;	(t (setq poly (new-rat poly))))
 ;  (loop while changes
@@ -1241,7 +1241,7 @@ substituting them to be zero."
 	(t (st-rat1 x))))
 
 (defun st-rat1 (x)
-  (cond ((polynomialp x) x)
+  (cond ((affine-polynomialp x) x)
 	((rational-functionp x) (cond ((eq (denom x) 1)(num x))
 				      (t x)))
 	(($ratp x) (cond ((numberp (num (cdr x))) (st-rat (cdr x)))
@@ -1415,8 +1415,8 @@ substituting them to be zero."
 
 (defun display (expr)
   (cond ((atom expr)(displa expr))
-	((or (polynomialp expr)(rational-functionp expr))(sh expr))
-	((or (polynomialp (car expr))(rational-functionp (car expr)))
+	((or (affine-polynomialp expr)(rational-functionp expr))(sh expr))
+	((or (affine-polynomialp (car expr))(rational-functionp (car expr)))
 	 (loop for v in expr do (display v)))
 	(t (displa expr))))
 

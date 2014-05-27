@@ -1530,7 +1530,7 @@
 	(($listp factors-to-elim) (setq factors-to-elim (cdr factors-to-elim)))
 	(t factors-to-elim))
   (check-arg variety  $listp  "macsyma list")
-  (setq type (cond ((polynomialp (second variety)) 'polynomial)
+  (setq type (cond ((affine-polynomialp (second variety)) 'polynomial)
 		   ((rational-functionp (second variety)) 'rational-function)
 		   (($ratp (second variety)) '$rat)
 		   (t 'general)))
@@ -1778,7 +1778,7 @@
 ;;;will cause the replacement u--> -h(w,v)/(x+1) in the remaining eqns.
 ;;;then it calls itself on the remaining equations.
 (defun remove-linears (eqns &optional (may-invert 1) &aux sub cof)
-  (check-arg eqns (polynomialp (car eqns)) "first term not  polynomial")
+  (check-arg eqns (affine-polynomialp (car eqns)) "first term not  polynomial")
   (loop for v in eqns do
        (block sue
 	 (loop for vari in (list-variables v)
@@ -1889,7 +1889,7 @@
 
 (defun $square_free_numerators (expr)
   (cond ((atom expr) expr)
-	((polynomialp expr)(square-free expr))
+	((affine-polynomialp expr)(square-free expr))
 	((rational-functionp expr) (square-free (num expr)))
 	(($ratp expr) (cons (car expr) (cons (square-free (num (cdr expr)))
 					     1)))
@@ -2085,14 +2085,14 @@ would restore the list"
 		 #'(lambda (x) (+ (pcomplexity (function-numerator x))
 				  (pcomplexity (function-denominator x)))))
     (setq firs (first list-fns))
-    (cond ((polynomialp firs)
+    (cond ((affine-polynomialp firs)
 	   (setq num-gcd   firs)
 	   (setq denom-gcd 1))
 	  ((rational-functionp firs)
 	   (setq num-gcd (num  firs))
 	   (setq denom-gcd (denom firs))))
     (loop for v in (cdr list-fns)
-	  when (polynomialp v)
+	  when (affine-polynomialp v)
 	  do (setq num-gcd (pgcd num-gcd v))
 	  (setq denom-gcd 1)
 	  else
@@ -2169,7 +2169,7 @@ would restore the list"
 (defun construct-rmap (list-funs &aux (answ 1) rat-fns)
   (cond (($listp list-funs)(setq list-funs (cdr list-funs))))
   (setq rat-fns (loop for v in  list-funs
-		      when (polynomialp v) collecting (cons v 1)
+		      when (affine-polynomialp v) collecting (cons v 1)
 		      else when (rational-functionp v) collecting v
 		      else when (get v 'disrep) collecting (cons (list v 1 1) 1)
 		      else collecting (new-rat v)))
@@ -2227,7 +2227,7 @@ would restore the list"
   (let ((*standard-output* stream))
     (cond
       ((atom obj)(format t "~s" obj))
-      ((or (polynomialp obj)(rational-functionp obj))(sh obj))
+      ((or (affine-polynomialp obj)(rational-functionp obj))(sh obj))
       (t (case (car obj)
 	   (zopen (show (zopen-history obj)))
 ;	    (describe-zopen obj))
@@ -2251,7 +2251,7 @@ would restore the list"
   (let ((*standard-output* stream))
     (cond
       ((atom obj)(format t "~s" obj))
-      ((or (polynomialp obj)(rational-functionp obj))(sh obj))
+      ((or (affine-polynomialp obj)(rational-functionp obj))(sh obj))
       (t (case (car obj)
 	   (zopen
 	    (describe-zopen obj))

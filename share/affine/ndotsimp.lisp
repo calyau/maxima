@@ -144,7 +144,7 @@
   (declare (special $new_fast_dotsimp))
   (cond (($listp expr) (cons '(mlist) (mapcar '$dotsimp (cdr expr))))
 	(t
-	 (cond ((or (rational-functionp expr)(polynomialp expr)) nil)
+	 (cond ((or (rational-functionp expr)(affine-polynomialp expr)) nil)
 	       (t (setq expr (new-rat expr))))
 	 (header-poly (new-dotsimp expr)))))
 

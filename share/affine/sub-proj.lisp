@@ -148,7 +148,7 @@ poly)
   (let ((tem (cond (vars-to-sub vars-to-sub)
 		   (t (loop for v in a-list collecting (car v)))))
 	deg)
-    (cond ((polynomialp poly)
+    (cond ((affine-polynomialp poly)
 	   (cond (degree (setq deg degree))
 		 (t(setq deg (poly-degree
 			       poly
@@ -426,13 +426,13 @@ poly)
 	       do (cond ((get v 'disrep)
 			 (setq v (list v 1 1)))
 			(t (setq v (st-rat v))))
-	       else when (polynomialp v) nconc nil
+	       else when (affine-polynomialp v) nconc nil
 	       else do (setq v (new-rat v)) (setq a-denom t)
 		 (setq lcd (plcm lcd (denom v)))
 	       collecting v))
   (cond (a-denom
 	 (loop for v on new
-	    when (polynomialp (car v)) do (setf (car v)	(gen-ptimes lcd (car v)))
+	    when (affine-polynomialp (car v)) do (setf (car v)	(gen-ptimes lcd (car v)))
 	    else
 	    do (setf (car v) (gen-ptimes (num (car v)) (pquotient lcd (denom (car v)))))))
 	(t (setq new (subseq new 0 (length old)))))
@@ -444,7 +444,7 @@ poly)
 (defun simple-rat-sublis ( subs f &optional (switch t) &aux sub)
   (cond ((atom f) (cons f 1))
 	((and (numberp (car f))(numberp (cdr f))) f)
-	((polynomialp f)
+	((affine-polynomialp f)
 	 (setq sub (cdr (assoc (p-var f) subs :test #'equal)))
 	 (cond ((null sub)(setq sub (cons  (list  (p-var f) 1 1) 1))))
 	 (loop for (deg cof) on (cdr f) by #'cddr
@@ -463,7 +463,7 @@ poly)
 	for w in subs
 	when (not  (get v 'disrep))
 	do (setq v (add-newvar v))
-	do (cond ((polynomialp w)
+	do (cond ((affine-polynomialp w)
 		  (setq w (cons w 1)))
 		 ((rational-functionp w) nil)
 		 ((get w 'disrep)(setq w (cons (list w 1 1)1)))

@@ -220,7 +220,7 @@
   (cond ((numberp b)
 	 (cond (($zerop (setq tem (ncmul* a b c))) 0)
 	       (t (new-rat tem))))
-	((polynomialp b)(poly-ncmul1 a b c))
+	((affine-polynomialp b)(poly-ncmul1 a b c))
 	((rational-functionp b)(cons (poly-ncmul1 a (num b) c) (denom b)))
 	(($ratp b)(new-rat-ncmul1 a (cdr b) c))
 	(t (new-rat-ncmul a (new-rat b) c))))
@@ -625,7 +625,7 @@
 
 
 
-;;;the following convert all to rat form using $new_rat unless given a polynomialp or $ratp
+;;;the following convert all to rat form using $new_rat unless given a affine-polynomialp or $ratp
 
 
 
@@ -688,10 +688,6 @@
 	(return 'done)
 	finally (setq $dot_simplifications (append $dot_simplifications a-list)))
   ($simplify_dot_simplifications ($nc_degree (car a-list))))
-
-(defmacro $set(a b)
-  (let (($dot_simplifications nil))
-    `(setq ,a  ' ,(meval* b))))
 
 (defmacro $with_no_simp (form)
   (let (($dot_simplifications nil))
@@ -1306,9 +1302,9 @@ and modulo-p not prime gives false answer"
   (let ($display2d)
     (cond
       ((macsyma-typep x)(string-grind x :stream stream))
-      ((or (polynomialp x) (rational-functionp x))
+      ((or (affine-polynomialp x) (rational-functionp x))
        (string-grind (header-poly x) :stream stream))
-      ((and ( listp x)(or (polynomialp (car x)) (rational-functionp (car x))))
+      ((and ( listp x)(or (affine-polynomialp (car x)) (rational-functionp (car x))))
        (case (length x)
 	 (1 (fsh x stream))
 	 (2 (fsh (first x) stream) (format stream " and ") (fsh (second x) stream))

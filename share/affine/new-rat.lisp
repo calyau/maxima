@@ -149,7 +149,7 @@
 
 (defun new-rat (x &aux genpairs)
   (cond
-    ((polynomialp x) (cons x 1))
+    ((affine-polynomialp x) (cons x 1))
     ((rational-functionp x) x)
     ((and (listp x) (eq (caar x) 'mrat))
 	 (cond ((member (car (num (cdr x))) *genvar* :test #'eq)
@@ -483,7 +483,7 @@ into genvar ordering and adds to genpairs"
 
 (defun rationalize-denom-zeta3 (expr &aux the-denom the-num the-gen)
   (setq the-gen (add-newvar '$%zeta3))
-  (cond ((polynomialp expr) expr)
+  (cond ((affine-polynomialp expr) expr)
 	((variable-in-polyp (denom expr) the-gen)
 	 (setq the-denom  (denom expr))
 	 (setq the-num (num expr))

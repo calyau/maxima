@@ -727,7 +727,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		    (t (return (header-poly (n+ answer expr)))))
 	      (setq-num-den the-num the-denom expr)
 	      (show the-num)
-					;	     (cond ((polynomialp  expr) (setq the-num expr the-denom 1))
+					;	     (cond ((affine-polynomialp  expr) (setq the-num expr the-denom 1))
 					;		   ((rational-functionp expr) (setq the-num (num expr) the-denom (denom expr)))
 					;		   (t (fsignal "expr is supposed to be poly or rational-functionp")))
 					;	     (cond ((numberp the-num)(setq answer (n+ answer expr))
@@ -1091,7 +1091,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 (defun extract-linear-equations (list-eqns &optional tem all-ind-mons)
   (loop for v in list-eqns
 	with varl with ind-mons = all-ind-mons
-	do(cond ((polynomialp v) nil)
+	do(cond ((affine-polynomialp v) nil)
 		((rational-functionp v)
 		 (setq v (function-numerator v)))
 		(t (fsignal
@@ -1268,7 +1268,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (loop for v in list-of-terms
 	for i from 0
 	when (and (not (numberp v))
-		  (or (polynomialp v)
+		  (or (affine-polynomialp v)
 		  (rational-functionp v)))
 	do
 	(cond ((rational-functionp v)(setq denom (denom v))))
@@ -1730,7 +1730,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
     (cond (($listp equations)(setq equations (cdr equations))))
     (loop for eqn in equations
 	  do
-       (cond ((or (rational-functionp eqn) (polynomialp eqn)) nil)
+       (cond ((or (rational-functionp eqn) (affine-polynomialp eqn)) nil)
 	     (t (cond (($ratp eqn) (setq eqn ($ratdisrep eqn))))
 		(setq eqn (bring-to-left-side eqn))))
 	  (cond (($zerop eqn) (format t "~%Eliminating Trivial Equation."))
@@ -2187,7 +2187,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	 (cond ((or (numberp f)($scalarp f))0)
 	       (t (cond ((setf tem (get f type-of-weight)) tem)
 			(t 1)))))
-	((polynomialp f) (+ ($nc_degree (get (car f) 'disrep)) ($nc_degree (fifth f))))
+	((affine-polynomialp f) (+ ($nc_degree (get (car f) 'disrep)) ($nc_degree (fifth f))))
 
 ;;;	(($plusp f)($nc_degree (second f) type-of-weight ))
 	(($ratp f) ($nc_degree (num (cdr f))))
@@ -2502,8 +2502,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 
 (defun gencoeff (form mon &optional( vars-to-exclude (list-variables mon)) &aux answ)
-  "coerces to poly if possible.  FORM should be a polynomialp or rational-functionp"
-  (cond ((polynomialp form) (pcoeff form mon vars-to-exclude))
+  "coerces to poly if possible.  FORM should be a affine-polynomialp or rational-functionp"
+  (cond ((affine-polynomialp form) (pcoeff form mon vars-to-exclude))
 	((rational-functionp form)(setq answ (pcoeff (num form) mon vars-to-exclude) )
 	 (cond ((pzerop answ) 0)
 	       (t (setq answ (ratreduce answ (denom form)))

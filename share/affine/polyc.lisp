@@ -35,7 +35,7 @@
 (defun poly-ncmul1 (mon   poly  mon1 &aux monom new-monom tem gen-sym)
   (cond ((null mon)(setq mon 1))
 	((null mon1) (setq mon1 1)))
-  (cond ((not (polynomialp poly))(break t)))
+  (cond ((not (affine-polynomialp poly))(break t)))
 
   (cond ((and (numberp mon)(numberp mon1))
 	 (n* poly (n* mon mon1)))
@@ -67,7 +67,7 @@
 ;(defun poly-ncmul1 (mon   poly  mon1 &aux monom new-monom gen-sym)
 ;  (cond ((null mon)(setq mon 1))
 ;	((null mon1) (setq mon1 1)))
-;  (cond ((not (polynomialp poly))(break t)))
+;  (cond ((not (affine-polynomialp poly))(break t)))
 ;
 ;  (cond ((and (numberp mon)(numberp mon1))
 ;	 (n* poly (n* mon mon1)))
@@ -88,16 +88,16 @@
 
 (defun poly-ncmul (&rest ll)
   "broken"
-  (loop for v in ll when (not (polynomialp v))do (break t))
+  (loop for v in ll when (not (affine-polynomialp v))do (break t))
   (cond ((null ll) 1)
 	((eq (length ll) 1) (car ll))
 	((numberp (car ll))(n* (car ll) (apply 'poly-ncmul (cdr ll))))
-	((polynomialp (car ll))
+	((affine-polynomialp (car ll))
 	      (apply
 				  'poly-ncmul (poly-ncmul1 1 (car ll) (second ll))
 				  (nthcdr 2 ll)))
-	((polynomialp (second ll))
-	 (cond ((polynomialp (third ll)) (merror "poly-ncmul can't have two 'polynomialp objects in its arg yet"))
+	((affine-polynomialp (second ll))
+	 (cond ((affine-polynomialp (third ll)) (merror "poly-ncmul can't have two 'affine-polynomialp objects in its arg yet"))
 	       (t (apply 'poly-ncmul
 				 (poly-ncmul1 (car ll)  (second ll) (third ll))
 				 (nthcdr 3 ll)))))))
@@ -218,7 +218,7 @@
 ;
 ;(defun sh (expr)
 ;  (cond ((numberp expr)(displa expr))
-;	((polynomialp expr)(displa (cons  *fake-rat* (cons expr 1))))
+;	((affine-polynomialp expr)(displa (cons  *fake-rat* (cons expr 1))))
 ;	((rational-functionp expr)(displa (cons *fake-rat* expr)))
 ;	(t (displa expr)))
 ;  expr)
@@ -589,19 +589,19 @@
 
 (defun function-denominator (pol)
   (cond ((numberp pol) (denominator pol))
-	((polynomialp pol) 1)
+	((affine-polynomialp pol) 1)
 	((rational-functionp pol) (denom pol))
 	(t (denom (new-rat pol)))))
 
 (defun function-numerator (pol)
   (cond ((rationalp pol) (numerator pol))
-	((polynomialp pol) pol)
+	((affine-polynomialp pol) pol)
 	((rational-functionp pol) (car pol))
 	(t (car (new-rat pol)))))
 
 (defun poly-type (x )
   (cond ((numberp x) ':number)
-	((polynomialp x) ':polynomial)
+	((affine-polynomialp x) ':polynomial)
 	((rational-functionp x) ':rational-function)
 	(($ratp x) ':$rat)
 	((and (listp x) (eq (caar x) 'rat)) ':rat)
@@ -688,7 +688,7 @@
 ;		   (:polynomial (,rat-op ,x (cons ,y 1)  ,@ rat-switch))
 ;		   (:rational-function (,rat-op ,x ,y ,@ rat-switch))))
 ;		(otherwise (merror "unknown arg"))))
-;	(cond ((polynomialp answer) answer)
+;	(cond ((affine-polynomialp answer) answer)
 ;	      ((rational-functionp answer)
 ;	       (cond ((eq 1 (cdr answer))(car answer))
 ;		     (t answer)))
@@ -777,8 +777,8 @@
 (defun poly-scalarp (a &aux tem)
   (cond ((numberp a))
 	((atom a)($scalarp a))
-	((setq tem(polynomialp a)) ($scalarp tem))
-	((and (setq tem(polynomialp (car a))) (polynomialp (cdr a)))
+	((setq tem(affine-polynomialp a)) ($scalarp tem))
+	((and (setq tem(affine-polynomialp (car a))) (affine-polynomialp (cdr a)))
 	 ($scalarp tem))))
 
 

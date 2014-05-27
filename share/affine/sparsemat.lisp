@@ -687,7 +687,7 @@
 	 (t (sp-rational-quotient 1 ,x))))
 
 (defun sp-rat (x)
-  (cond ((or (polynomialp x)(rational-functionp x)) x)
+  (cond ((or (affine-polynomialp x)(rational-functionp x)) x)
 	(($bfloatp x) x)
 	(t (new-rat x))))
 
@@ -1432,7 +1432,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;	      (t (cond (($numberp (sp-pivot-entry sp-mat))
 ;			(setf (sp-pivot-entry sp-mat)
 ;			      (cond ((atom (sp-pivot-entry sp-mat))(sp-pivot-entry sp-mat))
-;				    ((or (polynomialp (sp-pivot-entry sp-mat))
+;				    ((or (affine-polynomialp (sp-pivot-entry sp-mat))
 ;					 (rational-functionp (sp-pivot-entry sp-mat)))
 ;				     (sp-pivot-entry sp-mat))
 ;				    (t
@@ -2164,7 +2164,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 (defun float-zerop (n)
   (cond ((numberp n) (or (zerop n)(and (floatp n) (< (abs n) .0001))))
 	((atom n) nil)
-	((polynomialp n) nil)
+	((affine-polynomialp n) nil)
 	((rational-functionp n)(float-zerop (car n)))
 	(t
 	 (let (tem type-of-n)
