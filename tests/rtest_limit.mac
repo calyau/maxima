@@ -625,3 +625,8 @@ limit(log(-1/3125*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) +
 limit(x^2*exp(-%i*x - x), x, inf);
 0;
 
+/* bug #2621 gamma limit error */
+
+limit(gamma(x+1/2)/(sqrt(x)*gamma(x)), x, inf);
+1;
+

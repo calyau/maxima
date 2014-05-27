@@ -3160,6 +3160,26 @@ ignoring dummy variables and array indices."
 		    omega))
     (cons exp logw)))
 
+;;; if log w(x) = h(x), rewrite all subexpressions of the form
+;;; log(f(x)) as log(w^-c f(x)) + c h(x) with c the unique constant
+;;; such that w^-c f(x) is strictly less rapidly varying than w.
+(defun mrv-rewrite-logs (exp wsym logw)
+  (cond ((atom exp) exp)
+	((and (mlogp exp)
+	      (not (freeof wsym exp)))
+	 (let* ((f (cadr exp))
+		(c ($lopow (calculate-series f wsym)
+			   wsym)))
+	   (m+ (list (car exp)
+		     (m* (m^ wsym (m- c))
+			 (mrv-rewrite-logs f wsym logw)))
+	       (m* c logw))))
+	(t
+	 (cons (car exp)
+	       (mapcar (lambda (e)
+			 (mrv-rewrite-logs e wsym logw))
+		       (cdr exp))))))
+
 ;; returns list of two elements: coeff and exponent of leading term of exp,
 ;; after rewriting exp in term of its MRV set omega.
 (defun mrv-leadterm (exp var omega)
@@ -3181,7 +3201,8 @@ ignoring dummy variables and array indices."
 			     lo
 			     coef
 			     ((f . logw) (mrv-rewrite exp omega var wsym))
-			     (series (calculate-series f wsym)))
+			     (series (calculate-series (mrv-rewrite-logs f wsym logw)
+						       wsym)))
 			    (setq series (maxima-substitute logw `((%log) ,wsym) series))
 			    (setq lo ($lopow series wsym))
 			    (when (or (not ($constantp lo))
