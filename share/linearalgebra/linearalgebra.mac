@@ -142,6 +142,7 @@ print the proviso warnings.
 linalg_rank(m) := length(columnspace(m));
 
 rowswap(m,i,j) := block([n, p, r],
+  local(p),
   require_matrix(m, "first", "rowswap"),
   require_integer(i, "second", "rowswap"),
   require_integer(j, "third", "rowswap"),
@@ -158,6 +159,7 @@ columnswap(m,i,j) := transpose(rowswap(transpose(m),i,j));
 /*  row(m,i) <-- row(m,i) - theta * row(m,i) */
 
 rowop(m,i,j,theta) := block([p : copymatrix(m), listarith : true],
+  local(p),
   p[i] : p[i] - theta * p[j],
   p);
 

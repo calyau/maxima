@@ -135,5 +135,23 @@ signum(a)$
 limit(signum(x),x,1/a);
 signum(1/a)$
 
+realpart(signum(x));
+signum(x)$
+
+imagpart(signum(x));
+0$
+
+rectform(signum(x));
+signum(x)$
+
+rectform(signum(x + %i));
+x/sqrt(x^2+1)+%i/sqrt(x^2+1)$
+
+rectform(signum(42 + %i*x));
+%i*x/sqrt(x^2+1764)+42/sqrt(x^2+1764)$
+
+rectform(signum(x+%i*y));
+realpart(signum(%i*y+x))+%i*imagpart(signum(%i*y+x))$
+
 (forget(p > 0, n < 0, pz >= 0, nz <= 0,notequal(a,0)), remove(z,complex), 0);
 0$

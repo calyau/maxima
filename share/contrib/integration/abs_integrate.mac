@@ -127,7 +127,7 @@ linear_in_p(e,x) :=
 signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
   if freeof('signum, q) then (
-    q : if polynomialp(q,[x]) then integrate(q,x) else false,
+    q : block([extra_integration_methods : []], integrate(trigsimp(q),x)),
     if freeof('integrate, nounify('integrate),q) then q else false)
   else (
     q : almost_everywhere_simp(q), 
