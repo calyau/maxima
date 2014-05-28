@@ -473,7 +473,7 @@
          (setq terminal-command
                (getf plot-options :gnuplot_default_term_command))
          (setq terminal-command
-               "set term wxt dashed size 640,480 font \",12\"; set term pop")))
+               "set term pop")))
     ((getf plot-options :gnuplot_term)
      (setq
       terminal-command
