@@ -1453,7 +1453,7 @@ sin(y)*(10.0+6*cos(x)),
       ($title (setf (getf options :title)
                     (check-option (cdr opt) #'stringp "a string" 1)))
       ($transform_xy (setf (getf options :transform_xy)
-                           (check-option-b (cdr opt) #'symbolp "a symbol" 1)))
+                           (check-option-b (cdr opt) #'functionp "a function make_transform" 1)))
       ($x (setf (getf options :x) (cddr (check-range opt))))
       ($xbounds (setf (getf options :xbounds) (cddr (check-range opt))))
       ($xlabel (setf (getf options :xlabel)
