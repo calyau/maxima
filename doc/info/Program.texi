@@ -238,6 +238,7 @@ functions, including the currently active function.
 @c -----------------------------------------------------------------------------
 @anchor{do}
 @deffn {Special operator} do
+@deffnx {Special operator} in
 
 The @code{do} statement is used for performing iteration.  Due to its
 great generality the @code{do} statement will be described in two parts.
