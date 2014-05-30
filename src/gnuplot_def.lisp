@@ -232,6 +232,9 @@
         (meshcolor (if (member :mesh_lines_color plot-options)
                        (getf plot-options :mesh_lines_color)
                        '$black)))
+    (when (and (member :gnuplot_pm3d plot-options)
+               (not (getf plot-options :gnuplot_pm3d)))
+      (setq palette nil))
     (when (find 'mlist palette :key #'car) (setq palette (list palette)))
     ;; user's preamble
     (when (and (getf plot-options :gnuplot_preamble)
@@ -473,7 +476,7 @@
          (setq terminal-command
                (getf plot-options :gnuplot_default_term_command))
          (setq terminal-command
-               "set term wxt dashed size 640,480 font \",12\"; set term pop")))
+               "set term pop")))
     ((getf plot-options :gnuplot_term)
      (setq
       terminal-command
