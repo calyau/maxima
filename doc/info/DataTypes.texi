@@ -247,6 +247,11 @@ the number of digits printed is equal to @code{fpprintprec}.
 Otherwise, @code{fpprintprec} is 0, or greater than @code{fpprec},
 and the number of digits printed is equal to @code{fpprec}.
 
+For both ordinary floats and bigfloats,
+trailing zero digits are suppressed.
+The actual number of digits printed is less than @code{fpprintprec}
+if there are trailing zero digits.
+
 @code{fpprintprec} cannot be 1.
 
 @opencatbox

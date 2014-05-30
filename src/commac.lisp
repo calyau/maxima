@@ -331,6 +331,8 @@ values")
     (assert (stringp string))
     (coerce string 'list)))
 
+(defvar *exploden-strip-float-zeros* t) ;; NIL => allow trailing zeros
+
 (defun exploden-format-float (symb)
   (declare (special $maxfpprintprec))
   (let ((a (abs symb))
@@ -345,36 +347,56 @@ values")
     ;; Fortran's exponent markers are the same as Lisp's so
     ;; we just need to make sure the exponent marker is
     ;; printed.
-    ;;
-    ;; Also, for normal output, we basically want to use
-    ;; prin1, but we can't because we want fpprintprec to control
-    ;; how many digits are printed.  So we have to check for
-    ;; the size of the number and use ~e or ~f appropriately.
     (if *fortran-print*
         (setq string (format nil "~e" symb))
-        (multiple-value-bind (form width)
-            (cond ((or (zerop a)
-                       (<= 1 a 1e7))
-                   (values "~vf" (+ 1 effective-printprec)))
-                  ((<= 0.001 a 1)
-                   (values "~vf" (+ effective-printprec
-                                    (cond ((< a 0.01)
-                                           3)
-                                          ((< a 0.1)
-                                           2)
-                                          (t 1)))))
-                  (t
-                   (values "~ve" (+ 5 effective-printprec))))
-          (setq string (format nil form width a))
-          ;; Ensure result has a leading zero if it needs one.
-          (if (eq (aref string 0) #\.)
-            (setq string (concatenate 'string "0" string)))
+        (multiple-value-bind (form digits)
+          (cond
+            ((zerop a)
+             (values "~,vf" 1))
+            ((<= 0.001 a 1e7)
+             (let*
+               ((integer-log10 (floor (/ (log a) #.(log 10.0))))
+                (scale (1+ integer-log10)))
+               (if (< scale effective-printprec)
+                 (values "~,vf" (- effective-printprec scale))
+                 (values "~,ve" (1- effective-printprec)))))
+            (t
+              (values "~,ve" (1- effective-printprec))))
+
+          ;; Call FORMAT using format string chosen above.
+          (setq string (format nil form digits a))
+
           ;; EXPLODEN is often called after NFORMAT, so it doesn't
           ;; usually see a negative argument. I can't guarantee
           ;; a non-negative argument, so handle negative here.
           (if (< symb 0)
             (setq string (concatenate 'string "-" string)))))
-    (string-trim " " string)))
+
+    (if *exploden-strip-float-zeros*
+      (or (strip-float-zeros string) string)
+      string)))
+
+(defparameter trailing-zeros-regex-f-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$")))
+(defparameter trailing-zeros-regex-f-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*$")))
+(defparameter trailing-zeros-regex-e-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")))
+(defparameter trailing-zeros-regex-e-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$")))
+
+;; Return S with trailing zero digits stripped off, or NIL if there are none.
+
+(defun strip-float-zeros (s)
+  (cond
+    ((or (funcall trailing-zeros-regex-f-0 s) (funcall trailing-zeros-regex-f-1 s))
+     (let
+       ((group1 (aref maxima-nregex::*regex-groups* 1)))
+       (subseq s (first group1) (second group1))))
+    ((or (funcall trailing-zeros-regex-e-0 s) (funcall trailing-zeros-regex-e-1 s))
+     (let*
+       ((group1 (aref maxima-nregex::*regex-groups* 1))
+        (s1 (subseq s (first group1) (second group1)))
+        (group2 (aref maxima-nregex::*regex-groups* 2))
+        (s2 (subseq s (first group2) (second group2))))
+       (concatenate 'string s1 s2)))
+    (t nil)))
 
 (defun explodec (symb)		;is called for symbols and numbers
   (loop for v in (coerce (print-invert-case symb) 'list)
