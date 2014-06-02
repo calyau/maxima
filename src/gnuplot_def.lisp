@@ -409,8 +409,8 @@
                (> (length  (getf plot-options :gnuplot_postamble)) 0))
       (format dest "~a~%" (getf plot-options :gnuplot_postamble)))
 
-    ;;returns the name of the file created
-    (or (second terminal-file) "")))
+    ;;returns a list with the name of the file created, or nil
+    (if (null (second terminal-file)) nil (list (second terminal-file)))))
 
 (defun gnuplot-plot3d-command (file palette gstyles colors titles n) 
 (let (title (style "with pm3d"))

@@ -25,8 +25,9 @@
 
 (defun $mandelbrot (&rest extra-options)
   (let (file-name output-file (options (copy-tree *plot-options*))
-        a b c d e num  dx dy x xmax xmin y ymax ymin m nx ny)
+        a b c d e num  dx dy x xmax xmin y ymax ymin m nx ny gnuplot-term)
     (setf (getf options :type) "plot2d")
+    (setf (getf options :plot_format) '$gnuplot)
     (unless (getf options :x) (setf (getf options :x) '(-2 2)))
     (unless (getf options :y) (setf (getf options :y) '(-2 2)))
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
@@ -39,7 +40,14 @@
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-    (setf file-name (plot-temp-file "maxout.gnuplot"))
+
+    ;; Name of the gnuplot commands file and output file
+    (setq gnuplot-term (getf options :gnuplot_term))
+    (setf output-file (getf options :gnuplot_out_file))
+    (if (and (eq gnuplot-term '$default) output-file)
+        (setq file-name (plot-file-path output-file))
+        (setq file-name "maxout.gnuplot"))
+
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
     (setq xmin (car (getf options :x))) 
@@ -75,8 +83,8 @@
             (setq b (+ (float y) e)))
           (format st "~f ~f ~d~%" x y num)))
       (format st "e~%"))
-    (gnuplot-process options file-name)
-    (format nil "~a~&~a" file-name output-file)))
+    (gnuplot-process options file-name output-file)
+    (cons '(mlist) (cons file-name output-file))))
 
 ;; Function $julia(x,y) displays the Julia set for the
 ;; point (x,y) of the complex plane, on the region: xmin < x <xmax,
@@ -84,8 +92,9 @@
 
 (defun $julia (x y &rest extra-options)
   (let (file-name output-file (options (copy-tree *plot-options*))
-        num dx dy xmax xmin ymax ymin a b c d e a0 b0 m nx ny)
+        num dx dy xmax xmin ymax ymin a b c d e a0 b0 m nx ny gnuplot-term)
     (setf (getf options :type) "plot2d")
+    (setf (getf options :plot_format) '$gnuplot)
     (unless (getf options :x) (setf (getf options :x) '(-2 2)))
     (unless (getf options :y) (setf (getf options :y) '(-2 2)))
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
@@ -98,7 +107,14 @@
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-    (setf file-name (plot-temp-file "maxout.gnuplot"))
+
+    ;; Name of the gnuplot commands file and output file
+    (setq gnuplot-term (getf options :gnuplot_term))
+    (setf output-file (getf options :gnuplot_out_file))
+    (if (and (eq gnuplot-term '$default) output-file)
+        (setq file-name (plot-file-path output-file))
+        (setq file-name "maxout.gnuplot"))
+
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
     (setq xmin (car (getf options :x))) 
@@ -136,8 +152,8 @@
             (setq b (+ y e)))
           (format st "~f ~f ~d~%" a0 b0 num)))
       (format st "e~%"))
-    (gnuplot-process options file-name)
-    (format nil "~a~&~a" file-name output-file)))
+    (gnuplot-process options file-name output-file)
+    (cons '(mlist) (cons file-name output-file))))
 
 ;; Function $rk implements the 4th order Runge-Kutta numerical method.
 ;;  exprs:   an expression or maxima list with n expressions

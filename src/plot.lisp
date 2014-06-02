@@ -1752,7 +1752,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun $plot2d (fun &optional range &rest extra-options)
   (let (($display2d nil) (*plot-realpart* *plot-realpart*)
         (options (copy-tree *plot-options*)) (i 0)
-        (output-file "") gnuplot-term gnuplot-out-file file points-lists)
+        output-file gnuplot-term gnuplot-out-file file points-lists)
 
     ;; 1- Put fun in its most general form: a maxima list with several objects
     ;; that can be expressions (simple functions) and maxima lists (parametric
@@ -1869,9 +1869,8 @@ sin(y)*(10.0+6*cos(x)),
       (return-from $plot2d))
 
     (setq gnuplot-term (getf options :gnuplot_term))
-    (if (getf options :gnuplot_out_file)
-        (setf gnuplot-out-file (getf options :gnuplot_out_file)))
-    (if (and (eq (getf options :plot_format) '$gnuplot)
+    (setf gnuplot-out-file (getf options :gnuplot_out_file))
+    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
              (eq gnuplot-term '$default) gnuplot-out-file)
         (setq file (plot-file-path gnuplot-out-file))
         (setq file
@@ -1882,6 +1881,8 @@ sin(y)*(10.0+6*cos(x)),
     ;; old function $plot2dopen incorporated here
     (case (getf options :plot_format)
       ($xmaxima
+       (when (getf options :ps_file)
+         (setq output-file (list (getf options :ps_file))))
        (show-open-plot
         (with-output-to-string
             (st)
@@ -1952,7 +1953,8 @@ sin(y)*(10.0+6*cos(x)),
                           (setq lis (cddr lis))))
                    (format st "}"))))
           (format st "} "))
-        file))
+        file)
+       (cons '(mlist) (cons file output-file)))
       (t
        (with-open-file (st file :direction :output :if-exists :supersede)
          (case (getf options :plot_format)
@@ -2113,7 +2115,7 @@ sin(y)*(10.0+6*cos(x)),
       ($mgnuplot 
        ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
                 (format nil " -plot2d ~s -title ~s" file "Fun1"))))
-    (format nil "~a~&~a" file output-file)))
+    (cons '(mlist) (cons file output-file))))
 
 
 (defun msymbolp (x)
