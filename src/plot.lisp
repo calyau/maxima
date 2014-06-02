@@ -2329,7 +2329,7 @@ sin(y)*(10.0+6*cos(x)),
        functions exprn domain tem (options (copy-tree *plot-options*))
        ($in_netmath $in_netmath)
        (*plot-realpart* *plot-realpart*)
-       gnuplot-term gnuplot-out-file file titles (output-file "")
+       gnuplot-term gnuplot-out-file file titles output-file
        (usage (intl:gettext
 "plot3d: Usage.
 To plot a single function f of 2 variables v1 and v2:
@@ -2480,10 +2480,10 @@ Several functions depending on the two variables v1 and v2:
   ;; x and y should not be bound, when an xy transformation function is used
   (when tem (remf options :x) (remf options :y))
   
+  ;; Name of the gnuplot commands file and output file
   (setf gnuplot-term (getf options :gnuplot_term))
-  (if (getf options :gnuplot_out_file)
-      (setf gnuplot-out-file (getf options :gnuplot_out_file)))
-  (if (and (eq (getf options :plot_format) '$gnuplot)
+  (setf gnuplot-out-file (getf options :gnuplot_out_file))
+  (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
            (eq gnuplot-term '$default) gnuplot-out-file)
       (setq file (plot-file-path gnuplot-out-file))
       (setq file
@@ -2534,6 +2534,8 @@ Several functions depending on the two variables v1 and v2:
                                      (getf options :color)
                                      titles n)))
            ($xmaxima
+            (when (getf options :ps_file)
+              (setq output-file (list (getf options :ps_file))))
             (xmaxima-print-header $pstream options))
            ($geomview
             (format $pstream "LIST~%")))
@@ -2627,7 +2629,7 @@ Several functions depending on the two variables v1 and v2:
                    (concatenate
                     'string *maxima-plotdir* "/" $mgnuplot_command)
                    (format nil " -parametric3d \"~a\"" file))))))))
-  (format nil "~a~&~a" file output-file))
+    (cons '(mlist) (cons file output-file)))
 
 ;; Given a Maxima list with 3 elements, checks whether it represents a function
 ;; defined in a 2-dimensional domain or a parametric representation of a
