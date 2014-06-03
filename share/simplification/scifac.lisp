@@ -309,6 +309,6 @@
                (or (eq obj res) (rplaca mlm res)))))))
 
 (defun $gcfac (x)
-   (cond (($mapatom x) x)
-         (t (monomial-factor (copy-tree x)))))
+  (cond (($mapatom x) x)
+	(t (monomial-factor (copy-tree ($totaldisrep x))))))
                      
