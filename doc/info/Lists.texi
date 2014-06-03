@@ -200,16 +200,52 @@ so @code{assoc} returns @code{false}.
 @closecatbox
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn {Function} cons (@var{expr}, @var{list})
+@deffn  {Function} cons (@var{expr}, @var{list})
+@deffnx {Function} cons (@var{expr_1}, @var{expr_2})
 
-Returns a new list constructed of the element @var{expr} as its first element,
-followed by the elements of @var{list}.  @code{cons} also works on other
-expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+@code{cons (@var{expr}, @var{list})} returns a new list constructed of the element 
+@var{expr} as its first element, followed by the elements of @var{list}. This is 
+analogous to the Lisp language construction operation "cons".
+
+The Maxima function @code{cons} can also be used where the second argument is other
+than a list and this might be useful. In this case, @code{cons (@var{expr_1}, @var{expr_2})}
+returns an expression with with same operator as @var{expr_2} but with argument @code{cons(expr_1, args(expr_2))}.
+Examples:
+@c ===beg===
+@c cons(a,[b,c,d])
+@c cons(a,f(b,c,d))
+@c ===end===
+@example
+@group
+(%i1) cons(a,[b,c,d]);
+(%o1)                            [a, b, c, d]
+(%i2) cons(a,f(b,c,d));
+(%o2)                            f(a, b, c, d)
+@end group
+@end example
+
+In general, @code{cons} applied to a nonlist doesn't make sense. For instance, @code{cons(a,b^c)}
+results in an illegal expression, since '^' cannot take three arguments. 
+
+When @code{inflag} is true, @code{cons} operates on the internal structure of an expression, otherwise
+@code{cons} operates on the displayed form. Especially when @code{inflag} is true, @code{cons} applied 
+to a nonlist sometimes gives a surprising result; for example
+@c ===beg===
+@c cons(a,-a), inflag : true
+@c cons(a,-a), inflag : false;
+@c ===end===
+@example
+@group
+(%i1) cons(a,-a), inflag : true;
+                                        2
+(%o1)                                - a
+(%i2) cons(a,-a), inflag : false;
+(%o2)                                  0
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -428,21 +464,55 @@ See @mref{first} for more details.
 @closecatbox
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn {Function} endcons (@var{expr}, @var{list})
+@deffn  {Function} endcons (@var{expr}, @var{list})
+@deffnx {Function} endcons (@var{expr_1}, @var{expr_2})
 
-Returns a new list consisting of the elements of @code{list} followed by
-@var{expr}.  @code{endcons} also works on general expressions, e.g.
-@code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+@code{endcons (@var{expr}, @var{list})} returns a new list constructed of the elements of 
+@var{list} followed by @var{expr}. The Maxima function @code{endcons} can also be used where 
+the second argument is other than a list and this might be useful. In this case,
+@code{endcons (@var{expr_1}, @var{expr_2})} returns an expression with same operator as 
+@var{expr_2} but with argument @code{endcons(expr_1, args(expr_2))}. Examples:
+@c ===beg===
+@c endcons(a,[b,c,d])
+@c endcons(a,f(b,c,d))
+@c ===end===
+@example
+@group
+(%i1) endcons(a,[b,c,d]);
+(%o1)                            [b, c, d, a]
+(%i2) endcons(a,f(b,c,d));
+(%o2)                            f(b, c, d, a)
+@end group
+@end example
+
+In general, @code{endcons} applied to a nonlist doesn't make sense. For instance, @code{endcons(a,b^c)}
+results in an illegal expression, since '^' cannot take three arguments. 
+
+When @code{inflag} is true, @code{endcons} operates on the internal structure of an expression, otherwise
+@code{endcons} operates on the displayed form. Especially when @code{inflag} is true, @code{endcons} applied 
+to a nonlist sometimes gives a surprising result; for example
+@c ===beg===
+@c endcons(a,-a), inflag : true
+@c endcons(a,-a), inflag : false;
+@c ===end===
+@example
+@group
+(%i1) endcons(a,-a),inflag : true;
+                                        2
+(%o1)                                - a
+(%i2) endcons(a,-a),inflag : false;
+(%o2)                                  0
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
 @end deffn
+
 
 @c -----------------------------------------------------------------------------
 @anchor{fifth}
@@ -816,17 +886,37 @@ Examples:
 @closecatbox
 @end deffn
 
-@c NEEDS EXAMPLES
-
 @c -----------------------------------------------------------------------------
 @anchor{rest}
 @deffn  {Function} rest (@var{expr}, @var{n})
 @deffnx {Function} rest (@var{expr})
 
-Returns @var{expr} with its first @var{n} elements removed if @var{n} is
-positive and its last @code{- @var{n}} elements removed if @var{n} is negative.
-If @var{n} is 1 it may be omitted.  @var{expr} may be a list, matrix, or other
-expression.
+Returns @var{expr} with its first @var{n} elements removed if @var{n}
+is positive and its last @code{- @var{n}} elements removed if @var{n}
+is negative. If @var{n} is 1 it may be omitted. The first argument
+@var{expr} may be a list, matrix, or other expression. When @var{expr}
+is a mapatom, @code{rest} signals an error; when @var{expr} is an empty
+list and @code{partswitch} is false, @code{rest} signals an error. When 
+@var{expr} is an empty list and @code{partswitch} is true, @code{rest} 
+returns @code{end}.
+
+Applying @code{rest} to expression such as @code{f(a,b,c)} returns
+@code{f(b,c)}. In general, applying @code{rest} to an nonlist doesn't
+make sense. For example, because '^' requires two arguments,
+@code{rest(a^b)} results in an error message. The functions
+@code{args} and @code{op} may be useful as well, since @code{args(a^b)}
+returns @code{[a,b]} and @code{op(a^b)} returns ^.
+
+@example
+@group
+(%i1) rest(a+b+c);
+(%o1) b+a
+(%i2) rest(a+b+c,2);
+(%o2) a
+(%i3) rest(a+b+c,-2);
+(%o3) c
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}

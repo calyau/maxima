@@ -1148,3 +1148,109 @@ map('pop, '[l1,l2,l3]);
 0$
 
 /* end push and pop tests */
+
+/* tests for cons and endcons--especially tests for on nonlists */
+
+errcatch(cons(a,a));
+[]$
+
+errcatch(cons(false,false));
+[]$
+
+errcatch(cons(x,a^b));
+[]$
+
+cons(false,[]);
+[false]$
+
+cons(a,[a]);
+[a,a]$
+
+cons(a,[true,false]);
+[a,true,false]$
+
+cons(b, cons(a,[b]));
+[b,a,b]$
+
+(l : [1,2,3], ll : cons(x,l), l[3] : 42, ll);
+[x,1,2,42]$
+
+(remvalue(l,ll),0);
+0$
+
+cons(a,[[]]);
+[a,[]]$
+
+cons(2,a[2014]);
+a[2,2014]$
+
+cons(x,a+b);
+a+b+x$
+
+cons(x,a*b);
+a*b*x$
+
+block([inflag : true],cons(x,a/b));
+a*x/b$
+
+block([inflag : false],errcatch(cons(x,a/b)));
+[]$
+
+block([inflag : true], cons(x,-a));
+-a*x$
+
+block([inflag : false], cons(x,-a));
+x-a$
+
+errcatch(endcons(a,a));
+[]$
+
+errcatch(endcons(false,false));
+[]$
+
+errcatch(endcons(x,a^b));
+[]$
+
+endcons(false,[]);
+[false]$
+
+endcons(a,[a]);
+[a,a]$
+
+endcons(a,[true,false]);
+[true,false,a]$
+
+endcons(k,endcons(n,[u]));
+[u,n,k]$
+
+(remvalue(l,ll),0);
+0$
+
+endcons(a,[[]]);
+[[],a]$
+
+endcons(2,a[2014]);
+a[2014,2]$
+
+endcons(x,a+b);
+a+b+x$
+
+endcons(x,a*b);
+a*b*x$
+
+block([inflag : true],endcons(x,a/b));
+x*a/b$
+
+block([inflag : false],errcatch(endcons(x,a/b)));
+[]$
+
+block([inflag : true], endcons(x,-a));
+-a*x$
+
+block([inflag : false], endcons(x,-a));
+a-x$
+
+block([partswitch : true], rest([]));
+end$
+
+/* end of tests for cons and endcons--especially tests for on nonlists */

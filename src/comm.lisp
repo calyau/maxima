@@ -114,7 +114,7 @@
                   ;; Do a substitution for one equation.
                   (maxima-substitute (caddr l) (cadr l) z))
                  (t
-                  ;; We have a list of equations. We do parallel subsitution.
+                  ;; We have a list of equations. We do parallel substitution.
                   (let (gensymbol genlist eqn ($simp nil))
                     ;; At first substitute a gensym for the expressions of
                     ;; the left hand side of the equations.
@@ -991,11 +991,11 @@
        (eq (caar x) 'mlist)))
 
 (defmfun $cons (x e)
-  (atomchk (setq e (specrepcheck e)) '$cons t)
+  (atomchk (setq e (format1 e)) '$cons t)
   (mcons-exp-args e (cons x (margs e))))
 
 (defmfun $endcons (x e)
-  (atomchk (setq e (specrepcheck e)) '$endcons t)
+  (atomchk (setq e (format1 e)) '$endcons t)
   (mcons-exp-args e (append (margs e) (ncons x))))
 
 (defmfun $reverse (e)
