@@ -890,14 +890,17 @@ in the interval of integration.")
 		 total))))))
 
 ;; look for terms with a negative exponent
+;;
+;; recursively traverses exp in order to find discontinuities such as
+;;  erfc(1/x-x) at x=0
 (defun discontinuities-denom (exp)
   (cond ((atom exp) 1)
-	((eq (caar exp) 'mtimes)
-	 (m*l (mapcar #'discontinuities-denom (cdr exp))))
 	((and (eq (caar exp) 'mexpt)
+	      (not (freeof var (cadr exp)))
 	      (not (member ($sign (caddr exp)) '($pos $pz))))
 	 (m^ (cadr exp) (m- (caddr exp))))
-	(t 1)))
+	(t 
+	 (m*l (mapcar #'discontinuities-denom (cdr exp))))))
 
 ;; returns list of places where exp might be discontinuous in var.
 ;; list begins with ll and ends with ul, and include any values between

@@ -1150,6 +1150,9 @@ log(y^2+1)+2*atan(1/y)*y-2;
 integrate(sqrt(t)*log(t)^(1/2),t,0,1);
 sqrt(2)*sqrt(%pi)*%i/(3^(3/2));
 
+/* #2732 wrong answer for similar to gaussian integral */
+integrate(exp(-x^2-1/x^2),x,-inf,inf);
+%e^-2*sqrt(%pi);
 
 /* Integrals of the type: c*z^w*log(z)^m*exp(-t^s) for 0 to inf */
 
