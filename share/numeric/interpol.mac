@@ -78,8 +78,8 @@ interpol_check_input(data,funame):=
 /*    explicit(f(x),x,0,9),                                                    */
 /*    point_size = 3,                                                          */
 /*    points(p)) $                                                             */
-lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
-   tab: interpol_check_input(tab,"lagrange"),
+lagrange(tab,[select]) := block([n,sum:0,prod,options,defaults,ratprint:false,tab2],
+   tab2: interpol_check_input(tab,"lagrange"),
    options:  ['varname],
    defaults: ['x],
    for i in select do(
@@ -90,12 +90,12 @@ lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
       then error("Option 'varname' is not correct"),
 
    /* constructing the interpolating polynomial */
-   n: length(tab),
+   n: length(tab2),
    for i:1 thru n do(
       prod: 1,
       for k:1 thru n do
-         if k#i then prod: prod * (defaults[1]-tab[k][1]) / (tab[i][1]-tab[k][1]),
-      sum: sum + prod * tab[i][2] ),
+         if k#i then prod: prod * (defaults[1]-tab2[k][1]) / (tab2[i][1]-tab2[k][1]),
+      sum: sum + prod * tab2[i][2] ),
    sum )$
 
 
@@ -126,8 +126,8 @@ charfun2(z,l1,l2):= charfun(l1 <= z and z < l2)$
 /*    explicit(f(x),x,0,9),                                                    */
 /*    point_size = 3,                                                          */
 /*    points(p)) $                                                             */
-linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:false],
-   tab: interpol_check_input(tab,"linearinterpol"),
+linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:false,tab2],
+   tab2: interpol_check_input(tab,"linearinterpol"),
    options:  ['varname],
    defaults: ['x],
    for i in select do(
@@ -138,21 +138,21 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
       then error("Option 'varname' is not correct"),
 
    /* constructing the interpolating polynomial */
-   n: length(tab),
+   n: length(tab2),
    if n=2 /* case of two points */
-      then s: tab[2][2] + (tab[2][2]-tab[1][2]) *
-                          (defaults[1]-tab[2][1]) /
-                          (tab[2][1]-tab[1][1])
+      then s: tab2[2][2] + (tab2[2][2]-tab2[1][2]) *
+                          (defaults[1]-tab2[2][1]) /
+                          (tab2[2][1]-tab2[1][1])
       else for i:2 thru n do(
                if i=2
-                  then (a: 'minf, b: tab[i][1])
+                  then (a: 'minf, b: tab2[i][1])
                   else if i=n
-                          then (a: tab[i-1][1], b: 'inf)
-                          else (a: tab[i-1][1], b: tab[i][1]),
+                          then (a: tab2[i-1][1], b: 'inf)
+                          else (a: tab2[i-1][1], b: tab2[i][1]),
                s: s + funmake('charfun2,[defaults[1], a, b]) *
-                      expand( tab[i][2] + (tab[i][2]-tab[i-1][2]) *
-                                    (defaults[1]-tab[i][1]) /
-                                    (tab[i][1]-tab[i-1][1]) )   ),
+                      expand( tab2[i][2] + (tab2[i][2]-tab2[i-1][2]) *
+                                    (defaults[1]-tab2[i][1]) /
+                                    (tab2[i][1]-tab2[i-1][1]) )   ),
    s )$
 
 
@@ -190,8 +190,8 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
 /*    point_size = 3,                                                                  */
 /*    points(p)) $                                                                     */
 cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
-                               qn, un, a, b, s:0, aj, bj, cj, dj, aux,ratprint:false],
-   tab: interpol_check_input(tab,"cspline"),
+                               qn, un, a, b, s:0, aj, bj, cj, dj, aux,ratprint:false,tab2],
+   tab2: interpol_check_input(tab,"cspline"),
    options:  ['d1, 'dn, 'varname],
    defaults: ['unknown, 'unknown, 'x],
    for i in select do(
@@ -205,12 +205,12 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
    if not symbolp(defaults[3])
       then error("Option 'varname' is not correct"),
 
-   /* if tab contains only two points, linear interpolation */
-   n: length(tab),
+   /* if tab2 contains only two points, linear interpolation */
+   n: length(tab2),
    if n=2 /* case of two points */
-      then return(ratsimp( tab[2][2] + (tab[2][2]-tab[1][2]) *
-                                       (defaults[3]-tab[2][1]) /
-                                       (tab[2][1]-tab[1][1]))),
+      then return(ratsimp( tab2[2][2] + (tab2[2][2]-tab2[1][2]) *
+                                       (defaults[3]-tab2[2][1]) /
+                                       (tab2[2][1]-tab2[1][1]))),
 
 
    /* constructing the interpolating polynomial */
@@ -222,25 +222,25 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
       then (y2[1]: 0,
             u[1]: 0)
       else (y2[1]: -1/2,
-            u[1]: 3 / (tab[2][1]-tab[1][1]) *
-                      ((tab[2][2] - tab[1][2])/(tab[2][1] - tab[1][1]) - defaults[1]) ),
+            u[1]: 3 / (tab2[2][1]-tab2[1][1]) *
+                      ((tab2[2][2] - tab2[1][2])/(tab2[2][1] - tab2[1][1]) - defaults[1]) ),
 
    /* decomposition loop of the triangular algorithm */
    for i:2 thru n-1 do (
-      sig: (tab[i][1] - tab[i-1][1]) / (tab[i+1][1] - tab[i-1][1]),
+      sig: (tab2[i][1] - tab2[i-1][1]) / (tab2[i+1][1] - tab2[i-1][1]),
       p: sig * y2[i-1] + 2,
       y2[i]: (sig - 1) / p,
-      u[i]: (tab[i+1][2] - tab[i][2]) /(tab[i+1][1] - tab[i][1]) -
-            (tab[i][2] - tab[i-1][2]) /(tab[i][1] - tab[i-1][1]),
-      u[i]: (6 * u[i] / (tab[i+1][1] - tab[i-1][1]) - sig * u[i-1]) / p ) ,
+      u[i]: (tab2[i+1][2] - tab2[i][2]) /(tab2[i+1][1] - tab2[i][1]) -
+            (tab2[i][2] - tab2[i-1][2]) /(tab2[i][1] - tab2[i-1][1]),
+      u[i]: (6 * u[i] / (tab2[i+1][1] - tab2[i-1][1]) - sig * u[i-1]) / p ) ,
 
    /* controlling the upper boundary condition */
    if /*dn*/ defaults[2] = 'unknown
       then (qn: 0,
             un: 0)
       else (qn: 1/2,
-            un: 3 / (tab[n][1] - tab[n-1][1]) *
-                (defaults[2] - (tab[n][2] - tab[n-1][2]) / (tab[n][1] - tab[n-1][1]))),
+            un: 3 / (tab2[n][1] - tab2[n-1][1]) *
+                (defaults[2] - (tab2[n][2] - tab2[n-1][2]) / (tab2[n][1] - tab2[n-1][1]))),
    y2[n]: (un - qn * u[n-1]) / (qn * y2[n-1] + 1),
 
    /* backsubstitution loop of the tridiagonal algorithm */
@@ -250,20 +250,20 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
    /* constructing the cubic splines */
    for j:2 thru n do (
       if j=2
-          then (a: 'minf, b: tab[j][1] )
+          then (a: 'minf, b: tab2[j][1] )
           else if j=n
-                  then (a: tab[j-1][1], b: 'inf)
-                  else (a: tab[j-1][1], b: tab[j][1]),
+                  then (a: tab2[j-1][1], b: 'inf)
+                  else (a: tab2[j-1][1], b: tab2[j][1]),
       /* in the following sentences, defaults[3] is variable's name */
-      aux: (tab[j][1] - tab[j-1][1]),
-      aj: (tab[j][1] - defaults[3]) / aux,
-      bj: (defaults[3] - tab[j-1][1]) / aux,
+      aux: (tab2[j][1] - tab2[j-1][1]),
+      aj: (tab2[j][1] - defaults[3]) / aux,
+      bj: (defaults[3] - tab2[j-1][1]) / aux,
       aux: aux * aux /6,
       cj: (aj^3 - aj) * aux,
       dj: (bj^3 - bj) * aux,
 
       s: s + funmake('charfun2,[defaults[3], a, b]) *
-             expand(aj * tab[j-1][2] + bj * tab[j][2] + cj * y2[j-1] + dj * y2[j])  ),
+             expand(aj * tab2[j-1][2] + bj * tab2[j][2] + cj * y2[j-1] + dj * y2[j])  ),
    s )$
 
 
@@ -297,8 +297,8 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*          title = concat("Degree of numerator = ",k),                        */
 /*          yrange=[0,10])$                                                    */
 ratinterpol(tab,r,[select]) :=
-  block([n,m,coef,unk,sol,lovtab,lov,options,defaults,ratprint:false],
-    tab: interpol_check_input(tab,"ratinterpol"),
+  block([n,m,coef,unk,sol,lovtab,lov,options,defaults,ratprint:false,tab2],
+    tab2: interpol_check_input(tab,"ratinterpol"),
     options:  ['varname],
     defaults: ['x],
     for i in select do(
@@ -309,7 +309,7 @@ ratinterpol(tab,r,[select]) :=
        then error("Option 'varname' is not correct"),
 
     /* constructing the interpolating rational function */
-    n: length(tab),
+    n: length(tab2),
     if not integerp(r) or r > n-1 or r < 0
       then error("Degree of numerator must be a positive integer less than sample size"),
     m: n - r - 1, /* degree of denominator */
@@ -322,10 +322,10 @@ ratinterpol(tab,r,[select]) :=
                                   makelist(x^k,k,1,r),
                                   [-y],
                                   makelist(-y*x^k,k,1,m))),
-                         p, tab)),
+                         p, tab2)),
     unk: makelist(gensym(), k, r+m+2),
     sol: map(last, linsolve(flatten(args(coef.unk)),unk)),
-    lovtab : listofvars(tab),
+    lovtab : listofvars(tab2),
     lov: listofvars(sol),
     lov: listify(setdifference(setify(lov),setify(lovtab))),
     sol: subst(map(lambda([z1,z2], z1=z2), lov, makelist(1, k, length(lov))), sol),
