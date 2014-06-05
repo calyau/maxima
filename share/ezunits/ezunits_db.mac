@@ -50,16 +50,20 @@ declare_unit_conversion
     Gs = 1000000000*s,
 
     mA = A/1000,
+    ampere = A,
+    amp = A,
     kA = 1000*A,
     MA = 1000000*A,
     GA = 1000000000*A,
 
     mK = K/1000,
+    kelvin = K,
     kK = 1000*K,
     MK = 1000000*K,
     GK = 1000000000*K,
 
     mmol = mol/1000,
+    mole = mol,
     kmol = 1000*mol,
     Gmol = 1000000*mol,
     Mmol = 1000000000*mol,
@@ -152,6 +156,7 @@ declare_unit_conversion
 
     ns = s/1000000000,
     microsecond = s/1000000,
+    second = s,
     
     hectare = 100*m^2,
     ha = hectare,
