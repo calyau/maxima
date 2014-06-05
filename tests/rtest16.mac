@@ -1994,3 +1994,15 @@ integrate(y(tau)=sin(tau),tau,tau[0], tau[1]);
 
 integrate ([foo(x), bar(x)], x, x[1], x[2]);
 ['integrate (foo(x), x, x[1], x[2]), 'integrate (bar(x), x, x[1], x[2])];
+
+/* # 2738: Integrate encountered a Lisp error: The value 2 is not of type LIST. */
+
+(kill (x, y, I, J),
+ x(t):=2*cos(t),
+ y(t):=2*sin(t),
+ I : (x(t)+y(t)^2)*sqrt(diff(x(t),t)^2+diff(y(t),t)^2),
+ J : integrate (I, t));
+4*(t-tan(t)/(tan(t)^2+1))+4*sin(t)$
+
+trigsimp (diff (J, t) - I);
+0;

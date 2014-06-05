@@ -289,7 +289,7 @@
 
 (defun separc (ex)
   (cond ((arcfuncp ex) (setq arcpart ex coef 1))
-	((eq (caar ex) 'mtimes)
+	((and (consp ex) (eq (caar ex) 'mtimes))
 	 (arclist (cdr ex))
 	 (setq coef (cond ((null (cdr coef)) (car coef))
 			  (t (setq coef (cons (car ex) coef))))))))
