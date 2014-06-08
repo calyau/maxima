@@ -192,134 +192,134 @@ A fun@,{c}@~{a}o @code{declare} reconhece as seguintes propriedades:
 
 @table @code
 @item additive
-      Diz ao Maxima para simplificar express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
-      @code{@var{a_i}(x + y + z + ...)} @code{-->}
-      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
-      A substitui@,{c}@~{a}o @'{e} realizada somente sobre o primeiro argumento.
+Diz ao Maxima para simplificar express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
+@code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+A substitui@,{c}@~{a}o @'{e} realizada somente sobre o primeiro argumento.
 
 @item alphabetic
-      Diz ao Maxima para reconhecer todos os caracteres em @var{a_i} (que deve ser uma
-      sequ@^{e}ncia de caracteres) como caracteres alfab@'{e}ticos.
+Diz ao Maxima para reconhecer todos os caracteres em @var{a_i} (que deve ser uma
+sequ@^{e}ncia de caracteres) como caracteres alfab@'{e}ticos.
 
 @item antisymmetric, commutative, symmetric
-      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o sim@'{e}trica ou
-      antissim@'{e}trica.  Ter a propriedade @mref{commutative} @'{e} o mesmo que
-      ter a propriedade @code{symmetric}.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o sim@'{e}trica ou
+antissim@'{e}trica.  Ter a propriedade @mref{commutative} @'{e} o mesmo que
+ter a propriedade @code{symmetric}.
 
 @item bindtest
-      Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como
-      sendo n@~{a}o associado.
+Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como
+sendo n@~{a}o associado.
 
 @item constant
-      Diz ao Maxima para considerar @var{a_i} uma constante simb@'{o}lica.
-      @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
-      @c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
-      @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+Diz ao Maxima para considerar @var{a_i} uma constante simb@'{o}lica.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
 @item even, odd
-      Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira par ou inteira @'{i}mpar.
+Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira par ou inteira @'{i}mpar.
 
 @item evenfun, oddfun
-      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o @'{i}mpar ou uma fun@,{c}@~{a}o par.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o @'{i}mpar ou uma fun@,{c}@~{a}o par.
 
 @item evflag
-      Torna @var{a_i} conhecido para a fun@,{c}@~{a}o @code{ev} de forma que @var{a_i} seja associado a
-      @code{true} durante a execu@,{c}@~{a}o de @code{ev} quando @var{a_i} aparecer como
-      um argumento sinalizador de @code{ev}.  Veja @mrefdot{evflag}
+Torna @var{a_i} conhecido para a fun@,{c}@~{a}o @code{ev} de forma que @var{a_i} seja associado a
+@code{true} durante a execu@,{c}@~{a}o de @code{ev} quando @var{a_i} aparecer como
+um argumento sinalizador de @code{ev}.  Veja @mrefdot{evflag}
 
 @item evfun
-      Torna @var{a_i} conhecido de @code{ev} de forma que a fun@,{c}@~{a}o chamada por @var{a_i}
-      seja aplicada quando @var{a_i} aparecer como um argumento sinalizador de @code{ev}.
-      Veja @mrefdot{evfun}
+Torna @var{a_i} conhecido de @code{ev} de forma que a fun@,{c}@~{a}o chamada por @var{a_i}
+seja aplicada quando @var{a_i} aparecer como um argumento sinalizador de @code{ev}.
+Veja @mrefdot{evfun}
 
 @item feature
-      Diz ao Maxima para reconhecer @var{a_i} como o nome de uma caracter@'{i}stica.
-      Outros @'{a}tomos podem ser declarados terem a propriedade @var{a_i}.
+Diz ao Maxima para reconhecer @var{a_i} como o nome de uma caracter@'{i}stica.
+Outros @'{a}tomos podem ser declarados terem a propriedade @var{a_i}.
 
 @item increasing, decreasing
-      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o crescente
-      ou como uma fun@,{c}@~{a}o crescente.
-      @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
-      @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
-      @c REPORTED AS SF BUG # 1483194
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o crescente
+ou como uma fun@,{c}@~{a}o crescente.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
 
 @item integer, noninteger
-      Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira ou uma vari@'{a}vel n@~{a}o inteira.
+Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel inteira ou uma vari@'{a}vel n@~{a}o inteira.
 
 @item integervalued
-      Diz ao Maxima para reconhecer @var{a_i} cumo uma fun@,{c}@~{a}o cujo valor de retorno @'{e} um inteiro.
+Diz ao Maxima para reconhecer @var{a_i} cumo uma fun@,{c}@~{a}o cujo valor de retorno @'{e} um inteiro.
 
 @item lassociative, rassociative
-      Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o associativa @`{a} direita ou
-      uma fun@,{c}@~{a}o associativa @`{a} esquerda.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o associativa @`{a} direita ou
+uma fun@,{c}@~{a}o associativa @`{a} esquerda.
 
 @item linear
-      Equivale a declarar @var{a_i} simult@^{a}neamente @code{outative} e
-      @code{additive}.
+Equivale a declarar @var{a_i} simult@^{a}neamente @code{outative} e
+@code{additive}.
 
 @item mainvar
-      Diz ao Maxima para considerar @var{a_i} uma "vari@'{a}vel principal".  Uma vari@'{a}vel principal
-      prevalesce sobre todas as outras vari@'{a}veis e constantes na ordena@,{c}@~{a}o can@^{o}nica de
-      express@~{o}es do Maxima, como determinado por @code{ordergreatp}.
+Diz ao Maxima para considerar @var{a_i} uma "vari@'{a}vel principal".  Uma vari@'{a}vel principal
+prevalesce sobre todas as outras vari@'{a}veis e constantes na ordena@,{c}@~{a}o can@^{o}nica de
+express@~{o}es do Maxima, como determinado por @code{ordergreatp}.
 
 @item multiplicative
-      Diz ao Maxima para simplificar as express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
-      @code{@var{a_i}(x * y * z * ...)} @code{-->} 
-      @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
-      A substitui@,{c}@~{a}o @'{e} realizada sobre o primeiro argumento somente.
+Diz ao Maxima para simplificar as express@~{o}es @var{a_i} atrav@'{e}s da substitui@,{c}@~{a}o
+@code{@var{a_i}(x * y * z * ...)} @code{-->} 
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+A substitui@,{c}@~{a}o @'{e} realizada sobre o primeiro argumento somente.
 
 @item nary
-      Diz ao Maxima para reconhecer @var{a_i} as an n-ary function.
+Diz ao Maxima para reconhecer @var{a_i} como uma função de n argumentos.
 
-      The @code{nary} declaration is not the same as calling the @code{nary}
-      function.  The sole effect of @code{declare(foo, nary)} is to instruct the
-      Maxima simplifier to flatten nested expressions, for example, para simplificar
-      @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
+A declaração @code{nary} não é o mesmo que a função
+@code{nary}.  O único efeito de @code{declare(qualquercoisa, nary)} é instruir o
+simplificador do Maxima a melhorar expressão aninhadas, por exemplo, para simplificar
+@code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
 
 @item nonarray
-      Diz ao Maxima para considerar @var{a_i} not an array.  This declaration
-      prevents multiple evaluation of a subscripted variable name.
+Diz ao Maxima para considerar @var{a_i} um não vetor estático.  Essa declaração
+evita múltiplas avaliaçãoes de um nome de variável subscrita.
 
 @item nonscalar
-      Diz ao Maxima para considerar @var{a_i} a nonscalar variable.  The usual
-      application is to declare a variable as a symbolic vector or matrix.
+Diz ao Maxima para considerar @var{a_i} uma variável não escalar.  O uso comum
+é declarar uma variável como um vetor simbĺico ou uma matriz.
 
 @item noun
-      Diz ao Maxima to parse @var{a_i} as a noun.  The effect of this is to
-      replace instances of @var{a_i} with @code{'@var{a_i}} or
-      @code{nounify(@var{a_i})}, depending on the context.
+Diz ao Maxima para analizar @var{a_i} como substantivo.  O efeito disso é
+substituir instâncias de @var{a_i} com @code{'@var{a_i}} ou
+@code{nounify(@var{a_i})}, dependendo do contexto.
 
 @item outative
-      Diz ao Maxima para simplificar @var{a_i} expressions by pulling constant factors
-      out of the first argument.
+Diz ao Maxima para simplificar expressões @var{a_i} puxando fatores constantes
+para fora do primeiro argumento.
 
-      When @var{a_i} has one argument, a factor is considered constant if it is
-      a literal or declared constant.
+Quando @var{a_i} tem um argumento, um fator é considerado constante se for
+um literal ou constante explicitamente declarado.
 
-      When @var{a_i} has two or more arguments, a factor is considered constant
-      if the second argument is a symbol and the factor is independente de the second
-      argument.
+Quando @var{a_i} tem dois ou mais argumentos, um fator é considerado contante
+se o segundo argumentofor um símbolo e o fator for independente do segundo
+argumento.
 
 @item posfun
-      Diz ao Maxima para reconhecer @var{a_i} as a positive function.
+Diz ao Maxima para reconhecer @var{a_i} como uma função positiva.
 
 @item rational, irrational
-      Diz ao Maxima para reconhecer @var{a_i} as a rational or irrational real
-      variable.
+Diz ao Maxima para reconhecer @var{a_i} como uma variável real racional ou
+irracional.
 
 @item real, imaginary, complex
-      Diz ao Maxima para reconhecer @var{a_i} as a real, pure imaginary, or complex
-      variable.
+Diz ao Maxima para reconhecer @var{a_i} como uma variável real, imaginária pura, ou
+complexa.
 
 @item scalar
-      Diz ao Maxima para considerar @var{a_i} a scalar variable.
+Diz ao Maxima para considerar @var{a_i} uma variável escalar.
 
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 @end table
 
-Examples of the usage of the properties are available in the documentation
-for each separate description of a property.
+Exemplos de usodas propriedades estão disponíveis nadocumentação
+de cada descrição separada de uma propriedade.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -332,11 +332,11 @@ for each separate description of a property.
 @defvr  {Property} decreasing
 @defvrx {Property} increasing
 
-The commands @code{declare(@var{f}, decreasing)} or
-@code{declare(@var{f}, increasing)} tell Maxima para reconhecer the function
-@var{f} as an decreasing or increasing function.
+Os comandos @code{declare(@var{f}, decreasing)} ou
+@code{declare(@var{f}, increasing)} dizem ao Maxima para reconhecer a função
+@var{f} como uma função decrescente ou uma função crescente.
 
-Veja tamb@'{e}m @mref{declare} for more properties.
+Veja tamb@'{e}m @mref{declare} para mais propriedades.
 
 Exemplo:
 
@@ -362,12 +362,12 @@ Exemplo:
 @defvr  {Property} even
 @defvrx {Property} odd
 
-@code{declare(@var{a}, even)} or @code{declare(@var{a}, odd)} diz ao Maxima to
-recognize the symbol @var{a} as an even or odd integer variable.  The
-properties @code{even} and @code{odd} are not recognized by the functions
-@mrefcomma{evenp} @mrefcomma{oddp} and @mrefdot{integerp}
+Os comandos @code{declare(@var{a}, even)} ou @code{declare(@var{a}, odd)} dizem ao Maxima para
+reconhecer o símbolo @var{a} como uma variável inteira par ou uma variável inteira ímpar.  As
+propriedades @code{even} e @code{odd} não são reconhecidas pelas funções
+@mrefcomma{evenp} @mrefcomma{oddp} e @mrefdot{integerp}
 
-Veja tamb@'{e}m @mref{declare} and @mrefdot{askinteger}
+Veja tamb@'{e}m @mref{declare} e @mrefdot{askinteger}
 
 Exemplo:
 
@@ -393,14 +393,14 @@ Exemplo:
 @anchor{feature}
 @defvr {Property} feature
 
-Maxima understands two distinct types of features, system features and features
-which apply to mathematical expressions.  Veja tamb@'{e}m @mref{status} for information
-about system features.  Veja tamb@'{e}m @mref{features} and @mref{featurep} for
-information about mathematical features.
+Maxima entende dois distintos tipos de características, características de sistema e características
+aplicados a expressões matemáticas.  Veja tamb@'{e}m @mref{status} para informação
+sobre características de sistema.  Veja tamb@'{e}m @mref{features} e @mref{featurep} para
+informação sobre características matemáticas.
 @c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
 @c OTHER STUFF ??
 
-@code{feature} itself is not the name of a function or variable.
+O nome @code{feature} propriamente dito não é o nome de uma função ou de uma variável.
 @end defvr
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
@@ -410,16 +410,16 @@ information about mathematical features.
 @anchor{featurep}
 @deffn {Function} featurep (@var{a}, @var{f})
 
-Attempts to determine whether the object @var{a} has the feature @var{f} on the
-basis of the facts in the current database.  If so, it returns @code{true},
+Tenta determinar se o objeto @var{a} tem a característica @var{f} na
+base de fatos na base de dados atual.  Se tiver, a função featurep retorna @code{true},
 else @code{false}.
 
-Note that @code{featurep} returns @code{false} when neither @var{f}
-nor the negation of @var{f} can be established.
+Note que @code{featurep} retorna @code{false} quando nem @var{f}
+nem a negação de @var{f} pder ser estabelecida.
 
-@code{featurep} evaluates its argument.
+A função @code{featurep} avalia seus argumentos.
 
-Veja tamb@'{e}m @mref{declare} and @mrefdot{features}
+Veja tamb@'{e}m @mref{declare} e @mrefdot{features}
 
 @example
 (%i1) declare (j, even)$
