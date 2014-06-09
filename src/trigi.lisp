@@ -415,7 +415,7 @@
         ;; declines (by returning NIL), we silently give up and use the
         ;; rectform version.
         (cond ((and (afloatp x) (like 0 y))
-               (or (and bop (funcall bop x))
+               (or (and bop (funcall bop ($bfloat x)))
                    ($bfloat `((,op simp) ,x))))
               ((or (afloatp x) (afloatp y))
                (or (and bop (funcall bop ($bfloat x) ($bfloat y)))
