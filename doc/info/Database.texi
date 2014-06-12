@@ -453,8 +453,9 @@ The infolist @code{features} is a list of known features.  These are
    real           imaginary       complex
    analytic       increasing      decreasing
    oddfun         evenfun         posfun
-   commutative    lassociative    rassociative
-   symmetric      antisymmetric
+   constant       commutative     lassociative
+   rassociative   symmetric       antisymmetric
+   integervalued
 @end verbatim
 
 plus any user-defined features.
