@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 0aaa5516409ea54cb76194f078fc6822  Database.texi
+@c 7c21c62201e67b87f01e60715413bfaf  Database.texi
 @c
 @menu
 * Introduction to Maximas Database::
@@ -181,7 +181,7 @@ todas as propiedades.
 
 A fun@,{c}@~{a}o @code{declare} n@~{a}o avalia seus argumentos.  A fun@,{c}@~{a}o @code{declare} sempre retorna @code{done}.
 
-Como notado na descri@,{c}@~{a}o para cada sinalizador de declara@,{c}@~{a}o, para mesmos sinalizadores
+Como notado na descri@,{c}@~{a}o para cada sinalizador de declara@,{c}@~{a}o, para alguns sinalizadores
 @code{featurep(@var{objeto}, @var{caracter@'{i}stica})} retorna @code{true} se @var{objeto}
 tiver sido declarado como tendo @var{caracter@'{i}stica}.
 
@@ -412,10 +412,10 @@ O nome @code{feature} propriamente dito não é o nome de uma função ou de uma
 
 Tenta determinar se o objeto @var{a} tem a característica @var{f} na
 base de fatos na base de dados atual.  Se tiver, a função featurep retorna @code{true},
-else @code{false}.
+em caso contrário retorna @code{false}.
 
 Note que @code{featurep} retorna @code{false} quando nem @var{f}
-nem a negação de @var{f} pder ser estabelecida.
+nem a negação de @var{f} puder ser estabelecida.
 
 A função @code{featurep} avalia seus argumentos.
 
@@ -436,22 +436,22 @@ Veja tamb@'{e}m @mref{declare} e @mrefdot{features}
 @anchor{features}
 @defvr {Declaration} features
 
-Maxima recognizes certain mathematical properties of functions and variables.
-These are called "features".
+Maxima reconhece certas propriedades matemáticas de variáveis e funções.
+São aqui chamadas "features" @footnote{Nota do tradutor: característica.}.
 
-@code{declare (@var{x}, @var{foo})} gives the property @var{foo}
-to the function or variable @var{x}.
+O comando @code{declare (@var{x}, @var{qualquercoisa})} fornece a propriedade @var{qualquercoisa}
+à função ou variável @var{x}.
 
-@code{declare (@var{foo}, feature)} declares a new feature @var{foo}.
+O comando @code{declare (@var{qualquercoisa}, feature)} declara uma nova característica @var{qualquercoisa}.
 Por exemplo,
-@code{declare ([red, green, blue], feature)}
-declares three new features, @code{red}, @code{green}, and @code{blue}.
+@code{declare ([vermelho, verde, azul], feature)}
+declara três novas características, @code{vemelho}, @code{verde}, e @code{azul}.
 
-The predicate @code{featurep (@var{x}, @var{foo})}
-returns @code{true} if @var{x} has the @var{foo} property,
-and @code{false} otherwise.
+O predicado @code{featurep (@var{x}, @var{qualquercoisa})}
+retorna @code{true} se @var{x} tiver a propriedade @var{qualquercoisa},
+e @code{false} de outra forma.
 
-The infolist @code{features} is a list of known features.  These are
+A infolista @code{features} é uma lista das características conhecidas.  São elas
 
 @verbatim
    integer        noninteger      even
@@ -459,28 +459,29 @@ The infolist @code{features} is a list of known features.  These are
    real           imaginary       complex
    analytic       increasing      decreasing
    oddfun         evenfun         posfun
-   commutative    lassociative    rassociative
-   symmetric      antisymmetric
+   constant       commutative     lassociative
+   rassociative   symmetric       antisymmetric
+   integervalued
 @end verbatim
 
-plus any user-defined features.
+além de quaisquer outras características definidas pelo usuário.
 
-@code{features} is a list of mathematical features.  There is also a list of
-non-mathematical, system-dependent features.  See @mrefdot{status}
+A infolista @code{features} é uma lista de características matemáticas.  Existe também uma lista de
+características não-matemáticas e dependentes do sistema operacional no qual o Maxima está instalado.  Veja @mrefdot{status}
 
 Exemplo:
 
 @c ===beg===
-@c declare (FOO, feature);
-@c declare (x, FOO);
-@c featurep (x, FOO);
+@c declare (QUALQUERCOISA, feature);
+@c declare (x, QUALQUERCOISA);
+@c featurep (x, QUALQUERCOISA);
 @c ===end===
 @example
-(%i1) declare (FOO, feature);
+(%i1) declare (QUALQUERCOISA, feature);
 (%o1)                         done
-(%i2) declare (x, FOO);
+(%i2) declare (x, QUALQUERCOISA);
 (%o2)                         done
-(%i3) featurep (x, FOO);
+(%i3) featurep (x, QUALQUERCOISA);
 (%o3)                         true
 @end example
 
@@ -493,12 +494,12 @@ Exemplo:
 @anchor{get}
 @deffn {Function} get (@var{a}, @var{i})
 
-Retrieves the user property indicated by @var{i} associated with
-atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
+Recupera a propriedade de usuário indicada através de @var{i} associada ao
+átomo @var{a} ou retorna @code{false} se @var{a} não tiver a propriedade @var{i}.
 
-@code{get} evaluates its arguments.
+A função @code{get} avalia seus argumentos.
 
-Veja tamb@'{e}m @mref{put} and @mrefdot{qput}
+Veja tamb@'{e}m @mref{put} e @mrefdot{qput}
 
 @c ===beg===
 @c put (%e, 'transcendental, 'type);
@@ -546,8 +547,8 @@ x is not numeric.
 @defvr  {Property} integer
 @defvrx {Property} noninteger
 
-@code{declare(@var{a}, integer)} or @code{declare(@var{a}, noninteger)} diz
-Maxima para reconhecer @var{a} as an integer or noninteger variable.
+O comando @code{declare(@var{a}, integer)} ou o comando @code{declare(@var{a}, noninteger)} diz
+Maxima para reconhecer @var{a} como uma variável inteira ou não inteira.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -571,8 +572,8 @@ Exemplo:
 @anchor{integervalued}
 @defvr {Property} integervalued
 
-@code{declare(@var{f}, integervalued)} diz ao Maxima para reconhecer @var{f} as an
-integer-valued function.
+@code{declare(@var{f}, integervalued)} diz ao Maxima para reconhecer @var{f} como uma
+função que retorna um número inteiro.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -598,9 +599,9 @@ Exemplo:
 @anchor{nonarray}
 @deffn {Property} nonarray
 
-The command @code{declare(a, nonarray)} diz ao Maxima para considerar @var{a} not
-an array.  This declaration prevents multiple evaluation, if @var{a} is a
-subscripted variable.
+O comando @code{declare(a, nonarray)} diz ao Maxima para considerar @var{a} não
+um vetor estático.  Essa declaração evita avaliações múltiplas, se @var{a} for uma
+variável de subscrito.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -636,7 +637,7 @@ Exemplo:
 @anchor{nonscalar}
 @defvr {Property} nonscalar
 
-Makes atoms behave as does a list or matrix with respect to the dot operator.
+Faz com que átomos comportem-se como se faz com uma lista ou uma matriz com relação ao operador ponto.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -649,10 +650,10 @@ Veja tamb@'{e}m @mrefdot{declare}
 @anchor{nonscalarp}
 @deffn {Function} nonscalarp (@var{expr})
 
-Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
-atoms declared as non-scalars, lists, or matrices.
+Retorna @code{true} se @var{expr} for um não escalar, i.e., se contiver
+átomos declarados como não escalares, listas, ou matrizes.
 
-Veja tamb@'{e}m the predicate function @mref{scalarp} and @mrefdot{declare}
+Veja tamb@'{e}m a função de predicado @mref{scalarp} e @mrefdot{declare}
 
 @opencatbox
 @category{Predicate functions} @category{Vectors} @category{Matrices}
@@ -665,8 +666,8 @@ Veja tamb@'{e}m the predicate function @mref{scalarp} and @mrefdot{declare}
 @anchor{posfun}
 @defvr {Property} posfun
 
-@code{declare (f, posfun)} declares @code{f} to be a positive function.
-@code{is (f(x) > 0)} yields @code{true}.
+O comando @code{declare (f, posfun)} declara que @code{f} seja uma função positiva.
+O comando @code{is (f(x) > 0)} retorna @code{true}.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -684,12 +685,12 @@ Veja tamb@'{e}m @mrefdot{declare}
 @deffnx {Function} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
 @deffnx {Function} printprops (all, @var{i})
 
-Displays the property with the indicator @var{i} associated with the atom
-@var{a}.  @var{a} may also be a list of atoms or the atom @code{all} in which
-case all of the atoms with the given property will be used.  Por exemplo,
-@code{printprops ([f, g], atvalue)}.  @code{printprops} is for properties that
-cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
-@mrefcomma{atomgrad} @mrefcomma{gradef} and @mrefdot{matchdeclare}
+Mostra a propriedade com o indicador @var{i} associado ao átomo
+@var{a}.  A entidade @var{a} pode também ser uma lista de átomos ou o átomo @code{all} onde
+todos os átomos com a dada propriedade irão ser usados.  Por exemplo,
+@code{printprops ([f, g], atvalue)}.  A função @code{printprops} é para ser usada em propriedades que
+não puderem ser mostradas de outra forma, i.e.  para @mrefcomma{atvalue}@w{}
+@mrefcomma{atomgrad} @mrefcomma{gradef} e @mrefdot{matchdeclare}
 
 @opencatbox
 @category{Declarations and inferences} @category{Display functions}
@@ -703,7 +704,7 @@ cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 @anchor{properties}
 @deffn {Function} properties (@var{a})
 
-Returns a list of the names of all the properties associated with the atom
+Retorna uma lista de nomes de todas as propriedades associadas ao átomo
 @var{a}.
 
 @opencatbox
@@ -720,10 +721,10 @@ Returns a list of the names of all the properties associated with the atom
 @defvr {System variable} props
 Valor padr@~{a}o: @code{[]}
 
-@code{props} are atoms which have any property other than those explicitly
-mentioned in @mrefcomma{infolists} such as specified by @mrefcomma{atvalue}@w{}
-@mrefcomma{matchdeclare} etc., as well as properties specified in the
-@mref{declare} function.
+Os @code{props} são átomos que possuem qualquer propriedade outra que não aquelas explicitamente
+mencionadas em @mrefcomma{infolists} tais como as especificadas através de @mrefcomma{atvalue}@w{}
+@mrefcomma{matchdeclare} etc., bem como propriedades especificadas na
+função @mref{declare}.
 
 @opencatbox
 @category{Declarations and inferences} @category{Global variables}
@@ -737,9 +738,9 @@ mentioned in @mrefcomma{infolists} such as specified by @mrefcomma{atvalue}@w{}
 @anchor{propvars}
 @deffn {Function} propvars (@var{prop})
 
-Returns a list of those atoms on the @mref{props} list which
-have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
-returns a list of atoms which have atvalues.
+Retorna uma lista daqueles átomos na lista @mref{props} que
+possuem a propriedade indicada por @var{prop}.  Dessa forma @code{propvars (atvalue)}
+retorna uma lista de átomos que possuem atvalues.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -753,18 +754,18 @@ returns a list of atoms which have atvalues.
 
 @c -----------------------------------------------------------------------------
 @anchor{put}
-@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} put (@var{atom}, @var{valor}, @var{indicador})
 
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  @var{indicator} may be the name of any property, not just a
-system-defined property.
+Atribui @var{valor} à propriedade (especificada por @var{indicador}) de
+@var{atom}.  O @var{indicador} pode ser o nome de qualquer propriedade, não apenas uma
+propriedade definida pelo sistema.
 
-@mref{rem} reverses the effect of @code{put}.
+A função @mref{rem} reverte o efeito de @code{put}.
 
-@code{put} evaluates its arguments.
-@code{put} returns @var{value}.
+A função @code{put} avalia seus argumentos.
+A função @code{put} retorna @var{valor}.
 
-Veja tamb@'{e}m @mref{qput} and @mrefdot{get}
+Veja tamb@'{e}m @mref{qput} e @mrefdot{get}
 
 Exemplos:
 
@@ -790,11 +791,11 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{qput}
-@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} qput (@var{atom}, @var{valor}, @var{indicador})
 
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  This is the same as @mrefcomma{put} except that the arguments are
-quoted.
+Atribui @var{valor} à propriedade (especificada por @var{indicador}) de
+@var{atom}.  É o mesmo que @mrefcomma{put} exceto que os argumentos recebem
+um apóstrofo inicial (não são avaliados).
 
 Veja tamb@'{e}m @mrefdot{get}
 
@@ -829,8 +830,8 @@ Exemplo:
 @defvr  {Property} rational
 @defvrx {Property} irrational
 
-@code{declare(@var{a}, rational)} or @code{declare(@var{a}, irrational)} tells
-Maxima para reconhecer @var{a} as a rational or irrational real variable.
+O comando @code{declare(@var{a}, rational)} ou o comando @code{declare(@var{a}, irrational)} diz ao
+Maxima para reconhecer @var{a} como uma variável real racional ou irracional.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -847,9 +848,9 @@ Veja tamb@'{e}m @mrefdot{declare}
 @defvrx {Property} imaginary
 @defvrx {Property} complex
 
-@code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)}, or
-@code{declare(@var{a}, complex)} diz ao Maxima para reconhecer @var{a} como real,
-imagin@'{a}rio puro, ou vari@'{a}vel complexa.
+Os comandos @code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)}, ou
+@code{declare(@var{a}, complex)} dizem ao Maxima para reconhecer @var{a} como uma variável real,
+uma variável imagin@'{a}ria pura, ou uma vari@'{a}vel complexa.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
@@ -929,7 +930,7 @@ especificada.  Esse comportamento @'{e} diferente das fun@,{c}@~{o}es de remo@,{
 @mrefcomma{remvalue} @mrefcomma{remarray} @mrefcomma{remfunction} e
 @mrefdot{remrule}
 
-A fun@,{c}@~{a}o @code{remove} n@~{a}o avalia seus argumentos.
+A fun@,{c}@~{a}o @code{remove} n@~{a}o avalia seus argumentos (coloca apóstrofo inicial).
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @opencatbox
@@ -1796,14 +1797,14 @@ Alguns operadores avaliam @code{equal} e @code{notequal} para @code{true} ou
 @code{false}.
 
 @c ===beg===
-@c if equal (y, y - 1) then FOO else BAR;
+@c if equal (y, y - 1) then QUALQUERCOISA else OUTRACOISA;
 @c eq_1 : equal (x, x + 1);
 @c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
 @c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
 @c ===end===
 @example
-(%i1) if equal (y, y - 1) then FOO else BAR;
-(%o1)                          BAR
+(%i1) if equal (y, y - 1) then QUALQUERCOISA else OUTRACOISA;
+(%o1)                          OUTRACOISA
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
