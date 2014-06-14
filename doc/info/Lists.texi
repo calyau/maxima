@@ -212,7 +212,7 @@ analogous to the Lisp language construction operation "cons".
 
 The Maxima function @code{cons} can also be used where the second argument is other
 than a list and this might be useful. In this case, @code{cons (@var{expr_1}, @var{expr_2})}
-returns an expression with with same operator as @var{expr_2} but with argument @code{cons(expr_1, args(expr_2))}.
+returns an expression with same operator as @var{expr_2} but with argument @code{cons(expr_1, args(expr_2))}.
 Examples:
 @c ===beg===
 @c cons(a,[b,c,d])
