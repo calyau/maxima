@@ -837,18 +837,9 @@ para maiores detalhes.
 @anchor{pop}
 @deffn {Function} pop (@var{lista})
 
-A fun@,{c}@~{a}o @code{pop} remove o primeiro elemento da @var{lista} e retorna esse 
-elemento.  O argumento @var{lista} deve ser um s@'{i}mbolo, que esteja associado a uma lista e n@~{a}o a
-lista propriamente dita.
-
-Se o argumento @var{lista} n@~{a}o estiver associado a uma lista ou a lista estiver vazia, Maxima
-gera uma mensagem de erro.
-
-Veja tamb@'{e}m @mref{push}
-para exemplos.
-
-Para usar essa fun@,{c}@~{a}o, o pacote adicional "basic" deve ser primeiramente
-carregado: @code{load("basic")}.
+A função @code{pop} remove e retorna o primeiro elemento da lista @var{lista}. O segundo argumento 
+@var{lista} deve ser uma mapatom que está associado a uma lista não vazia. Se o argumento @var{lista} não
+for associado a uma lista não vazia, Maxima sinaliza um erro. Para exemplos, veja @mref{push}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -859,22 +850,16 @@ carregado: @code{load("basic")}.
 @anchor{push}
 @deffn {Function} push (@var{item}, @var{lista})
 
-A fun@,{c}@~{a}o @code{push} coloca no in@'{i}cio da @var{lista} o @var{item} e retorna uma
-c@'{o}pia da nova lista.  A @var{lista} deve ser um s@'{i}mbolo, que estja associado a uma lista e
-n@~{a}o a lista propriamente dita.  O @var{item} pode ser qualquer s@'{i}mbo ou express@~{a}o do Maxima.
+A função @code{push} anexa no início de uma @var{lista} o item @var{item} e retorna uma cópia da nova lista. 
+O segundo argumento @var{lista} deve ser um mapatom que esteja ssociado a uma lista. O primeiro argumento @var{item} 
+pode ser qualquer símbolo do Maxima ou expressão do Maxima. Se o argumento @var{lista} não estiver associado a uma lista, Maxima 
+sinaliza um erro.
 
-Se o argumento @var{lista} n@~{a}o esitver associado a uma lista, Maxima gera uma mensagem de
-erro.
-
-Veja tamb@'{e}m @mref{pop}
-para remover o primeiro item de uma lista.
-
-O comando @code{load("basic")} torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
+Para remover o primeiro item de uma lista, veja @mref{pop}.
 
 Exemplos:
 
 @c ===beg===
-@c load ("basic")$
 @c ll: [];
 @c push (x, ll);
 @c push (x^2+y, ll);
@@ -886,46 +871,27 @@ Exemplos:
 @c a;
 @c ===end===
 @example
-(%i1) load ("basic")$
 @group
-(%i2) ll: [];
-(%o2)                          []
-@end group
-@group
-(%i3) push (x, ll);
-(%o3)                          [x]
-@end group
-@group
-(%i4) push (x^2+y, ll);
-                                 2
-(%o4)                      [y + x , x]
-@end group
-@group
-(%i5) a: push ("string", ll);
-                                     2
-(%o5)                  [string, y + x , x]
-@end group
-@group
-(%i6) pop (ll);
-(%o6)                        string
-@end group
-@group
-(%i7) pop (ll);
-                                  2
-(%o7)                        y + x
-@end group
-@group
-(%i8) pop (ll);
-(%o8)                           x
-@end group
-@group
-(%i9) ll;
-(%o9)                          []
-@end group
-@group
-(%i10) a;
-                                     2
-(%o10)                 [string, y + x , x]
+(%i1) ll : [];
+(%o1)                                 []
+(%i2) push(x,ll);
+(%o2)                                 [x]
+(%i3) push(x^2+y,ll);
+                                        2
+(%o3)                             [y + x , x]
+(%i4) push("string",ll);
+                                            2
+(%o4)                         [string, y + x , x]
+(%i5) pop(ll);
+(%o5)                               string
+(%i6) pop(ll);
+                                         2
+(%o6)                               y + x
+(%i7) pop(ll);
+(%o7)                                  x
+(%i8) ll;
+(%o8)                                 []
+(%i9)
 @end group
 @end example
 
