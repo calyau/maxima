@@ -71,7 +71,9 @@
       (gethash '$zrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$cbrange *gr-options*)          nil      ; nil => automatic computation
       (gethash '$logx *gr-options*)             nil
+      (gethash '$logx_secondary *gr-options*)   nil
       (gethash '$logy *gr-options*)             nil
+      (gethash '$logy_secondary *gr-options*)   nil
       (gethash '$logz *gr-options*)             nil
       (gethash '$logcb *gr-options*)            nil
       (gethash '$title *gr-options*)            ""
@@ -853,7 +855,8 @@
                     (merror "draw: unknown contour level description: ~M " val))))
       ($opacity
          (update-opacity val))
-      (($transparent $border $logx $logy $logz $logcb $head_both $grid
+      (($transparent $border $logx $logx_secondary $logy $logy_secondary
+        $logz $logcb $head_both $grid
         $xaxis_secondary $yaxis_secondary $axis_bottom $axis_left $axis_top
         $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
         $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate

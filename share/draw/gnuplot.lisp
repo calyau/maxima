@@ -2736,9 +2736,30 @@
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
+
+            (if (get-option '$logx_secondary)
+               (format nil "set logscale x2~%")
+               (format nil "unset logscale x2~%"))
+
+
+
+
+
+
             (if (get-option '$logy)
                (format nil "set logscale y~%")
                (format nil "unset logscale y~%"))
+
+
+
+            (if (get-option '$logy_secondary)
+               (format nil "set logscale y2~%")
+               (format nil "unset logscale y2~%"))
+
+
+
+
+
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
@@ -2769,30 +2790,30 @@
                            (get-option '$yaxis_type)
                            (hex-to-rgb (get-option '$yaxis_color)) )
                (format nil "unset yzeroaxis~%"))
-            (if (null (get-option '$xtics))
-               (format nil "unset xtics~%")
-               (format nil "set xtics ~a ~a ~a~%" 
-                       (if (get-option '$xtics_rotate) "rotate" "norotate")
-                       (if (get-option '$xtics_axis) "axis" "border")
-                       (get-option '$xtics)))
             (if (null (get-option '$xtics_secondary))
                (format nil "unset x2tics~%")
                (format nil "set xtics nomirror~%set x2tics ~a ~a ~a~%"
                        (if (get-option '$xtics_secondary_rotate) "rotate" "norotate")
                        (if (get-option '$xtics_secondary_axis) "axis" "border")
                        (get-option '$xtics_secondary)))
-            (if (null (get-option '$ytics))
-               (format nil "unset ytics~%")
-               (format nil "set ytics ~a ~a ~a~%"
-                       (if (get-option '$ytics_rotate) "rotate" "norotate")
-                       (if (get-option '$ytics_axis) "axis" "border")
-                       (get-option '$ytics)))
+            (if (null (get-option '$xtics))
+               (format nil "unset xtics~%")
+               (format nil "set xtics ~a ~a ~a~%" 
+                       (if (get-option '$xtics_rotate) "rotate" "norotate")
+                       (if (get-option '$xtics_axis) "axis" "border")
+                       (get-option '$xtics)))
             (if (null (get-option '$ytics_secondary))
                (format nil "unset y2tics~%")
                (format nil "set ytics nomirror~%set y2tics ~a ~a ~a~%"
                        (if (get-option '$ytics_secondary_rotate) "rotate" "norotate")
                        (if (get-option '$ytics_secondary_axis) "axis" "border")
                        (get-option '$ytics_secondary)))
+            (if (null (get-option '$ytics))
+               (format nil "unset ytics~%")
+               (format nil "set ytics ~a ~a ~a~%"
+                       (if (get-option '$ytics_rotate) "rotate" "norotate")
+                       (if (get-option '$ytics_axis) "axis" "border")
+                       (get-option '$ytics)))
             (if (null (get-option '$cbtics))
                (format nil "unset cbtics~%")
                (format nil "set cbtics ~a~%" (get-option '$cbtics) ))

@@ -1919,7 +1919,45 @@ Example:
              logx = true)$
 @end example
 
-See also @code{logy} and @code{logz}.
+See also @code{logy}, @code{logx_secondary}, @code{logy_secondary}, and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logx_secondary
+Default value: @code{false}
+
+If @code{logx_secondary} is @code{true}, the secondary @var{x} axis 
+will be drawn in the logarithmic scale.
+
+This option is relevant only for 2d scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        grid = true,
+        key="x^2, linear scale",
+        color=red,
+        explicit(x^2,x,1,100),
+        xaxis_secondary = true,
+        xtics_secondary = true,
+        logx_secondary  = true,
+        key = "x^2, logarithmic x scale",
+        color = blue,
+        explicit(x^2,x,1,100) )$
+@end example
+
+See also @code{logx}, @code{logy}, @code{logy_secondary}, and @code{logz}.
 
 @opencatbox
 @category{Package draw}
@@ -1946,7 +1984,45 @@ Example:
              explicit(exp(x),x,0,5))$
 @end example
 
-See also @code{logx} and @code{logz}.
+See also @code{logx}, @code{logx_secondary}, @code{logy_secondary}, and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logy_secondary
+Default value: @code{false}
+
+If @code{logy_secondary} is @code{true}, the secondary @var{y} axis 
+will be drawn in the logarithmic scale.
+
+This option is relevant only for 2d scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        grid = true,
+        key="x^2, linear scale",
+        color=red,
+        explicit(x^2,x,1,100),
+        yaxis_secondary = true,
+        ytics_secondary = true,
+        logy_secondary  = true,
+        key = "x^2, logarithmic y scale",
+        color = blue,
+        explicit(x^2,x,1,100) )$
+@end example
+
+See also @code{logx}, @code{logy}, @code{logx_secondary}, and @code{logz}.
 
 @opencatbox
 @category{Package draw}
@@ -2907,17 +2983,17 @@ See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}
 
 
 @defvr {Graphic option} xtics
-Default value: @code{auto}
+Default value: @code{true}
 
 This graphic option controls the way tic marks are drawn on the @var{x} axis.
 
 @itemize @bullet
 @item
-When option @code{xtics} is bounded to symbol @var{auto}, tic marks are
+When option @code{xtics} is bounded to symbol @var{true}, tic marks are
 drawn automatically.
 
 @item
-When option @code{xtics} is bounded to symbol @var{none}, tic marks are
+When option @code{xtics} is bounded to symbol @var{false}, tic marks are
 not drawn.
 
 @item
@@ -2948,7 +3024,7 @@ Examples:
 Disable tics.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xtics = 'none,
+(%i2) draw2d(xtics = 'false,
              explicit(x^3,x,-1,1)  )$
 @end example
 
@@ -3406,7 +3482,7 @@ See also @code{xrange}, @code{yrange} and @code{zrange}.
 
 
 @defvr {Graphic option} ytics
-Default value: @code{auto}
+Default value: @code{true}
 
 This graphic option controls the way tic marks are drawn on the @var{y} axis.
 
@@ -3729,7 +3805,7 @@ See also @code{xrange} and @code{yrange}.
 
 
 @defvr {Graphic option} ztics
-Default value: @code{auto}
+Default value: @code{true}
 
 This graphic option controls the way tic marks are drawn on the @var{z} axis.
 
