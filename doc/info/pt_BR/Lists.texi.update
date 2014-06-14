@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c f0f1ce68ebaf21d903376e0bfc8a04a3  Lists.texi
+@c 548b6cd9ac383d5757cbb9ecfdecd286  Lists.texi
 @c
 @c -----------------------------------------------------------------------------
 @page
@@ -204,16 +204,53 @@ ent@~{a}o @code{assoc} retorna @code{false}.
 @closecatbox
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn {Function} cons (@var{expr}, @var{lista})
+@deffn  {Function} cons (@var{expr}, @var{lista})
+@deffnx {Function} cons (@var{expr_1}, @var{expr_2})
 
-Retorna uma nova lista cujo primeiro elemento @'{e} @var{expr},
-seguido pelos elementos de @var{lista}.  A fun@,{c}@~{a}o @code{cons} tamb@'{e}m trabalha sobre outras
-express@~{o}es, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+O comando @code{cons (@var{expr}, @var{lista})} retorna uma nova lista construída tendo
+@var{expr} como seu primeiro elemento, seguido pelos elementos de @var{lista}. É
+análoga à operação Lisp de construção de linguagem "cons".
+
+A função @code{cons} do Maxima pode também ser usada onde o segundo argumento é outra coisa além
+de uma lista. Nesse caso, @code{cons (@var{expr_1}, @var{expr_2})}
+retorna uma expressão com o mesmo operador que @var{expr_2} mas com argumento @code{cons(expr_1, args(expr_2))}.
+
+Exemplos:
+
+@c ===beg===
+@c cons(a,[b,c,d])
+@c cons(a,f(b,c,d))
+@c ===end===
+@example
+@group
+(%i1) cons(a,[b,c,d]);
+(%o1)                            [a, b, c, d]
+(%i2) cons(a,f(b,c,d));
+(%o2)                            f(a, b, c, d)
+@end group
+@end example
+
+Em geral, @code{cons} aplicada a uma não lista não faz sentido. Por exemplo, @code{cons(a,b^c)}
+resulta em uma expressão ilegal, uma vez que '^' não pode receber três argumentos.
+
+Quando @code{inflag} for @code{true}, @code{cons} trabalha sobre a estrutura interna de uma expressão, de outra forma
+@code{cons} trabalha sobre a forma exibida na tela. Especialmente quando @code{inflag} for @code{true}, @code{cons} applied
+a uma não lista algumas vezes fornece um resultado surpreendente; por exemplo
+@c ===beg===
+@c cons(a,-a), inflag : true
+@c cons(a,-a), inflag : false;
+@c ===end===
+@example
+@group
+(%i1) cons(a,-a), inflag : true;
+                                        2
+(%o1)                                - a
+(%i2) cons(a,-a), inflag : false;
+(%o2)                                  0
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -438,21 +475,54 @@ para maiores detalhes.
 @closecatbox
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn {Function} endcons (@var{expr}, @var{lista})
+@deffn  {Function} endcons (@var{expr}, @var{lista})
+@deffnx {Function} endcons (@var{expr_1}, @var{expr_2})
 
-Retorna uma nova lista consistindo dos elementos de @code{lista} seguido de
-@var{expr}.  A fun@,{c}@~{a}o @code{endcons} tamb@'{e}m trabalha sobre express@~{o}es em geral, e.g.
-@code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+O comando @code{endcons (@var{expr}, @var{lista})} retorna uma nova lista construída a partir dos elementos de
+@var{lista} seguidos por @var{expr}. A função do Maxima @code{endcons} pode também ser usada onde
+o segundo argumento é outra coisa além de uma lista e isso pode ser útil. Nesse caso,
+@code{endcons (@var{expr_1}, @var{expr_2})} retorna uma expressão com o mesmo operador que
+@var{expr_2} mas com argumento @code{endcons(expr_1, args(expr_2))}. Exemplos:
+@c ===beg===
+@c endcons(a,[b,c,d])
+@c endcons(a,f(b,c,d))
+@c ===end===
+@example
+@group
+(%i1) endcons(a,[b,c,d]);
+(%o1)                            [b, c, d, a]
+(%i2) endcons(a,f(b,c,d));
+(%o2)                            f(b, c, d, a)
+@end group
+@end example
+
+Em geral, @code{endcons} aplicada a uma não lista não faz sentido. Por exemplo, @code{endcons(a,b^c)}
+resulta em uma expressão ilegal, uma vez que '^' não pode receber três argumentos.
+
+Quando @code{inflag} for @code{true}, @code{endcons} trabalha sobre a estrutura interna de uma expressão, de outra forma
+@code{endcons} trabalha sobre a forma exibida na tela. Especialmente quando @code{inflag} for @code{true}, @code{endcons} aplicada
+a uma não lista algumas vezes fornece resultado surpreendente; por exemplo
+@c ===beg===
+@c endcons(a,-a), inflag : true
+@c endcons(a,-a), inflag : false;
+@c ===end===
+@example
+@group
+(%i1) endcons(a,-a),inflag : true;
+                                        2
+(%o1)                                - a
+(%i2) endcons(a,-a),inflag : false;
+(%o2)                                  0
+@end group
+@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
 @end deffn
+
 
 @c -----------------------------------------------------------------------------
 @anchor{fifth}
@@ -506,7 +576,7 @@ para maiores detalhes.
 @c -----------------------------------------------------------------------------
 @anchor{join}
 @deffn {Function} join (@var{l}, @var{m})
-
+
 Cria uma nova lista contendo elementos das listas @var{l} e @var{m},
 interspersed.  The result has elements @code{[@var{l}[1], @var{m}[1],
 @var{l}[2], @var{m}[2], ...]}.  The lists @var{l} and @var{m} may contain any
@@ -864,17 +934,38 @@ Exemplos:
 @closecatbox
 @end deffn
 
-@c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
 @deffn  {Function} rest (@var{expr}, @var{n})
 @deffnx {Function} rest (@var{expr})
 
-Retorna @var{expr} com seus primeiros @var{n} elementos removidos se @var{n} for
-positivo e seus @'{u}ltimos @code{- @var{n}} elementos removidos se @var{n} for negativo.
-Se @var{n} for 1 ent@~{a}o @var{n} pode ser omitido.  A @var{expr} pode ser uma lista, matriz, ou outra
-express@~{a}o.
++Returns @var{expr} with its first @var{n} elements removed if @var{n}
++is positive and its last @code{- @var{n}} elements removed if @var{n}
++is negative. If @var{n} is 1 it may be omitted. The first argument
++@var{expr} may be a list, matrix, or other expression. When @var{expr}
++is a mapatom, @code{rest} signals an error; when @var{expr} is an empty
++list and @code{partswitch} is false, @code{rest} signals an error. When.
++@var{expr} is an empty list and @code{partswitch} is true, @code{rest}.
++returns @code{end}.
++
++Applying @code{rest} to expression such as @code{f(a,b,c)} returns
++@code{f(b,c)}. In general, applying @code{rest} to an nonlist doesn't
++make sense. For example, because '^' requires two arguments,
++@code{rest(a^b)} results in an error message. The functions
++@code{args} and @code{op} may be useful as well, since @code{args(a^b)}
++returns @code{[a,b]} and @code{op(a^b)} returns ^.
++
++@example
++@group
++(%i1) rest(a+b+c);
++(%o1) b+a
++(%i2) rest(a+b+c,2);
++(%o2) a
++(%i3) rest(a+b+c,-2);
++(%o3) c
++@end group
++@end example
 
 @opencatbox
 @category{Lists} @category{Expressions}
