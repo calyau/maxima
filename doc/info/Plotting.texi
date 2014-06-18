@@ -219,7 +219,7 @@ variable. For instance,
 
 When the a graphic file is going to be created using @code{gnuplot},
 this variable is used to specify the way the file name should be passed
-to gnuplot. Its default value is "~s", which means that that the name of
+to gnuplot. Its default value is "~s", which means that the name of
 the file will be passed directly. The contents of this variable can be
 changed in order to add options for the gnuplot program, adding those
 options before the string "~s".
