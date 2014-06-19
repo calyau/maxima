@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c b8b70e31d552d83f23f9e369ff880913  DataTypes.texi
+@c 
 @c
 @menu
 * Numbers::
@@ -255,6 +255,11 @@ quando @code{fpprintprec} tiver um valor entre 2 e @code{fpprec} (inclusive),
 o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprintprec}.
 De outra forma, @code{fpprintprec} @'{e} 0, ou maior que @code{fpprec},
 e o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprec}.
+
+Para ambos floats comuns e bigfloats,
+zeros iniciais são suprimidos.
+O número de dígitos atuais mostrado é menor que @code{fpprintprec}
+se ouverem dígitos zeros iniciais.
 
 @code{fpprintprec} n@~{a}o pode ser 1.
 

@@ -1,4 +1,4 @@
-@c English version 2014-04-28
+@c English version 2014-06-14
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1746,7 +1746,40 @@ Ejemplo:
              logx = true)$
 @end example
 
-V@'eanse tambi@'en @code{logy} y @code{logz}.
+V@'eanse tambi@'en @code{logy}, @code{logx_secondary}, @code{logy_secondary} y @code{logz}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} logx_secondary
+Valor por defecto: @code{false}
+
+Si @code{logx_secondary} vale @code{true}, el eje secundario de @var{x} 
+se dibuja en la escala logar@'{@dotless{i}}tmica.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        grid = true,
+        key="x^2, linear scale",
+        color=red,
+        explicit(x^2,x,1,100),
+        xaxis_secondary = true,
+        xtics_secondary = true,
+        logx_secondary  = true,
+        key = "x^2, logarithmic x scale",
+        color = blue,
+        explicit(x^2,x,1,100) )$
+@end example
+
+V@'eanse tambi@'en @code{logx}, @code{logy}, @code{logy_secondary} y @code{logz}.
+
 @end defvr
 
 
@@ -1768,7 +1801,39 @@ Ejemplo:
              explicit(exp(x),x,0,5))$
 @end example
 
-V@'eanse tambi@'en @code{logx} y @code{logz}.
+V@'eanse tambi@'en @code{logx}, @code{logx_secondary}, @code{logy_secondary} y @code{logz}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} logy_secondary
+Valor por defecto: @code{false}
+
+Si @code{logy_secondary} vale @code{true}, el eje secundario de @var{y} 
+se dibuja en la escala logar@'{@dotless{i}}tmica.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        grid = true,
+        key="x^2, linear scale",
+        color=red,
+        explicit(x^2,x,1,100),
+        yaxis_secondary = true,
+        ytics_secondary = true,
+        logy_secondary  = true,
+        key = "x^2, logarithmic y scale",
+        color = blue,
+        explicit(x^2,x,1,100) )$
+@end example
+
+V@'eanse tambi@'en @code{logx}, @code{logy}, @code{logx_secondary} y @code{logz}.
+
 @end defvr
 
 
@@ -1790,7 +1855,7 @@ Ejemplo:
              explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
 @end example
 
-V@'eanse tambi@'en @code{logx} y @code{logy}.
+V@'eanse tambi@'en @code{logx} and @code{logy}.
 @end defvr
 
 
@@ -2623,18 +2688,18 @@ V@'eanse tambi@'en @code{xrange}, @code{yrange}, @code{zrange} y @code{yrange_se
 
 
 @defvr {Opci@'on gr@'afica} xtics
-Valor por defecto: @code{auto}
+Valor por defecto: @code{true}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{x}.
 
 @itemize @bullet
 @item
-Cuando a @code{xtics} se le da el valor @var{auto}, las marcas se dibujar@'an de
+Cuando a @code{xtics} se le da el valor @var{true}, las marcas se dibujar@'an de
 forma autom@'atica.
 
 @item
-Cuando a @code{xtics} se le da el valor @var{none}, no habr@'a marcas en los ejes.
+Cuando a @code{xtics} se le da el valor @var{false}, no habr@'a marcas en los ejes.
 
 @item
 Cuando a @code{xtics} se le da un valor num@'erico positivo, se interpretar@'a como la
@@ -2664,7 +2729,7 @@ Ejemplos:
 Marcas desactivadas.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xtics = 'none,
+(%i2) draw2d(xtics = 'false,
              explicit(x^3,x,-1,1)  )$
 @end example
 
@@ -3044,7 +3109,7 @@ V@'eanse tambi@'en @code{xrange}, @code{yrange} y @code{zrange}.
 
 
 @defvr {Opci@'on gr@'afica} ytics
-Valor por defecto: @code{auto}
+Valor por defecto: @code{true}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{y}.
@@ -3319,7 +3384,7 @@ V@'eanse tambi@'en @code{xrange} y @code{yrange}.
 
 
 @defvr {Opci@'on gr@'afica} ztics
-Valor por defecto: @code{auto}
+Valor por defecto: @code{true}
 
 Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{z}.
