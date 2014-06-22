@@ -428,8 +428,8 @@
 	 (sp1expt2 e))
 	((and (null (eq var '*novar)) (free b var))
 	 (sp1expt2 (m* (list '(%log) b) e)))
-	((member (caar b) '(%sin %cos %tan %cot %sec %csc
-			  %sinh %cosh %tanh %coth %sech %csch) :test #'eq)
+	((and (consp b) (consp (car b)) (member (caar b) '(%sin %cos %tan %cot %sec %csc
+								%sinh %cosh %tanh %coth %sech %csch) :test #'eq))
 	 (cond ((= (signum1 e) -1)
 		(sp1expt (list (list (oldget (caar b) 'recip)) (cadr b))
 			 (neg e)))

@@ -363,7 +363,7 @@
 	 (cond ((free (cadr a) var) (free (caddr a) var))
 	       ((smono a var) t)
 	       ((and (free (caddr a) var) (sratp (cadr a) var)))))
-	(t (free (cadr a) var))))
+	(t (and (free (mop a) var) (every #'(lambda (s) (free s var)) (margs a))))))
 
 (defun sandmap (l) (or (null l) (and (sratp (car l) var) (sandmap (cdr l)))))
 
