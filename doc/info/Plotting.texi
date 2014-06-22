@@ -470,7 +470,7 @@ interpreted as the x coordinates of the points to be plotted and the
 second list as the y coordinates.  If only one list is given after the
 @var{discrete} keyword, each element on the list could also be a list
 with two values that correspond to the x and y coordinates of a point,
-or it could be a sequence o numerical values which will be plotted
+or it could be a sequence of numerical values which will be plotted
 at consecutive integer values (1,2,3,...) on the x axis.
 
 A parametric plot is defined by a list starting with the keyword

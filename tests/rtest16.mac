@@ -2006,3 +2006,7 @@ integrate ([foo(x), bar(x)], x, x[1], x[2]);
 
 trigsimp (diff (J, t) - I);
 0;
+
+/* #2750 powerseries(x^x,x,0) gives Lisp error */
+powerseries(x^x,x,0);
+"Failed to expand"$

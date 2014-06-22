@@ -969,7 +969,7 @@
 	 ((ps-lim-infp p) (psexpt-fn-sing p))
 	 ((prog2 (setq ord<0? (e> (rczero) (ps-le p)))
 		 (null (n-term (terms p))))
-	  (setq ans (get-series '%ex (psexpt-log-ord p) (gvar-o p)
+	  (setq ans (get-series '%exp (psexpt-log-ord p) (gvar-o p)
 				(if ord<0? (e- (ps-le p)) (ps-le p))
 				(ps-lc p)))
 	  (if ord<0? (ps-invert-var ans) ans))
@@ -1806,7 +1806,7 @@
 
 
 (loop for (fun exp) on
- '(%ex    ((expexp-funs 1 . 1) ((0 . 1) 1 . 1) (1 . 1) (1 . 1) (1 . 1))
+ '(%exp    ((expexp-funs 1 . 1) ((0 . 1) 1 . 1) (1 . 1) (1 . 1) (1 . 1))
   %sin   (expexp-funs ((1 . 1) 1 . 1) (-1 . 1) (-1 . 1) (2 . 1))
   %cos   ((expexp-funs 2 . 1) ((0 . 1) 1 . 1) (-1 . 1) (-1 . 1) (2 . 1))
   %sinh  (expexp-funs ((1 . 1) 1 . 1) (1 . 1) (1 . 1) (2 . 1))
