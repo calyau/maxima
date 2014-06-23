@@ -29,13 +29,16 @@ powerseries(1/sqrt(1+x),x,0);
 powerseries(sqrt(1+x),x,0);
 2*('sum(x^i2/beta(3/2-i2,i2+1),i2,0,inf))/3;
 
-/* sf bug 1730044 - powerseries(1+x^n,x,0) wrong */
+/* sf bug 1730044 - powerseries(1+x^n,x,0) wrong; see also #2764 power series of 1 + x^n */
 powerseries(1+x^n, x, 0);
-('sum(x^(i3*n)/beta(2-i3,i3+1),i3,0,inf))/2;
+1+x^n$
 
-(declare(n, integer), powerseries(1/(1+x^n), x, 0));
-'sum((-1)^i4*x^(i4*n),i4,0,inf);
+(gensumnum : 0, declare(n, integer), powerseries(1/(1+x^n), x, 0));
+'sum((-1)^i1*x^(i1*n),i1,0,inf)$
 
+/* #2756 powerseries of constant plus power of linear  */
+(gensumnum : 0, powerseries(1 + (1-x)^(1/3),x,0));
+(3*sum(((-1)^i1*x^i1)/beta(4/3-i1,i1+1),i1,0,inf))/4+1$
 
 /* Examples from SF bug report [ 1722156 ] powerseries((x+1)/(1-2*x^2), x, 0);
  * tnx Dan Gildea
@@ -2010,3 +2013,10 @@ trigsimp (diff (J, t) - I);
 /* #2750 powerseries(x^x,x,0) gives Lisp error */
 powerseries(x^x,x,0);
 "Failed to expand"$
+
+/* #2756 powerseries of constant plus power of linear */
+(gensumnum : 0, powerseries((1-x)^(1/3) + 1,x,0));
+(3*sum(((-1)^i1*x^i1)/beta(4/3-i1,i1+1),i1,0,inf))/4+1$
+
+sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)));
+1$
