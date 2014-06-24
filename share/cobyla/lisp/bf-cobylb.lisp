@@ -16,6 +16,12 @@
 
 (in-package :bigfloat)
 
+;; Assume X is a float or bigfloat. Convert to string accordingly.
+;; (I'm not entirely sure which values are floats and which are bigfloats; play it safe.)
+(defun format-float-or-bf (x)
+  (if (floatp x)
+    (coerce (maxima::exploden x) 'string) ;; Ugh. Is there really no single function for this?
+    (print-object x nil)))
 
 (defun cobylb
        (n m mpp x rhobeg rhoend iprint maxfun con sim simi datmat a vsig veta
@@ -77,10 +83,10 @@
       (setf parmu 0.0)
       (if (>= iprint 2)
           (f2cl-lib:fformat t
-                            ("~%" "~3@T" "The initial value of RHO is" 1
-                             (("~13,6,2,1,'*,,'EE")) "~2@T"
+                            ("~%" "~3@T" "The initial value of RHO is " 1
+                             (("~13A")) "~2@T"
                              "and PARMU is set to zero." "~%")
-                            rho))
+                            (format-float-or-bf rho)))
       (setf nfvals 0)
       (setf temp (/ 1.0 rho))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -144,34 +150,34 @@
         ((or (= nfvals (f2cl-lib:int-add iprint (f2cl-lib:int-sub 1)))
              (= iprint 3))
          (f2cl-lib:fformat t
-                           ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F =" 1
-                            (("~13,6,2,1,'*,,'EE")) "~4@T" "MAXCV =" 1
-                            (("~13,6,2,1,'*,,'EE")) "~%" "~3@T" "X =" 1
-                            (("~13,6,2,1,'*,,'EE")) 4 (("~15,6,2,1,'*,,'EE"))
+                           ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F = " 1
+                            (("~13A")) "~4@T" "MAXCV = " 1
+                            (("~13A")) "~%" "~3@T" "X = " 1
+                            (("~13A")) "~1@T" 4 (("~15A"))
                             "~%")
                            nfvals
-                           f
-                           resmax
+                           (format-float-or-bf f)
+                           (format-float-or-bf resmax)
                            (do ((i 1 (f2cl-lib:int-add i 1))
                                 (%ret nil))
                                ((> i iptem) (nreverse %ret))
                              (declare (type f2cl-lib:integer4 i))
                              (push
-                              (f2cl-lib:fref x-%data% (i) ((1 *)) x-%offset%)
+                               (format-float-or-bf (f2cl-lib:fref x-%data% (i) ((1 *)) x-%offset%))
                               %ret)))
          (if (< iptem n)
              (f2cl-lib:fformat t
-                               (1 (("~19,6,2,1,'*,,'EE")) 4
-                                (("~15,6,2,1,'*,,'EE")) "~%")
+                               (1 
+							    (("~13A")) "~1@T" 4 (("~15A")) "~%")
                                (do ((i iptemp (f2cl-lib:int-add i 1))
                                     (%ret nil))
                                    ((> i n) (nreverse %ret))
                                  (declare (type f2cl-lib:integer4 i))
                                  (push
-                                  (f2cl-lib:fref x-%data%
+                                  (format-float-or-bf (f2cl-lib:fref x-%data%
                                                  (i)
                                                  ((1 *))
-                                                 x-%offset%)
+                                                 x-%offset%))
                                   %ret))))))
       (setf (f2cl-lib:fref con-%data% (mp) ((1 *)) con-%offset%) f)
       (setf (f2cl-lib:fref con-%data% (mpp) ((1 *)) con-%offset%) resmax)
@@ -755,9 +761,9 @@
          (setf parmu (* 2.0 barmu))
          (if (>= iprint 2)
              (f2cl-lib:fformat t
-                               ("~%" "~3@T" "Increase in PARMU to" 1
-                                (("~13,6,2,1,'*,,'EE")) "~%")
-                               parmu))
+                               ("~%" "~3@T" "Increase in PARMU to " 1
+                                (("~13A")) "~%")
+                               (format-float-or-bf parmu)))
          (setf phi
                  (+
                   (f2cl-lib:fref datmat-%data%
@@ -1057,51 +1063,51 @@
                (setf parmu (/ (- cmax cmin) denom))))))
          (if (>= iprint 2)
              (f2cl-lib:fformat t
-                               ("~%" "~3@T" "Reduction in RHO to" 1
-                                (("~13,6,2,1,'*,,'EE")) "  and PARMU =" 1
-                                (("~13,6,2,1,'*,,'EE")) "~%")
-                               rho
-                               parmu))
+                               ("~%" "~3@T" "Reduction in RHO to " 1
+                                (("~13A")) "  and PARMU = " 1
+                                (("~13A")) "~%")
+                               (format-float-or-bf rho)
+                               (format-float-or-bf parmu)))
          (cond
            ((= iprint 2)
             (f2cl-lib:fformat t
-                              ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F ="
-                               1 (("~13,6,2,1,'*,,'EE")) "~4@T" "MAXCV =" 1
-                               (("~13,6,2,1,'*,,'EE")) "~%" "~3@T" "X =" 1
-                               (("~13,6,2,1,'*,,'EE")) 4
-                               (("~15,6,2,1,'*,,'EE")) "~%")
+                              ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F = "
+                               1 (("~13A")) "~4@T" "MAXCV = " 1
+                               (("~13A")) "~%" "~3@T" "X = " 1
+                               (("~13A")) "~1@T" 4
+                               (("~15A")) "~%")
                               nfvals
-                              (f2cl-lib:fref datmat-%data%
+                              (format-float-or-bf (f2cl-lib:fref datmat-%data%
                                              (mp np)
                                              ((1 mpp) (1 *))
-                                             datmat-%offset%)
-                              (f2cl-lib:fref datmat-%data%
+                                             datmat-%offset%))
+                              (format-float-or-bf (f2cl-lib:fref datmat-%data%
                                              (mpp np)
                                              ((1 mpp) (1 *))
-                                             datmat-%offset%)
+                                             datmat-%offset%))
                               (do ((i 1 (f2cl-lib:int-add i 1))
                                    (%ret nil))
                                   ((> i iptem) (nreverse %ret))
                                 (declare (type f2cl-lib:integer4 i))
                                 (push
-                                 (f2cl-lib:fref sim-%data%
+                                 (format-float-or-bf (f2cl-lib:fref sim-%data%
                                                 (i np)
                                                 ((1 n) (1 *))
-                                                sim-%offset%)
+                                                sim-%offset%))
                                  %ret)))
             (if (< iptem n)
                 (f2cl-lib:fformat t
-                                  (1 (("~19,6,2,1,'*,,'EE")) 4
-                                   (("~15,6,2,1,'*,,'EE")) "~%")
+                                  (1 (("~19A")) "~1@T" 4
+                                   (("~15A")) "~%")
                                   (do ((i iptemp (f2cl-lib:int-add i 1))
                                        (%ret nil))
                                       ((> i n) (nreverse %ret))
                                     (declare (type f2cl-lib:integer4 i))
                                     (push
-                                     (f2cl-lib:fref x-%data%
+                                     (format-float-or-bf (f2cl-lib:fref x-%data%
                                                     (i)
                                                     ((1 *))
-                                                    x-%offset%)
+                                                    x-%offset%))
                                      %ret))))))
          (go label140)))
       '""
@@ -1135,35 +1141,35 @@
      label620
       (cond
         ((>= iprint 1)
-         (f2cl-lib:fformat t
-                           ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F =" 1
-                            (("~13,6,2,1,'*,,'EE")) "~4@T" "MAXCV =" 1
-                            (("~13,6,2,1,'*,,'EE")) "~%" "~3@T" "X =" 1
-                            (("~13,6,2,1,'*,,'EE")) 4 (("~15,6,2,1,'*,,'EE"))
+		 (f2cl-lib:fformat t
+                           ("~%" "~3@T" "NFVALS =" 1 (("~5D")) "~3@T" "F = " 1
+                            (("~13A")) "~4@T" "MAXCV = " 1
+                            (("~13A")) "~%" "~3@T" "X = " 1
+                            (("~13A")) "~1@T" 4 (("~15A"))
                             "~%")
                            nfvals
-                           f
-                           resmax
+                           (format-float-or-bf f)
+                           (format-float-or-bf resmax)
                            (do ((i 1 (f2cl-lib:int-add i 1))
                                 (%ret nil))
                                ((> i iptem) (nreverse %ret))
                              (declare (type f2cl-lib:integer4 i))
                              (push
-                              (f2cl-lib:fref x-%data% (i) ((1 *)) x-%offset%)
+                               (format-float-or-bf (f2cl-lib:fref x-%data% (i) ((1 *)) x-%offset%))
                               %ret)))
          (if (< iptem n)
              (f2cl-lib:fformat t
-                               (1 (("~19,6,2,1,'*,,'EE")) 4
-                                (("~15,6,2,1,'*,,'EE")) "~%")
+                               (1 
+							    (("~13A")) "~1@T" 4 (("~15A")) "~%")
                                (do ((i iptemp (f2cl-lib:int-add i 1))
                                     (%ret nil))
                                    ((> i n) (nreverse %ret))
                                  (declare (type f2cl-lib:integer4 i))
                                  (push
-                                  (f2cl-lib:fref x-%data%
+                                  (format-float-or-bf (f2cl-lib:fref x-%data%
                                                  (i)
                                                  ((1 *))
-                                                 x-%offset%)
+                                                 x-%offset%))
                                   %ret))))))
       (setf maxfun nfvals)
       (go end_label)
