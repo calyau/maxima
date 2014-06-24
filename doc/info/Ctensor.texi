@@ -1140,9 +1140,14 @@ Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
 
 @end deffn
 
-@deffn {Function} symmetricp (@var{M})
+@deffn {Function} symmetricp (@var{M}, @var{n})
 
-Returns @code{true} if @var{M} is a symmetric matrix or (2D) array.
+Returns @code{true} if @var{M} is a @var{n} by @var{n} symmetric matrix or two-dimensional array,
+otherwise @code{false}.
+
+If @var{n} is less than the size of @var{M},
+@code{symmetricp} considers only the @var{n} by @var{n} submatrix (respectively, subarray)
+comprising rows 1 through @var{n} and columns 1 through @var{n}.
 
 @opencatbox
 @category{Package ctensor} @category{Predicate functions}
