@@ -728,14 +728,14 @@ is multiplicative.
 If @code{f} is univariate, whenever the simplifier encounters @code{f} applied
 to a product, @code{f} distributes over that product.  E.g., @code{f(x*y)}
 simplifies to @code{f(x)*f(y)}.
+This simplification is not applied to expressions of the form @code{f('product(...))}.
 @item
 If @code{f} is a function of 2 or more arguments, multiplicativity is
 defined as multiplicativity in the first argument to @code{f}, e.g.,
 @code{f (g(x) * h(x), x)} simplifies to @code{f (g(x) ,x) * f (h(x), x)}.
 @end enumerate
 
-This simplification does not occur when @code{f} is applied to expressions of
-the form @code{product (x[i], i, m, n)}.
+@code{declare(nounify(product), multiplicative)} tells Maxima to simplify symbolic products.
 
 Example:
 
@@ -751,6 +751,32 @@ Example:
 (%o2)                         done
 (%i3) F2 (a * b * c);
 (%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+@code{declare(nounify(product), multiplicative)} tells Maxima to simplify symbolic products.
+
+@c ===beg===
+@c product (a[i] * b[i], i, 1, n);
+@c declare (nounify (product), multiplicative);
+@c product (a[i] * b[i], i, 1, n);
+@c ===end===
+@example
+(%i1) product (a[i] * b[i], i, 1, n);
+                                    n
+                                  /===\
+                                   ! !
+(%o1)                              ! !  a  b
+                                   ! !   i  i
+                                  i = 1
+(%i2) declare (nounify (product), multiplicative);
+(%o2)                                done
+(%i3) product (a[i] * b[i], i, 1, n);
+                                 n         n
+                               /===\     /===\
+                                ! !       ! !
+(%o3)                         ( ! !  a )  ! !  b
+                                ! !   i   ! !   i
+                               i = 1     i = 1
 @end example
 
 @opencatbox
