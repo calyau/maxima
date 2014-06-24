@@ -26,6 +26,58 @@ Example:
 @category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package simplex}
 @closecatbox
 
+@subsection Tests for simplex
+
+There are some tests in the directory @code{share/simplex/Tests}.
+
+@subsubsection klee_minty
+
+The function @code{klee_minty} produces input for @code{linear_program}, for which
+exponential time for solving is required without scaling.
+
+Example:
+
+@example
+load(klee_minty)$
+apply(linear_program, klee_minty(6));
+@end example
+
+A better approach:
+
+@example
+epsilon_sx : 0$
+scale_sx : true$
+apply(linear_program, klee_minty(10));
+@end example
+
+@subsubsection NETLIB
+
+Some smaller problems from netlib (@code{http://www.netlib.org/lp/data/}) test
+suite are converted to a format, readable by Maxima. Problems are @code{adlittle},
+@code{afiro}, @code{kb2} and @code{sc50a}. Each problem has three input files in CSV format for
+matrix @var{A} and vectors @var{b} and @var{c}.
+
+Example:
+
+@example
+A : read_matrix("adlittle_A.csv", 'csv)$
+b : read_list("adlittle_b.csv", 'csv)$
+c : read_list("adlittle_c.csv", 'csv)$
+linear_program(A, b, c)$
+%[2]
+=> 225494.963126615
+@end example
+
+Results:
+
+@example
+PROBLEM        MINIMUM                SCALING
+adlittle       225494.963126615       no
+afiro          - 464.7531428571429    no
+kb2            - 1749.900129055996    yes
+sc50a          - 64.5750770585645     no
+@end example
+
 @node Functions and Variables for simplex,  , Introduction to simplex, simplex
 @section Functions and Variables for simplex
 
@@ -169,3 +221,37 @@ See also: @code{minimize_lp}.
 @closecatbox
 
 @end defvr
+
+@defvr {Option variable} scale_lp
+Default value: @code{false}
+
+When @code{scale_lp} is @code{true},
+@code{linear_program} scales its input so that the maximum absolute value in each row or column is 1.
+
+@opencatbox
+@category{Package simplex}
+@closecatbox
+
+@end defvr
+
+@defvr {Variable} pivot_count_sx
+
+After @code{linear_program} returns,
+@code{pivot_count_sx} is the number of pivots in last computation.
+
+@opencatbox
+@category{Package simplex}
+@closecatbox
+
+@end defvr
+
+@defvr {Variable} pivot_max_sx
+
+@code{pivot_max_sx} is the maximum number of pivots allowed by @code{linear_program}.
+
+@opencatbox
+@category{Package simplex}
+@closecatbox
+
+@end defvr
+
