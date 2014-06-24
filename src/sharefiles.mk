@@ -89,6 +89,7 @@ calculus/qual.usg \
 calculus/revert.mac \
 calculus/taylor1.mac \
 cobyla/bf-cobyla-interface.lisp \
+cobyla/bf_fmin_cobyla.demo \
 cobyla/bf_fmin_cobyla.mac \
 cobyla/cobyla-interface.lisp \
 cobyla/cobyla-lisp.system \
