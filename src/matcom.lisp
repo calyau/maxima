@@ -192,7 +192,7 @@
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
-			   (list 'kaar (genref))))
+			   (list 'kaar e)))
 	       (go functionmatch))
 	      (t (go functionmatch)))
    (go a)
@@ -289,7 +289,7 @@
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
-			   (list 'kaar (genref))))
+			   (list 'kaar e)))
 	       (go functionmatch))
 	      (t (go functionmatch)))
    (go a)

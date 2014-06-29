@@ -581,3 +581,18 @@ BAR (5b0 + p + q);
  if %% = false then false else sort (%%));
 [aa = 12.345, bb = 54321, foo = sin];
 
+/* "rule issue" mailing list 2014-06-29 */
+
+(matchdeclare (u, atom, fn, symbolp),
+ defrule (ddint21, 'integrate(delta(u)*fn(u), u, minf, inf), fn(0)),
+ ddint21('integrate(delta(u)*fn(u), u, minf, inf)));
+fn(0);
+
+(kill (f), apply1 (1/(1 + 'integrate (f(x)*delta(x), x, minf, inf)), ddint21));
+1/(1 + f(0));
+
+(kill (blurf),
+ defrule (r1, 'integrate (blurf(u) + fn(u), u, minf, inf), fn(1)),
+ r1 ('integrate (blurf(a) + g(a), a, minf, inf)));
+g(1);
+
