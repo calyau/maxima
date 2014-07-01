@@ -413,8 +413,14 @@ quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, epsrel=1e-8, epsabs=0.0, limit=4
 e7 : ev (e7, foo(u)=1/u, au=1, bu=2, wfn=1);
 quad_qaws (1/u, u, 1, 2, alfa, vita, 1, epsrel=1e-8, epsabs=0.0, limit=48);
 
-ev (e7, alfa=2, vita=1);
-[.05296102778655729, 5.551115123125782E-17, 50, 0];
+/* expect [.05296102778655729, 5.551115123125782E-17, 50, 0] */
+(ev (e7, alfa=2, vita=1),
+ [float_approx_equal (%%[1], .05296102778655729),
+  /* checking relative error is problematic when expected value is close to zero; check absolute error instead */
+  is (abs (%%[2] - 5.551115123125782E-17) < float_approx_equal_tolerance),
+  is (%%[3] = 50),
+  is (%%[4] = 0)]);
+[true, true, true, true];
 
 /* Tests for bfallroots.  Same as the allroots tests above */
 bfallroots(x=0);
