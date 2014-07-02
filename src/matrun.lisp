@@ -66,7 +66,7 @@
 		  ((null (car (setq oldrules (cdr oldrules))))
 		   (setq oldrules (cdr oldrules))
 		   (setq othrulename 'simpargs1)
-		   (setq othrule #'(lambda (a b c) (simpargs a c))))
+		   (setq othrule #'(lambda (a bb c) (declare (ignore bb)) (simpargs a c))))
 		  (t (setq othrulename (car oldrules))
 		     (setq othrule (cadr (getl (car oldrules) '(expr subr))))))
 	    (putprop rule othrule 'expr)
