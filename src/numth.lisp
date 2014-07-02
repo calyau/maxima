@@ -942,8 +942,8 @@
 
 (putprop '$gf_coeff_limit 'gf-coeff-check 'assign)
 
-(defun gf-coeff-check (var arg) 
-  (declare (ignore var))
+(defun gf-coeff-check (assign-var arg) 
+  (declare (ignore assign-var))
   (unless (and (integerp arg) (> arg 1))
     (gf-merror (intl:gettext 
       "`gf_coeff_limit': Assignment ignored. Value must be an integer greater than 1.~%" ))))
@@ -4053,7 +4053,7 @@
    :name 'gf-coeff-ring
    :coerce-to-lisp-float nil
    :abs #'cl:identity ;; #'gf-mod
-   :great #'(lambda (a b) (declare (ignore a)) (null b)) ;; #'> gives wrong results
+   :great #'(lambda (yy b) (declare (ignore yy)) (null b)) ;; #'> gives wrong results
    :add #'gf-cplus-b
    :div #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
    :rdiv #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
@@ -4077,7 +4077,7 @@
    :coerce-to-lisp-float nil
    :abs #'cl:identity ;; #'gf-mod
    ;; :great #'(lambda (a b) (> (gf-x2n a) (gf-x2n b)))
-   :great #'(lambda (a b) (declare (ignore a)) (null b)) ;; ??
+   :great #'(lambda (yy b) (declare (ignore yy)) (null b)) ;; ??
    :add #'gf-plus
    :div #'(lambda (a b) (gf-times a (gf-inv b *gf-red*) *gf-red*))
    :rdiv #'(lambda (a b) (gf-times a (gf-inv b *gf-red*) *gf-red*))
@@ -4101,7 +4101,7 @@
    :coerce-to-lisp-float nil
    :abs #'cl:identity ;; #'ef-mod
    ;; :great #'(lambda (a b) (> (gf-x2n a) (gf-x2n b)))
-   :great #'(lambda (a b) (declare (ignore a)) (null b)) ;; ??
+   :great #'(lambda (yy b) (declare (ignore yy)) (null b)) ;; ??
    :add #'gf-plus
    :div #'(lambda (a b) (gf-times a (gf-inv b *ef-red*) *ef-red*))
    :rdiv #'(lambda (a b) (gf-times a (gf-inv b *ef-red*) *ef-red*))
