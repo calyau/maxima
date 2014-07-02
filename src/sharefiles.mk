@@ -171,6 +171,9 @@ contrib/boolsimp/rtest_boolsimp.mac \
 contrib/clebsch_gordan.mac \
 contrib/clebsh-gordan.tex \
 contrib/colorterm.lisp \
+contrib/coma/coma.mac \
+contrib/coma/COMA.txt \
+contrib/coma/Control_Engineering_with_Maxima.pdf \
 contrib/devine.mac \
 contrib/diag.mac \
 contrib/diag_test.mac \

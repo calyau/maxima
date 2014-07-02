@@ -1,0 +1,1042 @@
+/* ======================================================================= */
+/* coma.mac                                                         V 1.68 */
+/* ----------------------------------------------------------------------- */
+/* COntrol engineering with MAxima            (c) Wilhelm Haager 2009-2014 */
+/* ----------------------------------------------------------------------- */
+/*                                                                         */
+/*  This program is free software; you can redistribute it and/or modify   */
+/*  it under the terms of the GNU General Public License as published by   */
+/*  the Free Software Foundation.                                          */
+/*                                                                         */
+/*  New:                                                                   */
+/*  - function bode_plot                                                   */
+/*  - option-processing for plot functions renewed                         */
+/*  - 2012-01-25: bugfix in "phase"                                        */
+/*  - 2012-02-27: "poles" and "zeros" enhanced                             */
+/*  - 2012-11-02: bugfix in "step_response": variable "t" local ()         */
+/*  - 2012-12-21: "ratsimp" replaced by "xthru" in many places             */
+/*  - 2013-01-05: "nilt" improved                                          */
+/*  - 2013-03-30: "pulse_response" added                                   */
+/*  - 2013-11-16: Rootsepsilon" set to 1.0e-7 (bug in Maxima 5.31)         */
+/*  - 2014-01-23: some bugfixes (nilt,...)                                 */
+/*                                                                         */
+/* ======================================================================= */
+
+disp("coma v.1.68, (Wilhelm Haager, 2014-01-23)");
+load("draw");  /* not necessary any more but benefical (2013-11-16) */
+
+/* ======================================================================= */
+/* Default values                                                          */
+/* ======================================================================= */
+
+fpprintprec:5;
+rootsepsilon:1.0e-7;
+plot_defaults:[grid=true, dimensions=[500,300], wx=true, aspect_ratio=0.6,
+   color=['red,'blue,'green,'goldenrod,'violet,'gray50,'dark-cyan,
+       'dark-orange,'sea-green,'dark-pink] ];
+
+/* ======================================================================= */
+/* Messages                                                                */
+/* ======================================================================= */
+
+_COMA_msg[1]:"** COMA error ** Coefficients must be numeric";
+_COMA_msg[2]:"** COMA error ** yrange must be a list of TWO ranges";
+
+/* ======================================================================= */
+/* Plot Functions                                                          */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* plot - plots functions in one and two variables                         */
+/* ----------------------------------------------------------------------- */
+plot(f,[opts]) :=
+block(
+  [x,x1,x2,y,y1,y2,defs,hli,fli,h,n,t,wxx],
+  defs:[ ],
+  [x1,x2]:assoc('xrange,opts,[0,1]),
+  [y1,y2]:assoc('yrange,opts,[0,1]),
+  varli:map(listofvars,flatten([f])),
+  varli:map(lambda([u],delete(s,u)),varli),
+  varli:map(sort,varli),
+  n:apply(max,map(length,varli)),
+  if n>2 then return(false),
+  fli:flatten([f]),
+  if n<2 then block(  /* 2d-plot */
+    fli:map(lambda([u,w],
+    if _COMA_go(u) then u else explicit(u,part(w,1),x1,x2)
+    ),fli,varli))
+  else block(  /* 3d-plot */
+    fli:map(lambda([u,w],
+    if _COMA_go(u) then u else explicit(u,part(w,1),x1,x2,part(w,2),y1,y2)
+    ),fli,varli)),
+  hli:_COMA_ppo(fli,defs,opts),
+  if is(n>1) then block(
+     if wxx then apply(wxdraw3d,hli) else apply(draw3d,hli))
+  else block(
+    if wxx then apply(wxdraw2d,hli) else apply(draw2d,hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* step_response(f,opts) - plots the step response of f                    */
+/* ----------------------------------------------------------------------- */
+step_response(f,[opts]) :=
+block(
+  [hli,defs:[],fli,t,tanf,tend,wxx,ratprint:false,assume_pos:false],
+  f:flatten([f]),
+  fli:flatten(map(lambda([u], if _COMA_go(u) then u
+                             else nilt(xthru(u/s),s,t)),f)),
+  fli:map(lambda([u],if _COMA_go(u) then u
+        else explicit(if t>0 then u else 0,t,tanf,tend)),fli),
+  hli:_COMA_ppo(fli,defs,opts),
+  if option_exists('xrange,hli) then [tanf,tend]:get_option('xrange,hli)
+  else block([tanf,tend]:[0,_COMA_npv(_COMA_srat(f),[2,5,10])],
+       set_option('xrange=[tanf,tend],hli)),
+  if wxx then apply(wxdraw2d,ev(hli)) else apply(draw2d,ev(hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* pulse_response(f,opts) - plots the pulse response of f                  */
+/* ----------------------------------------------------------------------- */
+pulse_response(f,[opts]) :=
+block(
+  [hli,defs:[],fli,t,tanf,tend,wxx,ratprint:false,assume_pos:false],
+  f:flatten([f]),
+  fli:flatten(map(lambda([u], if _COMA_go(u) then u
+                             else nilt(xthru(u),s,t)),f)),
+  fli:map(lambda([u],if _COMA_go(u) then u
+        else explicit(if t>0 then u else 0,t,tanf,tend)),fli),
+  hli:_COMA_ppo(fli,defs,opts),
+  if option_exists('xrange,hli) then [tanf,tend]:get_option('xrange,hli)
+  else block([tanf,tend]:[0,_COMA_npv(_COMA_srat(f),[2,5,10])],
+       set_option('xrange=[tanf,tend],hli)),
+  if wxx then apply(wxdraw2d,ev(hli)) else apply(draw2d,ev(hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* nyquist_plot(f,opts) - nyquist plot of the transfer function f          */
+/* ----------------------------------------------------------------------- */
+nyquist_plot(f,[opts]) :=
+block(
+  [hli,defs,t,tanf,tend,fli,wxx],
+  defs:[aspect_ratio=-1, nticks=500],
+  [tanf,tend] : _COMA_bpr(f),
+  [tanf,tend] : [tanf/10,tend*10], /* ADAPT RANGE HERE */
+  tanf:float(log(tanf)/log(10)),
+  tend:float(log(tend)/log(10)),
+  fli:map(lambda([u], if _COMA_go(u) then u else
+          [float(realpart(ev(u,s=%i*t))), float(imagpart(ev(u,s=%i*t)))]
+          ),flatten([f])),
+  fli:map(lambda([u],if _COMA_go(u) then u else ev(u,t=10**t)),fli),
+  fli:map(lambda([u],if _COMA_go(u) then u
+          else parametric(part(u,1),part(u,2),t,tanf,tend)),fli),
+  hli:ev(_COMA_ppo(fli,defs,opts)),
+  if wxx then apply(wxdraw2d,hli) else apply(draw2d,hli)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* magnitude_plot(f,opts) - magnitude plot of the Bode-diagram             */
+/* ----------------------------------------------------------------------- */
+magnitude_plot(f,[opts]) :=
+block(
+  [hli,defs,t,tanf,tend,fli,wxx,ratprint:false],
+  fli:ratsimp(flatten([f])),
+  fli:map(lambda([u],if _COMA_go(u) then u else float(cabs(ev(u,s=%i*t)))),fli),
+  fli:map(lambda([u],if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli),
+  defs:['logx=true,'logy=true],
+  hli:_COMA_ppo(fli,defs,opts),
+  if option_exists('xrange,opts) then [tanf,tend]:assoc('xrange,opts)
+  else block([tanf,tend] : _COMA_bpr(f),
+       set_option('xrange=[tanf,tend],hli)),
+  if wxx then apply(wxdraw2d,ev(hli)) else apply(draw2d,ev(hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* phase_plot(f,opts) - phase plot of the Bode-diagram                     */
+/* ----------------------------------------------------------------------- */
+phase_plot(f,[opts]) :=
+block(
+  [hli,defs,t,tanf,tend,fli,ratprint:false,ph,wxx,omega],
+  defs:['logx=true],
+  fli:map(ratsimp,flatten([f])),
+  fli:map(lambda([u], if _COMA_go(u) then u else ev(phase(u),omega=t)),fli),
+  fli:map(lambda([u], if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli),
+  hli:_COMA_ppo(fli,defs,opts),
+  if option_exists('xrange,opts) then [tanf,tend]:assoc('xrange,opts)
+  else block(
+     [tanf,tend] : _COMA_bpr(f),
+     set_option('xrange=[tanf,tend],hli)),
+  if wxx then apply(wxdraw2d,ev(hli)) else apply(draw2d,ev(hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* bode_plot(f,opts) - Bode-diagram (magnitude_plot and phase_plot)        */
+/* ----------------------------------------------------------------------- */
+bode_plot(f,[opts]) :=
+block(
+  [fli,fli1,fli2,hli1,hli2,defs1,defs2,t,tanf,tend,ratprint:false,
+    xdim,ydim,dims,g0],
+  fli:ratsimp(flatten([f])),
+  defs1:['logx=true,'logy=true,'user_preamble=["set tmargin 1",
+        "set lmargin 6","set rmargin 3","set bmargin 0"]],
+  defs2:['logx=true, 'user_preamble=["set tmargin 0",
+        "set lmargin 6","set rmargin 3","set bmargin 1"]],
+  xdim:500, ydim:600, /* default values (for both diagrams together) */
+  if option_exists('dimensions,plot_defaults) then block(
+     xdim:assoc('dimensions,plot_defaults)[1],
+     ydim:2.0*assoc('dimensions,plot_defaults)[2]),
+  if option_exists('dimensions,opts) then block(
+     xdim:assoc('dimensions,opts)[1],
+     ydim:assoc('dimensions,opts)[2]),
+  dims:'dimensions=[xdim,ydim],
+  /* Generating the function list */
+  fli:sublist(fli,ntranfp), /* eliminate everything but transfer functions */
+  fli1:map(lambda([u],if _COMA_go(u) then u else float(cabs(ev(u,s=%i*t)))),fli),
+  fli1:map(lambda([u],if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli1),
+  hli1:_COMA_ppo(fli1,defs1,opts),
+  delete_option('dimensions,hli1),
+  fli2:map(lambda([u], if _COMA_go(u) then u else ev(phase(u),omega=t)),fli),
+  fli2:map(lambda([u], if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli2),
+  hli2:_COMA_ppo(fli2,defs2,opts),
+  delete_option('dimensions,hli2),
+  /* Processing the ranges (xrange, yrange) */
+  if option_exists('xrange,opts) then [tanf,tend]:assoc('xrange,opts)
+  else block(
+     [tanf,tend] : _COMA_bpr(f),
+     set_option('xrange=[tanf,tend],hli1),
+     set_option('xrange=[tanf,tend],hli2)),
+  if option_exists('yrange,hli1) then block([yr],
+     yr:assoc('yrange,opts),
+     delete_option('yrange,hli1), delete_option('yrange,hli2),
+     if listp(yr) and listp(yr[1]) and listp(yr[2]) then block(
+        set_option('yrange=yr[1],hli1), set_option('yrange=yr[2],hli2))
+     else disp(_COMA_msg[2])),
+  /* Put the scenes together */
+  g0:[apply(gr2d,ev(hli1)),apply(gr2d,ev(hli2)),dims],
+  if wxx then apply(wxdraw,g0) else apply(draw,g0)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* phase(f) - phase of a frequency response or a transfer function         */
+/* ----------------------------------------------------------------------- */
+phase(f) :=
+block(
+  [zz,nn,polyfactor:true,phz,phn,res,assume_pos:true,ratprint:false],
+  f:xthru(f),
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+  block([inflag:true],
+     if not ntranfp(ff) then return(_COMA_msg[1]),
+     nn:allroots(denom(ratsimp(ff))),
+     zz:allroots(num(ratsimp(ff))),
+     if atom(zz) then phz:carg(ev(zz,s=%i*omega))
+     else phz:apply("+",
+       map(lambda([u],if numberp(u) and u<0 then -%pi else carg(u)),ev(
+         makelist(inpart(zz,i),i,1,length(zz)),eval,s=%i*omega))),
+     if atom(nn) then phn:carg(ev(nn,s=%i*omega))
+     else phn:apply("+",
+       map(lambda([u],if numberp(u) and u<0 then -%pi else carg(u)),ev(
+         makelist(inpart(nn,i),i,1,length(nn)),eval,s=%i*omega))),
+     float((phz-phn)*180/%pi))
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* poles_and_zeros(f,opts) - plots the poles/zeros distribution            */
+/* ----------------------------------------------------------------------- */
+poles_and_zeros(f,[opts]) :=
+block(
+  [hli,defs,zli,pli,wxx,x1,x2,y1,y2,range,ratprint:false],
+  defs:[aspect_ratio=-1],
+  f:flatten([f]),     /* _COMA_(u)...Wrapper around graphic object */
+  zli:map(lambda([u],if _COMA_go(u) then _COMA_(u) else zeros(u)),f),
+  pli:map(lambda([u],if _COMA_go(u) then _COMA_(u) else poles(u)),f),
+  range:_COMA_rlpr(flatten(sublist(append(zli,pli),listp)),1.2,1.2),
+  [x1,x2]:assoc('xrange,opts,rhs(range[1])),
+  [y1,y2]:assoc('yrange,opts,rhs(range[2])),
+  set_option('xrange=[x1,x2],opts),
+  set_option('yrange=[y1,y2],opts),
+  zli:map(lambda([u],if op(u)=_COMA_ then u
+          else map(lambda([v],[realpart(v),imagpart(v)]),u)),zli),
+  zli:map(lambda([u],if op(u)=_COMA_ then u else [points(u)]),zli),
+  zli:map(lambda([u],if op(u)=_COMA_ then u else cons(point_type=6,u)),zli),
+  pli:map(lambda([u],if op(u)=_COMA_ then u
+          else map(lambda([v],[realpart(v),imagpart(v)]),u)),pli),
+  pli:map(lambda([u],if op(u)=_COMA_ then u else [points(u)]),pli),
+  pli:map(lambda([u],if op(u)=_COMA_ then u else cons(point_type=2,u)),pli),
+  pli:map(lambda([u,v],if op(u)=_COMA_ then args(u)
+                else append(u,v)),zli,pli),
+     /*    else flatten([u,v])),zli,pli), */
+  hli:_COMA_ppo(pli,defs,opts),
+  hli:delete(points([]),flatten(hli)),
+  if wxx then apply(wxdraw2d,hli) else apply(draw2d,hli)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* contourplot                                                             */
+/* ----------------------------------------------------------------------- */
+contourplot(f,p1,p2,[opts]):=
+block(
+  [x1,x2,y,y1,y2,defs,cli,hli,fli,ratprint:false,wxx],
+  defs:[contours=[0],color=[red],line_width=[1]],
+  hli:_COMA_ppo(1,defs,opts),
+  [x1,x2]:assoc('xrange,opts,[0,1]),
+  [y1,y2]:assoc('yrange,opts,[0,1]),
+  cli:assoc('contours,hli),
+  hli:map(lambda([u],f=u),cli),
+  hli:map(lambda([u],implicit(u,p1,x1,x2,p2,y1,y2)),hli),
+  hli:flatten(_COMA_ppo(hli,defs,opts)),
+  delete_option('contours,hli),
+  if wxx then apply(wxdraw2d,hli) else apply(draw2d,hli)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* root_locus(f,opts) - root locus plot of the transfer function f         */
+/* ----------------------------------------------------------------------- */
+root_locus(f,[opts]) :=
+block(
+  [i,range,nticks,fac,pars,nn,pl,poli:[],gpoli:[],t,t1,t2,defs,hli,fli,h,
+      ratprint:false,startpoints,endpoints,ratprint:false,wxx],
+  defs:[aspect_ratio=-1,trange=[0.001,100],nticks=500],
+  hli:_COMA_ppo(0,defs,opts),
+  [t1,t2]:assoc('trange,hli),
+  nticks:assoc('nticks,hli),
+  delete_option(nticks,hli),
+  delete_option(trange,hli),
+  fac:float((t2/t1)**(1/nticks)),
+  fli:flatten([f]),
+  pars:map(lambda([u],first(delete(s,listofvars(u)))),fli), /* variable */
+  range:_COMA_rlpr(
+        flatten(map(lambda([u,v],poles(ev(u,ev(v)=t1))),fli,pars)),2,1.5),
+  if not option_exists('xrange,hli) then set_option(first(range),hli),
+  if not option_exists('yrange,hli) then set_option(last(range),hli),
+  for i:1 step 1 thru length(fli) do block(
+    nn:denom(ratsimp(fli[i])),
+    poli:[zeros(ev(nn,ev(pars[i])=t1))],
+    t:t1,
+    while t<t2 do block(
+      t:t*fac,
+      poli:endcons(_COMA_rlsp(zeros(ev(nn,ev(pars[i])=t)),last(poli)),poli)),
+    poli:map(lambda([v],map(lambda([u],[realpart(u),imagpart(u)]),v)),poli),
+    [startpoints,endpoints]:[first(poli),last(poli)],
+    poli:map('points,apply("[",args(transpose(apply(matrix,poli))))),
+    poli:append(['points_joined=true,'point_type=-1],poli),
+    poli:append(poli,['points_joined=false,'point_type=2,points(startpoints)]),
+    poli:append(poli,['point_type=6,points(endpoints)]),
+    gpoli:endcons(poli,gpoli)
+  ),
+  hli:_COMA_ppo(gpoli,hli,[]),
+  if wxx then apply(wxdraw2d,hli) else apply(draw2d,hli)
+)$
+_COMA_rlpr(poles,fx,fy) :=   /* root locus plot range */
+block(                       /* fx,fy ... oversizing factors */
+  [immax,remin,remax,xmin,xmax,ymax,xm,aspect_ratio:0.6],
+  immax:apply(max,imagpart(poles)),
+  remax:apply(max,realpart(poles)),
+  remin:apply(min,realpart(poles)),
+  ymax:fy*immax,
+  xm:(remax+remin)/2,
+  xmax:xm+fx*(remax-remin)/2,
+  xmin:xm-fx*(remax-remin)/2,
+  if is(xmax=xmin) then block(xmax:xmax+1,xmin:xmin-1),
+  ymax:max(ymax,(xmax-xmin)/2*aspect_ratio),
+  xmax:max(xmax,xm+ymax/aspect_ratio),
+  xmin:min(xmin,xm-ymax/aspect_ratio),
+  ['xrange=[xmin,xmax],'yrange=[-ymax,ymax]]
+)$
+_COMA_rlsp(z1,z2) :=  /* root locus sort points */
+block([l:z1], for i:1 step 1 thru length(z1-1) do block(
+  for j:i+1 step 1 thru length(z1) do
+  if cabs(z2[i]-l[j])<cabs(z2[i]-l[i]) then [l[j],l[i]]:[l[i],l[j]]),l)$
+
+/* ======================================================================= */
+/* Stability and related functions                                         */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* poles(f) - poles of the transfer function f(s)                          */
+/* ----------------------------------------------------------------------- */
+poles(f):=
+block(
+  [res,polyfactor:false,liste,ratprint:false],
+  res:map(lambda([ff],
+  block (
+    liste:chop(allroots(%i*expand(float(denom(ff))))),
+    map(lambda([u],part(u,2)),liste))
+  ), xthru(flatten([f]))),
+  if listp(f) then res else res[1]
+)$
+
+/* ----------------------------------------------------------------------- */
+/* zeros(f) - zeros of the transfer function f(s)                          */
+/* ----------------------------------------------------------------------- */
+zeros(f):=
+block(
+  [res,polyfactor:false,liste,ratprint:false],
+  res:map(lambda([ff],
+  block (
+    liste:chop(allroots(%i*expand(float(num(ff))))),
+    map(lambda([u],part(u,2)),liste))
+  ), xthru(flatten([f]))),
+  if listp(f) then res else res[1]
+)$
+
+/* ----------------------------------------------------------------------- */
+/* hurwitz(p) - Hurwitz-determinants of the polynomial p(s)                */
+/* ----------------------------------------------------------------------- */
+hurwitz(p):=
+block(
+  [cli,n,i,k,hli,mat,res],
+  if not listp(p) then p:[p],
+  p:map(expand,p),
+  res:map(lambda([pp],
+  block(
+    hli:[],
+    n:hipow(pp,'s),
+    cli:coefficient_list(pp,s),
+    cli:flatten([makelist(0,i,1,n-1),cli,makelist(0,i,1,n  )]),
+    hli:makelist(mat:apply(matrix,makelist(
+        makelist('cli[''((2*(n-j)+1)+(i-1))],j,1,k),i,1,k)) ,k,2,n),
+    hli:ev(hli,nouns), /* trick to prevent substituting variables k and n */
+    hli:map(determinant,hli),
+    if n>1 then hli else [])
+  ), p),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* stable_area(f,p1,p2) - plots the stable area with respect to p1 and p2  */
+/* ----------------------------------------------------------------------- */
+stable_area(f,p1,p2,[opts]):=
+block(
+  [x,x1,x2,y,y1,y2,defs,hli,fli,h,wxx,ratprint:false],
+  defs:[xrange=[0,1],yrange=[0,1]],
+  f:flatten([f]),
+  h:hurwitz(map(denom,f)),
+  if not listp(first(h)) then h:[h],
+  fli:map(lambda([u],apply('min,u)),h),
+  fli:map(lambda([u],implicit(u,p1,x1,x2,p2,y1,y2)),fli),
+  hli:_COMA_ppo(fli,defs,opts),
+  [x1,x2]:get_option('xrange,hli),
+  [y1,y2]:get_option('yrange,hli),
+  if wxx then apply(wxdraw2d,ev(hli)) else apply(draw2d,ev(hli))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* stablep(f) - checks whether the transfer function f(s) is stable        */
+/* ----------------------------------------------------------------------- */
+stablep(f) :=
+block(
+  [ratprint:false],
+  if listp(f) then
+    map(lambda([ff],
+      not (member(true,map(lambda([u],is(realpart(u)>0)),poles(ff))))
+    ), f)
+  else not (member(true,map(lambda([u],is(realpart(u)>0)),poles(f))))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* phase_crossover(f) - calculates the phase crossover frequencies of f    */
+/* ----------------------------------------------------------------------- */
+phase_crossover(f):=
+block(
+  [re,im,sol,res,ratprint:false,omega],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+  block(
+    re:realpart(ev(ff,s=%i*omega)),
+    im:imagpart(ev(ff,s=%i*omega)),
+    sol:solve(num(im)=0,omega),
+    sol:sublist(sol,lambda([u],is(ev(re,u)<0) and is(rhs(u)>0)))
+)
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* gain_crossover(f) - calculates the gain crossover frequencies of f      */
+/* ----------------------------------------------------------------------- */
+gain_crossover(f):=
+block(
+  [roots,sol,res,polyfactor:false,ratprint:false,zz,omega],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+  block(
+    zz:num(xthru(cabs(ev(ff,s=%i*omega))**2-1)),
+    roots:if hipow(zz,omega)>0 then realroots(zz) else [],
+    sol:sublist(roots,lambda([u],is(part(u,2)>0))))
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* phase_margin(f) - calculates the phase margin of f                      */
+/* ----------------------------------------------------------------------- */
+phase_margin(f):=
+block(
+  [h,res,ratprint:false],
+  if not listp(f) then f:[f],
+  h:float(gain_crossover(f)),
+  if length(f)=1 then h:[h],
+  h:map(last,h),
+  res:180+map(ev,flatten([phase(float(f))]),h),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* gain_margin(f) - calculates the gain margin of f                        */
+/* ----------------------------------------------------------------------- */
+gain_margin(f):=
+block(
+  [h,res,ratprint:false,omega],
+  if not listp(f) then f:[f],
+  h:float(phase_crossover(f)),
+  if not listp(h) then h:[h],
+  res:-1/realpart(map(ev,(ev(f,s=%i*omega)),h)),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* stability_limit(f,par) - calculates conditions for imaginary poles      */
+/* ----------------------------------------------------------------------- */
+stability_limit(f,par,[opt]):=   /* hier weitermachen: opt (25.1.2011) */
+block(
+  [eqs,nn,sol,res,assume_pos:true,omega,ratprint:false],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+  block(
+    nn:ev(denom(ff),s=%i*omega),
+    eqs:map(lambda([u],u(nn)=0),[realpart,imagpart]),
+    sol:ev(solve(eqs,[par,omega]),realonly=true),
+    sol:sublist(sol,lambda([u], assoc(omega,u)>0)))
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* damping(f) - negative realpart of the rightmost pole of f(s)            */
+/* ----------------------------------------------------------------------- */
+damping(f) :=
+block(
+  [polyfactor:true,ratprint:false,expr,p,res],
+  res:map(lambda([ff],
+  block(
+    p:poles(float(xthru(ff))),
+    expr:map(realpart,p),
+    -apply(max,expr))
+  ), flatten([f])),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* damping_ratio(f) - minimal value of all damping ratios                  */
+/* ----------------------------------------------------------------------- */
+damping_ratio(f) :=
+block(
+  [polyfactor:true,ratprint:false,expr,p,res],
+  res:map(lambda([ff],
+  block(
+    p:poles(float(xthru(ff))),
+    expr:map(lambda([u],realpart(u)/sqrt(realpart(u)**2+imagpart(u)**2)),p),
+    -apply(max,expr))
+  ), flatten([f])),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ======================================================================= */
+/* Transfer Function Related                                               */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* tranftype(f) - returns the type of the transfer function f as a string  */
+/* ----------------------------------------------------------------------- */
+tranftype(f) :=
+block([res],
+  res:map(lambda([ff],
+  block(
+    [zz,nn,z0:1,z1,n0:1,n1,ratprint:false],
+    zz:coefficient_list(num(xthru(ff)),s),
+    nn:coefficient_list(denom(xthru(ff)),s),
+    z1:length(zz),
+    n1:length(nn),
+    while is(zz[z0]=0) do z0:z0+1,
+    while is(nn[n0]=0) do n0:n0+1,
+    if is([z1,n1]=[1,1]) then return("P"),
+    if is([z1,n0]=[1,1]) then return(concat("PT",n1-1)),
+    if is([z1,n1]=[1,2]) then return(concat("I")),
+    if is([z1,n0]=[1,n1]) then return(concat("I",n1-1)),
+    if is([z1,n0]=[1,2]) then return(concat("IT",n1-n0)),
+    if is([z1]=[1]) then return(concat("I",n0-1,"T",n1-n0)),
+    if is([z0,z1,n1]=[2,2,1]) then return("D"),
+    if is([z0,n1]=[z1,1]) then return(concat("D",z0-1)),
+    if is([z0,z1,n0]=[2,2,1]) then return(concat("DT",n1-1)),
+    if is([z1,n1]=[2,1]) then return("PD"),
+    if is([z0,n1]=[1,1]) then return(concat("PD",z1-1)),
+    if is([z0,z1,n0]=[1,2,1]) then return(concat("PDT",n1-1)),
+    if is([n1]=[1]) then return(concat("D",n0-1,"T",n1-n0)),
+    if is([z1,n0,n1]=[2,2,2]) then return("PI"),
+    if is([z1,n0,n1]=[3,2,2]) then return("PID"),
+    if is([z1,n0]=[3,2]) then return(concat("PIDT",n1-n0)),
+    if is([z0,z1,n1]=[1,2,1]) then return("PD"),
+    if is([z0,n0]=[1,1]) then return(concat("PD",z1-z0,"T",n1-n0)),
+    return("any"))
+  ), flatten([f])),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* rantranf(n) - Random transfer function of order n                       */
+/* ----------------------------------------------------------------------- */
+rantranf(n) :=
+block(
+  [zz:0, nn:0, kz:random(n), kn:n, i, f],
+  for i:0 step 1 thru kn do nn: nn + (1+random(10)) * s**i,
+  for i:0 step 1 thru kz do zz: zz + (1+random(10)) * s**i,
+  zz/nn
+)$
+
+/* ----------------------------------------------------------------------- */
+/* stable_rantranf(n) - stable random transfer function of order n         */
+/* ----------------------------------------------------------------------- */
+
+stable_rantranf(n) :=
+block(
+  [ntest:1,zz:0, nn:0, kz, kn, i, f],
+  kn:min(n,7),
+  kz:random(kn),
+  for i:0 step 1 thru kn do nn: nn + (1+random(10)) * s**i,
+  for i:0 step 1 thru kz do zz: zz + (1+random(10)) * s**i,
+  f:(zz/nn),
+  unless stablep(f) do block(
+    ntest:ntest+1,
+    nn:0,
+    for i:0 step 1 thru kn do nn: nn + (1+random(10)) * s**i,
+    f:(zz/nn)),
+  return(f)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* gentranf(c,nz,d,nn) - general transfer function of order nn             */
+/* ----------------------------------------------------------------------- */
+gentranf(c,nz,d,nn) := sum(c[i]*s**i,i,0,nz)/sum(d[i]*s**i,i,0,nn)$
+
+/* ----------------------------------------------------------------------- */
+/* impedance_chain(z1,z2,...n) - transfer function of an impedance chain   */
+/* ----------------------------------------------------------------------- */
+impedance_chain(z1,z2,[zi]) :=
+block(
+  [_z1:[],_num:1,_sol,_vars,_n,_k,_ue,_i,ratprint:false,_eqs,
+             _z:flatten(append([z1,z2],zi))],
+/* Repetition of the chain at odd number of parameters */
+  if oddp(length(_z)) then block(
+     _num:last(_z),
+     _z:rest(_z,-1),
+     for _j:1 thru _num do _z1:append(_z,_z1),
+     _z:_z1),
+  _n:length(_z)/2,
+/* Building and solving the mesh-equations */
+  _eqs:makelist(_z[2*(_k-1)]*_i[_k-1]=_z[2*_k]*_i[_k]+_z[2*_k-1]*sum(_i[_j],_j,_k,_n),_k,2,_n),
+  _eqs:cons(_ue=_z[1]*sum(_i[_j],_j,1,_n)+_z[2]*_i[1],_eqs),
+  _vars:makelist(_i[_k],_k,1,_n),
+  _sol:linsolve(_eqs,_vars), /* linsolve works better than solve (why?) */
+/* Calculation of the transfer function as the ratio Ua/Ue */
+  xthru(subst(_sol,_z[2*_n]*_i[_n]/_ue))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* nilt(f,s,t) - inverse Laplace transform of f with numerically           */
+/*               calculated poles                                          */
+/* ----------------------------------------------------------------------- */
+nilt(f,s,t):=
+block([polyfactor:true,ratprint:false,ft,res],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+/*  ft:ilt(num(ff)/allroots(float(denom(ff))),s,t), HAA 30.3.2013 */
+    ft:ilt(float(num(ff)/allroots(float(denom(ff)))),s,t),
+    ev(ft,float,expand)),xthru(f)),
+    if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* closed_loop(Fo) - calculates the closed loop transfer function Fw       */
+/* ----------------------------------------------------------------------- */
+closed_loop(f):=
+block(
+  [res,ratprint:false],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],map(expand,xthru(ff/(1+ff)))), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* open_loop(Fw) - calculates the open loop transfer function Fo           */
+/* ----------------------------------------------------------------------- */
+open_loop(f):=
+block(
+  [res,ratprint:false],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],map(expand,xthru(ff/(1-ff)))), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* time_delay(tt,n,k) - Pade-approximation of order n (numerator order k)  */
+/* ----------------------------------------------------------------------- */
+time_delay(tt,n,[k]):=
+if n=0 then 1
+else block([ratprint:false,h],
+    h:if emptyp(k) then n-1 else first(k),
+    lambda([u],num(u)/denom(u))(first(pade(taylor(exp(-s*tt),s,0,h+n),h,n)))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* ntranfp(f) - checks whether f has only numerical coefficients           */
+/* ----------------------------------------------------------------------- */
+ntranfp(f) :=
+block([ratprint:false,f1,zz,nn,res],
+  if not listp(f) then f:[f],
+  res:map(lambda([ff],
+     f1:map(expand,xthru(ff)),
+     zz:coefficient_list(num(f1),s), nn:coefficient_list(denom(f1),s),
+     if is(setify(map(numberp,zz))={true}) and
+       is(setify(map(numberp,nn))={true})
+       then true else false
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* transfer_function - transfer function from state space or equations     */
+/* ----------------------------------------------------------------------- */
+transfer_function(a,[d]) :=
+block(
+[ratprint:false,A,B,C,D,sp:systemp(a)],
+if sp then block(
+   if length(a)=4 then [A,B,C,D]:a,
+   if length(a)=3 then
+      [A,B,C,D]:endcons(zeromatrix(length(a[3]),length(a[2][1])),a)),
+if sp and matrixp(D) and length(D)=1 and length(D[1])=1 then D:D[1][1],
+if sp then return(map(expand,xthru(C.invert(s*ident(length(A))-A).B+D))),
+if matrixp(a) then block(
+   if length(d)=3 then [A,B,C,D]:[a,d[1],d[2],d[3]]
+   else [A,B,C,D]:[a,d[1],d[2],zeromatrix(length(d[2]),length(d[1][1]))],
+   if matrixp(D) and length(D)=1 and length(D[1])=1 then D:D[1][1],
+   map(expand,xthru(C.invert(s*ident(length(A))-A).B+D)))
+else block([m],
+m:coefmatrix(subst(linsolve(a,d[1]),flatten([d[3]])),flatten([d[2]])),
+if not listp(d[2]) and not listp(d[3]) then m[1][1] else m
+))$
+
+/* ----------------------------------------------------------------------- */
+/* standard_form - One of the 4 standard forms of a transfer function      */
+/*    (making one of the leading or absolute coefficients to 1)            */
+/* ----------------------------------------------------------------------- */
+standard_form(f,[n]) :=
+block([n1,numli,denli,numli1,denli1,k,ratprint:false],
+f:xthru(f),
+n1:if length(n)=0 then 4 else n[1],
+[numli,denli]:[coefficient_list(num(f),s),coefficient_list(denom(f),s)],
+[numli1,denli1]:[delete(0,numli),delete(0,denli)],
+k:[last(numli1),first(numli1),last(denli1),first(denli1)][n1],
+numli:numli/k, denli:denli/k,
+apply("+",fullmap(lambda([u],if u=1.0 then 1 else u),
+        float(numli)*makelist(s**i,i,0,length(numli)-1)))/
+apply("+",fullmap(lambda([u],if u=1.0 then 1 else u),
+        float(denli)*makelist(s**i,i,0,length(denli)-1)))
+)$
+
+/* ======================================================================= */
+/* Optimization, Controller Design                                         */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* ise(f) - integral of squared error                                      */
+/* ----------------------------------------------------------------------- */
+ise(f):=
+block(
+  [n,sol,res,ratprint:false,dn,varlist],
+  f:flatten([f]),
+  res:map(lambda([ff],
+  block(
+    block(                  /* Trick: solve darf gleichnamige Symbole in f */
+      [a,b,aa,bb,c,d,i],    /* nicht evaluieren! (macht es aber sonst :-)  */
+      [c,d]:[num(ff),denom(ff)],
+      n:hipow(d,s),
+      dn:coeff(expand(d),s,n),
+      aa:sum('a[i]*s**i,i,0,n-1),
+      bb:sum('b[i]*s**i,i,0,n-1),
+      eq:coefficient_list(expand(c*subst(s=-s,c)-aa*subst(s=-s,d)-bb*d),s),
+      varlist:flatten([makelist('a[i],i,0,n-1),makelist('b[i],i,0,n-1)])),
+    sol:solve(eq,varlist),
+    at('a[n-1]/dn,first(sol)))
+  ), f),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ----------------------------------------------------------------------- */
+/* gain_optimum(fs,fr) - controller design according to the gain optimum   */
+/* ----------------------------------------------------------------------- */
+gain_optimum(fs,fr,[v]):=
+block(
+  [fw,omega,vars,eq,pli,li,ratprint:false,assume_pos:true,res],
+  fw:ratsimp(closed_loop(fr*fs)),
+  if emptyp(v) then vars:delete(s,listofvars(fr)) else vars:flatten([v]),
+  res:map(lambda([ff],
+  block(
+    ff:ratsimp(ev(ff,s=%i*omega)),
+    eq:cabs(num(ff))**2-cabs(denom(ff))**2,
+    li:coefficient_list(expand(eq),omega),
+    li:sublist(li,lambda([u],not atom(u))),
+    li:sublist(li,lambda([u],is(op(u)="+"))),
+    li:sublist(li,lambda([v],not apply("and",map(lambda([u],freeof(u,v)),vars)))),
+    li:makelist(li[k],k,1,min(length(li),length(vars))),
+    li:solve(li,vars),
+    pli:sublist(li,lambda([x],
+                (not member(false,map(lambda([u],is(rhs(u)>0)),x))))),
+    if emptyp(pli) then li else first(pli))
+  ), flatten([fw])),
+  if length(res)=1 then res[1] else res
+)$
+
+/* ======================================================================= */
+/* State Space                                                             */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* systemp(x) - checks whether x is a linear system with state matrices    */
+/* ----------------------------------------------------------------------- */
+systemp(x) :=
+block([nx,nu,ny],
+if not listp(x) then return(false),
+if length(x)<3 or length(x)>4 then return(false),
+if not matrixp(x[1]) then return(false),
+if not matrixp(x[2]) then return(false),
+if not matrixp(x[3]) then return(false),
+[nx,nu,ny]:[length(x[1]),length(x[2][1]),length(x[3])],
+if length(x[1][1]) # nx then return(false),
+if length(x[2]) # nx then return(false),
+if length(x[3][1]) # nx then return(false),
+if length(x)=3 then return(true),
+D: if not matrixp(x[4]) then matrix([x[4]]) else x[4],
+if length(D) # ny then return(false),
+if length(D[1]) # nu then return(false),
+return(true)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* nsystemp(x) - checks whether x is a linear system with numeric coeffs.  */
+/* ----------------------------------------------------------------------- */
+nsystemp(x) :=
+if systemp(x) and freeof(false,fullmap(numberp,x)) then true else false$
+
+/* ----------------------------------------------------------------------- */
+/* controller_canonical_form                                               */
+/* ----------------------------------------------------------------------- */
+controller_canonical_form(f) :=
+block(
+[ratprint:false,zz,nn,zli,nli,A,B,C,D,o],
+[zz,nn]:[num(xthru(f)),denom(xthru(f))],
+zli:coefficient_list(zz,s), nli:coefficient_list(nn,s),
+zli:zli/last(nli), nli:nli/last(nli),
+o:length(nli)-1,
+zli:append(zli,makelist(0,k,1,length(nli)-length(zli))),
+A:genmatrix(lambda([u,v],if u=o then -nli[v] else if v-u=1 then 1 else 0),o,o),
+B:apply(matrix,endcons([1],makelist([0],k,1,o-1))),
+C:matrix(rest(map(lambda([u,v],u-last(zli)*v),zli,nli),-1)),
+D:last(zli),
+[A,B,C,D]
+);
+
+/* ----------------------------------------------------------------------- */
+/* observer_canonical_form                                                 */
+/* ----------------------------------------------------------------------- */
+observer_canonical_form(f) :=
+block(
+[ratprint:false,zz,nn,zli,nli,A,B,C,D,o],
+[zz,nn]:[num(xthru(f)),denom(xthru(f))],
+zli:coefficient_list(zz,s), nli:coefficient_list(nn,s),
+zli:zli/last(nli), nli:nli/last(nli),
+o:length(nli)-1,
+zli:append(zli,makelist(0,k,1,length(nli)-length(zli))),
+A:genmatrix(lambda([u,v],if v=o then -nli[u] else if u-v=1 then 1 else 0),o,o),
+B:apply(matrix,rest(map(lambda([u,v],[u-last(zli)*v]),zli,nli),-1)),
+C:matrix(endcons(1,makelist(0,k,1,o-1))),
+D:last(zli),
+[A,B,C,D]
+);
+
+/* ----------------------------------------------------------------------- */
+/* controllability_matrix                                                  */
+/* ----------------------------------------------------------------------- */
+controllability_matrix(x,[y]) :=
+block([A,B],
+  [A,B]:if systemp(x) then [x[1],x[2]] else [x,first(y)],
+  transpose(apply(matrix,makelist(
+    flatten(args(transpose(A^^n.B))),n,0,length(A)-1))));
+
+/* ----------------------------------------------------------------------- */
+/* observability_matrix                                                    */
+/* ----------------------------------------------------------------------- */
+observability_matrix(x,[y]) :=
+block([A,C],
+  [A,C]:if systemp(x) then [x[1],x[3]] else [x,first(y)],
+  apply(matrix,makelist(flatten(args(C.A^^n)),n,0,length(A)-1)));
+
+/* ======================================================================= */
+/* Various Useful Functions                                                */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* coefficient_list(p,s) - calculates a list of the coefficients of        */
+/*                         the polynomial p(s) in ascending order          */
+/* ----------------------------------------------------------------------- */
+coefficient_list(p,s) := lambda([v],map(lambda([u],coeff(v,s,u)),
+   makelist(i,i,0,hipow(v,s))))(expand(p))$
+
+/* ----------------------------------------------------------------------- */
+/* get_option(o,l) - returns the option o from the list l (if existing)    */
+/* option_exists(o,l) - tests, whether the option o exists in list l       */
+/* list_option_exists(o,l) - tests, whether o exists and is a list         */
+/* delete_option(o,l) - returns a list with option o deleted from l        */
+/* set_option(o=v,l) - sets an option o with the value v                   */
+/* ----------------------------------------------------------------------- */
+get_option(o,l,[d]) := assoc(o,sublist(l,lambda([v],
+       not atom(v) and op(v)="=")),if d=[] then false else first(d))$
+delete_option(o,l) ::= buildq([o,l],l:if option_exists(o,l) then
+       sublist(l,lambda([u], atom(u) or op(u)#"=" or first(u)#o)) else l)$
+option_exists(o,l) := if member(o,map(first,sublist(l,lambda([v],
+       not atom(v) and op(v)="=")))) then true$
+list_option_exists(o,l) :=
+   if option_exists(o,l) then if listp(assoc(o,l)) then true$
+set_option(o,l) ::= buildq([o,l],l:endcons(o,delete_option(first(o),l)))$
+
+/* ----------------------------------------------------------------------- */
+/* chop - setting very small numbers to 0                                  */
+/* ----------------------------------------------------------------------- */
+chop(f) :=
+block([epsilon:1.0e-10],
+  fullmap(lambda([u], if numberp(u) and cabs(u)<epsilon then 0 else u),f))$
+
+/* ======================================================================= */
+/* Auxiliary Functions (only for internal use)                             */
+/* ======================================================================= */
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_bpr(f) - calculation of an appropriate plot range                 */
+/* ----------------------------------------------------------------------- */
+_COMA_bpr(f):=
+block(
+  [frequencies,omin,omax,g:gain_crossover(f)],
+  f:flatten([f]),
+  frequencies:flatten([_COMA_cf(sublist(f,lambda([u],not _COMA_go(u)))),
+                  if length(g)>0 then map(last,flatten([g])) else []]),
+  if length(frequencies)=0 then frequencies:[1],
+  omin:apply(min,frequencies)/3,   /* ADAPT RANGE HERE */
+  omax:apply(max,frequencies)*3,   /* ADAPT RANGE HERE */
+  [10**floor(log(omin)/log(10)), 10**ceiling(log(omax)/log(10))]
+)$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_srat - calculates an appropriate display time for step_response   */
+/* ----------------------------------------------------------------------- */
+_COMA_srat(f):=
+block(
+  [pl,l],
+  if not listp(f) then f:[f],
+  pl:flatten(poles(f)),
+  pl:delete(0.0,pl), pl:delete(0,pl),
+  if length(pl)=0 then 1 else
+  block(
+  l:map(lambda([u],float(5/sqrt(realpart(u)**2+imagpart(u)**2))),pl),
+  apply(max,l))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_npv - next proper value for a plot range                          */
+/* ----------------------------------------------------------------------- */
+_COMA_npv(f,li):=
+block(
+  [n:length(li)],
+  while f>last(li) do li:append(li,rest(li,length(li)-n)*10),
+  li:append(li,rest(li,length(li)-n)*10), /* zur Vermeidung eines numer. Bugs */
+  while f<first(li) do li:append(rest(li,n-length(li))/10,li),
+  first(sublist(li,lambda([u],is(f<u))))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_cf(f) - cutoff frequencies                                        */
+/* ----------------------------------------------------------------------- */
+_COMA_cf(f):=
+block([pl],
+  if not listp(f) then f:[f],
+  f:sublist(f, lambda([u],not _COMA_go(u))),
+  pl:flatten([poles(f),zeros(f)]),
+  pl:sort(map(lambda([u],sqrt(realpart(u)**2+imagpart(u)**2)),pl)),
+  pl:sublist(pl,lambda([u],u>0))
+)$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_mx - "map extended", like map, adapts all lists according         */
+/*   to the last   one, then performs a map over all lists                 */
+/* ----------------------------------------------------------------------- */
+_COMA_mx([lists]) :=
+block(
+  [res:["["],i],
+  for i:1 step 1 thru length(lists)-1 do
+     res:endcons(
+       block([n1:length(lists[i]),n2:length(last(lists)),res:[],j],
+       for j:1 step 1 thru n2 do res:endcons(lists[i][mod(j-1,n1)+1],res),
+       res),res),
+  res:endcons(last(lists),res),
+  apply(map,res)
+)$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_go(f) - checks whether f is a graphic object                      */
+/* ----------------------------------------------------------------------- */
+_COMA_go(f) :=
+if (not atom(f) and member(op(f),['explicit,'points,'implicit,'parametric,
+                     'polar,'polygon,'rectangle,'ellipse,'label]))
+   then true else false$
+
+/* ----------------------------------------------------------------------- */
+/* _COMA_ppo(f,defs,opts) - process plot options                           */
+/* ----------------------------------------------------------------------- */
+/* f ... List of functions  bjects (or transfer functions)                 */
+/*       f = 0 ... only global options are processed                       */
+/*       f = 1 ... options are processed, but no functions                 */
+/* defs ... default options for a routine                                  */
+/* opts ... explicitely given options for a routine                        */
+/* ----------------------------------------------------------------------- */
+_COMA_ppo(f,defs,opts):=
+block(
+  [x,hli,fli,ar,preamble:[],list_options, list_exceptions:['dimensions,
+     'xrange,'yrange,'trange,'user_preamble,'ip_grid,'ip_grid_in,'allocation]],
+  hli:append(plot_defaults,defs,opts),
+  /* Gnuplot Praeambeln in Liste zusammenfassen */
+  set_option('user_preamble=flatten(map(lambda([u],rhs(u)),
+     sublist(hli,lambda([u],lhs(u)='user_preamble)))),hli),
+  /* Mehrfache Optionen loeschen */
+  for i:length(hli) step -1 thru 1 do hli:set_option(hli[i],hli),
+  /* wx-Entscheidung */
+  if option_exists('wx,hli) then
+     block(wxx:assoc('wx,hli), delete_option('wx,hli)),
+  if option_exists('terminal,opts) then wxx:false,
+  /* Aspect Ratio in die Gnuplot Praeambel einbauen */
+  if option_exists('aspect_ratio,hli) then block(
+     ar:float(assoc('aspect_ratio,hli)),
+     delete_option('aspect_ratio,hli),
+     preamble:assoc(user_preamble,hli,[]),
+     preamble:endcons(concat("set size ratio ",ar),flatten([preamble])),
+     if length(preamble)>0 then set_option(user_preamble=preamble,hli)),
+  /* Listenoptionen verarbeiten */
+  list_options:sublist(hli,lambda([u],listp(rhs(u)))),
+  for i:1 thru length(list_exceptions) do
+      delete_option(list_exceptions[i],list_options),
+  for i:1 thru length(list_options) do
+      delete_option(lhs(list_options[i]),hli),
+  if f=0 then return(hli),
+  if f=1 then return(append(hli,list_options)),
+  list_options:map(lambda([v],map(lambda([u],lhs(v)=u),rhs(v))),list_options),
+  append(hli,apply(_COMA_mx,append(list_options,[f])))
+)$

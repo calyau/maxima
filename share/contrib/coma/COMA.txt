@@ -1,0 +1,13 @@
+
+
+Control Engineering package (COMA)
+
+Postby wihaa » Mon Mar 29, 2010 11:34 am
+The COMA Control Engineering package currently comprises:
+* Inverse Laplace-transform of transfer functions of arbitrary order
+* Unit step responses
+* Nyquist diagrams and Bode plots
+* Poles and Zeros, root locus plots
+* Stability investigations: stability limit, Hurwitz criterion, stable regions in the parameter plane, phase margin, gain margin
+* Optimization and controller design: ISE-criterion (integral of squared error), gain optimum
+* State space methods: Conversion into a transfer function, canonical forms, controllability, observability
