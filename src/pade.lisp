@@ -41,7 +41,7 @@
 	  poly))
 
 (defmacro psmake (p tpf)
-  `(make-ps (gvar-o tpf) (poly-data tpf) (reverse ,p)))
+  `(make-ps (gvar-o ,tpf) (poly-data ,tpf) (reverse ,p)))
 
 (defmfun $pade (taylor-form n-bound d-bound)
   (cond ((not (and ($ratp taylor-form) (member 'trunc (car taylor-form) :test #'eq)))
