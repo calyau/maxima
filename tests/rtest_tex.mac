@@ -41,6 +41,16 @@ with_stdout ("tmp-rtest-1.tex",
     tex (\2F1 + ?lisp_symbol),
     tex (embedded\$dollar + embedded%percent + embedded_underscore + embedded\&ampersand),
 
+    tex_text ("\\subsubsection*{Gamma functions and variables}"),
+    tex_text ("Variables: \\%gamma (Euler-Mascheroni number), Gamma, nounify(gamma), verbify(gamma):"),
+    tex ([%gamma = ev (%gamma, numer), Gamma, nounify (gamma), verbify (gamma)]),
+    tex_text ("Functions: gamma(z) (gamma function), gamma\\_incomplete(a, z) (upper incomplete gamma function),
+gamma\\_incomplete\\_regularized(a, z) (gamma\\_incomplete normalized by gamma(z)),
+gamma\\_incomplete\\_generalized(a, z[1], z[2]) (upper minus lower incomplete gamma function),
+gamma\\_greek(a, z) (lower incomplete gamma function):"),
+    tex ([gamma (z), gamma_incomplete (a, z), gamma_incomplete_regularized (a, z),
+          gamma_incomplete_generalized (a, z[1], z[2]), gamma_greek (a, z)]),
+
     /* Maxima tex function doesn't escape special characters in symbol names,
      * so don't bother with these unless TEX-STRIPDOLLAR is revised or something like that.
      * tex (int\+float + int\*float + int\@float),

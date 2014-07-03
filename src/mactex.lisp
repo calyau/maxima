@@ -480,6 +480,10 @@
  (tex (cadr x) (append l '("\\Gamma\\left(")) (append '("\\right)") r) 'mparen 'mparen))
 
 (defprop $%gamma "\\gamma" texword)
+(defprop %gamma_incomplete "\\Gamma" texword)
+(defprop %gamma_incomplete_regularized "Q" texword)
+(defprop %gamma_incomplete_generalized "\\Gamma" texword)
+(defprop $gamma_greek "\\gamma" texword)
 (defprop $delta "\\delta" texword)
 (defprop $epsilon "\\varepsilon" texword)
 (defprop $zeta "\\zeta" texword)
