@@ -310,7 +310,7 @@
      (when (null args)
        (wna-err '$ezgcd))
      (when (some #'$ratp args)
-       (return (setq flag t)))
+       (setq flag t))
      (setq pfl (mapcar #'(lambda (h) (cdr (ratf h))) args))
      (setq pfl2 (list 1))
      (do ((lcm (cdar pfl))
