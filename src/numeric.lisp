@@ -2071,21 +2071,18 @@
 ;;;   Return a value of pi with the same precision as the argument.
 ;;; For rationals, we return a single-float approximation.
 (defmethod %pi ((x cl:rational))
-  (declare (ignore x))
   (cl:coerce cl:pi 'single-float))
 
 (defmethod %pi ((x cl:float))
   (cl:float cl:pi x))
 
 (defmethod %pi ((x bigfloat))
-  (declare (ignore x))
   (to (maxima::bcons (maxima::fppi))))
 
 (defmethod %pi ((x cl:complex))
   (cl:float cl:pi (realpart x)))
 
 (defmethod %pi ((x complex-bigfloat))
-  (declare (ignore x))
   (to (maxima::bcons (maxima::fppi))))
 
 ;;; %e - External
@@ -2093,21 +2090,18 @@
 ;;;   Return a value of e with the same precision as the argument.
 ;;;   For rationals, we return a single-float approximation.
 (defmethod %e ((x cl:rational))
-  (declare (ignore x))
   (cl:coerce maxima::%e-val 'single-float))
 
 (defmethod %e ((x cl:float))
   (cl:float maxima::%e-val x))
 
 (defmethod %e ((x bigfloat))
-  (declare (ignore x))
   (to (maxima::bcons (maxima::fpe))))
 
 (defmethod %e ((x cl:complex))
   (cl:float maxima::%e-val (realpart x)))
 
 (defmethod %e ((x complex-bigfloat))
-  (declare (ignore x))
   (to (maxima::bcons (maxima::fpe))))
 
 ;;;; Useful routines
