@@ -86,6 +86,7 @@
 
 ;; exponent in first term of taylor expansion of $li is one
 (defun li-ord (subl)
+  (declare (ignore subl))
   (ncons (rcone)))
 
 ;; taylor expansion of $li is its definition:
@@ -563,7 +564,8 @@
     ((mexpt) ((%lambert_w) x) -1)))
   integral)
 
-(defun simp-lambertw (x y z)
+(defun simp-lambertw (x yy z)
+  (declare (ignore yy))
   (oneargcheck x)
   (setq x (simpcheck (cadr x) z))
   (cond ((equal x 0) 0)

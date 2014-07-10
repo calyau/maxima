@@ -52,8 +52,8 @@
 
 ;; This is modeled after SIMPMDEF, SIMPLAMBDA etc. in JM;SIMP >
 
-(defun simpbuildq (x *ignore* simp-flags)
-  (declare (ignore *ignore* simp-flags))
+(defun simpbuildq (x ignored simp-flags)
+  (declare (ignore ignored simp-flags))
   (cons '($buildq simp) (cdr x)))
 
 ;; Note that supression of simplification is very important to the semantics

@@ -621,7 +621,6 @@
   (let (($lispdisp t))
     (setq form (strmeval (fexprcheck form)))
     (setq form (if $grind (strgrind form) (mstring form)))
-    (setq st (reverse form))
     (coerce form 'string)))
 
 (defmfun makstring (x)

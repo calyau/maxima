@@ -873,10 +873,10 @@
 (setf (get '%kron_delta 'real-valued) t) ;; conjugate(kron_delta(xxx)) --> kron_delta(xxx)
 (setf (get '%kron_delta 'integer-valued) t) ;; featurep(kron_delta(xxx), integer) --> true
 
-(putprop '%kron_delta #'(lambda (s) (setq sign '$pz)) 'sign-function)
+(putprop '%kron_delta #'(lambda (yy) (declare (ignore yy)) (setq sign '$pz)) 'sign-function)
 
-(defun simp-kron-delta (l y z)
-  (declare (ignore y))
+(defun simp-kron-delta (l yy z)
+  (declare (ignore yy))
 
   (setq l (cdr l)) ;; remove (($kron_delta simp)
   (if (and l (null (cdr l))) (wna-err '$kron_delta)) ;; wrong number of arguments error for exactly one argument

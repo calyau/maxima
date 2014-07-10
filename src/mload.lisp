@@ -219,18 +219,22 @@
 	(($taylorp g)
 	 (approx-alike 0 (sub (ratdisrep f) (ratdisrep g))))
 	
-	((atom f) (and (atom g) (equal f g)))
+	((stringp f)
+	 (and (stringp g) (string= f g)))
+
+	((arrayp f)
+	 (and (arrayp g) (approx-alike ($listarray f) ($listarray g))))
+
+	((hash-table-p f)
+	 (and (hash-table-p g) (approx-alike ($listarray f) ($listarray g))))
+
+	((atom f)
+	 (and (atom g) (equal f g)))
 		     
 	((op-equalp f 'lambda)
 	 (and (op-equalp g 'lambda)
 	      (approx-alike-list (mapcar #'(lambda (s) (simplifya s nil)) (margs f))
 				 (mapcar #'(lambda (s) (simplifya s nil)) (margs g)))))
-	
-	((arrayp f)
-	 (and (arrayp g) (approx-alike ($listarray f) ($listarray g))))
-	
-	((hash-table-p f)
-	 (and (hash-table-p g) (approx-alike ($listarray f) ($listarray g))))
 	
 	(($ratp f)
 	 (and ($ratp g) (approx-alike (ratdisrep f) (ratdisrep g))))

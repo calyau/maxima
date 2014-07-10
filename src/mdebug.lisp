@@ -133,7 +133,7 @@
 			   (car all)))))))
 
 (defun $backtrace (&optional (n 30))
-  (let ($display2d (st *debug-io*))
+  (let ($display2d)
     (loop for i below n
 	   for j from *current-frame*
 	   while (print-one-frame j t))))
