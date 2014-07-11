@@ -229,6 +229,7 @@ contrib/diffequations/tests/rtestode_utils.mac \
 contrib/diffequations/tests/rtest_sym2.mac \
 contrib/diffequations/tests/rtest_sym.mac \
 contrib/diffequations/tests/testsuite.lisp \
+contrib/engineering-format.lisp \
 contrib/f90.lisp \
 contrib/floatproperties.lisp \
 contrib/format/autoload-m.macsyma \
