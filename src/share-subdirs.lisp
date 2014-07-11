@@ -39,6 +39,7 @@
 "contrib/altsimp"
 "contrib/bitwise"
 "contrib/boolsimp"
+"contrib/coma"
 "contrib/diffequations"
 "contrib/diffequations/tests"
 "contrib/format"
