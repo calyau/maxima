@@ -512,39 +512,26 @@ tellsimp
 
 simp : true;
 
-/* Rules to unit-ify solve.
+/* Rules to handle arbitrary Maxima expressions dimensionally
+ * by replacing expressions a`b with a*gensymized(b).
  */
 
 matchdeclare (uu%, unitop_p);
-defrule (rununitify, uu%, subst_qty (uu%) * subst_units (uu%));
-
-subst_qty (u) := block ([v : listofvars (qty (u)), substs],
-  for v1 in v do if qty_gensyms [v1] = false then qty_gensyms [v1] : gensym (),
-  substs : makelist (v1 = qty_gensyms [v1], v1, v),
-  subst (substs, qty (u)));
+defrule (rununitify, uu%, qty (uu%) * subst_units (uu%));
 
 subst_units (u) := block ([v : listofvars (units (u)), substs],
-  for v1 in v do if units_gensyms [v1] = false then units_gensyms [v1] : gensym (),
+  for v1 in v do 
+   (if units_gensyms [v1] = false then units_gensyms [v1] : gensym (),
+    assume (units_gensyms [v1] > 0)),
   substs : makelist (v1 = units_gensyms [v1], v1, v),
   subst (substs, units (u)));
 
-matchdeclare (gg%, unit_gensym_p);
-unit_gensym_p (e) := member (e, listarray (units_gensyms));
-defrule (rreunitify, gg%, 1 ` gg%); /* apply via applyb1 only to avoid infinite recursion !! */
-
-solve_dimensional (e%, v%) := solve_dimensional1 (if not listp (e%) then [e%] else e%, if not listp (v%) then [v%] else v%);
-
-solve_dimensional1 (e%, v%) := block
-([qty_gensyms : make_array ('hashed),
-  units_gensyms : make_array ('hashed)],
-  applyb1 (e%, rununitify),
-  /* ENSURE QTY_GENSYMS AND UNITS_GENSYMS KEY SETS ARE DISJOINT ?? */
-  subst (gensym_map (qty_gensyms), [%%, v%]),
-  subst (gensym_map (units_gensyms), %%),
-  apply (solve, %%),
-  applyb1 (%%, rreunitify),
-  subst (inverse_gensym_map (units_gensyms), %%),
-  subst (inverse_gensym_map (qty_gensyms), %%));
+dimensionally (e%) ::= block ([body, units_gensyms : make_array ('hashed), context_name : gensym ()],
+ apply (supcontext, [context_name]),
+ context : context_name,
+ body : applyb1 (e%, rununitify),
+ buildq ([body, context_name, M : map (lambda ([e], lhs (e) = 1 ` rhs (e)), inverse_gensym_map (units_gensyms))],
+  block ([foo : subst (M, body)], killcontext (context_name), foo)));
 
 gensym_map (h) := map ("=", rest (arrayinfo (h), 2), listarray (h));
 inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
