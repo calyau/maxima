@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c a2b40b57cdffdd4884173e42ec4679e5  Command.texi
+@c 443e27eea15f3198481666a61c8395fe  Command.texi
 @c
 @menu
 * Introduction to Command Line::
@@ -325,6 +325,56 @@ requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.
 @opencatbox
 @category{Help} @category{Console interaction}
 @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{$}
+@deffn {Input terminator} $
+@ifinfo
+@fnindex Input terminator (omite a saída)
+@end ifinfo
+
+O sinal de dólar @code{$} termina uma expressão de entrada e
+tanto o local de memória destinado à mais recente saída @code{%} quanto um novo rótulo de saída, e.g. @code{%o1},
+recebem o resultado dessa expressão de entrada, mas o resultado não aparece na tela.
+
+Veja também @code{;}.
+
+Exemplo:
+@c ===beg===
+@c 1 + 2 + 3 $
+@c %;
+@c %o1;
+@c ===end===
+@example
+(%i1) 1 + 2 + 3 $
+(%i2) %;
+(%o2)                           6
+(%i3) %o1;
+(%o3)                           6
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{;}
+@deffn {Input terminator} ;
+@ifinfo
+@fnindex Input terminator (exibe a saída)
+@end ifinfo
+
+O ponto e vírgula @code{;} termina uma expressão de saída,
+e a saída resultate é mostrada.
+
+Veja também @code{$}.
+
+Exemplo:
+@c ===beg===
+@c 1 + 2 + 3;
+@c ===end===
+@example
+(%i1) 1 + 2 + 3;
+(%o1)                           6
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------

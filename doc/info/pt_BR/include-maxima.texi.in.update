@@ -2,7 +2,7 @@
 
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c f0cbbbfa2603be4fc6c95aa533b97c47  include-maxima.texi.in
+@c a12738f5493aa0352e65c8cc4f76487a  include-maxima.texi.in
 @c
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -140,6 +140,7 @@ Pacotes adicionais
 * augmented_lagrangian::        pacote augmented_lagrangian.
 * Bernstein::                   Polin@^{o}mios de Bernstein.
 * bode::                        Bode gain and phase plots.
+* clebsch_gordan::              Clebsch-Gordan and Wigner coefficients
 * cobyla::                      Nonlinear optimization with inequality constraints.
 * contrib_ode::                 Rotinas adicionais para EDOs
 * descriptive::                 Estat@'{i}stica descritiva.
@@ -393,6 +394,9 @@ Bernstein
 
 bode
 * Functions and Variables for bode::
+
+clebsch_gordan
+* Functions and Variables for clebsch_gordan::
 
 cobyla
 * Introduction to cobyla::
@@ -742,11 +746,15 @@ zeilberger
 @chapter Bernstein
 @include bernstein.texi
 
-@node bode, cobyla, Bernstein, Top
+@node bode, clebsch_gordan, Bernstein, Top
 @chapter bode
 @include bode.texi
 
-@node cobyla, contrib_ode, bode, Top
+@node clebsch_gordan, cobyla, bode, Top
+@chapter clebsch_gordan
+@include clebsch_gordan.texi
+
+@node cobyla, contrib_ode, clebsch_gordan, Top
 @chapter cobyla
 @include cobyla.texi
 
