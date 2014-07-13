@@ -22,24 +22,24 @@
 ;;	PACKAGE FOR FINDING REAL ZEROS OF UNIVARIATE POLYNOMIALS
 ;;	WITH INTEGER COEFFICIENTS USING STURM SEQUENCES.
 
-(defmfun $realroots (exp &optional (eps $rootsepsilon))
-  (setq exp (meqhk exp))
-  (when ($ratp exp)
-    (setq exp ($ratdisrep exp)))
+(defmfun $realroots (exp &optional (eps $rootsepsilon) &aux exp1)
+  (setq exp1 (meqhk exp))
+  (when ($ratp exp1)
+    (setq exp1 ($ratdisrep exp1)))
   (when (or (not (mnump eps)) (mnegp eps) (equal eps 0))
     (merror (intl:gettext "realroots: second argument must be a positive number; found: ~M") eps))
   (let (($keepfloat nil))
-    (sturmseq exp eps)))
+    (sturmseq exp exp1 eps)))
 
-(defun unipoly (exp)
-  (setq exp (cadr (ratf exp)))
-  (cond ((and (not (atom exp))
-	      (loop for v in (cdr exp)
+(defun unipoly (exp exp1)
+  (setq exp1 (cadr (ratf exp1)))
+  (cond ((and (not (atom exp1))
+	      (loop for v in (cdr exp1)
 		     when (not (atom v))
 		     do (return nil)
 		     finally (return t)))
 	 ;;(EVERY #'ATOM (CDR EXP)))
-	 exp)
+	 exp1)
 	(t (merror (intl:gettext "UNIPOLY: argument must be a univariate polynomial; found: ~M") exp))))
 
 (defun makrat (pt)
@@ -52,13 +52,13 @@
 
 (declare-top (special equations))
 
-(defun sturmseq (exp eps)
+(defun sturmseq (exp exp1 eps)
   (let (varlist equations $factorflag $ratprint $ratfac)
     (cond ($programmode
 	   (cons '(mlist)
-		 (multout (findroots (psqfr (pabs (unipoly exp)))
+		 (multout (findroots (psqfr (pabs (unipoly exp exp1)))
 				     (makrat eps)))))
-	  (t (solve2 (findroots (psqfr (pabs (unipoly exp)))
+	  (t (solve2 (findroots (psqfr (pabs (unipoly exp exp1)))
 				(makrat eps)))
 	     (cons '(mlist) equations)))))
 
@@ -173,7 +173,7 @@
 
 (defmfun $nroots (exp &optional (l '$minf) (r '$inf))
   (let (varlist $keepfloat $ratfac)
-    (nroots (unipoly (meqhk exp)) (makpoint l) (makpoint r))))
+    (nroots (unipoly exp (meqhk exp)) (makpoint l) (makpoint r))))
 
 (defun nroots (p l r)
   (rootaddup (psqfr p) l r))
