@@ -312,6 +312,56 @@ for documentation.  See also @mrefdot{describe}
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{$}
+@deffn {Input terminator} $
+@ifinfo
+@fnindex Input terminator (without display)
+@end ifinfo
+
+The dollar sign @code{$} terminates an input expression,
+and the most recent output @code{%} and an output label, e.g. @code{%o1},
+are assigned the result, but the result is not displayed.
+
+See also @code{;}.
+
+Example:
+@c ===beg===
+@c 1 + 2 + 3 $
+@c %;
+@c %o1;
+@c ===end===
+@example
+(%i1) 1 + 2 + 3 $
+(%i2) %;
+(%o2)                           6
+(%i3) %o1;
+(%o3)                           6
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{;}
+@deffn {Input terminator} ;
+@ifinfo
+@fnindex Input terminator (with display)
+@end ifinfo
+
+The semicolon @code{;} terminates an input expression,
+and the resulting output is displayed.
+
+See also @code{$}.
+
+Example:
+@c ===beg===
+@c 1 + 2 + 3;
+@c ===end===
+@example
+(%i1) 1 + 2 + 3;
+(%o1)                           6
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{inchar}
 @defvr {Option variable} inchar
 Default value: @code{%i}
