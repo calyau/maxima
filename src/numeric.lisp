@@ -2205,3 +2205,78 @@
 	  sum)
       #+nil
       (format t "~4d: ~S ~S ~S~%" k sum term (funcall f k)))))
+
+;; Format bfloats using ~E format. This is suitable as a ~// format.
+;;
+;; NOTE: This is a modified version of FORMAT-EXP-AUX from CMUCL to
+;; support printing of bfloats.
+
+(defun format-e (stream number colonp atp
+		 &optional w d e k
+		   overflowchar padchar exponentchar)
+  (typecase number
+    (bigfloat
+     (maxima::bfloat-format-e stream (real-value number) colonp atp
+			      w d e (or k 1)
+			      overflowchar
+			      (or padchar #\space)
+			      (or exponentchar #\b)))
+    (complex-bigfloat
+     ;; FIXME: Do something better than this since this doesn't honor
+     ;; any of the parameters.
+     (princ number stream))
+    (otherwise
+     ;; We were given some other kind of object. Just use CL's normal
+     ;; ~E printer to print it.
+     (let ((f
+	     (with-output-to-string (s)
+	       ;; Construct a suitable ~E format string from the given
+	       ;; parameters. First, handle w,d,e,k.
+	       (write-string "~V,V,V,V," s)
+	       (if overflowchar
+		   (format s "'~C," overflowchar)
+		   (write-string "," s))
+	       (if (char= padchar #\space)
+		   (write-string "," s)
+		   (format s "'~C," padchar))
+	       (when exponentchar
+		 (format s "'~C" exponentchar))
+	       (when colonp
+		 (write-char #\: s))
+	       (when atp
+		 (write-char #\@ s))
+	       (write-char #\E s))))
+       (format stream f w d e k number)))))
+
+(defun format-f (stream number colonp atp
+		 &optional w d k overflowchar padchar)
+  (typecase number
+    (bigfloat
+     (maxima::bfloat-format-f stream (real-value number) colonp atp
+			      w d (or k 0)
+			      overflowchar
+			      (or padchar #\space)))
+    (complex-bigfloat
+     ;; FIXME: Do something better than this since this doesn't honor
+     ;; any of the parameters.
+     (princ number stream))
+    (otherwise
+     ;; We were given some other kind of object. Just use CL's normal
+     ;; ~F printer to print it.
+     (let ((f
+	     (with-output-to-string (s)
+	       ;; Construct a suitable ~F format string from the given
+	       ;; parameters.  First handle w,d,k.
+	       (write-string "~V,V,V," s)
+	       (if overflowchar
+		   (format s "'~C," overflowchar)
+		   (write-string "," s))
+	       (if (char= padchar #\space)
+		   (write-string "," s)
+		   (format s "'~C," padchar))
+	       (when colonp
+		 (write-char #\: s))
+	       (when atp
+		 (write-char #\@ s))
+	       (write-char #\F s))))
+       (format stream f w d k number)))))

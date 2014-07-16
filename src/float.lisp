@@ -158,6 +158,9 @@ One extra decimal digit in actual representation for rounding purposes.")
   (let (($lispdisp nil))
     (dimension-atom (maknam (fpformat form)) result)))
 
+;; Converts the bigfloat L to list of digits including |.| and the
+;; exponent marker |b|. The number of significant digits is controlled
+;; by $fpprintprec.
 (defun fpformat (l)
   (if (not (member 'simp (cdar l) :test #'eq))
       (setq l (cons (cons (caar l) (cons 'simp (cdar l))) (cdr l))))
@@ -206,6 +209,281 @@ One extra decimal digit in actual representation for rounding purposes.")
 		      (ncons '|0|))
 		  (ncons '|b|)
 		  (explodec (1- (cadr l))))))))
+
+
+;; Format bfloats using ~E format. This is suitable as a ~// format.
+;;
+;; NOTE: This is a modified version of FORMAT-EXP-AUX from CMUCL to
+;; support printing of bfloats.
+(defun bfloat-format-e (stream arg colonp atp
+			&optional w d e (k 1)
+			  overflowchar (padchar #\space) exponentchar)
+  (declare (ignore colonp))
+  (flet ((exponent-value (x)
+	   ;; Compute the (decimal exponent) of the bfloat number X.
+	   (let* (($fpprintprec 1)
+		  (f (fpformat x))
+		  (marker (position '|b| f)))
+	     ;; FIXME: do something better than printing and reading
+	     ;; the result.
+	     (read-from-string
+	      (format nil "~{~A~}" (nthcdr (1+ marker) f)))))
+	 (bfloat-to-string (x fdigits)
+	   ;; Print the bfloat X with FDIGITS after the decimal
+	   ;; point. This means, roughtly, FDIGITS+1 significant
+	   ;; digits.
+	   (let* (($fpprintprec (if fdigits
+				    (if (zerop fdigits)
+					1
+					(1+ fdigits))
+				    0))
+		  (f (fpformat x))
+		  (marker (position '|b| f))
+		  (digits (remove '|.| (subseq f 0 marker))))
+	     ;; Depending on the value of k, move the decimal
+	     ;; point. DIGITS was printed assuming the decimal point
+	     ;; is after the first digit. But if fdigits = 0, fpformat
+	     ;; actually printed out one too many digits, so we need
+	     ;; to remove that.
+	     (when (and fdigits (zerop fdigits))
+	       (setf digits (butlast digits)))
+	     (cond ((zerop k)
+		    (push '|.| digits))
+		   ((minusp k)
+		    ;; Put the leading decimal and then some zeroes
+		    (dotimes (i (abs k))
+		      (push #\0 digits))
+		    (push '|.| digits))
+		   (t
+		    ;; The number is scaled by 10^k. Do this by
+		    ;; putting the decimal point in the right place,
+		    ;; appending zeroes if needed.
+		    (setf digits
+			  (cond ((> k (length digits))
+				 (concatenate 'list
+					      digits
+					      (make-list (- k (length digits))
+							 :initial-element #\0)
+					      (list '|.|)))
+				(t
+				 (concatenate 'list
+					      (subseq digits 0 k)
+					      (list '|.|)
+					      (subseq digits k)))))))
+	     (let* ((str (format nil "~{~A~}" digits))
+		    (len (length str)))
+	       (when (and fdigits (>= fdigits len))
+		 ;; Append some zeroes to get the desired number of digits
+		 (setf str (concatenate 'string str
+					(make-string (+ 1 k (- fdigits len))
+						     :initial-element #\0)))
+		 (setf len (length str)))
+	       (values str
+		       len
+		       (char= (aref str 0) #\.)
+		       (char= (aref str (1- (length str))) #\.)
+		       1
+		       0)))))
+    (let* ((num-expt (exponent-value arg))
+	   (expt (if (zerop (second arg))
+		     0
+		     (1+ (- num-expt k))))
+	   (estr (format nil "~D" expt))
+	   (elen (if e (max (length estr) e) (length estr)))
+	   (add-zero-p nil))
+      (cond ((and w overflowchar e (> elen e))
+	     ;; Exponent overflow
+	     (dotimes (i w)
+	       (write-char overflowchar stream)))
+	    (t
+	     ;; The hairy case
+	     (let* ((fdig (if d
+			      (if (plusp k)
+				  (1+ (- d k))
+				  d)
+			      nil))
+		    (fmin (if (minusp k)
+			      1
+			      fdig))
+		    (spaceleft (if w
+				   (- w 2 elen
+				      (if (or atp (minusp (second arg)))
+					  1 0))
+				   nil)))
+	       (multiple-value-bind (fstr flen lpoint tpoint)
+		   (bfloat-to-string arg fdig)
+		 #+(or)
+		 (format t "fstr flen lpoint tpoint = ~S ~S ~S ~S~%"
+			 fstr flen lpoint tpoint)
+		 (when (and d (zerop d)) (setq tpoint nil))
+		 (when w
+		   (decf spaceleft flen)
+		   ;; See CLHS 22.3.3.2.  "If the parameter d is
+		   ;; omitted, ... [and] if the fraction to be
+		   ;; printed is zero then a single zero digit should
+		   ;; appear after the decimal point."  So we need to
+		   ;; subtract one from here because we're going to
+		   ;; add an extra 0 digit later.
+		   (when (and (null d) (char= (aref fstr (1- flen)) #\.))
+		     (setf add-zero-p t)
+		     (decf spaceleft))
+		   (when lpoint
+		     (if (or (> spaceleft 0) tpoint)
+			 (decf spaceleft)
+			 (setq lpoint nil)))
+		   (when (and tpoint (<= spaceleft 0))
+		     (setq tpoint nil)))
+		 #+(or)
+		 (format t "w, spaceleft overflowchar = ~S ~S ~S~%"
+			 w spaceleft overflowchar)
+		 (cond ((and w (< spaceleft 0) overflowchar)
+			;; Significand overflow; output the overflow char
+			(dotimes (i w)
+			  (write-char overflowchar stream)))
+		       (t
+			(when w
+			  (dotimes (i spaceleft)
+			    (write-char padchar stream)))
+			(if (minusp (second arg))
+			    (write-char #\- stream)
+			    (when atp (write-char #\+ stream)))
+			(when lpoint
+			  (write-char #\0 stream))
+
+			(write-string fstr stream)
+			;; Add a zero if we need it.  Which means
+			;; we figured out we need one above, or
+			;; another condition.  Basically, append a
+			;; zero if there are no width constraints
+			;; and if the last char to print was a
+			;; decimal (so the trailing fraction is
+			;; zero.)
+			(when (or add-zero-p
+				  (and (null w)
+				       (char= (aref fstr (1- flen)) #\.)))
+			  (write-char #\0 stream))
+			(write-char (if exponentchar
+					exponentchar
+					#\b)
+				    stream)
+			(write-char (if (minusp expt) #\- #\+) stream)
+			(when e
+			  (dotimes (i (- e (length estr)))
+			    (write-char #\0 stream)))
+			(write-string estr stream)))))))))
+  (values))
+
+(defun bfloat-format-f (stream number colonp atsign &optional w d (k 0) ovf (pad #\space))
+  (labels
+      ((exponent-value (x)
+	 ;; Compute the (decimal exponent) of the bfloat number X.
+	 (let* (($fpprintprec 1)
+		(f (fpformat x))
+		(marker (position '|b| f)))
+	   ;; FIXME: do something better than printing and reading
+	   ;; the result.
+	   (read-from-string
+	    (format nil "~{~A~}" (nthcdr (1+ marker) f)))))
+       (bfloat-to-string (x fdigits scale spaceleft)
+	 ;; Print the bfloat X with FDIGITS after the decimal
+	 ;; point. To do this we need to know the exponent because
+	 ;; fpformat always produces exponential output. If the
+	 ;; exponent is E, and we want FDIGITS after the decimal
+	 ;; point, we need FDIGITS + E digits printed.
+	 (flet ((compute-prec (exp spaceleft)
+		  #+nil
+		  (format t "compute-prec ~D ~D~%" exp spaceleft)
+		  (cond (fdigits
+			 (+ fdigits exp 1))
+			(spaceleft
+			 (max (1- spaceleft) (1+ exp)))
+			(t
+			 (max (1+ exp) 0)))))
+	   (let* ((exp (+ k (exponent-value x)))
+		  ($fpprintprec (compute-prec exp spaceleft))
+		  (f (let ((maxima::$bftrunc nil))
+		       #+nil
+		       (format t "printprec = ~D~%" $fpprintprec)
+		       (fpformat (bcons (fpabs (cdr x))))))
+		  (marker (position '|b| f))
+		  (digits (remove '|.| (subseq f 0 marker))))
+	     ;; Depending on the value of scale, move the decimal
+	     ;; point. DIGITS was printed assuming the decimal point
+	     ;; is after the first digit. But if fdigits = 0, fpformat
+	     ;; actually printed out one too many digits, so we need
+	     ;; to remove that.
+	     #+nil
+	     (format t "exp, fdigits = ~D ~D, digits = ~S~%" exp fdigits digits)
+	     #+nil
+	     (when (and fdigits (zerop fdigits))
+	       (setf digits (butlast digits)))
+	     ;; Figure out where the decimal point should go.  An
+	     ;; exponent of 0 means the decimal is after the first
+	     ;; digit.
+	     (cond ((minusp exp)
+		    (dotimes (k (1- (abs exp)))
+		      (push '|0| digits))
+		    (push '|.| digits))
+		   ((< exp (length digits))
+		    (let ((len (length digits)))
+		      #+nil
+		      (format t "exp, len = ~D ~D~%" exp len)
+		      (setf digits (concatenate 'list
+						(subseq digits 0 (1+ exp))
+						(list '|.|)
+						(subseq digits (1+ exp))))))
+		   (t
+		    (setf digits (append digits (list '|.|)))))
+	     (let* ((str (format nil "~{~A~}" digits))
+		    (len (length str)))
+	       #+nil
+	       (format t "str = ~S~%" str)
+	       (when (and fdigits (>= fdigits len))
+		 ;; Append some zeroes to get the desired number of digits
+		 (setf str (concatenate 'string str
+					(make-string (+ 1 scale (- fdigits len))
+						     :initial-element #\0)))
+		 (setf len (length str)))
+	       (values str
+		       len
+		       (char= (aref str 0) #\.)
+		       (char= (aref str (1- (length str))) #\.)
+		       1
+		       0))))))
+    (let ((spaceleft w))
+      (when (and w (or atsign (minusp (second number))))
+	(decf spaceleft))
+      (multiple-value-bind (str len lpoint tpoint)
+	  (bfloat-to-string number d k spaceleft)
+	;;if caller specifically requested no fraction digits, suppress the
+	;;optional trailing zero
+	(when (and d (zerop d)) (setq tpoint nil))
+	(when w 
+	  (decf spaceleft len)
+	  ;;optional leading zero
+	  (when lpoint
+	    (if (or (> spaceleft 0) tpoint) ;force at least one digit
+		(decf spaceleft)
+		(setq lpoint nil)))
+	  ;;optional trailing zero
+	  (when tpoint
+	    (if (> spaceleft 0)
+		(decf spaceleft)
+		(setq tpoint nil))))
+	(cond ((and w (< spaceleft 0) ovf)
+	       ;;field width overflow
+	       (dotimes (i w) (write-char ovf stream))
+	       t)
+	      (t
+	       (when w (dotimes (i spaceleft) (write-char pad stream)))
+	       (if (minusp (second number))
+		   (write-char #\- stream)
+		   (if atsign (write-char #\+ stream)))
+	       (when lpoint (write-char #\0 stream))
+	       (write-string str stream)
+	       (when tpoint (write-char #\0 stream))
+	       nil))))))
+
 
 ;; Tells you if you have a bigfloat object.  BUT, if it is a bigfloat,
 ;; it will normalize it by making the precision of the bigfloat match
