@@ -211,8 +211,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 		  (explodec (1- (cadr l))))))))
 
 
-;; Format bfloats using ~E format. This is suitable as a ~// format.
-;;
 ;; NOTE: This is a modified version of FORMAT-EXP-AUX from CMUCL to
 ;; support printing of bfloats.
 (defun bfloat-format-e (stream arg colonp atp
@@ -237,7 +235,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 					1
 					(1+ fdigits))
 				    0))
-		  (f (fpformat x))
+		  (f (fpformat (bcons (fpabs (cdr x)))))
 		  (marker (position '|b| f))
 		  (digits (remove '|.| (subseq f 0 marker))))
 	     ;; Depending on the value of k, move the decimal
@@ -288,7 +286,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	   (expt (if (zerop (second arg))
 		     0
 		     (1+ (- num-expt k))))
-	   (estr (format nil "~D" expt))
+	   (estr (format nil "~D" (abs expt)))
 	   (elen (if e (max (length estr) e) (length estr)))
 	   (add-zero-p nil))
       (cond ((and w overflowchar e (> elen e))
@@ -373,6 +371,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 			(write-string estr stream)))))))))
   (values))
 
+;; NOTE: This is a modified version of FORMAT-FIXED-AUX from CMUCL to
+;; support printing of bfloats.
 (defun bfloat-format-f (stream number colonp atsign &optional w d (k 0) ovf (pad #\space))
   (labels
       ((exponent-value (x)
