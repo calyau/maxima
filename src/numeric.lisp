@@ -2236,9 +2236,9 @@
 	       (if overflowchar
 		   (format s "'~C," overflowchar)
 		   (write-string "," s))
-	       (if (char= padchar #\space)
-		   (write-string "," s)
-		   (format s "'~C," padchar))
+	       (if padchar
+		   (format s "'~C," padchar)
+		   (write-string "," s))
 	       (when exponentchar
 		 (format s "'~C" exponentchar))
 	       (when colonp
