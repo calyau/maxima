@@ -2206,9 +2206,9 @@
       #+nil
       (format t "~4d: ~S ~S ~S~%" k sum term (funcall f k)))))
 
-;; Format bfloats using ~E format. This is suitable as a ~// format.
+;; Format bigfloats using ~E format. This is suitable as a ~// format.
 ;;
-;; NOTE: This is a modified version of FORMAT-EXP-AUX from CMUCL to
+;; NOTE: This is a modified version of FORMAT-EXPONENTIAL from CMUCL to
 ;; support printing of bfloats.
 
 (defun format-e (stream number colonp atp
@@ -2248,6 +2248,11 @@
 	       (write-char #\E s))))
        (format stream f w d e k number)))))
 
+;; Format bigfloats using ~F format. This is suitable as a ~// format.
+;;
+;; NOTE: This is a modified version of FORMAT-FIXED from CMUCL to
+;; support printing of bfloats.
+
 (defun format-f (stream number colonp atp
 		 &optional w d k overflowchar padchar)
   (typecase number
@@ -2280,3 +2285,46 @@
 		 (write-char #\@ s))
 	       (write-char #\F s))))
        (format stream f w d k number)))))
+
+;; Format bigfloats using ~G format. This is suitable as a ~// format.
+;;
+;; NOTE: This is a modified version of FORMAT-GENERAL from CMUCL to
+;; support printing of bfloats.
+
+(defun format-g (stream number colonp atp
+		 &optional w d e k overflowchar padchar marker)
+  (typecase number
+    (bigfloat
+     (maxima::bfloat-format-g stream (real-value number) colonp atp
+			      w d e (or k 1) 
+			      overflowchar
+			      (or padchar #\space)
+			      (or marker #\b)))
+    (complex-bigfloat
+     ;; FIXME: Do something better than this since this doesn't honor
+     ;; any of the parameters.
+     (princ number stream))
+    (otherwise
+     ;; We were given some other kind of object. Just use CL's normal
+     ;; ~G printer to print it.
+     (let ((f
+	     (with-output-to-string (s)
+	       ;; Construct a suitable ~E format string from the given
+	       ;; parameters. First, handle w,d,e,k.
+	       (write-string "~V,V,V,V," s)
+	       (if overflowchar
+		   (format s "'~C," overflowchar)
+		   (write-string "," s))
+	       (if padchar
+		   (format s "'~C," padchar)
+		   (write-string "," s))
+	       (when marker
+		 (format s "'~C" marker))
+	       (when colonp
+		 (write-char #\: s))
+	       (when atp
+		 (write-char #\@ s))
+	       (write-char #\G s))))
+       (format stream f w d e k number)))))
+     
+     
