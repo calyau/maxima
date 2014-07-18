@@ -36,8 +36,7 @@ float (foo1);
 /* An example involving symbolic constants (Planck's and speed of light). */
 
 (declare ([E, %lambda], dimensional),
- eq : E * %lambda = %c * %h,
- foo : dimensionally (solve (subst (E = 10^-20 ` J, eq), %lambda)));
+ foo : block ([E : 10^-20 ` J], dimensionally (solve (E * %lambda = %c * %h, %lambda))));
 [%lambda = %c*%h*(100000000000000000000 ` 1/J)];
 
 dimensions (foo);

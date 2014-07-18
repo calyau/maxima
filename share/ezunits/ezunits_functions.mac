@@ -526,12 +526,18 @@ subst_units (u) := block ([v : listofvars (units (u)), substs],
   substs : makelist (v1 = units_gensyms [v1], v1, v),
   subst (substs, units (u)));
 
-dimensionally (e%) ::= block ([body, units_gensyms : make_array ('hashed), context_name : gensym ()],
- apply (supcontext, [context_name]),
- context : context_name,
- body : applyb1 (e%, rununitify),
- buildq ([body, context_name, M : map (lambda ([e], lhs (e) = 1 ` rhs (e)), inverse_gensym_map (units_gensyms))],
-  block ([foo : subst (M, body)], killcontext (context_name), foo)));
+dimensionally (e%) ::=
+  buildq ([e%_op : op (e%), e%_args : args (e%), context_name : gensym ()],
+    block
+     ([units_gensyms, unitless_args, reunitification_eqs, reunitified],
+      supcontext (context_name),
+      context : context_name,
+      units_gensyms : make_array ('hashed), 
+      unitless_args : applyb1 (e%_args, rununitify),
+      reunitification_eqs : map (lambda ([e], lhs (e) = 1 ` rhs (e)), inverse_gensym_map (units_gensyms)),
+      reunitified : subst (reunitification_eqs, apply (e%_op, unitless_args)),
+      killcontext (context_name),
+      reunitified));
 
 gensym_map (h) := map ("=", rest (arrayinfo (h), 2), listarray (h));
 inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
