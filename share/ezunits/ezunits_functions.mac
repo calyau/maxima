@@ -499,8 +499,9 @@ display_known_unit_conversions () :=
 simp : false;
 
 matchdeclare ([uu%, vv%, aa%, bb%], unitop_p);
+matchdeclare (nn%, integerp);
 
-tellsimp ('diff (uu%, vv%, 1), 'diff (qty (uu%), qty (vv%), 1) ` (units (uu%) / units (vv%)));
+tellsimp ('diff (uu%, vv%, nn%), 'diff (qty (uu%), qty (vv%), nn%) ` (units (uu%) / (units (vv%))^nn%));
 
 tellsimp ('integrate (uu%, vv%), 'integrate (qty (uu%), qty (vv%)) ` (units (uu%) * units (vv%)));
 

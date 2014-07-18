@@ -541,6 +541,9 @@ ev (xx, xyz = (1729 + 42/99) ` kg, nouns);
 'diff (x (t) ` inch, t ` year, 1);
 'diff (x (t), t, 1) ` inch / year;
 
+'diff (x (t) ` inch, t ` year, 2);
+'diff (x (t), t, 2) ` inch / year^2;
+
 'integrate (f (x) ` N, x ` m, 1 ` m, 10 ` m);
 ('integrate (f (x), x, 1, 10)) ` N*m;
 
