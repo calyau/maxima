@@ -49,7 +49,7 @@ evolution(fun, initial, n, [options]) :=
     if not member('x,kwds) then options: cons(['x, -0.5, n+0.5],options),
     if not member('xlabel,kwds) then options: endcons(['xlabel, "n"],options),
     if not member('ylabel,kwds) then
-          options: endcons(['ylabel,concat(listofvars(fun)[1],"(n)")],options),
+          options: endcons(['ylabel,sconcat(listofvars(fun)[1],"(n)")],options),
     if not member('style,kwds) then options: endcons(['style,'points],options),
     options: cons(['discrete, data], options),
     apply(plot2d, options))$
@@ -89,9 +89,9 @@ staircase(fun, initial, n, [options]) :=
     if not member('y,kwds) then 
        options: endcons(['y,1.1*z1-.1*z2,1.1*z2-.1*z1],options),
     if not member('xlabel,kwds) then
-       options: endcons(['xlabel,concat(listofvars(fun)[1],"(n)")],options),
+       options: endcons(['xlabel,sconcat(listofvars(fun)[1],"(n)")],options),
     if not member('ylabel,kwds) then
-       options: endcons(['ylabel,concat(listofvars(fun)[1],"(n+1)")],options),
+       options: endcons(['ylabel,sconcat(listofvars(fun)[1],"(n+1)")],options),
     if not member('legend,kwds) then options: endcons(['legend,false],options),
     options: cons([['discrete, stair], fun, listofvars(fun)[1]], options),
     apply(plot2d, options))$
@@ -144,9 +144,9 @@ evolution2d(fun, state, initial, n, [options]) :=
                  error("The function",fun[2],"gave a non-numerical value:", y),
        x: xaux),
     if not member('xlabel,kwds) then
-       options: endcons(['xlabel,state[1]],options),
+       options: endcons(['xlabel,string(state[1])],options),
     if not member('ylabel,kwds) then
-       options: endcons(['ylabel,state[2]],options),
+       options: endcons(['ylabel,string(state[2])],options),
     if not member('style,kwds) then options: endcons(['style,'points],options),
     options: cons(['discrete, data], options),
     print("Graph passed to plot2d..."),
@@ -186,10 +186,10 @@ block
       (if not listp(options[i]) then error("Wrong option", options[i]),
        kwds: cons(options[i][1], kwds)),
     if not member('xlabel,kwds) then
-       (xlabel: concat("The chaos game with ",m," points"),
+       (xlabel: sconcat("The chaos game with ",m," points"),
         options: endcons(['xlabel,xlabel],options)),
     if not member('ylabel,kwds) then
-       (ylabel: concat("contraction factor: ",b),
+       (ylabel: sconcat("contraction factor: ",b),
         options: endcons(['ylabel,ylabel],options)),
     if not member('style,kwds) then options: endcons(['style,'points],options),
     options: cons(['discrete, data], options),
@@ -242,7 +242,7 @@ block
        (if not listp(options[i]) then error("Wrong option", options[i]),
         kwds: cons(options[i][1], kwds)),
     if not member('xlabel,kwds) then
-       (xlabel: concat("Iterated Function System of ",m," transformations"),
+       (xlabel: sconcat("Iterated Function System of ",m," transformations"),
         options: endcons(['xlabel,xlabel],options)),
     if not member('ylabel,kwds) then options: endcons(['ylabel,""],options),
     if not member('style,kwds) then options: endcons(['style,'points],options),
@@ -358,9 +358,9 @@ block
            else
               plot: cons(['x,domain[3],domain[2]],plot)),
        if not member('xlabel,kwds) then
-          plot: endcons(['xlabel,domain[1]],plot),
+          plot: endcons(['xlabel,string(domain[1])],plot),
        if not member('ylabel,kwds) then
-          plot: endcons(['ylabel,var[1]],plot),
+          plot: endcons(['ylabel,string(var[1])],plot),
        if not member('style,kwds) then plot:endcons(['style,'points],plot),
        plot: cons(['discrete, data], plot),
        print("Graph passed to plot2d..."),
