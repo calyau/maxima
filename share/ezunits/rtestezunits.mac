@@ -966,4 +966,37 @@ c ` d + e ` d;
 foo (a ` b) + c ` d + e ` d + 2 + %pi;
 (c + e) ` d + foo (a ` b) + 2 + %pi;
 
+/* test rules for relational expressions */
 
+(kill (a, b, x, m),
+ block ([a : 17 ` m, b : x ` mm],
+  [a < b, a <= b, a >= b, a > b,
+   /* SEE NOTE ABOUT SIMPLIFICATION OF DIMENSIONAL "=" IN EZUNITS_FUNCTIONS !!
+   a = b, a # b,
+    */
+   equal (a, b), notequal (a, b)]));
+[17 < x/1000, 17 <= x/1000, 17 >= x/1000, 17 > x/1000,
+ /*
+ 17 = x/1000, 17 # x/1000,
+  */
+ equal (17, x/1000), notequal (17, x/1000)];
+
+/* I'M NOT COMFORTABLE WITH IMPLICIT CONVERSION OF 0 TO DIMENSIONAL !!
+block ([a : b ` kg],
+ [a < 0, 0 < a,
+  a <= 0, 0 <= a,
+  a >= 0, 0 >= a,
+  a > 0, 0 > a,
+  a = 0, 0 = a,
+  a # 0, 0 # a,
+  equal (a, 0), equal (0, a),
+  notequal (a, 0), notequal (0, a)]);
+[b < 0, 0 < b,
+ b <= 0, 0 <= b,
+ b >= 0, 0 >= b,
+ b > 0, 0 > b,
+ b = 0, 0 = b,
+ b # 0, 0 # b,
+ equal (b, 0), equal (0, b),
+ notequal (b, 0), notequal (0, b)];
+ */

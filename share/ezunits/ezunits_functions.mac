@@ -114,6 +114,41 @@ tellsimpafter (aa% ` cc%, aa%*cc%);
 tellsimpafter (uu% ` nd%, qty (uu%) ` (units (uu%) * nd%));
 tellsimpafter (abs (aa% ` bb%), abs (aa%) ` bb%);
 tellsimpafter (aa% ` abs (bb%), aa% ` bb%);
+
+/* RULES FOR RELATIONAL EXPRESSIONS HERE !! NOTIFY GUNTER KOENIGSMANN */
+matchdeclare (uu%, unitp, vv%, lambda ([e], unitp(e) and dimensions(e) = dimensions(uu%)));
+tellsimpafter (uu% < vv%, qty (uu%) < qty (vv% `` units (uu%)));
+tellsimpafter (uu% <= vv%, qty (uu%) <= qty (vv% `` units (uu%)));
+tellsimpafter (uu% >= vv%, qty (uu%) >= qty (vv% `` units (uu%)));
+tellsimpafter (uu% > vv%, qty (uu%) > qty (vv% `` units (uu%)));
+/* SIMPLIFICATION OF DIMENSIONAL "=" CAUSES TROUBLE FOR EXISTING FUNCTIONALITY !!
+ * ALSO IT SEEMS REALLY HEAVYHANDED TO RULE OUT FOO`M = BAR`FOOT !!
+tellsimpafter (uu% = vv%, qty (uu%) = qty (vv% `` units (uu%)));
+tellsimpafter (uu% # vv%, qty (uu%) # qty (vv% `` units (uu%)));
+ */
+tellsimpafter (equal (uu%, vv%), equal (qty (uu%), qty (vv% `` units (uu%))));
+tellsimpafter (notequal (uu%, vv%), notequal (qty (uu%), qty (vv% `` units (uu%))));
+/* I'M NOT COMFORTABLE WITH IMPLICIT CONVERSION OF 0 TO DIMENSIONAL !!
+ * I REMEMBER NOW THAT THE JUSTIFICATION IS THAT 0 IS AN ELEMENT OF EVERY DIMENSIONAL LINE !!
+ * IS THAT ENOUGH TO GO ON ??
+tellsimpafter (uu% < 0, qty (uu%) < 0);
+tellsimpafter (0 < uu%, 0 < qty (uu%));
+tellsimpafter (uu% <= 0, qty (uu%) <= 0);
+tellsimpafter (0 <= uu%, 0 <= qty (uu%));
+tellsimpafter (uu% >= 0, qty (uu%) >= 0);
+tellsimpafter (0 >= uu%, 0 >= qty (uu%));
+tellsimpafter (uu% > 0, qty (uu%) > 0);
+tellsimpafter (0 > uu%, 0 > qty (uu%));
+tellsimpafter (uu% = 0, qty (uu%) = 0);
+tellsimpafter (0 = uu%, 0 = qty (uu%));
+tellsimpafter (uu% # 0, qty (uu%) # 0);
+tellsimpafter (0 # uu%, 0 # qty (uu%));
+tellsimpafter (equal (uu%, 0), equal (qty (uu%), 0));
+tellsimpafter (equal (0, uu%), equal (0, qty (uu%)));
+tellsimpafter (notequal (uu%, 0), notequal (qty (uu%), 0));
+tellsimpafter (notequal (0, uu%), notequal (0, qty (uu%)));
+ */
+
 simp: true$
 
 matchdeclare (uu%, lambda ([e], unitp (e) and not unitop_p (e)));
