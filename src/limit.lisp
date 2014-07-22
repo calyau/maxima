@@ -513,7 +513,7 @@ ignoring dummy variables and array indices."
      (cond
        ;; When a isn't crazy, try a^b = e^(b log(a))
        ((not (amongl (append infinitesimals infinities) base))
-        (simpinf (m^ '$%e (m* base `((%log) ,exponent)))))
+        (simpinf (m^ '$%e (m* exponent `((%log) ,base)))))
 
        ;; No idea. Just return what we've found so far.
        (t (list '(mexpt) base exponent))))))
