@@ -2020,3 +2020,9 @@ powerseries(x^x,x,0);
 
 sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)));
 1$
+
+/* bug #2749: Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat */
+
+block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
+[9.850355570085235b433, 9.850355570085235b433];
+
