@@ -421,10 +421,6 @@ use el comando:
 mandelbrot([filename,"dinamica9"])$
 @end example
 
-@ifnotinfo
-@image{../figures/dynamics9,8cm}
-@end ifnotinfo
-
 y el conjunto de Julia del n@'umero (-0.55 + i 0.6) puede ser obtenido con:
 @example
 julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
@@ -435,10 +431,6 @@ la gr@'afica se guardar@'a en el fichero @emph{dinamica10.xpm} y
 mostrar@'a la regi@'on desde -0.3 hasta 0.3 en la direcci@'on x, y desde
 0.3 hasta 0.9 en la direcci@'on y. Ser@'an usados 36 colores, comenzando
 con azul e terminando con amarillo.
-
-@ifnotinfo
-@image{../figures/dynamics10,8cm}
-@end ifnotinfo
 
 Para resolver num@'ericamente la ecuaci@'on diferencial
 

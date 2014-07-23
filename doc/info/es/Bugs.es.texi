@@ -4,8 +4,10 @@
 @end menu
 
 
-@node Funciones y variables para la detecci@'on e informe de fallos
+@node Funciones y variables para la detecci@'on e informe de fallos,  , Detecci@'on e informe de fallos, Detecci@'on e informe de fallos
+
 @section Funciones y variables para la detecci@'on e informe de fallos
+
 @deffn {Funci@'on} run_testsuite ([@var{options}])
 
 Ejecuta el conjunto de pruebas de Maxima. Los tests que producen las 
