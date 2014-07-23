@@ -217,7 +217,7 @@
 	 rel))))
 
 (defun ratgreaterp (x y)
-  (cond ((and (mnump x) (mnump y))
+  (cond ((and (ratnump x) (ratnump y))
 	 (great x y))
 	((equal ($asksign (m- x y)) '$pos))))
 
