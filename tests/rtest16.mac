@@ -473,7 +473,7 @@ ratsimp(hgfred([-3/2,1],[-1/2], t));
 integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
  -(g32475^(2*n+1)*(g32475*n-n-1)/(g32475-1)^2+g32475^(n+1)/(g32475-1)^2)
   /(1-g32475),g32475,0,1);
-n^2/2+n;
+(n+1)^2/2-1/2;
 
 kill(all);
 done;
@@ -1418,15 +1418,15 @@ block([V:0.75, a:24, b:68, e],
  defint(f(x)=g(x),x,0,1);
  'integrate(f(x),x,0,1)='integrate(g(x),x,0,1);
  
-/* Bug report ID: 2796194 - error doing a Fourier transform
- * The following integral is divergent, but gives a noun form.
- * The Lisp error is no longer present.
- */
+/* Bug report ID: 2796194 - error doing a Fourier transform */
 (assume(equal(x,0)),done);
 done;
 
-integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf);
-%pi*'integrate(%e^(2*%i*%pi*t*x-2*%pi*t),t,minf,inf);
+errcatch(integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf));
+[];
+
+error;
+["defint: integral is divergent."];
 
 (forget(equal(x,0)),done);
 done;
