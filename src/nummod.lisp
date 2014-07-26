@@ -88,7 +88,7 @@
 
 ;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
 
-(defmacro bind-fpprec (val &rest exprs)
+(defmacro bind-fpprec (val &body exprs)
   `(let (fpprec bigfloatzero bigfloatone bfhalf bfmhalf)
      (let (($fpprec (fpprec1 nil ,val)))
        ,@exprs)))
@@ -124,8 +124,8 @@
       ;; this code might need to be repaired.
       
       (bind-fpprec digits 
-		   (setq f1 ($bfloat x))
-		   (if (not ($bfloatp f1)) (throw 'done nil)))
+        (setq f1 ($bfloat x))
+        (if (not ($bfloatp f1)) (throw 'done nil)))
 		   
       (incf digits 20)
       (setq f2 (bind-fpprec digits ($bfloat x)))
@@ -133,17 +133,17 @@
 
       (incf digits 20)
       (bind-fpprec digits 
-		   (setq f3 ($bfloat x))
-		   (if (not ($bfloatp f3)) (throw 'done nil))
+        (setq f3 ($bfloat x))
+        (if (not ($bfloatp f3)) (throw 'done nil))
 
-		   ;; Let's say that the true value of x is in the interval
-		   ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
-		   ;; Define n to be the number of integers in this interval; we have
-		   
-		   (setq eps (power ($bfloat 10) (- 20 digits)))
-		   (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
-		   (setq ub (add f3 (mult (take '(mabs) f3) eps)))
-		   (setq n (sub (take '($ceiling) ub) (take '($ceiling) lb))))
+        ;; Let's say that the true value of x is in the interval
+        ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
+        ;; Define n to be the number of integers in this interval; we have
+        
+        (setq eps (power ($bfloat 10) (- 20 digits)))
+        (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
+        (setq ub (add f3 (mult (take '(mabs) f3) eps)))
+        (setq n (sub (take '($ceiling) ub) (take '($ceiling) lb))))
       
       (setq f1 (take (list fn) f1))
       (setq f2 (take (list fn) f2))
