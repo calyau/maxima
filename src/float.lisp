@@ -1782,12 +1782,25 @@ One extra decimal digit in actual representation for rounding purposes.")
   (let ((fpprec (caddar f)))
     (fpintpart (cdr f))))
 
+;; Calculate the integer part of a floating point number that is represented as
+;; a list
+;;
+;;    (MANTISSA EXPONENT)
+;;
+;; The special variable fpprec should be bound to the precision (in bits) of the
+;; number. This encodes how many bits are known of the result and also a right
+;; shift. The pair denotes the number MANTISSA * 2^(EXPONENT - FPPREC), of which
+;; FPPREC bits are known.
+;;
+;; If EXPONENT is large and positive then we might not have enough information
+;; to calculate the integer part. Specifically, we only have enough information
+;; if EXPONENT < FPPREC. If that isn't the case, we signal a Maxima error.
 (defun fpintpart (f)
-  (prog (m)
-     (setq m (- fpprec (cadr f)))
-     (return (if (> m 0)
-		 (quotient (car f) (expt 2 m))
-		 (* (car f) (expt 2 (- m)))))))
+  (destructuring-bind (mantissa exponent) f
+    (if (< exponent fpprec)
+        (quotient mantissa (expt 2 (- fpprec exponent)))
+        (merror "~M doesn't have enough precision to compute its integer part"
+                `((bigfloat ,fpprec) ,mantissa ,exponent)))))
 
 (defun logbigfloat (a)
   (cond (($bfloatp (car a))
