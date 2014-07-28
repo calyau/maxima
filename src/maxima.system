@@ -566,7 +566,8 @@
 	       (:module integration :source-pathname ""
 			:components ((:file "sinint") 
 				     (:file "sin") 
-				     (:file "risch")))
+				     (:file "risch"))
+                        :depends-on (pattern-matching))
 	       (:module taylor-series :source-pathname ""
 			:components ((:file "hayat")))
 	       (:module definite-integration :source-pathname ""
@@ -575,7 +576,8 @@
 	       (:module trigonometry :source-pathname ""
 			:components ((:file "trigi") 
 				     (:file "trigo") 
-				     (:file "trgred")))
+				     (:file "trgred"))
+                        :depends-on (pattern-matching))
 	       (:module special-functions :source-pathname ""
 			:components ((:file "specfn")))
 	       (:module matrix-algebra :source-pathname ""

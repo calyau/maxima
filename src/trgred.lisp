@@ -538,39 +538,65 @@
 	 (sp1trigex e))
 	( e )))
 
+;; Return the expansion of ((trigfun) ((mplus) a b)). For example sin(a+b) =
+;; sin(a)cos(b) + cos(a)sin(b).
+(defun expand-trig-of-sum (trigfun a b)
+  (ecase trigfun
+    (%sin
+     (m+ (m* (sp1trig (list '(%sin) a))
+             (sp1trig (list '(%cos) b)))
+         (m* (sp1trig (list '(%cos) a))
+             (sp1trig (list '(%sin) b)))))
+    (%cos
+     (m- (m* (sp1trig (list '(%cos) a))
+             (sp1trig (list '(%cos) b)))
+         (m* (sp1trig (list '(%sin) a))
+             (sp1trig (list '(%sin) b)))))
+    (%sinh
+     (m+ (m* (sp1trig (list '(%sinh) a))
+             (sp1trig (list '(%cosh) b)))
+         (m* (sp1trig (list '(%cosh) a))
+             (sp1trig (list '(%sinh) b)))))
+    (%cosh
+     (m+ (m* (sp1trig (list '(%cosh) a))
+             (sp1trig (list '(%cosh) b)))
+         (m* (sp1trig (list '(%sinh) a))
+             (sp1trig (list '(%sinh) b)))))))
+
+;; Try to expand f(a+b) where f is sin, cos, sinh or cosh.
 (defun sp1trigex (e)
-  (let* ((ans (m2 (cadr e) '((mplus) ((coeffpp) (fr freevar))
-			     ((coeffpp) (exp true)))))
-         (fr (cdr (assoc 'fr ans :test #'eq)))
-         (exp (cdr (assoc 'exp ans :test #'eq))))
-    (cond ((signp e fr)
-	   (setq fr (cadr exp)
-		 exp (if (cdddr exp)
-                         (cons (car exp) (cddr exp))
-                         (caddr exp)))))
-    (cond ((or (equal fr 0)
-	       (null (member (caar e) '(%sin %cos %sinh %cosh) :test #'eq)))
-	   e)
-	  ((eq (caar e) '%sin)
-	   (m+ (m* (sp1trig (list '(%sin) exp))
-		   (sp1trig (list '(%cos) fr)))
-	       (m* (sp1trig (list '(%cos) exp))
-		   (sp1trig (list '(%sin) fr)))))
-	  ((eq (caar e) '%cos)
-	   (m- (m* (sp1trig (list '(%cos) exp))
-		   (sp1trig (list '(%cos) fr)))
-	       (m* (sp1trig (list '(%sin) exp))
-		   (sp1trig (list '(%sin) fr)))))
-	  ((eq (caar e) '%sinh)
-	   (m+ (m* (sp1trig (list '(%sinh) exp))
-		   (sp1trig (list '(%cosh) fr)))
-	       (m* (sp1trig (list '(%cosh) exp))
-		   (sp1trig (list '(%sinh) fr)))))
-	  ((eq (caar e) '%cosh)
-	   (m+ (m* (sp1trig (list '(%cosh) exp))
-		   (sp1trig (list '(%cosh) fr)))
-	       (m* (sp1trig (list '(%sinh) exp))
-		   (sp1trig (list '(%sinh) fr))))))))
+  (schatchen-cond w
+    ;; Ideally, we'd like to split the argument of the trig function into terms
+    ;; that involve VAR and those that are free of it.
+    ((m2 (cadr e) '((mplus) ((coeffpp) (a freevar)) ((coeffpp) (b true))))
+     (a b)
+
+     ;; Make sure that if B is zero then so is A (to simplify the cond)
+     (when (signp e b) (rotatef a b))
+
+     ;; Assuming we didn't just swap them, A will be free of VAR and B will
+     ;; contain any other terms. If A is zero (because the argument of trig
+     ;; function is a sum of terms, all of which involve VAR), then fall back on
+     ;; a different splitting, by terms of taking the first term of B.
+     (cond
+       ((and (signp e a)
+             (not (atom b))
+             (eq (caar b) 'mplus))
+        (expand-trig-of-sum (caar e)
+                            (cadr b)
+                            (if (cdddr b)
+                                (cons (car b) (cddr b))
+                                (caddr b))))
+
+       ;; For some weird reason, B isn't a sum. Give up.
+       ((signp e a) e)
+
+       ;; Do the splitting we intended in the first place.
+       (t
+        (expand-trig-of-sum (caar e) a b))))
+
+    ;; E doesn't match f(a+b). Return it unmodified.
+    (t nil e)))
 
 (defun sp1atrig (fn exp)
   (cond ((atom exp)
