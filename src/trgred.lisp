@@ -541,27 +541,15 @@
 ;; Return the expansion of ((trigfun) ((mplus) a b)). For example sin(a+b) =
 ;; sin(a)cos(b) + cos(a)sin(b).
 (defun expand-trig-of-sum (trigfun a b)
-  (ecase trigfun
-    (%sin
-     (m+ (m* (sp1trig (list '(%sin) a))
-             (sp1trig (list '(%cos) b)))
-         (m* (sp1trig (list '(%cos) a))
-             (sp1trig (list '(%sin) b)))))
-    (%cos
-     (m- (m* (sp1trig (list '(%cos) a))
-             (sp1trig (list '(%cos) b)))
-         (m* (sp1trig (list '(%sin) a))
-             (sp1trig (list '(%sin) b)))))
-    (%sinh
-     (m+ (m* (sp1trig (list '(%sinh) a))
-             (sp1trig (list '(%cosh) b)))
-         (m* (sp1trig (list '(%cosh) a))
-             (sp1trig (list '(%sinh) b)))))
-    (%cosh
-     (m+ (m* (sp1trig (list '(%cosh) a))
-             (sp1trig (list '(%cosh) b)))
-         (m* (sp1trig (list '(%sinh) a))
-             (sp1trig (list '(%sinh) b)))))))
+  (flet ((expand-it (op f1 f2 f3 f4)
+           (funcall op
+                    (m* (sp1trig (list f1 a)) (sp1trig (list f2 b)))
+                    (m* (sp1trig (list f3 a)) (sp1trig (list f4 b))))))
+    (ecase trigfun
+      (%sin  (expand-it #'add2* '(%sin)  '(%cos)  '(%cos)  '(%sin)))
+      (%cos  (expand-it #'sub*  '(%cos)  '(%cos)  '(%sin)  '(%sin)))
+      (%sinh (expand-it #'add2* '(%sinh) '(%cosh) '(%cosh) '(%sinh)))
+      (%cosh (expand-it #'sub*  '(%cosh) '(%cosh) '(%sinh) '(%sinh))))))
 
 ;; Try to expand f(a+b) where f is sin, cos, sinh or cosh.
 (defun sp1trigex (e)
