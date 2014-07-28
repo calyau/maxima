@@ -45,7 +45,6 @@
 (defvar *laws*)
 (defvar *trigbuckets*)
 (defvar *hyperbuckets*)
-(defvar *sp1logf* nil)
 
 ;;The Trigreduce file contains a group of routines which can be used to
 ;;make trigonometric simplifications of expressions.  The bulk of the
@@ -447,24 +446,40 @@
 	   (m^ '$%e exp))
 	  ((m* (m^ '$%e fr) (m^ '$%e exp))))))
 
-(defun sp1log (e)
-  (cond ((or *trigred (atom e) (free e var))
-	 (list '(%log) e))
-	((eq (caar e) 'mplus)
-	 (let* ((exp (m1- e))
-                (*a nil)
-                (*n nil))
-           (declare (special *n *a))
-	   (cond ((smono exp var)
-		  (list '(%log) e))
-		 (*sp1logf* (sp1log2 e))
-		 ((let* ((*sp1logf* t))
-                    (sp1log ($factor e)))))))
-	((eq (caar e) 'mtimes)
-	 (sp1 (m+l (mapcar #'sp1log (cdr e)))))
-	((eq (caar e) 'mexpt)
-	 (sp1 (m* (caddr e) (list '(%log) (cadr e)))))
-	((sp1log2 e))))
+;; Try to expand a logarithm for use in a power series in VAR by splitting up
+;; products.
+(defun sp1log (e &optional no-recurse)
+  (cond
+    ;; If E is free of VAR, is an atom, or we're supposed to be reducing rather
+    ;; than expanding, then just return E.
+    ((or *trigred (atom e) (free e var))
+     (list '(%log) e))
+
+    ;; The logarithm of a sum doesn't simplify very nicely, but call $factor to
+    ;; see if we can pull out one or more terms and then recurse (setting
+    ;; NO-RECURSE to make sure we don't end up in a loop)
+    ((eq (caar e) 'mplus)
+     (let* ((exp (m1- e)) *a *n)
+       (declare (special *n *a))
+       (cond
+         ((smono exp var)
+          (list '(%log) e))
+         ((not no-recurse)
+          (sp1log ($factor e) t))
+         (t (sp1log2 e)))))
+
+    ;; A product is much more promising. Do the transformation log(ab) =>
+    ;; log(a)+log(b) and pass it to SP1 for further simplification.
+    ((eq (caar e) 'mtimes)
+     (sp1 (m+l (mapcar #'sp1log (cdr e)))))
+
+    ;; Similarly, transform log(a^b) => b log(a) and pass back to SP1.
+    ((eq (caar e) 'mexpt)
+     (sp1 (m* (caddr e) (list '(%log) (cadr e)))))
+
+    ;; If we can't find any other expansions, pass the result to SP1LOG2, which
+    ;; tries again after expressing E as integrate(diff(e)/e).
+    ((sp1log2 e))))
 
 (defun sp1log2 (e)
   (and $verbose
