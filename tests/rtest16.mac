@@ -2020,3 +2020,10 @@ powerseries(x^x,x,0);
 
 sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)));
 1$
+
+/*
+  #2775: Don't expand a powerseries with log(ab)=log(a)+log(b) if a
+         is negative
+*/
+(gensumnum : 0, powerseries (log(2-x), x, 0));
+-sum(2^(-i1-1)*x^(i1+1)/(i1+1), i1, 0, inf)$

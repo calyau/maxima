@@ -446,6 +446,25 @@
 	   (m^ '$%e exp))
 	  ((m* (m^ '$%e fr) (m^ '$%e exp))))))
 
+;; Split TERMS into (VALUES NON-NEG OTHER) where NON-NEG and OTHER are a
+;; partition of the elements of TERMS. Expressions that are known not to be
+;; negative are placed in NON-NEG and all others end up in OTHER.
+;;
+;; This function is used to safely split products when expanding logarithms to
+;; avoid accidentally ending up with something like
+;;
+;;   log(1 - x) => log(-1) + log(x-1).
+;;
+;; Note that we don't check a term is strictly positive: if it was actually
+;; zero, the logarithm was bogus in the first place.
+(defun non-negative-split (terms)
+  (let ((non-neg) (other))
+    (dolist (term terms)
+      (if (memq ($sign term) '($pos $pz $zero))
+          (push term non-neg)
+          (push term other)))
+    (values non-neg other)))
+
 ;; Try to expand a logarithm for use in a power series in VAR by splitting up
 ;; products.
 (defun sp1log (e &optional no-recurse)
@@ -470,8 +489,18 @@
 
     ;; A product is much more promising. Do the transformation log(ab) =>
     ;; log(a)+log(b) and pass it to SP1 for further simplification.
+    ;;
+    ;; We need to be a little careful here because eg. factor(1-x) gives
+    ;; -(x-1). We don't want to end up with a log(-1) term! So check the sign of
+    ;; terms and only pull out the terms we know to be non-negative. If the
+    ;; argument was a negative real in the first place then we'd already got
+    ;; rubbish, but otherwise we won't pull out anything we don't want.
     ((eq (caar e) 'mtimes)
-     (sp1 (m+l (mapcar #'sp1log (cdr e)))))
+     (multiple-value-bind (non-neg other) (non-negative-split (cdr e))
+       (cond
+         ((null non-neg) (sp1log2 e))
+         (t
+          (sp1 (m+l (mapcar #'sp1log (cons other non-neg))))))))
 
     ;; Similarly, transform log(a^b) => b log(a) and pass back to SP1.
     ((eq (caar e) 'mexpt)
