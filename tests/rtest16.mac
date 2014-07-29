@@ -2043,3 +2043,7 @@ block([inf_exp, minf_exp],
   minf_exp: powerseries (1/(1+x), x, inf),
   inf_exp - minf_exp);
 0$
+
+/* #2765: powerseries with non-integer order */
+powerseries (diff (f(x), x, biggles), x, 0);
+"Failed to expand"$

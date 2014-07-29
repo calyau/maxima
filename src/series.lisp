@@ -424,19 +424,33 @@
       (cons x (dup x (1- %n)))))
 
 (defun sp2diff (exp l)
-  (let (indl)
-    (cond ((free exp var)
-	   (sp3form (sp2expand exp) (cons '(%derivative) l)))
-	  (t (do ((l l (cddr l)) (ll))
-		 ((null l)
-		  (if ll (sp3form exp (cons '(%derivative) (nreverse ll)))
-		      exp))
-	       (cond ((eq (car l) var)
-		      (do ((%i (cadr l) (1- %i)))
-			  ((= %i 0) exp)
-			(setq indl nil
-			      exp (sp2diff1 (sp2expand exp) nil nil))))
-		     (t (setq ll (list* (cadr l) (car l) ll)))))))))
+  (cond
+    ((free exp var)
+     (sp3form (sp2expand exp) (cons '(%derivative) l)))
+    (t
+     ;; If the expression isn't free of VAR, we know how to expand the result if
+     ;; the orders of differentiation are all explicit non-negative
+     ;; integers. Otherwise, give up.
+     (let ((indl) (remaining-derivs))
+       (loop
+          for (y order) on l by #'cddr
+          do
+            (cond
+              ((not (typep order '(integer 0)))
+               (throw 'psex nil))
+
+              ((not (eq y var))
+               (setf remaining-derivs (list* order y remaining-derivs)))
+
+              (t
+               (dotimes (i order)
+                 (setf indl nil)
+                 (setf exp (sp2diff1 (sp2expand exp) nil nil))))))
+
+       (if remaining-derivs
+           (sp3form exp `((%derivative)
+                          ,@(nreverse remaining-derivs)))
+           exp)))))
 
 (defun sp2diff1 (exp ind lol)		;ind is a list of the indices
 					;lol is a list of the lower limits
