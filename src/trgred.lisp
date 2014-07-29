@@ -510,24 +510,35 @@
     ;; tries again after expressing E as integrate(diff(e)/e).
     ((sp1log2 e))))
 
+;; We didn't manage to expand the expression, so make use of the fact that
+;; diff(log(f(x)), x) = f'(x)/f(x) and return integrate(f'(x)/f(x), x), hoping
+;; that a later stage will be able to do something useful with it.
+;;
+;; We have to be a little bit careful because an indefinite integral might have
+;; the wrong constant term. Instead, rewrite as
+;;
+;;  log(f(x0+h)) = log(f(x0+h)) - log(f(x0)) + log(f(x0))
+;;               = integrate(diff(log(f(x0+k)), k), k, 0, h) + log(f(x0))
+;;               = integrate(diff(f(x0+k))/f(x0+k), k, 0, h) + log(f(x0))
+;;
+;; The "x0" about which we expand is always zero (see the code in $powerseries)
 (defun sp1log2 (e)
-  (and $verbose
-       (prog2
-         (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
-	 (show-exp (list '(%log) e))
-	 (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
-		(list '(mlabel) nil
-		      (out-of
-		       (list '(mequal)
-			     (list '(%log) e)
-			     (list '(%integrate)
-				   (list '(mquotient)
-					 (list '(%derivative) e var 1)
-					 e)
-				   var)))))))
-  (list '(%integrate)
-	(sp1 ($ratsimp (list '(mtimes) (sdiff e var) (list '(mexpt) e -1))))
-	var))
+  (when $verbose
+    (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
+    (show-exp (list '(%log) e))
+    (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
+           (list '(mlabel) nil
+                 (out-of
+                  `((mequal)
+                    ((%log) ,e)
+                    ((%integrate)
+                     ((mquotient) ((%derivative) ,e ,var 1) ,e) ,var))))))
+  (let* ((dummy-sym ($gensym)))
+    (m+ (list '(%log) ($limit e var 0))
+        (list '(%integrate)
+              (maxima-substitute dummy-sym var
+                                 (sp1 (m// (sdiff e var) e)))
+              dummy-sym 0 var))))
 
 (defun sp1trig (e)
   (cond ((atom (cadr e)) (simplify e))
