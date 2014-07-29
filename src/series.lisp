@@ -399,24 +399,41 @@
 	   (m- e 1) nil nil))
 
 (defun sp2expt (exp)
-  (cond ((and (numberp (caddr exp)) (mexptp (cadr exp)))
-	 (sp2expt (m^ (cadr (cadr exp))
-		      (m* (caddr exp) (caddr (cadr exp))))))
-	((and (free (caddr exp) var)
-	      (signp g (caddr exp))
-	      (< (caddr exp) $maxposex))
-	 (m*l (dup (sp2expand (cadr exp)) (caddr exp))))
-	((free (cadr exp) var)
-	 (sp2sub (subst *index
-			'*index
-			(subst (cond ((eq (cadr exp) '$%e) 'sp2var)
-				     (t (list '(mtimes)
-					      (list '(mlog) (cadr exp))
-					      'sp2var)))
-			       'sp2var
-			       (get 'mexpt 'sp2)))
-		 (caddr exp)))
-	(t (throw 'psex nil))))
+  (let ((base (cadr exp))
+        (power (caddr exp)))
+    (cond
+      ;; Do (a^b)^c = a^(bc) when c is a number
+      ((and (numberp power) (mexptp base))
+       (sp2expt (m^ (cadr base)
+                    (m* power (caddr base)))))
+
+      ;; If a positive power which is free of the expansion variable and less
+      ;; than the maximum expansion power then expand the base and do the
+      ;; multiplication explicitly.
+      ((and (free power var)
+            (signp g power)
+            (< power $maxposex))
+       (m*l (dup (sp2expand base) power)))
+
+      ;; If the base is free of VAR, rewrite as a^b = e^(b log(a)) if necessary
+      ;; and then use the tabulated expansion of exp(x). If POWER is a sum then
+      ;; do the rewrite a^(b+c) = a^b a^c
+      ((free base var)
+       (let ((expansion
+              (subst *index '*index
+                     (if (eq base '$%e)
+                         (get 'mexpt 'sp2)
+                         (subst `((mtimes) ((mlog) ,base) sp2var) 'sp2var
+                                (get 'mexpt 'sp2))))))
+         (cond
+           ((not (mplusp power))
+            (sp2sub expansion power))
+
+           (t
+            (m*l (mapcar (lambda (summand) (sp2sub expansion summand))
+                         (cdr power)))))))
+
+      (t (throw 'psex nil)))))
 
 (defun dup (x %n)
   (if (= %n 1)
