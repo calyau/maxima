@@ -2024,6 +2024,8 @@ sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)))
 /*
   #2775: Don't expand a powerseries with log(ab)=log(a)+log(b) if a
          is negative
+
+  (and also #2767)
 */
 (gensumnum : 0, powerseries (log(2-x), x, 0));
--sum(2^(-i1-1)*x^(i1+1)/(i1+1), i1, 0, inf)$
+log(2) - sum (2^(-i2-1)*x^(i2+1)/(i2+1), i2, 0, inf)$

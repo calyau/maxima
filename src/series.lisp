@@ -515,15 +515,58 @@
 		 (t (sinint exp var))))
 	  (t (sinint exp var)))))
 
+;; Expand a definite integral, integrate(exp, v, lo, hi).
 (defun sp2integ2 (exp v lo hi)
-  (if (eq v var) (setq v (gensym) exp (subst v var exp)))
-  (cond ((and (free lo var) (free hi var))
-	 (cond ((free exp var)
-		(list '(%integrate) (subst var v exp) var lo hi))
-	       (t (sp3form (sp2expand exp)
-			   (list '(%integrate) v lo hi)))))
-	(t (m+ (sp2sub (setq exp (sp2expand (subst var v exp))) hi)
-	       (m* -1 (sp2sub exp lo))))))
+  ;; Deal with the case where the integration variable is also the expansion
+  ;; variable. Something's a bit odd if we're doing this, but we assume that the
+  ;; aliasing was accidental and that the (bound) integration variable should be
+  ;; called something else.
+  (when (eq v var)
+    (setq v (gensym)
+          exp (subst v var exp)))
+
+  (when (boundp '*sp2integ-recursion-guard*)
+    (throw 'psex
+      (list 'err '(mtext)
+            "Recursion when trying to expand the definite integral "
+            (out-of (symbol-value '*sp2integ-recursion-guard*)))))
+
+  (cond
+    ((not (and (free lo var) (free hi var)))
+     ;; Suppose one or both of the endpoints involves VAR. We'll give up unless
+     ;; they are monomials in VAR (because substituting a non-monomial into a
+     ;; power series is more difficult). If they *are* monomials in VAR, then we
+     ;; try to expand the integral as a power series and find an antiderivative.
+     (let ((lo-exp (sp2expand lo))
+           (hi-exp (sp2expand hi))
+           (*sp2integ-recursion-guard* exp))
+       (declare (special *sp2integ-recursion-guard*))
+
+       (unless (and (smono lo-exp var) (smono hi-exp var))
+         (throw 'psex
+           (list 'err '(mtext)
+                 "Endpoints of definite integral " (out-of exp)
+                 " are not monomials in the expansion variable.")))
+
+       ;; Since this is a formal powerseries calculation, we needn't concern
+       ;; ourselves with radii of convergence here. Just expand the integrand
+       ;; about zero. (Is there something cleverer we could do?)
+       (let ((anti-derivative (sinint ($powerseries exp v 0) v)))
+         ;; If the expansion had failed, we'd have thrown an error to top-level,
+         ;; so we can assume that ANTI-DERIVATIVE is a sum of monomials in
+         ;; V. Substituting in LO-EXP and HI-EXP, we'll get two sums of
+         ;; monomials in VAR. The difference of the two expressions isn't quite
+         ;; of the right form, but hopefully it's close enough for any other
+         ;; code that uses it.
+         (m- (maxima-substitute hi-exp v anti-derivative)
+             (maxima-substitute lo-exp v anti-derivative)))))
+
+    ((free exp var)
+     (list '(%integrate) (subst var v exp) var lo hi))
+
+    (t
+     (sp3form (sp2expand exp)
+              (list '(%integrate) v lo hi)))))
 
 ;;************************************************************************************
 ;;	phase three		miscellaneous garbage and final simplification
