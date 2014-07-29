@@ -2029,3 +2029,17 @@ sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)))
 */
 (gensumnum : 0, powerseries (log(2-x), x, 0));
 log(2) - sum (2^(-i2-1)*x^(i2+1)/(i2+1), i2, 0, inf)$
+
+/*
+  #2760: powerseries at minf
+
+  For an analytic function like this, the power series at minf should
+  match the power series at inf.
+*/
+block([inf_exp, minf_exp],
+  gensumnum : 0,
+  inf_exp: powerseries (1/(1+x), x, inf),
+  gensumnum : 0,
+  minf_exp: powerseries (1/(1+x), x, inf),
+  inf_exp - minf_exp);
+0$

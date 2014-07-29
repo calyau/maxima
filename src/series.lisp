@@ -28,15 +28,19 @@
 ;;psex -- for throws on failure to expand
 ;;
 
-(defmfun $powerseries (l var *pt)
-  (cond ((signp e *pt)
-	 (cond ((symbolp var) (seriesexpand* l))
-	       ((numberp var) (improper-arg-err var '$powerseries))
-	       (t (sbstpt l 'x (gensym) var var))))
-	((eq *pt '$inf)
-	 (sbstpt l (m// 1 'x) (gensym) var (div* 1 var)))
-	(t (sbstpt l (m+ 'x *pt) (gensym)
-		   var (simplifya (m- var *pt) nil)))))
+(defmfun $powerseries (expr var pt)
+  (when (numberp var)
+    (improper-arg-err var '$powerseries))
+  (cond
+    ((signp e pt)
+     (cond ((symbolp var) (seriesexpand* expr))
+           (t (sbstpt expr 'x (gensym) var var))))
+    ((eq pt '$inf)
+     (sbstpt expr (m// 1 'x) (gensym) var (div* 1 var)))
+    ((eq pt '$minf)
+     (sbstpt expr (m- (m// 1 'x)) (gensym) var (m- (div* 1 var))))
+    (t (sbstpt expr (m+ 'x pt) (gensym)
+               var (simplifya (m- var pt) nil)))))
 
 (defun sbstpt (exp sexp var var1 usexp)
   (setq sexp (subst var 'x sexp))
