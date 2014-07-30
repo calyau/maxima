@@ -22,76 +22,6 @@ buildq([foo:sin(baz+bar)],1);
 buildq([foo:[sin(baz+bar),sin(baz-bar)]],+splice(foo));
 sin(baz+bar)+sin(baz-bar)$
 
-/* Fixed in series.lisp rev 1.5, 04 Feb 2004.  
-   First case returned second result */
-powerseries(1/sqrt(1+x),x,0);
-2*'sum(x^i1/beta(1/2-i1,i1+1),i1,0,inf);
-powerseries(sqrt(1+x),x,0);
-2*('sum(x^i2/beta(3/2-i2,i2+1),i2,0,inf))/3;
-
-/* sf bug 1730044 - powerseries(1+x^n,x,0) wrong; see also #2764 power series of 1 + x^n */
-powerseries(1+x^n, x, 0);
-1+x^n$
-
-(gensumnum : 0, declare(n, integer), powerseries(1/(1+x^n), x, 0));
-'sum((-1)^i1*x^(i1*n),i1,0,inf)$
-
-/* #2756 powerseries of constant plus power of linear  */
-(gensumnum : 0, powerseries(1 + (1-x)^(1/3),x,0));
-(3*sum(((-1)^i1*x^i1)/beta(4/3-i1,i1+1),i1,0,inf))/4+1$
-
-/* Examples from SF bug report [ 1722156 ] powerseries((x+1)/(1-2*x^2), x, 0);
- * tnx Dan Gildea
- */
-
-gensumnum : 0;
-0;
-
-/* two simple roots */
-powerseries((1)/((1-2*x)*(1-3*x)), x, 0);
-'sum((3^(i1+1)+(-2*2^i1))*x^i1,i1,0,inf);
-
-/* fibonacci */
-powerseries((1)/(1-x-x^2), x, 0);
--'sum((-2*(sqrt(5)-1)^(-i2-1)*2^i2/sqrt(5)
- -2*(sqrt(5)+1)^(-i2-1)*(-2)^i2/sqrt(5))
- *x^i2,i2,0,inf);
-
-/* 1 1 2 2 4 4 8 8 */
-factor(powerseries((1+x)/(1-2*x^2), x, 0));
-/*
-'sum( (-1*(1/-(1/sqrt(2)))*(1/sqrt(2)-1)*(1/-(4/sqrt(2)))*(1/-(1/sqrt(2)))^i3 + 
-      -1*(1/(1/sqrt(2)))*(-1/sqrt(2)-1)*(1/(4/sqrt(2)))*(1/(1/sqrt(2)))^i3 ) * x^i3,i3,0,inf);
-*/
-
-'sum(2^(i3/2-3/2)*((sqrt(2)-1)*(-1)^i3+sqrt(2)+1)*x^i3,i3,0,inf);
-
-/* multiple root */
-powerseries((1+x)/(1-x)^2, x, 0);
-'sum(2*(i4+1)*x^i4-x^i4,i4,0,inf);
-
-/* numerator higher order poly than denom */
-powerseries((1+x^3)/(1-x-x^2), x, 0);
--2*x
- *'sum((-2*(sqrt(5)-1)^(-i5-1)*2^i5/sqrt(5)
-   -2*(sqrt(5)+1)^(-i5-1)*(-2)^i5/sqrt(5))
-   *x^i5,i5,0,inf)
-  -x+1;
-
-/* zero root in denom */
-powerseries((1)/((1-2*x)*(x)), x, 0);
-('sum(2^i6*x^i6,i6,0,inf))/x;
-
-/* one simple and one repeated root in denom */
-powerseries((1+x+x^2)/((1-2*x)*(1+x)^2), x, 0);
-'sum(7*2^i7*x^i7/9+(i7+1)*(-1)^i7*x^i7/3-(-1)^i7*x^i7/9,i7,0,inf);
-
-/* gcd of exps is two */
-powerseries((1-x^2)/(1-4*x^2+x^4), x, 0);
-'sum((-1*(1/(2-sqrt(3)))*(sqrt(3)-1)*(1/(2*(2-sqrt(3))-4))*(1/(2-sqrt(3)))^i8 +
-      -1*(1/(sqrt(3)+2))*(-sqrt(3)-1)*(1/(2*(sqrt(3)+2)-4))*(1/(sqrt(3)+2))^i8 )*x^(2*i8), 
-      i8, 0, inf);
-
 /* Verify that extended functionality of rhs/lhs works as advertised */
 
 (kill (x, y, aa, bb, cc), infix("@@"), 0);
@@ -2014,59 +1944,7 @@ integrate ([foo(x), bar(x)], x, x[1], x[2]);
 trigsimp (diff (J, t) - I);
 0;
 
-/* #2750 powerseries(x^x,x,0) gives Lisp error */
-powerseries(x^x,x,0);
-"Failed to expand"$
-
-/* #2756 powerseries of constant plus power of linear */
-(gensumnum : 0, powerseries((1-x)^(1/3) + 1,x,0));
-(3*sum(((-1)^i1*x^i1)/beta(4/3-i1,i1+1),i1,0,inf))/4+1$
-
-sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)));
-1$
-
 /* bug #2749: Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat */
 
 block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
 [9.850355570085235b433, 9.850355570085235b433];
-
-/*
-  #2775: Don't expand a powerseries with log(ab)=log(a)+log(b) if a
-         is negative
-
-  (and also #2767)
-*/
-(gensumnum : 0, powerseries (log(2-x), x, 0));
-log(2) - sum (2^(-i2-1)*x^(i2+1)/(i2+1), i2, 0, inf)$
-
-/*
-  #2760: powerseries at minf
-
-  For an analytic function like this, the power series at minf should
-  match the power series at inf.
-*/
-block([inf_exp, minf_exp],
-  gensumnum : 0,
-  inf_exp: powerseries (1/(1+x), x, inf),
-  gensumnum : 0,
-  minf_exp: powerseries (1/(1+x), x, inf),
-  inf_exp - minf_exp);
-0$
-
-/* #2765: powerseries with non-integer order */
-powerseries (diff (f(x), x, biggles), x, 0);
-"Failed to expand"$
-
-/* #2755: powerseries of natural exponential */
-niceindices (powerseries (%e^x, x, 1));
-sum (1/i!, i, 0, inf) * sum((x-1)^i/i!, i, 0, inf)$
-
-/*
-  #2760
-
-  Make sure that we give up rather than trying to substitute an
-  arbitrary expression for an integration / differentiation variable
-  after expansion.
-*/
-powerseries(f(x),x,inf);
-f(x)$

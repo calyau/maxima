@@ -207,11 +207,6 @@ forget(x>0);
 
 /* ---------- Series representations ---------------------------------------- */
 
-/* The Maxima user function powerseries does not know the definining
- * powerseries for the sqrt function. At this time we include no further
- * tests for the function powerseries.
- */
-
 /* Check taylor expansion */
 
 taylor(sqrt(x), x, x0, 2);
