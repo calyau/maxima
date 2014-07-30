@@ -7,12 +7,29 @@
 kill(all);
 done$
 
+/*
+  Basic identities
+*/
+powerseries(a, x, 0);
+a$
+
+powerseries(x, x, 0);
+x$
+
+/* Check that sums get expanded sanely (in SP1) */
+niceindices(powerseries(a + sin(x), x, 0) - powerseries(sin(x), x, 0));
+a$
+
+/* An element of the transformation dictionary for special trig sums in SP1 */
+niceindices(powerseries (1+tan(x)^2, x, 0) - powerseries(sec(x)^2, x, 0));
+0$
+
 /* Fixed in series.lisp rev 1.5, 04 Feb 2004.
    First case returned second result */
-powerseries(1/sqrt(1+x),x,0);
-2*'sum(x^i1/beta(1/2-i1,i1+1),i1,0,inf);
-powerseries(sqrt(1+x),x,0);
-2*('sum(x^i2/beta(3/2-i2,i2+1),i2,0,inf))/3;
+niceindices(powerseries(1/sqrt(1 + x), x, 0));
+2*'sum(x^i/beta(1/2-i,i+1),i,0,inf);
+niceindices (powerseries(sqrt(1+x),x,0));
+2*('sum(x^i/beta(3/2-i,i+1),i,0,inf))/3;
 
 /* sf bug 1730044 - powerseries(1+x^n,x,0) wrong; see also #2764 power series of 1 + x^n */
 powerseries(1+x^n, x, 0);

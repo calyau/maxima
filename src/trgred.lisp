@@ -62,33 +62,51 @@
     (declare (special $trigexpand *trigred $ratprint))
     (gcdred (sp1 exp))))
 
+;; The first pass in power series expansion (used by $powerseries in
+;; series.lisp), but also used by $trigreduce. Expands / reduces the expression
+;; E as a function VAR, controlled by the *TRIGRED and *NOEXPAND flags.
 (defun sp1 (e)
-  (cond ((atom e) e)
-	((eq (caar e) 'mplus)
-	 (do ((l *trans-list-plus* (cdr l)) (a))
-	     ((null l) (m+l (mapcar #'sp1 (cdr e))))
-	   (and (setq a (m2 e (caar l)))
-              (return (sp1 (sch-replace a (cadar l)))))))
-	((eq (caar e) 'mtimes)
-	 (sp1times e))
-	((eq (caar e) 'mexpt)
-	 (sp1expt (sp1 (cadr e)) (sp1 (caddr e))))
-	((eq (caar e) '%log)
-	 (sp1log (sp1 (cadr e))))
-	((member (caar e) '(%cos %sin %tan %cot %sec %csc
-                            %cosh %sinh %tanh %coth %sech %csch) :test #'eq)
-	 (sp1trig (list (car e) (let* ((*noexpand t)) (sp1 (cadr e))))))
-	((member (caar e) '(%asin %acos %atan %acot %asec %acsc
-                            %asinh %acosh %atanh %acoth %asech %acsch) :test #'eq)
-	 (sp1atrig (caar e) (let* ((*noexpand t)) (sp1 (cadr e)))))
-	((eq (caar e) 'mrat) (sp1 (ratdisrep e)))
-	((mbagp e)
-	 (cons (list (caar e)) (mapcar #'(lambda (u)
-					   (gcdred (sp1 u)))
-				       (cdr e))))
-	((eq (caar e) '%integrate)
-	 (list* '(%integrate) (sp1 (cadr e)) (cddr e)))
-        (t (recur-apply #'sp1 e))))
+  (cond
+    ((atom e) e)
+
+    ;; We recognise some special patterns that are expressed as sums, such as
+    ;; 1+tan(x)^2 => sec(x)^2. Rewrite using the first matching pattern (and
+    ;; recurse to try to simplify further). If no pattern matches, expand each
+    ;; term in the sum.
+    ((eq (caar e) 'mplus)
+     (or (dolist (pair *trans-list-plus*)
+           (let ((match (m2 e (first pair))))
+             (when match
+               (return (sp1 (sch-replace match (second pair)))))))
+         (m+l (mapcar #'sp1 (cdr e)))))
+
+    ((eq (caar e) 'mtimes)
+     (sp1times e))
+
+    ((eq (caar e) 'mexpt)
+     (sp1expt (sp1 (cadr e)) (sp1 (caddr e))))
+
+    ((eq (caar e) '%log)
+     (sp1log (sp1 (cadr e))))
+
+    ((member (caar e) '(%cos %sin %tan %cot %sec %csc
+                        %cosh %sinh %tanh %coth %sech %csch) :test #'eq)
+     (sp1trig (list (car e) (let* ((*noexpand t)) (sp1 (cadr e))))))
+
+    ((member (caar e) '(%asin %acos %atan %acot %asec %acsc
+                        %asinh %acosh %atanh %acoth %asech %acsch) :test #'eq)
+     (sp1atrig (caar e) (let* ((*noexpand t)) (sp1 (cadr e)))))
+
+    ((eq (caar e) 'mrat) (sp1 (ratdisrep e)))
+
+    ((mbagp e)
+     (cons (list (caar e)) (mapcar #'(lambda (u)
+                                       (gcdred (sp1 u)))
+                                   (cdr e))))
+    ((eq (caar e) '%integrate)
+     (list* '(%integrate) (sp1 (cadr e)) (cddr e)))
+
+    (t (recur-apply #'sp1 e))))
 
 (defun trigfp (e)
   (or (and (not (atom e)) (trigp (caar e))) (equal e 1)))
