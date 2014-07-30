@@ -31,21 +31,50 @@
 (defmfun $powerseries (expr var pt)
   (when (numberp var)
     (improper-arg-err var '$powerseries))
-  (cond
-    ((signp e pt)
-     (cond ((symbolp var) (seriesexpand* expr))
-           (t (sbstpt expr 'x (gensym) var var))))
-    ((eq pt '$inf)
-     (sbstpt expr (m// 1 'x) (gensym) var (div* 1 var)))
-    ((eq pt '$minf)
-     (sbstpt expr (m- (m// 1 'x)) (gensym) var (m- (div* 1 var))))
-    (t (sbstpt expr (m+ 'x pt) (gensym)
-               var (simplifya (m- var pt) nil)))))
 
-(defun sbstpt (exp sexp var var1 usexp)
-  (setq sexp (subst var 'x sexp))
-  (setq exp (maxima-substitute sexp var1 exp))
-  (maxima-substitute usexp var (seriesexpand* exp)))
+  (if (and (signp e pt) (symbolp var))
+      (seriesexpand* expr)
+      (cond
+        ((signp e pt)
+         (sbstpt expr 'x var var))
+        ((eq pt '$inf)
+         (sbstpt expr (m// 1 'x) var (div* 1 var)))
+        ((eq pt '$minf)
+         (sbstpt expr (m- (m// 1 'x)) var (m- (div* 1 var))))
+        (t
+         (sbstpt expr (m+ 'x pt) var (simplifya (m- var pt) nil))))))
+
+;; Return a list of the terms in the expression that are used as integration or
+;; differentiation variables.
+(defun intdiff-vars-in-expr (expr)
+  (cond
+    ((atom expr) nil)
+
+    ;; Arguably, if this is a definite integral, the variable isn't free so we
+    ;; shouldn't return it. But maxima-substitute doesn't know about bound
+    ;; variables and this is a helper function to avoid silly substitutions.
+    ((eq (caar expr) '%integrate) (list (caddr expr)))
+
+    ((eq (caar expr) '%derivative)
+     (loop for x in (cddr expr) by #'cddr collecting x))
+
+    (t
+     (reduce #'union (cdr expr) :key #'intdiff-vars-in-expr))))
+
+;; Series expand EXP after substituting in SEXP for VAR1, the main
+;; variable. SEXP should be an expression in 'X and 'X will be replaced by a
+;; gensym for the calculation. When the expansion is done, substitute USEXP for
+;; the gensym.
+(defun sbstpt (exp sexp var1 usexp)
+  (let* ((var (gensym))
+         (sub-exp (maxima-substitute (subst var 'x sexp) var1 exp))
+         (expanded (seriesexpand* sub-exp)))
+    ;; If we've ended up with diff(foo, var) then we give up and return the
+    ;; original contents (we can't substitute arbitrary expressions for the
+    ;; differentiation / integration variable).
+    (if (memq var (intdiff-vars-in-expr expanded))
+        exp
+        (maxima-substitute usexp var expanded))))
 
 (defun seriesexpand* (x)
   (let (*n *a *m *c

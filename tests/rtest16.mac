@@ -2051,3 +2051,13 @@ powerseries (diff (f(x), x, biggles), x, 0);
 /* #2755: powerseries of natural exponential */
 niceindices (powerseries (%e^x, x, 1));
 sum (1/i!, i, 0, inf) * sum((x-1)^i/i!, i, 0, inf)$
+
+/*
+  #2760
+
+  Make sure that we give up rather than trying to substitute an
+  arbitrary expression for an integration / differentiation variable
+  after expansion.
+*/
+powerseries(f(x),x,inf);
+f(x)$
