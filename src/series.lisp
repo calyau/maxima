@@ -102,20 +102,12 @@ integration / differentiation variable."))
         (maxima-substitute usexp var expanded))))
 
 (defun seriesexpand* (x)
-  (let (*n *a *m *c
-	   (*index (gensumindex))
-	   ($cauchysum t)
-	   ($ratsimpexpons t) $ratexpand
-	   *infsumsimp *ratexp *trigred *noexpand)
+  (let ((*index (gensumindex)) *n *a *m *c
+        ($cauchysum t) ($ratsimpexpons t)
+        $ratexpand *infsumsimp *ratexp *trigred *noexpand)
     (meval `(($declare) ,*index $integer))
-    (setq x (sp2expand (seriespass1 x)))
-    (cond ((and x (atom x)) x)
-	  ((and x (not (eq (car x) 'err))) x)
-	  ($verbose
-	   (mtell (intl:gettext "powerseries: unable to expand for the following reason: "))
-	   (cond ((null x) (mtell (intl:gettext "no reason given")) (intl:gettext "Failed to expand"))
-		 (t (cdr x))))
-	  (t (intl:gettext "Failed to expand")))))
+
+    (sp2expand (seriespass1 x))))
 
 (defun out-of (e)
   (let  ((e      (cond ((and (boundp '*var) *var)
