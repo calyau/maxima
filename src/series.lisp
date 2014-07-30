@@ -31,18 +31,43 @@
 (defmfun $powerseries (expr var pt)
   (when (numberp var)
     (improper-arg-err var '$powerseries))
+  (powerseries expr var pt))
 
-  (if (and (signp e pt) (symbolp var))
-      (seriesexpand* expr)
-      (cond
-        ((signp e pt)
-         (sbstpt expr 'x var var))
-        ((eq pt '$inf)
-         (sbstpt expr (m// 1 'x) var (div* 1 var)))
-        ((eq pt '$minf)
-         (sbstpt expr (m- (m// 1 'x)) var (m- (div* 1 var))))
-        (t
-         (sbstpt expr (m+ 'x pt) var (simplifya (m- var pt) nil))))))
+;; An error that can be raised deep in the bowels of POWERSERIES that we'll
+;; catch and return a noun form.
+(define-condition powerseries-expansion-error (error)
+  ((message :initarg :message :initform nil)))
+
+(defun powerseries-expansion-error (message &rest arguments)
+  (error 'powerseries-expansion-error :message (cons message arguments)))
+
+;; The top-level routine for $powerseries, which calls this function after
+;; spotting invalid arguments.
+(defun powerseries (expr var pt)
+  (handler-case
+      (if (and (signp e pt) (symbolp var))
+          (seriesexpand* expr)
+          (cond
+            ((signp e pt)
+             (sbstpt expr 'x var var))
+            ((eq pt '$inf)
+             (sbstpt expr (m// 1 'x) var (div* 1 var)))
+            ((eq pt '$minf)
+             (sbstpt expr (m- (m// 1 'x)) var (m- (div* 1 var))))
+            (t
+             (sbstpt expr (m+ 'x pt) var (simplifya (m- var pt) nil)))))
+
+    ;; If expansion fails, print a message in verbose mode but then return a
+    ;; noun form.
+    (powerseries-expansion-error (e)
+      (when $verbose
+        (mtell (intl:gettext "Failed to expand ~M with respect to ~M at ~M.~%")
+               expr var pt)
+        (with-slots (message) e
+          (when message
+            (terpri)
+            (apply #'mtell message))))
+      `((%powerseries) ,expr ,var ,pt))))
 
 ;; Return a list of the terms in the expression that are used as integration or
 ;; differentiation variables.
@@ -69,11 +94,15 @@
   (let* ((var (gensym))
          (sub-exp (maxima-substitute (subst var 'x sexp) var1 exp))
          (expanded (seriesexpand* sub-exp)))
-    ;; If we've ended up with diff(foo, var) then we give up and return the
-    ;; original contents (we can't substitute arbitrary expressions for the
-    ;; differentiation / integration variable).
+    ;; If we've ended up with diff(foo, var) then we give up (we can't
+    ;; substitute arbitrary expressions for the differentiation / integration
+    ;; variable).
     (if (memq var (intdiff-vars-in-expr expanded))
-        exp
+        (powerseries-expansion-error
+         (intl:gettext "~
+Couldn't make substitution to evaluate at the given point because the~%~
+power series expansion contained the expansion variable as an~%~
+integration / differentiation variable."))
         (maxima-substitute usexp var expanded))))
 
 (defun seriesexpand* (x)

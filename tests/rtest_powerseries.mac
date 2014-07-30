@@ -126,8 +126,8 @@ sum (1/i!, i, 0, inf) * sum((x-1)^i/i!, i, 0, inf)$
   arbitrary expression for an integration / differentiation variable
   after expansion.
 */
-powerseries(f(x),x,inf);
-f(x)$
+powerseries(f(x), x, inf);
+'powerseries(f(x), x, inf)$
 
 niceindices(powerseries(log(sin(x)/x),x,0));
 /*('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$*/
