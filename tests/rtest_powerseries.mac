@@ -78,8 +78,8 @@ powerseries((1-x^2)/(1-4*x^2+x^4), x, 0);
       i8, 0, inf);
 
 /* #2750 powerseries(x^x,x,0) gives Lisp error */
-powerseries(x^x,x,0);
-"Failed to expand"$
+powerseries(x^x, x, 0);
+'powerseries(x^x, x, 0)$
 
 /* #2756 powerseries of constant plus power of linear */
 (gensumnum : 0, powerseries((1-x)^(1/3) + 1,x,0));
@@ -113,7 +113,7 @@ block([inf_exp, minf_exp],
 
 /* #2765: powerseries with non-integer order */
 powerseries (diff (f(x), x, biggles), x, 0);
-"Failed to expand"$
+'powerseries (diff (f(x), x, biggles), x, 0)$
 
 /* #2755: powerseries of natural exponential */
 niceindices (powerseries (%e^x, x, 1));

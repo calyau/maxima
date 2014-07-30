@@ -22,11 +22,6 @@
 ;;******************************************************************************
 ;;				driver 	stage
 ;;******************************************************************************
-;;
-;;		the following throw labels are used
-;;
-;;psex -- for throws on failure to expand
-;;
 
 (defmfun $powerseries (expr var pt)
   (when (numberp var)
@@ -38,8 +33,9 @@
 (define-condition powerseries-expansion-error (error)
   ((message :initarg :message :initform nil)))
 
-(defun powerseries-expansion-error (message &rest arguments)
-  (error 'powerseries-expansion-error :message (cons message arguments)))
+(defun powerseries-expansion-error (&optional message &rest arguments)
+  (error 'powerseries-expansion-error
+         :message (when message (cons message arguments))))
 
 ;; The top-level routine for $powerseries, which calls this function after
 ;; spotting invalid arguments.
@@ -112,7 +108,7 @@ integration / differentiation variable."))
 	   ($ratsimpexpons t) $ratexpand
 	   *infsumsimp *ratexp *trigred *noexpand)
     (meval `(($declare) ,*index $integer))
-    (setq x (catch 'psex (sp2expand (seriespass1 x))))
+    (setq x (sp2expand (seriespass1 x)))
     (cond ((and x (atom x)) x)
 	  ((and x (not (eq (car x) 'err))) x)
 	  ($verbose
@@ -171,11 +167,13 @@ integration / differentiation variable."))
 		 *index 0 '$inf))))
 
 (defun sp2sub (s exp)
-  (cond ((smono exp var) (maxima-substitute exp 'sp2var (simplify s)))
-	(t (throw 'psex (list 'err '(mtext)
-			      "Tried to `maxima-substitute' the expansion of  "
-			      (out-of exp)
-			      " into an expansion")))))
+  (unless (smono exp var)
+    (powerseries-expansion-error
+     (intl:gettext "Can't substitute the value~%~M~%~
+                    into another expansion because it isn't a monomial in the~
+                    expansion variable.")
+     (out-of exp)))
+  (maxima-substitute exp 'sp2var (simplify s)))
 
 (defun ratexp (exp)
   (let (nn* dn* *gcd*)
@@ -204,7 +202,8 @@ integration / differentiation variable."))
 		    (m// n d))
 		   ((m1 n linpat)
 		    (m* (srbinexpnd (cdr ans)) (div* 1 d)))
-		   ((throw 'psex nil))))
+		   (t
+                    (powerseries-expansion-error))))
             ((smonop d var)
              (cond ((mplusp n)
                   (m+l (mapcar #'(lambda (q) (div* q d)) (cdr n))))
@@ -229,7 +228,7 @@ integration / differentiation variable."))
 
              (m// (srbinexpnd (cdr ans)) (cdr (assoc 'cc (cdr ans) :test #'eq))))
             (t
-             (and *ratexp (throw 'psex nil))
+             (and *ratexp (powerseries-expansion-error))
              (if (not (eq (caar d) 'mtimes)) 
 		 (ratexand1 n d)
 	       (do ((p (cdr d) (cdr p)))	; denom is a product
@@ -336,9 +335,8 @@ integration / differentiation variable."))
 			(and $verbose
 			     (mtell (intl:gettext "powerseries: partial fraction expansion failed, expanding denominator only.~%")))
 			(m* n (ratexp (m// 1 d))))
-					       (t (throw 'psex
-						    '(err (mtext)
-				       (intl:gettext "powerseries: partial fraction expansion failed")))))))
+                       (t (powerseries-expansion-error
+                           (intl:gettext "Partial fraction expansion failed"))))))
 	   t))
 
 (defun sratsubst (gcd num den)
@@ -434,7 +432,7 @@ integration / differentiation variable."))
 (defun sp2log (e)
   (funcall #'(lambda (exp *a *n)
 	       (cond ((or (atom e) (free e var)) (list '(%log) e))
-		     ((null (smono exp var)) (throw 'psex nil))
+		     ((null (smono exp var)) (powerseries-expansion-error))
 		     ((or (and (numberp *a)
 			       (minusp *a)
 			       (setq *a (- *a)))
@@ -491,7 +489,7 @@ integration / differentiation variable."))
             (m*l (mapcar (lambda (summand) (sp2sub expansion summand))
                          (cdr power)))))))
 
-      (t (throw 'psex nil)))))
+      (t (powerseries-expansion-error)))))
 
 (defun dup (x %n)
   (if (= %n 1)
@@ -512,7 +510,7 @@ integration / differentiation variable."))
           do
             (cond
               ((not (typep order '(integer 0)))
-               (throw 'psex nil))
+               (powerseries-expansion-error))
 
               ((not (eq y var))
                (setf remaining-derivs (list* order y remaining-derivs)))
@@ -619,10 +617,9 @@ integration / differentiation variable."))
           exp (subst v var exp)))
 
   (when (boundp '*sp2integ-recursion-guard*)
-    (throw 'psex
-      (list 'err '(mtext)
-            "Recursion when trying to expand the definite integral "
-            (out-of (symbol-value '*sp2integ-recursion-guard*)))))
+    (powerseries-expansion-error
+     (intl:gettext "Recursion when trying to expand the definite integral: ~M")
+     (out-of (symbol-value '*sp2integ-recursion-guard*))))
 
   (cond
     ((not (and (free lo var) (free hi var)))
@@ -636,10 +633,9 @@ integration / differentiation variable."))
        (declare (special *sp2integ-recursion-guard*))
 
        (unless (and (smono lo-exp var) (smono hi-exp var))
-         (throw 'psex
-           (list 'err '(mtext)
-                 "Endpoints of definite integral " (out-of exp)
-                 " are not monomials in the expansion variable.")))
+         (powerseries-expansion-error
+          (intl:gettext "Endpoints of definite integral ~M are not monomials in ~
+                         the expansion variable.") (out-of exp)))
 
        ;; Since this is a formal powerseries calculation, we needn't concern
        ;; ourselves with radii of convergence here. Just expand the integrand
