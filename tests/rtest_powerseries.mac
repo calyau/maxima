@@ -24,6 +24,19 @@ a$
 niceindices(powerseries (1+tan(x)^2, x, 0) - powerseries(sec(x)^2, x, 0));
 0$
 
+/* Check that constant factors get pulled out (in SP1TIMES) */
+niceindices(powerseries(a*sin(x), x, 0) - a*powerseries(sin(x), x, 0));
+0$
+
+/* ... even if they aren't atoms. */
+niceindices(powerseries((a+b)*sin(x), x, 0) - (a+b)*powerseries(sin(x), x, 0));
+0$
+
+/* "Atomic" factors also get pulled out */
+niceindices(powerseries(x*sin(x), x, 0) - x*powerseries(sin(x), x, 0));
+0$
+
+
 /* Fixed in series.lisp rev 1.5, 04 Feb 2004.
    First case returned second result */
 niceindices(powerseries(1/sqrt(1 + x), x, 0));
