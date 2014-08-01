@@ -79,6 +79,35 @@ niceindices(powerseries((x + u)^posint, x, 0));
 powerseries((x + y)^k, x, 0);
 'powerseries((x + y)^k, x, 0)$
 
+/* Some more white-box tests, based on the structure of SRATEXPND */
+
+/* If the numerator is monomial, factor it out and recurse */
+niceindices(powerseries(a*x^u/(1+x), x, 0) - a*x^u*powerseries(1/(1+x), x, 0));
+0$
+
+/* If the denominator is free of x and the numerator is a polynomial,
+   return the quotient */
+powerseries((x^2 + x + 1)/(a + b + c), x, 0);
+(x^2 + x + 1)/(a + b + c)$
+
+/* The only way of getting a monomial denominator in sratexpnd is if
+   the numerator is a polynomial. If the denominator is a sum, we return the
+   sum of quotients: */
+powerseries((x^2 + x + 1)/(a*x^2), x, 0);
+1/a + 1/(a*x) + 1/(a*x^2)$
+
+/* If the denominator isn't a sum, we just return the quotient of the
+   top and bottom. */
+powerseries((1+x)^n/(a*x^2), x, 0);
+(1+x)^n/(a*x^2)$
+
+/* (I haven't yet managed to find an example that triggers the
+    SRATSUBST clause and doesn't yield a noun form) */
+
+/* Partial fraction expansion */
+niceindices(powerseries(1/((1-2*x)*(1-3*x)), x, 0));
+'sum((3^(i+1) - 2^(i+1))*x^i, i, 0, inf)$
+
 /* Fixed in series.lisp rev 1.5, 04 Feb 2004.
    First case returned second result */
 niceindices(powerseries(1/sqrt(1 + x), x, 0));

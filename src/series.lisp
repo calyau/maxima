@@ -264,18 +264,31 @@ integration / differentiation variable."))
 ;  soln is not nonzero and every mult is 1
 (defun distinct-nonzero-roots-p (roots)
   (or (null roots)
-      (and (not (zerop1 (caddar roots)))	; root must not be zero
-	   (eq 1 (cadr roots))			; multiplicity of root must be one
-	   (distinct-nonzero-roots-p (cddr roots)))))
+      (and
+       ;; Check all roots have multiplicity one and are nonzero.
+       (loop
+          for (root mult) on roots by #'cddr
+          always (and (eql 1 mult)
+                      (eq ($sign `((mabs) ,(caddr root))) '$pos)))
+
+       ;; Now check that the roots are genuinely different from one another
+       ;; (eg. if I have two symbolic roots, A and B, then I don't need to know
+       ;; the values of A and B, but I do need to know that they aren't equal)
+       (loop
+          for rest on roots by #'cddr
+          always (loop
+                    for b in (cddr rest) by #'cddr
+                    with a = (car rest)
+                    always (eq '$pos
+                               ($sign `((mabs) ,(m- (caddr b) (caddr a))))))))))
 
 ; returns t if polynomial poly in variable var has all distinct roots
 (defun has-distinct-nonzero-roots-p (poly var)
   (let ((*roots nil)
 	(*failures nil))
     (solve poly var 1)
-    (cond (*failures nil)
-	  ((distinct-nonzero-roots-p *roots) t)
-	  (t nil))))
+    (and (not *failures)
+         (distinct-nonzero-roots-p *roots))))
 
 ; Rational Expansion Theorem for Distinct Roots
 ; Graham, Knuth, Patashnik, "Concrete Math" 2nd ed, p 340
