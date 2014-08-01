@@ -60,6 +60,6 @@
         ((mlist simp) "rtest_power" 19 20 26 58 62 65)
         "rtestdefstruct"
         "rtest_limit"
-        ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
         "rtest_powerseries"
+        ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
 	))

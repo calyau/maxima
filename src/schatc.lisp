@@ -627,6 +627,19 @@
 	   (cdr w1))
 	  (exp1))))
 
+;; Execute BODY with the variables in VARS bound using ALIST. If any variable is
+;; missing, it is set to NIL.
+;;
+;; Example usage:
+;;   (alist-bind (a b c) some-alist (+ a b c))
+(defmacro alist-bind (vars alist &body body)
+  (let ((alist-sym (gensym)))
+    `(let* ((,alist-sym ,alist)
+            ,@(loop
+                 for var in vars
+                 collecting `(,var (cdr (assoc ',var ,alist-sym :test #'eq)))))
+       ,@body)))
+
 ;; Factor out the common logic to write a COND statement that uses the Schatchen
 ;; pattern matcher.
 ;;
@@ -679,11 +692,7 @@
                       ;; If the clause matched, we explicitly bind all of those
                       ;; variables in a let form and then evaluate the
                       ;; associated body.
-                      (cond-body
-                       `((let ,(loop for var in variables
-                                  collecting `(,var (cdras ',var ,w)))
-                           ,@body))))
-                  `(,cond-test
-                    ,@cond-body)))))))
+                      (cond-body `(alist-bind ,variables ,w ,@body)))
+                  `(,cond-test ,cond-body)))))))
 
 (declare-top (unspecial var ans))

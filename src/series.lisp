@@ -362,19 +362,57 @@ integration / differentiation variable."))
 	       (t (cons *n (exlist (cdr exp))))))
 	(t (exlist (cdr exp)))))
 
+;; Perform a binomial expansion of (c x^m + a)^n.
+;;
+;; If n isn't known to be an integer, we'd like to write a sum of terms
+;;
+;;    x^(mk) c^k a^(n-k) / ((n+1) beta(n-k+1, k+1))
+;;
+;; But we have to be a bit careful: it only works if c, x and a are
+;; nonzero. (Otherwise the simplifier quite reasonably simplifies each of the
+;; terms to zero, because the only nonzero term has the undefined term 0^0 in
+;; it).
+;;
+;; If we're not sure whether cx is zero, we can just split out the first term
+;; from the sum. If a is definitely zero, we can just write down a single
+;; term. If we're not sure about a, it's a bit more difficult: if we know that n
+;; is a positive integer, the sum is finite (and has at least two terms) and we
+;; can just split off the last term. Otherwise, give up.
 (defun srbinexpnd (ans)
-  (let ((n (cdr (assoc 'n ans :test #'eq)))
-	(a (cdr (assoc 'a ans :test #'eq)))
-	(m (cdr (assoc 'm ans :test #'eq)))
-	(c (cdr (assoc 'c ans :test #'eq))))
-    (cond ((and (integerp n) (minusp n))
-	   (srintegexpd (neg n) a m c))
-	  (t (list '(%sum)
-		   (m// (m* (m^ (m* c var) (m* m *index))
-			    (m^ a (m- n *index)))
-			(m* (list '($beta) (m- n (m1- *index)) (m1+ *index))
-			    (m1+ n)))
-		   *index 0 '$inf)))))
+  (alist-bind (n a m c x) ans
+    (if (and (integerp n) (minusp n))
+        (srintegexpd (neg n) a m c)
+        (let ((sgn-a ($sign (list '(mabs) a)))
+              (sgn-cx ($sign `((mabs) ((mtimes) ,c ,x))))
+              (sgn-n ($sign n))
+              (general-term
+               (m// (m* (m^ var (m* m *index))
+                        (m^ c *index)
+                        (m^ a (m- n *index)))
+                    (m* (list '($beta) (m- n (m1- *index)) (m1+ *index))
+                        (m1+ n)))))
+          (cond
+            ((eq sgn-n '$zero) 1)
+            ((eq sgn-cx '$zero) (m^ a n))
+            ((eq sgn-a '$zero) (m* (m^ c n) (m^ x (m* m n))))
+
+            ((and (eq sgn-a '$pos) (eq sgn-cx '$pos))
+             (if (and ($featurep n '$integer)
+                      (memq sgn-n '($pos $pz)))
+                 `((%sum) ,general-term ,*index 0 ,n)
+                 `((%sum) ,general-term ,*index 0 $inf)))
+
+            ((eq sgn-a '$pos)
+             (m+ (m^ a n) `((%sum) ,general-term ,*index 1 $inf)))
+
+            ((and ($featurep n '$integer) (eq sgn-n '$pos))
+             (m+ `((%sum) ,general-term ,*index 0 ,(m1- n))
+                 (m* (m^ c n) (m^ x (m* n m)))))
+
+            (t
+             (powerseries-expansion-error
+              (intl:gettext "Couldn't expand binomial~%~M~%~
+                             as we didn't know what terms were nonzero."))))))))
 
 (defun psp2form (coeff exp bas)
   (list '(%sum) (m* coeff (m^ var exp)) *index bas '$inf))
