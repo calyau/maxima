@@ -159,7 +159,8 @@
 		      nil))
      (setq nn*
 	   (simplifya (pdis (ratnumerator e))
-		      nil))))
+		      nil)))
+  (values nn* dn*))
 
 (defun fmt (exp)
   (let (nn*)

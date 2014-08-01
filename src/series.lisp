@@ -168,12 +168,11 @@ integration / differentiation variable."))
   (maxima-substitute exp 'sp2var (simplify s)))
 
 (defun ratexp (exp)
-  (let (nn* dn* *gcd*)
+  (let (*gcd*)
     (if $verbose
 	(mtell (intl:gettext "powerseries: attempt rational function expansion of~%~M")
 	       (list '(mlabel) nil exp)))
-    (numden exp)
-    (sratexpnd nn* dn*)))
+    (multiple-value-call #'sratexpnd (numden exp))))
 
 (defun sratexpnd (n d)
   (let ((ans (list nil))
