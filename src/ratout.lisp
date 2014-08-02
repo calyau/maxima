@@ -325,7 +325,6 @@
      (setq p (pquotient p factor))
      (setq maxexp (quotient (cadr p) 2))
      (setq factors (cons factor factors))
-     (when (or (equal p 1) (equal p -1)) (return factors))
      (go a)
      d    (incf i)
      (go a)))
