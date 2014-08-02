@@ -221,24 +221,31 @@ integration / differentiation variable."))
                   (prog2 (setq d (let (($ratfac t))
                                    (ratdisrep ($rat (factor d) var))))
                       (m1 d linpat)))
-
              ;; We had num/den and LINPAT matched den. We need to replace cc
              ;; with num/cc and n with -n.
              (setf (cdr (assoc 'n ans)) (m- (cdr (assoc 'n ans)))
                    (cdr (assoc 'cc ans)) (m// n (cdr (assoc 'cc ans))))
-
              (srbinexpnd (cdr ans)))
+
             (t
              (and *ratexp (powerseries-expansion-error))
-             (if (not (eq (caar d) 'mtimes)) 
-		 (ratexand1 n d)
-	       (do ((p (cdr d) (cdr p)))	; denom is a product
-               ((null p) (ratexand1 n d))
-		 ; look for power of var (zero root) as term of denom
-               (cond ((or (eq (car p) var)
-                        (and (mexptp (car p)) (eq (cadaar p) var)))
-                    (return (m* (sratexpnd n (meval (div* d (car p))))
-				    (list '(mexpt) (car p) -1)))))))))))
+             ;; Look for a power of var (a zero root) as a term. We already know
+             ;; that d isn't a monomial, so we can only have a zero root if d is
+             ;; a product. We also know that d is not atomic because otherwise
+             ;; we'd have taken the (free d var) clause above.
+             (let ((zero-root
+                    (and (eq (caar d) 'mtimes)
+                         (find-if (lambda (factor)
+                                    (or (eq factor var)
+                                        (and (mexptp factor)
+                                             (eq (cadr factor) var))))
+                                  (cdr d)))))
+               (if (not zero-root)
+                   (ratexand1 n d)
+                   (let ((other-factors (remove zero-root (cdr d)
+                                                :test #'eq :count 1)))
+                     (m* (sratexpnd n (m*l other-factors))
+                         `((mexpt) ,zero-root -1)))))))))
 
 ; is a sum with index and bounds from psp2form
 (defun psp2formp (exp)
