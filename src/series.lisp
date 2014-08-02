@@ -339,26 +339,29 @@ integration / differentiation variable."))
 	  (t (error "EXPAND-DISTINCT-ROOTS: roots are not distinct.~%")))))
 
 (defun ratexand1 (n d)
-  (and $verbose
-       (prog2 (mtell (intl:gettext "powerseries: attempt partial fraction expansion of "))
-	   (show-exp (list '(mquotient) n d))
-	 (terpri)))
-  (funcall #'(lambda (*ratexp) 
-	       (let ((l ($partfrac (div* n d) var)))
-					 (cond ((eq (caar l) 'mplus)
-						(and $verbose
-			     (prog2 (mtell (intl:gettext "which is ~%"))
-				 (show-exp l)))
-			(psp2foldsum
-			 (m+l (mapcar #'ratexp
-				      (cdr l)))))
-		       ((poly? n var)
-			(and $verbose
-			     (mtell (intl:gettext "powerseries: partial fraction expansion failed, expanding denominator only.~%")))
-			(m* n (ratexp (m// 1 d))))
-                       (t (powerseries-expansion-error
-                           (intl:gettext "Partial fraction expansion failed"))))))
-	   t))
+  (when $verbose
+    (mtell (intl:gettext
+            "powerseries: attempt partial fraction expansion of "))
+    (show-exp (list '(mquotient) n d)) (terpri))
+
+  (let* ((*ratexp t)
+         (l ($partfrac (div* n d) var)))
+    (cond
+      ((eq (caar l) 'mplus)
+       (when $verbose
+         (mtell (intl:gettext "which is ~%"))
+         (show-exp l))
+       (psp2foldsum (m+l (mapcar #'ratexp (cdr l)))))
+
+      ((poly? n var)
+       (when $verbose
+         (mtell (intl:gettext
+                 "powerseries: partial fraction expansion failed, ~
+                  expanding denominator only.~%")))
+       (m* n (ratexp (m// 1 d))))
+
+      (t (powerseries-expansion-error
+          (intl:gettext "Partial fraction expansion failed"))))))
 
 (defun sratsubst (gcd num den)
   (and $verbose
