@@ -177,14 +177,16 @@ integration / differentiation variable."))
 (defun sratexpnd (n d)
   (let ((ans (list nil))
         (*splist*)
+        ;; A pattern that matches cc*(c*x^m + a)^n
         (linpat
          '((mtimes) ((coefftt) (cc not-zero-free var))
-                  ((mexpt) ((mplus) ((coeffpt)
-                               (w m1 ((mexpt) (x equal var)
-                                          (m not-zero-free var)))
-                               (c freevar))
-                              ((coeffpp) (a freevar)))
-                         (n not-zero-free var)))))
+           ((mexpt) ((mplus) ((coeffpt)
+                              (w m1 ((mexpt) (x equal var)
+                                     (m not-zero-free var)))
+                              (c freevar))
+                     ((coeffpp) (a freevar)))
+            (n not-zero-free var)))))
+
     (declare (special *splist*))
       (cond ((and (not (equal n 1)) (smono n var))
              (m* n (sratexpnd 1 d)))
@@ -192,7 +194,7 @@ integration / differentiation variable."))
              (cond ((poly? n var)
 		    (m// n d))
 		   ((m1 n linpat)
-		    (m* (srbinexpnd (cdr ans)) (div* 1 d)))
+		    (m// (srbinexpnd (cdr ans)) d))
 		   (t
                     (powerseries-expansion-error))))
             ((smonop d var)
@@ -209,15 +211,23 @@ integration / differentiation variable."))
 		  (has-distinct-nonzero-roots-p d var))
 	     (expand-distinct-roots n d))
 
-            ((and (equal n 1)
-                (prog2 (setq d (let (($ratfac t))
-                              (ratdisrep ($rat (factor d) var))))
-                     (m1 d linpat)))
+            ;; The SRBINEXPND call above dealt with expressions of the form
+            ;; cc*(c*x^m+a)^n. Here, we deal with b/(cc*(c*x^m+a)^n). If you
+            ;; explicitly write a polynomial like that, the simplifier will
+            ;; rewrite it as (..)^(-n) before it gets here, but things like
+            ;; 1/sqrt(x+1) won't have been rewritten successfully, so we catch
+            ;; them here.
+            ((and (free n var)
+                  (prog2 (setq d (let (($ratfac t))
+                                   (ratdisrep ($rat (factor d) var))))
+                      (m1 d linpat)))
 
-             ;; negate exponent because pattern matched denominator
-	     (setf (cdadr ans) (mul -1 (cdadr ans)))
+             ;; We had num/den and LINPAT matched den. We need to replace cc
+             ;; with num/cc and n with -n.
+             (setf (cdr (assoc 'n ans)) (m- (cdr (assoc 'n ans)))
+                   (cdr (assoc 'cc ans)) (m// n (cdr (assoc 'cc ans))))
 
-             (m// (srbinexpnd (cdr ans)) (cdr (assoc 'cc (cdr ans) :test #'eq))))
+             (srbinexpnd (cdr ans)))
             (t
              (and *ratexp (powerseries-expansion-error))
              (if (not (eq (caar d) 'mtimes)) 
@@ -391,40 +401,42 @@ integration / differentiation variable."))
 ;; is a positive integer, the sum is finite (and has at least two terms) and we
 ;; can just split off the last term. Otherwise, give up.
 (defun srbinexpnd (ans)
-  (alist-bind (n a m c x) ans
-    (if (and (integerp n) (minusp n))
-        (srintegexpd (neg n) a m c)
-        (let ((sgn-a ($sign (list '(mabs) a)))
-              (sgn-cx ($sign `((mabs) ((mtimes) ,c ,x))))
-              (sgn-n ($sign n))
-              (general-term
-               (m// (m* (m^ var (m* m *index))
-                        (m^ c *index)
-                        (m^ a (m- n *index)))
-                    (m* (list '($beta) (m- n (m1- *index)) (m1+ *index))
-                        (m1+ n)))))
-          (cond
-            ((eq sgn-n '$zero) 1)
-            ((eq sgn-cx '$zero) (m^ a n))
-            ((eq sgn-a '$zero) (m* (m^ c n) (m^ x (m* m n))))
+  (alist-bind (n a m c cc x) ans
+    (m* cc
+        (if (and (integerp n) (minusp n))
+            (srintegexpd (neg n) a m c)
+            (let ((sgn-a ($sign (list '(mabs) a)))
+                  (sgn-cx ($sign `((mabs) ((mtimes) ,c ,x))))
+                  (sgn-n ($sign n))
+                  (general-term
+                   (m// (m* (m^ var (m* m *index))
+                            (m^ c *index)
+                            (m^ a (m- n *index)))
+                        (m* (list '($beta) (m- n (m1- *index)) (m1+ *index))
+                            (m1+ n)))))
+              (cond
+                ((eq sgn-n '$zero) 1)
+                ((eq sgn-cx '$zero) (m^ a n))
+                ((eq sgn-a '$zero) (m* (m^ c n) (m^ x (m* m n))))
 
-            ((and (eq sgn-a '$pos) (eq sgn-cx '$pos))
-             (if (and ($featurep n '$integer)
-                      (memq sgn-n '($pos $pz)))
-                 `((%sum) ,general-term ,*index 0 ,n)
-                 `((%sum) ,general-term ,*index 0 $inf)))
+                ((and (eq sgn-a '$pos) (eq sgn-cx '$pos))
+                 (if (and ($featurep n '$integer)
+                          (memq sgn-n '($pos $pz)))
+                     `((%sum) ,general-term ,*index 0 ,n)
+                     `((%sum) ,general-term ,*index 0 $inf)))
 
-            ((eq sgn-a '$pos)
-             (m+ (m^ a n) `((%sum) ,general-term ,*index 1 $inf)))
+                ((eq sgn-a '$pos)
+                 (m+ (m^ a n) `((%sum) ,general-term ,*index 1 $inf)))
 
-            ((and ($featurep n '$integer) (eq sgn-n '$pos))
-             (m+ `((%sum) ,general-term ,*index 0 ,(m1- n))
-                 (m* (m^ c n) (m^ x (m* n m)))))
+                ((and ($featurep n '$integer) (eq sgn-n '$pos))
+                 (m+ `((%sum) ,general-term ,*index 0 ,(m1- n))
+                     (m* (m^ c n) (m^ x (m* n m)))))
 
-            (t
-             (powerseries-expansion-error
-              (intl:gettext "Couldn't expand binomial~%~M~%~
-                             as we didn't know what terms were nonzero."))))))))
+                (t
+                 (powerseries-expansion-error
+                  (intl:gettext
+                   "Couldn't expand binomial~%~M~%~
+                    as we didn't know which terms were nonzero.")))))))))
 
 (defun psp2form (coeff exp bas)
   (list '(%sum) (m* coeff (m^ var exp)) *index bas '$inf))
