@@ -489,10 +489,6 @@
 	  ((eq (caar l) 'mlist) (dsrl l))
 	  ((eq (caar l) '$matrix)
 	   (dot--ri (mapcar #'dsrl (cdr l)) '($matrix simp)))
-	  ((member (caar l) '(mlessp mleqp mgreaterp mgeqp) :test #'eq)
-	   (let ((ris1 (risplit (cadr l))) (ris2 (risplit (caddr l))))
-	     (cons (simplify (list (ncons (caar l)) (car ris1) (car ris2)))
-		   (simplify (list (ncons (caar l)) (cdr ris1) (cdr ris2))))))
 ;;;The Coversinemyfoot clause covers functions which can be converted
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  ((let ((foot (coversinemyfoot l)))
