@@ -627,4 +627,63 @@
 	   (cdr w1))
 	  (exp1))))
 
+;; Factor out the common logic to write a COND statement that uses the Schatchen
+;; pattern matcher.
+;;
+;; Each clause in CLAUSES should match (TEST VARIABLES &body BODY). This will be
+;; transformed into a COND clause that first runs TEST and binds the result to
+;; W. TEST is assumed to boil down to a call to M2, which returns an alist of
+;; results for the matched variables. VARIABLES should be a list of symbols and
+;; the clause only matches if each of these symbols is bound in the alist.
+;;
+;; As a special rule, if the CAR of TEST is of the form (AND F1 F2 .. FN) then
+;; the result of evaluating F1 is bound to W and then the clause only matches if
+;; F2 .. FN all evaluate to true as well as the test described above.
+;;
+;; If the clause matches then the result of the cond is that of evaluating BODY
+;; (in an implicit PROGN) with each variable bound to the corresponding element
+;; of the alist.
+;;
+;; To add an unconditional form at the bottom, use a clause of the form
+;;
+;;     (T NIL F1 .. FN).
+;;
+;; This will always match and doesn't try to bind any extra variables.
+
+(defmacro schatchen-cond (w &body clauses)
+  `(let ((,w))
+     (cond
+       ,@(loop
+            for clause in clauses
+            collecting
+              (let ((test (car clause))
+                    (variables (cadr clause))
+                    (body (cddr clause)))
+                ;; A clause matches in the cond if TEST returns non-nil and
+                ;; binds all the expected variables in the alist. As a special
+                ;; syntax, if the car of TEST is 'AND, then we bind W to the
+                ;; result of the first argument and then check the following
+                ;; arguments in an environment where W is bound (but the
+                ;; variables aren't).
+                (let ((cond-test
+                       (if (and (not (atom test)) (eq 'and (car test)))
+                           `(progn
+                              (setf ,w ,(cadr test))
+                              (and ,w ,@(loop for var in variables
+                                           collecting `(cdras ',var ,w))
+                                   ,@(cddr test)))
+                           `(progn
+                              (setf ,w ,test)
+                              (and ,w ,@(loop for var in variables
+                                           collecting `(cdras ',var ,w))))))
+                      ;; If the clause matched, we explicitly bind all of those
+                      ;; variables in a let form and then evaluate the
+                      ;; associated body.
+                      (cond-body
+                       `((let ,(loop for var in variables
+                                  collecting `(,var (cdras ',var ,w)))
+                           ,@body))))
+                  `(,cond-test
+                    ,@cond-body)))))))
+
 (declare-top (unspecial var ans))

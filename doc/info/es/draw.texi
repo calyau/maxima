@@ -1530,7 +1530,7 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} key_pos
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
-La opci@'on @code{key_pos} establece en qu@' posici@'on se colocar@'a la leyenda.
+La opci@'on @code{key_pos} establece en qu@'e posici@'on se colocar@'a la leyenda.
 Si @code{key} es una cadena vac@'{@dotless{i}}a, entonces se utilizar@'a por defecto la
 posici@'on @code{"top_right"}.
 Los valores disponibles para esta opci@'on son: @code{top_left}, @code{top_center},

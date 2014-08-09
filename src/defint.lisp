@@ -3337,7 +3337,12 @@ in the interval of integration.")
 	 (roots (real-roots denom var))
 	 (ll-pole (limit-pole exp var ll '$plus))
 	 (ul-pole (limit-pole exp var ul '$minus)))
-    (cond ((or (eq roots '$failure)
+    (cond ((member ($csign denom) '($pos $neg $pz))
+	   ;; this clause handles cases where we can't find the exact roots,
+	   ;; but we know that they occur outside the interval of integration.
+	   ;;  example: integrate ((1+exp(t))/sqrt(t+exp(t)), t, 0, 1);
+	   '$no)
+	  ((or (eq roots '$failure)
 	       (null ll-pole)
 	       (null ul-pole))   '$unknown)
 	  ((and (eq roots '$no)

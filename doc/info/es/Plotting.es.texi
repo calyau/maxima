@@ -121,13 +121,13 @@ nombre se sigue aceptando como sin@'onimo de @code{xmaxima}.
 
 
 
-@deffn {Funci@'on} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
+@deffn {Funci@'on} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
 
-Dibuja las curvas de nivel @var{expr}
+Dibuja las curvas de nivel de @var{expr}
 en el rect@'angulo @var{x_range} por @var{y_range}.
 Cualesquiera otros argumentos adicionales se tratan como en @code{plot3d}.
 
-@code{contour_plot} s@'olo trabaja cuando se utilizan @code{gnuplot} o @code{gnuplot_pipes}.
+@code{contour_plot} s@'olo trabaja con los m@'etodos @code{gnuplot} o @code{gnuplot_pipes}.
 
 V@'ease tambi@'en @code{implicit_plot}.
 
@@ -141,24 +141,7 @@ Ejemplos:
 @end example
 
 @ifnotinfo
-@image{../figures/contour1,8cm}
-@end ifnotinfo
-
-@c ===beg===
-@c F(x, y) := x^3 + y^2;
-@c contour_plot (F, [u, -4, 4], [v, -4, 4])$
-@c ===end===
-@example
-@group
-(%i1) F(x, y) := x^3 + y^2;
-                                   3    2
-(%o1)                  F(x, y) := x  + y
-@end group
-(%i2) contour_plot (F, [u, -4, 4], [v, -4, 4])$
-@end example
-
-@ifnotinfo
-@image{../figures/contour2,8cm}
+@image{../figures/plotting1,8cm}
 @end ifnotinfo
 
 Se pueden a@~nadir cualesquiera opciones que acepte @code{plot3d};
@@ -175,14 +158,14 @@ de Gnuplot:
 @c ===end===
 @example
 @group
-(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
-                    [legend,false],
-                    [gnuplot_preamble, "set cntrparam levels 12"])$
+(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4],
+              [legend,false],
+              [gnuplot_preamble, "set cntrparam levels 12"])$
 @end group
 @end example
 
 @ifnotinfo
-@image{../figures/contour3,8cm}
+@image{../figures/plotting2,8cm}
 @end ifnotinfo
 
 @end deffn

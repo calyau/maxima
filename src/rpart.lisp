@@ -480,12 +480,6 @@
 	  ((eq (caar l) '%plog)
 	   ;;  (princ '|Warning: Principal value not guaranteed for Plog in Rectform/|)
 	   (risplit (cons '(%log) (cdr l))))
-	  ((member (caar l) '(%realpart %imagpart mabs) :test #'eq) (cons l 0))
-	  ((eq (caar l) '%erf)
-	   (let ((ris (risplit (cadr l))) orig cc)
-	     (setq orig (simplify (list '(%erf) (add (car ris) (mul '$%i (cdr ris))))))
-	     (setq cc (simplify (list '(%erf) (sub (car ris) (mul '$%i (cdr ris))))))
-	     (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
 	  ;; Look for a risplit-function on the property list to handle the
 	  ;; realpart and imagpart for this function.
           ((setq op (safe-get (mop l) 'risplit-function))
@@ -495,10 +489,6 @@
 	  ((eq (caar l) 'mlist) (dsrl l))
 	  ((eq (caar l) '$matrix)
 	   (dot--ri (mapcar #'dsrl (cdr l)) '($matrix simp)))
-	  ((member (caar l) '(mlessp mleqp mgreaterp mgeqp) :test #'eq)
-	   (let ((ris1 (risplit (cadr l))) (ris2 (risplit (caddr l))))
-	     (cons (simplify (list (ncons (caar l)) (car ris1) (car ris2)))
-		   (simplify (list (ncons (caar l)) (cdr ris1) (cdr ris2))))))
 ;;;The Coversinemyfoot clause covers functions which can be converted
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  ((let ((foot (coversinemyfoot l)))

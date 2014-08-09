@@ -45,7 +45,6 @@
 (defvar *laws*)
 (defvar *trigbuckets*)
 (defvar *hyperbuckets*)
-(defvar *sp1logf* nil)
 
 ;;The Trigreduce file contains a group of routines which can be used to
 ;;make trigonometric simplifications of expressions.  The bulk of the
@@ -447,43 +446,99 @@
 	   (m^ '$%e exp))
 	  ((m* (m^ '$%e fr) (m^ '$%e exp))))))
 
-(defun sp1log (e)
-  (cond ((or *trigred (atom e) (free e var))
-	 (list '(%log) e))
-	((eq (caar e) 'mplus)
-	 (let* ((exp (m1- e))
-                (*a nil)
-                (*n nil))
-           (declare (special *n *a))
-	   (cond ((smono exp var)
-		  (list '(%log) e))
-		 (*sp1logf* (sp1log2 e))
-		 ((let* ((*sp1logf* t))
-                    (sp1log ($factor e)))))))
-	((eq (caar e) 'mtimes)
-	 (sp1 (m+l (mapcar #'sp1log (cdr e)))))
-	((eq (caar e) 'mexpt)
-	 (sp1 (m* (caddr e) (list '(%log) (cadr e)))))
-	((sp1log2 e))))
+;; Split TERMS into (VALUES NON-NEG OTHER) where NON-NEG and OTHER are a
+;; partition of the elements of TERMS. Expressions that are known not to be
+;; negative are placed in NON-NEG and all others end up in OTHER.
+;;
+;; This function is used to safely split products when expanding logarithms to
+;; avoid accidentally ending up with something like
+;;
+;;   log(1 - x) => log(-1) + log(x-1).
+;;
+;; Note that we don't check a term is strictly positive: if it was actually
+;; zero, the logarithm was bogus in the first place.
+(defun non-negative-split (terms)
+  (let ((non-neg) (other))
+    (dolist (term terms)
+      (if (memq ($sign term) '($pos $pz $zero))
+          (push term non-neg)
+          (push term other)))
+    (values non-neg other)))
 
+;; Try to expand a logarithm for use in a power series in VAR by splitting up
+;; products.
+(defun sp1log (e &optional no-recurse)
+  (cond
+    ;; If E is free of VAR, is an atom, or we're supposed to be reducing rather
+    ;; than expanding, then just return E.
+    ((or *trigred (atom e) (free e var))
+     (list '(%log) e))
+
+    ;; The logarithm of a sum doesn't simplify very nicely, but call $factor to
+    ;; see if we can pull out one or more terms and then recurse (setting
+    ;; NO-RECURSE to make sure we don't end up in a loop)
+    ((eq (caar e) 'mplus)
+     (let* ((exp (m1- e)) *a *n)
+       (declare (special *n *a))
+       (cond
+         ((smono exp var)
+          (list '(%log) e))
+         ((not no-recurse)
+          (sp1log ($factor e) t))
+         (t (sp1log2 e)))))
+
+    ;; A product is much more promising. Do the transformation log(ab) =>
+    ;; log(a)+log(b) and pass it to SP1 for further simplification.
+    ;;
+    ;; We need to be a little careful here because eg. factor(1-x) gives
+    ;; -(x-1). We don't want to end up with a log(-1) term! So check the sign of
+    ;; terms and only pull out the terms we know to be non-negative. If the
+    ;; argument was a negative real in the first place then we'd already got
+    ;; rubbish, but otherwise we won't pull out anything we don't want.
+    ((eq (caar e) 'mtimes)
+     (multiple-value-bind (non-neg other) (non-negative-split (cdr e))
+       (cond
+         ((null non-neg) (sp1log2 e))
+         (t
+          (sp1 (m+l (mapcar #'sp1log (cons other non-neg))))))))
+
+    ;; Similarly, transform log(a^b) => b log(a) and pass back to SP1.
+    ((eq (caar e) 'mexpt)
+     (sp1 (m* (caddr e) (list '(%log) (cadr e)))))
+
+    ;; If we can't find any other expansions, pass the result to SP1LOG2, which
+    ;; tries again after expressing E as integrate(diff(e)/e).
+    ((sp1log2 e))))
+
+;; We didn't manage to expand the expression, so make use of the fact that
+;; diff(log(f(x)), x) = f'(x)/f(x) and return integrate(f'(x)/f(x), x), hoping
+;; that a later stage will be able to do something useful with it.
+;;
+;; We have to be a little bit careful because an indefinite integral might have
+;; the wrong constant term. Instead, rewrite as
+;;
+;;  log(f(x0+h)) = log(f(x0+h)) - log(f(x0)) + log(f(x0))
+;;               = integrate(diff(log(f(x0+k)), k), k, 0, h) + log(f(x0))
+;;               = integrate(diff(f(x0+k))/f(x0+k), k, 0, h) + log(f(x0))
+;;
+;; The "x0" about which we expand is always zero (see the code in $powerseries)
 (defun sp1log2 (e)
-  (and $verbose
-       (prog2
-         (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
-	 (show-exp (list '(%log) e))
-	 (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
-		(list '(mlabel) nil
-		      (out-of
-		       (list '(mequal)
-			     (list '(%log) e)
-			     (list '(%integrate)
-				   (list '(mquotient)
-					 (list '(%derivative) e var 1)
-					 e)
-				   var)))))))
-  (list '(%integrate)
-	(sp1 ($ratsimp (list '(mtimes) (sdiff e var) (list '(mexpt) e -1))))
-	var))
+  (when $verbose
+    (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
+    (show-exp (list '(%log) e))
+    (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
+           (list '(mlabel) nil
+                 (out-of
+                  `((mequal)
+                    ((%log) ,e)
+                    ((%integrate)
+                     ((mquotient) ((%derivative) ,e ,var 1) ,e) ,var))))))
+  (let* ((dummy-sym ($gensym)))
+    (m+ (list '(%log) ($limit e var 0))
+        (list '(%integrate)
+              (maxima-substitute dummy-sym var
+                                 (sp1 (m// (sdiff e var) e)))
+              dummy-sym 0 var))))
 
 (defun sp1trig (e)
   (cond ((atom (cadr e)) (simplify e))
@@ -494,39 +549,53 @@
 	 (sp1trigex e))
 	( e )))
 
+;; Return the expansion of ((trigfun) ((mplus) a b)). For example sin(a+b) =
+;; sin(a)cos(b) + cos(a)sin(b).
+(defun expand-trig-of-sum (trigfun a b)
+  (flet ((expand-it (op f1 f2 f3 f4)
+           (funcall op
+                    (m* (sp1trig (list f1 a)) (sp1trig (list f2 b)))
+                    (m* (sp1trig (list f3 a)) (sp1trig (list f4 b))))))
+    (ecase trigfun
+      (%sin  (expand-it #'add2* '(%sin)  '(%cos)  '(%cos)  '(%sin)))
+      (%cos  (expand-it #'sub*  '(%cos)  '(%cos)  '(%sin)  '(%sin)))
+      (%sinh (expand-it #'add2* '(%sinh) '(%cosh) '(%cosh) '(%sinh)))
+      (%cosh (expand-it #'sub*  '(%cosh) '(%cosh) '(%sinh) '(%sinh))))))
+
+;; Try to expand f(a+b) where f is sin, cos, sinh or cosh.
 (defun sp1trigex (e)
-  (let* ((ans (m2 (cadr e) '((mplus) ((coeffpp) (fr freevar))
-			     ((coeffpp) (exp true)))))
-         (fr (cdr (assoc 'fr ans :test #'eq)))
-         (exp (cdr (assoc 'exp ans :test #'eq))))
-    (cond ((signp e fr)
-	   (setq fr (cadr exp)
-		 exp (if (cdddr exp)
-                         (cons (car exp) (cddr exp))
-                         (caddr exp)))))
-    (cond ((or (equal fr 0)
-	       (null (member (caar e) '(%sin %cos %sinh %cosh) :test #'eq)))
-	   e)
-	  ((eq (caar e) '%sin)
-	   (m+ (m* (sp1trig (list '(%sin) exp))
-		   (sp1trig (list '(%cos) fr)))
-	       (m* (sp1trig (list '(%cos) exp))
-		   (sp1trig (list '(%sin) fr)))))
-	  ((eq (caar e) '%cos)
-	   (m- (m* (sp1trig (list '(%cos) exp))
-		   (sp1trig (list '(%cos) fr)))
-	       (m* (sp1trig (list '(%sin) exp))
-		   (sp1trig (list '(%sin) fr)))))
-	  ((eq (caar e) '%sinh)
-	   (m+ (m* (sp1trig (list '(%sinh) exp))
-		   (sp1trig (list '(%cosh) fr)))
-	       (m* (sp1trig (list '(%cosh) exp))
-		   (sp1trig (list '(%sinh) fr)))))
-	  ((eq (caar e) '%cosh)
-	   (m+ (m* (sp1trig (list '(%cosh) exp))
-		   (sp1trig (list '(%cosh) fr)))
-	       (m* (sp1trig (list '(%sinh) exp))
-		   (sp1trig (list '(%sinh) fr))))))))
+  (schatchen-cond w
+    ;; Ideally, we'd like to split the argument of the trig function into terms
+    ;; that involve VAR and those that are free of it.
+    ((m2 (cadr e) '((mplus) ((coeffpp) (a freevar)) ((coeffpp) (b true))))
+     (a b)
+
+     ;; Make sure that if B is zero then so is A (to simplify the cond)
+     (when (signp e b) (rotatef a b))
+
+     ;; Assuming we didn't just swap them, A will be free of VAR and B will
+     ;; contain any other terms. If A is zero (because the argument of trig
+     ;; function is a sum of terms, all of which involve VAR), then fall back on
+     ;; a different splitting, by terms of taking the first term of B.
+     (cond
+       ((and (signp e a)
+             (not (atom b))
+             (eq (caar b) 'mplus))
+        (expand-trig-of-sum (caar e)
+                            (cadr b)
+                            (if (cdddr b)
+                                (cons (car b) (cddr b))
+                                (caddr b))))
+
+       ;; For some weird reason, B isn't a sum. Give up.
+       ((signp e a) e)
+
+       ;; Do the splitting we intended in the first place.
+       (t
+        (expand-trig-of-sum (caar e) a b))))
+
+    ;; E doesn't match f(a+b). Return it unmodified.
+    (t nil e)))
 
 (defun sp1atrig (fn exp)
   (cond ((atom exp)

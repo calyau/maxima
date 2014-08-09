@@ -473,7 +473,7 @@ ratsimp(hgfred([-3/2,1],[-1/2], t));
 integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
  -(g32475^(2*n+1)*(g32475*n-n-1)/(g32475-1)^2+g32475^(n+1)/(g32475-1)^2)
   /(1-g32475),g32475,0,1);
-n^2/2+n;
+(n+1)^2/2-1/2;
 
 kill(all);
 done;
@@ -1418,15 +1418,15 @@ block([V:0.75, a:24, b:68, e],
  defint(f(x)=g(x),x,0,1);
  'integrate(f(x),x,0,1)='integrate(g(x),x,0,1);
  
-/* Bug report ID: 2796194 - error doing a Fourier transform
- * The following integral is divergent, but gives a noun form.
- * The Lisp error is no longer present.
- */
+/* Bug report ID: 2796194 - error doing a Fourier transform */
 (assume(equal(x,0)),done);
 done;
 
-integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf);
-%pi*'integrate(%e^(2*%i*%pi*t*x-2*%pi*t),t,minf,inf);
+errcatch(integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf));
+[];
+
+error;
+["defint: integral is divergent."];
 
 (forget(equal(x,0)),done);
 done;
@@ -2026,3 +2026,43 @@ sumcontract(intosum(powerseries(1+ (1-x)^(a),x,0) - powerseries((1-x)^(a),x,0)))
 block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
 [9.850355570085235b433, 9.850355570085235b433];
 
+/*
+  #2775: Don't expand a powerseries with log(ab)=log(a)+log(b) if a
+         is negative
+
+  (and also #2767)
+*/
+(gensumnum : 0, powerseries (log(2-x), x, 0));
+log(2) - sum (2^(-i2-1)*x^(i2+1)/(i2+1), i2, 0, inf)$
+
+/*
+  #2760: powerseries at minf
+
+  For an analytic function like this, the power series at minf should
+  match the power series at inf.
+*/
+block([inf_exp, minf_exp],
+  gensumnum : 0,
+  inf_exp: powerseries (1/(1+x), x, inf),
+  gensumnum : 0,
+  minf_exp: powerseries (1/(1+x), x, inf),
+  inf_exp - minf_exp);
+0$
+
+/* #2765: powerseries with non-integer order */
+powerseries (diff (f(x), x, biggles), x, 0);
+"Failed to expand"$
+
+/* #2755: powerseries of natural exponential */
+niceindices (powerseries (%e^x, x, 1));
+sum (1/i!, i, 0, inf) * sum((x-1)^i/i!, i, 0, inf)$
+
+/*
+  #2760
+
+  Make sure that we give up rather than trying to substitute an
+  arbitrary expression for an integration / differentiation variable
+  after expansion.
+*/
+powerseries(f(x),x,inf);
+f(x)$

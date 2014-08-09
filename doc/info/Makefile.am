@@ -115,6 +115,7 @@ figures/graphs12.gif\
 figures/graphs13.gif\
 figures/graphs14.gif\
 figures/graphs15.gif\
+figures/favicon.ico\
 figures/bodegain1.gif\
 figures/bodegain2.gif\
 figures/bodegain3.gif\

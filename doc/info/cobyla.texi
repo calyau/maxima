@@ -129,7 +129,7 @@ operations are used, and the default value for @var{rhoend} is
 
 See @code{fmin_cobyla} for more information.
 
-@code{load(fmin_cobyla)} loads this function.
+@code{load(bf_fmin_cobyla)} loads this function.
 
 @end deffn
 

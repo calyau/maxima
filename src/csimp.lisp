@@ -70,39 +70,66 @@
         (cons a (maxima-substitute 0 var1 expr)))))
 
 (defmfun $partition (e var1)
-  (prog (k)
-     (setq e (mratcheck e) var1 (getopr var1))
-     (cond (($listp e)
-	    (return (do ((l (cdr e) (cdr l)) (l1) (l2) (x))
-			((null l) (list '(mlist simp)
-					(cons '(mlist simp) (nreverse l1))
-					(cons '(mlist simp) (nreverse l2))))
-		      (setq x (mratcheck (car l)))
-		      (cond ((free x var1) (setq l1 (cons x l1)))
-			    (t (setq l2 (cons x l2)))))))
-	   ((mplusp e) (setq e (cons '(mtimes) (cdr e)) k 0))
-	   ((mtimesp e) (setq k 1))
-	   (t
-	    (merror (intl:gettext "partition: first argument must be a list or '+' or '*' expression; found ~M") e)))
-     (setq e (partition e var1 k))
-     (return (list '(mlist simp) (car e) (cdr e)))))
+  (let ((e (mratcheck e))
+        (var1 (getopr var1)))
+    (cond
+      (($listp e)
+       (do ((l (cdr e) (cdr l)) (l1) (l2) (x))
+           ((null l) (list '(mlist simp)
+                           (cons '(mlist simp) (nreverse l1))
+                           (cons '(mlist simp) (nreverse l2))))
+         (setq x (mratcheck (car l)))
+         (cond ((free x var1) (setq l1 (cons x l1)))
+               (t (setq l2 (cons x l2))))))
 
-(defun partition (exp var1 k)	  ; k is 1 for MTIMES and 0 for MPLUS.
-  (prog (const varbl op)
-     (setq op (cond ((= k 0) '(mplus)) (t '(mtimes))))
-     (cond ((or (alike1 exp var1) (not (eq (caar exp) 'mtimes)))
-	    (return (cons k exp))))
-     (setq exp (cdr exp))
-     loop (cond ((freeof var1 (car exp)) (setq const (cons (car exp) const)))
-		(t (setq varbl (cons (car exp) varbl))))
-     (cond ((null (setq exp (cdr exp)))
-	    (return (cons (cond ((null const) k)
-				((null (cdr const)) (car const))
-				(t (simplifya (cons op (nreverse const)) t)))
-			  (cond ((null varbl) k)
-				((null (cdr varbl)) (car varbl))
-				(t (simplifya (cons op (nreverse varbl)) t)))))))
-     (go loop)))
+      ((mplusp e)
+       (destructuring-bind (constant . variable) (partition e var1 0)
+         (list '(mlist simp) constant variable)))
+
+      ((mtimesp e)
+       (destructuring-bind (constant . variable) (partition e var1 1)
+         (list '(mlist simp) constant variable)))
+
+      (t
+       (merror
+        (intl:gettext
+         "partition: first argument must be a list or '+' or '*' expression; found ~M") e)))))
+
+;; Partition an expression, EXP, into terms that contain VAR1 and terms that
+;; don't contain VAR1. EXP is either considered as a product or a sum (for which
+;; you should pass K = 1 or 0, respectively).
+
+(defun partition (exp var1 k)
+  (let ((op (if (= k 0) 'mplus 'mtimes))
+        (exp-op (unless (atom exp) (caar exp))))
+    (cond
+      ;; Exit immediately if exp = var1
+      ((alike1 exp var1) (cons k exp))
+
+      ;; If we have the wrong operation then the expression is either entirely
+      ;; constant or entirely variable.
+      ((not (eq exp-op op))
+       (if (freeof var1 exp)
+           (cons exp k)
+           (cons k exp)))
+
+      ;; Otherwise, we want to partition the arguments into constant and
+      ;; variable.
+      (t
+       (let (constant variable)
+         (dolist (arg (cdr exp))
+           (if (freeof var1 arg)
+               (push arg constant)
+               (push arg variable)))
+
+         (cons (cond ((null constant) k)
+                     ((null (cdr constant)) (car constant))
+                     (t (simplifya
+                         (cons (list op) (nreverse constant)) t)))
+               (cond ((null variable) k)
+                     ((null (cdr variable)) (car variable))
+                     (t (simplifya
+                         (cons (list op) (nreverse variable)) t)))))))))
 
 ;;To use this INTEGERINFO and *ASK* need to be special.
 ;;(defun integerpw (x)
@@ -217,7 +244,7 @@
 	 rel))))
 
 (defun ratgreaterp (x y)
-  (cond ((and (mnump x) (mnump y))
+  (cond ((and (ratnump x) (ratnump y))
 	 (great x y))
 	((equal ($asksign (m- x y)) '$pos))))
 

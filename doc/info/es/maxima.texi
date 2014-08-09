@@ -242,7 +242,7 @@ Introducci@'on
 
 * Introducci@'on a Maxima::
 
-Fallos
+Detecci@'on e informe de fallos
 
 * Funciones y variables para la detecci@'on e informe de fallos::
 

@@ -28,20 +28,53 @@
 ;;psex -- for throws on failure to expand
 ;;
 
-(defmfun $powerseries (l var *pt)
-  (cond ((signp e *pt)
-	 (cond ((symbolp var) (seriesexpand* l))
-	       ((numberp var) (improper-arg-err var '$powerseries))
-	       (t (sbstpt l 'x (gensym) var var))))
-	((eq *pt '$inf)
-	 (sbstpt l (m// 1 'x) (gensym) var (div* 1 var)))
-	(t (sbstpt l (m+ 'x *pt) (gensym)
-		   var (simplifya (m- var *pt) nil)))))
+(defmfun $powerseries (expr var pt)
+  (when (numberp var)
+    (improper-arg-err var '$powerseries))
 
-(defun sbstpt (exp sexp var var1 usexp)
-  (setq sexp (subst var 'x sexp))
-  (setq exp (maxima-substitute sexp var1 exp))
-  (maxima-substitute usexp var (seriesexpand* exp)))
+  (if (and (signp e pt) (symbolp var))
+      (seriesexpand* expr)
+      (cond
+        ((signp e pt)
+         (sbstpt expr 'x var var))
+        ((eq pt '$inf)
+         (sbstpt expr (m// 1 'x) var (div* 1 var)))
+        ((eq pt '$minf)
+         (sbstpt expr (m- (m// 1 'x)) var (m- (div* 1 var))))
+        (t
+         (sbstpt expr (m+ 'x pt) var (simplifya (m- var pt) nil))))))
+
+;; Return a list of the terms in the expression that are used as integration or
+;; differentiation variables.
+(defun intdiff-vars-in-expr (expr)
+  (cond
+    ((atom expr) nil)
+
+    ;; Arguably, if this is a definite integral, the variable isn't free so we
+    ;; shouldn't return it. But maxima-substitute doesn't know about bound
+    ;; variables and this is a helper function to avoid silly substitutions.
+    ((eq (caar expr) '%integrate) (list (caddr expr)))
+
+    ((eq (caar expr) '%derivative)
+     (loop for x in (cddr expr) by #'cddr collecting x))
+
+    (t
+     (reduce #'union (cdr expr) :key #'intdiff-vars-in-expr))))
+
+;; Series expand EXP after substituting in SEXP for VAR1, the main
+;; variable. SEXP should be an expression in 'X and 'X will be replaced by a
+;; gensym for the calculation. When the expansion is done, substitute USEXP for
+;; the gensym.
+(defun sbstpt (exp sexp var1 usexp)
+  (let* ((var (gensym))
+         (sub-exp (maxima-substitute (subst var 'x sexp) var1 exp))
+         (expanded (seriesexpand* sub-exp)))
+    ;; If we've ended up with diff(foo, var) then we give up and return the
+    ;; original contents (we can't substitute arbitrary expressions for the
+    ;; differentiation / integration variable).
+    (if (memq var (intdiff-vars-in-expr expanded))
+        exp
+        (maxima-substitute usexp var expanded))))
 
 (defun seriesexpand* (x)
   (let (*n *a *m *c
@@ -395,24 +428,41 @@
 	   (m- e 1) nil nil))
 
 (defun sp2expt (exp)
-  (cond ((and (numberp (caddr exp)) (mexptp (cadr exp)))
-	 (sp2expt (m^ (cadr (cadr exp))
-		      (m* (caddr exp) (caddr (cadr exp))))))
-	((and (free (caddr exp) var)
-	      (signp g (caddr exp))
-	      (< (caddr exp) $maxposex))
-	 (m*l (dup (sp2expand (cadr exp)) (caddr exp))))
-	((free (cadr exp) var)
-	 (sp2sub (subst *index
-			'*index
-			(subst (cond ((eq (cadr exp) '$%e) 'sp2var)
-				     (t (list '(mtimes)
-					      (list '(mlog) (cadr exp))
-					      'sp2var)))
-			       'sp2var
-			       (get 'mexpt 'sp2)))
-		 (caddr exp)))
-	(t (throw 'psex nil))))
+  (let ((base (cadr exp))
+        (power (caddr exp)))
+    (cond
+      ;; Do (a^b)^c = a^(bc) when c is a number
+      ((and (numberp power) (mexptp base))
+       (sp2expt (m^ (cadr base)
+                    (m* power (caddr base)))))
+
+      ;; If a positive power which is free of the expansion variable and less
+      ;; than the maximum expansion power then expand the base and do the
+      ;; multiplication explicitly.
+      ((and (free power var)
+            (signp g power)
+            (< power $maxposex))
+       (m*l (dup (sp2expand base) power)))
+
+      ;; If the base is free of VAR, rewrite as a^b = e^(b log(a)) if necessary
+      ;; and then use the tabulated expansion of exp(x). If POWER is a sum then
+      ;; do the rewrite a^(b+c) = a^b a^c
+      ((free base var)
+       (let ((expansion
+              (subst *index '*index
+                     (if (eq base '$%e)
+                         (get 'mexpt 'sp2)
+                         (subst `((mtimes) ((mlog) ,base) sp2var) 'sp2var
+                                (get 'mexpt 'sp2))))))
+         (cond
+           ((not (mplusp power))
+            (sp2sub expansion power))
+
+           (t
+            (m*l (mapcar (lambda (summand) (sp2sub expansion summand))
+                         (cdr power)))))))
+
+      (t (throw 'psex nil)))))
 
 (defun dup (x %n)
   (if (= %n 1)
@@ -420,19 +470,33 @@
       (cons x (dup x (1- %n)))))
 
 (defun sp2diff (exp l)
-  (let (indl)
-    (cond ((free exp var)
-	   (sp3form (sp2expand exp) (cons '(%derivative) l)))
-	  (t (do ((l l (cddr l)) (ll))
-		 ((null l)
-		  (if ll (sp3form exp (cons '(%derivative) (nreverse ll)))
-		      exp))
-	       (cond ((eq (car l) var)
-		      (do ((%i (cadr l) (1- %i)))
-			  ((= %i 0) exp)
-			(setq indl nil
-			      exp (sp2diff1 (sp2expand exp) nil nil))))
-		     (t (setq ll (list* (cadr l) (car l) ll)))))))))
+  (cond
+    ((free exp var)
+     (sp3form (sp2expand exp) (cons '(%derivative) l)))
+    (t
+     ;; If the expression isn't free of VAR, we know how to expand the result if
+     ;; the orders of differentiation are all explicit non-negative
+     ;; integers. Otherwise, give up.
+     (let ((indl) (remaining-derivs))
+       (loop
+          for (y order) on l by #'cddr
+          do
+            (cond
+              ((not (typep order '(integer 0)))
+               (throw 'psex nil))
+
+              ((not (eq y var))
+               (setf remaining-derivs (list* order y remaining-derivs)))
+
+              (t
+               (dotimes (i order)
+                 (setf indl nil)
+                 (setf exp (sp2diff1 (sp2expand exp) nil nil))))))
+
+       (if remaining-derivs
+           (sp3form exp `((%derivative)
+                          ,@(nreverse remaining-derivs)))
+           exp)))))
 
 (defun sp2diff1 (exp ind lol)		;ind is a list of the indices
 					;lol is a list of the lower limits
@@ -515,15 +579,58 @@
 		 (t (sinint exp var))))
 	  (t (sinint exp var)))))
 
+;; Expand a definite integral, integrate(exp, v, lo, hi).
 (defun sp2integ2 (exp v lo hi)
-  (if (eq v var) (setq v (gensym) exp (subst v var exp)))
-  (cond ((and (free lo var) (free hi var))
-	 (cond ((free exp var)
-		(list '(%integrate) (subst var v exp) var lo hi))
-	       (t (sp3form (sp2expand exp)
-			   (list '(%integrate) v lo hi)))))
-	(t (m+ (sp2sub (setq exp (sp2expand (subst var v exp))) hi)
-	       (m* -1 (sp2sub exp lo))))))
+  ;; Deal with the case where the integration variable is also the expansion
+  ;; variable. Something's a bit odd if we're doing this, but we assume that the
+  ;; aliasing was accidental and that the (bound) integration variable should be
+  ;; called something else.
+  (when (eq v var)
+    (setq v (gensym)
+          exp (subst v var exp)))
+
+  (when (boundp '*sp2integ-recursion-guard*)
+    (throw 'psex
+      (list 'err '(mtext)
+            "Recursion when trying to expand the definite integral "
+            (out-of (symbol-value '*sp2integ-recursion-guard*)))))
+
+  (cond
+    ((not (and (free lo var) (free hi var)))
+     ;; Suppose one or both of the endpoints involves VAR. We'll give up unless
+     ;; they are monomials in VAR (because substituting a non-monomial into a
+     ;; power series is more difficult). If they *are* monomials in VAR, then we
+     ;; try to expand the integral as a power series and find an antiderivative.
+     (let ((lo-exp (sp2expand lo))
+           (hi-exp (sp2expand hi))
+           (*sp2integ-recursion-guard* exp))
+       (declare (special *sp2integ-recursion-guard*))
+
+       (unless (and (smono lo-exp var) (smono hi-exp var))
+         (throw 'psex
+           (list 'err '(mtext)
+                 "Endpoints of definite integral " (out-of exp)
+                 " are not monomials in the expansion variable.")))
+
+       ;; Since this is a formal powerseries calculation, we needn't concern
+       ;; ourselves with radii of convergence here. Just expand the integrand
+       ;; about zero. (Is there something cleverer we could do?)
+       (let ((anti-derivative (sinint ($powerseries exp v 0) v)))
+         ;; If the expansion had failed, we'd have thrown an error to top-level,
+         ;; so we can assume that ANTI-DERIVATIVE is a sum of monomials in
+         ;; V. Substituting in LO-EXP and HI-EXP, we'll get two sums of
+         ;; monomials in VAR. The difference of the two expressions isn't quite
+         ;; of the right form, but hopefully it's close enough for any other
+         ;; code that uses it.
+         (m- (maxima-substitute hi-exp v anti-derivative)
+             (maxima-substitute lo-exp v anti-derivative)))))
+
+    ((free exp var)
+     (list '(%integrate) (subst var v exp) var lo hi))
+
+    (t
+     (sp3form (sp2expand exp)
+              (list '(%integrate) v lo hi)))))
 
 ;;************************************************************************************
 ;;	phase three		miscellaneous garbage and final simplification

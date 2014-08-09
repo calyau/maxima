@@ -325,7 +325,6 @@
      (setq p (pquotient p factor))
      (setq maxexp (quotient (cadr p) 2))
      (setq factors (cons factor factors))
-     (when (or (equal p 1) (equal p -1)) (return factors))
      (go a)
      d    (incf i)
      (go a)))
@@ -455,10 +454,10 @@
      (setq f (halfsplit f d) g (halfsplit g d))
      (setq a (fptimes1 (car f) (car g)))
      (setq b
-	   (fptimes1 (ptptplus (car f) (cdr f)) (pplus1 (car g) (cdr g))))
+	   (fptimes1 (ptptplus (car f) (cdr f)) (ptptplus (car g) (cdr g))))
      (setq c (fptimes1 (cdr f) (cdr g)))
-     (setq b (ptptdiffer (pdiffer1 b a) c))
-     (return (ptptplus (lsft a (ash d 1)) (pplus1 (lsft b d) c)))))
+     (setq b (ptptdiffer (ptptdiffer b a) c))
+     (return (ptptplus (lsft a (ash d 1)) (ptptplus (lsft b d) c)))))
 
 (defun halfsplit (p d)
   (do ((a) (p p (cddr p)))

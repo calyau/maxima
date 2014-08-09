@@ -88,7 +88,7 @@
 
 ;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
 
-(defmacro bind-fpprec (val &rest exprs)
+(defmacro bind-fpprec (val &body exprs)
   `(let (fpprec bigfloatzero bigfloatone bfhalf bfmhalf)
      (let (($fpprec (fpprec1 nil ,val)))
        ,@exprs)))
@@ -124,8 +124,8 @@
       ;; this code might need to be repaired.
       
       (bind-fpprec digits 
-		   (setq f1 ($bfloat x))
-		   (if (not ($bfloatp f1)) (throw 'done nil)))
+        (setq f1 ($bfloat x))
+        (if (not ($bfloatp f1)) (throw 'done nil)))
 		   
       (incf digits 20)
       (setq f2 (bind-fpprec digits ($bfloat x)))
@@ -133,24 +133,35 @@
 
       (incf digits 20)
       (bind-fpprec digits 
-		   (setq f3 ($bfloat x))
-		   (if (not ($bfloatp f3)) (throw 'done nil))
+        (setq f3 ($bfloat x))
+        (if (not ($bfloatp f3)) (throw 'done nil))
 
-		   ;; Let's say that the true value of x is in the interval
-		   ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
-		   ;; Define n to be the number of integers in this interval; we have
-		   
-		   (setq eps (power ($bfloat 10) (- 20 digits)))
-		   (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
-		   (setq ub (add f3 (mult (take '(mabs) f3) eps)))
-		   (setq n (sub (take '($ceiling) ub) (take '($ceiling) lb))))
-      
+        ;; Let's say that the true value of x is in the interval
+        ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
+        ;; Define n to be the number of integers in this interval; we have
+        
+        (setq eps (power ($bfloat 10) (- 20 digits)))
+        (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
+        (setq ub (add f3 (mult (take '(mabs) f3) eps)))
+
+        ;; If n > 1, we're going to give up. This is true iff ceiling(ub) -
+        ;; ceiling(lb) > 1. However, we don't want to blindly try to calculate
+        ;; that: if ub and lb are enormous, we probably won't have enough
+        ;; precision in the bigfloats to calculate either ceiling. Start by
+        ;; taking the difference: if it's at least 2, then we know that n >= 2.
+        (when (fpgreaterp (cdr (sub ub lb)) (cdr ($bfloat 2)))
+          (throw 'done nil))
+
+        (setq n (sub (take '($ceiling) ub)
+                     (take '($ceiling) lb))))
+
       (setq f1 (take (list fn) f1))
       (setq f2 (take (list fn) f2))
       (setq f3 (take (list fn) f3))
       
-      ;; Provided f1 = f2 = f3 and n = 0, return f1; if n = 1 and (use-radcan-p e) and ($radcan e)
-      ;; is a $ratnump, return floor / ceiling of radcan(x),
+      ;; Provided f1 = f2 = f3 and n = 0, return f1.
+      ;; If n = 1 and (use-radcan-p e) and ($radcan e) is a $ratnump, return
+      ;; floor / ceiling of radcan(x).
       
       (cond ((and (= f1 f2 f3) (= n 0)) f1)
 	    ((and (=  f1 f2 f3) (= n 1) (use-radcan-p x))

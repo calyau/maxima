@@ -428,6 +428,8 @@ float(0.0b0);
 0;
 integrate(sin(x)/cos(x)^2,x,0,%pi/3);
 1$
+kill(all);
+done;
 
 /*
  * Test compiled array access

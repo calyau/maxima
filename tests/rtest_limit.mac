@@ -92,6 +92,9 @@ limit(exp(-1/x)/x^4,x,0,'plus);
 limit(x*(atan(x)-%pi/2),x,inf);
 -1;
 
+limit((atan(x)-(%pi/2))/(sin(10/x)),x,inf);
+-1/10;
+
 /* [ 1498047 ] limit(a/n,n,inf); */
 limit(a/n, n, inf);
 0;

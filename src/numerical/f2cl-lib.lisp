@@ -1259,7 +1259,7 @@ causing all pending operations to be flushed"
 	   (arg-list
 	    (apply #'append
 		   (map 'list #'(lambda (x)
-				  (cond ((numberp x)
+				  (cond ((bigfloat:numberp x)
 					 (list x))
 					((stringp x)
 					 (list x))

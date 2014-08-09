@@ -319,7 +319,10 @@
 			  #:coerce
 			  )
   (:export #:lentz
-	   #:sum-power-series))
+	   #:sum-power-series
+	   #:format-e
+	   #:format-f
+	   #:format-g))
 
 ;; Export all the external symbols in BIGFLOAT-IMPL from BIGFLOAT too.
 (do-external-symbols (s '#:bigfloat-impl)
