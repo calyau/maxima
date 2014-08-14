@@ -407,11 +407,11 @@ matrix ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]);
  foo . foo_inv);
 matrix ([1, 0, 0], [0, 1, 0], [0, 0, 1]);
 
-/* invertmx exists */
+/* invert_by_gausselim exists */
 
 (kill (foo, foo_inv),
  foo : matrix ([1, 7, -20], [-1, 4, -2], [3, -2, 7]),
- foo_inv : invertmx (foo),
+ foo_inv : invert_by_gausselim (foo),
  foo . foo_inv);
 matrix ([1, 0, 0], [0, 1, 0], [0, 0, 1]);
 

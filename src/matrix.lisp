@@ -268,7 +268,7 @@
      (push (or d '(0 . 1)) row)
      (go loop2)))
 
-(defmfun $invertmx (k) 
+(defmfun $invert_by_gausselim (k) 
   (let ((*inv* t) *det* linind* top* mul* ($ratmx t) (ratmx $ratmx) $ratfac $sparse)
     (cond ((atom k) ($nounify '$inverx) (list '(%inverx) k))
 	  (t (newvarmat1 (setq k (check k)))
