@@ -1180,6 +1180,17 @@ where @code{.} is the noncommutative multiplication operator.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{invert_by_adjoint}
+@deffn {Function} invert_by_adjoint (@var{M})
+Returns the inverse of the matrix @var{M}.
+The inverse is computed by the adjoint method.
+
+@code{invert_by_adjoint} honors the @mref{ratmx} and @mref{detout} flags,
+the same as @mref{invert}.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{invert}
 @deffn {Function} invert (@var{M})
 

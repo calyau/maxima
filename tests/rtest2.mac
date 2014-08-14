@@ -399,4 +399,12 @@ true;
  ratsimp (invert_R_from_RealRefraction . R_from_RealRefraction - ident (4)));
 matrix ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]);
 
+/* invert_by_adjoint exists */
+
+(kill (foo, foo_inv),
+ foo : matrix ([1, 7, -20], [-1, 4, -2], [3, -2, 7]),
+ foo_inv : invert_by_adjoint (foo),
+ foo . foo_inv);
+matrix ([1, 0, 0], [0, 1, 0], [0, 0, 1]);
+
 /* end additional tests for invert */
