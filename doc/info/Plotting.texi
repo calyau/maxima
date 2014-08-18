@@ -1393,7 +1393,7 @@ to save the file in a different directory. When the option
 @mref{gnuplot_pdf_term_command} is also given, it will be used to set up
 Gnuplot's PDF terminal; otherwise, Gnuplot's pdfcairo terminal
 will be used with solid colored lines of width 3, plot
-size of 17.2 cm, 12.9 cm and font of 18 points.
+size of 17.2 cm by 12.9 cm and font of 18 points.
 
 @opencatbox
 @category{Plotting}
