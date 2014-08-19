@@ -1083,6 +1083,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		      (and (mexptp b) (not (eq '$minf (third b))) (zerop1 a) (eq t (mnqp (second b) 0))))
 		  nil)
 
+		 ;; DCOMPARE emits new stuff (via DINTERNP) into the assume database.
+		 ;; Let's avoid littering the database with numbers.
+		 ((and (mnump a) (mnump b)) (zerop1 (sub a b)))
+
 		 ;; lookup in assumption database
 		 ((and (dcompare a b) (eq '$zero sign)))	; dcompare sets sign
 		 ((memq sign '($pos $neg $pn)) nil)
