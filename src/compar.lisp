@@ -2270,23 +2270,25 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun mkind (x y)
   (kind (dintern x) (dintern y)))
 
+;; To guess from the previous incarnation of this code,
+;; each argument is assumed to be a float, bigfloat, integer, or Maxima rational.
+;; Convert Maxima rationals to Lisp rationals to make them comparable to others.
+
 (defmfun rgrp (x y)
-  (cond ((or ($bfloatp x) ($bfloatp y))
-	 (setq x (let (($float2bf t))
-		   (declare (special $float2bf))
-		   (cadr ($bfloat (sub x y)))) y 0))
-	((numberp x)
-	 (cond ((numberp y))
-	       (t (setq x (* x (caddr y))
-			y (cadr y)))))
-	((numberp y)
-	 (setq y (* (caddr x) y) x (cadr x)))
-	(t (let ((dummy x))
-	     (setq x (* (cadr x) (caddr y)))
-	     (setq y (* (caddr dummy) (cadr y))))))
-  (cond ((> x y) '$pos)
-	((> y x) '$neg)
-	(t '$zero)))
+  (when (or ($bfloatp x) ($bfloatp y))
+    (setq
+          x (let (($float2bf t))
+              (declare (special $float2bf))
+              (cadr ($bfloat (sub x y))))
+          y 0))
+  (if (not (numberp x))
+    (setq x (/ (cadr x) (caddr x))))
+  (if (not (numberp y))
+    (setq y (/ (cadr y) (caddr y))))
+  (cond
+    ((> x y) '$pos)
+    ((> y x) '$neg)
+    (t '$zero)))
 
 (defun mcons (x l)
   (cons (car l) (cons x (cdr l))))
