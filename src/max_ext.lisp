@@ -145,6 +145,7 @@
        $sequal
        $sequalignore
        $sexplode
+       $sha1sum
        $simplode
        $sinsert
        $sinvertcase
