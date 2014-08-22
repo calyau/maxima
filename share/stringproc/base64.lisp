@@ -51,7 +51,7 @@
 
 ;; range of *num64* :  '+' = 43 ... 'z' = 122
 
-(defvar *num64* (make-array 123. :element-type 'integer :initial-element 0))
+(defvar *num64* (make-array 123. :element-type 'integer :initial-element -1))
 
 (do ((i 0 (1+ i)))
     ((= i 64.))
@@ -86,31 +86,35 @@
 
 
 (defmfun $base64_decode (s) 
-  (unless (stringp s)
-    (merror "`base64_decode': Argument must be a string.") )
-  (let* ((len (length s))
-         (nrof= (count-if #'(lambda (c) (char= c #\=)) (subseq s (- len 2.))))
-         (size (- (ash (* 3. len) -2.) nrof=))
-         (res (make-array size :element-type 'integer :initial-element 0))
-         (w (make-array 4. :element-type 'integer :initial-element 0))
-         (bytes (mapcar #'char-code (coerce s 'list))) )
-    (prog ((j 0))
-      a
-      (setf (svref w 0) (svref *num64* (pop bytes))
-            (svref w 1) (svref *num64* (pop bytes))
-            (svref res j) 
-              (logior (logand (ash (svref w 0) 2.) #xff) (ash (svref w 1)  -4.)) )
-      (when (= (incf j) size) (return))
-      
-      (setf (svref w 2.) (svref *num64* (pop bytes))
-            (svref res j) 
-              (logior (logand (ash (svref w 1) 4.) #xff) (ash (svref w 2.) -2.)) )
-      
-      (when (= (incf j) size) (return))
-      
-      (setf (svref w 3.) (svref *num64* (pop bytes))
-            (svref res j) 
-              (logior (logand (ash (svref w 2.) 6.) #xff)     (svref w 3.)     ) )
-      (when (= (incf j) size) (return))
-      (go a) )
-    (coerce (map 'vector #'code-char res) 'string) ))
+  (let ((err-str "`base64_decode': Argument must be a base64 encoded string."))
+    (unless (stringp s) (merror err-str))
+    (let* ((len (length s))
+           (nrof= (count-if #'(lambda (c) (char= c #\=)) (subseq s (- len 2.))))
+           (size (- (ash (* 3. len) -2.) nrof=))
+           (res (make-array size :element-type 'integer :initial-element 0))
+           (w (make-array 4. :element-type 'integer :initial-element 0))
+           (bytes (mapcar #'char-code (coerce s 'list))) )
+      (when (or (> nrof= 2) (/= 0 (logand len #x3))) (merror err-str))
+      (prog ((j 0))
+        a
+        (setf (svref w 0) (svref *num64* (pop bytes))
+              (svref w 1) (svref *num64* (pop bytes)) )
+        (when (or (= -1 (svref w 0)) (= -1 (svref w 1))) (merror err-str))
+        (setf (svref res j) 
+                (logior (logand (ash (svref w 0) 2.) #xff) (ash (svref w 1)  -4.)) )
+        (when (= (incf j) size) (return))
+        
+        (setf (svref w 2.) (svref *num64* (pop bytes)))
+        (when (= -1 (svref w 2.)) (merror err-str))
+        (setf (svref res j) 
+                (logior (logand (ash (svref w 1) 4.) #xff) (ash (svref w 2.) -2.)) )
+        
+        (when (= (incf j) size) (return))
+        
+        (setf (svref w 3.) (svref *num64* (pop bytes)))
+        (when (= -1 (svref w 3.)) (merror err-str))
+        (setf (svref res j) 
+                (logior (logand (ash (svref w 2.) 6.) #xff)     (svref w 3.)     ) )
+        (when (= (incf j) size) (return))
+        (go a) )
+      (coerce (map 'vector #'code-char res) 'string) )))
