@@ -3,8 +3,7 @@
 ;;;;
 ;;;;  Maxima string processing
 ;;;;
-;;;;  Version       : 3.2 (april 2008)
-;;;;  Copyright     : 2005-2008 Volker van Nek
+;;;;  Copyright     : 2005-2014 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
 ;;;;  Test file     : rteststringproc.mac
@@ -311,23 +310,19 @@
 ;;
 (defun split (str ds &optional (multiple? t))
   (let ((pos1 (search ds str)))
-     (if pos1
-       (let ((ss (subseq str 0 pos1)))
-         (if (and multiple? (string= ss ""))
-           (split1 str ds multiple? pos1)
-           (cons ss (split1 str ds multiple? pos1))))
-       (list str))))
-;;
-(defun split1 (str ds multiple? start)
-  (let ((pos1 (search ds str :start2 start)))
     (if pos1
-      (let* ((pos2 (search ds str :start2 (+ pos1 (length ds))))
-             (ss (subseq str (+ pos1 (length ds)) pos2)))
-        (if (and multiple? (string= ss ""))
-        (if pos2 (split1 str ds multiple? pos2) nil)
-        (cons ss (if pos2 (split1 str ds multiple? pos2) nil))))
-      nil)))
-
+      (let ((ss (subseq str 0 pos1)) lst)
+        (unless (and multiple? (string= ss ""))
+          (setq lst (cons ss lst)) )
+        (do ((pos2 pos1) off) 
+            ((null pos2) (nreverse lst))
+          (setq off (+ pos1 (length ds))
+                pos2 (search ds str :start2 off)
+                ss (subseq str off pos2)
+                pos1 pos2 )
+          (unless (and multiple? (string= ss ""))
+            (setq lst (cons ss lst)) )))
+      (list str) )))
 
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
