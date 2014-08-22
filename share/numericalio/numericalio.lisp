@@ -391,7 +391,10 @@
             (t
               (cond
                 ((eq mode 'text)
-                 (mgrind e out)
+                 (let
+                   (($lispdisp t))
+                   (declare (special $lispdisp))
+                   (mgrind e out))
                  (cond
                    ((null L) (terpri out))
                    (t (write-char sep-ch out))))
