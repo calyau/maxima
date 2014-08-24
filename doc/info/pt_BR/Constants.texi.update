@@ -19,7 +19,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{%e}
-@defvr {Constant} %e
+@defvr {Constante} %e
 @ifinfo
 @vrindex e
 @vrindex Constante de Euler
@@ -32,13 +32,13 @@ Euler.  O valor num@'{e}ricos de @code{%e} @'{e} o valor em precis@~{a}o dupla e
 2.718281828459045d0.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%i}
-@defvr {Constant} %i
+@defvr {Constante} %i
 @ifinfo
 @vrindex i
 @vrindex Unidade imagin@'{a}ria
@@ -47,25 +47,25 @@ Euler.  O valor num@'{e}ricos de @code{%e} @'{e} o valor em precis@~{a}o dupla e
 @code{%i} representa a unidade imagin@'{a}ria, @math{sqrt(- 1)}.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{false}
-@defvr {Constant} false
+@defvr {Constante} false
 
 A constante @code{false} representa a constante Booleana de mesmo nome.
 Maxima implementa @code{false} atrav@'{e}s do valor @code{NIL} do Lisp.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%gamma}
-@defvr {Constant} %gamma
+@defvr {Constante} %gamma
 @ifinfo
 @vrindex Constante de Euler-Mascheroni
 @end ifinfo
@@ -74,13 +74,13 @@ A constante de Euler-Mascheroni, 0.5772156649015329 ....
 @c DOUBTLESS THERE IS MORE TO SAY HERE.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ind}
-@defvr {Constant} ind
+@defvr {Constante} ind
 @ifinfo
 @vrindex Indeterminado
 @end ifinfo
@@ -100,13 +100,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{inf}
-@defvr {Constant} inf
+@defvr {Constante} inf
 @ifinfo
 @vrindex Infinito real
 @end ifinfo
@@ -114,13 +114,13 @@ Exemplo:
 @code{inf} representa o infnito real positivo.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{infinity}
-@defvr {Constant}  infinity
+@defvr {Constante}  infinity
 @ifinfo
 @vrindex Infinito complexo
 @end ifinfo
@@ -128,13 +128,13 @@ Exemplo:
 @code{infinity} representa o infinito complexo.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{minf}
-@defvr {Constant} minf
+@defvr {Constante} minf
 @ifinfo
 @vrindex Menos infinito
 @vrindex Infinito negativo
@@ -143,13 +143,13 @@ Exemplo:
 @code{minf} representa menos infinito real (i.e., negativo).
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%phi}
-@defvr {Constant} %phi
+@defvr {Constante} %phi
 @ifinfo
 @vrindex phi
 @vrindex M@'{e}dia @'{a}urea
@@ -229,13 +229,13 @@ Ap@'{o}s avaliar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
 @end example
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%pi}
-@defvr {Constant} %pi
+@defvr {Constante} %pi
 @ifinfo
 @vrindex pi
 @end ifinfo
@@ -245,25 +245,25 @@ O valor num@'{e}rico de @code{%pi} @'{e} o valor em precis@~{a}o dupla e em pont
 3.141592653589793d0.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{true}
-@defvr {Constant} true
+@defvr {Constante} true
 
 @code{true} representa a constante Boolean de mesmo nome.
 Maxima implementa @code{true} atrav@'{e}s do valor @code{T} do Lisp.
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{und}
-@defvr {Constant} und
+@defvr {Constante} und
 @ifinfo
 @vrindex N@~{a}o definido
 @end ifinfo
@@ -283,13 +283,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{zeroa}
-@defvr {Constant} zeroa
+@defvr {Constante} zeroa
 
 @code{zeroa} representa uma quantidade extremamente pequena maior que zero (estritamente positiva).  A constante @code{zeroa} pode ser usada
 em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
@@ -314,13 +314,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{zerob}
-@defvr {Constant} zerob
+@defvr {Constante} zerob
 
 @code{zerob} representa uma quantidade extremamente pequena menor que zero (estritamente negativa).  A constante @code{zerob} pode ser usada
 em express@~{o}es.  A fun@,{c}@~{a}o @code{limit} simplifica express@~{o}es que possuem
@@ -330,7 +330,7 @@ Veja tamb@'{e}m @mref{zeroa}
 e @mrefdot{limit}
 
 @opencatbox
-@category{Constants}
+@category{Constantes}
 @closecatbox
 @end defvr
 

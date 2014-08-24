@@ -143,7 +143,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Nouns and verbs}
+@category{Avaliação} @category{Substantivos e verbos}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Syntax}
+@category{Sintaxe}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -239,19 +239,19 @@ condicionais.
 
 @c -----------------------------------------------------------------------------
 @anchor{alias}
-@deffn {Function} alias (@var{nome_novo_1}, @var{nome_antigo_1}, @dots{}, @var{nome_novo_n}, @var{nome_antigo_n})
+@deffn {Função} alias (@var{nome_novo_1}, @var{nome_antigo_1}, @dots{}, @var{nome_novo_n}, @var{nome_antigo_n})
 
 Fornece um nome alternativo para uma fun@,{c}@~{a}o (de usu@'{a}rio ou de sistema), vari@'{a}vel, vetor est@'{a}tico,
 etc.  Qualquer n@'{u}mero de argumentos pode ser usado.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{aliases}
-@defvr {System variable} aliases
+@defvr {Variável de sistema} aliases
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{aliases} cont@'{e}m a lista de @'{a}tomos que possuem um apelido definido pelo usu@'{a}rio (ajustado por meio das
@@ -263,7 +263,7 @@ da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun}
 usando @mrefdot{declare}).
 
 @opencatbox
-@category{Declarations and inferences} @category{Global variables}
+@category{Declarações e inferências} @category{Variáveis globais}
 @closecatbox
 @end defvr
 
@@ -272,7 +272,7 @@ usando @mrefdot{declare}).
 
 @c -----------------------------------------------------------------------------
 @anchor{allbut}
-@defvr {Keyword} allbut
+@defvr {Palavra chave} allbut
 
 Trabalha juntamente com os comandos @code{part} (i.e.  @mrefcomma{part}
 @w{}
@@ -332,7 +332,7 @@ O comando @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} tem o efeito de
 
 @c -----------------------------------------------------------------------------
 @anchor{args}
-@deffn {Function} args (@var{expr})
+@deffn {Função} args (@var{expr})
 
 Retorna a lista dos argumentos de @code{expr}, que pode ser qualquer tipo de
 express@~{a}o outra que n@~{a}o seja um @'{a}tomo.  Somente os argumentos do operador de n@'{i}vel mais alto
@@ -348,7 +348,7 @@ e @mrefdot{op}
 
 @c NEEDS EXAMPLES
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -357,7 +357,7 @@ e @mrefdot{op}
 
 @c -----------------------------------------------------------------------------
 @anchor{atom}
-@deffn {Function} atom (@var{expr})
+@deffn {Função} atom (@var{expr})
 
 Retorna @code{true} se @var{expr} for at@^{o}mica (i.e. um n@'{u}mero, um nome ou uma sequ@^{e}ncia de caracteres) caso contr@'{a}rio
 retorna @code{false}.  Dessa forma @code{atom(5)} @'{e} @code{true} enquanto @code{atom(a[1])} e
@@ -365,14 +365,14 @@ retorna @code{false}.  Dessa forma @code{atom(5)} @'{e} @code{true} enquanto @co
 sem associa@,{c}@~{a}o).
 
 @opencatbox
-@category{Expressions} @category{Predicate functions}
+@category{Expressões} @category{Funções predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{box}
-@deffn  {Function} box (@var{expr})
-@deffnx {Function} box (@var{expr}, @var{a})
+@deffn  {Função} box (@var{expr})
+@deffnx {Função} box (@var{expr}, @var{a})
 
 Retorna @var{expr} dentro de uma caixa.  O valor de retorno @'{e} uma express@~{a}o com
 @code{box} como o operador e @var{expr} como argumento.  Uma caixa @'{e} desenhada na
@@ -437,13 +437,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{boxchar}
-@defvr {Option variable} boxchar
+@defvr {Variável de opção} boxchar
 Valor padr@~{a}o: @code{"}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{boxchar} cont@'{e}m o caractere usado para desenhar a caixa nas fun@,{c}ẽos
@@ -455,7 +455,7 @@ Todas as caixas em uma express@~{a}o s@~{a}o desenhadas com o atual conte@'{u}do
 o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o dentro da caixa.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -463,7 +463,7 @@ o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o dentro da ca
 
 @c -----------------------------------------------------------------------------
 @anchor{collapse}
-@deffn {Function} collapse (@var{expr})
+@deffn {Função} collapse (@var{expr})
 
 Reduz @var{expr} fazendo com que todas as suas subexpress@~{o}es comuns (i.e., iguais)
 compartilhem (i.e., usem as mesmas c@'{e}lulas), economizando espa@,{c}o.  A fun@,{c}@~{a}o (@code{collapse} @'{e}
@@ -477,7 +477,7 @@ reduzir os elementos do vetor est@'{a}tico @code{A} fazendo
 @code{collapse (listarray ('A))}.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -485,7 +485,7 @@ reduzir os elementos do vetor est@'{a}tico @code{A} fazendo
 
 @c -----------------------------------------------------------------------------
 @anchor{disolate}
-@deffn {Function} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {Função} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 @'{E} similar a @code{isolate (@var{expr}, @var{x})} exceto que habilita o
 usu@'{a}rio a isolar mais de uma vari@'{a}vel simultaneamente.  Pode ser @'{u}til,
@@ -495,14 +495,14 @@ integra@,{c}@~{a}o.  Essa fun@,{c}@~{a}o @'{e} chamada automaticamente a partir 
 Uma demonstra@,{c}@~{a}o est@'{a} dispon@'{i}vel atrav@'{e}s de @code{demo("disol")$}.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{dispform}
-@deffn  {Function} dispform (@var{expr})
-@deffnx {Function} dispform (@var{expr}, all)
+@deffn  {Função} dispform (@var{expr})
+@deffnx {Função} dispform (@var{expr}, all)
 
 Retorna a representa@,{c}@~{a}o externa de @var{expr}.
 
@@ -580,7 +580,7 @@ Uso do argumento opcional @code{all}.
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -588,7 +588,7 @@ Uso do argumento opcional @code{all}.
 
 @c -----------------------------------------------------------------------------
 @anchor{dpart}
-@deffn {Function} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Seleciona a mesma subexpress@~{a}o que @mrefcomma{part}
 mas ao inv@'{e}s de apenas retornar
@@ -607,13 +607,13 @@ express@~{a}o.
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{exptisolate}
-@defvr {Option variable} exptisolate
+@defvr {Variável de opção} exptisolate
 Valor padr@~{a}o: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -622,13 +622,13 @@ examine expoentes de @'{a}tomos (tais como @code{%e}) que cont@'{e}m @code{var}.
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{exptsubst}
-@defvr {Option variable} exptsubst
+@defvr {Variável de opção} exptsubst
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{exptsubst}, quando @code{true}, permite substitui@,{c}@~{o}es tais como substituir por @code{y}
@@ -668,13 +668,13 @@ o @code{%e^x} em @code{%e^(a*x)}.
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Expressions}
+@category{Funções exponecial e logarítmica} @category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{freeof}
-@deffn {Function} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
+@deffn {Função} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
 
 O comando @code{freeof (@var{x_1}, @var{expr})} retorna @code{true} se nenhuma subexpress@~{a}o de
 @var{expr} for igual a @var{x_1} ou se @var{x_1} ocorrer somente como uma vari@'{a}vel sem nenhuma associa@,{c}@~{a}o fora de
@@ -777,13 +777,13 @@ Um integral indefinida n@~{a}o @'{e} livre de sua vari@'{a}vel de integra@,{c}@~
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{inflag}
-@defvr {Option variable} inflag
+@defvr {Variável de opção} inflag
 Valor padr@~{a}o: @code{false}
 
 Quando @code{inflag} for @code{true}, fun@,{c}@~{o}es que extraem partes inspecionam a
@@ -809,7 +809,7 @@ e @mrefdot{pickapart}
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -817,7 +817,7 @@ e @mrefdot{pickapart}
 
 @c -----------------------------------------------------------------------------
 @anchor{inpart}
-@deffn {Function} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 @'{E} similar a @mref{part}
 mas trabalha sobre a representa@,{c}@~{a}o interna da
@@ -848,7 +848,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -856,7 +856,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{isolate}
-@deffn {Function} isolate (@var{expr}, @var{x})
+@deffn {Função} isolate (@var{expr}, @var{x})
 
 Retorna @var{expr} com subexpress@~{o}es que s@~{a}o e que n@~{a}o possuem
 @var{var} substitu@'{i}da por r@'{o}tulos de express@~{a}o intermedi@'{a}ria (esses sendo s@'{i}mbolos at@^{o}micos
@@ -876,7 +876,7 @@ com relação aos produtos.  Veja @mrefdot{isolate_wrt_times}
 Fa@,{c}a @code{example (isolate)} para ver exemplos.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -884,7 +884,7 @@ Fa@,{c}a @code{example (isolate)} para ver exemplos.
 
 @c -----------------------------------------------------------------------------
 @anchor{isolate_wrt_times}
-@defvr {Option variable} isolate_wrt_times
+@defvr {Variável de opção} isolate_wrt_times
 Valor padr@~{a}o: @code{false}
 
 Quando @code{isolate_wrt_times} for @code{true}, @code{isolate} isolar@'{a} tamb@'{e}m
@@ -912,7 +912,7 @@ considerando os produtos.  E.g. compare ambos os ajustes de @code{isolate_wrt_ti
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -920,7 +920,7 @@ considerando os produtos.  E.g. compare ambos os ajustes de @code{isolate_wrt_ti
 
 @c -----------------------------------------------------------------------------
 @anchor{listconstvars}
-@defvr {Option variable} listconstvars
+@defvr {Variável de opção} listconstvars
 Valor padr@~{a}o: @code{false}
 
 Quando @code{listconstvars} for @code{true}, far@'{a} com que @mref{listofvars}
@@ -929,13 +929,13 @@ na lista se elas aparecerem no momento em que a @code{listofvars} for
 chamada.  O padr@~{a}o @'{e} omitir as constantes.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{listdummyvars}
-@defvr {Option variable} listdummyvars
+@defvr {Variável de opção} listdummyvars
 Valor padr@~{a}o: @code{true}
 
 Quando @code{listdummyvars} for @code{false}, "vari@'{a}veis dummy" na express@~{a}o
@@ -956,7 +956,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -964,7 +964,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{listofvars}
-@deffn {Function} listofvars (@var{expr})
+@deffn {Função} listofvars (@var{expr})
 
 Retorna uma lista das vari@'{a}veis em @var{expr}.
 
@@ -987,7 +987,7 @@ para incluir ou excluir "vari@'{a}veis dummy" na lista de vari@'{a}veis.
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -995,7 +995,7 @@ para incluir ou excluir "vari@'{a}veis dummy" na lista de vari@'{a}veis.
 
 @c -----------------------------------------------------------------------------
 @anchor{lfreeof}
-@deffn {Function} lfreeof (@var{lista}, @var{expr})
+@deffn {Função} lfreeof (@var{lista}, @var{expr})
 
 Para cada membro @var{m} de @var{lista}, chama
 @code{freeof (@var{m}, @var{expr})}.  Retorna @code{false} se qualquer chamada a
@@ -1023,7 +1023,7 @@ lfreeof ([ a, y], x^2+b);
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1031,14 +1031,14 @@ lfreeof ([ a, y], x^2+b);
 
 @c -----------------------------------------------------------------------------
 @anchor{lpart}
-@deffn {Function} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 @'{E} similar a @mref{dpart}
 mas usa uma caixa com r@'{o}tulo.  Uma caixa com r@'{o}tulo @'{e} similar
 a aquela produzida por @code{dpart} mas tem um nome na linha do topo.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1046,7 +1046,7 @@ a aquela produzida por @code{dpart} mas tem um nome na linha do topo.
 
 @c -----------------------------------------------------------------------------
 @anchor{mainvar}
-@defvr {Property} mainvar
+@defvr {Propriedade} mainvar
 
 Voc@^{e} pode declarar vari@'{a}veis com a propriedade @code{mainvar}.  A escala de ordena@,{c}@~{a}o para @'{a}tomos @'{e}
 essencialmente: n@'{u}meros < constantes (e.g., @code{%e}, @code{%pi}) < escalares < outras
@@ -1059,7 +1059,7 @@ necess@'{a}ria se for para ocorrer algum cancelamento.  Tamb@'{e}m, se voc@^{e} 
 @code{x} @'{e} uma @code{mainvar}, voc@^{e} provavelmente deve tamb@'{e}mo gravar @code{x}.)
 
 @opencatbox
-@category{Declarations and inferences} @category{Expressions}
+@category{Declarações e inferências} @category{Expressões}
 @closecatbox
 @end defvr
 
@@ -1067,7 +1067,7 @@ necess@'{a}ria se for para ocorrer algum cancelamento.  Tamb@'{e}m, se voc@^{e} 
 
 @c -----------------------------------------------------------------------------
 @anchor{noun}
-@defvr {Property} noun
+@defvr {Propriedade} noun
 
 A propriedade @code{noun} @'{e} uma das op@,{c}@~{o}es da fun@,{c}@~{a}o @mrefdot{declare}
 A @mref{declare} faz uma fun@,{c}@~{a}o ser um "noun", significando que essa fun@,{c}@~{a}o agora declarada "substantivo" n@~{a}o seja avaliada
@@ -1095,7 +1095,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Nouns and verbs}
+@category{Substantivos e verbos}
 @closecatbox
 @end defvr
 
@@ -1103,7 +1103,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{noundisp}
-@defvr {Option variable} noundisp
+@defvr {Variável de opção} noundisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{noundisp} for @code{true}, substantivos s@~{a}o exibidos entre
@@ -1111,7 +1111,7 @@ ap@'{o}strofos.  Esse comutador @'{e} sempre @code{true} quando se mostra defini
 de fun@,{c}@~{o}es.
 
 @opencatbox
-@category{Display flags and variables} @category{Nouns and verbs}
+@category{Sinalizadores e variáveis de exibição} @category{Substantivos e verbos}
 @closecatbox
 @end defvr
 
@@ -1119,7 +1119,7 @@ de fun@,{c}@~{o}es.
 
 @c -----------------------------------------------------------------------------
 @anchor{nounify}
-@deffn {Function} nounify (@var{f})
+@deffn {Função} nounify (@var{f})
 
 Retorna a forma substantiva da fun@,{c}@~{a}o @var{f}.  @'{E}
 necess@'{a}ria ao se fazer refer@^{e}ncia ao nome de uma fun@,{c}@~{a}o verbal como se essa fun@,{c}@~{a}o verbal
@@ -1130,7 +1130,7 @@ a forma retornada se uma chamada de fun@,{c}@~{a}o for precedida por ap@'{o}stro
 Veja tamb@'{e}m @mrefdot{verbify}
 
 @opencatbox
-@category{Nouns and verbs}
+@category{Substantivos e verbos}
 @closecatbox
 @end deffn
 
@@ -1138,7 +1138,7 @@ Veja tamb@'{e}m @mrefdot{verbify}
 
 @c -----------------------------------------------------------------------------
 @anchor{nterms}
-@deffn {Function} nterms (@var{expr})
+@deffn {Função} nterms (@var{expr})
 
 Retorna o n@'{u}mero de termos que @var{expr} pode ter se exxa express@~{a}o for completamente
 expandida e nenhum cancelamento ou combina@,{c}@~{a}o de termos ocorrer.
@@ -1147,7 +1147,7 @@ Note que express@~{o}es como @code{sin (@var{expr})}, @code{sqrt (@var{expr})},
 termos @var{expr} tenha (se for uma soma).
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1155,7 +1155,7 @@ termos @var{expr} tenha (se for uma soma).
 
 @c -----------------------------------------------------------------------------
 @anchor{op}
-@deffn {Function} op (@var{expr})
+@deffn {Função} op (@var{expr})
 
 Retorna o operadr principal da express@~{a}o @var{expr}.
 O comando @code{op (@var{expr})} @'{e} equivalente aos comando @code{part (@var{expr}, 0)}.
@@ -1220,7 +1220,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions} @category{Operators}
+@category{Expressões} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1228,8 +1228,8 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{operatorp}
-@deffn  {Function} operatorp (@var{expr}, @var{op})
-@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
+@deffn  {Função} operatorp (@var{expr}, @var{op})
+@deffnx {Função} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
 O comando @code{operatorp (@var{expr}, @var{op})} retorna @code{true}
 se @var{op} for igual ao operador de @var{expr}.
@@ -1239,7 +1239,7 @@ O comando@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} retorna
 operador de @var{expr}.
 
 @opencatbox
-@category{Operators} @category{Predicate functions}
+@category{Operadores} @category{Funções predicado}
 @closecatbox
 @end deffn
 
@@ -1247,7 +1247,7 @@ operador de @var{expr}.
 
 @c -----------------------------------------------------------------------------
 @anchor{option_opsubst}
-@defvr {Option variable} opsubst
+@defvr {Variável de opção} opsubst
 Valor padr@~{a}o: @code{true}
 
 Quando @code{opsubst} for @code{false}, @mref{subst}
@@ -1291,7 +1291,7 @@ substituir dentro do operador de uma express@~{a}o.  E.g.,
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -1299,7 +1299,7 @@ substituir dentro do operador de uma express@~{a}o.  E.g.,
 
 @c -----------------------------------------------------------------------------
 @anchor{optimize}
-@deffn {Function} optimize (@var{expr})
+@deffn {Função} optimize (@var{expr})
 
 Retorna uma express@~{a}o que produz o mesmo valor e
 os mesmos efeitos que @var{expr} mas o faz de modo mais eficiente evitando o
@@ -1308,29 +1308,29 @@ o "colapso" de seus argumentos de forma que todas as subexpress@~{o}es comuns
 sejam compartilhadas.  Fa@,{c}a @code{example (optimize)} para exemplos.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 
 @c -----------------------------------------------------------------------------
 @anchor{optimprefix}
-@defvr {Option variable} optimprefix
+@defvr {Variável de opção} optimprefix
 Valor padr@~{a}o: @code{%}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{optimprefix} cont@'{e}m o prefixo usado para gerar
 s@'{i}mbolos atrav@'{e}s do comando @mrefdot{optimize}
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ordergreat}
 @anchor{orderless}
-@deffn  {Function} ordergreat (@var{v_1}, @dots{}, @var{v_n})
-@deffnx {Function} orderless (@var{v_1}, @dots{}, @var{v_n})
+@deffn  {Função} ordergreat (@var{v_1}, @dots{}, @var{v_n})
+@deffnx {Função} orderless (@var{v_1}, @dots{}, @var{v_n})
 
 A fun@,{c}@~{a}o @code{ordergreat} modifica a ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do Maxima
 tal que @var{v_1} sucede @var{v_2} que sucede @dots{} que sucede @var{v_n},
@@ -1349,15 +1349,15 @@ uma vez para cada, a menos que @code{unorder} seja chamada; somente a @'{u}ltima
 Veja tamb@'{e}m @mrefdot{ordergreatp}
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ordergreatp}
 @anchor{orderlessp}
-@deffn  {Function} ordergreatp (@var{expr_1}, @var{expr_2})
-@deffnx {Function} orderlessp (@var{expr_1}, @var{expr_2})
+@deffn  {Função} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffnx {Função} orderlessp (@var{expr_1}, @var{expr_2})
 
 A fun@,{c}@~{a}o @code{ordergreatp} retorna @code{true} se @var{expr_1} suceder @var{expr_2} na
 ordena@,{c}@~{a}o can@^{o}nica de express@~{o}es do m@'{a}xima, e retorna @code{false} de outra forma.
@@ -1473,7 +1473,7 @@ Ordena@,{c}@~{a}o de express@~{o}es n@~{a}o at@^{o}micas.
 @end example
 
 @opencatbox
-@category{Expressions} @category{Predicate functions}
+@category{Expressões} @category{Funções predicado}
 @closecatbox
 @end deffn
 
@@ -1481,7 +1481,7 @@ Ordena@,{c}@~{a}o de express@~{o}es n@~{a}o at@^{o}micas.
 
 @c -----------------------------------------------------------------------------
 @anchor{part}
-@deffn {Function} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Retorna partes da forma mostrada na tela de @code{expr}.  A fun@,{c}@~{a}o @code{part} obt@'{e}m a parte de
 @code{expr} como especificado pelos @'{i}ndices @var{n_1}, @dots{}, @var{n_k}.  Primeiro
@@ -1532,7 +1532,7 @@ Exemplos:
 O comando @code{example (part)} mostra exemplos adicionais.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1540,7 +1540,7 @@ O comando @code{example (part)} mostra exemplos adicionais.
 
 @c -----------------------------------------------------------------------------
 @anchor{partition}
-@deffn {Function} partition (@var{expr}, @var{x})
+@deffn {Função} partition (@var{expr}, @var{x})
 
 Retorna uma lista de duas express@~{o}es.  S@~{a}o elas (1) os fatores de @var{expr}
 (se @var{expr} for um produto), os termos de @var{expr} (se @var{expr} for uma soma), ou a lista
@@ -1559,7 +1559,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1567,7 +1567,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{partswitch}
-@defvr {Option variable} partswitch
+@defvr {Variável de opção} partswitch
 Valor padr@~{a}o: @code{false}
 
 Quando @code{partswitch} for @code{true}, @code{end} @'{e} retornado
@@ -1575,13 +1575,13 @@ quando uma parte selecionada de uma express@~{a}o n@~{a}o existir, de outra form
 mensagem de erro @'{e} retornada.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{pickapart}
-@deffn {Function} pickapart (@var{expr}, @var{n})
+@deffn {Função} pickapart (@var{expr}, @var{n})
 
 Atribui r@'{o}tulos de express@~{o}es intermedi@'{a}rias a subexpress@~{o}es de @var{expr} no n@'{i}vel
 @var{n}, um inteiro.  Subexpress@~{o}es em maior ou menor n@'{i}vel n@~{a}o recebem
@@ -1675,7 +1675,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -1683,7 +1683,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{piece}
-@defvr {System variable} piece
+@defvr {Variável de sistema} piece
 
 Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mref{part}
 .
@@ -1696,14 +1696,14 @@ pr@'{o}prias fun@,{c}@~{o}es @mref{part}
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{psubst}
-@deffn  {Function} psubst (@var{lista}, @var{expr})
-@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
+@deffn  {Função} psubst (@var{lista}, @var{expr})
+@deffnx {Função} psubst (@var{a}, @var{b}, @var{expr})
 
 O comando @code{psubst(@var{a}, @var{b}, @var{expr})} @'{e} simliar a @code{subst}.  Veja 
 @mrefdot{subst}
@@ -1732,15 +1732,15 @@ serial.
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{rembox}
-@deffn  {Function} rembox (@var{expr}, unlabelled)
-@deffnx {Function} rembox (@var{expr}, @var{r@'{o}tulo})
-@deffnx {Function} rembox (@var{expr})
+@deffn  {Função} rembox (@var{expr}, unlabelled)
+@deffnx {Função} rembox (@var{expr}, @var{r@'{o}tulo})
+@deffnx {Função} rembox (@var{expr})
 
 Remove caixas de @var{expr}.
 
@@ -1822,13 +1822,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{reveal}
-@deffn {Function} reveal (@var{expr}, @var{n@'{i}vel})
+@deffn {Função} reveal (@var{expr}, @var{n@'{i}vel})
 
 Substitui partes de @var{expr} no inteiro especificando @var{n@'{i}vel}
 com sum@'{a}rios descritivos.
@@ -1908,7 +1908,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressions} @category{Display functions}
+@category{Expressões} @category{Display functions}
 @closecatbox
 @end deffn
 
@@ -1916,7 +1916,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{sublis}
-@deffn {Function} sublis (@var{lista}, @var{expr})
+@deffn {Função} sublis (@var{lista}, @var{expr})
 
 Faz substitui@,{c}@~{o}es paralelas m@'{u}ltiplas em uma express@~{a}o.  O argumento @var{lista}
 @'{e} uma lista de equa@,{c}@~{o}es.  O primeiro membro das equa@,{c}@~{o}es deve ser um @'{a}tomo.
@@ -1939,13 +1939,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sublis_apply_lambda}
-@defvr {Option variable} sublis_apply_lambda
+@defvr {Variável de opção} sublis_apply_lambda
 Valor padr@~{a}o: @code{true}
 
 Controla se substitui@,{c}@~{a}o de @code{lambda} @'{e} aplicada na simplifica@,{c}@~{a}o ap@'{o}s
@@ -1954,13 +1954,13 @@ para pegar coisas para
 aplicar a substitui@,{c}@~{a}o de @code{lambda}.  O valor @code{true} significa fazer a aplica@,{c}@~{a}o.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{subnumsimp}
-@defvr {Option variable} subnumsimp
+@defvr {Variável de opção} subnumsimp
 Valor padr@~{a}o: @code{false}
 
 Se @code{true} net@~{a}o as fun@,{c}@~{o}es @mref{subst}
@@ -1983,7 +1983,7 @@ subst: cannot substitute 100 for operator g in expression g
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end defvr
 
@@ -1991,7 +1991,7 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{subst}
-@deffn {Function} subst (@var{a}, @var{b}, @var{c})
+@deffn {Função} subst (@var{a}, @var{b}, @var{c})
 
 Substitui @var{a} por @var{b} em @var{c}.  O argumento @var{b} deve ou ser um @'{a}tomo ou uma
 subexpress@~{a}o completa de @var{c}.  Por exemplo, @code{x+y+z} @'{e} uma subexpress@~{a}o
@@ -2060,7 +2060,7 @@ uma substitui@,{c}@~{a}o paralela:
 Para exemplos adicionais, fa@,{c}a @code{example (subst)}.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -2068,7 +2068,7 @@ Para exemplos adicionais, fa@,{c}a @code{example (subst)}.
 
 @c ----------------------------------------------------------------------------
 @anchor{substinpart}
-@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Similar a @mrefcomma{substpart}
 mas @code{substinpart} trabalha na
@@ -2154,7 +2154,7 @@ ou @mref{substpart}
 ou @code{substinpart}.
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -2162,7 +2162,7 @@ ou @code{substinpart}.
 
 @c -----------------------------------------------------------------------------
 @anchor{substpart}
-@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Função} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Substitue @var{x} na subexpress@~{a}o selecionada atrav@'{e}s dos restantes
 argumentos como em @mrefdot{part}
@@ -2202,13 +2202,13 @@ ou @code{substpart} @'{e} o mesmo que chamar @code{inpart} ou
 @mrefdot{substinpart}
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{symbolp}
-@deffn {Function} symbolp (@var{expr})
+@deffn {Função} symbolp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um s@'{i}mbolo, de outra forma retorna @code{false}.  Em termos pr@'{a}ticos,
 @code{symbolp(x)} @'{e} equivalente ao predicado
@@ -2219,13 +2219,13 @@ Retorna @code{true} se @var{expr} for um s@'{i}mbolo, de outra forma retorna @co
 Veja tamb@'{e}m @ref{Identifiers}.
 
 @opencatbox
-@category{Predicate functions}
+@category{Funções predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{unorder}
-@deffn {Function} unorder ()
+@deffn {Função} unorder ()
 
 Desabilita nomes alternativos criados pelo @'{u}ltimo uso dos comandos de ordena@,{c}@~{a}o 
 @code{ordergreat} e @code{orderless}.  As fun@,{c}@~{o}es @code{ordergreat} e @code{orderless} 
@@ -2274,13 +2274,13 @@ sa@'{i}da @code{%o7}.
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{verbify}
-@deffn {Function} verbify (@var{f})
+@deffn {Função} verbify (@var{f})
 
 Retorna a forma verbal da fun@,{c}@~{a}o chamada @var{f}.
 Veja tamb@'{e}m @code{verb}, @code{noun}, e @code{nounify}.
@@ -2305,7 +2305,7 @@ $FOO
 @end example
 
 @opencatbox
-@category{Nouns and verbs}
+@category{Substantivos e verbos}
 @closecatbox
 @end deffn
 

@@ -182,7 +182,7 @@ Incorrect syntax: # is not a prefix operator
 @end example
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operadores} @category{Sintaxe}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -196,23 +196,23 @@ Incorrect syntax: # is not a prefix operator
 @anchor{*}
 @anchor{/}
 @anchor{^}
-@deffn {Operator} +
+@deffn {Operador} +
 @ifinfo
 @fnindex Adi@,{c}@~{a}o
 @end ifinfo
-@deffnx {Operator} -
+@deffnx {Operador} -
 @ifinfo
 @fnindex Subtra@,{c}@~{a}o
 @end ifinfo
-@deffnx {Operator} *
+@deffnx {Operador} *
 @ifinfo
 @fnindex Multiplica@,{c}@~{a}o
 @end ifinfo
-@deffnx {Operator} /
+@deffnx {Operador} /
 @ifinfo
 @fnindex Divis@~{a}o
 @end ifinfo
-@deffnx {Operator} ^
+@deffnx {Operador} ^
 @ifinfo
 @fnindex Exponencia@,{c}@~{a}o
 @end ifinfo
@@ -419,13 +419,13 @@ Aritm@'{e}tica @'{e} realizada elemento-a-elemento em listas (dependendo de
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{**}
-@deffn {Operator} **
+@deffn {Operador} **
 
 Operador de exponencia@,{c}@~{a}o.
 Maxima reconhece @code{**} como o mesmo operador que @mref{^}
@@ -459,13 +459,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{^^}
-@deffn {Operator} ^^
+@deffn {Operador} ^^
 @ifinfo
 @fnindex Exponencia@,{c}@~{a}o n@~{a}o comutativa
 @end ifinfo
@@ -494,13 +494,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{.}
-@deffn {Operator} .
+@deffn {Operador} .
 @ifinfo
 @fnindex Multiplica@,{c}@~{a}o n@~{a}o comutativa
 @end ifinfo
@@ -524,7 +524,7 @@ e
 @code{dotscrules}.
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -538,19 +538,19 @@ e
 @anchor{<=}
 @anchor{>=}
 @anchor{>}
-@deffn {Operator} <
+@deffn {Operador} <
 @ifinfo
 @fnindex Menor que
 @end ifinfo
-@deffnx {Operator} <=
+@deffnx {Operador} <=
 @ifinfo
 @fnindex Menor que ou equal
 @end ifinfo
-@deffnx {Operator} >=
+@deffnx {Operador} >=
 @ifinfo
 @fnindex Maior que ou equal
 @end ifinfo
-@deffnx {Operator} >
+@deffnx {Operador} >
 @ifinfo
 @fnindex Maior que
 @end ifinfo
@@ -635,7 +635,7 @@ Booleanos, embora os argumentos de express@~{o}es relacionais sejam avaliados.
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -648,7 +648,7 @@ Booleanos, embora os argumentos de express@~{o}es relacionais sejam avaliados.
 
 @c -----------------------------------------------------------------------------
 @anchor{and}
-@deffn {Operator} and
+@deffn {Operador} and
 @ifinfo
 @fnindex Conjun@,{c}@~{a}o l@'{o}gica
 @end ifinfo
@@ -675,7 +675,7 @@ O operador @code{and} n@~{a}o @'{e} comutativo: @code{a and b} pode n@~{a}o ser 
 @code{b and a} devido ao tratamento de operandos indeterminados.
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -683,7 +683,7 @@ O operador @code{and} n@~{a}o @'{e} comutativo: @code{a and b} pode n@~{a}o ser 
 
 @c -----------------------------------------------------------------------------
 @anchor{not}
-@deffn {Operator} not
+@deffn {Operador} not
 @ifinfo
 @fnindex Nega@,{c}@~{a}o l@'{o}gica
 @end ifinfo
@@ -701,7 +701,7 @@ operandos que n@~{a}o avaliam para @code{true} ou @code{false} s@~{a}o aceitos,
 e o resultado @'{e} uma express@~{a}o Booleana.
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -709,7 +709,7 @@ e o resultado @'{e} uma express@~{a}o Booleana.
 
 @c -----------------------------------------------------------------------------
 @anchor{or}
-@deffn {Operator} or
+@deffn {Operador} or
 @ifinfo
 @fnindex Disjun@,{c}@~{a}o l@'{o}gica
 @end ifinfo
@@ -736,7 +736,7 @@ O operando @code{or} n@~{a}o @'{e} comutativo: @code{a or b} pode n@~{a}o ser ig
 devido ao tratamento de operandos indeterminados.
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -747,7 +747,7 @@ devido ao tratamento de operandos indeterminados.
 
 @c -----------------------------------------------------------------------------
 @anchor{#}
-@deffn {Operator} #
+@deffn {Operador} #
 @ifinfo
 @fnindex Diferente (desigualdade sint@'{a}tica)
 @end ifinfo
@@ -785,13 +785,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{=}
-@deffn {Operator} =
+@deffn {Operador} =
 @ifinfo
 @fnindex Operador de equa@,{c}@~{a}o
 @fnindex Igual (igualdade sint@'{a}tica)
@@ -933,7 +933,7 @@ Devido a @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr},
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
@@ -944,7 +944,7 @@ Devido a @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr},
 
 @c -----------------------------------------------------------------------------
 @anchor{:}
-@deffn {Operator} :
+@deffn {Operador} :
 @ifinfo
 @fnindex Operador de atribui@,{c}@~{a}o
 @end ifinfo
@@ -1067,14 +1067,14 @@ Os valores de @code{a} e @code{b} s@~{a}o comutados nesse exemplo.
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Avaliação} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @need 900
 @anchor{::}
-@deffn {Operator} ::
+@deffn {Operador} ::
 @ifinfo
 @fnindex Operador de atribui@,{c}@~{a}o (avalia o primeiro membro da igualdade)
 @end ifinfo
@@ -1118,13 +1118,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Avaliação} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{::=}
-@deffn {Operator} ::=
+@deffn {Operador} ::=
 @ifinfo
 @fnindex Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o macro
 @end ifinfo
@@ -1236,13 +1236,13 @@ x is equal to 1234 - 1729 w
 @end example
 
 @opencatbox
-@category{Function definition} @category{Operators}
+@category{Definição de função} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{:=}
-@deffn {Operator} :=
+@deffn {Operador} :=
 @ifinfo
 @fnindex Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o
 @end ifinfo
@@ -1428,7 +1428,7 @@ A declaração @code{local} torna uma definição de função válida apenas loc
 @end example
 
 @opencatbox
-@category{Function definition} @category{Operators}
+@category{Definição de função} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1439,9 +1439,9 @@ A declaração @code{local} torna uma definição de função válida apenas loc
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {Function} infix (@var{op})
-@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn  {Função} infix (@var{op})
+@deffnx {Função} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Função} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
 Declara que o operador @var{op} é um operador infixo.  Um operador infixo é uma função de
 dois argumentos, com o nome da função escrito entre os argumentos.
@@ -1562,14 +1562,14 @@ if x ## y then
 @end example
 
 @opencatbox
-@category{Operators} @category{Declarations and inferences} @category{Syntax}
+@category{Operadores} @category{Declarações e inferências} @category{Sintaxe}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Function} matchfix (@var{de}, @var{dd})
-@deffnx {Function} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
+@deffn  {Função} matchfix (@var{de}, @var{dd})
+@deffnx {Função} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
 
 Declara um operador matchfix com delimitadores esquerdo e direito @var{de}
 e @var{dd}.  Os delimitadores são especificados como sequências de caractere.
@@ -1697,14 +1697,14 @@ Operadores matchfix são funções comuns definidas pelo usuário.
 @end example
 
 @opencatbox
-@category{Syntax} @category{Operators}
+@category{Sintaxe} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{function_nary}
-@deffn  {Function} nary (@var{op})
-@deffnx {Function} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
+@deffn  {Função} nary (@var{op})
+@deffnx {Função} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
 
 An @code{nary} operator is used to denote a function of any number of arguments,
 each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
@@ -1716,14 +1716,14 @@ to be an @code{nary} operator.  Functions may be declared to be @code{nary}.  If
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operadores} @category{Sintaxe}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {Function} nofix (@var{op})
-@deffnx {Function} nofix (@var{op}, @var{clgr})
+@deffn  {Função} nofix (@var{op})
+@deffnx {Função} nofix (@var{op}, @var{clgr})
 
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
@@ -1735,14 +1735,14 @@ function which declares @code{x} to be a @code{nofix} operator.
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operadores} @category{Sintaxe}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {Function} postfix (@var{op})
-@deffnx {Function} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
+@deffn  {Função} postfix (@var{op})
+@deffnx {Função} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
 
 Operadores @code{postfix} como a variedade @code{prefix} denota funções de um
 único argumento, mas nesse caso o argumento precede uma
@@ -1753,14 +1753,14 @@ função @code{postfix("x")} é uma função de extensão de sintaxe para declar
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operadores} @category{Sintaxe}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {Function} prefix (@var{op})
-@deffnx {Function} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
+@deffn  {Função} prefix (@var{op})
+@deffnx {Função} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
 
 Um operador @code{prefix} significa uma função de um argumento,
 o qual segue imediatamente uma ocorrência do operador.
@@ -1770,7 +1770,7 @@ operador @code{prefix}.
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operadores} @category{Sintaxe}
 @closecatbox
 @end deffn
 

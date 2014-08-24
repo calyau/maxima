@@ -50,18 +50,18 @@ todos os campos s@~{a}o sempre vis@'{i}veis.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@defvr {Global variable} structures
+@defvr {Variável global} structures
 
 A vari@'{a}vel global @code{structures} @'{e} a lista de estruturas definidas pelo usu@'{a}rio e @'{e} criada por @code{defstruct}.
 
 @opencatbox
-@category{Structures} @category{Global variables}
+@category{Estruturas} @category{Variáveis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
-@deffnx {Function} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+@deffn  {Função} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {Função} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
 
 Define uma estrutura, que @'{e} uma lista de campos nomeados como @var{a_1}, @dots{},
 @var{a_n} associada a um s@'{i}mbolo @var{S}.
@@ -111,13 +111,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Structures}
+@category{Estruturas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} new (@var{S})
-@deffnx {Function} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+@deffn  {Função} new (@var{S})
+@deffnx {Função} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
 
 A fun@,{c}@~{a}o @code{new} cria novas inst@^{a}ncias de estruturas.
 
@@ -145,12 +145,12 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Structures}
+@category{Estruturas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Operator} @@
+@deffn {Operador} @@
 
 O operador @code{@@} @'{e} o operador de acesso a campo de estrutura.
 A express@~{a}o @code{@var{x}@@ @var{a}} refere-se ao valor do campo @var{a} da inst@^{a}ncia de estrutura @var{x}.
@@ -224,7 +224,7 @@ O nome de campo n@~{a}o @'{e} avaliado.
 @end example
 
 @opencatbox
-@category{Structures} @category{Operators}
+@category{Estruturas} @category{Operadores}
 @closecatbox
 @end deffn
 

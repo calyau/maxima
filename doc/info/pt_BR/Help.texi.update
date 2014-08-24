@@ -46,7 +46,7 @@ retorna
 e um pouco mais.
 
 @opencatbox
-@category{Console interaction}
+@category{Interação com o console}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ e um pouco mais.
 
 @c -----------------------------------------------------------------------------
 @anchor{apropos}
-@deffn {Function} apropos (@var{seqcaracteres})
+@deffn {Função} apropos (@var{seqcaracteres})
 
 Buscas por nomes do Maxima que possuem @var{seqcaracteres} aparecendo em qualquer lugar dentro
 delas.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores e fun@,{c}@~{o}es
@@ -87,13 +87,13 @@ gamma_incomplete_generalized_regularized]
 @end example
 
 @opencatbox
-@category{Help}
+@category{Ajuda}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{demo}
-@deffn {Function} demo (@var{nomearquivo})
+@deffn {Função} demo (@var{nomearquivo})
 
 Avalia express@~{o}es do Maxima dentro de @var{nomearquivo} e mostra os resultados.
 @code{demo} interrompe a execu@,{c}@~{a}o ap@'{o}s avalizr cada express@~{a}o e continua ap@'{o}s o
@@ -134,15 +134,15 @@ _
 @end example
 
 @opencatbox
-@category{Help} @category{Console interaction} @category{File input}
+@category{Ajuda} @category{Interação com o console} @category{File input}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{describe}
-@deffn  {Function} describe (@var{seqcaracteres})
-@deffnx {Function} describe (@var{seqcaracteres}, exact)
-@deffnx {Function} describe (@var{seqcaracteres}, inexact)
+@deffn  {Função} describe (@var{seqcaracteres})
+@deffnx {Função} describe (@var{seqcaracteres}, exact)
+@deffnx {Função} describe (@var{seqcaracteres}, inexact)
 @ifinfo
 @fnindex Ajuda
 @end ifinfo
@@ -211,14 +211,14 @@ atrav@'{e}s de @code{[...]}).  Todos ou nenhum dos itens podem ter sido selecion
 respectivamente.
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Ajuda} @category{Interação com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
-@deffn  {Function} example (@var{t@'{o}pico})
-@deffnx {Function} example ()
+@deffn  {Função} example (@var{t@'{o}pico})
+@deffnx {Função} example ()
 
 @code{example (@var{t@'{o}pico})} alguns exemplos de @var{t@'{o}pico}, que pode ser
 um s@'{i}mbolo ou uma sequ@^{e}ncia de caracteres.  Para ver exemplos de operadores como @code{if}, @code{do},
@@ -260,20 +260,20 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Ajuda} @category{Interação com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{manual_demo}
-@defvr {Option variable} manual_demo
+@defvr {Variável de opção} manual_demo
 Valor padr@~{a}o: @code{"manual.demo"}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{manual_demo} especifica o nome do arquivo contendo os exemplos para 
 a fun@,{c}@~{a}o @code{example}.  Veja @mrefdot{example}
 
 @opencatbox
-@category{Help} @category{Global variables}
+@category{Ajuda} @category{Variáveis globais}
 @closecatbox
 @end defvr
 

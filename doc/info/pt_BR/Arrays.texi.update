@@ -19,9 +19,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{array}
-@deffn  {Function} array (@var{nome}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array (@var{nome}, @var{tipo}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array ([@var{nome_1}, @dots{}, @var{nome_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {Função} array (@var{nome}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {Função} array (@var{nome}, @var{tipo}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {Função} array ([@var{nome_1}, @dots{}, @var{nome_m}], @var{dim_1}, @dots{}, @var{dim_n})
 
 Cria um vetor est@'{a}tico @math{n}-dimensional.  O valor @math{n} pode ser menor ou equal a 5.
 Os subscritos para a @math{i}'@'{e}sima dimens@~{a}o s@~{a}o os inteiros variando de 0 a
@@ -53,13 +53,13 @@ declarado.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayapply}
-@deffn {Function} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Função} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 onde @var{A} @'{e} um vetor est@'{a}tico e @var{i_1}, @dots{}, @var{i_n} s@~{a}o inteiros.
@@ -69,13 +69,13 @@ com a exce@,{c}@~{a}o de que o primeiro argumento @'{e} um vetor est@'{a}tico
 ao inv@'{e}s de uma fun@,{c}@~{a}o.
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressões} @category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayinfo}
-@deffn {Function} arrayinfo (@var{A})
+@deffn {Função} arrayinfo (@var{A})
 
 Retorna informa@,{c}@~{o}es sobre o vetor est@'{a}tico @var{A}.
 O argumento @var{A} pode ser um vetor est@'{a}tico declarado, um vetor est@'{a}tico n@~{a}o declarado (cresce por ajuste),
@@ -98,7 +98,7 @@ Os valores armazenados de fun@,{c}@~{a}o s@~{a}o retornados atrav@'{e}s da @code
 
 Quando o argumento de @var{A} for do tipo fun@,{c}@~{a}o subscrita, @code{arrayinfo} retorna uma lista compreendendo o @'{a}tomo
 @code{hashed}, o n@'{u}mero de subscritos,
-e quaisquer valores de subscrito paa os quais houverem express@~{o}es lambda.
+e quaisquer valores de subscrito para os quais houverem express@~{o}es lambda.
 As express@~{o}es lambda s@~{a}o retornadas atrav@'{e}s de @code{listarray}.
 
 Veja tamb@'{e}m @mrefdot{listarray}
@@ -246,13 +246,13 @@ A @code{arrayinfo} e a @code{listarray} aplicadas a uma fun@,{c}@~{a}o de subscr
 @end example
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{arraymake}
-@deffn {Function} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Função} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 Retorna a express@~{a}o @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
 O resultado @'{e} uma refer@^{e}ncia de vetor est@'{a}tico n@~{a}o declarado.
@@ -344,13 +344,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressões} @category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{arrays}
-@defvr {System variable} arrays
+@defvr {Variável de sistema} arrays
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{arrays} @'{e} uma lista de vetores est@'{a}ticos que tenha sido alocados.
@@ -402,13 +402,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Arrays} @category{Global variables}
+@category{Vetores estáticos} @category{Variáveis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{arraysetapply}
-@deffn {Function} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
+@deffn {Função} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
 
 Atribui o mesmo valor @var{x} a todos do @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
 onde @var{A} @'{e} um vetor est@'{a}tico e @var{i_1}, @dots{}, @var{i_n} s@~{a}o inteiros.
@@ -416,13 +416,13 @@ onde @var{A} @'{e} um vetor est@'{a}tico e @var{i_1}, @dots{}, @var{i_n} s@~{a}o
 A fun@,{c}@~{a}o @code{arraysetapply} avalia seus argumentos.
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressões} @category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{fillarray}
-@deffn {Function} fillarray (@var{A}, @var{B})
+@deffn {Função} fillarray (@var{A}, @var{B})
 
 Preenche o vetor est@'{a}tico @var{A} a partir de @var{B}, que @'{e} uma lista ou um vetor est@'{a}tico.
 
@@ -527,13 +527,13 @@ os elementos extras s@~{a}o ignorados.
 @end example
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{listarray}
-@deffn {Function} listarray (@var{A})
+@deffn {Função} listarray (@var{A})
 
 Retorna uma lista dos elementos de vetor est@'{a}tico @var{A}.
 O argumento @var{A} pode ser um vetor est@'{a}tico declarado, um vetor est@'{a}tico n@~{a}o declarado (desordenado),
@@ -697,7 +697,7 @@ A @code{listarray} e a @code{arrayinfo} aplicadas a uma fun@,{c}@~{a}o de subscr
 @end example
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
@@ -705,7 +705,7 @@ A @code{listarray} e a @code{arrayinfo} aplicadas a uma fun@,{c}@~{a}o de subscr
 
 @c -----------------------------------------------------------------------------
 @anchor{make_array}
-@deffn {Function} make_array (@var{tipo}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Função} make_array (@var{tipo}, @var{dim_1}, @dots{}, @var{dim_n})
 
 Cria e retorna um vetor est@'{a}tico de Lisp.  O @var{tipo} pode
 ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou 
@@ -802,7 +802,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
@@ -810,7 +810,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{rearray}
-@deffn {Function} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Função} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
 
 Muda a dimens@~{a}o de um vetor est@'{a}tico.
 O novo vetor est@'{a}tico ser@'{a} preenchido com os elementos do antigo na
@@ -821,14 +821,14 @@ dependendo do tipo de declara@,{c}@~{a}o do veor est@'{a}tico que est@'{a} sendo
 modificado.
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{remarray}
-@deffn  {Function} remarray (@var{A_1}, @dots{}, @var{A_n})
-@deffnx {Function} remarray (all)
+@deffn  {Função} remarray (@var{A_1}, @dots{}, @var{A_n})
+@deffnx {Função} remarray (all)
 
 Remove vetores est@'{a}ticos e fun@,{c}@~{o}es associadas a vetores est@'{a}ticos associados e libera o espa@,{c}o de armazenamento usado.
 Os argumentos podem ser vetores est@'{a}ticos declarados, n@~{a}o declarados (desordenados), fun@,{c}@~{o}es de vetores
@@ -845,13 +845,13 @@ A @code{remarray} retorna uma lista dos vetores est@'{a}ticos removidos.
 A @code{remarray} n@~{a}o avalia seus argumentos.
 
 @opencatbox
-@category{Arrays}
+@category{Vetores estáticos}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{subvar}
-@deffn {Function} subvar (@var{x}, @var{i})
+@deffn {Função} subvar (@var{x}, @var{i})
 
 Avalia a express@~{a}o de subscrito @code{@var{x}[@var{i}]}.
 
@@ -896,7 +896,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressões} @category{Vetores estáticos}
 @closecatbox
 @end deffn
 
@@ -904,13 +904,13 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{subvarp}
-@deffn {Function} subvarp (@var{expr})
+@deffn {Função} subvarp (@var{expr})
 
 Returna @code{true} se @var{expr} for uma vari@'{a}vel de subscrito, por exemplo
 @code{a[i]}.
 
 @opencatbox
-@category{Predicate functions}
+@category{Funções predicado}
 @closecatbox
 @end deffn
 
@@ -918,7 +918,7 @@ Returna @code{true} se @var{expr} for uma vari@'{a}vel de subscrito, por exemplo
 
 @c -----------------------------------------------------------------------------
 @anchor{use_fast_arrays}
-@defvr {Option variable} use_fast_arrays
+@defvr {Variável de opção} use_fast_arrays
 
 Se @code{true} ent@~{a}o somente dois tipos de vetores est@'{a}ticos s@~{a}o reconhecidos:
 
@@ -950,7 +950,7 @@ c@'{o}digos traduzidos e compilados provenientes das vers@~{o}es antigas ajuste 
 @code{true}.
 
 @opencatbox
-@category{Arrays} @category{Global flags}
+@category{Vetores estáticos} @category{Global flags}
 @closecatbox
 @end defvr
 

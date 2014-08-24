@@ -21,7 +21,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{alphabetic}
-@defvr {Property} alphabetic
+@defvr {Propriedade} alphabetic
 
 A propriedade @code{alphabetic} @'{e} um tipo de propriedade reconhecido por @mrefdot{declare}@w{}
 A express@~{a}o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
@@ -49,13 +49,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{bindtest}
-@defvr {Property} bindtest
+@defvr {Propriedade} bindtest
 
 O comando @code{declare(@var{x}, bindtest)} dis ao Maxima para disparar um erro
 quando o s@'{i}mbolo @var{x} for avaliado como n@~{a}o associado.
@@ -87,7 +87,7 @@ aa unbound variable
 
 @c -----------------------------------------------------------------------------
 @anchor{constant}
-@deffn {Property} constant
+@deffn {Propriedade} constant
 
 O comando @code{declare(@var{a}, constant)} declara que @var{a} seja reconhecido como uma constante.  A
 declara@,{c}@~{a}o de um s@'{i}mbolo para que esse s@'{i}mbolo seja uma constante n@~{a}o impede a atribui@,{c}@~{a}o de um
@@ -110,13 +110,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences} @category{Constants}
+@category{Declarações e inferências} @category{Constantes}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{constantp}
-@deffn {Function} constantp (@var{expr})
+@deffn {Função} constantp (@var{expr})
 
 Retorna @code{true} se @var{expr} for uma express@~{a}o constante, de outra forma retorna
 @code{false}.
@@ -162,7 +162,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Constants}
+@category{Funções predicado} @category{Constantes}
 @closecatbox
 @end deffn
 
@@ -173,7 +173,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{declare}
-@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
+@deffn {Função} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
 
 Atribui ao @'{a}tomo ou @`{a} lista de @'{a}tomos @var{a_i} a propriedade ou lista de propriedades
 @var{p_i}.  Quando @var{a_i} e/ou @var{p_i} forem listas, cada um dos @'{a}tomos recebe
@@ -322,15 +322,15 @@ Exemplos de usodas propriedades estão disponíveis nadocumentação
 de cada descrição separada de uma propriedade.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{decreasing}
 @anchor{increasing}
-@defvr  {Property} decreasing
-@defvrx {Property} increasing
+@defvr  {Propriedade} decreasing
+@defvrx {Propriedade} increasing
 
 Os comandos @code{declare(@var{f}, decreasing)} ou
 @code{declare(@var{f}, increasing)} dizem ao Maxima para reconhecer a função
@@ -352,15 +352,15 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{even}
 @anchor{odd}
-@defvr  {Property} even
-@defvrx {Property} odd
+@defvr  {Propriedade} even
+@defvrx {Propriedade} odd
 
 Os comandos @code{declare(@var{a}, even)} ou @code{declare(@var{a}, odd)} dizem ao Maxima para
 reconhecer o símbolo @var{a} como uma variável inteira par ou uma variável inteira ímpar.  As
@@ -383,7 +383,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -391,7 +391,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{feature}
-@defvr {Property} feature
+@defvr {Propriedade} feature
 
 Maxima entende dois distintos tipos de características, características de sistema e características
 aplicados a expressões matemáticas.  Veja tamb@'{e}m @mref{status} para informação
@@ -408,7 +408,7 @@ O nome @code{feature} propriamente dito não é o nome de uma função ou de uma
 
 @c -----------------------------------------------------------------------------
 @anchor{featurep}
-@deffn {Function} featurep (@var{a}, @var{f})
+@deffn {Função} featurep (@var{a}, @var{f})
 
 Tenta determinar se o objeto @var{a} tem a característica @var{f} na
 base de fatos na base de dados atual.  Se tiver, a função featurep retorna @code{true},
@@ -428,13 +428,13 @@ Veja tamb@'{e}m @mref{declare} e @mrefdot{features}
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Funções predicado} @category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{features}
-@defvr {Declaration} features
+@defvr {Declaração} features
 
 Maxima reconhece certas propriedades matemáticas de variáveis e funções.
 São aqui chamadas "features" @footnote{Nota do tradutor: característica.}.
@@ -486,13 +486,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{get}
-@deffn {Function} get (@var{a}, @var{i})
+@deffn {Função} get (@var{a}, @var{i})
 
 Recupera a propriedade de usuário indicada através de @var{i} associada ao
 átomo @var{a} ou retorna @code{false} se @var{a} não tiver a propriedade @var{i}.
@@ -537,15 +537,15 @@ x is not numeric.
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{integer}
 @anchor{noninteger}
-@defvr  {Property} integer
-@defvrx {Property} noninteger
+@defvr  {Propriedade} integer
+@defvrx {Propriedade} noninteger
 
 O comando @code{declare(@var{a}, integer)} ou o comando @code{declare(@var{a}, noninteger)} diz
 Maxima para reconhecer @var{a} como uma variável inteira ou não inteira.
@@ -564,13 +564,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{integervalued}
-@defvr {Property} integervalued
+@defvr {Propriedade} integervalued
 
 @code{declare(@var{f}, integervalued)} diz ao Maxima para reconhecer @var{f} como uma
 função que retorna um número inteiro.
@@ -591,13 +591,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{nonarray}
-@deffn {Property} nonarray
+@deffn {Propriedade} nonarray
 
 O comando @code{declare(a, nonarray)} diz ao Maxima para considerar @var{a} não
 um vetor estático.  Essa declaração evita avaliações múltiplas, se @var{a} for uma
@@ -627,7 +627,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressions}
+@category{Expressões}
 @closecatbox
 @end deffn
 
@@ -635,20 +635,20 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{nonscalar}
-@defvr {Property} nonscalar
+@defvr {Propriedade} nonscalar
 
 Faz com que átomos comportem-se como se faz com uma lista ou uma matriz com relação ao operador ponto.
 
 Veja tamb@'{e}m @mrefdot{declare}
 
 @opencatbox
-@category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@category{Declarações e inferências} @category{Vectors} @category{Matrices}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{nonscalarp}
-@deffn {Function} nonscalarp (@var{expr})
+@deffn {Função} nonscalarp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um não escalar, i.e., se contiver
 átomos declarados como não escalares, listas, ou matrizes.
@@ -656,7 +656,7 @@ Retorna @code{true} se @var{expr} for um não escalar, i.e., se contiver
 Veja tamb@'{e}m a função de predicado @mref{scalarp} e @mrefdot{declare}
 
 @opencatbox
-@category{Predicate functions} @category{Vectors} @category{Matrices}
+@category{Funções predicado} @category{Vectors} @category{Matrices}
 @closecatbox
 @end deffn
 
@@ -664,7 +664,7 @@ Veja tamb@'{e}m a função de predicado @mref{scalarp} e @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{posfun}
-@defvr {Property} posfun
+@defvr {Propriedade} posfun
 
 O comando @code{declare (f, posfun)} declara que @code{f} seja uma função positiva.
 O comando @code{is (f(x) > 0)} retorna @code{true}.
@@ -672,7 +672,7 @@ O comando @code{is (f(x) > 0)} retorna @code{true}.
 Veja tamb@'{e}m @mrefdot{declare}
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators}
+@category{Declarações e inferências} @category{Operadores}
 @closecatbox
 @end defvr
 
@@ -681,9 +681,9 @@ Veja tamb@'{e}m @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{printprops}
-@deffn  {Function} printprops (@var{a}, @var{i})
-@deffnx {Function} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
-@deffnx {Function} printprops (all, @var{i})
+@deffn  {Função} printprops (@var{a}, @var{i})
+@deffnx {Função} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
+@deffnx {Função} printprops (all, @var{i})
 
 Mostra a propriedade com o indicador @var{i} associado ao átomo
 @var{a}.  A entidade @var{a} pode também ser uma lista de átomos ou o átomo @code{all} onde
@@ -693,7 +693,7 @@ não puderem ser mostradas de outra forma, i.e.  para @mrefcomma{atvalue}@w{}
 @mrefcomma{atomgrad} @mrefcomma{gradef} e @mrefdot{matchdeclare}
 
 @opencatbox
-@category{Declarations and inferences} @category{Display functions}
+@category{Declarações e inferências} @category{Display functions}
 @closecatbox
 @end deffn
 
@@ -702,13 +702,13 @@ não puderem ser mostradas de outra forma, i.e.  para @mrefcomma{atvalue}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{properties}
-@deffn {Function} properties (@var{a})
+@deffn {Função} properties (@var{a})
 
 Retorna uma lista de nomes de todas as propriedades associadas ao átomo
 @var{a}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
@@ -718,7 +718,7 @@ Retorna uma lista de nomes de todas as propriedades associadas ao átomo
 
 @c -----------------------------------------------------------------------------
 @anchor{props}
-@defvr {System variable} props
+@defvr {Variável de sistema} props
 Valor padr@~{a}o: @code{[]}
 
 Os @code{props} são átomos que possuem qualquer propriedade outra que não aquelas explicitamente
@@ -727,7 +727,7 @@ mencionadas em @mrefcomma{infolists} tais como as especificadas através de @mre
 função @mref{declare}.
 
 @opencatbox
-@category{Declarations and inferences} @category{Global variables}
+@category{Declarações e inferências} @category{Variáveis globais}
 @closecatbox
 @end defvr
 
@@ -736,14 +736,14 @@ função @mref{declare}.
 
 @c -----------------------------------------------------------------------------
 @anchor{propvars}
-@deffn {Function} propvars (@var{prop})
+@deffn {Função} propvars (@var{prop})
 
 Retorna uma lista daqueles átomos na lista @mref{props} que
 possuem a propriedade indicada por @var{prop}.  Dessa forma @code{propvars (atvalue)}
 retorna uma lista de átomos que possuem atvalues.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
@@ -754,7 +754,7 @@ retorna uma lista de átomos que possuem atvalues.
 
 @c -----------------------------------------------------------------------------
 @anchor{put}
-@deffn {Function} put (@var{atom}, @var{valor}, @var{indicador})
+@deffn {Função} put (@var{atom}, @var{valor}, @var{indicador})
 
 Atribui @var{valor} à propriedade (especificada por @var{indicador}) de
 @var{atom}.  O @var{indicador} pode ser o nome de qualquer propriedade, não apenas uma
@@ -785,13 +785,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{qput}
-@deffn {Function} qput (@var{atom}, @var{valor}, @var{indicador})
+@deffn {Função} qput (@var{atom}, @var{valor}, @var{indicador})
 
 Atribui @var{valor} à propriedade (especificada por @var{indicador}) de
 @var{atom}.  É o mesmo que @mrefcomma{put} exceto que os argumentos recebem
@@ -820,15 +820,15 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{rational}
 @anchor{irrational}
-@defvr  {Property} rational
-@defvrx {Property} irrational
+@defvr  {Propriedade} rational
+@defvrx {Propriedade} irrational
 
 O comando @code{declare(@var{a}, rational)} ou o comando @code{declare(@var{a}, irrational)} diz ao
 Maxima para reconhecer @var{a} como uma variável real racional ou irracional.
@@ -836,7 +836,7 @@ Maxima para reconhecer @var{a} como uma variável real racional ou irracional.
 Veja tamb@'{e}m @mrefdot{declare}
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -844,9 +844,9 @@ Veja tamb@'{e}m @mrefdot{declare}
 @anchor{real}
 @anchor{imaginary}
 @anchor{complex}
-@defvr  {Property} real
-@defvrx {Property} imaginary
-@defvrx {Property} complex
+@defvr  {Propriedade} real
+@defvrx {Propriedade} imaginary
+@defvrx {Propriedade} complex
 
 Os comandos @code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)}, ou
 @code{declare(@var{a}, complex)} dizem ao Maxima para reconhecer @var{a} como uma variável real,
@@ -855,7 +855,7 @@ uma variável imagin@'{a}ria pura, ou uma vari@'{a}vel complexa.
 Veja tamb@'{e}m @mrefdot{declare}
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -866,7 +866,7 @@ Veja tamb@'{e}m @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{rem}
-@deffn {Function} rem (@var{atom}, @var{indicador})
+@deffn {Função} rem (@var{atom}, @var{indicador})
 
 Remove a propriedade indicada por @var{indicador} de @var{atom}.
 A fun@,{c}@~{a}o @code{rem} reverte o efeito de @mrefdot{put}
@@ -875,7 +875,7 @@ A fun@,{c}@~{a}o @code{rem} retorna @code{done} se @var{atom} tiver a propriedad
 quando @code{rem} for chamada, ou @code{false} se o @var{atom} n@~{a}o tiver tal propriedade.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
@@ -886,11 +886,11 @@ quando @code{rem} for chamada, ou @code{false} se o @var{atom} n@~{a}o tiver tal
 
 @c -----------------------------------------------------------------------------
 @anchor{remove}
-@deffn  {Function} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
-@deffnx {Function} remove ("@var{a}", operator)
-@deffnx {Function} remove (@var{a}, transfun)
-@deffnx {Function} remove (all, @var{p})
+@deffn  {Função} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
+@deffnx {Função} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
+@deffnx {Função} remove ("@var{a}", operator)
+@deffnx {Função} remove (@var{a}, transfun)
+@deffnx {Função} remove (all, @var{p})
 
 Remove propriedades associadas a @'{a}tomos.
 
@@ -934,13 +934,13 @@ A fun@,{c}@~{a}o @code{remove} n@~{a}o avalia seus argumentos (coloca apóstrofo
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{scalar}
-@defvr {Property} scalar
+@defvr {Propriedade} scalar
 
 O comando @code{declare(@var{a}, scalar)} diz ao Maxima para considerar @var{a} uma vari@'{a}vel
 escalar.
@@ -948,7 +948,7 @@ escalar.
 Veja tamb@'{e}m @mrefdot{declare}
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -956,7 +956,7 @@ Veja tamb@'{e}m @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{scalarp}
-@deffn {Function} scalarp (@var{expr})
+@deffn {Função} scalarp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um n@'{u}mero, constante, ou vari@'{a}vel declarada como sendo
 @mref{scalar} com @mrefcomma{declare} ou composta inteiramente por n@'{u}meros,
@@ -965,7 +965,7 @@ constantes, e vari@'{a}veis escalares, mas n@~{a}o contendo matrizes ou listas.
 Veja tamb@'{e}m fun@,{c}@~{a}o predicado @mrefdot{nonscalarp}
 
 @opencatbox
-@category{Predicate functions} @category{Vectors} @category{Matrices}
+@category{Funções predicado} @category{Vectors} @category{Matrices}
 @closecatbox
 @end deffn
 
@@ -976,7 +976,7 @@ Veja tamb@'{e}m fun@,{c}@~{a}o predicado @mrefdot{nonscalarp}
 
 @c -----------------------------------------------------------------------------
 @anchor{activate}
-@deffn {Function} activate (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Função} activate (@var{context_1}, @dots{}, @var{context_n})
 
 Ativa os contextos @var{context_1}, @dots{}, @var{context_n}.
 Os fatos nesses contextos estar@~{a}o dispon@'{i}veis para
@@ -987,13 +987,13 @@ A vari@'{a}vel @mref{activecontexts} @'{e} a lista
 de contextos que est@'{a} ativa por meio da fun@,{c}@~{a}o @code{activate}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{activecontexts}
-@defvr {System variable} activecontexts
+@defvr {Variável de sistema} activecontexts
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{activecontexts} @'{e} uma lista de contextos que est@~{a}o ativos
@@ -1001,7 +1001,7 @@ por meio da fun@,{c}@~{a}o @mref{activate}, em oposi@,{c}@~{a}o aos que est@~{a}
 serem subcontextos do contexto atual.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -1009,10 +1009,10 @@ serem subcontextos do contexto atual.
 
 @c -----------------------------------------------------------------------------
 @anchor{askinteger}
-@deffn  {Function} askinteger (@var{expr}, integer)
-@deffnx {Function} askinteger (@var{expr})
-@deffnx {Function} askinteger (@var{expr}, even)
-@deffnx {Function} askinteger (@var{expr}, odd)
+@deffn  {Função} askinteger (@var{expr}, integer)
+@deffnx {Função} askinteger (@var{expr})
+@deffnx {Função} askinteger (@var{expr}, even)
+@deffnx {Função} askinteger (@var{expr}, odd)
 
 O comando @code{askinteger (@var{expr}, integer)} tenta determinar a partir da 
 base de dados de @code{assume} se @var{expr} @'{e} um inteiro.
@@ -1028,7 +1028,7 @@ da mesma forma tentam determinar se @var{expr} @'{e} um inteiro par ou um inteir
 respectivamente.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
@@ -1036,7 +1036,7 @@ respectivamente.
 
 @c -----------------------------------------------------------------------------
 @anchor{asksign}
-@deffn {Function} asksign (@var{expr})
+@deffn {Função} asksign (@var{expr})
 
 Primeiro tenta determinar se a express@~{a}o
 especificada @'{e} positiva, negativa, ou zero.  Se n@~{a}o for poss@'{i}vel, pergunta ao
@@ -1046,13 +1046,13 @@ c@'{a}lculo atual.  O valor de retorna de @code{asksign} @'{e} um entre @code{po
 @code{neg}, ou @code{zero}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{assume}
-@deffn {Function} assume (@var{pred_1}, @dots{}, @var{pred_n})
+@deffn {Função} assume (@var{pred_1}, @dots{}, @var{pred_n})
 
 Adiciona os predicados @var{pred_1}, @dots{}, @var{pred_n} ao contexto atual.
 Se um predicado for inconsistente ou redundante em rela@,{c}@~{a}o aos outros predicados no
@@ -1124,13 +1124,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{assumescalar}
-@defvr {Option variable} assumescalar
+@defvr {Variável de opção} assumescalar
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{assumescalar} ajuda a decidir se express@~{o}es @code{expr}
@@ -1154,14 +1154,14 @@ Quando @code{assumescalar} for @code{all}, tais express@~{o}es ir@~{a}o comporta
 escalares para todos os operadores listados acima.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @need 800
 @anchor{assume_pos}
-@defvr {Option variable} assume_pos
+@defvr {Variável de opção} assume_pos
 Valor padr@~{a}o: @code{false}
 
 Quando @code{assume_pos} for @code{true} e o sinal de um par@^{a}metro @var{x}
@@ -1191,13 +1191,13 @@ uma fun@,{c}@~{a}o que retorna @code{true} para todos os argumentos.
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{assume_pos_pred}
-@defvr {Option variable} assume_pos_pred
+@defvr {Variável de opção} assume_pos_pred
 Valor padr@~{a}o: @code{false}
 
 Quando a @code{assume_pos_pred} for atribu@'{i}do o nome de uma fun@,{c}@~{a}o
@@ -1282,13 +1282,13 @@ p;
 @end example
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{context}
-@defvr {Option variable} context
+@defvr {Variável de opção} context
 Valor padr@~{a}o: @code{initial}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{context} representa uma cole@,{c}@~{a}o de fatos mantida por @mref{assume} e por
@@ -1304,7 +1304,7 @@ O contexto especificado @'{e} ativado automaticamente.
 Veja @mref{contexts} para uma descri@,{c}@~{a}o geral do mecanismo de contexto.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
@@ -1313,7 +1313,7 @@ Veja @mref{contexts} para uma descri@,{c}@~{a}o geral do mecanismo de contexto.
 
 @c -----------------------------------------------------------------------------
 @anchor{contexts}
-@defvr {Option variable} contexts
+@defvr {Variável de opção} contexts
 Valor padr@~{a}o: @code{[initial, global]}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{contexts} (no plural) @'{e} uma lista dos contextos que
@@ -1344,25 +1344,25 @@ Veja tamb@'{e}m @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@
 @mrefcomma{assume} e @mrefdot{forget}
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{deactivate}
-@deffn {Function} deactivate (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Função} deactivate (@var{context_1}, @dots{}, @var{context_n})
 
 Desativa os contextos especificados @var{context_1}, @dots{}, @var{context_n}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{facts}
-@deffn  {Function} facts (@var{item})
-@deffnx {Function} facts ()
+@deffn  {Função} facts (@var{item})
+@deffnx {Função} facts ()
 
 Se @var{item} for o nome de um contexto, @code{facts (@var{item})} retorna uma
 lista de fatos no contexto especificado.
@@ -1374,14 +1374,14 @@ est@~{a}o ativos, mas em um contexto diferente, n@~{a}o s@~{a}o listados.
 O comando @code{facts ()} (i.e., sem argumentos) lista o contexto atual.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{forget}
-@deffn  {Function} forget (@var{pred_1}, @dots{}, @var{pred_n})
-@deffnx {Function} forget (@var{L})
+@deffn  {Função} forget (@var{pred_1}, @dots{}, @var{pred_n})
+@deffnx {Função} forget (@var{L})
 
 Remove predicados estabelecidos por @mrefdot{assume}
 Os predicados podem ser express@~{o}es equivalentes a (mas n@~{a}o necess@'{a}riamente identicas
@@ -1391,13 +1391,13 @@ O comando @code{forget (@var{L})}, onde @var{L} @'{e} uma lista de predicados,
 esquece cada item na lista.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{is}
-@deffn {Function} is (@var{expr})
+@deffn {Função} is (@var{expr})
 
 Tenta determinar se o predicado @var{expr} @'{e} dedut@'{i}vel a partir dos
 fatos na base de dados do @code{assume}.
@@ -1474,13 +1474,13 @@ a > 0
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Funções predicado} @category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{killcontext}
-@deffn {Function} killcontext (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Função} killcontext (@var{context_1}, @dots{}, @var{context_n})
 
 Apaga dos contextos @var{context_1}, @dots{}, @var{context_n}.
 
@@ -1498,13 +1498,13 @@ A fun@,{c}@~{a}o @code{killcontext} avalia seus argumentos.
 A fun@,{c}@~{a}o @code{killcontext} retorna @code{done}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{maybe}
-@deffn {Function} maybe (@var{expr})
+@deffn {Função} maybe (@var{expr})
 
 Tenta determinar se o predicado @var{expr} @'{e} demonstr@'{a}vel a partir dos
 fatos na base de dados do @code{assume}.
@@ -1536,13 +1536,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Funções predicado} @category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{newcontext}
-@deffn {Function} newcontext (@var{nome})
+@deffn {Função} newcontext (@var{nome})
 
 Cria um novo contexto, vazio, chamado @var{nome}, que
 tem @code{global} como seu @'{u}nico subcontexto.  O contexto recentemente criado
@@ -1552,13 +1552,13 @@ A fun@,{c}@~{a}o @code{newcontext} avalia seus argumentos.
 A fun@,{c}@~{a}o @code{newcontext} retorna @var{nome}.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sign}
-@deffn {Function} sign (@var{expr})
+@deffn {Função} sign (@var{expr})
 
 Tenta determinar o sinal de @var{expr} a partir dos fatos contidos na
 base de dados atual.  Retorna uma das seguintes respostas: @code{pos}
@@ -1567,14 +1567,14 @@ base de dados atual.  Retorna uma das seguintes respostas: @code{pos}
 (positivo, negativo, ou zero, i.e. nada se pode afirmar).
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{supcontext}
-@deffn  {Function} supcontext (@var{nome}, @var{ctxto})
-@deffnx {Function} supcontext (@var{nome})
+@deffn  {Função} supcontext (@var{nome}, @var{ctxto})
+@deffnx {Função} supcontext (@var{nome})
 
 Cria um novo contexto, chamado @var{nome}, que tem @var{ctxto} como um
 subcontexto.  O @var{ctxto} deve existir.
@@ -1582,7 +1582,7 @@ subcontexto.  O @var{ctxto} deve existir.
 Se @var{ctxto} n@~{a}o for especificado, o contexto atual @'{e} usado.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
@@ -1593,7 +1593,7 @@ Se @var{ctxto} n@~{a}o for especificado, o contexto atual @'{e} usado.
 
 @c -----------------------------------------------------------------------------
 @anchor{charfun}
-@deffn {Function} charfun (@var{p})
+@deffn {Função} charfun (@var{p})
 
 Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna 1 quando
 o predicado avaliar para @code{true}.  Qaundo o predicado avaliar para
@@ -1618,13 +1618,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Mathematical functions}
+@category{Funções matemáticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{compare}
-@deffn {Function} compare (@var{x}, @var{y})
+@deffn {Função} compare (@var{x}, @var{y})
 
 Retorna um operador de compara@,{c}@~{a}o @var{op} (@code{<}, @code{<=}, @code{>}, @code{>=},
 @code{=}, ou @code{#}) tal que @code{is (@var{x} @var{op} @var{y})} avalie
@@ -1672,13 +1672,13 @@ seus argumentos possuem um ou mais elementos; dessa forma
 O dom@'{i}nio real de @code{acos (x^2 + 1)} @'{e} vazio.
 
 @opencatbox
-@category{Declarations and inferences}
+@category{Declarações e inferências}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{equal}
-@deffn {Function} equal (@var{a}, @var{b})
+@deffn {Função} equal (@var{a}, @var{b})
 
 Representa equival@^{e}ncia, isto @'{e}, valor igual.
 
@@ -1830,13 +1830,13 @@ Devido a @code{not @var{expr}} fazer com que ocorra avalia@,{c}@~{a}o de @var{ex
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{notequal}
-@deffn {Function} notequal (@var{a}, @var{b})
+@deffn {Função} notequal (@var{a}, @var{b})
 
 Representa a nega@,{c}@~{a}o de @code{equal(@var{a}, @var{b})}.
 
@@ -1878,19 +1878,19 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Operators}
+@category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{unknown}
-@deffn {Function} unknown (@var{expr})
+@deffn {Função} unknown (@var{expr})
 
 Retorna @code{true} se e somente se @var{expr} contiver um operador ou fun@,{c}@~{a}o
 n@~{a}o reconhecida pelo simplificador do Maxima.
 
 @opencatbox
-@category{Predicate functions} @category{Simplification functions}
+@category{Funções predicado} @category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -1899,7 +1899,7 @@ n@~{a}o reconhecida pelo simplificador do Maxima.
 
 @c -----------------------------------------------------------------------------
 @anchor{zeroequiv}
-@deffn {Function} zeroequiv (@var{expr}, @var{v})
+@deffn {Função} zeroequiv (@var{expr}, @var{v})
 
 Testa se a express@~{a}o @var{expr} na vari@'{a}vel @var{v} @'{e} equivalente
 a zero, retornando @code{true}, @code{false}, ou @code{dontknow} @footnote{Nota do tradutor: n@~{a}o sei.}.
@@ -1928,7 +1928,7 @@ Por outro lado @code{zeroequiv (log(a * b) - log(a) - log(b), a)} retorna
 @code{dontknow} devido @`{a} presen@,{c}a de um par@^{a}metro extra @code{b}.
 
 @opencatbox
-@category{Predicate functions}
+@category{Funções predicado}
 @closecatbox
 @end deffn
 

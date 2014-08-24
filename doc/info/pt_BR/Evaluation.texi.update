@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 7c2c2edb86e3b1264b0561f59b9fd8ec  Evaluation.texi
+@c c5181d78c350f6d11ca36f72ef6ac503  Evaluation.texi
 @c
 @menu
 * Functions and Variables for Evaluation::
@@ -16,7 +16,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{quote}
-@deffn {Operator} '
+@deffn {Operador} '
 @ifinfo
 @fnindex Operador ap@'{o}strofo
 @end ifinfo
@@ -201,13 +201,13 @@ ap@'{o}strofo.
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Avaliação} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{quote-quote}
-@deffn {Operator} ''
+@deffn {Operador} ''
 @ifinfo
 @fnindex Operador ap@'{o}strofo-ap@'{o}strofo
 @end ifinfo
@@ -394,7 +394,7 @@ ap@'{o}strofo @code{'}.
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Avaliação} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -403,7 +403,7 @@ ap@'{o}strofo @code{'}.
 
 @c -----------------------------------------------------------------------------
 @anchor{ev}
-@deffn {Function} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffn {Função} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
 Avalia a express@~{a}o @var{expr} no ambiente especificado pelos
 argumentos @var{arg_1}, @dots{}, @var{arg_n}.  Os argumentos s@~{a}o comutadores
@@ -592,13 +592,13 @@ Solution
 @end example
 
 @opencatbox
-@category{Evaluation}
+@category{Avaliação}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{eval}
-@defvr {Special symbol} eval
+@defvr {Símbolo especial} eval
 
 Como um argumento em uma chamada a @code{ev (@var{expr})}, @code{eval} faz com que ocorra uma avalia@,{c}@~{a}o
 extra de @var{expr}.  Veja @mrefdot{ev}
@@ -626,13 +626,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Evaluation flags}
+@category{Sinalizadores de avaliação}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{evflag}
-@defvr {Property} evflag
+@defvr {Propriedade} evflag
 
 Quando um s@'{i}mbolo @var{x} tem a propriedade @code{evflag}, as express@~{o}es
 @code{ev(@var{expr}, @var{x})} e @code{@var{expr}, @var{x}} (na
@@ -716,13 +716,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Evaluation flags} @category{Simplification flags and variables}
+@category{Sinalizadores de avaliação} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{evfun}
-@defvr {Property} evfun
+@defvr {Propriedade} evfun
 
 Quando uma fun@,{c}@~{a}o @var{F} tem a propriedade @code{evfun}, as express@~{o}es
 @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}} (na
@@ -817,7 +817,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Evaluation flags}
+@category{Sinalizadores de avaliação}
 @closecatbox
 @end defvr
 
@@ -825,7 +825,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{infeval}
-@defvr {Option variable} infeval
+@defvr {Variável de opção} infeval
 
 Habilita o modo "avalia@,{c}@~{a}o infinita".  A fun@,{c}@~{a}o @mref{ev} repetidamente avalia uma
 express@~{a}o at@'{e} que a express@~{a}o pare de mudar.  Para evitar que uma vari@'{a}vel, digamos @code{X},
@@ -834,7 +834,7 @@ seja avaliada fora desse modo, simplesmente inclua @code{X='X} como um argumeto 
 gerar um la@,{c}o imfinito.
 
 @opencatbox
-@category{Evaluation flags}
+@category{Sinalizadores de avaliação}
 @closecatbox
 @end defvr
 
@@ -843,14 +843,14 @@ gerar um la@,{c}o imfinito.
 
 @c -----------------------------------------------------------------------------
 @anchor{noeval}
-@defvr {Special symbol} noeval
+@defvr {Símbolo especial} noeval
 
 O s@'{i}mbolo especial @code{noeval} suprime a fase d avalia@,{c}@~{a}o de @mrefdot{ev}  Isso @'{e} @'{u}til
 juntamente com outros comutadores e faz com que express@~{o}es
 sejam resimplificadas sem serem reavaliadas.
 
 @opencatbox
-@category{Evaluation flags}
+@category{Sinalizadores de avaliação}
 @closecatbox
 @end defvr
 
@@ -858,7 +858,7 @@ sejam resimplificadas sem serem reavaliadas.
 
 @c -----------------------------------------------------------------------------
 @anchor{nouns}
-@defvr {Special symbol} nouns
+@defvr {Símbolo especial} nouns
 
 O s@'{i}mbolo especial @code{nouns} possui a propriedade @mrefdot{evflag}  Quando usado como uma op@,{c}@~{a}o ao comando
 @mref{ev}@w{}, o s@'{i}mbolo especial @code{nouns} converte todas as formas "substantivas" ocorrendo em uma express@~{a}o
@@ -866,13 +866,13 @@ sendo trabalhado por  @code{ev} em "verbos", i.e., avalia essas formas substanti
 @mrefcomma{noun} @mrefcomma{nounify} @code{verb}, e @mrefdot{verbify} @footnote{Nota do tradutor: n@~{a}o existe nenhuma se@,{c}@~{a}o especial sobre @code{verb}.}
 
 @opencatbox
-@category{Evaluation flags} @category{Nouns and verbs}
+@category{Sinalizadores de avaliação} @category{Substantivos e verbos}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{pred}
-@defvr {Special symbol} pred
+@defvr {Símbolo especial} pred
 
 Como um argumento em uma chamada a @code{ev (@var{expr})}, @code{pred} faz com que 
 predicados (express@~{o}es que avaliam para @code{true} ou @code{false}) sejam
@@ -892,7 +892,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Evaluation flags}
+@category{Sinalizadores de avaliação}
 @closecatbox
 @end defvr
 
