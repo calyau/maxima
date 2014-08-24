@@ -22,7 +22,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{__}
-@defvr {Variável de sistema} __
+@defvr {Vari@'{a}vel de sistema} __
 @ifinfo
 @vrindex Current input expression
 @end ifinfo
@@ -77,13 +77,13 @@ Current input expression = --------------
 @end example
 
 @opencatbox
-@category{Variáveis globais}
+@category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{_}
-@defvr {Variável de sistema} _
+@defvr {Vari@'{a}vel de sistema} _
 @ifinfo
 @vrindex Previous input
 @end ifinfo
@@ -151,13 +151,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Interação com o console} @category{Variáveis globais}
+@category{Intera@,{c}@~{a}o com o console} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%}
-@defvr {Variável de sistema} %
+@defvr {Vari@'{a}vel de sistema} %
 @ifinfo
 @vrindex Previous input
 @end ifinfo
@@ -176,13 +176,13 @@ Veja tamb@'{e}m @mrefcomma{_} @mrefcomma{%%}
 e @mrefdot{%th}
 
 @opencatbox
-@category{Interação com o console} @category{Variáveis globais}
+@category{Intera@,{c}@~{a}o com o console} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%%}
-@defvr {Variável de sistema} %%
+@defvr {Vari@'{a}vel de sistema} %%
 @ifinfo
 @vrindex Previous result in compound expression
 @end ifinfo
@@ -241,13 +241,13 @@ _
 @end example
 
 @opencatbox
-@category{Variáveis globais}
+@category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%th}
-@deffn {Função} %th (@var{i})
+@deffn {Fun@,{c}@~{a}o} %th (@var{i})
 @ifinfo
 @fnindex N'@'{e}sima sa@'{i}da anterior
 @end ifinfo
@@ -285,13 +285,13 @@ express@~{o}es de sa@'{i}da.
 @end example
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{?}
-@deffn {Símbolo especial} ?
+@deffn {S@'{i}mbolo especial} ?
 @ifinfo
 @fnindex Documenta@,{c}@~{a}o, mostrando
 @end ifinfo
@@ -306,13 +306,13 @@ ocorrer no in@'{i}cio de uma linha de entrada; de outra forma a interroga@,{c}@~
 requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.  Veja tamb@'{e}m @mrefdot{describe}
 
 @opencatbox
-@category{Ajuda} @category{Interação com o console}
+@category{Ajuda} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{??}
-@deffn {Símbolo especial} ??
+@deffn {S@'{i}mbolo especial} ??
 @ifinfo
 @fnindex Documenta@,{c}@~{a}o, mostrando (busca inexata)
 @end ifinfo
@@ -323,7 +323,7 @@ no in@'{i}cio de uma linha de entrada; de outra forma a interroga@,{c}@~{a}o n@~
 requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.
 
 @opencatbox
-@category{Ajuda} @category{Interação com o console}
+@category{Ajuda} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
@@ -331,14 +331,14 @@ requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.
 @anchor{$}
 @deffn {Terminador de entrada} $
 @ifinfo
-@fnindex Input terminator (omite a saída)
+@fnindex Input terminator (omite a sa@'{i}da)
 @end ifinfo
 
-O sinal de dólar @code{$} termina uma expressão de entrada e
-tanto o local de memória destinado à mais recente saída @code{%} quanto um novo rótulo de saída, e.g. @code{%o1},
-recebem o resultado dessa expressão de entrada, mas o resultado não aparece na tela.
+O sinal de d@'{o}lar @code{$} termina uma express@~{a}o de entrada e
+tanto o local de mem@'{o}ria destinado @`{a} mais recente sa@'{i}da @code{%} quanto um novo r@'{o}tulo de sa@'{i}da, e.g. @code{%o1},
+recebem o resultado dessa express@~{a}o de entrada, mas o resultado n@~{a}o aparece na tela.
 
-Veja também @code{;}.
+Veja tamb@'{e}m @code{;}.
 
 Exemplo:
 @c ===beg===
@@ -359,13 +359,13 @@ Exemplo:
 @anchor{;}
 @deffn {Terminador de entrada} ;
 @ifinfo
-@fnindex Input terminator (exibe a saída)
+@fnindex Input terminator (exibe a sa@'{i}da)
 @end ifinfo
 
-O ponto e vírgula @code{;} termina uma expressão de saída,
-e a saída resultate é mostrada.
+O ponto e v@'{i}rgula @code{;} termina uma express@~{a}o de sa@'{i}da,
+e a sa@'{i}da resultate @'{e} mostrada.
 
-Veja também @code{$}.
+Veja tamb@'{e}m @code{$}.
 
 Exemplo:
 @c ===beg===
@@ -379,7 +379,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{inchar}
-@defvr {Variável de opção} inchar
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} inchar
 Valor padr@~{a}o: @code{%i}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{inchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es inseridas pelo usu@'{a}rio.
@@ -411,13 +411,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{infolists}
-@defvr {Variável de sistema} infolists
+@defvr {Vari@'{a}vel de sistema} infolists
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{infolists} @'{e} uma lista dos nomes de todas as listas de
@@ -478,7 +478,7 @@ um n@~{a}o for explicitamente ajustado pelo usu@'{a}rio.)
 @end table
 
 @opencatbox
-@category{Declarações e inferências} @category{Variáveis globais}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
@@ -488,14 +488,14 @@ um n@~{a}o for explicitamente ajustado pelo usu@'{a}rio.)
 
 @c -----------------------------------------------------------------------------
 @anchor{kill}
-@deffn  {Função} kill (@var{a_1}, @dots{}, @var{a_n})
-@deffnx {Função} kill (labels)
-@deffnx {Função} kill (inlabels, outlabels, linelabels)
-@deffnx {Função} kill (@var{n})
-@deffnx {Função} kill ([@var{m}, @var{n}])
-@deffnx {Função} kill (values, functions, arrays, @dots{})
-@deffnx {Função} kill (all)
-@deffnx {Função} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+@deffn  {Fun@,{c}@~{a}o} kill (@var{a_1}, @dots{}, @var{a_n})
+@deffnx {Fun@,{c}@~{a}o} kill (labels)
+@deffnx {Fun@,{c}@~{a}o} kill (inlabels, outlabels, linelabels)
+@deffnx {Fun@,{c}@~{a}o} kill (@var{n})
+@deffnx {Fun@,{c}@~{a}o} kill ([@var{m}, @var{n}])
+@deffnx {Fun@,{c}@~{a}o} kill (values, functions, arrays, @dots{})
+@deffnx {Fun@,{c}@~{a}o} kill (all)
+@deffnx {Fun@,{c}@~{a}o} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Remove todas as associa@,{c}@~{o}es (de valor, de fun@,{c}@~{a}o, de vetor est@'{a}tico, ou de regra) dos argumentos
 @var{a_1}, @dots{}, @var{a_n}.  Um argumento @var{a_k} pode ser um s@'{i}mbolo ou um
@@ -555,14 +555,14 @@ desassociam uma propriedade espec@'{i}fica.
 O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o tenha associa@,{c}@~{o}es.
 
 @opencatbox
-@category{Avaliação} @category{Interação com o console} @category{Gerenciamento de sessão}
+@category{Avalia@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console} @category{Gerenciamento de sess@~{a}o}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn  {Função} labels (@var{s@'{i}mbolo})
-@deffnx {Variável de sistema} labels
+@deffn  {Fun@,{c}@~{a}o} labels (@var{s@'{i}mbolo})
+@deffnx {Vari@'{a}vel de sistema} labels
 
 Retorna a lista de r@'{o}tulos de entrada, sa@'{i}da, ou de express@~{o}es intermediarias que se iniciam
 com @var{s@'{i}mbolo}.  Tipicamente @var{s@'{i}mbolo} @'{e} o valor de
@@ -595,13 +595,13 @@ Veja tamb@'{e}m @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar}
 e @mrefdot{infolists}
 
 @opencatbox
-@category{Display functions} @category{Sinalizadores e variáveis de exibição} @category{Interação com o console}
+@category{Display functions} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{linechar}
-@defvr {Variável de opção} linechar
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} linechar
 Valor padr@~{a}o: @code{%t}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{linechar} cont@'{e}m o prefixo dos r@'{o}tulos de express@~{o}es intermedi@'{a}rias 
@@ -619,7 +619,7 @@ Veja @mref{programmode}
 e @mrefdot{labels}
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -627,12 +627,12 @@ e @mrefdot{labels}
 
 @c -----------------------------------------------------------------------------
 @anchor{linenum}
-@defvr {Variável de sistema} linenum
+@defvr {Vari@'{a}vel de sistema} linenum
 
 O n@'{u}mero de linha do par atual de express@~{o}es de entrada e sa@'{i}da.
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição} @category{Interação com o console}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
@@ -640,20 +640,20 @@ O n@'{u}mero de linha do par atual de express@~{o}es de entrada e sa@'{i}da.
 
 @c -----------------------------------------------------------------------------
 @anchor{myoptions}
-@defvr {Variável de sistema} myoptions
+@defvr {Vari@'{a}vel de sistema} myoptions
 Valor padr@~{a}o: @code{[]}
 
 A vari@'{a}vel de sistema @code{myoptions} @'{e} a lista de todas as op@,{c}@~{o}es mesmo alteradas pelo usu@'{a}rio,
 seja essa altera@,{c}@~{a}o para o seu valor padr@~{a}o ou n@~{a}o.
 
 @opencatbox
-@category{Variáveis globais} @category{Gerenciamento de sessão} @category{Interação com o console}
+@category{Vari@'{a}veis globais} @category{Gerenciamento de sess@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{nolabels}
-@defvr {Variável de opção} nolabels
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} nolabels
 Valor padr@~{a}o: @code{false}
 
 Quando @code{nolabels} for @code{true}, r@'{o}tulos de resultado de entrada e sa@'{i}da (@code{%i}
@@ -673,7 +673,7 @@ Veja tamb@'{e}m @mrefcomma{batch} @mrefcomma{load}
 e @mrefdot{labels}
 
 @opencatbox
-@category{Global flags} @category{Gerenciamento de sessão}
+@category{Global flags} @category{Gerenciamento de sess@~{a}o}
 @closecatbox
 @end defvr
 
@@ -681,7 +681,7 @@ e @mrefdot{labels}
 
 @c -----------------------------------------------------------------------------
 @anchor{optionset}
-@defvr {Variável de opção} optionset
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} optionset
 Valor padr@~{a}o: @code{false}
 
 Quando @code{optionset} for @code{true}, Maxima mostra uma mensagem sempre que uma
@@ -701,14 +701,14 @@ assignment: assigning to option gamma_expand
 @end example
 
 @opencatbox
-@category{Global flags} @category{Gerenciamento de sessão} @category{Interação com o console}
+@category{Global flags} @category{Gerenciamento de sess@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @need 800
 @anchor{outchar}
-@defvr {Variável de opção} outchar
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} outchar
 Valor padr@~{a}o: @code{%o}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{outchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es calculadas pelo Maxima.
@@ -739,20 +739,20 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{playback}
-@deffn  {Função} playback ()
-@deffnx {Função} playback (@var{n})
-@deffnx {Função} playback ([@var{m}, @var{n}])
-@deffnx {Função} playback ([@var{m}])
-@deffnx {Função} playback (input)
-@deffnx {Função} playback (slow)
-@deffnx {Função} playback (time)
-@deffnx {Função} playback (grind)
+@deffn  {Fun@,{c}@~{a}o} playback ()
+@deffnx {Fun@,{c}@~{a}o} playback (@var{n})
+@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}, @var{n}])
+@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}])
+@deffnx {Fun@,{c}@~{a}o} playback (input)
+@deffnx {Fun@,{c}@~{a}o} playback (slow)
+@deffnx {Fun@,{c}@~{a}o} playback (time)
+@deffnx {Fun@,{c}@~{a}o} playback (grind)
 
 Mostra as entradas, as sa@'{i}das, e as express@~{o}es intermedi@'{a}rias, sem recalcul@'{a}-las.
 A fun@,{c}@~{a}o @code{playback} somente mostra as express@~{o}es associadas a r@'{o}tulos; quaisquer outras sa@'{i}das
@@ -801,14 +801,14 @@ Argumentos podem ser combinados, e.g., @code{playback ([5, 10], grind, time, slo
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
 @opencatbox
-@category{Display functions} @category{Interação com o console}
+@category{Display functions} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @need 800
 @anchor{prompt}
-@defvr {Variável de opção} prompt
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} prompt
 Valor padr@~{a}o: @code{_}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@,{c}@~{a}o @mrefcomma{demo}
@@ -817,13 +817,13 @@ modo @code{playback (slow)}, e do la@,{c}o de parada do Maxima (da forma invocad
 ).
 
 @opencatbox
-@category{Variáveis globais} @category{Interação com o console}
+@category{Vari@'{a}veis globais} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{quit}
-@deffn {Função} quit ()
+@deffn {Fun@,{c}@~{a}o} quit ()
 
 Encerra a sess@~{a}o do Maxima.  Note que a fun@,{c}@~{a}o deve ser chamada como
 @code{quit();} ou como @code{quit()$}, n@~{a}o como @code{quit} somente.
@@ -833,13 +833,13 @@ retornar paa a linha de comando do Maxima.  Se @code{*debugger-hook*} for @code{
 @code{control-C} abre o depurador Lisp.  Veja tamb@'{e}m @ref{Debugging}.
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{read}
-@deffn {Função} read (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} read (@var{expr_1}, @dots{}, @var{expr_n})
 
 Mostra @var{expr_1}, @dots{}, @var{expr_n}, a seguir l@^{e} uma express@~{a}o a partir do
 console e retorna a express@~{a}o avaliada.  A express@~{a}o @'{e} terminada com
@@ -860,13 +860,13 @@ foo is 42  -- enter new value.
 @end example
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{readonly}
-@deffn {Função} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} readonly (@var{expr_1}, @dots{}, @var{expr_n})
 
 Mostra @var{expr_1}, @dots{}, @var{expr_n}, a seguir l@^{e} uma express@~{a}o a partir do
 console e retorna a express@~{a}o (sem avalia@,{c}@~{a}o).  A express@~{a}o @'{e}
@@ -890,13 +890,13 @@ Enter an expression:
 @end example
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{reset}
-@deffn {Função} reset ()
+@deffn {Fun@,{c}@~{a}o} reset ()
 
 Volta muitas vari@'{a}veis globais e de op@,{c}@~{a}o, e algumas outras vari@'{a}veis, para seus
 valores padr@~{a}o.
@@ -908,13 +908,13 @@ vari@'{a}veis de op@,{c}@~{a}o s@~{a}o definidas por @code{defmvar}, e algumas v
 @code{defmvar} n@~{a}o s@~{a}o vari@'{a}veis globais nem vari@'{a}veis de op@,{c}@~{a}o.
 
 @opencatbox
-@category{Gerenciamento de sessão}
+@category{Gerenciamento de sess@~{a}o}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{showtime}
-@defvr {Variável de opção} showtime
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} showtime
 Valor padr@~{a}o: @code{false}
 
 Quando @code{showtime} for @code{true}, o tempo de c@'{a}lculo e o tempo decorrido ambos s@~{a}o
@@ -927,13 +927,13 @@ possam mostrar o tempo de c@'{a}lculo mesmo quando @code{showtime} for @code{fal
 Veja tamb@'{e}m @mrefdot{timer}
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição} @category{Depurando}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Depurando}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{to_lisp}
-@deffn {Função} to_lisp ()
+@deffn {Fun@,{c}@~{a}o} to_lisp ()
 
 Insere o sistema Lisp em uma sess@~{a}o do Maxima.  A fun@,{c}@~{a}o @code{(to-maxima)} retorna ao Maxima.
 
@@ -963,13 +963,13 @@ Returning to Maxima
 @end example
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{values}
-@defvr {Variável de sistema} values
+@defvr {Vari@'{a}vel de sistema} values
 Valor inicial: @code{[]}
 
 A vari@'{a}vel de sistema @code{values} @'{e} uma lista de todas as vari@'{a}veis de usu@'{a}rio associadas (n@~{a}o op@,{c}@~{o}es do Maxima ou
@@ -1009,7 +1009,7 @@ A seguir os valores s@~{a}o removidos das vari@'{a}veis.  A partir de agora a va
 @end example
 
 @opencatbox
-@category{Avaliação} @category{Variáveis globais}
+@category{Avalia@,{c}@~{a}o} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
@@ -1020,7 +1020,7 @@ A seguir os valores s@~{a}o removidos das vari@'{a}veis.  A partir de agora a va
 
 @c -----------------------------------------------------------------------------
 @anchor{%edispflag}
-@defvr {Variável de opção} %edispflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %edispflag
 Valor padr@~{a}o: @code{false}
 
 Quando @code{%edispflag} for @code{true}, Maxima mostra a base @code{%e} com um expoente
@@ -1047,13 +1047,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Funções exponecial e logarítmica} @category{Sinalizadores e variáveis de exibição}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{absboxchar}
-@defvr {Variável de opção} absboxchar
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} absboxchar
 Valor padr@~{a}o: @code{!}
 
 @code{absboxchar} @'{e} o caractere usado para desenhar o sinal de valor
@@ -1068,7 +1068,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -1089,7 +1089,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{disp}
-@deffn {Função} disp (@var{expr_1}, @var{expr_2}, @dots{})
+@deffn {Fun@,{c}@~{a}o} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
 Essa fun@,{c}@~{a}o @'{e} como @mref{display}
 mas somente o valor dos argumentos @'{e} mostrado ao inv@'{e}s das
@@ -1127,7 +1127,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{display}
-@deffn {Função} display (@var{expr_1}, @var{expr_2}, @dots{})
+@deffn {Fun@,{c}@~{a}o} display (@var{expr_1}, @var{expr_2}, @dots{})
 
 Mostra equa@,{c}@~{o}es cujo primeiro membro @'{e} @var{expr_i} n@~{a}o avaliado, e cujo segundo
 membro seja o valor da express@~{a}o de forma que ambos sejam centralizados na linha.  Essa fun@,{c}@~{a}o @'{e}
@@ -1168,7 +1168,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{display2d}
-@defvr {Variável de opção} display2d
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} display2d
 Valor padr@~{a}o: @code{true}
 
 Quando @code{display2d} for @code{false}, o console de exibi@,{c}@~{a}o @'{e} uma sequ@^{e}ncia de caracteres
@@ -1197,13 +1197,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{display_format_internal}
-@defvr {Variável de opção} display_format_internal
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} display_format_internal
 Valor padr@~{a}o: @code{false}
 
 Quando @code{display_format_internal} for @code{true}, express@~{o}es s@~{a}o msotradas
@@ -1229,7 +1229,7 @@ X*4/3;    ---        - X
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -1238,7 +1238,7 @@ X*4/3;    ---        - X
 
 @c -----------------------------------------------------------------------------
 @anchor{dispterms}
-@deffn {Função} dispterms (@var{expr})
+@deffn {Fun@,{c}@~{a}o} dispterms (@var{expr})
 
 Mostra @var{expr} em partes uma abaixo da outra.  Isto @'{e}, primeiramente o operador
 de @var{expr} @'{e} mostrado, a seguir cada parcela em uma soma, ou cada fator em um produto, ou
@@ -1274,8 +1274,8 @@ Exemplo:
 @c -----------------------------------------------------------------------------
 @anchor{expt}
 @anchor{ncexpt}
-@deffn  {Símbolo especial} expt (@var{a}, @var{b})
-@deffnx {Símbolo especial} ncexpt (@var{a}, @var{b})
+@deffn  {S@'{i}mbolo especial} expt (@var{a}, @var{b})
+@deffnx {S@'{i}mbolo especial} ncexpt (@var{a}, @var{b})
 
 Se uma express@~{a}o exponencial @'{e} muito larga para ser mostrada como
 @code{@var{a}^@var{b}} ela aparece como @code{expt (@var{a}, @var{b})} (ou como
@@ -1289,7 +1289,7 @@ Os s@'{i}mbolos especiais @code{expt} e @code{ncexpt} n@~{a}o s@~{a}o reconhecid
 
 @c -----------------------------------------------------------------------------
 @anchor{exptdispflag}
-@defvr {Variável de opção} exptdispflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} exptdispflag
 Valor padr@~{a}o: @code{true}
 
 Quando @code{exptdispflag} for @code{true}, Maxima mostra express@~{o}es
@@ -1313,14 +1313,14 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressões} @category{Sinalizadores e variáveis de exibição}
+@category{Express@~{o}es} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{grind}
-@deffn  {Função} grind (@var{expr})
-@deffnx {Variável de opção} grind
+@deffn  {Fun@,{c}@~{a}o} grind (@var{expr})
+@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} grind
 
 A fun@,{c}@~{a}o @code{grind} mostra @var{expr} no console de forma adequada a ser usada
 em uma entrada do Maxima.  A fun@,{c}@~{a}o @code{grind} sempre retorna @code{done}.
@@ -1450,13 +1450,13 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end example
 
 @opencatbox
-@category{Display functions} @category{Sinalizadores e variáveis de exibição}
+@category{Display functions} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ibase}
-@defvr {Variável de opção} ibase
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ibase
 Valor padr@~{a}o: @code{10}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{ibase} define a base do sistema de numera@,{c}@~{a}o para os inteiros lidos pelo Maxima.
@@ -1542,13 +1542,13 @@ Quando um inteiro for terminado por um ponto decimal,
 @end example
 
 @opencatbox
-@category{Interação com o console}
+@category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisp}
-@deffn {Função} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
 
 Mostra as express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma que
 elas foram mostradas na sa@'{i}da.  A fun@,{c}@~{a}o @code{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada
@@ -1589,7 +1589,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{ldisplay}
-@deffn {Função} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
 
 Mostra express@~{o}es @var{expr_1}, @dots{}, @var{expr_n} no console da forma que
 elas foram mostradas na sa@'{i}da.  Cada express@~{a}o @'{e} mostrada como uma equa@,{c}@~{a}o da forma
@@ -1634,7 +1634,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{leftjust}
-@defvr {Variável de opção} leftjust
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} leftjust
 Valor padr@~{a}o: @code{false}
 
 Quando @code{leftjust} for @code{true}, equa@,{c}@~{o}es no console 2D s@~{a}o desenhadas alinhadas
@@ -1656,13 +1656,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{linel}
-@defvr {Variável de opção} linel
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} linel
 Valor padr@~{a}o: @code{79}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{linel} @'{e} a largura assumida (em caracteres) do console de exibi@,{c}@~{a}o com
@@ -1673,14 +1673,14 @@ mostradaos pelas fun@,{c}@~{o}es embutidas do Maxima, tais como mensagens de err
 n@~{a}o s@~{a}o afetadas por @code{linel}.
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @need 800
 @anchor{lispdisp}
-@defvr {Variável de opção} lispdisp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} lispdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{lispdisp} for @code{true}, s@'{i}mbolos Lisp s@~{a}o mostrados com uma interroga@,{c}@~{a}o
@@ -1705,7 +1705,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -1713,7 +1713,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{negsumdispflag}
-@defvr {Variável de opção} negsumdispflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} negsumdispflag
 Valor padr@~{a}o: @code{true}
 
 Quando @code{negsumdispflag} for @code{true}, @code{x - y} @'{e} exibido como @code{x - y}
@@ -1723,13 +1723,13 @@ aplica@,{c}@~{a}o @'{e} que dessa forma @code{a + %i*b} e @code{a - %i*b} podem 
 mostradas da mesma maneira.
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{obase}
-@defvr {Variável de opção} obase
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} obase
 Valor padr@~{a}o: @code{10}
 
 @code{obase} is the base for integers displayed by Maxima.
@@ -1776,13 +1776,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição} @category{Interação com o console}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{pfeformat}
-@defvr {Variável de opção} pfeformat
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} pfeformat
 Valor padr@~{a}o: @code{false}
 
 Quando @code{pfeformat} for @code{true}, uma raz@~{a}o entre inteiros @'{e} mostrada com a
@@ -1809,13 +1809,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{powerdisp}
-@defvr {Variável de opção} powerdisp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} powerdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{powerdisp} for @code{true},
@@ -1841,13 +1841,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{print}
-@deffn {Função} print (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} print (@var{expr_1}, @dots{}, @var{expr_n})
 
 Avalia e mostra @var{expr_1}, @dots{}, @var{expr_n} uma ap@'{o}s a outra,
 da esquerda para a direita, iniciando a partir do canto esquerdo do console de exibi@,{c}@~{a}o.
@@ -1892,7 +1892,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{sqrtdispflag}
-@defvr {Variável de opção} sqrtdispflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} sqrtdispflag
 Valor padr@~{a}o: @code{true}
 
 Quando @code{sqrtdispflag} for @code{false}, faz com que @code{sqrt} seja mostrado com
@@ -1900,26 +1900,26 @@ expoente 1/2.
 @c AND OTHERWISE ... ??
 
 @opencatbox
-@category{Funções matemáticas} @category{Sinalizadores e variáveis de exibição}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{stardisp}
-@defvr {Variável de opção} stardisp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} stardisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{stardisp} for @code{true}, multiplica@,{c}@~{a}o @'{e}
 mostrada com um asterisco @code{*} entre os fatores.
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ttyoff}
-@defvr {Variável de opção} ttyoff
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ttyoff
 Valor padr@~{a}o: @code{false}
 
 Quando @code{ttyoff} for @code{true}, express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o mostradas.
@@ -1930,7 +1930,7 @@ de @mrefcomma{describe}
 n@~{a}o s@~{a}o afetadas por @code{ttyoff}.
 
 @opencatbox
-@category{Sinalizadores e variáveis de exibição}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 

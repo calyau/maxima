@@ -161,7 +161,7 @@ Exemplo:
 O valor num@'{e}rico de @code{%phi} @'{e} o valor em precis@~{a}o dupla e em ponto flutuante
 1.618033988749895d0.
 
-A função @mref{fibtophi}
+A fun@,{c}@~{a}o @mref{fibtophi}
 representa os n@'{u}meros de Fibonacci @code{fib(n)} em termos de
 @code{%phi}.
 

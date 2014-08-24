@@ -44,7 +44,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Operadores} @category{Declarações e inferências}
+@category{Operadores} @category{Declara@,{c}@~{o}es e infer@^{e}ncias}
 @closecatbox
 @end defvr
 
@@ -90,12 +90,12 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Operadores} @category{Declarações e inferências}
+@category{Operadores} @category{Declara@,{c}@~{o}es e infer@^{e}ncias}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Função} combine (@var{expr})
+@deffn {Fun@,{c}@~{a}o} combine (@var{expr})
 
 Simplifica a soma @var{expr} combinando termos com o mesmo
 denominador em um termo simples.
@@ -118,7 +118,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -156,7 +156,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Operadores} @category{Declarações e inferências}
+@category{Operadores} @category{Declara@,{c}@~{o}es e infer@^{e}ncias}
 @closecatbox
 @end defvr
 
@@ -164,8 +164,8 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{demoivre}
-@deffn  {Função} demoivre (@var{expr})
-@deffnx {Variável de opção} demoivre
+@deffn  {Fun@,{c}@~{a}o} demoivre (@var{expr})
+@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} demoivre
 
 O comando @code{demoivre (expr)} converte uma express@~{a}o
 sem ajustar a vari@'{a}vel global @code{demoivre}.
@@ -182,7 +182,7 @@ exponencial.  As vari@'{a}veis de op@,{c}@~{a}o @code{demoivre} e @code{exponent
 mesmo tempo.
 
 @opencatbox
-@category{Variáveis complexas} @category{Trigonometric functions} @category{Hyperbolic functions}
+@category{Vari@'{a}veis complexas} @category{Trigonometric functions} @category{Hyperbolic functions}
 @closecatbox
 @end deffn
 
@@ -190,7 +190,7 @@ mesmo tempo.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_distrib}
-@deffn {Função} distrib (@var{expr})
+@deffn {Fun@,{c}@~{a}o} distrib (@var{expr})
 
 Distribui sobre momas e produtos.  Difere de @code{expand} na medida em que somente
 trabalha no n@'{i}vel mais alto da express@~{a}o, i.e., n@~{a}o @'{e} recursiva e @'{e} mais
@@ -215,13 +215,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{distribute_over}
-@defvr {Variável de opção} distribute_over
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} distribute_over
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{distribute_over} controla a distributividade de fun@,{c}@~{o}es sobre cole@,{c}@~{o}es como listas, 
@@ -322,7 +322,7 @@ para o valor @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{domain}
-@defvr {Variável de opção} domain
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} domain
 Valor padr@~{a}o: @code{real}
 
 Quando @code{domain} for ajustado para @code{complex}, @code{sqrt (x^2)} ir@'{a} retornar
@@ -366,8 +366,8 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{expand}
-@deffn  {Função} expand (@var{expr})
-@deffnx {Função} expand (@var{expr}, @var{p}, @var{n})
+@deffn  {Fun@,{c}@~{a}o} expand (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} expand (@var{expr}, @var{p}, @var{n})
 
 Expande a express@~{a}o @var{expr}.
 Produto de somas @footnote{Nota do tradutor: @math{(a+b)(c+d)}.} e somas exponeciadas @footnote{Nota do tradutor: @math{(a+b)^x}.} s@~{a}o
@@ -481,7 +481,7 @@ Resimplificar uma express@~{a}o sem expans@~{a}o:
 @end example
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -489,7 +489,7 @@ Resimplificar uma express@~{a}o sem expans@~{a}o:
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt}
-@deffn {Função} expandwrt (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {Fun@,{c}@~{a}o} expandwrt (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 Expande express@~{o}es @code{expr} com rela@,{c}@~{a}o @`{a}s 
 vari@'{a}veis @var{x_1}, @dots{}, @var{x_n}.
@@ -505,13 +505,13 @@ Essa fun@,{c}@~{a}o @'{e} chamada automaticamente a partir de
 @file{simplification/stopex.mac}.
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwert_denom}
-@defvr {Variável de opção} expandwrt_denom
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} expandwrt_denom
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{expandwrt_denom} controla o tratamento de express@~{o}es
@@ -521,7 +521,7 @@ argumentos de @code{expandwrt}, mas se @code{expandwrt_denom} for @code{false},
 ent@~{a}o somente o numerador ir@'{a} ser expandido usando @code{expandwrt}.
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end defvr
 
@@ -530,7 +530,7 @@ ent@~{a}o somente o numerador ir@'{a} ser expandido usando @code{expandwrt}.
 
 @c -----------------------------------------------------------------------------
 @anchor{expandwrt_factored}
-@deffn {Função} expandwrt_factored (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {Fun@,{c}@~{a}o} expandwrt_factored (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 @'{E} similar a @code{expandwrt}, mas trata express@~{o}es que s@~{a}o produtos
 um pouco diferentemente.  A fun@,{c}@~{a}o @code{expandwrt_factored} expande somente os fatores de
@@ -540,13 +540,13 @@ um pouco diferentemente.  A fun@,{c}@~{a}o @code{expandwrt_factored} expande som
 Essa fun@,{c}@~{a}o @'{e} chamada automaticamente a partir de @file{simplification/stopex.mac}.
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{expon}
-@defvr {Variável de opção} expon
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} expon
 Valor padr@~{a}o: 0
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{expon} @'{e} o expoente da maior pot@^{e}ncia de expoente negativo que
@@ -555,14 +555,14 @@ exemplo, se @code{expon} for 4 ent@~{a}o @code{(x+1)^(-5)} n@~{a}o ir@'{a} ser a
 expandido.
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{exponentialize}
-@deffn  {Função} exponentialize (@var{expr})
-@deffnx {Variável de opção} exponentialize
+@deffn  {Fun@,{c}@~{a}o} exponentialize (@var{expr})
+@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} exponentialize
 
 A fun@,{c}@~{a}o @code{exponentialize (expr)} converte 
 fun@,{c}@~{o}es circulares e hiperb@'{o}licas em @var{expr} para exponenciais,
@@ -577,7 +577,7 @@ As vari@'{a}veis de op@,{c}@~{a}o @code{exponentialize} e @code{demoivre} n@~{a}
 ambas serem @code{true} ao mesmo tempo.
 
 @opencatbox
-@category{Variáveis complexas} @category{Trigonometric functions} @category{Hyperbolic functions}
+@category{Vari@'{a}veis complexas} @category{Trigonometric functions} @category{Hyperbolic functions}
 @closecatbox
 @end deffn
 
@@ -586,7 +586,7 @@ ambas serem @code{true} ao mesmo tempo.
 
 @c -----------------------------------------------------------------------------
 @anchor{expop}
-@defvr {Variável de opção} expop
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} expop
 Valor padr@~{a}o: 0
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{expop} @'{e} o maior expoente positivo que @'{e} automaticamente expandido.
@@ -597,7 +597,7 @@ executando @code{expand ((x + 1)^n)} ir@'{a} funcionar somente se @code{maxposex
 menor que n.
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end defvr
 
@@ -612,7 +612,7 @@ associativa @`{a} esquerda.  E.g., @code{g (g (a, b), g (c, d))} ir@'{a} simplif
 @code{g (g (g (a, b), c), d)}.
 
 @opencatbox
-@category{Declarações e inferências} @category{Operadores} @category{Simplification}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Operadores} @category{Simplification}
 @closecatbox
 @end defvr
 
@@ -684,7 +684,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarações e inferências} @category{Operadores} @category{Simplification}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Operadores} @category{Simplification}
 @closecatbox
 @end defvr
 
@@ -692,14 +692,14 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{maxnegex}
-@defvr {Variável de opção} maxnegex
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxnegex
 Valor padr@~{a}o: 1000
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{maxnegex} @'{e} o maior expoente negativo que ser@'{a}
 expandido pelo comando @code{expand} (veja tamb@'{e}m @code{maxposex}).
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end defvr
 
@@ -707,14 +707,14 @@ expandido pelo comando @code{expand} (veja tamb@'{e}m @code{maxposex}).
 
 @c -----------------------------------------------------------------------------
 @anchor{maxposex}
-@defvr {Variável de opção} maxposex
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxposex
 Valor padr@~{a}o: 1000
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{maxposex} @'{e} o maior expoente que ser@'{a}
 expandido com o comando @code{expand} (veja tamb@'{e}m @code{maxnegex}).
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end defvr
 
@@ -758,7 +758,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarações e inferências} @category{Expressões} @category{Simplification}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Express@~{o}es} @category{Simplification}
 @closecatbox
 @end defvr
 
@@ -766,8 +766,8 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{multthru}
-@deffn  {Função} multthru (@var{expr})
-@deffnx {Função} multthru (@var{expr_1}, @var{expr_2})
+@deffn  {Fun@,{c}@~{a}o} multthru (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} multthru (@var{expr_1}, @var{expr_2})
 
 Multiplica um fator (que pode ser uma soma) de @var{expr} pelos outros fatores
 de @var{expr}.  Isto @'{e}, @var{expr} @'{e} @code{@var{f_1} @var{f_2} ... @var{f_n}}
@@ -814,7 +814,7 @@ O comando @code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada termo em
 @end example
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -847,7 +847,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{negdistrib}
-@defvr {Variável de opção} negdistrib
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} negdistrib
 Valor padr@~{a}o: @code{true}
 
 Quando @code{negdistrib} for @code{true}, -1 distribui sobre uma express@~{a}o.
@@ -883,7 +883,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{opproperties}
-@defvr {Variável de sistema} opproperties
+@defvr {Vari@'{a}vel de sistema} opproperties
 
 A vari@'{a}vel de sistema @code{opproperties} cont@'{e}m a lista das propriedades de operador especial recognized
 by the Maxima simplifier:
@@ -900,7 +900,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Variáveis globais} @category{Operadores}
+@category{Vari@'{a}veis globais} @category{Operadores}
 @closecatbox
 @end defvr
 
@@ -951,13 +951,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Declarações e inferências} @category{Operadores}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Operadores}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{radcan}
-@deffn {Função} radcan (@var{expr})
+@deffn {Fun@,{c}@~{a}o} radcan (@var{expr})
 
 Simplifica @var{expr}, que pode conter logar@'{i}tmos, exponenciais, e radicais, 
 convertendo @var{expr} em uma forma que @'{e} can@^{o}nica sobre uma larga classe de express@~{o}es 
@@ -1016,7 +1016,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{radexpand}
-@defvr {Variável de opção} radexpand
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} radexpand
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{radexpand} controla algumas simplifica@,{c}@~{o}es de radicais.
@@ -1058,7 +1058,7 @@ do Maxima que @code{g} @'{e} associativa @`{a} direita.  E.g.,
 @code{g(g(a, b), g(c, d))} simplifica para @code{g(a, g(b, g(c, d)))}.
 
 @opencatbox
-@category{Declarações e inferências} @category{Operadores}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Operadores}
 @closecatbox
 @end defvr
 
@@ -1066,7 +1066,7 @@ do Maxima que @code{g} @'{e} associativa @`{a} direita.  E.g.,
 
 @c -----------------------------------------------------------------------------
 @anchor{scsimp}
-@deffn {Função} scsimp (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
+@deffn {Fun@,{c}@~{a}o} scsimp (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
 Simplifica@,{c}@~{a}o Comparativa Sequencial (m@'{e}todo devido a Stoute).
 A fun@,{c}@~{a}o @code{scsimp} tenta simplificar @var{expr}
@@ -1084,7 +1084,7 @@ O comando @code{example (scsimp)} mostra alguns exemplos.
 
 @c -----------------------------------------------------------------------------
 @anchor{simp}
-@defvr {Variável de opção} simp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} simp
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{simp} habilita simplifica@,{c}@~{a}o.  @'{E} o padr@~{a}o.  A vari@'{a}vel de op@,{c}@~{a}o @code{simp} @'{e} tamb@'{e}m
@@ -1135,7 +1135,7 @@ atribui@,{c}@~{a}o ter ocorrido durante a fase de avalia@,{c}@~{a}o da express@~
 @end example
 
 @opencatbox
-@category{Sinalizadores de avaliação}
+@category{Sinalizadores de avalia@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -1152,13 +1152,13 @@ simplifies to @code{h (x, y, z)}.
 A propriedade @code{commutative} @'{e} sin@^{o}nimo de @code{symmetric}.
 
 @opencatbox
-@category{Declarações e inferências} @category{Operadores}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Operadores}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{xthru}
-@deffn {Função} xthru (@var{expr})
+@deffn {Fun@,{c}@~{a}o} xthru (@var{expr})
 
 Combina todos os termos de @var{expr} (que deve ser uma soma) sobre um denominador
 comum sem expandir produtos e e somas exponenciadas como @code{ratsimp}
@@ -1195,7 +1195,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Expressões}
+@category{Express@~{o}es}
 @closecatbox
 @end deffn
 

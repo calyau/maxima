@@ -138,7 +138,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{append}
-@deffn {Função} append (@var{list_1}, @dots{}, @var{list_n})
+@deffn {Fun@,{c}@~{a}o} append (@var{list_1}, @dots{}, @var{list_n})
 
 Retorna uma lista simples contendo os elementos de @var{list_1} seguidos
 pelos elementos de @var{list_2}, @dots{}  A fun@,{c}@~{a}o @code{append} tamb@'{e}m funciona sobre
@@ -148,7 +148,7 @@ express@~{o}es gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
 Fa@,{c}a @code{example(append);} para um exemplo.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -156,8 +156,8 @@ Fa@,{c}a @code{example(append);} para um exemplo.
 
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
-@deffn  {Função} assoc (@var{chave}, @var{lista}, @var{retorno})
-@deffnx {Função} assoc (@var{chave}, @var{lista})
+@deffn  {Fun@,{c}@~{a}o} assoc (@var{chave}, @var{lista}, @var{retorno})
+@deffnx {Fun@,{c}@~{a}o} assoc (@var{chave}, @var{lista})
 
 Essa fun@,{c}@~{a}o busca por @var{chave} no lado esquerdo da
 @var{lista} informada. A @var{lista} argumento deve ser uma lista, cada um dos
@@ -200,22 +200,22 @@ ent@~{a}o @code{assoc} retorna @code{false}.
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn  {Função} cons (@var{expr}, @var{lista})
-@deffnx {Função} cons (@var{expr_1}, @var{expr_2})
+@deffn  {Fun@,{c}@~{a}o} cons (@var{expr}, @var{lista})
+@deffnx {Fun@,{c}@~{a}o} cons (@var{expr_1}, @var{expr_2})
 
-O comando @code{cons (@var{expr}, @var{lista})} retorna uma nova lista construída tendo
-@var{expr} como seu primeiro elemento, seguido pelos elementos de @var{lista}. É
-análoga à operação Lisp de construção de linguagem "cons".
+O comando @code{cons (@var{expr}, @var{lista})} retorna uma nova lista constru@'{i}da tendo
+@var{expr} como seu primeiro elemento, seguido pelos elementos de @var{lista}. @'{E}
+an@'{a}loga @`{a} opera@,{c}@~{a}o Lisp de constru@,{c}@~{a}o de linguagem "cons".
 
-A função @code{cons} do Maxima pode também ser usada onde o segundo argumento é outra coisa além
+A fun@,{c}@~{a}o @code{cons} do Maxima pode tamb@'{e}m ser usada onde o segundo argumento @'{e} outra coisa al@'{e}m
 de uma lista. Nesse caso, @code{cons (@var{expr_1}, @var{expr_2})}
-retorna uma expressão com o mesmo operador que @var{expr_2} mas com argumento @code{cons(expr_1, args(expr_2))}.
+retorna uma express@~{a}o com o mesmo operador que @var{expr_2} mas com argumento @code{cons(expr_1, args(expr_2))}.
 
 Exemplos:
 
@@ -232,12 +232,12 @@ Exemplos:
 @end group
 @end example
 
-Em geral, @code{cons} aplicada a uma não lista não faz sentido. Por exemplo, @code{cons(a,b^c)}
-resulta em uma expressão ilegal, uma vez que '^' não pode receber três argumentos.
+Em geral, @code{cons} aplicada a uma n@~{a}o lista n@~{a}o faz sentido. Por exemplo, @code{cons(a,b^c)}
+resulta em uma express@~{a}o ilegal, uma vez que '^' n@~{a}o pode receber tr@^{e}s argumentos.
 
-Quando @code{inflag} for @code{true}, @code{cons} trabalha sobre a estrutura interna de uma expressão, de outra forma
+Quando @code{inflag} for @code{true}, @code{cons} trabalha sobre a estrutura interna de uma express@~{a}o, de outra forma
 @code{cons} trabalha sobre a forma exibida na tela. Especialmente quando @code{inflag} for @code{true}, @code{cons} applied
-a uma não lista algumas vezes fornece um resultado surpreendente; por exemplo
+a uma n@~{a}o lista algumas vezes fornece um resultado surpreendente; por exemplo
 @c ===beg===
 @c cons(a,-a), inflag : true
 @c cons(a,-a), inflag : false;
@@ -253,13 +253,13 @@ a uma não lista algumas vezes fornece um resultado surpreendente; por exemplo
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{copylist}
-@deffn {Função} copylist (@var{lista})
+@deffn {Fun@,{c}@~{a}o} copylist (@var{lista})
 
 Retorna uma c@'{o}pia da lista @var{lista}.
 
@@ -270,7 +270,7 @@ Retorna uma c@'{o}pia da lista @var{lista}.
 
 @c -----------------------------------------------------------------------------
 @anchor{create_list}
-@deffn {Função} create_list (@var{formula}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
+@deffn {Fun@,{c}@~{a}o} create_list (@var{formula}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
 
 Cria uma lista avaliando @var{formula} com @var{x_1} associado a
 cada elemento de @var{list_1}, e para cada tal associa@,{c}@~{a}o associa @var{x_2}
@@ -332,8 +332,8 @@ depender do valor atual de @code{i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{delete}
-@deffn  {Função} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Função} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn  {Fun@,{c}@~{a}o} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Fun@,{c}@~{a}o} delete (@var{expr_1}, @var{expr_2}, @var{n})
 
 A fun@,{c}@~{a}o usada na forma @code{delete(@var{expr_1}, @var{expr_2})}
 remove da @var{expr_2} quaisquer argumentos de seu operador de n@'{i}vel mais alto
@@ -458,32 +458,32 @@ rat: replaced 0.0 by 0/1 = 0.0
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{eighth}
-@deffn {Função} eighth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} eighth (@var{expr})
 
 Retorna o oitavo item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para maiores detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn  {Função} endcons (@var{expr}, @var{lista})
-@deffnx {Função} endcons (@var{expr_1}, @var{expr_2})
+@deffn  {Fun@,{c}@~{a}o} endcons (@var{expr}, @var{lista})
+@deffnx {Fun@,{c}@~{a}o} endcons (@var{expr_1}, @var{expr_2})
 
-O comando @code{endcons (@var{expr}, @var{lista})} retorna uma nova lista construída a partir dos elementos de
-@var{lista} seguidos por @var{expr}. A função do Maxima @code{endcons} pode também ser usada onde
-o segundo argumento é outra coisa além de uma lista e isso pode ser útil. Nesse caso,
-@code{endcons (@var{expr_1}, @var{expr_2})} retorna uma expressão com o mesmo operador que
+O comando @code{endcons (@var{expr}, @var{lista})} retorna uma nova lista constru@'{i}da a partir dos elementos de
+@var{lista} seguidos por @var{expr}. A fun@,{c}@~{a}o do Maxima @code{endcons} pode tamb@'{e}m ser usada onde
+o segundo argumento @'{e} outra coisa al@'{e}m de uma lista e isso pode ser @'{u}til. Nesse caso,
+@code{endcons (@var{expr_1}, @var{expr_2})} retorna uma express@~{a}o com o mesmo operador que
 @var{expr_2} mas com argumento @code{endcons(expr_1, args(expr_2))}. Exemplos:
 @c ===beg===
 @c endcons(a,[b,c,d])
@@ -498,12 +498,12 @@ o segundo argumento é outra coisa além de uma lista e isso pode ser útil. Nes
 @end group
 @end example
 
-Em geral, @code{endcons} aplicada a uma não lista não faz sentido. Por exemplo, @code{endcons(a,b^c)}
-resulta em uma expressão ilegal, uma vez que '^' não pode receber três argumentos.
+Em geral, @code{endcons} aplicada a uma n@~{a}o lista n@~{a}o faz sentido. Por exemplo, @code{endcons(a,b^c)}
+resulta em uma express@~{a}o ilegal, uma vez que '^' n@~{a}o pode receber tr@^{e}s argumentos.
 
-Quando @code{inflag} for @code{true}, @code{endcons} trabalha sobre a estrutura interna de uma expressão, de outra forma
+Quando @code{inflag} for @code{true}, @code{endcons} trabalha sobre a estrutura interna de uma express@~{a}o, de outra forma
 @code{endcons} trabalha sobre a forma exibida na tela. Especialmente quando @code{inflag} for @code{true}, @code{endcons} aplicada
-a uma não lista algumas vezes fornece resultado surpreendente; por exemplo
+a uma n@~{a}o lista algumas vezes fornece resultado surpreendente; por exemplo
 @c ===beg===
 @c endcons(a,-a), inflag : true
 @c endcons(a,-a), inflag : false;
@@ -519,21 +519,21 @@ a uma não lista algumas vezes fornece resultado surpreendente; por exemplo
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 
 @c -----------------------------------------------------------------------------
 @anchor{fifth}
-@deffn {Função} fifth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} fifth (@var{expr})
 
 Retorna o quinto item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para maiores detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -541,7 +541,7 @@ para maiores detalhes.
 
 @c -----------------------------------------------------------------------------
 @anchor{first}
-@deffn {Função} first (@var{expr})
+@deffn {Fun@,{c}@~{a}o} first (@var{expr})
 
 Retorna a primeira parte de @var{expr} que pode resultar no primeiro elemento de uma
 lista, a primeira linha de uma matriz, a primeira parcela de uma soma, etc.  Note que
@@ -556,26 +556,26 @@ simplificador reordena express@~{o}es.  Dessa forma @code{first(x+y)} ir@'{a} re
 @code{tenth} retornam da segunda at@'{e} a d@'{e}cima parte de seu argumento de entrada.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{fourth}
-@deffn {Função} fourth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} fourth (@var{expr})
 
 Retorna o quarto item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para maiores detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{join}
-@deffn {Função} join (@var{l}, @var{m})
+@deffn {Fun@,{c}@~{a}o} join (@var{l}, @var{m})
 
 Cria uma nova lista contendo elementos das listas @var{l} e @var{m},
 interspersed.  The result has elements @code{[@var{l}[1], @var{m}[1],
@@ -619,12 +619,12 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{last}
-@deffn {Função} last (@var{expr})
+@deffn {Fun@,{c}@~{a}o} last (@var{expr})
 
 retorna a @'{u}ltima parte (termo, linha, elemento, etc.) de @var{expr}.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -632,7 +632,7 @@ retorna a @'{u}ltima parte (termo, linha, elemento, etc.) de @var{expr}.
 
 @c -----------------------------------------------------------------------------
 @anchor{length}
-@deffn {Função} length (@var{expr})
+@deffn {Fun@,{c}@~{a}o} length (@var{expr})
 
 Retorna (por padr@~{a}o) o n@'{u}mero de partes na forma
 externa (mostrada) de @var{expr}.  No caso de listas corresponde ao n@'{u}mero de elementos,
@@ -647,13 +647,13 @@ que @mref{exptdispflag}
 representa@,{c}@~{a}o interna @'{e} essencialmente @code{a*b^-1*c^-1}).
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{listarith}
-@defvr {Variável de opção} listarith
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} listarith
 Valor padr@~{a}o: @code{true} 
 
 Se @code{false} faz com que quaisquer opera@,{c}@~{o}es aritm@'{e}ticas com listas sejam suprimidas;
@@ -667,23 +667,23 @@ opera@,{c}@~{o}es lista-lista devem retornar listas.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Função} listp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} listp (@var{expr})
 
 Retorna @code{true} se @var{expr} for uma lista e @code{false} caso n@~{a}o seja.
 
 @opencatbox
-@category{Listas} @category{Funções predicado}
+@category{Listas} @category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
-@deffn  {Função} makelist ()
-@deffnx {Função} makelist (@var{expr}, @var{n})
-@deffnx {Função} makelist (@var{expr}, @var{i}, @var{i_max})
-@deffnx {Função} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
-@deffnx {Função} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{incr})
-@deffnx {Função} makelist (@var{expr}, @var{x}, @var{lista})
+@deffn  {Fun@,{c}@~{a}o} makelist ()
+@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{n})
+@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_max})
+@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
+@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{incr})
+@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{x}, @var{lista})
 
 A primeira forma, @code{makelist ()}, cria uma lista vazia. A segunda forma,
 @code{makelist (@var{expr})}, cria uma lista com @var{expr} sendo seu @'{u}nico
@@ -750,7 +750,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{member}
-@deffn {Função} member (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~{a}o} member (@var{expr_1}, @var{expr_2})
 
 Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
 para algum elemento @var{a} em @code{args(@var{expr_2})},
@@ -816,43 +816,43 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões} @category{Funções predicado}
+@category{Listas} @category{Express@~{o}es} @category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ninth}
-@deffn {Função} ninth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ninth (@var{expr})
 
 Retorna o nono item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para maiores detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{pop}
-@deffn {Função} pop (@var{lista})
+@deffn {Fun@,{c}@~{a}o} pop (@var{lista})
 
-A função @code{pop} remove e retorna o primeiro elemento da lista @var{lista}. O segundo argumento 
-@var{lista} deve ser uma mapatom que está associado a uma lista não vazia. Se o argumento @var{lista} não
-for associado a uma lista não vazia, Maxima sinaliza um erro. Para exemplos, veja @mref{push}.
+A fun@,{c}@~{a}o @code{pop} remove e retorna o primeiro elemento da lista @var{lista}. O segundo argumento 
+@var{lista} deve ser uma mapatom que est@'{a} associado a uma lista n@~{a}o vazia. Se o argumento @var{lista} n@~{a}o
+for associado a uma lista n@~{a}o vazia, Maxima sinaliza um erro. Para exemplos, veja @mref{push}.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{push}
-@deffn {Função} push (@var{item}, @var{lista})
+@deffn {Fun@,{c}@~{a}o} push (@var{item}, @var{lista})
 
-A função @code{push} anexa no início de uma @var{lista} o item @var{item} e retorna uma cópia da nova lista. 
+A fun@,{c}@~{a}o @code{push} anexa no in@'{i}cio de uma @var{lista} o item @var{item} e retorna uma c@'{o}pia da nova lista. 
 O segundo argumento @var{lista} deve ser um mapatom que esteja ssociado a uma lista. O primeiro argumento @var{item} 
-pode ser qualquer símbolo do Maxima ou expressão do Maxima. Se o argumento @var{lista} não estiver associado a uma lista, Maxima 
+pode ser qualquer s@'{i}mbolo do Maxima ou express@~{a}o do Maxima. Se o argumento @var{lista} n@~{a}o estiver associado a uma lista, Maxima 
 sinaliza um erro.
 
 Para remover o primeiro item de uma lista, veja @mref{pop}.
@@ -896,15 +896,15 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
-@deffn  {Função} rest (@var{expr}, @var{n})
-@deffnx {Função} rest (@var{expr})
+@deffn  {Fun@,{c}@~{a}o} rest (@var{expr}, @var{n})
+@deffnx {Fun@,{c}@~{a}o} rest (@var{expr})
 
 +Returns @var{expr} with its first @var{n} elements removed if @var{n}
 +is positive and its last @code{- @var{n}} elements removed if @var{n}
@@ -934,7 +934,7 @@ Exemplos:
 +@end example
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
@@ -943,60 +943,60 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{reverse}
-@deffn {Função} reverse (@var{lista})
+@deffn {Fun@,{c}@~{a}o} reverse (@var{lista})
 
 Reverte a ordem dos elementos de @var{lista} (n@~{a}o
 os membros propriamente ditos).  A fun@,{c}@~{a}o @code{reverse} tamb@'{e}m trabalha sobre express@~{o}es gerais,
 e.g.  @code{reverse(a=b);} fornece @code{b=a}.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{second}
-@deffn {Função} second (@var{expr})
+@deffn {Fun@,{c}@~{a}o} second (@var{expr})
 
 Retorna o segundo item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para mais detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{seventh}
-@deffn {Função} seventh (@var{expr})
+@deffn {Fun@,{c}@~{a}o} seventh (@var{expr})
 
 Retorna o s@'{e}timo item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para mais detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sixth}
-@deffn {Função} sixth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} sixth (@var{expr})
 
 Retorna o sexto item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para mais detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sort}
-@deffn  {Função} sort (@var{L}, @var{P})
-@deffnx {Função} sort (@var{L})
+@deffn  {Fun@,{c}@~{a}o} sort (@var{L}, @var{P})
+@deffnx {Fun@,{c}@~{a}o} sort (@var{L})
 
 O comando @code{sort(@var{L}, @var{P})} ordena a lista @var{L} conforme o predicado @code{P} de dois argumentos
 que definem uma ordena@,{c}@~{a}o estrita fraca @footnote{Nota do tradutor: ordena@,{c}@`{a}o estrita fraca usa o menor/maior
@@ -1190,7 +1190,7 @@ e todos os outros elementos da mesma forma que @code{orderlessp}.
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist}
-@deffn {Função} sublist (@var{lista}, @var{p})
+@deffn {Fun@,{c}@~{a}o} sublist (@var{lista}, @var{p})
 
 Retorna a lista dos elementos de @var{lista} para os quais o predicado @code{p}
 retorna @code{true}.
@@ -1219,7 +1219,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{sublist_indices}
-@deffn {Função} sublist_indices (@var{L}, @var{P})
+@deffn {Fun@,{c}@~{a}o} sublist_indices (@var{L}, @var{P})
 
 Retorna os @'{i}ndices dos elementos @code{x} da lista @var{L} para os quais
 o predicado @code{maybe(@var{P}(x))} retornar @code{true};
@@ -1275,7 +1275,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{unique}
-@deffn {Função} unique (@var{L})
+@deffn {Fun@,{c}@~{a}o} unique (@var{L})
 
 Retorna os elementos da lista @var{L} sem repeti@,{c}@~{o}es.
 
@@ -1300,27 +1300,27 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{tenth}
-@deffn {Função} tenth (@var{expr})
+@deffn {Fun@,{c}@~{a}o} tenth (@var{expr})
 
 Retorna o d@'{e}cimo item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para mais detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{third}
-@deffn {Função} third (@var{expr})
+@deffn {Fun@,{c}@~{a}o} third (@var{expr})
 
 Retorna o terceiro item da express@~{a}o ou lista @var{expr}.
 Veja @mref{first}
 para mais detalhes.
 
 @opencatbox
-@category{Listas} @category{Expressões}
+@category{Listas} @category{Express@~{o}es}
 @closecatbox
 @end deffn
 

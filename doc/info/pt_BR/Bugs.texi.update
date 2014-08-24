@@ -13,7 +13,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{run_testsuite}
-@deffn {Função} run_testsuite ([@var{options}])
+@deffn {Fun@,{c}@~{a}o} run_testsuite ([@var{options}])
 
 Executa os aplicativos de teste do Maxima.  Testes que produzem as respostas desejadas s@~{a}o
 considerados ``passes,'' @footnote{Nota do tradutor: aprovado.} e tamb@'{e}m os testes que n@~{a}o produzem a resposta
@@ -60,7 +60,7 @@ e ent@~{a}o define fun@,{c}@~{o}es e vari@'{a}veis apropriadas para o teste.
 
 @c -----------------------------------------------------------------------------
 @anchor{testsuite_files}
-@defvr {Variável de opção} testsuite_files
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} testsuite_files
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{testsuite_files} cont@'{e}m o conjunto de testes a serem executados por
 @mrefdot{run_testsuite}
@@ -80,13 +80,13 @@ Essa parte especifica o teste constitu@'{i}do pelos arquivos "rtest13s" e
 e 63.
 
 @opencatbox
-@category{Depurando} @category{Variáveis globais}
+@category{Depurando} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{bug_report}
-@deffn {Função} bug_report ()
+@deffn {Fun@,{c}@~{a}o} bug_report ()
 
 Mostra os n@'{u}meros de vers@~{a}o do Maxima e do Lisp, e fornece um link
 para a p@'{a}gina do relat@'{o}rio de erros do projeto Maxima.
@@ -104,7 +104,7 @@ do Maxima e do Lisp dentro do relat@'{o}rio de erro.
 
 @c -----------------------------------------------------------------------------
 @anchor{build_info}
-@deffn {Função} build_info ()
+@deffn {Fun@,{c}@~{a}o} build_info ()
 
 Retorna um resumo dos par@^{a}metros de compila@,{c}@~{a}o do Maxima,
 na forma de uma estrutura do Maxima (definida por @code{defstruct}).

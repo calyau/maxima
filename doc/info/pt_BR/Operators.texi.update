@@ -73,11 +73,11 @@ da fun@,{c}@~{a}o @code{"dd" (a)} @'{e} equivalente a @code{dd a}, da mesma form
 @end example
 
 As fun@,{c}@~{o}es do Maxima que definem novos operadores s@~{a}o sumarizadas na tabela adiante,
-equilibrando (padr@~{a}o) poder associado à esquerda e poder associada à direita (left binding power, right binding power, lbp e rbp, respectivamente).
+equilibrando (padr@~{a}o) poder associado @`{a} esquerda e poder associada @`{a} direita (left binding power, right binding power, lbp e rbp, respectivamente).
 @c REWORK FOLLOWING COMMENT.
 @c IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
-(Força associada determina a preced@^{e}ncia do operador.  Todavia, uma vez que o poder associado à esquerda e o poder
-associado à direita podem ser diferentes, associar poder @'{e} um pouco mais complicado que
+(For@,{c}a associada determina a preced@^{e}ncia do operador.  Todavia, uma vez que o poder associado @`{a} esquerda e o poder
+associado @`{a} direita podem ser diferentes, associar poder @'{e} um pouco mais complicado que
 preced@^{e}ncia.) Alguma das fun@,{c}@~{o}es de defini@,{c}@~{a}o de opera@,{c}@~{a}o recebem argumentos
 adicionais; veja as descri@,{c}@~{o}es de fun@,{c}@~{a}o para detalhes.
 
@@ -1067,7 +1067,7 @@ Os valores de @code{a} e @code{b} s@~{a}o comutados nesse exemplo.
 @end example
 
 @opencatbox
-@category{Avaliação} @category{Operadores}
+@category{Avalia@,{c}@~{a}o} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1118,7 +1118,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Avaliação} @category{Operadores}
+@category{Avalia@,{c}@~{a}o} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1180,16 +1180,16 @@ a macro foi chamada, mostrando a mensagem (2).
 (%o5)                                 %pi
 @end example
 
-Uma função comum avalia seus argumentos, então mensagem (1) mostra o valor de
-@code{y - z}.  O valor de retorno não é avaliado, então mensagem (2) não é mostrada
-até a avaliação explícita @code{''%}.
+Uma fun@,{c}@~{a}o comum avalia seus argumentos, ent@~{a}o mensagem (1) mostra o valor de
+@code{y - z}.  O valor de retorno n@~{a}o @'{e} avaliado, ent@~{a}o mensagem (2) n@~{a}o @'{e} mostrada
+at@'{e} a avalia@,{c}@~{a}o expl@'{i}cita @code{''%}.
 
 @c ===beg===
 @c x: %pi$
 @c y: 1234$
 @c z: 1729 * w$
-@c printe1 (x) := block (print ("(1) x é igual a", x), 
-@c       '(print ("(2) x é igual a", x)))$
+@c printe1 (x) := block (print ("(1) x @'{e} igual a", x), 
+@c       '(print ("(2) x @'{e} igual a", x)))$
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
@@ -1197,25 +1197,25 @@ até a avaliação explícita @code{''%}.
 (%i1) x: %pi$
 (%i2) y: 1234$
 (%i3) z: 1729 * w$
-(%i4) printe1 (x) := block (print ("(1) x é igual a", x),
-      '(print ("(2) x é igual a", x)))$
+(%i4) printe1 (x) := block (print ("(1) x @'{e} igual a", x),
+      '(print ("(2) x @'{e} igual a", x)))$
 (%i5) printe1 (y - z);
 (1) x is equal to 1234 - 1729 w
-(%o5)                     print((2) x é igual a, x)
+(%o5)                     print((2) x @'{e} igual a, x)
 (%i6) ''%;
-(2) x é igual a %pi
+(2) x @'{e} igual a %pi
 (%o6)                                 %pi
 @end example
 
-A função @code{macroexpand} retorna uma expansão de macro.
-O comando @code{macroexpand (qualquercoisa (x))} seguido por @code{''%} é equivalente a
-@code{qualquercoisa (x)} quando @code{qualquercoisa} for uma função de macro.
+A fun@,{c}@~{a}o @code{macroexpand} retorna uma expans@~{a}o de macro.
+O comando @code{macroexpand (qualquercoisa (x))} seguido por @code{''%} @'{e} equivalente a
+@code{qualquercoisa (x)} quando @code{qualquercoisa} for uma fun@,{c}@~{a}o de macro.
 
 @c ===beg===
 @c x: %pi$
 @c y: 1234$
 @c z: 1729 * w$
-@c g (x) ::= buildq ([x], print ("x é igual a", x))$
+@c g (x) ::= buildq ([x], print ("x @'{e} igual a", x))$
 @c macroexpand (g (y - z));
 @c ''%;
 @c g (y - z);
@@ -1224,9 +1224,9 @@ O comando @code{macroexpand (qualquercoisa (x))} seguido por @code{''%} é equiv
 (%i1) x: %pi$
 (%i2) y: 1234$
 (%i3) z: 1729 * w$
-(%i4) g (x) ::= buildq ([x], print ("x é igual a", x))$
+(%i4) g (x) ::= buildq ([x], print ("x @'{e} igual a", x))$
 (%i5) macroexpand (g (y - z));
-(%o5)                     print(x é igual a, y - z)
+(%o5)                     print(x @'{e} igual a, y - z)
 (%i6) ''%;
 x is equal to 1234 - 1729 w
 (%o6)                            1234 - 1729 w
@@ -1236,7 +1236,7 @@ x is equal to 1234 - 1729 w
 @end example
 
 @opencatbox
-@category{Definição de função} @category{Operadores}
+@category{Defini@,{c}@~{a}o de fun@,{c}@~{a}o} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1247,12 +1247,12 @@ x is equal to 1234 - 1729 w
 @fnindex Operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o
 @end ifinfo
 
-O operador de definição de função.
-O comando @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} define uma função chamada
-@var{f} com argumentos @var{x_1}, @dots{}, @var{x_n} e lei de formação
-@var{expr}.  O operador @code{:=} nunca avalia a lei de formação (a menos que explicitamente
-avaliado por apóstrofo-apóstrofo @code{'@w{}'}).
-O corpo da função é avaliado toda vez que a função for camada.
+O operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o.
+O comando @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} define uma fun@,{c}@~{a}o chamada
+@var{f} com argumentos @var{x_1}, @dots{}, @var{x_n} e lei de forma@,{c}@~{a}o
+@var{expr}.  O operador @code{:=} nunca avalia a lei de forma@,{c}@~{a}o (a menos que explicitamente
+avaliado por ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}).
+O corpo da fun@,{c}@~{a}o @'{e} avaliado toda vez que a fun@,{c}@~{a}o for camada.
 
 @code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called array function.
 Its function body is evaluated just once for each distinct value of its arguments,
@@ -1267,30 +1267,30 @@ with arguments @code{@var{y_1}, ..., @var{y_m}}.
 The function body is evaluated once for each distinct value of @code{@var{x_1}, ..., @var{x_n}},
 and the body of the lambda expression is that value.
 
-Quando o último ou único argumento de função @var{x_n} for uma lista de um elemento, a
-função definida por @code{:=} aceita um número de argumentos variável.  Os argumentos
-atuais são atribuídos um-a-um a argumentos formais @var{x_1}, @dots{},
-@var{x_(n - 1)}, e quaisquer argumentos adicionais, se presentes, são atribuídos a
+Quando o @'{u}ltimo ou @'{u}nico argumento de fun@,{c}@~{a}o @var{x_n} for uma lista de um elemento, a
+fun@,{c}@~{a}o definida por @code{:=} aceita um n@'{u}mero de argumentos vari@'{a}vel.  Os argumentos
+atuais s@~{a}o atribu@'{i}dos um-a-um a argumentos formais @var{x_1}, @dots{},
+@var{x_(n - 1)}, e quaisquer argumentos adicionais, se presentes, s@~{a}o atribu@'{i}dos a
 @var{x_n} como uma lista.
 
-Todas as definições de função aparecem no mesmo espaço de trabalho; definindo uma função
-@code{f} dentro de outra função @code{g} não limita automaticamente o escopo
-de @code{f} ao escopo de @code{g}.  Todavia, @code{local(f)} torna a definição da
-função @code{f} efetiva somente dentro do bloco ou somente dentro de outra expressão composta
+Todas as defini@,{c}@~{o}es de fun@,{c}@~{a}o aparecem no mesmo espa@,{c}o de trabalho; definindo uma fun@,{c}@~{a}o
+@code{f} dentro de outra fun@,{c}@~{a}o @code{g} n@~{a}o limita automaticamente o escopo
+de @code{f} ao escopo de @code{g}.  Todavia, @code{local(f)} torna a defini@,{c}@~{a}o da
+fun@,{c}@~{a}o @code{f} efetiva somente dentro do bloco ou somente dentro de outra express@~{a}o composta
 na qual @mref{local}
-apareça.
+apare@,{c}a.
 
-Se algum argumento formal @var{x_k} for um símbolo com apóstrofo no início, a função definida através de
-@code{:=} não avalia o argumento atual correspondente.  De outra forma todos os
-argumentos atuais são avaliados.
+Se algum argumento formal @var{x_k} for um s@'{i}mbolo com ap@'{o}strofo no in@'{i}cio, a fun@,{c}@~{a}o definida atrav@'{e}s de
+@code{:=} n@~{a}o avalia o argumento atual correspondente.  De outra forma todos os
+argumentos atuais s@~{a}o avaliados.
 
 Veja tamb@'{e}m @mref{define}
 e @mrefdot{::=}
 
 Exemplos:
 
-O operador @code{:=} nunca avalia o corpo da função (a menos que explicitamente avaliado por
-apóstrofo-apóstrofo).
+O operador @code{:=} nunca avalia o corpo da fun@,{c}@~{a}o (a menos que explicitamente avaliado por
+ap@'{o}strofo-ap@'{o}strofo).
 
 @c ===beg===
 @c expr : cos(y) - sin(x);
@@ -1312,7 +1312,7 @@ apóstrofo-apóstrofo).
 (%o5)                    cos(b) - sin(a)
 @end example
 
-O comando @code{f(@var{x_1}, ..., @var{x_n}) := ...} define uma função comum.
+O comando @code{f(@var{x_1}, ..., @var{x_n}) := ...} define uma fun@,{c}@~{a}o comum.
 
 @c ===beg===
 @c G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
@@ -1331,7 +1331,7 @@ Evaluating G1 for x= [1, a] and y= [2, b]
 (%o3)                           0
 @end example
 
-O comando @code{f[@var{x_1}, ..., @var{x_n}] := ...} define uma função array (vetor estático).
+O comando @code{f[@var{x_1}, ..., @var{x_n}] := ...} define uma fun@,{c}@~{a}o array (vetor est@'{a}tico).
 
 @c ===beg===
 @c G2[a] := (print ("Evaluating G2 for a=", a), a^2);
@@ -1361,7 +1361,7 @@ Evaluating G2 for a= 2345
 @end example
 
 O comando @code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
-é um caso especial de uma função array (vetor estático).
+@'{e} um caso especial de uma fun@,{c}@~{a}o array (vetor est@'{a}tico).
 
 @c ===beg===
 @c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
@@ -1394,8 +1394,8 @@ Evaluating G3 for n= 2
 (%o6)         [lambda([x], 2 cos (x) - 2 sin (x))]
 @end example
 
-Quando o último ou único argumento da função @var{x_n} for uma lista de um elemento,
-a função definida através de @code{:=} aceita um número variável de argumentos.
+Quando o @'{u}ltimo ou @'{u}nico argumento da fun@,{c}@~{a}o @var{x_n} for uma lista de um elemento,
+a fun@,{c}@~{a}o definida atrav@'{e}s de @code{:=} aceita um n@'{u}mero vari@'{a}vel de argumentos.
 
 @c ===beg===
 @c H ([L]) := apply ("+", L);
@@ -1408,7 +1408,7 @@ a função definida através de @code{:=} aceita um número variável de argumen
 (%o2)                       c + b + a
 @end example
 
-A declaração @code{local} torna uma definição de função válida apenas localmente.
+A declara@,{c}@~{a}o @code{local} torna uma defini@,{c}@~{a}o de fun@,{c}@~{a}o v@'{a}lida apenas localmente.
 
 @c ===beg===
 @c foo (x) := 1 - x;
@@ -1428,7 +1428,7 @@ A declaração @code{local} torna uma definição de função válida apenas loc
 @end example
 
 @opencatbox
-@category{Definição de função} @category{Operadores}
+@category{Defini@,{c}@~{a}o de fun@,{c}@~{a}o} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1439,48 +1439,48 @@ A declaração @code{local} torna uma definição de função válida apenas loc
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {Função} infix (@var{op})
-@deffnx {Função} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Função} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn  {Fun@,{c}@~{a}o} infix (@var{op})
+@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
-Declara que o operador @var{op} é um operador infixo.  Um operador infixo é uma função de
-dois argumentos, com o nome da função escrito entre os argumentos.
-Por exemplo, o operador de substração @code{-} é um operador infixo.
+Declara que o operador @var{op} @'{e} um operador infixo.  Um operador infixo @'{e} uma fun@,{c}@~{a}o de
+dois argumentos, com o nome da fun@,{c}@~{a}o escrito entre os argumentos.
+Por exemplo, o operador de substra@,{c}@~{a}o @code{-} @'{e} um operador infixo.
 
-O comando @code{infix (@var{op})} declara que o operador @var{op} é um operador infixo com poder
-associado padrão de (esquerda e direita ambas iguais a 180) e classe gramatical (esquerda e
+O comando @code{infix (@var{op})} declara que o operador @var{op} @'{e} um operador infixo com poder
+associado padr@~{a}o de (esquerda e direita ambas iguais a 180) e classe gramatical (esquerda e
 direita ambas iguais a @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-O comando @code{infix (@var{op}, @var{lbp}, @var{rbp})} declara que @var{op} é um operador
-infixo com poder associado direito e poder associado esquerdo ambos estabelecidos e classe gramatical padrão
+O comando @code{infix (@var{op}, @var{lbp}, @var{rbp})} declara que @var{op} @'{e} um operador
+infixo com poder associado direito e poder associado esquerdo ambos estabelecidos e classe gramatical padr@~{a}o
 (esquedo e direito ambos iguais a @code{any}).
 
 O comando @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-declara que o operador @var{op} é um operador infixo com poder associado direito e poder associado
+declara que o operador @var{op} @'{e} um operador infixo com poder associado direito e poder associado
 esquerdo ambos estabelecidos e classes gramaticais @var{lpos}, @var{rpos}, e @var{pos} para o operando
 esquerdo, o operando direito, e o resultado do operador, respectivamente.
 
-"Classe gramatical", referindo-se a declarações de operador, significa tipo de expressão.
-Três tipos de expressão são reconhecidos: @code{expr}, @code{clause}, e @code{any},
-indicando uma expressão algébrica, uma expressão Booleana, ou qualquer tipo de
-expressão, respectivamente.  Maxima pode detectar alguns erros de sintaxe comparando a
-classe gramatical declarada com uma expressão atual.
+"Classe gramatical", referindo-se a declara@,{c}@~{o}es de operador, significa tipo de express@~{a}o.
+Tr@^{e}s tipos de express@~{a}o s@~{a}o reconhecidos: @code{expr}, @code{clause}, e @code{any},
+indicando uma express@~{a}o alg@'{e}brica, uma express@~{a}o Booleana, ou qualquer tipo de
+express@~{a}o, respectivamente.  Maxima pode detectar alguns erros de sintaxe comparando a
+classe gramatical declarada com uma express@~{a}o atual.
 
-A precedência do operador @var{op} em relação a outro operador vem dos poderes
-associados esquerdo  e direito dos operadores em questão.  Se os poderes associados
+A preced@^{e}ncia do operador @var{op} em rela@,{c}@~{a}o a outro operador vem dos poderes
+associados esquerdo  e direito dos operadores em quest@~{a}o.  Se os poderes associados
 esquerdo e direito of @var{op} forem ambos maiores que os oderes associados esquerdo e direito de
-algum outro operador, então o operador @var{op} tem precedência sobre o outro operador.
-Se os poderes associados de um deles não forem ambos não forem ambos maiores ou menores, alguma relação mais
+algum outro operador, ent@~{a}o o operador @var{op} tem preced@^{e}ncia sobre o outro operador.
+Se os poderes associados de um deles n@~{a}o forem ambos n@~{a}o forem ambos maiores ou menores, alguma rela@,{c}@~{a}o mais
 complicada acontece.
 
 A associatividade de @var{op} depende de seus poderes associados.  Maior poder
-associado esquerdo (@var{lbp}) implica que uma instância de @var{op} é avaliada antes de
-outros operadores para sua esquerda em uma expressão, enquanto maior poder associado esquerdo
-(@var{rbp}) imprica que uma instância de @var{op} é avaliado antes de outros operadores
-para sua direita em uma expressão.  Deesa forma maior poder associado esquerdo (@var{lbp}) torna @var{op}
-associativo à direita, enquanto maior poder associado direito (@var{rbp}) torna @var{op} associativo à esquerda.
-Se @var{lbp} for igual a @var{rbp}, o operador @var{op} é associativo à esquerda.
+associado esquerdo (@var{lbp}) implica que uma inst@^{a}ncia de @var{op} @'{e} avaliada antes de
+outros operadores para sua esquerda em uma express@~{a}o, enquanto maior poder associado esquerdo
+(@var{rbp}) imprica que uma inst@^{a}ncia de @var{op} @'{e} avaliado antes de outros operadores
+para sua direita em uma express@~{a}o.  Deesa forma maior poder associado esquerdo (@var{lbp}) torna @var{op}
+associativo @`{a} direita, enquanto maior poder associado direito (@var{rbp}) torna @var{op} associativo @`{a} esquerda.
+Se @var{lbp} for igual a @var{rbp}, o operador @var{op} @'{e} associativo @`{a} esquerda.
 
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
@@ -1488,7 +1488,7 @@ Exemplos:
 
 Se os poderes associados esqeurdo e direito de @var{op} forem ambos maiores
 que os poderes associados esquerdo e direito de algum outro operador,
-então @var{op} tem precedência sobre o outro operador.
+ent@~{a}o @var{op} tem preced@^{e}ncia sobre o outro operador.
 
 @c ===beg===
 @c :lisp (get '$+ 'lbp)
@@ -1516,8 +1516,8 @@ então @var{op} tem precedência sobre o outro operador.
 (%o5)                       (a+1,b+2)
 @end example
 
-Maior @var{lbp} torna @var{op} associativo à direita,
-enquanto maior @var{rbp} torna @var{op} associativo à esquerda.
+Maior @var{lbp} torna @var{op} associativo @`{a} direita,
+enquanto maior @var{rbp} torna @var{op} associativo @`{a} esquerda.
 
 @c ===beg===
 @c infix ("##", 100, 99);
@@ -1539,7 +1539,7 @@ enquanto maior @var{rbp} torna @var{op} associativo à esquerda.
 @end example
 
 Maxima pode detectar alguns erros de sintaxe comparando a
-classe gramatical declarada com uma expressão atual.
+classe gramatical declarada com uma express@~{a}o atual.
 
 @c ===beg===
 @c infix ("##", 100, 99, expr, expr, expr);
@@ -1562,48 +1562,48 @@ if x ## y then
 @end example
 
 @opencatbox
-@category{Operadores} @category{Declarações e inferências} @category{Sintaxe}
+@category{Operadores} @category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Sintaxe}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Função} matchfix (@var{de}, @var{dd})
-@deffnx {Função} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
+@deffn  {Fun@,{c}@~{a}o} matchfix (@var{de}, @var{dd})
+@deffnx {Fun@,{c}@~{a}o} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
 
 Declara um operador matchfix com delimitadores esquerdo e direito @var{de}
-e @var{dd}.  Os delimitadores são especificados como sequências de caractere.
+e @var{dd}.  Os delimitadores s@~{a}o especificados como sequ@^{e}ncias de caractere.
 
-Um operador "matchfix" é uma função com qualquer número de argumentos,
+Um operador "matchfix" @'{e} uma fun@,{c}@~{a}o com qualquer n@'{u}mero de argumentos,
 tal que os argumentos ocorrem entre os delimitadores esquerdo e direito.
-Os delimitadores podem ser sequencias de caractere, tão longas quanto o analizador possa
+Os delimitadores podem ser sequencias de caractere, t@~{a}o longas quanto o analizador possa
 os delimitadores dos operandos 
-e de outras expressões e operadores.
-Na prática isso inviabiliza delimitadores não analisáveis tais como
+e de outras express@~{o}es e operadores.
+Na pr@'{a}tica isso inviabiliza delimitadores n@~{a}o analis@'{a}veis tais como
 @code{%}, @code{,}, @code{$} e @code{;}, 
-e pode exigir isolamento de delimitadores com espaço em branco.
+e pode exigir isolamento de delimitadores com espa@,{c}o em branco.
 O delimitador da direita pode ser igual ou diferente do delimitador da esquerda.
 
 Umdelimitador esquerdo pode ser associado a somente um delimitador direito;
-dois diferentes operadores matchfix não podem ter o mesmo delimitador esquerdo.
+dois diferentes operadores matchfix n@~{a}o podem ter o mesmo delimitador esquerdo.
 
 Um operador existente pode ser declarado novamente como sendo um operador matchfix
 sem modificar suas outras propriedades.
-Em particular, operadores embutidos como adição @code{+} podem
+Em particular, operadores embutidos como adi@,{c}@~{a}o @code{+} podem
 ser declarados matchfix,
-mas funções de operador não podem ser definidas para operadores embutidos.
+mas fun@,{c}@~{o}es de operador n@~{a}o podem ser definidas para operadores embutidos.
 
 O comando @code{matchfix (@var{de}, @var{dd}, @var{clgr_arg},
 @var{clgr})} declara que o argumento tem a classe gramatical @var{clgr_arg} e resultado
 tem a classe gramatical @var{clgr}, e os delimitadores @var{de} e
 @var{dd}.
 
-"Classe gramatical", referindo-se a declarações de operador, significa tipo de expressão.
-Três tipos são reconhecidos: @code{expr}, @code{clause}, e @code{any},
-indicando uma expressão algébrica, uma expressão Booleana, ou qualquer tipo de
-expressão, respectivamente.
+"Classe gramatical", referindo-se a declara@,{c}@~{o}es de operador, significa tipo de express@~{a}o.
+Tr@^{e}s tipos s@~{a}o reconhecidos: @code{expr}, @code{clause}, e @code{any},
+indicando uma express@~{a}o alg@'{e}brica, uma express@~{a}o Booleana, ou qualquer tipo de
+express@~{a}o, respectivamente.
 Maxima pode detectar alguns erros de sintaxe comparando a
-classe gramatical declarada com uma expressão atual.
+classe gramatical declarada com uma express@~{a}o atual.
 
 @c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
 @c An operator declared by @code{matchfix} is assigned a low binding power.
@@ -1612,20 +1612,20 @@ classe gramatical declarada com uma expressão atual.
 @c binding power is effectively irrelevant
 @c to the declaration of a matchfix operator.
 
-A função para realizar uma operação matchfix é uma função
-comum definida pelo usuário.
-A função de operador é definida
+A fun@,{c}@~{a}o para realizar uma opera@,{c}@~{a}o matchfix @'{e} uma fun@,{c}@~{a}o
+comum definida pelo usu@'{a}rio.
+A fun@,{c}@~{a}o de operador @'{e} definida
 da forma usual
-com o operador de definição de função @code{:=} ou com @code{define}.
+com o operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o @code{:=} ou com @code{define}.
 Os argumentos podem ser escritos entre os delimitadores,
-ou com o delimitador esquerdo como uma sequência de caracteres entre aspas duplas e os argumentos
-em seguida entre parêntesis.
-O comando @code{dispfun (@var{de})} mostra a definição da função.
+ou com o delimitador esquerdo como uma sequ@^{e}ncia de caracteres entre aspas duplas e os argumentos
+em seguida entre par@^{e}ntesis.
+O comando @code{dispfun (@var{de})} mostra a defini@,{c}@~{a}o da fun@,{c}@~{a}o.
 
-O único operador matchfix embutido é o construtor de listas @code{[ ]}.
-Os parêntesis @code{( )} e as aspas duplas @code{" "} 
+O @'{u}nico operador matchfix embutido @'{e} o construtor de listas @code{[ ]}.
+Os par@^{e}ntesis @code{( )} e as aspas duplas @code{" "} 
 atuam como operadores matchfix,
-mas não são tratados como tais pelo analisador do Maxima.
+mas n@~{a}o s@~{a}o tratados como tais pelo analisador do Maxima.
 
 O comando @code{matchfix} avalia seus argumentos.
 O comando @code{matchfix} retorna seu primeiro argumento, @var{de}.
@@ -1633,7 +1633,7 @@ O comando @code{matchfix} retorna seu primeiro argumento, @var{de}.
 
 Exemplos:
 
-Delimitadores podem ser quase qualquer sequência de caracteres.
+Delimitadores podem ser quase qualquer sequ@^{e}ncia de caracteres.
 
 @c ===beg===
 @c matchfix ("@@", "~");
@@ -1663,7 +1663,7 @@ Delimitadores podem ser quase qualquer sequência de caracteres.
                             @@@@p, q~
 @end example
 
-Operadores matchfix são funções comuns definidas pelo usuário.
+Operadores matchfix s@~{a}o fun@,{c}@~{o}es comuns definidas pelo usu@'{a}rio.
 
 @example
 (%i1) matchfix ("!-", "-!");
@@ -1703,8 +1703,8 @@ Operadores matchfix são funções comuns definidas pelo usuário.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_nary}
-@deffn  {Função} nary (@var{op})
-@deffnx {Função} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} nary (@var{op})
+@deffnx {Fun@,{c}@~{a}o} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
 
 An @code{nary} operator is used to denote a function of any number of arguments,
 each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
@@ -1722,8 +1722,8 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {Função} nofix (@var{op})
-@deffnx {Função} nofix (@var{op}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} nofix (@var{op})
+@deffnx {Fun@,{c}@~{a}o} nofix (@var{op}, @var{clgr})
 
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
@@ -1741,14 +1741,14 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {Função} postfix (@var{op})
-@deffnx {Função} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} postfix (@var{op})
+@deffnx {Fun@,{c}@~{a}o} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
 
-Operadores @code{postfix} como a variedade @code{prefix} denota funções de um
-único argumento, mas nesse caso o argumento precede uma
-ocorrência do operador na sequência de caracteres de entrada, e.g. 3!.  A
-função @code{postfix("x")} é uma função de extensão de sintaxe para declarar que @code{x}
-é um operador @code{postfix}.
+Operadores @code{postfix} como a variedade @code{prefix} denota fun@,{c}@~{o}es de um
+@'{u}nico argumento, mas nesse caso o argumento precede uma
+ocorr@^{e}ncia do operador na sequ@^{e}ncia de caracteres de entrada, e.g. 3!.  A
+fun@,{c}@~{a}o @code{postfix("x")} @'{e} uma fun@,{c}@~{a}o de extens@~{a}o de sintaxe para declarar que @code{x}
+@'{e} um operador @code{postfix}.
 
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
@@ -1759,12 +1759,12 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {Função} prefix (@var{op})
-@deffnx {Função} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} prefix (@var{op})
+@deffnx {Fun@,{c}@~{a}o} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
 
-Um operador @code{prefix} significa uma função de um argumento,
-o qual segue imediatamente uma ocorrência do operador.
-O comando @code{prefix("x")} é uma função de extensão de sintaxe para declarar que @code{x} é um
+Um operador @code{prefix} significa uma fun@,{c}@~{a}o de um argumento,
+o qual segue imediatamente uma ocorr@^{e}ncia do operador.
+O comando @code{prefix("x")} @'{e} uma fun@,{c}@~{a}o de extens@~{a}o de sintaxe para declarar que @code{x} @'{e} um
 operador @code{prefix}.
 
 Veja tamb@'{e}m @ref{Introduction to operators}.

@@ -50,18 +50,18 @@ todos os campos s@~{a}o sempre vis@'{i}veis.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@defvr {Variável global} structures
+@defvr {Vari@'{a}vel global} structures
 
 A vari@'{a}vel global @code{structures} @'{e} a lista de estruturas definidas pelo usu@'{a}rio e @'{e} criada por @code{defstruct}.
 
 @opencatbox
-@category{Estruturas} @category{Variáveis globais}
+@category{Estruturas} @category{Vari@'{a}veis globais}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Função} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
-@deffnx {Função} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+@deffn  {Fun@,{c}@~{a}o} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {Fun@,{c}@~{a}o} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
 
 Define uma estrutura, que @'{e} uma lista de campos nomeados como @var{a_1}, @dots{},
 @var{a_n} associada a um s@'{i}mbolo @var{S}.
@@ -116,8 +116,8 @@ Exemplos:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Função} new (@var{S})
-@deffnx {Função} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+@deffn  {Fun@,{c}@~{a}o} new (@var{S})
+@deffnx {Fun@,{c}@~{a}o} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
 
 A fun@,{c}@~{a}o @code{new} cria novas inst@^{a}ncias de estruturas.
 
