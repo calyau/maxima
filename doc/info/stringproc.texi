@@ -825,7 +825,8 @@ See also @code{parse_string}.
 @anchor{md5sum}
 @deffn {Function} md5sum (@var{string})
 
-Returns the md5 checksum of a @var{string} as a string. To parse the returned 
+Returns the md5 checksum of a @var{string}. 
+The return value is a string to guarantee 32 hex characters. To parse the returned 
 value into an integer please set the input base to 16 and prefix the string by zero.
 
 Example:
@@ -922,6 +923,32 @@ Like @code{sequal} but ignores case.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sha1sum}
+@deffn {Function} sha1sum (@var{string})
+
+Returns the sha1 fingerprint of a @var{string}. 
+The return value is a string to guarantee 48 hex characters. To parse the returned 
+value into an integer please set the input base to 16 and prefix the string by zero.
+
+Example:
+
+@example
+(%i1) string : sha1sum("foo bar baz");
+(%o1)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)              0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} simplode (@var{list})  
 @deffnx {Function} simplode (@var{list}, @var{delim})  
 @code{simplode} takes a list of expressions and concatenates them into a string.

@@ -40,7 +40,7 @@ de express@~{o}es complexas pode usualmente ser acompanhada do uso das fun@,{c}@
 @code{carg}.
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 
 
@@ -86,7 +86,7 @@ a vari@'{a}vel @mref{promote_float_to_bigfloat}.
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloat}
-@deffn {Function} bfloat (@var{expr})
+@deffn {Fun@,{c}@~{a}o} bfloat (@var{expr})
 
 Converte todos os n@'{u}meros e fun@,{c}@~{o}es de n@'{u}meros em @var{expr} para o formato de grandes n@'{u}meros em ponto flutuante.
 O n@'{u}mero de d@'{i}gitos significativos nos bigfloats resultantes @'{e} especificado pela
@@ -98,24 +98,24 @@ um n@'{u}mero em ponto flutuante @'{e} convertido em um n@'{u}mero bigfloat (uma
 isso pode levar a perda de precis@~{a}o).
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{bfloatp}
-@deffn {Function} bfloatp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} bfloatp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um n@'{u}mero bigfloat, de outra forma retorna @code{false}.
 
 @opencatbox
-@category{Numerical evaluation} @category{Predicate functions}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c --- 03.11.2011 --------------------------------------------------------------
 @anchor{bftorat}
-@defvr {Option variable} bftorat
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} bftorat
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{bftorat} controla a convers@~{a}o de bfloats para n@'{u}meros racionais.  Quando
@@ -146,13 +146,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{bftrunc}
-@defvr {Option variable} bftrunc
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} bftrunc
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{bftrunc} faz com que zeros @`{a} direita em n@'{u}meros bigfloat diferentes de zero n@~{a}o sejam
@@ -161,26 +161,26 @@ mostrados.  Dessa forma, se @code{bftrunc} for @code{false}, @code{bfloat (1)}
 @code{1.0B0}.
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{evenp}
-@deffn {Function} evenp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} evenp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um inteiro para.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} @'{e} retornado em todos os outros casos.
 
 @opencatbox
-@category{Predicate functions}
+@category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{float}
-@deffn {Function} float (@var{expr})
+@deffn {Fun@,{c}@~{a}o} float (@var{expr})
 
 Converte n@'{u}meros inteiros, n@'{u}meros racionais e bigfloats em @var{expr} para n@'{u}meros em
 ponto flutuante.  Da mesma forma um @mrefcomma{evflag}
@@ -189,13 +189,13 @@ n@'{u}meros racionais n@~{a}o inteiros e n@'{u}meros bigfloat sejam convertidos 
 ponto flutuante.
 
 @opencatbox
-@category{Numerical evaluation} @category{Evaluation flags}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Sinalizadores de avalia@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
 @anchor{float2bf}
-@defvr {Option variable} float2bf
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} float2bf
 Valor padr@~{a}o: @code{true}
  
 Quando @code{float2bf} for @code{false}, uma mensagem de alerta @'{e} mostrada sempre que
@@ -203,25 +203,25 @@ um n@'{u}mero em ponto flutuante @'{e} convertido em um n@'{u}mero bigfloat (uma
 isso pode levar a perda de precis@~{a}o).
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{floatnump}
-@deffn {Function} floatnump (@var{expr})
+@deffn {Fun@,{c}@~{a}o} floatnump (@var{expr})
 
 Retorna @code{true} se @var{expr} for um n@'{u}mero em ponto flutuante, de outra forma retorna
 @code{false}.
 
 @opencatbox
-@category{Numerical evaluation} @category{Predicate functions}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{fpprec}
-@defvr {Option variable} fpprec
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} fpprec
 Valor padr@~{a}o: 16
 
 @code{fpprec} @'{e} o n@'{u}mero de d@'{i}gitos significativos para opera@,{c}@~{o}es aritm@'{e}ticas usando n@'{u}meros
@@ -232,13 +232,13 @@ Veja tamb@'{e}m @mref{bfloat}
 e @mrefdot{fpprintprec}
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{fpprintprec}
-@defvr {Option variable} fpprintprec
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} fpprintprec
 Valor padr@~{a}o: 0
 
 @code{fpprintprec} @'{e} o n@'{u}mero de d@'{i}gitos a serem mostrados na exibi@,{c}@~{a}o de n@'{u}meros
@@ -257,20 +257,20 @@ De outra forma, @code{fpprintprec} @'{e} 0, ou maior que @code{fpprec},
 e o n@'{u}mero de d@'{i}gitos mostrados @'{e} igual a @code{fpprec}.
 
 Para ambos floats comuns e bigfloats,
-zeros iniciais são suprimidos.
-O número de dígitos atuais mostrado é menor que @code{fpprintprec}
-se ouverem dígitos zeros iniciais.
+zeros iniciais s@~{a}o suprimidos.
+O n@'{u}mero de d@'{i}gitos atuais mostrado @'{e} menor que @code{fpprintprec}
+se ouverem d@'{i}gitos zeros iniciais.
 
 @code{fpprintprec} n@~{a}o pode ser 1.
 
 @opencatbox
-@category{Numerical evaluation} @category{Display flags and variables}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{integerp}
-@deffn {Function} integerp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} integerp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um inteiro num@'{e}rico literal, de outra forma retorna
 @code{false}.
@@ -302,13 +302,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Predicate functions}
+@category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{m1pbranch}
-@defvr {Option variable} m1pbranch
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} m1pbranch
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{m1pbranch} @'{e} o ramo principal para @code{-1} elevado a um expoente.
@@ -329,23 +329,23 @@ m1pbranch:false          m1pbranch:true
 @end example
 
 @opencatbox
-@category{Expressions} @category{Global flags}
+@category{Express@~{o}es} @category{Global flags}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} nonnegintegerp (@var{n})
+@deffn {Fun@,{c}@~{a}o} nonnegintegerp (@var{n})
 
 Retorna @code{true} se e somente se @code{@var{n} >= 0} e @var{n} for um inteiro.
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Pacote linearalgebra} @category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{numberp}
-@deffn {Function} numberp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} numberp (@var{expr})
 
 Retorna @code{true} se @var{expr} for um inteiro literal, n@'{u}mero racional, 
 n@'{u}mero em ponto flutuante, ou bigfloat, de outra forma retorna @code{false}.
@@ -376,7 +376,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Predicate functions}
+@category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
@@ -387,7 +387,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{numer}
-@defvr {Option variable} numer
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} numer
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que algumas fun@,{c}@~{o}es matem@'{a}ticas (incluindo exponencia@,{c}@~{a}o)
 com argumentos num@'{e}ricos sejam tratadas como n@'{u}meros em ponto flutuante.  A vari@'{a}vel de op@,{c}@~{a}o @code{numer} faz com que
@@ -413,13 +413,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Numerical evaluation} @category{Evaluation flags}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Sinalizadores de avalia@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{numer_pbranch}
-@defvr {Option variable} numer_pbranch
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} numer_pbranch
 Valor padr@~{a}o: @code{false}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{numer_pbranch} controla a avalia@,{c}@~{a}o num@'{e}rica da 
@@ -457,7 +457,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
@@ -466,7 +466,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{numerval}
-@deffn {Function} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
 
 Declara as vari@'{a}veis @code{x_1}, @dots{}, @var{x_n} como tendo
 valores num@'{e}ricos iguas a @code{expr_1}, @dots{}, @code{expr_n}.
@@ -478,26 +478,26 @@ As express@~{o}es @code{expr_1}, @dots{}, @code{expr_n} podem ser quaisquer expr
 n@~{a}o necess@'{a}riamente num@'{e}ricas.
 
 @opencatbox
-@category{Declarations and inferences} @category{Numerical evaluation}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{oddp}
-@deffn {Function} oddp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} oddp (@var{expr})
 
 @'{e} @code{true} se @var{expr} for um inteiro @'{i}mpar.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} @'{e} retornado em todos os outros casos.
 
 @opencatbox
-@category{Predicate functions}
+@category{Fun@,{c}@~{o}es predicado}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{promote_float_to_bigfloat}
-@defvr {Option variable} promote_float_to_bigfloat
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} promote_float_to_bigfloat
 Valor padr@~{a}o: @code{true}
 
 Quando @code{promote_float_to_bigfloat} for @code{true}, o resultado de qualquer
@@ -513,13 +513,13 @@ ponto flutuante. Para desabilitar esse comportamento, ajuste
 @code{promote_float_to_bigfloat} para @code{false}.
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end defvr
 
 @c --- 03.11.2011 --------------------------------------------------------------
 @anchor{ratepsilon}
-@defvr {Option variable} ratepsilon
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratepsilon
 Valor padr@~{a}o: @code{2.0e-15}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{ratepsilon} @'{e} a toler@^{a}ncia usada na convers@~{a}o
@@ -528,13 +528,13 @@ de n@'{u}meros em ponto flutuante em n@'{u}meros racionais, quando a vari@'{a}ve
 tiver o valor @code{false}.  Veja @code{bftorat} para um exemplo.
 
 @opencatbox
-@category{Numerical evaluation} @category{Rational expressions}
+@category{Avalia@,{c}@~{a}o num@'{e}rica} @category{Rational expressions}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{rationalize}
-@deffn {Function} rationalize (@var{expr})
+@deffn {Fun@,{c}@~{a}o} rationalize (@var{expr})
 
 Converte todos os n@'{u}meros em ponto flutuante de precis@~{a}o dupla e todos os grandes n@'{u}meros em ponto flutuante (big floats) na express@~{a}o do Maxima @var{expr} para
 seus equivalentes racionais exatos.  Se voc@^{e} n@~{a}o est@'{a} faminiarizado com a representa@,{c}@~{a}o
@@ -578,19 +578,19 @@ bin@'{a}ria.
 @end example
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Avalia@,{c}@~{a}o num@'{e}rica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ratnump}
-@deffn {Function} ratnump (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratnump (@var{expr})
 
 Retorna @code{true} se @var{expr} for um inteiro literal ou raz@~{a}o de inteiros
 literais, de outra forma retorna @code{false}.
 
 @opencatbox
-@category{Predicate functions} @category{Rational expressions}
+@category{Fun@,{c}@~{o}es predicado} @category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -680,7 +680,7 @@ this string.";
 @end example
 
 @opencatbox
-@category{Syntax}
+@category{Sintaxe}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -690,7 +690,7 @@ this string.";
 
 @c -----------------------------------------------------------------------------
 @anchor{concat}
-@deffn {Function} concat (@var{arg_1}, @var{arg_2}, @dots{})
+@deffn {Fun@,{c}@~{a}o} concat (@var{arg_1}, @var{arg_2}, @dots{})
 
 Concatena seus argumentos.  Os argumentos devem avaliar para @'{a}tomos.  O valor de
 retorno @'{e} um s@'{i}mbolo se o primeiro argumento for um s@'{i}mbolo e o valor de retorno @'{e} uma sequ@^{e}ncia de caracteres nos outros casos.
@@ -737,13 +737,13 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 @end example
 
 @opencatbox
-@category{Expressions} @category{Strings}
+@category{Express@~{o}es} @category{Sequ@^{e}ncias de caractere}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sconcat}
-@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
+@deffn {Fun@,{c}@~{a}o} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
 Concatena seus argmentos em uma sequ@^{e}ncia de caracteres.  A menos que @mrefcomma{concat}
 os argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
@@ -754,7 +754,7 @@ os argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
 @end example
 
 @opencatbox
-@category{Expressions} @category{Strings}
+@category{Express@~{o}es} @category{Sequ@^{e}ncias de caractere}
 @closecatbox
 @end deffn
 
@@ -762,7 +762,7 @@ os argumentos @i{n@~{a}o} precisem ser @'{a}tomos.
 
 @c -----------------------------------------------------------------------------
 @anchor{string}
-@deffn {Function} string (@var{expr})
+@deffn {Fun@,{c}@~{a}o} string (@var{expr})
 
 Converte @code{expr} para a nota@,{c}@~{a}o linear do Maxima como se @code{expr} tivesse sido
 digitada.
@@ -771,7 +771,7 @@ O valor de retorno de @code{string} @'{e} uma sequ@^{e}ncia de caracteres, e n@~
 c@'{a}lculo.
 
 @opencatbox
-@category{Strings}
+@category{Sequ@^{e}ncias de caractere}
 @closecatbox
 @end deffn
 
@@ -779,7 +779,7 @@ c@'{a}lculo.
 
 @c -----------------------------------------------------------------------------
 @anchor{stringdisp}
-@defvr {Option variable} stringdisp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} stringdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{stringdisp} for @code{true}, sequ@^{e}ncias de caractere s@~{a}o mostras entre
@@ -813,7 +813,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Display flags and variables}
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
 @closecatbox
 @end defvr
 

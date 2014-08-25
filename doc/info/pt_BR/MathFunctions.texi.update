@@ -18,7 +18,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{abs}
-@deffn {Function} abs (@var{z})
+@deffn {Fun@,{c}@~{a}o} abs (@var{z})
 
 A fun@,{c}@~{a}o @code{abs} representa a fun@,{c}@~{a}o de valor absoluto da matem@'{a}tica e
 trabalha para ambos os valores num@'{e}ricos e simb@'{o}licos. Se o argumento, @var{z}, for um
@@ -112,13 +112,13 @@ Laplace de @code{abs}: veja @mrefdot{laplace}
 @end example
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ceiling}
-@deffn {Function} ceiling (@var{x})
+@deffn {Fun@,{c}@~{a}o} ceiling (@var{x})
 
 Quando @var{x} for um n@'{u}mero real, retorna o menor inteiro que
 @'{e} maior que ou igual a @var{x}.
@@ -158,7 +158,7 @@ $$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
-A função @code{ceiling} distribui sobre listas, matrizes e equações.
+A fun@,{c}@~{a}o @code{ceiling} distribui sobre listas, matrizes e equa@,{c}@~{o}es.
 Veja @mrefdot{distribute_over}
 
 Finalmente, para todas as entradas que forem claramente complexas, @code{ceiling} retorna 
@@ -235,26 +235,26 @@ Exemplo de uso:
 @end example
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{entier}
-@deffn {Function} entier (@var{x})
+@deffn {Fun@,{c}@~{a}o} entier (@var{x})
 
 Retorna o maior inteiro menor que ou igual a @var{x} onde @var{x} @'{e}
 num@'{e}rico.  A fun@,{c}@~{a}o @mref{fix} (como em @code{fixnum}) @'{e} um sin@^{o}nimo de @code{entier}, de forma que
 @code{fix(@var{x})} significa precisamente a mesma coisa.
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{floor}
-@deffn {Function} floor (@var{x})
+@deffn {Fun@,{c}@~{a}o} floor (@var{x})
 
 Quando @var{x} for um n@'{u}mero real, retorna o maior inteiro que @'{e} menor que ou
 igual a @var{x}.
@@ -294,7 +294,7 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-A função @code{floor} distribui sobre listas, matrizes e equações.
+A fun@,{c}@~{a}o @code{floor} distribui sobre listas, matrizes e equa@,{c}@~{o}es.
 Veja @mrefdot{distribute_over}
 
 Finalmente, para todas as entradas que forem claramente complexas, @code{floor} retorna 
@@ -318,50 +318,50 @@ podem usar essa informa@,{c}@~{a}o, por exemplo:
 @end example
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{fix}
-@deffn {Function} fix (@var{x})
+@deffn {Fun@,{c}@~{a}o} fix (@var{x})
 
 Um sin@^{o}nimo para @code{entier (@var{x})}.
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{lmax}
-@deffn {Function} lmax (@var{L})
+@deffn {Fun@,{c}@~{a}o} lmax (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.
 Quando @var{L} n@~{a}o for uma lista ou um conjunto, sinaliza um erro.
 Veja tamb@'{e}m @mref{lmin} e @mrefdot{max}
 
 @opencatbox
-@category{Mathematical functions} @category{Lists} @category{Sets}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas} @category{Listas} @category{Sets}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{lmin}
-@deffn {Function} lmin (@var{L})
+@deffn {Fun@,{c}@~{a}o} lmin (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}.
 Quando @var{L} n@~{a}o for uma lista ou um conjunto, sinaliza um erro.
 Veja tamb@'{e}m @mref{lmax} e @mrefdot{min}
 
 @opencatbox
-@category{Mathematical functions} @category{Lists} @category{Sets}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas} @category{Listas} @category{Sets}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{max}
-@deffn {Function} max (@var{x_1}, @dots{}, @var{x_n})
+@deffn {Fun@,{c}@~{a}o} max (@var{x_1}, @dots{}, @var{x_n})
 
 Retorna a valor simplificado para o maior valor entre os membros de @var{x_1} a
 @var{x_n}.  Quando @code{get (trylevel, maxmin)}, for 2 ou maior, a fun@,{c}@~{a}o @code{max}
@@ -374,13 +374,13 @@ para 2, use @code{put (trylevel, 2, maxmin)}.
 Veja tamb@'{e}m @mref{min} e @mrefdot{lmax}
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{min}
-@deffn {Function} min (@var{x_1}, @dots{}, @var{x_n})
+@deffn {Fun@,{c}@~{a}o} min (@var{x_1}, @dots{}, @var{x_n})
 
 Retorna um valor simplificado para o menor valor entre os membros de @code{x_1} a
 @code{x_n}.  Quando @code{get (trylevel, maxmin)}, for 2 ou maior, a fun@,{c}@~{a}o @code{min}
@@ -393,29 +393,29 @@ para 2, use @code{put (trylevel, 2, maxmin)}.
 Veja tamb@'{e}m @mref{max} e @mrefdot{lmin}
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{round}
-@deffn {Function} round (@var{x})
+@deffn {Fun@,{c}@~{a}o} round (@var{x})
 
 Quando @var{x} for um n@'{u}mero real, retorna o inteiro mais pr@'{o}ximo a @var{x}.
 Multiplos de 1/2 s@~{a}o arredonda the nearest even integer.  Evaluation of
 @var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
-A função @code{round} distribui sobre listas, matrizes e equações.
+A fun@,{c}@~{a}o @code{round} distribui sobre listas, matrizes e equa@,{c}@~{o}es.
 Veja @mrefdot{distribute_over}
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{signum}
-@deffn {Function} signum (@var{x})
+@deffn {Fun@,{c}@~{a}o} signum (@var{x})
 
 Para n@'{u}meros reais e complexos @var{x}, a fun@,{c}@~{a}o @code{signum} retorna
 0 se @var{x} for zero; para uma entrada @var{x} n@~{a}o nula, a fun@,{c}@~{a}o @code{signum}
@@ -432,23 +432,23 @@ A fun@,{c}@~{a}o @code{signum} distribui sobre uma lista, uma matriz, ou sobre u
 equa@,{c}@~{a}o.  Veja @mrefdot{distribute_over}
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{truncate}
-@deffn {Function} truncate (@var{x})
+@deffn {Fun@,{c}@~{a}o} truncate (@var{x})
 
-Quando @var{x} for um número real, retorna o inteiro mais próximo a @var{x} não
-maior que (em valor absoluto) @var{x}.  Avaliação de @var{x} é similar
+Quando @var{x} for um n@'{u}mero real, retorna o inteiro mais pr@'{o}ximo a @var{x} n@~{a}o
+maior que (em valor absoluto) @var{x}.  Avalia@,{c}@~{a}o de @var{x} @'{e} similar
 a @mref{floor} e a @mrefdot{ceiling}
 
-A função @code{truncate} distribui sobre listas, matrizes e equações.
+A fun@,{c}@~{a}o @code{truncate} distribui sobre listas, matrizes e equa@,{c}@~{o}es.
 Veja @mrefdot{distribute_over}
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
@@ -459,7 +459,7 @@ Veja @mrefdot{distribute_over}
 
 @c -----------------------------------------------------------------------------
 @anchor{cabs}
-@deffn {Function} cabs (@var{expr})
+@deffn {Fun@,{c}@~{a}o} cabs (@var{expr})
 
 Calcula o valor absoluto de uma express@~{a}o representando um n@'{u}mero
 complexo.  Diferentemente da fun@,{c}@~{a}o @mrefcomma{abs} a fun@,{c}@~{a}o @code{cabs} sempre
@@ -530,13 +530,13 @@ exemplo para @mrefdot{bessel_j}
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{carg}
-@deffn {Function} carg (@var{z})
+@deffn {Fun@,{c}@~{a}o} carg (@var{z})
 
 Retorna o argumento de @var{z}.  O argumento @'{e} um @^{a}ngulo
 @code{theta} no intervalo @code{(-%pi, %pi]} tal que @code{r exp (theta %i) = @var{z}}
@@ -578,13 +578,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{conjugate}
-@deffn {Function} conjugate (@var{x})
+@deffn {Fun@,{c}@~{a}o} conjugate (@var{x})
 
 Retorna o conjugado de @var{x}.
 
@@ -614,13 +614,13 @@ Retorna o conjugado de @var{x}.
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{imagpart}
-@deffn {Function} imagpart (@var{expr})
+@deffn {Fun@,{c}@~{a}o} imagpart (@var{expr})
 
 Retorna a parte imagin@'{a}ria da express@~{a}o @var{expr}.
 
@@ -651,14 +651,14 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
 @anchor{polarform}
-@deffn {Function} polarform (@var{expr})
+@deffn {Fun@,{c}@~{a}o} polarform (@var{expr})
 
 Retorna uma express@~{a}o @code{r %e^(%i theta)} equivalente a @var{expr},
 tal que @code{r} e @code{theta} sejam reais.
@@ -685,13 +685,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Complex variables} @category{Exponential and logarithm functions}
+@category{Vari@'{a}veis complexas} @category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{realpart}
-@deffn {Function} realpart (@var{expr})
+@deffn {Fun@,{c}@~{a}o} realpart (@var{expr})
 
 Retorna a parte real de @var{expr}.  As fun@,{c}@~{o}es @code{realpart} e @mref{imagpart} ir@~{a}o
 trabalhar sobre express@~{o}es envolvendo fun@,{c}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas,
@@ -717,13 +717,13 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{rectform}
-@deffn {Function} rectform (@var{expr})
+@deffn {Fun@,{c}@~{a}o} rectform (@var{expr})
 
 Retorna uma express@~{a}o @code{a + b %i} equivalente a @var{expr},
 tal que @var{a} e @var{b} sejam reais.
@@ -745,7 +745,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Complex variables}
+@category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
@@ -756,7 +756,7 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{!!}
-@deffn {Operator} !!
+@deffn {Operador} !!
 @ifinfo
 @fnindex Duplo fatorial
 @end ifinfo
@@ -780,13 +780,13 @@ retorna uma forma substantiva @code{genfact (n, n/2, 2)}.
 @c -- MENTION THAT? OR TOO MUCH DETAIL ???
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Operators}
+@category{Gamma and factorial functions} @category{Operadores}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{binomial}
-@deffn {Function} binomial (@var{x}, @var{y})
+@deffn {Fun@,{c}@~{a}o} binomial (@var{x}, @var{y})
 
 O coeficiente binaomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
 Se @var{x} e @var{y} forem inteiros, ent@~{a}o o valor num@'{e}rico do coeficiente
@@ -826,7 +826,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{factcomb}
-@deffn {Function} factcomb (@var{expr})
+@deffn {Fun@,{c}@~{a}o} factcomb (@var{expr})
 
 Tenta combinar os coeficientes de fatoriais em @var{expr}
 com os fatoriais em si mesmos por convers@~{a}o, por exemplo, @code{(n + 1)*n!}
@@ -870,8 +870,8 @@ Exemplo:
 @c -----------------------------------------------------------------------------
 @anchor{!}
 @anchor{factorial}
-@deffn  {Function} factorial
-@deffnx {Operator} !
+@deffn  {Fun@,{c}@~{a}o} factorial
+@deffnx {Operador} !
 
 Representa a fun@,{c}@~{a}o fatorial.  Maxima trata @code{factorial (@var{x})}
 da mesma forma que @code{@var{x}!}.
@@ -1001,7 +1001,7 @@ simplifica@,{c}@~{a}o de express@~{o}es com a fun@,{c}@~{a}o fatorial.
 @end example
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Operators}
+@category{Gamma and factorial functions} @category{Operadores}
 @closecatbox
 @end deffn
 
@@ -1009,7 +1009,7 @@ simplifica@,{c}@~{a}o de express@~{o}es com a fun@,{c}@~{a}o fatorial.
 
 @c -----------------------------------------------------------------------------
 @anchor{factlim}
-@defvr {Option variable} factlim
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} factlim
 Valor padr@~{a}o: -1
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{factlim} especifica o maior fatorial que @'{e}
@@ -1022,7 +1022,7 @@ automaticamente expandido.  Se for -1 ent@~{a}o qualquer inteiro @'{e} expandido
 
 @c -----------------------------------------------------------------------------
 @anchor{factorial_expand}
-@defvr {Option variable} factorial_expand
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} factorial_expand
 Valor padr@~{a}o: false
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{factorial_expand} controla a simplifica@,{c}@~{a}o de 
@@ -1038,7 +1038,7 @@ Veja @mref{factorial} para um exemplo.
 
 @c -----------------------------------------------------------------------------
 @anchor{genfact}
-@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
+@deffn {Fun@,{c}@~{a}o} genfact (@var{x}, @var{y}, @var{z})
 
 Retorna o fatorial generalizado @footnote{Nota do tradutor: a fun@,{c}@~{a}o gama.}, definido como
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Dessa forma, quando @var{x} for inteiro,
@@ -1051,7 +1051,7 @@ Retorna o fatorial generalizado @footnote{Nota do tradutor: a fun@,{c}@~{a}o gam
 
 @c -----------------------------------------------------------------------------
 @anchor{minfactorial}
-@deffn {Function} minfactorial (@var{expr})
+@deffn {Fun@,{c}@~{a}o} minfactorial (@var{expr})
 
 Examina @var{expr} @`{a} procura de ocorr@^{e}ncias de dois fatoriais
 que diferem entre s@'{i} de uma quantidade inteira.
@@ -1081,7 +1081,7 @@ que diferem entre s@'{i} de uma quantidade inteira.
 
 @c -----------------------------------------------------------------------------
 @anchor{sumsplitfact}
-@defvr {Option variable} sumsplitfact
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} sumsplitfact
 Valor padr@~{a}o: @code{true}
 
 Quando @code{sumsplitfact} for @code{false},
@@ -1131,7 +1131,7 @@ Quando @code{sumsplitfact} for @code{false},
 
 @c -----------------------------------------------------------------------------
 @anchor{%e_to_numlog}
-@defvr {Option variable} %e_to_numlog
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %e_to_numlog
 Valor padr@~{a}o: @code{false}
 
 Quando @code{true}, @code{r} algum n@'{u}mero racional, e @code{x} slguma express@~{a}o,
@@ -1141,13 +1141,13 @@ complicadas transforma@,{c}@~{o}es desse mesmo tipo tamb@'{e}m.  O comando
 @code{logcontract} "contrai" express@~{o}es contendo @code{log}.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%emode}
-@defvr {Option variable} %emode
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %emode
 Valor padr@~{a}o: @code{true}
 
 Quando @code{%emode} for @code{true}, @code{%e^(%pi %i x)} @'{e} simplificado como
@@ -1200,13 +1200,13 @@ Quando @code{%emode} for @code{false}, nenhuma simplifica@,{c}@~{a}o especial de
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%enumer}
-@defvr {Option variable} %enumer
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %enumer
 Valor padr@~{a}o: @code{false}
 
 Quando @code{%enumer} for @code{true}, @code{%e} @'{e} substitu@'{i}do por seu valor num@'{e}rico
@@ -1251,7 +1251,7 @@ Veja tamb@'{e}m @mref{ev} e @mrefdot{numer}
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Evaluation flags}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Sinalizadores de avalia@,{c}@~{a}o}
 @closecatbox
 @end defvr
 
@@ -1259,7 +1259,7 @@ Veja tamb@'{e}m @mref{ev} e @mrefdot{numer}
 
 @c -----------------------------------------------------------------------------
 @anchor{exp}
-@deffn {Function} exp (@var{x})
+@deffn {Fun@,{c}@~{a}o} exp (@var{x})
 
 Representa a fun@,{c}@~{a}o exponencial.  Inst@^{a}ncias de @code{exp (@var{x})} na entrada
 s@~{a}o simplificadas para @code{%e^@var{x}}; @code{exp} n@~{a}o aparece em express@~{o}es
@@ -1295,14 +1295,14 @@ A vari@'{a}vel de op@,{c}@~{a}o @code{%enumer}, quando @code{true} faz com que @
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica}
 @closecatbox
 @end deffn
 
 
 @c -----------------------------------------------------------------------------
 @anchor{li}
-@deffn {Function} li [@var{s}] (@var{z})
+@deffn {Fun@,{c}@~{a}o} li [@var{s}] (@var{z})
 
 Representa o polilogaritmo de ordem @var{s} e argumento @var{z},
 definido por meio de s@'{e}ries infinitas
@@ -1384,13 +1384,13 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{log}
-@deffn {Function} log (@var{x})
+@deffn {Fun@,{c}@~{a}o} log (@var{x})
 
 Representa o logaritmo natural (base @math{e}) de @var{x}.
 
@@ -1425,13 +1425,13 @@ e transforma@,{c}@~{o}es mais complicadas desse tipo tambẽm. O comando
 @end table
 
 @opencatbox
-@category{Exponential and logarithm functions}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{logabs}
-@defvr {Option variable} logabs
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} logabs
 Valor padr@~{a}o: @code{false}
 
 Ao fazer integra@,{c}@~{a}o indefinida onde s@~{a}o gerados logaritmos, e.g.
@@ -1442,7 +1442,7 @@ se @code{logabs} for @code{true}, mas tamb@'{e}m @'{e} dada em termos de @code{l
 extremidades @'{e} muitas vezes necess@'{a}ria.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Integral calculus} @category{Global flags}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Integral calculus} @category{Global flags}
 @closecatbox
 @end defvr
 
@@ -1450,8 +1450,8 @@ extremidades @'{e} muitas vezes necess@'{a}ria.
 
 @c -----------------------------------------------------------------------------
 @anchor{logarc}
-@defvr  {Option variable} logarc
-@defvrx {Function} logarc (@var{expr})
+@defvr  {Vari@'{a}vel de op@,{c}@~{a}o} logarc
+@defvrx {Fun@,{c}@~{a}o} logarc (@var{expr})
 
 Quando a vari@'{a}vel global @code{logarc} for @code{true},
 fun@,{c}@~{o}es circulares inversas e hiperb@'{o}licas inversas s@~{a}o substitu@'{i}das por
@@ -1463,13 +1463,13 @@ uma express@~{a}o @var{expr}
 sem ajustar a vari@'{a}vel global @code{logarc}.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Simplification functions}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables} @category{Simplification functions}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{logconcoeffp}
-@defvr {Option variable} logconcoeffp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} logconcoeffp
 Valor padr@~{a}o: @code{false}
 
 Controla quais coeficientes s@~{a}o
@@ -1480,13 +1480,13 @@ logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  Ent@~{a}o
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{logcontract}
-@deffn {Function} logcontract (@var{expr})
+@deffn {Fun@,{c}@~{a}o} logcontract (@var{expr})
 
 Recursivamente examina a express@~{a}o @var{expr}, transformando
 subexpress@~{o}es da forma @code{a1*log(b1) + a2*log(b2) + c} em
@@ -1514,13 +1514,13 @@ logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  Ent@~{a}o
 @code{logcontract(1/2*log(x));} fornecer@'{a} @code{log(sqrt(x))}.
 
 @opencatbox
-@category{Exponential and logarithm functions}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{logexpand}
-@defvr {Option variable} logexpand
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} logexpand
 Valor padr@~{a}o: @code{true}
 
 Se @code{true}, que @'{e} o valor padr@~{a}o, faz com que @code{log(a^b)} torne-se
@@ -1531,51 +1531,51 @@ tambẽm simplificar@'{a} para @code{log(a)-log(b)} para n@'{u}meros racionais @
 for ajustada para @code{false}, todas essas simplifica@,{c}@~{o}es ser@~{a}o desabilitadas.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{lognegint}
-@defvr {Option variable} lognegint
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} lognegint
 Valor padr@~{a}o: @code{false}
 
 Se @code{true} implementa a regra
 @code{log(-n)} -> @code{log(n)+%i*%pi} para @code{n} um inteiro positivo.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{logsimp}
-@defvr {Option variable} logsimp
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} logsimp
 Valor padr@~{a}o: @code{true}
 
 Se @code{false} nenhuma simplifica@,{c}@~{a}o de @code{%e} para uma
 potencia contendo @code{log}'s @'{e} realizada.
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{plog}
-@deffn {Function} plog (@var{x})
+@deffn {Fun@,{c}@~{a}o} plog (@var{x})
 
 Representa o ramo principal do logaritmo natural
 complexo com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Complex variables}
+@category{Fun@,{c}@~{o}es exponecial e logar@'{i}tmica} @category{Vari@'{a}veis complexas}
 @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sqrt}
-@deffn {Function} sqrt (@var{x})
+@deffn {Fun@,{c}@~{a}o} sqrt (@var{x})
 
 A ra@'{i}z quadrada de @var{x}.  @'{E} representada internamente por
 @code{@var{x}^(1/2)}.  Veja tamb@'{e}m @code{rootscontract}.
@@ -1586,7 +1586,7 @@ que s@~{a}o pot@^{e}ncias de n sejam empurados para fora do radical, e.g.
 @code{true}.
 
 @opencatbox
-@category{Mathematical functions}
+@category{Fun@,{c}@~{o}es matem@'{a}ticas}
 @closecatbox
 @end deffn
 
@@ -1633,7 +1633,7 @@ para detalhes.
 
 @c -----------------------------------------------------------------------------
 @anchor{%piargs}
-@defvr {Option variable} %piargs
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %piargs
 Valor padr@~{a}o: @code{true}
 
 Quando @code{%piargs} for @code{true},
@@ -1734,7 +1734,7 @@ uma vari@'{a}vel inteira.
 
 @c -----------------------------------------------------------------------------
 @anchor{%iargs}
-@defvr {Option variable} %iargs
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %iargs
 Valor padr@~{a}o: @code{true}
 
 Quando @code{%iargs} for @code{true},
@@ -1796,7 +1796,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acos (@var{x})
+@deffn {Fun@,{c}@~{a}o} acos (@var{x})
 
 -- Arc Cosine.
 
@@ -1806,7 +1806,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acosh (@var{x})
+@deffn {Fun@,{c}@~{a}o} acosh (@var{x})
 
 -- Arco Cosseno Hiperb@'{o}lico.
 
@@ -1816,7 +1816,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acot (@var{x})
+@deffn {Fun@,{c}@~{a}o} acot (@var{x})
 
 -- Arc Cotangent.
 
@@ -1826,7 +1826,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acoth (@var{x})
+@deffn {Fun@,{c}@~{a}o} acoth (@var{x})
 
 -- Arco Cotangente Hiperb@'{o}lico.
 
@@ -1836,7 +1836,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acsc (@var{x})
+@deffn {Fun@,{c}@~{a}o} acsc (@var{x})
 
 -- Arc Cosecant.
 
@@ -1846,7 +1846,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} acsch (@var{x})
+@deffn {Fun@,{c}@~{a}o} acsch (@var{x})
 
 -- Arco Cossecante Hiperb@'{o}lico.
 
@@ -1856,7 +1856,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asec (@var{x})
+@deffn {Fun@,{c}@~{a}o} asec (@var{x})
 
 -- Arco Secante.
 
@@ -1866,7 +1866,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asech (@var{x})
+@deffn {Fun@,{c}@~{a}o} asech (@var{x})
 
 -- Arco Secante Hiperb@'{o}lico.
 
@@ -1876,7 +1876,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asin (@var{x})
+@deffn {Fun@,{c}@~{a}o} asin (@var{x})
 
 -- Arco Seno.
 
@@ -1886,7 +1886,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} asinh (@var{x})
+@deffn {Fun@,{c}@~{a}o} asinh (@var{x})
 
 -- Arco Seno Hiperb@'{o}lico.
 
@@ -1896,7 +1896,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} atan (@var{x})
+@deffn {Fun@,{c}@~{a}o} atan (@var{x})
 
 -- Arco Tangente.
 
@@ -1907,7 +1907,7 @@ Mesmo quando o argumento for demonstradamente real, a simplifica@,{c}@~{a}o @'{e
 
 @c -----------------------------------------------------------------------------
 @anchor{atan2}
-@deffn {Function} atan2 (@var{y}, @var{x})
+@deffn {Fun@,{c}@~{a}o} atan2 (@var{y}, @var{x})
 
 -- retorna o valor de @code{atan(@var{y}/@var{x})} no intervalo de @code{-%pi}
 a @code{%pi}.
@@ -1918,7 +1918,7 @@ a @code{%pi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} atanh (@var{x})
+@deffn {Fun@,{c}@~{a}o} atanh (@var{x})
 
 -- Arco Tangente Hiperb@'{o}lico.
 
@@ -1931,7 +1931,7 @@ a @code{%pi}.
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
 @c -----------------------------------------------------------------------------
-@defvr {Package} atrig1
+@defvr {Pacote} atrig1
 
 O pacote @code{atrig1} cont@'{e}m muitas regras adicionais de simplifica@,{c}@~{a}o
 para fun@,{c}@~{o}es trigonom@'{e}tricas inversas.  Juntamente com regras
@@ -1946,7 +1946,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cos (@var{x})
+@deffn {Fun@,{c}@~{a}o} cos (@var{x})
 
 -- Cosine.
 
@@ -1956,7 +1956,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cosh (@var{x})
+@deffn {Fun@,{c}@~{a}o} cosh (@var{x})
 
 -- Cosseno Hiperb@'{o}lico.
 
@@ -1966,7 +1966,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cot (@var{x})
+@deffn {Fun@,{c}@~{a}o} cot (@var{x})
 
 -- Cotangente.
 
@@ -1976,7 +1976,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} coth (@var{x})
+@deffn {Fun@,{c}@~{a}o} coth (@var{x})
 
 -- Cotangente Hiperb@'{o}lica.
 
@@ -1986,7 +1986,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} csc (@var{x})
+@deffn {Fun@,{c}@~{a}o} csc (@var{x})
 
 -- Cossecante.
 
@@ -1996,7 +1996,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} csch (@var{x})
+@deffn {Fun@,{c}@~{a}o} csch (@var{x})
 
 -- Cossecante Hiperb@'{o}lica.
 
@@ -2007,7 +2007,7 @@ Fa@,{c}a @code{load(atrig1);} para usar o pacote @code{atrig1}.
 
 @c -----------------------------------------------------------------------------
 @anchor{halfangles}
-@defvr {Option variable} halfangles
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} halfangles
 Valor padr@~{a}o: @code{false}
 
 Quando @code{halfangles} for @code{true}, fun@,{c}@~{o}es trigonom@'{e}tricas de argumentos 
@@ -2083,7 +2083,7 @@ Exemplos:
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
 @c -----------------------------------------------------------------------------
-@defvr {Package} ntrig
+@defvr {Pacote} ntrig
 
 O pacote @code{ntrig} cont@'{e}m um conjunto de regras de simplifica@,{c}@~{a}o que s@~{a}o
 usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos forem da forma
@@ -2097,7 +2097,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sec (@var{x})
+@deffn {Fun@,{c}@~{a}o} sec (@var{x})
 
 -- Secante.
 
@@ -2107,7 +2107,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sech (@var{x})
+@deffn {Fun@,{c}@~{a}o} sech (@var{x})
 
 -- Secante Hiperb@'{o}lica.
 
@@ -2118,7 +2118,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 
 @c -----------------------------------------------------------------------------
 @anchor{sin}
-@deffn {Function} sin (@var{x})
+@deffn {Fun@,{c}@~{a}o} sin (@var{x})
 
 -- Seno.
 
@@ -2128,7 +2128,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sinh (@var{x})
+@deffn {Fun@,{c}@~{a}o} sinh (@var{x})
 
 -- Seno Hiperb@'{o}lico.
 
@@ -2138,7 +2138,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} tan (@var{x})
+@deffn {Fun@,{c}@~{a}o} tan (@var{x})
 
 -- Tangente.
 
@@ -2148,7 +2148,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} tanh (@var{x})
+@deffn {Fun@,{c}@~{a}o} tanh (@var{x})
 
 -- Hyperbolic Tangent.
 
@@ -2161,7 +2161,7 @@ usadas para simplificar fun@,{c}@~{o}es trigonom@'{e}tricas cujos argumentos for
 
 @c -----------------------------------------------------------------------------
 @anchor{trigexpand}
-@deffn {Function} trigexpand (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigexpand (@var{expr})
 
 Expande fun@,{c}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas de
 somas de @^{a}ngulos de angulos m@'{u}ltiplos que ocorram em @var{expr}.  Para melhores
@@ -2212,7 +2212,7 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{trigexpandplus}
-@defvr {Option variable} trigexpandplus
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigexpandplus
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{trigexpandplus} controla a regra da "soma" para
@@ -2228,7 +2228,7 @@ comutador @code{trigexpand} for ajustado para @code{true}, expans@~{a}o de somas
 
 @c -----------------------------------------------------------------------------
 @anchor{trigexpandtimes}
-@defvr {Option variable} trigexpandtimes
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigexpandtimes
 Valor padr@~{a}o: @code{true}
 
 A vari@'{a}vel de op@,{c}@~{a}o @code{trigexpandtimes} controla a regra do "produto" para @code{trigexpand}.
@@ -2243,7 +2243,7 @@ ocorrer@~{a}o somente se @code{trigexpandtimes} for @code{true}.
 
 @c -----------------------------------------------------------------------------
 @anchor{triginverses}
-@defvr {Option variable} triginverses
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} triginverses
 Valor padr@~{a}o: @code{true}
 
 @code{triginverses} controla a simplifica@,{c}@~{a}o da
@@ -2268,8 +2268,8 @@ s@~{a}o desabilitadas.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigreduce}
-@deffn  {Function} trigreduce (@var{expr}, @var{x})
-@deffnx {Function} trigreduce (@var{expr})
+@deffn  {Fun@,{c}@~{a}o} trigreduce (@var{expr}, @var{x})
+@deffnx {Fun@,{c}@~{a}o} trigreduce (@var{expr})
 
 Combina produtos e pot@^{e}ncias de senos e cossenos
 trigonom@'{e}tricos hiperb@'{o}licos de @var{x} naqueles de m@'{u}ltiplos de @var{x}.
@@ -2320,7 +2320,7 @@ Veja tamb@'{e}m @code{poissimp}.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigsign}
-@defvr {Option variable} trigsign
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigsign
 Valor padr@~{a}o: @code{true}
 
 Quando @code{trigsign} for @code{true}, permite simplifica@,{c}@~{a}o de argumentos
@@ -2334,7 +2334,7 @@ negativos em fun@,{c}@~{o}es trigonom@'{e}tricas.  E.g., @code{sin(-x)} tornar-s
 
 @c -----------------------------------------------------------------------------
 @anchor{trigsimp}
-@deffn {Function} trigsimp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigsimp (@var{expr})
 
 @iftex
 Emprega as identidades
@@ -2485,7 +2485,7 @@ sin(x) + -- cos(x) sec(x) + --- cos(x)
 
 @c -----------------------------------------------------------------------------
 @anchor{trigrat}
-@deffn {Function} trigrat (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigrat (@var{expr})
 
 Fornece uma forma can@^{o}nica simplificada quase linear de uma expres@~{a}o trigonom@'{e}trica;
 a @var{expr} @'{e} uma fra@,{c}@~{a}o racional dcontendo muitos @code{sin}, @code{cos} ou
@@ -2583,10 +2583,10 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c -----------------------------------------------------------------------------
 @anchor{make_random_state}
-@deffn  {Function} make_random_state (@var{n})
-@deffnx {Function} make_random_state (@var{s})
-@deffnx {Function} make_random_state (true)
-@deffnx {Function} make_random_state (false)
+@deffn  {Fun@,{c}@~{a}o} make_random_state (@var{n})
+@deffnx {Fun@,{c}@~{a}o} make_random_state (@var{s})
+@deffnx {Fun@,{c}@~{a}o} make_random_state (true)
+@deffnx {Fun@,{c}@~{a}o} make_random_state (false)
 
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})
@@ -2617,9 +2617,9 @@ do gerador de n@'{u}meros aleat@'{o}rios.
 
 @c -----------------------------------------------------------------------------
 @anchor{set_random_state}
-@deffn {Function} set_random_state (@var{s})
+@deffn {Fun@,{c}@~{a}o} set_random_state (@var{s})
 
-Copia @var{s} para o estado atual do gerador de números aleatórios.
+Copia @var{s} para o estado atual do gerador de n@'{u}meros aleat@'{o}rios.
 
 @code{set_random_state} always returns @code{done}.
 
@@ -2630,7 +2630,7 @@ Copia @var{s} para o estado atual do gerador de números aleatórios.
 
 @c -----------------------------------------------------------------------------
 @anchor{random}
-@deffn {Function} random (@var{x})
+@deffn {Fun@,{c}@~{a}o} random (@var{x})
 
 Retorna um n@'{u}mero pseudoaleat@'{o}rio.  Se @var{x} for um inteiro,
 @code{random (@var{x})} retorna um inteiro de 0 a @code{@var{x} - 1}

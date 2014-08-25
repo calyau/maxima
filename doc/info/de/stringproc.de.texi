@@ -706,7 +706,7 @@ Examples:
 @anchor{md5sum}
 @deffn {Funktion} md5sum (@var{string})
 
-Gibt die md5-Pr@"ufsumme von @var{string} als String zur@"uck. 
+Gibt die md5-Pr@"ufsumme von @var{string} als String mit 32 hexadezimalen Zeichen zur@"uck. 
 Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
 setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
 
@@ -783,6 +783,27 @@ Like @mref{sequal} but ignores case.
 
 @code{sexplode} is an alias for function @mrefdot{charlist}
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sha1sum}
+@deffn {Funktion} sha1sum (@var{string})
+
+Gibt den SHA1-Fingerprint von @var{string} als String mit 48 hexadezimalen Zeichen zur@"uck. 
+Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
+setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
+
+Beispiel:
+
+@example
+(%i1) string : sha1sum("foo bar baz");
+(%o1)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+(%i2) ibase : obase : 16.$
+
+(%i3) integer : parse_string(sconcat(0, string));
+(%o3)              0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+@end example
+@end deffn
+
 
 @c -----------------------------------------------------------------------------
 @anchor{simplode}

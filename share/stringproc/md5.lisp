@@ -32,6 +32,39 @@
    (%i4) integer : parse_string(sconcat(0, string));
    (%o4)                 0ab07acbb1e496801937adfa772424bf7
 
+   Note that in case the string contains German umlauts or other non-ASCII 
+   characters the md5 checksum is platform dependend.
+   
+   To check the md5sum of a *small* file the file can be streamed into a string.
+
+   (%i2) ostream : make_string_output_stream();
+   (%o2)                  #<string-output stream 00f06ae8>
+   (%i3) fos : openr("/home/volker/pub_key_temp.pem");
+   (%o3)            #<input stream /home/volker/pub_key_temp.pem>
+   (%i4) while (c : readchar(fos)) # false do printf(ostream, "~a", c);
+   (%o4)                                done
+   (%i5) close(fos);
+   (%o5)                                true
+   (%i6) string : get_output_stream_string(ostream);
+   (%o6) -----BEGIN PUBLIC KEY-----
+   MIIBCgKCAQEA7CCxZOFAoZ7khi0TiwIxU8cHEZJnIQb96ONrPbSqq/s3CVwU1eLH
+   9QEaZb8viFhe6/Db66DjR6RqCO3uIfx2siAb8SaTo0PYZz8JQ5IenjBDJAGA56gE
+   6OX8JadgPCLEZTdJ2Q0axqPHwoWsZkn56Pt4UlJfUcW7cNPNIihgy2DwE1PpbHCY
+   IdhYcT/iYA6C+TiYdYNcAFUsQyGExBxOTOXrMGFknjALedkLoq9IN3Djnw4kxGYv
+   vl3hVYBJpixusUgOK5LhYwowQayeczPoMA0Ef5KAZwJY9lUZ2UYBKMqdoNpdJuDz
+   q4QOxlkqUvZxWTEHqNmlfX4/2w71ZiAqpwIDAQAB
+   -----END PUBLIC KEY-----
+   (%i7) close(ostream);
+   (%o7)                                true
+   (%i8) md5sum(string);
+   (%o8)                  b5f2033ccb6f4066874aa5a2308bd561
+   
+   The result is checked against openssl in GNU/Linux.
+   
+   (%i9) system("openssl dgst -md5 '/home/volker/pub_key_temp.pem' > temp ; cat temp");
+   MD5(/home/volker/pub_key_temp.pem)= b5f2033ccb6f4066874aa5a2308bd561
+   (%o9)                                  0
+
 |#
 
 (defvar *a5* 0)
@@ -94,7 +127,7 @@
     (setq *a5* (md5+ %a *a5*) *b5* (md5+ %b *b5*) *c5* (md5+ %c *c5*) *d5* (md5+ %d *d5*)) ))
 
 
-(defun swap-endian64 (i64) ;; little endian <--> big endian
+(defun swap-endian64 (i64) ;; little-endian <--> big-endian
   (let (w)
     (do ((masq #xff (ash masq 8.))
          (sh 0 (- sh 8.)) )
@@ -116,8 +149,8 @@
                (fourth w)     ))
 
 
-(defun md5-words (vec)
-  (let ((w (make-array 16. :element-type 'list :initial-element nil))
+(defun md5-words (vec) ;; 32 bit little-endian
+  (let ((w (make-array 16. :element-type 'integer :initial-element 0))
         (inc -1) )
     (do ((i 0 (1+ i)))
         ((= i 16.) w)
