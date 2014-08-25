@@ -1304,6 +1304,9 @@ linear_regression(dat,[select]) :=
   aic: n*log(sumsquares/n) + 2*(p+1),
   bic: n*log(sumsquares/n) + log(n)*(p+1),
 
+  if stats_numer then
+    [b,covb,ci,t,pv,sR2,s2,r,Rbar,aic,bic]: float([b,covb,ci,t,pv,sR2,s2,r,Rbar,aic,bic]),
+
   /* result as an 'inference_result' object */
   inference_result("LINEAR REGRESSION MODEL",
                  [  ['b_estimation, b],
