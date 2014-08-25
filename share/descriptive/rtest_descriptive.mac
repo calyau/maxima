@@ -1,7 +1,7 @@
 (kill(all), 0);
 0$
 
-(load(descriptive), 0);
+(load(descriptive), float_approx_equal_tolerance : 1e-12, 0);
 0$
 
 mean([a, b, c]);
@@ -259,3 +259,6 @@ matrix([19.38,15.37,25.25],[17.33,14.67,19.58],[16.92,13.21,21.21],
 
 transform_sample(data, [a,b,c], [c, a*b, log(a)]), data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]);
 matrix([7,6,log(3)],[2,21,log(3)],[4,16,log(8)],[4,10,log(5)])$
+
+(reset (float_approx_equal_tolerance), 0);
+0;
