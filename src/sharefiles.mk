@@ -1108,6 +1108,7 @@ stringproc/pregexp.lisp \
 stringproc/printf.lisp \
 stringproc/rtestprintf.mac \
 stringproc/rteststringproc.mac \
+stringproc/sha1.lisp \
 stringproc/sregex.lisp \
 stringproc/stringproc.lisp \
 stringproc/stringproc.mac \
