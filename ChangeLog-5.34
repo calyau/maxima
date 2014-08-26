@@ -1,0 +1,69 @@
+   Maxima 5.34 change log
+
+
+   New items in core:
+
+ * function invert_by_gausselim: invert by Gaussian elimination (used to be function invertmx)
+ * function invert_by_adjoint: invert by adjoint method (used to be function invert)
+ * functions push, pop: now implemented in core
+
+
+   New items in share:
+
+ * package coma: functions for control engineering
+ * function sha1sum (package stringproc): compute SHA1 hash
+ * engineering-format.lisp: change default float display format
+
+
+   Changes in core:
+
+ * function invert: use adjoint method or Gaussian elimination depending on size of matrix
+ * function tex: Define TeX properties for gamma_incomplete and friends
+
+
+   Bug fixes:
+
+ #2785: dynamics package: plotting fails on evolution() and other functions
+ #2784: Ceiling gives error, without even an error message
+ #2782: realroots(x*y) internal error
+ #2776: Error when integrate sqrt
+ #2775: powerseries of some log expressions
+ #2772: powerseries of some trig expressions
+ #2768: "notequal" tries to put multiprecision rational numbers into floats
+ #2765: powerseries of a derivative
+ #2764: power series of 1 + x^n and regression tests in rtest16.mac
+ #2763: symmetricp(matrix) DOEs not work
+ #2760: powerseries at infinty broken
+ #2755: powerseries of natural exponential
+ #2751: powerseries of bessel functions needlessly fail
+ #2750: powerseries(x^x,x,0) gives Lisp error
+ #2749: Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat
+ #2746: scifac / gcfac crash
+ #2745: limit with numer:true
+ #2741: imaxima preamble broken for display in emacs
+ #2738: Integrate encountered a Lisp error: The value 2 is not of type LIST
+ #2732: wrong answer for similar to gaussian integral
+ #2726: integrate produces wrong answer for Gaussian Moments
+ #2725: pochhammer(n,x) documentation
+ #2721: maxima can't refresh plots in gnuplot_pipes format
+ #2719: Matrix invert() behaviour
+ #2718: imaxima LaTeX definitions conflict with amsmath
+ #2717: plot2d treats linear and log plots inconsistently
+ #2716: is allows more than one argument
+ #2711: `i' is not local in `geosum'
+ #2710: `rempart' from package `functs' fails
+ #2707: `rowp' fails if `p' function is defined
+ #2697: Inconsistent handling of Greek symbols
+ #2683: Plot2d default terminal broken
+ #2678: transform_xy rejects argument constructed with make_transform
+ #2677: [gnuplot_pm3d,false] does not disable pm3d
+ #2621: "gamma limit error"
+ #2526: abs_integrate fails on integrate(sqrt(x + sqrt(x)), x)
+
+   unnumbered bugs:
+
+ mailing list 2014-08-16: bind stack overflow in loop
+ mailing list 2014-07-01: "rtest8.mac test failure"
+ mailing list 2014-06-29: "rule issue"
+ limit((atan(x)-(%pi/2))/(sin(10/x)),x,inf)
+ ezgcd(p1,p2,...) => true when ratp returns true for any argument
