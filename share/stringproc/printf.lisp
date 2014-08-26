@@ -458,8 +458,7 @@
       (setq bf (meval `((%round) ,(bcons bf))))
       (setq bf (bcons (fpquotient (intofp bf) m))) ))  
 ;;
-  (let* (($fpprintprec 0) 
-         (s (string-left-trim "-" ($sconcat bf)))
+  (let* ((s (string-left-trim "-" ($sconcat bf)))
          (sgn (signum (cadr bf)))
          (part1 (subseq s 0 1))
          (pos (position #\b s))
