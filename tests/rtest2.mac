@@ -150,15 +150,21 @@ matrix ([x]);
  integer_pow(x) := block ([k], declare (k, integer), x^k),
  mat_function (integer_pow, A));
 
-matrix([(sqrt(a^2+4)-a)^k*(1-(sqrt(a^2+4)+a)/(2*((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)))*(-1)^k/2^k
-               +(sqrt(a^2+4)+a)^(k+1)*2^(-k-1)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2),
-              (sqrt(a^2+4)+a)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)*2^k)
-               -(sqrt(a^2+4)-a)^k*(-1)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)*2^k)],
-             [(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^(k+1)*2^(-k-2)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
-               -(sqrt(a^2+4)-a)^k*(sqrt(a^2+4)+a)*(1-(sqrt(a^2+4)+a)/(2*((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)))
-                                 *2^(-k-1)*(-1)^k,
-              (sqrt(a^2+4)-a)^k*(sqrt(a^2+4)+a)*2^(-k-1)*(-1)^k/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
-               +(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^k*2^(-k-1)/((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)]);
+matrix([(sqrt(a^2+4)-a)^(k+1)*2^(-k-1)*(-1)^k
+         /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+         +(sqrt(a^2+4)+a)^(k+1)*2^(-k-1)
+          /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2),
+        (sqrt(a^2+4)+a)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)*2^k)
+         -(sqrt(a^2+4)-a)^k*(-1)^k/(((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+                                   *2^k)],
+       [(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^(k+1)*2^(-k-2)
+         /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+         -(sqrt(a^2+4)-a)^(k+1)*(sqrt(a^2+4)+a)*2^(-k-2)*(-1)^k
+          /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2),
+        (sqrt(a^2+4)-a)^k*(sqrt(a^2+4)+a)*2^(-k-1)*(-1)^k
+         /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)
+         +(sqrt(a^2+4)-a)*(sqrt(a^2+4)+a)^k*2^(-k-1)
+          /((sqrt(a^2+4)+a)/2+(sqrt(a^2+4)-a)/2)]);
 
 kill (all);
 done;
