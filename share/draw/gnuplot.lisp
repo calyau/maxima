@@ -2756,30 +2756,15 @@
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
-
             (if (get-option '$logx_secondary)
                (format nil "set logscale x2~%")
                (format nil "unset logscale x2~%"))
-
-
-
-
-
-
             (if (get-option '$logy)
                (format nil "set logscale y~%")
                (format nil "unset logscale y~%"))
-
-
-
             (if (get-option '$logy_secondary)
                (format nil "set logscale y2~%")
                (format nil "unset logscale y2~%"))
-
-
-
-
-
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
@@ -2788,7 +2773,9 @@
                 (format nil "unset grid~%"))
             (format nil "set title '~a'~%"  (get-option '$title))
             (format nil "set xlabel '~a'~%" (get-option '$xlabel))
+            (format nil "set x2label '~a'~%" (get-option '$xlabel_secondary))
             (format nil "set ylabel '~a'~%" (get-option '$ylabel))
+            (format nil "set y2label '~a'~%" (get-option '$ylabel_secondary))
             (let ((suma 0))
               (if (get-option '$axis_bottom)  (setf suma (+ suma 1)))
               (if (get-option '$axis_left) (setf suma (+ suma 2)))
