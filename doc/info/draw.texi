@@ -2920,7 +2920,7 @@ Example:
              ylabel = "Population")$
 @end example
 
-@code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
+See also @code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
 
 @opencatbox
 @category{Package draw}

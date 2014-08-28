@@ -1,4 +1,4 @@
-@c English version 2014-06-14
+@c English version 2014-08-28
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2637,9 +2637,35 @@ Ejemplo:
              ylabel = "Population")$
 @end example
 
-V@'eanse tambi@'en @code{ylabel} y @code{zlabel}.
+V@'eanse tambi@'en @code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} y @code{zlabel}.
 @end defvr
 
+
+
+@defvr {Opci@'on gr@'afica} xlabel_secondary
+Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
+
+La opci@'on @code{xlabel_secondary} almacena una cadena con la
+etiqueta del eje @var{x} secundario. Por defecto, el eje no tiene etiqueta.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         xaxis_secondary=true,yaxis_secondary=true,
+         xtics_secondary=true,ytics_secondary=true,
+         xlabel_secondary="t[s]",
+         ylabel_secondary="U[V]",
+         explicit(sin(t),t,0,10) )$
+@end example
+
+V@'eanse tambi@'en @code{xlabel}, @code{ylabel}, @code{ylabel_secondary} y @code{zlabel}.
+
+@end defvr
 
 
 
@@ -3044,9 +3070,44 @@ Ejemplo:
              explicit(exp(u),u,-2,2) )$
 @end example
 
-V@'eanse tambi@'en @code{xlabel} y @code{zlabel}.
+V@'eanse tambi@'en @code{xlabel}, @code{xlabel_secondary}, @code{ylabel_secondary} y @code{zlabel}.
 @end defvr
 
+
+
+
+
+
+
+@defvr {Opci@'on gr@'afica} ylabel_secondary
+Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
+
+
+La opci@'on @code{ylabel_secondary} almacena una cadena con la
+etiqueta del eje @var{y} secundario. Por defecto, el eje no tiene etiqueta.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key="current",
+        xlabel="t[s]",
+        ylabel="I[A]",ylabel_secondary="P[W]",
+        explicit(sin(t),t,0,10),
+        yaxis_secondary=true,
+        ytics_secondary=true,
+        color=red,key="Power",
+        explicit((sin(t))^2,t,0,10)
+    )$
+@end example
+
+V@'eanse tambi@'en @code{xlabel}, @code{xlabel_secondary}, @code{ylabel} and @code{zlabel}.
+
+@end defvr
 
 
 
