@@ -445,6 +445,12 @@
 				     (:file "mdefun"))
 			:depends-on (maxima-language-compiler-macros))
 
+	       (:module pattern-matching :pathname ""
+			:components ((:file "schatc") 
+				     (:file "matcom") 
+				     (:file "matrun") 
+				     (:file "nisimp")))
+
 	       (:module trigonometry :pathname ""
 			:components ((:file "trigi") 
 				     (:file "trigo") 
@@ -499,11 +505,6 @@
 			:components ((:file "sprdet") 
 				     (:file "newinv") 
 				     (:file "newdet")))
-	       (:module pattern-matching :pathname ""
-			:components ((:file "schatc") 
-				     (:file "matcom") 
-				     (:file "matrun") 
-				     (:file "nisimp")))
 	       (:module limits :pathname ""
 			:components ((:file "tlimit") 
 				     (:file "limit")))
