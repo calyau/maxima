@@ -422,3 +422,12 @@ matrix ([1, 0, 0], [0, 1, 0], [0, 0, 1]);
 matrix ([1, 0, 0], [0, 1, 0], [0, 0, 1]);
 
 /* end additional tests for invert */
+
+/* float inf / SIGN1 mischief -- see also rtest_extra */
+
+block ([I, M],
+  I:87^611,
+  M:91^211,
+  sign(sqrt(I)-M));
+pos;
+
