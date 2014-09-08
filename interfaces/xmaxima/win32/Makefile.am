@@ -32,7 +32,7 @@ winkill$(EXEEXT): winkill.c
 	gcc -Wall -o $@ winkill.c
 
 tclwinkill.dll: tclwinkill.c
-	gcc -Wall -shared tclwinkill.c $(TCLSTUBLIB) -o $@
+	gcc -Wall -shared -I$(TCLINCLUDE) tclwinkill.c $(TCLSTUBLIB) -o $@
 
 InfoBefore = InfoBefore.txt InfoBefore_ru.txt InfoBefore_fr.txt \
   InfoBefore_de.txt InfoBefore_pt.txt InfoBefore_pt_BR.txt \

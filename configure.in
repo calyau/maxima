@@ -680,8 +680,10 @@ GCCVER=undefined
 if test x${xmaxima_exe} = xtrue ; then
   GCCVER=`gcc -dumpversion`
   if  test x${GCCVER} = x3.3.1; then
+    TCLINCLUDE=
     TCLSTUBLIB=-ltclstub84
   else
+    TCLINCLUDE=/c/tcl/include
     TCLSTUBLIB=/c/tcl/lib/tclstub85.lib
   fi
   dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
@@ -692,6 +694,7 @@ if test x${xmaxima_exe} = xtrue ; then
 fi
 
 AC_SUBST(GCCVER)
+AC_SUBST(TCLINCLUDE)
 AC_SUBST(TCLSTUBLIB)
 AC_SUBST(TCLKITSH)
 AC_SUBST(TCLKIT_RUNTIME)
