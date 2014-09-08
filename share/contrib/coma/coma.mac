@@ -1,5 +1,5 @@
 /* ======================================================================= */
-/* coma.mac                                                         V 1.68 */
+/* coma.mac                                                         V 1.70 */
 /* ----------------------------------------------------------------------- */
 /* COntrol engineering with MAxima            (c) Wilhelm Haager 2009-2014 */
 /* ----------------------------------------------------------------------- */
@@ -19,10 +19,13 @@
 /*  - 2013-03-30: "pulse_response" added                                   */
 /*  - 2013-11-16: Rootsepsilon" set to 1.0e-7 (bug in Maxima 5.31)         */
 /*  - 2014-01-23: some bugfixes (nilt,...)                                 */
+/*  - 2014-07-14: margin adjustment in bode_plot                           */
+/*  - 2014-08-10: "xthru" replaced by "ratsimp" in "impedance_chain"       */
+/*  - 2014-09-07: "xthru" replaced by "ratsimp" in "transfer_function"     */
 /*                                                                         */
 /* ======================================================================= */
 
-disp("coma v.1.68, (Wilhelm Haager, 2014-01-23)");
+disp("coma v.1.70, (Wilhelm Haager, 2014-09-07)");
 load("draw");  /* not necessary any more but benefical (2013-11-16) */
 
 /* ======================================================================= */
@@ -176,10 +179,10 @@ block(
   [fli,fli1,fli2,hli1,hli2,defs1,defs2,t,tanf,tend,ratprint:false,
     xdim,ydim,dims,g0],
   fli:ratsimp(flatten([f])),
-  defs1:['logx=true,'logy=true,'user_preamble=["set tmargin 1",
-        "set lmargin 6","set rmargin 3","set bmargin 0"]],
-  defs2:['logx=true, 'user_preamble=["set tmargin 0",
-        "set lmargin 6","set rmargin 3","set bmargin 1"]],
+  defs1:['logx=true,'logy=true,'user_preamble=["set tmargin 0.5",
+        "set lmargin 6","set rmargin 3","set bmargin 1.5"]],
+  defs2:['logx=true, 'user_preamble=["set tmargin 0.5",
+        "set lmargin 6","set rmargin 3","set bmargin 1.5"]],
   xdim:500, ydim:600, /* default values (for both diagrams together) */
   if option_exists('dimensions,plot_defaults) then block(
      xdim:assoc('dimensions,plot_defaults)[1],
@@ -640,7 +643,7 @@ block(
   _vars:makelist(_i[_k],_k,1,_n),
   _sol:linsolve(_eqs,_vars), /* linsolve works better than solve (why?) */
 /* Calculation of the transfer function as the ratio Ua/Ue */
-  xthru(subst(_sol,_z[2*_n]*_i[_n]/_ue))
+  ratsimp(subst(_sol,_z[2*_n]*_i[_n]/_ue))
 )$
 
 /* ----------------------------------------------------------------------- */
@@ -721,7 +724,7 @@ if matrixp(a) then block(
    if length(d)=3 then [A,B,C,D]:[a,d[1],d[2],d[3]]
    else [A,B,C,D]:[a,d[1],d[2],zeromatrix(length(d[2]),length(d[1][1]))],
    if matrixp(D) and length(D)=1 and length(D[1])=1 then D:D[1][1],
-   map(expand,xthru(C.invert(s*ident(length(A))-A).B+D)))
+   map(expand,ratsimp(C.invert(s*ident(length(A))-A).B+D)))
 else block([m],
 m:coefmatrix(subst(linsolve(a,d[1]),flatten([d[3]])),flatten([d[2]])),
 if not listp(d[2]) and not listp(d[3]) then m[1][1] else m
