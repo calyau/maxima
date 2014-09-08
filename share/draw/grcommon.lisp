@@ -137,7 +137,9 @@
       (gethash '$zaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
       (gethash '$zaxis_color *gr-options*) "#000000"
       (gethash '$xlabel *gr-options*) ""
+      (gethash '$xlabel_secondary *gr-options*) ""
       (gethash '$ylabel *gr-options*) ""
+      (gethash '$ylabel_secondary *gr-options*) ""
       (gethash '$zlabel *gr-options*) ""
 
       ; point options
@@ -944,8 +946,8 @@
             (if (member val '($horizontal $vertical))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal label orientation: ~M" val)))
-      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font
-        $gnuplot_file_name $data_file_name)
+      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $xlabel_secondary $ylabel_secondary
+        $font $gnuplot_file_name $data_file_name)
             (update-string opt val))
       ($user_preamble ; defined as a string or a Maxima list of strings
             (let ((str ""))

@@ -2920,7 +2920,38 @@ Example:
              ylabel = "Population")$
 @end example
 
-See also @code{ylabel}, and @code{zlabel}.
+See also @code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xlabel_secondary
+Default value: @code{""} (empty string)
+
+Option @code{xlabel_secondary}, a string, is the label for the secondary @var{x} axis.
+By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         xaxis_secondary=true,yaxis_secondary=true,
+         xtics_secondary=true,ytics_secondary=true,
+         xlabel_secondary="t[s]",
+         ylabel_secondary="U[V]",
+         explicit(sin(t),t,0,10) )$
+@end example
+
+See also @code{xlabel}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
 
 @opencatbox
 @category{Package draw}
@@ -3405,7 +3436,42 @@ Example:
              explicit(exp(u),u,-2,2) )$
 @end example
 
-See also @code{xlabel}, and @code{zlabel}.
+See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel_secondary}, and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ylabel_secondary
+Default value: @code{""} (empty string)
+
+Option @code{ylabel_secondary}, a string, is the label for the secondary @var{y} axis.
+By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key="current",
+        xlabel="t[s]",
+        ylabel="I[A]",ylabel_secondary="P[W]",
+        explicit(sin(t),t,0,10),
+        yaxis_secondary=true,
+        ytics_secondary=true,
+        color=red,key="Power",
+        explicit((sin(t))^2,t,0,10)
+    )$
+@end example
+
+See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel} and @code{zlabel}.
 
 @opencatbox
 @category{Package draw}
@@ -3545,7 +3611,6 @@ does not matter.
 @closecatbox
 
 @end defvr
-
 
 
 
