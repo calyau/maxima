@@ -257,8 +257,10 @@ directory (c:/maxima above) before testing the installation.
                        cos(theta),
                        theta, 0, %pi, phi, 0, 2 * %pi))$
  o Check that plotting to Postscript works
-    plot2d(sin(x),[x,0,10],[psfile,"pstest.ps"]);
+    plot2d(sin(x),[x,0,10],[ps_file,"ps_test.ps"]);
  o Try out the on-line help: describe(sin)
+ o Check that the windows help files work from the Start menu 
+   and from within xmaxima and wxmaxima
 
 
 Troubleshooting
