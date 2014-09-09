@@ -85,7 +85,7 @@ with_parameters ([L]) ::= buildq (
 
 draw_graph(G, [options]) := block(
   [
-   maperror : false, mapprint : false,
+   maperror : false, mapprint : false, ratprint:false,
    wxplot_size : graphs_plot_size,
    program : draw_graph_program, 
    show_id : false, show_label : false, show_weight : false,
