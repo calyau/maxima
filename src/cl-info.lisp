@@ -117,7 +117,8 @@
 (defun display-items (items)
   (let*
     ((items-list (rearrange-matches items))
-     (nitems (length items-list)))
+     (nitems (length items-list))
+     wanted)
 
     (loop for i from 0 for item in items-list do
       (when (> nitems 1)
