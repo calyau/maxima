@@ -1256,3 +1256,20 @@ block([partswitch : true], rest([]));
 end$
 
 /* end of tests for cons and endcons--especially tests for on nonlists */
+
+/* SF bug #2812: lambda doesn't work,but %lambda does work. */
+
+(kill (x, lambda), freeof (x, 1 + x * lambda[2]));
+false;
+
+/* original bug trigger for #2812 -- result probably dependent on simplification details so don't bother
+ *
+(kill (X, X11, X12, X21, X22, alpha, c, delta, f, eta, b, d),
+ X11 : alpha[1]*c[1]^2/3 + c[3]^3 - log(delta[1]) + f^5,
+ X12 : exp( eta[1] + b*eta[2] ) - log(d),
+ X21 : log( eta[1] + eta[2]/b ) + exp(d),
+ X22 : log(alpha[2]*c[2]^5/5 - c[1]/5) + exp(delta[2]) - lambda[2],
+ X : matrix ([X11, X12], [X21, X22]),
+ eigenvalues (X));
+ *
+ */

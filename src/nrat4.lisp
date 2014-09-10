@@ -373,7 +373,7 @@
 	 (cond ((not (freeofl var (hand-side (caddr e) 'r))) nil)
 	       ((not (freeofl var (hand-side (caddr e) 'l))) t)
 	       (t (freeof var (cadr e)))))
-	((and (eq (caar e) 'lambda) (member var (cdadr e) :test #'eq)) t)
+	((and (eq (caar e) 'lambda) (not (member 'array (cdar e) :test #'eq)) (member var (cdadr e) :test #'eq)) t)
         ;; Check for a local variable in a block.
         ((and (eq (caar e) 'mprog) (member var (cdadr e) :test #'eq)) t)
         ;; Check for a loop variable.
