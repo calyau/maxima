@@ -8,6 +8,8 @@
 
 (in-package :maxima)
 
+(declare-top (special $hypergeometric_representation))
+
 ;; When non-NIL, the Bessel functions of half-integral order are
 ;; expanded in terms of elementary functions.
 

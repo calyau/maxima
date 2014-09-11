@@ -833,8 +833,7 @@
        (dolist (p *small-primes*)
 	 (if (= (mmod n p) 0) (return))
 	 (if (>= (* p p) n) (return-from next-prime-det n)))
-       (incf n (nth (mmod n 210) deltaprimes)))
-  n)
+       (incf n (nth (mmod n 210) deltaprimes))))
 
 ;;; Find next/prev prime using probabilistic test and skipping al multiples of
 ;;; 2,3,5,7 using deltaprimes list and calculating gcd's with product of

@@ -7,6 +7,7 @@
   "Output targets for list-dependencies-operation")
 
 (defun list-dependencies-operation (component force)
+  (declare (ignore force))
   (dolist (target *oos-dependency-targets*)
     (let ((dep-name (format nil "~A.~A"
                             (component-source-pathname component)

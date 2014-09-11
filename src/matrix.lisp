@@ -269,7 +269,7 @@
      (go loop2)))
 
 (defmfun $invert_by_gausselim (k) 
-  (let ((*inv* t) *det* linind* top* mul* ($ratmx t) (ratmx $ratmx) $ratfac $sparse)
+  (let ((*inv* t) *det* top* mul* ($ratmx t) (ratmx $ratmx) $ratfac $sparse)
     (cond ((atom k) ($nounify '$inverx) (list '(%inverx) k))
 	  (t (newvarmat1 (setq k (check k)))
 	     (setq k (invert1 (replist1 (mcx (cdr k)))))
@@ -299,7 +299,7 @@
 		 (t (ratinvert elm))))))
 
 (defun invert1 (k) 
-  (prog (l r g i m n ei* ej* oneoff*) 
+  (prog (l r g i m n)
      (setq l (length k) i 1) 
      (cond ((= l (length (car k))) nil)
 	   (t(merror (intl:gettext "invert: matrix must be square; found ~M rows, ~M columns.") l (length (car k)))))
