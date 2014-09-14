@@ -300,9 +300,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 				  (1+ (- d k))
 				  d)
 			      nil))
-		    (fmin (if (minusp k)
-			      1
-			      fdig))
 		    (spaceleft (if w
 				   (- w 2 elen
 				      (if (or atp (minusp (second arg)))
@@ -379,6 +376,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; NOTE: This is a modified version of FORMAT-FIXED-AUX from CMUCL to
 ;; support printing of bfloats.
 (defun bfloat-format-f (stream number colonp atsign &optional w d (k 0) ovf (pad #\space))
+  (declare (ignore colonp))
   (labels
       ((exponent-value (x)
 	 ;; Compute the (decimal exponent) of the bfloat number X.
@@ -430,13 +428,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 		      (push '|0| digits))
 		    (push '|.| digits))
 		   ((< exp (length digits))
-		    (let ((len (length digits)))
-		      #+nil
-		      (format t "exp, len = ~D ~D~%" exp len)
-		      (setf digits (concatenate 'list
-						(subseq digits 0 (1+ exp))
-						(list '|.|)
-						(subseq digits (1+ exp))))))
+		    #+nil
+		    (format t "exp, len = ~D ~D~%" exp (length digits))
+		    (setf digits (concatenate 'list
+					      (subseq digits 0 (1+ exp))
+					      (list '|.|)
+					      (subseq digits (1+ exp)))))
 		   (t
 		    (setf digits (append digits (list '|.|)))))
 	     (let* ((str (format nil "~{~A~}" digits))
