@@ -206,7 +206,7 @@ state2text(state) :=
    simplode(map('ascii, flatten(args(transpose(state)))))$
 
 bytestring2state(bytestring) := block([num, state, ibase:16],
-   num : parse_string(bytestring),
+   num : parse_string(sconcat(0, bytestring)),
    state : zeromatrix(4, 4),
    for c:4 thru 1 step -1 do
       for r:4 thru 1 step -1 do (

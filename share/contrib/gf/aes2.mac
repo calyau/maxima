@@ -252,7 +252,7 @@ state2text(state) := block([bytes:[]],
    simplode(map('ascii, bytes)) )$
 
 bytestring2state(bytestring) := block([num, state, ibase:16],
-   num : parse_string(bytestring),
+   num : parse_string(sconcat(0, bytestring)),
    state : make_array(fixnum, 4, 4),
    for c:3 thru 0 step -1 do
       for r:3 thru 0 step -1 do (
