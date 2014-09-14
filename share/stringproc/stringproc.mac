@@ -3,3 +3,4 @@ load("stringproc.lisp")$
 load("printf.lisp")$
 load("md5.lisp")$
 load("base64.lisp")$
+load("sha1.lisp")$
