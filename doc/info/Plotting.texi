@@ -1372,7 +1372,7 @@ in this list, they will be repeated sequentially.
 The possible objects that can be used are: @code{bullet}, @code{circle},
 @code{plus}, @code{times}, @code{asterisk}, @code{box}, @code{square},
 @code{triangle}, @code{delta}, @code{wedge}, @code{nabla}, @code{diamond},
-@code{lozenge}
+@code{lozenge}.
 
 @opencatbox
 @category{Plotting}
@@ -1497,7 +1497,7 @@ a 3d plot will be the same.
 
 @c -----------------------------------------------------------------------------
 @anchor{style}
-@defvr  {Plot option} style [style, @var{type_1}, @dots{}, @var{type1_n}]
+@defvr  {Plot option} style [style, @var{type_1}, @dots{}, @var{type_n}]
 @defvrx {Plot option} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
 
 The styles that will be used for the various functions or sets of data
