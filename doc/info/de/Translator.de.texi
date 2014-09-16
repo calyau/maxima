@@ -382,7 +382,7 @@ definiert.
 @c might write @code{mode_identity (number, first (l))}.  However, a more 
 @c efficient way to do it would be to define a new primitive,
 @c @example
-@c firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+@c firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @c @end example
 @c and use @code{firstnumb} every time you take the first of a list of numbers.
 

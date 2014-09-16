@@ -1979,7 +1979,7 @@ number then you might write @code{mode_identity (number, first (l))}.  However,
 a more efficient way to do it would be to define a new primitive,
 
 @example
-firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @end example
 
 and use @code{firstnumb}

@@ -2000,7 +2000,7 @@ mode_declare ([function (f_1, f_2, ...)], fixnum)
 しかしながら、それをするもっと効率的な方法は、
 
 @example
-firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @end example
 
 のように新しいプリミティブを定義し、

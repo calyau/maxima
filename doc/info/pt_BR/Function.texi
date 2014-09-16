@@ -1680,7 +1680,7 @@ n@'{u}mero ent@~{a}o voc@^{e} pode escrever @code{mode_identity (number, first (
 um mais eficiente caminho para fazer isso @'{e} definir uma nova primitiva,
 
 @example
-firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @end example
 
 e usar @code{firstnumb}

@@ -1806,7 +1806,7 @@ mode_declare ([function (f_1, f_2, ...)], fixnum)
 Но более эффективно будет определить новый примитив 
 
 @example
-firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @end example
 
 и использовать @code{firstnumb} всякий раз при обращении
