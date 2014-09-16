@@ -1,6 +1,6 @@
 /*
-  Copyright 2008, 2009, 2010, 2011, 2012 by Barton Willis
-  Maxima code for integration of signum, abs, max, min, and unit_step.
+  Copyright 2008, 2009, 2010, 2011, 2012, 2014 by Barton Willis
+  Maxima code for integration of signum, abs, max, min, floor, ceiling, and unit_step.
 
   This is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License,
@@ -68,24 +68,6 @@ convert_to_signum(e) := block([opsubst : true],
   e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
   e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
   subst('abs = lambda([s], s * signum(s)), e));
-
-/* Do signum(a) * signum(b) --> signum(a * b). Maybe it should, but when n is a positive integer,
-   apply_signum_mult doesn't do signum(a)^n --> signum(a^n).
-
-   Starting with Maxima 5.23, the general simplifier does signum(a * b) --> signum(a) * signum(b).
-   Often (but not always!) the general simplifier reverts what this function does. Why not
-   always? We have apply_signum_mult_id(signum(x) * signum(1/x)) --> 1, but the general simplifier
-   doesn't change signum(x) * signum(1/x).
-
-   This function isn't used--maybe it will eventually be removed. */
-   
-apply_signum_mult_id (e) :=
-  subst(["*" = lambda([[x]], block([p : [], q : []],
-        for xk in x do (
-          if safe_op(xk) = 'signum then p : cons(first(xk),p) else q : cons(xk,q)),
-	p : xreduce("*",p),
-        q : xreduce("*",q),
-        q * signum(p)))],e);
  
 /* Do unit_step(a) * unit_step(b) --> unit_step(min(a,b)). This is an identity
 for either a left or right continuous unit_step. */
@@ -212,7 +194,7 @@ abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx : gensym("cntx")],
 signum(z)^2 -1 is zero everywhere except at each zero of z. The almost_everywhere_simp simplification
 is OK for an integrand--thus integrate(e,x) = integrate(almost_everywhere_simp(e),x).
 
-This function could be extended to do signum(z) --> 1, when z is a nonzero polynomial at csign(z) = 'pn,
+This function could be extended to do signum(z) --> 1, when z is a nonzero polynomial and csign(z) = 'pn,
 for example. Another extension is %if(x=0,xxx,zzz) --> zzz. I'll save these for another day.*/
 
 almost_everywhere_simp(e) := block([l],
@@ -289,33 +271,27 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx : gensym("cntx")],
 ''(buildq([z : ?gensym()], gradef(ceiling(z),%if(%integerp(z), 'und, 0)))); 
 ''(buildq([z : ?gensym()], gradef(signum(z), 0)));
 
-/* integrate(G(x,floor(x), ceiling(x)),x)
+/* These are in core facts, so let's comment them out 
+ intable[floor] : lambda([u], [-(floor(u)*(floor(u)-2*u+1))/2, diff(u,%voi)]);
+ intable[ceiling] : lambda([u], [(floor(u)^2-2*ceiling(u)*floor(u)+floor(u)+2*u*ceiling(u))/2, diff(u,%voi)]); */
 
-We have:
-
-  integrate(G(t, floor(t), ceiling(t)),t,0,x) = sum(integrate(G(t,k,k+1),t),k,0, floor(x)-1) +
-       integrate(G(t, floor(x), ceiling(x),t),floor(x),x). */
-
-intable[floor] : lambda([u], [-(floor(u)*(floor(u)-2*u+1))/2, diff(u,%voi)]);
-intable[ceiling] : lambda([u], [(floor(u)^2-2*ceiling(u)*floor(u)+floor(u)+2*u*ceiling(u))/2, diff(u,%voi)]);
-
-floor_int(q, x) := block([l, dl, fl, cl, t, s, k, simpsum : true],
+floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx : gensym(), simpsum : true],
   l : setify(xreduce('append, gatherargs(q,'floor))),
   l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
   l : subset(l, lambda([s], not(freeof(x, s)))),
   if l = set(x) then (
-    fl : new_variable('general),
-    cl : new_variable('general),
-    q : subst([floor(x) = fl, ceiling(x) = cl], q),
-    q : integrate(q, x),
-    if freeof('integrate, q) then (
-      s : errcatch(apply('sum, [subst([x = k + 1, fl = k, cl = k + 1], q)
-          - subst([x = k,fl = k, cl = k + 1], q),k,0, floor(x)-1])),
-      if s = [ ] or  not(freeof('sum,s)) then false else (
-        s : first(s) + subst([fl = floor(x), cl = ceiling(x)], q)
-        - subst([fl = floor(x), cl = ceiling(x), x = floor(x)], q),
-        s))
-    else false));
+    unwind_protect(
+      (cntx : apply('supcontext,[cntx]),
+       apply('declare,[[fl,cl,k],integer]),
+       assume(fl <= cl, cl < fl+1),
+       q : subst([floor(x) = fl, ceiling(x) = cl], q),
+       q : integrate(q, x),
+       q : subst([fl = floor(x), cl = ceiling(x)], q)
+           + sum(subst([fl = k-1, cl = k,x = k], q) - subst([fl = k, cl = k,x = k], q),k,0, floor(x))
+           + sum(subst([fl = k-1, cl = k-1,x = k-1], q) - subst([fl = k-1, cl = k,x = k-1], q),k,0,ceiling(x)),
+       if freeof('integrate,'sum,q) then q else false),               
+     killcontext(cntx)))
+ else false);
 
 if_int(q,x) := block([p,f,g,fi,gi,c],
   if safe_op(q) = '%if then (
