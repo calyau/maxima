@@ -24,6 +24,9 @@
 ;;  code formatting & printing functions  ;;
 ;;                                        ;;
 
+;;  princ with case inverted
+(defun princ-invert-case (sym)
+  (princ (print-invert-case sym)))
 
 ;;  fortran code formatting & printing functions  ;;
 
@@ -40,7 +43,7 @@
 		  (progn
 		   (cond ((> (+ (posn) (length (explode2 elt))) fortlinelen*)
 			  (fortcontline)))
-		   (princ elt))))))
+		   (princ-invert-case elt))))))
 
 (defun fortcontline ()
   (progn
@@ -70,7 +73,7 @@
 		   (cond ((> (+ (posn) (length (explode2 elt)))
 				    ratlinelen*)
 			  (ratcontline)))
-		   (princ elt))))))
+		   (princ-invert-case elt))))))
 
 (defun ratcontline ()
   (progn
@@ -99,7 +102,7 @@
 		   (cond ((> (+ (posn) (length (explode2 elt)))
 				    clinelen*)
 			  (ccontline)))
-		   (princ elt))))))
+		   (princ-invert-case elt))))))
 
 (defun ccontline ()
   (progn

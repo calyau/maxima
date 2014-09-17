@@ -1,0 +1,69 @@
+(kill(all), 0);
+0$
+
+(load(gentran), 'done);
+'done$
+
+gentranlang('fortran);
+?fortran$
+
+gentranlang('ratfor);
+?ratfor$
+
+gentranlang('c);
+?c$
+
+(gentranlang('c), ?\*gentranlang);
+?c$
+
+/*
+
+Gentran is confused by batch
+
+batch("rtest_gentran.mac", 'test);
+(gentranlang('fortran), gentran(a : 42));
+
+returns
+true
+
+One should reload
+load("gentran")$
+(gentranlang('fortran), gentran(a : 42))$
+
+prints
+a=42.0
+
+*/
+
+
+/*
+
+Those tests are not automatic, gentran prints output to *stdout*.
+
+(gentranlang('fortran), gentran(a : 42));
+a=42.0
+
+(gentranlang('ratfor), gentran(a : 42));
+a=42.0
+
+(gentranlang('c), gentran(a : 42));
+a=42.0;
+
+(gentranlang('fortran), gentran(for i: 1 thru 10 do s : s + i));
+25001 if (i .GT. 10.0) goto 25002
+          s=s+i
+          i=i+1
+          goto 25001
+25002 continue
+
+(gentranlang('c), gentran(for i: 1 thru 10 do s : s + i));
+for (i=1;!(i>10);i=i+1)
+    s=s+i;
+
+(gentranlang('ratfor), gentran(for i: 1 thru 10 do s : s + i));
+do i=1.0,10.0
+    s=s+i
+
+*/
+
+
