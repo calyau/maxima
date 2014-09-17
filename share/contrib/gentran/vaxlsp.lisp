@@ -451,7 +451,7 @@
   ;            (cond ((doexitcond) (break)))                                ;
   ;            dobody)                                                      ;
   (let ((gvar) condbody)
-    (destructuring-bind (dovar (x . dolist) x x x doexitcond dobody) (cdr stmt)
+    (destructuring-bind (dovar (_x1 . dolist) _x2 _x3 _x4 doexitcond dobody) (cdr stmt)
        (setq tvname tempvarname*)
        (setq tempvarname* 'i)
        (setq gvar ($tempvar nil))
