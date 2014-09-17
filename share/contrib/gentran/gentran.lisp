@@ -34,8 +34,8 @@
 (putprop 'ratcode "lsprat" 'autoload)
 (putprop 'ccode "lspc"   'autoload)
 
-(dolist (fname  '( "init" "lspfor" "templt" "global" "intrfc"
-		     "pre" "output" "vaxlsp" "segmnt"))
-               (load (merge-pathnames fname
-				      #-gcl *load-pathname*
-				      #+gcl sys:*load-pathname*)))
+(dolist (fname '("init" "lspfor" "lspc" "lsprat" "templt" "global" "intrfc"
+		 "pre" "output" "vaxlsp" "segmnt"))
+  (load (merge-pathnames fname
+			 #-gcl *load-pathname*
+			 #+gcl sys:*load-pathname*)))

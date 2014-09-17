@@ -166,7 +166,7 @@
               (aconc res '|)| )))))
 
 (defun ratforname (name)
-  (or (get name '*ratforname*) name))
+  (if (symbolp name) (or (get name '*ratforname*) name) name))
 
 (defun ratforop (op)
   (or (get op '*ratforop*) op))

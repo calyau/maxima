@@ -167,7 +167,7 @@
               (aconc res '|)|)))))
 
 (defun cname (name)
-  (or (get name '*cname*) name))
+  (if (symbolp name) (or (get name '*cname*) name) name))
 
 (defun cop (op)
   (or (get op '*cop*) op))
