@@ -1527,7 +1527,7 @@ objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
 triangles, 10: filled inverted triangles, 11: open inverted triangles,
 12: filled lozenges and 13: open lozenges.
 
-@var{linesdots} accepts up to four parameters: line width, points
+@var{linespoints} accepts up to four parameters: line width, points
 radius, color and type of object to replace the points.
 
 See also @mref{color} and @mrefdot{point_type}
