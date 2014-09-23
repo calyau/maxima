@@ -1217,289 +1217,403 @@ One extra decimal digit in actual representation for rounding purposes.")
 	((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
 	(t (intofp 1))))
 
-;;....................................................................................................... ;;
+;;----------------------------------------------------------------------------;;
 ;;
-;; (fpe1) returns a bigfloat approximation to E
-;;   (where the last digits are rounded, not truncated).
+;; The values of %e, %pi, %gamma and log(2) are computed by the technique of 
+;; binary splitting. See http://www.ginac.de/CLN/binsplit.pdf for details.
 ;;
-(defun fpe1 nil
-  (bcons 
-    (let ((tmp (let ((fpprec (+ fpprec 14)))             ;; compute 4 additional decimal digits 
-                 (list (fpround (compe fpprec)) *m) )))  
-      (list (fpround (car tmp)) (cadr tmp)) )))          ;; round to fpprec
-;; I checked the results for all fpprec in [10, 5010] : 
-;; Without extra digits 417 results differ in their last digit from the correctly 
-;; rounded approximation. 51 differ in two and 5 in three digits. These cases 
-;; have 9 to 0 roundings at their ends. In this range with (+ fpprec 10) all digits 
-;; are rounded correctly.
-;;
-(defun compe (prec) ;; use fixed point arithmetic
-   ;; compe is the bignum part of the bfloat(%e) computation
-   ;; (compe fpprec)/2^fpprec is an approximation to E
-   ;; The algorithm is based on the series
-   ;;
-   ;; %e = sum( 1/i! ,i,0,inf )
-   ;;
-   ;; but adds up k summands to one, for e.g. k=4 that means
-   ;;
-   ;;    1          1          1       1      1 + n*(1 + (n - 1)*(1 + (n - 2)))
-   ;; -------- + -------- + -------- + --  =  ---------------------------------
-   ;; (n - 3)!   (n - 2)!   (n - 1)!   n!                    n!
-   ;;
-   ;; The number of added summands should depend on the current precision. 
-   ;; k = isqrt(prec) seems to fit here.
-   ;;
-  (let (s h (n 1) d (k (isqrt prec))) 
-     (setq h (ash 1 prec))
-     (setq s h)
-     (do ((i k (+ i k)))
-         ((zerop h))
-       (setq d (do ((j 1 (1+ j)) (p i))
-                   ((> j (1- k)) (* p n))
-                 (setq p (* p (- i j)))) )
-       (setq n (do ((j (- k 2) (1- j)) (p 1))
-                   ((< j 0) p)
-                 (setq p (1+ (* p (- i j))))) )
-       (setq h (truncate (* h n) d))
-       (setq s (+ s h)))
-     s))
+;; Volker van Nek, Sept. 2014
 
 ;;
-;; (fppi1) returns a bigfloat approximation to PI
-;;   (where the last digits are rounded, not truncated).
+;; Euler's number E
 ;;
-(defun fppi1 nil
-  (bcons
-    (let ((tmp (let ((fpprec (+ fpprec 14))) (comppi)))) ;; compute 4 additional decimal digits 
-      (list (fpround (car tmp)) (cadr tmp)) )))          ;; round to fpprec
-;; I checked the results for all fpprec in [10, 5010] : 
-;; Without extra digits 117 results differ in their last digit from the correctly 
-;; rounded approximation. 15 differ in two and 1 in three digits. These cases 
-;; have 9 to 0 roundings at their ends. In this range with (+ fpprec 10) all digits 
-;; are rounded correctly.
-
-;; Version 1:
-#- (or sbcl clisp)
-(defun comppi nil
-  ;; STEP 1:
-  ;; compute sqrt(640320^3/12^2)
-  ;;       = sqrt(1823176476672000) = 42698670.666333...
-  ;;
-  ;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
-  ;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
-  ;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
-  (let ((a 1823176476672000)
-        (n 42698670666)
-        (d 1000)
-         h )
-    (do ((prec 32 (* 2 prec)))
-        ((> prec fpprec))
-      (setq h n)
-      (setq n (+ (* n n) (* a d d)))
-      (setq d (* 2 h d)) )
-  ;; STEP 2:
-  ;; divide n/d = sqrt(640320^3/12^2) by Chudnovsky-sum:
-  ;; pi = n/(d*sum)
-    (fpquotient (intofp n) 
-                (list (fpround (* d (chudnovsky-series fpprec))) *m) )))
-;;
-;; (chudnovsky-series fpprec)/2^fpprec is an approximation to 640320^(3/2)/12 * 1/%pi
-;;
-;; Chudnovsky & Chudnovsky (1987):
-;;
-;; 640320^(3/2) / (12 * %pi) =
-;;
-;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf ) 
-;;
-(defun chudnovsky-series (prec)                   ;; use fixed point arithmetic
-  (let (s h n d)
-    ;; i = 0:
-    (setq s (ash 13591409 prec))                  ;; 13591409 * 2^prec
-    ;; i = 1:             
-    (setq h (neg (truncate (ash 67047785160 prec) ;; - 6!/3!*(545140134+13591409) * 2^prec
-                           262537412640768000 ))) ;; 640320^3
-    (setq s (+ s h))
-    (do ((i 2 (1+ i)))
-        ((zerop h))
-      (setq n (* 24 (- (* 6 i) 5) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
-      (setq d (* (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
-      ;;             i^3   *(545140134 *(i-1) + 13591409)*     640320^3
-      (setq h (neg (truncate (* h n) d)))
-      (setq s (+ s h)))
-    s ))
-;;
-;; Version 2: (originally by Raymond Toy)
-;;
-;; The following timing measurements show why there are two versions of comppi. 
-;; (1.6 GHz DualCore, Maxima 5.32 with Lisps from Lubuntu 13.10, 32 and 64 Bit) 
+(defun fpe1 ()
+  (let ((e (compe (+ fpprec 12))))               ;; compute additional bits 
+    (bcons (list (fpround (car e)) (cadr e))) )) ;; round to fpprec
 ;; 
-;; $fpprec = 1000, runtime for 1000 runs in secs:
-;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
-;;          ccl   :  3.076 |  4.968 |  1.875 |  2.880
-;;          ecl   :  0.583 |  0.882 |  0.344 |  0.411
-;;          gcl   :  0.560 |  0.810 |  0.370 |  0.379
-;;          cmucl :  1.3   |  1.28  |  1.22  |  1.24
-;;          clisp :  0.916 |  0.755 |  0.777 |  0.661
-;;          sbcl  :  0.733 |  0.725 |  0.325 |  0.330
-;; 
-;; $fpprec = 1000000, runtime in secs:
-;;  version,  bit : 1,  32 | 2,  32 | 1,  64 | 2,  64
-;;          ccl   : 28.527 | 47.322 | 17.793 | 27.308
-;;          ecl   :  3.249 |  3.609 |  1.520 |  1.669
-;;          gcl   :  1.820 |  1.980 |  0.970 |  1.039
-;;          cmucl :  8.41  | 10.41  |  8.27  | 10.05 
-;;          clisp :  4.836 |  4.772 |  4.249 |  4.463
-;;          sbcl  :  7.270 |  6.079 |  2.815 |  2.618
+;; Taylor: %e = sum(s[i] ,i,0,inf) where s[i] = 1/i!
 ;;
-#+ (or sbcl clisp)
-(defun comppi nil
-  ;; STEP 1:
-  (let ((a 1823176476672000) sqrt-a)
-    ;; sqrt(a) = sqrt(a*2^(2*n))/(2^n).  Use isqrt to compute the sqrt.
-    (setq a (ash a (* 2 fpprec)))
-    (setq sqrt-a (intofp (isqrt a)))
+(defun compe (prec) 
+  (let ((fpprec prec))
+    (multiple-value-bind (tt qq) (split-taylor-e 0 (taylor-e-size prec))
+      (fpquotient (intofp tt) (intofp qq)) )))
+;;
+;; binary splitting:
+;;
+;;                  1
+;; s[i] = ----------------------
+;;        q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where q[0] = 1 
+;;        q[i] = i 
+;; 
+(defun split-taylor-e (i j)
+  (let (qq tt)
+    (if (= (- j i) 1) 
+      (setq qq (if (= i 0) 1 i) 
+            tt 1 )
+      (let ((m (ash (+ i j) -1)))
+        (multiple-value-bind (tl ql) (split-taylor-e i m)
+          (multiple-value-bind (tr qr) (split-taylor-e m j)
+            (setq qq (* ql qr)
+                  tt (+ (* qr tl) tr) )))))
+    (values tt qq) ))
+;;
+;;   stop when i! > 2^fpprec
+;;
+;;   log(i!) = sum(log(k), k,1,i) > fpprec * log(2)
+;;
+(defun taylor-e-size (prec)
+  (let ((acc 0)
+        (lim (* prec (log 2))) )
+    (do ((i 1 (1+ i))) 
+        ((> acc lim) i)
+      (incf acc (log i)) )))
+;;
+;;----------------------------------------------------------------------------;;
+;;
+;; PI
+;;
+(defun fppi1 ()
+  (let ((pi1 (comppi (+ fpprec 10))))
+    (bcons (list (fpround (car pi1)) (cadr pi1))) ))
+;;
+;; Chudnovsky & Chudnovsky:
+;;
+;; C^(3/2)/(12*%pi) = sum(s[i], i,0,inf), 
+;;
+;;    where s[i] = (-1)^i*(6*i)!*(A*i+B) / (i!^3*(3*i)!*C^(3*i))
+;;
+;;       and A = 545140134, B = 13591409, C = 640320
+;;
+(defun comppi (prec) 
+  (let ((fpprec prec)
+        nr n d oldn tt qq n*qq )
+    ;; STEP 1:
+    ;; compute n/d = sqrt(10005) :
+    ;;
+    ;;                         n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
+    ;; quadratic Heron: x[0] = ----,                          , sqrt(a) = ------
+    ;;                         d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
+    ;;
+    (multiple-value-setq (nr n d) (sqrt-10005-constants fpprec))
+    (dotimes (i nr)
+      (setq oldn n
+            n (+ (* n n) (* 10005 d d))
+            d (* 2 oldn d) ))
     ;; STEP 2:
-    ;; divide
-    (fpquotient
-    ;; sqrt(640320^3/12^2)
-      (list (car sqrt-a) (- (cadr sqrt-a) fpprec)) ;; mantissa exponent
-    ;; by Chudnovsky-sum:
-      (list (fpround (chudnovsky-series fpprec)) *m) )))
-;;.............................................................................. Volker van Nek, Feb 2014 .. ;;
-
-
-;; Compute the main part of the Euler-Mascheroni constant using the
-;; Bessel function approach.  See
-;; http://numbers.computation.free.fr/Constants/Gamma/gamma.html for a
-;; description of the algorithm.
-;; Roughly, we have
+    ;; divide C^(3/2)/12 = 3335*2^7*sqrt(10005) 
+    ;;   by Chudnovsky-sum = tt/qq :
+    ;;
+    (setq nr (ceiling (* fpprec 0.021226729578153))) ;; nr of summands
+                      ;; fpprec*log(2)/log(C^3/(24*6*2*6))
+    (multiple-value-setq (tt qq) (split-chudnovsky 0 (1+ nr)))
+    (setq n (* 3335 n)
+          n*qq (intofp (* n qq)) )
+    (fpquotient (list (car n*qq) (+ (cadr n*qq) 7))
+                (intofp (* d tt)) )))
 ;;
-;; %gamma = A(N)/B(N) - log(N) + O(e^(-4*N))
+;; The returned n and d serve as start values for the iteration. 
+;; n/d = sqrt(10005) with a precision of p = ceiling(prec/2^nr) bits 
+;;     where nr is the number of needed iterations.
 ;;
-;; where
+(defun sqrt-10005-constants (prec)
+  (let (ilen p nr n d)
+    (if (< prec 128)
+      (setq nr 0 p prec)
+      (setq ilen (integer-length prec)
+            nr (- ilen 7)
+            p (ceiling (* prec (expt 2.0 (- nr)))) ))
+    (cond 
+      ((<= p  76) (setq n         256192036001 d         2561280120))
+      ((<= p  89) (setq n       51244811200700 d       512320048001))
+      ((<= p 102) (setq n     2050048640064001 d     20495363200160))
+      ((<= p 115) (setq n   410060972824000900 d   4099584960080001))
+      (t          (setq n 16404488961600100001 d 164003893766400200)) )
+    (values nr n d) ))
 ;;
+;; binary splitting:
+;; 
+;;        a[i] * p[0]*p[1]*p[2]*..*p[i]
+;; s[i] = -----------------------------
+;;               q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where a[0] = B 
+;;        p[0] = q[0] = 1 
+;;        a[i] = A*i+B
+;;        p[i] = - (6*i-5)*(2*i-1)*(6*i-1)
+;;        q[i] = C^3/24*i^3
 ;;
-;;          a*N
-;;   A(N) = sum (N^2/n!)^2*H(n)
-;;          n=0
+(defun split-chudnovsky (i j)
+  (let (aa pp/qq pp qq tt)
+    (if (= (- j i) 1) 
+      (if (= i 0) 
+        (setq aa 13591409 pp 1 qq 1 tt aa)
+        (setq aa (+ (* i 545140134) 13591409)
+              pp/qq (/ (* (- 5 (* 6 i)) (- (* 2 i) 1) (- (* 6 i) 1)) 
+                       10939058860032000 ) ; C^3/24
+              pp (numerator pp/qq)
+              qq (* (denominator pp/qq) (expt i 3))
+              tt (* aa pp) ))
+      (let ((m (ash (+ i j) -1)))
+        (multiple-value-bind (tl ql pl) (split-chudnovsky i m)
+          (multiple-value-bind (tr qr pr) (split-chudnovsky m j)
+            (setq pp (* pl pr)
+                  qq (* ql qr)
+                  tt (+ (* qr tl) (* pl tr)) )))))
+    (values tt qq pp) ))
 ;;
-;;          a*N
-;;   B(N) = sum (N^2/n!)^2
-;;          n=0
+;;----------------------------------------------------------------------------;;
 ;;
-;;           n
-;;   H(n) = sum 1/k
-;;          k=1
+;; Euler-Mascheroni constant GAMMA
 ;;
-;;   with H(0) = 0
+(defun fpgamma1 ()
+  (let ((res (comp-bf%gamma (+ fpprec 14))))
+    (bcons (list (fpround (car res)) (cadr res))) ))
 ;;
-;; and a = 3.591121476668622136649223 where a*(log(a)-1) = 1.
+;; Brent-McMillan algorithm
 ;;
-;; This formula can be easily justified by looking at the value
-;; K0(2*N)/I0(2*N), where K0 and I0 are the modified Bessel functions.
-;; From A&S 9.6.12 and 9.6.13, We see that
+;; Let
+;;       alpha = 4.970625759544 
 ;;
-;;           inf
-;; I0(2*N) = sum (N^2/n!)^2
-;;           n=0
+;;       n > 0 and N-1 >= alpha*n
 ;;
+;;       H(k) = sum(1/i, i,1,k)
 ;;
-;;                                        inf
-;; K0(2*N) = -(log(N) + %gamma)*I0(2*N) + sum (N^2/n!)^2*H(n)
-;;                                        n=0
+;;       S = sum(H(k)*(n^k/k!)^2, k,0,N-1)
+;; 
+;;       I = sum((n^k/k!)^2, k,0,N-1)
 ;;
-;; So
+;;       T = 1/(4*n)*sum((2*k)!^3/(k!^4*(16*n)^(2*k)), k,0,2*n-1)
 ;;
-;; K0(2*N)/I0(2*N) = -log(N) - %gamma + C
+;; and
+;;       %gamma = S/I - T/I^2 - log(n)
 ;;
-;; where
+;; Then 
+;;       |%gamma - gamma| < 24 * e^(-8*n)
 ;;
-;; C = [sum (N^2/n!)^2*H(n)]/sum (N^2/n!)^2
-;;
-;; or
-;;
-;; For N large, A&S gives
-;;
-;; I0(2*N) = exp(2*N)/sqrt(4*%pi*N)
-;;
-;; K0(2*N) = sqrt(%pi/(4*N))*exp(-2*N)
-;;
-;; So K0(2*N)/I0(2*N) = %pi*exp(-4*N) and
-;;
-;; O(exp(-4*N)) = -log(N) - %gamma + C
-;;
-;; or
-;;
-;; %gamma = C - log(N) + O(exp(-4*N))
-;;
-;; And C is approximately A(N)/B(N) if we take enough terms in the
-;; sum.
+;; (Corollary 2, Remark 2, Brent/Johansson http://arxiv.org/pdf/1312.0039v1.pdf)
 ;;
 (defun comp-bf%gamma (prec)
-  ;; Prec is the number of digits we want.  We assume the remainder is
-  ;; really e^(-4*N) and not O(e^(-4*N)).  So choose N such that
-  ;; exp(-4*N) is less than the number of digits of precision we want.
-  ;;
-  ;; We also assume don't need a really precise value of beta because
-  ;; our N's are not so big that we need more.
   (let* ((fpprec prec)
-	 (big-n (floor (* 1/4 prec (log 2.0))))
-	 (big-n-sq (intofp (* big-n big-n)))
-	 (beta 3.591121476668622136649223)
-	 (limit (floor (* beta big-n)))
-	 (one (fpone))
-	 (term (intofp 1))
-	 (harmonic (intofp 0))
-	 (a-sum (intofp 0))
-	 (b-sum (intofp 1)))
-    (do ((n 1 (1+ n)))
-	((> n limit))
-      (let ((bf-n (intofp n)))
-	(setf term (fpquotient (fptimes* term big-n-sq)
-			       (fptimes* bf-n bf-n)))
-	(setf harmonic (fpplus harmonic (fpquotient one bf-n)))
-	(setf a-sum (fpplus a-sum (fptimes* term harmonic)))
-	(setf b-sum (fpplus b-sum term))))
-    (fpplus (fpquotient a-sum b-sum)
-	    (fpminus (fplog (intofp big-n))))))
-
-(defun fpgamma1 ()
-  ;; Use a few extra bits of precision
-  (bcons (list (fpround (first (comp-bf%gamma (+ fpprec 8)))) 0)))
-
+         (n (ceiling (* 1/8 (+ (* prec (log 2.0)) (log 24.0)))))
+         (n2 (* n n))
+         (alpha 4.970625759544)
+         (lim (ceiling (* alpha n))) 
+          sums/sumi    ;; S/I
+          sumi sumi2   ;; I and I^2
+          sumt/sumi2 ) ;; T/I^2
+    (multiple-value-bind (vv tt qq dd) (split-gamma-1 1 (1+ lim) n2) 
+      ;;
+      ;; sums      = vv/(qq*dd)
+      ;; sumi      = tt/qq
+      ;; sums/sumi = vv/(qq*dd)*qq/tt = vv/(dd*tt)
+      ;;
+      (setq sums/sumi (fpquotient (intofp vv) (intofp (* dd tt))) 
+            sumi      (fpquotient (intofp tt) (intofp qq))
+            sumi2     (fptimes* sumi sumi) )
+      ;;
+      (multiple-value-bind (ttt qqq) (split-gamma-2 0 (* 2 n) (* 32 n2))
+        ;;
+        ;; sumt       = 1/(4*n)*ttt/qqq 
+        ;; sumt/sumi2 = ttt/(4*n*qqq*sumi2)
+        ;;
+        (setq sumt/sumi2 (fpquotient (intofp ttt) 
+                                     (fptimes* (intofp (* 4 n qqq)) sumi2) ))
+        ;; %gamma :
+        (fpdifference sums/sumi (fpplus sumt/sumi2 (log-n n)) )))))
+;;
+;; split S and I simultaneously:
+;;
+;; summands I[0] = 1, I[i]/I[i-1] = n^2/i^2
+;;
+;;          S[0] = 0, S[i]/S[i-1] = n^2/i^2*H(i)/H(i-1)
+;;
+;;        p[0]*p[1]*p[2]*..*p[i]
+;; I[i] = ----------------------
+;;        q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where p[0] = n^2 
+;;        q[0] = 1 
+;;        p[i] = n^2
+;;        q[i] = i^2
+;;                                   c[0]   c[1]   c[2]        c[i]
+;; S[i] = H[i] * I[i],  where H[i] = ---- + ---- + ---- + .. + ----
+;;                                   d[0]   d[1]   d[2]        d[i]
+;;    and c[0] = 0 
+;;        d[0] = 1 
+;;        c[i] = 1
+;;        d[i] = i
+;;
+(defun split-gamma-1 (i j n2) 
+  (let (pp cc dd qq tt vv)
+    (cond 
+      ((= (- j i) 1) 
+        (if (= i 1) ;; S[0] is 0 -> start with i=1 and add I[0]=1 to tt :
+          (setq  pp n2  cc 1  dd 1  qq 1        tt (1+ n2)  vv n2)  
+          (setq  pp n2  cc 1  dd i  qq (* i i)  tt pp       vv tt) ))
+      (t 
+        (let* ((m (ash (+ i j) -1)) tmp) 
+          (multiple-value-bind (vl tl ql dl cl pl) (split-gamma-1 i m n2)
+            (multiple-value-bind (vr tr qr dr cr pr) (split-gamma-1 m j n2)
+              (setq pp (* pl pr)
+                    cc (+ (* cl dr) (* dl cr))
+                    dd (* dl dr)
+                    qq (* ql qr)
+                    tmp (* pl tr)
+                    tt (+ (* tl qr) tmp)
+                    vv (+ (* dr (+ (* vl qr) (* cl tmp))) (* dl pl vr)) ))))))
+    (values vv tt qq dd cc pp) ))
+;;
+;; split 4*n*T:
+;;
+;; summands T[0] = 1, T[i]/T[i-1] = (2*i−1)^3/(32*i*n^2)
+;; 
+;;        p[0]*p[1]*p[2]*..*p[i]
+;; T[i] = ----------------------
+;;        q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where p[0] = q[0] = 1
+;;        p[i] = (2*i−1)^3
+;;        q[i] = 32*i*n^2
+;;
+(defun split-gamma-2 (i j n2*32) 
+  (let (pp qq tt)
+    (cond 
+      ((= (- j i) 1) 
+        (if (= i 0) 
+          (setq  pp 1                      qq 1            tt 1)
+          (setq  pp (expt (1- (* 2 i)) 3)  qq (* i n2*32)  tt pp) ))
+      (t 
+        (let* ((m (ash (+ i j) -1))) 
+          (multiple-value-bind (tl ql pl) (split-gamma-2 i m n2*32)
+            (multiple-value-bind (tr qr pr) (split-gamma-2 m j n2*32)
+              (setq pp (* pl pr)
+                    qq (* ql qr)
+                    tt (+ (* tl qr) (* pl tr)) ))))))
+    (values tt qq pp) ))
+;;
+;;----------------------------------------------------------------------------;;
+;;
+;; log(2) = 18*L(26) - 2*L(4801) + 8*L(8749)
+;;
+;;   where L(k) = atanh(1/k)
+;;
+;;   see http://numbers.computation.free.fr/Constants/constants.html
+;;
+;;;(defun $log2 () (bcons (comp-log2))) ;; checked against reference table
+;;
 (defun comp-log2 ()
-  ;; This is the algorithm given in http://numbers.computation.free.fr/Constants/constants.html
-  ;; log(2) = 18*L(26) - 2*L(4801) + 8*L(8749)
-  ;; L(k) = atanh(1/k) = 1/2*log((k+1)/(k-1))
-  ;;      = sum(x^(2*m+1)/(2*m+1), m, 0, inf)
-  ;;
-  ;; So
-  ;;
-  ;; log(2) = 18*atanh(1/26)-2*atanh(1/4801)+8*atanh(8749)
-  (flet ((fast-atanh (k)
-	   ;; Compute atanh(x) using Taylor series:
-	   ;;
-	   ;; atanh(x) = sum(x^(2*n+1)/(2*n+1), n, 0, inf)
-	   (let* ((term (fpquotient (intofp 1) (intofp k)))
-		  (fact (fptimes* term term))
-		  (oldsum (intofp 0))
-		  (sum term))
-	     (loop for m from 3 by 2
-		until (equal oldsum sum)
-		do
-		  (setf oldsum sum)
-		  (setf term (fptimes* term fact))
-		  (setf sum (fpplus sum (fpquotient term (intofp m)))))
-	     sum)))
-    ;; Compute log(2) using the formula above.  We also use 8 extra
-    ;; bits of precision.
-    (let ((result
-	   (let* ((fpprec (+ fpprec 8)))
-	     (fpplus (fpdifference (fptimes* (intofp 18) (fast-atanh 26))
-				   (fptimes* (intofp 2) (fast-atanh 4801)))
-		     (fptimes* (intofp 8) (fast-atanh 8749))))))
-      (list (fpround (car result))
-	    (+ -8 *m)))))
+  (let ((res
+         (let ((fpprec (+ fpprec 12)))
+           (fpplus 
+             (fpdifference (n*atanh-1/k 18 26) (n*atanh-1/k 2 4801))
+             (n*atanh-1/k 8 8749) ))))
+    (list (fpround (car res)) (cadr res)) ))
+;;
+;; Taylor: atanh(1/k) = sum(s[i], i,0,inf)
+;;
+;;    where s[i] = 1/((2*i+1)*k^(2*i+1))
+;;
+(defun n*atanh-1/k (n k) ;; integer n,k
+  (let* ((k2 (* k k))
+         (nr (ceiling (* fpprec (/ (log 2) (log k2))))) )
+      (multiple-value-bind (tt qq bb) (split-atanh-1/k 0 (1+ nr) k k2)
+        (fpquotient (intofp (* n tt)) (intofp (* bb qq))) )))
+;;
+;; binary splitting:
+;;                      1
+;; s[i] = -----------------------------
+;;        b[i] * q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where b[0] = 1 
+;;        q[0] = k
+;;        b[i] = 2*i+1
+;;        q[i] = k^2
+;;
+(defun split-atanh-1/k (i j k k2)
+  (let (bb qq tt)
+    (if (= (- j i) 1) 
+      (if (= i 0) 
+        (setq  bb 1             qq k   tt 1)
+        (setq  bb (1+ (* 2 i))  qq k2  tt 1) )
+      (let ((m (ash (+ i j) -1)))
+        (multiple-value-bind (tl ql bl) (split-atanh-1/k i m k k2)
+          (multiple-value-bind (tr qr br) (split-atanh-1/k m j k k2)
+            (setq bb (* bl br)
+                  qq (* ql qr)
+                  tt (+ (* br qr tl) (* bl tr)) )))))
+    (values tt qq bb) ))
+;;
+;;----------------------------------------------------------------------------;;
+;;
+;; log(n) = log(n/2^k) + k*log(2)
+;;
+;;;(defun $log10 () (bcons (log-n 10))) ;; checked against reference table
+;;
+(defun log-n (n) ;; integer n > 0
+  (cond 
+    ((= 1 n) (list 0 0))
+    ((= 2 n) (comp-log2))
+    (t
+      (let ((res 
+             (let ((fpprec (+ fpprec 10))
+                   (k (integer-length n)) )
+               ;; choose k so that |n/2^k - 1| is as small as possible:
+               (when (< n (* (coerce 2/3 'flonum) (ash 1 k))) (decf k))
+               ;; now |n/2^k - 1| <= 1/3
+               (fpplus (log-u/2^k n k fpprec) 
+                       (fptimes* (intofp k) (comp-log2)) ))))
+        (list (fpround (car res)) (cadr res)) ))))
+;;
+;; log(1+u/v)  = 2 * sum(s[i], i,0,inf)
+;;
+;;   where s[i] = (u/(2*v+u))^(2*i+1)/(2*i+1)
+;;
+(defun log-u/2^k (u k prec) ;; integer u k; x = u/2^k; |x - 1| < 1
+  (setq u (- u (ash 1 k)))  ;; x <-- x - 1
+  (cond 
+    ((= 0 u) (list 0 0))
+    (t
+      (while (evenp u) (setq u (ash u -1)) (decf k))
+      (let* ((u2 (* u u))
+             (w (+ u (ash 2 k)))
+             (w2 (* w w))
+             (nr (ceiling (* prec (/ (log 2) 2 (log (abs (/ w u)))))))
+              lg/2 )
+        (multiple-value-bind (tt qq bb) (split-log-1+u/v 0 (1+ nr) u u2 w w2)
+          (setq lg/2 (fpquotient (intofp tt) (intofp (* bb qq)))) ;; sum
+          (list (car lg/2) (1+ (cadr lg/2))) )))))                ;; 2*sum
+;;
+;; binary splitting:
+;;
+;;               p[0]*p[1]*p[2]*..*p[i]
+;; s[i] = -----------------------------
+;;        b[i] * q[0]*q[1]*q[2]*..*q[i]
+;; 
+;;  where b[0] = 1 
+;;        p[0] = u
+;;        q[0] = w = 2*v+u
+;;        b[i] = 2*i+1
+;;        p[i] = u^2 
+;;        q[i] = w^2
+;;
+(defun split-log-1+u/v (i j u u2 w w2)
+  (let (pp bb qq tt)
+    (if (= (- j i) 1) 
+      (if (= i 0) 
+        (setq  pp u   bb 1             qq w   tt u)
+        (setq  pp u2  bb (1+ (* 2 i))  qq w2  tt pp) )
+      (let ((m (ash (+ i j) -1))) 
+        (multiple-value-bind (tl ql bl pl) (split-log-1+u/v i m u u2 w w2)
+          (multiple-value-bind (tr qr br pr) (split-log-1+u/v m j u u2 w w2)
+            (setq bb (* bl br)
+                  pp (* pl pr)
+                  qq (* ql qr)
+                  tt (+ (* br qr tl) (* bl pl tr)) )))))
+    (values tt qq bb pp) ))
+;;
+;;----------------------------------------------------------------------------;;
 
 
 (defun fpdifference (a b)
