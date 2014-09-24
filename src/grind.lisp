@@ -130,7 +130,7 @@
        (do () ((null x) l) (setq l (string1 (car x) l) x (cdr x))))))
 
 (defun msize (x l r lop rop)
-  (setq x (nformat x))
+  (setq x (nformat-check x))
   (cond ((atom x) (msize-atom x l r))
         ((and (atom (car x)) (setq x (cons '(mprogn) x)) nil))
 	((or (<= (lbp (caar x)) (rbp lop)) (> (lbp rop) (rbp (caar x))))
@@ -386,7 +386,7 @@
 
 (defun msz-mexpt (x l r)
   (setq l (msize (cadr x) l nil lop 'mexpt)
-	r (if (mmminusp (setq x (nformat (caddr x))))
+	r (if (mmminusp (setq x (nformat-check (caddr x))))
 	      (msize (cadr x) (reverse '(#\^ #\-)) r 'mexpt rop)
 	      (msize x (list #\^) r 'mexpt rop)))
   (list (+ (car l) (car r)) l r))
