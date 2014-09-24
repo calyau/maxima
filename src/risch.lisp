@@ -211,7 +211,7 @@
      (setq y (rischlogdprog exp))
      (dolist (rat logptdx)
        (setq y (rischadd (rischlogeprog rat) y)))
-     (setq y (rischadd (tryrisch1 expstuff mainvar) y))
+     (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar) y)))
      (return (if expint (rischadd (rischexppoly expint var) y)
 		 y))))
 

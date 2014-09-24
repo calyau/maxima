@@ -1,6 +1,14 @@
 (kill(all),load(abs_integrate), load('hypergeometric), load('hyperint), start : elapsed_real_time(), declare(signum,real), 0);
 0$
 
+/* SF bug #2815: abs_integrate leads to infinite recursion
+ * put this test first since leftover stuff in VARLIST seems to mask the bug
+ */
+
+integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
+(-1)/6*%pi^2*log(2)+1/2*log(2)^3+zeta(3)
+                   +(-1)/24*((-2)*%pi^2*log(2)+4*log(2)^3+21*zeta(3))$
+
 (extra_integration_methods : endcons('hyper_int, extra_integration_methods),0);
 0$
 
