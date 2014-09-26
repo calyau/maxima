@@ -367,7 +367,7 @@ The incomplete elliptic integral of the second kind, defined as
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 
-See also @ref{elliptic_e} and @ref{elliptic_ec}.
+See also @ref{elliptic_f} and @ref{elliptic_ec}.
 
 @opencatbox
 @category{Elliptic integrals}
