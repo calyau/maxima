@@ -1635,7 +1635,7 @@ axis. The first number is the initial value, the second the increments
 and the third is the last value where a mark is placed. The second and
 third numbers can be omitted. When only one number is given, it will be
 used as the increment from an initial value that will be chosen
-automatically
+automatically.
 
 @opencatbox
 @category{Plotting}
