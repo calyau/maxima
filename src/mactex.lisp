@@ -906,6 +906,9 @@
 (defprop mcond tex-mcond tex)
 (defprop %mcond tex-mcond tex)
 
+(defprop %del tex-prefix tex)
+(defprop %del ("d") texsym)
+
 (defprop %derivative tex-derivative tex)
 (defun tex-derivative (x l r)
   (tex (if $derivabbrev
