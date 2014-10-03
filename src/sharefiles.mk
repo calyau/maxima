@@ -162,6 +162,7 @@ contrib/alt-display/alt-display.mac \
 contrib/alt-display/tex-display.lisp \
 contrib/altsimp/altsimp.lisp \
 contrib/augmented_lagrangian.mac \
+contrib/binsplit/binsplit.lisp \
 contrib/bitwise/bitwise.lisp \
 contrib/bitwise/bitwise_specification.txt \
 contrib/bitwise/rtest_bitwise.mac \
@@ -313,6 +314,7 @@ contrib/gentran/test/mcond.lisp \
 contrib/gentran/test/mdo.lisp \
 contrib/gentran/test/README \
 contrib/gentran/test/rk.in \
+contrib/gentran/test/rtest_gentran.mac \
 contrib/gentran/test/runge.mac \
 contrib/gentran/test/runge.output \
 contrib/gentran/test/runge.template \

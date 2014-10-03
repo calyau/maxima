@@ -2248,6 +2248,118 @@
 	       (write-char #\E s))))
        (format stream f w d e k number)))))
 
+#|
+(defmacro assert-equal (expected form)
+  (let ((result (gensym))
+	(e (gensym)))
+    `(let ((,e ,expected)
+	  (,result ,form))
+       (unless (equal ,e ,result)
+	 (format *debug-io* "Assertion failed: Expected ~S but got ~S~%" ,e ,result)))))
+
+(assert-equal "  0.990E+00" (format nil
+				    "~11,3,2,0,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 99/100)))
+(assert-equal "  0.999E+00" (format nil
+				    "~11,3,2,0,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 999/1000)))
+;; Actually "  0.100E+01", but format-e doesn't round the output.
+(assert-equal "  0.999E+00" (format nil
+				    "~11,3,2,0,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 9999/10000)))
+(assert-equal "  0.999E-04" (format nil
+				    "~11,3,2,0,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 0000999/10000000)))
+;; Actually "  0.100E-03", but format-e doesn't round the output.
+(assert-equal "  0.999E-0e" (format nil
+				    "~11,3,2,0,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 00009999/100000000)))
+(assert-equal "  9.999E-05" (format nil
+				    "~11,3,2,,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 00009999/100000000)))
+;; Actually "  1.000E-04", but format-e doesn't round the output.
+(assert-equal "  9.999E-05" (format nil
+				    "~11,3,2,,'*,,'E/bigfloat::format-e/"
+				    (bigfloat:bigfloat 000099999/1000000000)))
+;; All of these currently fail.
+(assert-equal ".00123d+6" (format nil
+				  "~9,,,-2/bigfloat::format-e/"
+				  (bigfloat:bigfloat 1.2345689d3)))
+(assert-equal "-.0012d+6" (format nil
+				  "~9,,,-2/bigfloat::format-e/"
+				  (bigfloat:bigfloat -1.2345689d3)))
+(assert-equal ".00123d+0" (format nil
+				  "~9,,,-2/bigfloat::format-e/"
+				  (bigfloat:bigfloat 1.2345689d-3)))
+(assert-equal "-.0012d+0" (format nil
+				  "~9,,,-2/bigfloat::format-e/"
+				  (bigfloat:bigfloat -1.2345689d-3)))
+
+;; These fail because too many digits are printed and because the
+;; scale factor isn't properly applied.
+(assert-equal ".00000003d+8" (format nil
+				     "~9,4,,-7E"
+				     (bigfloat:bigfloat pi)))
+(assert-equal ".000003d+6" (format nil
+				   "~9,4,,-5E"
+				   (bigfloat:bigfloat pi)))
+(assert-equal "3141600.d-6" (format nil
+				    "~5,4,,7E"
+				    (bigfloat:bigfloat pi)))
+(assert-equal "  314.16d-2" (format nil
+				    "~11,4,,3E"
+				    (bigfloat:bigfloat pi)))
+(assert-equal "  31416.d-4" (format nil
+				    "~11,4,,5E"
+				    (bigfloat:bigfloat pi)))
+(assert-equal "  0.3142d+1" (format nil
+				    "~11,4,,0E"
+				    (bigfloat:bigfloat pi)))
+(assert-equal ".03142d+2" (format nil
+				  "~9,,,-1E"
+				  (bigfloat:bigfloat pi)))
+(assert-equal "0.003141592653589793d+3" (format nil
+						"~,,,-2E"
+						(bigfloat:bigfloat pi)))
+(assert-equal "31.41592653589793d-1" (format nil
+					     "~,,,2E"
+					     (bigfloat:bigfloat pi)))
+;; Fails because exponent is printed as "b0" instead of "b+0"
+(assert-equal "3.141592653589793b+0" (format nil "~E" (bigfloat:bigfloat pi)))
+
+
+;; These fail because too many digits are printed and because the
+;; scale factor isn't properly applied.
+(assert-equal ".03142d+2" (format nil "~9,5,,-1E" (bigfloat:bigfloat pi)))
+(assert-equal " 0.03142d+2" (format nil "~11,5,,-1E" (bigfloat:bigfloat pi)))
+(assert-equal "| 3141593.d-06|" (format nil "|~13,6,2,7E|" (bigfloat:bigfloat pi)))
+(assert-equal "0.314d+01" (format nil "~9,3,2,0,'%E" (bigfloat:bigfloat pi)))
+(assert-equal "+.003d+03" (format nil "~9,3,2,-2,'%@E" (bigfloat:bigfloat pi)))
+(assert-equal "+0.003d+03" (format nil "~10,3,2,-2,'%@E" (bigfloat:bigfloat pi)))
+(assert-equal "=====+0.003d+03" (format nil "~15,3,2,-2,'%,'=@E" (bigfloat:bigfloat pi)))
+(assert-equal "0.003d+03" (format nil "~9,3,2,-2,'%E" (bigfloat:bigfloat pi)))
+(assert-equal "%%%%%%%%" (format nil "~8,3,2,-2,'%@E" (bigfloat:bigfloat pi)))
+
+;; Works
+(assert-equal "0.0f+0" (format nil "~e" 0))
+
+;; Fails because exponent is printed as "b0" instead of "b+0'
+(assert-equal "0.0b+0" (format nil "~e" (bigfloat:bigfloat 0d0)))
+;; Fails because exponent is printed as "b0   " instead of "b+0000"
+(assert-equal "0.0b+0000" (format nil "~9,,4e" (bigfloat:bigfloat 0d0)))
+;; Fails because exponent is printed as "b4" isntead of "b+4"
+(assert-equal "1.2345678901234567b+4" (format nil "~E"
+					      (bigfloat:bigfloat 1.234567890123456789d4)))
+  
+;; Fails because exponent is printed as "b36" instead of "b+36"
+(assert-equal "1.32922799578492b+36" (format nil "~20E"
+					     (bigfloat:bigfloat (expt 2d0 120))))
+;; Fails because too many digits are printed and the exponent doesn't include "+".
+(assert-equal "       1.32922800b+36" (format nil "~21,8E"
+					      (bigfloat:bigfloat (expt 2d0 120))))
+|#
+
+
 ;; Format bigfloats using ~F format. This is suitable as a ~// format.
 ;;
 ;; NOTE: This is a modified version of FORMAT-FIXED from CMUCL to
