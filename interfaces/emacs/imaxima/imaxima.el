@@ -833,9 +833,11 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
      "\\setlength{\\textheight}{200cm}\n"
      ;; define \boxed from amsmath.sty
      "\\makeatletter
+      \\providecommand\\boxed{}
+      \\providecommand\\operatorname{}
       \\renewcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}
-\\renewcommand{\\operatorname}[1]{%
-\\mathop{\\relax\\kern\\z@\\operator@font{#1}}}
+      \\renewcommand{\\operatorname}[1]{%
+      \\mathop{\\relax\\kern\\z@\\operator@font{#1}}}
       \\makeatother
       \\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}
       \\newcommand{\\ifracd}[2]{\\frac{#1}{#2}}
@@ -861,20 +863,6 @@ temporary files.  Use linearized form if LINEAR is non-nil."
      ;;"\\batchmode\n"
      (format "\\documentclass[%dpt,leqno]{article}\n" imaxima-pt-size)
      "\n% mylatex\n"
-     "\\usepackage{color}\n"
-     "\\usepackage{exscale}\n"
-     "\\usepackage[cmbase]{flexisym}\n"
-     "\\usepackage{breqn}\n"
-     "\\setkeys{breqn}{compact}\n"
-     "\\setlength{\\textheight}{200cm}\n"
-     "\\newcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}\n"
-      "\\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}\n"
-      "\\newcommand{\\ifracd}[2]{\\frac{#1}{#2}}\n"
-      "\\newcommand{\\ifracn}[2]{\\frac{#1}{#2}}\n"
-      "\\newcommand{\\isubscript}[2]{{#1}_{#2}}\n"
-      "\\newcommand{\\iexpt}[2]{{#1}^{#2}}\n"
-      "\\newcommand{\\isqrt}[1]{\\sqrt{#1}}\n"
- 
      (format "\\setlength{\\textwidth}{%dmm}\n"
 	     (round (/ (imaxima-get-window-width)
 		       imaxima-scale-factor)))
