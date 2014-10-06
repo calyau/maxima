@@ -67,6 +67,13 @@
 
 |#
 
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (defvar old-ibase *read-base*)
+    (setq *read-base* 10.) )
+
+
 (defvar *a5* 0)
 (defvar *b5* 0) 
 (defvar *c5* 0) 
@@ -78,7 +85,7 @@
 
 (do ((i 0 (1+ i)))
     ((= i 64.) *k5*)
-  (setf (svref *k5* i) (floor (* (abs (sin (1+ i))) #x100000000))) )
+  (setf (svref *k5* i) (floor (* (abs (sin (+ i 1.0))) #x100000000))) )
 
 (defvar *s5* 
   #( 7. 12. 17. 22.   7. 12. 17. 22.   7. 12. 17. 22.   7. 12. 17. 22.
@@ -100,31 +107,34 @@
 
 
 (defun md5-worker ()
-  (let ((%a *a5*) (%b *b5*) (%c *c5*) (%d *d5*) 
-        %f g tmp hlp )
+  (let ((a *a5*) (b *b5*) (c *c5*) (d *d5*) 
+        f g tmp hlp )
     (do ((i 0 (1+ i)))
           ((= i 64.))
       (cond
         ((< i 16.)
-          (setq %f (logior (logand %b %c) (logand (md5-not %b) %d))
+          (setq f (logior (logand b c) (logand (md5-not b) d))
                 g i ))
         ((< i 32.)
-          (setq %f (logior (logand %b %d) (logand %c (md5-not %d)))
+          (setq f (logior (logand b d) (logand c (md5-not d)))
                 g (mod (+ (* 5. i) 1) 16.) ))
         ((< i 48.)
-          (setq %f (logxor %b %c %d)
+          (setq f (logxor b c d)
                 g (mod (+ (* 3. i) 5.) 16.) ))
         (t
-          (setq %f (logxor %c (logior %b (md5-not %d)))
+          (setq f (logxor c (logior b (md5-not d)))
                 g (mod (* 7. i) 16.) )))
-      (setq tmp %d
-            %d %c
-            %c %b
-            hlp (md5+ %a %f (svref *k5* i) (svref *m5* g))
+      (setq tmp d
+            d c
+            c b
+            hlp (md5+ a f (svref *k5* i) (svref *m5* g))
             hlp (md5-left-rotation hlp (svref *s5* i))
-            %b (md5+ %b hlp)
-            %a tmp ))  
-    (setq *a5* (md5+ %a *a5*) *b5* (md5+ %b *b5*) *c5* (md5+ %c *c5*) *d5* (md5+ %d *d5*)) ))
+            b (md5+ b hlp)
+            a tmp ))  
+    (setq *a5* (md5+ *a5* a) 
+          *b5* (md5+ *b5* b) 
+          *c5* (md5+ *c5* c) 
+          *d5* (md5+ *d5* d) )))
 
 
 (defun swap-endian64 (i64) ;; little-endian <--> big-endian
@@ -195,3 +205,8 @@
       (setq bytes (last bytes off)) )
     (format nil "~32,'0x" (md5-hash (list *a5* *b5* *c5* *d5*))) ))
 
+
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (setq *read-base* old-ibase) )

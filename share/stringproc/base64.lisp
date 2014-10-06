@@ -34,6 +34,12 @@
 
 |#
 
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (defvar old-ibase *read-base*)
+    (setq *read-base* 10.) )
+
 
 (defvar *str64* "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
 
@@ -118,3 +124,9 @@
         (when (= (incf j) size) (return))
         (go a) )
       (coerce (map 'vector #'code-char res) 'string) )))
+
+
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (setq *read-base* old-ibase) )

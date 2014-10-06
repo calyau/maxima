@@ -76,6 +76,13 @@
 
 |#
 
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (defvar old-ibase *read-base*)
+    (setq *read-base* 10.) )
+
+
 (defvar *a1* 0)
 (defvar *b1* 0) 
 (defvar *c1* 0) 
@@ -98,34 +105,34 @@
 
 
 (defun sha1-worker ()
-  (let ((*a* *a1*) (*b* *b1*) (*c* *c1*) (*d* *d1*) (*e* *e1*)
-         *f* k tmp )
+  (let ((a *a1*) (b *b1*) (c *c1*) (d *d1*) (e *e1*)
+         f k tmp )
     (do ((i 0 (1+ i)))
         ((= i 80.))
       (cond
         ((< i 20.)
-          (setq *f* (logior (logand *b* *c*) (logand (sha1-not *b*) *d*))
+          (setq f (logior (logand b c) (logand (sha1-not b) d))
                 k #x5A827999 ))
         ((< i 40.)
-          (setq *f* (logxor *b* *c* *d*)
+          (setq f (logxor b c d)
                 k #x6ED9EBA1 ))
         ((< i 60.)
-          (setq *f* (logior (logand *b* *c*) (logand *b* *d*) (logand *c* *d*))
+          (setq f (logior (logand b c) (logand b d) (logand c d))
                 k #x8F1BBCDC ))
         (t
-          (setq *f* (logxor *b* *c* *d*)
+          (setq f (logxor b c d)
                 k #xCA62C1D6 )))
-      (setq tmp (sha1+ (sha1-left-rotation *a* 5) *f* *e* k (svref *m1* i))
-            *e* *d*
-            *d* *c*
-            *c* (sha1-left-rotation *b* 30.)
-            *b* *a*
-            *a* tmp ) )
-    (setq *a1* (sha1+ *a1* *a*)
-          *b1* (sha1+ *b1* *b*)
-          *c1* (sha1+ *c1* *c*)
-          *d1* (sha1+ *d1* *d*)
-          *e1* (sha1+ *e1* *e*) )))
+      (setq tmp (sha1+ (sha1-left-rotation a 5) f e k (svref *m1* i))
+            e d
+            d c
+            c (sha1-left-rotation b 30.)
+            b a
+            a tmp ) )
+    (setq *a1* (sha1+ *a1* a)
+          *b1* (sha1+ *b1* b)
+          *c1* (sha1+ *c1* c)
+          *d1* (sha1+ *d1* d)
+          *e1* (sha1+ *e1* e) )))
 
 
 (defun sha1-words (vec) ;; 32 bit big-endian
@@ -197,3 +204,8 @@
       (setq bytes (last bytes off)) )
     (format nil "~40,'0x" (sha1-hash (list *a1* *b1* *c1* *d1* *e1*))) ))
 
+
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (setq *read-base* old-ibase) )
