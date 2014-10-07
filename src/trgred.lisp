@@ -220,7 +220,9 @@
                     (mapcar (lambda (summand) (m* coefficient summand))
                             (cdr expanded)))
                    (t
-                    (error "Unrecognised output from sp1sintcos.")))))
+                    ;; SP1SINTCOS can also return numbers and constant expressions.
+                    ;; Assume that's the case here.
+                    (list (m* coefficient expanded))))))
              ;; Treat EXPR as a sum and return a list of its terms
              (terms-of-sum (expr)
                (if (mplusp expr) (cdr expr) (ncons expr))))

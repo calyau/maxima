@@ -1948,6 +1948,10 @@ false$
 subst(0, x, trigreduce(product(cos(k*x), k, 1, 8)));
 1$
 
+/* SF bug #2818: Problem with trigreduce */
+trigreduce(sin(1/8*%pi)*sin(3/8*%pi)*sin(5/8*%pi)*sin(7/8*%pi));
+1/8;
+
 /* #2591: Risch gives lisp error */
 (risch(asinh((z^2-1)/z)/z,z), 0);
 0$
