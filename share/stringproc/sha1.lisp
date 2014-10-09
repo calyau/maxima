@@ -76,6 +76,13 @@
 
 |#
 
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (defvar old-ibase *read-base*)
+    (setq *read-base* 10.) )
+
+
 (defvar *a1* 0)
 (defvar *b1* 0) 
 (defvar *c1* 0) 
@@ -197,3 +204,8 @@
       (setq bytes (last bytes off)) )
     (format nil "~40,'0x" (sha1-hash (list *a1* *b1* *c1* *d1* *e1*))) ))
 
+
+(eval-when
+  #+gcl (compile eval)
+  #-gcl (:compile-toplevel :execute)
+    (setq *read-base* old-ibase) )

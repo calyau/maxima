@@ -242,7 +242,8 @@
                        (car 
                          (prepare-args 
                            subctrls 
-                           (list (cons '(mlist) (if loops (butlast todo (- (length todo) loops)) todo) ))
+                           (list (cons '(mlist) 
+                                   (if loops (butlast todo (max 0 (- (length todo) loops))) todo) ))
                            nil nil))) 
                      done))
                  (setq todo 
@@ -262,7 +263,8 @@
                        (car 
                          (prepare-args 
                            subctrls 
-                           (list (cons '(mlist) (if loops (butlast todo (- (length todo) loops)) todo) ))
+                           (list (cons '(mlist) 
+                                   (if loops (butlast todo (max 0 (- (length todo) loops))) todo) ))
                            nil nil))) 
                      done))
                  (setq todo 

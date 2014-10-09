@@ -360,12 +360,12 @@
 ) 
 
 (defun covsubst (x y rp)       ;Substitutes X for Y in the covariant part of RP
-       (cons (car rp) (cons (subst x y (cadr rp)) (cddr rp)))) 
+       (cons (car rp) (cons (subst x y ($covi rp)) (cons ($conti rp) (cdddr rp)))))
 
 (defun consubst (x y rp)   ;Substitutes X for Y in the contravariant part of RP
        (cons (car rp)
-	     (cons (cadr rp)
-		   (cons (subst x y (caddr rp)) (cdddr rp))))) 
+         (cons ($covi rp)
+           (cons (subst x y ($conti rp)) (cdddr rp)))))
 
 (defun dersubst (x y rp)   ;Substitutes X for Y in the derivative indices of RP
        (nconc (list (car rp) (cadr rp) (caddr rp))
@@ -409,14 +409,14 @@
     (
       (rpobj e)
       (setq temp
-        (mapcar 
+        (mapcar
           #'(lambda (v)
             (list '(mtimes)
               (list (diffop) (list smlist d x) (list smlist v))
               (consubst d v e)
             )
           )
-          (cdaddr e)
+          (conti e)
         )
       )
       (simplus
@@ -426,11 +426,11 @@
             (idiff e x)
             (cond
               (
-                (or (cdadr e) (cdddr e))
+                (or (covi e) (cdddr e))
                 (cons (list '(mtimes) -1.  (cons '(mplus)
                       (nconc
-                        (mapcar 
-                          #'(lambda (v) 
+                        (mapcar
+                          #'(lambda (v)
                             (list '(mtimes)
                                 (list
                                   (diffop)
@@ -440,13 +440,13 @@
                                 (covsubst d v e)
                             )
                           )
-                          (cdadr e)
+                          (covi e)
                         )
-                        (mapcar 
-                          #'(lambda (v) 
+                        (mapcar
+                          #'(lambda (v)
                             (list
                               '(mtimes)
-                              (list 
+                              (list
                                 (diffop)
                                 (list smlist v x)
                                 (list smlist d)
@@ -510,6 +510,7 @@
     (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
   )
 )
+
 
 (defun covdifftimes (l x) 
   (prog (sp left out) 
