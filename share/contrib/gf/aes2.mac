@@ -18,7 +18,7 @@
    
 **** AES en/decryption 2 (byte version) ****************************************
    
-   Copyright Volker van Nek, 2012 - 2013
+   Copyright Volker van Nek, 2012 - 2014
    
    
    This is an alternative to share/contrib/gf/aes.mac. It works at byte level 
@@ -29,8 +29,6 @@
    In this file states are implemented as 4x4 arrays.
    
    See below for examples.
-   
-   All functions are compiled when loading aes2.mac. Takes a few seconds.
    
    Maxima version 5.31 or higher.
    (Or download, compile and load a recent version of src/numth.lisp.)
@@ -45,25 +43,25 @@ gf_make_logs()$
 
 mult_by_table(a, b) := 
    if a = 0 or b = 0 then 0
-   else gf_powers[ ?mod(gf_logs[a] + gf_logs[b], 255) ]$
+   else gf_powers[ ?mod(gf_logs[a] + gf_logs[b], 255.) ]$
 
 inv_by_table(a) := 
    if a = 0 then 0 
-   else gf_powers[255 - gf_logs[a]]$
+   else gf_powers[255. - gf_logs[a]]$
 
 
 /* sub_bytes **************************************************************** */
 
-%_byte_sub : make_array(fixnum, 256)$
+%_byte_sub : make_array(fixnum, 256.)$
 
 bit_lrot(b, n) := 
-   ?logior(?logand(?ash(b, n), 255), ?ash(b, n-8))$
+   ?logior(?logand(?ash(b, n), 255.), ?ash(b, n-8))$
 
-for byte : 0 thru 255 do 
+for byte : 0 thru 255. do 
    %_byte_sub[byte] : 
       block([s, x],
          x : inv_by_table(byte),
-         s : [x, 99],
+         s : [x, 99.],
          for n thru 4 do 
             s : cons(bit_lrot(x, n), s),
          apply('?logxor, s) )$
@@ -79,12 +77,12 @@ sub_bytes(state) :=
 
 /* inv_sub_bytes ************************************************************ */
 
-%_inv_byte_sub : make_array(fixnum, 256)$
+%_inv_byte_sub : make_array(fixnum, 256.)$
 
-for byte : 0 thru 255 do 
+for byte : 0 thru 255. do 
    %_inv_byte_sub[byte] : 
       block([s, x],
-         x : ?logxor(byte, 99),
+         x : ?logxor(byte, 99.),
          s : [bit_lrot(x, 1), bit_lrot(x, 3), bit_lrot(x, 6)],
          inv_by_table( apply('?logxor, s) ) )$
 
@@ -160,7 +158,7 @@ add_round_key(state, key) :=
 
 /* key_expansion ************************************************************ */
 
-%_rcon : make_array(fixnum, 4, 10)$
+%_rcon : make_array(fixnum, 4, 10.)$
 
 for i:0 thru 9 do 
    %_rcon[0, i] : gf_p2n(gf_exp(x, i))$
@@ -182,7 +180,7 @@ key_expansion2(old, new) :=
       for r:0 thru 3 do
          new[r, c] : ?logxor(new[r, c-1], old[r, c])$
 
-%_round_key : make_array(any, 11)$
+%_round_key : make_array(any, 11.)$
 
 make_round_key(n) := (
    %_round_key[n] : make_array(fixnum, 4, 4),
@@ -191,7 +189,7 @@ make_round_key(n) := (
 
 key_expansion(key) := (
    %_round_key[0] : key,
-   for n:1 thru 10 do make_round_key(n) )$
+   for n:1 thru 10. do make_round_key(n) )$
 
 
 /* cipher ******************************************************************* */
@@ -207,13 +205,13 @@ cipher(state) := (
    
    sub_bytes(state),
    shift_rows(state), 
-   add_round_key(state, %_round_key[10]) )$
+   add_round_key(state, %_round_key[10.]) )$
 
 
 /* inv_cipher *************************************************************** */
 
 inv_cipher(state) := (
-   add_round_key(state, %_round_key[10]),
+   add_round_key(state, %_round_key[10.]),
    
    for n:9 step -1 thru 1 do (
       inv_shift_rows(state), 
@@ -251,12 +249,15 @@ state2text(state) := block([bytes:[]],
          bytes : cons(state[r, c], bytes),
    simplode(map('ascii, bytes)) )$
 
-bytestring2state(bytestring) := block([num, state, ibase:16],
+/* 
+setting ibase causes SBCL not to compile bytestring2state 
+*/
+bytestring2state(bytestring) := block([num, state, ibase:16.],
    num : parse_string(sconcat(0, bytestring)),
    state : make_array(fixnum, 4, 4),
    for c:3 thru 0 step -1 do
       for r:3 thru 0 step -1 do (
-         state[r, c] : ?logand(num, 255),
+         state[r, c] : ?logand(num, 255.),
          num : ?ash(num, - 8) ),
    state )$
 
@@ -269,9 +270,13 @@ state2bytestring(state) := block([bytes:[]],
 
 /* compilation ************************************************************** */
 
-define_variable(old_io, ?\*standard\-output\*, any_check)$
-define_variable(redirection, make_string_output_stream(), any_check)$
-?\*standard\-output\* : redirection$
+/*
+If speed matters it is recommended to compile the functions rather than to 
+compile the file. When compiling use input base 10.
+
+SBCL doesn't want to compile bytestring2state.
+
+compile(bytestring2state)$
 
 compile(
    mult_by_table, inv_by_table, 
@@ -282,10 +287,8 @@ compile(
    rot_word, key_expansion1, key_expansion2, make_round_key, key_expansion, 
    cipher, inv_cipher,
    matrix2state, state2matrix, 
-   print_block, text2state, state2text, bytestring2state, state2bytestring )$
-
-?\*standard\-output\* : old_io$
-close(redirection)$
+   print_block, text2state, state2text, state2bytestring )$
+*/
 
 
 /* examples ***************************************************************** */

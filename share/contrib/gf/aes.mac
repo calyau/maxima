@@ -18,7 +18,7 @@
    
 **** AES en/decryption *********************************************************
    
-   Copyright Volker van Nek, 2012 - 2013
+   Copyright Volker van Nek, 2012 - 2014
    
    
    This file shows the polynomial aspects of the AES algorithm and its functions 
@@ -31,8 +31,6 @@
    document (URL see below). One of these is also demonstrated in the excellent
    Rijndael_Animation_v4_en.swf (http://www.formaestudio.com/rijndaelinspector/)
    which I highly recommend to set next to this code.
-   
-   All functions are compiled when loading aes.mac. Takes a few seconds.
    
    Functions in this file work in Maxima version 5.31 or higher.
    (Or download from git, compile and load src/numth.lisp.)
@@ -52,7 +50,7 @@
    poly : gf_add(gf_mult(p1, inv), p2),
    gf_p2n(poly) )$
 
-for byte:0 thru 255 do %_byte_sub[byte]$
+for byte:0 thru 255. do %_byte_sub[byte]$
 
 sub_bytes(state) := matrixmap(lambda([byte], %_byte_sub[byte]), state)$
 
@@ -70,7 +68,7 @@ sub_bytes(state) := matrixmap(lambda([byte], %_byte_sub[byte]), state)$
    inv : if poly = 0 then 0 else gf_inv(poly),
    gf_p2n(inv) )$
 
-for byte:0 thru 255 do %_inv_byte_sub[byte]$
+for byte:0 thru 255. do %_inv_byte_sub[byte]$
 
 inv_sub_bytes(state) := matrixmap(lambda([byte], %_inv_byte_sub[byte]), state)$
 
@@ -79,14 +77,14 @@ inv_sub_bytes(state) := matrixmap(lambda([byte], %_inv_byte_sub[byte]), state)$
 
 rotate(row, i) := append(rest(row, i), rest(row, i-4))$
 
-shift_rows(state) := apply('matrix, makelist(rotate(state[i], i-1), i,1,4))$
+shift_rows(state) := apply('matrix, create_list(rotate(state[i], i-1), i,1,4))$
 
 
 /* inv_shift_rows *********************************************************** */
 
 inv_rotate(row, i) := append(rest(row, 4-i), rest(row, -i))$
 
-inv_shift_rows(M) := apply('matrix, makelist(inv_rotate(M[i], i-1), i,1,4))$
+inv_shift_rows(M) := apply('matrix, create_list(inv_rotate(M[i], i-1), i,1,4))$
 
 
 /* mix_columns ************************************************************** */
@@ -131,8 +129,8 @@ add_round_key(state, key) :=
 /* key_expansion ************************************************************ */
 
 %_rcon : addrow(
-   matrix([1, 2, 4, 8, 16, 32, 64, 128, 27, 54]),
-   zeromatrix(3, 10) )$
+   matrix([1, 2, 4, 8, 16., 32., 64., 128., 27., 54.]),
+   zeromatrix(3, 10.) )$
 
 rot_word(col) := addrow(submatrix(1, col), col[1])$
 
@@ -152,12 +150,12 @@ next_round_key(old, n) := block([new],
       new : addcol(new, key_expansion2(col(old, i), col(new, i-1))),
    new )$
 
-%_round_key : make_array(any, 11)$
+%_round_key : make_array(any, 11.)$
 
 key_expansion(key) := (
    kill(round_key),
    %_round_key[0] : key,
-   for n:1 thru 10 do 
+   for n:1 thru 10. do 
       %_round_key[n] : next_round_key(%_round_key[n-1], n) )$
 
 
@@ -172,13 +170,13 @@ cipher(state) := (
       state : add_round_key(state, %_round_key[i]) ),
    
    state : shift_rows( sub_bytes(state) ), 
-   add_round_key(state, %_round_key[10]) )$
+   add_round_key(state, %_round_key[10.]) )$
 
 
 /* inv_cipher *************************************************************** */
 
 inv_cipher(state) := (
-   state : add_round_key(state, %_round_key[10]),
+   state : add_round_key(state, %_round_key[10.]),
    
    for n:9 step -1 thru 1 do (
       state : inv_shift_rows( inv_sub_bytes(state) ), 
@@ -205,12 +203,15 @@ text2state(text) := block([state, c,r],
 state2text(state) := 
    simplode(map('ascii, flatten(args(transpose(state)))))$
 
-bytestring2state(bytestring) := block([num, state, ibase:16],
+/* 
+setting ibase causes SBCL not to compile bytestring2state 
+*/
+bytestring2state(bytestring) := block([num, state, ibase:16.],
    num : parse_string(sconcat(0, bytestring)),
    state : zeromatrix(4, 4),
    for c:4 thru 1 step -1 do
       for r:4 thru 1 step -1 do (
-         state[r, c] : ?logand(num, 255),
+         state[r, c] : ?logand(num, 255.),
          num : ?ash(num, - 8) ),
    state )$
 
@@ -220,9 +221,13 @@ state2bytestring(state) :=
 
 /* compilation ************************************************************** */
 
-define_variable(old_io, ?\*standard\-output\*, any_check)$
-define_variable(redirection, make_string_output_stream(), any_check)$
-?\*standard\-output\* : redirection$
+/*
+If speed matters it is recommended to compile the functions rather than to 
+compile the file. When compiling use input base 10.
+
+SBCL doesn't want to compile bytestring2state.
+
+compile(bytestring2state)$
 
 compile(
    sub_bytes, inv_sub_bytes, 
@@ -231,10 +236,8 @@ compile(
    add_round_key, 
    rot_word, key_expansion1, key_expansion2, next_round_key, key_expansion, 
    cipher, inv_cipher, 
-   print_block, text2state, state2text, bytestring2state, state2bytestring )$
-
-?\*standard\-output\* : old_io$
-close(redirection)$
+   print_block, text2state, state2text, state2bytestring )$
+*/
 
 
 /* examples ***************************************************************** */
