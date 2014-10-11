@@ -245,6 +245,16 @@ sum (1/i!, i, 0, inf) * sum((x-1)^i/i!, i, 0, inf)$
 powerseries(f(x), x, inf);
 'powerseries(f(x), x, inf)$
 
+/*
+  The test above gives up when it sees either an integral or a
+  derivative wrt the expansion variable as it's trying to substitute
+  answers back in. Make sure that we still allow either with respect
+  to some other variable. (Expand somewhere other than zero, otherwise
+  we skip the substitution step)
+*/
+factor(powerseries(integrate(f(x), x)*y, y, 1));
+'integrate(f(x), x)*y$
+
 niceindices(powerseries(log(sin(x)/x),x,0));
 /*('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$*/
 'sum((-1)^i*2^(2*i-1)*bern(2*i)*x^(2*i)/(i*(2*i)!),i,1,inf);
