@@ -203,7 +203,10 @@ integration / differentiation variable."))
             ((not (equal 1 (setq *gcd* (ggcd (nconc (exlist n) (exlist d))))))
              (sratsubst *gcd* n d))
 
-	    ; rational expansion theorem for distinct roots
+	    ;; Rational expansion theorem for distinct roots. The main point of
+	    ;; the POLY? test here is that it guarantees $HIPOW will give the
+	    ;; correct degrees (in particular, it only allows known non-negative
+	    ;; integer exponents)
 	    ((and (poly? n var)
 		  (poly? d var)
 		  (> ($hipow d var) ($hipow n var))
@@ -227,7 +230,12 @@ integration / differentiation variable."))
              (srbinexpnd (cdr ans)))
 
             (t
-             (and *ratexp (powerseries-expansion-error))
+             ;; *RATEXP is set by RATEXAND1, which we call to do the general
+             ;; expansion below. This check makes sure we can't end up recursing
+             ;; infinitely.
+             (when *ratexp
+               (powerseries-expansion-error))
+
              ;; Look for a power of var (a zero root) as a term. We already know
              ;; that d isn't a monomial, so we can only have a zero root if d is
              ;; a product. We also know that d is not atomic because otherwise

@@ -121,6 +121,21 @@ niceindices(powerseries(a*x^u/(1+x), x, 0) - a*x^u*powerseries(1/(1+x), x, 0));
 powerseries((x^2 + x + 1)/(a + b + c), x, 0);
 (x^2 + x + 1)/(a + b + c)$
 
+/*
+  If the denominator is free of y, but the numerator is sufficiently
+  gnarly, we give up. (Obviously, it would be nice to do better here!)
+*/
+powerseries((x+x^(1+y)+1)/(2+y), x, 0);
+powerseries((x+x^(1+y)+1)/(2+y), x, 0)$
+
+/*
+  Another gnarly example we can't deal with. We can't use partial
+  fraction expansion because we don't know that k < 2 (and, even if we
+  did, I don't know how we'd parametrise the result on k).
+*/
+powerseries((x+1)^k/((x+2)*(x+3)), x, 0);
+powerseries((x+1)^k/((x+2)*(x+3)), x, 0)$
+
 /* The only way of getting a monomial denominator in sratexpnd is if
    the numerator is a polynomial. If the denominator is a sum, we return the
    sum of quotients: */
@@ -138,6 +153,13 @@ powerseries((1+x)^n/(a*x^2), x, 0);
 /* Partial fraction expansion */
 niceindices(powerseries(1/((1-2*x)*(1-3*x)), x, 0));
 'sum((3^(i+1) - 2^(i+1))*x^i, i, 0, inf)$
+
+/*
+  Make sure we give up (rather than possibly recursing infinitely) in
+  the general case at the bottom of SRATEXPND.
+*/
+powerseries((x+2)*(x+3)^k/(x*(x+4)), x, 0);
+powerseries((x+2)*(x+3)^k/(x*(x+4)), x, 0)$
 
 /* Fixed in series.lisp rev 1.5, 04 Feb 2004.
    First case returned second result */
@@ -283,6 +305,15 @@ niceindices(powerseries(log(sin(x)/x),x,0));
 */
 op(niceindices(powerseries(integrate(f(x), x, 0, y), y, 0)));
 ''(nounify('sum))$
+
+/*
+  Check we get a noun form (rather than something exploding) when
+  expanding a known power series and then trying to substitute in some
+  arbitrary function. At the moment, we only support arguments that
+  are monomials (see SP2SUB in series.lisp).
+*/
+powerseries(sin(f(x)), x, 0);
+powerseries(sin(f(x)), x, 0)$
 
 /* Basic support for expanding log(x): this just checks  */
 factor(sumcontract(intosum(powerseries(log(x+1), x, 0) -
