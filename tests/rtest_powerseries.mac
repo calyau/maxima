@@ -276,5 +276,11 @@ niceindices(powerseries(log(sin(x)/x),x,0));
 op(niceindices(powerseries(integrate(f(x), x, 0, y), y, 0)));
 ''(nounify('sum))$
 
+/* Basic support for expanding log(x): this just checks  */
+factor(sumcontract(intosum(powerseries(log(x+1), x, 0) -
+                           sum((-1)^(i+1)*x^i/i, i, 1, inf))));
+0$
+
+
 (kill(all), 0);
 0$
