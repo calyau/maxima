@@ -16,6 +16,18 @@ a$
 powerseries(x, x, 0);
 x$
 
+/* Check that we get an error if the variable is a non-symbol atom */
+errcatch(powerseries(x, 0, 0));
+[]$
+
+errcatch(powerseries(x, "foo", 0));
+[]$
+
+/* Check that we can expand with respect to a non-atomic expression
+   (or at least check that we do something vaguely sensible) */
+niceindices(powerseries(sin(x^2), x^2, 0) - powerseries(sin(x^2), x, 0));
+0$
+
 /* Check that sums get expanded sanely (in SP1) */
 niceindices(powerseries(a + sin(x), x, 0) - powerseries(sin(x), x, 0));
 a$

@@ -24,7 +24,7 @@
 ;;******************************************************************************
 
 (defmfun $powerseries (expr var pt)
-  (when (numberp var)
+  (when (and (atom var) (not (symbolp var)))
     (improper-arg-err var '$powerseries))
   (powerseries expr var pt))
 
