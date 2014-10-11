@@ -27,6 +27,14 @@ errcatch(powerseries(x, "foo", 0));
 niceindices(powerseries([sin(x), cos(x)], x, 0));
 ''(niceindices([powerseries(sin(x), x, 0), powerseries(cos(x), x, 0)]))$
 
+/* Check we distribute over sum() and product() */
+niceindices(powerseries(sum(f(x,i), i, 0, inf), x, 0));
+''(niceindices(sum(powerseries(f(x,i), x, 0), i, 0, inf)));
+
+niceindices(powerseries(product(f(x,i), i, 0, inf), x, 0));
+''(niceindices(product(powerseries(f(x,i), x, 0), i, 0, inf)));
+
+
 /* Check that we can expand with respect to a non-atomic expression
    (or at least check that we do something vaguely sensible) */
 niceindices(powerseries(sin(x^2), x^2, 0) - powerseries(sin(x^2), x, 0));
