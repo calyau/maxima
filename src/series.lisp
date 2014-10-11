@@ -230,7 +230,7 @@ integration / differentiation variable."))
              (srbinexpnd (cdr ans)))
 
             (t
-             ;; *RATEXP is set by RATEXAND1, which we call to do the general
+             ;; *RATEXP is set by RATEXPAND1, which we call to do the general
              ;; expansion below. This check makes sure we can't end up recursing
              ;; infinitely.
              (when *ratexp
@@ -248,7 +248,7 @@ integration / differentiation variable."))
                                              (eq (cadr factor) var))))
                                   (cdr d)))))
                (if (not zero-root)
-                   (ratexand1 n d)
+                   (ratexpand1 n d)
                    (let ((other-factors (remove zero-root (cdr d)
                                                 :test #'eq :count 1)))
                      (m* (sratexpnd n (m*l other-factors))
@@ -345,21 +345,36 @@ integration / differentiation variable."))
 		     *index 0))
 	  (t (error "EXPAND-DISTINCT-ROOTS: roots are not distinct.~%")))))
 
-(defun ratexand1 (n d)
+;; Try to expand N/D as a power series in VAR about 0.
+;;
+;; Can safely assume that D has no zero roots (we remove them in SRATEXPND
+;; before calling this function).
+(defun ratexpand1 (n d)
   (when $verbose
     (mtell (intl:gettext
             "powerseries: attempt partial fraction expansion of "))
-    (show-exp (list '(mquotient) n d)) (terpri))
+    (show-exp (list '(mquotient) n d))
+    (terpri))
 
+  ;; *RATEXP serves as a recursion guard: if SRATEXPND is about to call us
+  ;; *recursively, the flag will be set and it gives up instead.
   (let* ((*ratexp t)
-         (l ($partfrac (div* n d) var)))
+         (fractions ($partfrac (div* n d) var)))
     (cond
-      ((eq (caar l) 'mplus)
+      ;; If $PARTFRAC succeeds, it will return a sum of terms. In that case,
+      ;; expand each one (which we assume is going to be easier than what we
+      ;; started with) and try to fold the result into a single power series sum
+      ;; again.
+      ((mplusp fractions)
        (when $verbose
          (mtell (intl:gettext "which is ~%"))
-         (show-exp l))
-       (psp2foldsum (m+l (mapcar #'ratexp (cdr l)))))
+         (show-exp fractions))
+       (psp2foldsum (m+l (mapcar #'ratexp (cdr fractions)))))
 
+      ;; If that didn't work, maybe it's because the numerator messed things
+      ;; up. If we're really lucky, the numerator is actually a polynomial
+      ;; though. In that case, factor it out and do an expansion of 1/d on its
+      ;; own.
       ((poly? n var)
        (when $verbose
          (mtell (intl:gettext
@@ -367,6 +382,8 @@ integration / differentiation variable."))
                   expanding denominator only.~%")))
        (m* n (ratexp (m// 1 d))))
 
+      ;; If n is complicated, there's not really much we can do to make further
+      ;; progress, so give up and return a noun form.
       (t (powerseries-expansion-error
           (intl:gettext "Partial fraction expansion failed"))))))
 
