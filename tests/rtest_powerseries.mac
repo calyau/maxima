@@ -23,6 +23,10 @@ errcatch(powerseries(x, 0, 0));
 errcatch(powerseries(x, "foo", 0));
 []$
 
+/* Check we distribute over bags */
+niceindices(powerseries([sin(x), cos(x)], x, 0));
+''(niceindices([powerseries(sin(x), x, 0), powerseries(cos(x), x, 0)]))$
+
 /* Check that we can expand with respect to a non-atomic expression
    (or at least check that we do something vaguely sensible) */
 niceindices(powerseries(sin(x^2), x^2, 0) - powerseries(sin(x^2), x, 0));
