@@ -249,5 +249,18 @@ niceindices(powerseries(log(sin(x)/x),x,0));
 /*('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$*/
 'sum((-1)^i*2^(2*i-1)*bern(2*i)*x^(2*i)/(i*(2*i)!),i,1,inf);
 
+/*
+  Check that we don't substitute blindly into the bound variables in
+  at() expressions.
+
+  The powerseries expands the integral of f(x) by computing an
+  antiderivative of the power series of f(x). Since we don't know
+  anything about f, this contains terms like "at(diff(f(x), x, n),
+  x=0)". If we then substituted the endpoints blindly, we'd get an
+  error from substituting in a number as a differentiation variable.
+*/
+op(niceindices(powerseries(integrate(f(x), x, 0, y), y, 0)));
+''(nounify('sum))$
+
 (kill(all), 0);
 0$

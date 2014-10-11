@@ -670,6 +670,42 @@ integration / differentiation variable."))
 		 (t (sinint exp var))))
 	  (t (sinint exp var)))))
 
+;; Substitute NEW for OLD in the expression tree EXPRESSION. This is a bit like
+;; MAXIMA-SUBSTITUTE, except it assumes OLD is a symbol. But the important bit
+;; is that it is bright enough to avoid substituting for bound variables in
+;; %INTEGRATE and %AT forms: even though the symbol might have the same name,
+;; it's thought of as a logically different variable.
+;;
+;; The function returns two values: the new expression and a flag that says
+;; whether that expression has changed. If the flag is true on a recursive call,
+;; int-diff-substitute resimplifies the result.
+(defun int-diff-substitute (new old expression)
+  (cond
+    ((eq expression old) (values new t))
+    ((atom expression) (values expression nil))
+    (t
+     (let ((op (caar expression))
+           (args (cdr expression)))
+       (if (or (and (eq op '%integrate) (eq old (second args)))
+               (and (eq op '%at)
+                    (not (atom (second args)))
+                    (eq (caar (second args)) 'MEQUAL)
+                    (eq old (cadr (second args)))))
+           (values expression nil)
+           (let* ((some-changed-p nil)
+                  (new-args
+                   (mapcar (lambda (x)
+                             (multiple-value-bind (new-val changed-p)
+                                 (int-diff-substitute new old x)
+                               (when changed-p
+                                 (setf some-changed-p t))
+                               new-val))
+                           (cdr expression))))
+             (if (not some-changed-p)
+                 (values expression nil)
+                 (values
+                  (simplifya (cons (list op) new-args) nil) t))))))))
+
 ;; Expand a definite integral, integrate(exp, v, lo, hi).
 (defun sp2integ2 (exp v lo hi)
   ;; Deal with the case where the integration variable is also the expansion
@@ -711,8 +747,8 @@ integration / differentiation variable."))
          ;; monomials in VAR. The difference of the two expressions isn't quite
          ;; of the right form, but hopefully it's close enough for any other
          ;; code that uses it.
-         (m- (maxima-substitute hi-exp v anti-derivative)
-             (maxima-substitute lo-exp v anti-derivative)))))
+         (m- (int-diff-substitute hi-exp v anti-derivative)
+             (int-diff-substitute lo-exp v anti-derivative)))))
 
     ((free exp var)
      (list '(%integrate) (subst var v exp) var lo hi))
