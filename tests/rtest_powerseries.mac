@@ -48,6 +48,13 @@ niceindices(powerseries((a+b)*sin(x), x, 0) - (a+b)*powerseries(sin(x), x, 0));
 niceindices(powerseries(x*sin(x), x, 0) - x*powerseries(sin(x), x, 0));
 0$
 
+/* Check that we evaluate powerseries at inf and minf sensibly */
+powerseries(1/x, x, inf);
+1/x$
+
+powerseries(1/x, x, minf);
+1/x$
+
 /*
   Exponentiation of a sum is dealt with in SRBINEXPAND, which has to
   cope with various possibilities depending on how much we know about
