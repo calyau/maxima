@@ -651,7 +651,7 @@
 	((rzerop (car nc)) (cons (list (cdr nc) poly n) ans))
       (push (list (cdr nc) poly n) ans))))
 
-(defun partfrac (rat var &optional facdenom)
+(defun partfrac (rat var)
   (destructuring-let* (((wholepart frpart) (pdivide (car rat) (cdr rat)))
 		       ((num . denom) (ratqu frpart (cdr rat))))
     (cond
@@ -661,7 +661,7 @@
            (let (apart y parnumer)
              (loop
                for (factor multiplicity)
-                 on (or facdenom (pfactor bpart)) by #'cddr
+                 on (pfactor bpart) by #'cddr
                unless (zerop (pdegree factor var))
                  do
                     (setq apart (pexpt factor multiplicity)
