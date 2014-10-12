@@ -95,6 +95,22 @@
         (intl:gettext
          "partition: first argument must be a list or '+' or '*' expression; found ~M") e)))))
 
+;; Apply PREDICATE to each element in the sequence SEQ and return
+;;
+;;   (VALUES YES NO),
+;;
+;; where YES and NO are lists consisting of elements for which PREDICATE is true
+;; or false, respectively.
+(defun partition-by (predicate seq)
+  (let ((yes) (no))
+    (map nil
+         (lambda (x)
+           (if (funcall predicate x)
+               (push x yes)
+               (push x no)))
+         seq)
+    (values yes no)))
+
 ;; Partition an expression, EXP, into terms that contain VAR1 and terms that
 ;; don't contain VAR1. EXP is either considered as a product or a sum (for which
 ;; you should pass K = 1 or 0, respectively).
@@ -116,12 +132,8 @@
       ;; Otherwise, we want to partition the arguments into constant and
       ;; variable.
       (t
-       (let (constant variable)
-         (dolist (arg (cdr exp))
-           (if (freeof var1 arg)
-               (push arg constant)
-               (push arg variable)))
-
+       (multiple-value-bind (constant variable)
+           (partition-by (lambda (x) (freeof var1 x)) (cdr exp))
          (cons (cond ((null constant) k)
                      ((null (cdr constant)) (car constant))
                      (t (simplifya

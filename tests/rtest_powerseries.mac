@@ -161,6 +161,14 @@ niceindices(powerseries(1/((1-2*x)*(1-3*x)), x, 0));
 powerseries((x+2)*(x+3)^k/(x*(x+4)), x, 0);
 powerseries((x+2)*(x+3)^k/(x*(x+4)), x, 0)$
 
+/*
+  A complicated example of a partial fraction expansion. The expansion
+  into partial fractions is 1 + 2/(x+3) - 6/(x+4), and the terms then
+  expand into two infinite series and one constant term. This test
+  makes sure that we coalesce the two series properly (in PSP2FOLDSUM).
+*/
+factor(niceindices(powerseries((x+1)*(x+2)/((x+3)*(x+4)), x, 0)));
+(sum(3^(-i-1)*(-1)^i*(4^(i+1)-3^(i+2))*x^i/4^i,i,0,inf)+2)/2$
 
 /*
   Make sure we successfully remove zero roots from the denominator

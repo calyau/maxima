@@ -263,25 +263,46 @@ integration / differentiation variable."))
        (eq (cadddr exp) 0)
        (eq (cadr (cdddr exp)) '$inf)))
 
-; turns (%sum ...) + (%sum ...) + (%sum ...)
-; into   %sum ... + ... + ...
+;; A stripped down version of (sumcontract (intosum EXP)). Coalesce occurrences
+;; of ((%SUM) <FOO> *INDEX 0 '$INF), which are allowed to start with
+;; multiplicative constants. So something like
+;;
+;;    sum(a(i), i, 0, inf) + 2*sum(b(i), i, 0, inf) + c
+;;
+;; turns into
+;;
+;;    sum(a(i) + 2*b(i), i, 0, inf) + c
+;;
+;; This is good enough to collect up the multiple infinite sums that you get
+;; when expanding a power series by partial fractions. It's (obviously) not
+;; clever enough to rename index variables or adjust ranges.
+
 (defun psp2foldsum (exp)
-  (and $verbose
-       (prog2 (mtell (intl:gettext "powerseries: preparing to fold sums~%"))
-	   (show-exp exp)))
-  (if (and (eq (caar exp) 'mplus)
-	   (every #'(lambda (e) 
-		      (or (psp2formp e)
-			  (and (mtimesp e)
-			       (psp2formp (caddr e)))))
-		  (cdr exp)))
-      (list '(%sum) (m+l (mapcar #'(lambda (e)
-				     (if (eq (caar e) 'mtimes) 
-					 (m* (cadr e) (cadr (caddr e)))
-				       (cadr e)))
-				 (cdr exp)))
-	    *index 0 '$inf)
-    exp))
+  (when $verbose
+    (mtell (intl:gettext "powerseries: preparing to fold sums~%"))
+    (show-exp exp))
+
+  (multiple-value-bind (sums others)
+      (partition-by (lambda (e)
+                      (or (psp2formp e)
+                          (and (mtimesp e)
+                               (psp2formp (caddr e)))))
+                    (cdr exp))
+    (if (null sums)
+        ;; If there were no sums, just return the original expression.
+        exp
+        ;; Otherwise contract the sums
+        (let ((contracted
+               (list '(%sum)
+                     (m+l (mapcar (lambda (e)
+                                    (if (eq (caar e) 'mtimes)
+                                        (m* (cadr e) (cadr (caddr e)))
+                                        (cadr e)))
+                                  sums))
+                     *index 0 '$inf)))
+          (if (null others)
+              contracted
+              (m+l (cons contracted others)))))))
 
 ; solve returns a list: (soln mult soln mult ...)
 ; distinct-nonzero-roots-p returns true if every
