@@ -1794,7 +1794,7 @@ will also be shown in the Maxima or Xmaxima console.
 Gnuplot generates commands in the PostScript page description language.
 If the option @mref{gnuplot_out_file} is set to @var{filename}, gnuplot
 writes the PostScript commands to @var{filename}.  Otherwise, it is
-saved as @code{maxplot.ps} file. The settings for this terminal of are given by the value of option @mrefdot{gnuplot_dumb_term_command}
+saved as @code{maxplot.ps} file. The settings for this terminal are given by the value of the option @mrefdot{gnuplot_dumb_term_command}
 
 @item
 A string representing any valid gnuplot term specification
