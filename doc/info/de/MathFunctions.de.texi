@@ -14,7 +14,7 @@
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
-* Wurzel-@comma{} Exponential- und Logarithmusfunktion::
+* Wurzel- Exponential- und Logarithmusfunktion::
 * Winkelfunktionen::
 * Hyperbelfunktionen::
 * Zufallszahlen::
@@ -1004,7 +1004,7 @@ Argument rein imagin@"ar.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen der Kombinatorik, Wurzel-@comma{} Exponential- und Logarithmusfunktion, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
+@node Funktionen der Kombinatorik, Wurzel- Exponential- und Logarithmusfunktion, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
@@ -1396,7 +1396,7 @@ Funktion @mref{minfactorial} angewendet.  Siehe die Funktion
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Wurzel-@comma{} Exponential- und Logarithmusfunktion, Winkelfunktionen, Funktionen der Kombinatorik, Mathematische Funktionen
+@node Wurzel- Exponential- und Logarithmusfunktion, Winkelfunktionen, Funktionen der Kombinatorik, Mathematische Funktionen
 @section Wurzel-, Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
@@ -1934,7 +1934,7 @@ Verschiedene Beispiele mit der Wurzelfunktion.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Winkelfunktionen, Hyperbelfunktionen, Wurzel-@comma{} Exponential- und Logarithmusfunktion, Mathematische Funktionen
+@node Winkelfunktionen, Hyperbelfunktionen, Wurzel- Exponential- und Logarithmusfunktion, Mathematische Funktionen
 @section Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
