@@ -156,17 +156,25 @@ fun@value{cedilha}@~{a}o deve ser uma fun@value{cedilha}@~{a}o de um argumento.
 Gr@'{a}ficos de fun@value{cedilha}@~{o}es comuns.
 
 @c ===beg===
-@c plot2d (sin(x), [x, -5, 5])$
-@c plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
+@c plot2d (sin(x), [x, -%pi, %pi])$
 @c ===end===
 @example
-(%i1) plot2d (sin(x), [x, -5, 5])$
-
-(%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
+(%i1) plot2d (sin(x), [x, -%pi, %pi])$
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}@image{../figures/plotting3,8cm}
+@image{../figures/plotting6,8cm}
+@end ifnotinfo
+
+@c ===beg===
+@c plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+@c ===end===
+@example
+(%i1) plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+@end example
+
+@ifnotinfo
+@image{../figures/plotting7,8cm}
 @end ifnotinfo
 
 Montando gr@'{a}fico de fun@value{cedilha}@~{o}es pelo nome.
@@ -175,214 +183,101 @@ Montando gr@'{a}fico de fun@value{cedilha}@~{o}es pelo nome.
 @c F(x) := x^2 $
 @c :lisp (defun |$g| (x) (m* x x x))
 @c H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
-@c plot2d (F, [u, -1, 1])$
 @c plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @c ===end===
 @example
-(%i3) F(x) := x^2 $
-
-(%i4) :lisp (defun |$g| (x) (m* x x x))
-
+(%i1) F(x) := x^2 $
+@group
+(%i2) :lisp (defun |$g| (x) (m* x x x))
 $g
-(%i5) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
-
-(%i6) plot2d (F, [u, -1, 1])$
-
-(%i7) plot2d ([F, G, H], [u, -1, 1])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting4,8cm}@image{../figures/plotting5,8cm}
-@end ifnotinfo
-
-Podemos montar o gr@'{a}fico de um c@'{i}rculo usando um gr@'{a}fico param@'{e}trico com um par@^{a}metro
-@var{t}. N@~{a}o @'{e} necess@'{a}rio fornecer um intervalo para intervalo horizontal,
-uma vez que o intervalo do par@^{a}metro @var{t} detrmina o
-dom@'{i}nio. Todavia, uma vez que os comprimentos dos eixos horizontal e vertical
-do gr@'{a}fico est@~{a}o na propor@value{cedilha}@~{a}o de 4 para 3, usaremos a op@value{cedilha}@~{a}o 
-@var{xrange} para obter a mesma escala em ambos os eixos:
-
-@c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
-@c ===end===
-@example
-(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]],
-           [x, -4/3, 4/3])$
-@end example
-@ifnotinfo
-@image{../figures/plotting6,8cm}
-@end ifnotinfo
-
-Se repetirmos aquele gr@'{a}fico com somente 8 pontos e extendendo o intervalo
-do par@^{a}metro para fornecer dois turnos, obteremos o gr@'{a}fico de uma estrela:
-
-@c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
-@c ===end===
-@example
-(%i9) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
-        [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting7,8cm}
-@end ifnotinfo
-
-Combina@value{cedilha}@~{a}o de um gr@'{a}fico comum de um polin@^{o}mio c@'{u}bico com um
-gr@'{a}fico param@'{e}trico de um c@'{i}rculo:
-
-@c ===beg===
-@c plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], [nticks, 80]]], [x, -3, 3])$
-@c ===end===
-@example
-(%i10) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
-        [nticks, 80]]], [x, -3, 3])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting8,8cm}
-@end ifnotinfo
-
-Exemplo de um gr@'{a}fico logar@'{i}tmico:
-@c ===beg===
-@c plot2d (exp(3*s), [s, -2, 2], [logy])$
-@c ===end===
-@example
-(%i11) plot2d (exp(3*s), [s, -2, 2], [logy])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting9,8cm}
-@end ifnotinfo
-
-Para mostrar alguns exemplos de gr@'{a}ficos discretos, iniciaremos por inserir as
-coordenadas de 5 pontos, por dois diferentes cominhos que podem ser usados:
-
-@c ===beg===
-@c xx:[10, 20, 30, 40, 50]$
-@c yy:[.6, .9, 1.1, 1.3, 1.4]$
-@c xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
-@c ===end===
-@example
-(%i12) xx:[10, 20, 30, 40, 50]$
-(%i13) yy:[.6, .9, 1.1, 1.3, 1.4]$
-(%i14) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
-@end example
-
-Para montar o gr@'{a}fico daqueles pontos, unidos com segmentos de reta, usamos:
-@c ===beg===
-@c plot2d([discrete,xx,yy])$
-@c ===end===
-@example
-(%i15) plot2d([discrete,xx,yy])$
+@end group
+(%i2) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+(%i3) plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @end example
 
 @ifnotinfo
 @image{../figures/plotting10,8cm}
 @end ifnotinfo
 
-Iremos agora mostrar o gr@'{a}fico com somente pontoss, e ilustrando o uso do
-segundo caminho de fornecer as coordenadas dos pontos:
+Podemos montar o gr@'{a}fico de um c@'{i}rculo usando um gr@'{a}fico param@'{e}trico com um par@^{a}metro
+@var{t}. N@~{a}o @'{e} necess@'{a}rio fornecer um intervalo para intervalo horizontal,
+uma vez que o intervalo do par@^{a}metro @var{t} determina o
+dom@'{i}nio. Todavia, usaremos a op@value{cedilha}@~{a}o 
+@var{same_xy} para obter a mesma escala em ambos os eixos:
 
 @c ===beg===
-@c plot2d([discrete, xy], [style, points])$
+@c plot2d([[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
+@c          [x, -sqrt(2), sqrt(2)], same_xy)$
 @c ===end===
 @example
-(%i16) plot2d([discrete, xy], [style, points])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting11,8cm}
-@end ifnotinfo
-
-O gr@'{a}fico de pontos pode ser mostrado juntamente com um gr@'{a}fico da
-fun@value{cedilha}@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e} as coordenads dos pontos:
-
-@c ===beg===
-@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"], [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
-@c ===end===
-@example
-(%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"],
-        [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+@group
+(%i1) plot2d([[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
+         [x, -sqrt(2), sqrt(2)], same_xy)$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting12,8cm}
 @end ifnotinfo
 
-Veja tamb@'{e}m @code{plot_options}, que descreve op@value{cedilha}@~{o}es de montagem de gr@'{a}fico e tem mais exemplos.
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~{a}o}  xgraph_curves (@var{list})
-transforma em gr@'{a}fico a lista de `grupos de pontos' dados em lista usando xgraph.  Se o programa
-xgraph n@~{a}o estiver instalado, esse comando ir@'{a} falhar.
-
-Um conjunto de pontos pode ser da forma
-
+Exemplo de um gr@'{a}fico logar@'{i}tmico:
+@c ===beg===
+@c plot2d (exp(3*s), [s, -2, 2], logy)$
+@c ===end===
 @example
-[x0, y0, x1, y1, x2, y2, ...]
-@end example
-ou
-@example
-[[x0, y0], [x1, y1], ...]
-@end example
-Um conjunto de pontos pode tamb@'{e}m conter s@'{i}mbolos que fornecem r@'{o}tulos ou outra
-informa@value{cedilha}@~{a}o.
-
-@example
-xgraph_curves ([pt_set1, pt_set2, pt_set3]);
-@end example
-
-transforma em gr@'{a}fico os tr@^{e}s conjuntos de pontos como tr@^{e}s curvas.
-
-@example
-pt_set: append (["NoLines: True", "LargePixels: true"],
-                          [x0, y0, x1, y1, ...]);
-@end example
-
-@noindent
-fizemos com que os grupos de pontos (e os pr@'{o}prios subseq@"{u}@^{e}ntes), n@~{a}o  
-possuam linhas entre si, e usassem pixels grandes.
-Veja a p@'{a}gina de manual sobre o xgraph para especificar mais op@value{cedilha}@~{o}es.
-
-@example
-pt_set: append ([concat ("\"", "x^2+y")], [x0, y0, x1, y1, ...]);
-@end example
-
-@noindent
-fizemos a@'{i} aparecer um "r@'{o}tulo" de "x^2+y" para esse grupo de pontos
-em particular.  As aspas, @code{"}, no in@'{i}cio @'{e} que dizem
-ao xgraph isso @'{e} um r@'{o}tulo.
-
-@example
-pt_set: append ([concat ("TitleText: Dados da Amostra")], [x0, ...])$
-@end example
-
-@noindent
-fizemos o t@'{i}tulo principal do gr@'{a}fico ser "Dados da Amostra" ao inv@'{e}s
-de "Maxima Plot".
-
-Para fazer um gr@'{a}fico em barras com largura de 0.2 unidades, e
-para montar o gr@'{a}fico com duas possibilidades diferentes dos tais gr@'{a}ficos em barras:
-@example
-(%i1) xgraph_curves ([append (["BarGraph: true", "NoLines: true",
-      "BarWidth: .2"], create_list ([i - .2, i^2], i, 1, 3)),
-      append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-      create_list ([i + .2, .7*i^2], i, 1, 3))]);
+(%i1) plot2d (exp(3*s), [s, -2, 2], logy)$
 @end example
 
 @ifnotinfo
-@image{../figures/plotting13,8cm}
+@image{../figures/plotting9,8cm}
 @end ifnotinfo
 
-@noindent
+Exemplo de gr@'{a}fico discreto, definindo as coordenadas x e y por separado:
 
-Um arquivo tempor@'{a}rio @file{xgraph-out} @'{e} usado.
+@c ===beg===
+@c plot2d ([discrete, makelist(i*%pi, i, 1, 5),
+@c                            [0.6, 0.9, 0.2, 1.3, 1]])$
+@c ===end===
+@example
+(%i1) plot2d ([discrete, makelist(i*%pi, i, 1, 5),
+                            [0.6, 0.9, 0.2, 1.3, 1]])$
+@end example
+
+@ifnotinfo
+@image{../figures/plotting14,8cm}
+@end ifnotinfo
+
+O gr@'{a}fico de pontos pode ser mostrado juntamente com um gr@'{a}fico da
+fun@value{cedilha}@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e} as coordenads dos pontos:
+
+@c ===beg===
+@c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@c plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+@c         [style, points, lines], [color, red, blue],
+@c         [point_type, asterisk],
+@c         [legend, "experiment", "theory"],
+@c         [xlabel, "pendulum's length (cm)"],
+@c         [ylabel, "period (s)"])$
+@c ===end===
+@example
+(%i1) xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@group
+(%i2) plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+        [style, points, lines], [color, red, blue],
+        [point_type, asterisk],
+        [legend, "experiment", "theory"],
+        [xlabel, "pendulum's length (cm)"],
+        [ylabel, "period (s)"])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting16,8cm}
+@end ifnotinfo
+
+Veja tamb@'{e}m @code{plot_options}, que descreve op@value{cedilha}@~{o}es de montagem de gr@'{a}fico e tem mais exemplos.
 
 @end deffn
-
 
 
 @defvr {Vari@'{a}vel de sistema} plot_options
@@ -800,117 +695,8 @@ escolher @code{gnuplot_ps_term_command} como:
 [gnuplot_ps_term_command,
 "set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"]
 @end example
-
 @end itemize
 
-@b{Exemplos:}
-
-@itemize @bullet
-@item
-Grava um gr@'{a}fico de @code{sin(x)} para o arquivo @code{sin.eps}.
-@end itemize
-@example
-(%i1) plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps],
-                        [gnuplot_out_file, "sin.eps"])$
-@end example
-
-@itemize @bullet
-@item
-Usa a op@value{cedilha}@~{a}o do y para arrancar singularidades e a op@value{cedilha}@~{a}o 
-gnuplot_preamble para colocar a chave na parte inferior do gr@'{a}fico em lugar de no topo.
-@end itemize
-@example
-(%i2) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
-                     [gnuplot_preamble, "set key bottom"])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting14,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Usa um muito complicado @code{gnuplot_preamble} para produzir elegantes r@'{o}tulos para o eixo x.
-(Note que a seq@"{u}@^{e}ncia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
-@end itemize
-@example
-(%i3) my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, \
-'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
-'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
-
-(%i4) plot2d([cos(x), sin(x), tan(x), cot(x)],
-       [x, -2*%pi, 2.1*%pi], [y, -2, 2],
-       [gnuplot_preamble, my_preamble]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting15,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Usa um muito complicad @code{gnuplot_preamble} para produzir elegantes r@'{o}tulos para o eixo x,
-e produzir sa@'{i}das
-PostScript que aproveita as vantagens do formato de texto avan@value{cedilha}ado dispon@'{i}vel
-no gnuplot.
-(Note que a seq@"{u}@^{e}ncia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
-@end itemize
-@example
-(%i5) my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' \
--6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
-'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
-'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
-6.283)"$
-
-(%i6) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
-    [y, -2, 2], [gnuplot_preamble, my_preamble],
-    [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
-@end example
-
-@itemize @bullet
-@item
-Uma montagem de gr@'{a}fico tridimensional usando o terminal gnuplot pm3d.
-@end itemize
-@example
-(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-        [grid, 50, 50], [gnuplot_pm3d, true])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting16,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Uma montagem de gr@'{a}fico tridimensional sem a malha e com contornos
-projetados no plano inferior.
-@end itemize
-@example
-(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
-set cntrparam levels 20;unset key"$
-(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [grid, 50, 50], [gnuplot_pm3d, true],
-    [gnuplot_preamble, my_preamble])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting17,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Uma montagem de gr@'{a}fico onde o eixo z @'{e} representado apenas por cores.
-(Note que a seq@"{u}@^{e}ncia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
-@end itemize
-@example
-(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [gnuplot_preamble, "set view map; unset surface"],
-    [gnuplot_pm3d, true], [grid, 150, 150])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting18,8cm}
-@end ifnotinfo
 
 @end defvr
 
@@ -922,95 +708,46 @@ Uma montagem de gr@'{a}fico onde o eixo z @'{e} representado apenas por cores.
 
 Mostra um gr@'{a}fico de uma ou tr@^{e}s express@~{o}es como fun@value{cedilha}@~{o}es de duas vari@'{a}veis.
 
+@c ===beg===
+@c plot3d (u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
+@c         [mesh_lines_color,false])$
+@c ===end===
 @example
-(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -7, 7]);
+@group
+(%i1) plot3d (u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
+        [mesh_lines_color,false])$
+@end group
 @end example
 
 @ifnotinfo
-@image{../figures/plotting19,8cm}
+@image{../figures/plotting17,8cm}
 @end ifnotinfo
 
-monta o gr@'{a}fico de @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando no intervalo fechado [-3,3] e
-no intervalo fechado de [-2,2] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre o eixo
+monta o gr@'{a}fico de @code{u^2-v^2} com @code{u} e @code{v} variando no intervalo fechado [-2,2] e
+no intervalo fechado de [-3,3] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre o eixo
 y.
 
-O mesmo gr@'{a}fico pode ser visualizado usando openmath (se Xmaxima
-estiver instalado):
+Outro exemplo @'{e} uma superf@'{i}cie de Klein:
 
+@c ===beg===
+@c expr_1: 5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)-10$
+@c expr_2: -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)$
+@c expr_3: 5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))$
+@c plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+@c         [y, -%pi, %pi], [grid, 50, 50])$
+@c ===end===
 @example
-(%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
-               [plot_format, openmath]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting25,8cm}
-@end ifnotinfo
-
-@noindent
-nesse caso o mouse pode ser usado para rotacionar a visualiza@value{cedilha}@~{a}o para olhar na superf@'{i}cie
-de diferentes @^{a}ngulos.
-
-Um exemplo do terceiro modelo de argumento @'{e}
-
-@example
-(%i3) plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)),
-   y*sin(x/2)], [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting20,8cm}
-@end ifnotinfo
-
-que monta o gr@'{a}fico da banda de Moebius, parametrizada por tr@^{e}s express@~{o}es fornecidas
-como o primeiro argumento para @code{plot3d}.  O argumento adiconal por@'{e}m opcional
-@code{['grid, 50, 15]} fornece o n@'{u}mero de ret@^{a}gulos da grade na dire@value{cedilha}@~{a}o x e
-na dire@value{cedilha}@~{a}o y.
-
-Uma fun@value{cedilha}@~{a}o a ter seu gr@'{a}fico montado
-pode ser especificada como o nome de uma fun@value{cedilha}@~{a}o Maxima ou como o nome de uma fun@value{cedilha}@~{a}o Lisp ou como um operador,
-como uma express@~{a}o lambda do Maxima, ou como uma express@~{a}o geral do Maxima.
-Se especificada como um nome ou como express@~{a}o lambda,
-a fun@value{cedilha}@~{a}o deve ser uma fun@value{cedilha}@~{a}o de um argumento.
-
-Esse exemplo mostra uma montagem de gr@'{a}fico da parte real de @code{z^1/3}.
-
-@example
-(%i4) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-      ['grid, 12, 80], ['transform_xy, polar_to_xy]);
+(%i1) expr_1: 5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)-10$
+(%i2) expr_2: -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)$
+(%i3) expr_3: 5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))$
+@group
+(%i4) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+        [y, -%pi, %pi], [grid, 50, 50])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting21,8cm}
-@end ifnotinfo
-
-Outro exemplo @'{e} uma superf@'{i}cie de Klein:
-
-@example
-(%i5) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
-      + 3.0) - 10.0$
-(%i6) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
-      + 3.0)$
-(%i7) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
-
-(%i8) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
-      [y, -%pi, %pi], ['grid, 40, 40]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting22,8cm}
-@end ifnotinfo
-
-e um toro
-
-@example
-(%i9) expr_1: cos(y)*(10.0+6*cos(x))$
-(%i10) expr_2: sin(y)*(10.0+6*cos(x))$
-(%i11) expr_3: -6*sin(x)$
-(%i12) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],       [y, 0, 2*%pi], ['grid, 40, 40]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting23,8cm}
 @end ifnotinfo
 
 Algumas vezes isso @'{e} necess@'{a}rio para definir uma fun@value{cedilha}@~{a}o para montar o graico da express@~{a}o. Todos
@@ -1018,15 +755,21 @@ os argumentos para plot3d s@~{a}o avaliados antes de serem passados para plot3d.
 fazer um express@~{a}o que faz apenas o que @'{e} preciso pode ser 
 dif@'{i}cil e pode ser mais f@'{a}cil fazer uma fun@value{cedilha}@~{a}o.   
 
+@c ===beg===
+@c M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
+@c f(x, y) := float('M [round(x), round(y)])$
+@c plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
+@c ===end===
 @example
-(%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
-       [1, 2, 3, 3])$
-(%i14) f(x, y) := float (M [?round(x), ?round(y)])$
-(%i15) plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
+(%i1) M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
+(%i2) f(x, y) := float('M [round(x), round(y)])$
+@group
+(%i3) plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
+@end group
 @end example
 
 @ifnotinfo
-@image{../figures/plotting24,8cm}
+@image{../figures/plotting25,8cm}
 @end ifnotinfo
 
 Veja @code{plot_options} para mais exemplos.

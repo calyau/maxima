@@ -305,10 +305,15 @@ Die Funktion wird mit dem Kommando @code{load(implicit_plot)} geladen.
 
 Beispiel:
 
+@c ===beg===
+@c load(implicit_plot)$
+@c implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
+@c ===end===
 @example
-(%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
- [gnuplot_preamble, "set zeroaxis"]);
+(%i1) load(implicit_plot)$
+(%i2) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
 @end example
+
 @ifnotinfo
 @image{../figures/plotting3,8cm}
 @end ifnotinfo
@@ -518,7 +523,6 @@ vertikalen Achse mit der Grafikoption @code{y} zu begrenzen.
 @example
 @group
 (%i1) plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
-plot2d: some values were clipped.
 @end group
 @end example
 
@@ -596,12 +600,11 @@ Graph einer parametrisch definierten Schmetterlingskurve.
 
 @c ===beg===
 @c r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
-@c plot2d([parametric, r*sin(t), r*cos(t), [t, -8*%pi, 8*%pi], [nticks, 2000]])$
+@c plot2d([parametric, r*sin(t), r*cos(t), [t, -8*%pi, 8*%pi]])$
 @c ===end===
 @example
 (%i1) r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
-(%i2) plot2d([parametric, r*sin(t), r*cos(t), [t, -8*%pi, 8*%pi], 
-             [nticks, 2000]])$
+(%i2) plot2d([parametric, r*sin(t), r*cos(t), [t, -8*%pi, 8*%pi]])$
 @end example
 
 @ifnotinfo
@@ -616,12 +619,13 @@ Graph der Funktion @code{abs(x)} und eines parametrischen Kreises.  Das
 Seitenverh@"altnis der Grafik wurde mit den Grafikoptionen @code{same_xy}.
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -2*%pi, 2*%pi], [nticks, 8]])$
+@c plot2d([[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
+@c          [x, -sqrt(2), sqrt(2)], same_xy)$
 @c ===end===
 @example
 @group
-(%i1) plot2d ([parametric, cos(t), sin(t), [t, -2*%pi, 2*%pi], 
-              [nticks, 8]])$
+(%i1) plot2d([[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
+         [x, -sqrt(2), sqrt(2)], same_xy)$
 @end group
 @end example
 
@@ -688,17 +692,20 @@ Funktion, die die Daten beschreibt.
 @c ===beg===
 @c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
 @c plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
-@c         [style, points, lines], [color, red, blue], [point_type, asterisk],
+@c         [style, points, lines], [color, red, blue],
+@c         [point_type, asterisk],
 @c         [legend, "experiment", "theory"],
-@c         [xlabel, "pendulum's length (cm)"], [ylabel, "period (s)"])$
+@c         [xlabel, "pendulum's length (cm)"],
+@c         [ylabel, "period (s)"])$
 @c ===end===
 @example
 (%i1) xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
 @group
 (%i2) plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, points, lines], [color, red, blue], 
-        [point_type, asterisk], [legend, "experiment", "theory"],
-        [xlabel, "pendulum's length (cm)"], 
+        [style, points, lines], [color, red, blue],
+        [point_type, asterisk],
+        [legend, "experiment", "theory"],
+        [xlabel, "pendulum's length (cm)"],
         [ylabel, "period (s)"])$
 @end group
 @end example
@@ -938,13 +945,13 @@ das @code{plot3d} fehlschl@"agt, wenn die Argumente keine ganze Zahlen sind.
 @c ===beg===
 @c M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
 @c f(x, y) := float('M [round(x), round(y)])$
-@c plot3d (f(x,y), [x,1,4], [y,1,4], [grid,3,3], [legend,false])$
+@c plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
 @c ===end===
 @example
 (%i1) M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
 (%i2) f(x, y) := float('M [round(x), round(y)])$
 @group
-(%i3) plot3d (f(x,y), [x,1,4], [y,1,4], [grid,3,3], [legend,false])$
+(%i3) plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
 @end group
 @end example
 
