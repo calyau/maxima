@@ -1801,8 +1801,8 @@ A string representing any valid gnuplot term specification
 
 Gnuplot can generate output in many other graphical formats such as png,
 jpeg, svg etc. To use those formats, option @code{gnuplot_term} can be
-set to any supported gnuplot term name (for example symbol) or even a
-full gnuplot term specification with any valid options (string).  For
+set to any supported gnuplot term name (which must be a symbol) or even a
+full gnuplot term specification with any valid options (which must be a string).  For
 example @code{[gnuplot_term, png]} creates output in PNG (Portable
 Network Graphics) format while @code{[gnuplot_term, "png size
 1000,1000"]} creates PNG of 1000 x 1000 pixels size.  If the option
