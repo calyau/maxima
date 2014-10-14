@@ -13,41 +13,44 @@
 @c -----------------------------------------------------------------------------
 
 Maxima uses an external plotting package to make the plots (see the
-section on Plotting formats).  The plotting functions calculate a set of
-points and pass them to the plotting package together with a set of
-commands.  That information can be passed to the external program either
-through a pipe or by calling the program with the name of a file where
-the data has been saved.  The data file is given the name
-@code{maxout.interface}, where @code{interface} is the name of the
-plotting interface being used (gnuplot, xmaxima, mgnuplot or
-gnuplot_pipes).
+section on @mref{Plotting Formats}).  The plotting functions calculate a
+set of points and pass them to the plotting package together with a set
+of commands.  That information can be passed to the external program
+either through a pipe or by calling the program with the name of a file
+where the data has been saved.  The data file is given the name
+@code{maxout.format}, where @code{format} is the name of the plotting
+format being used (@code{gnuplot}, @code{xmaxima}, @code{mgnuplot} or
+@code{gnuplot_pipes}).
 
-There are options that can be used to save the plot in a graphic format
-file. In those cases, the file @code{maxout.interface} will be created
-and then executed by the external plotting program to save the result in
-another file; if the name of that graphic file is not given by the
-options used, the default name @code{maxplot.format} will be used, where
-@code{format} is the format being used.
+There are to save the plot in a graphic format file. In those cases, the
+file @code{maxout.format} created by Maxima includes commands that will
+make the external plotting program save the result in a graphic
+file. The default name for that graphic file is
+@code{maxplot.extension}, where @code{extension} is the extension
+normally used for the kind of graphic file selected.
 
-The @code{maxout.interface} and @code{maxplot.format} files (or the plot
-name given by the options), in the cases when they are used, are created
+The @code{maxout.format} and @code{maxplot.extension} files are created
 in the directory specified by the system variable
-@mrefdot{maxima_tempdir} That location can be changed; by assigning to
+@mrefdot{maxima_tempdir} That location can be changed by assigning to
 that variable (or to the environment variable MAXIMA_TEMPDIR) a string
 that represents a valid directory where Maxima can create new files. The
-name of the file, or files, created will be shown as the output of the
-plotting command.
+output of the Maxima plotting command will be a list with the names of
+the file(s) created, including their complete path.
 
-After a plot has been created, the file @code{maxout.interface} can be
-executed again with the appropriate external program.  If a Maxima plotting
-command fails to show anything, that file can be inspected to look for
-possible sources of problems.
+If the format used is either @code{gnuplot} or @code{xmaxima}, the
+external programs @code{gnuplot} or @code{xmaxima} can be run, giving it
+the file @code{maxout.format} as argument, in order to view again a plot
+previously created in Maxima. Thus, when a Maxima plotting command
+fails, the format can be set to @code{gnuplot} or @code{xmaxima} and the
+plain-text file @code{maxout.gnuplot} (or @code{maxout.xmaxima}) can be
+inspected to look for the source of the problem.
 
-Together with the plotting functions described in this chapter, package
-@ref{draw} adds other functionalities.  Note that some plotting options
-are named equal in both plotting contexts, but with different syntax;
-if you want to access the draw information related to these options, you
-have to type @code{?? opt}, where @code{opt} is the name of the option.
+The additional package @ref{draw} provides functions similar to the ones
+described in this section with some extra features. Note that some
+plotting options have the same name in both plotting packages, but their
+syntax and behavior is different. To view the documentation for a
+graphic option @code{opt}, type @code{?? opt} in order to choose the
+information for either of those two packages.
 
 @opencatbox
 @category{Plotting}
@@ -58,10 +61,11 @@ have to type @code{?? opt}, where @code{opt} is the name of the option.
 @section Plotting Formats
 @c -----------------------------------------------------------------------------
 
-There are currently two external plotting programs that Maxima use: Gnuplot
-and Xmaxima.  There are various different formats for those programs,
-which can be selected with the option @mref{plot_format} (see
-the Plotting Options section).
+Maxima can use either Gnuplot or Xmaxima as graphics program. Gnuplot is
+an external program that has to be installed separately, while Xmaxima
+is distributed with Maxima. There are various different formats for
+those programs, which can be selected with the option @mref{plot_format}
+(see also the @mref{Plotting Options} section).
 
 The plotting formats are the following:
 
@@ -87,9 +91,9 @@ previous plots, unless the gnuplot pipe is closed with the function
 displayed on the screen.
 
 This format is only used to plot to the screen; whenever graphic files are
-created, the format will be switched automatically to @code{gnuplot} and
-the gnuplot commands needed to created the graphic file will be saved in
-@code{maxout.gnuplot}.
+created, the format is silently switched to @code{gnuplot} and
+the commands needed to create the graphic file are saved with the data
+in file @code{maxout.gnuplot}.
 
 @item
 @strong{mgnuplot}
@@ -104,18 +108,18 @@ Unix systems, the Tcl/Tk system.
 @strong{xmaxima}
 
 Xmaxima is a Tcl/Tk graphical interface for Maxima that can also be used
-to display plots created when Maxima is run from the console or from other
-graphical interfaces.  To use this format, the xmaxima program, which is
-distributed together with Maxima, should be installed.  If Maxima is
-being run from xmaxima itself, this format will make the plot functions
-send the data and commands through the same socket used for the
-communication between Maxima and Xmaxima.  When used from the console
-or from other interface, the commands and data will be saved in the file
-@code{maxout.xmaxima}, and the xmaxima program will be launched with the
-name of the location of that file as argument.
+to display plots created when Maxima is run from the console or from
+other graphical interfaces.  To use this format, the xmaxima program,
+which is distributed together with Maxima, should be installed.  If
+Maxima is being run from the Xmaxima console, the data and commands are
+passed to xmaxima through the same socket used for the communication
+between Maxima and the Xmaxima console. When used from a terminal or
+from graphical interfaces different from Xmaxima, the commands and data
+arre saved in the file @code{maxout.xmaxima} and xmaxima is run with the
+name of that file as argument.
 
 In previous versions this format used to be called @code{openmath}; that
-old name will still be accepted as a synonym for @code{xmaxima}.
+old name still works as a synonym for @code{xmaxima}.
 @end itemize
 
 @opencatbox
@@ -136,9 +140,11 @@ over the region @var{x_range} by @var{y_range}.
 Any additional arguments are treated the same as in @mrefdot{plot3d}
 
 This function only works when the plot format is either @code{gnuplot}
-or @code{gnuplot_pipes}.  The additional package @code{implicit_plot} can
-also be used to plot contours and it works for any format.  See
-@mrefdot{implicit_plot}
+or @code{gnuplot_pipes}.  The additional package
+@mrefcomma{implicit_plot} which works in any graphic format, can also be
+used to plot contours but a separate expression must be given for each
+contour.
+
 
 Examples:
 
@@ -154,8 +160,9 @@ Examples:
 
 You can add any options accepted by @code{plot3d}; for instance, the
 option @mref{legend} with a value of false, to remove the
-legend.  Gnuplot chooses, by default, 3 contours to show.  To increase the
-number of levels, it is necessary to specify a custom gnuplot preamble:
+legend. By default, Gnuplot chooses and displays 3 contours. To increase the
+number of contours, it is necessary to use a custom
+@mref{gnuplot_preamble}, as in the next example:
 
 @c ===beg===
 @c contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
@@ -182,9 +189,10 @@ number of levels, it is necessary to specify a custom gnuplot preamble:
 @anchor{get_plot_option}
 @deffn {Function} get_plot_option (@var{keyword}, @var{index})
 
-Returns the current default value of the option named @var{keyword}.  A
-value of 1 for the index will return the keyword itself, a value of 2
-returns the first parameter following the keyword, and so on.
+Returns the current default value of the option named @var{keyword},
+which is a list. The optional argument @var{index} must be a positive
+integer which can be used to extract only one element from the list
+(element 1 is the name of the option).
 
 See also @mrefcomma{set_plot_option} @mref{remove_plot_option} and the
 section on Plotting Options.
@@ -217,12 +225,12 @@ variable. For instance,
 @anchor{gnuplot_file_args}
 @defvr {System variable} gnuplot_file_args
 
-When the a graphic file is going to be created using @code{gnuplot},
-this variable is used to specify the way the file name should be passed
-to gnuplot. Its default value is "~s", which means that the name of
-the file will be passed directly. The contents of this variable can be
+When a graphic file is going to be created using @code{gnuplot}, this
+variable is used to specify the way the file name should be passed to
+gnuplot. Its default value is "~s", which means that the name of the
+file will be passed directly. The contents of this variable can be
 changed in order to add options for the gnuplot program, adding those
-options before the string "~s".
+options before the format directive "~s".
 
 @opencatbox
 @category{Plotting}
@@ -256,7 +264,7 @@ executed; thus, the window with the plot will remain, as well as the
 gnuplot interactive shell where other commands can be issued in order to
 modify the plot.
 
-In Windows versions of gnuplot older than 4.6.3 the behavior of "~s -"
+In Windows versions of Gnuplot older than 4.6.3 the behavior of "~s -"
 and "-persist ~s" were the opposite; namely, "-persist ~s" made the plot
 window and the gnuplot interactive shell remain, while "~s -" closed the
 gnuplot shell keeping the plot window. Therefore, when older gnuplot
@@ -273,16 +281,16 @@ of @code{gnuplot_view_args}.
 @deffn  {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
 @deffnx {Function} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
 
-Displays a plot of one or more expressions in implicit
-form.  @var{expr} is the expression to be plotted, @var{x_range} the
-range of the horizontal axis and @var{y_range} the range of vertical
-axis.  @code{implicit_plot} respects global setting for the Gnuplot
-driver set by the @var{set_plot_option} function.  Options can also be passed
-to @code{implicit_plot} function as optional arguments.
+Displays a plot of a function on the real plane, defined implicitly by
+the expression @var{expr}. The domain in the plane is defined by
+@var{x_range} and @var{y_range}. Several functions can be represented on
+the same plot, giving a list [@var{expr_1}, @dots{}, @var{expr_n}] of
+expressions that define them. This function uses the global format
+options set up with the @mrefdot{set_plot_option} Additional options can
+also be given as extra arguments for the @code{implicit_plot} command.
 
-@code{implicit_plot} works by tracking sign changes on the area
-given by @var{x_range} and @var{y_range} and can fail for complicated
-expressions.
+The method used by @code{implicit_plot} consists of tracking sign
+changes on the domain given and it can fail for complicated expressions.
 
 @code{load(implicit_plot)} loads this function.
 
@@ -337,13 +345,13 @@ Gnuplot from adjusting the color box up to 40, in which case the points
 corresponding the maximum 36 iterations would not be black.
 
 @c ===beg===
-@c julia (-0.55, 0.6, [iterations, 36], [x, -0.3, 0.2], [y, 0.3, 0.9],
-@c       [grid, 400, 400], [color_bar_tics, 0, 6, 36])$
+@c julia (-0.55, 0.6, [iterations, 36], [x, -0.3, 0.2],
+@c   [y, 0.3, 0.9], [grid, 400, 400], [color_bar_tics, 0, 6, 36])$
 @c ===end===
 @example
 @group
-(%i1) julia (-0.55, 0.6, [iterations, 36], [x, -0.3, 0.2], [y, 0.3, 0.9],
-      [grid, 400, 400], [color_bar_tics, 0, 6, 36])$
+(%i1) julia (-0.55, 0.6, [iterations, 36], [x, -0.3, 0.2],
+      [y, 0.3, 0.9], [grid, 400, 400], [color_bar_tics, 0, 6, 36])$
 @end group
 @end example
 
@@ -408,10 +416,12 @@ is used or the option @mref{same_xy} is disabled.
 Example:
 
 @c ===beg===
-@c mandelbrot ([iterations, 30], [x, -2, 1], [y, -1.2, 1.2], [grid,400,400])$
+@c mandelbrot ([iterations, 30], [x, -2, 1], [y, -1.2, 1.2],
+            [grid,400,400])$
 @c ===end===
 @example
-(%i1) mandelbrot ([iterations, 30], [x, -2, 1], [y, -1.2, 1.2], [grid,400,400])$
+(%i1) mandelbrot ([iterations, 30], [x, -2, 1], [y, -1.2, 1.2],
+            [grid,400,400])$
 @end example
 
 @ifnotinfo
@@ -536,14 +546,16 @@ default rectangular shape of the plot; in this example the plot will
 fill a square.
 
 @c ===beg===
-@c plot2d ( x^2 - 1, [x, -3, 3], [box, false], grid2d, [yx_ratio, 1],
-@c [axes, solid], [xtics, -2, 4, 2], [ytics, 2, 2, 6],
-@c [label, ["x", 2.9, -0.3], ["x^2-1", 0.1, 8]], [title, "A parabola"])$
+@c plot2d ( x^2 - 1, [x, -3, 3], [box, false], grid2d,
+@c      [yx_ratio, 1], [axes, solid], [xtics, -2, 4, 2],
+@c      [ytics, 2, 2, 6], [label, ["x", 2.9, -0.3],
+@c      ["x^2-1", 0.1, 8]], [title, "A parabola"])$
 @c ===end===
 @example
-(%i1) plot2d ( x^2 - 1, [x, -3, 3], [box, false], grid2d, [yx_ratio, 1],
-      [axes, solid], [xtics, -2, 4, 2], [ytics, 2, 2, 6],
-      [label, ["x", 2.9, -0.3], ["x^2-1", 0.1, 8]], [title, "A parabola"])$
+(%i1) plot2d ( x^2 - 1, [x, -3, 3], [box, false], grid2d,
+      [yx_ratio, 1], [axes, solid], [xtics, -2, 4, 2],
+      [ytics, 2, 2, 6], [label, ["x", 2.9, -0.3],
+      ["x^2-1", 0.1, 8]], [title, "A parabola"])$
 @end example
 
 @ifnotinfo
@@ -637,10 +649,12 @@ A plot of 200 random numbers between 0 and 9:
 A plot of a discrete set of points, defining x and y coordinates separately:
 
 @c ===beg===
-@c plot2d ([discrete, makelist(i*%pi, i, 1, 5), [.6, .9, 0.2, 1.3, 1]])$
+@c plot2d ([discrete, makelist(i*%pi, i, 1, 5),
+@c                            [0.6, 0.9, 0.2, 1.3, 1]])$
 @c ===end===
 @example
-(%i1) plot2d ([discrete, makelist(i*%pi, i, 1, 5), [.6, .9, 0.2, 1.3, 1]])$
+(%i1) plot2d ([discrete, makelist(i*%pi, i, 1, 5),
+                            [0.6, 0.9, 0.2, 1.3, 1]])$
 @end example
 
 @ifnotinfo
@@ -759,20 +773,22 @@ shows how to plot with only lines and no shading:
 @end ifnotinfo
 
 The infinite values of z can also be avoided by choosing a grid that
-does not fall on any asymptotes; next example also shows how to change
-the palette and how to show the color bar that relates the colors used with
-the values of the z variable:
+does not fall on any points where the function is undefined, as in the
+next example, which also shows how to change the palette and how to
+include a color bar that relates colors to values of the z variable:
 
 @c ===beg===
 @c plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2],[grid, 29, 29],
-@c        [palette, [gradient, red, orange, yellow, green]], color_bar,
-@c        [xtics, 1], [ytics, 1], [ztics, 4],[color_bar_tics, 4])$
+@c       [palette, [gradient, red, orange, yellow, green]],
+@c       color_bar, [xtics, 1], [ytics, 1], [ztics, 4],
+@c       [color_bar_tics, 4])$
 @c ===end===
 @example
 @group
 (%i1) plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2],[grid, 29, 29],
-       [palette, [gradient, red, orange, yellow, green]], color_bar,
-       [xtics, 1], [ytics, 1], [ztics, 4],[color_bar_tics, 4])$
+       [palette, [gradient, red, orange, yellow, green]],
+       color_bar, [xtics, 1], [ytics, 1], [ztics, 4],
+       [color_bar_tics, 4])$
 @end group
 @end example
 
@@ -781,9 +797,9 @@ the values of the z variable:
 @end ifnotinfo
 
 Two surfaces in the same plot. Ranges specific to one of the surfaces can
-be given by placing the expression and the ranges inside a common list;
-in this example each surface is defined in a domain different from the
-domain of the complete plot.
+be given by placing each expression and its ranges in a separate list;
+global ranges for the complete plot are also given after the functions
+definitions.
 
 @c ===beg===
 @c plot3d ([[-3*x - y, [x, -2, 2], [y, -2, 2]],
@@ -805,16 +821,16 @@ domain of the complete plot.
 Plot of a Klein bottle, defined parametrically:
 
 @c ===beg===
-@c expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
-@c expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
-@c expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+@c expr_1: 5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)-10$
+@c expr_2: -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)$
+@c expr_3: 5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))$
 @c plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
 @c         [y, -%pi, %pi], [grid, 50, 50])$
 @c ===end===
 @example
-(%i1) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
-(%i2) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
-(%i3) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+(%i1) expr_1: 5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)-10$
+(%i2) expr_2: -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)$
+(%i3) expr_3: 5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))$
 @group
 (%i4) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
         [y, -%pi, %pi], [grid, 50, 50])$
@@ -854,12 +870,12 @@ cylindrical to rectangular coordinates.  See the documentation for
 @mrefdot{polar_to_xy}
 
 @c ===beg===
-@c plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi], [box, false],
+@c plot3d (r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], [box, false],
 @c    [grid, 12, 80], [transform_xy, polar_to_xy], [legend, false])$
 @c ===end===
 @example
 @group
-(%i1) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi], [box, false],
+(%i1) plot3d (r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], [box, false],
    [grid, 12, 80], [transform_xy, polar_to_xy], [legend, false])$
 @end group
 @end example
@@ -892,19 +908,20 @@ surface correctly.
 @end ifnotinfo
 
 Definition of a function of two-variables using a matrix.  Notice the
-single quote in the definition of the function, to prevent plot3d from
-failing when it realizes that the matrix will require integer indices.
+single quote in the definition of the function, to prevent @code{plot3d}
+from failing when it realizes that the matrix will require integer
+indices.
 
 @c ===beg===
-@c M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
+@c M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
 @c f(x, y) := float('M [round(x), round(y)])$
-@c plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 3, 3], [legend, false])$
+@c plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
 @c ===end===
 @example
-(%i1) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
+(%i1) M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
 (%i2) f(x, y) := float('M [round(x), round(y)])$
 @group
-(%i3) plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 3, 3], [legend, false])$
+(%i3) plot3d (f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false])$
 @end group
 @end example
 
@@ -916,15 +933,15 @@ By setting the elevation equal to zero, a surface can be seen as a map
 in which each color represents a different level.
 
 @c ===beg===
-@c plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [zlabel, ""],
-@c         [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
-@c         color_bar, [grid, 80, 80], [ztics, false], [color_bar_tics, 1])$
+@c plot3d (cos (-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
+@c        [mesh_lines_color,false], [elevation,0], [azimuth,0],
+@c        color_bar, [grid,80,80], [ztics,false], [color_bar_tics,1])$
 @c ===end===
 @example
 @group
-(%i1) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [zlabel, ""],
-        [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
-        color_bar, [grid, 80, 80], [ztics, false], [color_bar_tics, 1])$
+(%i1) plot3d (cos (-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
+       [mesh_lines_color,false], [elevation,0], [azimuth,0],
+       color_bar, [grid,80,80], [ztics,false], [color_bar_tics,1])$
 @end group
 @end example
 
