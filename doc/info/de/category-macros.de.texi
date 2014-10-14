@@ -10,120 +10,134 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@macro opencatbox {}
 @ifhtml
+@macro opencatbox {}
 @html
 <div class=categorybox>
 @end html
-@end ifhtml
 @end macro
 
 @macro category {name}
-@ifhtml
 @html
 &middot;
 @end html
 @ref{Kategorie: \name\}
-@end ifhtml
 @end macro
 
 @macro closecatbox {}
-@ifhtml
 @html
 </div>
 @end html
-@end ifhtml
 @end macro
 
+@c Macros for cross references
+
 @macro mref {nodename}
-@ifhtml
 @code{@ref{\nodename\}}
-@end ifhtml
-@ifnothtml
-@code{\nodename\}
-@end ifnothtml
 @end macro
 
 @macro mxref {nodename, text}
-@ifhtml
 @code{@ref{\nodename\, \text\}}
-@end ifhtml
-@ifnothtml
-@code{\text\}
-@end ifnothtml
 @end macro
 
 @macro mrefdot {nodename}
-@ifhtml
 @code{@ref{\nodename\}}.
-@end ifhtml
-@ifnothtml
-@code{\nodename\}.
-@end ifnothtml
 @end macro
 
 @macro mxrefdot {nodename, text}
-@ifhtml
 @code{@ref{\nodename\, \text\}}.
-@end ifhtml
-@ifnothtml
-@code{\text\}.
-@end ifnothtml
 @end macro
 
 @macro mrefcomma {nodename}
-@ifhtml
 @code{@ref{\nodename\}},
-@end ifhtml
-@ifnothtml
-@code{\nodename\},
-@end ifnothtml
+@end macro
+
+@macro mxrefcomma {nodename, text}
+@code{@ref{\nodename\, \text\}},
 @end macro
 
 @macro mrefparen {nodename}
-@ifhtml
 @code{@ref{\nodename\}})
-@end ifhtml
-@ifnothtml
-@code{\nodename\})
-@end ifnothtml
 @end macro
 
 @macro nref {nodename}
-@ifhtml
 @ref{\nodename\}
-@end ifhtml
-@ifnothtml
-\nodename\
-@end ifnothtml
 @end macro
 
 @macro nxref {nodename, text}
-@ifhtml
 @ref{\nodename\, \text\}
-@end ifhtml
-@ifnothtml
-\text\
-@end ifnothtml
 @end macro
 
 @macro nrefdot {nodename}
-@ifhtml
 @ref{\nodename\}.
-@end ifhtml
-@ifnothtml
-\nodename\.
-@end ifnothtml
 @end macro
 
 @macro nrefcomma {nodename}
-@ifhtml
 @ref{\nodename\},
-@end ifhtml
-@ifnothtml
-\nodename\,
-@end ifnothtml
 @end macro
+
+@end ifhtml
+
+@c Non html versions of the macros
+
+@ifnothtml
+
+@macro opencatbox {}
+@end macro
+
+@macro category {name}
+@end macro
+
+@macro closecatbox {}
+@end macro
+
+@c Macros for cross references
+
+@macro mref {nodename}
+@code{\nodename\}
+@end macro
+
+@macro mxref {nodename, text}
+@code{\text\}
+@end macro
+
+@macro mrefdot {nodename}
+@code{\nodename\}.
+@end macro
+
+@macro mxrefdot {nodename, text}
+@code{\text\}.
+@end macro
+
+@macro mrefcomma {nodename}
+@code{\nodename\},
+@end macro
+
+@macro mxrefcomma {nodename, text}
+@code{\text\},
+@end macro
+
+@macro mrefparen {nodename}
+@code{\nodename\})
+@end macro
+
+@macro nref {nodename}
+\nodename\
+@end macro
+
+@macro nxref {nodename, text}
+\text\
+@end macro
+
+@macro nrefdot {nodename}
+\nodename\.
+@end macro
+
+@macro nrefcomma {nodename}
+\nodename\,
+@end macro
+
+@end ifnothtml
 
 @iftex
 @hyphenation{ab-ge-lei-te-ten
@@ -226,6 +240,7 @@
              Zwi-schen-raum-zei-chen
  }
 @end iftex
+
 
 @c --- End of file category-macros.de.texi -------------------------------------
 

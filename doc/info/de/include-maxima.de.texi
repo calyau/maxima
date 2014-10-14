@@ -286,7 +286,7 @@ Mathematische Funktionen
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
-* Wurzel-@comma{} Exponential- und Logarithmusfunktion::
+* Wurzel- Exponential- und Logarithmusfunktion::
 * Winkelfunktionen::
 * Einf@"uhrung in Winkelfunktionen::
 * Funktionen und Variablen f@"ur Winkelfunktionen::
