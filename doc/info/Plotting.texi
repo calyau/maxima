@@ -115,7 +115,7 @@ Maxima is being run from the Xmaxima console, the data and commands are
 passed to xmaxima through the same socket used for the communication
 between Maxima and the Xmaxima console. When used from a terminal or
 from graphical interfaces different from Xmaxima, the commands and data
-arre saved in the file @code{maxout.xmaxima} and xmaxima is run with the
+are saved in the file @code{maxout.xmaxima} and xmaxima is run with the
 name of that file as argument.
 
 In previous versions this format used to be called @code{openmath}; that
@@ -1138,7 +1138,7 @@ will be used instead.
 @c -----------------------------------------------------------------------------
 @anchor{color_bar}
 @defvr {Plot option} color_bar [color_bar, @var{symbol}]
-Default value: @code{false} in plot3d, @code{true} in mandelbrot and julia-
+Default value: @code{false} in plot3d, @code{true} in mandelbrot and julia
 
 Where @var{symbol} can be either @code{true} or @code{false}.  If
 @code{true}, whenever @mrefcomma{plot3d} @mref{mandelbrot} or
