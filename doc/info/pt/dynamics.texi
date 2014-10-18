@@ -1,12 +1,12 @@
 @c Language: Portuguese
 @c Source: dynamics.texi (en) 1.10
 @menu
-* Introdu@value{cedilha}@~ao a dynamics::
-* Defini@value{cedilha}@~oes para dynamics::
+* Introdu@,{c}@~ao a dynamics::
+* Defini@,{c}@~oes para dynamics::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a dynamics, Defini@value{cedilha}@~oes para dynamics, dynamics, dynamics
-@section Introdu@value{cedilha}@~ao a dynamics
+@node Introdu@,{c}@~ao a dynamics, Defini@,{c}@~oes para dynamics, dynamics, dynamics
+@section Introdu@,{c}@~ao a dynamics
 
 O pacote adicional @code{dynamics} inclui v@'arias
 fun@,{c}@~oes para criar diversas
@@ -20,8 +20,8 @@ primeiro que tudo carreg@'a-lo com @code{load("dynamics")}; as
 fun@,{c}@~oes que criam gr@'aficos precisam que o Xmaxima
 esteja instalado.
 
-@node Defini@value{cedilha}@~oes para dynamics,  , Introdu@value{cedilha}@~ao a dynamics, dynamics
-@section Defini@value{cedilha}@~oes para dynamics
+@node Defini@,{c}@~oes para dynamics,  , Introdu@,{c}@~ao a dynamics, dynamics
+@section Defini@,{c}@~oes para dynamics
 
 @deffn {Fun@,{c}@~ao} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@,{c}@~oes...);
 
@@ -99,69 +99,6 @@ propor@,{c}@~ao.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} julia (@var{x}, @var{y}, ...@var{op@,{c}@~oes}...)
-
-Cria um ficheiro gr@'afico com a representa@,{c}@~ao do
-conjunto de Julia do n@'umero complexo (@var{x} + i @var{y}). Os
-par@^ametros @var{x} e @var{y} dever@~ao ser reais. O ficheiro @'e
-criado no direct@'orio actual ou no direct@'orio do utilizador, usando o
-formato gr@'afico XPM. O programa pode demorar v@'arios segundos a ser
-executado e quando terminar imprime uma mensagem com o nome do ficheiro
-criado.
-
-Atribuem-se diferentes cores aos pontos que n@~ao pertencem ao conjunto
-de Julia, segundo o n@'umero de itera@,{c}@~oes que demorar a
-sequ@^encia que come@,{c}a nesse ponto, a sair fora do
-c@'{@dotless{i}}rculo de converg@^encia com raio 2. O n@'umero m@'aximo
-de itera@,{c}@~oes define-se com a op@,{c}@~ao
-@var{levels}; ap@'os conclu@'{@dotless{i}}do esse n@'umero de
-itera@,{c}@~oes, se a sequ@^encia estiver ainda dentro do
-c@'{@dotless{i}}rculo de converg@^encia, o ponto ser@'a colorido com a
-cor definida pela op@,{c}@~ao @var{color}.
-
-Todas as cores usadas para os pontos que n@~ao pertencerem ao conjunto
-de Julia ter@~ao os mesmos valores de satura@,{c}@~ao
-(@var{saturation}) e valor (@var{value}), mas com diferentes @^angulos
-de tonalidade, distribu@'{@dotless{i}}dos uniformemente no intervalo
-entre @var{hue} e (@var{hue} + @var{huerange}).
-
-Podem ser dadas @`a fun@,{c}@~ao uma sequ@^encia de
-op@,{c}@~oes. A lista de poss@'{@dotless{i}}veis
-op@,{c}@~oes aparece numa sec@,{c}@~ao mais para a
-frente.
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao} mandelbrot (@var{op@,{c}@~oes})
-
-Cria um ficheiro gr@'afico com a representa@,{c}@~ao do
-conjunto de Mandelbrot. O ficheiro @'e criado no direct@'orio actual ou
-no direct@'orio do utilizador, usando o formato gr@'afico XPM. O
-programa pode demorar v@'arios segundos a ser executado e quando
-terminar imprime uma mensagem com o nome do ficheiro criado.
-
-Atribuem-se diferentes cores aos pontos que n@~ao pertencem ao conjunto
-de Mandelbrot, segundo o n@'umero de itera@,{c}@~oes que
-demorar a sequ@^encia gerada por esse ponto a sair fora do
-c@'{@dotless{i}}rculo de converg@^encia com raio 2. O n@'umero m@'aximo
-de itera@,{c}@~oes define-se com a op@,{c}@~ao
-@var{levels}; ap@'os conclu@'{@dotless{i}}do esse n@'umero de
-itera@,{c}@~oes, se a sequ@^encia estiver ainda dentro do
-c@'{@dotless{i}}rculo de converg@^encia, o ponto ser@'a colorido com a
-cor definida pela op@,{c}@~ao @var{color}.
-
-Todas as cores usadas para os pontos que n@~ao pertencerem ao conjunto
-de Mandlebrot ter@~ao os mesmos valores de satura@,{c}@~ao
-(@var{saturation}) e valor (@var{value}), mas com diferentes @^angulos
-de tonalidade, distribu@'{@dotless{i}}dos uniformemente no intervalo
-entre @var{hue} e (@var{hue} + @var{huerange}).
-
-Podem ser dadas @`a fun@,{c}@~ao uma sequ@^encia de
-op@,{c}@~oes. A lista de poss@'{@dotless{i}}veis
-op@,{c}@~oes aparece numa sec@,{c}@~ao mais para a
-frente.
-
-@end deffn
 
 @deffn {Fun@,{c}@~ao} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@,{c}@~oes...);
 
@@ -305,82 +242,7 @@ ser@~ao representados.
 
 @end itemize
 
-As op@,{c}@~oes aceites pelos programas julia e mandelbrot
-s@~ao as seguintes:
-
-@itemize @bullet
-@item
-@dfn{size} admite um ou dois argumentos. Se aparecer um s@'o argumento,
-a largura e a altura do ficheiro gr@'afico criado ser@~ao iguais a esse
-valor em pixels. Se forem dados dois argumentos, esses dois valores ser@~ao
-usados para a largura e a altura. O valor por omiss@~ao @'e 400 pixels
-para a largura e para a altura. Se os dois valores n@~ao forem iguais,
-o conjunto aparecer@'a alongado.
-
-@item
-@dfn{levels} define o n@'umero m@'aximo de itera@,{c}@~oes, que @'e
-tamb@'em o n@'umero de cores usado para os pontos que n@~o pertencem
-ao conjunto. O valor por omiss@~ao @'e 12; valores mais elevados implicam
-tempos de processamento mais elevados.
-
-@item
-@dfn{huerange} define o intervalo de @^angulos usados para a tonalidade
-dos pontos que n@~o perten@,{c}am ao conjunto. O valor por
-omiss@~ao @'e 360, que faz com que as cores usadas abranjam todas as
-tonalidades. Valores superiores a 360 implicam repeti@,{c}@~ao de
-algumas tonalidades, e pode usar-se valores negativos para
-que o @^angulo de tonalidade seja menor @`a medida que o n@'umero de
-itera@,{c}@~oes aumentar.
-
-@item
-@dfn{hue} define a tonalidade, em graus, da primeira cor usada para
-representar os pontos que n@~ao pertencem ao conjunto.  O seu valor por
-omiss@~ao @'e 300 graus, que corresponde @`a cor magenta; a cor
-correspondente a outros valores padr@~ao @'e vermelho 0, laranja 45,
-amarelo 60, verde 120, azul ciano 180 e azul 240. Consulte tamb@'em a
-op@,{c}@~ao @var{huerange}.
-
-@item
-@dfn{saturation} define o n@'{@dotless{i}}vel de satura@,{c}@~ao das cores
-usadas para os pontos que n@~ao perten@,{c}am ao
-conjunto. Dever@'a ser um valor entre 0 e 1. O valor por omiss@~ao @'e
-0.46.
-
-@item
-@dfn{value} define o valor das cores usadas para pontos que n@~ao
-perten@,{c}am ao conjunto. Dever@'a ser um n@'umero entre 0 e
-1; quanto maior for, mais intensas ser@~ao as cores. O seu valor por
-omiss@~ao @'e 0.96.
-
-@item
-@dfn{color} dever@'a ter tr@^es par@^ametros que definem a tonalidade,
-satura@,{c}@~ao e valor da cor que ser@'a usada para os pontos
-do conjunto. O valor por omiss@~ao @'e 0 para os tr@^es par@^ametros,
-que corresponde @`a cor preta. Veja a explica@,{c}@~ao sobre
-os valores aceites nas op@,{c}@~oes @var{hue},
-@var{saturation} e @var{value}.
-
-@item
-@dfn{center} deber@'a ter dois par@^ametros reais que definem as
-coordenadas, no plano complexo, do ponto no centro da regi@~ao
-representada. O valor por omiss@~ao @'e 0 para as duas coordenadas (a
-origem).
-
-@item
-@dfn{radius} @'e o raio do maior c@'{@dotless{i}}rculo que
-cabe dentro da regi@~ao quadrada que ser@'a representada. O valor
-por omiss@~ao @'e 2.
-
-@item
-@dfn{nomeficheiro} d@'a o nome do ficheiro onde ser@'a armazenado o
-gr@'afico produzido. A esse nome ser@'a acrescentada a
-termina@,{c}@~ao .xpm. Se o ficheiro j@'a existir, ser@'a
-substitu@'{@dotless{i}}do pelo ficheiro produzido pela
-fun@,{c}@~ao. O valor por omiss@~ao @'e julia para o conjunto
-de Julia e mandelbrot para o conjunto de Mandelbrot.
-
-@end itemize
-
+As op@,{c}@~oes aceites pelos programas juli
 @b{Exemplos}
 
 Representa@,{c}@~ao gr@'afica e diagrama de degraus da sequ@^encia:
@@ -485,33 +347,6 @@ Iteradas:
 
 @ifnotinfo
 @image{../figures/dynamics8,8cm}
-@end ifnotinfo
-
-Para criar um ficheiro @emph{dinamica9.xpm} com a
-representa@,{c}@~ao gr@'afica do conjunto de Mandelbrot, com
-12 colores, use o comando:
-
-@example
-mandelbrot([nomeficheiro,"dinamica9"])$
-@end example
-
-@ifnotinfo
-@image{../figures/dynamics9,8cm}
-@end ifnotinfo
-
-e o conjunto de Julia do n@'umero (-0.55 + i 0.6) pode ser obtido com:
-@example
-julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
-      [hue, 240], [huerange, -180], [nomeficheiro, "dinamica10"])$
-@end example
-
-o gr@'afico guardar-se-@'a no ficheiro @emph{dinamica10.xpm} e
-apresentar@'a a regi@~o desde -0.3 at@'e 0.3 na direc@,{c}@~ao x, e desde
-0.3 at@'e 0.9 na direc@,{c}@~ao y. Ser@~ao usadas 36 cores, comen@,{c}ando
-com azul e terminando com amarelo.
-
-@ifnotinfo
-@image{../figures/dynamics10,8cm}
 @end ifnotinfo
 
 Para resolver numericamente a equa@,{c}@~ao diferencial
