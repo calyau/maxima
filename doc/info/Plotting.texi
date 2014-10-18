@@ -2059,7 +2059,7 @@ before reploting the window.
 @anchor{gnuplot_reset}
 @deffn {Function} gnuplot_reset ()
 
-Resets the state of gnuplot used with the @code{gnuplot_pipes} format  To
+Resets the state of gnuplot used with the @code{gnuplot_pipes} format.  To
 update the gnuplot window call @mref{gnuplot_replot} after @code{gnuplot_reset}.
 
 @opencatbox
