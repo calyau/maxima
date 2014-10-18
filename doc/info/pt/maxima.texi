@@ -10,6 +10,7 @@
 @setfilename  maxima.info
 @synindex vr fn
 @documentencoding ISO-8859-1
+@documentlanguage pt_PT
 @set cedilha @,{c}
 @settitle Manual do Maxima
 @c %**end of header
