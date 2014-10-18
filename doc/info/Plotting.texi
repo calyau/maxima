@@ -1930,7 +1930,7 @@ this option is not set, the command used will be: @code{"set term dumb
 @defvr {Plot option} gnuplot_pdf_term_command [gnuplot_pdf_term_command, @var{command}]
 
 The gnuplot command to set the terminal type for the PDF
-terminal.  It this option is not set, the command used will be: @code{"set term pdfcairo color solid lw 3 size 17.2 cm, 12.9 cm font \",18\""}. See the gnuplot documentation for more information.
+terminal.  If this option is not set, the command used will be: @code{"set term pdfcairo color solid lw 3 size 17.2 cm, 12.9 cm font \",18\""}. See the gnuplot documentation for more information.
 
 @opencatbox
 @category{Plotting}
@@ -1941,7 +1941,7 @@ terminal.  It this option is not set, the command used will be: @code{"set term 
 @anchor{gnuplot_png_term_command}
 @defvr {Plot option} gnuplot_png_term_command [gnuplot_png_term_command, @var{command}]
 
-The gnuplot command to set the terminal type for the PNG terminal.  It
+The gnuplot command to set the terminal type for the PNG terminal.  If
 this option is not set, the command used will be:
 @code{"set term pngcairo font \",12\""}. See the gnuplot documentation
 for more information.
@@ -1956,7 +1956,7 @@ for more information.
 @defvr {Plot option} gnuplot_ps_term_command [gnuplot_ps_term_command, @var{command}]
 
 The gnuplot command to set the terminal type for the PostScript
-terminal.  It this option is not set, the command used will be: @code{"set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""}. See the gnuplot documentation for @code{set term postscript} for
+terminal.  If this option is not set, the command used will be: @code{"set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""}. See the gnuplot documentation for @code{set term postscript} for
 more information.
 
 @opencatbox
@@ -1969,7 +1969,7 @@ more information.
 @defvr {Plot option} gnuplot_svg_term_command [gnuplot_svg_term_command, @var{command}]
 
 The gnuplot command to set the terminal type for the SVG
-terminal.  It this option is not set, the command used will be:
+terminal.  If this option is not set, the command used will be:
 @code{"set term svg font \",14\""}. See the gnuplot documentation for
 more information.
 
