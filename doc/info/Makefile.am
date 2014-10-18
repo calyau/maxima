@@ -50,7 +50,7 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
   mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
   ggf.texi ezunits.texi f90.texi diag.texi dynamics.texi\
   bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
-  interpol.texi lbfgs.texi romberg.texi grobner.texi\
+  implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
   asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi fractals.texi finance.texi\
   bernstein.texi to_poly_solve.texi defstruct.texi alt-display.texi
@@ -218,6 +218,11 @@ maxima-index.lisp: maxima.info build_index.pl
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
 	sh extract_categories.sh maxima
+
+maxima.pdf: maxima.texi $(maxima_TEXINFOS)
+	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
+	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima.html
 	perl ./create_index

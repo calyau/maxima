@@ -15,7 +15,12 @@ maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
-	perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+	perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file texi2html.init maxima.texi 
+
+maxima.pdf: maxima.texi $(maxima_TEXINFOS)
+	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
+	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc: maxima.html
 	perl ../create_index
