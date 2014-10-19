@@ -1,0 +1,141 @@
+(kill(all), 'done);
+'done$
+
+(load("diff_form"), 'done);
+'done$
+
+/* examples are taken from share/diff_form/example.txt */
+
+/* A1.vector to form */
+
+fstar_with_clf([x,y,z],[x,y,z],vtof1([a,b,c]));
+c*Dz+b*Dy+a*Dx$
+
+fstar_with_clf([x,y,z],[x,y,z],vtof2([a,b,c]));
+a*Dy*Dz-b*Dx*Dz+c*Dx*Dy$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  vtof1([a,b,c]));
+b*Dth*sin(phi)*r+c*Dphi*r+a*Dr$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  vtof2([a,b,c]));
+a*Dphi*Dth*sin(phi)*r^2+c*Dr*Dth*sin(phi)-b*Dphi*Dr/sin(phi)$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  scale_factor);
+[1,sin(phi)*r,r]$
+
+/* A2. grad,rot or curle,div,laplacian */
+/* 1.gradiant */
+
+fstar_with_clf([x,y,z],[x,y,z],(depends(f,[x,y,z]),d(f)));
+Dz*'diff(f,z,1)+Dy*'diff(f,y,1)+Dx*'diff(f,x,1)$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  (depends(f,[r,th,phi]),d(f)));
+Dth*'diff(f,th,1)+Dr*'diff(f,r,1)+Dphi*'diff(f,phi,1)$
+
+/* 2.rotate */
+fstar_with_clf([x,y,z],[x,y,z],(depends([a,b,c],[x,y,z]),aa:vtof1([a,b,c]),
+    h_st(d(aa))));
+'diff(b,x,1)*Dz-'diff(a,y,1)*Dz-'diff(c,x,1)*Dy+'diff(a,z,1)*Dy
++'diff(c,y,1)*Dx-'diff(b,z,1)*Dx$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  (depends([a,b,c],[r,th,phi]),aa:vtof1([a,b,c]),h_st(d(aa))));
+-'diff(c,r,1)*Dth*sin(phi)*r+'diff(b,r,1)*Dphi*r-b*Dr*cos(phi)/(sin(phi)*r)
+                            +'diff(c,th,1)*Dr/(sin(phi)*r)-'diff(b,phi,1)*Dr/r
+                            -c*Dth*sin(phi)+'diff(a,phi,1)*Dth*sin(phi)
+                            -'diff(a,th,1)*Dphi/sin(phi)+b*Dphi$
+
+/* 3.divergent */
+fstar_with_clf([x,y,z],[x,y,z],(depends([a,b,c],[x,y,z]),aa:vtof1([a,b,c]),
+    nest2([d,h_st],aa)));
+'diff(c,z,1)*Dx*Dy*Dz+'diff(b,y,1)*Dx*Dy*Dz+'diff(a,x,1)*Dx*Dy*Dz$
+
+fstar_with_clf([x,y,z],[x,y,z],(depends([a,b,c],[x,y,z]),aa:vtof1([a,b,c]),
+    nest2([h_st,d,h_st],aa)));
+'diff(c,z,1)+'diff(b,y,1)+'diff(a,x,1)$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  (depends([a,b,c],[r,th,phi]),aa:vtof1([a,b,c]),nest2([h_st,d,h_st],aa)));
+c*cos(phi)/(sin(phi)*r)+'diff(b,th,1)/(sin(phi)*r)+'diff(c,phi,1)/r+2*a/r
++'diff(a,r,1)$
+
+/* 4.laplacian */
+fstar_with_clf([x,y,z],[x,y,z],(depends(f,[x,y,z]),nest2([d,h_st,d],f)));
+Dx*Dy*Dz*'diff(f,z,2)+Dx*Dy*Dz*'diff(f,y,2)+Dx*Dy*Dz*'diff(f,x,2)$
+
+fstar_with_clf([x,y,z],[x,y,z],(depends(f,[x,y,z]),nest2([h_st,d,h_st,d],f)));
+'diff(f,z,2)+'diff(f,y,2)+'diff(f,x,2)$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+(depends(f,[r,th,phi]),nest2([h_st,d,h_st,d],f)));
+2*'diff(f,r,1)/r+'diff(f,phi,1)*cos(phi)/(sin(phi)*r^2)
+                +'diff(f,th,2)/(sin(phi)^2*r^2)+'diff(f,phi,2)/r^2
+                +'diff(f,r,2)$
+
+fstar_with_clf([r,th,phi],[r*sin(phi)*cos(th),r*sin(phi)*sin(th),r*cos(phi)],
+  (depends(f,[r,th,phi]),nest2([d,h_st,d],f)));
+Dphi*Dr*Dth*'diff(f,r,2)*sin(phi)*r^2+2*Dphi*Dr*Dth*'diff(f,r,1)*sin(phi)*r
+                                     +Dphi*Dr*Dth*'diff(f,phi,2)*sin(phi)
+                                     +Dphi*Dr*Dth*'diff(f,th,2)/sin(phi)
+                                     +Dphi*Dr*Dth*'diff(f,phi,1)*cos(phi)$
+
+
+/* A3. Example for vorticity */
+fstar_with_clf([x,y,z],[x,y,z],(depends([a1,a2],[x,y]),A:a1*Dx+a2*Dy,
+    nest2([h_st,d,h_st,d],A)));
+-'diff(a2,x,2)*Dy+'diff(a1,x,1,y,1)*Dy+'diff(a2,x,1,y,1)*Dx-'diff(a1,y,2)*Dx$
+
+fstar_with_clf([x,y,z],[x,y,z],(depends([a1,a2],[x,y]),A:a1*Dx+a2*Dy,d(h_st(A))));
+'diff(a2,y,1)*Dx*Dy*Dz+'diff(a1,x,1)*Dx*Dy*Dz$
+
+fstar_with_clf([x,y,z],[x,y,z],(depends([a1,a2],[x,y]),A:a1*Dx+a2*Dy,-(nest2([d,antid],A)+nest2([antid,d],A))));
+'diff(a2,y,2)*Dy+'diff(a2,x,2)*Dy+'diff(a1,y,2)*Dx+'diff(a1,x,2)*Dx$
+
+/* B.Changing integral variable more than two variables */
+
+f_star([u,v],(s:u/(v+1),t:u*v/(v+1),exp(-(s+t))*s^(-z)*t^(z-1)*d(s)@d(t)));
+Du*Dv*u*(u*v/(v+1))^(z-1)*%e^(-u*v/(v+1)-u/(v+1))/((v^2+2*v+1)*(u/(v+1))^z)$
+
+/* B3. Integral */
+trigsimp(f_star([phi,theta],(pu1:sin(phi)*cos(theta),pu2:sin(phi)*sin(theta),pu3:cos(phi),
+    pu1*d(pu2)@d(pu3)+pu2*d(pu3)@d(pu1)+pu3*d(pu1)@d(pu2))));
+Dphi*Dtheta*sin(phi)$
+
+f_star([x,y],(depends([p1,p2,p3],[x,y]),p1*d(p2)@d(p3)+p2*d(p3)@d(p1)+p3*d(p1)@d(p2)));
+p1*(Dx*Dy*'diff(p2,x,1)*'diff(p3,y,1)-Dx*Dy*'diff(p2,y,1)*'diff(p3,x,1))
+ +p2*(Dx*Dy*'diff(p1,y,1)*'diff(p3,x,1)-Dx*Dy*'diff(p1,x,1)*'diff(p3,y,1))
+ +(Dx*Dy*'diff(p1,x,1)*'diff(p2,y,1)-Dx*Dy*'diff(p1,y,1)*'diff(p2,x,1))*p3$
+
+/* C.Integral factor (always possible locally,but not global) */
+fstar_with_clf([x,y,z],[x,y,z],trans_toexact(y*z*d(x)+x*z*d(y)+d(z)));
+(Dz*u1*y^2*z+Dz*u2*x^2*z-Dx*u3*y-Dy*u3*x)/(u1*y^2*z^2+u2*x^2*z^2+u3)$
+
+/* D. Poission bracket (symplectic form,symplectic manifold) */
+f_star([p1,q1,p2,q2,p3,q3],(omega:Dp1@Dq1+Dp2@Dq2+Dp3@Dq3,omega@omega@omega));
+6*Dp1*Dp2*Dp3*Dq1*Dq2*Dq3$
+
+f_star([p1,q1,p2,q2,p3,q3],(omega:Dp1@Dq1+Dp2@Dq2+Dp3@Dq3,d(omega)));
+0$
+
+f_star([p1,p2,p3,q1,q2,q3],(depends([g],[p1,p2,p3,q1,q2,q3]),omega:Dp1@Dq1+Dp2@Dq2
+	+Dp3@Dq3,inner(diff(g,q1)*Dp1-diff(g,p1)*Dq1+diff(g,q2)*Dp2-diff(g,p2)*Dq2+diff(g,q3)*Dp3
+          -diff(g,p3)*Dq3,omega)));
+Dq3*'diff(g,q3,1)+Dq2*'diff(g,q2,1)+Dq1*'diff(g,q1,1)+Dp3*'diff(g,p3,1)
++Dp2*'diff(g,p2,1)+Dp1*'diff(g,p1,1)$
+
+/*
+FAILS:
+
+f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
+p_braket(f*g,h)-f*p_braket(g,h)-g*p_braket(f,h)));
+
+part: invalid index of list or matrix.
+#0: p_braket(_f=f,_g=g)(poisson.mac line 15)
+#1: f_star(newcoords=[p1,q1,p2,q2,p3,q3],a_form=(depends([f,g],[p1,q1,p2,q2,p3,q3]),p_braket(f,g)))
+ -- an error. To debug this try: debugmode(true);
+
+*/
