@@ -146,6 +146,7 @@
        $sequalignore
        $sexplode
        $sha1sum
+       $sha256sum
        $simplode
        $sinsert
        $sinvertcase
