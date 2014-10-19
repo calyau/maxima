@@ -16,13 +16,14 @@
    MA 02110-1301, USA.
    
    
-**** sha1 **********************************************************************
+**** sha1, sha256 **************************************************************
    
    Copyright Volker van Nek, 2014
    
-   sha1sum(string) returns the sha1 fingerprint of a string. 
+   sha1sum(string) returns the sha1 fingerprint of string and sha256sum the 
+   sha256 fingerprint.
    
-   The return value is a string to guarantee 48 hex characters. To parse it 
+   The return value is a string to guarantee 40 (64) hex characters. To parse it 
    into an integer please set the input base to 16 and prefix the string by zero.
    
    (%i2) string : sha1sum("foo bar baz");
@@ -33,7 +34,7 @@
    (%o4)              0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
 
    Note that in case the string contains German umlauts or other non-ASCII 
-   characters the sha1 fingerprint is platform dependend.
+   characters the fingerprint is platform dependend.
    
    The following code streams the base64 contents of a X509 certificate into a 
    string, decodes base64 to DER format and returns the SHA1 fingerprint. 
@@ -83,126 +84,189 @@
     (setq *read-base* 10.) )
 
 
-(defvar *a1* 0)
-(defvar *b1* 0) 
-(defvar *c1* 0) 
-(defvar *d1* 0)
-(defvar *e1* 0)
+(declaim (inline sha-not sha+ sha-left-rotation sha-right-rotation))
 
-(defvar *m1* nil)
-
-
-(declaim (inline sha1-not sha1+ sha1-left-rotation))
-
-(defun sha1-not (i32)
+(defun sha-not (i32)
   (logand (lognot i32) #xffffffff) )
 
-(defun sha1+ (&rest args)
+(defun sha+ (&rest args)
   (logand (apply #'+ args) #xffffffff) )
 
-(defun sha1-left-rotation (i32 k)
+(defun sha-left-rotation (i32 k)
   (logior (logand (ash i32 k) #xffffffff) (ash i32 (- k 32.))) )
 
-
-(defun sha1-worker ()
-  (let ((a *a1*) (b *b1*) (c *c1*) (d *d1*) (e *e1*)
-         f k tmp )
-    (do ((i 0 (1+ i)))
-        ((= i 80.))
-      (cond
-        ((< i 20.)
-          (setq f (logior (logand b c) (logand (sha1-not b) d))
-                k #x5A827999 ))
-        ((< i 40.)
-          (setq f (logxor b c d)
-                k #x6ED9EBA1 ))
-        ((< i 60.)
-          (setq f (logior (logand b c) (logand b d) (logand c d))
-                k #x8F1BBCDC ))
-        (t
-          (setq f (logxor b c d)
-                k #xCA62C1D6 )))
-      (setq tmp (sha1+ (sha1-left-rotation a 5) f e k (svref *m1* i))
-            e d
-            d c
-            c (sha1-left-rotation b 30.)
-            b a
-            a tmp ) )
-    (setq *a1* (sha1+ *a1* a)
-          *b1* (sha1+ *b1* b)
-          *c1* (sha1+ *c1* c)
-          *d1* (sha1+ *d1* d)
-          *e1* (sha1+ *e1* e) )))
+(defun sha-right-rotation (i32 k)
+  (logior (ash i32 (- k)) (logand (ash i32 (- 32. k)) #xffffffff)) )
 
 
-(defun sha1-words (vec) ;; 32 bit big-endian
-  (let ((w (make-array 16. :element-type 'integer :initial-element 0))
-        (inc -1) )
-    (do ((i 0 (1+ i)))
-        ((= i 16.) w)
-      (setf (svref w i) 
-        (logior (ash (svref vec (incf inc)) 24.)
-                (ash (svref vec (incf inc)) 16.)
-                (ash (svref vec (incf inc))  8.)
-                     (svref vec (incf inc))     )))))
+(defun sha-update (bytes nr)
+  (setq bytes (coerce bytes 'vector))
+  (cond
+    ((= nr 160.)
+      (sha1-words bytes)
+      (sha1-worker) )
+    ((= nr 256.)
+      (sha256-words bytes)
+      (sha256-worker) )))
 
-(defun sha1-expand (words)
-  (setq *m1* (make-array 80. :element-type 'integer :initial-element 0))
-  (do ((i 0 (1+ i)))
-      ((= i 16.))
-    (setf (svref *m1* i) (svref words i)) )
-  (do ((i 16. (1+ i)))
-      ((= i 80.))
-    (setf (svref *m1* i) 
-      (sha1-left-rotation 
-        (logxor (svref *m1* (- i 3.))
-                (svref *m1* (- i 8.))
-                (svref *m1* (- i 14.))
-                (svref *m1* (- i 16.)) )
-        1 ))))
+(defun sha-len64 (bits)
+  (do ((i 1 (1+ i)) lst) (nil)
+    (push (logand bits #xff) lst)
+    (when (= i 8) (return lst))
+    (setq bits (ash bits -8)) ))
 
-(defun sha1-update (bytes)
-  (sha1-expand (sha1-words (coerce bytes 'vector )))
-  (sha1-worker) )
-
-
-(defun sha1-final (bytes off len)
+(defun sha-final (bytes off len nr)
   (when bytes (rplacd (last bytes) '(#x80)))
   (when (= 0 off) (setq bytes '(#x80)))
   (if (<= off 55.)
     (let* ((bits (ash len 3))
-           (len64 (list 0 0 0 0 0 0 (ash bits -8.) (logand bits #xff)))
+           (len64 (sha-len64 bits))
            (pad (make-list (- 55. off) :initial-element 0)) )
-      (sha1-update (append bytes pad len64)) )
+      (sha-update (append bytes pad len64) nr) )
     (let ((pad (make-list (- 63. off) :initial-element 0)))
-      (sha1-update (append bytes pad))
-      (sha1-final nil -1 len) )))
+      (sha-update (append bytes pad) nr)
+      (sha-final nil -1 len nr) )))
 
 
-(defun sha1-hash (w)
-  (logior (ash (first  w) 128.)
-          (ash (second w)  96.)
-          (ash (third  w)  64.)
-          (ash (fourth w)  32.)
-               (fifth  w)      ))
+;; *** SHA1 ***************************************************************** ;;
 
+(defvar *h1* nil)
+(defvar *w1* nil)
+
+(defun sha1-worker ()
+  (multiple-value-bind (a b c d e) (apply #'values *h1*)
+    (let (f k tmp)
+      (do ((i 0 (1+ i)))
+          ((= i 80.))
+        (cond
+          ((< i 20.)
+            (setq f (logior (logand b c) (logand (sha-not b) d))
+                  k #x5a827999 ))
+          ((< i 40.)
+            (setq f (logxor b c d)
+                  k #x6ed9eba1 ))
+          ((< i 60.)
+            (setq f (logior (logand b c) (logand b d) (logand c d))
+                  k #x8f1bbcdc ))
+          (t
+            (setq f (logxor b c d)
+                  k #xca62c1d6 )))
+        (setq tmp (sha+ (sha-left-rotation a 5) f e k (svref *w1* i))
+              e d
+              d c
+              c (sha-left-rotation b 30.)
+              b a
+              a tmp ) )
+      (setq *h1* (mapcar #'sha+ (list a b c d e) *h1*)) )))
+
+(defun sha1-words (vec)
+  (setq *w1* (make-array 80. :element-type 'integer :initial-element 0))
+  ;; copy 512 bit message into 32 bit big-endian words:
+  (do ((i 0 (1+ i)) (inc -1))
+      ((= i 16.))
+    (setf (svref *w1* i) 
+      (logior (ash (svref vec (incf inc)) 24.)
+              (ash (svref vec (incf inc)) 16.)
+              (ash (svref vec (incf inc))  8.)
+                   (svref vec (incf inc))     )))
+  ;; expand:
+  (do ((i 16. (1+ i)))
+      ((= i 80.))
+    (setf (svref *w1* i) 
+      (sha-left-rotation 
+        (logxor (svref *w1* (- i 3.))
+                (svref *w1* (- i 8.))
+                (svref *w1* (- i 14.))
+                (svref *w1* (- i 16.)) )
+        1 ))))
 
 (defmfun $sha1sum (s)
   (unless (stringp s)
-    (merror "`sha1': Argument must be a string.") )
+    (merror "`sha1sum': Argument must be a string.") )
   (let* ((bytes (mapcar #'char-code (coerce s 'list)))
          (len (length bytes)) )
-    (setq *a1* #x67452301
-          *b1* #xEFCDAB89 
-          *c1* #x98BADCFE 
-          *d1* #x10325476
-          *e1* #xC3D2E1F0 )
+    (setq *h1* '(#x67452301 #xefcdab89 #x98badcfe #x10325476 #xc3d2e1f0))
     (do ((off len)) 
-        ((< off 64.) (sha1-final bytes off len))
+        ((< off 64.) (sha-final bytes off len 160.))
       (setq off (- off 64.))
-      (sha1-update (butlast bytes off))
+      (sha-update (butlast bytes off) 160.)
       (setq bytes (last bytes off)) )
-    (format nil "~40,'0x" (sha1-hash (list *a1* *b1* *c1* *d1* *e1*))) ))
+    (nstring-downcase (format nil "~{~8,'0x~}" *h1*)) ))
+
+
+;; *** SHA256 *************************************************************** ;;
+
+(defvar *k2* 
+  (coerce               ;; the first 32 bits of the fractional parts of ..
+    (mapcar #'(lambda (i) (floor (* (rem (expt (coerce i 'real) 1/3) 1.0) #x100000000))) 
+            (subseq *small-primes* 0 64.) ) ;; .. the cube roots of the first 64 primes (2,..,311)
+    'vector ))
+
+(defvar *h2* nil)
+(defvar *w2* nil)
+
+(defun sha256-worker ()
+  (multiple-value-bind (a b c d e f g h) (apply #'values *h2*)
+    (let (s1 t1 s2 t2)
+      (do ((i 0 (1+ i)))
+          ((= i 64.))
+        (setq s1 (logxor (sha-right-rotation e 6)
+                         (sha-right-rotation e 11.)
+                         (sha-right-rotation e 25.) )
+              t1 (logxor (logand e f) (logand (sha-not e) g))
+              t1 (sha+ h s1 t1 (svref *k2* i) (svref *w2* i))
+              s2 (logxor (sha-right-rotation a 2)
+                         (sha-right-rotation a 13.)
+                         (sha-right-rotation a 22.) )
+              t2 (logxor (logand a b) (logand a c) (logand b c))
+              t2 (sha+ s2 t2) )
+        (setq h g
+              g f
+              f e
+              e (sha+ d t1)
+              d c
+              c b
+              b a
+              a (sha+ t1 t2) ))
+      (setq *h2* (mapcar #'sha+ (list a b c d e f g h) *h2*)) )))
+
+(defun sha256-words (vec)
+  (setq *w2* (make-array 64. :element-type 'integer :initial-element 0))
+  ;; copy 512 bit message into 32 bit big-endian words:
+  (do ((i 0 (1+ i)) (inc -1))
+      ((= i 16.))
+    (setf (svref *w2* i) 
+      (logior (ash (svref vec (incf inc)) 24.)
+              (ash (svref vec (incf inc)) 16.)
+              (ash (svref vec (incf inc))  8.)
+                   (svref vec (incf inc))     )))
+  ;; expand:
+  (do ((i 16. (1+ i)) w s0 s1)
+      ((= i 64.))
+    (setq w (svref *w2* (- i 15.))
+          s0 (logxor (sha-right-rotation w 7)
+                     (sha-right-rotation w 18.)
+                     (ash w -3) )
+          w (svref *w2* (- i 2))
+          s1 (logxor (sha-right-rotation w 17.)
+                     (sha-right-rotation w 19.)
+                     (ash w -10.) ))
+    (setf (svref *w2* i) 
+      (sha+ (svref *w2* (- i 16.)) s0 (svref *w2* (- i 7)) s1) )))
+
+(defmfun $sha256sum (s)
+  (unless (stringp s)
+    (merror "`sha256sum': Argument must be a string.") )
+  (let* ((bytes (mapcar #'char-code (coerce s 'list)))
+         (len (length bytes)) )
+    (setq *h2* ;; the first 32 bits of the fractional parts of the square roots of the first 8 primes (2,..,19)
+      '(#x6a09e667 #xbb67ae85 #x3c6ef372 #xa54ff53a #x510e527f #x9b05688c #x1f83d9ab #x5be0cd19) )
+    (do ((off len)) 
+        ((< off 64.) (sha-final bytes off len 256.))
+      (setq off (- off 64.))
+      (sha-update (butlast bytes off) 256.)
+      (setq bytes (last bytes off)) )
+    (nstring-downcase (format nil "~{~8,'0x~}" *h2*)) ))
 
 
 (eval-when

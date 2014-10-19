@@ -74,17 +74,12 @@
     (setq *read-base* 10.) )
 
 
-(defvar *a5* 0)
-(defvar *b5* 0) 
-(defvar *c5* 0) 
-(defvar *d5* 0)
-
-(defvar *m5* nil)
+(defvar *h5* nil)
+(defvar *w5* nil)
 
 (defvar *k5* (make-array 64. :element-type 'integer :initial-element 0))
-
 (do ((i 0 (1+ i)))
-    ((= i 64.) *k5*)
+    ((= i 64.))
   (setf (svref *k5* i) (floor (* (abs (sin (+ i 1.0))) #x100000000))) )
 
 (defvar *s5* 
@@ -107,56 +102,44 @@
 
 
 (defun md5-worker ()
-  (let ((a *a5*) (b *b5*) (c *c5*) (d *d5*) 
-        f g tmp hlp )
-    (do ((i 0 (1+ i)))
+  (multiple-value-bind (a b c d) (apply #'values *h5*)
+    (let (f g tmp hlp)
+      (do ((i 0 (1+ i)))
           ((= i 64.))
-      (cond
-        ((< i 16.)
-          (setq f (logior (logand b c) (logand (md5-not b) d))
-                g i ))
-        ((< i 32.)
-          (setq f (logior (logand b d) (logand c (md5-not d)))
-                g (mod (+ (* 5. i) 1) 16.) ))
-        ((< i 48.)
-          (setq f (logxor b c d)
-                g (mod (+ (* 3. i) 5.) 16.) ))
-        (t
-          (setq f (logxor c (logior b (md5-not d)))
-                g (mod (* 7. i) 16.) )))
-      (setq tmp d
-            d c
-            c b
-            hlp (md5+ a f (svref *k5* i) (svref *m5* g))
-            hlp (md5-left-rotation hlp (svref *s5* i))
-            b (md5+ b hlp)
-            a tmp ))  
-    (setq *a5* (md5+ *a5* a) 
-          *b5* (md5+ *b5* b) 
-          *c5* (md5+ *c5* c) 
-          *d5* (md5+ *d5* d) )))
+        (cond
+          ((< i 16.)
+            (setq f (logior (logand b c) (logand (md5-not b) d))
+                  g i ))
+          ((< i 32.)
+            (setq f (logior (logand b d) (logand c (md5-not d)))
+                  g (logand (+ (* 5 i) 1) #xf) ))
+          ((< i 48.)
+            (setq f (logxor b c d)
+                  g (logand (+ (* 3 i) 5) #xf) ))
+          (t
+            (setq f (logxor c (logior b (md5-not d)))
+                  g (logand (* 7 i) #xf) )))
+        (setq tmp d
+              d c
+              c b
+              hlp (md5+ a f (svref *k5* i) (svref *w5* g))
+              hlp (md5-left-rotation hlp (svref *s5* i))
+              b (md5+ b hlp)
+              a tmp ))  
+      (setq *h5* (mapcar #'md5+ (list a b c d) *h5*)) )))
 
 
 (defun swap-endian64 (i64) ;; little-endian <--> big-endian
-  (let (w)
-    (do ((masq #xff (ash masq 8.))
-         (sh 0 (- sh 8.)) )
-        ((= sh -64.))
-      (push (ash (logand i64 masq) sh) w) )
-    (nreverse w) ))      
+  (do ((masq #xff (ash masq 8))
+       (sh 0 (- sh 8)) w )
+      ((= sh -64.) (nreverse w))
+    (push (ash (logand i64 masq) sh) w) ))
 
 (defun swap-endian32 (i32)
   (logior (ash (logand i32 #xff) 24.)
           (ash (logand i32 #xff00) 8.)
           (ash (logand i32 #xff0000) -8.)
           (ash (logand i32 #xff000000) -24.) ))
-
-(defun md5-hash (w)
-  (setq w (mapcar #'swap-endian32 w))
-  (logior (ash (first  w) 96.)
-          (ash (second w) 64.)
-          (ash (third  w) 32.)
-               (fourth w)     ))
 
 
 (defun md5-words (vec) ;; 32 bit little-endian
@@ -170,11 +153,9 @@
                 (ash (svref vec (incf inc)) 16.)
                 (ash (svref vec (incf inc)) 24.) )))))
 
-
 (defun md5-update (bytes)
-  (setq *m5* (md5-words (coerce bytes 'vector )))
+  (setq *w5* (md5-words (coerce bytes 'vector )))
   (md5-worker) )
-
 
 (defun md5-final (bytes off len)
   (when bytes (rplacd (last bytes) '(#x80)))
@@ -194,16 +175,13 @@
     (merror "`md5sum': Argument must be a string.") )
   (let* ((bytes (mapcar #'char-code (coerce s 'list)))
          (len (length bytes)) )
-    (setq *a5* #x67452301
-          *b5* #xEFCDAB89 
-          *c5* #x98BADCFE 
-          *d5* #x10325476 )
+    (setq *h5* '(#x67452301 #xefcdab89 #x98badcfe #x10325476))
     (do ((off len)) 
         ((< off 64.) (md5-final bytes off len))
       (setq off (- off 64.))
       (md5-update (butlast bytes off))
       (setq bytes (last bytes off)) )
-    (format nil "~32,'0x" (md5-hash (list *a5* *b5* *c5* *d5*))) ))
+    (nstring-downcase (format nil "~{~8,'0x~}" (mapcar #'swap-endian32 *h5*))) ))
 
 
 (eval-when
