@@ -1,13 +1,13 @@
 @c /simplex.texi/1.2/Mon May 15 07:55:16 2006//
 @menu
-* Introdu@value{cedilha}@~ao a simplex::
-* Defini@value{cedilha}@~oes para simplex::
+* Introdu@,{c}@~ao a simplex::
+* Defini@,{c}@~oes para simplex::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a simplex, Defini@value{cedilha}@~oes para simplex, simplex, simplex
-@section Introdu@value{cedilha}@~ao a simplex
+@node Introdu@,{c}@~ao a simplex, Defini@,{c}@~oes para simplex, simplex, simplex
+@section Introdu@,{c}@~ao a simplex
 
-@code{simplex} @'e um pacote para optimiza@value{cedilha}@~ao linear usando o algoritmo simplex.
+@code{simplex} @'e um pacote para optimiza@,{c}@~ao linear usando o algoritmo simplex.
 
 Exemplo:
 
@@ -23,10 +23,10 @@ Exemplo:
                   10       10      5
 @end example
 
-@node Defini@value{cedilha}@~oes para simplex,  , Introdu@value{cedilha}@~ao a simplex, simplex
-@section Defini@value{cedilha}@~oes para simplex
+@node Defini@,{c}@~oes para simplex,  , Introdu@,{c}@~ao a simplex, simplex
+@section Defini@,{c}@~oes para simplex
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} epsilon_sx
+@defvr {Vari@'avel de op@,{c}@~ao} epsilon_sx
 Valor por omiss@~ao: @code{10^-8}
 
 Epsilon usando para c@'alculos num@'ericos em @code{linear_program}.
@@ -35,9 +35,9 @@ Veja tamb@'em: @code{linear_program}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~ao} linear_program (@var{A}, @var{b}, @var{c})
 
-@code{linear_program} @'e uma implementa@value{cedilha}@~ao do algoritmo simplex.
+@code{linear_program} @'e uma implementa@,{c}@~ao do algoritmo simplex.
 @code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'e o m@'{@dotless{i}}nimo
 poss@'{@dotless{i}}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argumento
 @var{A} @'e uma matriz e os argumentos @var{b} e @var{c} s@~ao listas.
@@ -46,7 +46,7 @@ poss@'{@dotless{i}}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0
 valor m@'{@dotless{i}}nimo @code{c.x}. Se o problema for n@~ao associado, @'e retornado "Problem not bounded!" e
 se o problema for n@~ao vi@'avel, @'e retornado "Problem not feasible!".
 
-Para usar essa fun@value{cedilha}@~ao primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
 
 Exemplo:
 
@@ -70,10 +70,10 @@ Veja tamb@'em: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Maximiza a fun@value{cedilha}@~ao linear objetiva @var{obj} submetida a alguma restri@value{cedilha}@~ao linear
-@var{cond}. Veja @code{minimize_sx} para uma descri@value{cedilha}@~ao detalhada de argumentos e valores de
+Maximiza a fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao linear
+@var{cond}. Veja @code{minimize_sx} para uma descri@,{c}@~ao detalhada de argumentos e valores de
 retorno.
 
 
@@ -81,17 +81,17 @@ Veja tamb@'em: @code{minimize_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Minimiza uma fun@value{cedilha}@~ao linear objetiva @var{obj} submetida a alguma restri@value{cedilha}@~ao
-linear @var{cond}. @var{cond} @'e uma lista de equa@value{cedilha}@~oes lineares ou
+Minimiza uma fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao
+linear @var{cond}. @var{cond} @'e uma lista de equa@,{c}@~oes lineares ou
 desigualdades. Em desigualdades estritas @code{>} @'e  substituido por @code{>=}
 e @code{<} por @code{<=}. O argumento opcional @var{pos} @'e uma lista de
 vari@'aveis de decis@~ao que s@~ao assumidas como sendo positivas.
 
 Se o m@'{@dotless{i}}nimo existir, @code{minimize_sx} retorna uma lista que cont@'em
-o menor valor da fun@value{cedilha}@~ao objetiva e uma lista de valores de vari@'aveis de
-decis@~ao para os quais o m@'{@dotless{i}}nimo @'e alcan@value{cedilha}ado. Se o problema for n@~ao associado,
+o menor valor da fun@,{c}@~ao objetiva e uma lista de valores de vari@'aveis de
+decis@~ao para os quais o m@'{@dotless{i}}nimo @'e alcan@,{c}ado. Se o problema for n@~ao associado,
 @code{minimize_sx} retorna "Problem not bounded!" e se o problema for
 n@~ao vi@'avel, @'e retornado "Ploblem not feasible!".
 
@@ -99,12 +99,12 @@ As vari@'aveis de decis@~ao n@~ao s@~ao assumidas para serem n@~ao negativas por
 as vari@'aveis de dicis@~ao forem n@~ao negativas, escolha @code{nonegative_sx} para @code{true}.
 Se somente algumas das vari@'aveis de decis@~ao forem positivas, coloque-as ent@~ao no argumento
 opcional @var{pos} (note que isso @'e mais eficiente que adicionar
-restri@value{cedilha}@~oes).
+restri@,{c}@~oes).
 
-@code{minimize_sx} utiliza o algoritmo simplex que @'e implementado na fun@value{cedilha}@~ao
+@code{minimize_sx} utiliza o algoritmo simplex que @'e implementado na fun@,{c}@~ao
 @code{linear_program} do Maxima.
 
-Para usar essa fun@value{cedilha}@~ao primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
 
 Exemplos:
 
@@ -132,7 +132,7 @@ Veja tamb@'em: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} nonegative_sx
+@defvr {Vari@'avel de op@,{c}@~ao} nonegative_sx
 Valor por omiss@~ao: @code{false}
 
 Se @code{nonegative_sx} for verdadeiro (true) todas as vari@'aveis de decis@~ao para @code{minimize_sx}

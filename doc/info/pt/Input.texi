@@ -3,7 +3,7 @@
 @menu
 * Coment@'arios::
 * Ficheiros::                       
-* Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da::  
+* Defini@,{c}@~oes para Entrada e Sa@'{@dotless{i}}da::  
 @end menu
 
 @node Coment@'arios, Ficheiros, Entrada e Sa@'{@dotless{i}}da, Entrada e Sa@'{@dotless{i}}da
@@ -46,7 +46,7 @@ Exemplos:
 @end example
 
 
-@node Ficheiros, Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da, Coment@'arios, Entrada e Sa@'{@dotless{i}}da
+@node Ficheiros, Defini@,{c}@~oes para Entrada e Sa@'{@dotless{i}}da, Coment@'arios, Entrada e Sa@'{@dotless{i}}da
 @section Ficheiros
 Um ficheiro @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Ficheiros em disco s@~ao figurativamente agrupados dentro de "direct@'orios".
@@ -63,8 +63,8 @@ Comandos que lidam com ficheiros s@~ao:
 e
 @code{appendfile}.
 
-@node Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da,  , Ficheiros, Entrada e Sa@'{@dotless{i}}da
-@section Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da de Dados
+@node Defini@,{c}@~oes para Entrada e Sa@'{@dotless{i}}da,  , Ficheiros, Entrada e Sa@'{@dotless{i}}da
+@section Defini@,{c}@~oes para Entrada e Sa@'{@dotless{i}}da de Dados
 @defvr {Vari@'avel de sistema} __
 @ifinfo
 @vrindex Express@~ao de entrada actual
@@ -329,15 +329,15 @@ absoluto em torno de express@~oes que s@~ao maiores que uma linha de altura.
 @defvr {Vari@'avel de op@,{c}@~ao} file_output_append
 Valor por omiss@~ao: @code{false}
 
-@code{file_output_append} governa se fun@value{cedilha}@~oes de sa@'{@dotless{i}}da de ficheiro
+@code{file_output_append} governa se fun@,{c}@~oes de sa@'{@dotless{i}}da de ficheiro
 anexam ao final ou truncam seu ficheiro de sa@'{@dotless{i}}da.
 Quando @code{file_output_append} for @code{true},
-tais fun@value{cedilha}@~oes anexam ao final de seu ficheiro de sa@'{@dotless{i}}da.
+tais fun@,{c}@~oes anexam ao final de seu ficheiro de sa@'{@dotless{i}}da.
 De outra forma, o ficheiro de sa@'{@dotless{i}}da @'e truncado.
 
 @code{save}, @code{stringout}, e @code{with_stdout} respeitam @code{file_output_append}.
-Outras fun@value{cedilha}@~oes que escrevem ficheiros de sa@'{@dotless{i}}da n@~ao respeitam @code{file_output_append}.
-Em partivular, montagem de gr@'aficos e tradu@value{cedilha}@~oes de fun@value{cedilha}@~oes sempre truncam seu ficheiro de sa@'{@dotless{i}}da,
+Outras fun@,{c}@~oes que escrevem ficheiros de sa@'{@dotless{i}}da n@~ao respeitam @code{file_output_append}.
+Em partivular, montagem de gr@'aficos e tradu@,{c}@~oes de fun@,{c}@~oes sempre truncam seu ficheiro de sa@'{@dotless{i}}da,
 e @code{tex} e @code{appendfile} sempre anexam ao final.
 @c WHAT ABOUT WRITEFILE ??
 

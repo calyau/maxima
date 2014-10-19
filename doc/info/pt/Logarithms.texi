@@ -1,11 +1,11 @@
 @c Language: Portuguese
 @c /Logarithms.texi/1.16/Sat Jul  8 08:14:48 2006/-ko/
 @menu
-* Defini@value{cedilha}@~oes para Logaritmos::
+* Defini@,{c}@~oes para Logaritmos::
 @end menu
 
-@node Defini@value{cedilha}@~oes para Logaritmos,  , Logaritmos, Logaritmos
-@section Defini@value{cedilha}@~oes para Logaritmos
+@node Defini@,{c}@~oes para Logaritmos,  , Logaritmos, Logaritmos
+@section Defini@,{c}@~oes para Logaritmos
 
 @defvr {Vari@'avel de op@,{c}@~ao} %e_to_numlog
 Valor por omiss@~ao: @code{false}

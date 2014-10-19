@@ -1,13 +1,13 @@
 @c Language: Portuguese
 @c /distrib.texi/1.3/Mon Jan  1 07:18:27 2007//
 @menu
-* Introdu@value{cedilha}@~ao a distrib::
-* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'{@dotless{i}}nuas::
-* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas::
+* Introdu@,{c}@~ao a distrib::
+* Defini@,{c}@~oes para distribui@,{c}@~oes cont@'{@dotless{i}}nuas::
+* Defini@,{c}@~oes para distribui@,{c}@~oes discretas::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a distrib, Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'{@dotless{i}}nuas, distrib, distrib
-@section Introdu@value{cedilha}@~ao a distrib
+@node Introdu@,{c}@~ao a distrib, Defini@,{c}@~oes para distribui@,{c}@~oes cont@'{@dotless{i}}nuas, distrib, distrib
+@section Introdu@,{c}@~ao a distrib
 
 
 Pacote @code{distrib} cont@'em um conjunto de fun@,{c}@~oes para fazer c@'alculos 
@@ -357,7 +357,7 @@ Existe uma conven@,{c}@~ao de nome no pacote @code{distrib}. Todo nome de
 fun@,{c}@~ao tem duas partes, a primeira faz refer@^encia @`a fun@,{c}@~ao
 ou ao par@^ametro que queremos calcular,
 @example
-Fun@value{cedilha}@~oes:
+Fun@,{c}@~oes:
    fun@,{c}@~ao densidade de probabilidade            (pdf_*)
    fun@,{c}@~ao distribui@,{c}@~ao de probabilidade       (cdf_*)
    Quartil                    (quantile_*)
@@ -415,8 +415,8 @@ escrevendo
 Para coment@'arios, melhorias ou sugest@~oes, por favor contacte o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
-@node Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'{@dotless{i}}nuas, Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas, Introdu@value{cedilha}@~ao a distrib, distrib
-@section Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'{@dotless{i}}nuas
+@node Defini@,{c}@~oes para distribui@,{c}@~oes cont@'{@dotless{i}}nuas, Defini@,{c}@~oes para distribui@,{c}@~oes discretas, Introdu@,{c}@~ao a distrib, distrib
+@section Defini@,{c}@~oes para distribui@,{c}@~oes cont@'{@dotless{i}}nuas
 
 @deffn {Fun@,{c}@~ao} pdf_normal (@var{x},@var{m},@var{s})
 Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade
@@ -2341,8 +2341,8 @@ escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@node Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas,  , Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'{@dotless{i}}nuas, distrib
-@section Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas
+@node Defini@,{c}@~oes para distribui@,{c}@~oes discretas,  , Defini@,{c}@~oes para distribui@,{c}@~oes cont@'{@dotless{i}}nuas, distrib
+@section Defini@,{c}@~oes para distribui@,{c}@~oes discretas
 
 
 @deffn {Fun@,{c}@~ao} pdf_binomial (@var{x},@var{n},@var{p})

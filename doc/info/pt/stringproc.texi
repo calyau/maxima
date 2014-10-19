@@ -1,14 +1,14 @@
 @c Language: Portuguese
 @c Source: stringproc.texi (en) 1.6
 @menu
-* Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de sequ@^encias de caracteres::
-* Defini@value{cedilha}@~oes para entrada e sa@'{@dotless{i}}da::
-* Defini@value{cedilha}@~oes para caracteres::
-* Defini@value{cedilha}@~oes para sequ@^encias de caracteres::
+* Introdu@,{c}@~ao a manipula@,{c}@~ao de sequ@^encias de caracteres::
+* Defini@,{c}@~oes para entrada e sa@'{@dotless{i}}da::
+* Defini@,{c}@~oes para caracteres::
+* Defini@,{c}@~oes para sequ@^encias de caracteres::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de sequ@^encias de caracteres, Defini@value{cedilha}@~oes para entrada e sa@'{@dotless{i}}da, stringproc, stringproc
-@section Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de sequ@^encias de caracteres
+@node Introdu@,{c}@~ao a manipula@,{c}@~ao de sequ@^encias de caracteres, Defini@,{c}@~oes para entrada e sa@'{@dotless{i}}da, stringproc, stringproc
+@section Introdu@,{c}@~ao a manipula@,{c}@~ao de sequ@^encias de caracteres
 
 O ficheiro @code{stringproc.lisp} amplia a compatibilidade do Maxima de trabalhar com sequ@^encias de caracteres 
 e adiciona algumas fun@,{c}@~oes @'uteis a entrada e sa@'{@dotless{i}}da de dados.
@@ -145,8 +145,8 @@ precisa de @code{parse_string}, que pode ser disponibilizada para uso atrav@'es 
 
 @code{readline} retorna @code{false} quado o fim de ficheiro acontecer.
 
-@node Defini@value{cedilha}@~oes para entrada e sa@'{@dotless{i}}da, Defini@value{cedilha}@~oes para caracteres, Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de sequ@^encias de caracteres, stringproc
-@section Defini@value{cedilha}@~oes para entrada e sa@'{@dotless{i}}da
+@node Defini@,{c}@~oes para entrada e sa@'{@dotless{i}}da, Defini@,{c}@~oes para caracteres, Introdu@,{c}@~ao a manipula@,{c}@~ao de sequ@^encias de caracteres, stringproc
+@section Defini@,{c}@~oes para entrada e sa@'{@dotless{i}}da
 
 Exemplo: 
 
@@ -345,8 +345,8 @@ linha interm@'edia.
 
 @end deffn
 
-@node Defini@value{cedilha}@~oes para caracteres, Defini@value{cedilha}@~oes para sequ@^encias de caracteres, Defini@value{cedilha}@~oes para entrada e sa@'{@dotless{i}}da, stringproc
-@section Defini@value{cedilha}@~oes para caracteres
+@node Defini@,{c}@~oes para caracteres, Defini@,{c}@~oes para sequ@^encias de caracteres, Defini@,{c}@~oes para entrada e sa@'{@dotless{i}}da, stringproc
+@section Defini@,{c}@~oes para caracteres
 
 @deffn {Fun@,{c}@~ao} alphacharp (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um caractere alfab@'etico. 
@@ -399,7 +399,7 @@ Como @code{cgreaterp} mas ignora a caixa alta/baixa.
 
 @deffn {Fun@,{c}@~ao} charp (@var{obj}) 
 Retorna @code{true} se @var{obj} for um caractere do Maxima.
-Veja na se@,{c}@~ao "Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de sequ@^encias de caracteres" para ter um exemplo.
+Veja na se@,{c}@~ao "Introdu@,{c}@~ao a manipula@,{c}@~ao de sequ@^encias de caracteres" para ter um exemplo.
 
 @end deffn
 
@@ -481,8 +481,8 @@ Retorna @code{true} se @var{caractere} for um caractere em caixa alta.
 
 @end deffn
 
-@node Defini@value{cedilha}@~oes para sequ@^encias de caracteres,  , Defini@value{cedilha}@~oes para caracteres, stringproc
-@section Defini@value{cedilha}@~oes para sequ@^encias de caracteres
+@node Defini@,{c}@~oes para sequ@^encias de caracteres,  , Defini@,{c}@~oes para caracteres, stringproc
+@section Defini@,{c}@~oes para sequ@^encias de caracteres
 
 @deffn {Fun@,{c}@~ao} sunlisp (@var{lisp_string}) 
 Converte uma sequ@^encia de caracteres do Lisp em uma sequ@^encia de caracteres do Maxima.

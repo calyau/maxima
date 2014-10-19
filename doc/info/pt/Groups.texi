@@ -1,18 +1,18 @@
 @c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
 @menu
-* Defini@value{cedilha}@~oes para Grupos::
+* Defini@,{c}@~oes para Grupos::
 @end menu
 
-@node Defini@value{cedilha}@~oes para Grupos,  , Grupos, Grupos
-@section Defini@value{cedilha}@~oes para Grupos
+@node Defini@,{c}@~oes para Grupos,  , Grupos, Grupos
+@section Defini@,{c}@~oes para Grupos
 
-@deffn {Fun@value{cedilha}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao}, @var{subgroupo})
-@deffnx {Fun@value{cedilha}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao})
+@deffn {Fun@,{c}@~ao} todd_coxeter (@var{rela@,{c}@~ao}, @var{subgroupo})
+@deffnx {Fun@,{c}@~ao} todd_coxeter (@var{rela@,{c}@~ao})
 
-Acha a ordem de G/H onde G @'e o m@'odulo do Grupo Livre @var{rela@value{cedilha}@~ao}, e
+Acha a ordem de G/H onde G @'e o m@'odulo do Grupo Livre @var{rela@,{c}@~ao}, e
 H @'e o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'e um argumento
-opcional, cujo valor padr@~ao @'e [].  Em fazendo isso a fun@value{cedilha}@~ao produz uma
-tabela de multiplica@value{cedilha}@~ao @`a direita de G sobre G/H, onde os
+opcional, cujo valor padr@~ao @'e [].  Em fazendo isso a fun@,{c}@~ao produz uma
+tabela de multiplica@,{c}@~ao @`a direita de G sobre G/H, onde os
 co-conjuntos s@~ao enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
 @code{todd_coxeter_state}.
 

@@ -1,22 +1,22 @@
 @c /Equations.texi/1.24/Thu Nov  2 05:46:56 2006/-ko/
 @c end concepts Equations
 @menu
-* Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
+* Defini@,{c}@~oes para Equa@,{c}@~oes::   
 @end menu
 
-@node Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes,  , Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes
-@section Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes
+@node Defini@,{c}@~oes para Equa@,{c}@~oes,  , Equa@,{c}@~oes, Equa@,{c}@~oes
+@section Defini@,{c}@~oes para Equa@,{c}@~oes
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {Vari@'avel} %rnum_list
 Valor por omiss@~ao: @code{[]}
 
-@code{%rnum_list} @'e a lista de vari@'aveis introduzidas em solu@value{cedilha}@~oes
+@code{%rnum_list} @'e a lista de vari@'aveis introduzidas em solu@,{c}@~oes
 por @code{algsys}.
 @code{%r} vari@'aveis S@~ao adicionadas a @code{%rnum_list} na ordem em que
 forem criadas.
-Isso @'e conveniente para fazer substitui@value{cedilha}@~oes dentro da
-solu@value{cedilha}@~ao mais tarde.
+Isso @'e conveniente para fazer substitui@,{c}@~oes dentro da
+solu@,{c}@~ao mais tarde.
 @c WHAT DOES THIS STATEMENT MEAN ??
 @'E recomendado usar essa lista em lugar de
 fazer @code{concat ('%r, j)}.
@@ -37,62 +37,62 @@ Se @code{algexact} @'e @code{false}, @code{solve} @'e chamada somente se
 o eliminante n@~ao for de uma vari@'avel, ou se for uma quadr@'atica ou uma
 biquadrada.
 
-Dessa forma @code{algexact: true} n@~ao garante solu@value{cedilha}@~oes
+Dessa forma @code{algexact: true} n@~ao garante solu@,{c}@~oes
 exactas, apenas que @code{algsys} tentar@'a primeiro pegar
-solu@value{cedilha}@~oes exactas, e somente retorna aproxima@value{cedilha}@~oes quando tudo mais falha.
+solu@,{c}@~oes exactas, e somente retorna aproxima@,{c}@~oes quando tudo mais falha.
 
 @c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-@deffnx {Fun@value{cedilha}@~ao} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@,{c}@~ao} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Fun@,{c}@~ao} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve polin@'omios simult@^aneos @var{expr_1}, ..., @var{expr_m}
-ou equa@value{cedilha}@~oes polin@^omiais @var{eqn_1}, ..., @var{eqn_m}
+ou equa@,{c}@~oes polin@^omiais @var{eqn_1}, ..., @var{eqn_m}
 para as vari@'aveis @var{x_1}, ..., @var{x_n}.
-Uma express@~ao @var{expr} @'e equivalente a uma equa@value{cedilha}@~ao @code{@var{expr} = 0}.
-Pode existir mais equa@value{cedilha}@~oes que vari@'aveis ou vice-versa.
+Uma express@~ao @var{expr} @'e equivalente a uma equa@,{c}@~ao @code{@var{expr} = 0}.
+Pode existir mais equa@,{c}@~oes que vari@'aveis ou vice-versa.
 
-@code{algsys} retorna uma lista de solu@value{cedilha}@~oes,
-com cada solu@value{cedilha}@~ao dada com uma lista de valores de estado das equa@value{cedilha}@~oes
-das vari@'aveis @var{x_1}, ..., @var{x_n} que satisfazem o sistema de equa@value{cedilha}@~oes.
-Se @code{algsys} n@~ao pode achar uma solu@value{cedilha}@~ao, uma lista vazia @code{[]} @'e retornada.
+@code{algsys} retorna uma lista de solu@,{c}@~oes,
+com cada solu@,{c}@~ao dada com uma lista de valores de estado das equa@,{c}@~oes
+das vari@'aveis @var{x_1}, ..., @var{x_n} que satisfazem o sistema de equa@,{c}@~oes.
+Se @code{algsys} n@~ao pode achar uma solu@,{c}@~ao, uma lista vazia @code{[]} @'e retornada.
 
 Os s@'{@dotless{i}}mbolos @code{%r1}, @code{%r2}, ...,
-s@~ao introduzidos tantos quantos forem necess@'arios para representar par@^ametros arbitr@'arios na solu@value{cedilha}@~ao;
+s@~ao introduzidos tantos quantos forem necess@'arios para representar par@^ametros arbitr@'arios na solu@,{c}@~ao;
 essas vari@'aveis s@~ao tamb@'em anexadas @`a lista @code{%rnum_list}.
 
 O m@'etodo usado @'e o seguinte:
 
-(1) Primeiro as equa@value{cedilha}@~oes s@~ao factorizaadas e quebradas
+(1) Primeiro as equa@,{c}@~oes s@~ao factorizaadas e quebradas
 em subsistemas.
 
-(2) Para cada subsistema @var{S_i}, uma equa@value{cedilha}@~ao @var{E} e uma vari@'avel @var{x} s@~ao
+(2) Para cada subsistema @var{S_i}, uma equa@,{c}@~ao @var{E} e uma vari@'avel @var{x} s@~ao
 seleccionados.
 A vari@'avel @'e escolhida para ter o menor grau n@~ao zero.
-Ent@~ao a resultante de @var{E} e @var{E_j} em rela@value{cedilha}@~ao a @var{x} @'e calculada para cada um das
-equa@value{cedilha}@~oes restantes @var{E_j} nos subsistemas @var{S_i}.
+Ent@~ao a resultante de @var{E} e @var{E_j} em rela@,{c}@~ao a @var{x} @'e calculada para cada um das
+equa@,{c}@~oes restantes @var{E_j} nos subsistemas @var{S_i}.
 Isso retorna um novo subsistema @var{S_i'} em umas poucas vari@'aveis, como @var{x} tenha sido eliminada.
 O processo agora retorna ao passo (1).
 
-(3) Eventualmente, um subsistema consistindo de uma equa@value{cedilha}@~ao simples @'e
-obtido.  Se a equa@value{cedilha}@~ao @'e de v@'arias vari@'aveis e aproxima@value{cedilha}@~oes na
+(3) Eventualmente, um subsistema consistindo de uma equa@,{c}@~ao simples @'e
+obtido.  Se a equa@,{c}@~ao @'e de v@'arias vari@'aveis e aproxima@,{c}@~oes na
 forma de n@'umeros em ponto flutuante n@~a tenham sido introduzidas, ent@~ao @code{solve} @'e
-chamada para achar uma solu@value{cedilha}@~ao exacta.
+chamada para achar uma solu@,{c}@~ao exacta.
 
-Em alguns casos, @code{solve} n@~ao est@'a habilitada a achar uma solu@value{cedilha}@~ao,
-ou se isso @'e feito a solu@value{cedilha}@~ao pode ser uma express@~ao express@~ao muito larga.
+Em alguns casos, @code{solve} n@~ao est@'a habilitada a achar uma solu@,{c}@~ao,
+ou se isso @'e feito a solu@,{c}@~ao pode ser uma express@~ao express@~ao muito larga.
 
 @c REMAINDER OF (3) IS PRETTY COMPLEX.  HOW CAN IT BE CLARIFIED ??
-Se a equa@value{cedilha}@~ao @'e de uma @'unica vari@'avel e @'e ou linear, ou quadr@'atica, ou
-biquadrada, ent@~ao novamente @code{solve} @'e chamada se aproxima@value{cedilha}@~oes n@~ao tiverem
-sido introduzidas.  Se aproxima@value{cedilha}@~oes tiverem sido introduzidas ou a
-equa@value{cedilha}@~ao n@~ao @'e de uma @'unica vari@'avel e nem t@~ao pouco linear, quadratica, ou
-biquadrada, ent@~ao o comutador @code{realonly} @'e @code{true}, A fun@value{cedilha}@~ao
-@code{realroots} @'e chamada para achar o valor real das solu@value{cedilha}@~oes.  Se
+Se a equa@,{c}@~ao @'e de uma @'unica vari@'avel e @'e ou linear, ou quadr@'atica, ou
+biquadrada, ent@~ao novamente @code{solve} @'e chamada se aproxima@,{c}@~oes n@~ao tiverem
+sido introduzidas.  Se aproxima@,{c}@~oes tiverem sido introduzidas ou a
+equa@,{c}@~ao n@~ao @'e de uma @'unica vari@'avel e nem t@~ao pouco linear, quadratica, ou
+biquadrada, ent@~ao o comutador @code{realonly} @'e @code{true}, A fun@,{c}@~ao
+@code{realroots} @'e chamada para achar o valor real das solu@,{c}@~oes.  Se
 @code{realonly} @'e @code{false}, ent@~ao @code{allroots} @'e chamada a qual procura por
-solu@value{cedilha}@~oes reais e complexas.
+solu@,{c}@~oes reais e complexas.
 
-Se @code{algsys} produz uma solu@value{cedilha}@~ao que tem
+Se @code{algsys} produz uma solu@,{c}@~ao que tem
 poucos digitos significativos que o requerido, o utilizador pode escolher o valor
 de @code{algepsilon} para um valor maior.
 
@@ -100,23 +100,23 @@ Se @code{algexact} @'e escolhido para
 @code{true}, @code{solve} ser@'a sempre chamada.
 @c algepsilon IS IN Floating.texi -- MAY WANT TO BRING IT INTO THIS FILE
 
-(4) Finalmente, as solu@value{cedilha}@~oes obtidas no passo (3) s@~ao substitu@'{@dotless{i}}das dentro
-dos n@'{@dotless{i}}veis pr@'evios e o processo de solu@value{cedilha}@~ao retorna para (1).
+(4) Finalmente, as solu@,{c}@~oes obtidas no passo (3) s@~ao substitu@'{@dotless{i}}das dentro
+dos n@'{@dotless{i}}veis pr@'evios e o processo de solu@,{c}@~ao retorna para (1).
 @c "PREVIOUS LEVELS" -- WHAT ARE THOSE ??
 
-Quando @code{algsys} encontrar uma equa@value{cedilha}@~ao de v@'arias vari@'aveis que cont@'em
-aproxima@value{cedilha}@~oes em ponto flutuante (usualmente devido a suas falhas em achar
-solu@value{cedilha}@~oes exactas por um est@'agio mais f@'acil), ent@~ao n@~ao tentar@'a
-aplicar m@'etodos exatos para tais equa@value{cedilha}@~oes e em lugar disso imprime a mensagem:
+Quando @code{algsys} encontrar uma equa@,{c}@~ao de v@'arias vari@'aveis que cont@'em
+aproxima@,{c}@~oes em ponto flutuante (usualmente devido a suas falhas em achar
+solu@,{c}@~oes exactas por um est@'agio mais f@'acil), ent@~ao n@~ao tentar@'a
+aplicar m@'etodos exatos para tais equa@,{c}@~oes e em lugar disso imprime a mensagem:
 "@code{algsys} cannot solve - system too complicated."
 
-Intera@value{cedilha}@~oes com @code{radcan} podem produzir express@~oes largas ou
+Intera@,{c}@~oes com @code{radcan} podem produzir express@~oes largas ou
 complicadas.
 Naquele caso, pode ser poss@'{@dotless{i}}vel isolar partes do resultado
 com @code{pickapart} ou @code{reveal}.
 
 Ocasionalmente, @code{radcan} pode introduzir uma unidade imagin@'aria
-@code{%i} dentro de uma solu@value{cedilha}@~ao que @'e actualmente avaliada como real.
+@code{%i} dentro de uma solu@,{c}@~ao que @'e actualmente avaliada como real.
 
 Exemplos:
 
@@ -163,10 +163,10 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} allroots (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} allroots (@var{eqn})
-Calcula aproxima@value{cedilha}@~oes num@'ericas de ra@'{@dotless{i}}zes reais e complexas do
-polin@'omio @var{expr} ou equa@value{cedilha}@~ao polin@^omial @var{eqn} de uma vari@'avel.
+@deffn {Fun@,{c}@~ao} allroots (@var{expr})
+@deffnx {Fun@,{c}@~ao} allroots (@var{eqn})
+Calcula aproxima@,{c}@~oes num@'ericas de ra@'{@dotless{i}}zes reais e complexas do
+polin@'omio @var{expr} ou equa@,{c}@~ao polin@^omial @var{eqn} de uma vari@'avel.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
 O sinalizador @code{polyfactor} quando @code{true} faz com que
@@ -176,11 +176,11 @@ complexo.
 
 @code{allroots} pode retornar resultados imprecisos no caso de m@'ultiplas ra@'{@dotless{i}}zes.
 Se o polin@'omio for real, @code{allroots (%i*@var{p})}) pode retornar
-aproxima@value{cedilha}@~oes mais precisas que @code{allroots (@var{p})},
+aproxima@,{c}@~oes mais precisas que @code{allroots (@var{p})},
 como @code{allroots} invoca um algoritmo diferente naquele caso.
 
 @code{allroots} rejeita expresso@~oes que n@~ao sejam polin@'omios.
-Isso requer que o numerador ap@'os a classifica@value{cedilha}@~ao
+Isso requer que o numerador ap@'os a classifica@,{c}@~ao
 (@code{rat}'ing) poder@'a ser um polin@'omio, e isso requer que o
 denominador seja quando muito um n@'umero complexo.  Com esse tipo
 resultado @code{allroots} ir@'a sempre produzir uma express@~ao
@@ -239,18 +239,18 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 Valor por omiss@~ao: @code{true}
 
 @c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
-Quando @code{backsubst} @'e @code{false}, evita substitui@value{cedilha}@~oes
-em express@~oes anteriores ap@'os as equa@value{cedilha}@~oes terem sido triangularizadas.  Isso pode
-ser de grande ajuda em problemas muito grandes onde substitui@value{cedilha}@~ao em express@~oes anteriores pode vir a causar
-a gera@value{cedilha}@~ao de express@~oes extremamente largas.
+Quando @code{backsubst} @'e @code{false}, evita substitui@,{c}@~oes
+em express@~oes anteriores ap@'os as equa@,{c}@~oes terem sido triangularizadas.  Isso pode
+ser de grande ajuda em problemas muito grandes onde substitui@,{c}@~ao em express@~oes anteriores pode vir a causar
+a gera@,{c}@~ao de express@~oes extremamente largas.
 
 @end defvr
 
 @defvr {Vari@'avel} breakup
 Valor por omiss@~ao: @code{true}
 
-Quando @code{breakup} @'e @code{true}, @code{solve} expressa solu@value{cedilha}@~oes
-de equa@value{cedilha}@~oes c@'ubicas e qu@'articas em termos de subexpress@~oes comuns,
+Quando @code{breakup} @'e @code{true}, @code{solve} expressa solu@,{c}@~oes
+de equa@,{c}@~oes c@'ubicas e qu@'articas em termos de subexpress@~oes comuns,
 que s@~ao atribu@'{@dotless{i}}das a r@'otulos de express@~oes interm@'edias (@code{%t1}, @code{%t2}, etc.).
 De outra forma, subexpress@~oes comuns n@~ao s@~ao identificadas.
 
@@ -322,11 +322,11 @@ Solution:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} dimension (@var{eqn})
-@deffnx {Fun@value{cedilha}@~ao} dimension (@var{eqn_1}, ..., @var{eqn_n})
+@deffn {Fun@,{c}@~ao} dimension (@var{eqn})
+@deffnx {Fun@,{c}@~ao} dimension (@var{eqn_1}, ..., @var{eqn_n})
 @code{dimen} @'e um pacote de an@'alise dimensional.
 @code{load ("dimen")} chama esse pacote.
-@code{demo ("dimen")} mostra uma cura demostra@value{cedilha}@~ao.
+@code{demo ("dimen")} mostra uma cura demostra@,{c}@~ao.
 @c I GUESS THIS SHOULD BE EXPANDED TO COVER EACH FUNCTION IN THE PACKAGE
 
 @end deffn
@@ -336,16 +336,16 @@ Valor por omiss@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN ??
 Se escolhida para @code{false} dentro de um @code{block} inibir@'a
-a visualiza@value{cedilha}@~ao da sa@'{@dotless{i}}da gerada pelas fun@value{cedilha}@~oes solve chamadas de
+a visualiza@,{c}@~ao da sa@'{@dotless{i}}da gerada pelas fun@,{c}@~oes solve chamadas de
 dentro de @code{block}.  Terminando @code{block} com um sinal de dolar, $, escolhe
 @code{dispflag} para @code{false}.
 
 @end defvr
 
 @c THIS COULD BENEFIT FROM REPHRASING
-@deffn {Fun@value{cedilha}@~ao} funcsolve (@var{eqn}, @var{g}(@var{t}))
+@deffn {Fun@,{c}@~ao} funcsolve (@var{eqn}, @var{g}(@var{t}))
 Retorna @code{[@var{g}(@var{t}) = ...]}  ou @code{[]}, dependendo de existir
-ou n@~ao uma fun@value{cedilha}@~ao racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
+ou n@~ao uma fun@,{c}@~ao racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
 que deve ser de primeira ordem, polin@'omio linear em (para esse caso) 
 @code{@var{g}(@var{t})} e @code{@var{g}(@var{t}+1)}
 
@@ -356,14 +356,14 @@ que deve ser de primeira ordem, polin@'omio linear em (para esse caso)
                                  n + 1         n + 2
 (%i2) funcsolve (eqn, f(n));
 
-Equa@value{cedilha}@~oes dependentes eliminadas:  (4 3)
+Equa@,{c}@~oes dependentes eliminadas:  (4 3)
                                    n
 (%o2)                f(n) = ---------------
                             (n + 1) (n + 2)
 @end example
 
-Aten@value{cedilha}@~ao: essa @'e uma implementa@value{cedilha}@~ao muito rudimentar -- muitas verifica@value{cedilha}@~oes de seguran@value{cedilha}a
-e obviamente generaliza@value{cedilha}@~oes est@~ao aus@^entes.
+Aten@,{c}@~ao: essa @'e uma implementa@,{c}@~ao muito rudimentar -- muitas verifica@,{c}@~oes de seguran@,{c}a
+e obviamente generaliza@,{c}@~oes est@~ao aus@^entes.
 
 @end deffn
 
@@ -371,16 +371,16 @@ e obviamente generaliza@value{cedilha}@~oes est@~ao aus@^entes.
 Valor por omiss@~ao: @code{false}
 
 When @code{globalsolve} for @code{true},
-vari@'aveis para as quais as equa@value{cedilha}@~oes s@~ao resolvidas s@~ao atribuidas aos valores da solu@value{cedilha}@~ao encontrados por @code{linsolve},
-e por @code{solve} quando resolvendo duas ou mais equa@value{cedilha}@~oes lineares.
+vari@'aveis para as quais as equa@,{c}@~oes s@~ao resolvidas s@~ao atribuidas aos valores da solu@,{c}@~ao encontrados por @code{linsolve},
+e por @code{solve} quando resolvendo duas ou mais equa@,{c}@~oes lineares.
 Quando @code{globalsolve} for @code{false},
-solu@value{cedilha}@~oes encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equa@value{cedilha}@~oes lineares
-s@~ao espressas como equa@value{cedilha}@~oes,
-e as vari@'aveis para as quais a equa@value{cedilha}@~ao foi resolvida n@~ao s@~ao atribuidas.
+solu@,{c}@~oes encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equa@,{c}@~oes lineares
+s@~ao espressas como equa@,{c}@~oes,
+e as vari@'aveis para as quais a equa@,{c}@~ao foi resolvida n@~ao s@~ao atribuidas.
 
-Quando resolvendo qualquer coisa outra que n@~ao duas equa@value{cedilha}@~oes lineares ou mais,
+Quando resolvendo qualquer coisa outra que n@~ao duas equa@,{c}@~oes lineares ou mais,
 @code{solve} ignora @code{globalsolve}.
-Outras fun@value{cedilha}@~oes que resolvem equa@value{cedilha}@~oes (e.g., @code{algsys}) sempre ignoram @code{globalsolve}.
+Outras fun@,{c}@~oes que resolvem equa@,{c}@~oes (e.g., @code{algsys}) sempre ignoram @code{globalsolve}.
     
 Exemplos:
 
@@ -429,25 +429,25 @@ Solution
 @c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
 @c MERGE IN TEXT FROM share/integequations/inteqn.usg
 @c AND EXAMPLES FROM .../intexs.mac
-@deffn {Fun@value{cedilha}@~ao} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
-@code{inteqn} @'e um pacote para resolver equa@value{cedilha}@~oes integrais.
+@deffn {Fun@,{c}@~ao} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+@code{inteqn} @'e um pacote para resolver equa@,{c}@~oes integrais.
 @code{load ("inteqn")} carrega esse pacote.
 
-@var{ie} @'e a equa@value{cedilha}@~ao integral; @var{unk} @'e a fun@value{cedilha}@~ao desconhecida; @var{tech} @'e a
+@var{ie} @'e a equa@,{c}@~ao integral; @var{unk} @'e a fun@,{c}@~ao desconhecida; @var{tech} @'e a
 t@'ecnica a ser tentada nesses dados acima (@var{tech} = @code{first} significa: tente
-a primeira t@'ecnica que achar uma solu@value{cedilha}@~ao; @var{tech} = @code{all} significa: tente todas a
+a primeira t@'ecnica que achar uma solu@,{c}@~ao; @var{tech} = @code{all} significa: tente todas a
 t@'ecnicas aplic@'aveis); @var{n} @'e o n@'umero m@'aximo de termos a serem usados de
 @code{taylor}, @code{neumann}, @code{firstkindseries}, ou @code{fredseries} (isso @'e tamb@'em o
-n@'umero m@'aximo de ciclos de recurss@~ao para o m@'etodo de diferencia@value{cedilha}@~ao); @var{guess} @'e
+n@'umero m@'aximo de ciclos de recurss@~ao para o m@'etodo de diferencia@,{c}@~ao); @var{guess} @'e
 o inicial suposto para @code{neumann} ou @code{firstkindseries}.
 
 Valores padr@~ao do segundo at@'e o quinto par@^ametro s@~ao:
 
-@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'e a primeira fun@value{cedilha}@~ao encontrada em um integrando
+@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'e a primeira fun@,{c}@~ao encontrada em um integrando
 que @'e desconhecida para Maxima e @var{x} @'e a vari@'avel que ocorre como um
 argumento para a primeira ocorr@^encia de @var{p} achada fora de uma integral no
-caso de equa@value{cedilha}@~oes @code{secondkind} , ou @'e somente outra vari@'avel
-ao lado da vari@'avel de integra@value{cedilha}@~ao em equa@value{cedilha}@~oes @code{firstkind}.  Se uma
+caso de equa@,{c}@~oes @code{secondkind} , ou @'e somente outra vari@'avel
+ao lado da vari@'avel de integra@,{c}@~ao em equa@,{c}@~oes @code{firstkind}.  Se uma
 tentativa de procurar por @var{x} falha, o utilizador ser@'a perguntado para suprir a
 vari@'avel independente.
 
@@ -456,36 +456,36 @@ tech: @code{first}
 n: 1
 
 guess: @code{none} o que far@'a com que @code{neumann} e @code{firstkindseries} use
-@code{@var{f}(@var{x})} como uma suposi@value{cedilha}@~ao inicial.
+@code{@var{f}(@var{x})} como uma suposi@,{c}@~ao inicial.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ieqnprint
+@defvr {Vari@'avel de op@,{c}@~ao} ieqnprint
 Valor por omiss@~ao: @code{true}
 
 @code{ieqnprint} governa o comportamento do resultado
 retornado pelo comando @code{ieqn}.  Quando @code{ieqnprint} @'e
-@code{false}, as listas retornadas pela fun@value{cedilha}@~ao @code{ieqn} s@~ao da forma
+@code{false}, as listas retornadas pela fun@,{c}@~ao @code{ieqn} s@~ao da forma
 
-   [@var{solu@value{cedilha}@~ao}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
+   [@var{solu@,{c}@~ao}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
 
-onde @var{sinalizador} @'e retirado se a solu@value{cedilha}@~ao for exacta.
+onde @var{sinalizador} @'e retirado se a solu@,{c}@~ao for exacta.
 
 De outra forma, isso @'e a
 palavra @code{approximate} ou @code{incomplete} correspondendo @`a forma inexacta ou
-forma aberta de solu@value{cedilha}@~ao, respectivamente.  Se um m@'etodo de s@'erie foi usado,
+forma aberta de solu@,{c}@~ao, respectivamente.  Se um m@'etodo de s@'erie foi usado,
 @var{nterms} fornece o n@'umero de termos usados (que poder@'a ser menor que os n
-dados para @code{ieqn} se ocorrer um erro evita a gera@value{cedilha}@~ao de termos adicionais).
+dados para @code{ieqn} se ocorrer um erro evita a gera@,{c}@~ao de termos adicionais).
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} lhs (@var{expr})
+@deffn {Fun@,{c}@~ao} lhs (@var{expr})
 Retorna o lado esquerdo (isto @'e, o primeiro argumento)
 da express@~ao @var{expr},
 quando o operador de @var{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-um dos operadores de atribui@value{cedilha}@~ao @code{:= ::= : ::},
+um dos operadores de atribui@,{c}@~ao @code{:= ::= : ::},
 ou um operadro infixo definido pelo utilizador, como declarado por meio de @code{infix}.
 
 Quando @var{expr} for um @'atomo ou
@@ -540,18 +540,18 @@ Exemplos:
 @end deffn
 
 @c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
-@deffn {Fun@value{cedilha}@~ao} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@,{c}@~ao} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve a lista de
-equa@value{cedilha}@~oes lineares simult@^aneas para a lista de vari@'aveis.  As express@~oes
-devem ser cada uma polin@'omios nas vari@'aveis e podem ser equa@value{cedilha}@~oes.
+equa@,{c}@~oes lineares simult@^aneas para a lista de vari@'aveis.  As express@~oes
+devem ser cada uma polin@'omios nas vari@'aveis e podem ser equa@,{c}@~oes.
 
 Quando @code{globalsolve} @'e @code{true} ent@~ao vari@'aveis que foram resolvidas
-ser@~ao escolhidas para a solu@value{cedilha}@~ao do conjunto de equa@value{cedilha}@~oes simult@^aneas.
+ser@~ao escolhidas para a solu@,{c}@~ao do conjunto de equa@,{c}@~oes simult@^aneas.
 
 Quando @code{backsubst} @'e @code{false}, @code{linsolve}
-n@~ao realiza substitui@value{cedilha}@~ao em equa@value{cedilha}@~oes anteriores ap@'os
-as equa@value{cedilha}@~oes terem sido triangularizadas.  Isso pode ser necess@'ario em problemas
-muito grandes onde substitui@value{cedilha}@~ao em equa@value{cedilha}@~oes anteriores poder@'a causar a gera@value{cedilha}@~ao de
+n@~ao realiza substitui@,{c}@~ao em equa@,{c}@~oes anteriores ap@'os
+as equa@,{c}@~oes terem sido triangularizadas.  Isso pode ser necess@'ario em problemas
+muito grandes onde substitui@,{c}@~ao em equa@,{c}@~oes anteriores poder@'a causar a gera@,{c}@~ao de
 express@~oes extremamente largas.
 
 Quando @code{linsolve_params} for @code{true},
@@ -559,10 +559,10 @@ Quando @code{linsolve_params} for @code{true},
 usados para representar par@^ametros arbitr@'arios descritos no manual sob
 @code{algsys}.
 De outra forma, @code{linsolve} resolve um menor-determinado sistema de
-equa@value{cedilha}@~oes com algumas vari@'aveis expressas em termos de outras.
+equa@,{c}@~oes com algumas vari@'aveis expressas em termos de outras.
 
 Quando @code{programmode} for @code{false},
-@code{linsolve} mostra a solu@value{cedilha}@~ao com express@~oes interm@'edias com r@'otulos (@code{%t}),
+@code{linsolve} mostra a solu@,{c}@~ao com express@~oes interm@'edias com r@'otulos (@code{%t}),
 e retorna a lista de r@'otulos.
 
 @c ===beg===
@@ -637,7 +637,7 @@ Solution
 Valor por omiss@~ao: @code{true}
 
 Quando @code{linsolvewarn} @'e @code{true},
-@code{linsolve} imprime uma mensagem "Dependent equa@value{cedilha}@~oes eliminated".
+@code{linsolve} imprime uma mensagem "Dependent equa@,{c}@~oes eliminated".
 
 @end defvr
 
@@ -648,7 +648,7 @@ Quando @code{linsolve_params} @'e @code{true}, @code{linsolve} tamb@'em gera
 os s@'{@dotless{i}}mbolos @code{%r} usados para representar par@^ametros arbitr@'arios descritos no
 manual sob @code{algsys}.
 De outra forma, @code{linsolve} resolve um menor-determinado sistema de
-equa@value{cedilha}@~oes com algumas vari@'aveis expressas em termos e outras.
+equa@,{c}@~oes com algumas vari@'aveis expressas em termos e outras.
 
 @end defvr
 
@@ -656,13 +656,13 @@ equa@value{cedilha}@~oes com algumas vari@'aveis expressas em termos e outras.
 Valor por omiss@~ao: @code{not_set_yet}
 
 @code{multiplicities} @'e escolhida para uma lista de
-multiplicidades das solu@value{cedilha}@~oes individuais retornadas por @code{solve} ou
+multiplicidades das solu@,{c}@~oes individuais retornadas por @code{solve} ou
 @code{realroots}.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} nroots (@var{p}, @var{low}, @var{high})
+@deffn {Fun@,{c}@~ao} nroots (@var{p}, @var{low}, @var{high})
 Retorna o n@'umero de ra@'{@dotless{i}}zes reais do polin@'omio 
 real de uma @'unica vari@'avel @var{p} no intervalo semi-aberto
 @code{(@var{low}, @var{high}]}.
@@ -680,7 +680,7 @@ infinito e mais infinito.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} nthroot (@var{p}, @var{n})
+@deffn {Fun@,{c}@~ao} nthroot (@var{p}, @var{n})
 Onde p @'e um polin@'omio com coeficientes inteiros e
 n @'e um inteiro positivo retorna q, um polin@'omio sobre os inteiros, tal
 que q^n=p ou imprime uma mensagem de erro indicando que p n@~ao @'e uma pot@^encia n-@'esima
@@ -693,14 +693,14 @@ Valor por omiss@~ao: @code{true}
 
 Quando @code{programmode} @'e @code{true},
 @code{solve}, @code{realroots}, @code{allroots}, e @code{linsolve}
-retornam solu@value{cedilha}@~oes como elementos em uma lista.
+retornam solu@,{c}@~oes como elementos em uma lista.
 @c WHAT DOES BACKSUBSTITUTION HAVE TO DO WITH RETURN VALUES ??
 (Exceto quando @code{backsubst} @'e escolhido para @code{false}, nesse caso
 @code{programmode: false} @'e assumido.)
 
 Quando @code{programmode} @'e @code{false}, @code{solve}, etc.
 cria r@'otulos de express@~oes interm@'edias
-@code{%t1}, @code{t2}, etc., e atribui as solu@value{cedilha}@~oes para eles.
+@code{%t1}, @code{t2}, etc., e atribui as solu@,{c}@~oes para eles.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
@@ -709,16 +709,16 @@ cria r@'otulos de express@~oes interm@'edias
 Valor por omiss@~ao: @code{false}
 
 Quando @code{realonly} @'e @code{true}, @code{algsys} retorna somente
-aquelas solu@value{cedilha}@~oes que est@~ao livres de @code{%i}.
+aquelas solu@,{c}@~oes que est@~ao livres de @code{%i}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} realroots (@var{expr}, @var{bound})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{eqn}, @var{bound})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} realroots (@var{eqn})
-Calcula aproxima@value{cedilha}@~oes racionais das ra@'{@dotless{i}}zes reais da express@~ao polinomial @var{expr}
-ou da equa@value{cedilha}@~ao polinomial @var{eqn} de uma vari@'avel,
+@deffn {Fun@,{c}@~ao} realroots (@var{expr}, @var{bound})
+@deffnx {Fun@,{c}@~ao} realroots (@var{eqn}, @var{bound})
+@deffnx {Fun@,{c}@~ao} realroots (@var{expr})
+@deffnx {Fun@,{c}@~ao} realroots (@var{eqn})
+Calcula aproxima@,{c}@~oes racionais das ra@'{@dotless{i}}zes reais da express@~ao polinomial @var{expr}
+ou da equa@,{c}@~ao polinomial @var{eqn} de uma vari@'avel,
 dentro de uma toler@^ancia de @var{bound}.
 coeficientes de @var{expr} ou de @var{eqn} devem ser n@'umeros literais;
 constantes s@'{@dotless{i}}mbolo tais como @code{%pi} s@~ao rejeitadas.
@@ -727,11 +727,11 @@ constantes s@'{@dotless{i}}mbolo tais como @code{%pi} s@~ao rejeitadas.
 para a vari@'avel global @code{multiplicities}.
 
 @code{realroots} constr@'oi uma sequ@^encia de Sturm para delimitar cada ra@'{@dotless{i}}z,
-e ent@~ao palica a bisec@value{cedilha}@~ao para redefinir as aproxima@value{cedilha}@~oes.
+e ent@~ao palica a bisec@,{c}@~ao para redefinir as aproxima@,{c}@~oes.
 Todos os coeficientes s@~ao convertidos para os equivalentes racionais antes da busca por ra@'{@dotless{i}}zes,
 e c@'alculos s@~ao realizados por meio de aritm@'etica racional exacta.
 Mesmo se alguns coeficientes forem n@'umeros em ponto flutuante,
-os resultados s@~ao racionais (a menos que for@value{cedilha}ados a n@'umeros em ponto flutuante por @code{float} ou por @code{numer} flags).
+os resultados s@~ao racionais (a menos que for@,{c}ados a n@'umeros em ponto flutuante por @code{float} ou por @code{numer} flags).
 
 Quando @var{bound} for menor que 1, todas as ra@'{@dotless{i}}zes inteiras s@~ao encontradas exactamente.
 Quando @var{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a vari@'avel globa @code{rootsepsilon}.
@@ -774,13 +774,13 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rhs (@var{expr})
+@deffn {Fun@,{c}@~ao} rhs (@var{expr})
 Retorna o lado direito (isto @'e, o segundo argumento)
 da express@~ao @var{expr},
 quando o operador de @var{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-um dos operadores de atribui@value{cedilha}@~ao @code{:= ::= : ::},
+um dos operadores de atribui@,{c}@~ao @code{:= ::= : ::},
 ou um operador bin@'ario infixo definido pelo utilizador, como declarado por meio de @code{infix}.
 
 Quando @var{expr} for um @'etomo ou
@@ -834,7 +834,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} rootsconmode
+@defvr {Vari@'avel de op@,{c}@~ao} rootsconmode
 Valor por omiss@~ao: @code{true}
 
 @code{rootsconmode} governa o comportamento do comando
@@ -843,7 +843,7 @@ Valor por omiss@~ao: @code{true}
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} rootscontract (@var{expr})
+@deffn {Fun@,{c}@~ao} rootscontract (@var{expr})
 Converte produtos de ra@'{@dotless{i}}zes em ra@'{@dotless{i}}zes de produtos.
 Por exemplo,
 @code{rootscontract (sqrt(x)*y^(3/2))} retorna @code{sqrt(x*y^3)}.
@@ -852,7 +852,7 @@ Quando @code{radexpand} @'e @code{true} e @code{domain} @'e @code{real},
 @code{rootscontract} converte @code{abs} em @code{sqrt}, e.g.,
 @code{rootscontract (abs(x)*sqrt(y))} retorna @code{sqrt(x^2*y)}.
 
-Existe uma op@value{cedilha}@~ao @code{rootsconmode}
+Existe uma op@,{c}@~ao @code{rootsconmode}
 afectando @code{rootscontract} como segue:
 
 @example
@@ -867,7 +867,7 @@ x^(1/2)*y^(1/4)      all            (x^2*y)^(1/4)
 x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 @end example
 
-Quando @code{rootsconmode} @'e @code{false}, @code{rootscontract} contrai somente como rela@value{cedilha}@~ao a expoentes
+Quando @code{rootsconmode} @'e @code{false}, @code{rootscontract} contrai somente como rela@,{c}@~ao a expoentes
 de n@'umero racional cujos denominadores s@~ao os mesmos.  A chave para os exemplos
 @code{rootsconmode: true} @'e simplesmente que 2 divides 4 mas n@~ao 
 divide 3.  @code{rootsconmode: all} envolve pegar o menor m@'ultiplo comum
@@ -924,27 +924,27 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} rootsepsilon
+@defvr {Vari@'avel de op@,{c}@~ao} rootsepsilon
 Valor por omiss@~ao: 1.0e-7
 
 @code{rootsepsilon} @'e a toler@^ancia que estabelece o
-intervalo de confic@^encia para as ra@'{@dotless{i}}zes achadas pela fun@value{cedilha}@~ao @code{realroots}.
+intervalo de confic@^encia para as ra@'{@dotless{i}}zes achadas pela fun@,{c}@~ao @code{realroots}.
 @c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER NOTION ??
 @c NEED EXAMPLE HERE
 
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} solve (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} solve (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-Resolve a equa@value{cedilha}@~ao alg@'ebrica @var{expr} para a vari@'avel
-@var{x} e retorna uma lista de equa@value{cedilha}@~oes solu@value{cedilha}@~ao em @var{x}.  Se @var{expr} n@~ao @'e uma
-equa@value{cedilha}@~ao, a equa@value{cedilha}@~ao @code{@var{expr} = 0} @'e assumida em seu lugar.
-@var{x} pode ser uma fun@value{cedilha}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
-excepto uma adi@value{cedilha}@~ao ou um produto.  @var{x} pode ser omitido se @var{expr} cont@'em somente uma
+@deffn {Fun@,{c}@~ao} solve (@var{expr}, @var{x})
+@deffnx {Fun@,{c}@~ao} solve (@var{expr})
+@deffnx {Fun@,{c}@~ao} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+Resolve a equa@,{c}@~ao alg@'ebrica @var{expr} para a vari@'avel
+@var{x} e retorna uma lista de equa@,{c}@~oes solu@,{c}@~ao em @var{x}.  Se @var{expr} n@~ao @'e uma
+equa@,{c}@~ao, a equa@,{c}@~ao @code{@var{expr} = 0} @'e assumida em seu lugar.
+@var{x} pode ser uma fun@,{c}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
+excepto uma adi@,{c}@~ao ou um produto.  @var{x} pode ser omitido se @var{expr} cont@'em somente uma
 vari@'avel.  @var{expr} pode ser uma express@~ao racional, e pode conter
-fun@value{cedilha}@~oes trigonom@'etricas, exponenciais, etc.
+fun@,{c}@~oes trigonom@'etricas, exponenciais, etc.
 
 O seguinte m@'etodo @'e usado:
 
@@ -960,34 +960,34 @@ Se @var{E} for dada em factores ent@~ao @code{solve} @'e chamada sobre cada um d
 @code{solve} usar@'a as f@'ormulas quadr@'aticas, c@'ubicas, ou qu@'articas onde
 necess@'ario.
 
-No caso onde @var{E} for um polin@'omio em alguma fun@value{cedilha}@~ao de vari@'avel a ser
+No caso onde @var{E} for um polin@'omio em alguma fun@,{c}@~ao de vari@'avel a ser
 resolvida, digamos @code{F(X)}, ent@~ao isso @'e primeiro resolvida para @code{F(X)} (chama o
-resultado @var{C}), ent@~ao a equa@value{cedilha}@~ao @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
-inverso da fun@value{cedilha}@~ao @var{F} que @'e conhecida.
+resultado @var{C}), ent@~ao a equa@,{c}@~ao @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
+inverso da fun@,{c}@~ao @var{F} que @'e conhecida.
 
-@code{breakup} se @code{false} far@'a com que @code{solve} expresse as solu@value{cedilha}@~oes de
-equa@value{cedilha}@~oes c@'ubicas ou qu@'articas como express@~oes simples ao inv@'es de como feito
+@code{breakup} se @code{false} far@'a com que @code{solve} expresse as solu@,{c}@~oes de
+equa@,{c}@~oes c@'ubicas ou qu@'articas como express@~oes simples ao inv@'es de como feito
 em cima de v@'arias subexpress@~oes comuns que @'e o padr@~ao.
 
 @code{multiplicities} - ser@'a escolhido para uma lista de multiplicidades de
-solu@value{cedilha}@~oes individuais retornadas por @code{solve}, @code{realroots}, ou @code{allroots}.
+solu@,{c}@~oes individuais retornadas por @code{solve}, @code{realroots}, ou @code{allroots}.
 Tente @code{apropos (solve)} para os comutadores que afectam @code{solve}.  @code{describe} pode
 ent@~ao ser usada sobre o nome do comutador individual se seu propr@'osito n@~ao @'e
 claro.
 
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
-resolve um sistema de equa@value{cedilha}@~oes polinomiais
+resolve um sistema de equa@,{c}@~oes polinomiais
 (lineares ou n@~ao-lineares) simult@^aneas por chamada a @code{linsolve} ou
-@code{algsys} e retorna uma lista de listas solu@value{cedilha}@~ao nas vari@'aveis.  No
+@code{algsys} e retorna uma lista de listas solu@,{c}@~ao nas vari@'aveis.  No
 caso de @code{linsolve} essa lista conter@'a uma lista simples de
-solu@value{cedilha}@~oes.  Isso pega duas listas como argumentos.  A primeira lista
-representa as equa@value{cedilha}@~oes a serem resolvidas; a segunda lista @'e a
+solu@,{c}@~oes.  Isso pega duas listas como argumentos.  A primeira lista
+representa as equa@,{c}@~oes a serem resolvidas; a segunda lista @'e a
 lista de desconhecidos a ser determinada.  Se o n@'umero total de
-vari@'aveis nas equa@value{cedilha}@~oes @'e igual ao n@'umero de equa@value{cedilha}@~oes, a
+vari@'aveis nas equa@,{c}@~oes @'e igual ao n@'umero de equa@,{c}@~oes, a
 segunda lista-argumento pode ser omitida.  Para sistemas lineares se as dadas
-equa@value{cedilha}@~oes n@~ao s@~ao compat@'{@dotless{i}}veis, a mensagem @code{inconsistent} ser@'a
+equa@,{c}@~oes n@~ao s@~ao compat@'{@dotless{i}}veis, a mensagem @code{inconsistent} ser@'a
 mostrada (veja o comutador @code{solve_inconsistent_error} ); se n@~ao existe
-solu@value{cedilha}@~ao @'unica, ent@~ao @code{singular} ser@'a mostrado.
+solu@,{c}@~ao @'unica, ent@~ao @code{singular} ser@'a mostrado.
 
 Exemplos:
 @c FOLLOWING ADAPTED FROM example (solve)
@@ -1008,7 +1008,7 @@ Exemplos:
 (%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
 
 SOLVE is using arc-trig functions to get a solution.
-Some solu@value{cedilha}@~oes will be lost.
+Some solu@,{c}@~oes will be lost.
                             %pi
 (%o1)                  [x = ---, f(x) = 1]
                              6
@@ -1097,7 +1097,7 @@ y = - .1535675710019696]]
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solvedecomposes
+@defvr {Vari@'avel de op@,{c}@~ao} solvedecomposes
 Valor por omiss@~ao: @code{true}
 
 Quando @code{solvedecomposes} @'e @code{true}, @code{solve} chama
@@ -1106,38 +1106,38 @@ Quando @code{solvedecomposes} @'e @code{true}, @code{solve} chama
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solveexplicit
+@defvr {Vari@'avel de op@,{c}@~ao} solveexplicit
 Valor por omiss@~ao: @code{false}
 
 Quando @code{solveexplicit} @'e @code{true}, inibe @code{solve} de
-retornar solu@value{cedilha}@~oes impl@'{@dotless{i}}citas, isto @'e, solu@value{cedilha}@~oes da forma @code{F(x) = 0}
-onde @code{F} @'e alguma fun@value{cedilha}@~ao.
+retornar solu@,{c}@~oes impl@'{@dotless{i}}citas, isto @'e, solu@,{c}@~oes da forma @code{F(x) = 0}
+onde @code{F} @'e alguma fun@,{c}@~ao.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solvefactors
+@defvr {Vari@'avel de op@,{c}@~ao} solvefactors
 Valor por omiss@~ao: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
 Quando @code{solvefactors} @'e @code{false}, @code{solve} n@~ao tenta
 factorizar a express@~ao. A escolha do @code{false} poder@'a ser @'util
-em alguns casos onde a factoriza@value{cedilha}@~ao n@~ao @'e
+em alguns casos onde a factoriza@,{c}@~ao n@~ao @'e
 necess@'aria.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solvenullwarn
+@defvr {Vari@'avel de op@,{c}@~ao} solvenullwarn
 Valor por omiss@~ao: @code{true}
 
 Quando @code{solvenullwarn} @'e @code{true}, 
-@code{solve} imprime uma mensagem de alerta se chamada com ou uma lista equa@value{cedilha}@~ao ou uma vari@'avel lista nula.
+@code{solve} imprime uma mensagem de alerta se chamada com ou uma lista equa@,{c}@~ao ou uma vari@'avel lista nula.
 Por exemplo, @code{solve ([], [])} imprimir@'a duas mensagens de alerta e retorna @code{[]}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solveradcan
+@defvr {Vari@'avel de op@,{c}@~ao} solveradcan
 Valor por omiss@~ao: @code{false}
 
 Quando @code{solveradcan} @'e @code{true}, @code{solve} chama @code{radcan}
@@ -1147,34 +1147,34 @@ contendo exponeniais e logaritmos sejam resolvidos.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solvetrigwarn
+@defvr {Vari@'avel de op@,{c}@~ao} solvetrigwarn
 Valor por omiss@~ao: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
 Quando @code{solvetrigwarn} @'e @code{true},
-@code{solve} pode imprimir uma mensagem dizendo que est@'a usando fun@value{cedilha}@~oes
-trigonom@'etricas inversas para resolver a equa@value{cedilha}@~ao, e desse modo perdendo
-solu@value{cedilha}@~oes.
+@code{solve} pode imprimir uma mensagem dizendo que est@'a usando fun@,{c}@~oes
+trigonom@'etricas inversas para resolver a equa@,{c}@~ao, e desse modo perdendo
+solu@,{c}@~oes.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} solve_inconsistent_error
+@defvr {Vari@'avel de op@,{c}@~ao} solve_inconsistent_error
 Valor por omiss@~ao: @code{true}
 
 Quando @code{solve_inconsistent_error} @'e 
 @code{true}, @code{solve} e
-@code{linsolve} resultam em erro se as equa@value{cedilha}@~oes a serem resolvidas s@~ao inconsistentes.
+@code{linsolve} resultam em erro se as equa@,{c}@~oes a serem resolvidas s@~ao inconsistentes.
 
 Se @code{false}, @code{solve} e @code{linsolve} retornam uma lista vazia @code{[]} 
-se as equa@value{cedilha}@~oes forem inconsistentes.
+se as equa@,{c}@~oes forem inconsistentes.
 
 Exemplo:
 
 @example
 (%i1) solve_inconsistent_error: true$
 (%i2) solve ([a + b = 1, a + b = 2], [a, b]);
-Inconsistent equa@value{cedilha}@~oes:  (2)
+Inconsistent equa@,{c}@~oes:  (2)
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i3) solve_inconsistent_error: false$
 (%i4) solve ([a + b = 1, a + b = 2], [a, b]);

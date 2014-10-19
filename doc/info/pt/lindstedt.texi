@@ -1,24 +1,24 @@
 @c /lindstedt.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~oes para lindstedt::
+* Defini@,{c}@~oes para lindstedt::
 @end menu
 
-@node Defini@value{cedilha}@~oes para lindstedt,  , lindstedt, lindstedt
-@section Defini@value{cedilha}@~oes para lindstedt
+@node Defini@,{c}@~oes para lindstedt,  , lindstedt, lindstedt
+@section Defini@,{c}@~oes para lindstedt
 
 
-@deffn {Fun@value{cedilha}@~ao} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {Fun@,{c}@~ao} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
 Esse @'e um primeiro passo para um c@'odigo de Lindstedt.  Esse c@'odigo pode resolver problemas
-com condi@value{cedilha}@~oes iniciais fornecidas, @`as quais podem ser constantes arbitr@'arias,
-(n@~ao apenas @var{%k1} e @var{%k2}) onde as condi@value{cedilha}@~oes iniciais sobre as equa@value{cedilha}@~oes
-de perturba@value{cedilha}@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'e a lista de 
-condi@value{cedilha}@~oes iniciais.
+com condi@,{c}@~oes iniciais fornecidas, @`as quais podem ser constantes arbitr@'arias,
+(n@~ao apenas @var{%k1} e @var{%k2}) onde as condi@,{c}@~oes iniciais sobre as equa@,{c}@~oes
+de perturba@,{c}@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'e a lista de 
+condi@,{c}@~oes iniciais.
 
-Problemas ocorrem quando condi@value{cedilha}@~oes iniciais n@~ao forem dadas, como as constantes
-nas equa@value{cedilha}@~oes de perturba@value{cedilha}@~ao s@~ao as mesmas que a solu@value{cedilha}@~ao da equa@value{cedilha}@~ao de
-ordem zero.  Tamb@'em, problemas ocorrem quando as condi@value{cedilha}@~oes iniciais para as
-equa@value{cedilha}@~oes de perturba@value{cedilha}@~ao n@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
-equa@value{cedilha}@~ao de Van der Pol.
+Problemas ocorrem quando condi@,{c}@~oes iniciais n@~ao forem dadas, como as constantes
+nas equa@,{c}@~oes de perturba@,{c}@~ao s@~ao as mesmas que a solu@,{c}@~ao da equa@,{c}@~ao de
+ordem zero.  Tamb@'em, problemas ocorrem quando as condi@,{c}@~oes iniciais para as
+equa@,{c}@~oes de perturba@,{c}@~ao n@~ao s@~ao @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
+equa@,{c}@~ao de Van der Pol.
 
 Exemplo:
 @example
@@ -40,5 +40,5 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-Para usar essa fun@value{cedilha}@~ao escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
+Para usar essa fun@,{c}@~ao escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
 @end deffn

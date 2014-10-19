@@ -1,16 +1,16 @@
 @c @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /f90.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~oes para f90::
+* Defini@,{c}@~oes para f90::
 @end menu
 
-@node Defini@value{cedilha}@~oes para f90,  , f90, f90
-@section Defini@value{cedilha}@~oes para f90
+@node Defini@,{c}@~oes para f90,  , f90, f90
+@section Defini@,{c}@~oes para f90
 
 
-@deffn {Fun@value{cedilha}@~ao} f90 (@var{expr})
-O comando f90 @'e uma actualiza@value{cedilha}@~ao do comando
-@code{fortran} original do maxima. A principal diferen@value{cedilha}a
+@deffn {Fun@,{c}@~ao} f90 (@var{expr})
+O comando f90 @'e uma actualiza@,{c}@~ao do comando
+@code{fortran} original do maxima. A principal diferen@,{c}a
 @'e na forma como s@~ao divididas as linhas muito compridas.
 
 No exemplo seguinte, observe como o comando @code{fortran} divide linhas
@@ -42,8 +42,8 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
 
 A fun@,{c}@~ao @code{f90} foi criada como uma forma r@'apida de resolver
 um problema. N@~ao ser@'a necessariamente um bom exemplo a seguir para
-tradu@,{c}@~oes de outras linguagens de programa@value{cedilha}@~ao.
+tradu@,{c}@~oes de outras linguagens de programa@,{c}@~ao.
 
-Para usar esta fun@value{cedilha}@~ao, use primeiro @code{load("f90")}.
+Para usar esta fun@,{c}@~ao, use primeiro @code{load("f90")}.
 @end deffn
 

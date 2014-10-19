@@ -1,10 +1,10 @@
 @c /Constants.texi/1.15/Sat Nov 25 04:02:07 2006/-ko/
 @menu
-* Defini@value{cedilha}@~oes para Constantes::
+* Defini@,{c}@~oes para Constantes::
 @end menu
 
-@node Defini@value{cedilha}@~oes para Constantes,  , Constantes, Constantes
-@section Defini@value{cedilha}@~oes para Constantes
+@node Defini@,{c}@~oes para Constantes,  , Constantes, Constantes
+@section Defini@,{c}@~oes para Constantes
 
 @defvr {Constante} %e
 @ifinfo

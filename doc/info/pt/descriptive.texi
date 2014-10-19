@@ -1,15 +1,15 @@
 @c Language: Portuguese
 @c Source: descriptive.texi (en) 1.9
 @menu
-* Introdu@value{cedilha}@~ao ao pacote descriptive::
-* Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados::
-* Defini@value{cedilha}@~oes para estat@'{@dotless{i}}stica descritiva::
-* Defini@value{cedilha}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis::
-* Defini@value{cedilha}@~oes para gr@'aficos estat@'{@dotless{i}}sticos::
+* Introdu@,{c}@~ao ao pacote descriptive::
+* Defini@,{c}@~oes para manipula@,{c}@~ao da dados::
+* Defini@,{c}@~oes para estat@'{@dotless{i}}stica descritiva::
+* Defini@,{c}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis::
+* Defini@,{c}@~oes para gr@'aficos estat@'{@dotless{i}}sticos::
 @end menu
 
-@node Introdu@value{cedilha}@~ao ao pacote descriptive, Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, descriptive, descriptive
-@section Introdu@value{cedilha}@~ao ao pacote descriptive
+@node Introdu@,{c}@~ao ao pacote descriptive, Defini@,{c}@~oes para manipula@,{c}@~ao da dados, descriptive, descriptive
+@section Introdu@,{c}@~ao ao pacote descriptive
 
 O pacote @code{descriptive} cont@'em um conjunto de fun@,{c}@~oes para fazer c@'alculos de estat@'{@dotless{i}}stica descritiva e desenhar gr@'aficos. Juntamente com o c@'odigo fonte tr@^es conjuntos de dados em suar @'arvore do Maxima: @code{pidigits.data}, @code{wind.data} e @code{biomed.data}. Eles tamb@'em podem ser baixados a partir de @code{www.biomates.net}.
 
@@ -175,8 +175,8 @@ Se deve tomar cuidado quando se trabalha com dados divididos por categorias. no 
 
 
 
-@node Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, Defini@value{cedilha}@~oes para estat@'{@dotless{i}}stica descritiva, Introdu@value{cedilha}@~ao ao pacote descriptive, descriptive
-@section Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados
+@node Defini@,{c}@~oes para manipula@,{c}@~ao da dados, Defini@,{c}@~oes para estat@'{@dotless{i}}stica descritiva, Introdu@,{c}@~ao ao pacote descriptive, descriptive
+@section Defini@,{c}@~oes para manipula@,{c}@~ao da dados
 
 @deffn {Fun@,{c}@~ao} continuous_freq (@var{list})
 @deffnx {Fun@,{c}@~ao} continuous_freq (@var{list}, @var{m})
@@ -380,8 +380,8 @@ Aqui, a primeira componente @'e sem sentido, uma vez que @code{A} e @code{B} s@~
 @end deffn
 
 
-@node Defini@value{cedilha}@~oes para estat@'{@dotless{i}}stica descritiva, Defini@value{cedilha}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, descriptive
-@section Defini@value{cedilha}@~oes para estat@'{@dotless{i}}stica descritiva
+@node Defini@,{c}@~oes para estat@'{@dotless{i}}stica descritiva, Defini@,{c}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, Defini@,{c}@~oes para manipula@,{c}@~ao da dados, descriptive
+@section Defini@,{c}@~oes para estat@'{@dotless{i}}stica descritiva
 
 
 
@@ -1379,8 +1379,8 @@ Veja tamb@'em a fun@,{c}@~ao @code{quantile}.
 
 
 
-@node Defini@value{cedilha}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, Defini@value{cedilha}@~oes para gr@'aficos estat@'{@dotless{i}}sticos, Defini@value{cedilha}@~oes para estat@'{@dotless{i}}stica descritiva, descriptive
-@section Defini@value{cedilha}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis
+@node Defini@,{c}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, Defini@,{c}@~oes para gr@'aficos estat@'{@dotless{i}}sticos, Defini@,{c}@~oes para estat@'{@dotless{i}}stica descritiva, descriptive
+@section Defini@,{c}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis
 
 
 
@@ -1756,8 +1756,8 @@ Veja tamb@'em @code{cov} e @code{cov1}.
 
 
 
-@node Defini@value{cedilha}@~oes para gr@'aficos estat@'{@dotless{i}}sticos,  , Defini@value{cedilha}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, descriptive
-@section Defini@value{cedilha}@~oes para gr@'aficos estat@'{@dotless{i}}sticos
+@node Defini@,{c}@~oes para gr@'aficos estat@'{@dotless{i}}sticos,  , Defini@,{c}@~oes espec@'{@dotless{i}}ficas para estat@'{@dotless{i}}stica descritiva de v@'arias vari@'aveis, descriptive
+@section Defini@,{c}@~oes para gr@'aficos estat@'{@dotless{i}}sticos
 
 
 

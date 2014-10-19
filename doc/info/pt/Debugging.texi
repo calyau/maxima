@@ -1,13 +1,13 @@
 @c Language: Portuguese
 @c Source: Debugging.texi (en) 1.16
 @menu
-* Depura@value{cedilha}@~ao do C@'odigo Fonte::
+* Depura@,{c}@~ao do C@'odigo Fonte::
 * Comandos Palavra Chave::
-* Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao::   
+* Defini@,{c}@~oes para Depura@,{c}@~ao::   
 @end menu
 
-@node Depura@value{cedilha}@~ao do C@'odigo Fonte, Comandos Palavra Chave, , Depura@value{cedilha}@~ao
-@section Depura@value{cedilha}@~ao do C@'odigo Fonte
+@node Depura@,{c}@~ao do C@'odigo Fonte, Comandos Palavra Chave, , Depura@,{c}@~ao
+@section Depura@,{c}@~ao do C@'odigo Fonte
 
 Maxima tem um depurador interno de c@'odigo fonte.  O utilizador pode
 escolher um ponto de parada numa fun@,{c}@~ao, e executar o programa
@@ -122,7 +122,7 @@ maxima-mode.el habilitado na janela na qual o ficheiro @code{foobar.mac} estiver
 Existe comandos adicional dispon@'{@dotless{i}}veis naquela janela de ficheiro, tais como
 avaliando a fun@,{c}@~ao dentro do Maxima, atrav@'es da digita@,{c}@~ao de @code{Alt-Control-x}.
 
-@node Comandos Palavra Chave, Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao, Depura@value{cedilha}@~ao do C@'odigo Fonte, Depura@value{cedilha}@~ao
+@node Comandos Palavra Chave, Defini@,{c}@~oes para Depura@,{c}@~ao, Depura@,{c}@~ao do C@'odigo Fonte, Depura@,{c}@~ao
 @section Comandos Palavra Chave
 
 Comandos palavra chave s@~ao palavras chaves especiais que n@~ao s@~ao interpretadas como express@~oes do Maxima.
@@ -191,8 +191,8 @@ completar a computa@,{c}@~ao
 @end table 
 
 
-@node Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao, , Comandos Palavra Chave, Depura@value{cedilha}@~ao
-@section Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao
+@node Defini@,{c}@~oes para Depura@,{c}@~ao, , Comandos Palavra Chave, Depura@,{c}@~ao
+@section Defini@,{c}@~oes para Depura@,{c}@~ao
 
 @defvr {Vari@'avel de op@,{c}@~ao} refcheck
 Valor por omiss@~ao: @code{false}

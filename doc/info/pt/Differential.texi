@@ -1,11 +1,11 @@
 @c English version: 1.9
 @menu
-* Introdu@value{cedilha}@~ao @`as Equa@value{cedilha}@~oes Diferenciais::
-* Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais::  
+* Introdu@,{c}@~ao @`as Equa@,{c}@~oes Diferenciais::
+* Defini@,{c}@~oes para Equa@,{c}@~oes Diferenciais::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao @`as Equa@value{cedilha}@~oes Diferenciais, Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais, Equa@value{cedilha}@~oes Diferenciais, Equa@value{cedilha}@~oes Diferenciais
-@section Introdu@value{cedilha}@~ao @`as Equa@value{cedilha}@~oes Diferenciais
+@node Introdu@,{c}@~ao @`as Equa@,{c}@~oes Diferenciais, Defini@,{c}@~oes para Equa@,{c}@~oes Diferenciais, Equa@,{c}@~oes Diferenciais, Equa@,{c}@~oes Diferenciais
+@section Introdu@,{c}@~ao @`as Equa@,{c}@~oes Diferenciais
 
 Esta sec@,{c}@~ao descreve as fun@,{c}@~oes dispon@'{@dotless{i}}veis no
 Maxima para obter a solu@,{c}@~ao anal@'{@dotless{i}}tica de alguns
@@ -15,14 +15,14 @@ sistema de equa@,{c}@~oes diferenciais, consulte o pacote adicional
 @code{dynamics}. Para obter representa@,{c}@~oes gr@'aficas no
 espa@,{c}o de fase, consulte o pacote adicional @code{plotdf}.
 
-@node Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais, , Introdu@value{cedilha}@~ao @`as Equa@value{cedilha}@~oes Diferenciais, Equa@value{cedilha}@~oes Diferenciais
-@section Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais
+@node Defini@,{c}@~oes para Equa@,{c}@~oes Diferenciais, , Introdu@,{c}@~ao @`as Equa@,{c}@~oes Diferenciais, Equa@,{c}@~oes Diferenciais
+@section Defini@,{c}@~oes para Equa@,{c}@~oes Diferenciais
 
 
-@deffn {Fun@value{cedilha}@~ao} bc2 (@var{solu@value{cedilha}@~ao}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {Fun@,{c}@~ao} bc2 (@var{solu@,{c}@~ao}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 Resolve um problema de valores fronteira para uma equa@,{c}@~ao
-diferencial de segunda ordem.  Aqui: @var{solu@value{cedilha}@~ao} @'e
-uma solu@value{cedilha}@~ao geral para a equa@value{cedilha}@~ao,
+diferencial de segunda ordem.  Aqui: @var{solu@,{c}@~ao} @'e
+uma solu@,{c}@~ao geral para a equa@,{c}@~ao,
 calculada por @code{ode2}; @var{xval1} define o valor da vari@'avel
 independente, num primeiro ponto, na forma @code{@var{x} = @var{x1}}, e
 @var{yval1} define o valor da vari@'avel dependente, no mesmo ponto, na
@@ -36,9 +36,9 @@ Veja um exemplo da sua utiliza@,{c}@~ao na documenta@,{c}@~ao de
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} desolve (@var{eqn}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-A fun@value{cedilha}@~ao @code{dsolve} resolve sistemas de
+@deffn {Fun@,{c}@~ao} desolve (@var{eqn}, @var{x})
+@deffnx {Fun@,{c}@~ao} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+A fun@,{c}@~ao @code{dsolve} resolve sistemas de
 equa@,{c}@~oes diferenciais ordin@'arias lineares usando transformada de
 Laplace. Aqui as express@~oes @var{eqn} s@~ao equa@,{c}@~oes
 diferenciais nas vari@'aveis dependentes @var{x_1}, ..., @var{x_n}.  A

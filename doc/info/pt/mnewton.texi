@@ -1,39 +1,39 @@
 @c /mnewton.texi/1.2/Mon May 15 07:54:51 2006//
 @menu
-* Defini@value{cedilha}@~oes para mnewton::
+* Defini@,{c}@~oes para mnewton::
 @end menu
 
-@node Defini@value{cedilha}@~oes para mnewton,  , mnewton, mnewton
-@section Defini@value{cedilha}@~oes para mnewton
+@node Defini@,{c}@~oes para mnewton,  , mnewton, mnewton
+@section Defini@,{c}@~oes para mnewton
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} newtonepsilon
+@defvr {Vari@'avel de op@,{c}@~ao} newtonepsilon
 Valor por omiss@~ao: @code{10.0^(-fpprec/2)}
 
-Precis@~ao para determinar quando a fun@value{cedilha}@~ao @code{mnewton} convergiu em dire@value{cedilha}@~ao @`a solu@value{cedilha}@~ao.
+Precis@~ao para determinar quando a fun@,{c}@~ao @code{mnewton} convergiu em dire@,{c}@~ao @`a solu@,{c}@~ao.
 
 Veja tamb@'em @code{mnewton}.
 @end defvr
 
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} newtonmaxiter
+@defvr {Vari@'avel de op@,{c}@~ao} newtonmaxiter
 Valor por omiss@~ao: @code{50}
 
-N@'umero m@'aximo de itera@value{cedilha}@~oes que para a fun@value{cedilha}@~ao @code{mnewton}
-caso essa fun@value{cedilha}@~ao n@~ao seja convergente ou se convergir muito lentamente.
+N@'umero m@'aximo de itera@,{c}@~oes que para a fun@,{c}@~ao @code{mnewton}
+caso essa fun@,{c}@~ao n@~ao seja convergente ou se convergir muito lentamente.
 
 Veja tamb@'em @code{mnewton}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
-Solu@value{cedilha}@~ao de multiplas fun@value{cedilha}@~oes n@~ao lineares usando o m@'etodo de Newton.
-@var{FuncList} @'e a lista de fun@value{cedilha}@~oes a serem resolvidas,
+@deffn {Fun@,{c}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+Solu@,{c}@~ao de multiplas fun@,{c}@~oes n@~ao lineares usando o m@'etodo de Newton.
+@var{FuncList} @'e a lista de fun@,{c}@~oes a serem resolvidas,
 @var{VarList} @'e a lista dos nomes de vari@'aveis, e
-@var{GuessList} @'e a lista de aproxima@value{cedilha}@~oes iniciais.
+@var{GuessList} @'e a lista de aproxima@,{c}@~oes iniciais.
 
-A solu@value{cedilha}@~ao @'e retornada no mesmo formato retornado pela fun@value{cedilha}@~ao @code{solve()}.
-Caso a solu@value{cedilha}@~ao n@~ao seja encontrada, @code{[]} @'e retornado.
+A solu@,{c}@~ao @'e retornada no mesmo formato retornado pela fun@,{c}@~ao @code{solve()}.
+Caso a solu@,{c}@~ao n@~ao seja encontrada, @code{[]} @'e retornado.
 
-Essa fun@value{cedilha}@~ao @'e controlada atrav@'es das vari@'aveis globais @code{newtonepsilon} e @code{newtonmaxiter}.
+Essa fun@,{c}@~ao @'e controlada atrav@'es das vari@'aveis globais @code{newtonepsilon} e @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -47,6 +47,6 @@ Essa fun@value{cedilha}@~ao @'e controlada atrav@'es das vari@'aveis globais @co
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Para usar essa fun@value{cedilha}@~ao primeiro escreva @code{load("mnewton")}. Veja tamb@'em @code{newtonepsilon} e @code{newtonmaxiter}.
+Para usar essa fun@,{c}@~ao primeiro escreva @code{load("mnewton")}. Veja tamb@'em @code{newtonepsilon} e @code{newtonmaxiter}.
 @end deffn
 

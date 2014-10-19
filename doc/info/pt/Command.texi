@@ -6,12 +6,12 @@
 @hyphenation{va-lo-res}
 @end iftex
 @menu
-* Introdu@value{cedilha}@~ao a Linha de Comandos::  
-* Defini@value{cedilha}@~oes para Linha de Comandos::  
+* Introdu@,{c}@~ao a Linha de Comandos::  
+* Defini@,{c}@~oes para Linha de Comandos::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Linha de Comandos, Defini@value{cedilha}@~oes para Linha de Comandos, Linha de Comandos, Linha de Comandos
-@section Introdu@value{cedilha}@~ao a Linha de Comandos
+@node Introdu@,{c}@~ao a Linha de Comandos, Defini@,{c}@~oes para Linha de Comandos, Linha de Comandos, Linha de Comandos
+@section Introdu@,{c}@~ao a Linha de Comandos
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
@@ -331,8 +331,8 @@ da mesma forma que em defini@,{c}@~oes de fun@,{c}@~ao, da mesma forma que em de
 
 @end deffn
 
-@node Defini@value{cedilha}@~oes para Linha de Comandos,  , Introdu@value{cedilha}@~ao a Linha de Comandos, Linha de Comandos
-@section Defini@value{cedilha}@~oes para Linha de Comandos
+@node Defini@,{c}@~oes para Linha de Comandos,  , Introdu@,{c}@~ao a Linha de Comandos, Linha de Comandos
+@section Defini@,{c}@~oes para Linha de Comandos
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Fun@,{c}@~ao} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
@@ -349,7 +349,7 @@ Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmod
 O utilizador pode informar comandos para examinar o hist@'orico de chamadas, marcar pontos de parada, percorrer uma linha por vez
 o c@'odigo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op@,{c}@~oes do depurador.
 
-Habilitando @code{debugmode} por meio da altera@value{cedilha}@~ao de seu valor para @code{true}, n@~ao ser@~ao capturados erros do Lisp.
+Habilitando @code{debugmode} por meio da altera@,{c}@~ao de seu valor para @code{true}, n@~ao ser@~ao capturados erros do Lisp.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
@@ -421,7 +421,7 @@ faz com que @code{A} seja associado a
 valor de @code{express@~ao} durante a avalia@,{c}@~ao de @var{expr}.  Note que se @code{V} @'e uma
 op@,{c}@~ao do Maxima, ent@~ao @code{expression} @'e usada para seu valor durante a
 avalia@,{c}@~ao de @var{expr}.  Se mais que um argumento para @code{ev} @'e desse tipo
-ent@~ao a associa@value{cedilha}@~ao termina em paralelo.  Se @code{V} @'e uma express@~ao n@~ao at@^omica
+ent@~ao a associa@,{c}@~ao termina em paralelo.  Se @code{V} @'e uma express@~ao n@~ao at@^omica
 ent@~ao a substitui@,{c}@~ao, ao inv@'es de uma associa@,{c}@~ao, @'e executada.
 @item
 @code{F} onde @code{F}, um nome de fun@,{c}@~ao, tenha sido declarado para ser uma fun@,{c}@~ao de avalia@,{c}@~ao (veja @code{evfun})
@@ -452,7 +452,7 @@ manuseadas como @code{realpart (ratsimp (@var{expr}))}.
 
 Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tamb@'em ser alterados localmente em um
 bloco, ou globalmente no Maxima dessa forma eles ir@~a
-permanecer em efeito at@'e serem resetados ao t@'ermino da execu@value{cedilha}@~ao do bloco.
+permanecer em efeito at@'e serem resetados ao t@'ermino da execu@,{c}@~ao do bloco.
 
 Se @var{expr} for uma express@~ao racional can@'onica (CRE),
 ent@~ao a express@~ao retornada por @code{ev} @'e tamb@'em uma CRE,

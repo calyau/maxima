@@ -1,6 +1,6 @@
 @c /Introduction.texi/1.5/Sun Apr  3 08:17:33 2005/-ko/
 Inicie o Maxima com o comando "maxima".  Maxima mostrar@'a a
-informa@value{cedilha}@~ao de vers@~ao e uma linha de comando.  Termine
+informa@,{c}@~ao de vers@~ao e uma linha de comando.  Termine
 cada comando Maxima com um ponto e v@'{@dotless{i}}rgula.  Termine uma
 sess@~ao com o comando "quit();".  Aqui est@'a um exemplo de sess@~ao:
 
@@ -28,7 +28,7 @@ provides bug reporting information.
 Maxima pode fazer pesquisas nas p@'aginas info do manual. Use o comando
 @kbd{describe} para mostrar todos os comandos e vari@'aveis contendo uma
 dada sequ@^encia de caracteres, e opcionalmente a sua
-documenta@value{cedilha}@~ao.  O ponto de interroga@value{cedilha}@~ao
+documenta@,{c}@~ao.  O ponto de interroga@,{c}@~ao
 @code{?} @'e uma abreviatura para @code{describe}:
 
 @example
@@ -111,7 +111,7 @@ Maxima pode fazer contas de c@'alculo diferencial e integrail:
                   6             sqrt(3)          3
 @end example
 
-Maxima pode resolver sistemas lineares e equa@value{cedilha}@~oes c@'ubicas:
+Maxima pode resolver sistemas lineares e equa@,{c}@~oes c@'ubicas:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -122,7 +122,7 @@ Maxima pode resolver sistemas lineares e equa@value{cedilha}@~oes c@'ubicas:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima pode resolver sistemas de equa@value{cedilha}@~oes n@~ao
+Maxima pode resolver sistemas de equa@,{c}@~oes n@~ao
 lineares. Repare que se n@~ao quiser um resultado impresso, poder@'a
 terminar o seu comando com @kbd{$} em lugar de encerrar com @kbd{;}.
 
@@ -139,7 +139,7 @@ terminar o seu comando com @kbd{$} em lugar de encerrar com @kbd{;}.
                                      2                   2
 @end example
 
-Maxima pode gerar gr@'aficos de uma ou mais fun@value{cedilha}@~oes:
+Maxima pode gerar gr@'aficos de uma ou mais fun@,{c}@~oes:
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$

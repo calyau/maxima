@@ -1,20 +1,20 @@
 @c /stats.texi/1.4/Sat Jan 13 04:30:36 2007//
 @menu
-* Introdu@value{cedilha}@~ao a stats::
-* Defini@value{cedilha}@~oes para inference_result::
-* Defini@value{cedilha}@~oes para stats::
-* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais::
+* Introdu@,{c}@~ao a stats::
+* Defini@,{c}@~oes para inference_result::
+* Defini@,{c}@~oes para stats::
+* Defini@,{c}@~oes para distribui@,{c}@~oes especiais::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a stats, Defini@value{cedilha}@~oes para inference_result, Top, Top
-@section Introdu@value{cedilha}@~ao a stats
+@node Introdu@,{c}@~ao a stats, Defini@,{c}@~oes para inference_result, Top, Top
+@section Introdu@,{c}@~ao a stats
 
 
 O pacote @code{stats} cont@'em um conjunto de procedimentos de infer@^encia cl@'assica 
 estat@'{@dotless{i}}stica e procedimentos de teste.
 
-Todas essas fun@value{cedilha}@~oes retornam um objecto do Maxima chamado @code{inference_result} que cont@'em
-os resultados necess@'arios para infer@^encias de manipula@value{cedilha}@~ao e tomada de decis@~oes.
+Todas essas fun@,{c}@~oes retornam um objecto do Maxima chamado @code{inference_result} que cont@'em
+os resultados necess@'arios para infer@^encias de manipula@,{c}@~ao e tomada de decis@~oes.
 
 A vari@'avel global @code{stats_numer} controla se resultados s@~ao mostrados em 
 ponto flutuante ou simb@'olico e no formato racional; seu valor padr@~ao @'e @code{true}
@@ -33,13 +33,13 @@ Para coment@'arios, erros ou sugest@~oes, por favor contate o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@node Defini@value{cedilha}@~oes para inference_result, Defini@value{cedilha}@~oes para stats, Introdu@value{cedilha}@~ao a stats, Top
-@section Defini@value{cedilha}@~oes para inference_result
+@node Defini@,{c}@~oes para inference_result, Defini@,{c}@~oes para stats, Introdu@,{c}@~ao a stats, Top
+@section Defini@,{c}@~oes para inference_result
 
-@deffn {Fun@value{cedilha}@~ao} inference_result (@var{t@'{@dotless{i}}tulo}, @var{valores}, @var{n@'umeros})
+@deffn {Fun@,{c}@~ao} inference_result (@var{t@'{@dotless{i}}tulo}, @var{valores}, @var{n@'umeros})
 
 Constr@'oi um objecto @code{inference_result} do tipo retornado pelas
-fun@value{cedilha}@~oes stats. O argumento @var{t@'{@dotless{i}}tulo} @'e uma
+fun@,{c}@~oes stats. O argumento @var{t@'{@dotless{i}}tulo} @'e uma
 sequ@^encia de caracteres do Maxima co o nome do procedimento; @var{valores} @'e uma lissta com
 elementos da forma @code{s@'{@dotless{i}}mbolo = valor} e @var{n@'umeros} @'e uma lista
 com n@'umeros inteiros positivos no intervalo de um para @code{length(@var{valores})},
@@ -53,7 +53,7 @@ armazena cinco resultados, a saber, @code{'base}, @code{'altura},
 @code{'diagonal}, @code{'@'area} y @code{'per@'{@dotless{i}}metro}, por@'em s@'o mostra
 o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} tamb@'em
 @'e armazenado neste objecto, no entanto n@~ao @'e mostrado por padr@~ao; para se ter acesso
-a este valor, faz-se uso da fun@value{cedilha}@~ao @code{take_inference}.
+a este valor, faz-se uso da fun@,{c}@~ao @code{take_inference}.
 
 @c ===beg===
 @c load (inference_result)$
@@ -98,7 +98,7 @@ Veja tamb@'em @code{take_inference}.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} inferencep (@var{obj})
+@deffn {Fun@,{c}@~ao} inferencep (@var{obj})
 
 Retorna @code{true} ou @code{false}, dependendo se @var{obj} @'e
 um objecto @code{inference_result} ou n@~ao.
@@ -110,7 +110,7 @@ um objecto @code{inference_result} ou n@~ao.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} items_inference (@var{obj})
+@deffn {Fun@,{c}@~ao} items_inference (@var{obj})
 
 Retorna uma lista com os nomes dos itens em @var{obj}, que devem
 ser um objecto @code{inference_result}.
@@ -118,7 +118,7 @@ ser um objecto @code{inference_result}.
 Exemplo:
 
 O objecto @code{inference_result} armazena dois valores, a saber @code{'pi} e @code{'e},
-mas somente o segundo @'e mostrado. A fun@value{cedilha}@~ao @code{items_inference} retorna os nomes
+mas somente o segundo @'e mostrado. A fun@,{c}@~ao @code{items_inference} retorna os nomes
 de todos os itens, n@~ao importa se eles s@~ao ou n@~ao mostrados.
 
 @c ===beg===
@@ -143,19 +143,19 @@ de todos os itens, n@~ao importa se eles s@~ao ou n@~ao mostrados.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} take_inference (@var{n}, @var{obj})
-@deffnx {Fun@value{cedilha}@~ao} take_inference (@var{nome}, @var{obj})
-@deffnx {Fun@value{cedilha}@~ao} take_inference (@var{lista}, @var{obj})
+@deffn {Fun@,{c}@~ao} take_inference (@var{n}, @var{obj})
+@deffnx {Fun@,{c}@~ao} take_inference (@var{nome}, @var{obj})
+@deffnx {Fun@,{c}@~ao} take_inference (@var{lista}, @var{obj})
 
 Retorna o @var{n}-@'esimo valor armazenado em @var{obj} se @var{n} for um inteiro positivo,
 ou o item chamado @var{nome} se esse for o nome de um item. Se o primeiro
-argumento for uma lista de n@'umeros e/ou s@'{@dotless{i}}mbolos, a fun@value{cedilha}@~ao @code{take_inference} retorna
+argumento for uma lista de n@'umeros e/ou s@'{@dotless{i}}mbolos, a fun@,{c}@~ao @code{take_inference} retorna
 uma lista com os resultados correspondentes.
 
 Exemplo:
 
-Fornece um objecto @code{inference_result}, a fun@value{cedilha}@~ao @code{take_inference} @'e
-chamada com o objectivo de extrair alguma informa@value{cedilha}@~ao armazenada nesse objecto.
+Fornece um objecto @code{inference_result}, a fun@,{c}@~ao @code{take_inference} @'e
+chamada com o objectivo de extrair alguma informa@,{c}@~ao armazenada nesse objecto.
 
 @c ===beg===
 @c load (inference_result)$
@@ -212,29 +212,29 @@ Veja tamb@'em @code{inference_result} e @code{take_inference}.
 
 
 
-@node Defini@value{cedilha}@~oes para stats, Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais, Defini@value{cedilha}@~oes para inference_result, Top
-@section Defini@value{cedilha}@~oes para stats
+@node Defini@,{c}@~oes para stats, Defini@,{c}@~oes para distribui@,{c}@~oes especiais, Defini@,{c}@~oes para inference_result, Top
+@section Defini@,{c}@~oes para stats
 
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} stats_numer
+@defvr {Vari@'avel de op@,{c}@~ao} stats_numer
 Valor por omiss@~ao: @code{true}
 
-Se @code{stats_numer} for @code{true}, fun@value{cedilha}@~oes de infer@^encia estat@'{@dotless{i}}stica 
+Se @code{stats_numer} for @code{true}, fun@,{c}@~oes de infer@^encia estat@'{@dotless{i}}stica 
 retornam seus resultados em n@'umeros com ponto flutuante. Se @code{stats_numer} for @code{false},
 resultados s@~ao fornecidos em formato simb@'olico e racional.
 
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~ao} test_mean (@var{x})
-@deffnx {Fun@value{cedilha}@~ao} test_mean (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_mean (@var{x})
+@deffnx {Fun@,{c}@~ao} test_mean (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 Esse @'e o teste-@var{t} de m@'edia. O argumento @var{x} @'e uma lista ou uma matriz coluna
 contendo uma amostra unidimensional. @code{test_mean} tamb;em executa um teste assint@'otico
-baseado no @i{Teorema do Limite Central} se a op@value{cedilha}@~ao @code{'asymptotic} for
+baseado no @i{Teorema do Limite Central} se a op@,{c}@~ao @code{'asymptotic} for
 @code{true}.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -260,7 +260,7 @@ valores v@'alidos s@~ao @code{true} e @code{false}.
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_mean} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_mean} @'e um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
@@ -272,7 +272,7 @@ mostrando os seguintes resultados:
 @code{'conf_level}: n@'{@dotless{i}}vel de confid@^encia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confid@^encia para a m@'edia da popula@value{cedilha}@~ao.
+@code{'conf_interval}: intervalo de confid@^encia para a m@'edia da popula@,{c}@~ao.
 
 @item
 @code{'method}: procedimento de infer@^encia.
@@ -284,7 +284,7 @@ mostrando os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica a ser usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametro(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametro(s).
 
 @item
 @code{'p_value}: valores de @math{p} do teste.
@@ -372,19 +372,19 @@ esse procedimento pode ser aplicado a grandes amostras.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-Esse @'e o teste-@var{t} de diferen@value{cedilha}a de m@'edias entre duas amostras.
+Esse @'e o teste-@var{t} de diferen@,{c}a de m@'edias entre duas amostras.
 Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
 contendo duas amostras independentes. No caso de diferentes vari@^ancias desconhecidas
-(veja op@value{cedilha}@~oes @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
-os graus de liberdade s@~ao calculados por meio da aproxima@value{cedilha}@~ao de Welch.
+(veja op@,{c}@~oes @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
+os graus de liberdade s@~ao calculados por meio da aproxima@,{c}@~ao de Welch.
 @code{test_means_difference} tamb@'em executa um teste assint@'otico
-baseado no @i{Teorema do Limite Central} se a op@value{cedilha}@~ao @code{'asymptotic} for
+baseado no @i{Teorema do Limite Central} se a op@,{c}@~ao @code{'asymptotic} for
 escolhida para @code{true}.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -404,13 +404,13 @@ da amostra @var{x2} quando esse desvio for conhecido; valores v@'alidos s@~ao: @
 
 @item
 @code{'varequal}, o valor padr@~ao @'e @code{false}, se vari@^ancias podem serem consideradas como iguais ou n@~ao;
-essa op@value{cedilha}@~ao tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem  @code{'unknown}.
+essa op@,{c}@~ao tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem  @code{'unknown}.
 
 @item
 @code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'{@dotless{i}}vel de confid@^encia para o intervalo de confid@^encia; deve
 ser uma express@~ao que toma valores em (0,1). 
 
-Nota de Tradu@value{cedilha}@~ao: (0,1) representa intervalo aberto.
+Nota de Tradu@,{c}@~ao: (0,1) representa intervalo aberto.
 
 @item
 @code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_means_difference} executa um teste-@var{t} exato ou
@@ -419,19 +419,19 @@ valores v@'alidos s@~ao @code{true} e @code{false}.
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_means_difference} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_means_difference} @'e um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'diff_estimate}: a diferen@value{cedilha}a de m@'edias estimadas.
+@code{'diff_estimate}: a diferen@,{c}a de m@'edias estimadas.
 
 @item
 @code{'conf_level}: n@'{@dotless{i}}vel de confid@^encia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confid@^encia para a diferen@value{cedilha}a de m@'edias.
+@code{'conf_interval}: intervalo de confid@^encia para a diferen@,{c}a de m@'edias.
 
 @item
 @code{'method}: procedimento de infer@^encia.
@@ -443,7 +443,7 @@ mostrando os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
 
 @item
 @code{'p_value}: valor de @math{p} do teste.
@@ -454,7 +454,7 @@ Exemplos:
 
 A igualdade de m@'edias @'e testada com duas pequenas amostras @var{x} e @var{y},
 contra a alternativa @math{H_1: m_1>m_2}, sendo @math{m_1} e @math{m_2}
-as m@'edias das popula@value{cedilha}@~oes; vari@^ancias s@~ao desconhecidas e supostamente admitidas para serem diferentes.
+as m@'edias das popula@,{c}@~oes; vari@^ancias s@~ao desconhecidas e supostamente admitidas para serem diferentes.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -537,18 +537,18 @@ iguais.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_variance (@var{x})
-@deffnx {Fun@value{cedilha}@~ao} test_variance (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_variance (@var{x})
+@deffnx {Fun@,{c}@~ao} test_variance (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 Esse @'e o teste da vari@^ancia @var{chi^2}. O argumento @var{x} @'e uma lista ou uma matriz coluna
-contendo uma amostra unidimensional tomada entre a popula@value{cedilha}@~ao normal.
+contendo uma amostra unidimensional tomada entre a popula@,{c}@~ao normal.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'mean}, o valor padr@~ao @'e @code{'unknown}, @'e a m@'edia da popula@value{cedilha}@~ao, quando for conhecida.
+@code{'mean}, o valor padr@~ao @'e @code{'unknown}, @'e a m@'edia da popula@,{c}@~ao, quando for conhecida.
 
 @item
 @code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
@@ -563,7 +563,7 @@ ser uma express@~ao que toma valores em (0,1).
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_variance} est@'a no objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_variance} est@'a no objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
@@ -575,7 +575,7 @@ mostrando os seguintes resultados:
 @code{'conf_level}: n@'{@dotless{i}}vel de confid@^encia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confid@^encia para a vari@^ancia da popula@value{cedilha}@~ao.
+@code{'conf_interval}: intervalo de confid@^encia para a vari@^ancia da popula@,{c}@~ao.
 
 @item
 @code{'method}: procedimento de infer@^encia.
@@ -587,7 +587,7 @@ mostrando os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu par@^ametro.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu par@^ametro.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -596,7 +596,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Isso @'e testado se a vari@^ancia de uma popula@value{cedilha}@~ao com m@'edia desconhhecida
+Isso @'e testado se a vari@^ancia de uma popula@,{c}@~ao com m@'edia desconhhecida
 for igual ou maior que 200.
 
 @c ===beg===
@@ -635,14 +635,14 @@ for igual ou maior que 200.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-Isso @'e o teste @var{F} da raz@~ao de vari@^ancia para duas popula@value{cedilha}@~oes normais.
+Isso @'e o teste @var{F} da raz@~ao de vari@^ancia para duas popula@,{c}@~oes normais.
 Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
 contendo duas amostras independentes.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -652,11 +652,11 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
 @code{'mean1}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
-popula@value{cedilha}@~ao da qual @var{x1} foi tomada.
+popula@,{c}@~ao da qual @var{x1} foi tomada.
 
 @item
 @code{'mean2}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
-popula@value{cedilha}@~ao da qual @var{x2} foi tomada.
+popula@,{c}@~ao da qual @var{x2} foi tomada.
 
 @item
 @code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'{@dotless{i}}vel de confid@^encia para o intervalo de confid@^encia da
@@ -664,7 +664,7 @@ raz@~ao; deve ser uma express@~ao que tome valores em (0,1).
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_variance_ratio} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_variance_ratio} @'e um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
@@ -688,7 +688,7 @@ mostrando os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametros.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametros.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -698,7 +698,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-a igualdade das vari@^ancias de duas popula@value{cedilha}@~oes normais @'e verificado
+a igualdade das vari@^ancias de duas popula@,{c}@~oes normais @'e verificado
 contra a alternativa que a primeira @'e maior que a segunda.
 
 @c equivalent code for R:
@@ -743,13 +743,13 @@ contra a alternativa que a primeira @'e maior que a segunda.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_sign (@var{x})
-@deffnx {Fun@value{cedilha}@~ao} test_sign (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_sign (@var{x})
+@deffnx {Fun@,{c}@~ao} test_sign (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-Esse @'e o teste de sinal n@~ao param@'etrico para a mediana de uma popula@value{cedilha}@~ao cont@'{@dotless{i}}nua.
+Esse @'e o teste de sinal n@~ao param@'etrico para a mediana de uma popula@,{c}@~ao cont@'{@dotless{i}}nua.
 O argumento @var{x} @'e uma lista ou uma matriz coluna contendo uma amostra unidimensional.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -762,7 +762,7 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_sign} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_sign} @'e um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
@@ -780,7 +780,7 @@ mostrando os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usada para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -789,7 +789,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Verifica se a popula@value{cedilha}@~ao da qual a amostra foi tomada tem mediana 6, 
+Verifica se a popula@,{c}@~ao da qual a amostra foi tomada tem mediana 6, 
 contra a alternativa @math{H_1: median > 6}.
 
 @c ===beg===
@@ -826,17 +826,17 @@ contra a alternativa @math{H_1: median > 6}.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_signed_rank (@var{x})
-@deffnx {Fun@value{cedilha}@~ao} test_signed_rank (@var{x}, @var{op@value{cedilha}@~ao_1}, @var{op@value{cedilha}@~ao_2}, ...)
+@deffn {Fun@,{c}@~ao} test_signed_rank (@var{x})
+@deffnx {Fun@,{c}@~ao} test_signed_rank (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 Esse @'e o teste de ranque sinalizado de Wilcoxon para fazer infer@^encias sobre a mediana de uma
-popula@value{cedilha}@~ao cont@'{@dotless{i}}nua. O argumento @var{x} @'e uma lista ou uma matriz coluna
-contendo uma amostra unidimensional. Executa uma aproxima@value{cedilha}@~ao normal se o
+popula@,{c}@~ao cont@'{@dotless{i}}nua. O argumento @var{x} @'e uma lista ou uma matriz coluna
+contendo uma amostra unidimensional. Executa uma aproxima@,{c}@~ao normal se o
 tamanho da amostra for maior que 20, ou se existirem zeros ou houverem empates.
 
 Veja tamb@'em @code{pdf_rank_test} e @code{cdf_rank_test}.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -849,7 +849,7 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_signed_rank} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_signed_rank} @'e um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
@@ -867,7 +867,7 @@ com os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu(s) par@^ametro(s).
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -948,15 +948,15 @@ uma vez que ocorrem empates.
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Fun@value{cedilha}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{op@value{cedilha}@~ao_1})
+@deffn {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1})
 
-Esse @'e o teste de Wilcoxon-Mann-Whitney para compara@value{cedilha}@~ao das medianas de duas
-popula@value{cedilha}@~oes cont@'{@dotless{i}}nuas. Os primeiros dois argumentos @var{x1} e @var{x2} s@~ao listas
-ou matrizes colunas com os dados de duas amostras independentes. Executa aproxima@value{cedilha}@~ao
+Esse @'e o teste de Wilcoxon-Mann-Whitney para compara@,{c}@~ao das medianas de duas
+popula@,{c}@~oes cont@'{@dotless{i}}nuas. Os primeiros dois argumentos @var{x1} e @var{x2} s@~ao listas
+ou matrizes colunas com os dados de duas amostras independentes. Executa aproxima@,{c}@~ao
 normal se quaisquer dos tamanhos de amostra for maior que 10, ou se houverem empates.
 
-Op@value{cedilha}@~ao:
+Op@,{c}@~ao:
 
 @itemize @bullet
 
@@ -966,7 +966,7 @@ valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_rank_sum} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_rank_sum} @'e um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
@@ -981,7 +981,7 @@ com os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usada para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametros.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seus par@^ametros.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -990,7 +990,7 @@ com os seguintes resultados:
 
 Exemplos:
 
-Verifica se popula@value{cedilha}@~oes possuem medianas similares. Tamanhos de amotra
+Verifica se popula@,{c}@~oes possuem medianas similares. Tamanhos de amotra
 s@~ao pequenos e @'e feito um teste exato.
 
 @c equivalent code for R:
@@ -1023,7 +1023,7 @@ s@~ao pequenos e @'e feito um teste exato.
 @end example
 
 Agora, com grandes amostras e empates, o procedimento faz 
-aproxima@value{cedilha}@~ao norma. A hip@'otese alternativa @'e
+aproxima@,{c}@~ao norma. A hip@'otese alternativa @'e
 @math{H_1: median1 < median2}.
 
 @c equivalent code for R:
@@ -1063,17 +1063,17 @@ aproxima@value{cedilha}@~ao norma. A hip@'otese alternativa @'e
 
 
 
-@deffn {Fun@value{cedilha}@~ao} test_normality (@var{x})
+@deffn {Fun@,{c}@~ao} test_normality (@var{x})
 
 Teste de Shapiro-Wilk para normalidade. O argumento @var{x} @'e uma lista de n@'umeros, e o tamanho
-da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a fun@value{cedilha}@~ao
+da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a fun@,{c}@~ao
 @code{test_normality} sinaliza com um erro.
 
 Refer@^encia:
 
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{test_normality} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{test_normality} @'e um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
@@ -1088,7 +1088,7 @@ com os seguintes resultados:
 
 Exemplos:
 
-Verifica a normalidade de uma popula@value{cedilha}@~ao, baseada em uma amostra de tamanho 9.
+Verifica a normalidade de uma popula@,{c}@~ao, baseada em uma amostra de tamanho 9.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1120,14 +1120,14 @@ Verifica a normalidade de uma popula@value{cedilha}@~ao, baseada em uma amostra 
 
 
 
-@deffn {Fun@value{cedilha}@~ao} simple_linear_regression (@var{x})
-@deffnx {Fun@value{cedilha}@~ao} simple_linear_regression (@var{x} @var{op@value{cedilha}@~ao_1})
+@deffn {Fun@,{c}@~ao} simple_linear_regression (@var{x})
+@deffnx {Fun@,{c}@~ao} simple_linear_regression (@var{x} @var{op@,{c}@~ao_1})
 
 Regress@~ao linear simples, @math{y_i=a+b x_i+e_i}, onde os @math{e_i} s@~ao @math{N(0,sigma)}
 vari@'aveis aleat@'orias independentes. O argumento @var{x} deve ser uma matriz de duas colunas ou uma lista de
 pares.
 
-Op@value{cedilha}@~oes:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
@@ -1140,13 +1140,13 @@ ser uma express@~ao que tome valores em (0,1).
 
 @end itemize
 
-A sa@'{@dotless{i}}da da fun@value{cedilha}@~ao @code{simple_linear_regression} @'e um objecto @code{inference_result} do Maxima
+A sa@'{@dotless{i}}da da fun@,{c}@~ao @code{simple_linear_regression} @'e um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'model}: a equa@value{cedilha}@~ao ajustada. @'Util para fazer novas previs@~oes. Veja exemplos abaixo.
+@code{'model}: a equa@,{c}@~ao ajustada. @'Util para fazer novas previs@~oes. Veja exemplos abaixo.
 
 @item
 @code{'means}: m@'edia de duas vari@'aveis pseudo-aleat@'orias.
@@ -1155,10 +1155,10 @@ com os seguintes resultados:
 @code{'variances}: vari@^ancias de ambas as vari@'aveis.
 
 @item
-@code{'correlation}: coeficiente de correla@value{cedilha}@~ao.
+@code{'correlation}: coeficiente de correla@,{c}@~ao.
 
 @item
-@code{'adc}: coeficiente de determina@value{cedilha}@~ao ajustado.
+@code{'adc}: coeficiente de determina@,{c}@~ao ajustado.
 
 @item
 @code{'a_estimation}: estimador do par@^ametro @var{a}.
@@ -1179,7 +1179,7 @@ com os seguintes resultados:
 @code{'statistic}: valor da amostra estat@'{@dotless{i}}stica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribui@value{cedilha}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu par@^ametro.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'{@dotless{i}}stica, juntamente com seu par@^ametro.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste sobre @var{b}.
@@ -1197,13 +1197,13 @@ com os seguintes resultados:
 @code{'new_pred_conf_int}: intervalo de confid@^encia para uma nova previs@~ao. Veja exemplos abaixo.
 
 @item
-@code{'residuals}: lista de pares (previs@~ao, res@'{@dotless{i}}duo), ordenados em rela@value{cedilha}@~ao @`as previs@~oes.
+@code{'residuals}: lista de pares (previs@~ao, res@'{@dotless{i}}duo), ordenados em rela@,{c}@~ao @`as previs@~oes.
 @'Util para achar o melhor da an@'alise de ajuste. Veja exemplos abaixo.
 
 @end enumerate
 
 Somente os itens 1, 4, 14, 9, 10, 11, 12, e 13 acima, nessa ordem, s@~ao mostrados por padr@~ao. Os restantes
-escondem-se at@'e que o utilizador fa@value{cedilha}a uso de fun@value{cedilha}@~oes @code{items_inference} e @code{take_inference}.
+escondem-se at@'e que o utilizador fa@,{c}a uso de fun@,{c}@~oes @code{items_inference} e @code{take_inference}.
 
 Exemplo:
 
@@ -1288,36 +1288,36 @@ intervalo de confid@^encia para uma nova previs@~ao quando @code{x=113} s@~ao ta
 
 
 
-@node Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais, , Defini@value{cedilha}@~oes para stats, Top
-@section Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais
+@node Defini@,{c}@~oes para distribui@,{c}@~oes especiais, , Defini@,{c}@~oes para stats, Top
+@section Defini@,{c}@~oes para distribui@,{c}@~oes especiais
 
 
-@deffn {Fun@value{cedilha}@~ao} pdf_signed_rank (@var{x}, @var{n})
-Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
+@deffn {Fun@,{c}@~ao} pdf_signed_rank (@var{x}, @var{n})
+Fun@,{c}@~ao densidade de probabilidade da distribui@,{c}@~ao exacta da
 estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
 real e @var{n} um inteiro positivo.
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cdf_signed_rank (@var{x}, @var{n})
-Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
+@deffn {Fun@,{c}@~ao} cdf_signed_rank (@var{x}, @var{n})
+Fun@,{c}@~ao de densidade cumulativa da distribui@,{c}@~ao exacta da
 estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
 real e @var{n} um inteiro positivo. 
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
-Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
+@deffn {Fun@,{c}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+Fun@,{c}@~ao densidade de probabilidade da distribui@,{c}@~ao exacta da
 estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
 real e @var{n} e @var{m} s@~ao ambos inteiros positivos. 
 
 Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
+@deffn {Fun@,{c}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+Fun@,{c}@~ao de densidade cumulativa da distribui@,{c}@~ao exacta da
 estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
 real e @var{n} e @var{m} s@~ao ambos inteiro positivos. 
 
