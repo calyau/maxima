@@ -11,11 +11,16 @@
 
 
 @c %**start of header
+@documentlanguage en_US
+@settitle Maxima @manual_version@ Manual
+
+@synindex ky fn
 @synindex vr fn
 @synindex cp fn
-@settitle Maxima @VERSION@ Manual
-@c %**end of header
+
 @setchapternewpage odd
+@c %**end of header
+
 @ifinfo
 This is a Texinfo Maxima Manual
 
@@ -27,9 +32,7 @@ START-INFO-DIR-ENTRY
 * Maxima: (maxima).     A computer algebra system.
 END-INFO-DIR-ENTRY
 @end format
-@end ifinfo
 
-@ifinfo 
 @macro var {expr}
 <\expr\>
 @end macro
@@ -41,7 +44,7 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Maxima Manual}
-@center Ver. @VERSION@
+@center Version @manual_version@
 @page
 @vskip 0pt plus 1filll
 Maxima is a computer algebra system, implemented in Lisp.
@@ -910,4 +913,3 @@ zeilberger
 @appendix Function and Variable Index
 
 @printindex fn
-

@@ -121,6 +121,10 @@ if test x"${git_found}" = xtrue; then
     fi
 fi
 
+dnl Parses the version number for the manual
+manual_version=`echo $VERSION | sed 's+branch_++; s+_base++; s+_dirty++; s+_+.+g'`
+AC_SUBST(manual_version)
+
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
 CMUCL_RUNTIME=lisp
@@ -1070,7 +1074,7 @@ lisp-utils/Makefile tests/Makefile doc/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/de/Makefile doc/info/de.utf8/Makefile \
 doc/info/es/Makefile doc/info/es.utf8/Makefile \
-doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
+doc/info/pt/Makefile doc/info/pt/include-maxima.texi doc/info/pt.utf8/Makefile \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \
 doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/maxima.1 \
 doc/share/Makefile \

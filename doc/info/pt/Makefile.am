@@ -4,79 +4,22 @@ lang = pt
 langsdir = /pt
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = \
-Affine.texi \
-Arrays.texi \
-Atensor.texi \
-augmented_lagrangian.texi \
-bode.texi \
-Bugs.texi \
-Command.texi \
-Constants.texi \
-Contexts.texi \
-Ctensor.texi \
-Debugging.texi \
-descriptive.texi \
-diag.texi \
-Differential.texi \
-Differentiation.texi \
-distrib.texi \
-dynamics.texi \
-Elliptic.texi \
-Equations.texi \
-eval_string.texi \
-Expressions.texi \
-f90.texi \
-Floating.texi \
-Function.texi \
-ggf.texi \
-Groups.texi \
-Help.texi \
-impdiff.texi \
-implicit_plot.texi \
-Indices.texi \
-Input.texi \
-Integration.texi \
-interpol.texi \
-Introduction.texi \
-Itensor.texi \
-lbfgs.texi \
-Limits.texi \
-lindstedt.texi \
-linearalgebra.texi \
-Lists.texi \
-Logarithms.texi \
-lsquares.texi \
-makeOrders.texi \
-Matrices.texi \
-Miscellaneous.texi \
-mnewton.texi \
-nset.texi \
-Number.texi \
-numericalio.texi \
-Numerical.texi \
-Operators.texi \
-opsubst.texi \
-orthopoly.texi \
-plotdf.texi \
-Plotting.texi \
-Polynomials.texi \
-Program.texi \
-romberg.texi \
-Rules.texi \
-Runtime.texi \
-Series.texi \
-simplex.texi \
-simplifications.texi \
-Simplification.texi \
-solve_rec.texi \
-Special.texi \
-stats.texi \
-stirling.texi \
-stringproc.texi \
-Symmetries.texi \
-Trigonometric.texi \
-unit.texi \
-zeilberger.texi
+maxima_TEXINFOS = include-maxima.texi \
+ Introduction.texi Bugs.texi Help.texi Command.texi Operators.texi \
+ Expressions.texi Simplification.texi Plotting.texi Input.texi Floating.texi \
+ Contexts.texi Polynomials.texi Constants.texi Logarithms.texi \
+ Trigonometric.texi Special.texi Elliptic.texi Limits.texi \
+ Differentiation.texi Integration.texi Equations.texi Differential.texi \
+ Numerical.texi Arrays.texi Matrices.texi Affine.texi Itensor.texi \
+ Ctensor.texi Atensor.texi Series.texi Number.texi Symmetries.texi \
+ Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi \
+ nset.texi Function.texi Program.texi Debugging.texi \
+ augmented_lagrangian.texi bode.texi descriptive.texi diag.texi distrib.texi \
+ dynamics.texi eval_string.texi f90.texi ggf.texi impdiff.texi \
+ interpol.texi lbfgs.texi lindstedt.texi linearalgebra.texi lsquares.texi \
+ makeOrders.texi mnewton.texi numericalio.texi opsubst.texi orthopoly.texi \
+ plotdf.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
+ stats.texi stirling.texi stringproc.texi unit.texi zeilberger.texi
+
 
 include ../common-lang.mk
