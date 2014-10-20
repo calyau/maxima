@@ -1,7 +1,5 @@
 MAKEINFOFLAGS = --enable-encoding
 
-TEXINFO_TEX=../pt/texinfo.tex
-
 langsdir = /pt.utf8
 origlangsdir = ../pt
 
