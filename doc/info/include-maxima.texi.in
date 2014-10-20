@@ -904,9 +904,10 @@ zeilberger
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Function and Variable Index,  , zeilberger, Top
-@chapter Indices
-@include Indices.texi
-
 @c end includes
+
+@node Function and Variable Index,  , zeilberger, Top
+@appendix Function and Variable Index
+
+@printindex fn
 

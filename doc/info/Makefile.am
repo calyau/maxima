@@ -43,7 +43,7 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
   Arrays.texi Matrices.texi Affine.texi Itensor.texi \
   Ctensor.texi Atensor.texi Series.texi Number.texi Symmetries.texi \
   Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi \
-  Function.texi Program.texi Debugging.texi Indices.texi Elliptic.texi \
+  Function.texi Program.texi Debugging.texi Elliptic.texi \
   Bugs.texi nset.texi zeilberger.texi orthopoly.texi linearalgebra.texi \
   solve_rec.texi stringproc.texi numericalio.texi descriptive.texi \
   distrib.texi draw.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
