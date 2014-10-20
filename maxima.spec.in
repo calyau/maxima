@@ -63,14 +63,14 @@ Maxima is based on the original Macsyma developed
 at MIT in the 1970's.
 
 %package xmaxima
-Summary: Openmath graphics program and interface to Maxima
+Summary: Maxima graphics program and graphical interface to Maxima
 Group: Sciences/Mathematics
 Requires: maxima = %{version}, tk
 Provides: xmaxima
 %description xmaxima
 
 A graphical interface to the Maxima symbolic computation
-program. It also provides Openmath, a graphics program
+program. It also provides a graphics program
 that can be used from Maxima, and a Web browser that
 accepts a custom html tag to execute Maxima commands from
 an html page. Xmaxima is written in the Tcl/Tk language.
@@ -121,7 +121,7 @@ Summary: Maxima Spanish language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-es
-Maxima Spanish lagnuage support.
+Maxima Spanish language support.
 %endif
 
 %if %{enable_lang_es_utf}
@@ -130,7 +130,7 @@ Summary: Maxima Spanish UTF-8 language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-es-utf8
-Maxima Spanish lagnuage support (UTF-8).
+Maxima Spanish language support (UTF-8).
 %endif
 
 %if %{enable_lang_pt}
@@ -139,7 +139,7 @@ Summary: Maxima Portuguese language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt
-Maxima Portuguese lagnuage support.
+Maxima Portuguese language support.
 %endif
 
 %if %{enable_lang_pt_utf}
@@ -148,7 +148,7 @@ Summary: Maxima Portuguese UTF-8 language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt-utf8
-Maxima Portuguese lagnuage support (UTF-8).
+Maxima Portuguese language support (UTF-8).
 %endif
 
 %if %{enable_lang_pt_br}
@@ -157,7 +157,7 @@ Summary: Maxima Brazilian Portuguese language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt_BR
-Maxima Brazilian Portuguese lagnuage support.
+Maxima Brazilian Portuguese language support.
 %endif
 
 %if %{enable_lang_pt_br_utf}
@@ -166,7 +166,7 @@ Summary: Maxima Brazilian Portuguese UTF-8 language pack
 Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt_BR-utf8
-Maxima Brazilian Portuguese lagnuage support (UTF-8).
+Maxima Brazilian Portuguese language support (UTF-8).
 %endif
 
 %prep
