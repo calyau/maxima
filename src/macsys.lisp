@@ -399,7 +399,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (format t "-------------------------------------------------------------~%")
   (displa ($build_info))
   (format t "-------------------------------------------------------------~%")
-  (format t (intl:gettext "The above information is also reported by the function 'build_info'.~%~%"))
+  (format t (intl:gettext "The above information is also reported by the function 'build_info()'.~%~%"))
   "")
 
 ;; Declare a build_info structure, then remove it from the list of user-defined structures.
