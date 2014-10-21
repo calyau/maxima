@@ -1,0 +1,28 @@
+Maxima Internationalization with GNU Gettext
+--------------------------------------------
+
+Maxima is prepared to show its messages in any language selected by the
+user. The current languages accepted are the ones in the list
+TRANSLATIONS at the top of Makefile.am
+
+1. Starting a new language. Copy maxima.pot to LANG.po, where LANG is
+the ISO code for the new language. Translate the strings in LANG.po;
+we recommend that you start by translating the strings from program
+macsys.lisp. Add LANG to the list "TRANSLATIONS" at the top of
+Makefile.am. Maxima's configure script should be given the option
+--enable-gettext to compile it with Gettext support.
+
+2. Updating a language translation. Run the command:
+    msgmerge LANG.po maxima.pot > LANG_new.po
+examine LANG_new.po and if it looks correct, replace LANG.po with
+it. Translate the new strings.
+
+3. Updating maxima.pot for a new Maxima version. Run the following
+commands:
+    find ../src -name "*.lisp" -type f -print > files.txt
+    find ../share -name "*.lisp" -type f -print >> files.txt
+    xgettext -f files.txt
+Examine the file messages.po that should have been created and if it
+looks correct, replace maxima.pot with it.
+
+Jaime Villate, villate@fe.up.pt, October 2014.
