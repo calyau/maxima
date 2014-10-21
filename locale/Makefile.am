@@ -1,4 +1,4 @@
-TRANSLATIONS = es
+TRANSLATIONS = es pt
 
 localedir = $(datadir)/locale
 
