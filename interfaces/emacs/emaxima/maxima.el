@@ -38,9 +38,9 @@
 ;; put the lines
 ;;  (autoload 'maxima-mode "maxima" "Maxima mode" t)
 ;;  (autoload 'maxima "maxima" "Maxima interaction" t)
-;; in your `.emacs' file.  If you want any file ending in `.max' to begin
+;; in your `.emacs' file.  If you want any file ending in `.mac' to begin
 ;; in `maxima-mode', for example, put the line
-;;  (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+;;  (setq auto-mode-alist (cons '("\\.mac" . maxima-mode) auto-mode-alist))
 ;; to your `.emacs' file.
 ;;
 ;; In any of the Maxima modes, to get help on a prompted for Maxima topic,
@@ -524,7 +524,7 @@ in maxima minor mode."
   (setq maxima-temp-suffix (+ maxima-temp-suffix 1))
   (concat (concat (make-temp-name "#mz") "-")
           (int-to-string maxima-temp-suffix)
-          ".max"))
+          ".mac"))
 
 (defun maxima-strip-string-beginning (string)
   "Return STRING with whitespace and comments removed from the beginning."
