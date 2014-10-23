@@ -114,7 +114,7 @@
 ;;; (FUNGEN&ENV-for-meval <eval vars list> <late eval vars list>  <EXP>)
 ;;won't work in cl.  fix later.
 (defquote fungen&env-for-meval (&rest args)
-  (destructuring-let (((evl levl . body) args))
+  (destructuring-let (((evl nil . body) args))
 	    ;;; all we want to do here is make sure that the EVL gets
 	    ;;; evaluated now so that we have some kind of compatibility
 	    ;;; with compiled code. we could just punt and pass the body.

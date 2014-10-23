@@ -38,7 +38,7 @@
 
 (def%tr $define_variable (form)	;;VAR INIT MODE.
   (cond ((> (length form) 3)
-	 (destructuring-let (((var val mode) (cdr form)))
+	 (destructuring-let (((var nil mode) (cdr form)))
 			    (let ((mode-form `(($modedeclare) ,var ,mode)))
 			      (translate mode-form)
 			      (push-pre-transl-form
