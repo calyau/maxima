@@ -538,42 +538,133 @@ integration / differentiation variable."))
 
 (defun sp2trig (exp) (subst *index '*index (oldget (caar exp) 'sp2)))
 
+;; Take an expression, EXPR, and try to write it as a + b*VAR^c. On success,
+;; returns (VALUES A B C). On failure, raise a powerseries-expansion-error.
+;;
+;; One way to do this would be to call $EXPAND and look at the results, but that
+;; might be rather slow - if the expression is something like (1+x)^10, expand
+;; will take ages and won't help very much. Another approach would be to put it
+;; into CRE form, but that would be a mistake if the input was something like
+;; (1+x)^100...
+;;
+;; Instead, we're a bit stupider: we walk through the expression tree. If we see
+;; anything other than +,* and ^, we give up. If we find we have more than one
+;; different exponent in our terms, we give up.
+;;
+;; Obviously, there are always examples where this won't work, but $EXPAND will
+;; (something like (x+1)^2 - x^2, for example), but I'm assuming that this won't
+;; be something we encounter in practice.
+(defun split-two-term-poly (expr)
+  (cond
+    ((atom expr)
+     (if (eq expr var)
+         (values 0 1 1)
+         (values expr 0 1)))
+
+    ((freeof var expr)
+     (values expr 0 1))
+
+    ((eq (caar expr) 'mplus)
+     (let ((a 0) (b) (c))
+       (dolist (arg (cdr expr))
+         (multiple-value-bind (aa bb cc) (split-two-term-poly arg)
+           (setf a (m+ a aa))
+           (unless (eql bb 0)
+             (cond
+               ;; Is this the first nonzero power we've seen?
+               ((not b)
+                (setf b bb c cc))
+               ;; Is this another term with the same power as one we've seen
+               ;; already?
+               ((eql c cc)
+                (setf b (m+ b bb)))
+               ;; Otherwise, give up.
+               (t
+                (powerseries-expansion-error))))))
+       (values a b c)))
+
+    ((eq (caar expr) 'mtimes)
+     (let ((prod 1) a b c)
+       (dolist (arg (cdr expr))
+         (multiple-value-bind (aa bb cc) (split-two-term-poly arg)
+           (cond
+             ((eql bb 0)
+              (setf prod (m* prod aa)))
+             ((not a)
+              (setf a aa b bb c cc))
+             ;; This is the second term (a + b*x^c), so we know we'll end up
+             ;; with mixed terms. (We don't try to spot e.g. (1-x)*(1+x))
+             (t
+              (powerseries-expansion-error)))))
+
+       (if a
+           (values (m* a prod) (m* b prod) c)
+           (values prod 0 1))))
+
+    ((eq (caar expr) 'mexpt)
+     ;; We know that EXPR isn't free of VAR. Check that VAR isn't in the
+     ;; exponent.
+     (unless (freeof var (caddr expr))
+       (powerseries-expansion-error))
+     (multiple-value-bind (a b c) (split-two-term-poly (cadr expr))
+       (cond
+         ((eql a 0)
+          (values 0 (m^ b (caddr expr)) (m* c (caddr expr))))
+         ((eql b 0)
+          (values (m^ a (caddr expr)) 0 1))
+         (t
+          (powerseries-expansion-error)))))
+
+    (t
+     (powerseries-expansion-error))))
+
+;; Try to expand log(e) using the series for log(1+x).
+;;
+;; The basic idea is that if a is nonzero then
+;;
+;;   log(a + b*x^k) = log(a*(1 + b/a*x^k))
+;;                  = log(a) + log(1 + b/a*x^k)
+;;
+;; and we know a series for that.
 (defun sp2log (e)
   (cond
     ((or (atom e) (free e var))
      (list '(%log) e))
     (t
-     (let ((exp (m- e 1))
-           (negate-a)
-           (*a nil) (*n nil))
-
-       ;; smono sets *a and *n on success.
-       (unless (smono exp var)
+     (multiple-value-bind (a b k)
+         (split-two-term-poly (specdisrep e))
+       ;; If a is zero, we can't expand
+       (unless (eq '$positive
+                   (asksign (list '(mabs) a)))
          (powerseries-expansion-error))
-       ;; If *a is a negative number or merely looks like one (by being
-       ;; something like -7*k), negate it
-       (cond
-         ;; When *a is actually a number, we can make sure we get this right.
-         ((and (numberp *a) (minusp *a))
-          (setf negate-a t
-                *a (- *a)))
-         ;; If *a is symbolic, we just try to remove minus signs
-         ((and (mtimesp *a)
-               (numberp (cadr *a))
-               (minusp (cadr *a)))
-          (setq negate-a t
-                *a (simptimes
-                    (list* (car *a) (- (cadr *a)) (cddr *a))
-                    1 t))))
 
-       (list '(%sum)
-             (m* -1
-                 (m^ (if negate-a
-                         (m* *a (m^ var *n))
-                         (m* -1 *a (m^ var *n)))
-                     *index)
-                 (m^ *index -1))
-             *index 1 '$inf)))))
+       (let* ((coeff (m* b (m^ a -1)))
+              (coeff-sign ($sign coeff))
+              (negate-coeff-p))
+         ;; If we know that the coefficient is not positive, switch the series
+         ;; around (which gets rid of some ugly minus signs). If we're not sure,
+         ;; but the cofficient "looks negative" (so is something like -7*k),
+         ;; switch it around too.
+         (cond
+           ((member coeff-sign '($neg $nz))
+            (setf negate-coeff-p t
+                  coeff (m- coeff)))
+           ((and (not (member coeff-sign '($pos $pz)))
+                 (mtimesp coeff)
+                 (numberp (cadr coeff))
+                 (minusp (cadr coeff)))
+            (setq negate-coeff-p t
+                  coeff (simptimes
+                         (list* (car coeff) (- (cadr coeff)) (cddr coeff))
+                         1 t))))
+         (list '(%sum)
+               (m* -1
+                   (m^ (if negate-coeff-p
+                           (m* coeff (m^ var k))
+                           (m* -1 coeff (m^ var k)))
+                       *index)
+                   (m^ *index -1))
+               *index 1 '$inf))))))
 
 (defun sp2expt (exp)
   (let ((base (cadr exp))

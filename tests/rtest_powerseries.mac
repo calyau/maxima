@@ -332,10 +332,24 @@ op(niceindices(powerseries(integrate(f(x), x, 0, y), y, 0)));
 powerseries(sin(f(x)), x, 0);
 powerseries(sin(f(x)), x, 0)$
 
-/* Basic support for expanding log(x): this just checks  */
+/* Basic support for expanding log(1+x) */
 factor(sumcontract(intosum(powerseries(log(x+1), x, 0) -
                            sum((-1)^(i+1)*x^i/i, i, 1, inf))));
 0$
+
+/* Check that we can expand log(1+a*x^k) for various a and k. */
+niceindices(powerseries(log(1+a*x), x, 0));
+-sum((-1)^i * a^i * x^i / i, i, 1, inf)$
+
+niceindices(powerseries(log(1-a*x), x, 0));
+-sum(a^i * x^i / i, i, 1, inf)$
+
+/*
+  A particular example of a log expansion that didn't work when you
+  only allowed contents that SMONO accepted
+*/
+niceindices(powerseries(log(1-z*exp(-4)), z, 0));
+-sum(exp(-4*i)*z^i/i, i, 1, inf)$
 
 
 (kill(all), 0);
