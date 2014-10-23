@@ -23,7 +23,7 @@ You can build rpm files from an unpacked tarball or cvs sandbox.
 
 (1) Set the version number.
     
-    Open ./configure.in and change the AM_INIT_AUTOMAKE line.
+    Open ./configure.ac and change the AM_INIT_AUTOMAKE line.
     (This is the only way I know to change the version number.)
 
     Optionally -- open ./maxima.spec.in and increment the `Release' number.
