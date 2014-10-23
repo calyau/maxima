@@ -539,29 +539,41 @@ integration / differentiation variable."))
 (defun sp2trig (exp) (subst *index '*index (oldget (caar exp) 'sp2)))
 
 (defun sp2log (e)
-  (funcall #'(lambda (exp *a *n)
-	       (cond ((or (atom e) (free e var)) (list '(%log) e))
-		     ((null (smono exp var)) (powerseries-expansion-error))
-		     ((or (and (numberp *a)
-			       (minusp *a)
-			       (setq *a (- *a)))
-			  (and (mtimesp *a)
-			       (numberp (cadr *a))
-			       (minusp (cadr *a))
-			       (setq *a (simptimes
-					 (list* (car *a) (- (cadr *a)) (cddr *a))
-					 1 t))))
-		      (list '(%sum)
-			    (m* -1
-				(m^ (m* (m^ var *n) *a) *index)
-				(m^ *index -1))
-			    *index 1 '$inf))
-		     (t (list '(%sum)
-			      (m* -1
-				  (m^ (m* -1 *a (m^ var *n)) *index)
-				  (m^ *index -1))
-			      *index 1 '$inf))))
-	   (m- e 1) nil nil))
+  (cond
+    ((or (atom e) (free e var))
+     (list '(%log) e))
+    (t
+     (let ((exp (m- e 1))
+           (negate-a)
+           (*a nil) (*n nil))
+
+       ;; smono sets *a and *n on success.
+       (unless (smono exp var)
+         (powerseries-expansion-error))
+       ;; If *a is a negative number or merely looks like one (by being
+       ;; something like -7*k), negate it
+       (cond
+         ;; When *a is actually a number, we can make sure we get this right.
+         ((and (numberp *a) (minusp *a))
+          (setf negate-a t
+                *a (- *a)))
+         ;; If *a is symbolic, we just try to remove minus signs
+         ((and (mtimesp *a)
+               (numberp (cadr *a))
+               (minusp (cadr *a)))
+          (setq negate-a t
+                *a (simptimes
+                    (list* (car *a) (- (cadr *a)) (cddr *a))
+                    1 t))))
+
+       (list '(%sum)
+             (m* -1
+                 (m^ (if negate-a
+                         (m* *a (m^ var *n))
+                         (m* -1 *a (m^ var *n)))
+                     *index)
+                 (m^ *index -1))
+             *index 1 '$inf)))))
 
 (defun sp2expt (exp)
   (let ((base (cadr exp))
