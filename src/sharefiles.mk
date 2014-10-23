@@ -117,6 +117,7 @@ cobyla/lisp/cobylb.lisp \
 cobyla/lisp/trstlp.lisp \
 cobyla/load-bf-cobyla.lisp \
 cobyla/load-cobyla.lisp \
+cobyla/rtest_cobyla.mac \
 colnew/colnew-if.lisp \
 colnew/colnew-lisp.system \
 colnew/colnew.mac \
@@ -542,6 +543,7 @@ diff_form/new_cartan_test4.mac \
 diff_form/poisson.mac \
 diff_form/readme_diff_form.txt \
 diff_form/surface_example.txt \
+diff_form/tests/rtest_diff_form.mac \
 distrib/distrib.mac \
 distrib/numdistrib.lisp \
 distrib/rtest_distrib.mac \
