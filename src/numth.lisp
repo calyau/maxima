@@ -127,7 +127,7 @@
          ip
          (list '(mplus) rp ip))))))
 
-(defun gcfactor (a b &aux tem)
+(defun gcfactor (a b)
   (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
     (setq e1 0
           e2 0
@@ -151,8 +151,8 @@
             (setq gl (cddr gl)) 
             (go loop))
           ((equal p (car nl))
-            (cond ((zerop (rem (setq tem (+ (* a (car cd)) ;gcremainder
-                                            (* b (cadr cd))))
+            (cond ((zerop (rem (+ (* a (car cd)) ;gcremainder
+                                  (* b (cadr cd)))
                                p))     ;remainder(real((a+bi)cd~),p)
                                        ;z~ is complex conjugate
                     (setq e1 (cadr nl)) (setq dc cd))

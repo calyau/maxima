@@ -275,7 +275,7 @@
 ;;; we keep a pointer to the original FORM so that we can
 ;;; generate messages with it if need be.
 
-(defun gen-tr-lambda (form &aux arg-info mode frees t-form)
+(defun gen-tr-lambda (form &aux arg-info frees t-form)
   (setq arg-info (mapcar #'(lambda (v)
 			     (cond ((atom v) nil)
 				   ((and (eq (caar v) 'mlist)
@@ -298,8 +298,7 @@
 							 (t (cadr v))))
 					       (cdr (cadr form))))
 			    ,@(cddr form)))
-	       mode (car t-form)   ; not much to do with the mode now,
-	       t-form (cdr t-form) ; could be use by a global optimizer.
+	       t-form (cdr t-form)
 	       frees (tbound-free-vars (free-lisp-vars t-form)))))
 					; with this info we now dispatch to the various macros forms.
 					; (cadr t-form) is a lambda list. (cddr t-form) is a progn body.
