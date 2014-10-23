@@ -2023,7 +2023,7 @@ wrapper for this."
   (let ($use_fast_arrays) ;;for mdefine's we allow use the oldstyle hasharrays
     (twoargcheck l)
     (setq l (cdr l))
-    (let ((fun (car l)) (body (cadr l)) args subs ary fnname mqdef redef)
+    (let ((fun (car l)) (body (cadr l)) args subs ary fnname mqdef)
       (cond ((or (atom fun)
 		 (and (setq mqdef (eq (caar fun) 'mqapply))
 		      (member 'array (cdar fun) :test #'eq)))
@@ -2041,7 +2041,9 @@ wrapper for this."
 		 (or (mopp fnname) (member fnname '($all $allbut $%) :test #'eq)))
 	     (merror (intl:gettext "define: function name cannot be a built-in operator or special symbol; found: ~:@M") fnname))
 	    ((setq ary (member 'array (cdar fun) :test #'eq)) (setq subs (cdr fun)))
-	    (t (setq args (cdr fun) redef (mredef-check fnname))))
+	    (t
+	     (setq args (cdr fun))
+	     (mredef-check fnname)))
       (if (not ary) (remove1 (ncons fnname) 'mmacro t $macros t))
       (mdefchk fnname (or args (and (not mqdef) subs)) ary mqdef)
       (if (not (eq fnname (caar fun))) (rplaca (car fun) fnname))
