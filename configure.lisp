@@ -55,7 +55,7 @@
   
 (defun get-version ()
   (let ((version ""))
-    (with-open-file (in "configure.in" :direction :input)
+    (with-open-file (in "configure.ac" :direction :input)
       (do ((line (read-line in nil 'eof)
 		 (read-line in nil 'eof)))
 	  ((eql line 'eof))
