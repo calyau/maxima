@@ -520,7 +520,7 @@
        (cond
          ((null non-neg) (sp1log2 e))
          (t
-          (sp1 (m+l (mapcar #'sp1log (cons other non-neg))))))))
+          (sp1 (m+l (mapcar #'sp1log (append other non-neg))))))))
 
     ;; Similarly, transform log(a^b) => b log(a) and pass back to SP1.
     ((eq (caar e) 'mexpt)
