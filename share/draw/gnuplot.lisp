@@ -2798,8 +2798,8 @@
                            (hex-to-rgb (get-option '$yaxis_color)) )
                (format nil "unset yzeroaxis~%"))
             (if (null (get-option '$xtics_secondary))
-               (format nil "unset x2tics~%")
-               (format nil "set xtics nomirror~%set x2tics ~a ~a ~a~%"
+               (format nil "unset x2tics~%set xtics nomirror~%")
+               (format nil "set x2tics ~a ~a ~a~%"
                        (if (get-option '$xtics_secondary_rotate) "rotate" "norotate")
                        (if (get-option '$xtics_secondary_axis) "axis" "border")
                        (get-option '$xtics_secondary)))
@@ -2810,8 +2810,8 @@
                        (if (get-option '$xtics_axis) "axis" "border")
                        (get-option '$xtics)))
             (if (null (get-option '$ytics_secondary))
-               (format nil "unset y2tics~%")
-               (format nil "set ytics nomirror~%set y2tics ~a ~a ~a~%"
+               (format nil "unset y2tics~%set ytics nomirror~%")
+               (format nil "set y2tics ~a ~a ~a~%"
                        (if (get-option '$ytics_secondary_rotate) "rotate" "norotate")
                        (if (get-option '$ytics_secondary_axis) "axis" "border")
                        (get-option '$ytics_secondary)))
