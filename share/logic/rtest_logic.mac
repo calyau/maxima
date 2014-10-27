@@ -1,0 +1,166 @@
+(kill(all), 'done);
+'done$
+
+(load("logic.lisp"), 'done);
+'done$
+
+logic_simp (a or (b or false or (a or b)));
+a or b$
+
+logic_simp (b eq a eq false eq true);
+a eq b eq false$
+
+logic_simp ((a xor true) xor b xor true);
+a xor b$
+
+characteristic_vector (f(x,y,z), x, y, z);
+[f(false,false,false),f(false,false,true),f(false,true,false),
+ f(false,true,true),f(true,false,false),f(true,false,true),f(true,true,false),
+ f(true,true,true)]$
+
+characteristic_vector (true);
+[true]$
+
+characteristic_vector (a xor b);
+[false, true, true, false]$
+
+characteristic_vector (a implies b);
+[true, true, false, true]$
+
+characteristic_vector (a implies b, a, b);
+[true, true, false, true]$
+
+characteristic_vector (a implies b, b, a);
+[true, false, true, true]$
+
+zhegalkin_form (a or b or c);
+a and b and c xor a and b xor a and c xor b and c xor a xor b xor c$
+
+zhegalkin_form ((a implies b) or c);
+a and b and c xor a and b xor a and c xor a xor true$
+
+block([e, f],
+  e : ((a or b) xor c) and d, f: zhegalkin_form (e),
+  [logic_equiv (e, f), is(characteristic_vector(e)=characteristic_vector(f))]);
+[true, true]$
+
+logic_equiv (x and y eq x, x implies y);
+true$
+
+demorgan(dual_function (x or y));
+x and y$
+
+self_dual (a);
+true$
+
+self_dual (not a);
+true$
+
+self_dual (a eq b);
+false$
+
+closed_under_f (x and y);
+true$
+
+closed_under_f (x or y);
+true$
+
+closed_under_t (x and y);
+true$
+
+closed_under_t (x or y);
+true$
+
+monotonic (a or b);
+true$
+
+monotonic (a and b);
+true$
+
+monotonic (a implies b);
+false$
+
+characteristic_vector (a or b);
+[false, true, true, true]$
+
+characteristic_vector (a and b);
+[false, false, false, true]$
+
+characteristic_vector (a implies b);
+[true, true, false, true]$
+
+characteristic_vector (a xor b);
+[false, true, true, false]$
+
+linear(a or b);
+false$
+
+linear(a eq b);
+true$
+
+zhegalkin_form (a or b);
+(a and b) xor a xor b$
+
+zhegalkin_form (a eq b);
+a xor b xor true$
+
+functionally_complete (x and y, x xor y);
+false$
+
+functionally_complete (x and y, x xor y, true);
+true$
+
+functionally_complete (x and y, x or y, not x);
+true$
+
+logic_basis (x and y, x or y);
+false$
+
+logic_basis (x and y, x or y, not x);
+false$
+
+logic_basis (x and y, not x);
+true$
+
+logic_basis (x or y, not x);
+true$
+
+logic_basis (x and y, x xor y, true);
+true$
+
+block([logic_functions : { not x, x nand y, x nor y,
+                                    x implies y, x and y, x or y,
+                                    x eq y, x xor y, true, false }],
+                                    subset (powerset(logic_functions),
+                                      lambda ([s], apply ('logic_basis, listify(s)))));
+{{false, x eq y, x and y}, {false, x eq y, x or y},
+{false, x implies y}, {true, x xor y, x and y},
+{true, x xor y, x or y}, {not x, x implies y},
+{not x, x and y}, {not x, x or y},
+{x eq y, x xor y, x and y}, {x eq y, x xor y, x or y},
+{x implies y, x xor y}, {x nand y}, {x nor y}}$
+
+logic_diff (a or b or c, a);
+(b and c) xor b xor c xor true$
+
+logic_diff (a and b and c, a);
+b and c$
+
+logic_diff (a or (not a), a);
+false$
+
+demorgan(boolean_form (a implies b implies c));
+((not b) and a) or c$
+
+logic_equiv (boolean_form (a implies b implies c),
+  zhegalkin_form (a implies b implies c));
+true$
+
+demorgan (boolean_form (a nor b nor c));
+(not a) and (not b) and (not c)$
+
+pdnf (x implies y);
+(x and y) or ((not x) and y) or ((not x) and (not y))$
+
+pcnf (x implies y);
+(not x) or y$
