@@ -1,16 +1,17 @@
 @c /impdiff.texi/1.1/Sun Mar 19 20:02:45 2006//
 @menu
-* Defini@,{c}@~oes para impdiff::
+* Definições para impdiff::
 @end menu
 
-@node Defini@,{c}@~oes para impdiff,  , impdiff, impdiff
-@section Defini@,{c}@~oes para impdiff
+@node Definições para impdiff,  , impdiff, impdiff
+@section Definições para impdiff
 
-@deffn {Fun@,{c}@~ao} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
-Essa subrotina calcula derivadas impl@'{@dotless{i}}citas de fun@,{c}@~oes de v@'arias vari@'aveis.
-@var{f} @'e uma fun@,{c}@~ao do tipo array, os @'{@dotless{i}}ndices s@~ao o grau da derivada na ordem @var{indvarlist};
-@var{indvarlist} @'e a lista de vari@'aveis independentes; @var{orderlist} @'e a ordem desejada; e 
-@var{depvar} @'e a vari@'avel dependente.
+@deffn {Função} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Essa subrotina calcula derivadas implícitas de funções de várias variáveis.
+@var{f} é uma função do tipo array, os índices são o grau da derivada na ordem @var{indvarlist};
+@var{indvarlist} é a lista de variáveis independentes; @var{orderlist} é a ordem desejada; e 
+@var{depvar} é a variável dependente.
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("impdiff")}.
+Para usar essa função escreva primeiro @code{load("impdiff")}.
 @end deffn
+

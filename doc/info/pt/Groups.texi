@@ -1,19 +1,19 @@
 @c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
 @menu
-* Defini@,{c}@~oes para Grupos::
+* Definições para Grupos::
 @end menu
 
-@node Defini@,{c}@~oes para Grupos,  , Grupos, Grupos
-@section Defini@,{c}@~oes para Grupos
+@node Definições para Grupos,  , Grupos, Grupos
+@section Definições para Grupos
 
-@deffn {Fun@,{c}@~ao} todd_coxeter (@var{rela@,{c}@~ao}, @var{subgroupo})
-@deffnx {Fun@,{c}@~ao} todd_coxeter (@var{rela@,{c}@~ao})
+@deffn {Função} todd_coxeter (@var{relação}, @var{subgroupo})
+@deffnx {Função} todd_coxeter (@var{relação})
 
-Acha a ordem de G/H onde G @'e o m@'odulo do Grupo Livre @var{rela@,{c}@~ao}, e
-H @'e o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'e um argumento
-opcional, cujo valor padr@~ao @'e [].  Em fazendo isso a fun@,{c}@~ao produz uma
-tabela de multiplica@,{c}@~ao @`a direita de G sobre G/H, onde os
-co-conjuntos s@~ao enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
+Acha a ordem de G/H onde G é o módulo do Grupo Livre @var{relação}, e
+H é o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} é um argumento
+opcional, cujo valor padrão é [].  Em fazendo isso a função produz uma
+tabela de multiplicação à direita de G sobre G/H, onde os
+co-conjuntos são enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
 @code{todd_coxeter_state}.
 
 Exemplo:
@@ -64,4 +64,5 @@ Rows tried 71
 @end example
 
 @end deffn
+
 

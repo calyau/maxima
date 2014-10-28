@@ -1,17 +1,17 @@
 /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @c /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @menu
-* Introdu@,{c}@~ao a solve_rec::
-* Defini@,{c}@~oes para solve_rec::
+* Introdução a solve_rec::
+* Definições para solve_rec::
 @end menu
 
-@node Introdu@,{c}@~ao a solve_rec, Defini@,{c}@~oes para solve_rec, solve_rec, solve_rec
-@section Introdu@,{c}@~ao a solve_rec
+@node Introdução a solve_rec, Definições para solve_rec, solve_rec, solve_rec
+@section Introdução a solve_rec
 
-@code{solve_rec} @'e um pacote para resolver recorr@^encias lineares com coeficientes
+@code{solve_rec} é um pacote para resolver recorrências lineares com coeficientes
 polinomiais.
 
-Um ficheiro de domostra@,{c}@~ao est@'a disponivel com @code{demo(solve_rec);}.
+Um ficheiro de domostração está disponivel com @code{demo(solve_rec);}.
 
 Exemplo:
 
@@ -25,13 +25,13 @@ Exemplo:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Defini@,{c}@~oes para solve_rec,  , Introdu@,{c}@~ao a solve_rec, solve_rec
-@section Defini@,{c}@~oes para solve_rec
+@node Definições para solve_rec,  , Introdução a solve_rec, solve_rec
+@section Definições para solve_rec
 
-@deffn {Fun@,{c}@~ao} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Função} reduce_order (@var{rec}, @var{sol}, @var{var})
 
-Reduz a ordem de recorr@^encia linear @var{rec} quando uma solu@,{c}@~ao particular
-@var{sol} for conhecida. A recorr@^encia reduzida pode ser usada para pegar outras solu@,{c}@~oes.
+Reduz a ordem de recorrência linear @var{rec} quando uma solução particular
+@var{sol} for conhecida. A recorrência reduzida pode ser usada para pegar outras soluções.
 
 Exemplo:
 
@@ -79,23 +79,23 @@ So the general solution is
 
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} simplify_products
-Valor por omiss@~ao: @code{true}
+@defvr {Variável de opção} simplify_products
+Valor por omissão: @code{true}
 
-Se @code{simplify_products} for @code{true}, @code{solve_rec} ir@'a tentar
+Se @code{simplify_products} for @code{true}, @code{solve_rec} irá tentar
 simplificar produtos no resultado.
 
-Veja tamb@'em: @code{solve_rec}.
+Veja também: @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} simplify_sum (@var{expr})
+@deffn {Função} simplify_sum (@var{expr})
 
-Tenta simplificar todos os somat@'orios que aparecem na @var{expr} para uma forma a mais simplificada poss@'{@dotless{i}}vel.
+Tenta simplificar todos os somatórios que aparecem na @var{expr} para uma forma a mais simplificada possível.
 
-@code{simplify_sum} usa os algoritmos de Gosper e de Zeilberger para simplificar somat@'orios.
+@code{simplify_sum} usa os algoritmos de Gosper e de Zeilberger para simplificar somatórios.
 
-Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{simplify_sum} com
+Para usar essa função primeiramente chame o pacote @code{simplify_sum} com
 @code{load(simplify_sum)}.
 
 Exemplo:
@@ -119,24 +119,24 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} solve_rec (@var{eqn}, @var{var}, [@var{init}])
-Encontra solu@,{c}@~oes hipergeom@'etricas para a recorr@^encia linear @var{eqn} com
-coeficientes polinomiais na vari@'avel @var{var}. Argumentos opcionais @var{init}
-s@~ao as condi@,{c}@~oes iniciais.
+@deffn {Função} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+Encontra soluções hipergeométricas para a recorrência linear @var{eqn} com
+coeficientes polinomiais na variável @var{var}. Argumentos opcionais @var{init}
+são as condições iniciais.
 
-@code{solve_rec} pode resolver recorr@^encias lineares com coeficientes constantes,
-encontrando solu@,{c}@~oes hipergeom@'etricas para recorr@^encias lineares homog@^eneas com
-coeficientes polinomiais, solu@,{c}@~oes racionais para recorr@^encias lineares com
-coeficientes polinomiais e pode resolver recorr@^encias do tipo de Ricatti.
+@code{solve_rec} pode resolver recorrências lineares com coeficientes constantes,
+encontrando soluções hipergeométricas para recorrências lineares homogêneas com
+coeficientes polinomiais, soluções racionais para recorrências lineares com
+coeficientes polinomiais e pode resolver recorrências do tipo de Ricatti.
 
-Note que o tempo de execu@,{c}@~ao do algoritmo usado para encontrar solu@,{c}@~oes
-hipergeom@'etricas aumenta exponencialmente com o grau do coeficiente lider e
+Note que o tempo de execução do algoritmo usado para encontrar soluções
+hipergeométricas aumenta exponencialmente com o grau do coeficiente lider e
 guia.
 
-Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{solve_rec} com
+Para usar essa função primeiramente chame o pacote @code{solve_rec} com
 @code{load(solve_rec);}.
 
-Exemplo de recorr@^encia linear com coeficientes constantes:
+Exemplo de recorrência linear com coeficientes constantes:
 
 @example
 (%i2) solve_rec(a[n]=a[n-1]+a[n-2]+n/2^n, a[n]);
@@ -154,7 +154,7 @@ Exemplo de recorr@^encia linear com coeficientes constantes:
                                            2            5 2
 @end example
 
-Exemplo de recorr@^encia linear com coeficientes polinomiais:
+Exemplo de recorrência linear com coeficientes polinomiais:
 
 @example
 (%i7) 2*x*(x+1)*y[x] - (x^2+3*x-2)*y[x+1] + (x-1)*y[x+2];
@@ -168,7 +168,7 @@ Exemplo de recorr@^encia linear com coeficientes polinomiais:
                        x    4     2
 @end example
 
-Exemplo de recorr@^encia do tipo de Ricatti:
+Exemplo de recorrência do tipo de Ricatti:
 
 @example
 (%i2) x*y[x+1]*y[x] - y[x+1]/(x+2) + y[x]/(x-1) = 0;
@@ -186,16 +186,16 @@ Exemplo de recorr@^encia do tipo de Ricatti:
 @end example
 
 
-Veja tamb@'em: @code{solve_rec_rat}, @code{simplify_products}, e @code{product_use_gamma}.
+Veja também: @code{solve_rec_rat}, @code{simplify_products}, e @code{product_use_gamma}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Função} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
-Encontra solu@,{c}@~oes racionais para recorr@^encias lineares. Veja solve_rec para
-uma descri@,{c}@~ao dos argumentos.
+Encontra soluções racionais para recorrências lineares. Veja solve_rec para
+uma descrição dos argumentos.
 
-Para usar essa fun@,{c}@~ao primeirametne chame o pacote @code{solve_rec} com
+Para usar essa função primeirametne chame o pacote @code{solve_rec} com
 @code{load(solve_rec);}.
 
 Exemplo:
@@ -214,24 +214,24 @@ Exemplo:
 @end example
 
 
-Veja tamb@'em: @code{solve_rec}.
+Veja também: @code{solve_rec}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} product_use_gamma
-Valor por omiss@~ao: @code{true}
+@defvr {Variável de opção} product_use_gamma
+Valor por omissão: @code{true}
 
-Quando simplificando produtos, @code{solve_rec} introduz a fun@,{c}@~ao gama
-dentro da express@~ao se @code{product_use_gamma} for @code{true}.
+Quando simplificando produtos, @code{solve_rec} introduz a função gama
+dentro da expressão se @code{product_use_gamma} for @code{true}.
 
-Veja tamb@'em: @code{simplify_products}, @code{solve_rec}.
+Veja também: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Fun@,{c}@~ao} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Função} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {Função} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
-Retorna a recorr@^encia satisfeita pelo somat@'orio
+Retorna a recorrência satisfeita pelo somatório
 
 @example
      sup
@@ -243,10 +243,10 @@ Retorna a recorr@^encia satisfeita pelo somat@'orio
   k = inf
 @end example
 
-onde x @'e hipergeom@'etrico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
-forem omitidos, s@~ao assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
+onde x é hipergeométrico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
+forem omitidos, são assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
-Para usar essa fun@,{c}@~ao primeiro chame o pacote @code{simplify_sum} com
+Para usar essa função primeiro chame o pacote @code{simplify_sum} com
 @code{load(simplify_sum)}.
 
 Exemplo:
@@ -268,3 +268,4 @@ Exemplo:
 @end example
 
 @end deffn
+

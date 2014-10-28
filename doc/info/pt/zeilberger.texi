@@ -1,58 +1,58 @@
 @c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
 @menu
-* Introdu@,{c}@~ao a zeilberger::
-* Defini@,{c}@~oes para zeilberger::
+* Introdução a zeilberger::
+* Definições para zeilberger::
 @end menu
 
-@node Introdu@,{c}@~ao a zeilberger, Defini@,{c}@~oes para zeilberger, zeilberger, zeilberger
-@section Introdu@,{c}@~ao a zeilberger
+@node Introdução a zeilberger, Definições para zeilberger, zeilberger, zeilberger
+@section Introdução a zeilberger
 
-@code{zeilberger} @'e uma implementa@,{c}@~ao do algoritmo de Zeilberger
-para somat@'orio hipergeom@'etricos definidos, e tamb@'em 
-para o algoritmo de Gosper para somat@'orios hipergeom@'etricos
+@code{zeilberger} é uma implementação do algoritmo de Zeilberger
+para somatório hipergeométricos definidos, e também 
+para o algoritmo de Gosper para somatórios hipergeométricos
 indefinidos.
 
-@code{zeilberger} faz uso do m@'etodo de optimiza@,{c}@~ao "filtering" desenvolvido por Axel Riese.
+@code{zeilberger} faz uso do método de optimização "filtering" desenvolvido por Axel Riese.
 
 @code{zeilberger} foi desenvolvido por Fabrizio Caruso.
 
-@code{load (zeilberger)} torna esse pacote dispon@'{@dotless{i}}vel para uso.
+@code{load (zeilberger)} torna esse pacote disponível para uso.
 
-@subsection O problema dos somat@'orios hipergeom@'etricos indefinidos
+@subsection O problema dos somatórios hipergeométricos indefinidos
 
 @code{zeilberger} implementa o algoritmo de Gosper
-para somat@'orio hipergeom@'etrico indefinido.
-Dado um termo hipergeom@'etrico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@,{c}a
-hipergeom@'etrica, isto @'e, um termo hipergeom@'etrico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
+para somatório hipergeométrico indefinido.
+Dado um termo hipergeométrico @math{F_k} em @math{k} queremos encontrar sua anti-diferença
+hipergeométrica, isto é, um termo hipergeométrico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
 
-@subsection O problema dos somat@'orios hipergeom@'etricos definidos
+@subsection O problema dos somatórios hipergeométricos definidos
 
 @code{zeilberger} implementa o algoritmo de Zeilberger
-para somat@'orio hipergeom@'etrico definido.
-Dado um termo hipergeom@'etrico apropriado (em @math{n} e @math{k}) @math{F_(n,k)} e um
-inteiro positivo @math{d} queremos encontrar um @math{d}-@'esima ordem de recorr@^encia
+para somatório hipergeométrico definido.
+Dado um termo hipergeométrico apropriado (em @math{n} e @math{k}) @math{F_(n,k)} e um
+inteiro positivo @math{d} queremos encontrar um @math{d}-ésima ordem de recorrência
 linear com coeficientes polinomiais (em @math{n}) para @math{F_(n,k)}
-e uma fun@,{c}@~ao racional @math{R} em @math{n} e @math{k} tal que
+e uma função racional @math{R} em @math{n} e @math{k} tal que
 
 @math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_K(R(n,k) F_(n,k))}
 
-onde @math{Delta_k} @'e o @math{k}-seguinte operador de diferen@,{c}a, i.e.,
+onde @math{Delta_k} é o @math{k}-seguinte operador de diferença, i.e.,
 @math{Delta_k(t_k) := t_(k+1) - t_k}.
 
-@subsection N@'{@dotless{i}}veis de detalhe nas informa@,{c}@~oes
+@subsection Níveis de detalhe nas informações
 
-Existe tamb@'em vers@~oes de n@'{@dotless{i}}veis de detalhe fornecidos pelos comandos
-que s@~ao chamados (os n@'{@dotless{i}}veis) atrav@'es da adi@,{c}@~ao de um dos seguintes prefixos:
+Existe também versões de níveis de detalhe fornecidos pelos comandos
+que são chamados (os níveis) através da adição de um dos seguintes prefixos:
 
 @table @code
 @item Summary
-Apenas um sum@'ario @'e mostrado no final
+Apenas um sumário é mostrado no final
 @item Verbose
-Algumas informa@,{c}@~oes nos passos interm@'edios
+Algumas informações nos passos intermédios
 @item VeryVerbose
-Muita informa@,{c}@~ao
+Muita informação
 @item Extra
-Muito mais informa@,{c}@~ao incluindo informa@,{c}@~ao sobre
+Muito mais informação incluindo informação sobre
 o sistema linear no algoritmo de Zeilberger
 @end table
 
@@ -61,30 +61,30 @@ Por exemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Defini@,{c}@~oes para zeilberger, , Introdu@,{c}@~ao a zeilberger, zeilberger
-@section Defini@,{c}@~oes para zeilberger
+@node Definições para zeilberger, , Introdução a zeilberger, zeilberger
+@section Definições para zeilberger
 
-@deffn {Fun@,{c}@~ao} AntiDifference (@var{F_k}, @var{k})
+@deffn {Função} AntiDifference (@var{F_k}, @var{k})
 
-Retorna a anti-diferen@,{c}a hipergeom@'etrica
-de @var{F_k}, se essa anti-diferen@,{c}a.
+Retorna a anti-diferença hipergeométrica
+de @var{F_k}, se essa anti-diferença.
 De outra forma @code{AntiDifference} retorna @code{no_hyp_antidifference}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} Gosper (@var{F_k}, @var{k})
-Retorna o certificado racional @var{R(k)} para @var{F_k}, isto @'e,
-uma fun@,{c}@~ao racional tal que
+@deffn {Função} Gosper (@var{F_k}, @var{k})
+Retorna o certificado racional @var{R(k)} para @var{F_k}, isto é,
+uma função racional tal que
 
 @math{F_k = R(k+1) F_(k+1) - R(k) F_k}
  
-se essa fun@,{c}@~ao racional exitir.
+se essa função racional exitir.
 De outra forma, @code{Gosper} retorna @code{no_hyp_sol}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Função} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
 
-Retorna o somat@'orio de @var{F_k} de @math{@var{k} = @var{a}} a @math{@var{k} = @var{b}}
-se @var{F_k} tiver ma diferen@,{c}a hipergeom@'etrica.
+Retorna o somatório de @var{F_k} de @math{@var{k} = @var{a}} a @math{@var{k} = @var{b}}
+se @var{F_k} tiver ma diferença hipergeométrica.
 De outra forma, @code{GosperSum} retorna @code{nongosper_summable}.
 
 Exemplos:
@@ -141,117 +141,118 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Fun@,{c}@~ao} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
-Tenta encontrar uma recorr@^encia de @var{d}-@'esima ordem para @var{F_@{n,k@}}.
+@deffn {Função} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+Tenta encontrar uma recorrência de @var{d}-ésima ordem para @var{F_@{n,k@}}.
 
-O algoritmo retorna uma sequ@^encia
-@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~oes.
-Cada solu@,{c}@~ao tem a forma
+O algoritmo retorna uma sequência
+@math{[s_1, s_2, ..., s_m]} de soluções.
+Cada solução tem a forma
 
 @math{[R(n, k), [a_0, a_1, ..., a_d]]}
 
-@code{parGosper} retorna @code{[]} caso n@~ao consiga encontrar uma recorr@^encia.
+@code{parGosper} retorna @code{[]} caso não consiga encontrar uma recorrência.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
-Tenta calcular o somat@'orio hipergeom@'etrico indefinido de @var{F_@{n,k@}}.
+@deffn {Função} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+Tenta calcular o somatório hipergeométrico indefinido de @var{F_@{n,k@}}.
 
-@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~ao conseguir encontrar uma solu@,{c}@~ao, ent@~ao @code{Zeilberger} invoca
+@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} não conseguir encontrar uma solução, então @code{Zeilberger} invoca
 @code{parGosper}com ordem 1, 2, 3, ..., acima de @code{MAX_ORD}.
-Se Zeilberger encontrar uma solu@,{c}@~ao antes de esticar @code{MAX_ORD},
-Zeilberger para e retorna a solu@,{c}@~ao.
+Se Zeilberger encontrar uma solução antes de esticar @code{MAX_ORD},
+Zeilberger para e retorna a solução.
 
-O algoritmo retorna uma sequ@^encia
-@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~oes.
-Cada solu@,{c}@~ao tem a forma
+O algoritmo retorna uma sequência
+@math{[s_1, s_2, ..., s_m]} de soluções.
+Cada solução tem a forma
 
 @math{[R(n,k), [a_0, a_1, ..., a_d]]}
 
-@code{Zeilberger} retorna @code{[]} se n@~ao conseguir encontrar uma solu@,{c}@~ao.
+@code{Zeilberger} retorna @code{[]} se não conseguir encontrar uma solução.
 
 @code{Zeilberger} invoca @code{Gosper} somente se @code{gosper_in_zeilberger} for @code{true}.
 @end deffn
 
-@section Vari@'aveis globais gerais
+@section Variáveis globais gerais
 
-@defvr {Vari@'avel global} MAX_ORD
-Valor por omiss@~ao: 5
+@defvr {Variável global} MAX_ORD
+Valor por omissão: 5
 
-@code{MAX_ORD} @'e a ordem m@'axima de recorr@^encia tentada por @code{Zeilberger}.
+@code{MAX_ORD} é a ordem máxima de recorrência tentada por @code{Zeilberger}.
 @end defvr
 
-@defvr {Vari@'avel global} simplified_output
-Valor por omiss@~ao: @code{false}
+@defvr {Variável global} simplified_output
+Valor por omissão: @code{false}
 
 Quando @code{simplified_output} for @code{true},
-fun@,{c}@~oes no pacote @code{zeilberger} tentam
-simplifica@,{c}@~ao adicional da solu@,{c}@~ao.
+funções no pacote @code{zeilberger} tentam
+simplificação adicional da solução.
 @end defvr
 
-@defvr {Vari@'avel global} linear_solver
-Valor por omiss@~ao: @code{linsolve}
+@defvr {Variável global} linear_solver
+Valor por omissão: @code{linsolve}
 
-@code{linear_solver} nomeia o resolvedor que @'e usado para resolver o sistema
-de equa@,{c}@~oes no algoritmo de Zeilberger.
+@code{linear_solver} nomeia o resolvedor que é usado para resolver o sistema
+de equações no algoritmo de Zeilberger.
 @end defvr
 
-@defvr {Vari@'avel global} warnings
-Valor por omiss@~ao: @code{true}
+@defvr {Variável global} warnings
+Valor por omissão: @code{true}
 
 Quando @code{warnings} for @code{true},
-fun@,{c}@~oes no pacote @code{zeilberger} imprimem
-mensagens de alerta durante a execu@,{c}@~ao.
+funções no pacote @code{zeilberger} imprimem
+mensagens de alerta durante a execução.
 @end defvr
 
-@defvr {Vari@'avel global} gosper_in_zeilberger
-Valor por omiss@~ao: @code{true}
+@defvr {Variável global} gosper_in_zeilberger
+Valor por omissão: @code{true}
 
 Quando @code{gosper_in_zeilberger} for @code{true},
-a fun@,{c}@~ao @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
+a função @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
 De outra forma, @code{Zeilberger} vai imediatamente para @code{parGosper}.
 @end defvr
 
-@defvr {Vari@'avel global} trivial_solutions
-Valor por omiss@~ao: @code{true}
+@defvr {Variável global} trivial_solutions
+Valor por omissão: @code{true}
 
 Quando @code{trivial_solutions} for @code{true},
-@code{Zeilberger} retorna solu@,{c}@~oes
+@code{Zeilberger} retorna soluções
 que possuem certificado igual a zero, ou todos os coeficientes iguais a zero.
 @end defvr
 
-@section Vari@'aveis relacionadas ao teste modular
+@section Variáveis relacionadas ao teste modular
 
-@defvr {Vari@'avel global} mod_test
-Valor por omiss@~ao: @code{false}
+@defvr {Variável global} mod_test
+Valor por omissão: @code{false}
 
 Quando @code{mod_test} for @code{true},
 @code{parGosper} executa um
-teste modular discartando sistemas sem solu@,{c}@~ao.
+teste modular discartando sistemas sem solução.
 @end defvr
 
-@defvr {Vari@'avel global} modular_linear_solver
-Valor por omiss@~ao: @code{linsolve}
+@defvr {Variável global} modular_linear_solver
+Valor por omissão: @code{linsolve}
 
 @code{modular_linear_solver} nomeia o resolvedor linear usado pelo  teste modular em @code{parGosper}.
 @end defvr
 
-@defvr {Vari@'avel global} ev_point
-Valor por omiss@~ao: @code{big_primes[10]}
+@defvr {Variável global} ev_point
+Valor por omissão: @code{big_primes[10]}
 
-@code{ev_point} @'e o valor no qual a vari@'avel @var{n} @'e avaliada
-no momento da execu@,{c}@~ao do teste modular em @code{parGosper}.
+@code{ev_point} é o valor no qual a variável @var{n} é avaliada
+no momento da execução do teste modular em @code{parGosper}.
 @end defvr
 
-@defvr {Vari@'avel global} mod_big_prime
-Valor por omiss@~ao: @code{big_primes[1]}
+@defvr {Variável global} mod_big_prime
+Valor por omissão: @code{big_primes[1]}
 
-@code{mod_big_prime} @'e o m@'odulo usado pelo teste modular em @code{parGosper}.
+@code{mod_big_prime} é o módulo usado pelo teste modular em @code{parGosper}.
 @end defvr
 
-@defvr {Vari@'avel global} mod_threshold
-Valor por omiss@~ao: 4
+@defvr {Variável global} mod_threshold
+Valor por omissão: 4
 
 @code{mod_threshold} is the
-maior ordem para a qual o teste modular em @code{parGosper} @'e tentado.
+maior ordem para a qual o teste modular em @code{parGosper} é tentado.
 @end defvr
+
 

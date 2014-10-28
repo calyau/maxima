@@ -1,10 +1,12 @@
-O Maxima inicia-se com o comando "maxima".  Maxima mostrar@'a a informa@,{c}@~ao
-de vers@~ao e uma linha de comando. Cada comando Maxima termina-se com
-ponto e v@'irgula, para que seja executado e apare@,{c}a a resposta, ou com
-@code{$} para que seja executado sem aparecer a resposta. Para terminar
-a sess@~ao usa-se o comando @code{quit}(); normalmente, Ctrl-d (teclas
-Ctrl e d em simult@^aneo) servem como atalho para terminar a sess@~ao. Eis
-um exemplo de uma sess@~ao de trabalho:
+O Maxima inicia-se executando alguma das suas interfaces gráficas ou
+numa consola, com o comando "maxima". No início Maxima mostra informação
+do número de versão e uma linha de entrada de comando, identificada por
+@code{(%i1)} (entrada número 1). Cada comando deve terminar-se com ponto
+e vírgula ``@kbd{;}'', para que seja executado e apareça a resposta, ou
+com ``@kbd{$}'', para que seja executado sem aparecer a resposta. Para
+terminar a sessão usa-se o comando ``@code{quit}();''. Normalmente, as
+teclas @kbd{Ctrl-d} (Ctrl e d em simultâneo) servem como atalho para
+terminar a sessão. Eis um exemplo de uma sessão no Maxima:
 
 @example
 @group
@@ -17,7 +19,7 @@ The function bug_report() provides bug reporting information.
 @end group
 @group
 
-(%i1) factor(10!);
+(%i1) factor (10!);
                              8  4  2
 (%o1)                       2  3  5  7
 @end group
@@ -35,10 +37,10 @@ The function bug_report() provides bug reporting information.
 $
 @end example
 
-Maxima pode procurar informa@,{c}@~ao nas p@'aginas do manual. Usa-se o comando
-@kbd{describe} para mostrar todas as fun@,{c}@~oes e vari@'aveis relacionadas
-com o termo de pesquisa e opcionalmente a sua documenta@,{c}@~ao. O s@'imbolo de
-interroga@,{c}@~ao @code{?} @'e uma abreviatura para @code{describe}:
+Maxima pode procurar informação nas páginas do manual. Usa-se o comando
+@kbd{describe} para mostrar todas as funções e variáveis relacionadas
+com o termo de pesquisa e opcionalmente a sua documentação. O símbolo de
+interrogação @kbd{?} é uma abreviatura para @code{describe}:
 
 @example
 (%i1) ?? integer
@@ -76,10 +78,10 @@ Enter space-separated numbers, `all' or `none': 0
 @end group
 @end example
 
-Para usar um resultado em c@'alculos posteriores, pode atribuir-se esse
-valor a uma vari@'avel ou referir-se a esse mesmo valor atrav@'es da
-etiqueta @code{%on}, onde @code{n} @'e o n@'umero da sa@'ida. Adicionalmente,
-@kbd{%} refere-se sempre resultado mais recente:
+Para usar um resultado em cálculos posteriores, pode atribuir-se esse
+valor a uma variável ou usar-se a etiqueta @code{%o}@var{n}, onde
+@var{n} é o número da saída. Adicionalmente, @kbd{%} refere-se sempre
+ao resultado mais recente:
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -104,7 +106,7 @@ etiqueta @code{%on}, onde @code{n} @'e o n@'umero da sa@'ida. Adicionalmente,
 @end group
 @end example
 
-Maxima tem conhecimento sobre n@'umeros complexos e constantes num@'ericas:
+Maxima tem conhecimento sobre números complexos e constantes numéricas:
 
 @c ===beg===
 @c cos(%pi);
@@ -121,7 +123,7 @@ Maxima tem conhecimento sobre n@'umeros complexos e constantes num@'ericas:
 @end group
 @end example
 
-Maxima pode fazer contas de c@'alculo diferencial e integral:
+Maxima pode fazer contas de cálculo diferencial e integral:
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -149,7 +151,7 @@ Maxima pode fazer contas de c@'alculo diferencial e integral:
 @end group
 @end example
 
-Maxima pode resolver sistemas lineares de equa@,{c}@~oes e equa@,{c}@~oes c@'ubicas:
+Maxima pode resolver sistemas lineares de equações e equações cúbicas:
 
 @c ===beg===
 @c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -168,9 +170,8 @@ Maxima pode resolver sistemas lineares de equa@,{c}@~oes e equa@,{c}@~oes c@'ubi
 @end group
 @end example
 
-Maxima pode tamb@'em resolver sistemas de equa@,{c}@~oes n@~ao lineares. Repare-se
-que nos comandos terminados com @kbd{$}, que n@~ao mostram o resultado do
-comando.
+Maxima pode também resolver sistemas de equações não lineares. Note-se
+os comandos terminados com @kbd{$}, que não mostram o resultado obtido.
 
 @c ===beg===
 @c eq_1: x^2 + 3*x*y + y^2 = 0$
@@ -191,42 +192,28 @@ comando.
 @end group
 @end example
 
-Maxima pode gerar gr@'aficos de uma ou mais fun@,{c}@~oes:
+Maxima pode gerar gráficos de uma ou mais funções:
 
 @example
 (%i1) plot2d (sin(x)/x, [x, -20, 20])$
 @end example
-@ifhtml
-@image{../figures/introduction1}
-@end ifhtml
-@iftex
-@center @image{../figures/introduction1, 10cm}
-@end iftex
+@figure{introduction1}
 @example
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
-@ifhtml
-@image{../figures/introduction2}
-@end ifhtml
-@iftex
-@center @image{../figures/introduction2, 10cm}
-@end iftex
+@figure{introduction2}
 @example
 @group
 (%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
          [x, -12, 12], [y, -12, 12])$
 @end group
 @end example
-@ifhtml
-@image{../figures/introduction3}
-@end ifhtml
-@iftex
-@center @image{../figures/introduction3, 10cm}
-@end iftex
+@figure{introduction3}
 
 @c FOLLOWING TEXT DESCRIBES THE TCL/TK PLOT WINDOW WHICH IS NO LONGER THE DEFAULT
 @c Moving the cursor to the top left corner of the plot window will pop up
 @c a menu that will, among other things, let you generate a PostScript file
 @c of the plot.  (By default, the file is placed in your home directory.)
 @c You can rotate a 3D plot.
+
 

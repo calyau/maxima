@@ -1,34 +1,34 @@
 @c /Affine.texi/1.12/Sat Nov 19 06:51:23 2005/-ko/
 @c end concepts Affine
 @menu
-* Defini@,{c}@~oes para Fun@,{c}@~oes Afins::      
+* Definições para Funções Afins::      
 @end menu
 
-@node Defini@,{c}@~oes para Fun@,{c}@~oes Afins,  , Fun@,{c}@~oes Afins, Fun@,{c}@~oes Afins
-@section Defini@,{c}@~oes para Fun@,{c}@~oes Afins
+@node Definições para Funções Afins,  , Funções Afins, Funções Afins
+@section Definições para Funções Afins
 
-@deffn {Fun@,{c}@~ao} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-Resolve equa@,{c}@~oes lineares simult@^aneas @var{expr_1},
-..., @var{expr_m} para as vari@'aveis @var{x_1}, ..., @var{x_n}.  Cada
-@var{expr_i} pode ser uma equa@,{c}@~ao ou uma express@~ao
-geral; se for dada como uma express@~ao geral, ser@'a tratada como uma
-equa@,{c}@~ao na forma @code{@var{expr_i} = 0}.
+@deffn {Função} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Resolve equações lineares simultâneas @var{expr_1},
+..., @var{expr_m} para as variáveis @var{x_1}, ..., @var{x_n}.  Cada
+@var{expr_i} pode ser uma equação ou uma expressão
+geral; se for dada como uma expressão geral, será tratada como uma
+equação na forma @code{@var{expr_i} = 0}.
 
-O valor de retorno @'e uma lista de equa@,{c}@~oes da forma
+O valor de retorno é uma lista de equações da forma
 @code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]} onde
-@var{a_1}, ..., @var{a_n} s@~ao todas livres de @var{x_1}, ...,
+@var{a_1}, ..., @var{a_n} são todas livres de @var{x_1}, ...,
 @var{x_n}.
 
-@code{fast_linsolve} @'e mais r@'apido que @code{linsolve} para sistemas
-de equa@,{c}@~oes que s@~ao esparsas.
+@code{fast_linsolve} é mais rápido que @code{linsolve} para sistemas
+de equações que são esparsas.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
-Retorna uma base de Groebner para as equa@,{c}@~oes @var{expr_1}, ..., @var{expr_m}.
-A fun@,{c}@~a @code{polysimp} pode ent@~ao
-ser usada para simplificar outras fun@,{c}@~oes relativas @`as equa@,{c}@~oes.
+@deffn {Função} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+Retorna uma base de Groebner para as equações @var{expr_1}, ..., @var{expr_m}.
+A funçã @code{polysimp} pode então
+ser usada para simplificar outras funções relativas às equações.
 
 @example
 grobner_basis ([3*x^2+1, y*x])$
@@ -36,61 +36,61 @@ grobner_basis ([3*x^2+1, y*x])$
 polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end example
 
-@code{polysimp(f)} produz 0 se e somente se @var{f} est@'a no ideal gerado por
-@var{expr_1}, ..., @var{expr_m}, isto @'e,
-se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos de
+@code{polysimp(f)} produz 0 se e somente se @var{f} está no ideal gerado por
+@var{expr_1}, ..., @var{expr_m}, isto é,
+se e somente se @var{f} for uma combinação polinomial dos elementos de
 @var{expr_1}, ..., @var{expr_m}.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
-@deffn {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
-@deffnx {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns})
-As @var{eqns} s@~ao
-equa@,{c}@~oes polinomiais em vari@'aveis n@~ao comutativas.
-O valor de @code{current_variables}  @'e uma 
-lista de vari@'aveis usadas para calcular graus.  As equa@,{c}@~oes podem ser
-homog@'eneas, de forma a que o procedimento termine.  
+@deffn {Função} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Função} set_up_dot_simplifications (@var{eqns})
+As @var{eqns} são
+equações polinomiais em variáveis não comutativas.
+O valor de @code{current_variables}  é uma 
+lista de variáveis usadas para calcular graus.  As equações podem ser
+homogéneas, de forma a que o procedimento termine.  
 
-Se tiver optado por sobreposi@,{c}@~ao de simplifica@,{c}@~oes
-em @code{dot_simplifications} acima do grau de @var{f}, ent@~ao o
-seguinte @'e verdadeiro: @code{dotsimp (@var{f})} retorna 0 se, e
-somente se, @var{f} est@'a no ideal gerado pelas
-equa@,{c}@~oes, i.e., se e somente se @var{f} for uma
-combina@,{c}@~ao polinomial dos elementos das
-equa@,{c}@~oes.
+Se tiver optado por sobreposição de simplificações
+em @code{dot_simplifications} acima do grau de @var{f}, então o
+seguinte é verdadeiro: @code{dotsimp (@var{f})} retorna 0 se, e
+somente se, @var{f} está no ideal gerado pelas
+equações, i.e., se e somente se @var{f} for uma
+combinação polinomial dos elementos das
+equações.
 
-O grau @'e aquele retornado por @code{nc_degree}.  Isso por sua vez @'e
-influenciado pelos pesos das vari@'aveis individuais.
+O grau é aquele retornado por @code{nc_degree}.  Isso por sua vez é
+influenciado pelos pesos das variáveis individuais.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Função} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Atribui pesos @var{w_1}, ..., @var{w_n} to @var{x_1}, ..., @var{x_n}, respectivamente.
-Esses s@~ao pesos usados em c@'alculos @code{nc_degree}.
+Esses são pesos usados em cálculos @code{nc_degree}.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} nc_degree (@var{p})
-Retorna o grau de um polin@'omio n@~ao comutativo @var{p}.  Veja @code{declare_weights}.
+@deffn {Função} nc_degree (@var{p})
+Retorna o grau de um polinómio não comutativo @var{p}.  Veja @code{declare_weights}.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
-@deffn {Fun@,{c}@~ao} dotsimp (@var{f})
-Retorna 0 se e somente se @var{f} for um ideal gerado pelas equa@,{c}@~oes, i.e.,
-se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos das equa@,{c}@~oes.
+@deffn {Função} dotsimp (@var{f})
+Retorna 0 se e somente se @var{f} for um ideal gerado pelas equações, i.e.,
+se e somente se @var{f} for uma combinação polinomial dos elementos das equações.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
-Se @code{set_up_dot_simplifications} tiver sido feito previamente, ache o polin@'omio central
-nas vari@'aveis @var{x_1}, ..., @var{x_n} no grau dado, @var{n}.
+@deffn {Função} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+Se @code{set_up_dot_simplifications} tiver sido feito previamente, ache o polinómio central
+nas variáveis @var{x_1}, ..., @var{x_n} no grau dado, @var{n}.
 
 Por exemplo:
 @example
@@ -99,55 +99,55 @@ fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
-@deffn {Fun@,{c}@~ao} check_overlaps (@var{n}, @var{add_to_simps})
-Verifica as sobreposi@,{c}@~oes atrav@'es do grau @var{n}, garantindo
-que tem regras de simplifica@,{c}@~o suficientes em cada grau,
+@deffn {Função} check_overlaps (@var{n}, @var{add_to_simps})
+Verifica as sobreposições através do grau @var{n}, garantindo
+que tem regras de simplificaçõ suficientes em cada grau,
 para @code{dotsimp} trabalhar correctamente.  Esse processo pode ser mais
-r@'apido se souber de antem@~ao a dimens@~ao do espa@,{c}o de
-mon@'omios.  Se for de dimens@~ao global finita, ent@~ao @code{hilbert}
-pode ser usada.  Se n@~ao conhece as dimens@~oes monomiais, n@~ao
+rápido se souber de antemão a dimensão do espaço de
+monómios.  Se for de dimensão global finita, então @code{hilbert}
+pode ser usada.  Se não conhece as dimensões monomiais, não
 especifique nenhum @code{rank_function}.  Um terceiro argumento
-opcional, @code{reset}, @code{false} diz para n@~ao se incomodar em
+opcional, @code{reset}, @code{false} diz para não se incomodar em
 perguntar sobre reiniciar coisas.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
-Retorna a lista de mon@'omios independentes
-relativamente @`a simplifica@,{c}@~ao actual do grau @var{n}
-nas vari@'aveis @var{x_1}, ..., @var{x_n}.
+@deffn {Função} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+Retorna a lista de monómios independentes
+relativamente à simplificação actual do grau @var{n}
+nas variáveis @var{x_1}, ..., @var{x_n}.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} monomial_dimensions (@var{n})
-Calcula a s@'erie de Hilbert atrav@'es do grau @var{n} para a algebra corrente.
+@deffn {Função} monomial_dimensions (@var{n})
+Calcula a série de Hilbert através do grau @var{n} para a algebra corrente.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+@deffn {Função} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
 
-Faz uma lista dos coeficientes dos polin@'omios n@~ao comutativos @var{p_1}, ..., @var{p_n}
-dos monomios n@~ao comutatvos @var{m_1}, ..., @var{m_n}.
+Faz uma lista dos coeficientes dos polinómios não comutativos @var{p_1}, ..., @var{p_n}
+dos monomios não comutatvos @var{m_1}, ..., @var{m_n}.
 Os coeficientes podem ser escalares.   Use @code{list_nc_monomials} para construir a lista dos
-mon@'omios.
+monómios.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
-@deffn {Fun@,{c}@~ao} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
-@deffnx {Fun@,{c}@~ao} list_nc_monomials (@var{p})
+@deffn {Função} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Função} list_nc_monomials (@var{p})
 
-Retorna uma lista de mon@'omios n@~ao comutativos que ocorrem em um polin@'omio @var{p}
-ou em uma lista de polin@'omios @var{p_1}, ..., @var{p_n}.
+Retorna uma lista de monómios não comutativos que ocorrem em um polinómio @var{p}
+ou em uma lista de polinómios @var{p_1}, ..., @var{p_n}.
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load(affine)}.
 @end deffn
 
 @c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
@@ -188,17 +188,18 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load(affine)}.
 @c 
 @c @end defun
 
-@defvr {Vari@'avel de op@,{c}@~ao} all_dotsimp_denoms
-Valor por omiss@~ao: @code{false}
+@defvr {Variável de opção} all_dotsimp_denoms
+Valor por omissão: @code{false}
 
-Quando @code{all_dotsimp_denoms} @'e uma lista,
-os denominadores encontrados por @code{dotsimp} s@~ao adicionados ao final da lista.
+Quando @code{all_dotsimp_denoms} é uma lista,
+os denominadores encontrados por @code{dotsimp} são adicionados ao final da lista.
 @code{all_dotsimp_denoms} pode ser iniciado como uma lista vazia @code{[]}
 antes chamando @code{dotsimp}.
 
-Por padr@~ao, denominadores n@~ao s@~ao colectados por @code{dotsimp}.
+Por padrão, denominadores não são colectados por @code{dotsimp}.
 
 @end defvr
+
 
 
 

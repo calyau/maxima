@@ -1,14 +1,14 @@
 @c /makeOrders.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@,{c}@~oes para makeOrders::
+* Definições para makeOrders::
 @end menu
 
 
-@node Defini@,{c}@~oes para makeOrders,  , makeOrders, makeOrders
-@section Defini@,{c}@~oes para makeOrders
+@node Definições para makeOrders,  , makeOrders, makeOrders
+@section Definições para makeOrders
 
-@deffn {Fun@,{c}@~ao} makeOrders (@var{indvarlist},@var{orderlist})
-Retorna uma lista de todos os expoentes para um polin@'omio acima de e incluindo os argumentos. 
+@deffn {Função} makeOrders (@var{indvarlist},@var{orderlist})
+Retorna uma lista de todos os expoentes para um polinómio acima de e incluindo os argumentos. 
 
 @example
 (%i1) load("makeOrders")$
@@ -22,7 +22,8 @@ Retorna uma lista de todos os expoentes para um polin@'omio acima de e incluindo
                                                   2
                                            + b + a  + a + 1
 @end example
-onde @code{[0, 1]} est@'a associado ao termo @math{b} e @code{[2, 3]} est@'a associado ao termo @math{a^2 b^3}.
+onde @code{[0, 1]} está associado ao termo @math{b} e @code{[2, 3]} está associado ao termo @math{a^2 b^3}.
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("makeOrders")}.
+Para usar essa função escreva primeiro @code{load("makeOrders")}.
 @end deffn
+

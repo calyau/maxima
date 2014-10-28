@@ -1,23 +1,23 @@
 @c /Runtime.texi/1.18/Sat Jul  8 08:15:05 2006/-ko/
 @menu
-* Introdu@,{c}@~ao a Ambiente em Tempo de Execu@,{c}@~ao::  
-* Interrup@,{c}@~oes::                  
-* Defini@,{c}@~oes para Ambiente em Tempo de Execu@,{c}@~ao::  
+* Introdução a Ambiente em Tempo de Execução::  
+* Interrupções::                  
+* Definições para Ambiente em Tempo de Execução::  
 @end menu
 
 
-@node Introdu@,{c}@~ao a Ambiente em Tempo de Execu@,{c}@~ao, Interrup@,{c}@~oes, Ambiente em Tempo de Execu@,{c}@~ao, Ambiente em Tempo de Execu@,{c}@~ao
-@section Introdu@,{c}@~ao a Ambiente em Tempo de Execu@,{c}@~ao
+@node Introdução a Ambiente em Tempo de Execução, Interrupções, Ambiente em Tempo de Execução, Ambiente em Tempo de Execução
+@section Introdução a Ambiente em Tempo de Execução
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
-@code{maxima-init.mac} @'e um ficheiro que @'e chamado automaticamente
+@code{maxima-init.mac} é um ficheiro que é chamado automaticamente
 quando o Maxima inicia.  Pode usar @code{maxima-init.mac} para
 personalizar o seu ambiente no Maxima.  @code{maxima-init.mac}, se existir,
-@'e tipicamente colocado no direct@'orio chamado por
-@code{maxima_userdir}, embora possa estar em qualquer outro direct@'orio
-procurado pela fun@,{c}@~ao @code{file_search}.
+é tipicamente colocado no directório chamado por
+@code{maxima_userdir}, embora possa estar em qualquer outro directório
+procurado pela função @code{file_search}.
 
-Aqui est@'a um exemplo do ficheiro @code{maxima-init.mac}:
+Aqui está um exemplo do ficheiro @code{maxima-init.mac}:
 
 @example
 setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
@@ -26,77 +26,77 @@ showtime:all;
 
 Nesse Exemplo, @code{setup_autoload} diz ao Maxima para chamar o
 ficheiro especificado (@code{specfun.mac}) se qualquer das
-fun@,{c}@~oes (@code{ultraspherical}, @code{assoc_legendre_p})
-forem chamadas sem estarem definidas.  Dessa forma, n@~ao precisa de se
-lembrar de chamar o ficheiro antes das fun@,{c}@~oes.
+funções (@code{ultraspherical}, @code{assoc_legendre_p})
+forem chamadas sem estarem definidas.  Dessa forma, não precisa de se
+lembrar de chamar o ficheiro antes das funções.
 
-A declara@,{c}@~ao @code{showtime: all} diz ao Maxima para
-activar a op@,{c}@~ao @code{showtime}.  O ficheiro
+A declaração @code{showtime: all} diz ao Maxima para
+activar a opção @code{showtime}.  O ficheiro
 @code{maxima-init.mac} pode conter quaisquer outras
-atribui@,{c}@~oes ou outras declara@,{c}@~oes do
+atribuições ou outras declarações do
 Maxima.
 
-@node Interrup@,{c}@~oes, Defini@,{c}@~oes para Ambiente em Tempo de Execu@,{c}@~ao, Introdu@,{c}@~ao a Ambiente em Tempo de Execu@,{c}@~ao, Ambiente em Tempo de Execu@,{c}@~ao
+@node Interrupções, Definições para Ambiente em Tempo de Execução, Introdução a Ambiente em Tempo de Execução, Ambiente em Tempo de Execução
 
-@section Interrup@,{c}@~oes
+@section Interrupções
 
-O utilizador pode parar uma computa@,{c}@~ao que consome muito
-tempo com o caractere ^C (control-C).  A a@,{c}@~ao padr@~ao
-@'e parar a computa@,{c}@~ao e mostrar outra linha de comando
-do utilizador.  Nesse caso, n@~ao @'e poss@'{@dotless{i}}vel continuar a
-computa@,{c}@~ao interrompida.
+O utilizador pode parar uma computação que consome muito
+tempo com o caractere ^C (control-C).  A ação padrão
+é parar a computação e mostrar outra linha de comando
+do utilizador.  Nesse caso, não é possível continuar a
+computação interrompida.
 
-Se a vari@'avel @code{*debugger-hook*} @'e escolhida para @code{nil},
-atrav@'es do comando
+Se a variável @code{*debugger-hook*} é escolhida para @code{nil},
+através do comando
 
 @example
 :lisp (setq *debugger-hook* nil)
 @end example
 
 @noindent
-ent@~ao na ocasi@~ao do recebimento do ^C, Maxima iniciar@'a o depurador
+então na ocasião do recebimento do ^C, Maxima iniciará o depurador
 Lisp, e o utilizador pode usar o depurador para inspecionar o ambiente
-Lisp.  A computa@,{c}@~ao interrompida pode ser retomada
-atrav@'es do comando @code{continue} no depurador Lisp.  O m@'etodo de
+Lisp.  A computação interrompida pode ser retomada
+através do comando @code{continue} no depurador Lisp.  O método de
 retorno para ao Maxima partindo do depurador Lisp (outro como executando
-a computa@,{c}@~ao para complementa@,{c}@~ao) @'e
-diferente para cada vers@~ao do Lisp.
+a computação para complementação) é
+diferente para cada versão do Lisp.
 
 Em sistemas Unix, o caratere ^Z (control-Z) faz com que Maxima
-pare tudo e aguarde em segundo plano, e o controle @'e retornado para a linha de comando do shell.
+pare tudo e aguarde em segundo plano, e o controle é retornado para a linha de comando do shell.
 O comando @code{fg} faz com que o Maxima
 retorne ao primeiro plano e continue a partir do ponto no qual foi interrompido.
 
-@c end concepts Ambiente em Tempo de Execu@,{c}@~ao
-@node Defini@,{c}@~oes para Ambiente em Tempo de Execu@,{c}@~ao,  , Interrup@,{c}@~oes, Ambiente em Tempo de Execu@,{c}@~ao
-@section Defini@,{c}@~oes para Ambiente em Tempo de Execu@,{c}@~ao
+@c end concepts Ambiente em Tempo de Execução
+@node Definições para Ambiente em Tempo de Execução,  , Interrupções, Ambiente em Tempo de Execução
+@section Definições para Ambiente em Tempo de Execução
 
 @c NEEDS EXPANSION AND CLARIFICATION
-@defvr {Declara@,{c}@~ao} feature
+@defvr {Declaração} feature
 Maxima compreende dois tipos distintos de recurso,
-recursos do sistema e recursos aplicados a express@~oes matem@'aticas.
-Veja Tamb@'em @code{status} para informa@,{c}@~oes sobre recursos do sistema.
-Veja Tamb@'em @code{features} e @code{featurep} para informa@,{c}@~oes sobre recursos matem@'aticos.
+recursos do sistema e recursos aplicados a expressões matemáticas.
+Veja Também @code{status} para informações sobre recursos do sistema.
+Veja Também @code{features} e @code{featurep} para informações sobre recursos matemáticos.
 @c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
 @c OTHER STUFF ??
 
-@code{feature} por si mesmo n@~ao @'e o nome de uma fun@,{c}@~ao ou vari@'avel.
+@code{feature} por si mesmo não é o nome de uma função ou variável.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-@deffn {Fun@,{c}@~ao} featurep (@var{a}, @var{f})
+@deffn {Função} featurep (@var{a}, @var{f})
 Tenta determinar se o objecto @var{a} tem o
 recurso @var{f} na base dos factos dentro base de dados corrente.  Se possue,
-@'e retornado @code{true}, de outra forma @'e retornado @code{false}.
+é retornado @code{true}, de outra forma é retornado @code{false}.
 
 Note que @code{featurep} retorna @code{false} quando nem @var{f}
-nem a nega@,{c}@~ao de @var{f} puderem ser estabelecidas.
+nem a negação de @var{f} puderem ser estabelecidas.
 
 @code{featurep} avalia seus argumentos.
 
-Veja tamb@'em @code{declare} e @code{features}.
+Veja também @code{declare} e @code{features}.
        
 @example
 (%i1) declare (j, even)$
@@ -106,100 +106,100 @@ Veja tamb@'em @code{declare} e @code{features}.
 
 @end deffn
 
-@defvr {Vari@'avel de sistema} maxima_tempdir
+@defvr {Variável de sistema} maxima_tempdir
 
-@code{maxima_tempdir} nomeia o direct@'orio no qual Maxima cria alguns ficheiros tempor@'arios.
-Em particular, ficheiros tempor@'arios para impress@~ao s@~ao criados no @code{maxima_tempdir}.
+@code{maxima_tempdir} nomeia o directório no qual Maxima cria alguns ficheiros temporários.
+Em particular, ficheiros temporários para impressão são criados no @code{maxima_tempdir}.
 
-O valor inicial de @code{maxima_tempdir} @'e o direct@'orio do utilizador,
-se o maxima puder localiz@'a-lo; de outra forma Maxima sup@~oe um direct@'orio adequado.
+O valor inicial de @code{maxima_tempdir} é o directório do utilizador,
+se o maxima puder localizá-lo; de outra forma Maxima supõe um directório adequado.
 
-A @code{maxima_tempdir} pode ser atribu@'{@dotless{i}}do uma sequ@^encia de caracteres que corresponde a um direct@'orio.
+A @code{maxima_tempdir} pode ser atribuído uma sequência de caracteres que corresponde a um directório.
 
 @end defvr
 
-@defvr {Vari@'avel de sistema} maxima_userdir
+@defvr {Variável de sistema} maxima_userdir
 
-@code{maxima_userdir} nomeia um direct@'orio no qual Maxima espera encontrar seus pr@'oprios ficheiros e os do ficheiros do Lisp.
-(Maxima procura em alguns outros direct@'orios tamb@'em;
+@code{maxima_userdir} nomeia um directório no qual Maxima espera encontrar seus próprios ficheiros e os do ficheiros do Lisp.
+(Maxima procura em alguns outros directórios também;
 @code{file_search_maxima} e @code{file_search_lisp} possuem a lista completa.)
 
-O valor inicial de @code{maxima_userdir} @'e um subdirect@'orio do direct@'orio do utilizador,
-se Maxima puder localiz@'a-lo; de outra forma Maxima sup@~oe um direct@'orio adequado.
+O valor inicial de @code{maxima_userdir} é um subdirectório do directório do utilizador,
+se Maxima puder localizá-lo; de outra forma Maxima supõe um directório adequado.
 
-A @code{maxima_userdir} pode ser atribu@'{@dotless{i}}do uma sequ@^encia de caracteres que corresponde a um direct@'orio.
-Todavia, fazendo uma atribui@,{c}@~ao a @code{maxima_userdir} n@~ao muda automaticamente o valor de
+A @code{maxima_userdir} pode ser atribuído uma sequência de caracteres que corresponde a um directório.
+Todavia, fazendo uma atribuição a @code{maxima_userdir} não muda automaticamente o valor de
 @code{file_search_maxima} e de @code{file_search_lisp};
-Essas vari@'aveis devem ser modificadas separadamente.
+Essas variáveis devem ser modificadas separadamente.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} room ()
-@deffnx {Fun@,{c}@~ao} room (true)
-@deffnx {Fun@,{c}@~ao} room (false)
-Mostra uma descri@,{c}@~ao do estado de armazenamento e
-gerenciamento de pilha no Maxima. @code{room} chama a fun@,{c}@~ao Lisp de
+@deffn {Função} room ()
+@deffnx {Função} room (true)
+@deffnx {Função} room (false)
+Mostra uma descrição do estado de armazenamento e
+gerenciamento de pilha no Maxima. @code{room} chama a função Lisp de
 mesmo nome.
 
 @itemize @bullet
 @item
-@code{room ()} mostra uma descri@,{c}@~ao moderada.
+@code{room ()} mostra uma descrição moderada.
 @item
-@code{room (true)} mostra uma descri@,{c}@~ao detalhada.
+@code{room (true)} mostra uma descrição detalhada.
 @item
-@code{room (false)} mostra uma descri@,{c}@~ao resumida.
+@code{room (false)} mostra uma descrição resumida.
 @end itemize
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} status (feature)
-@deffnx {Fun@,{c}@~ao} status (feature, @var{recurso_ativo})
-@deffnx {Fun@,{c}@~ao} status (status)
-Retorna informa@,{c}@~oes sobre a presen@,{c}a ou aus@^encia de certos
+@deffn {Função} status (feature)
+@deffnx {Função} status (feature, @var{recurso_ativo})
+@deffnx {Função} status (status)
+Retorna informações sobre a presença ou ausência de certos
 recursos dependentes do sistema operacional.
 
 @itemize @bullet
 @item
 @code{status (feature)} retorna uma lista dos recursos do sistema.
-Inclui a vers@~ao do Lisp, tipo de sistema operacional, etc.
+Inclui a versão do Lisp, tipo de sistema operacional, etc.
 A lista pode variar de um tipo de Lisp para outro.
 @item @code{status (feature, @var{recurso_ativo})} retorna @code{true} se @var{recurso_ativo}
-est@'a na lista de @'{@dotless{i}}tens retornada atrav@'es de @code{status (feature)} e @code{false} de outra forma.
-@code{status} n@~ao avalia o argumento @var{recurso_ativo}.
-O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, evita a avalia@,{c}@~ao.
-Um recurso cujo nome cont@'em um caractere especial, tal como um h@'{@dotless{i}}fem,
-deve ser fornecido como um argumento em forma de sequ@^encia de caracteres. Por Exemplo,
+está na lista de ítens retornada através de @code{status (feature)} e @code{false} de outra forma.
+@code{status} não avalia o argumento @var{recurso_ativo}.
+O operador apóstrofo-apóstrofo, @code{'@w{}'}, evita a avaliação.
+Um recurso cujo nome contém um caractere especial, tal como um hífem,
+deve ser fornecido como um argumento em forma de sequência de caracteres. Por Exemplo,
 @code{status (feature, "ansi-cl")}.
 @item
 @code{status (status)} retorna uma lista de dois elementos @code{[feature, status]}.
-@code{feature} e @code{status} s@~ao dois argumentos aceitos pela fun@,{c}@~ao @code{status};
-N@~ao est@'a claro se essa lista tem signific@^ancia adicional.
+@code{feature} e @code{status} são dois argumentos aceitos pela função @code{status};
+Não está claro se essa lista tem significância adicional.
 @end itemize
 
-A vari@'avel @code{features} cont@'em uma lista de recursos que se aplicam a
-express@~oes matem@'aticas. Veja @code{features} e @code{featurep} para maiores informa@,{c}@~oes.
+A variável @code{features} contém uma lista de recursos que se aplicam a
+expressões matemáticas. Veja @code{features} e @code{featurep} para maiores informações.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} time (%o1, %o2, %o3, ...)
+@deffn {Função} time (%o1, %o2, %o3, ...)
 Retorna uma lista de tempos, em segundos, usados para calcular as linhas
-de sa@'{@dotless{i}}da @code{%o1}, @code{%o2}, @code{%o3}, .... O tempo retornado @'e uma estimativa do Maxima do
-tempo interno de computa@,{c}@~ao, n@~ao do tempo decorrido. @code{time} pode somente
-ser aplicado a vari@'aveis(r@'otulos) de sa@'{@dotless{i}}da de linha; para quaisquer outras vari@'aveis, @code{time}
+de saída @code{%o1}, @code{%o2}, @code{%o3}, .... O tempo retornado é uma estimativa do Maxima do
+tempo interno de computação, não do tempo decorrido. @code{time} pode somente
+ser aplicado a variáveis(rótulos) de saída de linha; para quaisquer outras variáveis, @code{time}
 retorna @code{unknown} (tempo desconhecido).
 
-Escolha @code{showtime: true} para fazer com que Maxima moste o tempo de computa@,{c}@~ao
-e o tempo decorrido a cada linha de sa@'{@dotless{i}}da.
+Escolha @code{showtime: true} para fazer com que Maxima moste o tempo de computação
+e o tempo decorrido a cada linha de saída.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} timedate ()
-Retorna uma sequ@^encia de caracteres representando a data e hora atuais.
-A sequ@^encia de caracteres tem o formato @code{HH:MM:SS Dia, mm/dd/aaaa (GMT-n)},
-Onde os campos s@~ao
-horas, minutos, segundos, dia da semana, m@^es, dia do m@^es, ano, e horas que diferem da hora GMT.
+@deffn {Função} timedate ()
+Retorna uma sequência de caracteres representando a data e hora atuais.
+A sequência de caracteres tem o formato @code{HH:MM:SS Dia, mm/dd/aaaa (GMT-n)},
+Onde os campos são
+horas, minutos, segundos, dia da semana, mês, dia do mês, ano, e horas que diferem da hora GMT.
 
-O valor de retorno @'e uma sequ@^encia de caracteres Lisp.
+O valor de retorno é uma sequência de caracteres Lisp.
 
 Exemplo:
 
@@ -215,3 +215,4 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @end example
 
 @end deffn
+

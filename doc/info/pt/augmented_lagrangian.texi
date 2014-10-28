@@ -1,42 +1,42 @@
 @c /augmented_lagrangian.texi/1.2/Wed Sep 27 07:36:26 2006//
 @menu
-* Defini@,{c}@~oes para augmented_lagrangian::
+* Definições para augmented_lagrangian::
 @end menu
 
-@node Defini@,{c}@~oes para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Defini@,{c}@~oes para augmented_lagrangian
+@node Definições para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Definições para augmented_lagrangian
 
-@deffn {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
+@deffn {Função} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Função} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
  
-Retorna um m@'{@dotless{i}}nimo aproximado da express@~ao @var{FOM}
-com rela@,{c}@~ao @`as vari@'aveis @var{xx},
+Retorna um mínimo aproximado da expressão @var{FOM}
+com relação às variáveis @var{xx},
 mantendo restrito o valor de @var{C} a zero.
-@var{yy} @'e uma lista de suposi@,{c}@~oes iniciais para @var{xx}.
-O m@'etodo utilizado @'e o m@'etodo do Lagrangiano aumentado (veja refer@^encias [1] e [2]).
+@var{yy} é uma lista de suposições iniciais para @var{xx}.
+O método utilizado é o método do Lagrangiano aumentado (veja referências [1] e [2]).
 
 @code{args_opcionais} representam argumentos adicionais,
-especificados como @code{@var{s@'{@dotless{i}}mbolo} = @var{valor}}.
-Os argumentos opcionais que podem ser colocados no lugar de @var{s@'{@dotless{i}}mbolo}:
+especificados como @code{@var{símbolo} = @var{valor}}.
+Os argumentos opcionais que podem ser colocados no lugar de @var{símbolo}:
  
 @table @code
 @item niter
-N@'umero de itera@,{c}@~oes do algoritmo do Langrangiano aumentado
+Número de iterações do algoritmo do Langrangiano aumentado
 @item lbfgs_tolerance
-Toler@^ancia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
+Tolerância forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
 @item iprint
-par@^ametro IPRINT (uma lista de dois inteiros que controlam o n@'{@dotless{i}}vel de informa@,{c}@~ao) fornecido a LBFGS
+parâmetro IPRINT (uma lista de dois inteiros que controlam o nível de informação) fornecido a LBFGS
 @item %lambda
-valor inicial de @code{%lambda} a ser usado durante o c@'alculo do Lagrangiano aumentado
+valor inicial de @code{%lambda} a ser usado durante o cálculo do Lagrangiano aumentado
 @end table
 
-Essa implementa@,{c}@~ao minimiza o Lagrangiano aumentado pela
-pela aplica@,{c}@~ao do algoritmo de mem@'oria limitada BFGS (LBFGS),
-que @'e um algoritmo quasi-Newton.
+Essa implementação minimiza o Lagrangiano aumentado pela
+pela aplicação do algoritmo de memória limitada BFGS (LBFGS),
+que é um algoritmo quasi-Newton.
 
-@code{load(augmented_lagrangian)} chama essa fun@,{c}@~ao.
+@code{load(augmented_lagrangian)} chama essa função.
  
-Veja tamb@'em @code{lbfgs}.
+Veja também @code{lbfgs}.
 
 References:
 
@@ -76,4 +76,5 @@ b/augmented_lagrangian.mac
 @end example
 
 @end deffn
+
 

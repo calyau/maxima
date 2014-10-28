@@ -1,146 +1,146 @@
 @c /Rules.texi/1.25/Fri Mar  2 00:44:44 2007/-ko/
 
 @menu
-* Introdu@,{c}@~ao a Regras e Modelos::  
-* Defini@,{c}@~oes para Regras e Modelos::  
+* Introdução a Regras e Modelos::  
+* Definições para Regras e Modelos::  
 @end menu
 
-@node Introdu@,{c}@~ao a Regras e Modelos, Defini@,{c}@~oes para Regras e Modelos, Regras e Modelos, Regras e Modelos
-@section Introdu@,{c}@~ao a Regras e Modelos
+@node Introdução a Regras e Modelos, Definições para Regras e Modelos, Regras e Modelos, Regras e Modelos
+@section Introdução a Regras e Modelos
 
-Essa sec@,{c}@~ao descreve coincid@^encias de modelos definidos pelo utilizador e
-regras de simplifica@,{c}@~ao.
-Existem dois grupos de fun@,{c}@~oes que implementam at@'e certo ponto diferentes esquemas de coincid@^encia de modelo.
-Em um grupo est@~ao @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule},
+Essa secção descreve coincidências de modelos definidos pelo utilizador e
+regras de simplificação.
+Existem dois grupos de funções que implementam até certo ponto diferentes esquemas de coincidência de modelo.
+Em um grupo estão @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule},
 @code{apply1}, @code{applyb1}, e @code{apply2}.
-Em outro grupo est@~ao @code{let} e @code{letsimp}.
-Ambos os esquemas definem modelos em termos de vari@'aveis de modelo declaradas por @code{matchdeclare}.
+Em outro grupo estão @code{let} e @code{letsimp}.
+Ambos os esquemas definem modelos em termos de variáveis de modelo declaradas por @code{matchdeclare}.
 
-Regras de coincid@^encia de modelos definidas por @code{tellsimp} e @code{tellsimpafter} s@~ao aplicadas automaticamente
-atrav@'es do simplificador do Maxima.
-Regras definidas atrav@'es de @code{defmatch}, @code{defrule}, e @code{let} s@~ao aplicadas
-atrav@'es de uma chamada expl@'{@dotless{i}}cita de fun@,{c}@~ao.
+Regras de coincidência de modelos definidas por @code{tellsimp} e @code{tellsimpafter} são aplicadas automaticamente
+através do simplificador do Maxima.
+Regras definidas através de @code{defmatch}, @code{defrule}, e @code{let} são aplicadas
+através de uma chamada explícita de função.
 
-Existe mecanismos adicionais para regras aplicadas a polin@'omios atrav@'es de @code{tellrat},
-e para @'algebra comutativa e n@~ao comutativa no pacote @code{affine}. 
+Existe mecanismos adicionais para regras aplicadas a polinómios através de @code{tellrat},
+e para álgebra comutativa e não comutativa no pacote @code{affine}. 
 
 @c end concepts Rules and Patterns
-@node Defini@,{c}@~oes para Regras e Modelos,  , Introdu@,{c}@~ao a Regras e Modelos, Regras e Modelos
-@section Defini@,{c}@~oes para Regras e Modelos
+@node Definições para Regras e Modelos,  , Introdução a Regras e Modelos, Regras e Modelos
+@section Definições para Regras e Modelos
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Função} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Repetidamente aplica @var{rule_1} a
-@var{expr} at@'e que isso falhe, ent@~ao repetidamente aplica a mesma regra a todas
-as subexpress@~oes de @var{expr}, da esquerda para a direita, at@'e que @var{rule_1} tenha falhado
-sobre todas as subexpress@~oes.  Chama o resultado da transforma@,{c}@~ao de @var{expr} dessa
-maneira de @var{expr_2}.  Ent@~ao @var{rule_2} @'e aplicada no mesmo estilo
-iniciando no topo de @var{expr_2}.  Quando @var{rule_n} falhar na subexpress@~ao
-final, o resultado @'e retornado.
+@var{expr} até que isso falhe, então repetidamente aplica a mesma regra a todas
+as subexpressões de @var{expr}, da esquerda para a direita, até que @var{rule_1} tenha falhado
+sobre todas as subexpressões.  Chama o resultado da transformação de @var{expr} dessa
+maneira de @var{expr_2}.  Então @var{rule_2} é aplicada no mesmo estilo
+iniciando no topo de @var{expr_2}.  Quando @var{rule_n} falhar na subexpressão
+final, o resultado é retornado.
 
-@code{maxapplydepth} @'e a intensidade de n@'{@dotless{i}}vel mais distante de subexpress@~oes processadas por
+@code{maxapplydepth} é a intensidade de nível mais distante de subexpressões processadas por
 @code{apply1} e @code{apply2}.
 
-Veja tamb@'em @code{applyb1}, @code{apply2}, e @code{let}.
+Veja também @code{applyb1}, @code{apply2}, e @code{let}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
-Se @var{rule_1} falhar sobre uma dada subexpress@~ao, ent@~ao @var{rule_2} @'e
+@deffn {Função} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+Se @var{rule_1} falhar sobre uma dada subexpressão, então @var{rule_2} é
 repetidamente aplicada, etc.  Somente se todas as regras falharem sobre uma dada
-subexpress@~ao @'e que o conjunto completo de regras @'e repetidamente aplicada @`a pr@'oxima
-subexpress@~ao.  Se uma das regras obt@'em sucesso, ent@~ao a mesma
-subexpress@~ao @'e reprocessada, iniciando com a primeira regra.
+subexpressão é que o conjunto completo de regras é repetidamente aplicada à próxima
+subexpressão.  Se uma das regras obtém sucesso, então a mesma
+subexpressão é reprocessada, iniciando com a primeira regra.
 
-@code{maxapplydepth} @'e a intensidade do n@'{@dotless{i}}vel mais distante de subexpress@~oes processadas atrav@'es de
+@code{maxapplydepth} é a intensidade do nível mais distante de subexpressões processadas através de
 @code{apply1} e @code{apply2}.
 
-Veja tamb@'em @code{apply1} e @code{let}.
+Veja também @code{apply1} e @code{let}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
-Repetidamente aplica @var{rule_1} para a subexpress@~ao mais distante de @var{expr} at@'e falhar,
-ent@~ao repetidamente aplica a mesma regra um n@'{@dotless{i}}vel mais acima (i.e., subexpress@~aos mais larga),
-at@'e que @var{rule_1} tenha falhado sobre a express@~ao de n@'{@dotless{i}}vel mais alto.
-Ent@~ao @var{rule_2} @'e aplicada com o mesmo estilo para o resultado de @var{rule_1}.
-ap@'os @var{rule_n} ter sido aplicada @`a express@~ao de n@'{@dotless{i}}vel mais elevado,
-o resultado @'e retornado.
+@deffn {Função} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+Repetidamente aplica @var{rule_1} para a subexpressão mais distante de @var{expr} até falhar,
+então repetidamente aplica a mesma regra um nível mais acima (i.e., subexpressãos mais larga),
+até que @var{rule_1} tenha falhado sobre a expressão de nível mais alto.
+Então @var{rule_2} é aplicada com o mesmo estilo para o resultado de @var{rule_1}.
+após @var{rule_n} ter sido aplicada à expressão de nível mais elevado,
+o resultado é retornado.
 
-@code{applyb1} @'e similar a @code{apply1} mas trabalha da
+@code{applyb1} é similar a @code{apply1} mas trabalha da
 base para cima em lugar de do topo para baixo.
 
-@code{maxapplyheight} @'e o @'apice que @code{applyb1} encontra
+@code{maxapplyheight} é o ápice que @code{applyb1} encontra
 antes de interromper.
 
-Veja tamb@'em @code{apply1}, @code{apply2}, e @code{let}.
+Veja também @code{apply1}, @code{apply2}, e @code{let}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} current_let_rule_package
-Valor por omiss@~ao: @code{default_let_rule_package}
+@defvr {Variável de opção} current_let_rule_package
+Valor por omissão: @code{default_let_rule_package}
 
-@code{current_let_rule_package} @'e o nome do pacote de regras que est@'a sendo usado por
-fun@,{c}@~oes no pacote @code{let} (@code{letsimp}, etc.) @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
+@code{current_let_rule_package} é o nome do pacote de regras que está sendo usado por
+funções no pacote @code{let} (@code{letsimp}, etc.) @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
 se nenhum outro pacote de regras for especificado.
-A essa vari@'avel pode ser atribu@'{@dotless{i}}do o nome de qualquer pacote de regras definido
+A essa variável pode ser atribuído o nome de qualquer pacote de regras definido
 via comando @code{let}.
 
 Se uma chamada tal como @code{letsimp (expr, nome_pct_regras)} for feita,
-o pacote de regras @code{nome_pct_regras} @'e usado para aquela chamada de fun@,{c}@~ao somente,
-e o valor de @code{current_let_rule_package} n@~ao @'e alterado.
+o pacote de regras @code{nome_pct_regras} é usado para aquela chamada de função somente,
+e o valor de @code{current_let_rule_package} não é alterado.
 
 @end defvr
 
-@defvr {Vari@'avel de op@,{c}@~ao} default_let_rule_package
+@defvr {Variável de opção} default_let_rule_package
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
-Valor por omiss@~ao: @code{default_let_rule_package}
+Valor por omissão: @code{default_let_rule_package}
 
 @c THIS IS SORT OF CONFUSING. PROBABLY NEED TO GIVE MORE DETAIL HERE
-@code{default_let_rule_package} @'e o nome do pacote de regras usado quando um
-n@~ao for explicitamente escolhido pelo utilizador com @code{let} ou atrav@'es de altera@,{c}@~ao do valor de
+@code{default_let_rule_package} é o nome do pacote de regras usado quando um
+não for explicitamente escolhido pelo utilizador com @code{let} ou através de alteração do valor de
 @code{current_let_rule_package}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
-@deffnx {Fun@,{c}@~ao} defmatch (@var{prognome}, @var{modelo})
-Define uma fun@,{c}@~ao @code{@var{prognome}(@var{expr}, @var{x_1}, ..., @var{x_n})}
-que testa @var{expr} para ver se essa express@~ao coincide com @var{modelo}.
+@deffn {Função} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
+@deffnx {Função} defmatch (@var{prognome}, @var{modelo})
+Define uma função @code{@var{prognome}(@var{expr}, @var{x_1}, ..., @var{x_n})}
+que testa @var{expr} para ver se essa expressão coincide com @var{modelo}.
 
-@var{modelo} @'e uma express@~ao contendo os argumentos modelo @var{x_1}, ..., @var{x_n} (se existir algum)
-e alguns modelos de vari@'aveis (se existir algum).
-os argumentos modelo s@~ao fornecidos explicitamente como argumentos para @code{defmatch} enquanto os modelos de vari@'aveis
-s@~ao declarados atrav@'es da fun@,{c}@~ao @code{matchdeclare}.
-Qualquer vari@'avel n@~ao declarada como modelo em @code{matchdeclare}
+@var{modelo} é uma expressão contendo os argumentos modelo @var{x_1}, ..., @var{x_n} (se existir algum)
+e alguns modelos de variáveis (se existir algum).
+os argumentos modelo são fornecidos explicitamente como argumentos para @code{defmatch} enquanto os modelos de variáveis
+são declarados através da função @code{matchdeclare}.
+Qualquer variável não declarada como modelo em @code{matchdeclare}
 ou como um argumento modelo em @code{defmatch} coincide somente com si mesma.
 
-O primeiro argumento para a fun@,{c}@~ao criada @var{prognome} @'e uma express@~ao
-a serem comparadas contra o modelo  e os outros argumentos s@~ao os atuais argumetnos
-que correspondem @`as vari@'aveis respectivas @var{x_1}, ..., @var{x_n} no modelo.
+O primeiro argumento para a função criada @var{prognome} é uma expressão
+a serem comparadas contra o modelo  e os outros argumentos são os atuais argumetnos
+que correspondem às variáveis respectivas @var{x_1}, ..., @var{x_n} no modelo.
 
-Se a tentativa de coincid@^encia obtiver sucesso, @var{prognome} retorna
-uma lista de equa@,{c}@~oes cujos lados esquerdos s@~ao os
-argumetnos de modelo e vari@'aveis de modelo, e cujo lado direito forem as subexpress@~oes
-cujos argumentos de modelo e as vari@'aveis coincidem.
-Os modelos de vari@'aveis, mas n@~ao tos argumentos de modelo, s@~ao atribu@'{@dotless{i}}dos @`as subexpress@~oes que coincidirem.
-Se a coincid@^encia falhar, @var{prognome} retorna @code{false}.  
+Se a tentativa de coincidência obtiver sucesso, @var{prognome} retorna
+uma lista de equações cujos lados esquerdos são os
+argumetnos de modelo e variáveis de modelo, e cujo lado direito forem as subexpressões
+cujos argumentos de modelo e as variáveis coincidem.
+Os modelos de variáveis, mas não tos argumentos de modelo, são atribuídos às subexpressões que coincidirem.
+Se a coincidência falhar, @var{prognome} retorna @code{false}.  
 
 Um modelo literal
-(isto @'e, um modelo que n@~ao contiver nem argumentos de modelo nem vari@'aveis de modelo)
-retorna @code{true} se a coincid@^encia ocorrer.
+(isto é, um modelo que não contiver nem argumentos de modelo nem variáveis de modelo)
+retorna @code{true} se a coincidência ocorrer.
 
-Veja tamb@'em @code{matchdeclare}, @code{defrule}, @code{tellsimp}, e @code{tellsimpafter}.
+Veja também @code{matchdeclare}, @code{defrule}, @code{tellsimp}, e @code{tellsimpafter}.
 
 Exemplos:
 
-Define uma fun@,{c}@~ao @code{linearp(expr, x)} que
-testa @code{expr} para ver se essa express@~ao da forma @code{a*x + b}
-tal que @code{a} e @code{b} n@~ao contenham @code{x} e @code{a} seja n@~ao nulo.
-Essa fun@,{c}@~ao de coincid@^encia coincide com express@~oes que sejam lineares em qualquer vari@'avel,
-por que o argumento de modelo @code{x} @'e fornecido para @code{defmatch}.
+Define uma função @code{linearp(expr, x)} que
+testa @code{expr} para ver se essa expressão da forma @code{a*x + b}
+tal que @code{a} e @code{b} não contenham @code{x} e @code{a} seja não nulo.
+Essa função de coincidência coincide com expressões que sejam lineares em qualquer variável,
+por que o argumento de modelo @code{x} é fornecido para @code{defmatch}.
 @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
 
 @c ===beg===
@@ -168,11 +168,11 @@ por que o argumento de modelo @code{x} @'e fornecido para @code{defmatch}.
 (%o6)                           x
 @end example
 
-Define uma fun@,{c}@~ao @code{linearp(expr)} que testa @code{expr}
-para ver se essa express@~ao @'e da forma @code{a*x + b}
-tal que @code{a} e @code{b} n@~ao contenham @code{x} e @code{a} seja n@~ao nulo.
-Essa fun@,{c}@~ao de coincid@^encia somente coincide com express@~oes lineares em @code{x},
-n@~ao em qualquer outra vari@'avel, porque nenhum argumento de modelo @'e fornecido a @code{defmatch}.
+Define uma função @code{linearp(expr)} que testa @code{expr}
+para ver se essa expressão é da forma @code{a*x + b}
+tal que @code{a} e @code{b} não contenham @code{x} e @code{a} seja não nulo.
+Essa função de coincidência somente coincide com expressões lineares em @code{x},
+não em qualquer outra variável, porque nenhum argumento de modelo é fornecido a @code{defmatch}.
 
 @c ===beg===
 @c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
@@ -192,8 +192,8 @@ n@~ao em qualquer outra vari@'avel, porque nenhum argumento de modelo @'e fornec
 (%o4)                  [b = y , a = y + 4]
 @end example
 
-Define uma fun@,{c}@~ao @code{checklimits(expr)} que testa @code{expr}
-para ver se essa express@~ao @'e uma integral definida.
+Define uma função @code{checklimits(expr)} que testa @code{expr}
+para ver se essa expressão é uma integral definida.
  
 @c ===beg===
 @c matchdeclare ([a, f], true);
@@ -236,38 +236,38 @@ para ver se essa express@~ao @'e uma integral definida.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} defrule (@var{nomeregra}, @var{modelo}, @var{substitui@,{c}@~ao})
+@deffn {Função} defrule (@var{nomeregra}, @var{modelo}, @var{substituição})
 Define e nomeia uma
-regra de substitui@,{c}@~ao para o modelo dado.  Se a regra nomeada @var{nomeregra} for
-aplicada a uma express@~ao (atrav@'es de @code{apply1}, @code{applyb1}, ou @code{apply2}), toda
-subexpress@~ao coincidindo com o modelo ser@'a substitu@'{@dotless{i}}da por
-@code{substitui@,{c}@~ao}. Todas as vari@'aveis em @code{substitui@,{c}@~ao} que tiverem sido
-atribuidos valores pela coincid@^encia com o modelo s@~ao atribuidas esses valores na
-@code{substitui@,{c}@~ao} que @'e ent@~ao simplificado.
+regra de substituição para o modelo dado.  Se a regra nomeada @var{nomeregra} for
+aplicada a uma expressão (através de @code{apply1}, @code{applyb1}, ou @code{apply2}), toda
+subexpressão coincidindo com o modelo será substituída por
+@code{substituição}. Todas as variáveis em @code{substituição} que tiverem sido
+atribuidos valores pela coincidência com o modelo são atribuidas esses valores na
+@code{substituição} que é então simplificado.
 
 As regras por si mesmas podem ser
-tratadas como fun@,{c}@~oes que transforma uma express@~ao atrav@'es de uma
-opera@,{c}@~ao de coincid@^encia de modelo e substitui@,{c}@~ao.
-Se a coincid@^encia falhar, a fun@,{c}@~ao da regra retorna @code{false}.
+tratadas como funções que transforma uma expressão através de uma
+operação de coincidência de modelo e substituição.
+Se a coincidência falhar, a função da regra retorna @code{false}.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
-@deffnx {Fun@,{c}@~ao} disprule (all)
+@deffn {Função} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
+@deffnx {Função} disprule (all)
 Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
 
-Cada regra @'e mostrada com um r@'otulo de express@~ao interm@'edia (@code{%t}).
+Cada regra é mostrada com um rótulo de expressão intermédia (@code{%t}).
 
 @code{disprule (all)} mostra todas as regras.
 
-@code{disprule} n@~ao avalia seus argumentos.
+@code{disprule} não avalia seus argumentos.
 
-@code{disprule} retorna a lista de r@'otulos de express@~oes intermed@'airias correspondendo @`as regras mostradas.
+@code{disprule} retorna a lista de rótulos de expressões intermedáirias correspondendo às regras mostradas.
 
-Veja tamb@'em @code{letrules}, que mostra regras definidas atrav@'es de @code{let}.
+Veja também @code{letrules}, que mostra regras definidas através de @code{let}.
 
 Examples:
 
@@ -300,70 +300,70 @@ Examples:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
-@deffnx {Fun@,{c}@~ao} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
-Define uma regra de substitui@,{c}@~ao para @code{letsimp} tal que @var{prod} @'e substitu@'{@dotless{i}}do por @var{repl}.
-@var{prod} @'e um produto de expoentes positivos ou negativos dos seguintes termos:
+@deffn {Função} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Função} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
+Define uma regra de substituição para @code{letsimp} tal que @var{prod} é substituído por @var{repl}.
+@var{prod} é um produto de expoentes positivos ou negativos dos seguintes termos:
 
 @itemize @bullet
 @item
-Atomos que @code{letsimp} ir@'a procurar literalmente a menos que previamente
-chamando @code{letsimp} a fun@,{c}@~ao @code{matchdeclare} @'e usada para associar um
-predicado com o @'atomo.  Nesse caso @code{letsimp} ir@'a coincidir com o @'atomo para
+Atomos que @code{letsimp} irá procurar literalmente a menos que previamente
+chamando @code{letsimp} a função @code{matchdeclare} é usada para associar um
+predicado com o átomo.  Nesse caso @code{letsimp} irá coincidir com o átomo para
 qualquer termo de um produto satisfazendo o predicado.
 @item
-N@'ucleos tais como @code{sin(x)}, @code{n!}, @code{f(x,y)}, etc.  Como com @'atomos acima
-@code{letsimp} ir@'a olhar um literal coincidente a menos que @code{matchdeclare} seja usada para
-associar um predicado com o argumento do n@'ucleo.
+Núcleos tais como @code{sin(x)}, @code{n!}, @code{f(x,y)}, etc.  Como com átomos acima
+@code{letsimp} irá olhar um literal coincidente a menos que @code{matchdeclare} seja usada para
+associar um predicado com o argumento do núcleo.
 @end itemize
 
-Um termo para um expoente positivo ir@'a somente coincidir com um termo tendo ao menos aquele
+Um termo para um expoente positivo irá somente coincidir com um termo tendo ao menos aquele
 expoente.  Um termo para um expoente negativo
-por outro lado ir@'a somente coincidir com um termo com um expoente ao menos j@'a
+por outro lado irá somente coincidir com um termo com um expoente ao menos já
 negativo.  o caso de expentes negativos em @var{prod} o comutador
 @code{letrat} deve ser escolhido para @code{true}.
-Veja tamb@'em @code{letrat}.
+Veja também @code{letrat}.
 
-Se um predicado for inclu@'{@dotless{i}}do na fun@,{c}@~ao @code{let} seguido por uma lista de
-argumentos, uma tentativa de coincid@^encia (i.e. uma que pode ser aceita se o
-predicado fosse omitido) @'e aceita somente se
-@code{prednome (arg_1', ..., arg_n')} avaliar para @code{true} onde @var{arg_i'} @'e o valor
-coincidente com @var{arg_i}.  O @var{arg_i} pode ser o nome de qualquer @'atomo ou o argumento
-de qualquer n@'ucleo aparecendo em @var{prod}.
-@var{repl} pode ser qualquer express@~ao racional. @c ONLY RATIONAL -- REALLY ??
-Se quaisquer dos @'atomos ou argumentos de @var{prod} aparecer em @var{repl} a
-substitui@,{c}@~ao @'e feita. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
+Se um predicado for incluído na função @code{let} seguido por uma lista de
+argumentos, uma tentativa de coincidência (i.e. uma que pode ser aceita se o
+predicado fosse omitido) é aceita somente se
+@code{prednome (arg_1', ..., arg_n')} avaliar para @code{true} onde @var{arg_i'} é o valor
+coincidente com @var{arg_i}.  O @var{arg_i} pode ser o nome de qualquer átomo ou o argumento
+de qualquer núcleo aparecendo em @var{prod}.
+@var{repl} pode ser qualquer expressão racional. @c ONLY RATIONAL -- REALLY ??
+Se quaisquer dos átomos ou argumentos de @var{prod} aparecer em @var{repl} a
+substituição é feita. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
 
-O sinalizador global @code{letrat} controla a simplifica@,{c}@~ao dos quocientes atrav@'es de @code{letsimp}.
+O sinalizador global @code{letrat} controla a simplificação dos quocientes através de @code{letsimp}.
 Quando @code{letrat} for @code{false},
 @code{letsimp} simplifica o numerador e o
-denominador de @var{expr} separadamente, e n@~ao simplifica o quociente.
-Substitui@,{c}@~oes tais como @code{n!/n} v@~ao para @code{(n-1)!} ent@~ao falham quando @code{letrat} for @code{false}.
-Quando @code{letrat} for @code{true}, ent@~ao o numerador,
-o denominador, e o quociente s@~ao simplificados nessa ordem.
+denominador de @var{expr} separadamente, e não simplifica o quociente.
+Substituições tais como @code{n!/n} vão para @code{(n-1)!} então falham quando @code{letrat} for @code{false}.
+Quando @code{letrat} for @code{true}, então o numerador,
+o denominador, e o quociente são simplificados nessa ordem.
 
-Essas fun@,{c}@~oes de substitui@,{c}@~ao
+Essas funções de substituição
 permitem-lhe trabalhar com muitos pacotes de regras.  Cada pacote de
-regras pode conter qualquer n@'umero de regras @code{let} e @'e
-referenciado atrav@'es de um nome definido pelo utilizador.  @code{let
+regras pode conter qualquer número de regras @code{let} e é
+referenciado através de um nome definido pelo utilizador.  @code{let
 ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ...,
 @var{arg_n}], @var{nome_pacote})} adiciona a regra @var{prednome} ao
 pacote de regras @var{nome_pacote}.  @code{letsimp (@var{expr},
 @var{nome_pacote})} aplica as regras em @var{nome_pacote}.
 @code{letsimp (@var{expr}, @var{nome_pacote1}, @var{nome_pacote2}, ...)}
-@'e equivalente a @code{letsimp (@var{expr}, @var{nome_pacote1})}
+é equivalente a @code{letsimp (@var{expr}, @var{nome_pacote1})}
 seguido por @code{letsimp (%, @var{nome_pacote2})}, ....
 
-@code{current_let_rule_package} @'e o nome do pacote de regras que est@'a
+@code{current_let_rule_package} é o nome do pacote de regras que está
 actualmente sendo usando.
-Essa vari@'avel pode receber o nome de
+Essa variável pode receber o nome de
 qualquer pacote de regras definidos via o comando @code{let}.
-Quando qualquer das fun@,{c}@~oes compreendidas no pacote @code{let} s@~ao chamadas sem o nome do pacote,
-o pacote nomeado por @code{current_let_rule_package} @'e usado.
-Se uma chamada tal como @code{letsimp (@var{expr}, @var{nome_pct_regras})} @'e feita,
-o pacote de regras @var{nome_pct_regras} @'e usado somente para aquele comando @code{letsimp},
-e @code{current_let_rule_package} n@~ao @'e alterada.
-Se n@~ao especificado de outra forma,
+Quando qualquer das funções compreendidas no pacote @code{let} são chamadas sem o nome do pacote,
+o pacote nomeado por @code{current_let_rule_package} é usado.
+Se uma chamada tal como @code{letsimp (@var{expr}, @var{nome_pct_regras})} é feita,
+o pacote de regras @var{nome_pct_regras} é usado somente para aquele comando @code{letsimp},
+e @code{current_let_rule_package} não é alterada.
+Se não especificado de outra forma,
 @code{current_let_rule_package} avalia de forma padronizada para @code{default_let_rule_package}.
 
 @example
@@ -389,15 +389,15 @@ Se n@~ao especificado de outra forma,
 @c NEEDS ADDITIONAL EXAMPLES
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} letrat
-Valor por omiss@~ao: @code{false}
+@defvr {Variável de opção} letrat
+Valor por omissão: @code{false}
 
 Quando @code{letrat} for @code{false}, @code{letsimp} simplifica o
-numerador e o denominador de uma raz@~ao separadamente,
-e n@~ao simplifica o quociente.
+numerador e o denominador de uma razão separadamente,
+e não simplifica o quociente.
 
 Quando @code{letrat} for @code{true},
-o numerador, o denominador, e seu quocienten s@~ao simplificados nessa ordem.
+o numerador, o denominador, e seu quocienten são simplificados nessa ordem.
 
 @example
 (%i1) matchdeclare (n, true)$
@@ -418,26 +418,26 @@ o numerador, o denominador, e seu quocienten s@~ao simplificados nessa ordem.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} letrules ()
-@deffnx {Fun@,{c}@~ao} letrules (@var{nome_pacote})
+@deffn {Função} letrules ()
+@deffnx {Função} letrules (@var{nome_pacote})
 Mostra as regras em um pacote de regras.
 @code{letrules ()} mostra as regras no pacote de regras corrente.
 @code{letrules (@var{nome_pacote})} mostra as regras em @code{nome_pacote}.
 
-O pacote de regras corrente @'e nomeado por @code{current_let_rule_package}.
-Se n@~ao especificado de outra forma, @code{current_let_rule_package}
-avalia de forma padr@~ao para @code{default_let_rule_package}.
+O pacote de regras corrente é nomeado por @code{current_let_rule_package}.
+Se não especificado de outra forma, @code{current_let_rule_package}
+avalia de forma padrão para @code{default_let_rule_package}.
 
-Veja tamb@'em @code{disprule}, que mostra regras defindas por @code{tellsimp} e @code{tellsimpafter}.
+Veja também @code{disprule}, que mostra regras defindas por @code{tellsimp} e @code{tellsimpafter}.
 @c WHAT ABOUT defmatch AND defrule ??
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} letsimp (@var{expr})
-@deffnx {Fun@,{c}@~ao} letsimp (@var{expr}, @var{nome_pacote})
-@deffnx {Fun@,{c}@~ao} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
-Repetidamente aplica a substitui@,{c}@~ao definida por @code{let}
-at@'e que nenhuma mudan@,{c}a adicional seja feita para @var{expr}.
+@deffn {Função} letsimp (@var{expr})
+@deffnx {Função} letsimp (@var{expr}, @var{nome_pacote})
+@deffnx {Função} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
+Repetidamente aplica a substituição definida por @code{let}
+até que nenhuma mudança adicional seja feita para @var{expr}.
 
 @code{letsimp (@var{expr})} usa as regras de @code{current_let_rule_package}.
 
@@ -445,97 +445,97 @@ at@'e que nenhuma mudan@,{c}a adicional seja feita para @var{expr}.
 sem alterar @code{current_let_rule_package}.
 
 @code{letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})}
-@'e equivalente a @code{letsimp (@var{expr}, @var{nome_pacote_1}},
+é equivalente a @code{letsimp (@var{expr}, @var{nome_pacote_1}},
 seguido por @code{letsimp (%, @var{nome_pacote_2})}, e assim sucessivamente.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} let_rule_packages
-Valor por omiss@~ao: @code{[default_let_rule_package]}
+@defvr {Variável de opção} let_rule_packages
+Valor por omissão: @code{[default_let_rule_package]}
 
-@code{let_rule_packages} @'e uma lista de todos os pacotes de regras @code{let} definidos pelo utilizador
-mais o pacote padr@~ao @code{default_let_rule_package}.
+@code{let_rule_packages} é uma lista de todos os pacotes de regras @code{let} definidos pelo utilizador
+mais o pacote padrão @code{default_let_rule_package}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+@deffn {Função} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 Associa um predicado @var{pred_k} 
-com uma vari@'avel ou lista de vari@'aveis @var{a_k}
-de forma que @var{a_k} coincida com express@~oes
-para as quais o predicado retorne qualquer coisa que n@~ao @code{false}.
+com uma variável ou lista de variáveis @var{a_k}
+de forma que @var{a_k} coincida com expressões
+para as quais o predicado retorne qualquer coisa que não @code{false}.
 
-Umpredicado @'e o nome de uma fun@,{c}@~ao,
-ou de uma express@~ao lambda,
-ou uma chamada de fun@,{c}@~ao ou chamada de fun@,{c}@~ao lambda iomitindo o @'ulltimo argumento,
+Umpredicado é o nome de uma função,
+ou de uma expressão lambda,
+ou uma chamada de função ou chamada de função lambda iomitindo o úlltimo argumento,
 ou @code{true} ou @code{all}.
-Qualquer express@~ao coincide com @code{true} ou @code{all}.
-Se o predicado for especificado como uma chamada de fun@,{c}@~ao ou chamada de fun@,{c}@~ao lambda,
-a express@~ao a ser testada @'e anexada ao final da lista de argumentos;
-os argumentos s@~ao avaliados ao mesmo tempo que a coincid@^encia @'e avaliada.
-De outra forma, o predicado @'e especificado como um nome de fun@,{c}@~ao ou express@~ao lambda,
-e a express@~ao a ser testada @'e o argumento sozinho.
-Uma fun@,{c}@~ao predicado n@~ao precisa ser definida quando @code{matchdeclare} for chamada;
-o predicado n@~ao @'e avaliado at@'e que uma coincid@^encia seja tentada.
+Qualquer expressão coincide com @code{true} ou @code{all}.
+Se o predicado for especificado como uma chamada de função ou chamada de função lambda,
+a expressão a ser testada é anexada ao final da lista de argumentos;
+os argumentos são avaliados ao mesmo tempo que a coincidência é avaliada.
+De outra forma, o predicado é especificado como um nome de função ou expressão lambda,
+e a expressão a ser testada é o argumento sozinho.
+Uma função predicado não precisa ser definida quando @code{matchdeclare} for chamada;
+o predicado não é avaliado até que uma coincidência seja tentada.
 
-Um predicado pode retornar uma express@~ao Booleana al@'em de @code{true} ou @code{false}.
-Express@~oes Booleanas s@~ao avaliadas por @code{is} dentro da fun@,{c}@~ao da regra constru@'{@dotless{i}}da,
-de forma que n@~ao @'e necess@'ario chamar @code{is} dentro do predicado.
+Um predicado pode retornar uma expressão Booleana além de @code{true} ou @code{false}.
+Expressões Booleanas são avaliadas por @code{is} dentro da função da regra construída,
+de forma que não é necessário chamar @code{is} dentro do predicado.
 
-Se uma express@~ao satisfaz uma coincid@^encia de predicado,
-a vari@'avel de coincid@^encia @'e atribu@'{@dotless{i}}da @`a express@~ao,
-excepto para vari@'aveis de coincid@^encia que s@~ao operandos de adi@,{c}@~ao @code{+} ou multiplica@,{c}@~ao @code{*}.
-Somente adi@,{c}@~ao e multiplica@,{c}@~ao s@~ao manuseadas de forma especial;
-outros operadores en@'arios (ambos os definidos internamente e os definidos pelo utilizador) s@~ao tratados como fun@,{c}@~oes comuns.
+Se uma expressão satisfaz uma coincidência de predicado,
+a variável de coincidência é atribuída à expressão,
+excepto para variáveis de coincidência que são operandos de adição @code{+} ou multiplicação @code{*}.
+Somente adição e multiplicação são manuseadas de forma especial;
+outros operadores enários (ambos os definidos internamente e os definidos pelo utilizador) são tratados como funções comuns.
 @c WOULD BE GREAT TO EXTEND PART+/PART* PROCESSING TO ALL N-ARY OPERATORS
 
-No caso de adi@,{c}@~ao e multiplica@,{c}@~ao,
-a vari@'avel de coincid@^encia pode ser atribuida a uma express@~ao simples que satisfaz o predicado de coincid@^encia,
-ou uma adi@,{c}@~ao ou um produto (respectivamente) de tais express@~oes.
-Tal coincid@^encia de termo multiplo @'e gulosa:
-predicados s@~ao avaliados na ordem em que suas vari@'aveis associadas
-aparecem no modelo de coincid@^encia,
-e o termo que satisfizer mais que um predicado @'e tomado pelo primeiro
+No caso de adição e multiplicação,
+a variável de coincidência pode ser atribuida a uma expressão simples que satisfaz o predicado de coincidência,
+ou uma adição ou um produto (respectivamente) de tais expressões.
+Tal coincidência de termo multiplo é gulosa:
+predicados são avaliados na ordem em que suas variáveis associadas
+aparecem no modelo de coincidência,
+e o termo que satisfizer mais que um predicado é tomado pelo primeiro
 predicado que satisfizer.
-Cada predicado @'e testado contra todos os operandos de adi@,{c}@~ao ou produto antes que o pr@'oximo predicado seja avaliado.
+Cada predicado é testado contra todos os operandos de adição ou produto antes que o próximo predicado seja avaliado.
 Adicionalmente,
-se 0 ou 1 (respectivamente) satisfazem um predicado de coincid@^encia,
-e n@~ao existe outros termos que satisfa@,{c}am o predicado,
-0 ou 1 @'e atribu@'{@dotless{i}}do para a vari@'avel de coincid@^encia associada com o predicado.
+se 0 ou 1 (respectivamente) satisfazem um predicado de coincidência,
+e não existe outros termos que satisfaçam o predicado,
+0 ou 1 é atribuído para a variável de coincidência associada com o predicado.
 
-O algoritmo para processar modelos contendo adi@,{c}@~ao e multiplica@,{c}@~ao faz alguns resultados de coincid@^encia
-(por exemplo, um modelo no qual uma vari@'avel "coincida com qualquer coisa" aparecer)
-dependerem da ordem dos termos no modelo de coincid@^encia e na express@~ao a ser testada a coincid@^encia.
+O algoritmo para processar modelos contendo adição e multiplicação faz alguns resultados de coincidência
+(por exemplo, um modelo no qual uma variável "coincida com qualquer coisa" aparecer)
+dependerem da ordem dos termos no modelo de coincidência e na expressão a ser testada a coincidência.
 Todavia,
-se todos os predicados de coincid@^encia s@~ao mutuamente exclusivos,
-o resultado de coincid@^encia @'e insens@'{@dotless{i}}vel a ordena@,{c}@~ao,
-como um predicado de coincid@^encia n@~ao pode aceitar termos de coincid@^encia de outro.
+se todos os predicados de coincidência são mutuamente exclusivos,
+o resultado de coincidência é insensível a ordenação,
+como um predicado de coincidência não pode aceitar termos de coincidência de outro.
 
-Chamado @code{matchdeclare} com uma vari@'avel @var{a} como um argumento
-muda a propriedade @code{matchdeclare} para @var{a}, se a vari@'avel @var{a} tiver sido declarada anteriormente;
-somente o @code{matchdeclare} mais recente est@'a em efeito quando uma regra @'e definida,
-mudan@,{c}as posteriores para a propriedade @code{matchdeclare}
+Chamado @code{matchdeclare} com uma variável @var{a} como um argumento
+muda a propriedade @code{matchdeclare} para @var{a}, se a variável @var{a} tiver sido declarada anteriormente;
+somente o @code{matchdeclare} mais recente está em efeito quando uma regra é definida,
+mudanças posteriores para a propriedade @code{matchdeclare}
 (via @code{matchdeclare} ou @code{remove})
-n@~ao afectam regras existentes.
+não afectam regras existentes.
 
-@code{propvars (matchdeclare)} retorna a lista de todas as vari@'aveis
+@code{propvars (matchdeclare)} retorna a lista de todas as variáveis
 para as quais exista uma propriedade @code{matchdeclare}.
-@code{printprops (@var{a}, matchdeclare)} retorna o predicado para a vari@'avel @code{a}.
-@code{printprops (all, matchdeclare)} retorna a lista de predicados para todas as vari@'aveis @code{matchdeclare}.
-@code{remove (@var{a}, matchdeclare)} remove a propriedade @code{matchdeclare} da vari@'avel @var{a}.
+@code{printprops (@var{a}, matchdeclare)} retorna o predicado para a variável @code{a}.
+@code{printprops (all, matchdeclare)} retorna a lista de predicados para todas as variáveis @code{matchdeclare}.
+@code{remove (@var{a}, matchdeclare)} remove a propriedade @code{matchdeclare} da variável @var{a}.
 
-As fun@,{c}@~oes
+As funções
 @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter}, e @code{let}
-constroem regras que testam express@~oes contra modelos.
+constroem regras que testam expressões contra modelos.
 
-@code{matchdeclare} coloca ap@'ostrofo em seus argumentos.
+@code{matchdeclare} coloca apóstrofo em seus argumentos.
 @code{matchdeclare} sempre retorna @code{done}.
 
 Exemplos:
 
-Um predicado @'e o nome de uma fun@,{c}@~ao,
-ou uma express@~ao lambda,
-ou uma chamada de fun@,{c}@~ao ou chamada a fun@,{c}@~ao lambda omitindo o @'ultimo argumento,
+Um predicado é o nome de uma função,
+ou uma expressão lambda,
+ou uma chamada de função ou chamada a função lambda omitindo o último argumento,
 or @code{true} or @code{all}.
 
 @c ===beg===
@@ -561,8 +561,8 @@ or @code{true} or @code{all}.
 (%o6)                         done
 @end example
 
-Se uma express@~ao satisfaz um predicado de coincid@^encia,
-a vari@'avel de coincid@^encia @'e atribu@'{@dotless{i}}da @`a express@~ao.
+Se uma expressão satisfaz um predicado de coincidência,
+a variável de coincidência é atribuída à expressão.
 
 @c ===beg===
 @c matchdeclare (aa, integerp, bb, atom);
@@ -579,9 +579,9 @@ a vari@'avel de coincid@^encia @'e atribu@'{@dotless{i}}da @`a express@~ao.
 (%o3)               [integer = 8, atom = %pi]
 @end example
 
-No caso de adi@,{c}@~ao e multiplica@,{c}@~ao,
-@`a vari@'avel de coincid@^encia pode ser atribu@'{@dotless{i}}da uma express@~ao simples que satisfaz o predicado de coincid@^encia,
-ou um somat@'orio ou produt@'orio (respectivamente) de tais express@~oes.
+No caso de adição e multiplicação,
+à variável de coincidência pode ser atribuída uma expressão simples que satisfaz o predicado de coincidência,
+ou um somatório ou produtório (respectivamente) de tais expressões.
 
 @c ===beg===
 @c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
@@ -606,9 +606,9 @@ bb aa partitions `product'
 @end example
 
 Quando coincidindo argumentos de @code{+} e @code{*},
-se todos os predicados de coincid@^encia forem mutuamente exclusivos,
-o resultado da coincid@^encia @'e insens@'{@dotless{i}}ve @`a ordena@,{c}@~ao,
-como um predicado de coincid@^encia n@~ao pode aceitar termos que coincidiram com outro.
+se todos os predicados de coincidência forem mutuamente exclusivos,
+o resultado da coincidência é insensíve à ordenação,
+como um predicado de coincidência não pode aceitar termos que coincidiram com outro.
 
 @c ===beg===
 @c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
@@ -636,7 +636,7 @@ bb aa partitions `product'
                                                  c
 @end example
 
-As fun@,{c}@~oes @code{propvars} e @code{printprops} retornam informa@,{c}@~oes sobre vari@'avels de coincid@^encia.
+As funções @code{propvars} e @code{printprops} retornam informações sobre variávels de coincidência.
 
 @c ===beg===
 @c matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
@@ -664,37 +664,37 @@ As fun@,{c}@~oes @code{propvars} e @code{printprops} retornam informa@,{c}@~oes 
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d})
-@deffnx {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
+@deffn {Função} matchfix (@var{delimitador_e}, @var{delimitador_d})
+@deffnx {Função} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
 Declara um operador @code{matchfix} com delimitadores esquerdo e direito @var{delimitador_e} e @var{delimitador_d}.
-Os delimitadores s@~ao especificados como sequ@^ecias de caracteres.
+Os delimitadores são especificados como sequêcias de caracteres.
 
-Um operador "matchfix" @'e uma fun@,{c}@~ao que aceita qualquer n@'umero de argumentos,
+Um operador "matchfix" é uma função que aceita qualquer número de argumentos,
 tal que os argumentos ocorram entre os delimitadores correspondentes esquerdo e direito.
-Os delimitadores podem ser quaisquer sequ@^ecias de caracteres, contanto que o analisador de express@~oes do Maxima possa
+Os delimitadores podem ser quaisquer sequêcias de caracteres, contanto que o analisador de expressões do Maxima possa
 distinguir os delimitadores dos operandos 
-e de outras express@~oes e operadores.
-Na pr@'atica essas regras excluem delimitadores n@~ao analis@'aveis tais como
+e de outras expressões e operadores.
+Na prática essas regras excluem delimitadores não analisáveis tais como
 @code{%}, @code{,}, @code{$} e @code{;}, 
-e pode ser necess@'ario isolar os delimitadores com espa@,{c}os em branco.
+e pode ser necessário isolar os delimitadores com espaços em branco.
 O delimitador da direita pode ser o mesmo ou diferente do delimitador da esquerda.
 
 Um delimitador esquerdo pode ser associado com somente um delimitador direito;
-dois diferentes operadores @code{matchfix} n@~ao podem ter o mesmo delimitador esquerdo.
+dois diferentes operadores @code{matchfix} não podem ter o mesmo delimitador esquerdo.
 
 Um operador existente pode ser redeclarado com um operador @code{matchfix}
 sem alterar suas outras propriedades.
-Particularmente, operadores internos tais como adi@,{c}@~ao @code{+} podem
+Particularmente, operadores internos tais como adição @code{+} podem
 ser declarados @code{matchfix},
-mas fun@,{c}@~oes operadores n@~ao podem ser definidas para operadores internos.
+mas funções operadores não podem ser definidas para operadores internos.
 
 @code{matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})} 
-declara o argumento @var{arg_pos} como sendo um entre: express@~ao l@'ogica,
-express@~ao comum do Maxima mas que n@~ao seja do tipo anterior, e qualquer outro
-tipo de express@~ao que n@~ao esteja inclu@'{@dotless{i}}da nos dois primeiros tipos.
-Essa declara@,{c}@~ao resulta em @var{pos} sendo um entre: express@~ao l@'ogica,
-express@~ao comum do Maxima mas que n@~ao seja do tipo anterior, e qualquer outro
-tipo de express@~ao que n@~ao esteja inclu@'{@dotless{i}}da nos dois primeiros tipos 
+declara o argumento @var{arg_pos} como sendo um entre: expressão lógica,
+expressão comum do Maxima mas que não seja do tipo anterior, e qualquer outro
+tipo de expressão que não esteja incluída nos dois primeiros tipos.
+Essa declaração resulta em @var{pos} sendo um entre: expressão lógica,
+expressão comum do Maxima mas que não seja do tipo anterior, e qualquer outro
+tipo de expressão que não esteja incluída nos dois primeiros tipos 
 e os delimitadores @var{delimitador_e} e @var{delimitador_d}.
 
 @c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
@@ -704,20 +704,20 @@ e os delimitadores @var{delimitador_e} e @var{delimitador_d}.
 @c binding power is effectively irrelevant
 @c to the declaration of a matchfix operator.
 
-A fun@,{c}@~ao para realizar uma opera@,{c}@~ao @code{matchfix} @'e uma fun@,{c}@~ao
+A função para realizar uma operação @code{matchfix} é uma função
 comum definida pelo utilizador.
-A fun@,{c}@~ao operador @'e definida
+A função operador é definida
 da forma usual
-com o operador de defini@,{c}@~ao de fun@,{c}@~ao @code{:=} ou @code{define}.
+com o operador de definição de função @code{:=} ou @code{define}.
 Os argumentos podem ser escritos entre os delimitadores,
-ou com o delimitador esquerdo com uma sequ@^encia de caracteres com ap@'ostrofo e os argumentos
-seguindo entre par@^entesis.
-@code{dispfun (@var{delimitador_e})} mostra a defini@,{c}@~ao da fun@,{c}@~ao operador.
+ou com o delimitador esquerdo com uma sequência de caracteres com apóstrofo e os argumentos
+seguindo entre parêntesis.
+@code{dispfun (@var{delimitador_e})} mostra a definição da função operador.
 
-O @'unico operador interno @code{matchfix} @'e o construtor de listas @code{[ ]}.
-Par@^entesis @code{( )} e aspas duplas @code{" "} 
+O único operador interno @code{matchfix} é o construtor de listas @code{[ ]}.
+Parêntesis @code{( )} e aspas duplas @code{" "} 
 atuam como operadores @code{matchfix},
-mas n@~ao s@~ao tratados como tal pelo analisador do Maxima.
+mas não são tratados como tal pelo analisador do Maxima.
 
 @code{matchfix} avalia seus argumentos.
 @code{matchfix} retorna seu primeiro argumento, @var{delimitador_e}.
@@ -727,7 +727,7 @@ Exemplos:
 
 @itemize @bullet
 @item
-Delimitadores podem ser quase quaisquer sequ@^encia de caracteres.
+Delimitadores podem ser quase quaisquer sequência de caracteres.
 @end itemize
 @c ===beg===
 @c matchfix ("@@", "~");
@@ -759,7 +759,7 @@ Delimitadores podem ser quase quaisquer sequ@^encia de caracteres.
 
 @itemize @bullet
 @item
-Operadores @code{matchfix} s@~ao fun@,{c}@~oes comuns definidas pelo utilizador.
+Operadores @code{matchfix} são funções comuns definidas pelo utilizador.
 @end itemize
 @example
 (%i1) matchfix ("!-", "-!");
@@ -795,30 +795,30 @@ Operadores @code{matchfix} s@~ao fun@,{c}@~oes comuns definidas pelo utilizador.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} remlet (@var{prod}, @var{nome})
-@deffnx {Fun@,{c}@~ao} remlet ()
-@deffnx {Fun@,{c}@~ao} remlet (all)
-@deffnx {Fun@,{c}@~ao} remlet (all, @var{nome})
-Apaga a regra de substitui@,{c}ao, prod --> repl, mais
-recentemente definida atrav@'es dea fun@,{c}@~ao @code{let}.  Se @code{nome} for fornecido a regra @'e
+@deffn {Função} remlet (@var{prod}, @var{nome})
+@deffnx {Função} remlet ()
+@deffnx {Função} remlet (all)
+@deffnx {Função} remlet (all, @var{nome})
+Apaga a regra de substituiçao, prod --> repl, mais
+recentemente definida através dea função @code{let}.  Se @code{nome} for fornecido a regra é
 apagada do pacote de regras chamado @code{nome}.
 
-@code{remlet()} e @code{remlet(all)} apagam todas as regras de substitui@,{c}@~ao do pacote de regras corrente.
+@code{remlet()} e @code{remlet(all)} apagam todas as regras de substituição do pacote de regras corrente.
 Se o nome de um pacote de regras for fornecido,
-e.g. @code{remlet (all, @var{nome})}, o pacote de regras @var{nome} @'e tamb@'em apagado.
+e.g. @code{remlet (all, @var{nome})}, o pacote de regras @var{nome} é também apagado.
 
-Se uma substitui@,{c}@~ao @'e para ser mudada usando o mesmo
-produto, @code{remlet} n@~ao precisa ser chamada, apenas redefina a substitui@,{c}@~ao
-usando o mesmo produto (literalmente) com a fun@,{c}@~ao @code{let} e a nova
-substitui@,{c}@~ao e/ou nome de predicado.  Pode agora @code{remlet (@var{prod})} ser
-chamada e a regra de substitui@,{c}@~ao original @'e ressuscitada.
+Se uma substituição é para ser mudada usando o mesmo
+produto, @code{remlet} não precisa ser chamada, apenas redefina a substituição
+usando o mesmo produto (literalmente) com a função @code{let} e a nova
+substituição e/ou nome de predicado.  Pode agora @code{remlet (@var{prod})} ser
+chamada e a regra de substituição original é ressuscitada.
 
-Veja tamb@'em @code{remrule}, que remove uma regra definida atrav@'es de @code{tellsimp} ou de @code{tellsimpafter}.
+Veja também @code{remrule}, que remove uma regra definida através de @code{tellsimp} ou de @code{tellsimpafter}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} remrule (@var{op}, @var{nomeregra})
-@deffnx {Fun@,{c}@~ao} remrule (@var{op}, all)
+@deffn {Função} remrule (@var{op}, @var{nomeregra})
+@deffnx {Função} remrule (@var{op}, all)
 Remove regras definidas por @code{tellsimp}, ou @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{nomeregra})}
@@ -829,7 +829,7 @@ Quando @var{op} for um operador interno ou um operador definido pelo utilizador
 
 @code{remrule (@var{op}, all)} remove todas as regras para o operador @var{op}.
 
-Veja tamb@'em @code{remlet}, que remove uma regra definida atrav@'es de @code{let}.
+Veja também @code{remlet}, que remove uma regra definida através de @code{let}.
 
 Examples:
 
@@ -884,23 +884,23 @@ Examples:
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
-@deffn {Fun@,{c}@~ao} tellsimp (@var{pattern}, @var{replacement})
-@'e similar a @code{tellsimpafter} mas coloca
-nova informa@,{c}@~ao antes da antiga de forma que essa nova regra seja aplicada antes das regras
-de simplifica@,{c}@~ao internas.
+@deffn {Função} tellsimp (@var{pattern}, @var{replacement})
+é similar a @code{tellsimpafter} mas coloca
+nova informação antes da antiga de forma que essa nova regra seja aplicada antes das regras
+de simplificação internas.
 
-@code{tellsimp} @'e usada quando for importante modificar a express@~ao
+@code{tellsimp} é usada quando for importante modificar a expressão
 antes que o simplificador trabalhe sobre ela, por exemplo se o
-simplificador "sabe" alguma coisa sobre a express@~ao, mas o que ele
-retorna n@~ao @'e para sua aprecia@,{c}@~ao.  Se o
+simplificador "sabe" alguma coisa sobre a expressão, mas o que ele
+retorna não é para sua apreciação.  Se o
 simplificador "sabe" alguma coisa sobre o principal operador da
-express@~ao, mas est@'a simplesmente a escond@^e-lo, provavelmente
-querr@'a usar @code{tellsimpafter}.
+expressão, mas está simplesmente a escondê-lo, provavelmente
+querrá usar @code{tellsimpafter}.
 
-O modelo pode n@~ao ser uma
-adi@,{c}@~ao, um produto, vari@'avel simples, ou n@'umero.
+O modelo pode não ser uma
+adição, um produto, variável simples, ou número.
 
-@code{rules} @'e a lista de regras definidas por
+@code{rules} é a lista de regras definidas por
 @code{defrule}, @code{defmatch}, @code{tellsimp}, e @code{tellsimpafter}.
 
 Exemplos:
@@ -948,29 +948,29 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} tellsimpafter (@var{modelo}, @var{substitui@,{c}@~ao})
-Define a uma regra de simplifica@,{c}@~ao que o simplificador do Maxima
-aplica ap@'os as regras de simplifica@,{c}@~ao internas.
-@var{modelo} @'e uma express@~ao, compreendendo vari@'aveis de modelo (declaradas atrav@'es de @code{matchdeclare})
-e outros @'atomos e opera@,{c}@~oes, considerados literais para o prop@'osito de coincid@^encia de modelos.
-@var{substitui@,{c}@~ao} @'e substitu@'{@dotless{i}}da para uma express@~ao actual que coincide com @var{modelo};
-vari@'aveis de modelo em @var{substitui@,{c}@~ao} s@~ao atribuidas a valores coincidentes na express@~ao actual.
+@deffn {Função} tellsimpafter (@var{modelo}, @var{substituição})
+Define a uma regra de simplificação que o simplificador do Maxima
+aplica após as regras de simplificação internas.
+@var{modelo} é uma expressão, compreendendo variáveis de modelo (declaradas através de @code{matchdeclare})
+e outros átomos e operações, considerados literais para o propósito de coincidência de modelos.
+@var{substituição} é substituída para uma expressão actual que coincide com @var{modelo};
+variáveis de modelo em @var{substituição} são atribuidas a valores coincidentes na expressão actual.
 
-@var{modelo} pode ser qualquer express@~ao n@~ao at@^omica
-na qual o principal operador n@~ao @'e uma vari@'avel de modelo;
-a regra de simplifica@,{c}@~ao est@'a associada com o operador principal.
-Os nomes de fun@,{c}@~oes (com uma excess@~ao, descrita abaixo), listas, e arrays
-podem aparecer em @var{modelo} como o principal operador somente como literais (n@~ao vari@'aveis de modelo);
-essas regras fornecem express@~oes tais como @code{aa(x)} e @code{bb[y]} como modelos,
-se @code{aa} e @code{bb} forem vari@'aveis de modelo.
-Nomes de fun@,{c}@~oes, listas, e arrays que s@~ao vari@'aveis de modelo podem aparecer como operadores
-outros que n@~ao o operador principal em @var{modelo}.
+@var{modelo} pode ser qualquer expressão não at@^omica
+na qual o principal operador não é uma variável de modelo;
+a regra de simplificação está associada com o operador principal.
+Os nomes de funções (com uma excessão, descrita abaixo), listas, e arrays
+podem aparecer em @var{modelo} como o principal operador somente como literais (não variáveis de modelo);
+essas regras fornecem expressões tais como @code{aa(x)} e @code{bb[y]} como modelos,
+se @code{aa} e @code{bb} forem variáveis de modelo.
+Nomes de funções, listas, e arrays que são variáveis de modelo podem aparecer como operadores
+outros que não o operador principal em @var{modelo}.
 
-Existe uma excess@~ao para o que foi dito acima com rela@,{c}@~ao a regras e nomes de fun@,{c}@~oes.
-O nome de uma fun@,{c}@~ao subscrita em uma express@~ao tal como @code{aa[x](y)}
-pode ser uma vari@'avel de modelo,
-porque o operador principal n@~ao @'e @code{aa} mas ao contr@'ario o @'atomo Lisp @code{mqapply}.
-Isso @'e uma consequ@^encia da representa@,{c}@~ao de express@~oes envolvendo fun@,{c}@~oes subscritas.
+Existe uma excessão para o que foi dito acima com relação a regras e nomes de funções.
+O nome de uma função subscrita em uma expressão tal como @code{aa[x](y)}
+pode ser uma variável de modelo,
+porque o operador principal não é @code{aa} mas ao contrário o átomo Lisp @code{mqapply}.
+Isso é uma consequência da representação de expressões envolvendo funções subscritas.
 
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
 @c The main operator of an expression @code{expr} is @code{caar $expr}.
@@ -980,62 +980,62 @@ Isso @'e uma consequ@^encia da representa@,{c}@~ao de express@~oes envolvendo fu
 @c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
 
 @c NEED TO REVIEW THIS PARAGRAPH FOR ACCURACY
-Regras de simplifica@,{c}@~ao s@~ao aplicadas ap@'os avalia@,{c}@~ao 
-(se n@~ao suprimida atrav@'es de coloca@,{c}@~ao de ap@'ostrofo ou do sinalizador @code{noeval}).
-Regras estabelecidas por @code{tellsimpafter} s@~ao aplicadas na ordem em que forem definidas,
-e ap@'os quaisquer regras internas.
-Regras s@~ao aplicadas de baixo para cima, isto @'e,
-aplicadas primeiro a subexpress@~oes antes de ser aplicada @`a express@~ao completa.
+Regras de simplificação são aplicadas após avaliação 
+(se não suprimida através de colocação de apóstrofo ou do sinalizador @code{noeval}).
+Regras estabelecidas por @code{tellsimpafter} são aplicadas na ordem em que forem definidas,
+e após quaisquer regras internas.
+Regras são aplicadas de baixo para cima, isto é,
+aplicadas primeiro a subexpressões antes de ser aplicada à expressão completa.
 @c NO IT IS MORE COMPLICATED THAN THIS, ALTHOUGH IN SOME CIRCUMSTANCE IT APPEARS TO BE THE CASE:
 @c For a given expression, at most one rule per operator is applied.
-Isso pode ser necess@'ario para repetidamente simplificar um resultado
-(por exemplo, via o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} ou o sinalizador @code{infeval})
-para garantir que todas as regras s@~ao aplicadas.
+Isso pode ser necessário para repetidamente simplificar um resultado
+(por exemplo, via o operador apóstrofo-apóstrofo @code{'@w{}'} ou o sinalizador @code{infeval})
+para garantir que todas as regras são aplicadas.
 
-Vari@'aveis de modelo s@~ao tratadas como vari@'aveis locais em regras de simplifica@,{c}@~ao.
-Assim que uma regra @'e definida, o valor de uma vari@'avel de modelo
-n@~ao afecta a regra, e n@~ao @'e afectado pela regra.
-Uma atribui@,{c}@~ao para uma vari@'avel de modelo que resulta em uma coincid@^encia de regra com sucesso
-n@~ao afecta a atribui@,{c}@~ao corrente (ou necessita disso) da vari@'avel de modelo.
+Variáveis de modelo são tratadas como variáveis locais em regras de simplificação.
+Assim que uma regra é definida, o valor de uma variável de modelo
+não afecta a regra, e não é afectado pela regra.
+Uma atribuição para uma variável de modelo que resulta em uma coincidência de regra com sucesso
+não afecta a atribuição corrente (ou necessita disso) da variável de modelo.
 Todavia,
-como com todos os @'atomos no Maxima,
-as propriedades de vari@'aveis de modelo (como declarado por @code{put} e fun@,{c}@~oes relacionadas) s@~ao globais.
+como com todos os átomos no Maxima,
+as propriedades de variáveis de modelo (como declarado por @code{put} e funções relacionadas) são globais.
 
-A regra constru@'{@dotless{i}}da por @code{tellsimpafter} @'e nomeada ap@'os o operador principal de @code{modelo}.
+A regra construída por @code{tellsimpafter} é nomeada após o operador principal de @code{modelo}.
 Regras para operadores internos, 
 e operadores definidos pelo utilizador 
 definidos por meio de @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, e @code{nofix},
-possuem nomes que s@~ao sequ@^encias de caracteres do Maxima.
+possuem nomes que são sequências de caracteres do Maxima.
 @c SLIGHTLY TOO MUCH DETAIL
 @c (that is, the name begins with ampersand @code{&}).
-Regras para outras fun@,{c}@~oes possuem nomes que s@~ao identificadores comuns do Maxima.
+Regras para outras funções possuem nomes que são identificadores comuns do Maxima.
 @c SLIGHTLY TOO MUCH DETAIL
 @c (that is, the name begins with dollar sign @code{$}).
 
-O tratamento de substantivos e formas verbais @'e desprez@'{@dotless{i}}velmente confuso. @c THIS IS A BUG.
-Se uma regra @'e definida para uma forma substantiva (ou verbal)
-e uma regra para o verbo correspondente (ou substantivo) j@'a existe, 
-ent@~ao a nova regra definida aplica-se a ambas as formas (substantiva e verbal).
-Se uma regra para a correspondente forma verbal (ou substantiva) n@~ao existe,
-a nova regra definida aplicar-se-@'a somente para a forma substantiva (ou verbal).
+O tratamento de substantivos e formas verbais é desprezívelmente confuso. @c THIS IS A BUG.
+Se uma regra é definida para uma forma substantiva (ou verbal)
+e uma regra para o verbo correspondente (ou substantivo) já existe, 
+então a nova regra definida aplica-se a ambas as formas (substantiva e verbal).
+Se uma regra para a correspondente forma verbal (ou substantiva) não existe,
+a nova regra definida aplicar-se-á somente para a forma substantiva (ou verbal).
 
-A regra constru@'{@dotless{i}}da atrav@'es de @code{tellsimpafter} @'e uma fun@,{c}@~ao Lisp comum.
+A regra construída através de @code{tellsimpafter} é uma função Lisp comum.
 Se o nome da regra for @code{$foorule1},
-a constru@,{c}@~ao @code{:lisp (trace $foorule1)} rastreia a fun@,{c}@~ao,
-e @code{:lisp (symbol-function '$foorule1} mostra sua defini@,{c}@~ao.
+a construção @code{:lisp (trace $foorule1)} rastreia a função,
+e @code{:lisp (symbol-function '$foorule1} mostra sua definição.
 
-@code{tellsimpafter} n@~ao avalia seus argumentos.
+@code{tellsimpafter} não avalia seus argumentos.
 @code{tellsimpafter} retorna a lista de regras para o operador principal de @var{modelo},
 incluindo a mais recente regra estabelecia.
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
-Veja tamb@'em @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{let},
+Veja também @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{let},
 @code{kill}, @code{remrule}, e @code{clear_rules}.
 
 Exemplos:
 
-@var{modelo} pode ser qualquer express@~ao n@~ao at@^omica na qual o 
-principal operador n@~ao @'e uma vari@'avel de modelo.
+@var{modelo} pode ser qualquer expressão não at@^omica na qual o 
+principal operador não é uma variável de modelo.
 
 @c ===beg===
 @c matchdeclare (aa, atom, [ll, mm], listp, xx, true)$
@@ -1065,9 +1065,9 @@ principal operador n@~ao @'e uma vari@'avel de modelo.
 (%o7)                    bar(foo(u - v))
 @end example
 
-Regras s@~ao aplicadas na ordem em que forem definidas.
-Se duas regras podem coincidir com uma express@~ao,
-a regra que foi primeiro definida @'e a que ser@'a aplicada.
+Regras são aplicadas na ordem em que forem definidas.
+Se duas regras podem coincidir com uma expressão,
+a regra que foi primeiro definida é a que será aplicada.
 
 @c ===beg===
 @c matchdeclare (aa, integerp);
@@ -1086,8 +1086,8 @@ a regra que foi primeiro definida @'e a que ser@'a aplicada.
 (%o4)                       bar_1(42)
 @end example
 
-vari@'aveis de modelo s@~ao tratadas como vari@'aveis locais em regras de simplifica@,{c}@~ao.
-(Compare a @code{defmatch}, que trata vari@'aveis de modelo como vari@'aveis globais.)
+variáveis de modelo são tratadas como variáveis locais em regras de simplificação.
+(Compare a @code{defmatch}, que trata variáveis de modelo como variáveis globais.)
 
 @c ===beg===
 @c matchdeclare (aa, integerp, bb, atom);
@@ -1109,9 +1109,9 @@ vari@'aveis de modelo s@~ao tratadas como vari@'aveis locais em regras de simpli
 (%o5)                         12345
 @end example
 
-Como com todos os @'atomos, propriedades de vari@'aveis de modelo s@~ao globais embora valores sejam locais.
-Nesse exemplo, uma propriedade de atribui@,{c}@~ao @'e declarada via @code{define_variable}.
-Essa @'e a propriedade do @'atomo @code{bb} atrav@'es de todo o Maxima.
+Como com todos os átomos, propriedades de variáveis de modelo são globais embora valores sejam locais.
+Nesse exemplo, uma propriedade de atribuição é declarada via @code{define_variable}.
+Essa é a propriedade do átomo @code{bb} através de todo o Maxima.
 
 @c ===beg===
 @c matchdeclare (aa, integerp, bb, atom);
@@ -1134,9 +1134,9 @@ Error: bb was declared mode boolean, has value: %e
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Regras s@~ao nomeadas ap@'os operadores principais.
-Nomes de regras para operadores internos e operadores definidos pelo utilizador s@~ao sequ@^encias de caracteres,
-enquanto nomes para outras fun@,{c}@~oes s@~ao identificadores comuns.
+Regras são nomeadas após operadores principais.
+Nomes de regras para operadores internos e operadores definidos pelo utilizador são sequências de caracteres,
+enquanto nomes para outras funções são identificadores comuns.
 
 @c ===beg===
 @c tellsimpafter (foo (%pi + %e), 3*%pi);
@@ -1184,7 +1184,7 @@ foorule2, foorule3, +rule1, *rule1, ^rule1]
 (%o13)                          ^
 @end example
 
-Um exemplo trabalhado: multiplica@,{c}@~ao anticomutativa.
+Um exemplo trabalhado: multiplicação anticomutativa.
 
 @c ===beg===
 @c gt (i, j) := integerp(j) and i < j;
@@ -1217,9 +1217,10 @@ Um exemplo trabalhado: multiplica@,{c}@~ao anticomutativa.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} clear_rules ()
-Executa @code{kill (rules)} e ent@~ao re-escolhe o pr@'oximo n@'umero de regra para 1
-para adi@,{c}@~ao @code{+}, multiplica@,{c}@~ao @code{*}, e exponencia@,{c}@~ao @code{^}.
+@deffn {Função} clear_rules ()
+Executa @code{kill (rules)} e então re-escolhe o próximo número de regra para 1
+para adição @code{+}, multiplicação @code{*}, e exponenciação @code{^}.
 
 @end deffn
+
 

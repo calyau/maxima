@@ -1,69 +1,70 @@
-@c /Bugs.texi/1.10/Sat Nov 25 04:02:06 2006//
 @menu
-* Defini@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros::  
+* Definições para Detecção e Relato de Erros::  
 @end menu
 
-@node Defini@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros
-@section Defini@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros
-@deffn {Fun@,{c}@~ao} run_testsuite ()
-@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean})
-@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean}, @var{boolean})
-@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
-Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
-considerados ``passes,'' e testes que n@~ao produzem a resposta
-desejada, s@~ao marcados como erros conhecidos.
+@node Definições para Detecção e Relato de Erros
+@section Definições para Detecção e Relato de Erros
+@deffn {Função} run_testsuite ()
+@deffnx {Função} run_testsuite (@var{boolean})
+@deffnx {Função} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Função} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+Executa o conjunto de testes do Maxima.  Testes que produzem a resposta
+desejada são considerados ``aprovações'' (em inglês, passes) e testes que
+não produzem a resposta desejada são marcados como erros.
 
-@code{run_testsuite ()} mostra somente testes que n@~ao s@~ao aprovados.
+@code{run_testsuite ()} mostra somente testes que não são aprovados.
 
-@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como erros conhecidos, bem
-como as falhas.
+@code{run_testsuite (true)} mostra somente testes que são marcados como
+erros, bem como as falhas.
 
 @code{run_testsuite (true, true)} mostra todos os testes.
 
-Se o terceiro argumento opcional for dado, um subconjunto de testes @'e executado.
-O subconjunto de testes para executar @'e dado como uma lista de nomes dos
-testes.  O conjunto completo de testes @'e especificado por @code{testsuite_files}.
+Se for usado o terceiro argumento opcional, que deve ser uma lista,
+executam-se unicamente os testes indicados nessa lista. Os nomes de
+todos os testes é especificado por @code{testsuite_files}.
 
-@code{run_testsuite} altera a vari@'avel de ambiente Maxima.
-Tipicamente um script de teste executa @code{kill} para estabelecer uma vari@'avel de ambiente
-(uma a saber sem fun@,{c}@~oes definidas pelo utilizador e vari@'aveis)
-e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
+@code{run_testsuite} altera a variável de ambiente Maxima.  Tipicamente
+um script de teste executa @code{kill} para estabelecer uma variável de
+ambiente (uma a saber sem funções definidas pelo utilizador e variáveis)
+e então define funções e variáveis apropriadamente para o teste.
 
 @code{run_testsuite} retorna @code{done}.
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} testsuite_files
+@defvar testsuite_files
      
-@code{testsuite_files} @'e o conjunto de testes a ser executado por
-@code{run_testsuite}.  Isso @'e uma lista de nomes de ficheiros contendo
-os testes a executar.  Se alguns dos testes em um ficheiro falha de forma conhecida,
-ent@~ao em lugar de listar o nome do ficheiro, uma lista contendo o
-nome do ficheiro e o n@'umero dos testes que falharam @'e usada.
+@code{testsuite_files} é o conjunto de testes a ser executado por
+@code{run_testsuite}. É uma lista de nomes de ficheiros contendo os
+testes a executar. Se alguns dos testes num ficheiro falha de forma
+conhecida, então em lugar de listar o nome do ficheiro mostra-se uma
+lista com o nome do ficheiro e o número dos testes que falharam.
 
-por exemplo, a linha adinate @'e uma parte do conjunto de testes padr@~ao:
+Por exemplo, a linha seguinte é uma parte do conjunto de testes padrão:
 
 @example
  ["rtest13s", ["rtest14", 57, 63]]
 @end example
 
-Essa linha especifica a suite de testes que consiste dos ficheiros "rtest13s" e
-"rtest14", mas "rtest14" cont@'em dois testes que falham de forma conhecida: 57
-e 63.
-@end defvr
+Essa linha especifica o conjunto de testes contidos nos ficheiros "rtest13s" e
+"rtest14", em que os testes números 57 e 63 do ficheiro "rtest14" falharam de forma conhecida.
+@end defvar
 
-@deffn {Fun@,{c}@~ao} bug_report ()
-Imprime os n@'umeros de vers@~ao do Maxima e do Lisp, e chama o link
-para a p@'agina web de informa@,{c}@~ao de erros do projeto Maxima.
-A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
+@defun bug_report ()
+Mostra os números de versão do Maxima e do Lisp e o apontador para o
+sítio onde devem informar-se os erros encontrados no Maxima, para que
+possam ser solucionados.  A informação das versões pode ser consultada
+também com @code{build_info}.
 
-Quando um erro @'e informado, @'e muito @'util copiar a vers@~ao do Maxima
-e do Lisp dentro da informa@,{c}@~ao do erro.
+Quando se informa sobre um erro, é muito útil indicar a versão do Maxima
+e do Lisp usadas.
 
-@code{bug_report} retorna uma sequ@^encia de caracteres vazia @code{""}.
-@end deffn
+A saída do comando @code{bug_report} é uma sequência de caracteres vazia
+@code{""}.
+@end defun
 
-@deffn {Fun@,{c}@~ao} build_info ()
-Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
+@defun build_info ()
+Mostra os números de versão do Maxima e do Lisp.
 
-@code{build_info} retorna uma sequ@^encia de caracteres vazia @code{""}.
-@end deffn
+A saída do comando @code{build_info} é uma sequência de caracteres vazia
+@code{""}.
+@end defun
