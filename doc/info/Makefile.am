@@ -33,27 +33,25 @@ endif
 SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8) $(DE_DIR) $(DE_DIR_UTF8)
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
-  DataTypes.texi Constants.texi Operators.texi Expressions.texi \
-  Evaluation.texi Simplification.texi MathFunctions.texi Database.texi \
-  Plotting.texi Input.texi Floating.texi Contexts.texi Polynomials.texi \
-  Logarithms.texi Trigonometric.texi Special.texi \
-  Limits.texi Differentiation.texi Integration.texi Equations.texi \
-  Differential.texi Numerical.texi \
-  Arrays.texi Matrices.texi Affine.texi Itensor.texi \
-  Ctensor.texi Atensor.texi Series.texi Number.texi Symmetries.texi \
-  Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi \
-  Function.texi Program.texi Debugging.texi Elliptic.texi \
-  Bugs.texi nset.texi zeilberger.texi orthopoly.texi linearalgebra.texi \
-  solve_rec.texi stringproc.texi numericalio.texi descriptive.texi \
-  distrib.texi draw.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
-  mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
-  ggf.texi ezunits.texi f90.texi diag.texi dynamics.texi\
-  bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
-  interpol.texi lbfgs.texi romberg.texi grobner.texi\
-  contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
-  asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi fractals.texi finance.texi\
-  bernstein.texi to_poly_solve.texi defstruct.texi alt-display.texi
+maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
+ Bugs.texi Help.texi Command.texi DataTypes.texi Constants.texi Lists.texi \
+ Arrays.texi defstruct.texi Expressions.texi Operators.texi Evaluation.texi \
+ Simplification.texi MathFunctions.texi Database.texi Plotting.texi \
+ Input.texi Polynomials.texi Special.texi Elliptic.texi Limits.texi \
+ Differentiation.texi Integration.texi Equations.texi Differential.texi \
+ Numerical.texi Matrices.texi Affine.texi Itensor.texi Ctensor.texi \
+ Atensor.texi Series.texi Number.texi Symmetries.texi Groups.texi \
+ Runtime.texi Miscellaneous.texi Rules.texi nset.texi Function.texi \
+ Program.texi Debugging.texi alt-display.texi asympa.texi \
+ augmented_lagrangian.texi bernstein.texi bode.texi clebsch_gordan.texi \
+ cobyla.texi contrib_ode.texi descriptive.texi diag.texi distrib.texi \
+ draw.texi drawdf.texi dynamics.texi ezunits.texi f90.texi finance.texi \
+ fractals.texi ggf.texi graphs.texi grobner.texi impdiff.texi interpol.texi \
+ lapack.texi lbfgs.texi lindstedt.texi linearalgebra.texi lsquares.texi \
+ minpack.texi makeOrders.texi mnewton.texi numericalio.texi opsubst.texi \
+ orthopoly.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
+ stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
+ zeilberger.texi
 
 figurefiles = \
 figures/introduction1.gif\
