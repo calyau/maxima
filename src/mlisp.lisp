@@ -141,10 +141,8 @@ or if apply is being used are printed.")
 	     (merror (intl:gettext "apply: subscript must be an integer; found: ~M") (car args1)))))
 	(aryp
 	 (cons '(mqapply array) (cons fn args)))
-	((member 'array (cdar fn) :test #'eq)
-	 (cons '(mqapply) (cons fn args)))
 	(t
-	 (badfunchk fnname fn t))))
+	 (cons '(mqapply) (cons fn args)))))
 
 ;; the last argument to mapply1 for the lineinfo is not correct here..
 (defmfun mcall (fn &rest args)

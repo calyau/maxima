@@ -34,3 +34,53 @@ block ([a, L],
   L : buildq ([a], lambda ([x], a[x])),
   print (L, L(0))); /* print(L) --> calls NFORMAT and therefore tickles bug */
 0;
+
+/* expressions like f(x)(y) */
+
+(kill (f, x, y), f(x)(y));
+f(x)(y);
+
+(f(x)(y), [op (%%), args (%%)]);
+[f(x), [y]];
+
+(f(x)(y), [op (op (%%)), args (op (%%))]);
+[f, [x]];
+
+apply (f(x), [y]);
+f(x)(y);
+
+(kill (z), f(x)(y)(z));
+f(x)(y)(z);
+
+(f(x)(y)(z), [op (%%), args (%%), op (op (%%)), args (op (%%)), op (op (op (%%))), args (op (op (%%)))]);
+[f(x)(y), [z], f(x), [y], f, [x]];
+
+ev (f(x)(y), f(u) := buildq ([u], lambda ([v], v*u)));
+x*y;
+
+apply (f(x)(y), [z]);
+f(x)(y)(z);
+
+map (f(x), [1, 2, 3]);
+[f(x)(1), f(x)(2), f(x)(3)];
+
+(f(u) := subst (u, 'u, lambda ([v], v^u)),
+ [f(x), f(x)(y)]);
+[lambda ([v], v^x), y^x];
+
+(kill (f),
+ matchdeclare (xx, integerp),
+ tellsimp (f(xx), subst ('xx = xx, lambda ([a], a - xx))),
+ [f(1), f(1)(y)]);
+[lambda ([a], a - 1), y - 1];
+
+(remrule (f, all), 0);
+0;
+
+(matchdeclare ([xx, yy], integerp),
+ tellsimp (f(xx)(yy), yy*xx),
+ [f(2), f(2)(3)]);
+[f(2), 6];
+
+kill (rules);
+done;
