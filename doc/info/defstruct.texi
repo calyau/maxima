@@ -56,8 +56,9 @@ all fields are always visible.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
-@deffnx {Function} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+@deffn  {Function} defstruct @
+@fname{defstruct} (@var{S}(@var{a_1}, @dots{}, @var{a_n})) @
+@fname{defstruct} (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
 
 Define a structure, which is a list of named fields @var{a_1}, @dots{},
 @var{a_n} associated with a symbol @var{S}.
@@ -112,8 +113,9 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} new (@var{S})
-@deffnx {Function} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+@deffn {Function} new @
+@fname{new} (@var{S}) @
+@fname{new} (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
 
 @code{new} creates new instances of structures.
 

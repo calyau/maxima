@@ -264,8 +264,9 @@ This time, the assignment to @var{mm} does not change the value of @var{m}.
 
 @c -----------------------------------------------------------------------------
 @anchor{cholesky}
-@deffn  {Function} cholesky (@var{M})
-@deffnx {Function} cholesky (@var{M}, @var{field})
+@deffn  {Function} cholesky @
+@fname{cholesky} (@var{M}) @
+@fname{cholesky} (@var{M}, @var{field})
 
 Return the Cholesky factorization of the matrix selfadjoint (or hermitian)
 matrix @var{M}.  The second argument defaults to 'generalring.' For a
@@ -338,8 +339,9 @@ Return the dotproduct of vectors @var{u} and @var{v}.  This is the same as
 
 @c -----------------------------------------------------------------------------
 @anchor{eigens_by_jacobi}
-@deffn  {Function} eigens_by_jacobi (@var{A})
-@deffnx {Function} eigens_by_jacobi (@var{A}, @var{field_type})
+@deffn  {Function} eigens_by_jacobi @
+@fname{eigens_by_jacobi} (@var{A}) @
+@fname{eigens_by_jacobi} (@var{A}, @var{field_type})
 
 Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi
 rotations.  @var{A} must be a symmetric matrix (but it need not be positive
@@ -428,8 +430,9 @@ triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
 
 @c -----------------------------------------------------------------------------
 @anchor{hankel}
-@deffn  {Function} hankel (@var{col})
-@deffnx {Function} hankel (@var{col}, @var{row})
+@deffn  {Function} hankel @
+@fname{hankel} (@var{col}) @
+@fname{hankel} (@var{col}, @var{row})
 
 Return a Hankel matrix @var{H}.  The first column of @var{H} is @var{col};
 except for the first entry, the last row of @var{H} is @var{row}.  The
@@ -495,8 +498,9 @@ integer, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{identfor}
-@deffn  {Function} identfor (@var{M})
-@deffnx {Function} identfor (@var{M}, @var{fld})
+@deffn  {Function} identfor @
+@fname{identfor} (@var{M}) @
+@fname{identfor} (@var{M}, @var{fld})
 
 Return an identity matrix that has the same shape as the matrix
 @var{M}.  The diagonal entries of the identity matrix are the 
@@ -577,8 +581,9 @@ Return the Kronecker product of the matrices @var{A} and @var{B}.
 
 @c -----------------------------------------------------------------------------
 @anchor{listp}
-@deffn  {Function} listp (@var{e}, @var{p})
-@deffnx {Function} listp (@var{e})
+@deffn  {Function} listp @
+@fname{listp} (@var{e}, @var{p}) @
+@fname{listp} (@var{e})
 
 Given an optional argument @var{p}, return @code{true} if @var{e} is a Maxima
 list and @var{p} evaluates to @code{true} for every list element.  When
@@ -773,8 +778,9 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_cond}
-@deffn  {Function} mat_cond (@var{M}, 1)
-@deffnx {Function} mat_cond (@var{M}, inf)
+@deffn  {Function} mat_cond @
+@fname{mat_cond} (@var{M}, 1) @
+@fname{mat_cond} (@var{M}, inf)
 
 Return the @var{p}-norm matrix condition number of the matrix
 @var{m}.  The allowed values for @var{p} are 1 and @var{inf}.  This
@@ -791,9 +797,10 @@ square of the matrix size.
 
 @c -----------------------------------------------------------------------------
 @anchor{mat_norm}
-@deffn  {Function} mat_norm (@var{M}, 1)
-@deffnx {Function} mat_norm (@var{M}, inf)
-@deffnx {Function} mat_norm (@var{M}, frobenius)
+@deffn  {Function} mat_norm @
+@fname{mat_norm} (@var{M}, 1) @
+@fname{mat_norm} (@var{M}, inf) @
+@fname{mat_norm} (@var{M}, frobenius)
 
 Return the matrix @var{p}-norm of the matrix @var{M}.  The allowed values for
 @var{p} are 1, @code{inf}, and @code{frobenius} (the Frobenius matrix norm).
@@ -806,8 +813,9 @@ The matrix @var{M} should be an unblocked matrix.
 
 @c -----------------------------------------------------------------------------
 @anchor{linearalgebra_matrixp}
-@deffn  {Function} matrixp (@var{e}, @var{p})
-@deffnx {Function} matrixp (@var{e})
+@deffn  {Function} matrixp @
+@fname{matrixp} (@var{e}, @var{p}) @
+@fname{matrixp} (@var{e})
 
 Given an optional argument @var{p}, return @code{true} if @var{e} is 
 a matrix and @var{p} evaluates to @code{true} for every matrix element.
@@ -948,9 +956,10 @@ Each vector @var{v_1} through @var{v_n} must be a column vector.
 
 @c -----------------------------------------------------------------------------
 @anchor{polynomialp}
-@deffn  {Function} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
-@deffnx {Function} polynomialp (@var{p}, @var{L}, @var{coeffp})
-@deffnx {Function} polynomialp (@var{p}, @var{L})
+@deffn  {Function} polynomialp @
+@fname{polynomialp} (@var{p}, @var{L}, @var{coeffp}, @var{exponp}) @
+@fname{polynomialp} (@var{p}, @var{L}, @var{coeffp}) @
+@fname{polynomialp} (@var{p}, @var{L})
 
 Return @code{true} if @var{p} is a polynomial in the variables in the list
 @var{L}.  The predicate @var{coeffp} must evaluate to @code{true} for each
@@ -1098,8 +1107,9 @@ have a row @var{i} or @var{j}, signal an error.
 
 @c -----------------------------------------------------------------------------
 @anchor{toeplitz}
-@deffn  {Function} toeplitz (@var{col})
-@deffnx {Function} toeplitz (@var{col}, @var{row})
+@deffn  {Function} toeplitz @
+@fname{toeplitz} (@var{col}) @
+@fname{toeplitz} (@var{col}, @var{row})
 
 Return a Toeplitz matrix @var{T}.  The first first column of @var{T} is
 @var{col}; except for the first entry, the first row of @var{T} is @var{row}.
@@ -1144,8 +1154,9 @@ Return a @var{n} by @var{n} matrix whose @var{i}-th row is
 
 @c -----------------------------------------------------------------------------
 @anchor{zerofor}
-@deffn  {Function} zerofor (@var{M})
-@deffnx {Function} zerofor (@var{M}, @var{fld})
+@deffn {Function} zerofor @
+@fname{zerofor} (@var{M}) @
+@fname{zerofor} (@var{M}, @var{fld})
 
 Return a zero  matrix that has the same shape as the matrix
 @var{M}.  Every entry of the zero matrix is the

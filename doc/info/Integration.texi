@@ -321,8 +321,9 @@ The number 1 isn't in the domain of atanh
 
 @c -----------------------------------------------------------------------------
 @anchor{integrate}
-@deffn  {Function} integrate (@var{expr}, @var{x})
-@deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn  {Function} integrate @
+@fname{integrate} (@var{expr}, @var{x}) @
+@fname{integrate} (@var{expr}, @var{x}, @var{a}, @var{b})
 
 Attempts to symbolically compute the integral of @var{expr} with respect to
 @var{x}.  @code{integrate (@var{expr}, @var{x})} is an indefinite integral,
@@ -965,8 +966,9 @@ for the integrator to produce a good solution.
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qag}
-@deffn  {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qag @
+@fname{quad_qag} (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qag} (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.  @code{quad_qag}
 implements a simple globally adaptive integrator using the strategy of Aind
@@ -1066,8 +1068,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qags}
-@deffn  {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qags @
+@fname{quad_qags} (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qags} (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qags} implements globally adaptive interval subdivision with
@@ -1157,8 +1160,9 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qagi}
-@deffn  {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qagi @
+@fname{quad_qagi} (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qagi} (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over an infinite or semi-infinite interval.
 The interval is mapped onto a finite interval and
@@ -1270,8 +1274,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawc}
-@deffn  {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qawc @
+@fname{quad_qawc} (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qawc} (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite
 interval.  The strategy is globally adaptive, and modified
@@ -1381,8 +1386,9 @@ Principal Value
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawf}
-@deffn  {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
-@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffn  {Function} quad_qawf @
+@fname{quad_qawf} (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}]) @
+@fname{quad_qawf} (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite
 interval using the Quadpack QAWF function.  The same approach as in
@@ -1487,8 +1493,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qawo}
-@deffn  {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
-@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffn  {Function} quad_qawo @
+@fname{quad_qawo} (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}]) @
+@fname{quad_qawo} (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Integration of
 @ifnottex
@@ -1628,8 +1635,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qaws}
-@deffn  {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qaws @
+@fname{quad_qaws} (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qaws} (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of @math{w(x) f(x)} over a finite interval, where @math{w(x)} is a
 certain algebraic or logarithmic function.  A globally adaptive subdivision
@@ -1759,8 +1767,9 @@ pos;
 
 @c -----------------------------------------------------------------------------
 @anchor{quad_qagp}
-@deffn  {Function} quad_qagp (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qagp (@var{f}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn  {Function} quad_qagp @
+@fname{quad_qagp} (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}]) @
+@fname{quad_qagp} (@var{f}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qagp} implements globally adaptive interval subdivision with

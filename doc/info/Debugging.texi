@@ -312,9 +312,9 @@ See also @code{setcheck} and @code{setcheckbreak}.
 
 @c -----------------------------------------------------------------------------
 @anchor{timer}
-@deffn  {Function} timer (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} timer (all)
-@deffnx {Function} timer ()
+@deffn  {Function} timer (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{timer} (all) @
+@fname{timer} ()
 
 Given functions @var{f_1}, @dots{}, @var{f_n}, @code{timer} puts each one on the
 list of functions for which timing statistics are collected.
@@ -348,8 +348,8 @@ See also @code{timer_devalue}.
 
 @c -----------------------------------------------------------------------------
 @anchor{untimer}
-@deffn  {Function} untimer (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} untimer ()
+@deffn  {Function} untimer (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{untimer} ()
 
 Given functions @var{f_1}, @dots{}, @var{f_n},
 @code{untimer} removes each function from the timer list.
@@ -389,8 +389,8 @@ See also @code{timer} and @code{timer_info}.
 
 @c -----------------------------------------------------------------------------
 @anchor{timer_info}
-@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n})
-@deffnx {Function} timer_info ()
+@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n}) @
+@fname{timer_info} ()
 
 Given functions @var{f_1}, ..., @var{f_n}, @code{timer_info} returns a matrix
 containing timing information for each function.
@@ -418,9 +418,9 @@ See also @code{timer}.
 
 @c -----------------------------------------------------------------------------
 @anchor{trace}
-@deffn  {Function} trace (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} trace (all)
-@deffnx {Function} trace ()
+@deffn  {Function} trace (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{trace} (all) @
+@fname{trace} ()
 
 Given functions @var{f_1}, @dots{}, @var{f_n}, @code{trace} instructs Maxima to
 print out debugging information whenever those functions are called.
@@ -453,8 +453,8 @@ If @code{timer (f)} is in effect, then @code{trace (f)} has no effect;
 
 @c -----------------------------------------------------------------------------
 @anchor{trace_options}
-@deffn  {Function} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n})
-@deffnx {Function} trace_options (@var{f})
+@deffn  {Function} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n}) @
+@fname{trace_options} (@var{f})
 
 Sets the trace options for function @var{f}.
 Any previous options are superseded.
@@ -529,8 +529,9 @@ on a predicate:
 
 @c -----------------------------------------------------------------------------
 @anchor{untrace}
-@deffn  {Function} untrace (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} untrace ()
+@deffn {Function} untrace @
+@fname{untrace} (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{untrace} ()
 
 Given functions @var{f_1}, @dots{}, @var{f_n},
 @code{untrace} disables tracing enabled by the @code{trace} function.

@@ -131,12 +131,11 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{describe}
-@deffn  {Function} describe (@var{string})
-@deffnx {Function} describe (@var{string}, exact)
-@deffnx {Function} describe (@var{string}, inexact)
-@ifinfo
 @fnindex Help
-@end ifinfo
+@deffn  {Function} describe @
+@fname{describe} (@var{string}) @
+@fname{describe} (@var{string}, exact) @
+@fname{describe} (@var{string}, inexact)
 
 @code{describe(@var{string})} is equivalent to
 @code{describe(@var{string}, exact)}.
@@ -208,8 +207,9 @@ respectively.
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
-@deffn  {Function} example (@var{topic})
-@deffnx {Function} example ()
+@deffn  {Function} example @
+@fname{example} (@var{topic}) @
+@fname{example} ()
 
 @code{example (@var{topic})} displays some examples of @var{topic}, which is a
 symbol or a string.  To get examples for operators like @code{if}, @code{do},

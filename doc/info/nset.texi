@@ -806,8 +806,9 @@ The equivalence classes are numbers which differ by a multiple of 3.
 @end deffn
 
 @anchor{every}
-@deffn {Function} every (@var{f}, @var{s})
-@deffnx {Function} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Function} every @
+@fname{every} (@var{f}, @var{s}) @
+@fname{every} (@var{f}, @var{L_1}, ..., @var{L_n})
 
 Returns @code{true} if the predicate @var{f} is @code{true} for all given arguments.
 
@@ -907,8 +908,9 @@ are governed by the global flag @code{prederror}.
 @end deffn
  
 @anchor{extremal_subset}
-@deffn {Function} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {Function} extremal_subset (@var{s}, @var{f}, min)
+@deffn {Function} extremal_subset @
+@fname{extremal_subset} (@var{s}, @var{f}, max) @
+@fname{extremal_subset} (@var{s}, @var{f}, min)
 
 Returns the subset of @var{s} for which the function @var{f} takes on maximum or minimum values.
 
@@ -1111,8 +1113,9 @@ are already Boolean values.
 @end deffn
 
 @anchor{integer_partitions}
-@deffn {Function} integer_partitions (@var{n})
-@deffnx {Function} integer_partitions (@var{n}, @var{len})
+@deffn {Function} integer_partitions @
+@fname{integer_partitions} (@var{n}) @
+@fname{integer_partitions} (@var{n}, @var{len})
 
 Returns integer partitions of @var{n}, that is,
 lists of integers which sum to @var{n}.
@@ -1298,8 +1301,9 @@ Examples:
 @end deffn
 
 @anchor{lreduce}
-@deffn {Function} lreduce (@var{F}, @var{s})
-@deffnx {Function} lreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} lreduce @
+@fname{lreduce} (@var{F}, @var{s}) @
+@fname{lreduce} (@var{F}, @var{s}, @var{s_0})
 
 Extends the binary function @var{F} to an n-ary function by composition,
 where @var{s} is a list.
@@ -1471,8 +1475,9 @@ Examples:
 @end deffn
  
 @anchor{multinomial_coeff}
-@deffn {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
-@deffnx {Function} multinomial_coeff ()
+@deffn {Function} multinomial_coeff @
+@fname{multinomial_coeff} (@var{a_1}, ..., @var{a_n}) @
+@fname{multinomial_coeff} ()
 
 Returns the multinomial coefficient.
 
@@ -1518,8 +1523,9 @@ Examples:
 @end deffn
 
 @anchor{num_distinct_partitions}
-@deffn {Function} num_distinct_partitions (@var{n})
-@deffnx {Function} num_distinct_partitions (@var{n}, list)
+@deffn {Function} num_distinct_partitions @
+@fname{num_distinct_partitions} (@var{n}) @
+@fname{num_distinct_partitions} (@var{n}, list)
 
 Returns the number of distinct integer partitions of @var{n}
 when @var{n} is a nonnegative integer.
@@ -1555,8 +1561,9 @@ Examples:
 @end deffn
 
 @anchor{num_partitions}
-@deffn {Function} num_partitions (@var{n})
-@deffnx {Function} num_partitions (@var{n}, list)
+@deffn {Function} num_partitions @
+@fname{num_partitions} (@var{n}) @
+@fname{num_partitions} (@var{n}, list)
 
 Returns the number of integer partitions of @var{n}
 when @var{n} is a nonnegative integer.
@@ -1661,8 +1668,9 @@ Examples:
 @end deffn
 
 @anchor{powerset}
-@deffn {Function} powerset (@var{a})
-@deffnx {Function} powerset (@var{a}, @var{n})
+@deffn {Function} powerset @
+@fname{powerset} (@var{a}) @
+@fname{powerset} (@var{a}, @var{n})
 
 Returns the set of all subsets of @var{a}, or a subset of that set.
 
@@ -1741,8 +1749,9 @@ Examples:
 @end deffn
 
 @anchor{rreduce}
-@deffn {Function} rreduce (@var{F}, @var{s})
-@deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+@deffn {Function} rreduce @
+@fname{rreduce} (@var{F}, @var{s}) @
+@fname{rreduce} (@var{F}, @var{s}, @var{s_@{n + 1@}})
 
 Extends the binary function @var{F} to an n-ary function by composition,
 where @var{s} is a list.
@@ -1948,8 +1957,9 @@ Examples:
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Function} set_partitions (@var{a})
-@deffnx {Function} set_partitions (@var{a}, @var{n})
+@deffn {Function_partitions} set @
+@fname{set_partitions} (@var{a}) @
+@fname{set_partitions} (@var{a}, @var{n})
 
 Returns the set of all partitions of @var{a}, or a subset of that set.
 
@@ -2033,8 +2043,9 @@ equal @code{s}; again let's check.
 @end deffn
 
 @anchor{some}
-@deffn {Function} some (@var{f}, @var{a})
-@deffnx {Function} some (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Function} some @
+@fname{some} (@var{f}, @var{a}) @
+@fname{some} (@var{f}, @var{L_1}, ..., @var{L_n})
 
 Returns @code{true} if the predicate @var{f} is @code{true} for one or more given arguments.
 
@@ -2354,8 +2365,9 @@ Examples:
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
-@deffn {Function} tree_reduce (@var{F}, @var{s})
-@deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} tree_reduce @
+@fname{tree_reduce} (@var{F}, @var{s}) @
+@fname{tree_reduce} (@var{F}, @var{s}, @var{s_0})
 
 Extends the binary function @var{F} to an n-ary function by composition,
 where @var{s} is a set or list.
@@ -2451,8 +2463,9 @@ Examples:
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
-@deffn {Function} xreduce (@var{F}, @var{s})
-@deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Function} xreduce @
+@fname{xreduce} (@var{F}, @var{s}) @
+@fname{xreduce} (@var{F}, @var{s}, @var{s_0})
 
 Extends the function @var{F} to an n-ary function by composition,
 or, if @var{F} is already n-ary, applies @var{F} to @var{s}.

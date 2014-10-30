@@ -284,8 +284,9 @@ See also: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Function} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Function} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Function} summand_to_rec @
+@fname{summand_to_rec} (@var{summand}, @var{k}, @var{n}) @
+@fname{summand_to_rec} (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
 Returns the recurrence sattisfied by the sum
 

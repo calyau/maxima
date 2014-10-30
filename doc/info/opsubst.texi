@@ -5,9 +5,10 @@
 @node Functions and Variables for opsubst,  , opsubst, opsubst
 @section Functions and Variables for opsubst
 
-@deffn {Function} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Function} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Function} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {Function} opsubst @
+@fname{opsubst} (@var{f},@var{g},@var{e}) @
+@fname{opsubst} (@var{g}=@var{f},@var{e}) @
+@fname{opsubst} ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
 The function @code{opsubst} is similar to the function @code{subst}, except that
 @code{opsubst} only makes substitutions for the operators in an expression. In general, 
 When @var{f} is an operator in the expression @var{e}, substitute @var{g} 

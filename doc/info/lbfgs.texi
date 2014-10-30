@@ -30,8 +30,9 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
 
-@deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
-@deffnx {Function} lbfgs ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Function} lbfgs @
+@fname{lbfgs} (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint}) @
+@fname{lbfgs} ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
 Finds an approximate solution of the unconstrained minimization of the figure of merit @var{FOM}
 over the list of variables @var{X},

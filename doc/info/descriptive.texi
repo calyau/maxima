@@ -202,8 +202,10 @@ One must take care when working with categorical data. In the next example, symb
 
 
 
-@deffn {Function} build_sample (@var{list})
-@deffnx {Function} build_sample (@var{matrix})
+@deffn {Function} build_sample @
+@fname{build_sample} (@var{list}) @
+@fname{build_sample} (@var{matrix})
+
 Builds a sample from a table of absolute frequencies.
 The input table can be a matrix or a list of lists, all of
 them of equal size. The number of columns or the length of
@@ -279,8 +281,10 @@ Multivariate frequency table.
 
 
 
-@deffn {Function} continuous_freq (@var{list})
-@deffnx {Function} continuous_freq (@var{list}, @var{m})
+@deffn {Function} continuous_freq @
+@fname{continuous_freq} (@var{list}) @
+@fname{continuous_freq} (@var{list}, @var{m})
+
 The argument of @code{continuous_freq} must be a list of numbers.
 Divides the range in intervals and counts how many values
 are inside them. The second argument is optional and either
@@ -378,8 +382,9 @@ The first list gives the sample values and the second their absolute frequencies
 
 
 
-@deffn {Function} standardize (@var{list})
-@deffnx {Function} standardize (@var{matrix})
+@deffn {Function} standardize @
+@fname{standardize} (@var{list}) @
+@fname{standardize} (@var{matrix})
 
 Subtracts to each element of the list the sample mean and divides
 the result by the standard deviation. When the input is a matrix,
@@ -394,8 +399,10 @@ divides each component by the corresponding standard deviation.
 
 
 
-@deffn {Function} subsample (@var{data_matrix}, @var{predicate_function})
-@deffnx {Function} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
+@deffn {Function} subsample @
+@fname{subsample} (@var{data_matrix}, @var{predicate_function}) @
+@fname{subsample} (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
+
 This is a sort of variant of the Maxima @code{submatrix} function.
 The first argument is the data matrix, the second is a predicate function
 and optional additional arguments are the numbers of the columns to be taken.
@@ -623,8 +630,10 @@ Add a constant column and remove the third variable.
 
 
 
-@deffn {Function} mean (@var{list})
-@deffnx {Function} mean (@var{matrix})
+@deffn {Function} mean @
+@fname{mean} (@var{list}) @
+@fname{mean} (@var{matrix})
+
 This is the sample mean, defined as
 @ifnottex
 @example
@@ -678,8 +687,10 @@ Example:
 
 
 
-@deffn {Function} var (@var{list})
-@deffnx {Function} var (@var{matrix})
+@deffn {Function} var @
+@fname{var} (@var{list}) @
+@fname{var} (@var{matrix})
+
 This is the sample variance, defined as
 @ifnottex
 @example
@@ -723,8 +734,10 @@ See also function @code{var1}.
 
 
 
-@deffn {Function} var1 (@var{list})
-@deffnx {Function} var1 (@var{matrix})
+@deffn {Function} var1 @
+@fname{var1} (@var{list}) @
+@fname{var1} (@var{matrix})
+
 This is the sample variance, defined as
 @ifnottex
 @example
@@ -776,8 +789,10 @@ See also function @code{var}.
 
 
 
-@deffn {Function} std (@var{list})
-@deffnx {Function} std (@var{matrix})
+@deffn {Function} std @
+@fname{std} (@var{list}) @
+@fname{std} (@var{matrix})
+
 This is the the square root of function @code{var}, the variance with denominator @math{n}.
 
 Example:
@@ -813,8 +828,10 @@ See also functions @code{var} and @code{std1}.
 
 
 
-@deffn {Function} std1 (@var{list})
-@deffnx {Function} std1 (@var{matrix})
+@deffn {Function} std1 @
+@fname{std1} (@var{list}) @
+@fname{std1} (@var{matrix})
+
 This is the the square root of function @code{var1}, the variance with denominator @math{n-1}.
 
 Example:
@@ -850,8 +867,10 @@ See also functions @code{var1} and @code{std}.
 
 
 
-@deffn {Function} noncentral_moment (@var{list}, @var{k})
-@deffnx {Function} noncentral_moment (@var{matrix}, @var{k})
+@deffn {Function} noncentral_moment @
+@fname{noncentral_moment} (@var{list}, @var{k}) @
+@fname{noncentral_moment} (@var{matrix}, @var{k})
+
 The non central moment of order @math{k}, defined as
 @ifnottex
 @example
@@ -905,8 +924,10 @@ See also function @code{central_moment}.
 
 
 
-@deffn {Function} central_moment (@var{list}, @var{k})
-@deffnx {Function} central_moment (@var{matrix}, @var{k})
+@deffn {Function} central_moment @
+@fname{central_moment} (@var{list}, @var{k}) @
+@fname{central_moment} (@var{matrix}, @var{k})
+
 The central moment of order @math{k}, defined as
 @ifnottex
 @example
@@ -958,8 +979,10 @@ See also functions @code{central_moment} and @code{mean}.
 
 
 
-@deffn {Function} cv (@var{list})
-@deffnx {Function} cv (@var{matrix})
+@deffn {Function} cv @
+@fname{cv} (@var{list}) @
+@fname{cv} (@var{matrix})
+
 The variation coefficient is the quotient between the sample standard deviation (@code{std}) and the @code{mean},
 
 @c ===beg===
@@ -993,8 +1016,10 @@ See also functions @code{std} and @code{mean}.
 
 
 
-@deffn {Function} smin (@var{list})
-@deffnx {Function} smin (@var{matrix})
+@deffn {Function} smin @
+@fname{smin} (@var{list}) @
+@fname{smin} (@var{matrix})
+
 This is the minimum value of the sample @var{list}.
 When the argument is a matrix, @code{smin} returns
 a list containing the minimum values of the columns,
@@ -1030,8 +1055,10 @@ See also function @code{smax}.
 
 
 
-@deffn {Function} smax (@var{list})
-@deffnx {Function} smax (@var{matrix})
+@deffn {Function} smax @
+@fname{smax} (@var{list}) @
+@fname{smax} (@var{matrix})
+
 This is the maximum value of the sample @var{list}.
 When the argument is a matrix, @code{smax} returns
 a list containing the maximum values of the columns,
@@ -1067,8 +1094,10 @@ See also function @code{smin}.
 
 
 
-@deffn {Function} range (@var{list})
-@deffnx {Function} range (@var{matrix})
+@deffn {Function} range @
+@fname{range} (@var{list}) @
+@fname{range} (@var{matrix})
+
 The range is the difference between the extreme values.
 
 Example:
@@ -1101,8 +1130,10 @@ Example:
 
 
 
-@deffn {Function} quantile (@var{list}, @var{p})
-@deffnx {Function} quantile (@var{matrix}, @var{p})
+@deffn {Function} quantile @
+@fname{quantile} (@var{list}, @var{p}) @
+@fname{quantile} (@var{matrix}, @var{p})
+
 This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
 Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
 
@@ -1138,8 +1169,10 @@ Example:
 
 
 
-@deffn {Function} median (@var{list})
-@deffnx {Function} median (@var{matrix})
+@deffn {Function} median @
+@fname{median} (@var{list}) @
+@fname{median} (@var{matrix})
+
 Once the sample is ordered, if the sample size is odd the median is the central value, otherwise it is the mean of the two central values.
 
 Example:
@@ -1178,8 +1211,10 @@ See also function @code{quantile}.
 
 
 
-@deffn {Function} qrange (@var{list})
-@deffnx {Function} qrange (@var{matrix})
+@deffn {Function} qrange @
+@fname{qrange} (@var{list}) @
+@fname{qrange} (@var{matrix})
+
 The interquartilic range is the difference between the third and first quartiles, @code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
@@ -1215,8 +1250,10 @@ See also function @code{quantile}.
 
 
 
-@deffn {Function} mean_deviation (@var{list})
-@deffnx {Function} mean_deviation (@var{matrix})
+@deffn {Function} mean_deviation @
+@fname{mean_deviation} (@var{list}) @
+@fname{mean_deviation} (@var{matrix})
+
 The mean deviation, defined as
 @ifnottex
 @example
@@ -1270,8 +1307,10 @@ See also function @code{mean}.
 
 
 
-@deffn {Function} median_deviation (@var{list})
-@deffnx {Function} median_deviation (@var{matrix})
+@deffn {Function} median_deviation @
+@fname{median_deviation} (@var{list}) @
+@fname{median_deviation} (@var{matrix})
+
 The median deviation, defined as
 @ifnottex
 @example
@@ -1325,8 +1364,10 @@ See also function @code{mean}.
 
 
 
-@deffn {Function} harmonic_mean (@var{list})
-@deffnx {Function} harmonic_mean (@var{matrix})
+@deffn {Function} harmonic_mean @
+@fname{harmonic_mean} (@var{list}) @
+@fname{harmonic_mean} (@var{matrix})
+
 The harmonic mean, defined as
 @ifnottex
 @example
@@ -1381,8 +1422,10 @@ See also functions @code{mean} and @code{geometric_mean}.
 
 
 
-@deffn {Function} geometric_mean (@var{list})
-@deffnx {Function} geometric_mean (@var{matrix})
+@deffn {Function} geometric_mean @
+@fname{geometric_mean} (@var{list}) @
+@fname{geometric_mean} (@var{matrix})
+
 The geometric mean, defined as
 @ifnottex
 @example
@@ -1434,8 +1477,10 @@ See also functions @code{mean} and @code{harmonic_mean}.
 
 
 
-@deffn {Function} kurtosis (@var{list})
-@deffnx {Function} kurtosis (@var{matrix})
+@deffn {Function} kurtosis @
+@fname{kurtosis} (@var{list}) @
+@fname{kurtosis} (@var{matrix})
+
 The kurtosis coefficient, defined as
 @ifnottex
 @example
@@ -1487,8 +1532,10 @@ See also functions @code{mean}, @code{var} and @code{skewness}.
 
 
 
-@deffn {Function} skewness (@var{list})
-@deffnx {Function} skewness (@var{matrix})
+@deffn {Function} skewness @
+@fname{skewness} (@var{list}) @
+@fname{skewness} (@var{matrix})
+
 The skewness coefficient, defined as
 @ifnottex
 @example
@@ -1540,8 +1587,10 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 
 
 
-@deffn {Function} pearson_skewness (@var{list})
-@deffnx {Function} pearson_skewness (@var{matrix})
+@deffn {Function} pearson_skewness @
+@fname{pearson_skewness} (@var{list}) @
+@fname{pearson_skewness} (@var{matrix})
+
 Pearson's skewness coefficient, defined as 
 @ifnottex
 @example
@@ -1591,8 +1640,10 @@ See also functions @code{mean}, @code{var} and @code{median}.
 
 
 
-@deffn {Function} quartile_skewness (@var{list})
-@deffnx {Function} quartile_skewness (@var{matrix})
+@deffn {Function} quartile_skewness @
+@fname{quartile_skewness} (@var{list}) @
+@fname{quartile_skewness} (@var{matrix})
+
 The quartile skewness coefficient, defined as 
 @ifnottex
 @example
@@ -1754,8 +1805,10 @@ See also function @code{cov}.
 
 
 
-@deffn {Function} global_variances (@var{matrix})
-@deffnx {Function} global_variances (@var{matrix}, @var{options} ...)
+@deffn {Function} global_variances @
+@fname{global_variances} (@var{matrix}) @
+@fname{global_variances} (@var{matrix}, @var{options} ...)
+
 Function @code{global_variances} returns a list of global variance measures:
 
 @itemize @bullet
@@ -1828,8 +1881,10 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@deffn {Function} cor (@var{matrix})
-@deffnx {Function} cor (@var{matrix}, @var{logical_value})
+@deffn {Function} cor @
+@fname{cor} (@var{matrix}) @
+@fname{cor} (@var{matrix}, @var{logical_value})
+
 The correlation matrix of the multivariate sample.
 
 Option:
@@ -1904,8 +1959,10 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@deffn {Function} list_correlations (@var{matrix})
-@deffnx {Function} list_correlations (@var{matrix}, @var{options} ...)
+@deffn {Function} list_correlations @
+@fname{list_correlations} (@var{matrix}) @
+@fname{list_correlations} (@var{matrix}, @var{options} ...)
+
 Function @code{list_correlations} returns a list of correlation measures:
 
 @itemize @bullet
@@ -2028,8 +2085,10 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@deffn {Function} principal_components (@var{matrix})
-@deffnx {Function} principal_components (@var{matrix}, @var{options} ...)
+@deffn {Function} principal_components @
+@fname{principal_components} (@var{matrix}) @
+@fname{principal_components} (@var{matrix}, @var{options} ...)
+
 Calculates the principal componentes of a multivariate sample. Principal components are
 used in multivariate statistical analysis to reduce the dimensionality of the sample.
 
@@ -2140,7 +2199,6 @@ but option @code{data=false} must be used.
 
 
 @deffn {Function} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} barsplot_description (@dots{})
 
 Plots bars diagrams for discrete statistical variables,
 both for one or multiple samples.
@@ -2200,10 +2258,9 @@ The following local @code{draw} options: @code{key}, @code{color},
 
 @end itemize
 
-Function @code{barsplot_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxbarsplot} for 
-creating embedded histograms in interfaces wxMaxima and iMaxima.
+There is also a function @code{wxbarsplot} for creating embedded
+histograms in interfaces wxMaxima and iMaxima.  @code{barsplot} in a
+multiplot context.
 
 Examples:
 
@@ -2324,7 +2381,21 @@ Stacked bars.
 @end group
 @end example
 
-@code{barsplot} in a multiplot context.
+For bars diagrams related options, see @code{bars} of package @code{draw}.
+See also functions @code{histogram} and @code{piechart}.
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {Function} barsplot_description (@dots{})
+
+Function @code{barsplot_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects.
+
+Example: @code{barsplot} in a multiplot context.
 
 @example
 (%i1) load (descriptive)$
@@ -2347,19 +2418,13 @@ Stacked bars.
 (%i6) draw(gr2d(bp1), gr2d(bp2))$
 @end example
 
-For bars diagrams related options, see @code{bars} of package @code{draw}.
-See also functions @code{histogram} and @code{piechart}.
-
 @opencatbox
 @category{Package descriptive} @category{Plotting}
 @closecatbox
 @end deffn
 
-
-
-@deffn {Function} boxplot (@var{data})
-@deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} boxplot_description (@dots{})
+@deffn {Function} boxplot (@var{data}) @
+@fname{boxplot} (@var{data}, @var{option_1}, @var{option_2}, @dots{})
 
 This function plots box-and-whishker diagrams. Argument @var{data} can be a list,
 which is not of great interest, since these diagrams are mainly used for
@@ -2394,10 +2459,8 @@ and @code{line_width}.
 
 @end itemize
 
-Function @code{boxplot_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxboxplot} for 
-creating embedded histograms in interfaces wxMaxima and iMaxima.
+There is also a function @code{wxboxplot} for creating embedded
+histograms in interfaces wxMaxima and iMaxima.
 
 Examples:
 
@@ -2452,15 +2515,25 @@ Box-and-whishker diagram from three samples of different sizes.
 @closecatbox
 @end deffn
 
+@deffn {Function} boxplot_description (@dots{})
 
+Function @code{boxplot_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects. 
 
-@deffn {Function} histogram (@var{list})
-@deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} histogram (@var{one_column_matrix})
-@deffnx {Function} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} histogram (@var{one_row_matrix})
-@deffnx {Function} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} histogram_description (@dots{})
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {Function} histogram @
+@fname{histogram} (@var{list}) @
+@fname{histogram} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
+@fname{histogram} (@var{one_column_matrix}) @
+@fname{histogram} (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{}) @
+@fname{histogram} (@var{one_row_matrix}) @
+@fname{histogram} (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
+
 This function plots an histogram from a continuous sample.
 Sample data must be stored in a list of numbers or a one dimensional matrix.
 
@@ -2496,10 +2569,8 @@ The following local @code{draw} options: @code{key}, @code{color},
 
 @end itemize
 
-Function @code{histogram_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxhistogram} for 
-creating embedded histograms in interfaces wxMaxima and iMaxima.
+There is also a function @code{wxhistogram} for creating embedded
+histograms in interfaces wxMaxima and iMaxima.
 
 Examples:
 
@@ -2545,7 +2616,16 @@ Also, we introduce predefined tics:
            fill_density = 0.6)$
 @end example
 
-We make use of @code{histogram_description} for setting 
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {Function} histogram_description (@dots{})
+
+Function @code{histogram_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects. We make use of @code{histogram_description} for setting 
 the @code{xrange} and adding an explicit curve into the scene:
 
 @example
@@ -2569,16 +2649,13 @@ the @code{xrange} and adding an explicit curve into the scene:
 @closecatbox
 @end deffn
 
-
-
-
-@deffn {Function} piechart (@var{list})
-@deffnx {Function} piechart (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} piechart (@var{one_column_matrix})
-@deffnx {Function} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} piechart (@var{one_row_matrix})
-@deffnx {Function} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} piechart_description (@dots{})
+@deffn {Function} piechart @
+@fname{piechart} (@var{list}) @
+@fname{piechart} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
+@fname{piechart} (@var{one_column_matrix}) @
+@fname{piechart} (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{}) @
+@fname{piechart} (@var{one_row_matrix}) @
+@fname{piechart} (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
 
 Similar to @code{barsplot}, but plots sectors instead of rectangles.
 
@@ -2610,9 +2687,7 @@ The following local @code{draw} options: @code{key}, @code{color},
 
 @end itemize
 
-Function @code{piechart_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxpiechart} for 
+There is also a function @code{wxpiechart} for 
 creating embedded histograms in interfaces wxMaxima and iMaxima.
 
 Example:
@@ -2643,22 +2718,29 @@ See also function @code{barsplot}.
 @closecatbox
 @end deffn
 
+@deffn {Function} piechart_description (@dots{})
 
+Function @code{piechart_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects.
 
-@deffn {Function} scatterplot (@var{list})
-@deffnx {Function} scatterplot (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} scatterplot (@var{matrix})
-@deffnx {Function} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} scatterplot_description (@dots{})
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {Function} scatterplot @
+@fname{scatterplot} (@var{list}) @
+@fname{scatterplot} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
+@fname{scatterplot} (@var{matrix}) @
+@fname{scatterplot} (@var{matrix}, @var{option_1}, @var{option_2}, @dots{})
 
 Plots scatter diagrams both for univariate (@var{list}) and multivariate 
 (@var{matrix}) samples.
 
 Available options are the same admitted by @code{histogram}.
 
-Function @code{scatterplot_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxscatterplot} for 
+There is also a function @code{wxscatterplot} for 
 creating embedded histograms in interfaces wxMaxima and iMaxima.
 
 Examples:
@@ -2759,10 +2841,18 @@ see @code{points}. See also @code{histogram}.
 @closecatbox
 @end deffn
 
+@deffn {Function} scatterplot_description (@dots{})
 
+Function @code{scatterplot_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects.
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
 
 @deffn {Function} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {Function} starplot_description (@dots{})
 
 Plots star diagrams for discrete statistical variables,
 both for one or multiple samples.
@@ -2810,9 +2900,7 @@ The following local @code{draw} option: @code{line_width}.
 
 @end itemize
 
-Function @code{starplot_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. There is also a function @code{wxstarplot} for 
+There is also a function @code{wxstarplot} for 
 creating embedded histograms in interfaces wxMaxima and iMaxima.
 
 Example:
@@ -2836,15 +2924,25 @@ Location and radius defined by the user.
 @end group
 @end example
 
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {Function} starplot_description (@dots{})
+
+Function @code{starplot_description} creates a graphic object
+suitable for creating complex scenes, together with other
+graphic objects. 
 
 @opencatbox
 @category{Package descriptive} @category{Plotting}
 @closecatbox
 @end deffn
 
-
-@deffn {Function} stemplot (@var{data})
-@deffnx {Function} stemplot (@var{data}, @var{option})
+@deffn {Function} stemplot @
+@fname{stemplot} (@var{data}) @
+@fname{stemplot} (@var{data}, @var{option})
 
 Plots stem and leaf diagrams.
 

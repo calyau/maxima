@@ -158,8 +158,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{at}
-@deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
-@deffnx {Function} at (@var{expr}, @var{eqn})
+@deffn  {Function} at @
+@fname{at} (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}]) @
+@fname{at} (@var{expr}, @var{eqn})
 
 Evaluates the expression @var{expr} with the variables assuming the values as
 specified for them in the list of equations @code{[@var{eqn_1}, ...,
@@ -237,8 +238,9 @@ This property is assigned by @code{gradef}.
 
 @c -----------------------------------------------------------------------------
 @anchor{atvalue}
-@deffn  {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, @dots{}, @var{x_m} = @var{a_m}], @var{c})
-@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@deffn  {Function} atvalue @
+@fname{atvalue} (@var{expr}, [@var{x_1} = @var{a_1}, @dots{}, @var{x_m} = @var{a_m}], @var{c}) @
+@fname{atvalue} (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 
 Assigns the value @var{c} to @var{expr} at the point @code{@var{x} = @var{a}}.
 Typically boundary values are established by this mechanism.
@@ -604,10 +606,11 @@ When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
 
 @c -----------------------------------------------------------------------------
 @anchor{diff}
-@deffn  {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
-@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} diff (@var{expr}, @var{x})
-@deffnx {Function} diff (@var{expr})
+@deffn  {Function} diff @
+@fname{diff} (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m}) @
+@fname{diff} (@var{expr}, @var{x}, @var{n}) @
+@fname{diff} (@var{expr}, @var{x}) @
+@fname{diff} (@var{expr})
 
 Returns the derivative or differential of @var{expr} with respect to some or
 all variables in @var{expr}.
@@ -860,8 +863,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{gradef}
-@deffn  {Function} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, @dots{}, @var{g_m})
-@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
+@deffn  {Function} gradef @
+@fname{gradef} (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, @dots{}, @var{g_m}) @
+@fname{gradef} (@var{a}, @var{x}, @var{expr})
 
 Defines the partial derivatives (i.e., the components of the gradient) of the
 function @var{f} or variable @var{a}.

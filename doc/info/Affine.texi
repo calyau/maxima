@@ -61,10 +61,11 @@ if and only if @var{f} is a polynomial combination of the elements of
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
-@deffn {Function} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
-@deffnx {Function} set_up_dot_simplifications (@var{eqns})
-The @var{eqns} are
-polynomial equations in non commutative variables.
+@deffn {Function} set_up_dot_simplifications @
+@fname{set_up_dot_simplifications} (@var{eqns}, @var{check_through_degree}) @
+@fname{set_up_dot_simplifications} (@var{eqns})
+
+The @var{eqns} are polynomial equations in non commutative variables.
 The value of @code{current_variables} is the
 list of variables used for computing degrees.  The equations must be
 homogeneous, in order for the procedure to terminate.
@@ -191,8 +192,9 @@ monomials.
 @closecatbox
 @end deffn
 
-@deffn {Function} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
-@deffnx {Function} list_nc_monomials (@var{p})
+@deffn {Function} list_nc_monomials @
+@fname{list_nc_monomials} ([@var{p_1}, ..., @var{p_n}]) @
+@fname{list_nc_monomials} (@var{p})
 
 Returns a list of the non commutative monomials occurring in a polynomial @var{p}
 or a list of polynomials @var{p_1}, ..., @var{p_n}.

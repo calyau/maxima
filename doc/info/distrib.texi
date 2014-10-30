@@ -364,8 +364,9 @@ Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @
 @end deffn
 
 
-@deffn {Function} random_normal (@var{m},@var{s})
-@deffnx {Function} random_normal (@var{m},@var{s},@var{n})
+@deffn {Function} random_normal (@var{m},@var{s}) @
+@fname{random_normal} (@var{m},@var{s},@var{n})
+
 Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is an implementation of the Box-Mueller algorithm, as described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
@@ -488,8 +489,9 @@ Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
 @end deffn
 
 
-@deffn {Function} random_student_t (@var{n})
-@deffnx {Function} random_student_t (@var{n},@var{m})
+@deffn {Function} random_student_t (@var{n}) @
+@fname{random_student_t} (@var{n},@var{m})
+
 Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
@@ -649,8 +651,9 @@ Returns the kurtosis coefficient of a noncentral Student random variable @math{n
 @end deffn
 
 
-@deffn {Function} random_noncentral_student_t (@var{n},@var{ncp})
-@deffnx {Function} random_noncentral_student_t (@var{n},@var{ncp},@var{m})
+@deffn {Function} random_noncentral_student_t (@var{n},@var{ncp}) @
+@fname{random_noncentral_student_t} (@var{n},@var{ncp},@var{m})
+
 Returns a noncentral Student random variate @math{nc_t(n,ncp)}, with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
@@ -901,8 +904,9 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
-@deffn {Function} random_chi2 (@var{n})
-@deffnx {Function} random_chi2 (@var{n},@var{m})
+@deffn {Function} random_chi2 (@var{n}) @
+@fname{random_chi2} (@var{n},@var{m})
+
 Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} for details.
@@ -998,8 +1002,9 @@ Returns the kurtosis coefficient of a noncentral Chi-square random variable @mat
 @end deffn
 
 
-@deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp})
-@deffnx {Function} random_noncentral_chi2 (@var{n},@var{ncp},@var{m})
+@deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp}) @
+@fname{random_noncentral_chi2} (@var{n},@var{ncp},@var{m})
+
 Returns a noncentral Chi-square random variate @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 To make use of this function, write first @code{load(distrib)}.
@@ -1124,8 +1129,9 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 @end deffn
 
 
-@deffn {Function} random_f (@var{m},@var{n})
-@deffnx {Function} random_f (@var{m},@var{n},@var{k})
+@deffn {Function} random_f (@var{m},@var{n}) @
+@fname{random_f} (@var{m},@var{n},@var{k})
+
 Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a @math{Chi^2(n)} random variable, then
@@ -1375,8 +1381,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
-@deffn {Function} random_exp (@var{m})
-@deffnx {Function} random_exp (@var{m},@var{k})
+@deffn {Function} random_exp (@var{m}) @
+@fname{random_exp} (@var{m},@var{k})
+
 Returns an @math{Exponential(m)} random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the general inverse method.
@@ -1499,8 +1506,9 @@ Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, wit
 @end deffn
 
 
-@deffn {Function} random_lognormal (@var{m},@var{s})
-@deffnx {Function} random_lognormal (@var{m},@var{s},@var{n})
+@deffn {Function} random_lognormal (@var{m},@var{s}) @
+@fname{random_lognormal} (@var{m},@var{s},@var{n})
+
 Returns a @math{Lognormal(m,s)} random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 Log-normal variates are simulated by means of random normal variates. See @code{random_normal} for details.
@@ -1608,8 +1616,9 @@ Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @m
 @end deffn
 
 
-@deffn {Function} random_gamma (@var{a},@var{b})
-@deffnx {Function} random_gamma (@var{a},@var{b},@var{n})
+@deffn {Function} random_gamma (@var{a},@var{b}) @
+@fname{random_gamma} (@var{a},@var{b},@var{n})
+
 Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is a combinantion of two procedures, depending on the value of parameter @var{a}:
@@ -1722,8 +1731,9 @@ Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @ma
 @end deffn
 
 
-@deffn {Function} random_beta (@var{a},@var{b})
-@deffnx {Function} random_beta (@var{a},@var{b},@var{n})
+@deffn {Function} random_beta (@var{a},@var{b}) @
+@fname{random_beta} (@var{a},@var{b},@var{n})
+
 Returns a @math{Beta(a,b)} random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
@@ -1815,8 +1825,9 @@ Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random vari
 @end deffn
 
 
-@deffn {Function} random_continuous_uniform (@var{a},@var{b})
-@deffnx {Function} random_continuous_uniform (@var{a},@var{b},@var{n})
+@deffn {Function} random_continuous_uniform (@var{a},@var{b}) @
+@fname{random_continuous_uniform} (@var{a},@var{b},@var{n})
+
 Returns a @math{Continuous Uniform(a,b)} random variate, with @math{a<b}. Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
@@ -1910,8 +1921,9 @@ Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , wit
 @end deffn
 
 
-@deffn {Function} random_logistic (@var{a},@var{b})
-@deffnx {Function} random_logistic (@var{a},@var{b},@var{n})
+@deffn {Function} random_logistic (@var{a},@var{b}) @
+@fname{random_logistic} (@var{a},@var{b},@var{n})
+
 Returns a @math{Logistic(a,b)} random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2005,8 +2017,9 @@ Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @
 @end deffn
 
 
-@deffn {Function} random_pareto (@var{a},@var{b})
-@deffnx {Function} random_pareto (@var{a},@var{b},@var{n})
+@deffn {Function} random_pareto (@var{a},@var{b}) @
+@fname{random_pareto} (@var{a},@var{b},@var{n})
+
 Returns a @math{Pareto(a,b)} random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2100,8 +2113,9 @@ Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with 
 @end deffn
 
 
-@deffn {Function} random_weibull (@var{a},@var{b})
-@deffnx {Function} random_weibull (@var{a},@var{b},@var{n})
+@deffn {Function} random_weibull (@var{a},@var{b}) @
+@fname{random_weibull} (@var{a},@var{b},@var{n})
+
 Returns a @math{Weibull(a,b)} random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2363,8 +2377,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
-@deffn {Function} random_rayleigh (@var{b})
-@deffnx {Function} random_rayleigh (@var{b},@var{n})
+@deffn {Function} random_rayleigh (@var{b}) @
+@fname{random_rayleigh} (@var{b},@var{n})
+
 Returns a @math{Rayleigh(b)} random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2459,8 +2474,9 @@ Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with 
 @end deffn
 
 
-@deffn {Function} random_laplace (@var{a},@var{b})
-@deffnx {Function} random_laplace (@var{a},@var{b},@var{n})
+@deffn {Function} random_laplace (@var{a},@var{b}) @
+@fname{random_laplace} (@var{a},@var{b},@var{n})
+
 Returns a @math{Laplace(a,b)} random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2505,8 +2521,9 @@ Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math
 @end deffn
 
 
-@deffn {Function} random_cauchy (@var{a},@var{b})
-@deffnx {Function} random_cauchy (@var{a},@var{b},@var{n})
+@deffn {Function} random_cauchy (@var{a},@var{b}) @
+@fname{random_cauchy} (@var{a},@var{b},@var{n})
+
 Returns a @math{Cauchy(a,b)} random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2629,8 +2646,9 @@ Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @
 @end deffn
 
 
-@deffn {Function} random_gumbel (@var{a},@var{b})
-@deffnx {Function} random_gumbel (@var{a},@var{b},@var{n})
+@deffn {Function} random_gumbel (@var{a},@var{b}) @
+@fname{random_gumbel} (@var{a},@var{b},@var{n})
+
 Returns a @math{Gumbel(a,b)} random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
@@ -2781,8 +2799,9 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
-@deffn {Function} random_general_finite_discrete (@var{v})
-@deffnx {Function} random_general_finite_discrete (@var{v},@var{m})
+@deffn {Function} random_general_finite_discrete (@var{v}) @
+@fname{random_general_finite_discrete} (@var{v},@var{m})
+
 Returns a general finite discrete random variate, with vector probabilities @math{v}. Calling @code{random_general_finite_discrete} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 See @code{pdf_general_finite_discrete} for more details.
@@ -2904,8 +2923,9 @@ Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with
 @end deffn
 
 
-@deffn {Function} random_binomial (@var{n},@var{p})
-@deffnx {Function} random_binomial (@var{n},@var{p},@var{m})
+@deffn {Function} random_binomial (@var{n},@var{p}) @
+@fname{random_binomial} (@var{n},@var{p},@var{m})
+
 Returns a @math{Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the one described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
@@ -3012,8 +3032,9 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 @end deffn
 
 
-@deffn {Function} random_poisson (@var{m})
-@deffnx {Function} random_poisson (@var{m},@var{n})
+@deffn {Function} random_poisson (@var{m}) @
+@fname{random_poisson} (@var{m},@var{n})
+
 Returns a @math{Poisson(m)} random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is the one described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
@@ -3201,8 +3222,9 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
-@deffn {Function} random_bernoulli (@var{p})
-@deffnx {Function} random_bernoulli (@var{p},@var{n})
+@deffn {Function} random_bernoulli (@var{p}) @
+@fname{random_bernoulli} (@var{p},@var{n})
+
 Returns a @math{Bernoulli(p)} random variate, with @math{0<p<1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
@@ -3296,8 +3318,9 @@ Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, 
 @end deffn
 
 
-@deffn {Function} random_geometric (@var{p})
-@deffnx {Function} random_geometric (@var{p},@var{n})
+@deffn {Function} random_geometric (@var{p}) @
+@fname{random_geometric} (@var{p},@var{n})
+
 Returns a @math{Geometric(p)} random variate, with @math{0<p<1}. Calling @code{random_geometric} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The algorithm is based on simulation of Bernoulli trials.
@@ -3391,8 +3414,9 @@ Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable
 @end deffn
 
 
-@deffn {Function} random_discrete_uniform (@var{n})
-@deffnx {Function} random_discrete_uniform (@var{n},@var{m})
+@deffn {Function} random_discrete_uniform (@var{n}) @
+@fname{random_discrete_uniform} (@var{n},@var{m})
+
 Returns a @math{Discrete Uniform(n)} random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
@@ -3496,8 +3520,9 @@ Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 @end deffn
 
 
-@deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n})
-@deffnx {Function} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
+@deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n}) @
+@fname{random_hypergeometric} (@var{n1},@var{n2},@var{n},@var{m})
+
 Returns a @math{Hypergeometric(n1,n2,n)} random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
@@ -3606,8 +3631,9 @@ Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random varia
 @end deffn
 
 
-@deffn {Function} random_negative_binomial (@var{n},@var{p})
-@deffnx {Function} random_negative_binomial (@var{n},@var{p},@var{m})
+@deffn {Function} random_negative_binomial (@var{n},@var{p}) @
+@fname{random_negative_binomial} (@var{n},@var{p},@var{m})
+
 Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.

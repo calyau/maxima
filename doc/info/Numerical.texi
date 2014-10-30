@@ -343,8 +343,9 @@ Computation of sine and cosine coefficients.
 @c -----------------------------------------------------------------------------
 
 @anchor{horner}
-@deffn  {Function} horner (@var{expr}, @var{x})
-@deffnx {Function} horner (@var{expr})
+@deffn  {Function} horner @
+@fname{horner} (@var{expr}, @var{x}) @
+@fname{horner} (@var{expr})
 
 Returns a rearranged representation of @var{expr} as in Horner's rule, using
 @var{x} as the main variable if it is specified.  @code{x} may be omitted in
@@ -610,10 +611,11 @@ autonomous.
 @node Functions for numerical solution of differential equations, , Introduction to numerical solution of differential equations, Numerical
 @section Functions for numerical solution of differential equations
 @c -----------------------------------------------------------------------------
-@deffn {Function} plotdf (@var{dydx}, ...options...)
-@deffnx {Function} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
-@deffnx {Function} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffn {Function} plotdf @
+@fname{plotdf} (@var{dydx}, options@dots{}) @
+@fname{plotdf} (@var{dvdu}, [@var{u},@var{v}], options@dots{}) @
+@fname{plotdf} ([@var{dxdt},c@var{dydt}], options@dots{}) @
+@fname{plotdf} ([@var{dudt},c@var{dvdt}], [@var{u},c@var{v}], options@dots{})
 
 The function @code{plotdf} creates a two-dimensional plot of the direction
 field (also called slope field) for a first-order Ordinary Differential
@@ -905,8 +907,9 @@ Clicking on a point will plot the equipotential curve that passes by that point
 
 @end deffn
 
-@deffn {Function} rk (@var{ODE}, @var{var}, @var{initial}, @var{domain})
-@deffnx {Function} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{domain})
+@deffn {Function} rk @
+@fname{rk} (@var{ODE}, @var{var}, @var{initial}, @var{domain}) @
+@fname{rk} ([@var{ODE1}, @dots{}, @var{ODEm}], [@var{v1}, @dots{}, @var{vm}], [@var{init1}, @dots{}, @var{initm}], @var{domain})
 
 The first form solves numerically one first-order ordinary differential
 equation, and the second form solves a system of m of those equations,

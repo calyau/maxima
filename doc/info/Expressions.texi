@@ -349,8 +349,9 @@ unbound).
 
 @c -----------------------------------------------------------------------------
 @anchor{box}
-@deffn  {Function} box (@var{expr})
-@deffnx {Function} box (@var{expr}, @var{a})
+@deffn {Function} box @
+@fname{box} (@var{expr}) @
+@fname{box} (@var{expr}, @var{a})
 
 Returns @var{expr} enclosed in a box.  The return value is an expression with
 @code{box} as the operator and @var{expr} as the argument.  A box is drawn on
@@ -472,8 +473,9 @@ A demo is available by @code{demo("disol")$}.
 
 @c -----------------------------------------------------------------------------
 @anchor{dispform}
-@deffn  {Function} dispform (@var{expr})
-@deffnx {Function} dispform (@var{expr}, all)
+@deffn  {Function} dispform @
+@fname{dispform} (@var{expr}) @
+@fname{dispform} (@var{expr}, all)
 
 Returns the external representation of @var{expr}.
 
@@ -1183,8 +1185,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{operatorp}
-@deffn  {Function} operatorp (@var{expr}, @var{op})
-@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
+@deffn  {Function} operatorp @
+@fname{operatorp} (@var{expr}, @var{op}) @
+@fname{operatorp} (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
 @code{operatorp (@var{expr}, @var{op})} returns @code{true}
 if @var{op} is equal to the operator of @var{expr}.
@@ -1640,8 +1643,9 @@ the function itself.
 
 @c -----------------------------------------------------------------------------
 @anchor{psubst}
-@deffn  {Function} psubst (@var{list}, @var{expr})
-@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
+@deffn  {Function} psubst @
+@fname{psubst} (@var{list}, @var{expr}) @
+@fname{psubst} (@var{a}, @var{b}, @var{expr})
 
 @code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}.  See 
 @mrefdot{subst}
@@ -1675,9 +1679,10 @@ substitution.
 
 @c -----------------------------------------------------------------------------
 @anchor{rembox}
-@deffn  {Function} rembox (@var{expr}, unlabelled)
-@deffnx {Function} rembox (@var{expr}, @var{label})
-@deffnx {Function} rembox (@var{expr})
+@deffn  {Function} rembox @
+@fname{rembox} (@var{expr}, unlabelled) @
+@fname{rembox} (@var{expr}, @var{label}) @
+@fname{rembox} (@var{expr})
 
 Removes boxes from @var{expr}.
 

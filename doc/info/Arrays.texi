@@ -15,9 +15,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{array}
-@deffn  {Function} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {Function} array @
+@fname{array} (@var{name}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
 
 Creates an @math{n}-dimensional array.  @math{n} may be less than or equal to 5.
 The subscripts for the @math{i}'th dimension are the integers running from 0 to
@@ -814,8 +815,9 @@ changed.
 
 @c -----------------------------------------------------------------------------
 @anchor{remarray}
-@deffn  {Function} remarray (@var{A_1}, @dots{}, @var{A_n})
-@deffnx {Function} remarray (all)
+@deffn  {Function} remarray @
+@fname{remarray} (@var{A_1}, @dots{}, @var{A_n}) @
+@fname{remarray} (all)
 
 Removes arrays and array associated functions and frees the storage occupied.
 The arguments may be declared arrays, undeclared (hashed) arrays, array

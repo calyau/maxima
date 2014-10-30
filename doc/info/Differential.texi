@@ -35,8 +35,10 @@ See @code{ode2} for an example of its usage.
 @end deffn
 
 
-@deffn {Function} desolve (@var{eqn}, @var{x})
-@deffnx {Function} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} desolve @
+@fname{desolve} (@var{eqn}, @var{x}) @
+@fname{desolve} ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+
 The function @code{desolve} solves systems of linear ordinary
 differential equations using Laplace transform.  Here the @var{eqn}'s
 are differential equations in the dependent variables @var{x_1}, ...,

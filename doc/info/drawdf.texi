@@ -72,12 +72,13 @@ equation into a system of two autonomous equations.
 
 @subsection Functions
 
-@deffn {Function} drawdf (@var{dydx}, ...options and objects...)
-@deffnx {Function} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
+@deffn {Function} drawdf @
+@fname{drawdf} (@var{dydx}, ...options and objects...) @
+@fname{drawdf} (@var{dvdu}, [@var{u},@var{v}], ...options and objects...) @
+@fname{drawdf} (@var{dvdu}, [@var{u},@var{umin},@var{umax}], [@var{v},@var{vmin},@var{vmax}], ...options and objects...) @
+@fname{drawdf} ([@var{dxdt},@var{dydt}], ...options and objects...) @
+@fname{drawdf} ([@var{dudt},@var{dvdt}], [@var{u},@var{v}], ...options and objects...) @
+@fname{drawdf} ([@var{dudt},@var{dvdt}], [@var{u},@var{umin},@var{umax}], [@var{v},@var{vmin},@var{vmax}], ...options and objects...)
 
 Function @code{drawdf} draws a 2D direction field with optional
 solution curves and other graphics using the @code{draw} package.

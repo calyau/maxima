@@ -461,14 +461,15 @@ one is not explicitly set by the user.)
 
 @c -----------------------------------------------------------------------------
 @anchor{kill}
-@deffn  {Function} kill (@var{a_1}, @dots{}, @var{a_n})
-@deffnx {Function} kill (labels)
-@deffnx {Function} kill (inlabels, outlabels, linelabels)
-@deffnx {Function} kill (@var{n})
-@deffnx {Function} kill ([@var{m}, @var{n}])
-@deffnx {Function} kill (values, functions, arrays, @dots{})
-@deffnx {Function} kill (all)
-@deffnx {Function} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+@deffn  {Function} kill @
+@fname{kill} (@var{a_1}, @dots{}, @var{a_n}) @
+@fname{kill} (labels) @
+@fname{kill} (inlabels, outlabels, linelabels) @
+@fname{kill} (@var{n}) @
+@fname{kill} ([@var{m}, @var{n}]) @
+@fname{kill} (values, functions, arrays, @dots{}) @
+@fname{kill} (all) @
+@fname{kill} (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
 @var{a_1}, @dots{}, @var{a_n}.  An argument @var{a_k} may be a symbol or a
@@ -528,17 +529,12 @@ the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn  {Function} labels (@var{symbol})
-@deffnx {System variable} labels
+@deffn  {Function} labels (@var{symbol}) @
 
 Returns the list of input, output, or intermediate expression labels which begin
 with @var{symbol}.  Typically @var{symbol} is the value of
 @mrefcomma{inchar} @mrefcomma{outchar} or @mrefdot{linechar}
 If no labels begin with @var{symbol}, @code{labels} returns an empty list.
-
-The variable @code{labels} is the list of input, output, and intermediate
-expression labels, including all previous labels if @code{inchar},
-@code{outchar}, or @code{linechar} were redefined.
 
 By default, Maxima displays the result of each user input expression, giving the
 result an output label.  The output display is suppressed by terminating the
@@ -557,9 +553,20 @@ See also @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} and
 @mrefdot{infolists}
 
 @opencatbox
-@category{Display functions} @category{Display flags and variables} @category{Console interaction}
+@category{Display functions} @category{Console interaction}
 @closecatbox
 @end deffn
+
+@defvr {System variable} labels
+
+The variable @code{labels} is the list of input, output, and intermediate
+expression labels, including all previous labels if @code{inchar},
+@code{outchar}, or @code{linechar} were redefined.
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{linechar}
@@ -705,14 +712,15 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{playback}
-@deffn  {Function} playback ()
-@deffnx {Function} playback (@var{n})
-@deffnx {Function} playback ([@var{m}, @var{n}])
-@deffnx {Function} playback ([@var{m}])
-@deffnx {Function} playback (input)
-@deffnx {Function} playback (slow)
-@deffnx {Function} playback (time)
-@deffnx {Function} playback (grind)
+@deffn {Function} playback @
+@fname{playback} () @
+@fname{playback} (@var{n}) @
+@fname{playback} ([@var{m}, @var{n}]) @
+@fname{playback} ([@var{m}]) @
+@fname{playback} (input) @
+@fname{playback} (slow) @
+@fname{playback} (time) @
+@fname{playback} (grind)
 
 Displays input, output, and intermediate expressions, without recomputing them.
 @code{playback} only displays the expressions bound to labels; any other output
@@ -1267,7 +1275,6 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{grind}
 @deffn  {Function} grind (@var{expr})
-@deffnx {Option variable} grind
 
 The function @code{grind} prints @var{expr} to the console in a form suitable
 for input to Maxima.  @code{grind} always returns @code{done}.
@@ -1278,16 +1285,6 @@ function or macro definition instead of just the name.
 See also @mrefcomma{string} which returns a string instead of printing its
 output.  @code{grind} attempts to print the expression in a manner which makes
 it slightly easier to read than the output of @code{string}.
-
-When the variable @code{grind} is @code{true}, the output of @code{string} and
-@mref{stringout} has the same format as that of @code{grind}; otherwise no
-attempt is made to specially format the output of those functions.  The default
-value of the variable @code{grind} is @code{false}.
-
-@code{grind} can also be specified as an argument of @mrefdot{playback}  When
-@code{grind} is present, @code{playback} prints input expressions in the same
-format as the @code{grind} function.  Otherwise, no attempt is made to specially
-format input expressions.
 
 @code{grind} evaluates its argument.
 
@@ -1395,9 +1392,26 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end example
 
 @opencatbox
-@category{Display functions} @category{Display flags and variables}
+@category{Display functions}
 @closecatbox
 @end deffn
+
+@defvr {Option variable} grind
+
+When the variable @code{grind} is @code{true}, the output of @code{string} and
+@mref{stringout} has the same format as that of @code{grind}; otherwise no
+attempt is made to specially format the output of those functions.  The default
+value of the variable @code{grind} is @code{false}.
+
+@code{grind} can also be specified as an argument of @mrefdot{playback}  When
+@code{grind} is present, @code{playback} prints input expressions in the same
+format as the @code{grind} function.  Otherwise, no attempt is made to specially
+format input expressions.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ibase}

@@ -102,8 +102,9 @@ only yield approximations when all else fails.
 
 @c -----------------------------------------------------------------------------
 @anchor{algsys}
-@deffn  {Function} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
-@deffnx {Function} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn  {Function} algsys @
+@fname{algsys} ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}]) @
+@fname{algsys} ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
 Solves the simultaneous polynomials @var{expr_1}, @dots{}, @var{expr_m} or
 polynomial equations @var{eqn_1}, @dots{}, @var{eqn_m} for the variables
@@ -227,8 +228,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{allroots}
-@deffn  {Function} allroots (@var{expr})
-@deffnx {Function} allroots (@var{eqn})
+@deffn  {Function} allroots @
+@fname{allroots} (@var{expr}) @
+@fname{allroots} (@var{eqn})
 
 Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
@@ -303,8 +305,9 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @c -----------------------------------------------------------------------------
 @anchor{bfallroots}
-@deffn  {Function} bfallroots (@var{expr})
-@deffnx {Function} bfallroots (@var{eqn})
+@deffn  {Function} bfallroots @
+@fname{bfallroots} (@var{expr}) @
+@fname{bfallroots} (@var{eqn})
 
 Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
@@ -434,8 +437,9 @@ Solution:
 
 @c -----------------------------------------------------------------------------
 @anchor{dimension}
-@deffn  {Function} dimension (@var{eqn})
-@deffnx {Function} dimension (@var{eqn_1}, @dots{}, @var{eqn_n})
+@deffn  {Function} dimension @
+@fname{dimension} (@var{eqn}) @
+@fname{dimension} (@var{eqn_1}, @dots{}, @var{eqn_n})
 
 @code{dimen} is a package for dimensional analysis.
 @code{load ("dimen")} loads this package.
@@ -927,10 +931,11 @@ which are free of @code{%i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{realroots}
-@deffn  {Function} realroots (@var{expr}, @var{bound})
-@deffnx {Function} realroots (@var{eqn}, @var{bound})
-@deffnx {Function} realroots (@var{expr})
-@deffnx {Function} realroots (@var{eqn})
+@deffn  {Function} realroots @
+@fname{realroots} (@var{expr}, @var{bound}) @
+@fname{realroots} (@var{eqn}, @var{bound}) @
+@fname{realroots} (@var{expr}) @
+@fname{realroots} (@var{eqn})
 
 Computes rational approximations of the real roots of the polynomial @var{expr}
 or polynomial equation @var{eqn} of one variable, to within a tolerance of
@@ -1185,9 +1190,10 @@ for the roots found by the @mref{realroots} function.
 
 @c -----------------------------------------------------------------------------
 @anchor{solve}
-@deffn  {Function} solve (@var{expr}, @var{x})
-@deffnx {Function} solve (@var{expr})
-@deffnx {Function} solve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn  {Function} solve @
+@fname{solve} (@var{expr}, @var{x}) @
+@fname{solve} (@var{expr}) @
+@fname{solve} ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
 Solves the algebraic equation @var{expr} for the variable @var{x} and returns a
 list of solution equations in @var{x}.  If @var{expr} is not an equation, the

@@ -34,9 +34,11 @@ To use the @code{graphs} package, first load it with @code{load(graphs)}.
 
 @subsection Building graphs
 
-@deffn {Function} create_graph (@var{v_list}, @var{e_list})
-@deffnx {Function} create_graph (@var{n}, @var{e_list})
-@deffnx {Function} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+@deffn {Function} create_graph @
+@fname{create_graph} (@var{v_list}, @var{e_list}) @
+@fname{create_graph} (@var{n}, @var{e_list}) @
+@fname{create_graph} (@var{v_list}, @var{e_list}, @var{directed})
+
 Creates a new graph on the set of vertices @var{v_list} and with edges @var{e_list}.
 
 @var{v_list} is a list of vertices (@code{[v1, v2,..., vn]}) or a
@@ -405,8 +407,10 @@ Returns the line graph of the graph @var{g}.
 @closecatbox
 @end deffn
 
-@deffn {Function} make_graph (@var{vrt}, @var{f})
-@deffnx {Function} make_graph (@var{vrt}, @var{f}, @var{oriented})
+@deffn {Function} make_graph @
+@fname{make_graph} (@var{vrt}, @var{f}) @
+@fname{make_graph} (@var{vrt}, @var{f}, @var{oriented})
+
 Creates a graph using a predicate function @var{f}.
 
 @var{vrt} is a list/set of vertices or an integer. If @var{vrt} is an
@@ -489,8 +493,10 @@ Returns the path on @var{n} vertices.
 @closecatbox
 @end deffn
 
-@deffn {Function} petersen_graph ()
-@deffnx {Function} petersen_graph (@var{n}, @var{d})
+@deffn {Function} petersen_graph @
+@fname{petersen_graph} () @
+@fname{petersen_graph} (@var{n}, @var{d})
+
 Returns the petersen graph @var{P_@{n,d@}}. The default values for
 @var{n} and @var{d} are @code{n=5} and @code{d=2}.
 
@@ -517,8 +523,10 @@ with probability @var{p}.
 @closecatbox
 @end deffn
 
-@deffn {Function} random_regular_graph (@var{n})
-@deffnx {Function} random_regular_graph (@var{n}, @var{d})
+@deffn {Function} random_regular_graph @
+@fname{random_regular_graph} (@var{n}) @
+@fname{random_regular_graph} (@var{n}, @var{d})
+
 Returns a random @var{d}-regular graph on @var{n} vertices. The default
 value for @var{d} is @code{d=3}.
 
@@ -1009,8 +1017,10 @@ Example:
 @closecatbox
 @end deffn
 
-@deffn {Function} get_edge_weight (@var{e}, @var{gr})
-@deffnx {Function} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+@deffn {Function} get_edge_weight @
+@fname{get_edge_weight} (@var{e}, @var{gr}) @
+@fname{get_edge_weight} (@var{e}, @var{gr}, @var{ifnot})
+
 Returns the weight of the edge @var{e} in the graph @var{gr}.
 
 If there is no weight assigned to the edge, the function returns 1. If
@@ -2578,8 +2588,9 @@ Removes the vertex @var{v} from the graph @var{gr}.
 
 @subsection Reading and writing to files
 
-@deffn {Function} dimacs_export (@var{gr}, @var{fl})
-@deffnx {Function} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
+@deffn {Function} dimacs_export @
+@fname{dimacs_export} (@var{gr}, @var{fl}) @
+@fname{dimacs_export} (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
 
 Exports the graph into the file @var{fl} in the DIMACS format. Optional
 comments will be added to the top of the file.
@@ -2674,8 +2685,10 @@ Returns a list of graphs from the file @var{fl} in the sparse6 format.
 
 @subsection Visualization
 
-@deffn {Function} draw_graph (@var{graph})
-@deffnx {Function} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
+@deffn {Function} draw_graph @
+@fname{draw_graph} (@var{graph}) @
+@fname{draw_graph} (@var{graph}, @var{option1}, ..., @var{optionk})
+
 Draws the graph using the @code{draw} package.
 
 The algorithm used to position vertices is specified by the optional

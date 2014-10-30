@@ -4124,8 +4124,10 @@ Vertical and horizontal error bars.
 
 
 
-@deffn  {Graphic object} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {Graphic object} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {Graphic object} explicit @
+@fname{explicit} (@var{fcn},@var{var},@var{minval},@var{maxval}) @
+@fname{explicit} (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+
 Draws explicit functions in 2D and 3D.
 
 @b{2D}
@@ -4291,8 +4293,10 @@ contains more elaborated examples.
 
 
 
-@deffn  {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
-@deffnx {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+@deffn  {Graphic object} implicit @
+@fname{implicit} (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax}) @
+@fname{implicit} (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+
 Draws implicit functions in 2D and 3D.
 
 @b{2D}
@@ -4351,8 +4355,10 @@ Example:
 
 
 
-@deffn  {Graphic object} label ([@var{string},@var{x},@var{y}],...)
-@deffnx {Graphic object} label ([@var{string},@var{x},@var{y},@var{z}],...)
+@deffn  {Graphic object} label @
+@fname{label} ([@var{string},@var{x},@var{y}],...) @
+@fname{label} ([@var{string},@var{x},@var{y},@var{z}],...)
+
 Writes labels in 2D and 3D.
 
 Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
@@ -4461,8 +4467,10 @@ Two quadrilaterals.
 
 
 
-@deffn  {Graphic object} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {Graphic object} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+@deffn  {Graphic object} parametric @
+@fname{parametric} (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax}) @
+@fname{parametric} (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+
 Draws parametric functions in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{nticks}, 
@@ -4554,17 +4562,18 @@ Example:
 
 
 
-@deffn  {Graphic object} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Graphic object} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
-@deffnx {Graphic object} points ([@var{y1},@var{y2},...])
-@deffnx {Graphic object} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
-@deffnx {Graphic object} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
-@deffnx {Graphic object} points (@var{matrix})
-@deffnx {Graphic object} points (@var{1d_y_array})
-@deffnx {Graphic object} points (@var{1d_x_array}, @var{1d_y_array})
-@deffnx {Graphic object} points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})
-@deffnx {Graphic object} points (@var{2d_xy_array})
-@deffnx {Graphic object} points (@var{2d_xyz_array})
+@deffn  {Graphic object} points @
+@fname{points} ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...]) @
+@fname{points} ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...]) @
+@fname{points} ([@var{y1},@var{y2},...]) @
+@fname{points} ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...]) @
+@fname{points} ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...]) @
+@fname{points} (@var{matrix}) @
+@fname{points} (@var{1d_y_array}) @
+@fname{points} (@var{1d_x_array}, @var{1d_y_array}) @
+@fname{points} (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array}) @
+@fname{points} (@var{2d_xy_array}) @
+@fname{points} (@var{2d_xyz_array})
 
 Draws points in 2D and 3D.
 
@@ -4780,8 +4789,10 @@ Example:
 
 
 
-@deffn  {Graphic object} polygon ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], @dots{}])
-@deffnx {Graphic object} polygon ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
+@deffn  {Graphic object} polygon @
+@fname{polygon} ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], @dots{}]) @
+@fname{polygon} ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
+
 Draws polygons in 2D.
 
 @b{2D}
@@ -5022,8 +5033,10 @@ Example:
 
 
 
-@deffn  {Graphic object} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
-@deffnx {Graphic object} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+@deffn  {Graphic object} vector @
+@fname{vector} ([@var{x},@var{y}], [@var{dx},@var{dy}]) @
+@fname{vector} ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+
 Draws vectors in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{head_both}, 
@@ -5095,8 +5108,10 @@ Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
 
 
 
-@deffn  {Function} make_level_picture (@var{data})
-@deffnx {Function} make_level_picture (@var{data},@var{width},@var{height})
+@deffn  {Function} make_level_picture @
+@fname{make_level_picture} (@var{data}) @
+@fname{make_level_picture} (@var{data},@var{width},@var{height})
+
 Returns a levels @var{picture} object. @code{make_level_picture (@var{data})}
 builds the @var{picture} object from matrix @var{data}.
 @code{make_level_picture (@var{data},@var{width},@var{height})}
@@ -5331,8 +5346,10 @@ Map of Europe labeling borders with their component number in
 
 
 
-@deffn  {Function} make_poly_continent (@var{continent_name})
-@deffnx  {Function} make_poly_continent (@var{country_list})
+@deffn  {Function} make_poly_continent @
+@fname{make_poly_continent} (@var{continent_name}) @
+@fname{make_poly_continent} (@var{country_list})
+
 Makes the necessary polygons to draw a colored continent
 or a list of countries.
 
@@ -5499,8 +5516,10 @@ Example:
 
 
 
-@deffn  {Graphic object} geomap (@var{numlist})
-@deffnx {Graphic object} geomap (@var{numlist},@var{3Dprojection})
+@deffn  {Graphic object} geomap @
+@fname{geomap} (@var{numlist}) @
+@fname{geomap} (@var{numlist},@var{3Dprojection})
+
 Draws cartographic maps in 2D and 3D.
 
 @b{2D}
