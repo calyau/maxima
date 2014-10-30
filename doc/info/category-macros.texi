@@ -1,4 +1,21 @@
 @ifhtml
+@macro fname {name}
+@*@ @ @ @ @t{\name\}
+@end macro
+@end ifhtml
+@iftex
+@macro fname {name}
+@*@t{\name\}
+@end macro
+@end iftex
+@ifinfo
+@macro fname {name}
+@*\name\
+@end macro
+@end ifinfo
+
+
+@ifhtml
 @macro opencatbox {}
 @html
 <div class=categorybox>
