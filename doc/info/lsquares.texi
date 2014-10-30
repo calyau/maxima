@@ -20,8 +20,9 @@ to estimate parameters for a model from numerical data.
 @section Functions and Variables for lsquares
 @c -----------------------------------------------------------------------------
 
-@deffn {Function} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
-@deffnx {Function} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {Function} lsquares_estimates @
+@fname{lsquares_estimates} (@var{D}, @var{x}, @var{e}, @var{a}) @
+@fname{lsquares_estimates} (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
 
 Estimate parameters @var{a} to best fit the equation @var{e}
 in the variables @var{x} and @var{a} to the data @var{D},
@@ -535,9 +536,10 @@ Example:
 
 @end deffn
 
-@deffn {Function} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+@deffn {Function} plsquares @
+@fname{plsquares} (@var{Mat},@var{VarList},@var{depvars}) @
+@fname{plsquares} (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon}) @
+@fname{plsquares} (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
 Multivariable polynomial adjustment of a data table by the "least squares"
 method. @var{Mat} is a matrix containing the data, @var{VarList} is a list of variable names (one for each Mat column, but use "-" instead of varnames to ignore Mat columns), @var{depvars} is the name of a dependent variable or a list with one or more names of dependent variables (which names should be in @var{VarList}), @var{maxexpon} is the optional maximum exponent for each independent variable (1 by default), and @var{maxdegree} is the optional maximum polynomial degree (@var{maxexpon} by default); note that the sum of exponents of each term must be equal or smaller than @var{maxdegree}, and if @code{maxdgree = 0} then no limit is applied.
 

@@ -842,11 +842,12 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{taylor}
-@deffn  {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {Function} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, @dots{}], [@var{a_1}, @var{a_2}, @dots{}], [@var{n_1}, @var{n_2}, @dots{}])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], @dots{})
+@deffn  {Function} taylor @
+@fname{taylor} (@var{expr}, @var{x}, @var{a}, @var{n}) @
+@fname{taylor} (@var{expr}, [@var{x_1}, @var{x_2}, @dots{}], @var{a}, @var{n}) @
+@fname{taylor} (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp]) @
+@fname{taylor} (@var{expr}, [@var{x_1}, @var{x_2}, @dots{}], [@var{a_1}, @var{a_2}, @dots{}], [@var{n_1}, @var{n_2}, @dots{}]) @
+@fname{taylor} (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], @dots{})
 
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expands the expression
 @var{expr} in a truncated Taylor or Laurent series in the variable @var{x}
@@ -1297,8 +1298,9 @@ Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
 
 @c -----------------------------------------------------------------------------
 @anchor{remfun}
-@deffn  {Function} remfun (@var{f}, @var{expr})
-@deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
+@deffn  {Function} remfun @
+@fname{remfun} (@var{f}, @var{expr}) @
+@fname{remfun} (@var{f}, @var{expr}, @var{x})
 
 @code{remfun (@var{f}, @var{expr})} replaces all occurrences of @code{@var{f}
 (@var{arg})} by @var{arg} in @var{expr}.
@@ -1315,8 +1317,9 @@ the variable @var{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{funp}
-@deffn  {Function} funp (@var{f}, @var{expr})
-@deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
+@deffn  {Function} funp @
+@fname{funp} (@var{f}, @var{expr}) @
+@fname{funp} (@var{f}, @var{expr}, @var{x})
 
 @code{funp (@var{f}, @var{expr})}
 returns @code{true} if @var{expr} contains the function @var{f}.
@@ -1333,9 +1336,10 @@ returns @code{true} if @var{expr} contains the function @var{f} and the variable
 
 @c -----------------------------------------------------------------------------
 @anchor{absint}
-@deffn  {Function} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {Function} absint (@var{f}, @var{x})
-@deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn  {Function} absint @
+@fname{absint} (@var{f}, @var{x}, @var{halfplane}) @
+@fname{absint} (@var{f}, @var{x}) @
+@fname{absint} (@var{f}, @var{x}, @var{a}, @var{b})
 
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
 returns the indefinite integral of @var{f} with respect to

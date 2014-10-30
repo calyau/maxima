@@ -278,8 +278,9 @@ of @code{gnuplot_view_args}.
 
 @c -----------------------------------------------------------------------------
 @anchor{implicit_plot}
-@deffn  {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Function} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn  {Function} implicit_plot @
+@fname{implicit_plot} (@var{expr}, @var{x_range}, @var{y_range}) @
+@fname{implicit_plot} ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
 
 Displays a plot of a function on the real plane, defined implicitly by
 the expression @var{expr}. The domain in the plane is defined by
@@ -450,9 +451,10 @@ coordinates), and transform them into x and y coordinates.
 
 @c -----------------------------------------------------------------------------
 @anchor{plot2d}
-@deffn  {Function} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
-@deffnx {Function} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
-@deffnx {Function} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
+@deffn  {Function} plot2d @
+@fname{plot2d} (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{}) @
+@fname{plot2d} ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{}) @
+@fname{plot2d} ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
 
 Where @var{plot}, @var{plot_1}, @dots{}, @var{plot_n} can be either
 expressions, function names or a list with
@@ -724,8 +726,9 @@ See also the section about Plotting Options.
 
 @c -----------------------------------------------------------------------------
 @anchor{plot3d}
-@deffn  {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
-@deffnx {Function} plot3d ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+@deffn {Function} plot3d @
+@fname{plot3d} (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{}) @
+@fname{plot3d} ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
 
 Displays a plot of one or more surfaces defined as functions of two
 variables or in parametric form.
@@ -1240,8 +1243,9 @@ coordinates indicated after each label.
 
 @c -----------------------------------------------------------------------------
 @anchor{legend}
-@defvr  {Plot option} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
-@defvrx {Plot option} legend [legend, @var{false}]
+@defvr {Plot option} legend @
+@fname{legend} [legend, @var{string_1}, @dots{}, @var{string_n}] @
+@fname{legend} [legend, @var{false}]
 
 It specifies the labels for the plots when various plots are shown.  If
 there are more plots than the number of labels given, they will be
@@ -1310,8 +1314,9 @@ it sets the number of points that will be shown for the plot.
 
 @c -----------------------------------------------------------------------------
 @anchor{palette}
-@defvr  {Plot option} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
-@defvrx {Plot option} palette [palette, @var{false}]
+@defvr  {Plot option} palette @
+@fname{palette} [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]] @
+@fname{palette} [palette, @var{false}]
 
 It can consist of one palette or a list of several palettes.  Each
 palette is a list with a keyword followed by values. If the keyword is
@@ -1514,8 +1519,9 @@ a 3d plot will be the same.
 
 @c -----------------------------------------------------------------------------
 @anchor{style}
-@defvr  {Plot option} style [style, @var{type_1}, @dots{}, @var{type_n}]
-@defvrx {Plot option} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
+@defvr  {Plot option} style @
+@fname{style} [style, @var{type_1}, @dots{}, @var{type_n}] @
+@fname{style} [style, [@var{style_1}], @dots{}, [@var{style_n}]]
 
 The styles that will be used for the various functions or sets of data
 in a 2d plot.  The word @var{style} must be followed by one or more
@@ -2043,8 +2049,9 @@ format and opens a new pipe.
 
 @c -----------------------------------------------------------------------------
 @anchor{gnuplot_replot}
-@deffn  {Function} gnuplot_replot ()
-@deffnx {Function} gnuplot_replot (@var{s})
+@deffn  {Function} gnuplot_replot @
+@fname{gnuplot_replot} () @
+@fname{gnuplot_replot} (@var{s})
 
 Updates the gnuplot window.  If @code{gnuplot_replot} is called with a
 gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot

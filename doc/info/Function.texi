@@ -588,8 +588,9 @@ Improper name or value in functional position.
 
 @c -----------------------------------------------------------------------------
 @anchor{block}
-@deffn  {Function} block ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n})
-@deffnx {Function} block (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn  {Function} block @
+@fname{block} ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n}) @
+@fname{block} (@var{expr_1}, @dots{}, @var{expr_n})
 
 @code{block} evaluates @var{expr_1}, @dots{}, @var{expr_n} in sequence and
 returns the value of the last expression evaluated.  The sequence can be
@@ -698,9 +699,10 @@ the first negative element of @code{l} and "throws" it up.
 
 @c -----------------------------------------------------------------------------
 @anchor{compfile}
-@deffn  {Function} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} compfile (@var{filename}, functions)
-@deffnx {Function} compfile (@var{filename}, all)
+@deffn  {Function} compfile @
+@fname{compfile} (@var{filename}, @var{f_1}, @dots{}, @var{f_n}) @
+@fname{compfile} (@var{filename}, functions) @
+@fname{compfile} (@var{filename}, all)
 
 Translates Maxima functions into Lisp and writes the translated code into the
 file @var{filename}.
@@ -735,9 +737,10 @@ See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 
 @c -----------------------------------------------------------------------------
 @anchor{compile}
-@deffn  {Function} compile (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} compile (functions)
-@deffnx {Function} compile (all)
+@deffn  {Function} compile @
+@fname{compile} (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{compile} (functions) @
+@fname{compile} (all)
 
 Translates Maxima functions @var{f_1}, @dots{}, @var{f_n} into Lisp, evaluates
 the Lisp translations, and calls the Lisp function @code{COMPILE} on each
@@ -757,12 +760,13 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 
 @c -----------------------------------------------------------------------------
 @anchor{define}
-@deffn  {Function} define (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr})
-@deffnx {Function} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr})
-@deffnx {Function} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}](@var{y_1}, @dots{}, @var{y_m}), @var{expr})
-@deffnx {Function} define (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
-@deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
-@deffnx {Function} define (ev (@var{expr_1}), @var{expr_2})
+@deffn  {Function} define @
+@fname{define} (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr}) @
+@fname{define} (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr}) @
+@fname{define} (@var{f}[@var{x_1}, @dots{}, @var{x_n}](@var{y_1}, @dots{}, @var{y_m}), @var{expr}) @
+@fname{define} (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr}) @
+@fname{define} (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@fname{define} (ev (@var{expr_1}), @var{expr_2})
 
 Defines a function named @var{f} with arguments @var{x_1}, @dots{}, @var{x_n}
 and function body @var{expr}.  @code{define} always evaluates its second
@@ -1034,8 +1038,9 @@ Cannot assign to `baz_quux'.
 
 @c -----------------------------------------------------------------------------
 @anchor{dispfun}
-@deffn  {Function} dispfun (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} dispfun (all)
+@deffn  {Function} dispfun @
+@fname{dispfun} (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{dispfun} (all)
 
 Displays the definition of the user-defined functions @var{f_1}, @dots{},
 @var{f_n}.  Each argument may be the name of a macro (defined with @code{::=}),
@@ -1420,9 +1425,10 @@ Maxima simplifies @code{funmake}'s return value.
 
 @c -----------------------------------------------------------------------------
 @anchor{lambda}
-@deffn  {Function} lambda ([@var{x_1}, @dots{}, @var{x_m}], @var{expr_1}, @dots{}, @var{expr_n})
-@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
-@deffnx {Function} lambda ([@var{x_1}, @dots{}, @var{x_m}, [@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
+@deffn  {Function} lambda @
+@fname{lambda} ([@var{x_1}, @dots{}, @var{x_m}], @var{expr_1}, @dots{}, @var{expr_n}) @
+@fname{lambda} ([[@var{L}]], @var{expr_1}, @dots{}, @var{expr_n}) @
+@fname{lambda} ([@var{x_1}, @dots{}, @var{x_m}, [@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
 
 Defines and returns a lambda expression (that is, an anonymous function).
 The function may have required arguments @var{x_1}, @dots{}, @var{x_m} and/or
@@ -1992,8 +1998,9 @@ every time you take the first of a list of numbers.
 
 @c -----------------------------------------------------------------------------
 @anchor{remfunction}
-@deffn  {Function} remfunction (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} remfunction (all)
+@deffn  {Function} remfunction @
+@fname{remfunction} (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{remfunction} (all)
 
 Unbinds the function definitions of the symbols @var{f_1}, @dots{}, @var{f_n}.
 The arguments may be the names of ordinary functions (created by @mref{:=} or
@@ -2056,9 +2063,10 @@ suitable for compilation.
 
 @c -----------------------------------------------------------------------------
 @anchor{translate}
-@deffn  {Function} translate (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} translate (functions)
-@deffnx {Function} translate (all)
+@deffn  {Function} translate @
+@fname{translate} (@var{f_1}, @dots{}, @var{f_n}) @
+@fname{translate} (functions) @
+@fname{translate} (all)
 
 Translates the user-defined functions @var{f_1}, @dots{}, @var{f_n} from the
 Maxima language into Lisp and evaluates the Lisp translations.
@@ -2121,8 +2129,9 @@ functions translated.
 
 @c -----------------------------------------------------------------------------
 @anchor{translate_file}
-@deffn  {Function} translate_file (@var{maxima_filename})
-@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn  {Function} translate_file @
+@fname{translate_file} (@var{maxima_filename}) @
+@fname{translate_file} (@var{maxima_filename}, @var{lisp_filename})
 
 Translates a file of Maxima code into a file of Lisp code.
 @code{translate_file} returns a list of three filenames:
@@ -2476,9 +2485,10 @@ undefined global variables are seen.
 
 @c -----------------------------------------------------------------------------
 @anchor{compile_file}
-@deffn  {Function} compile_file (@var{filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+@deffn  {Function} compile_file @
+@fname{compile_file} (@var{filename}) @
+@fname{compile_file} (@var{filename}, @var{compiled_filename}) @
+@fname{compile_file} (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 
 Translates the Maxima file @var{filename} into Lisp, executes the Lisp compiler,
 and, if the translation and compilation succeed, loads the compiled code into

@@ -190,26 +190,17 @@ Incorrect syntax: # is not a prefix operator
 @anchor{*}
 @anchor{/}
 @anchor{^}
-@deffn {Operator} +
-@ifinfo
 @fnindex Addition
-@end ifinfo
-@deffnx {Operator} -
-@ifinfo
 @fnindex Subtraction
-@end ifinfo
-@deffnx {Operator} *
-@ifinfo
 @fnindex Multiplication
-@end ifinfo
-@deffnx {Operator} /
-@ifinfo
 @fnindex Division
-@end ifinfo
-@deffnx {Operator} ^
-@ifinfo
 @fnindex Exponentiation
-@end ifinfo
+
+@deffn {Operator} +
+@deffnx {Operator} -
+@deffnx {Operator} *
+@deffnx {Operator} /
+@deffnx {Operator} ^
 
 The symbols @code{+} @code{*} @code{/} and @code{^} represent addition,
 multiplication, division, and exponentiation, respectively.  The names of these
@@ -527,22 +518,15 @@ and
 @anchor{<=}
 @anchor{>=}
 @anchor{>}
-@deffn {Operator} <
-@ifinfo
 @fnindex Less than
-@end ifinfo
-@deffnx {Operator} <=
-@ifinfo
 @fnindex Less than or equal
-@end ifinfo
-@deffnx {Operator} >=
-@ifinfo
 @fnindex Greater than or equal
-@end ifinfo
-@deffnx {Operator} >
-@ifinfo
 @fnindex Greater than
-@end ifinfo
+
+@deffn {Operator} <
+@deffnx {Operator} <=
+@deffnx {Operator} >=
+@deffnx {Operator} >
 
 The symbols @code{<} @code{<=} @code{>=} and @code{>} represent less than, less
 than or equal, greater than or equal, and greater than, respectively.  The names
@@ -1404,9 +1388,10 @@ the function defined by @code{:=} accepts a variable number of arguments.
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {Function} infix (@var{op})
-@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn  {Function} infix @
+@fname{infix} (@var{op}) @
+@fname{infix} (@var{op}, @var{lbp}, @var{rbp}) @
+@fname{infix} (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
 Declares @var{op} to be an infix operator.  An infix operator is a function of
 two arguments, with the name of the function written between the arguments.
@@ -1533,8 +1518,9 @@ if x ## y then
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Function} matchfix (@var{ldelimiter}, @var{rdelimiter})
-@deffnx {Function} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+@deffn  {Function} matchfix @
+@fname{matchfix} (@var{ldelimiter}, @var{rdelimiter}) @
+@fname{matchfix} (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
 Declares a matchfix operator with left and right delimiters @var{ldelimiter}
 and @var{rdelimiter}.  The delimiters are specified as strings.
@@ -1668,8 +1654,9 @@ Matchfix operators are ordinary user-defined functions.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_nary}
-@deffn  {Function} nary (@var{op})
-@deffnx {Function} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
+@deffn  {Function} nary @
+@fname{nary} (@var{op}) @
+@fname{nary} (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
 
 An @code{nary} operator is used to denote a function of any number of arguments,
 each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
@@ -1687,8 +1674,9 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {Function} nofix (@var{op})
-@deffnx {Function} nofix (@var{op}, @var{pos})
+@deffn  {Function} nofix @
+@fname{nofix} (@var{op}) @
+@fname{nofix} (@var{op}, @var{pos})
 
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
@@ -1706,8 +1694,9 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {Function} postfix (@var{op})
-@deffnx {Function} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
+@deffn  {Function} postfix @
+@fname{postfix} (@var{op}) @
+@fname{postfix} (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
 
 @code{postfix} operators like the @code{prefix} variety denote functions of a
 single argument, but in this case the argument immediately precedes an
@@ -1724,8 +1713,9 @@ See also @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {Function} prefix (@var{op})
-@deffnx {Function} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
+@deffn  {Function} prefix @
+@fname{prefix} (@var{op}) @
+@fname{prefix} (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
 
 A @code{prefix} operator is one which signifies a function of one argument,
 which argument immediately follows an occurrence of the operator.

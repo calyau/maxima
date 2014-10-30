@@ -2266,8 +2266,9 @@ simplifications are turned off.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigreduce}
-@deffn  {Function} trigreduce (@var{expr}, @var{x})
-@deffnx {Function} trigreduce (@var{expr})
+@deffn  {Function} trigreduce @
+@fname{trigreduce} (@var{expr}, @var{x}) @
+@fname{trigreduce} (@var{expr})
 
 Combines products and powers of trigonometric
 and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
@@ -2465,10 +2466,11 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c -----------------------------------------------------------------------------
 @anchor{make_random_state}
-@deffn  {Function} make_random_state (@var{n})
-@deffnx {Function} make_random_state (@var{s})
-@deffnx {Function} make_random_state (true)
-@deffnx {Function} make_random_state (false)
+@deffn  {Function} make_random_state @
+@fname{make_random_state} (@var{n}) @
+@fname{make_random_state} (@var{s}) @
+@fname{make_random_state} (true) @
+@fname{make_random_state} (false)
 
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})

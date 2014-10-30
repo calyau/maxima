@@ -146,8 +146,9 @@ is not explicitly set by the user with @code{let} or by changing the value of
 
 @c -----------------------------------------------------------------------------
 @anchor{defmatch}
-@deffn  {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
-@deffnx {Function} defmatch (@var{progname}, @var{pattern})
+@deffn  {Function} defmatch @
+@fname{defmatch} (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n}) @
+@fname{defmatch} (@var{progname}, @var{pattern})
 
 Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}
 which tests @var{expr} to see if it matches @var{pattern}.
@@ -314,8 +315,9 @@ If the match fails, the rule function returns @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{disprule}
-@deffn  {Function} disprule (@var{rulename_1}, @dots{}, @var{rulename_2})
-@deffnx {Function} disprule (all)
+@deffn  {Function} disprule @
+@fname{disprule} (@var{rulename_1}, @dots{}, @var{rulename_2}) @
+@fname{disprule} (all)
 
 Display rules with the names @var{rulename_1}, @dots{}, @var{rulename_n},
 as returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter},
@@ -366,8 +368,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{let}
-@deffn  {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n})
-@deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}], @var{package_name})
+@deffn  {Function} let @
+@fname{let} (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}) @
+@fname{let} ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}], @var{package_name})
 
 Defines a substitution rule for @code{letsimp} such that @var{prod} is replaced
 by @var{repl}.  @var{prod} is a product of positive or negative powers of the
@@ -493,8 +496,9 @@ the numerator, denominator, and their quotient are simplified in that order.
 
 @c -----------------------------------------------------------------------------
 @anchor{letrules}
-@deffn  {Function} letrules ()
-@deffnx {Function} letrules (@var{package_name})
+@deffn  {Function} letrules @
+@fname{letrules} () @
+@fname{letrules} (@var{package_name})
 
 Displays the rules in a rule package.
 @code{letrules ()} displays the rules in the current rule package.
@@ -515,9 +519,10 @@ See also @code{disprule}, which displays rules defined by @code{tellsimp} and
 
 @c -----------------------------------------------------------------------------
 @anchor{letsimp}
-@deffn  {Function} letsimp (@var{expr})
-@deffnx {Function} letsimp (@var{expr}, @var{package_name})
-@deffnx {Function} letsimp (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
+@deffn  {Function} letsimp @
+@fname{letsimp} (@var{expr}) @
+@fname{letsimp} (@var{expr}, @var{package_name}) @
+@fname{letsimp} (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
 
 Repeatedly applies the substitution rules defined by @code{let}
 until no further change is made to @var{expr}.
@@ -801,10 +806,11 @@ will reach before giving up.
 
 @c -----------------------------------------------------------------------------
 @anchor{remlet}
-@deffn  {Function} remlet (@var{prod}, @var{name})
-@deffnx {Function} remlet ()
-@deffnx {Function} remlet (all)
-@deffnx {Function} remlet (all, @var{name})
+@deffn  {Function} remlet @
+@fname{remlet} (@var{prod}, @var{name}) @
+@fname{remlet} () @
+@fname{remlet} (all) @
+@fname{remlet} (all, @var{name})
 
 Deletes the substitution rule, @var{prod} --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
@@ -830,8 +836,9 @@ See also @code{remrule}, which removes a rule defined by @code{tellsimp} or
 
 @c -----------------------------------------------------------------------------
 @anchor{remrule}
-@deffn  {Function} remrule (@var{op}, @var{rulename})
-@deffnx {Function} remrule (@var{op}, all)
+@deffn  {Function} remrule @
+@fname{remrule} (@var{op}, @var{rulename}) @
+@fname{remrule} (@var{op}, all)
 
 Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
 

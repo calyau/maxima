@@ -83,8 +83,9 @@ of @code{genindex} with no numeric suffix.
 
 @c -----------------------------------------------------------------------------
 @anchor{gensym}
-@deffn  {Function} gensym ()
-@deffnx {Function} gensym (@var{x})
+@deffn  {Function} gensym @
+@fname{gensym} () @
+@fname{gensym} (@var{x})
 
 @code{gensym()} creates and returns a fresh symbol.
 
@@ -146,8 +147,9 @@ creating Maxima init files.
 
 @c -----------------------------------------------------------------------------
 @anchor{remvalue}
-@deffn  {Function} remvalue (@var{name_1}, @dots{}, @var{name_n})
-@deffnx {Function} remvalue (all)
+@deffn  {Function} remvalue @
+@fname{remvalue} (@var{name_1}, @dots{}, @var{name_n}) @
+@fname{remvalue} remvalue (all)
 
 Removes the values of user variables @var{name_1}, @dots{}, @var{name_n}
 (which can be subscripted) from the system.
@@ -243,9 +245,10 @@ Warning - you are redefining the Macsyma function legendre_p
 
 @c -----------------------------------------------------------------------------
 @anchor{tcl_output}
-@deffn  {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
-@deffnx {Function} tcl_output (@var{list}, @var{i0})
-@deffnx {Function} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
+@deffn  {Function} tcl_output @
+@fname{tcl_output} (@var{list}, @var{i0}, @var{skip}) @
+@fname{tcl_output} (@var{list}, @var{i0}) @
+@fname{tcl_output} ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
 
 Prints elements of a list enclosed by curly braces @code{@{ @}},
 suitable as part of a program in the Tcl/Tk language.

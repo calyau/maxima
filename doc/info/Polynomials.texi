@@ -149,8 +149,9 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} coeff (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} coeff (@var{expr}, @var{x})
+@deffn  {Function} coeff @
+@fname{coeff} (@var{expr}, @var{x}, @var{n}) @
+@fname{coeff} (@var{expr}, @var{x})
 
 Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr},
 where @var{expr} is a polynomial or a monomial term in @var{x}.
@@ -453,8 +454,9 @@ Default value: @code{true}
 
 @c -----------------------------------------------------------------------------
 @anchor{factor}
-@deffn  {Function} factor (@var{expr})
-@deffnx {Function} factor (@var{expr}, @var{p})
+@deffn  {Function} factor @
+@fname{factor} (@var{expr}) @
+@fname{factor} (@var{expr}, @var{p})
 
 Factors the expression @var{expr}, containing any number of variables or 
 functions, into factors irreducible over the integers.
@@ -918,8 +920,9 @@ the polynomials divided by the greatest common divisor.
 
 @c -----------------------------------------------------------------------------
 @anchor{gcdex}
-@deffn  {Function} gcdex (@var{f}, @var{g})
-@deffnx {Function} gcdex (@var{f}, @var{g}, @var{x})
+@deffn  {Function} gcdex @
+@fname{gcdex} (@var{f}, @var{g}) @
+@fname{gcdex} (@var{f}, @var{g}, @var{x})
 
 Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the greatest
 common divisor (gcd) of @var{f} and @var{g}, and @var{u} is equal to
@@ -1380,8 +1383,9 @@ returns @var{p} (unexpanded), @code{polydecomp (compose ([@var{p_1}, ...,
 
 @c -----------------------------------------------------------------------------
 @anchor{polymod}
-@deffn  {Function} polymod (@var{p})
-@deffnx {Function} polymod (@var{p}, @var{m})
+@deffn  {Function} polymod @
+@fname{polymod} (@var{p}) @
+@fname{polymod} (@var{p}, @var{m})
 
 Converts the polynomial @var{p} to a modular representation with respect to the
 current modulus which is the value of the variable @code{modulus}.
@@ -1401,8 +1405,9 @@ See @mrefdot{modulus}
 
 @c -----------------------------------------------------------------------------
 @anchor{quotient}
-@deffn  {Function} quotient (@var{p_1}, @var{p_2})
-@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {Function} quotient @
+@fname{quotient} (@var{p_1}, @var{p_2}) @
+@fname{quotient} (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.  The
 arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
@@ -1419,8 +1424,9 @@ arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} rat (@var{expr})
-@deffnx {Function} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {Function} rat @
+@fname{rat} (@var{expr}) @
+@fname{rat} (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 Converts @var{expr} to canonical rational expression (CRE) form by expanding and
 combining all terms over a common denominator and cancelling out the
@@ -1504,8 +1510,9 @@ when canonical rational expressions (CRE) are used in algebraic mode.
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} ratcoef (@var{expr}, @var{x})
+@deffn  {Function} ratcoef @
+@fname{ratcoef} (@var{expr}, @var{x}, @var{n}) @
+@fname{ratcoef} (@var{expr}, @var{x})
 
 Returns the coefficient of the expression @code{@var{x}^@var{n}}
 in the expression @var{expr}.
@@ -2128,8 +2135,9 @@ evaluation are still present.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
-@deffnx {Function} ratweight ()
+@deffn  {Function} ratweight @
+@fname{ratweight} (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n}) @
+@fname{ratweight} ()
 
 Assigns a weight @var{w_i} to the variable @var{x_i}.
 This causes a term to be replaced by 0 if its weight exceeds the
@@ -2201,8 +2209,9 @@ For the default value of @code{false}, no truncation occurs.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} remainder (@var{p_1}, @var{p_2})
-@deffnx {Function} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {Function} remainder @
+@fname{remainder} (@var{p_1}, @var{p_2}) @
+@fname{remainder} (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns the remainder of the polynomial @var{p_1} divided by the polynomial
 @var{p_2}.  The arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in
@@ -2352,8 +2361,9 @@ Example:
 @c THIS ITEM STILL NEEDS WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} tellrat (@var{p_1}, @dots{}, @var{p_n})
-@deffnx {Function} tellrat ()
+@deffn  {Function} tellrat @
+@fname{tellrat} (@var{p_1}, @dots{}, @var{p_n}) @
+@fname{tellrat} ()
 
 Adds to the ring of algebraic integers known to Maxima
 the elements which are the solutions of the polynomials @var{p_1}, @dots{},

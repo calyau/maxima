@@ -139,8 +139,10 @@ interactively. See @code{ctensor} for more details.
 @closecatbox
 @end deffn
 
-@deffn {Function} cmetric (@var{dis})
-@deffnx {Function} cmetric ()
+@deffn {Function} cmetric @
+@fname{cmetric} (@var{dis}) @
+@fname{cmetric} ()
+
 A function in the @code{ctensor} (component tensor) package
 that computes the metric inverse and sets up the package for
 further calculations.
@@ -163,8 +165,10 @@ metric @code{ufg} are computed.
 @closecatbox
 @end deffn
 
-@deffn {Function} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
-@deffnx {Function} ct_coordsys (@var{coordinate_system})
+@deffn {Function} ct_coordsys @
+@fname{ct_coordsys} (@var{coordinate_system}, @var{extra_arg}) @
+@fname{ct_coordsys} (@var{coordinate_system})
+
 Sets up a predefined coordinate system and metric. The argument
 @var{coordinate_system} can be one of the following symbols:
 

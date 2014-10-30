@@ -90,10 +90,11 @@ The effect of reading such values with @code{numericalio} is undefined.
 @node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, numericalio
 @section Functions and Variables for plain-text input and output
 
-@deffn {Function} read_matrix (@var{S})
-@deffnx {Function} read_matrix (@var{S}, @var{M})
-@deffnx {Function} read_matrix (@var{S}, @var{separator_flag})
-@deffnx {Function} read_matrix (@var{S}, @var{M}, @var{separator_flag})
+@deffn {Function} read_matrix @
+@fname{read_matrix} (@var{S}) @
+@fname{read_matrix} (@var{S}, @var{M}) @
+@fname{read_matrix} (@var{S}, @var{separator_flag}) @
+@fname{read_matrix} (@var{S}, @var{M}, @var{separator_flag})
 
 @code{read_matrix(@var{S})} reads the source @var{S} and returns its entire content as a matrix.
 The size of the matrix is inferred from the input data;
@@ -117,8 +118,9 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} read_array (@var{S}, @var{A})
-@deffnx {Function} read_array (@var{S}, @var{A}, @var{separator_flag})
+@deffn {Function} read_array @
+@fname{read_array} (@var{S}, @var{A}) @
+@fname{read_array} (@var{S}, @var{A}, @var{separator_flag})
 
 Reads the source @var{S} into the array @var{A},
 until @var{A} is full or the source is exhausted.
@@ -137,8 +139,9 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} read_hashed_array (@var{S}, @var{A})
-@deffnx {Function} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
+@deffn {Function} read_hashed_array @
+@fname{read_hashed_array} (@var{S}, @var{A}) @
+@fname{read_hashed_array} (@var{S}, @var{A}, @var{separator_flag})
 
 Reads the source @var{S} and returns its entire content as a hashed array.
 The source @var{S} may be a file name or a stream.
@@ -159,8 +162,9 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} read_nested_list (@var{S})
-@deffnx {Function} read_nested_list (@var{S}, @var{separator_flag})
+@deffn {Function} read_nested_list @
+@fname{read_nested_list} (@var{S}) @
+@fname{read_nested_list} (@var{S}, @var{separator_flag})
 
 Reads the source @var{S} and returns its entire content as a nested list.
 The source @var{S} may be a file name or a stream.
@@ -179,10 +183,11 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} read_list (@var{S})
-@deffnx {Function} read_list (@var{S}, @var{L})
-@deffnx {Function} read_list (@var{S}, @var{separator_flag})
-@deffnx {Function} read_list (@var{S}, @var{L}, @var{separator_flag})
+@deffn {Function} read_list @
+@fname{read_list} (@var{S}) @
+@fname{read_list} (@var{S}, @var{L}) @
+@fname{read_list} (@var{S}, @var{separator_flag}) @
+@fname{read_list} (@var{S}, @var{L}, @var{separator_flag})
 
 @code{read_list(@var{S})} reads the source @var{S} and returns its entire content as a flat list.
 
@@ -201,8 +206,9 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} write_data (@var{X}, @var{D})
-@deffnx {Function} write_data (@var{X}, @var{D}, @var{separator_flag})
+@deffn {Function} write_data @
+@fname{write_data} (@var{X}, @var{D}) @
+@fname{write_data} (@var{X}, @var{D}, @var{separator_flag})
 
 Writes the object @var{X} to the destination @var{D}.
 
@@ -307,8 +313,10 @@ The byte order in elements of the source is specified by @code{assume_external_b
 @closecatbox
 @end deffn
 
-@deffn {Function} read_binary_list (@var{S})
-@deffnx {Function} read_binary_list (@var{S}, @var{L})
+@deffn {Function} read_binary_list @
+@fname{read_binary_list} (@var{S}) @
+@fname{read_binary_list} (@var{S}, @var{L})
+
 @code{read_binary_list(@var{S})} reads the entire content of the source @var{S}
 as a sequence of binary 8-byte floating point numbers, and returns it as a list.
 The source @var{S} may be a file name or a stream.

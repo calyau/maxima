@@ -5,8 +5,9 @@
 @node Functions and Variables for romberg, , Top, Top
 @section Functions and Variables for romberg
 
-@deffn {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Function} romberg (@var{F}, @var{a}, @var{b})
+@deffn {Function} romberg @
+@fname{romberg} (@var{expr}, @var{x}, @var{a}, @var{b}) @
+@fname{romberg} (@var{F}, @var{a}, @var{b})
 
 Computes a numerical integration by Romberg's method.
 

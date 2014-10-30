@@ -165,8 +165,9 @@ where @var{stream} has to be a stream from or to a file.
 
 @end deffn
 
-@deffn {Function} fposition (@var{stream})
-@deffnx {Function} fposition (@var{stream}, @var{pos})
+@deffn {Function} fposition @
+@fname{fposition} (@var{stream}) @
+@fname{fposition} (@var{stream}, @var{pos})
 
 Returns the current position in @var{stream}, if @var{pos} is not used. 
 If @var{pos} is used, @code{fposition} sets the position in @var{stream}.
@@ -180,8 +181,10 @@ is in position 1.
 
 @end deffn
 
-@deffn {Function} freshline () 
-@deffnx {Function} freshline (@var{stream}) 
+@deffn {Function} freshline @
+@fname{freshline} ()  @
+@fname{freshline} (@var{stream}) 
+
 Writes a new line (to @var{stream}),
 if the position is not at the beginning of a line.
 See also @code{newline}.
@@ -210,9 +213,10 @@ Example: See @ref{make_string_output_stream} .
 
 @c -----------------------------------------------------------------------------
 @anchor{make_string_input_stream}
-@deffn {Function} make_string_input_stream (@var{string})
-@deffnx {Function} make_string_input_stream (@var{string}, @var{start})
-@deffnx {Function} make_string_input_stream (@var{string}, @var{start}, @var{end})
+@deffn {Function} make_string_input_stream @
+@fname{make_string_input_stream} (@var{string}) @
+@fname{make_string_input_stream} (@var{string}, @var{start}) @
+@fname{make_string_input_stream} (@var{string}, @var{start}, @var{end})
 
 Returns an input stream which contains parts of @var{string} and an end of file. 
 Without optional arguments the stream contains the entire string 
@@ -264,8 +268,10 @@ in this stream can be retrieved by @ref{get_output_stream_string}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} newline () 
-@deffnx {Function} newline (@var{stream}) 
+@deffn {Function} newline @
+@fname{newline} ()  @
+@fname{newline} (@var{stream}) 
+
 Writes a new line (to @var{stream}).
 See @code{sprint} for an example of using @code{newline()}.
 Note that there are some cases, where @code{newline()} does not work as expected. 
@@ -307,8 +313,9 @@ If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
 @end deffn
 
-@deffn {Function} printf (@var{dest}, @var{string})
-@deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} printf @
+@fname{printf} (@var{dest}, @var{string}) @
+@fname{printf} (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
 
 Produces formatted output by outputting the characters of control-string 
 @var{string} and observing that a tilde introduces a directive.
@@ -885,9 +892,11 @@ Returns a copy of @var{string} as a new string.
 
 @end deffn
 
-@deffn {Function} sdowncase (@var{string}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}, @var{end}) 
+@deffn {Function} sdowncase @
+@fname{sdowncase} (@var{string}) @
+@fname{sdowncase} (@var{string}, @var{start})  @
+@fname{sdowncase} (@var{string}, @var{start}, @var{end})
+
 Like @code{supcase}, but uppercase characters are converted to lowercase. 
 
 @opencatbox
@@ -949,8 +958,10 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} simplode (@var{list})  
-@deffnx {Function} simplode (@var{list}, @var{delim})  
+@deffn {Function} simplode @
+@fname{simplode} (@var{list})   @
+@fname{simplode} (@var{list}, @var{delim})  
+
 @code{simplode} takes a list of expressions and concatenates them into a string.
 If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 @var{delim} can be any string.
@@ -999,9 +1010,11 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} sinvertcase (@var{string})  
-@deffnx {Function} sinvertcase (@var{string}, @var{start})  
-@deffnx {Function} sinvertcase (@var{string}, @var{start}, @var{end})  
+@deffn {Function} sinvertcase @
+@fname{sinvertcase} (@var{string}) @
+@fname{sinvertcase} (@var{string}, @var{start}) @
+@fname{sinvertcase} (@var{string}, @var{start}, @var{end})
+
 Returns @var{string} except that each character from position @var{start} to @var{end} is inverted.
 If @var{end} is not given,
 all characters from @var{start} to the end of @var{string} are replaced.
@@ -1046,8 +1059,10 @@ Returns a new string with a number of @var{num} characters @var{char}.
 
 @end deffn
 
-@deffn {Function} smismatch (@var{string_1}, @var{string_2}) 
-@deffnx {Function} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
+@deffn {Function} smismatch @
+@fname{smismatch} (@var{string_1}, @var{string_2}) @
+@fname{smismatch} (@var{string_1}, @var{string_2}, @var{test})
+
 Returns the position of the first character of @var{string_1} at which @var{string_1} and @var{string_2} differ or @code{false}.
 Default test function for matching is @code{sequal}.
 If @code{smismatch} should ignore case, use @code{sequalignore} as test.
@@ -1066,9 +1081,11 @@ If @code{smismatch} should ignore case, use @code{sequalignore} as test.
 
 @end deffn
 
-@deffn {Function} split (@var{string})  
-@deffnx {Function} split (@var{string}, @var{delim})  
-@deffnx {Function} split (@var{string}, @var{delim}, @var{multiple})  
+@deffn {Function} split @
+@fname{split} (@var{string}) @
+@fname{split} (@var{string}, @var{delim})
+@fname{split} (@var{string}, @var{delim}, @var{multiple})
+
 Returns the list of all tokens in @var{string}.
 Each token is an unparsed string.
 @code{split} uses @var{delim} as delimiter.
@@ -1106,10 +1123,12 @@ For matching characters ignoring case see @code{ssearch}.
 
 @end deffn
 
-@deffn {Function} sremove (@var{seq}, @var{string})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@deffn {Function} sremove @
+@fname{sremove} (@var{seq}, @var{string}) @
+@fname{sremove} (@var{seq}, @var{string}, @var{test})
+@fname{sremove} (@var{seq}, @var{string}, @var{test}, @var{start})
+@fname{sremove} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+
 Returns a string like @var{string} but without all substrings matching @var{seq}.
 Default test function for matching is @code{sequal}.
 If @code{sremove} should ignore case while searching for @var{seq}, use @code{sequalignore} as test.
@@ -1133,10 +1152,12 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} sremovefirst (@var{seq}, @var{string})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@deffn {Function} sremovefirst @
+@fname{sremovefirst} (@var{seq}, @var{string}) @
+@fname{sremovefirst} (@var{seq}, @var{string}, @var{test}) @
+@fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}) @
+@fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+
 Like @code{sremove} except that only the first substring that matches @code{seq} is removed. 
 
 @opencatbox
@@ -1154,10 +1175,12 @@ Returns a string with all the characters of @var{string} in reverse order.
 
 @end deffn
 
-@deffn {Function} ssearch (@var{seq}, @var{string})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+@deffn {Function} ssearch @
+@fname{ssearch} (@var{seq}, @var{string}) @
+@fname{ssearch} (@var{seq}, @var{string}, @var{test}) @
+@fname{ssearch} (@var{seq}, @var{string}, @var{test}, @var{start}) @
+@fname{ssearch} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+
 Returns the position of the first substring of @var{string} that matches the string @var{seq}.
 Default test function for matching is @code{sequal}.
 If @code{ssearch} should ignore case, use @code{sequalignore} as test.
@@ -1175,8 +1198,10 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} ssort (@var{string}) 
-@deffnx {Function} ssort (@var{string}, @var{test}) 
+@deffn {Function} ssort @
+@fname{ssort} (@var{string}) @
+@fname{ssort} (@var{string}, @var{test})
+
 Returns a string that contains all characters from @var{string} in an order such there are no two successive characters @var{c} and @var{d} such that @code{test (@var{c}, @var{d})} is @code{false} and @code{test (@var{d}, @var{c})} is @code{true}.
 Default test function for sorting is @var{clessp}.
 The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
@@ -1198,10 +1223,12 @@ The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpi
 
 @end deffn
 
-@deffn {Function} ssubst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@deffn {Function} ssubst @
+@fname{ssubst} (@var{new}, @var{old}, @var{string}) @
+@fname{ssubst} (@var{new}, @var{old}, @var{string}, @var{test}) @
+@fname{ssubst} (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) @
+@fname{ssubst} (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end})
+
 Returns a string like @var{string} except that all substrings matching @var{old} are replaced by @var{new}.
 @var{old} and @var{new} need not to be of the same length.
 Default test function for matching is @code{sequal}.
@@ -1226,11 +1253,13 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} ssubstfirst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
-Like @code{subst} except that only the first substring that matches @var{old} is replaced. 
+@deffn {Function} ssubstfirst @
+@fname{ssubstfirst} (@var{new}, @var{old}, @var{string}) @
+@fname{ssubstfirst} (@var{new}, @var{old}, @var{string}, @var{test}) @
+@fname{ssubstfirst} (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) @
+@fname{ssubstfirst} (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end})
+
+Like @code{subst} except that only the first substring that matches @var{old} is replaced.
 
 @opencatbox
 @category{Package stringproc}
@@ -1291,8 +1320,10 @@ See introduction for example.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} substring (@var{string}, @var{start})
-@deffnx {Function} substring (@var{string}, @var{start}, @var{end}) 
+@deffn {Function} substring @
+@fname{substring} (@var{string}, @var{start}) @
+@fname{substring} (@var{string}, @var{start}, @var{end})
+
 Returns the substring of @var{string} beginning at position @var{start} and ending at position @var{end}.
 The character at position @var{end} is not included.
 If @var{end} is not given, the substring contains the rest of the string.
@@ -1315,9 +1346,11 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} supcase (@var{string}) 
-@deffnx {Function} supcase (@var{string}, @var{start}) 
-@deffnx {Function} supcase (@var{string}, @var{start}, @var{end}) 
+@deffn {Function} supcase @
+@fname{supcase} (@var{string}) @
+@fname{supcase} (@var{string}, @var{start}) @
+@fname{supcase} (@var{string}, @var{start}, @var{end})
+
 Returns @var{string} except that lowercase characters from position @var{start} to @var{end} are replaced by the corresponding uppercase ones.
 If @var{end} is not given,
 all lowercase characters from @var{start} to the end of @var{string} are replaced.
@@ -1336,8 +1369,10 @@ all lowercase characters from @var{start} to the end of @var{string} are replace
 
 @end deffn
 
-@deffn {Function} tokens (@var{string}) 
-@deffnx {Function} tokens (@var{string}, @var{test}) 
+@deffn {Function} tokens @
+@fname{tokens} (@var{string}) @
+@fname{tokens} (@var{string}, @var{test})
+
 Returns a list of tokens, which have been extracted from @var{string}.
 The tokens are substrings whose characters satisfy a certain test function.
 If test is not given, @var{constituent} is used as the default test.

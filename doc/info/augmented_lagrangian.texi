@@ -5,10 +5,11 @@
 @node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Functions and Variables for augmented_lagrangian
 
-@deffn  {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
-@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
-@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffn  {Function} augmented_lagrangian_method @
+@fname{augmented_lagrangian_method} (@var{FOM}, @var{xx}, @var{C}, @var{yy}) @
+@fname{augmented_lagrangian_method} (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args) @
+@fname{augmented_lagrangian_method} ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}) @
+@fname{augmented_lagrangian_method} ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
 Returns an approximate minimum of the expression @var{FOM}
 with respect to the variables @var{xx},

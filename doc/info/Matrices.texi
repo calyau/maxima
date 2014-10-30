@@ -173,8 +173,9 @@ terms not dependent upon @var{x_1}, @dots{}, @var{x_n}).
 
 @c --- 04.10.2010 --------------------------------------------------------------
 @anchor{cauchy_matrix}
-@deffn  {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_m}], [@var{y_1}, @var{y_2}, @dots{}, @var{y_n}])
-@deffnx {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_n}])
+@deffn {Function} cauchy_matrix @
+@fname{cauchy_matrix} ([@var{x_1}, @var{x_2}, @dots{}, @var{x_m}], [@var{y_1}, @var{y_2}, @dots{}, @var{y_n}]) @
+@fname{cauchy_matrix} ([@var{x_1}, @var{x_2}, @dots{}, @var{x_n}])
 
 Returns a @code{n} by @var{m} Cauchy matrix with the elements @var{a[i,j]} 
 = 1/(@var{x_i}+@var{y_i}).  The second argument of @code{cauchy_matrix} is 
@@ -994,9 +995,10 @@ Matrix entered.
 
 @c -----------------------------------------------------------------------------
 @anchor{genmatrix}
-@deffn  {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+@deffn  {Function} genmatrix @
+@fname{genmatrix} (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1}) @
+@fname{genmatrix} (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}) @
+@fname{genmatrix} (@var{a}, @var{i_2}, @var{j_2})
 
 Returns a matrix generated from @var{a}, taking element
 @code{@var{a}[@var{i_1}, @var{j_1}]} as the upper-left element and
@@ -1073,8 +1075,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{gramschmidt}
-@deffn  {Function} gramschmidt (@var{x})
-@deffnx {Function} gramschmidt (@var{x}, @var{F})
+@deffn  {Function} gramschmidt @
+@fname{gramschmidt} (@var{x}) @
+@fname{gramschmidt} (@var{x}, @var{F})
 
 Carries out the Gram-Schmidt orthogonalization algorithm on @var{x}, which is
 either a matrix or a list of lists.  @var{x} is not modified by
@@ -1904,9 +1907,10 @@ When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then
 
 @c -----------------------------------------------------------------------------
 @anchor{submatrix}
-@deffn  {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
-@deffnx {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
-@deffnx {Function} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
+@deffn {Function} submatrix @
+@fname{submatrix} (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n}) @
+@fname{submatrix} (@var{i_1}, @dots{}, @var{i_m}, @var{M}) @
+@fname{submatrix} (@var{M}, @var{j_1}, @dots{}, @var{j_n})
 
 Returns a new matrix composed of the matrix @var{M} with rows @var{i_1},
 @dots{}, @var{i_m} deleted, and columns @var{j_1}, @dots{}, @var{j_n} deleted.

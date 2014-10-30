@@ -158,9 +158,10 @@ of all items, no matter they are displayed or not.
 
 
 
-@deffn {Function} take_inference (@var{n}, @var{obj})
-@deffnx {Function} take_inference (@var{name}, @var{obj})
-@deffnx {Function} take_inference (@var{list}, @var{obj})
+@deffn {Function} take_inference @
+@fname{take_inference} (@var{n}, @var{obj}) @
+@fname{take_inference} (@var{name}, @var{obj}) @
+@fname{take_inference} (@var{list}, @var{obj})
 
 Returns the @var{n}-th value stored in @var{obj} if @var{n} is a positive integer,
 or the item named @var{name} if this is the name of an item. If the first
@@ -251,8 +252,9 @@ results are given in symbolic and rational format.
 
 
 
-@deffn {Function} test_mean (@var{x})
-@deffnx {Function} test_mean (@var{x}, @var{options} ...)
+@deffn {Function} test_mean @
+@fname{test_mean} (@var{x}) @
+@fname{test_mean} (@var{x}, @var{options} ...)
 
 This is the mean @var{t}-test. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample. It also performs an asymptotic test
@@ -401,8 +403,9 @@ this procedure should be applied to large samples.
 
 
 
-@deffn {Function} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Function} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Function} test_means_difference @
+@fname{test_means_difference} (@var{x1}, @var{x2}) @
+@fname{test_means_difference} (@var{x1}, @var{x2}, @var{options} ...)
 
 This is the difference of means @var{t}-test for two samples.
 Arguments @var{x1} and @var{x2} are lists or column matrices
@@ -564,14 +567,9 @@ equal.
 
 @end deffn
 
-
-
-
-
-
-
-@deffn {Function} test_variance (@var{x})
-@deffnx {Function} test_variance (@var{x}, @var{options}, ...)
+@deffn {Function} test_variance @
+@fname{test_variance} (@var{x}) @
+@fname{test_variance} (@var{x}, @var{options}, ...)
 
 This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample taken from a normal population.
@@ -672,8 +670,9 @@ is equal to or greater than 200.
 
 
 
-@deffn {Function} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Function} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Function} test_variance_ratio @
+@fname{test_variance_ratio} (@var{x1}, @var{x2}) @
+@fname{test_variance_ratio} (@var{x1}, @var{x2}, @var{options} ...)
 
 This is the variance ratio @var{F}-test for two normal populations.
 Arguments @var{x1} and @var{x2} are lists or column matrices
@@ -782,8 +781,9 @@ against the alternative that the first is greater than the second.
 
 
 
-@deffn {Function} test_proportion (@var{x}, @var{n})
-@deffnx {Function} test_proportion (@var{x}, @var{n}, @var{options} ...)
+@deffn {Function} test_proportion @
+@fname{test_proportion} (@var{x}, @var{n}) @
+@fname{test_proportion} (@var{x}, @var{n}, @var{options} ...)
 
 Inferences on a proportion. Argument @var{x} is the number of successes
 in @var{n} trials in a Bernoulli experiment with unknown probability.
@@ -917,8 +917,9 @@ A two sided asymptotic test. Confidence level is 99/100.
 
 
 
-@deffn {Function} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
-@deffnx {Function} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+@deffn {Function} test_proportions_difference @
+@fname{test_proportions_difference} (@var{x1}, @var{n1}, @var{x2}, @var{n2}) @
+@fname{test_proportions_difference} (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} @dots{})
 
 Inferences on the difference of two proportions. Argument @var{x1} is the number of successes
 in @var{n1} trials in a Bernoulli experiment in the first population, and @var{x2} and @var{n2}
@@ -1042,14 +1043,9 @@ distribution when the data are unknown.
 
 @end deffn
 
-
-
-
-
-
-
-@deffn {Function} test_sign (@var{x})
-@deffnx {Function} test_sign (@var{x}, @var{options} ...)
+@deffn {Function} test_sign @
+@fname{test_sign} (@var{x}) @
+@fname{test_sign} (@var{x}, @var{options} @dots{})
 
 This is the non parametric sign test for the median of a continuous population.
 Argument @var{x} is a list or a column matrix containing a one dimensional sample.
@@ -1127,16 +1123,9 @@ against the alternative @math{H_1: median > 6}.
 
 @end deffn
 
-
-
-
-
-
-
-
-
-@deffn {Function} test_signed_rank (@var{x})
-@deffnx {Function} test_signed_rank (@var{x}, @var{options} ...)
+@deffn {Function} test_signed_rank @
+@fname{test_signed_rank} (@var{x}) @
+@fname{test_signed_rank} (@var{x}, @var{options} @dots{})
 
 This is the Wilcoxon signed rank test to make inferences about the median of a
 continuous population. Argument @var{x} is a list or a column matrix
@@ -1255,14 +1244,9 @@ since there are ties.
 
 @end deffn
 
-
-
-
-
-
-
-@deffn {Function} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Function} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+@deffn {Function} test_rank_sum @
+@fname{test_rank_sum} (@var{x1}, @var{x2}) @
+@fname{test_rank_sum} (@var{x1}, @var{x2}, @var{option})
 
 This is the Wilcoxon-Mann-Whitney test for comparing the medians of two
 continuous populations. The first two arguments @var{x1} and @var{x2} are lists
@@ -1433,15 +1417,9 @@ Checks for the normality of a population, based on a sample of size 9.
 
 @end deffn
 
-
-
-
-
-
-
-
-@deffn {Function} linear_regression (@var{x})
-@deffnx {Function} linear_regression (@var{x} @var{option})
+@deffn {Function} linear_regression @
+@fname{linear_regression} (@var{x}) @
+@fname{linear_regression} (@var{x} @var{option})
 
 Multivariate linear regression, 
 @math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},

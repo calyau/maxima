@@ -55,12 +55,11 @@ itself, since after it has been through the simplifier the list would become
 @c -----------------------------------------------------------------------------
 @anchor{[}
 @anchor{]}
-@defvr  {Operator} [
-@defvrx {Operator} ]
-@ifinfo
 @fnindex List delimiters
 @fnindex Subscript operator
-@end ifinfo
+
+@defvr  {Operator} [
+@defvrx {Operator} ]
 
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
@@ -152,8 +151,9 @@ Do @code{example(append);} for an example.
 
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
-@deffn  {Function} assoc (@var{key}, @var{list}, @var{default})
-@deffnx {Function} assoc (@var{key}, @var{list})
+@deffn {Function} assoc @
+@fname{assoc} (@var{key}, @var{list}, @var{default}) @
+@fname{assoc} (@var{key}, @var{list})
 
 This function searches for @var{key} in the left hand side of the
 input @var{list}. The @var{list} argument should be a list, each of
@@ -203,8 +203,9 @@ so @code{assoc} returns @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn  {Function} cons (@var{expr}, @var{list})
-@deffnx {Function} cons (@var{expr_1}, @var{expr_2})
+@deffn {Function} cons @
+@fname{cons} (@var{expr}, @var{list}) @
+@fname{cons} (@var{expr_1}, @var{expr_2})
 
 @code{cons (@var{expr}, @var{list})} returns a new list constructed of the element 
 @var{expr} as its first element, followed by the elements of @var{list}. This is 
@@ -324,8 +325,9 @@ depend on the current value of @code{i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{delete}
-@deffn  {Function} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn  {Function} delete @
+@fname{delete} (@var{expr_1}, @var{expr_2}) @
+@fname{delete} (@var{expr_1}, @var{expr_2}, @var{n})
 
 @code{delete(@var{expr_1}, @var{expr_2})}
 removes from @var{expr_2} any arguments of its top-level operator
@@ -467,8 +469,9 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn  {Function} endcons (@var{expr}, @var{list})
-@deffnx {Function} endcons (@var{expr_1}, @var{expr_2})
+@deffn  {Function} endcons @
+@fname{endcons} (@var{expr}, @var{list}) @
+@fname{endcons} (@var{expr_1}, @var{expr_2})
 
 @code{endcons (@var{expr}, @var{list})} returns a new list constructed of the elements of 
 @var{list} followed by @var{expr}. The Maxima function @code{endcons} can also be used where 
@@ -663,12 +666,13 @@ Returns @code{true} if @var{expr} is a list else @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
-@deffn  {Function} makelist ()
-@deffnx {Function} makelist (@var{expr}, @var{n})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_max})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
-@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{step})
-@deffnx {Function} makelist (@var{expr}, @var{x}, @var{list})
+@deffn  {Function} makelist @
+@fname{makelist} () @
+@fname{makelist} (@var{expr}, @var{n}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_max}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_0}, @var{i_max}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{step}) @
+@fname{makelist} (@var{expr}, @var{x}, @var{list})
 
 The first form, @code{makelist ()}, creates an empty list. The second form,
 @code{makelist (@var{expr})}, creates a list with @var{expr} as its single
@@ -888,8 +892,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
-@deffn  {Function} rest (@var{expr}, @var{n})
-@deffnx {Function} rest (@var{expr})
+@deffn  {Function} rest @
+@fname{rest} (@var{expr}, @var{n}) @
+@fname{rest} (@var{expr})
 
 Returns @var{expr} with its first @var{n} elements removed if @var{n}
 is positive and its last @code{- @var{n}} elements removed if @var{n}
@@ -977,8 +982,9 @@ See @mref{first} for more details.
 
 @c -----------------------------------------------------------------------------
 @anchor{sort}
-@deffn  {Function} sort (@var{L}, @var{P})
-@deffnx {Function} sort (@var{L})
+@deffn  {Function} sort @
+@fname{sort} (@var{L}, @var{P}) @
+@fname{sort} (@var{L})
 
 @code{sort(@var{L}, @var{P})} sorts a list @var{L} according to a predicate @code{P} of two arguments
 which defines a strict weak order on the elements of @var{L}.

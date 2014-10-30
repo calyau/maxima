@@ -362,8 +362,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{expand}
-@deffn  {Function} expand (@var{expr})
-@deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
+@deffn  {Function} expand @
+@fname{expand} (@var{expr}) @
+@fname{expand} (@var{expr}, @var{p}, @var{n})
 
 Expand expression @var{expr}.
 Products of sums and exponentiated sums are
@@ -788,8 +789,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{multthru}
-@deffn  {Function} multthru (@var{expr})
-@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
+@deffn  {Function} multthru @
+@fname{multthru} (@var{expr}) @
+@fname{multthru} (@var{expr_1}, @var{expr_2})
 
 Multiplies a factor (which should be a sum) of @var{expr} by the other factors
 of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}

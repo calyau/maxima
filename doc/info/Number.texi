@@ -326,8 +326,9 @@ Thus the default is to give one period.
 
 @c -----------------------------------------------------------------------------
 @anchor{divsum}
-@deffn  {Function} divsum (@var{n}, @var{k})
-@deffnx {Function} divsum (@var{n})
+@deffn  {Function} divsum @
+@fname{divsum} (@var{n}, @var{k}) @
+@fname{divsum} (@var{n})
 
 @code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
 raised to the @var{k}'th power.
@@ -1008,8 +1009,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_log}
-@deffn {Function} zn_log (@var{a}, @var{g}, @var{n}) 
-@deffnx {Function} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Function} zn_log @
+@fname{zn_log} (@var{a}, @var{g}, @var{n})  @
+@fname{zn_log} (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 Computes the discrete logarithm. Let (Z/@var{n}Z)* be a cyclic group, @var{g} a 
 primitive root modulo @var{n} and let @var{a} be a member of this group.  
@@ -1073,8 +1075,9 @@ The run time primarily depends on the bitlength of the totient's greatest prime 
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_mult_table}
-@deffn {Function} zn_mult_table (@var{n}) 
-@deffnx {Function} zn_mult_table (@var{n}, all)
+@deffn {Function} zn_mult_table @
+@fname{zn_mult_table} (@var{n})  @
+@fname{zn_mult_table} (@var{n}, all)
 
 Without the optional argument @var{all} @code{zn_mult_table(n)} 
 shows a multiplication table of all elements in (Z/@var{n}Z)* 
@@ -1107,8 +1110,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_order}
-@deffn {Function} zn_order (@var{x}, @var{n}) 
-@deffnx {Function} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Function} zn_order @
+@fname{zn_order} (@var{x}, @var{n})  @
+@fname{zn_order} (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 Returns the order of @var{x} if it is a unit of the finite group (Z/@var{n}Z)* 
 or returns @code{false}.  @var{x} is a unit modulo @var{n} if it is coprime to @var{n}.
@@ -1165,8 +1169,9 @@ The optional third argument must be of the same form as the list returned by
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_power_table}
-@deffn {Function} zn_power_table (@var{n}) 
-@deffnx {Function} zn_power_table (@var{n}, all)
+@deffn {Function} zn_power_table @
+@fname{zn_power_table} (@var{n})  @
+@fname{zn_power_table} (@var{n}, all)
 
 Without the optional argument @var{all} @code{zn_power_table(n)} 
 shows a power table of all elements in (Z/@var{n}Z)* 
@@ -1207,8 +1212,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_primroot}
-@deffn {Function} zn_primroot (@var{n}) 
-@deffnx {Function} zn_primroot (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Function} zn_primroot @
+@fname{zn_primroot} (@var{n})  @
+@fname{zn_primroot} (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 If the multiplicative group (Z/@var{n}Z)* is cyclic, @code{zn_primroot} computes the 
 smallest primitive root modulo @var{n}.  (Z/@var{n}Z)* is cyclic if @var{n} is equal to 
@@ -1287,8 +1293,9 @@ set to @code{true}, a message will be printed when @code{zn_primroot_limit} is r
 
 @c -----------------------------------------------------------------------------
 @anchor{zn_primroot_p}
-@deffn {Function} zn_primroot_p (@var{x}, @var{n}) 
-@deffnx {Function} zn_primroot_p (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {Function} zn_primroot_p @
+@fname{zn_primroot_p} (@var{x}, @var{n})  @
+@fname{zn_primroot_p} (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 Checks whether @var{x} is a primitive root in the multiplicative group (Z/@var{n}Z)*.
 

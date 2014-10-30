@@ -23,9 +23,10 @@ rule is used in @code{limit}.  This prevents infinite looping in cases like
 
 @c -----------------------------------------------------------------------------
 @anchor{limit}
-@deffn  {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} limit (@var{expr})
+@deffn  {Function} limit @
+@fname{limit} (@var{expr}, @var{x}, @var{val}, @var{dir}) @
+@fname{limit} (@var{expr}, @var{x}, @var{val}) @
+@fname{limit} (@var{expr})
 
 Computes the limit of @var{expr} as the real variable @var{x} approaches the
 value @var{val} from the direction @var{dir}.  @var{dir} may have the value
@@ -89,9 +90,10 @@ to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
 
 @c -----------------------------------------------------------------------------
 @anchor{tlimit}
-@deffn  {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} tlimit (@var{expr})
+@deffn  {Function} tlimit @
+@fname{tlimit} (@var{expr}, @var{x}, @var{val}, @var{dir}) @
+@fname{tlimit} (@var{expr}, @var{x}, @var{val}) @
+@fname{tlimit} (@var{expr})
 
 Take the limit of the Taylor series expansion of @code{expr} in @code{x}
 at @code{val} from direction @code{dir}.

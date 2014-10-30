@@ -675,9 +675,10 @@ See also @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{printprops}
-@deffn  {Function} printprops (@var{a}, @var{i})
-@deffnx {Function} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
-@deffnx {Function} printprops (all, @var{i})
+@deffn  {Function} printprops @
+@fname{printprops} (@var{a}, @var{i}) @
+@fname{printprops} ([@var{a_1}, @dots{}, @var{a_n}], @var{i}) @
+@fname{printprops} (all, @var{i})
 
 Displays the property with the indicator @var{i} associated with the atom
 @var{a}.  @var{a} may also be a list of atoms or the atom @code{all} in which
@@ -880,11 +881,12 @@ when @code{rem} was called, or @code{false} if it had no such property.
 
 @c -----------------------------------------------------------------------------
 @anchor{remove}
-@deffn  {Function} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
-@deffnx {Function} remove ("@var{a}", operator)
-@deffnx {Function} remove (@var{a}, transfun)
-@deffnx {Function} remove (all, @var{p})
+@deffn  {Function} remove @
+@fname{remove} (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n}) @
+@fname{remove} ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{}) @
+@fname{remove} ("@var{a}", operator) @
+@fname{remove} (@var{a}, transfun) @
+@fname{remove} (all, @var{p})
 
 Removes properties associated with atoms.
 
@@ -1003,10 +1005,11 @@ they are subcontexts of the current context.
 
 @c -----------------------------------------------------------------------------
 @anchor{askinteger}
-@deffn  {Function} askinteger (@var{expr}, integer)
-@deffnx {Function} askinteger (@var{expr})
-@deffnx {Function} askinteger (@var{expr}, even)
-@deffnx {Function} askinteger (@var{expr}, odd)
+@deffn  {Function} askinteger @
+@fname{askinteger} (@var{expr}, integer) @
+@fname{askinteger} (@var{expr}) @
+@fname{askinteger} (@var{expr}, even) @
+@fname{askinteger} (@var{expr}, odd)
 
 @code{askinteger (@var{expr}, integer)} attempts to determine from the
 @code{assume} database whether @var{expr} is an integer.
@@ -1355,8 +1358,9 @@ Deactivates the specified contexts @var{context_1}, @dots{}, @var{context_n}.
 
 @c -----------------------------------------------------------------------------
 @anchor{facts}
-@deffn  {Function} facts (@var{item})
-@deffnx {Function} facts ()
+@deffn  {Function} facts @
+@fname{facts} (@var{item}) @
+@fname{facts} ()
 
 If @var{item} is the name of a context, @code{facts (@var{item})} returns a
 list of the facts in the specified context.
@@ -1374,8 +1378,9 @@ are active, but in a different context, are not listed.
 
 @c -----------------------------------------------------------------------------
 @anchor{forget}
-@deffn  {Function} forget (@var{pred_1}, @dots{}, @var{pred_n})
-@deffnx {Function} forget (@var{L})
+@deffn  {Function} forget @
+@fname{forget} (@var{pred_1}, @dots{}, @var{pred_n}) @
+@fname{forget} (@var{L})
 
 Removes predicates established by @mrefdot{assume}
 The predicates may be expressions equivalent to (but not necessarily identical
@@ -1567,8 +1572,9 @@ current data base.  It returns one of the following answers: @code{pos}
 
 @c -----------------------------------------------------------------------------
 @anchor{supcontext}
-@deffn  {Function} supcontext (@var{name}, @var{context})
-@deffnx {Function} supcontext (@var{name})
+@deffn {Function} supcontext @
+@fname{supcontext} (@var{name}, @var{context}) @
+@fname{supcontext} (@var{name})
 
 Creates a new context, called @var{name}, which has @var{context} as a
 subcontext.  @var{context} must exist.

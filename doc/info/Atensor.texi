@@ -106,8 +106,9 @@ simplifications.
 
 @section Functions and Variables for atensor
 
-@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Function} init_atensor (@var{alg_type})
+@deffn {Function} init_atensor @
+@fname{init_atensor} (@var{alg_type}, @var{opt_dims}) @
+@fname{init_atensor} (@var{alg_type})
 
 Initializes the @code{atensor} package with the specified algebra type. @var{alg_type}
 can be one of the following:

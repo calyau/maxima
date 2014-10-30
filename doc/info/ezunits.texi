@@ -91,7 +91,8 @@ but other fundamental dimensions and units can be declared.
 @section Introduction to physical_constants
 
 @code{physical_constants} is a collection of physical constants,
-copied from CODATA 2006 recommended values. [1]
+copied from CODATA 2006 recommended values
+(@url{http://physics.nist.gov/constants}).
 @code{load(physical_constants)} loads this package,
 and loads @code{ezunits} also, if it is not already loaded.
 
@@ -193,9 +194,7 @@ Wien displacement law constant
 Wien displacement law constant
 @end table
 
-References:
-
-[1] @url{http://physics.nist.gov/constants}
+Reference: @url{http://physics.nist.gov/constants}
 
 Examples:
 
@@ -638,28 +637,17 @@ Computing conversions to base units; may take a moment.
 @end deffn
 
 @deffn {Function} constvalue (@var{x})
-@deffnx {Function} declare_constvalue (@var{a}, @var{x})
-@deffnx {Function} remove_constvalue (@var{a})
 
-@c REWORK THIS STATEMENT !!
-Returns the declared constant value of a symbol,
-or value of an expression with declared constant values substituted for symbols.
+Shows the value and the units of one of the constants declared by package
+@code{physical_constants}, which includes a list of physical constants, or
+of a new constant declared in package @code{ezunits} (see
+@mref{declare_constvalue}).
 
-Constant values are declared by @code{declare_constvalue}.
 Note that constant values as recognized by @code{constvalue}
 are separate from values declared by @code{numerval} and
 recognized by @code{constantp}.
 
-The @code{physical_units} package declares constant values
-for a number of physical constants.
-
-@code{remove_constvalue} reverts the effect of @code{declare_constvalue}.
-
-@code{load(ezunits)} loads these functions.
-
-Examples:
-
-Constant value of a physical constant.
+Example:
 
 @c ===beg===
 @c load (physical_constants)$
@@ -678,7 +666,18 @@ Constant value of a physical constant.
 (%o3)           Newtonian constant of gravitation
 @end example
 
-Declaring a new constant.
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+@end deffn
+
+@anchor{declare_constvalue}
+@deffn {Function} declare_constvalue (@var{a}, @var{x})
+
+Declares the value of a constant to be used in package @code{ezunits}. This
+function should be loaded with @code{load(ezunits)}. 
+
+Example:
 
 @c ===beg===
 @c load (ezunits)$
@@ -701,11 +700,20 @@ Declaring a new constant.
 @opencatbox
 @category{Package ezunits}
 @closecatbox
-
 @end deffn
 
+@deffn {Function} remove_constvalue (@var{a})
+
+Reverts the effect of @mrefdot{declare_constvalue} This function should be
+loaded with @code{load(ezunits)}.
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+@end deffn
+
+@anchor{units}
 @deffn {Function} units (@var{x})
-@deffnx {Function} declare_units (@var{a}, @var{u})
 
 Returns the units of a dimensional quantity @var{x},
 or returns 1 if @var{x} is nondimensional.
@@ -714,14 +722,9 @@ or returns 1 if @var{x} is nondimensional.
 a symbol with declared units via @code{declare_units}, 
 or an expression containing either or both of those.
 
-@code{declare_units} declares that @code{units(@var{a})} should return @var{u},
-where @var{u} is an expression.
+This function should be loaded with @code{load(ezunits)}.
 
-@code{load(ezunits)} loads these functions.
-
-Examples:
-
-@code{units} applied to literal dimensional expressions.
+Example:
 
 @c ===beg===
 @c load (ezunits)$
@@ -760,7 +763,18 @@ Examples:
 (%o8)                          kg
 @end example
 
-@code{units} applied to symbols with declared units.
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+@end deffn
+
+@deffn {Function} declare_units (@var{a}, @var{u})
+
+Declares that @mref{units} should return units @var{u} for @var{a},
+where @var{u} is an expression. This function should be loaded with
+@code{load(ezunits)}.
+
+Example:
 
 @c ===beg===
 @c load (ezunits)$
@@ -791,26 +805,20 @@ Examples:
 @opencatbox
 @category{Package ezunits}
 @closecatbox
-
 @end deffn
 
+@anchor{qty}
 @deffn {Function} qty (@var{x})
-@deffnx {Function} declare_qty (@var{a}, @var{x})
 
-@code{qty} returns the nondimensional part of a dimensional quantity @var{x},
+Returns the nondimensional part of a dimensional quantity @var{x},
 or returns @var{x} if @var{x} is nondimensional.
 @var{x} may be a literal dimensional expression @math{a ` b},
 a symbol with declared quantity, 
 or an expression containing either or both of those.
 
-@code{declare_qty} declares that @code{qty(@var{a})} should return @var{x},
-where @var{x} is a nondimensional quantity.
+This function should be loaded with @code{load(ezunits)}.
 
-@code{load(ezunits)} loads these functions.
-
-Examples:
-
-@code{qty} applied to literal dimensional expressions.
+Example:
 
 @c ===beg===
 @c load (ezunits)$
@@ -838,7 +846,18 @@ Examples:
 (%o6)                         100 v
 @end example
 
-@code{qty} applied to symbols with declared quantity.
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+@end deffn
+
+@deffn {Function} declare_qty (@var{a}, @var{x})
+
+Declares that @mref{qty} should return @var{x} for symbol @var{a}, where
+@var{x} is a nondimensional quantity. This function should be loaded
+with @code{load(ezunits)}.
+
+Example:
 
 @c ===beg===
 @c load (ezunits)$
@@ -866,7 +885,6 @@ Examples:
 @opencatbox
 @category{Package ezunits}
 @closecatbox
-
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
@@ -952,7 +970,7 @@ This limitation might be relaxed in future versions.
 
 @code{known_unit_conversions} is the list of known unit conversions.
 
-@code{load(ezunits)} loads this function.
+This function should be loaded with @code{load(ezunits)}.
 
 Examples:
 
@@ -1002,15 +1020,12 @@ Computing conversions to base units; may take a moment.
 @end deffn
 
 @deffn {Function} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
-@deffnx {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
-@code{declare_dimensions} declares @var{a_1}, ..., @var{a_n}
-to have dimensions @var{d_1}, ..., @var{d_n}, respectively.
+Declares @var{a_1}, ..., @var{a_n} to have dimensions @var{d_1}, ...,
+@var{d_n}, respectively.
 
 Each @var{a_k} is a symbol or a list of symbols.
 If it is a list, then every symbol in @var{a_k} is declared to have dimension @var{d_k}.
-
-@code{remove_dimensions} reverts the effect of @code{declare_dimensions}.
 
 @code{load(ezunits)} loads these functions.
 
@@ -1042,7 +1057,17 @@ Examples:
 @opencatbox
 @category{Package ezunits}
 @closecatbox
+@end deffn
 
+@deffn {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
+
+Reverts the effect of @code{declare_dimensions}. This function should be
+loaded with @code{load(ezunits)}.
+
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
 @end deffn
 
 @deffn {Function} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
@@ -1212,8 +1237,9 @@ Examples:
 
 @end deffn
 
-@deffn {Function} fundamental_units (@var{x})
-@deffnx {Function} fundamental_units ()
+@deffn {Function} fundamental_units @
+@fname{fundamental_units} (@var{x}) @
+@fname{fundamental_units} ()
 
 @code{fundamental_units(@var{x})} returns the units
 associated with the fundamental dimensions of @var{x}.

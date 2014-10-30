@@ -19,8 +19,10 @@ For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT x
 @section Functions and Variables for interpol
 
 
-@deffn {Function} lagrange (@var{points})
-@deffnx {Function} lagrange (@var{points}, @var{option})
+@deffn {Function} lagrange @
+@fname{lagrange} (@var{points}) @
+@fname{lagrange} (@var{points}, @var{option})
+
 Computes the polynomial interpolation by the Lagrangian method. Argument @var{points} must be either:
 
 @itemize @bullet
@@ -134,8 +136,10 @@ Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and
 @end deffn
 
 
-@deffn {Function} linearinterpol (@var{points})
-@deffnx {Function} linearinterpol (@var{points}, @var{option})
+@deffn {Function} linearinterpol @
+@fname{linearinterpol} (@var{points}) @
+@fname{linearinterpol} (@var{points}, @var{option})
+
 Computes the polynomial interpolation by the linear method. Argument @var{points} must be either:
 
 @itemize @bullet
@@ -211,8 +215,10 @@ Examples:
 
 
 
-@deffn {Function} cspline (@var{points})
-@deffnx {Function} cspline (@var{points}, @var{option1}, @var{option2}, ...)
+@deffn {Function} cspline @
+@fname{cspline} (@var{points}) @
+@fname{cspline} (@var{points}, @var{option1}, @var{option2}, ...)
+
 Computes the polynomial interpolation by the cubic splines method. Argument @var{points} must be either:
 
 @itemize @bullet
@@ -318,8 +324,10 @@ Examples:
 
 @end deffn
 
-@deffn {Function} ratinterpol (@var{points}, @var{numdeg})
-@deffnx {Function} ratinterpol (@var{points}, @var{numdeg}, @var{option1})
+@deffn {Function} ratinterpol @
+@fname{ratinterpol} (@var{points}, @var{numdeg}) @
+@fname{ratinterpol} (@var{points}, @var{numdeg}, @var{option1})
+
 Generates a rational interpolator for data given by @var{points} and the degree of the numerator
 being equal to @var{numdeg}; the degree of the denominator is calculated
 automatically. Argument @var{points} must be either:

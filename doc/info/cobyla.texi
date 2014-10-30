@@ -51,8 +51,9 @@ References:
 @node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
 @section Functions and Variables for cobyla
 
-@deffn {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y})
-@deffnx {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+@deffn {Function} fmin_cobyla @
+@fname{fmin_cobyla} (@var{F}, @var{X}, @var{Y}) @
+@fname{fmin_cobyla} (@var{F}, @var{X}, @var{Y}, optional_args)
 
 Returns an approximate minimum of the expression @var{F} with respect
 to the variables @var{X}, subject to an optional set of constraints.
@@ -120,8 +121,9 @@ Return code with the following meanings
 
 @end deffn
 
-@deffn {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
-@deffnx {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+@deffn {Function} bf_fmin_cobyla @
+@fname{bf_fmin_cobyla} (@var{F}, @var{X}, @var{Y}) @
+@fname{bf_fmin_cobyla} (@var{F}, @var{X}, @var{Y}, optional_args)
 
 This function is identical to @code{fmin_cobyla}, except that bigfloat
 operations are used, and the default value for @var{rhoend} is

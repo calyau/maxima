@@ -171,8 +171,9 @@ constructs such as @code{go}.
 
 @c -----------------------------------------------------------------------------
 @anchor{backtrace}
-@deffn  {Function} backtrace ()
-@deffnx {Function} backtrace (@var{n})
+@deffn  {Function} backtrace @
+@fname{backtrace} () @
+@fname{backtrace} (@var{n})
 
 Prints the call stack, that is, the list of functions which
 called the currently active function.
@@ -917,8 +918,10 @@ its argument.  See @code{block} for more information.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Function} scanmap (@var{f}, @var{expr})
-@deffnx {Function} scanmap (@var{f}, @var{expr}, bottomup)
+@deffn {Function} scanmap @
+@fname{scanmap} (@var{f}, @var{expr}) @
+@fname{scanmap} (@var{f}, @var{expr}, bottomup)
+
 Recursively applies @var{f} to @var{expr}, in a top
 down manner.  This is most useful when complete factorization is
 desired, for example:

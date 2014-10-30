@@ -122,9 +122,10 @@ those variables must be changed separately.
 
 @c -----------------------------------------------------------------------------
 @anchor{room}
-@deffn  {Function} room ()
-@deffnx {Function} room (true)
-@deffnx {Function} room (false)
+@deffn  {Function} room @
+@fname{room} () @
+@fname{room} (true) @
+@fname{room} (false)
 
 Prints out a description of the state of storage and
 stack management in Maxima.  @code{room} calls the Lisp function of 
@@ -164,8 +165,9 @@ See also @code{status}.
 
 @c -----------------------------------------------------------------------------
 @anchor{status}
-@deffn  {Function} status (@code{feature})
-@deffnx {Function} status (@code{feature}, @var{item})
+@deffn  {Function} status @
+@fname{status} (@code{feature}) @
+@fname{status} (@code{feature}, @var{item})
 
 Returns information about the presence or absence of certain system-dependent 
 features.
@@ -244,8 +246,9 @@ and elapsed time with each output line.
 
 @c -----------------------------------------------------------------------------
 @anchor{timedate}
-@deffn  {Function} timedate ()
-@deffnx {Function} timedate (@var{T})
+@deffn  {Function} timedate @
+@fname{timedate} () @
+@fname{timedate} (@var{T})
 
 @code{timedate()} with no argument
 returns a string representing the current time and date.

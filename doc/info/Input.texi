@@ -99,8 +99,9 @@ always appended.
 
 @c -----------------------------------------------------------------------------
 @anchor{batch}
-@deffn  {Function} batch (@var{filename})
-@deffnx {Function} batch (@var{filename}, @code{option})
+@deffn  {Function} batch @
+@fname{batch} (@var{filename}) @
+@fname{batch} (@var{filename}, @code{option})
 
 @code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
 evaluates them.  @code{batch} searches for @var{filename} in the list 
@@ -236,8 +237,9 @@ The result is a Lisp pathname object.
 
 @c -----------------------------------------------------------------------------
 @anchor{file_search}
-@deffn  {Function} file_search (@var{filename})
-@deffnx {Function} file_search (@var{filename}, @var{pathlist})
+@deffn  {Function} file_search @
+@fname{file_search} (@var{filename}) @
+@fname{file_search} (@var{filename}, @var{pathlist})
 
 @code{file_search} searches for the file @var{filename} and returns the path to
 the file (as a string) if it can be found; otherwise @code{file_search} returns
@@ -571,12 +573,13 @@ or otherwise the result of a successful filename merge.
 
 @c -----------------------------------------------------------------------------
 @anchor{save}
-@deffn  {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, @dots{})
-@deffnx {Function} save (@var{filename}, values, functions, labels, @dots{})
-@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @dots{})
-@deffnx {Function} save (@var{filename}, all)
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, @dots{})
+@deffn  {Function} save @
+@fname{save} (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, @dots{}) @
+@fname{save} (@var{filename}, values, functions, labels, @dots{}) @
+@fname{save} (@var{filename}, [@var{m}, @var{n}]) @
+@fname{save} (@var{filename}, @var{name_1}=@var{expr_1}, @dots{}) @
+@fname{save} (@var{filename}, all) @
+@fname{save} (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, @dots{})
 
 Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, @dots{},
 in @var{filename}.  The arguments are the names of variables, functions, or
@@ -632,11 +635,12 @@ have been assigned new values by the user; see @mrefdot{myoptions}
 
 @c -----------------------------------------------------------------------------
 @anchor{stringout}
-@deffn  {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
-@deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} stringout (@var{filename}, input)
-@deffnx {Function} stringout (@var{filename}, functions)
-@deffnx {Function} stringout (@var{filename}, values)
+@deffn  {Function} stringout @
+@fname{stringout} (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{}) @
+@fname{stringout} (@var{filename}, [@var{m}, @var{n}]) @
+@fname{stringout} (@var{filename}, input) @
+@fname{stringout} (@var{filename}, functions) @
+@fname{stringout} (@var{filename}, values)
 
 @code{stringout} writes expressions to a file in the same form the expressions
 would be typed for input.  The file can then be used as input for the
@@ -683,8 +687,9 @@ variable, a colon, and its value.  Note that the general form of
 
 @c -----------------------------------------------------------------------------
 @anchor{with_stdout}
-@deffn  {Function} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
-@deffnx {Function} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
+@deffn  {Function} with_stdout @
+@fname{with_stdout} (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{}) @
+@fname{with_stdout} (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
 
 Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{} and writes any
 output thus generated to a file @var{f} or output stream @var{s}.  The evaluated
@@ -773,12 +778,13 @@ displayed by @code{playback}.
 
 @c -----------------------------------------------------------------------------
 @anchor{tex}
-@deffn  {Function} tex (@var{expr})
-@deffnx {Function} tex (@var{expr}, @var{destination})
-@deffnx {Function} tex (@var{expr}, false)
-@deffnx {Function} tex (@var{label})
-@deffnx {Function} tex (@var{label}, @var{destination})
-@deffnx {Function} tex (@var{label}, false)
+@deffn  {Function} tex @
+@fname{tex} (@var{expr}) @
+@fname{tex} (@var{expr}, @var{destination}) @
+@fname{tex} (@var{expr}, false) @
+@fname{tex} (@var{label}) @
+@fname{tex} (@var{label}, @var{destination}) @
+@fname{tex} (@var{label}, false)
 
 Prints a representation of an expression suitable for the TeX document
 preparation system.  The result is a fragment of a document, which can be copied
@@ -864,11 +870,12 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{texput}
-@deffn  {Function} texput (@var{a}, @var{s})
-@deffnx {Function} texput (@var{a}, @var{f})
-@deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn  {Function} texput @
+@fname{texput} (@var{a}, @var{s}) @
+@fname{texput} (@var{a}, @var{f}) @
+@fname{texput} (@var{a}, @var{s}, @var{operator_type}) @
+@fname{texput} (@var{a}, [@var{s_1}, @var{s_2}], matchfix) @
+@fname{texput} (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
 Assign the TeX output for the atom @var{a}, which can be a symbol or the name
 of an operator.
