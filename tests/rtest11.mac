@@ -340,10 +340,10 @@ bar(y);
 
 /* constant declaration -- bug reported to mailing list 2009-05-02 */
 
-(kill (xx, yy, zz), sort (listofvars (xx + yy * zz)));
+(kill (aa, xx, yy, zz), sort (listofvars (xx + yy * zz)));
 [xx, yy, zz];
 
-(newcontext (aa), declare (zz, constant));
+(aa : newcontext (), declare (zz, constant));
 done;
 
 facts (aa);

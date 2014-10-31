@@ -1541,14 +1541,18 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{newcontext}
-@deffn {Function} newcontext (@var{name})
+@deffn {Function} newcontext @
+@fname{newcontext} (@var{name}) @
+@fname{newcontext} ()
 
 Creates a new, empty context, called @var{name}, which
 has @code{global} as its only subcontext.  The newly-created context
 becomes the currently active context.
 
+If @var{name} is not specified, a new name is created (via @code{gensym}) and returned.
+
 @code{newcontext} evaluates its argument.
-@code{newcontext} returns @var{name}.
+@code{newcontext} returns @var{name} (if specified) or the new context name.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -1574,12 +1578,18 @@ current data base.  It returns one of the following answers: @code{pos}
 @anchor{supcontext}
 @deffn {Function} supcontext @
 @fname{supcontext} (@var{name}, @var{context}) @
-@fname{supcontext} (@var{name})
+@fname{supcontext} (@var{name}) @
+@fname{supcontext} ()
 
 Creates a new context, called @var{name}, which has @var{context} as a
 subcontext.  @var{context} must exist.
 
 If @var{context} is not specified, the current context is assumed.
+
+If @var{name} is not specified, a new name is created (via @code{gensym}) and returned.
+
+@code{supcontext} evaluates its argument.
+@code{supcontext} returns @var{name} (if specified) or the new context name.
 
 @opencatbox
 @category{Declarations and inferences}

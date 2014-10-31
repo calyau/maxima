@@ -145,11 +145,11 @@ signum_int_helper(q,l,x) := block([v, xo, f, x%],
 
 /* The function dint is based on code I wrote and placed in the public domain.*/
 
-dint(e,x,l) := block([xo, acc : 0, i, cntx : gensym("cntx")],
+dint(e,x,l) := block([xo, acc : 0, i, cntx],
   xo : first(l),
   l : rest(l),
   for xi in l do (
-    cntx : apply('supcontext,[cntx]),
+    cntx : supcontext (),
     i : unwind_protect((
          apply('assume,[xo < x, x < xi, xo < xi]),
          errcatch(integrate(expand(e,0,0),x,xo,xi))),
@@ -169,12 +169,12 @@ partitions_interval_p(l,[endpts]) := block([ok,lo,hi],
     if every(lambda([a,b], is(a <= b)=true), l, endcons('inf, rest(l))) then l else false)
   else false);
 
-abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx : gensym("cntx")],
+abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx],
   if is(hi < lo)=true then -abs_defint(e,x,hi,lo)
   else if is(lo = hi) then 0
   else (
      unwind_protect((
-        cntx : apply('supcontext,[cntx]),
+        cntx : supcontext (),
         assume(lo <= x, x <= hi),
         e : expand(e,0,0),
         e : convert_to_signum(e),
@@ -209,17 +209,16 @@ The function sublis does all substitutions before simplification. This allows th
 sublis([x = 0], %if(x < 1, 5, log(x))) --> 5. The subst function simplifies along the way
 so subst([x = 0], %if(x < 1, 5, log(x))) --> error. */
 
-abs_int_extra(q,x) := block([q1,q2,k,xo,kk, cntx : gensym("cntx")],
+abs_int_extra(q,x) := block([q1,q2,k,xo,kk, cntx],
   q : convert_to_signum(q),
   k : sublist(gatherargs(q,'signum),lambda([s], not freeof(x,s))),
   if k # [] and emptyp(rest(k)) then (
     k : first(first(k)),
     if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
       kk : rhs(first(linsolve(k,x))),
-      cntx : apply('supcontext,[cntx]),
+      cntx : supcontext (),
       q1 : unwind_protect((assume(x < kk), errcatch(integrate(expand(q,0,0),x))),killcontext(cntx)),
-      cntx : gensym("cntx"),
-      cntx : apply('supcontext,[cntx]),
+      cntx : supcontext (),
       q2 : unwind_protect((assume(x > kk), errcatch(integrate(expand(q,0,0),x))),killcontext(cntx)),
       if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
       q1 # [] and q2 # [] then (
@@ -251,14 +250,13 @@ abs_integrate_use_if(q,x) := block([k,%x,xo],
     if q = [] then false else subst(%x = x, first(q)))
   else false);
 
-interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx : gensym("cntx")],
+interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx],
   if l = [ ] then integrate(q,x)
   else (
     xo : first(l),
-    cntx : apply('supcontext,[cntx]),
+    cntx : supcontext (),
     q1 : unwind_protect((assume(x < xo),integrate(expand(q,0,0),x)), killcontext(cntx)),
-    cntx : gensym("cntx"),
-    cntx : apply('supcontext,[cntx]),
+    cntx : supcontext (),
     q : unwind_protect((assume(x > xo),expand(q,0,0)),killcontext(cntx)),
     q2 : interval_integrate(q,x,rest(l)),
    
@@ -275,13 +273,13 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx : gensym("cntx")],
  intable[floor] : lambda([u], [-(floor(u)*(floor(u)-2*u+1))/2, diff(u,%voi)]);
  intable[ceiling] : lambda([u], [(floor(u)^2-2*ceiling(u)*floor(u)+floor(u)+2*u*ceiling(u))/2, diff(u,%voi)]); */
 
-floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx : gensym(), simpsum : true],
+floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx, simpsum : true],
   l : setify(xreduce('append, gatherargs(q,'floor))),
   l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
   l : subset(l, lambda([s], not(freeof(x, s)))),
   if l = set(x) then (
     unwind_protect(
-      (cntx : apply('supcontext,[cntx]),
+      (cntx : supcontext (),
        apply('declare,[[fl,cl,k],integer]),
        assume(fl <= cl, cl < fl+1),
        q : subst([floor(x) = fl, ceiling(x) = cl], q),
@@ -359,9 +357,9 @@ possible_singular_pts(e) := block([inflag : true],
    integrate(1/(a+x^2),x). Maybe we could avoid additional calls to asksign by
    setting assume_pos to true. But then integrate(abs(x),x) --> x^2/2. */
  
-forgetful_integrate(e,x) := block([ee, extra_integration_methods : [], cntx : gensym("cntx")],
+forgetful_integrate(e,x) := block([ee, extra_integration_methods : [], cntx],
    unwind_protect((
-     cntx : apply('supcontext, [cntx]),
+     cntx : supcontext (),
      ee : intfudu(e,x),	
      if ee # false then ee else integrate(e,x)),
     killcontext(cntx)));

@@ -229,9 +229,9 @@ constant_factors (e%) := block ([L%, eqns%],
 everything_else(e%) := e%/constant_factors(e%);
 
 simplify_units (e%) := block
-  ([L% : listofvars (e%), mycontext : ?gensym ()],
+  ([L% : listofvars (e%), mycontext],
     L% : makelist (x% > 0, x%, L%),
-    newcontext (mycontext),
+    mycontext : newcontext (),
     apply (assume, L%),
     e% : expand (e%, 0, 0),
     apply (forget, L%),
@@ -563,10 +563,10 @@ subst_units (u) := block ([v : listofvars (units (u)), substs],
   subst (substs, units (u)));
 
 dimensionally (e%) ::=
-  buildq ([e%_op : op (e%), e%_args : args (e%), context_name : gensym ()],
+  buildq ([e%_op : op (e%), e%_args : args (e%), context_name],
     block
      ([units_gensyms, unitless_args, reunitification_eqs, reunitified],
-      supcontext (context_name),
+      context_name : supcontext (),
       context : context_name,
       units_gensyms : make_array ('hashed), 
       unitless_args : applyb1 (e%_args, rununitify),

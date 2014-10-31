@@ -178,24 +178,32 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;;; This function actually creates a context whose subcontext is $GLOBAL.
 ;;; It also switches contexts to the newly created one.
+;;; If no argument supplied, then invent a name via gensym and use that.
 
-(defmfun $newcontext (x)
-  (cond ((not (symbolp x)) (nc-err '$newcontext x))
-	((member x $contexts :test #'eq)
-	 (mtell (intl:gettext "newcontext: context ~M already exists.") x) nil)
-	(t (setq $contexts (mcons x $contexts))
-	   (putprop x '($global) 'subc)
-	   (setq context x $context x))))
+(defmfun $newcontext (&rest args)
+  (if (null args)
+    ($newcontext ($gensym "context")) ;; make up a name and try again
+    (if (> (length args) 1)
+      (merror "newcontext: found more than one argument.")
+      (let ((x (first args)))
+        (cond
+          ((not (symbolp x)) (nc-err '$newcontext x))
+          ((member x $contexts :test #'eq)
+           (mtell (intl:gettext "newcontext: context ~M already exists.") x) nil)
+          (t
+            (setq $contexts (mcons x $contexts))
+            (putprop x '($global) 'subc)
+            (setq context x $context x)))))))
 
 ;;; This function creates a supercontext.  If given one argument, it
 ;;; makes the current context be the subcontext of the argument.  If
 ;;; given more than one argument, the first is assumed the name of the
 ;;; supercontext and the rest are the subcontexts.
+;;; If no arguments supplied, then invent a name via gensym and use that.
 
-(defmspec $supcontext (x)
-  (setq x (cdr x))
-  (cond ((null x) (merror (intl:gettext "supcontext: expected one or two arguments; found none.")))
-	((caddr x) (merror (intl:gettext "supcontext: expected one or two arguments; found more than two.")))
+(defun $supcontext (&rest x)
+  (cond ((null x) ($supcontext ($gensym "context"))) ;; make up a name and try again
+	((caddr x) (merror (intl:gettext "supcontext: found more than two arguments.")))
 	((not (symbolp (car x))) (nc-err '$supcontext (car x)))
 	((member (car x) $contexts :test #'eq)
 	 (merror (intl:gettext "supcontext: context ~M already exists.") (car x)))

@@ -530,8 +530,7 @@ done;
  acos (cos (foo)));
 acos (cos (foo));
 
-(ctxt : gensym (),
- newcontext (ctxt),
+(ctxt : newcontext (),
  assume (0 <= foo and foo <= %pi),
  acos (cos (foo)));
 foo;

@@ -4,14 +4,14 @@
  */
 
 (kill (all),
- mycontext : newcontext (gensym ()),
+ mycontext : newcontext (),
  declare (n, integer),
  /* attempt to forestall asksign queries */
  assume (a > 0, b > 0, c > 0),
  assume (n > 0, q > 0),
  assume_pos_pred : lambda ([e], true),
  assume_pos : true,
- assuming (e1, e2) ::= buildq ([e1, e2], block ([foo, c1 : newcontext (gensym ())], assume (e1), foo : e2, killcontext (c1), foo)),
+ assuming (e1, e2) ::= buildq ([e1, e2], block ([foo, c1 : newcontext ()], assume (e1), foo : e2, killcontext (c1), foo)),
  0);
 0;
 

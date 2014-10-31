@@ -153,7 +153,7 @@ simplify_sum(expr) :=
     if member(ss_new_context, contexts) then
       killcontext(ss_new_context),
  
-    apply(supcontext, [ss_new_context]),
+    supcontext (ss_new_context),
     if lo#minf and lo#-inf then assume(var>=lo),
     if hi#inf then assume(var<=hi),
     summand : simplify_sum(summand),
@@ -258,7 +258,7 @@ simplify_sum(expr) :=
               ratfun_to_psi(subst(new_var=2*new_var-1, ratfun), new_var, 1, inf))
       else sm1 : und),
   
-    apply(supcontext, [ss_new_context]),
+    supcontext (ss_new_context),
 
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
@@ -532,7 +532,7 @@ summand_to_rec(expr, k, n) := block(
     hi : k[3],
     k : k[1]),
 
-  supcontext(ss_context),
+  supcontext('ss_context),
 
   if errcatch(
     zr : ss_zeilb(expr, k, lo, hi, n)
@@ -913,7 +913,7 @@ sum_by_integral(expr, var, lo, hi) :=
   block(
     [expr1, x_:?gensym()],
     
-    apply(supcontext, [concat('sum_by_integral, simplify_sum_depth)]),
+    supcontext (concat('sum_by_integral, simplify_sum_depth)),
     assume(x_>0, x_<1, var>=lo, var<=hi),
 
     expr1 : opsubst(harmonic_number=lambda([u], (1-x_^u)/(1-x_)), expr),
