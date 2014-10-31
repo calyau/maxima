@@ -896,6 +896,7 @@ logic/logic.lisp \
 logic/logic.mac \
 logic/logic.pdf \
 logic/logic.texi \
+logic/rtest_logic.mac \
 logic/TODO \
 lsquares/lsquares.mac \
 lsquares/plsquares.mac \
