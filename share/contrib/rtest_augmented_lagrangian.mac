@@ -1,0 +1,15 @@
+(kill(all), 'done);
+'done$
+
+(load (augmented_lagrangian), float_approx_equal_tolerance : 1e-12, 'done);
+'done$
+
+block([FOM: x^2 + 2*y^2, xx: [x, y], C: [x + y - 1], yy: [1, 1]],
+  augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]));
+[[x = 0.666659841080023,y = 0.333340272455448],%lambda = [-1.333337940892518]]$
+
+block([FOM: x^2 + 2*y^2, xx: [x, y], grad : [2*x, 4*y], C: [x + y - 1], yy: [1, 1]],
+  augmented_lagrangian_method ([FOM, grad], xx, C, yy,
+    iprint = [-1, 0]));
+[[x = 0.6666598410800247,y = 0.3333402724554464],
+%lambda = [-1.333337940892525]]$
