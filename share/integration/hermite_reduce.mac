@@ -1,0 +1,141 @@
+/* nicked from mailing list; here is the email message + headers:
+ *
+From: toy.raymond at gmail.com (Raymond Toy)
+Date: Mon, 03 May 2010 09:41:08 -0400
+Subject: [Maxima] Rothstein-Trager algorithm.
+
+Here is a very rudimentary implementation of the Rothstein-Trager
+algorithm.  Seems to work for the few tests that I've run. 
+
+f:(x^4-3*x^2+6)/(x^6-5*x^4+5*x^2+4)$
+int_rational_function(f,x);
+-> lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1))
+
+One refinement that needs to be done is to try to solve for the roots
+and substitute them in if possible, instead of leaving the result as a
+sum over the roots.
+
+We could also implement the Lazard-Rioboo-Trager algorithm, but maxima
+doesn't seem to provide the subresultant prs sequence.  That would have
+to be implemented.
+
+Ray
+ *
+ */
+
+/*
+ * Simple implementation of Rothstein-Trager algorithm for integrating
+ * rational functions.
+ *
+ * $Id: hermite_reduce.mac,v 1.4 2010/05/03 13:28:46 toy Exp $
+ */
+
+/* Extended Euclidean algorithm, diophantine version
+ *
+ * Find s and t such that s*a + t*b = c and either s = 0 or deg(s) < deg(b)
+ *
+ * var is the variable of the polynomials.
+ */
+extended_euclidean(a, b, c, var) :=
+  block([s, t, g, q, r],
+    [s, t, g] : gcdex(a, b, var),
+    [q, r] : divide(c, g),
+    s : q*s,
+    t : q*t,
+    if is(s # 0) and is(hipow(s, var) > hipow(b, var)) then
+      ([q, r] : divide(s, b), s : r, t : t + q*a),
+    [s, t]);
+
+/* Hermite Reduction, Mack's linear version
+ *
+ * Find g and h such that A/D = diff(g,x) + h and return g and h.
+ * h has a square-free denominator.
+ */
+hermite_reduce(a, d, var) :=
+  block([g : 0, d_minus: gcd(d, diff(d, var)), d_star, deg],
+    d_star : quotient(d, d_minus),
+    /*
+    print("d- = ", d_minus),
+    print("d* = ", d_star),
+    */
+    for i : 1 while hipow(d_minus, var) > 0 do
+      block([d_minus2 : gcd(d_minus, diff(d_minus, var)), d_minus_s, b, c],
+        d_minus_s : quotient(d_minus, d_minus2),
+    /*
+        print("d-2 = ", d_minus2),
+        print("d-* = ", d_minus_s),
+    */
+        [b,c] : extended_euclidean(quotient(-d_star * diff(d_minus,var),
+d_minus), d_minus_s, a, var),
+        /*print("[b, c] = ", [b, c]),*/
+        a : c - quotient(diff(b, var) * d_star, d_minus_s),
+        /*print("a = ", a),*/
+        g : g + b/d_minus,
+        /*print("g = ", g),*/
+        d_minus : d_minus2),
+    [g, a/d_star]);
+
+/* Make p a monic polynomial.
+ *
+ * Let p(x) = a[0]*x^n + a[1]*x^(n-1) ...
+ *
+ * Use the substitution x = y/a[0]^(1/n) to get
+ *
+ * p(y) = y^n + a[1]/a[0]^((n-1)/n)*y^(n-1) ...
+ *
+ * Return the new polynomial and a[0]^(1/n)
+ */
+monic(p, var) :=
+  block([e : hipow(p, var), c, temp],
+    c : coeff(p, var, e),
+    [subst([var = var/(c^(1/e))], p), c^(1/e)]);
+
+/* Algebraic GCD */
+algebraic_gcd(a,b) :=
+  block([algebraic:true, gcd : subres],
+    gcd(a,b));
+
+/* Rothstein-Trager algorithm
+ *
+ * The numerator is a, the denominator is d, and the variable of
+ * integration is var.
+ */
+int_rational_log_part(a, d, var) :=
+  block([resultant : subres, t, r, s : 0],
+    r : resultant(d, a - t*diff(d,var), var),
+    r : sqfr(r),
+    /* Can this be done better?  Say we have -c*R1(x)*R2(x)....  We
+     * really just want the term product terms, without the leading
+     * coefficient.  Just look for a unary minus and negate if it is.
+     */
+    if op(r) = "-" and length(args(r)) = 1 then
+      r : -r,
+    for i : 1 thru length(r) do
+      block([f : part(r, i)],
+        /* Skip any expressions that don't involve t */
+        if not freeof(t, f) then
+      block([g, p, e],
+        /* Look for a expression like (t^2-16)^3.  Handle (t^2-16)
+carefully. */
+        if op(f) = "^" then
+          [p, e] : args(f)
+            else
+              [p, e] : [f, 1],
+        [rr, c] : monic(p, t),
+        tellrat(rr),
+        g : algebraic_gcd(d, a - t*expand(diff(d, var)/c)),
+        untellrat(t),
+        g : log(g),
+            s : s + apply('lsum, [t*g/c, t, rootsof(rr)]))),
+      s);
+
+
+/* Integrate a rational function f */
+int_rational_function(f, var) :=
+  block([g,h,q,r],
+    [g, h] : hermite_reduce(num(f), denom(f), var),
+    [q, r] : divide(num(h), denom(h)),
+    if r = 0 then
+      g + integrate(q, var)
+    else
+      g + integrate(q, var) + int_rational_log_part2(r, denom(h), var));

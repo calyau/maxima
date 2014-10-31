@@ -616,6 +616,7 @@ integration/bypart.mac \
 integration/delta.dem \
 integration/delta.mac \
 integration/delta.usg \
+integration/hermite_reduce.mac \
 integration/rtest_antid.mac \
 lapack/blas/blas-lisp.system \
 lapack/blas/blas-package.lisp \
