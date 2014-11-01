@@ -3,7 +3,7 @@
 (in-package :maxima)
 
 (defmfun $desolve (eqns vars)
-  (let (teqns tvars ovar (lvar (gensym)) (flag nil) ($dispflag nil))
+  (let (teqns tvars ovar (lvar ($gensym)) (flag nil) ($dispflag nil))
     (declare (special $dispflag))
     (unless ($listp vars)
       (setq eqns (list '(mlist) eqns))
