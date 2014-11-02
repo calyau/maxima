@@ -101,7 +101,7 @@ algebraic_gcd(a,b) :=
  * integration is var.
  */
 int_rational_log_part(a, d, var) :=
-  block([resultant : subres, t, r, s : 0],
+  block([resultant : subres, c, t, r, rr, s : 0],
     r : resultant(d, a - t*diff(d,var), var),
     r : sqfr(r),
     /* Can this be done better?  Say we have -c*R1(x)*R2(x)....  We
@@ -138,4 +138,4 @@ int_rational_function(f, var) :=
     if r = 0 then
       g + integrate(q, var)
     else
-      g + integrate(q, var) + int_rational_log_part2(r, denom(h), var));
+      g + integrate(q, var) + int_rational_log_part(r, denom(h), var));
