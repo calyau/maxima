@@ -448,6 +448,7 @@ contrib/rkf45/rkf45.dem \
 contrib/rkf45/rkf45.mac \
 contrib/rkf45/rkf45.pdf \
 contrib/rkf45/rtest_rkf45.mac \
+contrib/rtest_augmented_lagrangian.mac \
 contrib/sarag/aliases.mac \
 contrib/sarag/arag_test.mac \
 contrib/sarag/certificateOfPositivity.mac \
@@ -865,6 +866,7 @@ lbfgs/lbfgs.mac \
 lbfgs/maxima-lbfgs.lisp \
 lbfgs/mcsrch.lisp \
 lbfgs/mcstep.lisp \
+lbfgs/rtest_lbfgs.mac \
 lbfgs/run-lbfgs.lisp \
 lbfgs/sdrive.lisp \
 linearalgebra/announcement.txt \
