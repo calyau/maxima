@@ -244,7 +244,7 @@ build_sample(tbl) :=
 /* classes we want, OR a list containing only the limits.      */
 /* If sample values are all equal, this function returns only  */
 /* one class of amplitude 2                                    */
-continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k],
+continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index],
    if length(opt) = 1 and listofnumbersp(opt[1])
       then ( mini: opt[1][1],
 	     maxi: opt[1][2],
@@ -510,7 +510,7 @@ cov1(x):=block([n:length(x)], cov(x)*n/(n-1))$
 /*        must be computed; if false, x is the covariance matrix and 'cov1' */
 /*        is not recalculated.                                              */
 global_variances(x,[select]):=
- block([s,p,aux,out:[]],
+ block([s,p,aux,options,defaults,out:[]],
 
   /* this is for backcompatibility */
   if length(select)=1 and member(select[1], [true,false])
@@ -550,7 +550,7 @@ global_variances(x,[select]):=
 /*        must be computed; if false, x is the covariance matrix and 'cov1' */
 /*        is not recalculated.                                              */
 cor(x,[select]):=
- block([m,s,d],
+ block([m,s,d,defaults,options],
     
   /* this is for backcompatibility */
   if length(select)=1 and member(select[1], [true,false])
@@ -583,7 +583,7 @@ cor(x,[select]):=
 /*        must be computed; if false, x is the covariance matrix and 'cov1' */
 /*        is not recalculated.                                              */
 list_correlations(x,[select]):=
- block([s,p,s1,d,out:[],listarith:true],
+ block([s,p,s1,d,options,defaults,out:[],listarith:true],
 
   /* this is for backcompatibility */
   if length(select)=1 and member(select[1], [true,false])

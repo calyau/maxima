@@ -1,0 +1,64 @@
+(kill(all), 'done);
+'done$
+
+(load("hermite_reduce.mac"), 'done);
+'done$
+
+/* define a simple version of `rootsof' */
+(rof(expr):= map('rhs, solve(expr)), 'done);
+'done$
+
+int_rational_function(1,x);
+x$
+
+int_rational_function(x,x);
+x^2/2$
+
+/*
+Fails:
+
+(%i1) int_rational_function(1/x,x);
+part: argument must be a non-atomic expression; found t
+#0: int_rational_log_part(a=1,d=x,var=x)(hermite_reduce.mac line 120)
+#1: int_rational_function(f=1/x,var=x)(hermite_reduce.mac line 141)
+ -- an error. To debug this try: debugmode(true);
+
+int_rational_function(1/x,x);
+log(x)$
+
+*/
+
+block([expr: x/(x^2+1), ans, ref, logexpand: all],
+  ans: ev(int_rational_function(expr, x), rootsof=rof),
+  ref: integrate(expr, x),
+  expand(ans - ref));
+0$
+
+block([expr: x/(x^2+1), ans, ref, logexpand: all],
+  ans: ev(int_rational_function(expr, x), rootsof=rof),
+  ref: integrate(expr, x),
+  expand(ans - ref));
+0$
+
+block([expr: 1/(x^3+x), ans, ref, logexpand: all],
+  ans: ev(int_rational_function(expr, x), rootsof=rof),
+  ref: integrate(expr, x),
+  expand(ans - ref));
+log(2)/2$
+
+/* from
+Trager, B. M. Algebraic Factoring and Rational Function
+Integration. in Proceedings of the Third ACM Symposium on Symbolic and
+Algebraic Computation 219–226 (ACM, 1976). doi:10.1145/800205.806338
+*/
+block([q: 7*x^13 + 10*x^8 + 4*x^7 - 7*x^6 - 4*x^3 - 4*x^2 + 3*x +
+  3, r: x^14 - 2*x^8 - 2*x^7 - 2*x^4 - 4*x^3 - x^2 + 2*x + 1, ans, ref],
+  ans: ev(int_rational_function(q/r, x), rootsof=rof),
+  ref: (sqrt(2)+1)*log(x^7-sqrt(2)*x^2-(sqrt(2)+1)*x-1)/2
+  -(sqrt(2)-1)*log(x^7+sqrt(2)*x^2+(sqrt(2)-1)*x-1)/2,
+  expand(ref - ans));
+0$
+
+/* from comments in share/integration/hermite_reduce.mac */
+int_rational_function((x^4-3*x^2+6)/(x^6-5*x^4+5*x^2+4),x);
+'lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1))$

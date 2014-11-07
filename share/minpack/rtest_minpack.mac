@@ -1,0 +1,47 @@
+(kill(all), 0);
+0$
+
+(load(minpack), float_approx_equal_tolerance : 1e-12, 0);
+0$
+
+minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4],
+  [3,-1,0,1]), powell(x1,x2,x3,x4) :=
+                   [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2,
+                   sqrt(10)*(x1-x4)^2];
+[[1.652117596168394e-17, - 1.652117596168393e-18,
+                  2.643388153869468e-18, 2.643388153869468e-18],
+                  6.109327859207777e-34, 4]$
+
+minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4],
+  [3,-1,0,1], jacobian = false), powell(x1,x2,x3,x4) :=
+                   [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2,
+                   sqrt(10)*(x1-x4)^2];
+[[5.060282149485331e-11, - 5.060282149491206e-12,
+                  2.179447843547218e-11, 2.179447843547218e-11],
+                  3.534491794847031e-21, 5]$
+
+minpack_solve ( [x1 + x2 - 2, x1 - x2 - 2], [x1, x2], [0, 0]);
+[[2.0,-1.479114197289397e-31],2.091783358105259e-31,1]$
+
+minpack_solve ( [x1 + x2 - 2, x1 - x2 - 2], [x1, x2], [0, 0], jacobian=true);
+[[2.0, - 1.479114197289397e-31], 2.091783358105259e-31, 1]$
+
+/* An example from User Guide for MINPACK-1, Chapter 4
+http://www.mcs.anl.gov/~more/ANL8074b.pdf
+*/
+block([eq, varlist, gu, x], local(eq, x),
+  eq: makelist([], 9),
+  eq[1]: (3-2*x[1])*x[1]            - 2*x[2]                         + 1,
+  for i: 2 thru 8 do
+  eq[i]:         -x[i-1] + (3-2*x[i])*x[i]            - 2*x[i+1]     + 1,
+  eq[9]:                             -x[8]   + (3-2*x[9])*x[9]       + 1,
+  varlist: makelist(x[i], i, 9),
+  gu : makelist(0,       9),
+  minpack_solve (eq, varlist, gu));
+[[-0.5706545124664266,-0.6816283412828047,-0.7017324513732917,
+  -0.7042129396771661,-0.7013690482934034,-0.6918656444557993,
+  -0.6657920125574163,-0.5960342005611687,-0.4164120628161226],
+ 2.306068468708184e-10,1]$
+
+(reset (float_approx_equal_tolerance), 0);
+0$
