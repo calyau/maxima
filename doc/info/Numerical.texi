@@ -106,6 +106,9 @@ Then for @code{j} from 0 through @code{n - 1},
 x[j] = sum(y[k] exp(-2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
+As there are various sign and normalization conventions possible,
+this definition of the transform may differ from that used by other mathematical software.
+
 @code{load(fft)} loads this function.
 
 See also @code{fft} (forward transform), @code{recttopolar}, and
@@ -193,6 +196,9 @@ Then for @code{k} from 0 through @code{n - 1},
 @example
 y[k] = (1/n) sum(x[j] exp(+2 %i %pi j k / n), j, 0, n - 1)
 @end example
+
+As there are various sign and normalization conventions possible,
+this definition of the transform may differ from that used by other mathematical software.
 
 When the data @var{x} are real,
 real coefficients @code{a} and @code{b} can be computed such that
