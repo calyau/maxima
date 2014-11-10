@@ -74,7 +74,6 @@ block
         gf_test,
         rtest_namespaces,
         arag_test, 
-        /* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
         rtest_to_poly, 
         [rtestprintf, 27, 29, 38, 39, 40, 47, 48, 54],
