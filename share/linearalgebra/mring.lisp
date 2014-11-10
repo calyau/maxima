@@ -60,13 +60,18 @@
   maxima-to-mring
   mring-to-maxima)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defmvar $%mrings `((mlist) $floatfield $complexfield $rationalfield $crering $generalring $bigfloatfield
-		      $runningerror $noncommutingring)))
-		
+(eval-when 
+#-gcl (:compile-toplevel :load-toplevel :execute)
+#+gcl (compile load eval)
+  (defmvar $%mrings `((mlist) $floatfield $complexfield $rationalfield $crering 
+                       $generalring $bigfloatfield $runningerror $noncommutingring ))
+  (defvar *gf-rings* '(gf-coeff-ring gf-ring ef-ring)) )
+
 (defun $require_ring (ringname pos fun)
-  (if ($member ringname $%mrings) (get ringname 'ring)
-    (merror "The ~:M argument of the function '~:M' must be the name of a ring" pos fun)))
+  (if (or ($member ringname $%mrings) (member ringname *gf-rings*))
+    (get ringname 'ring)
+    (merror (intl:gettext "The ~:M argument of the function '~:M' must be the name of a ring") pos fun)))
+
 
 (defparameter *floatfield*
   (make-mring
@@ -230,6 +235,83 @@
 				(merror "Unable to convert matrix entry to a big float")))))
 
 (setf (get '$bigfloatfield 'ring) *bigfloatfield*)
+
+;; --- *gf-rings* --- (used by src/numth.lisp) ------------------------------ ;;
+;;                                                                            ;;
+(defparameter *gf-coeff-ring*
+  (make-mring
+   :name 'gf-coeff-ring
+   :coerce-to-lisp-float nil
+   :abs #'gf-cmod
+   :great #'(lambda (a b) (declare (ignore a)) (null b))
+   :add #'gf-cplus-b
+   :div #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
+   :rdiv #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
+   :reciprocal #'gf-cinv
+   :mult #'gf-ctimes
+   :sub #'(lambda (a b) (gf-cplus-b a (gf-cminus-b b)))
+   :negate #'gf-cminus-b
+   :psqrt #'(lambda (a) (let ((rs (zn-nrt a 2 *gf-char*))) (when rs (car rs))))
+   :add-id #'(lambda () 0)
+   :mult-id #'(lambda () 1)
+   :fzerop #'(lambda (s) (= 0 s))
+   :adjoint nil
+   :mring-to-maxima #'cl:identity
+   :maxima-to-mring #'cl:identity ))
+;;
+(setf (get 'gf-coeff-ring 'ring) *gf-coeff-ring*)
+;;
+(defparameter *gf-ring*
+  (make-mring
+   :name 'gf-ring
+   :coerce-to-lisp-float nil
+   :abs #'gf-mod
+   :great #'(lambda (a b) (declare (ignore a)) (null b))
+   :add #'gf-plus
+   :div #'(lambda (a b) (gf-times a (gf-inv b *gf-red*) *gf-red*))
+   :rdiv #'(lambda (a b) (gf-times a (gf-inv b *gf-red*) *gf-red*))
+   :reciprocal #'(lambda (a) (gf-inv a *gf-red*))
+   :mult #'(lambda (a b) (gf-times a b *gf-red*))
+   :sub #'(lambda (a b) (gf-plus a (gf-minus b)))
+   :negate #'gf-minus
+   :psqrt #'(lambda (a) 
+              (let ((rs (gf-nrt-exit (gf-nrt a 2 *gf-red* *gf-ord*)))) 
+                (when rs (cadr rs)) ))
+   :add-id #'(lambda () nil)
+   :mult-id #'(lambda () '(0 1))
+   :fzerop #'(lambda (s) (null s))
+   :adjoint nil
+   :mring-to-maxima #'gf-x2p
+   :maxima-to-mring #'gf-p2x ))
+;;
+(setf (get 'gf-ring 'ring) *gf-ring*)
+;;
+(defparameter *ef-ring*
+  (make-mring
+   :name 'ef-ring
+   :coerce-to-lisp-float nil
+   :abs #'gf-mod
+   :great #'(lambda (a b) (declare (ignore a)) (null b))
+   :add #'gf-plus
+   :div #'(lambda (a b) (gf-times a (gf-inv b *ef-red*) *ef-red*))
+   :rdiv #'(lambda (a b) (gf-times a (gf-inv b *ef-red*) *ef-red*))
+   :reciprocal #'(lambda (a) (gf-inv a *ef-red*))
+   :mult #'(lambda (a b) (gf-times a b *ef-red*))
+   :sub #'(lambda (a b) (gf-plus a (gf-minus b)))
+   :negate #'gf-minus
+   :psqrt #'(lambda (a) 
+              (let ((rs (gf-nrt-exit (gf-nrt a 2 *ef-red* *ef-ord*)))) 
+                (when rs (cadr rs)) ))
+   :add-id #'(lambda () nil)
+   :mult-id #'(lambda () '(0 1))
+   :fzerop #'(lambda (s) (null s))
+   :adjoint nil
+   :mring-to-maxima #'gf-x2p
+   :maxima-to-mring #'gf-p2x ))
+
+(setf (get 'ef-ring 'ring) *ef-ring*)
+;;                                                                            ;;
+;; -------------------------------------------------------------------------- ;;
 
 (defun fp-abs (a)
   (list (abs (first a)) (second a)))
