@@ -31,39 +31,64 @@
 
 (defvar *mread-prompt* nil    "prompt used by `mread'")
 (defvar *mread-eof-obj* ()    "Bound by `mread' for use by `mread-raw'")
+(defvar *current-line-info* nil)
+
+(defmvar $report_synerr_line t "If T, report line number where syntax error occurs; otherwise, report FILE-POSITION of error.")
+(defmvar $report_synerr_info t "If T, report the syntax error details from all sources; otherwise, only report details from standard-input.")
 
 (defun mread-synerr (format-string &rest l)
-    (let (tem
-	  errset
-	  (file "stdin"))
-      (errset
-       (setq tem (file-position *parse-stream*))
-       (setq file  (namestring *parse-stream*)))
-      (when tem
-	(format t "~%~a:~a:" file tem))
-      (format t (intl:gettext "incorrect syntax: "))
-      (apply 'format t format-string (mapcar #'(lambda (x)
-						 (if (symbolp x)
-						     (print-invert-case x)
-						     x))
-					     l))
-      (cond ((eql *parse-stream* *standard-input*)
+  (let ((fp (file-position *parse-stream*))
+	(file (cadr *current-line-info*)))
+    (flet ((line-number ()
+	     ;; Fix me: Neither batch nor load track the line number
+	     ;; correctly. batch, via dbm-read, does not track the
+	     ;; line number at all (a bug?).
+	     ;;
+	     ;; Find the line number by jumping to the start of file
+	     ;; and reading line-by-line til we reach the current
+	     ;; position
+	     (cond ((and fp (file-position *parse-stream* 0))
+		    (do ((l (read-line *parse-stream* nil nil) (read-line *parse-stream* nil nil))
+			 (o 1                                  (1+ p))
+			 (p (file-position *parse-stream*)     (file-position *parse-stream*))
+			 (n 1                                  (1+ n)))
+			((or (null p) (>= p fp))
+			 (cons n (- fp o)))))
+		   (t '())))
+	   (column ()
 	     (let ((n (get '*parse-window* 'length))
-		   some ch)
+		   ch some)
 	       (loop for i from (1- n) downto (- n 20)
-		      while (setq ch (nth i *parse-window*))
-		      do
-		      (cond ((eql ch #\newline)
-			     (push #\n some)
-			     (push #\\ some))
-			    ((eql ch #\tab)
-			     (push #\t some)
-			     (push #\\ some))
-			    (t (push ch some))))
+	     	  while (setq ch (nth i *parse-window*))
+		  do
+		    (cond ((char= ch #\newline)
+			   (return-from column some))
+			  (t (push ch some))))
+	       some))
+	   (printer (x)
+	     (cond ((symbolp x)
+		    (print-invert-case (stripdollar x)))
+		   ((stringp x)
+		    (maybe-invert-string-case x))
+		   (t x)))
+	   )
+      (case (and file $report_synerr_line)
+	((t)
+	 ;; print the file, line and column information
+	 (let ((line+column (line-number)))
+	   (format t "~&~a:~a:~a:" file (car line+column) (cdr line+column))))
+	(otherwise
+	 ;; if file=nil, then print a fresh line only; otherwise print
+	 ;; file and character location
+	 (format t "~&~:[~;~:*~a:~a:~]" file fp)))
+      (format t (intl:gettext "incorrect syntax: "))
+      (apply 'format t format-string (mapcar #'printer l))
+      (cond ((or $report_synerr_info (eql *parse-stream* *standard-input*))
+	     (let ((some (column)))
 	       (format t "~%~{~c~}~%~vt^" some (- (length some) 2))
-           (read-line *parse-stream* nil nil))))
+	       (read-line *parse-stream* nil nil))))
       (terpri)
-      (throw-macsyma-top)))
+      (throw-macsyma-top))))
 
 (defun tyi-parse-int (stream eof)
   (or *parse-window*
@@ -805,8 +830,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;; an atribute of the stream which somebody can hack before calling
 ;;; MREAD if he wants to.
 
-
-(defvar *current-line-info* nil)
 
 ;;Important for lispm rubout handler
 (defun mread (&rest read-args)
