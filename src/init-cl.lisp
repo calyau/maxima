@@ -237,6 +237,14 @@ When one changes, the other does too."
 				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
 			(t  (setq *maxima-lang-subdir* nil))))))))
 
+(flet ((sanitize-string (s)
+	 (map 'string (lambda(x) (if (alphanumericp x) x #\_))
+	      (subseq s 0 (min 142 (length s))))))
+  (defun lisp-implementation-version1 ()
+    (sanitize-string (lisp-implementation-version)))
+  (defun maxima-version1 ()
+    (sanitize-string *autoconf-version*)))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
@@ -272,7 +280,7 @@ When one changes, the other does too."
                        (if maxima-objdir-env
                          (maxima-parse-dirstring maxima-objdir-env)
                          (concatenate 'string *maxima-userdir* "/binary"))
-                       "/binary-" *maxima-lispname*))
+                       "/" (maxima-version1) "/" *maxima-lispname* "/" (lisp-implementation-version1)))
 
     ; On Windows Vista gcc requires explicit include
     #+gcl
