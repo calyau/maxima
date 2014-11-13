@@ -21,49 +21,49 @@ within Texinfo.
 Here is a sample session:
 
 @c (linenum:1,display2d:true,reset_displays());
-@verbatim
-  (%i1) load("alt-display.mac")$
-  (%i2) set_alt_display(2,tex_display)$
-  
-  (%i3) x/(x^2+y^2) = 1;
-  \mbox{\tt\red({\it \%o_3}) \black}$${{x}\over{y^2+x^2}}=1$$
+@example
+(%i1) load("alt-display.mac")$
+(%i2) set_alt_display(2,tex_display)$
 
-  (%i4) set_alt_display(2,mathml_display)$
-  
-  (%i5) x/(x^2+y^2) = 1;
-  <math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
-   <mfenced separators=""><msub><mi>%o</mi> <mn>5</mn></msub> 
-   <mo>,</mo><mfrac><mrow><mi>x</mi> </mrow> <mrow><msup><mrow>
-   <mi>y</mi> </mrow> <mn>2</mn> </msup> <mo>+</mo> <msup><mrow>
-   <mi>x</mi> </mrow> <mn>2</mn> </msup> </mrow></mfrac> <mo>=</mo> 
-   <mn>1</mn> </mfenced> </math>
+(%i3) x/(x^2+y^2) = 1;
+\mbox@{\tt\red(@{\it \%o_3@}) \black@}$$@{@{x@}\over@{y^2+x^2@}@}=1$$
 
-  (%i6) set_alt_display(2,multi_display_for_texinfo)$
-  
-  (%i7) x/(x^2+y^2) = 1;
-  
-  @iftex
-  @tex
-  \mbox{\tt\red({\it \%o_7}) \black}$${{x}\over{y^2+x^2}}=1$$
-  @end tex
-  @end iftex
-  @ifhtml
-  @html
-  
-   <math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
-   <mfenced separators=""><msub><mi>%o</mi> <mn>7</mn></msub> 
-   <mo>,</mo><mfrac><mrow><mi>x</mi> </mrow> <mrow><msup><mrow>
-   <mi>y</mi> </mrow> <mn>2</mn> </msup> <mo>+</mo> <msup><mrow>
-   <mi>x</mi> </mrow> <mn>2</mn> </msup> </mrow></mfrac> <mo>=</mo> 
-   <mn>1</mn> </mfenced> </math>
-  @end html
-  @end ifhtml
-  @ifinfo
-  @example
-  (%o7) x/(y^2+x^2) = 1
-  @end example
-  @end ifinfo
-@end verbatim
+(%i4) set_alt_display(2,mathml_display)$
+
+(%i5) x/(x^2+y^2) = 1;
+<math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
+<mfenced separators=""><msub><mi>%o</mi> <mn>5</mn></msub> 
+<mo>,</mo><mfrac><mrow><mi>x</mi> </mrow> <mrow><msup><mrow>
+<mi>y</mi> </mrow> <mn>2</mn> </msup> <mo>+</mo> <msup><mrow>
+<mi>x</mi> </mrow> <mn>2</mn> </msup> </mrow></mfrac> <mo>=</mo> 
+<mn>1</mn> </mfenced> </math>
+
+(%i6) set_alt_display(2,multi_display_for_texinfo)$
+
+(%i7) x/(x^2+y^2) = 1;
+
+@@iftex
+@@tex
+\mbox@{\tt\red(@{\it \%o_7@}) \black@}$$@{@{x@}\over@{y^2+x^2@}@}=1$$
+@@end tex
+@@end iftex
+@@ifhtml
+@@html
+
+<math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
+<mfenced separators=""><msub><mi>%o</mi> <mn>7</mn></msub> 
+<mo>,</mo><mfrac><mrow><mi>x</mi> </mrow> <mrow><msup><mrow>
+<mi>y</mi> </mrow> <mn>2</mn> </msup> <mo>+</mo> <msup><mrow>
+<mi>x</mi> </mrow> <mn>2</mn> </msup> </mrow></mfrac> <mo>=</mo> 
+<mn>1</mn> </mfenced> </math>
+@@end html
+@@end ifhtml
+@@ifinfo
+@@example
+(%o7) x/(y^2+x^2) = 1
+@@end example
+@@end ifinfo
+@end example
 
 If the alternative display function causes an error, the error is
 trapped and the display function is reset to the default display. In the
@@ -71,20 +71,20 @@ following example, the @code{error} function is set to display the
 output. This throws an error, which is handled by resetting the
 2d-display to the default.
 
-@verbatim
-  (%i8) set_alt_display(2,?error)$
-  
-  (%i9) x;
-  
-  Error in *alt-display2d*.
-  Messge: Condition designator ((MLABEL) $%O9 $X) is not of type (OR SYMBOL STRING
-                                                             FUNCTION).
-  *alt-display2d* reset to nil.
-   -- an error. To debug this try: debugmode(true);
+@example
+(%i8) set_alt_display(2,?error)$
 
-  (%i10) x;
-  (%o10)                                 x
-@end verbatim
+(%i9) x;
+
+Error in *alt-display2d*.
+Messge: Condition designator ((MLABEL) $%O9 $X) is not of type (OR SYMBOL STRING
+                                                             FUNCTION).
+*alt-display2d* reset to nil.
+ -- an error. To debug this try: debugmode(true);
+
+(%i10) x;
+(%o10)                                 x
+@end example
 
 @node Functions and Variables for alt-display,  , Introduction to alt-display, alt-display
 @section Functions and Variables for alt-display
@@ -161,14 +161,14 @@ an alternative 1-d or 2-d display function.
 @deffn {Function} mathml_display (@var{form})
 Produces MathML output.
 
-@verbatim
+@example
 (%i1) load("alt-display.mac")$
 
 (%i2) set_alt_display(2,mathml_display);
 <math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
  <mfenced separators=""><msub><mi>%o</mi> <mn>2</mn></msub> 
  <mo>,</mo><mi>done</mi> </mfenced> </math>
-@end verbatim
+@end example
 
 @opencatbox
 @category{Package alt-display}
@@ -180,12 +180,12 @@ Produces MathML output.
 @deffn {Function} tex_display (@var{form})
 Produces TeX output.
 
-@verbatim
+@example
 (%i2) set_alt_display(2,tex_display);
-\mbox{\tt\red({\it \%o_2}) \black}$$\mathbf{done}$$
+\mbox@{\tt\red(@{\it \%o_2@}) \black@}$$\mathbf@{done@}$$
 (%i3) x/(x^2+y^2);
-\mbox{\tt\red({\it \%o_3}) \black}$${{x}\over{y^2+x^2}}$$
-@end verbatim
+\mbox@{\tt\red(@{\it \%o_3@}) \black@}$$@{@{x@}\over@{y^2+x^2@}@}$$
+@end example
 
 @opencatbox
 @category{Package alt-display}
@@ -196,32 +196,32 @@ Produces TeX output.
 @deffn {Function} multi_display_for_texinfo (@var{form})
 Produces Texinfo output using all three display functions.
 
-@verbatim
-  (%i2) set_alt_display(2,multi_display_for_texinfo)$
-  
-  (%i3) x/(x^2+y^2);
-  
-  @iftex
-  @tex
-  \mbox{\tt\red({\it \%o_3}) \black}$${{x}\over{y^2+x^2}}$$
-  @end tex
-  @end iftex
-  @ifhtml
-  @html
-  
+@example
+(%i2) set_alt_display(2,multi_display_for_texinfo)$
+
+(%i3) x/(x^2+y^2);
+
+@@iftex
+@@tex
+\mbox@{\tt\red(@{\it \%o_3@}) \black@}$$@{@{x@}\over@{y^2+x^2@}@}$$
+@@end tex
+@@end iftex
+@@ifhtml
+@@html
+
    <math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>mlabel</mi> 
    <mfenced separators=""><msub><mi>%o</mi> <mn>3</mn></msub> 
    <mo>,</mo><mfrac><mrow><mi>x</mi> </mrow> <mrow><msup><mrow>
    <mi>y</mi> </mrow> <mn>2</mn> </msup> <mo>+</mo> <msup><mrow>
    <mi>x</mi> </mrow> <mn>2</mn> </msup> </mrow></mfrac> </mfenced> </math>
-  @end html
-  @end ifhtml
-  @ifinfo
-  @example
-  (%o3) x/(y^2+x^2)
-  @end example
-  @end ifinfo
-@end verbatim
+@@end html
+@@end ifhtml
+@@ifinfo
+@@example
+(%o3) x/(y^2+x^2)
+@@end example
+@@end ifinfo
+@end example
 
 @opencatbox
 @category{Package alt-display}
@@ -249,14 +249,12 @@ expression.
 Here is an example where the display function is a @code{lambda}
 expression; it just displays the result as @TeX{}.
 @example
-@verbatim
 (%i1) load("alt-display.mac")$
 
 (%i2) set_alt_display(2, lambda([form], tex(?caddr(form))))$
 
 (%i3) integrate(exp(-t^2),t,0,inf);
-$${{\sqrt{\pi}}\over{2}}$$
-@end verbatim
+$$@{@{\sqrt@{\pi@}@}\over@{2@}@}$$
 @end example
 
 A user-defined display function should take care that it @emph{prints}
@@ -332,7 +330,7 @@ output}.
 @end example
 @end ifinfo
 @ifnotinfo
-@image{figures/color_terminal}
+@figure{color_terminal}
 @end ifnotinfo
 
 Each prompt string starts with the ASCII escape character (27) followed
@@ -347,8 +345,6 @@ information on how to use control strings to set the terminal colors.
 @closecatbox
 
 @end deffn
-
-
 
 @c Local Variables: 
 @c mode: texinfo
