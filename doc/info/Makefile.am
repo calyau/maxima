@@ -131,7 +131,7 @@ figures/bodephase6.gif\
 figures/bodephase7.gif\
 figures/bodephase8.gif\
 figures/bodephase9.gif\
-figures/color_terminal.gif
+figures/color_terminal.png
 
 pdffigures = \
 figures/introduction1.pdf\
