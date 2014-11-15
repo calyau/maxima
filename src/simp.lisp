@@ -625,9 +625,7 @@
   (cond ((= 1 (length (cdr expr)))
          ;; Distribute over for a function with one argument.
          (cond ((and (not (atom (cadr expr)))
-                     (member (caaadr expr) (get (caar expr) 'distribute_over))
-                     ;; Distribute over lists only if $listarith is T
-                     (or $listarith (not (eq (caaadr expr) 'mlist))))
+                     (member (caaadr expr) (get (caar expr) 'distribute_over)))
                 (simplify
                   (cons (caadr expr)
                         (mapcar #'(lambda (u) (simplify (list (car expr) u)))
@@ -640,9 +638,7 @@
              ((null args) nil)
            (when (and (not (atom (car args)))
                       (member (caar (car args))
-                              (get (caar expr) 'distribute_over))
-                      ;; Disribute over lists only if $listarith is T
-                      (or $listarith (not (eq (caar (car args)) 'mlist))))
+                              (get (caar expr) 'distribute_over)))
              ;; Distribute the function over the arguments and simplify again.
              (return 
                (simplify 
