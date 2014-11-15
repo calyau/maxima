@@ -115,7 +115,7 @@
 
 (defun lnewvar1 (a)
   (cond ((atom a) (newvar1 a))
-	((member (caar a) '(mlist mequal $matrix) :test #'eq) (mapc #'lnewvar1 (cdr a)))
+	((mbagp a) (mapc #'lnewvar1 (cdr a)))
 	(t (newvar1 a))))
 
 (defun newvarmat (mat1 mat2)
