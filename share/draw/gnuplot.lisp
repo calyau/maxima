@@ -1199,8 +1199,6 @@
          x-samples y-samples yy result pltcmd result-array)
     (when (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
-    (when (not (subsetp (rest ($listofvars fcn)) (list var)))
-       (merror "draw2d (explicit): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (setf fcn ($float fcn))
     (cond 
@@ -1215,7 +1213,6 @@
                 (push (fun x) y-samples)))
           (setf x-samples (nreverse x-samples))
           (setf y-samples (nreverse y-samples))
-
           ;; For each region, adaptively plot it.
           (do ((x-start x-samples (cddr x-start))
                (x-mid (cdr x-samples) (cddr x-mid))
@@ -1224,11 +1221,12 @@
                (y-mid (cdr y-samples) (cddr y-mid))
                (y-end (cddr y-samples) (cddr y-end)))
               ((null x-end))
-
             ;; The region is x-start to x-end, with mid-point x-mid.
             (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                                (car y-start) (car y-mid) (car y-end)
                                                depth 1e-5)))
+              (when (notevery #'numberp sublst)
+                (merror "draw2d (explicit): non defined variable"))
               (when (not (null result))
                 (setf sublst (cddr sublst)))
               (do ((lst sublst (cddr lst)))
