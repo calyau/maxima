@@ -4616,7 +4616,7 @@ the system definition, if provided."
 
 ;; Define our own version of ensure-directories-exist for gcl, if gcl
 ;; doesn't have it. (gcl 2.6.10 has ensure-directories-exist).
-#+#.(cl:if (cl:and (cl:member :gcl cl:*features*) (cl:not (cl:find-symbol "ENSURE-DIRECTORIES-EXIST" "COMMON-LISP"))) '(and) '(or))
+#+#.(cl:if (cl:and (cl:member :gcl cl:*features*) (cl:not (cl:fboundp (cl:find-symbol "ENSURE-DIRECTORIES-EXIST" "COMMON-LISP")))) '(and) '(or))
 (defun ensure-directories-exist (pathspec &key verbose)
  (declare (ignore verbose))
  ;; A very gross implementation of ensure-directories-exist.  Just
