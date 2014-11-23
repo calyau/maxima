@@ -2550,7 +2550,7 @@
   ;; Look for the limit of the argument.
   (let ((z (limit (cadr expr) var val 'think)))
   (cond
-    ;; Handle an argument 0 at this place
+    ;; Handle an argument 1 at this place
     ((onep1 z) '$inf)
     ((onep1 (mul -1 z)) '$minf)
     (t
