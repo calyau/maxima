@@ -376,10 +376,17 @@ values")
       (or (strip-float-zeros string) string)
       string)))
 
-(defparameter trailing-zeros-regex-f-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$")))
-(defparameter trailing-zeros-regex-f-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*$")))
-(defparameter trailing-zeros-regex-e-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")))
-(defparameter trailing-zeros-regex-e-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$")))
+(let ((foo (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$")))
+  (defparameter trailing-zeros-regex-f-0 #+ecl (coerce foo 'function) #-ecl (compile nil foo)))
+
+(let ((foo (maxima-nregex::regex-compile "^(.*\\.0)00*$")))
+  (defparameter trailing-zeros-regex-f-1 #+ecl (coerce foo 'function) #-ecl (compile nil foo)))
+
+(let ((foo (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")))
+  (defparameter trailing-zeros-regex-e-0 #+ecl (coerce foo 'function) #-ecl (compile nil foo)))
+
+(let ((foo (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$")))
+  (defparameter trailing-zeros-regex-e-1 #+ecl (coerce foo 'function) #-ecl (compile nil foo)))
 
 ;; Return S with trailing zero digits stripped off, or NIL if there are none.
 
