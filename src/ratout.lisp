@@ -622,7 +622,7 @@
 		      wholepart parnumer varlist n))
 
 (defmfun $partfrac (exp var)
-  (cond ((and (not (atom exp)) (member (caar exp) '(mequal mlist $matrix) :test #'eq))
+  (cond ((mbagp exp)
 	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u var)) (cdr exp))))
 	((and (atom var) (not (among var exp))) exp)
 	(t (let (($savefactors t) (checkfactors ()) (varlist (list var))

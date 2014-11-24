@@ -464,9 +464,7 @@ in the interval of integration.")
       (restore-defint-assumptions old-assumptions *current-assumptions*))))
 
 (defun defint-list (exp var ll ul)
-  (cond ((and (not (atom exp))
-	      (member (caar exp)
-		    '(mequal mlist $matrix) :test #'eq))
+  (cond ((mbagp exp)
 	 (let ((ans (cons (car exp)
 			  (mapcar
 			   #'(lambda (sub-exp)

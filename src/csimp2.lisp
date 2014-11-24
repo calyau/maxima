@@ -708,8 +708,7 @@
 	((mtimesp e) (muln (mapcar '$xthru (cdr e)) nil))
 	((mplusp e) (simplify (comdenom (mapcar '$xthru (cdr e)) t)))
 	((mexptp e) (power ($xthru (cadr e)) (caddr e)))
-	((member (caar e) '(mequal mlist $matrix) :test #'eq)
-	 (cons (car e) (mapcar '$xthru (cdr e))))
+	((mbagp e) (cons (car e) (mapcar '$xthru (cdr e))))
 	(t e))) 
 
 (defun comdenom (l ind) 

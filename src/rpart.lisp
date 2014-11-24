@@ -97,7 +97,7 @@
 ;;; Polarform gives a result of the form a*%e^(%i*b).
 
 (defmfun $polarform (xx)
-  (cond ((and (not (atom xx)) (member (caar xx) '(mequal mlist $matrix) :test #'eq))
+  (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$polarform (cdr xx))))
 	(t
 	 (let ((aas (absarg xx)) ($%emode nil))
@@ -134,8 +134,7 @@
 ;;; Carg gives the complex argument.
 
 (defmfun $carg (xx)
-  (cond ((and (not (atom xx)) 
-              (member (caar xx) '(mequal mlist $matrix) :test #'eq))
+  (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$carg (cdr xx))))
 	(t (cdr (absarg xx)))))
 
