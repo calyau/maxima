@@ -225,3 +225,12 @@ if cos(a)^2-1.0 < 0 then -%pi*sin(a)^2/(cos(a)^2-1) elseif cos(a)^2-1.0 > 0
  simplify_sum(intosum(%%)));
 ?merror(?\~M\ non\-rational\ term\ ratio\ to\ nusum,
         binom(m,-r+k-1)*binom(n,r+1)*(r+1)/(binom(m,k-r)*binom(n,r)*r));
+
+integrate(1/(x^2-a),x);
+if a < 0 then atan(x/sqrt(-a))/sqrt(-a) elseif a > 0
+    then log((2*x-2*sqrt(a))/(2*x+2*sqrt(a)))/(2*sqrt(a))$
+
+integrate(1/x,x,a,b);
+if b - a < 0 then integrate(1/x,x,a,b)
+  elseif equal(b - a, 0) then integrate(1/x,x,a,b)
+  elseif b - a > 0 then integrate(1/x,x,a,b);
