@@ -137,6 +137,7 @@
 				    (replace-substring prefix "\\" "\\\\"))
 			      (cons "@PACKAGE@" "maxima")
 			      (cons "@VERSION@" (get-version))
+			      (cons "@host@" "unknown")
 			      (cons "@win32@" win32-string)
 			      (cons "@default_layout_autotools@" "false")
 			      (cons "@POSIX_SHELL@" shell)
