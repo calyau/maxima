@@ -39,10 +39,10 @@
 
 ;; Replaces ENSURE-SIGN in compar.lisp
 (defvar *interactive-ensure-sign* (symbol-function 'ensure-sign))
-(defun ensure-sign (expr &optional domain)
+(defun ensure-sign (expr &optional domain squared)
   (if $no_questions
-      (or (match-sign sign domain expr)
-          (meval `(($throw) '(($asksign) ,expr ,(or domain '$pnz)))))
+      (or (match-sign sign domain expr squared)
+          (meval `(($throw) '(($asksign) ,expr ,(or domain '$pnz))))) ;; PUT SQUARED HERE AS WELL ??
       (funcall *interactive-ensure-sign*)))
 
 ;; Replaces ASK-PROP in askp.lisp
