@@ -85,7 +85,7 @@ MEVAL1 () :=
   if within_MEVAL1
   then block
   ([r%: catch (ev (e%))],    /* by the time we get here, e% is bound by TOPLEVEL-MACSYMA-EVAL */
-    if not atom(r%) and (op(r%) = 'asksign or op(r%) = 'askprop)
+    if not atom(r%) and (op(r%) = 'asksign or op(r%) = 'askprop or op(r%) = 'askequal)
     then e%
     else r%)
 
@@ -110,6 +110,14 @@ MEVAL1 () :=
 
       funmake ("if", interleave (c%, L%)))
   
+    else if not atom(r%) and op(r%) = 'askequal
+    then block ([a%, b%, c%, L%],
+      [a%, b%] : args (r%),
+      c% : [equal (a%, b%), notequal (a%, b%)],
+      L% : apply (enumerate_cases, [c%]),
+      c% [2] : true, /* to make "else" instead of "elseif" */
+      funmake ("if", interleave (c%, L%)))
+
     else if not atom(r%) and op(r%) = 'askprop
       /* FOLLOWING ASKPROP STUFF NEEDS WORK */
       then block ([a%, s%, c%, L%],

@@ -51,3 +51,10 @@
   (if $no_questions
       (meval `(($throw) '(($askprop) ,object ,property)))
       (funcall *real-ask-prop*)))
+
+;; Replaces $ASKEQUAL in src/compar.lisp
+(defvar *real-askequal* (symbol-function '$askequal))
+(defun $askequal (a b)
+  (if $no_questions
+    (meval `(($throw) '(($askequal) ,a ,b)))
+    (funcall *real-askequal* a b)))
