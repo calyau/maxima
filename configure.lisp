@@ -59,13 +59,13 @@
       (do ((line (read-line in nil 'eof)
 		 (read-line in nil 'eof)))
 	  ((eql line 'eof))
-	(if (search "AM_INIT_AUTOMAKE" line)
+	(if (search "AC_INIT" line)
 	    (progn 
               #+openmcl (setq line (string-trim '(#\Return) line))
 	      (setf version 
-		    (replace-substring line "AM_INIT_AUTOMAKE(maxima," ""))
+		    (replace-substring line "AC_INIT([maxima], [" ""))
 	      (setf version
-		    (replace-substring version ")" ""))))))
+		    (replace-substring version "])" ""))))))
     version))
   
 (defvar *maxima-lispname* #+clisp "clisp"
