@@ -1,4 +1,4 @@
-@c English version 2014-08-28
+@c English version 2014-11-30
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1471,6 +1471,78 @@ V@'eanse tambi@'en @code{head_both}, @code{head_angle} y @code{head_length}.
 
 
 
+@defvr {Opci@'on gr@'afica} interpolate_color
+Valor por defecto: @code{false}
+
+Esta opci@'on solo es relevante si @code{enhanced3d} tiene un valor 
+diferente de @code{false}.
+
+Si @code{interpolate_color} vale @code{false}, las superficies se colorean con
+cuadril@'ateros homog@'eneos. Si vale @code{true}, las transiciones de colores se
+suavizan por interpolaci@'on.
+
+La opci@'on @code{interpolate_color} tambi@'en acepta una lista de dos n@'umeros, @code{[m,n]}.
+Para @var{m} y @var{n} positivos, cada cuadril@'atero o tri@'angulo se interpola
+@var{m} y @var{n} veces en la direcci@'on respectiva. Para @var{m} y @var{n} negativos,
+la frecuencia de interpolaci@'on se elige de forma que se dibujen al menos @var{abs(m)} y
+@var{abs(n)} puntos, pudi@'endose considerar esto como una funci@'on especial de enrejado.
+Con valores nulos, esto es @code{interpolate_color=[0,0]}, se seleccionar@'a un n@'umero 
+@'optimo de puntos interpolados en la superficie.
+
+Adem@'as, @code{interpolate_color=true} es equivalente a @code{interpolate_color=[0,0]}.
+
+La interpolaci@'on de colores en superficies param@'etricas puede dar resultados
+imprevisibles.
+
+Ejemplos:
+
+Interpolaci@'on de color con funciones expl@'{@dotless{i}}citas.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d   = sin(x*y),
+        explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+(%i3) draw3d(
+        interpolate_color = true,
+        enhanced3d   = sin(x*y),
+        explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+(%i4) draw3d(
+        interpolate_color = [-10,0],
+        enhanced3d   = sin(x*y),
+        explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+@end example
+
+Interpolaci@'on de color con el objeto @code{mesh}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d( 
+        enhanced3d = true,
+        mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
+             [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
+             [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+(%i3) draw3d( 
+        enhanced3d        = true,
+        interpolate_color = true,
+        mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
+             [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
+             [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+(%i4) draw3d( 
+        enhanced3d        = true,
+        interpolate_color = true,
+        view=map,
+        mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
+             [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
+             [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+
+V@'ease tambi@'en @code{enhanced3d}. 
+
+@end defvr
+
+
+
 @defvr {Opci@'on gr@'afica} ip_grid
 Valor por defecto: @code{[50, 50]}
 
@@ -2444,6 +2516,9 @@ vertical alrededor del eje @var{x}, dentro del intervalo @math{[0, 360]}.
 El segundo es la rotaci@'on horizontal alrededor del eje @var{z}, dentro
 del intervalo @math{[0, 360]}.
 
+D@'andole a la opci@'on @code{view} el valor @code{map}, la direcci@'on del 
+observador se sit@'ua perpendicularmente al plano-xy.
+
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 
@@ -2451,7 +2526,11 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(view = [170, 360],
+(%i2) draw3d(view = [170, 50],
+             enhanced3d = true,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+(%i3) draw3d(view = map,
+             enhanced3d = true,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
 @end defvr
