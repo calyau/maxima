@@ -1664,7 +1664,7 @@
 ;; equivalent of) the field element e^i, where e is a primitive element 
 ;;
     (setq $gf_powers (make-array (1+ ord) :element-type 'integer)
-          *gf-powers* (make-array (1+ ord) :element-type 'integer) )
+          *gf-powers* (make-array (1+ ord) :element-type 'list :initial-element nil) )
     (setf (svref $gf_powers 0) 1
           (svref *gf-powers* 0) (list 0 1) )
     (do ((i 1 (1+ i)))

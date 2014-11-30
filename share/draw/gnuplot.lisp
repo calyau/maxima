@@ -2986,7 +2986,8 @@
                (format nil "unset cbtics~%")
                (format nil "set cbtics ~a~%"
                        (get-option '$cbtics)) )
-            (if (eql (get-option '$contour) '$map)  ; if contour = map
+            (if (or (eql (get-option '$contour) '$map)
+                    (eql (get-option '$view) '$map) )
                (format nil "set view map~%~a~%"
                             (if (equal (get-option '$proportional_axes) '$none)
                                "set size noratio"
@@ -3002,7 +3003,7 @@
                 (format nil "set border 0~%"))
             (when (not (null (get-option '$enhanced3d)))
               (if (null (get-option '$wired_surface))
-                (format nil "set pm3d at s depthorder explicit~%")
+                (format nil "set pm3d at s ~a explicit~%" (get-option '$interpolate_color))
                 (format nil "set style line 1 lt 1 lw 1 lc rgb '#000000'~%set pm3d at s depthorder explicit hidden3d 1~%") ))
             (if (get-option '$surface_hide)
                (format nil "set hidden3d nooffset~%"))
