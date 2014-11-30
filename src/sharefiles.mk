@@ -251,6 +251,7 @@ contrib/format/format.ps \
 contrib/format/pois2.demo \
 contrib/format/pois2m.ps \
 contrib/format/README \
+contrib/format/rtest_format.mac \
 contrib/fresnel/d78.mac \
 contrib/fresnel/fg.mac \
 contrib/fresnel/filter.mac \
