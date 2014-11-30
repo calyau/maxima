@@ -54,20 +54,27 @@
 	  (truename ".")))))
   
 (defun get-version ()
-  (let ((version ""))
-    (with-open-file (in "configure.ac" :direction :input)
-      (do ((line (read-line in nil 'eof)
-		 (read-line in nil 'eof)))
-	  ((eql line 'eof))
-	(if (search "AC_INIT" line)
-	    (progn 
-              #+openmcl (setq line (string-trim '(#\Return) line))
-	      (setf version 
-		    (replace-substring line "AC_INIT([maxima], [" ""))
-	      (setf version
-		    (replace-substring version "])" ""))))))
-    version))
-  
+  (with-open-file (in "configure.ac" :direction :input)
+    (do ((line (read-line in nil 'eof)
+               (read-line in nil 'eof))
+         (version "")
+         temp)
+        ((eq line 'eof)
+         (when (string= version "")
+           (format t "WARNING: No version information found.~%~%"))
+         version)
+      (when (search "AC_INIT([maxima]," line)
+        #+openmcl (setq line (string-trim '(#\Return) line))
+        (setq temp
+              (replace-substring line "AC_INIT([maxima], [" ""))
+        (setq version
+              (replace-substring temp "])" ""))
+        (when (or (string= temp line)
+                  (string= temp version))
+          ; Failed substitution
+          (format t "WARNING: Problem parsing version information. ")
+          (format t "Found: \"~a\"~%~%" version))))))
+
 (defvar *maxima-lispname* #+clisp "clisp"
 	#+cmu "cmucl"
 	#+scl "scl"
