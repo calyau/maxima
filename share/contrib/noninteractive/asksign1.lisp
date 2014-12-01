@@ -56,5 +56,12 @@
 (defvar *real-askequal* (symbol-function '$askequal))
 (defun $askequal (a b)
   (if $no_questions
-    (meval `(($throw) '(($askequal) ,a ,b)))
+    ;; Throw askequal(a, b) only if askequal would actually ask the user
+    ;; (i.e., askequal can't figure out the answer by itself).
+    ;; Following is adapted from $ASKEQUAL in src/compar.lisp.
+    (let ((answer (meqp (sratsimp a) (sratsimp b))))
+      (cond
+        ((eq answer t) '$yes)
+        ((eq answer nil) '$no)
+        (t (meval `(($throw) '(($askequal) ,a ,b))))))
     (funcall *real-askequal* a b)))
