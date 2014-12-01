@@ -11,14 +11,16 @@ asksign(abs(x));
 if equal(x,0) then zero else pos;
 
 integrate(exp(a*x),x,0,inf);
-if a < 0 then -1/a elseif equal(a,0) then 0 else 0;
+if a < 0 then -(1/a) elseif equal(a,0)
+    then merror("defint: integral is divergent.")
+    else merror("defint: integral is divergent.");
 
 integrate(x^k,x);
-if equal(k+1,0) then log(x) else x^(k+1)/(k+1);
+if equal(k,-1) then log(x) else x^(k+1)/(k+1);
 
 integrate(x^k,x,1,b);
 if k < 0 then integrate(x^k,x,1,b) elseif equal(k,0)
-    then b^(k+1)/(k+1)-1/(k+1) else b^(k+1)/(k+1)-1/(k+1);
+    then b - 1 else b^(k+1)/(k+1)-1/(k+1);
 
 integrate(x^a/(1+x),x,0,inf);
 if a+1 < 0 then integrate(x^a/(x+1),x,0,inf) elseif equal(a+1,0)
@@ -39,7 +41,7 @@ if z-1 < 0 then integrate(sqrt(1-s^2)/(z-s),s,-1,1) elseif equal(z-1,0)
 integrate(1/(1+a^2*cos(t)^2),t,0,%pi);
 if 2*sqrt(a^2+1)-a^2-2 < 0 then integrate(1/(a^2*cos(t)^2+1),t,0,%pi)
     elseif equal(2*sqrt(a^2+1)-a^2-2,0)
-    then ?merror("atan2: atan2(0,0) is undefined.")
+    then integrate(1/(a^2*cos(t)^2+1),t,0,%pi)
     else integrate(1/(a^2*cos(t)^2+1),t,0,%pi);
 
 integrate(exp(-la*t)*la,t,0,inf);
