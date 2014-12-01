@@ -106,8 +106,6 @@ MEVAL1 (e%) :=
 
       L%: apply (enumerate_cases, [c%, e%]),
 
-      if s% = 'pnz or s% = 'znz then c% [length(c%)]: true, /* to make final "else" */
-
       funmake ("if", interleave (c%, L%)))
   
     else if not atom(r%) and op(r%) = 'askequal
@@ -115,7 +113,6 @@ MEVAL1 (e%) :=
       [a%, b%] : args (r%),
       c% : [equal (a%, b%), notequal (a%, b%)],
       L% : apply (enumerate_cases, [c%, e%]),
-      c% [2] : true, /* to make "else" instead of "elseif" */
       funmake ("if", interleave (c%, L%)))
 
     else if not atom(r%) and op(r%) = 'askprop
@@ -123,7 +120,7 @@ MEVAL1 (e%) :=
       then block ([a%, s%, c%, L%],
         a%: args(r%)[1],
         s%: args(r%)[2],
-        c%: ['kind (a%, 'integer), true],
+        c%: ['kind (a%, 'integer), 'kind (a%, 'noninteger)],
         L%:
          [block ([w%, z%],
             z% : newcontext (),
