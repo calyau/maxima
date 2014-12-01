@@ -143,7 +143,9 @@ MEVAL1 () :=
     else r%);
 
 enumerate_cases (L%) := 
-  map (lambda ([p%], assuming ([p%], MEVAL1 ())), L%);
+  map (lambda ([p%], if op(p%) = 'equal
+                         then block ([e% : subst (first (args (p%)) = second (args (p%)), e%)], assuming ([p%], MEVAL1 ()))
+                         else assuming ([p%], MEVAL1 ())), L%);
 
 interleave (L1, L2) := flatten (map (lambda ([e1, e2], [e1, e2]), L1, L2));
 
