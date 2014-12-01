@@ -81,16 +81,16 @@
 
 within_MEVAL1 : false;
 
-MEVAL1 () :=
+MEVAL1 (e%) :=
   if within_MEVAL1
   then block
-  ([r%: catch (ev (e%))],    /* by the time we get here, e% is bound by TOPLEVEL-MACSYMA-EVAL */
+  ([r%: catch (ev (e%))],
     if not atom(r%) and (op(r%) = 'asksign or op(r%) = 'askprop or op(r%) = 'askequal)
     then e%
     else r%)
 
   else block
-  ([r%: catch (ev (e%)),     /* by the time we get here, e% is bound by TOPLEVEL-MACSYMA-EVAL */
+  ([r%: catch (ev (e%)),
     within_MEVAL1 : true],
     if not atom(r%) and op(r%) = 'asksign
     then block ([a%, s%, c%, L%],
@@ -104,7 +104,7 @@ MEVAL1 () :=
         elseif s% = 'znz then [equal (a%, 0), not equal (a%, 0)]
         else throw (oops_unknown (s%)),
 
-      L%: apply (enumerate_cases, [c%]),
+      L%: apply (enumerate_cases, [c%, e%]),
 
       if s% = 'pnz or s% = 'znz then c% [length(c%)]: true, /* to make final "else" */
 
@@ -114,7 +114,7 @@ MEVAL1 () :=
     then block ([a%, b%, c%, L%],
       [a%, b%] : args (r%),
       c% : [equal (a%, b%), notequal (a%, b%)],
-      L% : apply (enumerate_cases, [c%]),
+      L% : apply (enumerate_cases, [c%, e%]),
       c% [2] : true, /* to make "else" instead of "elseif" */
       funmake ("if", interleave (c%, L%)))
 
@@ -128,13 +128,13 @@ MEVAL1 () :=
          [block ([w%, z%],
             z% : newcontext (),
             apply (declare, [a%, 'integer]),
-            w%: MEVAL1(),
+            w%: MEVAL1 (e%),
             killcontext (z%),
             w%),
          block ([w%, z%],
             z% : newcontext (),
             apply (declare, [a%, 'noninteger]),
-            w%: MEVAL1(),
+            w%: MEVAL1 (e%),
             killcontext (z%),
             w%)],
         
@@ -142,10 +142,12 @@ MEVAL1 () :=
   
     else r%);
 
-enumerate_cases (L%) := 
-  map (lambda ([p%], if op(p%) = 'equal
-                         then block ([e% : subst (first (args (p%)) = second (args (p%)), e%)], assuming ([p%], MEVAL1 ()))
-                         else assuming ([p%], MEVAL1 ())), L%);
+enumerate_cases (L1, expr) := 
+  map (lambda ([p%],
+               if op(p%) = 'equal
+                   then block ([foo : subst (first (args (p%)) = second (args (p%)), expr)], assuming ([p%], MEVAL1 (foo)))
+                   else assuming ([p%], MEVAL1 (expr))),
+               L1);
 
 interleave (L1, L2) := flatten (map (lambda ([e1, e2], [e1, e2]), L1, L2));
 

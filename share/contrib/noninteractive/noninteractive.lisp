@@ -11,7 +11,7 @@
      (assumptions (mapcar #'meval (rest (first args)))))
     (meval `(($assume) ,@assumptions))
     (unwind-protect
-      (first (last (mapcar #'meval (rest args))))
+      (first (last (mapcar #'(lambda (e) (mfuncall '|$meval1| e)) (rest args))))
       (meval `(($forget) ,@assumptions)))))
 
 ;; Remove functions and variables defined at Maxima level

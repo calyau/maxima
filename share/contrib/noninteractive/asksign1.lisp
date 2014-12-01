@@ -9,7 +9,7 @@
   (let
     ((mcatch (cons bindlist loclist)))
     (prog1
-      (catch 'mcatch (mfuncall '|$meval1|))
+      (catch 'mcatch (mfuncall '|$meval1| $e%))
       ;; Clear the facts from asksign and friends.
       (clearsign)
       (errlfun1 mcatch))))
