@@ -14,8 +14,12 @@ that this process is not as polished as the Unix-like install process.
 In order to create the Maxima Windows installer from the maxima tarball 
 distribution, I do the following in a MSYS window:
 ----------------------------------------------------
-./configure --prefix=c:/maxima --with-ccl=<path to wxcl86.exe> \
-    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
+./configure --prefix=c:/maxima \
+    --enable-chm \
+    --enable-xmaxima-exe \
+    --with-hhc=hhc \
+    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
+    --with-ccl=<path-to-ccl>
 make
 make install
 make iss
@@ -34,8 +38,7 @@ External Requirements
 5) gnuplot
 6) wxMaxima
 7) Microsoft HTML Help Workshop
-8) Perl
-9) Python
+8) Python
 
 Detailed Instructions
 =====================
@@ -44,60 +47,7 @@ The instructions below apply to the maxima release tarball. In order
 to build from the cvs repository, cvs, autoconf and automake are also
 required. Follow the directions in INSTALL.cvs before proceeding.
 
-1) Get a working msys+mingw installation from www.mingw.org. 
-
-Option A - gcc-3.3.1 based system
-
-From 2006 until 2012, it was essential to install the versions of gcc and
-binutils listed here to obtain a working gcl.  The files are available
-from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
-   a) Get and install MinGW-3.1.0-1.exe
-   b) Install MSYS-1.0.10.exe 
-      The installer should magically find your mingw installation
-      and add it to your path.
-   c) Install tcltk-8.4.1-1.exe
-      Install it into directory where MSYS/MinGW can find it,
-      for example mingw/bin directory.
-   d) Install gcc-3.3.1
-   e) Install binutils-2.14.90 from 
-      ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
-   f) Install msysDTK-1.0.1.exe
-      It provides Perl and autotools (autoconf/automake).
-      msysDTK-1.0.1 comes with Perl version 5.6.  This is now too old.
-      Since Maxima 5.11 we require version 5.8. 
-
-      or install
-
-      - automake msys-autoconf-2.59.tar.bz2
-      - autoconf msys-automake-1.8.2.tar.bz2
-      - libtool msys-libtool-1.5.tar.bz2
-   g) Download the MinGW implementation of mktemp from: 
-      http://downloads.sourceforge.net/mingw/mktemp-1.5-MSYS.tar.bz2 (4 Kb)
-      Install by (cd /; tar xjf /path/to/mktemp-1.5-MSYS.tar.bz2)
-
-NOTE: gcc 3.3.3 and gcc 3.4.0 do NOT work; likewise binutils 2.13.90
-and 2.15.90, but 2.17.50-20060824 is OK.
-
-This is output of msysinfo command for MSYS system with
-all required components:
------------------------------------------------------------------
-MSYS 1.0.10(0.46/3/2) 2004-03-15 07:17 i686 unknown; targ=MINGW32
-GNU bash, version 2.04.0(1)-release (i686-pc-msys); ENV=.profile
-GNU Make version 3.79.1,Built for i686-pc-msys; MAKE_MODE=unix
-gcc.exe (GCC) 3.3.1 (mingw special 20030804-1); targ=MINGW32
-GNU ld version 2.14.90 20040120
-   789320 Tue Mar 16 10:32:49 2004 /bin/msys-1.0.dll
-    52064 Thu Jan 02 05:05:27 2003 /bin/msysltdl-3.dll
-   135680 Tue Mar 16 10:32:48 2004 /bin/make.exe
-    84992 Thu Aug 07 23:29:00 2003 /mingw/bin/gcc.exe
-   617472 Tue Jan 20 21:57:52 2004 /mingw/bin/ld.exe
------------------------------------------------------------------
-
-Option B - gcc-4.6.2 based system
-
-From early 2012 it has been possible to build maxima using current 
-msys, mingw and gcc-4.6.
-
+1) Install MinGW and MSYS
 a) Download mingw installer mingw-get-inst from http://www.mingw.org/
 b) Run the installer to install mingw and msys
 c) Use the installed mingw-get to add the build dependencies, including
@@ -105,46 +55,6 @@ c) Use the installed mingw-get to add the build dependencies, including
    - mingw-binutils
    - mingw-make
    - mingw32-autotools
-
-maxima-5.27.0 was successfully built using
-  MSYS 1.0.17(0.48/3/2) 
-  GNU bash, version 3.1.17
-  GNU Make 3.81
-  gcc.exe (GCC) 4.6.2
-  GNU ld (GNU Binutils) 2.22
-
-2) Get a working GCL 
-
-Get the GCL 2.6.8pre from CVS.  
-See  <http://savannah.gnu.org/projects/gcl/>. 
-
-Then compile and install under mingw/msys with
-
-./configure --enable-ansi
-make
-make install
-
-Check that gcl works by typing gcl at MSYS command line
------------------------------------------------------------------------
-$ gcl
-GCL (GNU Common Lisp)  2.6.8 ANSI    Nov 11 2006 23:08:49
-Source License: LGPL(gcl,gmp), GPL(unexec,bfd,xgcl)
-Binary License:  GPL due to GPL'ed components: (UNEXEC)
-Modifications of this banner must retain notice of a compatible license
-Dedicated to the memory of W. Schelter
-
-Use (help) to get some basic information on how to use GCL.
-Temporary directory for compiler files set to C:/DOCUME~1/user/LOCALS~1/Temp/
-
->(quit)
------------------------------------------------------------------------
-=======
-1) Get a working msys+mingw installation from www.mingw.org. The files
-are available from <http://sourceforge.net/projects/mingw/>. Download
-the automated installer and run it. In the "Select components" page of
-the installation program select "MSYS Basic System" and "MinGW
-Developer ToolKit".
->>>>>>> Copied changes for maxima+ccl on windows from github.
 
 2) Download Clozure Common List from <http://ccl.clozure.com>. Use at
 least version 1.7.
@@ -178,18 +88,11 @@ variable with either Windows or MSYS approach), so the HTML Help
 Workshop compiler command "hhc.exe" is available at the MSYS command
 prompt.
 
-8) Install perl from http://strawberryperl.com/. Create a file
-/usr/local/bin/perl which contains
-
-  #!/bin/sh
-  exec /c/strawberry/perl/bin/perl $@
-
-9) Install Python from www.python.org. Add the path to python to your
+8) Install Python from www.python.org. Add the path to python to your
 windows PATH environment variable.
 
-10) The following components
+9) The following components
     a) HTML Help Workshop compiler (hhc command)
-    b) perl
     c) python
 should also be available at the MSYS command prompt.
 
@@ -200,8 +103,12 @@ You should now be ready to compile and install maxima.  Configure
 maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
-./configure --prefix="c:/maxima" --with-ccl=<path to wx86cl.exe> \
-  --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
+./configure --prefix=c:/maxima \
+    --enable-chm \
+    --enable-xmaxima-exe \
+    --with-hhc=hhc \
+    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
+    --with-ccl=<path-to-ccl>
 make
 make check
 make install
@@ -234,17 +141,3 @@ Test the installed package.  For example
  o Try out the on-line help: describe(sin)
  o Check that the windows help files work from the Start menu 
    and from within xmaxima and wxmaxima
-
-
-Troubleshooting
-===============
-
-The Windows installer for gcl-based maxima requires gcc and as.  The gcc 
-files required depend on the version of gcc used. If compilation fails
-then some troubleshooting is required.
-
-One way to do this is to save the .c file generated by gcl:
-  f(x):=x+2$
-  :lisp (setq compiler::*keep-gaz* t)
-  compile(f);
-then open a cmd window and run gcc from the command line. 
