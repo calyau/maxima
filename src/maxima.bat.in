@@ -131,17 +131,6 @@ goto end
 ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
-:doopenmcl
-rem OPENMCL can use either an executable image or a regular lisp core file.
-rem Check for the executable image and run that if possible.
-rem Otherwise, fallback and use the lisp core file.
-if exist "%maxima_imagesdir%\binary-openmcl\maxima.exe" goto doopenmcl_exec
-"%maxima_imagesdir%\binary-openmcl\wx86cl.exe" -l "%maxima_imagesdir%\binary-openmcl\maxima.image"  --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
-goto end
-:doopenmcl_exec
-"%maxima_imagesdir%\binary-openmcl\maxima.exe" --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
-goto end
-
 rem SBCL Steel Bank Common Lisp
 :dosbcl
 rem run executable image if it exists
@@ -152,8 +141,7 @@ goto end
 "%maxima_imagesdir%\binary-sbcl\maxima.exe" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
-endlocal
-:doccl
+:doopenmcl
 if "%MAXIMA_SIGNALS_THREAD%" == "" (
   set start_maxima="(cl-user::run)"
 ) else ( 
@@ -162,5 +150,7 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 wx86cl -I %maxima_image_base%.image -e %start_maxima% -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
-rem Restore environment variables
 :end
+
+rem Restore environment variables
+endlocal
