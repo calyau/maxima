@@ -7,7 +7,7 @@ unixize () {
 
 setup_vars() {
   if [ -z "$MAXIMA_VERSION" ]; then
-    MAXIMA_VERSION=@VERSION@
+    MAXIMA_VERSION="@VERSION@"
   fi
   prefix=`unixize "@prefix@"`
   exec_prefix=`unixize "@exec_prefix@"`
