@@ -106,14 +106,14 @@ MEVAL1 (e%) :=
 
       L%: apply (enumerate_cases, [c%, e%]),
 
-      funmake ("if", interleave (c%, L%)))
+      funmake ("if", append (interleave (c%, L%), [true, false])))
   
     else if not atom(r%) and op(r%) = 'askequal
     then block ([a%, b%, c%, L%],
       [a%, b%] : args (r%),
       c% : [equal (a%, b%), notequal (a%, b%)],
       L% : apply (enumerate_cases, [c%, e%]),
-      funmake ("if", interleave (c%, L%)))
+      funmake ("if", append (interleave (c%, L%), [true, false])))
 
     else if not atom(r%) and op(r%) = 'askprop
       /* FOLLOWING ASKPROP STUFF NEEDS WORK */
@@ -135,7 +135,7 @@ MEVAL1 (e%) :=
             killcontext (z%),
             w%)],
         
-        funmake ("if", interleave (c%, L%)))
+        funmake ("if", append (interleave (c%, L%), [true, false])))
   
     else r%);
 
