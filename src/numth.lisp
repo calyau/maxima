@@ -428,16 +428,15 @@
         (let* ((rq (car rq-q))
                (q (cadr rq-q))
                (gc (zn-gcdex2 q p))
-               (g (car gc)) )
+               (g (car gc))
+               (c (cadr gc)) )
           (cond
             ((= 1 g) ;; coprime moduli
-              (let* ((q-inv (inv-mod q p))
-                     (h (mod (* (- rp rq) q-inv) p))
+              (let* ((h (mod (* (- rp rq) c) p))
                      (x (+ (* h q) rq)) )
                 (list x (* p q)) ))
             ((= 0 (mod (- rp rq) g)) ;; ensures unique solution
-              (let* ((c (cadr gc))
-                     (h (* (- rp rq) c))
+              (let* ((h (* (- rp rq) c))
                      (q/g (truncate q g))
                      (lcm-pq (* p q/g)) )
                 (list (mod (+ rq (* h q/g)) lcm-pq) lcm-pq) ))))))))
