@@ -35,33 +35,6 @@
         (t (merror "Wrong argument for object: ~M" num))))
     (format st "} ")))
 
-;; parses a scene object into text for tcl scripts passed to Xmaxima
-(defun scene-object-to-tcl (value)
-  (let (vv v)
-    (unless (and  ($listp value)
-                  (symbolp (setq name (second value))))
-      (merror
-       (intl:gettext "~M is not an object option. Must be [property,value]")
-       value))
-    (case name
-      (($azimuth $elevation $tstep)
-       (setq v (check-option (cdr value) #'realp "a real number" 1))
-       (setq value (list '(mlist) name v)))
-      (($width $height $restart)
-       (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
-       (setq value (list '(mlist) name v)))
-      ($background
-       (setq v (check-option (cdr value) #'realp "a real number" 3))
-       (setq value (list '(mlist) name v)))
-      (($windowtitle $windowname $animate)
-       (setq v (check-option (cdr value) #'stringp "a string" 1))
-       (setq value (list '(mlist) name v)))
-      (t (merror (intl:gettext "Unknown property ~M") name)))
-    (setq vv (mapcar #'stripdollar (rest value)))
-    (with-output-to-string (st)
-      (format st "-~(~a~) " (first vv))
-      (format st "{~{~a~^ ~}}" (rest vv)))))
-
 ;; parses a scene option into a command-line option passed to Xmaxima
 (defun scene-option-to-tcl (value)
   (let (v vv)
@@ -73,18 +46,18 @@
     (case name
       (($azimuth $elevation $tstep)
        (setq v (check-option (cdr value) #'realp "a real number" 1))
-       (setq value (list '(mlist) name v)))
+       (setq value (list name v)))
       (($width $height $restart)
        (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
-       (setq value (list '(mlist) name v)))
+       (setq value (list name v)))
       ($background
        (setq v (check-option (cdr value) #'realp "a real number" 3))
-       (setq value (list '(mlist) name v)))
+       (setq value (cons name v)))
       (($windowtitle $windowname $animate)
        (setq v (check-option (cdr value) #'stringp "a string" 1))
-       (setq value (list '(mlist) name v)))
+       (setq value (list name v)))
       (t (merror (intl:gettext "Unknown property ~M") name)))
-    (setq vv (mapcar #'stripdollar (rest value)))
+    (setq vv (mapcar #'(lambda (a) (if (symbolp a) (ensure-string a) a)) value))
     (with-output-to-string (st)
       (format st "-~(~a~) " (first vv))
       (format st "{~{~a~^ ~}}" (rest vv)))))
