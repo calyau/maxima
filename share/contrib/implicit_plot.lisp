@@ -146,7 +146,7 @@
 
     (setf gnuplot-term (getf options :gnuplot_term))
     
-    (if (eq (getf options :plot-format) '$xmaxima)
+    (if (eq (getf options :plot_format) '$xmaxima)
         (setq ip-gnuplot nil)
         (setq ip-gnuplot t))
 

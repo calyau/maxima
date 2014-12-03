@@ -419,17 +419,37 @@
       (car (chinese rems mods)) )))
 ;;
 (defun chinese (rems mods)
-  (if (onep (length mods)) 
+  (if (= 1 (length mods)) 
     (list (car rems) (car mods))
-    (let* ((rp (car rems))
-           (p  (car mods))
-           (rq-q (chinese (cdr rems) (cdr mods)))
-           (rq (car rq-q))
-           (q (cadr rq-q))
-           (q-inv (inv-mod q p))
-           (h (mod (* (- rp rq) q-inv) p))
-           (x (+ (* h q) rq)) )
-      (list x (* p q)) )))
+    (let ((rp (car rems))
+          (p  (car mods))
+          (rq-q (chinese (cdr rems) (cdr mods))) )
+      (when rq-q
+        (let* ((rq (car rq-q))
+               (q (cadr rq-q))
+               (gc (zn-gcdex2 q p))
+               (g (car gc)) )
+          (cond
+            ((= 1 g) ;; coprime moduli
+              (let* ((q-inv (inv-mod q p))
+                     (h (mod (* (- rp rq) q-inv) p))
+                     (x (+ (* h q) rq)) )
+                (list x (* p q)) ))
+            ((= 0 (mod (- rp rq) g)) ;; ensures unique solution
+              (let* ((c (cadr gc))
+                     (h (* (- rp rq) c))
+                     (q/g (truncate q g))
+                     (lcm-pq (* p q/g)) )
+                (list (mod (+ rq (* h q/g)) lcm-pq) lcm-pq) ))))))))
+;;
+;; (zn-gcdex2 x y) returns `(,g ,c) where c*x + d*y = g = gcd(x,y)
+;;
+(defun zn-gcdex2 (x y) 
+  (let ((x1 1) (y1 0) q r) 
+    (do ()((= 0 y) (list x x1)) 
+      (multiple-value-setq (q r) (truncate x y))
+      (psetf x y y r) 
+      (psetf x1 y1 y1 (- x1 (* q y1))) )))
 
 ;;
 ;; discrete logarithm:
