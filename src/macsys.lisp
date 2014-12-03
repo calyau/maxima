@@ -615,7 +615,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+(or cmu scl) (ext:run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
     #+sbcl (sb-ext:run-program shell (list shell-opt (apply '$sconcat args)) :search t :output (or s t))
-    #+openmcl (ccl::run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
+    #+openmcl (ccl::run-program shell (cons shell-opt args) :output (or s t))
     #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))
     #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 
