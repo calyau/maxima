@@ -1364,8 +1364,8 @@ sin(y)*(10.0+6*cos(x)),
              (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
 ;; plot-options-parser puts the plot options given into a property list.
-;; maxima-options: a list (not a Maxima list!) with plot options.
-;; options-plist: a property list, or an empty list.
+;; maxopts: a list (not a Maxima list!) with plot options.
+;; options: a property list, or an empty list.
 ;; Example:
 ;;  (plot-options-parser (list #$[x,-2,2]$ #$[nticks,30]$) '(:nticks 4))
 ;; returns:
@@ -1721,7 +1721,7 @@ sin(y)*(10.0+6*cos(x)),
       (cadr option)
       (cdr option)))
 
-;; Transform can be false or the name of a function fot the transformation.
+;; Transform can be false or the name of a function for the transformation.
 (defun check-option-transform (option)
   (if (and (= (length option) 2)
            (or (atom (cadr option)) (null (cadr option))))
