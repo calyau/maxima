@@ -1,0 +1,144 @@
+load("Eulix.mac")$
+
+/* This is a 1-d example,
+   the right-hand side Rhs must return a 1x1 matrix
+   and the initial value must be 1x1 matrix, as well
+   
+   y'(t)= -2*t*y(t)^2      y(-1)= 1/(1+alpha)   e.g. alpha= 0.1
+*/
+
+Rhs(t,y):= matrix([-2*t*y[1,1]^2])$
+
+define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
+
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
+   buildq([J,t:X],lambda([t,y],J))
+)$
+
+Rhs_jac:gen_jacobian(Rhs,t,length(Rhs('t,'y)))$
+
+compile(Rhs,Rhs_t)$
+
+solution(t,t0,y0):= block([C:1/y0[1,1]-t0*t0],1/(t^2+C));
+
+print(">>> running ......")$
+
+high_precision: false$
+
+if high_precision then (
+  fpprec:30,
+  t:bfloat(-1),  alpha:bfloat(0.01),
+  y0:bfloat(matrix([1/(1+alpha)])),
+  atol:1e-22,  rtol:1e-20,
+  h:bfloat(0.01),
+
+  mass_matrix:bfloat(ident(1)) /* must be either 'false or a square mass matrix 
+                               = ident(dim) for an ODE with trivial mass matrix */
+
+) else (
+
+  t:-1.0,  alpha:0.01,
+  y0:matrix([1/(1+alpha)]),
+  atol:1e-10,  rtol:1e-8,
+  h:0.1,
+  mass_matrix: ident(1) /* must be either 'false or a square mass matrix 
+                        = ident(dim) for an ODE with trivial mass matrix */
+)$
+
+y: copymatrix(y0)$
+me: 6$
+t_end: 0;
+Check_Parm:true$
+Start:elapsed_real_time()$
+
+
+while t < t_end do (
+  h: signum(h)*min(abs(h),abs(t_end-t)),
+/*
+  [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_t,Rhs_jac,h,me,),
+                                      maximum_order=12,dense_output=true,work_estimates=[1,1,0],
+                                      check_parameters=Check_Parm,
+                                      absolute_tolerance=atol,relative_tolerance=rtol,'mass_matrix=ident(1))
+*/
+  [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_t,Rhs_jac,h,me,absolute_tolerance=atol,relative_tolerance=rtol,check_parameters=Check_Parm),
+  Check_Parm: false,
+  h: tn-t,  /* <<<< in case of reject within Eulix */
+  if failed then (
+    printf(true,"Eulix failed at t: ~7,4f~%",t),
+    throw('failed)
+  ),
+  if true then (  /* dense_output=true */
+    printf(true,"t: ~7,4f  mid interval         err: ~13,6e ~%",t+0.5*h,
+                     Eulix_Dense_Out(-0.5*h,DO_DQ)[1,1]-solution(t+0.5*h,-1,y0)),
+                 
+    y:copymatrix(DO_DQ[1])
+  ) else y:copymatrix(DO_DQ),
+  printf(true,"t: ~7,4f hn: ~10,8f  me:~2d err: ~13,6e ~%",tn,hn,me,y[1,1]-solution(tn,-1,y0)),
+  t: tn,  h: hn
+)$
+
+if not failed then
+  printf(true,"~%true error at t:~7,4f : ~13,6e~%", t,y[1,1]-solution(tn,-1,y0))$
+
+t_end: 1;
+
+
+printf(true,"~%--------------------------------------~%~%")$
+h:0.5;
+
+while t < t_end do (
+  h: signum(h)*min(abs(h),abs(t_end-t)),
+  [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_t,Rhs_jac,h,me,absolute_tolerance=atol,relative_tolerance=rtol,check_parameters=false),
+  h: tn-t,  /* <<<< in case of reject within Eulix */
+  if failed then (  /* dense_output=true */
+    printf(true,"Eulix failed at t: ~7,4f~%",t),
+    throw('failed)
+  ),
+  if true then (
+    printf(true,"t: ~7,4f  mid interval         err: ~13,6e ~%",t+0.5*h,
+                     Eulix_Dense_Out(-0.5*h,DO_DQ)[1,1]-solution(t+0.5*h,-1,y0)),
+    
+    y:copymatrix(DO_DQ[1])
+  ) else y:copymatrix(DO_DQ),
+
+  printf(true,"t: ~7,4f hn: ~10,8f  me:~2d err: ~13,6e ~%",tn,hn,me,y[1,1]-solution(tn,-1,y0)),
+  t: tn,  h: hn
+)$
+if not failed then
+  printf(true,"~%true error at t:~7,4f : ~13,6e~%", t,y[1,1]-solution(tn,-1,y0))$
+
+print("I've used",elapsed_real_time()-Start,"seconds for computing the solution")$
+
+/* low precision solution :
+t:  0.0593  mid interval         err:   1.796460e-5 
+t:  0.1187 hn: 0.11867765  me: 7 err:   1.545383e-5 
+t:  0.1780  mid interval         err:   9.972423e-6 
+t:  0.2374 hn: 0.15188629  me: 6 err:   7.793142e-6 
+t:  0.3133  mid interval         err:   5.115569e-6 
+t:  0.3892 hn: 0.15779524  me: 6 err:   3.376198e-6 
+t:  0.4681  mid interval         err:   4.329614e-6 
+t:  0.5470 hn: 0.19249365  me: 7 err:   2.266991e-6 
+t:  0.6433  mid interval         err:   4.005566e-6 
+t:  0.7395 hn: 0.27698728  me: 7 err:   1.939925e-6 
+t:  0.8698  mid interval         err:   1.476902e-6 
+t:  1.0000 hn: 0.31277292  me: 7 err:   7.680372e-7 
+
+true error at t:0 :   2.006125e-5
+
+t:  0.0593  mid interval         err:   1.796460e-5 
+t:  0.1187 hn: 0.11867765  me: 7 err:   1.545383e-5 
+t:  0.1780  mid interval         err:   9.972423e-6 
+t:  0.2374 hn: 0.15188629  me: 6 err:   7.793142e-6 
+t:  0.3133  mid interval         err:   5.115569e-6 
+t:  0.3892 hn: 0.15779524  me: 6 err:   3.376198e-6 
+t:  0.4681  mid interval         err:   4.329614e-6 
+t:  0.5470 hn: 0.19249365  me: 7 err:   2.266991e-6 
+t:  0.6433  mid interval         err:   4.005566e-6 
+t:  0.7395 hn: 0.27698728  me: 7 err:   1.939925e-6 
+t:  0.8698  mid interval         err:   1.476902e-6 
+t:  1.0000 hn: 0.31277292  me: 7 err:   7.680372e-7 
+
+true error at t:1 :   7.680372e-7
+
+*/

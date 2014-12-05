@@ -1,0 +1,83 @@
+load("Eulix.mac")$
+
+/* An AIDS model with root finding
+
+  x' = p - sx*x -rx*x*v +g(v)*x            x(0)= 1000    x: healthy T-cells   per mm^3
+  y' = rx*x*v -sy*y -g(v)*y                y(0)= 0       y: infected T-cells  per mm^3
+  v' = n*g(v)*y +f(y) -sv*v -(rx+rv)*x*v   v(0)= 1       v: AIDS viruses      per mm^3
+  
+  with  f(v):= 20*v/(v+1)  and  g(v):= v*g_inf/(vg+v)
+
+  n     : per time unit, g(v)*y infected T-cells die and produce n*g(v)*y
+          new AIDS viruses [1000]
+  p     : production of healthy T-cells by the thymus [10]
+  rx    : there are rx*v new infected T-celss  [2.4E-5]
+  rv    : rv*x*v viruses are kill by the immune system [7.4E-4]
+  sx    : death rate of healthy T-cells [0.02]
+  sy    : (natural) death rate of infected T-cells [0.265]
+  sv    : (natural) death rate of the AIDS viruses [0]
+  f(v)  : reproduction rate of viruses by non-T-celss
+  g(v)  : cell multiplication rate of T-cells for fighting the AIDS virus
+  g_inf : maximum cell multiplication rate of the AIDS viruses [0.01]
+  vg    : number of viruses with a cell multiplication rate of half of 
+          the maximum cell multiplication rate [100]
+  x == y[1] y == y[2]  v == y[3]
+*/
+
+g(v):= v/(100*(v+100))$
+f(v):= 20.0*v/(v+1.0)$
+
+Rhs(t,y):= matrix([10.0-0.02*y[1,1]-2.4E-5*y[1,1]*y[3,1]+g(y[3,1])*y[1,1]],
+                  [2.4E-5*y[1,1]*y[3,1]-0.265*y[2,1]-g(y[3,1])*y[2,1]],
+                  [1000.0*g(y[3,1])*y[2,1]+f(y[3,1])-7.64E-4*y[1,1]*y[3,1]])$
+
+mass_matrix: ident(3)$
+
+
+define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
+
+gen_jacobian(F,xx,num_funcs)::= block([i,n:ev(num_funcs),J,X:ev(xx)],
+    local(F,y),
+    J:jacobian(makelist(F(X,y)[i,1],i,n),makelist(y[i,1],i,n)),
+    buildq([J,t:X],lambda([t,y],J))
+)$
+
+Rhs_jac:gen_jacobian(Rhs,t,length(Rhs('t,'y)))$
+
+root_1(x,y):= block(local(y),y[3,1]-3000)$
+define(root_1_y(x,y),transpose(matrix([0,0,1])))$
+root_1_x(x,y):= 0$
+
+compile(Rhs,Rhs_t)$
+t0:0.0$
+y0:transpose(matrix([1000.0,0.0,1.0]))$
+t_end: 12*365+4$  /* 12 years */
+delta_t:7$
+Roots:[[root_1,root_1_y,root_1_x]]$
+
+Start:elapsed_real_time()$
+debugmode:true$
+
+[Solution,[tlist,ylist]]:Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,
+                                     'mass_matrix=mass_matrix,check_parameters=true,
+                                     combined_t_y_list=false,logging=true)$
+print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model")$
+print("Solution triggered by condition",first(Solution)," at time ",second(Solution),
+      "  and state:",third(Solution))$
+t1:second(Solution)$
+y1init:third(Solution)$
+[tlist2,ylist2]: Eulix_Table(t1,y1init,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,[],
+                             logging=true,combined_t_y_list=false)$ 
+
+tlist:append(tlist,tlist2)$
+ylist:append(ylist,ylist2)$
+tlist:tlist/365.25$  t1:t1/365.25$
+cut(z):=max(z,0.1)$
+plot2d([[discrete,tlist,map(lambda([z],cut(z[1,1])),ylist)],
+        [discrete,tlist,map(lambda([z],cut(z[2,1])),ylist)],
+        [discrete,tlist,map(lambda([z],cut(z[3,1])),ylist)],
+        [discrete,[t1,t1],[0.1,1E5]]], [logy,true],
+       [legend,"healthy","infected","AIDS-viruses","root location"],[title,"An AIDS model"])$
+read("enter ; or $ to quit");
+
+

@@ -1,0 +1,709 @@
+/*
+ * (C) Helmut Jarausch
+ *
+ * @version 0.9 Date May 28th, 2014
+ *
+ * @author Helmut Jarausch
+ *         RWTH Aachen University
+
+ * @contents
+ *  Eulix is an linearly implicit (by default) extrapolated Euler method.
+ *  It uses variable step sizes, variable orders and offers dense output.
+ *  Eulix can solve systems like  M y'(t)= f(t,y)  where M is a constant mass
+ *  matrix. This enables the solution of differential algebraic equations (DAE)
+ *  of index 1, as well.
+ *
+ *  I have made a simplified version of  SEULEX  published in
+ *
+ *  E. Hairer, G.Wanner
+ *  Solving Ordinary Differential Equations II
+ *  Stiff and Differential-Algebraic Problems
+ *  Springer 1991
+
+ *  The implicit version is  A-stable up to order 2  
+ *  A(alpha) stable with alpha >= 89.81 up to order 8 and probably above
+ *  where A-stable = A(alpha)-stable with alpha = 90 degree
+ *
+ * @license This library is free software; you can redistribute it and/or
+ *      modify it under the terms of the GNU Lesser General Public
+ *      License as published by the Free Software Foundation; either
+ *      version 2.1 of the License, or (at your option) any later version.
+ *
+ *      This library is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *       Lesser General Public License for more details.
+ *
+ *      You should have received a copy of the GNU Lesser General Public
+ *      License along with this library; if not, write to the Free Software
+ *      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+
+SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
+   /* nd = no of (Newton) DiffQuot
+      on return:  YT(:,nd1-j) contains the j-th DiffQuot
+    */
+   [Dim:length(y),dy,hi,j,k,l,Jhq,Q,R,nd1,YT],
+   local(A,Q,R,range,S,v,x,y,Col,Householder,MyQR,BackSolve,YT),
+   mode_declare(n_step,fixnum,nd,fixnum,nd1,fixnum,Dim,fixnum,k,fixnum,l,fixnum),
+   nd1:nd+1,
+   
+   Col(A,c,[range]):= block( [i0,i1], /* A[1..n,c] or  A[rg[0]..n,c] or A[rg[0]...rg[1],c] */
+     mode_declare(c,fixnum,i0,fixnum,i1,fixnum),
+     if not matrixp(A) then error("Col:A must be a matrix"),
+     i0:1, i1:length(A),
+     if length(range) =2 then i1:range[2],
+     if length(range)>=1 then i0:range[1],
+     genmatrix(lambda([i,j],A[i,j]),i1,c,i0,c)
+   ),
+
+   Householder(x):= block([beta,v:copymatrix(x)],
+     v[1,1]:v[1,1]*(1+sqrt(dotproduct(x,x))/cabs(v[1,1])),
+     beta:2/dotproduct(v,v),
+     [v,beta]
+   ),
+
+   MyQR(A):= block([b,betas,c,j,k,m,n,Q,R:copymatrix(A),v,vtr,vtq],
+     local(Q,R,v),
+     [m,n]:matrix_size(A),
+     Q:ident(m),
+     for c thru n do (
+       [v,b]: Householder(Col(R,c,c)),
+       for j thru c-1 do (
+         vtq: dotproduct(v,Col(Q,j,c)),
+         for k:c thru n do  Q[k,j]: Q[k,j]-(b*vtq)*v[k-c+1,1]
+       ),
+       for j:c thru n do (
+         vtr: dotproduct(v,Col(R,j,c)),
+         vtq: dotproduct(v,Col(Q,j,c)),
+         for k:c thru n do  R[k,j]: R[k,j]-(b*vtr)*v[k-c+1,1],
+         for k:c thru n do  Q[k,j]: Q[k,j]-(b*vtq)*v[k-c+1,1]
+       )
+     ),
+     [Q,R]
+   ),
+
+   BackSolve(R,x):= block([j,k,n],
+     mode_declare(j,fixnum,k,fixnum,n,fixnum),
+     n:length(R),
+     x[n,1]: x[n,1]/R[n,n],
+     for j:n-1 step -1 thru 1 do (
+       for k:j+1 thru n do x[j,1]: x[j,1]-R[j,k]*x[k,1],
+       x[j,1]: x[j,1]/R[j,j]
+     ),
+     x
+   ),
+   h: h/n_step,  hi: 1/h,
+   dy: fy,
+   if matrixp(MassMatrix) then  [Q,R]:MyQR(hi*MassMatrix-J),
+   YT:zeromatrix(Dim,nd1),
+   for k:1 thru (n_step-nd1) do (
+     dy: dy+h*ft,
+     y: y + if matrixp(MassMatrix) then BackSolve(R,Q.dy) else h*dy,
+     t: t+h,
+     dy: apply(Rhs,[t,y])
+   ),
+   for k:1 thru nd1 do (
+     dy: dy+h*ft,
+     y: y + if matrixp(MassMatrix) then BackSolve(R,Q.dy) else h*dy,
+     for j thru Dim do YT[j,k]: y[j,1], /*  i-th derivative will be in   YT(:,nd+1-i) */
+     for l:k-1 step -1 thru 1 do /* compute difference quotients */
+        for j thru Dim do YT[j,l]: (YT[j,l+1]-YT[j,l])/h,
+     t: t+h,
+     if k < nd1 then dy: apply(Rhs,[t,y])
+   ),
+   YT
+)$
+
+Eulix_Row(Rhs,level,Tab,t,h,hlv,nlv,dout, y,fy,ft,J,MassMatrix,Tol,work,swork):= block(
+    [maxreduction:0.1,max_fac:4,m:length(y),mf,jd,lv,nd,Err,Err_min,YT],
+    local(A,hlv,nlv,work,swork,Tab,y,Float),
+    Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
+    mf:Float(m),
+    nd: if dout then level else 0,
+    YT:SiEuler(t,h,nlv[level],nd,y,Rhs,fy,ft,J,MassMatrix),
+    /* here  i-th derivative (0 <= i <=nd) is in   YT(:,nd+1-i) */
+    for jd:0 thru nd do block( [jd1:jd+1,S:col(YT,nd+1-jd)],
+      Tab[level,jd1]:copymatrix(S),
+      if jd < level then 
+        for lv:level-1 step -1 thru max(1,jd) do
+          block([SS:copymatrix(Tab[lv,jd1]),F1,F2],
+                F2:Float(nlv[level]/nlv[lv]), F1: F2/(F2-1), F2:1/(F2-1), 
+                S:F1*S-F2*SS,
+                Tab[lv,jd1]:copymatrix(S)
+               )
+     ),
+     Err:0,
+     if level > 1 then
+       block([fac,fac_min],
+         Err: mat_norm(Tab[1,1]-Tab[2,1],'frobenius)/sqrt(mf),
+         Err_min: maxreduction/1.67*Tol*0.93^level,
+         if Err > Err_min then (
+           fac:exp(log(1.67*Err/Tol)/level)/ 0.93,
+           fac_min: exp(log(maxreduction)/level),
+           fac: max(fac,fac_min),
+           fac: min(fac,max_fac/fac_min)
+         ) else fac: exp(log(maxreduction)/level),
+         hlv[level]: h/fac,  /* new proposed stepsize */
+         swork[level]: work[level]/abs(hlv[level]) /* scaled work */
+       ),
+      [Tab,hlv,swork,Err]
+)$
+
+Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
+
+  /* This routine is similar to  SEULEX published in
+     Hairer/Wanner : Solving ODE II  Stiff and Differential-Algebraic Problems
+     input parameters :
+       y , t	solution at time  t
+       h	initial step size (e.g. from prev. step)
+       me	initial extrapolation tableau size (e.g. from prev. step)
+     
+     output :
+       DO_DQ , t  new state y at t unless dout (dense output) is true
+                  if dout then list of column vectors : Newton DiffQuot at new t  1..(order+1)
+       h , me	  new optimal step size and tableau size for next step
+       failed	  Eulix gave up due to more than 10 rejected steps in succession
+   */
+  [gain1:0.7, gain2:0.9, /* some tuning constants */
+   l, m, me: max(3,me), mxp, max_ex, 
+   nlv, hlv, work, swork,  fy, ft, Tol, rejected:false, reject_cnt:0, J, Tab, Err,
+   dout, WkEst, atol, rtol, Debug,OK,
+   scalarmatrixp:false,keepfloat:true,nolabels:true],
+   local(DO_DQ,hlv,nlv,work,WkEst,swork,Tab),
+   max_ex: assoc('maximum_order,options,20), /* max_ex	max. extrapolation tableau size */
+   mxp: max(4,max_ex+1),
+   /* dout  if true, enable dense output: Newton DDs in DO_DQ */
+   dout: assoc('dense_output,options,true),  
+   WkEst: assoc('work_estimates,options,[1,1,0]),
+     /* WkEst[1]  (relative) work to evaluate the Rhs
+                   and to solve the lin. impl. eqns
+        WkEst[2]  (relative) work to compute the Jacobian
+        WkEst[3]  (relative) work to decompose the Jacobian (Q-R-decomposition)
+     */
+
+   /* atol , rtol absolute/relative tolerance  Tol= atol + rtol*mat_norm(y,'inf) */
+   atol:  assoc('absolute_tolerance,options,1e-6),
+   rtol:  assoc('relative_tolerance,options,1e-6),
+   Debug   : assoc('check_parameters,options,true),
+   if Debug then (
+     if not (matrixp(y) and length(first(y)) = 1 and every(numberp,y)) then
+       error("first parameter of Eulix must be a numeric column"),
+     if not nonneginterp(me) then error("order (me) must be a positive integer"),
+     if not nonneginterp(max_ex) then error("maximum_order must be a positive integer"),
+     if me > max_ex then error("the order (me) must not be greater than maximum_order")
+   ),
+   mode_declare(me,fixnum,l,fixnum,m,fixnum,mxp,fixnum,reject_cnt,fixnum),
+   Tol: atol+rtol*mat_norm(y,'inf),
+   m:length(y),
+
+   /*
+     MassMatrix either `false or a square (mass-)matrix M for solving  M y'= Rhs(t,y)
+                     it might be a singular matrix for differential-algebraic equations
+                     of index 1
+   */
+   MassMatrix: assoc('mass_matrix,options,ident(m)),
+   if Debug then (
+     if not is(MassMatrix='false) then
+       if not (matrixp(MassMatrix) and length(MassMatrix)=m and length(first(MassMatrix)) = m
+          and every(numberp,MassMatrix)) then
+          error(simplode(["The mass_matrix parameter must be either 'false or a square ",
+                           m,"x",m," numeric matrix"]))
+   ),
+   fy:apply(Rhs,[t,y]),
+   ft: apply(Rhs_Time,[t,y]),
+   if Debug then (
+     if not (matrixp(fy) and length(first(fy)) = 1 and length(fy)=m and every(numberp,fy)) then
+       error("third parameter (Rhs) of Eulix must return a numeric column - got",fy),
+     if not (matrixp(ft) and length(first(ft)) = 1 and length(ft)=m and every(numberp,ft)) then
+       error("fifth parameter (Rhs_Time) of Eulix must return a numeric column - got",ft)
+   ),
+   Tab: if dout then zeromatrix(mxp+2,mxp+2)
+                else zeromatrix(mxp+2,1),
+   nlv:makelist(i,i,2,mxp+1), hlv:makelist(0,mxp),
+   work:makelist(0,mxp), swork:makelist(0,mxp),
+   if length(WkEst) # 3 then WkEst:[1,5,1],
+   /* compute cummulative work for an extrapolation row */
+   work[1]: WkEst[2]+nlv[1]*WkEst[1]+WkEst[3],
+   for l:2 thru mxp do work[l]: work[l-1]+(nlv[l]-1)*WkEst[1]+WkEst[3],
+   swork[1]: 1.0e30, /* large number */
+   
+   if matrixp(MassMatrix) then (
+      J:apply(Rhs_Jac,[t,y]),
+      if Debug then
+        if not (matrixp(J) and length(J)=m and length(first(J)) = m and every(numberp,J)) then
+          error("Jacobian must be a square numeric matrix within - got",J)
+   ) else J:0,
+   
+   OK:false,
+   while not OK and reject_cnt <= 10 do  /* build extrapolation tableau */
+   block([level,c_me:me-1,opt_me],
+     for level:1 thru c_me do 
+       [Tab,hlv,swork,Err]: Eulix_Row(Rhs,level,Tab,t,h,hlv,nlv,dout,
+                                      y,fy,ft,J,MassMatrix,Tol,work,swork),
+     /* check convergence at column level-1 */
+     if rejected or me=2 or (Err > Tol and Err < 4*nlv[me]*nlv[me+1]*Tol) then (
+       c_me: me,
+       /* compute column me */
+       [Tab,hlv,swork,Err]: Eulix_Row(Rhs,me,Tab,t,h,hlv,nlv,dout,
+                                      y,fy,ft,J,MassMatrix,Tol,work,swork),
+       if Err > Tol  and  Err < 2*nlv[me+1]*Tol then (
+         c_me: me+1, /* compute column  me+1 */
+         [Tab,hlv,swork,Err]: Eulix_Row(Rhs,me+1,Tab,t,h,hlv,nlv,dout,
+                                        y,fy,ft,J,MassMatrix,Tol,work,swork)
+       )
+     ),
+     
+     /* calculate new order and stepsize */
+
+     if Err > Tol then (
+       rejected: true, reject_cnt: reject_cnt+1,
+       me: min(c_me,me),
+       if  me > 2 and swork[me-1] < gain1*swork[me] then me: me-1,
+       if logging then
+          printf(true,"rejected at t=~11,3e  order dropped to ~d  new step=~11,3e~%",
+                                        t,                    me,           hlv[me]),
+       h: hlv[me]
+     ) else ( /* accept the step */
+       t: t+h,
+
+       if  dout then block([S,nderiv],
+         nderiv: c_me,
+         DO_DQ: makelist(0,nderiv+2),
+         DO_DQ[1]: copymatrix(Tab[1,1]),  /* y */
+
+         /* compute Hermite Interpol (Newton form) p(theta), xi in [0,h] 
+            which interpolates  p(0): y 
+            p(h): (y(h):Tab[1,1] ...)  
+            d^k p(h)/dt^k : d^k y(h)/dt^k : Tab[k,k+1]
+          */
+
+         /* best values of d-th derivative is in Tab[max(1,d],d+1) */
+         for k:1 thru nderiv do
+           
+           DO_DQ[k+1]: copymatrix(Tab[k,k+1])/k!,
+
+         /* Hermite Interpolation : all gener. Newton DQ at t+h 
+            append a new lower diagonal
+          */
+         S:y,
+         for k:1 thru (nderiv+1) do S: (S-DO_DQ[k])/(-h),
+         DO_DQ[nderiv+2]: S
+       ) else
+         DO_DQ: copymatrix(Tab[1,1]),  /* y */
+       
+
+
+       if c_me = 2 then (
+         opt_me: if rejected then  2 else 3
+       ) else (
+         if c_me <= me then (
+           opt_me: c_me,
+           if swork[c_me-1] < gain1*swork[c_me]   then   opt_me: c_me-1,
+           if swork[c_me]   < gain2*swork[c_me-1] then  opt_me: c_me+1
+         ) else (
+           opt_me: c_me-1,
+           if  c_me > 3 and swork[c_me-2] < gain1*swork[c_me-1] 
+              then opt_me: c_me-2,
+           if swork[c_me] < gain2*swork[opt_me] then opt_me: c_me  
+         ),
+         opt_me: min(max_ex,opt_me)
+       ),
+
+       if rejected then (
+         me: opt_me,
+         opt_me: min(opt_me,c_me),
+         h: signum(h)*min(abs(h),abs(hlv[opt_me])),
+         rejected: false
+
+       ) else (
+
+         if opt_me <= c_me then  h: hlv[opt_me]
+         else if  c_me < me and swork[c_me] < gain2*swork[c_me-1]
+               then
+                 h: hlv[c_me] * work[opt_me+1]/work[c_me]
+               else
+                 h: hlv[c_me] * work[opt_me]/work[c_me],
+         me: opt_me
+       ),
+       OK:true
+     )
+  ),
+  
+  failed: ev(reject_cnt > 10),
+  [DO_DQ,t,h,me,failed]
+)$
+
+/* DO_DQ contains the Taylor polynom at the new time tn = t+h
+   if we evaluate it for tau in [t,tn]  we have to pass dt= tau-tn
+ */
+
+Eulix_Dense_Out(dt,DO_DQ):= block(
+  [nd2:length(DO_DQ), y],
+  local(DO_DQ),
+  y:copymatrix(DO_DQ[nd2]),
+  for k :nd2-1 step -1 thru 1 do
+    y: y*dt + DO_DQ[k],
+  y
+)$
+
+Eulix_Dense_Deriv(dt,DO_DQ):= block(
+  [nd2:length(DO_DQ), yt],
+  local(DO_DQ),
+  yt:(nd2-1)*copymatrix(DO_DQ[nd2]),
+  for k :nd2-1 step -1 thru 2 do yt: yt*dt + (k-1)*DO_DQ[k],
+  yt
+)$
+
+Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
+  [i,t,dout:false,h,h_sign,y,T,Y,
+   DO_DQ,tn,hn,me,root_eps,logging,tabular,gen_table,full_table:false,failed,ttab,
+   NumRootConds,find_root:false,State,active_roots,
+   rt, Root_Found, Root_Solution,atol, Debug,
+   keepfloat:true,scalarmatrixp:false,nolabels:true],
+  local(DO_DQ,Roots,Root_Solution,rt,Newton_Root,Float),
+
+  h       : assoc('initial_step_size,options,0),
+  me      : assoc('initial_order,options,6),
+  root_eps: assoc('root_tolerance,options,0),
+            /* if root_eps < 0 then use 
+                  abs(root_eps)*max(mat_norm("y_left",'inf),mat_norm("y_right",'inf))
+               if root_eps = 0 then set root_eps to -1E-8
+            */
+  logging    : assoc('logging,options,false),
+  tabular    : assoc('tabular,options,'all),
+  atol       : assoc('absolute_tolerance,options,1e-6),
+  Debug      : assoc('check_parameters,options,true),
+  
+  if is(tabular='none) then gen_table:false
+  else if is(tabular='tabular) then  gen_table:true
+                               else (gen_table:true,full_table:true),
+
+  options:delete('dense_output=false,delete('dense_output=true,options)),
+  if (t_end-t0)*delta_t < 0 then
+      error("Eulix: (t_end-t0) must be of same sign as delta_t"),
+  if delta_t # 0 then ( dout:true,  options:cons('dense_output=true,options) )
+                 else ( dout:false, options:cons('dense_output=false,options) ),
+  NumRootConds: length(Roots),
+  find_root: NumRootConds > 0,
+
+  /* local Float function */
+  Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
+
+  /* local Newton function */
+  Newton_Root(tl,tr,fct,fctprime,root_eps):= block(
+    [fl:fct(tl), fr:fct(tr), t:(tl+tr)/2, f, it:0],
+    /* fl * fr <= 0 when called */
+    f:fct((tl+tr)/2),
+    while it < 100 and abs(f) > root_eps do (
+      it: it+1,
+      t: t - f/fctprime(t),
+      if (tr-tl)*(t-tl) < 0  or  (tr-tl)*(tr-t) < 0 then  t:(tl+tr)/2,
+      f: fct(t),
+      if fl*f < 0 then (tr:t, fr:f)
+                  else (tl:t, fl:f)
+    ),
+    if abs(f) > root_eps then throw(simplode(["Newton failed at t=",t])),
+    t
+  ),
+  t:t0,
+  y:copymatrix(y0),
+  if h=0 then block([atol_me,f0,f_bnd],
+     /* estimate the initial step size by looking at Taylor's series for y
+        see Gladwell, Shampine, Brankin "Automatic selection of the initial
+        step size for an ODE solver", J Comput Appl Math 18(1987) pp175-192 */
+    atol_me: exp(log(atol)/(me+1)),
+    f0: Rhs(t,y),
+    h: Float(atol_me/mat_norm(f0,'inf)),
+    if  not is(assoc('mass_matrix,options,0)='false) then (
+      f_bnd: mat_norm(Rhs_t(t,y),'inf)+ mat_norm(Rhs_jac(t,y).f0,'inf),
+      h: Float(sqrt(2/f_bnd)*atol_me)
+    ),
+    if t_end < t then h: -h,
+    if logging then print("computed initial step size=",h)
+  ),
+
+  h_sign: signum(h),
+  if logging then  print("options in effect:",options),
+  if gen_table then ( T:[t], Y:[y] ) else (T:[], Y:[]),
+  if dout then ttab:t+delta_t,
+  Root_Found: false,
+  if find_root then  (
+    rt:makelist(first(Roots[i])(t,y),i,1,NumRootConds),
+    State:[t,y,copylist(rt)],
+    Root_Solution:[0,0,0]
+  ),
+  while not Root_Found and (t_end-t)*h_sign > 0 do (
+    h: h_sign*min(abs(h),abs(t_end-t)),
+    if logging then  printf(true,"at t= ~10,4f  h= ~11,3e  me= ~2d~%",t,h,me),
+    [DO_DQ,tn,hn,me,failed]: apply(Eulix_Step,append([y,t,Rhs,Rhs_t,Rhs_jac,h,me],options)),
+    h: tn-t,  /* <<<< in case of reject within Eulix */
+    if  Debug then  ( /* check parameters on the first call at most */
+     options: delete('check_parameters=true,options),  Debug: false
+    ),
+    if failed then (
+      throw(simplode(["Eulix failed - too many rejected steps at",
+                     t,if dout then DO_DQ[1] else DO_DQ]))
+    ),
+    if dout then (
+      while not Root_Found and (tn-ttab)*h_sign >= 0 do (
+        y:Eulix_Dense_Out(ttab-tn,DO_DQ),
+        if gen_table then ( T:cons(ttab,T), Y:cons(y,Y) ),
+        if find_root then (
+          rt:makelist(first(Roots[i])(t,y),i,1,NumRootConds),
+          if root_eps <= 0 then (
+            root_eps: (if root_eps < 0 then abs(root_eps) else 1E-8)*apply('max,abs(rt)),
+            if logging then print("root_eps=",root_eps)
+          ),
+          active_roots:[],
+          for i:1 thru NumRootConds do (
+            if rt[i]*third(State)[i] <= 0 then (
+              active_roots: endcons(i,active_roots)
+            )
+          ),
+          Root_Found: length(active_roots) > 0,
+          if not Root_Found then State:[ttab,y,copylist(rt)]
+        ),
+        ttab: ttab+delta_t
+      ),
+      if  not (find_root and Root_Found) then (
+        y:copymatrix(DO_DQ[1]),
+        if full_table then ( T:cons(tn,T), Y:cons(y,Y) )
+      )
+    ) else ( /* no dense output */
+      y:copymatrix(DO_DQ),
+      if find_root then (
+        rt:makelist(first(Roots[i])(tn,y),i,1,NumRootConds),
+        if root_eps <= 0 then (
+          root_eps: (if root_eps < 0 then abs(root_eps) else 1E-8)*apply('max,abs(rt)),
+          if logging then print("root_eps=",root_eps)
+        ),
+        active_roots:[],
+        for i:1 thru NumRootConds do (
+          if rt[i]*third(State)[i] <= 0 then (
+            active_roots: endcons(i,active_roots)
+          )
+        ),
+        Root_Found: length(active_roots) > 0,
+        if not Root_Found then State:[tn,y,copylist(rt)]
+      ) else if gen_table then ( T:cons(tn,T), Y:cons(y,Y) )
+    ),
+    if  Root_Found  then block( [nr,eq,RT,RTprime,th,a_roots_init: false],
+      for nr in active_roots do (
+        RT: buildq([tn,Eq:first(Roots[nr])],
+                   lambda([tau],Eq(tau,Eulix_Dense_Out(tau-tn,DO_DQ)))),
+        RTprime: buildq([tn,Eq_y:second(Roots[nr]),Eq_t:third(Roots[nr])],
+                        lambda([tau],block([Y:Eulix_Dense_Out(tau-tn,DO_DQ)],
+                               dotproduct(Eq_y(tau,Y),Eulix_Dense_Deriv(tau-tn,DO_DQ))
+                               + Eq_t(tau,Y))
+                        )
+                       ),
+        th:Newton_Root(first(State),ttab,RT,RTprime,root_eps),
+        if a_roots_init then (
+           if  h_sign*(second(th - Root_Solution)) < 0  then 
+             Root_Solution:[nr,th,Eulix_Dense_Out(th-tn,DO_DQ)]
+        ) else (Root_Solution:[nr,th,Eulix_Dense_Out(th-tn,DO_DQ)], a_roots_init:true)
+      )
+    ),
+    t: tn,  h: hn
+  ),
+  if not gen_table then ( T:cons(tn,T), Y:cons(y,Y) ), /* store final time/state */
+  if  Root_found then (T:cons(Root_Solution[2],T), Y:cons(Root_Solution[3],Y))
+  else if dout and full_table then (T:cons(t,T), Y:cons(y,Y)),
+  T: reverse(T), Y: reverse(Y),
+  if gen_table then (
+    if find_root then [Root_Solution,[T,Y]]
+                 else [T,Y]
+  ) else
+    if find_root then [Root_Solution,first(Y)]
+       else  first(Y)
+
+)$
+
+defstruct(Eulix_Spline_Type(t_left,t_right,NewtonPoly))$
+
+Eulix_SplineEval(t,Spls):= block([degree,d,dir,dt,SPL,Spl,TP,y],
+  local(TP),
+  /* search the interval containig t 
+     assuming ODE has been integrated in positive t-direction
+   */
+   SPL: for Spl in Spls do (
+      dir:signum(Spl@t_right-Spl@t_left),
+      if  dir*(t-Spl@t_left) >= 0  and  dir*(Spl@t_right-t) >= 0  then return(Spl)
+   ),
+   if is (SPL = 'done) then
+     throw(simplode(["SplineEval ",t," is not in [",
+                     Spls[1]@t_left,",",Spls[length(Spls)]@t_right,"]"])),
+   dt: if  SPL@t_left <= SPL@t_right then t-SPL@t_right  else  t-SPL@t_left,
+   TP:SPL@NewtonPoly,  degree:length(TP),
+   y:copymatrix(TP[degree]),
+   for d:degree-1 step -1 thru 1 do  y: y*dt + TP[d],
+   y
+)$
+
+Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options]):= block(
+  [i,t,tn, h,hn,h_sign, me,logging,atol,Debug,y,
+   failed, Splines:[], Spl, DO_DQ,
+   keepfloat:true,scalarmatrixp:false,nolabels:true],
+  local(DO_DQ,Float),
+  h       : assoc('initial_step_size,options,0),
+  me      : assoc('initial_order,options,6),
+  logging    : assoc('logging,options,false),
+  atol       : assoc('absolute_tolerance,options,1e-6),
+  Debug: assoc('check_parameters,options,true),
+  options:delete('dense_output=false,delete('dense_output=true,options)),
+  options:cons('dense_output=true,options),
+
+  /* local Float function */
+  Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
+
+  t:t0,
+  y:copymatrix(y0),
+  if h=0 then block([atol_me,f0,f_bnd],
+     /* estimate the initial step size by looking at Taylor's series for y
+        see Gladwell, Shampine, Brankin "Automatic selection of the initial
+        step size for an ODE solver, J Comput Appl Math 18(1987) pp175-192 */
+    atol_me: exp(log(atol)/(me+1)),
+    f0: Rhs(t,y),
+    h: Float(atol_me/mat_norm(f0,'inf)),
+    if  not is(assoc('mass_matrix,options,0)='false) then (
+      f_bnd: mat_norm(Rhs_t(t,y),'inf)+ mat_norm(Rhs_jac(t,y).f0,'inf),
+      h: Float(sqrt(2/f_bnd)*atol_me)
+    ),
+    if t_end < t then h: -h,
+    if logging then print("computed initial step size=",h)
+  ),
+
+  h_sign: signum(h),
+  if logging then  print("options in effect:",options),
+
+  while (t_end-t)*h_sign > 0 do (
+    h: h_sign*min(abs(h),abs(t_end-t)),
+    if logging then  printf(true,"at t= ~10,4f  h= ~11,3e  me= ~2d~%",t,h,me),
+    [DO_DQ,tn,hn,me,failed]: apply(Eulix_Step,append([y,t,Rhs,Rhs_t,Rhs_jac,h,me],options)),
+    h: tn-t,  /* <<<< in case of reject within Eulix */
+    if  Debug then  ( /* check parameters on the first call at most */
+     options: delete('check_parameters=true,options),  Debug: false
+    ),
+    if failed then (
+      throw(simplode(["Eulix failed - too many rejected steps at",
+                     t,if dout then DO_DQ[1] else DO_DQ]))
+    ),
+
+    Spl:new(Eulix_Spline_Type),
+    Spl@t_left:t, Spl@t_right:tn,
+    Spl@NewtonPoly:makelist(copymatrix(DO_DQ[i]),i,1,length(DO_DQ)),
+    Splines:cons(Spl,Splines),
+    y:copymatrix(DO_DQ[1]),
+    t: tn,  h: hn
+  ),
+  reverse(Splines)
+)$
+
+
+
+
+Eulix(Expressions,Vars,initials,range,[options]):= block(
+  [NumExpr,NumVars,MassMatrix,i,t0,t_end,delta_t,x,col2list,
+   DO_DQ,Rhs,Rhs_jac,RootExpressions,tabular,gen_table:true,combined_t_y_list,
+   Results,Root_Solution,tlist,ylist,
+   keepfloat:true,scalarmatrixp:false,nolabels:true],
+  local(Espressions,Vars,initials,MassMatrix,range,V,y,col2list,
+        gen_rhs,gen_jacobian,gen_fct,gen_grad, Rhs_t),
+  x:range[1],
+  gen_rhs (Expr, V, X) := block([Ex:Expr,%_y:gensym()],
+    local(V,_y),
+    Ex:maplist(lambda([E],if atom(E) then E
+                      else if op(E)#"=" then E
+                           else if is(rhs(E)=0) then lhs(E) else rhs(E)),Expr),
+    subst (makelist (V[i] = %_y[i, 1], i, 1, length (V)), Ex),
+     buildq ([MList : makelist ([e], e, %%),t:X,_y:%_y],
+             lambda ([t, _y], matrix (splice (MList))))),
+
+  gen_fct(Ex, V, X) := block([%_y:gensym()],
+    local(V,_y),
+    Ex:subst (makelist (V[i] = %_y[i, 1], i, 1, length (V)), Ex),
+    buildq([Fct:%%,t:X,_y:%_y], lambda ([t, _y], Fct))),
+
+  tabular          : assoc('tabular,options,'all),
+  combined_t_y_list: assoc('combined_t_y_list,options,true),
+  if not listp(Expressions) then Expressions:[Expressions],
+  if not listp(Vars)        then Vars : [Vars],
+  if not listp(initials)    then initials:[initials],
+  NumExpr: length(Expressions), NumVars:length(Vars),
+  MassMatrix:ident(NumExpr),
+  for i:1 thru NumExpr do 
+    if not atom(Expressions[i]) then
+      if op(Expressions[i])="=" then MassMatrix[i,i]:0,
+
+  options:cons('mass_matrix=MassMatrix,options),
+
+  /* local col2list function */
+  col2list(L):= block(
+    if  listp(L) then  maplist(lambda([v],transpose(v)[1]),L)
+    else               transpose(L)[1]
+  ),
+
+  gen_grad(F,xx,NVars)::= block([i,n:ev(NVars),J,X:ev(xx)],
+    J: genmatrix(lambda([i,j],diff(F(X,y),y[i,1])),n,1),
+     buildq([J,t:X],lambda([t,y],J))
+  ),
+
+
+  gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+    J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
+     buildq([J,t:X],lambda([t,y],J))
+  ),
+
+  Rhs:gen_rhs(Expressions,Vars,x),
+  define(Rhs_t(x,'y),diff(Rhs(x,'y),x)),
+  Rhs_jac:gen_jacobian(Rhs,x,length(Expressions)),
+
+  t0:range[2], t_end:range[3],
+  if length(range) > 3 then  delta_t:range[4] else delta_t:0,
+  gen_table: is(tabular # 'none),
+  Roots:[],
+  if length(range) > 4 then (
+    RootExpressions: range[5],
+    if not listp(RootExpressions) then RootExpressions:[RootExpressions],
+    for Cond in RootExpressions do block([Eq,%_y:gensym(),t],
+      Eq:gen_fct(Cond,Vars,x),
+      Roots: endcons([Eq,gen_grad(Eq,x,NumVars),
+                        buildq([t:x,_y:%_y,body:diff(Eq(t,_y),t)],
+                               lambda ([t, _y],body))
+                      ],
+                      Roots)
+    )
+  ),
+  options:cons('check_parameters=false, options),
+  Results: apply(Eulix_Table,append([t0,transpose(matrix(initials)),delta_t,t_end,
+                                  Rhs,Rhs_t,Rhs_jac,Roots],options)),
+  
+  if length(Roots) > 0 then (
+    if gen_table then (
+      [Root_Solution,[tlist,ylist]]: Results,
+      ylist: col2list(ylist),
+      Root_Solution[3]:col2list(Root_Solution[3]),
+      if combined_t_y_list then (
+        [Root_Solution,
+         maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
+        ]
+      ) else [Root_Solution,[tlist,ylist]]
+    ) else [Results[1],col2list(Results[2])]
+  ) else 
+      if gen_table then (
+        [tlist,ylist]: Results,
+        ylist: col2list(ylist),
+        if combined_t_y_list then (
+          maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
+        ) else [tlist,ylist]
+      ) else col2list(Results)
+)$
+
+eval_when(loadfile,
+  compile(SiEuler,Eulix_Row,Eulix_Step,Eulix_Dense_Out,Eulix_Dense_Deriv,
+          Eulix_Table,Eulix_SplineEval,Eulix_Spline,Eulix)
+)$
+
+

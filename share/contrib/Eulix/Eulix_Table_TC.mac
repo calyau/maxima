@@ -1,0 +1,51 @@
+load("Eulix.mac")$
+
+/* 
+  a very stiff chemical reaction, see Hairer/Wanner Solving ODE II
+  y1' = -0.04*y1 + 1E4*y2*y3             y1(0)= 1
+  y2' =  0.04*y1 - 1E4*y2*y3 -3E7*y2^2   y2(0)= 0
+  y3' =                       3E7*y2^2   y3(0)= 0
+*/
+
+Rhs(t,y):= matrix([ -0.04*y[1,1] + 1E4*y[2,1]*y[3,1]],
+                  [  0.04*y[1,1] - 1E4*y[2,1]*y[3,1] -3E7*y[2,1]^2],
+                  [                       3E7*y[2,1]^2])$
+
+define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
+
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
+   buildq([J,t:X],lambda([t,y],J))
+)$
+Rhs_jac:gen_jacobian(Rhs,t,3)$
+
+compile(Rhs,Rhs_t)$
+
+
+t0:0$
+y0:matrix([1],[0],[0])$
+atol:1e-6$  rtol:1e-4$
+t_end: 0.02;
+delta_t: t_end/1000;
+Start:elapsed_real_time()$
+debugmode:true$
+
+[tlist,ylist]: Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,[],
+                           check_parameters=true,logging=true,
+                           combined_t_y_list=false)$ 
+/*
+y1max:lmax(map(lambda([z],z[1,1]),ylist))$
+y2max:lmax(map(lambda([z],z[2,1]),ylist))$
+y3max:lmax(map(lambda([z],z[3,1]),ylist))$
+
+plot2d([[discrete,tlist,map(lambda([z],z[1,1]),ylist)],
+        [discrete,tlist,map(lambda([z],z[2,1]/y2max),ylist)],
+        [discrete,tlist,map(lambda([z],z[3,1]/y3max),ylist)]],
+       [legend,"y1","y2","y3"],[title,"A chemical reaction"])$
+*/
+plot2d([[discrete,tlist,map(lambda([z],z[2,1]),ylist)]],
+       [legend,"y2"],[title,"A chemical reaction"])$
+read("enter ; or $ to quit");
+
+
+
