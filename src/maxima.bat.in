@@ -25,7 +25,7 @@ set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
 set mingw_gccver=GCCVER
-set path=%maxima_prefix%\gnuplot;%maxima_prefix%\bin;%path%
+set path=%maxima_prefix%\gnuplot;%maxima_prefix%\gnuplot\bin;%maxima_prefix%\bin;%path%
 
 if "%USERPROFILE%" == "" goto win9x
 if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%USERPROFILE%\maxima

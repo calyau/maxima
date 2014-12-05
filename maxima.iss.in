@@ -12,7 +12,6 @@
 ;;                                                                ;;
 ;;----------------------------------------------------------------;;
 
-
 [Setup]
 AppName=Maxima
 AppVerName=Maxima @VERSION@
