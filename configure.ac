@@ -695,13 +695,6 @@ dnl Hard code the filenames for now.  Can over-ride on make command line
 GCCVER=undefined
 if test x${xmaxima_exe} = xtrue ; then
   GCCVER=`gcc -dumpversion`
-  if  test x${GCCVER} = x3.3.1; then
-    TCLINCLUDE=
-    TCLSTUBLIB=-ltclstub84
-  else
-    TCLINCLUDE=/c/tcl/include
-    TCLSTUBLIB=/c/tcl/lib/tclstub85.lib
-  fi
   dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
   TCLKITSH=/c/programs/star/tclkitsh-win32.upx.exe
   TCLKIT_RUNTIME=/c/programs/star/tclkit-win32.upx.exe 
@@ -710,8 +703,6 @@ if test x${xmaxima_exe} = xtrue ; then
 fi
 
 AC_SUBST(GCCVER)
-AC_SUBST(TCLINCLUDE)
-AC_SUBST(TCLSTUBLIB)
 AC_SUBST(TCLKITSH)
 AC_SUBST(TCLKIT_RUNTIME)
 AC_SUBST(SDXKIT)
@@ -1155,11 +1146,6 @@ fi
 if test x"${xmaxima_exe}" = xtrue ; then
    echo "Windows xmaxima.exe enabled"
    echo "  GCC version GCCVER: ${GCCVER}"
-   echo "  TCLSTUBLIB: ${TCLSTUBLIB}"
-   if ! test -f "${TCLSTUBLIB}" ; then
-     AC_MSG_WARN(*** TCLSTUBLIB ${TCLSTUBLIB} not found)
-     xmaxima_exe_prerequisite=notfound
-   fi
    echo "  TCLKITSH: ${TCLKITSH}"
    if ! test -f "${TCLKITSH}" ; then
      AC_MSG_WARN(*** TCLKITSH ${TCLKITSH} not found)

@@ -60,13 +60,14 @@ cclcopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
 	cp "$(OPENMCL_NAME)" "$(prefix)/bin/"
 
+RUNTIMECOPY = 
 # Install files for lisp runtime support
 if GCL
-RUNTIMECOPY = gcccopy
+RUNTIMECOPY += gcccopy
 endif
 
 if OPENMCL
-RUNTIMECOPY = cclcopy
+RUNTIMECOPY += cclcopy
 endif
 
 # Install files for lisp runtime support
