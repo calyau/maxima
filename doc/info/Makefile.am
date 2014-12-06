@@ -131,6 +131,8 @@ figures/bodephase6.gif\
 figures/bodephase7.gif\
 figures/bodephase8.gif\
 figures/bodephase9.gif\
+figures/scene1.png\
+figures/scene2.png\
 figures/color_terminal.png
 
 pdffigures = \
@@ -195,6 +197,8 @@ figures/bodephase6.pdf\
 figures/bodephase7.pdf\
 figures/bodephase8.pdf\
 figures/bodephase9.pdf\
+figures/scene1.pdf\
+figures/scene2.pdf\
 figures/color_terminal.pdf
 
 if CHM
