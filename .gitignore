@@ -21,5 +21,8 @@ maxima*.iss
 maxout.*
 maxima*.tar.gz
 
+locale/pt.mo
+locale/es.mo
+
 /binary
 *~
