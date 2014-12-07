@@ -1,19 +1,19 @@
 @c English version 2008-04-24
 @menu
-* Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas::
-* Funciones y variables para funciones el@'{@dotless{i}}pticas::
-* Funciones y variables para integrales el@'{@dotless{i}}pticas::
+* Introducción a las funciones e integrales elípticas::
+* Funciones y variables para funciones elípticas::
+* Funciones y variables para integrales elípticas::
 @end menu
 
 
-@node Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Introducción a las funciones e integrales elípticas, Funciones y variables para funciones elípticas, Funciones elípticas, Funciones elípticas
 @comment  node-name,  next,  previous,  up
 
-@section Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas
+@section Introducción a las funciones e integrales elípticas
 
-Maxima da soporte para las funciones el@'{@dotless{i}}pticas jacobianas y para las integrales el@'{@dotless{i}}pticas completas e incompletas.  Esto incluye la manipulaci@'on simb@'olica de estas funciones y su evaluaci@'on num@'erica. Las definiciones de estas funciones y de muchas de sus propiedades se pueden encontrar en Abramowitz y Stegun, cap@'{@dotless{i}}tulos 16--17, que es la fuente principal utilizada para su programaci@'on en Maxima, aunque existen algunas diferencias.
+Maxima da soporte para las funciones elípticas jacobianas y para las integrales elípticas completas e incompletas.  Esto incluye la manipulación simbólica de estas funciones y su evaluación numérica. Las definiciones de estas funciones y de muchas de sus propiedades se pueden encontrar en Abramowitz y Stegun, capítulos 16--17, que es la fuente principal utilizada para su programación en Maxima, aunque existen algunas diferencias.
 
-En particular, todas las funciones e integrales el@'{@dotless{i}}pticas utilizan el par@'amero @math{m} en lugar del m@'odulo @math{k} o del @'angulo @math{alfa}. Esta es una de las diferencias con Abramowitz y Stegun, que utilizan el @'angulo para las funciones el@'{@dotless{i}}pticas. Las siguientes relaciones son v@'alidas:
+En particular, todas las funciones e integrales elípticas utilizan el parámero @math{m} en lugar del módulo @math{k} o del ángulo @math{alfa}. Esta es una de las diferencias con Abramowitz y Stegun, que utilizan el ángulo para las funciones elípticas. Las siguientes relaciones son válidas:
 
 @ifhtml
 @math{m = k^2} y @math{k = sin(alfa)}.
@@ -25,11 +25,11 @@ En particular, todas las funciones e integrales el@'{@dotless{i}}pticas utilizan
 $$m = k^2$$ y $$k = \sin\alpha $$
 @end tex
 
-Las funciones e integrales el@'{@dotless{i}}pticas en Maxima tienen como objetivo primordial dar soporte al c@'alculo simb@'olico, de ah@'{@dotless{i}} que tambi@'en est@'en incluidas la mayor@'{@dotless{i}}a de las derivadas e integrales asociadas a estas funciones. No obstante lo anterior, si los argumentos dados a las funciones son decimales en coma flotante, los resultados tambi@'en ser@'an decimales.
+Las funciones e integrales elípticas en Maxima tienen como objetivo primordial dar soporte al cálculo simbólico, de ahí que también estén incluidas la mayoría de las derivadas e integrales asociadas a estas funciones. No obstante lo anterior, si los argumentos dados a las funciones son decimales en coma flotante, los resultados también serán decimales.
 
-Sin embargo, la mayor@'{@dotless{i}}a de las propiedades no realacionadas con las derivadas de las funciones e integrales el@'{@dotless{i}}pticas  todav@'{@dotless{i}}a no han sido programadas en Maxima.
+Sin embargo, la mayoría de las propiedades no realacionadas con las derivadas de las funciones e integrales elípticas  todavía no han sido programadas en Maxima.
 
-Algunos ejemplos de funciones el@'{@dotless{i}}pticas:
+Algunos ejemplos de funciones elípticas:
 @c ===beg===
 @c jacobi_sn (u, m);
 @c jacobi_sn (u, 1);
@@ -59,7 +59,7 @@ Algunos ejemplos de funciones el@'{@dotless{i}}pticas:
               2 (1 - m)
 @end example
 
-Algunos ejemplos de integrales el@'{@dotless{i}}pticas:
+Algunos ejemplos de integrales elípticas:
 @c ===beg===
 @c elliptic_f (phi, m);
 @c elliptic_f (phi, 0);
@@ -110,118 +110,118 @@ Algunos ejemplos de integrales el@'{@dotless{i}}pticas:
                                sqrt(1 - m sin (phi))
 @end example
 
-El paquete para funciones e integrales el@'{@dotless{i}}pticas fue programado por Raymond Toy. Se distribuye, igual que Maxima, bajo la General Public License (GPL).
+El paquete para funciones e integrales elípticas fue programado por Raymond Toy. Se distribuye, igual que Maxima, bajo la General Public License (GPL).
 
-@node Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones y variables para integrales el@'{@dotless{i}}pticas, Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Funciones y variables para funciones elípticas, Funciones y variables para integrales elípticas, Introducción a las funciones e integrales elípticas, Funciones elípticas
 @comment  node-name,  next,  previous,  up
 
-@section Funciones y variables para funciones el@'{@dotless{i}}pticas
+@section Funciones y variables para funciones elípticas
 
-@deffn {Funci@'on} jacobi_sn (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sn(u,m)}.
+@deffn {Función} jacobi_sn (@var{u}, @var{m})
+Función elíptica jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cn (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cn(u,m)}.
+@deffn {Función} jacobi_cn (@var{u}, @var{m})
+Función elíptica jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_dn (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{dn(u,m)}.
+@deffn {Función} jacobi_dn (@var{u}, @var{m})
+Función elíptica jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_ns (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{ns(u,m) = 1/sn(u,m)}.
+@deffn {Función} jacobi_ns (@var{u}, @var{m})
+Función elíptica jacobiana @math{ns(u,m) = 1/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_sc (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+@deffn {Función} jacobi_sc (@var{u}, @var{m})
+Función elíptica jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_sd (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+@deffn {Función} jacobi_sd (@var{u}, @var{m})
+Función elíptica jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_nc (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
+@deffn {Función} jacobi_nc (@var{u}, @var{m})
+Función elíptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cs (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+@deffn {Función} jacobi_cs (@var{u}, @var{m})
+Función elíptica jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cd (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+@deffn {Función} jacobi_cd (@var{u}, @var{m})
+Función elíptica jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_nd (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
+@deffn {Función} jacobi_nd (@var{u}, @var{m})
+Función elíptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_ds (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+@deffn {Función} jacobi_ds (@var{u}, @var{m})
+Función elíptica jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_dc (@var{u}, @var{m})
-Funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+@deffn {Función} jacobi_dc (@var{u}, @var{m})
+Función elíptica jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sn (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sn(u,m)}.
+@deffn {Función} inverse_jacobi_sn (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cn (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cn(u,m)}.
+@deffn {Función} inverse_jacobi_cn (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_dn (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dn(u,m)}.
+@deffn {Función} inverse_jacobi_dn (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_ns (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{ns(u,m)}.
+@deffn {Función} inverse_jacobi_ns (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{ns(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sc (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sc(u,m)}.
+@deffn {Función} inverse_jacobi_sc (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{sc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sd (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sd(u,m)}.
+@deffn {Función} inverse_jacobi_sd (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{sd(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_nc (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m)}.
+@deffn {Función} inverse_jacobi_nc (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cs (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cs(u,m)}.
+@deffn {Función} inverse_jacobi_cs (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{cs(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cd (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cd(u,m)}.
+@deffn {Función} inverse_jacobi_cd (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{cd(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_nd (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m)}.
+@deffn {Función} inverse_jacobi_nd (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_ds (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{ds(u,m)}.
+@deffn {Función} inverse_jacobi_ds (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{ds(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_dc (@var{u}, @var{m})
-Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m)}.
+@deffn {Función} inverse_jacobi_dc (@var{u}, @var{m})
+Inversa de la función elíptica jacobiana @math{dc(u,m)}.
 @end deffn
 
 
-@node Funciones y variables para integrales el@'{@dotless{i}}pticas, , Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Funciones y variables para integrales elípticas, , Funciones y variables para funciones elípticas, Funciones elípticas
 @comment  node-name,  next,  previous,  up
 
-@section Funciones y variables para integrales el@'{@dotless{i}}pticas
+@section Funciones y variables para integrales elípticas
 
 
-@deffn {Funci@'on} elliptic_f (@var{phi}, @var{m})
-Integral el@'{@dotless{i}}ptica incompleta de primera especie, definida como
+@deffn {Función} elliptic_f (@var{phi}, @var{m})
+Integral elíptica incompleta de primera especie, definida como
 
 @ifhtml
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -234,13 +234,13 @@ Integral el@'{@dotless{i}}ptica incompleta de primera especie, definida como
 $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-V@'eanse tambi@'en @code{elliptic_e} y @code{elliptic_kc}.
+Véanse también @code{elliptic_e} y @code{elliptic_kc}.
 
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_e (@var{phi}, @var{m})
-Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
+@deffn {Función} elliptic_e (@var{phi}, @var{m})
+Integral elíptica incompleta de segunda especie, definida como
 
 @ifhtml
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -252,13 +252,13 @@ Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 
-V@'eanse tambi@'en @code{elliptic_e} y @code{elliptic_ec}.
+Véanse también @code{elliptic_e} y @code{elliptic_ec}.
 
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_eu (@var{u}, @var{m})
-Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
+@deffn {Función} elliptic_eu (@var{u}, @var{m})
+Integral elíptica incompleta de segunda especie, definida como
 
 @ifhtml
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
@@ -290,11 +290,11 @@ $$E(u,m) = E(\phi, m)$$
 donde $\phi = \sin^{-1} {\rm sn}(u, m)$.
 @end tex
 
-V@'ease tambi@'en @code{elliptic_e}.
+Véase también @code{elliptic_e}.
 @end deffn
 
-@deffn {Funci@'on} elliptic_pi (@var{n}, @var{phi}, @var{m})
-Integral el@'{@dotless{i}}ptica incompleta de tercera especie, definida como
+@deffn {Función} elliptic_pi (@var{n}, @var{phi}, @var{m})
+Integral elíptica incompleta de tercera especie, definida como
 
 @ifhtml
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -306,12 +306,12 @@ Integral el@'{@dotless{i}}ptica incompleta de tercera especie, definida como
 $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Maxima s@'olo conoce la derivada respecto de @math{phi}.
+Maxima sólo conoce la derivada respecto de @math{phi}.
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_kc (@var{m})
-Integral el@'{@dotless{i}}ptica completa de primera especie, definida como
+@deffn {Función} elliptic_kc (@var{m})
+Integral elíptica completa de primera especie, definida como
 
 @ifhtml
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
@@ -324,12 +324,12 @@ Integral el@'{@dotless{i}}ptica completa de primera especie, definida como
 $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Para algunos valores de @math{m}, se conoce el valor de la integral en t@'erminos de la funci@'on @math{Gamma}. H@'agase uso de @code{makegamma} para realizar su c@'alculo.
+Para algunos valores de @math{m}, se conoce el valor de la integral en términos de la función @math{Gamma}. Hágase uso de @code{makegamma} para realizar su cálculo.
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_ec (@var{m})
-Integral el@'{@dotless{i}}ptica completa de segunda especie, definida como
+@deffn {Función} elliptic_ec (@var{m})
+Integral elíptica completa de segunda especie, definida como
 
 @ifhtml
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
@@ -341,6 +341,7 @@ Integral el@'{@dotless{i}}ptica completa de segunda especie, definida como
 @tex
 $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
-Para algunos valores de @math{m}, se conoce el valor de la integral en t@'erminos de la funci@'on @math{Gamma}. H@'agase uso de @code{makegamma} para realizar su c@'alculo.
+Para algunos valores de @math{m}, se conoce el valor de la integral en términos de la función @math{Gamma}. Hágase uso de @code{makegamma} para realizar su cálculo.
 @end deffn
+
 

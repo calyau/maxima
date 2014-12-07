@@ -7,20 +7,20 @@
 @section Funciones y variables para f90
 
 
-@deffn {Funci@'on} f90 (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Función} f90 (@var{expr_1}, @dots{}, @var{expr_n})
 
-Imprime una o m@'as expresiones @var{expr_1}, @dots{}, @var{expr_n}
-como un programa Fortran 90. El programa se obtiene a trav@'es de
-la salida est@'andar.
+Imprime una o más expresiones @var{expr_1}, @dots{}, @var{expr_n}
+como un programa Fortran 90. El programa se obtiene a través de
+la salida estándar.
 
-La funci@'on @code{f90} imprime su salida en el llamado formato libre de
-Fortran 90: no se presta atenci@'on alguna a las posiciones de caracteres
+La función @code{f90} imprime su salida en el llamado formato libre de
+Fortran 90: no se presta atención alguna a las posiciones de caracteres
 respecto de las columnas y los renglones largos se dividen a un ancho fijo con el
-car@'acter @code{&} indicando continuaci@'on de c@'odigo.
+carácter @code{&} indicando continuación de código.
 
-Ejec@'utese @code{load(f90)} antes de utilizar esta funci@'on.
+Ejecútese @code{load(f90)} antes de utilizar esta función.
 
-V@'ease tambi@'en @code{fortran}.
+Véase también @code{fortran}.
 
 Ejemplos:
 
@@ -45,8 +45,8 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
 (%o3)                         false
 @end example
 
-Expresiones m@'ultiples. Captura de la salida est@'andar a un fichero
-por medio de la funci@'on @code{with_stdout}.
+Expresiones múltiples. Captura de la salida estándar a un fichero
+por medio de la función @code{with_stdout}.
 
 @c ===beg===
 @c load (f90)$
@@ -70,4 +70,5 @@ end
 (%o4)                        foo.f90
 @end example
 @end deffn
+
 

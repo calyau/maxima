@@ -1,19 +1,19 @@
 @c English version 2011-09-03
 @menu
-* Introducci@'on a las expresiones::
+* Introducción a las expresiones::
 * Nombres y verbos::
 * Identificadores::
 * Desigualdades::
 * Funciones y variables para expresiones::
 @end menu
 
-@node Introducci@'on a las expresiones, Nombres y verbos, Expresiones, Expresiones
-@section Introducci@'on a las expresiones
+@node Introducción a las expresiones, Nombres y verbos, Expresiones, Expresiones
+@section Introducción a las expresiones
 
-Existe un cierto n@'umero de palabras reservadas
-que no deber@'{@dotless{i}}an
-utilizarse como nombres de variables. Su uso podr@'{@dotless{i}}a causar 
-errores sint@'acticos. 
+Existe un cierto número de palabras reservadas
+que no deberían
+utilizarse como nombres de variables. Su uso podría causar 
+errores sintácticos. 
 
 @example
 integrate            next           from                 diff            
@@ -24,9 +24,9 @@ unless               product        while                thru
 step                                                                     
 @end example
 
-La mayor@'{@dotless{i}}a de los objetos en Maxima son expresiones. Una secuencia
-de expresiones puede constituir una expresi@'on, separ@'andolas por
-comas y colocando par@'entesis alrededor de ellas. Esto es similar a 
+La mayoría de los objetos en Maxima son expresiones. Una secuencia
+de expresiones puede constituir una expresión, separándolas por
+comas y colocando paréntesis alrededor de ellas. Esto es similar a 
 las @i{expresiones con coma} en @b{C}. 
 
 @example
@@ -40,7 +40,7 @@ las @i{expresiones con coma} en @b{C}.
 @end example
 
 Incluso los bucles en Maxima son expresiones, aunque el valor que
- retornan (@code{done}) no es muy @'util. 
+ retornan (@code{done}) no es muy útil. 
 
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
@@ -48,7 +48,7 @@ Incluso los bucles en Maxima son expresiones, aunque el valor que
 (%o2)                         done
 @end example
 
-pero quiz@'as se quiera incluir un tercer t@'ermino en la @i{expresi@'on con coma} para que devuelva el valor de inter@'es. 
+pero quizás se quiera incluir un tercer término en la @i{expresión con coma} para que devuelva el valor de interés. 
 
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
@@ -65,25 +65,25 @@ pero quiz@'as se quiera incluir un tercer t@'ermino en la @i{expresi@'on con com
 
 
 
-@node Nombres y verbos, Identificadores, Introducci@'on a las expresiones, Expresiones
+@node Nombres y verbos, Identificadores, Introducción a las expresiones, Expresiones
 @section Nombres y verbos
 
 Maxima distingue entre operadores que son "nombres" y operadores que son "verbos".
 Un verbo es un operador que puede ser ejecutado.
-Un nombre es un operador que aparece como un s@'{@dotless{i}}mbolo en una expresi@'on pero sin ser ejecutado.
+Un nombre es un operador que aparece como un símbolo en una expresión pero sin ser ejecutado.
 Por defecto, los nombres de funciones son verbos.
-Un verbo puede transformarse en nombre utilizando el ap@'ostrofo o aplicando la funci@'on @code{nounify}.
-Un nombre puede transformarse en verbo aplicando la funci@'on @code{verbify}.
-La variable @code{nouns} hace que @code{ev} eval@'ue los nombres presentes en una expresi@'on.
+Un verbo puede transformarse en nombre utilizando el apóstrofo o aplicando la función @code{nounify}.
+Un nombre puede transformarse en verbo aplicando la función @code{verbify}.
+La variable @code{nouns} hace que @code{ev} evalúe los nombres presentes en una expresión.
 
-La forma verbal se distingue mediante la precedencia del car@'acter d@'olar @code{$} al correspondiente s@'{@dotless{i}}mbolo de Lisp.
-Por otro lado, la forma nominal se distingue mediante la precedencia del car@'acter porcentaje @code{%} al correspondiente s@'{@dotless{i}}mbolo de Lisp. 
-Algunos nombres gozan de propiedades especiales para su representaci@'on, como @code{'integrate} o @code{'derivative}
-(devuelto por @code{diff}), pero la mayor@'{@dotless{i}}a no.
-Por defecto, las formas nominal y verbal de una funci@'on son id@'enticas cuando se muestran en un terminal.
-La variable global @code{noundisp} hace que Maxima muestre los nombres precedidos del ap@'ostrofo @code{'}.
+La forma verbal se distingue mediante la precedencia del carácter dólar @code{$} al correspondiente símbolo de Lisp.
+Por otro lado, la forma nominal se distingue mediante la precedencia del carácter porcentaje @code{%} al correspondiente símbolo de Lisp. 
+Algunos nombres gozan de propiedades especiales para su representación, como @code{'integrate} o @code{'derivative}
+(devuelto por @code{diff}), pero la mayoría no.
+Por defecto, las formas nominal y verbal de una función son idénticas cuando se muestran en un terminal.
+La variable global @code{noundisp} hace que Maxima muestre los nombres precedidos del apóstrofo @code{'}.
 
-V@'eanse tambi@'en @code{noun}, @code{nouns}, @code{nounify} y @code{verbify}.
+Véanse también @code{noun}, @code{nouns}, @code{nounify} y @code{verbify}.
 
 Ejemplos:
 
@@ -147,22 +147,22 @@ Ejemplos:
 @section Identificadores
 
 
-En Maxima, los identificadores pueden contener caracteres alfab@'eticos, n@'umeros del 0 al 9 y cualquier otro car@'acter precedido de la barra invertida @code{\}.
+En Maxima, los identificadores pueden contener caracteres alfabéticos, números del 0 al 9 y cualquier otro carácter precedido de la barra invertida @code{\}.
 
-Un identificador puede comenzar con un car@'acter num@'erico si @'este va precedido de la barra invertida @code{\}.
-Los caracteres num@'ericos que ocupen la segunda posici@'on o posterior no necesitan ir precedidos de la barra invertida.
+Un identificador puede comenzar con un carácter numérico si éste va precedido de la barra invertida @code{\}.
+Los caracteres numéricos que ocupen la segunda posición o posterior no necesitan ir precedidos de la barra invertida.
 
-Los caracteres pueden declararse como alfab@'eticos con la funci@'on @code{declare}.
-As@'{@dotless{i}} declarados, no necesitan ir precedidos de la barra invertida en un identificador.
-En principio, los caracteres alfab@'eticos son las letras de @code{A} a @code{Z} y
+Los caracteres pueden declararse como alfabéticos con la función @code{declare}.
+Así declarados, no necesitan ir precedidos de la barra invertida en un identificador.
+En principio, los caracteres alfabéticos son las letras de @code{A} a @code{Z} y
 @code{a} a @code{z}, junto con  @code{%} y @code{_}.
 
-Maxima distingue min@'usculas y may@'usculas. Los identificadores @code{foo}, @code{FOO} y @code{Foo} son distintos.
-V@'ease @ref{Lisp y Maxima} para m@'as informaci@'on.
+Maxima distingue minúsculas y mayúsculas. Los identificadores @code{foo}, @code{FOO} y @code{Foo} son distintos.
+Véase @ref{Lisp y Maxima} para más información.
 
-Un identificador en Maxima es un s@'{@dotless{i}}mbolo Lisp que comienza con el s@'{@dotless{i}}mbolo d@'olar @code{$}.
-Cualquier otro s@'{@dotless{i}}mbolo de Lisp va precedido de la interrogaci@'on @code{?} cuando aparece en Maxima.
-V@'ease @ref{Lisp y Maxima} para m@'as informaci@'on.
+Un identificador en Maxima es un símbolo Lisp que comienza con el símbolo dólar @code{$}.
+Cualquier otro símbolo de Lisp va precedido de la interrogación @code{?} cuando aparece en Maxima.
+Véase @ref{Lisp y Maxima} para más información.
 
 Ejemplos:
 
@@ -224,7 +224,7 @@ Ejemplos:
 
 
 Maxima dispone de los operadores de desigualdad @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#} y @code{notequal}.
-V@'ease @code{if} para una descripci@'on de las expresiones condicionales.
+Véase @code{if} para una descripción de las expresiones condicionales.
 
 
 
@@ -236,17 +236,17 @@ V@'ease @code{if} para una descripci@'on de las expresiones condicionales.
 @section Funciones y variables para expresiones
 
 
-@deffn {Funci@'on} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {Función} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 provee un nombre
-alternativo para una (bien sea definida por el usuario o por el sistema) funci@'on, variable, arreglo, etc. 
-Cualquier n@'umero par de argumentos puede ser usado. 
+alternativo para una (bien sea definida por el usuario o por el sistema) función, variable, arreglo, etc. 
+Cualquier número par de argumentos puede ser usado. 
 @end deffn
 
 
 @defvr {Variable del sistema} aliases
 Valor por defecto: @code{[]}
 
-La variable @code{aliases} es la lista de @'atomos que tienen un "alias" definido por el usuario (establecido mediante las funciones  @code{alias}, @code{ordergreat} o @code{orderless} o declarando el @'atomo como un @code{noun} (nombre) con @code{declare}.
+La variable @code{aliases} es la lista de átomos que tienen un "alias" definido por el usuario (establecido mediante las funciones  @code{alias}, @code{ordergreat} o @code{orderless} o declarando el átomo como un @code{noun} (nombre) con @code{declare}.
 @end defvr
 
 
@@ -279,7 +279,7 @@ mientras que:
 (%o2)                       e + c + b
 @end example
 
-La funci@'on @code{kill} tambi@'en reconoce a @code{allbut}.
+La función @code{kill} también reconoce a @code{allbut}.
 
 @c ===beg===
 @c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
@@ -297,48 +297,48 @@ La funci@'on @code{kill} tambi@'en reconoce a @code{allbut}.
 
 La sentencia @code{kill(allbut(@var{a_1}, @var{a_2}, ...))}
 tiene el mismo efecto que @code{kill(all)}, excepto que no
-elimina los s@'{@dotless{i}}mbolos @var{a_1}, @var{a_2}, ... .
+elimina los símbolos @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
 
 
-@deffn {Funci@'on} args (@var{expr})
+@deffn {Función} args (@var{expr})
 
-Devuelve la lista de argumentos de @code{expr}, que puede ser cualquier tipo de expresi@'on a excepci@'on de un @'atomo. Tan solo se muestran los argumentos del operador principal; subexpresiones de @code{expr} aparecen como elementos o subexpresiones de elementos de la lista de argumentos.
+Devuelve la lista de argumentos de @code{expr}, que puede ser cualquier tipo de expresión a excepción de un átomo. Tan solo se muestran los argumentos del operador principal; subexpresiones de @code{expr} aparecen como elementos o subexpresiones de elementos de la lista de argumentos.
 
 El orden de los miembros de la lista puede depender de la variable global @code{inflag}.
 
 La llamada @code{args (@var{expr})} es equivalente a @code{substpart ("[", @var{expr}, 0)}.
 
-V@'eanse tambi@'en @code{substpart} y @code{op}.
+Véanse también @code{substpart} y @code{op}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} atom (@var{expr})
+@deffn {Función} atom (@var{expr})
 
-Devuelve @code{true} si @var{expr} es un @'atomo (n@'umero, nombre o cadena alfanum@'erica) y @code{false} en caso contario. As@'{@dotless{i}}, @code{atom(5)} devolver@'a @code{true}, mientras que @code{atom(a[1])} y @code{atom(sin(x))} dar@'an como resultado @code{false} (dando por hecho que tanto @code{a[1]} como @code{x} no tienen valores asignados).
+Devuelve @code{true} si @var{expr} es un átomo (número, nombre o cadena alfanumérica) y @code{false} en caso contario. Así, @code{atom(5)} devolverá @code{true}, mientras que @code{atom(a[1])} y @code{atom(sin(x))} darán como resultado @code{false} (dando por hecho que tanto @code{a[1]} como @code{x} no tienen valores asignados).
 
 @end deffn
 
 
 
-@deffn {Funci@'on} box (@var{expr})
-@deffnx {Funci@'on} box (@var{expr}, @var{a})
+@deffn {Función} box (@var{expr})
+@deffnx {Función} box (@var{expr}, @var{a})
 Devuelve @var{expr} encerrada en una caja.
-El valor devuelto es una expresi@'on con @code{box} como operador y @var{expr} como argumento.
-Se dibujar@'a una caja cuando @code{display2d} valga @code{true}.
+El valor devuelto es una expresión con @code{box} como operador y @var{expr} como argumento.
+Se dibujará una caja cuando @code{display2d} valga @code{true}.
 
 La llamada @code{box (@var{expr}, @var{a})}
-encierra @var{expr} en una caja etiquetada con el s@'{@dotless{i}}mbolo @var{a}.
-La etiqueta se recorta si es m@'as larga que el ancho de la caja.
+encierra @var{expr} en una caja etiquetada con el símbolo @var{a}.
+La etiqueta se recorta si es más larga que el ancho de la caja.
 
-La funci@'on @code{box} eval@'ua su argumento. Sin embargo, la expresi@'on 
-encerrada no se eval@'ua, siendo exclu@'{@dotless{i}}da de los c@'alculos.
+La función @code{box} evalúa su argumento. Sin embargo, la expresión 
+encerrada no se evalúa, siendo excluída de los cálculos.
 
-La variable @code{boxchar} guarda el car@'acter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
+La variable @code{boxchar} guarda el carácter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
 
 Ejemplos:
 
@@ -391,49 +391,49 @@ Ejemplos:
 @defvr {Variable opcional} boxchar
 Valor por defecto: @code{"}
 
-La variable @code{boxchar} guarda el car@'acter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
+La variable @code{boxchar} guarda el carácter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
 
-Todas las cajas en una expresi@'on se dibujan con el valor actual de @code{boxchar}, car@'acter que no se almacena con las expresi@'on encerrada.
+Todas las cajas en una expresión se dibujan con el valor actual de @code{boxchar}, carácter que no se almacena con las expresión encerrada.
 
 @end defvr
 
 
 
-@deffn {Funci@'on} collapse (@var{expr})
+@deffn {Función} collapse (@var{expr})
 
 Colapsa @var{expr} haciendo que todas las subexpresiones que sean iguales
 compartan las mismas celdas, ahorrando espacio. @code{collapse} es una
-subrutina utilizada por la instrucci@'on @code{optimize}. El uso de 
-@code{collapse} puede ser @'util despu@'es de  cargar un fichero 
+subrutina utilizada por la instrucción @code{optimize}. El uso de 
+@code{collapse} puede ser útil después de  cargar un fichero 
 creado con @code{save}. Se pueden colapsar varias expresiones de forma
 conjunta utilizando @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.
-Tambi@'en se pueden colapsar los elementos del array @code{A}
+También se pueden colapsar los elementos del array @code{A}
 haciendo @code{collapse (listarray ('A))}.
 @end deffn
 
 
 
 
-@deffn {Funci@'on} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
-Es similar a @code{isolate (@var{expr}, @var{x})}, excepto que permite al usuario aislar m@'as de una variable simult@'aneamente. Puede ser @'util para hacer un cambio de variables en integrales m@'ultiples en las que tales variables dependan de de dos o m@'as variables de integraci@'on.  Esta funci@'on se carga autom@'aticamente desde 
-@file{simplification/disol.mac}.  Se dispone de una demostyraci@'on en @code{demo("disol")$}.
+@deffn {Función} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+Es similar a @code{isolate (@var{expr}, @var{x})}, excepto que permite al usuario aislar más de una variable simultáneamente. Puede ser útil para hacer un cambio de variables en integrales múltiples en las que tales variables dependan de de dos o más variables de integración.  Esta función se carga automáticamente desde 
+@file{simplification/disol.mac}.  Se dispone de una demostyración en @code{demo("disol")$}.
 
 @end deffn
 
-@deffn {Funci@'on} dispform (@var{expr})
+@deffn {Función} dispform (@var{expr})
 @deffnx {Function} dispform (@var{expr}, all)
 
-@code{dispform(@var{expr})} devuelve la representaci@'on externa de
+@code{dispform(@var{expr})} devuelve la representación externa de
 @var{expr} respecto del operador del nivel superior.
-@code{dispform(@var{expr}, all)} devuelve la representaci@'on
+@code{dispform(@var{expr}, all)} devuelve la representación
 externa respecto de todos los operadores que haya en @var{expr}.
 
-V@'ease tambi@'en @code{part}, @code{inpart} y @code{inflag}.
+Véase también @code{part}, @code{inpart} y @code{inflag}.
 
 Ejemplos:
 
-La representaci@'on interna de @code{- x} es "menos uno 
-multiplicado por @code{x}", mientras que la representaci@'on externa es
+La representación interna de @code{- x} es "menos uno 
+multiplicado por @code{x}", mientras que la representación externa es
 "menos @code{x}".
 
 @c ===beg===
@@ -455,9 +455,9 @@ multiplicado por @code{x}", mientras que la representaci@'on externa es
 (%o4)                         false
 @end example
 
-La representaci@'on interna de @code{sqrt(x)} es 
-"@code{x} elevado a 1/2", mientras que su representaci@'on
-externa es "ra@'{@dotless{i}}z de @code{x}".
+La representación interna de @code{sqrt(x)} es 
+"@code{x} elevado a 1/2", mientras que su representación
+externa es "raíz de @code{x}".
 
 @c ===beg===
 @c sqrt (x);
@@ -478,7 +478,7 @@ externa es "ra@'{@dotless{i}}z de @code{x}".
 (%o4)                         false
 @end example
 
-Utilizaci@'on del argumento opcional @code{all}.
+Utilización del argumento opcional @code{all}.
 
 @c ===beg===
 @c expr : sin (sqrt (x));
@@ -500,8 +500,8 @@ Utilizaci@'on del argumento opcional @code{all}.
 
 
 
-@deffn {Funci@'on} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-Selecciona la misma expresi@'on que @code{part}, pero en lugar de devolver esa expresi@'on como su valor, devuelve la expresi@'on completa con la subexpresi@'on seleccionada dentro de una caja. La caja es parte de la expresi@'on.
+@deffn {Función} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+Selecciona la misma expresión que @code{part}, pero en lugar de devolver esa expresión como su valor, devuelve la expresión completa con la subexpresión seleccionada dentro de una caja. La caja es parte de la expresión.
 
 @example
 (%i1) dpart (x+y/z^2, 1, 2, 1);
@@ -519,7 +519,7 @@ Selecciona la misma expresi@'on que @code{part}, pero en lugar de devolver esa e
 @defvr {Variable opcional} exptisolate
 Valor por defecto: @code{false}
 
-V@'ease @code{isolate}.
+Véase @code{isolate}.
 
 @end defvr
 
@@ -528,7 +528,7 @@ V@'ease @code{isolate}.
 @defvr {Variable opcional} exptsubst
 Valor por defecto: @code{false}
 
-Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code{%e^x} en @code{%e^(a x)}.
+Si @code{exptsubst} vale @code{true} permite la sustitución @code{y} por @code{%e^x} en @code{%e^(a x)}.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -536,10 +536,10 @@ Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code
 
 
 
-@deffn {Funci@'on} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@deffn {Función} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 
 @code{freeof (@var{x_1}, @var{expr})}
-devuelve @code{true} si ninguna subexpresi@'on de @var{expr} coincide con @var{x_1},
+devuelve @code{true} si ninguna subexpresión de @var{expr} coincide con @var{x_1},
 o si @var{x_1} aparece como variable muda en @var{expr}, o si @var{x_1} no es ni
 una forma nominal ni verbal de cualesquiera operadores presentes en @var{expr},
 devolviendo @code{false} en otro caso.
@@ -551,16 +551,16 @@ Los argumentos @var{x_1}, ..., @var{x_n}
 pueden seer nombres de funciones y variables, nombres subindicados,
 operadores (encerrados entre comillas dobles) o expresiones generales.
 
-La funci@'on @code{freeof} eval@'ua sus argumentos.
+La función @code{freeof} evalúa sus argumentos.
 
-Una variable es una variable muda en una expresi@'on si no tiene valor asignado fuera de la expresi@'on.
-Variable mudas reconocidas por  @code{freeof} son el @'{@dotless{i}}ndice de una suma o producto, la variable l@'{@dotless{i}}mite en @code{limit},
-la variable de integraci@'on en la versi@'on de integral definida de @code{integrate},
+Una variable es una variable muda en una expresión si no tiene valor asignado fuera de la expresión.
+Variable mudas reconocidas por  @code{freeof} son el índice de una suma o producto, la variable límite en @code{limit},
+la variable de integración en la versión de integral definida de @code{integrate},
 la variable original en @code{laplace},
 variables formales en expresiones @code{at} y
 los argumentos de las expresiones  @code{lambda}.
 
-La versi@'on indefinida de  @code{integrate} no est@'a libre de su variable de integraci@'on.
+La versión indefinida de  @code{integrate} no está libre de su variable de integración.
 
 Ejemplos:
 
@@ -587,7 +587,7 @@ Los argumentos son nombres de funciones, variables, nombres subindicados, operao
 (%o8)                         true
 @end example
 
-@code{freeof} eval@'ua sus argumentos.
+@code{freeof} evalúa sus argumentos.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -597,7 +597,7 @@ Los argumentos son nombres de funciones, variables, nombres subindicados, operao
 @end example
 
 @code{freeof} no considera funciones equivalentes.
-La simplificaci@'on puede dar una expresi@'on equivalente pero diferente.
+La simplificación puede dar una expresión equivalente pero diferente.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -615,8 +615,8 @@ La simplificaci@'on puede dar una expresi@'on equivalente pero diferente.
 (%o6)                         true
 @end example
 
-Un sumatorio o integral definida est@'a libre de su variable muda.
-Una integral indefinida de  @code{integrate} no est@'a libre de su variable de integraci@'on.
+Un sumatorio o integral definida está libre de su variable muda.
+Una integral indefinida de  @code{integrate} no está libre de su variable de integración.
 
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
@@ -634,18 +634,18 @@ Una integral indefinida de  @code{integrate} no est@'a libre de su variable de i
 @defvr {Variable opcional} inflag
 Valor por defecto: @code{false}
 
-Si @code{inflag} vale @code{true}, las funciones para la extracci@'on de partes inspeccionan la forma interna de @code{expr}.
+Si @code{inflag} vale @code{true}, las funciones para la extracción de partes inspeccionan la forma interna de @code{expr}.
 
-N@'otese que el simplificador reordena expresiones.
-As@'{@dotless{i}},  @code{first (x + y)} devuelve @code{x} si @code{inflag}
+Nótese que el simplificador reordena expresiones.
+Así,  @code{first (x + y)} devuelve @code{x} si @code{inflag}
 vale @code{true} y @code{y} si @code{inflag} vale @code{false}.
 (@code{first (y + x)} devuelve el mismo resultado.)
 
-Adem@'as, d@'andole a  @code{inflag} el valor @code{true} y llamando a @code{part} o  a @code{substpart} es lo mismo que llamar a @code{inpart} o a @code{substinpart}.
+Además, dándole a  @code{inflag} el valor @code{true} y llamando a @code{part} o  a @code{substpart} es lo mismo que llamar a @code{inpart} o a @code{substinpart}.
 
 Las funciones que se ven afectadas por el valor de @code{inflag} son:
 @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
-la construcci@'on @code{for} ... @code{in},
+la construcción @code{for} ... @code{in},
 @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} y @code{pickapart}.
 
 @c NEED EXAMPLES HERE
@@ -655,8 +655,8 @@ la construcci@'on @code{for} ... @code{in},
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-Similar a @code{part}, pero trabaja con la representaci@'on interna de la expresi@'on, siendo m@'as r@'apida. Se debe tener cuidado con el orden de subexpresiones en sumas y productos, pues el orden de las variables en la forma interna es normalmente diferente al que se muestra por el terminal, y cuando se trata con el signo menos unario, resta y divisi@'on, pues estos operadores desaparecen de la expresi@'on. Las llamadas @code{part (x+y, 0)} o @code{inpart (x+y, 0)} devuelven @code{+}, siendo necesario encerrar el operador entre comillas dobles cuando se haga referencia a@'el. Por ejemplo,
+@deffn {Función} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+Similar a @code{part}, pero trabaja con la representación interna de la expresión, siendo más rápida. Se debe tener cuidado con el orden de subexpresiones en sumas y productos, pues el orden de las variables en la forma interna es normalmente diferente al que se muestra por el terminal, y cuando se trata con el signo menos unario, resta y división, pues estos operadores desaparecen de la expresión. Las llamadas @code{part (x+y, 0)} o @code{inpart (x+y, 0)} devuelven @code{+}, siendo necesario encerrar el operador entre comillas dobles cuando se haga referencia aél. Por ejemplo,
 @code{... if inpart (%o9,0) = "+" then ...}.
 
 Ejemplos:
@@ -682,14 +682,14 @@ Ejemplos:
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} isolate (@var{expr}, @var{x})
-Devuelve @var{expr} con subexpresiones que son sumas y que no contienen variables reemplazadas por etiquetas de expresiones intermedias (tales etiquetas son s@'{@dotless{i}}mbolos at@'omicos como @code{%t1}, @code{%t2}, ...).  Esta funci@'on es de utilidad para evitar la expansi@'on innecesaria de subexpresiones que no contienen la variable de inter@'es. Puesto que las etiquetas intermedias toman el valor de subexpresiones pueden ser todas sustituidas evaluando la expresi@'on en la que aparecen.
+@deffn {Función} isolate (@var{expr}, @var{x})
+Devuelve @var{expr} con subexpresiones que son sumas y que no contienen variables reemplazadas por etiquetas de expresiones intermedias (tales etiquetas son símbolos atómicos como @code{%t1}, @code{%t2}, ...).  Esta función es de utilidad para evitar la expansión innecesaria de subexpresiones que no contienen la variable de interés. Puesto que las etiquetas intermedias toman el valor de subexpresiones pueden ser todas sustituidas evaluando la expresión en la que aparecen.
 
-Si la variable @code{exptisolate}, cuyo valor por defecto es @code{false}, vale @code{true} har@'a que @code{isolate} busque exponentes de @'atomos (como @code{%e}) que contengan la variable.
+Si la variable @code{exptisolate}, cuyo valor por defecto es @code{false}, vale @code{true} hará que @code{isolate} busque exponentes de átomos (como @code{%e}) que contengan la variable.
 
-Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de los productos. V@'ease @code{isolate_wrt_times}.
+Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} también aislará respecto de los productos. Véase @code{isolate_wrt_times}.
 
-Para ejemplos, ejec@'utese @code{example (isolate)}.
+Para ejemplos, ejecútese @code{example (isolate)}.
 
 @end deffn
 
@@ -697,7 +697,7 @@ Para ejemplos, ejec@'utese @code{example (isolate)}.
 @defvr {Variable opcional} isolate_wrt_times
 Valor por defecto: @code{false}
 
-Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de los productos. Comp@'arese el comportamiento de @code{isolate} al cambiar el valor de esta variable global en el siguiente ejemplo,
+Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} también aislará respecto de los productos. Compárese el comportamiento de @code{isolate} al cambiar el valor de esta variable global en el siguiente ejemplo,
 
 @example
 (%i1) isolate_wrt_times: true$
@@ -729,7 +729,7 @@ Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en 
 @defvr {Variable opcional} listconstvars
 Valor por defecto: @code{false}
 
-Si @code{listconstvars} vale @code{true}, har@'a que @code{listofvars} incluya @code{%e}, @code{%pi}, @code{%i} y cualquier otra variable que sea declarada constante de las que aparezcan en el argumento de @code{listofvars}.
+Si @code{listconstvars} vale @code{true}, hará que @code{listofvars} incluya @code{%e}, @code{%pi}, @code{%i} y cualquier otra variable que sea declarada constante de las que aparezcan en el argumento de @code{listofvars}.
 Estas constantes se omiten por defecto.
 
 @end defvr
@@ -737,8 +737,8 @@ Estas constantes se omiten por defecto.
 @defvr {Variable opcional} listdummyvars
 Valor por defecto: @code{true}
 
-Si @code{listdummyvars} vale @code{false}, las "variables mudas" de la expresi@'on no ser@'an inclu@'{@dotless{i}}das en la lista devuelta por @code{listofvars}. (La definici@'on de "variables mudas" se encuentra en la descripci@'on de @code{freeof}.
-"Variables mudas" son objetos matem@'aticos como el @'{@dotless{i}}ndice de un sumatorio o producto, una variable l@'{@dotless{i}}mite o la variable de una integraci@'on definida.)
+Si @code{listdummyvars} vale @code{false}, las "variables mudas" de la expresión no serán incluídas en la lista devuelta por @code{listofvars}. (La definición de "variables mudas" se encuentra en la descripción de @code{freeof}.
+"Variables mudas" son objetos matemáticos como el índice de un sumatorio o producto, una variable límite o la variable de una integración definida.)
 Ejemplo:
 
 @example
@@ -756,15 +756,15 @@ Ejemplo:
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} listofvars (@var{expr})
+@deffn {Función} listofvars (@var{expr})
 Devuelve una lista con las variables presentes en @var{expr}.
 
 Si la variable @code{listconstvars} vale @code{true} entonces
-@code{listofvars} incluir@'a @code{%e}, @code{%pi}, @code{%i}
+@code{listofvars} incluirá @code{%e}, @code{%pi}, @code{%i}
 y cualquier otra variable declarada constante de las que aparezcan
 en @var{expr}.  Estas constantes se omiten por defecto.
 
-V@'ease tambi@'en la variable opcional @code{listdummyvars} para
+Véase también la variable opcional @code{listdummyvars} para
 excluir o incluir variables ficticias en la lista de variables.
 
 Ejemplo:
@@ -778,33 +778,33 @@ Ejemplo:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Funci@'on} lfreeof (@var{list}, @var{expr})
+@deffn {Función} lfreeof (@var{list}, @var{expr})
 Para cada miembro  @var{m} de @var{list}, realiza la llamada @code{freeof (@var{m}, @var{expr})}.
-Devuelve @code{false} si alguna de estas llamadas a @code{freeof} retorn@'o @code{false}, y @code{true} en caso contrario.
+Devuelve @code{false} si alguna de estas llamadas a @code{freeof} retornó @code{false}, y @code{true} en caso contrario.
 @end deffn
 
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
-Similar a @code{dpart} pero utiliza una caja etiquetada. Una caja etiquetada es similar a la que produce @code{dpart}, pero con un nombre en la l@'{@dotless{i}}nea superior.
+@deffn {Función} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Similar a @code{dpart} pero utiliza una caja etiquetada. Una caja etiquetada es similar a la que produce @code{dpart}, pero con un nombre en la línea superior.
 @end deffn
 
 
 
 
 @defvr {Propiedad} mainvar
-Se pueden declarar variables de tipo @code{mainvar}.  El orden de los @'atomos 
-es: n@'umeros < constantes (como @code{%e} o @code{%pi}) <
-escalares < otras variables < "mainvars".  Por ejemplo, comp@'arese @code{expand ((X+Y)^4)}
-con @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Nota: Se debe tener cuidado si se quiere hacer uso de esta declaraci@'on. Por ejemplo, si se resta una expresi@'on en la que @code{x} ha sido declarada como @code{mainvar} de otra en la que @code{x} no es @code{mainvar}, puede ser necesario volver a simplificar, @code{ev (expr, simp)}, a fin de obtener cancelaciones.  Adem@'as, si se guarda una expresi@'on en la que @code{x} es @code{mainvar}, quiz@'as sea necesario guardar tambi@'en @code{x}.)
+Se pueden declarar variables de tipo @code{mainvar}.  El orden de los átomos 
+es: números < constantes (como @code{%e} o @code{%pi}) <
+escalares < otras variables < "mainvars".  Por ejemplo, compárese @code{expand ((X+Y)^4)}
+con @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Nota: Se debe tener cuidado si se quiere hacer uso de esta declaración. Por ejemplo, si se resta una expresión en la que @code{x} ha sido declarada como @code{mainvar} de otra en la que @code{x} no es @code{mainvar}, puede ser necesario volver a simplificar, @code{ev (expr, simp)}, a fin de obtener cancelaciones.  Además, si se guarda una expresión en la que @code{x} es @code{mainvar}, quizás sea necesario guardar también @code{x}.)
 
 @end defvr
 
 
 
 @defvr {Propiedad} noun
-El s@'{@dotless{i}}mbolo @code{noun} es una de las opciones de la instrucci@'on @code{declare}. Hace que una funci@'on se declare como "nombre", lo que significa que no se evaluar@'a autom@'aticamente.
+El símbolo @code{noun} es una de las opciones de la instrucción @code{declare}. Hace que una función se declare como "nombre", lo que significa que no se evaluará automáticamente.
 
 @end defvr
 
@@ -814,23 +814,23 @@ El s@'{@dotless{i}}mbolo @code{noun} es una de las opciones de la instrucci@'on 
 @defvr {Variable opcional} noundisp
 Valor por defecto: @code{false}
 
-Si @code{noundisp} vale @code{true}, los nombres se muestran precedidos de un ap@'ostrofo. Siempre debe valer @code{true} cuando se quiera representar la definici@'on de funciones.
+Si @code{noundisp} vale @code{true}, los nombres se muestran precedidos de un apóstrofo. Siempre debe valer @code{true} cuando se quiera representar la definición de funciones.
 
 @end defvr
 
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} nounify (@var{f})
-Devuelve la forma nominal de la funci@'on cuyo nombre es @var{f}.  Puede ser @'util cuando se quiera hacer referencia al nombre de una funci@'on sin que @'esta se ejecute.  N@'otese que algunas funciones verbales devolver@'an su forma nominal si no pueden ser evaluadas para ciertos argumentos.  Esta es tambi@'en la expresi@'on que se obtiene cuando la llamada a una funci@'on va precedida por del ap@'ostrofo.
+@deffn {Función} nounify (@var{f})
+Devuelve la forma nominal de la función cuyo nombre es @var{f}.  Puede ser útil cuando se quiera hacer referencia al nombre de una función sin que ésta se ejecute.  Nótese que algunas funciones verbales devolverán su forma nominal si no pueden ser evaluadas para ciertos argumentos.  Esta es también la expresión que se obtiene cuando la llamada a una función va precedida por del apóstrofo.
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Funci@'on} nterms (@var{expr})
-Devuelve el n@'umero de t@'erminos que  @var{expr} llegar@'{@dotless{i}}a a tener si fuese completamente expandida y no hubiesen cancelaciones ni combinaciones de t@'erminos semejantes.
-N@'otese que expresiones como @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
-cuentan como un s@'olo t@'ermino, independientemente de cu@'antos t@'erminos tenga a su vez @var{expr} en caso de tratarse de una suma.
+@deffn {Función} nterms (@var{expr})
+Devuelve el número de términos que  @var{expr} llegaría a tener si fuese completamente expandida y no hubiesen cancelaciones ni combinaciones de términos semejantes.
+Nótese que expresiones como @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
+cuentan como un sólo término, independientemente de cuántos términos tenga a su vez @var{expr} en caso de tratarse de una suma.
 
 @end deffn
 
@@ -838,22 +838,22 @@ cuentan como un s@'olo t@'ermino, independientemente de cu@'antos t@'erminos ten
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} op (@var{expr})
-Devuelve el operador principal de la expresi@'on @var{expr}. La llamada
+@deffn {Función} op (@var{expr})
+Devuelve el operador principal de la expresión @var{expr}. La llamada
 @code{op (@var{expr})} equivale a @code{part (@var{expr}, 0)}. 
 
-La funci@'on @code{op} devuelve una cadena si el operador principal es un operador prefijo, infijo (binario o @code{n}-ario), postfijo, "bi-fijo" o "no-fijo" ("bi-fijo"  se refiere a un par de s@'{@dotless{i}}mbolos que encierran su o sus argumentos, y "no-fijo" es un operador que no necesita argumentos).
-Si @var{expr} es la expresi@'on de una funci@'on
-subindicada, @code{op} devuelve la funci@'on subindicada;
-en cuyo caso el valor devuelto no es un @'atomo.
-En otro caso, @var{expr} es la expresi@'on de una funci@'on array u
-ordinaria, y entonces @code{op} devuelve un s@'{@dotless{i}}mbolo.
+La función @code{op} devuelve una cadena si el operador principal es un operador prefijo, infijo (binario o @code{n}-ario), postfijo, "bi-fijo" o "no-fijo" ("bi-fijo"  se refiere a un par de símbolos que encierran su o sus argumentos, y "no-fijo" es un operador que no necesita argumentos).
+Si @var{expr} es la expresión de una función
+subindicada, @code{op} devuelve la función subindicada;
+en cuyo caso el valor devuelto no es un átomo.
+En otro caso, @var{expr} es la expresión de una función array u
+ordinaria, y entonces @code{op} devuelve un símbolo.
 
-La funci@'on @code{op} observa el valor de la variable global @code{inflag}.
+La función @code{op} observa el valor de la variable global @code{inflag}.
 
-La funci@'on @code{op} eval@'ua sus argumentos.
+La función @code{op} evalúa sus argumentos.
 
-V@'ease tambi@'en @code{args}.
+Véase también @code{args}.
 
 Ejemplos:
 
@@ -906,14 +906,14 @@ Ejemplos:
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} operatorp (@var{expr}, @var{op})
-@deffnx {Funci@'on} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+@deffn {Función} operatorp (@var{expr}, @var{op})
+@deffnx {Función} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
 La llamada @code{operatorp (@var{expr}, @var{op})} devuelve @code{true}
 si @var{op} es igual al operador de @var{expr}.
 
 La llamada @code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} devuelve @code{true}
-si alg@'un elemento  @var{op_1}, ..., @var{op_n} es igual al operador de @var{expr}.
+si algún elemento  @var{op_1}, ..., @var{op_n} es igual al operador de @var{expr}.
 
 @end deffn
 
@@ -922,7 +922,7 @@ si alg@'un elemento  @var{op_1}, ..., @var{op_n} es igual al operador de @var{ex
 @defvr {Variable opcional} opsubst
 Valor por defecto: @code{true}
 
-Si @code{opsubst} vale @code{false}, @code{subst} no sustituye el operdor de una expresi@'on, de manera que @code{(opsubst: false, subst (x^2, r, r+r[0]))} trabajar@'a correctamente.
+Si @code{opsubst} vale @code{false}, @code{subst} no sustituye el operdor de una expresión, de manera que @code{(opsubst: false, subst (x^2, r, r+r[0]))} trabajará correctamente.
 
 @end defvr
 
@@ -930,89 +930,89 @@ Si @code{opsubst} vale @code{false}, @code{subst} no sustituye el operdor de una
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} optimize (@var{expr})
-Devuelve una expresi@'on que produce el mismo valor y efectos secundarios que @var{expr}, pero de forma m@'as eficiente al evitar recalcular subexpresiones comunes. La funci@'on @code{optimize} tambi@'en tiene el efecto secundario de colapsar su argumento de manera que se compartan todas sus subexpresiones comunes.
-H@'agase @code{example (optimize)} para ver ejemplos.
+@deffn {Función} optimize (@var{expr})
+Devuelve una expresión que produce el mismo valor y efectos secundarios que @var{expr}, pero de forma más eficiente al evitar recalcular subexpresiones comunes. La función @code{optimize} también tiene el efecto secundario de colapsar su argumento de manera que se compartan todas sus subexpresiones comunes.
+Hágase @code{example (optimize)} para ver ejemplos.
 
 @end deffn
 
 @defvr {Variable opcional} optimprefix
 Valor por defecto: @code{%}
 
-La variable @code{optimprefix} es el prefijo utilizado para los s@'{@dotless{i}}mbolos generados por la instrucci@'on @code{optimize}.
+La variable @code{optimprefix} es el prefijo utilizado para los símbolos generados por la instrucción @code{optimize}.
 
 @end defvr
 
-@deffn {Funci@'on} ordergreat (@var{v_1}, ..., @var{v_n})
-@deffnx {Funci@'on} orderless (@var{v_1}, ..., @var{v_n})
+@deffn {Función} ordergreat (@var{v_1}, ..., @var{v_n})
+@deffnx {Función} orderless (@var{v_1}, ..., @var{v_n})
 
-@code{ordergreat} cambia el orden can@'onico de las expresiones de
+@code{ordergreat} cambia el orden canónico de las expresiones de
 Maxima, de manera que @var{v_1} prevalece sobre @var{v_2}, que
 prevalece sobre ..., que prevalece sobre @var{v_n}, que prevalece
-sobre cualquier otro s@'{@dotless{i}}mbolo no presente en la
+sobre cualquier otro símbolo no presente en la
 lista de argumentos.
 
-@code{orderless} cambia el orden can@'onico de las expresiones de
+@code{orderless} cambia el orden canónico de las expresiones de
 Maxima, de manera que @var{v_1} precede a @var{v_2}, que precede a ...,
 que precede a @var{v_n}, que precede a cualquier otra variable no 
 presente en la lista de argumentos.
 
 El orden impuesto por @code{ordergreat} y @code{orderless} se 
 destruye con @code{unorder}. @code{ordergreat} y @code{orderless}
-s@'olo se pueden llamar una vez, a menos que se invoque a @code{unorder}.
-La @'ultima llamada a @code{ordergreat} y @code{orderless} es la que
+sólo se pueden llamar una vez, a menos que se invoque a @code{unorder}.
+La última llamada a @code{ordergreat} y @code{orderless} es la que
 se mantiene activa.
 
-V@'ease tambi@'en @code{ordergreatp}.
+Véase también @code{ordergreatp}.
 
 @end deffn
 
 
-@deffn {Funci@'on} ordergreatp (@var{expr_1}, @var{expr_2})
-@deffnx {Funci@'on} orderlessp (@var{expr_1}, @var{expr_2})
+@deffn {Función} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffnx {Función} orderlessp (@var{expr_1}, @var{expr_2})
 
 @code{ordergreatp} devuelve @code{true} si @var{expr_1} prevalece sobre
-@var{expr_2} en el orden can@'onico de las expresiones de Maxima, o
+@var{expr_2} en el orden canónico de las expresiones de Maxima, o
 @code{false} en caso contrario.
 
 @code{orderlessp} devuelve @code{true} si @var{expr_1} precede a
-@var{expr_2} en el orden can@'onico de las expresiones de Maxima, o
+@var{expr_2} en el orden canónico de las expresiones de Maxima, o
 @code{false} en caso contrario.
 
-Todos los @'atomos y expresiones de Maxima son comparables bajo 
+Todos los átomos y expresiones de Maxima son comparables bajo 
 @code{ordergreatp} y @code{orderlessp}, aunque existen ejemplos aislados
 de expresiones para los que estos predicados no son transitivos.
 
-La ordenaci@'on can@'onica de @'atomos (s@'{@dotless{i}}mbolos, n@'umeros
+La ordenación canónica de átomos (símbolos, números
 literales y cadenas) es la siguiente: (enteros y decimales en coma flotante)
-preceden a (n@'umeros decimales grandes o @i{bigfloats}), que preceden a (constantes
+preceden a (números decimales grandes o @i{bigfloats}), que preceden a (constantes
 declaradas), que preceden a (cadenas), que preceden a (escalares declarados), que preceden a 
-(primer argumento de @code{orderless}), que precede a ..., que precede a (@'ultimo
-argumento de @code{orderless}), que precede a (otros s@'{@dotless{i}}mbolos), que
-preceden a (@'ultimo argumento de @code{ordergreat}), que precede a ..., que
+(primer argumento de @code{orderless}), que precede a ..., que precede a (último
+argumento de @code{orderless}), que precede a (otros símbolos), que
+preceden a (último argumento de @code{ordergreat}), que precede a ..., que
 precede a (primer argumento de @code{ordergreat}), que precede a (variables
 principales declaradas).
 
-Para las expresiones no at@'omicas, la ordenaci@'on can@'onica se deriva de la
-ordenaci@'on de @'atomos. Para los operadores nativos @code{+}, @code{*} y @code{^},
-los criterios de ordenaci@'on no son sencillos de resumir.
-Para otros operadores nativos, y todas las dem@'as funciones y operadores,
+Para las expresiones no atómicas, la ordenación canónica se deriva de la
+ordenación de átomos. Para los operadores nativos @code{+}, @code{*} y @code{^},
+los criterios de ordenación no son sencillos de resumir.
+Para otros operadores nativos, y todas las demás funciones y operadores,
 las expresiones se ordenan por sus argumentos (empezando por el primero),
-despu@'es por el nombre del operador o funci@'on. En caso de expresiones
-con sub@'{@dotless{i}}ndices, el s@'{@dotless{i}}mbolo subindicado se
-considera operador y el sub@'{@dotless{i}}ndice un argumento del mismo.
+después por el nombre del operador o función. En caso de expresiones
+con subíndices, el símbolo subindicado se
+considera operador y el subíndice un argumento del mismo.
 
-El orden can@'onico de expresiones se modifica mediante las funciones
-@code{ordergreat} y @code{orderless}, as@'{@dotless{i}} como por las 
+El orden canónico de expresiones se modifica mediante las funciones
+@code{ordergreat} y @code{orderless}, así como por las 
 declaraciones @code{mainvar}, @code{constant} y @code{scalar}.
 
-V@'ease tambi@'en @code{sort}.
+Véase también @code{sort}.
 
 Ejemplos:
 
-Ordenaci@'on de s@'{@dotless{i}}mbolos comunes y constantes.
-N@'otese que @code{%pi} no se ordena en funci@'on de su valor
-num@'erico.
+Ordenación de símbolos comunes y constantes.
+Nótese que @code{%pi} no se ordena en función de su valor
+numérico.
 
 @c ===beg===
 @c stringdisp : true;
@@ -1066,7 +1066,7 @@ Efecto producido por las declaraciones @code{mainvar}, @code{constant} y @code{s
 (%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
 @end example
 
-Ordenaci@'on de expresiones no at@'omicas.
+Ordenación de expresiones no atómicas.
 
 @c ===beg===
 @c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
@@ -1084,34 +1084,34 @@ Ordenaci@'on de expresiones no at@'omicas.
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Función} part (@var{expr}, @var{n_1}, ..., @var{n_k})
 Devuelve partes de la forma mostrada de @code{expr}. Obtiene la 
-parte de @code{expr} que se especifica por los @'{@dotless{i}}ndices 
+parte de @code{expr} que se especifica por los índices 
 @var{n_1}, ..., @var{n_k}.  Primero se obtiene la parte @var{n_1} de 
-@code{expr}, despu@'es la parte @var{n_2} del resultado anterior, 
-y as@'{@dotless{i}} sucesivamente.  El resultado que se obtiene es 
+@code{expr}, después la parte @var{n_2} del resultado anterior, 
+y así sucesivamente.  El resultado que se obtiene es 
 la parte @var{n_k} de ... la parte @var{n_2} de la parte @var{n_1} de @code{expr}.
-Si no se especifican @'{@dotless{i}}ndices, devuelve @code{expr}.
+Si no se especifican índices, devuelve @code{expr}.
 
-La funci@'on @code{part} se puede utilizar para obtener un elemento 
+La función @code{part} se puede utilizar para obtener un elemento 
 de una lista, una fila de una matriz, etc.
 
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
-Si el @'ultimo argumento de la funci@'on @code{part} es una lista de 
-@'{@dotless{i}}ndices, entonces se toman varias subexpresiones, cada 
-una de las cuales correspondiente a un @'{@dotless{i}}ndice de la lista.
-As@'{@dotless{i}}, @code{part (x + y + z, [1, 3])} devuelve @code{z+x}.
+Si el último argumento de la función @code{part} es una lista de 
+índices, entonces se toman varias subexpresiones, cada 
+una de las cuales correspondiente a un índice de la lista.
+Así, @code{part (x + y + z, [1, 3])} devuelve @code{z+x}.
 
-La variable @code{piece} guarda la @'ultima expresi@'on seleccionada
-con la funci@'on @code{part}. Se actualiza durante la ejecuci@'on de
-la funci@'on, por lo que puede ser referenciada en la misma funci@'on.
+La variable @code{piece} guarda la última expresión seleccionada
+con la función @code{part}. Se actualiza durante la ejecución de
+la función, por lo que puede ser referenciada en la misma función.
 
 Si @code{partswitch} vale @code{true} entonces de devuelve @code{end}
-cuando no exista la parte seleccionada de una expresi@'on, si vale
-@code{false} se mostrar@'a un mensaje de error.
+cuando no exista la parte seleccionada de una expresión, si vale
+@code{false} se mostrará un mensaje de error.
 
-V@'eanse tambi@'en @code{inpart}, @code{substpart}, @code{substinpart},
+Véanse también @code{inpart}, @code{substpart}, @code{substinpart},
 @code{dpart} y @code{lpart}.
 
 Ejemplos:
@@ -1130,7 +1130,7 @@ Ejemplos:
 (%o3)                                  2
 @end example
 
-La instrucci@'on @code{example (part)} muestra m@'as ejemplos.
+La instrucción @code{example (part)} muestra más ejemplos.
 
 @end deffn
 
@@ -1138,11 +1138,11 @@ La instrucci@'on @code{example (part)} muestra m@'as ejemplos.
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} partition (@var{expr}, @var{x})
+@deffn {Función} partition (@var{expr}, @var{x})
 Devuelve una lista con dos expresiones, que son: (1) los factores de 
-@var{expr} si es un producto, los t@'erminos de @var{expr} si es una
+@var{expr} si es un producto, los términos de @var{expr} si es una
 suma, o los elementos de @var{expr}, si es una lista, que no contengan
-a @var{x}, (2) los factores, t@'erminos o lista que contengan a @var{x}.
+a @var{x}, (2) los factores, términos o lista que contengan a @var{x}.
 
 @example
 (%i1) partition (2*a*x*f(x), x);
@@ -1159,15 +1159,15 @@ a @var{x}, (2) los factores, t@'erminos o lista que contengan a @var{x}.
 @defvr {Variable opcional} partswitch
 Valor por defecto: @code{false}
 
-Si @code{partswitch} vale @code{true} entonces de devuelve @code{end} cuando no exista la parte seleccionada de una expresi@'on, si vale @code{false} se mostrar@'a un mensaje de error.
+Si @code{partswitch} vale @code{true} entonces de devuelve @code{end} cuando no exista la parte seleccionada de una expresión, si vale @code{false} se mostrará un mensaje de error.
 
 @end defvr
 
-@deffn {Funci@'on} pickapart (@var{expr}, @var{n})
-Asigna etiquetas de expresiones intermedias a subexpresiones de @var{expr} al nivel de profundidad @var{n}, que es un entero. A las subexpresiones a un nivel de profundidad mayor o menor no se les asignan etiquetas. La funci@'on
-@code{pickapart} devuelve una expresi@'on en t@'erminos de expresiones intermedias equivalente a la expresi@'on original @var{expr}.
+@deffn {Función} pickapart (@var{expr}, @var{n})
+Asigna etiquetas de expresiones intermedias a subexpresiones de @var{expr} al nivel de profundidad @var{n}, que es un entero. A las subexpresiones a un nivel de profundidad mayor o menor no se les asignan etiquetas. La función
+@code{pickapart} devuelve una expresión en términos de expresiones intermedias equivalente a la expresión original @var{expr}.
 
-V@'eanse tambi@'en @code{part}, @code{dpart}, @code{lpart}, @code{inpart} y @code{reveal}.
+Véanse también @code{part}, @code{dpart}, @code{lpart}, @code{inpart} y @code{reveal}.
 
 Ejemplos:
 
@@ -1253,7 +1253,7 @@ Ejemplos:
 
 @c NEEDS WORK
 @defvr {Variable del sistema} piece
-Guarda la @'ultima expresi@'on seleccionada por las funciones @code{part}.
+Guarda la última expresión seleccionada por las funciones @code{part}.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
@@ -1261,22 +1261,22 @@ Guarda la @'ultima expresi@'on seleccionada por las funciones @code{part}.
 
 
 
-@deffn  {Funci@'on} psubst (@var{list}, @var{expr})
-@deffnx {Funci@'on} psubst (@var{a}, @var{b}, @var{expr})
+@deffn  {Función} psubst (@var{list}, @var{expr})
+@deffnx {Función} psubst (@var{a}, @var{b}, @var{expr})
 
-@code{psubst(@var{a}, @var{b}, @var{expr})} es simliar a @code{subst}.  V@'ease 
+@code{psubst(@var{a}, @var{b}, @var{expr})} es simliar a @code{subst}.  Véase 
 @code{subst}.
 
-A diferencia de @code{subst}, la funci@'on @code{psubst} hace sustituciones
+A diferencia de @code{subst}, la función @code{psubst} hace sustituciones
 en paralelo si su primer argumento es una lista de ecuaciones.
 
-V@'ease tambi@'en @code{sublis} para hacer sustituciones en paralelo.
+Véase también @code{sublis} para hacer sustituciones en paralelo.
 
 Ejemplo:
 
-El primer ejemplo muestra la sustituci@'on en paralelo con @code{psubst}.
-El segundo ejemplo muestra el resultado de la funci@'on @code{subst},
-que realiza la sustituci@'on en serie.
+El primer ejemplo muestra la sustitución en paralelo con @code{psubst}.
+El segundo ejemplo muestra el resultado de la función @code{subst},
+que realiza la sustitución en serie.
 
 @c ===beg===
 @c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
@@ -1294,16 +1294,16 @@ que realiza la sustituci@'on en serie.
 
 
 
-@deffn {Funci@'on} rembox (@var{expr}, unlabelled)
-@deffnx {Funci@'on} rembox (@var{expr}, @var{label})
-@deffnx {Funci@'on} rembox (@var{expr})
+@deffn {Función} rembox (@var{expr}, unlabelled)
+@deffnx {Función} rembox (@var{expr}, @var{label})
+@deffnx {Función} rembox (@var{expr})
 Elimina cajas de @var{expr}.
 
 La llamada @code{rembox (@var{expr}, unlabelled)} elimina todas las cajas no etiquetadas de @var{expr}.
 
-La llamada @code{rembox (@var{expr}, @var{label})} s@'olo elimina las cajas etiquetadas con @var{label}.
+La llamada @code{rembox (@var{expr}, @var{label})} sólo elimina las cajas etiquetadas con @var{label}.
 
-La llamada @code{rembox (@var{expr})} elimina todas las caajs, independientemente de que est@'en etiquetadas o no.
+La llamada @code{rembox (@var{expr})} elimina todas las caajs, independientemente de que estén etiquetadas o no.
 
 Las cajas son dibujadas por las funciones @code{box}, @code{dpart} y @code{lpart}.
 
@@ -1376,31 +1376,31 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} reveal (@var{expr}, @var{nivel})
+@deffn {Función} reveal (@var{expr}, @var{nivel})
 Reemplaza partes de @var{expr} al @var{nivel} especificado y las sutituye por descripciones cortas.
 
 @itemize @bullet
 @item
 Las sumas y restas se reemplazan por @code{Sum(@var{n})},
-siendo @var{n} el n@'umero de t@'erminos de la suma.
+siendo @var{n} el número de términos de la suma.
 @item
 Los productos se reemplazan por @code{Product(@var{n})},
-siendo @var{n} el n@'umero de factores del producto.
+siendo @var{n} el número de factores del producto.
 @item
 Las potencias se reemplazan por @code{Expt}. 
 @item
 Los cocientes se reemplazan por @code{Quotient}.
 @item
-El s@'{@dotless{i}}mbolo negativo se reemplaza por @code{Negterm}.
+El símbolo negativo se reemplaza por @code{Negterm}.
 @item
-Las listas se reemplazan por @code{List(@var{n})}, siendo @var{n} el n@'umero de
+Las listas se reemplazan por @code{List(@var{n})}, siendo @var{n} el número de
 elementos de la lista.
 @end itemize
 
-Si el entero  @var{depth} es mayor o igual que la profundidad m@'axima de @var{expr},
+Si el entero  @var{depth} es mayor o igual que la profundidad máxima de @var{expr},
 @code{reveal (@var{expr}, @var{depth})} devuelve @var{expr} sin modificar.
 
-La funci@'on @code{reveal} eval@'ua sus argumentos y devuelve la expresi@'on con las modificaciones solicitadas.
+La función @code{reveal} evalúa sus argumentos y devuelve la expresión con las modificaciones solicitadas.
 
 Ejemplo:
 
@@ -1453,16 +1453,16 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} sublis (@var{list}, @var{expr})
+@deffn {Función} sublis (@var{list}, @var{expr})
 
-Hace sustituciones m@'ultiples en paralelo dentro de las expresiones.
+Hace sustituciones múltiples en paralelo dentro de las expresiones.
 @var{list} es una lista de ecuaciones, cuyos miembros izquierdos deben
-ser @'atomos.
+ser átomos.
 
-La variable @code{sublis_apply_lambda} controla la simplificaci@'on
-despu@'es de @code{sublis}.
+La variable @code{sublis_apply_lambda} controla la simplificación
+después de @code{sublis}.
 
-V@'ease tambi@'en @code{psubst} para hacer sustituciones en paralelo.
+Véase también @code{psubst} para hacer sustituciones en paralelo.
 
 Ejemplo:
 
@@ -1480,7 +1480,7 @@ Ejemplo:
 @defvr {Variable opcional} sublis_apply_lambda
 Valor por defecto: @code{true}
 
-Controla si los @code{lambda} sustituidos son aplicados en la simplificaci@'on despu@'es de invocar a @code{sublis}, o si se tiene que hacer un @code{ev} para hacerlo. Si @code{sublis_apply_lambda} vale @code{true}, significa que se ejecute la aplicaci@'on.
+Controla si los @code{lambda} sustituidos son aplicados en la simplificación después de invocar a @code{sublis}, o si se tiene que hacer un @code{ev} para hacerlo. Si @code{sublis_apply_lambda} vale @code{true}, significa que se ejecute la aplicación.
 
 @end defvr
 
@@ -1490,10 +1490,10 @@ Controla si los @code{lambda} sustituidos son aplicados en la simplificaci@'on d
 Valor por defecto: @code{false}
 
 Si vale @code{true}, las funciones @code{subst} y @code{psubst} puede sustituir
-una variable subindicada @code{f[x]} por un n@'umero simplemente utilizando el
-s@'{@dotless{i}}mbolo @code{f}.
+una variable subindicada @code{f[x]} por un número simplemente utilizando el
+símbolo @code{f}.
 
-V@'ease tambi@'en @code{subst}.
+Véase también @code{subst}.
 
 @example
 (%i1) subst(100,g,g[x]+2);
@@ -1511,18 +1511,18 @@ subst: cannot substitute 100 for operator g in expression g
 
 
 
-@deffn {Funci@'on} subst (@var{a}, @var{b}, @var{c})
-Sustituye @var{a} por @var{b} en @var{c}. El argumento  @var{b} debe ser un @'atomo o una subexpresi@'on completa de @var{c}.  Por ejemplo, @code{x+y+z} es una subexpresi@'on completa de  @code{2*(x+y+z)/w} mientras que @code{x+y} no lo es. Cuando @var{b} no cumple esta caracter@'{@dotless{i}}stica, se puede utilizar en algunos casos @code{substpart} o @code{ratsubst}
-(ver m@'as abajo).  Alternativamente, si @var{b} no es de la forma @code{e/f} entonces se puede usar @code{subst (a*f, e, c)}, pero si @var{b} es de la forma @code{e^(1/f)} se debe usar @code{subst (a^f, e, c)}.  La instrucci@'on @code{subst} tambi@'en reconoce @code{x^y} en @code{x^-y}, de manera que  @code{subst (a, sqrt(x), 1/sqrt(x))} da @code{1/a}. Los argumentos @var{a} y @var{b} tambi@'en pueden ser operadores de una expresi@'on acotados por comillas dobles @code{"} o nombres de funciones.  Si se quiere sustituir la variable independiente en expresiones con derivadas se debe utilizar la funci@'on @code{at} (ver m@'as abajo).
+@deffn {Función} subst (@var{a}, @var{b}, @var{c})
+Sustituye @var{a} por @var{b} en @var{c}. El argumento  @var{b} debe ser un átomo o una subexpresión completa de @var{c}.  Por ejemplo, @code{x+y+z} es una subexpresión completa de  @code{2*(x+y+z)/w} mientras que @code{x+y} no lo es. Cuando @var{b} no cumple esta característica, se puede utilizar en algunos casos @code{substpart} o @code{ratsubst}
+(ver más abajo).  Alternativamente, si @var{b} no es de la forma @code{e/f} entonces se puede usar @code{subst (a*f, e, c)}, pero si @var{b} es de la forma @code{e^(1/f)} se debe usar @code{subst (a^f, e, c)}.  La instrucción @code{subst} también reconoce @code{x^y} en @code{x^-y}, de manera que  @code{subst (a, sqrt(x), 1/sqrt(x))} da @code{1/a}. Los argumentos @var{a} y @var{b} también pueden ser operadores de una expresión acotados por comillas dobles @code{"} o nombres de funciones.  Si se quiere sustituir la variable independiente en expresiones con derivadas se debe utilizar la función @code{at} (ver más abajo).
 
-La funci@'on @code{subst} es sin@'onimo de @code{substitute}.
+La función @code{subst} es sinónimo de @code{substitute}.
 
 La llamada @code{subst (@var{eq_1}, @var{expr})} o 
 @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
-est@'an permitidas. Las @var{eq_i} son ecuaciones que indican las sustituciones a realizar.
-Para cada ecuaci@'on, el miembro izquierdo ser@'a sustituido por la expresi@'on del 
+están permitidas. Las @var{eq_i} son ecuaciones que indican las sustituciones a realizar.
+Para cada ecuación, el miembro izquierdo será sustituido por la expresión del 
 miembro derecho en @var{expr}. Las ecuaciones se sustituyen secuencialmente de
-izquierda a derecha en @var{expr}. V@'eanse las funciones @code{sublis} y @code{psubst} 
+izquierda a derecha en @var{expr}. Véanse las funciones @code{sublis} y @code{psubst} 
 para sustituciones en paralelo.
 
 Si la variable @code{exptsubst} vale @code{true} se permiten ciertas
@@ -1530,8 +1530,8 @@ sustituciones de exponentes; por ejemplo, sustituir @code{y} por @code{%e^x}
 en @code{%e^(a*x)}.
 
 Si @code{opsubst} vale @code{false},
-@code{subst} no intentar@'a sustituir un operador de una expresi@'on. Por ejemplo, 
-@code{(opsubst: false, subst (x^2, r, r+r[0]))} trabajar@'a sin problemas.
+@code{subst} no intentará sustituir un operador de una expresión. Por ejemplo, 
+@code{(opsubst: false, subst (x^2, r, r+r[0]))} trabajará sin problemas.
 
 Ejemplos:
 
@@ -1547,8 +1547,8 @@ Ejemplos:
 (%o2)                       a - %i b
 @end example
 
-La sustituci@'on se hace secuencialmente seg@'un una lista de
-ecuaciones. Comp@'arese con la sustituci@'on en paralelo.
+La sustitución se hace secuencialmente según una lista de
+ecuaciones. Compárese con la sustitución en paralelo.
 
 @c ===beg===
 @c subst([a=b, b=c], a+b);
@@ -1562,15 +1562,15 @@ ecuaciones. Comp@'arese con la sustituci@'on en paralelo.
 @end example
 
 @noindent
-Para m@'as ejemplos, ejec@'utese @code{example (subst)}.
+Para más ejemplos, ejecútese @code{example (subst)}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Función} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-Es similar a @code{substinpart}, pero trabaja con la representaci@'on interna de @var{expr}.
+Es similar a @code{substinpart}, pero trabaja con la representación interna de @var{expr}.
 
 Ejemplos:
 
@@ -1593,9 +1593,9 @@ Ejemplos:
 (%o3)                       f1(x + 1)
 @end example
 
-Si el @'ultimo argumento pasado a la funci@'on @code{part} es una
-lista de @'{@dotless{i}}ndices, se obtendr@'a la lista de subexpresiones
-correspondientes a cada uno de los @'{@dotless{i}}ndices.
+Si el último argumento pasado a la función @code{part} es una
+lista de índices, se obtendrá la lista de subexpresiones
+correspondientes a cada uno de los índices.
 
 @c ===beg===
 @c part (x + y + z, [1, 3]);
@@ -1605,11 +1605,11 @@ correspondientes a cada uno de los @'{@dotless{i}}ndices.
 (%o1)                         z + x
 @end example
 
-La variable @code{piece} guarda el valor de la @'ultima expresi@'on seleccionada al
+La variable @code{piece} guarda el valor de la última expresión seleccionada al
 utilizar las funciones @code{part}. El valor es asignado durante la 
-ejecuci@'on de la funci@'on y puede ser utilizada tal como se muestra m@'as
+ejecución de la función y puede ser utilizada tal como se muestra más
 abajo. Si a @code{partswitch} se le asigna el valor @code{true} entonces se
-devolver@'a @code{end} cuando no existe la parte solicitada; con otro
+devolverá @code{end} cuando no existe la parte solicitada; con otro
 valor devuelve un mensaje de error.
 
 @c ===beg===
@@ -1642,17 +1642,17 @@ valor devuelve un mensaje de error.
                               x     z
 @end example
 
-Adem@'as, d@'andole a @code{inflag} el valor @code{true} y llamando a
+Además, dándole a @code{inflag} el valor @code{true} y llamando a
 @code{part} o @code{substpart} es lo mismo que invocar a  @code{inpart} o @code{substinpart}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {Función} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-Sustituye por @var{x} la subexpresi@'on que se obtiene de aplicar el resto de
-argumentos a la funci@'on @code{part}, devolviendo el nuevo valor de @var{expr}.
+Sustituye por @var{x} la subexpresión que se obtiene de aplicar el resto de
+argumentos a la función @code{part}, devolviendo el nuevo valor de @var{expr}.
 @var{x} puede ser un operador que sustituya otro operador de @var{expr}. En
 ciertos casos, @var{x} necesita estar entrecomillado por comillas dobles (@code{"});
 por ejemplo, de @code{substpart ("+", a*b, 0)} se obtiene @code{b + a}.
@@ -1682,39 +1682,39 @@ Ejemplo:
 (%o4)                    x + f(b, y) + a
 @end example
 
-Adem@'as, d@'andole a @code{inflag} el valor @code{true} y llamando a
+Además, dándole a @code{inflag} el valor @code{true} y llamando a
 @code{part} o @code{substpart} es lo mismo que invocar a  @code{inpart} o @code{substinpart}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} symbolp (@var{expr})
-Devuelve @code{true} si @var{expr} es un s@'{@dotless{i}}mbolo y @code{false} en caso contrario.
+@deffn {Función} symbolp (@var{expr})
+Devuelve @code{true} si @var{expr} es un símbolo y @code{false} en caso contrario.
 La llamada @code{symbolp(x)} equivale al predicado @code{atom(x) and not numberp(x)}.
 
-V@'ease tambi@'en @code{Identifiers}.
+Véase también @code{Identifiers}.
 
 @end deffn
 
 
 
 
-@deffn {Funci@'on} unorder ()
-Desactiva las asociaciones creadas por la @'ultima utilizaci@'on de los comandos de ordenaci@'on @code{ordergreat} y @code{orderless}, los cuales no pueden ser utilizados m@'as de una vez sin invocar a @code{unorder}. 
+@deffn {Función} unorder ()
+Desactiva las asociaciones creadas por la última utilización de los comandos de ordenación @code{ordergreat} y @code{orderless}, los cuales no pueden ser utilizados más de una vez sin invocar a @code{unorder}. 
 
-@code{unorder} no sustituye en expresiones los s@'{@dotless{i}}mbolos originales
+@code{unorder} no sustituye en expresiones los símbolos originales
 por los alias introducidos por @code{ordergreat} y @code{orderless}. Es por ello
 que tras la ejecuciÃ³n de @code{unorder} los alias aparecen en expresiones
 anteriores.
 
-V@'ease tambi@'en @code{ordergreat} y @code{orderless}.
+Véase también @code{ordergreat} y @code{orderless}.
 
 Ejemplos:
 
-@code{ordergreat(a)} introduce un alias para el s@'{@dotless{i}}mbolo @code{a},
-raz@'on por la cual la diferencia de @code{%o2} y @code{%o4} no se anula.
-@code{unorder} no restablece el s@'{@dotless{i}}mbolo @code{a} y el alias
+@code{ordergreat(a)} introduce un alias para el símbolo @code{a},
+razón por la cual la diferencia de @code{%o2} y @code{%o4} no se anula.
+@code{unorder} no restablece el símbolo @code{a} y el alias
 aparece en el resultado @code{%o7}.
 
 @c ===beg===
@@ -1751,10 +1751,10 @@ aparece en el resultado @code{%o7}.
 
 
 
-@deffn {Funci@'on} verbify (@var{f})
-Devuelve la forma verbal del nombre de funci@'on @var{f}.
+@deffn {Función} verbify (@var{f})
+Devuelve la forma verbal del nombre de función @var{f}.
 
-V@'eanse tambi@'en @code{verb}, @code{noun} y @code{nounify}.
+Véanse también @code{verb}, @code{noun} y @code{nounify}.
 
 Ejemplos:
 
@@ -1776,3 +1776,4 @@ $FOO
 @end example
 
 @end deffn
+

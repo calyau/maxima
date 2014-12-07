@@ -7,17 +7,17 @@
 @section Funciones y variables para opsubst
 
 
-@deffn {Funci@'on} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Funci@'on} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Funci@'on} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
-La funci@'on @code{opsubst} es similar a la funci@'on @code{subst},
+@deffn {Función} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Función} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Función} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+La función @code{opsubst} es similar a la función @code{subst},
 excepto por el hecho de que @code{opsubst}  tan solo hace sustituciones
 de operadores en las expresiones. En general, si @var{f} es un operador en
-la expresi@'on @var{e}, lo cambia por @var{g} en la expresi@'on @var{e}.
+la expresión @var{e}, lo cambia por @var{g} en la expresión @var{e}.
 
 Para determinar el operador, @code{opsubst} asigna a @code{inflag} 
 el valor @code{true}, lo cual significa que @code{opsubst} sustituye
-el operador interno de la expresi@'on, no el mostrado en la salida
+el operador interno de la expresión, no el mostrado en la salida
 formateada.
 
 Ejemplo:
@@ -39,8 +39,8 @@ Ejemplo:
 (%o7)                       h(x)
 @end example
 
-Internamente, Maxima no hace uso de los operadores de negaci@'on unaria,
-de divisi@'on ni de la resta, por lo que:
+Internamente, Maxima no hace uso de los operadores de negación unaria,
+de división ni de la resta, por lo que:
 @example
 (%i8) opsubst("+","-",a-b);
 (%o8)                     a - b
@@ -52,14 +52,14 @@ de divisi@'on ni de la resta, por lo que:
                              b
 @end example
 
-La representaci@'on interna de -a*b es *(-1,a,b), de modo que
+La representación interna de -a*b es *(-1,a,b), de modo que
 @example
 (%i11) opsubst("[","*", -a*b);
 (%o11)                  [- 1, a, b]
 @end example
 
-Si alguno de los operadores no es un s@'{@dotless{i}}mbolo de Maxima,
-se emitir@'a un mensaje de error:
+Si alguno de los operadores no es un símbolo de Maxima,
+se emitirá un mensaje de error:
 @example
 (%i12) opsubst(a+b,f, f(x));
 
@@ -75,6 +75,7 @@ Sin embargo se permiten operadores subindicados:
                             5
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("opsubst")}.
+Antes de hacer uso de esta función ejecútese  @code{load("opsubst")}.
 @end deffn
+
 

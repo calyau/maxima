@@ -1,22 +1,22 @@
 @c English version: 2013-07-27
 @menu
-* Introducci@'on a lbfgs::
+* Introducción a lbfgs::
 * Funciones y variables para lbfgs::
 @end menu
 
-@node Introducci@'on a lbfgs, Funciones y variables para lbfgs, Top, Top
-@section Introducci@'on a lbfgs
+@node Introducción a lbfgs, Funciones y variables para lbfgs, Top, Top
+@section Introducción a lbfgs
 
-La funci@'on @code{lbfgs} implementa el llamado algoritmo L-BFGS [1]
-para resolver problemas de minimizaci@'on sin restricciones mediante una
-t@'ecnica @i{cuasi-Newton con memoria limitada} (BFGS). El t@'ermino
-memoria limitada procede del hecho de que se almacena una aproximaci@'on
+La función @code{lbfgs} implementa el llamado algoritmo L-BFGS [1]
+para resolver problemas de minimización sin restricciones mediante una
+técnica @i{cuasi-Newton con memoria limitada} (BFGS). El término
+memoria limitada procede del hecho de que se almacena una aproximación
 de rango bajo de la inversa de la matriz hessiana, en lugar de la matriz
 completa. El programa fue originalmente escrito en Fortran [2] por
 Jorge Nocedal, incorporando algunas funciones escritas originalmente
 por Jorge J. Mor@'{e} y David J. Thuente, traducidas posteriormente a Lisp
-autom@'aticamente con el programa @code{f2cl}. El paquete @code{lbfgs}
-contiene el c@'odigo traducido, junto con una funci@'on interfaz que para
+automáticamente con el programa @code{f2cl}. El paquete @code{lbfgs}
+contiene el código traducido, junto con una función interfaz que para
 controlar ciertos detalles.
 
 
@@ -27,36 +27,36 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] @url{http://netlib.org/opt/lbfgs_um.shar}
 
-@node Funciones y variables para lbfgs, , Introducci@'on a lbfgs, Top
+@node Funciones y variables para lbfgs, , Introducción a lbfgs, Top
 @section Funciones y variables para lbfgs
 
-@deffn {Funci@'on} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Función} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 @deffnx {Function} lbfgs ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encuentra una soluci@'on aproximada para el problema de minimizaci@'on
-sin restricciones de la funci@'on objetivo @var{FOM} para la lista de 
+Encuentra una solución aproximada para el problema de minimización
+sin restricciones de la función objetivo @var{FOM} para la lista de 
 variables @var{X}, partiendo de los estimadores iniciales @var{X0},
 de tal manera que @math{norm(grad(FOM)) < epsilon*max(1, norm(X))}.
 
-Si el argumento @var{grad} est@'a presente, debe ser el gradiente de @var{FOM} respecto
-de las variables @var{X}. @var{grad} puede ser una lista o una funci@'on 
-que devuelva una lista con igual n@'umero de elementos que @var{X}. 
-Si el argumento no est@'a presente, el gradiente se calcula autom@'aticamente mediante derivaci@'on
-simb@'olica. Si @var{FOM} es una funci@'on, el gradiente @var{grad} debe ser suministrado
+Si el argumento @var{grad} está presente, debe ser el gradiente de @var{FOM} respecto
+de las variables @var{X}. @var{grad} puede ser una lista o una función 
+que devuelva una lista con igual número de elementos que @var{X}. 
+Si el argumento no está presente, el gradiente se calcula automáticamente mediante derivación
+simbólica. Si @var{FOM} es una función, el gradiente @var{grad} debe ser suministrado
 por el usuario.
 
-El algoritmo utilizado es una t@'ecnica @i{cuasi-Newton con memoria limitada}
-(BFGS) [1]. El t@'ermino @i{memoria limitada} procede del hecho de que se almacena
-una aproximaci@'on de rango bajo de la inversa de la matriz hessiana, en lugar
+El algoritmo utilizado es una técnica @i{cuasi-Newton con memoria limitada}
+(BFGS) [1]. El término @i{memoria limitada} procede del hecho de que se almacena
+una aproximación de rango bajo de la inversa de la matriz hessiana, en lugar
 de la matriz completa.
-Cada iteraci@'on del algoritmo es una b@'usqueda a lo largo de una recta,
-cuya direcci@'on se calcula a partir de la matriz inversa aproximada del
-hessiano. La funci@'on objetivo decrece siempre tras cada b@'usqueda
-exitosa a lo largo de la recta; adem@'as, casi siempre decrece tambi@'en
-el m@'odulo del gradiente de la funci@'on.
+Cada iteración del algoritmo es una búsqueda a lo largo de una recta,
+cuya dirección se calcula a partir de la matriz inversa aproximada del
+hessiano. La función objetivo decrece siempre tras cada búsqueda
+exitosa a lo largo de la recta; además, casi siempre decrece también
+el módulo del gradiente de la función.
 
-El argumento @var{iprint} controla los mensajes de progreso que env@'{@dotless{i}}a
-la funci@'on @code{lbfgs}.
+El argumento @var{iprint} controla los mensajes de progreso que envía
+la función @code{lbfgs}.
 
 
 @table @code
@@ -64,24 +64,24 @@ la funci@'on @code{lbfgs}.
 @code{@var{iprint}[1]} controla la frecuencia con la que se emiten los mensajes.
 @table @code
 @item iprint[1] < 0
-No se env@'{@dotless{i}}an mensajes.
+No se envían mensajes.
 @item iprint[1] = 0
-Mensajes @'unicamente en la primera y @'ultima iteraciones.
+Mensajes únicamente en la primera y última iteraciones.
 @item iprint[1] > 0
 Imprime un mensaje cada @code{@var{iprint}[1]} iteraciones.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla la cantidad de informaci@'on contenida en los mensajes.
+@code{@var{iprint}[2]} controla la cantidad de información contenida en los mensajes.
 @table @code
 @item iprint[2] = 0
-Imprime contador de iteraciones, n@'umero de evaluaciones de @var{FOM}, valor de @var{FOM},
-m@'odulo del gradiente de @var{FOM} y amplitud del paso.
+Imprime contador de iteraciones, número de evaluaciones de @var{FOM}, valor de @var{FOM},
+módulo del gradiente de @var{FOM} y amplitud del paso.
 @item iprint[2] = 1
 Igual que @code{@var{iprint}[2] = 0}, incluyendo @var{X0} y el gradiente de @var{FOM} evaluado en @var{X0}.
 @item iprint[2] = 2
-Igual que @code{@var{iprint}[2] = 1}, incluyendo los valores de @var{X} en cada iteraci@'on.
+Igual que @code{@var{iprint}[2] = 1}, incluyendo los valores de @var{X} en cada iteración.
 @item iprint[2] = 3
-Igual que @code{@var{iprint}[2] = 2}, incluyendo el gradiente de @var{FOM} en cada iteraci@'on.
+Igual que @code{@var{iprint}[2] = 2}, incluyendo el gradiente de @var{FOM} en cada iteración.
 @end table
 @end table
 
@@ -89,23 +89,23 @@ Las columnas devueltas por @code{lbfgs} son las siguientes:
 
 @table @code
 @item I
-N@'umero de iteraciones. Se incremente tras cada b@'usqueda a lo
+Número de iteraciones. Se incremente tras cada búsqueda a lo
 largo de una recta.
 @item NFN
-N@'umero de evaluaciones de la funci@'on objetivo.
+Número de evaluaciones de la función objetivo.
 @item FUNC
-Valor de la funci@'on objetivo al final de cada iteraci@'on.
+Valor de la función objetivo al final de cada iteración.
 @item GNORM
-M@'odulo del gradiente de la funci@'on objetivo al final de
-cada iteraci@'on.
+Módulo del gradiente de la función objetivo al final de
+cada iteración.
 @item STEPLENGTH
-Un par@'ametro interno del algoritmo de b@'usqueda.
+Un parámetro interno del algoritmo de búsqueda.
 @end table
 
-Para m@'as informaci@'on sobre el algoritmo se puede acudir a los
-comentarios en el c@'odigo original en Fortran [2].
+Para más información sobre el algoritmo se puede acudir a los
+comentarios en el código original en Fortran [2].
 
-V@'eanse tambi@'en @code{lbfgs_nfeval_max} y @code{lbfgs_ncorrections}.
+Véanse también @code{lbfgs_nfeval_max} y @code{lbfgs_ncorrections}.
 
 Referencias:
 
@@ -116,10 +116,10 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 Ejemplos:
 
-La misma funci@'on objetivo utilizada por FGCOMPUTE en el programa 
-sdrive.f del paquete LBFGS de Netlib. N@'otese que las variables en
-cuesti@'on est@'an subindicadas. La funci@'on objetivo tiene un
-m@'{@dotless{i}}nimo exacto igual a cero en @math{u[k] = 1}, para
+La misma función objetivo utilizada por FGCOMPUTE en el programa 
+sdrive.f del paquete LBFGS de Netlib. Nótese que las variables en
+cuestión están subindicadas. La función objetivo tiene un
+mínimo exacto igual a cero en @math{u[k] = 1}, para
 @math{k = 1, ..., 8}.
 @c ===beg===
 @c load (lbfgs)$
@@ -255,11 +255,11 @@ u  = 1.000005339816132, u  = 1.000009942840108]
  7                       8
 @end example
 
-Un problema de regresi@'on. La funci@'on objetivo es el cuadrado medio
-de la diferencia entre la predicci@'on @math{F(X[i])} y el valor observado
-@math{Y[i]}. La funci@'on @math{F} es mon@'otona y acotada (llamada en ocasiones
+Un problema de regresión. La función objetivo es el cuadrado medio
+de la diferencia entre la predicción @math{F(X[i])} y el valor observado
+@math{Y[i]}. La función @math{F} es monótona y acotada (llamada en ocasiones
 "sigmoidal"). En este ejemplo, @code{lbfgs} calcula valores aproximados para los
-par@'ametros de @math{F} y @code{plot2d} hace una representaci@'on gr@'afica
+parámetros de @math{F} y @code{plot2d} hace una representación gráfica
 comparativa de @math{F} junto con los datos observados.
 
 @c ===beg===
@@ -352,8 +352,8 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 (%o8) 
 @end example
 
-Especificando el gradiente de la funci@'on objetivo en lugar de calcularlo
-simb@'olicamente.
+Especificando el gradiente de la función objetivo en lugar de calcularlo
+simbólicamente.
 
 @c ===beg===
 @c load (lbfgs)$
@@ -433,18 +433,20 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 @defvr {Variable} lbfgs_nfeval_max
 Valor por defecto: 100
 
-La variable @code{lbfgs_nfeval_max} almacena el n@'umero m@'aximo de
-evaluaciones de la funci@'on objetivo en @code{lbfgs}. Cuando se
+La variable @code{lbfgs_nfeval_max} almacena el número máximo de
+evaluaciones de la función objetivo en @code{lbfgs}. Cuando se
 alcanza el valor @code{lbfgs_nfeval_max}, @code{lbfgs} devuelve
-el resultado logrado en la @'ultima iteraci@'on exitosa.
+el resultado logrado en la última iteración exitosa.
 
 @end defvr
 
 @defvr {Variable} lbfgs_ncorrections
 Valor por defecto: 25
 
-La variable @code{lbfgs_ncorrections} almacena el n@'umero de correcciones
+La variable @code{lbfgs_ncorrections} almacena el número de correcciones
 aplicadas a la matriz inversa aproximada del hessiano, la cual es gestionada
 por @code{lbfgs}.
 
 @end defvr
+
+

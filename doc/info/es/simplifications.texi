@@ -1,6 +1,6 @@
 @c English version 2013-08-03
 @menu
-* Introducci@'on a simplification::
+* Introducción a simplification::
 * Paquete absimp::
 * Paquete facexp::
 * Paquete functs::
@@ -10,32 +10,32 @@
 * Paquete sqdnst::
 @end menu
 
-@node Introducci@'on a simplification, Paquete absimp, simplification, simplification
-@section Introducci@'on a simplification
+@node Introducción a simplification, Paquete absimp, simplification, simplification
+@section Introducción a simplification
 
 El directorio @code{maxima/share/simplification} contiene programas que
 implementan algunas reglas y funciones para simplificar expresiones, 
-as@'{@dotless{i}} como ciertas funciones no relacionadas con la simplificaci@'on.
+así como ciertas funciones no relacionadas con la simplificación.
 
 
 
 
 
 
-@node Paquete absimp, Paquete facexp, Introducci@'on a simplification, simplification
+@node Paquete absimp, Paquete facexp, Introducción a simplification, simplification
 @section Paquete absimp
 
 El paquete @code{absimp} contiene reglas para aplicar patrones que extienden
 el sistema de reglas nativo de Maxima para las funciones @code{abs} y
-@code{signum}, respetando las relaciones establecidas con la funci@'on
+@code{signum}, respetando las relaciones establecidas con la función
 @code{assume} o con declaraciones tales como @code{modedeclare (m, even, n, odd)}
 para enteros pares o impares.
 
 En el paquete @code{absimp} se definen las funciones @code{unitramp} y
-@code{unitstep} en t@'erminos de @code{abs} y @code{signum}.
+@code{unitstep} en términos de @code{abs} y @code{signum}.
 
-La instrucci@'on @code{load (absimp)} carga este paquete y @code{demo (absimp)}
-desarrolla una demostraci@'on sobre el uso del mismo.
+La instrucción @code{load (absimp)} carga este paquete y @code{demo (absimp)}
+desarrolla una demostración sobre el uso del mismo.
 
 Ejemplos:
 
@@ -70,22 +70,22 @@ Ejemplos:
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 El paquete @code{facexp} contiene varias funciones que le aportan al
 usuario la posibilidad de estructurar expresiones controlando su
-expansi@'on. Esta capacidad es especialmente @'util cuando la 
-expresi@'on contiene variables con significado f@'{@dotless{i}}sico,
-ya que se suele dar el caso de que la forma m@'as sencilla para estas
+expansión. Esta capacidad es especialmente útil cuando la 
+expresión contiene variables con significado físico,
+ya que se suele dar el caso de que la forma más sencilla para estas
 expresiones se obtiene cuando se expanden respecto de estas variables
 y luego se factoriza respecto de sus coeficientes. Si bien es cierto que
-este procedimiento no es dif@'{@dotless{i}}cil de llevar a cabo con las 
-funciones est@'andar de Maxima, pueden ser necesarios algunos retoques
-adicionales que s@'{@dotless{i}} pueden ser m@'as dif@'{@dotless{i}}ciles
+este procedimiento no es difícil de llevar a cabo con las 
+funciones estándar de Maxima, pueden ser necesarios algunos retoques
+adicionales que sí pueden ser más difíciles
 de hacer.
 
-La funci@'on @code{facsum} y sus formas relacionadas proporcionan un 
-m@'etodo para controlar la estructura de expresiones. La funci@'on 
-@code{collectterms} puede usarse para a@~nadir dos o m@'as 
+La función @code{facsum} y sus formas relacionadas proporcionan un 
+método para controlar la estructura de expresiones. La función 
+@code{collectterms} puede usarse para añadir dos o más 
 expresiones que ya hayan sido simplificadas de la forma indicada,
-sin necesidad de volver a simplificar la expresi@'on completa.
-Esta funci@'on puede ser @'util cuando las expresiones sean
+sin necesidad de volver a simplificar la expresión completa.
+Esta función puede ser útil cuando las expresiones sean
 largas.
 
 @c CAN'T FIND ANY SUCH FILE "DIAGEVAL".
@@ -96,48 +96,48 @@ largas.
 @c after loading @code{diageval}. They are special functions used for  tensor
 @c manipulation.
 
-La instrucci@'on @code{load (facexp)} carga este paquete y @code{demo (facexp)}
-hace una demostraci@'on sobre su uso.
+La instrucción @code{load (facexp)} carga este paquete y @code{demo (facexp)}
+hace una demostración sobre su uso.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
 
 
-@deffn {Funci@'on} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Función} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 
-Devuelve una expresi@'on equivalente a @var{expr}, la cual
+Devuelve una expresión equivalente a @var{expr}, la cual
 depende de los argumentos @var{arg_1}, ..., @var{arg_n}, y 
-@'estos pueden ser de cualquiera de las formas aceptables
+éstos pueden ser de cualquiera de las formas aceptables
 para @code{ratvars}, o listas de estas formas. Si los
 argumentos no son listas, la forma devuelta se expande
 completamente con respecto de los argumentos, siendo los
 coeficientes de tales argumentos factorizados. Estos
 coeficientes no contienen a ninguno de los argumentos,
-excepto quiz@'as de una forma no racional.
+excepto quizás de una forma no racional.
 
 En caso de que cualquiera de los argumentos sea una lista, entonces
-todos ellos se combinan en una @'unica lista, y en lugar de llamar
+todos ellos se combinan en una única lista, y en lugar de llamar
 a @code{factor} para los coeficientes de los argumentos, @code{facsum}
-se llama a s@'{@dotless{i}} misma utilizando esta nueva lista @'unica
+se llama a sí misma utilizando esta nueva lista única
 como lista de argumentos.
 
 Es posible que se quiera utilizar @code{facsum} con respecto a
-expresiones m@'as complicadas, tales como @code{log (x + y)}. Estos
-argumentos son tambi@'en admisibles.
+expresiones más complicadas, tales como @code{log (x + y)}. Estos
+argumentos son también admisibles.
 
 En ocasiones puede ser necesario obtener cualquiera de las formas
 anteriores especificadas por sus operadores principales. Por ejemplo,
 se puede querer aplicar @code{facsum} con respecto a todos los 
 @code{log}; en este caso, se puede incluir entre los argumentos bien
-los @code{log} espec@'{@dotless{i}}ficos que se quieran tratar de esta
-manera, bien la expresi@'on @code{operator (log)} o @code{'operator (log)}.
+los @code{log} específicos que se quieran tratar de esta
+manera, bien la expresión @code{operator (log)} o @code{'operator (log)}.
 Si se quiere aplicar @code{facsum} a @var{expr} con respecto a los 
 operadores @var{op_1}, ..., @var{op_n}, se debe evaluar 
 @code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}.
-La forma @code{operator} puede aparecer tambi@'en dentro de las
+La forma @code{operator} puede aparecer también dentro de las
 listas de argumentos.
 
-Adem@'as, d@'andole valores a las variables opcionales @code{facsum_combine}
+Además, dándole valores a las variables opcionales @code{facsum_combine}
 y @code{nextlayerfactor} se puede controlar el resultado de @code{facsum}.
 @end deffn
 
@@ -149,12 +149,12 @@ Si @code{nextlayerfactor} vale @code{true}, las llamadas recursivas de
 coeficientes de los argumentos.
 
 Si vale @code{false}, @code{facsum} se aplica a cada coeficiente como
-un todo cada vez que se efect@'uen llamadas recursivas a @code{facsum}.
+un todo cada vez que se efectúen llamadas recursivas a @code{facsum}.
 
-La inclusi@'on del @'atomo @code{nextlayerfactor} en la lista de 
+La inclusión del átomo @code{nextlayerfactor} en la lista de 
 argumentos de @code{facsum} tiene el mismo efecto que 
 @code{nextlayerfactor: true}, pero @i{solamente} para el siguiente
-nivel de la expresi@'on. Puesto que @code{nextlayerfactor} toma
+nivel de la expresión. Puesto que @code{nextlayerfactor} toma
 siempre uno de los valores @code{true} o  @code{false}, debe aparecer
 comentado (comilla simple) cada vez que aparezca en la lista de 
 argumentos de @code{facsum}.
@@ -165,33 +165,33 @@ Valor por defecto: @code{true}
 
 La variable @code{facsum_combine} controla la forma del resultado final
 devuelto por @code{facsum} si su argumento es un cociente de polinomios.
-Si @code{facsum_combine} vale @code{false}, el resultado ser@'a una suma
-completamente expandida, pero si vale @code{true}, la expresi@'on devuelta
+Si @code{facsum_combine} vale @code{false}, el resultado será una suma
+completamente expandida, pero si vale @code{true}, la expresión devuelta
 es un cociente de polinomios.
 
 @c aqu'i falta un p'arrafo.
 
 @end defvr
 
-@deffn {Funci@'on} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
-Devuelve una expresi@'on equivalente a @var{expr} obtenida aplicando
+@deffn {Función} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
+Devuelve una expresión equivalente a @var{expr} obtenida aplicando
 @code{facsum} a los factores de @var{expr}, de argumentos
 @var{arg_1}, ... @var{arg_n}. Si alguno de los factores de @var{expr} se 
-eleva a una potencia, tanto el factor como el exponente se procesar@'an de
+eleva a una potencia, tanto el factor como el exponente se procesarán de
 esta manera.
 @end deffn
 
-@deffn {Funci@'on} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffn {Función} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 Si algunas expresiones fueron ya simplificadas con @code{facsum}, @code{factorfacsum},
 @code{factenexpand},  @code{facexpten} o @code{factorfacexpten}, debiendo ser 
-luego sumadas, puede ser conveniente combinarlas utilizando la funci@'on
-@code{collecterms}, la cual admite como argumentos todos aqu@'ellos que se
-puedan pasar a las anteriormente citadas funciones, con la excepci@'on de
+luego sumadas, puede ser conveniente combinarlas utilizando la función
+@code{collecterms}, la cual admite como argumentos todos aquéllos que se
+puedan pasar a las anteriormente citadas funciones, con la excepción de
 @code{nextlayerfactor}, que no tiene efecto alguno sobre @code{collectterms}.
 La ventaja de @code{collectterms} es que devuelve una forma similar a la de
 @code{facsum}, pero debido a que suma expresiones que ya han sido previamente
-procesadas, no necesita repetir esta operaci@'on, lo cual 
-resulta ser especialmente @'util cuando las expresiones a sumar son muy
+procesadas, no necesita repetir esta operación, lo cual 
+resulta ser especialmente útil cuando las expresiones a sumar son muy
 grandes.
 @end deffn
 
@@ -206,22 +206,22 @@ grandes.
 @node Paquete functs, Paquete ineq, Paquete facexp, simplification
 @section Paquete functs
 
-@deffn {Funci@'on} rempart (@var{expr}, @var{n})
-Elimina la parte @var{n} de la expresi@'on @var{expr}.
+@deffn {Función} rempart (@var{expr}, @var{n})
+Elimina la parte @var{n} de la expresión @var{expr}.
 
 Si @var{n} es una lista de la forma @code{[@var{l}, @var{m}]}, entonces
-las partes desde @var{l} a @var{m} ser@'an eliminadas.
+las partes desde @var{l} a @var{m} serán eliminadas.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
+@deffn {Función} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
 Devuelve la matriz wronskiana de las expresiones @var{f_1}, ..., @var{f_n}
 dependeientes de la variable @var{x}.
 El determinante de la matriz wronskiana es el determinante wronskiano de
 la lista de expresiones.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 
 Ejemplo:
 
@@ -238,42 +238,42 @@ Ejemplo:
 
 @c adjoint already described in doc/info/Matrices.texi
 
-@deffn {Funci@'on} tracematrix (@var{M})
+@deffn {Función} tracematrix (@var{M})
 Devuelve la traza (suma de los elementos de la diagonal) de la matriz @var{M}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} rational (@var{z})
+@deffn {Función} rational (@var{z})
 Multiplica el numerador y denominador de @var{z} por el complejo conjugado
-del denominador, racionalizando as@'{@dotless{i}} el denominador.
-Devuelve la expresi@'on can@'onica racional (canonical rational expression,
+del denominador, racionalizando así el denominador.
+Devuelve la expresión canónica racional (canonical rational expression,
 CRE) si el argumento @var{z} es de esta forma, en caso contrario devuelve una
-expresi@'on en formato com@'un.
+expresión en formato común.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp
 
-@deffn {Funci@'on} nonzeroandfreeof (@var{x}, @var{expr})
+@deffn {Función} nonzeroandfreeof (@var{x}, @var{expr})
 Devuelve @code{true} si @var{expr} es diferente de cero y 
 @code{freeof (@var{x}, @var{expr})} devuelve @code{true}.
 En caso contrario devuelve @code{false}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} linear (@var{expr}, @var{x})
-Si @var{expr} es una expresi@'on de la forma @code{@var{a}*@var{x} + @var{b}},
+@deffn {Función} linear (@var{expr}, @var{x})
+Si @var{expr} es una expresión de la forma @code{@var{a}*@var{x} + @var{b}},
 siendo @var{a} no nulo y los argumentos @var{a} y @var{b} no contienen a @var{x},
 @code{linear} devuelve una lista con tres ecuaciones, una por cada variable
-@var{b}, @var{a} y @var{x}. Si no se cumple la condici@'on anterior, 
+@var{b}, @var{a} y @var{x}. Si no se cumple la condición anterior, 
 @code{linear} devuelve @code{false}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 
 Ejemplo:
 
@@ -292,19 +292,19 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} gcdivide (@var{p}, @var{q})
+@deffn {Función} gcdivide (@var{p}, @var{q})
 Si la variable opcional @code{takegcd} vale @code{true}, que es su valor por defecto, 
 @code{gcdivide} divide los polinomios @var{p} y @var{q} por su
-m@'aximo com@'un divisor y devuelve el cociente de los resultados.
-@code{gcdivide} hace una llamada a la funci@'on @code{ezgcd} para
-dividir los polinomios por su m@'aximo com@'un divisor.
+máximo común divisor y devuelve el cociente de los resultados.
+@code{gcdivide} hace una llamada a la función @code{ezgcd} para
+dividir los polinomios por su máximo común divisor.
 
 Si @code{takegcd} vale @code{false}, @code{gcdivide} devuelve
 el cociente @code{@var{p}/@var{q}}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 
-V@'eanse tambi@'en  @code{ezgcd}, @code{gcd}, @code{gcdex} y
+Véanse también  @code{ezgcd}, @code{gcd}, @code{gcdex} y
 @code{poly_gcd}.
 
 Ejemplos:
@@ -340,100 +340,100 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} arithmetic (@var{a}, @var{d}, @var{n})
-Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on aritm@'etica
+@deffn {Función} arithmetic (@var{a}, @var{d}, @var{n})
+Devuelve el @var{n}-ésimo término de la progresión aritmética
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} geometric (@var{a}, @var{r}, @var{n})
-Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on geom@'etrica
+@deffn {Función} geometric (@var{a}, @var{r}, @var{n})
+Devuelve el @var{n}-ésimo término de la progresión geométrica
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
-Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on arm@'onica
+@deffn {Función} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+Devuelve el @var{n}-ésimo término de la progresión armónica
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} arithsum (@var{a}, @var{d}, @var{n})
-Devuelve la suma de la progresi@'on aritm@'etica desde hasta el @var{n}-@'esimo t@'ermino.
+@deffn {Función} arithsum (@var{a}, @var{d}, @var{n})
+Devuelve la suma de la progresión aritmética desde hasta el @var{n}-ésimo término.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} geosum (@var{a}, @var{r}, @var{n})
-Devuelve la suma de la sucesi@'on geom@'etrica hasta el @var{n}-@'esimo t@'ermino.
-Si @var{n} es infinito (@code{inf}) la suma ser@'a finita s@'olo si el valor absoluto de 
+@deffn {Función} geosum (@var{a}, @var{r}, @var{n})
+Devuelve la suma de la sucesión geométrica hasta el @var{n}-ésimo término.
+Si @var{n} es infinito (@code{inf}) la suma será finita sólo si el valor absoluto de 
 @var{r} es menor que 1.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} gaussprob (@var{x})
-Devuelve la funci@'on de densidad de probabilidad,
+@deffn {Función} gaussprob (@var{x})
+Devuelve la función de densidad de probabilidad,
 normal @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} gd (@var{x})
-Devuelve la funci@'on de Gudermann,
+@deffn {Función} gd (@var{x})
+Devuelve la función de Gudermann,
 @code{2*atan(%e^x)-%pi/2}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} agd (@var{x})
-Devuelve la inversa de la funci@'on de Gudermann,
+@deffn {Función} agd (@var{x})
+Devuelve la inversa de la función de Gudermann,
 @code{log (tan (%pi/4 + x/2))}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} vers (@var{x})
+@deffn {Función} vers (@var{x})
 Devuelve @code{1 - cos (x)}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} covers (@var{x})
+@deffn {Función} covers (@var{x})
 Devuelve @code{1 - sin (@var{x})}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} exsec (@var{x})
+@deffn {Función} exsec (@var{x})
 Devuelve @code{sec (@var{x}) - 1}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
-@deffn {Funci@'on} hav (@var{x})
+@deffn {Función} hav (@var{x})
 Devuelve @code{(1 - cos(x))/2}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
-@deffn {Funci@'on} combination (@var{n}, @var{r})
-Calcula el n@'umero de combinaciones de @var{n} objetos
+@deffn {Función} combination (@var{n}, @var{r})
+Calcula el número de combinaciones de @var{n} objetos
 tomados de @var{r} en @var{r}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
-@deffn {Funci@'on} permutation (@var{n}, @var{r})
-Calcula el n@'umero de permutaciones de @var{r}, seleccionados
+@deffn {Función} permutation (@var{n}, @var{r})
+Calcula el número de permutaciones de @var{r}, seleccionados
 de un conjunto de @var{n}.
 
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+Para hacer uso de esta función ejecutar @code{load(functs)}.
 @end deffn
 
 
@@ -447,9 +447,9 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @node Paquete ineq, Paquete rducon, Paquete functs, simplification
 @section Paquete ineq
 
-El paquete @code{ineq} contiene reglas de simplificaci@'on para desigualdades
+El paquete @code{ineq} contiene reglas de simplificación para desigualdades
 
-Una sesi@'on de ejemplo:
+Una sesión de ejemplo:
 
 @c ===beg===
 @c load(ineq)$
@@ -517,18 +517,18 @@ Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 (%o17)                               true
 @end example
 
-Debe tenerse cuidado con el uso de par@'entesis que incluyan desigualdades;
+Debe tenerse cuidado con el uso de paréntesis que incluyan desigualdades;
 si se escribe @code{(A > B) + (C = 5)} el resultado es @code{A + C > B + 5},
-pero @code{A > B + C = 5} es un error sint@'actico y @code{(A > B + C) = 5}
+pero @code{A > B + C = 5} es un error sintáctico y @code{(A > B + C) = 5}
 es una cosa completamente diferente.
 
-Ejec@'utese @code{disprule (all)} para ver la lista completa de las
+Ejecútese @code{disprule (all)} para ver la lista completa de las
 reglas definidas.
 
-Maxima preguntar@'a al usuario cuando desconozca el signo de una cantidad que
+Maxima preguntará al usuario cuando desconozca el signo de una cantidad que
 multiplica a una desigualdad.
 
-Los fallos m@'as comunes son:
+Los fallos más comunes son:
 
 @example
 eq: a > b;
@@ -540,24 +540,24 @@ Otro problema es el producto de una desigualdad por cero.
 Si se escribe @code{x*@var{some_inequality}} y Maxima pregunta por
 el signo de @code{x} y se responde que vale @code{zero} (o @code{z}),
 el programa devuelve @code{x*@var{some_inequality}} sin hacer uso de la
-informaci@'on de que @code{x} es 0. En tal caso se deber@'{@dotless{i}}a
-escribir @code{ev (%, x: 0)}, ya que la base de datos s@'olo ser@'a utilizada 
+información de que @code{x} es 0. En tal caso se debería
+escribir @code{ev (%, x: 0)}, ya que la base de datos sólo será utilizada 
 para fines comparativos y no para evaluar @code{x}.
 
-El usuario puede apreciar que las respuestas son m@'as lentas al cargarse este paquete,
-ya que el simplificador deber@'a examinar m@'as reglas que cuando no se hace uso del 
+El usuario puede apreciar que las respuestas son más lentas al cargarse este paquete,
+ya que el simplificador deberá examinar más reglas que cuando no se hace uso del 
 paquete, por lo que puede ser conveniente borrar estas reglas cuando ya no se haga
-uso de ellas. Ejec@'utese @code{kill (rules)} para eliminar todas las reglas 
-(incluidas las definidas por el usuario); tambi@'en es posible eliminar
-parte de ellas o utilizar @code{remrule} sobre una reglas espec@'{@dotless{i}}fica.
+uso de ellas. Ejecútese @code{kill (rules)} para eliminar todas las reglas 
+(incluidas las definidas por el usuario); también es posible eliminar
+parte de ellas o utilizar @code{remrule} sobre una reglas específica.
 
-N@'otese que si se carga este paquete despu@'es de haber definido otras reglas
-de igual nombre,se borrar@'an las antiguas. Las reglas de este paquete son:
+Nótese que si se carga este paquete después de haber definido otras reglas
+de igual nombre,se borrarán las antiguas. Las reglas de este paquete son:
 @code{*rule1}, ..., @code{*rule8},
 @code{+rule1}, ..., @code{+rule18},
-debi@'endose encerrar entre comillas el nombre de la reglas para referenciarse a ellas,
+debiéndose encerrar entre comillas el nombre de la reglas para referenciarse a ellas,
 como en @code{remrule ("+", "+rule1")} para eliminar la primera regla sobre @code{"+"},
-o @code{disprule ("*rule2")} para mostrar la definici@'on de la segunda regla
+o @code{disprule ("*rule2")} para mostrar la definición de la segunda regla
 multiplicativa.
 
 
@@ -573,12 +573,12 @@ multiplicativa.
 
 
 
-@deffn {Funci@'on} reduce_consts (@var{expr})
-Sustituye subexpresiones constantes de @var{expr} por @'atomos,
-guardando la definici@'on de todos ellos en la lista de ecuaciones
- @code{const_eqns} y devolviendo el expresi@'on @var{expr} ya
+@deffn {Función} reduce_consts (@var{expr})
+Sustituye subexpresiones constantes de @var{expr} por átomos,
+guardando la definición de todos ellos en la lista de ecuaciones
+ @code{const_eqns} y devolviendo el expresión @var{expr} ya
 modificada. Se consideran partes constantes de @var{expr} aquellas
-que devuelven @code{true} cuando se les aplica la funci@'on @code{constantp},
+que devuelven @code{true} cuando se les aplica la función @code{constantp},
 por lo que antes de llamar a @code{reduce_consts} se debe ejecutar
 
 @example
@@ -586,11 +586,11 @@ declare ([@var{objetos a los que se quiera dar la propiedad de ser constantes}],
 @end example
 
 para crear la base de datos de las cantidades constantes presentes en
-la expresi@'on.
+la expresión.
 
-Si se pretende generar c@'odigo Fortran despu@'es de estos c@'alculos
-simb@'olicos, una de las primeras secciones del c@'odigo debe ser el
-c@'alculo de las constantes. Para generar este segmento de c@'odigo hacer
+Si se pretende generar código Fortran después de estos cálculos
+simbólicos, una de las primeras secciones del código debe ser el
+cálculo de las constantes. Para generar este segmento de código hacer
 
 @example
 map ('fortran, const_eqns)$
@@ -599,15 +599,15 @@ map ('fortran, const_eqns)$
 Junto a @code{const_eqns}, otras variables que afectan a @code{reduce_consts} son:
 
 @code{const_prefix} (Valor por defecto: @code{xx}) es la cadena de caracteres utilizada como
-prefijo para todos los s@'{@dotless{i}}mbolos generados por @code{reduce_consts} para
+prefijo para todos los símbolos generados por @code{reduce_consts} para
 representar subexpresiones constantes.
 
-@code{const_counter} (Valor por defecto: 1) es el @'{@dotless{i}}ndice entero utilizado
-para generar los s@'{@dotless{i}}mbolos que representen a las subexpresiones
+@code{const_counter} (Valor por defecto: 1) es el índice entero utilizado
+para generar los símbolos que representen a las subexpresiones
 constantes encontradas por @code{reduce_consts}.
 
-La instrucci@'on @code{load (rducon)} carga esta funci@'on y @code{demo (rducon)}
-hace una demostraci@'on sobre su uso.
+La instrucción @code{load (rducon)} carga esta función y @code{demo (rducon)}
+hace una demostración sobre su uso.
 @end deffn
 
 
@@ -620,30 +620,30 @@ hace una demostraci@'on sobre su uso.
 @section Paquete scifac
 
 
-@deffn {Funci@'on} gcfac (@var{expr})
-Es una funci@'on de factorizaci@'on que intenta aplicar la misma heur@'{@dotless{i}}stica
-que los humanos cuando tratan de hacer las expresiones m@'as simples, limit@'andose
-a la factorizaci@'on de monomios. En caso de sumas, @code{gcfac} hace lo siguiente:
+@deffn {Función} gcfac (@var{expr})
+Es una función de factorización que intenta aplicar la misma heurística
+que los humanos cuando tratan de hacer las expresiones más simples, limitándose
+a la factorización de monomios. En caso de sumas, @code{gcfac} hace lo siguiente:
 
 @enumerate
 @item
 Factoriza los enteros.
 @item
-Factoriza las potencias mayores de los t@'erminos que aparecen como
+Factoriza las potencias mayores de los términos que aparecen como
 coeficientes, independientemente de su complejidad.
 @item
-Utiliza (1) y (2) en la factorizaci@'on de pares de t@'erminos adyacentes.
+Utiliza (1) y (2) en la factorización de pares de términos adyacentes.
 @item
-Aplica estas t@'ecnicas repetida y recursivamente hasta que la
-expresi@'on deje de sufrir cambios.
+Aplica estas técnicas repetida y recursivamente hasta que la
+expresión deje de sufrir cambios.
 @end enumerate
 
-En general, el apartado (3) no hace una factorizaci@'on @'optima debido a la
-naturaleza combinatoria y compleja de encontrar cu@'al de todas las ordenaciones
-posibles de los pares da lugar a la expresi@'on m@'as compacta.
+En general, el apartado (3) no hace una factorización óptima debido a la
+naturaleza combinatoria y compleja de encontrar cuál de todas las ordenaciones
+posibles de los pares da lugar a la expresión más compacta.
 
-La instrucci@'on @code{load (scifac)} carga esta funci@'on y @code{demo (scifac)}
-hace una demostraci@'on sobre su uso.
+La instrucción @code{load (scifac)} carga esta función y @code{demo (scifac)}
+hace una demostración sobre su uso.
 @end deffn
 
 
@@ -654,8 +654,8 @@ hace una demostraci@'on sobre su uso.
 @node Paquete sqdnst,  , Paquete scifac, simplification
 @section Paquete sqdnst
 
-@deffn {Funci@'on} sqrtdenest (@var{expr})
-Reduce expresiones en las que se encuentren ra@'{@dotless{i}}ces cuadradas anidadas,
+@deffn {Función} sqrtdenest (@var{expr})
+Reduce expresiones en las que se encuentren raíces cuadradas anidadas,
 siempre que sea posible
 
 Ejemplo:
@@ -682,9 +682,10 @@ Ejemplo:
                                  3 2    - 2
 @end example
 
-A veces conviene aplicar @code{sqrtdenest} m@'as de una vez, como en el caso
+A veces conviene aplicar @code{sqrtdenest} más de una vez, como en el caso
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-La sentencia @code{load (sqdnst)} carga esta funci@'on.
+La sentencia @code{load (sqdnst)} carga esta función.
 @end deffn
+
 

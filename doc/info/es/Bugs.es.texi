@@ -1,14 +1,14 @@
 @c English version 2012-01-29
 @menu
-* Funciones y variables para la detecci@'on e informe de fallos::
+* Funciones y variables para la detección e informe de fallos::
 @end menu
 
 
-@node Funciones y variables para la detecci@'on e informe de fallos,  , Detecci@'on e informe de fallos, Detecci@'on e informe de fallos
+@node Funciones y variables para la detección e informe de fallos,  , Detección e informe de fallos, Detección e informe de fallos
 
-@section Funciones y variables para la detecci@'on e informe de fallos
+@section Funciones y variables para la detección e informe de fallos
 
-@deffn {Funci@'on} run_testsuite ([@var{options}])
+@deffn {Función} run_testsuite ([@var{options}])
 
 Ejecuta el conjunto de pruebas de Maxima. Los tests que producen las 
 respuestas deseadas son considerados como ``pruebas superadas'', como
@@ -27,25 +27,25 @@ por defecto es @code{false}).
 @item tests
 Esta es la lista de las pruebas que se deben ejecutar. Cada prueba
 se puede especificar, tanto mediante una cadena de texto como
-por un s@'{@dotless{i}}mbolo. Por defecto, todas las pruebas se ejecutan. El
-conjunto completo de pruebas est@'a especificado en @code{testsuite_files}.
+por un símbolo. Por defecto, todas las pruebas se ejecutan. El
+conjunto completo de pruebas está especificado en @code{testsuite_files}.
 @item time
-Muestra informaci@'on sobre tiempos de ejecuci@'on. Si vale @code{true},
+Muestra información sobre tiempos de ejecución. Si vale @code{true},
 se muestran los tiempos de los ficheros de prueba. Si vale @code{all},
 se muestran los tiempos de cada prueba individual si @code{display_all}
 vale @code{true}. El valor por defecto es @code{false}, por lo que no
-se muestra informaci@'on temporal alguna.
+se muestra información temporal alguna.
 @end table
 
 Por ejemplo, @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
-ejecuta la prueba @code{rtest5} y muestra si est@'a marcada como fallo
+ejecuta la prueba @code{rtest5} y muestra si está marcada como fallo
 conocido.
 
-@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} ejecutar@'a
+@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} ejecutará
 las pruebas @code{rtest1} y @code{rtest2}, mostrando cada una de ellas.
 
 @code{run_testsuite} cambia el entorno de Maxima. 
-T@'{@dotless{i}}picamente un script de test ejecuta @code{kill} para establecer un entorno conocido (ll@'amese uno sin funciones ni variables definidas por el usuario) y entonces define una serie de funciones y variables apropiadas para el test. 
+Típicamente un script de test ejecuta @code{kill} para establecer un entorno conocido (llámese uno sin funciones ni variables definidas por el usuario) y entonces define una serie de funciones y variables apropiadas para el test. 
 
 @code{run_testsuite} retorna @code{done}.
 @end deffn
@@ -53,7 +53,7 @@ T@'{@dotless{i}}picamente un script de test ejecuta @code{kill} para establecer 
 
 @defvr {Variable opcional} testsuite_files
 
-@code{testsuite_files} es el conjunto de tests a ejecutar por @code{run_testsuite}. Se trata de una lista con los nombres de los ficheros que contienen los tests a ejecutar. Si se sabe que alguno de los tests de un fichero falla, entonces en lugar de listar el nombre del fichero, se utiliza una lista que contiene el nombre del fichero y los n@'umeros de los tests que fallan.
+@code{testsuite_files} es el conjunto de tests a ejecutar por @code{run_testsuite}. Se trata de una lista con los nombres de los ficheros que contienen los tests a ejecutar. Si se sabe que alguno de los tests de un fichero falla, entonces en lugar de listar el nombre del fichero, se utiliza una lista que contiene el nombre del fichero y los números de los tests que fallan.
 
 Por ejemplo, esta es una parte de los tests por defecto:
 
@@ -61,31 +61,31 @@ Por ejemplo, esta es una parte de los tests por defecto:
  ["rtest13s", ["rtest14", 57, 63]]
 @end example
 
-Con esto se especifica que el conjunto de tests est@'a formado por los ficheros "rtest13s"  y "rtest14", pero que "rtest14" contiene dos tests que se sabe que causan fallos, el 57 y el 63.
+Con esto se especifica que el conjunto de tests está formado por los ficheros "rtest13s"  y "rtest14", pero que "rtest14" contiene dos tests que se sabe que causan fallos, el 57 y el 63.
 @end defvr
 
 
-@deffn {Funci@'on} bug_report ()
+@deffn {Función} bug_report ()
 Imprime las versiones de Maxima y de Lisp y proporciona un enlace a la
-p@'agina web sobre informe de fallos del proyecto Maxima. 
-La informaci@'on respecto a las versiones es la misma que reporta la 
-funci@'on @code{build_info}. 
+página web sobre informe de fallos del proyecto Maxima. 
+La información respecto a las versiones es la misma que reporta la 
+función @code{build_info}. 
 
 Cuando se informa sobre un fallo, es de gran ayuda que se copie la
-informaci@'on relacionada con la versi@'on de Maxima y de Lisp usada,
+información relacionada con la versión de Maxima y de Lisp usada,
 dentro del propio informe. 
 
-@code{bug_report} retorna una cadena vac@'{@dotless{i}}a @code{""}.
+@code{bug_report} retorna una cadena vacía @code{""}.
 @end deffn
 
-@deffn {Funci@'on} build_info ()
+@deffn {Función} build_info ()
 Devuelve un resumen de los parÃ¡metros con los que se ha compilado Maxima
 en formato de estructura @code{defstruct}. Los campos de la estructura son:
 @code{version}, @code{timestamp}, @code{host}, @code{lisp_name} y @code{lisp_version}.
 Cuando @code{display2d} toma el valor @code{true}, la estructura se muestra como una
-peque@~na tabla.
+pequeña tabla.
 
-V@'ease tambi@'en @code{bug_report}.
+Véase también @code{bug_report}.
 
 Ejemplos:
 
@@ -142,3 +142,4 @@ Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal deb
 @end group
 @end example
 @end deffn
+

@@ -1,68 +1,68 @@
 @c English version 2013-07-30
 @menu
-* Introducci@'on a las funciones especiales::
+* Introducción a las funciones especiales::
 * Funciones de Bessel::
 * Funciones de Airy::
 * Funciones Gamma y factorial::
 * Integral exponencial::
-* Funci@'on de error::
+* Función de error::
 * Funciones de Struve::
-* Funciones hipergeom@'etricas::
-* Funciones de cilindro parab@'olico::
+* Funciones hipergeométricas::
+* Funciones de cilindro parabólico::
 * Funciones y variables para las funciones especiales::
 @end menu
 
-@node Introducci@'on a las funciones especiales, Funciones de Bessel, Funciones Especiales, Funciones Especiales
-@section Introducci@'on a las funciones especiales
+@node Introducción a las funciones especiales, Funciones de Bessel, Funciones Especiales, Funciones Especiales
+@section Introducción a las funciones especiales
 
-A continuaci@'on se especifican las notaciones correspondientes a las funciones especiales:
+A continuación se especifican las notaciones correspondientes a las funciones especiales:
 
 @example
-bessel_j (index, expr)    Funci@'on de Bessel de primera especie
-bessel_y (index, expr)    Funci@'on de Bessel de segunda especie
-bessel_i (index, expr)    Funci@'on de Bessel modificada de primera especie
-bessel_k (index, expr)    Funci@'on de Bessel modificada de segunda especie
-hankel_1 (v,z)            Funci@'on de Hankel de primera especie
-hankel_2 (v,z)            Funci@'on de Hankel de segunda especie
-struve_h (v,z)            Funci@'on H de Struve
-struve_l (v,z)            Funci@'on L de Struve
-%p[u,v] (z)               Funci@'on de Legendre de primera especie
-%q[u,v] (z)               Funci@'on de Legendre de segunda especie
-%f[p,q] ([], [], expr)    Funci@'on hipergeom@'etrica generalizada
-gamma(z)                  Funci@'on Gamma
-gammagreek(a,z)           Funci@'on Gamma incompleta
-gamma_incomplete (a,z)    Extremo de la funci@'on Gamma incompleta
-hypergeometric(l1, l2, z) Funci@'on hipergeom@'etrica
+bessel_j (index, expr)    Función de Bessel de primera especie
+bessel_y (index, expr)    Función de Bessel de segunda especie
+bessel_i (index, expr)    Función de Bessel modificada de primera especie
+bessel_k (index, expr)    Función de Bessel modificada de segunda especie
+hankel_1 (v,z)            Función de Hankel de primera especie
+hankel_2 (v,z)            Función de Hankel de segunda especie
+struve_h (v,z)            Función H de Struve
+struve_l (v,z)            Función L de Struve
+%p[u,v] (z)               Función de Legendre de primera especie
+%q[u,v] (z)               Función de Legendre de segunda especie
+%f[p,q] ([], [], expr)    Función hipergeométrica generalizada
+gamma(z)                  Función Gamma
+gammagreek(a,z)           Función Gamma incompleta
+gamma_incomplete (a,z)    Extremo de la función Gamma incompleta
+hypergeometric(l1, l2, z) Función hipergeométrica
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
-%m[u,k] (z)               Funci@'on de Whittaker de primera especie
-%w[u,k] (z)               Funci@'on de Whittaker de segunda especie
-erfc (z)                  Complemento de la funci@'on de error, erf
+%m[u,k] (z)               Función de Whittaker de primera especie
+%w[u,k] (z)               Función de Whittaker de segunda especie
+erfc (z)                  Complemento de la función de error, erf
 expintegral_e (v,z)       Integral exponencial E
 expintegral_e1 (z)        Integral exponencial E1
 expintegral_ei (z)        Integral exponencial Ei
-expintegral_li (z)        Integral logar@'{@dotless{i}}tmica Li
+expintegral_li (z)        Integral logarítmica Li
 expintegral_si (z)        Integral exponencial Si
 expintegral_ci (z)        Integral exponencial Ci
 expintegral_shi (z)       Integral exponencial Shi
 expintegral_chi (z)       Integral exponencial Chi
-kelliptic (z)             Integral el@'{@dotless{i}}ptica completa
+kelliptic (z)             Integral elíptica completa
                                   de primera especie (K)
-parabolic_cylinder_d(v,z) Funci@'on D de cilindro parab@'olico
+parabolic_cylinder_d(v,z) Función D de cilindro parabólico
 @end example
 
 
 
 
 
-@node Funciones de Bessel, Funciones de Airy, Introducci@'on a las funciones especiales, Funciones Especiales
+@node Funciones de Bessel, Funciones de Airy, Introducción a las funciones especiales, Funciones Especiales
 @section Funciones de Bessel
 
 
-@deffn {Funci@'on} bessel_j (@var{v}, @var{z})
-Funci@'on de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+@deffn {Función} bessel_j (@var{v}, @var{z})
+Función de Bessel de primera especie de orden @math{v} y argumento @math{z}.
 
-La funci@'on @code{bessel_j} se define como
+La función @code{bessel_j} se define como
 
 @ifnottex
 @example
@@ -81,14 +81,14 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
  }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
 @end tex
 
-aunque la serie infinita no se utiliza en los c@'alculos.
+aunque la serie infinita no se utiliza en los cálculos.
 
 @end deffn
 
-@deffn {Funci@'on} bessel_y (@var{v}, @var{z})
-Funci@'on de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
+@deffn {Función} bessel_y (@var{v}, @var{z})
+Función de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
 
-La funci@'on @code{bessel_y} se define como
+La función @code{bessel_y} se define como
 
 @ifnottex
 @example
@@ -103,15 +103,15 @@ $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
  \sin \left(\pi\,v\right)}}$$
 @end tex
 
-si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, se calcula el l@'{@dotless{i}}mite cuando @math{v} se aproxima a @math{n}.
+si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, se calcula el límite cuando @math{v} se aproxima a @math{n}.
 
 @end deffn
 
 
-@deffn {Funci@'on} bessel_i (@var{v}, @var{z})
-Funci@'on modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+@deffn {Función} bessel_i (@var{v}, @var{z})
+Función modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
 
-La funci@'on @code{bessel_i} se define como
+La función @code{bessel_i} se define como
 
 @ifnottex
 @example
@@ -130,15 +130,15 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
 @end tex
 
-aunque la serie infinita no se utiliza en los c@'alculos.
+aunque la serie infinita no se utiliza en los cálculos.
 
 @end deffn
 
 
-@deffn {Funci@'on} bessel_k (@var{v}, @var{z})
-Funci@'on modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
+@deffn {Función} bessel_k (@var{v}, @var{z})
+Función modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
 
-La funci@'on @code{bessel_k} se define como
+La función @code{bessel_k} se define como
 
 @ifnottex
 @example
@@ -152,32 +152,32 @@ La funci@'on @code{bessel_k} se define como
 $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 @end tex
 
-si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces se calcula el l@'{@dotless{i}}mite cuando @math{v} tiende a @math{n}.
+si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces se calcula el límite cuando @math{v} tiende a @math{n}.
 @end deffn
 
 
-@deffn {Funci@'on} hankel_1 (@var{v}, @var{z})
-Funci@'on de Hankel de primera especie de orden @math{v} y argumento @math{z}
-(A&S 9.1.3). La funci@'on @code{hankel_1} se define como
+@deffn {Función} hankel_1 (@var{v}, @var{z})
+Función de Hankel de primera especie de orden @math{v} y argumento @math{z}
+(A&S 9.1.3). La función @code{hankel_1} se define como
 
 @example
    bessel_j(v,z) + %i * bessel_y(v,z)
 @end example
 
-Maxima eval@'ua @code{hankel_1} num@'ericamente para el orden real @math{v}
-y el argumento complejo @math{z} en doble precisi@'on (float). La evaluaci@'on
-num@'erica en gran precisi@'on (bigfloat) y para @'ordenes complejos no est@'a
+Maxima evalúa @code{hankel_1} numéricamente para el orden real @math{v}
+y el argumento complejo @math{z} en doble precisión (float). La evaluación
+numérica en gran precisión (bigfloat) y para órdenes complejos no está
 implementada.
 
 Si @code{besselexpand} vale @code{true}, @code{hankel_1} se expande en 
-t@'erminos de funciones elementales cuando el orden @math{v} es la mitad
-de un entero impar. V@'ease al respecto @code{besselexpand}.
+términos de funciones elementales cuando el orden @math{v} es la mitad
+de un entero impar. Véase al respecto @code{besselexpand}.
 
 Maxima reconoce la derivada de @code{hankel_1} con respecto del argumento @math{z}.
 
 Ejemplos:
 
-Evaluaci@'on num@'erica:
+Evaluación numérica:
 
 @c ===beg===
 @c hankel_1(1,0.5);
@@ -190,7 +190,7 @@ Evaluaci@'on num@'erica:
 (%o2)             - .2558287994862166 %i - 0.239575601883016
 @end example
 
-No se soportan @'ordenes complejos. Maxima devuelve una forma nominal:
+No se soportan órdenes complejos. Maxima devuelve una forma nominal:
 
 @c ===beg===
 @c hankel_1(%i,0.5+%i);
@@ -200,7 +200,7 @@ No se soportan @'ordenes complejos. Maxima devuelve una forma nominal:
 (%o3)                       hankel_1(%i, %i + 0.5)
 @end example
 
-Expansi@'on de @code{hankel_1} cuando @code{besselexpand} vale @code{true}:
+Expansión de @code{hankel_1} cuando @code{besselexpand} vale @code{true}:
 
 @c ===beg===
 @c hankel_1(1/2,z),besselexpand:true;
@@ -212,7 +212,7 @@ Expansi@'on de @code{hankel_1} cuando @code{besselexpand} vale @code{true}:
                               sqrt(%pi) sqrt(z)
 @end example
 
-Derivada de @code{hankel_1} respecto del argumento @math{z}. No est@'a
+Derivada de @code{hankel_1} respecto del argumento @math{z}. No está
 soportada la derivada respecto del orden @math{v}. Maxima devuelve una forma nominal:
 
 @c ===beg===
@@ -232,33 +232,33 @@ soportada la derivada respecto del orden @math{v}. Maxima devuelve una forma nom
 
 @end deffn
 
-@deffn {Funci@'on} hankel_2 (@var{v}, @var{z})
-Funci@'on de Hankel de segunda especie de orden @math{v} y argumento @math{z}
-(A&S 9.1.4). La funci@'on @code{hankel_2} se define como
+@deffn {Función} hankel_2 (@var{v}, @var{z})
+Función de Hankel de segunda especie de orden @math{v} y argumento @math{z}
+(A&S 9.1.4). La función @code{hankel_2} se define como
 
 @example
    bessel_j(v,z) - %i * bessel_y(v,z)
 @end example
 
-Maxima eval@'ua @code{hankel_2} num@'ericamente para el orden real @math{v}
-y el argumento complejo @math{z} en doble precisi@'on (float). La evaluaci@'on
-num@'erica en gran precisi@'on (bigfloat) y para @'ordenes complejos no est@'a
+Maxima evalúa @code{hankel_2} numéricamente para el orden real @math{v}
+y el argumento complejo @math{z} en doble precisión (float). La evaluación
+numérica en gran precisión (bigfloat) y para órdenes complejos no está
 implementada.
 
 Si @code{besselexpand} vale @code{true}, @code{hankel_2} se expande en 
-t@'erminos de funciones elementales cuando el orden @math{v} es la mitad
-de un entero impar. V@'ease al respecto @code{besselexpand}.
+términos de funciones elementales cuando el orden @math{v} es la mitad
+de un entero impar. Véase al respecto @code{besselexpand}.
 
 Maxima reconoce la derivada de @code{hankel_2} con respecto del argumento @math{z}.
 
-V@'eanse ejemplos en @code{hankel_1}.
+Véanse ejemplos en @code{hankel_1}.
 
 @end deffn
 
 @defvr {Variable optativa} besselexpand
 Valor por defecto: @code{false}
 
-Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad de un entero impar. En tal caso, las funciones de Bessel se pueden expandir en t@'erminos de otras funciones elementales.  Si @code{besselexpand} vale @code{true}, se expande la funci@'on de Bessel.
+Controla la expansión de las funciones de Bessel cuando el orden es la mitad de un entero impar. En tal caso, las funciones de Bessel se pueden expandir en términos de otras funciones elementales.  Si @code{besselexpand} vale @code{true}, se expande la función de Bessel.
 
 @example
 (%i1) besselexpand: false$
@@ -279,36 +279,36 @@ Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad d
 @end defvr
 
 
-@deffn {Funci@'on} scaled_bessel_i (@var{v}, @var{z})
+@deffn {Función} scaled_bessel_i (@var{v}, @var{z})
 
-Es la funci@'on de Bessel modificada de primera especie de
+Es la función de Bessel modificada de primera especie de
 orden @math{v} y argumento @math{z}, es decir
 @math{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
-Esta funci@'on es especialmente @'util para calcular @math{bessel_i}
-cuando @math{z} es grande. Sin embargo, Maxima no sabe mucho m@'as 
-sobre esta funci@'on. En c@'alculos simb@'olicos, quiz@'as sea
-preferible trabajar directamente con la expresi@'on 
+Esta función es especialmente útil para calcular @math{bessel_i}
+cuando @math{z} es grande. Sin embargo, Maxima no sabe mucho más 
+sobre esta función. En cálculos simbólicos, quizás sea
+preferible trabajar directamente con la expresión 
 @code{exp(-abs(z))*bessel_i(v, z)}.
 
 @end deffn
 
 
-@deffn {Funci@'on} scaled_bessel_i0 (@var{z})
+@deffn {Función} scaled_bessel_i0 (@var{z})
 
-Id@'entica a @code{scaled_bessel_i(0,z)}.
-
-@end deffn
-
-@deffn {Funci@'on} scaled_bessel_i1 (@var{z})
-
-Id@'entica a @code{scaled_bessel_i(1,z)}.
+Idéntica a @code{scaled_bessel_i(0,z)}.
 
 @end deffn
 
+@deffn {Función} scaled_bessel_i1 (@var{z})
 
-@deffn {Funci@'on} %s [@var{u},@var{v}] (@var{z}) 
+Idéntica a @code{scaled_bessel_i(1,z)}.
 
-Funci@'on s[u,v](z) de Lommel.
+@end deffn
+
+
+@deffn {Función} %s [@var{u},@var{v}] (@var{z}) 
+
+Función s[u,v](z) de Lommel.
 Gradshteyn & Ryzhik 8.570.1.
 
 @end deffn
@@ -320,47 +320,47 @@ Gradshteyn & Ryzhik 8.570.1.
 @node Funciones de Airy, Funciones Gamma y factorial, Funciones de Bessel, Funciones Especiales
 @section Funciones de Airy
 
-Las funciones de Airy Ai(x) y Bi(x) se definen en la secci@'on 10.4.
+Las funciones de Airy Ai(x) y Bi(x) se definen en la sección 10.4.
 de Abramowitz and Stegun, @i{Handbook of Mathematical Functions}.
 
 @code{y = Ai(x)} y @code{y = Bi(x)} son dos soluciones linealmente
-independientes de la ecuaci@'on diferencia de Airy
+independientes de la ecuación diferencia de Airy
 @code{diff (y(x), x, 2) - x y(x) = 0}.
 
-Si el argumento @code{x} es un n@'umero decimal en coma flotante
-real o complejo, se devolver@'a el valor num@'erico de la funci@'on.
+Si el argumento @code{x} es un número decimal en coma flotante
+real o complejo, se devolverá el valor numérico de la función.
 
-@deffn {Funci@'on} airy_ai (@var{x})
-Funci@'on de Airy Ai(x).  (A&S 10.4.2)
+@deffn {Función} airy_ai (@var{x})
+Función de Airy Ai(x).  (A&S 10.4.2)
 
 La derivada @code{diff (airy_ai(x), x)} es @code{airy_dai(x)}.
 
-V@'eanse @code{airy_bi}, @code{airy_dai} y @code{airy_dbi}.
+Véanse @code{airy_bi}, @code{airy_dai} y @code{airy_dbi}.
 @end deffn
 
 
-@deffn {Funci@'on} airy_dai (@var{x})
-Es la derivada de la funci@'on Ai de Airy, @code{airy_ai(x)}. 
+@deffn {Función} airy_dai (@var{x})
+Es la derivada de la función Ai de Airy, @code{airy_ai(x)}. 
 
-V@'ease @code{airy_ai}.
+Véase @code{airy_ai}.
 @end deffn
 
 
-@deffn {Funci@'on} airy_bi (@var{x})
-Es la funci@'on Bi de Airy, tal como la definen Abramowitz y Stegun,
-@i{Handbook of Mathematical Functions}, Secci@'on 10.4. Se trata de la segunda soluci@'on de la ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0}.
+@deffn {Función} airy_bi (@var{x})
+Es la función Bi de Airy, tal como la definen Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, Sección 10.4. Se trata de la segunda solución de la ecuación de Airy @code{diff (y(x), x, 2) - x y(x) = 0}.
 
-Si el argumento @code{x} es un n@'umero decimal real o complejo, se devolver@'a el valor num@'erico de @code{airy_bi} siempre que sea posible. En los otros casos, se devuelve la expresi@'on sin evaluar.
+Si el argumento @code{x} es un número decimal real o complejo, se devolverá el valor numérico de @code{airy_bi} siempre que sea posible. En los otros casos, se devuelve la expresión sin evaluar.
 
 La derivada @code{diff (airy_bi(x), x)} es @code{airy_dbi(x)}.
 
-V@'eanse @code{airy_ai} y @code{airy_dbi}.
+Véanse @code{airy_ai} y @code{airy_dbi}.
 @end deffn
 
-@deffn {Funci@'on} airy_dbi (@var{x})
-Es la derivada de la funci@'on Bi de Airy, @code{airy_bi(x)}.
+@deffn {Función} airy_dbi (@var{x})
+Es la derivada de la función Bi de Airy, @code{airy_bi(x)}.
 
-V@'eanse @code{airy_ai} y @code{airy_bi}.
+Véanse @code{airy_ai} y @code{airy_bi}.
 @end deffn
 
 
@@ -370,15 +370,15 @@ V@'eanse @code{airy_ai} y @code{airy_bi}.
 @node Funciones Gamma y factorial, Integral exponencial, Funciones de Airy, Funciones Especiales
 @section Funciones Gamma y factorial
 
-Las funciones gamma, beta, psi y gamma incompleta est@'an
-definidas en el cap@'{@dotless{i}}tulo 6 de Abramowitz y Stegun,
+Las funciones gamma, beta, psi y gamma incompleta están
+definidas en el capítulo 6 de Abramowitz y Stegun,
 @i{Handbook of Mathematical Functions}.
 
 
 
 
-@deffn {Funci@'on} bffac (@var{expr}, @var{n})
-Versi@'on para "bigfloat" de la funci@'on factorial (Gamma desplazada). El segundo argumento indica cu@'antos d@'{@dotless{i}}gitos se conservan y devuelven, pudiendo utilizarse para obtener algunas cifras extra.
+@deffn {Función} bffac (@var{expr}, @var{n})
+Versión para "bigfloat" de la función factorial (Gamma desplazada). El segundo argumento indica cuántos dígitos se conservan y devuelven, pudiendo utilizarse para obtener algunas cifras extra.
 
 @end deffn
 
@@ -391,11 +391,11 @@ El valor de @code{algepsilon} es usado por @code{algsys}.
 
 
 
-@deffn {Funci@'on} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Funci@'on} bfpsi0 (@var{z}, @var{fpprec})
-La funci@'on @code{bfpsi} es la poligamma de argumento real @var{z} y de orden el entero @var{n}. La funci@'on @code{bfpsi0} es la digamma.  La llamada @code{bfpsi0 (@var{z}, @var{fpprec})} equivale a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+@deffn {Función} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Función} bfpsi0 (@var{z}, @var{fpprec})
+La función @code{bfpsi} es la poligamma de argumento real @var{z} y de orden el entero @var{n}. La función @code{bfpsi0} es la digamma.  La llamada @code{bfpsi0 (@var{z}, @var{fpprec})} equivale a @code{bfpsi (0, @var{z}, @var{fpprec})}.
 
-Estas funciones devuelven valores "bigfloat". La variable @var{fpprec} es la precisi@'on "bigfloat" del valor de retorno.
+Estas funciones devuelven valores "bigfloat". La variable @var{fpprec} es la precisión "bigfloat" del valor de retorno.
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
@@ -405,18 +405,18 @@ Estas funciones devuelven valores "bigfloat". La variable @var{fpprec} es la pre
 
 
 
-@deffn {Funci@'on} cbffac (@var{z}, @var{fpprec})
-Calcula el factorial de n@'umeros complejos de punto flotante grandes.
+@deffn {Función} cbffac (@var{z}, @var{fpprec})
+Calcula el factorial de números complejos de punto flotante grandes.
 
-La instrucci@'on @code{load ("bffac")} carga esta funci@'on.
+La instrucción @code{load ("bffac")} carga esta función.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} gamma (@var{x})
+@deffn {Función} gamma (@var{x})
 
-La definici@'on b@'asica de la funci@'on gamma (A&S 6.1.1) es
+La definición básica de la función gamma (A&S 6.1.1) es
 
 @ifnottex
 @example
@@ -434,21 +434,21 @@ $$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
 @end tex
 
 Maxima simplifica @code{gamma} para enteros positivos y para fracciones positivas
-o negativas. Para fracciones de denominador dos, el resultado es un n@'umero 
-racional multiplicado por @code{sqrt(%pi)}. La simplificaci@'on para valores
+o negativas. Para fracciones de denominador dos, el resultado es un número 
+racional multiplicado por @code{sqrt(%pi)}. La simplificación para valores
 enteros la controla @code{factlim}. Para enteros mayores que @code{factlim}
-el resultado num@'erico de la funci@'on factorial, la cual se utiliza para
-calcular @code{gamma}, producir@'a un desbordamiento. La simplificaci@'on
-para n@'umeros racionales la controla @code{gammalim} para evitar desbordamientos.
-V@'eanse tambi@'en @code{factlim} y @code{gammalim}.
+el resultado numérico de la función factorial, la cual se utiliza para
+calcular @code{gamma}, producirá un desbordamiento. La simplificación
+para números racionales la controla @code{gammalim} para evitar desbordamientos.
+Véanse también @code{factlim} y @code{gammalim}.
 
-Para enteros negativos, @code{gamma} no est@'a definida.
+Para enteros negativos, @code{gamma} no está definida.
 
-Maxima puede evaluar @code{gamma} num@'ericamente para valores reales
-y complejos, tanto en formato float (doble precisi@'on) como big float 
-(precisi@'on arbitraria).
+Maxima puede evaluar @code{gamma} numéricamente para valores reales
+y complejos, tanto en formato float (doble precisión) como big float 
+(precisión arbitraria).
 
-La funci@'on @code{gamma} tiene simetr@'{@dotless{i}}a especular.
+La función @code{gamma} tiene simetría especular.
 
 Si @code{gamma_expand} vale @code{true}, Maxima expande @code{gamma}
 para argumentos del tipo @code{z+n} y @code{z-n}, siendo @code{n}
@@ -458,8 +458,8 @@ Maxima conoce la derivada de @code{gamma}.
 
 Ejemplos:
 
-Simplificaci@'on para enteros, fracciones de denominador dos
-y n@'umeros racionales:
+Simplificación para enteros, fracciones de denominador dos
+y números racionales:
 
 @example
 (%i1) map('gamma,[1,2,3,4,5,6,7,8,9]);
@@ -478,7 +478,7 @@ y n@'umeros racionales:
                             3       3           9
 @end example
 
-Evaluaci@'on num@'erica para valores reales y complejos:
+Evaluación numérica para valores reales y complejos:
 
 @example
 (%i4) map('gamma,[2.5,2.5b0]);
@@ -489,7 +489,7 @@ Evaluaci@'on num@'erica para valores reales y complejos:
                       4.980156681183561b-1 - 1.549498283018107b-1 %i]
 @end example
 
-Simetr@'{@dotless{i}}a especular:
+Simetría especular:
 
 @example
 (%i6) declare(z,complex)$
@@ -516,21 +516,21 @@ Derivada de @code{gamma}:
                                   0
 @end example
 
-V@'ease tambi@'en @code{makegamma}.
+Véase también @code{makegamma}.
 
 La constante de Euler-Mascheroni es @code{%gamma}.
 @end deffn
 
 
-@deffn {Funci@'on} log_gamma (@var{z})
-Logaritmo natural de la funci@'on gamma.
+@deffn {Función} log_gamma (@var{z})
+Logaritmo natural de la función gamma.
 @end deffn
 
 
 
-@deffn {Funci@'on} gamma_greek (@var{a}, @var{z})
+@deffn {Función} gamma_greek (@var{a}, @var{z})
 
-Funci@'on gamma incompleta inferior (A&S 6.5.2):
+Función gamma incompleta inferior (A&S 6.5.2):
 
 @ifnottex
 @example
@@ -547,13 +547,13 @@ Funci@'on gamma incompleta inferior (A&S 6.5.2):
 $$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
-V@'ease tambi@'en @code{gamma_incomplete} (funci@'on gamma incompleta superior).
+Véase también @code{gamma_incomplete} (función gamma incompleta superior).
 @end deffn
 
 
 
-@deffn {Funci@'on} gamma_incomplete (@var{a},@var{z})
-Funci@'on gamma incompleta superior, A&S 6.5.3:
+@deffn {Función} gamma_incomplete (@var{a},@var{z})
+Función gamma incompleta superior, A&S 6.5.3:
 
 @ifnottex
 @example
@@ -570,15 +570,15 @@ Funci@'on gamma incompleta superior, A&S 6.5.3:
 $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
-V@'eanse tambi@'en @code{gamma_expand} para controlar c@'omo se expresa
-@code{gamma_incomplete} en t@'erminos de funciones elementales y de @code{erfc}.
+Véanse también @code{gamma_expand} para controlar cómo se expresa
+@code{gamma_incomplete} en términos de funciones elementales y de @code{erfc}.
 
-V@'eanse tambi@'en las funciones relacionadas @code{gamma_incomplete_regularized} y
+Véanse también las funciones relacionadas @code{gamma_incomplete_regularized} y
 @code{gamma_incomplete_generalized}.
 @end deffn
 
-@deffn {Funci@'on} gamma_incomplete_regularized (@var{a},@var{z})
-Funci@'on gamma incompleta superior regularizada, A&S 6.5.1.
+@deffn {Función} gamma_incomplete_regularized (@var{a},@var{z})
+Función gamma incompleta superior regularizada, A&S 6.5.1.
 
 @ifnottex
 @example
@@ -592,14 +592,14 @@ gamma_incomplete_regularized(a, z) =
 $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
 @end tex
 
-V@'eanse tambi@'en @code{gamma_expand} para controlar c@'omo se expresa
-@code{gamma_incomplete} en t@'erminos de funciones elementales y de @code{erfc}.
+Véanse también @code{gamma_expand} para controlar cómo se expresa
+@code{gamma_incomplete} en términos de funciones elementales y de @code{erfc}.
 
-V@'ease tambi@'en @code{gamma_incomplete}.
+Véase también @code{gamma_incomplete}.
 @end deffn
 
-@deffn {Funci@'on} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1})
-Funci@'on gamma incompleta generalizada.  
+@deffn {Función} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1})
+Función gamma incompleta generalizada.  
 
 @ifnottex
 @example
@@ -617,16 +617,16 @@ gamma_incomplete_generalized(a, z1, z2) =
 $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
-V@'eanse tambi@'en @code{gamma_incomplete} y @code{gamma_incomplete_regularized}.
+Véanse también @code{gamma_incomplete} y @code{gamma_incomplete_regularized}.
 @end deffn
 
 
 @defvr {Variable opcional} gamma_expand
 Valor por defecto: @code{false}
 
-@code{gamma_expand} controla la expansi@'on de @code{gamma_incomplete}.
+@code{gamma_expand} controla la expansión de @code{gamma_incomplete}.
 Si @code{gamma_expand} vale @code{true}, @code{gamma_incomplete(v,z)}
-se expande en t@'erminos de
+se expande en términos de
 @code{z}, @code{exp(z)} y @code{erfc(z)}, siempre que sea posible.
 
 @example
@@ -651,41 +651,41 @@ se expande en t@'erminos de
 @defvr {Variable optativa} gammalim
 Valor por defecto: 10000
 
-La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma con argumentos enteros o racionales. Si el valor absoluto del argumento no es mayor que @code{gammalim}, entonces se realizar@'a la simplificaci@'on. N@'otese que la variable @code{factlim} tambi@'en controla la simplificaci@'on del resultado de @code{gamma} con argumento entero.
+La variable @code{gammalim} controla la simplificación de la función gamma con argumentos enteros o racionales. Si el valor absoluto del argumento no es mayor que @code{gammalim}, entonces se realizará la simplificación. Nótese que la variable @code{factlim} también controla la simplificación del resultado de @code{gamma} con argumento entero.
 
 @end defvr
 
-@deffn {Funci@'on} makegamma (@var{expr})
+@deffn {Función} makegamma (@var{expr})
 Transforma las funciones @code{binomial}, @code{factorial} y @code{beta} que aparecen en @var{expr} en funciones @code{gamma}.
 
-V@'ease tambi@'en @code{makefact}.
+Véase también @code{makefact}.
 
 @end deffn
 
 
-@deffn {Funci@'on} beta (@var{a}, @var{b})
-La funci@'on beta se define como @code{gamma(a) gamma(b)/gamma(a+b)}
+@deffn {Función} beta (@var{a}, @var{b})
+La función beta se define como @code{gamma(a) gamma(b)/gamma(a+b)}
 (A&S 6.2.1).
 
-Maxima simplifica la funci@'on beta para enteros positivos y n@'umeros
+Maxima simplifica la función beta para enteros positivos y números
 racionales cuya suma sea entera. Si @code{beta_args_sum_to_integer}
-vale @code{true}, Maxima tambi@'en simplifica expresiones generales
-cuya suma sea tambi@'en entera.
+vale @code{true}, Maxima también simplifica expresiones generales
+cuya suma sea también entera.
 
-Cuando @var{a} o @var{b} sean nulos, la funci@'on beta no est@'a definida.
+Cuando @var{a} o @var{b} sean nulos, la función beta no está definida.
 
-En general, la funci@'on beta no est@'a definida para enteros negativos. 
-La excepci@'on es para @var{a=-n}, siendo @var{n} un entero positivo
+En general, la función beta no está definida para enteros negativos. 
+La excepción es para @var{a=-n}, siendo @var{n} un entero positivo
 y @var{b} otro entero positivo tal que @var{b<=n}, entonces es posible
-definir una continuaci@'on anal@'{@dotless{i}}tica. En este caso Maxima
+definir una continuación analítica. En este caso Maxima
 devuelve un resultado.
 
 Si @code{beta_expand} vale @code{true}, expresiones como @code{beta(a+n,b)},
 @code{beta(a-n,b)}, @code{beta(a,b+n)} o @code{beta(a,b-n)}, siendo @code{n}
 entero, se simplifican.
 
-Maxima puede evaluar la funci@'on beta para valores reales y complejos, tanto
-de tipo decimal flotante o big float. Para la evaluaci@'on num@'erica
+Maxima puede evaluar la función beta para valores reales y complejos, tanto
+de tipo decimal flotante o big float. Para la evaluación numérica
 Maxima utiliza @code{log_gamma}:
 
 @example
@@ -693,17 +693,17 @@ Maxima utiliza @code{log_gamma}:
          %e
 @end example
 
-Maxima reconoce la simetr@'{@dotless{i}}a de la funci@'on beta.
+Maxima reconoce la simetría de la función beta.
 
-Maxima conoce las derivadas de la funci@'on beta, tanto respecto de @var{a}
+Maxima conoce las derivadas de la función beta, tanto respecto de @var{a}
 como de @var{b}.
 
-Para expresar la funci@'on beta como un cociente de funciones gamma,
-v@'ease @code{makegamma}.
+Para expresar la función beta como un cociente de funciones gamma,
+véase @code{makegamma}.
 
 Ejemplos:
 
-Simplificaci@'on cuando uno de sus argumentos es entero:
+Simplificación cuando uno de sus argumentos es entero:
 
 @example
 (%i1) [beta(2,3),beta(2,1/3),beta(2,a)];
@@ -712,7 +712,7 @@ Simplificaci@'on cuando uno de sus argumentos es entero:
                                12  4  a (a + 1)
 @end example
 
-Simplificaci@'on para argumentos racionales que suman un entero:
+Simplificación para argumentos racionales que suman un entero:
 
 @example
 (%i2) [beta(1/2,5/2),beta(1/3,2/3),beta(1/4,3/4)];
@@ -722,7 +722,7 @@ Simplificaci@'on para argumentos racionales que suman un entero:
 @end example
 
 Cuando se iguala @code{beta_args_sum_to_integer} a @code{true} se
-simplifican expresiones m@'as generales si la suma de los argumentos
+simplifican expresiones más generales si la suma de los argumentos
 se reduce a un entero:
 
 @example
@@ -754,7 +754,7 @@ si @code{beta_expand} vale @code{true}:
 
 @end example
 
-La funci@'on beta no est@'a definida si uno de sus argumentos es cero:
+La función beta no está definida si uno de sus argumentos es cero:
 
 @example
 (%i7) beta(0,b);
@@ -762,7 +762,7 @@ beta: expected nonzero arguments; found 0, b
  -- an error.  To debug this try debugmode(true);
 @end example
 
-Evaluaci@'on num@'erica para argumentos reales y complejos de tipo
+Evaluación numérica para argumentos reales y complejos de tipo
 decimal flotante o big float:
 
 @example
@@ -779,7 +779,7 @@ decimal flotante o big float:
 (%o11) 6.401449507966944b-2 - 1.502078053286415b-1 %i
 @end example
 
-La funci@'on beta es sim@'etrica con simetr@'{@dotless{i}}a especular:
+La función beta es simétrica con simetría especular:
 
 @example
 (%i14) beta(a,b)-beta(b,a);
@@ -789,7 +789,7 @@ La funci@'on beta es sim@'etrica con simetr@'{@dotless{i}}a especular:
 (%o16)                 beta(conjugate(a), conjugate(b))
 @end example
 
-Derivada de la funci@'on beta respecto de @code{a}:
+Derivada de la función beta respecto de @code{a}:
 
 @example
 (%i17) diff(beta(a,b),a);
@@ -798,8 +798,8 @@ Derivada de la funci@'on beta respecto de @code{a}:
 @end example
 @end deffn
 
-@deffn {Funci@'on} beta_incomplete (@var{a}, @var{b}, @var{z})
-La definici@'on b@'asica de la funci@'on beta incompleta (A&S 6.6.1) es
+@deffn {Función} beta_incomplete (@var{a}, @var{b}, @var{z})
+La definición básica de la función beta incompleta (A&S 6.6.1) es
 
 @example
                        z
@@ -811,18 +811,18 @@ La definici@'on b@'asica de la funci@'on beta incompleta (A&S 6.6.1) es
                        0
 @end example
 
-Esta definici@'on es posible para @math{realpart(a)>0}, @math{realpart(b)>0}
-y @math{abs(z)<1}. Para otras situaciones, la funci@'on beta incompleta puede
-definirse por medio de una funci@'on hipergeom@'etrica generalizada:
+Esta definición es posible para @math{realpart(a)>0}, @math{realpart(b)>0}
+y @math{abs(z)<1}. Para otras situaciones, la función beta incompleta puede
+definirse por medio de una función hipergeométrica generalizada:
 
 @example
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
-(V@'ease Funci@'ons.wolfram.com para una completa definici@'on de la funci@'on beta 
+(Véase Funcións.wolfram.com para una completa definición de la función beta 
 incompleta.)
 
 Para enteros negativos @math{a = -n} y enteros positivos @math{b=m} con 
-@math{m<=n} la funci@'on beta incompleta se define como
+@math{m<=n} la función beta incompleta se define como
 
 @example
                             m - 1           k
@@ -833,33 +833,33 @@ Para enteros negativos @math{a = -n} y enteros positivos @math{b=m} con
                             ====
                             k = 0
 @end example
-Maxima utiliza esta definici@'on para simplificar @code{beta_incomplete} 
+Maxima utiliza esta definición para simplificar @code{beta_incomplete} 
 cuando @var{a} es entero negativo.
 
 Cuando @var{a} es entero positivo, @code{beta_incomplete} se simplifica
 para cualesquiera argumentos @var{b} y @var{z}, y para @var{b} entero
 positivo para cualesquiera argumentos @var{a} y @var{z}, con la 
-excepci@'on de cuando @var{a} sea entero negativo.
+excepción de cuando @var{a} sea entero negativo.
 
 Para @math{z=0} y @math{realpart(a)>0}, @code{beta_incomplete} se anula.
 Para @var{z=1} y @math{realpart(b)>0}, @code{beta_incomplete} se reduce a
-la funci@'on @code{beta(a,b)}.
+la función @code{beta(a,b)}.
 
-Maxima eval@'ua @code{beta_incomplete} num@'ericamente para valores reales
-y complejos en forma decimal y big float. La evaluaci@'on num@'erica se
-realiza expandiendo la funci@'on beta incompleta en fracciones continuas.
+Maxima evalúa @code{beta_incomplete} numéricamente para valores reales
+y complejos en forma decimal y big float. La evaluación numérica se
+realiza expandiendo la función beta incompleta en fracciones continuas.
 
 Si @code{beta_expand} vale @code{true}, Maxima expande las expresiones
 @code{beta_incomplete(a+n,b,z)} y @code{beta_incomplete(a-n,b,z)},
 siendo @var{n} entero positivo.
 
 Maxima conoce las derivadas de @code{beta_incomplete} con respecto a
-las variables @var{a}, @var{b} y @var{z}, as@'{@dotless{i}} como la
+las variables @var{a}, @var{b} y @var{z}, así como la
 integral respecto de la variable @var{z}.
 
 Ejemplos:
 
-Simplificaci@'on para @var{a} entero positivo:
+Simplificación para @var{a} entero positivo:
 
 @example
 (%i1) beta_incomplete(2,b,z);
@@ -869,7 +869,7 @@ Simplificaci@'on para @var{a} entero positivo:
                                   b (b + 1)
 @end example
 
-Simplificaci@'on para @var{b} entero positivo:
+Simplificación para @var{b} entero positivo:
 
 @example
 (%i2) beta_incomplete(a,2,z);
@@ -879,7 +879,7 @@ Simplificaci@'on para @var{b} entero positivo:
                                   a (a + 1)
 @end example
 
-Simplificaci@'on para @var{a} y @var{b} enteros positivos:
+Simplificación para @var{a} y @var{b} enteros positivos:
 
 @example
 (%i3) beta_incomplete(3,2,z);
@@ -899,7 +899,7 @@ Para @var{a} entero negativo y @math{b<=(-a)}:
                                      3 z
 @end example
 
-Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
+Simplificación para los valores @math{z=0} y @math{z=1}:
 
 @example
 (%i5) assume(a>0,b>0)$
@@ -909,8 +909,8 @@ Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
 (%o7)                            beta(a, b)
 @end example
 
-Evaluaci@'on num@'erica, tanto con float (precisi@'on doble)
-como big float (precisi@'on arbitraria):
+Evaluación numérica, tanto con float (precisión doble)
+como big float (precisión arbitraria):
 
 @example
 (%i8) beta_incomplete(0.25,0.50,0.9);
@@ -928,7 +928,7 @@ resultado complejo:
 (%o11)              5.244115108584249 - 1.45518047787844 %i
 @end example
 
-Resultados para argumentos complejos m@'as generales:
+Resultados para argumentos complejos más generales:
 
 @example
 (%i14) beta_incomplete(0.25+%i,1.0+%i,1.7+%i);
@@ -938,7 +938,7 @@ Resultados para argumentos complejos m@'as generales:
 (%i16) 
 @end example
 
-Expansi@'on cuando @code{beta_expand} vale @code{true}:
+Expansión cuando @code{beta_expand} vale @code{true}:
 
 @example
 (%i23) beta_incomplete(a+1,b,z),beta_expand:true;
@@ -976,8 +976,8 @@ Derivada e integral de @code{beta_incomplete}:
 @end example
 @end deffn
 
-@deffn {Funci@'on} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
-Funci@'on beta incompleta regularizada A&S 6.6.2,
+@deffn {Función} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
+Función beta incompleta regularizada A&S 6.6.2,
 definida como
 
 @example
@@ -987,8 +987,8 @@ beta_incomplete_regularized(a, b, z) =
                                              beta(a, b)
 @end example
 
-Al igual que @code{beta_incomplete}, esta definici@'on no es completa.
-V@'ease Funci@'ons.wolfram.com para una definici@'on completa de 
+Al igual que @code{beta_incomplete}, esta definición no es completa.
+Véase Funcións.wolfram.com para una definición completa de 
 @code{beta_incomplete_regularized}.
 
 @code{beta_incomplete_regularized} se simplifica para @var{a} o @var{b} 
@@ -997,7 +997,7 @@ entero positivo.
 Para @math{z=0} y @math{realpart(a)>0}, @code{beta_incomplete_regularized} se anula.
 Para @var{z=1} y @math{realpart(b)>0}, @code{beta_incomplete_regularized} se reduce a 1.
 
-Maxima eval@'ua @code{beta_incomplete_regularized} num@'ericamente para valores reales
+Maxima evalúa @code{beta_incomplete_regularized} numéricamente para valores reales
 y complejos en forma decimal y big float.
 
 Si @code{beta_expand} vale @code{true}, Maxima expande 
@@ -1005,12 +1005,12 @@ Si @code{beta_expand} vale @code{true}, Maxima expande
 siendo @var{n} entero.
 
 Maxima conoce las derivadas de @code{beta_incomplete_regularized} con respecto a
-las variables @var{a}, @var{b} y @var{z}, as@'{@dotless{i}} como la
+las variables @var{a}, @var{b} y @var{z}, así como la
 integral respecto de la variable @var{z}.
 
 Ejemplos:
 
-Simplificaci@'on para @var{a} o @var{b} enteros positivos:
+Simplificación para @var{a} o @var{b} enteros positivos:
 
 @example
 (%i1) beta_incomplete_regularized(2,b,z);
@@ -1026,7 +1026,7 @@ Simplificaci@'on para @var{a} o @var{b} enteros positivos:
 (%o3)                         (3 (1 - z) + 1) z
 @end example
 
-Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
+Simplificación para los valores @math{z=0} y @math{z=1}:
 
 @example
 (%i4) assume(a>0,b>0)$
@@ -1036,8 +1036,8 @@ Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
 (%o6)                                 1
 @end example
 
-Evaluaci@'on num@'erica, tanto con float (precisi@'on doble)
-como big float (precisi@'on arbitraria):
+Evaluación numérica, tanto con float (precisión doble)
+como big float (precisión arbitraria):
 
 @example
 (%i7) beta_incomplete_regularized(0.12,0.43,0.9);
@@ -1052,7 +1052,7 @@ como big float (precisi@'on arbitraria):
 (%o12)      2.8653674999354036142b-1 %i - 1.2299596333468400163b-1
 @end example
 
-Expansi@'on cuando @code{beta_expand} vale @code{true}:
+Expansión cuando @code{beta_expand} vale @code{true}:
 
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
@@ -1089,8 +1089,8 @@ Derivada e integral respecto de @var{z}:
 
 @end deffn
 
-@deffn {Funci@'on} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
-La definici@'on b@'asica de la funci@'on beta incompleta generalizada es
+@deffn {Función} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+La definición básica de la función beta incompleta generalizada es
 
 The basic definition of the generalized incomplete beta function is
 
@@ -1110,9 +1110,9 @@ enteros positivos.
 Para @math{realpart(a)>0} y @math{z1=0} o @math{z2=0}, Maxima reduce
 @code{beta_incomplete_generalized} a @code{beta_incomplete}. Para
 @math{realpart(b)>0} y @math{z1=1} o @var{z2=1}, Maxima reduce a
-una expresi@'on con @code{beta} y @code{beta_incomplete}.
+una expresión con @code{beta} y @code{beta_incomplete}.
 
-Maxima eval@'ua @code{beta_incomplete_generalized} num@'ericamente para valores reales
+Maxima evalúa @code{beta_incomplete_generalized} numéricamente para valores reales
 y complejos en forma decimal y big float.
 
 Si @code{beta_expand} vale @code{true}, Maxima expande 
@@ -1120,7 +1120,7 @@ Si @code{beta_expand} vale @code{true}, Maxima expande
 siendo @var{n} entero positivo.
 
 Maxima conoce las derivadas de @code{beta_incomplete_generalized} con respecto a
-las variables @var{a}, @var{b}, @var{z1} y @var{z2}, as@'{@dotless{i}} como la
+las variables @var{a}, @var{b}, @var{z1} y @var{z2}, así como la
 integral respecto de las variables @var{z1} y @var{z2}.
 
 Ejemplos:
@@ -1147,7 +1147,7 @@ enteros positivos:
                                       12
 @end example
 
-Simplificaci@'on para los valores @math{z1=0}, @math{z2=0}, @math{z1=1}
+Simplificación para los valores @math{z1=0}, @math{z2=0}, @math{z1=1}
 o @math{z2=1}:
 @example
 (%i4) assume(a > 0, b > 0)$
@@ -1164,8 +1164,8 @@ o @math{z2=1}:
 (%o8)              beta_incomplete(a, b, z2) - beta(a, b)
 @end example
 
-Evaluaci@'on num@'erica para argumentos reales, tanto con float
-(precisi@'on doble) como big float (precisi@'on arbitraria):
+Evaluación numérica para argumentos reales, tanto con float
+(precisión doble) como big float (precisión arbitraria):
 @example
 (%i9) beta_incomplete_generalized(1/2,3/2,0.25,0.31);
 (%o9)                        .09638178086368676
@@ -1175,8 +1175,8 @@ Evaluaci@'on num@'erica para argumentos reales, tanto con float
 (%o10)               9.6381780863686935309170054689964b-2
 @end example
 
-Evaluaci@'on num@'erica para argumentos complejos, tanto con float
-(precisi@'on doble) como big float (precisi@'on arbitraria):
+Evaluación numérica para argumentos complejos, tanto con float
+(precisión doble) como big float (precisión arbitraria):
 @example
 (%i11) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31);
 (%o11)           - .09625463003205376 %i - .003323847735353769
@@ -1185,7 +1185,7 @@ Evaluaci@'on num@'erica para argumentos complejos, tanto con float
 (%o13)     - 9.6254630032054178691b-2 %i - 3.3238477353543591914b-3
 @end example
 
-Expansi@'on para @math{a+n} o @math{a-n}, siendo @var{n} entero positivo
+Expansión para @math{a+n} o @math{a-n}, siendo @var{n} entero positivo
 con @code{beta_expand} igual @code{true}:
 @example
 (%i14) beta_expand:true$
@@ -1231,7 +1231,7 @@ Valor por defecto: false
 
 Si @code{beta_expand} vale @code{true}, @code{beta(a,b)} y sus
 funciones relacionadas se expanden para argumentos del tipo 
-@math{a+n} o @math{a-n}, siendo @math{n} un n@'umero entero.
+@math{a+n} o @math{a-n}, siendo @math{n} un número entero.
 @end defvr
 
 @defvr {Variable opcional} beta_args_sum_to_integer
@@ -1243,28 +1243,28 @@ Si @code{beta_args_sum_to_integer} vale @code{true}, Maxima simplifica
 
 
 
-@deffn {Funci@'on} psi [@var{n}](@var{x})
+@deffn {Función} psi [@var{n}](@var{x})
 
 Es la derivada de @code{log (gamma (@var{x}))} de orden @code{@var{n}+1},
 de tal manera que @code{psi[0](@var{x})} es la primera derivada, 
-@code{psi[1](@var{x})} la segunda derivada y as@'{@dotless{i}} 
+@code{psi[1](@var{x})} la segunda derivada y así 
 sucesivamente.
 
-En general, Maxima no sabe c@'omo calcular valores num@'ericos de 
-@code{psi}, pero s@'{@dotless{i}} conoce el valor exacto para
+En general, Maxima no sabe cómo calcular valores numéricos de 
+@code{psi}, pero sí conoce el valor exacto para
 algunos argumentos racionales.
-Existen algunas variables globales para controlar en qu@'e rangos
+Existen algunas variables globales para controlar en qué rangos
 racionales debe devolver @code{psi} resultados exactos, si ello es posible.
-V@'eanse las descripciones de @code{maxpsiposint}, @code{maxpsinegint},
+Véanse las descripciones de @code{maxpsiposint}, @code{maxpsinegint},
 @code{maxpsifracnum} y @code{maxpsifracdenom}.
 En resumen, @var{x} debe alcanzar un valor entre @code{maxpsinegint} y
 @code{maxpsiposint}. Si el valor absoluto de la parte fraccional de
 @var{x} es racional y tiene un numerador menor que @code{maxpsifracnum}
-y un denominador menor que @code{maxpsifracdenom}, la funci@'on @code{psi}
-devolver@'a un valor exacto.
+y un denominador menor que @code{maxpsifracdenom}, la función @code{psi}
+devolverá un valor exacto.
 
-La funci@'on @code{bfpsi} del paquete @code{bffac} puede calcular
-valores num@'ericos.
+La función @code{bfpsi} del paquete @code{bffac} puede calcular
+valores numéricos.
 
 @end deffn
 
@@ -1272,7 +1272,7 @@ valores num@'ericos.
 Valor por defecto: 20
 
 La variable @code{maxpsiposint} guarda el mayor valor positivo para el 
-que @code{psi[n](x)} intentar@'a calcular un valor exacto.
+que @code{psi[n](x)} intentará calcular un valor exacto.
 
 @end defvr
 
@@ -1280,9 +1280,9 @@ que @code{psi[n](x)} intentar@'a calcular un valor exacto.
 Valor por defecto: -10
 
 La variable @code{maxpsinegint} guarda el menor valor negativo para el
-que @code{psi[n](x)} intentar@'a calcular un valor exacto. Si
-@var{x} es menor que @code{maxnegint}, @code{psi[n](@var{x})} no devolver@'a
-una respuesta simplificada, aunque supiese c@'omo hacerlo.
+que @code{psi[n](x)} intentará calcular un valor exacto. Si
+@var{x} es menor que @code{maxnegint}, @code{psi[n](@var{x})} no devolverá
+una respuesta simplificada, aunque supiese cómo hacerlo.
 
 @end defvr
 
@@ -1290,32 +1290,32 @@ una respuesta simplificada, aunque supiese c@'omo hacerlo.
 @defvr {Variable opcional} maxpsifracnum
 Valor por defecto: 6
 
-Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
+Sea @var{x} un número racional menor que la unidad de la forma @code{p/q}.
 Si @code{p} es mayor que @code{maxpsifracnum}, entonces
-@code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
+@code{psi[@var{n}](@var{x})} no devolverá una respuesta simplificada.
 
 @end defvr
 
 @defvr {Variable opcional} maxpsifracdenom
 Valor por defecto: 6
 
-Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
+Sea @var{x} un número racional menor que la unidad de la forma @code{p/q}.
 Si @code{q} es mayor que @code{maxpsifracnum}, entonces
-@code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
+@code{psi[@var{n}](@var{x})} no devolverá una respuesta simplificada.
 
 @end defvr
 
 
-@deffn {Funci@'on} makefact (@var{expr})
-Transforma las funciones @code{binomial}, @code{gamma} y @code{beta} que aparecen en @var{expr} en su notaci@'on factorial.
+@deffn {Función} makefact (@var{expr})
+Transforma las funciones @code{binomial}, @code{gamma} y @code{beta} que aparecen en @var{expr} en su notación factorial.
 
-V@'ease tambi@'en @code{makegamma}.
+Véase también @code{makegamma}.
 
 @end deffn
 
 
-@deffn {Funci@'on} numfactor (@var{expr})
-Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cual debe tener un @'unico t@'ermino. 
+@deffn {Función} numfactor (@var{expr})
+Devuelve el factor numérico que multiplica a la expresión @var{expr}, la cual debe tener un único término. 
 
 @example
 (%i1) gamma (7/2);
@@ -1336,51 +1336,51 @@ Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cua
 
 
 
-@node Integral exponencial, Funci@'on de error, Funciones Gamma y factorial, Funciones Especiales
+@node Integral exponencial, Función de error, Funciones Gamma y factorial, Funciones Especiales
 @section Integral exponencial
 
 La integral exponencial y sus funciones relacionadas se 
-definen en el cap@'{@dotless{i}}tulo 5 de Abramowitz y Stegun, 
+definen en el capítulo 5 de Abramowitz y Stegun, 
 @i{Handbook of Mathematical Functions}.
 
 
-@deffn {Funci@'on} expintegral_e1 (@var{z})
+@deffn {Función} expintegral_e1 (@var{z})
 La integral exponencial E1(z) (A&S 5.1.1)
 @end deffn
 
-@deffn {Funci@'on} expintegral_ei (@var{z})
+@deffn {Función} expintegral_ei (@var{z})
 La integral exponencial Ei(z) (A&S 5.1.2)
 @end deffn
 
-@deffn {Funci@'on} expintegral_li (@var{z})
+@deffn {Función} expintegral_li (@var{z})
 La integral exponencial Li(z)  (A&S 5.1.3)
 @end deffn
 
-@deffn {Funci@'on} expintegral_e (@var{n},@var{z})
+@deffn {Función} expintegral_e (@var{n},@var{z})
 La integral exponencial En(z)  (A&S 5.1.4)
 @end deffn
 
-@deffn {Funci@'on} expintegral_si (@var{z})
+@deffn {Función} expintegral_si (@var{z})
 La integral exponencial Si(z) (A&S 5.2.1)
 @end deffn
 
-@deffn {Funci@'on} expintegral_ci (@var{z})
+@deffn {Función} expintegral_ci (@var{z})
 La integral exponencial Ci(z) (A&S 5.2.2)
 @end deffn
 
-@deffn {Funci@'on} expintegral_shi (@var{z})
+@deffn {Función} expintegral_shi (@var{z})
 La integral exponencial Shi(z) (A&S 5.2.3)
 @end deffn
 
-@deffn {Funci@'on} expintegral_chi (@var{z})
+@deffn {Función} expintegral_chi (@var{z})
 La integral exponencial Chi(z) (A&S 5.2.4)
 @end deffn
 
 @defvr {Option variable} expintrep
 Valor por defecto: false
 
-Transforma la representaci@'on de la integral exponencial
-en t@'erminos de las funciones @code{gamma_incomplete}, 
+Transforma la representación de la integral exponencial
+en términos de las funciones @code{gamma_incomplete}, 
 @code{expintegral_e1}, @code{expintegral_ei}, 
 @code{expintegral_li}, @code{expintegral_trig} y @code{expintegral_hyp}.
 @end defvr
@@ -1389,69 +1389,69 @@ en t@'erminos de las funciones @code{gamma_incomplete},
 Valor por defecto: false
 
 Expande la integral exponencial E[n](z)
-para valores medios de la integral en t@'erminos de 
+para valores medios de la integral en términos de 
 las funciones Erfc o Erf y para positivos enteros
-en t@'erminos de Ei .
+en términos de Ei .
 @end defvr
 
 
 
 
 
-@node Funci@'on de error, Funciones de Struve, Integral exponencial, Funciones Especiales
-@section Funci@'on de error
+@node Función de error, Funciones de Struve, Integral exponencial, Funciones Especiales
+@section Función de error
 
-La funci@'on de error y sus asociadas se definen en el 
-cap@'{@dotless{i}}tulo 7 de Abramowitz y Stegun, 
+La función de error y sus asociadas se definen en el 
+capítulo 7 de Abramowitz y Stegun, 
 @i{Handbook of Mathematical Functions}.
 
 
-@deffn {Funci@'on} erf (@var{z})
-Funci@'on de error erf(z) (A&S 7.1.1)
+@deffn {Función} erf (@var{z})
+Función de error erf(z) (A&S 7.1.1)
 
-V@'ease tambi@'en @code{erfflag}.
+Véase también @code{erfflag}.
 @end deffn
 
-@deffn {Funci@'on} erfc (@var{z})
-Complemento de la funci@'on de error erfc(z) (A&S 7.1.2)
+@deffn {Función} erfc (@var{z})
+Complemento de la función de error erfc(z) (A&S 7.1.2)
 
 @code{erfc(z) = 1-erf(z)}
 @end deffn
 
-@deffn {Funci@'on} erfi (@var{z})
-Funci@'on de error imaginaria. 
+@deffn {Función} erfi (@var{z})
+Función de error imaginaria. 
 
 @code{erfi(z) = -%i*erf(%i*z)}
 @end deffn
 
-@deffn {Funci@'on} erf_generalized (@var{z1},@var{z2})
-Funci@'on de error generalizada Erf(z1,z2)
+@deffn {Función} erf_generalized (@var{z1},@var{z2})
+Función de error generalizada Erf(z1,z2)
 @end deffn
 
 
-@deffn {Funci@'on} fresnel_c (@var{z})
+@deffn {Función} fresnel_c (@var{z})
 Integral de Fresnel @code{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}. (A&S 7.3.1)
 
-La simplificaci@'on @code{fresnel_c(-x) = -fresnel_c(x)} se aplica cuando
+La simplificación @code{fresnel_c(-x) = -fresnel_c(x)} se aplica cuando
 la variable global @code{trigsign} vale @code{true}.
 
-La simplificaci@'on @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} se aplica cuando
+La simplificación @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} se aplica cuando
 la variable global @code{%iargs} vale @code{true}.
 
-V@'eanse tambi@'en @code{erf_representation} y
+Véanse también @code{erf_representation} y
 @code{hypergeometric_representation}.
 @end deffn
 
-@deffn {Funci@'on} fresnel_s (@var{z})
+@deffn {Función} fresnel_s (@var{z})
 Integral de Fresnel S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
 
-La simplificaci@'on fresnel_s(-x) = -fresnel_s(x) se aplica cuando
+La simplificación fresnel_s(-x) = -fresnel_s(x) se aplica cuando
 la variable global @code{trigsign} vale @code{true}.
 
-La simplificaci@'on fresnel_s(%i*x) =  %i*fresnel_s(x) se aplica cuando
+La simplificación fresnel_s(%i*x) =  %i*fresnel_s(x) se aplica cuando
 la variable global @code{%iargs} vale @code{true}.
 
-V@'eanse tambi@'en @code{erf_representation} y
+Véanse también @code{erf_representation} y
 @code{hypergeometric_representation}.
 @end deffn
 
@@ -1465,7 +1465,7 @@ y fresnel_c se transforman a erf.
 @defvr {Variable opcional} hypergeometric_representation
 Valor por defecto: false
 
-Permite obtener la representaci@'on hipergeom@'etrica
+Permite obtener la representación hipergeométrica
 de las funciones fresnel_s y fresnel_c.
 @end defvr
 
@@ -1475,19 +1475,19 @@ de las funciones fresnel_s y fresnel_c.
 
 
 
-@node Funciones de Struve, Funciones hipergeom@'etricas, Funci@'on de error, Funciones Especiales
+@node Funciones de Struve, Funciones hipergeométricas, Función de error, Funciones Especiales
 @section Funciones de Struve
 
-Las funciones de Struve se definen en el cap@'{@dotless{i}}tulo
+Las funciones de Struve se definen en el capítulo
 12 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}.
 
-@deffn {Funci@'on} struve_h (@var{v}, @var{z})
-Funci@'on H de Struve de orden @var{v} y argumento @var{z}, (A&S 12.1.1).
+@deffn {Función} struve_h (@var{v}, @var{z})
+Función H de Struve de orden @var{v} y argumento @var{z}, (A&S 12.1.1).
 
 @end deffn
 
-@deffn {Funci@'on} struve_l (@var{v}, @var{z})
-Funci@'on L modificada de Struve de orden @var{v} y argumento @var{z}, (A&S 12.2.1).
+@deffn {Función} struve_l (@var{v}, @var{z})
+Función L modificada de Struve de orden @var{v} y argumento @var{z}, (A&S 12.2.1).
 
 @end deffn
 
@@ -1495,41 +1495,41 @@ Funci@'on L modificada de Struve de orden @var{v} y argumento @var{z}, (A&S 12.2
 
 
 
-@node Funciones hipergeom@'etricas, Funciones de cilindro parab@'olico, Funciones de Struve, Funciones Especiales
-@section Funciones hipergeom@'etricas
+@node Funciones hipergeométricas, Funciones de cilindro parabólico, Funciones de Struve, Funciones Especiales
+@section Funciones hipergeométricas
 
-Las funciones hipergeom@'etricas se definen en los cap@'{@dotless{i}}tulos
+Las funciones hipergeométricas se definen en los capítulos
 13 y 15 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}. 
 
 Maxima tiene un soporte limitado sobre estas funciones, que pueden
 aparecer en resultados devueltos por @code{hgfred}.
 
-@deffn {Funci@'on} %m [@var{k},@var{u}] (@var{z}) 
-Funci@'on M de Whittaker
+@deffn {Función} %m [@var{k},@var{u}] (@var{z}) 
+Función M de Whittaker
 @code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
 (A&S 13.1.32)
 @end deffn
 
-@deffn {Funci@'on} %w [@var{k},@var{u}] (@var{z}) 
-Funci@'on W de Whittaker.  (A&S 13.1.33)
+@deffn {Función} %w [@var{k},@var{u}] (@var{z}) 
+Función W de Whittaker.  (A&S 13.1.33)
 @end deffn
 
 
-@deffn {Funci@'on} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
-Es la funci@'on hipergeom@'etrica pFq(a1,a2,..ap;b1,b2,..bq;z),
+@deffn {Función} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
+Es la función hipergeométrica pFq(a1,a2,..ap;b1,b2,..bq;z),
 donde @code{a} es una lista de longitud @code{p} y 
 @code{b} otra lista de longitud @code{q}.
 @end deffn
 
 
-@deffn {Funci@'on} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
-Es la funci@'on hipergeom@'etrica. A diferencia de la funci@'on
-hipergeom@'etrica @code{%f} de Maxima, la funci@'on @code{hypergeometric}
-es simplificadora; adem@'as, @code{hypergeometric} soporta la evaluaci@'on
-en doble (float) y gran (bigfloat) precisi@'on. La evaluaci@'on 
-num@'erica fuera del c@'{@dotless{i}}rculo unidad no est@'a en general
-soportada, pero s@'{@dotless{i}} en el caso de la funci@'on
-hipergeom@'etrica de Gauss, cuando @math{p = 2} y @math{q = 1}.
+@deffn {Función} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+Es la función hipergeométrica. A diferencia de la función
+hipergeométrica @code{%f} de Maxima, la función @code{hypergeometric}
+es simplificadora; además, @code{hypergeometric} soporta la evaluación
+en doble (float) y gran (bigfloat) precisión. La evaluación 
+numérica fuera del círculo unidad no está en general
+soportada, pero sí en el caso de la función
+hipergeométrica de Gauss, cuando @math{p = 2} y @math{q = 1}.
 
 Si la variable opcional @code{expand_hypergeometric} vale @code{true},
 (el valor por defecto es @code{false}) y uno de los argumentos entr @code{a1}
@@ -1542,7 +1542,7 @@ Ejemplos:
 (%o1) %e^x
 @end example
 
-Los polinomios se expanden autom@'aticamente cuando @code{expand_hypergeometric}
+Los polinomios se expanden automáticamente cuando @code{expand_hypergeometric}
 vale @code{true}.
 
 @example
@@ -1553,7 +1553,7 @@ vale @code{true}.
 (%o3) -x^3/504+3*x^2/56-3*x/7+1
 @end example
 
-Se soporta la evaluaci@'on en doble (float) y gran (bigfloat) precisi@'on:
+Se soporta la evaluación en doble (float) y gran (bigfloat) precisión:
 
 @example
 (%i4) hypergeometric([5.1],[7.1 + %i],0.42);
@@ -1574,17 +1574,17 @@ Se soporta la evaluaci@'on en doble (float) y gran (bigfloat) precisi@'on:
 
 
 
-@node Funciones de cilindro parab@'olico, Funciones y variables para las funciones especiales, Funciones hipergeom@'etricas, Funciones Especiales
-@section  Funciones de cilindro parab@'olico
+@node Funciones de cilindro parabólico, Funciones y variables para las funciones especiales, Funciones hipergeométricas, Funciones Especiales
+@section  Funciones de cilindro parabólico
 
-Las funciones de cilindro parab@'olico se definen en el cap@'{@dotless{i}}tulo
+Las funciones de cilindro parabólico se definen en el capítulo
 19 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}. 
 
 Maxima tiene un soporte limitado sobre estas funciones, que pueden
 aparecer en resultados devueltos por @code{hgfred}.
 
-@deffn {Funci@'on} parabolic_cylinder_d (@var{v}, @var{z}) 
-Funci@'on de cilindro parab@'olico @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
+@deffn {Función} parabolic_cylinder_d (@var{v}, @var{z}) 
+Función de cilindro parabólico @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 @end deffn
 
 
@@ -1597,37 +1597,37 @@ Funci@'on de cilindro parab@'olico @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1
 
 
 
-@node Funciones y variables para las funciones especiales,  , Funciones de cilindro parab@'olico, Funciones Especiales
+@node Funciones y variables para las funciones especiales,  , Funciones de cilindro parabólico, Funciones Especiales
 @section Funciones y variables para las funciones especiales
 
 
-@deffn {Funci@'on} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@deffn {Función} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
 Calcula la transformada de Laplace de @var{expr} respecto de
 la variable @var{t}. El integrando @var{expr} puede contener
 funciones especiales.
 
-La funci@'on @code{specint} admite las funciones especiales siguientes:
+La función @code{specint} admite las funciones especiales siguientes:
 la gamma incompleta, las funciones de error (pero no @code{erfi}, siendo
-sencillo transformar @code{erfi} en la funci@'on de error @code{erf}),
+sencillo transformar @code{erfi} en la función de error @code{erf}),
 integrales exponenciales, funciones de Bessel (incluidos productos de
 funciones de Bessel), funciones de Hankel, de Hermite y los polinomios de
 Laguerre.
 
-Adem@'as, @code{specint} tambi@'en admite la funci@'on hipergeom@'etrica
-@code{%f[p,q]([],[],z)}, la funci@'on de Whittaker de primera especie
+Además, @code{specint} también admite la función hipergeométrica
+@code{%f[p,q]([],[],z)}, la función de Whittaker de primera especie
 @code{%m[u,k](z)} y la de segunda especie @code{%w[u,k](z)}.
 
-El resultado puede darse en t@'erminos de funciones especiales y es
-posible que incluya tambi@'en funciones hipergeom@'etricas sin
+El resultado puede darse en términos de funciones especiales y es
+posible que incluya también funciones hipergeométricas sin
 simplificar.
 
 Cuando @code{laplace} es incapaz de calcular la transformada de Laplace,
-entonces llama a la funci@'on @code{specint}. Puesto que @code{laplace}
-tiene programadas m@'as reglas para calcular transformadas de Laplace,
+entonces llama a la función @code{specint}. Puesto que @code{laplace}
+tiene programadas más reglas para calcular transformadas de Laplace,
 es preferible utilizar @code{laplace} en lugar de @code{specint}.
 
-La ejecuci@'on de @code{demo(hypgeo)} muestra algunos ejemplos de
+La ejecución de @code{demo(hypgeo)} muestra algunos ejemplos de
 transformadas de Laplace calculadas con @code{specint}.
 
 Ejemplos:
@@ -1683,8 +1683,8 @@ ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
                                s
 @end example
 
-Resultados cuando se utiliza la expansi@'on de @code{gamma_incomplete}
-y se cambia la representaci@'on de @code{expintegral_e1}:
+Resultados cuando se utiliza la expansión de @code{gamma_incomplete}
+y se cambia la representación de @code{expintegral_e1}:
 
 @example
 (%i10) assume(s>0)$
@@ -1711,16 +1711,16 @@ y se cambia la representaci@'on de @code{expintegral_e1}:
 @end deffn
 
 
-@deffn {Funci@'on} hgfred (@var{a}, @var{b}, @var{t})
+@deffn {Función} hgfred (@var{a}, @var{b}, @var{t})
 
-Simplifica la funci@'on hipergeom@'etrica generalizada en t@'erminos
-de otras funciones m@'as sencillas. @var{a} es una lista de par@'ametros
-del numerador y @var{b} lo es de par@'ametros del denominador.
+Simplifica la función hipergeométrica generalizada en términos
+de otras funciones más sencillas. @var{a} es una lista de parámetros
+del numerador y @var{b} lo es de parámetros del denominador.
 
-En caso de que @code{hgfred} no pueda simplificar la funci@'on hipergeom@'etrica
-devolver@'a una expresi@'on de la forma @code{%f[p,q]([a], [b], x)}, siendo @var{p}
-el n@'umero de elementos de @var{a} y @var{q} el de @var{b}. Esta es la 
-funci@'on hipergeom@'etrica generalizada @code{pFq}.
+En caso de que @code{hgfred} no pueda simplificar la función hipergeométrica
+devolverá una expresión de la forma @code{%f[p,q]([a], [b], x)}, siendo @var{p}
+el número de elementos de @var{a} y @var{q} el de @var{b}. Esta es la 
+función hipergeométrica generalizada @code{pFq}.
 
 @example
 (%i1) assume(not(equal(z,0)));
@@ -1747,7 +1747,7 @@ funci@'on hipergeom@'etrica generalizada @code{pFq}.
 @end example
 
 Tal como muestra el siguiente ejemplo, puede ser de utilidad cargar
-tambi@'en el paquete @code{orthopoly}. N@'otese que @var{L} es el
+también el paquete @code{orthopoly}. Nótese que @var{L} es el
 polinomio generalizado de Laguerre.
 
 @example
@@ -1771,13 +1771,13 @@ polinomio generalizado de Laguerre.
 @end deffn
 
 
-@deffn {Funci@'on} lambert_w (@var{z})
-Rama principal de la funci@'on W de Lambert, soluci@'on de
-la ecuaci@'on @code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
+@deffn {Función} lambert_w (@var{z})
+Rama principal de la función W de Lambert, solución de
+la ecuación @code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
 @end deffn
 
-@deffn {Funci@'on} generalized_lambert_w (@var{k}, @var{z})
-@var{k}-@'esima rama de la funci@'on W de Lambert's, W(z), soluci@'on de
+@deffn {Función} generalized_lambert_w (@var{k}, @var{z})
+@var{k}-ésima rama de la función W de Lambert's, W(z), solución de
 @code{z = W(z) * exp(W(z))}. (DLMF 4.13)
 
 La rama principal, representada por Wp(z) en DLMF, es @code{lambert_w(z) = generalized_lambert_w(0,z)}.
@@ -1785,16 +1785,17 @@ La rama principal, representada por Wp(z) en DLMF, es @code{lambert_w(z) = gener
 La otra rama con valores reales, representada por Wm(z) en DLMF, es @code{generalized_lambert_w(-1,z)}.
 @end deffn
 
-@deffn {Funci@'on} nzeta (@var{z})
-Funci@'on de dispersi@'on del plasma.
+@deffn {Función} nzeta (@var{z})
+Función de dispersión del plasma.
 @code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
 @end deffn
 
-@deffn {Funci@'on} nzetar (@var{z})
+@deffn {Función} nzetar (@var{z})
 Devuelve @code{realpart(nzeta(z))}.
 @end deffn
 
-@deffn {Funci@'on} nzetai (@var{z})
+@deffn {Función} nzetai (@var{z})
 Devuelve @code{imagpart(nzeta(z))}.
 @end deffn
+
 

@@ -1,17 +1,17 @@
 @c English version: 2010-11-01
 @menu
-* Introducci@'on a solve_rec::
+* Introducción a solve_rec::
 * Funciones y variables para solve_rec::
 @end menu
 
-@node Introducci@'on a solve_rec, Funciones y variables para solve_rec, solve_rec, solve_rec
-@section Introducci@'on a solve_rec
+@node Introducción a solve_rec, Funciones y variables para solve_rec, solve_rec, solve_rec
+@section Introducción a solve_rec
 
 El paquete @code{solve_rec} resuelve expresiones recurrentes lineales con
 coeficientes polinomiales.
 
-Ejec@'utese @code{demo(solve_rec);} para ver una demostraci@'on sobre
-la utilizaci@'on de este paquete.
+Ejecútese @code{demo(solve_rec);} para ver una demostración sobre
+la utilización de este paquete.
 
 Ejemplo:
 
@@ -25,16 +25,16 @@ Ejemplo:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Funciones y variables para solve_rec,  , Introducci@'on a solve_rec, solve_rec
+@node Funciones y variables para solve_rec,  , Introducción a solve_rec, solve_rec
 
 @section Funciones y variables para solve_rec
 
 
-@deffn {Funci@'on} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Función} reduce_order (@var{rec}, @var{sol}, @var{var})
 
-Reduce el orden de la expresi@'on recurrente lineal @var{rec} cuando
-se conoce una soluci@'on particular @var{sol}. La recurrencia
-reducida puede utilizarse para obterner m@'as soluciones.
+Reduce el orden de la expresión recurrente lineal @var{rec} cuando
+se conoce una solución particular @var{sol}. La recurrencia
+reducida puede utilizarse para obterner más soluciones.
 
 Ejemplo:
 
@@ -85,22 +85,22 @@ So the general solution is
 @defvr {Variable opcional} simplify_products
 Valor por defecto: @code{true}
 
-Si @code{simplify_products} vale @code{true}, @code{solve_rec} intentar@'a
+Si @code{simplify_products} vale @code{true}, @code{solve_rec} intentará
 simplificar los productos del resultado.
 
-V@'ease tambi@'en @code{solve_rec}.
+Véase también @code{solve_rec}.
 
 @end defvr
 
 
 
-@deffn {Funci@'on} simplify_sum (@var{expr})
+@deffn {Función} simplify_sum (@var{expr})
 
 Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
 cerrada.
 
-Para utilizar esta funci@'on c@'arguese previamente el paquete @code{simplify_sum}
-ejecutando la instrucci@'on @code{load(simplify_sum)}.
+Para utilizar esta función cárguese previamente el paquete @code{simplify_sum}
+ejecutando la instrucción @code{load(simplify_sum)}.
 
 Ejemplo:
 
@@ -133,23 +133,23 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Función} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 
-Obtiene las soluciones hipergeom@'etricas de la expresi@'on recurrente @var{eqn}
+Obtiene las soluciones hipergeométricas de la expresión recurrente @var{eqn}
 con coeficientes lineales en la variable @var{var}. Los argumentos opcionales
 @var{init} son condiciones iniciales.
 
-La funci@'on @code{solve_rec} puede resolver expresiones recurrentes con
-coeficientes constantes, encuentra soluciones hipergeom@'etricas de
-expresiones recurrentes lineales homog@'eneas con coeficientes 
+La función @code{solve_rec} puede resolver expresiones recurrentes con
+coeficientes constantes, encuentra soluciones hipergeométricas de
+expresiones recurrentes lineales homogéneas con coeficientes 
 polinomiales, obtiene soluciones racionales de expresiones recurrentes
-lineales con coeficientes lineales y resuelve tambi@'en expresiones
+lineales con coeficientes lineales y resuelve también expresiones
 recurrentes de Ricatti.
 
-N@'otese que el tiempo de ejecuci@'on del algoritmo para encontrar soluciones 
-hipergeom@'etricas es exponencial respecto del grado del coeficiente principal.
+Nótese que el tiempo de ejecución del algoritmo para encontrar soluciones 
+hipergeométricas es exponencial respecto del grado del coeficiente principal.
 
-Para hacer uso de esta funci@'on ejec@'utese previamente @code{load(solve_rec);}.
+Para hacer uso de esta función ejecútese previamente @code{load(solve_rec);}.
 
 Ejemplo de recurrencia lineal con coeficientes constantes:
 
@@ -201,16 +201,16 @@ Ejemplo de recurrencia de Ricatti:
 @end example
 
 
-V@'eanse tambi@'en @code{solve_rec_rat}, @code{simplify_products} y @code{product_use_gamma}.
+Véanse también @code{solve_rec_rat}, @code{simplify_products} y @code{product_use_gamma}.
 
 @end deffn
 
-@deffn {Funci@'on} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Función} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
 Calcula las soluciones racionales de las expresiones recurrentes lineales. 
-V@'ease @code{solve_rec} para la descripci@'on de sus argumentos.
+Véase @code{solve_rec} para la descripción de sus argumentos.
 
-Para hacer uso de esta funci@'on ejec@'utese previamente @code{load(solve_rec);}.
+Para hacer uso de esta función ejecútese previamente @code{load(solve_rec);}.
 
 Ejemplo:
 
@@ -227,7 +227,7 @@ Ejemplo:
             x   (x - 1) (x + 1)
 @end example
 
-V@'ease tambi@'en @code{solve_rec}.
+Véase también @code{solve_rec}.
 
 @end deffn
 
@@ -235,16 +235,16 @@ V@'ease tambi@'en @code{solve_rec}.
 Valor por defecto:@code{true} 
 
 Si @code{product_use_gamma} vale @code{true},  @code{solve_rec}
-introduce la funci@'on gamma en la expresi@'on del resultado
+introduce la función gamma en la expresión del resultado
 cuando se simplifican productos.
 
-V@'eanse tambi@'en @code{simplify_products} y @code{solve_rec}.
+Véanse también @code{simplify_products} y @code{solve_rec}.
 
 @end defvr
 
-@deffn {Funci@'on} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffn {Función} summand_to_rec (@var{summand}, @var{k}, @var{n})
 
-Devuelve la expresi@'on recurrente que satisface la suma
+Devuelve la expresión recurrente que satisface la suma
 
 @example
     inf
@@ -256,10 +256,10 @@ Devuelve la expresi@'on recurrente que satisface la suma
   k = minf
 @end example
 
-donde el sumando es hipergeom@'etrico en  @var{k} y @var{n}.
+donde el sumando es hipergeométrico en  @var{k} y @var{n}.
 
-Para hacer uso de esta funci@'on deben cargarse previamente los paquetes
-@code{zeilberger} y @code{solve_rec} mediante la ejecuci@'on de las sentencias
+Para hacer uso de esta función deben cargarse previamente los paquetes
+@code{zeilberger} y @code{solve_rec} mediante la ejecución de las sentencias
 @code{load(solve_rec)} y @code{load(zeilberger)}.
 
 @example
@@ -296,3 +296,4 @@ Dependent equations eliminated:  (3 2)
 @end example
 
 @end deffn
+

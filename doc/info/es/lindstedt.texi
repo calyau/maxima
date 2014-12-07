@@ -7,10 +7,10 @@
 @section Funciones y variables para lindstedt
 
 
-@deffn {Funci@'on} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {Función} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
 Este es el primer paso hacia un programa para resolver ecuaciones de Lindstedt.
 Puede resolver problemas con condiciones iniciales, las cuales pueden ser
-constantes arbitrarias (no pueden usarse @var{%k1} ni @var{%k2}) donde las condiciones iniciales sobre las ecuaciones de perturbaci@'on son @math{z[i]=0, z'[i]=0} para @math{i>0}.
+constantes arbitrarias (no pueden usarse @var{%k1} ni @var{%k2}) donde las condiciones iniciales sobre las ecuaciones de perturbación son @math{z[i]=0, z'[i]=0} para @math{i>0}.
 El argumento @var{ic} es la lista de condiciones iniciales.
 
 Ejemplo:
@@ -33,5 +33,6 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utense  @code{load("makeOrders")} y @code{load("lindstedt")}.
+Antes de hacer uso de esta función ejecútense  @code{load("makeOrders")} y @code{load("lindstedt")}.
 @end deffn
+

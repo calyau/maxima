@@ -13,15 +13,15 @@
 En Maxima, un comentario es cualquier texto encerrado entre las
 marcas @code{/*} y @code{*/}.
 
-El analizador sint@'actico de Maxima trata los comentarios como
+El analizador sintáctico de Maxima trata los comentarios como
 espacios en blanco a efectos de encontrar @i{tokens} en el flujo
 de entrada. Una entrada tal como @code{a/* foo */b} contiene dos
-@i{tokens}, @code{a} y @code{b}, no un @'unico @i{token} @code{ab}.
+@i{tokens}, @code{a} y @code{b}, no un único @i{token} @code{ab}.
 En cualquier otro contexto, los comentarios son ignorados por Maxima;
 no se almacenan ni sus contenidos ni sus localizaciones.
 
 Los comentarios pueden anidarse hasta una profundidad arbitraria.
-Las marcas  @code{/*} y @code{*/} deben emparejarse y debe haber igual n@'umero
+Las marcas  @code{/*} y @code{*/} deben emparejarse y debe haber igual número
 de ambos.
 
 Ejemplos:
@@ -50,7 +50,7 @@ Ejemplos:
 @node Archivos, Funciones y variables para lectura y escritura, Comentarios, Lectura y escritura
 @section Archivos
 
-Un archivo no es m@'as que una @'area de un cierto dispositivo de almacenamiento que contiene datos o texto.
+Un archivo no es más que una área de un cierto dispositivo de almacenamiento que contiene datos o texto.
 Los archivos se agrupan en los discos en "directorios", que son listas de archivos.
 Instrucciones que operan con archivos son:
 
@@ -67,92 +67,92 @@ Instrucciones que operan con archivos son:
 @end example
 
 Cuando el nombre de un fichero se pasa a funciones como @code{plot2d}, @code{save} o 
-@code{writefile} y en @'el no se incluye la ruta de acceso, Maxima almacena
-el fichero en la carpeta de trabajo actual. La ubicaci@'on de la carpeta de 
-trabajo depende del sistema operativo y de la instalaci@'on.
+@code{writefile} y en él no se incluye la ruta de acceso, Maxima almacena
+el fichero en la carpeta de trabajo actual. La ubicación de la carpeta de 
+trabajo depende del sistema operativo y de la instalación.
 
 
 @node Funciones y variables para lectura y escritura, Funciones y variables para salida TeX, Archivos, Lectura y escritura
 @section Funciones y variables para lectura y escritura
 
 
-@deffn {Funci@'on} appendfile (@var{filename})
-A@~nade informaci@'on de la consola a @var{filename}, de igual manera que lo hace @code{writefile}, pero con la salvedad de que si el archivo ya existe la informaci@'on queda a@~nadida al final de su contenido.
+@deffn {Función} appendfile (@var{filename})
+Añade información de la consola a @var{filename}, de igual manera que lo hace @code{writefile}, pero con la salvedad de que si el archivo ya existe la información queda añadida al final de su contenido.
 
-La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
+La función @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} batch (@var{filename})
+@deffn {Función} batch (@var{filename})
 @deffnx {Function} batch (@var{filename}, @code{option})
 
 @code{batch(@var{filename})} lee expresiones de Maxima desde @var{filename} y 
-las eval@'ua. La funci@'on @code{batch} busca @var{filename} en la lista 
-@code{file_search_maxima}. V@'ease @code{file_search}.
+las evalúa. La función @code{batch} busca @var{filename} en la lista 
+@code{file_search_maxima}. Véase @code{file_search}.
 
 @code{batch(@var{filename}, @code{test})} es como @code{run_testsuite} con la
-opci@'on @code{display_all=true}. En este caso @code{batch} busca @var{filename} 
+opción @code{display_all=true}. En este caso @code{batch} busca @var{filename} 
 en la lista @code{file_search_maxima} y no en @code{file_search_tests} como hace
-@code{run_testsuite}. Adem@'as, @code{run_testsuite} ejecuta tests que est@'an
+@code{run_testsuite}. Además, @code{run_testsuite} ejecuta tests que están
 en la lista @code{testsuite_files}. Con @code{batch} es posible ejecutar
 cualquier fichero que se encuentre en @code{file_search_maxima} en modo de prueba.
 
 El contenido de @var{filename} debe ser una secuencia de expresiones de Maxima,
 cada una de las cuales termina en @code{;} o @code{$}.
-La variable especial @code{%} y la funci@'on @code{%th}
+La variable especial @code{%} y la función @code{%th}
 se refieren a resultados previos dentro del archivo.
 El archivo puede incluir construcciones del tipo @code{:lisp}.
-Espacios, tabulaciones y saltos de l@'{@dotless{i}}nea en el archivo se ignoran.
-Un archivo de entrada v@'alido puede crearse con un editor de texto o con la 
-funci@'on @code{stringout}.
+Espacios, tabulaciones y saltos de línea en el archivo se ignoran.
+Un archivo de entrada válido puede crearse con un editor de texto o con la 
+función @code{stringout}.
 
-La funci@'on @code{batch} lee las expresiones del archivo @var{filename}, 
-muestra las entradas en la consola, realiza los c@'alculos solicitados y 
+La función @code{batch} lee las expresiones del archivo @var{filename}, 
+muestra las entradas en la consola, realiza los cálculos solicitados y 
 muestra las expresiones de los resultados.
-A las expresiones de entrada se les asignan etiquetas, as@'{@dotless{i}} 
-como a las de salida. La funci@'on @code{batch} eval@'ua todas las expresiones 
+A las expresiones de entrada se les asignan etiquetas, así 
+como a las de salida. La función @code{batch} evalúa todas las expresiones 
 de entrada del archivo a menos que se produzca un error. Si se le solicita 
-informaci@'on al usuario (con @code{asksign} o @code{askinteger}, por ejemplo)
-@code{batch} se detiene para leer la nueva informaci@'on para luego continuar.
+información al usuario (con @code{asksign} o @code{askinteger}, por ejemplo)
+@code{batch} se detiene para leer la nueva información para luego continuar.
 
 Es posible detener  @code{batch} tecleando @code{control-C} desde la consola.
 El efecto de @code{control-C} depende del entorno Lisp instalado.
 
-La funci@'on @code{batch} tiene diversas aplicaciones, tales como servir de 
-almac@'en de c@'odigo escrito por el usuario, suministrar demostraciones
-libres de errores o ayudar a organizar el trabajo del usuario en la resoluci@'on 
+La función @code{batch} tiene diversas aplicaciones, tales como servir de 
+almacén de código escrito por el usuario, suministrar demostraciones
+libres de errores o ayudar a organizar el trabajo del usuario en la resolución 
 de problemas complejos.
 
-La funci@'on @code{batch} eval@'ua su argumento y devuelve la ruta hacia
+La función @code{batch} evalúa su argumento y devuelve la ruta hacia
 @var{filename} en formato cadena cuando es invocada sin segundo argumento
-o con la opci@'on @code{demo}. Cuando es llamada con la opci@'on @code{test}, 
-devuelve la lista vac@'{@dotless{i}}a @code{[]} o una lista con @var{filename}
-y los n@'umeros de tests que han fallado.
+o con la opción @code{demo}. Cuando es llamada con la opción @code{test}, 
+devuelve la lista vacía @code{[]} o una lista con @var{filename}
+y los números de tests que han fallado.
 
-V@'eanse tambi@'en  @code{load}, @code{batchload} y @code{demo}.
+Véanse también  @code{load}, @code{batchload} y @code{demo}.
 
 @end deffn
 
-@deffn {Funci@'on} batchload (@var{filename})
-Lee expresiones de Maxima desde @var{filename} y las eval@'ua sin mostrar las entradas ni las salidas y sin asignarles etiquetas. Sin embargo, las salidas producidas por  @code{print} o @code{describe} s@'{@dotless{i}} se muestran.
+@deffn {Función} batchload (@var{filename})
+Lee expresiones de Maxima desde @var{filename} y las evalúa sin mostrar las entradas ni las salidas y sin asignarles etiquetas. Sin embargo, las salidas producidas por  @code{print} o @code{describe} sí se muestran.
 
-La variable especial @code{%} y la funci@'on @code{%th} se refieren a resultados previos del int@'erprete interactivo, no a los del propio archivo. El archivo no puede incluir construcciones del tipo @code{:lisp}.
+La variable especial @code{%} y la función @code{%th} se refieren a resultados previos del intérprete interactivo, no a los del propio archivo. El archivo no puede incluir construcciones del tipo @code{:lisp}.
 
-La funci@'on @code{batchload} devuelve la ruta de @var{filename} en formato de cadena.
+La función @code{batchload} devuelve la ruta de @var{filename} en formato de cadena.
 
-La funci@'on @code{batchload} eval@'ua sus argumentos.
+La función @code{batchload} evalúa sus argumentos.
 
-V@'eanse tambi@'en @code{batch} y @code{load}.
+Véanse también @code{batch} y @code{load}.
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
 
 @end deffn
 
 
 
-@deffn {Funci@'on} closefile ()
-La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
+@deffn {Función} closefile ()
+La función @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
 
 @end deffn
 
@@ -160,16 +160,16 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile}
 @defvr {Variable opcional} file_output_append
 Valor por defecto: @code{false}
 
-La variable @code{file_output_append} controla si las funciones de escritura de ficheros a@~naden informaci@'on o sustituyen el fichero de salida. Cuando @code{file_output_append} toma el valor @code{true}, estas funciones ampl@'{@dotless{i}}an el contenido de sus ficheros de salida; en otro caso, sustituyen el fichero anterior de igual nombre por otro con el nuevo contenido.
+La variable @code{file_output_append} controla si las funciones de escritura de ficheros añaden información o sustituyen el fichero de salida. Cuando @code{file_output_append} toma el valor @code{true}, estas funciones amplían el contenido de sus ficheros de salida; en otro caso, sustituyen el fichero anterior de igual nombre por otro con el nuevo contenido.
 
-Las funciones @code{save}, @code{stringout} y @code{with_stdout} se ven afectadas por el valor que tome la variable @code{file_output_append}. Otras funciones que tambi@'en escriben en ficheros de salida no tienen en cuenta este valor; en concreto, las funciones para la representaci@'on de gr@'aficos y las de traducci@'on siempre sustituyen el fichero anterior por uno nuevo de igual nombre, mientras que las funciones @code{tex} y @code{appendfile} siempre a@~naden informaci@'on al fichero de salida sin eliminar la informaci@'on anterior.
+Las funciones @code{save}, @code{stringout} y @code{with_stdout} se ven afectadas por el valor que tome la variable @code{file_output_append}. Otras funciones que también escriben en ficheros de salida no tienen en cuenta este valor; en concreto, las funciones para la representación de gráficos y las de traducción siempre sustituyen el fichero anterior por uno nuevo de igual nombre, mientras que las funciones @code{tex} y @code{appendfile} siempre añaden información al fichero de salida sin eliminar la información anterior.
 @c WHAT ABOUT WRITEFILE ??
 
 @end defvr
 
 
 
-@deffn {Funci@'on} filename_merge (@var{path}, @var{filename})
+@deffn {Función} filename_merge (@var{path}, @var{filename})
 Construye una ruta modificada a partir de @var{path} y @var{filename}.
 Si la componente final de @var{path} es de la forma @code{###.@var{something}},
 la componente se reemplaza con @code{@var{filename}.@var{something}}.
@@ -180,18 +180,18 @@ El resultado es un objeto Lisp de tipo @i{pathname}.
 
 
 
-@deffn {Funci@'on} file_search (@var{filename})
-@deffnx {Funci@'on} file_search (@var{filename}, @var{pathlist})
+@deffn {Función} file_search (@var{filename})
+@deffnx {Función} file_search (@var{filename}, @var{pathlist})
 
-La funci@'on @code{file_search} busca el archivo @var{filename} y devuelve su ruta como una cadena; si no lo encuentra,  @code{file_search} devuelve @code{false}. La llamada 
-@code{file_search (@var{filename})} busca en los directorios de b@'usqueda por defecto,
+La función @code{file_search} busca el archivo @var{filename} y devuelve su ruta como una cadena; si no lo encuentra,  @code{file_search} devuelve @code{false}. La llamada 
+@code{file_search (@var{filename})} busca en los directorios de búsqueda por defecto,
 que son los especificados por las variables @code{file_search_maxima}, @code{file_search_lisp} y @code{file_search_demo}.
 
-La funci@'on @code{file_search} analiza primero si el nombre del argumento existe antes de hacerlo coincidir con los comodines de los patrones de b@'usqueda de archivos.
-V@'ease @code{file_search_maxima} para m@'as informaci@'on sobre patrones de b@'usqueda de archivos.
+La función @code{file_search} analiza primero si el nombre del argumento existe antes de hacerlo coincidir con los comodines de los patrones de búsqueda de archivos.
+Véase @code{file_search_maxima} para más información sobre patrones de búsqueda de archivos.
 
 El argumento @var{filename} puede ser una ruta con nombre de archivo,
-o simplemente el nombre del archivo, o, si el directorio de b@'usqueda de archivo incluye un patr@'on de b@'usqueda, es suficiente con el nombre de archivo sin extensi@'on.
+o simplemente el nombre del archivo, o, si el directorio de búsqueda de archivo incluye un patrón de búsqueda, es suficiente con el nombre de archivo sin extensión.
 Por ejemplo,
 
 @example
@@ -201,15 +201,15 @@ file_search ("zeta");
 @end example
 
 todos buscan el mismo archivo, dando por hecho que el archivo existe y que @code{/home/wfs/special/###.mac}
-est@'a en @code{file_search_maxima}.
+está en @code{file_search_maxima}.
 
 La llamada @code{file_search (@var{filename}, @var{pathlist})} busca solamente en los directorios especificados por @var{pathlist}, que es una lista de cadenas.
-El argumento @var{pathlist} ignora los directorios de b@'usqueda por defecto, de manera que si se da la lista de rutas, @code{file_search} busca solamente en ellas y no en los directorios por defecto.
-Incluso si hay un @'unico directorio en @var{pathlist}, debe ser suministrado como una lista de un @'unico elemento.
+El argumento @var{pathlist} ignora los directorios de búsqueda por defecto, de manera que si se da la lista de rutas, @code{file_search} busca solamente en ellas y no en los directorios por defecto.
+Incluso si hay un único directorio en @var{pathlist}, debe ser suministrado como una lista de un único elemento.
 
-El usuario puede modificar los directorios de b@'usqueda por defecto; v@'ease para ello See @code{file_search_maxima}.
+El usuario puede modificar los directorios de búsqueda por defecto; véase para ello See @code{file_search_maxima}.
 
-La funci@'on @code{file_search} es llamada por @code{load} con los directorios de b@'usqueda @code{file_search_maxima} y @code{file_search_lisp}.
+La función @code{file_search} es llamada por @code{load} con los directorios de búsqueda @code{file_search_maxima} y @code{file_search_lisp}.
 @end deffn
 
 
@@ -220,9 +220,9 @@ La funci@'on @code{file_search} es llamada por @code{load} con los directorios d
 @defvrx {Variable opcional} file_search_usage
 @defvrx {Variable opcional} file_search_tests
 
-Estas variables especifican listas de directorios en los que deben buscar la funciones  @code{load}, @code{demo} y algunas otras. Los valores por defecto de estas variables nombran directorios de la instalaci@'on de Maxima.
+Estas variables especifican listas de directorios en los que deben buscar la funciones  @code{load}, @code{demo} y algunas otras. Los valores por defecto de estas variables nombran directorios de la instalación de Maxima.
 
-El usuario puede modificar estas variables, bien reemplazando los valores por defecto, bien a@~nadiendo nuevos directorios.
+El usuario puede modificar estas variables, bien reemplazando los valores por defecto, bien añadiendo nuevos directorios.
 Por ejemplo,
 
 @example
@@ -237,10 +237,10 @@ file_search_maxima: append (file_search_maxima,
     ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
 @end example
 
-a@~nade dos directorios m@'as. Puede ser conveniente colocar una expresi@'on como esta en el archivo @code{maxima-init.mac}, de manera que la ruta de b@'usqueda de ficheros se asigne autom@'aticamente cada vez que arranca Maxima.
+añade dos directorios más. Puede ser conveniente colocar una expresión como esta en el archivo @code{maxima-init.mac}, de manera que la ruta de búsqueda de ficheros se asigne automáticamente cada vez que arranca Maxima.
 
 Se pueden especificar varias extensiones de archivos y rutas con comodines especiales.
-La cadena @code{###} representa el nombre del archivo buscado y una lista separada de comas y encerrada entre llaves,  @code{@{foo,bar,baz@}} representa m@'ultiples cadenas.
+La cadena @code{###} representa el nombre del archivo buscado y una lista separada de comas y encerrada entre llaves,  @code{@{foo,bar,baz@}} representa múltiples cadenas.
 Por ejemplo, suponiendo que se busca el nombre @code{neumann},
 
 @example
@@ -251,17 +251,17 @@ se interpreta como @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @end defvr
 
 
-@deffn {Funci@'on} file_type (@var{filename})
-Devuelve una descripci@'on del contenido de @var{filename} basada en la 
-extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.
+@deffn {Función} file_type (@var{filename})
+Devuelve una descripción del contenido de @var{filename} basada en la 
+extensión, sin intentar abrir el archivo para inspeccionar su contenido.
 
-El valor devuelto es un s@'{@dotless{i}}mbolo @code{object}, @code{lisp} o 
-@code{maxima}. Si la extensi@'on es "mac", "mc", "demo", "dem", "dm1", "dm2", 
-"dm3" o "dmt", @code{file_type} devuelve @code{maxima}. Si la extensi@'on es 
-"l", "lsp" o "lisp", @code{file_type} devuelve @code{lisp}. Si la extensi@'on
+El valor devuelto es un símbolo @code{object}, @code{lisp} o 
+@code{maxima}. Si la extensión es "mac", "mc", "demo", "dem", "dm1", "dm2", 
+"dm3" o "dmt", @code{file_type} devuelve @code{maxima}. Si la extensión es 
+"l", "lsp" o "lisp", @code{file_type} devuelve @code{lisp}. Si la extensión
 no es ninguna de las anteriores, @code{file_type} devuelve @code{object}.
 
-V@'ease tambi@'en @code{pathname_type}.
+Véase también @code{pathname_type}.
 
 Ejemplos:
 
@@ -282,7 +282,7 @@ Valor por defecto:  @code{[l, lsp, lisp]}
 @code{file_type_lisp} es una lista con extensiones de ficheros que Maxima 
 reconoce como fuente de Lisp.
 
-V@'ease tambi@'en @code{file_type}
+Véase también @code{file_type}
 @end defvr
 
 
@@ -293,39 +293,39 @@ Valor por defecto:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 @code{file_type_maxima} es una lista con extensiones de ficheros que Maxima 
 reconoce como fuente de Maxima.
 
-V@'ease tambi@'en @code{file_type}
+Véase también @code{file_type}
 @end defvr
 
 
 
 
-@deffn {Funci@'on} load (@var{filename})
-Eval@'ua las expresiones del archivo @var{filename}, trayendo variables,
-funciones y otros objetos a Maxima. Una asignaci@'on hecha previamente a 
-una variable en Maxima ser@'a destruida por otra asignaci@'on que se le 
+@deffn {Función} load (@var{filename})
+Evalúa las expresiones del archivo @var{filename}, trayendo variables,
+funciones y otros objetos a Maxima. Una asignación hecha previamente a 
+una variable en Maxima será destruida por otra asignación que se le 
 haga en @var{filename}. Para encontrar el fichero, @code{load} llama a 
 @code{file_search} con @code{file_search_maxima} y @code{file_search_lisp} 
-como directorios de b@'usqueda. Si la llamada a @code{load} funciona correctamente, 
+como directorios de búsqueda. Si la llamada a @code{load} funciona correctamente, 
 devuelve el nombre del fichero; en caso contrario, @code{load} muestra un mensaje de error.
 
-La funci@'on @code{load} trabaja indistintamente con c@'odigo Lisp y Maxima.
+La función @code{load} trabaja indistintamente con código Lisp y Maxima.
 Los ficheros creados con @code{save}, @code{translate_file} y @code{compile_file}, 
-que crea c@'odigo Lisp, y @code{stringout}, que crea c@'odigo Maxima, todos ellos 
-pueden ser procesados por @code{load}. La funci@'on @code{load} llama a @code{loadfile} 
+que crea código Lisp, y @code{stringout}, que crea código Maxima, todos ellos 
+pueden ser procesados por @code{load}. La función @code{load} llama a @code{loadfile} 
 para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
 
-La funci@'on @code{load} no reconoce las construcciones de tipo @code{:lisp} en
-ficheros de Maxima. Adem@'as, mientras se est@'a procesando @var{filename},
+La función @code{load} no reconoce las construcciones de tipo @code{:lisp} en
+ficheros de Maxima. Además, mientras se está procesando @var{filename},
 las variables globales @code{_}, @code{__}, @code{%} y @code{%th} mantienen los
-valores que ten@'{@dotless{i}}an cuando se realiz@'o la llamada a @code{load}.
+valores que tenían cuando se realizó la llamada a @code{load}.
 
-V@'eanse tambi@'en @code{loadfile}, @code{batch}, @code{batchload} y @code{demo};
+Véanse también @code{loadfile}, @code{batch}, @code{batchload} y @code{demo};
 @code{loadfile} procesa archivos en Lisp; @code{batch}, @code{batchload} y @code{demo}
 procesan archivos en Maxima.
 
-V@'ease @code{file_search} para m@'as detalles sobre el mecanismo de b@'usqueda de archivos.
+Véase @code{file_search} para más detalles sobre el mecanismo de búsqueda de archivos.
 
-La funci@'on @code{load} eval@'ua sus argumentos.
+La función @code{load} evalúa sus argumentos.
 
 @end deffn
 
@@ -336,14 +336,14 @@ Valor por defecto: @code{false}
 
 Cuando se carga un fichero con las funciones @code{load}, @code{loadfile}
 o @code{batchload}, a la variable @code{load_pathname} se le asigna la
-ruta al fichero en cuesti@'on.
+ruta al fichero en cuestión.
 
-Se puede acceder a la variable @code{load_pathname} mientras se est@'a
+Se puede acceder a la variable @code{load_pathname} mientras se está
 cargando el fichero.
 
 Ejemplo:
 
-Sup@'ongase que se tiene el fichero @code{test.mac} en la carpeta
+Supóngase que se tiene el fichero @code{test.mac} en la carpeta
 @code{"/home/usuario/workspace/mymaxima/temp/"} con las siguientes
 instrucciones:
 
@@ -363,12 +363,12 @@ End of batchfile
 @end defvr
 
 
-@deffn {Funci@'on} loadfile (@var{filename})
-Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
-@code{loadfile} no llama a @code{file_search}, de manera que @code{filename} debe incluir la extensi@'on del archivo y su ruta completa.
+@deffn {Función} loadfile (@var{filename})
+Evalúa las expresiones Lisp del archivo @var{filename}. La función
+@code{loadfile} no llama a @code{file_search}, de manera que @code{filename} debe incluir la extensión del archivo y su ruta completa.
 
-La funci@'on @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
-Puede ser m@'as conveniente utilizar @code{load} en lugar de @code{loadfile}.
+La función @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
+Puede ser más conveniente utilizar @code{load} en lugar de @code{loadfile}.
 @end deffn
 
 
@@ -382,11 +382,11 @@ La variable @code{loadprint} indica si mostrar un mensaje cuando se carga un arc
 @item
 Si @code{loadprint} vale @code{true}, se muestra siempre un mensaje.
 @item
-Si @code{loadprint} vale @code{'loadfile}, muestra un mensaje s@'olo si el archivo es cargado con la funci@'on @code{loadfile}.
+Si @code{loadprint} vale @code{'loadfile}, muestra un mensaje sólo si el archivo es cargado con la función @code{loadfile}.
 @item
-Si @code{loadprint} vale @code{'autoload}, muestra un mensaje s@'olo cuandi un archivo se carga autom@'aticamente. V@'ease  @code{setup_autoload}.
+Si @code{loadprint} vale @code{'autoload}, muestra un mensaje sólo cuandi un archivo se carga automáticamente. Véase  @code{setup_autoload}.
 @item
-Si @code{loadprint} vale @code{false}, nunca mostrar@'a mensajes.
+Si @code{loadprint} vale @code{false}, nunca mostrará mensajes.
 @end itemize
 
 @end defvr
@@ -398,15 +398,15 @@ Valor por defecto: @code{false}
 
 Los desarrolladores de paquetes que utilizan @code{save} o @code{translate}
 para crear paquetes (ficheros) que van a ser utilizados por terceros pueden
-hacer @code{packagefile: true} para evitar que se a@~nada informaci@'on a la
-listas de informaci@'on de Maxima, como @code{values} o @code{functions}.
+hacer @code{packagefile: true} para evitar que se añada información a la
+listas de información de Maxima, como @code{values} o @code{functions}.
 @end defvr
 
 
 
-@deffn  {Funci@'on} pathname_directory (@var{pathname})
-@deffnx {Funci@'on} pathname_name (@var{pathname})
-@deffnx {Funci@'on} pathname_type (@var{pathname})
+@deffn  {Función} pathname_directory (@var{pathname})
+@deffnx {Función} pathname_name (@var{pathname})
+@deffnx {Función} pathname_type (@var{pathname})
 
 Estas funciones devuelven las componentes de @var{pathname}.
 
@@ -430,16 +430,16 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} printfile (@var{path})
+@deffn {Función} printfile (@var{path})
 
-Env@'{@dotless{i}}a el fichero al que hace referncia la ruta @var{path}
-a la consola. @var{path} puede ser una cadena o un s@'{@dotless{i}}mbolo,
-en cuyo caso se convertir@'a en una cadena.
+Envía el fichero al que hace referncia la ruta @var{path}
+a la consola. @var{path} puede ser una cadena o un símbolo,
+en cuyo caso se convertirá en una cadena.
 
 Si @var{path} hace referencia a un fichero accesible desde el directorio
-actual de trabajo, entonces se enviar@'a a la consola; en caso contrario,
-@code{printfile} intentar@'a localizar el fichero a@~nadi@'endole @var{path}
-a cada uno de los elementos de @code{file_search_usage} a trav@'es de 
+actual de trabajo, entonces se enviará a la consola; en caso contrario,
+@code{printfile} intentará localizar el fichero añadiéndole @var{path}
+a cada uno de los elementos de @code{file_search_usage} a través de 
 @code{filename_merge}.
 
 @code{printfile} devuelve la ruta del fichero encontado.
@@ -449,25 +449,25 @@ a cada uno de los elementos de @code{file_search_usage} a trav@'es de
 
 
 
-@deffn {Funci@'on} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Funci@'on} save (@var{filename}, values, functions, labels, ...)
-@deffnx {Funci@'on} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@deffnx {Funci@'on} save (@var{filename}, all)
-@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+@deffn {Función} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffnx {Función} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Función} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Función} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Función} save (@var{filename}, all)
+@deffnx {Función} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
 
 Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., 
 en el archivo @var{filename}. Los argumentos son nombres de variables, funciones 
-u otros objetos. Si un nombre no tiene un valor o una funci@'on asociado a @'el, 
+u otros objetos. Si un nombre no tiene un valor o una función asociado a él, 
 entonces se ignora.
 
-La funci@'on @code{save} devuelve @var{filename}.
+La función @code{save} devuelve @var{filename}.
 
-La funci@'on @code{save} almacena datos en forma de expresiones Lisp.
+La función @code{save} almacena datos en forma de expresiones Lisp.
 Los datos almacenados por @code{save} pueden recuperarse con @code{load (@var{filename})}.
 El resultado de ejecutar  @code{save} cuando @var{filename} ya existe depende 
 del soporte Lisp implementado; el archivo puede ser sobreescrito o que @code{save} 
-env@'{@dotless{i}}e un mesaje de error.
+envíe un mesaje de error.
 
 La llamada @code{save (@var{filename}, values, functions, labels, ...)}
 almacena los elementos cuyos nombres son @code{values}, @code{functions}, 
@@ -476,54 +476,54 @@ por la variable @code{infolists}; @code{values} incluye todas las variables
 definidas por el usuario.
 
 La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacena los valores 
-de las etiquetas de entrada y salida desde @var{m} hasta @var{n}. N@'otese que 
-@var{m} y @var{n} deben ser n@'umeros. Las etiquetas de entrada y salida 
-tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
+de las etiquetas de entrada y salida desde @var{m} hasta @var{n}. Nótese que 
+@var{m} y @var{n} deben ser números. Las etiquetas de entrada y salida 
+también se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
 La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de 
 entrada y salida. Cuando las etiquetas almacenadas en el archivo sean posteriormente 
-recuperadas, se sobreescribir@'an las activas en ese momento.
+recuperadas, se sobreescribirán las activas en ese momento.
 
 La llamada @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
 almacena los valores de @var{expr_1}, @var{expr_2}, ...,
 con los nombres @var{name_1}, @var{name_2}, ....
-Es @'util hacer este tipo de llamada para con etiquetas de entrada y salida, por ejemplo, @code{save ("foo.1", aa=%o88)}.
-El miembro derecho de la igualdad puede ser cualquier expresi@'on, que ser@'a evaluada.
-Esta llamada a la funci@'on @code{save} no incorpora nuevos nombres a la sesi@'on actual de Maxima,
+Es útil hacer este tipo de llamada para con etiquetas de entrada y salida, por ejemplo, @code{save ("foo.1", aa=%o88)}.
+El miembro derecho de la igualdad puede ser cualquier expresión, que será evaluada.
+Esta llamada a la función @code{save} no incorpora nuevos nombres a la sesión actual de Maxima,
 simplemente los almacena en el archivo @var{filename}.
 
-Todas estas formas de llamar a la funci@'on @code{save} se pueden combinar a voluntad.
+Todas estas formas de llamar a la función @code{save} se pueden combinar a voluntad.
 Por ejemplo, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
 La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, 
 lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., 
-as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
+así como algunos objetos definidos automáticamente.
 Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o 
-@code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
+@code{showtime}, si han sido modificadas por el usuario. Véase @code{myoptions}.
 
-@code{save} eval@'ua @var{filename} pero no el resto de argumentos.
+@code{save} evalúa @var{filename} pero no el resto de argumentos.
 @end deffn
 
 
 
-@deffn {Funci@'on} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funci@'on} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Funci@'on} stringout (@var{filename}, input)
-@deffnx {Funci@'on} stringout (@var{filename}, functions)
-@deffnx {Funci@'on} stringout (@var{filename}, values)
+@deffn {Función} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Función} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Función} stringout (@var{filename}, input)
+@deffnx {Función} stringout (@var{filename}, functions)
+@deffnx {Función} stringout (@var{filename}, values)
 
-La funci@'on @code{stringout} escribe expresiones en un archivo de la misma forma en 
-que se escribir@'{@dotless{i}}an como expresiones de entrada. El archivo puede ser 
+La función @code{stringout} escribe expresiones en un archivo de la misma forma en 
+que se escribirían como expresiones de entrada. El archivo puede ser 
 utilizado entonces como entrada a las funciones @code{batch} o @code{demo}, y puede 
-ser editado para cualquier otro prop@'osito.
+ser editado para cualquier otro propósito.
 
-La forma general de @code{stringout} escribe los valores de una o m@'as expresiones 
-en el archivo de salida. N@'otese que si una expresi@'on es una variable, solamente se 
-escribir@'a el valor de la variable y no el nombre de @'esta. Como caso especial, y muy 
-@'util en algunas ocasiones, las expresiones pueden ser etiquetas de entrada (@code{%i1}, 
+La forma general de @code{stringout} escribe los valores de una o más expresiones 
+en el archivo de salida. Nótese que si una expresión es una variable, solamente se 
+escribirá el valor de la variable y no el nombre de ésta. Como caso especial, y muy 
+útil en algunas ocasiones, las expresiones pueden ser etiquetas de entrada (@code{%i1}, 
 @code{%i2}, @code{%i3}, ...) o de salida (@code{%o1}, @code{%o2}, @code{%o3}, ...).
 
 Si @code{grind} vale @code{true}, @code{stringout} formatea la salida utilizando @code{grind}. 
-En caso contrario, se utilizar@'a el formato @code{string}. V@'eanse @code{grind} y @code{string}.
+En caso contrario, se utilizará el formato @code{string}. Véanse @code{grind} y @code{string}.
 
 La forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escribe los valores 
 de las etiquetas de entrada desde la m hasta la n, ambas inclusive. 
@@ -536,28 +536,28 @@ definidas por el usuario, contenidas en la lista global @code{functions}, en el 
 
 La forma especial @code{stringout (@var{filename}, values)} escribe todas las variables 
 asignadas por el usuario, contenidas en la lista global @code{values}, en el archivo. 
-Cada variable se escribe como una sentencia de asignaci@'on, con el nombre de la variable 
-seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general de 
-@code{stringout} no escribe las variables como sentencias de asignaci@'on.
+Cada variable se escribe como una sentencia de asignación, con el nombre de la variable 
+seguida de dos puntos y a continuación su valor. Nótese que la forma general de 
+@code{stringout} no escribe las variables como sentencias de asignación.
 @end deffn
 
 
-@deffn {Funci@'on} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funci@'on} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Eval@'ua  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
+@deffn {Función} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Función} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Evalúa  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
 y escribe los resultados en el fichero @var{f} o flujo de salida @var{s}.
-Las expresiones que se eval@'uan no se escriben. La salida puede generarse por medio
+Las expresiones que se evalúan no se escriben. La salida puede generarse por medio
 de @code{print}, @code{display}, @code{grind} entre otras funciones.
 
 La variable global @code{file_output_append} controla si @code{with_stdout}
-a@~nade o reinicia el contenido del fichero de salida @var{f}.
-Si @code{file_output_append} vale @code{true}, @code{with_stdout} a@~nade
+añade o reinicia el contenido del fichero de salida @var{f}.
+Si @code{file_output_append} vale @code{true}, @code{with_stdout} añade
 contenido al fichero de salida. En cualquier caso, @code{with_stdout}
-crea el fichero si @'este no existe.
+crea el fichero si éste no existe.
 
-La funci@'on @code{with_stdout} devuelve el valor de su @'ultimo argumento.
+La función @code{with_stdout} devuelve el valor de su último argumento.
 
-V@'ease tambi@'en @code{writefile}.
+Véase también @code{writefile}.
 
 @c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
 @c Note the binding of display2d to be
@@ -590,19 +590,19 @@ V@'ease tambi@'en @code{writefile}.
 
 
 
-@deffn {Funci@'on} writefile (@var{filename})
-Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @var{filename}.
-Cualquier interacci@'on entre Maxima y el usuario se almacena tambi@'en en este archivo, tal como aparece en la consola.
+@deffn {Función} writefile (@var{filename})
+Comienza escribiendo una transcripción de la sesión de Maxima en el archivo @var{filename}.
+Cualquier interacción entre Maxima y el usuario se almacena también en este archivo, tal como aparece en la consola.
 
-Puesto que la transcripci@'on se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
-Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, v@'eanse @code{save} y @code{stringout}; la funci@'on @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
+Puesto que la transcripción se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
+Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, véanse @code{save} y @code{stringout}; la función @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
 
-El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
+El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesión actual. La función @code{appendfile} siempre añade la sesión al contenido actual.
 
-Puede ser @'util ejecutar @code{playback} despu@'es de @code{writefile} para guardar las interacciones previas de la sesi@'on. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
-cualquier salida generada por una sentencia de impresi@'on desde dentro de una funci@'on no es mostrada por @code{playback}.
+Puede ser útil ejecutar @code{playback} después de @code{writefile} para guardar las interacciones previas de la sesión. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
+cualquier salida generada por una sentencia de impresión desde dentro de una función no es mostrada por @code{playback}.
 
-La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
+La función @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
 @end deffn
 
 
@@ -612,40 +612,40 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} 
 @section Funciones y variables para salida TeX
 
 
-@deffn {Funci@'on} tex (@var{expr})
-@deffnx {Funci@'on} tex (@var{expr}, @var{destination})
-@deffnx {Funci@'on} tex (@var{expr}, false)
-@deffnx {Funci@'on} tex (@var{label})
-@deffnx {Funci@'on} tex (@var{label}, @var{destination})
-@deffnx {Funci@'on} tex (@var{label}, false)
+@deffn {Función} tex (@var{expr})
+@deffnx {Función} tex (@var{expr}, @var{destination})
+@deffnx {Función} tex (@var{expr}, false)
+@deffnx {Función} tex (@var{label})
+@deffnx {Función} tex (@var{label}, @var{destination})
+@deffnx {Función} tex (@var{label}, false)
 
-Devuelve la expresi@'on en un formato apropiado para para ser 
+Devuelve la expresión en un formato apropiado para para ser 
 incorporado a un documento basado en TeX. El resultado que se 
-obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
+obtiene es un fragmento de código que puede incluirse en un documento mayor, pero que
 no puede ser procesado aisladamente.
 
-La instrucci@'on @code{tex (@var{expr})} imprime en la consola 
-la representaci@'on en TeX de @var{expr}.
+La instrucción @code{tex (@var{expr})} imprime en la consola 
+la representación en TeX de @var{expr}.
 
-La instrucci@'on @code{tex (@var{label})} imprime en la consola la 
-representaci@'on en TeX de la expresi@'on a la que hace referencia la 
-etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on 
-que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la 
-expresi@'on en TeX es la misma que la de Maxima.
+La instrucción @code{tex (@var{label})} imprime en la consola la 
+representación en TeX de la expresión a la que hace referencia la 
+etiqueta @var{label}, asignándole a su vez una etiqueta de ecuación 
+que será mostrada al lado izquierdo de la misma. La etiqueta de la 
+expresión en TeX es la misma que la de Maxima.
 
 @var{destination} puede ser tanto un flujo de salida como el nombre de un fichero.
 
-Si @var{destination} es el nombre de un fichero, @code{tex} a@~nade la salida al fichero.
+Si @var{destination} es el nombre de un fichero, @code{tex} añade la salida al fichero.
 Las funciones @code{openw} y @code{opena} crean flujos de salida.
 
 Las instrucciones @code{tex (@var{expr}, false)} y @code{tex (@var{label}, false)}
-devuelven el c@'odigo TeX en formato de cadena.
+devuelven el código TeX en formato de cadena.
 
-La funci@'on @code{tex} eval@'ua su primer argumento tras
+La función @code{tex} evalúa su primer argumento tras
 comprobar si se trata de una etiqueta. La doble comilla simple @code{''} 
-fuerza la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
+fuerza la evaluación del argumento, anulando la comprobación sobre la etiqueta.
 
-V@'ease tambi@'en @code{texput}.
+Véase también @code{texput}.
 
 Ejemplos:
 
@@ -668,7 +668,7 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@code{tex (@var{expr}, false)} devuelve el c@'odigo TeX en formato de cadena.
+@code{tex (@var{expr}, false)} devuelve el código TeX en formato de cadena.
 
 @c ===beg===
 @c S : tex (x * y * z, false);
@@ -685,9 +685,9 @@ $$-\cos x$$
 
 
 
-@deffn {Funci@'on} tex1 (@var{e})
-Devuelve una cadena con el c@'odigo TeX de la expresi@'on @var{e}.
-El c@'odigo TeX no se encierra entre delimitadores para una ecuaci@'on
+@deffn {Función} tex1 (@var{e})
+Devuelve una cadena con el código TeX de la expresión @var{e}.
+El código TeX no se encierra entre delimitadores para una ecuación
 ni cualesquiera otros entornos.
 
 Ejemplo:
@@ -702,50 +702,50 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} texput (@var{a}, @var{s})
-@deffnx {Funci@'on} texput (@var{a}, @var{f})
-@deffnx {Funci@'on} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Función} texput (@var{a}, @var{s})
+@deffnx {Función} texput (@var{a}, @var{f})
+@deffnx {Función} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Función} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Función} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Establece el formato en TeX del @'atomo @var{a}, el cual puede ser un
-s@'{@dotless{i}}mbolo o el nombre de un operador.
+Establece el formato en TeX del átomo @var{a}, el cual puede ser un
+símbolo o el nombre de un operador.
 
-La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on
+La instrucción @code{texput (@var{a}, @var{s})} hace que la función
 @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
 
-La instrucci@'on @code{texput (@var{a}, @var{f})} hace que @code{tex} llame
-a la funci@'on @var{f} para que genere c@'odigo TeX. La funci@'on @var{f} 
-debe aceptar un @'unico argumento, el cual es una expresi@'on que tenga como
-operador @var{a} y que devuelva una cadena con el c@'odigo TeX. Esta funci@'on
-puede llamar a @code{tex1} para generar el c@'odigo TeX para los argumentos
-de la expresi@'on de entrada.
+La instrucción @code{texput (@var{a}, @var{f})} hace que @code{tex} llame
+a la función @var{f} para que genere código TeX. La función @var{f} 
+debe aceptar un único argumento, el cual es una expresión que tenga como
+operador @var{a} y que devuelva una cadena con el código TeX. Esta función
+puede llamar a @code{tex1} para generar el código TeX para los argumentos
+de la expresión de entrada.
 
-La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})},
+La instrucción @code{texput (@var{a}, @var{s}, @var{operator_type})},
 en la que @var{operator_type} es @code{prefix}, @code{infix} o
-@code{postfix}, @code{nary} o @code{nofix},hace que la funci@'on
+@code{postfix}, @code{nary} o @code{nofix},hace que la función
 @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a},
-coloc@'andolo en el lugar correcto.
+colocándolo en el lugar correcto.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
-hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la
-salida TeX a los lados de los argumentos de @var{a}. Si son m@'as de uno,
+La instrucción @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+hace que la función @code{tex} introduzca @var{s_1} y @var{s_2} en la
+salida TeX a los lados de los argumentos de @var{a}. Si son más de uno,
 los argumentos se separan por comas.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}],
-matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y
+La instrucción @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}],
+matchfix)} hace que la función @code{tex} introduzca @var{s_1} y
 @var{s_2} en la salida TeX a los lados de los argumentos de @var{a},
 con @var{s_3} separando los argumentos.
 
 Ejemplos:
 
-Asigna c@'odigo TeX para una variable.
+Asigna código TeX para una variable.
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
 @c ===end===
 
-Llama a una funci@'on que genera c@'odigo TeX.
+Llama a una función que genera código TeX.
 
 @c ===beg===
 @c texfoo (e) := block ([a, b], [a, b] : args (e),
@@ -772,7 +772,7 @@ $$\mu_e$$
 (%o2)                         false
 @end example
 
-Asigna c@'odigo TeX para una funci@'on ordinaria (no para un operador).
+Asigna código TeX para una función ordinaria (no para un operador).
 @c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
@@ -786,7 +786,7 @@ $$\mathrm@{lcm@}\left(a , b\right)$$
 (%o2)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador prefijo.
+Asigna código TeX para un operador prefijo.
 @c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
@@ -803,7 +803,7 @@ $$ \nabla f$$
 (%o3)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador infijo.
+Asigna código TeX para un operador infijo.
 @c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
@@ -820,7 +820,7 @@ $$a \times b$$
 (%o3)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador postfijo..
+Asigna código TeX para un operador postfijo..
 @c ===beg===
 @c postfix ("##");
 @c texput ("##", "!!", postfix);
@@ -837,7 +837,7 @@ $$x!!$$
 (%o3)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador n-ario.
+Asigna código TeX para un operador n-ario.
 @c ===beg===
 @c nary ("@@");
 @c texput ("@@", " \\circ ", nary);
@@ -854,7 +854,7 @@ $$a \circ b \circ c \circ d$$
 (%o3)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador "no-fijo".
+Asigna código TeX para un operador "no-fijo".
 @c ===beg===
 @c nofix ("foo");
 @c texput ("foo", "\\mathsc{foo}", nofix);
@@ -871,7 +871,7 @@ $$\mathsc@{foo@}$$
 (%o3)                         false
 @end example
 
-Asigna c@'odigo TeX para un operador "bi-fijo" (matchfix).
+Asigna código TeX para un operador "bi-fijo" (matchfix).
 @c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
@@ -909,15 +909,15 @@ $$ \langle a \, | \,b \rangle $$
 
 
 
-@deffn {Funci@'on} get_tex_environment (@var{op})
-@deffnx {Funci@'on} set_tex_environment (@var{op}, @var{before}, @var{after})
+@deffn {Función} get_tex_environment (@var{op})
+@deffnx {Función} set_tex_environment (@var{op}, @var{before}, @var{after})
 
-Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
-El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
-cualquier salida en TeX, y otra que se escribe despu@'es.
+Gestiona el entorno de las salidas TeX que se obtienen de la función @code{tex}.
+El entorno TeX está formado por dos cadenas: una que se escribe antes que
+cualquier salida en TeX, y otra que se escribe después.
 
 @code{get_tex_environment} devuelve el entorno TeX que se aplica al operador @var{op}.
-Si no se ha asignado ning@'un entorno, devolver@'a el que tenga por defecto.
+Si no se ha asignado ningún entorno, devolverá el que tenga por defecto.
 
 @code{set_tex_environment} asigna el entorno TeX al operador @var{op}.
 
@@ -951,12 +951,12 @@ $$f(x):=1-x$$
 @end example
 @end deffn
 
-@deffn {Funci@'on} get_tex_environment_default ()
-@deffnx {Funci@'on} set_tex_environment_default (@var{before}, @var{after})
+@deffn {Función} get_tex_environment_default ()
+@deffnx {Función} set_tex_environment_default (@var{before}, @var{after})
 
-Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
-El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
-cualquier salida en TeX, y otra que se escribe despu@'es.
+Gestiona el entorno de las salidas TeX que se obtienen de la función @code{tex}.
+El entorno TeX está formado por dos cadenas: una que se escribe antes que
+cualquier salida en TeX, y otra que se escribe después.
 
 @code{get_tex_environment_default} devuelve el entorno TeX que se aplica
 a expresiones para las cuales el operador de mayor rango no tiene entorno
@@ -1002,25 +1002,25 @@ g\left(x\right)+f\left(x\right)
 Valor por defecto: 0
 
 La variable @code{fortindent} controla el margen izquierdo de las expresiones que 
-escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal 
-de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
+escribe la instrucción @code{fortran}.  El valor 0 escribe con un margen normal 
+de 6 espacios; valores positivos harán que las expresiones se escriban más a la derecha.
 @end defvr
 
 
 
-@deffn {Funci@'on} fortran (@var{expr})
-Escribe @var{expr} en c@'odigo Fortran. La salida se escribe con m@'argenes, y si @'esta es demasiado larga @code{fortran} sigue escribiendo en l@'{@dotless{i}}neas sucesivas. La funci@'on @code{fortran} escribe el operador de exponenciaci@'on @code{^} como @code{**}, e imprime un n@'umero complejo @code{a + b %i} como @code{(a,b)}.
+@deffn {Función} fortran (@var{expr})
+Escribe @var{expr} en código Fortran. La salida se escribe con márgenes, y si ésta es demasiado larga @code{fortran} sigue escribiendo en líneas sucesivas. La función @code{fortran} escribe el operador de exponenciación @code{^} como @code{**}, e imprime un número complejo @code{a + b %i} como @code{(a,b)}.
 
-El argumento @var{expr} puede ser una ecuaci@'on. En tal caso, @code{fortran} escribe una sentencia de asignaci@'on, d@'andole el valor del miembro derecho de la expresi@'on al miembro izquierdo. En particular, si el miembro derecho de @var{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignaci@'on para cada elemento de la matriz.
+El argumento @var{expr} puede ser una ecuación. En tal caso, @code{fortran} escribe una sentencia de asignación, dándole el valor del miembro derecho de la expresión al miembro izquierdo. En particular, si el miembro derecho de @var{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignación para cada elemento de la matriz.
 
-Si @var{expr} no es reconozida por @code{fortran}, la expresi@'on se escribe en formato @code{grind} sin avisos. La funci@'on @code{fortran} no reconoce listas, arreglos ni funciones.
+Si @var{expr} no es reconozida por @code{fortran}, la expresión se escribe en formato @code{grind} sin avisos. La función @code{fortran} no reconoce listas, arreglos ni funciones.
 
-La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
+La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucción @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos harán que las expresiones se escriban más a la derecha.
 
-Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas con espacios de 80 columnas.
+Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las líneas con espacios de 80 columnas.
 
-La funci@'on @code{fortran} eval@'ua sus argumentos; un argumento precedido de ap@'ostrofo previene de la evaluaci@'on.
-La funci@'on @code{fortran} siempre devuelve @code{done}.
+La función @code{fortran} evalúa sus argumentos; un argumento precedido de apóstrofo previene de la evaluación.
+La función @code{fortran} siempre devuelve @code{done}.
 
 Ejemplos:
 
@@ -1054,7 +1054,8 @@ Ejemplos:
 @defvr {Variable opcional} fortspaces
 Valor por defecto: @code{false}
 
-Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas 
+Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las líneas 
 con espacios de 80 columnas.
 @end defvr
+
 

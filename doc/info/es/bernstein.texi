@@ -6,14 +6,14 @@
 @node Funciones y variables para Bernstein,  , Bernstein, Bernstein
 @section Funciones y variables para Bernstein
 
-@deffn {Funci@'on} bernstein_poly (@var{k}, @var{n}, @var{x})
+@deffn {Función} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 Si @code{k} no es un entero negativo, los polinomios de Bernstein se 
 definen como @code{bernstein_poly(k,n,x) = binomial(n,k) x^k (1-x)^(n-k)}; 
 en cambio, si @code{k} es un entero negativo, el polinomio de Bernstein
 @code{bernstein_poly(k,n,x)} se anula. Cuando o bien @code{k} o @code{n} 
 no son enteros, la variable opcional @code{bernstein_explicit} controla
-la expansi@'on de los polinomios de Bernstein a su forma expl@'{@dotless{i}}cita.
+la expansión de los polinomios de Bernstein a su forma explícita.
 
 Ejemplo:
 
@@ -41,8 +41,8 @@ Los polinomios de Bernstein tienen definidas su derivada e integral:
                               k + 1
 @end example
 
-Cuando los argumentos contienen n@'umeros decimales en coma flotante, los
-polinomios de Bernstein tambi@'en devuelven resultados decimales.
+Cuando los argumentos contienen números decimales en coma flotante, los
+polinomios de Bernstein también devuelven resultados decimales.
 
 @example
 (%i6) bernstein_poly(5,9, 1/2 + %i);
@@ -53,7 +53,7 @@ polinomios de Bernstein tambi@'en devuelven resultados decimales.
 (%o7)           3.076171875b2 %i + 1.5380859375b2
 @end example
 
-Para hacer uso de @code{bernstein_poly}, ejec@'utese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_poly}, ejecútese primero @code{load("bernstein")}.
 
 @end deffn
 
@@ -61,7 +61,7 @@ Para hacer uso de @code{bernstein_poly}, ejec@'utese primero @code{load("bernste
 Valor por defecto: @code{false}
 
 Cuando o bien @code{k} o @code{n} no son enteros, la variable opcional @code{bernstein_explicit} controla
-la expansi@'on de los polinomios de Bernstein a su forma expl@'{@dotless{i}}cita.
+la expansión de los polinomios de Bernstein a su forma explícita.
 
 Ejemplo:
 
@@ -74,28 +74,28 @@ Ejemplo:
 @end example
 
 Cuando tanto @code{k} como @code{n} son enteros, @code{bernstein(k,n,x)} se
-expande siempre a su forma expl@'{@dotless{i}}cita.
+expande siempre a su forma explícita.
 
 @end defvr
 
 
 
-@deffn {Funci@'on} multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})
+@deffn {Función} multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})
 
 La sentencia @code{multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})}
 es el producto de polinomios de Bernstein 
 @code{bernstein_poly(k1,n1,x1) bernstein_poly(k2,n2,x2) ... bernstein_poly(kp,np,xp)}.
 
-Para hacer uso de @code{multibernstein_poly}, ejec@'utese primero @code{load("bernstein")}.
+Para hacer uso de @code{multibernstein_poly}, ejecútese primero @code{load("bernstein")}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} bernstein_approx (@var{f},@var{[x1,x1,...,xn]},n)
+@deffn {Función} bernstein_approx (@var{f},@var{[x1,x1,...,xn]},n)
 
-Devuelve el polinomio de Bernstein uniforme de @code{n}-@'esimo orden que aproxima 
-la funci@'on @code{(x1,x2,..xn) |--> f}.
+Devuelve el polinomio de Bernstein uniforme de @code{n}-ésimo orden que aproxima 
+la función @code{(x1,x2,..xn) |--> f}.
 
 Ejemplos:
 
@@ -119,15 +119,15 @@ Ejemplos:
        2
 @end example
 
-Para hacer uso de @code{bernstein_approx}, ejec@'utese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_approx}, ejecútese primero @code{load("bernstein")}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} bernstein_expand (@var{e}, @var{[x1,x1,...,xn]})
+@deffn {Función} bernstein_expand (@var{e}, @var{[x1,x1,...,xn]})
 
-Expresa el polinomio @code{e} como una combinaci@'on lineal de polinomios de
+Expresa el polinomio @code{e} como una combinación lineal de polinomios de
 Bernstein multivariantes.
 
 @example
@@ -139,6 +139,7 @@ Bernstein multivariantes.
 
 Maxima devuelve un error si el primer argumento no es un polinomio.
 
-Para hacer uso de @code{bernstein_expand}, ejec@'utese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_expand}, ejecútese primero @code{load("bernstein")}.
 
 @end deffn
+

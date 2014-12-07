@@ -1,60 +1,60 @@
 @c English version: 2011-06-11
 @menu
-* Introducci@'on a cobyla::
+* Introducción a cobyla::
 * Funciones y variables para cobyla::
 * Ejemplos para cobyla::  
 @end menu
 
-@node Introducci@'on a cobyla, Funciones y variables para cobyla,  cobyla, cobyla
-@section Introducci@'on a cobyla
+@node Introducción a cobyla, Funciones y variables para cobyla,  cobyla, cobyla
+@section Introducción a cobyla
 
-@code{fmin_cobyla} es una traducci@'on a Common Lisp hecha con el
+@code{fmin_cobyla} es una traducción a Common Lisp hecha con el
 programa @code{f2cl} de la rutina Fortran COBYLA, (Powell, [1][2][3]), 
-para optimizaci@'on con restricciones.
+para optimización con restricciones.
 
-COBYLA minimiza una funci@'on objetivo F(X) sujeta a M restricciones con
+COBYLA minimiza una función objetivo F(X) sujeta a M restricciones con
 desigualdades de la forma g(X) >= 0 sobre X, siendo X un vector de variables
 de N componentes.
 
 Las restricciones en forma de igualdades se pueden implementar por pares
 de desigualdades de la forma g(X)>=0 y -g(X)>= 0. El interfaz Maxima para
-COBYLA admite restricciones de igualdad, transform@'andolas luego
+COBYLA admite restricciones de igualdad, transformándolas luego
 internamente a pares de desigualdades.
 
-El algoritmo hace uso de aproximaciones lineales, tanto de la funci@'on
-objetivo como de las funciones de restricci@'on; tales aproximaciones
-se hacen mediante interpolaci@'on lineal de N+1 puntos en el espacio de
-variables. Los puntos de interpolaci@'on se consideran v@'ertices de un
-simplejo o s@'{@dotless{i}}mplex. El par@'ametro RHO controla el tama@~no
-del simplejo y se reduce autom@'aticamente de RHOBEG a RHOEND. Para cada
+El algoritmo hace uso de aproximaciones lineales, tanto de la función
+objetivo como de las funciones de restricción; tales aproximaciones
+se hacen mediante interpolación lineal de N+1 puntos en el espacio de
+variables. Los puntos de interpolación se consideran vértices de un
+simplejo o símplex. El parámetro RHO controla el tamaño
+del simplejo y se reduce automáticamente de RHOBEG a RHOEND. Para cada
 RHO la subrutina intenta alcanzar un buen vector de variables para el
-tama@~no actual, reduci@'endose entonces RHO hasta alcanzar el valor de
+tamaño actual, reduciéndose entonces RHO hasta alcanzar el valor de
 RHOEND. Por eso, tanto a RHOBEG como a RHOEND se les deben asignar valores
-razonables, lo que requiere cierto trabajo emp@'{@dotless{i}}rico previo.
-La rutina trata cada restricci@'on individualmente cuando se calcula un
+razonables, lo que requiere cierto trabajo empírico previo.
+La rutina trata cada restricción individualmente cuando se calcula un
 en las variables. El nombre de la rutina se deriva de la frase 
 @i{Constrained Optimization BY Linear Approximations}.
 
 Referecias:
 
-[1] C@'odigo Fortran procede de @url{http://plato.asu.edu/sub/nlores.html#general}
+[1] Código Fortran procede de @url{http://plato.asu.edu/sub/nlores.html#general}
 
 [2] M. J. D. Powell, "A direct search optimization method that models the objective and constraint functions by linear interpolation," en Advances in Optimization and Numerical Analysis, eds. S. Gomez and J.-P. Hennart (Kluwer Academic: Dordrecht, 1994), p. 51-67. 
 
 [3] M. J. D. Powell, "Direct search algorithms for optimization calculations," Acta Numerica 7, 287-336 (1998).  Also available as University of Cambridge, Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis Group, Report NA1998/04 from @url{http://www.damtp.cam.ac.uk/user/na/reports.html}
 
-@node Funciones y variables para cobyla, Ejemplos para cobyla, Introducci@'on a cobyla, cobyla
+@node Funciones y variables para cobyla, Ejemplos para cobyla, Introducción a cobyla, cobyla
 @section Funciones y variables para cobyla
 
-@deffn {Funci@'on} fmin_cobyla (@var{F}, @var{X}, @var{Y})
-@deffnx {Funci@'on} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+@deffn {Función} fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Función} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
-Devuelve una aproximaci@'on del valor m@'{@dotless{i}}nimo de la expresi@'on
+Devuelve una aproximación del valor mínimo de la expresión
 @var{F} respecto de las variables @var{X}, sujeta a un conjunto opcional
-de restricciones. @var{Y} es una lista que contiene una soluci@'on semilla
+de restricciones. @var{Y} es una lista que contiene una solución semilla
 inicial en @var{X}.
 
-@var{F} debe ser una expresi@'on ordinaria, no valen nombres de funciones
+@var{F} debe ser una expresión ordinaria, no valen nombres de funciones
 ni expresiones lambda.
 
 @code{optional_args} hace referencia a argumentos adicionales, que se
@@ -69,72 +69,72 @@ satisfacer @var{X}. Las desigualdades deben ser de la forma
 Las restricciones de igualdad deben ser de la forma 
 @code{g(@var{X}) = h(@var{X})}.
 @item rhobeg
-Valor inicial de la variable interna RHO, que controla el tama@~no del
+Valor inicial de la variable interna RHO, que controla el tamaño del
 simplejo. Su valor por defecto es 1.0.
 @item rhoend 
-El valor final deseado para el par@'ametro RHO. Es aproximadamente la
-precisi@'on de las variables. Su valor por defecto es 1d-6.
+El valor final deseado para el parámetro RHO. Es aproximadamente la
+precisión de las variables. Su valor por defecto es 1d-6.
 @item iprint
-Nivel de informaci@'on de salida. Su valor por defecto es 0.
+Nivel de información de salida. Su valor por defecto es 0.
 @itemize
 @item
-0 - Sin informaci@'on de salida
+0 - Sin información de salida
 @item
-1 - Sumario al final de los c@'alculos
+1 - Sumario al final de los cálculos
 @item
 2 - Se van mostrando los nuevos valores de RHO y SIGMA, incluyendo
  el vector de variables.
 @item
-3 - Como en 2, pero la informaci@'on se muestra cuando se calcula F(X).
+3 - Como en 2, pero la información se muestra cuando se calcula F(X).
 @end itemize
 @item maxfun
-N@'umero m@'aximo de evaluaciones de la funci@'on. Su valor por defecto es 1000.
+Número máximo de evaluaciones de la función. Su valor por defecto es 1000.
 @end table
 
 El resultado devuelto es un vector:
 @enumerate
 @item
-Los valores de las variables con las que se alcanza el valor m@'{@dotless{i}}nimo.
+Los valores de las variables con las que se alcanza el valor mínimo.
 Es una lista de elementos de la forma @code{@var{var} = @var{value}} para cada
 una de las variables listadas en @var{X}.
 @item
-El valor m@'{@dotless{i}}nimo de la funci@'on objetivo.
+El valor mínimo de la función objetivo.
 @item
-El n@'umero de evaluaciones de la funci@'on.
+El número de evaluaciones de la función.
 @item
-C@'odigo de retorno con los siguientes significados:
+Código de retorno con los siguientes significados:
  @enumerate
  @item
  0 - No ha habido errores.
  @item
- 1 - Alcanzado el m@'aximo n@'umero permitido de evaluaciones de la funci@'on.
+ 1 - Alcanzado el máximo número permitido de evaluaciones de la función.
  @item
  2 - Errores de redondeo han impedido el avance del proceso.
  @end enumerate
 @end enumerate
 
-El c@'odigo @code{load(fmin_cobyla)} carga en memoria esta funci@'on..
+El código @code{load(fmin_cobyla)} carga en memoria esta función..
 
 @end deffn
 
-@deffn {Funci@'on} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
-@deffnx {Funci@'on} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+@deffn {Función} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Función} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
-Esta funci@'on es id@'entica a @code{fmin_cobyla}, excepto por el hecho
-de que utiliza aritm@'etica de precisi@'on arbitraria (bigfloat) y que el
+Esta función es idéntica a @code{fmin_cobyla}, excepto por el hecho
+de que utiliza aritmética de precisión arbitraria (bigfloat) y que el
 valor por defecto de @var{rhoend} es @code{10^(fpprec/2)}. 
 
-V@'ease @code{fmin_cobyla}.
+Véase @code{fmin_cobyla}.
 
-El c@'odigo @code{load(fmin_cobyla)} carga en memoria esta funci@'on..
+El código @code{load(fmin_cobyla)} carga en memoria esta función..
 
 @end deffn
 
 @node Ejemplos para cobyla, , Funciones y variables para cobyla, cobyla
 @section Ejemplos para cobyla
 
-Minimizar x1*x2 bajo la condici@'on 1-x1^2-x2^2 >= 0.  
-La soluci@'on te@'orica es x1 = 1/sqrt(2), x2 = -1/sqrt(2).
+Minimizar x1*x2 bajo la condición 1-x1^2-x2^2 >= 0.  
+La solución teórica es x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===
 @c load(fmin_cobyla);
@@ -153,6 +153,7 @@ La soluci@'on te@'orica es x1 = 1/sqrt(2), x2 = -1/sqrt(2).
        [[-1.999955756559757e-12],[]], 66]
 @end example
 
-Hay m@'as ejemplos en el directorio @code{share/cobyla/ex}.
+Hay más ejemplos en el directorio @code{share/cobyla/ex}.
+
 
 

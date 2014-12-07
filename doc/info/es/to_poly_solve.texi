@@ -11,7 +11,7 @@ siendo posible que las especificaciones de sus funciones puedan
 cambiar en el futuro, o que algunas de estas funciones puedan ser
 incorporadas a otras partes de Maxima.
 
-Los paquetes @code{to_poly} y @code{to_poly_solve}, junto con su documentaci@'on,
+Los paquetes @code{to_poly} y @code{to_poly_solve}, junto con su documentación,
 fue escrito por Barton Willis de la Universidad de Nebraska en Kearney. 
 
 
@@ -21,21 +21,21 @@ fue escrito por Barton Willis de la Universidad de Nebraska en Kearney.
 
 @deffn {Operador} %and
 @ifinfo
-@fnindex Conjunci@'on l@'ogica
+@fnindex Conjunción lógica
 @end ifinfo
 
-El operador @code{%and} es una conjunci@'on l@'ogica. Maxima simplifica
-una expresi@'on @code{%and} a @code{true}, @code{false} o a una expresi@'on
-l@'ogicamente equivalente, pero simplificada. El operador @code{%and}
-es asociativo, conmutativo e idempotente. As@'{@dotless{i}}, cuando @code{%and}
-devuelva una forma nominal, sus argumentos no ser@'an redundantes; por ejemplo,
+El operador @code{%and} es una conjunción lógica. Maxima simplifica
+una expresión @code{%and} a @code{true}, @code{false} o a una expresión
+lógicamente equivalente, pero simplificada. El operador @code{%and}
+es asociativo, conmutativo e idempotente. Así, cuando @code{%and}
+devuelva una forma nominal, sus argumentos no serán redundantes; por ejemplo,
 
 @example
 (%i1) a %and (a %and b);
 (%o1)                       a %and b
 @end example
 
-Si uno de los argumentos de la conjunci@'on es la negaci@'on de otro argumento,
+Si uno de los argumentos de la conjunción es la negación de otro argumento,
 @code{%and} devuelve @code{false}:
 
 @example
@@ -43,20 +43,20 @@ Si uno de los argumentos de la conjunci@'on es la negaci@'on de otro argumento,
  (%o2) false
 @end example
 
-Si cualquiera de los argumentos vale @code{false}, la conjunci@'on devuelve
-@code{false}, incluso cuando haya alg@'un otro argumento que sea una
-expresi@'on no booleana; por ejemplo,
+Si cualquiera de los argumentos vale @code{false}, la conjunción devuelve
+@code{false}, incluso cuando haya algún otro argumento que sea una
+expresión no booleana; por ejemplo,
 
 @example
 (%i2) a %and (not a);
 (%o2)                         false
 @end example
 
-Los argumentos de la expresi@'on @code{%and} que sean inecuaciones se
-reducen con la simplificaci@'on de Fourier; el m@'etodo que se
+Los argumentos de la expresión @code{%and} que sean inecuaciones se
+reducen con la simplificación de Fourier; el método que se
 aplica dispone de un pre-procesador que convierte algunas, pero no
 todas, las inecuaciones no lineales a lineales. Por ejemplo, el
-m@'etodo de simplificaci@'on de Fourier simplifica @code{abs(x) + 1 > 0}
+método de simplificación de Fourier simplifica @code{abs(x) + 1 > 0}
 a @code{true}:
 
 @example
@@ -67,19 +67,19 @@ a @code{true}:
 @b{Notas}  
 @itemize @bullet
 @item La variable opcional @code{prederror} no altera la
-simplificaci@'on de las expresiones @code{%and}.
+simplificación de las expresiones @code{%and}.
 
 @item Para evitar errores en la precedencia de las operaciones,
-se recomienda utilizar par@'entesis en las expresiones combinadas
+se recomienda utilizar paréntesis en las expresiones combinadas
 en las que aparezcan los operadores @code{%and},  @code{%or} y @code{not} .
 
-@item Los operadores @code{and} y @code{or}, tal como est@'an
+@item Los operadores @code{and} y @code{or}, tal como están
 programados en Maxima, no conocen las propiedades asociativa
 ni conmutativa.
 
 @end itemize
 
-@b{Limitaciones} La conjunci@'on @code{%and} simplifica inecuaciones
+@b{Limitaciones} La conjunción @code{%and} simplifica inecuaciones
 @i{locamente}, no @i{globalmente}, lo que significa que conjunciones tales como
 
 @example
@@ -87,7 +87,7 @@ ni conmutativa.
 (%o5)                 (x > 1) %and (x < 1)
 @end example
 
-@i{no} simplifican a @code{false}. Adem@'as, las rutinas de eliminaci@'on de Fourier
+@i{no} simplifican a @code{false}. Además, las rutinas de eliminación de Fourier
 ignoran los hechos almacenados en la base de datos.
 
 @example
@@ -97,15 +97,15 @@ ignoran los hechos almacenados en la base de datos.
 (%o7)                 (x > 1) %and (x > 2)
 @end example
 
-Por @'ultimo, las inecuaciones no lineales que no se puedan reducir de
+Por último, las inecuaciones no lineales que no se puedan reducir de
 manera sencilla a formas lineales, no se simplifican.
 
-No est@'a soportada la distributividad de @code{%and} respecto de @code{%or},
-ni la negaci@'on respecto de @code{%and}.
+No está soportada la distributividad de @code{%and} respecto de @code{%or},
+ni la negación respecto de @code{%and}.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
 
-V@'eanse tambi@'en @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
+Véanse también @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 @end deffn
 
@@ -116,19 +116,19 @@ V@'eanse tambi@'en @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 @deffn {Operador} %if ( @var{bool}, @var{a}, @var{b})
 @ifinfo
-@fnindex Evaluaci@'on condicionada
+@fnindex Evaluación condicionada
 @end ifinfo
 
-El operador @code{%if} es un condicional. La condici@'on @var{bool}
-debe tomar un valor l@'ogico; cuando sea @code{true}, se devolver@'a
+El operador @code{%if} es un condicional. La condición @var{bool}
+debe tomar un valor lógico; cuando sea @code{true}, se devolverá
 el segundo argumento, y cuando valga @code{false}, el segundo. En
 cualquier otro caso, se obtiene una forma nominal.
 
 En Maxima, las expresiones con desigualdades o igualdades no adquieren
-valores l@'ogicos; por ejemplo, @math{5 < 6} no se simplifica a @code{true},
-ni @math{5 = 6} @code{false}. Sin embargo, en la condici@'on de una
-sentencia @code{%if}, Maxima intenta determinar el valor l@'ogico
-de la expresi@'on de forma autom@'atica. V@'ease un ejemplo:
+valores lógicos; por ejemplo, @math{5 < 6} no se simplifica a @code{true},
+ni @math{5 = 6} @code{false}. Sin embargo, en la condición de una
+sentencia @code{%if}, Maxima intenta determinar el valor lógico
+de la expresión de forma automática. Véase un ejemplo:
 
 @example
 (%i1) f : %if(x # 1, 2, 8);
@@ -137,12 +137,12 @@ de la expresi@'on de forma autom@'atica. V@'ease un ejemplo:
 (%o2)                        [2, 8]
 @end example
 
-Si en la condici@'on aparece una inecuaci@'on, Maxima la
-reduce con una simplificaci@'on de Fourier.
+Si en la condición aparece una inecuación, Maxima la
+reduce con una simplificación de Fourier.
 
 @b{Notas} 
 @itemize bullet
-@item Si la condici@'on no se reduce a un valor l@'ogico, Maxima devuelve
+@item Si la condición no se reduce a un valor lógico, Maxima devuelve
 una forma nominal:
 @example
 (%i3) %if(42,1,2);
@@ -152,10 +152,10 @@ una forma nominal:
 @item El operador @code{if} de Maxima es n-ario, pero el operador @code{%if} no lo es.
 @end itemize
 
-Por @'ultimo, las inecuaciones no lineales que no se puedan reducir de
+Por último, las inecuaciones no lineales que no se puedan reducir de
 manera sencilla a formas lineales, no se simplifican.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -164,21 +164,21 @@ Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
   
 @deffn {Operador} %or
 @ifinfo
-@fnindex Disyunci@'on l@'ogica
+@fnindex Disyunción lógica
 @end ifinfo
 
-El operador @code{%or} es una disyunci@'on l@'ogica. Maxima simplifica
-una expresi@'on @code{%or} a @code{true}, @code{false} o a una expresi@'on
-l@'ogicamente equivalente, pero simplificada. El operador @code{%or}
-es asociativo, conmutativo e idempotente. As@'{@dotless{i}}, cuando @code{%or}
-devuelva una forma nominal, sus argumentos no ser@'an redundantes; por ejemplo,
+El operador @code{%or} es una disyunción lógica. Maxima simplifica
+una expresión @code{%or} a @code{true}, @code{false} o a una expresión
+lógicamente equivalente, pero simplificada. El operador @code{%or}
+es asociativo, conmutativo e idempotente. Así, cuando @code{%or}
+devuelva una forma nominal, sus argumentos no serán redundantes; por ejemplo,
 
 @example
 (%i1) a %or (a %or b);
 (%o1)                        a %or b
 @end example
 
-Si uno de los argumentos de la disyunci@'on es la negaci@'on de otro argumento,
+Si uno de los argumentos de la disyunción es la negación de otro argumento,
 @code{%or} devuelve @code{true}:
 
 @example
@@ -186,18 +186,18 @@ Si uno de los argumentos de la disyunci@'on es la negaci@'on de otro argumento,
 (%o2)                         true
 @end example
 
-Si cualquiera de los argumentos vale @code{true}, la disyunci@'on devuelve
-@code{true}, incluso cuando haya alg@'un otro argumento que sea una
-expresi@'on no booleana; por ejemplo,
+Si cualquiera de los argumentos vale @code{true}, la disyunción devuelve
+@code{true}, incluso cuando haya algún otro argumento que sea una
+expresión no booleana; por ejemplo,
 
 @example
 (%i3) 42 %or true;
 (%o3)                         true
 @end example
 
-Los argumentos de la expresi@'on @code{%or} que sean inecuaciones se
-reducen con la simplificaci@'on de Fourier. Por ejemplo, el
-m@'etodo de simplificaci@'on de Fourier simplifica @code{abs(x) + 1 > 0}
+Los argumentos de la expresión @code{%or} que sean inecuaciones se
+reducen con la simplificación de Fourier. Por ejemplo, el
+método de simplificación de Fourier simplifica @code{abs(x) + 1 > 0}
 a @code{true}:
 
 @example
@@ -208,19 +208,19 @@ a @code{true}:
 @b{Notas}  
 @itemize @bullet
 @item La variable opcional @code{prederror} no altera la
-simplificaci@'on de las expresiones @code{%or}.
+simplificación de las expresiones @code{%or}.
 
 @item Para evitar errores en la precedencia de las operaciones,
-se recomienda utilizar par@'entesis en las expresiones combinadas
+se recomienda utilizar paréntesis en las expresiones combinadas
 en las que aparezcan los operadores @code{%and},  @code{%or} y @code{not} .
 
-@item Los operadores @code{and} y @code{or}, tal como est@'an
+@item Los operadores @code{and} y @code{or}, tal como están
 programados en Maxima, no conocen las propiedades asociativa
 ni conmutativa.
 
 @end itemize
 
-@b{Limitaciones} La conjunci@'on @code{%or} simplifica inecuaciones
+@b{Limitaciones} La conjunción @code{%or} simplifica inecuaciones
 @i{locamente}, no @i{globalmente}, lo que significa que disyunciones tales como
 
 @example
@@ -228,7 +228,7 @@ ni conmutativa.
  (%o1) (x > 1) %or (x >= 1)
 @end example
 
-@i{no} simplifican a @code{true}. Adem@'as, las rutinas de eliminaci@'on de Fourier
+@i{no} simplifican a @code{true}. Además, las rutinas de eliminación de Fourier
 ignoran los hechos almacenados en la base de datos.
 
 @example
@@ -238,15 +238,15 @@ ignoran los hechos almacenados en la base de datos.
 (%o3)                 (x > 1) %and (x > 2)
 @end example
 
-Por @'ultimo, las inecuaciones no lineales que no se puedan reducir de
+Por último, las inecuaciones no lineales que no se puedan reducir de
 manera sencilla a formas lineales, no se simplifican.
 
-No est@'a soportada la distributividad de @code{%or} respecto de @code{%and},
-ni la negaci@'on respecto de @code{%or}.
+No está soportada la distributividad de @code{%or} respecto de @code{%and},
+ni la negación respecto de @code{%or}.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
 
-V@'eanse tambi@'en @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
+Véanse también @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 @end deffn
 
@@ -254,12 +254,12 @@ V@'eanse tambi@'en @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 
 
-@deffn {Funci@'on} complex_number_p (@var{x})
+@deffn {Función} complex_number_p (@var{x})
 
-La funci@'on @code{complex_number_p} devuelve @code{true} si su
+La función @code{complex_number_p} devuelve @code{true} si su
 argumento es de cualquiera de las formas @code{a + %i * b}, @code{a}, @code{%i b} o
 @code{%i}, donde @code{a} y @code{b} son racionales o decimales en coma flotante,
-de precisi@'on doble o arbitraria (@i{bigfloats}); para cualesquiera otros argumentos,
+de precisión doble o arbitraria (@i{bigfloats}); para cualesquiera otros argumentos,
 @code{complex_number_p} devuelve @code{false}.
 
 Ejemplo:
@@ -273,9 +273,9 @@ Ejemplo:
 (%o3)                         false
 @end example
 
-V@'ease tambi@'en @code{isreal_p}.
+Véase también @code{isreal_p}.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -283,10 +283,10 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} compose_functions (@var{l})
+@deffn {Función} compose_functions (@var{l})
 
-La funci@'on @code{compose_functions(l)} devuelve una expresi@'on lambda
-que es la composici@'on de las funciones presentes en la lista @var{l}.
+La función @code{compose_functions(l)} devuelve una expresión lambda
+que es la composición de las funciones presentes en la lista @var{l}.
 Las funciones se aplican de derecha a izquierda.
 
 Ejemplo:
@@ -300,7 +300,7 @@ Ejemplo:
 (%o2)                       cos(%e )
 @end example
 
-Si la lista est@'a vac@'{@dotless{i}}a devuelve la funci@'on identidad:
+Si la lista está vacía devuelve la función identidad:
 
 @example
 (%i3) compose_functions([]);
@@ -312,7 +312,7 @@ Si la lista est@'a vac@'{@dotless{i}}a devuelve la funci@'on identidad:
 @b{Notas} 
 @itemize @bullet
 @item Cuando Maxima detecta que un miembro de la lista no es un
-s@'{@dotless{i}}mbolo o expresi@'on lambda, la funci@'on 
+símbolo o expresión lambda, la función 
 @code{funmake} (no @code{compose_functions}) muestra un mensaje de
 error:
 @example
@@ -325,7 +325,7 @@ string, or lambda expression; found: a < b
 @end example
 
 @item Para evitar conflictos de nombres, la variable independiente se determina
-con la funci@'on @code{new_variable}:
+con la función @code{new_variable}:
 @example
 (%i6) compose_functions([%g0]);
 (%o6)              lambda([%g154], %g0(%g154))
@@ -333,14 +333,14 @@ con la funci@'on @code{new_variable}:
 (%o7)              lambda([%g155], %g0(%g155))
 @end example
 Aunque las variables dependientes sean diferentes, Maxima es capaz de
-determinar que las expresiones lambda son sem@'anticamente equivalentes:
+determinar que las expresiones lambda son semánticamente equivalentes:
 @example
 (%i8) is(equal(%o6,%o7));
 (%o8)                         true
 @end example
 @end itemize
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -348,11 +348,11 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} dfloat (@var{x})
+@deffn {Función} dfloat (@var{x})
 
-La funci@'on @code{dfloat} es similar a @code{float}, pero @code{dfloat} 
-aplica @code{rectform} cuando @code{float} no puede evaluar a un n@'umero
-decimal de coma flotante de doble precisi@'on. Ejemplo:
+La función @code{dfloat} es similar a @code{float}, pero @code{dfloat} 
+aplica @code{rectform} cuando @code{float} no puede evaluar a un número
+decimal de coma flotante de doble precisión. Ejemplo:
 
 @example
 (%i1) float(4.5^(1 + %i));
@@ -365,16 +365,16 @@ decimal de coma flotante de doble precisi@'on. Ejemplo:
 @b{Notas} 
 
 @itemize @bullet
-@item La forma rectangular de una expresi@'on puede no ser la
-m@'as adecuada para c@'alculos num@'ericos
+@item La forma rectangular de una expresión puede no ser la
+más adecuada para cálculos numéricos
 
 @item El identificador @code{float} es al mismo tiempo una variable opcional,
-cuyo valor por defecto es @code{false} y el nombre de una funci@'on.
+cuyo valor por defecto es @code{false} y el nombre de una función.
 @end itemize
 
-V@'eanse tambi@'en @code{float} y @code{bfloat}.
+Véanse también @code{float} y @code{bfloat}.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -383,23 +383,23 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} elim (@var{l}, @var{x})
+@deffn {Función} elim (@var{l}, @var{x})
 
-La funci@'on @code{elim} elimina las variables que se indican en el conjunto
+La función @code{elim} elimina las variables que se indican en el conjunto
 o lista @code{x} del conjunto o lista de ecuaciones en @code{l}. Cada
-elemento de @code{x} debe ser un s@'{@dotless{i}}mbolo, mientras que los
+elemento de @code{x} debe ser un símbolo, mientras que los
 elementos de @code{l} pueden ser ecuaciones o expresiones que se suponen
 igualadas a cero.
 
-La funci@'on @code{elim} devuelve una lista formada por dos listas; la
-primera est@'a formada por las expresiones con las variables eliminadas y
+La función @code{elim} devuelve una lista formada por dos listas; la
+primera está formada por las expresiones con las variables eliminadas y
 la segunda es la lista de pivotes o, en otras palabras, es la lista de
-expresiones que @code{elim} ha utilizado para proceder con la eliminaci@'on.
+expresiones que @code{elim} ha utilizado para proceder con la eliminación.
 
 Ejemplo:
 
-Eliminaci@'on entre ecuaciones lineales. Eliminando @code{x} e @code{y}
-se obtiene una @'unica ecuaci@'on @code{2 z - 7 = 0}; las ecuaciones
+Eliminación entre ecuaciones lineales. Eliminando @code{x} e @code{y}
+se obtiene una única ecuación @code{2 z - 7 = 0}; las ecuaciones
 @code{y + 7 = 0} y @code{z - z + 1 = 1} se han utilizado como pivotes.
 
 @example
@@ -426,32 +426,32 @@ Las ecuaciones no necesitan ser lineales:
 @end example
 
 El usuario no puede controlar el orden en el que se eliminan las
-variables. El algoritmo utiliza una heur@'{@dotless{i}}stica con
-la que intenta escoger el mejor pivote y el mejor orden de eliminaci@'on.
+variables. El algoritmo utiliza una heurística con
+la que intenta escoger el mejor pivote y el mejor orden de eliminación.
 
 @b{Notas} 
 
 @itemize @bullet
 
-@item Al contrario que la funci@'on relacionada @code{eliminate}, la
-funci@'on @code{elim} no llama a la funci@'on @code{solve} cuando el
-n@'umero de ecuaciones iguala al de variables.
+@item Al contrario que la función relacionada @code{eliminate}, la
+función @code{elim} no llama a la función @code{solve} cuando el
+número de ecuaciones iguala al de variables.
 
-@item La funci@'on @code{elim} trabaja aplicando resultantes; la variable
-opcional @code{resultant} determina qu@'e algoritmo va a utilizar Maxima.
-Con @code{sqfr}, Maxima factoriza cada resultante y suprime ceros m@'ultiples.
+@item La función @code{elim} trabaja aplicando resultantes; la variable
+opcional @code{resultant} determina qué algoritmo va a utilizar Maxima.
+Con @code{sqfr}, Maxima factoriza cada resultante y suprime ceros múltiples.
 
-@item @code{elim} triangulariza un conjunto de ecuaciones polin@'omicas no
-lineales; el conjunto soluci@'on del conjunto triangularizado puede ser mayor
+@item @code{elim} triangulariza un conjunto de ecuaciones polinómicas no
+lineales; el conjunto solución del conjunto triangularizado puede ser mayor
 que el conjunto de soluciones del conjunto no triangularizado, por lo que
 las ecuaciones triangularizadas pueden tener soluciones falsas.
 
 @end itemize
 
-V@'eanse tambi@'en @code{elim_allbut}, @code{eliminate_using}, @code{eliminate}
+Véanse también @code{elim_allbut}, @code{eliminate_using}, @code{eliminate}
 y @code{resultant}.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
 
 @end deffn
 
@@ -461,10 +461,10 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
 
 
 
-@deffn {Funci@'on} elim_allbut (@var{l}, @var{x})
+@deffn {Función} elim_allbut (@var{l}, @var{x})
 
 Es similar a @code{elim}, excepto por el hecho de que elimina todas las variables
-que aparecen en la lista de ecuaciones @code{l} que no est@'an en @code{x}.
+que aparecen en la lista de ecuaciones @code{l} que no están en @code{x}.
 
 Ejemplo:
 
@@ -475,9 +475,9 @@ Ejemplo:
 (%o2)                [[x - 1], [y + x - 1]]
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
 
-V@'eanse tambi@'en @code{elim}, @code{eliminate_using}, @code{eliminate}
+Véanse también @code{elim}, @code{eliminate_using}, @code{eliminate}
 y @code{resultant}.
 
 @end deffn
@@ -486,9 +486,9 @@ y @code{resultant}.
 
 
 
-@deffn {Funci@'on} eliminate_using (@var{l}, @var{e}, @var{x})
+@deffn {Función} eliminate_using (@var{l}, @var{e}, @var{x})
 
-Elmina el s@'{@dotless{i}}mbolo @code{x} de la lista o conjunto de ecuaciones
+Elmina el símbolo @code{x} de la lista o conjunto de ecuaciones
 @code{l} haciendo uso del pivote @code{e}.
 
 Ejemplos:
@@ -511,9 +511,9 @@ Ejemplos:
 (%o4) @{y  - 3 x y + x  + 5, y  + (1 - 3 x) y  + 3 x  y - x  - x @}
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
 
-V@'eanse tambi@'en @code{elim}, @code{elim_allbut}, @code{eliminate}
+Véanse también @code{elim}, @code{elim_allbut}, @code{eliminate}
 y @code{resultant}.
 
 @end deffn
@@ -523,10 +523,10 @@ y @code{resultant}.
 
 
 
-@deffn {Funci@'on} fourier_elim ([@var{eq1}, @var{eq2}, ...], [@var{var1}, @var{var}, ...])
+@deffn {Función} fourier_elim ([@var{eq1}, @var{eq2}, ...], [@var{var1}, @var{var}, ...])
 
-La instrucci@'on @code{fourier_elim([eq1,eq2,...], [var1,var2,...]} aplica el
-algoritmo de eliminaci@'on de Fourier para resolver el sistema de inecuaciones 
+La instrucción @code{fourier_elim([eq1,eq2,...], [var1,var2,...]} aplica el
+algoritmo de eliminación de Fourier para resolver el sistema de inecuaciones 
 lineales @code{[eq1,eq2,...]} respecto de las variables @code{[var1,var2,...]}.
 
 Ejemplos:
@@ -539,12 +539,12 @@ Ejemplos:
 @end example
 
 Eliminando primero respecto de @math{x} y luego respecto de @math{y},
-se obtienen l@'{@dotless{i}}mites inferior y superior para @math{x}
-que dependen de @math{y}, y l@'{@dotless{i}}mites num@'ericos para @math{y}.
-Si se eliminan en orden inverso, se obtienen los l@'{@dotless{i}}mites
-de @math{y} en funci@'on de @math{x}, y los de @math{x} son n@'umeros.
+se obtienen límites inferior y superior para @math{x}
+que dependen de @math{y}, y límites numéricos para @math{y}.
+Si se eliminan en orden inverso, se obtienen los límites
+de @math{y} en función de @math{x}, y los de @math{x} son números.
 
-De ser necesario, @code{fourier_elim} devuelve una disyunci@'on de listas
+De ser necesario, @code{fourier_elim} devuelve una disyunción de listas
 de ecuaciones:
 
 @example
@@ -552,8 +552,8 @@ de ecuaciones:
 (%o3)                  [x < 6] or [6 < x]
 @end example
 
-Si no existe soluci@'on, @code{fourier_elim} devuelve @code{emptyset},
-y si la soluci@'on son todos los reales, @code{fourier_elim} devuelve 
+Si no existe solución, @code{fourier_elim} devuelve @code{emptyset},
+y si la solución son todos los reales, @code{fourier_elim} devuelve 
 @code{universalset}:
 
 @example
@@ -575,7 +575,7 @@ devuelve una lista de inecuaciones simplificadas:
 @end example
 
 En lugar de una lista de inecuaciones, el primer argumento pasado a
-@code{fourier_elim} puede ser una conjunci@'on o disyunci@'on l@'ogica.
+@code{fourier_elim} puede ser una conjunción o disyunción lógica.
 
 @example
 (%i8) fourier_elim((x + y < 5) and (x - y >8),[x,y]);
@@ -586,14 +586,14 @@ En lugar de una lista de inecuaciones, el primer argumento pasado a
 (%o9)          [y + 8 < x] or [x < min(1, 5 - y)]
 @end example
 
-La funci@'on @code{fourier_elim} soporta los operadores de desigualdad 
+La función @code{fourier_elim} soporta los operadores de desigualdad 
 @code{<}, @code{<=}, @code{>}, @code{>=}, @code{#} y @code{=}.
 
-La rutina de eliminaci@'on de Fourier dispone de un preprocesador que
+La rutina de eliminación de Fourier dispone de un preprocesador que
 convierte algunas inecuaciones no lineales formadas con las funciones
-del valor absoluto, m@'{@dotless{i}}nimo y m@'aximo a inecuaciones 
-lineales. Adem@'as, el preprocesador admite algunas expresiones 
-que son productos o cocientes de t@'erminos lineales:
+del valor absoluto, mínimo y máximo a inecuaciones 
+lineales. Además, el preprocesador admite algunas expresiones 
+que son productos o cocientes de términos lineales:
 
 @example
 (%i10) fourier_elim([max(x,y) > 6, x # 8, abs(y-1) > 12],[x,y]);
@@ -606,7 +606,7 @@ que son productos o cocientes de t@'erminos lineales:
 (%o12)      [- 1 < x, x < 1] or [1 < x] or [x < - 1]
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
+Para hacer uso de esta función, ejecútese @code{load(fourier_elim)}.
 
 @end deffn
 
@@ -616,10 +616,10 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
 
 
 
-@deffn {Funci@'on} isreal_p (@var{e})
+@deffn {Función} isreal_p (@var{e})
 
 El predicado @code{isreal_p} devuelve @code{true} si @code{e} representa un
-n@'umero real y @code{false} si no representa un punto de la recta; en cualquier
+número real y @code{false} si no representa un punto de la recta; en cualquier
 otro caso devuelve una forma nominal.
 
 @example
@@ -627,14 +627,14 @@ otro caso devuelve una forma nominal.
 (%o1)               [true, true, false, true]
 @end example
 
-Las variables de Maxima se interpretan como n@'umeros reales:
+Las variables de Maxima se interpretan como números reales:
 
 @example
 (%i2) isreal_p(x);
 (%o2)                         true
 @end example
 
-La funci@'on @code{isreal_p} consulta los hechos almacenados en la base de datos:
+La función @code{isreal_p} consulta los hechos almacenados en la base de datos:
 @example
 (%i3) declare(z,complex)$
 
@@ -642,9 +642,9 @@ La funci@'on @code{isreal_p} consulta los hechos almacenados en la base de datos
 (%o4)                      isreal_p(z)
 @end example
 
-Con frecuencia, @code{isreal_p} devuelve una forma nominal cuando deber@'{@dotless{i}}a
-devolver @code{false}; por ejemplo, la funci@'on logar@'{@dotless{i}}tmica no toma valores
-reales en toda la recta real, por lo que  @code{isreal_p(log(x))} deber@'{@dotless{i}}a
+Con frecuencia, @code{isreal_p} devuelve una forma nominal cuando debería
+devolver @code{false}; por ejemplo, la función logarítmica no toma valores
+reales en toda la recta real, por lo que  @code{isreal_p(log(x))} debería
 devolver @code{false}, sin embargo:
 
 @example
@@ -652,11 +652,11 @@ devolver @code{false}, sin embargo:
 (%o5)                   isreal_p(log(x))
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
-V@'ease tambi@'en @code{complex_number_p}.
+Véase también @code{complex_number_p}.
 
-La funci@'on @code{isreal_p} es experimental; sus
+La función @code{isreal_p} es experimental; sus
 especificaciones pueden cambiar y su funcionalidad puede incorporarse a otras funciones
 de Maxima.
 @end deffn
@@ -666,18 +666,18 @@ de Maxima.
 
 
 
-@deffn {Funci@'on} new_variable (@var{type})
+@deffn {Función} new_variable (@var{type})
 
-Devuelve un s@'{@dotless{i}}mbolo de la forma @code{%[z,n,r,c,g]k},
-siendo @code{k} un n@'umero entero. Los valores admisibles para @var{type}
+Devuelve un símbolo de la forma @code{%[z,n,r,c,g]k},
+siendo @code{k} un número entero. Los valores admisibles para @var{type}
 son @code{integer}, @code{natural_number}, @code{real}, @code{natural_number}
-y @code{general}. Por n@'umero natural se entiende @i{entero negativo}, de 
-manera que el ceero es un n@'umero natural.
+y @code{general}. Por número natural se entiende @i{entero negativo}, de 
+manera que el ceero es un número natural.
 
-Cuando @var{type} no es de ninguno de los tipos indicados m@'as arriba,
-@var{type} toma por defecto el valor @code{general}. Para enteros, n@'umeros
-naturales y n@'umeros complejos, Maxima a@~nade esta informaci@'on a la base de
-datos de forma autom@'atica.
+Cuando @var{type} no es de ninguno de los tipos indicados más arriba,
+@var{type} toma por defecto el valor @code{general}. Para enteros, números
+naturales y números complejos, Maxima añade esta información a la base de
+datos de forma automática.
 
 @example
 (%i1) map('new_variable,
@@ -696,7 +696,7 @@ datos de forma autom@'atica.
 @end example
 
 Es recomendable que al argumento de @code{new_variable} se le
-aplique el operador de comilla simple para evitar su evaluaci@'on,
+aplique el operador de comilla simple para evitar su evaluación,
 de esta manera se evitan errores como el siguiente:
 
 @example
@@ -708,9 +708,9 @@ de esta manera se evitan errores como el siguiente:
 (%o9)                         %z150
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
-V@'ease tambi@'en @code{nicedummies}.
+Véase también @code{nicedummies}.
 
 @end deffn
 
@@ -719,10 +719,10 @@ V@'ease tambi@'en @code{nicedummies}.
 
 
 
-@deffn {Funci@'on} nicedummies
+@deffn {Función} nicedummies
 
-La funci@'on @code{nicedummies} reescribe los @'{@dotless{i}}ndices,
-comenzando por cero, de las variables de una expresi@'on qua hayan
+La función @code{nicedummies} reescribe los índices,
+comenzando por cero, de las variables de una expresión qua hayan
 sido introducidas por @code{new_variable}:
 
 @example
@@ -734,9 +734,9 @@ sido introducidas por @code{new_variable}:
 (%o3)                       %z0 - %z1
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
-V@'ease tambi@'en @code{new_variable}.
+Véase también @code{new_variable}.
 
 @end deffn
 
@@ -744,10 +744,10 @@ V@'ease tambi@'en @code{new_variable}.
 
 
 
-@deffn {Funci@'on} parg (@var{x})
+@deffn {Función} parg (@var{x})
 
-La funci@'on @code{parg} es una versi@'on con capacidades simplificadoras
-de la funci@'on de argumento complejo @code{carg}:
+La función @code{parg} es una versión con capacidades simplificadoras
+de la función de argumento complejo @code{carg}:
 
 @example
 (%i1) map('parg,[1,1+%i,%i, -1 + %i, -1]);
@@ -756,15 +756,15 @@ de la funci@'on de argumento complejo @code{carg}:
                          4    2     4
 @end example
 
-Si el argumento pasado a la funci@'on @code{parg} no es una constante,
-se devolver@'a una forma nominal:
+Si el argumento pasado a la función @code{parg} no es una constante,
+se devolverá una forma nominal:
 
 @example
 (%i2) parg(x + %i * sqrt(x));
 (%o2)                 parg(x + %i sqrt(x))
 @end example
 
-Si @code{sign} detecta que la entrada es un n@'umero real negativo o
+Si @code{sign} detecta que la entrada es un número real negativo o
 positivo, @code{parg} devuelve una forma no nominal aunque la entrada
 no sea una constante:
 
@@ -775,7 +775,7 @@ no sea una constante:
 (%o4)                          %pi
 @end example
 
-La funci@'on @code{sign} suele ignorar las variables declaradas complejas
+La función @code{sign} suele ignorar las variables declaradas complejas
 (@code{declare(x,complex)}); en tales casos, @code{parg}
 puede retornar valores incorrectos:
 
@@ -786,9 +786,9 @@ puede retornar valores incorrectos:
 (%o2) 0
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
-V@'eanse tambi@'en @code{carg}, @code{isreal_p}.
+Véanse también @code{carg}, @code{isreal_p}.
 
 @end deffn
 
@@ -797,11 +797,11 @@ V@'eanse tambi@'en @code{carg}, @code{isreal_p}.
 
 
 
-@deffn {Funci@'on} real_imagpart_to_conjugate (@var{e})
+@deffn {Función} real_imagpart_to_conjugate (@var{e})
 
-La funci@'on @code{real_imagpart_to_conjugate} reemplaza todas las
-llamadas a @code{realpart} y @code{imagpart} presentes en una expresi@'on 
-por llamadas a @code{conjugate}, obteniendo otra expresi@'on equivalente:
+La función @code{real_imagpart_to_conjugate} reemplaza todas las
+llamadas a @code{realpart} y @code{imagpart} presentes en una expresión 
+por llamadas a @code{conjugate}, obteniendo otra expresión equivalente:
 
 @example
 (%i1) declare(x, complex)$
@@ -812,7 +812,7 @@ por llamadas a @code{conjugate}, obteniendo otra expresi@'on equivalente:
                  2                     2
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -820,11 +820,11 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} rectform_log_if_constant (@var{e})
+@deffn {Función} rectform_log_if_constant (@var{e})
 
-La funci@'on @code{rectform_log_if_constant} convierte todos los t@'erminos
+La función @code{rectform_log_if_constant} convierte todos los términos
 de la forma @code{log(c)} a @code{rectform(log(c))}, siendo @code{c} 
-una expresi@'on constante o declarada como tal.
+una expresión constante o declarada como tal.
 
 @example
 (%i1) rectform_log_if_constant(log(1-%i) - log(x - %i));
@@ -840,7 +840,7 @@ una expresi@'on constante o declarada como tal.
                        2
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -848,12 +848,12 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} simp_inequality (@var{e})
+@deffn {Función} simp_inequality (@var{e})
 
-La funci@'on @code{simp_inequality} aplica ciertas simplificaciones
+La función @code{simp_inequality} aplica ciertas simplificaciones
 a conjunciones y disyunciones de inecuaciones.
 
-@b{Limitaciones} La funci@'on @code{simp_inequality} est@'a limitada en
+@b{Limitaciones} La función @code{simp_inequality} está limitada en
 al menos dos aspectos; en primer lugar, las simplificaciones son locales:
 
 @example
@@ -871,7 +871,7 @@ base de datos:
 (%o3)                         x > 0
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
+Para hacer uso de esta función, ejecútese @code{load(fourier_elim)}.
 
 @end deffn
 
@@ -879,14 +879,14 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
 
 
 
-@deffn {Funci@'on} standardize_inverse_trig (@var{e})
+@deffn {Función} standardize_inverse_trig (@var{e})
 
-Esta funci@'on aplica las identidades @code{cot(x) = atan(1/x)} y
+Esta función aplica las identidades @code{cot(x) = atan(1/x)} y
 @code{acsc(x) = asin(1/x)} y similares con @code{asec}, @code{acoth}
-y @code{acsch}. Cons@'ultese Abramowitz y Stegun, ecuaciones
+y @code{acsch}. Consúltese Abramowitz y Stegun, ecuaciones
 4.4.6 a 4.4.8 y 4.6.4 a 4.6.6.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -894,9 +894,9 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} subst_parallel (@var{l}, @var{e})
+@deffn {Función} subst_parallel (@var{l}, @var{e})
 
-Dada la ecuaci@'on o lista de ecuaciones @var{l} y la expresi@'on
+Dada la ecuación o lista de ecuaciones @var{l} y la expresión
 @var{e}, sustituye @i{en paralelo} en @var{e} los miembros izquierdos
 de las ecuaciones por los derechos:
 
@@ -907,16 +907,16 @@ de las ecuaciones por los derechos:
 (%o2)                        [y, x]
 @end example
 
-Comp@'arese el resultado anterior con las sustituciones hechas en serie: 
+Compárese el resultado anterior con las sustituciones hechas en serie: 
 
 @example
 (%i3) subst([x=y,y=x],[x,y]);
 (%o3)                        [x, x]
 @end example
 
-La funci@'on @code{subst_parallel} es similar a @code{sublis}, excepto por
-el hecho de que @code{subst_parallel} permite la sustituci@'on de expresiones
-no at@'omicas:
+La función @code{subst_parallel} es similar a @code{sublis}, excepto por
+el hecho de que @code{subst_parallel} permite la sustitución de expresiones
+no atómicas:
 
 @example
 (%i4) subst_parallel([x^2 = a, y = b], x^2 * y);
@@ -928,8 +928,8 @@ sublis: left-hand side of equation must be a symbol; found: x
  -- an error. To debug this try: debugmode(true);
 @end example
 
-Las sustituciones hechas por @code{subst_parallel} son literales, no sem@'anticas,
-por lo que @code{subst_parallel} no reconoce que @math{x * y} sea una subexpresi@'on
+Las sustituciones hechas por @code{subst_parallel} son literales, no semánticas,
+por lo que @code{subst_parallel} no reconoce que @math{x * y} sea una subexpresión
 de @math{x^2 * y}:
 
 @example
@@ -938,9 +938,9 @@ de @math{x^2 * y}:
 (%o6)                         x  y
 @end example
 
-La funci@'on @code{subst_parallel} realiza todas las sustituciones
-antes de proceder a la simplificaci@'on, lo que permite sustituciones
-en expresiones condicionales que podr@'{@dotless{i}}n producir 
+La función @code{subst_parallel} realiza todas las sustituciones
+antes de proceder a la simplificación, lo que permite sustituciones
+en expresiones condicionales que podrín producir 
 errores en caso de simplificar antes de sustituir:
 
 @example
@@ -952,9 +952,9 @@ log: encountered log(0).
  -- an error. To debug this try: debugmode(true);
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve_extra.lisp)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve_extra.lisp)}.
 
-V@'eanse tambi@'en @code{subst}, @code{sublis} y @code{ratsubst}.
+Véanse también @code{subst}, @code{sublis} y @code{ratsubst}.
 
 @end deffn
 
@@ -963,14 +963,14 @@ V@'eanse tambi@'en @code{subst}, @code{sublis} y @code{ratsubst}.
 
 
 
-@deffn {Funci@'on} to_poly (@var{e}, @var{l})
+@deffn {Función} to_poly (@var{e}, @var{l})
 
-La funci@'on @code{to_poly} intenta convertir la ecuaci@'on @var{e}
+La función @code{to_poly} intenta convertir la ecuación @var{e}
 en un sistema de polinomios, junto con restricciones en forma de
-desigualdades. Las soluciones del sistema polin@'omico que cumplan
-las restricciones son, a su vez, las soluciones de la ecuaci@'on @var{e}.
+desigualdades. Las soluciones del sistema polinómico que cumplan
+las restricciones son, a su vez, las soluciones de la ecuación @var{e}.
 Dicho de manera informal, @code{to_poly} intenta pasar a forma de
-polinomio la ecuaci@'on @var{e}; un ejemplo ayudar@'a a aclarar su
+polinomio la ecuación @var{e}; un ejemplo ayudará a aclarar su
 comportamiento:
 
 @example
@@ -985,12 +985,12 @@ comportamiento:
 @end example
 
 Las condiciones @code{-%pi/2<parg(%g130),parg(%g130)<=%pi/2} dicen que
-@code{%g130} est@'a en el rango de la funci@'on radical; cuando eso se
+@code{%g130} está en el rango de la función radical; cuando eso se
 cumpla, el conjunto de ecuaciones de @code{sqrt(x) = 3} coincide con
 el de @code{%g130-3,x=%g130^2}.
 
-Para convertir a forma polin@'omica una expresi@'on trigonom@'etrica,
-es necesario introducir una sustituci@'on no algebraica; tal sustituci@'on
+Para convertir a forma polinómica una expresión trigonométrica,
+es necesario introducir una sustitución no algebraica; tal sustitución
 se devuelve en la tercera lista de la respuesta de @code{to_poly}:
 
 @example
@@ -999,8 +999,8 @@ se devuelve en la tercera lista de la respuesta de @code{to_poly}:
 (%o3)    [[%g131  + 1], [2 %g131 # 0], [%g131 = %e    ]]
 @end example
 
-Los t@'erminos constantes no se transforman a polinomios a menos que el
-n@'umero uno se introduzca en la lista de variables:
+Los términos constantes no se transforman a polinomios a menos que el
+número uno se introduzca en la lista de variables:
 
 @example
 (%i4) to_poly(x = sqrt(5),[x]);
@@ -1014,7 +1014,7 @@ n@'umero uno se introduzca en la lista de variables:
 @end example
 
 Para generar un polinomio que tenga @math{sqrt(5) + sqrt(7)} como
-ra@'{@dotless{i}}z puede hacerse lo siguiente:
+raíz puede hacerse lo siguiente:
 
 @example
 (%i6) first(elim_allbut(first(to_poly(x = sqrt(5) + sqrt(7),
@@ -1023,9 +1023,9 @@ ra@'{@dotless{i}}z puede hacerse lo siguiente:
 (%o6)                   [x  - 24 x  + 4]
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
 
-V@'ease tambi@'en @code{to_poly_solve}.
+Véase también @code{to_poly_solve}.
 
 @end deffn
 
@@ -1034,19 +1034,19 @@ V@'ease tambi@'en @code{to_poly_solve}.
 
 
 
-@deffn {Funci@'on} to_poly_solve (@var{e}, @var{l}, [options])
+@deffn {Función} to_poly_solve (@var{e}, @var{l}, [options])
 
-La funci@'on @code{to_poly_solve} intenta resolver las ecuaciones @var{e}
-de inc@'ognitas @var{l}. El argumento @var{e} puede ser una @'unica ecuaci@'on,
+La función @code{to_poly_solve} intenta resolver las ecuaciones @var{e}
+de incógnitas @var{l}. El argumento @var{e} puede ser una única ecuación,
 o una lista o conjunto de ecuaciones; de forma similar, @var{l} puede ser un
-s@'{@dotless{i}}mbolo o una lista o conjunto de s@'{@dotless{i}}mbolos. Cuando
+símbolo o una lista o conjunto de símbolos. Cuando
 uno de los elementos de @var{e} no sea una igualdad, como @math{x^2 -1},
-se supodr@'a que es igual a cero.
+se supodrá que es igual a cero.
 
-La estrategia b@'asica de @code{to_poly_solve} consiste en convertir la entrada en un
-polinomio y luego invocar a la funci@'on @code{algsys}. Internamente,  @code{to_poly_solve}
+La estrategia básica de @code{to_poly_solve} consiste en convertir la entrada en un
+polinomio y luego invocar a la función @code{algsys}. Internamente,  @code{to_poly_solve}
 asigna a @code{algexact} el valor @code{true}. Para cambiar el valor de @code{algexact},
-debe an@~nadirse @code{'algexact=false} a la lista de argumentos de @code{to_poly_solve}.
+debe anñadirse @code{'algexact=false} a la lista de argumentos de @code{to_poly_solve}.
 
 Cuando @code{to_poly_solve} consigue determinar el conjunto de soluciones, cada
 miembro del conjunto de soluciones es una lista en un objeto  @code{%union}:
@@ -1070,36 +1070,36 @@ unable to solve
 (%o3)            %solve([x  + 2 x + 1 = 0], [x])
 @end example
 
-A veces se puede obtener la soluci@'on haciendo una sustituci@'on en @code{%solve}:
+A veces se puede obtener la solución haciendo una sustitución en @code{%solve}:
 
 @example
 (%i4) subst(k = 2, %);
 (%o4)                   %union([x = - 1])
 @end example
 
-Especialmente en el caso de las funciones trigonom@'etricas, los resultados pueden
-incorporar n@'umeros enteros arbitrarios de la forma @code{%zXXX}, siendo @code{XXX}
-un @'{@dotless{i}}ndice entero:
+Especialmente en el caso de las funciones trigonométricas, los resultados pueden
+incorporar números enteros arbitrarios de la forma @code{%zXXX}, siendo @code{XXX}
+un índice entero:
 
 @example
 (%i5) to_poly_solve(sin(x) = 0, x);
 (%o5)   %union([x = 2 %pi %z33 + %pi], [x = 2 %pi %z35])
 @end example
 
-Para inicializar los @'{@dotless{i}}ndices, h@'agase uso de @code{nicedummies}:
+Para inicializar los índices, hágase uso de @code{nicedummies}:
 
 @example
 (%i6) nicedummies(%);
 (%o6)    %union([x = 2 %pi %z0 + %pi], [x = 2 %pi %z1])
 @end example
 
-En ocasiones, se introducen n@'umeros complejos arbitrarios de la forma
-@code{%cXXX}, o reales de la forma @code{%rXXX}. La funci@'on @code{nicedummies}
+En ocasiones, se introducen números complejos arbitrarios de la forma
+@code{%cXXX}, o reales de la forma @code{%rXXX}. La función @code{nicedummies}
 inicializa estos identificadores a cero.
 
-Tambi@'en a veces, la soluci@'on incorpora versiones simplificadas de los
-operadores l@'ogicos @code{%and}, @code{%or} y @code{%if}, que representan, respectivamente,
-la conjunci@'on, la disyunci@'on y la implicaci@'on:
+También a veces, la solución incorpora versiones simplificadas de los
+operadores lógicos @code{%and}, @code{%or} y @code{%if}, que representan, respectivamente,
+la conjunción, la disyunción y la implicación:
 
 @example
 (%i7) sol : to_poly_solve(abs(x) = a, x);
@@ -1111,13 +1111,13 @@ la conjunci@'on, la disyunci@'on y la implicaci@'on:
 (%o9)                       %union()
 @end example
 
-El conjunto vac@'{@dotless{i}}o se representa por @code{%union}.
+El conjunto vacío se representa por @code{%union}.
 
-La funci@'on @code{to_poly_solve} es capaz de resolver algunas ecuaciones
+La función @code{to_poly_solve} es capaz de resolver algunas ecuaciones
 con potencias racionales, potencias no racionales, valores absolutos, funciones
-trigonom@'etricas y funciones del m@'{@dotless{i}}nimo y del m@'aximo. 
-Tambi@'en puede resolver algunas ecuaciones resolubles en t@'erminos de la
-funci@'on W de Lambert:
+trigonométricas y funciones del mínimo y del máximo. 
+También puede resolver algunas ecuaciones resolubles en términos de la
+función W de Lambert:
 
 @example
 (%i1) load(to_poly_solve)$
@@ -1160,8 +1160,8 @@ funci@'on W de Lambert:
 (%o7)              %union([x = lambert_w(a)])
 @end example
 
-En el caso de inecuaciones lineales, @code{to_poly_solve} aplica autom@'aticamente
-la eliminaci@'on de Fourier:
+En el caso de inecuaciones lineales, @code{to_poly_solve} aplica automáticamente
+la eliminación de Fourier:
 
 @example
 (%i8) to_poly_solve([x + y < 1, x - y >= 8], [x,y]);
@@ -1173,13 +1173,13 @@ la eliminaci@'on de Fourier:
                                                               2
 @end example
 
-Los argumentos opcionales deben tener forma de ecuaci@'on; generalmente, el orden
+Los argumentos opcionales deben tener forma de ecuación; generalmente, el orden
 de estas opciones no reviste importancia.
 
 @itemize
 
 @item @code{simpfuncs = l}, siendo @code{l} una lista de funciones,
-aplica la composici@'on de los elementos de @code{l} a cada soluci@'on:
+aplica la composición de los elementos de @code{l} a cada solución:
 @example
 (%i1) to_poly_solve(x^2=%i,x);
                                1/4             1/4
@@ -1190,7 +1190,7 @@ aplica la composici@'on de los elementos de @code{l} a cada soluci@'on:
                     sqrt(2)   sqrt(2)        sqrt(2)   sqrt(2)
 @end example
 
-A veces, una simplificaci@'on puede anular una simplificaci@'on anterior:
+A veces, una simplificación puede anular una simplificación anterior:
 @example
 (%i3) to_poly_solve(x^2=1,x);
 (%o3)              %union([x = - 1], [x = 1])
@@ -1206,7 +1206,7 @@ todos simplificaciones:
 (%o5)                   %union([x = %i])
 @end example
 
-Para convertir cada soluci@'on a real de doble precisi@'on h@'agase uso de
+Para convertir cada solución a real de doble precisión hágase uso de
 @code{simpfunc = ['dfloat]}:
 @example
 (%i6) to_poly_solve(x^3 +x + 1 = 0,x, 
@@ -1216,10 +1216,10 @@ Para convertir cada soluci@'on a real de doble precisi@'on h@'agase uso de
 [x = 1.161541399997251 %i + .3411639019140089])
 @end example
 
-@item Con la opci@'on @code{use_grobner = true} se aplica la funci@'on 
+@item Con la opción @code{use_grobner = true} se aplica la función 
 @code{poly_reduced_grobner} a las ecuaciones antes de intentar resolverlas.
-En primer lugar, esta opci@'on proporciona una manera de soslayar algunas
-debilidades de la funci@'on @code{algsys}:
+En primer lugar, esta opción proporciona una manera de soslayar algunas
+debilidades de la función @code{algsys}:
 
 @example
 (%i7) to_poly_solve([x^2+y^2=2^2,(x-1)^2+(y-1)^2=2^2],[x,y],
@@ -1235,7 +1235,7 @@ debilidades de la funci@'on @code{algsys}:
 @end example
 
 @item @code{maxdepth = k}, siendo @code{k} un positivo entero, controla el nivel
-de recursi@'on. El valor por defecto es cinco. Cuando se excede el nivel de recursi@'on
+de recursión. El valor por defecto es cinco. Cuando se excede el nivel de recursión
 se obtiene un mensaje de error:
 @example
 (%i9) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
@@ -1245,8 +1245,8 @@ Unable to solve
 (%o9)        %solve([cos(x) = x], [x], maxdepth = 2)
 @end example
 
-@item Con @code{parameters = l}, siendo @code{l} una lista de s@'{@dotless{i}}mbolos,
-el programa intenta encontrar una soluci@'on v@'alida para todos los miembros de la
+@item Con @code{parameters = l}, siendo @code{l} una lista de símbolos,
+el programa intenta encontrar una solución válida para todos los miembros de la
 lista @code{l}:
 @example
 (%i10) to_poly_solve(a * x = x, x);
@@ -1256,7 +1256,7 @@ lista @code{l}:
                                %if(a - 1 # 0, [x = 0], %union()))
 @end example
 En @code{(%o2)}, el programa introduce una variable ficticia; para reinicializarla,
-@'usese la funci@'on @code{nicedummies}:
+úsese la función @code{nicedummies}:
 @example
 (%i12) nicedummies(%);
 (%o12) %union(%if(a - 1 = 0, [x = %c0], %union()), 
@@ -1264,8 +1264,8 @@ En @code{(%o2)}, el programa introduce una variable ficticia; para reinicializar
 @end example
 @end itemize
 
-@code{to_poly_solve} utiliza informaci@'on almacenada en el array @code{one_to_one_reduce}
-para resolver ecuaciones de la forma  @math{f(a) = f(b)}. La asignaci@'on 
+@code{to_poly_solve} utiliza información almacenada en el array @code{one_to_one_reduce}
+para resolver ecuaciones de la forma  @math{f(a) = f(b)}. La asignación 
 @code{one_to_one_reduce['f,'f] : lambda([a,b], a=b)} le dice a @code{to_poly_solve}
 que el conjunto de soluciones de @math{f(a) = f(b)} es igual al conjunto de soluciones
 de @math{a=b}:
@@ -1276,7 +1276,7 @@ de @math{a=b}:
 (%o14)             %union([x = - 1], [x = 1])
 @end example
 
-De forma m@'as general, la asignaci@'on 
+De forma más general, la asignación 
 @code{one_to_one_reduce['f,'g] : lambda([a,b], w(a,b)=0} le indica a
 @code{to_poly_solve} que el cojunto de soluciones de @math{f(a) = f(b)} 
 es igual al conjunto de soluciones de @math{w(a,b) = 0}:
@@ -1287,9 +1287,9 @@ es igual al conjunto de soluciones de @math{w(a,b) = 0}:
 (%o16)                   %union([x = 2])
 @end example
 
-Adem@'as, @code{to_poly_solve} utiliza informaci@'on almacenada en el array
+Además, @code{to_poly_solve} utiliza información almacenada en el array
 @code{function_inverse} para resolver ecuaciones de la forma @math{f(a) = b}.
-La asignaci@'on @code{function_inverse['f] : lambda([s], g(s))} le dice a
+La asignación @code{function_inverse['f] : lambda([s], g(s))} le dice a
 @code{to_poly_solve} que el conjunto de soluciones de @math{f(x) = b} es
 igual al conjunto de soluciones de @math{x = g(b)}:
 @example
@@ -1307,7 +1307,7 @@ igual al conjunto de soluciones de @math{x = g(b)}:
 
 @itemize
 
-@item Las inc@'ognitas a resolver no necesitan ser s@'{@dotless{i}}mbolos, lo cual es
+@item Las incógnitas a resolver no necesitan ser símbolos, lo cual es
 cierto cuando @code{fullratsubst} es capaz de hacer las sustituciones de forma apropiadas:
 @example
 (%i1) to_poly_solve([x^2 + y^2 + x * y = 5, x * y = 8],
@@ -1317,7 +1317,7 @@ cierto cuando @code{fullratsubst} es capaz de hacer las sustituciones de forma a
 @end example
 
 @item Cuando las ecuaciones involucran conjugados de complejos, el programa
-a@~nade autom@'aticamente las ecuaciones conjugadas:
+añade automáticamente las ecuaciones conjugadas:
 @example
 (%i1) declare(x,complex)$
 
@@ -1336,7 +1336,7 @@ a@~nade autom@'aticamente las ecuaciones conjugadas:
 
 @item Cuando las funciones involucran valores absolutos, @code{to_poly_solve}
 consulta los hechos de la base de datos para decidir si los argumentos de los valores
-absolutos son n@'umeros complejos:
+absolutos son números complejos:
 @example
 (%i1) to_poly_solve(abs(x) = 6, x);
 (%o1)              %union([x = - 6], [x = 6])
@@ -1347,12 +1347,13 @@ absolutos son n@'umeros complejos:
                                        0), [z = %c11], %union()))
 @end example
 
-Esta es la @'unica situaci@'on en la que @code{to_poly_solve} consulta la base de
-datos; si una inc@'ognita se declara, por ejemplo, como entero, @code{to_poly_solve} lo ignora.
+Esta es la única situación en la que @code{to_poly_solve} consulta la base de
+datos; si una incógnita se declara, por ejemplo, como entero, @code{to_poly_solve} lo ignora.
 @end itemize
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
-V@'ease tambi@'en @code{algexact}, @code{resultant}, @code{algebraic} y @code{to_poly}.
+Véase también @code{algexact}, @code{resultant}, @code{algebraic} y @code{to_poly}.
 
 @end deffn
+

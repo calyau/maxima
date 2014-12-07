@@ -1,7 +1,7 @@
 @c English version 2011-11-01
 @menu
-* Introducci@'on a la evaluaci@'on::
-* Funciones y variables para la evaluaci@'on::
+* Introducción a la evaluación::
+* Funciones y variables para la evaluación::
 @end menu
 
 
@@ -12,21 +12,21 @@
 
 
 
-@node Introducci@'on a la evaluaci@'on, Funciones y variables para la evaluaci@'on, Evaluaci@'on, Evaluaci@'on
-@section Introducci@'on a la evaluaci@'on
+@node Introducción a la evaluación, Funciones y variables para la evaluación, Evaluación, Evaluación
+@section Introducción a la evaluación
 
-Las fases que se suceden desde que el usuario solicita un c@'alculo hasta que
-obtiene el resultado son: la propia solicitud del c@'alculo, la evaluaci@'on,
-la simplificaci@'on y la respuesta.
+Las fases que se suceden desde que el usuario solicita un cálculo hasta que
+obtiene el resultado son: la propia solicitud del cálculo, la evaluación,
+la simplificación y la respuesta.
 
-Toda expresi@'on @var{expr} que se introduzca en Maxima ser@'a evaluada, de manera
-que los s@'{@dotless{i}}mbolos que no tengan asociado ning@'un valor y los n@'umeros
-eval@'uan a s@'{@dotless{i}} mismos; en cambio, aquellos s@'{@dotless{i}}mbolos
-que tengan un valor asociado ser@'an sustitu@'{@dotless{i}}dos por tales valores.
+Toda expresión @var{expr} que se introduzca en Maxima será evaluada, de manera
+que los símbolos que no tengan asociado ningún valor y los números
+evalúan a sí mismos; en cambio, aquellos símbolos
+que tengan un valor asociado serán sustituídos por tales valores.
 
-Dos ejemplos. En el primero, los s@'{@dotless{i}}mbolos y los n@'umeros se eval@'uan
-a s@'{@dotless{i}} mismos; en el segundo ejemplo, al asignarle a la variable @code{a}
-el valor @code{2}, all@'a donde se escriba @code{a} ser@'a sustituido por dicho valor.
+Dos ejemplos. En el primero, los símbolos y los números se evalúan
+a sí mismos; en el segundo ejemplo, al asignarle a la variable @code{a}
+el valor @code{2}, allá donde se escriba @code{a} será sustituido por dicho valor.
 
 @example
 (%i1) [a, b, 2, 1/2, 1.0];
@@ -44,16 +44,16 @@ nominal. Las funciones en forma verbal son evaluadas tomando en cuenta
 los valores dados a sus argumentos; en cambio, las funciones nominales
 no son evaluadas, aunque sus argumentos tengan valores asignados. Las
 funciones son susceptibles de ser tratadas de ambos modos; ejemplos 
-t@'{@dotless{i}}picos son la funci@'on de diferenciaci@'on @code{diff}
-y la de integraci@'on @code{integrate}.
+típicos son la función de diferenciación @code{diff}
+y la de integración @code{integrate}.
 
 En el siguiente ejemplo se le asigna a la variable @code{a} cierto
-valor, a continuaci@'on se invoca la funci@'on @code{diff} en su
+valor, a continuación se invoca la función @code{diff} en su
 forma verbal con sus argumentos tomando los valores @code{a*x^2} y @code{x}.
-Seguidamente se invoca a la misma funci@'on @code{diff} en su
+Seguidamente se invoca a la misma función @code{diff} en su
 forma nominal, lo cual se consigue mediante el operador de comilla simple (@code{'});
-en este caso la funci@'on no es evaluada y devuelve una expresi@'on simb@'olica
-en la que los argumentos s@'{@dotless{i}} han sido evaluados, pues la variable
+en este caso la función no es evaluada y devuelve una expresión simbólica
+en la que los argumentos sí han sido evaluados, pues la variable
 @code{a} es sustituida por el valor @code{1/2}.
 
 @example
@@ -73,19 +73,19 @@ en la que los argumentos s@'{@dotless{i}} han sido evaluados, pues la variable
 @end example
 
 Sin embargo, no todas las funciones de Maxima sustituyen sus argumentos por
-sus valores. La documentaci@'on para cada funci@'on informar@'a si sus argumentos
+sus valores. La documentación para cada función informará si sus argumentos
 son evaluados o no.
 
-Por ejemplo, la funci@'on @code{properties} no eval@'ua sus argumentos, lo cual
-resulta pr@'actico para el usuario, ya que en caso contrario deber@'{@dotless{i}}a
+Por ejemplo, la función @code{properties} no evalúa sus argumentos, lo cual
+resulta práctico para el usuario, ya que en caso contrario debería
 utilizar el operador de comilla simple @code{'} a fin de poder mostrar las
-propiedades del s@'{@dotless{i}}mbolo @code{a}. A continuaci@'on se muestra 
-como en el primer caso se devuelve una lista vac@'{@dotless{i}}a, ya que no se
-le ha encontrado ninguna propiedad al s@'{@dotless{i}}mbolo @code{a}; una vez
-se le ha asignado el valor @code{2}, la funci@'on @code{properties} nos dice
-que la variable guarda un valor y esto es as@'{@dotless{i}} porque no ha sustituido
-el s@'{@dotless{i}}mbolo @code{a} por su valor @code{2}. En consecuencia, la
-funci@'on @code{properties} muestra las propiedades de @code{'a}.
+propiedades del símbolo @code{a}. A continuación se muestra 
+como en el primer caso se devuelve una lista vacía, ya que no se
+le ha encontrado ninguna propiedad al símbolo @code{a}; una vez
+se le ha asignado el valor @code{2}, la función @code{properties} nos dice
+que la variable guarda un valor y esto es así porque no ha sustituido
+el símbolo @code{a} por su valor @code{2}. En consecuencia, la
+función @code{properties} muestra las propiedades de @code{'a}.
 
 @example
 (%i1) properties(a);
@@ -96,14 +96,14 @@ funci@'on @code{properties} muestra las propiedades de @code{'a}.
 (%o3)                        [value]
 @end example
 
-La evaluaci@'on de s@'{@dotless{i}}mbolos, funciones y expresiones se puede
+La evaluación de símbolos, funciones y expresiones se puede
 controlar con los operadores de comilla simple (@code{'}) y de doble comilla
-simple (@code{'@w{}'}). La evaluaci@'on se suprime con la comilla simple y se
+simple (@code{'@w{}'}). La evaluación se suprime con la comilla simple y se
 fuerza con la doble comilla simple (que no comilla doble).
 
-Con la funci@'on @code{ev} se eval@'ua una expresi@'on dentro de un contexto
+Con la función @code{ev} se evalúa una expresión dentro de un contexto
 determinado controlado por el valor de ciertas variables @code{evflag} y
-funciones de evaluaci@'on @code{evfun}.
+funciones de evaluación @code{evfun}.
 
 
 
@@ -114,45 +114,45 @@ funciones de evaluaci@'on @code{evfun}.
 
 
 
-@node Funciones y variables para la evaluaci@'on,  , Introducci@'on a la evaluaci@'on, Evaluaci@'on
-@section Funciones y variables para la evaluaci@'on
+@node Funciones y variables para la evaluación,  , Introducción a la evaluación, Evaluación
+@section Funciones y variables para la evaluación
 
 
 @deffn {Operador} '
 @ifinfo
 @fnindex Operador comilla
 @end ifinfo
-El operador comilla simple @code{'} evita la evaluaci@'on. 
+El operador comilla simple @code{'} evita la evaluación. 
 
-Aplicado a un s@'{@dotless{i}}mbolo, 
-la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+Aplicado a un símbolo, 
+la comilla simple evita la evaluación del símbolo. 
 
-Aplicado a la llamada de una funci@'on,
-la comilla simple evita la evaluaci@'on de la funci@'on llamada,
-aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
-la evaluaci@'on no se evite de otra manera). 
-El resultado es una forma de nombre de la funci@'on llamada.  
+Aplicado a la llamada de una función,
+la comilla simple evita la evaluación de la función llamada,
+aunque los argumentos de la función son evaluados (siempre y cuando 
+la evaluación no se evite de otra manera). 
+El resultado es una forma de nombre de la función llamada.  
 
-Aplicado a una expresi@'on con par@'entesis, 
-la comilla simple evita la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a funciones que hayan en la expresi@'on. 
+Aplicado a una expresión con paréntesis, 
+la comilla simple evita la evaluación de todos los símbolos y llamadas a funciones que hayan en la expresión. 
 @c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
-E.g., @code{'(f(x))} significa que no se evalua la expresi@'on @code{f(x)}. 
+E.g., @code{'(f(x))} significa que no se evalua la expresión @code{f(x)}. 
 @code{'f(x)} (con la comilla simple aplicada a @code{f} en cambio de a @code{f(x)})
 significa el retorno de la forma de nombre de @code{f} aplicada a @code{[x]}. 
 
-La comilla simple no evita la simplificaci@'on. 
+La comilla simple no evita la simplificación. 
 
 Cuando el interruptor global @code{noundisp} es @code{true}, 
 los nombres se muestran con una comilla simple. 
 Este interruptor siempre tiene como valor @code{true} cuando 
 se muestran definiciones de funciones. 
 
-Ver tambi@'en los operadores comilla-comilla @code{'@w{}'} y @code{nouns}. 
+Ver también los operadores comilla-comilla @code{'@w{}'} y @code{nouns}. 
 
 Ejemplos:
 
-Aplicado a un s@'{@dotless{i}}mbolo, 
-la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+Aplicado a un símbolo, 
+la comilla simple evita la evaluación del símbolo. 
 
 @c ===beg===
 @c aa: 1024;
@@ -172,11 +172,11 @@ la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo.
 (%o4)                        1048576
 @end example
 
-Aplicado a la llamada de una funci@'on,
-la comilla simple evita la evaluaci@'on de la funci@'on llamada,
-aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
-la evaluaci@'on no se evite de otra manera). 
-El resultado es una forma de nombre de la funci@'on llamada.  
+Aplicado a la llamada de una función,
+la comilla simple evita la evaluación de la función llamada,
+aunque los argumentos de la función son evaluados (siempre y cuando 
+la evaluación no se evite de otra manera). 
+El resultado es una forma de nombre de la función llamada.  
 
 @c ===beg===
 @c x0: 5;
@@ -208,9 +208,9 @@ El resultado es una forma de nombre de la funci@'on llamada.
                                 3
 @end example
 
-Aplicado a una expresi@'on con par@'entesis, la comilla simple evita
-la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a 
-funciones que haya dentro en la expresi@'on. 
+Aplicado a una expresión con paréntesis, la comilla simple evita
+la evaluación de todos los símbolos y llamadas a 
+funciones que haya dentro en la expresión. 
 
 @c ===beg===
 @c aa: 1024;
@@ -232,7 +232,7 @@ funciones que haya dentro en la expresi@'on.
 (%o5)                          51
 @end example
 
-La comilla simple no evita la simplificaci@'on. 
+La comilla simple no evita la simplificación. 
 
 @c ===beg===
 @c sin (17 * %pi) + cos (17 * %pi);
@@ -245,7 +245,7 @@ La comilla simple no evita la simplificaci@'on.
 (%o2)                          - 1
 @end example
 
-Internamente, Maxima considera que las operaciones con n@'umeros
+Internamente, Maxima considera que las operaciones con números
 decimales de coma flotante son simples simplificaciones.
 
 @c ===beg===
@@ -269,31 +269,31 @@ decimales de coma flotante son simples simplificaciones.
 @ifinfo
 @fnindex Operador comilla-comilla
 @end ifinfo
-El operador comilla-comilla @code{'@w{}'} (dos comillas simples) modifica la evaluaci@'on
+El operador comilla-comilla @code{'@w{}'} (dos comillas simples) modifica la evaluación
 en las expresiones de entrada.
 
-Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
-el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+Aplicado a cualquier expresión general @var{expr}, las dos comillas simples hacen que
+el valor de @var{expr} sea sustituido por @var{expr} en la expresión de entrada.
 
-Aplicado al operador de una expresi@'on, el operador comilla-comilla hace que el operador
+Aplicado al operador de una expresión, el operador comilla-comilla hace que el operador
 pase de ser un nombre a ser un verbo, a menos que ya sea un verbo.
 
-El operador comilla-comilla es aplicado por el analizador sint@'actico de entrada;
-no se almacena como una parte de la expresi@'on de entrada analizada.
+El operador comilla-comilla es aplicado por el analizador sintáctico de entrada;
+no se almacena como una parte de la expresión de entrada analizada.
 Este operador se aplica siempre tan pronto como es detectado y no puede ser comentado con
-una comilla simple. De esta manera, el operador comilla-comilla provoca la evaluaci@'on de
-una expresi@'on cuando @'esta no estaba previsto que fuese evaluada, como en la
-definici@'on de funciones, expresiones lambda y expresiones comentadas con una comilla simple
+una comilla simple. De esta manera, el operador comilla-comilla provoca la evaluación de
+una expresión cuando ésta no estaba previsto que fuese evaluada, como en la
+definición de funciones, expresiones lambda y expresiones comentadas con una comilla simple
 @code{'}.
 
 El operador comilla-comilla es reconocido tanto por @code{batch} como por @code{load}.
 
-V@'eanse tambi@'en el operador comilla simple @code{'} y @code{nouns}.
+Véanse también el operador comilla simple @code{'} y @code{nouns}.
 
 Ejemplos:
 
-Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
-el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+Aplicado a cualquier expresión general @var{expr}, las dos comillas simples hacen que
+el valor de @var{expr} sea sustituido por @var{expr} en la expresión de entrada.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -345,7 +345,7 @@ el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrad
 (%o14)                         x3
 @end example
 
-Aplicado al operador de una expresi@'on, la
+Aplicado al operador de una expresión, la
 doble comilla simple hace que el operador
 pase de ser nominal a verbal, a menos que ya sea un verbo.
 
@@ -367,8 +367,8 @@ pase de ser nominal a verbal, a menos que ya sea un verbo.
 @end example
 
 
-El operador comilla-comilla es aplicado por el analizador sint@'actico de entrada;
-no se almacena como una parte de la expresi@'on de entrada analizada.
+El operador comilla-comilla es aplicado por el analizador sintáctico de entrada;
+no se almacena como una parte de la expresión de entrada analizada.
 
 @c ===beg===
 @c [aa : bb, cc : dd, bb : 1234, dd : 5678];
@@ -402,9 +402,9 @@ no se almacena como una parte de la expresi@'on de entrada analizada.
 (%o5)                         done
 @end example
 
-El operador comilla-comilla provoca la evaluaci@'on de
-una expresi@'on cuando @'esta no estaba previsto que fuese evaluada, como en la
-definici@'on de funciones, expresiones lambda y expresiones comentadas con una comilla simple
+El operador comilla-comilla provoca la evaluación de
+una expresión cuando ésta no estaba previsto que fuese evaluada, como en la
+definición de funciones, expresiones lambda y expresiones comentadas con una comilla simple
 @code{'}.
 
 @c ===beg===
@@ -459,14 +459,14 @@ definici@'on de funciones, expresiones lambda y expresiones comentadas con una c
 
 
 
-@deffn {Funci@'on} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
-Evalua la expresi@'on @var{expr} en el entorno especificado
+@deffn {Función} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+Evalua la expresión @var{expr} en el entorno especificado
 por los argumentos @var{arg_1}, ..., @var{arg_n}.
 Los argumentos son interruptores (Variables Booleanas), variables de
-asignaci@'on, ecuaciones y funciones. 
-@code{ev} retorna el resultado (otra expresi@'on) de la evaluaci@'on. 
+asignación, ecuaciones y funciones. 
+@code{ev} retorna el resultado (otra expresión) de la evaluación. 
 
-La evaluaci@'on se realiza por etapas, como sigue: 
+La evaluación se realiza por etapas, como sigue: 
 
 @enumerate
 @item
@@ -475,67 +475,67 @@ cuales pueden ser algunos o todos de la siguiente lista:
 
 @itemize @bullet
 @item
-@code{simp} causa que @var{expr} sea simplificada sin importar el valor de la variable interruptor @code{simp} la cual inhibe la simplificaci@'on cuando su valor es @code{false}. 
+@code{simp} causa que @var{expr} sea simplificada sin importar el valor de la variable interruptor @code{simp} la cual inhibe la simplificación cuando su valor es @code{false}. 
 @item
-@code{noeval} suprime la fase de evaluaci@'on de @code{ev} (Vea el paso (4) m@'as adelante). 
-Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @var{expr} que sea resimplificada sin ser reevaluada. 
+@code{noeval} suprime la fase de evaluación de @code{ev} (Vea el paso (4) más adelante). 
+Esto es muy útil en conjunción con otras variables interruptor y causan en @var{expr} que sea resimplificada sin ser reevaluada. 
 @item
-@code{nouns} causa la evaluaci@'on de las formas nominales
-(t@'{@dotless{i}}picamente funciones sin evaluar tales como
+@code{nouns} causa la evaluación de las formas nominales
+(típicamente funciones sin evaluar tales como
 @code{'integrate} or @code{'diff}) en @code{expr}. 
 @item
-@code{expand} causa expansi@'on. 
+@code{expand} causa expansión. 
 @item
-@code{expand (@var{m}, @var{n})} causa expansi@'on, asignando los valores de @code{maxposex} y
+@code{expand (@var{m}, @var{n})} causa expansión, asignando los valores de @code{maxposex} y
 @code{maxnegex} a @var{m} y @var{n}, respectivamente.
 @item
 @code{detout} hace que cualesquiera matrices inversas calculadas en @var{expr} conserven su determinante fuera de la inversa, en vez de que divida a cada elemento.  
 @item
 @code{diff} realiza todas las diferenciaciones indicadas en @var{expr}. 
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza sólo las diferenciaciones con respecto a las variables indicadas. 
 @item
-@code{risch} hace que las integrales presentes en @var{expr} se eval@'uen mediante
-el algoritmo de Risch. V@'ease tambi@'en @code{risch}. Cuando se utiliza el 
-s@'{@dotless{i}}mbolo especial @code{nouns}, se aplica la rutina est@'andar de integraci@'on.
+@code{risch} hace que las integrales presentes en @var{expr} se evalúen mediante
+el algoritmo de Risch. Véase también @code{risch}. Cuando se utiliza el 
+símbolo especial @code{nouns}, se aplica la rutina estándar de integración.
 @item
-@code{float} provoca la conversi@'on de los n@'umeros racionales no-enteros a n@'umeros decimales de coma flotante. 
+@code{float} provoca la conversión de los números racionales no-enteros a números decimales de coma flotante. 
 @item
-@code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
+@code{numer} causa que algunas funciones matemáticas (incluyendo potenciación) con argumentos numéricos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables numéricas sean reemplazadas por sus respectivos valores. Esto también configura la variable interruptor @code{float} a @code{true}. 
 @item
-@code{pred} provoca la evaluaci@'on de los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}). 
+@code{pred} provoca la evaluación de los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}). 
 @item
-@code{eval} provoca una post-evaluaci@'on extra de @var{expr} (v@'ease el paso (5) m@'as adelante), pudiendo aparecer
-@code{eval} varias veces; por cada aparici@'on de @code{eval}, la expresi@'on es reevaluada.
+@code{eval} provoca una post-evaluación extra de @var{expr} (véase el paso (5) más adelante), pudiendo aparecer
+@code{eval} varias veces; por cada aparición de @code{eval}, la expresión es reevaluada.
 @item
-@code{A}, donde @code{A} es un @'atomo declarado como una variable de tipo interruptor, (Vea @code{evflag})
+@code{A}, donde @code{A} es un átomo declarado como una variable de tipo interruptor, (Vea @code{evflag})
 causa que @code{A} tenga como valor @code{true} durante 
-la evaluaci@'on de @var{expr}.  
+la evaluación de @var{expr}.  
 @item
 @code{V: expresion} (o alternativamente @code{V=expresion}) causa que 
-@code{V} tenga el valor de @code{expresion} durante la evaluaci@'on
-de @var{expr}. Notese que si @code{V} es una opci@'on Maxima, entonces
-@code{expresion} se usa como su valor durante la evaluaci@'on de
-@var{expr}. Si m@'as de un argumento de @code{ev} es de este 
-tipo entonces el v@'{@dotless{i}}nculo se hace en paralelo. Si @code{V} es una
-expresi@'on no at@'omica entonces se hace una sustituci@'on m@'as que 
-un v@'{@dotless{i}}nculo.
+@code{V} tenga el valor de @code{expresion} durante la evaluación
+de @var{expr}. Notese que si @code{V} es una opción Maxima, entonces
+@code{expresion} se usa como su valor durante la evaluación de
+@var{expr}. Si más de un argumento de @code{ev} es de este 
+tipo entonces el vínculo se hace en paralelo. Si @code{V} es una
+expresión no atómica entonces se hace una sustitución más que 
+un vínculo.
 @item
-@code{F} donde @code{F}, un nombre de funci@'on, ha sido declarado para 
-ser una funci@'on de evaluaci@'on (Vea @code{evfun}) causa que
+@code{F} donde @code{F}, un nombre de función, ha sido declarado para 
+ser una función de evaluación (Vea @code{evfun}) causa que
 @code{F} sea aplicada a @var{expr}. 
 @item
-Cualquier otro nombre de funci@'on (e.g., @code{sum}) causa la evaluaci@'on de las ocurrencias de esos nombres en @code{expr} como si ellos fueran
+Cualquier otro nombre de función (e.g., @code{sum}) causa la evaluación de las ocurrencias de esos nombres en @code{expr} como si ellos fueran
 verbos. 
 @item
-En adici@'on de que una funci@'on ocurra en @var{expr} (digamos @code{F(x)}) puede ser definida localmente para el prop@'osito de esta evaluaci@'on 
+En adición de que una función ocurra en @var{expr} (digamos @code{F(x)}) puede ser definida localmente para el propósito de esta evaluación 
 de @var{expr} pasando @code{F(x) := expresion} como un argumento a
 @code{ev}. 
 @item
-Si un @'atomo no mencionado anteriormente o una variable o expresi@'on 
-con sub@'{@dotless{i}}ndices fueran pasadas como un argumento, esta es evaluada y
-si el resultado es una ecuaci@'on o una asignaci@'on entonces el 
-v@'{@dotless{i}}nculo o sustituci@'on se llevar@'a a cabo. Si el resultado es una
+Si un átomo no mencionado anteriormente o una variable o expresión 
+con subíndices fueran pasadas como un argumento, esta es evaluada y
+si el resultado es una ecuación o una asignación entonces el 
+vínculo o sustitución se llevará a cabo. Si el resultado es una
 lista entonces los miembros de la lista tratados como si ellos fueran
 argumentos adicionales pasados a @code{ev}. Esto permite que una
 lista de argumentos sea pasada (e.g., @code{[X=1, Y=A**2]}) o una lista
@@ -544,40 +544,40 @@ de nombres de ecuaciones (e.g., @code{[%t1, %t2]} donde @code{%t1} y
 @code{solve}. 
 @end itemize
 
-Los argumentos de @code{ev} pueden ser pasados en cualquier orden con excepci@'on de la sustituci@'on de ecuaciones las cuales son manipuladas en 
-secuencia, de izquierda a derecha y las funciones de evaluaci@'on las 
+Los argumentos de @code{ev} pueden ser pasados en cualquier orden con excepción de la sustitución de ecuaciones las cuales son manipuladas en 
+secuencia, de izquierda a derecha y las funciones de evaluación las 
 cuales son compuestas, e.g., @code{ev (@var{expr}, ratsimp, realpart)}
 es manipulada como @code{realpart (ratsimp (@var{expr}))}. 
 
 Los interruptores @code{simp}, @code{numer} y @code{float} 
-pueden tambi@'en ser configurados localmente en una sentencia block, o
+pueden también ser configurados localmente en una sentencia block, o
 globalmente en Maxima para que su efecto permanezca hasta que
 sean reconfiguradas.   
 
-Si @var{expr} es una Expresi@'on Racional Can@'onica (CRE, por sus siglas en ingl@'es), entonces la expresi@'on retornada por @code{ev} es tambi@'en 
+Si @var{expr} es una Expresión Racional Canónica (CRE, por sus siglas en inglés), entonces la expresión retornada por @code{ev} es también 
 de tipo CRE, siempre que los interruptores @code{numer} y @code{float} no sean @code{true}. 
 
 @item
-Durante el paso (1), se fabrica una lista de las variables que no contienen sub@'{@dotless{i}}ndices que aparecen en el lado izquierdo de las ecuaciones en los
-argumentos o en el valor de algunos argumentos si el valor es una ecuaci@'on. Las variables (variables que contienen sub@'{@dotless{i}}ndices las cuales no tienen asociado un arreglo de funciones como tambi@'en las variables que no contienen sub@'{@dotless{i}}ndices) en la expresi@'on @var{expr} son reemplazadas por sus valores globales, excepto por aquellos que aparezcan en esa lista. 
-Usualmente, @var{expr} es s@'olo una etiqueta o un @code{%} 
-(como en @code{%i2} en el ejemplo de m@'as abajo) as@'{@dotless{i}} que 
-este paso simplemente recupera la expresi@'on a la que hace referencia 
-la etiqueta y as@'{@dotless{i}} @code{ev} puede trabajarla. 
+Durante el paso (1), se fabrica una lista de las variables que no contienen subíndices que aparecen en el lado izquierdo de las ecuaciones en los
+argumentos o en el valor de algunos argumentos si el valor es una ecuación. Las variables (variables que contienen subíndices las cuales no tienen asociado un arreglo de funciones como también las variables que no contienen subíndices) en la expresión @var{expr} son reemplazadas por sus valores globales, excepto por aquellos que aparezcan en esa lista. 
+Usualmente, @var{expr} es sólo una etiqueta o un @code{%} 
+(como en @code{%i2} en el ejemplo de más abajo) así que 
+este paso simplemente recupera la expresión a la que hace referencia 
+la etiqueta y así @code{ev} puede trabajarla. 
 
 @item
 Si algunas sustituciones son indicadas por los argumentos, ellas
-ser@'an llevadas a cabo ahora. 
+serán llevadas a cabo ahora. 
 
 @item
-La expresi@'on resultante es tambi@'en reevaluada (a menos que uno de 
+La expresión resultante es también reevaluada (a menos que uno de 
 los argumentos fuese @code{noeval}) y simplificada de acuerdo a los 
-argumentos. Notese que cualquier llamada a una funci@'on en @var{expr} 
-ser@'a llevada a cabo despu@'es de que las variables sean evaluadas 
+argumentos. Notese que cualquier llamada a una función en @var{expr} 
+será llevada a cabo después de que las variables sean evaluadas 
 en ella y que @code{ev(F(x))} pueda comportarse como @code{F(ev(x))}. 
 
 @item
-Por cada aparici@'on de @code{eval} en los argumentos, se repetir@'an los pasos (3) y (4).
+Por cada aparición de @code{eval} en los argumentos, se repetirán los pasos (3) y (4).
 @end enumerate
 
 Ejemplos:
@@ -605,10 +605,10 @@ el comando @code{ev()}; se trata de una forma de escritura simplificada:
 @var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
-Esta sintaxis no est@'a permitida dentro de otras expresiones, como
+Esta sintaxis no está permitida dentro de otras expresiones, como
 funciones, bloques, etc.
 
-N@'otese el proceso de v@'{@dotless{i}}nculo en paralelo en el siguiente ejemplo:
+Nótese el proceso de vínculo en paralelo en el siguiente ejemplo:
 
 @example
 (%i3) programmode: false;
@@ -618,7 +618,7 @@ N@'otese el proceso de v@'{@dotless{i}}nculo en paralelo en el siguiente ejemplo
 (%i5) 2*x - 3*y = 3$
 (%i6) -3*x + 2*y = -4$
 (%i7) solve ([%o5, %o6]);
-Soluci@'on
+Solución
 
                                           1
 (%t7)                               y = - -
@@ -644,11 +644,11 @@ Soluci@'on
 
 
 
-@defvr {S@'{@dotless{i}}mbolo especial} eval
+@defvr {Símbolo especial} eval
 Como argumento en una llamada a @code{ev (@var{expr})}, @code{eval} 
-fuerza una evaluaci@'on extra de @var{expr}.
+fuerza una evaluación extra de @var{expr}.
 
-V@'ease tambi@'en @code{ev}.
+Véase también @code{ev}.
 
 Ejemplo:
 
@@ -678,12 +678,12 @@ Ejemplo:
 
 
 @defvr {Propiedad} evflag
-Cuando un s@'{@dotless{i}}mbolo @var{x} goza de la propiedad @code{evflag},
+Cuando un símbolo @var{x} goza de la propiedad @code{evflag},
 las expresiones @code{ev(@var{expr}, @var{x})} y @code{@var{expr}, @var{x}}
 (en modo interactivo) equivalen a @code{ev(@var{expr}, @var{x} = true)}.
-Esto es, a @var{x} se le asigna @code{true} al tiempo que se eval@'ua @var{expr}.
+Esto es, a @var{x} se le asigna @code{true} al tiempo que se evalúa @var{expr}.
 
-La expresi@'on @code{declare(@var{x}, evflag)} dota a la variable @var{x}
+La expresión @code{declare(@var{x}, evflag)} dota a la variable @var{x}
 de la propiedad @code{evflag}.
 
 Los interruptores que tienen la propiedad @code{evflag} son: 
@@ -763,15 +763,15 @@ Ejemplos:
 
 
 @defvr {Propiedad} evfun
-Cuando la funci@'on @var{F} goza de la propiedad @code{evfun},
+Cuando la función @var{F} goza de la propiedad @code{evfun},
 las expresiones @code{ev(@var{expr}, @var{F})} y @code{@var{expr}, @var{F}}
 (en modo interactivo) equivalen a @code{@var{F}(ev(@var{expr}))}.
 
-Si se especifican dos o m@'as funciones, @var{F}, @var{G}, etc., como poseedoras 
-de la propiedad @code{evfun}, @'estas se aplican en el mismo orden en el que han sido 
+Si se especifican dos o más funciones, @var{F}, @var{G}, etc., como poseedoras 
+de la propiedad @code{evfun}, éstas se aplican en el mismo orden en el que han sido 
 especificadas como tales.
 
-La expresi@'on @code{declare(@var{F}, evfun)} dota a la funci@'on  @var{F}
+La expresión @code{declare(@var{F}, evfun)} dota a la función  @var{F}
 de la propiedad @code{evfun}.
 
 Las funciones que tienen la propiedad @code{evfun} por defecto son: 
@@ -860,42 +860,42 @@ Ejemplos:
 
 
 @defvr {Variable opcional} infeval
-Habilita el modo de "evaluaci@'on infinita". @code{ev} repetidamente 
-evalua una expresi@'on hasta que se pare de hacer cambios. Para prevenir
+Habilita el modo de "evaluación infinita". @code{ev} repetidamente 
+evalua una expresión hasta que se pare de hacer cambios. Para prevenir
 que una variable, digamos @code{X}, sea evaluada sin parar en este modo, 
 simplemente incluya @code{X='X} como argumento de @code{ev}. 
-Esta claro que expresiones como @code{ev (X, X=X+1, infeval)} generar@'an un bucle infinito.
+Esta claro que expresiones como @code{ev (X, X=X+1, infeval)} generarán un bucle infinito.
 @end defvr
 
 
 
-@defvr {S@'{@dotless{i}}mbolo especial} noeval
-El s@'{@dotless{i}}mbolo @code{noeval} evita la fase de evaluaci@'on de @code{ev}.
-Es @'util conjuntamente con otras variables globales y para poder volver a 
+@defvr {Símbolo especial} noeval
+El símbolo @code{noeval} evita la fase de evaluación de @code{ev}.
+Es útil conjuntamente con otras variables globales y para poder volver a 
 simplificar expresiones sin tener que evaluarlas otra vez.
 
 @end defvr
 
 
 
-@defvr {S@'{@dotless{i}}mbolo especial} nouns
-El s@'{@dotless{i}}mbolo @code{nouns} es una @code{evflag}, lo que significa 
-que cuando se utilice como una opci@'on de la instrucci@'on @code{ev}, 
-todas las formas nominales que aparezcan en una expresi@'on las convierte en 
-verbales, esto es, las eval@'ua.  V@'eanse tambi@'en @code{noun}, @code{nounify}, 
+@defvr {Símbolo especial} nouns
+El símbolo @code{nouns} es una @code{evflag}, lo que significa 
+que cuando se utilice como una opción de la instrucción @code{ev}, 
+todas las formas nominales que aparezcan en una expresión las convierte en 
+verbales, esto es, las evalúa.  Véanse también @code{noun}, @code{nounify}, 
 @code{verb} y @code{verbify}.
 
 @end defvr
 
 
 
-@defvr {S@'{@dotless{i}}mbolo especial} pred
+@defvr {Símbolo especial} pred
 Cuando se utiliza como argumento en una llamada a
 @code{ev (@var{expr})}, @code{pred} provoca que los
 predicados (expresiones que se reducen a @code{true} o
-@code{false}) se eval@'uen.
+@code{false}) se evalúen.
 
-V@'ease @code{ev}.
+Véase @code{ev}.
 
 Ejemplo:
 
@@ -910,3 +910,4 @@ Ejemplo:
 (%o2)                                true
 @end example
 @end defvr
+
