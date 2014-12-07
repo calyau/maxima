@@ -14,7 +14,7 @@ set sceneOptions {
     {windowname {.scene} {Window name}}
     {windowtitle {Xmaxima: scene} {Window title}}
     {azimuth 135 {Azimuth angle}}
-    {elevation 60 {Elevation angle}}
+    {elevation 30 {Elevation angle}}
     {tstep 10 {Time interval between iterations, in miliseconds}}
     {restart 0 {If different from zero, the animation will loop forever.}}
     {objects  {} {A list of Objects of the form {{Class {options}} ...}}} 
@@ -284,7 +284,7 @@ proc updateScene { win } {
 
     # Set azimuth and elevation
     [$renderer GetActiveCamera] Azimuth $azimuth
-    [$renderer GetActiveCamera] Elevation [expr "90 - $elevation"]
+    [$renderer GetActiveCamera] Elevation $elevation
     $renderer ResetCamera
     $renwin Render
 
