@@ -278,15 +278,16 @@ some system might come in a separate package).
 @anchor{scene}
 @deffn {Function} scene (@var{objects}, @dots{}, @var{options}, @dots{});
 
-Accepts an empty list or a list of several objects and options. The
-program will open an external window representing the given objects in a
+Accepts an empty list or a list of several @mxref{scene_objects,objects}
+and @mxrefdot{scene_options,options} The program launches Xmaxima, which
+opens an external window representing the given objects in a
 3-dimensional space and applying the options given. Each object must
-belong to one of the following 4 classes: sphere, cube, cylinder or
-cone. Objects are identified by giving their name or by a list in which
-the first element is the class name and the following elements are
-options for that object.
+belong to one of the following 4 classes: sphere, cube, cylinder or cone
+(see @mxref{scene_objects,Scene objects}). Objects are identified by
+giving their name or by a list in which the first element is the class
+name and the following elements are options for that object.
  
-@strong{Example}. A hexagonal prism with a blue background:
+@strong{Example}. A hexagonal pyramid with a blue background:
 @c ===beg===
 @c scene(cone, [background,"#9980e5"])$
 @c ===end===
@@ -297,36 +298,17 @@ options for that object.
 @figure{scene1}
 @end ifnotinfo
 
-By default, the cone has a base with six edges and a gray color. By
-holding down the left button of the mouse while it is moved on the
-graphics window, the cone can be rotated. The two plot options
-@mref{elevation} and @mref{azimuth} can also be used to change the initial
+By holding down the left button of the mouse while it is moved on the
+graphics window, the camera can be rotated showing different views of
+the pyramid. The two plot options @mxref{scene_elevation,elevation} and
+@mxref{scene_azimuth,azimuth} can also be used to change the initial
 orientation of the viewing camera. The camera can be moved by holding
 the middle mouse button while moving it and holding the right-side mouse
 button while moving it up or down will zoom in or out.
 
 Each object option should be a list starting with the option name,
-followed by its value. The options that can be given to objects are:
-@var{color},  @var{center}, @var{opacity}, @var{origin}, @var{scale},
-@var{position}, @var{orientation}, @var{usertransform}
-@var{ambient}, @var{ambientcolor}, @var{specular}, @var{specularcolor},
-@var{diffuse}, @var{diffusecolor}, @var{edgevisibility},
-@var{edgecolor}, @var{linewidth}, @var{pointsize}, @var{lightning},
-@var{shading}, @var{texture}, @var{representation}, @var{points},
-@var{wireframe}, @var{surface}, @var{interpolation}, @var{flat},
-@var{gourand}, @var{phong}, @var{stipplepattern}, @var{stipplerepeat},
-@var{frontculling} and @var{backculling}. Cylinders and cones
-also accept @var{radius}, @var{height}, @var{direction}, @var{capping} and
-@var{resolution}. Spheres accept also @var{radius}, @var{latlongtessellation},
-@var{thetaresolution}, @var{phiresolution}, @var{starttheta},
-@var{endtheta}, @var{startphi} and @var{endphi}. Cubes also accept
-@var{xlength}, @var{ylength}, @var{zlength}, @var{bounds} and @var{angle}.
-
-Each object can also include an option @var{animation}, followed by the
-name of one of the 4 properties: @var{origin}, @var{scale},
-@var{position} or @var{orientation} and a list of values that will be
-given to that property sequentially, when the start button in the
-graphics windows is pressed.
+followed by its value. The list of allowed options can be found in the
+@mxref{object_options,Scene object's options} section.
 
 @strong{Example}. This will show a sphere falling to the ground and
 bouncing off without loosing any energy. To start or pause the
@@ -334,8 +316,9 @@ animation, press the play/pause button.
 @c ===beg===
 @c p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
 @c p: append (p, reverse(p))$
-@c ball: [sphere, [radius,0.1], [thetaresolution,20], [phiresolution,20],
-@c   [position,0,0,2.1], [color,red], [animate,position,p]]$
+@c ball: [sphere, [radius,0.1], [thetaresolution,20],
+@c   [phiresolution,20],[position,0,0,2.1], [color,red],
+@c   [animate,position,p]]$
 @c ground: [cube, [xlength,2], [ylength,2], [zlength,0.2],
 @c   [position,0,0,-0.1],[color,violet]]$
 @c scene (ball, ground, restart);
@@ -343,11 +326,16 @@ animation, press the play/pause button.
 
 @example
 (%i1) p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
+
 (%i2) p: append (p, reverse(p))$
-(%i3) ball: [sphere, [radius,0.1], [thetaresolution,20], [phiresolution,20],
-  [position,0,0,2.1], [color,red], [animate,position,p]]$
+
+(%i3) ball: [sphere, [radius,0.1], [thetaresolution,20],
+  [phiresolution,20], [position,0,0,2.1], [color,red],
+  [animate,position,p]]$
+
 (%i4) ground: [cube, [xlength,2], [ylength,2], [zlength,0.2],
   [position,0,0,-0.1],[color,violet]]$
+
 (%i5) scene (ball, ground, restart)$
 @end example
 @ifnotinfo
@@ -364,3 +352,528 @@ option of plot2d.
 @closecatbox
 
 @end deffn
+
+@anchor{scene_options}
+@subsection Scene options
+
+@anchor{scene_background}
+@defvr {Scene option} background [background, @var{color}]
+Default value: @code{black}
+
+The color of the graphics window's background. It accepts color names or
+hexadecimal red-green-blue strings (see the @mref{color} option of plot2d).
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_azimuth}
+@defvr {Scene option} azimuth [azimuth, @var{angle}]
+Default value: @code{135}
+
+The rotation of the camera on the horizontal (x, y) plane. @var{angle}
+must be a real number; an angle of 0 means that the camera points in the
+direction of the y axis and the x axis will appear on the right.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_elevation}
+@defvr {Scene option} elevation [elevation, @var{angle}]
+Default value: @code{30}
+
+The vertical rotation of the camera. The @var{angle} must be a real
+number; an angle of 0 means that the camera points on the horizontal,
+and the default angle of 30 means that the camera is pointing 30 degrees
+down from the horizontal.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_width}
+@defvr {Scene option} width [width, @var{pixels}]
+Default value: @code{500}
+
+The width, in pixels, of the graphics window. @var{pixels} must be a
+positive integer number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_height}
+@defvr {Scene option} height [height, @var{pixels}]
+Default value: @code{500}
+
+The height, in pixels, of the graphics window. @var{pixels} must be a
+positive integer number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_tstep}
+@defvr {Scene option} tstep [tstep, @var{time}]
+Default value: @code{10}
+
+The amount of time, in mili-seconds, between iterations among
+consecutive animation frames. @var{time} must be a real number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_restart}
+@defvr {Scene option} restart [restart, @var{value}]
+Default value: @code{false}
+
+A true value means that animations will restart automatically when the
+end of the list is reached. Writing just ``restart'' is equivalent to
+[restart, @var{true}].
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_windowtitle}
+@defvr {Scene option} windowtitle [windowtitle, @var{name}]
+Default value: @code{Xmaxima: scene}
+
+@var{name} must be a string that will be written in the title of the
+window created by @code{scene}.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+
+@anchor{scene_windowname}
+@defvr {Scene option} windowname [windowtitle, @var{name}]
+Default value: @code{.scene}
+
+@var{name} must be a string that can be used as the name of the Tk
+window created by Xmaxima for the @code{scene} graphics. The default
+value @code{.scene} implies that a new top level window will be created.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_objects}
+@subsection Scene objects
+
+@anchor{cone}
+@defvr {Object option} cone [cone, @var{options}]
+
+Creates a regular pyramid with height equal to 1 and a hexagonal base
+with vertices 0.5 units away from the axis. Options
+@mxref{object_height,height} and @mxref{object_radius,radius} can be used
+to change those defaults and option @mxref{object_resolution, resolution}
+can be used to change the number of edges of the base; higher values
+will make it look like a cone. By default, the axis will be along the x
+axis, the middle point of the axis will be at the origin and the vertex
+on the positive side of the x axis; use options
+@mxref{object_orientation,orientation} and @mxref{object_center,center} to
+change those defaults.
+
+@strong{Example}. This shows a pyramid that starts rotating around the z
+axis when the play button is pressed.
+ 
+@example
+(%i1) scene([cone, [orientation,0,30,0], [tstep,100],
+   [animate,orientation,makelist([0,30,i],i,5,360,5)]], restart)$
+@end example
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{cylinder}
+@defvr {Object option} cylinder [cylinder, @var{options}]
+
+Creates a regular prism with height equal to 1 and a hexagonal base with
+vertices 0.5 units away from the axis. Options
+@mxref{object_height,height} and @mxref{object_radius,radius} can be
+used to change those defaults and option @mxref{object_resolution,
+resolution} can be used to change the number of edges of the base;
+higher values will make it look like a cylinder. The default height can
+be changed with the option @mxref{object_height,height}. By default, the
+axis will be along the x axis, the middle point of the axis will be at
+the origin and the vertex on the positive side of the x axis; use
+options @mxref{object_orientation,orientation} and
+@mxref{object_center,center} to change those defaults.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{cube}
+@defvr {Object option} cube [cube, @var{options}]
+
+A cube with edges of 1 unit and faces parallel to the xy, xz and yz
+planes. The lengths of the three edges can be changed with options
+@mxref{object_xlength,xlength}, @mxref{object_ylength,ylength} and
+@mxref{object_zlength,zlength}, turning it into a rectangular box and
+the faces can be rotated with option @mxrefdot{object_orientation,orientation}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{sphere}
+@defvr {Object option} sphere [sphere, @var{options}]
+
+A sphere with default radius of 0.5 units and center at the origin. 
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_options}
+@subsection Scene object's options
+
+@anchor{object_position}
+@defvr {Object option} position [position, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's position. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_center}
+@defvr {Object option} center [center, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's geometric center, with respect to its
+@mxrefdot{object_position, position} @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas. In a cylinder, cone
+or cube it will be at half its height and in a sphere at its center.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_origin}
+@defvr {Object option} origin [origin, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's origin, with respect to which its
+other dimensions are defined. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_resolution}
+@defvr {Object option} resolution [resolution, @var{number}]
+Default value: @code{6}
+
+@var{number} must be a integer greater than 2 that sets the number of
+edges in the base of a cone or a cylinder.
+ 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_height}
+@defvr {Object option} height [height, @var{value}]
+Default value: @code{1}
+
+@var{value} must be a positive number which sets the height of a cone
+or a cylinder.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_radius}
+@defvr {Object option} radius [radius, @var{value}]
+Default value: @code{0.5}
+
+The radius or a sphere or the distance from the axis to the vertices in
+a cylinder or a cone. @var{value} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_xlength}
+@defvr {Object option} xlength [xlength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in the x direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_ylength}
+@defvr {Object option} ylength [ylength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in the y direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_zlength}
+@defvr {Object option} zlength [zlength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in z the direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_orientation}
+@defvr {Object option} orientation [orientation, @var{angles}]
+Default value: @code{[0, 0, 0]}
+
+Three angles by which the object will be rotated with respect to the
+three axis. @var{angles} can be a list with 3 real numbers, or 3 real
+numbers separated by commas. @strong{Example}: @code{[0, 0, 90]} rotates
+the x axis of the object to the y axis of the reference frame.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_scale}
+@defvr {Object option} scale [scale, @var{factors}]
+Default value: @code{[1, 1, 1]}
+
+Three numbers by which the object will be scaled with respect to the
+three axis. @var{factors} can be a list with 3 real numbers, or 3 real
+numbers separated by commas. @strong{Example}: @code{[2, 0.5, 1]}
+enlarges the object to twice its size in the x direction, reduces the
+dimensions in the y direction to half and leaves the z dimensions
+unchanged.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_starttheta}
+@defvr {Object option} starttheta [starttheta, @var{angle}]
+Default value: @code{0}
+
+In a sphere theta is the angle on the horizontal plane (longitude),
+measured from the positive part of the x axis. @var{angle} must be a
+number between 0 and 360 that sets the initial value of theta at which
+the surface will start. A value bigger than 0 will eliminate a part of
+the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_endtheta}
+@defvr {Object option} endtheta [endtheta, @var{angle}]
+Default value: @code{360}
+
+In a sphere theta is the angle on the horizontal plane (longitude),
+measured from the positive part of the x axis. @var{angle} must be a
+number between 0 and 360 that sets the final value of theta at which the
+surface will start. A value smaller than 360 will eliminate a part of
+the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_thetaresolution}
+@defvr {Object option} thetaresolution [thetaresolution, @var{num}]
+Default value: @code{}
+
+The number of sub-intervals into which the theta angle interval from
+@mxref{object_starttheta,starttheta} to @mxref{object_endtheta,endtheta}
+will be divided. @var{num} must be a positive integer.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_startphi}
+@defvr {Object option} startphi [startphi, @var{angle}]
+Default value: @code{0}
+
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the initial value of phi at
+which the surface will start. A value bigger than 0 will eliminate a
+part of the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_endphi}
+@defvr {Object option} endphi [endphi, @var{angle}]
+Default value: @code{180}
+
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the initial value of phi at
+which the surface will start. A value smaller than 180 will eliminate a
+part of the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_phiresolution}
+@defvr {Object option} phiresolution [phiresolution, @var{num}]
+Default value: @code{}
+
+The number of sub-intervals into which the phi angle interval from
+@mxref{object_startphi,starttheta} to @mxref{object_endphi,endphi}
+will be divided. @var{num} must be a positive integer.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_color}
+@defvr {Object option} color [color, @var{colorname}]
+Default value: @code{white}
+
+The color of the object. It accepts color names or hexadecimal
+red-green-blue strings (see the @mref{color} option of plot2d).
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_capping}
+@defvr {Object option} capping [capping, @var{number}]
+Default value: @code{1}
+
+In a cone or a cylinder, it defines whether the base (or bases) will be
+shown. A value of 1 for @var{number} makes the base visible and a value
+of 0 makes it invisible.
+ 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_surface}
+@defvr {Object option} surface [surface]
+
+The surfaces of the object will be rendered. This is the default
+behavior.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_wireframe}
+@defvr {Object option} wireframe  [wireframe]
+
+Only the edges of the triangulation used to render the surface will be
+shown. @strong{Example}: @code{[cube, [wireframe]]}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_points}
+@defvr {Object option} points  [points]
+
+Only the vertices of the triangulation used to render the surface will
+be shown. @strong{Example}: @code{[sphere, [points]]}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_track}
+@defvr {Object option} track [track, @var{positions}]
+
+@var{positions} should be a list of points. When the play button is
+pressed, the object position will be changed sequentially through all
+the points in the list, at intervals of time given by the option
+@mxrefcomma{scene_tstep,tstep} leaving behind a track of the object's
+trajectory. The rewind button can be used to point at the start of the
+sequence making the animation restart after the play button is pressed
+again.
+
+@strong{Example}. This will show the trajectory of a ball thrown with
+speed of 5 m/s, at an angle of 45 degrees, when the air resistance can
+be neglected:
+
+@example
+(%i1) p: makelist ([0,4*t,4*t- 9.8*t^2/2], t, 0, 0.82, 0.01)$
+
+(%i2) ball: [sphere, [radius,0.1], [color,red], [track,p]]$
+
+(%i3) ground: [cube, [xlength,2], [ylength,4], [zlength,0.2],
+      [position,0,1.5,-0.2],[color,green]]$
+
+(%i4) scene (ball, ground)$
+@end example
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_animation}
+@defvr {Object option} animation [animation, @var{property}, @var{positions}]
+
+@var{property} should be one of the following 4 object's properties:
+@mxrefcomma{object_origin,origin} @mxrefcomma{object_scale,scale}
+@mxref{object_position,position} or
+@mxref{object_orientation,orientation} and @var{positions} should be a
+list of points. When the play button is pressed, the object property
+will be changed sequentially through all the values in the list, at
+intervals of time given by the option @mxref{scene_tstep,tstep}. The
+rewind button can be used to point at the start of the sequence making
+the animation restart after the play button is pressed again.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
