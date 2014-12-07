@@ -88,7 +88,7 @@
       ($background
        (setq v (check-option option #'plotcolorp "a color"))
        (setq option (cons name (hexrgb-to-decimal (rgb-color v)))))
-      (($windowtitle $windowname $animate)
+      (($windowtitle $windowname)
        (setq v (check-option option #'string "a string" 1))
        (setq option (list name v)))
       (t (merror (intl:gettext "scene: Unknown option ~M") name)))
