@@ -14,7 +14,7 @@ set sceneOptions {
     {windowname {.scene} {Window name}}
     {windowtitle {Xmaxima: scene} {Window title}}
     {azimuth 135 {Azimuth angle}}
-    {elevation 60 {Elevation angle}}
+    {elevation 30 {Elevation angle}}
     {tstep 10 {Time interval between iterations, in miliseconds}}
     {restart 0 {If different from zero, the animation will loop forever.}}
     {objects  {} {A list of Objects of the form {{Class {options}} ...}}} 
@@ -35,7 +35,7 @@ proc PlayStep {frame} {
       }
     if {$iteration < $maxiter } {
         incr iteration
-        uplevel $frame.mb.play configure -image ::img::pause
+        uplevel $frame.menubar.play configure -image ::img::pause
         foreach anim_obj $animate {
             set name [lindex $anim_obj 0]
             set prop [lindex $anim_obj 1]
@@ -104,7 +104,7 @@ proc stopAnimation {frame} {
     linkLocal $frame iteration playing
     after cancel PlayStep $frame
     set playing 0
-    uplevel $frame.mb.play configure -image ::img::play
+    uplevel $frame.menubar.play configure -image ::img::play
 }
 proc startAnimation {frame} {
     linkLocal $frame iteration prev_iteration playing
@@ -113,7 +113,7 @@ proc startAnimation {frame} {
     set iteration -1
     set prev_iteration 0
     uplevel PlayStep $frame
-    uplevel $frame.mb.play configure -image ::img::play
+    uplevel $frame.menubar.play configure -image ::img::play
 }
 proc endAnimation {frame} {
     linkLocal $frame maxiter iteration prev_iteration
@@ -284,7 +284,7 @@ proc updateScene { win } {
 
     # Set azimuth and elevation
     [$renderer GetActiveCamera] Azimuth $azimuth
-    [$renderer GetActiveCamera] Elevation [expr "90 - $elevation"]
+    [$renderer GetActiveCamera] Elevation $elevation
     $renderer ResetCamera
     $renwin Render
 

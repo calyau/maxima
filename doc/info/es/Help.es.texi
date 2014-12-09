@@ -1,17 +1,17 @@
 @c English version 2013-08-03
 @menu
-* Documentaci@'on::
+* Documentación::
 * Funciones y variables para la ayuda::
 @end menu
 
 
-@node Documentaci@'on, Funciones y variables para la ayuda, Ayuda, Ayuda
-@section Documentaci@'on
+@node Documentación, Funciones y variables para la ayuda, Ayuda, Ayuda
+@section Documentación
 
-El manual en l@'{@dotless{i}}nea del usuario de Maxima puede ser visto en diferentes formas. 
+El manual en línea del usuario de Maxima puede ser visto en diferentes formas. 
 Desde el prompt interactivo de Maxima, el manual de usuario
-es visto como texto plano por medio del comando  @code{?} (i.e., la funci@'on @code{describe}). 
-El manual de usuario tambi@'en puede ser visto como hipertexto tipo @code{info} por medio del programa @code{info} y como una p@'agina web a trav@'es de cualquier navegador. 
+es visto como texto plano por medio del comando  @code{?} (i.e., la función @code{describe}). 
+El manual de usuario también puede ser visto como hipertexto tipo @code{info} por medio del programa @code{info} y como una página web a través de cualquier navegador. 
 
 El comando @code{example} muestra ejemplos para muchas funciones Maxima. 
 Por ejemplo: 
@@ -44,32 +44,32 @@ y salidas adicionales.
 
 
 
-@node Funciones y variables para la ayuda,  , Documentaci@'on, Ayuda
+@node Funciones y variables para la ayuda,  , Documentación, Ayuda
 @section Funciones y variables para la ayuda
 
 
 
-@deffn {Funci@'on} apropos (@var{string})
+@deffn {Función} apropos (@var{string})
 
-Busca los s@'{@dotless{i}}mbolos de Maxima en los cuales aparezca 
-@var{cadena} en cualquier lugar dentro de su nombre. As@'{@dotless{i}}, 
+Busca los símbolos de Maxima en los cuales aparezca 
+@var{cadena} en cualquier lugar dentro de su nombre. Así, 
 @code{apropos (exp)} devuelve una lista con todas las variables y 
 funciones que tengan  @code{exp} formando parte de sus nombres, 
 como  @code{expand}, @code{exp} y @code{exponentialize}. 
 De esta forma, si el usuario tan solo recuerda parte del nombre de algo, 
 puede utilizar este comando para encontrar el resto del nombre. 
-De manera semejante, tambi@'en se puede hacer @code{apropos (tr_)} 
+De manera semejante, también se puede hacer @code{apropos (tr_)} 
 para encontrar una lista de muchas de las variables relacionadas 
 con el traductor, buena parte de las cuales comienzan con @code{tr_}.
 
 @code{apropos("")} devuelve una lista con todos los nombres de Maxima. 
 
-En caso de no encontrar informaci@'on relevante, @code{apropos} 
-devuelve la lista vac@'{@dotless{i}}a @code{[]}.
+En caso de no encontrar información relevante, @code{apropos} 
+devuelve la lista vacía @code{[]}.
 
 Ejemplo:
 
-Devuelve todos los s@'{@dotless{i}}mbolos de Maxima que
+Devuelve todos los símbolos de Maxima que
 contienen la subcadena @code{"gamma"} en su nombre:
 
 @c ===beg===
@@ -89,21 +89,21 @@ gamma_incomplete_generalized_regularized]
 
 
 
-@deffn {Funci@'on} demo (@var{archivo})
+@deffn {Función} demo (@var{archivo})
 Evalua las expresiones Maxima contenidas en @var{archivo} y muestra los resultados. 
-@code{demo} hace pausas despu@'es de evaluar  cada expresi@'on
-y continua despu@'es de que el usuario ingrese un retorno de carro. 
+@code{demo} hace pausas después de evaluar  cada expresión
+y continua después de que el usuario ingrese un retorno de carro. 
 (Si se ejecuta en Xmaxima, @code{demo} puede que necesite un punto y coma
-@code{;} a continuaci@'on del retorno de carro.)
+@code{;} a continuación del retorno de carro.)
 
 @code{demo} busca la lista de directorios 
 @code{file_search_demo} para encontrar @code{archivo}.
 Si el archivo tiene el sufijo @code{dem}, 
 el sufijo puede ser omitido. 
-Ver tambi@'en @code{file_search}.
+Ver también @code{file_search}.
 
 @code{demo} evalua su argumento. 
-@code{demo} retorna el nombre del archivo demostraci@'on. 
+@code{demo} retorna el nombre del archivo demostración. 
 
 Ejemplo:
 
@@ -179,22 +179,22 @@ _
 @end deffn
 
 
-@deffn {Funci@'on} describe (@var{string})
-@deffnx {Funci@'on} describe (@var{string}, exact)
-@deffnx {Funci@'on} describe (@var{string}, inexact)
+@deffn {Función} describe (@var{string})
+@deffnx {Función} describe (@var{string}, exact)
+@deffnx {Función} describe (@var{string}, inexact)
 @ifinfo
 @fnindex Ayuda
 @end ifinfo
 La sentencia @code{describe(@var{string})} equivale a @code{describe(@var{string}, exact)}.
 
 La sentencia @code{describe(@var{string}, exact)} encuentra el elemento, si
-existe, cuyo t@'{@dotless{i}}tulo coincide exactamente con @var{string}
-(ignorando la diferencia entre may@'usculas y min@'usculas).
+existe, cuyo título coincide exactamente con @var{string}
+(ignorando la diferencia entre mayúsculas y minúsculas).
 
 La sentencia @code{describe(@var{string}, inexact)} encuentra todos los elementos
-documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
+documentados que contengan @var{string} en sus títulos.
 
-Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
+Si hay más de una opción, Maxima preguntará al usuario para que
 seleccione las opciones que desee consultar.
 
 La sentencia @code{? foo} (con espacio entre @code{?} y @code{foo})
@@ -202,13 +202,13 @@ equivale a  @code{describe("foo", exact)}, mientras que @code{?? foo}
 equivale a @code{describe("foo", inexact)}.
 
 @code{describe ("", inexact)} produce una lista de todos los temas documentados en
-el manual en l@'{@dotless{i}}nea. 
+el manual en línea. 
 
-@code{describe} no eval@'ua su argumento. La funci@'on @code{describe} devuelve
-@code{true} si encuentra la documentaci@'on solicitada y @code{false} en caso
+@code{describe} no evalúa su argumento. La función @code{describe} devuelve
+@code{true} si encuentra la documentación solicitada y @code{false} en caso
 contrario.
 
-V@'ease tambi@'en @code{Documentaci@'on}.
+Véase también @code{Documentación}.
 
 Ejemplo:
 
@@ -257,15 +257,15 @@ Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 
 
 
-@deffn {Funci@'on} example (@var{topic})
-@deffnx {Funci@'on} example ()
+@deffn {Función} example (@var{topic})
+@deffnx {Función} example ()
 
 @code{example (@var{topic})} muestra algunos ejemplos sobre @var{topic},
-el cual debe ser un s@'{@dotless{i}}mbolo o cadena de texto. Para ver
+el cual debe ser un símbolo o cadena de texto. Para ver
 ejemplos sobre operadores como @code{if}, @code{do} o @code{lambda}
 el argumento debe ser necesariamente una cadena de texto, como
-@code{example ("do")}. La funci@'on @code{example} no distingue entre min@'usculas
-y may@'usculas. La mayor parte de ejemplos versan sobre funciones.
+@code{example ("do")}. La función @code{example} no distingue entre minúsculas
+y mayúsculas. La mayor parte de ejemplos versan sobre funciones.
 
 La sentencia @code{example ()} devuelve la lista de todos los ejemplos
 existentes.
@@ -274,7 +274,7 @@ El nombre del fichero que contine los ejemplos existentes se guarda en
 la variable global @code{manual_demo}, cuyo valor por defecto es
 @code{"manual.demo"}.
 
-La funci@'on @code{example} no eval@'ua su argumento.
+La función @code{example} no evalúa su argumento.
 
 Ejemplos:
 
@@ -315,8 +315,9 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 Valor por defecto: @code{"manual.demo"}
 
 @code{manual_demo} especifica el nombre del fichero que contiene
-los ejemplo para la funci@'on @code{example}. 
+los ejemplo para la función @code{example}. 
 
-V@'ease @code{example}.
+Véase @code{example}.
 
 @end defvr
+

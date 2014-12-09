@@ -148,7 +148,7 @@ Additional packages
 * distrib::                     Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
 * drawdf::                      Direction fields with Gnuplot.
-* dynamics::                    Graphics for dynamical systems and fractals.
+* dynamics::                    3D visualization, animations and dynamical systems.
 * ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
 * finance::                     Financial package.
@@ -435,8 +435,9 @@ drawdf
 * Functions and Variables for drawdf::
 
 dynamics
-* Introduction to dynamics::
-* Functions and Variables for dynamics::
+* The dynamics package::
+* Graphical analysis of discrete dynamical systems::
+* Visualization with VTK::
 
 ezunits
 * Introduction to ezunits::

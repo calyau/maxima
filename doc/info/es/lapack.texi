@@ -1,55 +1,55 @@
 @c English version 2011-07-15
 @menu
-* Introducci@'on a lapack::
+* Introducción a lapack::
 * Funciones y variables para lapack::
 @end menu
 
-@node Introducci@'on a lapack, Funciones y variables para lapack, lapack, lapack
-@section Introducci@'on a lapack
+@node Introducción a lapack, Funciones y variables para lapack, lapack, lapack
+@section Introducción a lapack
 
-@code{lapack} es una traducci@'on autom@'atica a Common Lisp (con el programa @code{f2c})  
-de la librer@'{@dotless{i}}a LAPACK escrita en Fortran.
+@code{lapack} es una traducción automática a Common Lisp (con el programa @code{f2c})  
+de la librería LAPACK escrita en Fortran.
 
 
-@node Funciones y variables para lapack, , Introducci@'on a lapack, lapack
+@node Funciones y variables para lapack, , Introducción a lapack, lapack
 @section Funciones y variables para lapack
 
-@deffn {Funci@'on} dgeev (@var{A})
-@deffnx {Funci@'on} dgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Función} dgeev (@var{A})
+@deffnx {Función} dgeev (@var{A}, @var{right_p}, @var{left_p})
 
-Calcula los autovalores y, opcionalmente, tambi@'en los autovectores de la matriz @var{A}.
-Todos los elementos de @var{A} deben ser enteros o n@'umeros decimales en coma flotante.
-Adem@'as, @var{A} debe ser cuadrada (igual n@'umero de filas que de columnas) y puede
-ser o no sim@'etrica.
+Calcula los autovalores y, opcionalmente, también los autovectores de la matriz @var{A}.
+Todos los elementos de @var{A} deben ser enteros o números decimales en coma flotante.
+Además, @var{A} debe ser cuadrada (igual número de filas que de columnas) y puede
+ser o no simétrica.
 
-@code{dgeev(@var{A})} calcula s@'olo los autovalores de @var{A}. 
+@code{dgeev(@var{A})} calcula sólo los autovalores de @var{A}. 
 @code{dgeev(@var{A}, @var{right_p}, @var{left_p})} calcula los autovalores de @var{A}
 y los autovectores por la derecha cuando @math{@var{right_p} = @code{true}}, y
 los autovectores por la izquierda cuando @math{@var{left_p} = @code{true}}.
 
-La funci@'on devuelve una lista de tres elementos.
+La función devuelve una lista de tres elementos.
 El primer elemento es una lista con los autovalores.
 El segundo elemento es @code{false} o la matriz de autovectores por la derecha.
 El tercer elemento es @code{false} o la matriz de autovectores por la izquierda.
 
-El autovector por la derecha @math{v(j)} (la @math{j}-@'esima columna de la matriz de
+El autovector por la derecha @math{v(j)} (la @math{j}-ésima columna de la matriz de
 autovectores por la derecha) satisface
 
 @math{A . v(j) = lambda(j) . v(j)}
 
 donde @math{lambda(j)} es su autovalor asociado.
 
-El autovector por la izquierda @math{u(j)} (la @math{j}-@'esima columna de la matriz de
+El autovector por la izquierda @math{u(j)} (la @math{j}-ésima columna de la matriz de
 autovectores por la izquierda) satisface
 
 @math{u(j)**H . A = lambda(j) . u(j)**H}
 
 donde @math{u(j)**H} denota la transpuesta conjugada de @math{u(j)}.
 
-La funci@'on de Maxima @code{ctranspose} calcula la transpuesta conjugada.
+La función de Maxima @code{ctranspose} calcula la transpuesta conjugada.
 
-Los autovectores calculados est@'an normalizados para que su norma
-eucl@'{@dotless{i}}dea valga 1 y su componente mayor tenga su parte
+Los autovectores calculados están normalizados para que su norma
+euclídea valga 1 y su componente mayor tenga su parte
 imaginaria igual a cero.
 
 Ejemplo:
@@ -98,18 +98,18 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} dgeqrf (@var{A})
+@deffn {Función} dgeqrf (@var{A})
 
-Calcula la descomposici@'on QR de la matriz @var{A}.
-Todos los elementos de @var{A} deben ser enteros o n@'umeros
+Calcula la descomposición QR de la matriz @var{A}.
+Todos los elementos de @var{A} deben ser enteros o números
 reales. No es necesario que @var{A} tenga
-el mismo n@'umero de filas que de columnas.
+el mismo número de filas que de columnas.
 
-La funci@'on devuelve una lista con dos elementos; el primero es
-la matriz cuadrada ortonormal @var{Q}, con el mismo n@'umero de
+La función devuelve una lista con dos elementos; el primero es
+la matriz cuadrada ortonormal @var{Q}, con el mismo número de
 filas que @var{A}, y el segundo es la matriz triangular superior @var{R},
 de iguales dimensiones que @var{A}. El producto @code{@var{Q} . @var{R}}, 
-siendo "." el operador de la multiplicaci@'on matricial, es igual a
+siendo "." el operador de la multiplicación matricial, es igual a
 @var{A}, ignorando errores de redondeo.
 
 @c ===beg===
@@ -144,25 +144,25 @@ siendo "." el operador de la multiplicaci@'on matricial, es igual a
 
 
 
-@deffn {Funci@'on} dgesv (@var{A}, @var{b})
+@deffn {Función} dgesv (@var{A}, @var{b})
 
-Calcula la soluci@'on @var{x} de la ecuaci@'on @math{@var{A} @var{x} = @var{b}},
+Calcula la solución @var{x} de la ecuación @math{@var{A} @var{x} = @var{b}},
 siendo @var{A} una matriz cuadrada y @var{b} otra matriz con el mismo
-n@'umero de filas que @var{A} y un n@'umero arbitrario de columnas. Las 
-dimensiones de la soluci@'on @var{x} son las mismas de @var{b}.
+número de filas que @var{A} y un número arbitrario de columnas. Las 
+dimensiones de la solución @var{x} son las mismas de @var{b}.
 
-Los elementos de @var{A} y @var{b} deben ser reducibles a n@'umeros decimales
-si se les aplica la funci@'on @code{float}, por lo que tales elementos
-pueden en principio ser de cualquier tipo num@'erico, constantes num@'ericas
-simb@'olicas o cualesquiera expresiones reducibles a un n@'umero decimal.
-Los elementos de @var{x} son siempre n@'umeros decimales. Todas las
-operaciones aritm@'eticas se realizan en coma flotante.
+Los elementos de @var{A} y @var{b} deben ser reducibles a números decimales
+si se les aplica la función @code{float}, por lo que tales elementos
+pueden en principio ser de cualquier tipo numérico, constantes numéricas
+simbólicas o cualesquiera expresiones reducibles a un número decimal.
+Los elementos de @var{x} son siempre números decimales. Todas las
+operaciones aritméticas se realizan en coma flotante.
 
-@code{dgesv} calcula la soluci@'on mediante la descomposici@'on LU de @var{A}.
+@code{dgesv} calcula la solución mediante la descomposición LU de @var{A}.
 
 Ejemplos:
 
-@code{dgesv} calcula la soluci@'on @var{x} de la ecuaci@'on 
+@code{dgesv} calcula la solución @var{x} de la ecuación 
 @math{@var{A} @var{x} = @var{b}}.
 
 @c ===beg===
@@ -188,8 +188,8 @@ Ejemplos:
 (%o4)                                 0.0
 @end example
 
-@var{b} una matriz con el mismo n@'umero de filas que @var{A}
-y un n@'umero arbitrario de columnas. Las dimensiones de 
+@var{b} una matriz con el mismo número de filas que @var{A}
+y un número arbitrario de columnas. Las dimensiones de 
 @var{x} son las mismas de @var{b}.
 
 @c ===beg===
@@ -216,7 +216,7 @@ y un n@'umero arbitrario de columnas. Las dimensiones de
 (%o4)                       1.1102230246251565E-15
 @end example
 
-Los elementos de @var{A} y @var{b} deben ser reducibles a n@'umeros decimales.
+Los elementos de @var{A} y @var{b} deben ser reducibles a números decimales.
 
 @c ===beg===
 @c A : matrix ([5, -%pi], [1b0, 11/17]);
@@ -248,17 +248,17 @@ Los elementos de @var{A} y @var{b} deben ser reducibles a n@'umeros decimales.
 
 
 
-@deffn {Funci@'on} dgesvd (@var{A})
-@deffnx {Funci@'on} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+@deffn {Función} dgesvd (@var{A})
+@deffnx {Función} dgesvd (@var{A}, @var{left_p}, @var{right_p})
 
-Calcula la descomposici@'on singular (SVD, en ingl@'es) de la matriz @var{A},
+Calcula la descomposición singular (SVD, en inglés) de la matriz @var{A},
 que contiene los valores singulares y, opcionalmente, los vectores singulares por
 la derecha o por la izquierda. Todos los elementos de @var{A} deben ser enteros o 
-n@'umeros decimales en coma flotante. La matriz @var{A} puede ser cuadrada o no 
-(igual n@'umero de filas que de columnas).
+números decimales en coma flotante. La matriz @var{A} puede ser cuadrada o no 
+(igual número de filas que de columnas).
 
-Sea @math{m} el n@'umero de filas y @math{n} el de columnas de @var{A}.
-La descomposici@'on singular de @var{A} consiste en calcular tres matrices: 
+Sea @math{m} el número de filas y @math{n} el de columnas de @var{A}.
+La descomposición singular de @var{A} consiste en calcular tres matrices: 
 @var{U}, @var{Sigma} y @var{V^T}, tales que
 
 @c @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
@@ -271,18 +271,18 @@ donde @var{U} es una matriz unitaria @math{m}-por-@math{m},
 Sea @math{sigma[i]} un elemento diagonal de @math{Sigma}, esto es,
 @math{@var{Sigma}[i, i] = @var{sigma}[i]}. Los elementos @math{sigma[i]}
 se llaman valores singulares de @var{A}, los cuales son reales y no negativos,
-siendo devueltos por la funci@'on @code{dgesvd} en orden descendente. 
+siendo devueltos por la función @code{dgesvd} en orden descendente. 
 
 Las primeras @math{min(m, n)} columnas de @var{U} y @var{V} son los vectores
-singulares izquierdo y derecho de @var{A}. N@'otese que @code{dgesvd}
+singulares izquierdo y derecho de @var{A}. Nótese que @code{dgesvd}
 devuelve la transpuesta de @var{V}, no la propia matriz @var{V}.
 
-@code{dgesvd(@var{A})} calcula @'unicamente los valores singulares de @var{A}.
+@code{dgesvd(@var{A})} calcula únicamente los valores singulares de @var{A}.
 @code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} calcula los valores singulares
 de @var{A} y los vectores sigulares por la izquierda cuando @math{@var{left_p} = @code{true}},
 y los vectores sigulares por la derecha cuando @math{@var{right_p} = @code{true}}.
 
-La funci@'on devuelve una lista de tres elementos.
+La función devuelve una lista de tres elementos.
 El primer elemento es una lista con los valores singulares.
 El segundo elemento es @code{false} o la matriz de vectores singulares por la izquierda.
 El tercer elemento es @code{false} o la matriz de vectores singulares por la derecha.
@@ -373,62 +373,62 @@ Ejemplo:
 
 @end deffn
 
-@deffn {Funci@'on} dlange (@var{norm}, @var{A})
-@deffnx {Funci@'on} zlange (@var{norm}, @var{A})
+@deffn {Función} dlange (@var{norm}, @var{A})
+@deffnx {Función} zlange (@var{norm}, @var{A})
 
 Calcula una norma o seudonorma de la matriz @var{A}.
 
 @table @code
 @item max
-Calcula @math{max(abs(A(i, j)))}, siendo @math{i} y @math{j} n@'umeros de filas
+Calcula @math{max(abs(A(i, j)))}, siendo @math{i} y @math{j} números de filas
 y columnas, respectivamente, de @var{A}.
-N@'otese que esta funci@'on no es una norma matricial.
+Nótese que esta función no es una norma matricial.
 @item one_norm
 Calcula la norma @math{L[1]} de @var{A},
-esto es, el m@'aximo de la suma de los valores absolutos de los elementos de cada columna.
+esto es, el máximo de la suma de los valores absolutos de los elementos de cada columna.
 @item inf_norm
 Calcula la norma @math{L[inf]} de @var{A},
-esto es, el m@'aximo de la suma de los valores absolutos de los elementos de cada fila.
+esto es, el máximo de la suma de los valores absolutos de los elementos de cada fila.
 @item frobenius
 Calcula la norma de Frobenius de @var{A},
-esto es, la ra@'{@dotless{i}}z cuadrada de la suma de los cuadrados de los elementos de
+esto es, la raíz cuadrada de la suma de los cuadrados de los elementos de
 la matriz.
 @end table
 @end deffn
 
 
-@deffn {Funci@'on} dgemm (@var{A}, @var{B})
-@deffnx {Funci@'on} dgemm (@var{A}, @var{B}, @var{options})
+@deffn {Función} dgemm (@var{A}, @var{B})
+@deffnx {Función} dgemm (@var{A}, @var{B}, @var{options})
 Calcula el producto de dos matrices y, opcionalmente, suma este producto
 con una tercera matriz.
 
-En su forma m@'as simple, @code{dgemm(@var{A}, @var{B})} calcula el
+En su forma más simple, @code{dgemm(@var{A}, @var{B})} calcula el
 producto de las matrices reales @var{A} y @var{B}.
 
 En la segunda forma, @code{dgemm} calcula @math{@var{alpha} *
 @var{A} * @var{B} + @var{beta} * @var{C}}, donde @var{A}, @var{B} y
 @var{C} son matrices reales de dimensiones apropiadas, siendo @var{alpha} 
-y @var{beta} n@'umeros reales. De forma opcional, tanto @var{A} como @var{B}
-pueden transponerse antes de calcular su producto. Los par@'ametros adicionales
+y @var{beta} números reales. De forma opcional, tanto @var{A} como @var{B}
+pueden transponerse antes de calcular su producto. Los parámetros adicionales
 se pueden especificar en cualquier orden, siendo su sintaxis de la forma
 @code{clave=valor}. Las claves reconocidas son:
 
 @table @code
 @item C
 La matriz @var{C} que debe ser sumada. El valor por defecto es @code{false},
-lo que significa que no se sumar@'a ninguna matriz.
+lo que significa que no se sumará ninguna matriz.
 @item alpha
-El producto de @var{A} por @var{B} se multiplicar@'a por este vaalor. El valor
+El producto de @var{A} por @var{B} se multiplicará por este vaalor. El valor
 por defecto es 1.
 @item beta
-Si se da la matriz @var{C}, se multiplicar@'a por este valor antes de ser sumada.
+Si se da la matriz @var{C}, se multiplicará por este valor antes de ser sumada.
 El valor por defecto es 0, lo que significa que @var{C} no se suma, incluso estando
-presente. Por lo tanto, t@'engase cuidado en especificar un valor no nulo para @var{beta}.
+presente. Por lo tanto, téngase cuidado en especificar un valor no nulo para @var{beta}.
 @item transpose_a
-Si toma el valor @code{true}, se utilizar@'a la transpuesta de @var{A}, en lugar de la 
+Si toma el valor @code{true}, se utilizará la transpuesta de @var{A}, en lugar de la 
 propia matriz @var{A}, en el producto. El valor por defecto es @code{false}.
 @item transpose_b
-Si toma el valor @code{true}, se utilizar@'a la transpuesta de @var{B}, en lugar de la 
+Si toma el valor @code{true}, se utilizará la transpuesta de @var{B}, en lugar de la 
 propia matriz @var{B}, en el producto. El valor por defecto es @code{false}.
 @end table
 
@@ -516,4 +516,5 @@ propia matriz @var{B}, en el producto. El valor por defecto es @code{false}.
 
 @end example
 @end deffn
+
 

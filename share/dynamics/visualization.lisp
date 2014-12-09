@@ -1,6 +1,6 @@
 ;; visualization.lisp
 ;;   
-;; Copyright (c) 2011, Jaime E. Villate <villate@fe.up.pt>
+;; Copyright (c) 2011-2014, Jaime E. Villate <villate@fe.up.pt>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,10 +17,32 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 ;; MA  02110-1301, USA.
 ;;
-;; $Id: visualization.lisp,v 1.1 2011-03-09 11:32:39 villate Exp $
 
 (in-package :maxima)
 
+;; translates Maxima scene object's option values into Xmaxima input syntax
+(defun tcl-vtk-option-value (name values)
+  (when ($listp (car values)) (setq values (cdar values)))
+  (with-output-to-string (st)
+    (format st "{~a" name)
+    (dolist (num values)
+      (cond
+        ((plotcolorp num)
+         (format st "~{ ~d~}" (hexrgb-to-decimal (rgb-color num)))) 
+        ((integerp num) (format st " ~d" num))
+        ((floatp num) (format st " ~f" num))
+        (($numberp num) (format st " ~f " (coerce-float num)))
+        ((and ($constantp num) ($freeof '$%i num) (not (member num '(t nil)))
+              (not ($listp num)))
+         (format st " ~f " (coerce-float num)))
+        (($listp num) (format st "~a" (tcl-output-number-list num)))
+        (t
+         (merror
+          (intl:gettext "scene: Wrong value for option ~M~%Expecting a number; found: ~M")
+          name num))))
+    (format st "} ")))
+
+;; converts a Maxima list into a floating-point Tcl list string
 (defun tcl-output-number-list (maxlist)
   (with-output-to-string (st)
     (format st "{ ")
@@ -32,65 +54,52 @@
               (not ($listp num)))
          (format st "~f " (coerce-float num)))
         (($listp num) (format st "~a" (tcl-output-number-list num)))
-        (t (merror "Wrong argument for object: ~M" num))))
+        (t
+         (merror
+          (intl:gettext "scene: Wrong value in animation list: ~M")
+          num))))
     (format st "} ")))
 
-;; parses a scene object into text for tcl scripts passed to Xmaxima
-(defun scene-object-to-tcl (value)
-  (let (vv v)
-    (unless (and  ($listp value)
-                  (symbolp (setq name (second value))))
-      (merror
-       (intl:gettext "~M is not an object option. Must be [property,value]")
-       value))
-    (case name
-      (($azimuth $elevation $tstep)
-       (setq v (check-option (cdr value) #'realp "a real number" 1))
-       (setq value (list '(mlist) name v)))
-      (($width $height $restart)
-       (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
-       (setq value (list '(mlist) name v)))
-      ($background
-       (setq v (check-option (cdr value) #'realp "a real number" 3))
-       (setq value (list '(mlist) name v)))
-      (($windowtitle $windowname $animate)
-       (setq v (check-option (cdr value) #'stringp "a string" 1))
-       (setq value (list '(mlist) name v)))
-      (t (merror (intl:gettext "Unknown property ~M") name)))
-    (setq vv (mapcar #'stripdollar (rest value)))
-    (with-output-to-string (st)
-      (format st "-~(~a~) " (first vv))
-      (format st "{~{~a~^ ~}}" (rest vv)))))
+;; converts a hexadecimal rgb color string into list of numbers from 0 to 1
+(defun hexrgb-to-decimal (color)
+  (list (/ (parse-integer (subseq color 1 3) :radix 16) 255.0)
+        (/ (parse-integer (subseq color 3 5) :radix 16) 255.0)
+        (/ (parse-integer (subseq color 5) :radix 16) 255.0)))
 
 ;; parses a scene option into a command-line option passed to Xmaxima
-(defun scene-option-to-tcl (value)
-  (let (v vv)
-    (unless (and  ($listp value)
-                  (symbolp (setq name (second value))))
-      (merror
-       (intl:gettext "~M is not a scene option. Must be [symbol,...data]")
-       value))
+(defun scene-option-to-tcl (option)
+  (let (v vv (name (car option)))
     (case name
-      (($azimuth $elevation $tstep)
-       (setq v (check-option (cdr value) #'realp "a real number" 1))
-       (setq value (list '(mlist) name v)))
-      (($width $height $restart)
-       (setq v (check-option (cdr value) #'naturalp "a natural number" 1))
-       (setq value (list '(mlist) name v)))
+      ($azimuth (if (cadr option)
+                    (setf (cadr option) (parse-azimuth (cadr option))))
+                (setq v (check-option option #'realp "a real number" 1)))
+      ($elevation (if (cadr option)
+                      (setf (cadr option) (parse-elevation (cadr option))))
+                  (setq v (check-option option #'realp "a real number" 1)))
+      ($tstep
+       (setq v (check-option option #'realp "a real number" 1))
+       (setq option (list name v)))
+      (($width $height)
+       (setq v (check-option option #'naturalp "a natural number" 1))
+       (setq option (list name v)))
+      ($restart
+       (setq v (check-option-boole option))
+       (setq option (list name (if v 1 0))))
       ($background
-       (setq v (check-option (cdr value) #'realp "a real number" 3))
-       (setq value (list '(mlist) name v)))
-      (($windowtitle $windowname $animate)
-       (setq v (check-option (cdr value) #'stringp "a string" 1))
-       (setq value (list '(mlist) name v)))
-      (t (merror (intl:gettext "Unknown property ~M") name)))
-    (setq vv (mapcar #'stripdollar (rest value)))
+       (setq v (check-option option #'plotcolorp "a color"))
+       (setq option (cons name (hexrgb-to-decimal (rgb-color v)))))
+      (($windowtitle $windowname)
+       (setq v (check-option option #'string "a string" 1))
+       (setq option (list name v)))
+      (t (merror (intl:gettext "scene: Unknown option ~M") name)))
+    (setq vv (mapcar #'(lambda (a) (if (symbolp a) (ensure-string a) a)) option))
     (with-output-to-string (st)
       (format st "-~(~a~) " (first vv))
       (format st "{~{~a~^ ~}}" (rest vv)))))
 
-(defun $scene (objects &rest options)
-  (let (file (objs "") (opts " ") name vtkname prop (lf (format NIL "~%"))
+(defun $scene (&rest arguments)
+  (let (objects options file (objs "") (opts " ") vtkname
+                (lf (format NIL "~%"))
         (classes '(($cube . "Cube") ($sphere . "Sphere")
                      ($cylinder . "Cylinder") ($cone . "Cone")))
         ;; VTK methods for the objects in classes
@@ -130,47 +139,42 @@
         (amethods '(($origin . "Origin") ($scale . "Scale")
                     ($position . "Position") ($orientation . "Orientation")
                     ($usertransform . "UserTransform"))))
-    ;; set up file name
+    ;; separates arguments between objects and options
+    (dolist (v arguments)
+      (if (listp v) (setq v (cdr v)) (setq v (list v))) 
+      (if (assoc (car v) classes)
+          (setq objects (append objects (list v)))
+          (setq options (append options (list v)))))
+    ;; sets up output file name to pass to Xmaxima
     (setq file (plot-temp-file "maxout.xmaxima"))
 
-    ;; prepare list of objects
-    (if ($listp objects)
-        (if ($listp (second objects))
-            (setq objects (rest objects)) (setq objects `(,objects)))
-        (merror
-         (intl:gettext
-          "First argument should be an object or a list of objects")))
-    ;; parse objects
+    ;; parses objects
     (dolist (v objects)
-      (let ((copts "") (popts "") (aopts "") animate)
-        (unless (and ($listp v) (symbolp (setq name (second v))))
-          (merror
-           (intl:gettext "~M is not an object. Expecting [class, options]")
-           v))
-        (unless (setq vtkname (cdr (assoc name classes)))
-          (merror (intl:gettext "Unknown object class: ~M") name))
-        ;; parse object properties 
-        (dolist (w (cddr v))
+      (let ((copts "") (popts "") (aopts "") animate prop)
+        (setq vtkname (cdr (assoc (car v) classes)))
+        ;; parses object properties 
+        (dolist (w (cdr v))
           (unless ($listp w)
             (merror
-             (intl:gettext "Wrong option format; expecting a list, found  ~M")
+             (intl:gettext "scene: Wrong option; expecting a list; found:  ~M")
              w))
           (cond
             ((setq prop (cdr (assoc (second w) cmethods)))
              (setq copts
-                   (concatenate 'string copts "{" prop
-                                (format NIL "~{ ~a~}" (cddr w)) "} ")))
+                   (concatenate 'string copts
+                                (tcl-vtk-option-value prop (cddr w)))))
             ((setq prop (cdr (assoc (second w) pmethods)))
              (setq popts
-                   (concatenate 'string popts "{" prop
-                                (format NIL "~{ ~a~}" (cddr w)) "} ")))
+                   (concatenate 'string popts
+                   (tcl-vtk-option-value prop (cddr w)))))
             ((setq prop (cdr (assoc (second w) amethods)))
              (setq aopts
-                   (concatenate 'string aopts "{" prop
-                                (format NIL "~{ ~a~}" (cddr w)) "} ")))
+                   (concatenate 'string aopts
+                                (tcl-vtk-option-value prop (cddr w)))))
             ((eql (second w) '$animate)
              (unless (setq prop (cdr (assoc (third w) amethods)))
-               (merror (intl:gettext "~M cannot be animated.") (third w)))
+               (merror (intl:gettext "scene: ~M cannot be animated.")
+                       (third w)))
              (setq animate
                    (concatenate 'string "{" prop " 0 "
                           (tcl-output-number-list (fourth w)) "}")))
@@ -178,7 +182,8 @@
              (setq animate
                    (concatenate 'string "{Position 1 "
                           (tcl-output-number-list (third w)) "}")))
-            (t (mtell (intl:gettext "Ignored option: ~M") (second w)))))
+            (t (mtell (intl:gettext "scene: Ignored option: ~M")
+                      (second w)))))
         ;; save object name and properties in string objs
         (setq objs 
               (concatenate 'string objs "{" vtkname lf "{" copts "}" lf

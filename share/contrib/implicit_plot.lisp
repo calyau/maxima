@@ -146,7 +146,7 @@
 
     (setf gnuplot-term (getf options :gnuplot_term))
     
-    (if (eq (getf options :plot-format) '$xmaxima)
+    (if (eq (getf options :plot_format) '$xmaxima)
         (setq ip-gnuplot nil)
         (setq ip-gnuplot t))
 
@@ -256,7 +256,7 @@
     
     ;; call plotter
     (if ip-gnuplot
-        (gnuplot-process options file-name)
+        (gnuplot-process options file-name (getf options :gnuplot_out_file))
         ($system (concatenate 'string *maxima-prefix*
                               "/bin/" $xmaxima_plot_command)
                  (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima")))))

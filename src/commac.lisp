@@ -376,20 +376,20 @@ values")
       (or (strip-float-zeros string) string)
       string)))
 
-(defparameter trailing-zeros-regex-f-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$")))
-(defparameter trailing-zeros-regex-f-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*$")))
-(defparameter trailing-zeros-regex-e-0 (compile nil (maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")))
-(defparameter trailing-zeros-regex-e-1 (compile nil (maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$")))
+(defun trailing-zeros-regex-f-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$") s))
+(defun trailing-zeros-regex-f-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*$") s))
+(defun trailing-zeros-regex-e-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$") s))
+(defun trailing-zeros-regex-e-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$") s))
 
 ;; Return S with trailing zero digits stripped off, or NIL if there are none.
 
 (defun strip-float-zeros (s)
   (cond
-    ((or (funcall trailing-zeros-regex-f-0 s) (funcall trailing-zeros-regex-f-1 s))
+    ((or (trailing-zeros-regex-f-0 s) (trailing-zeros-regex-f-1 s))
      (let
        ((group1 (aref maxima-nregex::*regex-groups* 1)))
        (subseq s (first group1) (second group1))))
-    ((or (funcall trailing-zeros-regex-e-0 s) (funcall trailing-zeros-regex-e-1 s))
+    ((or (trailing-zeros-regex-e-0 s) (trailing-zeros-regex-e-1 s))
      (let*
        ((group1 (aref maxima-nregex::*regex-groups* 1))
         (s1 (subseq s (first group1) (second group1)))

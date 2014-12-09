@@ -419,17 +419,36 @@
       (car (chinese rems mods)) )))
 ;;
 (defun chinese (rems mods)
-  (if (onep (length mods)) 
+  (if (= 1 (length mods)) 
     (list (car rems) (car mods))
-    (let* ((rp (car rems))
-           (p  (car mods))
-           (rq-q (chinese (cdr rems) (cdr mods)))
-           (rq (car rq-q))
-           (q (cadr rq-q))
-           (q-inv (inv-mod q p))
-           (h (mod (* (- rp rq) q-inv) p))
-           (x (+ (* h q) rq)) )
-      (list x (* p q)) )))
+    (let ((rp (car rems))
+          (p  (car mods))
+          (rq-q (chinese (cdr rems) (cdr mods))) )
+      (when rq-q
+        (let* ((rq (car rq-q))
+               (q (cadr rq-q))
+               (gc (zn-gcdex2 q p))
+               (g (car gc))
+               (c (cadr gc)) )
+          (cond
+            ((= 1 g) ;; coprime moduli
+              (let* ((h (mod (* (- rp rq) c) p))
+                     (x (+ (* h q) rq)) )
+                (list x (* p q)) ))
+            ((= 0 (mod (- rp rq) g)) ;; ensures unique solution
+              (let* ((h (* (- rp rq) c))
+                     (q/g (truncate q g))
+                     (lcm-pq (* p q/g)) )
+                (list (mod (+ rq (* h q/g)) lcm-pq) lcm-pq) ))))))))
+;;
+;; (zn-gcdex2 x y) returns `(,g ,c) where c*x + d*y = g = gcd(x,y)
+;;
+(defun zn-gcdex2 (x y) 
+  (let ((x1 1) (y1 0) q r) 
+    (do ()((= 0 y) (list x x1)) 
+      (multiple-value-setq (q r) (truncate x y))
+      (psetf x y y r) 
+      (psetf x1 y1 y1 (- x1 (* q y1))) )))
 
 ;;
 ;; discrete logarithm:
@@ -501,22 +520,26 @@
 (defun dlog-baby-giant (a g p n) ;; g is generator of order p mod n
   (let* ((m (1+ (isqrt p)))
          (s (floor (* 1.3 m)))
-         (gi (inv-mod g n)) d babies )
+         (gi (inv-mod g n)) 
+          g^m babies )
     (setf babies 
       (make-hash-table :size s :test #'eql :rehash-threshold 0.9) )
-    (do ((r 0 (1+ r)) b)
-        ((= r m))
-      (setq b (mod (* a (power-mod gi r n)) n))
+    (do ((r 0) (b a))
+        (())
       (when (= 1 b)
         (clrhash babies)
         (return-from dlog-baby-giant r) )
-      (setf (gethash b babies) r) )
-    (setq d (power-mod g m n))
-    (do ((rr 0 (1+ rr)) bb r) (())
-      (setq bb (power-mod d rr n))
+      (setf (gethash b babies) r)
+      (incf r)
+      (when (= r m) (return))
+      (setq b (mod (* gi b) n)) )
+    (setq g^m (power-mod g m n))
+    (do ((rr 0 (1+ rr)) 
+         (bb 1 (mod (* g^m bb) n)) 
+          r ) (())
       (when (setq r (gethash bb babies))
         (clrhash babies)
-        (return (mod (+ (* rr m) r) n)) )) ))
+        (return (+ (* rr m) r)) )) ))
 
 ;; brute-force:
 
@@ -1664,7 +1687,7 @@
 ;; equivalent of) the field element e^i, where e is a primitive element 
 ;;
     (setq $gf_powers (make-array (1+ ord) :element-type 'integer)
-          *gf-powers* (make-array (1+ ord) :element-type 'integer) )
+          *gf-powers* (make-array (1+ ord) :element-type 'list :initial-element nil) )
     (setf (svref $gf_powers 0) 1
           (svref *gf-powers* 0) (list 0 1) )
     (do ((i 1 (1+ i)))
@@ -4234,23 +4257,26 @@
 (defun gf-dlog-baby-giant (a g p red) ;; g is generator of order prime p
   (let* ((m (1+ (isqrt p)))
          (s (floor (* 1.3 m)))
-         (gi (gf-inv g red)) d babies )
+         (gi (gf-inv g red)) 
+          g^m babies )
     (setf babies 
       (make-hash-table :size s :test #'equal :rehash-threshold 0.9) )
-    (do ((r 0 (1+ r)) b)
-        ((= r m))
-      (setq b (gf-times a (gf-pow gi r red) red))
+    (do ((r 0) (b a))
+        (())
       (when (equal '(0 1) b)
         (clrhash babies)
         (return-from gf-dlog-baby-giant r) )
-      (setf (gethash b babies) r) )
-    (setq d (gf-pow g m red))
-    (do ((rr 0 (1+ rr)) bb r) 
-        ((= rr m))
-      (setq bb (gf-pow d rr red))
+      (setf (gethash b babies) r)
+      (incf r)
+      (when (= r m) (return))
+      (setq b (gf-times gi b red)) ) 
+    (setq g^m (gf-pow g m red))
+    (do ((rr 0 (1+ rr)) 
+         (bb (list 0 1) (gf-times g^m bb red)) 
+          r ) (())
       (when (setq r (gethash bb babies))
         (clrhash babies)
-        (return-from gf-dlog-baby-giant (+ (* rr m) r)) )) ))
+        (return (+ r (* rr m))) )) ))
 
 ;; Pollard rho for dlog computation (Brents variant of collision detection)
 

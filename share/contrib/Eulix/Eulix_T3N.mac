@@ -1,0 +1,20 @@
+load("Eulix.mac")$
+
+
+/* Lotka-Volterra  
+    alpha= 0.1  beta= 0.015  gamma= 0.0225  delta= 0.02
+
+    y1' =  y1*(alpha-beta*y2)     y1(0)= 1
+    y2' = -y2*(gamma-delta*y1)    y2(0)= 1
+*/
+ 
+alpha:0.1$beta:0.015$gamma:0.0225$delta:0.02$
+
+
+y1_198:1.01243149501057267529$
+y2_198:0.99965472408223507814$
+
+debugmode(true)$
+ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198],'tabular='none)$
+print("solution at final time: ",ER)$
+

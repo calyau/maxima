@@ -1,43 +1,43 @@
 @c english version 1.13
 @menu
-* Introducci@'on a dynamics::
+* Introducción a dynamics::
 * Funciones y variables para dynamics::
 @end menu
 
-@node Introducci@'on a dynamics, Funciones y variables para dynamics, dynamics, dynamics
-@section Introducci@'on a dynamics
+@node Introducción a dynamics, Funciones y variables para dynamics, dynamics, dynamics
+@section Introducción a dynamics
 
 El paquete adicional @code{dynamics} incluye varias funciones para crear
-diversas representaciones gr@'aficas de sistemas din@'amicos y fractales,
-y adem@'as una implementaci@'on del m@'etodo num@'erico de Runge-Kutta de
+diversas representaciones gráficas de sistemas dinámicos y fractales,
+y además una implementación del método numérico de Runge-Kutta de
 cuarto orden, para resolver sistemas de ecuaciones diferenciales.
 
-Para usar las funciones en este paquete ser@'a necesario primero que todo
+Para usar las funciones en este paquete será necesario primero que todo
 cargarlo con @code{load("dynamics")}, y las funciones que crean
-gr@'aficas necesitan que Xmaxima est@'e instalado.
+gráficas necesitan que Xmaxima esté instalado.
 
-@node Funciones y variables para dynamics,  , Introducci@'on a dynamics, dynamics
+@node Funciones y variables para dynamics,  , Introducción a dynamics, dynamics
 @section Funciones y variables para dynamics
 
-@deffn {Funci@'on} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opciones...);
+@deffn {Función} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opciones...);
 
-Usa el m@'etodo llamado juego del caos, para producir fractales: se dibuja
+Usa el método llamado juego del caos, para producir fractales: se dibuja
 un punto inicial (@var{x0}, @var{y0}) y luego se elije aleatoriamente uno
 de los @var{m} puntos @code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm},
-@var{ym}@code{]}. Despu@'es se dibuja un nuevo punto que estar@'a en
-el segmento entre el @'ultimo punto dibujado y el punto que se acab@'o de
-elegir aleatoriamente, a una distancia del punto elegido que ser@'a
+@var{ym}@code{]}. Después se dibuja un nuevo punto que estará en
+el segmento entre el último punto dibujado y el punto que se acabó de
+elegir aleatoriamente, a una distancia del punto elegido que será
 @var{b} veces la longitud del segmento. El proceso se repite @var{n} veces.
 
 @end deffn
 
-@deffn {Funci@'on} evolution (@var{F}, @var{y0}, @var{n},...opciones...);
+@deffn {Función} evolution (@var{F}, @var{y0}, @var{n},...opciones...);
 
-Dibuja @var{n+1} puntos en una gr@'afica bidimensional (serie de
+Dibuja @var{n+1} puntos en una gráfica bidimensional (serie de
 tiempo), en que las coordenadas horizontales de los puntos son los
-n@'umeros enteros 0, 1, 2, ..., @var{n}, y las coordenadas verticales
+números enteros 0, 1, 2, ..., @var{n}, y las coordenadas verticales
 son los valores @var{y(n)} correspondientes, obtenidos a partir de la
-relaci@'on de recurrencia
+relación de recurrencia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -47,16 +47,16 @@ relaci@'on de recurrencia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-Con valor inicial @var{y(0)} igual a @var{y0}. @var{F} deber@'a ser una
-expresi@'on que dependa @'unicamente de la variable @var{y} (y no de @var{n}),
-@var{y0} deber@'a ser un n@'umero real y @var{n} un n@'umero entero positivo.
+Con valor inicial @var{y(0)} igual a @var{y0}. @var{F} deberá ser una
+expresión que dependa únicamente de la variable @var{y} (y no de @var{n}),
+@var{y0} deberá ser un número real y @var{n} un número entero positivo.
 
 @end deffn
 
-@deffn {Funci@'on} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...opciones...);
+@deffn {Función} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...opciones...);
 
-Muestra, en una gr@'afica bidimensional, los primeros @var{n+1} puntos de
-la sucesi@'on definida a partir del sistema din@'amico discreto con
+Muestra, en una gráfica bidimensional, los primeros @var{n+1} puntos de
+la sucesión definida a partir del sistema dinámico discreto con
 relaciones de recurrencia:
 @ifnottex 
 @example
@@ -68,108 +68,108 @@ $$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
 @end tex
 
 Con valores iniciales @var{x0} y @var{y0}. @var{F} y @var{G} deben ser dos
-expresiones que dependan @'unicamente de @var{x} y @var{y}. 
+expresiones que dependan únicamente de @var{x} y @var{y}. 
 
 @end deffn
 
-@deffn {Funci@'on} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...opciones...);
+@deffn {Función} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...opciones...);
 
-Usa el m@'etodo del Sistema de Funciones Iteradas (IFS, en ingl@'es
-Iterated Function System). Ese m@'etodo es semejante al m@'etodo descrito
-en la funci@'on @code{chaosgame}, pero en vez de aproximar el @'ultimo punto
-al punto elegido aleatoriamente, las dos coordenadas del @'ultimo punto
+Usa el método del Sistema de Funciones Iteradas (IFS, en inglés
+Iterated Function System). Ese método es semejante al método descrito
+en la función @code{chaosgame}, pero en vez de aproximar el último punto
+al punto elegido aleatoriamente, las dos coordenadas del último punto
 se multiplican por una matriz 2 por 2 @var{Ai} correspondiente al punto
 que fue elegido aleatoriamente.
 
-La selecci@'on aleatoria de uno de los @var{m} puntos atractivos puede
-ser realizada con una funci@'on de probabilidad no uniforme, definida
+La selección aleatoria de uno de los @var{m} puntos atractivos puede
+ser realizada con una función de probabilidad no uniforme, definida
 con los pesos @var{r1},...,@var{rm}. Esos pesos deben ser dados en forma
 acumulada; por ejemplo, si se quieren 3 puntos con probabilidades 0.2, 0.5 y
-0.3, los pesos @var{r1}, @var{r2} y @var{r3} podr@'{@dotless{i}}an ser 2, 7 y 10, o
-cualquier otro grupo de n@'umeros que tengan la misma proporci@'on.
+0.3, los pesos @var{r1}, @var{r2} y @var{r3} podrían ser 2, 7 y 10, o
+cualquier otro grupo de números que tengan la misma proporción.
 
 @end deffn
 
-@deffn {Funci@'on} julia (@var{x}, @var{y}, ...@var{opciones}...)
+@deffn {Función} julia (@var{x}, @var{y}, ...@var{opciones}...)
 
-Crea un fichero gr@'afico con la representaci@'on del conjunto de Julia
-del n@'umero complejo (@var{x} + i @var{y}). Los par@'ametros @var{x} y
-@var{y} deben ser reales. El fichero se crea en el direct@'orio actual o
-en el direct@'orio del usuario, usando el formato gr@'afico XPM. El
+Crea un fichero gráfico con la representación del conjunto de Julia
+del número complejo (@var{x} + i @var{y}). Los parámetros @var{x} y
+@var{y} deben ser reales. El fichero se crea en el directório actual o
+en el directório del usuario, usando el formato gráfico XPM. El
 programa puede demorar varios segundos a ser ejecutado y cuando termina
 imprime un mensaje con el nombre del fichero creado.
 
 Se asignan diferentes colores a los puntos que no pertenecen al conjunto
-de Julia, de acuerdo con el n@'umero de iteraciones que demore la
+de Julia, de acuerdo con el número de iteraciones que demore la
 secuencia, comenzando en ese punto, a salir fuera del
-c@'{@dotless{i}}rculo de convergencia con radio 2. El n@'umero m@'aximo
-de iteraciones se define con la opci@'on @var{levels}; despu@'es de
-ejecutadas ese n@'umero de iteraciones, si la secuencia aun est@'a
-dentro del c@'{@dotless{i}}rculo de convergencia, el punto ser@'a
-coloreado con el color definido por la opci@'on @var{color}.
+círculo de convergencia con radio 2. El número máximo
+de iteraciones se define con la opción @var{levels}; después de
+ejecutadas ese número de iteraciones, si la secuencia aun está
+dentro del círculo de convergencia, el punto será
+coloreado con el color definido por la opción @var{color}.
 
 Todos los colores usados para los puntos que no pertenecen al conjunto
-de Julia tendr@'an los mismos valores de saturaci@'on (@var{saturation})
-y valor (@var{value}), pero con diferentes @'angulos de tonalidad,
+de Julia tendrán los mismos valores de saturación (@var{saturation})
+y valor (@var{value}), pero con diferentes ángulos de tonalidad,
 distribuidos uniformemente en el intervalo entre @var{hue} y (@var{hue}
 + @var{huerange}).
 
-Se puede dar a la funci@'on una secuencia de opciones. La lista de
-posibles opciones aparece en una secci@'on m@'as al frente.
+Se puede dar a la función una secuencia de opciones. La lista de
+posibles opciones aparece en una sección más al frente.
 
 @end deffn
 
-@deffn {Funci@'on} mandelbrot (@var{options})
+@deffn {Función} mandelbrot (@var{options})
 
-Crea un fichero gr@'afico con la representaci@'on del conjunto de
-Mandelbrot. El fichero se crea en el direct@'orio actual o en el
-direct@'orio del usuario, usando el formato gr@'afico XPM. El programa
+Crea un fichero gráfico con la representación del conjunto de
+Mandelbrot. El fichero se crea en el directório actual o en el
+directório del usuario, usando el formato gráfico XPM. El programa
 puede demorar varios segundos a ser ejecutado y cuando termina imprime
 un mensaje con el nombre del fichero creado.
 
 Se asignan diferentes colores a los puntos que no pertenecen al conjunto
-de Mandelbrot, de acuerdo con el n@'umero de iteraciones que demore la
-secuencia generada por ese punto a salir fuera del c@'{@dotless{i}}rculo
-de convergencia con radio 2. El n@'umero m@'aximo de iteraciones se
-define con la opci@'on @var{levels}; despu@'es de ejecutadas ese
-n@'umero de iteraciones, si la secuencia aun est@'a dentro del
-c@'{@dotless{i}}rculo de convergencia, el punto ser@'a coloreado con el
-color definido por la opci@'on @var{color}.
+de Mandelbrot, de acuerdo con el número de iteraciones que demore la
+secuencia generada por ese punto a salir fuera del círculo
+de convergencia con radio 2. El número máximo de iteraciones se
+define con la opción @var{levels}; después de ejecutadas ese
+número de iteraciones, si la secuencia aun está dentro del
+círculo de convergencia, el punto será coloreado con el
+color definido por la opción @var{color}.
 
 Todos los colores usados para los puntos que no pertenecen al conjunto
-de Mandelbrot tendr@'an los mismos valores de saturaci@'on
-(@var{saturation}) y valor (@var{value}), pero con diferentes @'angulos
+de Mandelbrot tendrán los mismos valores de saturación
+(@var{saturation}) y valor (@var{value}), pero con diferentes ángulos
 de tonalidad, distribuidos uniformemente en el intervalo entre @var{hue}
 y (@var{hue} + @var{huerange}).
 
-Se puede dar a la funci@'on una secuencia de opciones. La lista de
-posibles opciones aparece en una secci@'on m@'as al frente.
+Se puede dar a la función una secuencia de opciones. La lista de
+posibles opciones aparece en una sección más al frente.
 
 @end deffn
 
-@deffn {Funci@'on} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...opciones...);
+@deffn {Función} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...opciones...);
 
-Dibuja el diagrama de @'orbitas de una familia de sistemas din@'amicos
-discretos unidimensionales, con un par@'ametro @var{x}; ese tipo de diagrama
+Dibuja el diagrama de órbitas de una familia de sistemas dinámicos
+discretos unidimensionales, con un parámetro @var{x}; ese tipo de diagrama
 se usa para mostrar las bifurcaciones de un sistema discreto unidimensional.
 
-La funci@'on @var{F(y)} define una secuencia que comienza con un valor
-inicial @var{y0}, igual que en el caso de la funci@'on @code{evolution}, pero
-en este caso la funci@'on tambi@'en depender@'a del par@'ametro @var{x},
-el cual tomar@'a valores comprendidos en el intervalo de @var{x0} a @var{xf},
-con incrementos @var{xstep}. Cada valor usado para el par@'ametro @var{x} se
-muestra en el eje horizontal. En el eje vertical se mostrar@'an @var{n2}
-valores de la sucesi@'on @var{y(n1+1)},..., @var{y(n1+n2+1)}, obtenidos
-despu@'es de dejarla evolucionar durante @var{n1} iteraciones iniciales.
+La función @var{F(y)} define una secuencia que comienza con un valor
+inicial @var{y0}, igual que en el caso de la función @code{evolution}, pero
+en este caso la función también dependerá del parámetro @var{x},
+el cual tomará valores comprendidos en el intervalo de @var{x0} a @var{xf},
+con incrementos @var{xstep}. Cada valor usado para el parámetro @var{x} se
+muestra en el eje horizontal. En el eje vertical se mostrarán @var{n2}
+valores de la sucesión @var{y(n1+1)},..., @var{y(n1+n2+1)}, obtenidos
+después de dejarla evolucionar durante @var{n1} iteraciones iniciales.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} staircase (@var{F}, @var{y0}, @var{n}, ...opciones...);
+@deffn {Función} staircase (@var{F}, @var{y0}, @var{n}, ...opciones...);
 
-Dibuja un diagrama de escalera (o diagrama de red) para la sucesi@'on
-definida por la ecuaci@'on de recurrencia
+Dibuja un diagrama de escalera (o diagrama de red) para la sucesión
+definida por la ecuación de recurrencia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -179,60 +179,60 @@ definida por la ecuaci@'on de recurrencia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-La interpretaci@'on y valores permitidos de los par@'ametros de entrada
-es la misma que para la funci@'on @code{evolution}. Un diagrama de
-escalera consiste en una gr@'afica de la funci@'on @var{F(y)}, junto con
+La interpretación y valores permitidos de los parámetros de entrada
+es la misma que para la función @code{evolution}. Un diagrama de
+escalera consiste en una gráfica de la función @var{F(y)}, junto con
 la recta @var{G(y)} @code{=} @var{y}. Se comienza por dibujar un
 segmento vertical desde el punto (@var{y0}, @var{y0}) en la recta, hasta
-el punto de intersecci@'on con la funci@'on @var{F}. En seguida, desde
+el punto de intersección con la función @var{F}. En seguida, desde
 ese punto se dibuja un segmento horizontal hasta el punto de
-intersecci@'on con la recta, (@var{y1}, @var{y1}); el procedimiento se
+intersección con la recta, (@var{y1}, @var{y1}); el procedimiento se
 repite @var{n} veces hasta alcanzar el punto (@var{yn}, @var{yn}).
 
 @end deffn
 
 @b{Opciones}
 
-Cada opci@'on es una lista con dos o m@'as elementos. El primer elemento
-en la lista es el nombre de la opci@'on y el resto consiste en los
-argumentos para esa opci@'on.
+Cada opción es una lista con dos o más elementos. El primer elemento
+en la lista es el nombre de la opción y el resto consiste en los
+argumentos para esa opción.
 
 Las opciones aceptadas por las funciones evolution, evolution2,
 staircase, orbits, ifs y chaosgame son las siguientes:
 
 @itemize @bullet
 @item
-@dfn{domain} especifica los valores m@'{@dotless{i}}nimo y m@'aximo de la
-variable independiente para la gr@'afica de la funci@'on @var{F}
+@dfn{domain} especifica los valores mínimo y máximo de la
+variable independiente para la gráfica de la función @var{F}
 representada por @code{staircase}.
 
 @item
 @dfn{pointsize} define el radio de cada punto dibujado, en unidades de
-puntos.  El valor por omisi@'on es 1.
+puntos.  El valor por omisión es 1.
 
 @item
-@dfn{xaxislabel} es la etiqueta que se escribir@'a en el eje horizontal.
+@dfn{xaxislabel} es la etiqueta que se escribirá en el eje horizontal.
 
 @item
-@dfn{xcenter} es la coordenada x del punto que deber@'a aparecer en el
-centro de la gr@'afica. Esta opci@'on no es usada por la funci@'on
+@dfn{xcenter} es la coordenada x del punto que deberá aparecer en el
+centro de la gráfica. Esta opción no es usada por la función
 @code{orbits}.
 
 @item
 @dfn{xradius} es mitad de la longitud del intervalo de valores de x que
-ser@'a representado. Esta opci@'on no es usada por la funci@'on
+será representado. Esta opción no es usada por la función
 @code{orbits}.
 
 @item
-@dfn{yaxislabel} es la etiqueta que se escribir@'a en el eje vertical.
+@dfn{yaxislabel} es la etiqueta que se escribirá en el eje vertical.
 
 @item
-@dfn{ycenter} es la coordenada y del punto que deber@'a aparecer en el
-centro de la gr@'afica.
+@dfn{ycenter} es la coordenada y del punto que deberá aparecer en el
+centro de la gráfica.
 
 @item
 @dfn{yradius} es mitad de la longitud del intervalo de valores de y que
-ser@'a representado.
+será representado.
 
 @end itemize
 
@@ -242,77 +242,77 @@ siguientes:
 @itemize @bullet
 @item
 @dfn{size} acepta uno o dos argumentos. Si se da solo un argumento, el
-ancho y la altura del fichero gr@'afico creado ser@'an iguales a ese
-valor en pixels. Si se dan dos argumentos, esos dos valores ser@'an
-usados para el ancho y la altura. El valor por omisi@'on es 400 pixels
+ancho y la altura del fichero gráfico creado serán iguales a ese
+valor en pixels. Si se dan dos argumentos, esos dos valores serán
+usados para el ancho y la altura. El valor por omisión es 400 pixels
 tanto para el ancho como para la altura. Si los dos valores no son
-iguales, el conjunto aparecer@'a distorcionado.
+iguales, el conjunto aparecerá distorcionado.
 
 @item
-@dfn{levels} define el n@'umero m@'aximo de iteraciones, que es
-tambi@'en el n@'umero de colores usado para los puntos que no pertenecem
-al conjunto. El valor por omisi@'on es 12; valores mayores implican
-tiempos de procesamiento m@'as elevados.
+@dfn{levels} define el número máximo de iteraciones, que es
+también el número de colores usado para los puntos que no pertenecem
+al conjunto. El valor por omisión es 12; valores mayores implican
+tiempos de procesamiento más elevados.
 
 @item
-@dfn{huerange} define el intervalo de @'angulos usados para la tonalidad
-de los puntos que no pertenecen al conjunto. El valor por omisi@'on es
-360, que hace que los colores usados abarcar@'an todo el rango de
-tonalidades. Valores mayores que 360 implican repetici@'on de algunos
+@dfn{huerange} define el intervalo de ángulos usados para la tonalidad
+de los puntos que no pertenecen al conjunto. El valor por omisión es
+360, que hace que los colores usados abarcarán todo el rango de
+tonalidades. Valores mayores que 360 implican repetición de algunos
 valores de la tonalidad, y pueden usarse valores negativos para que el
-@'angulo de tonalidad sea menor a medida que el n@'umero de iteraciones
+ángulo de tonalidad sea menor a medida que el número de iteraciones
 aumente.
 
 @item
 @dfn{hue} define la tonalidad, en grados, del primer color usado para
 representar los puntos que no pertenecen al conjunto.  Su valor por
-omisi@'on es 300 grados, que corresponde al color magenta; el color
+omisión es 300 grados, que corresponde al color magenta; el color
 correspondiente para otros valores estandar es rojo 0, naranja 45,
-amarillo 60, verde 120, cian 180 y azul 240. Consulte tambi@'en la
-opci@'on @var{huerange}.
+amarillo 60, verde 120, cian 180 y azul 240. Consulte también la
+opción @var{huerange}.
 
 @item
-@dfn{saturation} define el nivel de saturaci@'on que ser@'a usado para
+@dfn{saturation} define el nivel de saturación que será usado para
 los colores de los puntos que no pertenecen al conjunto. Debe ser un valor
-entre 0 y 1. El valor por omisi@'on es 0.46.
+entre 0 y 1. El valor por omisión es 0.46.
 
 @item
 @dfn{value} define el valor de los colores usados para puntos que no
 pertenezcan al conjunto. Debe estar comprendido entre 0 y 1; cuanto
-mayor sea, mas brilhantes ser@'an los colores. Su valor por omisi@'on es
+mayor sea, mas brilhantes serán los colores. Su valor por omisión es
 0.96.
 
 @item
-@dfn{color} debe ir seguido de tres par@'ametros que definen la
-tonalidad, saturaci@'on y valor del color que ser@'a usado para los
-puntos del conjunto. El valor por omisi@'on es 0 para los tres
-par@'ametros, que corresponde al negro. Consulte las explicaci@'on sobre
-el rango de valores aceptados en la explicaci@'on de las opciones
+@dfn{color} debe ir seguido de tres parámetros que definen la
+tonalidad, saturación y valor del color que será usado para los
+puntos del conjunto. El valor por omisión es 0 para los tres
+parámetros, que corresponde al negro. Consulte las explicación sobre
+el rango de valores aceptados en la explicación de las opciones
 @var{hue}, @var{saturation} y @var{value}.
 
 @item
-@dfn{center} deber@'a tener dos par@'ametros reales que dan las
-coordenadas, en el plano complejo, del punto en el centro de la regi@'on
-representada. El valor por omisi@'on es 0 para las dos coordenadas (el
+@dfn{center} deberá tener dos parámetros reales que dan las
+coordenadas, en el plano complejo, del punto en el centro de la región
+representada. El valor por omisión es 0 para las dos coordenadas (el
 origen).
 
 @item
-@dfn{radius} es el radio de el mayor c@'{@dotless{i}}rculo que
-cabe dentro de la regi@'on quadrada que ser@'a representada. El valor
-por omisi@'on es 2.
+@dfn{radius} es el radio de el mayor círculo que
+cabe dentro de la región quadrada que será representada. El valor
+por omisión es 2.
 
 @item
-@dfn{filename} da el nombre del fichero donde se guardar@'a la gr@'afica
-producida. A ese nombre se le acrecentar@'a la terminaci@'on .xpm. Si el
-fichero ya existe, ser@'a substituido por el fichero producido por la
-funci@'on. El valor por omisi@'on es julia para el conjunto de Julia y
+@dfn{filename} da el nombre del fichero donde se guardará la gráfica
+producida. A ese nombre se le acrecentará la terminación .xpm. Si el
+fichero ya existe, será substituido por el fichero producido por la
+función. El valor por omisión es julia para el conjunto de Julia y
 mandelbrot para el conjunto de Mandelbrot.
 
 @end itemize
 
 @b{Ejemplos}
 
-Representaci@'on gr@'afica y diagrama de escalera de la secuencia:
+Representación gráfica y diagrama de escalera de la secuencia:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -326,12 +326,12 @@ Representaci@'on gr@'afica y diagrama de escalera de la secuencia:
 @image{../figures/dynamics2,8cm}
 @end ifnotinfo
 
-Si su procesador es lento, tendr@'a que reducir el n@'umero de
+Si su procesador es lento, tendrá que reducir el número de
 iteraciones usado en los ejemplos siguientes. Y el valor de
 @var{pointsize} que da mejores resultados depende del monitor y de la
-resoluci@'on que use. Tendr@'a que experimentar con diferentes valores.
+resolución que use. Tendrá que experimentar con diferentes valores.
 
-Diagrama de @'orbitas para el mapa cuadr@'atico
+Diagrama de órbitas para el mapa cuadrático
 @ifnottex
 @example
         y(n+1) = x + y(n)^2
@@ -349,7 +349,7 @@ $$y_{n+1} = x + y_n^2$$
 @image{../figures/dynamics3,8cm}
 @end ifnotinfo
 
-Para ampliar la regi@'on alrededor de la bifurcaci@'on en la parte de
+Para ampliar la región alrededor de la bifurcación en la parte de
 abajo, cerca de x @code{=} -1.25, use el comando:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
@@ -360,7 +360,7 @@ abajo, cerca de x @code{=} -1.25, use el comando:
 @image{../figures/dynamics4,8cm}
 @end ifnotinfo
 
-Evoluci@'on de un sistema en dos dimensiones, que conduce a un fractal:
+Evolución de un sistema en dos dimensiones, que conduce a un fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
@@ -372,7 +372,7 @@ Evoluci@'on de un sistema en dos dimensiones, que conduce a un fractal:
 @image{../figures/dynamics5,8cm}
 @end ifnotinfo
 
-Y una ampliaci@'on de una peque@~na regi@'on en el fractal:
+Y una ampliación de una pequeña región en el fractal:
 
 @example
 (%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
@@ -383,7 +383,7 @@ Y una ampliaci@'on de una peque@~na regi@'on en el fractal:
 @image{../figures/dynamics6,8cm}
 @end ifnotinfo
 
-Una gr@'afica del triangulo de Sierpinsky, obtenida con el juego del caos:
+Una gráfica del triangulo de Sierpinsky, obtenida con el juego del caos:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
@@ -414,25 +414,25 @@ El helecho de Barnsley, obtenido con el Sistema de Funciones Iteradas:
 @end ifnotinfo
 
 Para crear un fichero llamado @emph{dinamica9.xpm} con la
-representaci@'on gr@'afica del conjunto de Mandelbrot, con 12 colores,
+representación gráfica del conjunto de Mandelbrot, con 12 colores,
 use el comando:
 
 @example
 mandelbrot([filename,"dinamica9"])$
 @end example
 
-y el conjunto de Julia del n@'umero (-0.55 + i 0.6) puede ser obtenido con:
+y el conjunto de Julia del número (-0.55 + i 0.6) puede ser obtenido con:
 @example
 julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
       [hue, 240], [huerange, -180], [filename, "dinamica10"])$
 @end example
 
-la gr@'afica se guardar@'a en el fichero @emph{dinamica10.xpm} y
-mostrar@'a la regi@'on desde -0.3 hasta 0.3 en la direcci@'on x, y desde
-0.3 hasta 0.9 en la direcci@'on y. Ser@'an usados 36 colores, comenzando
+la gráfica se guardará en el fichero @emph{dinamica10.xpm} y
+mostrará la región desde -0.3 hasta 0.3 en la dirección x, y desde
+0.3 hasta 0.9 en la dirección y. Serán usados 36 colores, comenzando
 con azul e terminando con amarillo.
 
-Para resolver num@'ericamente la ecuaci@'on diferencial
+Para resolver numéricamente la ecuación diferencial
 
 @ifnottex
 @example
@@ -450,9 +450,9 @@ con incrementos de 0.1, se usa:
 (%i20) resultados: rk(t-x^2,x,1,[t,0,8,0.1])$
 @end example
 
-los resultados quedar@'an guardados en la lista resultados.
+los resultados quedarán guardados en la lista resultados.
 
-Para resolver num@'ericamente el sistema:
+Para resolver numéricamente el sistema:
 
 @ifnottex
 @example
@@ -468,3 +468,4 @@ para t entre 0 y 4, con valores iniciales -1.25 y 0.75 para (x, y) en t=0:
 @example
 (%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
 @end example
+

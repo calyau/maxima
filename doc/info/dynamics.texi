@@ -1,37 +1,51 @@
 @menu
-* Introduction to dynamics::
-* Functions and Variables for dynamics::
+* The dynamics package::
+* Graphical analysis of discrete dynamical systems::
+* Visualization with VTK::
 @end menu
 
-@node Introduction to dynamics, Functions and Variables for dynamics, dynamics, dynamics
-@section Introduction to dynamics
+@node The dynamics package, Graphical analysis of discrete dynamical systems, dynamics, dynamics
+@section The dynamics package
 
-The additional package @code{dynamics} includes several
-functions to create various graphical representations of discrete
-dynamical systems and fractals, and an implementation of the Runge-Kutta
-4th-order numerical method for solving systems of differential equations.
+Package @code{dynamics} includes functions for 3D visualization,
+animations, graphical analysis of differential and difference equations
+and numerical solution of differential equations. The functions for
+differential equations are described in the section on @mxref{Numerical,
+Numerical Methods} and the functions to plot the Mandelbrot and Julia
+sets are described in the section on @mrefdot{Plotting}.
 
-To use the functions in this package you must first load it with
-@code{load("dynamics")}.
-
-The commands that produce graphics accept the same options accepted by @code{plot2d} and some additional ones.
+All the functions in this package will be loaded automatically the first
+time they are used.
 
 @opencatbox
 @category{Dynamical systems} @category{Share packages} @category{Package dynamics}
 @closecatbox
 
-@node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
-@section Functions and Variables for dynamics
+@node Graphical analysis of discrete dynamical systems,  Visualization with VTK, The dynamics package, dynamics
+@section Graphical analysis of discrete dynamical systems
 
-@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ..., options, ...);
+@anchor{chaosgame}
+@deffn {Function} chaosgame ([[@var{x1}, @var{y1}]@dots{}[@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{b}, @var{n}, @var{options}, @dots{});
 
 Implements the so-called chaos game: the initial point (@var{x0},
 @var{y0}) is plotted and then one of the @var{m} points
-@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
+[@var{x1}, @var{y1}]@dots{}@var{xm}, @var{ym}]
 will be selected at random. The next point plotted will be on the
 segment from the previous point plotted to the point chosen randomly, at a
 distance from the random point which will be @var{b} times that segment's
-length. The procedure is repeated @var{n} times.
+length. The procedure is repeated @var{n} times. The options are the
+same as for @mrefdot{plot2d}
+
+@strong{Example}. A plot of Sierpinsky's triangle:
+
+@example
+(%i1) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
+                 30000, [style, dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics7,8cm}
+@end ifnotinfo
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -39,7 +53,8 @@ length. The procedure is repeated @var{n} times.
 
 @end deffn
 
-@deffn {Function} evolution (@var{F}, @var{y0}, @var{n}, ..., options, ...);
+@anchor{evolution}
+@deffn {Function} evolution (@var{F}, @var{y0}, @var{n},  @dots{}, @var{options}, @dots{});
 
 Draws @var{n+1} points in a two-dimensional graph, where the horizontal
 coordinates of the points are the integers 0, 1, 2, ..., @var{n}, and
@@ -58,6 +73,16 @@ With initial value @var{y(0)} equal to @var{y0}. @var{F} must be an
 expression that depends only on one variable (in the example, it
 depend on @var{y}, but any other variable can be used),
 @var{y0} must be a real number and @var{n} must be a positive integer.
+ This function accepts the same options as @mrefdot{plot2d}
+@strong{Example}.
+
+@example
+(%i1) evolution(cos(y), 2, 11);
+@end example
+@ifnotinfo
+@image{figures/dynamics1,8cm}
+@end ifnotinfo
+
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -65,7 +90,8 @@ depend on @var{y}, but any other variable can be used),
 
 @end deffn
 
-@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
+@anchor{evolution2d}
+@deffn {Function} evolution2d ([@var{F}, @var{G}], [@var{u}, @var{v}], [@var{u0}, @var{y0}], @var{n}, @var{options}, @dots{});
 
 Shows, in a two-dimensional plot, the first @var{n+1} points in the
 sequence of points defined by the two-dimensional discrete dynamical
@@ -81,155 +107,15 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 
 With initial values @var{u0} and @var{v0}. @var{F} and @var{G} must be
 two expressions that depend only on two variables, @var{u} and
-@var{v}, which must be named explicitely in a list. 
+@var{v}, which must be named explicitly in a list. The options are the
+same as for @mrefdot{plot2d}
 
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-
-@end deffn
-
-@deffn {Function} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
-
-Implements the Iterated Function System method. This method is similar
-to the method described in the function @code{chaosgame}, but instead of
-shrinking the segment from the current point to the randomly chosen
-point, the 2 components of that segment will be multiplied by the 2 by 2
-matrix @var{Ai} that corresponds to the point chosen randomly.
-
-The random choice of one of the @var{m} attractive points can be made with
-a non-uniform probability distribution defined by the weights
-@var{r1},...,@var{rm}. Those weights are given in cumulative form; for instance if there are 3 points with probabilities 0.2, 0.5 and
-0.3, the weights @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-
-@end deffn
-
-@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
-
-Draws the orbits diagram for a family of one-dimensional
-discrete dynamical systems, with one parameter @var{x}; that kind of
-diagram is used to study the bifurcations of a one-dimensional discrete
-system.
-
-The function @var{F(y)} defines a sequence with a starting value of
-@var{y0}, as in the case of the function @code{evolution}, but in this
-case that function will also depend on a parameter @var{x} that will
-take values in the interval from @var{x0} to @var{xf} with increments of
-@var{xstep}. Each value used for the parameter @var{x} is shown on the
-horizontal axis. The vertical axis will show the @var{n2} values
-of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after letting
-the sequence evolve @var{n1} iterations.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-
-@end deffn
-
-
-@deffn {Function} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
-
-Draws a staircase diagram for the sequence defined by the recurrence
-relation
-@ifnottex
-@example
-        y(n+1) = F(y(n))
-@end example
-@end ifnottex
-@tex
-$$y_{n+1} = F(y_n)$$
-@end tex
-
-The interpretation and allowed values of the input parameters is the
-same as for the function @code{evolution}. A staircase diagram consists
-of a plot of the function @var{F(y)}, together with the line
-@var{G(y)} @code{=} @var{y}. A vertical segment is drawn from the
-point (@var{y0}, @var{y0}) on that line until the point where it
-intersects the function @var{F}. From that point a horizontal segment is
-drawn until it reaches the point (@var{y1}, @var{y1}) on the line, and
-the procedure is repeated @var{n} times until the point (@var{yn}, @var{yn})
-is reached.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-
-@end deffn
-
-@b{Options}
-
-Each option is a list of two or more items. The first item is the name
-of the option, and the remainder comprises the arguments for the option.
-
-The options accepted by the functions @code{evolution}, @code{evolution2d},
-@code{staircase}, @code{orbits}, @code{ifs} and @code{chaosgame} are the same as the options for
-@code{plot2d}. In addition to those options, @code{orbits} accepts and
-extra option @var{pixels} that sets up the maximum number of different
-points that will be represented in the vertical direction.
-
-@b{Examples}
-
-Graphical representation and staircase diagram for the sequence:
-2, cos(2), cos(cos(2)),...
+@strong{Example}. Evolution of a two-dimensional discrete dynamical system:
 
 @example
-(%i1) load("dynamics")$
-
-(%i2) evolution(cos(y), 2, 11);
-
-(%i3) staircase(cos(y), 1, 11, [y, 0, 1.2]);
-@end example
-
-@ifnotinfo
-@image{figures/dynamics1,8cm}
-@image{figures/dynamics2,8cm}
-@end ifnotinfo
-
-If your system is slow, you'll have to reduce the number of iterations in
-the following examples. And if the dots appear too small in your
-monitor, you might want to try a different style, such as
-@code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
-
-Orbits diagram for the quadratic map, with a parameter @var{a}.
-@ifnottex
-@example
-        x(n+1) = a + x(n)^2
-@end example
-@end ifnottex
-@tex
-$$x_{n+1} = a + x_n^2$$
-@end tex
-
-@example
-(%i4) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
-@end example
-
-@ifnotinfo
-@image{figures/dynamics3,8cm}
-@end ifnotinfo
-
-To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
-@example
-(%i5) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
-             [nticks, 400], [style,dots]);
-@end example
-
-@ifnotinfo
-@image{figures/dynamics4,8cm}
-@end ifnotinfo
-
-Evolution of a two-dimensional system that leads to a fractal:
-
-@example
-(%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
-
-(%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
-
-(%i8) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
+(%i1) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+(%i2) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
+(%i3) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo
@@ -247,43 +133,747 @@ And an enlargement of a small region in that fractal:
 @image{figures/dynamics6,8cm}
 @end ifnotinfo
 
-A plot of Sierpinsky's triangle, obtained with the chaos game:
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@anchor{ifs}
+@deffn {Function} ifs ([@var{r1}, @dots{}, @var{rm}], [@var{A1},@dots{}, @var{Am}], [[@var{x1}, @var{y1}], @dots{}, [@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{n}, @var{options}, @dots{});
+
+Implements the Iterated Function System method. This method is similar
+to the method described in the function @mrefdot{chaosgame} but instead of
+shrinking the segment from the current point to the randomly chosen
+point, the 2 components of that segment will be multiplied by the 2 by 2
+matrix @var{Ai} that corresponds to the point chosen randomly.
+
+The random choice of one of the @var{m} attractive points can be made
+with a non-uniform probability distribution defined by the weights
+@var{r1},...,@var{rm}. Those weights are given in cumulative form; for
+instance if there are 3 points with probabilities 0.2, 0.5 and 0.3, the
+weights @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10. The
+options are the same as for @mrefdot{plot2d}
+
+@strong{Example}. Barnsley's fern, obtained with 4 matrices and 4 points:
 
 @example
-(%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
-                 30000, [style, dots]);
-@end example
-
-@ifnotinfo
-@image{figures/dynamics7,8cm}
-@end ifnotinfo
-
-Barnsley's fern, obtained with an Iterated Function System:
-
-@example
-(%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
-
-(%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
-
-(%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
-
-(%i13) a4: matrix([0,0],[0,0.16])$
-
-(%i14) p1: [0,1.6]$
-
-(%i15) p2: [0,1.6]$
-
-(%i16) p3: [0,0.44]$
-
-(%i17) p4: [0,0]$
-
-(%i18) w: [85,92,99,100]$
-
-(%i19) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
+(%i1) a1: matrix([0.85,0.04],[-0.04,0.85])$
+(%i2) a2: matrix([0.2,-0.26],[0.23,0.22])$
+(%i3) a3: matrix([-0.15,0.28],[0.26,0.24])$
+(%i4) a4: matrix([0,0],[0,0.16])$
+(%i5) p1: [0,1.6]$
+(%i6) p2: [0,1.6]$
+(%i7) p3: [0,0.44]$
+(%i8) p4: [0,0]$
+(%i9) w: [85,92,99,100]$
+(%i10) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo
 @image{figures/dynamics8,8cm}
 @end ifnotinfo
 
-See also the documentation for packages @mrefdot{mandelbrot} and @mrefdot{julia} in the Plotting section.
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@anchor{orbits}
+@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], @var{options}, @dots{});
+
+Draws the orbits diagram for a family of one-dimensional
+discrete dynamical systems, with one parameter @var{x}; that kind of
+diagram is used to study the bifurcations of a one-dimensional discrete
+system.
+
+The function @var{F(y)} defines a sequence with a starting value of
+@var{y0}, as in the case of the function @code{evolution}, but in this
+case that function will also depend on a parameter @var{x} that will
+take values in the interval from @var{x0} to @var{xf} with increments of
+@var{xstep}. Each value used for the parameter @var{x} is shown on the
+horizontal axis. The vertical axis will show the @var{n2} values
+of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after letting
+the sequence evolve @var{n1} iterations.  In addition to the options
+accepted by @mrefcomma{plot2d} it accepts an option @var{pixels} that
+sets up the maximum number of different points that will be represented
+in the vertical direction.
+
+@strong{Example}. Orbits diagram of the quadratic map, with a parameter
+@var{a}:
+
+@example
+(%i1) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics3,8cm}
+@end ifnotinfo
+
+To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
+@example
+(%i2) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+             [nticks, 400], [style,dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics4,8cm}
+@end ifnotinfo
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@anchor{staircase}
+@deffn {Function} staircase (@var{F}, @var{y0}, @var{n},@var{options},@dots{});
+
+Draws a staircase diagram for the sequence defined by the recurrence
+relation
+@ifnottex
+@example
+        y(n+1) = F(y(n))
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = F(y_n)$$
+@end tex
+
+The interpretation and allowed values of the input parameters is the
+same as for the function @mrefdot{evolution} A staircase diagram consists
+of a plot of the function @var{F(y)}, together with the line @var{G(y)}
+@code{=} @var{y}. A vertical segment is drawn from the point (@var{y0},
+@var{y0}) on that line until the point where it intersects the function
+@var{F}. From that point a horizontal segment is drawn until it reaches
+the point (@var{y1}, @var{y1}) on the line, and the procedure is
+repeated @var{n} times until the point (@var{yn}, @var{yn}) is
+reached. The options are the same as for @mrefdot{plot2d}
+
+@strong{Example}.
+
+@example
+(%i1) staircase(cos(y), 1, 11, [y, 0, 1.2]);
+@end example
+@ifnotinfo
+@image{figures/dynamics2,8cm}
+@end ifnotinfo
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+
+@node Visualization with VTK, , Graphical analysis of discrete dynamical systems, dynamics
+@section Visualization with VTK
+
+Function scene creates 3D images and animations using the @emph{Visualization
+ToolKit} (VTK) software. In order to use that function, Xmaxima and VTK should be
+installed in your system (including the TCL bindings of VTK, which in
+some system might come in a separate package).
+
+@anchor{scene}
+@deffn {Function} scene (@var{objects}, @dots{}, @var{options}, @dots{});
+
+Accepts an empty list or a list of several @mxref{scene_objects,objects}
+and @mxrefdot{scene_options,options} The program launches Xmaxima, which
+opens an external window representing the given objects in a
+3-dimensional space and applying the options given. Each object must
+belong to one of the following 4 classes: sphere, cube, cylinder or cone
+(see @mxref{scene_objects,Scene objects}). Objects are identified by
+giving their name or by a list in which the first element is the class
+name and the following elements are options for that object.
+ 
+@strong{Example}. A hexagonal pyramid with a blue background:
+@c ===beg===
+@c scene(cone, [background,"#9980e5"])$
+@c ===end===
+@example
+(%i1) scene(cone, [background,"#9980e5"])$
+@end example
+@ifnotinfo
+@figure{scene1}
+@end ifnotinfo
+
+By holding down the left button of the mouse while it is moved on the
+graphics window, the camera can be rotated showing different views of
+the pyramid. The two plot options @mxref{scene_elevation,elevation} and
+@mxref{scene_azimuth,azimuth} can also be used to change the initial
+orientation of the viewing camera. The camera can be moved by holding
+the middle mouse button while moving it and holding the right-side mouse
+button while moving it up or down will zoom in or out.
+
+Each object option should be a list starting with the option name,
+followed by its value. The list of allowed options can be found in the
+@mxref{object_options,Scene object's options} section.
+
+@strong{Example}. This will show a sphere falling to the ground and
+bouncing off without loosing any energy. To start or pause the
+animation, press the play/pause button.
+@c ===beg===
+@c p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
+@c p: append (p, reverse(p))$
+@c ball: [sphere, [radius,0.1], [thetaresolution,20],
+@c   [phiresolution,20],[position,0,0,2.1], [color,red],
+@c   [animate,position,p]]$
+@c ground: [cube, [xlength,2], [ylength,2], [zlength,0.2],
+@c   [position,0,0,-0.1],[color,violet]]$
+@c scene (ball, ground, restart);
+@c ===end===
+
+@example
+(%i1) p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
+
+(%i2) p: append (p, reverse(p))$
+
+(%i3) ball: [sphere, [radius,0.1], [thetaresolution,20],
+  [phiresolution,20], [position,0,0,2.1], [color,red],
+  [animate,position,p]]$
+
+(%i4) ground: [cube, [xlength,2], [ylength,2], [zlength,0.2],
+  [position,0,0,-0.1],[color,violet]]$
+
+(%i5) scene (ball, ground, restart)$
+@end example
+@ifnotinfo
+@figure{scene2}
+@end ifnotinfo
+
+The @var{restart} option was used to make the animation restart
+automatically every time the last point in the position list is reached.
+The accepted values for the colors are the same as for the @mref{color}
+option of plot2d. 
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@anchor{scene_options}
+@subsection Scene options
+
+@anchor{scene_background}
+@defvr {Scene option} background [background, @var{color}]
+Default value: @code{black}
+
+The color of the graphics window's background. It accepts color names or
+hexadecimal red-green-blue strings (see the @mref{color} option of plot2d).
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_azimuth}
+@defvr {Scene option} azimuth [azimuth, @var{angle}]
+Default value: @code{135}
+
+The rotation of the camera on the horizontal (x, y) plane. @var{angle}
+must be a real number; an angle of 0 means that the camera points in the
+direction of the y axis and the x axis will appear on the right.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_elevation}
+@defvr {Scene option} elevation [elevation, @var{angle}]
+Default value: @code{30}
+
+The vertical rotation of the camera. The @var{angle} must be a real
+number; an angle of 0 means that the camera points on the horizontal,
+and the default angle of 30 means that the camera is pointing 30 degrees
+down from the horizontal.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_width}
+@defvr {Scene option} width [width, @var{pixels}]
+Default value: @code{500}
+
+The width, in pixels, of the graphics window. @var{pixels} must be a
+positive integer number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_height}
+@defvr {Scene option} height [height, @var{pixels}]
+Default value: @code{500}
+
+The height, in pixels, of the graphics window. @var{pixels} must be a
+positive integer number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_tstep}
+@defvr {Scene option} tstep [tstep, @var{time}]
+Default value: @code{10}
+
+The amount of time, in mili-seconds, between iterations among
+consecutive animation frames. @var{time} must be a real number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_restart}
+@defvr {Scene option} restart [restart, @var{value}]
+Default value: @code{false}
+
+A true value means that animations will restart automatically when the
+end of the list is reached. Writing just ``restart'' is equivalent to
+[restart, @var{true}].
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_windowtitle}
+@defvr {Scene option} windowtitle [windowtitle, @var{name}]
+Default value: @code{Xmaxima: scene}
+
+@var{name} must be a string that will be written in the title of the
+window created by @code{scene}.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+
+@anchor{scene_windowname}
+@defvr {Scene option} windowname [windowtitle, @var{name}]
+Default value: @code{.scene}
+
+@var{name} must be a string that can be used as the name of the Tk
+window created by Xmaxima for the @code{scene} graphics. The default
+value @code{.scene} implies that a new top level window will be created.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_objects}
+@subsection Scene objects
+
+@anchor{cone}
+@defvr {Object option} cone [cone, @var{options}]
+
+Creates a regular pyramid with height equal to 1 and a hexagonal base
+with vertices 0.5 units away from the axis. Options
+@mxref{object_height,height} and @mxref{object_radius,radius} can be used
+to change those defaults and option @mxref{object_resolution, resolution}
+can be used to change the number of edges of the base; higher values
+will make it look like a cone. By default, the axis will be along the x
+axis, the middle point of the axis will be at the origin and the vertex
+on the positive side of the x axis; use options
+@mxref{object_orientation,orientation} and @mxref{object_center,center} to
+change those defaults.
+
+@strong{Example}. This shows a pyramid that starts rotating around the z
+axis when the play button is pressed.
+ 
+@example
+(%i1) scene([cone, [orientation,0,30,0], [tstep,100],
+   [animate,orientation,makelist([0,30,i],i,5,360,5)]], restart)$
+@end example
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{cylinder}
+@defvr {Object option} cylinder [cylinder, @var{options}]
+
+Creates a regular prism with height equal to 1 and a hexagonal base with
+vertices 0.5 units away from the axis. Options
+@mxref{object_height,height} and @mxref{object_radius,radius} can be
+used to change those defaults and option @mxref{object_resolution,
+resolution} can be used to change the number of edges of the base;
+higher values will make it look like a cylinder. The default height can
+be changed with the option @mxref{object_height,height}. By default, the
+axis will be along the x axis, the middle point of the axis will be at
+the origin and the vertex on the positive side of the x axis; use
+options @mxref{object_orientation,orientation} and
+@mxref{object_center,center} to change those defaults.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{cube}
+@defvr {Object option} cube [cube, @var{options}]
+
+A cube with edges of 1 unit and faces parallel to the xy, xz and yz
+planes. The lengths of the three edges can be changed with options
+@mxref{object_xlength,xlength}, @mxref{object_ylength,ylength} and
+@mxref{object_zlength,zlength}, turning it into a rectangular box and
+the faces can be rotated with option @mxrefdot{object_orientation,orientation}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{sphere}
+@defvr {Object option} sphere [sphere, @var{options}]
+
+A sphere with default radius of 0.5 units and center at the origin. 
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_options}
+@subsection Scene object's options
+
+@anchor{object_position}
+@defvr {Object option} position [position, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's position. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_center}
+@defvr {Object option} center [center, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's geometric center, with respect to its
+@mxrefdot{object_position, position} @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas. In a cylinder, cone
+or cube it will be at half its height and in a sphere at its center.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_origin}
+@defvr {Object option} origin [origin, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's origin, with respect to which its
+other dimensions are defined. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_resolution}
+@defvr {Object option} resolution [resolution, @var{number}]
+Default value: @code{6}
+
+@var{number} must be a integer greater than 2 that sets the number of
+edges in the base of a cone or a cylinder.
+ 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_height}
+@defvr {Object option} height [height, @var{value}]
+Default value: @code{1}
+
+@var{value} must be a positive number which sets the height of a cone
+or a cylinder.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_radius}
+@defvr {Object option} radius [radius, @var{value}]
+Default value: @code{0.5}
+
+The radius or a sphere or the distance from the axis to the vertices in
+a cylinder or a cone. @var{value} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_xlength}
+@defvr {Object option} xlength [xlength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in the x direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_ylength}
+@defvr {Object option} ylength [ylength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in the y direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_zlength}
+@defvr {Object option} zlength [zlength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in z the direction. @var{length} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_orientation}
+@defvr {Object option} orientation [orientation, @var{angles}]
+Default value: @code{[0, 0, 0]}
+
+Three angles by which the object will be rotated with respect to the
+three axis. @var{angles} can be a list with 3 real numbers, or 3 real
+numbers separated by commas. @strong{Example}: @code{[0, 0, 90]} rotates
+the x axis of the object to the y axis of the reference frame.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_scale}
+@defvr {Object option} scale [scale, @var{factors}]
+Default value: @code{[1, 1, 1]}
+
+Three numbers by which the object will be scaled with respect to the
+three axis. @var{factors} can be a list with 3 real numbers, or 3 real
+numbers separated by commas. @strong{Example}: @code{[2, 0.5, 1]}
+enlarges the object to twice its size in the x direction, reduces the
+dimensions in the y direction to half and leaves the z dimensions
+unchanged.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_starttheta}
+@defvr {Object option} starttheta [starttheta, @var{angle}]
+Default value: @code{0}
+
+In a sphere theta is the angle on the horizontal plane (longitude),
+measured from the positive part of the x axis. @var{angle} must be a
+number between 0 and 360 that sets the initial value of theta at which
+the surface will start. A value bigger than 0 will eliminate a part of
+the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_endtheta}
+@defvr {Object option} endtheta [endtheta, @var{angle}]
+Default value: @code{360}
+
+In a sphere theta is the angle on the horizontal plane (longitude),
+measured from the positive part of the x axis. @var{angle} must be a
+number between 0 and 360 that sets the final value of theta at which the
+surface will start. A value smaller than 360 will eliminate a part of
+the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_thetaresolution}
+@defvr {Object option} thetaresolution [thetaresolution, @var{num}]
+Default value: @code{}
+
+The number of sub-intervals into which the theta angle interval from
+@mxref{object_starttheta,starttheta} to @mxref{object_endtheta,endtheta}
+will be divided. @var{num} must be a positive integer.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_startphi}
+@defvr {Object option} startphi [startphi, @var{angle}]
+Default value: @code{0}
+
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the initial value of phi at
+which the surface will start. A value bigger than 0 will eliminate a
+part of the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_endphi}
+@defvr {Object option} endphi [endphi, @var{angle}]
+Default value: @code{180}
+
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the initial value of phi at
+which the surface will start. A value smaller than 180 will eliminate a
+part of the sphere's surface.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_phiresolution}
+@defvr {Object option} phiresolution [phiresolution, @var{num}]
+Default value: @code{}
+
+The number of sub-intervals into which the phi angle interval from
+@mxref{object_startphi,starttheta} to @mxref{object_endphi,endphi}
+will be divided. @var{num} must be a positive integer.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_color}
+@defvr {Object option} color [color, @var{colorname}]
+Default value: @code{white}
+
+The color of the object. It accepts color names or hexadecimal
+red-green-blue strings (see the @mref{color} option of plot2d).
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_capping}
+@defvr {Object option} capping [capping, @var{number}]
+Default value: @code{1}
+
+In a cone or a cylinder, it defines whether the base (or bases) will be
+shown. A value of 1 for @var{number} makes the base visible and a value
+of 0 makes it invisible.
+ 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_surface}
+@defvr {Object option} surface [surface]
+
+The surfaces of the object will be rendered. This is the default
+behavior.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_wireframe}
+@defvr {Object option} wireframe  [wireframe]
+
+Only the edges of the triangulation used to render the surface will be
+shown. @strong{Example}: @code{[cube, [wireframe]]}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_points}
+@defvr {Object option} points  [points]
+
+Only the vertices of the triangulation used to render the surface will
+be shown. @strong{Example}: @code{[sphere, [points]]}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_track}
+@defvr {Object option} track [track, @var{positions}]
+
+@var{positions} should be a list of points. When the play button is
+pressed, the object position will be changed sequentially through all
+the points in the list, at intervals of time given by the option
+@mxrefcomma{scene_tstep,tstep} leaving behind a track of the object's
+trajectory. The rewind button can be used to point at the start of the
+sequence making the animation restart after the play button is pressed
+again.
+
+@strong{Example}. This will show the trajectory of a ball thrown with
+speed of 5 m/s, at an angle of 45 degrees, when the air resistance can
+be neglected:
+
+@example
+(%i1) p: makelist ([0,4*t,4*t- 9.8*t^2/2], t, 0, 0.82, 0.01)$
+
+(%i2) ball: [sphere, [radius,0.1], [color,red], [track,p]]$
+
+(%i3) ground: [cube, [xlength,2], [ylength,4], [zlength,0.2],
+      [position,0,1.5,-0.2],[color,green]]$
+
+(%i4) scene (ball, ground)$
+@end example
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_animation}
+@defvr {Object option} animation [animation, @var{property}, @var{positions}]
+
+@var{property} should be one of the following 4 object's properties:
+@mxrefcomma{object_origin,origin} @mxrefcomma{object_scale,scale}
+@mxref{object_position,position} or
+@mxref{object_orientation,orientation} and @var{positions} should be a
+list of points. When the play button is pressed, the object property
+will be changed sequentially through all the values in the list, at
+intervals of time given by the option @mxref{scene_tstep,tstep}. The
+rewind button can be used to point at the start of the sequence making
+the animation restart after the play button is pressed again.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr

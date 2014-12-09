@@ -1,0 +1,45 @@
+load("Eulix.mac")$
+
+Start:elapsed_real_time()$
+
+n:1000$ p:10$
+rx:2.4E-5$ rv:7.4E-4$
+sx:0.02$ sy:0.265$
+ginf:0.01$
+vg:100$ sv:0$
+g(v):= ginf*v/(v+100)$
+f(v):= 20.0*v/(v+1.0)$
+
+debugmode(true)$
+/* :break Eulix$ */
+
+[Solution,[tlist,ylist]]: Eulix([p - sx*x -rx*x*v +g(v)*x,
+                                 rx*x*v -sy*y -g(v)*y,
+                                 n*g(v)*y +f(v) -sv*v -(rx+rv)*x*v],[x,y,v],
+                                 [1000.0,0,1.0],[t,0.0,12*365+4,1,v-t-245.0],
+                                 initial_step_size=1,absolute_tolerance=1e-8,logging=true,
+                                 combined_t_y_list=false)$
+print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model")$
+print("Solution triggered by condition",first(Solution)," at time ",second(Solution),
+      "  and state:",third(Solution))$
+t1:second(Solution)$
+y1init:third(Solution)$
+[tlist2,ylist2]: Eulix([p - sx*x -rx*x*v +g(v)*x,
+                        rx*x*v -sy*y -g(v)*y,                                                                          
+                        n*g(v)*y +f(v) -sv*v -(rx+rv)*x*v],
+                        [x,y,v],y1init,[t,t1,12*365+4,1],         
+                        absolute_tolerance=1e-8,logging=true,
+                        combined_t_y_list=false)$                                     
+
+tlist:append(tlist,tlist2)$
+ylist:append(ylist,ylist2)$
+tlen:length(tlist)$
+print("tlist:",tlist[tlen],"   ylist:",ylist[tlen])$
+log10(z):= if z > 0 then log(z)/log(10) else 0$
+tlist:tlist/365.4$  t1:t1/365.4$
+plot2d([[discrete,tlist,map(lambda([z],log10(z[1])),ylist)],[discrete,tlist,map(lambda([z],log10(z[2])),ylist)],
+        [discrete,tlist,map(lambda([z],log10(z[3])),ylist)],
+        [discrete,[t1,t1],[0,5]]],
+       [legend,"healthy","infected","AIDS-viruses","root location"],[title,"An AIDS model"])$
+read("enter ; or $ to quit");
+

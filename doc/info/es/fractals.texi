@@ -1,6 +1,6 @@
 @c English version: 2011-03-27
 @menu
-* Introducci@'on a fractals::
+* Introducción a fractals::
 * Definiciones para IFS fractals::
 * Definiciones para fractales complejos::
 * Definiciones para cops de Koch::
@@ -8,13 +8,13 @@
 @end menu
 
 
-@node Introducci@'on a fractals, Definiciones para IFS fractals, fractals, fractals
-@section Introducci@'on a fractals
+@node Introducción a fractals, Definiciones para IFS fractals, fractals, fractals
+@section Introducción a fractals
 
 Este paquete define algunos fractales:
 
-- con IFS (Iterated Function System) aleatorias: tri@'angulo de  Sierpinsky, un
-@'arbol y un helecho.
+- con IFS (Iterated Function System) aleatorias: triángulo de  Sierpinsky, un
+árbol y un helecho.
 
 - Fractales complejos: conjuntos de Mandelbrot y de Julia.
 
@@ -22,33 +22,33 @@ Este paquete define algunos fractales:
 
 - Funciones de Peano: funciones de Sierpinski y Hilbert.
 
-Autor: Jos@'e Ramm@'{@dotless{i}}rez Labrador.
+Autor: José Rammírez Labrador.
 
 Para preguntas, sugerencias y fallos,
 
 pepe DOT ramirez AAATTT uca DOT es
 
-@node Definiciones para IFS fractals, Definiciones para fractales complejos, Introducci@'on a fractals, fractals
+@node Definiciones para IFS fractals, Definiciones para fractales complejos, Introducción a fractals, fractals
 @section Definiciones para IFS fractals
 
-Algunos fractales se pueden generar por medio de la aplicaci@'on iterativa
-de transformaciones afines contractivas de forma aleatoria; v@'ease
+Algunos fractales se pueden generar por medio de la aplicación iterativa
+de transformaciones afines contractivas de forma aleatoria; véase
 
 Hoggar S. G., "Mathematics for computer graphics", Cambridge University
 Press 1994.
 
 Definimos una lista con varias transformaciones afines contractivas,
 luego las vamos seleccionando de forma aleatoria y recursiva. La
-probabilidad de selecci@'on de una transformaci@'on debe estar relacionada
-con la raz@'on de contracci@'on.
+probabilidad de selección de una transformación debe estar relacionada
+con la razón de contracción.
 
 Se pueden cambiar las transformaciones y encontrar nuevos fractales.
 
 
-@deffn {Funci@'on} sierpinskiale (@var{n})
+@deffn {Función} sierpinskiale (@var{n})
 
-Tri@'angulo de Sierpinski: 3 aplicaciones contractivas; constante de contracci@'on de 0.5
-y traslaciones. Todas las aplicaciones tienen la misma constante de contracci@'on. El argumento
+Triángulo de Sierpinski: 3 aplicaciones contractivas; constante de contracción de 0.5
+y traslaciones. Todas las aplicaciones tienen la misma constante de contracción. El argumento
 @var{n} debe ser suficientemente alto, 10000 o mayor.
 
 Ejemplo:
@@ -60,10 +60,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} treefale (@var{n})
+@deffn {Función} treefale (@var{n})
 
 3 aplicaciones contractivas, todas ellas con el mismo coeficiente
-de contracci@'on. El argumento @var{n} debe ser suficientemente alto, 10000 o mayor.
+de contracción. El argumento @var{n} debe ser suficientemente alto, 10000 o mayor.
 
 Ejemplo:
 
@@ -74,10 +74,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} fernfale (@var{n})
+@deffn {Función} fernfale (@var{n})
 
-4 aplicaciones contractivas, cuyas probabilidades de selecci@'on deben estar
-relacionadas con su constante de contracci@'on. El argumento @var{n} debe ser
+4 aplicaciones contractivas, cuyas probabilidades de selección deben estar
+relacionadas con su constante de contracción. El argumento @var{n} debe ser
 suficientemente alto, 10000 o mayor.
 
 Ejemplo:
@@ -92,12 +92,12 @@ Ejemplo:
 @node Definiciones para fractales complejos, Definiciones para cops de Koch, Definiciones para IFS fractals, Top
 @section Definiciones para fractales complejos
 
-@deffn {Funci@'on} mandelbrot_set (@var{x}, @var{y})
+@deffn {Función} mandelbrot_set (@var{x}, @var{y})
 
 Conjunto de Mandelbrot.
 
-Esta funci@'on debe realizar muchas operaciones y puede tardar bastante
-tiempo en ejecutarse, tiempo que tambi@'en depende del n@'umero de puntos
+Esta función debe realizar muchas operaciones y puede tardar bastante
+tiempo en ejecutarse, tiempo que también depende del número de puntos
 de la malla.
 
 Ejemplo:
@@ -114,12 +114,12 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} julia_set (@var{x}, @var{y})
+@deffn {Función} julia_set (@var{x}, @var{y})
 
 Conjuntos de Julia.
 
-Esta funci@'on debe realizar muchas operaciones y puede tardar bastante
-tiempo en ejecutarse, tiempo que tambi@'en depende del n@'umero de puntos
+Esta función debe realizar muchas operaciones y puede tardar bastante
+tiempo en ejecutarse, tiempo que también depende del número de puntos
 de la malla.
 
 Ejemplo:
@@ -132,7 +132,7 @@ Ejemplo:
                 [grid, 150, 150])$
 @end example
 
-V@'ease tambi@'en @code{julia_parameter}.
+Véase también @code{julia_parameter}.
 @end deffn
 
 
@@ -141,7 +141,7 @@ V@'ease tambi@'en @code{julia_parameter}.
 @defvr {Variable opcional} julia_parameter
 Valor por defecto: @code{%i}
 
-Par@'ametro complejo para fractales de Julia. Su valor por defecto es @code{%i},
+Parámetro complejo para fractales de Julia. Su valor por defecto es @code{%i},
 y otros que se sugieren son: @code{-.745+%i*.113002}, @code{-.39054-%i*.58679},
 @code{-.15652+%i*1.03225}, @code{-.194+%i*.6557} y @code{.011031-%i*.67037}.
 
@@ -151,14 +151,14 @@ y otros que se sugieren son: @code{-.745+%i*.113002}, @code{-.39054-%i*.58679},
 
 
 
-@deffn {Funci@'on} julia_sin (@var{x}, @var{y})
+@deffn {Función} julia_sin (@var{x}, @var{y})
 
-Mientras que la funci@'on @code{julia_set} implementa la transformaci@'on 
-@code{julia_parameter+z^2}, la funci@'on @code{julia_sin} implementa 
-@code{julia_parameter*sin(z)}. V@'ease el c@'odigo fuente para m@'as detalles.
+Mientras que la función @code{julia_set} implementa la transformación 
+@code{julia_parameter+z^2}, la función @code{julia_sin} implementa 
+@code{julia_parameter*sin(z)}. Véase el código fuente para más detalles.
 
-Este programa es lento porque calcula muchos senos; el tiempo de ejecuci@'on 
-tambi@'en depende del n@'umero de puntos de la malla.
+Este programa es lento porque calcula muchos senos; el tiempo de ejecución 
+también depende del número de puntos de la malla.
 
 Ejemplo:
 
@@ -171,7 +171,7 @@ Ejemplo:
                 [grid, 150, 150])$
 @end example
 
-V@'ease tambi@'en @code{julia_parameter}.
+Véase también @code{julia_parameter}.
 @end deffn
 
 @node Definiciones para cops de Koch, Definiciones para curvas de Peano, Definiciones para fractales complejos, Top
@@ -179,13 +179,13 @@ V@'ease tambi@'en @code{julia_parameter}.
 
 
 
-@deffn {Funci@'on} snowmap (@var{ent}, @var{nn})
+@deffn {Función} snowmap (@var{ent}, @var{nn})
 
-Copos de Koch. La funci@'on @code{snowmap} dibuja el copo de Koch
-sobre los v@'ertices de un pol@'{@dotless{i}}gono convexo inicial del
-plano complejo. La orientaci@'on del pol@'{@dotless{i}}gono es importante.
-El argumento @var{nn} es el n@'umero de recursividades de la transformaci@'on
-de Koch, el cual debe ser peque@~no (5 o 6).
+Copos de Koch. La función @code{snowmap} dibuja el copo de Koch
+sobre los vértices de un polígono convexo inicial del
+plano complejo. La orientación del polígono es importante.
+El argumento @var{nn} es el número de recursividades de la transformación
+de Koch, el cual debe ser pequeño (5 o 6).
 
 Ejemplos:
 
@@ -207,14 +207,14 @@ Ejemplos:
 @node Definiciones para curvas de Peano,  , Definiciones para cops de Koch, fractals
 @section Definiciones para curvas de Peano
 
-Funciones continuas que cubren un @'area. Aviso: el n@'umero de puntos
+Funciones continuas que cubren un área. Aviso: el número de puntos
 crece exponencialmente con @var{n}.
 
 
 
-@deffn {Funci@'on} hilbertmap (@var{nn})
+@deffn {Función} hilbertmap (@var{nn})
 
-Curva de Hilbert. El argumento @var{nn} debe ser peque@~no (por ejemplo, 5).
+Curva de Hilbert. El argumento @var{nn} debe ser pequeño (por ejemplo, 5).
 Maxima se puede detener si @var{nn} es 7 o mayor.
 
 Ejemplo:
@@ -225,9 +225,9 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} sierpinskimap (@var{nn})
+@deffn {Función} sierpinskimap (@var{nn})
 
-Curva de Sierpinski. El argumento @var{nn} debe ser peque@~no (por ejemplo, 5).
+Curva de Sierpinski. El argumento @var{nn} debe ser pequeño (por ejemplo, 5).
 Maxima se puede detener si @var{nn} es 7 o mayor.
 
 Ejemplo:
@@ -237,4 +237,5 @@ Ejemplo:
 (%i2) plot2d([discrete,sierpinskimap(6)])$
 @end example
 @end deffn
+
 

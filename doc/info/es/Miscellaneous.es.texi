@@ -1,18 +1,16 @@
 @c English version 2013-08-03
 @menu
-* Introducci@'on a la miscel@'anea de opciones::  
+* Introducción a la miscelánea de opciones::  
 * Share::  
-* Funciones y variables para la miscel@'anea de opciones::
+* Funciones y variables para la miscelánea de opciones::
 @end menu
 
-@node Introducci@'on a la miscel@'anea de opciones, Share, Miscel@'anea de opciones, Miscel@'anea de opciones
+@node Introducción a la miscelánea de opciones, Share, Miscelánea de opciones, Miscelánea de opciones
 
-@section Introducci@'on a la miscel@'anea de opciones
+@section Introducción a la miscelánea de opciones
 
-En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento
-de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
-
-
+En esta sección se comentan varias opciones que tienen un efecto global sobre le comportamiento
+de Maxima. También se comentan varias listas, como la de las funciones definidas por el usuario.
 
 
 
@@ -20,19 +18,21 @@ de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definid
 
 
 
-@node Share, Funciones y variables para la miscel@'anea de opciones, Introducci@'on a la miscel@'anea de opciones, Miscel@'anea de opciones
+
+
+@node Share, Funciones y variables para la miscelánea de opciones, Introducción a la miscelánea de opciones, Miscelánea de opciones
 
 @section Share
 
-El directorio "share" de Maxima contiene programas y ficheros de inter@'es para
-los usuarios de Maxima, pero no forman parte del n@'ucleo de Maxima. Estos programas 
+El directorio "share" de Maxima contiene programas y ficheros de interés para
+los usuarios de Maxima, pero no forman parte del núcleo de Maxima. Estos programas 
 se cargan en memoria con llamadas a las funciones @code{load} o @code{setup_autoload}.
 
-El c@'odigo @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del directorio 
+El código @code{:lisp *maxima-sharedir*} muestra la localización del directorio 
 "share" dentro del sistema de ficheros del usuario.
 
-El c@'odigo @code{printfile ("share.usg")} muestra una lista actualizada de paquetes 
-en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente
+El código @code{printfile ("share.usg")} muestra una lista actualizada de paquetes 
+en "share". Los usuarios pueden encontrar más información accediendo directamente
 a los contenidos del directorio "share".
 
 
@@ -43,12 +43,12 @@ a los contenidos del directorio "share".
 
 
 
-@node Funciones y variables para la miscel@'anea de opciones,  , Share, Miscel@'anea de opciones
-@section Funciones y variables para la miscel@'anea de opciones
+@node Funciones y variables para la miscelánea de opciones,  , Share, Miscelánea de opciones
+@section Funciones y variables para la miscelánea de opciones
 
 
 @defvr {Variable del sistema} askexp
-Cuando se invoca a @code{asksign}, la expresi@'on que se va 
+Cuando se invoca a @code{asksign}, la expresión que se va 
 a analizar es precisamente @code{askexp}.
 
 @end defvr
@@ -58,7 +58,7 @@ a analizar es precisamente @code{askexp}.
 @defvr {Variable optativa} genindex
 Valor por defecto: @code{i}
 
-La variable @code{genindex} es el prefijo alfab@'etico utilizado para generar la siguiente variable de sumaci@'on en caso de necesidad.
+La variable @code{genindex} es el prefijo alfabético utilizado para generar la siguiente variable de sumación en caso de necesidad.
 
 @end defvr
 
@@ -67,33 +67,33 @@ La variable @code{genindex} es el prefijo alfab@'etico utilizado para generar la
 @defvr {Variable optativa} gensumnum
 Valor por defecto: 0
 
-La variable @code{gensumnum} es el sufijo num@'erico utilizado para generar la siguiente variable de sumaci@'on. Si vale  @code{false} entonces el @'{@dotless{i}}ndice consistir@'a solamente de  @code{genindex}, sin sufijo num@'erico.
+La variable @code{gensumnum} es el sufijo numérico utilizado para generar la siguiente variable de sumación. Si vale  @code{false} entonces el índice consistirá solamente de  @code{genindex}, sin sufijo numérico.
 @end defvr
 
 
 
 
-@deffn  {Funci@'on} gensym ()
-@deffnx {Funci@'on} gensym (@var{x})
+@deffn  {Función} gensym ()
+@deffnx {Función} gensym (@var{x})
 
-@code{gensym()} crea y devuelve una nueva s@'{@dotless{i}}mbolo o
+@code{gensym()} crea y devuelve una nueva símbolo o
 variable sin valor asignado.
 
-El nombre del nuevo s@'{@dotless{i}}mbolo est@'a formado por la
-concatenaci@'on de un prefijo, cuyo valor por defecto es "g", y de
-un sufijo, el cual es la representaci@'on decimal de un n@'umero que
+El nombre del nuevo símbolo está formado por la
+concatenación de un prefijo, cuyo valor por defecto es "g", y de
+un sufijo, el cual es la representación decimal de un número que
 coincide, por defecto, con el valor de un contador interno de Lisp.
 
 En caso de suministrar el argumento @var{x}, siendo este una cadena,
-se utilizar@'a como prefijo en lugar de "g", lo cual tendr@'a efecto
-s@'olo para esta llamada a @code{gensym}Â·
+se utilizará como prefijo en lugar de "g", lo cual tendrá efecto
+sólo para esta llamada a @code{gensym}Â·
 
-En caso de suministrar el argumento @var{x}, siendo este un n@'umero
-entero, se utilizar@'a como sufijo en lugar del contador interno de
-Lisp, lo cual tendr@'a efecto s@'olo para esta llamada a @code{gensym}Â·
+En caso de suministrar el argumento @var{x}, siendo este un número
+entero, se utilizará como sufijo en lugar del contador interno de
+Lisp, lo cual tendrá efecto sólo para esta llamada a @code{gensym}Â·
 
-Si no se suministra el sufijo en forma expl@'{@dotless{i}}cita, y s@'olo
-en este caso, el contador interno sufrir@'a un incremento despu@'es de
+Si no se suministra el sufijo en forma explícita, y sólo
+en este caso, el contador interno sufrirá un incremento después de
 haber sido utilizado.
 
 Ejemplos:
@@ -119,46 +119,46 @@ Ejemplos:
 Valor por defecto: @code{false}
 
 Los autores de paquetes que utilizan @code{save} o @code{translate}
-para crear librer@'{@dotless{i}}as para otros usuarios pueden hacer la asignaci@'on
-@code{packagefile: true} para prevenir que se a@~nada informaci@'on a las listas
-con informaci@'on del sistema de Maxima, como @code{values} o @code{functions}.
+para crear librerías para otros usuarios pueden hacer la asignación
+@code{packagefile: true} para prevenir que se añada información a las listas
+con información del sistema de Maxima, como @code{values} o @code{functions}.
 @end defvr
 
 
 
-@deffn {Funci@'on} remvalue (@var{nombre_1}, ..., @var{nombre_n})
-@deffnx {Funci@'on} remvalue (all)
+@deffn {Función} remvalue (@var{nombre_1}, ..., @var{nombre_n})
+@deffnx {Función} remvalue (all)
 
-Elimina del sistema los valores de las variable de usuario @var{nombre_1}, ..., @var{nombre_n} (incluso las que tienen sub@'{@dotless{i}}ndices).
+Elimina del sistema los valores de las variable de usuario @var{nombre_1}, ..., @var{nombre_n} (incluso las que tienen subíndices).
 
-La llamada @code{remvalue (all)} elimina los valores de todas las variables en @code{values}, la lista de todas las variables a las que el usuario a dado alg@'un nombre, pero no de aqu@'ellas a las que Maxima asigna autom@'aticamente un valor.
+La llamada @code{remvalue (all)} elimina los valores de todas las variables en @code{values}, la lista de todas las variables a las que el usuario a dado algún nombre, pero no de aquéllas a las que Maxima asigna automáticamente un valor.
 
-V@'ease tambi@'en @code{values}.
+Véase también @code{values}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} rncombine (@var{expr})
+@deffn {Función} rncombine (@var{expr})
 
-Transforma @var{expr} combinando todos los t@'erminos de @var{expr} que tengan denominadores id@'enticos o que difieran unos de otros por factores num@'ericos. Su comportamiento es diferente al de la funci@'on @code{combine}, que combina t@'erminos con iguales denominadores.
+Transforma @var{expr} combinando todos los términos de @var{expr} que tengan denominadores idénticos o que difieran unos de otros por factores numéricos. Su comportamiento es diferente al de la función @code{combine}, que combina términos con iguales denominadores.
 
-Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aqu@'ellos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores num@'ericos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
+Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aquéllos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores numéricos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
 
-Antes de utilizar esta funci@'on ejec@'utese @code{load(rncomb)}.
+Antes de utilizar esta función ejecútese @code{load(rncomb)}.
 @end deffn
 
 
 
 
 
-@deffn {Funci@'on} setup_autoload (@var{nombre_fichero}, @var{funci@'on_1}, ..., @var{funci@'on_n})
+@deffn {Función} setup_autoload (@var{nombre_fichero}, @var{función_1}, ..., @var{función_n})
 
-Especifica que si alguna de las funciones @var{function_1}, ..., @var{function_n} es referenciada pero todav@'{@dotless{i}}a no ha sido definida, se cargar@'a @var{nombre_fichero} mediante una llamada a @code{load}. El @var{nombre_fichero} normalmente contendr@'a las definiciones de las funciones especificadas, aunque esto no es imperativo.
+Especifica que si alguna de las funciones @var{function_1}, ..., @var{function_n} es referenciada pero todavía no ha sido definida, se cargará @var{nombre_fichero} mediante una llamada a @code{load}. El @var{nombre_fichero} normalmente contendrá las definiciones de las funciones especificadas, aunque esto no es imperativo.
 
-La funci@'on @code{setup_autoload} no opera con arreglos de funciones.
+La función @code{setup_autoload} no opera con arreglos de funciones.
 
-La funci@'on @code{setup_autoload} no eval@'ua sus argumentos.
+La función @code{setup_autoload} no evalúa sus argumentos.
 
 Ejemplo:
 
@@ -188,11 +188,11 @@ Warning - you are redefining the Macsyma function legendre_p
 
 
 
-@deffn  {Funci@'on} tcl_output (@var{list}, @var{i0}, @var{skip})
-@deffnx {Funci@'on} tcl_output (@var{list}, @var{i0})
-@deffnx {Funci@'on} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
+@deffn  {Función} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Función} tcl_output (@var{list}, @var{i0})
+@deffnx {Función} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
 
-Imprime los elementos de una lista encerr@'andolos con llaves @code{@{ @}},
+Imprime los elementos de una lista encerrándolos con llaves @code{@{ @}},
 de forma apropiada para ser utilizado en un programa en el lenguaje Tcl/Tk.
 
 @code{tcl_output (@var{list}, @var{i0}, @var{skip})}
@@ -203,7 +203,7 @@ elementos @code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
 equivale a @code{tcl_output (@var{list}, @var{i0}, 2)}.
 
 @code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
-imprime los @var{i}-@'esimos elementos de @var{list_1}, @dots{}, @var{list_n}.
+imprime los @var{i}-ésimos elementos de @var{list_1}, @dots{}, @var{list_n}.
 
 Ejemplos:
 
@@ -241,4 +241,5 @@ Ejemplos:
  @}
 @end example
 @end deffn
+
 

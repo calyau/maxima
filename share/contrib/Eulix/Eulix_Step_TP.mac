@@ -1,0 +1,78 @@
+load("Eulix.mac")$
+
+/* 
+  y' =  2 * t * y * log(z)    y(0)=1
+  z' = -2 * t * z * log(y)    z(0)=%e
+  
+  exact solution  y(t)=exp(sin(t^2))  z(t)=exp(cos(t^2))
+*/
+
+Rhs(t,y):= matrix([ 2*t*y[1,1]*log(y[2,1])],
+                  [-2*t*y[2,1]*log(y[1,1])] )$
+
+define(Rhs_Time('t,'y),diff(Rhs('t,'y),'t))$
+
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
+   buildq([J,t:X],lambda([t,y],J))
+)$
+Rhs_Jac:gen_jacobian(Rhs,t,2)$
+
+compile(Rhs,Rhs_Time)$
+
+solution(t):= matrix([exp(sin(t^2))],[exp(cos(t^2))])$
+high_precision: true$
+
+if high_precision then (
+  fpprec:40,
+  t:bfloat(0.1),
+  y0:solution(t),
+  atol:1e-30,  rtol:1e-28,
+  h:1b-3,
+  me:20,
+  if true then
+    mass_matrix:bfloat(ident(2)) /* must be either 'false or a square mass matrix 
+                                 = ident(dim) for an ODE with trivial mass matrix */
+  else mass_matrix:false
+
+) else (
+
+  t:0.1,
+  y0:solution(t),
+  atol:1e-10,  rtol:1e-8,
+  h:0.1,
+  mass_matrix: ident(2), /* must be either 'false or a square mass matrix 
+                         = ident(dim) for an ODE with trivial mass matrix */
+  me:6
+)$
+
+y: copymatrix(y0)$
+t_end: sqrt(float(%pi));
+Check_Parm:true$
+Start:elapsed_real_time()$
+dense_out:true$
+debugmode:true$
+
+while t < t_end do (
+  h: min(h,t_end-t),
+  [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me, dense_output=dense_out,
+                                      absolute_tolerance=atol,relative_tolerance=rtol,
+                                      'mass_matrix=mass_matrix),
+  Check_Parm: false,
+  h: tn-t,  /* <<<< in case of reject within Eulix */
+  if failed then (
+    printf(true,"Eulix failed at t: ~7,4f~%",t),
+    throw('failed)
+  ),
+  if dense_out then (  /* dense_output=true */
+    printf(true,"t: ~7,4f  mid interval         err: ~13,6e ~%",t+0.5*h,
+                     mat_norm(Eulix_Dense_Out(-0.5*h,DO_DQ)-solution(t+0.5*h),'inf)),
+                 
+    y:copymatrix(DO_DQ[1])
+  ) else y:copymatrix(DO_DQ),
+  printf(true,"t: ~7,4f hn: ~10,8f  me:~2d err: ~13,6e ~%",tn,hn,me,
+                     mat_norm(y-solution(tn),'inf)),
+  t: tn,  h: hn
+)$
+
+

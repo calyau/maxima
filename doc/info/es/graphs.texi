@@ -1,11 +1,11 @@
 @c English version: 2011-06-11
 @menu
-* Introducci@'on a graphs::
+* Introducción a graphs::
 * Funciones y variables para graphs::
 @end menu
 
-@node Introducci@'on a graphs, Funciones y variables para graphs, graphs, graphs
-@section Introducci@'on a graphs
+@node Introducción a graphs, Funciones y variables para graphs, graphs, graphs
+@section Introducción a graphs
 
 El paquete @code{graphs} permite trabajar con estructuras de grafos y digrafos en
 Maxima. Tanto los grafos como los digrafos son de estructura simples (no 
@@ -14,45 +14,45 @@ una arista dirigida desde @var{u} hasta @var{v} y otra desde @var{v}
 hasta @var{u}.
 
 Los grafos se representan internamente como listas de adyacencia y se
-implementan como estructuras de lisp. Los v@'ertices se identifican 
-por sus n@'umeros de identificaci@'n (siempre enteros). Las aristas/arcos
+implementan como estructuras de lisp. Los vértices se identifican 
+por sus números de identificaci@'n (siempre enteros). Las aristas/arcos
 se representan por listas de longitud 2. Se pueden asignar etiquetas a los
-v@'ertices de los grafos/digrafos y pesos a sus aristas/arcos.
+vértices de los grafos/digrafos y pesos a sus aristas/arcos.
 
-La funci@'on @code{draw_graph} dibuja grafos siguiendo un criterio r@'{@dotless{i}}gido
-de posicionamiento de los v@'ertices. Tambi@'en puede hacer uso del programa graphviz
-disponible en @url{http://www.graphviz.org}. La funci@'on @code{draw_graph} utiliza el paquete 
+La función @code{draw_graph} dibuja grafos siguiendo un criterio rígido
+de posicionamiento de los vértices. También puede hacer uso del programa graphviz
+disponible en @url{http://www.graphviz.org}. La función @code{draw_graph} utiliza el paquete 
 @code{draw} de Maxima.
 
-Para hacer uso de este paquete, ejec@'utese primero @code{load(graphs)}.
+Para hacer uso de este paquete, ejecútese primero @code{load(graphs)}.
 
 
-@node Funciones y variables para graphs, , Introducci@'on a graphs, graphs
+@node Funciones y variables para graphs, , Introducción a graphs, graphs
 @section Funciones y variables para graphs
 
 @subsection Construyendo grafos
 
-@deffn {Funci@'on} create_graph (@var{v_list}, @var{e_list})
-@deffnx {Funci@'on} create_graph (@var{n}, @var{e_list})
-@deffnx {Funci@'on} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+@deffn {Función} create_graph (@var{v_list}, @var{e_list})
+@deffnx {Función} create_graph (@var{n}, @var{e_list})
+@deffnx {Función} create_graph (@var{v_list}, @var{e_list}, @var{directed})
 
-Crea un nuevo grafo sobre el conjunto de v@'ertices @var{v_list} con aristas
+Crea un nuevo grafo sobre el conjunto de vértices @var{v_list} con aristas
 @var{e_list}.
 
-@var{v_list} es una lista de v@'ertices (@code{[v1, v2,..., vn]}) o una lista de
-v@'ertices junto con sus respectivas etiquetas (@code{[[v1,l1], [v2,l2],..., [vn,ln]]}).
+@var{v_list} es una lista de vértices (@code{[v1, v2,..., vn]}) o una lista de
+vértices junto con sus respectivas etiquetas (@code{[[v1,l1], [v2,l2],..., [vn,ln]]}).
 
-@var{n} es el n@'umero de v@'ertices, los cuales se identificar@'an desde
+@var{n} es el número de vértices, los cuales se identificarán desde
 0 hasta n-1.
 
 @var{e_list} es una lista de aristas (@code{[e1, e2,..., em]}) o una lista de
 aristas con sus respectivas ponderaciones (@code{[[e1, w1], ..., [em, wm]]}).
 
-Si @var{directed} is not @code{false}, se devolver@'a un grafo orientado.
+Si @var{directed} is not @code{false}, se devolverá un grafo orientado.
 
 Ejemplos:
 
-Crea un ciclo de 3 v@'ertices.
+Crea un ciclo de 3 vértices.
 
 @c ===beg===
 @c load (graphs)$
@@ -70,7 +70,7 @@ Adjacencies:
   1 :  3  2
 @end example
 
-Crea un ciclo de 3 v@'ertices y aristas ponderadas:
+Crea un ciclo de 3 vértices y aristas ponderadas:
 
 @c ===beg===
 @c load (graphs)$
@@ -124,12 +124,12 @@ Adjacencies:
 
 
 
-@deffn {Funci@'on} copy_graph (@var{g})
+@deffn {Función} copy_graph (@var{g})
 Devuelve una copia del grafo @var{g}.
 @end deffn
 
-@deffn {Funci@'on} circulant_graph (@var{n}, @var{d})
-Devuelve un grafo cirlulante de par@'ametros @var{n} y @var{d}.
+@deffn {Función} circulant_graph (@var{n}, @var{d})
+Devuelve un grafo cirlulante de parámetros @var{n} y @var{d}.
 
 Ejemplo:
 
@@ -157,48 +157,48 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} clebsch_graph ()
+@deffn {Función} clebsch_graph ()
 Devuelve el grafo de Clebsch.
 @end deffn
 
-@deffn {Funci@'on} complement_graph (@var{g})
+@deffn {Función} complement_graph (@var{g})
 Devuelve el complemento del grafo @var{g}.
 @end deffn
 
-@deffn {Funci@'on} complete_bipartite_graph (@var{n}, @var{m})
-Devuelve el grafo bipartido completo de @var{n+m} v@'ertices.
+@deffn {Función} complete_bipartite_graph (@var{n}, @var{m})
+Devuelve el grafo bipartido completo de @var{n+m} vértices.
 @end deffn
 
-@deffn {Funci@'on} complete_graph (@var{n})
-Devuelve el grafo completo de @var{n} v@'ertices.
+@deffn {Función} complete_graph (@var{n})
+Devuelve el grafo completo de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} cycle_digraph (@var{n})
-Devuelve el ciclo dirigido de @var{n} v@'ertices.
+@deffn {Función} cycle_digraph (@var{n})
+Devuelve el ciclo dirigido de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} cycle_graph (@var{n})
-Devuelve el ciclo de @var{n} v@'ertices.
+@deffn {Función} cycle_graph (@var{n})
+Devuelve el ciclo de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} cuboctahedron_graph (@var{n})
-Devuelve el grafo cuboocta@'edrico.
+@deffn {Función} cuboctahedron_graph (@var{n})
+Devuelve el grafo cubooctaédrico.
 @end deffn
 
-@deffn {Funci@'on} cube_graph (@var{n})
+@deffn {Función} cube_graph (@var{n})
 Devuelve el cubo de @var{n} dimensiones.
 @end deffn
 
-@deffn {Funci@'on} dodecahedron_graph ()
+@deffn {Función} dodecahedron_graph ()
 Devuelve el grafo del dodecaedro.
 @end deffn
 
-@deffn {Funci@'on} empty_graph (@var{n})
-Devuelve el grafo vac@'{@dotless{i}}o de @var{n} v@'ertices.
+@deffn {Función} empty_graph (@var{n})
+Devuelve el grafo vacío de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} flower_snark (@var{n})
-Devuelve el grafo de flor de @var{4n} v@'ertices.
+@deffn {Función} flower_snark (@var{n})
+Devuelve el grafo de flor de @var{4n} vértices.
 
 Ejemplo:
 
@@ -215,15 +215,15 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} from_adjacency_matrix (@var{A})
+@deffn {Función} from_adjacency_matrix (@var{A})
 Devuelve el grafo definido por la matriz de adyacencia @var{A}.
 @end deffn
 
-@deffn {Funci@'on} frucht_graph ()
+@deffn {Función} frucht_graph ()
 Devuelve el grafo de Frucht.
 @end deffn
 
-@deffn {Funci@'on} graph_product (@var{g1}, @var{g1})
+@deffn {Función} graph_product (@var{g1}, @var{g1})
 Devuelve el producto dirigido de los grafos @var{g1} y @var{g2}.
 
 Ejemplo:
@@ -244,40 +244,40 @@ Ejemplo:
 @image{../figures/graphs01,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} graph_union (@var{g1}, @var{g1})
-Devuelve la uni@'on (suma) de los grafos @var{g1} y @var{g2}.
+@deffn {Función} graph_union (@var{g1}, @var{g1})
+Devuelve la unión (suma) de los grafos @var{g1} y @var{g2}.
 @end deffn
 
-@deffn {Funci@'on} grid_graph (@var{n}, @var{m})
+@deffn {Función} grid_graph (@var{n}, @var{m})
 Devuelve la rejilla @var{n x m}.
 @end deffn
 
-@deffn {Funci@'on} great_rhombicosidodecahedron_graph ()
-Devuelve el grafo gran rombicosidodeca@'edrico.
+@deffn {Función} great_rhombicosidodecahedron_graph ()
+Devuelve el grafo gran rombicosidodecaédrico.
 @end deffn
 
-@deffn {Funci@'on} great_rhombicuboctahedron_graph ()
-Devuelve el grafo gran rombicocubicoocta@'edrico.
+@deffn {Función} great_rhombicuboctahedron_graph ()
+Devuelve el grafo gran rombicocubicooctaédrico.
 @end deffn
 
-@deffn {Funci@'on} grotzch_graph ()
+@deffn {Función} grotzch_graph ()
 Devuelve el grafo de Grotzch.
 @end deffn
 
-@deffn {Funci@'on} heawood_graph ()
+@deffn {Función} heawood_graph ()
 Devuelve el grafo de Heawood.
 @end deffn
 
-@deffn {Funci@'on} icosahedron_graph ()
-Devuelve el grafo icosa@'edrico.
+@deffn {Función} icosahedron_graph ()
+Devuelve el grafo icosaédrico.
 @end deffn
 
-@deffn {Funci@'on} icosidodecahedron_graph ()
-Devuelve el grafo icosidodeca@'edrico.
+@deffn {Función} icosidodecahedron_graph ()
+Devuelve el grafo icosidodecaédrico.
 @end deffn
 
-@deffn {Funci@'on} induced_subgraph (@var{V}, @var{g})
-Devuelve el grafo inducido por el subconjunto @var{V} de v@'ertices del grafo @var{g}.
+@deffn {Función} induced_subgraph (@var{V}, @var{g})
+Devuelve el grafo inducido por el subconjunto @var{V} de vértices del grafo @var{g}.
 
 Ejemplo:
 
@@ -304,23 +304,23 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} line_graph (@var{g})
-Devuelve el grafo de l@'{@dotless{i}}nea del grafo @var{g}.
+@deffn {Función} line_graph (@var{g})
+Devuelve el grafo de línea del grafo @var{g}.
 @end deffn
 
 
-@deffn {Funci@'on} make_graph (@var{vrt}, @var{f})
-@deffnx {Funci@'on} make_graph (@var{vrt}, @var{f}, @var{oriented})
-Crea un grafo por medio de la funci@'on de predicado @var{f}.
+@deffn {Función} make_graph (@var{vrt}, @var{f})
+@deffnx {Función} make_graph (@var{vrt}, @var{f}, @var{oriented})
+Crea un grafo por medio de la función de predicado @var{f}.
 
-@var{vrt} es una lista o conjunto de v@'ertices o un simplemente un n@'umero entero.
-Si @var{vrt} es un n@'umero entero, entonces los v@'ertices del grafo ser@'an los
+@var{vrt} es una lista o conjunto de vértices o un simplemente un número entero.
+Si @var{vrt} es un número entero, entonces los vértices del grafo serán los
 enteros desde 1 hasta @var{vrt}.
 
-@var{f} es una funci@'on de predicado. Dos v@'ertices @var{a} y @var{b} se conectar@'an
+@var{f} es una función de predicado. Dos vértices @var{a} y @var{b} se conectarán
 si @code{f(a,b)=true}.
 
-Si @var{directed} no es @var{false}, entonces en grafo ser@'a dirigido.
+Si @var{directed} no es @var{false}, entonces en grafo será dirigido.
 
 Ejemplo 1:
 @c ===beg===
@@ -358,57 +358,57 @@ Ejemplo 2:
 @end deffn
 
 
-@deffn {Funci@'on} mycielski_graph (@var{g})
+@deffn {Función} mycielski_graph (@var{g})
 Devuelve el grafo de Mycielski del grafo @var{g}.
 @end deffn
 
-@deffn {Funci@'on} new_graph ()
-Devuelve el grafo sin v@'ertices ni aristas.
+@deffn {Función} new_graph ()
+Devuelve el grafo sin vértices ni aristas.
 @end deffn
 
-@deffn {Funci@'on} path_digraph (@var{n})
-Devuelve el camino dirigido de @var{n} v@'ertices.
+@deffn {Función} path_digraph (@var{n})
+Devuelve el camino dirigido de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} path_graph (@var{n})
-Devuelve el camino de @var{n} v@'ertices.
+@deffn {Función} path_graph (@var{n})
+Devuelve el camino de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} petersen_graph ()
-@deffnx {Funci@'on} petersen_graph (@var{n}, @var{d})
+@deffn {Función} petersen_graph ()
+@deffnx {Función} petersen_graph (@var{n}, @var{d})
 Devuelve el grafo de Petersen @var{P_@{n,d@}}. Los valores por
 defecto para @var{n} y @var{d} son @code{n=5} y @code{d=2}.
 @end deffn
 
-@deffn {Funci@'on} random_bipartite_graph (@var{a}, @var{b}, @var{p})
-Devuelve un grafo aleatorio bipartido a partir de los v@'ertices @code{a+b}. Cada
+@deffn {Función} random_bipartite_graph (@var{a}, @var{b}, @var{p})
+Devuelve un grafo aleatorio bipartido a partir de los vértices @code{a+b}. Cada
 arista se genera con probabilidad @var{p}.
 @end deffn
 
-@deffn {Funci@'on} random_digraph (@var{n}, @var{p})
-Devuelve un grafo aleatorio dirigido de @var{n} v@'ertices. Cada arco se presenta
+@deffn {Función} random_digraph (@var{n}, @var{p})
+Devuelve un grafo aleatorio dirigido de @var{n} vértices. Cada arco se presenta
 con una probabilidad @var{p}.
 @end deffn
 
-@deffn {Funci@'on} random_regular_graph (@var{n})
-@deffnx {Funci@'on} random_regular_graph (@var{n}, @var{d})
-Devuelve un grafo aleatorio @var{d}-regular de @var{n} v@'ertices. El valor
+@deffn {Función} random_regular_graph (@var{n})
+@deffnx {Función} random_regular_graph (@var{n}, @var{d})
+Devuelve un grafo aleatorio @var{d}-regular de @var{n} vértices. El valor
 por defecto para @var{d} es @code{d=3}.
 @end deffn
 
-@deffn {Funci@'on} random_graph (@var{n}, @var{p})
-Devuelve un grafo aleatorio de @var{n} v@'ertices. Cada arco se presenta
+@deffn {Función} random_graph (@var{n}, @var{p})
+Devuelve un grafo aleatorio de @var{n} vértices. Cada arco se presenta
 con una probabilidad @var{p}.
 @end deffn
 
-@deffn {Funci@'on} random_graph1 (@var{n}, @var{m})
-Devuelve un grafo aleatorio de @var{n} v@'ertices y @var{m} arcos aleatorios.
+@deffn {Función} random_graph1 (@var{n}, @var{m})
+Devuelve un grafo aleatorio de @var{n} vértices y @var{m} arcos aleatorios.
 @end deffn
 
-@deffn {Funci@'on} random_network (@var{n}, @var{p}, @var{w})
-Devuelve una red aleatoria de @var{n} v@'ertices. Cada arco se presenta 
+@deffn {Función} random_network (@var{n}, @var{p}, @var{w})
+Devuelve una red aleatoria de @var{n} vértices. Cada arco se presenta 
 con probabilidad @var{p} y tiene un peso dentro del rango @code{[0,w]}.
-La funci@'on devuelve una lista @code{[network, source, sink]}.
+La función devuelve una lista @code{[network, source, sink]}.
 
 Ejemplo:
 
@@ -428,61 +428,61 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} random_tournament (@var{n})
-Devuelve un torneo aleatorio de @var{n} v@'ertices.
+@deffn {Función} random_tournament (@var{n})
+Devuelve un torneo aleatorio de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} random_tree (@var{n})
-Devuelve un @'arbol aleatorio de @var{n} v@'ertices.
+@deffn {Función} random_tree (@var{n})
+Devuelve un árbol aleatorio de @var{n} vértices.
 @end deffn
 
-@deffn {Funci@'on} small_rhombicosidodecahedron_graph ()
-Devuelve el grafo peque@~no rombicosidodeca@'edrico.
+@deffn {Función} small_rhombicosidodecahedron_graph ()
+Devuelve el grafo pequeño rombicosidodecaédrico.
 @end deffn
 
-@deffn {Funci@'on} small_rhombicuboctahedron_graph ()
-Devuelve el grafo peque@~no rombicocubicoocta@'edrico.
+@deffn {Función} small_rhombicuboctahedron_graph ()
+Devuelve el grafo pequeño rombicocubicooctaédrico.
 @end deffn
 
-@deffn {Funci@'on} snub_cube_graph ()
-Devuelve el grafo c@'ubico volteado.
+@deffn {Función} snub_cube_graph ()
+Devuelve el grafo cúbico volteado.
 @end deffn
 
-@deffn {Funci@'on} snub_dodecahedron_graph ()
-Devuelve el grafo dodeca@'edrico volteado.
+@deffn {Función} snub_dodecahedron_graph ()
+Devuelve el grafo dodecaédrico volteado.
 @end deffn
 
-@deffn {Funci@'on} truncated_cube_graph ()
-Devuelve el grafo c@'ubico truncado.
+@deffn {Función} truncated_cube_graph ()
+Devuelve el grafo cúbico truncado.
 @end deffn
 
-@deffn {Funci@'on} truncated_dodecahedron_graph ()
-Devuelve el grafo dodeca@'edrico truncado.
+@deffn {Función} truncated_dodecahedron_graph ()
+Devuelve el grafo dodecaédrico truncado.
 @end deffn
 
-@deffn {Funci@'on} truncated_icosahedron_graph ()
-Devuelve el grafo icosa@'edrico truncado.
+@deffn {Función} truncated_icosahedron_graph ()
+Devuelve el grafo icosaédrico truncado.
 @end deffn
 
-@deffn {Funci@'on} truncated_tetrahedron_graph ()
+@deffn {Función} truncated_tetrahedron_graph ()
 Devuelve el grafo del tetraedro truncado.
 @end deffn
 
-@deffn {Funci@'on} tutte_graph ()
+@deffn {Función} tutte_graph ()
 Devuelve el grafo de Tutte.
 @end deffn
 
-@deffn {Funci@'on} underlying_graph (@var{g})
+@deffn {Función} underlying_graph (@var{g})
 Devuelve el grafo asociado al grafo orientado @var{g}.
 @end deffn
 
-@deffn {Funci@'on} wheel_graph (@var{n})
-Devuelve el grafo de rueda de @var{n+1} v@'ertices.
+@deffn {Función} wheel_graph (@var{n})
+Devuelve el grafo de rueda de @var{n+1} vértices.
 @end deffn
 
 @subsection Propiedades de los grafos
 
-@deffn {Funci@'on} adjacency_matrix (@var{gr})
+@deffn {Función} adjacency_matrix (@var{gr})
 Devuelve la matriz de adyacencia del grafo @var{gr}.
 
 Ejemplo:
@@ -506,8 +506,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} average_degree (@var{gr})
-Devuelve el grado medio de los v@'ertices del garfo @var{gr}.
+@deffn {Función} average_degree (@var{gr})
+Devuelve el grado medio de los vértices del garfo @var{gr}.
 
 Ejemplo:
 
@@ -524,8 +524,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} biconnected_components (@var{gr})
-Devuelve los subconjuntos de v@'ertices biconectados del grafo @var{gr}.
+@deffn {Función} biconnected_components (@var{gr})
+Devuelve los subconjuntos de vértices biconectados del grafo @var{gr}.
 
 Ejemplo:
 
@@ -556,9 +556,9 @@ Ejemplo:
 @end ifhtml
 @end deffn
 
-@deffn {Funci@'on} bipartition (@var{gr})
-Devuelve una bipartici@'on de los v@'ertices del grafo @var{gr}, o una
-lista vac@'{@dotless{i}}a si @var{gr} no es bipartido.
+@deffn {Función} bipartition (@var{gr})
+Devuelve una bipartición de los vértices del grafo @var{gr}, o una
+lista vacía si @var{gr} no es bipartido.
 
 Ejemplo:
 
@@ -581,8 +581,8 @@ Ejemplo:
 @image{../figures/graphs02,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} chromatic_index (@var{gr})
-Devuelve el @'{@dotless{i}}ndice crom@'atico del grafo @var{gr}.
+@deffn {Función} chromatic_index (@var{gr})
+Devuelve el índice cromático del grafo @var{gr}.
 
 Ejemplo:
 
@@ -599,8 +599,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} chromatic_number (@var{gr})
-Devuelve el n@'umero crom@'atico del grafo @var{gr}.
+@deffn {Función} chromatic_number (@var{gr})
+Devuelve el número cromático del grafo @var{gr}.
 
 Ejemplo:
 
@@ -618,7 +618,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} clear_edge_weight (@var{e}, @var{gr})
+@deffn {Función} clear_edge_weight (@var{e}, @var{gr})
 Elimina el peso del arco @var{e} del grafo @var{gr}.
 
 Ejemplo:
@@ -641,8 +641,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} clear_vertex_label (@var{v}, @var{gr})
-Elimina la etiqueta del v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} clear_vertex_label (@var{v}, @var{gr})
+Elimina la etiqueta del vértice @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -665,7 +665,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} connected_components (@var{gr})
+@deffn {Función} connected_components (@var{gr})
 Devuelve las componentes conexas del grafo @var{gr}.
 
 Ejemplo:
@@ -683,8 +683,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} diameter (@var{gr})
-Devuelve el di@'ametro del grafo @var{gr}.
+@deffn {Función} diameter (@var{gr})
+Devuelve el diámetro del grafo @var{gr}.
 
 Ejemplo:
 
@@ -699,10 +699,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} edge_coloring (@var{gr})
-Devuelve una coloraci@'on @'optima de los arcos del grafo @var{gr}.
+@deffn {Función} edge_coloring (@var{gr})
+Devuelve una coloración óptima de los arcos del grafo @var{gr}.
 
-La funci@'on devuelve el @'{@dotless{i}}ndice crom@'atico y una lista
+La función devuelve el índice cromático y una lista
 que representa el coloreado de los arcos de @var{gr}.
 
 Ejemplo:
@@ -729,8 +729,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} degree_sequence (@var{gr})
-Devuelve una lista con los grados de los v@'ertices del grafo @var{gr}.
+@deffn {Función} degree_sequence (@var{gr})
+Devuelve una lista con los grados de los vértices del grafo @var{gr}.
 
 Ejemplo:
 
@@ -745,13 +745,13 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} edge_connectivity (@var{gr})
+@deffn {Función} edge_connectivity (@var{gr})
 Devuelve la conectividad de las aristas del grafo @var{gr}.
 
-V@'ease tambi@'en @code{min_edge_cut}.
+Véase también @code{min_edge_cut}.
 @end deffn
 
-@deffn {Funci@'on} edges (@var{gr})
+@deffn {Función} edges (@var{gr})
 Devuelve la lista de las aristas (arcos) del grafo (dirigido) @var{gr}.
 
 Ejemplo:
@@ -767,12 +767,12 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} get_edge_weight (@var{e}, @var{gr})
-@deffnx {Funci@'on} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+@deffn {Función} get_edge_weight (@var{e}, @var{gr})
+@deffnx {Función} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
 Devuelve el peso de la arista @var{e} del grafo @var{gr}.
 
-Si la arista no tiene peso, la funci@'on devuelve 1. Si la arista no
-pertenece al grafo, la funci@'on emite un mensaje de error o devuelve
+Si la arista no tiene peso, la función devuelve 1. Si la arista no
+pertenece al grafo, la función emite un mensaje de error o devuelve
 el argumento opcional @var{ifnot}.
 
 Ejemplo:
@@ -796,8 +796,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} get_vertex_label (@var{v}, @var{gr})
-Devuelve la etiqueta del v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} get_vertex_label (@var{v}, @var{gr})
+Devuelve la etiqueta del vértice @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -814,8 +814,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_charpoly (@var{gr}, @var{x})
-Devuelve el polinomio caracter@'{@dotless{i}}stico (de variable @var{x})
+@deffn {Función} graph_charpoly (@var{gr}, @var{x})
+Devuelve el polinomio característico (de variable @var{x})
 del grafo @var{gr}.
 
 Ejemplo:
@@ -834,7 +834,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_center (@var{gr})
+@deffn {Función} graph_center (@var{gr})
 Devuelve el centro del grafo @var{gr}.
 
 Ejemplo:
@@ -852,10 +852,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_eigenvalues (@var{gr})
-Devuelve los valores propios del grafo @var{gr}. La funci@'on
+@deffn {Función} graph_eigenvalues (@var{gr})
+Devuelve los valores propios del grafo @var{gr}. La función
 devuelve los valores propios en el mismo formato en el que lo 
-hace la funci@'on @code{eigenvalue}.
+hace la función @code{eigenvalue}.
 
 Ejemplo:
 
@@ -872,7 +872,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_periphery (@var{gr})
+@deffn {Función} graph_periphery (@var{gr})
 Devuelve la periferia del grafo @var{gr}.
 
 Ejemplo:
@@ -890,8 +890,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_size (@var{gr})
-Devuelve el n@'umero de aristas del grafo @var{gr}.
+@deffn {Función} graph_size (@var{gr})
+Devuelve el número de aristas del grafo @var{gr}.
 
 Ejemplo:
 
@@ -908,8 +908,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} graph_order (@var{gr})
-Devuelve el n@'umero de v@'ertices del grafo @var{gr}.
+@deffn {Función} graph_order (@var{gr})
+Devuelve el número de vértices del grafo @var{gr}.
 
 Ejemplo:
 
@@ -926,8 +926,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} girth (@var{gr})
-Devuelve la longitud del ciclo m@'as corto del grafo @var{gr}.
+@deffn {Función} girth (@var{gr})
+Devuelve la longitud del ciclo más corto del grafo @var{gr}.
 
 Ejemplo:
 
@@ -944,8 +944,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} hamilton_cycle (@var{gr})
-Devuelve el ciclo de Hamilton del grafo @var{gr} o una lista vac@'{@dotless{i}}a
+@deffn {Función} hamilton_cycle (@var{gr})
+Devuelve el ciclo de Hamilton del grafo @var{gr} o una lista vacía
 si @var{gr} no es hamiltoniano.
 
 Ejemplo:
@@ -969,8 +969,8 @@ Ejemplo:
 @image{../figures/graphs03,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} hamilton_path (@var{gr})
-Devuelve el camino de Hamilton del grafo @var{gr} o una lista vac@'{@dotless{i}}a
+@deffn {Función} hamilton_path (@var{gr})
+Devuelve el camino de Hamilton del grafo @var{gr} o una lista vacía
 si @var{gr} no los tiene.
 
 Ejemplo:
@@ -994,9 +994,9 @@ Ejemplo:
 @image{../figures/graphs04,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} isomorphism (@var{gr1}, @var{gr2})
+@deffn {Función} isomorphism (@var{gr1}, @var{gr2})
 Devuelve un isomorfismo entre los grafos/digrafos @var{gr1} y @var{gr2}.
-Si @var{gr1} y @var{gr2} no son isomorfos, devuelve una lista vac@'{@dotless{i}}a.
+Si @var{gr1} y @var{gr2} no son isomorfos, devuelve una lista vacía.
 
 Ejemplo:
 
@@ -1014,8 +1014,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} in_neighbors (@var{v}, @var{gr})
-Devuelve la lista de los nodos hijos del v@'ertice @var{v}
+@deffn {Función} in_neighbors (@var{v}, @var{gr})
+Devuelve la lista de los nodos hijos del vértice @var{v}
 del grafo orientado @var{gr}.
 
 Ejemplo:
@@ -1036,8 +1036,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_biconnected (@var{gr})
-Devuelve @code{true} si @var{gr} est@'a biconectado y @code{false}
+@deffn {Función} is_biconnected (@var{gr})
+Devuelve @code{true} si @var{gr} está biconectado y @code{false}
 en caso contrario.
 
 Ejemplo:
@@ -1057,7 +1057,7 @@ Example:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_bipartite (@var{gr})
+@deffn {Función} is_bipartite (@var{gr})
 Devuelve @code{true} si @var{gr} es bipartido (2-coloreable) y @code{false}
 en caso contrario.
 
@@ -1077,7 +1077,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_connected (@var{gr})
+@deffn {Función} is_connected (@var{gr})
 Devuelve @code{true} si el grafo @var{gr} es conexo y @code{false}
 en caso contrario.
 
@@ -1094,7 +1094,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_digraph (@var{gr})
+@deffn {Función} is_digraph (@var{gr})
 Devuelve @code{true} si @var{gr} es un grafo orientado (digrafo) y
 @code{false} en caso contrario.
 
@@ -1114,7 +1114,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_edge_in_graph (@var{e}, @var{gr})
+@deffn {Función} is_edge_in_graph (@var{e}, @var{gr})
 Devuelve @code{true} si @var{e} es una arista (arco) del
 grafo (digrafo) @var{g} y @code{false} en caso contrario.
 
@@ -1142,7 +1142,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_graph (@var{gr})
+@deffn {Función} is_graph (@var{gr})
 Devuelve @code{true} si @var{gr} es un grafo y @code{false} en caso contrario.
 
 Ejemplo:
@@ -1161,7 +1161,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_graph_or_digraph (@var{gr})
+@deffn {Función} is_graph_or_digraph (@var{gr})
 Devuelve @code{true} si @var{gr} es una grafo, orientado o no,
 y @code{false} en caso contrario.
 
@@ -1181,11 +1181,11 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_isomorphic (@var{gr1}, @var{gr2})
+@deffn {Función} is_isomorphic (@var{gr1}, @var{gr2})
 Devuelve @code{true} si los grafos/digrafos @var{gr1} y @var{gr2} son
 isomorfos y @code{false} en caso contrario.
 
-V@'ease tambi@'en @code{isomorphism}.
+Véase también @code{isomorphism}.
 
 Ejemplo:
 
@@ -1202,10 +1202,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_planar (@var{gr})
+@deffn {Función} is_planar (@var{gr})
 Devuelve @code{true} si @var{gr} es un grafo planar y @code{false} en caso contrario.
 
-El algoritmo utilizado es el de Demoucron, que es de tiempo cuadr@'atico.
+El algoritmo utilizado es el de Demoucron, que es de tiempo cuadrático.
 
 Ejemplo:
 
@@ -1226,7 +1226,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_sconnected (@var{gr})
+@deffn {Función} is_sconnected (@var{gr})
 Devuelve @code{true} si el grafo orientado @var{gr} es fuertemente conexo,
 devolviendo @code{false} en caso contrario.
 
@@ -1246,8 +1246,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_vertex_in_graph (@var{v}, @var{gr})
-Devuelve @code{true} si @var{v} es un v@'ertice del grafo @var{g}
+@deffn {Función} is_vertex_in_graph (@var{v}, @var{gr})
+Devuelve @code{true} si @var{v} es un vértice del grafo @var{g}
 y @code{false} en caso contrario.
 
 Ejemplo:
@@ -1268,8 +1268,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} is_tree (@var{gr})
-Devuelve @code{true} si @var{gr} es un @'arbol y @code{false} en caso contrario.
+@deffn {Función} is_tree (@var{gr})
+Devuelve @code{true} si @var{gr} es un árbol y @code{false} en caso contrario.
 
 Ejemplo:
 
@@ -1287,7 +1287,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} laplacian_matrix (@var{gr})
+@deffn {Función} laplacian_matrix (@var{gr})
 Devuelve el laplaciano de la matriz del grafo @var{gr}.
 
 Ejemplo:
@@ -1311,8 +1311,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} max_clique (@var{gr})
-Devuelve el clique m@'aximo del grafo @var{gr}.
+@deffn {Función} max_clique (@var{gr})
+Devuelve el clique máximo del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1329,9 +1329,9 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} max_degree (@var{gr})
-Devuelve el grado m@'aximo de los v@'ertices del grafo @var{gr} y un 
-v@'ertice de grado m@'aximo.
+@deffn {Función} max_degree (@var{gr})
+Devuelve el grado máximo de los vértices del grafo @var{gr} y un 
+vértice de grado máximo.
 
 Ejemplo:
 
@@ -1351,12 +1351,12 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} max_flow (@var{net}, @var{s}, @var{t})
+@deffn {Función} max_flow (@var{net}, @var{s}, @var{t})
 Devuelve el flujo maximal de la red @var{net} con origen en
 @var{s} y final en @var{t}.
 
-La funci@'on devuelve el valor del flujo maximal y una lista con los
-pesos de los arcos del flujo @'optimo.
+La función devuelve el valor del flujo maximal y una lista con los
+pesos de los arcos del flujo óptimo.
 
 Ejemplo:
 
@@ -1405,8 +1405,8 @@ Example:
 @end example
 @end deffn
 
-@deffn {Funci@'on} max_independent_set (@var{gr})
-Devuelve un conjunto maximal independiente de v@'ertices del grafo @var{gr}.
+@deffn {Función} max_independent_set (@var{gr})
+Devuelve un conjunto maximal independiente de vértices del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1429,7 +1429,7 @@ Ejemplo:
 @image{../figures/graphs05,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} max_matching (@var{gr})
+@deffn {Función} max_matching (@var{gr})
 Devuelve un conjunto maximal independiente de aristas del grafo @var{gr}.
 
 Ejemplo:
@@ -1454,9 +1454,9 @@ Ejemplo:
 @image{../figures/graphs06,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} min_degree (@var{gr})
-Devuelve el grado m@'{@dotless{i}}nimo de los v@'ertices del grafo @var{gr} y un 
-v@'ertice de grado m@'{@dotless{i}}nimo.
+@deffn {Función} min_degree (@var{gr})
+Devuelve el grado mínimo de los vértices del grafo @var{gr} y un 
+vértice de grado mínimo.
 
 Ejemplo:
 
@@ -1476,27 +1476,27 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} min_edge_cut (@var{gr})
-Devuelve el m@'{@dotless{i}}nimo @i{edge cut} del grafo @var{gr}. Un @i{edge cut} es
-un conjunto de aristas cuya eliminaci@'on aumenta el n@'umero de componentes del grafo.
+@deffn {Función} min_edge_cut (@var{gr})
+Devuelve el mínimo @i{edge cut} del grafo @var{gr}. Un @i{edge cut} es
+un conjunto de aristas cuya eliminación aumenta el número de componentes del grafo.
 
-V@'ease tambi@'en @code{edge_connectivity}.
+Véase también @code{edge_connectivity}.
 @end deffn
 
-@deffn {Funci@'on} min_vertex_cover (@var{gr})
-Devuelve el m@'{@dotless{i}}nimo nodo @i{covering} del grafo @var{gr}.
+@deffn {Función} min_vertex_cover (@var{gr})
+Devuelve el mínimo nodo @i{covering} del grafo @var{gr}.
 @c Esta traduccion esta tomada de la wikipedia. Habra que revisarla.
 @end deffn
 
-@deffn {Funci@'on} min_vertex_cut (@var{gr})
-Devuelve el m@'{@dotless{i}}nimo @i{vertex cut} del grafo @var{gr}.
+@deffn {Función} min_vertex_cut (@var{gr})
+Devuelve el mínimo @i{vertex cut} del grafo @var{gr}.
 
-V@'ease tambi@'en @code{vertex_connectivity}.
+Véase también @code{vertex_connectivity}.
 @end deffn
 
 
-@deffn {Funci@'on} minimum_spanning_tree (@var{gr})
-Devuelve el grafo de expansi@'on m@'{@dotless{i}}nimo del grafo @var{gr}.
+@deffn {Función} minimum_spanning_tree (@var{gr})
+Devuelve el grafo de expansión mínimo del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1518,8 +1518,8 @@ Ejemplo:
 @image{../figures/graphs07,6cm}
 @end ifhtml
 
-@deffn {Funci@'on} neighbors (@var{v}, @var{gr})
-Devuelve la lista de los vecinos del v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} neighbors (@var{v}, @var{gr})
+Devuelve la lista de los vecinos del vértice @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1536,8 +1536,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} odd_girth (@var{gr})
-Devuelve la longitud del ciclo impar m@'as corto del grafo @var{gr}.
+@deffn {Función} odd_girth (@var{gr})
+Devuelve la longitud del ciclo impar más corto del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1557,8 +1557,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} out_neighbors (@var{v}, @var{gr})
-Devuelve la lista de los nodos padres del v@'ertice @var{v} del grafo
+@deffn {Función} out_neighbors (@var{v}, @var{gr})
+Devuelve la lista de los nodos padres del vértice @var{v} del grafo
 orientado @var{gr}.
 
 Ejemplo:
@@ -1579,13 +1579,13 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} planar_embedding (@var{gr})
-Devuelve la lista de caminos faciales en una proyecci@'on planar de @var{gr},
+@deffn {Función} planar_embedding (@var{gr})
+Devuelve la lista de caminos faciales en una proyección planar de @var{gr},
 o @code{false} si @var{gr} no es un grafo planar.
 
 El grafo @var{gr} debe estar biconectado.
 
-El algoritmo utilizado es el de Demoucron, que es de tiempo cuadr@'atico.
+El algoritmo utilizado es el de Demoucron, que es de tiempo cuadrático.
 
 Ejemplo:
 
@@ -1601,8 +1601,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} print_graph (@var{gr})
-Muestra alguna informaci@'on sobre el grafo @var{gr}.
+@deffn {Función} print_graph (@var{gr})
+Muestra alguna información sobre el grafo @var{gr}.
 
 Ejemplo:
 
@@ -1639,7 +1639,7 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} radius (@var{gr})
+@deffn {Función} radius (@var{gr})
 Devuelve el radio del grafo  @var{gr}.
 
 Ejemplo:
@@ -1655,7 +1655,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} set_edge_weight (@var{e}, @var{w}, @var{gr})
+@deffn {Función} set_edge_weight (@var{e}, @var{w}, @var{gr})
 Asigna el peso @var{w} a la arista @var{e} del grafo @var{gr}.
 
 Ejemplo:
@@ -1679,8 +1679,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} set_vertex_label (@var{v}, @var{l}, @var{gr})
-Asigna la etiqueta @var{l} al v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} set_vertex_label (@var{v}, @var{l}, @var{gr})
+Asigna la etiqueta @var{l} al vértice @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1703,8 +1703,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} shortest_path (@var{u}, @var{v}, @var{gr})
-Devuelve el camino m@'as corto desde @var{u} hasta @var{v} del grafo @var{gr}.
+@deffn {Función} shortest_path (@var{u}, @var{v}, @var{gr})
+Devuelve el camino más corto desde @var{u} hasta @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1728,9 +1728,9 @@ Ejemplo:
 @end ifhtml
 
 
-@deffn {Funci@'on} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
-Devuelve la longitud del camino m@'as corto ponderado y el propio camino
-m@'as corto ponderado desde @var{u} hasta @var{v} en el grafo @var{gr}.
+@deffn {Función} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
+Devuelve la longitud del camino más corto ponderado y el propio camino
+más corto ponderado desde @var{u} hasta @var{v} en el grafo @var{gr}.
 
 La longitud del camino ponderado es la suma de los pesos de las aristas
 del camino. Si una arista no tiene peso asignado, su valor por defecto
@@ -1755,7 +1755,7 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} strong_components (@var{gr})
+@deffn {Función} strong_components (@var{gr})
 Devuelve las componentes fuertes del grafo orientado @var{gr}.
 
 Ejemplo:
@@ -1776,10 +1776,10 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} topological_sort (@var{dag})
-Devuelve el orden topol@'ogico de los v@'ertices del grafo orientado @var{dag}
-o una lista vac@'{@dotless{i}}a si @var{dag} no es un grafo orientado
-ac@'{@dotless{i}}clico.
+@deffn {Función} topological_sort (@var{dag})
+Devuelve el orden topológico de los vértices del grafo orientado @var{dag}
+o una lista vacía si @var{dag} no es un grafo orientado
+acíclico.
 
 Ejemplo:
 
@@ -1808,18 +1808,18 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertex_connectivity (@var{g})
-Devuelve la conectividad de los v@'ertices del grafo @var{g}.
+@deffn {Función} vertex_connectivity (@var{g})
+Devuelve la conectividad de los vértices del grafo @var{g}.
 
-V@'ease tambi@'en @code{min_vertex_cut}.
+Véase también @code{min_vertex_cut}.
 @end deffn
 
-@deffn {Funci@'on} vertex_degree (@var{v}, @var{gr})
-Devuelve el grado del v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} vertex_degree (@var{v}, @var{gr})
+Devuelve el grado del vértice @var{v} del grafo @var{gr}.
 @end deffn
 
-@deffn {Funci@'on} vertex_distance (@var{u}, @var{v}, @var{gr})
-Devuelve la longitud del camino m@'as corto entre @var{u} y @var{v}
+@deffn {Función} vertex_distance (@var{u}, @var{v}, @var{gr})
+Devuelve la longitud del camino más corto entre @var{u} y @var{v}
 del grafo o digrafo @var{gr}.
 
 Ejemplo:
@@ -1840,8 +1840,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertex_eccentricity (@var{v}, @var{gr})
-Devuelve la excentricidad del v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} vertex_eccentricity (@var{v}, @var{gr})
+Devuelve la excentricidad del vértice @var{v} del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1858,8 +1858,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertex_in_degree (@var{v}, @var{gr})
-Devuelve el grado de entrada del v@'ertice @var{v} del grafo 
+@deffn {Función} vertex_in_degree (@var{v}, @var{gr})
+Devuelve el grado de entrada del vértice @var{v} del grafo 
 orientado @var{gr}.
 
 Ejemplo:
@@ -1889,8 +1889,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertex_out_degree (@var{v}, @var{gr})
-Devuelve el grado de salida del v@'ertice @var{v} del grafo
+@deffn {Función} vertex_out_degree (@var{v}, @var{gr})
+Devuelve el grado de salida del vértice @var{v} del grafo
 orientado @var{gr}.
 
 Ejemplo:
@@ -1911,8 +1911,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertices (@var{gr})
-Devuelve la lista de v@'ertices del grafo @var{gr}.
+@deffn {Función} vertices (@var{gr})
+Devuelve la lista de vértices del grafo @var{gr}.
 
 Example
 
@@ -1927,11 +1927,11 @@ Example
 @end example
 @end deffn
 
-@deffn {Funci@'on} vertex_coloring (@var{gr})
-Devuelve un coloreado @'optimo de los v@'ertices del grafo @var{gr}.
+@deffn {Función} vertex_coloring (@var{gr})
+Devuelve un coloreado óptimo de los vértices del grafo @var{gr}.
 
-La funci@'on devuelve el n@'umero crom@'atico y una lista 
-representando el coloreado de los v@'ertices de @var{gr}.
+La función devuelve el número cromático y una lista 
+representando el coloreado de los vértices de @var{gr}.
 
 Ejemplo:
 
@@ -1949,8 +1949,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} wiener_index (@var{gr})
-Devuelve el @'{@dotless{i}}ndice de Wiener del grafo @var{gr}.
+@deffn {Función} wiener_index (@var{gr})
+Devuelve el índice de Wiener del grafo @var{gr}.
 
 Ejemplo:
 
@@ -1974,11 +1974,11 @@ Ejemplo:
 
 
 
-@subsection Modificaci@'on de grafos
+@subsection Modificación de grafos
 
 
-@deffn {Funci@'on} add_edge (@var{e}, @var{gr})
-A@~nade la arista @var{e} al grafo @var{gr}.
+@deffn {Función} add_edge (@var{e}, @var{gr})
+Añade la arista @var{e} al grafo @var{gr}.
 
 Ejemplo:
 
@@ -2001,8 +2001,8 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} add_edges (@var{e_list}, @var{gr})
-A@~nade las aristas de la lista  @var{e_list} al grafo @var{gr}.
+@deffn {Función} add_edges (@var{e_list}, @var{gr})
+Añade las aristas de la lista  @var{e_list} al grafo @var{gr}.
 
 Ejemplo:
 
@@ -2025,8 +2025,8 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} add_vertex (@var{v}, @var{gr})
-A@~nade el v@'ertice @var{v} al grafo @var{gr}.
+@deffn {Función} add_vertex (@var{v}, @var{gr})
+Añade el vértice @var{v} al grafo @var{gr}.
 
 Ejemplo:
 
@@ -2049,16 +2049,16 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} add_vertices (@var{v_list}, @var{gr})
-A@~nade los v@'ertices de la lista  @var{v_list} al grafo @var{gr}.
+@deffn {Función} add_vertices (@var{v_list}, @var{gr})
+Añade los vértices de la lista  @var{v_list} al grafo @var{gr}.
 @end deffn
 
-@deffn {Funci@'on} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
-Conecta todos los v@'ertices de la lista @var{v_list} con los v@'ertices
+@deffn {Función} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
+Conecta todos los vértices de la lista @var{v_list} con los vértices
 de la lista @var{u_list} del grafo @var{gr}.
 
-@var{v_list} y @var{u_list} pueden ser v@'ertices aislados o una lista de
-v@'ertices.
+@var{v_list} y @var{u_list} pueden ser vértices aislados o una lista de
+vértices.
 
 Ejemplo:
 
@@ -2082,7 +2082,7 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} contract_edge (@var{e}, @var{gr})
+@deffn {Función} contract_edge (@var{e}, @var{gr})
 Contrae la arista @var{e} del @var{gr}.
 
 Ejemplo:
@@ -2124,7 +2124,7 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} remove_edge (@var{e}, @var{gr})
+@deffn {Función} remove_edge (@var{e}, @var{gr})
 Elimina la arista @var{e} del grafo @var{gr}.
 
 Ejemplo:
@@ -2148,15 +2148,15 @@ Adjacencies:
 @end example
 @end deffn
 
-@deffn {Funci@'on} remove_vertex (@var{v}, @var{gr})
-Elimina el v@'ertice @var{v} del grafo @var{gr}.
+@deffn {Función} remove_vertex (@var{v}, @var{gr})
+Elimina el vértice @var{v} del grafo @var{gr}.
 @end deffn
 
-@deffn {Funci@'on} vertex_coloring (@var{gr})
-Devuelve un coloreado @'optimo de los v@'ertice del grafo @var{gr}.
+@deffn {Función} vertex_coloring (@var{gr})
+Devuelve un coloreado óptimo de los vértice del grafo @var{gr}.
 
-La funci@'on devuelve el n@'umero crom@'atico y una lista representando 
-el coloreado de los v@'ertices de @var{gr}.
+La función devuelve el número cromático y una lista representando 
+el coloreado de los vértices de @var{gr}.
 
 Ejemplo:
 
@@ -2177,58 +2177,58 @@ Ejemplo:
 
 @subsection Lectura y escritura de ficheros
 
-@deffn {Funci@'on} dimacs_export (@var{gr}, @var{fl})
-@deffnx {Funci@'on} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
+@deffn {Función} dimacs_export (@var{gr}, @var{fl})
+@deffnx {Función} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
 Exporta el grafo al fichero @var{fl} en formato DIMACS. Los comentarios
-adicionales se an@~adir@'an al comienzo del fichero.
+adicionales se anãdirán al comienzo del fichero.
 @end deffn
 
-@deffn {Funci@'on} dimacs_import (@var{fl})
+@deffn {Función} dimacs_import (@var{fl})
 Lee el grafo almacenado en el fichero @var{fl} en formato DIMACS.
 @end deffn
 
-@deffn {Funci@'on} graph6_decode (@var{str})
+@deffn {Función} graph6_decode (@var{str})
 Devuelve el grafo codificado en formato graph6 en la cadena @var{str}.
 @end deffn
 
-@deffn {Funci@'on} graph6_encode (@var{gr})
+@deffn {Función} graph6_encode (@var{gr})
 Devuelve una cadena codificando el grafo @var{gr} en formato graph6.
 @end deffn
 
-@deffn {Funci@'on} graph6_export (@var{gr_list}, @var{fl})
+@deffn {Función} graph6_export (@var{gr_list}, @var{fl})
 Exporta los grafos de la lista @var{gr_list} al fichero @var{fl} en formato graph6.
 @end deffn
 
-@deffn {Funci@'on} graph6_import (@var{fl})
+@deffn {Función} graph6_import (@var{fl})
 Lee la lista de grafos almacenados en el fichero @var{fl} en formato graph6.
 @end deffn
 
-@deffn {Funci@'on} sparse6_decode (@var{str})
+@deffn {Función} sparse6_decode (@var{str})
 Devuelve el grafo codificado en formato sparse6 en la cadena @var{str}.
 @end deffn
 
-@deffn {Funci@'on} sparse6_encode (@var{gr})
+@deffn {Función} sparse6_encode (@var{gr})
 Devuelve una cadena codificando el grafo @var{gr} en formato sparse6.
 @end deffn
 
-@deffn {Funci@'on} sparse6_export (@var{gr_list}, @var{fl})
+@deffn {Función} sparse6_export (@var{gr_list}, @var{fl})
 Exporta los grafos de la lista @var{gr_list} al fichero @var{fl} en formato sparse6.
 @end deffn
 
-@deffn {Funci@'on} sparse6_import (@var{fl})
+@deffn {Función} sparse6_import (@var{fl})
 Lee la lista de grafos almacenados en el fichero @var{fl} en formato sparse6.
 @end deffn
 
-@subsection Visualizaci@'on
+@subsection Visualización
 
-@deffn {Funci@'on} draw_graph (@var{graph})
-@deffnx {Funci@'on} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
+@deffn {Función} draw_graph (@var{graph})
+@deffnx {Función} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
 Dibuja el grafo utilizando el paquete @code{draw}.
 
-El algoritmo utilizado para posicionar los v@'ertices se especifica con el argumento
+El algoritmo utilizado para posicionar los vértices se especifica con el argumento
 opcional @var{program}, cuyo valor por defecto es @code{program=spring_embedding}.
-@var{draw_graph} tambi@'en puede utilizar los programas de graphviz para
-posicionar los v@'ertices, para lo cual deber@'a instalarse separadamente el programa graphviz.
+@var{draw_graph} también puede utilizar los programas de graphviz para
+posicionar los vértices, para lo cual deberá instalarse separadamente el programa graphviz.
 
 Ejemplo 1:
 
@@ -2436,178 +2436,180 @@ Ejemplo 6:
 @defvr {Variable opcional} draw_graph_program
 Valor por defecto: @var{spring_embedding}
 
-Programa a utilizar por defecto para posicionar los v@'ertices en la funci@'on @code{draw_graph}.
+Programa a utilizar por defecto para posicionar los vértices en la función @code{draw_graph}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_id
+@defvr {Opción de draw_graph} show_id
 Valor por defecto: @var{false}
 
 Si @var{show_id} vale @var{true} entonces se muestran los
-n@'umeros identificadores de los v@'ertices.
+números identificadores de los vértices.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_label
+@defvr {Opción de draw_graph} show_label
 Valor por defecto: @var{false}
 
 Si @var{show_label} vale @var{true} entonces se muestran las
-etiquetas de los v@'ertices.
+etiquetas de los vértices.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} label_alignment
+@defvr {Opción de draw_graph} label_alignment
 Valor por defecto: @var{center}
 
-Indica c@'omo se deben alinear las etiquetas o n@'umeros
-identificadores de los v@'ertices. Puede ser: @code{left}, @code{center} or @code{right}.
+Indica cómo se deben alinear las etiquetas o números
+identificadores de los vértices. Puede ser: @code{left}, @code{center} or @code{right}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_weight 
+@defvr {Opción de draw_graph} show_weight 
 Valor por defecto: @var{false}
 
-si @var{show_weight} vale @var{true} entonces se mostrar@'an 
+si @var{show_weight} vale @var{true} entonces se mostrarán 
 los pesos de las aristas.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} vertex_type
+@defvr {Opción de draw_graph} vertex_type
 Valor por defecto: @var{circle}
 
-Establece c@'omo se mostrar@'an los v@'ertices. V@'ease la
-opci@'on @var{point_type} del paquete @code{draw}.
+Establece cómo se mostrarán los vértices. Véase la
+opción @var{point_type} del paquete @code{draw}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} vertex_size
-Taman@~o de los v@'ertices.
+@defvr {Opción de draw_graph} vertex_size
+Tamanõ de los vértices.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} vertex_color
-Color a utilizar en los v@'ertices.
+@defvr {Opción de draw_graph} vertex_color
+Color a utilizar en los vértices.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_vertices
+@defvr {Opción de draw_graph} show_vertices
 Valor por defecto: []
 
-Dibuja los v@'ertices seleccionados en la lista con colores diferentes.
+Dibuja los vértices seleccionados en la lista con colores diferentes.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_vertex_type
-Establece c@'omo se mostrar@'an los v@'ertices de
-@var{show_vertices}. V@'ease la opci@'on @var{point_type} del paquete @code{draw}.
+@defvr {Opción de draw_graph} show_vertex_type
+Establece cómo se mostrarán los vértices de
+@var{show_vertices}. Véase la opción @var{point_type} del paquete @code{draw}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_vertex_size
-Taman@~os de los v@'ertices de @var{show_vertices}.
+@defvr {Opción de draw_graph} show_vertex_size
+Tamanõs de los vértices de @var{show_vertices}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_vertex_color 
-Color a utilizar en los v@'ertices de la lista @var{show_vertices}.
+@defvr {Opción de draw_graph} show_vertex_color 
+Color a utilizar en los vértices de la lista @var{show_vertices}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} vertex_partition
+@defvr {Opción de draw_graph} vertex_partition
 Valor por defecto: []
 
-Una partici@'on @code{[[v1,v2,...],...,[vk,...,vn]]} de los v@'ertices del grafo. Los 
-v@'ertices de cada lista se dibujar@'an de diferente color.
+Una partición @code{[[v1,v2,...],...,[vk,...,vn]]} de los vértices del grafo. Los 
+vértices de cada lista se dibujarán de diferente color.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} vertex_coloring
-Colores de los v@'ertices. Los colores @var{col} deben
+@defvr {Opción de draw_graph} vertex_coloring
+Colores de los vértices. Los colores @var{col} deben
 especificarse en el mismo formato que el devuelto por @var{vertex_coloring}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} edge_color 
+@defvr {Opción de draw_graph} edge_color 
 Color a utilizar en las aristas.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} edge_width
+@defvr {Opción de draw_graph} edge_width
 Ancho de las aristas.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} edge_type
-Establece c@'omo se dibujar@'an las aristas. V@'ease la opci@'on
+@defvr {Opción de draw_graph} edge_type
+Establece cómo se dibujarán las aristas. Véase la opción
 @var{line_type} del paquete @code{draw}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_edges
+@defvr {Opción de draw_graph} show_edges
 Dibuja las aristas de la lista @var{e_list} con colores diferentes.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_edge_color
+@defvr {Opción de draw_graph} show_edge_color
 Color a utilizar en las aristas de la lista @var{show_edges}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_edge_width
+@defvr {Opción de draw_graph} show_edge_width
 Anchos de las aristas de @var{show_edges}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} show_edge_type
-Establece c@'omo se dibujar@'an las aristas de @var{show_edges}.
-V@'ease la opci@'on @var{line_type} del paquete @code{draw}.
+@defvr {Opción de draw_graph} show_edge_type
+Establece cómo se dibujarán las aristas de @var{show_edges}.
+Véase la opción @var{line_type} del paquete @code{draw}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} edge_partition
-Una partici@'on @code{[[e1,e2,...],...,[ek,...,em]]} de las aristas del grafo.
-Las aristas de cada lista se dibujar@'an de diferente color.
+@defvr {Opción de draw_graph} edge_partition
+Una partición @code{[[e1,e2,...],...,[ek,...,em]]} de las aristas del grafo.
+Las aristas de cada lista se dibujarán de diferente color.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} edge_coloring
+@defvr {Opción de draw_graph} edge_coloring
 Colores de las aristas. Los colores @var{col} deben
 especificarse en el mismo formato que el devuelto por @var{edge_coloring}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} redraw 
+@defvr {Opción de draw_graph} redraw 
 Valor por defecto: @var{false}
 
-Si @var{redraw} vale @code{true}, las posiciones de los v@'ertices se recalculan
-incluso si las posiciones est@'an almacenadas de un dibujo previo del grafo.
+Si @var{redraw} vale @code{true}, las posiciones de los vértices se recalculan
+incluso si las posiciones están almacenadas de un dibujo previo del grafo.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} head_angle
+@defvr {Opción de draw_graph} head_angle
 Valor por defecto: 15
 
-@'Angulo de las flechas de los arcos en los grafos orientados.
+Ángulo de las flechas de los arcos en los grafos orientados.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} head_length
+@defvr {Opción de draw_graph} head_length
 Valor por defecto: 0.1
 
 Longitud de las flechas de los arcos en los grafos orientados.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} spring_embedding_depth
+@defvr {Opción de draw_graph} spring_embedding_depth
 Valor por defecto: 50
 
-N@'umero de iteraciones del algoritmo de dibujo de grafos.
+Número de iteraciones del algoritmo de dibujo de grafos.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} terminal
-Terminal utilizado para ver el gr@'afo. V@'ease la opci@'on @var{terminal}
+@defvr {Opción de draw_graph} terminal
+Terminal utilizado para ver el gráfo. Véase la opción @var{terminal}
 del paquete @code{draw}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} file_name
+@defvr {Opción de draw_graph} file_name
 Nombre del fichero cuando el terminal especificado no es la pantalla.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} program
-establece el programa para posicionado de v@'ertices del grafo. Puede ser
+@defvr {Opción de draw_graph} program
+establece el programa para posicionado de vértices del grafo. Puede ser
 cualquiera de los programas graphviz (dot, neato, twopi, circ, fdp), @var{circular} o
-@var{spring_embedding} o @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
+@var{spring_embedding} o @var{planar_embedding}; @var{planar_embedding} s@'lo está
 disponible para grafos planares 2-conectados. Si @code{program=spring_embedding},
-se puede especificar un conjunto de v@'ertices de posici@'on fija con la opci@'on 
+se puede especificar un conjunto de vértices de posición fija con la opción 
 @var{fixed_vertices}.
 @end defvr
 
-@defvr {Opci@'on de draw_graph} fixed_vertices
-Especifica una lista de v@'ertices con posiciones fijas en
-un pol@'{@dotless{i}}gono regular. Se puede utilizar cuando @code{program=spring_embedding}.
+@defvr {Opción de draw_graph} fixed_vertices
+Especifica una lista de vértices con posiciones fijas en
+un polígono regular. Se puede utilizar cuando @code{program=spring_embedding}.
 @end defvr
 
-@deffn {Funci@'on} vertices_to_path (@var{v_list})
-Convierte una lista @var{v_list} de v@'ertices en la lista de aristas del camino
+@deffn {Función} vertices_to_path (@var{v_list})
+Convierte una lista @var{v_list} de vértices en la lista de aristas del camino
 definido por la propia @var{v_list}.
 @end deffn
 
-@deffn {Funci@'on} vertices_to_cycle (@var{v_list})
-Convierte una lista @var{v_list} de v@'ertices en la lista de aristas del ciclo
+@deffn {Función} vertices_to_cycle (@var{v_list})
+Convierte una lista @var{v_list} de vértices en la lista de aristas del ciclo
 definido por la propia @var{v_list}.
 @end deffn
+
+
 

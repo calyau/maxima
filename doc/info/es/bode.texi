@@ -8,8 +8,8 @@
 
 
 
-@deffn {Funci@'on} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
-Funci@'on para dibujar el gr@'afico de ganancia de Bode.
+@deffn {Función} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+Función para dibujar el gráfico de ganancia de Bode.
 
 Ejemplos (1 a 7 de 
 @example
@@ -54,13 +54,13 @@ Ejemplos (1 a 7 de
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("bode")}.
-V@'ease tambi@'en @code{bode_phase}.
+Antes de hacer uso de esta función ejecútese  @code{load("bode")}.
+Véase también @code{bode_phase}.
 @end deffn
 
 
-@deffn {Funci@'on} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
-Funci@'on para dibujar el gr@'afico de fase de Bode.
+@deffn {Función} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+Función para dibujar el gráfico de fase de Bode.
 
 Ejemplos (1 a 7 de 
 @example
@@ -111,7 +111,8 @@ Ejemplos (1 a 7 de
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("bode")}.
-V@'ease tambi@'en @code{bode_gain}.
+Antes de hacer uso de esta función ejecútese  @code{load("bode")}.
+Véase también @code{bode_gain}.
 @end deffn
+
 

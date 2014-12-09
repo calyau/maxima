@@ -1,0 +1,125 @@
+(kill(all), 'done);
+'done$
+
+(load("format"), 'done);
+'done$
+
+/* A basic rearrangement: */
+format((a+b*x)*(c-x)^2,%poly(x),%factor);
+b*x^3+(a-2*b*c)*x^2+c*(b*c-2*a)*x+a*c^2$
+
+/* A `mathematical' alternative to map or substpart...*/
+format((1+2*a+a^2)*b + a*(1+2*b+b^2),%sum,%product,%factor);
+a*(b+1)^2+(a+1)^2*b$
+
+/* Focussing simplifications */
+block([foo],
+  foo:x^2*sin(y)^4-2*x^2*sin(y)^2+x^4*cos(y)^4-2*x^4*cos(y)^2+x^4+x^2+1,
+  format(foo,%poly(x),trigsimp));
+x^4*sin(y)^4+x^2*cos(y)^4+1$
+
+format((1+2*eps*(q+r*cos(g))^2)^4,%series(eps,2),%trig(g),factor);
+1+eps*(4*(r^2+2*q^2)+4*cos(2*g)*r^2+16*cos(g)*q*r)
+ +eps^2*(3*(3*r^4+24*q^2*r^2+8*q^4)+3*cos(4*g)*r^4+24*cos(3*g)*q*r^3
+                                   +24*cos(g)*q*r*(3*r^2+4*q^2)
+                                   +12*cos(2*g)*r^2*(r^2+6*q^2))$
+                                 
+format((1+2*a+a^2)*b + a*(1+2*b+b^2),%sum,%product,%factor);
+a*(b+1)^2+(a+1)^2*b$
+
+format(expand((1+a)^2/(1+b)^2),%ratsimp,%factor);
+(a+1)^2/(b+1)^2$
+
+block([t1:expand((1+x^4)*y^2+(1+x^8)*y^4)],
+  [format(t1,%p(y),%f), format(t1,%p(y),%f(a^2-2))]);
+[(x^8+1)*y^4+(x^4+1)*y^2,
+ (x^4-a*x^2+1)*(x^4+a*x^2+1)*y^4+(x^2-a*x+1)*(x^2+a*x+1)*y^2]$
+
+format(expand((a+x)^3-a^3),%f-a^3);
+(x+a)^3-a^3$
+
+/* Contrast power series & Taylor series: */
+format((1+sin(x)-x)^3,%series(x,3),%f);
+-x^3+3*x^2*(sin(x)+1)-3*x*(sin(x)+1)^2+(sin(x)+1)^3$
+
+format((1+sin(x)-x)^3,%taylor(x,3),%f);
+1-x^3/2$
+
+block([], local(sqrtp),
+  sqrtp(f):=not(atom(f)) and part(f,0)='sqrt,
+  first(solve(a*x^2+b*x-(b-2*a)/4,x)),
+  format(%%,%rhs,%preformat(%p(match(sqrtp))),%match(sqrtp),%arg(1),%f));
+x = -sqrt((b-a)*(b+2*a))/(2*a)-b/(2*a)$
+
+/***********************************************************************
+Subtemplates & template chains. Compare: */
+block([t2:expand((1+a)^2*(1+x)^2/(1+b^2)/(1+y)^2)],
+  [format(t2,%r[%p(x)],%f), format(t2,%r[[%p(x),%f]])]);
+[((a+1)^2*x^2+2*(a+1)^2*x+(a+1)^2)/((b^2+1)*(y+1)^2),
+        ((a+1)^2*x^2+2*(a+1)^2*x+(a+1)^2)/((b^2+1)*y^2+(2*b^2+2)*y+b^2+1)]$
+
+/* Contrast these subtemplates */
+block([l1:[1+2*a+a^2,1+2*b+b^2,1+2*c+c^2]],
+  [format(l1,%list,%f), format(l1,%list[%noop,%f]), format(l1,%list[%noop,%ditto(%f)])]);
+[[(a+1)^2,(b+1)^2,(c+1)^2],[a^2+2*a+1,(b+1)^2,c^2+2*c+1],
+        [a^2+2*a+1,(b+1)^2,(c+1)^2]]$
+
+/* Contrast various templates & subtemplate usage */
+format((1+a)^2/(1+2*b+b^2),%frac[expand,%f]);
+(a^2+2*a+1)/(b+1)^2$
+
+format((1+a)^2/(1+2*b+b^2),%expression[expand,%f]);
+(a^2+2*a+1)/(b+1)^2$
+
+format((1+a)^2/(1+2*b+b^2),%denom,%f);
+(a+1)^2/(b+1)^2$
+
+format((1+a)^2/(1+2*b+b^2),%num,expand);
+(a^2+2*a+1)/(b^2+2*b+1)$
+
+/***********************************************************************
+ Bags: Lists, Relations & Matrices */
+
+format([a=b,c=d,e=f],%equation);
+[a,c,e] = [b,d,f]$
+
+format([a,c,e] = [b,d,f],%list);
+[a = b,c = d,e = f]$
+
+format(1+2*a+a^2 < 1+2*b+b^2,%rel("<")[%f]);
+(a+1)^2 < b^2+2*b+1$
+
+format(1+2*a+a^2 < 1+2*b+b^2,%rhs("<"),%f);
+a^2+2*a+1 < (b+1)^2$
+
+format(1+2*a+a^2 < 1+2*b+b^2,%lhs("<"),%f);
+(a+1)^2 < b^2+2*b+1$
+
+format(1+2*a+a^2 = 1+2*b+b^2,%lhs,%f);
+(a+1)^2 = b^2+2*b+1$
+
+block([m],
+  m1:matrix([a^2+2*a+1=q,b^2+2*b+1=r],[c^2+2*c+1=s,d^2+2*d+1=t]),
+  format(m1,%equation,%matrix[%list[%factor]]));
+matrix([(a+1)^2,b^2+2*b+1],[c^2+2*c+1,d^2+2*d+1]) = matrix([q,r],[s,t])$
+
+block([m],
+  m1:matrix([a^2+2*a+1=q,b^2+2*b+1=r],[c^2+2*c+1=s,d^2+2*d+1=t]),
+  format(m1,%eq,%element(1,1),%f));
+matrix([(a+1)^2,b^2+2*b+1],[c^2+2*c+1,d^2+2*d+1]) = matrix([q,r],[s,t])$
+
+block([m],
+  m1:matrix([a^2+2*a+1=q,b^2+2*b+1=r],[c^2+2*c+1=s,d^2+2*d+1=t]),
+  format(m1,%equation,%matrix[%noop,%list[%noop,%factor]]));
+matrix([a^2+2*a+1,b^2+2*b+1],[c^2+2*c+1,(d+1)^2]) = matrix([q,r],[s,t])$
+
+block([m],
+  m1:matrix([a^2+2*a+1=q,b^2+2*b+1=r],[c^2+2*c+1=s,d^2+2*d+1=t]),
+  format(m1,%eq,%element(2,2),%f));
+matrix([a^2+2*a+1,b^2+2*b+1],[c^2+2*c+1,(d+1)^2]) = matrix([q,r],[s,t])$
+
+/***********************************************************************
+ Conditionals */
+format(a*(1+2*x+x^2)+b*(1+2*y+y^2),%sum,%if(lambda([xx],freeof(x,xx)))[%f,%subst(x=q)]);
+b*(y+1)^2+a*(q^2+2*q+1)$
+

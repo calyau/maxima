@@ -1,0 +1,24 @@
+load("Eulix.mac")$
+load("rkf45.mac")$
+
+/* This is a 1-d example
+   Shampine's ball of flame
+   y'= y^2-y^3   y(0)= delta   [0,1/delta]
+*/
+
+debugmode:true$
+delta:0.00001$
+timer(rkf45,Eulix)$
+
+RR:rkf45(y^2-y^3,y,delta,[t,0,2/delta],
+         report=true,max_iterations=40000,absolute_tolerance=5E-8)$
+
+[tlist,ylist]: Eulix(y^2-y^3,y,delta,[t,0,2/delta],
+                     logging=true,absolute_tolerance=5E-8,combined_t_y_list=false)$
+timer_info();  /* rkf45: 37.376 sec   Eulix: 2.192 sec */
+
+plot2d([discrete,tlist,map(lambda([z],z[1]),ylist)],
+       [legend,"y"],[title,"Shampine's ball of flame"])$
+read("enter ; or $ to quit");
+
+

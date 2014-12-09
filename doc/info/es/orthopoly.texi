@@ -1,39 +1,39 @@
 @c English version: 2012-08-22
 @menu
-* Introducci@'on a polinomios ortogonales::
+* Introducción a polinomios ortogonales::
 * Funciones y variables para polinomios ortogonales::
 @end menu
 
-@node Introducci@'on a polinomios ortogonales, Funciones y variables para polinomios ortogonales, orthopoly, orthopoly
-@section Introducci@'on a polinomios ortogonales
+@node Introducción a polinomios ortogonales, Funciones y variables para polinomios ortogonales, orthopoly, orthopoly
+@section Introducción a polinomios ortogonales
 
-El paquete @code{orthopoly} contiene funciones para la evaluaci@'on
-simb@'olica y num@'erica de diversos tipos de polinomios ortogonales, como
-los de Chebyshev, Laguerre, Hermite, Jacobi, Legendre y ultraesf@'ericos 
-(Gegenbauer). Adem@'as, @code{orthopoly} soporta las funciones esf@'ericas
-de Bessel, Hankel y arm@'onicas.
+El paquete @code{orthopoly} contiene funciones para la evaluación
+simbólica y numérica de diversos tipos de polinomios ortogonales, como
+los de Chebyshev, Laguerre, Hermite, Jacobi, Legendre y ultraesféricos 
+(Gegenbauer). Además, @code{orthopoly} soporta las funciones esféricas
+de Bessel, Hankel y armónicas.
 
 Referencias:
 @itemize @bullet
 @item
 Abramowitz y Stegun, @i{Handbook of Mathematical Functions},
-(1972, d@'ecima reimpresi@'on, cap@'{@dotless{i}}tulo 22)
+(1972, décima reimpresión, capítulo 22)
 
 @item
-Gradshteyn y Ryzhik, @i{Table of Integrals, Series y  Products}, (1980, edici@'on
+Gradshteyn y Ryzhik, @i{Table of Integrals, Series y  Products}, (1980, edición
 corregida y ampliada)
 
 @item
-Eugen Merzbacher, @i{Quantum Mechanics}, (1970, segunda edici@'on)
+Eugen Merzbacher, @i{Quantum Mechanics}, (1970, segunda edición)
 
 @end itemize
 
-El paquete @code{orthopoly}, junto con su documentaci@'on, fue escrito por 
+El paquete @code{orthopoly}, junto con su documentación, fue escrito por 
 Barton Willis de la Universidad de Nebraska en Kearney. El paquete se
 distribuye con la licencia GNU General Public License (GPL).
 
 
-@subsection Inici@'andose con orthopoly
+@subsection Iniciándose con orthopoly
 
 @code{load (orthopoly)} carga el paquete @code{orthopoly}.
 
@@ -50,7 +50,7 @@ Para obtener el polinomio de Legendre de tercer orden,
                  2             2
 @end example
 
-Para expresarlo como una suma de potencias de @var{x}, apl@'{@dotless{i}}quese
+Para expresarlo como una suma de potencias de @var{x}, aplíquese
 @var{ratsimp} o @var{rat} al resultado.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
@@ -65,8 +65,8 @@ Para expresarlo como una suma de potencias de @var{x}, apl@'{@dotless{i}}quese
                          2           2
 @end example
 
-De forma alternativa, convi@'ertase el segundo argumento de to @code{legendre_p}
-(su variable  ``principal'') a una expresi@'on racional can@'onica 
+De forma alternativa, conviértase el segundo argumento de to @code{legendre_p}
+(su variable  ``principal'') a una expresión racional canónica 
 (canonical rational expression, CRE)).
 
 @c ===beg===
@@ -80,8 +80,8 @@ De forma alternativa, convi@'ertase el segundo argumento de to @code{legendre_p}
                                2
 @end example
 
-Para la evaluaci@'on num@'erica,  @code{orthopoly} hace uso del an@'alisis
-de error de ejecuci@'on para estimar una cota superior del error. Por ejemplo,
+Para la evaluación numérica,  @code{orthopoly} hace uso del análisis
+de error de ejecución para estimar una cota superior del error. Por ejemplo,
 
 @c ===beg===
 @c jacobi_p (150, 2, 3, 0.2);
@@ -93,8 +93,8 @@ de error de ejecuci@'on para estimar una cota superior del error. Por ejemplo,
 
 Los intervalos tienen la forma @code{interval (@var{c}, @var{r})}, donde
 @var{c} es el centro y @var{r} el radio del intervalo. Puesto que Maxima
-no soporta aritm@'etica de intervalos, en algunas situaciones, como en los 
-gr@'aficos, puede ser necesario ignorar el error y utilizar el centro del
+no soporta aritmética de intervalos, en algunas situaciones, como en los 
+gráficos, puede ser necesario ignorar el error y utilizar el centro del
 intervalo. Para conseguirlo conviene asignar a la variable 
 @code{orthopoly_returns_intervals} el valor @code{false}.
 
@@ -109,10 +109,10 @@ intervalo. Para conseguirlo conviene asignar a la variable
 (%o2)                  - 0.062017037936715
 @end example
 
-V@'ease la secci@'on @i{Evaluaci@'on num@'erica} para m@'as informaci@'on.
+Véase la sección @i{Evaluación numérica} para más información.
 
 La mayor parte de las funciones de @code{orthopoly} tienen una propiedad
-@code{gradef}; as@'{@dotless{i}},
+@code{gradef}; así,
 
 @c ===beg===
 @c diff (hermite (n, x), x);
@@ -130,8 +130,8 @@ La mayor parte de las funciones de @code{orthopoly} tienen una propiedad
                                x
 @end example
 
-La funci@'on @code{unit_step} del segundo ejemplo evita el error que
-aparecer@'{@dotless{i}}a al evaluar la expresi@'on con @var{n} igual a 0.
+La función @code{unit_step} del segundo ejemplo evita el error que
+aparecería al evaluar la expresión con @var{n} igual a 0.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -142,8 +142,8 @@ aparecer@'{@dotless{i}}a al evaluar la expresi@'on con @var{n} igual a 0.
 (%o3)                           0
 @end example
 
-La propiedad "gradef" s@'olo se aplica a la variable principal; derivadas 
-respecto de las otras variables dar@'an lugar normalmente a mensajes de 
+La propiedad "gradef" sólo se aplica a la variable principal; derivadas 
+respecto de las otras variables darán lugar normalmente a mensajes de 
 error; por ejemplo,
 
 @c ===beg===
@@ -162,9 +162,9 @@ respect the first argument
 @end example
 
 Generalmente, las funciones de @code{orthopoly} se distribuyen sobre listas y
-matrices. Al objeto de que la evaluaci@'on se realice completamente, las variables
+matrices. Al objeto de que la evaluación se realice completamente, las variables
 opcionales @code{doallmxops} y @code{listarith} deben valer ambas @code{true},
-que es el valor por defecto. Para ilustrar la distribuci@'on sobre matrices 
+que es el valor por defecto. Para ilustrar la distribución sobre matrices 
 sirve el siguiente ejemplo
 
 @c ===beg===
@@ -188,9 +188,9 @@ sirve el siguiente ejemplo
                [ - 2 (1 - 2 y )       - 2       ]
 @end example
 
-En el segundo ejemplo, el elemento @code{i, j}-@'esimo es
+En el segundo ejemplo, el elemento @code{i, j}-ésimo es
 @code{hermite (2, m[i,j])}, que no es lo mismo que calcular
-@code{-2 + 4 m . m}, seg@'un se ve en el siguiente ejemplo.
+@code{-2 + 4 m . m}, según se ve en el siguiente ejemplo.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -203,8 +203,8 @@ En el segundo ejemplo, el elemento @code{i, j}-@'esimo es
                     [     0      4 x y - 2 ]
 @end example
 
-Si se eval@'ua una funci@'on en un punto fuera de su dominio de definici@'on,
-generalmente @code{orthopoly} devolver@'a la funci@'on sin evaluar. Por ejemplo,
+Si se evalúa una función en un punto fuera de su dominio de definición,
+generalmente @code{orthopoly} devolverá la función sin evaluar. Por ejemplo,
 
 @c ===beg===
 @c legendre_p (2/3, x);
@@ -215,8 +215,8 @@ generalmente @code{orthopoly} devolver@'a la funci@'on sin evaluar. Por ejemplo,
                               2/3
 @end example
 
-@code{orthopoly} da soporte a la traducci@'on de expresiones al formato TeX y
-la representaci@'on bidimensional en el terminal.
+@code{orthopoly} da soporte a la traducción de expresiones al formato TeX y
+la representación bidimensional en el terminal.
 
 @c ===beg===
 @c spherical_harmonic (l, m, theta, phi);
@@ -243,11 +243,11 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 
 @subsection Limitaciones
 
-Cuando una expresi@'on contenga varios polinomios ortogonales
-con @'ordenes simb@'olicos, es posible que aunque la expresi@'on sea
+Cuando una expresión contenga varios polinomios ortogonales
+con órdenes simbólicos, es posible que aunque la expresión sea
 nula, Maxima sea incapaz de simplificarla a cero, por lo que si se
-divide por esta cantidad, aparecer@'an problemas. Por ejemplo, la
-siguiente expressi@'on se anula para enteros @var{n} mayores que
+divide por esta cantidad, aparecerán problemas. Por ejemplo, la
+siguiente expressión se anula para enteros @var{n} mayores que
 1, no pudiendo Maxima reducirla a cero.
 
 @c ===beg===
@@ -261,8 +261,8 @@ siguiente expressi@'on se anula para enteros @var{n} mayores que
                   n - 1           n               n - 2
 @end example
 
-Para un valor espec@'{@dotless{i}}fico de @var{n} se puede
-reducir la expresi@'on a cero.
+Para un valor específico de @var{n} se puede
+reducir la expresión a cero.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -273,8 +273,8 @@ reducir la expresi@'on a cero.
 (%o2)                           0
 @end example
 
-Generalmente, la forma polinomial de un polinomio ortogonal no es la m@'as
-apropiada para su evaluaci@'on num@'erica. Aqu@'{@dotless{i}} un ejemplo.
+Generalmente, la forma polinomial de un polinomio ortogonal no es la más
+apropiada para su evaluación numérica. Aquí un ejemplo.
 
 @c ===beg===
 @c p : jacobi_p (100, 2, 3, x)$
@@ -293,7 +293,7 @@ apropiada para su evaluaci@'on num@'erica. Aqu@'{@dotless{i}} un ejemplo.
 @end example
 
 Este resultado se puede mejorar expandiendo el polinomio y evaluando
-a continuaci@'on, lo que da una aproximaci@'on mejor.
+a continuación, lo que da una aproximación mejor.
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c p : expand (p)$
@@ -305,17 +305,17 @@ a continuaci@'on, lo que da una aproximaci@'on mejor.
 (%o6) 0.18413609766122982
 @end example
 
-Sin embargo esto no vale como regla general; la expansi@'on del
-polinomio no siempre da como resultado una expresi@'on m@'as f@'acil
-de evaluar num@'ericamente. Sin duda, la mejor manera de hacer la
-evaluaci@'on num@'erica consiste en hacer que uno o m@'as de los argumentos
-de la funci@'on sean decimales en coma flotante; de esta forma se utilizar@'an
-algoritmos decimales especializados para hacer la evaluaci@'on.
+Sin embargo esto no vale como regla general; la expansión del
+polinomio no siempre da como resultado una expresión más fácil
+de evaluar numéricamente. Sin duda, la mejor manera de hacer la
+evaluación numérica consiste en hacer que uno o más de los argumentos
+de la función sean decimales en coma flotante; de esta forma se utilizarán
+algoritmos decimales especializados para hacer la evaluación.
 
-La funci@'on @code{float} de Maxima trabaja de forma indiscriminada; si se aplica
-@code{float} a una expresi@'on que contenga un polinomio ortogonal con el grado u orden
-simb@'olico, @'estos se pueden transformar en decimales y la expresi@'on no ser
-evaluada de forma completa. Consid@'erese
+La función @code{float} de Maxima trabaja de forma indiscriminada; si se aplica
+@code{float} a una expresión que contenga un polinomio ortogonal con el grado u orden
+simbólico, éstos se pueden transformar en decimales y la expresión no ser
+evaluada de forma completa. Considérese
 
 @c ===beg===
 @c assoc_legendre_p (n, 1, x);
@@ -337,10 +337,10 @@ evaluada de forma completa. Consid@'erese
                              2
 @end example
 
-La expresi@'on en @code{(%o3)} no da como resultado un decimal en coma flotante; 
+La expresión en @code{(%o3)} no da como resultado un decimal en coma flotante; 
 @code{orthopoly} no reconoce decimales donde espera que haya enteros. De forma semejante,
-la evaluaci@'on num@'erica de la funci@'on @code{pochhammer} para @'ordenes que
-excedan @code{pochhammer_max_index} puede ser problem@'atica; consid@'erese
+la evaluación numérica de la función @code{pochhammer} para órdenes que
+excedan @code{pochhammer_max_index} puede ser problemática; considérese
 
 @c ===beg===
 @c x :  pochhammer (1, 10), pochhammer_max_index : 5;
@@ -377,21 +377,21 @@ A fin de evaluar @var{x} como decimal, es necesario asignar a
 @end example
 
 El valor por defecto de @code{pochhammer_max_index} es 100;
-c@'ambiese este valor tras cargar el paquete @code{orthopoly}.
+cámbiese este valor tras cargar el paquete @code{orthopoly}.
 
-Por @'ultimo, t@'engase en cuenta que las referencias bibliogr@'aficas
+Por último, téngase en cuenta que las referencias bibliográficas
 no coinciden a la hora de definir los polinomios ortogonales; en 
 @code{orthopoly} se han utilizado normalmente las convenciones seguidas
 por Abramowitz y Stegun.
 
-Cuando se sospeche de un fallo en @code{orthopoly}, compru@'ebense algunos
+Cuando se sospeche de un fallo en @code{orthopoly}, compruébense algunos
 casos especiales a fin de determinar si las definiciones de las que el
 usuario parte coinciden con las utilizadas por el paquete @code{orthopoly}.
-A veces las definiciones difieren por un factor de normalizaci@'on; algunos
+A veces las definiciones difieren por un factor de normalización; algunos
 autores utilizan versiones que hacen que las familias sean ortogonales
-en otros intervalos diferentes de @math{(-1, 1)}. As@'{@dotless{i}} por
+en otros intervalos diferentes de @math{(-1, 1)}. Así por
 ejemplo, para definir un polinomio de Legendre ortogonal en @math{(0, 1)}
-def@'{@dotless{i}}nase
+defínase
 
 @c ===beg===
 @c shifted_legendre_p (n, x) := legendre_p (n, 2*x - 1)$
@@ -411,28 +411,28 @@ def@'{@dotless{i}}nase
                                2
 @end example
 
-@anchor{Evaluaci@'on num@'erica}
-@subsection Evaluaci@'on num@'erica
+@anchor{Evaluación numérica}
+@subsection Evaluación numérica
 
-La mayor parte de las funciones de @code{orthopoly} realizan an@'alisis de
-errores en tiempo de ejecuci@'on para estimar el error en la evaluaci@'on
-decimal, a excepci@'on de las funciones esf@'ericas de Bessel y los 
+La mayor parte de las funciones de @code{orthopoly} realizan análisis de
+errores en tiempo de ejecución para estimar el error en la evaluación
+decimal, a excepción de las funciones esféricas de Bessel y los 
 polinomios asociados de Legendre de segunda especie. Para la 
-evaluaci@'on num@'erica, las funciones esf@'ericas de Bessel hacen uso
-de funciones SLATEC. No se lleva a cabo ning@'un m@'etodo especial de
-evaluaci@'on num@'erica para los polinomios asociados de Legendre de 
+evaluación numérica, las funciones esféricas de Bessel hacen uso
+de funciones SLATEC. No se lleva a cabo ningún método especial de
+evaluación numérica para los polinomios asociados de Legendre de 
 segunda especie.
 
 Es posible, aunque improbable, que el error obtenido en las evaluaciones 
-num@'ericas exceda al error estimado.
+numéricas exceda al error estimado.
 
 
 Los intervalos tienen la forma @code{interval (@var{c}, @var{r})},
 siendo @var{c} el centro del intervalo y @var{r} su radio. El
-centro del intervalo puede ser un n@'umero complejo, pero el radio
-ser@'a siempre un n@'umero real positivo.
+centro del intervalo puede ser un número complejo, pero el radio
+será siempre un número real positivo.
 
-He aqu@'{@dotless{i}} un ejemplo:
+He aquí un ejemplo:
 
 @c ===beg===
 @c fpprec : 50$
@@ -461,7 +461,7 @@ Se comprueba que el error es menor que el estimado
 En este ejemplo el error estimado es una cota superior para el error
 verdadero.
 
-Maxima no da soporte a la aritm@'etica de intervalos.
+Maxima no da soporte a la aritmética de intervalos.
 
 @c ===beg===
 @c legendre_p (7, 0.1) + legendre_p (8, 0.1);
@@ -472,7 +472,7 @@ Maxima no da soporte a la aritm@'etica de intervalos.
         + interval(- 0.19949294375000004, 3.3769353084291579E-15)
 @end example
 
-El usuario puede definir operadores aritm@'eticos para los intervalos.
+El usuario puede definir operadores aritméticos para los intervalos.
 Para definir la suma de intervalos se puede hacer
 
 @c ===beg===
@@ -490,7 +490,7 @@ Para definir la suma de intervalos se puede hacer
 (%o3) interval(- 0.019172222265624955, 6.5246488395313372E-15)
 @end example
 
-Las rutinas especiales para c@'alculo num@'erico son llamadas cuando
+Las rutinas especiales para cálculo numérico son llamadas cuando
 los argumentos son complejos. Por ejemplo,
 
 @c ===beg===
@@ -502,7 +502,7 @@ los argumentos son complejos. Por ejemplo,
                                            1.2089173052721777E-6)
 @end example
 
-Comp@'arese con el valor verdadero.
+Compárese con el valor verdadero.
 
 @c ===beg===
 @c float (expand (legendre_p (10, 2 + 3*%i)));
@@ -512,10 +512,10 @@ Comp@'arese con el valor verdadero.
 (%o1)          - 3.876378825E+7 %i - 6.0787748E+7
 @end example
 
-Adem@'as, cuando los argumentos son n@'umeros decimales grandes 
-(@i{big floats}), se realizan llamadas a las rutinas num@'ericas 
+Además, cuando los argumentos son números decimales grandes 
+(@i{big floats}), se realizan llamadas a las rutinas numéricas 
 especiales; sin embargo, los decimales grandes se convierten 
-previamente a doble precisi@'on y de este tipo ser@'an tambi@'en
+previamente a doble precisión y de este tipo serán también
 los resultados.
 
 @c ===beg===
@@ -526,20 +526,20 @@ los resultados.
 (%o1) interval(- 0.043009481257265, 3.3750051301228864E-14)
 @end example
 
-@subsection Gr@'aficos y orthopoly
+@subsection Gráficos y orthopoly
 
-Para representar gr@'aficamente expresiones que contengan polinomios
+Para representar gráficamente expresiones que contengan polinomios
 ortogonales se deben hacer dos cosas:
 @enumerate
 @item 
 Asignar a la variable opcional @code{orthopoly_returns_intervals} el valor @code{false},
 @item
-Comentar (con ap@'ostrofo) las llamadas a las funciones de @code{orthopoly}.
+Comentar (con apóstrofo) las llamadas a las funciones de @code{orthopoly}.
 @end enumerate
-Si las llamadas a las funciones no se comentan, Maxima las eval@'ua a 
-polinomios antes de hacer el gr@'afico, por lo que el c@'odigo especializado
-en el c@'alculo num@'erico no es llamado. Aqu@'{@dotless{i}} hay un ejemplo 
-de c@'omo se debe hacer para representar gr@'aficamente una expresi@'on que
+Si las llamadas a las funciones no se comentan, Maxima las evalúa a 
+polinomios antes de hacer el gráfico, por lo que el código especializado
+en el cálculo numérico no es llamado. Aquí hay un ejemplo 
+de cómo se debe hacer para representar gráficamente una expresión que
 contiene un polinomio de Legendre:
 
 @c ===beg===
@@ -556,17 +556,17 @@ contiene un polinomio de Legendre:
 @image{../figures/orthopoly1,8cm}
 @end ifnotinfo
 
-La expresi@'on @code{legendre_p (5, x)} se comenta @i{completamente}, que no es 
-lo mismo que comentar el nombre de la funci@'on, como en
+La expresión @code{legendre_p (5, x)} se comenta @i{completamente}, que no es 
+lo mismo que comentar el nombre de la función, como en
 @code{'legendre_p (5, @var{x})}.
 
-@subsection Miscel@'anea de funciones
+@subsection Miscelánea de funciones
 
-El paquete @code{orthopoly} define el s@'{@dotless{i}}mbolo de Pochhammer y
-la funci@'on de escal@'on unidad en sentencias gradef.
+El paquete @code{orthopoly} define el símbolo de Pochhammer y
+la función de escalón unidad en sentencias gradef.
 
-Para convertir los s@'{@dotless{i}}mbolos de Pochhammer en cocientes o
-funciones gamma, h@'agase uso de @code{makegamma}.
+Para convertir los símbolos de Pochhammer en cocientes o
+funciones gamma, hágase uso de @code{makegamma}.
 
 @c ===beg===
 @c makegamma (pochhammer (x, n));
@@ -583,8 +583,8 @@ funciones gamma, h@'agase uso de @code{makegamma}.
                             sqrt(%pi)
 @end example
 
-Las derivadas del s@'{@dotless{i}}mbolo de Pochhammer se dan en
-t@'erminos de la funci@'on @code{psi}.
+Las derivadas del símbolo de Pochhammer se dan en
+términos de la función @code{psi}.
 
 @c ===beg===
 @c diff (pochhammer (x, n), x);
@@ -599,14 +599,14 @@ t@'erminos de la funci@'on @code{psi}.
                            n    0
 @end example
 
-Es necesario tener cuidado con la expresi@'on en @code{(%o1)}, pues la diferencia
+Es necesario tener cuidado con la expresión en @code{(%o1)}, pues la diferencia
 de las funciones @code{psi} tiene polos cuando @code{@var{x} = -1, -2, .., -@var{n}}.
 Estos polos se cancelan con factores de @code{pochhammer (@var{x}, @var{n})}
 haciendo que la derivada sea un polinomio de grado @code{@var{n} - 1} si @var{n}
 es entero positivo.
 
-El s@'{@dotless{i}}mbolo de Pochhammer se define para @'ordenes negativos a
-trav@'es de su representaci@'on como cociente de funciones gamma. Consid@'erese
+El símbolo de Pochhammer se define para órdenes negativos a
+través de su representación como cociente de funciones gamma. Considérese
 
 @c ===beg===
 @c q : makegamma (pochhammer (x, n));
@@ -635,7 +635,7 @@ De forma alternativa, es posible llegar a este resultado directamente.
                                2240
 @end example
 
-La funci@'on de escal@'on unidad es continua por la izquierda; as@'{@dotless{i}},
+La función de escalón unidad es continua por la izquierda; así,
 
 @c ===beg===
 @c [unit_step (-1/10), unit_step (0), unit_step (1/10)];
@@ -645,7 +645,7 @@ La funci@'on de escal@'on unidad es continua por la izquierda; as@'{@dotless{i}}
 (%o1)                       [0, 0, 1]
 @end example
 
-En caso de ser necesaria una funci@'on escal@'on unidad que no sea
+En caso de ser necesaria una función escalón unidad que no sea
 continua ni por la izquierda ni por la derecha en el origen, se puede definir
 haciendo uso de @code{signum}; por ejemplo,
 
@@ -662,107 +662,107 @@ haciendo uso de @code{signum}; por ejemplo,
                                 2
 @end example
 
-No se debe redefinir la funci@'on @code{unit_step}, ya que parte del
-c@'odigo de @code{orthopoly} requiere que la funci@'on escal@'on sea
+No se debe redefinir la función @code{unit_step}, ya que parte del
+código de @code{orthopoly} requiere que la función escalón sea
 continua por la izquierda.
 
 @subsection Algoritmos
 
-En general, el paquete @code{orthopoly} gestiona la evaluaci@'on
-simb@'olica a trav@'es de la representaci@'on hipergeom@'etrica de 
-los polinomios ortogonales. Las funciones hipergeom@'etricas se
-eval@'uan utilizando las funciones (no documentadas) @code{hypergeo11} 
+En general, el paquete @code{orthopoly} gestiona la evaluación
+simbólica a través de la representación hipergeométrica de 
+los polinomios ortogonales. Las funciones hipergeométricas se
+evalúan utilizando las funciones (no documentadas) @code{hypergeo11} 
 y @code{hypergeo21}. Excepciones son las funciones de Bessel de
-@'{@dotless{i}}ndice semi-entero y las funciones asociadas de 
-Legendre de segunda especie; las funciones de Bessel de @'{@dotless{i}}ndice
-semi-entero se eval@'uan 
-utilizando una representaci@'on expl@'{@dotless{i}}cita, mientras que
-la funci@'on asociada de Legendre de segunda especie se eval@'ua 
+índice semi-entero y las funciones asociadas de 
+Legendre de segunda especie; las funciones de Bessel de índice
+semi-entero se evalúan 
+utilizando una representación explícita, mientras que
+la función asociada de Legendre de segunda especie se evalúa 
 recursivamente.
 
-En cuanto a la evaluaci@'on num@'erica, la mayor parte de las funciones
-se convierten a su forma hipergeom@'etrica, evalu@'andolas mediante recursi@'on.
-Adem@'as, las excepciones son las funciones de Bessel de @'{@dotless{i}}ndice
+En cuanto a la evaluación numérica, la mayor parte de las funciones
+se convierten a su forma hipergeométrica, evaluándolas mediante recursión.
+Además, las excepciones son las funciones de Bessel de índice
 semi-entero y las funciones asociadas de Legendre de segunda especie.
-Las funciones de Bessel de @'{@dotless{i}}ndice semi-entero se eval@'uan 
-num@'ericamente con c@'odigo SLATEC.
+Las funciones de Bessel de índice semi-entero se evalúan 
+numéricamente con código SLATEC.
 
 
-@node Funciones y variables para polinomios ortogonales,  , Introducci@'on a polinomios ortogonales, orthopoly
+@node Funciones y variables para polinomios ortogonales,  , Introducción a polinomios ortogonales, orthopoly
 @section Funciones y variables para polinomios ortogonales
 
-@deffn {Funci@'on} assoc_legendre_p (@var{n}, @var{m}, @var{x})
-Funci@'on asociada de Legendre de primera especie de grado @var{n} y orden @var{m}.
+@deffn {Función} assoc_legendre_p (@var{n}, @var{m}, @var{x})
+Función asociada de Legendre de primera especie de grado @var{n} y orden @var{m}.
 
-Referencia: Abramowitz y Stegun, ecuaciones 22.5.37, p@'agina 779, 8.6.6
-(segunda ecuaci@'on), p@'agina 334 y  8.2.5, p@'agina 333.
+Referencia: Abramowitz y Stegun, ecuaciones 22.5.37, página 779, 8.6.6
+(segunda ecuación), página 334 y  8.2.5, página 333.
 @end deffn
 
-@deffn {Funci@'on} assoc_legendre_q (@var{n}, @var{m}, @var{x})
-Funci@'on asociada de Legendre de segunda especie de grado @var{n} y orden @var{m}.
+@deffn {Función} assoc_legendre_q (@var{n}, @var{m}, @var{x})
+Función asociada de Legendre de segunda especie de grado @var{n} y orden @var{m}.
 
 Referencia: Abramowitz y Stegun, ecuaciones 8.5.3 y 8.1.8.
 @end deffn
 
-@deffn {Funci@'on} chebyshev_t (@var{n}, @var{x})
-Funci@'on de Chebyshev de primera especie.
+@deffn {Función} chebyshev_t (@var{n}, @var{x})
+Función de Chebyshev de primera especie.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.47, p@'agina 779.
+Referencia: Abramowitz y Stegun, ecuación 22.5.47, página 779.
 @end deffn
 
-@deffn {Funci@'on} chebyshev_u (@var{n}, @var{x})
-Funci@'on de Chebyshev de segunda especie.
+@deffn {Función} chebyshev_u (@var{n}, @var{x})
+Función de Chebyshev de segunda especie.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.48, p@'agina 779.
+Referencia: Abramowitz y Stegun, ecuación 22.5.48, página 779.
 @end deffn
 
-@deffn {Funci@'on} gen_laguerre (@var{n}, @var{a}, @var{x})
+@deffn {Función} gen_laguerre (@var{n}, @var{a}, @var{x})
 Polinomio de Laguerre generalizado de grado @var{n}.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.54, p@'agina 780.
+Referencia: Abramowitz y Stegun, ecuación 22.5.54, página 780.
 @end deffn
 
-@deffn {Funci@'on} hermite (@var{n}, @var{x})
+@deffn {Función} hermite (@var{n}, @var{x})
 Polinomio de Hermite.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.55, p@'agina 780.
+Referencia: Abramowitz y Stegun, ecuación 22.5.55, página 780.
 @end deffn
 
-@deffn {Funci@'on} intervalp (@var{e})
+@deffn {Función} intervalp (@var{e})
 Devuelve @code{true} si la entrada es un intervalo y @code{false} en caso contrario.
 @end deffn
 
-@deffn {Funci@'on} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+@deffn {Función} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
 Polinomio de Jacobi.
 
-Los polinomios de Jacobi est@'an definidos para todo @var{a} y @var{b};
+Los polinomios de Jacobi están definidos para todo @var{a} y @var{b};
 sin embargo, el peso @code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}}
 no es integrable para @code{@var{a} <= -1} o @code{@var{b} <= -1}.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.42, p@'agina 779.
+Referencia: Abramowitz y Stegun, ecuación 22.5.42, página 779.
 @end deffn
 
-@deffn {Funci@'on} laguerre (@var{n}, @var{x})
+@deffn {Función} laguerre (@var{n}, @var{x})
 Polinomio de Laguerre.
 
-Referencia: Abramowitz y Stegun, ecuaciones 22.5.16 y 22.5.54, p@'agina 780.
+Referencia: Abramowitz y Stegun, ecuaciones 22.5.16 y 22.5.54, página 780.
 @end deffn
 
-@deffn {Funci@'on} legendre_p (@var{n}, @var{x})
+@deffn {Función} legendre_p (@var{n}, @var{x})
 Polinomio de Legendre de primera especie.
 
-Referencia: Abramowitz y Stegun, ecuaciones 22.5.50 y 22.5.51, p@'agina 779.
+Referencia: Abramowitz y Stegun, ecuaciones 22.5.50 y 22.5.51, página 779.
 @end deffn
 
-@deffn {Funci@'on} legendre_q (@var{n}, @var{x})
+@deffn {Función} legendre_q (@var{n}, @var{x})
 Polinomio de Legendre de segunda especie.
 
 Referencia: Abramowitz y Stegun, ecuaciones 8.5.3 y 8.1.8.
 @end deffn
 
-@deffn {Funci@'on} orthopoly_recur (@var{f}, @var{args})
-Devuelve una relaci@'on recursiva para la familia de funciones
-ortogonales @var{f} con argumentos @var{args}. La recursi@'on se hace con respecto
+@deffn {Función} orthopoly_recur (@var{f}, @var{args})
+Devuelve una relación recursiva para la familia de funciones
+ortogonales @var{f} con argumentos @var{args}. La recursión se hace con respecto
 al grado del polinomio.
 
 @c ===beg===
@@ -777,7 +777,7 @@ al grado del polinomio.
 @end example
 
 El segundo argumento de @code{orthopoly_recur} debe ser una lista con
-el n@'umero correcto de argumentos para la funci@'on @var{f}; si no
+el número correcto de argumentos para la función @var{f}; si no
 lo es, Maxima emite un mensaje de error.
 
 @c ===beg===
@@ -790,7 +790,7 @@ Function jacobi_p needs 4 arguments, instead it received 2
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Adem@'as, si @var{f} no es el nombre de ninguna de las 
+Además, si @var{f} no es el nombre de ninguna de las 
 familias de polinomios ortogonales, se emite otro mensaje
 de error.
 
@@ -808,17 +808,17 @@ A recursion relation for foo isn't known to Maxima
 @defvr {Variable opcional} orthopoly_returns_intervals
 Valor por defecto: @code{true}
 
-Si @code{orthopoly_returns_intervals} vale @code{true}, los n@'umeros
+Si @code{orthopoly_returns_intervals} vale @code{true}, los números
 decimales en coma flotante se retornan con el formato 
 @code{interval (@var{c}, @var{r})}, donde @var{c} es el centro del
-intervalo y @var{r} su radio. El centro puede ser un n@'umero complejo,
+intervalo y @var{r} su radio. El centro puede ser un número complejo,
 en cuyo caso el intervalo es un disco en el plano complejo.
 @end defvr
 
-@deffn {Funci@'on} orthopoly_weight (@var{f}, @var{args})
+@deffn {Función} orthopoly_weight (@var{f}, @var{args})
 
 Devuelve una lista con tres elementos; el primer elemento es la
-f@'ormula del peso para la familia de polinomios ortogonales @var{f}
+fórmula del peso para la familia de polinomios ortogonales @var{f}
 con los argumentos dados por la lista @var{args}; el segundo y tercer
 elementos son los extremos inferior y superior del intervalo de
 ortogonalidad. Por ejemplo,
@@ -836,19 +836,19 @@ ortogonalidad. Por ejemplo,
 (%o2)                           0
 @end example
 
-La variable principal de @var{f} debe ser un s@'{@dotless{i}}mbolo, en caso
+La variable principal de @var{f} debe ser un símbolo, en caso
 contrario Maxima emite un mensaje de error.
 @end deffn
 
-@deffn {Funci@'on} pochhammer (@var{n}, @var{x})
-S@'{@dotless{i}}mbolo de Pochhammer. Para enteros no negativos @var{n} con
-@code{@var{n} <= pochhammer_max_index}, la expresi@'on 
-@code{pochhammer (@var{x}, @var{n})} se eval@'ua como el producto 
+@deffn {Función} pochhammer (@var{n}, @var{x})
+Símbolo de Pochhammer. Para enteros no negativos @var{n} con
+@code{@var{n} <= pochhammer_max_index}, la expresión 
+@code{pochhammer (@var{x}, @var{n})} se evalúa como el producto 
 @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)} si 
 @code{@var{n} > 0} y como 1 si @code{@var{n} = 0}. Para @var{n} negativo,
 @code{pochhammer (@var{x}, @var{n})} se define como 
 @code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}.
-As@'{@dotless{i}} por ejemplo,
+Así por ejemplo,
 
 @c ===beg===
 @c pochhammer (x, 3);
@@ -863,9 +863,9 @@ As@'{@dotless{i}} por ejemplo,
                       (1 - x) (2 - x) (3 - x)
 @end example
 
-A fin de convertir el s@'{@dotless{i}}mbolo de Pochhammer en un cociente 
-de funciones gamma (v@'ease Abramowitz y Stegun, ecuaci@'on 6.1.22),
-h@'agase uso de @code{makegamma}. Por ejemplo,
+A fin de convertir el símbolo de Pochhammer en un cociente 
+de funciones gamma (véase Abramowitz y Stegun, ecuación 6.1.22),
+hágase uso de @code{makegamma}. Por ejemplo,
 
 @c ===beg===
 @c makegamma (pochhammer (x, n));
@@ -878,7 +878,7 @@ h@'agase uso de @code{makegamma}. Por ejemplo,
 @end example
 
 Si @var{n} es mayor que @code{pochhammer_max_index} o si @var{n}
-es simb@'olico, @code{pochhammer} devuelve una forma nominal.
+es simbólico, @code{pochhammer} devuelve una forma nominal.
 
 @c ===beg===
 @c pochhammer (x, n);
@@ -893,8 +893,8 @@ es simb@'olico, @code{pochhammer} devuelve una forma nominal.
 @defvr {Variable opcional} pochhammer_max_index
 Valor por defecto: 100
 
-@code{pochhammer (@var{n}, @var{x})} se eval@'ua como un producto
-si y s@'olo si @code{@var{n} <= pochhammer_max_index}.
+@code{pochhammer (@var{n}, @var{x})} se evalúa como un producto
+si y sólo si @code{@var{n} <= pochhammer_max_index}.
 
 Ejemplos:
 
@@ -910,50 +910,51 @@ Ejemplos:
                                  4
 @end example
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 6.1.16, p@'agina 256.
+Referencia: Abramowitz y Stegun, ecuación 6.1.16, página 256.
 @end defvr
 
-@deffn {Funci@'on} spherical_bessel_j (@var{n}, @var{x})
-Funci@'on de Bessel esf@'erica de primera especie.
+@deffn {Función} spherical_bessel_j (@var{n}, @var{x})
+Función de Bessel esférica de primera especie.
 
-Referencia: Abramowitz y Stegun, ecuaciones 10.1.8, p@'agina 437 y 10.1.15, p@'agina 439.
+Referencia: Abramowitz y Stegun, ecuaciones 10.1.8, página 437 y 10.1.15, página 439.
 @end deffn
 
-@deffn {Funci@'on} spherical_bessel_y (@var{n}, @var{x})
-Funci@'on de Bessel esf@'erica de segunda especie.
+@deffn {Función} spherical_bessel_y (@var{n}, @var{x})
+Función de Bessel esférica de segunda especie.
 
-Referencia: Abramowitz y Stegun, ecuaciones 10.1.9, p@'agina 437 y 10.1.15, p@'agina 439.
+Referencia: Abramowitz y Stegun, ecuaciones 10.1.9, página 437 y 10.1.15, página 439.
 @end deffn
 
-@deffn {Funci@'on} spherical_hankel1 (@var{n}, @var{x})
-Funci@'on esf@'erica de Hankel de primera especie.
+@deffn {Función} spherical_hankel1 (@var{n}, @var{x})
+Función esférica de Hankel de primera especie.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 10.1.36, p@'agina 439.
+Referencia: Abramowitz y Stegun, ecuación 10.1.36, página 439.
 @end deffn
 
-@deffn {Funci@'on} spherical_hankel2 (@var{n}, @var{x})
-Funci@'on esf@'erica de Hankel de segunda especie.
+@deffn {Función} spherical_hankel2 (@var{n}, @var{x})
+Función esférica de Hankel de segunda especie.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 10.1.17, p@'agina 439.
+Referencia: Abramowitz y Stegun, ecuación 10.1.17, página 439.
 @end deffn
 
-@deffn {Funci@'on} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
-Funci@'on arm@'onica esf@'erica.
+@deffn {Función} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+Función armónica esférica.
 
 Referencia: Merzbacher 9.64.
 @end deffn
 
-@deffn {Funci@'on} unit_step (@var{x})
-Funci@'on de escal@'on unidad continua por la izquierda, definida de
+@deffn {Función} unit_step (@var{x})
+Función de escalón unidad continua por la izquierda, definida de
 tal forma que @code{unit_step (@var{x})} se anula para @code{@var{x} <= 0}
 y es igual a 1 para @code{@var{x} > 0}.
 
-En caso de ser necesaria una funci@'on escal@'on unidad que tome el
-valor 1/2 en el origen, util@'{@dotless{i}}cese @code{(1 + signum (@var{x}))/2}.
+En caso de ser necesaria una función escalón unidad que tome el
+valor 1/2 en el origen, utilícese @code{(1 + signum (@var{x}))/2}.
 @end deffn
 
-@deffn {Funci@'on} ultraspherical (@var{n}, @var{a}, @var{x})
-Polinomio ultraesf@'erico o de Gegenbauer.
+@deffn {Función} ultraspherical (@var{n}, @var{a}, @var{x})
+Polinomio ultraesférico o de Gegenbauer.
 
-Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.46, p@'agina 779.
+Referencia: Abramowitz y Stegun, ecuación 22.5.46, página 779.
 @end deffn
+

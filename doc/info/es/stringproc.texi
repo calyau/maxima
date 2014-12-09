@@ -1,23 +1,23 @@
 @c English version: 2013-08-07
 @menu
-* Introducci@'on al procesamiento de cadenas::
+* Introducción al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
 * Funciones y variables para caracteres::
 * Funciones y variables para cadenas::
 @end menu
 
-@node Introducci@'on al procesamiento de cadenas, Funciones y variables para entrada y salida, stringproc, stringproc
-@section Introducci@'on al procesamiento de cadenas
+@node Introducción al procesamiento de cadenas, Funciones y variables para entrada y salida, stringproc, stringproc
+@section Introducción al procesamiento de cadenas
 
-El paquete @code{stringproc} ampl@'{@dotless{i}}a las capacidades de 
-Maxima para manipular cadenas de caracteres, al tiempo que a@~nade algunas
-funciones @'utiles para la lectura y escritura de ficheros.
+El paquete @code{stringproc} amplía las capacidades de 
+Maxima para manipular cadenas de caracteres, al tiempo que añade algunas
+funciones útiles para la lectura y escritura de ficheros.
 
-Para dudas y fallos, por favor cont@'actese con @code{volkervannek at gmail dot com}.
+Para dudas y fallos, por favor contáctese con @code{volkervannek at gmail dot com}.
 
-En Maxima, una cadena de caracteres se construye f@'acilmente 
-escribi@'endola entre comillas dobles, como en @code{"texto"}.
-La funci@'on @code{stringp} comprueba si el argumento es una cadena.
+En Maxima, una cadena de caracteres se construye fácilmente 
+escribiéndola entre comillas dobles, como en @code{"texto"}.
+La función @code{stringp} comprueba si el argumento es una cadena.
 
 @c ===beg===
 @c m: "text";
@@ -32,9 +32,9 @@ La funci@'on @code{stringp} comprueba si el argumento es una cadena.
 
 Los caracteres se representan como cadenas de longitud unidad.
 No se tratan como caracteres Lisp. Se pueden chequear con la
-funci@'on @code{charp} (o con @code{lcharp} para los caracteres Lisp).
-La conversi@'on de caracteres Lisp a caracteres Maxima se realiza con
-la funci@'on @code{cunlisp}.
+función @code{charp} (o con @code{lcharp} para los caracteres Lisp).
+La conversión de caracteres Lisp a caracteres Maxima se realiza con
+la función @code{cunlisp}.
 
 @c ===beg===
 @c c: "e";
@@ -55,22 +55,22 @@ la funci@'on @code{cunlisp}.
 
 Todos los caracteres devueltos por las funciones de @code{stringproc} son caracteres
 de Maxima. Puesto que los caracteres introducidos son cadenas de longitud igual a
-la unidad, se pueden utilizar las funciones de cadenas tambi@'en para los 
+la unidad, se pueden utilizar las funciones de cadenas también para los 
 caracteres, como se ha hecho con @code{supcase} en el anterior ejemplo.
 
-Es importante tener en cuenta que el primer car@'acter en una cadena de Maxima
-ocupa la posici@'on 1. Esto se ha dise@~nado as@'{@dotless{i}} para mantener
-la compatibilidad con las listas de Maxima. V@'eanse las definiciones de 
+Es importante tener en cuenta que el primer carácter en una cadena de Maxima
+ocupa la posición 1. Esto se ha diseñado así para mantener
+la compatibilidad con las listas de Maxima. Véanse las definiciones de 
 @code{charat} y @code{charlist} para ver ejemplos.
 
 Las funciones de cadena se utilizan frecuentemente cuando se trabaja con
-ficheros. El siguiente ejemplo muestra algunas de estas funciones en acci@'on.
+ficheros. El siguiente ejemplo muestra algunas de estas funciones en acción.
 
 Ejemplo: 
 
-La funci@'on @code{openw} env@'{@dotless{i}}a un flujo de salida hacia
-un fichero, entonces @code{printf} permitir@'a formatera la escritura en
-este fichero. V@'ease @code{printf} para m@'as detalles.
+La función @code{openw} envía un flujo de salida hacia
+un fichero, entonces @code{printf} permitirá formatera la escritura en
+este fichero. Véase @code{printf} para más detalles.
 
 @example
 (%i1) s: openw("E:/file.txt");
@@ -84,9 +84,9 @@ este fichero. V@'ease @code{printf} para m@'as detalles.
 (%o4)                                true
 @end example
 
-Una vez cerrado el flujo, se podr@'a abrir nuevamente. La funci@'on @code{readline}
-devuelve el rengl@'on entero como una @'unica cadena. El paquete @code{stringproc}
-dispone de muchas funciones para manipular cadenas. La separaci@'on de palabras se
+Una vez cerrado el flujo, se podrá abrir nuevamente. La función @code{readline}
+devuelve el renglón entero como una única cadena. El paquete @code{stringproc}
+dispone de muchas funciones para manipular cadenas. La separación de palabras se
 puede hacer con @code{split} o @code{tokens}.
 
 @example
@@ -102,10 +102,10 @@ puede hacer con @code{split} o @code{tokens}.
 (%o9)           [42, 1.234, false, false, 0.01, 0.01, false]
 @end example
 
-La funci@'on @code{parsetoken} s@'olo analiza sint@'acticamente n@'umeros
-enteros y decimales. El an@'alisis de s@'{@dotless{i}}mbolos y n@'umeros
+La función @code{parsetoken} sólo analiza sintácticamente números
+enteros y decimales. El análisis de símbolos y números
 decimales grandes (@i{big floats}) necesita @code{parse_string}, que se
-cargar autom@'aticamente desde @code{eval_string.lisp}.
+cargar automáticamente desde @code{eval_string.lisp}.
 
 @example 
 (%i5) s: openr("E:/file.txt");
@@ -126,11 +126,11 @@ cargar autom@'aticamente desde @code{eval_string.lisp}.
 (%i12) close(s)$
 @end example
 
-La funci@'on @code{readline} devuelve @code{false} cuando se alcanza el
+La función @code{readline} devuelve @code{false} cuando se alcanza el
 final del fichero.
 
 
-@node Funciones y variables para entrada y salida, Funciones y variables para caracteres, Introducci@'on al procesamiento de cadenas, stringproc
+@node Funciones y variables para entrada y salida, Funciones y variables para caracteres, Introducción al procesamiento de cadenas, stringproc
 @section Funciones y variables para entrada y salida
 
 Ejemplo: 
@@ -164,52 +164,52 @@ Ejemplo:
 (%i7) close(s)$
 @end example
 
-@deffn {Funci@'on} close (@var{stream}) 
-Cierra el flujo de datos @var{stream} y devuelve @code{true} si @var{stream} hab@'{@dotless{i}}a
+@deffn {Función} close (@var{stream}) 
+Cierra el flujo de datos @var{stream} y devuelve @code{true} si @var{stream} había
 sido abierto. 
 
 @end deffn
 
-@deffn {Funci@'on} flength (@var{stream})
-Devuelve el n@'umero de elementos en @var{stream},
+@deffn {Función} flength (@var{stream})
+Devuelve el número de elementos en @var{stream},
 el cual debe ser un flujo de datos desde o hacia un fichero.
 @end deffn
 
-@deffn {Funci@'on} fposition (@var{stream})
-@deffnx {Funci@'on} fposition (@var{stream}, @var{pos})
-Devuelve la posici@'on actual en el flujo de datos @var{stream} si no se utiliza @var{pos}.
-Si se utiliza @var{pos}, @code{fposition} fija la posici@'on en @var{stream}.
+@deffn {Función} fposition (@var{stream})
+@deffnx {Función} fposition (@var{stream}, @var{pos})
+Devuelve la posición actual en el flujo de datos @var{stream} si no se utiliza @var{pos}.
+Si se utiliza @var{pos}, @code{fposition} fija la posición en @var{stream}.
 @var{stream} debe ser un flujo de datos desde o hacia un fichero y @var{pos} 
 debe ser un entero positivo que hace corresponder al primer elemento de
-@var{stream} la posici@'on 1.
+@var{stream} la posición 1.
 @end deffn
 
-@deffn {Funci@'on} freshline () 
-@deffnx {Funci@'on} freshline (@var{stream}) 
-Escribe una nueva l@'{@dotless{i}}nea (en el flujo de datos @var{stream})
-si la posici@'on actual no corresponde al inicio de la l@'{@dotless{i}}nea.
+@deffn {Función} freshline () 
+@deffnx {Función} freshline (@var{stream}) 
+Escribe una nueva línea (en el flujo de datos @var{stream})
+si la posición actual no corresponde al inicio de la línea.
 
-V@'ease tambi@'en @code{newline}.
+Véase también @code{newline}.
 @end deffn
 
 
-@deffn {Funci@'on} get_output_stream_string (@var{stream})
+@deffn {Función} get_output_stream_string (@var{stream})
 Devuelve una cadena con todos los caracteres presentes en @var{stream},
 que debe ser un flujo de datos de salida abiero.
 Los caracteres devueltos son eliminados de @var{stream}.
 
-Para un ejemplo, v@'ease @code{make_string_output_stream} .
+Para un ejemplo, véase @code{make_string_output_stream} .
 @end deffn
 
 
-@deffn {Funci@'on} make_string_input_stream (@var{string})
-@deffnx {Funci@'on} make_string_input_stream (@var{string}, @var{start})
-@deffnx {Funci@'on} make_string_input_stream (@var{string}, @var{start}, @var{end})
+@deffn {Función} make_string_input_stream (@var{string})
+@deffnx {Función} make_string_input_stream (@var{string}, @var{start})
+@deffnx {Función} make_string_input_stream (@var{string}, @var{start}, @var{end})
 Devuelve un flujo de entrada que contiene partes de @var{string} junto con
-el car@'acter de final de fichero. Sin argumentos opcionales, el flujo contiene
-la cadena entera y se posiciona frente al primer car@'acter.
+el carácter de final de fichero. Sin argumentos opcionales, el flujo contiene
+la cadena entera y se posiciona frente al primer carácter.
 Los argumentos @var{start} y @var{end} definen la subcadena contenida en el
-flujo. El primer car@'acter est@'a disponible en la posici@'on 1.
+flujo. El primer carácter está disponible en la posición 1.
 
 Ejemplo:
 
@@ -224,9 +224,9 @@ t e x
 
 
 
-@deffn {Funci@'on} make_string_output_stream ()
+@deffn {Función} make_string_output_stream ()
 Devuelve un flujo de salida que acepta caracteres. Los caracteres de
-este flujo podr@'an obtenerse con @code{get_output_stream_string}.
+este flujo podrán obtenerse con @code{get_output_stream_string}.
 
 Ejemplo:
 
@@ -249,50 +249,50 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} newline () 
-@deffnx {Funci@'on} newline (@var{stream}) 
-Escribe una nueva l@'{@dotless{i}}nea (en el flujo de datos  @var{stream}).
+@deffn {Función} newline () 
+@deffnx {Función} newline (@var{stream}) 
+Escribe una nueva línea (en el flujo de datos  @var{stream}).
 
-V@'ease @code{sprint} para un ejemplo de uso de @code{newline()}.
+Véase @code{sprint} para un ejemplo de uso de @code{newline()}.
 
-N@'otese que hay algunos casos en los que @code{newline} no trabaja
-seg@'un lo esperado.
+Nótese que hay algunos casos en los que @code{newline} no trabaja
+según lo esperado.
 
 @end deffn
 
-@deffn {Funci@'on} opena (@var{file}) 
+@deffn {Función} opena (@var{file}) 
 Devuelve un flujo de datos al fichero @var{file}.
-Si se abre un fichero ya existente, @code{opena} a@~nade elementos al final
+Si se abre un fichero ya existente, @code{opena} añade elementos al final
 del fichero.
 
 @end deffn
 
-@deffn {Funci@'on} openr (@var{file}) 
+@deffn {Función} openr (@var{file}) 
 Devuelve un flujo de datos de entrada al fichero @var{file}.
-Si @var{file} no existe, ser@'a creado.
+Si @var{file} no existe, será creado.
 @end deffn
 
-@deffn {Funci@'on} openw (@var{file}) 
+@deffn {Función} openw (@var{file}) 
 Devuelve un flujo de datos de salida al fichero @var{file}.
-Si @var{file} no existe, ser@'a creado.
+Si @var{file} no existe, será creado.
 Si se abre un fichero ya existente, @code{openw} lo modifica 
 borrando el contenido anterior.
 @end deffn
 
-@deffn {Funci@'on} printf (@var{dest}, @var{string})
-@deffnx {Funci@'on} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Función} printf (@var{dest}, @var{string})
+@deffnx {Función} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
 Genera una cadena de caracteres a partir de la cadena de control @var{string},
-teniendo en cuenta que las tildes introducen directivas. El car@'acter que
-va despu@'es de la tilde, posiblemente precedido por par@'ametros y modificadores,
+teniendo en cuenta que las tildes introducen directivas. El carácter que
+va después de la tilde, posiblemente precedido por parámetros y modificadores,
 especifica el tipo de formato que se desea. La mayor parte de las directivas usan
-uno o m@'as elementos de los argumentos @var{expr_1}, ..., @var{expr_n}
+uno o más elementos de los argumentos @var{expr_1}, ..., @var{expr_n}
 para crear la salida.
 
 Si @var{dest} es un flujo o vale @code{true}, entonces @code{printf} devuelve @code{false}.
 En otro caso, @code{printf} devuelve una cadena conteniendo la salida.
 
-@code{printf} da acceso a la funci@'on @code{format} de Common Lisp.
-El siguiente ejemplo muestra la relaci@'on entre estas dos funciones.
+@code{printf} da acceso a la función @code{format} de Common Lisp.
+El siguiente ejemplo muestra la relación entre estas dos funciones.
 
 @example
 (%i1) printf(true, "R~dD~d~%", 2, 2);
@@ -303,15 +303,15 @@ R2D2
 NIL
 @end example
 
-La siguiente descripci@'on es un simple resumen de las posibilidades de @code{printf}.
-La funci@'on @code{format} de Common Lisp se encuentra descrita en detalle en muchas
+La siguiente descripción es un simple resumen de las posibilidades de @code{printf}.
+La función @code{format} de Common Lisp se encuentra descrita en detalle en muchas
 referencias, como el manual libre "Common Lisp the Language" de Guy L. Steele; en
-particular, el cap@'{@dotless{i}}tulo 22.3.3.
+particular, el capítulo 22.3.3.
 
 @example
-   ~%       nueva l@'{@dotless{i}}nea
-   ~&       l@'{@dotless{i}}nea de refresco
-   ~t       tabulaci@'on
+   ~%       nueva línea
+   ~&       línea de refresco
+   ~t       tabulación
    ~$       moneda
    ~d       entero en base decimal
    ~b       entero en base binaria
@@ -321,22 +321,22 @@ particular, el cap@'{@dotless{i}}tulo 22.3.3.
    ~r       deletrea un entero
    ~p       plural
    ~f       decimal en coma flotante
-   ~e       notaci@'on cient@'{@dotless{i}}fica
+   ~e       notación científica
    ~g       ~f o ~e, dependiendo de la magnitud
-   ~h       n@'umero decimal grande (@i{bigfloat})
-   ~a       utiliza la funci@'on @code{string} de Maxima
+   ~h       número decimal grande (@i{bigfloat})
+   ~a       utiliza la función @code{string} de Maxima
    ~s       como ~a, pero las cadenas se devuelven entre "comillas dobles"
    ~~       ~
-   ~<       justificaci@'on, ~> termina
-   ~(       conversor may@'uscula/min@'uscula, ~) termina 
-   ~[       selecci@'on, ~] termina 
-   ~@{       iteraci@'on, ~@} termina
+   ~<       justificación, ~> termina
+   ~(       conversor mayúscula/minúscula, ~) termina 
+   ~[       selección, ~] termina 
+   ~@{       iteración, ~@} termina
 @end example
 
-La directiva @code{~h} para n@'umeros decimales grandes no pertenece al est@'andar
-de Lisp, por lo que se ilustra m@'as abajo.
+La directiva @code{~h} para números decimales grandes no pertenece al estándar
+de Lisp, por lo que se ilustra más abajo.
 
-La directiva @code{~*} no est@'a soportada.
+La directiva @code{~*} no está soportada.
 
 Ejemplos:
 
@@ -410,26 +410,26 @@ La directiva @code{~h} se ha introducido para formatear decimales grandes.
 
 
 
-@deffn {Funci@'on} readchar (@var{stream})
-Elimina y devuelve el primer car@'acter de @var{stream}. 
+@deffn {Función} readchar (@var{stream})
+Elimina y devuelve el primer carácter de @var{stream}. 
 Si se ha alcanzado el final del fichero, @code{readchar} devuelve @code{false}.
 
-Para un ejemplo, v@'ease @code{make_string_input_stream}.
+Para un ejemplo, véase @code{make_string_input_stream}.
 @end deffn
 
 
-@deffn {Funci@'on} readline (@var{stream}) 
-Devuelve una cadena con los caracteres desde la posici@'on actual en el flujo
-de datos @var{stream} hasta el final de la l@'{@dotless{i}}nea, o @code{false}
+@deffn {Función} readline (@var{stream}) 
+Devuelve una cadena con los caracteres desde la posición actual en el flujo
+de datos @var{stream} hasta el final de la línea, o @code{false}
 si se ha alcanzado el final del fichero.
 @end deffn
 
-@deffn {Funci@'on} sprint (@var{expr_1}, ..., @var{expr_n})
-Eval@'ua y muestra sus argumentos uno tras otro en un rengl@'on comenzando por 
+@deffn {Función} sprint (@var{expr_1}, ..., @var{expr_n})
+Evalúa y muestra sus argumentos uno tras otro en un renglón comenzando por 
 su extremo izquierdo. 
 
-La funci@'on @code{newline()}, que se carga autom@'aticamente desde @code{stringproc.lisp},
-puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
+La función @code{newline()}, que se carga automáticamente desde @code{stringproc.lisp},
+puede ser de utilidad si se quiere intercalar un salto de línea.
 
 @c ===beg===
 @c for n:0 thru 19 do sprint( fib(n) )$
@@ -451,17 +451,17 @@ puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
 @node Funciones y variables para caracteres, Funciones y variables para cadenas, Funciones y variables para entrada y salida, stringproc
 @section Funciones y variables para caracteres
 
-@deffn {Funci@'on} alphacharp (@var{char})
-Devuelve @code{true} si @var{char} es una car@'acter alfab@'etico.
+@deffn {Función} alphacharp (@var{char})
+Devuelve @code{true} si @var{char} es una carácter alfabético.
 @end deffn
 
-@deffn {Funci@'on} alphanumericp (@var{char}) 
-Devuelve @code{true} si @var{char} es una car@'acter alfab@'etico o
-un d@'{@dotless{i}}gito.
+@deffn {Función} alphanumericp (@var{char}) 
+Devuelve @code{true} si @var{char} es una carácter alfabético o
+un dígito.
 @end deffn
 
-@deffn {Funci@'on} ascii (@var{int})
-Devuelve el car@'acter correspondiente al n@'umero ASCII @var{int},
+@deffn {Función} ascii (@var{int})
+Devuelve el carácter correspondiente al número ASCII @var{int},
 debiendo ser @math{-1 < int < 256}.
 
 @c ===beg===
@@ -479,47 +479,47 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {Funci@'on} cequal (@var{char_1}, @var{char_2})          
-Devuelve @code{true} si @var{char_1} y @var{char_2} son el mismo car@'acter. 
+@deffn {Función} cequal (@var{char_1}, @var{char_2})          
+Devuelve @code{true} si @var{char_1} y @var{char_2} son el mismo carácter. 
 @end deffn
 
-@deffn {Funci@'on} cequalignore (@var{char_1}, @var{char_2})
-Como @code{cequal}, pero ignora si las letras est@'an en may@'usculas o
-min@'usculas.
+@deffn {Función} cequalignore (@var{char_1}, @var{char_2})
+Como @code{cequal}, pero ignora si las letras están en mayúsculas o
+minúsculas.
 @end deffn
 
-@deffn {Funci@'on} cgreaterp (@var{char_1}, @var{char_2})    
-Devuelve  @code{true} si el n@'umero ASCII de @var{char_1} es mayor que el 
+@deffn {Función} cgreaterp (@var{char_1}, @var{char_2})    
+Devuelve  @code{true} si el número ASCII de @var{char_1} es mayor que el 
 de @var{char_2}. 
 @end deffn
 
-@deffn {Funci@'on} cgreaterpignore (@var{char_1}, @var{char_2})
-Como @code{cgreaterp}, pero ignora si las letras est@'an en may@'usculas o
-min@'usculas.
+@deffn {Función} cgreaterpignore (@var{char_1}, @var{char_2})
+Como @code{cgreaterp}, pero ignora si las letras están en mayúsculas o
+minúsculas.
 @end deffn
 
-@deffn {Funci@'on} charp (@var{obj})
-Devuelve @code{true} si @var{obj} es un car@'acter de Maxima.
+@deffn {Función} charp (@var{obj})
+Devuelve @code{true} si @var{obj} es un carácter de Maxima.
 @end deffn
 
-@deffn {Funci@'on} cint (@var{char}) 
-Devuelve el n@'umero ASCII de @var{char}.
+@deffn {Función} cint (@var{char}) 
+Devuelve el número ASCII de @var{char}.
 @end deffn
 
-@deffn {Funci@'on} clessp (@var{char_1}, @var{char_2})
-Devuelve  @code{true} si el n@'umero ASCII de @var{char_1} es menor que el 
+@deffn {Función} clessp (@var{char_1}, @var{char_2})
+Devuelve  @code{true} si el número ASCII de @var{char_1} es menor que el 
 de @var{char_2}.  
 @end deffn
 
-@deffn {Funci@'on} clesspignore (@var{char_1}, @var{char_2})
-Como @code{clessp}, pero ignora si las letras est@'an en may@'usculas o
-min@'usculas.
+@deffn {Función} clesspignore (@var{char_1}, @var{char_2})
+Como @code{clessp}, pero ignora si las letras están en mayúsculas o
+minúsculas.
 @end deffn
 
-@deffn {Funci@'on} constituent (@var{char})
-Devuelve @code{true} si @var{char} es un car@'acter gr@'afico y no el
-car@'acter espacio. Un car@'acter gr@'afico es el que se puede ver y con un
-espacio a@~nadido; @code{constituent} est@'a definido por Paul Graham,
+@deffn {Función} constituent (@var{char})
+Devuelve @code{true} si @var{char} es un carácter gráfico y no el
+carácter espacio. Un carácter gráfico es el que se puede ver y con un
+espacio añadido; @code{constituent} está definido por Paul Graham,
 ANSI Common Lisp, 1996, page 67.
 
 @c ===beg===
@@ -536,38 +536,38 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @end deffn
 
-@deffn {Funci@'on} cunlisp (@var{lisp_char}) 
-Convierte un car@'acter Lisp en uno de Maxima. El uso de esta funci@'on por
-parte del usuario no ser@'a necesario.
+@deffn {Función} cunlisp (@var{lisp_char}) 
+Convierte un carácter Lisp en uno de Maxima. El uso de esta función por
+parte del usuario no será necesario.
 @end deffn
 
-@deffn {Funci@'on} digitcharp (@var{char})    
-Devuelve @code{true} si @var{char} es un d@'{@dotless{i}}gito. 
+@deffn {Función} digitcharp (@var{char})    
+Devuelve @code{true} si @var{char} es un dígito. 
 @end deffn
 
-@deffn {Funci@'on} lcharp (@var{obj}) 
-Devuelve @code{true} si @var{obj} es un car@'acter de Lisp.
-El uso de esta funci@'on por parte del usuario no ser@'a necesario.
+@deffn {Función} lcharp (@var{obj}) 
+Devuelve @code{true} si @var{obj} es un carácter de Lisp.
+El uso de esta función por parte del usuario no será necesario.
 @end deffn
 
-@deffn {Funci@'on} lowercasep (@var{char})  
-Devuelve  @code{true} si @var{char} es un car@'acter en min@'uscula.
+@deffn {Función} lowercasep (@var{char})  
+Devuelve  @code{true} si @var{char} es un carácter en minúscula.
 @end deffn
 
 @defvr {Variable} newline 
-El car@'acter de nueva l@'{@dotless{i}}nea. 
+El carácter de nueva línea. 
 @end defvr
 
 @defvr {Variable} space   
-El car@'acter de espacio.
+El carácter de espacio.
 @end defvr
 
 @defvr {Variable} tab     
-El car@'acter de tabulaci@'on.
+El carácter de tabulación.
 @end defvr
 
-@deffn {Funci@'on} uppercasep (@var{char})  
-Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
+@deffn {Función} uppercasep (@var{char})  
+Devuelve @code{true} si @var{char} es un carácter en mayúscula.
 @end deffn
 
 @node Funciones y variables para cadenas,  , Funciones y variables para caracteres, stringproc
@@ -575,8 +575,8 @@ Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
 
 
 
-@deffn {Funci@'on} base64 (@var{string})
-Devuelve la representaci@'on en base 64 de @var{string} en formato de
+@deffn {Función} base64 (@var{string})
+Devuelve la representación en base 64 de @var{string} en formato de
 cadena de caracteres.
 
 Ejemplo:
@@ -590,17 +590,17 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} base64_decode (@var{base64-string})
+@deffn {Función} base64_decode (@var{base64-string})
 Decodifica la cadena de caracteres @var{base64-string}, codificada
 en base 64, y devuelve la cadena original.
 
-Para un ejemplo, v@'ease @code{base64}.
+Para un ejemplo, véase @code{base64}.
 @end deffn
 
 
-@deffn {Funci@'on} charat (@var{string}, @var{n})
-Devuelve el @var{n}-@'esimo car@'acter de @var{string}.
-Al primer car@'acter de @var{string} le corresponde @var{n} = 1.
+@deffn {Función} charat (@var{string}, @var{n})
+Devuelve el @var{n}-ésimo carácter de @var{string}.
+Al primer carácter de @var{string} le corresponde @var{n} = 1.
 
 @c ===beg===
 @c charat("Lisp",1);
@@ -612,7 +612,7 @@ Al primer car@'acter de @var{string} le corresponde @var{n} = 1.
 
 @end deffn
 
-@deffn {Funci@'on} charlist (@var{string}) 
+@deffn {Función} charlist (@var{string}) 
 Devuelve una lista con todos los caracteres de @var{string}. 
 
 @c ===beg===
@@ -628,13 +628,13 @@ Devuelve una lista con todos los caracteres de @var{string}.
 
 @end deffn
 
-@deffn {Funci@'on} eval_string (@var{str})
-Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima
-y la eval@'ua. La cadena @var{str} puede terminar o no con cualquiera de los 
-s@'{@dotless{i}}mbolos de final de sentencia (d@'olar @code{$} o punto y coma @code{;}).
-S@'olo se analiza la primera expresi@'on si hay m@'as de una.
+@deffn {Función} eval_string (@var{str})
+Analiza sintácticamente la cadena @var{str} como una expresión de Maxima
+y la evalúa. La cadena @var{str} puede terminar o no con cualquiera de los 
+símbolos de final de sentencia (dólar @code{$} o punto y coma @code{;}).
+Sólo se analiza la primera expresión si hay más de una.
 
-Se emitir@'a un mensaje de error si @var{str} no es una cadena.
+Se emitirá un mensaje de error si @var{str} no es una cadena.
 
 Ejemplos:
 
@@ -649,17 +649,17 @@ Ejemplos:
 (%o2)                   baz + 1764
 @end example
 
-V@'ease tambi@'en @code{parse_string}.
+Véase también @code{parse_string}.
 @end deffn
 
 
 
 
 
-@deffn {Funci@'on} md5sum (@var{string})
-Devuelve, en formato de cadena de caracteres, el resultado de la suma de verificaci@'on
-md5 del argumento @var{string}. Para obtener el valor devuelto por la funci@'on como
-n@'umero entero, fijar la base num@'erica de entrada a 16 y a~nadir como prefijo
+@deffn {Función} md5sum (@var{string})
+Devuelve, en formato de cadena de caracteres, el resultado de la suma de verificación
+md5 del argumento @var{string}. Para obtener el valor devuelto por la función como
+número entero, fijar la base numérica de entrada a 16 y a~nadir como prefijo
 el cero.
 
 Ejemplo:
@@ -679,13 +679,13 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} parse_string (@var{str})
-Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima,
-pero no la eval@'ua. La cadena @var{str} puede terminar o no con cualquiera de los 
-s@'{@dotless{i}}mbolos de final de sentencia (d@'olar @code{$} o punto y coma @code{;}).
-S@'olo se analiza la primera expresi@'on si hay m@'as de una.
+@deffn {Función} parse_string (@var{str})
+Analiza sintácticamente la cadena @var{str} como una expresión de Maxima,
+pero no la evalúa. La cadena @var{str} puede terminar o no con cualquiera de los 
+símbolos de final de sentencia (dólar @code{$} o punto y coma @code{;}).
+Sólo se analiza la primera expresión si hay más de una.
 
-Se emitir@'a un mensaje de error si @var{str} no es una cadena.
+Se emitirá un mensaje de error si @var{str} no es una cadena.
 
 Ejemplos:
 
@@ -701,38 +701,38 @@ Ejemplos:
 (%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
-V@'ease tambi@'en @code{eval_string}.
+Véase también @code{eval_string}.
 @end deffn
 
-@deffn {Funci@'on} scopy (@var{string}) 
+@deffn {Función} scopy (@var{string}) 
 Devuelve una copia nueva de la cadena @var{string}. 
 @end deffn
 
-@deffn {Funci@'on} sdowncase (@var{string}) 
-@deffnx {Funci@'on} sdowncase (@var{string}, @var{start}) 
-@deffnx {Funci@'on} sdowncase (@var{string}, @var{start}, @var{end}) 
-Convierte caracteres en min@'uscula a may@'uscula. V@'ease tambi@'en @code{supcase}.
+@deffn {Función} sdowncase (@var{string}) 
+@deffnx {Función} sdowncase (@var{string}, @var{start}) 
+@deffnx {Función} sdowncase (@var{string}, @var{start}, @var{end}) 
+Convierte caracteres en minúscula a mayúscula. Véase también @code{supcase}.
 @end deffn
 
-@deffn {Funci@'on} sequal (@var{string_1}, @var{string_2}) 
+@deffn {Función} sequal (@var{string_1}, @var{string_2}) 
 Devuelve @code{true} si @var{string_1} y @var{string_2} son dos cadenas de caracteres iguales. 
 
 @end deffn
 
-@deffn {Funci@'on} sequalignore (@var{string_1}, @var{string_2})
-Igual que @code{sequal} pero no diferencia entre min@'usculas y may@'usculas.. 
+@deffn {Función} sequalignore (@var{string_1}, @var{string_2})
+Igual que @code{sequal} pero no diferencia entre minúsculas y mayúsculas.. 
 
 @end deffn
 
-@deffn {Funci@'on} sexplode (@var{string})
-El nombre @code{sexplode} es un seud@'onimo de la funci@'on @code{charlist}.
+@deffn {Función} sexplode (@var{string})
+El nombre @code{sexplode} es un seudónimo de la función @code{charlist}.
 
 @end deffn
 
-@deffn {Funci@'on} simplode (@var{list})  
-@deffnx {Funci@'on} simplode (@var{list}, @var{delim})  
-La funci@'on @code{simplode} admite como entrada una lista de expresiones para
-luego convertirla en una cadena de caracteres. Si no se utiliza la opci@'on @var{delim}
+@deffn {Función} simplode (@var{list})  
+@deffnx {Función} simplode (@var{list}, @var{delim})  
+La función @code{simplode} admite como entrada una lista de expresiones para
+luego convertirla en una cadena de caracteres. Si no se utiliza la opción @var{delim}
 para indicar el delimitador, entonces @code{simplode} no 
 hace uso de ninguno. El valor de @var{delim} puede ser cualquier cadena.
 
@@ -752,10 +752,10 @@ hace uso de ninguno. El valor de @var{delim} puede ser cualquier cadena.
 
 @end deffn
 
-@deffn {Funci@'on} sinsert (@var{seq}, @var{string}, @var{pos}) 
-Devuelve la concatenaci@'on de las cadenas @code{substring (@var{string}, 1, @var{pos} - 1)},
+@deffn {Función} sinsert (@var{seq}, @var{string}, @var{pos}) 
+Devuelve la concatenación de las cadenas @code{substring (@var{string}, 1, @var{pos} - 1)},
 @var{seq} y @code{substring (@var{string}, @var{pos})}.
-N@'otese que al primer car@'acter de @var{string} le corresponde la posici@'on 1.
+Nótese que al primer carácter de @var{string} le corresponde la posición 1.
 
 @c ===beg===
 @c s: "A submarine."$
@@ -772,12 +772,12 @@ N@'otese que al primer car@'acter de @var{string} le corresponde la posici@'on 1
 
 @end deffn
 
-@deffn {Funci@'on} sinvertcase (@var{string})  
-@deffnx {Funci@'on} sinvertcase (@var{string}, @var{start})  
-@deffnx {Funci@'on} sinvertcase (@var{string}, @var{start}, @var{end})  
+@deffn {Función} sinvertcase (@var{string})  
+@deffnx {Función} sinvertcase (@var{string}, @var{start})  
+@deffnx {Función} sinvertcase (@var{string}, @var{start}, @var{end})  
 Devuelve la misma cadena @var{string} pero con todos sus caracteres desde la
-posici@'on @var{start} hasta @var{end} invertidos, esto es, las
-may@'usculas se convierten en min@'usculas y @'estas en may@'usculas.
+posición @var{start} hasta @var{end} invertidos, esto es, las
+mayúsculas se convierten en minúsculas y éstas en mayúsculas.
 Si no se incluye el argumento @var{end}, se invierten todos los caracteres 
 desde @var{start} hasta el final de la cadena.
 
@@ -792,12 +792,12 @@ desde @var{start} hasta el final de la cadena.
 
 @end deffn
 
-@deffn {Funci@'on} slength (@var{string}) 
-Devuelve el n@'umero de caracteres de @var{string}. 
+@deffn {Función} slength (@var{string}) 
+Devuelve el número de caracteres de @var{string}. 
 
 @end deffn
 
-@deffn {Funci@'on} smake (@var{num}, @var{char}) 
+@deffn {Función} smake (@var{num}, @var{char}) 
 Construye una cadena de longitud @var{num} con todos sus
 caracteres iguales a @var{char}. 
 
@@ -811,12 +811,12 @@ caracteres iguales a @var{char}.
 
 @end deffn
 
-@deffn {Funci@'on} smismatch (@var{string_1}, @var{string_2}) 
-@deffnx {Funci@'on} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
-Devuelve la posici@'on del primer car@'acter de @var{string_1} distinto del
-correpondiente a @var{string_2}. La respuesta ser@'a @code{false} si no existe
-tal car@'acter. Por defecto, la funci@'on de comparaci@'on es @code{sequal}.
-Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas, h@'agase uso de 
+@deffn {Función} smismatch (@var{string_1}, @var{string_2}) 
+@deffnx {Función} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
+Devuelve la posición del primer carácter de @var{string_1} distinto del
+correpondiente a @var{string_2}. La respuesta será @code{false} si no existe
+tal carácter. Por defecto, la función de comparación es @code{sequal}.
+Si se quiere ignorar la diferencia entre mayúsculas y minúsculas, hágase uso de 
 @code{sequalignore} para el argumento @var{test}.
 
 @c ===beg===
@@ -829,17 +829,17 @@ Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas, h@'agase u
 
 @end deffn
 
-@deffn {Funci@'on} split (@var{string})  
-@deffnx {Funci@'on} split (@var{string}, @var{delim})  
-@deffnx {Funci@'on} split (@var{string}, @var{delim}, @var{multiple}) 
+@deffn {Función} split (@var{string})  
+@deffnx {Función} split (@var{string}, @var{delim})  
+@deffnx {Función} split (@var{string}, @var{delim}, @var{multiple}) 
 Devuelve la lista de todos los lexemas (@i{tokens}) de @var{string}.
-La funci@'on @code{split} utiliza @var{delim} como delimitador, y en caso
-de no ser utilizado este argumento, ser@'a utilizado el espacio en blanco
+La función @code{split} utiliza @var{delim} como delimitador, y en caso
+de no ser utilizado este argumento, será utilizado el espacio en blanco
 como delimitador por defecto. El argumento @var{multiple} es una variable
-booleana con valor @code{true} por defecto. Los delimitadores m@'ultiples 
+booleana con valor @code{true} por defecto. Los delimitadores múltiples 
 se leen como uno solo, lo que resulta de utilidad si las tabulaciones son 
 almacenadas como secuencias de espacios en blanco. Si a @var{multiple} se 
-le asigna el valor @code{false}, se consirarar@'an todos los delimitadores.
+le asigna el valor @code{false}, se consirararán todos los delimitadores.
 
 @c ===beg===
 @c split("1.2   2.3   3.4   4.5");
@@ -854,24 +854,24 @@ le asigna el valor @code{false}, se consirarar@'an todos los delimitadores.
 
 @end deffn
 
-@deffn {Funci@'on} sposition (@var{char}, @var{string}) 
-Devuelve la posici@'on del primer car@'acter de @var{string} que
-coincide con @var{char}. Al primer car@'acter de @var{string}
-le corresponde la posici@'on 1.
-Para cuando se quiera ignorar la diferencia entre may@'usculas y 
-min@'usculas, v@'ease @var{ssearch}.
+@deffn {Función} sposition (@var{char}, @var{string}) 
+Devuelve la posición del primer carácter de @var{string} que
+coincide con @var{char}. Al primer carácter de @var{string}
+le corresponde la posición 1.
+Para cuando se quiera ignorar la diferencia entre mayúsculas y 
+minúsculas, véase @var{ssearch}.
 @end deffn
 
-@deffn {Funci@'on} sremove (@var{seq}, @var{string})  
-@deffnx {Funci@'on} sremove (@var{seq}, @var{string}, @var{test})  
-@deffnx {Funci@'on} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Funci@'on} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+@deffn {Función} sremove (@var{seq}, @var{string})  
+@deffnx {Función} sremove (@var{seq}, @var{string}, @var{test})  
+@deffnx {Función} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Función} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 Devuelve la cadena @var{string} pero sin las subcadenas que coinciden con @var{seq}.
-La funci@'on de comparaci@'on por defecto es @code{sequal}.
-Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas, h@'agase uso de 
+La función de comparación por defecto es @code{sequal}.
+Si se quiere ignorar la diferencia entre mayúsculas y minúsculas, hágase uso de 
 @code{sequalignore} para el argumento @var{test}.
-Util@'{@dotless{i}}cense @var{start} y @var{end} para acotar la b@'usqueda.
-Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
+Utilícense @var{start} y @var{end} para acotar la búsqueda.
+Al primer carácter de @var{string} le corresponde la posición 1.
 
 @c ===beg===
 @c sremove("n't","I don't like coffee.");
@@ -886,31 +886,31 @@ Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @end deffn
 
-@deffn {Funci@'on} sremovefirst (@var{seq}, @var{string})  
-@deffnx {Funci@'on} sremovefirst (@var{seq}, @var{string}, @var{test})  
-@deffnx {Funci@'on} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Funci@'on} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
-Act@'ua de forma similar a la funci@'on @code{sremove}, pero s@'olo elimina
-la primera aparici@'on de la subcadena @code{seq}.
+@deffn {Función} sremovefirst (@var{seq}, @var{string})  
+@deffnx {Función} sremovefirst (@var{seq}, @var{string}, @var{test})  
+@deffnx {Función} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Función} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+Actúa de forma similar a la función @code{sremove}, pero sólo elimina
+la primera aparición de la subcadena @code{seq}.
 
 @end deffn
 
-@deffn {Funci@'on} sreverse (@var{string}) 
+@deffn {Función} sreverse (@var{string}) 
 Devuelve una cadena con todos los caracteres de @var{string} en orden inverso.
 
 @end deffn
 
-@deffn {Funci@'on} ssearch (@var{seq}, @var{string})  
-@deffnx {Funci@'on} ssearch (@var{seq}, @var{string}, @var{test})  
-@deffnx {Funci@'on} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Funci@'on} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
-Devuelve la posici@'on de la primera subcadena de @var{string} que coincide con
+@deffn {Función} ssearch (@var{seq}, @var{string})  
+@deffnx {Función} ssearch (@var{seq}, @var{string}, @var{test})  
+@deffnx {Función} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Función} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+Devuelve la posición de la primera subcadena de @var{string} que coincide con
 la cadena @var{seq}.
-La funci@'on de comparaci@'on por defecto es @code{sequal}.
-Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas, h@'agase uso de 
+La función de comparación por defecto es @code{sequal}.
+Si se quiere ignorar la diferencia entre mayúsculas y minúsculas, hágase uso de 
 @code{sequalignore} para el argumento @var{test}.
-Util@'{@dotless{i}}cense @var{start} y @var{end} para acotar la b@'usqueda.
-Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
+Utilícense @var{start} y @var{end} para acotar la búsqueda.
+Al primer carácter de @var{string} le corresponde la posición 1.
 
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
@@ -919,13 +919,13 @@ Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @end deffn
 
-@deffn {Funci@'on} ssort (@var{string}) 
-@deffnx {Funci@'on} ssort (@var{string}, @var{test}) 
+@deffn {Función} ssort (@var{string}) 
+@deffnx {Función} ssort (@var{string}, @var{test}) 
 Devuelve una cadena con todos los caracteres de @var{string} en un orden
 tal que no haya dos caracteres sucesivos @var{c} y @var{d} que verifiquen
 que @code{test (@var{c}, @var{d})} sea igual @code{false} y 
 @code{test (@var{d}, @var{c})} igual a @code{true}.
-La funci@'on de comparaci@'on @var{test} por defecto es  @var{clessp}, siendo
+La función de comparación @var{test} por defecto es  @var{clessp}, siendo
 el conjunto de posibles valores para este argumento 
 @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
@@ -942,19 +942,19 @@ el conjunto de posibles valores para este argumento
 
 @end deffn
 
-@deffn {Funci@'on} ssubst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Funci@'on} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Funci@'on} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Funci@'on} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@deffn {Función} ssubst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Función} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Función} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Función} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 Devuelve una cadena similar a @var{string} pero en la que aquellas subcadenas 
 coincidentes con @var{old} han sido sustituidas por @var{new}. Las subcadenas
 @var{old} y @var{new} no necesitan ser de la misma longitud. 
-La funci@'on de comparaci@'on por defecto es @code{sequal}.
-Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas durante
-la b@'usqueda de @var{old}, h@'agase uso de 
+La función de comparación por defecto es @code{sequal}.
+Si se quiere ignorar la diferencia entre mayúsculas y minúsculas durante
+la búsqueda de @var{old}, hágase uso de 
 @code{sequalignore} para el argumento @var{test}.
-Util@'{@dotless{i}}cense @var{start} y @var{end} para acotar la b@'usqueda.
-Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
+Utilícense @var{start} y @var{end} para acotar la búsqueda.
+Al primer carácter de @var{string} le corresponde la posición 1.
 
 @c ===beg===
 @c ssubst("like","hate","I hate Thai food. I hate green tea.");
@@ -969,15 +969,15 @@ Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @end deffn
 
-@deffn {Funci@'on} ssubstfirst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Funci@'on} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Funci@'on} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Funci@'on} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
-Act@'ua de forma similar a la funci@'on @code{subst}, pero s@'olo hace
-la sustituci@'on en la primera coincidencia con @var{old}. 
+@deffn {Función} ssubstfirst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Función} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Función} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Función} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+Actúa de forma similar a la función @code{subst}, pero sólo hace
+la sustitución en la primera coincidencia con @var{old}. 
 @end deffn
 
-@deffn {Funci@'on} strim (@var{seq},@var{string}) 
+@deffn {Función} strim (@var{seq},@var{string}) 
 Devuelve la cadena @var{string} pero recortando los caracteres
 de @var{seq} que tuviese en sus extremos.
 
@@ -996,29 +996,29 @@ de @var{seq} que tuviese en sus extremos.
 
 @end deffn
 
-@deffn {Funci@'on} striml (@var{seq}, @var{string}) 
-Act@'ua de forma similar a @code{strim}, pero s@'olo recorta
+@deffn {Función} striml (@var{seq}, @var{string}) 
+Actúa de forma similar a @code{strim}, pero sólo recorta
 en el extremo final de @var{string}.
 @end deffn
 
-@deffn {Funci@'on} strimr (@var{seq}, @var{string}) 
-Act@'ua de forma similar a @code{strim}, pero s@'olo recorta
+@deffn {Función} strimr (@var{seq}, @var{string}) 
+Actúa de forma similar a @code{strim}, pero sólo recorta
 en el extremo inicial de @var{string}.
 @end deffn
 
-@deffn {Funci@'on} stringp (@var{obj}) 
+@deffn {Función} stringp (@var{obj}) 
 Devuelve @code{true} si @var{obj} es una cadena.
-V@'ease un ejemplo en la introducci@'on.
+Véase un ejemplo en la introducción.
 @end deffn
 
-@deffn {Funci@'on} substring (@var{string}, @var{start})
-@deffnx {Funci@'on} substring (@var{string}, @var{start}, @var{end}) 
-Devuelve la subcadena de @var{string} que comienza en la posici@'on
-@var{start} y termina en la posici@'on @var{end}.
-El car@'acter en la posici@'on @var{end} no se incluye.
+@deffn {Función} substring (@var{string}, @var{start})
+@deffnx {Función} substring (@var{string}, @var{start}, @var{end}) 
+Devuelve la subcadena de @var{string} que comienza en la posición
+@var{start} y termina en la posición @var{end}.
+El carácter en la posición @var{end} no se incluye.
 En caso de no suministrarse el argumento @var{end}, la subcadena
-se extender@'a hasta el final. 
-Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
+se extenderá hasta el final. 
+Al primer carácter de @var{string} le corresponde la posición 1.
 
 @c ===beg===
 @c substring("substring",4);
@@ -1034,13 +1034,13 @@ Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @end deffn
 
-@deffn {Funci@'on} supcase (@var{string}) 
-@deffnx {Funci@'on} supcase (@var{string}, @var{start}) 
-@deffnx {Funci@'on} supcase (@var{string}, @var{start}, @var{end}) 
+@deffn {Función} supcase (@var{string}) 
+@deffnx {Función} supcase (@var{string}, @var{start}) 
+@deffnx {Función} supcase (@var{string}, @var{start}, @var{end}) 
 Devuelve la cadena @var{string} con todos sus caracteres entre las posiciones
-@var{start} y @var{end} en min@'uscula transformados a may@'uscula.
+@var{start} y @var{end} en minúscula transformados a mayúscula.
 En caso de no suministrarse el argumento @var{end}, los cambios
-se extender@'an hasta el final.
+se extenderán hasta el final.
 
 @c ===beg===
 @c supcase("english",1,2);
@@ -1052,11 +1052,11 @@ se extender@'an hasta el final.
 
 @end deffn
 
-@deffn {Funci@'on} tokens (@var{string}) 
-@deffnx {Funci@'on} tokens (@var{string}, @var{test}) 
+@deffn {Función} tokens (@var{string}) 
+@deffnx {Función} tokens (@var{string}, @var{test}) 
 Devuelve la lista de todos los lexemas (@i{tokens}) de @var{string}.
-Los lexemas son subcadenas cuyos caracteres satisfacen la  condici@'on @var{test}.
-Si no se suministra el argumento @var{test}, se utilizar@'a la condici@'on
+Los lexemas son subcadenas cuyos caracteres satisfacen la  condición @var{test}.
+Si no se suministra el argumento @var{test}, se utilizará la condición
 @var{constituent}, siendo el conjunto de las otras alternativas
 @code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}}.
 
@@ -1075,3 +1075,4 @@ Si no se suministra el argumento @var{test}, se utilizar@'a la condici@'on
 @end example
 
 @end deffn
+

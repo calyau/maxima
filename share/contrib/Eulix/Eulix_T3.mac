@@ -1,0 +1,49 @@
+load("Eulix.mac")$
+
+
+/* Lotka-Volterra  
+    alpha= 0.1  beta= 0.015  gamma= 0.0225  delta= 0.02
+
+    y1' =  y1*(alpha-beta*y2)     y1(0)= 1
+    y2' = -y2*(gamma-delta*y1)    y2(0)= 1
+*/
+ 
+alpha:0.1$beta:0.015$gamma:0.0225$delta:0.02$
+load("rkf45")$
+
+
+if false then block([fpprec,alpha, beta, gamma, delta],
+  timer(Eulix),
+  fpprec:30,
+  alpha:bfloat(1/10), beta:bfloat(15/1000), gamma:bfloat(225/10000), delta:bfloat(2/100),
+  ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[bfloat(1),bfloat(1)],['t,0,198],
+            absolute_tolerance=1e-20,relative_tolerance=1e-20),
+  print(timer_info(Eulix)),   /* 4.794 sec */
+  [t,y1_198,y2_198]: ER[length(ER)]
+) else ( /* by verified computing (RANGE by Alberth) correct to 20 decimal places */
+y1_198:1.01243149501057267529,
+y2_198:0.99965472408223507814
+);
+
+timer(rkf45,Eulix)$
+RkfR: rkf45([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198])$
+[t,y1t,y2t]: RkfR[length(RkfR)]$
+print("rkf45 error:",max(abs(y1t-y1_198),abs(y2t-y2_198)))$       /* 5.32e-4 */
+
+ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198])$
+          /* default absolute_tolerance=1e-6,relative_tolerance=1e-6 */
+[t,y1t,y2t]: ER[length(ER)]$
+print("Eulix 1E-6 error:",max(abs(y1t-y1_198),abs(y2t-y2_198)))$  /* 4.43e-5  */
+
+timer_info(rkf45,Eulix); /*  rkf45 ; 0.031 sec     Eulix : 1.228 sec  */
+
+ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198],
+          absolute_tolerance=1e-10,relative_tolerance=1e-10)$
+[t,y1t,y2t]: ER[length(ER)]$
+print("Eulix 1E-10 error:",max(abs(y1t-y1_198),abs(y2t-y2_198)))$ /* 1.11e-7 */
+
+ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198],
+          absolute_tolerance=1e-11,relative_tolerance=1e-11)$
+[t,y1t,y2t]: ER[length(ER)]$
+print("Eulix 1E-11 error:",max(abs(y1t-y1_198),abs(y2t-y2_198)))$ /* 1.37e-8 */
+

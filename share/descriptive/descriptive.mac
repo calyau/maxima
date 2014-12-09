@@ -267,6 +267,7 @@ continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index],
             for i:1 thru length(lis) do (
                if lis[i]=mini
                  then index: 1
+                 elseif lis[i] = maxi then index : nc
                  else index: ceiling((lis[i]-mini)/amp),
                fr[index]:fr[index]+1 ),
             [lim,fr])   )$

@@ -1,36 +1,36 @@
 @c English version: 2008-12-31
 @menu
-* Introducci@'on a units::       
+* Introducción a units::       
 * Funciones y variables para units::       
 @end menu
 
-@node Introducci@'on a units, Funciones y variables para units, unit, unit
-@section Introducci@'on a units
+@node Introducción a units, Funciones y variables para units, unit, unit
+@section Introducción a units
 
 El paquete @code{unit} permite al usuario hacer cambios de unidades y
-llevar a cabo el an@'alisis dimensional de las ecuaciones. La forma de operar de
+llevar a cabo el análisis dimensional de las ecuaciones. La forma de operar de
 este paquete es radicalmente diferente de la del paquete original de Maxima;
 mientras que en el paquete original era tan solo una lista de definiciones,
-aqu@'{@dotless{i}} se utiliza un conjunto de reglas que permiten seleccionar al usuario
-en qu@'e unidades debe devolverse la expresi@'on final. 
+aquí se utiliza un conjunto de reglas que permiten seleccionar al usuario
+en qué unidades debe devolverse la expresión final. 
 
-Junto con el an@'alisis dimensional, el paquete aporta una serie de 
-herramientas para controlar las opciones de conversi@'on y simplificaci@'on.
-Adem@'as de la conversi@'on autom@'atica adaptable a las necesidades del
+Junto con el análisis dimensional, el paquete aporta una serie de 
+herramientas para controlar las opciones de conversión y simplificación.
+Además de la conversión automática adaptable a las necesidades del
 usuario, el paquete @code{unit} permite hacer conversiones a la manera
 tradicional.
 
-Nota: Cuando los factores de conversi@'on no son exactos, Maxima los
-transformar@'a a fracciones como consecuencia de la metodolog@'{@dotless{i}}a
+Nota: Cuando los factores de conversión no son exactos, Maxima los
+transformará a fracciones como consecuencia de la metodología
 utilizada para simplificar las unidades. Los mensajes de aviso concernientes a
-estas transformaciones est@'an desactivados por defecto en el caso de las
-unidades (lo habitual es que est@'en activados en otros contextos) debido a
-que al ser una operaci@'on muy frecuente, ser@'{@dotless{i}}an un estorbo. 
+estas transformaciones están desactivados por defecto en el caso de las
+unidades (lo habitual es que estén activados en otros contextos) debido a
+que al ser una operación muy frecuente, serían un estorbo. 
 El estado previo de la variable @code{ratprint} queda restaurado tras la
-conversi@'on de las unidades, de manera que se mantendr@'a la opci@'on
-seleccionada por el usuario; en caso de que @'este necesite ver dichos 
-avisos, podr@'a hacer la asignaci@'on @code{unitverbose:on} para
-reactivarlos desde el proceso de conversi@'on de unidades.
+conversión de las unidades, de manera que se mantendrá la opción
+seleccionada por el usuario; en caso de que éste necesite ver dichos 
+avisos, podrá hacer la asignación @code{unitverbose:on} para
+reactivarlos desde el proceso de conversión de unidades.
 
 El paquete @code{unit} se aloja en el directorio @code{share/contrib/unit}
 y se ajusta a las convenciones de Maxima para la carga de paquetes:
@@ -56,23 +56,23 @@ Done.
 @end example
 
 Los avisos del tipo @code{WARNING} son normales y no deben interpretarse
-como errores; tan solo indican que el paquete @code{unit} est@'a redefiniendo
+como errores; tan solo indican que el paquete @code{unit} está redefiniendo
 funciones que ya estaban definidas en Maxima. Esto es necesario para que las
 unidades se gestionen de forma correcta. El usuario debe tener en cuenta que si 
-otros paquetes han cambiado las definiciones de estas funciones, tales cambios ser@'an
+otros paquetes han cambiado las definiciones de estas funciones, tales cambios serán
 ignorados por el proceso de carga de @code{unit}.
 
-El paquete @code{unit} tambi@'en carga el fichero de Lisp @code{unit-functions.lisp},
+El paquete @code{unit} también carga el fichero de Lisp @code{unit-functions.lisp},
 el cual contiene las funciones Lisp necesarias.
 
 El autor principal de este paquete es Clifford Yapp, quien ha recibido ayuda
 y asistencia, entre otros, de Barton Willis y Robert Dodier.
 
-@node Funciones y variables para units,  , Introducci@'on a units, unit
+@node Funciones y variables para units,  , Introducción a units, unit
 @section Funciones y variables para units
 
 
-@deffn {Funci@'on} setunits (@var{list})
+@deffn {Función} setunits (@var{list})
 
 El paquete @code{unit} no utiliza por defecto dimensiones derivadas, pero convierte
 todas las unidades a las siete fundamentales en unidades MKS.
@@ -108,8 +108,8 @@ todas las unidades a las siete fundamentales en unidades MKS.
 @end example
 
 Este es el comportamiento que se desea en ciertos casos. Si
-el usuario necesita utilizar otras unidades, habr@'a de utilizar la
-instrucci@'on @code{setunits}:
+el usuario necesita utilizar otras unidades, habrá de utilizar la
+instrucción @code{setunits}:
 @example
 @group
 (%i6) setunits([centigram,inch,minute]);
@@ -142,7 +142,7 @@ instrucci@'on @code{setunits}:
 @end group
 @end example
 
-La especificaci@'on de las variables es relativamente flexible.
+La especificación de las variables es relativamente flexible.
 Por ejemplo, si se quiere volver a utilizar kilogramos, metros y
 segundos como unidades por defecto, podemos hacer:
 @example
@@ -159,7 +159,7 @@ segundos como unidades por defecto, podemos hacer:
 @end group
 @end example
 
-Las unidades derivadas tambi@'en se controlan con esta misma instrucci@'on:
+Las unidades derivadas también se controlan con esta misma instrucción:
 @example
 @group
 (%i17) setunits(N);
@@ -187,11 +187,11 @@ Las unidades derivadas tambi@'en se controlan con esta misma instrucci@'on:
 @end group
 @end example
 
-T@'engase en cuenta que el paquete @code{unit} reconoce que la
-combinaci@'on de masa, longitud e inversa del cuadrado del tiempo da
-lugar a una fuerza, convirti@'endola a newtons. Esta es la forma
+Téngase en cuenta que el paquete @code{unit} reconoce que la
+combinación de masa, longitud e inversa del cuadrado del tiempo da
+lugar a una fuerza, convirtiéndola a newtons. Esta es la forma
 general en la que trabaja Maxima. Si el usuario prefiere dinas a newtons,
-tan solo tendr@'a que hacer lo siguiente:
+tan solo tendrá que hacer lo siguiente:
 @example
 @group
 (%i22) setunits(dyn);
@@ -209,7 +209,7 @@ tan solo tendr@'a que hacer lo siguiente:
 @end group
 @end example
 
-Para desactivar una unidad se utiliza la instrucci@'on @code{uforget}:
+Para desactivar una unidad se utiliza la instrucción @code{uforget}:
 @example
 @group
 (%i26) uforget(dyn);
@@ -230,20 +230,20 @@ Para desactivar una unidad se utiliza la instrucci@'on @code{uforget}:
                                               s
 @end group
 @end example
-Esto tambi@'en hubiese funcionado con @code{uforget(N)} o
+Esto también hubiese funcionado con @code{uforget(N)} o
 @code{uforget(%force)}. 
 
 
-V@'ease tambi@'en @code{uforget}. Para hacer uso de esta funci@'on ejec@'utese @code{load("unit")}.
+Véase también @code{uforget}. Para hacer uso de esta función ejecútese @code{load("unit")}.
 @end deffn
 
 
-@deffn {Funci@'on} uforget (@var{list})
+@deffn {Función} uforget (@var{list})
 Por defecto, el paquete @code{unit} convierte todas las unidades a las
 siete fundamentales del sistema MKS. Este comportamiento puede alterarse
-mediante la instrucci@'on @code{setunits}. Despu@'es, si el usuario quiere
-restaurar el comportamiento por defecto podr@'a hacerlo para una dimensi@'on
-determinada haciendo uso de la instrucci@'on @code{uforget}:
+mediante la instrucción @code{setunits}. Después, si el usuario quiere
+restaurar el comportamiento por defecto podrá hacerlo para una dimensión
+determinada haciendo uso de la instrucción @code{uforget}:
 @example
 @group
 (%i13) setunits([centigram,inch,minute]);
@@ -269,26 +269,26 @@ determinada haciendo uso de la instrucci@'on @code{uforget}:
 @end group
 @end example
 
-La instrucci@'on @code{uforget} opera
-sobre dimensiones, no sobre unidades, de modo que valdr@'a para
-cualquier unidad de una dimensi@'on concreta. La propia dimensi@'on
-es una argumento v@'alido para esta funci@'on.
+La instrucción @code{uforget} opera
+sobre dimensiones, no sobre unidades, de modo que valdrá para
+cualquier unidad de una dimensión concreta. La propia dimensión
+es una argumento válido para esta función.
 
-V@'ease tambi@'en @code{setunits}. Para hacer uso de esta funci@'on ejec@'utese @code{load("unit")}.
+Véase también @code{setunits}. Para hacer uso de esta función ejecútese @code{load("unit")}.
 @end deffn
 
 
-@deffn {Funci@'on} convert (@var{expr}, @var{list})
-La funci@'on @code{convert} permite conversiones de una sola vez sin
-alterar el entorno global de ejecuci@'on. Acepta tanto un @'unico argumento
+@deffn {Función} convert (@var{expr}, @var{list})
+La función @code{convert} permite conversiones de una sola vez sin
+alterar el entorno global de ejecución. Acepta tanto un único argumento
 como una lista de unidades a utilizar en las conversiones. Cuando se realiza
-una llamada a @code{convert} se ignora el sistema global de evaluaci@'on, con 
+una llamada a @code{convert} se ignora el sistema global de evaluación, con 
 el fin de evitar que el resultado deseado sea nuevamente transformado.
-Como consecuencia de esto, en los c@'alculos con decimales, los avisos de
-tipo @code{rat} se har@'an visibles si la variable global @code{ratprint}
+Como consecuencia de esto, en los cálculos con decimales, los avisos de
+tipo @code{rat} se harán visibles si la variable global @code{ratprint}
 vale @code{true}. Otra propiedad de @code{convert} es que permite al
 usuario hacer conversiones al sistema fundamental de dimensiones incluso
-cuando el entorno ha sido ajustado para simplificar a una dimensi@'on
+cuando el entorno ha sido ajustado para simplificar a una dimensión
 derivada.
 @example
 @group
@@ -376,8 +376,8 @@ derivada.
 @end group
 @end example
 
-V@'eanse tambi@'en @code{setunits} y @code{uforget}.
-Para hacer uso de esta funci@'on ejec@'utese @code{load("unit")}.
+Véanse también @code{setunits} y @code{uforget}.
+Para hacer uso de esta función ejecútese @code{load("unit")}.
 @end deffn
 
 
@@ -387,17 +387,17 @@ Valor por defecto: ninguno
 En caso de que el usuario desee que el comportamiento por defecto del
 paquete @code{unit} sea distinto del descrito, puede hacer uso del
 fichero @code{maxima-init.mac} y de la variable global @code{usersetunits}.
-El paquete @code{unit} comprobar@'a al ser cargado si se le ha dado a esta
-variable una lista de unidades; en caso afirmativo, aplicar@'a @code{setunits}
-a las unidades de esta lista y las utilizar@'a por defecto. Una llamada a la
-funci@'on @code{uforget} permitir@'a retornar al comportamiento establecido
+El paquete @code{unit} comprobará al ser cargado si se le ha dado a esta
+variable una lista de unidades; en caso afirmativo, aplicará @code{setunits}
+a las unidades de esta lista y las utilizará por defecto. Una llamada a la
+función @code{uforget} permitirá retornar al comportamiento establecido
 por defecto por el usuario. Por ejemplo, si en el archivo @code{maxima-init.mac}
-se tiene el siguiente c@'odigo:
+se tiene el siguiente código:
 @example
 usersetunits : [N,J];
 @end example
 
-observar@'{@dotless{i}}amos el siguiente comportamiento:
+observaríamos el siguiente comportamiento:
 @example
 @group
 (%i1) load("unit")$
@@ -480,15 +480,15 @@ User defaults initialized.
 
 De no haber hecho uso de @code{usersetunits}, las entradas iniciales hubiesen
 sido convertidas a unidades MKS y cualquier llamada a @code{uforget} hubiese
-retornado tambi@'en a MKS. Sin embargo, las preferencias establecidas por el
+retornado también a MKS. Sin embargo, las preferencias establecidas por el
 usuario se respetan en ambos casos. Para eliminar las preferencias del usuario
 y volver a utilizar las establecidas por defecto por el paquete @code{unit},
-debe utilizarse la instrucci@'on @code{dontusedimension}. La funci@'on
+debe utilizarse la instrucción @code{dontusedimension}. La función
 @code{uforget} puede restaurar nuevamente las preferencias del usuario, pero
-s@'olo si @code{usedimension} mantiene su valor. Alternativamente, 
-@code{kill(usersetunits)}  eliminar@'a completamente cualquier vestigio de las
-preferencias del usuario durante la sesi@'on actual. V@'eanse a continuaci@'on
-algunos ejemplos de aplicaci@'on de estas opciones:
+sólo si @code{usedimension} mantiene su valor. Alternativamente, 
+@code{kill(usersetunits)}  eliminará completamente cualquier vestigio de las
+preferencias del usuario durante la sesión actual. Véanse a continuación
+algunos ejemplos de aplicación de estas opciones:
 @example
 @group
 (%i2) kg*m/s^2;
@@ -661,7 +661,7 @@ setunits([unit]) to select a unit.
 
 Desafortunadamente, esta amplia variedad de opciones puede resultar
 confusa en un primer momento, pero una vez se practica un poco con
-ellas, el usuario comprobar@'a que tiene un control absoluto sobre
+ellas, el usuario comprobará que tiene un control absoluto sobre
 su entorno de trabajo.
 
 
@@ -674,11 +674,11 @@ su entorno de trabajo.
 
 @end defvr
 
-@deffn {Funci@'on} metricexpandall (@var{x})
+@deffn {Función} metricexpandall (@var{x})
 
-Reconstruye autom@'aticamente las listas globales de unidades creando todas
-los m@'ultiplos y subm@'ultiplos m@'etricos necesarios. El argumento num@'erico 
-@var{x} se utiliza para especificar cu@'antos prefijos num@'ericos quiere 
+Reconstruye automáticamente las listas globales de unidades creando todas
+los múltiplos y submúltiplos métricos necesarios. El argumento numérico 
+@var{x} se utiliza para especificar cuántos prefijos numéricos quiere 
 utilizar el usuario. Los argumentos son los siguientes:
 @example
 @group
@@ -693,8 +693,8 @@ utilizar el usuario. Los argumentos son los siguientes:
 @end group
 @end example
 
-Normalmente, Maxima no definir@'a el juego completo de m@'ultiplos y 
-subm@'ultiplos, lo que implica un n@'umero muy grande de unidades, pero
+Normalmente, Maxima no definirá el juego completo de múltiplos y 
+submúltiplos, lo que implica un número muy grande de unidades, pero
 @code{metricexpandall} puede utilizarse para reconstruir la lista. La
 variable fundamental del paquete @code{unit} es @code{%unitexpand}.
 @end deffn
@@ -713,4 +713,5 @@ paquete @code{unit}.
 @c @defvr {Variable} variablename
 @c Default value: @code{true}
 @c @end defvr
+
 

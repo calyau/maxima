@@ -3,6 +3,11 @@ dnl Process this file with autoconf to produce a configure script.
 dnl If git is available, the version number here is not used.  
 dnl Instead, git is used to derive the version based on the closest
 dnl annotated branch tag.
+dnl
+dnl Note: during Lisp-based builds (see INSTALL.lisp) the version
+dnl number is read from the following AC_INIT line.  It's sensitive to
+dnl whitespace so when updating the version number only make changes
+dnl within the second pair of square brackets.
 AC_INIT([maxima], [5.34post])
 AC_CONFIG_SRCDIR([src/macsys.lisp])
 AM_INIT_AUTOMAKE([-Wno-portability])

@@ -1,0 +1,33 @@
+load("Eulix.mac")$
+load("rkf45")$
+
+/* This is a 1-d example,
+   the right-hand side Rhs must return a 1x1 matrix
+   and the initial value must be 1x1 matrix, as well
+   
+   given a differentiable function  stat(t)  and lamba > 0
+   this is the Robin test equation
+   
+   y'(t)= -Lambda*(y-stat(t)) + diff(stat(t),t)   y(0)= y0
+*/
+
+stat(t):= sin(t)$
+Lambda: 1000$
+debugmode:true$
+y0:1$
+solution(t,y0):= stat(t)+exp(-Lambda*t)*(y0-stat(0))$
+timer(rkf45,Eulix)$
+print("rkf45 errors:")$
+RR:rkf45(-Lambda*(y-stat(t)) + diff(stat(t),t),y,1,[t,0,1])$
+for i:1 thru length(RR) do block([ty:RR[i],tt,yt],
+  tt:first(ty),yt:second(ty),
+  printf(true,"at t= ~7,4f  err= ~10,3e~%",tt,(yt-solution(tt,y0)))
+);
+
+print("Eulix errors:")$
+ER:Eulix(-Lambda*(y-stat(t)) + diff(stat(t),t),y,1,[t,0,1])$
+for i:1 thru length(ER) do block([ty:ER[i],tt,yt],
+  tt:first(ty),yt:second(ty),
+  printf(true,"at t= ~7,4f  err= ~10,3e~%",tt,(yt-solution(tt,y0)))
+);
+timer_info();  /* rkf45: 0.419 sec   Eulix: 0.896 sec */

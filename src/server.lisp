@@ -109,7 +109,7 @@
 #-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl) (getpid-from-environment)
 )
 
-#+(or gcl clisp cmu scl sbcl lispworks ecl openmcl)
+#+(or gcl clisp cmu scl sbcl lispworks ecl ccl)
 (defun xchdir (w)
   #+clisp (ext:cd w)
   #+gcl (si::chdir w)
@@ -117,5 +117,5 @@
   #+sbcl (sb-posix:chdir w)
   #+lispworks (hcl:change-directory w)
   #+ecl (si:chdir w)
-  #+openmcl (let ((ws (if (pathnamep w) (namestring w) w))) (ccl:cwd ws))
+  #+ccl (ccl:cwd w)
   )

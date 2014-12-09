@@ -2,27 +2,27 @@
 @c Esta es traduccion del original en frances;
 @c Queda pendiente cotejar con la version inglesa.
 @menu
-* Funciones y variables para simetr@'{@dotless{i}}as::  
+* Funciones y variables para simetrías::  
 @end menu
 
 @ifnottex
 Paquete escrito para Macsyma-Symbolics por Annick Valibouze (@url{http://www-calfor.lip6.fr/~avb/}).
-Los algoritmos est@'an descritos en los siguientes art@'{@dotless{i}}culos:
+Los algoritmos están descritos en los siguientes artículos:
 @end ifnottex
 @iftex
 Paquete escrito para Macsyma-Symbolics por Annick Valibouze@footnote{@url{www-calfor.lip6.fr/~avb}}.
-Los algoritmos est@'an descritos en los siguientes art@'{@dotless{i}}culos:
+Los algoritmos están descritos en los siguientes artículos:
 @end iftex
 
 @ifnottex
 @enumerate
 @item
-Fonctions sym@'etriques et changements de bases. Annick Valibouze.
+Fonctions symétriques et changements de bases. Annick Valibouze.
 EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
 Springer, Berlin, 1989.@*
 @url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
 
-@item R@'esolvantes et fonctions sym@'etriques. Annick Valibouze.
+@item Résolvantes et fonctions symétriques. Annick Valibouze.
 Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
 and Algebraic Computation, ISSAC'89 (Portland, Oregon).
 ACM Press, 390-399, 1989.@*
@@ -33,8 +33,8 @@ Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
 Springer-Verlag, New York Berlin, 308-320, 1989.@*
 @url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
 
-@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
-@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
+@item Théorie de Galois Constructive. Annick Valibouze. Mémoire d'habilitation
+à diriger les recherches (HDR), Université P. et M. Curie (Paris VI), 1994
 @end enumerate
 @end ifnottex
 
@@ -42,12 +42,12 @@ Springer-Verlag, New York Berlin, 308-320, 1989.@*
 @iftex
 @enumerate
 @item
-Fonctions sym@'etriques et changements de bases
+Fonctions symétriques et changements de bases
 @footnote{@url{www.stix.polytechnique.fr/publications/1984-1994.html}}. Annick Valibouze.
 EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
 Springer, Berlin, 1989.
 
-@item R@'esolvantes et fonctions sym@'etriques
+@item Résolvantes et fonctions symétriques
 @footnote{@url{www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}}.
 Annick Valibouze.
 Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
@@ -59,23 +59,23 @@ ACM Press, 390-399, 1989.
 Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
 Springer-Verlag, New York Berlin, 308-320, 1989.
 
-@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
-@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
+@item Théorie de Galois Constructive. Annick Valibouze. Mémoire d'habilitation
+à diriger les recherches (HDR), Université P. et M. Curie (Paris VI), 1994
 @end enumerate
 @end iftex
 
 
 
 
-@node Funciones y variables para simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
-@section Funciones y variables para simetr@'{@dotless{i}}as
+@node Funciones y variables para simetrías,  , Simetrías, Simetrías
+@section Funciones y variables para simetrías
 
-@deffn {Funci@'on} comp2pui (@var{n}, @var{l})
-Realiza el paso de las funciones sim@'etricas completas
-de la lista @var{l} a las funciones sim@'etricas elementales
+@deffn {Función} comp2pui (@var{n}, @var{l})
+Realiza el paso de las funciones simétricas completas
+de la lista @var{l} a las funciones simétricas elementales
 de 0 a @var{n}. En caso de que la lista @var{l}
 contenga menos de @code{@var{n}+1} elementos,
-se completar@'a con valores formales. 
+se completará con valores formales. 
 El primer elemento de la lista @var{l} almacena
 el cardinal del alfabeto, en caso de que exista;
 en caso contrario se le da el valor @var{n}.
@@ -93,9 +93,9 @@ en caso contrario se le da el valor @var{n}.
 
 @end deffn
 
-@deffn {Funci@'on} cont2part (@var{pc}, @var{lvar})
+@deffn {Función} cont2part (@var{pc}, @var{lvar})
 Convierte el polinomio particionado asociado a la
-forma contra@'{@dotless{i}}da @var{pc}, cuyas variables
+forma contraída @var{pc}, cuyas variables
 se encuentran en @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -110,18 +110,18 @@ se encuentran en @var{lvar}.
 (%o2)              [[1, 5, 0], [2 a  b, 4, 1]]
 @end example
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 @code{contract}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tcontract} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} contract (@var{psym}, @var{lvar})
-Convierte una forma contra@'{@dotless{i}}da (como un
-monomio por @'orbita sobre la acci@'on del grupo sim@'etrico)
+@deffn {Función} contract (@var{psym}, @var{lvar})
+Convierte una forma contraída (como un
+monomio por órbita sobre la acción del grupo simétrico)
 del polinomio @var{psym} cuyas variables se encuentran en la
-lista @var{lvar}. La funci@'on @code{explose} realiza la operaci@'on 
-inversa. A mayopes, la funci@'on @code{tcontract} comprueba la 
-simetr@'{@dotless{i}}a del polinomio.
+lista @var{lvar}. La función @code{explose} realiza la operación 
+inversa. A mayopes, la función @code{tcontract} comprueba la 
+simetría del polinomio.
 
 @c GENERATED FROM THE FOLLOWING
 @c psym: explose (2*a^3*b*x^4*y, [x, y, z]);
@@ -138,22 +138,22 @@ simetr@'{@dotless{i}}a del polinomio.
 (%o2)                      2 a  b x  y
 @end example
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 
 @code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tcontract}, @code{tpartpol}.
 
 
 @end deffn
 
-@deffn {Funci@'on} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
+@deffn {Función} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
 Calcula la imagen directa 
-(v@'ease M. Giusti, D. Lazard et A. Valibouze, ISSAC 1988, Roma)
-asociada a la funci@'on @var{f}, en las listas de variables
+(véase M. Giusti, D. Lazard et A. Valibouze, ISSAC 1988, Roma)
+asociada a la función @var{f}, en las listas de variables
 @var{lvar_1}, ..., @var{lvar_n}, y en los polinomios 
-@var{p_1}, ..., @var{p_n} de una variable @var{y}. Si la expresi@'on de
-@var{f} no depende de variable alguna, no s@'olo es in@'util
-aportar esa variable, sino que tambi@'en disminuyen considerablemente los
-c@'alculos cuando la variable no se declara.
+@var{p_1}, ..., @var{p_n} de una variable @var{y}. Si la expresión de
+@var{f} no depende de variable alguna, no sólo es inútil
+aportar esa variable, sino que también disminuyen considerablemente los
+cálculos cuando la variable no se declara.
 
 @c GENERATED FROM THE FOLLOWING
 @c direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
@@ -204,9 +204,9 @@ c@'alculos cuando la variable no se declara.
  + (e1 e2 e3 - 9 e3 ) f1  f2 + e3  f1
 @end example
 
-B@'usqueda del polinomio cuyas ra@'{@dotless{i}}ces son la suma
-@math{a+u} o @math{a} es la ra@'{@dotless{i}}z de 
-@math{z^2  - e1* z + e2} y @math{u} es la ra@'{@dotless{i}}z de
+Búsqueda del polinomio cuyas raíces son la suma
+@math{a+u} o @math{a} es la raíz de 
+@math{z^2  - e1* z + e2} y @math{u} es la raíz de
 @math{z^2  - f1* z + f2}
 
 @c GENERATED FROM THE FOLLOWING
@@ -228,23 +228,23 @@ B@'usqueda del polinomio cuyas ra@'{@dotless{i}}ces son la suma
  + e2
 @end example
 
-La funci@'on @code{direct} acepta dos indicadores:
+La función @code{direct} acepta dos indicadores:
 @code{elementaires} (elementales) y @code{puissances} (potenciales,
 que es el valor por defecto) que permiten hacer la
-descomposici@'on de los polinomios sim@'etricos que aparezcan en los 
-c@'alculos en funciones sim@'etricas elementales o en funciones
+descomposición de los polinomios simétricos que aparezcan en los 
+cálculos en funciones simétricas elementales o en funciones
 potenciales, respectivamente.
 
-Funciones de @code{sym} utilizadas en esta funci@'on:
+Funciones de @code{sym} utilizadas en esta función:
 
 @code{multi_orbit}(por tanto @code{orbit}),@code{pui_direct}, @code{multi_elem}
 (por tanto @code{elem}), @code{multi_pui} (por tanto @code{pui}), @code{pui2ele}, @code{ele2pui}
-(si al indicador @code{direct} se le asign@'o @code{puissances}).
+(si al indicador @code{direct} se le asignó @code{puissances}).
 
 @end deffn
 
-@deffn {Funci@'on} ele2comp (@var{m}, @var{l})
-Pasa las funciones sim@'etricas elementales a funciones
+@deffn {Función} ele2comp (@var{m}, @var{l})
+Pasa las funciones simétricas elementales a funciones
 completas, de forma similar a @code{comp2ele} y @code{comp2pui}.
 
 Otras funciones para cambio de bases son:
@@ -254,13 +254,13 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} ele2polynome (@var{l}, @var{z})
+@deffn {Función} ele2polynome (@var{l}, @var{z})
 Devuelve el polinomio en @var{z} en el que las
-funciones sim@'etricas elementales de las ra@'{@dotless{i}}ces
+funciones simétricas elementales de las raíces
 son las de la lista @var{l}.
 @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}, donde @var{n}
-es el grado del polinomio y @var{e_i} la @var{i}-@'esima funci@'on
-sim@'etrica elemental.
+es el grado del polinomio y @var{e_i} la @var{i}-ésima función
+simétrica elemental.
 
 @c GENERATED FROM THE FOLLOWING
 @c ele2polynome ([2, e1, e2], z);
@@ -277,14 +277,14 @@ sim@'etrica elemental.
 (%o3)            x  - 14 x  + 56 x  - 56 x + 22
 @end example
 
-La funci@'on rec@'{@dotless{i}}proca es @code{polynome2ele (@var{P}, @var{z})}
+La función recíproca es @code{polynome2ele (@var{P}, @var{z})}
 
-V@'eanse tambi@'en @code{polynome2ele} y @code{pui2polynome}.
+Véanse también @code{polynome2ele} y @code{pui2polynome}.
 
 @end deffn
 
-@deffn {Funci@'on} ele2pui (@var{m}, @var{l})
-Pasa las funciones sim@'etricas elementales a funciones
+@deffn {Función} ele2pui (@var{m}, @var{l})
+Pasa las funciones simétricas elementales a funciones
 completas, de forma similar a @code{comp2ele} y @code{comp2comp}.
 
 Otras funciones para cambio de bases son:
@@ -294,27 +294,27 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} elem (@var{ele}, @var{sym}, @var{lvar})
-Descompone el polinomio sim@'etrico @var{sym} con las variables
-continuas de la lista @var{lvar} en las funciones sim@'etricas 
+@deffn {Función} elem (@var{ele}, @var{sym}, @var{lvar})
+Descompone el polinomio simétrico @var{sym} con las variables
+continuas de la lista @var{lvar} en las funciones simétricas 
 elementales contenidas en la lista @var{ele}. 
 El primer elemento de la lista @var{ele} almacena
 el cardinal del alfabeto, en caso de que exista;
 en caso contrario se le da como valor el grado del polinomio @var{sym}.
-Si faltan valores en la lista @var{ele}, @'esta se completar@'a con
+Si faltan valores en la lista @var{ele}, ésta se completará con
 valores formales del tipo "ei".
 El polinomio @var{sym} puede especificarse de tres formas diferentes:
-contra@'{@dotless{i}}do (en cuyo caso @code{elem} debe valer 1, que
-es el valor por defecto), particionado (@code{elem} valdr@'a 3) o
+contraído (en cuyo caso @code{elem} debe valer 1, que
+es el valor por defecto), particionado (@code{elem} valdrá 3) o
 extendido (por ejemplo, el polinomio completo) (en este caso, @code{elem}
-valdr@'a 2). La utilizaci@'on de la funci@'on @code{pui} se hace
+valdrá 2). La utilización de la función @code{pui} se hace
 siguiendo este mismo modelo.
 
-Con un alfabeto de cardinal 3 con @var{e1}, la primera funci@'on
-sim@'etrica elemental valiendo 7, el polinomio sim@'etrico de
-tres variables cuya forma contra@'{@dotless{i}}da (aqu@'{@dotless{i}}
+Con un alfabeto de cardinal 3 con @var{e1}, la primera función
+simétrica elemental valiendo 7, el polinomio simétrico de
+tres variables cuya forma contraída (aquí
 dependiendo solamente de dos de sus variables) es @math{^4-2*x*y},
-se descompone en funciones sim@'etricas elementales:
+se descompone en funciones simétricas elementales:
 
 @c GENERATED FROM THE FOLLOWING
 @c elem ([3, 7], x^4 - 2*x*y, [x, y]);
@@ -343,9 +343,9 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} explose (@var{pc}, @var{lvar})
-Devuelve el polinomio sim@'etrico asociado a la forma
-contra@'{@dotless{i}}da @var{pc}. La lista @var{lvar}
+@deffn {Función} explose (@var{pc}, @var{lvar})
+Devuelve el polinomio simétrico asociado a la forma
+contraída @var{pc}. La lista @var{lvar}
 contiene las variables.
 
 @c GENERATED FROM THE FOLLOWING
@@ -355,13 +355,13 @@ contiene las variables.
 (%o1)                  a z + a y + a x + 1
 @end example
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 @code{contract}, @code{cont2part}, @code{part2cont}, @code{partpol}, @code{tcontract} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} kostka (@var{part_1}, @var{part_2})
-Funci@'on escrita por P. Espert, calcula el n@'umero de Kostka
+@deffn {Función} kostka (@var{part_1}, @var{part_2})
+Función escrita por P. Espert, calcula el número de Kostka
 asociado a las particiones @var{part_1} y @var{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -373,7 +373,7 @@ asociado a las particiones @var{part_1} y @var{part_2}.
 
 @end deffn
 
-@deffn {Funci@'on} lgtreillis (@var{n}, @var{m})
+@deffn {Función} lgtreillis (@var{n}, @var{m})
 Devuelve la lista de particiones de peso @var{n} y longitud @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -383,11 +383,11 @@ Devuelve la lista de particiones de peso @var{n} y longitud @var{m}.
 (%o1)                   [[3, 1], [2, 2]]
 @end example
 
-V@'eanse tambi@'en @code{ltreillis}, @code{treillis} y @code{treinat}.
+Véanse también @code{ltreillis}, @code{treillis} y @code{treinat}.
 
 @end deffn
 
-@deffn {Funci@'on} ltreillis (@var{n}, @var{m})
+@deffn {Función} ltreillis (@var{n}, @var{m})
 Devuelve la lista de particiones de peso @var{n} y longitud 
 menor o igual que @var{m}.
 
@@ -398,24 +398,24 @@ menor o igual que @var{m}.
 (%o1)               [[4, 0], [3, 1], [2, 2]]
 @end example
 
-V@'eanse tambi@'ent @code{lgtreillis}, @code{treillis} y @code{treinat}.
+Véanse tambiént @code{lgtreillis}, @code{treillis} y @code{treinat}.
 
 @end deffn
 
 @c NOT REALLY HAPPY ABOUT MATH NOTATION HERE
-@deffn {Funci@'on} mon2schur (@var{l})
-La lista @var{l} representa la funci@'on de Schur S_@var{l}:
+@deffn {Función} mon2schur (@var{l})
+La lista @var{l} representa la función de Schur S_@var{l}:
 Se tiene @var{l} = [@var{i_1}, @var{i_2}, ..., @var{i_q}]
 con @var{i_1} <= @var{i_2} <= ... <= @var{i_q}.
-La funci@'on de Schur es S_[@var{i_1}, @var{i_2}, ..., @var{i_q}],
+La función de Schur es S_[@var{i_1}, @var{i_2}, ..., @var{i_q}],
 el menor de la matriz infinita (h_@{i-j@}) @var{i} >= 1, @var{j} >= 1
 compuesto de las @var{q} primeras filas y columnas 
 @var{i_1} + 1, @var{i_2} + 2, ..., @var{i_q} + @var{q}.
 
-Se ha escrito esta funci@'on de Schur en funci@'on de las
+Se ha escrito esta función de Schur en función de las
 formas monomiales utilizando las funciones @code{treinat} y @code{kostka}.
-La forma devuelta es un polinomio sim@'etrico en una de sus representaciones
-contra@'{@dotless{i}}das con las variables @var{x_1}, @var{x_2}, ...
+La forma devuelta es un polinomio simétrico en una de sus representaciones
+contraídas con las variables @var{x_1}, @var{x_2}, ...
  
 @c GENERATED FROM THE FOLLOWING
 @c mon2schur ([1, 1, 1]);
@@ -439,7 +439,7 @@ contra@'{@dotless{i}}das con las variables @var{x_1}, @var{x_2}, ...
 @end example
 
 
-Para 3 variables se tendr@'a:
+Para 3 variables se tendrá:
 
 @c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ??
 @example
@@ -456,11 +456,11 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
-Descompone un polinomio multisim@'etrico sobre una forma
-multicontra@'{@dotless{i}}da @var{multi_pc} en los grupos de
+@deffn {Función} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
+Descompone un polinomio multisimétrico sobre una forma
+multicontraída @var{multi_pc} en los grupos de
 variables contenidas en la lista de listas  @var{l_var} sobre los
-grupos de funciones sim@'etricas elementales contenidas en @var{l_elem}.
+grupos de funciones simétricas elementales contenidas en @var{l_elem}.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
@@ -488,11 +488,11 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
+@deffn {Función} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
 @var{P} es un polinomio en el conjunto de variables contenidas 
 en las listas @var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}.
-Esta funci@'on restablece la @'orbita del polinomio @var{P} sobre la
-acci@'on del producto de los grupos sim@'etricos de los conjuntos de
+Esta función restablece la órbita del polinomio @var{P} sobre la
+acción del producto de los grupos simétricos de los conjuntos de
 variables representadas por esas @var{p} listas.
 
 @c GENERATED FROM THE FOLLOWING
@@ -510,14 +510,14 @@ variables representadas por esas @var{p} listas.
 @end example
 
 
-V@'ease tambi@'en @code{orbit} para la acci@'on de un solo grupo sim@'erico.
+Véase también @code{orbit} para la acción de un solo grupo simérico.
 
 @end deffn
 
 @c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ??
-@deffn {Funci@'on} multi_pui
-Es a la funci@'on @code{pui} lo que la funci@'on @code{multi_elem} es
-a la funci@'on @code{elem}.
+@deffn {Función} multi_pui
+Es a la función @code{pui} lo que la función @code{multi_elem} es
+a la función @code{elem}.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
@@ -535,25 +535,25 @@ a la funci@'on @code{elem}.
 
 @end deffn
 
-@deffn {Funci@'on} multinomial (@var{r}, @var{part})
-El argumento @var{r} es el peso de la partici@'on @var{part}.
-Esta funci@'on calcula el coeficiente multinomial asociado: si
+@deffn {Función} multinomial (@var{r}, @var{part})
+El argumento @var{r} es el peso de la partición @var{part}.
+Esta función calcula el coeficiente multinomial asociado: si
 las partes de las particiones @var{part} son 
 @var{i_1}, @var{i_2}, ..., @var{i_k}, el resultado de @code{multinomial}
 es @code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
 
 @end deffn
 
-@deffn {Funci@'on} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
-Calcula el producto de dos polinomios sim@'etricos de @var{n} variables
-operando solamente con el m@'odulo de la acci@'on del grupo
-sim@'etrico de orden @var{n}. Los polinomios est@'an en su 
-representaci@'on particionada.
+@deffn {Función} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
+Calcula el producto de dos polinomios simétricos de @var{n} variables
+operando solamente con el módulo de la acción del grupo
+simétrico de orden @var{n}. Los polinomios están en su 
+representación particionada.
 
-Sean los dos polinomios sim@'etricos en @code{x} e @code{y}:
+Sean los dos polinomios simétricos en @code{x} e @code{y}:
 @code{3*(x + y) + 2*x*y} y @code{5*(x^2 + y^2)}
 cuyas formas particionadas son @code{[[3, 1], [2, 1, 1]]} y @code{[[5, 2]]},
-respectivamente; el producto de ambos ser@'a:
+respectivamente; el producto de ambos será:
 
 @c GENERATED FROM THE FOLLOWING
 @c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
@@ -567,16 +567,16 @@ respectivamente; el producto de ambos ser@'a:
 
 o sea, @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
 
-Funciones de cambio de representaci@'on de un polinomio sim@'etrico:
+Funciones de cambio de representación de un polinomio simétrico:
 
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont},
 @code{partpol}, @code{tcontract} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} orbit (@var{P}, @var{lvar})
-Calcula la @'orbita de un polinomio @var{P} en las variables de 
-la lista @var{lvar} bajo la acci@'on del grupo sim@'etrico del
+@deffn {Función} orbit (@var{P}, @var{lvar})
+Calcula la órbita de un polinomio @var{P} en las variables de 
+la lista @var{lvar} bajo la acción del grupo simétrico del
 conjunto de variables contenidas en la lista @var{lvar}.
  
 @c GENERATED FROM THE FOLLOWING
@@ -594,14 +594,14 @@ conjunto de variables contenidas en la lista @var{lvar}.
 @end group
 @end example
 
-V@'ease tambi@'en @code{multi_orbit} para la acci@'on de un producto
-de grupos sim@'etricos sobre un polinomio.
+Véase también @code{multi_orbit} para la acción de un producto
+de grupos simétricos sobre un polinomio.
 
 @end deffn
 
-@deffn {Funci@'on} part2cont (@var{ppart}, @var{lvar})
-Transforma un polinomio sim@'etrico de su forma particionada a
-su forma contra@'{@dotless{i}}da. La forma contra@'{@dotless{i}}da
+@deffn {Función} part2cont (@var{ppart}, @var{lvar})
+Transforma un polinomio simétrico de su forma particionada a
+su forma contraída. La forma contraída
 se devuelve con las variables contenidas en @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -615,15 +615,15 @@ se devuelve con las variables contenidas en @var{lvar}.
 @end example
 
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 
 @code{contract}, @code{cont2part}, @code{explose}, @code{partpol}, @code{tcontract} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} partpol (@var{psym}, @var{lvar})
-Restablece la representaci@'on particionada del polinomio
-sim@'etrico @var{psym} de variables en @var{lvar}.
+@deffn {Función} partpol (@var{psym}, @var{lvar})
+Restablece la representación particionada del polinomio
+simétrico @var{psym} de variables en @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -635,21 +635,21 @@ sim@'etrico @var{psym} de variables en @var{lvar}.
 @end example
 
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{tcontract} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} permut (@var{l})
+@deffn {Función} permut (@var{l})
 Devuelve la lista de permutaciones de la lista @var{l}.
 @end deffn
 
-@deffn {Funci@'on} polynome2ele (@var{P}, @var{x})
+@deffn {Función} polynome2ele (@var{P}, @var{x})
 Devuelve la lista @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]},
 en la que @var{n} es el grado del polinomio @var{P} de variable @var{x}
-y @var{e_i} es la @var{i}-@'esima funci@'on sim@'etrica elemental de las
-ra@'{@dotless{i}}ces de @var{P}.
+y @var{e_i} es la @var{i}-ésima función simétrica elemental de las
+raíces de @var{P}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
@@ -667,32 +667,32 @@ ra@'{@dotless{i}}ces de @var{P}.
 @end example
 
 
-La funci@'on rec@'{@dotless{i}}proca es @code{ele2polynome (@var{l}, @var{x})}.
+La función recíproca es @code{ele2polynome (@var{l}, @var{x})}.
 
 @end deffn
 
-@deffn {Funci@'on} prodrac (@var{l}, @var{k})
-Siendo @var{l} una lista que contiene las funciones sim@'etricas
-elementales sobre un conjunto @var{A}, la funci@'on @code{prodrac}
-calcula el polinomio cuyas ra@'{@dotless{i}}ces son los productos 
+@deffn {Función} prodrac (@var{l}, @var{k})
+Siendo @var{l} una lista que contiene las funciones simétricas
+elementales sobre un conjunto @var{A}, la función @code{prodrac}
+calcula el polinomio cuyas raíces son los productos 
 @var{k} a @var{k} de los elementos de @var{A}.
 @end deffn
 
 @c HMM, pui IS A VARIABLE AS WELL
-@deffn {Funci@'on} pui (@var{l}, @var{sym}, @var{lvar})
-Descompone el polinomio sim@'etrico @var{sym}, cuyas variables
+@deffn {Función} pui (@var{l}, @var{sym}, @var{lvar})
+Descompone el polinomio simétrico @var{sym}, cuyas variables
 son las contenidas en @var{lvar}, en las funciones potenciales
 contenidas en la lista @var{l}.
 El primer elemento de la lista @var{l} almacena
 el cardinal del alfabeto, en caso de que exista;
 en caso contrario se le da el grado del polinomio @var{sym}.
-Si faltan los valores de la lista @var{l}, en su lugar ser@'an
+Si faltan los valores de la lista @var{l}, en su lugar serán
 colocados valores formales del tipo "pi". 
 El polinomio @var{sym} puede especificarse de tres formas diferentes:
-contra@'{@dotless{i}}do (en cuyo caso @code{pui} debe valer 1, que
-es el valor por defecto), particionado (@code{pui} valdr@'a 3) o
+contraído (en cuyo caso @code{pui} debe valer 1, que
+es el valor por defecto), particionado (@code{pui} valdrá 3) o
 extendido (por ejemplo, el polinomio completo) (en este caso, @code{pui}
-valdr@'a 2). La utilizaci@'on de la funci@'on @code{elem} se hace
+valdrá 2). La utilización de la función @code{elem} se hace
 siguiendo este mismo modelo.
 
 @c GENERATED FROM THE FOLLOWING
@@ -728,12 +728,12 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} pui2comp (@var{n}, @var{lpui})
+@deffn {Función} pui2comp (@var{n}, @var{lpui})
 Devuelve la lista de las @var{n} primeras funciones completas
-(con el cardinal en primer lugar) en funci@'on de las funciones
+(con el cardinal en primer lugar) en función de las funciones
 potenciales dadas en la lista @var{lpui}. Si la lista @var{lpui}
-estuviese vac@'{@dotless{i}}a, el cardinal ser@'{@dotless{i}}a @var{N};
-si no estuviese vac@'{@dotless{i}}a, se tomar@'{@dotless{i}}a como
+estuviese vacía, el cardinal sería @var{N};
+si no estuviese vacía, se tomaría como
 cardinal su primer elemento, de forma similar a como se procede en
 @code{comp2ele} y en @code{comp2pui}.
 
@@ -775,12 +775,12 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} pui2ele (@var{n}, @var{lpui})
-Transforma las funciones potenciales a funciones sim@'etricas
+@deffn {Función} pui2ele (@var{n}, @var{lpui})
+Transforma las funciones potenciales a funciones simétricas
 elementales. Si la variable global @code{pui2ele} vale @code{girard},
-se recupera la lista de funciones sim@'etricas elementales de 1 @var{n},
-y si es igual a @code{close}, se recupera la @var{n}-@'esima 
-funci@'on sim@'etrica elemental.
+se recupera la lista de funciones simétricas elementales de 1 @var{n},
+y si es igual a @code{close}, se recupera la @var{n}-ésima 
+función simétrica elemental.
 
 Otras funciones para cambio de bases son:
 @code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem},
@@ -789,8 +789,8 @@ Otras funciones para cambio de bases son:
 
 @end deffn
 
-@deffn {Funci@'on} pui2polynome (@var{x}, @var{lpui})
-Calcula el polinomio en @var{x} cuyas ra@'{@dotless{i}}ces tienen
+@deffn {Función} pui2polynome (@var{x}, @var{lpui})
+Calcula el polinomio en @var{x} cuyas raíces tienen
 como funciones potenciales las dadas en la lista @var{lpui}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -821,29 +821,29 @@ como funciones potenciales las dadas en la lista @var{lpui}.
 @end group
 @end example
 
-V@'eanse tambi@'en @code{polynome2ele} y @code{ele2polynome}.
+Véanse también @code{polynome2ele} y @code{ele2polynome}.
 
 @end deffn
 
-@deffn {Funci@'on} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
+@deffn {Función} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 Sea @var{f} un polinomio en @var{n} bloques de variables @var{lvar_1}, ..., @var{lvar_n}.
-Sea @var{c_i} el n@'umero de variables en @var{lvar_i} y @var{SC} el
-producto de los @var{n} grupos sim@'etricos de grados @var{c_1}, ..., @var{c_n},
-que act@'uan sobre @var{f}.
-La lista @var{orbite} es la @'orbita, representada por @code{@var{SC}(@var{f})},
-de la funci@'on @var{f} sobre la acci@'on de @var{SC}, la cual puede ser
-obtenida por medio de la funci@'on @code{multi_orbit}.
+Sea @var{c_i} el número de variables en @var{lvar_i} y @var{SC} el
+producto de los @var{n} grupos simétricos de grados @var{c_1}, ..., @var{c_n},
+que actúan sobre @var{f}.
+La lista @var{orbite} es la órbita, representada por @code{@var{SC}(@var{f})},
+de la función @var{f} sobre la acción de @var{SC}, la cual puede ser
+obtenida por medio de la función @code{multi_orbit}.
 Los valores @code{d_i} son enteros tales que 
 @var{c_1} <= @var{d_1}, @var{c_2} <= @var{d_2}, ..., @var{c_n} <= @var{d_n}.
-Por @'ultimo, sea @var{SD} el producto de los grupos sim@'etricos
+Por último, sea @var{SD} el producto de los grupos simétricos
 @var{S_d1} x @var{S_d2} x ... x @var{S_dn}.
 
-La funci@'on @code{pui_direct} devuelve las @var{n} primeras
+La función @code{pui_direct} devuelve las @var{n} primeras
 funciones potenciales de @code{@var{SD}(@var{f})} deducidas de 
 las funciones potenciales de @code{@var{SC}(@var{f})}, siendo 
 @var{n} el cardinal de @code{@var{SD}(@var{f})}.
 
-El resultado se devuelve en la forma multicontra@'{@dotless{i}}da
+El resultado se devuelve en la forma multicontraída
 respecto de @var{SD}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -892,10 +892,10 @@ respecto de @var{SD}.
 
 @end deffn
 
-@deffn {Funci@'on} puireduc (@var{n}, @var{lpui})
+@deffn {Función} puireduc (@var{n}, @var{lpui})
 Siendo @var{lpui} una lista en la que el primer elemento es
 un entero @var{m}, @code{puireduc} devuelve las @var{n} primeras 
-funciones potenciales en funci@'on de las @var{m} primeras.
+funciones potenciales en función de las @var{m} primeras.
 
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
@@ -919,17 +919,17 @@ funciones potenciales en funci@'on de las @var{m} primeras.
 
 @end deffn
 
-@deffn {Funci@'on} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
+@deffn {Función} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
 Calcula la resolvente del polinomio @var{P} de variable @var{x} y
-grado @var{n} >= @var{d} por la funci@'on @var{f} de variables
+grado @var{n} >= @var{d} por la función @var{f} de variables
 @var{x_1}, ..., @var{x_d}. 
-Para mejorar los c@'alculos, es importante no incluir en la lista
+Para mejorar los cálculos, es importante no incluir en la lista
 @code{[@var{x_1}, ..., @var{x_d}]} las variables que no intervienen
-en la funci@'on de transformaci@'on @var{f}.
+en la función de transformación @var{f}.
 
-Con el fin de hacer m@'as eficaces los c@'alculos, se puede asignar a
+Con el fin de hacer más eficaces los cálculos, se puede asignar a
 @code{resolvante} un indicador que permita seleccionar el algoritmo
-m@'as apropiado:
+más apropiado:
 
 @c AQUI QUEDAN ALGUNAS LINEAS POR TRADUCIR (MARIO)
 
@@ -1130,10 +1130,10 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 @end group
 @end example
 
-Para la resolvente de Cayley, los dos @'ultimos argumentos son neutros
+Para la resolvente de Cayley, los dos últimos argumentos son neutros
 y el polinomio dado en el argumento debe ser necesariamente de grado 5.
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_bipartite}, @code{resolvante_produit_sym},
 @code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
@@ -1142,12 +1142,12 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_alternee1 (@var{P}, @var{x})
-Calcula la transformaci@'on de @code{@var{P}(@var{x})} de
-grado @var{n} por la funci@'on $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
+@deffn {Función} resolvante_alternee1 (@var{P}, @var{x})
+Calcula la transformación de @code{@var{P}(@var{x})} de
+grado @var{n} por la función $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1156,9 +1156,9 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_bipartite (@var{P}, @var{x})
-Calcula la transformaci@'on de 
-@code{@var{P}(@var{x})} de grado @var{n} (@var{n} par) por la funci@'on 
+@deffn {Función} resolvante_bipartite (@var{P}, @var{x})
+Calcula la transformación de 
+@code{@var{P}(@var{x})} de grado @var{n} (@var{n} par) por la función 
 $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
 @c GENERATED FROM THE FOLLOWING
@@ -1172,7 +1172,7 @@ $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 @end example
 
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1181,9 +1181,9 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_diedrale (@var{P}, @var{x})
-Calcula la transformaci@'on de
-@code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
+@deffn {Función} resolvante_diedrale (@var{P}, @var{x})
+Calcula la transformación de
+@code{@var{P}(@var{x})} por la función @code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
@@ -1201,7 +1201,7 @@ Calcula la transformaci@'on de
 @end example
 
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1210,11 +1210,11 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_klein (@var{P}, @var{x})
-Calcula la transformaci@'on de
-@code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+@deffn {Función} resolvante_klein (@var{P}, @var{x})
+Calcula la transformación de
+@code{@var{P}(@var{x})} por la función @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
@@ -1223,11 +1223,11 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_klein3 (@var{P}, @var{x})
-Calcula la transformaci@'on de
-@code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+@deffn {Función} resolvante_klein3 (@var{P}, @var{x})
+Calcula la transformación de
+@code{@var{P}(@var{x})} por la función @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
@@ -1236,7 +1236,7 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_produit_sym (@var{P}, @var{x})
+@deffn {Función} resolvante_produit_sym (@var{P}, @var{x})
 Calcula la lista de todas las resolventes producto
 del polinomio @code{@var{P}(@var{x})}.
 
@@ -1270,7 +1270,7 @@ del polinomio @code{@var{P}(@var{x})}.
 @c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein},
@@ -1280,11 +1280,11 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
+@deffn {Función} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
 Calcula la resolvente del polinomio @code{@var{P}(@var{x})} 
 por el polinomio @code{@var{Q}(@var{x})}.
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1293,11 +1293,11 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} resolvante_vierer (@var{P}, @var{x})
-Calcula la transformaci@'on de
-@code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
+@deffn {Función} resolvante_vierer (@var{P}, @var{x})
+Calcula la transformación de
+@code{@var{P}(@var{x})} por la función @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
-V@'eanse tambi@'en:
+Véanse también:
 @flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1306,15 +1306,15 @@ V@'eanse tambi@'en:
 
 @end deffn
 
-@deffn {Funci@'on} schur2comp (@var{P}, @var{l_var})
+@deffn {Función} schur2comp (@var{P}, @var{l_var})
 @var{P} es un polinomio de variables contenidas en
 la lista @var{l_var}. Cada una de las variables de @var{l_var}
-representa una funci@'on sim@'etrica completa. 
-La @var{i}-@'esima funci@'on sim@'etrica completa de @var{l_var}
-se representa como la concatenaci@'on de la letra @code{h} con el
+representa una función simétrica completa. 
+La @var{i}-ésima función simétrica completa de @var{l_var}
+se representa como la concatenación de la letra @code{h} con el
 entero @var{i}: @code{h@var{i}}.
-La funci@'on @code{schur2comp} devuelve la expresi@'on de @var{P}
-en funci@'on de las funciones de Schur.
+La función @code{schur2comp} devuelve la expresión de @var{P}
+en función de las funciones de Schur.
 
 @c GENERATED FROM THE FOLLOWING
 @c schur2comp (h1*h2 - h3, [h1, h2, h3]);
@@ -1334,39 +1334,39 @@ en funci@'on de las funciones de Schur.
 
 @end deffn
 
-@deffn {Funci@'on} somrac (@var{l}, @var{k})
-Si la lista @var{l} contiene las funciones sim@'etricas elementales de
-un polinomio @var{P}, la funci@'on @code{somrac} calcula el polinomio cuyas
-ra@'{@dotless{i}}ces son las sumas @var{k} a @var{k} de las ra@'{@dotless{i}}ces
+@deffn {Función} somrac (@var{l}, @var{k})
+Si la lista @var{l} contiene las funciones simétricas elementales de
+un polinomio @var{P}, la función @code{somrac} calcula el polinomio cuyas
+raíces son las sumas @var{k} a @var{k} de las raíces
 de @var{P}. 
 
-V@'ease tambi@'en @code{prodrac}.
+Véase también @code{prodrac}.
 
 @end deffn
 
-@deffn {Funci@'on} tcontract (@var{pol}, @var{lvar})
-Comprueba si el polinomio @var{pol} es sim@'etrico en las
+@deffn {Función} tcontract (@var{pol}, @var{lvar})
+Comprueba si el polinomio @var{pol} es simétrico en las
 variable contenidas en la lista @var{lvar}. En caso afirmativo,
-devuelve una forma contra@'{@dotless{i}}da tal como lo hace la
-funci@'on @code{contract}.
+devuelve una forma contraída tal como lo hace la
+función @code{contract}.
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol} y @code{tpartpol}.
 
 @end deffn
 
-@deffn {Funci@'on} tpartpol (@var{pol}, @var{lvar})
-Comprueba si el polinomio @var{pol} es sim@'etrico en las
+@deffn {Función} tpartpol (@var{pol}, @var{lvar})
+Comprueba si el polinomio @var{pol} es simétrico en las
 variable contenidas en la lista @var{lvar}. En caso afirmativo,
 devuelve una forma particionada tal como lo hace la
-funci@'on @code{partpol}.
+función @code{partpol}.
 
-Otras funciones para efectuar cambios de representaci@'on son:
+Otras funciones para efectuar cambios de representación son:
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol} y @code{tcontract}.
 
 @end deffn
 
-@deffn {Funci@'on} treillis (@var{n})
+@deffn {Función} treillis (@var{n})
 Devuelve todas las particiones de pesos @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -1379,12 +1379,12 @@ Devuelve todas las particiones de pesos @var{n}.
 @end example
 
 
-V@'eanse tambi@'en @code{lgtreillis}, @code{ltreillis} y @code{treinat}.
+Véanse también @code{lgtreillis}, @code{ltreillis} y @code{treinat}.
 
 @end deffn
 
-@deffn {Funci@'on} treinat (@var{part})
-Devuelve la lista de las particiones inferiores de la partici@'on
+@deffn {Función} treinat (@var{part})
+Devuelve la lista de las particiones inferiores de la partición
 @var{part} en su orden natural.
 
 @c GENERATED FROM THE FOLLOWING
@@ -1409,6 +1409,7 @@ Devuelve la lista de las particiones inferiores de la partici@'on
 @end example
 
 
-V@'eanse tambi@'en @code{lgtreillis}, @code{ltreillis} y @code{treillis}.
+Véanse también @code{lgtreillis}, @code{ltreillis} y @code{treillis}.
 
 @end deffn
+

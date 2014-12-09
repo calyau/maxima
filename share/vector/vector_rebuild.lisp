@@ -116,10 +116,9 @@
           (vector-rebuild expr (cdr params)) )))))
 
 (defun vector-rebuild (expr params)
-  (let (coef-matrix args col-flag tmp-vec
+  (let (coef-matrix col-flag tmp-vec col
         (res '((mplus) 0))
         (n 0) 
-        (nr-pars (length params))
         (vec ($vector_simp expr)) )
     (when (not (vector-p vec)) (return-from vector-rebuild expr))
     (when (zero-vector-p vec) (return-from vector-rebuild vec))

@@ -1,62 +1,62 @@
 @c English version: 2011-06-11
 @menu
-* Introducci@'on a ezunits::
-* Introducci@'on a physical_constants::
+* Introducción a ezunits::
+* Introducción a physical_constants::
 * Funciones y variables para ezunits::
 @end menu
 
-@node Introducci@'on a ezunits, Introducci@'on a physical_constants, ezunits, ezunits
-@section Introducci@'on a ezunits
+@node Introducción a ezunits, Introducción a physical_constants, ezunits, ezunits
+@section Introducción a ezunits
 
 @code{ezunits} es un paquete para trabajar con magnitudes dimensionales, incluyendo
-algunas funciones para realizar an@'alisis dimensional.
-@code{ezunits} puede hacer operaciones aritm@'eticas con magnitudes dimensionales y
+algunas funciones para realizar análisis dimensional.
+@code{ezunits} puede hacer operaciones aritméticas con magnitudes dimensionales y
 efectuar conversiones entre unidades.
 Las unidades que se definen son las del Sistema Internacional (SI) y otras comunes en
 los Estados Unidos, siendo posible declarar otras nuevas.
 
-V@'ease tambi@'en @code{physical_constants}, una colecci@'on de constantes f@'{@dotless{i}}sicas.
+Véase también @code{physical_constants}, una colección de constantes físicas.
 
 Es necesario ejecutar primero @code{load(ezunits)} para utilizar este paquete. 
-Con @code{demo(ezunits)} se podr@'an ver algunos ejemplos de utilizaci@'on.
-La funci@'on @code{known_units} devuelve una lista con todas las unidades
-que est@'an definidas y @code{display_known_unit_conversions} muestra
+Con @code{demo(ezunits)} se podrán ver algunos ejemplos de utilización.
+La función @code{known_units} devuelve una lista con todas las unidades
+que están definidas y @code{display_known_unit_conversions} muestra
 las conversiones conocidas por el sistema en un formato de lectura sencilla.
 
-Una expresi@'on tal como @math{a ` b} representa una magnitud dimensional, siendo
+Una expresión tal como @math{a ` b} representa una magnitud dimensional, siendo
 @code{a} una magnitud adimensional y @code{b} las unidades.
-Se puede utilizar un s@'{@dotless{i}}mbolo como unidad, sin necesidad
+Se puede utilizar un símbolo como unidad, sin necesidad
 de declararlo como tal ni de que deba cumplir propiedades especiales.
-Tanto la magnitud como la unidad de una expresi@'on de la forma @math{a ` b}
+Tanto la magnitud como la unidad de una expresión de la forma @math{a ` b}
 pueden extraerse invocando las funciones @code{qty} y @code{units},
 respectivamente.
 
-Una expresi@'on tal como @code{a ` b `` c} convierte las unidades @code{b}
+Una expresión tal como @code{a ` b `` c} convierte las unidades @code{b}
 en @code{c}. El paquete @code{ezunits} contiene funciones conversoras para
-unidades fundamentales del SI, unidades derivadas, as@'{@dotless{i}} como
+unidades fundamentales del SI, unidades derivadas, así como
 algunas otras unidades ajenas al SI.
-Las conversiones entre unidades que no est@'en programadas en @code{ezunits}
-podr@'an declararse a posteriori.
-Las conversiones conocidas por @code{ezunits} est@'an especificadas en la
+Las conversiones entre unidades que no estén programadas en @code{ezunits}
+podrán declararse a posteriori.
+Las conversiones conocidas por @code{ezunits} están especificadas en la
 variable global @code{known_unit_conversions}, incluyendo tanto las ya
-declaradas por defecto como aqu@'ellas introducidas por el usuario.
+declaradas por defecto como aquéllas introducidas por el usuario.
 Las conversiones para los productos, cocientes y potencias de unidades
 se derivan del conjunto de conversiones ya conocidas.
 
-En general, Maxima prefiere n@'umeros exactos (enteros o racionales)
+En general, Maxima prefiere números exactos (enteros o racionales)
 a inexactos (decimales en coma flotante), por lo que @code{ezunits}
-respetar@'a los exactos cuando aparezcan en expresiones de magnitudes
+respetará los exactos cuando aparezcan en expresiones de magnitudes
 dimensionales. Todas las conversiones del paquete se han definido en
-t@'erminos de n@'umeros exactos.
+términos de números exactos.
 
-No hay un sistema de representaci@'on de unidades que se considere preferible,
-raz@'on por la cual las unidades no se convierten a otras a menos que se
-indique de forma expl@'{@dotless{i}}cita. @code{ezunits} reconoce los prefijos
+No hay un sistema de representación de unidades que se considere preferible,
+razón por la cual las unidades no se convierten a otras a menos que se
+indique de forma explícita. @code{ezunits} reconoce los prefijos
 m-, k-, M y G- para mili-, kilo-, mega- y giga-, respectivamente, tal como se
-utilizan en el SI; estos prefijos s@'olo se utilizan cuando as@'{@dotless{i}}
-se indica de forma expl@'{@dotless{i}}cita.
+utilizan en el SI; estos prefijos sólo se utilizan cuando así
+se indica de forma explícita.
 
-Las operaciones aritm@'eticas con magnitudes dimensionales se realizan
+Las operaciones aritméticas con magnitudes dimensionales se realizan
 de la forma convencional.
 
 @itemize
@@ -66,16 +66,16 @@ de la forma convencional.
 @end itemize
 
 @code{ezunits} no necesita que las unidades en una suma tengan las mismas 
-dimensiones; estos t@'erminos ser@'an sumados sin emitirse mensaje de error.
+dimensiones; estos términos serán sumados sin emitirse mensaje de error.
 
-@code{ezunits} incluye funciones para el an@'alisis dimensional elemental,
+@code{ezunits} incluye funciones para el análisis dimensional elemental,
 como las dimensiones fundamentales, las unidades fundamentales de una
-magnitud dimensional o el c@'alculo de magnitudes adimensionales y
-unidades naturales. Las funciones de an@'alisis dimensional son
+magnitud dimensional o el cálculo de magnitudes adimensionales y
+unidades naturales. Las funciones de análisis dimensional son
 adaptaciones de funciones semejantes escritas por Barton Willis en
 otro paquete.
 
-Con el fin de poder llevar a cabo an@'alisis dimensionales, se 
+Con el fin de poder llevar a cabo análisis dimensionales, se 
 mantiene una lista de dimensiones fundamentales y otra lista asociada
 de unidades fundamentales; por defecto, las dimensiones fundamentales son
 longitud, masa, tiempo, carga, temperatura y cantidad de materia, siendo
@@ -85,42 +85,42 @@ fundamentales.
 
 
 
-@node Introducci@'on a physical_constants, Funciones y variables para ezunits, Introducci@'on a ezunits, ezunits
-@section Introducci@'on a physical_constants
+@node Introducción a physical_constants, Funciones y variables para ezunits, Introducción a ezunits, ezunits
+@section Introducción a physical_constants
 
-@code{physical_constants} contiene constantes f@'{@dotless{i}}sicas
+@code{physical_constants} contiene constantes físicas
 recomendadas por el CODATA 2006 (@url{http://physics.nist.gov/constants}).
-La instrucci@'on @code{load(physical_constants)} carga este paquete
-en memoria junto con el propio @code{ezunits}, si @'este no estaba
+La instrucción @code{load(physical_constants)} carga este paquete
+en memoria junto con el propio @code{ezunits}, si éste no estaba
 previamente cargado.
 
-Una constante f@'{@dotless{i}}sica se representa por un s@'{@dotless{i}}mbolo
+Una constante física se representa por un símbolo
 con la propiedad de ser un valor constante. El valor constante es una magnitud
-dimensional en la sintaxis de @code{ezunits}. La funci@'on @code{constvalue}
-extrae el valor constante, el cual no es el valor ordinario del s@'{@dotless{i}}mbolo,
-por lo que las constantes f@'{@dotless{i}}sicas se mantienen inalteradas en las
-expresiones evaluadas hasta que sus valores sea extra@'{@dotless{i}}do con
-la funci@'on @code{constvalue}.
+dimensional en la sintaxis de @code{ezunits}. La función @code{constvalue}
+extrae el valor constante, el cual no es el valor ordinario del símbolo,
+por lo que las constantes físicas se mantienen inalteradas en las
+expresiones evaluadas hasta que sus valores sea extraído con
+la función @code{constvalue}.
 
-@code{physical_constants} incluye cierta informaci@'on adicional,
-como la descripci@'on de cada constante, una estimaci@'on del error 
-de su valor num@'erico y una propiedad para ser representada en TeX.
-Para identificar constantes f@'{@dotless{i}}sicas, cada s@'{@dotless{i}}mbolo
+@code{physical_constants} incluye cierta información adicional,
+como la descripción de cada constante, una estimación del error 
+de su valor numérico y una propiedad para ser representada en TeX.
+Para identificar constantes físicas, cada símbolo
 tiene la propiedad @code{physical_constant}, de forma que 
 @code{propvars(physical_constant)} muestra la lista de todas
-las constantes f@'{@dotless{i}}sicas.
+las constantes físicas.
 
 @code{physical_constants} contiene las siguientes constantes:
 
 @table @code
 @item %c
-velocidad de la luz en el vac@'{@dotless{i}}o
+velocidad de la luz en el vacío
 @item %mu_0
-constante magn@'etica
+constante magnética
 @item %e_0
-constante el@'ectrica
+constante eléctrica
 @item %Z_0
-impedancia caracter@'{@dotless{i}}stica del vac@'{@dotless{i}}o
+impedancia característica del vacío
 @item %G
 constante gravitatoria de Newton
 @item %h
@@ -138,17 +138,17 @@ tiempo de Planck
 @item %%e
 carga elemental
 @item %Phi_0
-flujo magn@'etico cu@'antico
+flujo magnético cuántico
 @item %G_0
-conductancia cu@'antica
+conductancia cuántica
 @item %K_J
 constante de Josephson
 @item %R_K
 constante de von Klitzing
 @item %mu_B
-magnet@'on de Bohr
+magnetón de Bohr
 @item %mu_N
-magnet@'on nuclear
+magnetón nuclear
 @item %alpha
 constante de estructura fina
 @item %R_inf
@@ -156,15 +156,15 @@ constante de Rydberg
 @item %a_0
 radio de Bohr
 @item %E_h
-energ@'{@dotless{i}}a de Hartree
+energía de Hartree
 @item %ratio_h_me
-cuanto de circulaci@'on
+cuanto de circulación
 @item %m_e
-masa del electr@'on
+masa del electrón
 @item %N_A
-n@'umero de Avogadro
+número de Avogadro
 @item %m_u
-constante de masa at@'omica
+constante de masa atómica
 atomic mass constant
 @item %F
 constante de Faraday
@@ -177,15 +177,15 @@ volumen molar del gas ideal
 @item %n_0
 constante de Loschmidt
 @item %ratio_S0_R
-constante de Sackur-Tetrode (constante de entrop@'{@dotless{i}}a absoluta)
+constante de Sackur-Tetrode (constante de entropía absoluta)
 @item %sigma
 constante de Stefan-Boltzmann
 @item %c_1
-primera constante de radiaci@'on
+primera constante de radiación
 @item %c_1L
-primera constante de radiaci@'on para radiancia espectral
+primera constante de radiación para radiancia espectral
 @item %c_2
-segunda constante de radiaci@'on
+segunda constante de radiación
 @item %b
 Constante de la ley del desplazamiento de Wien
 @item %b_prime
@@ -194,7 +194,7 @@ Constante de la ley del desplazamiento de Wien
 
 Ejemplos:
 
-Lista de todos los s@'{@dotless{i}}mbolos que tienen la propiedad
+Lista de todos los símbolos que tienen la propiedad
 @code{physical_constant}.
 
 @c ===beg===
@@ -211,7 +211,7 @@ Lista de todos los s@'{@dotless{i}}mbolos que tienen la propiedad
 @end example
 
 
-Propiedades de la constante f@'{@dotless{i}}sica @code{%c}.
+Propiedades de la constante física @code{%c}.
 
 @c ===beg===
 @c load (physical_constants)$
@@ -239,9 +239,9 @@ $$c$$
 @end example
 
 
-Energ@'{@dotless{i}}a equivalente de una libra-masa. El s@'{@dotless{i}}mbolo
-@code{%c} se mantiene hasta que su valor es extra@'{@dotless{i}}do
-con la llamada a la funci@'on @code{constvalue}.
+Energía equivalente de una libra-masa. El símbolo
+@code{%c} se mantiene hasta que su valor es extraído
+con la llamada a la función @code{constvalue}.
 
 @c ===beg===
 @c load (physical_constants)$
@@ -281,21 +281,21 @@ Computing conversions to base units; may take a moment.
 
 
 
-@node Funciones y variables para ezunits, , Introducci@'on a physical_constants, ezunits
+@node Funciones y variables para ezunits, , Introducción a physical_constants, ezunits
 @section Funciones y variables para ezunits
 
 @deffn {Operador} `
 
 Operador de magnitud dimensional. 
-Una expresi@'on tal como @math{a ` b} representa una magnitud dimensional, siendo
+Una expresión tal como @math{a ` b} representa una magnitud dimensional, siendo
 @code{a} una magnitud adimensional y @code{b} las unidades.
-Se puede utilizar un s@'{@dotless{i}}mbolo como unidad, sin necesidad
+Se puede utilizar un símbolo como unidad, sin necesidad
 de declararlo como tal ni de que deba cumplir propiedades especiales.
-Tanto la magnitud como la unidad de una expresi@'on de la forma @math{a ` b}
+Tanto la magnitud como la unidad de una expresión de la forma @math{a ` b}
 pueden extraerse invocando las funciones @code{qty} y @code{units},
 respectivamente.
 
-Las operaciones aritm@'eticas con magnitudes dimensionales se realizan
+Las operaciones aritméticas con magnitudes dimensionales se realizan
 de la forma convencional.
 
 @itemize
@@ -305,9 +305,9 @@ de la forma convencional.
 @end itemize
 
 @code{ezunits} no necesita que las unidades en una suma tengan las mismas 
-dimensiones; estos t@'erminos ser@'an sumados sin emitirse mensaje de error.
+dimensiones; estos términos serán sumados sin emitirse mensaje de error.
 
-Para utilizar este operador ejec@'utese primero @code{load(ezunits)}.
+Para utilizar este operador ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -379,7 +379,7 @@ Unidades ad hoc.
 @end example
 
 
-Operaciones aritm@'eticas y magnitudes dimensionales.
+Operaciones aritméticas y magnitudes dimensionales.
 
 @c ===beg===
 @c load (ezunits)$
@@ -415,26 +415,26 @@ Operaciones aritm@'eticas y magnitudes dimensionales.
 
 @deffn {Operador} `@w{}`
 
-Operador de conversi@'on de unidades.
-Una expresi@'on tal como @math{a ` b `@w{}` c} convierte las unidades @code{b}
+Operador de conversión de unidades.
+Una expresión tal como @math{a ` b `@w{}` c} convierte las unidades @code{b}
 en @code{c}. El paquete @code{ezunits} contiene funciones conversoras para
-unidades fundamentales del SI, unidades derivadas, as@'{@dotless{i}} como
+unidades fundamentales del SI, unidades derivadas, así como
 algunas otras unidades ajenas al SI.
-Las conversiones entre unidades que no est@'en programadas en @code{ezunits}
-podr@'an declararse a posteriori.
-Las conversiones conocidas por @code{ezunits} est@'an especificadas en la
+Las conversiones entre unidades que no estén programadas en @code{ezunits}
+podrán declararse a posteriori.
+Las conversiones conocidas por @code{ezunits} están especificadas en la
 variable global @code{known_unit_conversions}, incluyendo tanto las ya
-declaradas por defecto como aqu@'ellas introducidas por el usuario.
+declaradas por defecto como aquéllas introducidas por el usuario.
 Las conversiones para los productos, cocientes y potencias de unidades
 se derivan del conjunto de conversiones ya conocidas.
 
-No hay un sistema de representaci@'on de unidades que se considere preferible,
-raz@'on por la cual las unidades no se convierten a otras a menos que se
-indique de forma expl@'{@dotless{i}}cita. Del mismo modo, @code{ezunits}
+No hay un sistema de representación de unidades que se considere preferible,
+razón por la cual las unidades no se convierten a otras a menos que se
+indique de forma explícita. Del mismo modo, @code{ezunits}
 no transforma prefijos (milli-, centi-, deci-, etc) a menos que se le
 indique.
 
-Para utilizar este operador ejec@'utese primero @code{load(ezunits)}.
+Para utilizar este operador ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -570,7 +570,7 @@ Transformando pies a metros y viceversa.
 (%o6)                      130.48 ` m
 @end example
 
-An@'alisis dimensional para encontrar dimensiones y unidades fundamentales.
+Análisis dimensional para encontrar dimensiones y unidades fundamentales.
 
 @c ===beg===
 @c load (ezunits)$
@@ -599,7 +599,7 @@ An@'alisis dimensional para encontrar dimensiones y unidades fundamentales.
 (%o6)                 1233.48183754752 ` m
 @end example
 
-Declaraci@'on de conversiones.
+Declaración de conversiones.
 
 @c ===beg===
 @c load (ezunits)$
@@ -629,11 +629,11 @@ Computing conversions to base units; may take a moment.
 @end example
 @end deffn
 
-@deffn {Funci@'on} constvalue (@var{x})
-@deffnx {Funci@'on} declare_constvalue (@var{a}, @var{x})
-@deffnx {Funci@'on} remove_constvalue (@var{a})
+@deffn {Función} constvalue (@var{x})
+@deffnx {Función} declare_constvalue (@var{a}, @var{x})
+@deffnx {Función} remove_constvalue (@var{a})
 
-Devuelve la constante declarada para un s@'{@dotless{i}}mbolo.
+Devuelve la constante declarada para un símbolo.
 Los valores constantes se declaran con @code{declare_constvalue}.
 
 Los valores constantes reconocidos por @code{constvalue}
@@ -641,15 +641,15 @@ son distintos de los valores declarados por @code{numerval}
 y reconocidos por @code{constantp}.
 
 El paquete @code{physical_units} declara los valores constantes
-de las constantes f@'{@dotless{i}}sicas.
+de las constantes físicas.
 
-@code{remove_constvalue} deshace la acci@'on de @code{declare_constvalue}.
+@code{remove_constvalue} deshace la acción de @code{declare_constvalue}.
 
-Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
+Para utilizar estas funciones ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
-Valor de una constante f@'{@dotless{i}}sica.
+Valor de una constante física.
 
 @c ===beg===
 @c load (physical_constants)$
@@ -690,21 +690,21 @@ Declarando una nueva constante.
 
 @end deffn
 
-@deffn {Funci@'on} units (@var{x})
-@deffnx {Funci@'on} declare_units (@var{a}, @var{u})
+@deffn {Función} units (@var{x})
+@deffnx {Función} declare_units (@var{a}, @var{u})
 
 Devuelve las unidades de la magnitud dimensional @var{x},
 o 1 en caso de que @var{x} sea adimensional.
 
-@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
-un s@'{@dotless{i}}mbolo con unidades declaradas por
-medio de @code{declare_units}, o una expresi@'on 
+@var{x} puede ser una expresión literal dimensional @math{a ` b},
+un símbolo con unidades declaradas por
+medio de @code{declare_units}, o una expresión 
 que contenga cualquiera o ambos de los anteriores.
 
 @code{declare_constvalue} declara que @code{units(@var{a})}
-debe devolver @var{u}, siendo @var{u} una expresi@'on.
+debe devolver @var{u}, siendo @var{u} una expresión.
 
-Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
+Para utilizar estas funciones ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -747,7 +747,7 @@ Ejemplos:
 (%o8)                                 kg
 @end example
 
-@code{units} aplicado a s@'{@dotless{i}}mbolos con unidades declaradas.
+@code{units} aplicado a símbolos con unidades declaradas.
 
 @c ===beg===
 @c load (ezunits)$
@@ -779,19 +779,19 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} qty (@var{x})
-@deffnx {Funci@'on} declare_qty (@var{a}, @var{x})
+@deffn {Función} qty (@var{x})
+@deffnx {Función} declare_qty (@var{a}, @var{x})
 
 @code{qty} devuelve la parte adimensional de la magnitud dimensional @var{x},
 o @var{x}, si @var{x} es adimensional.
-@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
-un s@'{@dotless{i}}mbolo con unidades declaradas o una expresi@'on 
+@var{x} puede ser una expresión literal dimensional @math{a ` b},
+un símbolo con unidades declaradas o una expresión 
 que contenga cualquiera o ambos de los anteriores.
 
 @code{declare_qty} declara que @code{qty(@var{a})}
 debe devolver @var{x}, siendo @var{x} una magnitud dimensional.
 
-Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
+Para utilizar estas funciones ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -823,7 +823,7 @@ Ejemplos:
 (%o6)                         100 v
 @end example
 
-@code{qty} aplicado a s@'{@dotless{i}}mbolos con unidades declaradas.
+@code{qty} aplicado a símbolos con unidades declaradas.
 
 @c ===beg===
 @c load (ezunits)$
@@ -851,15 +851,15 @@ Ejemplos:
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
-@deffn {Funci@'on} unitp (@var{x})
+@deffn {Función} unitp (@var{x})
 
-Devuelve @code{true} si @var{x} es una expresi@'on dimensional
-literal, un s@'{@dotless{i}}mbolo declarado como dimensional o
-una expresi@'on en la que su operador principal ha sido declarado
+Devuelve @code{true} si @var{x} es una expresión dimensional
+literal, un símbolo declarado como dimensional o
+una expresión en la que su operador principal ha sido declarado
 como dimensional. En cualquier otro caso, @code{unitp} devuelve
 @code{false}.
 
-Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+Para utilizar esta función ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -893,7 +893,7 @@ Ejemplos:
 (%o4)                         true
 @end example
 
-@code{unitp} aplicado a una expresi@'on en la que el operador
+@code{unitp} aplicado a una expresión en la que el operador
 principal se declara dimensional.
 
 @c ===beg===
@@ -914,26 +914,26 @@ principal se declara dimensional.
 
 @end deffn
 
-@deffn {Funci@'on} declare_unit_conversion (@var{u} = @var{v}, ...)
+@deffn {Función} declare_unit_conversion (@var{u} = @var{v}, ...)
 
-A@~nade las ecuaciones @var{u} = @var{v}, ... a la lista de conversiones
-de unidades conocidas por el operador de conversi@'on @math{`@w{}`}.
-@var{u} y @var{v} son t@'erminos multiplicativos en las que las
+Añade las ecuaciones @var{u} = @var{v}, ... a la lista de conversiones
+de unidades conocidas por el operador de conversión @math{`@w{}`}.
+@var{u} y @var{v} son términos multiplicativos en las que las
 variables son unidades o expresiones dimensionales literales.
 
 De momento, es imperativo expresar las conversiones de forma
-que el miembro izquierdo de cada ecuaci@'on sea una unidad simple
-(en opsici@'on a una expresi@'on multiplicativa) o una expresi@'on
+que el miembro izquierdo de cada ecuación sea una unidad simple
+(en opsición a una expresión multiplicativa) o una expresión
 dimensional literal con la cantidad igual a 1 y con unidad simple.
-Est@'a previsto eliminar esta restricci@'on en versiones futuras.
+Está previsto eliminar esta restricción en versiones futuras.
 
 @code{known_unit_conversions} es la lista de conversiones de unidades conocidas.
 
-Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+Para utilizar esta función ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
-Conversi@'on de unidades expresadas por ecuaciones con t@'erminos multiplicativos.
+Conversión de unidades expresadas por ecuaciones con términos multiplicativos.
 
 @c ===beg===
 @c load (ezunits)$
@@ -953,7 +953,7 @@ Computing conversions to base units; may take a moment.
                             3024   s
 @end example
 
-Conversi@'on de unidades expresadas por ecuaciones con expresiones dimensionales
+Conversión de unidades expresadas por ecuaciones con expresiones dimensionales
 literales.
 
 @c ===beg===
@@ -977,19 +977,19 @@ Computing conversions to base units; may take a moment.
 @end deffn
 
 
-@deffn {Funci@'on} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
-@deffnx {Funci@'on} remove_dimensions (@var{a_1}, ..., @var{a_n})
+@deffn {Función} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {Función} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
 @code{declare_dimensions} declara @var{a_1}, ..., @var{a_n}
 con las dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
 
-Cada @var{a_k} es un s@'{@dotless{i}}mbolo o lista de s@'{@dotless{i}}mbolos.
-En caso de ser una lista, cada s@'{@dotless{i}}mbolo en @var{a_k} se
-declara de dimensi@'on @var{d_k}.
+Cada @var{a_k} es un símbolo o lista de símbolos.
+En caso de ser una lista, cada símbolo en @var{a_k} se
+declara de dimensión @var{d_k}.
 
 @code{remove_dimensions} invierte el efecto de @code{declare_dimensions}.
 
-Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+Ejecútese @code{load(ezunits)} para hacer uso de estas funciones.
 
 Ejemplos:
 
@@ -1018,20 +1018,20 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
-@deffnx {Funci@'on} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffn {Función} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Función} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Variable global} fundamental_dimensions
 
 @code{declare_fundamental_dimensions} declara dimensiones fundamentales.
-Los s@'{@dotless{i}}mbolos @var{d_1}, @var{d_2}, @var{d_3}, ... se a@~naden a la lista
-de dimensiones fundamentales si no est@'an ya presentes en la lista.
+Los símbolos @var{d_1}, @var{d_2}, @var{d_3}, ... se añaden a la lista
+de dimensiones fundamentales si no están ya presentes en la lista.
 
 @code{remove_fundamental_dimensions} invierte el efecto de @code{declare_fundamental_dimensions}.
 
 @code{fundamental_dimensions} es la lista de dimensiones fundamentales.
-Por defecto, la lista comprende algunas dimensiones f@'{@dotless{i}}sicas.
+Por defecto, la lista comprende algunas dimensiones físicas.
 
-Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+Ejecútese @code{load(ezunits)} para hacer uso de estas funciones.
 
 Ejemplos:
 
@@ -1061,12 +1061,12 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
-@deffnx {Funci@'on} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
+@deffn {Función} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {Función} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
 
 @code{declare_fundamental_units} declara @var{u_1}, ..., @var{u_n}
 de dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
-Todos los argumentos deben s@'{@dotless{i}}mbolos.
+Todos los argumentos deben símbolos.
 
 Tras la llamada a @code{declare_fundamental_units},
 @code{dimensions(@var{u_k})} devuelve @var{d_k} para cada argumento @var{u_1}, ..., @var{u_n},
@@ -1074,7 +1074,7 @@ y @code{fundamental_units(@var{d_k})} devuelve @var{u_k} para cada @var{d_1}, ..
 
 @code{remove_fundamental_units} invierte el efecto de @code{declare_fundamental_units}.
 
-Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+Ejecútese @code{load(ezunits)} para hacer uso de estas funciones.
 
 Ejemplos:
 
@@ -1113,18 +1113,18 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} dimensions (@var{x})
-@deffnx {Funci@'on} dimensions_as_list (@var{x})
+@deffn {Función} dimensions (@var{x})
+@deffnx {Función} dimensions_as_list (@var{x})
 
 @code{dimensions} devuelve las dimensiones de la magnitud dimensional @var{x}
-en forma de expresi@'on que contiene productos y potencias de dimensiones
+en forma de expresión que contiene productos y potencias de dimensiones
 fundamentales.
 
 @code{dimensions_as_list} devuelve las dimensiones de la magnitud dimensional @var{x}
 en forma de lista, cuyos elementos indican las potencias de las dimensiones
 fundamentales correspondientes.
 
-Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
+Para utilizar estas funciones ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -1180,21 +1180,21 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} fundamental_units (@var{x})
-@deffnx {Funci@'on} fundamental_units ()
+@deffn {Función} fundamental_units (@var{x})
+@deffnx {Función} fundamental_units ()
 
 @code{fundamental_units(@var{x})} devuelve las unidades
 asociadas a las dimensiones fundamentales de @var{x},
 tal como queda determinada por @code{dimensions(@var{x})}.
 
-@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
-un s@'{@dotless{i}}mbolo con unidades declaradas a trav@'es de
-@code{declare_units} o una expresi@'on que contenga a ambos.
+@var{x} puede ser una expresión literal dimensional @math{a ` b},
+un símbolo con unidades declaradas a través de
+@code{declare_units} o una expresión que contenga a ambos.
 
 @code{fundamental_units()} devuelve una lista con las unidades
 fundamentales conocidas, tal como fueron declaradas por @code{declare_fundamental_units}.
 
-Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+Para utilizar esta función ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -1227,12 +1227,12 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} dimensionless (@var{L})
+@deffn {Función} dimensionless (@var{L})
 
-Devuelve una expresi@'on sin dimensiones que se puede formar
+Devuelve una expresión sin dimensiones que se puede formar
 a partir de una lista @var{L} de cantidades dimensionales 
 
-Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+Para utilizar esta función ejecútese primero @code{load(ezunits)}.
 
 Ejemplos:
 
@@ -1250,8 +1250,8 @@ Ejemplos:
                                 x
 @end example
 
-Cantidades adimensionales obtenidas a partir de cantidades f@'{@dotless{i}}sicas.
-N@'otese que el primer elemento de la lista es proporcional a la
+Cantidades adimensionales obtenidas a partir de cantidades físicas.
+Nótese que el primer elemento de la lista es proporcional a la
 constante de estructura fina.
 
 @c ===beg===
@@ -1274,14 +1274,15 @@ constante de estructura fina.
 @end deffn
 
 
-@deffn {Funci@'on} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
+@deffn {Función} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
 
 Busca los exponentes @var{e_1}, ..., @var{e_n} tales que
 @code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
 
-Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+Para utilizar esta función ejecútese primero @code{load(ezunits)}.
 
 @end deffn
+
 
 
 

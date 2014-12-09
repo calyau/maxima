@@ -1,0 +1,38 @@
+load("Eulix.mac")$
+
+
+/* Lotka-Volterra  
+    alpha= 0.1  beta= 0.015  gamma= 0.0225  delta= 0.02
+
+    y1' = y1*(alpha-beta*y2)     y1(0)= 1
+    y2' = -y2*(gamma-delta*y1)   y2(0)= 1
+*/
+ 
+Rhs(t,y):= block([alpha:0.1,beta:0.015,gamma:0.0225,delta:0.02],
+             matrix([y[1,1]*(alpha-beta*y[2,1])],[-y[2,1]*(gamma-delta*y[1,1])]))$
+
+define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
+   buildq([J,t:X],lambda([t,y],J))
+)$
+
+Rhs_jac:gen_jacobian(Rhs,t,length(Rhs('t,'y)))$
+compile(Rhs,Rhs_t)$
+
+t0:0.0$
+y0:matrix([1.0],[1.0])$
+/* h:0.1$ */
+t_end: 198.0$
+debugmode:true$
+/*:break Eulix_SplineEval*/
+Start:elapsed_real_time()$
+
+Splines: Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,logging=true)$
+
+print("I've used ",elapsed_real_time()-Start,"seconds for computing the Lotka-Volterra orbit")$
+Sp1:lambda([tau],first(first(transpose(Eulix_SplineEval(tau,Splines)))));
+Sp2:lambda([tau],second(first(transpose(Eulix_SplineEval(tau,Splines)))));
+print("end state:",Sp1(t_end), Sp2(t_end))$
+plot2d([parametric,Sp1,Sp2,[t,0,t_end],[xlabel,"y1"],[ylabel,"y2"]], [title,"Lotka-Volterra Equation"]);
+read("enter ; or $ to quit");
