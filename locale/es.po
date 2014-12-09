@@ -29,10 +29,7 @@ msgid "~%Translating ~:@M"
 msgstr ""
 
 #: ../src/transs.lisp:232
-#, lisp-format
-msgid ""
-"~2%/* The compiler might be able to optimize some function calls\n"
-"   if you prepend the following declaration to your Maxima code: */~%"
+msgid "~2%/* The compiler might be able to optimize some function calls if you prepend the following declaration to your Maxima code: */~%"
 msgstr ""
 
 #: ../src/transs.lisp:238
@@ -91,9 +88,8 @@ msgid "translate: call 'translate_file' to translate a file; found: ~M"
 msgstr ""
 
 #: ../src/transs.lisp:354
-#, fuzzy
-msgid "error: 'translate' argument must be an atom; found: ~:M~%"
-msgstr "concat: el argumento debe ser un átomo; encontré ~M"
+msgid "error: 'translate' argument must be an atom; found: ~M~%"
+msgstr "error: el argumento de 'translate' debe ser un átomo; se encontró: ~M~%"
 
 #: ../src/trgred.lisp:527
 #, lisp-format
@@ -109,14 +105,12 @@ msgid "throw: not within 'catch'."
 msgstr ""
 
 #: ../src/trans1.lisp:215 ../src/mstuff.lisp:60
-#, fuzzy
 msgid "makelist: second argument must evaluate to a number; found: ~M"
-msgstr "lsum: el segundo argumento debe ser una variable; encontré ~M"
+msgstr "makelist: el segundo argumento debe pode ser evaluado como número; se encontró: ~M"
 
 #: ../src/trans1.lisp:243 ../src/mstuff.lisp:78
-#, fuzzy
 msgid "makelist: third argument must be a number or a list; found: ~M"
-msgstr "algsys: el primer argumento debe ser una lista; encontré ~M"
+msgstr "makelist: el tercer argumento debe ser un número o lista; se encontró: ~M"
 
 #: ../src/trans1.lisp:263 ../src/mstuff.lisp:87
 msgid ""
@@ -137,19 +131,16 @@ msgid ""
 msgstr ""
 
 #: ../src/outmis.lisp:88
-#, fuzzy
 msgid "pickapart: second argument must be an integer; found: ~M"
-msgstr "apply: el segundo argumento debe ser una lista; encontré ~M"
+msgstr "pickapart: el segundo argumento debía ser una lista pero se encontró: ~M"
 
 #: ../src/outmis.lisp:97
-#, fuzzy
 msgid "reveal: second argument must be a positive integer; found: ~M"
-msgstr "ematrix: los argumentos deben ser enteros positivos; encontré ~M"
+msgstr "reveal: el segundo argumento debe ser entero positivo; se encontró: ~M"
 
 #: ../src/outmis.lisp:128
-#, fuzzy
 msgid "properties: argument must be a symbol or a string."
-msgstr "gradef: el argumento debe ser un símbolo; encontré ~M"
+msgstr "properties: el argumento debe ser un símbolo o secuencia de caracteres."
 
 #: ../src/outmis.lisp:237
 msgid "printprops: requires two arguments."
@@ -160,19 +151,16 @@ msgid "printprops: unknown property ~:M"
 msgstr ""
 
 #: ../src/outmis.lisp:327
-#, fuzzy
 msgid "changevar: second argument must not be an atom; found: ~M"
-msgstr "polydecomp: el segundo argumento debe ser un átomo; encontré ~M"
+msgstr "changevar: el segundo argumento no debe ser un átomo; se encontró: ~M"
 
 #: ../src/outmis.lisp:328
-#, fuzzy
 msgid "changevar: third argument must be an atom; found: ~M"
-msgstr "concat: el argumento debe ser un átomo; encontré ~M"
+msgstr "changevar: el tercer argumento debe ser un átomo; se encontró: ~M"
 
 #: ../src/outmis.lisp:329
-#, fuzzy
 msgid "changevar: fourth argument must be an atom; found: ~M"
-msgstr "concat: el argumento debe ser un átomo; encontré ~M"
+msgstr "changevar: el cuarto argumento debe ser un átomo; se encontró: ~M"
 
 #: ../src/outmis.lisp:337
 msgid "changevar: failed to solve for ~M in ~M"
@@ -909,7 +897,7 @@ msgstr ""
 #: ../src/transl.lisp:561
 #, fuzzy
 msgid "error: 'eval-when' argument must be a list or atom; found: ~:M~%"
-msgstr "arrayapply: el segundo argumento debe ser una lista; encontré ~M"
+msgstr "error: el argumento 'eval-when' debe ser una lista pero se encontró ~M"
 
 #: ../src/transl.lisp:589
 msgid "note: translating ~:@M~%"
@@ -1384,11 +1372,12 @@ msgstr ""
 #: ../src/fcall.lisp:82
 #, fuzzy
 msgid "apply: expected symbol or function; found: ~M"
-msgstr "numerval: esperaba un símbolo; encontré ~M"
+msgstr "apply: se esperaba un símbolo pero se encontró: ~M"
 
 #: ../src/fcall.lisp:93
 msgid "apply: function ~:@M undefined after loading file ~A"
-msgstr ""
+msgstr "apply: función ~:@M indefinida después de cargar el fichero ~A"
+
 
 #: ../src/algfac.lisp:178 ../src/algfac.lisp:186
 msgid "GFSPLIT: unknown error."
@@ -1631,16 +1620,13 @@ msgid "file_search1: ~M not found in ~A."
 msgstr ""
 
 #: ../src/mload.lisp:150
-#, fuzzy, lisp-format
-msgid ""
-"batch: second argument must be 'demo, 'batch, or 'test; found: ~A, assume "
-"'batch~%"
-msgstr "apply: el segundo argumento debe ser una lista; encontré ~M"
+msgid "batch: second argument must be 'demo', 'batch', or 'test'; found: ~A, assumed 'batch'~%"
+msgstr "batch: el segundo argumento debe ser 'demo', 'batch' o 'test'; se encontró ~M y se asumió 'batch'~%"
 
 #: ../src/mload.lisp:161
 #, lisp-format
 msgid "~%read and interpret file: ~A~%"
-msgstr ""
+msgstr "~%leer e interpretar el fichero: ~A~%"
 
 #: ../src/mload.lisp:291
 #, lisp-format
@@ -1864,9 +1850,8 @@ msgid "matrix"
 msgstr ""
 
 #: ../src/mlisp.lisp:141
-#, fuzzy
 msgid "apply: subscript must be an integer; found: ~M"
-msgstr "~:M: el argumento debe ser un entero; encontré ~M"
+msgstr "apply: el subíndice debe ser un entero; se encontró: ~M"
 
 #: ../src/mlisp.lisp:187
 #, fuzzy

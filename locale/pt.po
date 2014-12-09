@@ -92,8 +92,8 @@ msgid "translate: call 'translate_file' to translate a file; found: ~M"
 msgstr ""
 
 #: ../src/transs.lisp:354
-msgid "error: 'translate' argument must be an atom; found: ~:M~%"
-msgstr ""
+msgid "error: 'translate' argument must be an atom; found: ~M~%"
+msgstr "erro: o argumento 'translate' deve ser um átomo; encontrou-se: ~M~%"
 
 #: ../src/trgred.lisp:527
 #, lisp-format
@@ -1283,11 +1283,11 @@ msgstr ""
 
 #: ../src/fcall.lisp:82
 msgid "apply: expected symbol or function; found: ~M"
-msgstr ""
+msgstr "apply: esperava-se um símbolo ou função mas encontrou-se: ~M"
 
 #: ../src/fcall.lisp:93
 msgid "apply: function ~:@M undefined after loading file ~A"
-msgstr ""
+msgstr "apply: função ~:@M indefinida após carregar o ficheiro ~A"
 
 #: ../src/algfac.lisp:178 ../src/algfac.lisp:186
 msgid "GFSPLIT: unknown error."
@@ -1508,16 +1508,13 @@ msgid "file_search1: ~M not found in ~A."
 msgstr ""
 
 #: ../src/mload.lisp:150
-#, lisp-format
-msgid ""
-"batch: second argument must be 'demo, 'batch, or 'test; found: ~A, assume "
-"'batch~%"
-msgstr ""
+msgid "batch: second argument must be 'demo', 'batch', or 'test'; found: ~A, assumed 'batch'~%"
+msgstr "batch: o segundo argumento deve ser 'demo', 'batch' ou 'test'; encontrou-se ~M e foi assumido 'batch'~%"
 
 #: ../src/mload.lisp:161
 #, lisp-format
 msgid "~%read and interpret file: ~A~%"
-msgstr ""
+msgstr "~%ler e interpretar o ficheiro: ~A~%"
 
 #: ../src/mload.lisp:291
 #, lisp-format
@@ -1732,7 +1729,7 @@ msgstr ""
 
 #: ../src/mlisp.lisp:141
 msgid "apply: subscript must be an integer; found: ~M"
-msgstr ""
+msgstr "apply: o subíndice deve ser um inteiro; encontrou-se: ~M"
 
 #: ../src/mlisp.lisp:187
 msgid "lambda: first argument must be a list; found: ~M"
@@ -3764,7 +3761,7 @@ msgstr ""
 #: ../src/rat3e.lisp:903
 #, lisp-format
 msgid "~&rat: replaced ~A by"
-msgstr ""
+msgstr "~&rat: ~A foi substituído por"
 
 #: ../src/macsys.lisp:44
 #, lisp-format
