@@ -282,7 +282,7 @@ endif
 
 EXTRA_DIST = texi2html manual.css texi2html.init \
     $(genericdirDATA) $(pdffigures) \
-    check_tab fix_tab build_index.pl create_index maxima-index.lisp \
+    create_index maxima-index.lisp pt/maxima.macros.texi \
     extract_categories1.awk  extract_categories1.sed  extract_categories.sh
 
 check_texinfo:
