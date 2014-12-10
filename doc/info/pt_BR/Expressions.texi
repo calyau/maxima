@@ -783,8 +783,7 @@ por exemplo, para simplificar @code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o sim@'{e}trica ou antisim@'{e}trica.
 @code{commutative} @'{e} o mesmo que @code{symmetric}.
 
-@item
-@code{oddfun}, @code{evenfun}
+@item @code{oddfun}, @code{evenfun}
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o par ou uma fun@value{cedilha}@~{a}o @'{i}mpar.
  
 @item @code{outative}
