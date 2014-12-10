@@ -4,7 +4,7 @@ lang = pt
 langsdir = /pt
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = include-maxima.texi \
+maxima_TEXINFOS = include-maxima.texi maxima-macros.texi \
  Introduction.texi Bugs.texi Help.texi Command.texi Operators.texi \
  Expressions.texi Simplification.texi Plotting.texi Input.texi Floating.texi \
  Contexts.texi Polynomials.texi Constants.texi Logarithms.texi \
