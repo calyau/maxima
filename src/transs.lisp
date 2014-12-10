@@ -229,8 +229,7 @@ translated."
 	   *untranslated-functions-called*))
     (when hint
       (format  stream
-	       (intl:gettext "~2%/* The compiler might be able to optimize some function calls
-   if you prepend the following declaration to your Maxima code: */~%"))
+	       (intl:gettext "~2%/* The compiler might be able to optimize some function calls if you prepend the following declaration to your Maxima code: */~%"))
       (mgrind `(($eval_when) $translate (($declare_translated) ,@hint))
 	      stream)
       (format stream "$"))
@@ -351,7 +350,7 @@ translated."
 		  (let ((it (translate-function ($verbify (car l)))))
 		    (if it (push it v))))
 		 (t
-		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
+		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~M~%") (car l))))))))
 
 (defmspec $compile (form)
   (let ((l (meval `(($translate),@(cdr form)))))
