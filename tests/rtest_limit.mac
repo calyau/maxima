@@ -516,6 +516,10 @@ infinity;
 limit(sqrt(x), x, minf);
 infinity;
 
+/* #2847 limits of powers of constants */
+limit((5+%i)^n,n,inf);
+infinity;
+
 /* limit bug - ID: 3101075 */
 limit((2+cos(x))/(x^3*sin(x))-3/x^4,x,0,plus);
 1/60;
