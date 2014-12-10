@@ -404,17 +404,20 @@
 ;;
 ;; Chinese Remainder Theorem
 ;;
-(defmfun $chinese (rems mods) 
+(defmfun $chinese (rems mods &optional (return-lcm? nil)) 
   (cond 
     ((not (and ($listp rems) ($listp mods)))
       (list '($chinese) rems mods) )
-    ((or (= 0 ($length rems)) (= 0 ($length mods)))
+    ((let ((lr ($length rems)) (lm ($length mods)))
+       (or (= 0 lr) (= 0 lm) (/= lr lm)) )
       (gf-merror (intl:gettext
-        "At least one argument to `chinese' was an empty list." )))
+        "Unsuitable arguments to `chinese': ~m ~m" ) rems mods ))
     ((notevery #'integerp (setq rems (cdr rems)))
       (list '($chinese) (cons '(mlist simp) rems) mods) )
     ((notevery #'integerp (setq mods (cdr mods)))
       (list '($chinese) (cons '(mlist simp) rems) (cons '(mlist simp) mods)) )
+    ((eql return-lcm? t)
+      (cons '(mlist simp) (chinese rems mods)) )
     (t
       (car (chinese rems mods)) )))
 ;;
@@ -428,8 +431,8 @@
         (let* ((rq (car rq-q))
                (q (cadr rq-q))
                (gc (zn-gcdex2 q p))
-               (g (car gc))
-               (c (cadr gc)) )
+               (g (car gc))    ;; gcd
+               (c (cadr gc)) ) ;; CRT-coefficient
           (cond
             ((= 1 g) ;; coprime moduli
               (let* ((h (mod (* (- rp rq) c) p))
