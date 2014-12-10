@@ -3466,19 +3466,20 @@ in the interval of integration.")
 	*roots *failures)		;special vars for solve.
     (cond ((not (among var exp))   '$no)
 	  (t (solve exp var 1)
-	     (cond (*failures '$failure)
-		   (t (do ((dummy *roots (cddr dummy))
-			   (rootlist))
-			  ((null dummy)
-			   (cond ((not (null rootlist))
-				  rootlist)
-				 (t '$no)))
-			(cond ((equal ($imagpart (caddar dummy)) 0)
-			       (setq rootlist
-				     (cons (cons
-					    ($rectform (caddar dummy))
-					    (cadr dummy))
-					   rootlist)))))))))))
+	     ;; If *failures is set, we may have missed some roots.
+	     ;; We still return the roots that we have found.
+	     (do ((dummy *roots (cddr dummy))
+		  (rootlist))
+		 ((null dummy)
+		  (cond ((not (null rootlist))
+			 rootlist)
+			(t '$no)))
+	       (cond ((equal ($imagpart (caddar dummy)) 0)
+		      (setq rootlist
+			    (cons (cons
+				   ($rectform (caddar dummy))
+				   (cadr dummy))
+				  rootlist)))))))))))
 
 (defun ask-greateq (x y)
 ;;; Is x > y. X or Y can be $MINF or $INF, zeroA or zeroB.
