@@ -8,52 +8,44 @@
 * Funciones para el formato Gnuplot_pipes::
 @end menu
 
-
-
-
-
-
-
 @node Introducción a los gráficos, Formatos gráficos, Gráficos, Gráficos
 @section Introducción a los gráficos
 
+Maxima utiliza un programa gráfico externo para hacer figuras (véase la
+sección @mref{Formatos gráficos}). Las funciones gráficas calculan un
+conjunto de puntos y se los pasa al programa gráfico, junto con una
+serie de instrucciones. Estas instrucciones pueden pasarse al programa
+gráfico, bien a través de una tubería (@i{pipe}, en inglés), bien
+llamando al programa, junto con el nombre del fichero en el que se
+almacenan los datos. Al fichero de datos se le da el nombre
+@code{maxout.interface}, donde @code{interface} es el nombre del intefaz
+a ser utilizado (@code{gnuplot}, @code{xmaxima}, @code{mgnuplot} o
+@code{gnuplot_pipes}).
 
-Maxima utiliza un programa gráfico externo para hacer figuras (véase la sección
-Formatos gráficos). Las funciones gráficas calculan un conjunto de puntos y
-se los pasa al programa gráfico, junto con una serie de instrucciones. Estas
-instrucciones pueden pasarse al programa gráfico, bien a través de una
-tubería (@i{pipe}, en inglés), bien llamando al programa, junto con
-el nombre del fichero en el que se almacenan los datos. Al fichero de datos se le
-da el nombre @code{maxout.interface}, donde @code{interface} es el nombre del
-intefaz a ser utilizado (gnuplot, xmaxima, mgnuplot o gnuplot_pipes).
+El fichero @code{maxout.interface}, si se utiliza, se almacena en la
+carpeta especificada por la variable @var{maxima_tempdir}, cuyo valor se
+puede cambiar por una cadena de texto que represente la ruta a una
+carpeta válida, en la que Maxima pueda guardar nuevos ficheros.
 
-El fichero @code{maxout.interface}, si se utiliza, se almacena en la carpeta
-especificada por la variable @var{maxima_tempdir}, cuyo valor se puede cambiar
-por una cadena de texto que represente la ruta a una carpeta válida, en la
-que Maxima pueda guardar nuevos ficheros.
+Una vez creado el gráfico, el fichero @code{maxout.interface} puede
+ejecutarse nuevamente con el programa externo adecuado. Si una
+instrucción gráfica de Maxima falla, este fichero puede ser
+inspeccionado a fin de encontrar el origen del problema.
 
-Una vez creado el gráfico, el fichero @code{maxout.interface} puede ejecutarse
-nuevamente con el programa externo adecuado. Si una instrucción gráfica de Maxima
-falla, este fichero puede ser inspeccionado a fin de encontrar el origen del problema.
-
-Junto con las funciones gráficas descritas en esta sección, el paquete @code{draw}
-añade otras funcionalidades. Nótese que algunas opciones gráficas se llaman igual
-en ambos contextos gráficos, pero con diferente sintaxis; para acceder a la información
-de estas opciones en el ámbito de @code{draw}, es necesario teclear @code{?? opc}, donde
-@code{opc} es el nombre de la opción.
-
-
-
-
-
-
+Junto con las funciones gráficas descritas en esta sección, el paquete
+@code{draw} añade otras funcionalidades. Nótese que algunas opciones
+gráficas se llaman igual en ambos contextos gráficos, pero con diferente
+sintaxis; para acceder a la información de estas opciones en el ámbito
+de @code{draw}, es necesario teclear @code{?? opc}, donde @code{opc} es
+el nombre de la opción.
 
 @node Formatos gráficos, Funciones y variables para gráficos, Introducción a los gráficos, Gráficos
 @section Formatos gráficos
 
-Actualmente, Maxima utiliza dos programas gráficos externos: Gnuplot y Xmaxima.
-Existen varios formatos diferentes para estos programas, que pueden seleccionarse
-con la opción @code{plot_format} (véase la sección Opciones gráficas).
+Actualmente, Maxima utiliza dos programas gráficos externos: Gnuplot y
+Xmaxima.  Existen varios formatos diferentes para estos programas, que
+pueden seleccionarse con la opción @code{plot_format} (véase la sección
+Opciones gráficas).
 
 Los formatos gráficos se listan a continuación:
 
@@ -66,7 +58,8 @@ estar instalado en el sistema. Las instrucciones gráficas y los
 datos se almacenan en el fichero @code{maxout.gnuplot}.
 
 @item
-@strong{gnuplot_pipes} (formato por defecto para plataformas distintas de Windows)
+@strong{gnuplot_pipes} (formato por defecto para plataformas distintas
+de Windows)
 
 Este formato no está disponible en plataformas Windows. Es similar al
 formato @code{gnuplot}, excepto por el hecho de que las instrucciones son
@@ -111,15 +104,8 @@ nombre se sigue aceptando como sinónimo de @code{xmaxima}.
 @end itemize
 
 
-
-
-
-
-
 @node Funciones y variables para gráficos, Opciones gráficas, Formatos gráficos, Gráficos
 @section Funciones y variables para gráficos
-
-
 
 @deffn {Función} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
 
@@ -210,9 +196,7 @@ polares, transformándolas luego a coordenadas cartesianas.
 
 @end deffn
 
-
-
-
+@anchor{plot2d}
 @deffn  {Función} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
 @deffnx {Función} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
 @deffnx {Función} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
@@ -888,7 +872,7 @@ si vale @code{false}, no.
 @end defvr
 
 
-
+@anchor{color}
 @defvr {Opción para plot} color [color, @var{color_1}, @dots{}, @var{color_n}]
 Valor por defecto: blue, red, green, magenta, black, cyan
 
