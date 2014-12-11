@@ -21,5 +21,6 @@ maxima_TEXINFOS = include-maxima.texi maxima-macros.texi \
  plotdf.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi unit.texi zeilberger.texi
 
+EXTRA_DIST = texi2html.init
 
 include ../common-lang.mk

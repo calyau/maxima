@@ -29,5 +29,7 @@ lbfgs.texi          drawdf.texi      finance.texi      fractals.texi      defstr
 DataTypes.es.texi   Evaluation.es.texi   MathFunctions.es.texi   Database.es.texi  \
 bernstein.texi      to_poly_solve.texi
 
+EXTRA_DIST = texi2html.init
+
 include ../common-lang.mk
 
