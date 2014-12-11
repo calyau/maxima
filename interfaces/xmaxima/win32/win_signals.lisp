@@ -8,8 +8,8 @@
 ;;; should interrupt current computation or terminate. Other
 ;;; signals are not supported yet.
 ;;;
-;;; Currently there is only support for openmcl. Should add support
-;;; for all lisps other than gcl which run on windows.
+;;; Currently there is only support for ccl and sbcl. Should add
+;;; support for all lisps other than gcl which run on windows.
 ;;;
 
 (in-package :maxima)
@@ -54,7 +54,39 @@
     (load-library)
     (start-monitor)))
 
-#-openmcl
+#+sbcl
+(progn
+  (sb-alien:load-shared-object "winkill_lib.dll")
+  
+  (defun load-library ()
+    (sb-alien:alien-funcall (sb-alien:extern-alien "init_shared_memory" (sb-alien:function sb-alien:void))))
+  
+  (defvar *run-monitor* nil)
+  
+  (defun monitor-shared-memory ()
+    (loop while *run-monitor* do
+	  ;; Check for SIGINT signals
+	  (when (= 1 (sb-alien:alien-funcall (sb-alien:extern-alien "read_sm_sigint" (sb-alien:function sb-alien:int))))
+	    (sb-alien:alien-funcall (sb-alien:extern-alien "reset_sm_sigint" (function sb-alien:void)))
+	    (sb-thread:interrupt-thread (sb-thread:main-thread) #'(lambda () (error "interrupt signal"))))
+	  ;; Check for SIGTERM signals
+	  (when (= 1 (sb-alien:alien-funcall (sb-alien:extern-alien"read_sm_sigterm" (sb-alien:function sb-alien:int))))
+	    (sb-alien:alien-funcall (sb-alien:extern-alien "reset_sm_sigterm" (sb-alien:function sb-alien:void)))
+	    (sb-thread:interrupt-thread (sb-thread:main-thread) #'(lambda () ($quit))))
+	  ;; Wait a little
+	  (sleep 0.1)))
+  
+  ;; Starts the monitor thread
+  (defun start-monitor ()
+    (setq *run-monitor* t)
+    (sb-thread:make-thread #'monitor-shared-memory :name "monitor"))
+  
+  (defun start-shared-memory-monitor ()
+    (load-library)
+    (start-monitor)))
+
+
+#-(or openmcl sbcl)
 (defun start-shared-memory-monitor ())
 
 

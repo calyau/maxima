@@ -60,6 +60,10 @@ cclcopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
 	cp "$(OPENMCL_NAME)" "$(prefix)/bin/"
 
+sbclcopy:
+	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
+	cp "$(SBCL_NAME)" "$(prefix)/bin/"
+
 RUNTIMECOPY = 
 # Install files for lisp runtime support
 if GCL
@@ -68,6 +72,10 @@ endif
 
 if OPENMCL
 RUNTIMECOPY += cclcopy
+endif
+
+if SBCL
+RUNTIMECOPY += sbclcopy
 endif
 
 # Install files for lisp runtime support
