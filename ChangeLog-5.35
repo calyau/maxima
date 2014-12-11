@@ -1,0 +1,42 @@
+   Maxima 5.35 change log
+
+   New items in core:
+
+ * in evaluation, allow general expressions as operators
+ 
+
+   New items in share:
+
+ * package Eulix: numerical solution of ordinary differential equations
+ * script hermite_reduce.mac: implement Rothstein-Trager algorithm
+
+
+   Changes in core:
+
+ * function supcontext: evaluate argument(s)
+ * functions supcontext, newcontext: return made-up name if none supplied
+ * function powerseries: bug fixes
+
+
+   Other changes:
+
+ * many updates to documentation
+
+
+   Bug fixes:
+
+   #2847: limits of powers of constants
+   #2845: Avoid initialization-time compile in commac.lisp 
+   #2818: Problem with trigreduce
+   #2816: Significant reduction in processing LaTeX output in imaxima in new version
+   #2815: abs_integrate leads to infinite recursion
+   #2814: abs_integrate: integration of x*ceiling(x)
+   #2800: a typo in mode_identity documentation
+   #2774: desolve doesn't know how to interpret temporary variables
+   #2623: shortest_path
+   #2575: Integration error: integrate(sqrt(k-k*cos(2*x)), x)
+   #2371: limit((exp(a*x)-1)/(exp(a*x)+1),x,inf) fails
+
+   unnumbered bugs:
+   mailing list 2014-11-26: Error in histogram and continuous_freq
+   mailing list 2014-09-01: SIGN1 strangeness, was: Problem with bfloat
