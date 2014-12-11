@@ -4,9 +4,6 @@
 @c texi2html drawutils.texi        to make .html
 @c texi2pdf drawutils.texi         to make .pdf
 
-
-
-
 @setfilename drawutils.info
 @settitle drawutils
 
@@ -16,10 +13,6 @@
 @end macro
 @end ifinfo
 
-
-
-
-
 @node Top, Introduction to drawutils, (dir), (dir)
 @top
 @menu
@@ -28,26 +21,14 @@
 * Function and variable index::
 @end menu
 
-
 @node Introduction to drawutils, Vector fields, Top, Top
-@section Introduction to drawutils
-
-
+@chapter Introduction to drawutils
 
 Package @code{drawutils} contains user contributed code based on the @code{draw} package.
 
 
-
-
-
-
-
-
-
-
-
 @node Vector fields, Function and variable index, Introduction to drawutils, Top
-@section Vector fields
+@chapter Vector fields
 
 By Donald J. Bindner (2010)
 

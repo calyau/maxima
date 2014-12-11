@@ -147,7 +147,7 @@
    of each command line"
   (cond ((setq tem (member ($mkey demo) possible :test #'eq))
 	 (setq demo (car tem)))
-	(t (format t (intl:gettext "batch: second argument must be 'demo, 'batch, or 'test; found: ~A, assume 'batch~%") demo)))
+	(t (format t (intl:gettext "batch: second argument must be 'demo', 'batch' or 'test'; found: ~A, assumed 'batch'~%") demo)))
 
   (setq filename ($file_search1 filename
 				(if (eql demo :demo)

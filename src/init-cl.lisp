@@ -510,7 +510,7 @@ When one changes, the other does too."
 			   :action #'(lambda (port-string)
 				       (start-client (parse-integer
 						      port-string))
-				       (setf input-stream *socket-connection*))
+                                       (setf input-stream *standard-input*))
 			   :help-string "Connect Maxima to server on <port>.")
 	   (make-cl-option :names '("-u" "--use-version")
 			   :argument "<version>"
