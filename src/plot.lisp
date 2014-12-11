@@ -2212,7 +2212,8 @@ sin(y)*(10.0+6*cos(x)),
          ($system (concatenate 'string *maxima-prefix* 
                                (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
                                $xmaxima_plot_command)
-                  (format nil " ~s &" file)))
+                  #-windows (format nil " ~s &" file)
+		  #+windows file))
         (t (princ ans) "")))
 
 
