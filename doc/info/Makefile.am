@@ -286,13 +286,13 @@ EXTRA_DIST = texi2html manual.css texi2html.init \
     extract_categories1.awk  extract_categories1.sed  extract_categories.sh
 
 check_texinfo:
-	pattern=`printf "\t"` ; \
+	@pattern=`printf "\t"` ; \
 	bad_files=`find . -name '*.texi' -print | xargs $(EGREP) -l -e "$$pattern"` ; \
 	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run make distclean and then /doc/info/fix_tab to fix the problem." ; exit 1 )
 
 warn_texinfo:
-	pattern=`printf "\t"` ; \
+	@pattern=`printf "\t"` ; \
 	bad_files=`find . -name '*.texi' -print | xargs $(EGREP) -l -e "$$pattern"` ; \
 	[ -z  "$$bad_files" ] || ( echo "WARNING: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run /doc/info/fix_tab to fix the problem." )

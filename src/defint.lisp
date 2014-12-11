@@ -3479,7 +3479,7 @@ in the interval of integration.")
 			    (cons (cons
 				   ($rectform (caddar dummy))
 				   (cadr dummy))
-				  rootlist)))))))))))
+				  rootlist)))))))))
 
 (defun ask-greateq (x y)
 ;;; Is x > y. X or Y can be $MINF or $INF, zeroA or zeroB.
