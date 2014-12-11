@@ -1,4 +1,5 @@
 TRANSLATIONS = es pt
+EXTRA_DIST = es.po es.mo pt.po pt.mo
 
 localedir = $(datadir)/locale
 
@@ -25,7 +26,7 @@ SUFFIXES=	.mo .po
 
 maxima.pot:
 	touch $@
-	find ../src -name "*.lisp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o maxima.pot
+	find ../src ../share -name "*.lisp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o maxima.pot
 
 allpo: force-update maxima.pot
 	@for t in $(TRANSLATIONS); do $(MAKE) $$t.po; done
@@ -39,6 +40,3 @@ force-update:
 	$(RM) maxima.pot
 
 all: allmo
-
-EXTRA_DIST = es.po es.mo
-

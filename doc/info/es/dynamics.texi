@@ -1,37 +1,54 @@
-@c english version 1.13
 @menu
-* Introducción a dynamics::
-* Funciones y variables para dynamics::
+* El paquete dynamics::
+* Análisis gráfico de sistemas dinámicos discretos::
+* Visualización usando VTK::
 @end menu
 
-@node Introducción a dynamics, Funciones y variables para dynamics, dynamics, dynamics
-@section Introducción a dynamics
+@node El paquete dynamics, Análisis gráfico de sistemas dinámicos discretos, dynamics, dynamics
+@section El paquete dynamics
 
-El paquete adicional @code{dynamics} incluye varias funciones para crear
-diversas representaciones gráficas de sistemas dinámicos y fractales,
-y además una implementación del método numérico de Runge-Kutta de
-cuarto orden, para resolver sistemas de ecuaciones diferenciales.
+El paquete adicional @code{dynamics} incluye funciones para
+visualización 3D, animaciones, análisis gráfico de ecuaciones
+diferenciales y ecuaciones de diferencias y para resolución numérica de
+ecuaciones diferenciales. Las funciones para ecuaciones diferenciales se
+describen en la sección sobre @mxref{Métodos numéricos} y las funciones
+para representar las gráficas de los conjuntos de Mandelbrot y de Julia
+se describen en la sección sobre @mrefdot{Gráficos}
 
-Para usar las funciones en este paquete será necesario primero que todo
-cargarlo con @code{load("dynamics")}, y las funciones que crean
-gráficas necesitan que Xmaxima esté instalado.
+Todas las funciones en este paquete se cargan automáticamente la primera
+vez que se usan.
 
-@node Funciones y variables para dynamics,  , Introducción a dynamics, dynamics
-@section Funciones y variables para dynamics
+@node Análisis gráfico de sistemas dinámicos discretos, Visualización usando VTK, El paquete dynamics, dynamics
+@section Análisis gráfico de sistemas dinámicos discretos
 
-@deffn {Función} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opciones...);
+@anchor{chaosgame}
+@deffn {Función} chaosgame ([[@var{x1}, @var{y1}]@dots{}[@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{b}, @var{n}, @var{opciones}, @dots{});
 
 Usa el método llamado juego del caos, para producir fractales: se dibuja
-un punto inicial (@var{x0}, @var{y0}) y luego se elije aleatoriamente uno
-de los @var{m} puntos @code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm},
-@var{ym}@code{]}. Después se dibuja un nuevo punto que estará en
-el segmento entre el último punto dibujado y el punto que se acabó de
-elegir aleatoriamente, a una distancia del punto elegido que será
-@var{b} veces la longitud del segmento. El proceso se repite @var{n} veces.
+un punto inicial (@var{x0}, @var{y0}) y luego se elije aleatoriamente
+uno de los @var{m} puntos @code{[}@var{x1},
+@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}. Después se dibuja
+un nuevo punto que estará en el segmento entre el último punto dibujado
+y el punto que se acabó de elegir aleatoriamente, a una distancia del
+punto elegido que será @var{b} veces la longitud del segmento. El
+proceso se repite @var{n} veces.  Este programa acepta las mismas
+opciones de @mrefdot{plot2d}
+
+@strong{Ejemplo}. Gráfico del triángulo de Sierpinsky:
+
+@example
+(%i1) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
+                 30000, [style, dots]);
+@end example
+
+@ifnotinfo
+@figures{dynamics7}
+@end ifnotinfo
 
 @end deffn
 
-@deffn {Función} evolution (@var{F}, @var{y0}, @var{n},...opciones...);
+@anchor{evolution}
+@deffn {Función} evolution evolution (@var{F}, @var{y0}, @var{n},  @dots{}, @var{opciones}, @dots{});
 
 Dibuja @var{n+1} puntos en una gráfica bidimensional (serie de
 tiempo), en que las coordenadas horizontales de los puntos son los
@@ -50,10 +67,21 @@ $$y_{n+1} = F(y_n)$$
 Con valor inicial @var{y(0)} igual a @var{y0}. @var{F} deberá ser una
 expresión que dependa únicamente de la variable @var{y} (y no de @var{n}),
 @var{y0} deberá ser un número real y @var{n} un número entero positivo.
+Esta función acepta las mismas opciones que @mrefdot{plot2d}
+
+@strong{Ejemplo}.
+
+@example
+(%i1) evolution(cos(y), 2, 11);
+@end example
+@ifnotinfo
+@figure{dynamics1}
+@end ifnotinfo
 
 @end deffn
 
-@deffn {Función} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...opciones...);
+@anchor{evolution2d}
+@deffn {Función} evolution2d ([@var{F}, @var{G}], [@var{u}, @var{v}], [@var{u0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
 
 Muestra, en una gráfica bidimensional, los primeros @var{n+1} puntos de
 la sucesión definida a partir del sistema dinámico discreto con
@@ -68,15 +96,41 @@ $$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
 @end tex
 
 Con valores iniciales @var{x0} y @var{y0}. @var{F} y @var{G} deben ser dos
-expresiones que dependan únicamente de @var{x} y @var{y}. 
+expresiones que dependan únicamente de @var{x} y @var{y}. Esta función
+acepta las mismas opciones que @mrefdot{plot2d}
+
+@strong{Ejemplo}. Evolución de un sistema dinámico discreto en dos
+dimensiones:
+
+@example
+(%i1) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+(%i2) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
+(%i3) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
+@end example
+
+@ifnotinfo
+@figure{dynamics5}
+@end ifnotinfo
+
+Y un acercamiento de una pequeña región en ese fractal:
+
+@example
+(%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
+                  [y,-0.4,-0.2], [style, dots]);
+@end example
+
+@ifnotinfo
+@figure{dynamics6}
+@end ifnotinfo
 
 @end deffn
 
-@deffn {Función} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...opciones...);
+@anchor{ifs}
+@deffn {Función} ifs ([@var{r1}, @dots{}, @var{rm}], [@var{A1},@dots{}, @var{Am}], [[@var{x1}, @var{y1}], @dots{}, [@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
 
 Usa el método del Sistema de Funciones Iteradas (IFS, en inglés
 Iterated Function System). Ese método es semejante al método descrito
-en la función @code{chaosgame}, pero en vez de aproximar el último punto
+en la función @mrefdot{chaosgame} pero en vez de aproximar el último punto
 al punto elegido aleatoriamente, las dos coordenadas del último punto
 se multiplican por una matriz 2 por 2 @var{Ai} correspondiente al punto
 que fue elegido aleatoriamente.
@@ -86,87 +140,74 @@ ser realizada con una función de probabilidad no uniforme, definida
 con los pesos @var{r1},...,@var{rm}. Esos pesos deben ser dados en forma
 acumulada; por ejemplo, si se quieren 3 puntos con probabilidades 0.2, 0.5 y
 0.3, los pesos @var{r1}, @var{r2} y @var{r3} podrían ser 2, 7 y 10, o
-cualquier otro grupo de números que tengan la misma proporción.
+cualquier otro grupo de números que tengan la misma proporción. Esta
+función acepta las mismas opciones que @mrefdot{plot2d}
+
+@strong{Ejemplo}. El helecho de Barnsley, creado con 4 matrices y 4
+puntos:
+
+@example
+(%i1) a1: matrix([0.85,0.04],[-0.04,0.85])$
+(%i2) a2: matrix([0.2,-0.26],[0.23,0.22])$
+(%i3) a3: matrix([-0.15,0.28],[0.26,0.24])$
+(%i4) a4: matrix([0,0],[0,0.16])$
+(%i5) p1: [0,1.6]$
+(%i6) p2: [0,1.6]$
+(%i7) p3: [0,0.44]$
+(%i8) p4: [0,0]$
+(%i9) w: [85,92,99,100]$
+(%i10) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
+@end example
+
+@ifnotinfo
+@figure{dynamics8}
+@end ifnotinfo
 
 @end deffn
 
-@deffn {Función} julia (@var{x}, @var{y}, ...@var{opciones}...)
-
-Crea un fichero gráfico con la representación del conjunto de Julia
-del número complejo (@var{x} + i @var{y}). Los parámetros @var{x} y
-@var{y} deben ser reales. El fichero se crea en el directório actual o
-en el directório del usuario, usando el formato gráfico XPM. El
-programa puede demorar varios segundos a ser ejecutado y cuando termina
-imprime un mensaje con el nombre del fichero creado.
-
-Se asignan diferentes colores a los puntos que no pertenecen al conjunto
-de Julia, de acuerdo con el número de iteraciones que demore la
-secuencia, comenzando en ese punto, a salir fuera del
-círculo de convergencia con radio 2. El número máximo
-de iteraciones se define con la opción @var{levels}; después de
-ejecutadas ese número de iteraciones, si la secuencia aun está
-dentro del círculo de convergencia, el punto será
-coloreado con el color definido por la opción @var{color}.
-
-Todos los colores usados para los puntos que no pertenecen al conjunto
-de Julia tendrán los mismos valores de saturación (@var{saturation})
-y valor (@var{value}), pero con diferentes ángulos de tonalidad,
-distribuidos uniformemente en el intervalo entre @var{hue} y (@var{hue}
-+ @var{huerange}).
-
-Se puede dar a la función una secuencia de opciones. La lista de
-posibles opciones aparece en una sección más al frente.
-
-@end deffn
-
-@deffn {Función} mandelbrot (@var{options})
-
-Crea un fichero gráfico con la representación del conjunto de
-Mandelbrot. El fichero se crea en el directório actual o en el
-directório del usuario, usando el formato gráfico XPM. El programa
-puede demorar varios segundos a ser ejecutado y cuando termina imprime
-un mensaje con el nombre del fichero creado.
-
-Se asignan diferentes colores a los puntos que no pertenecen al conjunto
-de Mandelbrot, de acuerdo con el número de iteraciones que demore la
-secuencia generada por ese punto a salir fuera del círculo
-de convergencia con radio 2. El número máximo de iteraciones se
-define con la opción @var{levels}; después de ejecutadas ese
-número de iteraciones, si la secuencia aun está dentro del
-círculo de convergencia, el punto será coloreado con el
-color definido por la opción @var{color}.
-
-Todos los colores usados para los puntos que no pertenecen al conjunto
-de Mandelbrot tendrán los mismos valores de saturación
-(@var{saturation}) y valor (@var{value}), pero con diferentes ángulos
-de tonalidad, distribuidos uniformemente en el intervalo entre @var{hue}
-y (@var{hue} + @var{huerange}).
-
-Se puede dar a la función una secuencia de opciones. La lista de
-posibles opciones aparece en una sección más al frente.
-
-@end deffn
-
-@deffn {Función} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...opciones...);
+@anchor{orbits}
+@deffn {Función} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], @var{opciones}, @dots{});
 
 Dibuja el diagrama de órbitas de una familia de sistemas dinámicos
-discretos unidimensionales, con un parámetro @var{x}; ese tipo de diagrama
-se usa para mostrar las bifurcaciones de un sistema discreto unidimensional.
+discretos unidimensionales, con un parámetro @var{x}; ese tipo de
+diagrama se usa para mostrar las bifurcaciones de un sistema discreto
+unidimensional.
 
 La función @var{F(y)} define una secuencia que comienza con un valor
-inicial @var{y0}, igual que en el caso de la función @code{evolution}, pero
-en este caso la función también dependerá del parámetro @var{x},
-el cual tomará valores comprendidos en el intervalo de @var{x0} a @var{xf},
-con incrementos @var{xstep}. Cada valor usado para el parámetro @var{x} se
-muestra en el eje horizontal. En el eje vertical se mostrarán @var{n2}
-valores de la sucesión @var{y(n1+1)},..., @var{y(n1+n2+1)}, obtenidos
-después de dejarla evolucionar durante @var{n1} iteraciones iniciales.
+inicial @var{y0}, igual que en el caso de la función @code{evolution},
+pero en este caso la función también dependerá del parámetro @var{x}, el
+cual tomará valores comprendidos en el intervalo de @var{x0} a @var{xf},
+con incrementos @var{xstep}. Cada valor usado para el parámetro @var{x}
+se muestra en el eje horizontal. En el eje vertical se mostrarán
+@var{n2} valores de la sucesión @var{y(n1+1)},..., @var{y(n1+n2+1)},
+obtenidos después de dejarla evolucionar durante @var{n1} iteraciones
+iniciales.
+
+@strong{Ejemplo}. Diagrama de órbitas para el mapa cuadrático
+
+@example
+(%i1) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
+@end example
+
+@ifnotinfo
+@figure{dynamics3}
+@end ifnotinfo
+
+Para ampliar la región alrededor de la bifurcación en la parte de
+abajo, cerca de x @code{=} -1.25, se usa el comando:
+@example
+(%i2) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+             [nticks, 400], [style,dots]);
+@end example
+
+@ifnotinfo
+@figure{dynamics4}
+@end ifnotinfo
 
 @end deffn
 
-
-
-@deffn {Función} staircase (@var{F}, @var{y0}, @var{n}, ...opciones...);
+@anchor{staircase}
+@deffn {Función} staircase (@var{F}, @var{y0}, @var{n},@var{opciones},@dots{});
 
 Dibuja un diagrama de escalera (o diagrama de red) para la sucesión
 definida por la ecuación de recurrencia
@@ -187,285 +228,590 @@ segmento vertical desde el punto (@var{y0}, @var{y0}) en la recta, hasta
 el punto de intersección con la función @var{F}. En seguida, desde
 ese punto se dibuja un segmento horizontal hasta el punto de
 intersección con la recta, (@var{y1}, @var{y1}); el procedimiento se
-repite @var{n} veces hasta alcanzar el punto (@var{yn}, @var{yn}).
+repite @var{n} veces hasta alcanzar el punto (@var{yn}, @var{yn}). Esta
+función acepta las mismas opciones que @mrefdot{plot2d}
+
+@strong{Ejemplo}.
+
+@example
+(%i1) staircase(cos(y), 1, 11, [y, 0, 1.2]);
+@end example
+@ifnotinfo
+@figure{dynamics2}
+@end ifnotinfo
 
 @end deffn
 
-@b{Opciones}
+@node Visualización usando VTK, , Análisis gráfico de sistemas dinámicos discretos, dynamics
+@section Visualización usando VTK
 
-Cada opción es una lista con dos o más elementos. El primer elemento
-en la lista es el nombre de la opción y el resto consiste en los
-argumentos para esa opción.
+La función scene crea imágenes tridimensionales y animaciones usando el
+software @emph{Visualization ToolKit} (VTK). Para poder usar esa función
+es necesario tener Xmaxima y VTK instalados en el sistema (incluyendo la
+biblioteca para usar VTK desde TCL que en algunos sistemas viene en un
+paquete separado).
 
-Las opciones aceptadas por las funciones evolution, evolution2,
-staircase, orbits, ifs y chaosgame son las siguientes:
+@anchor{scene}
+@deffn {Función} scene (@var{objetos}, @dots{}, @var{opciones}, @dots{});
 
-@itemize @bullet
-@item
-@dfn{domain} especifica los valores mínimo y máximo de la
-variable independiente para la gráfica de la función @var{F}
-representada por @code{staircase}.
-
-@item
-@dfn{pointsize} define el radio de cada punto dibujado, en unidades de
-puntos.  El valor por omisión es 1.
-
-@item
-@dfn{xaxislabel} es la etiqueta que se escribirá en el eje horizontal.
-
-@item
-@dfn{xcenter} es la coordenada x del punto que deberá aparecer en el
-centro de la gráfica. Esta opción no es usada por la función
-@code{orbits}.
-
-@item
-@dfn{xradius} es mitad de la longitud del intervalo de valores de x que
-será representado. Esta opción no es usada por la función
-@code{orbits}.
-
-@item
-@dfn{yaxislabel} es la etiqueta que se escribirá en el eje vertical.
-
-@item
-@dfn{ycenter} es la coordenada y del punto que deberá aparecer en el
-centro de la gráfica.
-
-@item
-@dfn{yradius} es mitad de la longitud del intervalo de valores de y que
-será representado.
-
-@end itemize
-
-Las opciones aceptadas por los programas julia y mandelbrot son las
-siguientes:
-
-@itemize @bullet
-@item
-@dfn{size} acepta uno o dos argumentos. Si se da solo un argumento, el
-ancho y la altura del fichero gráfico creado serán iguales a ese
-valor en pixels. Si se dan dos argumentos, esos dos valores serán
-usados para el ancho y la altura. El valor por omisión es 400 pixels
-tanto para el ancho como para la altura. Si los dos valores no son
-iguales, el conjunto aparecerá distorcionado.
-
-@item
-@dfn{levels} define el número máximo de iteraciones, que es
-también el número de colores usado para los puntos que no pertenecem
-al conjunto. El valor por omisión es 12; valores mayores implican
-tiempos de procesamiento más elevados.
-
-@item
-@dfn{huerange} define el intervalo de ángulos usados para la tonalidad
-de los puntos que no pertenecen al conjunto. El valor por omisión es
-360, que hace que los colores usados abarcarán todo el rango de
-tonalidades. Valores mayores que 360 implican repetición de algunos
-valores de la tonalidad, y pueden usarse valores negativos para que el
-ángulo de tonalidad sea menor a medida que el número de iteraciones
-aumente.
-
-@item
-@dfn{hue} define la tonalidad, en grados, del primer color usado para
-representar los puntos que no pertenecen al conjunto.  Su valor por
-omisión es 300 grados, que corresponde al color magenta; el color
-correspondiente para otros valores estandar es rojo 0, naranja 45,
-amarillo 60, verde 120, cian 180 y azul 240. Consulte también la
-opción @var{huerange}.
-
-@item
-@dfn{saturation} define el nivel de saturación que será usado para
-los colores de los puntos que no pertenecen al conjunto. Debe ser un valor
-entre 0 y 1. El valor por omisión es 0.46.
-
-@item
-@dfn{value} define el valor de los colores usados para puntos que no
-pertenezcan al conjunto. Debe estar comprendido entre 0 y 1; cuanto
-mayor sea, mas brilhantes serán los colores. Su valor por omisión es
-0.96.
-
-@item
-@dfn{color} debe ir seguido de tres parámetros que definen la
-tonalidad, saturación y valor del color que será usado para los
-puntos del conjunto. El valor por omisión es 0 para los tres
-parámetros, que corresponde al negro. Consulte las explicación sobre
-el rango de valores aceptados en la explicación de las opciones
-@var{hue}, @var{saturation} y @var{value}.
-
-@item
-@dfn{center} deberá tener dos parámetros reales que dan las
-coordenadas, en el plano complejo, del punto en el centro de la región
-representada. El valor por omisión es 0 para las dos coordenadas (el
-origen).
-
-@item
-@dfn{radius} es el radio de el mayor círculo que
-cabe dentro de la región quadrada que será representada. El valor
-por omisión es 2.
-
-@item
-@dfn{filename} da el nombre del fichero donde se guardará la gráfica
-producida. A ese nombre se le acrecentará la terminación .xpm. Si el
-fichero ya existe, será substituido por el fichero producido por la
-función. El valor por omisión es julia para el conjunto de Julia y
-mandelbrot para el conjunto de Mandelbrot.
-
-@end itemize
-
-@b{Ejemplos}
-
-Representación gráfica y diagrama de escalera de la secuencia:
-2, cos(2), cos(cos(2)),...
-
+Acepta una lista vacía o una lista de varios
+@mxref{scene_objetos,objetos} y @mxrefdot{scene_opciones,opciones} El
+programa ejecuta Xmaxima, que abre una ventana donde se representan los
+objetos dados, en un espacio tridimensional y aplicando las opciones
+dadas. Cada objeto debe pertenecer una de las 4 clases: sphere, cube,
+cylinder o cone (ver @mxref{scene_objetos,Objetos de scene}). Los
+objetos se identifican dando el nombre de su clase, o una lista en que
+el primer elemento es el nombre de la clase y los restantes elementos
+son opciones para ese objeto.
+ 
+@strong{Ejemplo}. Una pirámide hexagonal con fondo azul:
+@c ===beg===
+@c scene(cone, [background,"#9980e5"])$
+@c ===end===
 @example
-(%i1) load("dynamics")$
-(%i2) evolution(cos(y), 2, 11, [yaxislabel, "y"], [xaxislabel,"n"]);
-(%i3) staircase(cos(y), 1, 11, [domain, 0, 1.2]);
+(%i1) scene(cone, [background,"#9980e5"])$
 @end example
-
 @ifnotinfo
-@image{../figures/dynamics1,8cm}
-@image{../figures/dynamics2,8cm}
+@figure{scene1}
 @end ifnotinfo
 
-Si su procesador es lento, tendrá que reducir el número de
-iteraciones usado en los ejemplos siguientes. Y el valor de
-@var{pointsize} que da mejores resultados depende del monitor y de la
-resolución que use. Tendrá que experimentar con diferentes valores.
+Presionando el botón izquierdo del ratón mientras se mueve dentro de la
+ventana gráfica, se puede rotar la cámara, mostrando diferentes vistas
+de la pirámide. Las dos opciones @mxref{scene_elevation,elevation} y
+@mxref{scene_azimuth,azimuth} se pueden usar también para cambiar la
+orientación de la cámara. La cámara se puede mover presionando el botón
+del medio y moviendo el ratón y el botón del lado derecho se usa para
+aumentar o disminuir el zoom, moviendo el ratón para arriba y para
+bajo.
 
-Diagrama de órbitas para el mapa cuadrático
-@ifnottex
+Cada opción de un objeto deberá ser una lista comenzando con el nombre
+de la opción, seguido por su valor. La lista de posibles opciones se
+encuentra en la sección
+@mxrefdot{objeto_opciones,Opciones de objetos de scene}
+
+@strong{Ejemplo}. Este ejemplo mostrará una esfera cayendo para el piso
+y rebotando sin perder energía. Para comenzar o poner en pausa la
+animación se debe oprimir el botón de play/pausa.
+@c ===beg===
+@c p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
+@c p: append (p, reverse(p))$
+@c bola: [sphere, [radius,0.1], [thetaresolution,20],
+@c   [phiresolution,20],[position,0,0,2.1], [color,red],
+@c   [animate,position,p]]$
+@c piso: [cube, [xlength,2], [ylength,2], [zlength,0.2],
+@c   [position,0,0,-0.1],[color,violet]]$
+@c scene (bola, piso, restart);
+@c ===end===
+
 @example
-        y(n+1) = x + y(n)^2
-@end example
-@end ifnottex
-@tex
-$$y_{n+1} = x + y_n^2$$
-@end tex
+(%i1) p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
 
-@example
-(%i4) orbits(y^2+x, 0, 50, 200, [x, -2, 0.25, 0.01], [pointsize, 0.9]);
-@end example
+(%i2) p: append (p, reverse(p))$
 
+(%i3) bola: [sphere, [radius,0.1], [thetaresolution,20],
+  [phiresolution,20], [position,0,0,2.1], [color,red],
+  [animate,position,p]]$
+
+(%i4) piso: [cube, [xlength,2], [ylength,2], [zlength,0.2],
+  [position,0,0,-0.1],[color,violet]]$
+
+(%i5) scene (bola, piso, restart)$
+@end example
 @ifnotinfo
-@image{../figures/dynamics3,8cm}
+@figure{scene2}
 @end ifnotinfo
 
-Para ampliar la región alrededor de la bifurcación en la parte de
-abajo, cerca de x @code{=} -1.25, use el comando:
+La opción @var{restart} fue usada para hacer que la animación recomienze
+cada vez que se llega al último punto en la lista. Los valores
+permitidos para los colores son los mismo que para la opción @mref{color}
+de plot2d. 
+
+@end deffn
+
+@anchor{scene_opciones}
+@subsection Opciones de scene
+
+@anchor{scene_azimuth}
+@defvr {Opción de scene} azimuth [azimuth, @var{ángulo}]
+Valor predefinido: @code{135}
+
+La rotación de la cámara en el plano horizontal (x, y). @var{ángulo}
+debe ser un número real; un ángulo de 0 significa que la cámara apunta
+en la dirección del eje y, haciendo que el eje x aparezca a la derecha.
+
+@end defvr
+
+@anchor{scene_background}
+@defvr {Opción de scene} background [background, @var{color}]
+Valor predefinido: @code{black}
+
+El color del fondo de la ventana gráfica. Acepta nombres de colores o
+secuencias de caracteres hexadecimales para rojo-verde-azul (ver la
+opción @mref{color} de plot2d).
+
+@end defvr
+
+@anchor{scene_elevation}
+@defvr {Opción de scene} elevation [elevation, @var{ángulo}]
+Valor predefinido: @code{30}
+
+La rotación vertical de la cámara. El @var{ángulo} debe ser un número
+real; un ángulo de 0 significa que la cámara apunta en la horizontal y
+el valor predefinido de 30 significa que la cámara apunta 30 grados para
+abajo de la horizontal.
+
+@end defvr
+
+@anchor{scene_height}
+@defvr {Opción de scene} height [height, @var{pixels}]
+Valor predefinido: @code{500}
+
+La altura, en pixels, de la ventana gráfica. @var{pixels} debe ser un
+número entero positivo.
+
+@end defvr
+
+@anchor{scene_restart}
+@defvr {Opción de scene} restart [restart, @var{valor}]
+Valor predefinido: @code{false}
+
+Un valor 'true' significa que la animación recomenzará automáticamente
+cuando llegue al final. Escribir simplemente ``restart'' es equivalente
+a escribir [restart, @var{true}].
+
+@end defvr
+
+@anchor{scene_tstep}
+@defvr {Opción de scene} tstep [tstep, @var{tiempo}]
+Valor predefinido: @code{10}
+
+El intervalo de tiempo, en milisegundos, entre iteraciones consecutivas
+de las partes de una animación. @var{tiempo} debe ser un número real.
+
+@end defvr
+
+@anchor{scene_width}
+@defvr {Opción de scene} width [width, @var{pixels}]
+Valor predefinido: @code{500}
+
+El ancho, en pixels, de la ventana gráfica. @var{pixels} deberá ser un
+número entero positivo.
+
+@end defvr
+
+@anchor{scene_windowname}
+@defvr {Opción de scene} windowname [windowtitle, @var{nombre}]
+Valor predefinido: @code{.scene}
+
+@var{nombre} deberá ser una secuencia de caracteres que pueda ser usada
+para el nombre de una ventana de Tk, creada por Xmaxima para los
+gráficos de @code{scene}. El valor predefinido @code{.scene} implica que
+será creada una nueva ventana.
+
+@end defvr
+
+@anchor{scene_windowtitle}
+@defvr {Opción de scene} windowtitle [windowtitle, @var{nombre}]
+Valor predefinido: @code{Xmaxima: scene}
+
+@var{nombre} debe ser una secuencia de caracteres que serán escritos en
+el encabezado de la ventana creada por  @code{scene}.
+
+@end defvr
+
+@anchor{scene_objetos}
+@subsection Objetos de scene
+
+@anchor{cone}
+@defvr {Objeto de scene} cone [cone, @var{opciones}]
+
+Crea una pirámide regular con altura 1 unidad y base hexagonal con
+vértices a 0.5 unidades del eje. Las opciones
+@mxref{objeto_height,height} y @mxref{objeto_radius,radius} se pueden
+usar para alterar esos valores predefinidos y la opción
+@mxref{objeto_resolution, resolution} se usa para alterar el número de
+aristas de la base; valores mayores harán que la pirámide parezca un
+cono. Por omisión, el eje estará a lo largo del eje x, el punto medio de
+la altura estará en el origen y el vértice en el lado positivo del eje
+x; las opciones @mxref{objeto_orientation,orientation} y
+@mxref{objeto_center,center} permiten alterar eso.
+
+@strong{Ejemplo}. El siguiente comando muestra una pirámide que comienza
+a dar vueltas cuando se oprime el botón de animación.
+ 
 @example
-(%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
-             [ycenter,-1.2], [yradius,0.4]);
+(%i1) scene([cone, [orientation,0,30,0], [tstep,100],
+   [animate,orientation,makelist([0,30,i],i,5,360,5)]], restart)$
 @end example
 
-@ifnotinfo
-@image{../figures/dynamics4,8cm}
-@end ifnotinfo
+@end defvr
 
-Evolución de un sistema en dos dimensiones, que conduce a un fractal:
+@anchor{cube}
+@defvr {Objeto de scene} cube [cube, @var{opciones}]
+
+Un cubo con aristas de 1 unidad y caras paralelas al los planos xy, xz y
+yz. Las longitudes de las 3 aristas se pueden modificar con las opciones
+@mxref{objeto_xlength,xlength}, @mxref{objeto_ylength,ylength} y
+@mxref{objeto_zlength,zlength}, convirtiéndolo en un paralelepípedo y
+las caras se pueden hacer rotar con la opción
+@mxrefdot{objeto_orientation,orientation}
+
+@end defvr
+
+@anchor{cylinder}
+@defvr {Objeto de scene} cylinder [cylinder, @var{opciones}]
+
+Crea un prisma regular con altura de 1 unidad y base hexagonal con los
+vértices a 0.5 unidades del eje. Las opciones
+@mxref{objeto_height,height} y @mxref{objeto_radius,radius} permiten
+modificar esos valores predefinidos y la opción
+@mxref{objeto_resolution,resolution} se puede usar para modificar el
+número de aristas de la base; valores mayores tornan el prisma más
+parecido a un cilindro. La altura predefinida se puede alterar con la
+opción @mxrefdot{objeto_height,height} Por omisión el eje estará
+orientado a lo largo del eje x, y el punto medio de la altura estará en
+el origen; se pueden cambiar esas propiedades con las opciones
+@mxref{objeto_orientation,orientation} y @mxrefdot{objeto_center,center}
+
+@end defvr
+
+@anchor{sphere}
+@defvr {Objeto de scene} sphere [sphere, @var{opciones}]
+
+Una esfera de radio igual a 0.5 unidades y centro en el origen.
+
+@end defvr
+
+@anchor{objeto_opciones}
+@subsection Opciones de objetos de scene
+
+@anchor{objeto_animation}
+@defvr {Opción de objeto} animation [animation, @var{propiedad}, @var{posiciones}]
+
+@var{propiedad} deberá ser una de las 4 siguientes propiedades del
+objeto: @mxrefcomma{objeto_origin,origin}
+@mxrefcomma{objeto_scale,scale} @mxref{objeto_position,position} o
+@mxref{objeto_orientation,orientation} y @var{posiciones} deberá ser una
+lista de puntos. Cuando se oprime el botón ``play'', esa propiedad
+tomará sucesivamente los valores en la lista, en intervalos regulares de
+tiempo definidos por la opción @mxrefdot{scene_tstep,tstep} El botón de
+volver al comienzo puede usarse para recomenzar desde el principio de la
+lista, haciendo que la animación comience nuevamente cuando se presione
+otra vez el botón de play.
+
+Consulte también @mxrefdot{objeto_track,track}
+
+@end defvr
+
+@anchor{objeto_capping}
+@defvr {Opción de objeto} capping [capping, @var{número}]
+Valor predefinido: @code{1}
+
+En un objeto ``cone'' o ``cylinder'', determina si la base (o bases) se
+muestran o no. Un valor de 1 para @var{número} torna la base visible y
+un valor de 0 la hace invisible.
+ 
+@end defvr
+
+@anchor{objeto_center}
+@defvr {Opción de objeto} center [center, @var{punto}]
+Valor predefinido: @code{[0, 0, 0]}
+
+Coordenadas del centro geométrico del objeto, en relación a su posición
+(@mxref{objeto_position, position}); @var{punto} puede ser una lista de
+3 números reales o 3 números separados por comas. En objetos de clase
+``cylinder'',''cone'' o ``cube'' estará localizado en el punto medio de
+la altura y en objetos de clase ``sphere'' estará en su centro.
+
+@end defvr
+
+@anchor{objeto_color}
+@defvr {Opción de objeto} color [color, @var{nombre}]
+Valor predefinido: @code{white}
+
+El color del objeto. Acepta nombres de colores conocidos o secuencias de
+6 dígitos (rojo-verde-azul) precedidos por # (ver la opción @mref{color}
+de plot2d).
+
+@end defvr
+
+@anchor{objeto_endphi}
+@defvr {Opción de objeto} endphi [endphi, @var{ángulo}]
+Valor predefinido: @code{180}
+
+En una esfera, phi es el ángulo en el plano vertical que pasa por el eje
+z, medido a partir de la parte positiva del eje z. @var{ángulo} debe ser
+un múmero entre 0 y 180 que determina el valor final de phi hasta donde
+se mostrará la superficie. Valores menores que 180 eliminan una parte de
+la superficie.
+
+Consulte también @mxref{objeto_startphi,startphi} y
+@mxrefdot{objeto_phiresolution,phiresolution}
+
+@end defvr
+
+@anchor{objeto_endtheta}
+@defvr {Opción de objeto} endtheta [endtheta, @var{ángulo}]
+Valor predefinido: @code{360}
+
+En una esfera, theta es el ángulo en el plano horizontal (longitud),
+medido desde la parte positiva del eje x. @var{ángulo} debe ser un
+número entre 0 y 360 que determina el valor final donde la superficie
+terminará. Valores menores que 360 hacen que se elimine una parte de la
+superficie de la esfera.
+
+Consulte también @mxref{objeto_starttheta,starttheta} y
+@mxrefdot{objeto_thetaresolution,thetaresolution}
+
+@end defvr
+
+@anchor{objeto_height}
+@defvr {Opción de objeto} height [height, @var{valor}]
+Valor predefinido: @code{1}
+
+@var{valor} debe ser un número positivo que define la altura de un cono
+o cilindro.
+
+@end defvr
+
+@anchor{objeto_linewidth}
+@defvr {Opción de objeto} linewidth [linewidth, @var{valor}]
+Valor predefinido: @code{1}
+
+El ancho de las líneas cuando se usa la opción
+@mxref{objeto_wireframe,wireframe}. @var{valor} debe ser un número
+positivo.
+
+@end defvr
+
+@anchor{objeto_opacity}
+@defvr {Opción de objeto} opacity [opacity, @var{valor}]
+Valor predefinido: @code{1}
+
+@var{valor} debe se un número entre 0 y 1. Cuanto menor sea el número,
+mas transparente será el objeto. El valor predefinido de 1 implica un
+objeto completamente opaco.
+
+@end defvr
+
+@anchor{objeto_orientation}
+@defvr {Opción de objeto} orientation [orientation, @var{ángulos}]
+Valor predefinido: @code{[0, 0, 0]}
+
+Tres ángulos que de rotaciones que serán realizadas en el objeto,
+alrededor de los tres ejes.@var{ángulos} puede ser una lista con tres
+números reales o tres números separados por comas. @strong{Ejemplo}:
+@code{[0, 0, 90]} rota el eje x del objeto hasta el eje y del sistema de
+referencia.
+
+@end defvr
+
+@anchor{objeto_origin}
+@defvr {Opción de objeto} origin [origin, @var{punto}]
+Valor predefinido: @code{[0, 0, 0]}
+
+Coordenadas del origen del objeto, en relación al cual las otras
+dimensiones serán definidas. @var{punto} pueden ser tres números
+separados por comas, o una lista de tres números.
+
+@end defvr
+
+@anchor{objeto_phiresolution}
+@defvr {Opción de objeto} phiresolution [phiresolution, @var{num}]
+Valor predefinido: @code{}
+
+Número de sub-intervalos en que se divide el intervalo de valores del
+ángulo phi, que comienza en @mxref{objeto_startphi,startphi} y termina
+en @mxrefdot{objeto_endphi,endphi} @var{num} debe ser un número entero
+positivo.
+
+Consulte también @mxref{objeto_startphi,startphi} y
+@mxrefdot{objeto_endphi,endphi}
+
+@end defvr
+
+@anchor{objeto_points}
+@defvr {Opción de objeto} points  [points]
+
+Esta opción hace que en vez de que se muestre la superficie, se muestren
+únicamente los vértices en la triangulación usada para construir la
+superficie. @strong{Ejemplo}: @code{[sphere, [points]]}
+
+Consulte también @mxref{objeto_surface,surface} y
+@mxrefdot{objeto_wireframe,wireframe}
+
+@end defvr
+
+@anchor{objeto_pointsize}
+@defvr {Opción de objeto} pointsize [pointsize, @var{valor}]
+Valor predefinido: @code{1}
+
+Tamaño de los puntos, cuando se usa la opción
+@mxrefdot{objeto_points,points} @var{valor} debe ser un número positivo.
+
+@end defvr
+
+@anchor{objeto_position}
+@defvr {Opción de objeto} position [position, @var{punto}]
+Valor predefinido: @code{[0, 0, 0]}
+
+Coordenadas de la posición del objeto. @var{punto} puede ser tres
+números separados por comas o una lista de tres números.
+
+@end defvr
+
+@anchor{objeto_radius}
+@defvr {Opción de objeto} radius [radius, @var{valor}]
+Valor predefinido: @code{0.5}
+
+El radio de una esfera o la distancia desde el eje hasta los vértices de
+la base en cilindros o conos. @var{valor} debe ser un número positivo.
+
+@end defvr
+
+@anchor{objeto_resolution}
+@defvr {Opción de objeto} resolution [resolution, @var{número}]
+Valor predefinido: @code{6}
+
+@var{número} debe ser un número entero mayor que 2, que define el número
+de aristas de la base en objetos de clase ``cone'' o ``cylinder''.
+ 
+@end defvr
+
+@anchor{objeto_scale}
+@defvr {Opción de objeto} scale [scale, @var{factores}]
+Valor predefinido: @code{[1, 1, 1]}
+
+Tres factores de escala en que serán deformadas las dimensiones del
+objeto en relación a los tres ejes. @var{factors} pueden ser tres número
+separados por comas o una lista con tres números. @strong{Ejemplo}:
+@code{[2, 0.5, 1]} estira el objeto suplicando sus dimensiones paralelas
+la eje x, reduce a mitad las dimensiones paralelas al eje y, dejando
+iguales las dimensiones paralelas al eje z.
+
+@end defvr
+
+@anchor{objeto_startphi}
+@defvr {Opción de objeto} startphi [startphi, @var{ángulo}]
+Valor predefinido: @code{0}
+
+En una esfera, phi es el ángulo en el plano vertical que pasa por el eje
+z, medido a partir de la parte positiva del eje z. @var{ángulo} debe ser
+un múmero entre 0 y 180 que determina el valor inicial de phi desde donde
+se mostrará la superficie. Valores superiores a 0 eliminan una parte de
+la superficie.
+
+Consulte también @mxref{objeto_endphi,endphi} y
+@mxrefdot{objeto_phiresolution,phiresolution}
+
+@end defvr
+
+@anchor{objeto_starttheta}
+@defvr {Opción de objeto} starttheta [starttheta, @var{ángulo}]
+Valor predefinido: @code{0}
+
+En una esfera, theta es el ángulo en el plano horizontal (longitud),
+medido desde la parte positiva del eje x. @var{ángulo} debe ser un
+número entre 0 y 360 que determina el valor inicial donde la superficie
+comienza. Valores mayores que 0 hacen que se elimine una parte de la
+superficie de la esfera.
+
+Consulte también @mxref{objeto_endtheta,endtheta} y
+@mxrefdot{objeto_thetaresolution,thetaresolution}
+
+@end defvr
+
+@anchor{objeto_surface}
+@defvr {Opción de objeto} surface [surface]
+
+Hace que se muestre la superficie del objeto y no los las líneas ni los
+vértices de la triangulación usada para construirlo. Ese es el
+comportamiento habitual que se puede alterar con las opciones
+@mxref{objeto_points,points} o @mxrefdot{objeto_wireframe,wireframe}
+
+@end defvr
+
+@anchor{objeto_thetaresolution}
+@defvr {Opción de objeto} thetaresolution [thetaresolution, @var{num}]
+Valor predefinido: @code{}
+
+Número de sub-intervalos en que se divide el intervalo de valores del
+ángulo theta, que comienza en @mxref{objeto_starttheta,starttheta} y termina
+en @mxrefdot{objeto_endtheta,endtheta} @var{num} debe ser un número entero
+positivo.
+Consulte también @mxref{objeto_starttheta,starttheta} y
+@mxrefdot{objeto_endtheta,endtheta}
+
+@end defvr
+
+@anchor{objeto_track}
+@defvr {Opción de objeto} track [track, @var{posiciones}]
+
+@var{posiciones} deberá ser una lista de puntos. Cuando se oprime el
+botón de ``play'', la posición del objeto tomara secuencialmente los
+valores en la lista, a intervalos regulares de tiempo definidos por la
+opción @mxrefcomma{scene_tstep,tstep} dejando un rastro de la
+trayectoria del objeto. El botón de volver al comienzo puede usarse para
+recomenzar desde el principio de la lista, haciendo que la animación
+comience nuevamente cuando se presione otra vez el botón de play.
+
+@strong{Ejemplo}. Estos comandos muestran la trayectoria de una bola
+lanzada con velocidad inicial de 5 m/s, a un ángulo de 45 grados, cuando
+se puede ignorar la resistencia del aire:
 
 @example
-(%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
-(%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
-(%i8) evolution2d([f,g],[-0.5,0],50000,[pointsize,0.7]);
+(%i1) p: makelist ([0,4*t,4*t- 9.8*t^2/2], t, 0, 0.82, 0.01)$
+
+(%i2) bola: [sphere, [radius,0.1], [color,red], [track,p]]$
+
+(%i3) piso: [cube, [xlength,2], [ylength,4], [zlength,0.2],
+      [position,0,1.5,-0.2],[color,green]]$
+
+(%i4) scene (bola, piso)$
 @end example
 
-@ifnotinfo
-@image{../figures/dynamics5,8cm}
-@end ifnotinfo
+Consulte también @mxrefdot{objeto_animation,animation}
 
-Y una ampliación de una pequeña región en el fractal:
+@end defvr
 
-@example
-(%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
-                  [ycenter,-0.3],[xradius,0.1],[yradius,0.1]);
-@end example
+@anchor{objeto_xlength}
+@defvr {Opción de objeto} xlength [xlength, @var{altura}]
+Valor predefinido: @code{1}
 
-@ifnotinfo
-@image{../figures/dynamics6,8cm}
-@end ifnotinfo
+Altura de un objeto de clase ``cube'', en la dirección x. @var{altura}
+debe ser un número positivo. Consulte también
+@mxref{objeto_ylength,ylength} y @mxrefdot{objeto_zlength,zlength}
 
-Una gráfica del triangulo de Sierpinsky, obtenida con el juego del caos:
+@end defvr
 
-@example
-(%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
-                 30000, [pointsize,0.7]);
-@end example
+@anchor{objeto_ylength}
+@defvr {Opción de objeto} ylength [ylength, @var{altura}]
+Valor predefinido: @code{1}
 
-@ifnotinfo
-@image{../figures/dynamics7,8cm}
-@end ifnotinfo
+Altura de un objeto de clase ``cube'', en la dirección y. @var{altura}
+debe ser un número positivo. Consulte también
+@mxref{objeto_xlength,xlength} y @mxrefdot{objeto_zlength,zlength}
 
-El helecho de Barnsley, obtenido con el Sistema de Funciones Iteradas:
+@end defvr
 
-@example
-(%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
-(%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
-(%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
-(%i13) a4: matrix([0,0],[0,0.16])$
-(%i14) p1: [0,1.6]$
-(%i15) p2: [0,1.6]$
-(%i16) p3: [0,0.44]$
-(%i17) p4: [0,0]$
-(%i18) w: [85,92,99,100]$
-(%i19) ifs(w,[a1,a2,a3,a4],[p1,p2,p3,p4],[5,0],50000,[pointsize,0.9]);
-@end example
+@anchor{objeto_zlength}
+@defvr {Opción de objeto} zlength [zlength, @var{altura}]
+Valor predefinido: @code{1}
 
-@ifnotinfo
-@image{../figures/dynamics8,8cm}
-@end ifnotinfo
+Altura de un objeto de clase ``cube'', en la dirección z. @var{altura}
+debe ser un número positivo. Consulte también
+@mxref{objeto_xlength,xlength} y @mxrefdot{objeto_ylength,ylength}
 
-Para crear un fichero llamado @emph{dinamica9.xpm} con la
-representación gráfica del conjunto de Mandelbrot, con 12 colores,
-use el comando:
+@end defvr
 
-@example
-mandelbrot([filename,"dinamica9"])$
-@end example
+@anchor{objeto_wireframe}
+@defvr {Opción de objeto} wireframe  [wireframe]
 
-y el conjunto de Julia del número (-0.55 + i 0.6) puede ser obtenido con:
-@example
-julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
-      [hue, 240], [huerange, -180], [filename, "dinamica10"])$
-@end example
+Esta opción hace que en vez de que se muestre la superficie, se muestren
+únicamente las aristas de la triangulación usada para construir la
+superficie. @strong{Ejemplo}: @code{[cube, [wireframe]]}
 
-la gráfica se guardará en el fichero @emph{dinamica10.xpm} y
-mostrará la región desde -0.3 hasta 0.3 en la dirección x, y desde
-0.3 hasta 0.9 en la dirección y. Serán usados 36 colores, comenzando
-con azul e terminando con amarillo.
+Consulte también @mxref{objeto_surface,surface} y
+@mxrefdot{objeto_points,points}
 
-Para resolver numéricamente la ecuación diferencial
-
-@ifnottex
-@example
-          dx/dt = t - x^2
-@end example
-@end ifnottex
-@tex
-$${{dx}\over{dt}} = t - x^2$$ 
-@end tex
-
-Con valor inicial x(t=0) = 1, en el intervalo de t desde 0 hasta 8, y
-con incrementos de 0.1, se usa:
-
-@example
-(%i20) resultados: rk(t-x^2,x,1,[t,0,8,0.1])$
-@end example
-
-los resultados quedarán guardados en la lista resultados.
-
-Para resolver numéricamente el sistema:
-
-@ifnottex
-@example
-        dx/dt = 4-x^2-4*y^2     dy/dt = y^2-x^2+1
-@end example
-@end ifnottex
-@tex
-$$\cases{{\displaystyle{dx}\over\displaystyle{dt}} = 4-x^2-4y^2 &\cr &\cr {\displaystyle{dy}\over\displaystyle{dt}} = y^2-x^2+1}$$
-@end tex
-
-para t entre 0 y 4, con valores iniciales -1.25 y 0.75 para (x, y) en t=0:
-
-@example
-(%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
-@end example
-
+@end defvr

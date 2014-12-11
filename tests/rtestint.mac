@@ -1453,6 +1453,10 @@ integrate( erf(x+a)-erf(x-a), x, minf, inf);
 integrate(cos(3*x)/(5-4*cos(x)),x,0,2*%pi);
 %pi/12;
 
+/* #2575 Integration error: integrate(sqrt(k-k*cos(2*x)), x) */
+integrate(sqrt(cos(x)+1), x, -%pi, %pi);
+2^(5/2);
+
 /* #2776 Error when integrate sqrt */
 integrate ((1+exp(t))/sqrt(t+exp(t)), t, 0, 1);
 2*sqrt(%e+1)-2;

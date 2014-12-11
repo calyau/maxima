@@ -57,14 +57,14 @@ figurefiles = \
 figures/introduction1.gif\
 figures/introduction2.gif\
 figures/introduction3.gif\
-figures/dynamics1.gif\
-figures/dynamics2.gif\
-figures/dynamics3.gif\
-figures/dynamics4.gif\
-figures/dynamics5.gif\
-figures/dynamics6.gif\
-figures/dynamics7.gif\
-figures/dynamics8.gif\
+figures/dynamics1.png\
+figures/dynamics2.png\
+figures/dynamics3.png\
+figures/dynamics4.png\
+figures/dynamics5.png\
+figures/dynamics6.png\
+figures/dynamics7.png\
+figures/dynamics8.png\
 figures/plotdf1.gif\
 figures/plotdf2.gif\
 figures/plotdf3.gif\
@@ -282,7 +282,7 @@ endif
 
 EXTRA_DIST = texi2html manual.css texi2html.init \
     $(genericdirDATA) $(pdffigures) \
-    create_index maxima-index.lisp pt/maxima.macros.texi \
+    create_index maxima-index.lisp  \
     extract_categories1.awk  extract_categories1.sed  extract_categories.sh
 
 check_texinfo:
