@@ -1467,14 +1467,14 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;
 ;; split 4*n*T:
 ;;
-;; summands T[0] = 1, T[i]/T[i-1] = (2*i−1)^3/(32*i*n^2)
+;; summands T[0] = 1, T[i]/T[i-1] = (2*i-1)^3/(32*i*n^2)
 ;; 
 ;;        p[0]*p[1]*p[2]*..*p[i]
 ;; T[i] = ----------------------
 ;;        q[0]*q[1]*q[2]*..*q[i]
 ;; 
 ;;  where p[0] = q[0] = 1
-;;        p[i] = (2*i−1)^3
+;;        p[i] = (2*i-1)^3
 ;;        q[i] = 32*i*n^2
 ;;
 (defun split-gamma-2 (i j n2*32) 
