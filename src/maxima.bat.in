@@ -138,7 +138,7 @@ if exist "%maxima_imagesdir%\binary-sbcl\maxima.exe" goto dosbcl_exec
 if "%MAXIMA_SIGNALS_THREAD%" == "" (
   set start_maxima="(cl-user::run)"
 ) else ( 
-  set start_maxima="(blockn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
+  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
 sbcl.exe --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform --end-runtime-options --eval %start_maxima% --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
@@ -150,7 +150,7 @@ goto end
 if "%MAXIMA_SIGNALS_THREAD%" == "" (
   set start_maxima="(cl-user::run)"
 ) else ( 
-  set start_maxima="(blockn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
+  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
 wx86cl -I %maxima_image_base%.image -e %start_maxima% -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
