@@ -1077,21 +1077,21 @@ admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
 src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
-doc/info/de/Makefile doc/info/de.utf8/Makefile \
-doc/info/es/Makefile doc/info/es.utf8/Makefile \
-doc/info/pt/Makefile doc/info/pt/include-maxima.texi doc/info/pt.utf8/Makefile \
+doc/info/de/Makefile \
+doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
+doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
+doc/info/pt/include-maxima.texi \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \
 doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/maxima.1 \
-doc/share/Makefile \
-interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile \
-interfaces/emacs/imaxima/Makefile \
+doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile \
+interfaces/emacs/emaxima/Makefile interfaces/emacs/imaxima/Makefile \
 interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile \
 interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl \
 interfaces/xmaxima/doc/Makefile interfaces/xmaxima/doc/figures/Makefile \
 interfaces/xmaxima/msgs/Makefile interfaces/xmaxima/win32/Makefile \
 plotting/mgnuplot share/Makefile demo/Makefile plotting/Makefile locale/Makefile \
 share/contrib/Makefile share/contrib/integration/Makefile \
-share/draw/Makefile share/logic/Makefile \
+share/draw/Makefile share/logic/Makefile  doc/info/es/include-maxima.texi \
 src/lisp)
 
 echo

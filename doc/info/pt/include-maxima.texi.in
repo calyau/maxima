@@ -74,7 +74,7 @@ Villate (@code{villate arroba fe.up.pt}).
 @node Top, Introdução ao Maxima, (dir), (dir)
 @top
 
-@i{Maxima é um Sistema de Computação Algébrica, programado em Lisp.}
+@emph{Maxima é um Sistema de Computação Algébrica, programado em Lisp.}
 
 Maxima derivou-se do sistema Macsyma, desenvolvido no MIT entre 1968 e
 1982, como parte do Projecto MAC. O MIT transferiu uma cópia do código
@@ -100,11 +100,11 @@ Infraestrutura do Maxima
 * Ajuda::                       Obtenção de ajuda no Maxima.
 * Linha de Comandos::           Sintaxe da linha de comandos do Maxima.
 * Operadores::                  Operadores usados em expressões do Maxima.
-* Expressões::                Expressões no Maxima.
-* Simplificação::         Simplificação de expressões.
-* Criação de Gráficos:: Gráficos em 2D e 3D.
-* Entrada e Saída::           Entrada e saída de ficheiros.
-* Ponto Flutuante::  Rotinas numéricas de baixo nível.
+* Expressões::                  Expressões no Maxima.
+* Simplificação::               Simplificação de expressões.
+* Criação de Gráficos::         Gráficos em 2D e 3D.
+* Entrada e Saída::             Entrada e saída de ficheiros.
+* Ponto Flutuante::             Rotinas numéricas de baixo nível.
 * Contextos::                   Conjunto de regras assumidas.
 
 Suporte a áreas específicas da matemática
@@ -150,7 +150,7 @@ Pacotes Adicionais
 * descriptive::                 Estatística descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribuições de probabilidade.
-* dynamics::                    Gráficos para sistemas dinâmicos e fractais.
+* dynamics::                    Visualização 3D, animações e sistemas dinâmicos.
 * eval_string::                 Expressões do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o Fortran.
 * ggf::                         Função geradora para sequências.
@@ -417,8 +417,9 @@ distrib
 
 dynamics
 
-* Introdução a dynamics::
-* Definições para dynamics::
+* O pacote dynamics::
+* Análise gráfica de sistemas dinâmicos discretos::
+* Visualização usando VTK::
 
 eval_string
 

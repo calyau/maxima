@@ -1,12 +1,13 @@
 @c Language: Portuguese
 @c Source: dynamics.texi (en) 1.10
 @menu
-* Introdução a dynamics::
-* Definições para dynamics::
+* O pacote dynamics::
+* Análise gráfica de sistemas dinâmicos discretos::
+* Visualização usando VTK::
 @end menu
 
-@node Introdução a dynamics, Definições para dynamics, dynamics, dynamics
-@section Introdução a dynamics
+@node O pacote dynamics, Análise gráfica de sistemas dinâmicos discretos, dynamics, dynamics
+@section O pacote dynamics
 
 O pacote adicional @code{dynamics} inclui várias
 funções para criar diversas
@@ -20,8 +21,8 @@ primeiro que tudo carregá-lo com @code{load("dynamics")}; as
 funções que criam gráficos precisam que o Xmaxima
 esteja instalado.
 
-@node Definições para dynamics,  , Introdução a dynamics, dynamics
-@section Definições para dynamics
+@node Análise gráfica de sistemas dinâmicos discretos, Visualização usando VTK, O pacote dynamics, dynamics
+@section Análise gráfica de sistemas dinâmicos discretos
 
 @deffn {Função} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opções...);
 
@@ -386,3 +387,11 @@ para t entre 0 e 4, com valores iniciais -1.25 e 0.75 para (x, y) em t=0:
 (%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
 @end example
 
+@node Visualização usando VTK,  , Análise gráfica de sistemas dinâmicos discretos, dynamics
+@section Visualização usando VTK
+
+A função scene cria imagens a três dimensões e animações, usando o
+software @emph{Visualization ToolKit} (VTK). Para poder usar essa função
+é necessário ter Xmaxima e VTK instalados no sistema (incluindo a
+libraria para utilizar VTK desde TCL, que pode vir num pacote separado
+em alguns sistemas). 

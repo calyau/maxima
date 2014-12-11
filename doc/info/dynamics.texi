@@ -12,7 +12,7 @@ animations, graphical analysis of differential and difference equations
 and numerical solution of differential equations. The functions for
 differential equations are described in the section on @mxref{Numerical,
 Numerical Methods} and the functions to plot the Mandelbrot and Julia
-sets are described in the section on @mrefdot{Plotting}.
+sets are described in the section on @mrefdot{Plotting}
 
 All the functions in this package will be loaded automatically the first
 time they are used.
@@ -44,7 +44,7 @@ same as for @mrefdot{plot2d}
 @end example
 
 @ifnotinfo
-@image{figures/dynamics7,8cm}
+@figure{dynamics7}
 @end ifnotinfo
 
 @opencatbox
@@ -74,13 +74,14 @@ expression that depends only on one variable (in the example, it
 depend on @var{y}, but any other variable can be used),
 @var{y0} must be a real number and @var{n} must be a positive integer.
  This function accepts the same options as @mrefdot{plot2d}
+
 @strong{Example}.
 
 @example
 (%i1) evolution(cos(y), 2, 11);
 @end example
 @ifnotinfo
-@image{figures/dynamics1,8cm}
+@figure{dynamics1}
 @end ifnotinfo
 
 
@@ -119,7 +120,7 @@ same as for @mrefdot{plot2d}
 @end example
 
 @ifnotinfo
-@image{figures/dynamics5,8cm}
+@figure{dynamics5}
 @end ifnotinfo
 
 And an enlargement of a small region in that fractal:
@@ -130,7 +131,7 @@ And an enlargement of a small region in that fractal:
 @end example
 
 @ifnotinfo
-@image{figures/dynamics6,8cm}
+@figure{dynamics6}
 @end ifnotinfo
 
 @opencatbox
@@ -171,7 +172,7 @@ options are the same as for @mrefdot{plot2d}
 @end example
 
 @ifnotinfo
-@image{figures/dynamics8,8cm}
+@figure{dynamics8}
 @end ifnotinfo
 
 @opencatbox
@@ -208,7 +209,7 @@ in the vertical direction.
 @end example
 
 @ifnotinfo
-@image{figures/dynamics3,8cm}
+@figure{dynamics3}
 @end ifnotinfo
 
 To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
@@ -218,7 +219,7 @@ To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @end example
 
 @ifnotinfo
-@image{figures/dynamics4,8cm}
+@figure{dynamics4}
 @end ifnotinfo
 
 @opencatbox
@@ -257,7 +258,7 @@ reached. The options are the same as for @mrefdot{plot2d}
 (%i1) staircase(cos(y), 1, 11, [y, 0, 1.2]);
 @end example
 @ifnotinfo
-@image{figures/dynamics2,8cm}
+@figure{dynamics2}
 @end ifnotinfo
 
 @opencatbox
@@ -265,7 +266,6 @@ reached. The options are the same as for @mrefdot{plot2d}
 @closecatbox
 
 @end deffn
-
 
 @node Visualization with VTK, , Graphical analysis of discrete dynamical systems, dynamics
 @section Visualization with VTK
@@ -356,18 +356,6 @@ option of plot2d.
 @anchor{scene_options}
 @subsection Scene options
 
-@anchor{scene_background}
-@defvr {Scene option} background [background, @var{color}]
-Default value: @code{black}
-
-The color of the graphics window's background. It accepts color names or
-hexadecimal red-green-blue strings (see the @mref{color} option of plot2d).
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
 @anchor{scene_azimuth}
 @defvr {Scene option} azimuth [azimuth, @var{angle}]
 Default value: @code{135}
@@ -375,6 +363,18 @@ Default value: @code{135}
 The rotation of the camera on the horizontal (x, y) plane. @var{angle}
 must be a real number; an angle of 0 means that the camera points in the
 direction of the y axis and the x axis will appear on the right.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{scene_background}
+@defvr {Scene option} background [background, @var{color}]
+Default value: @code{black}
+
+The color of the graphics window's background. It accepts color names or
+hexadecimal red-green-blue strings (see the @mref{color} option of plot2d).
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -395,36 +395,12 @@ down from the horizontal.
 @closecatbox
 @end defvr
 
-@anchor{scene_width}
-@defvr {Scene option} width [width, @var{pixels}]
-Default value: @code{500}
-
-The width, in pixels, of the graphics window. @var{pixels} must be a
-positive integer number.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
 @anchor{scene_height}
 @defvr {Scene option} height [height, @var{pixels}]
 Default value: @code{500}
 
 The height, in pixels, of the graphics window. @var{pixels} must be a
 positive integer number.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{scene_tstep}
-@defvr {Scene option} tstep [tstep, @var{time}]
-Default value: @code{10}
-
-The amount of time, in mili-seconds, between iterations among
-consecutive animation frames. @var{time} must be a real number.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -444,18 +420,29 @@ end of the list is reached. Writing just ``restart'' is equivalent to
 @closecatbox
 @end defvr
 
-@anchor{scene_windowtitle}
-@defvr {Scene option} windowtitle [windowtitle, @var{name}]
-Default value: @code{Xmaxima: scene}
+@anchor{scene_tstep}
+@defvr {Scene option} tstep [tstep, @var{time}]
+Default value: @code{10}
 
-@var{name} must be a string that will be written in the title of the
-window created by @code{scene}.
+The amount of time, in mili-seconds, between iterations among
+consecutive animation frames. @var{time} must be a real number.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
 @end defvr
 
+@anchor{scene_width}
+@defvr {Scene option} width [width, @var{pixels}]
+Default value: @code{500}
+
+The width, in pixels, of the graphics window. @var{pixels} must be a
+positive integer number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
 
 @anchor{scene_windowname}
 @defvr {Scene option} windowname [windowtitle, @var{name}]
@@ -470,11 +457,23 @@ value @code{.scene} implies that a new top level window will be created.
 @closecatbox
 @end defvr
 
+@anchor{scene_windowtitle}
+@defvr {Scene option} windowtitle [windowtitle, @var{name}]
+Default value: @code{Xmaxima: scene}
+
+@var{name} must be a string that will be written in the title of the
+window created by @code{scene}.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
 @anchor{scene_objects}
 @subsection Scene objects
 
 @anchor{cone}
-@defvr {Object option} cone [cone, @var{options}]
+@defvr {Scene object} cone [cone, @var{options}]
 
 Creates a regular pyramid with height equal to 1 and a hexagonal base
 with vertices 0.5 units away from the axis. Options
@@ -500,28 +499,8 @@ axis when the play button is pressed.
 @closecatbox
 @end defvr
 
-@anchor{cylinder}
-@defvr {Object option} cylinder [cylinder, @var{options}]
-
-Creates a regular prism with height equal to 1 and a hexagonal base with
-vertices 0.5 units away from the axis. Options
-@mxref{object_height,height} and @mxref{object_radius,radius} can be
-used to change those defaults and option @mxref{object_resolution,
-resolution} can be used to change the number of edges of the base;
-higher values will make it look like a cylinder. The default height can
-be changed with the option @mxref{object_height,height}. By default, the
-axis will be along the x axis, the middle point of the axis will be at
-the origin and the vertex on the positive side of the x axis; use
-options @mxref{object_orientation,orientation} and
-@mxref{object_center,center} to change those defaults.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
 @anchor{cube}
-@defvr {Object option} cube [cube, @var{options}]
+@defvr {Scene object} cube [cube, @var{options}]
 
 A cube with edges of 1 unit and faces parallel to the xy, xz and yz
 planes. The lengths of the three edges can be changed with options
@@ -534,8 +513,27 @@ the faces can be rotated with option @mxrefdot{object_orientation,orientation}
 @closecatbox
 @end defvr
 
+@anchor{cylinder}
+@defvr {Scene object} cylinder [cylinder, @var{options}]
+
+Creates a regular prism with height equal to 1 and a hexagonal base with
+vertices 0.5 units away from the axis. Options
+@mxref{object_height,height} and @mxref{object_radius,radius} can be
+used to change those defaults and option @mxref{object_resolution,
+resolution} can be used to change the number of edges of the base;
+higher values will make it look like a cylinder. The default height can
+be changed with the option @mxrefdot{object_height,height} By default,
+the axis will be along the x axis and the middle point of the axis will
+be at the origin; use options @mxref{object_orientation,orientation} and
+@mxref{object_center,center} to change those defaults.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
 @anchor{sphere}
-@defvr {Object option} sphere [sphere, @var{options}]
+@defvr {Scene object} sphere [sphere, @var{options}]
 
 A sphere with default radius of 0.5 units and center at the origin. 
 
@@ -547,13 +545,34 @@ A sphere with default radius of 0.5 units and center at the origin.
 @anchor{object_options}
 @subsection Scene object's options
 
-@anchor{object_position}
-@defvr {Object option} position [position, @var{point}]
-Default value: @code{[0, 0, 0]}
+@anchor{object_animation}
+@defvr {Object option} animation [animation, @var{property}, @var{positions}]
 
-The coordinates of the object's position. @var{point} can be a list with 3
-real numbers, or 3 real numbers separated by commas.
+@var{property} should be one of the following 4 object's properties:
+@mxrefcomma{object_origin,origin} @mxrefcomma{object_scale,scale}
+@mxref{object_position,position} or
+@mxref{object_orientation,orientation} and @var{positions} should be a
+list of points. When the play button is pressed, the object property
+will be changed sequentially through all the values in the list, at
+intervals of time given by the option @mxrefdot{scene_tstep,tstep} The
+rewind button can be used to point at the start of the sequence making
+the animation restart after the play button is pressed again.
 
+See also @mxrefdot{object_track,track}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_capping}
+@defvr {Object option} capping [capping, @var{number}]
+Default value: @code{1}
+
+In a cone or a cylinder, it defines whether the base (or bases) will be
+shown. A value of 1 for @var{number} makes the base visible and a value
+of 0 makes it invisible.
+ 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
@@ -573,26 +592,49 @@ or cube it will be at half its height and in a sphere at its center.
 @closecatbox
 @end defvr
 
-@anchor{object_origin}
-@defvr {Object option} origin [origin, @var{point}]
-Default value: @code{[0, 0, 0]}
+@anchor{object_color}
+@defvr {Object option} color [color, @var{colorname}]
+Default value: @code{white}
 
-The coordinates of the object's origin, with respect to which its
-other dimensions are defined. @var{point} can be a list with 3
-real numbers, or 3 real numbers separated by commas.
+The color of the object. It accepts color names or hexadecimal
+red-green-blue strings (see the @mref{color} option of plot2d).
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
 @end defvr
 
-@anchor{object_resolution}
-@defvr {Object option} resolution [resolution, @var{number}]
-Default value: @code{6}
+@anchor{object_endphi}
+@defvr {Object option} endphi [endphi, @var{angle}]
+Default value: @code{180}
 
-@var{number} must be a integer greater than 2 that sets the number of
-edges in the base of a cone or a cylinder.
- 
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the final value of phi at
+which the surface will end. A value smaller than 180 will eliminate a
+part of the sphere's surface.
+
+See also @mxref{object_startphi,startphi} and
+@mxrefdot{object_phiresolution,phiresolution}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_endtheta}
+@defvr {Object option} endtheta [endtheta, @var{angle}]
+Default value: @code{360}
+
+In a sphere theta is the angle on the horizontal plane (longitude),
+measured from the positive part of the x axis. @var{angle} must be a
+number between 0 and 360 that sets the final value of theta at which the
+surface will end. A value smaller than 360 will eliminate a part of
+the sphere's surface.
+
+See also @mxref{object_starttheta,starttheta} and
+@mxrefdot{object_thetaresolution,thetaresolution}
+
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
@@ -610,45 +652,25 @@ or a cylinder.
 @closecatbox
 @end defvr
 
-@anchor{object_radius}
-@defvr {Object option} radius [radius, @var{value}]
-Default value: @code{0.5}
+@anchor{object_linewidth}
+@defvr {Object option} linewidth [linewidth, @var{value}]
+Default value: @code{1}
 
-The radius or a sphere or the distance from the axis to the vertices in
-a cylinder or a cone. @var{value} must be a positive number.
+The width of the lines, when option @mxref{object_wireframe,wireframe} is
+used. @var{value} must be a positive number.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
 @end defvr
 
-@anchor{object_xlength}
-@defvr {Object option} xlength [xlength, @var{length}]
+@anchor{object_opacity}
+@defvr {Object option} opacity [opacity, @var{value}]
 Default value: @code{1}
 
-The height of a cube in the x direction. @var{length} must be a positive number.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_ylength}
-@defvr {Object option} ylength [ylength, @var{length}]
-Default value: @code{1}
-
-The height of a cube in the y direction. @var{length} must be a positive number.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_zlength}
-@defvr {Object option} zlength [zlength, @var{length}]
-Default value: @code{1}
-
-The height of a cube in z the direction. @var{length} must be a positive number.
+@var{value} must be a number between 0 and 1. The lower the number, the
+more transparent the object will become. The default value of 1 means a
+completely opaque object.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -664,6 +686,97 @@ three axis. @var{angles} can be a list with 3 real numbers, or 3 real
 numbers separated by commas. @strong{Example}: @code{[0, 0, 90]} rotates
 the x axis of the object to the y axis of the reference frame.
 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_origin}
+@defvr {Object option} origin [origin, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's origin, with respect to which its
+other dimensions are defined. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_phiresolution}
+@defvr {Object option} phiresolution [phiresolution, @var{num}]
+Default value: @code{}
+
+The number of sub-intervals into which the phi angle interval from
+@mxref{object_startphi,startphi} to @mxref{object_endphi,endphi}
+will be divided. @var{num} must be a positive integer.
+
+See also @mxref{object_startphi,startphi} and
+@mxrefdot{object_endphi,endphi}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_points}
+@defvr {Object option} points  [points]
+
+Only the vertices of the triangulation used to render the surface will
+be shown. @strong{Example}: @code{[sphere, [points]]}
+
+See also @mxref{object_surface,surface} and
+@mxrefdot{object_wireframe,wireframe}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_pointsize}
+@defvr {Object option} pointsize [pointsize, @var{value}]
+Default value: @code{1}
+
+The size of the points, when option @mxref{object_points,points} is
+used. @var{value} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_position}
+@defvr {Object option} position [position, @var{point}]
+Default value: @code{[0, 0, 0]}
+
+The coordinates of the object's position. @var{point} can be a list with 3
+real numbers, or 3 real numbers separated by commas.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_radius}
+@defvr {Object option} radius [radius, @var{value}]
+Default value: @code{0.5}
+
+The radius or a sphere or the distance from the axis to the base's
+vertices in a cylinder or a cone. @var{value} must be a positive number.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_resolution}
+@defvr {Object option} resolution [resolution, @var{number}]
+Default value: @code{6}
+
+@var{number} must be a integer greater than 2 that sets the number of
+edges in the base of a cone or a cylinder.
+ 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
@@ -685,6 +798,24 @@ unchanged.
 @closecatbox
 @end defvr
 
+@anchor{object_startphi}
+@defvr {Object option} startphi [startphi, @var{angle}]
+Default value: @code{0}
+
+In a sphere phi is the angle on the vertical plane that passes through
+the z axis, measured from the positive part of the z axis. @var{angle}
+must be a number between 0 and 180 that sets the initial value of phi at
+which the surface will start. A value bigger than 0 will eliminate a
+part of the sphere's surface.
+
+See also @mxref{object_endphi,endphi} and
+@mxrefdot{object_phiresolution,phiresolution}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
 @anchor{object_starttheta}
 @defvr {Object option} starttheta [starttheta, @var{angle}]
 Default value: @code{0}
@@ -695,20 +826,21 @@ number between 0 and 360 that sets the initial value of theta at which
 the surface will start. A value bigger than 0 will eliminate a part of
 the sphere's surface.
 
+See also @mxref{object_endtheta,endtheta} and
+@mxrefdot{object_thetaresolution,thetaresolution}
+
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
 @end defvr
 
-@anchor{object_endtheta}
-@defvr {Object option} endtheta [endtheta, @var{angle}]
-Default value: @code{360}
+@anchor{object_surface}
+@defvr {Object option} surface [surface]
 
-In a sphere theta is the angle on the horizontal plane (longitude),
-measured from the positive part of the x axis. @var{angle} must be a
-number between 0 and 360 that sets the final value of theta at which the
-surface will start. A value smaller than 360 will eliminate a part of
-the sphere's surface.
+The surfaces of the object will be rendered and the lines and points of
+the triangulation used to build the surface will not be shown. This is
+the default behavior, which can be changed using either the option
+@mxref{object_points,points} or @mxrefdot{object_wireframe,wireframe}
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -723,106 +855,8 @@ The number of sub-intervals into which the theta angle interval from
 @mxref{object_starttheta,starttheta} to @mxref{object_endtheta,endtheta}
 will be divided. @var{num} must be a positive integer.
 
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_startphi}
-@defvr {Object option} startphi [startphi, @var{angle}]
-Default value: @code{0}
-
-In a sphere phi is the angle on the vertical plane that passes through
-the z axis, measured from the positive part of the z axis. @var{angle}
-must be a number between 0 and 180 that sets the initial value of phi at
-which the surface will start. A value bigger than 0 will eliminate a
-part of the sphere's surface.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_endphi}
-@defvr {Object option} endphi [endphi, @var{angle}]
-Default value: @code{180}
-
-In a sphere phi is the angle on the vertical plane that passes through
-the z axis, measured from the positive part of the z axis. @var{angle}
-must be a number between 0 and 180 that sets the initial value of phi at
-which the surface will start. A value smaller than 180 will eliminate a
-part of the sphere's surface.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_phiresolution}
-@defvr {Object option} phiresolution [phiresolution, @var{num}]
-Default value: @code{}
-
-The number of sub-intervals into which the phi angle interval from
-@mxref{object_startphi,starttheta} to @mxref{object_endphi,endphi}
-will be divided. @var{num} must be a positive integer.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_color}
-@defvr {Object option} color [color, @var{colorname}]
-Default value: @code{white}
-
-The color of the object. It accepts color names or hexadecimal
-red-green-blue strings (see the @mref{color} option of plot2d).
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_capping}
-@defvr {Object option} capping [capping, @var{number}]
-Default value: @code{1}
-
-In a cone or a cylinder, it defines whether the base (or bases) will be
-shown. A value of 1 for @var{number} makes the base visible and a value
-of 0 makes it invisible.
- 
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_surface}
-@defvr {Object option} surface [surface]
-
-The surfaces of the object will be rendered. This is the default
-behavior.
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_wireframe}
-@defvr {Object option} wireframe  [wireframe]
-
-Only the edges of the triangulation used to render the surface will be
-shown. @strong{Example}: @code{[cube, [wireframe]]}
-
-@opencatbox
-@category{Package dynamics} @category{Plotting}
-@closecatbox
-@end defvr
-
-@anchor{object_points}
-@defvr {Object option} points  [points]
-
-Only the vertices of the triangulation used to render the surface will
-be shown. @strong{Example}: @code{[sphere, [points]]}
+See also @mxref{object_starttheta,starttheta} and
+@mxrefdot{object_endtheta,endtheta}
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -855,23 +889,61 @@ be neglected:
 (%i4) scene (ball, ground)$
 @end example
 
+See also @mxrefdot{object_animation,animation}
+
+
 @opencatbox
 @category{Package dynamics} @category{Plotting}
 @closecatbox
 @end defvr
 
-@anchor{object_animation}
-@defvr {Object option} animation [animation, @var{property}, @var{positions}]
+@anchor{object_xlength}
+@defvr {Object option} xlength [xlength, @var{length}]
+Default value: @code{1}
 
-@var{property} should be one of the following 4 object's properties:
-@mxrefcomma{object_origin,origin} @mxrefcomma{object_scale,scale}
-@mxref{object_position,position} or
-@mxref{object_orientation,orientation} and @var{positions} should be a
-list of points. When the play button is pressed, the object property
-will be changed sequentially through all the values in the list, at
-intervals of time given by the option @mxref{scene_tstep,tstep}. The
-rewind button can be used to point at the start of the sequence making
-the animation restart after the play button is pressed again.
+The height of a cube in the x direction. @var{length} must be a positive
+number. See also @mxref{object_ylength,ylength} and
+@mxrefdot{object_zlength,zlength}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_ylength}
+@defvr {Object option} ylength [ylength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in the y direction. @var{length} must be a positive
+number. See also @mxref{object_xlength,xlength} and
+@mxrefdot{object_zlength,zlength}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_zlength}
+@defvr {Object option} zlength [zlength, @var{length}]
+Default value: @code{1}
+
+The height of a cube in z the direction. @var{length} must be a positive
+ number.  See also @mxref{object_xlength,xlength} and
+ @mxrefdot{object_ylength,ylength}
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+@end defvr
+
+@anchor{object_wireframe}
+@defvr {Object option} wireframe  [wireframe]
+
+Only the edges of the triangulation used to render the surface will be
+shown. @strong{Example}: @code{[cube, [wireframe]]}
+
+See also @mxref{object_surface,surface} and
+@mxrefdot{object_points,points}
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
