@@ -4,15 +4,9 @@
  * GNU General Public License.
  */
 
-/*
 qput (ezunits, "experimental, usable", version);
 
 load ("ezunits.lisp");
 load ("ezunits_functions.mac");
 load ("ezunits_db.mac");
-*/
-
-block(
-  print("EZUNITS package is not supported!"),
-  false)$
   
