@@ -1427,12 +1427,38 @@ ignoring dummy variables and array indices."
     (desetq (const . (n . d)) (remove-singularities n d))
     (setq const (m* const (m// nconst dconst)))
     (simpinf
-     (cond (ind (let ((ans (limit2 n d var val)))
-		  (if ans (m* const ans))))
-	   (t (let ((ans (limit
-			  ($multthru (sratsimp (m// n d)))
-			  var val 'think)))
-		(if ans (m* const ans))))))))
+     (let ((ans (if ind
+                    (limit2 n d var val)
+                    (limit-numden n d val))))
+
+       ;; When the limit function returns, it's possible that it will return NIL
+       ;; (gave up without finding a limit). It's also possible that it will
+       ;; return something containing UND. We treat that as a failure too.
+       (when (and ans (freeof '$und ans))
+         (m* const ans))))))
+
+;; Try to compute the limit of a quotient NUM/DEN, trying to massage the input
+;; into a convenient form for LIMIT on the way.
+(defun limit-numden (n d val)
+  (let ((expr (cond
+                ;; For general arguments, the best approach seems to be to use
+                ;; sratsimp to simplify the quotient as much as we can, then
+                ;; $multthru, which splits it up into a sum (presumably useful
+                ;; because limit(a+b) = limit(a) + limit(b) if the limits exist, and
+                ;; the right hand side might be easier to calculate)
+                ((not (mplusp n))
+                 ($multthru (sratsimp (m// n d))))
+
+                ;; If we've already got a sum in the numerator, it seems to be
+                ;; better not to recombine it. Call LIMIT on the whole lot, though,
+                ;; because terms with infinite limits might cancel to give a finite
+                ;; result.
+                (t
+                 (m+l (mapcar #'(lambda (x)
+                                  (sratsimp (m// x d)))
+                              (cdr n)))))))
+
+    (limit expr var val 'think)))
 
 ;; Heuristics for picking the right way to express a LHOSPITAL problem.
 (defun lhop-numden (num denom)
