@@ -637,3 +637,7 @@ limit(x^2*exp(-%i*x - x), x, inf);
 limit(gamma(x+1/2)/(sqrt(x)*gamma(x)), x, inf);
 1;
 
+/* Triggered by #2849. This result isn't great, but it's better than
+   an error. A more useful result would be und. */
+limit (ind * inf);
+ind * inf $

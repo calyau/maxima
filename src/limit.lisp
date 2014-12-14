@@ -322,10 +322,11 @@
 (defun getsignl (z)
   (let ((z (ridofab z)))
     (if (not (free z var)) (setq z ($limit z var val)))
-    (let ((sign ($csign z)))
-      (cond ((eq sign '$pos) 1)
-	    ((eq sign '$neg) -1)
-	    ((eq sign '$zero) 0)))))
+    (let ((*complexsign* t))
+      (let ((sign ($sign z)))
+        (cond ((eq sign '$pos) 1)
+              ((eq sign '$neg) -1)
+              ((eq sign '$zero) 0))))))
 
 (defun restorelim (exp)
   (cond ((null exp) nil)
@@ -416,9 +417,20 @@ ignoring dummy variables and array indices."
     ;; If there's only one infinity, we replace it by a variable and take the
     ;; limit as that variable goes to infinity. Use $gensym in case we can't
     ;; compute the answer and the limit leaks out.
-    (1 (let ((limit (or (inf-typep exp) (epsilon-typep exp)))
-             (var ($gensym)))
-         ($limit (subst var limit exp) var limit)))
+    (1 (let* ((val (or (inf-typep exp) (epsilon-typep exp)))
+              (var ($gensym))
+              (expr (subst var val exp))
+              (limit ($limit expr var val)))
+         (cond
+           ;; Now we look to see whether the computed limit is any simpler than
+           ;; what we shoved in (which we'll define as "doesn't contain EXPR as a
+           ;; subtree"). If so, return it.
+           ((not (subtree-p expr limit :test #'equal))
+            limit)
+
+           ;; Otherwise, return the original form: apparently, we can't compute
+           ;; the limit we needed, and it's uglier than what we started with.
+           (t exp))))
 
     ;; If more than one infinity, we have to be a bit more careful.
     (otherwise

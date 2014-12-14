@@ -92,6 +92,17 @@
 	((atom l) (member l x :test #'eq))
 	(t (or (amongl x (car l)) (amongl x (cdr l)))))) 
 
+;;; Tests to see whether one tree is a subtree of another.
+;;;
+;;; Both arguments should be well-formed cons trees (so no cycles). If supplied,
+;;; TEST is used as an equality predicate.
+
+(defun subtree-p (branch tree &key (test #'eql))
+  (or (funcall test branch tree)
+      (and (not (atom tree))
+           (member branch tree
+                   :test (lambda (x y) (subtree-p x y :test test))))))
+
 ;;; Takes a list in "alist" form and converts it to one in
 ;;; "property list" form, i.e. ((A . B) (C . D)) --> (A B C D).
 ;;; All elements of the list better be conses.
