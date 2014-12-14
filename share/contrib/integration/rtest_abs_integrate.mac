@@ -1,4 +1,4 @@
-(kill(all),load(abs_integrate), load('hypergeometric), load('hyperint), start : elapsed_real_time(), declare(signum,real), 0);
+(kill(all),load("abs_integrate.mac"), load('hypergeometric), load("hyperint.mac"), start : elapsed_real_time(), declare(signum,real), 0);
 0$
 
 /* SF bug #2815: abs_integrate leads to infinite recursion
@@ -28,8 +28,6 @@ integrate(abs(%pi * x + 1),x);
 ((%pi*x+1)*abs(%pi*x+1))/(2*%pi)$
 
 integrate(x*abs(x),x);
-/*(x^3*signum(x))/3$
-  A equivalent result because of rev. 1.63 of sin.lisp */
 x^2*abs(x)/2-x^3*signum(x)/6;
 
 (assume(n > 2), integrate(abs(x) * x^n,x));
@@ -186,7 +184,8 @@ true$
 integrate(abs(x-1) * (x + abs(x-5)),x,-7,9);
 1280/3$
 
-integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
+/* Due to changes in limit (circa 14 December 2014), we need to exclude abs_integrate_use_if*/
+block([extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'floor_int]], integrate(abs(x-1) / (x + abs(x-5)),x,-7,9));
 (3*log(13)+18)/4-(3*log(5)+10)/4+8$
 
 integrate(abs(x-1) / (x + abs(x-5)),x,9,-7) + integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
@@ -202,9 +201,6 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 i : integrate(abs(x-1)/ ( 1 + x^2),x);
-/* (2*signum(x-1)*log(x^2+1)-4*x*signum(x-1)*atan(x)
-     +(%pi-2*log(2))*signum(x-1))/4+abs(x-1)*atan(x)$
-   A equivalent result because of rev. 1.63 of sin.lisp */
 signum(x-1)*(2*log(x^2+1)-4*atan(x)-2*log(2)+%pi)/4
  +abs(x-1)*atan(x)+(2*x-2)*signum(x-1)*atan(x)/-2;
 
@@ -217,8 +213,6 @@ integrate(exp(-abs(x)), x);
 integrate(cos(x + abs(x)),x);
 ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
 
-/* We modify the following example because of revision 1.18 of risch.lisp
- * signum_to_abs(expand(integrate(diff(abs(x) * cos(x),x),x))); */
 signum_to_abs(integrate(diff(abs(x) * cos(x),x),x)), gamma_expand:true;
 cos(x)*abs(x)$
 
@@ -555,6 +549,14 @@ expand(limit(baz,x,kk,plus) - subst(x=kk,baz));
 
 expand(integrate(x*ceiling(x)*floor(x),x));
 -floor(x)^4/8-floor(x)^3/4-floor(x)^2/8+x^2*ceiling(x)*floor(x)/2-ceiling(x)^4/8+ceiling(x)^3/4-ceiling(x)^2/8+1/2$
+
+/* see SF bug 2853*/
+integrate(log(abs(sin(x))),x);
+ x*log(abs(sin(x)))-(x*log(sin(x)^2+cos(x)^2+2*cos(x)+1) +x*log(sin(x)^2+cos(x)^2-2*cos(x)+1)
+                    +2*%i*x*atan2(sin(x),cos(x)+1) -2*%i*x*atan2(sin(x),1-cos(x))-2*%i*li[2](%e^(%i*x))-2*%i*li[2](-%e^(%i*x))-%i*x^2)/2$
+
+integrate(log(abs(sin(x))),x,0,%pi/2);
+(8*%i*li[2](%i)+8*%i*li[2](-%i)-4*%pi*log(2)+%i*%pi^2)/8-%i*%pi^2/12$
 
 (print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 70));
 true$
