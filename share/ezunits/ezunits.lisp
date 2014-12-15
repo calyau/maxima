@@ -43,7 +43,7 @@
 (defun $evens (a) (cons '(mlist) (odds (cdr a) 0)))
 
 (defun mathml-presentation-ezunits (mexpress)
-  (mPr_engine `((mtimes) ,(second mexpress) ,(third mexpress)) 'mparen 'mparen))
+  (funcall 'mPr_engine `((mtimes) ,(second mexpress) ,(third mexpress)) 'mparen 'mparen))
 
 (when (fboundp 'setup)
   (setup '($\` (mPrprocess mathml-presentation-ezunits))))
