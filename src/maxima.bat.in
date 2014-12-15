@@ -101,7 +101,10 @@ if "%lisp%" == "clisp" goto doclisp
 if "%lisp%" == "ecl" goto doecl
 if "%lisp%" == "openmcl" goto doopenmcl
 rem Allow ccl as an alias of openmcl
-if "%lisp%" == "ccl" goto doopenmcl
+if "%lisp%" == "ccl" (
+   set lisp="openmcl"
+   goto doopenmcl
+)
 if "%lisp%" == "sbcl" goto dosbcl
 if "%lisp%" == "openmcl" goto doccl
 
