@@ -41,7 +41,7 @@ block
      
      */
         rtest_odelin,	
-      /*  rtestezunits, */
+      	rtestezunits,
         rtest_numericalio,
         [rtest_simplify_sum, 57],
         rtest_solve_rec,
