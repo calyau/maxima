@@ -32,3 +32,21 @@ block (print ("Please enter 'z' now:"), 0);
 
 [asksign (foo), sign (foo), sign (foo)];
 [zero, zero, zero];
+
+block (print ("Please enter 'p' now:"), 0);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf);
+1;
+
+block (print ("Please enter 'n' now:"), 0);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf);
+-1;
+
+block (print ("Please enter 'z' now:"), 0);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf);
+0;

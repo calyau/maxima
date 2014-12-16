@@ -255,3 +255,6 @@ integrate(1/x,x,a,b);
 if b - a < 0 then integrate(1/x,x,a,b)
   elseif equal(b - a, 0) then integrate(1/x,x,a,b)
   elseif b - a > 0 then integrate(1/x,x,a,b);
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf);
+if a < 0 then -1 elseif equal (a, 0) then 0 elseif a > 0 then 1;
