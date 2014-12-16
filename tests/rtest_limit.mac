@@ -641,3 +641,6 @@ limit(gamma(x+1/2)/(sqrt(x)*gamma(x)), x, inf);
    an error. A more useful result would be und. */
 limit (ind * inf);
 ind * inf $
+
+limit((a*exp(a*x)*sin(b*x))/(b^2+a^2)-(b*exp(a*x)*cos(b*x))/(b^2+a^2), x, 0, plus);
+-(b/(a^2 + b^2));
