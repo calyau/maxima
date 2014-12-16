@@ -3341,7 +3341,12 @@
                (format cmdstorage "~%quit~%~%")
                (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
-             ($system $gnuplot_command gfn))
+	     #+(or (and sbcl win32) (and ccl windows))
+             ($system $gnuplot_command gfn)
+	     #-(or (and sbcl win32) (and ccl windows))
+	     ($system (format nil "~a \"~a\"" 
+			      $gnuplot_command
+			      gfn) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
@@ -3374,10 +3379,20 @@
                         (format nil "load '~a'" gfn)))
                 ; call gnuplot via system command
                 (t
+
+		 #+(or (and sbcl win32) (and ccl windows))
 		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
 		     ($system $gnuplot_command "-persist" gfn)
-		   ($system $gnuplot_command gfn))))))
-
+		     ($system $gnuplot_command gfn))
+		 #-(or (and sbcl win32) (and ccl windows))
+		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+			      (format nil "~a ~a"
+				      $gnuplot_command
+				      (format nil $gnuplot_view_args gfn))
+			      (format nil "~a \"~a\"" 
+				      $gnuplot_command
+				      gfn))) ))))
+		
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )
 

@@ -38,7 +38,6 @@ $(distdir).tar.gz: Makefile.am
 rpm: $(distdir).tar.gz
 	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
 	$(SUDO) rpmbuild -ba maxima.spec
-	$(SUDO) rpmbuild -ba maxima.spec
 
 # windows installer rules
 if WIN32

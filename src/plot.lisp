@@ -1352,7 +1352,14 @@ sin(y)*(10.0+6*cos(x)),
         ($default
          ;; the options given to gnuplot will be different when the user
          ;; redirects the output by using "set output" in the preamble
-         ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file)))
+	 #+(or (and sbcl win32) (and ccl windows))
+	 ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file))
+	 #-(or (and sbcl win32) (and ccl windows))
+	 ($system 
+	  (format nil "~a ~a" $gnuplot_command
+		  (format nil (if (search "set out" gnuplot-preamble) 
+				  $gnuplot_file_args $gnuplot_view_args)
+			  file))))
         ($dumb
          (if out-file
              ($printfile out-file)
@@ -2212,6 +2219,9 @@ sin(y)*(10.0+6*cos(x)),
          ($system (concatenate 'string *maxima-prefix* 
                                (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
                                $xmaxima_plot_command)
+		  #-(or (and sbcl win32) (and ccl windows))
+		  (format nil " ~s &" file)
+		  #+(or (and sbcl win32) (and ccl windows))
 		  file))
         (t (princ ans) "")))
 
