@@ -53,7 +53,7 @@ winkill_lib.dll: winkill_lib.c
 InfoBefore = InfoBefore.txt InfoBefore_ru.txt InfoBefore_fr.txt \
   InfoBefore_de.txt InfoBefore_pt.txt InfoBefore_pt_BR.txt \
   InfoBefore_it.txt InfoBefore_es.txt
-EXTRA_DIST = ChangeLog $(genericdirDATA) $(InfoBefore) tclwinkill.c
+EXTRA_DIST = ChangeLog $(genericdirDATA) $(InfoBefore) winkill.c winkill_lib.c win_signals.lisp
 
 CLEANFILES = 
 if XMAXIMA_EXE
