@@ -1934,6 +1934,7 @@ ignoring dummy variables and array indices."
              (if (or (not sign) (eq sign 'complex))
                  0
                  (ecase (* zf sign)
+                   (0 0)
                    (1  '$zeroa)
                    (-1 '$zerob))))))
       ;; If num=1 (and so denom != 1), we have some form of infinity
