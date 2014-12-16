@@ -17,6 +17,7 @@ xmaxima-local
 maxima-local
 maxima.spec
 maxima*.iss
+Output
 
 maxout.*
 maxima*.tar.gz
