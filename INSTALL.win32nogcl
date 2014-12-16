@@ -1,0 +1,133 @@
+Executive Summary
+=================
+
+Maxima can now be built under Windows without recourse to any
+Unix-like utilities. To do so, follow the purely lisp-based build
+procedure in INSTALL.lisp.
+
+Maxima can be simply compiled and installed under MSYS or Cygwin by
+following the GNU Autotools instructions in INSTALL. With a few more
+steps, Maxima will create a windows installer executable.  The
+instructions for doing so are contained in this file. Note, however,
+that this process is not as polished as the Unix-like install process.
+
+In order to create the Maxima Windows installer from the maxima tarball 
+distribution, I do the following in a MSYS window:
+----------------------------------------------------
+./configure --prefix=c:/maxima \
+    --enable-chm \
+    --enable-xmaxima-exe \
+    --with-hhc=hhc \
+    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
+    --with-ccl=<path-to-ccl>
+make
+make install
+make iss
+----------------------------------------------------
+Then run Inno Setup on the generated maxima.iss file. That is all it
+takes.
+
+
+External Requirements
+=====================
+
+1) MinGW and MSYS
+2) ccl/sbcl
+3) Starkit, TclKit and img.kit
+4) InnoSetup
+5) gnuplot
+6) wxMaxima
+7) Microsoft HTML Help Workshop
+8) Python
+
+Detailed Instructions
+=====================
+
+The instructions below apply to the maxima release tarball. In order
+to build from the cvs repository, cvs, autoconf and automake are also
+required. Follow the directions in INSTALL.cvs before proceeding.
+
+1) Install MinGW and MSYS
+a) Download mingw installer mingw-get-inst from http://www.mingw.org/
+b) Run the installer to install mingw and msys
+c) Use the installed mingw-get to add the build dependencies, including
+   - mingw-gcc
+   - mingw-binutils
+   - mingw-make
+   - mingw32-autotools
+
+2) Install a lisp. Clozure Common Lisp (http://ccl.clozure.com) and
+Steel Bank Common Lisp (http://sbcl.org) are supported. For Clozure
+Common List use at least version 1.7 (version 1.10 does not work). For
+Steel Bank CL use at least version 1.2.
+
+3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>.
+Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>.
+Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from
+<http://www.equi4.com/pub/tk/8.5.2/>.
+
+Install the following four files 
+  sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
+are in C:/programs/star.
+
+Download img.kit from <http://www.tcl.tk/starkits/> and put it in your
+MSYS user home directory in C:/programs/star.
+
+4) Get and install Inno Setup from <http://www.jrsoftware.org/isinfo.php>.
+
+5) Download the gnuplot windows binary from
+<http://gnuplot.sourceforge.net>.  Install in your MSYS user home
+directory in ~/programs/gnuplot. Use at least version 4.4.
+
+6) Put wxMaxima windows binary into C:/programs/wxMaxima.
+
+7) Get Microsoft HTML Help Workshop from
+<http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
+and install it.
+
+8) Install Python from www.python.org. Add the path to python to your
+windows PATH environment variable.
+
+
+You should now be ready to compile and install maxima.  Configure
+maxima so that it will install in some sort of temporary
+directory. The directory does not need to exist ahead of time.
+
+./configure --prefix=c:/maxima \
+    --enable-chm \
+    --enable-xmaxima-exe \
+    --with-hhc=hhc \
+    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
+    --with-ccl=<path-to-ccl>
+make
+make check
+make install
+make iss
+
+The "check" should pass all tests except those listed as known
+failures.
+
+Once "make iss" is complete, run Inno Setup on the maxima.iss file. It
+is recommended to remove the temporary maxima install directory
+(c:/maxima above) before testing the installation.
+
+Test the installed package.  For example
+ o Run the maxima testsuite: run_testsuite()
+ o Try compiling a function.  This has been a problem in the past
+    - f(x):=x+2;
+    - compile(f);
+    - f(2);
+ o Test the graphics systems in both xmaxima and wxmaxima
+    plot2d(sin(x),[x,0,10]);
+    plot3d(x*y,[x,-1,1],[y,-1,1]);
+    load(draw)$
+    draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
+          parametric_surface(cos(phi) * sin(theta),
+                       sin(phi) * sin(theta),
+                       cos(theta),
+                       theta, 0, %pi, phi, 0, 2 * %pi))$
+ o Check that plotting to Postscript works
+    plot2d(sin(x),[x,0,10],[ps_file,"ps_test.ps"]);
+ o Try out the on-line help: describe(sin)
+ o Check that the windows help files work from the Start menu 
+   and from within xmaxima and wxmaxima
