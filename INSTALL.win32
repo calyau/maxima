@@ -32,7 +32,7 @@ External Requirements
 =====================
 
 1) MinGW and MSYS
-2) ccl
+2) ccl/sbcl
 3) Starkit, TclKit and img.kit
 4) InnoSetup
 5) gnuplot
@@ -56,8 +56,10 @@ c) Use the installed mingw-get to add the build dependencies, including
    - mingw-make
    - mingw32-autotools
 
-2) Download Clozure Common List from <http://ccl.clozure.com>. Use at
-least version 1.7.
+2) Install a lisp. Clozure Common Lisp (http://ccl.clozure.com) and
+Steel Bank Common Lisp (http://sbcl.org) are supported. For Clozure
+Common List use at least version 1.7 (version 1.10 does not work). For
+Steel Bank CL use at least version 1.2.
 
 3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>.
 Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>.
@@ -65,11 +67,11 @@ Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from
 <http://www.equi4.com/pub/tk/8.5.2/>.
 
 Install the following four files 
-	sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
-in your MSYS user home directory in ~/programs/star
+  sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
+are in C:/programs/star.
 
 Download img.kit from <http://www.tcl.tk/starkits/> and put it in your
-MSYS user home directory in ~/programs/star.
+MSYS user home directory in C:/programs/star.
 
 4) Get and install Inno Setup from <http://www.jrsoftware.org/isinfo.php>.
 
@@ -77,27 +79,15 @@ MSYS user home directory in ~/programs/star.
 <http://gnuplot.sourceforge.net>.  Install in your MSYS user home
 directory in ~/programs/gnuplot. Use at least version 4.4.
 
-6) Put wxMaxima windows binary into ~/programs/wxMaxima.
+6) Put wxMaxima windows binary into C:/programs/wxMaxima.
 
 7) Get Microsoft HTML Help Workshop from
 <http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
 and install it.
 
-Make sure that HHW directory is within PATH (edit PATH environment
-variable with either Windows or MSYS approach), so the HTML Help
-Workshop compiler command "hhc.exe" is available at the MSYS command
-prompt.
-
 8) Install Python from www.python.org. Add the path to python to your
 windows PATH environment variable.
 
-9) The following components
-    a) HTML Help Workshop compiler (hhc command)
-    c) python
-should also be available at the MSYS command prompt.
-
-If this is not the case, edit your PATH variable or add wrapper
-scripts.
 
 You should now be ready to compile and install maxima.  Configure
 maxima so that it will install in some sort of temporary
