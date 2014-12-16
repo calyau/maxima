@@ -849,7 +849,7 @@
   (do ((i 0 (1+ i)) res)
       ((= i n) 
         (cons '($matrix simp) (nreverse res)) )
-    (push (mfuncall '$makelist `(mod (+ ,i $j) ,n) '$j 0 (1- n)) res) ))
+    (push (mfuncall '$makelist `((mod) (+ ,i $j) ,n) '$j 0 (1- n)) res) ))
 
 (defmfun $zn_mult_table (n &optional all?)
   (zn-table-errchk n "zn_mult_table")
@@ -859,7 +859,7 @@
       (do ((i 1 (1+ i)) res)
           ((= i n) (cons '($matrix simp) (nreverse res)))
         (push 
-           (mfuncall '$makelist `(mod (* ,i $j) ,n) '$j 1 (1- n))
+           (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j 1 (1- n))
            res )))
     (t ;; units only
       (let (units res)
@@ -869,7 +869,7 @@
           (when (= 1 (gcd i n)) (push i units)) )
         (dolist (i (cdr units) (cons '($matrix simp) (nreverse res)))
           (push 
-            (mfuncall '$makelist `(mod (* ,i $j) ,n) '$j units)
+            (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j units)
             res ))))))
 
 (defmfun $zn_power_table (&rest args)
@@ -893,7 +893,7 @@
         ((= i n) 
           (cons '($matrix simp) (nreverse res)) )
       (when (or all? (= 1 (gcd i n))) 
-        (push (mfuncall '$makelist `(power-mod ,i $j ,n) '$j 1 cols) res) ))))
+        (push (mfuncall '$makelist `((power-mod) ,i $j ,n) '$j 1 cols) res) ))))
 
 
 ;; $zn_invert_by_lu (m p) 
