@@ -24,7 +24,6 @@ set prefix=@prefix@
 set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
-set mingw_gccver=GCCVER
 set path=%maxima_prefix%\gnuplot;%maxima_prefix%\gnuplot\bin;%maxima_prefix%\bin;%path%
 
 if "%USERPROFILE%" == "" goto win9x
@@ -112,6 +111,7 @@ if "%lisp%" == "openmcl" goto doccl
 goto end
 
 :dogcl
+set set path=%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path
 "%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
