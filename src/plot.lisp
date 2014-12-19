@@ -1343,7 +1343,11 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; creates the output file, when there is one to be created
     (when (and out-file (not (eq gnuplot-term '$default)))
-      ($system $gnuplot_command (format nil $gnuplot_file_args file)))
+      #+(or (and sbcl win32) (and ccl windows))
+      ($system $gnuplot_command (format nil $gnuplot_file_args file))
+      #-(or (and sbcl win32) (and ccl windows))
+      ($system (format nil "~a ~a" $gnuplot_command
+                       (format nil $gnuplot_file_args file))))
 
     ;; displays contents of the output file, when gnuplot-term is dumb,
     ;; or runs gnuplot when gnuplot-term is default
