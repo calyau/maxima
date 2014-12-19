@@ -258,3 +258,29 @@ if b - a < 0 then integrate(1/x,x,a,b)
 
 limit((exp(a*x)-1)/(exp(a*x)+1),x,inf);
 if a < 0 then -1 elseif equal (a, 0) then 0 elseif a > 0 then 1;
+
+limit(exp(b*a), b, inf);
+if a < 0 then 0 elseif equal (a, 0) then 1 elseif a > 0 then inf;
+
+limit(exp(-b*a), b, inf);
+if a < 0 then inf elseif equal (a, 0) then 1 elseif a > 0 then 0;
+
+limit(a*x, x, inf);
+if a < 0 then minf elseif equal (a, 0) then 0 elseif a > 0 then inf;
+
+/* not sure if this one is handled correctly by expand_branches --
+ * do we get into a cycle of asksign questions??
+ *
+(foo : %e^(beta*hbar*omega-beta*(hbar*(2*n+1)*omega+delta))
+         /(1/(1-%e^-(beta*hbar*omega))^2 +(%e^-(beta*delta)-1)/(1-%e^-(2*beta*hbar*omega))),
+ limit (foo, beta, inf));
+0;
+
+limit (ratsimp (foo), beta, inf);
+0;
+ *
+ */
+
+limit ((%e^-(b*d)-1)/(1-%e^-(2*b*h*z)), b, inf);
+0;
+
