@@ -561,7 +561,7 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
         
         tmp_sum  : minfactorial(factcomb(makefact(subst(%n%=%i%, sm)))),
         dif : factor(rectform(real_sum - tmp_sum)),
-        if not freeof_sum(real_sum) then (
+        if not freeof_sum(real_sum) or (numberp(dif) and dif#0) then (
          if dif#0 then (
           ss_print_message(2, "Sum check failed with: ", 'i=%i%, 'tmp_sum=tmp_sum, 'dif=dif),
           throw(false))
