@@ -334,7 +334,7 @@
 		  (format out (intl:gettext "~%Time:  ~,3F sec (~,3F elapsed)")
 			  (float (/ (- test-end-run-time test-start-run-time)
 				    internal-time-units-per-second))
-			  (float (/ (- test-end-run-time test-start-run-time)
+			  (float (/ (- test-end-real-time test-start-real-time)
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
 		     (format t (intl:gettext "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima.~%")))

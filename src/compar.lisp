@@ -456,7 +456,7 @@ relational knowledge is contained in the default context GLOBAL.")
   (let* ((x (mevalp1 pat))
 	 (ans (car x))
 	 (patevalled (cadr x)))
-    (cond ((member ans '(#.(not ()) ()) :test #'eq) ans)
+    (cond ((member ans '(t ()) :test #'eq) ans)
 	  ;; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
 	  ($prederror (pre-err patevalled))
 	  (t (or patevalled ans)))))
