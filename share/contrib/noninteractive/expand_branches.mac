@@ -1,0 +1,93 @@
+/* evaluate branches of "if" assuming conditions */
+
+matchdeclare (ii, ifp);
+ifp (e) := not atom(e) and (op(e) = "if" or op(e) = nounify("if"));
+
+defrule
+ (expand_branches,
+  ii,
+  block
+   ([aa : args (ii)],
+    makelist ([aa[2*jj - 1], aa[2*jj]], jj, 1, length(aa)/2),
+    map (lambda ([pp], [pp[1], apply (assuming, [[pp[1]], buildq ([e : pp[2]], expand_branches1 (e))])]), %%),
+    subst (expand_branches1 = ?mprogn, %%), /* DON'T YET UNDERSTAND HOW EXPAND_BRANCHES1 APPEARS ... REMOVE IT ANYWAY !! */
+    apply (append, %%),
+    apply ("if", %%)));
+
+expand_branches1 (u) := (expand_branches(u), if %% = false then u else %%);
+
+defrule
+ (merge_branches,
+  ii,
+  block
+   ([aa : args (ii), conditions, expressions, new_conditions, new_expressions, j, k],
+    conditions : makelist (aa[2*i - 1], i, 1, length (aa) / 2),
+    expressions : makelist (aa[2*i], i, 1, length (aa) / 2),
+    new_conditions : [first (conditions)],
+    new_expressions : [first (expressions)],
+    for i:2 thru length (conditions) do
+      if (j : find_index (expressions [i], new_expressions)) # false
+      then
+        new_conditions [j] : new_conditions [j] or (conditions [i] and not apply ("or", sublist_elements (new_conditions, 1, j)))
+      else
+       (push (conditions [i], new_conditions),
+        push (expressions [i], new_expressions)),
+    apply (op (ii), join (reverse (new_conditions), reverse (new_expressions)))));
+
+find_index (x, L) := catch (block (for i thru length (L) do if L[i] = x then throw (i), false));
+
+delete_element (L, i) :=
+  if i < 1 or i > length (L)
+    then L
+    else append (makelist (L[j], j, 1, i - 1), makelist (L[j], j, i + 1, length (L)));
+
+sublist_elements (L, m, n) := if m < n then makelist (L[i], i, m, n - 1) else [];
+
+tabulate (e) := block ([v : sort (listofvars (e))], makelist (block ([l : bits (i, length (v))], map ("=", v, l), ev (e, %%)), i, 0, 2^length(v) - 1));
+
+bits (m, n) := block ([b : []], for j thru n do (if oddp (m) then push (true, b) else push (false, b), m : floor (m/2)), b);
+
+defrule
+ (flatten_branches,
+  ii,
+  block
+   ([aa : args (ii), conditions, expressions, new_conditions, new_expressions],
+    conditions : makelist (aa[2*i - 1], i, 1, length (aa) / 2),
+    expressions : makelist (aa[2*i], i, 1, length (aa) / 2),
+    new_conditions : [],
+    new_expressions : [],
+    for i thru length (expressions)
+      do
+        if ifp (expressions [i])
+        then
+          block
+           ([aa1 : args (expressions [i])],
+            while aa1 # [] do
+             (push (conditions [i] and pop (aa1), new_conditions),
+              push (pop (aa1), new_expressions)))
+        else
+           (push (conditions [i], new_conditions),
+            push (expressions [i], new_expressions)),
+     apply (op (ii), join (reverse (new_conditions), reverse (new_expressions)))));
+
+defrule
+ (subst_branches,
+  ii,
+  block
+   ([aa : args (ii), conditions, expressions, new_conditions, new_expressions],
+    conditions : makelist (aa[2*i - 1], i, 1, length (aa) / 2),
+    expressions : makelist (aa[2*i], i, 1, length (aa) / 2),
+    new_conditions : [],
+    new_expressions : [],
+    for i thru length (expressions)
+      do
+        block ([cc : conditions [i], ee : expressions [i]],
+          if not atom(cc) and (op(cc) = "=" or op(cc) = 'equal)
+            then
+             (push (cc, new_conditions),
+              push (subst (if op(cc) = 'equal then subst ('equal = "=", cc) else cc, ee), new_expressions))
+            else
+             (push (cc, new_conditions),
+              push (ee, new_expressions))),
+    apply (op (ii), join (reverse (new_conditions), reverse (new_expressions)))));
+
