@@ -1461,6 +1461,14 @@ integrate(sqrt(cos(x)+1), x, -%pi, %pi);
 integrate ((1+exp(t))/sqrt(t+exp(t)), t, 0, 1);
 2*sqrt(%e+1)-2;
 
+/* #2862 Incorrect result for integrate(u/(u+1)^2,u,0,inf); */
+errcatch(integrate(u/(u+1)^2,u,0,inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+
 /* SF # 2633: ev(integrate,numer) gives strange result */
 (foo : ev(integrate(sin(2*%pi*x),x,0,1),numer), 0);
 0;
