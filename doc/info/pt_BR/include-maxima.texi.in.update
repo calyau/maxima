@@ -2,7 +2,7 @@
 
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c a12738f5493aa0352e65c8cc4f76487a  include-maxima.texi.in
+@c 2fd770bf9cd8698331c89f865474bb54  include-maxima.texi.in
 @c
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -16,11 +16,15 @@
 
 
 @c %**start of header
+@settitle Manual do Maxima @manual_version@
+
+@synindex ky fn
 @synindex vr fn
 @synindex cp fn
-@settitle Manual do Maxima @VERSION@
-@c %**end of header
+
 @setchapternewpage odd
+@c %**end of header
+
 @ifinfo
 Esse @'{e} um Manual do Maxima no formato Texinfo
 
@@ -32,9 +36,7 @@ START-INFO-DIR-ENTRY
 * Maxima: (maxima).     Um sistema de computa@,{c}@~{a}o alg@'{e}brica.
 END-INFO-DIR-ENTRY
 @end format
-@end ifinfo
-
-@ifinfo 
+ 
 @macro var {expr}
 <\expr\>
 @end macro
@@ -46,7 +48,7 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Manual do Maxima}
-@center Ver. @VERSION@
+@center Vers@~{a}o @manual_version@
 @page
 @vskip 0pt plus 1filll
 Maxima @'{e} um sistema de computa@,{c}@~{a}o alg@'{e}brica, implementado em Lisp.
@@ -148,7 +150,7 @@ Pacotes adicionais
 * distrib::                     Distribui@,{c}@~{a}o de probabilidade.
 * draw::                        Trabalhando com Maxima e Gnuplot.
 * drawdf::                      Campos de dire@,{c}@~{a}o com Gnuplot.
-* dynamics::                    Gr@'{a}ficos para sistemas din@^{a}micos e fractais.
+* dynamics::                    3D visualization, animations and dynamical systems.
 * ezunits::                     Quantidades dimensionais.
 * f90::                         Tradutor de Maxima para fortran.
 * finance::                     Pacote financeiro.
@@ -435,8 +437,9 @@ drawdf
 * Functions and Variables for drawdf::
 
 dynamics
-* Introduction to dynamics::
-* Functions and Variables for dynamics::
+* The dynamics package::
+* Graphical analysis of discrete dynamical systems::
+* Visualization with VTK::
 
 ezunits
 * Introduction to ezunits::
@@ -906,9 +909,9 @@ zeilberger
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Function and Variable Index,  , zeilberger, Top
-@chapter Indices
-@include Indices.texi
-
 @c end includes
 
+@node Function and Variable Index,  , zeilberger, Top
+@appendix Function and Variable Index
+
+@printindex fn

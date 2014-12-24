@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c fcdbb02e08152bd79b77ee6d8f358d49  MathFunctions.texi
+@c 942fe3a0d1afebd3279a82c404442e4c  MathFunctions.texi
 @c
 @menu
 * Functions for Numbers::
@@ -2268,8 +2268,9 @@ s@~{a}o desabilitadas.
 
 @c -----------------------------------------------------------------------------
 @anchor{trigreduce}
-@deffn  {Fun@,{c}@~{a}o} trigreduce (@var{expr}, @var{x})
-@deffnx {Fun@,{c}@~{a}o} trigreduce (@var{expr})
+@deffn  {Fun@,{c}@~{a}o} trigreduce @
+@fname{trigreduce} (@var{expr}, @var{x}) @
+@fname{trigreduce} (@var{expr})
 
 Combina produtos e pot@^{e}ncias de senos e cossenos
 trigonom@'{e}tricos hiperb@'{o}licos de @var{x} naqueles de m@'{u}ltiplos de @var{x}.
@@ -2583,10 +2584,11 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c -----------------------------------------------------------------------------
 @anchor{make_random_state}
-@deffn  {Fun@,{c}@~{a}o} make_random_state (@var{n})
-@deffnx {Fun@,{c}@~{a}o} make_random_state (@var{s})
-@deffnx {Fun@,{c}@~{a}o} make_random_state (true)
-@deffnx {Fun@,{c}@~{a}o} make_random_state (false)
+@deffn  {Fun@,{c}@~{a}o} make_random_state @
+@fname{make_random_state} (@var{n}) @
+@fname{make_random_state} (@var{s}) @
+@fname{make_random_state} (true) @
+@fname{make_random_state} (false)
 
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})

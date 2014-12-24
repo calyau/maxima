@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c f748fdd469c5f84597d4b0d2a63e42a0  Operators.texi
+@c 735c640397e886d271d4de87d783df89  Operators.texi
 @c
 @menu     
 * Introduction to operators::      
@@ -196,26 +196,17 @@ Incorrect syntax: # is not a prefix operator
 @anchor{*}
 @anchor{/}
 @anchor{^}
-@deffn {Operador} +
-@ifinfo
 @fnindex Adi@,{c}@~{a}o
-@end ifinfo
-@deffnx {Operador} -
-@ifinfo
 @fnindex Subtra@,{c}@~{a}o
-@end ifinfo
-@deffnx {Operador} *
-@ifinfo
 @fnindex Multiplica@,{c}@~{a}o
-@end ifinfo
-@deffnx {Operador} /
-@ifinfo
 @fnindex Divis@~{a}o
-@end ifinfo
-@deffnx {Operador} ^
-@ifinfo
 @fnindex Exponencia@,{c}@~{a}o
-@end ifinfo
+
+@deffn {Operador} +
+@deffnx {Operador} -
+@deffnx {Operador} *
+@deffnx {Operador} /
+@deffnx {Operador} ^
 
 Os s@'{i}mbolos @code{+} @code{*} @code{/} e @code{^} representam adi@,{c}@~{a}o,
 multiplica@,{c}@~{a}o, divis@~{a}o, e exponencia@,{c}@~{a}o, respectivamente.  Os nomes desses
@@ -538,22 +529,15 @@ e
 @anchor{<=}
 @anchor{>=}
 @anchor{>}
-@deffn {Operador} <
-@ifinfo
 @fnindex Menor que
-@end ifinfo
-@deffnx {Operador} <=
-@ifinfo
 @fnindex Menor que ou equal
-@end ifinfo
-@deffnx {Operador} >=
-@ifinfo
 @fnindex Maior que ou equal
-@end ifinfo
-@deffnx {Operador} >
-@ifinfo
 @fnindex Maior que
-@end ifinfo
+
+@deffn {Operator} <
+@deffnx {Operator} <=
+@deffnx {Operator} >=
+@deffnx {Operator} >
 
 Os s@'{i}mbolos @code{<} @code{<=} @code{>=} e @code{>} representam menor que, menor
 que ou igual a, maior que ou igual a, e maior que, respectivamente.  Os nomes
@@ -1248,24 +1232,25 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 
 O operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o.
+
 O comando @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} define uma fun@,{c}@~{a}o chamada
 @var{f} com argumentos @var{x_1}, @dots{}, @var{x_n} e lei de forma@,{c}@~{a}o
 @var{expr}.  O operador @code{:=} nunca avalia a lei de forma@,{c}@~{a}o (a menos que explicitamente
 avaliado por ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'}).
-O corpo da fun@,{c}@~{a}o @'{e} avaliado toda vez que a fun@,{c}@~{a}o for camada.
+O corpo da função é avaliado sempre que a função for chamada.
 
-@code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called array function.
-Its function body is evaluated just once for each distinct value of its arguments,
-and that value is returned, without evaluating the function body,
-whenever the arguments have those values again.
-(A function of this kind is commonly known as a ``memoizing function''.)
+O comando @code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} define uma então chamada função de vetor estático @footnote{Nota do tradutor: array.}.
+Seu corpo de função é avaliado apenas uma vez para cada valor distinto de seus argumentos,
+e aquele valor é retornado, sem fazer avaliação do corpo da função,
+sempre que os argumentos tiverem aqueles valores novamente.
+(Uma funçao desse tipo é comumente conhecida com uma ``função de memoizing''@footnote{Nota do tradutor: memoizing vem do latin -memorandum- e não do latin -memoria- é uma técnica de otimização de memória computacional.}.)
 
-@code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
-is a special case of an array function.
-@code{@var{f}[@var{x_1}, ..., @var{x_n}]} is an array function which returns a lambda expression
-with arguments @code{@var{y_1}, ..., @var{y_m}}.
-The function body is evaluated once for each distinct value of @code{@var{x_1}, ..., @var{x_n}},
-and the body of the lambda expression is that value.
+O comando @code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
+é um caso especial de uma função de vetor estático.
+O comando @code{@var{f}[@var{x_1}, ..., @var{x_n}]} é uma função de vetor estático que retorna uma expressão @mref{lambda}
+com argumentos @code{@var{y_1}, ..., @var{y_m}}.
+O corpo da função é avaliado uma única vez para cada valor distinto de @code{@var{x_1}, ..., @var{x_n}},
+e o corpo da expressão lambda é aquele valor.
 
 Quando o @'{u}ltimo ou @'{u}nico argumento de fun@,{c}@~{a}o @var{x_n} for uma lista de um elemento, a
 fun@,{c}@~{a}o definida por @code{:=} aceita um n@'{u}mero de argumentos vari@'{a}vel.  Os argumentos
@@ -1439,9 +1424,10 @@ A declara@,{c}@~{a}o @code{local} torna uma defini@,{c}@~{a}o de fun@,{c}@~{a}o 
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {Fun@,{c}@~{a}o} infix (@var{op})
-@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn  {Fun@,{c}@~{a}o} infix @
+@fname{infix} (@var{op}) @
+@fname{infix} (@var{op}, @var{lbp}, @var{rbp}) @
+@fname{infix} (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 
 Declara que o operador @var{op} @'{e} um operador infixo.  Um operador infixo @'{e} uma fun@,{c}@~{a}o de
 dois argumentos, com o nome da fun@,{c}@~{a}o escrito entre os argumentos.
@@ -1568,8 +1554,9 @@ if x ## y then
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {Fun@,{c}@~{a}o} matchfix (@var{de}, @var{dd})
-@deffnx {Fun@,{c}@~{a}o} matchfix (@var{de}, @var{dd}, @var{arg_pos}, @var{pos})
+@deffn  {Fun@,{c}@~{a}o} matchfix @
+@fname{matchfix} (@var{ldelimiter}, @var{rdelimiter}) @
+@fname{matchfix} (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
 Declara um operador matchfix com delimitadores esquerdo e direito @var{de}
 e @var{dd}.  Os delimitadores s@~{a}o especificados como sequ@^{e}ncias de caractere.
@@ -1703,15 +1690,16 @@ Operadores matchfix s@~{a}o fun@,{c}@~{o}es comuns definidas pelo usu@'{a}rio.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_nary}
-@deffn  {Fun@,{c}@~{a}o} nary (@var{op})
-@deffnx {Fun@,{c}@~{a}o} nary (@var{op}, @var{bp}, @var{clgr_arg}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} nary @
+@fname{nary} (@var{op}) @
+@fname{nary} (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
 
-An @code{nary} operator is used to denote a function of any number of arguments,
-each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
-The @code{nary("x")} function is a syntax extension function to declare @code{x}
-to be an @code{nary} operator.  Functions may be declared to be @code{nary}.  If
-@code{declare(j,nary);} is done, this tells the simplifier to simplify, e.g.
-@code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
+Um operador @code{nary} é usado para denotar uma função de qualquer número de argumentos,
+cada um dos quais separados por uma ocorrência do operador, e.g.  A+B or A+B+C.
+A função @code{nary("x")} é uma extensão da sintaxe de função para declarar @code{x}
+como sendo um operador do tipo @code{nary}.  Funções podem ser declaradas para serem @code{nary}.  Se
+@code{declare(j,nary);} for concluído, diz ao simplificador para simplificar, e.g.
+@code{j(j(a,b),j(c,d))} em @code{j(a, b, c, d)}.
 
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
@@ -1722,15 +1710,16 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {Fun@,{c}@~{a}o} nofix (@var{op})
-@deffnx {Fun@,{c}@~{a}o} nofix (@var{op}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} nofix @
+@fname{nofix} (@var{op}) @
+@fname{nofix} (@var{op}, @var{pos})
 
-@code{nofix} operators are used to denote functions of no arguments.
-The mere presence of such an operator in a command will cause the
-corresponding function to be evaluated.  Por exemplo, when one types
-"exit;" to exit from a Maxima break, "exit" is behaving similar to a
-@code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
-function which declares @code{x} to be a @code{nofix} operator.
+Os operadors @code{nofix} são usados para denotar funções que não possuem argumentos.
+A mera presença de tal operador em um comando fará com que a
+função correspondente seja avaliada.  Por exemplo, quando se digita
+"exit;" para sair de uma parada do Maxima, "exit" se comporta de forma semelhante a um
+operador @code{nofix}.  A função @code{nofix("x")} é uma extensão da sintaxe
+de função que declara @code{x} como sendo um operador @code{nofix}.
 
 Veja tamb@'{e}m @ref{Introduction to operators}.
 
@@ -1741,8 +1730,9 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {Fun@,{c}@~{a}o} postfix (@var{op})
-@deffnx {Fun@,{c}@~{a}o} postfix (@var{op}, @var{lbp}, @var{lclgr}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} postfix @
+@fname{postfix} (@var{op}) @
+@fname{postfix} (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
 
 Operadores @code{postfix} como a variedade @code{prefix} denota fun@,{c}@~{o}es de um
 @'{u}nico argumento, mas nesse caso o argumento precede uma
@@ -1759,8 +1749,9 @@ Veja tamb@'{e}m @ref{Introduction to operators}.
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {Fun@,{c}@~{a}o} prefix (@var{op})
-@deffnx {Fun@,{c}@~{a}o} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{clgr})
+@deffn  {Fun@,{c}@~{a}o} prefix @
+@fname{prefix} (@var{op}) @
+@fname{prefix} (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
 
 Um operador @code{prefix} significa uma fun@,{c}@~{a}o de um argumento,
 o qual segue imediatamente uma ocorr@^{e}ncia do operador.

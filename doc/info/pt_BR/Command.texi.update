@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 443e27eea15f3198481666a61c8395fe  Command.texi
+@c 4790874d54a6f4da1ccf53672b684d79  Command.texi
 @c
 @menu
 * Introduction to Command Line::
@@ -329,7 +329,7 @@ requisi@,{c}@~{a}o de documenta@,{c}@~{a}o.
 
 @c -----------------------------------------------------------------------------
 @anchor{$}
-@deffn {Terminador de entrada} $
+@deffn {Finalizador de entrada} $
 @ifinfo
 @fnindex Input terminator (omite a sa@'{i}da)
 @end ifinfo
@@ -488,14 +488,15 @@ um n@~{a}o for explicitamente ajustado pelo usu@'{a}rio.)
 
 @c -----------------------------------------------------------------------------
 @anchor{kill}
-@deffn  {Fun@,{c}@~{a}o} kill (@var{a_1}, @dots{}, @var{a_n})
-@deffnx {Fun@,{c}@~{a}o} kill (labels)
-@deffnx {Fun@,{c}@~{a}o} kill (inlabels, outlabels, linelabels)
-@deffnx {Fun@,{c}@~{a}o} kill (@var{n})
-@deffnx {Fun@,{c}@~{a}o} kill ([@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} kill (values, functions, arrays, @dots{})
-@deffnx {Fun@,{c}@~{a}o} kill (all)
-@deffnx {Fun@,{c}@~{a}o} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+@deffn  {Fun@,{c}@~{a}o} kill @
+@fname{kill} (@var{a_1}, @dots{}, @var{a_n}) @
+@fname{kill} (labels) @
+@fname{kill} (inlabels, outlabels, linelabels) @
+@fname{kill} (@var{n}) @
+@fname{kill} ([@var{m}, @var{n}]) @
+@fname{kill} (values, functions, arrays, @dots{}) @
+@fname{kill} (all) @
+@fname{kill} (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Remove todas as associa@,{c}@~{o}es (de valor, de fun@,{c}@~{a}o, de vetor est@'{a}tico, ou de regra) dos argumentos
 @var{a_1}, @dots{}, @var{a_n}.  Um argumento @var{a_k} pode ser um s@'{i}mbolo ou um
@@ -561,19 +562,13 @@ O comando @code{kill} sempre retorna @code{done}, mesmo se um argumento n@~{a}o 
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn  {Fun@,{c}@~{a}o} labels (@var{s@'{i}mbolo})
-@deffnx {Vari@'{a}vel de sistema} labels
+@deffn  {Fun@,{c}@~{a}o} labels (@var{s@'{i}mbolo}) @
 
 Retorna a lista de r@'{o}tulos de entrada, sa@'{i}da, ou de express@~{o}es intermediarias que se iniciam
 com @var{s@'{i}mbolo}.  Tipicamente @var{s@'{i}mbolo} @'{e} o valor de
 @mrefcomma{inchar} @mrefcomma{outchar}
 ou de @mrefdot{linechar}
-
 Se nenhum r@'{o}tulo iniciar-se com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
-
-A vari@'{a}vel @code{labels} @'{e} a lista de r@'{o}tulos de entrada, de sa@'{i}da, e de express@~{o}es
-intermedi@'{a}rias, incluindo todos os r@'{o}tulos anteriores se @code{inchar},
-@code{outchar}, ou @code{linechar} forem redefinidas.
 
 Por padr@~{a}o, Maxima mostra o resultado de cada express@~{a}o de entrada de usu@'{a}rio, fornecendo ao
 resultado um r@'{o}tulo de sa@'{i}da.  A exibi@,{c}@~{a}o da sa@'{i}da @'{e} omitida terminando a entrada
@@ -595,9 +590,20 @@ Veja tamb@'{e}m @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar}
 e @mrefdot{infolists}
 
 @opencatbox
-@category{Display functions} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
+
+@defvr {Vari@'{a}vel de sistema} labels
+
+A variável @code{labels} contém a lista de rótulos de entradas, saídas, e de
+expressões intermediárias, incluindo todos os rótulos anteriores se @code{inchar},
+@code{outchar}, ou @code{linechar} forem redefinidas.
+
+@opencatbox
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{linechar}
@@ -745,14 +751,15 @@ Exemplo:
 
 @c -----------------------------------------------------------------------------
 @anchor{playback}
-@deffn  {Fun@,{c}@~{a}o} playback ()
-@deffnx {Fun@,{c}@~{a}o} playback (@var{n})
-@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}])
-@deffnx {Fun@,{c}@~{a}o} playback (input)
-@deffnx {Fun@,{c}@~{a}o} playback (slow)
-@deffnx {Fun@,{c}@~{a}o} playback (time)
-@deffnx {Fun@,{c}@~{a}o} playback (grind)
+@deffn {Fun@,{c}@~{a}o} playback @
+@fname{playback} () @
+@fname{playback} (@var{n}) @
+@fname{playback} ([@var{m}, @var{n}]) @
+@fname{playback} ([@var{m}]) @
+@fname{playback} (input) @
+@fname{playback} (slow) @
+@fname{playback} (time) @
+@fname{playback} (grind)
 
 Mostra as entradas, as sa@'{i}das, e as express@~{o}es intermedi@'{a}rias, sem recalcul@'{a}-las.
 A fun@,{c}@~{a}o @code{playback} somente mostra as express@~{o}es associadas a r@'{o}tulos; quaisquer outras sa@'{i}das
@@ -801,7 +808,7 @@ Argumentos podem ser combinados, e.g., @code{playback ([5, 10], grind, time, slo
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
 @opencatbox
-@category{Display functions} @category{Intera@,{c}@~{a}o com o console}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o} @category{Intera@,{c}@~{a}o com o console}
 @closecatbox
 @end deffn
 
@@ -1121,7 +1128,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
@@ -1162,7 +1169,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
@@ -1267,7 +1274,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
@@ -1320,7 +1327,6 @@ Exemplo:
 @c -----------------------------------------------------------------------------
 @anchor{grind}
 @deffn  {Fun@,{c}@~{a}o} grind (@var{expr})
-@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} grind
 
 A fun@,{c}@~{a}o @code{grind} mostra @var{expr} no console de forma adequada a ser usada
 em uma entrada do Maxima.  A fun@,{c}@~{a}o @code{grind} sempre retorna @code{done}.
@@ -1332,17 +1338,6 @@ Veja tamb@'{e}m @mrefcomma{string}
 que retorna uma sequ@^{e}ncia de caracteres ao inv@'{e}s de mostrar sua
 sa@'{i}da.  A fun@,{c}@~{a}o @code{grind} tenta mostrar a express@~{a}o de uma maneira que a torna
 levemente mais f@'{a}cil de ler que a sa@'{i}da de @code{string}.
-
-Quando a vari@'{a}vel @code{grind} for @code{true}, a sa@'{i}da de @code{string} e a sa@'{i}da de
-@mref{stringout}
-possuem o mesmo formato que a sa@'{i}da de @code{grind}; de outra forma nenhuma
-tentativa @'{e} feita para formatar de forma especial a sa@'{i}da de @code{string} e de @code{stringout}.  O valor
-padr@~{a}o da vari@'{a}vel @code{grind} @'{e} @code{false}.
-
-A vari@'{a}vel de op@,{c}@~{a}o @code{grind} pode tamb@'{e}m ser especificada como um argumento a @mrefdot{playback}
-Quando @code{grind} estiver presente, @code{playback} mostra express@~{o}es de sa@'{i}da no mesmo
-formato que a fun@,{c}@~{a}o @code{grind}.  De outra forma, nenhuma tentativa @'{e} feita para formatar
-especialmente express@~{o}es de netrada.
 
 A fun@,{c}@~{a}o @code{grind} avalia seus argumentos.
 
@@ -1450,9 +1445,26 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end example
 
 @opencatbox
-@category{Display functions} @category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
+
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} grind
+
+Quando a variável @code{grind} for @code{true}, a saída de @code{string} e de
+@mref{stringout} possuem o mesmo formato de @code{grind}; de outra forma nenhuma
+tentativa é feita para formatar especialmente a saída das funções @code{string} e @code{stringout}.  O valor
+padrão da variável @code{grind} é @code{false}.
+
+A variável @code{grind} pode também ser especificada como um argumento da função @mrefdot{playback}  Quando
+@code{grind} estiver presente,  A função @code{playback} exibe expressões de entrada no mesmo
+formato da função @code{grind}.  De outra forma, nenhuma tentativa é feita para formatar
+especialmente expressões de entrada.
+
+@opencatbox
+@category{Sinalizadores e vari@'{a}veis de exibi@,{c}@~{a}o}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{ibase}
@@ -1583,7 +1595,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
@@ -1628,7 +1640,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
@@ -1886,7 +1898,7 @@ Exemplos:
 @end example
 
 @opencatbox
-@category{Display functions}
+@category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 
