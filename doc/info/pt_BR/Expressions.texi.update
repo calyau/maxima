@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 294673dec00a34bbf8dae4895aa8f4f8  Expressions.texi
+@c 193546d8470b2fe6db7f7be69832db13  Expressions.texi
 @c
 @menu
 * Introduction to Expressions::
@@ -77,7 +77,7 @@ O sinalizador de avalia@,{c}@~{a}o
 faz com que a fun@,{c}@~{a}o @mref{ev}
 seja usada para avaliar substantivos em uma express@~{a}o.
 
-A forma verbal @'{e} distinguida por meio de um sinal de d@'{o}lar @code{$} no in@'{i}cio do
+A forma verbal @'{e} evidenciada por meio de um sinal de d@'{o}lar @code{$} no in@'{i}cio do
 s@'{i}mbolo Lisp correspondente.  De forma semelhante, a forma substantiva @'{e} distinguida por um
 sinal de porcentagem @code{%} colocado no in@'{i}co do s@'{i}mbolo Lisp correspondente.  Alguns substantivos possuem
 propriedades de exibi@,{c}@~{a}o especiais, s@'{i}mbolos tais como @code{'integrate} e @code{'derivative}
@@ -260,7 +260,7 @@ fun@,{c}@~{o}es @mrefcomma{alias}
 @mref{orderless}
 ou por meio
 da declara@,{c}@~{a}o do @'{a}tomo como sendo um @mref{noun}
-usando @mrefdot{declare}).
+usando @mrefdot{declare})
 
 @opencatbox
 @category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Vari@'{a}veis globais}
@@ -371,8 +371,9 @@ sem associa@,{c}@~{a}o).
 
 @c -----------------------------------------------------------------------------
 @anchor{box}
-@deffn  {Fun@,{c}@~{a}o} box (@var{expr})
-@deffnx {Fun@,{c}@~{a}o} box (@var{expr}, @var{a})
+@deffn {Fun@,{c}@~{a}o} box @
+@fname{box} (@var{expr}) @
+@fname{box} (@var{expr}, @var{a})
 
 Retorna @var{expr} dentro de uma caixa.  O valor de retorno @'{e} uma express@~{a}o com
 @code{box} como o operador e @var{expr} como argumento.  Uma caixa @'{e} desenhada na
@@ -446,7 +447,7 @@ Exemplos:
 @defvr {Vari@'{a}vel de op@,{c}@~{a}o} boxchar
 Valor padr@~{a}o: @code{"}
 
-A vari@'{a}vel de op@,{c}@~{a}o @code{boxchar} cont@'{e}m o caractere usado para desenhar a caixa nas fun@,{c}ẽos
+A vari@'{a}vel de op@,{c}@~{a}o @code{boxchar} cont@'{e}m o caractere usado para desenhar a caixa na fun@,{c}@~{a}o
 @mref{box}@w{}
 e nas fun@,{c}@~{o}es @mref{dpart}
 e @mrefdot{lpart}
@@ -501,8 +502,9 @@ Uma demonstra@,{c}@~{a}o est@'{a} dispon@'{i}vel atrav@'{e}s de @code{demo("diso
 
 @c -----------------------------------------------------------------------------
 @anchor{dispform}
-@deffn  {Fun@,{c}@~{a}o} dispform (@var{expr})
-@deffnx {Fun@,{c}@~{a}o} dispform (@var{expr}, all)
+@deffn  {Fun@,{c}@~{a}o} dispform @
+@fname{dispform} (@var{expr}) @
+@fname{dispform} (@var{expr}, all)
 
 Retorna a representa@,{c}@~{a}o externa de @var{expr}.
 
@@ -923,10 +925,37 @@ considerando os produtos.  E.g. compare ambos os ajustes de @code{isolate_wrt_ti
 @defvr {Vari@'{a}vel de op@,{c}@~{a}o} listconstvars
 Valor padr@~{a}o: @code{false}
 
-Quando @code{listconstvars} for @code{true}, far@'{a} com que @mref{listofvars}
-inclua @code{%e}, @code{%pi}, @code{%i}, e quaisquer vari@'{a}veis declaradas como sendo do tipo constante
-na lista se elas aparecerem no momento em que a @code{listofvars} for
-chamada.  O padr@~{a}o @'{e} omitir as constantes.
+Quando @code{listconstvars} for @code{true} a lista retornada através de
+@code{listofvars} conterá variáveis do tipo constante, tais como @code{%e},
+@code{%pi}, @code{%i} ou quaisquer variáveis declaradas do tipo constante que
+ocorram em @var{expr}. Uma variável é delcarada do tipo @code{constant}
+via @mref{declare}
+, e @mref{constantp}
+retorna @code{true}
+para todas as variáveis declaradas do tipo @code{constant}. O padrão é
+omitir variáveis do tipo constante do valor de retorno da @code{listofvars}.
+
+Exemplo:
+
+@c ===beg===
+@c lfreeof ([ a, x], x^2+b);
+@c lfreeof ([ b, x], x^2+b);
+@c lfreeof ([ a, y], x^2+b);
+@c ===end===
+@example
+@group
+(%i1) lfreeof ([ a, x], x^2+b);
+(%o1)                                false
+@end group
+@group
+lfreeof ([ b, x], x^2+b);
+(%o2)                                false
+@end group
+@group
+lfreeof ([ a, y], x^2+b);
+(%o3)                                true
+@end group
+@end example
 
 @opencatbox
 @category{Express@~{o}es}
@@ -968,14 +997,10 @@ Exemplo:
 
 Retorna uma lista das vari@'{a}veis em @var{expr}.
 
-Quando @code{listconstvars} for @code{true} a lista retornada por
-@code{listofvars} conter@'{a} as vari@'{a}veis do tipo constante, tais como @code{%e},
-@code{%pi}, @code{%i} ou quaisquer vari@'{a}veis declaradas como sendo do tipo contantes que
-ocorrerem em @var{expr}. Uma vari@'{a}vel @'{e} declarada como sendo do tipo
-@code{constant} via @mrefdot{declare}
-e @mref{constantp}
-retorna @code{true} para todas as vari@'{a}veis declaradas @code{constant}. O padr@~{a}o @'{e}
-omitir vari@'{a}veis do tipo constante da express@~{a}o de retorno em @code{listofvars}.
+A @mref{listconstvars}
+se @code{true} faz com que @code{listofvars} inclua
+@code{%e}, @code{%pi}, @code{%i}, e quaisquer variáveis declaradas como sendo do tipo @code{constant} na 
+lista que a função @code{listofvars} retorna se essas variáveis constantes aparecerem na @var{expr}.  O padrão é omitir essas variáveis do tipo constante.
 
 Veja tamb@'{e}m a vari@'{a}vel de op@,{c}@~{a}o @mref{listdummyvars}
 para incluir ou excluir "vari@'{a}veis dummy" na lista de vari@'{a}veis.
@@ -1001,6 +1026,8 @@ Para cada membro @var{m} de @var{lista}, chama
 @code{freeof (@var{m}, @var{expr})}.  Retorna @code{false} se qualquer chamada a
 @mref{freeof}
 tamb@'{e}m retornar @code{false} e @code{true} de outra forma.
+
+Exemplo:
 
 @c ===beg===
 @c lfreeof ([ a, x], x^2+b);
@@ -1228,8 +1255,9 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{operatorp}
-@deffn  {Fun@,{c}@~{a}o} operatorp (@var{expr}, @var{op})
-@deffnx {Fun@,{c}@~{a}o} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
+@deffn  {Fun@,{c}@~{a}o} operatorp @
+@fname{operatorp} (@var{expr}, @var{op}) @
+@fname{operatorp} (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
 O comando @code{operatorp (@var{expr}, @var{op})} retorna @code{true}
 se @var{op} for igual ao operador de @var{expr}.
@@ -1372,14 +1400,14 @@ esses predicados n@~{a}o s@~{a}o transitivos; isso @'{e} um bug.
 A ordena@,{c}@~{a}o can@^{o}nica de @'{a}tomos (s@'{i}mbolos, n@'{u}meros literais, e sequ@^{e}ncias de caractere) @'{e} a
 seguinte.
 
-(n@'{u}meros inteiros e n@'{u}meros em ponto flutuante) precedem (grandes n@'{u}meros em ponto flutuante) que precedem
-(constantes declaradas) que precedem (sequ@^{e}ncias de caractere) que precedem (escalares declarados)
-que precedem (primeiro argumento de @mref{orderless}
-) que precede @dots{} que precede
-(@'{u}ltimo argumento de @code{orderless}) que precede (outros s@'{i}mbolos) que precedem
+(n@'{u}meros inteiros e n@'{u}meros em ponto flutuante) precedem (grandes n@'{u}meros em ponto flutuante) precedem
+(constantes declaradas) precedem (sequ@^{e}ncias de caractere) precedem (escalares declarados)
+precedem (primeiro argumento de @mref{orderless}
+) precede @dots{} precede o
+(@'{u}ltimo argumento de @code{orderless}) precede (outros s@'{i}mbolos) precedem
 (@'{u}ltimo argumento de @mref{ordergreat}
-) que precede @dots{} que precede
-(primeiro argumento de @code{ordergreat}) que precede (vari@'{a}veis principais declaradas)
+) precede @dots{} precede
+(primeiro argumento de @code{ordergreat}) precede (vari@'{a}veis principais declaradas)
 
 Para express@~{o}es n@~{a}o at@^{o}micas, a ordena@,{c}@~{a}o can@^{o}nica @'{e} derivada da ordena@,{c}@~{a}o
 para @'{a}tomos.  Para os operadores internos @code{+} @code{*} e @code{^},
@@ -1685,13 +1713,12 @@ Exemplos:
 @anchor{piece}
 @defvr {Vari@'{a}vel de sistema} piece
 
-Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mref{part}
-.
+Mant@'{e}m a @'{u}ltima express@~{a}o selecionada durante o uso das fun@,{c}@~{o}es @mrefdot{part}
+
 @c WHAT DOES THIS MEAN EXACTLY ??
 A vari@'{a}vel de sistema @code{piece} @'{e} ajustada durante a execu@,{c}@~{a}o das fun@,{c}@~{o}es @mref{part}
 e dessa forma a ultima express@~{a}o selecionada pode ser referenciada nas
-pr@'{o}prias fun@,{c}@~{o}es @mref{part}
-.
+pr@'{o}prias fun@,{c}@~{o}es @mrefdot{part}
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
@@ -1702,8 +1729,9 @@ pr@'{o}prias fun@,{c}@~{o}es @mref{part}
 
 @c -----------------------------------------------------------------------------
 @anchor{psubst}
-@deffn  {Fun@,{c}@~{a}o} psubst (@var{lista}, @var{expr})
-@deffnx {Fun@,{c}@~{a}o} psubst (@var{a}, @var{b}, @var{expr})
+@deffn  {Fun@,{c}@~{a}o} psubst @
+@fname{psubst} (@var{lista}, @var{expr}) @
+@fname{psubst} (@var{a}, @var{b}, @var{expr})
 
 O comando @code{psubst(@var{a}, @var{b}, @var{expr})} @'{e} simliar a @code{subst}.  Veja 
 @mrefdot{subst}
@@ -1738,9 +1766,10 @@ serial.
 
 @c -----------------------------------------------------------------------------
 @anchor{rembox}
-@deffn  {Fun@,{c}@~{a}o} rembox (@var{expr}, unlabelled)
-@deffnx {Fun@,{c}@~{a}o} rembox (@var{expr}, @var{r@'{o}tulo})
-@deffnx {Fun@,{c}@~{a}o} rembox (@var{expr})
++@deffn  {Fun@,{c}@~{a}o} rembox @
++@fname{rembox} (@var{expr}, unlabelled) @
++@fname{rembox} (@var{expr}, @var{r@'{o}tulo}) @
++@fname{rembox} (@var{expr})
 
 Remove caixas de @var{expr}.
 
@@ -1908,7 +1937,7 @@ Exemplo:
 @end example
 
 @opencatbox
-@category{Express@~{o}es} @category{Display functions}
+@category{Express@~{o}es} @category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 

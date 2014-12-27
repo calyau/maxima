@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 548b6cd9ac383d5757cbb9ecfdecd286  Lists.texi
+@c 5b5c718aee36d662677111cae1133bf1  Lists.texi
 @c
 @c -----------------------------------------------------------------------------
 @page
@@ -59,12 +59,11 @@ propriamente dita, uma vez que essa lista tenha estado no simplificador a lista 
 @c -----------------------------------------------------------------------------
 @anchor{[}
 @anchor{]}
-@defvr  {Operador} [
-@defvrx {Operador} ]
-@ifinfo
 @fnindex Delimitadores de lista
 @fnindex Operador de subscrito
-@end ifinfo
+
+@defvr  {Operador} [
+@defvrx {Operador} ]
 
 Os operadores @code{[} e @code{]} delimitam o in@'{i}cio e o fim, respectivamente, de uma lista.
 
@@ -156,11 +155,12 @@ Fa@,{c}a @code{example(append);} para um exemplo.
 
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
-@deffn  {Fun@,{c}@~{a}o} assoc (@var{chave}, @var{lista}, @var{retorno})
-@deffnx {Fun@,{c}@~{a}o} assoc (@var{chave}, @var{lista})
+@deffn {Fun@,{c}@~{a}o} assoc @
+@fname{assoc} (@var{chave}, @var{lista}, @var{retorno}) @
+@fname{assoc} (@var{chave}, @var{lista})
 
 Essa fun@,{c}@~{a}o busca por @var{chave} no lado esquerdo da
-@var{lista} informada. A @var{lista} argumento deve ser uma lista, cada um dos
+@var{lista} de entrada. O argumento @var{lista} deve ser uma lista, cada um dos
 elementos dessa lista @'{e} uma express@~{a}o com exatamente duas partes. Na maioria dos casos,
 os elementos de @var{lista} s@~{a}o tamb@'{e}m listas, cada lista com dois
 elementos.
@@ -206,8 +206,9 @@ ent@~{a}o @code{assoc} retorna @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{cons}
-@deffn  {Fun@,{c}@~{a}o} cons (@var{expr}, @var{lista})
-@deffnx {Fun@,{c}@~{a}o} cons (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~{a}o} cons @
+@fname{cons} (@var{expr}, @var{lista}) @
+@fname{cons} (@var{expr_1}, @var{expr_2})
 
 O comando @code{cons (@var{expr}, @var{lista})} retorna uma nova lista constru@'{i}da tendo
 @var{expr} como seu primeiro elemento, seguido pelos elementos de @var{lista}. @'{E}
@@ -332,8 +333,9 @@ depender do valor atual de @code{i}.
 
 @c -----------------------------------------------------------------------------
 @anchor{delete}
-@deffn  {Fun@,{c}@~{a}o} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Fun@,{c}@~{a}o} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn  {Fun@,{c}@~{a}o} delete @
+@fname{delete} (@var{expr_1}, @var{expr_2}) @
+@fname{delete} (@var{expr_1}, @var{expr_2}, @var{n})
 
 A fun@,{c}@~{a}o usada na forma @code{delete(@var{expr_1}, @var{expr_2})}
 remove da @var{expr_2} quaisquer argumentos de seu operador de n@'{i}vel mais alto
@@ -477,8 +479,9 @@ para maiores detalhes.
 
 @c -----------------------------------------------------------------------------
 @anchor{endcons}
-@deffn  {Fun@,{c}@~{a}o} endcons (@var{expr}, @var{lista})
-@deffnx {Fun@,{c}@~{a}o} endcons (@var{expr_1}, @var{expr_2})
++@deffn  {Fun@,{c}@~{a}o} endcons @
+@fname{endcons} (@var{expr}, @var{lista}) @
+@fname{endcons} (@var{expr_1}, @var{expr_2})
 
 O comando @code{endcons (@var{expr}, @var{lista})} retorna uma nova lista constru@'{i}da a partir dos elementos de
 @var{lista} seguidos por @var{expr}. A fun@,{c}@~{a}o do Maxima @code{endcons} pode tamb@'{e}m ser usada onde
@@ -678,12 +681,13 @@ Retorna @code{true} se @var{expr} for uma lista e @code{false} caso n@~{a}o seja
 
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
-@deffn  {Fun@,{c}@~{a}o} makelist ()
-@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{n})
-@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_max})
-@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
-@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{incr})
-@deffnx {Fun@,{c}@~{a}o} makelist (@var{expr}, @var{x}, @var{lista})
+@deffn  Fun@,{c}@~{a}o{} makelist @
+@fname{makelist} () @
+@fname{makelist} (@var{expr}, @var{n}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_max}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_0}, @var{i_max}) @
+@fname{makelist} (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{incr}) @
+@fname{makelist} (@var{expr}, @var{x}, @var{lista})
 
 A primeira forma, @code{makelist ()}, cria uma lista vazia. A segunda forma,
 @code{makelist (@var{expr})}, cria uma lista com @var{expr} sendo seu @'{u}nico
@@ -838,7 +842,7 @@ para maiores detalhes.
 @deffn {Fun@,{c}@~{a}o} pop (@var{lista})
 
 A fun@,{c}@~{a}o @code{pop} remove e retorna o primeiro elemento da lista @var{lista}. O segundo argumento 
-@var{lista} deve ser uma mapatom que est@'{a} associado a uma lista n@~{a}o vazia. Se o argumento @var{lista} n@~{a}o
+@var{lista} deve ser um @mref{mapatom} que est@'{a} associado a uma lista n@~{a}o vazia. Se o argumento @var{lista} n@~{a}o
 for associado a uma lista n@~{a}o vazia, Maxima sinaliza um erro. Para exemplos, veja @mref{push}.
 
 @opencatbox
@@ -851,7 +855,7 @@ for associado a uma lista n@~{a}o vazia, Maxima sinaliza um erro. Para exemplos,
 @deffn {Fun@,{c}@~{a}o} push (@var{item}, @var{lista})
 
 A fun@,{c}@~{a}o @code{push} anexa no in@'{i}cio de uma @var{lista} o item @var{item} e retorna uma c@'{o}pia da nova lista. 
-O segundo argumento @var{lista} deve ser um mapatom que esteja ssociado a uma lista. O primeiro argumento @var{item} 
+O segundo argumento @var{lista} deve ser um @mref{mapatom} que esteja associado a uma lista. O primeiro argumento @var{item} 
 pode ser qualquer s@'{i}mbolo do Maxima ou express@~{a}o do Maxima. Se o argumento @var{lista} n@~{a}o estiver associado a uma lista, Maxima 
 sinaliza um erro.
 
@@ -903,35 +907,36 @@ Exemplos:
 
 @c -----------------------------------------------------------------------------
 @anchor{rest}
-@deffn  {Fun@,{c}@~{a}o} rest (@var{expr}, @var{n})
-@deffnx {Fun@,{c}@~{a}o} rest (@var{expr})
+@deffn  {Fun@,{c}@~{a}o} rest @
+@fname{rest} (@var{expr}, @var{n}) @
+@fname{rest} (@var{expr})
 
-+Returns @var{expr} with its first @var{n} elements removed if @var{n}
-+is positive and its last @code{- @var{n}} elements removed if @var{n}
-+is negative. If @var{n} is 1 it may be omitted. The first argument
-+@var{expr} may be a list, matrix, or other expression. When @var{expr}
-+is a mapatom, @code{rest} signals an error; when @var{expr} is an empty
-+list and @code{partswitch} is false, @code{rest} signals an error. When.
-+@var{expr} is an empty list and @code{partswitch} is true, @code{rest}.
-+returns @code{end}.
-+
-+Applying @code{rest} to expression such as @code{f(a,b,c)} returns
-+@code{f(b,c)}. In general, applying @code{rest} to an nonlist doesn't
-+make sense. For example, because '^' requires two arguments,
-+@code{rest(a^b)} results in an error message. The functions
-+@code{args} and @code{op} may be useful as well, since @code{args(a^b)}
-+returns @code{[a,b]} and @code{op(a^b)} returns ^.
-+
-+@example
-+@group
-+(%i1) rest(a+b+c);
-+(%o1) b+a
-+(%i2) rest(a+b+c,2);
-+(%o2) a
-+(%i3) rest(a+b+c,-2);
-+(%o3) c
-+@end group
-+@end example
+Retorna @var{expr} com seus primeiros @var{n} elementos removidos se @var{n}
+for positivo ou seus últimos @code{- @var{n}} elementos removidos se @var{n}
+for negativo. Se @var{n} for 1 a explicitação de @var{n} pode ser omitida. O primeiro argumento
+@var{expr} pode ser uma lista, matriz, ou outra expressão. Quando @var{expr}
+for um @mref{mapatom}, @code{rest} sinaliza um erro; quando @var{expr} for uma lista
+vazia e @code{partswitch} for @code{false}, @code{rest} sinaliza um erro. Quando
+@var{expr} for uma lista vazia e @code{partswitch} for @code{true}, @code{rest}.
+retorna @code{end}.
+
+Aplicando @code{rest} a uma expressão como @code{f(a,b,c)} retorna
+@code{f(b,c)}. Em geral, aplicando @code{rest} a algo que não é lista não
+faz sentido. Por exemplo, devido a '^' requerer dois argumentos,
+@code{rest(a^b)} resulta em uma mesnagem de erro. As funções
+@code{args} e @code{op} podem ser também úteis, uma vez que @code{args(a^b)}
+retorna @code{[a,b]} e @code{op(a^b)} retorna ^.
+
+@example
+@group
+(%i1) rest(a+b+c);
+(%o1) b+a
+(%i2) rest(a+b+c,2);
+(%o2) a
+(%i3) rest(a+b+c,-2);
+(%o3) c
+@end group
+@end example
 
 @opencatbox
 @category{Listas} @category{Express@~{o}es}
@@ -995,8 +1000,9 @@ para mais detalhes.
 
 @c -----------------------------------------------------------------------------
 @anchor{sort}
-@deffn  {Fun@,{c}@~{a}o} sort (@var{L}, @var{P})
-@deffnx {Fun@,{c}@~{a}o} sort (@var{L})
+@deffn  {Fun@,{c}@~{a}o} sort @
+@fname{sort} (@var{L}, @var{P}) @
+@fname{sort} (@var{L})
 
 O comando @code{sort(@var{L}, @var{P})} ordena a lista @var{L} conforme o predicado @code{P} de dois argumentos
 que definem uma ordena@,{c}@~{a}o estrita fraca @footnote{Nota do tradutor: ordena@,{c}@`{a}o estrita fraca usa o menor/maior
@@ -1047,8 +1053,8 @@ que definem uma ordem estrita fraca sobre os elementos da lista.
 @end group
 @end example
 
-O preicado pode ser um nome de fun@,{c}@~{a}o 
-ou oerador bin@'{a}rio infixo, ou uma express@~{a}o @code{lambda}.  Se for
+O predicado pode ser um nome de fun@,{c}@~{a}o 
+ou operador bin@'{a}rio infixo, ou uma express@~{a}o @code{lambda}.  Se for
 o nome de um operador, o nome deve ser informado entre aspas duplas.
 
 @c ===beg===

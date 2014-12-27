@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 777136e393f9239882b6510534f1d813  Help.texi
+@c 035096e62d02de60369e60c80a03fdcd  Help.texi
 @c
 @menu       
 * Documentation::               
@@ -140,15 +140,14 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{describe}
-@deffn  {Fun@,{c}@~{a}o} describe (@var{seqcaracteres})
-@deffnx {Fun@,{c}@~{a}o} describe (@var{seqcaracteres}, exact)
-@deffnx {Fun@,{c}@~{a}o} describe (@var{seqcaracteres}, inexact)
-@ifinfo
 @fnindex Ajuda
-@end ifinfo
+@deffn  {Fun@,{c}@~{a}o} describe @
+@fname{describe} (@var{caracteres}) @
+@fname{describe} (@var{caracteres}, exact) @
+@fname{describe} (@var{caracteres}, inexact)
 
-@code{describe(@var{seqcaracteres})} @'{e} equivalente a
-@code{describe(@var{seqcaracteres}, exact)}.
+@code{describe(@var{caracteres})} @'{e} equivalente a
+@code{describe(@var{caracteres}, exact)}.
 
 @code{describe(@var{seqcaracteres}, exact)} encontra um item com t@'{i}tulo igual
 (sens@'{i}vel @`{a} caixa alta ou baixa) a @var{seqcaracteres}, se existir qualquer tal item.
@@ -217,8 +216,9 @@ respectivamente.
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
-@deffn  {Fun@,{c}@~{a}o} example (@var{t@'{o}pico})
-@deffnx {Fun@,{c}@~{a}o} example ()
+@deffn  {Fun@,{c}@~{a}o} example @
+@fname{example} (@var{t@'{o}pico}) @
+@fname{example} ()
 
 @code{example (@var{t@'{o}pico})} alguns exemplos de @var{t@'{o}pico}, que pode ser
 um s@'{i}mbolo ou uma sequ@^{e}ncia de caracteres.  Para ver exemplos de operadores como @code{if}, @code{do},

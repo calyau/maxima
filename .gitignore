@@ -23,3 +23,4 @@ maxima*.tar.gz
 
 /binary
 *~
+*.ERR

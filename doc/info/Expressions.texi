@@ -858,7 +858,6 @@ with respect to products.  E.g. compare both settings of the switch on
 
 (%t3)                          2 b
 
-
                           2            2
 (%t4)                    b  + 2 a b + a
 
@@ -889,28 +888,6 @@ occur in @var{expr}. A variable is declared as @code{constant}
 type via @mref{declare}, and @mref{constantp} returns @code{true}
 for all variables declared as @code{constant}. The default is to
 omit constant variables from @code{listofvars} return value.
-
-Example:
-
-@c ===beg===
-@c lfreeof ([ a, x], x^2+b);
-@c lfreeof ([ b, x], x^2+b);
-@c lfreeof ([ a, y], x^2+b);
-@c ===end===
-@example
-@group
-(%i1) lfreeof ([ a, x], x^2+b);
-(%o1)                                false
-@end group
-@group
-lfreeof ([ b, x], x^2+b);
-(%o2)                                false
-@end group
-@group
-lfreeof ([ a, y], x^2+b);
-(%o3)                                true
-@end group
-@end example
 
 @opencatbox
 @category{Expressions}
@@ -979,6 +956,28 @@ See also the option variable @mref{listdummyvars} to exclude or include
 For each member @var{m} of @var{list}, calls
 @code{freeof (@var{m}, @var{expr})}.  It returns @code{false} if any call to
 @mref{freeof} does and @code{true} otherwise.
+
+Example:
+
+@c ===beg===
+@c lfreeof ([ a, x], x^2+b);
+@c lfreeof ([ b, x], x^2+b);
+@c lfreeof ([ a, y], x^2+b);
+@c ===end===
+@example
+@group
+(%i1) lfreeof ([ a, x], x^2+b);
+(%o1)                                false
+@end group
+@group
+lfreeof ([ b, x], x^2+b);
+(%o2)                                false
+@end group
+@group
+lfreeof ([ a, y], x^2+b);
+(%o3)                                true
+@end group
+@end example
 
 @opencatbox
 @category{Expressions}

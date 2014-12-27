@@ -684,5 +684,7 @@ When one changes, the other does too."
 ;; usable *LOAD-PATHNAME*, but it does have SYS:*LOAD-PATHNAME*.
 (defun maxima-load-pathname-directory ()
   "Return the directory part of *load-pathname*."
-  (make-pathname :directory (pathname-directory #-gcl *load-pathname*
-						#+gcl sys:*load-pathname*)))
+  (let ((path #-gcl *load-pathname*
+              #+gcl sys:*load-pathname*))
+    (make-pathname :directory (pathname-directory path)
+                   :device (pathname-device path))))

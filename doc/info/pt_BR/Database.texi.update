@@ -693,7 +693,7 @@ n@~{a}o puderem ser mostradas de outra forma, i.e.  para @mrefcomma{atvalue}@w{}
 @mrefcomma{atomgrad} @mrefcomma{gradef} e @mrefdot{matchdeclare}
 
 @opencatbox
-@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Display functions}
+@category{Declara@,{c}@~{o}es e infer@^{e}ncias} @category{Fun@,{c}@~{o}es de exibi@,{c}@~{a}o}
 @closecatbox
 @end deffn
 

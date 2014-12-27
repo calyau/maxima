@@ -611,7 +611,11 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
     #+gcl (lisp:system (apply '$sconcat args))
     #+ecl (si:system (apply '$concat args))
-    #+clisp (ext:run-shell-command (apply '$sconcat args))
+    #+clisp (let ((output (ext:run-shell-command (apply '$sconcat args)
+                                                 :wait t :output :stream)))
+              (loop for line = (read-line output nil)
+                 while line do
+                   (format (or s t) "~a~%" line)))
     #+(or cmu scl) (ext:run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
     #+sbcl (sb-ext:run-program shell (list shell-opt (apply '$sconcat args)) :search t :output (or s t))

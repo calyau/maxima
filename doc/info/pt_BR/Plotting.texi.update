@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c de89bb7d7b996f9036fdbde3081554d6  Plotting.texi
+@c b5c28e7d3abce9a91af15bd771290edf  Plotting.texi
 @c
 @menu
 * Introduction to Plotting::
@@ -136,10 +136,10 @@ nome antigo ainda funciona como um sin@^{o}nimo para @code{xmaxima}.
 
 @c -----------------------------------------------------------------------------
 @anchor{contour_plot}
-@deffn {Fun@,{c}@~{a}o} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
+@deffn {Fun@,{c}@~{a}o} contour_plot (@var{expr}, @var{x_intervalo}, @var{y_intervalo}, @var{options}, @dots{})
 
 Essa fun@,{c}@~{a}o monta o gr@'{a}fico de contorno (curvas de valor igual) de @var{expr}
-sobre a regi@~{a}o @var{x_range} por @var{y_range}.
+sobre a regi@~{a}o @var{x_intervalo} por @var{y_intervalo}.
 Quaisquer argumentos adicionais s@~{a}o tratados da mesma forma que em @mrefdot{plot3d}
 
 Essa fun@,{c}@~{a}o somente funciona quando o formato de montagem de gr@'{a}fico for ou @code{gnuplot}
@@ -278,8 +278,9 @@ de @code{gnuplot_view_args}.}
 
 @c -----------------------------------------------------------------------------
 @anchor{implicit_plot}
-@deffn  {Fun@,{c}@~{a}o} implicit_plot (@var{expr}, @var{x_intervalo}, @var{y_intervalo})
-@deffnx {Fun@,{c}@~{a}o} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_intervalo}, @var{y_intervalo})
+@deffn  {Fun@,{c}@~{a}o} implicit_plot @
+@fname{implicit_plot} (@var{expr}, @var{x_intervalo}, @var{y_intervalo}) @
+@fname{implicit_plot} ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_intervalo}, @var{y_intervalo})
 
 Exibe um gr@'{a}fico de uma fun@,{c}@~{a}o no plano real, definido implicitamente atrav@'{e}s da
 express@~{a}o @var{expr}. O dom@'{i}nio no plano @'{e} definido atrav@'{e}s de
@@ -450,9 +451,10 @@ polares), e transform@'{a}-los em coordenadas x e y cartesianas.
 
 @c -----------------------------------------------------------------------------
 @anchor{plot2d}
-@deffn  {Fun@,{c}@~{a}o} plot2d (@var{gr@'{a}fico}, @var{x_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
-@deffnx {Fun@,{c}@~{a}o} plot2d ([@var{gr@'{a}fico_1}, @dots{}, @var{gr@'{a}fico_n}], @dots{}, @var{op@,{c}@~{o}es}, @dots{})
-@deffnx {Fun@,{c}@~{a}o} plot2d ([@var{gr@'{a}fico_1}, @dots{}, @var{gr@'{a}fico_n}], @var{x_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
+@deffn  {Fun@,{c}@~{a}o} plot2d @
+@fname{plot2d} (@var{plot}, @var{x_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{}) @
+@fname{plot2d} ([@var{gr@'{a}fico_1}, @dots{}, @var{gr@'{a}fico_n}], @dots{}, @var{op@,{c}@~{o}es}, @dots{}) @
+@fname{plot2d} ([@var{gr@'{a}fico_1}, @dots{}, @var{gr@'{a}fico_n}], @var{x_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
 
 Onde @var{gr@'{a}fico}, @var{gr@'{a}fico_1}, @dots{}, @var{gr@'{a}fico_n} podem ser ou
 express@~{o}es, ou nomes de fun@,{c}@~{o}es ou uma lista com
@@ -724,8 +726,9 @@ Veja tamb@'{e}m a se@,{c}@~{a}o @mref{Plotting Options} - Op@,{c}oes Gr@'{a}fica
 
 @c -----------------------------------------------------------------------------
 @anchor{plot3d}
-@deffn  {Fun@,{c}@~{a}o} plot3d (@var{expr}, @var{x_intervalo}, @var{y_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
-@deffnx {Fun@,{c}@~{a}o} plot3d ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_intervalo}, @var{y_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
+@deffn {Fun@,{c}@~{a}o} plot3d @
+@fname{plot3d} (@var{expr}, @var{x_intervalo}, @var{y_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{}) @
+@fname{plot3d} ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_intervalo}, @var{y_intervalo}, @dots{}, @var{op@,{c}@~{o}es}, @dots{})
 
 Exibe um gr@'{a}fico de uma ou mais superf@'{i}cies definidas como fun@,{c}@~{o}es de duas
 vari@'{a}veis ou na forma param@'{e}trica.
@@ -1243,8 +1246,9 @@ Escreve um ou v@'{a}rios r@'{o}tulos nos pontos de coordenadas
 
 @c -----------------------------------------------------------------------------
 @anchor{legend}
-@defvr  {Op@,{c}@~{a}o gr@'{a}fica} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
-@defvrx {Op@,{c}@~{a}o gr@'{a}fica} legend [legend, @var{false}]
+@defvr {Op@,{c}@~{a}o gr@'{a}fica} legend @
+@fname{legend} [legend, @var{string_1}, @dots{}, @var{string_n}] @
+@fname{legend} [legend, @var{false}]
 
 Especifica os r@'{o}tulos para os gr@'{a}ficos quando v@'{a}rios gr@'{a}ficos s@~{a}o exibidos.  Se
 houverem mais graficos que n@'{u}meros de r@'{o}tulos, os n@'{u}meros ser@~{a}o
@@ -1313,8 +1317,9 @@ ajusta o n@'{u}mero de pontos que ir@'{a} ser mostrado no gr@'{a}fico.
 
 @c -----------------------------------------------------------------------------
 @anchor{palette}
-@defvr  {Op@,{c}@~{a}o gr@'{a}fica} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
-@defvrx {Op@,{c}@~{a}o gr@'{a}fica} palette [palette, @var{false}]
+@defvr  {Op@,{c}@~{a}o gr@'{a}fica} palette @
+@fname{palette} [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]] @
+@fname{palette} [palette, @var{false}]
 
 Consiste de uma paleta ou de uma lista de muitas paletas.  Cada
 paleta @'{e} uma lista com uma palavra chave seguida de valores. Se a palavra chave for
@@ -1517,8 +1522,9 @@ um gr@'{a}fico tridimensional ser@~{a}o iguais.
 
 @c -----------------------------------------------------------------------------
 @anchor{style}
-@defvr  {Op@,{c}@~{a}o gr@'{a}fica} style [estilo, @var{type_1}, @dots{}, @var{type_n}]
-@defvrx {Op@,{c}@~{a}o gr@'{a}fica} style [estilo, [@var{style_1}], @dots{}, [@var{style_n}]]
+@defvr  {Op@,{c}@~{a}o gr@'{a}fica} style @
+@fname{style} [style, @var{type_1}, @dots{}, @var{type_n}] @
+@fname{style} [style, [@var{style_1}], @dots{}, [@var{style_n}]]
 
 Os estilos que ir@~{a}o ser usados nas v@'{a}rias fun@,{c}@~{o}es ou conjuntos de dados
 em um gr@'{a}fico bidimensional.  A palavra @var{style} deve ser seguida por um ou mais
@@ -2046,8 +2052,9 @@ Fecha a liga@,{c}@~{a}o direta para o gnuplot que usada com o formato
 
 @c -----------------------------------------------------------------------------
 @anchor{gnuplot_replot}
-@deffn  {Fun@,{c}@~{a}o} gnuplot_replot ()
-@deffnx {Fun@,{c}@~{a}o} gnuplot_replot (@var{s})
+@deffn  {Fun@,{c}@~{a}o} gnuplot_replot @
+@fname{gnuplot_replot} () @
+@fname{gnuplot_replot} (@var{s})
 
 Atualiza a janela do gnuplot.  Se @code{gnuplot_replot} for chamado com um
 comando gnuplot em uma sequ@^{e}ncia de caracteres @var{s}, ent@~{a}o @code{s} @'{e} enviada para o gnuplot

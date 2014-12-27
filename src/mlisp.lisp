@@ -831,7 +831,7 @@ wrapper for this."
 
 (defmspec $new (h)
   (unless (= (length (cdr h)) 1)
-    (merror (intl:gettext "~new: expected exactly one argument; found: ~M") (length (cdr h))))
+    (merror (intl:gettext "new: expected exactly one argument; found: ~M") (length (cdr h))))
 
   (let ((recordname (cadr h)))
     (cond

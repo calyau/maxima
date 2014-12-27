@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 9bd5652e5e494830a8ff5a706f50578d  Arrays.texi
+@c 891f9d709b041d14d27e375d36e1fd01  Arrays.texi
 @c
 @c -----------------------------------------------------------------------------
 @page
@@ -19,9 +19,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{array}
-@deffn  {Fun@,{c}@~{a}o} array (@var{nome}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Fun@,{c}@~{a}o} array (@var{nome}, @var{tipo}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Fun@,{c}@~{a}o} array ([@var{nome_1}, @dots{}, @var{nome_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {Fun@,{c}@~{a}o} array @
+@fname{array} (@var{name}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
 
 Cria um vetor est@'{a}tico @math{n}-dimensional.  O valor @math{n} pode ser menor ou equal a 5.
 Os subscritos para a @math{i}'@'{e}sima dimens@~{a}o s@~{a}o os inteiros variando de 0 a
@@ -827,8 +828,9 @@ modificado.
 
 @c -----------------------------------------------------------------------------
 @anchor{remarray}
-@deffn  {Fun@,{c}@~{a}o} remarray (@var{A_1}, @dots{}, @var{A_n})
-@deffnx {Fun@,{c}@~{a}o} remarray (all)
+@deffn  {Fun@,{c}@~{a}o} remarray @
+@fname{remarray} (@var{A_1}, @dots{}, @var{A_n}) @
+@fname{remarray} (all)
 
 Remove vetores est@'{a}ticos e fun@,{c}@~{o}es associadas a vetores est@'{a}ticos associados e libera o espa@,{c}o de armazenamento usado.
 Os argumentos podem ser vetores est@'{a}ticos declarados, n@~{a}o declarados (desordenados), fun@,{c}@~{o}es de vetores
