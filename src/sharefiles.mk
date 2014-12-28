@@ -401,6 +401,7 @@ contrib/namespaces/foo.mac \
 contrib/namespaces/namespaces.lisp \
 contrib/namespaces/rtest_namespaces.mac \
 contrib/noninteractive/asksign1.lisp \
+contrib/noninteractive/expand_branches.mac \
 contrib/noninteractive/noninteractive.lisp \
 contrib/noninteractive/noninteractive.mac \
 contrib/noninteractive/rtest_noninteractive.mac \
