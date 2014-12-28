@@ -1225,7 +1225,7 @@
             (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                                (car y-start) (car y-mid) (car y-end)
                                                depth 1e-5)))
-              (when (notevery #'numberp sublst)
+              (when (notevery #'(lambda (x) (or (numberp x) (eq x t) )) sublst)
                 (merror "draw2d (explicit): non defined variable"))
               (when (not (null result))
                 (setf sublst (cddr sublst)))
