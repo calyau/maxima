@@ -1740,7 +1740,7 @@
          (count -1)
          ncols result)
     (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2)))
-       (merror "draw2d (explicit): non defined variable"))
+       (merror "draw3d (explicit): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
