@@ -424,7 +424,7 @@ ru.ReferenceManualBrazilianPortuguese=Справочное руководство (Бразильский португ
 ru.ReferenceManualRussian=Справочное руководство (Русский)
 ru.ReferenceManualSpanish=Справочное руководство (Испанский)
 
-
+3
 ;=== Spanish ===  LID=$0c0a  CodePage=1252
 
 es.FullInstallation=Instalaciуn Completa
@@ -472,8 +472,10 @@ es.ReferenceManualSpanish=Manual de Referencia (Espaсol)
 { Check if a path contains spaces.  If it does, convert it to
   the equivalent short path }
 function PathWithoutSpaces( strIn: String): String;
+var
+  Version: TWindowsVersion;
 begin
-  if (Pos(' ',strIn) = 0) then
+  if (Pos(' ',strIn) = 0) or (Version.Major > 5) then
     Result := strIn
   else
     Result := GetShortName(strIn);

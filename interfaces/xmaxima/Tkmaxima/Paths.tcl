@@ -299,7 +299,9 @@ proc setMaxDir {} {
 	set maxima_priv(firstUrl) ""
     } else {
 	if {$tcl_platform(platform) == "windows"} {
-	    set file [file attrib $file -shortname]
+	    if {$tcl_platform(osVersion) < 5 } {
+		set file [file attrib $file -shortname]
+	    }
 	    # convert to unix
 	    set file [file dir $file]/[file tail $file]
 	}
@@ -398,7 +400,9 @@ proc vMAXSetMaximaCommand {} {
     if {$tcl_platform(platform) == "windows"} {
 	if {[string first " " $exe] >= 0} {
             regsub -all "\[\{\}\]" $exe "" exe
-            set exe [file attrib $exe -shortname]
+	    if {$tcl_platform(osVersion) < 5} {
+		set exe [file attrib $exe -shortname]
+	    }
         }
     }
 
