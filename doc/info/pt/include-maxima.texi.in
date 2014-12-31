@@ -3,7 +3,7 @@
 @c This file is the Portuguese translation of the original file in English
 @c Translator: Jaime Villate <villate ARROBA fe PONTO up PONTO pt>
 @c ------------------------------------------------------------------------
-@c %**start of header
+@c start of header
 @documentencoding ISO-8859-1
 @documentlanguage pt_PT
 @settitle Manual do Maxima @manual_version@
@@ -14,7 +14,7 @@
 
 @setchapternewpage odd
 @paragraphindent 0
-@c %**end of header
+@c end of header
 
 @ifinfo
 Este é o Manual do Maxima no formato Texinfo
