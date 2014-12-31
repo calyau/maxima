@@ -88,7 +88,38 @@
 (defun presign (n p)
   (if (oddp n) (pminus p) p))
 
-;;computes resultant using subresultant p.r.s. TOMS Sept. 1978
+;; Computes resultant using subresultant PRS. See Brown, "The Subresultant PRS
+;; Algorithm" (TOMS Sept. 1978). This is Algorithm 1, as found on page 241.
+;;
+;; Write G[1] = P, G[2] = Q and write g[i] for the leading coefficient of
+;; G[i]. On the k'th iteration of the loop, we are computing G[k+2], which is
+;; given by the formula
+;;
+;;    G[k+2] = (-1)^(delta[k]+1) prem(G[k], G[k+1]) / (g[k] h[k]^delta[k])
+;;
+;; except we set the denominator to 1 when k=1. Here, h[2] = g[2]^delta[1] and,
+;; for i >= 3, satisfies the recurrence:
+;;
+;;    h[i] = g[i]^delta[i-1] h[i-1]^(1 - delta[i-1])
+;;
+;; Here, delta[i] = deg(G[i]) - deg(G[i+1]), which is non-negative.
+;;
+;; Dictionary between program variables and values computed by the algorithm:
+;;
+;;   - g is set to g[i-2]
+;;   - h is set to g[i-2]^d / "h^1-d"
+;;
+;;   Since d and h^1-d haven't yet been set on this iteration, they get their
+;;   previous values, which turn out to give:
+;;
+;;   - h is set to g[i-2]^delta[i-3] h[i-3]^[1-delta[i-3]] which, substituting
+;;     above, is h[i-2].
+;;
+;;   Continuing:
+;;
+;;   - degq is set to deg(G[i-1])
+;;   - d is set to delta[i-2]
+;;   - h^1-d is (confusingly!) set to h[i-2]^(delta[i-2] - 1).
 
 (defun subresult (p q)
   (loop for g = 1 then (p-lc p)

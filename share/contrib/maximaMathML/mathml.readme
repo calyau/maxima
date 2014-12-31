@@ -1,11 +1,19 @@
+To load this package, run
 
-The files:
-
-load-mathml.lsp
-CtMathML.lsp
-PrMathML.lsp
-mathml-maxima.lsp
-mathmldisplay.lsp
+  load("maximaMathML");
 
 The package is experimental and needs more testing and
 fine tuning.  Also it may need to be upgraded to MathML2.0
+
+
+If you're writing another package that you want to hook in with the
+MathML presentation code (to display some special operator/function
+differently), you'll want to call the SETUP function to associate your
+operator with a presentation function. See MATHML-PRESENTATION-LAMDA
+in PrMathML.lisp for an example of how the presentation function can
+be written.
+
+To ensure that the customisation gets set up correctly when
+maximaMathML is loaded, add a set up function to
+*MATHML-PRESENTATION-HOOK*. See the ezunits.lisp in the ezunits
+library for an example of how to do so.

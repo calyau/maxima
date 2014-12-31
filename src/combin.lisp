@@ -1204,7 +1204,12 @@
 
 (defun fsgeo (e y lo hi)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
-    (cond ((free r *var*)
+    (cond ((equal r 1)
+           (adsum
+            (list '(mtimes)
+                  (list '(mplus) 1 hi (list '(mtimes) -1 lo))
+                  (maxima-substitute lo *var* e))))
+          ((free r *var*)
 	   (adsum
 	    (list '(mtimes) y
 		  (maxima-substitute 0 *var* e)

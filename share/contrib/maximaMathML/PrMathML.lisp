@@ -1085,6 +1085,12 @@
 (setq $mPrautolabel nil) ;set autolabel mode off, can be set to be integer
 (setq $lamPrautolabel nil)      ;set LaTeX autolabel mode false
 
+;; The MathML presentation code has been loaded. Run each post-load hook. This
+;; let other libraries hook in to the MathML library easily (doing so needs
+;; SETUP and MPR_ENGINE to be defined).
+;;
+;; Each hook should be an idempotent thunk.
 
-
-
+(when (boundp '*mathml-presentation-hook*)
+  (dolist (hook (symbol-value '*mathml-presentation-hook*))
+    (funcall hook)))
