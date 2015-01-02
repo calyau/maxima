@@ -1,7 +1,7 @@
 @c -*-texinfo-*-
 @c english version 1.48
 
-@c %**start of header
+@c start of header
 @documentencoding ISO-8859-1
 @documentlanguage es_ES
 @settitle Manual de Maxima @manual_version@
@@ -12,7 +12,7 @@
 
 @setchapternewpage odd
 @paragraphindent 0
-@c %**end of header
+@c end of header
 
 @ifinfo
 Este es el Manual de Maxima en versión Texinfo

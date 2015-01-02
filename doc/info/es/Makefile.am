@@ -30,5 +30,5 @@ DataTypes.es.texi   Evaluation.es.texi   MathFunctions.es.texi   Database.es.tex
 bernstein.texi      to_poly_solve.texi
 
 include ../common-lang.mk
-EXTRA_DIST += texi2html.init
+EXTRA_DIST += texi2html.init txi-es_ES.tex
 

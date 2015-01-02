@@ -19,6 +19,7 @@ de la transformada rápida de Fourier.
 
 
 @node Funciones y variables para la transformada rápida de Fourier, Funciones para la resolución numérica de ecuaciones, Introducción a la transformada rápida de Fourier, Métodos numéricos
+@section Funciones y variables para la transformada rápida de Fourier
 
 @deffn {Función} polartorect (@var{magnitude_array}, @var{phase_array})
 

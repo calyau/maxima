@@ -11,7 +11,7 @@ El paquete adicional @code{dynamics} incluye funciones para
 visualización 3D, animaciones, análisis gráfico de ecuaciones
 diferenciales y ecuaciones de diferencias y para resolución numérica de
 ecuaciones diferenciales. Las funciones para ecuaciones diferenciales se
-describen en la sección sobre @mxref{Métodos numéricos} y las funciones
+describen en la sección sobre @mref{Métodos numéricos} y las funciones
 para representar las gráficas de los conjuntos de Mandelbrot y de Julia
 se describen en la sección sobre @mrefdot{Gráficos}
 

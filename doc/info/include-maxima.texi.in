@@ -10,7 +10,7 @@
 @c texinfo-multiple-files-update will delete the detailed node listing!
 
 
-@c %**start of header
+@c start of header
 @settitle Maxima @manual_version@ Manual
 
 @synindex ky fn
@@ -18,7 +18,7 @@
 @synindex cp fn
 
 @setchapternewpage odd
-@c %**end of header
+@c end of header
 
 @ifinfo
 This is a Texinfo Maxima Manual
