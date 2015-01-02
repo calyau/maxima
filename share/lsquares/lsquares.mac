@@ -256,7 +256,7 @@ lsquares_mse ('data%, variables, equation) := block
 
     makelist ('data% ['i, j], j, 1, length (variables)),
     map ("=", variables, %%),
-    sublis (%%, (lhs (equation) - rhs (equation))^2),
+    psubst (%%, (lhs (equation) - rhs (equation))^2),
     buildq
         ([n : length (ev (data%)), summand : %%],
         (1/n) * 'sum (summand, i, 1, n)),
@@ -267,7 +267,7 @@ lsquares_mse ('data%, variables, equation) := block
 lsquares_mse_with_array (data%,variables,equation):=block
    (makelist(data%['i,j],j,0,length(variables)-1),
     map("=",variables,%%),
-    sublis(%%,(lhs(equation)-rhs(equation))^2),
+    psubst(%%,(lhs(equation)-rhs(equation))^2),
     buildq([n:array_nrows(data%),summand:%%],
     ('sum(summand,i,0,n-1))/n));
  *
@@ -313,8 +313,8 @@ lsquares_estimates_approximate (MSE, parameters, [optional_args]) := block
 
 lsquares_residuals (data, variables, equation, parameters_estimates) :=
 
-   (equation : sublis (parameters_estimates, equation),
-    maplist (lambda ([row], (sublis (map ("=", variables, row), equation), lhs (%%) - rhs (%%))), data));
+   (equation : psubst (parameters_estimates, equation),
+    maplist (lambda ([row], (psubst (map ("=", variables, row), equation), lhs (%%) - rhs (%%))), data));
 
 lsquares_residual_mse (data, variables, equation, parameters_estimates) :=
 
