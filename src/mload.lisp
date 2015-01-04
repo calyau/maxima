@@ -617,7 +617,6 @@
   ;; Convert to a new list that looks like (:opt1 val1 :opt2 val2 ...)
   ;;
   (unless (listp options)
-    ;; UNREACHABLE MESSAGE: OPTIONS IS A &REST ARGUMENT TO $RUN_TESTSUITE SO IT MUST PASS LISTP
     (merror "Invalid Maxima keyword options: ~M" options))
   (when (every #'(lambda (o)
 		   ;; Make sure every option has the right form.
