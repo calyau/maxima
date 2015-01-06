@@ -520,6 +520,77 @@ atan2(sqrt(1-u)*(u-1),1)$
 atan2((1-u)^(1/2^10)*(u-1),1);
 atan2((1-u)^(1/2^10)*(u-1),1)$
 
+/* adding tests for some previously uncovered code in trigi.lisp and trigo.lisp */
+
+block([triginverses : true], [sin(atan2(y,x)), cos(atan2(y,x)),tan(atan2(y,x)), cot(atan2(y,x)), csc(atan2(y,x)), sec(atan2(y,x))]);
+[y/sqrt(y^2+x^2), x/sqrt(y^2+x^2),  y/x, x/y, sqrt(y^2+x^2)/y, sqrt(y^2+x^2)/x]$
+
+block([exponentialize : true], [sec(x),csch(x), sech(x)]);
+[2/(%e^(%i*x)+%e^-(%i*x)), 2/(%e^x-%e^-x), 2/(%e^x+%e^-x)]$
+
+[atan(inf), atan(-minf), atan(minf), atan(-inf)];
+[%pi/2, %pi/2, -%pi/2, -%pi/2]$
+
+block([%piargs : true], [atan(-1 + sqrt(2)), atan(1+sqrt(2))]);
+[%pi/8, 3*%pi/8]$
+
+block([%iargs : true], atan(%i*x));
+%i*atanh(x)$
+
+[atan(tan(2015)), atan(tan(-2014)),  atan(cot(-2014)), atan(cot(2015))];
+[2015-641*%pi,641*%pi-2014,2014-1283*%pi/2,1283*%pi/2-2015]$
+
+asin(sqrt(3)/2);
+%pi/3$
+
+asin(-sqrt(3)/2);
+-%pi/3$
+
+map(lambda([x], asin(sin(x)) - (-min(2*%pi*floor(x/(2*%pi))-x+%pi,-2*%pi*floor(x/(2*%pi))+x-2*%pi)-max(x-2*%pi*floor(x/(2*%pi)),2*%pi*floor(x/(2*%pi))-x+%pi)-2*%pi*floor(x/(2*%pi))+x-%pi)), makelist(i/3,i,0,43));
+''(makelist(0,i,0,43))$
+
+map(lambda([x], asec(sec(x)) - (%pi-abs(2*%pi*floor(x/(2*%pi))-x+%pi))), makelist(i/19,i,0,25));
+''(makelist(0,i,0,25))$
+
+sin(641*%pi-2015);
+sin(2015)$
+
+asin(cos(2015));
+2015-1283*%pi/2$
+
+block([triginverses : true], asin(sin(1/5)));
+1/5$
+
+acos(sin(1066));
+1066-677*%pi/2$
+
+acot(cot(42));
+42-13*%pi$
+
+acsc(csc(191/8));
+191/8-8*%pi$
+
+block([triginverses : all],
+   [acsc(csc(x)), acot(cot(x)), acos(cos(x)), asinh(sinh(x)), acosh(cosh(x)), atanh(tanh(x)),acoth(coth(x)), acsch(csch(x)), asech(sech(x))]);
+[x,x, x, x, x, x, x, x, x]$
+
+[acot(0), acot(1),acot(-1),acot(1/sqrt(3)), acot(sqrt(3))];
+[%pi/2,%pi/4,-%pi/4,%pi/3,%pi/6]$
+
+[atan(inf), atan(1),atan(-1),atan(sqrt(3)), atan(1/sqrt(3))];
+[%pi/2,%pi/4,-%pi/4,%pi/3,%pi/6]$
+
+[acos(sqrt(3)/2), acos(-sqrt(3)/2)];
+[%pi/6,5*%pi/6]$
+
+[acsc(1), acsc(-1), acsc(sqrt(2)), acsc(2/sqrt(3))];
+ [%pi/2,-%pi/2,%pi/4,%pi/3]$
+
+[asec(-1),asec(sqrt(2)), 2/sqrt(3)];
+[%pi,%pi/4,2/sqrt(3)]$
+
+/* end of tests for some previously uncovered code in trigi.lisp and trigo.lisp */
+
 /* Restore global flags */
 (halfangles:old_halfangles,%iargs:old_%iargs,done);
 done;

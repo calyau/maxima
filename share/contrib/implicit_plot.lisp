@@ -112,27 +112,26 @@
            expr1))))
 
 (defun $implicit_plot (expr xrange yrange &rest extra-options)
-  (let* (($numer t) (options (copy-tree *plot-options*))
-         (plot-name)
-         (i 0)
-         (xmin ($second xrange))
-         (xmax ($third xrange))
-         (xdelta (/ (- xmax xmin) ($first $ip_grid)))
-         (ymin ($second yrange))
-         (ymax ($third yrange))
-         (ydelta (/ (- ymax ymin) ($second $ip_grid)))
-         (sample (make-array `(,(1+ ($first $ip_grid))
+  (let (($numer t) (options (copy-tree *plot-options*))
+        (i 0) plot-name xmin xmax xdelta ymin ymax ydelta
+        (sample (make-array `(,(1+ ($first $ip_grid))
                                ,(1+ ($second $ip_grid)))))
-         (ssample (make-array `(,(1+ ($first $ip_grid_in))
+        (ssample (make-array `(,(1+ ($first $ip_grid_in))
                                 ,(1+ ($second $ip_grid_in)))))
-         file-name gnuplot-out-file gnuplot-term
-         (xmaxima-titles nil))
+        file-name gnuplot-out-file gnuplot-term
+        (xmaxima-titles nil))
     
     ;; Parse the given options into the list options
     (setf (getf options :type) "plot2d")
     (setq options (plot-options-parser extra-options options))
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
+    (setq xmin ($second xrange))
+    (setq xmax ($third xrange))
+    (setq ymin ($second yrange))
+    (setq ymax ($third yrange))
+    (setq xdelta (/ (- xmax xmin) ($first $ip_grid)))
+    (setq ydelta (/ (- ymax ymin) ($second $ip_grid)))
     (setf (getf options :x) (cddr xrange))
     (setf (getf options :y) (cddr yrange))
     
