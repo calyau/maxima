@@ -1331,7 +1331,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; If no file path is given, uses temporary directory path
 (defun plot-file-path (file)
-  (if (search "/" file)
+  (if (pathname-directory file)
       file
       (plot-temp-file file)))
 
