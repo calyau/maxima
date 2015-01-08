@@ -57,7 +57,7 @@
         ((mlist simp) "rtest_sqrt" 89)
         ((mlist simp) "rtest_carg" 40 41)
         ((mlist simp) "rtest_log")
-        ((mlist simp) "rtest_power" 19 20 26 58 62 65)
+        ((mlist simp) "rtest_power" 19 20 26 58 65)
         "rtestdefstruct"
         "rtest_limit"
         "rtest_powerseries"
