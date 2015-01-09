@@ -865,19 +865,6 @@ AC_ARG_ENABLE(gcl-alt-link,
 
 AM_CONDITIONAL(GCL_ALT_LINK, test x$gcl_alt_link = xtrue)
 
-## Enable building sys-proclaim.lisp. Only has any effect on GCL,
-## where it increases the compiled binary's performance by maybe 5% at
-## the expense of doubling compile time.
-AC_ARG_ENABLE([sys-proclaim],
-        [  --enable-sys-proclaim        Use sys-proclaim.lisp (only affects GCL)],
-        [case "${enableval}" in
-              yes) sys_proclaim=true ;;
-              no) sys_proclaim=false ;;
-              *) AC_MSG_ERROR(bad value ${enableval} for --enable-sys-proclaim) ;;
-         esac],
-        [sys_proclaim=true])
-AM_CONDITIONAL([SYS_PROCLAIM], [test x${sys_proclaim} = xtrue])
-	
 AC_ARG_WITH(default-lisp,
 	[  --with-default-lisp=<lisp>   Set default lisp implementation to <lisp>],
      	[case "${withval}" in

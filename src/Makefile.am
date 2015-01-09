@@ -17,7 +17,7 @@ EXTRA_DIST = \
   maxima-build.lisp maxima-command.ico set_lang.vbs \
   lisp \
   share-subdirs.lisp \
-  sharefiles.mk sys-proclaim.lisp
+  sharefiles.mk
 
 ## If we can, we use Automake's blah_SCRIPTS targets to install
 ## stuff. When doing this, we have to populate EXTRA_SCRIPTS, so we
@@ -300,13 +300,8 @@ EXECUTEGCL = $(GCL_NAME) -batch -eval
 BUILT_FILES += binary-gcl/maxima
 CLEAN_TARGETS += clean-gcl
 
-if SYS_PROCLAIM
 sys_proc_dependency = sys-proclaim.lisp
 gcl_depends_targets = (list "binary-gcl/maxima" "sys-proclaim.lisp")
-
-## This ensures that, when gcl-depends.mk is rebuilt, it gets done in
-## an environment with WITH_SYS_PROCLAIM defined and true.
-export WITH_SYS_PROCLAIM = true
 
 sys-proclaim.lisp:
 	rm -rf binary-gcl
@@ -314,10 +309,6 @@ sys-proclaim.lisp:
 	$(MAKE) bd
 	$(EXECUTEGCL) '(progn (load "generate-sys-proclaim.lisp"))'
 	rm -rf binary-gcl
-else !SYS_PROCLAIM
-sys_proc_dependency =
-gcl_depends_targets = "binary-gcl/maxima"
-endif
 
 gcl: binary-gcl/maxima
 
