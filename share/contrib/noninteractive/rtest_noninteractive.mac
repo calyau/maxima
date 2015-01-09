@@ -250,9 +250,6 @@ if a < 0 then 0 elseif equal (a, 0) then 1 elseif a > 0 then inf;
 limit(exp(-b*a), b, inf);
 if a < 0 then inf elseif equal (a, 0) then 1 elseif a > 0 then 0;
 
-limit(a*x, x, inf);
-if a < 0 then minf elseif equal (a, 0) then 0 elseif a > 0 then inf;
-
 /* not sure if this one is handled correctly by expand_branches --
  * do we get into a cycle of asksign questions??
  *
