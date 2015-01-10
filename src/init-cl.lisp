@@ -587,7 +587,8 @@ When one changes, the other does too."
   (set-locale-subdir)
   (adjust-character-encoding)
   (set-pathnames)
-  (cl-info::load-primary-index)   
+  (catch 'return-from-debugger
+    (cl-info::load-primary-index))
   (when (boundp '*maxima-prefix*)
     (push (pathname (concatenate 'string *maxima-prefix*
                                  (if *maxima-layout-autotools*
