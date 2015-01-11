@@ -37,6 +37,10 @@ diff(bessel_k(0,x),x);
 diff(bessel_k(1,x),x);
 -((bessel_k(2,x)+bessel_k(0,x))/2);
 
+/* Maxima used to get this wrong: A&S 9.1.65 */
+diff(bessel_y(v,z),v);
+cot(%pi*v)*('diff(bessel_j(v,z),v,1)-%pi*bessel_y(v,z))-csc(%pi*v)*'diff(bessel_j(-v,z),v,1)-%pi*bessel_j(v,z);
+
 besselexpand:true;
 true$
 

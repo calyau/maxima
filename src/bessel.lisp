@@ -400,11 +400,11 @@
      ;; cot(n*%pi)*[diff(bessel_j(n,x),n)-%pi*bessel_y(n,x)]
      ;;  - csc(n*%pi)*diff(bessel_j(-n,x),n)-%pi*bessel_j(n,x)
      ((mplus)
-      ((mtimes) $%pi ((%bessel_j) n x))
+      ((mtimes) -1 $%pi ((%bessel_j) n x))
       ((mtimes)
        -1
        ((%csc) ((mtimes) $%pi n))
-       ((%derivative) ((%bessel_j) ((mtimes) -1 n) x) x 1))
+       ((%derivative) ((%bessel_j) ((mtimes) -1 n) x) n 1))
       ((mtimes)
        ((%cot) ((mtimes) $%pi n))
        ((mplus)
