@@ -49,7 +49,7 @@
 	       ;; just display as a lisp symbol, number, or other atom.
 	       (t form)))
 	((atom (car form))  form) ;; probably an illegal form; just return it.
-	((null (cdar form)) form) ;; probably an illegal or unsimplified form; just return it.
+	((not (member 'simp (cdar form))) form) ;; unsimplified expression; just return it.
 	
 	;; this next section is for the ordinary maxima objects that are tagged by
 	;; their main operator or CAAR,  e.g. ((mplus) a b) has CAAR mplus ...

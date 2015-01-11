@@ -33,7 +33,7 @@ endif
 SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8) $(DE_DIR) $(DE_DIR_UTF8)
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
+maxima_TEXINFOS = category-macros.texi Introduction.texi \
  Bugs.texi Help.texi Command.texi DataTypes.texi Constants.texi Lists.texi \
  Arrays.texi defstruct.texi Expressions.texi Operators.texi Evaluation.texi \
  Simplification.texi MathFunctions.texi Database.texi Plotting.texi \
@@ -211,7 +211,7 @@ endif
 all-local: maxima.info maxima-index.lisp $(MAXIMA_CHM)
 
 maxima.info : maxima.texi
-	makeinfo --split-size=1000000 maxima.texi
+	$(MAKEINFO) --split-size=1000000 maxima.texi
 
 html: maxima.html contents.hhc
 

@@ -36,6 +36,7 @@
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)
+(defvar *getsignl-asksign-ok* nil)
 
 (load-macsyma-macros rzmac)
 
@@ -94,6 +95,13 @@
 	  ans))))
 
 (defmfun $limit (&rest args)
+  (let ((first-try (apply #'toplevel-$limit args)))
+    (if (and (consp first-try) (eq (caar first-try) '%limit))
+      (let ((*getsignl-asksign-ok* t))
+        (apply #'toplevel-$limit args))
+      first-try)))
+
+(defmfun toplevel-$limit (&rest args)
   (let ((limit-assumptions ())
 	(old-integer-info ())
 	($keepfloat t)
@@ -233,7 +241,7 @@
 
 (defmfun limit-list (exp1 &rest rest)
   (if (mbagp exp1)
-      `(,(car exp1) ,@(mapcar #'(lambda (x) (apply #'$limit `(,x ,@rest))) (cdr exp1)))
+      `(,(car exp1) ,@(mapcar #'(lambda (x) (apply #'toplevel-$limit `(,x ,@rest))) (cdr exp1)))
       ()))
 
 (defun limit-context (var val direction) ;Only works on entry!
@@ -285,9 +293,9 @@
 ;; preserve-direction.  Default is T, like it used to be.
 (defun both-side (exp var val &optional (preserve t))
   (let* ((preserve-direction preserve)
-         (la ($limit exp var val '$plus)) lb)
+         (la (toplevel-$limit exp var val '$plus)) lb)
     (when (eq la '$und) (return-from both-side '$und))
-    (setf lb ($limit exp var val '$minus))
+    (setf lb (toplevel-$limit exp var val '$minus))
     (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
           ((or (not (free la '%limit))
                (not (free lb '%limit)))  ())
@@ -321,9 +329,9 @@
 ;; or nil if sign unknown or complex
 (defun getsignl (z)
   (let ((z (ridofab z)))
-    (if (not (free z var)) (setq z ($limit z var val)))
+    (if (not (free z var)) (setq z (toplevel-$limit z var val)))
     (let ((*complexsign* t))
-      (let ((sign ($sign z)))
+      (let ((sign (if *getsignl-asksign-ok* ($asksign z) ($sign z))))
         (cond ((eq sign '$pos) 1)
               ((eq sign '$neg) -1)
               ((eq sign '$zero) 0))))))
@@ -420,7 +428,7 @@ ignoring dummy variables and array indices."
     (1 (let* ((val (or (inf-typep exp) (epsilon-typep exp)))
               (var ($gensym))
               (expr (subst var val exp))
-              (limit ($limit expr var val)))
+              (limit (toplevel-$limit expr var val)))
          (cond
            ;; Now we look to see whether the computed limit is any simpler than
            ;; what we shoved in (which we'll define as "doesn't contain EXPR as a
@@ -1024,7 +1032,7 @@ ignoring dummy variables and array indices."
   (let ((ans ()))
     (setq n (stirling0 n)
 	  d (stirling0 d))
-    (setq ans ($limit (m// n d) var '$inf))
+    (setq ans (toplevel-$limit (m// n d) var '$inf))
     (cond ((and (atom ans)
 		(not (member ans '(und ind ) :test #'eq)))  ans)
 	  ((eq (caar ans) '%limit)  ())
@@ -1860,7 +1868,7 @@ ignoring dummy variables and array indices."
   (let ((new-val (cond ((eq val '$zeroa)  '$inf)
 		       ((eq val '$zerob)  '$minf))))
     (if new-val (let ((preserve-direction t))
-		  ($limit e var new-val)) (throw 'limit t))))
+		  (toplevel-$limit e var new-val)) (throw 'limit t))))
 
 (defun simplimtimes (exp)
   ;; The following test
@@ -3029,8 +3037,8 @@ ignoring dummy variables and array indices."
 
 (defmfun $ldefint (exp var ll ul &aux $logabs ans a1 a2)
   (setq $logabs t ans (sinint exp var)
-	a1 ($limit ans var ul '$minus)
-	a2 ($limit ans var ll '$plus))
+	a1 (toplevel-$limit ans var ul '$minus)
+	a2 (toplevel-$limit ans var ll '$plus))
   (and (member a1 '($inf $minf $infinity $und $ind) :test #'eq)
        (setq a1 (nounlimit ans var ul)))
   (and (member a2 '($inf $minf $infinity $und $ind) :test #'eq)

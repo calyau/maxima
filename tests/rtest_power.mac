@@ -241,7 +241,8 @@ limit(x^a/b^x,x,inf);
 forget(a>0,b>1);
 [a>0,b>1];
 
-limit(z^a/a!,a,inf);
+/* supply an assumption to quiet asksign */
+block ([ctxt: supcontext (), foo], assume (abs(z) - 1 < 0), foo : limit(z^a/a!,a,inf), killcontext (ctxt), foo);
 0;
 
 declare(v,noninteger);

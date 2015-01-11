@@ -431,3 +431,112 @@ block ([I, M],
   sign(sqrt(I)-M));
 pos;
 
+/* verify that verbify is not applied to array name
+ * SF bug #2865: "Use exp as a list"
+ */
+exp : [1, 2, 3];
+[1, 2, 3];
+
+exp[1] : 123;
+123;
+
+exp;
+[123, 2, 3];
+
+exp[1];
+123;
+
+remvalue (exp);
+[exp];
+
+/* further tests */
+
+/* verify that $array does not apply $verbify to array name */
+
+(kill (foo),
+ apply (array, [nounify ('foo), 10]),
+ member (nounify ('foo), arrays));
+true;
+
+/* verify that arrstore does not apply $verbify to array name */
+
+((nounify ('foo)) [0] :: 123,
+ first (listarray (nounify ('foo))));
+123;
+
+'foo[1];
+'foo[1];
+
+ev ('foo[1], nouns);
+foo[1];
+
+/* verify that mdefine does not apply $verbify to array function name */
+
+(kill (foo, x, a), define (funmake (arraymake (nounify ('foo), [x]), [a]), x^a));
+'foo[x](a) := x^a;
+
+member (nounify (foo), arrays);
+true;
+
+/* verify that mdefine does not apply $verbify to function name */
+
+(kill (bar), define (funmake (nounify ('bar), ['x]), 2*'x), 0);
+0;
+
+(nounify ('bar))(u);
+'bar(u);
+
+ev ('bar(u), nouns);
+bar(u);
+
+/* verify that consfundef does not apply $verbify to function name */
+
+apply (fundef, [nounify ('bar)]);
+'bar(x) := 2*x;
+
+/* verify that consfundef does not apply $verbify to array function name */
+
+apply (fundef, [nounify ('foo)]);
+'foo[x](a) := x^a;
+
+/* function and array names which are strings are verbified, however */
+
+"bar"(x) := 1 + x;
+bar(x) := 1 + x;
+
+bar(u);
+1 + u;
+
+"bar"(z);
+1 + z;
+
+fundef (bar);
+bar(x) := 1 + x;
+
+fundef ("bar");
+bar(x) := 1 + x;
+
+member ('(bar(x)), functions);
+true;
+
+"baz"[x] := x^2;
+baz[x] := x^2;
+
+baz[10];
+100;
+
+"baz"[11];
+121;
+
+"quux"[u](v) := u - v;
+quux[u](v) := u - v;
+
+member (baz, arrays);
+true;
+
+member (quux, arrays);
+true;
+
+kill (functions, arrays);
+done;
+

@@ -42,7 +42,7 @@ opciones de @mrefdot{plot2d}
 @end example
 
 @ifnotinfo
-@figures{dynamics7}
+@figure{dynamics7}
 @end ifnotinfo
 
 @end deffn

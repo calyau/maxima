@@ -120,19 +120,21 @@ MEVAL1 (e%) :=
       then block ([a%, s%, c%, L%],
         a%: args(r%)[1],
         s%: args(r%)[2],
-        c%: ['kind (a%, 'integer), 'kind (a%, 'noninteger)],
+        c%: subst ('a% = a%, '[featurep (a%, integer), featurep (a%, noninteger)]),
+        /* DECLARE/REMOVE DON'T ACT IN A CONTEXT,
+         * SO FOLLOWING CAN CAUSE TROUBLE IN PRESENCE OF GLOBAL
+         * DECLARATIONS ABOUT SYMBOL NAMED BY A% !!
+         */
         L%:
-         [block ([w%, z%],
-            z% : newcontext (),
+         [block ([w%],
             apply (declare, [a%, 'integer]),
             w%: MEVAL1 (e%),
-            killcontext (z%),
+            apply (remove, [a%, 'integer]),
             w%),
-         block ([w%, z%],
-            z% : newcontext (),
+         block ([w%],
             apply (declare, [a%, 'noninteger]),
             w%: MEVAL1 (e%),
-            killcontext (z%),
+            apply (remove, [a%, 'noninteger]),
             w%)],
         
         funmake ("if", append (interleave (c%, L%), [true, false])))
@@ -146,7 +148,7 @@ enumerate_cases (L1, expr) :=
                    else assuming ([p%], MEVAL1 (expr))),
                L1);
 
-interleave (L1, L2) := flatten (map (lambda ([e1, e2], [e1, e2]), L1, L2));
+interleave (L1, L2) := apply (append, map (lambda ([e1, e2], [e1, e2]), L1, L2));
 
 /* Pattern-matching rules for collapsing conditionals.
  * These rules have the desired effect.

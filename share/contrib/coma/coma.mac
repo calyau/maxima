@@ -1,7 +1,7 @@
 /* ======================================================================= */
-/* coma.mac                                                         V 1.70 */
+/* coma.mac                                                         V 1.73 */
 /* ----------------------------------------------------------------------- */
-/* COntrol engineering with MAxima            (c) Wilhelm Haager 2009-2014 */
+/* COntrol engineering with MAxima            (c) Wilhelm Haager 2009-2015 */
 /* ----------------------------------------------------------------------- */
 /*                                                                         */
 /*  This program is free software; you can redistribute it and/or modify   */
@@ -22,10 +22,13 @@
 /*  - 2014-07-14: margin adjustment in bode_plot                           */
 /*  - 2014-08-10: "xthru" replaced by "ratsimp" in "impedance_chain"       */
 /*  - 2014-09-07: "xthru" replaced by "ratsimp" in "transfer_function"     */
+/*  - 2014-11-07: Grid lines for Bode-plots                                */
+/*  - 2014-11-14: Nested lists for graphic options enabled                 */
+/*  - 2015-01-09: "//" - Parallel-Operator for electric resistances        */
 /*                                                                         */
 /* ======================================================================= */
 
-disp("coma v.1.70, (Wilhelm Haager, 2014-09-07)");
+disp("coma v.1.73, (Wilhelm Haager, 2015-01-09)");
 load("draw");  /* not necessary any more but benefical (2013-11-16) */
 
 /* ======================================================================= */
@@ -55,6 +58,7 @@ _COMA_msg[2]:"** COMA error ** yrange must be a list of TWO ranges";
 plot(f,[opts]) :=
 block(
   [x,x1,x2,y,y1,y2,defs,hli,fli,h,n,t,wxx],
+  opts:flatten(opts),
   defs:[ ],
   [x1,x2]:assoc('xrange,opts,[0,1]),
   [y1,y2]:assoc('yrange,opts,[0,1]),
@@ -85,6 +89,7 @@ block(
 step_response(f,[opts]) :=
 block(
   [hli,defs:[],fli,t,tanf,tend,wxx,ratprint:false,assume_pos:false],
+  opts:flatten(opts),
   f:flatten([f]),
   fli:flatten(map(lambda([u], if _COMA_go(u) then u
                              else nilt(xthru(u/s),s,t)),f)),
@@ -103,6 +108,7 @@ block(
 pulse_response(f,[opts]) :=
 block(
   [hli,defs:[],fli,t,tanf,tend,wxx,ratprint:false,assume_pos:false],
+  opts:flatten(opts),
   f:flatten([f]),
   fli:flatten(map(lambda([u], if _COMA_go(u) then u
                              else nilt(xthru(u),s,t)),f)),
@@ -121,6 +127,7 @@ block(
 nyquist_plot(f,[opts]) :=
 block(
   [hli,defs,t,tanf,tend,fli,wxx],
+  opts:flatten(opts),
   defs:[aspect_ratio=-1, nticks=500],
   [tanf,tend] : _COMA_bpr(f),
   [tanf,tend] : [tanf/10,tend*10], /* ADAPT RANGE HERE */
@@ -142,10 +149,11 @@ block(
 magnitude_plot(f,[opts]) :=
 block(
   [hli,defs,t,tanf,tend,fli,wxx,ratprint:false],
+  opts:flatten(opts),
   fli:ratsimp(flatten([f])),
   fli:map(lambda([u],if _COMA_go(u) then u else float(cabs(ev(u,s=%i*t)))),fli),
   fli:map(lambda([u],if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli),
-  defs:['logx=true,'logy=true],
+  defs:['logx=true,'logy=true,'user_preamble="set grid xtics mxtics ytics mytics"],
   hli:_COMA_ppo(fli,defs,opts),
   if option_exists('xrange,opts) then [tanf,tend]:assoc('xrange,opts)
   else block([tanf,tend] : _COMA_bpr(f),
@@ -159,7 +167,8 @@ block(
 phase_plot(f,[opts]) :=
 block(
   [hli,defs,t,tanf,tend,fli,ratprint:false,ph,wxx,omega],
-  defs:['logx=true],
+  opts:flatten(opts),
+  defs:['logx=true,'user_preamble="set grid xtics mxtics ytics mytics"],
   fli:map(ratsimp,flatten([f])),
   fli:map(lambda([u], if _COMA_go(u) then u else ev(phase(u),omega=t)),fli),
   fli:map(lambda([u], if _COMA_go(u) then u else explicit(u,t,tanf,tend)),fli),
@@ -176,13 +185,14 @@ block(
 /* ----------------------------------------------------------------------- */
 bode_plot(f,[opts]) :=
 block(
-  [fli,fli1,fli2,hli1,hli2,defs1,defs2,t,tanf,tend,ratprint:false,
+  [fli,fli1,fli2,hli1,hli2,defs1,defs2,t,tanf,tend,ratprint:false,wxx,
     xdim,ydim,dims,g0],
+  opts:flatten(opts),
   fli:ratsimp(flatten([f])),
   defs1:['logx=true,'logy=true,'user_preamble=["set tmargin 0.5",
-        "set lmargin 6","set rmargin 3","set bmargin 1.5"]],
+        "set lmargin 6","set rmargin 3","set bmargin 1.5","set grid xtics mxtics ytics mytics"]],
   defs2:['logx=true, 'user_preamble=["set tmargin 0.5",
-        "set lmargin 6","set rmargin 3","set bmargin 1.5"]],
+        "set lmargin 6","set rmargin 3","set bmargin 1.5","set grid xtics mxtics ytics mytics"]],
   xdim:500, ydim:600, /* default values (for both diagrams together) */
   if option_exists('dimensions,plot_defaults) then block(
      xdim:assoc('dimensions,plot_defaults)[1],
@@ -250,6 +260,7 @@ block(
 poles_and_zeros(f,[opts]) :=
 block(
   [hli,defs,zli,pli,wxx,x1,x2,y1,y2,range,ratprint:false],
+  opts:flatten(opts),
   defs:[aspect_ratio=-1],
   f:flatten([f]),     /* _COMA_(u)...Wrapper around graphic object */
   zli:map(lambda([u],if _COMA_go(u) then _COMA_(u) else zeros(u)),f),
@@ -281,6 +292,7 @@ block(
 contourplot(f,p1,p2,[opts]):=
 block(
   [x1,x2,y,y1,y2,defs,cli,hli,fli,ratprint:false,wxx],
+  opts:flatten(opts),
   defs:[contours=[0],color=[red],line_width=[1]],
   hli:_COMA_ppo(1,defs,opts),
   [x1,x2]:assoc('xrange,opts,[0,1]),
@@ -300,6 +312,7 @@ root_locus(f,[opts]) :=
 block(
   [i,range,nticks,fac,pars,nn,pl,poli:[],gpoli:[],t,t1,t2,defs,hli,fli,h,
       ratprint:false,startpoints,endpoints,ratprint:false,wxx],
+  opts:flatten(opts),
   defs:[aspect_ratio=-1,trange=[0.001,100],nticks=500],
   hli:_COMA_ppo(0,defs,opts),
   [t1,t2]:assoc('trange,hli),
@@ -413,6 +426,7 @@ block(
 stable_area(f,p1,p2,[opts]):=
 block(
   [x,x1,x2,y,y1,y2,defs,hli,fli,h,wxx,ratprint:false],
+  opts:flatten(opts),
   defs:[xrange=[0,1],yrange=[0,1]],
   f:flatten([f]),
   h:hurwitz(map(denom,f)),
@@ -920,6 +934,12 @@ chop(f) :=
 block([epsilon:1.0e-10],
   fullmap(lambda([u], if numberp(u) and cabs(u)<epsilon then 0 else u),f))$
 
+/* ----------------------------------------------------------------------- */
+/* // - parallel connection of resistances                 (WH, 26.9.2014) */
+/* ----------------------------------------------------------------------- */
+"//"([x]):=xthru(1/apply("+",1/x));
+nary("//",115);
+
 /* ======================================================================= */
 /* Auxiliary Functions (only for internal use)                             */
 /* ======================================================================= */
@@ -1005,7 +1025,7 @@ if (not atom(f) and member(op(f),['explicit,'points,'implicit,'parametric,
 /* ----------------------------------------------------------------------- */
 /* _COMA_ppo(f,defs,opts) - process plot options                           */
 /* ----------------------------------------------------------------------- */
-/* f ... List of functions  bjects (or transfer functions)                 */
+/* f ... List of functions, objects (or transfer functions)                */
 /*       f = 0 ... only global options are processed                       */
 /*       f = 1 ... options are processed, but no functions                 */
 /* defs ... default options for a routine                                  */
