@@ -13,18 +13,18 @@
 ;;----------------------------------------------------------------;;
 
 [Setup]
-AppName=Maxima
-AppVerName=Maxima @VERSION@
-AppId=Maxima-@VERSION@
+AppName=Maxima (@DEFAULTLISP@)
+AppVerName=Maxima (@DEFAULTLISP@) @VERSION@
+AppId=Maxima_@DEFAULTLISP@-@VERSION@
 UsePreviousAppDir=no
 AppPublisher=The Maxima Development Team
 AppPublisherURL=http://maxima.sourceforge.net
 AppSupportURL=http://maxima.sourceforge.net
 AppUpdatesURL=http://maxima.sourceforge.net
 AppVersion=@VERSION@
-OutputBaseFilename=maxima-@VERSION@
-DefaultDirName={pf}\Maxima-@VERSION@
-DefaultGroupName=Maxima-@VERSION@
+OutputBaseFilename=maxima_@DEFAULTLISP@-@VERSION@
+DefaultDirName={pf}\Maxima_@DEFAULTLISP@-@VERSION@
+DefaultGroupName=Maxima_@DEFAULTLISP@-@VERSION@
 InfoBeforeFile=interfaces\xmaxima\win32\InfoBefore.txt
 InfoAfterFile=interfaces\xmaxima\win32\readme_en.txt
 AllowNoIcons=yes
@@ -424,7 +424,7 @@ ru.ReferenceManualBrazilianPortuguese=Справочное руководство (Бразильский португ
 ru.ReferenceManualRussian=Справочное руководство (Русский)
 ru.ReferenceManualSpanish=Справочное руководство (Испанский)
 
-3
+
 ;=== Spanish ===  LID=$0c0a  CodePage=1252
 
 es.FullInstallation=Instalaciуn Completa
@@ -475,7 +475,8 @@ function PathWithoutSpaces( strIn: String): String;
 var
   Version: TWindowsVersion;
 begin
-  if (Pos(' ',strIn) = 0) or (Version.Major > 5) then
+  GetWindowsVersionEx(Version);
+  if (Pos(' ',strIn) = 0) or (Version.Major >= 5) then
     Result := strIn
   else
     Result := GetShortName(strIn);
