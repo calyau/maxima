@@ -107,8 +107,6 @@ Name: "{group}\{cm:ReadmeMenuEntry}"; Filename: "{app}\readme_{language}.txt"; C
 
 ; wxmaxima
 Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
-Name: "{group}\{cm:ProgramOnTheWeb,wxMaxima}"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
-Name: "{group}\{cm:OnlineForum,wxMaxima}"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
 ; xmaxima
