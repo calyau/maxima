@@ -700,9 +700,10 @@ dnl Hard code the filenames for now.  Can over-ride on make command line
 GCCVER=undefined
 if test x${xmaxima_exe} = xtrue ; then
   GCCVER=`gcc -dumpversion`
-  dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
-  TCLKITSH=/c/programs/star/tclkitsh-win32.upx.exe
-  TCLKIT_RUNTIME=/c/programs/star/tclkit-win32.upx.exe 
+  dnl http://tclkits.rkeene.org/fossil/wiki?name=Downloads
+  dnl and http://www.tcl.tk/starkits/
+  TCLKITSH=/c/programs/star/tclkitsh-8.6.3-win32-ix86.exe
+  TCLKIT_RUNTIME=/c/programs/star/tclkit-8.6.3-win32-ix86.exe
   SDXKIT=/c/programs/star/sdx.kit
   IMGKIT=/c/programs/star/img.kit
 fi

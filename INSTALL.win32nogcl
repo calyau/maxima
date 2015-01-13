@@ -67,7 +67,7 @@ Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from
 <http://www.equi4.com/pub/tk/8.5.2/>.
 
 Install the following four files 
-  sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
+  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
 are in C:/programs/star.
 
 Download img.kit from <http://www.tcl.tk/starkits/> and put it in your
