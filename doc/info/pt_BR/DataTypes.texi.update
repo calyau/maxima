@@ -80,7 +80,7 @@ flutuante ao inv@'{e}s de gerar um n@'{u}mero bigfloat. Para configurar esse com
 a vari@'{a}vel @mref{promote_float_to_bigfloat}.
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Numbers, , Introduction to Numbers, Numbers
+@node Functions and Variables for Numbers,  , Introduction to Numbers, Numbers
 @subsection Functions and Variables for Numbers
 @c -----------------------------------------------------------------------------
 
@@ -684,7 +684,7 @@ this string.";
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Strings, , Introduction to Strings, Strings
+@node Functions and Variables for Strings,  , Introduction to Strings, Strings
 @subsection Functions and Variables for Strings
 @c -----------------------------------------------------------------------------
 

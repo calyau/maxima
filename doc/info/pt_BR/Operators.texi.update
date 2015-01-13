@@ -1418,7 +1418,7 @@ A declara@,{c}@~{a}o @code{local} torna uma defini@,{c}@~{a}o de fun@,{c}@~{a}o 
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node User defined operators, , Assignment operators, Operators
+@node User defined operators,  , Assignment operators, Operators
 @section User defined operators
 @c -----------------------------------------------------------------------------
 

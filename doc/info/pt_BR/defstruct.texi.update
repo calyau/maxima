@@ -1,10 +1,10 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 1cc1e3dc0675e563a1ce3e0a1b690465  defstruct.texi
+@c 400c5c7ab963bd345661eee17f3fd94c  defstruct.texi
 @c
 @c -----------------------------------------------------------------------------
 @page
-@node Structures, , Arrays, Data Types and Structures
+@node Structures,  , Arrays, Data Types and Structures
 @section Structures
 @c -----------------------------------------------------------------------------
 
@@ -60,8 +60,9 @@ A vari@'{a}vel global @code{structures} @'{e} a lista de estruturas definidas pe
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {Fun@,{c}@~{a}o} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
-@deffnx {Fun@,{c}@~{a}o} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+@deffn  {Fun@,{c}@~{a}o} defstruct @
+@fname{defstruct} (@var{S}(@var{a_1}, @dots{}, @var{a_n})) @
+@fname{defstruct} (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
 
 Define uma estrutura, que @'{e} uma lista de campos nomeados como @var{a_1}, @dots{},
 @var{a_n} associada a um s@'{i}mbolo @var{S}.
@@ -116,8 +117,9 @@ Exemplos:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Fun@,{c}@~{a}o} new (@var{S})
-@deffnx {Fun@,{c}@~{a}o} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+@deffn {Fun@,{c}@~{a}o} new @
+@fname{new} (@var{S}) @
+@fname{new} (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
 
 A fun@,{c}@~{a}o @code{new} cria novas inst@^{a}ncias de estruturas.
 
