@@ -61,17 +61,13 @@ Steel Bank Common Lisp (http://sbcl.org) are supported. For Clozure
 Common List use at least version 1.7 (version 1.10 does not work). For
 Steel Bank CL use at least version 1.2.
 
-3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>.
-Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>.
-Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from
-<http://www.equi4.com/pub/tk/8.5.2/>.
+3) Download tclkitsh-8.6.3-win32-ix86.exe and
+tclkit-8.6.3-win32-ix86.exe from
+<http://tclkits.rkeene.org/fossil/wiki?name=Downloads> and put them in
+c:/programs/star.
 
-Install the following four files 
-  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
-are in C:/programs/star.
-
-Download img.kit from <http://www.tcl.tk/starkits/> and put it in your
-MSYS user home directory in C:/programs/star.
+Download sdx.kit and img.kit from <http://www.tcl.tk/starkits/> and
+put them in c:/programs/star.
 
 4) Get and install Inno Setup from <http://www.jrsoftware.org/isinfo.php>.
 
