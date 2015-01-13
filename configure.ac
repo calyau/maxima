@@ -516,6 +516,7 @@ AC_ARG_ENABLE(gettext,
 	 esac],
 	 [enable_gettext=false])
 
+
 AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
 
 dnl languages
@@ -550,6 +551,7 @@ AC_ARG_ENABLE(lang-es,
      	esac],
 	[lang_es=false])
 
+AC_SUBST(lang_es)
 AM_CONDITIONAL(LANG_ES, test x$lang_es = xtrue)
 
 AC_ARG_ENABLE(lang-es-utf8,
@@ -572,6 +574,7 @@ AC_ARG_ENABLE(lang-pt,
      	esac],
 	[lang_pt=false])
 
+AC_SUBST(lang_pt)
 AM_CONDITIONAL(LANG_PT, test x$lang_pt = xtrue)
 
 AC_ARG_ENABLE(lang-pt-utf8,
@@ -594,6 +597,7 @@ AC_ARG_ENABLE(lang-pt_BR,
      	esac],
 	[lang_pt_br=false])
 
+AC_SUBST(lang_pt_br)
 AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
 
 AC_ARG_ENABLE(lang-pt_BR-utf8,
