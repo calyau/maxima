@@ -17,7 +17,7 @@ distribution, I do the following in a MSYS window:
 ./configure --prefix=c:/maxima \
     --enable-chm \
     --enable-xmaxima-exe \
-    --with-hhc=hhc \
+    --with-hhc=<path-to-hhc> \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install
@@ -182,9 +182,8 @@ To see how they are used, look in interfaces/xmaxima/win32/Makefile.in
 and Makefile.am in the top level maxima directory.  You may change
 their values according to your preferences.
 
-7) Get Microsoft HTML Help Workshop from 
-<http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
-and install it.  
+7) Install Microsoft HTML Help Workshop from
+<http://www.microsoft.com/en-us/download/details.aspx?id=21138>.
 
 Make sure that HHW directory is within PATH (edit PATH environment
 variable with either Windows or MSYS approach), so the HTML Help Workshop

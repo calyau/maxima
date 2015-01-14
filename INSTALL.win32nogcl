@@ -17,7 +17,7 @@ distribution, I do the following in a MSYS window:
 ./configure --prefix=c:/maxima \
     --enable-chm \
     --enable-xmaxima-exe \
-    --with-hhc=hhc \
+    --with-hhc=<path-to-hhc> \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
     --with-ccl=<path-to-ccl>
 make
@@ -27,6 +27,8 @@ make iss
 Then run Inno Setup on the generated maxima.iss file. That is all it
 takes.
 
+To compile with sbcl replace --with-ccl=<path-to-ccl> with
+--with-sbcl=<path-to-sbcl>.
 
 External Requirements
 =====================
@@ -72,14 +74,13 @@ put them in c:/programs/star.
 4) Get and install Inno Setup from <http://www.jrsoftware.org/isinfo.php>.
 
 5) Download the gnuplot windows binary from
-<http://gnuplot.sourceforge.net>.  Install in your MSYS user home
-directory in ~/programs/gnuplot. Use at least version 4.4.
+<http://gnuplot.sourceforge.net> and put it in
+c:/programs/gnuplot. Use at least version 4.4.
 
-6) Put wxMaxima windows binary into C:/programs/wxMaxima.
+6) Put the wxMaxima windows binary into c:/programs/wxMaxima.
 
 7) Get Microsoft HTML Help Workshop from
-<http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
-and install it.
+<http://www.microsoft.com/en-us/download/details.aspx?id=21138>
 
 8) Install Python from www.python.org. Add the path to python to your
 windows PATH environment variable.
@@ -92,7 +93,7 @@ directory. The directory does not need to exist ahead of time.
 ./configure --prefix=c:/maxima \
     --enable-chm \
     --enable-xmaxima-exe \
-    --with-hhc=hhc \
+    --with-hhc=<path-to-hhc> \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR \
     --with-ccl=<path-to-ccl>
 make
