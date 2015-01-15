@@ -522,11 +522,25 @@
 	       (t (callsolve (cons (car lhsl) var)))))
 	(t (mergesoln solnl (apprsys (baksubst solnl lhsl))))))
 
+;; (EVERY-ATOM PRED X)
+;;
+;; Evaluates to true if (PRED Y) is true for every atom Y in the cons tree X.
+(defun every-atom (pred x)
+  (if (atom x)
+      (funcall pred x)
+      (and (every-atom pred (car x))
+           (every-atom pred (cdr x)))))
+
+;; (EXACTONLY SOLNL)
+;;
+;; True if the list of solutions doesn't contain any terms that look inexact
+;; (just floating point numbers, unless realonlyratnum is true)
 (defun exactonly (solnl)
-  (cond ((atom solnl)
-	 (and (not (floatp solnl))
-	      (or (null realonlyratnum) (not (eq solnl 'rat)))))
-	(t (and (exactonly (car solnl)) (exactonly (cdr solnl))))))
+  (every-atom (lambda (x)
+                (and (not (floatp x))
+                     (or (null realonlyratnum)
+                         (not (eq x 'rat)))))
+              solnl))
 
 (defun mergesoln (asoln solnl)
   (let ((errorsw t) s (unbind (cons bindlist loclist)))
