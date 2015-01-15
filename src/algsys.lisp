@@ -285,25 +285,46 @@
 (defun pconstp (poly)
   (or (atom poly) (not (member (car poly) *tvarxlist* :test #'eq))))
 
+;;; (PFREEOFMAINVARSP POLY)
+;;;
+;;; If POLY isn't a polynomial in the variables for which we're solving,
+;;; disrep it and apply $RADCAN.
 (defun pfreeofmainvarsp (poly)
-  (cond ((atom poly) poly)
-	((null (member (car poly) *tvarxlist* :test #'eq))
-	 ($radcan (pdis poly)))
-	(t poly)))
+  (if (or (atom poly)
+          (member (car poly) *tvarxlist* :test #'eq))
+      poly
+      ($radcan (pdis poly))))
 
+;;; (LOFACTORS POLY)
+;;;
+;;; If POLY is a polynomial in one of the variables for which we're solving,
+;;; then factor it into a list of factors (where the result returns factors
+;;; alternating with their multiplicity in the same way as PFACTOR).
+;;;
+;;; If POLY is not a polynomial in one of the solution variables, return NIL.
 (defun lofactors (poly)
-  (setq poly (pfreeofmainvarsp poly))
-  (cond ((pzerop poly)			;(signp e poly)
-	 (list 0))
-	((or (atom poly) (not (atom (car poly))))  nil)
-	(t (do ((tfactors (pfactor poly) (cddr tfactors))
-		(lfactors))
-	       ((null tfactors) lfactors)
-	     (setq poly (pfreeofmainvarsp (car tfactors)))
-	     (cond ((pzerop poly)	;(signp e poly)
-		    (return (list 0)))
-		   ((and (not (atom poly)) (atom (car poly)))
-		    (setq lfactors (cons (pabs poly) lfactors))))))))
+  (let ((main-var-poly (pfreeofmainvarsp poly)))
+    (cond
+      ((pzerop main-var-poly) '(0))
+
+      ;; If POLY isn't a polynomial in our chosen variables, RADCAN will return
+      ;; something whose CAR is a cons. In that case, or if the polynomial is
+      ;; something like a number, there are no factors to extract.
+      ((or (atom main-var-poly)
+           (not (atom (car main-var-poly))))
+       nil)
+
+      (t
+       (do ((tfactors (pfactor main-var-poly) (cddr tfactors))
+            (lfactors))
+           ((null tfactors) lfactors)
+         (let ((main-var-factor (pfreeofmainvarsp (car tfactors))))
+           (cond
+             ((pzerop main-var-factor)
+              (return (list 0)))
+             ((and (not (atom main-var-factor))
+                   (atom (car main-var-factor)))
+              (push (pabs main-var-factor) lfactors)))))))))
 
 (defun combiney (listofl)
   (cond ((member nil listofl :test #'eq) nil)
