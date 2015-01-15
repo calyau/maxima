@@ -116,13 +116,20 @@
 	  (resimplify solnlist))
 	solnlist)))
 
+;;; (CONDENSESOLNL TEMPSOLNL)
+;;;
+;;; Condense a solution list, discarding any solution that is a special case of
+;;; another one. (For example, if the list contained [x=1, y=1] as a solution,
+;;; but also just [x=1], then the first solution would be discarded)
+;;;
+;;; Destructively modifies TEMPSOLNL
 (defun condensesolnl (tempsolnl)
   (let (solnl)
-    (mapl #'(lambda (q) (or (subsetl (cdr q) (car q))
-			    (setq solnl (cons (car q) solnl))))
+    (mapl (lambda (q)
+            (unless (subsetl (cdr q) (car q))
+              (push (car q) solnl)))
 	  (sort tempsolnl #'(lambda (a b) (> (length a) (length b)))))
     solnl))
-
 
 ;;; (SUBSETL L1 S2)
 ;;;
