@@ -123,16 +123,16 @@
 	  (sort tempsolnl #'(lambda (a b) (> (length a) (length b)))))
     solnl))
 
-(defun subsetl (l1 s2)
-  (or (equal s2 (list nil))
-      (do ((l l1 (cdr l)))
-	  ((null l) nil)
-	(when (m-subset (car l) s2) (return t)))))
 
-(defun m-subset (s1 s2)
-  (do ((s s1 (cdr s)))
-      ((null s) t)
-    (unless (memalike (car s) s2) (return nil))))
+;;; (SUBSETL L1 S2)
+;;;
+;;; Check whether some element of L1 is a subset of S2 (comparing elements with
+;;; ALIKE1). As a special case, if S2 is '(NIL) then return true.
+(defun subsetl (l1 s2)
+  (or (equal s2 '(nil))
+      (member-if (lambda (x)
+                   (subsetp x s2 :test #'alike1))
+                 l1)))
 
 (defun algsys (tlhslist &aux answ)
   (setq answ
