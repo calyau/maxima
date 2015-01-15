@@ -229,6 +229,25 @@
 
 (declare-top (special *vardegs*))
 
+;;; (FINDLEASTVAR LHSL)
+;;;
+;;; Iterate over the polynomials in LHSL, trying to find a "least var", which is
+;;; a variable that will hopefully be easiest to solve for. Variables from
+;;; *TVARXLIST* and their products are considered.
+;;;
+;;; For example, if *TVARXLIST* contains x, y and we only considered the
+;;; polynomial x^3 + y^2 + x then we'd have a least var of y with degree 2. If c
+;;; is not in *TVARXLIST* then we'd get the same answer from x^3 + c*y^2 + x
+;;; because such variables are just ignored. However, x^3 + x^2*y^2 would yield
+;;; x with degree 3 because the mixed term x^2*y^2 has higher total degree.
+;;;
+;;; The function returns the polynomial with the variable with minimal maximum
+;;; degree (as described above), together with that variable.
+;;;
+;;; Mixed terms are mostly ignored, but consider this pair of polynomials:
+;;; [x*y+1, x^3+1]. In the first polynomial, the only non-constant term is
+;;; mixed. Its degree in the first polynomial is 2 which is less than 3, so that
+;;; first polynomial is returned along with its leading variable.
 (defun findleastvar (lhsl)
   (let ((*vardegs*)
         (leasteq) (leastvar)
