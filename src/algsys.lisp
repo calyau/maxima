@@ -253,14 +253,26 @@
                 leastvar (car teq)))
     (cons leasteq leastvar)))
 
+;;; (KILLVARDEGSC POLY)
+;;;
+;;; For each monomial in POLY that is mixed in the variables in *VARDEGS*
+;;; (i.e. has more than one variable from *VARDEGS* with positive exponent),
+;;; iterate over all but the first variable, checking to see whether its degree
+;;; in the monomial is at least as high as that in *VARDEGS*. If so, delete that
+;;; variable and its degree from *VARDEGS*.
+;;;
+;;; Returns the maximum total degree of any term in the polynomial, summing
+;;; degrees over the variables in *VARDEGS*.
 (defun killvardegsc (poly)
-  (cond ((pconstp poly) 0)
-	(t (do ((poly (cdr poly) (cddr poly))
-		(tdeg 0 (max tdeg (+ (car  poly)
-				      (cond ((= (car poly) 0)
-					     (killvardegsc (cadr poly)))
-					    (t (killvardegsn (cadr poly))))))))
-	       ((null poly) tdeg)))))
+  (cond
+    ((pconstp poly) 0)
+    (t
+     (do ((terms (p-terms poly) (pt-red terms))
+          (tdeg 0 (max tdeg (+ (pt-le terms)
+                               (if (= (pt-le terms) 0)
+                                   (killvardegsc (pt-lc terms))
+                                   (killvardegsn (pt-lc terms)))))))
+         ((null terms) tdeg)))))
 
 ;;; (KILLVARDEGSN POLY)
 ;;;
@@ -268,8 +280,8 @@
 ;;; *TVARXLIST*. If the degree is at least as high as that recorded in
 ;;; *VARDEGS*, delete that variable and its degree from *VARDEGS*.
 ;;;
-;;; Returns the maximum total degree of any term in the polynomial where degrees
-;;; are summed over the variables in *VARDEGS*.
+;;; Returns the maximum total degree of any term in the polynomial, summing
+;;; degrees over the variables in *VARDEGS*.
 (defun killvardegsn (poly)
   (declare (special *vardegs*))
   (cond
