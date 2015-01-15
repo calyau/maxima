@@ -141,14 +141,11 @@
                    (subsetp x s2 :test #'alike1))
                  l1)))
 
-(defun algsys (tlhslist &aux answ)
-  (setq answ
-	(condensesolnl (apply #'append
-			      (mapcar #' algsys0
-					 (distrep (mapcar  #'lofactors tlhslist))))))
-  ;;     (displa  (cons '(mlist)  (loop for v in answ collecting
-  ;;				  (cons '(mlist) v))))
-  answ)
+(defun algsys (tlhslist)
+  (condensesolnl
+   (apply #'append
+          (mapcar #'algsys0
+                  (distrep (mapcar #'lofactors tlhslist))))))
 
 (defun algsys0 (tlhslist)
   (cond ((null tlhslist) (list nil))
