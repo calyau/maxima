@@ -30,6 +30,9 @@ takes.
 To compile with sbcl replace --with-ccl=<path-to-ccl> with
 --with-sbcl=<path-to-sbcl>.
 
+A script for building an installer is available at
+<https://github.com/andrejv/max_build.sh>.
+
 External Requirements
 =====================
 
