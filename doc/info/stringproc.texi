@@ -1158,7 +1158,7 @@ Note that the first character in @var{string} is in position 1.
 @fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}) @
 @fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
-Like @code{sremove} except that only the first substring that matches @code{seq} is removed. 
+Like @code{sremove} except that only the first substring that matches @var{seq} is removed.
 
 @opencatbox
 @category{Package stringproc}
