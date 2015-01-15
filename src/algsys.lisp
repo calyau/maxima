@@ -329,12 +329,16 @@
 ;;; (COMBINEY LISTOFL)
 ;;;
 ;;; Combine "independent" lists in LISTOFL. If all the lists have empty pairwise
-;;; intersections, this returns all selections of items, one from each list.
+;;; intersections, this returns all selections of items, one from each
+;;; list. Destructively modifies LISTOFL.
 ;;;
 ;;; Selections are built up starting at the last list. When building, if there
 ;;; would be a repeated element because the list we're about to select from has
 ;;; nonempty intersection with an existing partial selections then elements from
 ;;; the current list aren't added to this selection.
+;;;
+;;; COMBINEY guarantees that no list in the result has two elements that are
+;;; ALIKE1 each other.
 ;;;
 ;;; This is used to enumerate combinations of solutions from multiple
 ;;; equations. Each entry in LISTOFL is a list of possible solutions for an
@@ -343,13 +347,13 @@
 ;;;
 ;;; (I don't know why the non-disjoint behaviour works like this. RJS 1/2015)
 (defun combiney (listofl)
-  (cond ((member nil listofl :test #'eq) nil)
-	(t (combiney1 (delete '(0) listofl :test #'equal)))))
+  (unless (member nil listofl)
+    (combiney1 (delete '(0) listofl :test #'equal))))
 
 (defun combiney1 (listofl)
   (cond ((null listofl) (list nil))
 	(t (mapcan #'(lambda (r)
-		       (if (intersection (car listofl) r :test #'equal)
+		       (if (intersection (car listofl) r :test #'alike1)
 			   (list r)
 			   (mapcar #'(lambda (q) (cons q r)) (car listofl))))
 		   (combiney1 (cdr listofl))))))
@@ -542,18 +546,21 @@
 (defmfun mycabs (x)
   (and (complexnump x) (cabs x)))
 
+;;; (DISTREP LOL)
+;;;
+;;; Take selections from LOL, a list of lists, using COMBINEY. When used by
+;;; ALGSYS, the elements of the lists are per-equation solutions for some system
+;;; of equations. COMBINEY combines the per-equation solutions into prospective
+;;; solutions for the entire system.
+;;;
+;;; These prospective solutions are then filtered with CONDENSESOLNL, which
+;;; discards special cases of more general solutions.
+;;;
+;;; (I don't understand why this reversal has to be here, but we get properly
+;;;  wrong solutions to some of the testsuite functions without it. Come back to
+;;;  this... RJS 1/2015)
 (defun distrep (lol)
-  (condensesolnl (condensesublist (combiney lol))))
-
-(defun condensey (l)
-  (let ((result nil))
-    (mapl #'(lambda (q)
-	      (or (memalike (car q) (cdr q)) (push (car q) result)))
-	  l)
-    result))
-
-(defun condensesublist (lol)
-  (mapcar #'condensey lol))
+  (condensesolnl (mapcar #'reverse (combiney lol))))
 
 (defun exclude (l1 l2)
   (cond ((null l2)
