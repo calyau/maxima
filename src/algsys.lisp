@@ -253,6 +253,19 @@
                 leastvar (car teq)))
     (cons leasteq leastvar)))
 
+;;; DO-POLY-TERMS
+;;;
+;;; Iterate over the terms in a polynomial, POLY, executing BODY with LE and LC
+;;; bound to the exponent and coefficient respectively of each term. If RESULT
+;;; is non-NIL, it is evaluated to give a result when the iteration finishes.
+(defmacro do-poly-terms ((le lc poly &optional result) &body body)
+  (let ((pt (gensym)))
+    `(do ((,pt (p-terms ,poly) (pt-red ,pt)))
+         ((null ,pt) ,result)
+       (let ((,le (pt-le ,pt))
+             (,lc (pt-lc ,pt)))
+         ,@body))))
+
 ;;; (KILLVARDEGSC POLY)
 ;;;
 ;;; For each monomial in POLY that is mixed in the variables in *VARDEGS*
@@ -264,15 +277,14 @@
 ;;; Returns the maximum total degree of any term in the polynomial, summing
 ;;; degrees over the variables in *VARDEGS*.
 (defun killvardegsc (poly)
-  (cond
-    ((pconstp poly) 0)
-    (t
-     (do ((terms (p-terms poly) (pt-red terms))
-          (tdeg 0 (max tdeg (+ (pt-le terms)
-                               (if (= (pt-le terms) 0)
-                                   (killvardegsc (pt-lc terms))
-                                   (killvardegsn (pt-lc terms)))))))
-         ((null terms) tdeg)))))
+  (if (pconstp poly)
+      0
+      (let ((tdeg 0))
+        (do-poly-terms (le lc poly tdeg)
+          (setf tdeg (max tdeg (+ le
+                                  (if (= le 0)
+                                      (killvardegsc lc)
+                                      (killvardegsn lc)))))))))
 
 ;;; (KILLVARDEGSN POLY)
 ;;;
@@ -290,10 +302,9 @@
      (let ((x (assoc (p-var poly) *vardegs* :test #'eq)))
        (when (and x (<= (cdr x) (p-le poly)))
          (setq *vardegs* (delete x *vardegs* :test #'equal))))
-     (do ((terms (p-terms poly) (pt-red terms))
-          (tdeg 0 (max tdeg (+ (pt-le terms)
-                               (killvardegsn (pt-lc terms))))))
-         ((null terms) tdeg)))))
+     (let ((tdeg 0))
+       (do-poly-terms (le lc poly tdeg)
+         (setf tdeg (max tdeg (+ le (killvardegsn lc)))))))))
 
 ;;; (GETVARDEGS POLY)
 ;;;
