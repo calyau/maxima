@@ -275,6 +275,26 @@
 	      (tdeg 0 (max tdeg (+ (car poly) (killvardegsn (cadr poly))))))
 	     ((null poly) tdeg)))))
 
+;;; (GETVARDEGS POLY)
+;;;
+;;; Return degrees of POLY's monomials in the variables for which we're
+;;; solving. Ignores mixed terms (like x*y). Results are returned as an alist
+;;; with elements (VAR . DEGREE).
+;;;
+;;; For example, if *TVARXLIST* is '(x y) and we are looking at the polynomial
+;;; x^2 + y^2, we have
+;;;
+;;;   (GETVARDEGS '(X 2 1 0 (Y 2 1))) => ((X . 2) (Y . 2))
+;;;
+;;; Variables that aren't in *TVARXLIST* are assumed to come after those that
+;;; are. For example c*x^2 would look like
+;;;
+;;;   (GETVARDEGS '(X 2 (C 1 1))) => ((X . 2))
+;;;
+;;; Mixed powers are ignored, so x*y + y looks like:
+;;;
+;;;   (GETVARDEGS '(X 1 (Y 1 1) 0 (Y 1 1))) => ((Y . 1))
+
 (defun getvardegs (poly)
   (cond ((pconstp poly) nil)
 	((pconstp (caddr poly))
