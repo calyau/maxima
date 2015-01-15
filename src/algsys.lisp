@@ -230,25 +230,28 @@
 (declare-top (special *vardegs*))
 
 (defun findleastvar (lhsl)
-  (do ((tlhsl lhsl (cdr tlhsl))
-       (teq) (*vardegs*) (tdeg)
-       ;; Largest possible fixnum.  The actual degree of any polynomial
-       ;; is supposed to be less than this number.
-       (leastdeg  most-positive-fixnum)
-       (leasteq) (leastvar))
-      ((null tlhsl) (cons leasteq leastvar))
+  (let ((*vardegs*)
+        (leasteq) (leastvar)
+        ;; most-positive-fixnum is larger than any polynomial degree, so we can
+        ;; initialise with this and be certain to replace it on the first
+        ;; iteration.
+        (leastdeg most-positive-fixnum))
     (declare (special *vardegs*))
-    (setq teq (car tlhsl))
-    (setq *vardegs* (getvardegs teq))
-    (setq tdeg (killvardegsc teq))
-    (mapc #'(lambda (q) (cond ((not (> (cdr q) leastdeg))
-			      (setq leastdeg (cdr q)
-				    leasteq teq
-				    leastvar (car q)))))
-	   *vardegs*)
-    (cond ((< tdeg leastdeg) (setq leastdeg tdeg
-				   leasteq teq
-				   leastvar (car teq))))))
+    (loop
+       for teq in lhsl
+       for *vardegs* = (getvardegs teq)
+       for tdeg = (killvardegsc teq)
+       do (loop
+             for q in *vardegs*
+             if (<= (cdr q) leastdeg)
+             do (setq leastdeg (cdr q)
+                      leasteq teq
+                      leastvar (car q)))
+       if (< tdeg leastdeg)
+       do (setq leastdeg tdeg
+                leasteq teq
+                leastvar (car teq)))
+    (cons leasteq leastvar)))
 
 (defun killvardegsc (poly)
   (cond ((pconstp poly) 0)
