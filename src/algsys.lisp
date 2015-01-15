@@ -143,9 +143,8 @@
 
 (defun algsys (tlhslist)
   (condensesolnl
-   (apply #'append
-          (mapcar #'algsys0
-                  (distrep (mapcar #'lofactors tlhslist))))))
+   (mapcan #'algsys0
+           (distrep (mapcar #'lofactors tlhslist)))))
 
 (defun algsys0 (tlhslist)
   (cond ((null tlhslist) (list nil))
