@@ -326,6 +326,22 @@
                    (atom (car main-var-factor)))
               (push (pabs main-var-factor) lfactors)))))))))
 
+;;; (COMBINEY LISTOFL)
+;;;
+;;; Combine "independent" lists in LISTOFL. If all the lists have empty pairwise
+;;; intersections, this returns all selections of items, one from each list.
+;;;
+;;; Selections are built up starting at the last list. When building, if there
+;;; would be a repeated element because the list we're about to select from has
+;;; nonempty intersection with an existing partial selections then elements from
+;;; the current list aren't added to this selection.
+;;;
+;;; This is used to enumerate combinations of solutions from multiple
+;;; equations. Each entry in LISTOFL is a list of possible solutions for an
+;;; equation. A solution for the set of equations is found by looking at
+;;; (compatible) combinations of solutions.
+;;;
+;;; (I don't know why the non-disjoint behaviour works like this. RJS 1/2015)
 (defun combiney (listofl)
   (cond ((member nil listofl :test #'eq) nil)
 	(t (combiney1 (delete '(0) listofl :test #'equal)))))
