@@ -262,18 +262,26 @@
 					    (t (killvardegsn (cadr poly))))))))
 	       ((null poly) tdeg)))))
 
+;;; (KILLVARDEGSN POLY)
+;;;
+;;; For each monomial in POLY, look at its degree in each variable in
+;;; *TVARXLIST*. If the degree is at least as high as that recorded in
+;;; *VARDEGS*, delete that variable and its degree from *VARDEGS*.
+;;;
+;;; Returns the maximum total degree of any term in the polynomial where degrees
+;;; are summed over the variables in *VARDEGS*.
 (defun killvardegsn (poly)
   (declare (special *vardegs*))
-  (cond ((pconstp poly)
-	 0)
-	(t
-	 (let ((x (assoc (car poly) *vardegs* :test #'eq)))
-	   (and x
-		(not (> (cdr x) (cadr poly)))
-		(setq *vardegs* (delete x *vardegs* :test #'equal))))
-	 (do ((poly (cdr poly) (cddr poly))
-	      (tdeg 0 (max tdeg (+ (car poly) (killvardegsn (cadr poly))))))
-	     ((null poly) tdeg)))))
+  (cond
+    ((pconstp poly) 0)
+    (t
+     (let ((x (assoc (p-var poly) *vardegs* :test #'eq)))
+       (when (and x (<= (cdr x) (p-le poly)))
+         (setq *vardegs* (delete x *vardegs* :test #'equal))))
+     (do ((terms (p-terms poly) (pt-red terms))
+          (tdeg 0 (max tdeg (+ (pt-le terms)
+                               (killvardegsn (pt-lc terms))))))
+         ((null terms) tdeg)))))
 
 ;;; (GETVARDEGS POLY)
 ;;;
