@@ -765,7 +765,7 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 @fname{define} (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr}) @
 @fname{define} (@var{f}[@var{x_1}, @dots{}, @var{x_n}](@var{y_1}, @dots{}, @var{y_m}), @var{expr}) @
 @fname{define} (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr}) @
-@fname{define} (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@fname{define} (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr}) @
 @fname{define} (ev (@var{expr_1}), @var{expr_2})
 
 Defines a function named @var{f} with arguments @var{x_1}, @dots{}, @var{x_n}
