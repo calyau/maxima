@@ -251,9 +251,9 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
 	  (format t (intl:gettext "Evaluation took ~,4F seconds (~,4F elapsed)")
 		  time-used etime-used )
-	  #+(or gcl ecl openmcl)
+	  #+(or gcl ecl)
 	  (format t "~%")
-	  #+(or cmu scl sbcl clisp)
+	  #+(or cmu scl sbcl clisp openmcl)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
 		   (format t (intl:gettext " using ~,3F MB.~%")
