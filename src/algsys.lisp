@@ -542,21 +542,28 @@
                          (not (eq x 'rat)))))
               solnl))
 
+;; (MERGESOLN ASOLN SOLNL)
+;;
+;; For each solution S in SOLNL, evaluate each element of ASOLN in light of S
+;; and, collecting up the results and prepending them to S. If evaluating an
+;; element in light of S caused an error, ignore the combination of ASOLN and S.
 (defun mergesoln (asoln solnl)
-  (let ((errorsw t) s (unbind (cons bindlist loclist)))
-    (mapcan #'(lambda (q)
-		(setq s (catch 'errorsw
-			  (append
-			   (mapcar #'(lambda (r)
-				       (what-the-$ev r (cons '(mlist) q)))
-				   asoln)
-			   q)))
-		(cond ((eq s t)
-		       (errlfun1 unbind)
-		       nil)
-		      (t
-		       (list s))))
-	    solnl)))
+  (let ((unbind (cons bindlist loclist))
+        (errorsw t))
+    (macrolet ((catch-error-t (&body body)
+                 `(let ((result (catch 'errorsw ,@body)))
+                    (when (eq result t)
+                      (errlfun1 unbind))
+                    result)))
+      (loop
+         for q in solnl
+         for result =
+           (catch-error-t
+            (append (mapcar (lambda (r)
+                              (what-the-$ev r (cons '(mlist) q)))
+                            asoln)
+                   q))
+         if (not (eq result t)) collect result))))
 
 (defun callsolve (pv)
   (let ((poly (car pv))
