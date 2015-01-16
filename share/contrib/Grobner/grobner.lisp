@@ -24,12 +24,6 @@
 
 (macsyma-module cgb-maxima)
 
-(eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
-    (format t "~&Loading maxima-grobner ~a ~a~%"
-	    "$Revision: 1.6 $" "$Date: 2009-06-02 07:49:49 $"))
-
 ;; Macros for making lists with iterators - an exammple of GENSYM
 ;; MAKELIST-1 makes a list with one iterator, while MAKELIST accepts an
 ;; arbitrary number of iterators
