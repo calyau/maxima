@@ -273,7 +273,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
           (putprop '$% (cons time-used 0) 'time)
 	  (putprop d-tag (cons time-used  0) 'time))
 	(if (eq (caar r) 'displayinput)
-	    (displa `((mlabel) ,d-tag ,$%))) ;; consistently misspelling label.
+	    (displa `((mlabel) ,d-tag ,$%)))
 	(when (eq batch-or-demo-flag ':demo)
           (princ (break-prompt))
           (force-output)
