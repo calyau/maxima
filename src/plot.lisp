@@ -2627,7 +2627,10 @@ Several functions depending on the two variables v1 and v2:
                     'string *maxima-prefix* 
                     (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
                     $xmaxima_plot_command) 
-                   (format nil " ~s &" file)))
+                   #-(or (and sbcl win32) (and ccl windows))
+                   (format nil " ~s &" file)
+                   #+(or (and sbcl win32) (and ccl windows))
+                   file))
                  ($geomview 
                   ($system $geomview_command
                            (format nil " \"~a\"" file)))
