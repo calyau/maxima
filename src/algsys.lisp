@@ -613,17 +613,21 @@
 				      (deletmult *roots)))))))
 	  (t (callapprs poly)))))
 
+;;; (BIQUADRATICP POLY)
+;;;
+;;; Check whether POLY is biquadratic in its main variable: either of degree at
+;;; most two or of degree four and with only even powers.
 (defun biquadraticp (poly)
   (or (atom poly)
       (if algnotexact
-	  (< (cadr poly) 2)
-	  (or (< (cadr poly) 3)
-	      (and (= (cadr poly) 4) (biquadp1 (cdddr poly)))))))
+	  (< (p-le poly) 2)
+	  (or (< (p-le poly) 3)
+	      (and (= (p-le poly) 4) (biquadp1 (p-red poly)))))))
 
-(defun biquadp1 (l)
-  (or (null l)
-      (and (or (= (car l) 2) (= (car l) 0))
-	   (biquadp1 (cddr l)))))
+(defun biquadp1 (terms)
+  (or (null terms)
+      (and (or (= (pt-le terms) 2) (= (pt-le terms) 0))
+	   (biquadp1 (pt-red terms)))))
 
 (defun callapprs (poly)
   (or (punivarp poly)
