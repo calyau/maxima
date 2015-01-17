@@ -448,8 +448,16 @@
 	 (cons (car solnl1) (commonroots eps (cdr solnl1) solnl2)))
 	(t (commonroots eps (cdr solnl1) solnl2))))
 
-(defun deletmult (l)
-  (and l (cons (car l) (deletmult (cddr l)))))
+;; (REMOVE-MULT L)
+;;
+;; Return a copy of L with all elements in odd positions removed. This is so
+;; named because some code returns roots and multiplicities in the format
+;;
+;;   (ROOT0 MULT0 ROOT1 MULT1 ... ROOTN MULTN)
+;;
+;; Calling REMOVE-MULT on such a list removes the multiplicities.
+(defun remove-mult (l)
+  (and l (cons (car l) (remove-mult (cddr l)))))
 
 (defun punivarp (poly)
   ;; Check if called with the number zero, return nil. 
@@ -606,11 +614,11 @@
 	   (cond ((null (or *roots *failures))
 		  (list nil))
 		 (t
-		  (append (mapcan #'(lambda (q) (callapprs (cadr (ratf (meqhk q))))) (deletmult *failures))
+		  (append (mapcan #'(lambda (q) (callapprs (cadr (ratf (meqhk q))))) (remove-mult *failures))
 			  (mapcar #'list
 				  (if $realonly
-				      (realonly (deletmult *roots))
-				      (deletmult *roots)))))))
+				      (realonly (remove-mult *roots))
+				      (remove-mult *roots)))))))
 	  (t (callapprs poly)))))
 
 ;;; (BIQUADRATICP POLY)
