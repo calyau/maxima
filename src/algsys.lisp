@@ -470,11 +470,15 @@
 	     (punivarp (cadr l)))
 	(return nil))))
 
+;; (REALONLY ROOTSL)
+;;
+;; Return only the elements of ROOTSL whose $IMAGPART simplifies to zero with
+;; SRATSIMP. (Note that this a subset of "the real roots", because SRATSIMP may
+;; not be able to check that a given expression is zero)
 (defun realonly (rootsl)
-  (cond ((null rootsl) nil)
-	((equal 0 (sratsimp ($imagpart (caddr (car rootsl)))))
-	 (nconc (list (car rootsl)) (realonly (cdr rootsl))))
-	(t (realonly (cdr rootsl)))))
+  (remove-if-not (lambda (root)
+                   (equal 0 (sratsimp ($imagpart (caddr root)))))
+                 rootsl))
 
 
 (defun presultant (p1 p2 var)
