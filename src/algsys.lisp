@@ -478,6 +478,15 @@
      (cond ((null ll) (return (car l)))
 	   (t (return (ptimes (car l) (ptimeftrs ll)))))))
 
+;; (EBAKSUBST SOLNL LHSL)
+;;
+;; Substitute a solution for one variable back into the "left hand side
+;; list". If the equation had to be solved for multiple variables, this allows
+;; us to use the solution for a first variable to feed in to the equation for
+;; the next one along.
+;;
+;; As well as doing the obvious substitution, EBAKSUBST also simplifies with
+;; $RADCAN (presumably, E stands for Exponential)
 (defun ebaksubst (solnl lhsl)
   (mapcar #'(lambda (q) (cadr (ratf (what-the-$ev (pdis q)
 						  (cons '(mlist) solnl)
