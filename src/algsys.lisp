@@ -600,6 +600,19 @@
                    q))
          if (not (eq result t)) collect result))))
 
+;; (CALLSOLVE PV)
+;;
+;; Try to solve a polynomial with respect to the given variable. PV is a cons
+;; pair (POLY . VAR). On success, return a list of solutions. Each solution is
+;; itself a list, whose elements are equalities (one for each variable in the
+;; equation). If we determine that there aren't any solutions, return '(NIL).
+;;
+;; If POLY is in more than one variable or if it can clearly be solved by the
+;; quadratic formula (BIQUADRATICP), we always call SOLVE to try to get an exact
+;; solution. Similarly if the user has set the $ALGEXACT variable to true.
+;;
+;; Otherwise, or if SOLVE fails, we try to find an approximate solution with a
+;; call to CALLAPPRS.
 (defun callsolve (pv)
   (let ((poly (car pv))
 	(var (cdr pv))
@@ -608,17 +621,26 @@
 	(*roots nil)
 	(*failures nil)
 	($programmode t))
-    (cond ((or $algexact (not (punivarp  poly))
+    (cond ((or $algexact
+               (not (punivarp poly))
 	       (biquadraticp poly))
+           ;; Call SOLVE to try to solve POLY. When it returns, the solutions it
+           ;; found end up in *ROOTS. *FAILURES contains expressions that, if
+           ;; solved, would lead to further solutions.
 	   (solve (pdis poly) (pdis (list var 1 1)) 1)
-	   (cond ((null (or *roots *failures))
-		  (list nil))
-		 (t
-		  (append (mapcan #'(lambda (q) (callapprs (cadr (ratf (meqhk q))))) (remove-mult *failures))
-			  (mapcar #'list
-				  (if $realonly
-				      (realonly (remove-mult *roots))
-				      (remove-mult *roots)))))))
+           (if (null (or *roots *failures))
+               ;; We're certain there are no solutions
+               (list nil)
+               ;; Try to find approximate solutions to the terms that SOLVE gave
+               ;; up on (in *FAILURES) and remove any roots from SOLVE that
+               ;; aren't known to be real if $REALONLY is true.
+               (append (mapcan (lambda (q)
+                                 (callapprs (cadr (ratf (meqhk q)))))
+                               (remove-mult *failures))
+                       (mapcar #'list
+                               (if $realonly
+                                   (realonly (remove-mult *roots))
+                                   (remove-mult *roots))))))
 	  (t (callapprs poly)))))
 
 ;;; (BIQUADRATICP POLY)
