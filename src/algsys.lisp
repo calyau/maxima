@@ -530,24 +530,26 @@
     (or (numberp p)
 	(eq (pdis (pget (car p))) '$%i))))
 
+;; (BAKALEVEL SOLNL LHSL VAR)
+;;
+;;; Recursively try to find a solution to the list of polynomials in LHSL. SOLNL
+;;; should be a non-empty list of partial solutions (for example, these might be
+;;; solutions we've already found for x when we're solving for x and y).
+;;;
+;;; BAKALEVEL works over each partial solution. This should itself be a list. If
+;;; it is non-nil, it is a list of equations for the variables we're trying to
+;;; solve for ("x = 3 + y" etc.). In this case, BAKALEVEL substitutes these
+;;; solutions into the system of equations and then tries to solve the
+;;; result. On success, it merges the partial solutions in SOLNL with those it
+;;; gets recursively.
+;;;
+;;; If a partial solution is nil, we don't yet have any partial information. If
+;;; there is only a single polynomial to solve in LHSL, we try to solve it in
+;;; the given variable, VAR. Otherwise we choose a variable of lowest degree
+;;; (with FINDLEASTVAR), solve for that (with CALLSOLVE) and then recurse.
 (defun bakalevel (solnl lhsl var)
-;;(apply #'append (mapcar #'(lambda (q) (bakalevel1 q lhsl var)) solnl))
-  (loop for q in solnl append (bakalevel1 q lhsl var)))
+  (loop for q in solnl nconcing (bakalevel1 q lhsl var)))
 
-;;; (BAKALEVEL1 SOLNL LHSL VAR)
-;;;
-;;; Recursively try to find a solution to the list of polynomials in LHSL. If
-;;; SOLNL is non-nil, it is a list of partial solutions (for example, it might
-;;; be solutions for x when we're solving for x and y). In this case, BAKALEVEL1
-;;; substitutes these solutions into the system of equations and then tries to
-;;; solve the result. On success, it merges the partial solutions in SOLNL with
-;;; those it gets recursively.
-;;;
-;;; If SOLNL is NIL, we don't yet have any partial solutions. If there is only a
-;;; single polynomial to solve in LHSL, we try to solve it in the given
-;;; variable, VAR. Otherwise we choose a variable of lowest degree (with
-;;; FINDLEASTVAR), solve for that (with CALLSOLVE) and then recurse through
-;;; BAKALEVEL.
 (defun bakalevel1 (solnl lhsl var)
   (cond
     ((not (exactonly solnl))
