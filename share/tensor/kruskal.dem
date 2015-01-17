@@ -13,7 +13,7 @@
  * The Kruskal extension of the Schwarzschild metric.
  *
  */
-kill(allbut(props));
+kill(all);
 
 ("Computing Kruskal's maximal extension of the Schwarzschild metric" )$
 
@@ -41,5 +41,5 @@ kill(r);
 block([title: "The Kruskal-Szekeres metric coefficient for GM=1"],
 /*plot3d([r*cos(u),r*sin(u),ev(subst((1-r/(2*G*M))*exp(r/(2*G*M))+R^2,T^2,ug[1,1]),G=1,M=1)],[r,0.01,5],[u,-%pi,%pi],['grid,50,15]));*/
 /*plot3d([r*cos(u),r*sin(u),ev(subst((1-r/(2*G*M))*exp(r/(2*G*M))+R^2,T^2,ug[1,1]),G=1,M=1)],[r,0.01,5],[u,-%pi,%pi],['grid,7,7],[plot_format,gnuplot],[gnuplot_term,dumb],[gnuplot_dumb_term_command, "set term dumb 132 50"]));*/
-plot2d(ev(subst((1-r/(2*G*M))*exp(r/(2*G*M))+R^2,T^2,ug[1,1]),G=1,M=1),[r,0,5],[plot_format,gnuplot],[gnuplot_term,dumb]));
+plot2d(ev(subst((1-r/(2*G*M))*exp(r/(2*G*M))+R^2,T^2,ug[1,1]),G=1,M=1),[r,0,5],[plot_format,gnuplot],[gnuplot_term,dumb],[yx_ratio,0.25]));
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

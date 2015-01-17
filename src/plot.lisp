@@ -1360,7 +1360,7 @@ sin(y)*(10.0+6*cos(x)),
 			  file))))
         ($dumb
          (if out-file
-             ($printfile out-file)
+             ($printfile (car out-file))
              (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
 ;; plot-options-parser puts the plot options given into a property list.
