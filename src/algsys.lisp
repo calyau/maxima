@@ -34,7 +34,7 @@
 
 (declare-top (special $algdelta $ratepsilon $algepsilon $keepfloat
 		     varlist genvar *roots *failures $ratprint $numer $ratfac
-		     $rnum $solvefactors $dispflag $breakup $rootsquad
+		     $rnum $solvefactors $dispflag $breakup
 		     *tvarxlist* errorsw $programmode *ivar* errset $polyfactor
 		     bindlist loclist $float $infeval))
 
@@ -663,21 +663,26 @@
       (and (or (= (pt-le terms) 2) (= (pt-le terms) 0))
 	   (biquadp1 (pt-red terms)))))
 
+;;; (CALLAPPRS POLY)
+;;;
+;;; Try to find approximate solutions to POLY, which should be a polynomial in a
+;;; single variable. Uses STURM1 if we're only after real roots (because
+;;; $REALONLY is set). Otherwise, calls $ALLROOTS.
 (defun callapprs (poly)
-  (or (punivarp poly)
-      (merror (intl:gettext "algsys: tried and failed to reduce system to a polynomial in one variable; give up.")))
-  (let ($rootsquad $dispflag)
-    (cond ($realonly
-	   (mapcar #'(lambda (q)
-		       (list (list '(mequal)
-				   (pdis (list (car poly) 1 1))
-				   (rflot q))))
-		   (sturm1 poly (cons 1 $algepsilon))))
-	  (t (mapcar #'list
-		     (let (($programmode t) l)
-		       (setq l (cdr ($allroots (pdis poly))))
-		       (cond ((not (eq (caaar l) 'mequal)) (cdr l))
-			     (t l))))))))
+  (unless (punivarp poly)
+    (merror (intl:gettext "algsys: Couldn't reduce system to a polynomial in one variable.")))
+  (let ($dispflag)
+    (if $realonly
+        (let ((dis-var (pdis (list (car poly) 1 1))))
+          (mapcar #'(lambda (q)
+                      (list (list '(mequal) dis-var (rflot q))))
+                  (sturm1 poly (cons 1 $algepsilon))))
+        (mapcar #'list
+                (let* (($programmode t)
+                       (roots (cdr ($allroots (pdis poly)))))
+                  (if (eq (caaar roots) 'mequal)
+                      roots
+                      (cdr roots)))))))
 
 (defun apprsys (lhsl)
   (cond ((null lhsl) (list nil))
