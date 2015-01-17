@@ -522,14 +522,32 @@
 ;;(apply #'append (mapcar #'(lambda (q) (bakalevel1 q lhsl var)) solnl))
   (loop for q in solnl append (bakalevel1 q lhsl var)))
 
+;;; (BAKALEVEL1 SOLNL LHSL VAR)
+;;;
+;;; Recursively try to find a solution to the list of polynomials in LHSL. If
+;;; SOLNL is non-nil, it is a list of partial solutions (for example, it might
+;;; be solutions for x when we're solving for x and y). In this case, BAKALEVEL1
+;;; substitutes these solutions into the system of equations and then tries to
+;;; solve the result. On success, it merges the partial solutions in SOLNL with
+;;; those it gets recursively.
+;;;
+;;; If SOLNL is NIL, we don't yet have any partial solutions. If there is only a
+;;; single polynomial to solve in LHSL, we try to solve it in the given
+;;; variable, VAR. Otherwise we choose a variable of lowest degree (with
+;;; FINDLEASTVAR), solve for that (with CALLSOLVE) and then recurse through
+;;; BAKALEVEL.
 (defun bakalevel1 (solnl lhsl var)
-  (cond ((exactonly solnl)
-	 (cond (solnl (mergesoln solnl (algsys (ebaksubst solnl lhsl))))
-	       ((cdr lhsl)
-		(bakalevel (callsolve (setq solnl (findleastvar lhsl)))
-			   (remove (car solnl) lhsl :test #'equal) var))
-	       (t (callsolve (cons (car lhsl) var)))))
-	(t (mergesoln solnl (apprsys (baksubst solnl lhsl))))))
+  (cond
+    ((not (exactonly solnl))
+     (mergesoln solnl (apprsys (baksubst solnl lhsl))))
+    (solnl
+     (mergesoln solnl (algsys (ebaksubst solnl lhsl))))
+    ((cdr lhsl)
+     (let ((poly-and-var (findleastvar lhsl)))
+       (bakalevel (callsolve poly-and-var)
+                  (remove (car poly-and-var) lhsl :test #'equal)
+                  var)))
+    (t (callsolve (cons (car lhsl) var)))))
 
 ;; (EVERY-ATOM PRED X)
 ;;
