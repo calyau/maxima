@@ -12,20 +12,19 @@
 ;;                                                                ;;
 ;;----------------------------------------------------------------;;
 
-
 [Setup]
-AppName=Maxima
-AppVerName=Maxima @VERSION@
-AppId=Maxima-@VERSION@
+AppName=Maxima (@DEFAULTLISP@)
+AppVerName=Maxima (@DEFAULTLISP@) @VERSION@
+AppId=Maxima-@DEFAULTLISP@-@VERSION@
 UsePreviousAppDir=no
 AppPublisher=The Maxima Development Team
 AppPublisherURL=http://maxima.sourceforge.net
 AppSupportURL=http://maxima.sourceforge.net
 AppUpdatesURL=http://maxima.sourceforge.net
 AppVersion=@VERSION@
-OutputBaseFilename=maxima-@VERSION@
-DefaultDirName={pf}\Maxima-@VERSION@
-DefaultGroupName=Maxima-@VERSION@
+OutputBaseFilename=maxima-@DEFAULTLISP@-@VERSION@
+DefaultDirName={pf}\Maxima-@DEFAULTLISP@-@VERSION@
+DefaultGroupName=Maxima @VERSION@ (@DEFAULTLISP@)
 InfoBeforeFile=interfaces\xmaxima\win32\InfoBefore.txt
 InfoAfterFile=interfaces\xmaxima\win32\readme_en.txt
 AllowNoIcons=yes
@@ -60,10 +59,18 @@ Name: "custom"; Description: "{cm:CustomInstallation}"; Flags: iscustom
 Name: "core"; Description: "{cm:MaximaCore}"; Types: full compact custom; Flags: fixed
 Name: "wxmaxima"; Description: "{cm:wxMaximaGraphicShell}"; Types: full custom
 Name: "xmaxima"; Description: "{cm:XMaximaGraphicShell}"; Types: full custom
+#if "@lang_es@" == "true" || "@lang_pt@" == "true" ||"@lang_pt_br@" == "true"
 Name: "lang"; Description: "{cm:MaximaLanguagePacks}"; Types: full custom
+#endif
+#if "@lang_es@" == "true"
 Name: "lang\spanish"; Description: "{cm:Spanish}"; Types: full custom
+#endif
+#if "@lang_pt@" == "true"
 Name: "lang\portuguese"; Description: "{cm:Portuguese}"; Types: full custom
+#endif
+#if "@lang_pt_br@" == "true"
 Name: "lang\brazilian"; Description: "{cm:BrazilianPortuguese}"; Types: full custom
+#endif
 
 
 [Tasks]
@@ -89,14 +96,20 @@ Source: "@prefix@\bin\xmaxima.*"; DestDir: "{app}\bin\"; Flags: ignoreversion; C
 Source: "@prefix@\bin\xmaxima"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
 
 ; lang\spanish
+#if "@lang_es@" == "true"
 Source: "@prefix@\share\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs;  Components: "lang\spanish"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\es\"; Components: "lang\spanish"
+#endif
 ; lang\portuguese
+#if "@lang_pt@" == "true"
 Source: "@prefix@\share\info\pt\*.*"; DestDir: "{app}\info\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt\"; Components: "lang\portuguese"
+#endif
 ; lang\brazilian
+#if "@lang_pt_br@" == "true"
 Source: "@prefix@\share\info\pt_BR\*.*"; DestDir: "{app}\info\pt_BR\";  Flags: recursesubdirs;  Components: "lang\brazilian"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt_BR\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt_BR\"; Components: "lang\brazilian"
+#endif
 
 
 [Icons]
@@ -108,8 +121,6 @@ Name: "{group}\{cm:ReadmeMenuEntry}"; Filename: "{app}\readme_{language}.txt"; C
 
 ; wxmaxima
 Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
-Name: "{group}\{cm:ProgramOnTheWeb,wxMaxima}"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
-Name: "{group}\{cm:OnlineForum,wxMaxima}"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
 ; xmaxima
@@ -119,12 +130,17 @@ Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,
 Name: "{group}\{cm:Uninstall}"; Filename:"{uninstallexe}"
 
 ; lang\spanish
+#if "@lang_es@" == "true"
 Name: "{group}\{cm:ReferenceManualSpanish}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\spanish"
+#endif
 ; lang\portuguese
+#if "@lang_pt@" == "true"
 Name: "{group}\{cm:ReferenceManualPortuguese}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
+#endif
 ; lang\brazilian
+#if "@lang_pt_br@" == "true"
 Name: "{group}\{cm:ReferenceManualBrazilianPortuguese}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\pt_BR\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\brazilian"
-
+#endif
 
 ;[Run]
 ;Filename: "{app}\bin\xmaxima.exe"; Description: "{cm:LaunchProgram,XMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
@@ -473,8 +489,11 @@ es.ReferenceManualSpanish=Manual de Referencia (Español)
 { Check if a path contains spaces.  If it does, convert it to
   the equivalent short path }
 function PathWithoutSpaces( strIn: String): String;
+var
+  Version: TWindowsVersion;
 begin
-  if (Pos(' ',strIn) = 0) then
+  GetWindowsVersionEx(Version);
+  if (Pos(' ',strIn) = 0) or (Version.Major >= 5) then
     Result := strIn
   else
     Result := GetShortName(strIn);

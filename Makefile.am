@@ -42,32 +42,43 @@ rpm: $(distdir).tar.gz
 # windows installer rules
 if WIN32
 
-GNUPLOTDIR = /c/programs/gnuplot
-WXMAXIMADIR = /c/programs/wxMaxima
-
-
-# Windows installer.
-iss: extradocinstall gnuplot wxmaxima win32-lisp-runtime
+GNUPLOTDIR = "/c/programs/gnuplot"
+WXMAXIMADIR = "/c/programs/wxMaxima"
 
 # Install the gnuplot binary files
 gnuplot: 
 	mkdir -p $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/bin $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/share $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/etc $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/license $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR) $(prefix)/
 
 # Install wxMaxima
 wxmaxima:
+	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
 	cp -rf $(WXMAXIMADIR) $(prefix)/wxMaxima
 
+cclcopy:
+	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
+	cp "$(OPENMCL_NAME)" "$(prefix)/bin/"
+
+sbclcopy:
+	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
+	cp "$(SBCL_NAME)" "$(prefix)/bin/"
+
+RUNTIMECOPY = 
 # Install files for lisp runtime support
 if GCL
-GCCCOPY = gcccopy
+RUNTIMECOPY += gcccopy
+endif
+
+if OPENMCL
+RUNTIMECOPY += cclcopy
+endif
+
+if SBCL
+RUNTIMECOPY += sbclcopy
 endif
 
 # Install files for lisp runtime support
-win32-lisp-runtime: $(GCCCOPY)
+win32-lisp-runtime: $(RUNTIMECOPY)
 
 MINGW=/mingw
 if GCC331
@@ -143,5 +154,7 @@ gcccopy:
 		$(prefix)/lib/gcc/mingw32/$(GCCVER)/include
 
 endif # GCC331
+
+iss: win32-lisp-runtime wxmaxima gnuplot extradocinstall
 
 endif # WIN32

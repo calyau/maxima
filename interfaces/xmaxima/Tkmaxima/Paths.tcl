@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.27 2009-01-18 20:17:24 robert_dodier Exp $
+#       $Id: Paths.tcl,v 1.27 2009/01/18 20:17:24 robert_dodier Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -9,6 +9,10 @@ proc setMaxDir {} {
     global env maxima_priv autoconf tcl_platform
 
     if {$tcl_platform(platform) == "windows"} {
+
+	# Make sure the signals thread is started
+	set env(MAXIMA_SIGNALS_THREAD) "1"
+
 	# Assume the executable is one level down from the top
 	# for 5.6 this was src/ and for 5.9 its bin/
 	set up [file dir [file dir [info name]]]
@@ -295,7 +299,9 @@ proc setMaxDir {} {
 	set maxima_priv(firstUrl) ""
     } else {
 	if {$tcl_platform(platform) == "windows"} {
-	    set file [file attrib $file -shortname]
+	    if {$tcl_platform(osVersion) < 5 } {
+		set file [file attrib $file -shortname]
+	    }
 	    # convert to unix
 	    set file [file dir $file]/[file tail $file]
 	}
@@ -394,7 +400,9 @@ proc vMAXSetMaximaCommand {} {
     if {$tcl_platform(platform) == "windows"} {
 	if {[string first " " $exe] >= 0} {
             regsub -all "\[\{\}\]" $exe "" exe
-            set exe [file attrib $exe -shortname]
+	    if {$tcl_platform(osVersion) < 5} {
+		set exe [file attrib $exe -shortname]
+	    }
         }
     }
 

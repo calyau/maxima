@@ -17,7 +17,7 @@ distribution, I do the following in a MSYS window:
 ./configure --prefix=c:/maxima \
     --enable-chm \
     --enable-xmaxima-exe \
-    --with-hhc=hhc \
+    --with-hhc=<path-to-hhc> \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install
@@ -144,29 +144,22 @@ Temporary directory for compiler files set to C:/DOCUME~1/user/LOCALS~1/Temp/
 >(quit)
 -----------------------------------------------------------------------
 
-3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>. 
+3) Download tclkitsh-8.6.3-win32-ix86.exe and
+tclkit-8.6.3-win32-ix86.exe from
+<http://tclkits.rkeene.org/fossil/wiki?name=Downloads> and put them in
+c:/programs/star.
 
-Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>. 
-Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from 
-<http://www.equi4.com/pub/tk/8.5.2/>.
 
-Install the following four files 
-	sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
-in your MSYS user home directory in ~/programs/star
-
-Download img.kit from <http://www.tcl.tk/starkits/> and put it in
-~/programs/star
-
-6) Get and install Inno Setup from
+4) Get and install Inno Setup from
 <http://www.jrsoftware.org/isinfo.php>. 
 
-7) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
+5) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
 It is recomended to use version 4.6 patchlevel 3 or more recent (If you
 do have to use an older version, read the Maxima documentation for variable
 gnuplot_view_args).  
 Install gnuplot in your MSYS user home directory in ~/programs/gnuplot 
 
-8) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
+6) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
 Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 
 wxMaxima 0.7.0 with Maxima 5.10.0,
 and wxMaxima 0.7.1 with Maxima 5.11.0.
@@ -189,9 +182,8 @@ To see how they are used, look in interfaces/xmaxima/win32/Makefile.in
 and Makefile.am in the top level maxima directory.  You may change
 their values according to your preferences.
 
-9) Get Microsoft HTML Help Workshop from 
-<http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
-and install it.  
+7) Install Microsoft HTML Help Workshop from
+<http://www.microsoft.com/en-us/download/details.aspx?id=21138>.
 
 Make sure that HHW directory is within PATH (edit PATH environment
 variable with either Windows or MSYS approach), so the HTML Help Workshop
@@ -202,7 +194,7 @@ c:\msys\1.0\etc\profile and add the following line after the initial
 setting of PATH:
     export PATH="/c/gcl/bin:$PATH"
 
-10) Install Perl 5.8.  ActivePerl binaries provided by
+8) Install Perl 5.8.  ActivePerl binaries provided by
     http://www.activestate.com work.  Again add the perl bin
     directory to PATH.  Alternatively use a wrapper script like
 
@@ -210,10 +202,10 @@ setting of PATH:
     #!/bin/sh
     exec /c/perl/bin/perl $@
 
-11) Install Python 2.6. ActivePython binaries provided by
+9) Install Python 2.6. ActivePython binaries provided by
     http://www.activestate.com work.
 
-11) Following components
+10) Following components
     a) tcltk (e.g. wish84 command), 
     b) gcl (gcl command),
     c) HTML Help Workshop compiler (hhc command)
@@ -223,7 +215,7 @@ should also be available at the MSYS command prompt.
 
 If this is not the case, edit your PATH variable or add wrapper scripts.
 
-12) You should now be ready to compile and install maxima. 
+11) You should now be ready to compile and install maxima. 
 Configure maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
@@ -237,11 +229,11 @@ make iss
 The "check" should pass all tests except those listed as known
 failures.
 
-13) Once "make iss" is complete, run Inno Setup on the maxima.iss
+11) Once "make iss" is complete, run Inno Setup on the maxima.iss
 file. It is recommended to remove the temporary maxima install
 directory (c:/maxima above) before testing the installation.
 
-14) Test the installed package.  For example
+12) Test the installed package.  For example
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;

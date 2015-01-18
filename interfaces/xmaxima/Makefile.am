@@ -8,6 +8,10 @@ include $(top_srcdir)/common.mk
 SUBDIRS = msgs doc
 if XMAXIMA_EXE
 SUBDIRS += win32
+else
+if WINKILL_EXE
+SUBDIRS += win32
+endif
 endif
 
 genericdir = $(xmaximadir)
