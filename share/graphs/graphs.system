@@ -2,7 +2,7 @@
 
 (mk:defsystem graphs
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "contrib" "graphs")
+  :binary-pathname (maxima::maxima-objdir "share" "graphs")
   :source-extension "lisp"
   :components
   ((:file "graph_core")
