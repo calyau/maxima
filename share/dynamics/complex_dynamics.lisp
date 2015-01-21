@@ -44,9 +44,14 @@
     ;; Name of the gnuplot commands file and output file
     (setq gnuplot-term (getf options :gnuplot_term))
     (setf output-file (getf options :gnuplot_out_file))
-    (if (and (eq gnuplot-term '$default) output-file)
+
+    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
+             (eq gnuplot-term '$default) output-file)
         (setq file-name (plot-file-path output-file))
-        (setq file-name "maxout.gnuplot"))
+      (setq file-name
+	    (plot-file-path
+	     (format nil "maxout.~(~a~)"
+		     (ensure-string (getf options :plot_format))))))
 
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
@@ -111,9 +116,14 @@
     ;; Name of the gnuplot commands file and output file
     (setq gnuplot-term (getf options :gnuplot_term))
     (setf output-file (getf options :gnuplot_out_file))
-    (if (and (eq gnuplot-term '$default) output-file)
+
+    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
+             (eq gnuplot-term '$default) output-file)
         (setq file-name (plot-file-path output-file))
-        (setq file-name "maxout.gnuplot"))
+        (setq file-name
+              (plot-file-path
+               (format nil "maxout.~(~a~)"
+                       (ensure-string (getf options :plot_format))))))
 
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
     
