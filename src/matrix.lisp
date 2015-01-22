@@ -543,9 +543,8 @@
 	    (setq x (- x) mat ($invert mat))
 	    (cond ($detout
 		   (return (let ((*inv* '$detout))
-			     (mul2* (power* (cadr mat) x)
 				    (fmapl1 #'(lambda (x) x)
-					    (powerx (caddr mat) x)))))))))
+					    (powerx mat x))))))))
      (newvarmat1 (setq mat (check mat)))
      (setq n 1 mat (mcx (cdr mat)) y mat) 
      loop (if (= n x)
