@@ -248,7 +248,7 @@
                                               )))
                             sol))
                       (setf mini most-POSITIVE-DOUBLE-FLOAT)
-                      (loop for p in sol do (if (< (second p) mini) (setf opt (car p))))
+                      (loop for p in sol do (if (< (second p) mini) (progn (setf opt (car p)) (setq mini (second p)))))
                 ))))
           ); loop
     opt
