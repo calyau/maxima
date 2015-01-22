@@ -12,8 +12,7 @@
          (n (length vs))
          (v (make-array (list n))))
     (loop for i from 0 to (- n 1) do
-          (setf (aref v i) (make-array (list n) :initial-contents (nth i 
-vs))))
+          (setf (aref v i) (make-array (list n) :initial-contents (nth i vs))))
     (setf v (lll v))
     (cons '(maxima::mlist)
           (mapcar #'(lambda (u) (cons '(maxima::mlist) (coerce u 'list)))
@@ -98,8 +97,7 @@ vs))))
                       (setf (aref mu j k)
                             (/ (dot (aref f j) (aref g k))
                                (dot (aref g k) (aref g k))))
-                      (setf (aref g j) (vsub (aref g j) (smul (aref mu j 
-k) (aref g k))))
+                      (setf (aref g j) (vsub (aref g j) (smul (aref mu j k) (aref g k))))
                       ))      
                 ))
     g
@@ -123,8 +121,7 @@ k) (aref g k))))
                   (vsub (aref g i) (smul (nint (aref mu i j)) (aref g j))))
             (setf gg (gso g mu))
             )
-      (if (and (> i 0) (> (norm2 (aref gg (- i 1))) (* 2 (norm2 (aref gg 
-i)))))
+      (if (and (> i 0) (> (norm2 (aref gg (- i 1))) (* 2 (norm2 (aref gg i)))))
           (progn
             (setf temp (aref g (- i 1)))
             (setf (aref g (- i 1)) (aref g i))
@@ -191,21 +188,18 @@ i)))))
   (- a (car (list (floor a)))))
 
 
-(defun FloatRelations (x &optional (digits 10)) ; x is a list of floats 
-or doubles
+(defun FloatRelations (x &optional (digits 10)) ; x is a list of floats or doubles
   (let ((n (length x)) (digs nil) (i 0) (nkomma 0)
         (nkommaStellen0) (xx 0) (expo nil) (rel nil) (def 0))
     (setf nkommaStellen
           (lambda (x) ; x ist float
             (let ((s 0) (i 0))
-              (do () ((< (abs (nkomma (* x (expt 10d0 s)))) (expt 1d-1 
-digits)))
+              (do () ((< (abs (nkomma (* x (expt 10d0 s)))) (expt 1d-1 digits)))
                 (setf s (+ s 1)))
               s)))
   (setf digs (mapcar nkommaStellen x))
   (setf expo (apply 'max digs)) 
-  (setf xx (mapcar #'(lambda (u) (car (list (floor (* u (expt 10d0 
-expo))))))  x))
+  (setf xx (mapcar #'(lambda (u) (car (list (floor (* u (expt 10d0 expo))))))  x))
   (setf rel (IntegerRelations xx))
   (list (car rel) (/ (cadr rel) (expt 10.0d0 expo)))
   ))
@@ -239,8 +233,7 @@ expo))))))  x))
               (progn
                 (setf pol 0)
                 (loop for i from 0 to n do
-                      (setf pol (mksum pol (mkprod (nth i (car res)) 
-(mkexpt var i)))))
+                      (setf pol (mksum pol (mkprod (nth i (car res)) (mkexpt var i)))))
                 (setf sol (maxima::meval (maxima::$solve (mkeq pol 0) var)))
                 (if (not (null (cdr sol))) ; a solution has been found
                     (progn (setq *sol* sol)
@@ -248,19 +241,14 @@ expo))))))  x))
                       (setf sol
                             (mapcar #'(lambda (u)
                                         (let ((r (maxima::$realpart u))
-                                              (i (maxima::$float 
-(maxima::$imagpart u))))
-                                          (if (or (equal i 0) (equal i 
-0.0) (equal i 0.0d0))
-                                              (list u (abs (- x 
-(maxima::$float u))))
-                                              (list u 
-most-POSITIVE-DOUBLE-FLOAT)
+                                              (i (maxima::$float (maxima::$imagpart u))))
+                                          (if (or (equal i 0) (equal i 0.0) (equal i 0.0d0))
+                                              (list u (abs (- x (maxima::$float u))))
+                                              (list u most-POSITIVE-DOUBLE-FLOAT)
                                               )))
                             sol))
                       (setf mini most-POSITIVE-DOUBLE-FLOAT)
-                      (loop for p in sol do (if (< (second p) mini) 
-(setf opt (car p))))
+                      (loop for p in sol do (if (< (second p) mini) (setf opt (car p))))
                 ))))
           ); loop
     opt
