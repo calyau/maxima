@@ -87,8 +87,8 @@ limit(i,x,1, 'minus) - limit(i,x,1, 'plus);
 (remvalue(i,di),0);
 0$
 
-expand(integrate(unit_step(a * x),x));
-(signum(a)*x*signum(x))/2+x/2$
+integrate(unit_step(a * x),x);
+(abs(a)*abs(x)+a*x)/(2*a)$
 
 (i : integrate(unit_step(a * x),x,-7,10),0);
 0$
@@ -558,8 +558,53 @@ integrate(log(abs(sin(x))),x);
 integrate(log(abs(sin(x))),x,0,%pi/2);
 (8*%i*li[2](%i)+8*%i*li[2](-%i)-4*%pi*log(2)+%i*%pi^2)/8-%i*%pi^2/12$
 
-(print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 70));
-true$
+/* Tests for January 2015 extensions. */
+integrate(triangle_wave(x),x);
+-(((4*floor(x)-4*x+3)*abs(4*floor(x)-4*x+3) +(-4*floor(x)+4*x-1)*abs(4*floor(x)-4*x+1)-16*floor(x)^2+(32*x-16)*floor(x)
+ -16*x^2+16*x-8) /8)$
+
+integrate(triangle_wave(x),x,0,1/2);
+1/4$
+
+integrate(triangle_wave(x),x,1/2,1);
+-1/4$
+
+integrate(triangle_wave(x),x,0, 42);
+0$
+
+integrate(triangle_wave(x),x,0, 42+1/5);
+2/25$
+
+(i : integrate(triangle_wave(x),x,0,z), i : diff(i,z) - block([z : mod(z,1)], abs(4*z-3)-abs(4*z-1) + 4*z - 2),
+    setify(makelist(subst(z=(k+1/3)/10,i),k,0,29)));
+set(0)$
+
+(remvale(i),0);
+0$
+
+'integrate(abs(sin(x)),x);
+2*floor(x/%pi)-cos(x)*cos(%pi*floor(x/%pi))$
+
+'integrate(x*abs(sin(x^2)),x);
+ -((cos(x^2)*cos(%pi*floor(x^2/%pi))-2*floor(x^2/%pi))/2)$
+ 
+i : intfudu(Ci(x^2)*x,x);
+(x^2*Ci(x^2)-sin(x^2))/2$
+
+diff(i,x);
+x*Ci(x^2)$
+
+intfudu(bessel_j(1,log(x))/x,x);
+-bessel_j(0,log(x))$
+
+intfudu(cos(x)*sin(x),x);
+sin(x)^2/2$
+
+intfudu(cos(x)^2*sin(x),x);
+ -cos(x)^3/3$
+ 
+(print("time = ", elapsed_real_time () - start), 0);
+0$
 
 (remvalue(e,i,di,f1,start,baz), remove(x,noninteger,kk,integer), remfunction(convolution, unit_box), forget(signum,real),0);
 0$ 
