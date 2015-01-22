@@ -1,22 +1,10 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <windows.h>
 
 #define signal_mask(n)  (1 << (n))
-
-
-/*
-  Meant to resemble kill under unix.  Basic idea is that the
-  process we want to kill, has a shared memory segment, and
-  we write into it the flag of the signal we want to send.  That
-  process has to frequently check that memory location.
-  
-  Sample USAGE:  winkill -SIGNAL ProcessID
-  eg:
-   C:> winkill -INT 243232  
- */
-
 
 static struct {
   HANDLE handle;
@@ -124,7 +112,7 @@ sigNameStruct sigNames[]=
 {	SIGPOLL, "POLL" },	/* Pollable event occurred (System V).  */
 #endif
 #ifdef 	SIGIO
-{	SIGIO, "IO" },	/* I/O now possible (4.2 BSD).  */
+{	SIGIO, "IO" },          /* I/O now possible (4.2 BSD).  */
 #endif
 #ifdef 	SIGPWR
 {	SIGPWR, "PWR" },	/* Power failure restart (System V).  */
@@ -134,13 +122,6 @@ sigNameStruct sigNames[]=
 #endif
 { 0,0}
 };
-
-int ErrorHandler(char *s)
-{
-  fprintf(stderr,s);
-  fflush(stderr);
-  exit(1);
-}
 
 void close_shared_memory()
 {
@@ -152,86 +133,131 @@ void close_shared_memory()
   sharedMemory.address = NULL;
 }
 
+int is_shared_memory_initialised = FALSE;
 
-
-int main(int argc, char *argv[])
+int check_shared_memory()
 {
-  int sig=-1;
-  int pid=-1;
-  int value;
+  return is_shared_memory_initialised;
+}
+
+void print_shared_memory_name()
+{
+  if (is_shared_memory_initialised)
+    puts(sharedMemory.name);
+}
+
+void init_shared_memory (void)
+{
+  if ( ! is_shared_memory_initialised ) {
+    sprintf ( sharedMemory.name, "maxima-%d", getpid());
+
+    is_shared_memory_initialised = TRUE;
+
+    sharedMemory.handle =
+      CreateFileMapping ( (HANDLE)-1,
+                          NULL,
+                          PAGE_READWRITE,
+                          0,
+                          sharedMemory.length,
+                          TEXT (sharedMemory.name) );
+
+    if ( sharedMemory.handle == NULL ) {
+      is_shared_memory_initialised = FALSE;
+    }
+
+    sharedMemory.address =
+      MapViewOfFile(sharedMemory.handle, /* Handle to mapping object.  */
+                    FILE_MAP_WRITE,      /* Read/write permission */
+                    0,                   /* Max.  object size.  */
+                    0,                   /* Size of hFile.  */
+                    0);                  /* Map entire file.  */
+
+    if ( sharedMemory.address == NULL ) {
+      is_shared_memory_initialised = FALSE;
+    }
+
+    atexit ( close_shared_memory );
+  }
+}
+
+int read_shared_memory(void)
+{
   int *at;
-  char *in;  
-  sigNameStruct *sigNamePtr = sigNames;
   
-  if  (argc < 3 || argv[1][0] != '-') {
-  USAGE:
-    fprintf(stderr,"Sample usage: winkill -INT 232423, to interrupt the process 232423 ");
-    {
-      int i = 0;
-      fprintf(stderr,"\nargv[1][0]=%c,%d",argv[1][0],argv[1][0]);
-      fprintf(stderr,"\nCalled with: argc=%d <",argc);
-      while (i < argc) fprintf(stderr, " %s",argv[i++]);
-      fprintf(stderr,">\n");
-    }
-    exit(1);
-  }
-
-  /* Find which signal to send. */
-  in = &(argv[1][1]);
-  if (sscanf(&(argv[1][1]),"%d",&sig)==0) {
-    while(sigNamePtr->name) {
-      if (strcmp(sigNamePtr->name,in)==0) {
-        sig = sigNamePtr->signumber;
-        break;
-      }
-      sigNamePtr++;
-    }
-  }
-  if (sig<0) {     
-    fprintf(stderr,"winkill: Bad signal %s.", in);
-    goto USAGE;
-  }
-  value = signal_mask(sig);
-
-  /* Find the process pid. */
-  if (sscanf(argv[2],"%d",&pid)!=1 ) {
-    fprintf(stderr,"winkill: Bad pid %s.", argv[2]);
-    goto USAGE;
-  }
-
-  /* First try to send the signal to gcl. */
-  sprintf(sharedMemory.name,"gcl-%d", pid);
-  sharedMemory.handle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
-                                        FALSE,              /*  Do not inherit the name  */
-                                        sharedMemory.name); /*  of the mapping object.   */
- 
- 
-  /* If gcl is not running, send to maxima. */
-  if (sharedMemory.handle == NULL) {
-    sprintf(sharedMemory.name,"maxima-%d", pid);
-    sharedMemory.handle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
-                                          FALSE,              /*  Do not inherit the name  */
-                                          sharedMemory.name); /*  of the mapping object.   */
-  }
-
-  if (sharedMemory.handle == NULL) { 
-    printf("MEMORY: %s\n", sharedMemory.name);
-    ErrorHandler("winkill: Could not open file-mapping object."); 
-  } 
- 
-  sharedMemory.address = MapViewOfFile(sharedMemory.handle, /* Handle to mapping object.  */
-                                       FILE_MAP_WRITE,      /* Read/write permission.  */
-                                       0,                   /* Max.  object size.  */
-                                       0,                   /* Size of hFile.  */
-                                       0);                  /* Map entire file.  */
- 
-  if (sharedMemory.address == NULL) { 
-    ErrorHandler("winkill: Could not map view of file."); 
-  }
+  if (! is_shared_memory_initialised )
+    return 0;
   
   at = (int *)(sharedMemory.address);
-  *at |= value;
-  close_shared_memory();
-
+  
+  if (*at & signal_mask(SIGINT))
+    return 1;
+  if (*at & signal_mask(SIGTERM))
+    return 2;
   return 0;
+}
+
+int read_sm_sigterm(void)
+{
+  int *at;
+  
+  if (! is_shared_memory_initialised )
+    return 0;
+  
+  at = (int *)(sharedMemory.address);
+  
+  if (*at & signal_mask(SIGTERM))
+    return 1;
+  
+  return 0;
+}
+
+int read_sm_sigint(void)
+{
+  int *at;
+  
+  if (! is_shared_memory_initialised )
+    return 0;
+  
+  at = (int *)(sharedMemory.address);
+  
+  if (*at & signal_mask(SIGINT))
+    return 1;
+  
+  return 0;
+}
+
+void reset_shared_memory(void)
+{
+  int *at;
+  
+  if (! is_shared_memory_initialised )
+    return ;
+  
+  at = (int *)(sharedMemory.address);
+  
+  *at = 0;
+}
+
+void reset_sm_sigint(void)
+{
+  int *at;
+  
+  if (! is_shared_memory_initialised )
+    return ;
+  
+  at = (int *)(sharedMemory.address);
+  
+  *at &= ~signal_mask(SIGINT);
+}
+
+void reset_sm_sigterm(void)
+{
+  int *at;
+  
+  if (! is_shared_memory_initialised )
+    return ;
+  
+  at = (int *)(sharedMemory.address);
+  
+  *at &= ~signal_mask(SIGTERM);
 }

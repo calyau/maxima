@@ -516,6 +516,7 @@ AC_ARG_ENABLE(gettext,
 	 esac],
 	 [enable_gettext=false])
 
+
 AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
 
 dnl languages
@@ -550,6 +551,7 @@ AC_ARG_ENABLE(lang-es,
      	esac],
 	[lang_es=false])
 
+AC_SUBST(lang_es)
 AM_CONDITIONAL(LANG_ES, test x$lang_es = xtrue)
 
 AC_ARG_ENABLE(lang-es-utf8,
@@ -572,6 +574,7 @@ AC_ARG_ENABLE(lang-pt,
      	esac],
 	[lang_pt=false])
 
+AC_SUBST(lang_pt)
 AM_CONDITIONAL(LANG_PT, test x$lang_pt = xtrue)
 
 AC_ARG_ENABLE(lang-pt-utf8,
@@ -594,6 +597,7 @@ AC_ARG_ENABLE(lang-pt_BR,
      	esac],
 	[lang_pt_br=false])
 
+AC_SUBST(lang_pt_br)
 AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
 
 AC_ARG_ENABLE(lang-pt_BR-utf8,
@@ -683,28 +687,32 @@ AC_ARG_ENABLE(xmaxima_exe,
    [xmaxima_exe=false])
 AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 
+dnl Optionally build xmaxima.exe under windows
+dnl default to false as additional software
+AC_ARG_ENABLE(winkill_exe,
+  [  --enable-winkill         Build Windows winkill.exe and winkill_lib.dll for installer],
+  [case "${enableval}" in
+       		yes) winkill_exe=true ;;
+       		no)  winkill_exe=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-winkill-exe) ;;
+   esac],
+   [winkill_exe=false])
+AM_CONDITIONAL(WINKILL_EXE, test x$winkill_exe = xtrue)
+
 dnl Tools for building xmaxima.exe on windows
 dnl Hard code the filenames for now.  Can over-ride on make command line
 GCCVER=undefined
 if test x${xmaxima_exe} = xtrue ; then
   GCCVER=`gcc -dumpversion`
-  if  test x${GCCVER} = x3.3.1; then
-    TCLINCLUDE=
-    TCLSTUBLIB=-ltclstub84
-  else
-    TCLINCLUDE=/c/tcl/include
-    TCLSTUBLIB=/c/tcl/lib/tclstub85.lib
-  fi
-  dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
-  TCLKITSH=/c/programs/star/tclkitsh-win32.upx.exe
-  TCLKIT_RUNTIME=/c/programs/star/tclkit-win32.upx.exe 
+  dnl http://tclkits.rkeene.org/fossil/wiki?name=Downloads
+  dnl and http://www.tcl.tk/starkits/
+  TCLKITSH=/c/programs/star/tclkitsh-8.6.3-win32-ix86.exe
+  TCLKIT_RUNTIME=/c/programs/star/tclkit-8.6.3-win32-ix86.exe
   SDXKIT=/c/programs/star/sdx.kit
   IMGKIT=/c/programs/star/img.kit
 fi
 
 AC_SUBST(GCCVER)
-AC_SUBST(TCLINCLUDE)
-AC_SUBST(TCLSTUBLIB)
 AC_SUBST(TCLKITSH)
 AC_SUBST(TCLKIT_RUNTIME)
 AC_SUBST(SDXKIT)
@@ -1135,11 +1143,6 @@ fi
 if test x"${xmaxima_exe}" = xtrue ; then
    echo "Windows xmaxima.exe enabled"
    echo "  GCC version GCCVER: ${GCCVER}"
-   echo "  TCLSTUBLIB: ${TCLSTUBLIB}"
-   if ! test -f "${TCLSTUBLIB}" ; then
-     AC_MSG_WARN(*** TCLSTUBLIB ${TCLSTUBLIB} not found)
-     xmaxima_exe_prerequisite=notfound
-   fi
    echo "  TCLKITSH: ${TCLKITSH}"
    if ! test -f "${TCLKITSH}" ; then
      AC_MSG_WARN(*** TCLKITSH ${TCLKITSH} not found)
