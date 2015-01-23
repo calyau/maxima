@@ -908,7 +908,7 @@ as elements in a list.
 @code{programmode: false} is assumed.)
 
 When @code{programmode} is @code{false}, @code{solve}, etc. create intermediate
-expression labels @code{%t1}, @code{t2}, etc., and assign the solutions to them.
+expression labels @code{%t1}, @code{%t2}, etc., and assign the solutions to them.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox

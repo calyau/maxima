@@ -1571,6 +1571,7 @@
 		       t))
 	     ((eq (caar e) 'mequal)
 	      (list (car e) (sdiff (cadr e) x) (sdiff (caddr e) x)))
+		 ((mbagp e) (cons (car e) (sdiffmap (cdr e) x)))
 	     ((eq (caar e) '$matrix)
 	      (cons (car e)
 		    (mapcar 

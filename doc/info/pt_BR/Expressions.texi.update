@@ -1,6 +1,6 @@
 @c
 @c versao pt_BR baseada no md5sum abaixo:
-@c 193546d8470b2fe6db7f7be69832db13  Expressions.texi
+@c 64108af4074409382a4fe58eb303c8cc  Expressions.texi
 @c
 @menu
 * Introduction to Expressions::
@@ -934,28 +934,6 @@ via @mref{declare}
 retorna @code{true}
 para todas as variáveis declaradas do tipo @code{constant}. O padrão é
 omitir variáveis do tipo constante do valor de retorno da @code{listofvars}.
-
-Exemplo:
-
-@c ===beg===
-@c lfreeof ([ a, x], x^2+b);
-@c lfreeof ([ b, x], x^2+b);
-@c lfreeof ([ a, y], x^2+b);
-@c ===end===
-@example
-@group
-(%i1) lfreeof ([ a, x], x^2+b);
-(%o1)                                false
-@end group
-@group
-lfreeof ([ b, x], x^2+b);
-(%o2)                                false
-@end group
-@group
-lfreeof ([ a, y], x^2+b);
-(%o3)                                true
-@end group
-@end example
 
 @opencatbox
 @category{Express@~{o}es}

@@ -52,7 +52,9 @@
 
   (let ((host (etypecase host
                 (string host)
-                (integer (hostent-name (resolve-host-ipaddr host))))))
+                (integer (hostent-name (resolve-host-ipaddr host)))))
+	#+(and ccl openmcl-unicode-strings)
+	(ccl:*default-socket-character-encoding* :utf-8))
     #+allegro (socket:make-socket :remote-host host :remote-port port
                                   :format (if bin :binary :text))
     #+clisp (socket:socket-connect port host :element-type

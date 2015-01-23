@@ -23,7 +23,7 @@
 @synindex cp fn
 
 @setchapternewpage odd
-@c %**end of header
+@c end of header
 
 @ifinfo
 Esse @'{e} um Manual do Maxima no formato Texinfo

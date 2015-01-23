@@ -1083,7 +1083,7 @@ If @code{smismatch} should ignore case, use @code{sequalignore} as test.
 
 @deffn {Function} split @
 @fname{split} (@var{string}) @
-@fname{split} (@var{string}, @var{delim})
+@fname{split} (@var{string}, @var{delim}) @
 @fname{split} (@var{string}, @var{delim}, @var{multiple})
 
 Returns the list of all tokens in @var{string}.
@@ -1125,8 +1125,8 @@ For matching characters ignoring case see @code{ssearch}.
 
 @deffn {Function} sremove @
 @fname{sremove} (@var{seq}, @var{string}) @
-@fname{sremove} (@var{seq}, @var{string}, @var{test})
-@fname{sremove} (@var{seq}, @var{string}, @var{test}, @var{start})
+@fname{sremove} (@var{seq}, @var{string}, @var{test}) @
+@fname{sremove} (@var{seq}, @var{string}, @var{test}, @var{start}) @
 @fname{sremove} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
 Returns a string like @var{string} but without all substrings matching @var{seq}.
@@ -1158,7 +1158,7 @@ Note that the first character in @var{string} is in position 1.
 @fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}) @
 @fname{sremovefirst} (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
-Like @code{sremove} except that only the first substring that matches @code{seq} is removed. 
+Like @code{sremove} except that only the first substring that matches @var{seq} is removed.
 
 @opencatbox
 @category{Package stringproc}

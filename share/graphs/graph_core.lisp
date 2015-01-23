@@ -689,7 +689,7 @@
     gr))
 
 (defmfun $empty_digraph (n)
-  (let ((gr (make-digraph)) (pos))
+  (let ((gr (make-digraph)))
     (dotimes (i n)
       (add-vertex i gr))
     gr))

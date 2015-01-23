@@ -3,6 +3,7 @@ Makefile.in
 img.vfs
 tclwinkill.dll
 winkill.exe
+winkill_lib.dll
 xmaxima.exe
 xmaxima.kit
 xmaxima.tcl

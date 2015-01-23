@@ -91,6 +91,13 @@
 ;; Computes resultant using subresultant PRS. See Brown, "The Subresultant PRS
 ;; Algorithm" (TOMS Sept. 1978). This is Algorithm 1, as found on page 241.
 ;;
+;; This routine will not work if the coefficients contain hidden copies of the
+;; main polynomial variable. For example, if P is x*sqrt(x^2-1) + 2 then, when
+;; encoded as a polynomial in x, it appears as x*c + 2 for some (opaque)
+;; c. While doing the PRS calculation, the SUBRESULT code will square c, causing
+;; extra x's to appear and making the degree of polynomials derived from P
+;; behave erratically. The code might error or, worse, return a wrong result.
+;;
 ;; Write G[1] = P, G[2] = Q and write g[i] for the leading coefficient of
 ;; G[i]. On the k'th iteration of the loop, we are computing G[k+2], which is
 ;; given by the formula

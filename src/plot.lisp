@@ -1316,8 +1316,8 @@ sin(y)*(10.0+6*cos(x)),
 #+sbcl (defvar $gnuplot_view_args "-persist ~a")
 #-sbcl (defvar $gnuplot_view_args "-persist ~s")
 
-#+sbcl (defvar $gnuplot_file_args "~a")
-#-sbcl (defvar $gnuplot_file_args "~s")
+#+(or sbcl openmcl) (defvar $gnuplot_file_args "~a")
+#-(or sbcl openmcl) (defvar $gnuplot_file_args "~s")
 
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
@@ -1343,8 +1343,11 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; creates the output file, when there is one to be created
     (when (and out-file (not (eq gnuplot-term '$default)))
+      #+(or (and sbcl win32) (and ccl windows))
+      ($system $gnuplot_command (format nil $gnuplot_file_args file))
+      #-(or (and sbcl win32) (and ccl windows))
       ($system (format nil "~a ~a" $gnuplot_command
-		       (format nil $gnuplot_file_args file))))
+                       (format nil $gnuplot_file_args file))))
 
     ;; displays contents of the output file, when gnuplot-term is dumb,
     ;; or runs gnuplot when gnuplot-term is default
@@ -1353,14 +1356,17 @@ sin(y)*(10.0+6*cos(x)),
         ($default
          ;; the options given to gnuplot will be different when the user
          ;; redirects the output by using "set output" in the preamble
-         ($system 
+	 #+(or (and sbcl win32) (and ccl windows))
+	 ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file))
+	 #-(or (and sbcl win32) (and ccl windows))
+	 ($system 
 	  (format nil "~a ~a" $gnuplot_command
 		  (format nil (if (search "set out" gnuplot-preamble) 
 				  $gnuplot_file_args $gnuplot_view_args)
 			  file))))
         ($dumb
          (if out-file
-             ($printfile out-file)
+             ($printfile (car out-file))
              (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
 ;; plot-options-parser puts the plot options given into a property list.
@@ -2217,7 +2223,10 @@ sin(y)*(10.0+6*cos(x)),
          ($system (concatenate 'string *maxima-prefix* 
                                (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
                                $xmaxima_plot_command)
-                  (format nil " ~s &" file)))
+		  #-(or (and sbcl win32) (and ccl windows))
+		  (format nil " ~s &" file)
+		  #+(or (and sbcl win32) (and ccl windows))
+		  file))
         (t (princ ans) "")))
 
 
@@ -2618,7 +2627,10 @@ Several functions depending on the two variables v1 and v2:
                     'string *maxima-prefix* 
                     (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
                     $xmaxima_plot_command) 
-                   (format nil " ~s &" file)))
+                   #-(or (and sbcl win32) (and ccl windows))
+                   (format nil " ~s &" file)
+                   #+(or (and sbcl win32) (and ccl windows))
+                   file))
                  ($geomview 
                   ($system $geomview_command
                            (format nil " \"~a\"" file)))

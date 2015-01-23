@@ -72,7 +72,7 @@
      ;; do this?  It's quite messy.
      ;;
      ;; J[n](x)*log(x/2) 
-     ;;       - (x/2)^n*sum((-1)^k*psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
+     ;;       - (x/2)^n*sum((-1)^k*psi(n+k+1)/gamma(n+k+1)*(x^2/4)^k/k!,k,0,inf)
      ((mplus)
       ((mtimes)
        ((%bessel_j) n x)
@@ -100,7 +100,7 @@
 (defun bessel-j-integral-2 (v z)
   (case v
     (0 
-     ;; integrate(bessel_j(0,z))
+     ;; integrate(bessel_j(0,z),z)
      ;; = (1/2)*z*(%pi*bessel_j(1,z)*struve_h(0,z)
      ;;            +bessel_j(0,z)*(2-%pi*struve_h(1,z)))
      `((mtimes) ((rat) 1 2) ,z
@@ -112,11 +112,11 @@
 	 ((%bessel_j) 0 ,z)
 	 ((mplus) 2 ((mtimes) -1 $%pi ((%struve_h) 1 ,z)))))))
     (1
-     ;; integrate(bessel_j(1,z)) = -bessel_j(0,z)
+     ;; integrate(bessel_j(1,z),z) = -bessel_j(0,z)
      `((mtimes) -1 ((%bessel_j) 0 ,z)))
     (otherwise
      ;; http://functions.wolfram.com/03.01.21.0002.01
-     ;; integrate(bessel_j(v,z))
+     ;; integrate(bessel_j(v,z),z)
      ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
      ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
      ;;  = 2^(-v)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
@@ -246,8 +246,8 @@
             (and (integerp order)
                  (plusp order)
                  (> order 1)))
-       ;; Reduce a bessel function of order > 2 to order 1 and 0:
-       ;; bessel_j(v,z) -> 2*(v-1)/z*bessel_j(v-1,z)-bessel_i(v-2,z)
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.1.27: bessel_j(v,z) = 2*(v-1)/z*bessel_j(v-1,z)-bessel_j(v-2,z)
        (sub (mul 2
                  (- order 1)
                  (inv arg) 
@@ -270,7 +270,7 @@
 
 ;; Returns the hypergeometric representation of bessel_j
 (defun bessel-j-hypergeometric (order arg)
-  ;; http://functions.wolfram.com/03.01.26.0002.01
+  ;; A&S 9.1.69 / http://functions.wolfram.com/03.01.26.0002.01
   ;; hypergeometric([],[v+1],-z^2/4)*(z/2)^v/gamma(v+1)
   (mul (inv (take '(%gamma) (add order 1)))
        (power (div arg 2) order)
@@ -293,16 +293,18 @@
           (slatec:dbesj1 (float arg)))
          ((minusp order)
           (cond ((zerop (nth-value 1 (truncate order)))
-                 ;; The order is a negative integer.
-                 ;; We use J[n](z)=(-1)^n*J[n](z) and not the Hankel functions.
+                 ;; The order is a negative integer.  We use A&S 9.1.5:
+                 ;;   J[-n](z) = (-1)^n*J[n](z)
+                 ;; and not the Hankel functions.
                  (if (evenp (floor order)) 
                      (bessel-j (- order) arg)
                      (- (bessel-j (- order) arg))))
                 (t
                  ;; Bessel function of negative order.  We use the Hankel
-                 ;; functions to compute this: J(v,z)= 0.5*(H1(v,x) +
-                 ;; H2(v,x)).  This works for negative and positive arg
-                 ;; and handles special cases correctly.
+                 ;; functions to compute this:
+                 ;;   J[v](z) = (H1[v](z) + H2[v](z)) / 2.
+                 ;; This works for negative and positive arg and handles
+                 ;; special cases correctly.
                  (let ((result (* 0.5 (+ (hankel-1 order arg) (hankel-2 order arg)))))
                    (cond ((= (nth-value 1 (floor order)) 1/2)
                           ;; ORDER is a half-integral-value or a float
@@ -324,9 +326,9 @@
                      (aref jvals n))
                     (t
                      ;; Use analytic continuation formula A&S 9.1.35:
-                     ;; %j[v](z*exp(m*%pi*%i)) = exp(m*%pi*%i*v)*%j[v](z)
+                     ;; J[v](z*exp(m*%pi*%i)) = exp(m*%pi*%i*v)*J[v](z)
                      ;; for an integer m.  In particular, for m = 1:
-                     ;; %j[v](-x) = exp(v*%pi*%i)*%j[v](x)
+                     ;; J[v](-x) = exp(v*%pi*%i)*J[v](x)
                      ;; and handle special cases
                      (cond ((zerop (nth-value 1 (truncate order)))
                             ;; order is an integer
@@ -347,10 +349,13 @@
      ;; The arg is complex. Use the complex-valued Bessel function.
      (cond ((mminusp order)
             ;; Bessel function of negative order. We use the Hankel function to 
-            ;; compute this, because A&S 9.1.3 says H1(v,z)=J(v,z) + i * Y(v,z),
-            ;; and H2(v,z) = J(v,z) - i * Y(v,z).    
-            ;; Thus, J(v,z) = (H1(v,z) + H2(v,z))/2. Not the most efficient way,
-            ;; but perhaps good enough for maxima.
+            ;; compute this, because A&S 9.1.3 and 9.1.4 say
+            ;;   H1[v](z) = J[v](z) + %i * Y[v](z)
+            ;; and
+            ;;   H2[v](z) = J[v](z) - %i * Y[v](z).
+            ;; Thus
+            ;;   J[v](z) = (H1[v](z) + H2[v](z)) / 2.
+            ;; Not the most efficient way, but perhaps good enough for maxima.
             (* 0.5 (+ (hankel-1 order arg) (hankel-2 order arg))))
            (t
             (multiple-value-bind (n alpha) (floor (float order))
@@ -390,16 +395,16 @@
 
 (defprop %bessel_y
     ((n x)
-     ;; A&S 9.1.65
+     ;; Derivative wrt order n.  A&S 9.1.65.
      ;;
      ;; cot(n*%pi)*[diff(bessel_j(n,x),n)-%pi*bessel_y(n,x)]
      ;;  - csc(n*%pi)*diff(bessel_j(-n,x),n)-%pi*bessel_j(n,x)
      ((mplus)
-      ((mtimes) $%pi ((%bessel_j) n x))
+      ((mtimes) -1 $%pi ((%bessel_j) n x))
       ((mtimes)
        -1
        ((%csc) ((mtimes) $%pi n))
-       ((%derivative) ((%bessel_j) ((mtimes) -1 n) x) x 1))
+       ((%derivative) ((%bessel_j) ((mtimes) -1 n) x) n 1))
       ((mtimes)
        ((%cot) ((mtimes) $%pi n))
        ((mplus)
@@ -418,12 +423,11 @@
 ;; Integral of the Bessel Y function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselY/21/01/01/
 (defun bessel-y-integral-2 (n z)
-  ;;(declare (ignore unused))
   (cond 
    ((and ($integerp n) (<= 0 n))
     (cond
      (($oddp n)
-      ;; integrate(bessel_y(2*N+1,z)) , N > 0 
+      ;; integrate(bessel_y(2*N+1,z),z) , N > 0
       ;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,N)
       (let* ((k (gensym))
 	     (answer `((mplus) ((mtimes) -1 ((%bessel_y) 0 ,z))
@@ -435,7 +439,7 @@
             (meval `(($ev) ,answer $sum))   ; Is there a better way?
 	  (simplify ($niceindices answer)))))
      (($evenp n)
-      ;; integrate(bessel_y(2*N,z)) , N > 0
+      ;; integrate(bessel_y(2*N,z),z) , N > 0
       ;; = (1/2)*%pi*z*(bessel_y(0,z)*struve_h(-1,z)
       ;;               +bessel_y(1,z)*struve_h(0,z))
       ;;    - 2 * sum(bessel_y(2*k+1,z),k,0,N-1)
@@ -548,17 +552,18 @@
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we
        ;; can express the result in terms of elementary functions.
+       ;; From A&S 10.1.1, 10.1.11-12 and 10.1.15:
        ;;
-       ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
-       ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
+       ;; Y[1/2](z) = -J[-1/2](z) is a function of cos(z).
+       ;; Y[-1/2](z) = J[1/2](z) is a function of sin(z).
        (bessel-y-half-order rat-order arg))
       
       ((and $bessel_reduce
             (and (integerp order)
                  (plusp order)
                  (> order 1)))
-       ;; Reduce a bessel function of order > 2 to order 1 and 0:
-       ;; bessel_y(v,z) -> 2*(v-1)/z*bessel_y(v-1,z)-bessel_y(v-2,z)
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.1.27: bessel_y(v,z) = 2*(v-1)/z*bessel_y(v-1,z)-bessel_y(v-2,z)
        (sub (mul 2
                  (- order 1)
                  (inv arg) 
@@ -606,11 +611,11 @@
      ;; For negative values, use the analytic continuation formula
      ;; A&S 9.1.36:
      ;;
-     ;; %y[v](z*exp(m*%pi*%i)) = exp(-v*m*%pi*%i) * %y[v](z)
-     ;;       + 2*%i*sin(m*v*%pi)*cot(v*%pi)*%j[v](z)
+     ;; Y[v](z*exp(m*%pi*%i)) = exp(-v*m*%pi*%i) * Y[v](z)
+     ;;       + 2*%i*sin(m*v*%pi)*cot(v*%pi)*J[v](z)
      ;;
      ;; In particular for m = 1:
-     ;; %y[v](-z) = exp(-v*%pi*%i) * %y[v](z) + 2*%i*cos(v*%pi)*%j[v](z)
+     ;; Y[v](-z) = exp(-v*%pi*%i) * Y[v](z) + 2*%i*cos(v*%pi)*J[v](z)
      (let ((arg (realpart arg)))
        (cond 
          ((zerop order)
@@ -618,7 +623,7 @@
                  (slatec:dbesy0 (float arg)))
                 (t
                  ;; For v = 0, this simplifies to
-                 ;; %y[0](-z) = %y[0](z) + 2*%i*%j[0](z)
+                 ;; Y[0](-z) = Y[0](z) + 2*%i*J[0](z)
                  ;; the return value has to be a CL number
                  (+ (slatec:dbesy0 (float (- arg)))
                     (complex 0 (* 2 (slatec:dbesj0 (float (- arg)))))))))
@@ -627,22 +632,21 @@
                  (slatec:dbesy1 (float arg)))
                 (t
                  ;; For v = 1, this simplifies to
-                 ;; %y[1](-z) = -%y[1](z) - 2*%i*%j[1](v)
+                 ;; Y[1](-z) = -Y[1](z) - 2*%i*J[1](v)
                  ;; the return value has to be a CL number
                  (+ (- (slatec:dbesy1 (float (- arg))))
                     (complex 0 (* -2 (slatec:dbesj1 (float (- arg)))))))))
          ((minusp order)
           (cond ((zerop (nth-value 1 (truncate order)))
-                 ;; Order is a negative integeger or float representation.
-                 ;; We use Y[-n](z)=(-1)^n*Y[n](z).
+                 ;; Order is a negative integer or float representation.
+                 ;; Use A&S 9.1.5: Y[-n](z) = (-1)^n*Y[n](z).
                  (if (evenp (floor order))
                      (bessel-y (- order) arg)
                      (- (bessel-y (- order) arg))))
                 (t
                  ;; Bessel function of negative order. We use the Hankel 
-                 ;; function to compute this, because A&S 9.1.3 says 
-                 ;; H1(v,z) = J(v,z) + i * Y(v,z) and H2(v,z) = J(v,z) -i *
-                 ;; Y(v,z), we know that Y(v,z) = 0.5/%i * (H1(v,z) - H2(v,z))
+                 ;; functions to compute this:
+                 ;;   Y[v](z) = (H1[v](z) - H2[v](z)) / 2 / %i
                  (let ((result (/ (- (hankel-1 order arg)
                                      (hankel-2 order arg))
                                   (complex 0 2))))
@@ -686,9 +690,12 @@
     (t
      (cond ((minusp order)
             ;; Bessel function of negative order. We use the Hankel function to
-            ;; compute this, because A&S 9.1.3 says H1(v,z)=J(v,z) + i * Y(v,z) 
-            ;; and H2(v,z) = J(v,z) -i * Y(v,z), we now that
-            ;; Y(v,z) = 1/(2*%i) * (H1(v,z) - H2(v,z))
+            ;; compute this, because A&S 9.1.3 and 9.1.4 say
+            ;;   H1[v](z) = J[v](z) + %i * Y[v](z)
+            ;; and
+            ;;   H2[v](z) = J[v](z) - %i * Y[v](z).
+            ;; Thus
+            ;;   Y[v](z) = (H1[v](z) - H2[v](z)) / 2 / %i
             (/ (- (hankel-1 order arg) (hankel-2 order arg))
                (complex 0 2)))
            (t
@@ -733,10 +740,10 @@
 
 (defprop %bessel_i
     ((n x)
-     ;; A&S 9.6.42
+     ;; Derivative wrt order n.  A&S 9.6.42.
      ;;
      ;; I[n](x)*log(x/2) 
-     ;;   - (x/2)^n*sum(psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
+     ;;   - (x/2)^n*sum(psi(n+k+1)/gamma(n+k+1)*(x^2/4)^k/k!,k,0,inf)
      ((mplus)
       ((mtimes)
        ((%bessel_i) n x)
@@ -762,7 +769,7 @@
 (defun bessel-i-integral-2 (v z)
   (case v
 	(0
-	 ;; integrate(bessel_i(0,z))
+	 ;; integrate(bessel_i(0,z),z)
 	 ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
 	 ;;            -%pi*bessel_i(1,z)*struve_l(0,z))
 	 `((mtimes) ((rat) 1 2) ,z
@@ -775,11 +782,11 @@
 	     ((mplus) 2
 	      ((mtimes) $%pi ((%struve_l) 1 ,z)))))))
 	(1
-	 ;; integrate(bessel_i(1,z)) = bessel_i(0,z)
+	 ;; integrate(bessel_i(1,z),z) = bessel_i(0,z)
 	 `((%bessel_i) 0 ,z))
 	(otherwise
          ;; http://functions.wolfram.com/03.02.21.0002.01
-         ;; integrate(bessel_i(v,z))
+         ;; integrate(bessel_i(v,z),z)
          ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
          ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],z^2/4)
          ;;  = 2^(-v)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],z^2/4)
@@ -896,6 +903,7 @@
       ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we
        ;; can express the result in terms of elementary functions.
+       ;; From A&S 10.2.13 and 10.2.14:
        ;;
        ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
        ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
@@ -905,8 +913,8 @@
             (and (integerp order)
                  (plusp order)
                  (> order 1)))
-       ;; Reduce a bessel function of order > 2 to order 1 and 0:
-       ;; bessel_i(v,z) -> -2*(v-1)/z*bessel_i(v-1,z)+bessel_i(v-2,z)
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.6.26: bessel_i(v,z) = -2*(v-1)/z*bessel_i(v-1,z)+bessel_i(v-2,z)
        (add (mul -2
                  (- order 1)
                  (inv arg) 
@@ -929,7 +937,7 @@
 
 ;; Returns the hypergeometric representation of bessel_i
 (defun bessel-i-hypergeometric (order arg)
-  ;; http://functions.wolfram.com/03.02.26.0002.01
+  ;; A&S 9.6.47 / http://functions.wolfram.com/03.02.26.0002.01
   ;; hypergeometric([],[v+1],z^2/4)*(z/2)^v/gamma(v+1)
   (mul (inv (take '(%gamma) (add order 1)))
        (power (div arg 2) order)
@@ -938,7 +946,7 @@
              (list '(mlist) (add order 1))
              (div (mul arg arg) 4))))
 
-;; Compute value of Modified Bessel function of the first kind of order n
+;; Compute value of Modified Bessel function of the first kind of order ORDER
 (defun bessel-i (order arg)
   (cond 
     ((zerop (imagpart arg))
@@ -954,8 +962,10 @@
          ((or (minusp order) (< arg 0))
           (multiple-value-bind (order-int order-frac) (floor order)
             (cond ((zerop order-frac)
-                   ;; order is an integer. We have I[-n](z)=I[n](z) and
-                   ;; I[n](-z)=(-1)^n*I[n](z)
+                   ;; Order is an integer. From A&S 9.6.6 and 9.6.30 we have
+                   ;;   I[-n](z) = I[n](z)
+                   ;; and
+                   ;;   I[n](-z) = (-1)^n*I[n](z)
                    (if (< arg 0)
                        (if (evenp order-int)
                            (bessel-i (abs order) (abs arg))
@@ -964,7 +974,7 @@
                   (t
                    ;; Order or arg is negative and order is not an integer, use 
                    ;; the bessel-j function for calculation.  We know from
-                   ;; the definition I[v](x) = z^v*%i^(-v)*J[v](%i*x).
+                   ;; the definition I[v](x) = x^v/(%i*x)^v * J[v](%i*x).
                    (let* ((arg (float arg))
                           (result (* (expt arg order)
                                      (expt (complex 0 arg) (- order))
@@ -998,7 +1008,7 @@
      ;; so we want to make sure that happens.
      ;;
      ;; bessel_i(n, %i*x) = (%i*x)^n/x^n * bessel_j(n,x)
-     ;;    = %i*n * bessel_j(n,x)
+     ;;    = %i^n * bessel_j(n,x)
      (let* ((n (floor order))
 	    (result (bessel-j (float n) (imagpart arg))))
        (cond ((evenp n)
@@ -1028,10 +1038,11 @@
            (when (plusp v-ierr)
              (format t "zbesi ierr = ~A~%" v-ierr))
            
-           ;; We have evaluated I(abs(order), arg), now we look at
+           ;; We have evaluated I[|order|](arg), now we look at
            ;; the the sign of the order.
            (cond ((minusp order)
-                  ;;  I(-a,z) = I(a,z) + (2/pi)*sin(pi*a)*K(a,z)
+                  ;; From A&S 9.6.2:
+                  ;; I[-a](z) = I[a](z) + (2/%pi)*sin(%pi*a)*K[a](z)
                   (+ (complex (aref cyr n) (aref cyi n))
                      (let ((dpi (coerce pi 'flonum)))
                        (* (/ 2.0 dpi)
@@ -1062,7 +1073,7 @@
 
 (defprop %bessel_k
     ((n x)
-     ;; A&S 9.6.43
+     ;; Derivativer wrt order n.  A&S 9.6.43.
      ;;
      ;; %pi/2*csc(n*%pi)*['diff(bessel_i(-n,x),n)-'diff(bessel_i(n,x),n)]
      ;;    - %pi*cot(n*%pi)*bessel_k(n,x)
@@ -1093,7 +1104,7 @@
    ((and ($integerp n) (<= 0 n))
     (cond
      (($oddp n)
-      ;; integrate(bessel_k(2*N+1,z)) , N > 0
+      ;; integrate(bessel_k(2*N+1,z),z) , N > 0
       ;; = -(-1)^((n-1)/2)*bessel_k(0,z) 
       ;;   + 2*sum((-1)^(k+(n-1)/2-1)*bessel_k(2*k,z),k,1,(n-1)/2)
       (let* ((k (gensym))
@@ -1113,7 +1124,7 @@
             (meval `(($ev) ,answer $sum))   ; Is there a better way?
 	  (simplify ($niceindices answer)))))
      (($evenp n)
-      ;; integrate(bessel_k(2*N,z)) , N > 0
+      ;; integrate(bessel_k(2*N,z),z) , N > 0
       ;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*struve_l(-1,z)
       ;;               +bessel_k(1,z)*struve_l(0,z))
       ;;    + 2 * sum((-1)^(k+n/2)*bessel_k(2*k+1,z),k,0,n/2-1)
@@ -1202,7 +1213,6 @@
       
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
-              ;; A&S 9.6.6: K[-v](x) = K[v](x)
               (let* ((order ($float order))
                      (arg (complex ($float ($realpart arg))
                                   ($float ($imagpart arg))))
@@ -1227,17 +1237,18 @@
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we
        ;; can express the result in terms of elementary
-       ;; functions.
+       ;; functions.  From A&S 10.2.16 and 10.2.17:
        ;;
-       ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
+       ;; K[1/2](z) = sqrt(%pi/2/z)*exp(-z)
+       ;;           = K[-1/2](z)
        (bessel-k-half-order rat-order arg))
       
       ((and $bessel_reduce
             (and (integerp order)
                  (plusp order)
                  (> order 1)))
-       ;; Reduce a bessel function of order > 2 to order 1 and 0:
-       ;; bessel_k(v,z) -> 2*(v-1)/z*bessel_k(v-1,z)+bessel_k(v-2,z)
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.6.26: bessel_k(v,z) = 2*(v-1)/z*bessel_k(v-1,z)+bessel_k(v-2,z)
        (add (mul 2
                  (- order 1)
                  (inv arg) 
@@ -1270,7 +1281,7 @@
                   (list '(mlist) (add order 1))
                   (div (mul arg arg) 4)))))
 
-;; Compute value of Modified Bessel function of the second kind of order n
+;; Compute value of Modified Bessel function of the second kind of order ORDER
 (defun bessel-k (order arg)
   (cond 
     ((zerop (imagpart arg))
@@ -1281,8 +1292,9 @@
        (cond 
          ((< arg 0)
           ;; This is the extension for negative arg.
-          ;; We use the following formula for evaluation:
-          ;; K[v](-z) = exp(-i*pi*v) * K[n][z]-i * pi *I[n](z)
+          ;; We use A&S 9.6.6 and 9.6.31 for evaluation:
+          ;; K[v](-z) = K[|v|](-z)
+          ;;          = exp(-%i*%pi*|v|)*K[|v|](z) - %i*%pi*I[|v|](z)
           (let* ((dpi (coerce pi 'flonum))
                  (s1 (cis (* dpi (- (abs order)))))
                  (s2 (* (complex 0 -1) dpi))
@@ -1304,7 +1316,7 @@
          ((= order 1)
           (slatec:dbesk1 (float arg)))
          (t
-          ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
+          ;; From A&S 9.6.6, K[-v](z) = K[v](z), so take the
           ;; absolute value of the order.
           (multiple-value-bind (n alpha) (floor (abs (float order)))
             (let ((jvals (make-array (1+ n) :element-type 'flonum)))
@@ -1312,7 +1324,7 @@
               (aref jvals n)))))))
     (t
      ;; The arg is complex.  Use the complex-valued Bessel function. From 
-     ;; A&S 9.6.6, K(-v,z) = K(v,z), so take the absolute value of the order.
+     ;; A&S 9.6.6, K[-v](z) = K[v](z), so take the absolute value of the order.
      (multiple-value-bind (n alpha) (floor (abs (float order)))
        (let ((cyr (make-array (1+ n) :element-type 'flonum))
              (cyi (make-array (1+ n) :element-type 'flonum)))
@@ -1336,22 +1348,22 @@
 ;;
 ;; From A&S 10.1.1, we have
 ;;
-;; J[n+1/2](z) = sqrt(2*z/pi)*j[n](z)
-;; Y[n+1/2](z) = sqrt(2*z/pi)*y[n](z)
+;; J[n+1/2](z) = sqrt(2*z/%pi)*j[n](z)
+;; Y[n+1/2](z) = sqrt(2*z/%pi)*y[n](z)
 ;;
 ;; where j[n](z) is the spherical bessel function of the first kind
 ;; and y[n](z) is the spherical bessel function of the second kind.
 ;;
 ;; A&S 10.1.8 and 10.1.9 give
 ;;
-;; j[n](z) = 1/z*[P(n+1/2,z)*sin(z-n*pi/2) + Q(n+1/2)*cos(z-n*pi/2)]
+;; j[n](z) = 1/z*[P(n+1/2,z)*sin(z-n*%pi/2) + Q(n+1/2,z)*cos(z-n*%pi/2)]
 ;;
-;; y[n](z) = (-1)^(n+1)*1/z*[P(n+1/2,z)*cos(z+n*pi/2) - Q(n+1/2)*sin(z+n*pi/2)]
+;; y[n](z) = (-1)^(n+1)*1/z*[P(n+1/2,z)*cos(z+n*%pi/2) - Q(n+1/2,z)*sin(z+n*%pi/2)]
 ;;
 
 ;; A&S 10.1.10
 ;;
-;; j[n](z) = f[n](z)*sin(z) + (-1)^n*f[-n-1](z)*cos(z)
+;; j[n](z) = f[n](z)*sin(z) + (-1)^(n+1)*f[-n-1](z)*cos(z)
 ;;
 ;; f[0](z) = 1/z, f[1](z) = 1/z^2
 ;;
@@ -1421,7 +1433,7 @@
 
 ;; See A&S 10.2.12
 ;;
-;; I[n+1/2](z) = sqrt(2*z/%pi)*[g[n](z)*sinh(z) + g[n-1](z)*cosh(z)]
+;; I[n+1/2](z) = sqrt(2*z/%pi)*[g[n](z)*sinh(z) + g[-n-1](z)*cosh(z)]
 ;;
 ;; g[0](z) = 1/z, g[1](z) = -1/z^2
 ;;
@@ -1461,12 +1473,11 @@
 
 ;; See A&S 10.2.15
 ;;
-;; sqrt(%pi/2/z)*K[n+1/2](z) = (%pi/2/z)*exp(-z)*sum (n+1/2,k)/(2*z)^k
+;; sqrt(%pi/2/z)*K[n+1/2](z) = (%pi/2/z)*exp(-z)*sum((n+1/2,k)/(2*z)^k,k,0,n)
 ;;
 ;; or
-;;                                            n
-;; K[n+1/2](z) = sqrt(%pi/2)/sqrt(z)*exp(-z) sum (n+1/2,k)/(2*z)^k
-;;                                           k=0
+;;
+;; K[n+1/2](z) = sqrt(%pi/2)/sqrt(z)*exp(-z)*sum((n+1/2,k)/(2*z)^k,k,0,n)
 ;;
 ;; where (A&S 10.1.9)
 ;;
@@ -1724,16 +1735,16 @@
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 
        ;; the result in terms of elementary functions.
-       ;; Use the defintion hankel_1(v,z) = bessel_j(v,z)+%i*bessel_y(v,z)
+       ;; Use the definition hankel_1(v,z) = bessel_j(v,z)+%i*bessel_y(v,z)
        (sratsimp
          (add (bessel-j-half-order rat-order arg)
               (mul '$%i
                    (bessel-y-half-order rat-order arg)))))
       (t (eqtest (list '(%hankel_1) order arg) expr)))))
 
-;; Numerically compute H1(v, z).
+;; Numerically compute H1[v](z).
 ;;
-;; A&S 9.1.3 says H1(v,z) = J(v,z) + i * Y(v,z)
+;; A&S 9.1.3 says H1[v](z) = J[v](z) + %i * Y[v](z)
 ;;
 (defun hankel-1 (v z)
   (let ((v (float v))
@@ -1741,11 +1752,11 @@
     (cond ((minusp v)
 	   ;; A&S 9.1.6:
 	   ;;
-	   ;; H1(-v,z) = exp(v*pi*i)*H1(v,z)
+	   ;; H1[-v](z) = exp(v*%pi*%i)*H1[v](z)
 	   ;;
 	   ;; or
 	   ;;
-	   ;; H1(v,z) = exp(-v*pi*i)*H1(-v,z)
+	   ;; H1[v](z) = exp(-v*%pi*%i)*H1[-v](z)
 	   
 	   (* (cis (* (float pi) (- v))) (hankel-1 (- v) z)))
 	  (t
@@ -1824,16 +1835,16 @@
             (setq rat-order (max-numeric-ratio-p order 2)))
        ;; When order is a fraction with a denominator of 2, we can express 
        ;; the result in terms of elementary functions.
-       ;; Use the defintion hankel_1(v,z) = bessel_j(v,z)-%i*bessel_y(v,z)
+       ;; Use the definition hankel_2(v,z) = bessel_j(v,z)-%i*bessel_y(v,z)
        (sratsimp
          (sub (bessel-j-half-order rat-order arg)
               (mul '$%i
                    (bessel-y-half-order rat-order arg)))))
       (t (eqtest (list '(%hankel_2) order arg) expr)))))
 
-;; Numerically compute H2(v, z).
+;; Numerically compute H2[v](z).
 ;;
-;; A&S 9.1.4 says H2(v,z) = J(v,z) - i * Y(v,z)
+;; A&S 9.1.4 says H2[v](z) = J[v](z) - %i * Y[v](z)
 ;;
 (defun hankel-2 (v z)
   (let ((v (float v))
@@ -1841,11 +1852,11 @@
     (cond ((minusp v)
 	   ;; A&S 9.1.6:
 	   ;;
-	   ;; H2(-v,z) = exp(-v*pi*i)*H1(v,z)
+	   ;; H2[-v](z) = exp(-v*%pi*%i)*H2[v](z)
 	   ;;
 	   ;; or
 	   ;;
-	   ;; H2(v,z) = exp(v*pi*i)*H1(-v,z)
+	   ;; H2[v](z) = exp(v*%pi*%i)*H2[-v](z)
 	   
 	   (* (cis (* (float pi) v)) (hankel-2 (- v) z)))
 	  (t
