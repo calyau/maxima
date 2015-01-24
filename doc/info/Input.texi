@@ -519,6 +519,26 @@ When @code{loadprint} is @code{false}, never print a message.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{directory}
+@deffn {Function} directory (@var{path})
+
+Returns a list of the files and directories found in @var{path}
+in the file system.
+
+@var{path} may contain wildcard characters (i.e., characters which represent
+unspecified parts of the path),
+which include at least the asterisk on most systems,
+and possibly other characters, depending on the system.
+
+@code{directory} relies on the Lisp function DIRECTORY,
+which may have implementation-specific behavior.
+
+@opencatbox
+@category{File input}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{pathname_directory}
 @anchor{pathname_name}
 @anchor{pathname_type}
