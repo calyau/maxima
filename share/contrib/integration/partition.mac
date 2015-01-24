@@ -111,9 +111,7 @@ result:false],
       (thefun:intable2[inpart(k,0), inpart(j,0)])#false and
       (thelist:apply(thefun,[[inargs(k),inargs(j)]]))#false
      then( [int,df]:thelist,
-           print([df,j,k,exp]),
-           df : 1,
-           if  df # 0 and j # 0 and k # 0 and freeof(%voi,therest:ratsimp(exp/k/j/df))
+       if  df # 0 and j # 0 and k # 0 and freeof(%voi,therest:ratsimp(exp/k/j/df))
                then (result:(therest*int),
                             return())),
   return(result))$
