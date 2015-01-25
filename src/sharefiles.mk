@@ -374,6 +374,7 @@ contrib/levin/levin.dem \
 contrib/levin/levin.mac \
 contrib/levin/rtest_levin.mac \
 contrib/lindstedt.mac \
+contrib/lll.lisp \
 contrib/log10.mac \
 contrib/lurkmathml/mathml.lisp \
 contrib/lurkmathml/mathml_ref_list_for_IE \
