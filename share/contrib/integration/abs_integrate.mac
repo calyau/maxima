@@ -36,7 +36,7 @@ tangent_p(x) := safe_op(x) = 'tan;
 (intable[abs_sin] : lambda([u], [2*floor(u/%pi)-cos(u)*cos(%pi*floor(u/%pi)),  diff(u, %voi)]),
 intable[abs_cos] : lambda([u], [sin(u)*cos(%pi*floor(u/%pi+1/2))+2*floor(u/%pi+1/2),diff(u, %voi)]),
 intable[triangle_wave] : lambda([u],   [block([u : mod(u,1)], -(4*u-1)*abs(4*u-1)/8+(4*u-3)*abs(4*u-3)/8+2*u^2-2*u+1), diff(u,%voi)]),
-intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+x/2, diff(u,%voi)]));
+intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+u/2, diff(u,%voi)]));
                               
 /* Before attempting to integrate, replace (here X matches with any expression):
      (1) mod =  lambda([x,y], x - y * floor(x / y)),q)
@@ -54,7 +54,7 @@ extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   q : subst('acos = lambda([x], %pi/2 - asin(x)), q),
   q : subst('asin = lambda([x], if sine_p(x) then (%pi/2)*triangle_wave(first(x)/(2*%pi)) else asin(x)), q),
   q : subst('asin = lambda([x], if cosine_p(x) then -(%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)) else asin(x)), q),
-  q : subst('atan = lambda([x], if tangent_p(x) then %pi * sawtooth((first(x)-%pi/2)/(%pi)) - %pi/2 else atan(x)),q),
+  q : subst('atan = lambda([x], if tangent_p(x) then %pi * sawtooth_wave((first(x)-%pi/2)/(%pi)) - %pi/2 else atan(x)),q),
 
   while l # [ ] do (
     i : first(l)(q,x),
