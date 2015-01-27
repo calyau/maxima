@@ -44,7 +44,7 @@ intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+u/
      (3) acos(X) = %pi/2 - asin(x),
      (4) asin(sin(X)) =  (%pi/2)*triangle_wave(X/(2*%pi)), asin(cos(X)) =  -(%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)),
      (5) acos(cos(X)) = (%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)) + %pi/2,
-     (6) atan(tan(X)) =  %pi * sawtooth_wave((X-%pi/2)/(%pi)) - %pi/2
+     (6) atan(tan(X)) =  %pi * sawtooth_wave((X-%pi/2)/(%pi)) - %pi/2 -> -%pi*floor((2*X-%pi)/(2*%pi))+X-%p
 Where triangle_wave(x) = block([x : mod(x,1)], -abs(4*x-1) + abs(4*x-3) + 4*x-2) and sawtooth_wave(x) = x - floor(x).*/
      
 extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
@@ -54,8 +54,7 @@ extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   q : subst('acos = lambda([x], %pi/2 - asin(x)), q),
   q : subst('asin = lambda([x], if sine_p(x) then (%pi/2)*triangle_wave(first(x)/(2*%pi)) else asin(x)), q),
   q : subst('asin = lambda([x], if cosine_p(x) then -(%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)) else asin(x)), q),
-  q : subst('atan = lambda([x], if tangent_p(x) then %pi * sawtooth_wave((first(x)-%pi/2)/(%pi)) - %pi/2 else atan(x)),q),
-
+  q : subst('atan = lambda([x], if tangent_p(x) then block([x : first(x)], -%pi*floor((2*x-%pi)/(2*%pi))+x-%pi) else atan(x)),q),
   while l # [ ] do (
     i : first(l)(q,x),
     l : rest(l),
@@ -291,7 +290,8 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx, extra_integration_method
 ''(buildq([z : ?gensym()], gradef(floor(z), %if(%integerp(z), 'und, 0))));    
 ''(buildq([z : ?gensym()], gradef(ceiling(z),%if(%integerp(z), 'und, 0)))); 
 ''(buildq([z : ?gensym()], gradef(signum(z), 0)));
-
+''(buildq([z : ?gensym()], gradef(sawtooth_wave(z), %if(%integerp(z), 'und, 1))));
+  
 floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx, simpsum : true],
   l : setify(xreduce('append, gatherargs(q,'floor))),
   l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
