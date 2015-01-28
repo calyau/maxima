@@ -34,7 +34,7 @@ define_variable(cframe_flag,false,boolean,
   "Perform computations in a moving frame.")$
 define_variable(ctorsion_flag,false,boolean,"Apply torsion")$
 define_variable(cnonmet_flag,false,boolean,"Apply nonmetricity")$
-define_variable(derivabbrev,true,boolean)$
+/* define_variable(derivabbrev,true,boolean)$ */
 define_variable(ctayswitch,false,boolean)$
 define_variable(ratchristof,true,boolean)$
 define_variable(rateinstein,true,boolean)$
