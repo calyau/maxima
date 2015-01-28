@@ -29,8 +29,7 @@
           ((iprint f2cl-lib:integer4 iprint-%data% iprint-%offset%)
            (x double-float x-%data% x-%offset%)
            (g double-float g-%data% g-%offset%))
-        (prog ((i 0))
-          (declare (type (integer) i))
+        (prog nil
           (cond
             ((= iter 0)
              (f2cl-lib:fformat mp
