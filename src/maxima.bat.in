@@ -19,6 +19,7 @@ rem to get localized describe in command line Maxima
 rem set MAXIMA_LANG_SUBDIR=es
 
 set lisp=@DEFAULTLISP@
+set lisp_options=
 set version=@VERSION@
 set prefix=@prefix@
 set maxima_prefix=@prefix@
@@ -41,11 +42,18 @@ if x%1 == x-u goto foundversion
 if x%1 == x--use-version goto foundversion
 if x%1 == x-v goto foundverbose
 if x%1 == x--verbose goto foundverbose
+if x%1 == x--lisp-options goto foundlispoptions
+if x%1 == x-X goto foundlispoptions
 
 :continueparseargs
 shift
 if not x%1 == x goto startparseargs
 goto endparseargs
+
+:foundlispoptions
+set lisp_options=%~2
+shift
+goto continueparseargs
 
 :foundlisp
 set lisp=%2
@@ -112,26 +120,26 @@ goto end
 
 :dogcl
 set set path=%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path
-"%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" %lisp_options% -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doclisp
 if exist "%maxima_imagesdir%\binary-clisp\maxima.exe" goto doclisp_exec
 
 if "%layout_autotools%" == "true" goto clisp_autotools
-clisp -q -M "%maxima_image_base%.mem" "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+clisp %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :clisp_autotools
-"%maxima_imagesdir%\binary-clisp\lisp.exe" -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-clisp\lisp.exe" %lisp_options% -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :clisp_exec
-"%maxima_imagesdir%\binary-clisp\maxima.exe" -q "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-clisp\maxima.exe" %lisp_options% -q "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doecl
-ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+ecl -load %maxima_image_base%.fas %lisp_options% -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 rem SBCL Steel Bank Common Lisp
@@ -143,10 +151,10 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 ) else ( 
   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
-sbcl.exe --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform --end-runtime-options --eval %start_maxima% --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+sbcl.exe --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 :dosbcl_exec
-"%maxima_imagesdir%\binary-sbcl\maxima.exe" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+"%maxima_imagesdir%\binary-sbcl\maxima.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :doopenmcl
@@ -155,7 +163,7 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 ) else ( 
   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
-wx86cl -I "%maxima_image_base%.image" -e %start_maxima% -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+wx86cl -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :end

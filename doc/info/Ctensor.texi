@@ -1134,9 +1134,10 @@ equations are the components of an array named @code{rosen}.
 
 @subsection Utility functions
 
-@deffn {Function} diagmatrixp (@var{M})
+@deffn {Function} diagmatrixp (@var{M},@var{n})
 
-Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
+Returns @code{true} if the first @var{n} rows and @var{n} columns of @var{M}
+form a diagonal matrix or (2D) array.
 
 @opencatbox
 @category{Package ctensor} @category{Predicate functions}

@@ -2,6 +2,56 @@ INTRODUCTION
 ------------
 
 The figures in this directory will be used in the Maxima manual.
+Each figure should be in two versions, PDF and PNG. The PDF version
+will be used in the PDF version of the manual, and the PNG version
+will be used in the HTML version.
+
+CREATING FIGURES FOR THE MAXIMA MANUAL
+--------------------------------------
+
+If the figures are the result of a plot2d or plot3d command, the two
+versions needed can be created adding the options pdf_file and
+png_file to the plotting command. For example, the two commands needed
+for a figure named "plot24" might be:
+
+  plot2d (sin(x), [x, -5, 5], [pdf_file, "plot24.pdf"]);
+  plot2d (sin(x), [x, -5, 5], [png_file, "plot24.png"]);
+
+ADDING FIGURES TO THE MANUAL
+----------------------------
+
+Once the files plot24.pdf and plot24.png have been placed in the
+doc/info/figures directory, they are added in a section of the manual
+using the figure macro:
+  @figure{plot24}
+
+Notice that no file-name extension or directory should be given. That
+macro should add the figure correctly in any section and in any of the
+translations of the manual.
+
+ADDING THE FIGURE TO THE LIST OF FILES TO BE DISTRIBUTED
+--------------------------------------------------------
+
+Every time you add a new figure, do not forget to modify the
+doc/info/Makefile.am file, adding the name of the two files (PDF and
+PNG) to the lists "figurefiles" and "pdffigures". In the example
+above,
+  figures/plot24.png
+should be added to figurefiles and
+  figures/plot24.pdf
+to pdffigures.
+
+------------
+Jaime Villate, January 27, 2015.
+
+
+
+
+
+INTRODUCTION
+------------
+
+The figures in this directory will be used in the Maxima manual.
 Each figure should be in two versions, PDF and GIF. The PDF version
 will be used in the PDF version of the manual, and the GIF version
 will be used in the HTML version.
