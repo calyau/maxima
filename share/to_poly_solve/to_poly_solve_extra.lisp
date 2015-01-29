@@ -32,6 +32,10 @@
 (setf (get '$%and 'operators) 'simp-%and)
 (setf (get '%and 'operators) 'simp-%and)
 
+;; make op(a %and b) --> "%and" This allows things like if op(e) = "%and" to work. With this disjunction_p and conjuction_p aren't needed.
+(putprop '%and "%and" 'op) 
+(putprop '%or "%or" 'op) 
+
 ;; Efficiency hack (see nset.lisp) -- this tells xreduce that %and is nary.
 (def-nary '$%and (s) (simplify (cons '(%and) s)) t)
 
