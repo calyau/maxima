@@ -330,6 +330,39 @@ true;
 is (invert (M) = M^^-1), ratmx=true, detout=true, doscmxops=false, doallmxops=false;
 true;
 
+/* handle detout=true correctly when determinant=1
+ * reported to mailing list 2015-01-22, "Matrix inversion with detout = true?"
+ */
+M : ident (4) $
+matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
+
+M^^-1, detout=true, doscmxops=false, doallmxops=false;
+matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
+
+/* test the various matrix inversion functions to make sure they all handle detout correctly */
+
+M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='adjoint;
+matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
+
+M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='lu;
+matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
+
+M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='gausselim;
+matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
+
+M : matrix ([17, 29], [1, 42]);
+matrix ([17, 29], [1, 42]);
+
+(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='adjoint), [op(%%), args(%%)]);
+["/", [matrix([42,-29],[-1,17]), 685]] $
+ 
+(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='lu), [op(%%), args(%%)]);
+["/", [matrix([42,-29],[-1,17]), 685]] $
+ 
+(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='gausselim), [op(%%), args(%%)]);
+["/", [matrix([42,-29],[-1,17]), 685]] $
+ 
+ 
 /* a matrix of modest size, the subject of bug report #2362 */
 
 (M:matrix([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
