@@ -71,7 +71,7 @@
 		    ar)
 	   val))
     ((symbolp ar)
-     (error "MASET1: first argument must not be a symbol; found: ~M" ar))
+     (error "MASET1: first argument must not be a symbol; found: ~A" ar))
     ((and (= (length inds) 1)
 	  (or ($listp ar) ($matrixp ar)))
      (setf (nth (car inds) ar) val) val)
