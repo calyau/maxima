@@ -74,10 +74,10 @@
      (error "MASET1: first argument must not be a symbol; found: ~A" ar))
     ((and (= (length inds) 1)
 	  (or ($listp ar) ($matrixp ar)))
-     (setf (nth (car inds) ar) val) val)
+     (setf (nth (car inds) ar) val))
     ((and ($matrixp ar)
 	  (= (length inds) 2))
-     (setf (nth (second inds) (nth  (car inds) ar)) val) val)
+     (setf (nth (second inds) (nth  (car inds) ar)) val))
     (t (error "MASET1: invalid array reference: ~A" ar))))
 
 
