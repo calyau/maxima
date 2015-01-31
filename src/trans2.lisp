@@ -61,7 +61,7 @@
       `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
       `(nil maset ,val ,ar  ,@ inds)))
 
-(defun maset1 ( val ar  &rest inds &aux  )
+(defun maset1 (val ar &rest inds)
   (cond
     ((and (typep ar 'cl:array)
 	  (= (length inds) (cl:array-rank ar)))
@@ -121,7 +121,7 @@
 (defun tr-maref (ar inds)
   `(nil maref , ar ,@ (copy-list inds)))
 
-(defun maref1 (ar  &rest inds &aux )
+(defun maref1 (ar &rest inds)
   (cond
     ((and (typep ar 'cl:array)
 	  (= (length inds) (cl:array-rank ar)))
