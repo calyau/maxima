@@ -45,6 +45,13 @@ To build Maxima:
     binary-gcl/numerical
     binary-gcl/numerical/slatec
 
+(4.2) GCL only: Create an empty sys-proclaim.lisp file, restart Lisp and do:
+
+    (load "generate-sys-proclaim.lisp")
+
+    Delete the directory binary-gcl and repeat step (4.1) before continuing to
+    step (5).
+
 Maxima builds with defsystem. The file maxima-build.lisp is provided
 for rudimentary guidance in using defsystem. Experts should feel free
 to subsitute their knowledge of defsystem for the following steps.
