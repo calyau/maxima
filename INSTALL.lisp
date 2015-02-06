@@ -64,9 +64,9 @@ to subsitute their knowledge of defsystem for the following steps.
 
     (maxima-compile)
 
-    Clisp only: Clisp complains about SETQ applied to a symbol in
-    a locked package when compiling src/cpoly.lisp.
-    When Clisp asks you if you want to allow it, enter "continue" (without quote marks).
+    Clisp only: Clisp may complain about SETQ applied to a symbol in a
+    locked package when compiling src/cpoly.lisp.  If Clisp asks you if
+    you want to allow it, enter "continue" (without quote marks).
 
 (7) Quit Lisp, and restart Lisp.
 
