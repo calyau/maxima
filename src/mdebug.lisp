@@ -650,7 +650,7 @@ Command      Description~%~
 
 (defmacro lisp-quiet (&rest l)
   (setq *mread-prompt* "")
-  (eval (cons 'progn l)))
+  `(lisp-eval ,@l))
 
 (def-break :lisp-quiet 'lisp-quiet 
   "Evaluate the lisp form without printing a prompt")
