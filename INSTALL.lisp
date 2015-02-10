@@ -45,6 +45,13 @@ To build Maxima:
     binary-gcl/numerical
     binary-gcl/numerical/slatec
 
+(4.2) GCL only: Create an empty sys-proclaim.lisp file, restart Lisp and do:
+
+    (load "generate-sys-proclaim.lisp")
+
+    Delete the directory binary-gcl and repeat step (4.1) before continuing to
+    step (5).
+
 Maxima builds with defsystem. The file maxima-build.lisp is provided
 for rudimentary guidance in using defsystem. Experts should feel free
 to subsitute their knowledge of defsystem for the following steps.
@@ -56,10 +63,6 @@ to subsitute their knowledge of defsystem for the following steps.
 (6) Compile the Lisp source code:
 
     (maxima-compile)
-
-    Clisp only: Clisp complains about SETQ applied to a symbol in
-    a locked package when compiling src/cpoly.lisp.
-    When Clisp asks you if you want to allow it, enter "continue" (without quote marks).
 
 (7) Quit Lisp, and restart Lisp.
 
