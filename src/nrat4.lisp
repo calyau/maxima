@@ -113,7 +113,7 @@
   (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat)
      ;; hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
-     (when (and $radsubstflag
+     (if (and $radsubstflag
 		(prog2 (newvar b) (some #'mexptp varlist)))
        (let (($factorflag t) *exp *exp2 *radsubst)
 	 (setq b (fullratsimp b))
@@ -127,7 +127,8 @@
 	 (setq *radsubst t)
 	 (spc0)
 	 (setq b (rdis *exp) c (rdis *exp2))
-	 (setq varlist nil)))
+	 (setq varlist nil))
+       (setq varlist nil))
      (setq a ($ratdisrep a) b ($ratdisrep b) c ($ratdisrep c))
      (cond ((integerp b) (setq c (ratf (maxima-substitute a b c)))
 	    (return (cond (dontdisrepit c) (t ($ratdisrep c))))))
