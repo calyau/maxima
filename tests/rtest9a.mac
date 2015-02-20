@@ -31,7 +31,7 @@ sin(x+(o+1/2)*%pi),expand;
 4*x^2*%e^(y+x^2)/(y+x)+2*%e^(y+x^2)/(y+x)-4*x*%e^(y+x^2)/(y+x)^2 +2*%e^(y+x^2)/(y+x)^3$
 
 sconcat(optimize(%));
-''(sconcat("block([%1,%2,%3,%4],%1:y+x,%2:x^2,%3:%e^(y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*x*%3/%1^2+2*%3/%1^3)"))$
+"block([%1,%2,%3,%4],%1:y+x,%2:x^2,%3:%e^(y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-(4*x*%3)/%1^2+(2*%3)/%1^3)"$
 
 linel:79;
 79$
@@ -56,3 +56,41 @@ f(t)=-2*cosh(sqrt(a*b*(a*b-1))*t/b)/(a^3*b^2-2*a^2*b+a)+a*t^2/(a*b-1)+2/(a^3*b^2
 forget(a>0,b>0,a*b>1);
 [a>0,b>0,a*b>1];
 
+/* bug reported to mailing list 2015-02-16: expand phenomenon */
+
+block ([f1, f2], f1:y=(x+1)*(x+3), f2:expand(f1), string (expand(f1)=expand(f2)));
+"(y = x^2+4*x+3) = (y = x^2+4*x+3)";
+
+string ((a = b) = (c = d));
+"(a = b) = (c = d)";
+
+/* following is supposed to test pretty printing code path
+ * not sure if embedded newline will be recognized appropriately on Windows
+ */
+block ([s, display2d : true],
+  s : make_string_output_stream (),
+  with_stdout (s, print ((a = b) = (c = d))),
+  close (s),
+  get_output_stream_string (s));
+"(a = b) = (c = d) 
+";
+
+infix ("foo");
+"foo";
+
+string ((a foo b) foo (c foo d));
+"(a foo b) foo (c foo d)";
+
+/* following is supposed to test pretty printing code path
+ * not sure if embedded newline will be recognized appropriately on Windows
+ */
+block ([s, display2d : true],
+  s : make_string_output_stream (),
+  with_stdout (s, print ((a foo b) foo (c foo d))),
+  close (s),
+  get_output_stream_string (s));
+"(a foo b) foo (c foo d) 
+";
+
+kill ("foo");
+done;

@@ -123,7 +123,7 @@
     (cond ((atom form)
 	   (dimension-atom form result))
 	  ((and (atom (car form)) (setq form (cons '(mprogn) form)) nil))
-	  ((or (<= (lbp (caar form)) (rbp lop)) (> (lbp rop) (rbp (caar form))))
+	  ((or (<= (lbp (caar form)) (rbp lop)) (>= (lbp rop) (rbp (caar form))))
 	   (dimension-paren form result))
 	  ((member 'array (car form) :test #'eq) (dimension-array form result))
 	  ((safe-get (caar form) 'dimension)

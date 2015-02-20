@@ -133,7 +133,7 @@
   (setq x (nformat-check x))
   (cond ((atom x) (msize-atom x l r))
         ((and (atom (car x)) (setq x (cons '(mprogn) x)) nil))
-	((or (<= (lbp (caar x)) (rbp lop)) (> (lbp rop) (rbp (caar x))))
+	((or (<= (lbp (caar x)) (rbp lop)) (>= (lbp rop) (rbp (caar x))))
 	 (msize-paren x l r))
 	((member 'array (cdar x) :test #'eq) (msize-array x l r))
 	((safe-get (caar x) 'grind)
