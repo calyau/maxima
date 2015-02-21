@@ -1706,26 +1706,21 @@ sin(y)*(10.0+6*cos(x)),
 ;; style can be one or several of the names of the styles or one or several
 ;; Maxima lists starting with the name of one of the styles. 
 (defun check-option-style (option)
-  (if (not ($listp (cadr option)))
-      (dolist (item (rest option))
-        (when (not (member item 
-                           '($lines $points $linespoints $dots $impulses)))
-          (merror
-           (intl:gettext
-            "Wrong argument ~M for option ~M. Not a valid style")
-             item (car option))))
-      (dolist (item (rest option))
-        (when (not
-               (and ($listp item)
-                    (member (cadr item)
-                            '($lines $points $linespoints $dots $impulses))))
-          (merror
-           (intl:gettext
-            "Wrong argument ~M for option ~M. Not a valid style.")
-           item (car option)))))
-  (if (= (length option) 2)
-      (cadr option)
-      (cdr option)))
+  (let (name parsed)
+    (dolist (item (rest option))
+      (when ($listp item)
+        (setq item (cdr item)))
+      (if (listp item)
+          (setq name (first item))
+          (setq name item))
+      (when (not (member name 
+                         '($lines $points $linespoints $dots $impulses)))
+        (merror
+         (intl:gettext
+          "Wrong argument ~M for option ~M. Not a valid style")
+         name (car option)))
+      (setq parsed (cons item parsed)))
+    (reverse parsed)))
 
 ;; Transform can be false or the name of a function for the transformation.
 (defun check-option-transform (option)

@@ -287,7 +287,7 @@
       (concatenate 'string "{\\it " s "}")
       s)))
 
-(defun tex-stripdollar0 (sym &aux )
+(defun tex-stripdollar0 (sym)
   (or (symbolp sym) (return-from tex-stripdollar0  sym))
   (let* ((pname (quote-% (stripdollar sym)))
 	 (l (length pname))

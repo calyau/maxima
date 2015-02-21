@@ -61,7 +61,7 @@
       `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
       `(nil maset ,val ,ar  ,@ inds)))
 
-(defun maset1 ( val ar  &rest inds &aux  )
+(defun maset1 (val ar &rest inds)
   (cond
     ((and (typep ar 'cl:array)
 	  (= (length inds) (cl:array-rank ar)))
@@ -71,13 +71,13 @@
 		    ar)
 	   val))
     ((symbolp ar)
-     (error "MASET1: first argument must not be a symbol; found: ~M" ar))
+     (error "MASET1: first argument must not be a symbol; found: ~A" ar))
     ((and (= (length inds) 1)
 	  (or ($listp ar) ($matrixp ar)))
-     (setf (nth (car inds) ar) val) val)
+     (setf (nth (car inds) ar) val))
     ((and ($matrixp ar)
 	  (= (length inds) 2))
-     (setf (nth (second inds) (nth  (car inds) ar)) val) val)
+     (setf (nth (second inds) (nth  (car inds) ar)) val))
     (t (error "MASET1: invalid array reference: ~A" ar))))
 
 
@@ -121,7 +121,7 @@
 (defun tr-maref (ar inds)
   `(nil maref , ar ,@ (copy-list inds)))
 
-(defun maref1 (ar  &rest inds &aux )
+(defun maref1 (ar &rest inds)
   (cond
     ((and (typep ar 'cl:array)
 	  (= (length inds) (cl:array-rank ar)))
