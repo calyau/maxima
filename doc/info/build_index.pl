@@ -237,7 +237,7 @@ print ")))\n";
 
 #        Construct hashtables from the lists given above.
 
-print "(load-info-hashtables (pathname-directory #-gcl *load-pathname* #+gcl sys:*load-pathname*) deffn-defvr-pairs section-pairs))\n";
+print "(load-info-hashtables (list (pathname-device #-gcl *load-pathname* #+gcl sys:*load-pathname*) (pathname-directory #-gcl *load-pathname* #+gcl sys:*load-pathname*)) deffn-defvr-pairs section-pairs))\n";
 
 # (2.3)  Do we have any items or sections?
 #

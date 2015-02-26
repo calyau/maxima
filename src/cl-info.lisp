@@ -195,7 +195,7 @@
      (byte-offset (cadr value))
      (byte-count (caddr value))
      (text (make-string byte-count))
-     (path+filename (make-pathname :directory dir-name :name filename)))
+     (path+filename (make-pathname :device (first dir-name) :directory (second dir-name) :name filename)))
     (with-open-file (in path+filename :direction :input)
       (file-position in byte-offset)
       #+gcl (gcl-read-sequence text in :start 0 :end byte-count)
