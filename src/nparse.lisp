@@ -37,8 +37,10 @@
 (defmvar $report_synerr_info t "If T, report the syntax error details from all sources; otherwise, only report details from standard-input.")
 
 (defun mread-synerr (format-string &rest l)
-  (let ((fp (file-position *parse-stream*))
-	(file (cadr *current-line-info*)))
+  (let ((fp (and (not (eq *parse-stream* *standard-input*))
+                 (file-position *parse-stream*)))
+	(file (and (not (eq *parse-stream* *standard-input*))
+                   (cadr *current-line-info*))))
     (flet ((line-number ()
 	     ;; Fix me: Neither batch nor load track the line number
 	     ;; correctly. batch, via dbm-read, does not track the
