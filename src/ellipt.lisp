@@ -4097,10 +4097,10 @@ first kind:
 		,m))
 	     (%inverse_jacobi_ns
 	      ;; A&S 17.4.48
-	      `(($elliptic_f) ((asin) ((mexpt) ,u -1)) ,m))
+	      `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) ,m))
 	     (%inverse_jacobi_nc
 	      ;; A&S 17.4.49
-	      `(($elliptic_f) ((acos) ((mexpt) ,u -1)) ,m))
+	      `(($elliptic_f) ((%acos) ((mexpt) ,u -1)) ,m))
 	     (%inverse_jacobi_ds
 	      ;; A&S 17.4.50
 	      `(($elliptic_f)
