@@ -307,12 +307,21 @@ true$
 
 /*
  * Bug [ 1658067 ] jacobi_sn(elliptic_kc(1-m)*%i/2,m) isn't simplified
+ *
+ * This test (and Maxima) used to be wrong.  This is related to the
+ * jacobi_sc(elliptic_kc(m)/2,m) test below.
  */
 jacobi_sn(elliptic_kc(1-m)*%i/2,m);
-%i*m^(1/4)$
+%i/m^(1/4)$
 
 jacobi_sc(elliptic_kc(m)+u,m);
 -jacobi_cs(u,m)/sqrt(1-m)$
+
+/*
+ * Maxima used to get this wrong by returning the reciprocal instead
+ */
+jacobi_sc(elliptic_kc(m)/2,m);
+1/(1-m)^(1/4);
 
 /*
  * Bug [ 2505945 ] - hgfred([2,-1/2],[3],-x^2);

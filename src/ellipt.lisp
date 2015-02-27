@@ -2754,8 +2754,9 @@ first kind:
 				     (power (sub 1 m) 1//2)))))))
 		   ((and (alike1 lin 1//2)
 			 (zerop1 const))
-		    ;; (1-m)^(1/4)
-		    (power (sub 1 m) (div 1 4)))
+		    ;; From A&S 16.3.3 and 16.5.2:
+		    ;; sc(1/2*K) = 1/(1-m)^(1/4)
+		    (power (sub 1 m) (div -1 4)))
 		   (t
 		    (eqtest (list '(%jacobi_sc) u m) form)))))
 	  (t
