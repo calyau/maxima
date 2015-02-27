@@ -40,15 +40,30 @@
 	x
 	(append (or iteml '(nil)) (cdr x)))))
 
+(defmacro with-maxima-io-syntax (&rest forms)
+  `(let ((*readtable* (copy-readtable nil)) (*print-readably* t) *print-gensym* 
+        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
+	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
+    #-gcl
+    (progn
+      #-(or scl allegro)
+      (setf (readtable-case *readtable*) :invert)
+      #+(or scl allegro)
+      (unless #+scl (eq ext:*case-mode* :lower)
+	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
+	(setf (readtable-case *readtable*) :invert))
+      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
+			   #'pprint-defmtrfun))
+    ,@forms))
+
 (defmspec $save (form)
-  (let ((*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)) ; $save stores Lisp expressions.
+  (with-maxima-io-syntax ; $save stores Lisp expressions.
     (dsksetup (cdr form) nil '$save)))
 
 (defvar *macsyma-extend-types-saved* nil)
 
 (defun dsksetup (x storefl fn)
-  (let (file (fname (meval (car x)))
-		   *print-gensym* list maxima-error)
+  (let (file (fname (meval (car x))) list maxima-error)
     (unless (stringp fname)
       (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
     (setq savefile

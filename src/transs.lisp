@@ -54,22 +54,6 @@
 
 (defvar declares nil)
 
-(defmacro with-maxima-io-syntax (&rest forms)
-  `(let ((*readtable* (copy-readtable nil))
-        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
-	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
-    #-gcl
-    (progn
-      #-(or scl allegro)
-      (setf (readtable-case *readtable*) :invert)
-      #+(or scl allegro)
-      (unless #+scl (eq ext:*case-mode* :lower)
-	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
-	(setf (readtable-case *readtable*) :invert))
-      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
-			   #'pprint-defmtrfun))
-    ,@forms))
-
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
     (if (eq 1 (length forms))

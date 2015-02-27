@@ -277,3 +277,85 @@ true;
 
 is (y1b = y2b);
 true;
+
+/* verify that save/compfile/compile_file/translate_file preserves upper/lower case in symbol names */
+
+/* save */
+
+(kill (all),
+ foo (x) := my_foo * x,
+ Foo (x) := my_Foo * x,
+ FOO (x) := my_FOO * x,
+ [my_foo, my_Foo, my_FOO] : [123, 456, 789],
+ results : [foo (2), Foo (3), FOO (4)],
+ my_test () := is (results = [2*123, 3*456, 4*789]),
+ lisp_name : ssubst ("_", " ", build_info()@lisp_name),
+ lisp_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-save-", lisp_name, ".lisp"),
+ save (lisp_filename, values, functions),
+ kill (allbut (lisp_filename)),
+ load (lisp_filename),
+ my_test ());
+true;
+
+/* compfile */
+
+(kill (all),
+ foo (x) := my_foo * x,
+ Foo (x) := my_Foo * x,
+ FOO (x) := my_FOO * x,
+ lisp_name : ssubst ("_", " ", build_info()@lisp_name),
+ lisp_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compfile-", lisp_name, ".lisp"),
+ compfile (lisp_filename, functions),
+ kill (functions), 
+ load (lisp_filename),
+ [my_foo, my_Foo, my_FOO] : [123, 456, 789],
+ results : [foo (2), Foo (3), FOO (4)],
+ my_test () := is (results = [2*123, 3*456, 4*789]),
+ my_test ());
+true;
+ 
+/* compile_file */
+
+(kill (all),
+ lisp_name : ssubst ("_", " ", build_info()@lisp_name),
+ maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compile_file-", lisp_name, ".mac"),
+ fasl_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compile_file-", lisp_name, ".fasl"),
+ lisp_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compile_file-", lisp_name, ".LISP"),
+ maxima_output : openw (maxima_filename),
+ maxima_content :
+"foo (x) := my_foo * x;
+Foo (x) := my_Foo * x;
+FOO (x) := my_FOO * x;
+[my_foo, my_Foo, my_FOO] : [123, 456, 789];
+results : [foo (2), Foo (3), FOO (4)];
+my_test () := is (results = [2*123, 3*456, 4*789]);",
+ printf (maxima_output, maxima_content),
+ close (maxima_output),
+ compile_file (maxima_filename, fasl_filename, lisp_filename),
+ kill (allbut (lisp_filename)),
+ load (lisp_filename),
+ my_test ());
+true;
+
+/* translate_file */
+
+(kill (all),
+ lisp_name : ssubst ("_", " ", build_info()@lisp_name),
+ maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-translate_file-", lisp_name, ".mac"),
+ lisp_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-translate_file-", lisp_name, ".LISP"),
+ maxima_output : openw (maxima_filename),
+ maxima_content :
+"foo (x) := my_foo * x;
+Foo (x) := my_Foo * x;
+FOO (x) := my_FOO * x;
+[my_foo, my_Foo, my_FOO] : [123, 456, 789];
+results : [foo (2), Foo (3), FOO (4)];
+my_test () := is (results = [2*123, 3*456, 4*789]);",
+ printf (maxima_output, maxima_content),
+ close (maxima_output),
+ translate_file (maxima_filename, lisp_filename),
+ kill (allbut (lisp_filename)),
+ load (lisp_filename),
+ my_test ());
+true;
+
