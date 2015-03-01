@@ -32,7 +32,7 @@
 					  '($linenum $ratvars $weightlevels *ratweights
 					    tellratlist *alphabet* $dontfactor $features $contexts))))
 		     ((eq (car x) '$labels) (reverse (cdr $labels)))
-		     ((member (car x) '($functions $macros $gradefs $dependencies) :test #'eq)
+		     ((member (car x) '($functions $macros $gradefs $dependencies $structures) :test #'eq)
 		      (mapcar #'caar (cdr (symbol-value (car x)))))
 		     ((eq (car x) '$contexts) (delete '$global (reverse (cdr $contexts)) :count 1 :test #'eq))
 		     (t (cdr (symbol-value (car x)))))))
@@ -40,15 +40,31 @@
 	x
 	(append (or iteml '(nil)) (cdr x)))))
 
+(defmacro with-maxima-io-syntax (&rest forms)
+  `(let ((*readtable* (copy-readtable nil)) (*print-readably* t) *print-gensym* 
+        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
+	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
+    #-gcl
+    (progn
+      #-(or scl allegro)
+      (setf (readtable-case *readtable*) :invert)
+      #+(or scl allegro)
+      (unless #+scl (eq ext:*case-mode* :lower)
+	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
+	(setf (readtable-case *readtable*) :invert))
+      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
+			   #'pprint-defmtrfun))
+    ,@forms))
+
 (defmspec $save (form)
-  (let ((*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)) ; $save stores Lisp expressions.
+  (with-maxima-io-syntax ; $save stores Lisp expressions.
     (dsksetup (cdr form) nil '$save)))
 
 (defvar *macsyma-extend-types-saved* nil)
+(defvar *dsksetup-errset-value* t)
 
 (defun dsksetup (x storefl fn)
-  (let (file (fname (meval (car x)))
-		   *print-gensym* list maxima-error)
+  (let (file (fname (meval (car x))) list maxima-error (errset *dsksetup-errset-value*))
     (unless (stringp fname)
       (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
     (setq savefile
@@ -269,24 +285,23 @@
 	(fasprint t `(defprop ,(cadr rename) ,val1 array-mode)))))
 
 (defun extopchk (item val)
-  (let ((val1 (implode (cons #\$ (cdr (exploden val))))))
-    (when (or (get val1 'nud) (get val1 'led) (get val1 'lbp))
+    (when (or (get item 'nud) (get item 'led) (get item 'lbp))
       (fasprin `(define-symbol (quote ,val)))
       (if (member val *mopl* :test #'eq)
 	  (fasprin `(setq *mopl* (cons (quote ,val) *mopl*))))
-      (when (setq val (get val1 'dimension))
-	(dskdefprop val1 val 'dimension)
-	(dskdefprop val1 (get val1 'dissym) 'dissym)
-	(dskdefprop val1 (get val1 'grind) 'grind))
-      (if (setq val (get val1 'lbp)) (dskdefprop val1 val 'lbp))
-      (if (setq val (get val1 'rbp)) (dskdefprop val1 val 'rbp))
-      (if (setq val (get val1 'nud)) (dskdefprop val1 val 'nud))
-      (if (setq val (get val1 'led)) (dskdefprop val1 val 'led))
-      (when (setq val (get val1 'verb))
+      (when (setq val (get item 'dimension))
+	(dskdefprop item val 'dimension)
+	(dskdefprop item (get item 'dissym) 'dissym)
+	(dskdefprop item (get item 'grind) 'grind))
+      (if (setq val (get item 'lbp)) (dskdefprop item val 'lbp))
+      (if (setq val (get item 'rbp)) (dskdefprop item val 'rbp))
+      (if (setq val (get item 'nud)) (dskdefprop item val 'nud))
+      (if (setq val (get item 'led)) (dskdefprop item val 'led))
+      (when (setq val (get item 'verb))
 	(dskdefprop val (get val 'dimension) 'dimension)
 	(dskdefprop val (get val 'dissym) 'dissym))
       (when (setq val (get item 'match))
-	(dskdefprop item val 'match) val))))
+	(dskdefprop item val 'match) val)))
 
 (defun propschk (item rename ind)
   (let ((val (get item ind)))
