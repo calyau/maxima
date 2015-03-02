@@ -213,12 +213,9 @@
        ;; to add the conversion to a Maxima-complex-number.
        (cond ((= 0 ($imagpart order))
               ;; order is real, arg is real or complex
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                   ($float ($imagpart arg))))
-                     (result (bessel-j order arg)))
-                (add (mul '$%i (imagpart result))
-                     (realpart result))))
+              (complexify (bessel-j ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; order is complex, arg is real or complex
               (let (($numer t)
@@ -525,12 +522,10 @@
        ;; we have either the order or arg being floating-point,
        ;; so let's evaluate it numerically.
        (cond ((= 0 ($imagpart order))
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                   ($float ($imagpart arg))))
-                     (result (bessel-y order arg)))
-                (add (mul '$%i (imagpart result))
-                     (realpart result))))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-y ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; order is complex, arg is real or complex
               (let (($numer t)
@@ -879,12 +874,10 @@
       
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                   ($float ($imagpart arg))))
-                     (result (bessel-i order arg)))
-                (add (mul '$%i (imagpart result))
-                     (realpart result))))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-i ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; order is complex, arg is real or complex
               (let (($numer t)
@@ -1213,12 +1206,10 @@
       
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                  ($float ($imagpart arg))))
-                     (result (bessel-k order arg)))
-                (add (mul '$%i (imagpart result))
-                     (realpart result))))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-k ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; order is complex, arg is real or complex
               (let (($numer t)
@@ -1713,11 +1704,10 @@
          order arg))
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                   ($float ($imagpart arg))))
-                     (result (hankel-1 order arg)))
-                (add (mul '$%i (imagpart result)) (realpart result))))
+              ;; order is real, arg is real or complex
+              (complexify (hankel-1 ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; The order is complex.  Use
               ;;   hankel_1(v,z) = bessel_j(v,z) + %i*bessel_y(v,z)
@@ -1813,11 +1803,10 @@
          order arg))
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
-              (let* ((order ($float order))
-                     (arg (complex ($float ($realpart arg))
-                                   ($float ($imagpart arg))))
-                     (result (hankel-2 order arg)))
-                (add (mul '$%i (imagpart result)) (realpart result))))
+              ;; order is real, arg is real or complex
+              (complexify (hankel-2 ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
              (t
               ;; The order is complex.  Use
               ;;   hankel_2(v,z) = bessel_j(v,z) - %i*bessel_y(v,z)

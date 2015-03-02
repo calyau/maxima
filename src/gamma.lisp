@@ -116,10 +116,12 @@
 (defun complex-float-numerical-eval-p (&rest args)
   (let ((flag nil))
     (dolist (ll args)
-      (when (not (complex-number-p ll 'float-or-rational-p)) 
-        (return-from complex-float-numerical-eval-p nil))
-      (when (or (floatp ($realpart ll)) (floatp ($imagpart ll)))
-        (setq flag t)))
+      (destructuring-bind (rll . ill) (trisplit ll)
+        (unless (and (float-or-rational-p rll)
+                     (float-or-rational-p ill))
+          (return-from complex-float-numerical-eval-p nil))
+        (when (or (floatp rll) (floatp ill))
+          (setq flag t))))
     (if (or $numer flag) t nil)))
 
 ;;; Test for numerically evaluation in bigfloat precision
