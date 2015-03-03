@@ -291,7 +291,6 @@ true;
  my_test () := is (results = [2*123, 3*456, 4*789]),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  lisp_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-save-", lisp_name, ".lisp"),
- kill (lisp_name), /* work around SBCL bug: SIMPLE-BASE-STRING is not printable readably!!! Oh dear gods. */
  save (lisp_filename, values, functions),
  kill (allbut (lisp_filename)),
  load (lisp_filename),

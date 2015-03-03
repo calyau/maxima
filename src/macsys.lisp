@@ -427,8 +427,13 @@ DESTINATION is an actual stream (rather than nil for a string)."
             ,*autoconf-version*
             ,(format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d" year month day hour minute seconds)
             ,*autoconf-host*
-            ,(lisp-implementation-type)
-            ,(lisp-implementation-version)))))))
+            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-type)) #-sbcl (lisp-implementation-type)
+            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-version)) #-sbcl (lisp-implementation-version)))))))
+
+;; SBCL base strings aren't readably printable.
+;; Attempt a work-around. Yes, this is terribly ugly.
+#+sbcl (defun ensure-readably-printable-string (x)
+  (coerce x `(simple-array character (,(length x)))))
 
 (defun dimension-build-info (form result)
   (declare (special bkptht bkptdp lines break))
