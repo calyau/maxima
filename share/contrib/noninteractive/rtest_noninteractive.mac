@@ -266,3 +266,26 @@ limit (ratsimp (foo), beta, inf);
 limit ((%e^-(b*d)-1)/(1-%e^-(2*b*h*z)), b, inf);
 0;
 
+/* a couple of examples inspired by mailing list 2015-03-04
+ * tnx David Scherfgen
+ */
+
+integrate (x^n + x^m, x);
+if equal(m,-1) then integrate(x^n+1/x,x) elseif notequal(m,-1) then
+integrate(x^n+x^m,x);
+
+(load (expand_branches), 0);
+0;
+
+expand_branches (integrate (x^n + x^m, x));
+if equal(m,-1)
+    then (if equal(n,-1) then 2*log(x) elseif notequal(n,-1)
+              then log(x)+x^(n+1)/(n+1)) elseif notequal(m,-1)
+    then (if equal(n,-1) then log(x)+x^(m+1)/(m+1) elseif notequal(n,-1)
+              then x^(n+1)/(n+1)+x^(m+1)/(m+1));
+
+/* expected failure due to assume weakness; see SF bug #2915 */
+
+integrate (1/(a*x^2 + b), x);
+if a*b < 0 then log((2*a*x-2*sqrt(-a*b))/(2*a*x+2*sqrt(-a*b)))/(2*sqrt(-a*b))
+elseif a*b > 0 then atan(a*x/sqrt(a*b))/sqrt(a*b)$
