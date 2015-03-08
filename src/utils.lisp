@@ -48,6 +48,7 @@
   #+ecl                (si:quit)
   #+lispworks          (lispworks:quit)
   #+abcl               (cl-user::quit)
+  #+kcl                (lisp::bye)
   )
 
 
