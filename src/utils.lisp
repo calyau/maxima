@@ -42,7 +42,7 @@
 (defun bye ()
   #+(or cmu scl clisp) (ext:quit)
   #+sbcl               (sb-ext:quit)
-  #+allegro            (excl:exit)
+  #+allegro            (excl:exit 0 :quiet t)
   #+(or mcl openmcl)   (ccl:quit)
   #+gcl                (lisp:quit)
   #+ecl                (si:quit)
