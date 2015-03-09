@@ -795,18 +795,9 @@
 
 
 (defmfun $quit ()
-  nil
   (princ *maxima-epilog*)
-  #+kcl (lisp::bye)
-  #+(or cmu scl) (ext:quit)
-  #+sbcl (sb-ext:quit)
-  #+clisp (ext:quit)
-  #+(or openmcl mcl) (ccl::quit)
-  #+gcl (quit)
-  #+abcl (cl-user::quit)
-  #+ecl (si:quit)
-  #+excl "don't know quit function"
-  #+lispworks (lispworks:quit))
+  (bye)
+  (mtell (intl:gettext "quit: No known quit function for this Lisp.~%")))
 
 ;; File-processing stuff.
 

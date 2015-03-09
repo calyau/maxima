@@ -1,13 +1,32 @@
-load("recur.mac");
+(kill(all), 'done);
+'done$
+
+(load("recur.mac"), 'done);
+'done$
+
 (declare(n, integer),
   matchdeclare(nn, lambda([e], symbolp(e) and featurep(e, integer))),
   tellsimpafter('binomial(nn, nn), 1),
-  'done)$
+  'done);
+'done$
 
 char(u(n+3)+6*u(n+2)+12*u(n+1)+8*u(n),0,u,n,3,[u(0)=1,u(1)=-2,u(2)=8]);
+u(n) = (n^2/2-n/2+1)*(-2)^n$
+
 char(u(n+1)-u(n),(1/6)*n*(n-1)*(n-2)+n-1,u,n,1,[u(0)=1]);
+u(n) = n*(n^3/24-n^2/4+23*n/24-7/4)+1$
+
 char(u(n+2)-2*u(n+1)+u(n),n**2,u,n,2,[u(0)=0,u(1)=1]);
+u(n) = n^2*(n^2/12-n/3+5/12)+5*n/6$
+
 genf(u(n+2)-u(n),2**n,u,n,2,[u(0)=1,u(1)=0]);
+u(n) = 2^n/3+2*(-1)^n/3$
+
 char(u(n+2)-4*u(n),3+2*n,u,n,2,[u(0)=1,u(1)=0]);
+u(n) = 7*2^(n-2)+25*(-2)^(n-2)/9-2*n/3-13/9$
+
 varc1(u(n+1)-(n+1)*u(n),1,u,n,1,[u(0)=1]);
+u(n) = ('sum(1/i1!,i1,0,n))*n!$
+
 varc2(u(n+1)-(n+1)*u(n),1,u,n,1,[u(0)=1]);
+u(n) = ('product(i+1,i,1,n-1))*'sum(1/'product(j+1,j,1,i-1),i,0,n)$

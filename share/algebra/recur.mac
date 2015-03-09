@@ -234,7 +234,7 @@ local(a,b),dispflag:false,
   else return("o.d.e. can't be solved at present by macsyma"),
      cauchysum:true,
   sersol:powerseries(rhs(finsol),x,0), sersol:expand(sersol),
-  b:inpart(sersol,1),
+  b:inpart(sersol,2),
   b:ev(b,x=1),
   if atom(b)=false then b:substpart(n,b,4),
   return(u(n)=((n!)*b)))$
@@ -262,14 +262,13 @@ local(a),
 
 
 /*this block implements the first order method*/
-varc2(e,g,u,n,k,iv):=block([h,p,v,c,sol],
-local(ap,p),
+varc2(e,g,u,n,k,iv):=block([h,p,v,c,sol,sj,si,pn,hi,ap,p],
      p:(-1)*coeff(e,u(n))/coeff(e,u(n+1)),
      v:g/coeff(e,u(n+1)),
-     s[j]:subst(j,n,p),
-     s[i]:subst(i,n,p),
-     p[n]:product(s[i],i,1,n-1),
-     h[i]:subst(i,n,v)/product(s[j],j,1,i-1),
-     v1:sum(h[i],i,0,n),
+     sj:subst(j,n,p),
+     si:subst(i,n,p),
+     pn:product(si,i,1,n-1),
+     hi:subst(i,n,v)/product(sj,j,1,i-1),
+     v1:sum(hi,i,0,n),
      ap:ev(u(0)-subst(0,n,v),iv),
-     return(u(n)=ap*p[n]+p[n]*v1))$
+     return(u(n)=ap*pn+pn*v1))$

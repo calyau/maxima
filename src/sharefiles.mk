@@ -46,6 +46,7 @@ algebra/nusum.mac \
 algebra/recur.dem \
 algebra/recur.mac \
 algebra/recur.transcript \
+algebra/rtest_recur.mac \
 algebra/solver/linsolve.mac \
 algebra/solver/misc.mac \
 algebra/solver/readme \
