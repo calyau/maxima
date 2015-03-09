@@ -633,19 +633,59 @@ values")
 (defvar ^w nil)
 
 (defun $timedate (&optional (time (get-universal-time)))
-  (multiple-value-bind
-    (second minute hour date month year day-of-week dst-p tz)
-    (decode-universal-time time)
-    (declare (ignore day-of-week))
-    (let
-      ((tz-offset (if dst-p (- 1 tz) (- tz))))
-      (multiple-value-bind
-        (tz-hours tz-hour-fraction)
-        (floor tz-offset)
-        (let
-          ((tz-sign (if (< 0 tz-hours) #\+ #\-)))
-          (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~a~2,'0d:~2,'0d"
-              year month date hour minute second tz-sign (abs tz-hours) (floor (* 60 tz-hour-fraction))))))))
+  (let*
+    ((time-integer (mfuncall '$floor time))
+     (time-fraction (sub time time-integer))
+     (time-millis (mfuncall '$round (mul 1000 time-fraction))))
+    (when (= time-millis 1000)
+      (setq time-integer (1+ time-integer))
+      (setq time-millis 0))
+    (multiple-value-bind
+      (second minute hour date month year day-of-week dst-p tz)
+      (decode-universal-time time-integer)
+      (declare (ignore day-of-week))
+      (let
+        ((tz-offset (if dst-p (- 1 tz) (- tz))))
+        (multiple-value-bind
+          (tz-hours tz-hour-fraction)
+          (floor tz-offset)
+          (let
+            ((tz-sign (if (< 0 tz-hours) #\+ #\-)))
+            (if (= time-millis 0)
+              (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~a~2,'0d:~2,'0d"
+                  year month date hour minute second tz-sign (abs tz-hours) (floor (* 60 tz-hour-fraction)))
+              (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d.~3,'0d~a~2,'0d:~2,'0d"
+                  year month date hour minute second time-millis tz-sign (abs tz-hours) (floor (* 60 tz-hour-fraction))))))))))
+
+;; Parse date/time strings in these formats (and only these):
+;;
+;;   YYYY-MM-DD[ T]hh:mm:ss[,.]nnn
+;;   YYYY-MM-DD[ T]hh:mm:ss
+;;   YYYY-MM-DD
+
+(defun date-match-date (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])") s))
+(defun date-match-date+time (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])") s))
+(defun date-match-date+time+ms (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])[,.]([0-9][0-9][0-9])") s))
+
+(defun $parse_timedate (s)
+  (if (date-match-date+time+ms s)
+    (date-parse-foo s)
+    (if (date-match-date+time s)
+      (date-parse-foo s)
+      (if (date-match-date s)
+        (date-parse-foo s)))))
+
+(defun date-parse-foo (s)
+  (let ((groups maxima-nregex::*regex-groups*) (ngroups maxima-nregex::*regex-groupings*))
+    (apply #'construct-universal-time
+      (mapcar #'parse-integer
+        (extract-date-bits s (rest (coerce (subseq groups 0 ngroups) 'list)))))))
+
+(defun extract-date-bits (s groups)
+  (loop for p in groups while p collect (apply #'subseq (cons s p))))
+
+(defun construct-universal-time (year month day &optional (hour 0) (minute 0) (second 0) (ms 0))
+  (add (div ms 1000) (encode-universal-time second minute hour day month year)))
 
 ;;Some systems make everything functionp including macros:
 (defun functionp (x)

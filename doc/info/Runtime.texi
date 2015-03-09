@@ -295,6 +295,67 @@ timedate reports current time 2010-06-08 04:08:09+01:00
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{parse_timedate}
+@deffn  {Function} parse_timedate @
+@fname{parse_timedate} (@var{S})
+
+Parses a string @var{S} representing a date or date and time of day
+and returns the number of seconds since midnight, January 1, 1900 GMT.
+If there is a nonzero milliseconds part, the value returned is a rational number,
+otherwise, it is an integer.
+
+The string @var{S} must have one of the following formats:
+
+@itemize @bullet
+@item
+@code{YYYY-MM-DD[ T]hh:mm:ss[,.]nnn}
+@item
+@code{YYYY-MM-DD[ T]hh:mm:ss}
+@item
+@code{YYYY-MM-DD}
+@end itemize
+
+where the fields are year, month, day, hours, minutes, seconds, and milliseconds,
+and square brackets indicate acceptable alternatives.
+
+See also @code{timedate} and @code{absolute_real_time}.
+
+Examples:
+
+Midnight, January 1, 1900, in the local time zone, in each acceptable format.
+
+@c ===beg===
+@c parse_timedate ("1900-01-01 00:00:00,000");
+@c parse_timedate ("1900-01-01 00:00:00.000");
+@c parse_timedate ("1900-01-01T00:00:00,000");
+@c parse_timedate ("1900-01-01T00:00:00.000");
+@c parse_timedate ("1900-01-01 00:00:00");
+@c parse_timedate ("1900-01-01T00:00:00");
+@c parse_timedate ("1900-01-01");
+@c ===end===
+@example
+(%i1) parse_timedate ("1900-01-01 00:00:00,000");
+(%o1)                         28800
+(%i2) parse_timedate ("1900-01-01 00:00:00.000");
+(%o2)                         28800
+(%i3) parse_timedate ("1900-01-01T00:00:00,000");
+(%o3)                         28800
+(%i4) parse_timedate ("1900-01-01T00:00:00.000");
+(%o4)                         28800
+(%i5) parse_timedate ("1900-01-01 00:00:00");
+(%o5)                         28800
+(%i6) parse_timedate ("1900-01-01T00:00:00");
+(%o6)                         28800
+(%i7) parse_timedate ("1900-01-01");
+(%o7)                         28800
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{absolute_real_time}
 @deffn {Function} absolute_real_time ()
 

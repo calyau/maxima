@@ -315,6 +315,26 @@ true;
 stringp (timedate (100*365*24*3600));
 true;
 
+/* date parsing */
+
+parse_timedate (timedate (0));
+0;
+
+parse_timedate (timedate (1));
+1;
+
+parse_timedate (timedate (1000));
+1000;
+
+parse_timedate (timedate (1000000));
+1000000;
+
+parse_timedate (timedate (1000000000));
+1000000000;
+
+parse_timedate (timedate (10000000000));
+10000000000;
+
 /* Do the right thing when listarray and arrayinfo are called within
  * a function and the name of the formal argument coincides with the
  * name of the actual argument. (Was a bug in ARRAYINFO-AUX.)
