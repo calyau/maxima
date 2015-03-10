@@ -214,3 +214,40 @@ makelist (ev (printf (false, "~h", bfloat (%pi)), fpprintprec=i), i, 2, 16);
 ["3.1", "3.14", "3.141", "3.1415", "3.14159", "3.141592", "3.1415926", 
 "3.14159265", "3.141592653", "3.1415926535", "3.14159265358", 
 "3.141592653589", "3.1415926535897", "3.14159265358979", "3.141592653589793"];
+
+/* printing numbers close to 1 exposes bug in FORMAT
+ * reported to mailing list 2015-03-10: "Rounding problem with format"
+ */
+
+(fpprec : 100, 0);
+0;
+
+(3.486966909006701254309886183074014693622265540576239825103417070695233093147180625237524509429931641b-22
+*2.867821881007928e+21,
+ printf(false, "~13,6,3,1e", %%),
+ if sequalignore (%%, "1.000000e+000") then true else %%);
+true;
+
+(reset (fpprec), 0);
+0;
+
+(printf (false, "~13,6,3,1e", 0.9999999999999999),
+ if sequalignore (%%, "1.000000e+000") then true else %%);
+true;
+
+(printf (false, "~9,3,2,1e", 1.0),
+ if sequalignore (%%, "1.000e+00") then true else %%);
+true;
+
+(printf (false, "~9,3,2,1e", 0.999),
+ if sequalignore (%%, "9.990e-01") then true else %%);
+true;
+
+(printf (false, "~9,3,2,1e", 0.9999),
+ if sequalignore (%%, "9.999e-01") then true else %%);
+true;
+
+(printf (false, "~9,3,2,1e", 0.99999),
+ if sequalignore (%%, "1.000e+00") then true else %%);
+true;
+
