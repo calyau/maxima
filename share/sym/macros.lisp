@@ -16,25 +16,6 @@
 ;       *              e-mail : avb@sysal.ibp.fr                      *
 ;       ***************************************************************
 
-(defvar COEI)
-(defvar TERMREST)
-(defvar CHCOETERM)
-(defvar MONI)
-(defvar A)
-(defvar TCOE)
-(defvar B)
-(defvar TMON)
-(defvar C)
-(defvar LGI)
-(defvar D)
-(defvar TLG)
-(defvar SYM)
-(defvar TERM)
-(defvar 3CONS)
-(defvar TERMI)
-(defvar P)
-(defvar COE)
-(defvar 4CONS)
 
 
 
