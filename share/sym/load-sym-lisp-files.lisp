@@ -8,15 +8,15 @@
 
 (with-compilation-unit nil
   ($load "macros")
+  ($load "operations")
+  ($load "chbase")
   ($load "util")
   ($load "lecteur")
   ($load "ecrivain")
-  ($load "operations")
   ($operation)
   ($load "arite")
   ($load "elem")
   ($load "pui")
-  ($load "chbase")
   ($load "schur")
   ($load "direct")
   ($load "kak")

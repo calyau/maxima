@@ -569,10 +569,6 @@
          (ele2polynome (cdr (meval (list '($pui2ele) (car fct_pui)
                                  (cons '(mlist)  fct_pui))))
              variable)))
-(defun pui2polynome_speci (fct_pui)
-      (let ((poly_generique (pui2polynome_generique (list (car
-							   fct_pui)))))
-           ($ev poly_generique )))
          
 ;=========================================================================
 ;               CALCUL DES FONCTIONS SYMETRIQUES ELEMENTAIRES

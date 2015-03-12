@@ -363,8 +363,8 @@
               (cond
                 ((equal part1 part2) (union2 l1 (cdr l2)))
                 (($lex part1 part2) (union2 (cdr l1) l2))
-                (t (setq ll1 (cdr l1))
-                   (union2 (cdr (rplacd l1 l2)) ll1))))))))
+                (t (let ((ll1 (cdr l1)))
+                     (union2 (cdr (rplacd l1 l2)) ll1)))))))))
 (defun crefils_init (part) (crefils (reverse part) nil nil))
 ; part = (an mn ... a2 m2 a1 m1) an > ... > a2 > a1
 ; debut = (a(i-1) m(i-1) ... a1 m1) 

@@ -718,6 +718,7 @@
             ((mexpt simp) $x 5))
            ((mexpt simp) $x 6))) 
 (add2lnc '$q $values) 
+(defvar aaaaa)
 (setq aaaaa (gensym)) 
 (remcompary '$q) 
 (mremprop '$q 'array) 
