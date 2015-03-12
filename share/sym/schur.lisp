@@ -87,7 +87,10 @@
 			    			      (cddr l))))))
                                  (schur2comp (cdar polpart))))
               sol))))
-; l'egalite nous importe pas.
+
+; Ordre Lexicographique pour des polynomes partitionnes de type 1.
+; l'egalite ne nous importe pas.
+
 (defun lexinv_type1 (terme1 terme2)
   (2lexinv_type1 (cddr terme1) (cddr terme2)))
 
@@ -243,17 +246,17 @@
 (defun kostka (l m)
  (list-length (good_tab0 l (make-list (apply '+ l) :initial-element 0) m)))
 
-(defun firstn (n l)
+(defun schur-firstn (n l)
   (cond
     ((null l) nil)
     ((plusp n)
      (cons (car l)
-           (firstn (1- n)
+           (schur-firstn (1- n)
                    (cdr l))))
     (t nil)))
 ; normalement cette fonction existe en Common  sous le nom de "last"
 (defun lastn (l n)
-   (nreverse (firstn n (reverse l))))
+   (nreverse (schur-firstn n (reverse l))))
 
 (defun good_tab0 (l lcont ltas)
   (let ((l1 nil) (rep nil) (relais nil))
@@ -283,7 +286,7 @@
 (defun new_tas0 (l1 ltas)
   (if (null l1) ltas
       (new_tas0 (cdr l1)
-          (append (firstn (1- (car l1))
+          (append (schur-firstn (1- (car l1))
                           ltas)
                   (list (1- (nth (1- (car l1)) ltas)))
                   (lastn ltas (- (list-length ltas) (car l1))
@@ -386,7 +389,7 @@
      (cond
        ((eql 1 ai) (reverse (arrivecube rfin)))
        (t (nconc (reverse (arrivecube rfin))
-                 (met (1- ai)
+                 (schur-met (1- ai)
                       debut)))))
     (t (cond
          ((eql 1 ai)
@@ -398,14 +401,14 @@
               ((eql 2 mi)
                (nconc (reverse (rmet (1+ ai)
                                      rfin))
-                      (met (1- ai)
+                      (schur-met (1- ai)
                            debut)))
               (t (nconc (reverse (cons (- mi 2)
                                        (cons ai
                                         (rmet
                                          (1+ ai)
                                          rfin))))
-                        (met (1- ai)
+                        (schur-met (1- ai)
                              debut)))))))))
 ; rpart = (m a ...)
 ; aj = a(i-1) ==> m(i-1) --> m(i-1) +1
@@ -417,7 +420,7 @@
            (cdr rpart)))
     (t (cons 1 (cons aj rpart)))))
 ; part = part2 sens croissant des parts
-(defun met (aj part)
+(defun schur-met (aj part)
   (cond
     ((null part) (list aj 1))
     ((eql aj (car part))

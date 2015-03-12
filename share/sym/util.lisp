@@ -24,21 +24,6 @@
 ; terme partitionne sa longueur
 ;---------------------------------------------------------------------------
 
-(defmacro lgi (sym) (list 'caar sym)); longueur de la partition initiale
-(defmacro moni (p) (list 'cddar p)); partition initiale
-(defmacro coei (p) 
-          (list 'cadar p)); coefficient associe a la partition initiale
-(defmacro termi (p) (list 'car p)); terme partitionne initial
-(defmacro chcoeterm (term coe); modification physique du coefficient d'un terme
-          (list 'progn (list 'rplaca (list 'cdr term) coe) term))
-(defmacro termrest (p) 
-          (list 'cdr p)); liste de  termes partitionnes sans le premier
-(defmacro tmon (term) (list 'cddr term)); partition d'un terme partitionne
-(defmacro tcoe (term) (list 'cadr term)); coefficient d'un terme partitionne
-(defmacro tlg (term) 
-         (list 'car term)); longueur de la partition d'un terme partitionne
-
-
 ;----------------------------------------------------------------------------
 ;                       LES UTILITAIRES 
 ;----------------------------------------------------------------------------
@@ -260,23 +245,6 @@
   
 (defun $e_lex (p q)
   (and (not (equal (cddr p) (cddr q))) ($lex (cddr p) (cddr q))))
-
-; Ordre Lexicographique pour des polynomes partitionnes de type 1.
-; l'egalite ne nous importe pas.
-
-(defun lexinv_type1 (terme1 terme2)
-  (2lexinv_type1 (cddr terme1) (cddr terme2)))
-
-(defun 2lexinv_type1 (1part 2part)
-  (cond
-    ((null (car 1part)) nil)
-    ((null (car 2part)) t)
-    ((< (car 1part) (car 2part))
-     nil)
-    ((> (car 1part) (car 2part))
-     t)
-    (t (2lexinv_type1 (cdr 1part) (cdr 2part)))))
-
 
 ; teste sur deux monomes en representation distribuee (i1 i2 ...)
 
@@ -560,56 +528,6 @@
   (cons '(mlist)
         (mapcar #'(lambda (permu) (cons '(mlist) permu))
                 (permut (cdr nuplet)))))
-
-;cas particulier de permut avec les elem. de L 2 a 2 <>(pour voir) 
-;On place le car
-; dans toutes les positions possibles 
-
-(defun insertion (a l i)
-  (if (null l) (list a)
-      (if (equal (nth i l) a) nil
-          (append (firstn i l) (list a)
-                  (flet ((franz.nthcdr (ind lis)
-                             "equivalent to Franz Lisp 'nthcdr'."
-                             (let ((evalind (eval ind)))
-                               (if (minusp evalind) (cons nil lis)
-                                   (nthcdr evalind lis)))))
-                    (franz.nthcdr i l))))))
-
-; dans la liste L il y a peut - etre des () au top niveau : je les vire
-; chlorure de vire_nil 
-
-(defun vire_nil (l)
-  (and l
-       (if (null (car l)) (vire_nil (cdr l))
-           (cons (car l) (vire_nil (cdr l))))))
-
-;ne garde que les e'le'ments de L 2 a' 2 distincts au top niveau
-
-(defun un_de_chaque (l)
-  (and l
-       (if (member (car l) (cdr l) :test #'equal)
-           (un_de_chaque (cdr l))
-           (cons (car l) (un_de_chaque (cdr l))))))
-
-;retourne la liste de toutes les permutations de L (voir ex plus bas )
-
-(defun permut (l)
-  (let ((i 0) (reponse nil) (relais nil)(a nil))
-    (cond 
-      ((<= (list-length l) 1)
-       (list l))
-      (t
-       (setq relais (permut (cdr l)) a (car l))
-       (do ((i i (1+ i)))
-	   ((eql i (list-length l)) (un_de_chaque (vire_nil reponse)))
-	 (setq reponse
-	       (append reponse
-		       (append (mapcar #'(lambda (z)
-                                           (insertion a z i))
-				       relais)))))))))
-
-; ex : ( permut '(1 1 2 2 3 3)) donne la liste des 90 positions concerne'es
 
 ;======================================================================
 ;                      EXPRESSION D'UN POLYNOME

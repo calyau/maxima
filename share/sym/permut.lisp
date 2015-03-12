@@ -64,7 +64,7 @@
 (defun insertion (a l i)
   (if (null l) (list a)
       (if (equal (nth i l) a) nil
-          (append (firstn i l) (list a)
+          (append (schur-firstn i l) (list a)
                   (flet ((franz.nthcdr (ind lis)
                              "equivalent to Franz Lisp 'nthcdr'."
                              (let ((evalind (eval ind)))
@@ -85,7 +85,7 @@
            (cons (car l) (un_de_chaque (cdr l))))))
 ;retourne la liste de toutes les permutations de L (voir ex plus bas )
 (defun permut (l)
-  (let ((i 0) (reponse nil) (relais nil))
+  (let ((i 0) (reponse nil) (relais nil) (a nil))
     (cond
       ((<= (list-length l) 1)
        (list l))

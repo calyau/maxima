@@ -61,28 +61,6 @@
   (defvar coei)
   (defvar nblib))
 
-;; Les macros
-; inclusion du fichier macros.lsp
-;---------------------------------------------------------------------------
-;                     DECLARATION DES MACROS
-; pour le type 2 des polynomes partitionnes avec en tete de chaque
-; terme partitionne sa longueur
-;---------------------------------------------------------------------------
-
-(defmacro lgi (sym) (list 'caar sym)); longueur de la partition initiale
-(defmacro moni (p) (list 'cddar p)); partition initiale
-(defmacro coei (p) 
-          (list 'cadar p)); coefficient associe a la partition initiale
-(defmacro termi (p) (list 'car p)); terme partitionne initial
-(defmacro chcoeterm (term coe); modification physique du coefficient d'un terme
-          (list 'progn (list 'rplaca (list 'cdr term) coe) term))
-(defmacro termrest (p) 
-          (list 'cdr p)); liste de  termes partitionnes sans le premier
-(defmacro tmon (term) (list 'cddr term)); partition d'un terme partitionne
-(defmacro tcoe (term) (list 'cadr term)); coefficient d'un terme partitionne
-(defmacro tlg (term) 
-         (list 'car term)); longueur de la partition d'un terme partitionne
-
 ;***************************************************************************
 ;          MISE SOUS FORME INTERNE DU POLYNOME SYMETRIQUE 
 ;                SUIVANT LES FORMES EXTERNES DONNEES

@@ -361,7 +361,7 @@
     (t (macdonald2 ote
            (max 0
                 (- (* 2 ote) exposant))
-           (met exposant ote poule))
+           (chbase-met exposant ote poule))
        (let ((ote (1+ ote)))
          (and (< ote exposant)
               (macdonald2 exposant ote poule))))))
@@ -376,7 +376,7 @@
     ($divi_sym ($mult_sym ($exp_sym puiaj+1 mj+1) (car (last poule)))
         (* (cadr poule) (expt aj+1 mj+1) (factorielle mj+1)))))
 
-; met construit au fur et a mesure epsilon_I*z_I et p_I pour |I|
+; chbase-met construit au fur et a mesure epsilon_I*z_I et p_I pour |I|
 ; strictement inferieure a n
 
 ; au depart poule = ( (n  pn ... p1) (-1)^n)
@@ -386,7 +386,7 @@
 
 
 
-(defun met (exposant ote poule)
+(defun chbase-met (exposant ote poule)
   (cond
     ((null (cddr poule))
      (list (car poule)

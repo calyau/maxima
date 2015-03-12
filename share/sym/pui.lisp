@@ -49,12 +49,6 @@
 (progn (defvar listpi) (defvar $pui) (defvar $testpartpol))
 
 
-;; Les macros
-; inclusion du fichier macros.lsp
-
-;(progn
- ; (compile-file "//users//avb//symetrique//sym//symakcl//maxima//macros.o")
-  ;(load "//users//avb//symetrique//sym//symakcl//maxima//macros.o"))
 ;---------------------------------------------------------------------------
 ;                     DECLARATION DES MACROS
 ; pour le type 2 des polynomes partitionnes avec en tete de chaque
