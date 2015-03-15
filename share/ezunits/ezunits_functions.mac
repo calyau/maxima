@@ -275,8 +275,7 @@ compute_conversion_factor (u1%, u2%) :=
   ev (simplify_units (u1% / u2%), conversions_to_base_units));
 
 compute_conversions_to_base_units () :=
- (print ("ezunits: computing conversions to base units; may take a moment."),
-  conversions_to_base_units : listify (compute_conversions_to_base_units0 (known_unit_conversions)));
+  conversions_to_base_units : listify (compute_conversions_to_base_units0 (known_unit_conversions));
 
 compute_conversions_to_base_units0 (conversion_eqns) :=
 block ([derived_units, primitive_units, defined_so_far, undefined_so_far, definitions, definablep, now_definable],
