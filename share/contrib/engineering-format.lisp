@@ -30,13 +30,15 @@
 (defmvar $engineering_format_floats t)
 
 (defun engineering-format (x)
-  (let*
-    ((integer-log (floor (/ (log (abs x)) (log 10.0))))
-     (scale (1+ (mod integer-log 3)))
-     (effective-fpprintprec (if (= $fpprintprec 0) 16 $fpprintprec))
-     (digits (1- effective-fpprintprec)))
-    (declare (special $fpprintprec))
-    (format nil "~,v,,ve" digits scale x)))
+  (if (= x 0.0)
+    (format nil "~e" x)
+    (let*
+      ((integer-log (floor (/ (log (abs x)) (log 10.0))))
+       (scale (1+ (mod integer-log 3)))
+       (effective-fpprintprec (if (= $fpprintprec 0) 16 $fpprintprec))
+       (digits (1- effective-fpprintprec)))
+      (declare (special $fpprintprec))
+      (format nil "~,v,,ve" digits scale x))))
 
 (let ((foo (symbol-function 'exploden)))
   (defun exploden (x)
