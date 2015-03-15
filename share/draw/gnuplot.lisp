@@ -1497,6 +1497,15 @@
 ;;     yaxis_secondary
 ;; Note: taken from implicit_plot.lisp
 
+;; returns elements at odd positions
+(defun x-elements (list)
+  (if (endp list) list
+      (list* (first list) (x-elements (rest (rest list))))))
+
+;; returns elements at even positions
+(defun y-elements (list)
+  (x-elements (rest list)))
+
 (defvar pts ())
 
 (defun contains-zeros (i j sample)
@@ -1525,7 +1534,7 @@
 	 (y1 (coerce (+ ymin (/ (* ydelta (+ (cadr point1) (cadddr point1))) 2)) 'flonum) )
 	 (x2 (coerce (+ xmin (/ (* xdelta (+ (car point2) (caddr point2))) 2)) 'flonum) )
 	 (y2 (coerce (+ ymin (/ (* ydelta (+ (cadr point2) (cadddr point2))) 2)) 'flonum) ))
-    (setq pts (nconc (list x1 y1 x2 y2) pts))))	
+     (setq pts (nconc (list x1 y1 x2 y2) pts))))	
 
 (defun print-square (xmin xmax ymin ymax sample grid)
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
@@ -1572,7 +1581,7 @@
          (expr (m- ($rhs expr) ($lhs expr)))
          (ip-grid (get-option '$ip_grid))
          (ip-grid-in (get-option '$ip_grid_in))
-         e pltcmd
+         e pltcmd 
          (xmin ($float xmin))
          (xmax ($float xmax))
          (ymin ($float ymin))
@@ -1604,6 +1613,26 @@
 			   ssample ip-grid-in)
 	      (print-square xxmin xxmax yymin yymax
 			    ssample ip-grid-in) )) ))
+
+    ; geometric transformation
+    (when (> *draw-transform-dimensions* 0)
+      (let ((x (x-elements pts))
+            (y (y-elements pts))
+            xmin xmax ymin ymax)
+        (transform-lists 2)
+        (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
+              xmax ($tree_reduce 'max (cons '(mlist simp) x))
+              ymin ($tree_reduce 'min (cons '(mlist simp) y))
+              ymax ($tree_reduce 'max (cons '(mlist simp) y)) )
+        (update-ranges-2d xmin xmax ymin ymax)
+        (setf pts
+          (loop
+            collect (car x)
+            collect (car y)
+            do (setf x (cdr x))
+               (setf y (cdr y))
+            when (null x) do (loop-finish) ))) )
+
     (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                               (make-obj-title (get-option '$key))
                               (get-option '$line_width)
@@ -1740,7 +1769,7 @@
          (count -1)
          ncols result)
     (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2)))
-       (merror "draw3d (explicit): non defined variable"))
+       (merror "draw2d (explicit): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
@@ -3341,12 +3370,9 @@
                (format cmdstorage "~%quit~%~%")
                (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
-	     #+(or (and sbcl win32) (and ccl windows))
-             ($system $gnuplot_command gfn)
-	     #-(or (and sbcl win32) (and ccl windows))
-	     ($system (format nil "~a \"~a\"" 
-			      $gnuplot_command
-			      gfn) ))
+             ($system (format nil "~a \"~a\"" 
+                                  $gnuplot_command
+                                  gfn) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
@@ -3379,20 +3405,14 @@
                         (format nil "load '~a'" gfn)))
                 ; call gnuplot via system command
                 (t
+                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+                                   (format nil "~a ~a"
+                                               $gnuplot_command
+                                               (format nil $gnuplot_view_args gfn))
+                                   (format nil "~a \"~a\"" 
+                                               $gnuplot_command
+                                               gfn)))))))
 
-		 #+(or (and sbcl win32) (and ccl windows))
-		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
-		     ($system $gnuplot_command "-persist" gfn)
-		     ($system $gnuplot_command gfn))
-		 #-(or (and sbcl win32) (and ccl windows))
-		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
-			      (format nil "~a ~a"
-				      $gnuplot_command
-				      (format nil $gnuplot_view_args gfn))
-			      (format nil "~a \"~a\"" 
-				      $gnuplot_command
-				      gfn))) ))))
-		
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )
 
