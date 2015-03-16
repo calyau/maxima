@@ -317,14 +317,14 @@ true;
 
 /* date parsing */
 
-parse_timedate (timedate (0));
-0;
+parse_timedate (timedate (86400));
+86400;
 
-parse_timedate (timedate (1));
-1;
+parse_timedate (timedate (86401));
+86401;
 
-parse_timedate (timedate (1000));
-1000;
+parse_timedate (timedate (87400));
+87400;
 
 parse_timedate (timedate (1000000));
 1000000;
