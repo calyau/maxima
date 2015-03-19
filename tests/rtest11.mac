@@ -477,6 +477,41 @@ zor (zand (a, c), zand (b, c));
 zand (a, zor (b, c));
 zor (zand (a, b), zand (a, c));
 
+/* another lassociative/rassociative bug, tickled by rule which returns an atom
+ * reported to mailing list 2015-03-16: "Requesting advice on simplification rules for user-defined operators"
+ */
+
+kill (a, b, c, d, e, f, z);
+done;
+
+(kill ("wedge"),
+ nary ("wedge"),
+ declare ("wedge", [commutative, lassociative]),
+ matchdeclare (var, true),
+ 0);
+0;
+
+(tellsimpafter (0 wedge var, 0),
+ 0);
+0;
+
+ev (a wedge (b wedge (c wedge (0 wedge d))) wedge (e wedge f), infeval);
+0;
+
+(kill ("wedge"),
+ nary ("wedge"),
+ declare ("wedge", [commutative, rassociative]),
+ matchdeclare (var, true),
+ 0);
+0;
+
+(tellsimpafter (var wedge z, z),
+ 0);
+0;
+
+ev (a wedge (b wedge (c wedge (z wedge d))) wedge (e wedge f), infeval);
+z;
+
 /* some tests for partition */
 
 (kill (foo, u, e1, e2, e3),

@@ -1045,7 +1045,7 @@ summation when necessary."
 (defmfun lassociative (e z)
   (let*
     ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
-     (ans (cdr ans0)))
+     (ans (if (consp ans0) (cdr ans0))))
     (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
           ((do ((newans (list (car e) (car ans) (cadr ans))
                         (list (car e) newans (car ans)))
@@ -1058,7 +1058,7 @@ summation when necessary."
 (defmfun rassociative (e z)
   (let*
     ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
-     (ans (cdr ans0)))
+     (ans (if (consp ans0) (cdr ans0))))
     (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
 	  (t (setq ans (nreverse ans))
 	     (do ((newans (list (car e) (cadr ans) (car ans))
