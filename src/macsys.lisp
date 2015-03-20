@@ -504,7 +504,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
       #-clisp (lisp-implementation-version)
       #+clisp (subseq (lisp-implementation-version)
 	      0 (1+ (search ")" (lisp-implementation-version)))))
-  #+gcl (format t " (a.k.a. GCL)")
   (format t (intl:gettext "~%Distributed under the GNU Public License. See the file COPYING.~%"))
   (format t (intl:gettext "Dedicated to the memory of William Schelter.~%"))
   (format t (intl:gettext "The function bug_report() provides bug reporting information.~%")))

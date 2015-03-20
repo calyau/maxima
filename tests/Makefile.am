@@ -1,5 +1,5 @@
 include $(top_srcdir)/common.mk
-MAXIMA = @POSIX_SHELL@ $(top_srcdir)/maxima-local
+MAXIMA = @POSIX_SHELL@ $(top_builddir)/maxima-local
 if CLISP
 check: check-clisp
 check-clisp:
