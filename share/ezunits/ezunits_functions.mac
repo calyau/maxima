@@ -56,6 +56,8 @@ units_check (zz%) :=
     if units('zz%) # 1 and units(yy%) # 1 and units(yy%) # units('zz%)
     then throw (oops ('zz%, yy%)))));
 
+/* PROBABLY QTY SHOULD BE A SIMPLIFYING FUNCTION !! OH WELL. KEEP STUMBLING AHEAD. */
+
 qty(e%) :=
   block (local (e%),
   if atom(e%) then
@@ -64,6 +66,7 @@ qty(e%) :=
     else e%
   else if unitop_p(e%) then first(e%)
   else if featurep (op(e%), 'dimensional) then 'qty(e%)
+  else if op(e%) = 'qty or op(e%) = nounify('qty) then e%
   else apply (op(e%), map (qty, args(e%))));
 
 units(e%) :=
@@ -87,6 +90,7 @@ d(e%) := dimension (units (e%));
 matchdeclare
   ([aa%, bb%], true,
     cc%, constantp,
+    dd%, lambda ([e], atom(e) and featurep (e, 'dimensional)),
     ccn0%, constantp_not0,
     ccn1%, constantp_not1,
     /* dl = "dimensionless" */
@@ -102,7 +106,10 @@ simp: false$
 /* tellsimpafter rules are applied in order of declaration; tellsimp, the other way around */
 tellsimp (nd% `` dl%, apply_units_conversion (nd%, dl%));
 tellsimp (uu% `` aa%, apply_units_conversion (uu%, aa%));
+tellsimp (aa%*pp% `` bb% , expand (aa%*pp%) `` bb%); /* HOW ABOUT THIS ONE ?? */
 tellsimp (pp% `` aa%, apply ("+", map (buildq ([aa%], lambda ([e], e `` aa%)), args (pp%))));
+tellsimp (dd% `` aa%, (qty(dd%) ` units(dd%)) `` aa%);
+tellsimp (aa%*dd% `` bb%, aa% * (qty(dd%) ` units(dd%)) `` bb%);
 tellsimp (qq% `` aa%, map (lambda ([e], e `` aa%), qq%));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (aa% * nd% * uu%, aa% * multiply_with_units (nd%, uu%));
@@ -154,6 +161,12 @@ simp: true$
 matchdeclare (uu%, lambda ([e], unitp (e) and not unitop_p (e)));
 defrule (rexpand_dimensional, uu%, qty (uu%) ` units (uu%));
 expand_dimensional (e) := applyb1 (e, rexpand_dimensional);
+
+/* expand_dimensional('qty(xyz)) => 'qty('qty(xyz) ` units(xyz)) without this rule ... sigh !!
+ * does the need for it go away if qty is a simplifying function ??
+ */
+matchdeclare (uu%, unitop_p);
+tellsimpafter ('qty (uu%), qty (uu%));
 
 unitop_p (e%) := not atom(e%) and atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
 unitp (e%) :=
@@ -584,8 +597,11 @@ inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
 
 simp : false;
 declare_unit_conversion (degree = %pi/180);
-matchdeclare (uu, lambda ([e], unitp(e) and dimensions(e) = 1));
+matchdeclare (uu, lambda ([e], not nondimensionalp(e) and dimensions(e) = 1));
 map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot, atan]);
+
+tellsimp (%e^uu, %e^(uu `` 1));
+tellsimp (log (uu), log (uu `` 1));
 
 matchdeclare (aa, unitp, bb, lambda ([e], dimensions (e) = dimensions (aa)));
 tellsimp (atan2 (aa, bb), atan2 (qty (aa), qty (bb `` units (aa))));

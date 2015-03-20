@@ -687,6 +687,9 @@ ratsimp (W : (p * %pi * r^2) `` kN), r = (300 ` mm)/2;
 ratsimp (W * 1/(200 ` N) `` 1);
 (39717*%pi + 28800000)/200000;
 
+kill (W);
+done;
+
 p_B : (10^3 ` kg/m^3) * gee * (2 ` m + 3 ` m) `` kPa;
 1471/30 ` kPa;
 
@@ -825,6 +828,11 @@ done;
 
 block ([fpprec : 16], 3b0 ` millilightsecond `` mile);
 5.588471911536626b2 ` mile;
+
+/* from the mailing list 2015-03-18: "Some ezunits questions" */
+
+(1000 ` C+66.0*10^-9 ` F*V)*(46*10^3 ` Hz*V)``W;
+4.6000000003036E+7 ` W;
 
 /* subscripts applied to unitful expressions */
 
@@ -1000,3 +1008,19 @@ block ([a : b ` kg],
  equal (b, 0), equal (0, b),
  notequal (b, 0), notequal (0, b)];
  */
+
+/* sin, cos, etc of dimensionless quantities */
+
+(foo1 : [sin, cos, tan, csc, sec, cot, exp, log],
+ kill (x, y),
+ z : (x ` m)/(y ` foot) `` 1);
+(1250*x)/(381*y);
+
+map (lambda ([f1], f1((x ` m)/(y ` foot))), foo1);
+''(makelist (f1(z), f1, foo1));
+
+atan2 (x ` m, y ` foot);
+atan2 (x, 381*y/1250);
+
+exp (-%%k*(x ` K)/(y ` J));
+exp (-qty(%%k)*x/y);
