@@ -40,7 +40,7 @@
 (put 'leqp     '*ratforop* '|<=|)
 (put 'plus     '*ratforop* '|+|)
 (put 'times    '*ratforop* '|*|)
-(put 'quotient '*ratforop* '|//|)
+(put 'quotient '*ratforop* '|/|)
 (put 'expt     '*ratforop* '|**|)
 (put 'minus    '*ratforop* '|-|)
 

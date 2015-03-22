@@ -39,7 +39,7 @@
 (put 'leqp     '*cop* '|<=|)
 (put 'plus     '*cop* '|+|)
 (put 'times    '*cop* '|*|)
-(put 'quotient '*cop* '|//|)
+(put 'quotient '*cop* '|/|)
 (put 'minus    '*cop* '|-|)
 (put 'or       '*cop* "||")
 ;;                                  ;;
@@ -126,7 +126,7 @@
 	       (cond ((< wt wtin) (aconc (cons '|(| res) '|)| ))
 		     (t res))))
 	((eq (car exp) 'expt)
-	 (append (cons 'power (cons '|(| (cexp1 (cadr exp) 0)))
+	 (append (cons 'pow (cons '|(| (cexp1 (cadr exp) 0)))
                  (aconc (cons '|,| (cexp1 (caddr exp) 0)) '|)| )))
 	((or (member (car exp) *lisparithexpops* :test #'eq)
 	     (member (car exp) *lisplogexpops* :test #'eq))
