@@ -1,0 +1,78 @@
+\input texinfo
+
+@setfilename kovacicODE.info
+@settitle kovacicODE
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@include ../../../doc/info/category-macros.texi
+
+@node Top, Introduction to kovacicODE, (dir), (dir)
+@top
+@menu
+* Introduction to kovacicODE::
+* Definitions for kovacicODE::
+* Function and variable index::
+@end menu
+@chapter kovacicODE
+
+@node Introduction to kovacicODE, Definitions for kovacicODE, Top, Top
+@section Introduction to kovacicODE
+
+@node Definitions for kovacicODE, Function and variable index, Introduction to kovacicODE, Top
+@section Definitions for kovacicODE
+
+@deffn {Function} kovacicODE (@var{expr}, @var{y}, @var{x})
+
+@code{kovacicODE} is an implementation of the Kovacic algorithm for
+finding the solution of second order linear ordinary differential
+equations (ODEs) with Liouvillian solutions.
+If the ODE has a Liouvillian solution,
+@code{kovacicODE} finds and returns the solution.
+If the ODE does not have a Liouvillian solution, @code{kovacicODE} returns @code{false}.
+
+@code{load("kovacicODE")} loads this function.
+
+Example:
+
+Example 1 from "On Liouvillian Solutions of Linear Differential Equations" by F. Unger (1992),
+@i{Applicable Algebra in Engineering, Communication and Computing}, volume 2, issue 3, pp 171--193.
+@code{DEBUGFLAG} controls debugging output in @code{kovacicODE};
+we'll set it to 0 to suppress debugging output in this example.
+
+@c ===beg===
+@c load (kovacicODE) $
+@c eq : 'diff(y, x, 2) - 'diff(y, x, 1)/x + x^2*y/(x^4 + 2*x^2 + 1) = 0;
+@c DEBUGFLAG : 0 $
+@c kovacicODE (eq, y, x);
+@c ===end===
+@example
+(%i1) load (kovacicODE) $
+(%i2) eq : 'diff(y, x, 2) - 'diff(y, x, 1)/x + x^2*y/(x^4 + 2*x^2 + 1) = 0;
+                        dy
+                   2    --        2
+                  d y   dx       x  y
+(%o2)             --- - -- + ------------- = 0
+                    2   x     4      2
+                  dx         x  + 2 x  + 1
+(%i3) DEBUGFLAG : 0 $
+(%i4) kovacicODE (eq, y, x);
+                     2           2                  2
+(%o4) [y = %k2 sqrt(x  + 1) log(x  + 1) + %k1 sqrt(x  + 1)]
+@end example
+
+@opencatbox
+@category{Package kovacicODE} @category{Differential equations}
+@closecatbox
+@end deffn
+
+@node Function and variable index,  , Definitions for kovacicODE, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye

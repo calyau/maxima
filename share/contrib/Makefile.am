@@ -1,1 +1,1 @@
-SUBDIRS = integration
+SUBDIRS = integration maxima-odesolve
