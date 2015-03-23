@@ -136,7 +136,7 @@ kovacicODE(_expr,_y1,_x1) := block([_y,_x,_var,_ode_order,_ddy,_ode,_phi,_b,_c,_
   _ode: solve(_expr,_ddy)[1],
   _phi : rhs(_ode),
   if (lhs(_ode)=_ddy) and (freeof(_ddy,_phi)) then (
-    dprint(1,"ODE: ",grind(_ode))
+    dprint(1,"ODE: ",string(_ode))
   )
   else (
     dprint(0,"could not separate second order differential operator ",_ode),
@@ -272,7 +272,7 @@ kovacicODE(_expr,_y1,_x1) := block([_y,_x,_var,_ode_order,_ddy,_ode,_phi,_b,_c,_
 
 
 /* ************************************************* */
-  print("end of preliminaries..."),
+  dprint(0, "end of preliminaries..."),
 /* ************************************************* */
 
   /* STEP 1 PART (a) */
@@ -351,7 +351,7 @@ if member(1,_listl) then (
         dprint(0,"No Liouvillian solutions exist"),
         return(false)
       ),
-      print("_sol = ",_sol),
+      dprint(0, "_sol = ",_sol),
       _ac[_nu] : ratsimp(_sol^(1/2)),
       for _k from _nu-1 thru 2 step -1 do (
         _ac[_k] : _vtemp,
@@ -452,7 +452,7 @@ else if member(1,_listl) then (
   else (
     _dd[0]:_tmp1/_ac[_nu]
   ),
-  print("_dd[0] = ",_dd[0]), 
+  dprint(0, "_dd[0] = ",_dd[0]), 
 
   _tmp2 : sum(_ac[_l]*_var^_l,_l,0,_nu),
 
@@ -539,7 +539,7 @@ for i from 1 thru length(_listl) do (
         dprint(3,"_soln = ",_soln,length([_soln])),
       
         if _soln#false then (
-          print("finding sol2"),
+          dprint(0, "finding sol2"),
           ratio:_b, 
 
           /*gamma_expand:true, */ /* to get rid of incomplete gamma in saunders ex. 1 */
@@ -704,11 +704,11 @@ for i from 1 thru length(_listl) do (
     /*_P : trigexpand(_P),*/
     /*
     _P : trigreduce(_P),
-    print("1.  particular solution : ", _P),
+    dprint(0, "1.  particular solution : ", _P),
     _P : trigsimp(_P),
-    print("2. particular solution : ", _P),
+    dprint(0, "2. particular solution : ", _P),
     _P : radcan(_P), 
-    print("3. particular solution : ", _P),
+    dprint(0, "3. particular solution : ", _P),
     */
     /* substitute back the original _variables */
     /* -------------------------------------------------- */
@@ -720,8 +720,8 @@ for i from 1 thru length(_listl) do (
     /*print("x1=",_x1),*/
 
     /*
-    print("complexity of method 1 for particular solution: ",length(nrOps(_PP))),
-    print("complexity of method 2 for particular solution: ",length(nrOps(_P))),
+    dprint(0, "complexity of method 1 for particular solution: ",length(nrOps(_PP))),
+    dprint(0, "complexity of method 2 for particular solution: ",length(nrOps(_P))),
     */
     /* if method 1 has less operation than method 2, use method 1 */
     if (length(nrOps(_PP)) <= length(nrOps(_P)) ) then (
@@ -762,10 +762,10 @@ for i from 1 thru length(_listl) do (
 
   
 
-  dprint(1,"11d:",grind(_solution)) 
+  dprint(1,"11d:",string(_solution)) 
   ),
 
-  dprint(1,"solution:",grind(_solution)), 
+  dprint(1,"solution:",string(_solution)), 
   /* also return the method used to solve the ode */
   method : 'kovacic,
   return(_solution)
@@ -857,7 +857,7 @@ step3(_n,_d,_theta,rhs1,_var):=block([_p,_listv,_i,_a,_a0,_a1,_a2,_a3,_a4,_a5,_p
   _trial : sum(_pr[_i]*_w^_i/(_n-_i)!,_i,0,_n), 
 
 
-  dprint(3,"_trial = ",grind(_trial)),
+  dprint(3,"_trial = ",string(_trial)),
   dprint(3,"w = ",_w),
  
   _solution:solve(ev(_trial),_w), 
@@ -872,7 +872,7 @@ step3(_n,_d,_theta,rhs1,_var):=block([_p,_listv,_i,_a,_a0,_a1,_a2,_a3,_a4,_a5,_p
   _w:ratsimp(factor(_solution[1])), /* we need factor, it's like bringing it in normal form */
   
 /* this call to ratexpand causes radcan to behave strangely (doesn't simplify certain things) later on */
-/*  print("expanded = ",ratexpand(_w)),*/
+/*  dprint(0, "expanded = ",ratexpand(_w)),*/
   dprint(3,"w=",_w),
   sol:exp(integrate(rhs(_w),_var)),
   dprint(3,"sol=",sol),
@@ -906,7 +906,7 @@ rootz(_expr,_var):=block([_sol,_mult,_rlist2,_j,_i],
 /* ----- determine coefficient of a factor in a partial fraction expansion                     ----- */
 /*****************************************************************************************************/
 undetcoeff(_num,_rden,_var,_root,_m,_ex):=block([_k,_p,_er],
-  print("undetcoeff:",_m-_ex,_rden,_num),
+  dprint(0, "undetcoeff:",_m-_ex,_rden,_num),
   _k : _m - _ex,
   _p : _num/_rden,
 
@@ -920,7 +920,7 @@ undetcoeff(_num,_rden,_var,_root,_m,_ex):=block([_k,_p,_er],
   ) else (
     _er:_er[1]
   ),
-  print("_er:",_er),
+  dprint(0, "_er:",_er),
   return(_er)
 )$
 
@@ -964,7 +964,7 @@ sqfree(_expr,_var):=block([_i,_signp,_tc,_tlist1,_c,_d,_n,_cc,_re,_pp,_cont,_g,_
 
   /* if polynomial is a constant, then return the constant */
   if freeof(_var,_expr) then (
-    print("polynomial is constant"),
+    dprint(0, "polynomial is constant"),
     return[_expr,0]
   ),
  
@@ -1032,7 +1032,7 @@ constant_factors(_expr) := block([inflag:true],
 /*****************************************************************************************************/
 nrOps(expression):=
  block( [ ],
-        print("expression:",expression),
+        dprint(0, "expression:",expression),
         allOpsPriv (expression, [])
        )$
 
@@ -1057,12 +1057,4 @@ allOpsPriv(expression, opList) :=
 /*****************************************************************************************************/
 /* ----- dprint(flag,expr) is debuggingprint. It only prints expr when flag<DEBUGFLAG          ----- */
 /*****************************************************************************************************/
-dprint(flag,[expr]):=
- block([exprs:""],
- if (flag<DEBUGFLAG) then (
- for i:1 thru length(expr) do(
-   exprs:sconcat(exprs,expr[i])
- ),
- print(exprs))
- /*return(exprs)) else ( return(""))*/
-)$
+dprint(flag,[expr])::= if flag < DEBUGFLAG then buildq ([expr], print (splice (expr)));
