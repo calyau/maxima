@@ -1024,3 +1024,14 @@ atan2 (x, 381*y/1250);
 
 exp (-%%k*(x ` K)/(y ` J));
 exp (-qty(%%k)*x/y);
+
+/* fractions of a farad */
+
+1`pF*1`V*1`Hz `` A;
+1/1000000000000 ` A$
+
+1 ` nF `` C/V;
+1/1000000000 ` C/V;
+
+1 ` microF/nF `` 1;
+1000;

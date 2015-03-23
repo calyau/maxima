@@ -103,6 +103,9 @@ declare_unit_conversion
     MV = 1000000*V,
     GV = 1000000000*V,
 
+    pF = F/10^12,
+    nF = F/10^9,
+    microF = F/10^6,
     mF = F/1000,
     kF = 1000*F,
     MF = 1000000*F,
