@@ -411,7 +411,7 @@
 	      ;; We're trying to parse the exponent part of a number,
 	      ;; and we didn't get a value after the exponent marker.
 	      ;; That's an error.
-	      (merror (intl:gettext "parser: incomplete number; missing exponent?")))
+	      (mread-synerr "parser: incomplete number; missing exponent?"))
 	     (t
 	      (make-number (cons (nreverse l) data)))))
     (parse-tyi)))
