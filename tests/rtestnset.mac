@@ -1803,3 +1803,19 @@ full_listify(rat(3/4));
 /* is union nary? */
 xreduce('union,[]);
 set()$
+
+/* kron_delta is scalar */
+
+featurep (kron_delta, scalar);
+true;
+
+(kill (a, b), declare ([a, b], nonscalar), 0);
+0;
+
+(a * kron_delta (i, j)) . b, dotscrules=true;
+(a . b)*'kron_delta (i, j);
+
+/* verify that scalar declaration is really needed */
+(a * kran_dalta (i, j)) . b, dotscrules=true;
+(a * kran_dalta (i, j)) . b;
+

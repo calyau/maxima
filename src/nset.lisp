@@ -872,6 +872,7 @@
 (defun $kron_delta (&rest x) (simplifya `((%kron_delta) ,@x) t))
 (setf (get '%kron_delta 'real-valued) t) ;; conjugate(kron_delta(xxx)) --> kron_delta(xxx)
 (setf (get '%kron_delta 'integer-valued) t) ;; featurep(kron_delta(xxx), integer) --> true
+(mputprop '%kron_delta t '$scalar) ;; same effect as declare(kron_delta, scalar)
 
 (putprop '%kron_delta #'(lambda (yy) (declare (ignore yy)) (setq sign '$pz)) 'sign-function)
 
