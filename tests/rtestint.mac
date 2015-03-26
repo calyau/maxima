@@ -1484,6 +1484,54 @@ errcatch(integrate(1/(x^2), x, -inf, inf));
 error;
 ["defint: integral is divergent."];
 
+/* other tests mentioned in #2919 */
+
+errcatch (integrate(1/x, x, 0, 1));
+[];
+
+error;
+["defint: integral is divergent."];
+
+integrate(1/x, x, -1, 1);
+0;
+/* expected output: Principal Value -- dunno how to capture that */
+
+errcatch (integrate(1/x, x, 0, inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+errcatch (integrate(1/x, x, 1, inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+integrate(1/x, x, -inf, inf);
+0;
+/* expected output: Principal Value -- dunno how to capture that */
+
+errcatch (integrate(1/x^2, x, 0, 1));
+[];
+
+error;
+["defint: integral is divergent."];
+
+errcatch (integrate(1/x^2, x, -1, 1));
+[];
+
+error;
+["defint: integral is divergent."];
+
+errcatch (integrate(1/x^2, x, 0, inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+integrate(1/x^2, x, 1, inf);
+1;
 
 /* SF # 2633: ev(integrate,numer) gives strange result */
 (foo : ev(integrate(sin(2*%pi*x),x,0,1),numer), 0);
