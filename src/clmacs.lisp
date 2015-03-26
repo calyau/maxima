@@ -12,7 +12,7 @@
   (member x lis :test #'eq))
 
 ;;this will make operators which declare the type and result of numerical operations
-(eval-when (:compile-toplevel :load-toplevel)
+(eval-when (:compile-toplevel :load-toplevel :execute)
 
   (defmacro def-op (name arg-type op &optional return-type)
     `(setf (macro-function ',name)

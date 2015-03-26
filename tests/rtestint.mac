@@ -1469,6 +1469,22 @@ error;
 ["defint: integral is divergent."];
 
 
+/* #2903 Wrong integration over 1/(x+1) with bounds 0 to inf, since version 5.34.0 */
+errcatch(integrate(1/(x+1), x,0,inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+
+/* #2919 Definite integration broken: integrate(1/(x^2), x, -inf, inf) gives zero  */
+errcatch(integrate(1/(x^2), x, -inf, inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+
 /* SF # 2633: ev(integrate,numer) gives strange result */
 (foo : ev(integrate(sin(2*%pi*x),x,0,1),numer), 0);
 0;

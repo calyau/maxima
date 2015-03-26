@@ -3339,7 +3339,7 @@ in the interval of integration.")
 	       (null ll-pole)
 	       (null ul-pole))   '$unknown)
 	  ((and (or (eq roots '$no)
-		    (member ($csign denom) '($pos $neg $pz)))
+		    (member ($csign denom) '($pos $neg $pn)))
 		    ;; this clause handles cases where we can't find the exact roots,
 		    ;; but we know that they occur outside the interval of integration.
 		    ;;  example: integrate ((1+exp(t))/sqrt(t+exp(t)), t, 0, 1);
