@@ -296,12 +296,24 @@
          (la (toplevel-$limit exp var val '$plus)) lb)
     (when (eq la '$und) (return-from both-side '$und))
     (setf lb (toplevel-$limit exp var val '$minus))
-    (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
-          ((or (not (free la '%limit))
-               (not (free lb '%limit)))  ())
-          ;; inf + minf => infinity
-          ((and (infinityp la) (infinityp lb)) '$infinity)
-          (t '$und))))
+    (let ((ra (ridofab la))
+          (rb (ridofab lb)))
+      (cond ((eq t (meqp ra rb))
+             ra)
+            ((and (eq ra '$ind)
+                  (eq rb '$ind))
+             ; Maxima does not consider equal(ind,ind) to be true, but
+             ; if both one-sided limits are ind then we want to call
+             ; the two-sided limit ind (e.g., limit(sin(1/x),x,0)).
+             '$ind)
+            ((or (not (free la '%limit))
+                 (not (free lb '%limit)))
+             ())
+            ((and (infinityp la) (infinityp lb))
+             ; inf + minf => infinity
+             '$infinity)
+            (t
+             '$und)))))
 
 ;; Warning:  (CATCH NIL ...) will catch all throws.
 ;; NIL should not be used as a tag name.
