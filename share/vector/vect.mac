@@ -21,11 +21,11 @@ eval_when([translate,batch,demo,load,loadfile],
   /* we do not want FOO(F):=F(1) to mean APPLY(F,[1]) */
   )$
 
-infix("~", 134, 133, expr, expr, expr) $
-prefix("grad", 142, expr, expr) $
-prefix("div", 142, expr, expr) $
-prefix("curl", 142, expr, expr) $
-prefix("laplacian", 142, expr, expr) $ 
+infix("~", 134, 133, 'expr, 'expr, 'expr) $
+prefix("grad", 142, 'expr, 'expr) $
+prefix("div", 142, 'expr, 'expr) $
+prefix("curl", 142, 'expr, 'expr) $
+prefix("laplacian", 142, 'expr, 'expr) $ 
 
 declare(order,commutative,
         ordern,nary,
