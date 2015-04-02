@@ -1957,7 +1957,7 @@ Examples:
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Function_partitions} set @
+@deffn {Function} set_partitions @
 @fname{set_partitions} (@var{a}) @
 @fname{set_partitions} (@var{a}, @var{n})
 
