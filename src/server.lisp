@@ -106,7 +106,9 @@
 #+lispworks (system::getpid)
 #+ecl (si:getpid)
 #+ccl (ccl::getpid)
-#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl) (getpid-from-environment)
+#+allegro (excl::getpid)
+#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl allegro)
+  (getpid-from-environment)
 )
 
 #+(or gcl clisp cmu scl sbcl lispworks ecl ccl)
