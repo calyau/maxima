@@ -111,7 +111,7 @@
   (getpid-from-environment)
 )
 
-#+(or gcl clisp cmu scl sbcl lispworks ecl ccl)
+#+(or gcl clisp cmu scl sbcl lispworks ecl ccl allegro)
 (defun xchdir (w)
   #+clisp (ext:cd w)
   #+gcl (si::chdir w)
@@ -120,4 +120,5 @@
   #+lispworks (hcl:change-directory w)
   #+ecl (si:chdir w)
   #+ccl (ccl:cwd w)
+  #+allegro (excl:chdir w)
   )
