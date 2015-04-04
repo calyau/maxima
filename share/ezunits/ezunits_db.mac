@@ -234,7 +234,7 @@ declare_unit_conversion
     microsecond = s/1000000,
     second = s,
     
-    hectare = 100*m^2,
+    hectare = 10000*m^2,
     ha = hectare,
 
     liter = m^3/1000,

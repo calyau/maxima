@@ -1035,3 +1035,8 @@ exp (-qty(%%k)*x/y);
 
 1 ` microF/nF `` 1;
 1000;
+
+/* Reported on mailing list by Antonio Lapira 2015-04-04 - FIXED */
+3`ha``m^2;
+30000`m^2;
+
