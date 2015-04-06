@@ -128,7 +128,7 @@ ode_deriv(eq) := block(
 
 /* Check the solution of an ode. */
 ode_check(e_,a_) := block(
-  [deriv,x_,y_,diff_e,u,v],
+  [deriv,x_,y_,diff_e,e,u,v],
 
   deriv:ode_deriv(e_),
   if deriv=false then (
@@ -173,7 +173,7 @@ ode_check_tidy(e) := block(
   for f in ['bessimp, 'expintegral_e_simp,'ode_trig_simp]
   do 
     (if (f(e)=0) then return(e:0)),
-  return(e)
+  return(expand(e))
 )$
 
 /*  This Bessel function simplification code can be improved,
