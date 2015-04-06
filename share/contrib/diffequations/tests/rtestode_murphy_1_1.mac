@@ -26,8 +26,8 @@ true;
 [linear,0];
 
 /*   3 */
-(pn_(3),ans:contrib_ode(eqn:'diff(y,x)=x^2+3*cosh(x)+2*y,y,x));
-[y=%e^(2*x)*(-%e^-(3*x)*(3*%e^(2*x)+1)/2-(2*x^2+2*x+1)*%e^-(2*x)/4+%c)];
+(pn_(3),ans:contrib_ode(eqn:'diff(y,x)=x^2+3*cosh(x)+2*y,y,x),0);
+0$
 ans:expand(ans[1]);
 y = %c*%e^(2*x)-3*%e^x/2-%e^-x/2-x^2/2-x/2-1/4;
 [method,ode_check(eqn,ans)];
@@ -52,8 +52,10 @@ y = %c*%e^(2*x)-3*%e^x/2-%e^-x/2-x^2/2-x/2-1/4;
 [linear,0];
 
 /* 7 */
-(pn_(7),assume(c>0,k>c),ans:contrib_ode(eqn:'diff(y,x)=a+b*exp(k*x)+c*y,y,x),forget(c>0,k>c),ans);
-[y = %e^(c*x)*(b*%e^((k-c)*x)/(k-c)-a*%e^-(c*x)/c+%c)];
+(pn_(7),assume(c>0,k>c),ans:contrib_ode(eqn:'diff(y,x)=a+b*exp(k*x)+c*y,y,x),forget(c>0,k>c),0);
+0$
+expand(ans[1]);
+y = (-(b*%e^(k*x))/(c-k))+%c*%e^(c*x)-a/c$
 [method,ode_check(eqn,ans[1])];
 [linear,0];
 
@@ -250,8 +252,10 @@ y=%c*%e^(x*sin(log(x))+a*x);
 [linear,0];
 
 /* 37 */
-(pn_(37),ans:contrib_ode(eqn:'diff(y,x)=6*exp(2*x)-y*tanh(x),y,x));
-[y=(%e^(3*x)+3*%e^x+%c)/cosh(x)];
+(pn_(37),ans:contrib_ode(eqn:'diff(y,x)=6*exp(2*x)-y*tanh(x),y,x),0);
+0$
+expand(ans[1]);
+y=%e^(3*x)/cosh(x)+(3*%e^x)/cosh(x)+%c/cosh(x)$
 [method,ode_check(eqn,ans[1])];
 [linear,0];
 
@@ -261,10 +265,8 @@ y=%c*%e^(x*sin(log(x))+a*x);
 /* 41  Riccati */
 
 /* 42  Riccati */
-(pn_(42),ans:contrib_ode(eqn:'diff(y,x)+1-x=(x+y)*y,y,x));
-[y = -(%e^-(2*x)*(%e^(2*x)*(sqrt(2)*sqrt(%pi)*%c*erf((%i*x-2*%i)/sqrt(2))
-       +sqrt(2)*%e^2*sqrt(%pi))+2*%i*%c*%e^(x^2/2+2)))
- / (sqrt(2)*sqrt(%pi)*%c*erf((%i*x-2*%i)/sqrt(2))+sqrt(2)*%e^2*sqrt(%pi)) ];
+(pn_(42),ans:contrib_ode(eqn:'diff(y,x)+1-x=(x+y)*y,y,x),0);
+0$
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 

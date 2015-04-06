@@ -133,15 +133,9 @@ solve(ans[1],y);
 [lie,0];
 
 /* 26 */
-(pn_(26),ans:contrib_ode(eqn:'diff(y,x)^2-2*'diff(y,x)+a*(x-y)=0,y,x));
-[-((4*sqrt(a*y-a*x+1)+2*a*x-4)/(sqrt(2)*sqrt(3)*sqrt(-a))) = %c];
-solve(ans[1],sqrt(a*y-a*x+1));
-[sqrt(a*y-a*x+1) = -((2*a*x+sqrt(2)*sqrt(3)*%c*sqrt(-a)-4)/4)];
-%[1]^2;
-a*y-a*x+1 = (2*a*x+sqrt(2)*sqrt(3)*%c*sqrt(-a)-4)^2/16;
-solve(%,y);
-[y = (2*a^2*x^2+2*sqrt(2)*sqrt(3)*%c*sqrt(-a)*a*x-3*%c^2*a-4*sqrt(2)*sqrt(3)*%c*sqrt(-a))/(8*a)];
-[method,ode_check(eqn,%[1])];
+(pn_(26),ans:contrib_ode(eqn:'diff(y,x)^2-2*'diff(y,x)+a*(x-y)=0,y,x),0);
+0$
+[method,ode_check(eqn,ans[1])];
 [lie,0];
 /* Murphy gives a*(C+x)^2=4*(C+y), a*y=1+a*x */
 
@@ -367,18 +361,8 @@ ans:solve(%,y);
 /* (pn_(58),ans:contrib_ode(eqn:'diff(y,x)^2-a*x^3*'diff(y,x)+4*a*x^2*y=0,y,x));*/
 
 /* 59 */
-(pn_(59),ans:contrib_ode(eqn:'diff(y,x)^2+4*x^5*'diff(y,x)-12*x^4*y=0,y,x));
-[(4*%i*sqrt(3*y+x^6)+4*%i*x^3)/(3*sqrt(2)) = %c];
-ans[1]/%i,%c=%i*%c;
--%i*(4*%i*sqrt(3*y+x^6)+4*%i*x^3)/(3*sqrt(2)) = %c;
-expand(%);
-4*sqrt(3*y+x^6)/(3*sqrt(2))+4*x^3/(3*sqrt(2)) = %c;
-solve(%,sqrt(3*y+x^6));
-[sqrt(3*y+x^6) = -((4*x^3-3*sqrt(2)*%c)/4)];
-%[1]^2;
-3*y+x^6 = (4*x^3-3*sqrt(2)*%c)^2/16;
-ans:solve(%,y);
-[y = -((4*sqrt(2)*%c*x^3-3*%c^2)/8)];
+(pn_(59),ans:contrib_ode(eqn:'diff(y,x)^2+4*x^5*'diff(y,x)-12*x^4*y=0,y,x),0);
+0$
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
@@ -579,19 +563,9 @@ method;
 lagrange;
 
 /* 89 */
-(pn_(89),ans:contrib_ode(eqn:3*'diff(y,x)^2+4*x*'diff(y,x)+x^2-y=0,y,x));
-[(4*%i*sqrt(3*y+x^2)+2*%i*x)/(3*sqrt(2)) = %c];
-expand(ans[1]/%i);
-4*sqrt(3*y+x^2)/(3*sqrt(2))+2*x/(3*sqrt(2)) = -%i*%c;
-%,%c=%i*%c;
-4*sqrt(3*y+x^2)/(3*sqrt(2))+2*x/(3*sqrt(2)) = %c;
-solve(%,sqrt(3*y+x^2));
-[sqrt(3*y+x^2) = -((2*x-3*sqrt(2)*%c)/4)];
-%[1]^2;
-3*y+x^2 = (2*x-3*sqrt(2)*%c)^2/16;
-solve(%,y);
-[y = -((2*x^2+2*sqrt(2)*%c*x-3*%c^2)/8)];
-[method,ode_check(eqn,%[1])];
+(pn_(89),ans:contrib_ode(eqn:3*'diff(y,x)^2+4*x*'diff(y,x)+x^2-y=0,y,x),0);
+0$
+[method,ode_check(eqn,ans[1])];
 [lie,0];
 
 /* 90 */
