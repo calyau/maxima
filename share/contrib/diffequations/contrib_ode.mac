@@ -350,7 +350,7 @@ ode_trig_simp(e) := block(
 )$
 
 
-/* Check implicit solution of first order ode e_
+/* Check parametric solution of first order ode e_
    Solution is of form  [x = X(%t), y = Y(%t) ]
 
    May have x=X(%t,y) or y=Y(%t,x) but not both
