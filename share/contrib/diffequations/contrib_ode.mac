@@ -152,6 +152,11 @@ ode_check(e_,a_) := block(
     return(ode_check_tidy(ratsimp(ev(lhs(e_)-rhs(e_),a_,diff))))
   ),
 
+  /* Is it a parametric solution */
+  if length(a_)=2 and lhs(a_[1])=x_ and lhs(a_[2])=y_ then (
+    return(ode_check_tidy(fullratsimp(ode_check_parametric(e_,a_,x_,y_))))
+  ),
+
   /* Must be an implicit solution */
   diff_e:diff(subst(v(x),y_,a_),x_),
   diff_e:subst(y_,v(x),diff_e),
@@ -342,4 +347,23 @@ ode_trig_simp(e) := block(
     e
   else
     radcan(trigrat(trigsimp(e)))
+)$
+
+
+/* Check implicit solution of first order ode e_
+   Solution is of form  [x = X(%t), y = Y(%t) ]
+
+   May have x=X(%t,y) or y=Y(%t,x) but not both
+*/
+ode_check_parametric(e_, a_, x, y) := block(
+  [X,Y,dydx,s],
+  X:rhs(a_[1]),
+  Y:rhs(a_[2]),
+  if not freeof(y,X) then X:subst(Y,y,X),
+  if not freeof(x,Y) then Y:subst(X,x,Y),
+  dydx:diff(Y,%t)/diff(X,%t),
+  s:subst(dydx,'diff(y,x),lhs(e_)-rhs(e_)),
+  s:subst(X,x,s),
+  s:subst(Y,y,s),
+  return(s)
 )$
