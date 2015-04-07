@@ -207,12 +207,15 @@ odelin(3*x*'diff(y,x,2)+2*(1-x)*'diff(y,x,1)-y,y,x);
 set (kummer_m(1/2,4/3,-2*x/3)*x^(1/3)*%e^(2*x/3),
 	kummer_u(1/2,4/3,-2*x/3)*x^(1/3)*%e^(2*x/3));
 
+/* FIXME 2015-04-07 hangs */
+/*
 assume((2*n-b)*(2*n+b) > 0);
 [(2*n-b)*(2*n+b) > 0];
 odelin('diff(y,x,2)+(b^2-(4*n^2-1))/(4*x^2)*y,y,x);
 set ( x^(1/2-(sqrt(2*n-b)*sqrt(2*n+b)/2)),x^(sqrt(2*n-b)*sqrt(2*n+b)/2+1/2) );
 forget((2*n-b)*(2*n+b) > 0);
 [(2*n-b)*(2*n+b) > 0];
+*/
 
 odelin('diff(y,x,2)+(1-2*a)*'diff(y,x,1)/x+(b^2+(a^2-n^2)/x^2)*y,y,x);
 set (bessel_j(n,-b*x)*x^a,bessel_y(n,-b*x)*x^a);

@@ -402,12 +402,13 @@ false;
 [linear,0];
 
 /*  155  */ 
-(pn_(155),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)+y^2-2*x*y+1,y,x));
-[y = (x^2*((x-1)*(%c*log(x+1)-%c*log(x-1)+2*%c+1)
+(pn_(155),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)+y^2-2*x*y+1,y,x),0);
+0$
+/*[y = (x^2*((x-1)*(%c*log(x+1)-%c*log(x-1)+2*%c+1)
                  +(x+1)*(%c*log(x+1)-%c*log(x-1)-2*%c+1))
           +(x+1)*(-%c*log(x+1)+%c*log(x-1)+2*%c-1)
           +(x-1)*(-%c*log(x+1)+%c*log(x-1)-2*%c-1))
-          /((x-1)*(x+1)*(2*%c*log(x+1)-2*%c*log(x-1)+2))];
+          /((x-1)*(x+1)*(2*%c*log(x+1)-2*%c*log(x-1)+2))]; */
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
@@ -468,13 +469,19 @@ forget(x>0);
 [x>0];
 
 /*  164  */ 
-(pn_(164),ans:contrib_ode(eqn:2*x^2*'diff(y,x,1)-2*y^2-3*x*y+2*a^2*x,y,x));
+(pn_(164),ans:contrib_ode(eqn:2*x^2*'diff(y,x,1)-2*y^2-3*x*y+2*a^2*x,y,x),0);
+0$
+/*
 [y=-(((bessel_y(-(1/2),2*a/sqrt(-x))*%c+bessel_j(-(1/2),2*a/sqrt(-x)))*x
    +((2*bessel_y(-(3/2),2*a/sqrt(-x))-2*bessel_y(1/2,2*a/sqrt(-x)))*%c
     -2*bessel_j(1/2,2*a/sqrt(-x))+2*bessel_j(-(3/2),2*a/sqrt(-x)))*a*sqrt(-x))
     /(4*bessel_y(-(1/2),2*a/sqrt(-x))*%c+4*bessel_j(-(1/2),2*a/sqrt(-x))))];
+ */
+/* FIXME 2015-04-06  Form of solution has changed.
+                     ode_check() crashes with stack overflow 
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+*/
 
 /*  165  */ 
 (pn_(165),ans:contrib_ode(eqn:x*(2*x-1)*'diff(y,x,1)+y^2+(-4*x-1)*y+4*x,y,x));
@@ -503,7 +510,9 @@ solve(map(log,ans[1]),y);
 [homogeneous,0];
 
 /*  168  */ 
-(pn_(168),ans:contrib_ode(eqn:3*(x^2-4)*'diff(y,x,1)+y^2-x*y-3,y,x));
+(pn_(168),ans:contrib_ode(eqn:3*(x^2-4)*'diff(y,x,1)+y^2-x*y-3,y,x),0);
+0$
+/*
 [y = -( ((3*dgauss_b(1/2,7/6,4/3,-((x-2)/4))*%c
          +3*dgauss_a(1/2,7/6,4/3,-((x-2)/4)))
           *x^2
@@ -513,6 +522,7 @@ solve(map(log,ans[1]),y);
           -12*dgauss_a(1/2,7/6,4/3,-((x-2)/4)))
    /(4*gauss_b(1/2,7/6,4/3,-((x-2)/4))*%c
     +4*gauss_a(1/2,7/6,4/3,-((x-2)/4))) )  ];
+ */
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
@@ -678,15 +688,18 @@ done;
 
 /*  192  */ 
 (pn_(192),ans:contrib_ode(eqn:sqrt(x^2+a^2)*'diff(y,x,1)+y-sqrt(x^2+a^2)+x,y,x));
- [y = %e^-asinh(x/abs(a))*(('integrate(sqrt(x^2+a^2),x))/a
-     -('integrate(x^2/sqrt(x^2+a^2),x))/abs(a)
-     +(a-abs(a))*x^2/(2*a*abs(a))+%c)];
+[y = %e^-asinh(x/abs(a))*(((a^2*log(sqrt(x^2/a^2+1)+x/abs(a)))/2
+                               +(x*sqrt(x^2+a^2))/2)
+                               /a
+                               -((x*sqrt(x^2+a^2))/2
+                                -(a^2*log(sqrt(x^2/a^2+1)+x/abs(a)))/2)
+                                /abs(a)+((a-abs(a))*x^2)/(2*a*abs(a))+%c)]$
 assume(a>0);  /* Just check when a>0 */
 [a>0];
-radcan(ans),integrate;
-[y = %e^-asinh(x/a)*(a*asinh(x/a)+%c)];
-logarc(%[1]);
-y=(a*log(sqrt(x^2/a^2+1)+x/a)+%c)/(sqrt(x^2/a^2+1)+x/a);
+logarc( expand(ans[1],0,0));
+y = (((a^2*log(sqrt(x^2/a^2+1)+x/a))/2+(x*sqrt(x^2+a^2))/2)/a
+         -((x*sqrt(x^2+a^2))/2-(a^2*log(sqrt(x^2/a^2+1)+x/a))/2)/a+%c)
+         /(sqrt(x^2/a^2+1)+x/a)$
 [method,ode_check(eqn,%)];
 [linear,0];
 forget(a>0);

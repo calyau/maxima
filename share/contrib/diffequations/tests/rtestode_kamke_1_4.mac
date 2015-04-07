@@ -332,7 +332,8 @@ false;
 
 /*  359  */ 
 (pn_(359),ans:contrib_ode(eqn:3*sin(x)*sin(y)*'diff(y,x,1)+5*cos(x)^4*y,y,x));
-[-3*('integrate(sin(y)/y,y))/5=%c-(3*log(cos(x)+1)-3*log(cos(x)-1)-2*cos(x)^3-6*cos(x))/6];
+ [(3*%i*gamma_incomplete(0,%i*y)-3*%i*gamma_incomplete(0,-%i*y))/10
+          = %c-(3*log(cos(x)+1)-3*log(cos(x)-1)-2*cos(x)^3-6*cos(x))/6]$
 [method,ode_check(eqn,ans[1])];
 [separable,0];
 
@@ -433,8 +434,8 @@ forget(a>0);
 /*  376  */ 
 (pn_(376),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*'diff(y,x,1)+b*y,y,x));
 [[x=%c-((log(%t)*a+2*%t)/b),y=-((%t*a+%t^2)/b)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  377  */ 
 (pn_(377),ans:contrib_ode(eqn:('diff(y,x,1))^2+(x-2)*'diff(y,x,1)-y+1,y,x));
@@ -508,8 +509,8 @@ false;
 /*  389  */ 
 (pn_(389),ans:contrib_ode(eqn:('diff(y,x,1))^2-(4*y+1)*'diff(y,x,1)+y*(4*y+1),y,x));
 [[x=log(sqrt(8*%t+1)+1)+%c,y=-((sqrt(8*%t+1)-4*%t+1)/8)],[x=log(sqrt(8*%t+1)-1)+%c,y=(sqrt(8*%t+1)+4*%t-1)/8]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[1])];
+[lagrange,0,0];
 
 /*  390  */ 
 (pn_(390),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*y*'diff(y,x,1)-b*x-c,y,x));

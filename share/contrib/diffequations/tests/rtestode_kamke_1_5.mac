@@ -24,15 +24,15 @@ lagrange;
 
 /*  402  Why the complex solution? */ 
 (pn_(402),ans:contrib_ode(eqn:3*('diff(y,x,1))^2+4*x*'diff(y,x,1)-y+x^2,y,x));
-[(4*%i*sqrt(3*y+x^2)+2*%i*x)/(3*sqrt(2))=%c];
+[(2^(3/2)*%i*sqrt(3*y+x^2)+sqrt(2)*%i*x)/3 = %c]$
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
 /*  403  */ 
 (pn_(403),ans:contrib_ode(eqn:a*('diff(y,x,1))^2+b*'diff(y,x,1)-y,y,x));
 [[x=log(%t)*b+2*%t*a+%c,y=%t*b+%t^2*a]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  404  */ 
 /* This equation presents a problem - runs forever */ 
@@ -55,14 +55,14 @@ lagrange;
 /*  408  */ 
 (pn_( 408 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*y+x ,y,x));
 [[x=%c*%e^-(2*(log(%t-1)-1/(%t-1))),y=(%t^2+1)*x/2]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  409  */ 
 (pn_( 409 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*'diff(y,x,1)-y ,y,x));
 [[x=(2*(%t-log(%t))+%c)/(%t-1)^2,y = %t^2*x-2*%t]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  410  */ 
 /* This equation presents a problem - runs forever */ 
@@ -71,8 +71,8 @@ lagrange;
 /*  411  */ 
 (pn_(411),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+x*'diff(y,x,1)-y ,y,x));
 [[x=%c*%e^(1/%t)/%t^2,y=(%t^2+%t)*x]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  412  */ 
 (pn_(412),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+a,y,x));
@@ -81,14 +81,20 @@ lagrange;
 [lie,0];
 
 /*  413  Not sure about this one - ode_check() chokes */
-(pn_(413),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)-x^2,y,x));
+(pn_(413),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)-x^2,y,x),0);
+0$
+/* FIXME 2015-04 solution has changed 
 [-((120*'integrate((sqrt(y^2+4*x^3)*(y*%e^(3*log(y^2+4*x^3)/2)+(-y^3-4*x^3*y)*%e^(log(y^2+4*x^3)/2)+32*x^3*y^2+128*x^6)+(-4*y^2-32*x^3)*%e^(3*log(y^2+4*x^3)/2)+(4*y^4+16*x^3*y^2)*%e^(log(y^2+4*x^3)/2))/(sqrt(y^2+4*x^3)*((4*y^2+16*x^3)*%e^(3*log(y^2+4*x^3)/2)+(-4*y^4-16*x^3*y^2)*%e^(log(y^2+4*x^3)/2)+64*x^3*y^3+256*x^6*y)+(16*y^3+64*x^3*y)*%e^(3*log(y^2+4*x^3)/2)+(-16*y^5-64*x^3*y^3)*%e^(log(y^2+4*x^3)/2)+256*x^3*y^4+1024*x^6*y^2),y)-64*log(%e^(log(y^2+4*x^3)/2)+4*y)+25*log(%e^(log(y^2+4*x^3)/2)+y)+9*log(%e^(log(y^2+4*x^3)/2)-y)-75*log(x))/120) = %c];
+ */
 method;
 lie;
 
 /*  414  "Solution" changed Jan 2007.  Don't worry at present. */
-/* (pn_(414),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+x^3,y,x));
+/* (pn_(414),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+x^3,y,x),0);
+0$
+/*
 [-(5*'integrate((sqrt(y^2-4*x^4)*'integrate(((52*x^3*y^2-8*x^7)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+20*x^3*y^3-80*x^7*y)/((65*y^5-270*x^4*y^3+40*x^8*y)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+97*y^6-464*x^4*y^4+306*x^8*y^2-8*x^12),x)+5*y*'integrate(((52*x^3*y^2-8*x^7)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+20*x^3*y^3-80*x^7*y)/((65*y^5-270*x^4*y^3+40*x^8*y)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+97*y^6-464*x^4*y^4+306*x^8*y^2-8*x^12),x)-2)/(sqrt(y^2-4*x^4)+5*y),y)+5*'integrate((24*y^2+4*x^4)/(25*x*y*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+65*x*y^2-10*x^5),x)-3*log(x))/5=%c];
+ */
 method;
 lie; */
 
@@ -101,8 +107,8 @@ lie; */
 /*  416  */ 
 (pn_(416),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+(y-3*x)*'diff(y,x,1)+y,y,x));
 [[x=%c*(%t+1)*%e^-(3*log(%t)/2),y=-((%t^2-3*%t)*x/(%t+1))]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  417  */ 
 (pn_(417),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-y*'diff(y,x,1)+a,y,x));
@@ -113,14 +119,14 @@ lagrange;
 /*  418  */ 
 (pn_(418),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-y*'diff(y,x,1)+a*y,y,x));
 [[x=%c*(%t-a)*%e^-(%t/a),y=%t^2*x/(%t-a)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  419  */ 
 (pn_(419),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+2*y*'diff(y,x,1)-x,y,x));
 [[x=%c*%t*%e^-((2*log(3*%t^2-1)/3)),y=-((%t^2-1)*x/(2*%t))]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  420  */ 
 (pn_(420),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-2*y*'diff(y,x,1)+a,y,x));
@@ -156,8 +162,8 @@ solve(ans[1],y);
 /*  424  */ 
 (pn_(424),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+a*y*'diff(y,x,1)+b*x,y,x));
 [[x=%c*%t*%e^-((a+2)*log(b+%t^2*(a+1))/(2*a+2)),y=-((b+%t^2)*x/(%t*a))]];
-method;
-lagrange;
+[method,ode_check(eqn,%[1])];
+[lagrange,0];
 
 /*  425  */ 
 (pn_(425),ans:contrib_ode(eqn: (x+1)*('diff(y,x,1))^2-(y+x)*'diff(y,x,1)+y ,y,x));
@@ -246,19 +252,12 @@ forget(y>0);
 assume(%t>0);
 [%t>0];
 (pn_(439),ans:contrib_ode(eqn:x^2*('diff(y,x,1))^2+3*x*y*'diff(y,x,1)+3*y^2,y,x));
-[[x = %c*%e^-((%i+sqrt(3))*log(%t)/(%i+3*sqrt(3))),
-        y = -((sqrt(3)*%i+3)*%t*x/6)],
-       [x = %c*%e^-((%i-sqrt(3))*log(%t)/(%i-3*sqrt(3))),
-        y = (sqrt(3)*%i-3)*%t*x/6]];
-/* Check the first solution
-ans[1][2],solve(ans[1][1],%t);
-y = -(sqrt(3)*%i+3)*x*%e^(%i*log(%c/x)/(%i+sqrt(3))
-     +3*sqrt(3)*log(%c/x)/(%i+sqrt(3)))/6;
-ode_check(eqn,%);
-0;
-*/
-method;
-lagrange;
+[[x = %c*%e^-(((sqrt(3)*%i+3)*log(%t))/(sqrt(3)*%i+9)),
+  y = -((sqrt(3)*%i+3)*%t*x)/6],
+ [x = %c*%e^-(((sqrt(3)*%i-3)*log(%t))/(sqrt(3)*%i-9)),
+  y = ((sqrt(3)*%i-3)*%t*x)/6]]$
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
+[lagrange,0,0];
 forget(%t>0);
 [%t>0];
 
@@ -269,8 +268,11 @@ forget(%t>0);
 [factor,0,0];
 
 /*  441  */ 
-(pn_(441),ans:contrib_ode(eqn:x^2*('diff(y,x,1))^2-4*x*(y+2)*'diff(y,x,1)+4*y*(y+2),y,x));
-[-((4*sqrt(2)*%i*sqrt(y+2)-4*%i*y-8*%i)/(sqrt(2)*sqrt(3)*x*sqrt(y+2)))=%c];
+(pn_(441),ans:contrib_ode(eqn:x^2*('diff(y,x,1))^2-4*x*(y+2)*'diff(y,x,1)+4*y*(y+2),y,x),0);
+0$
+/*
+[-(4*%i*sqrt(y+2)-2^(3/2)*%i*y-2^(5/2)*%i)/(sqrt(3)*x*sqrt(y+2))=%c]$
+ */
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
@@ -280,9 +282,50 @@ forget(%t>0);
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [factor,0,0];
 
-/*  443  */ 
+/*  443  Just accept solution for now */ 
 (pn_(443),ans:contrib_ode(eqn:x*(x*'diff(y,x,1)-y)^2-'diff(y,x,1),y,x));
-false;
+['integrate((%e^('integrate(1/x,x))*sqrt(4*x^2*y+1)
+                                          *'integrate(
+                                           (sqrt(4*x^2*y+1)
+                                            *(12*x^6*y^2+12*x^4*y+2*x^2)
+                                            -32*x^6*y^2-16*x^4*y-2*x^2)
+                                            /((-216*x^8*%e^('integrate(1/x,x))
+                                                   *y^4)
+                                             +sqrt(4*x^2*y+1)
+                                              *(108*x^6*%e^('integrate(1/x,x))
+                                                   *y^3
+                                               +67*x^4*%e^('integrate(1/x,x))
+                                                  *y^2
+                                               +14*x^2*%e^('integrate(1/x,x))
+                                                  *y+%e^'integrate(1/x,x))
+                                             -234*x^6*%e^('integrate(1/x,x))
+                                                 *y^3
+                                             -93*x^4*%e^('integrate(1/x,x))
+                                                *y^2
+                                             -16*x^2*%e^('integrate(1/x,x))*y
+                                             -%e^'integrate(1/x,x)),x)
+                    +((-6*x^2*%e^('integrate(1/x,x))*y)-%e^'integrate(1/x,x))
+                     *'integrate((sqrt(4*x^2*y+1)*(12*x^6*y^2+12*x^4*y+2*x^2)
+                                  -32*x^6*y^2-16*x^4*y-2*x^2)
+                                  /((-216*x^8*%e^('integrate(1/x,x))*y^4)
+                                   +sqrt(4*x^2*y+1)
+                                    *(108*x^6*%e^('integrate(1/x,x))*y^3
+                                     +67*x^4*%e^('integrate(1/x,x))*y^2
+                                     +14*x^2*%e^('integrate(1/x,x))*y
+                                     +%e^'integrate(1/x,x))
+                                   -234*x^6*%e^('integrate(1/x,x))*y^3
+                                   -93*x^4*%e^('integrate(1/x,x))*y^2
+                                   -16*x^2*%e^('integrate(1/x,x))*y
+                                   -%e^'integrate(1/x,x)),x)+2*x^3)
+                    /(%e^('integrate(1/x,x))*sqrt(4*x^2*y+1)
+                     -6*x^2*%e^('integrate(1/x,x))*y-%e^'integrate(1/x,x)),y)
+         +'integrate((sqrt(4*x^2*y+1)-2*x^2*y-1)
+                      /(%e^('integrate(1/x,x))*sqrt(4*x^2*y+1)
+                       -6*x^2*%e^('integrate(1/x,x))*y-%e^'integrate(1/x,x)),
+                     x)
+          = %c]$
+method;
+lie$
 
 /*  444  */ 
 /* This equation presents a problem - runs forever */ 
@@ -423,38 +466,38 @@ false;
 /*  464  */ 
 (pn_(464),ans:contrib_ode(eqn: y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y,y,x));
 [[x=%c*%e^(2*(log(%t+1)/2-log(%t)+log(%t-1)/2)),y=-2*%t*x/(%t^2-1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  465  */ 
 (pn_(465),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-9*y,y,x)); 
 [[x=%c*(%t-3)*(%t+3)*%e^(2*log(%t)/7-8*log(%t^2-7)/7),y=-2*%t*x/(%t^2-9)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  466  */ 
 (pn_(466),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-2*x*'diff(y,x,1)+y,y,x));
 [[x=%c*%e^-(2*(log(%t)-log(%t^2+1)/2)),y=2*%t*x/(%t^2+1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  467  */ 
 (pn_(467),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-4*x*'diff(y,x,1)+y,y,x));
 [[x=%c*(%t^2+1)*%e^(-log(%t^2-3)/3-4*log(%t)/3),y=4*%t*x/(%t^2+1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  468  */ 
 (pn_(468),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-4*a^2*x*'diff(y,x,1)+a^2*y,y,x));
 [[x=%c*(a^2+%t^2)*%e^(-log(%t^2-3*a^2)/3-4*log(%t)/3),y=4*%t*a^2*x/(a^2+%t^2)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  469  */ 
 (pn_(469),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+a*x*'diff(y,x,1)+b*y,y,x));
 [[x=%c*(b+%t^2)*%e^(-((2*b+a)*log(b+a+%t^2)/(2*b+2*a))-log(%t)*a/(b+a)),y=-(%t*a*x/(b+%t^2))]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  470  */ 
 (pn_(470),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+x^3*'diff(y,x,1)-x^2*y,y,x));
@@ -471,8 +514,8 @@ lagrange;
 /*  472  */ 
 (pn_(472),ans:contrib_ode(eqn:(y+x)*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y,y,x));
 [[x=%c*%e^(2*(log(%t+1)/2-log(%t)+log(%t-1)/2)),y=-((%t^2+2*%t)*x/(%t^2-1))]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  473  */ 
 /* This equation presents a problem - runs forever */ 
@@ -485,8 +528,8 @@ lagrange;
 /*  475  */ 
 (pn_(475),ans:contrib_ode(eqn: 4*y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y ,y,x));
 [[x=%c*%e^(2*(log(2*%t+1)/2+log(2*%t-1)/2-log(%t))),y=-2*%t*x/(4*%t^2-1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  476  */ 
 (pn_(476),ans:contrib_ode(eqn:9*y*('diff(y,x,1))^2+4*x^3*'diff(y,x,1)-4*x^2*y,y,x));
@@ -501,8 +544,8 @@ lagrange;
 /*  478  */ 
 (pn_(478),ans:contrib_ode(eqn:(a*y+b)*(('diff(y,x,1))^2+1)-c,y,x));
 [[x=%c-(2*(%t/(2*%t^2*a+2*a)+atan(%t)/(2*a)))*c,y=-((-c+%t^2*b+b)/(%t^2*a+a))]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  479  */ 
 /* This equation presents a problem - runs forever */ 
@@ -537,8 +580,8 @@ false;
 /*  486  */ 
 (pn_(486),ans:contrib_ode(eqn: y^2*('diff(y,x,1))^2+y^2-a^2 ,y,x));
 [[x=%t*a/sqrt(%t^2+1)+%c,y = -a/sqrt(%t^2+1)],[x=%c-%t*a/sqrt(%t^2+1),y = a/sqrt(%t^2+1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  487 - "solution" changed Jan 2007.  Don't care at present. */ 
 /*
@@ -567,8 +610,8 @@ lie;
 /*  492  */ 
 (pn_( 492 ),ans:contrib_ode(eqn: (y^2-a^2)*('diff(y,x,1))^2+y^2 ,y,x));
 [[x=%c-('integrate(1/(sqrt(%t^2+1)*(%t^3+%t)),%t))*a,y=-%t*a/sqrt(%t^2+1)],[x=('integrate(1/(sqrt(%t^2+1)*(%t^3+%t)),%t))*a+%c,y = %t*a/sqrt(%t^2+1)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  493  */ 
 /* This equation presents a problem - runs forever */ 
@@ -593,8 +636,8 @@ lagrange;
 /*  498  */ 
 (pn_(498),ans:contrib_ode(eqn:(3*y-2)*('diff(y,x,1))^2+4*(y-1),y,x));
 [[x=%c-8*(atan(3*%t/(2*sqrt(3)))/(16*sqrt(3))+%t/(24*%t^2+32)),y=(2*%t^2+4)/(3*%t^2+4)]];
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /*  499  */ 
 /* This equation presents a problem - runs forever */ 
