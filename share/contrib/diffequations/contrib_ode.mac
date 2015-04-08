@@ -152,9 +152,25 @@ ode_check(e_,a_) := block(
     return(ode_check_tidy(ratsimp(ev(lhs(e_)-rhs(e_),a_,diff))))
   ),
 
-  /* Is it a parametric solution */
+  /* Is a_ a parametric solution */
   if length(a_)=2 and lhs(a_[1])=x_ and lhs(a_[2])=y_ then (
     return(ode_check_tidy(fullratsimp(ode_check_parametric(e_,a_,x_,y_))))
+  ),
+
+  /* Is a_ a parametric solution in disguise?
+       For example, Kamke 1.555 returns
+       [(-y)+%t*x+sqrt(%t^2+1)=0, (sqrt(%t^2+1)*x+%t)/sqrt(%t^2+1)=0]
+   */
+  if length(a_)=2 and not freeof(%t,a_) then (
+    s:solve(a_,[x_,y_]),
+    /* Check to see if the solution s is a valid
+       FIXME: Have assumed a single solution 
+     */
+    if s#[]
+        and freeof(x_,y_,rhs(s[1][1]))
+        and freeof(x_,y_,rhs(s[1][2])) then (
+      return(ode_check_tidy(fullratsimp(ode_check_parametric(e_,s[1],x_,y_))))
+    )
   ),
 
   /* Must be an implicit solution */
