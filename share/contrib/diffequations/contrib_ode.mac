@@ -55,7 +55,7 @@ contrib_ode(eqn,y,x) := block(
     )
   )
   else if (degree=2) then (
-    return(ode2_linear(eqn,y,x))
+    return(ode2_lin(eqn,y,x))
   )
   else (
     error("contrib_ode: This case cannot occur"),
@@ -67,7 +67,7 @@ contrib_ode(eqn,y,x) := block(
    eqn is a 2nd order ODE.
    FIXME: Remove multiple checks for linearity 
 */
-ode2_linear(eqn,y,x) := block(
+ode2_lin(eqn,y,x) := block(
   [de,a1,a2,a3,a4,soln,%k1,%k2],
   ode_disp("   Second order equation"),
   de: desimp(lhs(eqn)-rhs(eqn)),
