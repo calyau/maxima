@@ -32,7 +32,6 @@
          "rtestode_kamke_1_5.mac"
          ((mlist) "rtestode_kamke_1_6.mac"
 	  20   ; OK - testsuite issues
-	  49   ;  FIXME ode_check issue
 	  )
          "rtestode_kamke_2_1.mac"
          ((mlist) "rtestode_kamke_2_2.mac" 132 ) ; OK - testsuite issues
