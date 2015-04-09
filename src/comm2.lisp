@@ -173,11 +173,30 @@
   (let* ((arg (simpcheck (cadr expr) simp-flag))
          (e (resimplify (caddr expr)))
          (eqn (if ($listp e)
-                  (cons '(mlist simp) (cdr ($sort e)))
+                  (if (= ($length e) 1) ($first e) (cons '(mlist simp) (cdr ($sort e))))
                   e)))
     (cond (($constantp arg) arg)
           ((alike1 eqn '((mlist))) arg)
+          ((at-not-dependent eqn arg))
           (t (eqtest (list '(%at) arg eqn) expr)))))
+
+;; Remove any variable from EQN if ARG is not dependent on it.
+(defun at-not-dependent (eqn arg)
+  (if (eq (caar eqn) 'mequal)
+    (setq eqn (list '(mlist) eqn)))
+  (multiple-value-bind (e0 e1) (at-not-dependent-find-vars eqn arg)
+    (if e0
+      (if e1
+        (let*
+          ((e1 (mapcar #'(lambda (x) (list '(mequal) x ($assoc x eqn))) e1))
+           (eqn1 (if (= (length e1) 1) (first e1) (cons '(mlist) e1))))
+          (list '(%at) arg eqn1))
+        arg))))
+
+;; Test dependence via derivative to account for declared dependencies.
+(defun at-not-dependent-find-vars (eqn arg)
+  (let ((e (mapcar #'second (rest eqn))))
+    (partition-by #'(lambda (x) (eq (mfuncall '$diff arg x) 0)) e)))
 
 (defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))

@@ -115,3 +115,86 @@ y+x$
 /* SF bug 2014436 */
 at(f(x),[]);
 f(x)$
+
+/* simplification of 'at' */
+
+kill (f, g, h, u, v, w, x, y, z, a, b, c);
+done;
+
+at (f (x, y, z), x = a);
+f (a, y, z);
+
+'(at (f (x, y, z), x = a));
+at (f (x, y, z), x = a);
+
+'('at (f (x, y, z), x = a));
+'at (f (x, y, z), [x = a]);
+
+at (f (x, y), z = b);
+f (x, y);
+
+'(at (f (x, y), z = b));
+at (f (x, y), z = b);
+
+'('at (f (x, y), z = b));
+f (x, y);
+
+at ('f (x, y), [x = a, y = b]);
+'f (a, b);
+
+'(at ('f (x, y), [x = a, y = b]));
+at ('f (x, y), [x = a, y = b]);
+
+'('at ('f (x, y), [x = a, y = b]));
+'at ('f (x, y), [x = a, y = b]);
+
+at (diff (f (x, y), x, 1, y, 1), [x = a, y = b]);
+'at ('diff (f (x, y), x, 1, y, 1), [x = a, y = b]);
+
+at (diff (f (x, y), x, 1, y, 1), x = a);
+'at ('diff (f (x, y), x, 1, y, 1), [x = a]);
+
+at (at (diff (f (x, y), x, 1, y, 1), [x = a, y = b]), a = c);
+'at ('at ('diff (f (x, y), x, 1, y, 1), [x = a, y = b]), [a = c]);
+
+at (at (diff (f (x, y), x, 1, y, 1), [x = a, y = b]), c = z);
+'at ('diff (f (x, y), x, 1, y, 1), [x = a, y = b]);
+
+depends (x, [y, z]);
+[x(y, z)];
+
+at (diff (x, y), [u = 1, v = 2, w = 3, z = 4]);
+'at ('diff (x, y, 1), [z = 4]);
+
+at (sum (f(a), a, 1, b), [a = x]);
+'sum (f(a), a, 1, b);
+
+at (sum (f(a), a, 1, b), [b = x]);
+'sum (f(a), a, 1, x);
+
+'('at ('sum (f(a), a, 1, b), [b = x]));
+'at ('sum (f(a), a, 1, b), [b = x]);
+
+at ('integrate (f(x), x), x = y);
+'at ('integrate (f(x), x), [x = y]);
+
+at ('integrate (f(x), x, a, b), x = y);
+'integrate (f(x), x, a, b);
+
+at ('laplace (f(t), t, s), [t = a, s = b]);
+'at ('laplace (f(t), t, s), [s = b]);
+
+a : at (taylor (f(x), x, 0, 3), [x = 7/5]);
+(343*('at('diff(f(x),x,3),x = 0)))/750+(49*('at('diff(f(x),x,2),x = 0)))/50
+                                      +(7*('at('diff(f(x),x,1),x = 0)))/5+f(0)$
+
+b : subst (f = cos, a);
+(343*('at('diff(cos(x),x,3),x = 0)))/750
+ +(49*('at('diff(cos(x),x,2),x = 0)))/50+(7*('at('diff(cos(x),x,1),x = 0)))/5
+ +1$
+
+ev (b, nouns);
+1/50;
+
+(taylor (cos(x), x, 0, 3), ev (%%, x=7/5));
+''(rat(1/50)); /* not a vanilla 1/50 ... */
