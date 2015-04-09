@@ -133,15 +133,9 @@ solve(ans[1],y);
 [lie,0];
 
 /* 26 */
-(pn_(26),ans:contrib_ode(eqn:'diff(y,x)^2-2*'diff(y,x)+a*(x-y)=0,y,x));
-[-((4*sqrt(a*y-a*x+1)+2*a*x-4)/(sqrt(2)*sqrt(3)*sqrt(-a))) = %c];
-solve(ans[1],sqrt(a*y-a*x+1));
-[sqrt(a*y-a*x+1) = -((2*a*x+sqrt(2)*sqrt(3)*%c*sqrt(-a)-4)/4)];
-%[1]^2;
-a*y-a*x+1 = (2*a*x+sqrt(2)*sqrt(3)*%c*sqrt(-a)-4)^2/16;
-solve(%,y);
-[y = (2*a^2*x^2+2*sqrt(2)*sqrt(3)*%c*sqrt(-a)*a*x-3*%c^2*a-4*sqrt(2)*sqrt(3)*%c*sqrt(-a))/(8*a)];
-[method,ode_check(eqn,%[1])];
+(pn_(26),ans:contrib_ode(eqn:'diff(y,x)^2-2*'diff(y,x)+a*(x-y)=0,y,x),0);
+0$
+[method,ode_check(eqn,ans[1])];
 [lie,0];
 /* Murphy gives a*(C+x)^2=4*(C+y), a*y=1+a*x */
 
@@ -367,18 +361,8 @@ ans:solve(%,y);
 /* (pn_(58),ans:contrib_ode(eqn:'diff(y,x)^2-a*x^3*'diff(y,x)+4*a*x^2*y=0,y,x));*/
 
 /* 59 */
-(pn_(59),ans:contrib_ode(eqn:'diff(y,x)^2+4*x^5*'diff(y,x)-12*x^4*y=0,y,x));
-[(4*%i*sqrt(3*y+x^6)+4*%i*x^3)/(3*sqrt(2)) = %c];
-ans[1]/%i,%c=%i*%c;
--%i*(4*%i*sqrt(3*y+x^6)+4*%i*x^3)/(3*sqrt(2)) = %c;
-expand(%);
-4*sqrt(3*y+x^6)/(3*sqrt(2))+4*x^3/(3*sqrt(2)) = %c;
-solve(%,sqrt(3*y+x^6));
-[sqrt(3*y+x^6) = -((4*x^3-3*sqrt(2)*%c)/4)];
-%[1]^2;
-3*y+x^6 = (4*x^3-3*sqrt(2)*%c)^2/16;
-ans:solve(%,y);
-[y = -((4*sqrt(2)*%c*x^3-3*%c^2)/8)];
+(pn_(59),ans:contrib_ode(eqn:'diff(y,x)^2+4*x^5*'diff(y,x)-12*x^4*y=0,y,x),0);
+0$
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
@@ -432,10 +416,12 @@ false;
 
 /* 65 */
 (pn_(65),ans:contrib_ode(eqn:'diff(y,x)^2+(1+2*y)*'diff(y,x)+y*(y-1)=0,y,x));
-[[x=(4*log(sqrt(1-8*%t)-1)-12*log(sqrt(1-8*%t)+1))/4+%c,y=-((2*%t+sqrt(1-8*%t)-1)/2)],[x=(4*log(sqrt(1-8*%t)+1)-12*log(sqrt(1-8*%t)-1))/4+%c,y=(-2*%t+sqrt(1-8*%t)+1)/2]];
-method;
-lagrange;
-/* CHECKME */
+[[x = 2*(log(sqrt(1-8*%t)-1)/2-(3*log(sqrt(1-8*%t)+1))/2)+%c,
+  y = -((2*%t+sqrt(1-8*%t)-1)/2)],
+ [x = 2*(log(sqrt(1-8*%t)+1)/2-(3*log(sqrt(1-8*%t)-1))/2)+%c,
+  y = ((-2*%t)+sqrt(1-8*%t)+1)/2]]$
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
+[lagrange,0,0];
 
 /* 66 */
 (pn_(66),ans:contrib_ode(eqn:'diff(y,x)^2-2*(x-y)*'diff(y,x)-4*x*y=0,y,x));
@@ -449,16 +435,20 @@ lagrange;
   y=-((sqrt(32*%t^2-8*%t+1)+4*%t+1)/8)],
  [x=%c-((asinh(%t/abs(%t)-1/(4*abs(%t)))-8*(asinh((64*%t-8)/8)/2^(5/2))+log(%t))/2),
   y = ((sqrt(32*%t^2-8*%t+1)-4*%t-1)/8)]];
-method;
-lagrange;
-/* CHECKME */
+[method,radcan(ode_check(eqn,ans[1])),radcan(ode_check(eqn,ans[2]))];
+[lagrange,0,0];
 
 /* 68 */
 (pn_(68),ans:contrib_ode(eqn:'diff(y,x)^2-2*(1-3*y)*'diff(y,x)-(4-9*y)*y=0,y,x));
-[[x=%c-(3*log((2*sqrt(3*%t+2)-2*sqrt(2))/(2*sqrt(3*%t+2)+2*sqrt(2)))/2+3*log(3*%t))/9,y=-(sqrt(2)*sqrt(3*%t+2)+3*%t-2)/9],[x=%c-(3*log(3*%t)-3*log((2*sqrt(3*%t+2)-2*sqrt(2))/(2*sqrt(3*%t+2)+2*sqrt(2)))/2)/9,y=(sqrt(2)*sqrt(3*%t+2)-3*%t+2)/9]];
-method;
-lagrange;
-/* CHECKME */
+[[x = (sqrt(2)*(-(log((2*sqrt(3*%t+2)-2^(3/2))
+                              /(2*sqrt(3*%t+2)+2^(3/2)))
+                      /2^(3/2))-log(3*%t)/sqrt(2)))/3+%c,
+  y = -((sqrt(2)*sqrt(3*%t+2)+3*%t-2)/9)],
+ [x = (sqrt(2)*(log((2*sqrt(3*%t+2)-2^(3/2))/(2*sqrt(3*%t+2)+2^(3/2)))
+                      /2^(3/2)-log(3*%t)/sqrt(2)))/3+%c,
+  y = (sqrt(2)*sqrt(3*%t+2)-3*%t+2)/9]]$
+[method,radcan(ode_check(eqn,ans[1])),radcan(ode_check(eqn,ans[2]))];
+[lagrange,0,0];
 
 /* 69 ode1_lie takes forever */
 /*(pn_(69),ans:contrib_ode(eqn:'diff(y,x)^2-(a+6*y)*'diff(y,x)+y(3*a+b+9*y)=0,y,x));*/
@@ -502,8 +492,8 @@ ans[1][2],%;
 y = -((1/(x-%c)^2-1)*abs(x-%c));
 %,abs(x-%c)=(x-%c);
 y = -((x-%c)*(1/(x-%c)^2-1));
-[method,ode_check(eqn,%)];
-[lagrange,0];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
+[lagrange,0,0];
 
 /* 76 ode1_lie takes forever */
 /*(pn_(76),ans:contrib_ode(eqn:'diff(y,x)^2-(x-y)*y*'diff(y,x)+x*y^3=0,y,x));*/
@@ -569,8 +559,8 @@ ans[1][2],%;
 y=-((sqrt(%c^2*%e^(3*x)+2*%c*%e^(3*x/2)+1)+(%c^2*%e^(3*x)+2*%c*%e^(3*x/2))/2-1)/12);
 radcan(%);
 y=-((%c^2*%e^(3*x)+4*%c*%e^(3*x/2))/24);
-[method,ode_check(eqn,%)];
-[lagrange,0];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
+[lagrange,0,0];
 
 /* 88 */
 (pn_(88),ans:contrib_ode(eqn:3*'diff(y,x)^2-2*x*'diff(y,x)+y=0,y,x));
@@ -579,19 +569,9 @@ method;
 lagrange;
 
 /* 89 */
-(pn_(89),ans:contrib_ode(eqn:3*'diff(y,x)^2+4*x*'diff(y,x)+x^2-y=0,y,x));
-[(4*%i*sqrt(3*y+x^2)+2*%i*x)/(3*sqrt(2)) = %c];
-expand(ans[1]/%i);
-4*sqrt(3*y+x^2)/(3*sqrt(2))+2*x/(3*sqrt(2)) = -%i*%c;
-%,%c=%i*%c;
-4*sqrt(3*y+x^2)/(3*sqrt(2))+2*x/(3*sqrt(2)) = %c;
-solve(%,sqrt(3*y+x^2));
-[sqrt(3*y+x^2) = -((2*x-3*sqrt(2)*%c)/4)];
-%[1]^2;
-3*y+x^2 = (2*x-3*sqrt(2)*%c)^2/16;
-solve(%,y);
-[y = -((2*x^2+2*sqrt(2)*%c*x-3*%c^2)/8)];
-[method,ode_check(eqn,%[1])];
+(pn_(89),ans:contrib_ode(eqn:3*'diff(y,x)^2+4*x*'diff(y,x)+x^2-y=0,y,x),0);
+0$
+[method,ode_check(eqn,ans[1])];
 [lie,0];
 
 /* 90 */
@@ -612,10 +592,8 @@ false;
 /* 93 */
 (pn_(93),ans:contrib_ode(eqn:5*'diff(y,x)^2+3*x*'diff(y,x)-y=0,y,x));
 [[x=%e^-(3*log(%t)/2)*(%c-2*%e^(5*log(%t)/2)),y=3*%t*x+5*%t^2]];
-map(radcan,ans);
-[[x=-((2*%t^(5/2)-%c)/%t^(3/2)),y=3*%t*x+5*%t^2]]; /*CHECKME*/
-method;
-lagrange;
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /* 94  Very long "answer" from ode1_lie that doesn't satisfy ode */
 /* (pn_(94),ans:contrib_ode(eqn:5*'diff(y,x)^2+6*x*'diff(y,x)-2*y=0,y,x)); */
@@ -649,12 +627,13 @@ ans:solve(expand(%[1]),y);
 
 /* 99 */
 (pn_(99),ans:contrib_ode(eqn:x*'diff(y,x)^2+x-2*y=0,y,x));
-[[x=%c*%e^-(2*(log(%t-1)-1/(%t-1))),y=(%t^2+1)*x/2]]; /* CHECKME */
-method;
-lagrange;
+[[x=%c*%e^-(2*(log(%t-1)-1/(%t-1))),y=(%t^2+1)*x/2]];
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
 
 /* 100 */
 (pn_(100),ans:contrib_ode(eqn:x*'diff(y,x)^2+'diff(y,x)=y,y,x));
-[[x = (log(%t)-%t+%c)/(%t-1)^2,y = %t^2*x+%t]]; /* CHECKME */
-method;
-lagrange;
+[[x = (log(%t)-%t+%c)/(%t-1)^2,y = %t^2*x+%t]];
+[method,ode_check(eqn,ans[1])];
+[lagrange,0];
+

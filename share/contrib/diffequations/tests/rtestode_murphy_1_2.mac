@@ -108,9 +108,9 @@ forget(4*a^2<4*b^2);
 /* 116 */
 (pn_(116),ans:contrib_ode(eqn:'diff(y,x)+tan(x)*sec(x)*cos(y)^2,y,x));
 [-tan(y)=1/cos(x)+%c];
-map(atan,-ans[1]); /* FIXME: solve(%[1],y) gives wrong answer */
-y=-atan(1/cos(x)+%c);
-[method,ode_check(eqn,%)];
+map(atan,-ans[1]),triginverses=all;
+y=-atan(1/cos(x)+%c)$
+[method,ode_check(eqn,ans[1])];
 [separable,0];
 
 /* 117 */
@@ -230,12 +230,9 @@ forget(a>b,4*a^2>4*b^2);
 
 /* 132 CHECKME - Why the %I in the solution? */
 /* Interactive solution is equivalent but different */
-(pn_(132),ans:contrib_ode(eqn:'diff(y,x)=x+exp(y),y,x));
-[-%e^-y*(sqrt(2)*sqrt(%pi)*%i*erf(%i*x/sqrt(2))*%e^y-2*%e^(x^2/2))/2=%c];
-solve(ans[1],y);
-/*[y = log(2*%c*%e^(x^2/2)/(%pi*erf(sqrt(2)*%i*x/2)^2+2*%c^2)-sqrt(2)*sqrt(%pi)*%i*%e^(x^2/2)*erf(sqrt(2)*%i*x/2)/(%pi*erf(sqrt(2)*%i*x/2)^2+2*%c^2))];*/
-[y = log(2*%e^(x^2/2)/(sqrt(2)*sqrt(%pi)*%i*erf(%i*x/sqrt(2))+2*%c))];
-[method,ode_check(eqn,%[1])];
+(pn_(132),ans:contrib_ode(eqn:'diff(y,x)=x+exp(y),y,x),0);
+0$
+[method,ode_check(eqn,ans[1])];
 [lie,0];
 
 /* 133 */
@@ -613,10 +610,8 @@ y = -x/(x^2+%c);
 [exact,0];
 
 /* 181 Riccati */
-(pn_(181),assume(a>0,b>0),ans:contrib_ode(eqn:x*'diff(y,x)+b*x+(2+a*x*y)*y=0,y,x),forget(a>0,b>0),ans);
-[y = (sqrt(a)*sqrt(b)*x*(%i*%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)-%i)
-          -%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)-1)
-          /(a*x*(%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)+1))];
+(pn_(181),assume(a>0,b>0),ans:contrib_ode(eqn:x*'diff(y,x)+b*x+(2+a*x*y)*y=0,y,x),forget(a>0,b>0),ans,0);
+0$
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
@@ -700,8 +695,8 @@ ans:solve(%,y);
 /* 193 */
 assume(not(equal(a,0)),not(equal(a,-1)));
 '[not equal(a,0),not equal(a,-1)];
-(pn_(193),ans:contrib_ode(eqn:x*'diff(y,x)=a*y+b*(1+x^2)*y^3,y,x));
-[y=%e^(a*log(x))/sqrt(%c-2*(b*%e^((2*a+2)*log(x))/(2*a+2)+b*%e^(2*a*log(x))/(2*a)))];
+(pn_(193),ans:contrib_ode(eqn:x*'diff(y,x)=a*y+b*(1+x^2)*y^3,y,x),0);
+0$
 ans:map(radcan,ans);
 [y=sqrt(a)*sqrt(a+1)*x^a/sqrt(x^(2*a)*((-a-1)*b-a*b*x^2)+%c*a^2+%c*a)];
 [method,ode_check(eqn,ans[1])];

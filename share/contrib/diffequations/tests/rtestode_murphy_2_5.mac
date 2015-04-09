@@ -63,7 +63,7 @@ ans[2]:ans[2],log(sqrt(%t^2+1)+%t)=asinh(%t);
 [y-%t*x+%t*asinh(%t)-sqrt(%t^2+1) = 0,asinh(%t)-x = 0];
 solve(ans[2][2],%t);
 [%t = sinh(x)];
-trigsimp(ev(ans[2][1],%[1]));
+trigsimp(ans[2][1]),%[1],triginverses=all;
 y-cosh(x)=0;
 ans[2]:first(solve(%,y));
 y=cosh(x);

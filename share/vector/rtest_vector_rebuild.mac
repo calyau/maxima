@@ -1,0 +1,97 @@
+(kill(all), 'done);
+'done$
+
+(load("vector_rebuild"), 'done);
+'done;
+
+[1,2]+t*[3,4], vector_simp;
+[3*t+1,4*t+2]$
+
+vector_rebuild([3*t+1,4*t+2], [t]);
+t*[3,4]+[1,2]$
+
+vector_rebuild([1,2]+t*[3,4]+[5,6]+(t/2-1)*[7,8], [t]);
+t*[13/2,8]+[-1,0]$
+
+covect([1/2,1/3,1/4]), vector_factor;
+(1/12)*matrix([6],[4],[3])$
+
+/*
+`vector_factor' returns
+((MTIMES SIMP) -1 ((MTIMESQ SIMP) 2 ((MLIST SIMP) 1 2))) */
+block([vector_factor_minus:true],
+  args(vector_factor([-2,-4])));
+[2*[1, 2]]$
+
+extract_equations([1,2]+t*[3,4] = [4,3]+s*[2,1]);
+[3*t+1 = 2*s+4,4*t+2 = s+3]$
+
+[1,0,0]~[0,1,0];
+[0,0,1]$
+
+block([v: covect([1,2])], 1/|v|*v);
+(1/sqrt(5))*matrix([1],[2])$
+
+(v([args]):= covect(args), 'done);
+done$
+
+block([plane1, plane2, veq, sys, so, params],
+  plane1: v(1,2,3)+p*v(4,5,6)+q*v(7,8,9),
+  plane2: v(3,2,1)+r*v(6,5,4)+s*v(9,8,7),
+  veq: plane1 = plane2,
+  sys: extract_equations(veq),
+  so: algsys(sys,[p,q,r,s]),
+  params: subst([%rnum_list[1]=u, %rnum_list[2]=v], so),
+  vector_rebuild(subst(params, plane2), [u, v]));
+v*matrix([7],[8],[9])+u*matrix([4],[5],[6])+matrix([1],[2],[3])$
+
+block([n, a, plane],
+  n: [1,2,3], a: [2,0,1],
+  plane: x.n = a.n,
+  plane: vector_simp(plane),
+  plane: subst(x=[x1,x2,x3], plane),
+  vector_simp(plane));
+3*x3+2*x2+x1 = 5$
+
+block([n],
+  n: v(1,2,3),
+  1/|n|*n);
+(1/sqrt(14))*matrix([1],[2],[3])$
+
+block([n, a, plane],
+  n: v(1,2,3),
+  a: v(2,0,1),
+  plane: x.n = a.n,
+  vector_simp(plane));
+x . matrix([1],[2],[3]) = 5$
+
+block([point, a, n, en],
+  point: v(0,1,2),
+    a: v(2,0,1),
+    n: v(1,2,3),
+    en: 1/|n|*n,
+    |(point-a)*en|);
+  sqrt(17)/sqrt(14)$
+
+block([a, n, en],
+  a: v(2,0,1),
+  n: v(1,2,3),
+  en: 1/|n|*n,
+  [vector_simp(a+t*en), vector_factor(vector_rebuild(a+t*en, [t]))]);
+[matrix([t/sqrt(14)+2],[(2*t)/sqrt(14)],[(3*t)/sqrt(14)+1]),
+(t/sqrt(14))*matrix([1],[2],[3])+matrix([2],[0],[1])]$
+
+args(vector_factor(v(-2,-4)));
+[2,matrix([-1],[-2])]$
+
+block([vector_factor_minus:true], args(vector_factor(v(-2,-4))));
+[2*matrix([1],[2])]$
+
+block([vector_factor: true, M, M_1],
+  M: matrix([1,2],[3,-1]),
+  M_1: M^^-1,
+  vector_simp(M.M_1));
+matrix([1,0],[0,1])$
+
+(kill(v), 'done);
+'done$

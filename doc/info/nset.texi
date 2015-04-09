@@ -828,7 +828,7 @@ for all @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
 @code{every} evaluates lists in the order of increasing index.
 
 Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
-@code{every} returns @code{false}.
+@code{every} returns @code{true}.
 
 When the global flag @code{maperror} is @code{true}, all lists 
 @var{L_1}, ..., @var{L_n} must have equal lengths.
@@ -1957,7 +1957,7 @@ Examples:
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Function_partitions} set @
+@deffn {Function} set_partitions @
 @fname{set_partitions} (@var{a}) @
 @fname{set_partitions} (@var{a}, @var{n})
 

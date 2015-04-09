@@ -55,7 +55,7 @@ contrib_ode(eqn,y,x) := block(
     )
   )
   else if (degree=2) then (
-    return(ode2_linear(eqn,y,x))
+    return(ode2_lin(eqn,y,x))
   )
   else (
     error("contrib_ode: This case cannot occur"),
@@ -67,7 +67,7 @@ contrib_ode(eqn,y,x) := block(
    eqn is a 2nd order ODE.
    FIXME: Remove multiple checks for linearity 
 */
-ode2_linear(eqn,y,x) := block(
+ode2_lin(eqn,y,x) := block(
   [de,a1,a2,a3,a4,soln,%k1,%k2],
   ode_disp("   Second order equation"),
   de: desimp(lhs(eqn)-rhs(eqn)),
@@ -128,7 +128,7 @@ ode_deriv(eq) := block(
 
 /* Check the solution of an ode. */
 ode_check(e_,a_) := block(
-  [deriv,x_,y_,diff_e,u,v],
+  [deriv,x_,y_,diff_e,e,u,v],
 
   deriv:ode_deriv(e_),
   if deriv=false then (
@@ -152,6 +152,27 @@ ode_check(e_,a_) := block(
     return(ode_check_tidy(ratsimp(ev(lhs(e_)-rhs(e_),a_,diff))))
   ),
 
+  /* Is a_ a parametric solution */
+  if length(a_)=2 and lhs(a_[1])=x_ and lhs(a_[2])=y_ then (
+    return(ode_check_tidy(fullratsimp(ode_check_parametric(e_,a_,x_,y_))))
+  ),
+
+  /* Is a_ a parametric solution in disguise?
+       For example, Kamke 1.555 returns
+       [(-y)+%t*x+sqrt(%t^2+1)=0, (sqrt(%t^2+1)*x+%t)/sqrt(%t^2+1)=0]
+   */
+  if length(a_)=2 and not freeof(%t,a_) then (
+    s:solve(a_,[x_,y_]),
+    /* Check to see if the solution s is a valid
+       FIXME: Have assumed a single solution 
+     */
+    if s#[]
+        and freeof(x_,y_,rhs(s[1][1]))
+        and freeof(x_,y_,rhs(s[1][2])) then (
+      return(ode_check_tidy(fullratsimp(ode_check_parametric(e_,s[1],x_,y_))))
+    )
+  ),
+
   /* Must be an implicit solution */
   diff_e:diff(subst(v(x),y_,a_),x_),
   diff_e:subst(y_,v(x),diff_e),
@@ -173,7 +194,7 @@ ode_check_tidy(e) := block(
   for f in ['bessimp, 'expintegral_e_simp,'ode_trig_simp]
   do 
     (if (f(e)=0) then return(e:0)),
-  return(e)
+  return(expand(e))
 )$
 
 /*  This Bessel function simplification code can be improved,
@@ -342,4 +363,23 @@ ode_trig_simp(e) := block(
     e
   else
     radcan(trigrat(trigsimp(e)))
+)$
+
+
+/* Check parametric solution of first order ode e_
+   Solution is of form  [x = X(%t), y = Y(%t) ]
+
+   May have x=X(%t,y) or y=Y(%t,x) but not both
+*/
+ode_check_parametric(e_, a_, x, y) := block(
+  [X,Y,dydx,s],
+  X:rhs(a_[1]),
+  Y:rhs(a_[2]),
+  if not freeof(y,X) then X:subst(Y,y,X),
+  if not freeof(x,Y) then Y:subst(X,x,Y),
+  dydx:diff(Y,%t)/diff(X,%t),
+  s:subst(dydx,'diff(y,x),lhs(e_)-rhs(e_)),
+  s:subst(X,x,s),
+  s:subst(Y,y,s),
+  return(s)
 )$

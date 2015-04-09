@@ -644,3 +644,11 @@ ind * inf $
 
 limit((a*exp(a*x)*sin(b*x))/(b^2+a^2)-(b*exp(a*x)*cos(b*x))/(b^2+a^2), x, 0, plus);
 -(b/(a^2 + b^2));
+
+/* Bug #2898: limit of continuous --> und */
+
+limit(log(x)^2+2*log(x)+q/2+1,x,1);
+(q+2)/2$
+
+limit(log(x)^2+2*%gamma*log(x)-%pi^2/6+%gamma^2,x,1);
+-((%pi^2-6*%gamma^2)/6)$

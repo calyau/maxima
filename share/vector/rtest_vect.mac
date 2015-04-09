@@ -136,3 +136,18 @@ matrix([-1/5,1/2,-3/10],[0,-1/2,1/2],[3/5,0,2/5]);
 done;
 a.b-b.a;
 matrix([-10,-2],[-24,10]);
+
+/*
+
+Some syntax errors can be detected by comparing the declared part of
+speech to an actual expression. (see documentation for `infix'.). The
+tests are not automatic because a syntax error is not captured by
+`errcatch'.
+
+errcatch(if a~b then 1 else 0);
+[]$
+
+errcatch(if grad a then 1 else 0);
+[]$
+
+*/

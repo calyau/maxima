@@ -98,11 +98,7 @@ false;
 false;
 
 /* 300 Riccati */
-(pn_(300),ans:contrib_ode(eqn:(1-x^2)*'diff(y,x)=1-(2*x-y)*y,y,x));
- [y = (x^2*((x-1)*(%c*log(x+1)-%c*log(x-1)+2*%c+1)
-                 +(x+1)*(%c*log(x+1)-%c*log(x-1)-2*%c+1))
-          +(x+1)*(-%c*log(x+1)+%c*log(x-1)+2*%c-1)
-          +(x-1)*(-%c*log(x+1)+%c*log(x-1)-2*%c-1))
-          /((x-1)*(x+1)*(2*%c*log(x+1)-2*%c*log(x-1)+2))];
+(pn_(300),ans:contrib_ode(eqn:(1-x^2)*'diff(y,x)=1-(2*x-y)*y,y,x),0);
+0$
 [method,ode_check(eqn,ans[1])];
 [riccati,0];

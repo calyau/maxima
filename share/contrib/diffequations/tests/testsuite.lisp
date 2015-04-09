@@ -20,26 +20,28 @@
          "rtestode_murphy_1_4.mac"
          "rtestode_murphy_1_5.mac"
          "rtestode_murphy_1_6.mac"
-         ((mlist) "rtestode_murphy_2_1.mac" 140 142) ; OK - testsuite issues
+         "rtestode_murphy_2_1.mac"
          "rtestode_murphy_2_2.mac"
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
-         ((mlist) "rtestode_kamke_1_1.mac" 34 75)
-         ((mlist) "rtestode_kamke_1_2.mac" 9)  ; OK - testsuite issues
+         "rtestode_kamke_1_1.mac"
+         "rtestode_kamke_1_2.mac"
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
          "rtestode_kamke_1_5.mac"
-         ((mlist) "rtestode_kamke_1_6.mac" 20) ; OK - testsuite issues
-         ((mlist) "rtestode_kamke_2_1.mac" 77) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_1_6.mac"
+	  20   ; OK - testsuite issues
+	  )
+         "rtestode_kamke_2_1.mac"
          ((mlist) "rtestode_kamke_2_2.mac" 132 ) ; OK - testsuite issues
-         ((mlist) "rtestode_kamke_2_3.mac" 83 107 181) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_2_3.mac" 83 107) ; OK - testsuite issues
          "rtestode_kamke_2_4.mac"
          "rtestode_kamke_2_5.mac"
 	 "rtest_sym.mac" 
 	 "rtest_sym2.mac"
 	 ((mlist) "rtest_ode1_riccati.mac" 138) ; OK - testsuite issues
-         "rtest_ode1_abel.mac"
+         ((mlist) "rtest_ode1_abel.mac" 45) ; OK - testsuite issues
          "rtestode_odelin.mac"
          "rtestode_utils.mac"
 	)
