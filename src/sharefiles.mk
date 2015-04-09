@@ -1259,6 +1259,7 @@ trigonometry/trgsmp.mac \
 trigonometry/trigrat.lisp \
 utils/mactex-utilities.lisp \
 vector/rtest_vect.mac \
+vector/rtest_vector_rebuild.mac \
 vector/vect.dem \
 vector/vect.mac \
 vector/vector.dem \
