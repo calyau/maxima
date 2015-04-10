@@ -260,12 +260,16 @@
            (gf-merror (intl:gettext 
              "Third argument to `zn_order' must be of the form [[p1, e1], ..., [pk, ek]]." )))
          (setq fs-phi (totient-with-factors n)) )
-      (zn_order x 
+      (zn-order x 
                 n
                 (car fs-phi) ;; phi
                 (cdr fs-phi)) ))) ;; factors of phi with multiplicity
 ;;
 (defun zn_order (x n phi fs-phi)
+  (format t "`zn_order' is deprecated. ~%Please use `zn-order' instead.~%" )
+  (zn-order x n phi fs-phi) )
+;;
+(defun zn-order (x n phi fs-phi)
   (let ((s phi) p e)
     (dolist (f fs-phi s)
       (setq p (car f) e (cadr f))
