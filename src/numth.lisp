@@ -217,10 +217,10 @@
 ;; Maxima functions in (Z/nZ)*
 ;; 
 ;; zn_order, zn_primroot_p, zn_primroot, zn_log, 
-;; chinese,
+;; chinese, zn_characteristic_factors, zn_nth_root,
 ;; zn_add_table, zn_mult_table, zn_power_table 
 ;;
-;; 2012 - 2014, Volker van Nek  
+;; 2012 - 2015, Volker van Nek  
 ;;
 
 ;; Maxima option variables:
