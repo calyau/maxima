@@ -674,10 +674,12 @@
         (unless rt (return-from zn-nrt nil))
         (push q qs)
         (push rt rts) )
-      (when (= 1 (length fs-n)) (return-from zn-nrt rt)) ;; n is a prime power
-      (setq qs (nreverse qs)
-            rems (zn-distrib-lists (nreverse rts)) )
-      (sort (mapcar #'(lambda (rs) (car (chinese rs qs))) rems) #'<) )))
+      (if (= 1 (length fs-n)) 
+        (setq res rt) ;; n is a prime power
+        (setq qs (nreverse qs)
+              rems (zn-distrib-lists (nreverse rts))
+              res (mapcar #'(lambda (rs) (car (chinese rs qs))) rems) ))
+      (sort res #'<) )))
 
 ;; return all possible combinations containing one entry per list:
 ;; (zn-distrib-lists '((1 2 3) (4) (5 6)))
