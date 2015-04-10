@@ -2126,23 +2126,6 @@
       (rplaca r (gf-cminus-b (car r)))
       (when (null (cdr r)) (return x)) )))
 
-;; x + c, 0 < c < *gf-char*
-
-(defun gf-nxcplus (x c) ;; modifies x
-  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (maybe-char-is-fixnum-let ((c c))
-    (cond 
-      ((null x) (list 0 c))
-      (t (setq x (nreverse x))
-         (cond
-           ((= 0 (the fixnum (cadr x)))
-             (setq c (gf-cplus-b c (car x)))
-             (if (= 0 c)
-               (setq x (cddr x))
-               (rplaca x c) ))
-           (t (setq x (cons c (cons 0 x)))) )
-         (nreverse x) ))))
-
 ;; x + y
 
 (defun gf-plus (x y) 
@@ -2966,7 +2949,7 @@
         (if (= 0 n) nil (list 0 n)) ))
     (t
       (do (res) (())
-        (setq res (gf-nxcplus res (cadr y))) 
+        (setq res (gf-nplus res (list 0 (cadr y))))
         (when (null (cddr y)) 
           (return (gf-times res (gf-pow x (car y) red) red)) ) 
         (setq res (gf-times res (gf-pow x (- (car y) (caddr y)) red) red)
