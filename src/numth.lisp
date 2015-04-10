@@ -2108,6 +2108,14 @@
            ((null rx) res)
         (rplacd r (list (+ e (the fixnum (car rx))) (gf-ctimes c (cadr rx)))) ))))
 
+;; v^e * x
+
+(defun gf-nxetimes (x e) ;; modifies x
+  (if (null x) x
+    (do ((r x (cddr r)))
+        ((null r) x)
+      (rplaca r (+ e (car r))) )))
+
 ;; - x
 
 (defun gf-minus (x) 
