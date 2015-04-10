@@ -229,6 +229,11 @@
 (defmvar $zn_primroot_pretest nil "`zn_primroot' pretests whether (Z/nZ)* is cyclic." boolean)
 
 
+(defun zn-quo (n d p)
+  (declare (inline))
+  (mod (* n (inv-mod d p)) p) )
+
+
 ;; compute the order of x in (Z/nZ)*
 ;;
 ;; optional argument: ifactors of totient(n) as returned in Maxima by 
@@ -574,7 +579,7 @@
             (setq bb b yy y zz z) ))
         (setq dy (mod (- y yy) p) dz (mod (- zz z) p)) ;; g^dy = a^dz = g^(x*dz)
         (when (= 1 (gcd dz p))
-          (return (mod (* dy (inv-mod dz p)) p)) )     ;; x = dy/dz mod p (since g is generator of order p)
+          (return (zn-quo dy dz p)) ) ;; x = dy/dz mod p (since g is generator of order p)
         (setq y 0
               z 0
               b 1
@@ -4185,7 +4190,7 @@
   (let* ((a-ind (funcall dlog-fn a)) (b-ind (funcall dlog-fn b))
          (d (gcd (gcd a-ind b-ind) ord))
          (m (truncate ord d)) )
-    (mod (* (inv-mod (truncate b-ind d) m) (truncate a-ind d)) m) ))
+    (zn-quo (truncate a-ind d) (truncate b-ind d) m) ))
 
 ;; Pohlig and Hellman reduction
 
@@ -4300,7 +4305,8 @@
             (setq bb b yy y zz z) ))
         (setq dy (mod (- yy y) p) dz (mod (- z zz) p)) ;; g^dy = a^dz = g^(x*dz)
         (when (= 1 (gcd dz p))
-          (return (mod (* dy (inv-mod dz p)) p)) )     ;; x = dy/dz mod p (since g is generator of order p)
+          (return (zn-quo dy dz p)) ) ;; x = dy/dz mod p (since g is generator of order p)
+        (setq y 0
         (setq y 0
               z 0
               b (list 0 1)
