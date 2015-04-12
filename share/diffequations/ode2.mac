@@ -16,7 +16,7 @@ declare_translated(boundtest,noteqn,nlxy,nly,nlx,xcc2,bessel2,euler2,
 ode2(eq,yold,x):=block([derivsubst:false,ynew],
    subst(yold,ynew,ode2a(subst(ynew,yold,eq),ynew,x)))$
 
-ode2a(eq,y,x):=block([de,a1,a2,a3,a4,%q%,msg1],
+ode2a(eq,y,x):=block([de,a1,a2,a3,a4,%q%],
    intfactor: false, method: 'none,
    if freeof('diff(y,x,2),eq)
      then if ftest(ode1a(eq,y,x)) then return(%q%) else return(false),
