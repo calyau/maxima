@@ -4311,7 +4311,6 @@
         (when (= 1 (gcd dz p))
           (return (zn-quo dy dz p)) ) ;; x = dy/dz mod p (since g is generator of order p)
         (setq y 0
-        (setq y 0
               z 0
               b (list 0 1)
               yy (1+ (random (1- p)))
