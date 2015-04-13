@@ -18,6 +18,7 @@
 @menu
 * Introduction to drawutils::
 * Vector fields::
+* Venn diagrams::
 * Function and variable index::
 @end menu
 
@@ -141,7 +142,53 @@ Examples:
 
 
 
-@node Function and variable index,  , Vector fields, Top
+
+@node Venn diagrams, Function and variable index, Vector fields, Top
+@chapter Venn diagrams
+
+By Pankaj Sejwal (2015)
+
+The @emph{vennplot} package enables the user to plot Venn diagram for any logical 
+relation. Logical atoms are represented as equally distanced circles of different 
+random colours which help in distinguishing different circles.
+
+No known bug, but in case some issue needs to be addressed, please share it on 
+Maxima mailing list.
+
+@deffn {Function} vennplot (@var{logical_expression})
+Draws a basicVenn diagram.
+
+Examples:
+
+@example
+(%i1) load(drawutils)$
+(%i2) vennplot(a and b and not(c) and d)$
+(%i3) vennplot(a and b and c and d)$
+(%i4) vennplot(not(d))$
+@end example
+
+TODO : Filling circles with different colors
+
+@end deffn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@node Function and variable index,  , Venn diagrams, Top
 @appendix Function and variable index
 @printindex fn
 @c @printindex vr
