@@ -9,7 +9,7 @@
 @end macro
 @end ifinfo
 
-@include ../../../doc/info/category-macros.texi
+@include category-macros.texi
 
 @node Top, Introduction to kovacicODE, (dir), (dir)
 @top

@@ -6,4 +6,4 @@ abs_integrate.info: abs_integrate.texi
 	makeinfo $<
 
 integration-index.lisp: abs_integrate.info
-	perl ../../../doc/info/build_index.pl $< > $@
+	perl  $(top_srcdir)/doc/info/build_index.pl $< > $@

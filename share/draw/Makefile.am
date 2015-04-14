@@ -6,4 +6,4 @@ drawutils.info: drawutils.texi
 	makeinfo $<
 
 draw-index.lisp: drawutils.info
-	perl ../../doc/info/build_index.pl $< > $@
+	perl  $(top_srcdir)/doc/info/build_index.pl $< > $@
