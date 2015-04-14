@@ -22,16 +22,19 @@ case "$host" in
                 win32=true
                 mingw=true
                 EXEEXT=.exe
+		CLISPEXT=${EXEEXT}
                 ;;
         *cygwin*)
-                win32=true
+                win32=false
                 mingw=false
                 EXEEXT=.exe
+		CLISPEXT=${EXEEXT}
                 ;;
         *)
                 win32=false
                 mingw=false
                 EXEEXT=
+		CLISPEXT=.run
 esac
 AC_SUBST(EXEEXT)
 AC_SUBST(win32)
@@ -64,11 +67,7 @@ AC_ARG_WITH(clisp,
 		CLISP_NAME="$withval"
 	fi],
 	[CLISP_NAME=${clisp_default_name}])
-if test x"${win32}" = x"true" ; then
-   	CLISP_RUNTIME="lisp.exe"
-else
-	CLISP_RUNTIME="lisp.run"
-fi
+	CLISP_RUNTIME="lisp${CLISPEXT}"
 AC_ARG_WITH(clisp-runtime,
 	[  --with-clisp-runtime=<path>  Use clisp runtime <path> (default
 	                          *lib-directory*/base/lisp.run on unix,
@@ -1055,7 +1054,10 @@ AC_SUBST(default_sharedirs)
 dnl Look for grep that can handle long lines and -e.
 AC_PROG_EGREP
 AC_SUBST(EGREP)
-
+AC_PATH_PROG([CAT],[cat])
+AC_PROG_SED
+AC_PROG_AWK
+AM_PATH_PYTHON
 
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
