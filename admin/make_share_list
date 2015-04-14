@@ -17,7 +17,7 @@ echo "sharefiles = \\"
 # Then remove the leading dot and append a \ to each line, but not the
 # last line.
 
-find ../share -type f |
+find ${top_srcdir}/share \! -type d |
 egrep -v '\.ERR$' |
 egrep -v 'CVS|Makefile(\.in|\.am)?|^\./Makefile|\.gitignore' |
 egrep -v '/fortran/' |
@@ -25,7 +25,7 @@ egrep -v 'colnew/ex./' |
 egrep -v 'lbfgs/.*\.f' |
 egrep -v '/\.#' |
 egrep -v '~|#' |
-sed -e 's;../share/;;' -e 's%\./%%' -e 's%$% \\%' |
+sed -e "s;${top_srcdir}/share/;;" -e 's%\./%%' -e 's%$% \\%' |
 sort -f -d |
 sed '$s/\\$//'
 )  > sharefiles.mk.$$
