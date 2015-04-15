@@ -405,8 +405,8 @@
       (catch *quit-tag*
 	(unwind-protect
 	     (do () (())
-	       (format-prompt *debug-io* "~a"
-			      (format nil "~&~@[(~a:~a) ~]"
+	       (format-prompt *debug-io* "~&~a"
+			      (format nil "~@[(~a:~a) ~]"
 				      (unless (stringp at) "dbm")
 				      (length *quit-tags*)))
 	       (finish-output *debug-io*)
