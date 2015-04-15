@@ -159,6 +159,21 @@ alpha * a . b$
 a . (alpha . b), dotscrules : true;
 alpha * a . b$
 
+declare(".",antisymmetric);
+'done$
+
+b . alpha, dotscrules : true;
+alpha * b$
+
+a . (b . alpha), dotscrules : true;
+alpha * a . b$
+
+a . (alpha * a), dotscrules : true;
+0;
+
+remove(".",antisymmetric);
+'done$
+
 /*--- dotassoc ---*/
 
 is(equal(a . (b . c) , (a . b) . c)), dotassoc : true, prederror : false;
