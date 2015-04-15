@@ -365,3 +365,34 @@ b*matrix([''(rat(a))]);
 
 (reset (doallmxops, doscmxops), 0);
 0;
+
+/* SF bug #2936: stack overflow in integrate */
+
+kill (x, A, B, MU, SIGMA);
+done;
+
+trigsimp (gamma_incomplete (1, log (x)));
+gamma_incomplete (1, log (x));
+
+trigsimp ((%i*gamma_incomplete(1,(1-2*log(x))^2/4)*(1-2*log(x))^2)
+           /(2*log(x)-1)^2);
+%i*gamma_incomplete(1,(4*log(x)^2-4*log(x)+1)/4)$
+
+trigsimp (integrate (%e^((-log(x)^2)-1)*log(x),x));
+-(%e^-(3/4)*(2*gamma_incomplete(1,(4*log(x)^2-4*log(x)+1)/4)*abs(2*log(x)-1)
+            +2*gamma_incomplete(1/2,(4*log(x)^2-4*log(x)+1)/4)*log(x)
+            -gamma_incomplete(1/2,(4*log(x)^2-4*log(x)+1)/4)))
+ /(4*abs(2*log(x)-1))$
+
+/* throw away results of integrate, just make sure it runs without crashing */
+block ([foo, bar, ctxt],
+  foo : exp(-(log(x) - MU)*(log(x) - MU)/(2*SIGMA*SIGMA))/(x*SIGMA*sqrt(2*%pi)),
+  bar : (log(B) - log(x*SIGMA) + ((x-A)*(x-A)/(2*B*B) - (log(x) -MU)*(log(x) -MU)/(2*SIGMA*SIGMA))),
+  [foo, bar] : subst ([A=2, MU=3], [foo, bar]),
+  ctxt : newcontext (),
+  assume (SIGMA > 0, B > 0),
+  integrate (expand (foo*bar), x),
+  integrate (expand (foo*bar), x, 2, inf),
+  killcontext (ctxt),
+  0);
+0;
