@@ -57,6 +57,6 @@ check-ecl:
 endif
 
 genericdir = $(insttestsdir)
-genericdirDATA = $(shell echo README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*)
+genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*))
 
 EXTRA_DIST = $(genericdirDATA)
