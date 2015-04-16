@@ -1769,7 +1769,7 @@
          (count -1)
          ncols result)
     (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2)))
-       (merror "draw2d (explicit): non defined variable"))
+       (merror "draw3d (explicit): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
@@ -3370,9 +3370,12 @@
                (format cmdstorage "~%quit~%~%")
                (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
-             ($system (format nil "~a \"~a\"" 
-                                  $gnuplot_command
-                                  gfn) ))
+	     #+(or (and sbcl win32) (and ccl windows))
+             ($system $gnuplot_command gfn)
+	     #-(or (and sbcl win32) (and ccl windows))
+	     ($system (format nil "~a \"~a\"" 
+			      $gnuplot_command
+			      gfn) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
@@ -3405,13 +3408,19 @@
                         (format nil "load '~a'" gfn)))
                 ; call gnuplot via system command
                 (t
-                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
-                                   (format nil "~a ~a"
-                                               $gnuplot_command
-                                               (format nil $gnuplot_view_args gfn))
-                                   (format nil "~a \"~a\"" 
-                                               $gnuplot_command
-                                               gfn)))))))
+
+		 #+(or (and sbcl win32) (and ccl windows))
+		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+		     ($system $gnuplot_command "-persist" gfn)
+		     ($system $gnuplot_command gfn))
+		 #-(or (and sbcl win32) (and ccl windows))
+		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+			      (format nil "~a ~a"
+				      $gnuplot_command
+				      (format nil $gnuplot_view_args gfn))
+			      (format nil "~a \"~a\"" 
+				      $gnuplot_command
+				      gfn))) ))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )
