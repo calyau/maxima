@@ -120,8 +120,8 @@ Name: "{group}\{cm:ReferenceManual}"; Filename: "{app}\share\maxima\@VERSION@\do
 Name: "{group}\{cm:ReadmeMenuEntry}"; Filename: "{app}\readme_{language}.txt"; Components: "core"
 
 ; wxmaxima
-Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
-Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
+Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxmaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
+Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxmaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
 ; xmaxima
 Name: "{group}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
@@ -144,19 +144,19 @@ Name: "{group}\{cm:ReferenceManualBrazilianPortuguese}"; Filename: "{app}\share\
 
 ;[Run]
 ;Filename: "{app}\bin\xmaxima.exe"; Description: "{cm:LaunchProgram,XMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
-;Filename: "{app}\wxMaxima\wxMaxima.exe"; Description: "{cm:LaunchProgram,wxMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
+;Filename: "{app}\wxMaxima\wxmaxima.exe"; Description: "{cm:LaunchProgram,wxMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
 
 
 [Registry]
 Root: HKCR; Subkey: ".wxm"; ValueType: string; ValueName: ""; ValueData: "Maxima.wxMaxima"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "Maxima.wxMaxima"; ValueType: string; ValueName: ""; ValueData: "{cm:wxMaximaSession}"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "Maxima.wxMaxima\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,1"
-Root: HKCR; Subkey: "Maxima.wxMaxima\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxMaxima.exe"" -o ""%1"""
+Root: HKCR; Subkey: "Maxima.wxMaxima\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxmaxima.exe,1"
+Root: HKCR; Subkey: "Maxima.wxMaxima\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxmaxima.exe"" -o ""%1"""
 
 Root: HKCR; Subkey: ".wxmx"; ValueType: string; ValueName: ""; ValueData: "Maxima.wxMaximaX"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "Maxima.wxMaximaX"; ValueType: string; ValueName: ""; ValueData: "{cm:wxMaximaSession}"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "Maxima.wxMaximaX\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,1"
-Root: HKCR; Subkey: "Maxima.wxMaximaX\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxMaxima.exe"" -o ""%1"""
+Root: HKCR; Subkey: "Maxima.wxMaximaX\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxmaxima.exe,1"
+Root: HKCR; Subkey: "Maxima.wxMaximaX\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxmaxima.exe"" -o ""%1"""
 
 
 [CustomMessages]
