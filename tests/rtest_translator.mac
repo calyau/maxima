@@ -359,3 +359,29 @@ my_test () := is (results = [2*123, 3*456, 4*789]);",
  my_test ());
 true;
 
+/* Bug 2934:
+
+   Translating a literal exponent that comes out as a float shouldn't
+   produce assigned type any. This test runs the translation for a
+   trivial function that triggered the bug then looks in the unlisp
+   file (which contains messages from the translator) and checks that
+   there aren't any warnings.
+*/
+(kill (all),
+ lisp_name : ssubst ("_", " ", build_info()@lisp_name),
+ basename: sconcat (maxima_tempdir, "/tmp-rtest_translator-2934-", lisp_name),
+ maxima_filename : sconcat (basename, ".mac"),
+ lisp_filename : sconcat (basename, ".LISP"),
+ maxima_output : openw (maxima_filename),
+ maxima_content : "f () := block([y], mode_declare(y,float), y: 3^0.33, y)$",
+ printf (maxima_output, maxima_content),
+ close (maxima_output),
+ translate_file (maxima_filename, lisp_filename),
+ kill (allbut(basename)),
+ /* Any warning messages end up at .UNLISP */
+ block ([unlisp: openr (sconcat (basename, ".UNLISP")),
+         line, acc: []],
+   while stringp (line: readline(unlisp)) do
+     if is ("warning" = split(line, ":")[1]) then push(line, acc),
+   acc));
+[]$

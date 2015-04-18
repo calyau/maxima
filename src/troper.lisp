@@ -79,36 +79,67 @@
   "If True it allows translation of x^n to generate (expt $x $n) if $n is fixnum and $x is fixnum, or number")
 
 (def%tr mexpt (form)
-  (if (eq '$%e (cadr form)) (translate `(($exp) ,(caddr form)))
-      (let   (bas exp)
-	(setq bas (translate (cadr form)) exp (translate (caddr form)))
-	(cond ((eq '$fixnum (car exp))
-	       (setq exp (cdr exp))
-	       (cond ((eq '$float (car bas))
-		      `($float expt ,(cdr bas) ,exp))
-		     ((and (eq (car bas) '$fixnum)
-			   $tr_numer)
-		      ;; when NUMER:TRUE we have 1/2 evaluating to 0.5
-		      ;; therefore we have a TR_NUMER switch to control
-		      ;; this form numerical hackers at translate time
-		      ;; where it does the most good. -gjc
-		      `($float . (expt (float ,(cdr bas)) ,exp)))
-		     ;;It seems to me we can do this,
-		     ;; although 2^-3 would result in a "cl rat'l number"
-		     ((and $tr_exponent (member (car bas) '($fixnum $number) :test #'eq))
-		      `($number expt ,(cdr bas) ,exp))
-		     (t `($any power ,(cdr bas) ,exp))))
-	      ((and (eq '$float (car bas))
-		    (eq '$rational (car exp))
-		    (not (atom (caddr exp)))
-		    (cond ((equal 2 (caddr (caddr exp)))
-			   (setq exp (cadr (caddr exp)))
-			   (cond ((= 1 exp) `($float sqrt ,(cdr bas)))
-				 ((= -1 exp) `($float / (sqrt ,(cdr bas))))
-				 (t `($float expt (sqrt ,(cdr bas)) ,exp))))
-			  ((eq 'rat (caar (caddr exp)))
-			   `($float expt ,(cdr bas) ,($float (caddr exp)))))))
-	      (t `($any power ,(cdr bas) ,(cdr exp)))))))
+  (if (eq '$%e (cadr form))
+      (translate `(($exp) ,(caddr form)))
+      (let ((bas (translate (cadr form)))
+            (exp (translate (caddr form))))
+	(cond
+          ((eq '$fixnum (car exp))
+           (setq exp (cdr exp))
+           (cond ((eq '$float (car bas))
+                  `($float expt ,(cdr bas) ,exp))
+                 ((and (eq (car bas) '$fixnum)
+                       $tr_numer)
+                  ;; when NUMER:TRUE we have 1/2 evaluating to 0.5
+                  ;; therefore we have a TR_NUMER switch to control
+                  ;; this form numerical hackers at translate time
+                  ;; where it does the most good. -gjc
+                  `($float . (expt (float ,(cdr bas)) ,exp)))
+                 ;;It seems to me we can do this,
+                 ;; although 2^-3 would result in a "cl rat'l number"
+                 ((and $tr_exponent (member (car bas) '($fixnum $number) :test #'eq))
+                  `($number expt ,(cdr bas) ,exp))
+                 (t `($any power ,(cdr bas) ,exp))))
+
+          ((and (eq '$float (car bas))
+                (eq '$rational (car exp))
+                (not (atom (caddr exp)))
+                (cond ((equal 2 (caddr (caddr exp)))
+                       (setq exp (cadr (caddr exp)))
+                       (cond ((= 1 exp) `($float sqrt ,(cdr bas)))
+                             ((= -1 exp) `($float / (sqrt ,(cdr bas))))
+                             (t `($float expt (sqrt ,(cdr bas)) ,exp))))
+                      ((eq 'rat (caar (caddr exp)))
+                       `($float expt ,(cdr bas) ,($float (caddr exp)))))))
+
+          ;; If the exponent is a float, we can't just translate straight to a
+          ;; float because the base might be negative. However, if the base
+          ;; happens to be a literal then we can check its sign. If it's
+          ;; non-negative we know that the result of calling POWER will indeed
+          ;; be a float.
+          ((and (eq '$float (car exp))
+                (or (numberp (car bas))
+                    (and (eq '$rational (car bas))
+                         (eq 'quote (second bas))
+                         (not (atom (third bas)))
+                         (eq 'rat (caar (third bas)))
+                         (integerp (second (third bas)))
+                         (integerp (third (third bas))))
+                    (and (memq (car bas) '($float $fixnum))
+                         (numberp (cdr bas)))))
+           (let ((cl-base
+                  (cond
+                    ((numberp (car bas))
+                     (car bas))
+                    ((eq '$rational (car bas))
+                     (/ (second (third bas)) (third (third bas))))
+                    (t
+                     (cdr bas)))))
+             (if (< cl-base 0)
+                 `($any power ,(cdr bas) ,(cdr exp))
+                 `($float power ,(cdr bas) ,(cdr exp)))))
+
+          (t `($any power ,(cdr bas) ,(cdr exp)))))))
 
 (def%tr rat (form)
   `($rational . ',form))
