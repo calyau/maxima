@@ -389,8 +389,10 @@ contrib/maximaMathML/mathml-maxima.lisp \
 contrib/maximaMathML/mathml.readme \
 contrib/maximaMathML/maximaMathML.lisp \
 contrib/maximaMathML/PrMathML.lisp \
+contrib/maxima-odesolve/kovacicODE.info \
 contrib/maxima-odesolve/kovacicODE.mac \
 contrib/maxima-odesolve/kovacicODE.texi \
+contrib/maxima-odesolve/maxima-odesolve-index.lisp \
 contrib/maxima-odesolve/README \
 contrib/maxima-server.lisp \
 contrib/mcclim/formula.lisp \
