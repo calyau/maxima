@@ -305,6 +305,11 @@
       (carefulfactor expr var)
       expr))
 
+;; CAREFULFACTOR
+;;
+;; Try to factor an expression of the form A^B. If *GLOBALCAREFLAG* is NIL, this
+;; is exactly the same as $FACTOR. Otherwise, use $FACTOR on (A/x)^B and then
+;; restore the missing x^B afterwards using RESTOREX.
 (defun carefulfactor (expr x)
   (declare (special *globalcareflag*))
   (if (null *globalcareflag*)
