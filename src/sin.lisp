@@ -237,10 +237,10 @@
         ;; Method 3: Substitution for a rational root
 	((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
 	      (denomfind (caddr expres))) ; expon is ratnum
-	 (cond ((setq w (prog2
-			  (setq *powerl* t)
-			  (ratroot exp var (cadr expres) w))) w)
-	   (t (inte exp var))))
+         (or (progn
+               (setq *powerl* t)
+               (ratroot exp var (cadr expres) w))
+             (inte exp var)))
         
         ;; Method 4: Binomial - Chebyschev
 	((not (integerp1 (caddr expres))) ; 2*exponent not integer
