@@ -284,11 +284,15 @@
             (declare (special *globalcareflag*))
             (try-inti))))))
 
-(defun distrfactor (expr x)
-  (if (null expr)
+;; DISTRFACTOR
+;;
+;; Apply FACTOROOT to each element in the list, FACTORS. Accumulate the results
+;; by multiplication, associating to the right.
+(defun distrfactor (factors x)
+  (if (null factors)
       1
-      (mul (factoroot (car expr) x)
-	   (distrfactor (cdr expr) x))))
+      (mul (factoroot (first factors) x)
+	   (distrfactor (rest factors) x))))
 
 (defun factoroot (expr var)
   (if (atom expr)
