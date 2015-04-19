@@ -314,29 +314,44 @@
   (declare (special *globalcareflag*))
   (if (null *globalcareflag*)
       ($factor expr)
-      (restorex ($factor (power (div (cadr expr) x) (caddr expr))) x)))
+      (restorex ($factor (power (div (cadr expr) x) (caddr expr)))
+                x (caddr expr))))
 
-(defun restorex (expr var)
-  (if (atom expr)
-      expr
-      (if (eq (caar expr) 'mtimes)
-	  (distrestorex (cdr expr) var)
-	  expr)))
+;; RESTOREX
+;;
+;; Multiply EXPR by VAR^EXPT, trying to insert the factor of VAR inside terms in
+;; a product if possible.
+(defun restorex (expr var expt)
+  (cond
+    ((and (mexptp expr)
+          (equal expt (caddr expr)))
+     (power (restorex (cadr expr) var 1) (caddr expr)))
 
-(defun distrestorex (expr var)
-  (if (null expr)
-      1
-      (mul (restoroot (car expr) var)
-	   (distrestorex (cdr expr) var))))
+    ((mtimesp expr)
+     (distrestorex (cdr expr) var expt))
 
-(defun restoroot (expr var)
-  (if (atom expr)
-      expr
-      (if (and (eq (caar expr) 'mexpt)
-	       (integerpfr (caddr expr))
-	       (mplusp (cadr expr)))
-	  (power ($expand (mul var (cadr expr))) (caddr expr))
-	  expr)))
+    (t
+     (mul (power var expt) expr))))
+
+;; DISTRESTOREX
+;;
+;; Takes a list of factors. Returns an expression that equals the product of
+;; these factors, but after multiplying one of them by VAR to try to multiply
+;; the entire product by VAR^EXPT. If it's not possible to multiply factors to
+;; do so, add a factor of VAR^EXPT to the end.
+(defun distrestorex (factors var expt)
+  (if (null factors)
+      (power var expt)
+      (let ((start (first factors)))
+        (if (and (mexptp start)
+                 (equal expt (caddr start)))
+
+            (lmul
+             (cons (power ($expand (mul var (cadr start)))
+                          (caddr start))
+                   (rest factors)))
+
+            (mul start (distrestorex (rest factors) var expt))))))
 
 (defun timestest (expr)
   (if (mtimesp expr)
