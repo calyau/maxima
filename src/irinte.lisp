@@ -329,11 +329,9 @@
 	  expr)))
 
 (defun timestest (expr)
-  (if (atom expr)
-      (list expr)
-      (if (eq (caar expr) 'mtimes)
-	  (cdr expr)
-	  (list expr))))
+  (if (mtimesp expr)
+      (cdr expr)
+      (list expr)))
 
 ;; Integrate a function of the form d*p(y)*y^m*(a*y^2+b*x+c)^n.
 ;; n is half of an integer.
