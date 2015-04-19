@@ -294,14 +294,16 @@
       (mul (factoroot (first factors) x)
 	   (distrfactor (rest factors) x))))
 
+;; FACTOROOT
+;;
+;; If EXPR is of the form A^B and is not free of VAR, use CAREFULFACTOR to try
+;; to factor it. Otherwise just return EXPR.
 (defun factoroot (expr var)
-  (if (atom expr)
-      expr
-      (if (and (eq (caar expr) 'mexpt)
-	       (hasvar expr)
-	       (integerpfr (caddr expr)))
-	  (carefulfactor expr var)
-	  expr)))
+  (if (and (mexptp expr)
+           (hasvar expr)
+           (integerpfr (caddr expr)))
+      (carefulfactor expr var)
+      expr))
 
 (defun carefulfactor (expr x)
   (declare (special *globalcareflag*))
