@@ -1,0 +1,375 @@
+\input texinfo
+
+@c -----------------------------------------------------------------------------
+@c NOTE: This template-standalone.texi shows how to create a texinfo file
+@c that yields a stand-alone elliptic_curves.info file.
+@c See template.texi for a texinfo file which is to be part of maxima.info.
+
+@c NOTE: The content of this file was determined by tedious trial and error.
+@c My advice is to keep all elements of this template, from \input to @bye,
+@c otherwise you'll experience cryptic error messages, hair loss, etc.
+
+@c makeinfo elliptic_curves.texi         to make .info
+@c texi2html elliptic_curves.texi        to make .html
+@c texi2pdf elliptic_curves.texi         to make .pdf
+@c -----------------------------------------------------------------------------
+
+@setfilename elliptic_curves.info
+@settitle elliptic_curves
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to elliptic_curves, (dir), (dir)
+@top
+@menu
+* Introduction to elliptic_curves::
+* Definitions for elliptic_curves::
+* Function and variable index::
+@end menu
+@chapter elliptic_curves
+
+@node Introduction to elliptic_curves, Definitions for elliptic_curves, Top, Top
+@section Introduction to elliptic_curves
+
+@code{elliptic_curves} is a package for elliptic curves over prime fields 
+and provides some basic functions like addition and multiplication of curve points 
+given in affine coordinates. There are functions for computing point and group 
+orders and the package also contains example curve parameters from SEC and BRAINPOOL. 
+
+The trace of Frobenius is computed via Shanks-Mestre or Schoof-Elkies-Atkin, 
+where the database of precalculated modular polynomials is limited and the trace 
+can only be computed up to 256 bit examples. 
+
+Example: Plot of an elliptic curve with balanced points.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) [p,a,b] : [13,-9,12]$
+(%i3) ec_set_curve(p,a,b)$
+(%i4) ord : p+1 - ec_trace();
+(%o4)                                  19
+(%i5) ec_point_p(pt : [5,1]);
+(%o5)                                 true
+(%i6) ec_point_order(pt,ord);
+(%o6)                                  19
+(%i7) ec_balanced : true$
+(%i8) L : makelist(ec_mult(i,pt), i,1,ord-1)$
+(%i9) plot2d([discrete, L], 
+        [style, points], [x,-7,7], [y,-7,7],
+        [gnuplot_postamble, 
+          "set size square; set grid; set xtics 1; set ytics 1;"])$
+@c (%i9) plot2d([discrete, L], [gnuplot_term, dumb], [style, points])$
+@c
+@c                         y
+@c                           6 +-G-G----------------+
+@c                             |   +G +   G  + G +  |
+@c                             |          :         |
+@c                           4 |+         :        +|
+@c                             |      G   :         |
+@c                           2 |+         :G       +|
+@c                             |          :         |
+@c                             |          :      GG |
+@c                           0 |+..................+|
+@c                             |          :      GG |
+@c                             |          :         |
+@c                          -2 |+         :G       +|
+@c                             |      G   :         |
+@c                          -4 |+         :        +|
+@c                             |          :         |
+@c                             |   +G +   G  + G +  |
+@c                          -6 +-G-G----------------+
+@c                            -6  -4 -2   0  2   4  6
+@c                                       x
+@ifnotinfo
+@image{figures/ec_Z13,10cm}
+@end ifnotinfo
+
+@end example
+
+@code{elliptic_curves} contains some example parameters from SEC and BRAINPOOL. 
+
+Example: secp112r2 has no prime order.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) [[p,a,b],base_pt,n] : secp112r2$
+(%i3) ec_set_curve(p,a,b)$
+(%i4) ord : p+1 - ec_trace();
+(%o4)                   4451685225093714699870930859147564
+(%i5) ifactors(ord);
+(%o5)              [[2,2],[1112921306273428674967732714786891,1]]
+(%i6) n = ec_point_order(base_pt,ord);
+(%o6) 1112921306273428674967732714786891=1112921306273428674967732714786891
+@end example
+
+
+@node Definitions for elliptic_curves, Function and variable index, Introduction to elliptic_curves, Top
+@section Definitions for elliptic_curves
+
+@c -----------------------------------------------------------------------------
+@c Maxima functions:
+@c ec_add, ec_log, ec_mult, ec_point_order, ec_point_p, ec_random, 
+@c ec_set_curve, ec_trace, ec_twist_curve
+@c 
+@c Option variables:
+@c ec_balanced, ec_sea_verbose
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_add (@var{pt1}, @var{pt2})
+
+Adds two points on the current elliptic curve. 
+@code{ec_add} does not check if both points are indeed on the curve and will 
+return erroneous results if they are not.
+
+The following example also shows the point at infinity @code{ec_inf}. 
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_set_curve(13,1,2)$
+(%i3) pt : [1,11]$
+(%i4) ec_add(pt,pt);
+(%o4)                              [12,0]
+(%i5) ec_add(pt,ec_inf);
+(%o5)                              [1,11]
+@end example
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@defvr {Variable} ec_balanced
+Default value: @code{false}
+
+When @code{ec_balanced} is @code{true},
+a balanced modulus is applied when printing curve points. 
+E.g. this allows to create a symmetric discrete plot.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_balanced : true$
+(%i3) ec_set_curve(13,1,2)$
+(%i4) makelist(ec_mult(i, [1,11]), i,1,4);
+(%o4)                   [[1,-2],[-1,0],[1,2],ec_inf]
+@end example
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_log (@var{pt}, @var{gen})
+
+Uses a simple baby-giant-algorithm to compute the discrete logarithm of @var{pt}, 
+i.e. it solves the equation @code{gen^x = pt} on the current elliptic curve. 
+@var{gen} has to be a generator of the subgroup which contains @var{pt}. 
+Otherwise @code{ec_log} returns @code{false}.
+
+@code{ec_log} does not check if both points are indeed on the curve and will 
+return erroneous results if they are not.
+
+The algorithm is limited and prints an error if the characteristic exceeds 
+an integer length of 36 bit.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_set_curve(13,1,2)$
+(%i3) ord : p+1 - ec_trace();
+(%o3)                                12
+(%i4) gen : [2,5]$
+(%i5) makelist(ec_mult(i,gen), i,1,ec_point_order(gen,ord));
+(%o5)               [[2,5],[9,8],[12,0],[9,5],[2,8],ec_inf]
+(%i6) pt : [2,8]$
+(%i7) ec_log(pt,gen);
+(%o7)                                 5
+(%i8) pt : [1,2]$
+(%i9) ec_log(pt,gen);
+(%o9)                               false
+@end example
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_mult (@var{n}, @var{pt})
+
+Returns @var{n} times the point @var{pt} of the elliptic curve, which was 
+previously set by @code{ec_set_curve}. @code{ec_mult} does not check if the 
+point is indeed on the curve and will return erroneous results if it is not.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_set_curve(13,1,2)$
+(%i3) pt : [1,11]$
+(%i4) ec_mult(-1,pt);
+(%o4)                              [1,2]
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_point_order (@var{pt}, @var{ord})
+@deffnx {Function} ec_point_order (@var{pt}, @var{ord}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+
+Computes the point order of @var{pt} on the current elliptic curve as a factor 
+of the known group order @var{ord} of the curve. 
+
+If the factorization of @var{ord} is known, it can be passed as an optional argument.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_set_curve(p:13, 1,2)$
+(%i3) ord : p+1 - ec_trace();
+(%o3)                                12
+(%i4) fs_ord : ifactors(ord);
+(%o4)                           [[2,2],[3,1]]
+(%i5) pt : [1,11]$
+(%i6) ec_point_order(pt,ord,fs_ord);
+(%o6)                                 4
+(%i7) ec_mult(4,pt);
+(%o7)                              ec_inf
+@end example
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_point_p (@var{pt})
+
+Checks if @var{pt} is a point on the current elliptic curve, where the point at 
+infinity @code{ec_inf} is regarded as a point on the curve. 
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_random ()
+
+Returns a non-infinite random point on the current elliptic curve. 
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@defvr {Variable} ec_sea_verbose
+Default value: @code{false}
+
+When @code{ec_sea_verbose} is @code{true} and the integer length of the 
+characteristic @var{p} is larger than 56,
+@code{ec_trace} will print some information about the splitting type of the 
+modular polynomial and the resulting possible traces.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_sea_verbose : true$
+(%i3) apply(ec_set_curve, secp112r1[1])$
+(%i4) ec_trace();
+mod 2 : [2, [1]]
+atkin : [3, [1,2]]
+atkin : [5, [0]]
+elkies: [49, [47]]
+atkin : [11, [4,5,6,7]]
+atkin : [13, [0]]
+elkies: [17, [3]]
+atkin : [19, [2,4,6,9,10,13,15,17]]
+elkies: [23, [4]]
+atkin : [29, [10,19]]
+elkies: [31, [15]]
+elkies: [37, [2]]
+elkies: [41, [36]]
+atkin : [43, [1,4,6,7,8,10,14,17,18,20,23,25,26,29,33,35,36,37,39,42]]
+atkin : [47, [1,4,5,8,14,16,19,23,24,28,31,33,39,42,43,46]]
+(%o4)                        -4407293269000505
+@end example
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_set_curve (@var{p}, @var{a}, @var{b})
+
+Defines an elliptic curve (@var{a},@var{b}), 
+where @var{a} and @var{b} are elements of the prime field @code{F}@var{p} and 
+correspond to the Weierstrass equation @code{y^2 = x^3 + @var{a}*x + @var{b}}.
+@var{a}, @var{b} and @var{p} are stored as global parameters and all elliptic 
+curve functions refer to them.
+
+@code{ec_set_curve} returns @code{true} if the curve is not singular and 
+@code{false} otherwise. In this case no parameters are set.
+
+The following example shows the definition of the curve @code{secp112r1} and the 
+computation of its group order. 
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) p : 4451685225093714772084598273548427$
+(%i3) a : -3$
+(%i4) b : 2061118396808653202902996166388514$
+(%i5) ec_set_curve(p,a,b)$
+(%i6) ord : p + 1 - ec_trace();
+(%o6)                 4451685225093714776491891542548933
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_trace ()
+
+Returns the trace of Frobenius of the current elliptic curve. 
+@code{ec_trace} uses the Shanks-Mestre algorithm for integer lengths up to 56 bit 
+and the Schoof-Elkies-Atkin (SEA) algorithm otherwise. The database of modular 
+polynomials is limited and @code{ec_trace} will not work for parameters much larger 
+than 256 bit.
+
+The following example uses the curve @code{secp128r1} from the file 
+@code{curve_parameters.mac}.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) [p,a,b] : secp128r1[1]$
+(%i3) ec_set_curve(p,a,b)$
+(%i4) ord : p+1 - ec_trace();
+(%o4)              340282366762482138443322565580356624661
+(%i5) primep(ord);
+(%o5)                               true
+@end example
+
+See also @code{ec_sea_verbose}.
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@deffn {Function} ec_twist_curve ()
+
+Returns a list with a quadratic non-residue n of the given field and the 
+parameters (a*n^2, b*n^3) of the twisted curve.
+
+@example
+(%i1) load("elliptic_curves")$
+(%i2) ec_set_curve(p:13, 1,2)$
+(%i3) ord : p+1 - ec_trace();
+(%o3)                                12
+(%i4) [n,at,bt] : ec_twist_curve();
+(%o4)                              [2,4,3]
+(%i5) ec_set_curve(p, at,bt)$
+(%i6) ordt : p+1 - ec_trace();
+(%o6)                                16
+(%i7) is(ord + ordt = 2*p + 2);
+(%o7)                               true
+@end example
+
+@end deffn 
+
+@c -----------------------------------------------------------------------------
+
+@node Function and variable index,  , Definitions for elliptic_curves, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
