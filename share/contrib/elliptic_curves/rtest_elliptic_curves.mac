@@ -1,0 +1,76 @@
+
+( load("elliptic_curves"), 0 );
+0;
+
+
+/* atkin 3-23; elkies 29 */
+( [a,b]:[47,11],
+  p:13846712190265973, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+-135052897;
+
+twist:ec_twist_curve();
+[2,188,88];
+
+( [n,a,b]:twist,
+  ec_set_curve(p,a,b),
+  tr:ec_trace() );
+135052897;
+
+( ord:p+1-tr,
+  pt:[10827879220991895,2011341206274986],
+  ord/ec_point_order(pt,ord) );
+61;
+
+ec_add(ec_mult(123,pt), ec_mult(-123,pt));
+'ec_inf;
+
+ec_point_p([8179675642094528,5284678598995489]);
+true;
+
+/* 4 roots 3; atkin 11; 1 root 13; elkies 5,7,17,19 */
+( [a,b]:[47,11],
+  p:14738075521595911, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+-233499080;
+
+/* p < 2^52 */
+( [a,b]:[47,11],
+  p:1457711826897059, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+24668952;
+
+/* supersingular */
+( [a,b]:[0,8],
+  p:14759468628340727, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+0;
+
+/* j = 0 */
+( [a,b]:[0,8],
+  p:7671916838415829, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+-160797254;
+
+/* j = 1728 */
+( [a,b]:[15,0],
+  p:11722877012949637, 
+  ec_set_curve(p,a,b),
+  ec_trace() );
+-186087348;
+
+( [a,b]:[47,11],
+  p:11931547,
+  ec_set_curve(p,a,b),
+  gen:[7302929,11532116],
+  pt:ec_mult(7878895,gen),
+  ec_log(pt,gen) );
+7878895;
+
+(remvalue(p,a,b,n,tr,ord,pt,twist,gen), 0); 
+0;
