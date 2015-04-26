@@ -676,7 +676,7 @@
   (cond
     ((= a 0) (list 0))
     ((= 1 (gcd a n))
-      (let (p q qs rt rts rems)
+      (let (p q qs rt rts rems res)
         (unless fs-n (setq fs-n (let (($intfaclim)) (get-factor-list n))))
         (dolist (pe fs-n)
           (setq p (car pe)
