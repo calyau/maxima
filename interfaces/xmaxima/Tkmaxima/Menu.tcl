@@ -333,8 +333,7 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 -label [mc "Project Page"] \
 	-command [list eval $browse http://sourceforge.net/projects/maxima &]
     $m add command -underline 0 -label [mc "Bug Reports"] \
-	-command [list eval $browse \
-		      {http://sourceforge.net/tracker/?group_id=4933&atid=104933} &]
+	-command [list eval $browse http://sourceforge.net/p/maxima/bugs &]
 
     rename vMAXAddSystemMenu ""
     # vMAXSystemMenuHandlers $text $event
