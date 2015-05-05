@@ -236,6 +236,14 @@ contrib/diffequations/tests/rtestode_utils.mac \
 contrib/diffequations/tests/rtest_sym2.mac \
 contrib/diffequations/tests/rtest_sym.mac \
 contrib/diffequations/tests/testsuite.lisp \
+contrib/elliptic_curves/curve_parameters.mac \
+contrib/elliptic_curves/elliptic_curves.lisp \
+contrib/elliptic_curves/elliptic_curves.mac \
+contrib/elliptic_curves/elliptic_curves.texi \
+contrib/elliptic_curves/figures/ec_Z13.pdf \
+contrib/elliptic_curves/figures/ec_Z13.png \
+contrib/elliptic_curves/modular_polynomials.lisp \
+contrib/elliptic_curves/rtest_elliptic_curves.mac \
 contrib/engineering-format.lisp \
 contrib/Eulix/Eulix.html \
 contrib/Eulix/Eulix.mac \
