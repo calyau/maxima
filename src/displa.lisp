@@ -94,6 +94,12 @@
 		 (apply *alt-display1d* form ())
 		 (linear-displa form))))))
 
+(defmspec $with_default_2d_display (expr)
+  (let ((*alt-display2d* nil)
+        ($display2d t)
+        (mexpr (cons '(mprog) (cdr expr))))    
+    (meval mexpr)))
+
 ;;; (LINEAR-DISPLA <thing-to-display>)
 ;;;
 ;;; Display text linearly. This function should be usable in any case
