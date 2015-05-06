@@ -57,6 +57,11 @@
         (send-gnuplot-command
           (format nil "set terminal wxt dashed ~a~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
+      ($qt
+       ($mutiplot_mode '$none)
+       (send-gnuplot-command
+         (format nil "set terminal qt dashed ~a~%set multiplot~%" (write-font-type)))
+       (setf *multiplot-is-active* t))
       ($none
         (send-gnuplot-command
           (format nil "unset multiplot~%"))
@@ -3224,6 +3229,11 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
+        ($qt (format cmdstorage "set terminal qt dashed enhanced ~a ~a size ~a, ~a~%"
+                           *draw-terminal-number*
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
         ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
@@ -3398,7 +3408,7 @@
              (cond
                 ; connect to gnuplot via pipes
                 ((and (not *windows-OS*)
-                      (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+                      (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
                       (equal $draw_renderer '$gnuplot_pipes))
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
@@ -3410,11 +3420,11 @@
                 (t
 
 		 #+(or (and sbcl win32) (and ccl windows))
-		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
 		     ($system $gnuplot_command "-persist" gfn)
 		     ($system $gnuplot_command gfn))
 		 #-(or (and sbcl win32) (and ccl windows))
-		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
+		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
 			      (format nil "~a ~a"
 				      $gnuplot_command
 				      (format nil $gnuplot_view_args gfn))
@@ -3520,6 +3530,7 @@
       (case term
          ($wxt      (setf str "wxt"))
          ($aquaterm (setf str "aquaterm"))
+         ($qt       (setf str "qt"))
          (otherwise (setf str "x11")))
       (send-gnuplot-command (format nil "set terminal ~a ~a~%" str num))   ))
 
