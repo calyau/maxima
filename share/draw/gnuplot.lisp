@@ -58,7 +58,7 @@
           (format nil "set terminal wxt dashed ~a~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
       ($qt
-       ($mutiplot_mode '$none)
+        ($multiplot_mode '$none)
        (send-gnuplot-command
          (format nil "set terminal qt dashed ~a~%set multiplot~%" (write-font-type)))
        (setf *multiplot-is-active* t))
