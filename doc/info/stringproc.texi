@@ -1300,7 +1300,7 @@ Like @code{strim} except that only the left end of @var{string} is trimmed.
 @end deffn
 
 @deffn {Function} strimr (@var{seq}, @var{string}) 
-Like @code{strim} except that only the right end of string is trimmed. 
+Like @code{strim} except that only the right end of @var{string} is trimmed.
 
 @opencatbox
 @category{Package stringproc}
