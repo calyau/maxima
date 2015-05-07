@@ -383,7 +383,7 @@ change its value after loading @code{orthopoly}.
 
 Finally, be aware that reference books vary on the definitions of the 
 orthogonal polynomials; we've generally used the conventions 
-of conventions of Abramowitz and Stegun.
+of Abramowitz and Stegun.
 
 Before you suspect a bug in orthopoly, check some special cases 
 to determine if your definitions match those used by @code{orthopoly}. 
