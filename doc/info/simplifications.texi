@@ -288,7 +288,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
-@deffn {Function} rational (@code{z})
+@deffn {Function} rational (@var{z})
 Multiplies numerator and denominator of @var{z} by the complex conjugate of denominator,
 thus rationalizing the denominator.
 Returns canonical rational expression (CRE) form if given one, else returns general form.
