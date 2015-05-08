@@ -82,8 +82,8 @@ ceiling(x) * ceiling(y)$
 ceiling(6 * ceiling(x) - 28 * ceiling(y));
 6 * ceiling(x) - 28 * ceiling(y)$
 
-ceiling(ceiling(x));
-'(ceiling(x))$
+ceiling(floor(x));
+'(floor(x))$
 
 (declare(n,integer),0);
 0$
