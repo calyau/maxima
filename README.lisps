@@ -92,15 +92,12 @@ There are GCL implementations for many platforms
 including MS Windows and Unix-like systems.
 
 --------------------------------------------------------------------
-SBCL <http://sbcl.sourceforge.net>
+SBCL <http://www.sbcl.org>
 
     SBCL is a fork of CMUCL which differs in some minor details,
 but most notably, it is simpler to rebuild SBCL than CMUCL.
 
 rmaxima is recommended for use with SBCL. See CMUCL above.
-
-There are SBCL implementations only for Unix-like systems
-(not MS Windows).
 
 --------------------------------------------------------------------
 Allegro Common Lisp:
