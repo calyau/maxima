@@ -497,6 +497,7 @@
                                      (:file "mload") 
                                      (:file "suprv1")
                                      (:file "dskfn")))
+               (:file "algext")
                (:module factoring :source-pathname ""
                         :components ((:file "lesfac") 
                                      (:file "factor") 

@@ -44,17 +44,18 @@
     (setq b (lmake2 (cadr (ratrep* b)) nil))
     (setq mainvar (caadr (ratrep* mainvar)))
 
-    (dolist (a-term a)
-      (dolist (b-term b)
-        (setq res (result1 (car a-term) (car b-term) mainvar))
-        (setq ans (ptimes ans
-                          (pexpt
-                           (if (zerop (third res))
-                               (first res)
-                               (ptimeschk (first res)
-                                          (pexpt (makprod (second res) nil)
-                                                 (third res))))
-                           (* (cdr a-term) (cdr b-term)))))))
+    (force-algebraic-independence
+      (dolist (a-term a)
+        (dolist (b-term b)
+          (setq res (result1 (car a-term) (car b-term) mainvar))
+          (setq ans (ptimes ans
+                            (pexpt
+                             (if (zerop (third res))
+                                 (first res)
+                                 (ptimeschk (first res)
+                                            (pexpt (makprod (second res) nil)
+                                                   (third res))))
+                             (* (cdr a-term) (cdr b-term))))))))
 
     (if formflag (pdis* ans) (pdis ans))))
 
