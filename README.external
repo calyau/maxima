@@ -15,4 +15,4 @@ The following external tools are needed to build and/or use Maxima:
 5) The xmaxima front-end requires Tcl/Tk. xmaxima is only one
    possible interface to Maxima. It is not required.
 
-6) Building Maxima from CVS additionally requires the GNU autotools.
+6) Building Maxima from GIT additionally requires the GNU autotools.
