@@ -53,6 +53,18 @@
 (defmfun assolike (item alist) 
   (cdr (assol item alist)))
 
+;;; (MEMALIKE X L)
+;;;
+;;;  Searches for X in the list L, but uses ALIKE1 as the comparison predicate
+;;;  (which is similar to EQUAL, but ignores header flags other than the ARRAY
+;;;  flag)
+;;;
+;;;  Conceptually, the function is the same as
+;;;
+;;;    (when (find x l :test #'alike1) l)
+;;;
+;;;  except that MEMALIKE requires a list rather than a general sequence, so the
+;;;  host lisp can probably generate faster code.
 (defmfun memalike (x l)
   (do ((l l (cdr l)))
       ((null l))

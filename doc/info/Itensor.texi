@@ -56,7 +56,7 @@ expressions which in the component representation would be
 unmanageable can sometimes be greatly simplified by using the special
 routines for symmetrical objects in @code{itensor}. In this way the structure
 of a large expression may be more transparent. On the other hand, because
-of the the special indicial representation in @code{itensor}, in some cases the
+of the special indicial representation in @code{itensor}, in some cases the
 user may find difficulty with the specification of the metric, function
 definition, and the evaluation of differentiated "indexed" objects.
 

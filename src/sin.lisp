@@ -105,17 +105,6 @@
   (let ((ex (simplify ($factor x))))
     (if (not (alike1 ex x)) ex)))
 
-;; Like FIND-IF, but calls FUNC on elements of SEQ in turn until one returns
-;; non-NIL. At that point, return the result (rather than the input, which is
-;; what you'd get from FIND-IF)
-(defun map-find (func seq)
-  (catch 'map-find
-    (map nil
-         (lambda (x)
-           (let ((result (funcall func x)))
-             (when result (throw 'map-find result))))
-         seq)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Stage II of the Integrator

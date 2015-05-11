@@ -34,7 +34,7 @@
 
 (declare-top (special $algdelta $ratepsilon $algepsilon $keepfloat
 		     varlist genvar *roots *failures $ratprint $numer $ratfac
-		     $rnum $solvefactors $dispflag $breakup $rootsquad
+		     $rnum $solvefactors $dispflag $breakup
 		     *tvarxlist* errorsw $programmode *ivar* errset $polyfactor
 		     bindlist loclist $float $infeval))
 
@@ -116,32 +116,35 @@
 	  (resimplify solnlist))
 	solnlist)))
 
+;;; (CONDENSESOLNL TEMPSOLNL)
+;;;
+;;; Condense a solution list, discarding any solution that is a special case of
+;;; another one. (For example, if the list contained [x=1, y=1] as a solution,
+;;; but also just [x=1], then the first solution would be discarded)
+;;;
+;;; Destructively modifies TEMPSOLNL
 (defun condensesolnl (tempsolnl)
   (let (solnl)
-    (mapl #'(lambda (q) (or (subsetl (cdr q) (car q))
-			    (setq solnl (cons (car q) solnl))))
+    (mapl (lambda (q)
+            (unless (subsetl (cdr q) (car q))
+              (push (car q) solnl)))
 	  (sort tempsolnl #'(lambda (a b) (> (length a) (length b)))))
     solnl))
 
+;;; (SUBSETL L1 S2)
+;;;
+;;; Check whether some element of L1 is a subset of S2 (comparing elements with
+;;; ALIKE1). As a special case, if S2 is '(NIL) then return true.
 (defun subsetl (l1 s2)
-  (or (equal s2 (list nil))
-      (do ((l l1 (cdr l)))
-	  ((null l) nil)
-	(when (m-subset (car l) s2) (return t)))))
+  (or (equal s2 '(nil))
+      (member-if (lambda (x)
+                   (subsetp x s2 :test #'alike1))
+                 l1)))
 
-(defun m-subset (s1 s2)
-  (do ((s s1 (cdr s)))
-      ((null s) t)
-    (unless (memalike (car s) s2) (return nil))))
-
-(defun algsys (tlhslist &aux answ)
-  (setq answ
-	(condensesolnl (apply #'append
-			      (mapcar #' algsys0
-					 (distrep (mapcar  #'lofactors tlhslist))))))
-  ;;     (displa  (cons '(mlist)  (loop for v in answ collecting
-  ;;				  (cons '(mlist) v))))
-  answ)
+(defun algsys (tlhslist)
+  (condensesolnl
+   (mapcan #'algsys0
+           (distrep (mapcar #'lofactors tlhslist)))))
 
 (defun algsys0 (tlhslist)
   (cond ((null tlhslist) (list nil))
@@ -149,17 +152,14 @@
 	(t (algsys1 tlhslist))))
 
 (defun algsys1 (tlhslist)
-  (let ((resulteq (findleastvar tlhslist))
-	(vartorid nil)
-	(nlhslist nil))
-    (setq vartorid (cdr resulteq)
-	  resulteq (car resulteq)
-	  nlhslist (mapcar #'(lambda (q)
-			       (if (among vartorid q)
-				   (presultant q resulteq vartorid)
-				   q))
-			   (delete resulteq (copy-list tlhslist) :test #'equal)))
-    (bakalevel (algsys nlhslist) tlhslist vartorid)))
+  (destructuring-bind (resulteq . vartorid) (findleastvar tlhslist)
+    (bakalevel (algsys
+                (mapcar #'(lambda (q)
+                            (if (among vartorid q)
+                                (presultant q resulteq vartorid)
+                                q))
+                        (remove resulteq tlhslist :test #'equal)))
+               tlhslist vartorid)))
 
 (defun addmlist (l)
   (cons '(mlist) l))
@@ -226,48 +226,121 @@
 
 (declare-top (special *vardegs*))
 
+;;; (FINDLEASTVAR LHSL)
+;;;
+;;; Iterate over the polynomials in LHSL, trying to find a "least var", which is
+;;; a variable that will hopefully be easiest to solve for. Variables from
+;;; *TVARXLIST* and their products are considered.
+;;;
+;;; For example, if *TVARXLIST* contains x, y and we only considered the
+;;; polynomial x^3 + y^2 + x then we'd have a least var of y with degree 2. If c
+;;; is not in *TVARXLIST* then we'd get the same answer from x^3 + c*y^2 + x
+;;; because such variables are just ignored. However, x^3 + x^2*y^2 would yield
+;;; x with degree 3 because the mixed term x^2*y^2 has higher total degree.
+;;;
+;;; The function returns the polynomial with the variable with minimal maximum
+;;; degree (as described above), together with that variable.
+;;;
+;;; Mixed terms are mostly ignored, but consider this pair of polynomials:
+;;; [x*y+1, x^3+1]. In the first polynomial, the only non-constant term is
+;;; mixed. Its degree in the first polynomial is 2 which is less than 3, so that
+;;; first polynomial is returned along with its leading variable.
 (defun findleastvar (lhsl)
-  (do ((tlhsl lhsl (cdr tlhsl))
-       (teq) (*vardegs*) (tdeg)
-       ;; Largest possible fixnum.  The actual degree of any polynomial
-       ;; is supposed to be less than this number.
-       (leastdeg  most-positive-fixnum)
-       (leasteq) (leastvar))
-      ((null tlhsl) (cons leasteq leastvar))
+  (let ((*vardegs*)
+        (leasteq) (leastvar)
+        ;; most-positive-fixnum is larger than any polynomial degree, so we can
+        ;; initialise with this and be certain to replace it on the first
+        ;; iteration.
+        (leastdeg most-positive-fixnum))
     (declare (special *vardegs*))
-    (setq teq (car tlhsl))
-    (setq *vardegs* (getvardegs teq))
-    (setq tdeg (killvardegsc teq))
-    (mapc #'(lambda (q) (cond ((not (> (cdr q) leastdeg))
-			      (setq leastdeg (cdr q)
-				    leasteq teq
-				    leastvar (car q)))))
-	   *vardegs*)
-    (cond ((< tdeg leastdeg) (setq leastdeg tdeg
-				   leasteq teq
-				   leastvar (car teq))))))
+    (loop
+       for teq in lhsl
+       for *vardegs* = (getvardegs teq)
+       for tdeg = (killvardegsc teq)
+       do (loop
+             for q in *vardegs*
+             if (<= (cdr q) leastdeg)
+             do (setq leastdeg (cdr q)
+                      leasteq teq
+                      leastvar (car q)))
+       if (< tdeg leastdeg)
+       do (setq leastdeg tdeg
+                leasteq teq
+                leastvar (car teq)))
+    (cons leasteq leastvar)))
 
+;;; DO-POLY-TERMS
+;;;
+;;; Iterate over the terms in a polynomial, POLY, executing BODY with LE and LC
+;;; bound to the exponent and coefficient respectively of each term. If RESULT
+;;; is non-NIL, it is evaluated to give a result when the iteration finishes.
+(defmacro do-poly-terms ((le lc poly &optional result) &body body)
+  (let ((pt (gensym)))
+    `(do ((,pt (p-terms ,poly) (pt-red ,pt)))
+         ((null ,pt) ,result)
+       (let ((,le (pt-le ,pt))
+             (,lc (pt-lc ,pt)))
+         ,@body))))
+
+;;; (KILLVARDEGSC POLY)
+;;;
+;;; For each monomial in POLY that is mixed in the variables in *VARDEGS*
+;;; (i.e. has more than one variable from *VARDEGS* with positive exponent),
+;;; iterate over all but the first variable, checking to see whether its degree
+;;; in the monomial is at least as high as that in *VARDEGS*. If so, delete that
+;;; variable and its degree from *VARDEGS*.
+;;;
+;;; Returns the maximum total degree of any term in the polynomial, summing
+;;; degrees over the variables in *VARDEGS*.
 (defun killvardegsc (poly)
-  (cond ((pconstp poly) 0)
-	(t (do ((poly (cdr poly) (cddr poly))
-		(tdeg 0 (max tdeg (+ (car  poly)
-				      (cond ((= (car poly) 0)
-					     (killvardegsc (cadr poly)))
-					    (t (killvardegsn (cadr poly))))))))
-	       ((null poly) tdeg)))))
+  (if (pconstp poly)
+      0
+      (let ((tdeg 0))
+        (do-poly-terms (le lc poly tdeg)
+          (setf tdeg (max tdeg (+ le
+                                  (if (= le 0)
+                                      (killvardegsc lc)
+                                      (killvardegsn lc)))))))))
 
+;;; (KILLVARDEGSN POLY)
+;;;
+;;; For each monomial in POLY, look at its degree in each variable in
+;;; *TVARXLIST*. If the degree is at least as high as that recorded in
+;;; *VARDEGS*, delete that variable and its degree from *VARDEGS*.
+;;;
+;;; Returns the maximum total degree of any term in the polynomial, summing
+;;; degrees over the variables in *VARDEGS*.
 (defun killvardegsn (poly)
   (declare (special *vardegs*))
-  (cond ((pconstp poly)
-	 0)
-	(t
-	 (let ((x (assoc (car poly) *vardegs* :test #'eq)))
-	   (and x
-		(not (> (cdr x) (cadr poly)))
-		(setq *vardegs* (delete x *vardegs* :test #'equal))))
-	 (do ((poly (cdr poly) (cddr poly))
-	      (tdeg 0 (max tdeg (+ (car poly) (killvardegsn (cadr poly))))))
-	     ((null poly) tdeg)))))
+  (cond
+    ((pconstp poly) 0)
+    (t
+     (let ((x (assoc (p-var poly) *vardegs* :test #'eq)))
+       (when (and x (<= (cdr x) (p-le poly)))
+         (setq *vardegs* (delete x *vardegs* :test #'equal))))
+     (let ((tdeg 0))
+       (do-poly-terms (le lc poly tdeg)
+         (setf tdeg (max tdeg (+ le (killvardegsn lc)))))))))
+
+;;; (GETVARDEGS POLY)
+;;;
+;;; Return degrees of POLY's monomials in the variables for which we're
+;;; solving. Ignores mixed terms (like x*y). Results are returned as an alist
+;;; with elements (VAR . DEGREE).
+;;;
+;;; For example, if *TVARXLIST* is '(x y) and we are looking at the polynomial
+;;; x^2 + y^2, we have
+;;;
+;;;   (GETVARDEGS '(X 2 1 0 (Y 2 1))) => ((X . 2) (Y . 2))
+;;;
+;;; Variables that aren't in *TVARXLIST* are assumed to come after those that
+;;; are. For example c*x^2 would look like
+;;;
+;;;   (GETVARDEGS '(X 2 (C 1 1))) => ((X . 2))
+;;;
+;;; Mixed powers are ignored, so x*y + y looks like:
+;;;
+;;;   (GETVARDEGS '(X 1 (Y 1 1) 0 (Y 1 1))) => ((Y . 1))
 
 (defun getvardegs (poly)
   (cond ((pconstp poly) nil)
@@ -281,34 +354,75 @@
 (defun pconstp (poly)
   (or (atom poly) (not (member (car poly) *tvarxlist* :test #'eq))))
 
+;;; (PFREEOFMAINVARSP POLY)
+;;;
+;;; If POLY isn't a polynomial in the variables for which we're solving,
+;;; disrep it and apply $RADCAN.
 (defun pfreeofmainvarsp (poly)
-  (cond ((atom poly) poly)
-	((null (member (car poly) *tvarxlist* :test #'eq))
-	 ($radcan (pdis poly)))
-	(t poly)))
+  (if (or (atom poly)
+          (member (car poly) *tvarxlist* :test #'eq))
+      poly
+      ($radcan (pdis poly))))
 
+;;; (LOFACTORS POLY)
+;;;
+;;; If POLY is a polynomial in one of the variables for which we're solving,
+;;; then factor it into a list of factors (where the result returns factors
+;;; alternating with their multiplicity in the same way as PFACTOR).
+;;;
+;;; If POLY is not a polynomial in one of the solution variables, return NIL.
 (defun lofactors (poly)
-  (setq poly (pfreeofmainvarsp poly))
-  (cond ((pzerop poly)			;(signp e poly)
-	 (list 0))
-	((or (atom poly) (not (atom (car poly))))  nil)
-	(t (do ((tfactors (pfactor poly) (cddr tfactors))
-		(lfactors))
-	       ((null tfactors) lfactors)
-	     (setq poly (pfreeofmainvarsp (car tfactors)))
-	     (cond ((pzerop poly)	;(signp e poly)
-		    (return (list 0)))
-		   ((and (not (atom poly)) (atom (car poly)))
-		    (setq lfactors (cons (pabs poly) lfactors))))))))
+  (let ((main-var-poly (pfreeofmainvarsp poly)))
+    (cond
+      ((pzerop main-var-poly) '(0))
 
+      ;; If POLY isn't a polynomial in our chosen variables, RADCAN will return
+      ;; something whose CAR is a cons. In that case, or if the polynomial is
+      ;; something like a number, there are no factors to extract.
+      ((or (atom main-var-poly)
+           (not (atom (car main-var-poly))))
+       nil)
+
+      (t
+       (do ((tfactors (pfactor main-var-poly) (cddr tfactors))
+            (lfactors))
+           ((null tfactors) lfactors)
+         (let ((main-var-factor (pfreeofmainvarsp (car tfactors))))
+           (cond
+             ((pzerop main-var-factor)
+              (return (list 0)))
+             ((and (not (atom main-var-factor))
+                   (atom (car main-var-factor)))
+              (push (pabs main-var-factor) lfactors)))))))))
+
+;;; (COMBINEY LISTOFL)
+;;;
+;;; Combine "independent" lists in LISTOFL. If all the lists have empty pairwise
+;;; intersections, this returns all selections of items, one from each
+;;; list. Destructively modifies LISTOFL.
+;;;
+;;; Selections are built up starting at the last list. When building, if there
+;;; would be a repeated element because the list we're about to select from has
+;;; nonempty intersection with an existing partial selections then elements from
+;;; the current list aren't added to this selection.
+;;;
+;;; COMBINEY guarantees that no list in the result has two elements that are
+;;; ALIKE1 each other.
+;;;
+;;; This is used to enumerate combinations of solutions from multiple
+;;; equations. Each entry in LISTOFL is a list of possible solutions for an
+;;; equation. A solution for the set of equations is found by looking at
+;;; (compatible) combinations of solutions.
+;;;
+;;; (I don't know why the non-disjoint behaviour works like this. RJS 1/2015)
 (defun combiney (listofl)
-  (cond ((member nil listofl :test #'eq) nil)
-	(t (combiney1 (delete '(0) listofl :test #'equal)))))
+  (unless (member nil listofl)
+    (combiney1 (delete '(0) listofl :test #'equal))))
 
 (defun combiney1 (listofl)
   (cond ((null listofl) (list nil))
 	(t (mapcan #'(lambda (r)
-		       (if (intersection (car listofl) r :test #'equal)
+		       (if (intersection (car listofl) r :test #'alike1)
 			   (list r)
 			   (mapcar #'(lambda (q) (cons q r)) (car listofl))))
 		   (combiney1 (cdr listofl))))))
@@ -334,8 +448,16 @@
 	 (cons (car solnl1) (commonroots eps (cdr solnl1) solnl2)))
 	(t (commonroots eps (cdr solnl1) solnl2))))
 
-(defun deletmult (l)
-  (and l (cons (car l) (deletmult (cddr l)))))
+;; (REMOVE-MULT L)
+;;
+;; Return a copy of L with all elements in odd positions removed. This is so
+;; named because some code returns roots and multiplicities in the format
+;;
+;;   (ROOT0 MULT0 ROOT1 MULT1 ... ROOTN MULTN)
+;;
+;; Calling REMOVE-MULT on such a list removes the multiplicities.
+(defun remove-mult (l)
+  (and l (cons (car l) (remove-mult (cddr l)))))
 
 (defun punivarp (poly)
   ;; Check if called with the number zero, return nil. 
@@ -348,11 +470,15 @@
 	     (punivarp (cadr l)))
 	(return nil))))
 
+;; (REALONLY ROOTSL)
+;;
+;; Return only the elements of ROOTSL whose $IMAGPART simplifies to zero with
+;; SRATSIMP. (Note that this a subset of "the real roots", because SRATSIMP may
+;; not be able to check that a given expression is zero)
 (defun realonly (rootsl)
-  (cond ((null rootsl) nil)
-	((equal 0 (sratsimp ($imagpart (caddr (car rootsl)))))
-	 (nconc (list (car rootsl)) (realonly (cdr rootsl))))
-	(t (realonly (cdr rootsl)))))
+  (remove-if-not (lambda (root)
+                   (equal 0 (sratsimp ($imagpart (caddr root)))))
+                 rootsl))
 
 
 (defun presultant (p1 p2 var)
@@ -364,6 +490,15 @@
      (cond ((null ll) (return (car l)))
 	   (t (return (ptimes (car l) (ptimeftrs ll)))))))
 
+;; (EBAKSUBST SOLNL LHSL)
+;;
+;; Substitute a solution for one variable back into the "left hand side
+;; list". If the equation had to be solved for multiple variables, this allows
+;; us to use the solution for a first variable to feed in to the equation for
+;; the next one along.
+;;
+;; As well as doing the obvious substitution, EBAKSUBST also simplifies with
+;; $RADCAN (presumably, E stands for Exponential)
 (defun ebaksubst (solnl lhsl)
   (mapcar #'(lambda (q) (cadr (ratf (what-the-$ev (pdis q)
 						  (cons '(mlist) solnl)
@@ -395,41 +530,95 @@
     (or (numberp p)
 	(eq (pdis (pget (car p))) '$%i))))
 
+;; (BAKALEVEL SOLNL LHSL VAR)
+;;
+;;; Recursively try to find a solution to the list of polynomials in LHSL. SOLNL
+;;; should be a non-empty list of partial solutions (for example, these might be
+;;; solutions we've already found for x when we're solving for x and y).
+;;;
+;;; BAKALEVEL works over each partial solution. This should itself be a list. If
+;;; it is non-nil, it is a list of equations for the variables we're trying to
+;;; solve for ("x = 3 + y" etc.). In this case, BAKALEVEL substitutes these
+;;; solutions into the system of equations and then tries to solve the
+;;; result. On success, it merges the partial solutions in SOLNL with those it
+;;; gets recursively.
+;;;
+;;; If a partial solution is nil, we don't yet have any partial information. If
+;;; there is only a single polynomial to solve in LHSL, we try to solve it in
+;;; the given variable, VAR. Otherwise we choose a variable of lowest degree
+;;; (with FINDLEASTVAR), solve for that (with CALLSOLVE) and then recurse.
 (defun bakalevel (solnl lhsl var)
-;;(apply #'append (mapcar #'(lambda (q) (bakalevel1 q lhsl var)) solnl))
-  (loop for q in solnl append (bakalevel1 q lhsl var)))
+  (loop for q in solnl nconcing (bakalevel1 q lhsl var)))
 
 (defun bakalevel1 (solnl lhsl var)
-  (cond ((exactonly solnl)
-	 (cond (solnl (mergesoln solnl (algsys (ebaksubst solnl lhsl))))
-	       ((cdr lhsl)
-		(bakalevel (callsolve (setq solnl (findleastvar lhsl)))
-			   (remove (car solnl) lhsl :test #'equal) var))
-	       (t (callsolve (cons (car lhsl) var)))))
-	(t (mergesoln solnl (apprsys (baksubst solnl lhsl))))))
+  (cond
+    ((not (exactonly solnl))
+     (mergesoln solnl (apprsys (baksubst solnl lhsl))))
+    (solnl
+     (mergesoln solnl (algsys (ebaksubst solnl lhsl))))
+    ((cdr lhsl)
+     (let ((poly-and-var (findleastvar lhsl)))
+       (bakalevel (callsolve poly-and-var)
+                  (remove (car poly-and-var) lhsl :test #'equal)
+                  var)))
+    (t (callsolve (cons (car lhsl) var)))))
 
+;; (EVERY-ATOM PRED X)
+;;
+;; Evaluates to true if (PRED Y) is true for every atom Y in the cons tree X.
+(defun every-atom (pred x)
+  (if (atom x)
+      (funcall pred x)
+      (and (every-atom pred (car x))
+           (every-atom pred (cdr x)))))
+
+;; (EXACTONLY SOLNL)
+;;
+;; True if the list of solutions doesn't contain any terms that look inexact
+;; (just floating point numbers, unless realonlyratnum is true)
 (defun exactonly (solnl)
-  (cond ((atom solnl)
-	 (and (not (floatp solnl))
-	      (or (null realonlyratnum) (not (eq solnl 'rat)))))
-	(t (and (exactonly (car solnl)) (exactonly (cdr solnl))))))
+  (every-atom (lambda (x)
+                (and (not (floatp x))
+                     (or (null realonlyratnum)
+                         (not (eq x 'rat)))))
+              solnl))
 
+;; (MERGESOLN ASOLN SOLNL)
+;;
+;; For each solution S in SOLNL, evaluate each element of ASOLN in light of S
+;; and, collecting up the results and prepending them to S. If evaluating an
+;; element in light of S caused an error, ignore the combination of ASOLN and S.
 (defun mergesoln (asoln solnl)
-  (let ((errorsw t) s (unbind (cons bindlist loclist)))
-    (mapcan #'(lambda (q)
-		(setq s (catch 'errorsw
-			  (append
-			   (mapcar #'(lambda (r)
-				       (what-the-$ev r (cons '(mlist) q)))
-				   asoln)
-			   q)))
-		(cond ((eq s t)
-		       (errlfun1 unbind)
-		       nil)
-		      (t
-		       (list s))))
-	    solnl)))
+  (let ((unbind (cons bindlist loclist))
+        (errorsw t))
+    (macrolet ((catch-error-t (&body body)
+                 `(let ((result (catch 'errorsw ,@body)))
+                    (when (eq result t)
+                      (errlfun1 unbind))
+                    result)))
+      (loop
+         for q in solnl
+         for result =
+           (catch-error-t
+            (append (mapcar (lambda (r)
+                              (what-the-$ev r (cons '(mlist) q)))
+                            asoln)
+                   q))
+         if (not (eq result t)) collect result))))
 
+;; (CALLSOLVE PV)
+;;
+;; Try to solve a polynomial with respect to the given variable. PV is a cons
+;; pair (POLY . VAR). On success, return a list of solutions. Each solution is
+;; itself a list, whose elements are equalities (one for each variable in the
+;; equation). If we determine that there aren't any solutions, return '(NIL).
+;;
+;; If POLY is in more than one variable or if it can clearly be solved by the
+;; quadratic formula (BIQUADRATICP), we always call SOLVE to try to get an exact
+;; solution. Similarly if the user has set the $ALGEXACT variable to true.
+;;
+;; Otherwise, or if SOLVE fails, we try to find an approximate solution with a
+;; call to CALLAPPRS.
 (defun callsolve (pv)
   (let ((poly (car pv))
 	(var (cdr pv))
@@ -438,46 +627,64 @@
 	(*roots nil)
 	(*failures nil)
 	($programmode t))
-    (cond ((or $algexact (not (punivarp  poly))
+    (cond ((or $algexact
+               (not (punivarp poly))
 	       (biquadraticp poly))
+           ;; Call SOLVE to try to solve POLY. When it returns, the solutions it
+           ;; found end up in *ROOTS. *FAILURES contains expressions that, if
+           ;; solved, would lead to further solutions.
 	   (solve (pdis poly) (pdis (list var 1 1)) 1)
-	   (cond ((null (or *roots *failures))
-		  (list nil))
-		 (t
-		  (append (mapcan #'(lambda (q) (callapprs (cadr (ratf (meqhk q))))) (deletmult *failures))
-			  (mapcar #'list
-				  (if $realonly
-				      (realonly (deletmult *roots))
-				      (deletmult *roots)))))))
+           (if (null (or *roots *failures))
+               ;; We're certain there are no solutions
+               (list nil)
+               ;; Try to find approximate solutions to the terms that SOLVE gave
+               ;; up on (in *FAILURES) and remove any roots from SOLVE that
+               ;; aren't known to be real if $REALONLY is true.
+               (append (mapcan (lambda (q)
+                                 (callapprs (cadr (ratf (meqhk q)))))
+                               (remove-mult *failures))
+                       (mapcar #'list
+                               (if $realonly
+                                   (realonly (remove-mult *roots))
+                                   (remove-mult *roots))))))
 	  (t (callapprs poly)))))
 
+;;; (BIQUADRATICP POLY)
+;;;
+;;; Check whether POLY is biquadratic in its main variable: either of degree at
+;;; most two or of degree four and with only even powers.
 (defun biquadraticp (poly)
   (or (atom poly)
       (if algnotexact
-	  (< (cadr poly) 2)
-	  (or (< (cadr poly) 3)
-	      (and (= (cadr poly) 4) (biquadp1 (cdddr poly)))))))
+	  (< (p-le poly) 2)
+	  (or (< (p-le poly) 3)
+	      (and (= (p-le poly) 4) (biquadp1 (p-red poly)))))))
 
-(defun biquadp1 (l)
-  (or (null l)
-      (and (or (= (car l) 2) (= (car l) 0))
-	   (biquadp1 (cddr l)))))
+(defun biquadp1 (terms)
+  (or (null terms)
+      (and (or (= (pt-le terms) 2) (= (pt-le terms) 0))
+	   (biquadp1 (pt-red terms)))))
 
+;;; (CALLAPPRS POLY)
+;;;
+;;; Try to find approximate solutions to POLY, which should be a polynomial in a
+;;; single variable. Uses STURM1 if we're only after real roots (because
+;;; $REALONLY is set). Otherwise, calls $ALLROOTS.
 (defun callapprs (poly)
-  (or (punivarp poly)
-      (merror (intl:gettext "algsys: tried and failed to reduce system to a polynomial in one variable; give up.")))
-  (let ($rootsquad $dispflag)
-    (cond ($realonly
-	   (mapcar #'(lambda (q)
-		       (list (list '(mequal)
-				   (pdis (list (car poly) 1 1))
-				   (rflot q))))
-		   (sturm1 poly (cons 1 $algepsilon))))
-	  (t (mapcar #'list
-		     (let (($programmode t) l)
-		       (setq l (cdr ($allroots (pdis poly))))
-		       (cond ((not (eq (caaar l) 'mequal)) (cdr l))
-			     (t l))))))))
+  (unless (punivarp poly)
+    (merror (intl:gettext "algsys: Couldn't reduce system to a polynomial in one variable.")))
+  (let ($dispflag)
+    (if $realonly
+        (let ((dis-var (pdis (list (car poly) 1 1))))
+          (mapcar #'(lambda (q)
+                      (list (list '(mequal) dis-var (rflot q))))
+                  (sturm1 poly (cons 1 $algepsilon))))
+        (mapcar #'list
+                (let* (($programmode t)
+                       (roots (cdr ($allroots (pdis poly)))))
+                  (if (eq (caaar roots) 'mequal)
+                      roots
+                      (cdr roots)))))))
 
 (defun apprsys (lhsl)
   (cond ((null lhsl) (list nil))
@@ -501,18 +708,21 @@
 (defmfun mycabs (x)
   (and (complexnump x) (cabs x)))
 
+;;; (DISTREP LOL)
+;;;
+;;; Take selections from LOL, a list of lists, using COMBINEY. When used by
+;;; ALGSYS, the elements of the lists are per-equation solutions for some system
+;;; of equations. COMBINEY combines the per-equation solutions into prospective
+;;; solutions for the entire system.
+;;;
+;;; These prospective solutions are then filtered with CONDENSESOLNL, which
+;;; discards special cases of more general solutions.
+;;;
+;;; (I don't understand why this reversal has to be here, but we get properly
+;;;  wrong solutions to some of the testsuite functions without it. Come back to
+;;;  this... RJS 1/2015)
 (defun distrep (lol)
-  (condensesolnl (condensesublist (combiney lol))))
-
-(defun condensey (l)
-  (let ((result nil))
-    (mapl #'(lambda (q)
-	      (or (memalike (car q) (cdr q)) (push (car q) result)))
-	  l)
-    result))
-
-(defun condensesublist (lol)
-  (mapcar #'condensey lol))
+  (condensesolnl (mapcar #'reverse (combiney lol))))
 
 (defun exclude (l1 l2)
   (cond ((null l2)

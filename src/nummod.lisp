@@ -218,11 +218,15 @@
 			 (opcons '$floor o-sum)))
 	   (add i-sum o-sum)))
 
-	;; handle 0 < e < 1 implies floor(e) = 0 and
-	;; -1 < e < 0 implies floor(e) = -1.
+	;; handle 0 <= e < 1 implies floor(e) = 0 and
+	;; -1 <= e < 0 implies floor(e) = -1.
 
-	((and (equal ($compare 0 e) "<") (equal ($compare e 1) "<")) 0)
-	((and (equal ($compare -1 e) "<") (equal ($compare e 0) "<")) -1)
+	((and (member ($compare 0 e) '("<" "<=") :test #'equal)
+	      (equal ($compare e 1) "<"))
+	 0)
+	((and (member ($compare -1 e) '("<" "<=") :test #'equal)
+	      (equal ($compare e 0) "<"))
+	 -1)
 	(t `(($floor simp) ,e))))
 
 (defun floor-integral (x)
@@ -274,11 +278,15 @@
 			 (opcons '$ceiling o-sum)))
 	   (add i-sum o-sum)))
 
-	;; handle 0 < e < 1 implies ceiling(e) = 1 and
-	;; -1 < e < 0 implies ceiling(e) = 0.
+	;; handle 0 < e <= 1 implies ceiling(e) = 1 and
+	;; -1 < e <= 0 implies ceiling(e) = 0.
 
-	((and (equal ($compare 0 e) "<") (equal ($compare e 1) "<")) 1)
-	((and (equal ($compare -1 e) "<") (equal ($compare e 0) "<")) 0)
+	((and (equal ($compare 0 e) "<")
+	      (member ($compare e 1) '("<" "<=") :test #'equal))
+	 1)
+	((and (equal ($compare -1 e) "<")
+	      (member ($compare e 0) '("<" "<=") :test #'equal))
+	 0)
 	(t `(($ceiling simp) ,e))))
 
 (defprop $mod simp-nummod operators)

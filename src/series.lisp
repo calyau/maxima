@@ -362,7 +362,7 @@ integration / differentiation variable."))
 					  (maxima-substitute r var num)
 					  (m// 1 (maxima-substitute r var ($diff den var)))
 					  (m^ (m// 1 r) *index)))
-				  (mapcar #'caddr (deletmult *roots))))
+				  (mapcar #'caddr (remove-mult *roots))))
 		     *index 0))
 	  (t (error "EXPAND-DISTINCT-ROOTS: roots are not distinct.~%")))))
 

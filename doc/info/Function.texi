@@ -1046,9 +1046,9 @@ Displays the definition of the user-defined functions @var{f_1}, @dots{},
 @var{f_n}.  Each argument may be the name of a macro (defined with @code{::=}),
 an ordinary function (defined with @code{:=} or @code{define}), an array
 function (defined with @code{:=} or @code{define}, but enclosing arguments in
-square brackets @code{[ ]}), a subscripted function, (defined with @code{:=} or
+square brackets @code{[ ]}), a subscripted function (defined with @code{:=} or
 @code{define}, but enclosing some arguments in square brackets and others in
-parentheses @code{( )}) one of a family of subscripted functions selected by a
+parentheses @code{( )}), one of a family of subscripted functions selected by a
 particular subscript value, or a subscripted function defined with a constant
 subscript.
 
@@ -1270,9 +1270,9 @@ Returns the definition of the function @var{f}.
 The argument may be the name of a macro (defined with @code{::=}), an ordinary
 function (defined with @code{:=} or @code{define}), an array function (defined
 with @code{:=} or @code{define}, but enclosing arguments in square brackets
-@code{[ ]}), a subscripted function, (defined with @code{:=} or @code{define},
+@code{[ ]}), a subscripted function (defined with @code{:=} or @code{define},
 but enclosing some arguments in square brackets and others in parentheses
-@code{( )}) one of a family of subscripted functions selected by a particular
+@code{( )}), one of a family of subscripted functions selected by a particular
 subscript value, or a subscripted function defined with a constant subscript.
 
 @code{fundef} quotes its argument;

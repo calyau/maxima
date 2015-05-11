@@ -46,8 +46,8 @@ Detailed Instructions
 =====================
 
 The instructions below apply to the maxima release tarball. In order
-to build from the cvs repository, cvs, autoconf and automake are also
-required. Follow the directions in INSTALL.cvs before proceeding.
+to build from the git repository, git, autoconf and automake are also
+required. Follow the directions in INSTALL.git before proceeding.
 
 1) Get a working msys+mingw installation from www.mingw.org. 
 

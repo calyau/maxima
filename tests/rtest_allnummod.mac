@@ -82,8 +82,8 @@ ceiling(x) * ceiling(y)$
 ceiling(6 * ceiling(x) - 28 * ceiling(y));
 6 * ceiling(x) - 28 * ceiling(y)$
 
-ceiling(ceiling(x));
-'(ceiling(x))$
+ceiling(floor(x));
+'(floor(x))$
 
 (declare(n,integer),0);
 0$
@@ -205,6 +205,24 @@ floor(-xx);
 ceiling(-xx);
 0$
 
+(kill(xx), assume(0 <= xx, xx < 1),0);
+0$
+
+floor(xx);
+0$
+
+ceiling(-xx);
+0$
+
+(kill(xx), assume(0 < xx, xx <= 1),0);
+0$
+
+ceiling(xx);
+1$
+
+floor(-xx);
+-1$
+
 (assume(-1 < yy, yy < 0),0);
 0$
 
@@ -212,6 +230,24 @@ floor(yy);
 -1$
 
 ceiling(yy);
+0$
+
+(kill(yy), assume(-1 <= yy, yy < 0),0);
+0$
+
+floor(yy);
+-1$
+
+ceiling(-yy);
+1$
+
+(kill(yy), assume(-1 < yy, yy <= 0),0);
+0$
+
+ceiling(yy);
+0$
+
+floor(-yy);
 0$
 
 ceiling(%i^%i);

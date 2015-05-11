@@ -67,12 +67,13 @@ string ((a = b) = (c = d));
 /* following is supposed to test pretty printing code path
  * not sure if embedded newline will be recognized appropriately on Windows
  */
-block ([s, display2d : true, stuff],
-  s : make_string_output_stream (),
-  with_stdout (s, print ((a = b) = (c = d))),
-  stuff : get_output_stream_string (s),
-  close (s),
-  stuff);
+block ([s, stuff],
+  with_default_2d_display( 
+    s : make_string_output_stream (),
+    with_stdout (s, print ((a = b) = (c = d))),
+    stuff : get_output_stream_string (s),
+    close (s),
+    stuff));
 "(a = b) = (c = d) 
 ";
 
@@ -85,12 +86,13 @@ string ((a foo b) foo (c foo d));
 /* following is supposed to test pretty printing code path
  * not sure if embedded newline will be recognized appropriately on Windows
  */
-block ([s, display2d : true, stuff],
-  s : make_string_output_stream (),
-  with_stdout (s, print ((a foo b) foo (c foo d))),
-  stuff : get_output_stream_string (s),
-  close (s),
-  stuff);
+block ([s, stuff],
+  with_default_2d_display( 
+    s : make_string_output_stream (),
+    with_stdout (s, print ((a foo b) foo (c foo d))),
+    stuff : get_output_stream_string (s),
+    close (s),
+    stuff));
 "(a foo b) foo (c foo d) 
 ";
 
