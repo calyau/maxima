@@ -41,7 +41,7 @@ Springer-Verlag, Berlin, 2003
 
 which together with SARAG is available for download at 
 
-http://name.math.univ-rennes1.fr/marie-francoise.roy/bpr-posted1.html 
+http://perso.univ-rennes1.fr/marie-francoise.roy/bpr-ed2-posted2.html
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
