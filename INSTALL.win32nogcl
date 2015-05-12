@@ -38,12 +38,14 @@ External Requirements
 
 1) MinGW and MSYS
 2) ccl/sbcl
-3) Starkit, TclKit and img.kit
-4) InnoSetup
-5) gnuplot
-6) wxMaxima
-7) Microsoft HTML Help Workshop
-8) Python
+3) Tcl/Tk (8.5 or later recommended)
+4) Starkit, TclKit and img.kit
+5) Vtk
+6) InnoSetup
+7) gnuplot
+8) wxMaxima
+9) Microsoft HTML Help Workshop
+10) Python
 
 Detailed Instructions
 =====================
@@ -119,7 +121,10 @@ Test the installed package.  For example
     - f(2);
  o Test the graphics systems in both xmaxima and wxmaxima
     plot2d(sin(x),[x,0,10]);
+    plot2d(sin(x),[x,0,10],[plot_format,xmaxima]);
     plot3d(x*y,[x,-1,1],[y,-1,1]);
+    scene([cone]);
+    plotdf([-y,x],[trajectory_at,5,0]);
     load(draw)$
     draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
           parametric_surface(cos(phi) * sin(theta),

@@ -9,10 +9,15 @@ The following external tools are needed to build and/or use Maxima:
    INSTALL.lisp.
 
 4) Plotting uses gnuplot, <http://gnuplot.sourceforge.net>, by
-   default. Plotting can also be done with Maxima's openmath
-   application. openmath requires Tcl/Tk.
+   default. Plotting can also be done with Maxima's xmaxima
+   application.
 
-5) The xmaxima front-end requires Tcl/Tk. xmaxima is only one
-   possible interface to Maxima. It is not required.
+5) xmaxima requires Tcl/Tk, preferably version 8.5 or later.
+   xmaxima is both one possible interface to  Maxima and a plotting
+   program. As a graphical interface it is not required but as a
+   plotting program it is required by some commands (plotdf, ploteq
+   and scene).
 
-6) Building Maxima from GIT additionally requires the GNU autotools.
+6) The scene command requires Vtk and its bindings for Tcl/Tk.
+ 
+7) Building Maxima from GIT additionally requires the GNU autotools.

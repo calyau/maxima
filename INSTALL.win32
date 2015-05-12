@@ -33,14 +33,15 @@ External Requirements
 1) MSYS+MinGW, including mktemp
 2) msysDTK
 3) GCL
-4) Tcl/Tk
+4) Tcl/Tk (8.5 or later recommended)
 5) Starkit, TclKit and img.kit
-6) InnoSetup
-7) gnuplot
-8) wxMaxima
-9) Microsoft HTML Help Workshop
-10) Perl 5.8 (ActivePerl)
-11) Python 
+6) Vtk
+7) InnoSetup
+8) gnuplot
+9) wxMaxima
+10) Microsoft HTML Help Workshop
+11) Perl 5.8 (ActivePerl)
+12) Python 
 
 Detailed Instructions
 =====================
@@ -241,7 +242,10 @@ directory (c:/maxima above) before testing the installation.
     - f(2);
  o Test the graphics systems in both xmaxima and wxmaxima
     plot2d(sin(x),[x,0,10]);
+    plot2d(sin(x),[x,0,10],[plot_format,xmaxima]);
     plot3d(x*y,[x,-1,1],[y,-1,1]);
+    scene([cone]);
+    plotdf([-y,x],[trajectory_at,5,0]);
     load(draw)$
     draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
           parametric_surface(cos(phi) * sin(theta),
