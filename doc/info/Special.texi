@@ -644,7 +644,7 @@ See also @code{gamma_incomplete} (upper incomplete gamma function).
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
 
-The incomplete upper gamma function A&S 6.5.3:
+The incomplete upper gamma function (A&S 6.5.3):
 
 @ifnottex
 @example
@@ -676,7 +676,7 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
 
-The regularized incomplete upper gamma function A&S 6.5.1:
+The regularized incomplete upper gamma function (A&S 6.5.1):
 
 @ifnottex
 @example
@@ -1117,7 +1117,7 @@ Derivative and integral for @code{beta_incomplete}:
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 
-The regularized incomplete beta function A&S 6.6.2, defined as
+The regularized incomplete beta function (A&S 6.6.2), defined as
 
 @example
 beta_incomplete_regularized(a, b, z) = 
