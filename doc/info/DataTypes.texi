@@ -62,7 +62,7 @@ corresponds to choosing the range of the mantissa). See @mref{fpprec}
 for more information. To type a literal bigfloat, use the exponent
 notation as above but with the character @code{b} in place of
 @code{e}. The example of @code{0.01} from above could be entered as a
-bigfloat with @code{1b-2} or @code{0.001b0}.
+bigfloat with @code{1b-2} or @code{0.01b0}.
 
 Calculations using machine floats can be significantly faster than
 using bigfloats since modern computer processors have dedicated
