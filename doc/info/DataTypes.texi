@@ -162,9 +162,12 @@ displays as @code{1.000000000000000B0}.  Otherwise, this is displayed as
 @anchor{evenp}
 @deffn {Function} evenp (@var{expr})
 
-Returns @code{true} if @var{expr} is an even integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
-@code{false} is returned in all other cases.
+Returns @code{true} if @var{expr} is a literal even integer, otherwise
+@code{false}.
+
+@code{evenp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
+is declared @code{even}.
 
 @opencatbox
 @category{Predicate functions}
@@ -266,8 +269,8 @@ if there are trailing zero digits.
 Returns @code{true} if @var{expr} is a literal numeric integer, otherwise
 @code{false}.
 
-@code{integerp} returns @code{false} if its argument is a symbol,
-even if the argument is declared integer.
+@code{integerp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
+is declared @code{integer}.
 
 Examples:
 
@@ -341,8 +344,8 @@ Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 Returns @code{true} if @var{expr} is a literal integer, rational number, 
 floating point number, or bigfloat, otherwise @code{false}.
 
-@code{numberp} returns @code{false} if its argument is a symbol, even if the
-argument is a symbolic number such as @code{%pi} or @code{%i}, or declared to be
+@code{numberp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
+is a symbolic number such as @code{%pi} or @code{%i}, or declared to be
 @code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational},
 @code{real}, @code{imaginary}, or @code{complex}.
 
@@ -475,9 +478,12 @@ not necessarily numeric.
 @anchor{oddp}
 @deffn {Function} oddp (@var{expr})
 
-is @code{true} if @var{expr} is an odd integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
-@code{false} is returned in all other cases.
+Returns @code{true} if @var{expr} is a literal odd integer, otherwise
+@code{false}.
+
+@code{oddp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
+is declared @code{odd}.
 
 @opencatbox
 @category{Predicate functions}
