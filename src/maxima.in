@@ -82,15 +82,7 @@ if [ -z "$MAXIMA_DIRECTORY" ]; then
   unset MAXIMA_DIRECTORY
 fi
 
-arg1=$1
-arg2=$2
-arg3=$3
-arg4=$4
-arg5=$5
-arg6=$6
-arg7=$7
-arg8=$8
-arg9=$9
+
 while [ -n "$1" ]; do
     case $1 in 
 	-l|--lisp ) MAXIMA_LISP=$2 ; shift;;
@@ -136,15 +128,15 @@ fi
 if [ "$MAXIMA_LISP" = "clisp" ]; then
     if [ "$layout_autotools" = "true" ]; then
       if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-        exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -q "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+        exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -q "" -- "$@"
       else
-	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CLISP_RUNTIME@" $MAXIMA_LISP_OPTIONS -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CLISP_RUNTIME@" $MAXIMA_LISP_OPTIONS -q -M "$maxima_image_base.mem" "" -- "$@"
       fi
     else
       if [ -x "$maxima_image_base" ]; then
-        exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -q  "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+        exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -q  "" -- "$@"
       else
-	exec "@CLISP_NAME@" $MAXIMA_LISP_OPTIONS -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "@CLISP_NAME@" $MAXIMA_LISP_OPTIONS -q -M "$maxima_image_base.mem" "" -- "$@"
       fi
     fi
 elif [ "$MAXIMA_LISP" = "cmucl" ]; then
@@ -153,29 +145,29 @@ elif [ "$MAXIMA_LISP" = "cmucl" ]; then
     # Otherwise, fallback and use the lisp core file.
     if [ "$layout_autotools" = "true" ]; then
 	if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -quiet -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -quiet -- "$@"
 	else
-	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$@"
 	fi
     else
 	if [ -x "$maxima_image_base" ]; then
-	    exec "$maxima_image_base" $MAXIMA_LISP_OPTIONS -quiet -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	    exec "$maxima_image_base" $MAXIMA_LISP_OPTIONS -quiet -- "$@"
 	else
-	    exec "@CMUCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	    exec "@CMUCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$@"
 	fi
     fi
 elif [ "$MAXIMA_LISP" = "scl" ]; then
     if [ "$layout_autotools" = "true" ]; then
-	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@SCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@SCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$@"
     else
-	exec "@SCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "@SCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$@"
     fi
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
-    exec "$maxima_image_base" -eval '(cl-user::run)' $MAXIMA_LISP_OPTIONS -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "$maxima_image_base" -eval '(cl-user::run)' $MAXIMA_LISP_OPTIONS -f -- "$@"
 elif [ "$MAXIMA_LISP" = "acl" ]; then
 # FIXME: arguments need in a manner consistent with the way they are extracted
 #        in the function get-application-args in command-line.lisp
-    exec "@ACL_NAME@" -I "$maxima_image_base.dxl" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "@ACL_NAME@" -I "$maxima_image_base.dxl" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
 elif [ "$MAXIMA_LISP" = "openmcl" ]; then
 # OPENMCL can use either an executable image or a regular lisp core
 # file.  Check for the executable image and run that if possible.
@@ -183,20 +175,20 @@ elif [ "$MAXIMA_LISP" = "openmcl" ]; then
 # FIXME: arguments need in a manner consistent with the way they are extracted
 #        in the function get-application-args in command-line.lisp
     if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-      exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+      exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
     else
-      exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+      exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
    fi
 
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
-   exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+   exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -- "$@"
 
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # Use executable image if it exists
   if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   else
-    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   fi
 
 else
