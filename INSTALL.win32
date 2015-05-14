@@ -244,7 +244,7 @@ directory (c:/maxima above) before testing the installation.
     plot2d(sin(x),[x,0,10]);
     plot2d(sin(x),[x,0,10],[plot_format,xmaxima]);
     plot3d(x*y,[x,-1,1],[y,-1,1]);
-    scene([cone]);
+    scene(cone);
     plotdf([-y,x],[trajectory_at,5,0]);
     load(draw)$
     draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
