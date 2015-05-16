@@ -82,23 +82,28 @@ if [ -z "$MAXIMA_DIRECTORY" ]; then
   unset MAXIMA_DIRECTORY
 fi
 
+# process the command line arguments. This must be done in a function, because
+# "shift" should only shift the function parameters, not the global parameters.
+process_commandline_arguments() {
+    while [ -n "$1" ]; do
+	case $1 in
+	    -l|--lisp ) MAXIMA_LISP=$2 ; shift;;
+	    --lisp=*) MAXIMA_LISP=`echo "$1" | sed 's/--lisp=//'` ;;
+	    -u|--use-version ) MAXIMA_VERSION=$2 ; shift;;
+	    --use-version=*) MAXIMA_VERSION=`echo "$1" | sed 's/--use-version=//'` ;;
+	    -X|--lisp-options) MAXIMA_LISP_OPTIONS="$2" ; shift ;;
+	    --lisp-options=*) MAXIMA_LISP_OPTIONS=`echo "$1" | sed 's/--lisp-options=//'` ;;
+	    --userdir ) : ; shift;; # noop; handled by process_userdir_argument
+	    --userdir=*) : ;; # noop; handled by process_userdir_argument
+	    -v|--verbose ) verbose=true;;
+	    *) ;;
+	esac
+	shift
+    done
+}
 
-while [ -n "$1" ]; do
-    case $1 in 
-	-l|--lisp ) MAXIMA_LISP=$2 ; shift;;
-	--lisp=*) MAXIMA_LISP=`echo "$1" | sed 's/--lisp=//'` ;;
-	-u|--use-version ) MAXIMA_VERSION=$2 ; shift;;
-	--use-version=*) MAXIMA_VERSION=`echo "$1" | sed 's/--use-version=//'` 
-	    ;;
-	-X|--lisp-options) MAXIMA_LISP_OPTIONS="$2" ; shift ;;
-	--lisp-options=*) MAXIMA_LISP_OPTIONS=`echo "$1" | sed 's/--lisp-options=//'` ;;
-	--userdir ) : ; shift;; # noop; handled by process_userdir_argument
-	--userdir=*) : ;; # noop; handled by process_userdir_argument
-	-v|--verbose ) verbose=true;;
-	*) ;;
-    esac
-    shift
-done
+process_commandline_arguments "$@"
+
 
 # Allow ccl as an alias of openmcl.
 if [ "$MAXIMA_LISP" = "ccl" ]; then
