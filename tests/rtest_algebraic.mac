@@ -137,12 +137,15 @@ ratsimp([1,x,x^2,x^3]);
 ratsimp([1,1/x,1/x^2,1/x^3]);
 [1,1/x,1/x^2,1/x^3]$
 
-/*
-  A fix for the "algebraic" part of bug 125: we don't test the result
-  and just check that we don't explode.
-*/
-(algsys ([a+b+c = 0, a*b*c = 1], [a, b, c]), 0);
-0$
-
 (reset(algebraic), remvalue(eq, sol),0);
 0$
+
+
+
+
+
+
+
+
+
+
