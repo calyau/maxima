@@ -101,7 +101,7 @@ if "%lisp%" == "openmcl" goto doccl
 goto end
 
 :dogcl
-set set path=%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path
+set path=%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path
 "%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" %lisp_options% -f -- %*
 goto end
 
