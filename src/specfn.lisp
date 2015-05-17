@@ -259,8 +259,8 @@
      (cond 
       ((and ($integerp n) (>= n 0))
        (cond 
-	((= n 0) '((%log_gamma) x))
-	(t '((mqapply) (($psi array) ((mplus) -1 n)) x))))
+	((= n 0) `((%log_gamma) ,x))
+	(t `((mqapply) (($psi array) ((mplus) -1 ,n)) ,x))))
       (t nil))))
      'integral)
 
