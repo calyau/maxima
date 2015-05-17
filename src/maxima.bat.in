@@ -113,7 +113,8 @@ clisp %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_autotools
-"%maxima_imagesdir%\binary-clisp\lisp.exe" %lisp_options% -q -M %maxima_image_base%.mem "" -- %*
+set path=%maxima_imagesdir%\binary-clisp;%maxima_prefix%\clisp-2.49\base;%path%
+lisp.exe %lisp_options% -q -M %maxima_image_base%.mem "" -- %*
 goto end
 
 :clisp_exec

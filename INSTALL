@@ -56,8 +56,7 @@ INSTALL.win32nogcl (for build instructions with CCL/SBCL)
 CROSSCOMPILING A WINDOWS INSTALLER ON LINUX/UNIX
 ================================================
 
-Instructions and scripts for crosscompiling Maxima 
-you can find on: http://wolfgang.dautermann.at/maxima/
+See crosscompile-windows/README.txt for build instructions.
 
 
 UNIX GNU AUTOTOOLS BUILD AND INSTALL
