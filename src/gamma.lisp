@@ -388,20 +388,20 @@
               ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
               ;; function and the Generalized Incomplete Gamma function 
               ;; (functions.wolfram.com), only for a>0.
-              '((mplus)
+              `((mplus)
                  ((mtimes)
-                   ((mexpt) ((%gamma) a) 2)
-                   ((mexpt) z a)
+                   ((mexpt) ((%gamma) ,a) 2)
+                   ((mexpt) ,z ,a)
                    (($hypergeometric_regularized)
-                      ((mlist) a a)
-                      ((mlist) ((mplus) 1 a) ((mplus) 1 a))
-                      ((mtimes) -1 z)))
+                      ((mlist) ,a ,a)
+                      ((mlist) ((mplus) 1 ,a) ((mplus) 1 ,a))
+                      ((mtimes) -1 ,z)))
                  ((mtimes) -1
-                   ((%gamma_incomplete_generalized) a 0 z)
-                   ((%log) z))
+                   ((%gamma_incomplete_generalized) ,a 0 ,z)
+                   ((%log) ,z))
                  ((mtimes)
-                   ((%gamma) a)
-                   ((mqapply) (($psi array) 0) a))))
+                   ((%gamma) ,a)
+                   ((mqapply) (($psi array) 0) ,a))))
              (t
               ;; No derivative. Maxima generates a noun form.  
               nil)))

@@ -1681,9 +1681,12 @@
 
 (defprop %hankel_1 simp-hankel-1 operators)
 
+; Derivatives of the Hankel 1 function
 (defprop %hankel_1
     ((n x)
      nil
+
+     ;; Derivative wrt arg x.  A&S 9.1.27.
      ((mtimes)
        ((mplus)
          ((%hankel_1) ((mplus) -1 n) x)
@@ -1780,9 +1783,12 @@
 
 (defprop %hankel_2 simp-hankel-2 operators)
 
+; Derivatives of the Hankel 2 function
 (defprop %hankel_2
     ((n x)
      nil
+
+     ;; Derivative wrt arg x.  A&S 9.1.27.
      ((mtimes)
        ((mplus) 
          ((%hankel_2) ((mplus) -1 n) x)
@@ -1879,9 +1885,12 @@
 
 (defprop %struve_h simp-struve-h operators)
 
+; Derivatives of the Struve H function
 (defprop %struve_h
   ((v z)
    nil
+
+   ;; Derivative wrt arg z.  A&S 12.1.10.
    ((mtimes) 
     ((rat) 1 2)
     ((mplus) 
@@ -1907,6 +1916,7 @@
       
       ((zerop1 arg)
        (cond ((eq ($csign (add order 1)) '$zero)
+              ; http://functions.wolfram.com/03.09.03.0018.01
               (cond ((or ($bfloatp order)
                          ($bfloatp arg))
                      ($bfloat (div 2 '$%pi)))
@@ -1916,6 +1926,7 @@
                     (t
                      (div 2 '$%pi))))
              ((eq ($sign (add ($realpart order) 1)) '$pos)
+              ; http://functions.wolfram.com/03.09.03.0001.01
               arg)
              ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
               (simp-domain-error 
@@ -1927,6 +1938,7 @@
       ;; Check for numerical evaluation
       
       ((complex-float-numerical-eval-p order arg)
+       ; A&S 12.1.21
        (let (($numer t) ($float t))
          ($rectform
            ($float
@@ -1942,6 +1954,7 @@
                                (div (mul arg arg) -4.0))))))))
       
       ((complex-bigfloat-numerical-eval-p order arg)
+       ; A&S 12.1.21
        (let (($ratprint nil)
              (arg ($bfloat arg))
              (order ($bfloat order)))
@@ -2124,9 +2137,12 @@
 
 (defprop %struve_l (mlist $matrix mequal) distribute_over)
 
+; Derivatives of the Struve L function
 (defprop %struve_l
   ((v z)
    nil
+
+   ;; Derivative wrt arg z.  A&S 12.2.5.
    ((mtimes) 
     ((rat) 1 2)
     ((mplus) 
@@ -2152,6 +2168,7 @@
       
       ((zerop1 arg)
        (cond ((eq ($csign (add order 1)) '$zero)
+              ; http://functions.wolfram.com/03.10.03.0018.01
               (cond ((or ($bfloatp order)
                          ($bfloatp arg))
                      ($bfloat (div 2 '$%pi)))
@@ -2161,6 +2178,7 @@
                     (t
                      (div 2 '$%pi))))
              ((eq ($sign (add ($realpart order) 1)) '$pos)
+              ; http://functions.wolfram.com/03.10.03.0001.01
               arg)
              ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
               (simp-domain-error 
@@ -2172,6 +2190,7 @@
       ;; Check for numerical evaluation
       
       ((complex-float-numerical-eval-p order arg)
+       ; http://functions.wolfram.com/03.10.26.0002.01
        (let (($numer t) ($float t))
          ($rectform
            ($float
@@ -2187,6 +2206,7 @@
                                (div (mul arg arg) 4.0))))))))
       
       ((complex-bigfloat-numerical-eval-p order arg)
+       ; http://functions.wolfram.com/03.10.26.0002.01
        (let (($ratprint nil))
          ($rectform
            ($bfloat

@@ -259,8 +259,8 @@
      (cond 
       ((and ($integerp n) (>= n 0))
        (cond 
-	((= n 0) '((%log_gamma) x))
-	(t '((mqapply) (($psi array) ((mplus) -1 n)) x))))
+	((= n 0) `((%log_gamma) ,x))
+	(t `((mqapply) (($psi array) ((mplus) -1 ,n)) ,x))))
       (t nil))))
      'integral)
 
@@ -658,7 +658,7 @@
       (bigfloat::lambert-branch-approx z))
     ;; otherwise C <= z < 0, use iteration W(z) ~ ln(-z)-ln(-W(z))
     ;; nine iterations are sufficient over -0.3 <= z < 0 
-    (t (let* ( (ln-z (log (- z))) (maxiter 9) (w ln-z) k)
+    (t (let* ((ln-z (log (- z))) (maxiter 9) (w ln-z))
 	 (dotimes (k maxiter w)
             (setq w (- ln-z (log (- w)))))))))
 

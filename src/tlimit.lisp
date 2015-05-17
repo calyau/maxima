@@ -26,7 +26,8 @@
     (declare (special limit-using-taylor))
     ($ldefint exp var ll ul)))
 
-(defun tlimp (exp)		; TO BE EXPANDED TO BE SMARTER (MAYBE)
+(defun tlimp (expr)		; TO BE EXPANDED TO BE SMARTER (MAYBE)
+  (declare (ignore expr))
   t)
 
 ;; compute limit of exp by finding its taylor series expansion.

@@ -245,7 +245,8 @@
      ;;	   funct (mul -1 (div (meval (mul denom funct))
      ;;			      (add (mul f x) e))))
 
-     jump
+     ;; jump
+
      ;; Apply the linear substitution y = f*x+e.  That is x = (y-e)/f.
      ;; Then use INTIRA to integrate this.  The integrand becomes
      ;; something like p(y)*y^m and other terms.

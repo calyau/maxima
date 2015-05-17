@@ -179,7 +179,6 @@
 
 ;; These following functions, when they are the value of *break-step*
 ;; are invoked by an inner hook in eval. They may choose to stop things.
-(defvar *break-step* nil)
 (defun break-step-into (form &optional env)
   (let ((fun (current-step-fun)))
     (let ((line-info (set-full-lineinfo fun)))
