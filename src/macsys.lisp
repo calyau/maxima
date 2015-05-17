@@ -150,6 +150,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
     (multiple-value-bind (.olduser .oldsystem .oldgcu .oldgcs)
 	(excl::get-internal-run-times)
+      (declare (ignore .olduser .oldsystem .oldgcs))
       (sys::gsgc-totalloc .oldspace t)
       (list (aref .oldspace 0) (aref .oldspace 2) .oldgcu)))) ;; report just two kinds of space,
 							      ;; cons-cells and other bytes,
