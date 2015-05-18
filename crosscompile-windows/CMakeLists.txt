@@ -171,7 +171,7 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 # Build Maxima
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
-  DOWNLOAD_COMMAND rsync -av --exclude=maxima-windows-install/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_SOURCE_DIR}/build/maxima-prefix/src/maxima"
+  DOWNLOAD_COMMAND rsync -av --exclude=crosscompile-windows/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_SOURCE_DIR}/build/maxima-prefix/src/maxima"
   DEPENDS clisp
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
