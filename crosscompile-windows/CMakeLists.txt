@@ -203,7 +203,7 @@ if(USE_WXMAXIMA_GIT)
         GIT_REPOSITORY ${WXMAXIMA_GIT}
         DEPENDS wxWidgets
         BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-svn-prefix/src/wxMaxima-git/acinclude.m4"
+        CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4"
                   COMMAND ./bootstrap
                   COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND make -j${JOBS}
@@ -228,7 +228,7 @@ endif()
 
 
 # workaround for file associations.
-install(FILES "${CMAKE_SOURCE_DIR}/wxmaxima-assoc.bat" DESTINATION wxMaxima/)
+#install(FILES "${CMAKE_SOURCE_DIR}/wxmaxima-assoc.bat" DESTINATION wxMaxima/)
 
 
 # Include DLLs from the current Mingw environment.
@@ -248,16 +248,16 @@ set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/maxima-icon.bmp")
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima\\\\maxima-icon.ico")
 set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
-set(CPACK_PACKAGE_EXECUTABLES "../wxMaxima/wxmaxima" "wxMaxima (GUI for Maxima)")
+set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
 set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima")
 
 # File associations:
 set(CPACK_NSIS_DEFINES "!include ${CMAKE_SOURCE_DIR}\\\\FileAssociation.nsh")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima-assoc.bat\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima-assoc.bat\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima-assoc.bat\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
+\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
+\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
+\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
 ")
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
 \\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
