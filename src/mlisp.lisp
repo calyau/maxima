@@ -820,14 +820,14 @@ wrapper for this."
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
   (cons (car r)(mapcar #'(lambda(z)
 			   (cond((symbolp z) z)
-				((eq (caar z) 'mequal)(second z))
+				((mequalp z) (second z))
 				(t (merror (intl:gettext "defstruct: expected a record initializer; found: ~M") z))))
 		       (cdr r))))
 
 (defun initializersmostly(r);; f(a=3,b,c=5) -> f(3,b,5)
   (cons (car r)(mapcar #'(lambda(z)
 			   (cond((symbolp z) z)
-				((eq (caar z) 'mequal) (meval (third z)))
+				((mequalp z) (meval (third z)))
 				(t (merror (intl:gettext "defstruct: expected a record initializer; found: ~M") z))))
 		       (cdr r))))
 

@@ -94,3 +94,7 @@ kgcd (123456, 123);
 errcatch (defstruct (xx));
 [];
 
+/* Error on malformed record initializer */
+errcatch (defstruct (xx (1)));
+[];
+
