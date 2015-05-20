@@ -805,7 +805,9 @@ wrapper for this."
   (let ((translated-args (mapcar #'translate (cdr form))))
     `($any simplify (list '(,(caar form)) ,@(mapcar #'cdr translated-args)))))
 
-(defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
+(defun defstruct1 (z) ;; z should look like (($whatever) $a $b $c)
+  (unless (and (consp z) (consp (car z)))
+    (merror (intl:gettext "defstruct: expected a structure template; found ~M") z))
    ;; store the template
   (putprop (caar z) (namesonly z) 'defstruct-template)
   ;; set the initialization
