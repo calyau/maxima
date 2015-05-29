@@ -45,6 +45,7 @@ URL: http://maxima.sourceforge.net
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 Requires: maxima-exec = %{version}
+Provides: maxima-doc
 
 %description
 
