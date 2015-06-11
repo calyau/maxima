@@ -397,12 +397,16 @@ Examples:
 @c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
 @c ===end===
 @example
+@group
 (%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
                                         1
 (%o1)            [sqrt(2), sin(1), -----------]
                                    sqrt(3) + 1
+@end group
+@group
 (%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
-(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+(%o2) [1.414213562373095, 0.8414709848078965, 0.3660254037844387]
+@end group
 @end example
 
 @opencatbox
@@ -432,20 +436,29 @@ Examples:
 @c (-2)^(3/4),numer,numer_pbranch:true;
 @c ===end===
 @example
+@group
 (%i1) (-2)^0.75;
-(%o1) (-2)^0.75
-
+                                 0.75
+(%o1)                       (- 2)
+@end group
+@group
 (%i2) (-2)^0.75,numer_pbranch:true;
-(%o2) 1.189207115002721*%i-1.189207115002721
-
+(%o2)       1.189207115002721 %i - 1.189207115002721
+@end group
+@group
 (%i3) (-2)^(3/4);
-(%o3) (-1)^(3/4)*2^(3/4)
-
+                               3/4  3/4
+(%o3)                     (- 1)    2
+@end group
+@group
 (%i4) (-2)^(3/4),numer;
-(%o4) 1.681792830507429*(-1)^0.75
-
+                                          0.75
+(%o4)              1.681792830507429 (- 1)
+@end group
+@group
 (%i5) (-2)^(3/4),numer,numer_pbranch:true;
-(%o5) 1.189207115002721*%i-1.189207115002721
+(%o5)       1.189207115002721 %i - 1.189207115002721
+@end group
 @end example
 
 @opencatbox
@@ -547,28 +560,38 @@ representation.
 @c rationalize (sin (0.1*x + 5.6));
 @c ===end===
 @example
+@group
 (%i1) rationalize (0.5);
                                 1
 (%o1)                           -
                                 2
+@end group
+@group
 (%i2) rationalize (0.1);
-                               1
-(%o2)                          --
-                               10
+                        3602879701896397
+(%o2)                   -----------------
+                        36028797018963968
+@end group
 (%i3) fpprec : 5$
+@group
 (%i4) rationalize (0.1b0);
                              209715
 (%o4)                        -------
                              2097152
+@end group
 (%i5) fpprec : 20$
+@group
 (%i6) rationalize (0.1b0);
                      236118324143482260685
 (%o6)                ----------------------
                      2361183241434822606848
+@end group
+@group
 (%i7) rationalize (sin (0.1*x + 5.6));
-                              x    28
-(%o7)                     sin(-- + --)
-                              10   5
+               3602879701896397 x   3152519739159347
+(%o7)      sin(------------------ + ----------------)
+               36028797018963968    562949953421312
+@end group
 @end example
 
 @opencatbox
@@ -650,27 +673,40 @@ Examples:
 @c s_1;
 @c ===end===
 @example
+@group
 (%i1) s_1 : "This is a string.";
-(%o1)               This is a string.
+(%o1)                   This is a string.
+@end group
+@group
 (%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
 (%o2) Embedded "double quotes" and backslash \ characters.
+@end group
+@group
 (%i3) s_3 : "Embedded line termination
-in this string.";
 (%o3) Embedded line termination
 in this string.
-(%i4) s_4 : "Ignore the \
-line termination \
-characters in \
-this string.";
+@end group
+@group
+(%i4) in this string.";
 (%o4) Ignore the line termination characters in this string.
-(%i5) stringdisp : false;
+@end group
+@group
+(%i5) s_4 : "Ignore the \
 (%o5)                         false
-(%i6) s_1;
+@end group
+@group
+(%i6) line termination \
 (%o6)                   This is a string.
-(%i7) stringdisp : true;
+@end group
+@group
+(%i7) characters in \
 (%o7)                         true
-(%i8) s_1;
+@end group
+@group
+(%i8) this string.";
 (%o8)                  "This is a string."
+@end group
+(%i9) stringdisp : false;
 @end example
 
 @opencatbox
@@ -792,17 +828,21 @@ Examples:
 @c ===end===
 @example
 (%i1) stringdisp: false$
+@group
 (%i2) "This is an example string.";
 (%o2)              This is an example string.
+@end group
 @group
 (%i3) foo () :=
       print ("This is a string in a function definition.");
-@end group
 (%o3) foo() := 
               print("This is a string in a function definition.")
+@end group
 (%i4) stringdisp: true$
+@group
 (%i5) "This is an example string.";
 (%o5)             "This is an example string."
+@end group
 @end example
 
 @opencatbox
