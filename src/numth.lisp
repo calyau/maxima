@@ -950,6 +950,8 @@
 (defvar *gf-fsx-base-p* nil "*gf-fsx* in  base p") 
 (defvar *gf-x^p-powers* nil "x^p^i, i=0,..,n-1") 
 
+(defvar *f2-red* 0 "reduction polynomial") ;; used by ef coeff arith over binary fields
+
 (declaim (fixnum *gf-exp* *ef-exp*))
 
 ;; extension:
@@ -974,7 +976,17 @@
 
 (defmvar $gf_rat nil "Return values are rational expressions?" boolean)
 
-(defmvar $gf_symmetric nil "A symmetric modulus should be used?" boolean)
+(defmvar $gf_symmetric nil "A symmetric modulus should be used?" boolean) ;; deprecated
+(defmvar $gf_balanced nil "A balanced modulus should be used?" boolean)   ;; there is ec_balanced in elliptic_curves.lisp
+
+(putprop '$gf_symmetric 'gf-balanced-info 'assign)
+
+(defun gf-balanced-info (assign-var arg) 
+  (declare (ignore assign-var))
+  (setq $gf_balanced arg)
+  (format t "`gf_symmetric' is deprecated and replaced by `gf_balanced'.~%The value is bound to `gf_balanced'.") )
+  ;; temporarily print this message
+
 
 (defmvar $gf_coeff_limit 256 
   "`gf_coeff_limit' limits the coeffs when searching for irreducible and primitive polynomials." fixnum)
@@ -1122,6 +1134,7 @@
     ((= 0 c) (gf-merror (intl:gettext "ef coefficient inversion: Quotient by zero")))
     ($ef_coeff_inv (mfuncall '$ef_coeff_inv c))
     (*gf-logs?* (ef-cinv-by-table c))
+    ((= 2 *gf-char*) (f2-inv c))
     (t (let ((*ef-arith?*))
          (gf-x2n (gf-inv (gf-n2x c) *gf-red*)) ))))
 
@@ -1129,6 +1142,7 @@
   (cond 
     ($ef_coeff_exp (mfuncall '$ef_coeff_exp c n))
     (*gf-logs?* (ef-cpow-by-table c n))
+    ((= 2 *gf-char*) (f2-pow c n))
     (t (let ((*ef-arith?*)) 
          (gf-x2n (gf-pow (gf-n2x c) n *gf-red*)) ))))
 
@@ -1138,6 +1152,7 @@
     ((plusp c)
       (cond 
         ((< c *gf-ord*) c) 
+        ((= 2 *gf-char*) (f2-red c))
         (t (let ((*ef-arith?*))
              (gf-x2n (gf-nred (gf-n2x c) *gf-red*)) ))))
     (t 
@@ -1148,6 +1163,7 @@
   (cond 
     ($ef_coeff_mult (mfuncall '$ef_coeff_mult a b))
     (*gf-logs?* (ef-ctimes-by-table a b))
+    ((= 2 *gf-char*) (f2-times a b))
     (t (let ((*ef-arith?*)) 
          (gf-x2n (gf-times (gf-n2x a) (gf-n2x b) *gf-red*)) ))))
 
@@ -1221,6 +1237,78 @@
     ((null x) nil)
     (t (svref *gf-powers* 
          (mod (* n (the fixnum (svref $gf_logs (gf-x2n x)))) *gf-ord*) )) ))
+
+
+;; ef coefficient arith for binary base fields:
+
+(defun f2-red (a)
+  (declare (optimize (speed 3) (safety 0)))
+  (let* ((red *f2-red*)
+         (ilen (integer-length red))
+         (e 0) )
+       (declare (fixnum e ilen))
+    (do () ((= a 0) 0)
+      (setq e (- (integer-length a) ilen))
+      (when (< e 0) (return a))
+      (setq a (logxor a (ash red e))) )))
+
+(defun f2-times (a b)
+  (declare (optimize (speed 3) (safety 0)))
+  (let* ((ilen (integer-length b))
+         (a1 (ash a (1- ilen)))
+         (ab a1) )
+    (do ((i (- ilen 2) (1- i)) (k 0)) 
+        ((< i 0) (f2-red ab))
+        (declare (fixnum i k))
+      (decf k)
+      (when (logbitp i b) 
+        (setq a1 (ash a1 k)
+              ab (logxor ab a1)
+              k 0 )))))
+
+(defun f2-pow (a n) ;; assume n >= 0
+  (declare (optimize (speed 3) (safety 0)) 
+           (integer n) )
+  (cond 
+    ((= n 0) 1)
+    ((= a 0) 0) 
+    (t (do (res) (())
+         (when (oddp n)
+           (setq res (if res (f2-times a res) a)) 
+           (when (= 1 n)
+             (return-from f2-pow res) ))
+         (setq n (ash n -1) 
+               a (f2-times a a)) ))))
+
+(defun f2-inv (b) 
+  (declare (optimize (speed 3) (safety 0)))
+  (when (= b 0) 
+    (gf-merror (intl:gettext "f2 arithmetic: Quotient by zero")) )
+  (let ((b1 1) (a *f2-red*) (a1 0) q r)
+    (do ()
+        ((= b 0) a1)
+      (multiple-value-setq (q r) (f2-divide a b)) 
+      (psetf a b b r) 
+      (psetf a1 b1 b1 (logxor (f2-times q b1) a1)) )))
+
+(defun f2-divide (a b)
+  (declare (optimize (speed 3) (safety 0)))
+  (cond 
+    ((= b 0)
+      (gf-merror (intl:gettext "f2 arithmetic: Quotient by zero")) )
+    ((= a 0) (values 0 0))
+    (t 
+      (let ((ilen (integer-length b))
+            (e 0) 
+            (q 0) )
+           (declare (fixnum e ilen))
+        (do () ((= a 0) (values q 0))
+          (setq e (- (integer-length a) ilen))
+          (when (< e 0) (return (values q a)))
+          (setq q (logxor q (ash 1 e)))
+          (setq a (logxor a (ash b e))) )))))
+
+;; -------------------------------------------------------------------------- ;;
 
 
 #-gcl (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -1372,6 +1460,8 @@
     (unless *gf-red* ;; find irreducible reduction poly:
       (setq *gf-red* (if (= 1 *gf-exp*) (list 1 1) (gf-irr p *gf-exp*))
             *gf-irred?* t ))
+    
+    (when (= *gf-char* 2) (setq *f2-red* (gf-x2n *gf-red*)))
     
     (setq *gf-card* (expt p *gf-exp*)) ;; cardinality #(F)
 
@@ -1563,7 +1653,7 @@
         $ef_coeff_mult nil $ef_coeff_add nil $ef_coeff_inv nil $ef_coeff_exp nil
         *gf-rat-header* nil *gf-char* 0 
         *gf-exp* 1 *gf-ord* 0 *gf-card* 0 ;; *gf-exp* = 1 when gf_set_data has no optional arg
-        *gf-red* nil *gf-prim* nil 
+        *gf-red* nil *f2-red* 0 *gf-prim* nil
         *gf-fs-ord* nil *gf-fsx* nil *gf-fsx-base-p* nil *gf-x^p-powers* nil 
         *gf-char?* nil *gf-red?* nil *gf-irred?* nil *gf-data?* nil ) 
   t )
