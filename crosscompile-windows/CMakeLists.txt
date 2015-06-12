@@ -14,7 +14,6 @@ project(maxima)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
-set(JOBS 4)
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." OFF)
 
@@ -66,8 +65,6 @@ set(TEXFONTS_URL  "http://www.math.union.edu/~dpvc/jsMath/download/TeX-fonts-25.
 set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 
 
-
-
 # Where are libgcc_s_sjlj-1.dll and libstdc++-6.dll?
 #
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -99,7 +96,7 @@ externalproject_add(wxWidgets
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
   CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --with-zlib=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-libpng=builtin --with-expat=builtin --host=${HOST}
-  BUILD_COMMAND make -j${JOBS}
+  BUILD_COMMAND $(MAKE) 
         COMMAND ${CMAKE_SOURCE_DIR}/wxwidgets/debian-crosscompile-correction.sh ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib
   INSTALL_COMMAND ""
 )
@@ -110,8 +107,8 @@ externalproject_add(tcl
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TCL_MD5}
   CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/win/configure --host=${HOST} --prefix=C:/maxima-${MAXIMAVERSION}
-  BUILD_COMMAND make -j${JOBS}
-  INSTALL_COMMAND make install
+  BUILD_COMMAND $(MAKE)
+  INSTALL_COMMAND $(MAKE) install
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 
@@ -121,8 +118,8 @@ externalproject_add(tk
   URL_MD5 ${TK_MD5}
   DEPENDS tcl
   CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tk-prefix/src/tk/win/configure --host=${HOST} --with-tcl=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/lib --prefix=C:/maxima-${MAXIMAVERSION}
-  BUILD_COMMAND make -j${JOBS}
-  INSTALL_COMMAND make install
+  BUILD_COMMAND $(MAKE)
+  INSTALL_COMMAND $(MAKE) install
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 
@@ -177,11 +174,11 @@ externalproject_add(maxima
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
-  BUILD_COMMAND make -C src clisp-depends.mk
+  BUILD_COMMAND $(MAKE) -C src clisp-depends.mk
         COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
         COMMAND mv src/clisp-depends.mk-new src/clisp-depends.mk
-        COMMAND make -j${JOBS}
-  INSTALL_COMMAND make -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+        COMMAND $(MAKE)
+  INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
 
@@ -206,9 +203,9 @@ if(USE_WXMAXIMA_GIT)
         CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4"
                   COMMAND ./bootstrap
                   COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
-        BUILD_COMMAND make -j${JOBS}
-              COMMAND make -C locales allmo
-        INSTALL_COMMAND make -C ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git wxMaxima.win
+        BUILD_COMMAND $(MAKE)
+              COMMAND $(MAKE) -C locales allmo
+        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git wxMaxima.win
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/wxMaxima/ DESTINATION wxMaxima)
 else()
@@ -219,16 +216,12 @@ else()
         DEPENDS wxWidgets
         BUILD_IN_SOURCE 1
         CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
-        BUILD_COMMAND make -j${JOBS}
-              COMMAND make -C locales allmo
-        INSTALL_COMMAND make -C ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima wxMaxima.win
+        BUILD_COMMAND $(MAKE)
+              COMMAND $(MAKE) -C locales allmo
+        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima wxMaxima.win
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/wxMaxima/ DESTINATION wxMaxima)
 endif()
-
-
-# workaround for file associations.
-#install(FILES "${CMAKE_SOURCE_DIR}/wxmaxima-assoc.bat" DESTINATION wxMaxima/)
 
 
 # Include DLLs from the current Mingw environment.
@@ -239,7 +232,7 @@ install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_PACKAGE_VERSION "${MAXIMAVERSION}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Maxima")
-set(CPACK_PACKAGE_VENDOR "Wolfgang Dautermann")
+set(CPACK_PACKAGE_VENDOR "Maxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/../README")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../COPYING")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "maxima-${CPACK_PACKAGE_VERSION}")
