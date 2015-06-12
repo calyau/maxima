@@ -92,7 +92,7 @@ Example: Plot of an elliptic curve with balanced points.
 
 @code{elliptic_curves} contains some example parameters from SEC and BRAINPOOL. 
 
-Example: secp112r2 has no prime order.
+Example: @code{secp112r2} has no prime order. The cofactor is 4: @code{ord = 4*n}.
 
 @example
 (%i1) load("elliptic_curves")$
