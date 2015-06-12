@@ -133,20 +133,15 @@
        $lowercasep
        $uppercasep
        $stringp
-       $base64
-       $base64_decode
        $charat
        $charlist
        $eval_string
-       $md5sum
        $parse_string
        $scopy
        $sdowncase
        $sequal
        $sequalignore
        $sexplode
-       $sha1sum
-       $sha256sum
        $simplode
        $sinsert
        $sinvertcase
@@ -168,7 +163,17 @@
        $substring
        $supcase
        $tab
-       $tokens ))
+       $tokens
+       $base64
+       $base64_decode
+       $crc24sum
+       $md5sum
+       $number_to_octets
+       $octets_to_number
+       $octets_to_oid
+       $oid_to_octets
+       $sha1sum
+       $sha256sum ))
   (setf (get f 'autoload) "stringproc"))
 
 
@@ -193,8 +198,16 @@
     $write_data))
   (setf (get f 'autoload) "numericalio"))
 
-(setf (get '$eval_string 'autoload) "eval_string")
-(setf (get '$parse_string 'autoload) "eval_string")
+(dolist (f       
+  '($bit_and
+    $bit_length
+    $bit_lsh
+    $bit_not
+    $bit_onep
+    $bit_or
+    $bit_rsh
+    $bit_xor ))
+  (setf (get f 'autoload) "bitwise"))
 
 
 ;; functions from share/linearalgebra 
