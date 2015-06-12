@@ -22,7 +22,7 @@
    This file contains some algorithms for elliptic curves over prime fields.
 
    Maxima functions:
-   ec_set_curve, ec_add, ec_mult, ec_random, ec_curve_point_p, ec_point_order, 
+   ec_set_curve, ec_add, ec_mult, ec_random, ec_point_p, ec_point_order, 
    ec_log, ec_twist_curve, ec_trace
    
    Option variables:
@@ -80,11 +80,11 @@
 ;;
 (defmfun $ec_set_curve (p a b)
   (let ((fn "ec_set_curve"))
-    (unless (and (integerp a) (integerp b))
+    (unless (and (integerp p) (integerp a) (integerp b))
       (gf-merror (intl:gettext "`~m': Arguments must be a integers.") fn) )
     (unless (and (primep p) (> p 3))
       (gf-merror (intl:gettext
-        "`~m': Third argument must be a prime number greater than 3. Found ~m." ) fn p) )
+        "`~m': First argument must be a prime number greater than 3. Found ~m." ) fn p) )
     (if (= 0 (mod (+ (* 4 a a a) (* 27 b b)) p))
       (setq *ec-set?* nil)
       (setq *ec-p* p
@@ -322,12 +322,12 @@
   (do ((p *ec-p*) (a *ec-a*) (b *ec-b*)
         x y rts ) 
       (())
-    (setq x (random p)
+    (setq x ($random p) ;; $random is set by set_random_state
           y (mod (+ (power-mod x 3 p) (* a x) b) p) )
     (when (or (= y 0) 
               (and (= 1 ($jacobi y p))
                    (setq rts (zn-nrt y 2 p `((,p 1)))
-                         y (if (= 0 (random 2)) (car rts) (cadr rts)) ))) ;; y#0, p>3: 2 solutions
+                         y (if (= 0 ($random 2)) (car rts) (cadr rts)) ))) ;; y#0, p>3: 2 solutions
       (return (list x y)) )))
 ;;
 ;;
@@ -370,9 +370,7 @@
 ;;
 (defun ec-point-order (pt ord fs-ord)
   (setq pt (ec-projectify pt)) 
-  (let ((s ord) 
-        (qt (list 1 1 0))
-         fp fe )
+  (let ((s ord) qt fp fe)
     (dolist (f fs-ord s)
       (setq fp (car f)
             fe (cadr f)
@@ -1579,7 +1577,7 @@
 (defun ec-pattern2val (pattern vec k)
   (do ((i 0 (1+ i)) (val 1))
       ((= i k) val)
-    (when (/= 0 (logand pattern (ash 1 i)))
+    (when (logbitp i pattern)
       (setq val (* val (svref vec i))) )))
 ;;
 ;; Lercier notes that the size of the two sets C_i should have a quotient of 
