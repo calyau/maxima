@@ -782,6 +782,22 @@ Number of Miller-Rabin's tests used in @code{primep}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{primes}
+@deffn {Function} primes (@var{start}, @var{end})
+
+Returns the list of all primes from @var{start} to @var{end}.
+
+@example
+(%i1) primes(3, 7);
+(%o1)                     [3, 5, 7]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{prev_time}
 @deffn {Function} prev_prime (@var{n})
 
