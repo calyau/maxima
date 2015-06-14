@@ -30,10 +30,11 @@
    (%o1)                          Zm9vIGJhciBiYXo=
    (%i2) string: base64_decode(base64);
    (%o2)                            foo bar baz
-   (%i3) integer: base64_decode(base64, 'number);
-   (%o3)                       666f6f206261722062617a
-   (%i4) octets: base64_decode(base64, 'list);
-   (%o4)            [66, 6F, 6F, 20, 62, 61, 72, 20, 62, 61, 7A]
+   (%i3) obase: 16.$
+   (%i4) integer: base64_decode(base64, 'number);
+   (%o4)                       666f6f206261722062617a
+   (%i5) octets: base64_decode(base64, 'list);
+   (%o5)            [66, 6F, 6F, 20, 62, 61, 72, 20, 62, 61, 7A]
    
    Note that if the string contains umlauts the base64 string is platform 
    dependend. But in every case the decoded string is equal to the original.
