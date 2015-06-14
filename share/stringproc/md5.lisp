@@ -19,11 +19,13 @@
 **** md5sum ********************************************************************
    
    Copyright Volker van Nek, 2013 - 2015
+
+   md5sum returns the md5 checksum of a string, a non-negative integer or 
+   a list of octets. 
    
-   md5sum(string) returns the md5 checksum.
-   
-   The default return value is a string to guarantee 32 hex characters. 
-   md5sum optionally returns the corresponding number or list of octets.
+   The default return value is a string that guarantees 32 hex characters. 
+   An optional argument allows md5sum to return the corresponding number or 
+   list of octets.
    
    (%i1) ibase: obase: 16.$
    (%i2) msg: "foo bar baz"$

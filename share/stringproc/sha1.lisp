@@ -20,12 +20,14 @@
    
    Copyright Volker van Nek, 2014 - 2015
    
-   sha1sum(string) returns the sha1 fingerprint of string and sha256sum the 
-   sha256 fingerprint.
+   sha1sum returns the sha1 fingerprint of a string, a non-negative integer or 
+   a list of octets. 
    
-   The default return value is a string to guarantee 40 (64) hex characters. 
-   sha1sum and sha256sum optionally returns the corresponding number or list of 
-   octets.
+   sha256sum returns the sha256 fingerprint.
+   
+   The default return value is a string that guarantees 40 (64) hex characters. 
+   An optional argument allows sha1sum and sha256sum to return the corresponding 
+   number or list of octets.
    
    (%i1) ibase: obase: 16.$
    (%i2) msg: "foo bar baz"$

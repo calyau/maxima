@@ -20,11 +20,12 @@
    
    Copyright Volker van Nek, 2013 - 2015
    
-   base64(string) returns a base 64 representation of a string. 
-
-   base64_decode(base64) returns a decoded base 64 string. 
-   By default the return value is a string.  
-   Optionally base64_decode returns the corresponding number or list of octets.
+   base64 returns a base 64 representation of a string, a non-negative integer 
+   or a list of octets.
+   
+   base64_decode decodes a base 64 string. The default return value is a string.  
+   An optional argument allows base64_decode to return the corresponding number 
+   or list of octets.
    
    (%i1) base64: base64("foo bar baz");
    (%o1)                          Zm9vIGJhciBiYXo=
