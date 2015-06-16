@@ -1945,7 +1945,10 @@
 
 (defmfun $ef_eval (a) 
   (ef-gf-field? "ef_eval")
-  (let ((*ef-arith?*)) (gf-eval a *ef-red* "ef_eval")) )
+  (let ((*ef-arith?* t)) 
+    (unless (equal a ($expand a))
+      (gf-merror (intl:gettext "`ef_eval': The argument must be an expanded polynomial.")) )
+    (gf-eval a *ef-red* "ef_eval") ))
 
 (defun gf-eval (a red fun)
   (setq a (let ((modulus)) (car (prep1 a)))) 
