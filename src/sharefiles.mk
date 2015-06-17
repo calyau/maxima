@@ -175,6 +175,7 @@ contrib/bitwise/rtest_bitwise.mac \
 contrib/bode.mac \
 contrib/boolsimp/boolsimp.lisp \
 contrib/boolsimp/rtest_boolsimp.mac \
+contrib/cgrind.lisp \
 contrib/clebsch_gordan.mac \
 contrib/clebsh-gordan.tex \
 contrib/colorterm.lisp \
