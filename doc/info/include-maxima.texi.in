@@ -549,10 +549,11 @@ stirling
 * Functions and Variables for stirling::
 
 stringproc
-* Introduction to string processing::
-* Functions and Variables for input and output::
-* Functions and Variables for characters::
-* Functions and Variables for strings::
+* Introduction to String Processing::
+* Input and Output::
+* Characters::
+* String Processing::
+* Octets and Utilities for Cryptography::
 
 to_poly_solve
 * Functions and Variables for to_poly_solve::
