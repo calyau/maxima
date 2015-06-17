@@ -903,43 +903,42 @@ Returns @code{true} if @var{expr} is a subscripted variable, for example
 @closecatbox
 @end deffn
 
-@c THIS IS REALLY CONFUSING
-
 @c -----------------------------------------------------------------------------
 @anchor{use_fast_arrays}
 @defvr {Option variable} use_fast_arrays
+Default value: @code{false}
 
-If @code{true} then only two types of arrays are recognized:
+When @code{use_fast_arrays} is @code{true},
+undeclared arrays and arrays declared by @code{array} are values instead of properties,
+and undeclared arrays are implemented as Lisp hash tables.
 
-@enumerate
-@item
-The art-q array (t in Common Lisp) which may have several dimensions
-indexed by integers, and may hold any Lisp or Maxima object as an
-entry.  To construct such an array, enter @code{a:make_array(any,3,4);} 
-then @code{a} will have as value, an array with twelve slots, and the 
-indexing is zero based.
+When @code{use_fast_arrays} is @code{false},
+undeclared arrays and arrays declared by @code{array} are properties,
+and undeclared arrays are implemented with Maxima's own hash table implementation.
 
-@item
-The Hash_table array which is the default type of array created if one
-does @code{b[x+1]:y^2} (and @code{b} is not already an array, a list, or a
-matrix -- if it were one of these an error would be caused since
-@code{x+1} would not be a valid subscript for an art-q array, a list or
-a matrix).  Its indices (also known as keys) may be any object.
-It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}).
-Referencing is done by @code{b[x+1] ==> y^2}.  Of course the key may be
-a list, e.g. @code{b[[x+1,u]]:y} would be valid.  This is incompatible 
-with the old Maxima hash arrays, but saves consing.
-@end enumerate
+Arrays created by @code{make_array} are not affected by @code{use_fast_arrays}.
 
-An advantage of storing the arrays as values of the symbol is that the
-usual conventions about local variables of a function apply to arrays as
-well.  The Hash_table type also uses less consing and is more efficient
-than the old type of Maxima hashar.  To obtain consistent behaviour in
-translated and compiled code set @code{translate_fast_arrays} to be
-@code{true}.
+See also @code{translate_fast_arrays}.
 
 @opencatbox
 @category{Arrays} @category{Global flags}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{translate_fast_arrays}
+@defvr {Option variable} translate_fast_arrays
+Default value: @code{false}
+
+When @code{translate_fast_arrays} is @code{true},
+the Maxima-to-Lisp translator generates code that assumes arrays are values instead of properties,
+as if @code{use_fast_arrays} were @code{true}.
+
+When @code{translate_fast_arrays} is @code{false},
+the Maxima-to-Lisp translator generates code that assumes arrays are properties,
+as if @code{use_fast_arrays} were @code{false}.
+
+@opencatbox
+@category{Arrays} @category{Translation flags and variables}
+@closecatbox
+@end defvr
