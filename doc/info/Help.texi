@@ -71,12 +71,14 @@ Show all Maxima symbols which have @code{"gamma"} in the name:
 @c apropos("gamma");
 @c ===end===
 @example
+@group
 (%i1) apropos("gamma");
 (%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
 gamma_incomplete, gamma_incomplete_generalized, 
 gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
-prefer_gamma_incomplete, 
+prefer_gamma_incomplete, gamma-incomplete, 
 gamma_incomplete_generalized_regularized]
+@end group
 @end example
 
 @opencatbox
@@ -232,19 +234,20 @@ Examples:
 @c example("lambda");
 @c ===end===
 @example
+@group
 (%i1) example(append);
-(%i2) append([x+y,0,-3.2],[2.5e+20,x])
+(%i2) append([y+x,0,-3.2],[2.5e+20,x])
 (%o2)             [y + x, 0, - 3.2, 2.5e+20, x]
 (%o2)                         done
+@end group
 (%i3) example("lambda");
-
-(%i4) lambda([x,y,z],z^2+y^2+x^2)
+(%i4) lambda([x,y,z],x^2+y^2+z^2)
                                     2    2    2
-(%o4)            lambda([x, y, z], z  + y  + x )
+(%o4)            lambda([x, y, z], x  + y  + z )
 (%i5) %(1,2,a)
                               2
 (%o5)                        a  + 5
-(%i6) a+2+1
+(%i6) 1+2+a
 (%o6)                         a + 3
 (%o6)                         done
 @end example

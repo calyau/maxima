@@ -661,6 +661,18 @@ Die Anzahl der Pseudo-Primzahl-Tests nach Miller-Rabin in der Funktion
 @mref{primep}.
 @end defvr
 
+@c --- 13.06.2015 VN -----------------------------------------------------------
+@anchor{primes}
+@deffn {Funktion} primes (@var{start}, @var{end})
+
+Gibt eine Liste mit allen Primzahlen von @var{start} bis @var{end} zur@"uck.
+
+@example
+(%i1) primes(3, 7);
+(%o1)                     [3, 5, 7]
+@end example
+@end deffn
+
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{prev_prime}
 @deffn {Funktion} prev_prime (@var{n})

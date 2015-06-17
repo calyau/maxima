@@ -51,15 +51,24 @@ Examples:
 @c (aa + bb + cc)/(dd + ee + g(x));
 @c ===end===
 @example
+@group
 (%i1) print ("I was called as", __);
 I was called as print(I was called as, __) 
 (%o1)              print(I was called as, __)
+@end group
+@group
 (%i2) foo (__);
 (%o2)                     foo(foo(__))
+@end group
+@group
 (%i3) g (x) := (print ("Current input expression =", __), 0);
 (%o3) g(x) := (print("Current input expression =", __), 0)
+@end group
+@group
 (%i4) [aa : 1, bb : 2, cc : 3];
 (%o4)                       [1, 2, 3]
+@end group
+@group
 (%i5) (aa + bb + cc)/(dd + ee + g(x));
                             cc + bb + aa
 Current input expression = -------------- 
@@ -67,6 +76,7 @@ Current input expression = --------------
                                 6
 (%o5)                        -------
                              ee + dd
+@end group
 @end example
 
 @opencatbox
@@ -114,30 +124,52 @@ Examples:
 @c ev (_);
 @c ===end===
 @example
+@group
 (%i1) 13 + 29;
 (%o1)                          42
+@end group
+@group
 (%i2) :lisp $_
 ((MPLUS) 13 29)
+@end group
+@group
 (%i2) _;
 (%o2)                          42
+@end group
+@group
 (%i3) sin (%pi/2);
 (%o3)                           1
+@end group
+@group
 (%i4) :lisp $_
 ((%SIN) ((MQUOTIENT) $%PI 2))
+@end group
+@group
 (%i4) _;
 (%o4)                           1
+@end group
 (%i5) a: 13$
 (%i6) b: 29$
+@group
 (%i7) a + b;
 (%o7)                          42
+@end group
+@group
 (%i8) :lisp $_
 ((MPLUS) $A $B)
+@end group
+@group
 (%i8) _;
 (%o8)                         b + a
+@end group
+@group
 (%i9) a + b;
 (%o9)                          42
+@end group
+@group
 (%i10) ev (_);
 (%o10)                         42
+@end group
 @end example
 
 @opencatbox
@@ -332,10 +364,14 @@ Example:
 @c ===end===
 @example
 (%i1) 1 + 2 + 3 $
+@group
 (%i2) %;
 (%o2)                           6
+@end group
+@group
 (%i3) %o1;
 (%o3)                           6
+@end group
 @end example
 @end deffn
 
@@ -356,8 +392,10 @@ Example:
 @c 1 + 2 + 3;
 @c ===end===
 @example
+@group
 (%i1) 1 + 2 + 3;
 (%o1)                           6
+@end group
 @end example
 @end deffn
 
@@ -385,12 +423,15 @@ Example:
 @c expand((a+b)^3);
 @c ===end===
 @example
+@group
 (%i1) inchar: "input";
 (%o1)                         input
+@end group
+@group
 (input2) expand((a+b)^3);
                      3        2      2      3
 (%o2)               b  + 3 a b  + 3 a  b + a
-(input3)
+@end group
 @end example
 
 @opencatbox
@@ -697,12 +738,15 @@ Example:
 @c expand((a+b)^3);
 @c ===end===
 @example
+@group
 (%i1) outchar: "output";
 (output1)                    output
+@end group
+@group
 (%i2) expand((a+b)^3);
                      3        2      2      3
 (output2)           b  + 3 a b  + 3 a  b + a
-(%i3)
+@end group
 @end example
 
 @opencatbox
@@ -957,15 +1001,23 @@ The values are removed from the variables.  @code{values} is the empty list.
 @c values;
 @c ===end===
 @example
-(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+@group
+(%i1) [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
                                            2
 (%o1)              [99, 9, 90, d, f(x) := x ]
+@end group
+@group
 (%i2) values;
 (%o2)                       [a, b, c]
+@end group
+@group
 (%i3) [kill(a), remove(b,value), remvalue(c)];
 (%o3)                   [done, done, [c]]
+@end group
+@group
 (%i4) values;
 (%o4)                          []
+@end group
 @end example
 
 @opencatbox
@@ -995,15 +1047,19 @@ Example:
 @c %e^-10;
 @c ===end===
 @example
+@group
 (%i1) %e^-10;
                                - 10
 (%o1)                        %e
+@end group
 (%i2) %edispflag:true$
+@group
 (%i3) %e^-10;
                                1
 (%o3)                         ----
                                 10
                               %e
+@end group
 @end example
 
 @opencatbox
@@ -1067,15 +1123,17 @@ Example:
 @example
 (%i1) b[1,2]:x-x^2$
 (%i2) x:123$
+@group
 (%i3) disp(x, b[1,2], sin(1.0));
                                123
 
                                   2
                              x - x
 
-                        .8414709848078965
+                       0.8414709848078965
 
 (%o3)                         done
+@end group
 @end example
 
 @opencatbox
@@ -1112,7 +1170,7 @@ Example:
                          b     = x - x
                           1, 2
 
-                  sin(1.0) = .8414709848078965
+                  sin(1.0) = 0.8414709848078965
 
 (%o3)                         done
 @end example
@@ -1141,14 +1199,18 @@ Example:
 @c x/(x^2+1);
 @c ===end===
 @example
+@group
 (%i1) x/(x^2+1);
                                x
 (%o1)                        ------
                               2
                              x  + 1
+@end group
 (%i2) display2d:false$
+@group
 (%i3) x/(x^2+1);
 (%o3) x/(x^2+1)
+@end group
 @end example
 
 @opencatbox
@@ -1308,44 +1370,65 @@ Examples:
 @c   p : makelist (0, i, 1, length (A))], 
 @c   for i thru n do for j : i thru n do
 @c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
-@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
 @c   for i thru n do L[i, i] : 1 / p[i],
 @c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 @c grind (cholesky);
 @c string (fundef (cholesky));
 @c ===end===
 @example
+@group
 (%i1) aa + 1729;
 (%o1)                       aa + 1729
+@end group
+@group
 (%i2) grind (%);
 aa+1729$
 (%o2)                         done
+@end group
+@group
 (%i3) [aa, 1729, aa + 1729];
 (%o3)                 [aa, 1729, aa + 1729]
+@end group
+@group
 (%i4) grind (%);
 [aa,1729,aa+1729]$
 (%o4)                         done
+@end group
+@group
 (%i5) matrix ([aa, 17], [29, bb]);
                            [ aa  17 ]
 (%o5)                      [        ]
                            [ 29  bb ]
+@end group
+@group
 (%i6) grind (%);
 matrix([aa,17],[29,bb])$
 (%o6)                         done
+@end group
+@group
 (%i7) set (aa, 17, 29, bb);
 (%o7)                   @{17, 29, aa, bb@}
+@end group
+@group
 (%i8) grind (%);
 @{17,29,aa,bb@}$
 (%o8)                         done
+@end group
+@group
 (%i9) exp (aa / (bb + 17)^29);
                                 aa
                             -----------
                                      29
                             (bb + 17)
 (%o9)                     %e
+@end group
+@group
 (%i10) grind (%);
 %e^(aa/(bb+17)^29)$
 (%o10)                        done
+@end group
+@group
 (%i11) expr: expand ((aa + bb)^10);
          10           9        2   8         3   7         4   6
 (%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
@@ -1353,24 +1436,30 @@ matrix([aa,17],[29,bb])$
  + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
         9        10
  + 10 aa  bb + aa
-(%i12) grind (expr);
+@end group
 @group
+(%i12) grind (expr);
 bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
      +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
      +10*aa^9*bb+aa^10$
-@end group
 (%o12)                        done
+@end group
+@group
 (%i13) string (expr);
 (%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
 +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
 bb+aa^10
+@end group
+@group
 (%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
-  p : makelist (0, i, 1, length (A))], for i thru n do
-  for j : i thru n do
+  p : makelist (0, i, 1, length (A))],
+  for i thru n do for j : i thru n do
   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
   if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
   for i thru n do L[i, i] : 1 / p[i],
   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+define: warning: redefining the built-in function cholesky
+@end group
 (%i15) grind (cholesky);
 cholesky(A):=block(
          [n:length(A),L:copymatrix(A),
@@ -1383,12 +1472,14 @@ cholesky(A):=block(
          for i thru n do L[i,i]:1/p[i],
          for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
 (%o15)                        done
+@group
 (%i16) string (fundef (cholesky));
 (%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
 t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
 [i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
 ) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
 n do (for j from i+1 thru n do L[i,j]:0),L)
+@end group
 @end example
 
 @opencatbox
@@ -1447,10 +1538,14 @@ Examples:
 @c ===end===
 @example
 (%i1) ibase : 2 $
+@group
 (%i2) obase;
 (%o2)                          10
+@end group
+@group
 (%i3) 1111111111111111;
 (%o3)                         65535
+@end group
 @end example
 
 @code{ibase} greater than 10.
@@ -1467,18 +1562,30 @@ Letters are interpreted as digits only if the first digit is 0 through 9.
 @c ===end===
 @example
 (%i1) ibase : 16 $
+@group
 (%i2) obase;
 (%o2)                          10
+@end group
+@group
 (%i3) 1000;
 (%o3)                         4096
+@end group
+@group
 (%i4) abcd;
 (%o4)                         abcd
+@end group
+@group
 (%i5) symbolp (abcd);
 (%o5)                         true
+@end group
+@group
 (%i6) 0abcd;
 (%o6)                         43981
+@end group
+@group
 (%i7) symbolp (0abcd);
 (%o7)                         false
+@end group
 @end example
 
 When an integer is terminated by a decimal point,
@@ -1492,12 +1599,18 @@ it is interpreted in base 10.
 @c ===end===
 @example
 (%i1) ibase : 36 $
+@group
 (%i2) obase;
 (%o2)                          10
+@end group
+@group
 (%i3) 1234;
 (%o3)                         49360
+@end group
+@group
 (%i4) 1234.;
 (%o4)                         1234
+@end group
 @end example
 
 @opencatbox
@@ -1651,11 +1764,15 @@ Examples:
 @c ===end===
 @example
 (%i1) lispdisp: false$
+@group
 (%i2) ?foo + ?bar;
 (%o2)                       foo + bar
+@end group
 (%i3) lispdisp: true$
+@group
 (%i4) ?foo + ?bar;
 (%o4)                      ?foo + ?bar
+@end group
 @end example
 
 @opencatbox
@@ -1711,22 +1828,38 @@ Examples:
 @c 36^8 - 1;
 @c ===end===
 @example
+@group
 (%i1) obase : 2;
 (%o1)                          10
-(%i2) 2^8 - 1;
+@end group
+@group
+(%i10) 2^8 - 1;
 (%o10)                      11111111
-(%i3) obase : 8;
+@end group
+@group
+(%i11) obase : 8;
 (%o3)                          10
+@end group
+@group
 (%i4) 8^8 - 1;
 (%o4)                       77777777
+@end group
+@group
 (%i5) obase : 16;
 (%o5)                          10
+@end group
+@group
 (%i6) 16^8 - 1;
 (%o6)                       0FFFFFFFF
+@end group
+@group
 (%i7) obase : 36;
 (%o7)                          10
+@end group
+@group
 (%i8) 36^8 - 1;
 (%o8)                       0ZZZZZZZZ
+@end group
 @end example
 
 @opencatbox

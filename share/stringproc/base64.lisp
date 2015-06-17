@@ -18,16 +18,24 @@
    
 **** base64 ********************************************************************
    
-   Copyright Volker van Nek, 2013
+   Copyright Volker van Nek, 2013 - 2015
    
-   base64(string) returns a base 64 representation of a string. 
-
-   base64_decode(base64) returns a decoded base 64 string. 
+   base64 returns a base 64 representation of a string, a non-negative integer 
+   or a list of octets.
    
-   (%i2) base64 : base64("foo bar baz");
-   (%o2)                          Zm9vIGJhciBiYXo=
-   (%i3) string : base64_decode(base64);
-   (%o3)                             foo bar baz
+   base64_decode decodes a base 64 string. The default return value is a string.  
+   An optional argument allows base64_decode to return the corresponding number 
+   or list of octets.
+   
+   (%i1) base64: base64("foo bar baz");
+   (%o1)                          Zm9vIGJhciBiYXo=
+   (%i2) string: base64_decode(base64);
+   (%o2)                            foo bar baz
+   (%i3) obase: 16.$
+   (%i4) integer: base64_decode(base64, 'number);
+   (%o4)                       666f6f206261722062617a
+   (%i5) octets: base64_decode(base64, 'list);
+   (%o5)            [66, 6F, 6F, 20, 62, 61, 72, 20, 62, 61, 7A]
    
    Note that if the string contains umlauts the base64 string is platform 
    dependend. But in every case the decoded string is equal to the original.
@@ -64,13 +72,21 @@
   (setf (svref *num64* (char-code (char *chr64* i))) i) )
 
 
-(defmfun $base64 (s) 
-  (unless (stringp s)
-    (merror "`base64': Argument must be a string.") )
-  (let* ((bytes (mapcar #'char-code (coerce s 'list)))
-         (len (length s))
-         (base64 (make-array (* 4. (floor (+ len 2.) 3.)) :element-type 'character :initial-element #\0))
-         (k 0) b ind )
+(defmfun $base64 (s)
+  (let (bytes len base64 k b ind)
+    (cond
+      ((stringp s)
+        (setq bytes (mapcar #'char-code (coerce s 'list))) )
+      ((and (integerp s) (>= s 0))
+        (setq bytes (number-to-octets s)) )
+      (($listp s)
+        (setq bytes (cdr s)) )
+      (t 
+        (gf-merror (intl:gettext 
+          "`base64': Argument must be a string, a non-negative integer or a list of octets." ))))
+    (setq len (length bytes) 
+          base64 (make-array (* 4. (floor (+ len 2.) 3.)) :element-type 'character :initial-element #\0)
+          k 0 )
     (do ()
         ((null bytes))
       (setq b `#(,(pop bytes)
@@ -91,7 +107,7 @@
     (coerce base64 'string) ))
 
 
-(defmfun $base64_decode (s) 
+(defmfun $base64_decode (s &optional (rtype '$string))
   (let ((err-str "`base64_decode': Argument must be a base64 encoded string."))
     (unless (stringp s) (merror err-str))
     (let* ((len (length s))
@@ -123,7 +139,16 @@
                 (logior (logand (ash (svref w 2.) 6.) #xff)     (svref w 3.)     ) )
         (when (= (incf j) size) (return))
         (go a) )
-      (coerce (map 'vector #'code-char res) 'string) )))
+      (cond
+        ((equal rtype '$list)
+          (cons '(mlist simp) (coerce res 'list)) )
+        ((equal rtype '$number)
+          (reduce #'(lambda (x y) (logior (ash x 8.) y)) (coerce res 'list)) )
+        ((equal rtype '$string)
+          (coerce (map 'vector #'code-char res) 'string) )
+        (t  
+          (gf-merror (intl:gettext 
+            "`base64_decode': Optional argument must be 'list, 'number or 'string." )))))))
 
 
 (eval-when

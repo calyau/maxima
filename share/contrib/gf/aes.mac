@@ -18,7 +18,7 @@
    
 **** AES en/decryption *********************************************************
    
-   Copyright Volker van Nek, 2012 - 2014
+   Copyright Volker van Nek, 2012 - 2015
    
    
    This file shows the polynomial aspects of the AES algorithm and its functions 
@@ -32,8 +32,13 @@
    Rijndael_Animation_v4_en.swf (http://www.formaestudio.com/rijndaelinspector/)
    which I highly recommend to set next to this code.
    
-   Functions in this file work in Maxima version 5.31 or higher.
-   (Or download from git, compile and load src/numth.lisp.)
+   
+   June, 2015: New user interface.
+   The functions make_state and coerce_state provide flexible support for 
+   different data types. States can be build from octet-strings, integers and 
+   lists of octets and can be coerced back to these three types.
+   The new interface is based on new functions in share/stringproc. So you 
+   should have installed Maxima version 5.37 or higher.
 */
 
 
@@ -89,7 +94,7 @@ inv_shift_rows(M) := apply('matrix, create_list(inv_rotate(M[i], i-1), i,1,4))$
 
 /* mix_columns ************************************************************** */
 
-gf_set_data(2, x^8+x^4+x^3+x+1)$
+gf_set_data(2, x^8+x^4+x^3+x+1)$ /* gf_invert_by_lu (see below) needs a field */
 
 mat_n2p(num_mat) := matrixmap('gf_n2p, num_mat)$
 mat_p2n(poly_mat) := matrixmap('gf_p2n, poly_mat)$
@@ -123,7 +128,10 @@ inv_mix_columns(state) := block([mixed],
 /* add_round_key ************************************************************ */
 
 add_round_key(state, key) := 
+   matrixmap(?logxor, state, key)$
+/* with polynomial addition:
    mat_p2n( gf_matadd( mat_n2p(state), mat_n2p(key) ))$
+*/
 
 
 /* key_expansion ************************************************************ */
@@ -161,6 +169,9 @@ key_expansion(key) := (
 
 /* cipher ******************************************************************* */
 
+/*
+cipher and inv_cipher both return a new state.
+*/
 cipher(state) := (
    state : add_round_key(state, %_round_key[0]),
    
@@ -192,31 +203,33 @@ inv_cipher(state) := (
 print_block(block) := 
    printf(true, "~{~{~2,'0x ~}~%~}", block)$
 
-text2state(text) := block([state, c,r],
-   state : zeromatrix(4, 4),
-   c : r : 1,
-   for char in map('cint, charlist(text)) do (
-      state[r, c] : char,
+/* 
+Setting ibase causes SBCL not to compile make_state.
+
+arg can be an octet-string, an integer or a list of octets.
+The return value is a 4x4 matrix.
+*/
+make_state(arg) := block([state, c:1, r:1, ibase:16.],
+   if stringp(arg) then arg : parse_string(sconcat(0, arg)),
+   if integerp(arg) then arg : number_to_octets(arg),
+   while length(arg) < 16. do arg : cons(0, arg),
+   state : zeromatrix(4,4),
+   for octet in arg do (
+      state[r, c] : octet,
       if (r : r+1) = 5 then (r : 1, c : c+1) ),
    state )$
 
-state2text(state) := 
-   simplode(map('ascii, flatten(args(transpose(state)))))$
-
-/* 
-setting ibase causes SBCL not to compile bytestring2state 
+/*
+The first argument must be the state, a 4x4 matrix.
+The second optional argument can be 'list (the default), 'number or 'string.
+Accordingly the return value is a list of octets, an integer or an octet-string.
 */
-bytestring2state(bytestring) := block([num, state, ibase:16.],
-   num : parse_string(sconcat(0, bytestring)),
-   state : zeromatrix(4, 4),
-   for c:4 thru 1 step -1 do
-      for r:4 thru 1 step -1 do (
-         state[r, c] : ?logand(num, 255.),
-         num : ?ash(num, - 8) ),
-   state )$
-
-state2bytestring(state) := 
-   printf(false, "~{~2,'0x~}", flatten(args(transpose(state))))$
+coerce_state([args]) := block([state:args[1], type, res],
+   res : flatten(args(transpose(state))),
+   type : if length(args) = 2 then args[2],
+   if type = 'number then res : octets_to_number(res),
+   if type = 'string then res : printf(false, "~{~2,'0x~}", res),
+   res )$
 
 
 /* compilation ************************************************************** */
@@ -225,9 +238,9 @@ state2bytestring(state) :=
 If speed matters it is recommended to compile the functions rather than to 
 compile the file. When compiling use input base 10.
 
-SBCL doesn't want to compile bytestring2state.
+SBCL doesn't want to compile make_state.
 
-compile(bytestring2state)$
+compile(make_state)$
 
 compile(
    sub_bytes, inv_sub_bytes, 
@@ -236,7 +249,7 @@ compile(
    add_round_key, 
    rot_word, key_expansion1, key_expansion2, next_round_key, key_expansion, 
    cipher, inv_cipher, 
-   print_block, text2state, state2text, state2bytestring )$
+   print_block, coerce_state )$
 */
 
 
@@ -247,25 +260,35 @@ http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
 (Nov 26, 2001, AES specification) 
 page 35/36:
 
-(%i2) state : bytestring2state("00112233445566778899aabbccddeeff")$
-(%i3) key : bytestring2state("000102030405060708090a0b0c0d0e0f")$
-(%i4) key_expansion(key)$
-(%i5) state : cipher(state)$
-(%i6) state2bytestring(state);
-(%o6)                  69C4E0D86A7B0430D8CDB78070B4C55A
-(%i7) state : inv_cipher(state)$
-(%i8) state2bytestring(state);
-(%o8)                  00112233445566778899AABBCCDDEEFF
+(%i1) load(aes)$
+
+(%i2) ibase: obase: 16.$
+
+(%i3) state: make_state("00112233445566778899aabbccddeeff")$
+
+(%i4) key: make_state("000102030405060708090a0b0c0d0e0f")$
+
+(%i5) key_expansion(key)$
+
+(%i6) state: cipher(state)$
+
+(%i6) coerce_state(state);
+(%o7)       [69,0C4,0E0,0D8,6A,7B,4,30,0D8,0CD,0B7,80,70,0B4,0C5,5A]
+(%i8) state: inv_cipher(state)$
+
+(%i9) coerce_state(state, 'string);
+(%o9)                  00112233445566778899AABBCCDDEEFF
 
 
 fips-197.pdf, page 33/34:
 
-(%i9) state : bytestring2state("3243f6a8885a308d313198a2e0370734")$
-(%i10) key : bytestring2state("2b7e151628aed2a6abf7158809cf4f3c")$
-(%i11) key_expansion(key)$
+(%i0A) state: make_state("3243f6a8885a308d313198a2e0370734")$
 
-(%i12) obase : 16$
-(%i13) key;
+(%i0B) key: make_state("2b7e151628aed2a6abf7158809cf4f3c")$
+
+(%i0C) key_expansion(key)$
+
+(%i0D) key;
                              [ 2B  28   0AB   9  ]
                              [                   ]
                              [ 7E  0AE  0F7  0CF ]
@@ -273,7 +296,7 @@ fips-197.pdf, page 33/34:
                              [ 15  0D2  15   4F  ]
                              [                   ]
                              [ 16  0A6  88   3C  ]
-(%i14) state;
+(%i0E) state;
                              [ 32   88  31   0E0 ]
                              [                   ]
                              [ 43   5A  31   37  ]
@@ -281,40 +304,22 @@ fips-197.pdf, page 33/34:
                              [ 0F6  30  98    7  ]
                              [                   ]
                              [ 0A8  8D  0A2  34  ]
-(%i15) obase : 10.$
-(%i16) print_block(state)$
-32 88 31 E0 
-43 5A 31 37 
-F6 30 98 07 
-A8 8D A2 34 
-(%i17) state : cipher(state)$
+(%i0F) state: cipher(state)$
 
-(%i18) print_block(state)$
-39 02 DC 19 
+(%i10) print_block(state)$
+39 02 DC 19
 25 DC 11 6A 
 84 09 85 0B 
 1D FB 97 32 
-(%i19) state : inv_cipher(state)$
 
-(%i20) print_block(state)$
+(%i11) state: inv_cipher(state)$
+
+(%i12) print_block(state)$
 32 88 31 E0 
 43 5A 31 37 
 F6 30 98 07 
 A8 8D A2 34 
 
-
-(%i21) state : text2state("Computer Algebra")$
-
-(%i22) matrixmap(ascii, state);
-                                [ C  u     e ]
-                                [            ]
-                                [ o  t  A  b ]
-(%o22)                          [            ]
-                                [ m  e  l  r ]
-                                [            ]
-                                [ p  r  g  a ]
-(%i23) state2text(state);
-(%o23)                         Computer Algebra
 */
 
 

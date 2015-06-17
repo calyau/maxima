@@ -18,7 +18,7 @@
    
 **** AES en/decryption 2 (byte version) ****************************************
    
-   Copyright Volker van Nek, 2012 - 2014
+   Copyright Volker van Nek, 2012 - 2015
    
    
    This is an alternative to share/contrib/gf/aes.mac. It works at byte level 
@@ -26,12 +26,18 @@
    description of the mix_columns operation by using matrix-dot-multiplication 
    controlled by Maxima's global variables matrix_element_add and .._mult.
    
-   In this file states are implemented as 4x4 arrays.
+   In this file states are implemented as 4x4 arrays with destructively working 
+   operations.
    
    See below for examples.
    
-   Maxima version 5.31 or higher.
-   (Or download, compile and load a recent version of src/numth.lisp.)
+
+   June, 2015: New user interface.
+   The functions make_state and coerce_state provide flexible support for 
+   different data types. States can be build from octet-strings, integers and 
+   lists of octets and can be coerced back to these three types.
+   The new interface is based on new functions in share/stringproc. So you 
+   should have installed Maxima version 5.37 or higher.
 */
 
 
@@ -54,7 +60,7 @@ inv_by_table(a) :=
 
 %_byte_sub : make_array(fixnum, 256.)$
 
-bit_lrot(b, n) := 
+byte_lrot(b, n) := 
    ?logior(?logand(?ash(b, n), 255.), ?ash(b, n-8))$
 
 for byte : 0 thru 255. do 
@@ -63,7 +69,7 @@ for byte : 0 thru 255. do
          x : inv_by_table(byte),
          s : [x, 99.],
          for n thru 4 do 
-            s : cons(bit_lrot(x, n), s),
+            s : cons(byte_lrot(x, n), s),
          apply('?logxor, s) )$
 
 print_byte_sub() := 
@@ -83,7 +89,7 @@ for byte : 0 thru 255. do
    %_inv_byte_sub[byte] : 
       block([s, x],
          x : ?logxor(byte, 99.),
-         s : [bit_lrot(x, 1), bit_lrot(x, 3), bit_lrot(x, 6)],
+         s : [byte_lrot(x, 1), byte_lrot(x, 3), byte_lrot(x, 6)],
          inv_by_table( apply('?logxor, s) ) )$
 
 print_inv_byte_sub() := 
@@ -194,6 +200,9 @@ key_expansion(key) := (
 
 /* cipher ******************************************************************* */
 
+/*
+cipher and inv_cipher both change the state destructively.
+*/
 cipher(state) := (
    add_round_key(state, %_round_key[0]),
    
@@ -226,46 +235,44 @@ inv_cipher(state) := (
 
 /* user interface *********************************************************** */
 
-matrix2state(matrix) := block([state],
+matrix_to_state(matrix) := block([state],
    state : make_array(fixnum, 4, 4),
    fillarray(state, flatten(args(matrix))) )$
    
-state2matrix(state) := genmatrix(state, 3, 3, 0, 0)$
+state_to_matrix(state) := genmatrix(state, 3, 3, 0, 0)$
 
 print_block(block) := 
    printf(true, "~{~4@{~2,'0x ~}~%~}", listarray(block))$
 
-text2state(text) := block([state, c,r],
-   state : make_array(fixnum, 4, 4),
-   c : r : 0,
-   for char in map('cint, charlist(text)) do (
-      state[r, c] : char,
+/* 
+Setting ibase causes SBCL not to compile make_state.
+
+arg can be an octet-string, an integer or a list of octets.
+The return value is a Lisp array.
+*/
+make_state(arg) := block([state, c:0, r:0, ibase:16.],
+   if stringp(arg) then arg : parse_string(sconcat(0, arg)),
+   if integerp(arg) then arg : number_to_octets(arg),
+   while length(arg) < 16. do arg : cons(0, arg),
+   state : make_array(fixnum, 4, 4), 
+   for octet in arg do (
+      state[r, c] : octet,
       if (r : r+1) = 4 then (r : 0, c : c+1) ),
    state )$
 
-state2text(state) := block([bytes:[]],
-   for c:3 thru 0 step -1 do
-      for r:3 thru 0 step -1 do 
-         bytes : cons(state[r, c], bytes),
-   simplode(map('ascii, bytes)) )$
-
-/* 
-setting ibase causes SBCL not to compile bytestring2state 
+/*
+The first argument must be the state, a 4x4 Lisp array.
+The second optional argument can be 'list (the default), 'number or 'string.
+Accordingly the return value is a list of octets, an integer or an octet-string.
 */
-bytestring2state(bytestring) := block([num, state, ibase:16.],
-   num : parse_string(sconcat(0, bytestring)),
-   state : make_array(fixnum, 4, 4),
-   for c:3 thru 0 step -1 do
-      for r:3 thru 0 step -1 do (
-         state[r, c] : ?logand(num, 255.),
-         num : ?ash(num, - 8) ),
-   state )$
-
-state2bytestring(state) := block([bytes:[]],
+coerce_state([args]) := block([state:args[1], type, res:[]],
    for c:3 thru 0 step -1 do
       for r:3 thru 0 step -1 do 
-         bytes : cons(state[r, c], bytes),
-   printf(false, "~{~2,'0x~}", bytes) )$
+         res : cons(state[r, c], res),
+   type : if length(args) = 2 then args[2],
+   if type = 'number then res : octets_to_number(res),
+   if type = 'string then res : printf(false, "~{~2,'0x~}", res),
+   res )$
 
 
 /* compilation ************************************************************** */
@@ -274,20 +281,19 @@ state2bytestring(state) := block([bytes:[]],
 If speed matters it is recommended to compile the functions rather than to 
 compile the file. When compiling use input base 10.
 
-SBCL doesn't want to compile bytestring2state.
+SBCL doesn't want to compile make_state.
 
-compile(bytestring2state)$
+compile(make_state)$
 
 compile(
    mult_by_table, inv_by_table, 
-   bit_lrot, sub_bytes, inv_sub_bytes, print_byte_sub, print_inv_byte_sub, 
+   byte_lrot, sub_bytes, inv_sub_bytes, print_byte_sub, print_inv_byte_sub, 
    rotate1, rotate2, inv_rotate1, shift_rows, inv_shift_rows, 
    mix_columns, inv_mix_columns, 
    add_round_key, 
    rot_word, key_expansion1, key_expansion2, make_round_key, key_expansion, 
    cipher, inv_cipher,
-   matrix2state, state2matrix, 
-   print_block, text2state, state2text, state2bytestring )$
+   matrix_to_state, state_to_matrix, print_block, coerce_state )$
 */
 
 
@@ -298,60 +304,59 @@ http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
 (Nov 26, 2001, AES specification) 
 page 35/36:
 
-(%i2) state : bytestring2state("00112233445566778899aabbccddeeff")$
-(%i3) key : bytestring2state("000102030405060708090a0b0c0d0e0f")$
-(%i4) key_expansion(key)$
-(%i5) cipher(state)$
-(%i6) state2bytestring(state);
-(%o6)                  69C4E0D86A7B0430D8CDB78070B4C55A
-(%i7) inv_cipher(state)$
-(%i8) state2bytestring(state);
-(%o8)                  00112233445566778899AABBCCDDEEFF
+(%i1) load(aes2)$
+
+(%i2) ibase : obase : 16.$
+
+(%i3) state : make_state("00112233445566778899aabbccddeeff")$
+
+(%i4) key : make_state("000102030405060708090a0b0c0d0e0f")$
+
+(%i5) key_expansion(key)$
+
+(%i6) cipher(state);
+(%o6)                               done      
+(%i7) coerce_state(state);
+(%o7)       [69,0C4,0E0,0D8,6A,7B,4,30,0D8,0CD,0B7,80,70,0B4,0C5,5A]
+(%i8) inv_cipher(state);
+(%o8)                               done      
+(%i9) coerce_state(state, 'string);
+(%o9)                  00112233445566778899AABBCCDDEEFF
 
 fips-197.pdf, page 33/34:
 
-(%i9) state : bytestring2state("3243f6a8885a308d313198a2e0370734")$
-(%i10) key : bytestring2state("2b7e151628aed2a6abf7158809cf4f3c")$
-(%i11) key_expansion(key)$
+(%i0A) state : make_state("3243f6a8885a308d313198a2e0370734");
+(%o0A)                         Lisp array [4,4]      
+(%i0B) key : make_state("2b7e151628aed2a6abf7158809cf4f3c")$
 
-(%i12) print_block(key)$
+(%i0C) key_expansion(key)$
+
+(%i0D) print_block(key)$
 2B 28 AB 09 
 7E AE F7 CF 
 15 D2 15 4F 
 16 A6 88 3C 
-(%i13) print_block(state)$
+
+(%i0E) print_block(state)$
 32 88 31 E0 
 43 5A 31 37 
 F6 30 98 07 
 A8 8D A2 34 
-(%i14) cipher(state)$
-
-(%i15) print_block(state)$
+(%i0F) cipher(state);
+(%o0F)                              done      
+(%i10) print_block(state)$
 39 02 DC 19 
 25 DC 11 6A 
 84 09 85 0B 
 1D FB 97 32 
-(%i16) inv_cipher(state)$
-
-(%i17) print_block(state)$
+(%i11) inv_cipher(state);
+(%o11)                              done      
+(%i12) print_block(state)$
 32 88 31 E0 
 43 5A 31 37 
 F6 30 98 07 
 A8 8D A2 34 
 
-
-(%i18) state : text2state("Computer Algebra")$
-
-(%i19) matrixmap(ascii, state2matrix(state));
-                                [ C  u     e ]
-                                [            ]
-                                [ o  t  A  b ]
-(%o19)                          [            ]
-                                [ m  e  l  r ]
-                                [            ]
-                                [ p  r  g  a ]
-(%i20) state2text(state);
-(%o20)                         Computer Algebra
 */
 
 

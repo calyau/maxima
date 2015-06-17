@@ -87,14 +87,16 @@ eigenvalues(mat):=
 		solution:block([programmode:true],
 	        solve(charpoly(mat,dummy),dummy)),
 		if solution=[] then 
-		(print(" "),print("solve is unable to find the roots of"),
-		print("the characteristic polynomial."),
-		return(listall))
-		else (for index2 thru dimnsn do
+		(print(" "),print("eigenvalues: solve is unable to find the roots of the characteristic polynomial."),
+                return(listall))
+                else if apply("+",multiplicities) < dimnsn then
+		(print(" "),print("eigenvalues: solve is unable to find some of the roots of the characteristic polynomial."),
+                dimnsn:apply("+",multiplicities)),
+		for index2 thru dimnsn do
 		(dimnsn:mi(dimnsn-part(multiplicities,index2)+1),
 		listall:endcons(rhs(part(solution,index2)),listall)),
 		listall:endcons(multiplicities,[listall]),
-		return(listall)))$
+		return(listall))$
 
 eigenvectors(mat):=
 		block([eigvecs,equations,unknowns,solution,eigvals,dimnsn,
@@ -109,7 +111,8 @@ eigenvectors(mat):=
 		if knowneigvals then eigvals:listeigvals
 		else eigvals:eigenvalues(mat),
 		if eigvals=[] then (nondiagonalizable:true,return(eigvals))
-		else (multiplicities:part(eigvals,2),
+                else (multiplicities:part(eigvals,2),
+                count:length(multiplicities),
 		for index1 thru dimnsn do
 		unknowns:endcons(concat(notknwn,index1),unknowns),
 		vectr:columnvector(unknowns),matrx:mat.vectr,
@@ -129,8 +132,8 @@ eigenvectors(mat):=
 		(intern:substvectk(%rnum_list,index3,interm),
                 unit:append(unit,[intern])),
 	        if unit=[] then
-		(print(" "),print("algsys failure: the eigenvector(s) for the",
-		index1,"th eigenvalue will be missing.")),
+		(print(" "),print("eigenvectors: the eigenvector(s) for the",
+                index1,"th eigenvalue will be missing.")),
 		if hermitianmatrix and %rnum>1 then unit:gramschmidt(unit),
 		eigvecs:append(eigvecs,[unit])),
 		return([eigvals, eigvecs])))$

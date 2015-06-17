@@ -775,6 +775,10 @@ package (except @mrefcomma{innerproduct} @mrefcomma{unitvector}@w{}
 @c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
 @c WHAT DOES "will not work" MEAN, ANYWAY ??
+Sometimes @code{solve} may find only a subset of the roots of the polynomial.
+This may happen when the factoring of the polynomial contains polynomials
+of degree 5 or more. In such cases a warning message is displayed and the
+only the roots found and their corresponding multiplicities are returned.
 
 In some cases the eigenvalues found by @code{solve} may be complicated
 expressions.  (This may happen when @code{solve} returns a not-so-obviously real
@@ -816,6 +820,12 @@ The package @code{eigen.mac} is loaded automatically when
 If @code{eigen.mac} is not already loaded,
 @code{load ("eigen")} loads it.
 After loading, all functions and variables in the package are available.
+
+Note that @code{eigenvectors} internally calls @code{eigenvalues} to
+obtain eigenvalues. So, when @code{eigenvalues} returns a subset of
+all the eigenvalues, the @code{eigenvectors} returns the corresponding
+subset of the all the eigenvectors, with the same warning displayed as
+@code{eigenvalues}.
 
 The flags that affect this function are:
 

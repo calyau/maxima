@@ -1,4 +1,4 @@
-gCrosscompiling Maxima for Windows
+Crosscompiling Maxima for Windows
 =================================
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:

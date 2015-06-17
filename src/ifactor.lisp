@@ -3,8 +3,7 @@
 ;;;;
 ;;;;  Maxima integer factorization package.
 ;;;;
-;;;;  Version  : 1.4 (march 2008)
-;;;;  Copyright: 2005-2008 Andrej Vodopivec, Volker van Nek
+;;;;  Copyright: 2005-2015 Andrej Vodopivec, Volker van Nek
 ;;;;  Licence  : GPL
 ;;;;
 ;;;;   - ifactors     : factorization of integers
@@ -702,25 +701,62 @@
       (incf j)
       (setq y (power-mod y 2 n)))))
 
-(defun $power_mod (b n m)
-  (unless (and (integerp b) (integerp n) (integerp m))
-    (merror (intl:gettext "power_mod: arguments must be integers; found: ~M, ~M, ~M") b n m))
-  (if (>= n 0)
-      (power-mod b n m)
-      (let ((inv (inv-mod b m)))
-	(if inv
-	    (power-mod inv (- n) m)))))
-
-(defun power-mod (b n m)
-  (if (zerop n)
-      (mod 1 m)
-      (do ((res 1))
-	  (())
-	(when (logbitp 0 n)
-	  (setq res (mod (* res b) m))
-	  (when (= 1 n) (return res)))
-	(setq n (ash n -1))
-	(setq b (mod (* b b) m)))))
+(defun $power_mod (b e m)
+  (unless (and (integerp b) (integerp e) (integerp m))
+    (merror (intl:gettext "power_mod: arguments must be integers; found: ~M, ~M, ~M") b e m) )
+  (if (>= e 0)
+    (power-mod b e m)
+    (let ((inv (inv-mod b m)))
+      (when inv
+        (power-mod inv (- e) m) ))))
+;;
+(defun power-mod (b e m)
+  (declare (optimize (speed 3) (safety 0)))
+  (cond
+    ((zerop e) 
+      (mod 1 m) )
+    ((typep e 'fixnum)
+      (do ((res 1)) (())
+        (when (logbitp 0 e)
+          (setq res (mod (* res b) m))
+          (when (= 1 e) (return res)) )
+        (setq e (ash e -1)
+              b (mod (* b b) m)) ))
+    (t ;; sliding window variant:
+      (let* ((l (integer-length e))
+             (k (cond ((< l  65) 3)
+                      ((< l 161) 4)
+                      ((< l 385) 5)
+                      ((< l 897) 6)
+                      (t         7) ))
+             (tab (power-mod-tab b k m))
+             (res 1) s u tmp )
+        (do ((i (1- l)))
+            ((< i 0) res)
+          (cond
+            ((logbitp i e)
+              (setq s (max (1+ (- i k)) 0))
+              (do () ((logbitp s e)) (incf s))
+              (setq tmp (1+ (- i s)))
+              (dotimes (h tmp) (setq res (mod (* res res) m)))
+              (setq u (ldb (byte tmp s) e))
+              (unless (= u 0) (setq res (mod (* res (svref tab (ash u -1))) m)))
+              (setq i (1- s)) )
+            (t
+              (setq res (mod (* res res) m))
+              (decf i) )))))))
+;;
+(defun power-mod-tab (b k m)
+  (declare (optimize (speed 3) (safety 0)))
+  (let* ((l (ash 1 (1- k)))
+         (tab (make-array l :element-type 'integer :initial-element 1))
+         (bi b)
+         (bb (mod (* b b) m)) )
+    (setf (svref tab 0) b)
+    (do ((i 1 (1+ i)))
+        ((= i l) tab)
+      (setq bi (mod (* bi bb) m))
+      (setf (svref tab i) bi) )))
 
 ;;; primep-lucas:
 ;;;

@@ -18,20 +18,27 @@
    
 **** sha1, sha256 **************************************************************
    
-   Copyright Volker van Nek, 2014
+   Copyright Volker van Nek, 2014 - 2015
    
-   sha1sum(string) returns the sha1 fingerprint of string and sha256sum the 
-   sha256 fingerprint.
+   sha1sum returns the sha1 fingerprint of a string, a non-negative integer or 
+   a list of octets. 
    
-   The return value is a string to guarantee 40 (64) hex characters. To parse it 
-   into an integer please set the input base to 16 and prefix the string by zero.
+   sha256sum returns the sha256 fingerprint.
    
-   (%i2) string : sha1sum("foo bar baz");
-   (%o2)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
-   (%i3) ibase : obase : 16.$
+   The default return value is a string that guarantees 40 (64) hex characters. 
+   An optional argument allows sha1sum and sha256sum to return the corresponding 
+   number or list of octets.
    
-   (%i4) integer : parse_string(sconcat(0, string));
-   (%o4)              0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+   (%i1) ibase: obase: 16.$
+   (%i2) msg: "foo bar baz"$
+   (%i3) string: sha1sum(msg);
+   (%o3)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+   (%i4) integer: sha1sum(msg, 'number);
+   (%o4)             0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+   (%i5) octets: sha1sum(msg, 'list);
+   (%o5)  [0C7,56,7E,8B,39,0E2,42,8E,38,0BF,9C,92,26,0AC,68,0DE,4C,67,0DC,39]
+   (%i6) sdowncase( printf(false, "~{~2,'0x~^:~}", octets) );
+   (%o6)     c7:56:7e:8b:39:e2:42:8e:38:bf:9c:92:26:ac:68:de:4c:67:dc:39
 
    Note that in case the string contains German umlauts or other non-ASCII 
    characters the fingerprint is platform dependend.
@@ -40,17 +47,17 @@
    string, decodes base64 to DER format and returns the SHA1 fingerprint. 
    The result is checked against openssl in GNU/Linux.
    
-   (%i2) ostream : make_string_output_stream();
-   (%o2)                  #<string-output stream 00f065e8>
-   (%i3) fos : openr("/home/volker/Deutsche_Telekom_Root_CA_2.crt");
-   (%o3)        #<input stream /home/volker/Deutsche_Telekom_Root_CA_2.crt>
-   (%i4) while (z : readline(fos)) # false do 
+   (%i1) ostream : make_string_output_stream();
+   (%o1)                  #<string-output stream 00f065e8>
+   (%i2) fos : openr("/home/volker/Deutsche_Telekom_Root_CA_2.crt");
+   (%o2)        #<input stream /home/volker/Deutsche_Telekom_Root_CA_2.crt>
+   (%i3) while (z : readline(fos)) # false do 
    if not cequal(charat(z, 1), "-") then printf(ostream, "~a", z);
-   (%o4)                                done
-   (%i5) close(fos);
-   (%o5)                                true
-   (%i6) string : get_output_stream_string(ostream);
-   (%o6) MIIDnzCCAoegAwIBAgIBJjANBgkqhkiG9w0BAQUFADBxMQswCQYDVQQGEwJERTEcMBoGA1UE\
+   (%o3)                                done
+   (%i4) close(fos);
+   (%o4)                                true
+   (%i5) string : get_output_stream_string(ostream);
+   (%o5) MIIDnzCCAoegAwIBAgIBJjANBgkqhkiG9w0BAQUFADBxMQswCQYDVQQGEwJERTEcMBoGA1UE\
    ChMTRGV1dHNjaGUgVGVsZWtvbSBBRzEfMB0GA1UECxMWVC1UZWxlU2VjIFRydXN0IENlbnRlcjEjMC\
    EGA1UEAxMaRGV1dHNjaGUgVGVsZWtvbSBSb290IENBIDIwHhcNOTkwNzA5MTIxMTAwWhcNMTkwNzA5\
    MjM1OTAwWjBxMQswCQYDVQQGEwJERTEcMBoGA1UEChMTRGV1dHNjaGUgVGVsZWtvbSBBRzEfMB0GA1\
@@ -67,13 +74,13 @@
    Ll6iFhkOQxIY40sfcvNUqFENrnijchvllj4PKFiDFT1FQUhXB59C4Gdyd1Lx+4ivn+xbrYNuSD7Odl\
    t79jWvNGr4GUN9RBjNYj1h7P9WgbRGOiWrqnNVmh5XAFmw4jV5mUCm26OWMohpLzGITY+9HPBVZkVw\
    ==
-   (%i7) close(ostream);
-   (%o7)                                true
-   (%i8) sha1sum(base64_decode(string));
-   (%o8)              85a408c09c193e5d51587dcdd61330fd8cde37bf
-   (%i9) system("openssl x509 -fingerprint -noout -in '/home/volker/Deutsche_Telekom_Root_CA_2.crt' > temp ; cat temp");
+   (%i6) close(ostream);
+   (%o6)                                true
+   (%i7) sha1sum(base64_decode(string));
+   (%o7)              85a408c09c193e5d51587dcdd61330fd8cde37bf
+   (%i8) system("openssl x509 -fingerprint -noout -in '/home/volker/Deutsche_Telekom_Root_CA_2.crt' > temp ; cat temp");
    SHA1 Fingerprint=85:A4:08:C0:9C:19:3E:5D:51:58:7D:CD:D6:13:30:FD:8C:DE:37:BF
-   (%o9)                                  0
+   (%o8)                                  0
 
 |#
 
@@ -116,7 +123,7 @@
     (setq bits (ash bits -8)) ))
 
 (defun sha-final (bytes off len nr)
-  (when bytes (rplacd (last bytes) '(#x80)))
+  (when bytes (setq bytes (append bytes '(#x80)))) ;; don't modify bytes
   (when (= 0 off) (setq bytes '(#x80)))
   (if (<= off 55.)
     (let* ((bits (ash len 3))
@@ -180,18 +187,36 @@
                 (svref *w1* (- i 16.)) )
         1 ))))
 
-(defmfun $sha1sum (s)
-  (unless (stringp s)
-    (merror "`sha1sum': Argument must be a string.") )
-  (let* ((bytes (mapcar #'char-code (coerce s 'list)))
-         (len (length bytes)) )
-    (setq *h1* '(#x67452301 #xefcdab89 #x98badcfe #x10325476 #xc3d2e1f0))
+(defmfun $sha1sum (s &optional (rtype '$string))
+  (let (bytes len)
+    (cond
+      ((stringp s)
+        (setq bytes (mapcar #'char-code (coerce s 'list))) )
+      ((and (integerp s) (>= s 0))
+        (setq bytes (number-to-octets s)) )
+      (($listp s)
+        (setq bytes (cdr s)) )
+      (t 
+        (gf-merror (intl:gettext 
+          "`sha1sum': Argument must be a string, a non-negative integer or a list of octets." ))))
+    (setq len (length bytes) 
+          *h1* '(#x67452301 #xefcdab89 #x98badcfe #x10325476 #xc3d2e1f0) )
     (do ((off len)) 
         ((< off 64.) (sha-final bytes off len 160.))
       (setq off (- off 64.))
       (sha-update (butlast bytes off) 160.)
       (setq bytes (last bytes off)) )
-    (nstring-downcase (format nil "~{~8,'0x~}" *h1*)) ))
+    (cond
+      ((equal rtype '$list)
+        (cons '(mlist simp)
+          (reduce #'nconc (mapcar #'word-to-octets *h1*)) ))
+      ((equal rtype '$number)
+        (reduce #'(lambda (x y) (logior (ash x 32.) y)) *h1*) )
+      ((equal rtype '$string)
+        (nstring-downcase (format nil "~{~8,'0x~}" *h1*)) )
+      (t  
+        (gf-merror (intl:gettext 
+          "`sha1sum': Optional argument must be 'list, 'number or 'string." ))))))
 
 
 ;; *** SHA256 *************************************************************** ;;
@@ -254,19 +279,37 @@
     (setf (svref *w2* i) 
       (sha+ (svref *w2* (- i 16.)) s0 (svref *w2* (- i 7)) s1) )))
 
-(defmfun $sha256sum (s)
-  (unless (stringp s)
-    (merror "`sha256sum': Argument must be a string.") )
-  (let* ((bytes (mapcar #'char-code (coerce s 'list)))
-         (len (length bytes)) )
-    (setq *h2* ;; the first 32 bits of the fractional parts of the square roots of the first 8 primes (2,..,19)
-      '(#x6a09e667 #xbb67ae85 #x3c6ef372 #xa54ff53a #x510e527f #x9b05688c #x1f83d9ab #x5be0cd19) )
+(defmfun $sha256sum (s &optional (rtype '$string))
+  (let (bytes len)
+    (cond
+      ((stringp s)
+        (setq bytes (mapcar #'char-code (coerce s 'list))) )
+      ((and (integerp s) (>= s 0))
+        (setq bytes (number-to-octets s)) )
+      (($listp s)
+        (setq bytes (cdr s)) )
+      (t 
+        (gf-merror (intl:gettext 
+          "`sha256sum': Argument must be a string, a non-negative integer or a list of octets." ))))
+    (setq len (length bytes) 
+          *h2* ;; the first 32 bits of the fractional parts of the square roots of the first 8 primes (2,..,19)
+            '(#x6a09e667 #xbb67ae85 #x3c6ef372 #xa54ff53a #x510e527f #x9b05688c #x1f83d9ab #x5be0cd19) )
     (do ((off len)) 
         ((< off 64.) (sha-final bytes off len 256.))
       (setq off (- off 64.))
       (sha-update (butlast bytes off) 256.)
       (setq bytes (last bytes off)) )
-    (nstring-downcase (format nil "~{~8,'0x~}" *h2*)) ))
+    (cond
+      ((equal rtype '$list)
+        (cons '(mlist simp)
+          (reduce #'nconc (mapcar #'word-to-octets *h2*)) ))
+      ((equal rtype '$number)
+        (reduce #'(lambda (x y) (logior (ash x 32.) y)) *h2*) )
+      ((equal rtype '$string)
+        (nstring-downcase (format nil "~{~8,'0x~}" *h2*)) )
+      (t  
+        (gf-merror (intl:gettext 
+          "`sha256sum': Optional argument must be 'list, 'number or 'string." ))))))
 
 
 (eval-when
