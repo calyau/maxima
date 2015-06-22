@@ -1,3 +1,7 @@
+Since version 5.10.0 there exists a "ChangeLog-VERSION" file for the
+changes in each Maxima version.
+Look there for changes in recent versions.
+
 2005-03-13 12:00  robert_dodier
 
 	* src/nset.lisp, tests/rtestnset.mac:
