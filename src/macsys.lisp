@@ -382,10 +382,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (continue (make-echo-stream fileobj *standard-output*)
 	    (if demo-p ':demo ':batch)))
 
-(defmspec $grindef (form)
-  (eval `(grindef ,@(cdr form)))
-  '$done)
-
 (defun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
     (or tem (merror (intl:gettext "demo: could not find ~M in ~M.")
