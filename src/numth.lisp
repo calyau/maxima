@@ -1979,7 +1979,7 @@
 (defun gf-np2smod (x) ;; modifies x
   (cond 
     ((null x) nil)
-    ((not $gf_symmetric) x)
+    ((not $gf_balanced) x)
     (*ef-arith?*
       (*f-np2smod x *gf-card* #'(lambda (c) (neg (gf-ctimes (1- *gf-char*) c)))) )
     (t 
@@ -1996,7 +1996,7 @@
 ;; adjust a coefficient to a symmetric modulus:
 (defun gf-cp2smod (c)
   (cond 
-    ((not $gf_symmetric) c)
+    ((not $gf_balanced) c)
     (*ef-arith?*
       (if (> c (ash *gf-card* -1)) (neg (gf-ctimes c (1- *gf-char*))) c) )
     (t 
@@ -3422,9 +3422,9 @@
            (setq a (simplifya (cons '(mtimes) (cdr a)) nil)) )
          a ))))
 
-;; adjust results from rat3d/pfactor to a positive modulus if $gf_symmetric = false 
+;; adjust results from rat3d/pfactor to a positive modulus if $gf_balanced = false 
 (defun gf-ns2pmod-factors (fs) ;; modifies fs 
-  (if $gf_symmetric fs
+  (if $gf_balanced fs
     (maybe-char-is-fixnum-let ((m *gf-char*))
       (do ((r fs (cddr r)))
           ((null r) fs)
