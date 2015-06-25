@@ -214,3 +214,17 @@ radcan(3^(1/6)*9^(1/3));
 radcan(81^(1/5)*9^(1/3));
 3*3^(7/15);
 
+/* SF #2905 Assigning variable twice yields different results */
+
+block ([var1, var5, var6, diff_expr3],
+  var1 : D^5*Some,
+  var5 : sqrt(var1)*z[D]*r^D,
+  var6 : -sqrt(var1)*r^D/D,
+  diff_expr3 : diff(var5,r),
+  var6*diff_expr3,
+  [var1, var5, var6, diff_expr3, %%]);
+[D^5*Some,
+ r^D*sqrt(Some*D^5)*z[D],
+ -sqrt(Some*D^5)*r^D/D,
+ D*r^(D - 1)*sqrt(Some*D^5)*z[D],
+ -r^(2*D - 1)*Some*D^5*z[D]];
