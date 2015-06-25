@@ -652,3 +652,13 @@ limit(log(x)^2+2*log(x)+q/2+1,x,1);
 
 limit(log(x)^2+2*%gamma*log(x)-%pi^2/6+%gamma^2,x,1);
 -((%pi^2-6*%gamma^2)/6)$
+
+/* #2972 Wrong limits involving logs */
+limit( 27^(log(n)/log(3))/n^3, n, inf);
+1;
+
+limit( 27^(log(n)/log(3)+1)/n^3, n, inf);
+27;
+
+limit( ((27^(log(n)/log(3)+1)-1)/26+n-log(n)/log(3)-1)/n^3,n,inf);
+27/26;
