@@ -286,7 +286,7 @@ abs(log(-z))$
 subst(z=-1, abs(log(-z)));
 0$
 
-(forget(z,complex),0);
+(remove(z,complex),0);
 0$
 
 /* check sign before using multiplicative identity; from x*y > 0 */
