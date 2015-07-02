@@ -3260,6 +3260,10 @@
       (if (> (length scenes) 1)
         (format cmdstorage "~%set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
 
+    ; Make gnuplot versions newer than 5.0 understand that linetype means
+    ; we try to set the dash type
+    (format cmdstorage "~%if(GPVAL_VERSION >= 5.0){set for [i=1:8] linetype i dashtype i}")
+
     ; write descriptions of 2d and 3d scenes
     (let ((i -1)
           (alloc (reverse *allocations*))
