@@ -3897,7 +3897,7 @@
 
 (defun ef-normal-p (x) 
   (unless (null x) 
-    (let ((mat (gf-maybe-normal-basis x)) )
+    (let ((mat (ef-maybe-normal-basis x)) )
       (/= 0 ($ef_determinant mat)) )))
 
 
