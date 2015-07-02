@@ -1187,18 +1187,22 @@ The optional third argument must be of the same form as the list returned by
 @anchor{zn_power_table}
 @deffn {Function} zn_power_table @
 @fname{zn_power_table} (@var{n})  @
-@fname{zn_power_table} (@var{n}, all)
+@fname{zn_power_table} (@var{n}, @var{opt_1}, @var{opt_2})
 
-Without the optional argument @var{all} @code{zn_power_table(n)} 
+Without any optional argument @code{zn_power_table(n)} 
 shows a power table of all elements in (Z/@var{n}Z)* 
 which are all elements invertible modulo @var{n}. 
 The exponent loops from @code{1} to the greatest characteristic factor of 
 @code{totient(n)} and the table ends with a column of ones on the right side.
 
-The optional argument @var{all} causes the table to be printed for all 
-non-zero elements. The exponent now loops from @code{1} to 
-@code{totient(n) + 1} and in case the modulus factors into different primes 
+The optional arguments can be @code{all} and/or a positive integer @code{i} in any order. 
+
+The argument @code{all} causes the table to be printed for all non-zero elements. 
+One more column is added and in case the modulus factors into different primes 
 the last column is equal to the first.
+
+If an additional integer argument @code{i} is given the exponent loops from 
+@code{1} to @code{i}.
 
 See also @mref{zn_add_table}, @mref{zn_mult_table}.
 
@@ -1219,6 +1223,16 @@ Examples:
                                [ 4  4  4 ]
                                [         ]
                                [ 5  1  5 ]
+(%i3) zn_power_table(6,all,5);
+                            [ 1  1  1  1  1 ]
+                            [               ]
+                            [ 2  4  2  4  2 ]
+                            [               ]
+(%o3)                       [ 3  3  3  3  3 ]
+                            [               ]
+                            [ 4  4  4  4  4 ]
+                            [               ]
+                            [ 5  1  5  1  5 ]
 @end example
 
 @opencatbox

@@ -6,7 +6,6 @@
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.01.2011
 @c Revision    : 26.02.2011
-@c Revision    : 27.03.2012, 29.03.2012, 23.03.2013, 27.7.2013 VvN
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1059,23 +1058,28 @@ entsprechen.
 @end example
 @end deffn
 
-@c --- 27.07.2013 VvN ----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @anchor{zn_power_table}
 @deffn {Funktion} zn_power_table (@var{n}) 
-@deffnx {Funktion} zn_power_table (@var{n}, all)
+@deffnx {Funktion} zn_power_table (@var{n}, @var{opt_1}, @var{opt_2})
 
-Ohne das optionale Argument @var{all} zeigt @code{zn_power_table(n)} 
+Ohne ein optionales Argument zeigt @code{zn_power_table(n)} 
 eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
 d.h. von allen modulo @var{n} invertierbaren Elementen. 
 Der Exponent variiert dabei jeweils zwischen @code{1} und 
 dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}, 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
-Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
-verschiedenen Elemente gezeigt wird. In diesem Fall 
-variiert der Exponent zwischen @code{1} und @code{totient(n) + 1}. 
-Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, stimmen dann 
-die erste und letzte Spalte @"uberein.
+Die optionalen Argumente k@"onnen @code{all} und/oder eine nat@"urliche Zahl 
+@code{i} sein. Die Reihenfolge ist dabei beliebig.
+
+Das Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
+verschiedenen Elemente gezeigt wird. Zus@"atzlich wird eine weitere Spalte ausgegeben.
+Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, 
+stimmt dann die erste mit der letzten Spalte @"uberein.
+
+Ist eine zus@"atzliche nat@"urliche Zahl @code{i} angegeben, variiert der 
+Exponent zwischen @code{1} und @code{i}.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
 
@@ -1096,6 +1100,16 @@ Beispiele:
                                [ 4  4  4 ]
                                [         ]
                                [ 5  1  5 ]
+(%i3) zn_power_table(6,all,5);
+                            [ 1  1  1  1  1 ]
+                            [               ]
+                            [ 2  4  2  4  2 ]
+                            [               ]
+(%o3)                       [ 3  3  3  3  3 ]
+                            [               ]
+                            [ 4  4  4  4  4 ]
+                            [               ]
+                            [ 5  1  5  1  5 ]
 @end example
 @end deffn
 
