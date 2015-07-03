@@ -217,7 +217,7 @@
 ;; Maxima functions in (Z/nZ)*
 ;; 
 ;; zn_order, zn_primroot_p, zn_primroot, zn_log, 
-;; chinese, zn_characteristic_factors, zn_nth_root,
+;; chinese, zn_characteristic_factors, zn_factor_generators, zn_nth_root,
 ;; zn_add_table, zn_mult_table, zn_power_table 
 ;;
 ;; 2012 - 2015, Volker van Nek  
@@ -655,6 +655,100 @@
   (cond ((> (car a) (car b)) t)
         ((< (car a) (car b)) nil)
         (t (> (cadr a) (cadr b))) ))
+
+
+;; factor generators:
+
+(defmfun $zn_factor_generators (m) 
+  (unless (and (integerp m) (> m 1))
+    (gf-merror (intl:gettext 
+      "`zn_factor_generators': Argument must be an integer greater or equal 2." )))
+  (cons '(mlist simp) (zn-factor-generators m)) )
+;;
+;; D. Shanks - Solved and unsolved problems in number theory, 2. ed
+;; Theorem 44, page 94
+;;
+;; zn_factor_generators(104);                     --> [79,27,89]
+;; zn_characteristic_factors(104);                --> [2,2,12]
+;; map(lambda([g], zn_order(g,104)), [79,27,89]); --> [2,2,12]
+;;
+;; Every element in Z104* can be expressed as 
+;;   79^i * 27^j * 89^k (mod m) where 0 <= i,j < 2 and 0 <= k < 12
+;;
+;; The proof of theorem 44 contains the construction of the factor generators.
+;;
+(defun zn-factor-generators (m) ;; m > 1
+  (let* (($intfaclim) 
+         (fs (sort (get-factor-list m) #'< :key #'car))
+         (pe (car fs))
+         (p (car pe)) (e (cadr pe))
+         (a (expt p e)) 
+         phi fs-phi ga gs ords fs-ords pegs )
+    ;; lemma 1, page 98 :
+                                                       ;; (Z/mZ)* is cyclic when m = 
+    (when (= m 2)                                      ;; 2
+      (return-from zn-factor-generators (list 1)) )     
+    (when (or (< m 8)                                  ;; 3,4,5,6,7
+              (and (> p 2) (null (cdr fs)))            ;;   p^k, p#2
+              (and (= 2 p) (= 1 e) (null (cddr fs))) ) ;; 2*p^k, p#2
+      (setq phi (totient-by-fs-n fs)
+            fs-phi (sort (mapcar #'car (get-factor-list phi)) #'<)
+            ga (zn-primroot m phi fs-phi) )
+      (return-from zn-factor-generators (list ga)) )
+    (setq fs (cdr fs))
+    (cond 
+      ((= 2 p)
+        (unless (and (= e 1) (cdr fs)) ;; phi(2*m) = phi(m) if m#1 is odd
+          (push (1- a) gs) ) ;; a = 2^e
+        (when (> e 1) (setq ords (list 2) fs-ords (list '((2 1)))))
+        (when (> e 2) 
+          (push 3 gs) (push (expt 2 (- e 2)) ords) (push `((2 ,(- e 2))) fs-ords) ))
+    ;; lemma 2, page 100 :
+      (t 
+        (setq phi (* (1- p) (expt p (1- e)))
+              fs-phi (sort (get-factor-list (1- p)) #'< :key #'car) )
+        (when (> e 1) (setq fs-phi (nconc fs-phi (list `(,p ,(1- e))))))
+        (setq ga (zn-primroot a phi (mapcar #'car fs-phi)) ;; factors only
+              gs (list ga)
+              ords (list phi)
+              fs-ords (list fs-phi) )))
+    ;; 
+    (do (b gb c h ia) 
+        ((null fs))
+      (setq pe (car fs) fs (cdr fs)
+            p (car pe) e (cadr pe)
+            phi (* (1- p) (expt p (1- e)))
+            fs-phi (sort (get-factor-list (1- p)) #'< :key #'car) )
+      (when (> e 1) (setq fs-phi (nconc fs-phi (list `(,p ,(1- e))))))
+      (setq b (expt p e)
+            gb (zn-primroot b phi (mapcar #'car fs-phi))
+            c (mod (* (inv-mod b a) (- 1 gb)) a) ;; CRT: h = gb mod b
+            h (+ (* b c) gb)                     ;; CRT: h =  1 mod a
+            ia (inv-mod a b)
+            gs (mapcar #'(lambda (g) (+ (* a (mod (* ia (- 1 g)) b)) g)) gs)
+            gs (cons h gs)
+            ords (cons phi ords)
+            fs-ords (cons fs-phi fs-ords)
+            a (* a b) ))
+    ;; lemma 3, page 101 :
+    (setq pegs 
+      (mapcar #'(lambda (g ord f)
+                (mapcar #'(lambda (pe) 
+                          (append pe 
+                            (list (power-mod g (truncate ord (apply #'expt pe)) m)) ))
+                        f ))
+              gs ords fs-ords ))
+    (setq pegs (sort (apply #'append pegs) #'zn-pe>))
+    (do ((todo pegs (nreverse left)) 
+         (q 0 0) (fg 1 1) (left nil nil)
+          g fgs )
+        ((null todo) fgs)
+      (dolist (peg todo)
+        (setq p (car peg) g (caddr peg)) 
+        (if (= p q) 
+          (push peg left)
+          (setq q p fg (mod (* fg g) m)) ))
+      (push fg fgs) )))
 
 
 ;; nth roots in (Z/nZ)*
