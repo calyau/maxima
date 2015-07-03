@@ -840,6 +840,88 @@ zeigt eine Additionstabelle von allen Elementen in (Z/@var{n}Z).
 Siehe auch @mref{zn_mult_table}, @mref{zn_power_table}.
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{zn_characteristic_factors}
+@deffn {Funktion} zn_characteristic_factors (@var{n}) 
+
+Gibt eine Liste mit den charakteristischen Faktoren des Totienten von @var{n} zur@"uck.
+
+Mit Hilfe der charakteristischen Faktoren kann eine multiplikative Gruppe modulo @var{n} 
+als direktes Produkt zyklischer Untergruppen dargestellt werden. 
+
+Ist die Gruppe selbst zyklisch, dann enth@"alt die Liste nur den Totienten 
+und mit @code{zn_primroot} kann ein Generator berechnet werden. 
+Zerf@"allt der Totient in mehrere charakteristische Faktoren, 
+k@"onnen Generatoren der entsprechenden Untergruppen mit @code{zn_factor_generators} 
+ermittelt werden.
+
+Jeder der @code{r} Faktoren in der Liste teilt die weiter rechts stehenden Faktoren. 
+Fuer den letzten Faktor @code{f_r} gilt daher @code{a^f_r = 1 (mod n)} 
+f@"ur alle @code{a} der Gruppe.
+
+F@"ur @code{n > 2} ist @code{totient(n)/2^r} die Anzahl der quadratischen Reste 
+in der Gruppe und jeder dieser Reste hat @code{2^r} Wurzeln.
+
+Siehe auch @mref{totient}, @mref{zn_primroot}, @mref{zn_factor_generators}.
+
+Beispiele:
+
+Die multiplikative Gruppe modulo @code{14} ist zyklisch und ihre @code{6} Elemente 
+lassen sich durch eine Primitivwurzel erzeugen.
+
+@example
+(%i1) [zn_characteristic_factors(14), phi: totient(14)];
+(%o1)                              [[6], 6]
+(%i2) [zn_factor_generators(14), g: zn_primroot(14)];
+(%o2)                              [[3], 3]
+(%i3) M14: makelist(power_mod(g,i,14), i,0,phi-1);
+(%o3)                         [1, 3, 9, 13, 11, 5]
+@end example
+
+Die multiplikative Gruppe modulo @code{15} ist nicht zyklisch und ihre @code{8} Elemente 
+lassen sich mit Hilfe zweier Faktorgeneratoren erzeugen.
+
+@example
+(%i1) [[f1,f2]: zn_characteristic_factors(15), totient(15)];
+(%o1)                             [[2, 4], 8]
+(%i2) [[g1,g2]: zn_factor_generators(15), zn_primroot(15)];
+(%o2)                           [[11, 7], false]
+(%i3) UG1: makelist(power_mod(g1,i,15), i,0,f1-1);
+(%o3)                               [1, 11]
+(%i4) UG2: makelist(power_mod(g2,i,15), i,0,f2-1);
+(%o4)                            [1, 7, 4, 13]
+(%i5) M15: create_list(mod(i*j,15), i,UG1, j,UG2);
+(%o5)                      [1, 7, 4, 13, 11, 2, 14, 8]
+@end example
+
+F@"ur den letzten charakteristischen Faktor @code{4} gilt 
+@code{a^4 = 1 (mod 15)} fuer alle @code{a} in @code{M15}. 
+
+@code{M15} hat @code{2} charakteristische Faktoren und daher die @code{8/2^2} 
+quadratischen Reste @code{1} und @code{4}, und diese haben jeweils @code{2^2} Wurzeln.
+
+@example
+(%i6) zn_power_table(15);
+                               [ 1   1  1   1 ]
+                               [              ]
+                               [ 2   4  8   1 ]
+                               [              ]
+                               [ 4   1  4   1 ]
+                               [              ]
+                               [ 7   4  13  1 ]
+(%o6)                          [              ]
+                               [ 8   4  2   1 ]
+                               [              ]
+                               [ 11  1  11  1 ]
+                               [              ]
+                               [ 13  4  7   1 ]
+                               [              ]
+                               [ 14  1  14  1 ]
+(%i7) map(lambda([i], zn_nth_root(i,2,15)), [1,4]);
+(%o7)                   [[1, 4, 11, 14], [2, 7, 8, 13]]
+@end example
+@end deffn
+
 @c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{zn_determinant}
 @deffn {Funktion} zn_determinant (@var{matrix}, @var{p}) 
@@ -872,6 +954,17 @@ Beispiel:
 (%i4) zn_determinant(m, 5);
 (%o4)                               0
 @end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_factor_generators}
+@deffn {Funktion} zn_factor_generators (@var{n}) 
+
+Gibt eine Liste mit Faktorgeneratoren zur@"uck, die zu den charakteristischen 
+Faktoren des Totienten von @var{n} passen. 
+
+F@"ur Erlaeuterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+
 @end deffn
 
 @c --- 27.07.2013 VvN ----------------------------------------------------------
