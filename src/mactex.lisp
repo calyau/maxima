@@ -106,6 +106,8 @@
 (defmspec $tex(l) ;; mexplabel, and optional filename or stream
   ;;if filename or stream supplied but 'nil' then return a string
   (let ((args (cdr l)))
+    (unless (member (length args) '(1 2))
+      (wna-err '$tex))
     (cond ((and (cdr args) (null (cadr args)))
 	   (let ((*standard-output* (make-string-output-stream)))
 	     (apply 'tex1  args)
