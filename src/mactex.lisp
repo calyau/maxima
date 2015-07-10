@@ -379,8 +379,7 @@
   (tex (cadr x) (append l (texsym (caar x))) r (caar x) rop))
 
 (defun tex-infix (x l r)
-  ;; check for 2 args
-  (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+  (twoargcheck x)
   (setq l (tex (cadr x) l nil lop (caar x)))
   (tex (caddr x) (append l (texsym (caar x))) r (caar x) rop))
 
@@ -644,7 +643,7 @@
 (defprop mquotient ("\\over") texsym)
 
 (defun tex-mquotient (x l r)
-  (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+  (twoargcheck x)
   (setq l (tex (cadr x) (append l '("{{")) nil 'mparen 'mparen)
 					;the divide bar groups things
 	r (tex (caddr x) (list "}\\over{") (append '("}}")r) 'mparen 'mparen))
