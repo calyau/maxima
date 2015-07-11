@@ -234,7 +234,17 @@ failures.
 file. It is recommended to remove the temporary maxima install
 directory (c:/maxima above) before testing the installation.
 
-12) Test the installed package.  For example
+12) Test the installed package (see the following part:)
+
+
+
+Testing the installation package:
+=================================
+
+After building it, you can (and should) test the new Maxima installation package.
+Install it on Windows and check that the installation (and later the deinstallation)
+works properly. To test Maxima, try the following:
+
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;
@@ -255,8 +265,25 @@ directory (c:/maxima above) before testing the installation.
  o Check that plotting to Postscript works
     plot2d(sin(x),[x,0,10],[ps_file,"ps_test.ps"]);
  o Try out the on-line help: describe(sin)
+ o Try out, if external packages (e.g. lapack) work:
+   load(lapack);
+   fpprintprec : 6;
+   M : matrix ([9.5, 1.75], [3.25, 10.45]);
+   dgeev (M);
+
+   should return the eigenvalues of M (and false, false since we did
+   not compute eigenvectors: [[7.54331, 12.4067], false, false]
+
  o Check that the windows help files work from the Start menu 
    and from within xmaxima and wxmaxima
+ o Try if double-clicking on a .wxmx file opens it
+ o The wxMaxima source comes with a file (test/testbench_simple.wxmx)
+   that tries to trigger everything that has gone wrong in previous
+   wxMaxima builds.  They include the commands that will test the
+   graphics system in the next step.
+   Open that file and then select "Cells/Evaluate all cells" in this
+   file and check if the file is processed correctly.
+
 
 
 Troubleshooting
