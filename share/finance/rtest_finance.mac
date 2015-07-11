@@ -5,10 +5,13 @@
  ******************************************************************************/
 
 kill(all);
-done$
+'done$
 
-(load("finance.mac"),done);
-done$
+(load("finance.mac"),'done);
+'done$
+
+(fpprec: 16, 'done);
+'done$
 
 days360(2008,12,16,2007,3,25);
 -621$
@@ -25,6 +28,36 @@ annuity_pv(0.12,5000,10);
 
 annuity_fv(0.12,65000,10);
 3703.970670389863$
+
+block([s: make_string_output_stream()],
+  with_stdout(s, amortization(0.05,56000,3)),
+  get_output_stream_string(s));
+"           \"n\"    \"Balance\"     \"Interest\"   \"Amortization\"  \"Payment\"      
+          0.000     56000.000         0.000         0.000         0.000  
+          1.000     38236.320      2800.000     17763.680     20563.680  
+          2.000     19584.457      1911.816     18651.864     20563.680  
+          3.000         0.000       979.223     19584.457     20563.680  
+ "$
+
+block([s: make_string_output_stream()],
+  with_stdout(s, arit_amortization(0.05,1000,56000,3)),
+  get_output_stream_string(s));
+"           \"n\"    \"Balance\"     \"Interest\"   \"Amortization\"  \"Payment\"      
+          0.000     56000.000         0.000         0.000         0.000  
+          1.000     39203.807      2800.000     16796.193     19596.193  
+          2.000     20567.803      1960.190     18636.003     20596.193  
+          3.000         0.000      1028.390     20567.803     21596.193  
+ "$
+
+block([s: make_string_output_stream()],
+  with_stdout(s, geo_amortization(0.05,0.03,56000,3)),
+  get_output_stream_string(s));
+"           \"n\"    \"Balance\"     \"Interest\"   \"Amortization\"  \"Payment\"      
+          0.000     56000.000         0.000         0.000         0.000  
+          1.000     38821.880      2800.000     17178.120     19978.120  
+          2.000     20185.511      1941.094     18636.369     20577.463  
+          3.000         0.000      1009.276     20185.511     21194.787  
+ "$
 
 geo_annuity_pv(0.14,0.05,5000,10);
 802.6888176505123$
@@ -44,3 +77,5 @@ block([l: [100,500,323,124,300],
 benefit_cost(0.24,[0,300,500,150],[100,320,0,180]);
 1.427249324905784$
 
+(reset(fpprec), 'done);
+'done$
