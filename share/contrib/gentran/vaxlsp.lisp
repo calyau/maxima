@@ -50,7 +50,10 @@
   (setq allnum t ) ;;set flag to check if all numbers in an expression
   (cond ((atom exp)
 
-	 (cond ((numberp exp)
+	 (cond
+	   ((and (numberp exp) (not *float)
+		 exp))
+	   ((numberp exp)
 		(cond ((equal ind 0)
 
 		       (setq expty (exptype  context ))

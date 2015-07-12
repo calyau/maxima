@@ -233,7 +233,7 @@
   (prog (n1 hi incr result)
 	(setq n1 (genstmtno))
 	(setq *endofloopstack* (cons n1 *endofloopstack*))
-	(setq hi (car (delete1 '> (delete1 '< (delete1 var exitcond)))))
+	(setq hi (car (delete1 'greaterp (delete1 'lessp (delete1 var exitcond)))))
 	(setq incr (car (delete1 'plus (delete1 var nextexp))))
 	(setq result (mkffortdo n1 var lo hi incr))
 	(indentfortlevel (+ 1))
@@ -358,7 +358,7 @@
 		    lo
 		    (equal (car nextexp) 'plus)
 		    (member var nextexp)
-		    (member (car exitcond) '(> <))
+		    (member (car exitcond) (list 'greaterp 'lessp))
 		    (member var exitcond))
 	       (return (fortdo var lo nextexp exitcond body)))
 	      ((and exitcond

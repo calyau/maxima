@@ -58,7 +58,7 @@
 
 (declare-top (special *float *gentranopt *gentranparser *gentranseg))
 
-(setq *float         nil)
+(setq *float         t)
 (setq *gentranopt    nil)
 (setq *gentranparser nil)
 (setq *gentranseg    t)
