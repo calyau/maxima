@@ -488,6 +488,7 @@ contrib/rkf45/rkf45.mac \
 contrib/rkf45/rkf45.pdf \
 contrib/rkf45/rtest_rkf45.mac \
 contrib/rtest_augmented_lagrangian.mac \
+contrib/rtest_ggf.mac \
 contrib/sarag/aliases.mac \
 contrib/sarag/arag_test.mac \
 contrib/sarag/certificateOfPositivity.mac \
