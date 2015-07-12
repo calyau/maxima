@@ -306,7 +306,7 @@
   (foreach f in flags do
 	   (prog (flag funlist)
 		 (setq flag (setq f (stripdollar1 f)))
-		 (setq f (implode (cons '* (explode f))))
+		 (setq f (implode (cons '* (exploden f))))
 		 (set f onp)
 		 (cond ((setq funlist (assoc onp (get flag 'simpfg)))
 			(foreach form in (cdr funlist) do (eval form))))))
