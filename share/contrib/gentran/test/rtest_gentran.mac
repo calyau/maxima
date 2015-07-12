@@ -1,5 +1,5 @@
-(kill(all), 0);
-0$
+(kill(all), 'done);
+'done$
 
 (load(gentran), 'done);
 'done$
@@ -15,6 +15,47 @@ gentranlang('c);
 
 (gentranlang('c), ?\*gentranlang);
 ?c$
+
+/* helper function to get gentran output as a string */
+(sgentran(['L]):= block([s: make_string_output_stream(),
+    ?genstmtno\*: 25000 ],
+  gentranpush(s),
+  apply(gentran, L),
+  gentranpop(s),
+  get_output_stream_string(s)),
+'done);
+'done;
+
+(gentranlang('fortran), sgentran(a : 42));
+"      a=42.0
+"$
+
+(gentranlang('ratfor), sgentran(a : 42));
+"a=42.0
+"$
+
+(gentranlang('c),      sgentran(a : 42));
+"a=42.0;
+"$
+
+/* the output is different from the one in the manual
+   share/contrib/gentran/man/MANUAL.ps (page. 6)
+
+(c2) gentran( for i:1 thru n do v[i]:0.0 );
+      do 25001 i=1,n
+          v(i)=0.0
+25001 continue */
+(gentranlang('fortran), sgentran(type(integer, n, i),
+    for i:1 thru n do v[i]:0.0 ));
+"      integer n,i
+      i=1
+25001 if (i .GT. n) goto 25002
+          v(i)=0.0
+          i=i+1
+          goto 25001
+25002 continue
+"$
+
 
 /*
 
@@ -36,34 +77,5 @@ a=42.0
 */
 
 
-/*
-
-Those tests are not automatic, gentran prints output to *stdout*.
-
-(gentranlang('fortran), gentran(a : 42));
-a=42.0
-
-(gentranlang('ratfor), gentran(a : 42));
-a=42.0
-
-(gentranlang('c), gentran(a : 42));
-a=42.0;
-
-(gentranlang('fortran), gentran(for i: 1 thru 10 do s : s + i));
-25001 if (i .GT. 10.0) goto 25002
-          s=s+i
-          i=i+1
-          goto 25001
-25002 continue
-
-(gentranlang('c), gentran(for i: 1 thru 10 do s : s + i));
-for (i=1;!(i>10);i=i+1)
-    s=s+i;
-
-(gentranlang('ratfor), gentran(for i: 1 thru 10 do s : s + i));
-do i=1.0,10.0
-    s=s+i
-
-*/
 
 
