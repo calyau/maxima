@@ -46,7 +46,7 @@
 	(return (gentran forms flist))))
 
 
-(defmfun $gentranout (flist)
+(defmfun $gentranout (&rest flist)
   ;                                                                     ;
   ;  gentranout(f1,f2,...,fn);  -->  (gentranoutpush (f1 f2 ... fn) t)  ;
   ;                                                                     ;
@@ -59,14 +59,14 @@
   (gentranoutpush flist t))
 
 
-(defmfun $gentranshut (flist)
+(defmfun $gentranshut (&rest flist)
   ;                                                                 ;
   ;  gentranshut(f1,f2,...,fn);  -->  (gentranshut (f1 f2 ... fn))  ;
   ;                                                                 ;
   (gentranshut flist))
 
 
-(defmfun $gentranpush (flist)
+(defmfun $gentranpush (&rest flist)
   ;                                                                        ;
   ;  gentranpush(f1,f2,...,fn);  -->  (gentranoutpush (f1 f2 ... fn) nil)  ;
   ;                                                                        ;
@@ -79,14 +79,14 @@
   (gentranoutpush flist nil))
 
 
-(defmfun $gentranpop (flist)
+(defmfun $gentranpop (&rest flist)
   ;                                                               ;
   ;  gentranpop(f1,f2,...,fn);  -->  (gentranpop (f1 f2 ... fn))  ;
   ;                                                               ;
   (gentranpop flist))
 
 
-(defmfun $gentranin (forms)
+(defmfun $gentranin (&rest forms)
   ;                                              ;
   ;  gentranin(f1,f2,...,fn {,[f1,f2,...,fm]});  ;
   ;      -->                                     ;
@@ -103,7 +103,7 @@
 	(return (gentranin forms outflist))))
 
 
-(defmfun $on (flaglist)
+(defmfun $on (&rest flaglist)
   ;                              ;
   ;  on(flag1,flag2,...,flagn);  ;
   ;    -->                       ;
@@ -118,7 +118,7 @@
   (onoff flaglist t))
 
 
-(defmfun $off (flaglist)
+(defmfun $off (&rest flaglist)
   ;                               ;
   ;  off(flag1,flag2,...,flagn);  ;
   ;    -->                        ;
