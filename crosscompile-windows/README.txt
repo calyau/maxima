@@ -95,3 +95,17 @@ works properly. To test Maxima, try the following:
    graphics system in the next step.
    Open that file and then select "Cells/Evaluate all cells" in this
    file and check if the file is processed correctly.
+
+
+INSTALLING THE PACKAGE
+======================
+
+Of course just by doubleclicking/executing the generated EXE on
+Windows. This maxima installer installs into C:\maxima-VERSION, you
+can not change this directory.
+
+If you want to do an *unattended* installation (e.g. if you plan to
+install Maxima on many computers in a school, university or company),
+this installer (and uninstaller) understands the command line switch
+"/S" (for 'silent install').
+
