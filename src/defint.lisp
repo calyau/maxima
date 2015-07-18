@@ -825,14 +825,35 @@ in the interval of integration.")
 		  (setq ll '$inf)))
 	   (cond ((alike1 ul (m*t -1 '$minf))
 		  (setq ul '$inf)))
-	   (cond ((eq ll ul))
-		 ((eq ul '$inf))
+	   (cond ((eq ll ul)
+		  ; We have minf <= ll = ul <= inf
+		  )
+		 ((eq ul '$inf)
+		  ; We have minf <= ll < ul = inf
+		  )
 		 ((eq ll '$minf)
+		  ; We have minf = ll < ul < inf
+		  ;
+		  ; Now substitute
+		  ;
+		  ;   var -> -var
+		  ;   ll  -> -ul
+		  ;   ul  -> inf
+		  ;
+		  ; so that minf < ll < ul = inf
 		  (setq exp (subin (m- var) exp))
 		  (setq ll (m- ul))
 		  (setq ul '$inf))
 		 ((or (eq ll '$inf)
 		      (equal (complm ask-or-not) -1))
+		  ; We have minf <= ul < ll
+		  ;
+		  ; Now substitute
+		  ;
+		  ;   exp  -> -exp
+		  ;   ll  <-> ul
+		  ;
+		  ; so that minf <= ll < ul
 		  (setq exp (m- exp))
 		  (rotatef ll ul)))
 	   t)))
