@@ -26,12 +26,6 @@
 (defmacro tuchus (list object)
   `(setf ,list (nconc ,list (ncons ,object))))
 
-;; (EXCH A B) exchanges the bindings of A and B
-;; Maybe it should turn into (PSETF A B B A)?
-
-(defmacro exch (x y)
-  `(setf ,x (prog1 ,y (setf ,y ,x))))
-
 ;; The following macros pertain only to Macsyma.
 
 ;; Except on the Lisp Machine, load the specified macro files.

@@ -49,7 +49,7 @@
 ;;	   ((NULL DPL) PL)))
 
 (defun dpgcd (p q)
-  (if (< (car p) (car q)) (exch p q))
+  (if (< (car p) (car q)) (rotatef p q))
   (do ((p (copy-list p) q)
        (q (copy-list q) (dpremquo p q nil)))
       ((= (car q) 0)
