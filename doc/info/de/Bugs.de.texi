@@ -223,18 +223,19 @@ Beispiel:
 
 @example
 (%i1) bug_report();
-The Maxima bug database is available at
-    http://sourceforge.net/tracker/?atid=104933&group_id=4933
-Submit bug reports by following the 'Add new' link on that page.
+
+Please report bugs to:
+    http://sourceforge.net/p/maxima/bugs
+To report a bug, you must have a Sourceforge account.
 Please include the following information with your bug report:
 -------------------------------------------------------------
-Maxima version: 5.20post
-Maxima build date: 19:59 5/10/2010
-Host type: i686-pc-linux-gnu
-Lisp implementation type: SBCL
-Lisp implementation version: 1.0.29.11.debian
+Maxima version: "5.36.1"
+Maxima build date: "2015-07-25 15:04:14"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "CLISP"
+Lisp implementation version: "2.49 (2010-07-07) (built 3589338791) (memory 3646818256)"
 -------------------------------------------------------------
-The above information is also reported by the function 'build_info'
+The above information is also reported by the function 'build_info()'.
 @end example
 @end deffn
 
@@ -249,11 +250,12 @@ Beispiel:
 
 @example
 (%i1) build_info();
-Maxima version: 5.20post
-Maxima build date: 19:59 5/10/2010
-Host type: i686-pc-linux-gnu
-Lisp implementation type: SBCL
-Lisp implementation version: 1.0.29.11.debian
+(%o1) 
+Maxima version: "5.36.1"
+Maxima build date: "2015-07-25 15:04:14"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "CLISP"
+Lisp implementation version: "2.49 (2010-07-07) (built 3589338791) (memory 3646818256)"
 @end example
 @end deffn
 
