@@ -1,12 +1,12 @@
-\documentclass[ngerman,12pt]{scrartcl}
+\documentclass[12pt]{scrartcl}
 
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{babel}
-\usepackage{hyperref}
+\usepackage[ngerman]{babel}
 \usepackage{xspace}
 \usepackage{microtype}
+\usepackage{hyperref}
 
 \newcommand*\zB{z.\,B.\xspace}
 \newcommand*\ua{u.\,a.\xspace}
@@ -59,7 +59,7 @@ deutsche übersetzung der GPL:\\
 
 Ich möchte nur kurz betonen, dass ich selbst Maxima-Anfänger bin und der Text nur auf die Grundlagen der Maxima-Benutzung eingehen kann. Die Beispiele haben keinen tieferen Sinn. Sie dienen lediglich der Darstellung der Möglichkeiten von Maxima.\\
 Für weitere Anregungen bin ich immer dankbar\@.\\
-email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
+Email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
 
 \vspace{1cm}
 Verbesserungsvorschläge durch: Volker van Nek, Robert Figura.
@@ -177,8 +177,8 @@ Zuweisungen können mit \texttt{kill} einzeln oder auch insgesamt gelöscht werd
 Zum Abbrechen eines Kommandos drückt man die Tastenkombination
 \texttt{Strg-C} oder \texttt{Strg-G}. Meldet sich der Debugger, so beendet
 man diesen durch Eingabe  von \texttt{Q}.
-Zum Beenden von Maxima gibt man \texttt{quit()} ein (Bemerkung: unter
-\texttt{xmaxima} das Menue benutzen).
+Zum Beenden von Maxima gibt man \texttt{quit();} ein (Bemerkung: unter
+\texttt{xmaxima} (oder \texttt{wxmaxima}) das Menü benutzen).
 
 
 \subsection{Hilfefunktionen}
@@ -234,13 +234,13 @@ Funktionen von Maxima angezeigt werden (Darstellung hier gekürzt):
 
 (%i4) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
 (%o4) test(f) := block([u], u : integrate(f, x), ratsimp(f - diff(u, x)))
-(%i5) test(sin(x))
+(%i5) test(sin(x));
 (%o5)                                  0
-(%i6) test(1/(x+1))
+(%i6) test(1/(x+1));
 (%o6)                                  0
-(%i7) test(1/(x^2+1))
+(%i7) test(1/(x^2+1));
 (%o7)                                  0
-(%i8) integrate(sin(x)^3,x)
+(%i8) integrate(sin(x)^3,x);
                                   3
                                cos (x)
 (%o8)                          ------- - cos(x)
@@ -398,10 +398,10 @@ Enter space-separated numbers, `all' or `none': Enter space-separated numbers, `
 Die üblichen arithmetischen Operatoren stehen zur Verfügung:
 
 \begin{itemize}
-\item \texttt{+}  Addition,
+\item \texttt{+} Addition,
 \item \texttt{-} Subtraktion,
 \item \texttt{*} skalare Multiplikation,
-\item \texttt{.} Slalarmultiplikation von Vektoren und Matrix-Multiplikation,
+\item \texttt{.} Skalarmultiplikation von Vektoren und Matrix-Multiplikation,
 \item \texttt{/} Division,
 \item \texttt{**} oder \texttt{\^} Potenzfunktion,
 \item \texttt{sqrt()} Wurzelfunktion,
@@ -510,45 +510,45 @@ zur Verfügung.
 \begin{verbatim}
 (%i102) example(trig);
 
-(%i103) tan(%pi/6)+sin(%pi/12)
+(%i103) tan(%pi/6)+sin(%pi/12);
                                   %pi       1
 (%o103)                       sin(---) + -------
                                   12     sqrt(3)
-(%i104) ev(%,numer)
+(%i104) ev(%,numer);
 (%o104)                       0.83616931429214658
-(%i105) sin(1)
+(%i105) sin(1);
 (%o105)                             sin(1)
-(%i106) ev(sin(1),numer)
+(%i106) ev(sin(1),numer);
 (%o106)                       0.8414709848078965
-(%i107) beta(1/2,2/5)
+(%i107) beta(1/2,2/5);
                                        1  2
 (%o107)                           beta(-, -)
                                        2  5
-(%i108) ev(%,numer)
+(%i108) ev(%,numer);
 (%o108)                       3.6790939804058804
-(%i109) diff(atanh(sqrt(x)),x)
+(%i109) diff(atanh(sqrt(x)),x);
                                        1
 (%o109)                        -----------------
                                2 (1 - x) sqrt(x)
-(%i110) fpprec:25
-(%i111) sin(5.0B-1)
+(%i110) fpprec:25;
+(%i111) sin(5.0B-1);
 (%o111)                  4.794255386042030002732879B-1
-(%i112) cos(x)^2-sin(x)^2
+(%i112) cos(x)^2-sin(x)^2;
                                   2         2
 (%o112)                        cos (x) - sin (x)
-(%i113) ev(%,x:%pi/3)
+(%i113) ev(%,x:%pi/3);
                                         1
 (%o113)                               - -
                                         2
-(%i114) diff(%th(2),x)
+(%i114) diff(%th(2),x);
 (%o114)                        - 4 cos(x) sin(x)
-(%i115) integrate(%th(3),x)
+(%i115) integrate(%th(3),x);
                           sin(2 x)           sin(2 x)
                           -------- + x   x - --------
                              2                  2
 (%o115)                   ------------ - ------------
                                2              2
-(%i116) expand(%)
+(%i116) expand(%);
                                    sin(2 x)
 (%o116)                            --------
                                       2
@@ -563,7 +563,7 @@ trigonometrischen Funktion so stark wie möglich zu vereinfachen.
                                    sin(2 x)
 (%o116)                            --------
                                       2
-(%i117) trigexpand(%)
+(%i117) trigexpand(%);
 (%o117)                          cos(x) sin(x)
 \end{verbatim}
 
@@ -574,13 +574,13 @@ sin oder cos Funktion ist.
 \begin{verbatim}
 (%o117)                          cos(x) sin(x)
 
-(%i118) trigreduce(%)
+(%i118) trigreduce(%);
                                    sin(2 x)
 (%o118)                            --------
                                       2
 
 (%i119) sech(x)^2*tanh(x)/coth(x)^2+cosh(x)^2*sech(x)^2*tanh(x)/coth(x)^2
-                                   +sech(x)^2*sinh(x)*tanh(x)/coth(x)^2
+                                   +sech(x)^2*sinh(x)*tanh(x)/coth(x)^2;
 
             2                          2        2                  2
         sech (x) sinh(x) tanh(x)   cosh (x) sech (x) tanh(x)   sech (x) tanh(x)
@@ -594,7 +594,7 @@ sin oder cos Funktion ist.
 trigonometrische Funktionen in sin und cos Equivalente umwandelt.
 
 \begin{verbatim}
-(%i120) trigsimp(%)
+(%i120) trigsimp(%);
 
                            5          4            3
                        sinh (x) + sinh (x) + 2 sinh (x)
@@ -606,7 +606,7 @@ trigonometrische Funktionen in sin und cos Equivalente umwandelt.
 \texttt{exponentialize()} transformiert trigonometrische Funktionen in ihre komplexe Exponentialform.
 
 \begin{verbatim}
-(%i121) ev(sin(x),exponentialize)
+(%i121) ev(sin(x),exponentialize);
                                    %i x     - %i x
                              %i (%e     - %e      )
 (%o121)                    - ----------------------
@@ -619,19 +619,18 @@ Entwicklungspunkt bis zum vorgegebenen Grad.
 
 \begin{verbatim}
 
-(%i122) taylor(sin(x)/x,x,0,4)
+(%i122) taylor(sin(x)/x,x,0,4);
 
                                   2    4
                                  x    x
 (%o122)/T/                   1 - -- + --- + . . .
                                  6    120
 
-(%i123) ev(cos(x)^2-sin(x)^2,sin(x)^2 = 1-cos(x)^2)
+(%i123) ev(cos(x)^2-sin(x)^2,sin(x)^2 = 1-cos(x)^2);
 
                                       2
 (%o123)                          2 cos (x) - 1
 
-(%o123)                              done
 \end{verbatim}
 
 \subsection{Komplexe Zahlen}
@@ -728,11 +727,11 @@ Ein Beispiel für eine Taylorreihenentwicklung und eine Grenzwertberechnung:
 Integrale lassen sich bestimmt und unbestimmt berechnen:
 
 \begin{verbatim}
-(%i109) integrate(%e^x/(2+%e^x),x)
+(%i109) integrate(%e^x/(2+%e^x),x);
                                        x
 (%o109)                          log(%e  + 2)
 
-(%i116) integrate(x^(5/4)/(1+x)^(5/2),x,0,inf)
+(%i116) integrate(x^(5/4)/(1+x)^(5/2),x,0,inf);
 
                                        9  1
 (%o116)                           beta(-, -)
@@ -757,7 +756,7 @@ Maskierung und verhindert die Auswertung durch Maxima:
 Zum Lösen von gewöhnlichen Differentialgleichungen stehen folgende
 Funktionen zur Verfügung: \texttt{ode2}, \texttt{ic1}, \texttt{ic2}, \texttt{bc1}, \texttt{bc2}.
 \texttt{ic1}, \texttt{ic2} sind auf Anfangswertaufgaben 1. bzw. 2. Ordnung spezialisiert.
-\texttt{bc1}, \texttt{bc2} sind auf Randwertaufgaben 1. bzw. 2. Ordnungspezialisiert.
+\texttt{bc1}, \texttt{bc2} sind auf Randwertaufgaben 1. bzw. 2. Ordnung spezialisiert.
 
 \begin{verbatim}
 (%i23) dgl1: -'diff(y,x) * sin(x) + y * cos(x) = 1;
@@ -834,31 +833,31 @@ Umständen durch folgende Differentialgleichung beschreiben und mittels
 Mit Maxima lassen sich auch allgemeine Matrizenoperationen durchführen.
 
 \begin{verbatim}
-(%i79) m:matrix([a,0],[b,1])
+(%i79) m:matrix([a,0],[b,1]);
                                    [ a  0 ]
 (%o79)                             [      ]
                                    [ b  1 ]
-(%i80) m^2
+(%i80) m^2;
                                    [  2    ]
                                    [ a   0 ]
 (%o80)                             [       ]
                                    [  2    ]
                                    [ b   1 ]
-(%i81) m . m
+(%i81) m . m;
                                 [    2       ]
 (%o81)                          [   a      0 ]
                                 [            ]
                                 [ a b + b  1 ]
-(%i82) m[1,1]*m
+(%i82) m[1,1]*m;
                                   [  2     ]
 (%o82)                            [ a    0 ]
                                   [        ]
                                   [ a b  a ]
-(%i83) 1-%th(2)+%
+(%i83) 1-%th(2)+%;
                                  [   1    1 ]
 (%o83)                           [          ]
                                  [ 1 - b  a ]
-(%i84) m^^(-1)
+(%i84) m^^(-1);
                                   [  1     ]
                                   [  -   0 ]
                                   [  a     ]
@@ -866,18 +865,18 @@ Mit Maxima lassen sich auch allgemeine Matrizenoperationen durchführen.
                                   [   b    ]
                                   [ - -  1 ]
                                   [   a    ]
-(%i85) [x,y] . m
+(%i85) [x,y] . m;
 
 (%o85)                         [ b y + a x  y ]
 
-(%i86) matrix([a,b,c],[d,e,f],[g,h,i])
+(%i86) matrix([a,b,c],[d,e,f],[g,h,i]);
 
                                   [ a  b  c ]
                                   [         ]
 (%o86)                            [ d  e  f ]
                                   [         ]
                                   [ g  h  i ]
-(%i87) %^^2
+(%i87) %^^2;
              [              2                                    ]
              [ c g + b d + a    c h + b e + a b  c i + b f + a c ]
              [                                                   ]
@@ -886,7 +885,6 @@ Mit Maxima lassen sich auch allgemeine Matrizenoperationen durchführen.
              [                                                   ]
              [                                    2              ]
              [ g i + d h + a g  h i + e h + b g  i  + f h + c g  ]
-(%o87)                               done
 \end{verbatim}
 
 Außerdem lassen sich \ua\@ die Determinante, die Inverse, die
@@ -1036,7 +1034,7 @@ Ein kleine Auswahl wichtiger und nützlicher Maxima-Funktionen:
 \item \texttt{example(a)} Zeigt Beispiele für die Verwendung eines
   Befehls oder einer  Funktion an. Nicht für jede Funktion sind Beispiele vorhanden.
 \item \texttt{expand(a)} Algebraische Expansion (Distribution).
-\item \texttt{exponentialize(a)} Transformiert trigonometrische Funktionen in ihre komplexen Exponentialfunktioen.
+\item \texttt{exponentialize(a)} Transformiert trigonometrische Funktionen in ihre komplexen Exponentialfunktionen.
 \item \texttt{factor(a)} Faktorisiert a.
 \item \texttt{freeof(a,b)} Ergibt wahr, wenn b nicht a enthält.
 \item \texttt{grind(a)} Darstellung einer Variable oder Funktion in einer kompakten Form.
