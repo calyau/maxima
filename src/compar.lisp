@@ -1031,7 +1031,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
             ((memq sgn '($complex $imaginary))
              ;; We call trisplit here, which goes back to general evaluation and
              ;; could cause an infinite recursion. To make sure that doesn't
-             ;; happen, use the with-unsafe-recursion macro.
+             ;; happen, use the with-safe-recursion macro.
              (handler-case
                  (with-safe-recursion meqp-by-csign z
                    (let* ((ri-parts (trisplit z))
