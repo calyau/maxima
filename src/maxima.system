@@ -172,7 +172,8 @@
                         :components ((:file "mrgmac") 
                                      (:file "rzmac")    
                                      (:file "strmac") 
-                                     (:file "displm")))
+                                     (:file "displm")
+                                     (:file "safe-recursion")))
                (:module rat-macros :source-pathname ""
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
