@@ -1957,3 +1957,7 @@ trigsimp (diff (J, t) - I);
 
 block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
 [9.850355570085235b433, 9.850355570085235b433];
+
+/* bug #2980: Infinite recursion with (e: log(e), rectform(e)) */
+block ([e: log(e)], rectform(e));
+log(abs(e)) + %i*atan2(0, e)$
