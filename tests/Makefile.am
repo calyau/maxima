@@ -1,62 +1,84 @@
 include $(top_srcdir)/common.mk
 MAXIMA = @POSIX_SHELL@ $(top_builddir)/maxima-local
+
+TESTS =
+
 if CLISP
-check: check-clisp
-check-clisp:
-	echo "Running test suite with clisp..."; \
-	$(MAXIMA) --lisp=clisp --batch-string="run_testsuite();" < /dev/null
+TESTS += clisp-test.sh
+clisp-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#clisp#'                               \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/clisp.log#'
+	chmod a+x "$@"
 endif
 
 if CMUCL
-check: check-cmucl
-check-cmucl:
-	echo "Running test suite with cmucl..."; \
-	$(MAXIMA) --lisp=cmucl --batch-string="run_testsuite();" < /dev/null
+TESTS += cmucl-test.sh
+cmucl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#cmucl#'                               \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/cmucl.log#'
+	chmod a+x "$@"
 endif
 
 if SCL
-check: check-scl
-check-scl:
-	echo "Running test suite with scl..."; \
-	$(MAXIMA) --lisp=scl --batch-string="run_testsuite();" < /dev/null
+TESTS += scl-test.sh
+scl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#scl#'                                 \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/scl.log#'
+	chmod a+x "$@"
 endif
 
 if SBCL
-check: check-sbcl
-check-sbcl:
-	echo "Running test suite with sbcl..."; \
-	$(MAXIMA) --lisp=sbcl --batch-string="run_testsuite();" < /dev/null
+TESTS += sbcl-test.sh
+sbcl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#sbcl#'                                \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/sbcl.log#'
+	chmod a+x "$@"
 endif
 
 if GCL
-check: check-gcl
-check-gcl:
-	echo "Running test suite with gcl..."; \
-	$(MAXIMA) --lisp=gcl --batch-string="run_testsuite();" < /dev/null
+TESTS += gcl-test.sh
+gcl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#gcl#'                                 \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/gcl.log#'
+	chmod a+x "$@"
 endif
 
 if ACL
-check: check-acl
-check-acl:
-	echo "Running test suite with acl..."; \
-	$(MAXIMA) --lisp=acl --batch-string="run_testsuite();" < /dev/null
+TESTS += acl-test.sh
+acl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#acl#'                                 \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/acl.log#'
+	chmod a+x "$@"
 endif
 
 if OPENMCL
-check: check-openmcl
-check-openmcl:
-	echo "Running test suite with openmcl..."; \
-	$(MAXIMA) --lisp=openmcl --batch-string="run_testsuite();" < /dev/null
+TESTS += openmcl-test.sh
+openmcl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#openmcl#'                             \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/openmcl.log#'
+	chmod a+x "$@"
 endif
 
 if ECL
-check: check-ecl
-check-ecl:
-	echo "Running test suite with ecl..."; \
-	$(MAXIMA) --lisp=ecl --batch-string="run_testsuite();" < /dev/null
+TESTS += ecl-test.sh
+ecl-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#ecl#'                                 \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/ecl.log#'
+	chmod a+x "$@"
 endif
-
-genericdir = $(insttestsdir)
-genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*))
-
-EXTRA_DIST = $(genericdirDATA)

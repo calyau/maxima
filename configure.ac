@@ -16,7 +16,8 @@ AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
 
-dnl Don't use AC_EXEEXT as that requires a C compiler
+dnl If we were using a C compiler, EXEEXT would get defined
+dnl automatically. But we aren't, so we have to define it ourselves.
 case "$host" in
         *mingw*)
                 win32=true
@@ -39,6 +40,13 @@ esac
 AC_SUBST(EXEEXT)
 AC_SUBST(win32)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
+
+dnl To make life more confusing, the automake test machinery (which we
+dnl use in ./tests) needs the am__EXEEXT conditional. This would have
+dnl normally been expanded (via something we've copied from Automake's
+dnl init.m4 into our aclocal.m4) as Automake computed EXEEXT, but it
+dnl didn't so we have to drop this in ourselves.
+AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
 
 explicit_lisp=false
 lisps_enabled=""

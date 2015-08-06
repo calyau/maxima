@@ -1,16 +1,18 @@
 Makefile
 Makefile.in
 
-config.cache
-config.log
-config.status
-config.sub
-config.guess
-autom4te.cache
-configure
-aclocal.m4
-install-sh
-missing
+/config.cache
+/config.log
+/config.status
+/config.sub
+/config.guess
+/autom4te.cache
+/configure
+/aclocal.m4
+/install-sh
+/missing
+/depcomp
+/test-driver
 
 mkinstalldirs
 xmaxima-local
