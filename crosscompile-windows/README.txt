@@ -14,13 +14,14 @@ make
 make package
 
 This will download the required Software (CLISP, Gnuplot, Maxima,
-wXmaxima, wXwidgets, Tcl, Tk, jsMath TeX Fonts) from the internet
+wxMaxima, wxWidgets, Tcl, Tk, jsMath TeX Fonts) from the internet
 into the directory "download".
 
 The packages will be compiled (if necessary) and a Windows 
 installer for Maxima is generated.
 
-This should work (at least) on Ubuntu, Debian and Opensuse.
+This should work (at least) on Ubuntu, Debian and openSUSE (I hope on other
+Linux-Distributions too...).
 (if you want you may even omit the first "make")
 
 Instead of "make clean" just remove everything in the build directory.
@@ -34,9 +35,6 @@ In case a software gets upgraded (and no new patches are needed), it should
 be sufficient to just increase the version number and MD5-checksum for the new
 release in CMakeLists.txt.
 
-
-Best regards,
-Wolfgang Dautermann
 
 
 Some issues:
@@ -100,8 +98,8 @@ works properly. To test Maxima, try the following:
 INSTALLING THE PACKAGE
 ======================
 
-Of course just by doubleclicking/executing the generated EXE on
-Windows. This maxima installer installs into C:\maxima-VERSION, you
+Of course just by double-clicking/executing the generated EXE on
+Windows. This Maxima installer installs into C:\maxima-VERSION, you
 can not change this directory.
 
 If you want to do an *unattended* installation (e.g. if you plan to

@@ -69,7 +69,7 @@ set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 #
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll     OUTPUT_VARIABLE MINGW_LIBSTDCPP OUTPUT_STRIP_TRAILING_WHITESPACE)
-# that does work on Debian 7 and Ubuntu 14.04, but not on Opensuse 13.1 (dont know why)
+# That does work on Debian 7 and Ubuntu 14.04, but not on Opensuse 13.1 (don't know why)
 # There the libraries are in /usr/i686-w64-mingw32/sys-root/mingw/bin
 # (with repository: http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/)
 # so try that...
@@ -167,13 +167,13 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 
 # Build Maxima
 externalproject_add(maxima
-  # first copy the maxima source to a build directory, since out-of-source-builds do not work
+  # first copy the Maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -av --exclude=crosscompile-windows/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_SOURCE_DIR}/build/maxima-prefix/src/maxima"
   DEPENDS clisp
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --prefix=C:/maxima-${MAXIMAVERSION}
-  # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
+  # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
   BUILD_COMMAND $(MAKE) -C src clisp-depends.mk
         COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
         COMMAND mv src/clisp-depends.mk-new src/clisp-depends.mk
