@@ -128,9 +128,6 @@
 (defun tex1 (mexplabel &optional filename-or-stream) ;; mexplabel, and optional filename or stream
   (prog (mexp  texport x y itsalabel need-to-close-texport)
      (reset-ccol)
-     (cond ((null mexplabel)
-	    (displa " No eqn given to TeX")
-	    (return nil)))
      ;; collect the file-name, if any, and open a port if needed
      (setq filename-or-stream (meval filename-or-stream))
      (setq texport
