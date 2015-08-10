@@ -4009,10 +4009,11 @@
        (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0)))
               beta ibeta )
          (setq a ($float a) b ($float b))
-         (if (or (< (setq beta (simplify (list '($beta) a b))) 1e-307) 
-                 (< (setq ibeta (beta-incomplete a b ($float z))) 1e-307) )
-           ;; In case of underflow (see bug #2999) or precision loss use bigfloats.
-           ;; Temporarily give some extra precision but avoid fpprec dependency.
+         (if (or (< ($abs (setq beta (simplify (list '($beta) a b)))) 1e-307) 
+                 (< ($abs (setq ibeta (beta-incomplete a b ($float z)))) 1e-307) )
+           ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
+           ;; and emporarily give some extra precision but avoid fpprec dependency.
+           ;; Is this workaround correct for complex values?
            (let ((fpprec 70))
              ($float ($beta_incomplete_regularized ($bfloat a) ($bfloat b) z)) )
            ($rectform (div ibeta beta)) )))
