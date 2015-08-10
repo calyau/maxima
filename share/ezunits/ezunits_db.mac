@@ -66,6 +66,7 @@ declare_unit_conversion
     pA = A/10^12,
     nA = A/10^9,
     microA = A/10^6,
+    microampere = microA,
     mA = A/1000,
     ampere = A,
     amp = A,
@@ -77,6 +78,7 @@ declare_unit_conversion
     pK = K/10^12,
     nK = K/10^9,
     microK = K/10^6,
+    microkelvin = microK,
     mK = K/1000,
     kelvin = K,
     kK = 1000*K,
@@ -86,7 +88,8 @@ declare_unit_conversion
     fmol = mol/10^15,
     pmol = mol/10^12,
     nmol = mol/10^9,
-    microm = mol/10^6,
+    micromol = mol/10^6,
+    micromole = micromol,
     mmol = mol/1000,
     mole = mol,
     kmol = 1000*mol,
@@ -97,6 +100,7 @@ declare_unit_conversion
     pHz = Hz/10^12,
     nHz = Hz/10^9,
     microHz = Hz/10^6,
+    microhertz = microHz,
     mHz = Hz/1000,
     kHz = 1000*Hz,
     MHz = 1000000*Hz,
@@ -106,6 +110,7 @@ declare_unit_conversion
     pN = N/10^12,
     nN = N/10^9,
     microN = N/10^6,
+    micronewton = microN,
     mN = N/1000,
     kN = 1000*N,
     MN = 1000000*N,
@@ -115,6 +120,7 @@ declare_unit_conversion
     pPa = Pa/10^12,
     nPa = Pa/10^9,
     microPa = Pa/10^6,
+    micropascal = microPa,
     mPa = Pa/1000,
     kPa = 1000*Pa,
     MPa = 1000000*Pa,
@@ -124,6 +130,7 @@ declare_unit_conversion
     pJ = J/10^12,
     nJ = J/10^9,
     microJ = J/10^6,
+    microjoule = microJ,
     mJ = J/1000,
     kJ = 1000*J,
     MJ = 1000000*J,
@@ -133,6 +140,7 @@ declare_unit_conversion
     pW = W/10^12,
     nW = W/10^9,
     microW = W/10^6,
+    microwatt = microW,
     mW = W/1000,
     kW = 1000*W,
     MW = 1000000*W,
@@ -142,6 +150,7 @@ declare_unit_conversion
     pC = C/10^12,
     nC = C/10^9,
     microC = C/10^6,
+    microcoulomb = microC,
     mC = C/1000,
     kC = 1000*C,
     MC = 1000000*C,
@@ -151,6 +160,7 @@ declare_unit_conversion
     pV = V/10^12,
     nV = V/10^9,
     microV = V/10^6,
+    microvolt = microV,
     mV = V/1000,
     kV = 1000*V,
     MV = 1000000*V,
@@ -160,6 +170,7 @@ declare_unit_conversion
     pF = F/10^12,
     nF = F/10^9,
     microF = F/10^6,
+    microfarad = microF,
     mF = F/1000,
     kF = 1000*F,
     MF = 1000000*F,
@@ -178,6 +189,7 @@ declare_unit_conversion
     pS = S/10^12,
     nS = S/10^9,
     microS = S/10^6,
+    microsievert = microS,
     mS = S/1000,
     kS = 1000*S,
     MS = 1000000*S,
@@ -187,6 +199,7 @@ declare_unit_conversion
     pWb = Wb/10^12,
     nWb = Wb/10^9,
     microWb = Wb/10^6,
+    microweber = microWb,
     mWb = Wb/1000,
     kWb = 1000*Wb,
     MWb = 1000000*Wb,
@@ -196,6 +209,7 @@ declare_unit_conversion
     pT = T/10^12,
     nT = T/10^9,
     microT = T/10^6,
+    microtesla = microT,
     mT = T/1000,
     kT = 1000*T,
     MT = 1000000*T,
@@ -205,6 +219,7 @@ declare_unit_conversion
     pH = H/10^12,
     nH = H/10^9,
     microH = H/10^6,
+    microhenry = microH,
     mH = H/1000,
     kH = 1000*H,
     MH = 1000000*H,
@@ -263,9 +278,44 @@ texput (MOhm, "{\\mathrm M\\Omega}");
 texput (GOhm, "{\\mathrm G\\Omega}");
 
 texput (micrometer, "\\mu {\\mathrm m}");
+texput (microm, "\\mu {\\mathrm m}");
 texput (micron, "\\mu {\\mathrm m}");
 texput (microgram, "\\mu {\\mathrm g}");
+texput (microg, "\\mu {\\mathrm g}");
 texput (microsecond, "\\mu {\\mathrm s}");
+texput (micros, "\\mu {\\mathrm s}");
+texput (microampere, "\\mu {\\mathrm A}");
+texput (microamp, "\\mu {\\mathrm A}");
+texput (microA, "\\mu {\\mathrm A}");
+texput (microkelvin, "\\mu {\\mathrm K}");
+texput (microK, "\\mu {\\mathrm K}");
+texput (micromole, "\\mu {\\mathrm mol}");
+texput (micromol, "\\mu {\\mathrm mol}");
+texput (microhertz, "\\mu {\\mathrm Hz}");
+texput (microHz, "\\mu {\\mathrm Hz}");
+texput (micronewton, "\\mu {\\mathrm N}");
+texput (microN, "\\mu {\\mathrm N}");
+texput (micropascal, "\\mu {\\mathrm Pa}");
+texput (microPa, "\\mu {\\mathrm Pa}");
+texput (microjoule, "\\mu {\\mathrm J}");
+texput (microJ, "\\mu {\\mathrm J}");
+texput (microwatt, "\\mu {\\mathrm W}");
+texput (microW, "\\mu {\\mathrm W}");
+texput (microcoulomb, "\\mu {\\mathrm C}");
+texput (microC, "\\mu {\\mathrm C}");
+texput (microvolt, "\\mu {\\mathrm V}");
+texput (microV, "\\mu {\\mathrm V}");
+texput (microfarad, "\\mu {\\mathrm F}");
+texput (microF, "\\mu {\\mathrm F}");
+texput (microOhm, "\\mu \\Omega");
+texput (microsievert, "\\mu {\\mathrm S}");
+texput (microS, "\\mu {\\mathrm S}");
+texput (microweber, "\\mu {\\mathrm Wb}");
+texput (microWb, "\\mu {\\mathrm Wb}");
+texput (microtesla, "\\mu {\\mathrm T}");
+texput (microT, "\\mu {\\mathrm T}");
+texput (microhenry, "\\mu {\\mathrm H}");
+texput (microH, "\\mu {\\mathrm H}");
 
 texput (metric_ton, "{\\mathrm metric\\ ton}");
 
