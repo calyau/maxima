@@ -317,22 +317,36 @@ true;
 
 /* date parsing */
 
-parse_timedate (timedate (86400));
+/* this is really terrible, ... <sigh>
+ * problem is that Clisp on Windows runs into a Lisp error when parsing dates
+ * before 1970, when the user's timezone is Central European time -- see discussion
+ * on mailing list circa 2015-04-21: "parse_timedate error"
+ * I don't know if it's really useful to go to so much trouble,
+ * but now I have already, so I'm going to leave it here.
+ */
+
+block ([foo : build_info ()],
+  lisp_clisp : sequalignore (foo@lisp_name, "clisp"),
+  host_windows : some (lambda ([x], ssearch (x, foo@host, 'sequalignore)), ["windows", "win32", "w32", "ms-win"]),
+  0);
+0;
+
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (86400));
 86400;
 
-parse_timedate (timedate (86401));
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (86401));
 86401;
 
-parse_timedate (timedate (87400));
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (87400));
 87400;
 
-parse_timedate (timedate (1000000));
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (1000000));
 1000000;
 
-parse_timedate (timedate (1000000000));
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (1000000000));
 1000000000;
 
-parse_timedate (timedate (10000000000));
+if lisp_clisp and host_windows then skip_over_parse_timedate else parse_timedate (timedate (10000000000));
 10000000000;
 
 /* Do the right thing when listarray and arrayinfo are called within
