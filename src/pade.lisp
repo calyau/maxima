@@ -82,7 +82,7 @@
 				       (srdis (psmake (denom r) tpf)))))
 		   ans))
 	(setq r1 (pade1 r1 r2))
-	(exch r1 r2)))))
+	(rotatef r1 r2)))))
 
 (defun pade1 (r1 r2)
   (do ((quoterm) (lcoef (lc (num r2))) (expon (le (num r2)))

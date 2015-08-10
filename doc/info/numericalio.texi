@@ -106,7 +106,15 @@ until @var{M} is full or the source is exhausted.
 Input data are read into the matrix in row-major order;
 the input need not have the same number of rows and columns as @var{M}.
 
-The source @var{S} may be a file name or a stream.
+The source @var{S} may be a file name or a stream which for example allows skipping
+the very first line of a file (that may be useful, if you read CSV data, where the
+first line often contains the description of the columns):
+@example
+s : openr("data.txt");
+readline(s);  /* skip the first line */
+M : read_matrix(s, comma);  /* read the following (comma-separated) lines into matrix M */
+close(s);
+@end example
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.

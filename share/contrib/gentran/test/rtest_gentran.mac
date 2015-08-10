@@ -1,7 +1,11 @@
-(kill(all), 0);
-0$
+/*
+   References:
+   [1] share/contrib/gentran/man/MANUAL.ps
+*/
+(kill(all), 'done);
+'done$
 
-(load(gentran), 'done);
+(load("gentran"), 'done);
 'done$
 
 gentranlang('fortran);
@@ -16,8 +20,100 @@ gentranlang('c);
 (gentranlang('c), ?\*gentranlang);
 ?c$
 
-/*
+/* helper function to get gentran output as a string */
+(sgentran(['L]):= block([s: make_string_output_stream(),
+    ?genstmtno\*:  25000,
+    ?fortcurrind\*:    0,
+    ?ratcurrind\*:     0,
+    ?currind\*:        0],
+  gentranpush(s),
+  apply(gentran, L),
+  gentranpop(s),
+  get_output_stream_string(s)),
+'done);
+'done;
 
+(gentranlang('fortran), sgentran(a : 42));
+"a=42.0
+"$
+
+(gentranlang('ratfor), sgentran(a : 42));
+"a=42.0
+"$
+
+(gentranlang('c),      sgentran(a : 42));
+"a=42.0;
+"$
+
+/* do not convert integers to float */
+(off('float), ?\*float);
+false$
+
+(gentranlang('c), sgentran(a : 42));
+"a=42;
+"$
+
+/* [1] (p. 6) */
+(gentranlang('fortran), sgentran(for i:1 thru n do v[i]:0.0 ));
+"do 25001 i=1,n
+    v(i)=0.0
+25001 continue
+"$
+
+(gentranlang('fortran), sgentran(for i:1 thru n step -1 do v[i]:0.0));
+"do 25001 i=1,n,-1
+    v(i)=0.0
+25001 continue
+"$
+
+/* [1] (p. 6) */
+(gentranlang('ratfor),
+  sgentran(
+    for i:1 thru n do
+    for j:i+1 thru n do
+    (
+      x[j,i] : x[i,j],
+      y[j,i] : y[i,j])));
+"do i=1,n
+    do j=1+i,n
+        {
+            x(j,i)=x(i,j)
+            y(j,i)=y(i,j)
+        }
+"$
+
+/* [1] (p. 7) */
+(gentranlang('c),
+  sgentran(p : a*x^2 + b*x + c ));
+"p=c+b*x+a*pow(x,2);
+"$
+
+/* [1] (p. 8) */
+(gentranlang('fortran),
+  sgentran( function("real", f(x,y)),
+    body( x:x^2, y:y^2, f:abs(x-y) ) ) );
+"real function f(x,y)
+x=x**2
+y=y**2
+f=abs(-x+y)
+return
+end
+"$
+
+/* [1] (p. 9) */
+(gentranlang('c),
+  sgentran(cprocedure("float", f(x,y)) ));
+"float f(x,y)
+"$
+
+/* [13] (p. 13, without float) */
+block([f: 2*x^2 - 5*x + 6],
+  gentranlang('fortran),
+  sgentran( q : eval(f)/eval(diff(f,x)) ));
+"q=(6-5*x+2*x**2)/(-5+4*x)
+"$
+
+/*
 Gentran is confused by batch
 
 batch("rtest_gentran.mac", 'test);
@@ -34,36 +130,3 @@ prints
 a=42.0
 
 */
-
-
-/*
-
-Those tests are not automatic, gentran prints output to *stdout*.
-
-(gentranlang('fortran), gentran(a : 42));
-a=42.0
-
-(gentranlang('ratfor), gentran(a : 42));
-a=42.0
-
-(gentranlang('c), gentran(a : 42));
-a=42.0;
-
-(gentranlang('fortran), gentran(for i: 1 thru 10 do s : s + i));
-25001 if (i .GT. 10.0) goto 25002
-          s=s+i
-          i=i+1
-          goto 25001
-25002 continue
-
-(gentranlang('c), gentran(for i: 1 thru 10 do s : s + i));
-for (i=1;!(i>10);i=i+1)
-    s=s+i;
-
-(gentranlang('ratfor), gentran(for i: 1 thru 10 do s : s + i));
-do i=1.0,10.0
-    s=s+i
-
-*/
-
-

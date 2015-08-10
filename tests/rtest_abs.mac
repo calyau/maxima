@@ -286,7 +286,7 @@ abs(log(-z))$
 subst(z=-1, abs(log(-z)));
 0$
 
-(forget(z,complex),0);
+(remove(z,complex),0);
 0$
 
 /* check sign before using multiplicative identity; from x*y > 0 */
@@ -305,4 +305,21 @@ abs(x^2);
 x^2$
 
 abs(rat(a-b))-abs(rat(b-a));
+0$
+
+/* Bug #2230: abs(x)^(2*int) doesn't simplify */
+
+(declare(n, integer, e, even), 0);
+0$
+
+abs(x)^(2*n);
+x^(2*n)$
+
+abs(x)^e;
+x^e$
+
+abs(x)^(2*floor(z));
+x^(2*floor(z))$
+
+(remove(n, integer, e, even), 0);
 0$

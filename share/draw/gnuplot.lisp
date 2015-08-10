@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2014 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2015 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -1529,6 +1529,8 @@
 	   (j 0 (1+ j)))
 	  ((> j ($second grid)))
 	(let ((fun-val (funcall expr x-val y-val)))
+          (when (not (floatp fun-val))
+                (merror "draw2d (implicit): non defined variable"))
 	  (if (or (eq fun-val t) (>= fun-val epsilon))
 	      (setf (aref sample i j) 1)
 	      (setf (aref sample i j) -1)))))))
@@ -1598,8 +1600,6 @@
 	 (ssample (make-array `(,(1+ ($first ip-grid-in))
 				,(1+ ($second ip-grid-in))))) )
 
-    (when (not (subsetp (rest ($listofvars expr)) (list x y)))
-       (merror "draw2d (implicit): non defined variable"))
     (setq e (coerce-float-fun (imp-pl-prepare-expr expr)
 			      `((mlist simp)
 				,x ,y)))
@@ -3259,6 +3259,10 @@
       (setf nrows (ceiling (/ (length scenes) ncols)))
       (if (> (length scenes) 1)
         (format cmdstorage "~%set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
+
+    ; Make gnuplot versions newer than 5.0 understand that linetype means
+    ; we try to set the dash type
+    (format cmdstorage "~%if(GPVAL_VERSION >= 5.0){set for [i=1:8] linetype i dashtype i}")
 
     ; write descriptions of 2d and 3d scenes
     (let ((i -1)

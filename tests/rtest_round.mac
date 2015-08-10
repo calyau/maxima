@@ -82,7 +82,7 @@ round(2*n + 3/2);
 round(n!);
 n!$
 
-(forget(n,integer),0);
+(remove(n,integer),0);
 0$
 
 (forget(n > 0),0);
@@ -109,7 +109,7 @@ e$
 round(e-1/2);
 e$
 
-(forget(o,odd), forget(o,integer), forget(e,even), forget(e,integer),0);
+(remove(o,odd), remove(o,integer), remove(e,even), remove(e,integer),0);
 0$
 
 round(x) + round(-x);
@@ -205,7 +205,7 @@ n*(n+1)$
 truncate(n!);
 n!$
 
-(forget(n,integer),0);
+(remove(n,integer),0);
 0$
 
 (forget(n > 0),0);

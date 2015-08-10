@@ -3983,7 +3983,8 @@
                 (eqtest 
                   (list '(%beta_incomplete_regularized) a b z) expr)))))
 
-      ((and (integer-representation-p b) (minusp b))
+      ((and (integer-representation-p b)
+            (if ($bfloatp b) (minusp (cadr b)) (minusp b)) )
        ;; Problem: for b a negative integer the Regularized Incomplete 
        ;; Beta function is defined to be zero. BUT: When we calculate
        ;; e.g. beta_incomplete(1.0,-2.0,1/2)/beta(1.0,-2.0) we get the 
@@ -3991,9 +3992,12 @@
        ;; for this case. How do we get a consistent behaviour?
        0)
 
-      ((and (integer-representation-p a) (minusp a))
+      ((and (integer-representation-p a)
+            (if ($bfloatp a) (minusp (cadr a)) (minusp a)) )
        (cond
+         ;; TODO: The following line does not work for bigfloats.
          ((and (integer-representation-p b) (<= b (- a)))
+         ;;       Does $beta_incomplete or simpbeta underflow in this case?
           (div ($beta_incomplete a b z)
                (simplify (list '($beta) a b))))
          (t 
@@ -4002,17 +4006,25 @@
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
       ((complex-float-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
-         ($rectform 
-           (div (beta-incomplete ($float a) ($float b) ($float z))
-                (simplify (list '($beta) ($float a) ($float b)))))))
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0)))
+              beta ibeta )
+         (setq a ($float a) b ($float b))
+         (if (or (< ($abs (setq beta (simplify (list '($beta) a b)))) 1e-307) 
+                 (< ($abs (setq ibeta (beta-incomplete a b ($float z)))) 1e-307) )
+           ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
+           ;; and emporarily give some extra precision but avoid fpprec dependency.
+           ;; Is this workaround correct for complex values?
+           (let ((fpprec 70))
+             ($float ($beta_incomplete_regularized ($bfloat a) ($bfloat b) z)) )
+           ($rectform (div ibeta beta)) )))
            
       ((complex-bigfloat-numerical-eval-p a b z)
        (let ((*beta-incomplete-eps*
                (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         (setq a ($bfloat a) b ($bfloat b))
          ($rectform 
-           (div (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))
-                (simplify (list '($beta) ($float a) ($float b)))))))
+           (div (beta-incomplete a b ($bfloat z))
+                (simplify (list '($beta) a b))))))
 
       ;; Check for argument simplifications and transformations
 

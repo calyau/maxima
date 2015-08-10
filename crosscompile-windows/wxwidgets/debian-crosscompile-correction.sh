@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Debian genereates libraris with the suffix libXYZ-i686-w64-mingw32.a,
+# Debian generates libraries with the suffix libXYZ-i686-w64-mingw32.a,
 # but i686-w64-mingw32-msw-unicode-static-3.0 --libs
 # does not contain this suffix.
 

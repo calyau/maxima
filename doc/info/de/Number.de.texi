@@ -6,7 +6,6 @@
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.01.2011
 @c Revision    : 26.02.2011
-@c Revision    : 27.03.2012, 29.03.2012, 23.03.2013, 27.7.2013 VvN
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -841,6 +840,88 @@ zeigt eine Additionstabelle von allen Elementen in (Z/@var{n}Z).
 Siehe auch @mref{zn_mult_table}, @mref{zn_power_table}.
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{zn_characteristic_factors}
+@deffn {Funktion} zn_characteristic_factors (@var{n}) 
+
+Gibt eine Liste mit den charakteristischen Faktoren des Totienten von @var{n} zur@"uck.
+
+Mit Hilfe der charakteristischen Faktoren kann eine multiplikative Gruppe modulo @var{n} 
+als direktes Produkt zyklischer Untergruppen dargestellt werden. 
+
+Ist die Gruppe selbst zyklisch, dann enth@"alt die Liste nur den Totienten 
+und mit @code{zn_primroot} kann ein Generator berechnet werden. 
+Zerf@"allt der Totient in mehrere charakteristische Faktoren, 
+k@"onnen Generatoren der entsprechenden Untergruppen mit @code{zn_factor_generators} 
+ermittelt werden.
+
+Jeder der @code{r} Faktoren in der Liste teilt die weiter rechts stehenden Faktoren. 
+Fuer den letzten Faktor @code{f_r} gilt daher @code{a^f_r = 1 (mod n)} 
+f@"ur alle @code{a} der Gruppe.
+
+F@"ur @code{n > 2} ist @code{totient(n)/2^r} die Anzahl der quadratischen Reste 
+in der Gruppe und jeder dieser Reste hat @code{2^r} Wurzeln.
+
+Siehe auch @mref{totient}, @mref{zn_primroot}, @mref{zn_factor_generators}.
+
+Beispiele:
+
+Die multiplikative Gruppe modulo @code{14} ist zyklisch und ihre @code{6} Elemente 
+lassen sich durch eine Primitivwurzel erzeugen.
+
+@example
+(%i1) [zn_characteristic_factors(14), phi: totient(14)];
+(%o1)                              [[6], 6]
+(%i2) [zn_factor_generators(14), g: zn_primroot(14)];
+(%o2)                              [[3], 3]
+(%i3) M14: makelist(power_mod(g,i,14), i,0,phi-1);
+(%o3)                         [1, 3, 9, 13, 11, 5]
+@end example
+
+Die multiplikative Gruppe modulo @code{15} ist nicht zyklisch und ihre @code{8} Elemente 
+lassen sich mit Hilfe zweier Faktorgeneratoren erzeugen.
+
+@example
+(%i1) [[f1,f2]: zn_characteristic_factors(15), totient(15)];
+(%o1)                             [[2, 4], 8]
+(%i2) [[g1,g2]: zn_factor_generators(15), zn_primroot(15)];
+(%o2)                           [[11, 7], false]
+(%i3) UG1: makelist(power_mod(g1,i,15), i,0,f1-1);
+(%o3)                               [1, 11]
+(%i4) UG2: makelist(power_mod(g2,i,15), i,0,f2-1);
+(%o4)                            [1, 7, 4, 13]
+(%i5) M15: create_list(mod(i*j,15), i,UG1, j,UG2);
+(%o5)                      [1, 7, 4, 13, 11, 2, 14, 8]
+@end example
+
+F@"ur den letzten charakteristischen Faktor @code{4} gilt 
+@code{a^4 = 1 (mod 15)} fuer alle @code{a} in @code{M15}. 
+
+@code{M15} hat @code{2} charakteristische Faktoren und daher die @code{8/2^2} 
+quadratischen Reste @code{1} und @code{4}, und diese haben jeweils @code{2^2} Wurzeln.
+
+@example
+(%i6) zn_power_table(15);
+                               [ 1   1  1   1 ]
+                               [              ]
+                               [ 2   4  8   1 ]
+                               [              ]
+                               [ 4   1  4   1 ]
+                               [              ]
+                               [ 7   4  13  1 ]
+(%o6)                          [              ]
+                               [ 8   4  2   1 ]
+                               [              ]
+                               [ 11  1  11  1 ]
+                               [              ]
+                               [ 13  4  7   1 ]
+                               [              ]
+                               [ 14  1  14  1 ]
+(%i7) map(lambda([i], zn_nth_root(i,2,15)), [1,4]);
+(%o7)                   [[1, 4, 11, 14], [2, 7, 8, 13]]
+@end example
+@end deffn
+
 @c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{zn_determinant}
 @deffn {Funktion} zn_determinant (@var{matrix}, @var{p}) 
@@ -873,6 +954,17 @@ Beispiel:
 (%i4) zn_determinant(m, 5);
 (%o4)                               0
 @end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_factor_generators}
+@deffn {Funktion} zn_factor_generators (@var{n}) 
+
+Gibt eine Liste mit Faktorgeneratoren zur@"uck, die zu den charakteristischen 
+Faktoren des Totienten von @var{n} passen. 
+
+F@"ur Erlaeuterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+
 @end deffn
 
 @c --- 27.07.2013 VvN ----------------------------------------------------------
@@ -1002,6 +1094,64 @@ Beispiele:
 @end example
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{zn_nth_root}
+@deffn {Funktion} zn_nth_root (@var{x}, @var{n}, @var{m}) 
+@deffnx {Funktion} zn_nth_root (@var{x}, @var{n}, @var{m}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+
+Gibt eine Liste mit den @var{n}-ten Wurzeln von @var{x} zur@"uck, falls @var{x} 
+eine Einheit in der multiplikativen Gruppe (Z/@var{m}Z)* ist, 
+d.h. teilerfremd zu @var{m}, 
+und falls @var{x} die @var{n}-te Potenz einer Einheit von (Z/@var{m}Z)* ist. 
+Andernfalls gibt @code{zn_nth_root} @code{false} zur@"uck.  
+
+@code{zn_nth_root} verwendet einen Algorithmus von Adleman, Manders und Miller 
+und ben@"otigt eine Primfaktorzerlegung des Modulus @var{m}. 
+Es kann eventuell sinnvoll sein, diese Zerlegung vorab zu berechnen und 
+als viertes Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe von 
+@code{ifactors(m)} mit der Standardeinstellung @code{false} der 
+Optionsvariable @code{factors_only} entsprechen. 
+
+Beispiele:
+
+Eine Potenztabelle der multiplikativen Gruppe modulo @code{14} 
+gefolgt von einer Liste mit Listen von @var{n}-ten Wurzeln der @code{1}, 
+wobei @var{n} von @code{1} bis @code{6} variiert.
+
+@example
+(%i1) zn_power_table(14);
+                         [ 1   1   1   1   1   1 ]
+                         [                       ]
+                         [ 3   9   13  11  5   1 ]
+                         [                       ]
+                         [ 5   11  13  9   3   1 ]
+(%o1)                    [                       ]
+                         [ 9   11  1   9   11  1 ]
+                         [                       ]
+                         [ 11  9   1   11  9   1 ]
+                         [                       ]
+                         [ 13  1   13  1   13  1 ]
+(%i2) makelist(zn_nth_root(1,n,14), n,1,6);
+(%o2)  [[1], [1, 13], [1, 9, 11], [1, 13], [1], [1, 3, 5, 9, 11, 13]]
+@end example
+
+In diesem RSA-@"ahnlichen Beispiel ist die Faktorisierung des Modulus bekannt 
+und wird als viertes Argument @"ubergeben.
+
+@example
+(%i1) p: 2^107-1$  q: 2^127-1$  N: p*q$
+
+(%i4) ibase: obase: 16$
+
+(%i5) msg: 11223344556677889900aabbccddeeff$
+
+(%i6) enc: power_mod(msg, 10001, N);
+(%o6)    1a8db7892ae588bdc2be25dd5107a425001fe9c82161abc673241c8b383
+(%i7) zn_nth_root(enc, 10001, N, [[p,1],[q,1]]);
+(%o7)               [11223344556677889900aabbccddeeff]
+@end example
+@end deffn
+
 @c --- 29.03.2012 VN -----------------------------------------------------------
 @anchor{zn_order}
 @deffn {Funktion} zn_order (@var{x}, @var{n}) 
@@ -1059,23 +1209,28 @@ entsprechen.
 @end example
 @end deffn
 
-@c --- 27.07.2013 VvN ----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @anchor{zn_power_table}
 @deffn {Funktion} zn_power_table (@var{n}) 
-@deffnx {Funktion} zn_power_table (@var{n}, all)
+@deffnx {Funktion} zn_power_table (@var{n}, @var{opt_1}, @var{opt_2})
 
-Ohne das optionale Argument @var{all} zeigt @code{zn_power_table(n)} 
+Ohne ein optionales Argument zeigt @code{zn_power_table(n)} 
 eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
 d.h. von allen modulo @var{n} invertierbaren Elementen. 
 Der Exponent variiert dabei jeweils zwischen @code{1} und 
 dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}, 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
-Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
-verschiedenen Elemente gezeigt wird. In diesem Fall 
-variiert der Exponent zwischen @code{1} und @code{totient(n) + 1}. 
-Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, stimmen dann 
-die erste und letzte Spalte @"uberein.
+Die optionalen Argumente k@"onnen @code{all} und/oder eine nat@"urliche Zahl 
+@code{i} sein. Die Reihenfolge ist dabei beliebig.
+
+Das Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
+verschiedenen Elemente gezeigt wird. Zus@"atzlich wird eine weitere Spalte ausgegeben.
+Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, 
+stimmt dann die erste mit der letzten Spalte @"uberein.
+
+Ist eine zus@"atzliche nat@"urliche Zahl @code{i} angegeben, variiert der 
+Exponent zwischen @code{1} und @code{i}.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
 
@@ -1096,6 +1251,16 @@ Beispiele:
                                [ 4  4  4 ]
                                [         ]
                                [ 5  1  5 ]
+(%i3) zn_power_table(6,all,5);
+                            [ 1  1  1  1  1 ]
+                            [               ]
+                            [ 2  4  2  4  2 ]
+                            [               ]
+(%o3)                       [ 3  3  3  3  3 ]
+                            [               ]
+                            [ 4  4  4  4  4 ]
+                            [               ]
+                            [ 5  1  5  1  5 ]
 @end example
 @end deffn
 

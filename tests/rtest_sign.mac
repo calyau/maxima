@@ -242,7 +242,7 @@ pnz$
 0$
 
 sign(log(x));
-pn$
+pz$
 
 (forget(x >= 1),0);
 0$

@@ -1542,3 +1542,18 @@ true;
 
 float (foo);
 0.0;
+
+/* Maxima used to call these integrals divergent even though it would yield 0
+ * when both limits were inf.
+ */
+integrate(exp(-x^2), x, minf, minf);
+0;
+
+integrate(const, x, minf, minf);
+0;
+
+/* Maxima used to give the bogus result "-false" for this integral even though
+ * it would yield 0 when both limits were inf.
+ */
+integrate(erf(x), x, minf, minf);
+0;

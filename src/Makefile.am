@@ -16,8 +16,7 @@ EXTRA_DIST = \
   numerical/slatec/fortran \
   maxima-build.lisp maxima-command.ico set_lang.vbs \
   lisp \
-  share-subdirs.lisp \
-  sharefiles.mk
+  share-subdirs.lisp
 
 ## If we can, we use Automake's blah_SCRIPTS targets to install
 ## stuff. When doing this, we have to populate EXTRA_SCRIPTS, so we
@@ -31,22 +30,11 @@ echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
 
-## Create the list of files that will be installed from share. The
-## make_share_list script outputs to a temporary file and only
-## overwrites sharefiles.mk if there is a change. As such,
-## share/Makefile is only updated (and share rebuilt) when something
-## changes.
-##
-## TODO: Why is this in src/ not in share/ ?
-.PHONY: sharefiles.mk
-sharefiles.mk:
-	../admin/make_share_list
-
 ## "all" depends on sharefiles.mk and whatever files we choose to
 ## build. These are listed in BUILT_FILES, which is populated in the
 ## implementation-dependent sections below.
 BUILT_FILES =
-all-local: sharefiles.mk $(BUILT_FILES)
+all-local: $(BUILT_FILES)
 
 ## The "clean" rule always just deletes some files and they are
 ## specified in the conditional sections by adding

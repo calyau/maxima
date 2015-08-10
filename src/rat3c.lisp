@@ -198,7 +198,7 @@
   (if (> egcd 1)
       (setq u (pexpon*// u egcd nil)
 	    v (pexpon*// v egcd nil)))
-  (if (> (p-le v) (p-le u)) (exch u v))
+  (if (> (p-le v) (p-le u)) (rotatef u v))
   (setq s (case $gcd
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))

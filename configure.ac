@@ -16,7 +16,8 @@ AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
 
-dnl Don't use AC_EXEEXT as that requires a C compiler
+dnl If we were using a C compiler, EXEEXT would get defined
+dnl automatically. But we aren't, so we have to define it ourselves.
 case "$host" in
         *mingw*)
                 win32=true
@@ -39,6 +40,13 @@ esac
 AC_SUBST(EXEEXT)
 AC_SUBST(win32)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
+
+dnl To make life more confusing, the automake test machinery (which we
+dnl use in ./tests) needs the am__EXEEXT conditional. This would have
+dnl normally been expanded (via something we've copied from Automake's
+dnl init.m4 into our aclocal.m4) as Automake computed EXEEXT, but it
+dnl didn't so we have to drop this in ourselves.
+AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
 
 explicit_lisp=false
 lisps_enabled=""
@@ -847,7 +855,7 @@ script the SCL executable is the program exec'd by that shell script.])
 fi
 
 if test x"${gcl}" = xtrue; then
-   result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")' -eval '(bye)'`
+   result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")' -eval '(si::bye)'`
    retval=$?
    if test ! x"${retval}" = x"0" ; then
       AC_MSG_ERROR(unable to run gcl executable \"${GCL_NAME}\".)
@@ -1024,12 +1032,12 @@ if test x"${exec_prefix}" = xNONE ; then
 else
 	tmp_exec_prefix="${exec_prefix}"
 fi
-expanded_top_srcdir="`(cd \"$top_srcdir\" 1>/dev/null 2>/dev/null; pwd)`"
+expanded_top_srcdir="$(cd "$top_srcdir" 1>/dev/null 2>/dev/null; pwd)"
 expanded_exec_prefix="${tmp_exec_prefix}"
-expanded_libdir="`eval \"exec_prefix=\\\"${tmp_exec_prefix}\\\";echo ${libdir}\"`"
-expanded_libexecdir="`eval \"exec_prefix=\\\"${tmp_exec_prefix}\\\";echo ${libexecdir}\"`"
-expanded_datadir="`eval \"prefix=\\\"${tmp_prefix}\\\";datarootdir=\\\"${datarootdir}\\\";echo ${datadir}\"`"
-expanded_infodir="`eval \"prefix=\\\"${tmp_prefix}\\\";datarootdir=\\\"${datarootdir}\\\";echo ${infodir}\"`"
+expanded_libdir="$(eval "exec_prefix=\"${tmp_exec_prefix}\";echo ${libdir}")"
+expanded_libexecdir="$(eval "exec_prefix=\"${tmp_exec_prefix}\";echo ${libexecdir}")"
+expanded_datadir="$(eval "prefix=\"${tmp_prefix}\";datarootdir=\"${datarootdir}\";echo ${datadir}")"
+expanded_infodir="$(eval "prefix=\"${tmp_prefix}\";datarootdir=\"${datarootdir}\";echo ${infodir}")"
 
 
 dnl Find all the directories in share, but remove the share directory

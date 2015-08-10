@@ -1,4 +1,3 @@
-Makefile
-Makefile.in
-
-tests-*.log
+*.log
+*-test.sh*
+test-suite.log

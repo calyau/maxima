@@ -1019,21 +1019,34 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
-  (let ((sgn) (rsgn) (isgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
+  (let (($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
     (setq z ($niceindices z))
     (setq z (if ($constantp z) ($rectform z) (sratsimp z)))
-    (setq sgn ($csign z))
-    (cond ((eq '$zero sgn) t)
-	  ((memq sgn '($pos $neg $pn)) nil)
+    (let ((sgn ($csign z))
+          (dunno `(($equal) ,a ,b)))
+      (cond ((eq '$zero sgn) t)
+            ((memq sgn '($pos $neg $pn)) nil)
 
-	  ((memq sgn '($complex $imaginary)) ;; previously checked also for (linearp z '$%i))
-	   (setq rsgn ($csign ($realpart z)))
-	   (setq isgn ($csign ($imagpart z)))
-	   (cond ((and (eq '$zero rsgn) (eq '$zero isgn)) t)
-		 ((or (memq rsgn '($neg $pos $pn)) (memq isgn '($neg $pos $pn))) nil)
-		 (t `(($equal) ,a ,b))))
+            ;; previously checked also for (linearp z '$%i))
+            ((memq sgn '($complex $imaginary))
+             ;; We call trisplit here, which goes back to general evaluation and
+             ;; could cause an infinite recursion. To make sure that doesn't
+             ;; happen, use the with-safe-recursion macro.
+             (handler-case
+                 (with-safe-recursion meqp-by-csign z
+                   (let* ((ri-parts (trisplit z))
+                          (rsgn ($csign (car ri-parts)))
+                          (isgn ($csign (cdr ri-parts))))
+                     (cond ((and (eq '$zero rsgn)
+                                 (eq '$zero isgn)) t)
 
-	  (t `(($equal) ,a ,b)))))
+                           ((or (memq rsgn '($neg $pos $pn))
+                                (memq isgn '($neg $pos $pn))) nil)
+
+                           (t dunno))))
+               (unsafe-recursion () dunno)))
+
+            (t dunno)))))
 
 ;; For each fact of the form equal(a,b) in the active context, do e : ratsubst(b,a,e).
 

@@ -160,7 +160,7 @@ performed modulo 2, addition and subtraction are equivalent:
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i3)}# a : x^3+x;
-  #\tr{(\%o3)}\bc\rb{$\tb{x^4+x^2}$}\ec#
+  #\tr{(\%o3)}\bc\rb{$\tb{x^3+x}$}\ec#
   #\tr{(\%i4)}# b : x^3+x^2+1;
   #\tr{(\%o4)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
   #\tr{(\%i5)}# gf_add(a, b);
@@ -287,17 +287,23 @@ run over all the integers from 0 to $p^n-1$, there is a corresponding
 ``logarithm'' array, \texttt{gf\_logs}.  
 The logarithm table may be considered to be
 indexed from 0 to $p^n-1$, and its $i$-th element (ignoring the 0-th) is the power 
-corresponding to that element:
+corresponding to that element.
+
+The last array returned by \verb!gf_make_logs! is \verb!gf_zech_logs! 
+which enables efficient addition. 
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i17)}# gf_make_logs();
+  #\tr{(\%i17)}# map(listarray, gf_make_logs());
   #\vspace{-4mm}#
   #\tr{(\%o17)}\bc\rb{$\tb{
-    [\,\{Lisp Array: \#(1\ 2\ 4\ 8\ 3\ 6\ 12\ 11\ 5\ 10\ 7\ 14\ 15\ 13\ 9\ 1)\}, 
-  }$}\vspace{1mm}\ec#
-  #\bc\hspace*{32mm}\rb{$\tb{
-    \{Lisp Array: \#(N\hspace{-0.5mm}I\hspace{-0.5mm}L\ 0\ 1\ 4\ 2\ 8\ 5\ 10\ 3\ 14\ 9\ 7\ 6\ 13\ 11\ 12)\}\,]
+    [\,\,[1,2,4,8,3,6,0C,0B,5,0A,7,0E,0F,0D,9,1], 
+  }$}\ec#
+  #\bc\hspace*{1mm}\rb{$\tb{
+      [false,0,1,4,2,8,5,0A,3,0E,9,7,6,0D,0B,0C],
+  }$}\ec#
+  #\bc\hspace*{1mm}\rb{$\tb{
+      [false,4,8,0E,1,0A,0D,9,2,7,5,0C,0B,6,3,false]\,\,]
   }$}\ec#
   #\tr{(\%i18)}# c : gf_exp(x, 4);
   #\tr{(\%o18)}\bc\rb{$\tb{x + 1}$}\ec#
@@ -466,9 +472,9 @@ This last value is the ciphertext.  Alice now needs to decrypt it:
 
 \vspace*{-4mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i43)}# r : mod(c - gf_exp() * d, gf_order());
+  #\tr{(\%i43)}# r : mod(c - gf_exponent() * d, gf_order());
   #\tr{(\%o43)}\bc\rb{$\tb{1913}$}\ec#
-  #\tr{(\%i44)}# u : gf_exponent(g, r);
+  #\tr{(\%i44)}# u : gf_exp(g, r);
   #\tr{(\%o44)}\bc\rb{$\tb{x^3+3\,x^2+2\,x+5}$}\ec#
   #\tr{(\%i45)}# s : u + gf_reduction();
   #\tr{(\%o45)}\bc\rb{$\tb{x^4+4\,x^3+8\,x^2+8\,x+7}$}\ec#

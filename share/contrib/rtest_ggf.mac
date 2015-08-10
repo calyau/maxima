@@ -1,0 +1,29 @@
+(kill(all), 'done);
+'done$
+
+(load("ggf"), 'done);
+'done$
+
+ggf(makelist(fib(n),n,0,40));
+-x/(x^2+x-1)$
+
+ggf(makelist(2*fib(n+1)-fib(n),n,0,40));
+(x-2)/(x^2+x-1)$
+
+ggf([1, 1, 1, 1, 1]), GGFINFINITY=4;
+x^4+x^3+x^2+x+1$
+
+ggf([1, -1, 1, -1, 1]), GGFINFINITY=4;
+x^4-x^3+x^2-x+1$
+
+ggf([1, -1, 1, -1, 1]), GGFINFINITY=2;
+1/(x+1)$
+
+ggf([8,24,48,80,120,169,225,290,363,444,533,631,736,850,972,1102,1240,1387,1541]);
+-((x^5+8*x^3+16*x^2+16*x+8)/(x^6-x^5-x^4+x^2+x-1))$
+
+ggf(makelist( (-1)^(i-1)/i, i, 4)), GGFCFMAX=4;
+'done$
+
+ggf(makelist( (-1)^(i-1)/i, i, 4)), GGFCFMAX=6;
+-((3*x^3-4*x^2+6*x-12)/12)$
