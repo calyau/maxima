@@ -1552,6 +1552,18 @@ num_partitions(0);
 every(is, makelist(num_partitions(i)=cardinality(integer_partitions(i)),i,1,15));
 true$
 
+/* SF bug #2975: "number of distinct partitions gives wroing result" */
+
+every ("=",
+       makelist (num_partitions (n, 'list), n, 1, 10),
+       makelist (makelist (num_partitions (m), m, 1, n), n, 1, 10));
+true;
+
+every ("=",
+       makelist (num_distinct_partitions (n, 'list), n, 1, 10),
+       makelist (makelist (num_distinct_partitions (m), m, 1, n), n, 1, 10));
+true;
+
 (distinctp(l) := is(cardinality(setify(l)) = length(l)),0);
 0$
 

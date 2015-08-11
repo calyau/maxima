@@ -807,7 +807,7 @@
 		   (dotimes (i n)
 		     (push (aref p i) acc))
 		   (setq acc (nreverse acc))
-		   (push '(mlist simp) acc)))
+		   (push '(mlist simp) (cdr acc))))
 		(t
 		 (aref p n)))))
 	(t (if lst `(($num_partitions simp) ,n ,lst) 
@@ -849,7 +849,7 @@
 		    (dotimes (i n)
 		      (push (aref p i) acc))
 		    (setq acc (nreverse acc))
-		    (push '(mlist simp) acc)))
+		    (push '(mlist simp) (cdr acc))))
 		 (t
 		  (aref p n)))))
 	(t (if lst `(($num_distinct_partitions simp) ,n ,lst) 
