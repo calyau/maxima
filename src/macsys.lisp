@@ -610,7 +610,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	   (setf shell "cmd") (setf shell-opt "/c"))
 	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
 
-    #+gcl (lisp:system (apply '$sconcat args))
+    #+gcl (system:system (apply '$sconcat args))
     #+ecl (si:system (apply '$concat args))
     #+clisp (let ((output (ext:run-shell-command (apply '$sconcat args)
                                                  :wait t :output :stream)))

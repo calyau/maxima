@@ -12,8 +12,8 @@
 
 #+gcl
 (progn 
-  (lisp:clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
-  (lisp:defentry make-unspecial (lisp:object) (lisp:object "MAKE_UNSPECIAL")))
+  (system:clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
+  (system:defentry make-unspecial (system:object) (system:object "MAKE_UNSPECIAL")))
 
 #+(or scl cmu)
 (defun make-unspecial (symbol)

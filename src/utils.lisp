@@ -44,7 +44,7 @@
   #+sbcl               (sb-ext:quit)
   #+allegro            (excl:exit 0 :quiet t)
   #+(or mcl openmcl)   (ccl:quit)
-  #+gcl                (lisp:quit)
+  #+gcl                (system:quit)
   #+ecl                (si:quit)
   #+lispworks          (lispworks:quit)
   #+abcl               (cl-user::quit)
