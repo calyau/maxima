@@ -84,3 +84,61 @@ map (f(x), [1, 2, 3]);
 
 kill (rules);
 done;
+
+/* verify that subscripted functions are formatted without superfluous parentheses
+ * see SF bug #2998: "extra () in display2d:false output"
+ */
+
+(kill (foo, x, y),
+ string (foo[x](y)));
+"foo[x](y)";
+
+[string (li[2](x)), string (psi[3](y))];
+["li[2](x)", "psi[3](y)"];
+
+/* further tests for #2998 combining subscripted functions with various user-defined operators */
+
+block ([opsies : ["infixie", "prefixie", "postfixie", "naryie", "matchfixie", "nofixie"]],
+  apply (kill, opsies),
+  map (lambda ([f, a], apply (f, [a])), [infix, prefix, postfix, nary, lambda ([a], matchfix (a, a)), nofix], opsies),
+  kill (foo, bar, baz, a, b, c, x, y, z),
+  0);
+0;
+
+foo[x, y](a) infixie bar[z](b, c);
+(foo[x, y](a)) infixie (bar[z](b, c));
+
+string ((foo[x, y](a)) infixie (bar[z](b, c)));
+"foo[x,y](a) infixie bar[z](b,c)";
+
+bar[a, a](x, x) naryie baz[a](x, y) naryie prefixie foo[a, b](x, y);
+(bar[a, a](x, x)) naryie (baz[a](x, y)) naryie (prefixie (foo[a, b](x, y)));
+
+string ((bar[a, a](x, x)) naryie (baz[a](x, y)) naryie (prefixie (foo[a, b](x, y))));
+"bar[a,a](x,x) naryie baz[a](x,y) naryie prefixie foo[a,b](x,y)";
+
+matchfixie foo[1](z) matchfixie;
+matchfixie (foo[1](z)) matchfixie;
+
+string (matchfixie (foo[1](z)) matchfixie);
+"matchfixiefoo[1](z)matchfixie";
+
+/* ... and with built-in operators */
+
+foo[x, y](a)^bar[z](b, c);
+(foo[x, y](a))^(bar[z](b, c));
+
+string ((foo[x, y](a))^(bar[z](b, c)));
+"foo[x,y](a)^bar[z](b,c)";
+
+bar[a, a](x, x) and baz[a](x, y) and not foo[a, b](x, y);
+(bar[a, a](x, x)) and (baz[a](x, y)) and (not (foo[a, b](x, y)));
+
+string ((bar[a, a](x, x)) and (baz[a](x, y)) and (not (foo[a, b](x, y))));
+"bar[a,a](x,x) and baz[a](x,y) and not foo[a,b](x,y)";
+
+[ foo[1](z) ];
+[ (foo[1](z)) ];
+
+string ([ (foo[1](z)) ]);
+"[foo[1](z)]";

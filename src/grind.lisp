@@ -615,3 +615,6 @@
 		`($while ,(cadr (seventh x))))
 	       (t `($unless ,(seventh x))))
 	 `($do ,(eighth x))))
+
+(defprop mfunction 190. lbp)
+(defprop mfunction 190. rbp)
