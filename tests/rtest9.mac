@@ -233,4 +233,14 @@ ratsimp ((a*b - 0.5*a*(b - c))/a), keepfloat;
 /* SF bug #2982: "Display of taylor series in wrong order" */
 
 string (taylor(1/(1-x), x, 0, 10));
-+"1+x+x^2+x^3+x^4+x^5+x^6+x^7+x^8+x^9+x^10";
+"1+x+x^2+x^3+x^4+x^5+x^6+x^7+x^8+x^9+x^10";
+
+args (taylor(1/(1-x), x, 0, 10));
+[1, x, x^2, x^3, x^4, x^5, x^6, x^7, x^8, x^9, x^10];
+
+string (taylor(sin(x),x,0,4));
+"x-x^3/6";
+
+args (taylor(sin(x),x,0,4));
+[x, -x^3/6];
+
