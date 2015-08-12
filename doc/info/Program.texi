@@ -854,7 +854,7 @@ is displayed in the above two instances.
 Default value: @code{true}
 
 When @code{mapprint} is @code{true}, various information messages from
-@code{map}, @code{mapl}, and @code{fullmap} are produced in certain
+@code{map}, @code{maplist}, and @code{fullmap} are produced in certain
 situations.  These include situations where @code{map} would use
 @code{apply}, or @code{map} is truncating on the shortest list.
 
