@@ -229,3 +229,8 @@ false;
 /* [ 2604950 ] rats with keepfloat */
 ratsimp ((a*b - 0.5*a*(b - c))/a), keepfloat;
 0.5*c + 0.5*b;
+
+/* SF bug #2982: "Display of taylor series in wrong order" */
+
+string (taylor(1/(1-x), x, 0, 10));
++"1+x+x^2+x^3+x^4+x^5+x^6+x^7+x^8+x^9+x^10";
