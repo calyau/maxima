@@ -963,7 +963,8 @@
   "The first argument is some location holding a number. This number is
   incremented by the second argument, DELTA, which defaults to 1."
   (multiple-value-bind (dummies vals newval setter getter)
-      (get-setf-expansion place env)
+      ;; GET-SETF-EXPANSION is present in GCL 2.6.12, but it is not FBOUNDP; ??
+      (#-gcl get-setf-expansion #+gcl get-setf-method place env)
     (let ((d (gensym)))
       `(let* (,@(mapcar #'list dummies vals)
               (,d ,delta)
@@ -974,7 +975,7 @@
   "The first argument is some location holding a number. This number is
   decremented by the second argument, DELTA, which defaults to 1."
   (multiple-value-bind (dummies vals newval setter getter)
-      (get-setf-expansion place env)
+      (#-gcl get-setf-expansion #+gcl get-setf-method place env)
     (let ((d (gensym)))
       `(let* (,@(mapcar #'list dummies vals)
               (,d ,delta)
