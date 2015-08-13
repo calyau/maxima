@@ -245,8 +245,9 @@ ratsimp ([M1 . M, M . M1]);
 is (invert (M) = M^^-1);
 true;
 
-(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false), [op (M1), ratsimp (args (M1))]);
-["/",[matrix([d,-b],[-c,a]),a*d-b*c]];
+(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false),
+ block ([inflag:true], [op (M1), ratsimp (args (M1))]));
+["*",[1/(a*d-b*c),matrix([d,-b],[-c,a])]];
 
 is (invert (M) = M^^-1), detout=true, doscmxops=false, doallmxops=false;
 true;
@@ -277,7 +278,8 @@ matrix([4.0b-1,2.0b-1],[3.0b-1,-1.0b-1]);
 is (invert (M) = M^^-1);
 true;
 
-(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false), ev ([op (M1), args (M1)], simp=false));
+(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false),
+ ev ([op (M1), args (M1)], simp=false, inflag=true));
 ["*", [-0.1b0, matrix([-4.0b0, -2.0b0], [-3.0b0, 1.0b0])]];
 
 is (invert (M) = M^^-1), detout=true, doscmxops=false, doallmxops=false;
@@ -291,7 +293,7 @@ is (invert (M) = M^^-1), ratmx=true;
 true;
 
 (M1 : ev (invert (M), ratmx=true, detout=true, doscmxops=false, doallmxops=false),
- [o, a] : ev ([op (M1), args (M1)], simp=false),
+ [o, a] : ev ([op (M1), args (M1)], simp=false, inflag=true),
  if ?caar (a [1]) = ?rat and every (ratp (a [2])) and equal (%%, ["*", [-1/10, matrix ([-4, -2], [-3, 1])]]) then true else %%);
 true;
 
@@ -309,7 +311,8 @@ matrix([4.0e-1,2.0e-1],[3.0e-1,-1.0e-1]);
 is (invert (M) = M^^-1);
 true;
 
-(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false), ev ([op (M1), args (M1)], simp=false));
+(M1 : ev (invert (M), detout=true, doscmxops=false, doallmxops=false),
+ ev ([op (M1), args (M1)], simp=false, inflag=true));
 ["*", [-0.1e0, matrix([-4.0e0, -2.0e0], [-3.0e0, 1.0e0])]];
 
 is (invert (M) = M^^-1), detout=true, doscmxops=false, doallmxops=false;
@@ -323,7 +326,7 @@ is (invert (M) = M^^-1), ratmx=true;
 true;
 
 (M1 : ev (invert (M), ratmx=true, detout=true, doscmxops=false, doallmxops=false),
- [o, a] : ev ([op (M1), args (M1)], simp=false),
+ [o, a] : ev ([op (M1), args (M1)], simp=false, inflag=true),
  if ?caar (a [1]) = ?rat and every (ratp (a [2])) and equal (%%, ["*", [-1/10, matrix ([-4, -2], [-3, 1])]]) then true else %%);
 true;
 
@@ -353,14 +356,17 @@ matrix ([1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]) $
 M : matrix ([17, 29], [1, 42]);
 matrix ([17, 29], [1, 42]);
 
-(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='adjoint), [op(%%), args(%%)]);
-["/", [matrix([42,-29],[-1,17]), 685]] $
+(M1 : ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='adjoint),
+ block ([inflag:true], [op(M1), args(M1)]));
+["*",[1/685,matrix([42,-29],[-1,17])]] $
  
-(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='lu), [op(%%), args(%%)]);
-["/", [matrix([42,-29],[-1,17]), 685]] $
+(M1 : ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='lu),
+ block ([inflag:true], [op(M1), args(M1)]));
+["*",[1/685,matrix([42,-29],[-1,17])]] $
  
-(ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='gausselim), [op(%%), args(%%)]);
-["/", [matrix([42,-29],[-1,17]), 685]] $
+(M1 : ev (M^^-1, detout=true, doscmxops=false, doallmxops=false, invert_method='gausselim),
+ block ([inflag:true], [op(M1), args(M1)]));
+["*",[1/685,matrix([42,-29],[-1,17])]] $
  
  
 /* a matrix of modest size, the subject of bug report #2362 */

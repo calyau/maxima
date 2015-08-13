@@ -419,6 +419,9 @@ todd_coxeter (symet (5));
 
 /* reported to mailing list 2015-01-05: "order of operands is changed due to source information" */
 
-block([simp:false], ?cons(?list('?mplus,'?foo, '?bar),?cdr(1+5+3)), string(%%));
-"1+5+3";
+block([simp:false], ?cons(?list('?mplus),?cdr([1,5,3])), string(%%));
+"3+5+1";
+
+block([simp:false], ?cons(?list('?mplus,'?foo, '?bar),?cdr([1,5,3])), string(%%));
+"3+5+1";
 
