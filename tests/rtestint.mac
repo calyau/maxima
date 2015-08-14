@@ -1530,6 +1530,13 @@ errcatch (integrate(1/x^2, x, 0, inf));
 error;
 ["defint: integral is divergent."];
 
+/* #2987 Some divergent integrals give error, some don't */
+errcatch (integrate(exp(x)/x, x, 0, 1));
+[];
+
+error;
+["defint: integral is divergent."];
+
 integrate(1/x^2, x, 1, inf);
 1;
 
