@@ -321,7 +321,7 @@ For binary output see @ref{Functions and Variables for binary input and output, 
 @c -----------------------------------------------------------------------------
 @deffn {Function} openr (@var{file}) 
 Returns a character input stream to @var{file}.
-If @var{file} does not exist, it will be created.
+@code{openr} assumes that @var{file} already exists.
 
 For binary input see @ref{Functions and Variables for binary input and output, openr_binary} .
 
