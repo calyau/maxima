@@ -2,9 +2,7 @@
 @c File     : stringproc.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : stringproc.texi revision 31.05.2011
-@c Date     : 08.11.2010
-@c Revision : 18.08.2011
+@c Original : stringproc.texi
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -144,10 +142,22 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 
 @c -----------------------------------------------------------------------------
 @anchor{flength}
-@deffn {Function} flength (@var{stream})
+@deffn {Funktion} flength (@var{stream})
 
-Returns the number of elements in @var{stream} 
-where @var{stream} has to be a stream from or to a file.
+@var{stream} muss ein ge@"offneter Datenstrom in eine oder aus einer Datei sein. 
+@code{flength} gibt dann die Anzahl der Bytes zur@"uck, die sich momentan in 
+dieser Datei befinden.
+
+Beipiel: Siehe @ref{writebyte} .
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Funktion} flush (@var{stream}) 
+
+Leert den Inhalt des Dateiausgabestroms @var{stream} in die Datei.
+
+Beipiel: Siehe @ref{writebyte} .
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -243,27 +253,38 @@ not work as expected.
 
 @c -----------------------------------------------------------------------------
 @anchor{opena}
-@deffn {Function} opena (@var{file})
+@deffn {Funktion} opena (@var{file})
 
-Returns an output stream to @var{file}.
-If an existing file is opened, @code{opena} appends elements at the end of file.
+Gibt einen Dateiausgabestrom f@"ur Buchstaben zur@"uck. 
+Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt. 
+Wird eine bereits vorhandene Datei ge@"offnet, werden alle Ausgaben in die 
+Datei am Ende hinzu gef@"ugt.
+
+@ref{Functions and Variables for binary input and output, opena_binary} 
+ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{openr}
-@deffn {Function} openr (@var{file})
+@deffn {Funktion} openr (@var{file})
 
-Returns an input stream to @var{file}.  If @var{file} does not exist, it will 
-be created.
+Gibt einen Dateieingabestrom f@"ur Buchstaben aus einer Textdatei zur@"uck. 
+Voraussetzung ist, dass die Datei @var{file} bereits existiert. 
+
+@ref{Functions and Variables for binary input and output, openr_binary} 
+ist die entsprechende Funktion f@"ur die Eingabe aus einer Bin@"ardatei.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{openw}
-@deffn {Function} openw (@var{file})
+@deffn {Funktion} openw (@var{file})
 
-Returns an output stream to @var{file}.
-If @var{file} does not exist, it will be created.
-If an existing file is opened, @code{openw} destructively modifies @var{file}.
+Gibt einen Dateiausgabestrom f@"ur Buchstaben zur@"uck. 
+Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt. 
+Wird eine bereits vorhandene Datei ge@"offnet, wird sie destruktiv ver@"andert. 
+
+@ref{Functions and Variables for binary input and output, openw_binary} 
+ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -394,6 +415,34 @@ eingef@"uhrt.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{readbyte}
+@deffn {Funktion} readbyte (@var{stream}) 
+
+Entfernt das erste Byte aus dem bin@"aren Eingabestrom @var{stream} und gibt es 
+zur@"uck. 
+Ist das Ende der Datei (EOF) erreicht, wird @code{false} zur@"uck gegeben.
+
+Beispiel: Die ersten 16 Byte aus einer mit AES in OpenSSL verschl@"usselten 
+Datei werden gelesen und ausgewertet. 
+
+@example
+(%i1) ibase: obase: 16.$
+
+(%i2) in: openr_binary("msg.bin");
+(%o2)                       #<input stream msg.bin>
+(%i3) (L:[],  thru 16. do push(readbyte(in), L),  L:reverse(L));
+(%o3) [53, 61, 6C, 74, 65, 64, 5F, 5F, 88, 56, 0DE, 8A, 74, 0FD, 0AD, 0F0]
+(%i4) close(in);
+(%o4)                                true
+(%i5) map(ascii, rest(L,-8));
+(%o5)                      [S, a, l, t, e, d, _, _]
+(%i6) salt: octets_to_number(rest(L,8));
+(%o6)                          8856de8a74fdadf0
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{readchar}
 @deffn {Funktion} readchar (@var{stream})
 
@@ -415,15 +464,16 @@ is encountered.
 
 @c -----------------------------------------------------------------------------
 @anchor{sprint}
-@deffn {Function} sprint (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} sprint (@var{expr_1}, @dots{}, @var{expr_n})
 
-Evaluates and displays its arguments one after the other `on a line' starting 
-at the leftmost position.  The numbers are printed with the '-' right next to 
-the number, and it disregards line length.  @code{newline()}, which will be 
-autoloaded from @code{stringproc.lisp} might be useful, if you whish to place 
-intermediate line breaking.
+Wertet ihre Argumente der Reihe nach von links nach rechts aus und gibt sie dann 
+auf einer Linie aus. Zeilenbegrenzungen werden dabei au@ss{}er Acht gelassen. 
+An die ausgegebenen Ausdr@"ucke wird jeweils rechts ein Leerzeichen angef@"ugt. 
 
-Examples:
+Die Funktion @code{newline()} kann verwendet werden, um zwischenliegende 
+Zeilenumbr@"uche zu erzeugen.
+
+Beispiel:
 
 @example
 (%i1) for n:0 thru 19 do sprint( fib(n) )$
@@ -434,6 +484,49 @@ Examples:
 55 89 144 233 377 610 987 1597 2584 4181 
 6765 10946 17711 
 @end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{writebyte}
+@deffn {Funktion} writebyte (@var{byte}, @var{stream}) 
+
+Schreibt das Byte @var{byte} in den bin@"aren Ausgabestrom @var{stream}. 
+@code{writebyte} gibt @code{byte} zur@"uck.
+
+Beispiel: Es werden Bytes in eine Bin@"ardatei geschrieben. 
+In diesem Beispiel entsprechen s@"amtliche Bytes druckbaren Zeichen, 
+die mit Hilfe von @code{printfile} ausgegeben werden k@"onnen. 
+Die Bytes verbleiben so lange im Datenstrom, bis die Funktionen @code{flush} 
+oder @code{close} aufgerufen werden.
+
+@example
+(%i1) ibase: obase: 16.$
+
+(%i2) bytes: map(cint, charlist("GNU/Linux"));
+(%o2)                [47, 4E, 55, 2F, 4C, 69, 6E, 75, 78]
+(%i3) out: openw_binary("test.bin");
+(%o3)                      #<output stream test.bin>
+(%i4) for i thru 3 do writebyte(bytes[i], out);
+(%o4)                                done
+(%i5) printfile("test.bin")$
+
+(%i6) flength(out);
+(%o6)                                  0
+(%i7) flush(out);
+(%o7)                                true
+(%i8) flength(out);
+(%o8)                                  3
+(%i9) printfile("test.bin")$
+GNU
+(%i0A) for b in rest(bytes,3) do writebyte(b, out);
+(%o0A)                               done
+(%i0B) close(out);
+(%o0B)                               true
+(%i0C) printfile("test.bin")$
+GNU/Linux
+@end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
