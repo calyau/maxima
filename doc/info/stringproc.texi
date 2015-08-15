@@ -164,7 +164,7 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @c -----------------------------------------------------------------------------
 @deffn {Function} flength (@var{stream})
 @var{stream} has to be an open stream from or to a file. 
-@code{flength} then returns the number of bytes which a currently present in this file.
+@code{flength} then returns the number of bytes which are currently present in this file.
 
 Example: See @ref{writebyte} .
 
@@ -308,7 +308,7 @@ Note that there are some cases, where @code{newline()} does not work as expected
 @c -----------------------------------------------------------------------------
 @deffn {Function} opena (@var{file}) 
 Returns a character output stream to @var{file}.
-If an existing file is opened, @code{opena} appends elements at the end of file.
+If an existing file is opened, @code{opena} appends elements at the end of @var{file}.
 
 For binary output see @ref{Functions and Variables for binary input and output, opena_binary} .
 
@@ -543,7 +543,7 @@ if the end of the file is encountered.
 @deffn {Function} sprint (@var{expr_1}, @dots{}, @var{expr_n})
 
 Evaluates and displays its arguments one after the other `on a line' starting at
-the leftmost position.  The numbers are printed with a space character right next 
+the leftmost position.  The expressions are printed with a space character right next 
 to the number, and it disregards line length.  
 @code{newline()} might be useful, if you whish to place intermediate line breaking.
 
@@ -573,7 +573,7 @@ Example:
 @anchor{writebyte}
 @deffn {Function} writebyte (@var{byte}, @var{stream})
 
-Writes the byte @var{byte} to @var{stream} which must be a binary output stream. 
+Writes @var{byte} to @var{stream} which must be a binary output stream. 
 @code{writebyte} returns @code{byte}.
 
 Example: Write some bytes to a binary file output stream. 
