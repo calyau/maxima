@@ -175,7 +175,7 @@ Example: See @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} flush (@var{stream})
+@deffn {Function} flush_output (@var{stream})
 Flushes @var{stream} where @var{stream} has to be an output stream to a file. 
 
 Example: See @ref{writebyte} .
@@ -579,7 +579,7 @@ Writes @var{byte} to @var{stream} which must be a binary output stream.
 Example: Write some bytes to a binary file output stream. 
 In this example all bytes correspond to printable characters and are printed 
 by @code{printfile}. 
-The bytes remain in the stream until @code{flush} or @code{close} have been called.
+The bytes remain in the stream until @code{flush_output} or @code{close} have been called.
 
 @example
 (%i1) ibase: obase: 16.$
@@ -594,7 +594,7 @@ The bytes remain in the stream until @code{flush} or @code{close} have been call
 
 (%i6) flength(out);
 (%o6)                                  0
-(%i7) flush(out);
+(%i7) flush_output(out);
 (%o7)                                true
 (%i8) flength(out);
 (%o8)                                  3

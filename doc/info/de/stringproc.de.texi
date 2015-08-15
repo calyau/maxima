@@ -152,7 +152,7 @@ Beispiel: Siehe @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Funktion} flush (@var{stream}) 
+@deffn {Funktion} flush_output (@var{stream}) 
 
 Leert den Inhalt des Dateiausgabestroms @var{stream} in die Datei.
 
@@ -497,7 +497,7 @@ Schreibt das Byte @var{byte} in den bin@"aren Ausgabestrom @var{stream}.
 Beispiel: Es werden Bytes in eine Bin@"ardatei geschrieben. 
 In diesem Beispiel entsprechen s@"amtliche Bytes druckbaren Zeichen, 
 die mit Hilfe von @code{printfile} ausgegeben werden k@"onnen. 
-Die Bytes verbleiben so lange im Datenstrom, bis die Funktionen @code{flush} 
+Die Bytes verbleiben so lange im Datenstrom, bis die Funktionen @code{flush_output} 
 oder @code{close} aufgerufen werden.
 
 @example
@@ -513,7 +513,7 @@ oder @code{close} aufgerufen werden.
 
 (%i6) flength(out);
 (%o6)                                  0
-(%i7) flush(out);
+(%i7) flush_output(out);
 (%o7)                                true
 (%i8) flength(out);
 (%o8)                                  3

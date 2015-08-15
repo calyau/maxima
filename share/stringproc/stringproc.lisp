@@ -77,10 +77,10 @@
   (close stream))
 
 
-(defun $flush (stream) 
+(defun $flush_output (stream) 
   (unless (streamp stream)
-    (merror (intl:gettext "flush: argument must be a stream.")) )
-  (not (finish-output stream)) ) ;; so $flush and $close both return t
+    (merror (intl:gettext "flush_output: argument must be a stream.")) )
+  (not (finish-output stream)) ) ;; so $flush_output and $close both return t
 
 
 (defun $flength (stream) 

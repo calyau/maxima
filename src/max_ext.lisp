@@ -101,7 +101,7 @@
 
 (dolist (f       
      '($close
-       $flush
+       $flush_output
        $flength
        $fposition
        $freshline
