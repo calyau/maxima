@@ -148,7 +148,7 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @code{flength} gibt dann die Anzahl der Bytes zur@"uck, die sich momentan in 
 dieser Datei befinden.
 
-Beipiel: Siehe @ref{writebyte} .
+Beispiel: Siehe @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -156,7 +156,7 @@ Beipiel: Siehe @ref{writebyte} .
 
 Leert den Inhalt des Dateiausgabestroms @var{stream} in die Datei.
 
-Beipiel: Siehe @ref{writebyte} .
+Beispiel: Siehe @ref{writebyte} .
 
 @end deffn
 
