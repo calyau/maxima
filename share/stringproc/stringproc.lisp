@@ -3,7 +3,7 @@
 ;;;;
 ;;;;  Maxima string processing
 ;;;;
-;;;;  Copyright     : 2005-2014 Volker van Nek
+;;;;  Copyright     : 2005-2015 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
 ;;;;  Test file     : rteststringproc.mac
@@ -19,6 +19,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  1. I/O
+
+
+;; $openw_binary, $opena_binary, $openr_binary 
+;;    are placed in share/numercalio/numercalio.lisp.
 
 
 (defun $openw (file)
@@ -73,6 +77,12 @@
   (close stream))
 
 
+(defun $flush (stream) 
+  (unless (streamp stream)
+    (merror (intl:gettext "flush: argument must be a stream.")) )
+  (not (finish-output stream)) ) ;; so $flush and $close both return t
+
+
 (defun $flength (stream) 
   (if (not (streamp stream))
     (merror "flength: argument must be a stream."))
@@ -103,6 +113,20 @@
     (merror "readchar: argument must be a stream.") )
   (let ((lc (read-char stream nil nil)))
     (when lc (m-char lc)) ))
+
+
+(defun $readbyte (stream) 
+  (unless (and (streamp stream)
+               (equal (stream-element-type stream) '(unsigned-byte 8)) )
+    (merror (intl:gettext "readbyte: argument must be a binary stream.")) )
+  (read-byte stream nil nil) )
+
+
+(defun $writebyte (i stream) 
+  (unless (and (streamp stream)
+               (equal (stream-element-type stream) '(unsigned-byte 8)) )
+    (merror (intl:gettext "writebyte: argument must be a binary stream.")) )
+  (write-byte i stream) )
 
 
 (defun $freshline (&optional (stream)) 

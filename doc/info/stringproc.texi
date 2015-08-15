@@ -6,6 +6,8 @@
 * Octets and Utilities for Cryptography::
 @end menu
 
+@c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Introduction to String Processing, Input and Output, stringproc, stringproc
 @section Introduction to String Processing
 
@@ -113,6 +115,8 @@ now offers a lot of functions for manipulating strings. Tokenizing can be done b
 @closecatbox
 
 
+@c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Input and Output, Characters, Introduction to String Processing, stringproc
 @section Input and Output
 
@@ -147,6 +151,7 @@ and an integer: ~20t~d~%"$
 (%i7) close(s)$
 @end example
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} close (@var{stream}) 
 Closes @var{stream} and returns @code{true} if @var{stream} had been open. 
 
@@ -156,9 +161,12 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} flength (@var{stream})
-Returns the number of elements in @var{stream}
-where @var{stream} has to be a stream from or to a file. 
+@var{stream} has to be an open stream from or to a file. 
+@code{flength} then returns the number of bytes which a currently present in this file.
+
+Example: See @ref{writebyte} .
 
 @opencatbox
 @category{File input} @category{File output} @category{Package stringproc}
@@ -166,6 +174,19 @@ where @var{stream} has to be a stream from or to a file.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} flush (@var{stream})
+Flushes @var{stream} where @var{stream} has to be an output stream to a file. 
+
+Example: See @ref{writebyte} .
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} fposition @
 @fname{fposition} (@var{stream}) @
 @fname{fposition} (@var{stream}, @var{pos})
@@ -182,6 +203,7 @@ is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} freshline @
 @fname{freshline} ()  @
 @fname{freshline} (@var{stream}) 
@@ -283,9 +305,12 @@ Note that there are some cases, where @code{newline()} does not work as expected
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} opena (@var{file}) 
-Returns an output stream to @var{file}.
+Returns a character output stream to @var{file}.
 If an existing file is opened, @code{opena} appends elements at the end of file.
+
+For binary output see @ref{opena_binary} .
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -293,9 +318,12 @@ If an existing file is opened, @code{opena} appends elements at the end of file.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} openr (@var{file}) 
-Returns an input stream to @var{file}.
+Returns a character input stream to @var{file}.
 If @var{file} does not exist, it will be created.
+
+For binary input see @ref{openr_binary} .
 
 @opencatbox
 @category{File input} @category{Package stringproc}
@@ -303,10 +331,13 @@ If @var{file} does not exist, it will be created.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} openw (@var{file}) 
-Returns an output stream to @var{file}.
+Returns a character output stream to @var{file}.
 If @var{file} does not exist, it will be created.
 If an existing file is opened, @code{openw} destructively modifies @var{file}.
+
+For binary output see @ref{openw_binary} .
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -314,6 +345,7 @@ If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} printf @
 @fname{printf} (@var{dest}, @var{string}) @
 @fname{printf} (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
@@ -450,6 +482,36 @@ The directive ~h has been introduced to handle bigfloats.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{readbyte}
+@deffn {Function} readbyte (@var{stream})
+
+Removes and returns the first byte in @var{stream} which must be a binary input stream. 
+If the end of file is encountered @code{readbyte} returns @code{false}.
+
+Example: Read the first 16 bytes from a file encrypted with AES in OpenSSL. 
+
+@example
+(%i1) ibase: obase: 16.$
+
+(%i2) in: openr_binary("msg.bin");
+(%o2)                       #<input stream msg.bin>
+(%i3) (L:[],  thru 16. do push(readbyte(in), L),  L:reverse(L));
+(%o3) [53, 61, 6C, 74, 65, 64, 5F, 5F, 88, 56, 0DE, 8A, 74, 0FD, 0AD, 0F0]
+(%i4) close(in);
+(%o4)                                true
+(%i5) map(ascii, rest(L,-8));
+(%o5)                      [S, a, l, t, e, d, _, _]
+(%i6) salt: octets_to_number(rest(L,8));
+(%o6)                          8856de8a74fdadf0
+@end example
+
+@opencatbox
+@category{File input} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{readchar}
 @deffn {Function} readchar (@var{stream})
 
@@ -481,10 +543,9 @@ if the end of the file is encountered.
 @deffn {Function} sprint (@var{expr_1}, @dots{}, @var{expr_n})
 
 Evaluates and displays its arguments one after the other `on a line' starting at
-the leftmost position.  The numbers are printed with the '-' right next to the
-number, and it disregards line length.  @code{newline()}, which will be
-autoloaded from @code{stringproc.lisp} might be useful, if you whish to place
-intermediate line breaking.
+the leftmost position.  The numbers are printed with a space character right next 
+to the number, and it disregards line length.  
+@code{newline()} might be useful, if you whish to place intermediate line breaking.
 
 Example:
 
@@ -508,6 +569,53 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{writebyte}
+@deffn {Function} writebyte (@var{byte}, @var{stream})
+
+Writes the byte @var{byte} to @var{stream} which must be a binary output stream. 
+@code{writebyte} returns @code{byte}.
+
+Example: Write some bytes to a binary file output stream. 
+In this example all bytes correspond to printable characters and are printed 
+by @code{printfile}. 
+The bytes remain in the stream until @code{flush} or @code{close} have been called.
+
+@example
+(%i1) ibase: obase: 16.$
+
+(%i2) bytes: map(cint, charlist("GNU/Linux"));
+(%o2)                [47, 4E, 55, 2F, 4C, 69, 6E, 75, 78]
+(%i3) out: openw_binary("test.bin");
+(%o3)                      #<output stream test.bin>
+(%i4) for i thru 3 do writebyte(bytes[i], out);
+(%o4)                                done
+(%i5) printfile("test.bin")$
+
+(%i6) flength(out);
+(%o6)                                  0
+(%i7) flush(out);
+(%o7)                                true
+(%i8) flength(out);
+(%o8)                                  3
+(%i9) printfile("test.bin")$
+GNU
+(%i0A) for b in rest(bytes,3) do writebyte(b, out);
+(%o0A)                               done
+(%i0B) close(out);
+(%o0B)                               true
+(%i0C) printfile("test.bin")$
+GNU/Linux
+@end example
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Characters, String Processing, Input and Output, stringproc
 @section Characters
 
@@ -722,6 +830,7 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
 @node String Processing, Octets and Utilities for Cryptography, Characters, stringproc
 @section String Processing

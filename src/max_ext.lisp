@@ -101,6 +101,7 @@
 
 (dolist (f       
      '($close
+       $flush
        $flength
        $fposition
        $freshline
@@ -113,6 +114,8 @@
        $get_output_stream_string
        $printf
        $sprint
+       $writebyte
+       $readbyte
        $readchar
        $readline
        $alphacharp
