@@ -310,7 +310,7 @@ Note that there are some cases, where @code{newline()} does not work as expected
 Returns a character output stream to @var{file}.
 If an existing file is opened, @code{opena} appends elements at the end of @var{file}.
 
-For binary output see @ref{Functions and Variables for binary input and output, opena_binary} .
+For binary output see @ref{Functions and Variables for binary input and output, , opena_binary} .
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -323,7 +323,7 @@ For binary output see @ref{Functions and Variables for binary input and output, 
 Returns a character input stream to @var{file}.
 @code{openr} assumes that @var{file} already exists.
 
-For binary input see @ref{Functions and Variables for binary input and output, openr_binary} .
+For binary input see @ref{Functions and Variables for binary input and output, , openr_binary} .
 
 @opencatbox
 @category{File input} @category{Package stringproc}
@@ -337,7 +337,7 @@ Returns a character output stream to @var{file}.
 If @var{file} does not exist, it will be created.
 If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
-For binary output see @ref{Functions and Variables for binary input and output, openw_binary} .
+For binary output see @ref{Functions and Variables for binary input and output, , openw_binary} .
 
 @opencatbox
 @category{File output} @category{Package stringproc}
