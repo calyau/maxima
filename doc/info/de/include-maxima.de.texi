@@ -5,7 +5,6 @@
 @c Original    : include-maxima.texi.in 25.09.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 06.12.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -55,7 +54,7 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Maxima Manual}
-@center Version 5.29
+@c @center Version 5.29
 @sp 2
 @center Deutsche @"Ubersetzung
 @page
@@ -72,19 +71,21 @@ von DOE Macsyma gepflegt.  Im Jahr 1998 erhielt Schelter vom Department of
 Energy die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz
 zu ver@"offentlichen.  Im Jahr 2000 initiierte Schelter das Maxima Projekt bei
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
-@sp 2
+@c @sp 2
 
 Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
 die deutsche Sprache.  Das Manual ist noch nicht vollst@"andig @"ubersetzt.
 Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
 Sprache eingef@"ugt.  Dieses Manual ist nicht nur eine @"Ubersetzung, sondern
-auch der Versuch, die Inhalte neu zu organisieren und zu @"uberarbeiten.  Ziel
-ist, ein besser lesbares und @"ubersichtlicheres Manual zu erhalten.  Diese 
-Arbeit soll auch in das englische Original einflie@ss{}en.  Die jeweils aktuelle
-Version des Manuals ist unter 
-@url{http://crategus.users.sourceforge.net/maxima.html} verf@"ugbar.
+auch der Versuch, die Inhalte neu zu organisieren und zu @"uberarbeiten.  
+@c Ziel
+@c ist, ein besser lesbares und @"ubersichtlicheres Manual zu erhalten.  Diese 
+@c Arbeit soll auch in das englische Original einflie@ss{}en.  Die jeweils aktuelle
+@c Version des Manuals ist unter
+@c @url{http://crategus.users.sourceforge.net/maxima.html} verf@"ugbar.
 
-Dr. Dieter Kaiser, 14.02.2011
+Dr. Dieter Kaiser
+@c , 14.02.2011
 @end titlepage
 
 @summarycontents
@@ -105,19 +106,15 @@ von DOE Macsyma gepflegt.  Im Jahr 1998 erhielt Schelter vom Department of
 Energy die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz
 zu ver@"offentlichen.  Im Jahr 2000 initiierte Schelter das Maxima Projekt bei
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
-@sp 2
+@c @sp 2
 
 Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
 die deutsche Sprache.  Das Manual ist noch nicht vollst@"andig @"ubersetzt.
 Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
 Sprache eingef@"ugt.  Dieses Manual ist nicht nur eine @"Ubersetzung, sondern
-auch der Versuch, die Inhalte neu zu organisieren und zu @"uberarbeiten.  Ziel
-ist, ein besser lesbares und @"ubersichtlicheres Manual zu erhalten.  Diese 
-Arbeit soll auch in das englische Original einflie@ss{}en.  Die jeweils aktuelle
-Version des Manuals ist unter
-@url{http://crategus.users.sourceforge.net/maxima.html} verf@"ugbar.
+auch der Versuch, die Inhalte neu zu organisieren und zu @"uberarbeiten.  
 
-Dr. Dieter Kaiser, 14.02.2011
+Dr. Dieter Kaiser
 @sp 2
 @end ifnottex
 
