@@ -214,7 +214,7 @@ Zus@"atzliche Pakete (Englisch)
 * solve_rec::                   Linear recurrences.
 * stats::                       Statistical inference package.
 * stirling::                    Stirling formula.
-* stringproc::                  String processing.
+* stringproc::                  Verarbeitung von Zeichenketten.
 * symmetries::                  
 * to_poly_solve::               to_poly_solve package.
 * unit::                        Units and dimensions package.
@@ -577,10 +577,11 @@ stirling
 * Functions and Variables for stirling::
 
 stringproc
-* Introduction to string processing::
-* Functions and Variables for input and output::
-* Functions and Variables for characters::
-* Functions and Variables for strings::
+* Einf@"uhrung in die Verarbeitung von Zeichenketten::
+* Ein- und Ausgabe::
+* Buchstaben::
+* Verarbeitung von Zeichenketten::
+* Oktette und Werkzeuge f@"ur die Kryptographie::
 
 symmetries
 * Introduction to Symmetries::

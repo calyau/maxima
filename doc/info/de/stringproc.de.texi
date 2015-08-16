@@ -8,15 +8,16 @@
 @c -----------------------------------------------------------------------------
 
 @menu
-* Introduction to string processing::
-* Functions and Variables for input and output::
-* Functions and Variables for characters::
-* Functions and Variables for strings::
+* Einf@"uhrung in die Verarbeitung von Zeichenketten::
+* Ein- und Ausgabe::
+* Buchstaben::
+* Verarbeitung von Zeichenketten::
+* Oktette und Werkzeuge f@"ur die Kryptographie::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to string processing, Functions and Variables for input and output, stringproc, stringproc
-@section Introduction to string processing
+@node Einf@"uhrung in die Verarbeitung von Zeichenketten, Ein- und Ausgabe, stringproc, stringproc
+@section Einf@"uhrung in die Verarbeitung von Zeichenketten
 @c -----------------------------------------------------------------------------
 
 @code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
@@ -108,8 +109,8 @@ be done by @mref{split} or @mrefdot{tokens}
 @code{readline} returns @code{false} when the end of file occurs.
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for input and output, Functions and Variables for characters, Introduction to string processing, stringproc
-@section Functions and Variables for input and output
+@node Ein- und Ausgabe, Buchstaben, Einf@"uhrung in die Verarbeitung von Zeichenketten, stringproc
+@section Ein- und Ausgabe
 @c -----------------------------------------------------------------------------
 
 Example: 
@@ -260,7 +261,7 @@ Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt.
 Wird eine bereits vorhandene Datei ge@"offnet, werden alle Ausgaben in die 
 Datei am Ende hinzu gef@"ugt.
 
-@ref{Functions and Variables for binary input and output, opena_binary} 
+@ref{Functions and Variables for binary input and output, , opena_binary} 
 ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 @end deffn
 
@@ -271,7 +272,7 @@ ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 Gibt einen Dateieingabestrom f@"ur Buchstaben aus einer Textdatei zur@"uck. 
 Voraussetzung ist, dass die Datei @var{file} bereits existiert. 
 
-@ref{Functions and Variables for binary input and output, openr_binary} 
+@ref{Functions and Variables for binary input and output, , openr_binary} 
 ist die entsprechende Funktion f@"ur die Eingabe aus einer Bin@"ardatei.
 @end deffn
 
@@ -283,7 +284,7 @@ Gibt einen Dateiausgabestrom f@"ur Buchstaben zur@"uck.
 Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt. 
 Wird eine bereits vorhandene Datei ge@"offnet, wird sie destruktiv ver@"andert. 
 
-@ref{Functions and Variables for binary input and output, openw_binary} 
+@ref{Functions and Variables for binary input and output, , openw_binary} 
 ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 @end deffn
 
@@ -530,8 +531,8 @@ GNU/Linux
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for characters, Functions and Variables for strings, Functions and Variables for input and output, stringproc
-@section Functions and Variables for characters
+@node Buchstaben, Verarbeitung von Zeichenketten, Ein- und Ausgabe, stringproc
+@section Buchstaben
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -704,42 +705,9 @@ Returns @code{true} if @var{char} is an uppercase character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
-@section Functions and Variables for strings
+@node Verarbeitung von Zeichenketten, Oktette und Werkzeuge f@"ur die Kryptographie, Buchstaben, stringproc
+@section Verarbeitung von Zeichenketten
 @c -----------------------------------------------------------------------------
-
-@c -----------------------------------------------------------------------------
-@anchor{base64}
-@deffn {Funktion} base64 (@var{string})
-
-Gibt einen String zur@"uck, der die Base64-Darstellung von @var{string} zeigt. 
-
-Sind in @var{string} Umlaute oder Eszett enthalten, ist das Ergebnis von der 
-verwendeten Plattform abh@"angig. Es wird aber durch eine Anwendung von 
-@ref{base64_decode} in jedem Fall wieder in den urspr@"unglichen String 
-zur@"uck verwandelt.
-
-Beispiel:
-
-@example
-(%i1) base64 : base64("foo bar baz");
-(%o1)                       Zm9vIGJhciBiYXo=
-(%i2) string : base64_decode(base64);
-(%o2)                          foo bar baz
-(%i3) base64_decode(base64("@"a@"o@"u"));
-(%o3)                            @"a@"o@"u
-@end example
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{base64_decode}
-@deffn {Funktion} base64_decode (@var{base64-string})
-
-Dekodiert den Base64-kodierten String @var{base64-string} wieder zur@"uck in 
-den urspr@"unglichen String.
-
-Beispiel: Siehe @ref{base64}.
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charat}
@@ -792,26 +760,6 @@ Examples:
 (%o1)                       42
 (%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
 (%o2)                   baz + 1764
-@end example
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{md5sum}
-@deffn {Funktion} md5sum (@var{string})
-
-Gibt die md5-Pr@"ufsumme von @var{string} als String mit 32 hexadezimalen Zeichen zur@"uck. 
-Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
-setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
-
-Beispiel:
-
-@example
-(%i1) string : md5sum("foo bar baz");
-(%o1)               ab07acbb1e496801937adfa772424bf7
-(%i2) ibase : obase : 16.$
-
-(%i3) integer : parse_string(sconcat(0, string));
-(%o3)              0ab07acbb1e496801937adfa772424bf7
 @end example
 @end deffn
 
@@ -876,27 +824,6 @@ Like @mref{sequal} but ignores case.
 
 @code{sexplode} is an alias for function @mrefdot{charlist}
 @end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{sha1sum}
-@deffn {Funktion} sha1sum (@var{string})
-
-Gibt den SHA1-Fingerprint von @var{string} als String mit 48 hexadezimalen Zeichen zur@"uck. 
-Um den R@"uckgabewert in eine nat@"urliche Zahl zu parsen, 
-setzen Sie bitte die Eingabebasis auf 16 und f@"ugen eine Null vor den String.
-
-Beispiel:
-
-@example
-(%i1) string : sha1sum("foo bar baz");
-(%o1)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
-(%i2) ibase : obase : 16.$
-
-(%i3) integer : parse_string(sconcat(0, string));
-(%o3)              0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
-@end example
-@end deffn
-
 
 @c -----------------------------------------------------------------------------
 @anchor{simplode}
@@ -1250,6 +1177,256 @@ Examples:
 (%o3)                      [5, 10, 24]
 @end example
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@node Oktette und Werkzeuge f@"ur die Kryptographie,  , Verarbeitung von Zeichenketten, stringproc
+@section Oktette und Werkzeuge f@"ur die Kryptographie
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{base64}
+@deffn {Funktion} base64 (@var{arg})
+
+Gibt eine Base64-Darstellung von @var{arg} zur@"uck. 
+Das Argument @var{arg} kann eine Zeichenkette, eine nicht-negative Ganzzahl 
+oder eine Liste von Oktetten sein.
+
+Beispiel:
+
+@example
+(%i1) base64: base64("foo bar baz");
+(%o1)                          Zm9vIGJhciBiYXo=
+(%i2) string: base64_decode(base64);
+(%o2)                            foo bar baz
+(%i3) obase: 16.$
+(%i4) integer: base64_decode(base64, 'number);
+(%o4)                       666f6f206261722062617a
+(%i5) octets: base64_decode(base64, 'list);
+(%o5)            [66, 6F, 6F, 20, 62, 61, 72, 20, 62, 61, 7A]
+(%i6) ibase: 16.$
+(%i7) base64(octets);
+(%o7)                          Zm9vIGJhciBiYXo=
+@end example
+
+Sind in @var{arg} Umlaute oder Eszett enthalten (bzw. Oktette gr@"o@ss{}er 
+als 127), ist das Ergebnis von der verwendeten Plattform abh@"angig. 
+Es wird aber durch eine Anwendung von @ref{base64_decode} in jedem Fall 
+wieder in die urspr@"ungliche Zeichenkette zur@"uck verwandelt.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{base64_decode}
+@deffn {Funktion} base64_decode (@var{base64-string})
+@deffnx {Funktion} base64_decode (@var{base64-string}, @var{return-type}) 
+
+Dekodiert die Base64-kodierte Zeichenkette @var{base64-string} standardm@"a@ss{}ig 
+wieder zur@"uck in die urspr@"ungliche Zeichenkette.
+
+Das optionale Argument @var{return-type} erlaubt es @code{base64_decode}, 
+alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
+zur@"uck zu geben.
+
+Beispiel: Siehe @ref{base64}.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{crc24sum}
+@deffn {Funktion} crc24sum (@var{octets})
+@deffnx {Funktion} crc24sum (@var{octets}, @var{return-type}) 
+
+Gibt standardm@"a@ss{}ig die @code{CRC24}-Pr@"ufsumme einer Oktett-Liste als 
+Zeichenkette zur@"uck.
+
+Das optionale Argument @var{return-type} erlaubt es @code{crc24sum}, 
+alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
+zur@"uck zu geben.
+
+Beispiel:
+@example
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQEcBAEBAgAGBQJVdCTzAAoJEG/1Mgf2DWAqCSYH/AhVFwhu1D89C3/QFcgVvZTM
+wnOYzBUURJAL/cT+IngkLEpp3hEbREcugWp+Tm6aw3R4CdJ7G3FLxExBH/5KnDHi
+rBQu+I7+3ySK2hpryQ6Wx5J9uZSa4YmfsNteR8up0zGkaulJeWkS4pjiRM+auWVe
+vajlKZCIK52P080DG7Q2dpshh4fgTeNwqCuCiBhQ73t8g1IaLdhDN6EzJVjGIzam
+/spqT/sTo6sw8yDOJjvU+Qvn6/mSMjC/YxjhRMaQt9EMrR1AZ4ukBF5uG1S7mXOH
+WdiwkSPZ3gnIBhM9SuC076gLWZUNs6NqTeE3UzMjDAFhH3jYk1T7mysCvdtIkms=
+=WmeC
+-----END PGP SIGNATURE-----
+@end example
+
+@example
+(%i1) ibase : obase : 16.$
+(%i2) sig64 : sconcat(
+ "iQEcBAEBAgAGBQJVdCTzAAoJEG/1Mgf2DWAqCSYH/AhVFwhu1D89C3/QFcgVvZTM",
+ "wnOYzBUURJAL/cT+IngkLEpp3hEbREcugWp+Tm6aw3R4CdJ7G3FLxExBH/5KnDHi",
+ "rBQu+I7+3ySK2hpryQ6Wx5J9uZSa4YmfsNteR8up0zGkaulJeWkS4pjiRM+auWVe",
+ "vajlKZCIK52P080DG7Q2dpshh4fgTeNwqCuCiBhQ73t8g1IaLdhDN6EzJVjGIzam",
+ "/spqT/sTo6sw8yDOJjvU+Qvn6/mSMjC/YxjhRMaQt9EMrR1AZ4ukBF5uG1S7mXOH",
+ "WdiwkSPZ3gnIBhM9SuC076gLWZUNs6NqTeE3UzMjDAFhH3jYk1T7mysCvdtIkms=" )$
+(%i3) octets: base64_decode(sig64, 'list)$
+(%i4) crc24: crc24sum(octets, 'list);
+(%o4)                          [5A, 67, 82]
+(%i5) base64(crc24);
+(%o5)                              WmeC
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{md5sum}
+@deffn {Funktion} md5sum (@var{arg})
+@deffnx {Funktion} md5sum (@var{arg}, @var{return-type}) 
+
+Gibt die @code{md5}-Pr@"ufsumme einer Zeichenkette, einer nicht-negativen Ganzzahl 
+oder einer Liste von Oktetten zur@"uck. Der standardm@"a@ss{}ige R@"uckgabewert 
+ist eine Zeichenkette mit 32 hexadezimalen Zeichen.
+
+Das optionale Argument @var{return-type} erlaubt es @code{md5sum}, 
+alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
+zur@"uck zu geben.
+
+Beispiel:
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) msg: "foo bar baz"$
+(%i3) string: md5sum(msg);
+(%o3)                  ab07acbb1e496801937adfa772424bf7
+(%i4) integer: md5sum(msg, 'number);
+(%o4)                 0ab07acbb1e496801937adfa772424bf7
+(%i5) octets: md5sum(msg, 'list);
+(%o5)        [0AB,7,0AC,0BB,1E,49,68,1,93,7A,0DF,0A7,72,42,4B,0F7]
+(%i6) sdowncase( printf(false, "~@{~2,'0x~^:~@}", octets) );
+(%o6)           ab:07:ac:bb:1e:49:68:01:93:7a:df:a7:72:42:4b:f7
+@end example
+
+Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+gr@"o@ss{}er als 127), ist das Ergebnis von der verwendeten Plattform abh@"angig. 
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{number_to_octets}
+@deffn {Funktion} number_to_octets (@var{number})
+
+Gibt eine Oktett-Darstellung der nicht-negativen Ganzzahl @var{number} in Form 
+einer Liste zur@"uck. 
+
+Beispiel:
+
+@example
+(%i1) ibase : obase : 16.$
+(%i2) octets: [0ca,0fe,0ba,0be]$
+(%i3) number: octets_to_number(octets);
+(%o3)                            0cafebabe
+(%i4) number_to_octets(number);
+(%o4)                      [0CA, 0FE, 0BA, 0BE]
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{octets_to_number}
+@deffn {Funktion} octets_to_number (@var{octets})
+
+F@"ugt die in der Liste @var{octets} enthaltenden Oktette zu einer Zahl zusammen 
+und gibt diese zur@"uck. 
+
+Beispiel: Siehe @ref{number_to_octets}.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{octets_to_oid}
+@deffn {Funktion} octets_to_oid (@var{octets})
+
+Berechnet eine Objektkennung (OID) aus einer Liste von Oktetten.
+
+Beispiel: RSA encryption OID
+
+@example
+(%i1) ibase : obase : 16.$
+(%i2) oid: octets_to_oid([2A,86,48,86,0F7,0D,1,1,1]);
+(%o2)                      1.2.840.113549.1.1.1
+(%i3) oid_to_octets(oid);
+(%o3)               [2A, 86, 48, 86, 0F7, 0D, 1, 1, 1]
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{oid_to_octets}
+@deffn {Funktion} oid_to_octets (@var{oid-string})
+
+Verwandelt eine Objektkennung (OID) in eine Liste von Oktetten.
+
+Beispiel: Siehe @ref{octets_to_oid}.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sha1sum}
+@deffn {Funktion} sha1sum (@var{arg})
+@deffnx {Funktion} sha1sum (@var{arg}, @var{return-type}) 
+
+Gibt den @code{SHA1}-Fingerabdruck einer Zeichenkette, einer nicht-negativen Ganzzahl 
+oder einer Liste von Oktetten zur@"uck. Der standardm@"a@ss{}ige R@"uckgabewert 
+ist eine Zeichenkette mit 40 hexadezimalen Zeichen.
+
+Das optionale Argument @var{return-type} erlaubt es @code{sha1sum}, 
+alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
+zur@"uck zu geben.
+
+Beispiel:
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) msg: "foo bar baz"$
+(%i3) string: sha1sum(msg);
+(%o3)              c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+(%i4) integer: sha1sum(msg, 'number);
+(%o4)             0c7567e8b39e2428e38bf9c9226ac68de4c67dc39
+(%i5) octets: sha1sum(msg, 'list);
+(%o5)  [0C7,56,7E,8B,39,0E2,42,8E,38,0BF,9C,92,26,0AC,68,0DE,4C,67,0DC,39]
+(%i6) sdowncase( printf(false, "~@{~2,'0x~^:~@}", octets) );
+(%o6)     c7:56:7e:8b:39:e2:42:8e:38:bf:9c:92:26:ac:68:de:4c:67:dc:39
+@end example
+
+Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+gr@"o@ss{}er als 127), ist der @code{SHA1}-Fingerabdruck von der verwendeten 
+Plattform abh@"angig. 
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sha256sum}
+@deffn {Funktion} sha256sum (@var{arg})
+@deffnx {Funktion} sha256sum (@var{arg}, @var{return-type}) 
+
+Gibt den @code{SHA256}-Fingerabdruck einer Zeichenkette, einer nicht-negativen 
+Ganzzahl oder einer Liste von Oktetten zur@"uck. Der standardm@"a@ss{}ige 
+R@"uckgabewert ist eine Zeichenkette mit 64 hexadezimalen Zeichen.
+
+Das optionale Argument @var{return-type} erlaubt es @code{sha256sum}, 
+alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
+zur@"uck zu geben (siehe @ref{sha1sum}).
+
+Beispiel:
+
+@example
+(%i1) string: sha256sum("foo bar baz");
+(%o1)  dbd318c1c462aee872f41109a4dfd3048871a03dedd0fe0e757ced57dad6f2d7
+@end example
+
+Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+gr@"o@ss{}er als 127), ist der @code{SHA256}-Fingerabdruck von der verwendeten 
+Plattform abh@"angig. 
+
+@end deffn
+
 
 @c --- End of file stringproc.de.texi ------------------------------------------
 
