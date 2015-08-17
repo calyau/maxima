@@ -596,3 +596,16 @@ fn(0);
  r1 ('integrate (blurf(a) + g(a), a, minf, inf)));
 g(1);
 
+/* rule for f interferes with function definition after kill
+ * discussion on mailing list circa 2015-08-17: "trouble with GCL build"
+ */
+(kill (all),
+ matchdeclare (xx, integerp),
+ tellsimp (f(xx), subst ('xx = xx, lambda ([a], a - xx))),
+ kill (rules),
+ f(n) := n + 1,
+ translate(f),
+ kill(f),
+ f(y):=y+3,
+ [fundef (f), f (10)]);
+[f(y) := y + 3, 13];

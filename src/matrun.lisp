@@ -65,7 +65,7 @@
 		   (merror (intl:gettext "remrule: no such rule: ~:M") rule))
 		  ((null (car (setq oldrules (cdr oldrules))))
 		   (setq oldrules (cdr oldrules))
-		   (setq othrulename 'simpargs1)
+		   (setq othrulename nil)
 		   (setq othrule #'(lambda (a bb c) (declare (ignore bb)) (simpargs a c))))
 		  (t (setq othrulename (car oldrules))
 		     (setq othrule (cadr (getl (car oldrules) '(expr subr))))))
