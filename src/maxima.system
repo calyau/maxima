@@ -151,7 +151,8 @@
                         :components ((:file "generr")
 				     (:file "clmacs")))
                (:module compatibility-macros :source-pathname ""
-                        :components ((:file "commac"))) 
+                        :components (#+gcl (:file "gcl-compat")
+                                     (:file "commac")))
                (:module prerequisites :source-pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
