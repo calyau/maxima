@@ -82,3 +82,8 @@ ecl-test.sh: test.sh.in
 	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/ecl.log#'
 	chmod a+x "$@"
 endif
+
+genericdir = $(insttestsdir)
+genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*))
+
+EXTRA_DIST = $(genericdirDATA)
