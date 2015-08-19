@@ -96,7 +96,7 @@ externalproject_add(wxWidgets
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
   CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --with-zlib=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-libpng=builtin --with-expat=builtin --host=${HOST}
-  BUILD_COMMAND $(MAKE) 
+  BUILD_COMMAND $(MAKE)
         COMMAND ${CMAKE_SOURCE_DIR}/wxwidgets/debian-crosscompile-correction.sh ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib
   INSTALL_COMMAND ""
 )
@@ -244,6 +244,7 @@ set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
 set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima")
+set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-${CPACK_PACKAGE_VERSION}")
 
 # File associations:
 set(CPACK_NSIS_DEFINES "!include ${CMAKE_SOURCE_DIR}\\\\FileAssociation.nsh")
