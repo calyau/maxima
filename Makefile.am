@@ -2,7 +2,7 @@ if ENABLE_GETTEXT
    LOCALE_DIR = locale
 endif
 
-SUBDIRS = admin src lisp-utils tests doc interfaces share demo plotting $(LOCALE_DIR)
+SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share demo plotting $(LOCALE_DIR)
 
 EXTRA_DIST = \
   common.mk maxima.iss.in \
