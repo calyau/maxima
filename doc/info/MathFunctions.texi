@@ -1576,12 +1576,7 @@ logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 @deffn {Function} sqrt (@var{x})
 
 The square root of @var{x}.  It is represented internally by
-@code{@var{x}^(1/2)}.  See also @code{rootscontract}.
-
-@code{radexpand} if @code{true} will cause nth roots of factors of a product
-which are powers of n to be pulled outside of the radical, e.g.
-@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is
-@code{true}.
+@code{@var{x}^(1/2)}.  See also @mref{rootscontract} and @mrefdot{radexpand}
 
 @opencatbox
 @category{Mathematical functions}
