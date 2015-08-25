@@ -351,7 +351,7 @@
 (setf (get '%atanh 'reflection-rule) #'odd-function-reflect)
 (setf (get '%asech 'reflection-rule) #'even-function-reflect)
 (setf (get '%acsch 'reflection-rule) #'odd-function-reflect)
-(setf (get '%acoth 'reflection-rule) #'even-function-reflect)
+(setf (get '%acoth 'reflection-rule) #'odd-function-reflect)
 
 ;; When b is nil, do not apply the reflection rule. For trigonometric like
 ;; functions, b is $trigsign.  This function uses 'great' to decide when to

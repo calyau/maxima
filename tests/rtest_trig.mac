@@ -608,3 +608,9 @@ foo;
 
 killcontext (ctxt);
 done;
+
+/* mailing list 2015-08-25: "Strange symmetry of acoth(x), area cotangens hyperbolicus function (#552)" */
+
+(kill (x), - acoth (- x));
+acoth (x);
+
