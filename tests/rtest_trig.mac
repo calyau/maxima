@@ -614,3 +614,24 @@ done;
 (kill (x), - acoth (- x));
 acoth (x);
 
+/* SF bug #2620: "atan2(y,x)+atan2(-y,x) doesn't always return 0 " */
+
+(kill (x, y), atan2(y,x)+atan2(-y,x));
+0;
+
+(assume (y > 0), atan2(y,x)+atan2(-y,x));
+0;
+
+(kill (n, p, r), forget (y > 0), assume(n<0,p>0), atan2 (- x, r));
+- atan2 (x, r);
+
+atan2 (-n, r);
+- atan2 (n, r);
+
+atan2 (-p, r);
+- atan2 (p, r);
+
+forget (n < 0, p > 0);
+[n < 0, p > 0];
+
+
