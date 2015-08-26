@@ -1,0 +1,77 @@
+/* Maxima implementation of Sister Celine's method
+    Barton Willis wrote this code. It is released under the Creative Commons CC0 license (https://creativecommons.org/about/cc0) 
+
+Celine's method is described in Sections 4.1--4.4 of the book "A=B", by Marko Petkovsek, Herbert S. Wilf, and Doron Zeilberger.
+This book is available at http://www.math.rutgers.edu/~zeilberg/AeqB.pdf 
+
+Let f = F(n,k). The function celine returns a set of recursion relations for F of the form
+
+    p_0(n) * fff(n,k) + p_1(n) * fff(n+1,k) + ... +  p_p(n) * fff(n+p,k+q),
+
+where p_0 through p_p are polynomials. If Maxima is unable to determine that sum(sum(a(i,j) * F(n+i,k+j),i,0,p),j,0,q) / F(n,k) 
+is a rational function of n and k, celine returns the empty set. When f involves parameters (variables other than n or k), celine
+might make assumptions about these parameters. Using 'put' with a key of 'proviso,' Maxima saves these assumptions on the input 
+label.
+
+To use this function, first load the package integer_sequence, opsubst, and to_poly_solve.
+
+Examples:
+
+  (%i1) celine(n!,n,k,1,0);
+  (%o1) {fff(n+1,k)-n*fff(n,k)-fff(n,k)}
+
+Check:
+
+  (%i2) ratsimp(minfactorial(first(%))),fff(n,k) := n!;
+  (%o2) 0
+
+An example with parameters:
+
+  (%i3) e : pochhammer(a,k) * pochhammer(-k,n) / (pochhammer(b,k));
+  (%o3) (pochhammer(a,k)*pochhammer(-k,n))/pochhammer(b,k)
+
+  (%i4) recur : celine(e,n,k,2,1);
+  (%o4) {fff(n+2,k+1)-fff(n+2,k)-b*fff(n+1,k+1)+n*(-fff(n+1,k+1)+2*fff(n+1,k)-a*fff(n,k)-fff(n,k))+a*(fff(n+1,k)-fff(n,k))+2*fff(n+1,k)-n^2*fff(n,k)}
+
+Check:
+
+  (%i5) first(%), fff(n,k) := ''(e)$
+  (%i6) makefact(makegamma(%))$
+  
+  (%i7) minfactorial(factor(minfactorial(factor(%))));
+  (%o7) 0
+
+The proviso data suggests that setting a = b may result in a lower order recursion
+
+  (%i8) get('%i4,'proviso);
+  (%o8) (-(b-1)*(b-a)*n*(n+a-1)#0) %and ((b-1)*(b-a)*n*(n+a-1)#0) %and (n-b+a#0)
+
+  (%i9) celine(subst(b=a,e),n,k,1,1);
+  (%o9) {fff(n+1,k+1)-fff(n+1,k)+n*fff(n,k)+fff(n,k)} */
+
+map('load, ["integer_sequence", "opsubst", "to_poly_solve"]);
+
+celine(f,n,k,p,q) := block([e, recur, v, sol : set(), fff, ratmx : false, mat,cnd],
+   f : makefact(makegamma(f)),
+   p : n .. (n + p),
+   q : k .. (k + q),
+   v : outermap(lambda([i,j], gensym()), p, q),
+   recur : xreduce("+", outermap('fff, p, q) . v),
+   e : xreduce("+", outermap(lambda([i,j], subst([n=i, k=j], f)), p, q) . v),
+   v : xreduce('append,v),
+   e : minfactorial(factor(e/f)),
+   if polynomialp(ratnum(e),[n,k], lambda([s], freeof(n,k,s))) and polynomialp(ratdenom(e),[n,k],lambda([s], freeof(n,k,s))) then (
+       e : rat(ratnum(e)),
+       e : map(lambda([i], ratcoeff(e,k,i)), 0 .. hipow(e,k)),
+       mat : triangularize(coefmatrix(e,v)),
+       cnd : map(lambda([s], delete(0,s)), args(mat)),
+       cnd : xreduce("%and", map(lambda([s], factor(first(s)) # 0),cnd)),
+       sol :  block([scalarmatrixp : false], algsys(xreduce('append, args(mat . transpose(v))),v)),
+       recur : expand(subst(sol, recur)),
+       recur : setify(map(lambda([s], coeff(recur,s)), %rnum_list)),
+       recur : map(lambda([s], block([ar : gatherargs(s, 'fff)], /* standardize to minimum argument of n & k. */
+                 expand(subst([n = 2*n - lmin(map('first,ar)), k = 2*k - lmin(map('second,ar))],s)))),recur),   
+       sol : map(lambda([s], block([ar : gatherargs(s, 'fff)], /* standardize leading coefficient to one.*/
+                   ratsimp(s / coeff(s, funmake('fff,last(sort(ar))))))),recur)),
+  put(first(labels), cnd, 'proviso),
+  sol)$
