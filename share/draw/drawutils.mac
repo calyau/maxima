@@ -25,9 +25,9 @@ based on package draw.
 See documentation in drawutils.texi
 */
 
-?defvar(drawutils_version, 1) $
+drawutils_version :  1 $
 
-if not $draw_version then load("draw") $
+if draw_version = 'draw_version then load("draw") $
 
 
 
