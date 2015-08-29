@@ -185,12 +185,6 @@ externalproject_add(maxima
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
 
-# Install Windows CHM Help files (extracted from the Andrej's installer)
-install(FILES "${CMAKE_SOURCE_DIR}/maxima/chm/maxima.chm" DESTINATION share/maxima/${MAXIMAVERSION}/doc/chm/)
-install(FILES "${CMAKE_SOURCE_DIR}/maxima/chm/pt_BR/maxima.chm" DESTINATION share/maxima/${MAXIMAVERSION}/doc/chm/pt_BR/)
-install(FILES "${CMAKE_SOURCE_DIR}/maxima/chm/es/maxima.chm" DESTINATION share/maxima/${MAXIMAVERSION}/doc/chm/es/)
-install(FILES "${CMAKE_SOURCE_DIR}/maxima/chm/pt/maxima.chm" DESTINATION share/maxima/${MAXIMAVERSION}/doc/chm/pt/)
-
 
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/src")
 

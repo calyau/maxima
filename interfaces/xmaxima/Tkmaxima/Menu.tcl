@@ -284,9 +284,15 @@ proc vMAXAddSystemMenu {fr text} {
 	set state disabled
     }
     if {$tcl_platform(platform) == "windows"} {
-        $m add command -underline 1 -label [mc "Maxima Manual"] \
-        	-state $state \
-	        -command [list exec hh.exe $file & ]
+        if {[string match *maxima.chm* $file]} {
+            $m add command -underline 1 -label [mc "Maxima Manual"] \
+         	    -state $state \
+	            -command [list exec hh.exe $file & ]
+        } else {
+            $m add command -underline 1 -label [mc "Maxima Manual (xmaxima browser)"] \
+        	    -state $state \
+	            -command "OpenMathOpenUrl \"file:/$file\""
+        }
         $m add command -underline 4 -label [mc "Xmaxima Manual (xmaxima browser)"] \
         	-state $xstate \
 	        -command "OpenMathOpenUrl \"file:/$xfile\""
@@ -331,9 +337,9 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 7 -label [mc "Maxima Homepage"] \
 	-command [list eval $browse http://maxima.sourceforge.net &]
     $m add command -underline 0 -label [mc "Project Page"] \
-	-command [list eval $browse http://sourceforge.net/projects/maxima &]
+	-command [list eval $browse http://sourceforge.net/projects/maxima/ &]
     $m add command -underline 0 -label [mc "Bug Reports"] \
-	-command [list eval $browse http://sourceforge.net/p/maxima/bugs &]
+	-command [list eval $browse http://sourceforge.net/p/maxima/bugs/ &]
 
     rename vMAXAddSystemMenu ""
     # vMAXSystemMenuHandlers $text $event
