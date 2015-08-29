@@ -25,7 +25,7 @@ option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." OFF)
 
 # current program versions
 set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  15.04.0)
+set(WXMAXIMAVERSION  15.08.0)
 set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.1)
 set(TCLVERSION       8.6.4)
@@ -34,7 +34,7 @@ set(TKVERSION        8.6.4)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "eb425513c269918fbcc253a7dc9ad283")
+set(WXMAXIMA_MD5  "4ad1f4fe954101ea2a0d897cb8a7ef6e")
 set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
 set(GNUPLOT_MD5   "4da2089339d9dd2b834f68b39cc876e6")
 set(TCL_MD5       "d7cbb91f1ded1919370a30edd1534304")
@@ -95,7 +95,7 @@ externalproject_add(wxWidgets
   URL "${WXWIDGETS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --with-zlib=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-libpng=builtin --with-expat=builtin --host=${HOST}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST}
   BUILD_COMMAND $(MAKE)
         COMMAND ${CMAKE_SOURCE_DIR}/wxwidgets/debian-crosscompile-correction.sh ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib
   INSTALL_COMMAND ""
@@ -159,6 +159,12 @@ externalproject_add(texfonts
   INSTALL_COMMAND ""
 )
 
+find_program(WINE_EXE NAMES wine)
+if(WINE_EXE)
+    message(STATUS "Found wine at ${WINE_EXE}")
+else()
+    message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
+endif()
 
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
@@ -186,10 +192,9 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSI
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
 
 
-file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/src")
-
 
 if(USE_WXMAXIMA_GIT)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/src")
     externalproject_add(wxMaxima-git
         GIT_REPOSITORY ${WXMAXIMA_GIT}
         DEPENDS wxWidgets
@@ -203,16 +208,19 @@ if(USE_WXMAXIMA_GIT)
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/wxMaxima/ DESTINATION wxMaxima)
 else()
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/src")
     externalproject_add(wxMaxima
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxWidgets
         BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+	PATCH_COMMAND patch -p1 < "${CMAKE_SOURCE_DIR}/wxmaxima-15.08.0.patch"
+        CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/acinclude.m4"
+                  COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) -C locales allmo
-        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima wxMaxima.win
+              COMMAND $(MAKE) allmo
+        INSTALL_COMMAND $(MAKE) wxMaxima.win
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/wxMaxima/ DESTINATION wxMaxima)
 endif()
