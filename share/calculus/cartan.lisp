@@ -96,6 +96,11 @@ T $FALSE)) ((MRETURN SIMP) $EXT104))) MEXPR)
          ((MCOND) (($LISTP) $X) (($LIE_DIFF_V) $V $X) T
           (($LIE_DIFF_F) $V $X))))
 
+(defmvar $cartan_dim)
+(defmvar $extdim)
+(defmvar $cartan_coords)
+(defmvar $cartan_basis)
+
 ; The following is a hand translation (more or less) of this MAXIMA code:
 ; 
 ; init_cartan(coords):=block
