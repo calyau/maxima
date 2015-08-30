@@ -258,16 +258,45 @@ proc setMaxDir {} {
 	    [file join $dir maxima_toc.html]
     } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.9 and up
+	# first choose the HTML documentation
+	if { $maxima_priv(maxima_lang_subdir) != "" && \
+	     [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
+	    set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+	} else {
+	    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+	}
+	# if the platform is Windows and Maxima is running localized, try the following help files
+	# if they exist:
+	# 1st priority: localized CHM
+	# 2nd priority: localized HTML
+	# 3rd priority: english CHM
+	# 4th priority: english HTML
         if { $tcl_platform(platform) == "windows" } {
-	    if { $maxima_priv(maxima_lang_subdir) != "" && \
-		 [file exists [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm] ] } {
-		set maxima_priv(pReferenceToc) [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm]
+	    if { $maxima_priv(maxima_lang_subdir) != "" } {
+		if {[file exists [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm] ] } {
+		    set maxima_priv(pReferenceToc) [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm]
+		} else {
+		    if {[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
+			set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+		    } else {
+			if {[file exists [file join $dir chm maxima.chm] ] } {
+			    set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
+			} else {
+			    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+			}
+		    }
+		}
 	    } else {
-		set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
+		if {[file exists [file join $dir chm maxima.chm] ] } {
+		    set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
+		} else {
+		    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+		}
 	    }
 	} else {
+	    # Platform != windows, just chooose the HTML documentation
 	    if { $maxima_priv(maxima_lang_subdir) != "" && \
-		 [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
+		[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
 		set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
 	    } else {
 		set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
