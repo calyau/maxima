@@ -347,7 +347,7 @@ Klammern werden nicht in der Größe expandiert und Brüche mit Hilfe von
                                        5 a
 (%o52)                               %e
 
-(%i54) (%i54) integrate( f(x) , x, 0, inf);
+(%i54) integrate( f(x) , x, 0, inf);
 
                                   inf
                                  /
@@ -362,8 +362,8 @@ Die Darstellung im erweiterten Emacs-Modus, in Imaxima und in Texmacs
 ist grafisch, d.\,h.\@ für \texttt{\%pi}, \texttt{\%e}, Integrale,
 Summen, \ldots werden entsprechende Symbole verwendet.
 
-Maxima kann natürlich auch Funktionen plotten. Die Funktion
-\texttt{plot2d([Funktionsliste], [X-Var, Min, Max], [Y-Var, Min,  Max])}
+Maxima kann natürlich auch Funktionen plotten. Die Funktion \\
+\texttt{plot2d([Funktionsliste], [X-Var, Min, Max], [Y-Var, Min, Max])} \\
 kann eine Gruppe von Funktionen plotten. Hierzu gibt man die
 Liste von Funktionen in eckigen Klammern und durch Kommas getrennt als
 ersten Parameter an, es folgt eine Liste, welche die abhängige
@@ -404,7 +404,7 @@ Die üblichen arithmetischen Operatoren stehen zur Verfügung:
 \item \texttt{.} Skalarmultiplikation von Vektoren und Matrix-Multiplikation,
 \item \texttt{/} Division,
 \item \texttt{**} oder \texttt{\^} Potenzfunktion,
-\item \texttt{sqrt()} Wurzelfunktion,
+\item \texttt{sqrt()} Quadratwurzelfunktion\footnote{$\sqrt[n]{x}$ muss durch \texttt{x\^{}(1/n)} ausgedrückt werden.},
 \item \texttt{exp()} Exponentialfunktion,
 \item \texttt{log()} natürliche Logarithmusfunktion
 \end{itemize}
@@ -459,7 +459,7 @@ algebraischen  Gleichungsystemen zu berechnen. Im folgenden Beispiel
 werden 3  Gleichungen nach drei Unbekannten aufgelöst:
 
 \begin{verbatim}
- (%i77) eq1: a + b + c = 6;
+(%i77) eq1: a + b + c = 6;
 
 (%o77)                           c + b + a = 6
 (%i78) eq2: a * b + c = 5;
@@ -774,7 +774,8 @@ Funktionen zur Verfügung: \texttt{ode2}, \texttt{ic1}, \texttt{ic2}, \texttt{bc
 (%o25)                      y = %c sin(x) + cos(x)
 \end{verbatim}
 
-Anfangswertaufgabe: Harmonische Schwingungen \zB eines Pendels
+\subsubsection*{Anfangswertaufgabe}
+Harmonische Schwingungen \zB eines Pendels
 werden durch folgende Differentialgleichung beschrieben und mittels
 \texttt{ode2} und \texttt{ic2} gelöst:
 
@@ -794,7 +795,8 @@ werden durch folgende Differentialgleichung beschrieben und mittels
 (%o40)                           y = cos(x) y0
 \end{verbatim}
 
-Randwertaufgabe: Bei gleichmäßger Belastung, lässt sich die Biegelinie
+\subsubsection*{Randwertaufgabe}
+Bei gleichmäßger Belastung, lässt sich die Biegelinie
 eines ruhenden und auf 2 Stützen liegenden Balkens unter bestimmten
 Umständen durch folgende Differentialgleichung beschreiben und mittels
 \texttt{ode2} und \texttt{ic2} lösen:
@@ -935,8 +937,8 @@ zur Berechnung der Inversen (\texttt{invert}). Das  Schlüsselwort
 Bis jetzt haben Sie gesehen, wie man Maxima im interaktiven Modus wie
 einen Taschenrechner benutzt. Für Berechnungen, welche wiederholt
 Kommandosequenzen durchlaufen müssen, sind Programme geeigneter.
-Programme werden gewöhnlich in einem Texteditor (Emacs) geschrieben
-und dann mittels batch in Maxima geladen.
+Programme werden gewöhnlich in einem Texteditor (z.B. Emacs) geschrieben
+und dann mittels \texttt{batch}  in Maxima geladen.
 
 Im Folgenden schreiben wir ein kleines Statistik-Münzwurfprogramm zur
 Veranschaulichung. Mit \texttt{block([Lokale Variablen], Kommando1,  Kommando2 \ldots)} wird
@@ -1026,7 +1028,7 @@ Ein kleine Auswahl wichtiger und nützlicher Maxima-Funktionen:
 \item \texttt{diff(a,b1,c1,b2,c2,\ldots,bn,cn)} Gemischte partielle Ableitung von a nach $b_i$ der Stufe $c_i$.
 \item \texttt{eigenvalues(a)} Berechnet die Eigenwerte und ihre Multiplikatoren.
 \item \texttt{eigenvectors(a)} Berechnet Eigenvektoren, Eigenwerte und  Multiplikatoren.
-\item \texttt{entermatrix(a,b)} Matrixeingabe
+\item \texttt{entermatrix(a,b)} Matrixeingabe einer Matrix mit a Zeilen und b Spalten.
 \item \texttt{ev(a,b1,b2,\ldots,bn)} Berechnet Ausdruck a unter den Annahmen $b_i$
   (Gleichungen, Zuweisungen, Schlüsselwörter (numer - Zahlenwerte,
   detout - Matrixinverse ohne Determinante, diff - alle Ableitungen
@@ -1087,7 +1089,7 @@ Ein kleine Auswahl wichtiger und nützlicher Maxima-Funktionen:
   trigonometrische  Produkte und Potenzen.
 \item \texttt{trigsimp(a)} Eine Vereinfachungsroutine, welche
   verschiedene  trigonometrische Funktionen in sin und cos Equivalente umwandelt.
-\item \texttt{with\_stdout( Datei, Ausdrücke)} Leitet die Ausgabe der
+\item \texttt{with\_stdout(Datei, Ausdrücke)} Leitet die Ausgabe der
   Ausdrücke  in die angegebene Datei um.
 \end{itemize}
 
