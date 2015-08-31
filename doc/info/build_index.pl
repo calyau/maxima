@@ -148,7 +148,16 @@ foreach $key (sort keys %topic_locator) {
     $item_cnt++;
     my $sanitized_key = $key;
     $sanitized_key =~ s/"/\\"/g;
-    print "(\"$sanitized_key\" . (\"$topic_locator{$key}[1]\" $topic_locator{$key}[2] $topic_locator{$key}[3] \"$topic_locator{$key}[0]\"))\n";
+    my $file_name = $topic_locator{$key}[1];
+    my $byte_offset = $topic_locator{$key}[2];
+    my $nchars = $topic_locator{$key}[3];
+    my $node_name = $topic_locator{$key}[0];
+    if ($sanitized_key eq '' or $file_name eq '' or $byte_offset < 0 or $nchars < 0 or $node_name eq '') {
+        print STDERR "build_info.pl: something seems wrong for key=\"$sanitized_key\"; emit it anyway.\n";
+        print STDERR "build_info.pl: sanitized_key=\"$sanitized_key\", file_name=\"$file_name\", byte_offset=$byte_offset, nchars=$nchars, node_name=\"$node_name\"\n";
+        print ";; build_index.pl: something seems wrong for this next item\n";
+    }
+    print "(\"$sanitized_key\" . (\"$file_name\" $byte_offset $nchars \"$node_name\"))\n";
 }
 
 print "))\n";
@@ -230,6 +239,11 @@ foreach $node_title (sort keys %node_locator) {
     ($filename, $begin_node_offset, $length) = @{$node_locator{$node_title}};
     my $sanitized_title = $node_title;
     $sanitized_title =~ s/"/\\"/g;
+    if ($sanitized_title eq '' or $filename eq '' or $begin_node_offset < 0 or $length < 0) {
+        print STDERR "build_info.pl: something seems wrong for title=\"$sanitized_title\"; emit it anyway.\n";
+        print STDERR "build_info.pl: sanitized_title=\"$sanitized_title\", filename=\"$filename\", begin_node_offset=$begin_node_offset, length=$length\n";
+        print ";; build_index.pl: something seems wrong for this next item\n";
+    }
     print "(\"$sanitized_title\" . (\"$filename\" $begin_node_offset ", $length, "))\n";
 }
 
