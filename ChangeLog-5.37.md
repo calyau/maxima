@@ -32,6 +32,7 @@ Changes in share:
 Bug fixes:
 ----------
 
+* [#3005]: Manual is wrong about "sqrt" and "radexpand"
 * [#2998]: extra () in display2d:false output
 * [#2988]: documentation error in gf_manual.pdf 
 * [#2987]: Some divergent integrals give error, some don't
@@ -44,14 +45,25 @@ Bug fixes:
 * [#2934]: dotscrules and antisymmetric
 * [#2929]: misformatting in debugger help message
 * [#2905]: Assigning variable twice yields different results
+* [#2620]: atan2(y,x)+atan2(-y,x) doesnt always return 0
 * [#2230]: abs(x)^(2*int) doesn't simplify
 * [#2211]: rtest_sign #77
 * [#2183]: eigenvectors of a 10 x 10
+* [#1193]: ev doesn't bind functions safely
 
 Unnumbered bugs:
 ----------------
 
 * commit [6779ac0]: zn-nrt: root of zero should be zero
-* mailing list 2015-06-11: [rationalize(0.1) and the manual][1]
+* commit [b212487]: Fix up version variables so that load(drawutils) succeeds
+* mailing list 2015-08-29: [Documentation fails with error][1]
+* mailing list 2015-08-27: [Warnings from loading cartan package][2]
+* mailing list 2015-08-25: [Strange symmetry of acoth(x), area cotangens hyperbolicus function (#552)][3]
+* mailing list 2015-08-17: [trouble with GCL build][4]
+* mailing list 2015-06-11: [rationalize(0.1) and the manual][5]
 
-[1]: https://sourceforge.net/p/maxima/mailman/message/34196346/
+[1]: https://sourceforge.net/p/maxima/mailman/message/34417174/
+[2]: https://sourceforge.net/p/maxima/mailman/message/34411188/
+[3]: https://sourceforge.net/p/maxima/mailman/message/34401610/
+[4]: https://sourceforge.net/p/maxima/mailman/message/34369023/
+[5]: https://sourceforge.net/p/maxima/mailman/message/34196346/
