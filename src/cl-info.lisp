@@ -144,7 +144,12 @@
     (when (consp wanted)
       (format t "~%")
       (loop for item in wanted
-        do (format t "~A~%~%" (read-info-text (first item) (second item)))))))
+	    do (let ((doc (read-info-text (first item) (second item))))
+		 (if doc
+		     (format t "~A~%~%" doc)
+		     (format t "Unable to find documentation for `~A'.~%~
+                                Possible bug maxima-index.lisp or build_index.pl?~%"
+			     (first (second item)))))))))
 
 (defun inexact-topic-match (topic)
   (setq topic (regex-sanitize topic))
@@ -197,9 +202,14 @@
      (text (make-string byte-count))
      (path+filename (make-pathname :device (first dir-name) :directory (second dir-name) :name filename)))
     (with-open-file (in path+filename :direction :input)
+      (unless (plusp byte-offset)
+	;; If byte-offset isn't positive there must be some error in
+	;; the index.  Return nil and let the caller deal with it.
+	(return-from read-info-text nil))
       (file-position in byte-offset)
-      #+gcl (gcl-read-sequence text in :start 0 :end byte-count)
-      #-gcl (read-sequence text in :start 0 :end byte-count))
+      (#-gcl read-sequence
+       #+gcl gcl-read-sequence
+       text in :start 0 :end byte-count))
     text))
 
 #+gcl
