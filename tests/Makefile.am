@@ -86,4 +86,4 @@ endif
 genericdir = $(insttestsdir)
 genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*))
 
-EXTRA_DIST = $(genericdirDATA)
+EXTRA_DIST = $(genericdirDATA) test.sh.in
