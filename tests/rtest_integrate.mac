@@ -2463,7 +2463,7 @@ log(b*%e^(c*z)+a)/(b*c);
 
 /* Problem 438: OK */
 integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a),z), domain:real;
-log(b*%e^(c*z)+a)*(a*B-b*A)/(a*b*c)+z*A/a;
+(A*z)/a-((A*b-B*a)*log(b*%e^(c*z)+a))/(a*b*c);
 
 /* Problem 439: OK */
 integrate(%e^(2*c*z)/(b*%e^(c*z)+a),z);
@@ -2515,7 +2515,8 @@ integrate(%e^(d*z)/(b*%e^(c*z)+a)^2,z);
 
 /* Problem 448: OK */
 integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^2,z), domain:real;
-(a*B-b*A)/(-c*(a*b^2*%e^(c*z)+a^2*b))-log(b*%e^(c*z)+a)*A/(a^2*c)+z*A/a^2$
+(-(A*log(b*%e^(c*z)+a))/(a^2*c))+(A*b-B*a)/(c*(a^2*b+a*b^2*%e^(c*z)))
+                                +(A*z)/a^2;
 
 /* Problem 449: OK */
 integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z), domain:real;
@@ -2525,9 +2526,11 @@ integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z), domain:real;
 
 /* Problem 450: OK */
 integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z), domain:real;
-(%e^(c*z)*(2*a^2*b*C-2*b^3*A)+a^3*C+a^2*b*B-3*a*b^2*A)
- /(-c*(2*a^2*b^4*%e^(2*c*z)+4*a^3*b^3*%e^(c*z)+2*a^4*b^2))
- -log(b*%e^(c*z)+a)*A/(a^3*c)+z*A/a^3$
+(-(A*log(b*%e^(c*z)+a))/(a^3*c))+((2*A*b^3-2*C*a^2*b)*%e^(c*z)
+                                 +3*A*a*b^2-B*a^2*b-C*a^3)
+                                 /(c*(2*a^4*b^2+4*a^3*b^3*%e^(c*z)
+                                               +2*a^2*b^4*%e^(2*c*z)))
+                                +(A*z)/a^3;
 
 /* ----- Involving 1/(a*%e^(2*d*z)+b*%e^(d*z)+c)----------------------------- */
 
