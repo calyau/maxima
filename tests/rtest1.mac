@@ -425,3 +425,48 @@ block([simp:false], ?cons(?list('?mplus),?cdr([1,5,3])), string(%%));
 block([simp:false], ?cons(?list('?mplus,'?foo, '?bar),?cdr([1,5,3])), string(%%));
 "3+5+1";
 
+/* SF bug #3012: "orderlessp/ordergreatp confusing treatment of upper/lower case in symbol names" */
+
+orderlessp ("A1", "B1");
+true;
+
+orderlessp ("A1", "Ba");
+true;
+
+orderlessp ("Aa", "B1");
+true;
+
+orderlessp ("Aa", "Ba");
+true;
+
+kill (A1, B1, Aa, Ba);
+done;
+
+orderlessp (A1, B1);
+true;
+
+orderlessp (A1, Ba);
+true;
+
+orderlessp (Aa, B1);
+true;
+
+orderlessp (Aa, Ba);
+true;
+
+sort (["aaa", "A_i", "bbb", "ccc", "C_R_tia", "C_tia", "l", "R_tia", "v", "x1",
+  "x10", "x8", "A0", "C_K_2", "C_MESS_P2", "C_S_1", "C_S_2", "C_S_MESS", "C_STREU", "ION", "U0"]);
+["A0", "A_i", "C_K_2", "C_MESS_P2", "C_R_tia", "C_STREU", "C_S_1", 
+"C_S_2", "C_S_MESS", "C_tia", "ION", "R_tia", "U0", "aaa", "bbb", "ccc", "l", 
+"v", "x1", "x10", "x8"];
+
+kill (aaa, A_i, bbb, ccc, C_R_tia, C_tia, l, R_tia, v, x1, x10, x8, A0,
+  C_K_2, C_MESS_P2, C_S_1, C_S_2, C_S_MESS, C_STREU, ION, U0);
+done;
+
+sort ([aaa, A_i, bbb, ccc, C_R_tia, C_tia, l, R_tia, v, x1, x10, x8, A0,
+  C_K_2, C_MESS_P2, C_S_1, C_S_2, C_S_MESS, C_STREU, ION, U0]);
+[A0, A_i, C_K_2, C_MESS_P2, C_R_tia, C_STREU, C_S_1, 
+C_S_2, C_S_MESS, C_tia, ION, R_tia, U0, aaa, bbb, ccc, l, 
+v, x1, x10, x8];
+
