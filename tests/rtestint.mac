@@ -1564,3 +1564,8 @@ integrate(const, x, minf, minf);
  */
 integrate(erf(x), x, minf, minf);
 0;
+
+/* From the mailing list on 29 Aug 2015. Maxima was leaving integrate(0,x) in the result.
+ */
+(reset(integration_constant_counter), integrate(x=0,x));
+x^2/2 = %c1;
