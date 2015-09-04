@@ -9,10 +9,6 @@ Ports to other ANSI Common Lisps should be straightforward
 and are welcome; please post a message on the Maxima mailing list
 if you are interested in working on a port.
 
-For specific Maxima and Lisp version number combinations,
-see the ports page at the Maxima wiki:
-http://maxima.sourceforge.net/wiki/index.php?Maxima%20ports
-
 When Maxima is recompiled, the Lisp implementation is selected by
 an argument of the form `--enable-foolisp' for the configure script.
 `./configure --help' shows a list of the Lisp types recognized by
@@ -30,7 +26,7 @@ pre-5.9.3   P2 450 MHz, Linux        75      91              301
 
 
 --------------------------------------------------------------------
-Clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
+Clisp <http://clisp.org>
 
 	Clisp includes GNU readline support, so Maxima has
 advanced command-line editing facilities when built with it.
@@ -47,7 +43,7 @@ There are Clisp implementations for many platforms
 including MS Windows and Unix-like systems.
 
 --------------------------------------------------------------------
-CMUCL <http://cmucl.cons.org>
+CMUCL <http://www.cons.org/cmucl/>
 
 	CMUCL is a fast option for Maxima on platforms where it is
 available. The rmaxima front-end provides advanced line-editing
@@ -68,11 +64,11 @@ are supported.  SCL offers a lower case, case sensitive, version which
 avoids the Maxima case inversion issues with symbol names.  Tested
 front end options are: maxima emacs mode available in the
 interfaces/emacs/ directory, the emacs imaxima mode available from
-http://members3.jcom.home.ne.jp/imaxima/, and TeXmacs available from
+https://sites.google.com/site/imaximaimath/, and TeXmacs available from
 http://www.texmacs.org/
 
 --------------------------------------------------------------------
-GCL <http://savannah.gnu.org/projects/gcl>
+GCL <http://savannah.gnu.org/projects/gcl/>
 
 	GCL versions starting with 2.4.3 can be built with readline
 support, so Maxima has advanced command-line editing facilities
@@ -100,14 +96,14 @@ but most notably, it is simpler to rebuild SBCL than CMUCL.
 rmaxima is recommended for use with SBCL. See CMUCL above.
 
 --------------------------------------------------------------------
-Allegro Common Lisp:
+Allegro Common Lisp <http://franz.com/products/allegro-common-lisp/>
 
 	Maxima should work with Allegro Common Lisp, but
 only limited testing has been done with these Lisp
 implementations. User feedback would be welcome.
 
 --------------------------------------------------------------------
-CCL <http://clozure.com>
+CCL <http://ccl.clozure.com/>
 
     CCL, formerly known as OpenMCL, is known to work with maxima on
 all platforms where ccl runs including Linux, Mac OSX, and Windows.
@@ -115,7 +111,7 @@ There are appear to be some bugs in the 32-bit version of ccl,  but
 the 64-bit version passes all tests.
 
 --------------------------------------------------------------------
-ECL <http://ecls.sourceforge.net>
+ECL <https://common-lisp.net/project/ecl/>
     
     ECL is known to work with maxima and passes the testsuite.  ECL
 runs on many platforms and OSes.
