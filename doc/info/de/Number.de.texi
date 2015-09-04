@@ -1105,8 +1105,16 @@ d.h. teilerfremd zu @var{m},
 und falls @var{x} die @var{n}-te Potenz einer Einheit von (Z/@var{m}Z)* ist. 
 Andernfalls gibt @code{zn_nth_root} @code{false} zur@"uck.  
 
-@code{zn_nth_root} verwendet einen Algorithmus von Adleman, Manders und Miller 
-und ben@"otigt eine Primfaktorzerlegung des Modulus @var{m}. 
+Abweichend hiervon muss das Argument @var{x} in RSA-@"ahnlichen F@"allen, 
+in denen der Modulus @var{m} in paarweise verschiedene Faktoren zerf@"allt, 
+nicht teilerfremd zu @var{m} sein. 
+In diesen F@"allen wird f@"ur jede @var{n}-te Potenz eine Liste von Wurzeln 
+zur@"uck gegeben.
+
+@code{zn_nth_root} basiert auf einem Algorithmus von Adleman, Manders und Miller 
+und Ergebnissen @"uber modulo multiplikative Gruppen von Shanks.
+
+Der Algorithmus ben@"otigt eine Primfaktorzerlegung des Modulus @var{m}. 
 Es kann eventuell sinnvoll sein, diese Zerlegung vorab zu berechnen und 
 als viertes Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe von 
 @code{ifactors(m)} mit der Standardeinstellung @code{false} der 
@@ -1135,8 +1143,31 @@ wobei @var{n} von @code{1} bis @code{6} variiert.
 (%o2)  [[1], [1, 13], [1, 9, 11], [1, 13], [1], [1, 3, 5, 9, 11, 13]]
 @end example
 
-In diesem RSA-@"ahnlichen Beispiel ist die Faktorisierung des Modulus bekannt 
-und wird als viertes Argument @"ubergeben.
+Im folgenden RSA-@"ahnlichen Beispiel, in dem der Modulus @code{N} in paarweise 
+verschiedene Faktoren zerf@"allt, ist das erste Argument von @code{zn_nth_root} 
+nicht auf Zahlen beschr@"ankt, die teilerfremd zu @code{N} sind.
+
+Zur Entschl@"usselung wird die @code{e}-te Wurzel berechnet. 
+@code{e} ist teilerfremd zu @code{N} und die @code{e}-te Wurzel ist deshalb 
+eindeutig. @code{zn_nth_root} wendet hier effektiv den als CRT-RSA 
+bekannten Algorithmus an.
+(Man beachte, dass @code{flatten} Klammern entfernt und keine L@"osungen.)
+
+@example
+(%i1) [p,q,e]: [5,7,17]$  N: p*q$
+
+(%i3) xs: makelist(x,x,0,N-1)$
+
+(%i4) ys: map(lambda([x],power_mod(x,e,N)),xs)$
+
+(%i5) zs: flatten(map(lambda([y], zn_nth_root(y,e,N)), ys))$
+
+(%i6) is(zs = xs);
+(%o6)                             true
+@end example
+
+Im folgenden Beispiel ist die Faktorisierung des Modulus bekannt und wird 
+als viertes Argument @"ubergeben.
 
 @example
 (%i1) p: 2^107-1$  q: 2^127-1$  N: p*q$

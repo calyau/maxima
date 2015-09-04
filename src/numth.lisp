@@ -751,8 +751,12 @@
       (push fg fgs) )))
 
 
-;; nth roots in (Z/nZ)*
-
+;; r-th roots in (Z/nZ)* ;; ------------------------------------------------- ;;
+;;
+;; Basically the algorithm is limited to modulo multiplicative groups (Z/nZ)*
+;; but in RSA-like cases where n factors into different primes r-th roots are 
+;; computed for every r-th power in (Z/nZ).
+;;
 (defmfun $zn_nth_root (a r n &optional fs-n)
   (unless (and (integerp a) (integerp r) (integerp n)) 
     (gf-merror (intl:gettext "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m.") a r n) )
@@ -767,28 +771,49 @@
     (when rts (cons '(mlist simp) rts)) ))
 
 (defun zn-nrt (a r n &optional fs-n)
-  (cond
-    ((= a 0) (list 0))
-    ((= 1 (gcd a n))
-      (let (p q qs rt rts rems res)
-        (unless fs-n (setq fs-n (let (($intfaclim)) (get-factor-list n))))
-        (dolist (pe fs-n)
-          (setq p (car pe)
-                q (apply #'expt pe)
-                rt (zq-nrt a r p q) )
-          (unless rt (return-from zn-nrt nil))
-          (push q qs)
-          (push rt rts) )
-        (if (= 1 (length fs-n)) 
-          (setq res rt) ;; n is a prime power
-          (setq qs (nreverse qs)
-                rems (zn-distrib-lists (nreverse rts))
-                res (mapcar #'(lambda (rs) (car (chinese rs qs))) rems) ))
-        (sort res #'<) ))))
+  (let (p q aq ro ord qs rt rts rems res)
+    (unless fs-n (setq fs-n (let (($intfaclim)) (get-factor-list n))))
+    (cond 
+      ((every #'onep (mapcar #'second fs-n)) ;; RSA-like case
+        (when (= a 0) (return-from zn-nrt (list 0))) )
+      ((/= (gcd a n) 1)                      ;; units only in all other cases
+        (return-from zn-nrt nil) ))
+    ;; for every prime power factor of n  
+    ;;   reduce a and r if possible and call zq-nrt:
+    (dolist (pe fs-n)
+      (setq p (car pe)
+            q (apply #'expt pe)
+            aq (mod a q)
+            ord (* (1- p) (truncate q p)) )
+      (cond 
+        ((> r ord)
+          (setq ro (mod r ord))
+          (when (= ro 0) (setq ro ord)) )
+        (t (setq ro r)) )
+      (cond
+        ((= aq 0) 
+          (if (or (= p q) (= ro 1))
+            (setq rt (list 0))
+            (return-from zn-nrt nil) ))
+        ((= ro 1) 
+          (setq rt (list aq)) )
+        (t 
+          (setq rt (zq-nrt aq ro p q))
+          (unless rt (return-from zn-nrt nil)) ))
+      (push q qs)
+      (push rt rts) )
+    ;; CRT in case n splits into more than one factor:
+    (if (= 1 (length fs-n)) 
+      (setq res rt) ;; n is a prime power
+      (setq qs (nreverse qs)
+            rems (zn-distrib-lists (nreverse rts))
+            res (mapcar #'(lambda (rs) (car (chinese rs qs))) rems) ))
+    (sort res #'<) ))
 
 ;; return all possible combinations containing one entry per list:
 ;; (zn-distrib-lists '((1 2 3) (4) (5 6)))
 ;; --> ((1 4 5) (1 4 6) (2 4 5) (2 4 6) (3 4 5) (3 4 6))
+;;
 (defun zn-distrib-lists (ll)
   (let ((res (car ll)) tmp e)
     (dolist (l (cdr ll) res)
@@ -799,8 +824,11 @@
           (push (nconc e (list n)) tmp) ))
       (setq res (nreverse tmp)) )))
 
-;; e.g. r=x*x*y*z, then a^(1/r) = (((a^(1/x))^(1/x))^(1/y))^(1/z)
+;; handle composite r:
+;;   e.g. r=x*x*y*z, then a^(1/r) = (((a^(1/x))^(1/x))^(1/y))^(1/z)
+;;
 (defun zq-nrt (a r p q) ;; prime power q = p^e
+  ;; assume a < q, r <= q
   (let (rts)
     (cond 
       ((or (= 1 r) (primep r)) (setq rts (zq-amm a r p q)))
@@ -815,110 +843,145 @@
           (setq rts (zq-amm a (car rs) p q))
           (dolist (r (cdr rs))
             (setq rts (apply #'nconc (mapcar #'(lambda (a) (zq-amm a r p q)) rts))) ))))
-    (if (and (= 0 (mod q 4)) (= 0 (mod r 2))) ;; this case needs a postprocess 
-      (nconc (mapcar #'(lambda (rt) (- q rt)) rts) rts)
-      rts ) ))
+    (if (and (= p 2) (> q 2) (evenp r)) ;; this case needs a postprocess (see below)
+      (nconc (mapcar #'(lambda (rt) (- q rt)) rts) rts) ;; add negative solutions
+      rts )))
 
-;; inspired by Bach,Shallit 7.3.2
-(defun zq-amm (a r p q) ;; r,p prime, q prime power
-  (setq a (mod a q))
+;; Computing r-th roots modulo a prime power p^n, where r is a prime
+;;
+;;   inspired by 
+;;     Bach,Shallit - Algorithmic Number Theory, Theorem 7.3.2
+;;   and 
+;;     Shanks - Solved and Unsolved Problems in Number Theory, Th. 46, Lemma 1 to Th. 44
+;;
+;;   The algorithm AMM (Adleman, Manders, Miller) is essentially based on   
+;;   properties of cyclic groups and with the exception of q = 2^n, n > 2 
+;;   it can be applied to any multiplicative group (Z/qZ)* where q = p^n.
+;;
+;;   Doing so, the order q-1 of Fq* in Th. 7.3.2 has to be replaced by the 
+;;   group order totient(q) of (Z/qZ)*.
+;;
+;;   But how to include q = 8,16,32,... ?   
+;;   r > 2: r is prime. There exists a unique solution for all a in (Z/qZ)*.
+;;   r = 2 (the square root case): 
+;;   - (Z/qZ)* has k = 2 characteristic factors [2,q/4] with [-1,3] as possible 
+;;       factor generators (see Shanks, Lemma 1 to Th. 44). 
+;;       I.e. 3 is of order q/4 and 3^2 = 9 of order q/8.
+;;   - (Z/qZ)* has totient/2^k = q/8 quadratic residues with 2^k = 4 roots each 
+;;       (see Shanks, Th. 46). 
+;;   - It follows that the subgroup <3> generated by 3 contains all quadratic 
+;;       residues of (Z/qZ)* (which must be all the powers of 9 located in <3>). 
+;;   - We apply the algorithm AMM for cyclic groups to <3> and compute two 
+;;       square roots x,y. 
+;;   - The numbers -x and -y, obviously roots as well, both lie in (-1)*<3> 
+;;       and therefore they differ from x,y and complete the set of 4 roots.
+;;
+(defun zq-amm (a r p q) ;; r,p prime, q = p^n
+  ;; assume a < q, r <= q
   (cond 
     ((= 1 r) (list a))
     ((= 2 q) (when (= 1 a) (list 1)))
     ((= 4 q) (when (or (= 1 a) (and (= 3 a) (oddp r))) (list a)))
-    (t 
-      (let ((ord (* (1- p) (truncate q p))) 
-            k n e u u1 s m re1 re ar au om om1 g gr b c r-inv br bu ab alpha beta rt )
-      (when (= 2 r) 
-        (if (= 2 p)
-          (when (/= 1 (mod a 8)) (return-from zq-amm nil))
-          (cond
-            ((/= 1 ($jacobi (mod a p) p))
-              (return-from zq-amm nil) )
-            ((= 2 (mod ord 4)) 
-              (setq rt (power-mod a (ash (+ ord 2) -2) q)) 
-              (return-from zq-amm `(,rt ,(- q rt))) )
-            ((and (= p q) (= 5 (mod p 8))) 
-              (let* ((x (ash a 1))
-                     (y (power-mod x (ash (- p 5) -3) p)) 
-                     (i (mod (* x y y) p)) 
-                     (rt (mod (* a y (1- i)) p)) )
-                (return-from zq-amm `(,rt ,(- p rt))) )))))
-      (when (= 2 p) ;; q = 8,16,32,..  
-        (setq ord (ash ord -1)) ) ;; max element order
-      (multiple-value-setq (s m) (truncate ord r))
-      (when (and (= 0 m) (/= 1 (power-mod a s q))) (return-from zq-amm nil))
-      ;; r = 3, first 2 cases:
-      (when (= 3 r) 
+    (t
+      (let ((ord (* (1- p) (truncate q p))) ;; group order: totient(q)
+             k e u u1 s m re1 re ar au om om1 g gr b c r-inv br bu ab alpha beta rt )
+        (when (= 2 r)
+          (if (= 2 p)
+            (when (/= 1 (mod a 8)) (return-from zq-amm nil)) ;; a must be a power of 9
+            (cond
+              ((/= 1 ($jacobi (mod a p) p))
+                (return-from zq-amm nil) )
+              ((= 2 (mod ord 4))
+                (setq rt (power-mod a (ash (+ ord 2) -2) q)) 
+                (return-from zq-amm `(,rt ,(- q rt))) )
+              ((and (= p q) (= 5 (mod p 8)))
+                (let* ((x (ash a 1))
+                       (y (power-mod x (ash (- p 5) -3) p)) 
+                       (i (mod (* x y y) p)) 
+                       (rt (mod (* a y (1- i)) p)) )
+                  (return-from zq-amm `(,rt ,(- p rt))) )))))
+        (when (= 2 p) ;; q = 8,16,32,..  
+          (setq ord (ash ord -1)) ) ;; factor generator 3 is of half order
+        (multiple-value-setq (s m) (truncate ord r))
+        (when (and (= 0 m) (/= 1 (power-mod a s q))) (return-from zq-amm nil))
+        ;; r = 3, first 2 cases:
+        (when (= 3 r) 
+          (cond 
+            ((= 1 (setq m (mod ord 3))) ;; unique solution
+              (return-from zq-amm 
+                `(,(power-mod a (truncate (1+ (ash ord 1)) 3) q)) ))
+            ((= 2 m)                    ;; unique solution
+              (return-from zq-amm 
+                `(,(power-mod a (truncate (1+ ord) 3) q)) ))))
+        (setq u ord e 0 u1 u m 0)
+        (do () (())
+          (multiple-value-setq (u1 m) (truncate u1 r))
+          (cond 
+            ((= 0 m) (setq u u1 e (1+ e)))
+            (t (setq re1 (expt r e)         ;; ord = u*r^e
+                     r-inv (inv-mod r u) )  ;; r,u coprime
+               (return) )))
         (cond 
-          ((= 1 (setq m (mod ord 3))) ;; unique solution
-            (return-from zq-amm 
-              `(,(power-mod a (truncate (1+ (ash ord 1)) 3) q)) ))
-          ((= 2 m)                    ;; unique solution
-            (return-from zq-amm 
-              `(,(power-mod a (truncate (1+ ord) 3) q)) ))))
-      (setq u ord e 0 u1 u m 0)
-      (do () (())
-        (multiple-value-setq (u1 m) (truncate u1 r))
-        (cond 
-          ((= 0 m) (setq u u1 e (1+ e)))
-          (t (setq re1 (expt r e)         ;; ord = u*r^e
-                   r-inv (inv-mod r u) )  ;; r,u coprime
-             (return) )))
-      (cond 
-        ((= 0 e) 
-          (setq rt (power-mod a r-inv q)) ;; unique solution, see Bach,Shallit 7.3.1
-          (list rt) )
-        (t ;; a is r-th power
-          (setq n 2)
-          (do () ((and (= 1 (gcd n q)) (/= 1 (power-mod n s q)))) ;; n is no r-th power
-            (setq n ($next_prime n)) )
-          (setq g (power-mod n u q) gr g
-                re (truncate re1 r)
-                om (power-mod g re q) ) ;; r-th root of unity
-          (cond
-            ((or (/= 3 r) (= 0 (setq m (mod ord 9))))
-              (setq ar (power-mod a u q) b ar
-                    au (power-mod a re1 q) )
-              ;; compute k with g^-k = ar :
-              (setq k 0)
-              (do ((i 1 (1+ i)) (ri 1))
-                  ((= i e))
-                (setq gr (power-mod gr r q)
-                      re (truncate re r)
-                      om1 (power-mod b re q)
-                      ri (* ri r) )
-                (cond 
-                  ((or (< r 512) (= 2 p)) ;; required if p = 2 and r = 2 (maybe nonresidue), optional in other cases
-                    (setq c 0) ;; brute-force:
-                    (do () ((or (= 1 om1) (= c r))
-                             (when (= c r) (return-from zq-amm nil)) )
-                      (incf c)
-                      (setq om1 (mod (* om om1) q)) ))
-                  (t ;; baby-giant (r < 65536) or pollard-rho:
-                    (setq c (dlog-rho (inv-mod om1 q) om r q)) ))
-                (when (/= 0 c)
-                  (incf k (* c ri))
-                  (setq b (mod (* b (power-mod gr c q)) q))  ))
-              ;;
-              (setq k (mod (neg (truncate k r)) re1) ;; g is of order r^e
-                    br (power-mod g k q)             ;; br^r = g^-k = ar
-                    bu (power-mod au r-inv q)        ;; bu^r = au
-                    ab (cdr (zn-gcdex1 u re1))
-                    alpha (car ab)
-                    beta (cadr ab) )
-              (if (< alpha 0) (incf alpha ord) (incf beta ord))
-              (setq rt (mod (* (power-mod br alpha q) (power-mod bu beta q)) q)) )
-            ;; r = 3, remaining cases:
-            ((= 3 m)
-              (setq rt (power-mod a (truncate (+ (ash ord 1) 3) 9) q)) )
-            ((= 6 m)
-              (setq rt (power-mod a (truncate (+ ord 3) 9) q)) ))
-          (do ((i 1 (1+ i)) (j 1) (res (list rt)))
-              ((= i r) res)
-            (setq j (mod (* j om) q))
-            (push (mod (* rt j) q) res) )))))))
+          ((= 0 e) 
+            (setq rt (power-mod a r-inv q)) ;; unique solution, see Bach,Shallit 7.3.1
+            (list rt) )
+          (t ;; a is r-th power
+            (if (= p 2) ;; p = 2: then r = 2 (other r: e = 0)
+              (setq g 3)
+              (do ((n 2 ($next_prime n))) 
+                  ((and (= 1 (gcd n q)) (/= 1 (power-mod n s q))) ;; n is no r-th power
+                    (setq g (power-mod n u q)) )))
+            (setq gr g
+                  re (truncate re1 r)
+                  om (power-mod g re q) ) ;; r-th root of unity
+            (cond
+              ((or (/= 3 r) (= 0 (setq m (mod ord 9))))
+                (setq ar (power-mod a u q) 
+                      b ar
+                      au (power-mod a re1 q) )
+                ;; compute k with g^-k = ar :
+                (setq k 0)
+                (do ((i 1 (1+ i)) (ri 1))
+                    ((= i e))
+                  (setq gr (power-mod gr r q)
+                        re (truncate re r)
+                        om1 (power-mod b re q)
+                        ri (* ri r) )
+                  (cond 
+                    ((< r 512) ;; brute-force:
+                      (setq c 0) 
+                      (do () ((= 1 om1))
+                        (incf c)
+                        (setq om1 (mod (* om om1) q)) ))
+                    (t ;; baby-giant (r < 65536) or pollard-rho:
+                      (setq c (dlog-rho (inv-mod om1 q) om r q)) ))
+                  (when (/= 0 c)
+                    (incf k (* c ri))
+                    (setq b (mod (* b (power-mod gr c q)) q))  ))
+                ;;
+                (setq k (mod (neg (truncate k r)) re1) ;; g is of order r^e
+                      br (power-mod g k q)             ;; br^r = g^-k = ar
+                      bu (power-mod au r-inv q)        ;; bu^r = au
+                      ab (cdr (zn-gcdex1 u re1))
+                      alpha (car ab)
+                      beta (cadr ab) )
+                (if (< alpha 0) (incf alpha ord) (incf beta ord))
+                (setq rt (mod (* (power-mod br alpha q) (power-mod bu beta q)) q)) )
+              ;; r = 3, remaining cases:
+              ((= 3 m)
+                (setq rt (power-mod a (truncate (+ (ash ord 1) 3) 9) q)) )
+              ((= 6 m)
+                (setq rt (power-mod a (truncate (+ ord 3) 9) q)) ))
+            ;; mult with r-th roots of unity:
+            (do ((i 1 (1+ i)) (j 1) (res (list rt)))
+                ((= i r) res)
+              (setq j (mod (* j om) q))
+              (push (mod (* rt j) q) res) )))))))
+;;
+;; -------------------------------------------------------------------------- ;;
 
+
+;; Two variants of gcdex:
 
 ;; returns gcd as first entry:
 ;; (zn-gcdex1 12 45) --> (3 4 -1), so 4*12 + -1*45 = 3
