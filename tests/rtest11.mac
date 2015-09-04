@@ -327,7 +327,7 @@ true;
 
 block ([foo : build_info ()],
   lisp_clisp : sequalignore (foo@lisp_name, "clisp"),
-  host_windows : some (lambda ([x], ssearch (x, foo@host, 'sequalignore)), ["windows", "win32", "w32", "ms-win"]),
+  host_windows : some (lambda ([x], ssearch (x, foo@host, 'sequalignore) # false), ["windows", "win32", "w32", "ms-win"]),
   0);
 0;
 
