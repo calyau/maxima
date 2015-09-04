@@ -1663,7 +1663,7 @@
 ;;
 ;; The logic, as I understand it (Rupert 01/2014):
 ;;
-;;   (1) If I integrate f(x) wrt x and get an atom other than x, either
+;;   (1) If I integrate f(x) wrt x and get an atom other than x or 0, either
 ;;       something's gone horribly wrong, or this is part of a larger
 ;;       expression. In the latter case, we can return T here because hopefully
 ;;       something else interesting will make the top-level return NIL.
@@ -1687,7 +1687,12 @@
 ;;   (6) Otherwise something interested (and hopefully useful) has
 ;;       happened. Return NIL to tell SININT to report it.
 (defun sum-of-intsp (ans)
-  (cond ((atom ans) (not (eq ans var)))
+  (cond ((atom ans)
+	 ;; If we have integrate(0, x) or integrate(x,x). then return
+	 ;; NIL so the caller will actually do the integral. Otherwise
+	 ;; return T.
+	 (not (or (equal ans 0)
+		  (eq ans var))))
 	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
 	((eq (caar ans) '%integrate) t)
 	((mtimesp ans)
