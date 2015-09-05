@@ -452,6 +452,36 @@ The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{
 
 @end deffn
 
+@deffn {Function} besssimp (@var{expr})
+Simplifies expressions containing Bessel functions bessel_j, bessel_y,
+bessel_i, bessel_k, hankel_1, hankel_2, strauve_h and strauve_l.
+Recurrence relations are used to replace functions of highest order n
+by functions of order n-1 and n-2.  This is repeated until all the orders
+differ by less than 2.
+
+
+@opencatbox
+@category{Package contrib_ode}
+@category{Bessel functions}
+@category{Special functions}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} expintegral_e_simp (@var{expr})
+Simplify expressions containing exponential integral expintegral_e
+using the recurrence (A&S 5.1.14).
+
+   expintegral_e(n+1,z) 
+        = (1/n) * (exp(-z)-z*expintegral_e(n,z))      n = 1,2,3 ....
+
+@opencatbox
+@category{Package contrib_ode}
+@category{Exponential Integrals}
+@category{Special functions}
+@closecatbox
+
+@end deffn
 
 
 @node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode
