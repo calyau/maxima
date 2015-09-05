@@ -51,3 +51,33 @@ false;
 block ([use_fast_arrays : true], kill (foo), foo [2] : 'x, foo [3] : 'y, foo [5] : 'z, foo [7] : 'a, sort (listarray (foo)));
 [a, x, y, z];
 
+/* Bug #2978: "kill(a[i])" doesn't work with fast arrays */
+
+block ([use_fast_arrays : true,
+        y : yvalue],
+  local (y),
+  kill (foo),
+  foo ['x] : 'x,
+  foo ['y] : 'y,
+  foo [ y] :  y,
+  foo ['z] : 'z,
+  /* Check that indices get evaluated */
+  kill (foo ['y]),
+  kill (foo [ y]),
+  sort (listarray (foo)));
+[x, z];
+
+block ([use_fast_arrays : true,
+        y : yvalue],
+  local (y),
+  kill (foo),
+  foo [1, 'x] : 'x,
+  foo [2, 'y] : 'y,
+  foo [2,  y] :  y,
+  foo [3, 'z] : 'z,
+  /* Check that indices get evaluated */
+  kill (foo [2, 'y]),
+  kill (foo [2,  y]),
+  sort (listarray (foo)));
+[x, z];
+
