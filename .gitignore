@@ -27,3 +27,6 @@ maxima*.tar.gz
 /binary
 *~
 *.ERR
+
+tags
+TAGS
