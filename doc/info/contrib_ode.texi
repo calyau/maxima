@@ -63,19 +63,27 @@ non-linear ODEs can have multiple solutions.  For example:
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
-
                     dy 2             dy
-(%o2)            x (--)  - (x y + 1) -- + y = 0
+(%o2)            x (--)  - (1 + x y) -- + y = 0
                     dx               dx
+@end group
+@group
 (%i3) contrib_ode(eqn,y,x);
+                    dy 2             dy
+(%t3)            x (--)  - (1 + x y) -- + y = 0
+                    dx               dx
+
+              first order equation not linear in y'
 
                                              x
 (%o3)             [y = log(x) + %c, y = %c %e ]
+@end group
+@group
 (%i4) method;
-
 (%o4)                        factor
+@end group
 @end example
 
 Nonlinear ODEs can have singular solutions without constants of
@@ -89,21 +97,27 @@ integration, as in the second solution of the following example:
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
-
                        dy 2     dy
 (%o2)                 (--)  + x -- - y = 0
                        dx       dx
+@end group
 (%i3) contrib_ode(eqn,y,x);
+                       dy 2     dy
+(%t3)                 (--)  + x -- - y = 0
+                       dx       dx
+
+              first order equation not linear in y'
 
                                            2
                                  2        x
 (%o3)              [y = %c x + %c , y = - --]
                                           4
+@group
 (%i4) method;
-
 (%o4)                       clairault
+@end group
 @end example
 
 
@@ -119,19 +133,21 @@ to give explicit solutions.
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) eqn:'diff(y,x)=(x+y)^2;
-
                           dy          2
-(%o2)                     -- = (y + x)
+(%o2)                     -- = (x + y)
                           dx
+@end group
+@group
 (%i3) contrib_ode(eqn,y,x);
-
-(%o3) [[x = %c - atan(sqrt(%t)), y = - x - sqrt(%t)], 
+(%o3) [[x = %c - atan(sqrt(%t)), y = (- x) - sqrt(%t)], 
                      [x = atan(sqrt(%t)) + %c, y = sqrt(%t) - x]]
+@end group
+@group
 (%i4) method;
-
 (%o4)                       lagrange
+@end group
 @end example
 
 The following example (Kamke 1.112) demonstrates an implicit solution.
@@ -145,23 +161,26 @@ The following example (Kamke 1.112) demonstrates an implicit solution.
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) assume(x>0,y>0);
-
 (%o2)                    [x > 0, y > 0]
+@end group
+@group
 (%i3) eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
-
                      dy           2    2
 (%o3)              x -- - x sqrt(y  + x ) - y
                      dx
+@end group
+@group
 (%i4) contrib_ode(eqn,y,x);
-
                                   y
 (%o4)                  [x - asinh(-) = %c]
                                   x
+@end group
+@group
 (%i5) method;
-
 (%o5)                          lie
+@end group
 @end example
 
  
@@ -177,23 +196,25 @@ solve the new ODE, so it is returned unevaluated.
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
-
                     2 dy      2  2      n
 (%o2)              x  -- = c x  y  + b x  + a
                       dx
+@end group
+@group
 (%i3) contrib_ode(eqn,y,x);
-
                d%u
                ---                            2
-               dx        2     n - 2   a     d %u
-(%o3)  [[y = - ----, %u c  (b x      + --) + ---- c = 0]]
-               %u c                     2      2
-                                       x     dx
+               dx        2  a       n - 2    d %u
+(%o3)  [[y = - ----, %u c  (-- + b x     ) + ---- c = 0]]
+               %u c          2                 2
+                            x                dx
+@end group
+@group
 (%i4) method;
-
 (%o4)                        riccati
+@end group
 @end example
 
 
@@ -243,26 +264,14 @@ special functions.
 @c odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
 @c ===end===
 @example
-(%i1) load('contrib_ode);
-
+(%i1) load('contrib_ode)$
+@group
 (%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
-...trying factor method
-...solving 7 equations in 4 variables
-...trying the Bessel solver
-...solving 1 equations in 2 variables
-...trying the F01 solver
-...solving 1 equations in 3 variables
-...trying the spherodial wave solver
-...solving 1 equations in 4 variables
-...trying the square root Bessel solver
-...solving 1 equations in 2 variables
-...trying the 2F1 solver
-...solving 9 equations in 5 variables
        gauss_a(- 6, - 2, - 3, - x)  gauss_b(- 6, - 2, - 3, - x)
 (%o2) @{---------------------------, ---------------------------@}
                     4                            4
                    x                            x
-
+@end group
 @end example
 
 @opencatbox
@@ -286,28 +295,28 @@ zero if @var{soln} is a solution of @var{eqn}.
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
-
+@group
 (%i2) eqn:'diff(y,x,2)+(a*x+b)*y;
-
                          2
                         d y
-(%o2)                   --- + (a x + b) y
+(%o2)                   --- + (b + a x) y
                           2
                         dx
+@end group
 (%i3) ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
          +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
-
                                   3/2
-                    1  2 (a x + b)
+                    1  2 (b + a x)
 (%o3) [y = bessel_y(-, --------------) %k2 sqrt(a x + b)
                     3       3 a
                                           3/2
-                            1  2 (a x + b)
+                            1  2 (b + a x)
                  + bessel_j(-, --------------) %k1 sqrt(a x + b)]
                             3       3 a
+@group
 (%i4) ode_check(eqn,ans[1]);
-
 (%o4)                           0
+@end group
 @end example
 
 @opencatbox
@@ -452,13 +461,41 @@ The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{
 
 @end deffn
 
-@deffn {Function} besssimp (@var{expr})
+@deffn {Function} bessel_simplify (@var{expr})
 Simplifies expressions containing Bessel functions bessel_j, bessel_y,
 bessel_i, bessel_k, hankel_1, hankel_2, strauve_h and strauve_l.
-Recurrence relations are used to replace functions of highest order n
-by functions of order n-1 and n-2.  This is repeated until all the orders
+Recurrence relations (given in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions},
+Section 9.1.27) are used to replace functions of highest order n
+by functions of order n-1 and n-2.
+
+This process repeated until all the orders
 differ by less than 2.
 
+@c ===beg===
+@c load('contrib_ode)$
+@c bessel_simplify(4*bessel_j(n,x^2)*(x^2-n^2/x^2) 
+@c   +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
+@c   -(bessel_j(n,x^2)-bessel_j(n+2,x^2))*x)
+@c   -2*bessel_j(n+1,x^2)+2*bessel_j(n-1,x^2));
+@c bessel_simplify(diff(3*%pi*(struve_h(1,z)*bessel_j(2,z)
+@c   -bessel_j(1,z)*struve_h(2,z))*z/2,z)-bessel_j(2,z)*z^2);
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+@group
+(%i2) bessel_simplify(4*bessel_j(n,x^2)*(x^2-n^2/x^2)
+  +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
+  -(bessel_j(n,x^2)-bessel_j(n+2,x^2))*x)
+  -2*bessel_j(n+1,x^2)+2*bessel_j(n-1,x^2));
+(%o2)                           0
+@end group
+@group
+(%i3) bessel_simplify(diff(3*%pi*(struve_h(1,z)*bessel_j(2,z)
+  -bessel_j(1,z)*struve_h(2,z))*z/2,z)-bessel_j(2,z)*z^2);
+(%o3)                           0
+@end group
+@end example
 
 @opencatbox
 @category{Package contrib_ode}
@@ -468,7 +505,7 @@ differ by less than 2.
 
 @end deffn
 
-@deffn {Function} expintegral_e_simp (@var{expr})
+@deffn {Function} expintegral_e_simplify (@var{expr})
 Simplify expressions containing exponential integral expintegral_e
 using the recurrence (A&S 5.1.14).
 
