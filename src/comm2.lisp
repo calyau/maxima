@@ -797,10 +797,10 @@
 	 (cond ((hash-table-p arra)
 		(let ((dim1 (gethash 'dim1 arra)))
 		  (return (list* '(mlist) '$hash_table (if dim1 1 t)
-				 (loop for u being the hash-keys in arra using (hash-value v)
+				 (loop for u being the hash-keys in arra
 				    unless (eq u 'dim1)
 				    collect
-				    (if (progn v dim1) ;;ignore v
+				    (if dim1
 					u
 					(cons '(mlist simp) u)))))))
 	       ((arrayp arra)
