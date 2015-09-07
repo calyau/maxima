@@ -388,12 +388,16 @@
 	 (propg))))
 
 (defmfun isp (pat)
-  (let ((isp 'unknown))
+  (let ((isp 'unknown) #+ccl (err t))
     (ignore-errors
       (setq isp
 	    (cond ((truep pat))
 		  ((falsep pat) nil)
-		  (t 'unknown))))
+		  (t 'unknown)))
+      (setq err nil))
+    #+ccl
+    (when err
+      (setq +labs nil))
     isp))
 
 (defmfun kindp (x y)
