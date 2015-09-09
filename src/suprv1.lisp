@@ -770,14 +770,14 @@
 (defmspec $errcatch (form)
   (let ((errcatch (cons bindlist loclist)) ret)
     (if (null (setq ret (let (*mdebug*)
-			  (errset (mevaln (cdr form)) lisperrprint))))
+			  (errset (rat-error-to-merror (mevaln (cdr form))) lisperrprint))))
 	(errlfun1 errcatch))
     (cons '(mlist) ret)))
 
 (defmspec $catch (form)
   (let ((mcatch (cons bindlist loclist)))
     (prog1
-	(catch 'mcatch (mevaln (cdr form)))
+	(catch 'mcatch (rat-error-to-merror (mevaln (cdr form))))
       (errlfun1 mcatch))))
 
 (defmfun $throw (exp)

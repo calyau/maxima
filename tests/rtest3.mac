@@ -396,3 +396,26 @@ block ([foo, bar, ctxt],
   killcontext (ctxt),
   0);
 0;
+
+/* mailing list 2015-09-07: How can I catch this error? "errcatch" doesn't do the trick. */
+
+/* result for this test will change if ever "quotient by zero" bug is fixed */
+errcatch (integrate(ev(ratsimp(1/(x^(5/2)+3*x^(1/3))),algebraic),x));
+[];
+
+(kill (foo, bar, baz), foo () := bar (), bar () := (errcatch (integrate(ev(ratsimp(1/(x^(5/2)+3*x^(1/3))),algebraic),x)), throw ('baz)), catch (foo ()));
+baz;
+
+/* result for this test will change if ever "quotient by zero" bug is fixed */
+errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x));
+[];
+
+(kill (quux), bar () := (errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x)), throw ('quux)), catch (foo ()));
+quux;
+
+/* result for this test will change if ever "quotient by zero" bug is fixed */
+errcatch (taylor(coth(x), x, %i*%pi, 0));
+[];
+
+(kill (mumble), bar () := (errcatch (taylor(coth(x), x, %i*%pi, 0)), throw ('mumble)), catch (foo ()));
+mumble;
