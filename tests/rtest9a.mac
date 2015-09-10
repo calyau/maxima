@@ -98,3 +98,221 @@ block ([s, stuff],
 
 kill ("foo");
 done;
+
+/* mailing list 2015-09-08 and SF bug #3019: "transfer function" */
+
+(verify_display_2d (expr, expected_output) :=
+  block ([S, output],
+    with_default_2d_display
+     (S : make_string_output_stream (),
+      with_stdout (S, print (expr)),
+      output : get_output_stream_string (S),
+      close (S),
+      if is (output = expected_output) then true else [expected_output, output])),
+ verify_display_1d (expr, expected_output) :=
+  if is (string (expr) = expected_output) then true else [expected_output, output],
+ 0);
+0;
+
+block ([powerdisp : false],
+  verify_display_2d ((x+1)/(x+2),
+"x + 1
+----- 
+x + 2
+"));
+true;
+
+block ([powerdisp : true],
+  verify_display_2d ((x+1)/(x+2),
+"1 + x
+----- 
+2 + x
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d ((x+1)/(x+2), "(x+1)/(x+2)"));
+true;
+
+block ([powerdisp : true], verify_display_1d ((x+1)/(x+2), "(1+x)/(2+x)"));
+true;
+
+(H : ( n2 * s^2 + n1 * s + n0 ) / ( d2 * s^2 + d1 * s + d0 ), 0);
+0;
+
+block ([powerdisp : false], verify_display_2d (H,
+"    2
+n2 s  + n1 s + n0
+----------------- 
+    2
+d2 s  + d1 s + d0
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (H,
+"                2
+n0 + n1 s + n2 s
+----------------- 
+                2
+d0 + d1 s + d2 s
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (H, "(n2*s^2+n1*s+n0)/(d2*s^2+d1*s+d0)"));
+true;
+
+block ([powerdisp : true], verify_display_1d (H, "(n0+n1*s+n2*s^2)/(d0+d1*s+d2*s^2)"));
+true;
+
+
+/* mailing list 2015-09-08: "Maxima 5.37.1 changes in behaviour when simp:false" */
+
+simp:false;
+false;
+
+(p:1+x,
+ [?second (p), ?third (p)]);
+[1, x];
+
+string(p);
+"1+x";
+
+tex(p, false);
+"$$1+x$$
+";
+
+simp : true;
+true;
+
+(p:1+x,
+ [?second (p), ?third (p)]);
+[1, x];
+
+string(p);
+"x+1";
+
+tex(p, false);
+"$$x+1$$
+";
+
+block ([powerdisp : false], verify_display_2d (diff (x^n, x),
+"   n - 1
+n x      
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (diff (x^n, x),
+"   (- 1) + n
+n x          
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (diff (x^n, x), "n*x^(n-1)"));
+true;
+
+block ([powerdisp : true], verify_display_1d (diff (x^n, x), "n*x^((-1)+n)"));
+true;
+
+/* mailing list 2015-09-04: "Inconsistent ordering: (x+1)^2 becomes (1+x)^2, but x+1 stays x+1" */
+
+block ([powerdisp : false], verify_display_2d ((x+1)^2,
+"       2
+(x + 1)  
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d ((x+1)^2,
+"       2
+(1 + x)  
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d ((x+1)^2, "(x+1)^2"));
+true;
+block ([powerdisp : true], verify_display_1d ((x+1)^2, "(1+x)^2"));
+true;
+
+block ([powerdisp : false], verify_display_2d ((x^3+x^2+x+1)^2,
+"  3    2         2
+(x  + x  + x + 1)  
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d ((x^3+x^2+x+1)^2,
+"          2    3 2
+(1 + x + x  + x )  
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d ((x^3+x^2+x+1)^2, "(x^3+x^2+x+1)^2"));
+true;
+block ([powerdisp : true], verify_display_1d ((x^3+x^2+x+1)^2, "(1+x+x^2+x^3)^2"));
+true;
+
+block ([powerdisp : false], verify_display_2d (x+1,
+"x + 1 
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (x+1,
+"1 + x 
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (x+1, "x+1"));
+true;
+block ([powerdisp : true], verify_display_1d (x+1, "1+x"));
+true;
+
+block ([powerdisp : false], verify_display_2d (x^3+x^2+x+1,
+" 3    2
+x  + x  + x + 1 
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (x^3+x^2+x+1,
+"         2    3
+1 + x + x  + x  
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (x^3+x^2+x+1, "x^3+x^2+x+1"));
+true;
+block ([powerdisp : true], verify_display_1d (x^3+x^2+x+1, "1+x+x^2+x^3"));
+true;
+
+block ([powerdisp : false], verify_display_2d (2^(x+1),
+" x + 1
+2      
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (2^(x+1),
+" 1 + x
+2      
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (2^(x+1), "2^(x+1)"));
+true;
+block ([powerdisp : true], verify_display_1d (2^(x+1), "2^(1+x)"));
+true;
+
+block ([powerdisp : false], verify_display_2d (2^(x^3+x^2+x+1),
+"  3    2
+ x  + x  + x + 1
+2                
+"));
+true;
+
+block ([powerdisp : true], verify_display_2d (2^(x^3+x^2+x+1),
+"          2    3
+ 1 + x + x  + x
+2                
+"));
+true;
+
+block ([powerdisp : false], verify_display_1d (2^(x^3+x^2+x+1), "2^(x^3+x^2+x+1)"));
+true;
+block ([powerdisp : true], verify_display_1d (2^(x^3+x^2+x+1), "2^(1+x+x^2+x^3)"));
+true;
+

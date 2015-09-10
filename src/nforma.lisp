@@ -57,9 +57,10 @@
 	(t form)))			; if there is no formatter. Just return form unchanged.
 
  
-(defun form-mplus (form &aux args trunc)
+(defun form-mplus (form &aux args trunc simplified)
   (setq args (mapcar #'nformat (cdr form)))
   (setq trunc (member 'trunc (cdar form) :test #'eq))
+  (setq simplified (member 'simp (cdar form) :test #'eq))
   (cons (if trunc '(mplus trunc) '(mplus))
 	(cond ((and (member 'ratsimp (cdar form) :test #'eq)
 		    (not (member 'simp (cdar form) :test #'eq)))
@@ -70,8 +71,8 @@
 	       (if (and (not (mmminusp (car args)))
 			(mmminusp (cadr args)))
 		   args
-		   (nreverse args)))
-	      (t (nreverse args)))))
+		   (if simplified (nreverse args) args)))
+	      (t (if simplified (nreverse args) args)))))
 
 (defun form-mtimes (form)
   (cond ((null (cdr form)) '((mtimes)))
