@@ -5,7 +5,7 @@
 'done$
 
 /* define a simple version of `rootsof' */
-(rof(expr):= map('rhs, solve(expr)), 'done);
+(rof(expr, var):= map('rhs, solve(expr, var)), 'done);
 'done$
 
 int_rational_function(1,x);
@@ -61,4 +61,4 @@ block([q: 7*x^13 + 10*x^8 + 4*x^7 - 7*x^6 - 4*x^3 - 4*x^2 + 3*x +
 
 /* from comments in share/integration/hermite_reduce.mac */
 int_rational_function((x^4-3*x^2+6)/(x^6-5*x^4+5*x^2+4),x);
-'lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1))$
+'lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1,t))$

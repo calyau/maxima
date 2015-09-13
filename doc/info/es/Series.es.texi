@@ -37,20 +37,20 @@ Ejemplos:
 
 @c ===beg===
 @c lsum (x^i, i, [1, 2, 7]);
-@c lsum (i^2, i, rootsof (x^3 - 1));
+@c lsum (i^2, i, rootsof (x^3 - 1, x));
 @c ===end===
 @example
 (%i1) lsum (x^i, i, [1, 2, 7]);
                             7    2
 (%o1)                      x  + x  + x
-(%i2) lsum (i^2, i, rootsof (x^3 - 1));
+(%i2) lsum (i^2, i, rootsof (x^3 - 1, x));
                      ====
                      \      2
 (%o2)                 >    i
                      /
                      ====
                                    3
-                     i in rootsof(x  - 1)
+                     i in rootsof(x  - 1, x)
 @end example
 @end deffn
 

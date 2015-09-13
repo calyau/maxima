@@ -9,7 +9,7 @@ algorithm.  Seems to work for the few tests that I've run.
 
 f:(x^4-3*x^2+6)/(x^6-5*x^4+5*x^2+4)$
 int_rational_function(f,x);
--> lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1))
+-> lsum(t*log(x^3+t*x^2-3*x-2*t)/2,t,rootsof(t^2+1,t))
 
 One refinement that needs to be done is to try to solve for the roots
 and substitute them in if possible, instead of leaving the result as a
@@ -126,7 +126,7 @@ carefully. */
         g : algebraic_gcd(d, a - t*expand(diff(d, var)/c)),
         untellrat(t),
         g : log(g),
-            s : s + apply('lsum, [t*g/c, t, rootsof(rr)]))),
+            s : s + apply('lsum, [t*g/c, t, rootsof(rr, t)]))),
       s);
 
 
