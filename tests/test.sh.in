@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This is the general driver used by the testsuite to run tests by
 # "make check" in the tests directory. It gets processed by a
@@ -11,7 +11,6 @@ LISP="!LISPNAME!"
 
 # Die if a command fails
 set -e
-set -o pipefail
 
 # This command doesn't exit with a helpful status if the lisp survives
 # but the test fails so we must check by hand that nothing untoward
