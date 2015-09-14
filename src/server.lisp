@@ -73,7 +73,8 @@
 		      (sb-bsd-sockets:get-host-by-name host)) port)
 	     (sb-bsd-sockets:socket-make-stream
 	      socket :input t :output t :buffering (if bin :none :line)
-	      :element-type (if bin '(unsigned-byte 8) 'character)))
+	      :element-type (if bin '(unsigned-byte 8) 'character)
+              #+sb-unicode :external-format #+sb-unicode :utf-8))
     #+gcl (si::socket port :host host)
     #+lispworks (comm:open-tcp-stream host port :direction :io :element-type
                                       (if bin 'unsigned-byte 'base-char))
