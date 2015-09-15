@@ -2189,6 +2189,10 @@ gamma_incomplete_regularized(0,z);
 gamma_incomplete_regularized(a,inf);
 0;
 
+/* Check that the derivative is correct. */
+diff(gamma_incomplete_regularized(a,z),z);
+-(z^(a-1)*%e^(-z))/gamma(a);
+
 /* Expand gamma_incomplete_regularized */
 
 gamma_expand:true;
