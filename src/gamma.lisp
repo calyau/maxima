@@ -1417,6 +1417,7 @@
             ((mtimes) -1 ((mqapply) (($psi array) 0) a)))))
    ;; The derivative wrt z
    ((mtimes)
+      -1
       ((mexpt) $%e ((mtimes) -1 z))
       ((mexpt) z ((mplus) -1 a))
       ((mexpt) ((%gamma) a) -1)))

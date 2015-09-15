@@ -447,8 +447,8 @@ integral ser@'{a} expressa como um somat@'{o}rio sobre as ra@'{i}zes do denomina
        >      -------------------------------
       /                    2
       ====            3 %r4  - 2 %r4
-                      3    2
-      %r4 in rootsof(x  - x  + 1)
+                        3      2
+      %r4 in rootsof(%r4  - %r4  + 1, %r4)
 (%o4) ----------------------------------------------------------
                7
 

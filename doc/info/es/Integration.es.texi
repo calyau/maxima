@@ -482,8 +482,8 @@ Si ahora se le da a la variable el valor @code{true}, la parte no resuelta de la
        >      -------------------------------
       /                    2
       ====            3 %r4  - 2 %r4
-                      3    2
-      %r4 in rootsof(x  - x  + 1)
+                        3      2
+      %r4 in rootsof(%r4  - %r4  + 1, %r4)
 (%o4) ----------------------------------------------------------
                7
 

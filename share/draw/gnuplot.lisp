@@ -2718,7 +2718,23 @@
       (gethash '$label         *2d-graphic-objects*) 'label
       (gethash '$bars          *2d-graphic-objects*) 'bars
       (gethash '$polar         *2d-graphic-objects*) 'polar
-      (gethash '$image         *2d-graphic-objects*) 'image )
+      (gethash '$image         *2d-graphic-objects*) 'image
+      (gethash '%points        *2d-graphic-objects*) 'points
+      (gethash '%errors        *2d-graphic-objects*) 'errors
+      (gethash '%polygon       *2d-graphic-objects*) 'polygon
+      (gethash '%ellipse       *2d-graphic-objects*) 'ellipse
+      (gethash '%triangle      *2d-graphic-objects*) 'triangle
+      (gethash '%rectangle     *2d-graphic-objects*) 'rectangle
+      (gethash '%quadrilateral *2d-graphic-objects*) 'quadrilateral
+      (gethash '%region        *2d-graphic-objects*) 'region
+      (gethash '%explicit      *2d-graphic-objects*) 'explicit
+      (gethash '%implicit      *2d-graphic-objects*) 'implicit
+      (gethash '%parametric    *2d-graphic-objects*) 'parametric
+      (gethash '%vector        *2d-graphic-objects*) 'vect
+      (gethash '%label         *2d-graphic-objects*) 'label
+      (gethash '%bars          *2d-graphic-objects*) 'bars
+      (gethash '%polar         *2d-graphic-objects*) 'polar
+      (gethash '%image         *2d-graphic-objects*) 'image )
 
 (defun make-scene-2d (args)
    (let ((objects nil)
@@ -2896,7 +2912,21 @@
       (gethash '$parametric_surface *3d-graphic-objects*) 'parametric_surface
       (gethash '$tube               *3d-graphic-objects*) 'tube
       (gethash '$spherical          *3d-graphic-objects*) 'spherical
-      (gethash '$cylindrical        *3d-graphic-objects*) 'cylindrical )
+      (gethash '$cylindrical        *3d-graphic-objects*) 'cylindrical
+      (gethash '%points             *3d-graphic-objects*) 'points3d
+      (gethash '%elevation_grid     *3d-graphic-objects*) 'elevation_grid
+      (gethash '%mesh               *3d-graphic-objects*) 'mesh
+      (gethash '%triangle           *3d-graphic-objects*) 'triangle3d
+      (gethash '%quadrilateral      *3d-graphic-objects*) 'quadrilateral3d
+      (gethash '%explicit           *3d-graphic-objects*) 'explicit3d
+      (gethash '%implicit           *3d-graphic-objects*) 'implicit3d
+      (gethash '%parametric         *3d-graphic-objects*) 'parametric3d
+      (gethash '%vector             *3d-graphic-objects*) 'vect3d
+      (gethash '%label              *3d-graphic-objects*) 'label
+      (gethash '%parametric_surface *3d-graphic-objects*) 'parametric_surface
+      (gethash '%tube               *3d-graphic-objects*) 'tube
+      (gethash '%spherical          *3d-graphic-objects*) 'spherical
+      (gethash '%cylindrical        *3d-graphic-objects*) 'cylindrical  )
 
 ;; This function builds a 3d scene by calling the 
 ;; graphic objects constructors.
