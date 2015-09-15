@@ -800,7 +800,8 @@ Beispiele:
 @cindex \
 @end ifnotinfo
 @ifinfo
-@cindex \\
+@c adding the backslash to the index here breaks the LaTeX syntax of the file
+@c maxima.fns that is created by the first pdfLaTeX run by "make pdf".
 @end ifinfo
 Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt.  Sie werden 
 standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben.  Hat die 

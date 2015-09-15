@@ -260,6 +260,7 @@ clean-local: clean-info clean-html $(CLEAN_CHM)
 clean-info:
 	rm -f maxima.info*
 	rm -f maxima-index.lisp
+	rm -f maxima.fns
 
 clean-html:
 	rm -f maxima*.html

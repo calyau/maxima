@@ -616,7 +616,8 @@ literais, de outra forma retorna @code{false}.
 @cindex \
 @end ifnotinfo
 @ifinfo
-@cindex \\
+@c adding the backslash to the index here breaks the LaTeX syntax of the file
+@c maxima.fns that is created by the first pdfLaTeX run by "make pdf".
 @end ifinfo
 Strings (sequ@^{e}ncias de caractere) s@~{a}o colocadas entre aspas duplas @code{"}
 para entrada, e mostradas com ou sem as aspas duplas, dependendo do valor da

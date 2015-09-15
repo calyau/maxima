@@ -633,8 +633,10 @@ integers, otherwise @code{false}.
 @cindex \
 @end ifnotinfo
 @ifinfo
-@cindex \\
+@c adding the backslash to the index here breaks the LaTeX syntax of the file
+@c maxima.fns that is created by the first pdfLaTeX run by "make pdf".
 @end ifinfo
+
 Strings (quoted character sequences) are enclosed in double quote marks @code{"}
 for input, and displayed with or without the quote marks, depending on the
 global variable @mrefdot{stringdisp}
