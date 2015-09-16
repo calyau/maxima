@@ -29,6 +29,11 @@ Instead of "make clean" just remove everything in the build directory.
 If you want to use the current wxMaxima development version, you can use
 cmake -DUSE_WXMAXIMA_GIT=YES ..
 
+If you want to include VTK, use
+cmake -DUSE_VTK=YES ..
+(Attention: The compilation time will increase!!! The size of the installation will
+approximately be 100% more than without VTK.)
+
 
 
 In case a software gets upgraded (and no new patches are needed), it should

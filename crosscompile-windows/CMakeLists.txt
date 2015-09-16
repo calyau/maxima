@@ -16,6 +16,7 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." OFF)
+option(USE_VTK "Use VTK." OFF)
 
 
 # If you want to use a updated version of a program,
@@ -30,6 +31,7 @@ set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.1)
 set(TCLVERSION       8.6.4)
 set(TKVERSION        8.6.4)
+set(VTKVERSION       6.3.0)
 
 
 # MD5 checksums for the current program versions.
@@ -40,6 +42,7 @@ set(GNUPLOT_MD5   "4da2089339d9dd2b834f68b39cc876e6")
 set(TCL_MD5       "d7cbb91f1ded1919370a30edd1534304")
 set(TK_MD5        "261754d7dc2a582f00e35547777e1fea")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
+set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
 
 # Get Maxima version from configure.ac
 file(STRINGS "${CMAKE_SOURCE_DIR}/../configure.ac" CONFIGUREAC REGEX "AC_INIT\\(.*\\)")
@@ -55,6 +58,7 @@ set(WXWIDGETS_URL "https://sourceforge.net/projects/wxwindows/files/${WXWIDGETSV
 set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.zip")
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
+set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz")
 
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
@@ -106,22 +110,21 @@ externalproject_add(tcl
   URL "${TCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TCL_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/win/configure --host=${HOST} --prefix=C:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/win/configure --host=${HOST} --prefix=${CMAKE_BINARY_DIR}/tcltk-root
   BUILD_COMMAND $(MAKE)
   INSTALL_COMMAND $(MAKE) install
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 
 externalproject_add(tk
   URL "${TK_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TK_MD5}
   DEPENDS tcl
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tk-prefix/src/tk/win/configure --host=${HOST} --with-tcl=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/lib --prefix=C:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tk-prefix/src/tk/win/configure --host=${HOST} --with-tcl=${CMAKE_BINARY_DIR}/tcltk-root/lib --prefix=${CMAKE_BINARY_DIR}/tcltk-root
   BUILD_COMMAND $(MAKE)
   INSTALL_COMMAND $(MAKE) install
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/tcltk-root/ DESTINATION .)
 
 # Clisp (already a binary package just extract it...)
 #
@@ -158,7 +161,6 @@ externalproject_add(texfonts
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-
 find_program(WINE_EXE NAMES wine)
 if(WINE_EXE)
     message(STATUS "Found wine at ${WINE_EXE}")
@@ -173,13 +175,13 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 
 # Build Maxima
 externalproject_add(maxima
-  # first copy the Maxima source to a build directory, since out-of-source-builds do not work
+  # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -av --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_SOURCE_DIR}/build/maxima-prefix/src/maxima"
   DEPENDS clisp
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --prefix=C:/maxima-${MAXIMAVERSION}
-  # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
+  # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
   BUILD_COMMAND $(MAKE) -C src clisp-depends.mk
         COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
         COMMAND mv src/clisp-depends.mk-new src/clisp-depends.mk
@@ -190,6 +192,7 @@ externalproject_add(maxima
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
+
 
 
 
@@ -215,19 +218,38 @@ else()
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxWidgets
         BUILD_IN_SOURCE 1
-	PATCH_COMMAND patch -p1 < "${CMAKE_SOURCE_DIR}/wxmaxima-15.08.0.patch"
-        CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/acinclude.m4"
-                  COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+	PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/wxmaxima-15.08.0.patch
+        CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) allmo
-        INSTALL_COMMAND $(MAKE) wxMaxima.win
+              COMMAND $(MAKE) -C locales allmo
+        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima wxMaxima.win
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/wxMaxima/ DESTINATION wxMaxima)
 endif()
 
+if(USE_VTK)
+    externalproject_add(vtk-native
+        URL "${VTK_URL}"
+        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        URL_MD5 ${VTK_MD5}
+        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/vtk-native-root
+        BUILD_COMMAND $(MAKE)
+    )
+    externalproject_add(vtk
+        URL "${VTK_URL}"
+        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        URL_MD5 ${VTK_MD5}
+	PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/vtk-6.3.patch
+        DEPENDS tcl tk vtk-native
+        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcltk-root/bin/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcltk-root/include -DTCL_TCLSH=${CMAKE_BINARY_DIR}/tcltk-root/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tcltk-root/bin/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcltk-root/include -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/wine -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tcltk-root/include -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
+        BUILD_COMMAND $(MAKE)
+    )
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
+endif()
 
 # Include DLLs from the current Mingw environment.
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
+install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/)
 
 
 
