@@ -252,11 +252,10 @@
 
 ;; Following bits about exporting Maxima symbols is something of a mess.
 ;; The :maxima package contains lots and lots of symbols, many of which
-;; are relevant only to some specific block of code; those shouldn't
+;; are relevant only to some specific block of code; maybe those shouldn't
 ;; be exported. I've made an attempt to determine which symbols should be
-;; exported: all dollarified functions, any dollarified symbols which
-;; were declared by DEMFVAR, and any symbols which begin with the letter #\m.
-;; I wouldn't be surprised if a better policy could be invented.
+;; exported: all dollarified symbols, and all symbols which begin with the
+;; letter #\m. I wouldn't be surprised if a better policy could be invented.
 
 ;; Bottom line is, I'm going to burn in Hell for this hackery ...
 
@@ -265,20 +264,10 @@
     (when (or (get s 'nud) (get s 'led) (get s 'mheader))
       (export s))))
 
-(defun export-maxima-dollarified-functions ()
+(defun export-maxima-dollarified-symbols ()
   (do-symbols (s :maxima)
     (when (equal (car (exploden s)) #\$)
-      (if (or (fboundp s) (mfboundp s))
-        (export s)))))
-
-(defun export-maxima-dollarified-variables ()
-  (do-symbols (s :maxima)
-    (when (equal (car (exploden s)) #\$)
-      ;; DEFMVAR makes a (key, value) pair in the hash table *VARIABLE-INITIAL-VALUES*.
-      (multiple-value-bind (value present-p) (gethash s *variable-initial-values*)
-        (declare (ignore value))
-        (if (or present-p ($constantp s))
-          (export s))))))
+      (export s))))
 
 (defun export-maxima-mfoo ()
   (do-symbols (s :maxima)
@@ -294,29 +283,12 @@
   (do-symbols (s :maxima)
     (export s)))
 
-(export-maxima-keywords)
-(export-maxima-dollarified-functions)
-(export-maxima-dollarified-variables)
+;; Note that all keywords are dollarified symbols,
+;; so they don't need to be tested separately.
+;; (export-maxima-keywords)
+(export-maxima-dollarified-symbols)
 (export-maxima-mfoo)
 ; (export-maxima-all)
-
-;; DEFMVAR isn't really appropriate for these ...
-;; Maybe figure out how to cover these in general export above.
-
-(export '$namespaces)
-(export '$maxima)
-(export '$%%)
-(export '$__)
-(mapcar #'export (cdr $infolists))
-(export '$infolists)
-(export '$true)
-(export '$false)
-(export '$in)
-(export '$equal)
-(export '$notequal)
-(export '$done)
-(export '$unknown)
-(export '$block)
 
 ; ------------------ begin modified existing Maxima functions ------------------
 
