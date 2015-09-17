@@ -26,7 +26,7 @@ option(USE_VTK "Use VTK." OFF)
 
 # current program versions
 set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  15.08.0)
+set(WXMAXIMAVERSION  15.08.2)
 set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.1)
 set(TCLVERSION       8.6.4)
@@ -36,7 +36,7 @@ set(VTKVERSION       6.3.0)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "4ad1f4fe954101ea2a0d897cb8a7ef6e")
+set(WXMAXIMA_MD5  "57f8ad6376bfc8ca92c69e613dcf0d99")
 set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
 set(GNUPLOT_MD5   "4da2089339d9dd2b834f68b39cc876e6")
 set(TCL_MD5       "d7cbb91f1ded1919370a30edd1534304")
@@ -218,7 +218,6 @@ else()
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxWidgets
         BUILD_IN_SOURCE 1
-	PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/wxmaxima-15.08.0.patch
         CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) -C locales allmo
