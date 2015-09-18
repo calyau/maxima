@@ -1064,33 +1064,117 @@ Primfaktors des Totienten ab.
 @end example
 @end deffn
 
-@c --- 27.07.2013 VvN ----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @anchor{zn_mult_table}
 @deffn {Funktion} zn_mult_table (@var{n}) 
-@deffnx {Funktion} zn_mult_table (@var{n}, all)
+@deffnx {Funktion} zn_mult_table (@var{n}, @var{gcd})
 
-Ohne das optionale Argument @var{all} zeigt @code{zn_mult_table(n)} 
+Ohne das optionale Argument @var{gcd} zeigt @code{zn_mult_table(n)} 
 eine Multiplikationstabelle von allen Elementen in (Z/@var{n}Z)*, 
-d.h. von allen modulo @var{n} invertierbaren Elementen.
+d.h. von allen zu @var{n} teilerfremden Elementen.
 
-Das optionale Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
-verschiedenen Elemente gezeigt wird.
+Das optionale zweite Argument @var{gcd} erlaubt es, eine bestimmte Untermenge 
+von (Z/@var{n}Z) auszuw@"ahlen. 
+Ist @var{gcd} eine nat@"urliche Zahl, enth@"alt die Multiplikationstabelle 
+alle Restklassen @code{x} mit @code{gcd(x,n) = }@var{gcd}. 
+Zur besseren Lesbarkeit werden Zeilen- und Spaltenk@"opfe hinzugef@"ugt. 
+Falls notwendig, lassen sich diese mit @code{submatrix(1, tabelle, 1)} 
+wieder einfach entfernen. 
+
+Wird @var{gcd} auf @code{all} gesetzt, wird die Tabelle f@"ur s@"amtliche 
+von Null verschiedene Elemente in (Z/@var{n}Z) ausgegeben.
+
+Das zweite Beispiel unten zeigt einen alternativen Weg, f@"ur Untergruppen 
+eine Multiplikationstabelle zu erzeugen.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_power_table}.
 
 Beispiele:
 
+Die Standardtabelle zeigt alle Elemente aus (Z/@var{n}Z)* und erlaubt, 
+grundlegende Eigenschaften von modularen Multiplikationsgruppen zu zeigen und 
+zu studieren. Z.B. stehen in der Hauptdiagonale s@"amtliche quadratische Reste, 
+jede Zeile und Spalte enth@"alt alle Elemente, die Tabelle ist symmetrisch, etc..
+
+Wird @var{gcd} auf @code{all} gesetzt, wird die Tabelle f@"ur s@"amtliche 
+von Null verschiedene Elemente in (Z/@var{n}Z) ausgegeben.
+
 @example
-(%i1) zn_mult_table(4);
-                                [ 1  3 ]
-(%o1)                           [      ]
-                                [ 3  1 ]
-(%i2) zn_mult_table(4, all);
-                               [ 1  2  3 ]
-                               [         ]
-(%o2)                          [ 2  0  2 ]
-                               [         ]
-                               [ 3  2  1 ]
+(%i1) zn_mult_table(8);
+                                [ 1  3  5  7 ]
+                                [            ]
+                                [ 3  1  7  5 ]
+(%o1)                           [            ]
+                                [ 5  7  1  3 ]
+                                [            ]
+                                [ 7  5  3  1 ]
+(%i2) zn_mult_table(8, all);
+                            [ 1  2  3  4  5  6  7 ]
+                            [                     ]
+                            [ 2  4  6  0  2  4  6 ]
+                            [                     ]
+                            [ 3  6  1  4  7  2  5 ]
+                            [                     ]
+(%o2)                       [ 4  0  4  0  4  0  4 ]
+                            [                     ]
+                            [ 5  2  7  4  1  6  3 ]
+                            [                     ]
+                            [ 6  4  2  0  6  4  2 ]
+                            [                     ]
+                            [ 7  6  5  4  3  2  1 ]
+@end example
+
+Ist @var{gcd} eine Zahl, wird zur besseren Lesbarkeit ein Zeilen- und Spaltenkopf 
+hinzugef@"ugt.
+
+Ist die mit @var{gcd} ausgew@"ahlte Teilmenge eine Gruppe, gibt es einen 
+alternativen Weg, die Multiplikationstabelle zu erzeugen.
+Die Isomorphie zu einer Gruppe mit @code{1} als Identit@"at l@"asst sich nutzen, 
+um eine leicht lesbare Tabelle zu erhalten. Die Abbildung gelingt mit dem CRT.
+
+In der so erzeugten zweiten Version der Tabelle @code{T36_4} steht genau wie 
+bei @code{T9} die Identit@"at, hier @code{28}, in der linken oberen Ecke. 
+
+
+@example
+(%i1) T36_4: zn_mult_table(36,4);
+                        [ *   4   8   16  20  28  32 ]
+                        [                            ]
+                        [ 4   16  32  28  8   4   20 ]
+                        [                            ]
+                        [ 8   32  28  20  16  8   4  ]
+                        [                            ]
+(%o1)                   [ 16  28  20  4   32  16  8  ]
+                        [                            ]
+                        [ 20  8   16  32  4   20  28 ]
+                        [                            ]
+                        [ 28  4   8   16  20  28  32 ]
+                        [                            ]
+                        [ 32  20  4   8   28  32  16 ]
+(%i2) T9: zn_mult_table(36/4);
+                             [ 1  2  4  5  7  8 ]
+                             [                  ]
+                             [ 2  4  8  1  5  7 ]
+                             [                  ]
+                             [ 4  8  7  2  1  5 ]
+(%o2)                        [                  ]
+                             [ 5  1  2  7  8  4 ]
+                             [                  ]
+                             [ 7  5  1  8  4  2 ]
+                             [                  ]
+                             [ 8  7  5  4  2  1 ]
+(%i3) T36_4: matrixmap(lambda([x], chinese([0,x],[4,9])), T9);
+                          [ 28  20  4   32  16  8  ]
+                          [                        ]
+                          [ 20  4   8   28  32  16 ]
+                          [                        ]
+                          [ 4   8   16  20  28  32 ]
+(%o3)                     [                        ]
+                          [ 32  28  20  16  8   4  ]
+                          [                        ]
+                          [ 16  32  28  8   4   20 ]
+                          [                        ]
+                          [ 8   16  32  4   20  28 ]
 @end example
 @end deffn
 
@@ -1099,20 +1183,16 @@ Beispiele:
 @deffn {Funktion} zn_nth_root (@var{x}, @var{n}, @var{m}) 
 @deffnx {Funktion} zn_nth_root (@var{x}, @var{n}, @var{m}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Gibt eine Liste mit den @var{n}-ten Wurzeln von @var{x} zur@"uck, falls @var{x} 
-eine Einheit in der multiplikativen Gruppe (Z/@var{m}Z)* ist, 
-d.h. teilerfremd zu @var{m}, 
-und falls @var{x} die @var{n}-te Potenz einer Einheit von (Z/@var{m}Z)* ist. 
-Andernfalls gibt @code{zn_nth_root} @code{false} zur@"uck.  
+Gibt eine Liste mit allen @var{n}-ten Wurzeln von @var{x} aus der multiplikativen 
+Untergruppe von (Z/@var{m}Z) zur@"uck, in der sich @var{x} befindet, 
+oder @code{false}, falls @var{x} keine @var{n}-te Potenz modulo @var{m} oder 
+kein Element einer multiplikativen Untergruppe von (Z/@var{m}Z) ist.
 
-Abweichend hiervon muss das Argument @var{x} in RSA-@"ahnlichen F@"allen, 
-in denen der Modulus @var{m} in paarweise verschiedene Faktoren zerf@"allt, 
-nicht teilerfremd zu @var{m} sein. 
-In diesen F@"allen wird f@"ur jede @var{n}-te Potenz eine Liste von Wurzeln 
-zur@"uck gegeben.
+@var{x} ist Element einer multiplikativen Untergruppe modulo @var{m}, wenn der 
+gr@"o@ss{}te gemeinsame Teiler @code{g = gcd(x,m)} zu @code{m/g} teilerfremd ist.
 
 @code{zn_nth_root} basiert auf einem Algorithmus von Adleman, Manders und Miller 
-und Ergebnissen @"uber modulo multiplikative Gruppen von Shanks.
+und S@"atzen @"uber modulare Multiplikationsgruppen von Daniel Shanks.
 
 Der Algorithmus ben@"otigt eine Primfaktorzerlegung des Modulus @var{m}. 
 Es kann eventuell sinnvoll sein, diese Zerlegung vorab zu berechnen und 
@@ -1143,9 +1223,42 @@ wobei @var{n} von @code{1} bis @code{6} variiert.
 (%o2)  [[1], [1, 13], [1, 9, 11], [1, 13], [1], [1, 3, 5, 9, 11, 13]]
 @end example
 
+Im folgenden Beispiel ist @var{x} nicht zu @var{m} teilerfremd, 
+aber es ist Element einer multiplikativen Untergruppe von (Z/@var{m}Z) 
+und jede @var{n}-te Wurzel ist aus der selben Untergruppe. 
+
+Die Restklasse @code{3} ist kein Element in irgend einer multiplikativen 
+Untergruppe von (Z/63Z) und wird daher nicht als dritte Wurzel von @code{27} 
+zur@"uck gegeben.
+
+Hier zeigt @code{zn_power_table} alle Reste @code{x} in (Z/63Z) 
+mit @code{gcd(x,63) = 9}. Diese Untergruppe ist isomorph zu (Z/7Z)* 
+und seine Identit@"at @code{36} wird mit Hilfe des CRT berechnet.
+
+@example
+(%i1) m: 7*9$
+
+(%i2) zn_power_table(m,9);
+                         [ 9   18  36  9   18  36 ]
+                         [                        ]
+                         [ 18  9   36  18  9   36 ]
+                         [                        ]
+                         [ 27  36  27  36  27  36 ]
+(%o2)                    [                        ]
+                         [ 36  36  36  36  36  36 ]
+                         [                        ]
+                         [ 45  9   27  18  54  36 ]
+                         [                        ]
+                         [ 54  18  27  9   45  36 ]
+(%i3) zn_nth_root(27,3,m);
+(%o3)                           [27, 45, 54]
+(%i4) id7:1$  id63_9: chinese([id7,0],[7,9]);
+(%o5)                                36
+@end example
+
 Im folgenden RSA-@"ahnlichen Beispiel, in dem der Modulus @code{N} in paarweise 
-verschiedene Faktoren zerf@"allt, ist das erste Argument von @code{zn_nth_root} 
-nicht auf Zahlen beschr@"ankt, die teilerfremd zu @code{N} sind.
+verschiedene Faktoren zerf@"allt, ist jedes @code{x} von @code{0} bis @code{N-1}
+in einer multiplikativen Untergruppe enthalten.
 
 Zur Entschl@"usselung wird die @code{e}-te Wurzel berechnet. 
 @code{e} ist teilerfremd zu @code{N} und die @code{e}-te Wurzel ist deshalb 
@@ -1243,55 +1356,100 @@ entsprechen.
 @c -----------------------------------------------------------------------------
 @anchor{zn_power_table}
 @deffn {Funktion} zn_power_table (@var{n}) 
-@deffnx {Funktion} zn_power_table (@var{n}, @var{opt_1}, @var{opt_2})
+@deffnx {Funktion} zn_power_table (@var{n}, @var{gcd})
+@deffnx {Funktion} zn_power_table (@var{n}, @var{gcd}, @var{max_exp})
 
 Ohne ein optionales Argument zeigt @code{zn_power_table(n)} 
 eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
-d.h. von allen modulo @var{n} invertierbaren Elementen. 
+d.h. von allen zu @var{n} teilerfremden Elementen. 
 Der Exponent variiert dabei jeweils zwischen @code{1} und 
 dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}, 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
-Die optionalen Argumente k@"onnen @code{all} und/oder eine nat@"urliche Zahl 
-@code{i} sein. Die Reihenfolge ist dabei beliebig.
+Das optionale zweite Argument @var{gcd} erlaubt es, eine bestimmte Untermenge 
+von (Z/@var{n}Z) auszuw@"ahlen. 
+Ist @var{gcd} eine nat@"urliche Zahl, werden Potenzen von allen Restklassen 
+@code{x} mit @code{gcd(x,n) = }@var{gcd} zur@"uck gegeben, 
+d.h. @var{gcd} ist standardm@"a@ss{}ig @code{1}.
+Wird @var{gcd} auf @code{all} gesetzt, wird die Tabelle f@"ur s@"amtliche 
+Elemente in (Z/@var{n}Z) ausgegeben.
 
-Das Argument @var{all} bewirkt, dass die Tabelle f@"ur alle von Null 
-verschiedenen Elemente gezeigt wird. Zus@"atzlich wird eine weitere Spalte ausgegeben.
-Ist der Modulus aus voneinander verschiedenen Primzahlen zusammen gesetzt, 
-stimmt dann die erste mit der letzten Spalte @"uberein.
-
-Ist eine zus@"atzliche nat@"urliche Zahl @code{i} angegeben, variiert der 
-Exponent zwischen @code{1} und @code{i}.
+Wird das optionale dritte Argument @var{max_exp} angegeben, variiert der 
+Exponent zwischen @code{1} und @var{max_exp}.
 
 Siehe auch @mref{zn_add_table}, @mref{zn_mult_table}.
 
 Beispiele:
 
+Die Standardeinstellung @var{gcd}@code{ = 1} erlaubt es, grundlegende S@"atze, 
+wie die von Fermat and Euler, zu zeigen und zu betrachten.
+
+Das Argument @var{gcd} erlaubt es, bestimmte Teilmengen von (Z/@var{n}Z) 
+auszuw@"ahlen und multiplikative Untergruppen und Isomorphismen zu untersuchen. 
+
+Z.B. sind die Gruppen @code{G10} und @code{G10_2} unter der Multiplikation 
+beide isomorph zu @code{G5}. @code{1} ist die Identit@"at in @code{G5}. 
+So sind @code{1} bzw. @code{6} die Identit@"aten in @code{G10} bzw. @code{G10_2}. 
+Entsprechende Zuordnungen ergeben sich bei den Primitivwurzeln, n-ten Wurzeln, etc..
+
 @example
-(%i1) zn_power_table(6);
-                                [ 1  1 ]
-(%o1)                           [      ]
-                                [ 5  1 ]
-(%i2) zn_power_table(6, all);
-                               [ 1  1  1 ]
-                               [         ]
-                               [ 2  4  2 ]
-                               [         ]
-(%o2)                          [ 3  3  3 ]
-                               [         ]
-                               [ 4  4  4 ]
-                               [         ]
-                               [ 5  1  5 ]
-(%i3) zn_power_table(6,all,5);
-                            [ 1  1  1  1  1 ]
-                            [               ]
-                            [ 2  4  2  4  2 ]
-                            [               ]
-(%o3)                       [ 3  3  3  3  3 ]
-                            [               ]
-                            [ 4  4  4  4  4 ]
-                            [               ]
-                            [ 5  1  5  1  5 ]
+(%i1) zn_power_table(10);
+                              [ 1  1  1  1 ]
+                              [            ]
+                              [ 3  9  7  1 ]
+(%o1)                         [            ]
+                              [ 7  9  3  1 ]
+                              [            ]
+                              [ 9  1  9  1 ]
+(%i2) zn_power_table(10,2);
+                              [ 2  4  8  6 ]
+                              [            ]
+                              [ 4  6  4  6 ]
+(%o2)                         [            ]
+                              [ 6  6  6  6 ]
+                              [            ]
+                              [ 8  4  2  6 ]
+(%i3) zn_power_table(10,5);
+(%o3)                         [ 5  5  5  5 ]
+(%i4) zn_power_table(10,10);
+(%o4)                         [ 0  0  0  0 ]
+(%i5) G5: [1,2,3,4];
+(%o6)                          [1, 2, 3, 4]
+(%i6) G10_2: map(lambda([x], chinese([0,x],[2,5])), G5);
+(%o6)                          [6, 2, 8, 4]
+(%i7) G10: map(lambda([x], power_mod(3, zn_log(x,2,5), 10)), G5);
+(%o7)                          [1, 3, 7, 9]
+@end example
+
+Wird @var{gcd} auf @code{all} gesetzt, wird die Tabelle f@"ur s@"amtliche 
+Elemente in (Z/@var{n}Z) ausgegeben.
+
+Das dritte Argument @var{max_exp} erlaubt, den h@"ochsten Exponenten zu w@"ahlen.  
+Die folgende Tabelle zeigt ein kleines RSA-Beispiel.
+
+@example
+(%i1) N:2*5$ phi:totient(N)$ e:7$ d:inv_mod(e,phi)$
+
+(%i5) zn_power_table(N, all, e*d);
+       [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ]
+       [                                                               ]
+       [ 1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 ]
+       [                                                               ]
+       [ 2  4  8  6  2  4  8  6  2  4  8  6  2  4  8  6  2  4  8  6  2 ]
+       [                                                               ]
+       [ 3  9  7  1  3  9  7  1  3  9  7  1  3  9  7  1  3  9  7  1  3 ]
+       [                                                               ]
+       [ 4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4 ]
+(%o5)  [                                                               ]
+       [ 5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5 ]
+       [                                                               ]
+       [ 6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6 ]
+       [                                                               ]
+       [ 7  9  3  1  7  9  3  1  7  9  3  1  7  9  3  1  7  9  3  1  7 ]
+       [                                                               ]
+       [ 8  4  2  6  8  4  2  6  8  4  2  6  8  4  2  6  8  4  2  6  8 ]
+       [                                                               ]
+       [ 9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9 ]
 @end example
 @end deffn
 
