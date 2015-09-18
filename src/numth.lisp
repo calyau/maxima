@@ -751,33 +751,56 @@
       (push fg fgs) )))
 
 
-;; r-th roots in (Z/nZ)* ;; ------------------------------------------------- ;;
+;; r-th roots --------------------------------------------------------------- ;;
 ;;
-;; Basically the algorithm is limited to modulo multiplicative groups (Z/nZ)*
-;; but in RSA-like cases where n factors into different primes r-th roots are 
-;; computed for every r-th power in (Z/nZ).
+;; If the residue class a is an r-th power modulo n and contained in a multiplication 
+;; subgroup of (Z/nZ), return all r-th roots from this subgroup and false otherwise.
 ;;
 (defmfun $zn_nth_root (a r n &optional fs-n)
   (unless (and (integerp a) (integerp r) (integerp n)) 
-    (gf-merror (intl:gettext "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m.") a r n) )
+    (gf-merror (intl:gettext 
+      "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m." ) a r n))
   (unless (and (> r 0) (> n 0)) 
-    (gf-merror (intl:gettext "`zn_nth_root': Second and third argument must be a positive integers. Found ~m, ~m.") r n) )
+    (gf-merror (intl:gettext 
+      "`zn_nth_root': Second and third arg must be pos integers. Found ~m, ~m." ) r n))
   (when fs-n
     (if (and ($listp fs-n) ($listp (cadr fs-n)))
       (setq fs-n (mapcar #'cdr (cdr fs-n))) ;; Lispify fs-n
       (gf-merror (intl:gettext 
-        "Optional fourth argument to `zn_nth_root' must be of the form [[p1, e1], ..., [pk, ek]]." ))))
+        "`zn_nth_root': The opt fourth arg must be of the form [[p1, e1], ..., [pk, ek]]." ))))
   (let ((rts (zn-nrt a r n fs-n)))
     (when rts (cons '(mlist simp) rts)) ))
 
 (defun zn-nrt (a r n &optional fs-n)
-  (let (p q aq ro ord qs rt rts rems res)
+  (let (g n/g c p q aq ro ord qs rt rts rems res)
     (unless fs-n (setq fs-n (let (($intfaclim)) (get-factor-list n))))
+    (setq a (mod a n))
     (cond 
-      ((every #'onep (mapcar #'second fs-n)) ;; RSA-like case
-        (when (= a 0) (return-from zn-nrt (list 0))) )
-      ((/= (gcd a n) 1)                      ;; units only in all other cases
-        (return-from zn-nrt nil) ))
+      ((every #'onep (mapcar #'second fs-n)) ;; RSA-like case (n is squarefree)
+        (when (= a 0) (return-from zn-nrt (list 0))) ) ;; n = 1: exit here 
+      ((/= (gcd a n) 1)
+        ;; Handle residue classes not coprime to n (n is not squarefree):
+        ;; Use Theorems 49 and 50 from 
+        ;;   Shanks - Solved and Unsolved Problems in Number Theory
+        (setq g (gcd a n) n/g (truncate n g))
+        (when (/= (gcd g n/g) 1)     ;; a is not contained in any mult. subgroup (Th. 50):
+          (return-from zn-nrt nil) ) ;;   exit here
+        (when (= a 0) (return-from zn-nrt (list 0)))
+        ;; g = gcd(a,n). Now assume gcd(g,n/g) = 1.
+        ;; There are totient(n/g) multiples of g, i*g, with gcd(i,n/g) = 1, 
+        ;;   which form a modulo multiplication subgroup of (Z/nZ),
+        ;;   isomorphic to (Z/mZ)*, where m = n/g.
+        ;; a is one of these multiples of g.
+        ;; Find the r-th roots of a resp. mod(a,m) in (Z/mZ)* and then 
+        ;;   by using CRT all corresponding r-th roots of a in (Z/nZ).
+        (setq a (mod a n/g)
+              rts (zn-nrt a r n/g)
+              c (inv-mod g n/g) ;; CRT-coeff
+              ;; isomorphic mapping (Th. 49):
+              ;;   (use CRT with x = 0 mod g and x = rt mod n/g)
+              res (mapcar #'(lambda (rt) (* g (mod (* c rt) n/g))) rts) )
+        (return-from zn-nrt (sort res #'<)) ))
+    ;;
     ;; for every prime power factor of n  
     ;;   reduce a and r if possible and call zq-nrt:
     (dolist (pe fs-n)
@@ -1021,49 +1044,59 @@
         (cons '($matrix simp) (nreverse res)) )
     (push (mfuncall '$makelist `((mod) (+ ,i $j) ,n) '$j 0 (1- n)) res) ))
 
-(defmfun $zn_mult_table (n &optional all?)
+;; multiplication table modulo n
+;;
+;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i#0.
+;;  If n # 1 add row and column headings for better readability.
+;;
+(defmfun $zn_mult_table (n &optional g)
   (zn-table-errchk n "zn_mult_table")
-  (cond
-    ((or (primep n) ;; field
-         (equal all? '$all) )
-      (do ((i 1 (1+ i)) res)
-          ((= i n) (cons '($matrix simp) (nreverse res)))
-        (push 
-           (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j 1 (1- n))
-           res )))
-    (t ;; units only
-      (let (units res)
-        (do ((i 1 (1+ i)))
-            ((= i n) 
-              (setq units (cons '(mlist simp) (nreverse units))) ) 
-          (when (= 1 (gcd i n)) (push i units)) )
-        (dolist (i (cdr units) (cons '($matrix simp) (nreverse res)))
-          (push 
-            (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j units)
-            res ))))))
-
-(defmfun $zn_power_table (&rest args)
-  (zn-table-errchk (car args) "zn_power_table")
-  (let ((n (car args)) all? cols (x (cadr args)) (y (caddr args)))
-    (when x
-      (cond 
-        ((integerp x) (setq cols x))
-        ((equal x '$all) (setq all? t))
-        (t (gf-merror (intl:gettext 
-             "Second argument to `zn_power_table' must be `all' or a small fixnum." )))))
-    (when y
-      (cond 
-        ((and (integerp x) (equal y '$all)) (setq all? t))
-        ((and (equal x '$all) (integerp y)) (setq cols y))
-        (t (format t "The third argument to `zn_power_table' is not usable and was ignored.~%") )))
-    (unless cols
-      (setq cols (car (last (zn-characteristic-factors n))))
-      (when all? (incf cols)) )
-    (do ((i 1 (1+ i)) res)
+  (let ((i0 1) all header choice res)
+    (cond 
+      ((not g) (setq g 1))
+      ((equal g '$all) (setq all t))
+      ((not (fixnump g))
+        (gf-merror (intl:gettext 
+          "`zn_mult_table': The opt second arg must be `all' or a small fixnum." )))
+      (t
+        (when (= n g) (setq i0 0))
+        (push 1 choice) ;; creates the headers
+        (setq header t) ))
+    (do ((i i0 (1+ i)))
         ((= i n) 
-          (cons '($matrix simp) (nreverse res)) )
-      (when (or all? (= 1 (gcd i n))) 
-        (push (mfuncall '$makelist `((power-mod) ,i $j ,n) '$j 1 cols) res) ))))
+          (setq choice (cons '(mlist simp) (nreverse choice))) ) 
+      (when (or all (= g (gcd i n))) (push i choice)) )
+    (when (and header (= (length choice) 2))
+      (return-from $zn_mult_table) )
+    (dolist (i (cdr choice))
+      (push (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j choice) res) )
+    (setq res (nreverse res))
+    (when header (rplaca (cdar res) "*"))
+    (cons '($matrix simp) res) ))
+
+;; power table modulo n
+;;
+;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i.
+;;
+(defmfun $zn_power_table (n &optional g e)
+  (zn-table-errchk n "zn_power_table")
+  (let (all)
+    (cond 
+      ((not g) (setq g 1))
+      ((equal g '$all) (setq all t))
+      ((not (fixnump g))
+        (gf-merror (intl:gettext 
+          "`zn_power_table': The opt second arg must be `all' or a small fixnum." ))))
+    (cond 
+      ((not e) (setq e (car (last (zn-characteristic-factors n)))))
+      ((not (fixnump e))
+        (gf-merror (intl:gettext 
+          "`zn_power_table': The opt third arg must be a small fixnum." ))))
+    (do ((i 0 (1+ i)) res)
+        ((= i n) 
+          (when res (cons '($matrix simp) (nreverse res))) )
+      (when (or all (= g (gcd i n))) 
+        (push (mfuncall '$makelist `((power-mod) ,i $j ,n) '$j 1 e) res) ))))
 
 
 ;; $zn_invert_by_lu (m p) 

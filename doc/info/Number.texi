@@ -1192,30 +1192,109 @@ The run time primarily depends on the bitlength of the totient's greatest prime 
 @anchor{zn_mult_table}
 @deffn {Function} zn_mult_table @
 @fname{zn_mult_table} (@var{n})  @
-@fname{zn_mult_table} (@var{n}, all)
+@fname{zn_mult_table} (@var{n}, @var{gcd})
 
-Without the optional argument @var{all} @code{zn_mult_table(n)} 
-shows a multiplication table of all elements in (Z/@var{n}Z)* 
-which are all elements invertible modulo @var{n}.
+Without the optional argument @var{gcd} @code{zn_mult_table(n)} shows a 
+multiplication table of all elements in (Z/@var{n}Z)* which are all elements 
+coprime to @var{n}.
 
-The optional argument @var{all} causes the table to be printed for all 
-non-zero elements.
+The optional second argument @var{gcd} allows to select a specific 
+subset of (Z/@var{n}Z). If @var{gcd} is an integer, a multiplication table of 
+all residues @code{x} with @code{gcd(x,n) = }@var{gcd} are returned.
+Additionally row and column headings are added for better readability. 
+If necessary, these can be easily removed by @code{submatrix(1, table, 1)}. 
+ 
+If @var{gcd} is set to @code{all}, the table is printed for all non-zero 
+elements in (Z/@var{n}Z).
+
+The second example shows an alternative way to create a multiplication table 
+for subgroups.
 
 See also @mref{zn_add_table}, @mref{zn_power_table}.
 
 Examples:
 
+The default table shows all elements in (Z/@var{n}Z)* and allows to demonstrate 
+and study basic properties of modular multiplication groups.
+E.g. the principal diagonal contains all quadratic residues, 
+each row and column contains every element, the tables are symmetric, etc..
+
+If @var{gcd} is set to @code{all}, the table is printed for all non-zero 
+elements in (Z/@var{n}Z).
+
 @example
-(%i1) zn_mult_table(4);
-                                [ 1  3 ]
-(%o1)                           [      ]
-                                [ 3  1 ]
-(%i2) zn_mult_table(4, all);
-                               [ 1  2  3 ]
-                               [         ]
-(%o2)                          [ 2  0  2 ]
-                               [         ]
-                               [ 3  2  1 ]
+(%i1) zn_mult_table(8);
+                                [ 1  3  5  7 ]
+                                [            ]
+                                [ 3  1  7  5 ]
+(%o1)                           [            ]
+                                [ 5  7  1  3 ]
+                                [            ]
+                                [ 7  5  3  1 ]
+(%i2) zn_mult_table(8, all);
+                            [ 1  2  3  4  5  6  7 ]
+                            [                     ]
+                            [ 2  4  6  0  2  4  6 ]
+                            [                     ]
+                            [ 3  6  1  4  7  2  5 ]
+                            [                     ]
+(%o2)                       [ 4  0  4  0  4  0  4 ]
+                            [                     ]
+                            [ 5  2  7  4  1  6  3 ]
+                            [                     ]
+                            [ 6  4  2  0  6  4  2 ]
+                            [                     ]
+                            [ 7  6  5  4  3  2  1 ]
+@end example
+
+If @var{gcd} is an integer, row and column headings are added for better readability. 
+
+If the subset chosen by @var{gcd} is a group there is another way to create 
+a multiplication table. An isomorphic mapping from a group with @code{1} as 
+identity builds a table which is easy to read. The mapping is accomplished via CRT.
+
+In the second version of @code{T36_4} the identity, here @code{28}, is placed in 
+the top left corner, just like in table @code{T9}. 
+
+@example
+(%i1) T36_4: zn_mult_table(36,4);
+                        [ *   4   8   16  20  28  32 ]
+                        [                            ]
+                        [ 4   16  32  28  8   4   20 ]
+                        [                            ]
+                        [ 8   32  28  20  16  8   4  ]
+                        [                            ]
+(%o1)                   [ 16  28  20  4   32  16  8  ]
+                        [                            ]
+                        [ 20  8   16  32  4   20  28 ]
+                        [                            ]
+                        [ 28  4   8   16  20  28  32 ]
+                        [                            ]
+                        [ 32  20  4   8   28  32  16 ]
+(%i2) T9: zn_mult_table(36/4);
+                             [ 1  2  4  5  7  8 ]
+                             [                  ]
+                             [ 2  4  8  1  5  7 ]
+                             [                  ]
+                             [ 4  8  7  2  1  5 ]
+(%o2)                        [                  ]
+                             [ 5  1  2  7  8  4 ]
+                             [                  ]
+                             [ 7  5  1  8  4  2 ]
+                             [                  ]
+                             [ 8  7  5  4  2  1 ]
+(%i3) T36_4: matrixmap(lambda([x], chinese([0,x],[4,9])), T9);
+                          [ 28  20  4   32  16  8  ]
+                          [                        ]
+                          [ 20  4   8   28  32  16 ]
+                          [                        ]
+                          [ 4   8   16  20  28  32 ]
+(%o3)                     [                        ]
+                          [ 32  28  20  16  8   4  ]
+                          [                        ]
+                          [ 16  32  28  8   4   20 ]
+                          [                        ]
+                          [ 8   16  32  4   20  28 ]
 @end example
 
 @opencatbox
@@ -1229,23 +1308,23 @@ Examples:
 @fname{zn_nth_root} (@var{x}, @var{n}, @var{m})  @
 @fname{zn_nth_root} (@var{x}, @var{n}, @var{m}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Returns a list containing the @var{n}-th roots of @var{x} if it is a member 
-of the multiplication group (Z/@var{m}Z)*, i.e. coprime to @var{m}, and if it is 
-an @var{n}-th power of a member of (Z/@var{m}Z)*.
-Otherwise @code{zn_nth_root} returns @code{false}.
+Returns a list with all @var{n}-th roots of @var{x} from the multiplication 
+subgroup of (Z/@var{m}Z) which contains @var{x}, or @code{false}, if @var{x} 
+is no @var{n}-th power modulo @var{m} or not contained in any multiplication 
+subgroup of (Z/@var{m}Z).
 
-As an exception to this in RSA-like cases where @var{m} splits into pairwise 
-different factors, @var{x} is not limited to numbers coprime to @var{m}. 
-In these cases a list of roots is returned for every @var{n}-th power. 
+@var{x} is an element of a multiplication subgroup modulo @var{m}, if the 
+greatest common divisor @code{g = gcd(x,m)} is coprime to @code{m/g}.
 
 @code{zn_nth_root} is based on an algorithm by Adleman, Manders and Miller 
-and on some results about modulo multiplication groups by Shanks.
+and on theorems about modulo multiplication groups by Daniel Shanks.
  
 The algorithm needs a prime factorization of the modulus @var{m}. 
 So in case the factorization of @var{m} is known, the list of factors 
 can be passed as the fourth argument. This optional argument
 must be of the same form as the list returned by @code{ifactors(m)} 
 using the default option @code{factors_only: false}.
+
 
 Examples:
 
@@ -1270,11 +1349,43 @@ with @var{n} from @code{1} to @code{6}.
 (%o2)  [[1], [1, 13], [1, 9, 11], [1, 13], [1], [1, 3, 5, 9, 11, 13]]
 @end example
 
-In the following RSA-like example where the modulus @code{N} splits into 
-different factors the first argument to @code{zn_nth_root} is not limited to 
-numbers @code{x} coprime to @code{N}. 
+In the following example @var{x} is not coprime to @var{m}, 
+but is a member of a multiplication subgroup of (Z/@var{m}Z) 
+and any @var{n}-th root is a member of the same subgroup.
 
-The process of decryption is taking the @code{e}-th root. 
+The residue class @code{3} is no member of any multiplication subgroup of (Z/63Z) 
+and is therefore not returned as a third root of @code{27}.
+
+Here @code{zn_power_table} shows all residues @code{x} in (Z/63Z) 
+with @code{gcd(x,63) = 9}. This subgroup is isomorphic to (Z/7Z)*  
+and its identity @code{36} is computed via CRT.
+
+@example
+(%i1) m: 7*9$
+
+(%i2) zn_power_table(m,9);
+                         [ 9   18  36  9   18  36 ]
+                         [                        ]
+                         [ 18  9   36  18  9   36 ]
+                         [                        ]
+                         [ 27  36  27  36  27  36 ]
+(%o2)                    [                        ]
+                         [ 36  36  36  36  36  36 ]
+                         [                        ]
+                         [ 45  9   27  18  54  36 ]
+                         [                        ]
+                         [ 54  18  27  9   45  36 ]
+(%i3) zn_nth_root(27,3,m);
+(%o3)                           [27, 45, 54]
+(%i4) id7:1$  id63_9: chinese([id7,0],[7,9]);
+(%o5)                                36
+@end example
+
+In the following RSA-like example, where the modulus @code{N} splits into 
+exclusively first power factors, every @code{x} from @code{0} to @code{N-1} 
+is contained in a multiplication subgroup.
+
+The process of decryption needs the @code{e}-th root. 
 @code{e} is coprime to @code{totient(N)} and therefore the @code{e}-th root is unique. 
 In this case @code{zn_nth_root} effectively performs CRT-RSA. 
 (Please note that @code{flatten} removes braces but no solutions.)
@@ -1376,52 +1487,97 @@ The optional third argument must be of the same form as the list returned by
 @anchor{zn_power_table}
 @deffn {Function} zn_power_table @
 @fname{zn_power_table} (@var{n})  @
-@fname{zn_power_table} (@var{n}, @var{opt_1}, @var{opt_2})
+@fname{zn_power_table} (@var{n}, @var{gcd})  @
+@fname{zn_power_table} (@var{n}, @var{gcd}, @var{max_exp})
 
 Without any optional argument @code{zn_power_table(n)} 
 shows a power table of all elements in (Z/@var{n}Z)* 
-which are all elements invertible modulo @var{n}. 
+which are all residue classes coprime to @var{n}. 
 The exponent loops from @code{1} to the greatest characteristic factor of 
-@code{totient(n)} and the table ends with a column of ones on the right side.
+@code{totient(n)} and the table ends with a column of ones on the right side. 
 
-The optional arguments can be @code{all} and/or a positive integer @code{i} in any order. 
+The optional second argument @var{gcd} allows to select powers of a specific 
+subset of (Z/@var{n}Z). If @var{gcd} is an integer, powers of all residue 
+classes @code{x} with @code{gcd(x,n) = }@var{gcd} are returned,
+i.e. the default value for @var{gcd} is @code{1}.   
+If @var{gcd} is set to @code{all}, the table contains powers of all elements 
+in (Z/@var{n}Z).
 
-The argument @code{all} causes the table to be printed for all non-zero elements. 
-One more column is added and in case the modulus factors into different primes 
-the last column is equal to the first.
-
-If an additional integer argument @code{i} is given the exponent loops from 
-@code{1} to @code{i}.
+If the optional third argument @var{max_exp} is given, the exponent loops from 
+@code{1} to @var{max_exp}. 
 
 See also @mref{zn_add_table}, @mref{zn_mult_table}.
 
 Examples:
 
+The default which is @var{gcd}@code{ = 1} allows to demonstrate and study basic 
+theorems of e.g. Fermat and Euler.
+
+The argument @var{gcd} allows to select subsets of (Z/@var{n}Z) and to study 
+multiplication subgroups and isomorphisms. 
+E.g. the groups @code{G10} and @code{G10_2} are under multiplication both 
+isomorphic to @code{G5}. @code{1} is the identity in @code{G5}. 
+So are @code{1} resp. @code{6} the identities in @code{G10} resp. @code{G10_2}. 
+There are corresponding mappings for primitive roots, n-th roots, etc..
+
 @example
-(%i1) zn_power_table(6);
-                                [ 1  1 ]
-(%o1)                           [      ]
-                                [ 5  1 ]
-(%i2) zn_power_table(6, all);
-                               [ 1  1  1 ]
-                               [         ]
-                               [ 2  4  2 ]
-                               [         ]
-(%o2)                          [ 3  3  3 ]
-                               [         ]
-                               [ 4  4  4 ]
-                               [         ]
-                               [ 5  1  5 ]
-(%i3) zn_power_table(6,all,5);
-                            [ 1  1  1  1  1 ]
-                            [               ]
-                            [ 2  4  2  4  2 ]
-                            [               ]
-(%o3)                       [ 3  3  3  3  3 ]
-                            [               ]
-                            [ 4  4  4  4  4 ]
-                            [               ]
-                            [ 5  1  5  1  5 ]
+(%i1) zn_power_table(10);
+                              [ 1  1  1  1 ]
+                              [            ]
+                              [ 3  9  7  1 ]
+(%o1)                         [            ]
+                              [ 7  9  3  1 ]
+                              [            ]
+                              [ 9  1  9  1 ]
+(%i2) zn_power_table(10,2);
+                              [ 2  4  8  6 ]
+                              [            ]
+                              [ 4  6  4  6 ]
+(%o2)                         [            ]
+                              [ 6  6  6  6 ]
+                              [            ]
+                              [ 8  4  2  6 ]
+(%i3) zn_power_table(10,5);
+(%o3)                         [ 5  5  5  5 ]
+(%i4) zn_power_table(10,10);
+(%o4)                         [ 0  0  0  0 ]
+(%i5) G5: [1,2,3,4];
+(%o6)                          [1, 2, 3, 4]
+(%i6) G10_2: map(lambda([x], chinese([0,x],[2,5])), G5);
+(%o6)                          [6, 2, 8, 4]
+(%i7) G10: map(lambda([x], power_mod(3, zn_log(x,2,5), 10)), G5);
+(%o7)                          [1, 3, 7, 9]
+@end example
+
+If @var{gcd} is set to @code{all}, the table contains powers of all elements 
+in (Z/@var{n}Z).
+
+The third argument @var{max_exp} allows to set the highest exponent. 
+The following table shows a very small example of RSA.
+
+@example
+(%i1) N:2*5$ phi:totient(N)$ e:7$ d:inv_mod(e,phi)$
+
+(%i5) zn_power_table(N, all, e*d);
+       [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ]
+       [                                                               ]
+       [ 1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 ]
+       [                                                               ]
+       [ 2  4  8  6  2  4  8  6  2  4  8  6  2  4  8  6  2  4  8  6  2 ]
+       [                                                               ]
+       [ 3  9  7  1  3  9  7  1  3  9  7  1  3  9  7  1  3  9  7  1  3 ]
+       [                                                               ]
+       [ 4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4  6  4 ]
+(%o5)  [                                                               ]
+       [ 5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5 ]
+       [                                                               ]
+       [ 6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6 ]
+       [                                                               ]
+       [ 7  9  3  1  7  9  3  1  7  9  3  1  7  9  3  1  7  9  3  1  7 ]
+       [                                                               ]
+       [ 8  4  2  6  8  4  2  6  8  4  2  6  8  4  2  6  8  4  2  6  8 ]
+       [                                                               ]
+       [ 9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9 ]
 @end example
 
 @opencatbox
