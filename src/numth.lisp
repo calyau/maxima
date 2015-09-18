@@ -1044,49 +1044,59 @@
         (cons '($matrix simp) (nreverse res)) )
     (push (mfuncall '$makelist `((mod) (+ ,i $j) ,n) '$j 0 (1- n)) res) ))
 
-(defmfun $zn_mult_table (n &optional all?)
+;; multiplication table modulo n
+;;
+;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i#0.
+;;  If n # 1 add row and column headings for better readability.
+;;
+(defmfun $zn_mult_table (n &optional g)
   (zn-table-errchk n "zn_mult_table")
-  (cond
-    ((or (primep n) ;; field
-         (equal all? '$all) )
-      (do ((i 1 (1+ i)) res)
-          ((= i n) (cons '($matrix simp) (nreverse res)))
-        (push 
-           (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j 1 (1- n))
-           res )))
-    (t ;; units only
-      (let (units res)
-        (do ((i 1 (1+ i)))
-            ((= i n) 
-              (setq units (cons '(mlist simp) (nreverse units))) ) 
-          (when (= 1 (gcd i n)) (push i units)) )
-        (dolist (i (cdr units) (cons '($matrix simp) (nreverse res)))
-          (push 
-            (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j units)
-            res ))))))
-
-(defmfun $zn_power_table (&rest args)
-  (zn-table-errchk (car args) "zn_power_table")
-  (let ((n (car args)) all? cols (x (cadr args)) (y (caddr args)))
-    (when x
-      (cond 
-        ((integerp x) (setq cols x))
-        ((equal x '$all) (setq all? t))
-        (t (gf-merror (intl:gettext 
-             "Second argument to `zn_power_table' must be `all' or a small fixnum." )))))
-    (when y
-      (cond 
-        ((and (integerp x) (equal y '$all)) (setq all? t))
-        ((and (equal x '$all) (integerp y)) (setq cols y))
-        (t (format t "The third argument to `zn_power_table' is not usable and was ignored.~%") )))
-    (unless cols
-      (setq cols (car (last (zn-characteristic-factors n))))
-      (when all? (incf cols)) )
-    (do ((i 1 (1+ i)) res)
+  (let ((i0 1) all header choice res)
+    (cond 
+      ((not g) (setq g 1))
+      ((equal g '$all) (setq all t))
+      ((not (fixnump g))
+        (gf-merror (intl:gettext 
+          "`zn_mult_table': The opt second arg must be `all' or a small fixnum." )))
+      (t
+        (when (= n g) (setq i0 0))
+        (push 1 choice) ;; creates the headers
+        (setq header t) ))
+    (do ((i i0 (1+ i)))
         ((= i n) 
-          (cons '($matrix simp) (nreverse res)) )
-      (when (or all? (= 1 (gcd i n))) 
-        (push (mfuncall '$makelist `((power-mod) ,i $j ,n) '$j 1 cols) res) ))))
+          (setq choice (cons '(mlist simp) (nreverse choice))) ) 
+      (when (or all (= g (gcd i n))) (push i choice)) )
+    (when (and header (= (length choice) 2))
+      (return-from $zn_mult_table) )
+    (dolist (i (cdr choice))
+      (push (mfuncall '$makelist `((mod) (* ,i $j) ,n) '$j choice) res) )
+    (setq res (nreverse res))
+    (when header (rplaca (cdar res) "*"))
+    (cons '($matrix simp) res) ))
+
+;; power table modulo n
+;;
+;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i.
+;;
+(defmfun $zn_power_table (n &optional g e)
+  (zn-table-errchk n "zn_power_table")
+  (let (all)
+    (cond 
+      ((not g) (setq g 1))
+      ((equal g '$all) (setq all t))
+      ((not (fixnump g))
+        (gf-merror (intl:gettext 
+          "`zn_power_table': The opt second arg must be `all' or a small fixnum." ))))
+    (cond 
+      ((not e) (setq e (car (last (zn-characteristic-factors n)))))
+      ((not (fixnump e))
+        (gf-merror (intl:gettext 
+          "`zn_power_table': The opt third arg must be a small fixnum." ))))
+    (do ((i 0 (1+ i)) res)
+        ((= i n) 
+          (when res (cons '($matrix simp) (nreverse res))) )
+      (when (or all (= g (gcd i n))) 
+        (push (mfuncall '$makelist `((power-mod) ,i $j ,n) '$j 1 e) res) ))))
 
 
 ;; $zn_invert_by_lu (m p) 
