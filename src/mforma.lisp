@@ -47,8 +47,6 @@
 ;; kidding.) -gjc
 
 (defmacro +def-mformat-var (type var val init-condition)
-  ;; How about that bullshit LISPM conditionalization put in
-  ;; by BEE? It is needed of course or else conses will go away. -gjc
   (push (list var val)
 	(cdr (or (assoc init-condition (get type 'mformat-state-vars))
 		 (car (push (ncons init-condition)
