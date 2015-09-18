@@ -751,33 +751,56 @@
       (push fg fgs) )))
 
 
-;; r-th roots in (Z/nZ)* ;; ------------------------------------------------- ;;
+;; r-th roots --------------------------------------------------------------- ;;
 ;;
-;; Basically the algorithm is limited to modulo multiplicative groups (Z/nZ)*
-;; but in RSA-like cases where n factors into different primes r-th roots are 
-;; computed for every r-th power in (Z/nZ).
+;; If the residue class a is an r-th power modulo n and contained in a multiplication 
+;; subgroup of (Z/nZ), return all r-th roots from this subgroup and false otherwise.
 ;;
 (defmfun $zn_nth_root (a r n &optional fs-n)
   (unless (and (integerp a) (integerp r) (integerp n)) 
-    (gf-merror (intl:gettext "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m.") a r n) )
+    (gf-merror (intl:gettext 
+      "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m." ) a r n))
   (unless (and (> r 0) (> n 0)) 
-    (gf-merror (intl:gettext "`zn_nth_root': Second and third argument must be a positive integers. Found ~m, ~m.") r n) )
+    (gf-merror (intl:gettext 
+      "`zn_nth_root': Second and third arg must be pos integers. Found ~m, ~m." ) r n))
   (when fs-n
     (if (and ($listp fs-n) ($listp (cadr fs-n)))
       (setq fs-n (mapcar #'cdr (cdr fs-n))) ;; Lispify fs-n
       (gf-merror (intl:gettext 
-        "Optional fourth argument to `zn_nth_root' must be of the form [[p1, e1], ..., [pk, ek]]." ))))
+        "`zn_nth_root': The opt fourth arg must be of the form [[p1, e1], ..., [pk, ek]]." ))))
   (let ((rts (zn-nrt a r n fs-n)))
     (when rts (cons '(mlist simp) rts)) ))
 
 (defun zn-nrt (a r n &optional fs-n)
-  (let (p q aq ro ord qs rt rts rems res)
+  (let (g n/g c p q aq ro ord qs rt rts rems res)
     (unless fs-n (setq fs-n (let (($intfaclim)) (get-factor-list n))))
+    (setq a (mod a n))
     (cond 
-      ((every #'onep (mapcar #'second fs-n)) ;; RSA-like case
-        (when (= a 0) (return-from zn-nrt (list 0))) )
-      ((/= (gcd a n) 1)                      ;; units only in all other cases
-        (return-from zn-nrt nil) ))
+      ((every #'onep (mapcar #'second fs-n)) ;; RSA-like case (n is squarefree)
+        (when (= a 0) (return-from zn-nrt (list 0))) ) ;; n = 1: exit here 
+      ((/= (gcd a n) 1)
+        ;; Handle residue classes not coprime to n (n is not squarefree):
+        ;; Use Theorems 49 and 50 from 
+        ;;   Shanks - Solved and Unsolved Problems in Number Theory
+        (setq g (gcd a n) n/g (truncate n g))
+        (when (/= (gcd g n/g) 1)     ;; a is not contained in any mult. subgroup (Th. 50):
+          (return-from zn-nrt nil) ) ;;   exit here
+        (when (= a 0) (return-from zn-nrt (list 0)))
+        ;; g = gcd(a,n). Now assume gcd(g,n/g) = 1.
+        ;; There are totient(n/g) multiples of g, i*g, with gcd(i,n/g) = 1, 
+        ;;   which form a modulo multiplication subgroup of (Z/nZ),
+        ;;   isomorphic to (Z/mZ)*, where m = n/g.
+        ;; a is one of these multiples of g.
+        ;; Find the r-th roots of a resp. mod(a,m) in (Z/mZ)* and then 
+        ;;   by using CRT all corresponding r-th roots of a in (Z/nZ).
+        (setq a (mod a n/g)
+              rts (zn-nrt a r n/g)
+              c (inv-mod g n/g) ;; CRT-coeff
+              ;; isomorphic mapping (Th. 49):
+              ;;   (use CRT with x = 0 mod g and x = rt mod n/g)
+              res (mapcar #'(lambda (rt) (* g (mod (* c rt) n/g))) rts) )
+        (return-from zn-nrt (sort res #'<)) ))
+    ;;
     ;; for every prime power factor of n  
     ;;   reduce a and r if possible and call zq-nrt:
     (dolist (pe fs-n)
