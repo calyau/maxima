@@ -665,28 +665,59 @@
 
 	(t nil))))
 
-;; Integrals of elementary special functions
-;; This may not be the best place for this definition, but it is close 
+;; Define the antiderivatives of some elementary special functions.
+;; This may not be the best place for this definition, but it is close
 ;; to the original code.
+;; Antiderivatives that depend on the logabs flag are defined further below.
 (defprop %log  ((x) ((mplus) ((mtimes) x ((%log) x)) ((mtimes) -1 x))) integral)
 (defprop %sin  ((x) ((mtimes) -1 ((%cos) x))) integral)
 (defprop %cos  ((x) ((%sin) x)) integral)
-(defprop %tan  ((x) ((%log) ((%sec) x))) integral)
-(defprop %csc  ((x) ((mtimes) -1 ((%log) ((mplus) ((%csc) x) ((%cot) x))))) integral)
-(defprop %sec  ((x) ((%log) ((mplus) ((%sec) x) ((%tan) x)))) integral)
-(defprop %cot  ((x) ((%log) ((%sin) x))) integral)
-(defprop %sinh ((x) ((%cosh) x))  integral)
+(defprop %sinh ((x) ((%cosh) x)) integral)
 (defprop %cosh ((x) ((%sinh) x)) integral)
+;; No need to take logabs into account for tanh(x), because cosh(x) is positive.
 (defprop %tanh ((x) ((%log) ((%cosh) x))) integral)
-(defprop %coth ((x) ((%log) ((%sinh) x))) integral)
-(defprop %sech ((x) ((%atan) ((%sinh)x))) integral)
-(defprop %csch ((x) ((%log) ((%tanh) ((mtimes) ((rat simp) 1 2) x)))) integral)
+(defprop %sech ((x) ((%atan) ((%sinh) x))) integral)
 
-;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else logmabs(x).
+;; Define a little helper function to be used in antiderivatives.
+;; Depending on the logabs flag, it either returns log(x) or log(abs(x)).
+(defun log-or-logabs (x)
+  (take '(%log) (if $logabs (take '(mabs) x) x)))
+
+;; Define the antiderivative of tan(x), taking logabs into account.
+(defun integrate-tan (x)
+  (log-or-logabs (take '(%sec) x)))
+(putprop '%tan `((x) ,#'integrate-tan) 'integral)
+
+;; ... the same for csc(x) ...
+(defun integrate-csc (x)
+  (mul -1 (log-or-logabs (add (take '(%csc) x) (take '(%cot) x)))))
+(putprop '%csc `((x) ,#'integrate-csc) 'integral)
+
+;; ... the same for sec(x) ...
+(defun integrate-sec (x)
+  (log-or-logabs (mul (take '(%sec) x) (take '(%tan) x))))
+(putprop '%sec `((x) ,#'integrate-sec) 'integral)
+
+;; ... the same for cot(x) ...
+(defun integrate-cot (x)
+  (log-or-logabs (take '(%sin) x)))
+(putprop '%cot `((x) ,#'integrate-cot) 'integral)
+
+;; ... the same for coth(x) ...
+(defun integrate-coth (x)
+  (log-or-logabs (take '(%sinh) x)))
+(putprop '%coth `((x) ,#'integrate-coth) 'integral)
+
+;; ... the same for csch(x) ...
+(defun integrate-csch (x)
+  (log-or-logabs (take '(%tanh) (mul '((rat simp) 1 2) x))))
+(putprop '%csch `((x) ,#'integrate-csch) 'integral)
+
+;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else log-or-logabs(x).
 (defun integrate-mexpt-1 (x n)
   (let ((n-is-minus-one ($askequal n -1)))
     (cond ((eq '$yes n-is-minus-one)
-	   (take '(%log) (if $logabs (take '(mabs) x) x)))
+	   (log-or-logabs x))
 	  (t
 	   (setq n (add n 1))
 	   (div (take '(mexpt) x n) n)))))
@@ -694,7 +725,7 @@
 ;; integrate(a^x,x) = a^x/log(a).
 (defun integrate-mexpt-2 (a x)
   (div (take '(mexpt) a x) (take '(%log) a)))
-  
+
 (putprop 'mexpt `((x n) ,#'integrate-mexpt-1 ,#'integrate-mexpt-2) 'integral)
 
 (defun rat10 (ex)
