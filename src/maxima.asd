@@ -51,7 +51,13 @@
 					  #+ecl (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
            (:module intl :pathname ""
-            :components ((:file "intl")))
+            :components (
+              ;; Some versions of CMUCL already
+              ;; have a compatible version of
+              ;; INTL, so skip it if we have
+              ;; it.
+               #+#.(cl:if (cl:and (cl:member :cmu cl:*features*) (cl:find-package '#:intl))  '(or) '(and))
+              (:file "intl")))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
 				     (:file "cl-info")))
