@@ -50,9 +50,10 @@
 			:components (#-gcl(:file "maxima-package")
 					  #+ecl (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
+           (:module intl :pathname ""
+            :components ((:file "intl")))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
-                     (:file "intl")
 				     (:file "cl-info")))
 	       (:module sloop :pathname ""
 			:components ((:file "sloop")))
