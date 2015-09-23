@@ -65,7 +65,8 @@
                         :components ((:file "generr")
 				     (:file "clmacs")))
                (:module compatibility-macros :pathname ""
-                        :components ((:file "commac"))) 
+                        :components (#+gcl (:file "gcl-compat")
+                                     (:file "commac"))) 
                (:module prerequisites :pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
@@ -86,7 +87,8 @@
                         :components ((:file "mrgmac") 
                                      (:file "rzmac")    
                                      (:file "strmac") 
-                                     (:file "displm")))
+                                     (:file "displm")
+                                     (:file "safe-recursion")))
                (:module rat-macros :pathname ""
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
@@ -342,6 +344,8 @@
 					  :depends-on ("dqelg"
 						       "dqk15i"
 						       "dqpsrt"))
+				   (:file "dqagp"
+					  :depends-on ("dqagpe"))
 				   (:file "dqagpe"
 					  :depends-on ("dqelg"
 						       "dqpsrt"
