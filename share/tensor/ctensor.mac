@@ -1220,9 +1220,19 @@ leinstein(dis):=block
 /* This function computes the (1,3) Riemann tensor */
 riemann(dis):=if cframe_flag then block
 (
+  [df],
   if not member('lriem,arrays) then triemann(false),
+  df:true,
   for i thru dim do for j thru dim do for k thru dim do for l thru dim do
+  (
     riem[i,j,k,l]:sum(lriem[i,j,k,m%]*ufg[l,m%],m%,1,dim),
+    if dis and riem[i,j,k,l]#0 then
+    (
+      ldisplay(riem[i,j,k,l]),
+      df:false
+    )
+  ),
+  if df and dis then print("THIS SPACETIME IS FLAT"),
   done
 )
 else block

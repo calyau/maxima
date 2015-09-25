@@ -50,9 +50,16 @@
 			:components (#-gcl(:file "maxima-package")
 					  #+ecl (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
+           (:module intl :pathname ""
+            :components (
+              ;; Some versions of CMUCL already
+              ;; have a compatible version of
+              ;; INTL, so skip it if we have
+              ;; it.
+               #+#.(cl:if (cl:and (cl:member :cmu cl:*features*) (cl:find-package '#:intl))  '(or) '(and))
+              (:file "intl")))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
-                     (:file "intl")
 				     (:file "cl-info")))
 	       (:module sloop :pathname ""
 			:components ((:file "sloop")))
@@ -64,7 +71,8 @@
                         :components ((:file "generr")
 				     (:file "clmacs")))
                (:module compatibility-macros :pathname ""
-                        :components ((:file "commac"))) 
+                        :components (#+gcl (:file "gcl-compat")
+                                     (:file "commac"))) 
                (:module prerequisites :pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
@@ -85,7 +93,8 @@
                         :components ((:file "mrgmac") 
                                      (:file "rzmac")    
                                      (:file "strmac") 
-                                     (:file "displm")))
+                                     (:file "displm")
+                                     (:file "safe-recursion")))
                (:module rat-macros :pathname ""
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
@@ -341,6 +350,8 @@
 					  :depends-on ("dqelg"
 						       "dqk15i"
 						       "dqpsrt"))
+				   (:file "dqagp"
+					  :depends-on ("dqagpe"))
 				   (:file "dqagpe"
 					  :depends-on ("dqelg"
 						       "dqpsrt"

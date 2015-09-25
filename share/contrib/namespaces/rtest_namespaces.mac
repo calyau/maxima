@@ -17,7 +17,7 @@ namespaces;
 '[foo];
 
 symbols (foo);
-[foo|a, foo|f, foo|g, foo|hh, foo|my_constant, foo|n, foo|x, foo|z];
+[foo|f, foo|g, foo|hh, foo|my_constant];
 
 external_symbols (foo);
 [foo|f, foo|g];

@@ -32,10 +32,10 @@ is not included")
 ;; If you change this, you may need to change some of the macros
 ;; below, such as INT and AINT!
 
-#+(or cmu scl sbcl)
+#+(or cmu scl sbcl ecl)
 (deftype integer4 (&optional (low #x-80000000) (high #x7fffffff))
   `(integer ,low ,high))
-#-(or cmu scl sbcl)
+#-(or cmu scl sbcl ecl)
 (deftype integer4 (&optional low high)
   (declare (ignore low high))
   'fixnum)

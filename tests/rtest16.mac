@@ -1961,3 +1961,9 @@ block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
 /* bug #2980: Infinite recursion with (e: log(e), rectform(e)) */
 block ([e: log(e)], rectform(e));
 log(abs(e)) + %i*atan2(0, e)$
+
+/* bug #2159: integration_with_logabs ("integrate(tan(x),x);" etc. do not take "logabs" flag into account) */
+integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x);
+[log(sec(x)),-log(csc(x)+cot(x)),log(sec(x)*tan(x)),log(sin(x)),log(cosh(x)),log(sinh(x)),log(tanh(x/2))]$
+integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x),logabs;
+[log(abs(sec(x))),-log(abs(csc(x)+cot(x))),log(abs(sec(x))*abs(tan(x))),log(abs(sin(x))),log(cosh(x)),log(abs(sinh(x))),log(abs(tanh(x/2)))]$
