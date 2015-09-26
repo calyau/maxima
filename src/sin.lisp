@@ -695,7 +695,7 @@
 
 ;; ... the same for sec(x) ...
 (defun integrate-sec (x)
-  (log-or-logabs (mul (take '(%sec) x) (take '(%tan) x))))
+  (log-or-logabs (add (take '(%sec) x) (take '(%tan) x))))
 (putprop '%sec `((x) ,#'integrate-sec) 'integral)
 
 ;; ... the same for cot(x) ...
