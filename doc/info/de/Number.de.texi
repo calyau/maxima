@@ -930,7 +930,7 @@ quadratischen Reste @code{1} und @code{4}, und diese haben jeweils @code{2^2} Wu
 Gibt @code{1} zur@"uck, wenn @var{n} gleich @code{1} ist und andernfalls 
 den gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}. 
 
-F@"ur Erlaeuterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+F@"ur Erl@"auterungen und Beispiele siehe @mref{zn_characteristic_factors}.
 
 @end deffn
 
@@ -975,7 +975,7 @@ Beispiel:
 Gibt eine Liste mit Faktorgeneratoren zur@"uck, die zu den charakteristischen 
 Faktoren des Totienten von @var{n} passen. 
 
-F@"ur Erlaeuterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+F@"ur Erl@"auterungen und Beispiele siehe @mref{zn_characteristic_factors}.
 
 @end deffn
 
@@ -1377,7 +1377,7 @@ eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*,
 d.h. von allen zu @var{n} teilerfremden Elementen. 
 Der Exponent variiert dabei jeweils zwischen @code{1} und 
 dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}
-(auch bekannt als Carmichael Funktion), 
+(auch bekannt als Carmichael Funktion bzw. Carmichael Lambda), 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
 Das optionale zweite Argument @var{gcd} erlaubt es, eine bestimmte Untermenge 

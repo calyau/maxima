@@ -1510,7 +1510,7 @@ Without any optional argument @code{zn_power_table(n)}
 shows a power table of all elements in (Z/@var{n}Z)* 
 which are all residue classes coprime to @var{n}. 
 The exponent loops from @code{1} to the greatest characteristic factor of 
-@code{totient(n)} (also known as Carmichael function)
+@code{totient(n)} (also known as Carmichael function or Carmichael lambda)
 and the table ends with a column of ones on the right side. 
 
 The optional second argument @var{gcd} allows to select powers of a specific 
