@@ -608,9 +608,17 @@
 ;; characteristic factors:
 
 (defmfun $zn_characteristic_factors (m)
-  (unless (integerp m)
-    (gf-merror (intl:gettext "`zn_characteristic_factors': Argument must be an integer.")) )
+  (unless (and (integerp m) (> m 1)) ;; according to Shanks no result for m = 1
+    (gf-merror (intl:gettext 
+      "`zn_characteristic_factors': Argument must be an integer greater than 1." )))
   (cons '(mlist simp) (zn-characteristic-factors m)) )
+
+(defmfun $zn_carmichael_lambda (m)
+  (cond 
+    ((integerp m)
+      (if (= m 1) 1 (zn-characteristic-factors m t)) )
+    (t (gf-merror (intl:gettext 
+         "`zn_carmichael_lambda': Argument must be a positive integer." )))))
 
 ;; D. Shanks - Solved and unsolved problems in number theory, 2. ed
 ;; definition 29 and 30 (p. 92 - 94)
@@ -619,7 +627,7 @@
 ;; => Z104* is isomorphic to M2 x M2 x M12
 ;;    the direct product of modulo multiplication groups of order 2 resp. 12
 ;;
-(defun zn-characteristic-factors (m) 
+(defun zn-characteristic-factors (m &optional lambda-only) ;; m > 1
   (let* (($intfaclim) 
          (pe-list (get-factor-list m)) ;; def. 29 part A
          (shanks-phi                   ;;         part D
@@ -636,6 +644,7 @@
         (if (= q p) 
           (push qd left)
           (setq p q f (* f (expt q d))) ))
+      (when lambda-only (return-from zn-characteristic-factors f))
       (push f fs) )))
 
 ;; definition 29 parts B,C (p. 92)
@@ -1088,7 +1097,7 @@
         (gf-merror (intl:gettext 
           "`zn_power_table': The opt second arg must be `all' or a small fixnum." ))))
     (cond 
-      ((not e) (setq e (car (last (zn-characteristic-factors n)))))
+      ((not e) (setq e (zn-characteristic-factors n t)))
       ((not (fixnump e))
         (gf-merror (intl:gettext 
           "`zn_power_table': The opt third arg must be a small fixnum." ))))
