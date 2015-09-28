@@ -58,7 +58,7 @@ When one changes, the other does too."
 (defun shadow-string-assignment (var value)
   (cond
     ((stringp value)
-     (set (get var 'lisp-shadow) value)
+     (setf (symbol-value (get var 'lisp-shadow)) value)
      value)
     (t
       (merror (intl:gettext "assignment: must assign a string to ~:M; found: ~M") var value))))

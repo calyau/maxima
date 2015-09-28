@@ -117,7 +117,7 @@
 	(setq x (infolstchk x) item (setq rename (and x (getopr (car x))))))
     (cond ((not (symbolp item))
 	   (setq nitemfl item)
-	   (setq item (let ((nitem (gensym))) (set nitem (meval item)) nitem)))
+	   (setq item (let ((nitem (gensym))) (setf (symbol-value nitem) (meval item)) nitem)))
 	  ((eq item '$ratweights) (setq item '*ratweights))
 	  ((eq item '$tellrats) (setq item 'tellratlist))
       ((eq item '$alphabet) (setq item '*alphabet*)))
@@ -331,7 +331,7 @@
 	   (cond ((member flag '(mexpr mmacro) :test #'eq) (setq rename (caar rename)))
 		 ((eq flag 'array) (remcompary item)))
 	   (setq prop (list '(mfile) file rename))
-	   (cond ((eq flag 'value) (set item prop))
+	   (cond ((eq flag 'value) (setf (symbol-value item) prop))
 		 ((member flag '(mexpr mmacro aexpr array hashar) :test #'eq)
 		  (mputprop item prop flag)))))))
 

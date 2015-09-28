@@ -353,7 +353,7 @@
 (defun exchangevar (poly var)
   (let ((newvar (gensym))
 	(ovar (car poly)))
-    (set newvar (1+ (eval ovar)))
+    (setf (symbol-value newvar) (1+ (eval ovar)))
     (pvsubst ovar newvar
 	     (pvsubst var ovar
 		      (pvsubst newvar var poly)))))
@@ -376,7 +376,7 @@
 		    ((null a) (rattimes ans (ratexpt val ld) t))))))
 	((pointergp var (car p)) (cons p 1))
 	(t (let ((newsym (gensym)))
-	     (set newsym (1+ (symbol-value (car p))))
+	     (setf (symbol-value newsym) (1+ (symbol-value (car p))))
 	     (rgsubst val newsym (pvsubst newsym var p))))))
 
 (defun ratgsubst (val var rat)

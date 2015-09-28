@@ -149,7 +149,7 @@
   ;; the values of the special variables controling its behavior.
   ;; The real expense here is when MFORMAT calls the DISPLA package.
   (let ((the-jig (process-error-argl (cddr $error))))
-    (mapc #'set (car the-jig) (cadr the-jig))
+    (mapc #'(lambda (v x) (setf (symbol-value v) x)) (car the-jig) (cadr the-jig))
     (fresh-line)
     (let ((errset nil))
       (if (null (errset

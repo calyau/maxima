@@ -228,7 +228,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	(format t "~a" *general-display-prefix*)
 	(if (eq r eof) (return '$done))
 	(setq $__ (caddr r))
-	(unless $nolabels (set  c-tag $__))
+	(unless $nolabels (setf (symbol-value c-tag) $__))
 	(cond (batch-or-demo-flag
 	  (let (($display2d nil))
 	    (displa `((mlabel) ,c-tag , $__)))))
@@ -247,7 +247,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 			  internal-time-units-per-second))
 	(incf accumulated-time time-used)
 	(setq d-tag (makelabel $outchar))
-	(unless $nolabels (set d-tag $%))
+	(unless $nolabels (setf (symbol-value d-tag) $%))
 	(setq $_ $__)
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
 	  (format t (intl:gettext "Evaluation took ~,4F seconds (~,4F elapsed)")

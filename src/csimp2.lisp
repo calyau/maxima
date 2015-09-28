@@ -811,7 +811,7 @@
 			   (let (($nolabels nil))
 			     (makelabel $linechar))
 			   *linelabel*)
-			 (set *linelabel* zzz)))
+			 (setf (symbol-value *linelabel*) zzz)))
 	 (nconc sol (ncons *linelabel*))
 	 (cond ($dispflag
 		(setq tim (get-internal-run-time))
