@@ -603,7 +603,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
   (let ((s (and (boundp '*socket-connection*) *socket-connection*))
 	shell shell-opt)
-    #+(or gcl ecl clisp lispworks)
+    #+(or gcl ecl lispworks)
     (declare (ignore s))
 
     (cond ((string= *autoconf-win32* "true")
