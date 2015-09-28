@@ -394,7 +394,7 @@
 	    (cond ((truep pat))
 		  ((falsep pat) nil)
 		  (t 'unknown)))
-      (setq err nil))
+      #+ccl (setq err nil))
     #+ccl
     (when err
       (setq +labs nil))
