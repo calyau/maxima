@@ -32,7 +32,8 @@
 	  ((atom ans) (down ans))
 	  ((or (eq '$down (caar ans)) (eq '$options (caar ans)))
 	   (down (cadr ans)))
-	  ((eq '$describe (caar ans)) (mdescribe (decode (cadr ans))))
+	  ((eq '$describe (caar ans))
+	   (cl-info::info-exact (print-invert-case (stripdollar (decode (cadr ans))))))
 	  (t (opt-err)))
     (setq ans (retrieve ": " nil))))
 

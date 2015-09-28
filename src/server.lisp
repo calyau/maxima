@@ -52,7 +52,9 @@
 
   (let ((host (etypecase host
                 (string host)
-                (integer (hostent-name (resolve-host-ipaddr host)))))
+                ;; Can't actually handle this case for lack of HOSTENT-NAME and RESOLVE-HOST-IPADDR.
+                ;;(integer (hostent-name (resolve-host-ipaddr host)))))
+                (integer (merror (intl:gettext "OPEN-SOCKET: can't handle integer host argument (host=~M)~%") host))))
 	#+(and ccl openmcl-unicode-strings)
 	(ccl:*default-socket-character-encoding* :utf-8))
     #+allegro (socket:make-socket :remote-host host :remote-port port
