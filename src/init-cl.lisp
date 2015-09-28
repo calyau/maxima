@@ -107,10 +107,6 @@ When one changes, the other does too."
 (defvar $file_search_tests nil
   "Directories to search for maxima test suite")
 
-(defun combine-path (&rest list)
-  "splice a '/' between the path components given as arguments"
-  (format nil "~{~A~^/~}" list))
-
 (defun maxima-parse-dirstring (str)
   (let ((sep "/"))
     (if (position (character "\\") str)

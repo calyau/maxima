@@ -49,6 +49,10 @@
 
 ; ------------------ search help topics ------------------
 
+(defun maxima::combine-path (&rest list)
+  "splice a '/' between the path components given as arguments"
+  (format nil "~{~A~^/~}" list))
+
 (defun load-primary-index ()
   ;; Load the index, but make sure we use a sensible *read-base*.
   ;; See bug 1951964.  GCL doesn't seem to have
