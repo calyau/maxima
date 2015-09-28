@@ -54,6 +54,7 @@
   (format nil "~{~A~^/~}" list))
 
 (defun load-primary-index ()
+  (declare (special maxima::*maxima-lang-subdir* maxima::*maxima-infodir*))
   ;; Load the index, but make sure we use a sensible *read-base*.
   ;; See bug 1951964.  GCL doesn't seem to have
   ;; with-standard-io-syntax.  Is just binding *read-base* enough?  Is
