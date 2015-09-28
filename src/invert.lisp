@@ -57,11 +57,11 @@
   (if $detout
     (let*
       ((field (mfuncall '$require_ring field-name "$second" "$invert"))
-       (d-i (invert-by-lu-with-determinant m field-name))
+       (d-i (funcall 'invert-by-lu-with-determinant m field-name))
        (d (first d-i))
        (i (second d-i))
-       (d-times-i (multiply-matrix-elements d (mring-mult field) i))
-       (d^-1 (funcall (mring-reciprocal field) d)))
+       (d-times-i (multiply-matrix-elements d (funcall 'mring-mult field) i))
+       (d^-1 (funcall (funcall 'mring-reciprocal field) d)))
       (list '(mtimes) d^-1 d-times-i))
     (mfuncall '$invert_by_lu m field-name)))
 
