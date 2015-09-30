@@ -286,7 +286,7 @@ is EQ to FNNAME if the latter is non-NIL."
                   (member form (cdr $values) :test #'eq)
                   (not (member form *refchkl* :test #'eq)))
          (setq *refchkl* (cons form *refchkl*))
-         (mtell (intl:gettext "evaluation: ~:M has a value.~%") form))
+         (mtell (intl:gettext "evaluation: ~:M has the value ~:M.~%") form val))
        (return val)))
     ((or (and (atom (car form))
               (setq form (cons (ncons (car form)) (cdr form))))

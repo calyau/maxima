@@ -967,7 +967,8 @@ If the totient splits into more than one characteristic factors
  
 Each of the @code{r} factors in the list divides the right following factors. 
 For the last factor @code{f_r} therefore holds @code{a^f_r = 1 (mod n)} 
-for all @code{a} in the group.
+for all @code{a} coprime to @var{n}.  
+This factor is also known as Carmichael function or Carmichael lambda.
 
 If @code{n > 2}, then @code{totient(n)/2^r} is the number of quadratic residues, 
 and each of these has @code{2^r} square roots.
@@ -1030,6 +1031,20 @@ and each of these has @code{2^2} square roots.
 (%i7) map(lambda([i], zn_nth_root(i,2,15)), [1,4]);
 (%o7)                   [[1, 4, 11, 14], [2, 7, 8, 13]]
 @end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zn_carmichael_lambda}
+@deffn {Function} zn_carmichael_lambda (@var{n}) 
+
+Returns @code{1} if @var{n} is @code{1} and otherwise 
+the greatest characteristic factor of the totient of @var{n}.
+
+For remarks and examples see @mref{zn_characteristic_factors}.
 
 @opencatbox
 @category{Number theory}
@@ -1381,7 +1396,8 @@ and its identity @code{36} is computed via CRT.
 (%o5)                                36
 @end example
 
-In the following RSA-like example, where the modulus @code{N} splits into 
+In the following RSA-like example, where the modulus @code{N} is squarefree, 
+i.e. it splits into 
 exclusively first power factors, every @code{x} from @code{0} to @code{N-1} 
 is contained in a multiplication subgroup.
 
@@ -1494,7 +1510,8 @@ Without any optional argument @code{zn_power_table(n)}
 shows a power table of all elements in (Z/@var{n}Z)* 
 which are all residue classes coprime to @var{n}. 
 The exponent loops from @code{1} to the greatest characteristic factor of 
-@code{totient(n)} and the table ends with a column of ones on the right side. 
+@code{totient(n)} (also known as Carmichael function or Carmichael lambda)
+and the table ends with a column of ones on the right side. 
 
 The optional second argument @var{gcd} allows to select powers of a specific 
 subset of (Z/@var{n}Z). If @var{gcd} is an integer, powers of all residue 

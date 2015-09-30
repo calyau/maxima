@@ -846,7 +846,7 @@ Siehe auch @mref{zn_mult_table}, @mref{zn_power_table}.
 
 Gibt eine Liste mit den charakteristischen Faktoren des Totienten von @var{n} zur@"uck.
 
-Mit Hilfe der charakteristischen Faktoren kann eine multiplikative Gruppe modulo @var{n} 
+Mit Hilfe der charakteristischen Faktoren kann eine modulo @var{n} multiplikative Gruppe 
 als direktes Produkt zyklischer Untergruppen dargestellt werden. 
 
 Ist die Gruppe selbst zyklisch, dann enth@"alt die Liste nur den Totienten 
@@ -857,7 +857,8 @@ ermittelt werden.
 
 Jeder der @code{r} Faktoren in der Liste teilt die weiter rechts stehenden Faktoren. 
 Fuer den letzten Faktor @code{f_r} gilt daher @code{a^f_r = 1 (mod n)} 
-f@"ur alle @code{a} der Gruppe.
+f@"ur alle @code{a} teilerfremd zu @var{n}. 
+Dieser Faktor ist auch als Carmichael Funktion bzw. Carmichael Lambda bekannt.
 
 F@"ur @code{n > 2} ist @code{totient(n)/2^r} die Anzahl der quadratischen Reste 
 in der Gruppe und jeder dieser Reste hat @code{2^r} Wurzeln.
@@ -922,6 +923,17 @@ quadratischen Reste @code{1} und @code{4}, und diese haben jeweils @code{2^2} Wu
 @end example
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{zn_carmichael_lambda}
+@deffn {Funktion} zn_carmichael_lambda (@var{n}) 
+
+Gibt @code{1} zur@"uck, wenn @var{n} gleich @code{1} ist und andernfalls 
+den gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}. 
+
+F@"ur Erl@"auterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+
+@end deffn
+
 @c --- 27.07.2013 VvN ----------------------------------------------------------
 @anchor{zn_determinant}
 @deffn {Funktion} zn_determinant (@var{matrix}, @var{p}) 
@@ -963,7 +975,7 @@ Beispiel:
 Gibt eine Liste mit Faktorgeneratoren zur@"uck, die zu den charakteristischen 
 Faktoren des Totienten von @var{n} passen. 
 
-F@"ur Erlaeuterungen und Beispiele siehe @mref{zn_characteristic_factors}.
+F@"ur Erl@"auterungen und Beispiele siehe @mref{zn_characteristic_factors}.
 
 @end deffn
 
@@ -1256,8 +1268,9 @@ und seine Identit@"at @code{36} wird mit Hilfe des CRT berechnet.
 (%o5)                                36
 @end example
 
-Im folgenden RSA-@"ahnlichen Beispiel, in dem der Modulus @code{N} in paarweise 
-verschiedene Faktoren zerf@"allt, ist jedes @code{x} von @code{0} bis @code{N-1}
+Im folgenden RSA-@"ahnlichen Beispiel, in dem der Modulus @code{N} quadratfrei ist, 
+d.h. in paarweise verschiedene Primfaktoren zerf@"allt, 
+ist jedes @code{x} von @code{0} bis @code{N-1}
 in einer multiplikativen Untergruppe enthalten.
 
 Zur Entschl@"usselung wird die @code{e}-te Wurzel berechnet. 
@@ -1363,7 +1376,8 @@ Ohne ein optionales Argument zeigt @code{zn_power_table(n)}
 eine Potenzierungstabelle von allen Elementen in (Z/@var{n}Z)*, 
 d.h. von allen zu @var{n} teilerfremden Elementen. 
 Der Exponent variiert dabei jeweils zwischen @code{1} und 
-dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}, 
+dem gr@"o@ss{}ten charakteristischen Faktor des Totienten von @var{n}
+(auch bekannt als Carmichael Funktion bzw. Carmichael Lambda), 
 so dass die Tabelle rechts mit einer Spalte von Einsen endet.
 
 Das optionale zweite Argument @var{gcd} erlaubt es, eine bestimmte Untermenge 
