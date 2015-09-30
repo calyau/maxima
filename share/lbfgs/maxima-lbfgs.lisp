@@ -141,11 +141,11 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                          var-8 var-9 var-10 var-12))
         (setf iflag var-11)
+        ; Set return value to result of line search.
+        ; That's what's returned if algorithm doesn't converge; better than nothing, I hope.
+        (setq return-value (append '((mlist)) (mapcar #'(lambda (a b) `((mequal) ,a ,b)) (cdr x-list) (coerce scache 'list))))
         (cond
-          ; MIGHT WANT TO RETURN SCACHE VALUES UNCONDITIONALLY
-          ; (RESULT OF MOST RECENT LINE SEARCH IS BETTER THAN NOTHING)
           ((eq iflag 0)
-           (setq return-value (append '((mlist)) (mapcar #'(lambda (a b) `((mequal) ,a ,b)) (cdr x-list) (coerce scache 'list))))
            (return)))))
 
     return-value))
