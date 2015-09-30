@@ -15,6 +15,9 @@
 (load-macsyma-macros defcal mopers)
 
 (defmvar *alphabet* (list #\_ #\%))
+(defmvar *whitespace-chars*
+         '(#\tab #\space #\linefeed #\return #\page #\newline
+           #+(or unicode sb-unicode openmcl-unicode-strings) #\no-break_space))
 
 (defmfun alphabetp (n)
   (and (characterp n)
@@ -123,7 +126,7 @@
 
 (defun gobble-whitespace ()
   (do ((ch (parse-tyipeek) (parse-tyipeek)))
-      ((not (member ch '(#\tab #\space #\linefeed #\return #\page #\newline))))
+      ((not (member ch *whitespace-chars*)))
     (parse-tyi)))
 
 (defun read-command-token (obj)
@@ -222,8 +225,7 @@
 		             ;; when grad is defined as a prefix operator.
 		             ;; See bug report ID: 2970792.
 		             (or (not (alphabetp (cadr (exploden (cadr (cadr lis))))))
-		                 (member (parse-tyipeek)
-		                         '(#\tab #\space #\linefeed #\return #\page #\newline)))
+		                 (member (parse-tyipeek) *whitespace-chars*))
 		             (cadr (cadr lis)))))
 	         (t
 		  (let ((res   (and (eql (car (cadr lis)) 'ans)
