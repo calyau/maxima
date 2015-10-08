@@ -1,0 +1,10 @@
+;; -*- mode: lisp; coding: utf-8 -*-
+;; Copyright Leo Butler (leo.butler@member.fsf.org) 2015
+;; Released under the terms of GPLv3+
+
+(mk:defsystem unicodedata
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "contrib" "unicodedata")
+  :source-extension "lisp"
+  :components
+  ((:file "unicodedata")))
