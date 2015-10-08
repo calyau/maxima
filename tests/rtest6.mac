@@ -142,3 +142,8 @@ string ((bar[a, a](x, x)) and (baz[a](x, y)) and (not (foo[a, b](x, y))));
 
 string ([ (foo[1](z)) ]);
 "[foo[1](z)]";
+
+/* mailing list 2015-10-05: "Wrong result from integrate?" */
+
+(kill(t, R), integrate(sqrt(sin(t)^2*R^2+(1-cos(t))^2*R^2),t,0,2*%pi));
+8*R;
