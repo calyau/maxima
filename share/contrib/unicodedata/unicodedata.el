@@ -2,7 +2,7 @@
 ;; Copyright Leo Butler (leo.butler@member.fsf.org) 2015
 ;; Released under terms of GPLv3+
 ;;
-;; Generate the UnicodeData.lisp file from UnicodeData.txt
+;; Generate the unicodedata-txt.lisp file from UnicodeData.txt
 ;;
 ;; Batch mode:
 ;; emacs -nw -q --eval "(progn (byte-compile-file \"unicodedata.el\" t) (unicode-init) (unicode-print-lisp))" 
@@ -69,9 +69,8 @@ in a hashtable HT. Analogous to CL-REMOVE-IF-NOT."
     ht))
 
 (eval-when (compile load)
-  (defvar unicode-data-file "UnicodeData.txt")
-  (defvar unicode-data-hashtable );;(unicode->hashtable unicode-data-file))
-  (defvar unicode-data-list );; (unicode->list unicode-data-file))
+  (defvar unicode-data-hashtable )	;; (unicode->hashtable unicode-data-txt-buffer))
+  (defvar unicode-data-list )		;; (unicode->list unicode-data-txt-buffer))
   (defvar unicode-data-txt-url "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"
     "URL of UnicodeData.txt file.")
   (defvar unicode-data-txt-buffer "UnicodeData.txt" "Name of buffer created by UNICODEDATA.TXT.GET."))
@@ -144,7 +143,7 @@ in a hashtable HT. Analogous to CL-REMOVE-IF-NOT."
 
 (eval-when (compile load)
   (defvar unicode-math-characters nil) ;; (unicode-math-characters))
-  (defvar unicode-data-output-file "UnicodeData.lisp"))
+  (defvar unicode-data-output-file "unicodedata-txt.lisp"))
 
 (defun unicode-print-lisp (&optional data-file ht)
   (interactive)
@@ -202,7 +201,7 @@ in a hashtable HT. Analogous to CL-REMOVE-IF-NOT."
 	  (unicode-character-name 3) 
 	  (unicode-general-category 4)))
   (unicodedata.txt.get nil t)
-  (unicode->hashtable unicode-data-file)
+  (unicode->hashtable unicode-data-txt-buffer)
   )
 
 ;; end of unicodedata.el ;;

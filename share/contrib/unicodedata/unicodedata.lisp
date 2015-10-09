@@ -92,7 +92,7 @@ known alphabetical characters."
 		#+t t))))
 
     (defun maxima::$unicode_init (&optional (regexp nil) file)
-      (let ((data-file (mfuncall '$file_search1 (or file "UnicodeData.lisp") '((mlist) $file_search_lisp))))
+      (let ((data-file (mfuncall '$file_search1 (or file "unicodedata-txt.lisp") '((mlist) $file_search_lisp))))
 	(loop for (n char-sym description category) in (with-open-file (instr data-file :direction :input) (read instr t nil nil))
 	   do
 	     (setf (gethash n unicode-data-hashtable) (list char-sym description category)))
@@ -124,4 +124,4 @@ known alphabetical characters."
     (defun print-alphabetp-hashtable ()
       (print-hashtable alphabetp-hashtable))))
 
-; end of utf8-hack.lisp 
+; end of unicodedata.lisp 
