@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2012-2013 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2012-2015 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -2031,6 +2031,9 @@
 
     ; close script file
     (close cmdstorage)
+    #+(or (and sbcl win32) (and ccl windows))
+    ($system "vtk" gfn)
+    #-(or (and sbcl win32) (and ccl windows))
     ($system (format nil "(~a \"~a\")&" "vtk " gfn))
     '$done))
 
