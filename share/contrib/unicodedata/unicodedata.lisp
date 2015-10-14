@@ -47,7 +47,7 @@ To do:
 	   #-sbcl (char-sym (x) (first x))
 	   (category (x) (symbol-name (third x))))
 
-    (let (stack)
+    (let ((stack '()))
       (defun unicode-alphabetp (c)
 	(cond ((< (char-code c) 128.)				;; this character is ascii and must be non-alphabetic
 	       (setf stack '()))				;; there are no characters on the stack nor known to be part of a wide-character
@@ -109,12 +109,14 @@ known alphabetical characters."
 	   table UNICODE-DATA-HASHTABLE is emptied. Example:
 	   unicode_add(\"greek .+ letter [^ ]+$\");"
       (cond ((and (listp regexp) (not (null regexp)))
-	     (loop for regex in (cdr regexp)
-		for append = append then t
-		do (maxima::$unicode_add regex append))
-	     '$done)
+	     (let ((r (loop for regex in (cdr regexp)
+			 for append = append then t
+			 collect (maxima::$unicode_add regex append))))
+	       (cons '(mlist) r)))
 	    (t
-	     (funcall (create-adder #'description) regexp append))))
+	     (let ((n (hash-table-count alphabetp-hashtable)))
+	       (funcall (create-adder #'description) regexp append)
+	       (list '(mlist) regexp (- (hash-table-count alphabetp-hashtable) n))))))
 
     (defun print-hashtable (&optional (ht unicode-data-hashtable))
       (let ((*print-base* 16.)
