@@ -7,4 +7,4 @@
   :binary-pathname (maxima::maxima-objdir "share" "contrib" "unicodedata")
   :source-extension "lisp"
   :components
-  ((:file "unicodedata")))
+  ((:file "unicodedata") (:file "grind-patch")))

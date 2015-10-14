@@ -1,0 +1,6 @@
+/* -*- Mode: maxima; Package: MAXIMA -*- */
+
+load("unicodedata.lisp")$
+load("grind-patch.lisp")$
+
+/* end of unicodedata.mac */
