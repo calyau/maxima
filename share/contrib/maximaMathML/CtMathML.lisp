@@ -392,7 +392,7 @@
 (setup '(mfactorial  (ctfun "factorial/")))
 (setup '(mabs (ctfun "abs/")))
 (setup '(%abs (ct-proc abs)))
-(setup '(mnctimes  (ctfun "times/ type=\"noncommutative\"")))
+(setup '(mnctimes  (ctfun "times type=\"noncommutative\"/")))
 (setup '(mtimes  (ctfun "times/")))
 (setup '(mexpt (ctfun "power/")))
 ;;(setup '(mdottimes (ctfun "&CenterDot;")))
