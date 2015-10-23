@@ -181,6 +181,11 @@
    (tprinc "</list>")
 )
 
+(defun ctset(op args)
+  (tprinc "<set>")
+  (mapc (function ctmathml) args)
+  (tprinc "</set>"))
+
 (defun matrixrow(args)
    (setq args (cdr args))
    (row-begin "<matrixrow>")
@@ -372,6 +377,7 @@
 
 ;;;;; containers
 (setup '(mlist (ct-proc ctlist)))
+(setup '($set (ct-proc ctset)))
 (setup '($matrix (ct-proc  ctmatrix)))
 (setup '($vector (ct-proc  ctvector)))
 
