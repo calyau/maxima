@@ -1799,7 +1799,7 @@ x + 99 is equal to x
                             a b + 99
 @end example
 
-When @code{macroexpansion} is @code{expand},
+When @code{macroexpansion} is @code{displace},
 a macro function is called once,
 and the calling expression is modified.
 
