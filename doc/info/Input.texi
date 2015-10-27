@@ -797,6 +797,10 @@ displayed by @code{playback}.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+
+Note that the built-in TeX output functionality of wxMaxima makes no use of
+the functions described here but uses its own implementation instead.
+
 @anchor{tex}
 @deffn  {Function} tex @
 @fname{tex} (@var{expr}) @
