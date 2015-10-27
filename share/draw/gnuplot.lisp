@@ -2754,7 +2754,7 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (format nil "set style rectangle fillcolor rgb '~a' fs solid 1.0 noborder~%"
+            (format nil "set style rectangle fillcolor rgb '~a' fs solid 1.0 noborder ~%"
                         (get-option '$background_color)) ; background rectangle
             (if (equal (get-option '$proportional_axes) '$none)
                (format nil "set size noratio~%")
@@ -3327,7 +3327,7 @@
                 (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
                 (when (and (not *multiplot-is-active*)
                            (not (member (get-option '$terminal) '($epslatex $epslatex_standalone))))
-                  (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
+                  (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a fs solid noborder~%" 
                                      origin1 origin2 (+ origin1 size1 ) (+ origin2 size2)))  ))
         (setf is1stobj t
               biglist '()
