@@ -36,6 +36,17 @@
     ($printf t "~a " v))
   (car args))
 
+(defvar $stderr)
+(defvar $stdout)
+(defvar $stdin)
+
+;; Make stdout, stdin and stderr user-accessible
+;;
+(setq $stderr *error-output*
+      $stdout *standard-output*
+      $stdin  *standard-input*
+      )
+
 
 ;;
 ;;

@@ -112,6 +112,9 @@
        $make_string_input_stream
        $make_string_output_stream
        $get_output_stream_string
+       $stderr
+       $stdin
+       $stdout
        $printf
        $sprint
        $writebyte

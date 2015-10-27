@@ -24,6 +24,10 @@
   (let* ((sock (open-socket host port)))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
+    (defvar $old_stdout)
+    (defvar $old_stdin)
+    (setq $old_stderr *error-output*
+	  $old_stdout *standard-output*)
     #+ecl (setq *old-stdin* *standard-input*
 		*old-stdout* *standard-output*
 		*old-stderr* *error-output*
