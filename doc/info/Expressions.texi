@@ -1989,6 +1989,15 @@ a parallel substitution:
 (%o4)                                c + b
 @end example
 
+Single-character Operators like @code{+} and @code{-} have to be quoted in
+order to be replaced by subst. It is to note, though, that @code{a+b-c}
+might be expressed as @code{a+b+(-1*c)} internally.
+
+@example
+(%i3) subst(["+"="-"],a+b-c);
+(%o3)                                 c-b+a
+@end example
+
 @noindent
 For further examples, do @code{example (subst)}.
 
