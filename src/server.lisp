@@ -17,6 +17,10 @@
 (defvar *socket-connection*)
 
 (defun setup-client (port &optional (host "localhost"))
+  ;; The following command has to be executed on windows before
+  ;; the connection is opened. If it isn't the first unicode 
+  ;; character maxima wants to send causes sbcl to wait indefinitely.
+  #+sbcl (setf sb-impl::*default-external-format* :utf-8)
   (let* ((sock (open-socket host port)))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
