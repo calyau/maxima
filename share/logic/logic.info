@@ -1,4 +1,4 @@
-This is logic.info, produced by makeinfo version 4.13 from logic.texi.
+This is logic.info, produced by makeinfo version 6.0 from logic.texi.
 
 
 File: logic.info,  Node: Top,  Next: Introduction to logic,  Prev: (dir),  Up: (dir)
@@ -22,53 +22,46 @@ File: logic.info,  Node: Introduction to logic,  Next: Definitions for logic,  P
 =========================
 
 This is a draft version of logic algebra package for Maxima.  It is
-being developed by Alexey Beshenov (al@beshenov.ru).  All source code
-is available uder the terms of GNU GPL 2.1.
+being developed by Alexey Beshenov (al@beshenov.ru).  All source code is
+available uder the terms of GNU GPL 2.1.
 
    List of recognized operators:
 
 Operator    Type    Binding Description                      Properties
-                    power                                    
----------------------------------------------------------------------------- 
-`not'       Prefix  `70'    Logical NOT (negation)           
-`and'       N-ary   `65'    Logical AND (conjunction)        Commutative
-`nand'      N-ary   `62'    Sheffer stroke (alternative      Commutative
-                            denial, NAND)                    
-`nor'       N-ary   `61'    Webb-operation or Peirce arrow   Commutative
-                            (Quine's dagger, NOR)            
-`or'        N-ary   `60'    Logical OR (disjunction)         Commutative
-`implies'   Infix   `59'    Implication                      
-`eq'        N-ary   `58'    Equivalence                      Commutative
-`xor'       N-ary   `58'    Sum modulo 2 (exclusive or)      Commutative
+                    power
+----------------------------------------------------------------------------
+'not'       Prefix  '70'    Logical NOT (negation)
+'and'       N-ary   '65'    Logical AND (conjunction)        Commutative
+'nand'      N-ary   '62'    Sheffer stroke (alternative      Commutative
+                            denial, NAND)
+'nor'       N-ary   '61'    Webb-operation or Peirce arrow   Commutative
+                            (Quine's dagger, NOR)
+'or'        N-ary   '60'    Logical OR (disjunction)         Commutative
+'implies'   Infix   '59'    Implication
+'eq'        N-ary   '58'    Equivalence                      Commutative
+'xor'       N-ary   '58'    Sum modulo 2 (exclusive or)      Commutative
 
 1.2 TeX output
 ==============
 
 logic.mac assigns the following TeX output:
 
-`not'
-     `\neg'
-
-`and'
-     `\wedge'
-
-`nand'
-     `\mid'
-
-`nor'
-     `\downarrow'
-
-`or'
-     `\vee'
-
-`implies'
-     `\rightarrow'
-
-`eq'
-     `\sim'
-
-`xor'
-     `\oplus'
+'not'
+     '\neg'
+'and'
+     '\wedge'
+'nand'
+     '\mid'
+'nor'
+     '\downarrow'
+'or'
+     '\vee'
+'implies'
+     '\rightarrow'
+'eq'
+     '\sim'
+'xor'
+     '\oplus'
 
    Examples:
 
@@ -93,6 +86,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
 =========================
 
  -- Function: logic_simp (<expr>)
+
      Returns a simplified version of logical expression <expr>.
 
      Examples:
@@ -111,9 +105,10 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
      N.B. It should be merged somehow with the basic Maxima simplifier.
 
  -- Function: characteristic_vector (<expr>, <var_1>, ..., <var_n>)
+
      Returns a list of size 2^n with all possible values of <expr>.
 
-     For example, `characteristic_vector (f(x,y,z), x, y, z)' is
+     For example, 'characteristic_vector (f(x,y,z), x, y, z)' is
      equivalent to list
 
           [
@@ -127,7 +122,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
             f ( true,  true,  true)
           ]
 
-     If `<var_1>, ..., <var_n>' is omitted, it is assumed that
+     If '<var_1>, ..., <var_n>' is omitted, it is assumed that
 
           [<var_1>, ..., <var_n>] = sort(listofvars(<expr>))
 
@@ -146,8 +141,9 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o6)                      [true, false, true, true]
 
  -- Function: zhegalkin_form (<expr>)
-     Returns the representation of <expr> in Zhegalkin basis `{xor,
-     and, true}'.
+
+     Returns the representation of <expr> in Zhegalkin basis '{xor, and,
+     true}'.
 
      Examples:
 
@@ -160,7 +156,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
                                                                 xor true
 
  -- Function: logic_equiv (<expr_1>, <expr_2>)
-     Returns `true' if <expr_1> is equivalent to <expr_2> and `false'
+
+     Returns 'true' if <expr_1> is equivalent to <expr_2> and 'false'
      otherwise.
 
      Examples:
@@ -178,6 +175,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o6)                                true
 
  -- Function: dual_function (<expr>)
+
           dual_function (f (x_1, ..., x_n)) := not f (not x_1, ..., not x_n).
 
      Example:
@@ -189,8 +187,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o3)                               x and y
 
  -- Function: self_dual (<expr>)
-     Returns `true' if <expr> is equivalent to `dual_function (<expr>)'
-     and `false' otherwise.
+     Returns 'true' if <expr> is equivalent to 'dual_function (<expr>)'
+     and 'false' otherwise.
 
      Examples:
 
@@ -203,8 +201,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o4)                               false
 
  -- Function: closed_under_f (<expr>)
-     `closed_under_f (f (x_1, ..., x_n)' returns `true' if `f (false,
-     ..., false) = false' and `false' otherwise.
+     'closed_under_f (f (x_1, ..., x_n)' returns 'true' if 'f (false,
+     ..., false) = false' and 'false' otherwise.
 
      Examples:
 
@@ -215,8 +213,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o3)                                true
 
  -- Function: closed_under_t (<expr>)
-     `closed_under_t (f (x_1, ..., x_n)' returns `true' if `f (true,
-     ..., true) = true' and `false' otherwise.
+     'closed_under_t (f (x_1, ..., x_n)' returns 'true' if 'f (true,
+     ..., true) = true' and 'false' otherwise.
 
      Examples:
 
@@ -227,13 +225,13 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o3)                                true
 
  -- Function: monotonic (<expr>)
-     Returns `true' if characteristic vector of <expr> is monotonic,
+     Returns 'true' if characteristic vector of <expr> is monotonic,
      i.e.
 
           charvec : characteristic_vector(expr)
           charvec[i] <= charvec[i+1],   i = 1, ..., n-1
 
-     where `a<=b := (a=b or (a=false and b=true))'.
+     where 'a<=b := (a=b or (a=false and b=true))'.
 
      Examples:
 
@@ -256,7 +254,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o9)                    [false, true, true, false]
 
  -- Function: linear (<expr>)
-     Returns `true' if `zhegalkin_form(<expr>)' is linear and `false'
+     Returns 'true' if 'zhegalkin_form(<expr>)' is linear and 'false'
      otherwise.
 
      Examples:
@@ -275,9 +273,9 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
      functions.
 
  -- Function: functionally_complete (<expr_1>, ..., <expr_n>)
-     Returns `true' if <expr_1>, ..., <expr_n> is a functionally
-     complete system and `false' otherwise.  The constants are
-     essential (see the example below).
+     Returns 'true' if <expr_1>, ..., <expr_n> is a functionally
+     complete system and 'false' otherwise.  The constants are essential
+     (see the example below).
 
      Examples:
 
@@ -290,8 +288,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o4)                                true
 
  -- Function: logic_basis (<expr_1>, ..., <expr_n>)
-     Returns `true' if <expr_1>, ..., <expr_n> is a functionally
-     complete system without redundant elements and `false' otherwise.
+     Returns 'true' if <expr_1>, ..., <expr_n> is a functionally
+     complete system without redundant elements and 'false' otherwise.
 
      Examples:
 
@@ -340,7 +338,8 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o4)                       false
 
  -- Function: boolean_form (<expr>)
-     Returns the representation of <expr> in Boolean basis `{and, or,
+
+     Returns the representation of <expr> in Boolean basis '{and, or,
      not}'.
 
      Examples:
@@ -355,6 +354,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o4)                       true
 
  -- Function: demorgan (<expr>)
+
      Applies De Morgan's rules to <expr>:
 
           not (x_1 and ... and x_n) => (not x_1  or ...  or not x_n)
@@ -367,6 +367,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o2)          (not a) and (not b) and (not c)
 
  -- Function: pdnf (<expr>)
+
      Returns the perfect disjunctive normal form of <expr>.
 
      Example:
@@ -376,6 +377,7 @@ File: logic.info,  Node: Definitions for logic,  Next: Function and variable ind
           (%o2) (x and y) or ((not x) and y) or ((not x) and (not y))
 
  -- Function: pcnf (<expr>)
+
      Returns the perfect conjunctive normal form of <expr>.
 
      Example:
@@ -394,48 +396,46 @@ Appendix A Function and variable index
 * Menu:
 
 * boolean_form:                          Definitions for logic.
-                                                              (line 254)
+                                                              (line 258)
 * characteristic_vector:                 Definitions for logic.
                                                               (line  25)
 * closed_under_f:                        Definitions for logic.
-                                                              (line 117)
+                                                              (line 121)
 * closed_under_t:                        Definitions for logic.
-                                                              (line 129)
+                                                              (line 133)
 * demorgan:                              Definitions for logic.
-                                                              (line 269)
+                                                              (line 274)
 * dual_function:                         Definitions for logic.
-                                                              (line  92)
+                                                              (line  95)
 * functionally_complete:                 Definitions for logic.
-                                                              (line 189)
+                                                              (line 193)
 * linear:                                Definitions for logic.
-                                                              (line 170)
+                                                              (line 174)
 * logic_basis:                           Definitions for logic.
-                                                              (line 204)
+                                                              (line 208)
 * logic_diff:                            Definitions for logic.
-                                                              (line 237)
+                                                              (line 241)
 * logic_equiv:                           Definitions for logic.
-                                                              (line  74)
+                                                              (line  76)
 * logic_simp:                            Definitions for logic.
-                                                              (line   7)
+                                                              (line   6)
 * monotonic:                             Definitions for logic.
-                                                              (line 141)
+                                                              (line 145)
 * pcnf:                                  Definitions for logic.
-                                                              (line 290)
+                                                              (line 297)
 * pdnf:                                  Definitions for logic.
-                                                              (line 281)
+                                                              (line 287)
 * self_dual:                             Definitions for logic.
-                                                              (line 103)
+                                                              (line 107)
 * zhegalkin_form:                        Definitions for logic.
-                                                              (line  60)
+                                                              (line  61)
 
- [index ]
-* Menu:
 
 
 Tag Table:
-Node: Top0
-Node: Introduction to logic284
-Node: Definitions for logic2308
-Node: Function and variable index13090
+Node: Top71
+Node: Introduction to logic283
+Node: Definitions for logic2198
+Node: Function and variable index12989
 
 End Tag Table
