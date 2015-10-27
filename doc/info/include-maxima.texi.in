@@ -140,6 +140,7 @@ Additional packages
 * augmented_lagrangian::        augmented_lagrangian package.
 * Bernstein::                   Bernstein polynomials.
 * bode::                        Bode gain and phase plots.
+* celine::                      Sister Celine's method 
 * clebsch_gordan::              Clebsch-Gordan and Wigner coefficients
 * cobyla::                      Nonlinear optimization with inequality constraints.
 * contrib_ode::                 Additional routines for ODEs
@@ -751,6 +752,10 @@ zeilberger
 @node bode
 @chapter bode
 @include bode.texi
+
+@node celine
+@chapter celine
+@include celine.texi
 
 @node clebsch_gordan
 @chapter clebsch_gordan
