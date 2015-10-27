@@ -529,22 +529,51 @@ See @mref{first} for more details.
 @closecatbox
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-
 @c -----------------------------------------------------------------------------
 @anchor{first}
 @deffn {Function} first (@var{expr})
 
 Returns the first part of @var{expr} which may result in the first element of a
-list, the first row of a matrix, the first term of a sum, etc.  Note that
+list, the first row of a matrix, the first term of a sum, etc.:
+@example
+@group
+(%i1) matrix([1,2],[3,4]);
+                                   [ 1  2 ]
+(%o1)                              [      ]
+                                   [ 3  4 ]
+(%i2) first(%);
+(%o2)                              [1,2]
+(%i3) first(%);
+(%o3)                              1
+(%i4) first(a*b/c+d+e/x);
+                                   a b
+(%o4)                              ---
+                                    c
+(%i5) first(a=b/c+d+e/x);
+(%o5)                              a
+@end group
+@end example
+Note that
 @code{first} and its related functions, @code{rest} and @code{last}, work
 on the form of @var{expr} which is displayed not the form which is typed on
 input.  If the variable @mref{inflag} is set to @code{true} however, these
-functions will look at the internal form of @var{expr}.  Note that the
-simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
-@code{inflag} is @code{true} and @code{y} if @code{inflag} is @code{false}
-(@code{first(y+x)} gives the same results).  The functions @code{second} @dots{}
+functions will look at the internal form of @var{expr}. One reason why this may
+make a difference is that the simplifier re-orders expressions:
+@example
+@group
+(%i1) x+y;
+(%o1)                              y+1
+(%i2) first(x+y),inflag : true;
+(%o2)                              x
+(%i3) first(x+y),inflag : false;
+(%o3)                              y
+@end group
+@end example
+
+The functions @code{second} @dots{}
 @code{tenth} yield the second through the tenth part of their input argument.
+
+See also @code{part}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
