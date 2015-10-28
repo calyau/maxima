@@ -629,9 +629,11 @@ integers, otherwise @code{false}.
 @c -----------------------------------------------------------------------------
 
 @cindex backslash
-@ifnotinfo
-@cindex \
-@end ifnotinfo
+@c The following three lines were commented out since they made "make pdf" abort
+@c with an error:
+@c @ifnotinfo
+@c @cindex \
+@c @end ifnotinfo
 @ifinfo
 @c adding the backslash to the index here breaks the LaTeX syntax of the file
 @c maxima.fns that is created by the first pdfLaTeX run by "make pdf".
