@@ -18,18 +18,19 @@ set of points and pass them to the plotting package together with a set
 of commands.  That information can be passed to the external program
 either through a pipe or by calling the program with the name of a file
 where the data has been saved.  The data file is given the name
-@code{maxout.format}, where @code{format} is the name of the plotting
-format being used (@code{gnuplot}, @code{xmaxima}, @code{mgnuplot} or
-@code{gnuplot_pipes}).
+@code{maxout_xxx.format}, where @code{xxx} is a number that is unique
+to every concurrently-running instance of maxima and @code{format} is
+the name of the plotting format being used (@code{gnuplot},
+@code{xmaxima}, @code{mgnuplot} or @code{gnuplot_pipes}).
 
 There are to save the plot in a graphic format file. In those cases, the
-file @code{maxout.format} created by Maxima includes commands that will
+file @code{maxout_xxx.format} created by Maxima includes commands that will
 make the external plotting program save the result in a graphic
 file. The default name for that graphic file is
 @code{maxplot.extension}, where @code{extension} is the extension
 normally used for the kind of graphic file selected.
 
-The @code{maxout.format} and @code{maxplot.extension} files are created
+The @code{maxout_xxx.format} and @code{maxplot.extension} files are created
 in the directory specified by the system variable
 @mrefdot{maxima_tempdir} That location can be changed by assigning to
 that variable (or to the environment variable MAXIMA_TEMPDIR) a string
@@ -39,10 +40,10 @@ the file(s) created, including their complete path.
 
 If the format used is either @code{gnuplot} or @code{xmaxima}, the
 external programs @code{gnuplot} or @code{xmaxima} can be run, giving it
-the file @code{maxout.format} as argument, in order to view again a plot
+the file @code{maxout_xxx.format} as argument, in order to view again a plot
 previously created in Maxima. Thus, when a Maxima plotting command
 fails, the format can be set to @code{gnuplot} or @code{xmaxima} and the
-plain-text file @code{maxout.gnuplot} (or @code{maxout.xmaxima}) can be
+plain-text file @code{maxout_xxx.gnuplot} (or @code{maxout_xxx.xmaxima}) can be
 inspected to look for the source of the problem.
 
 The additional package @ref{draw} provides functions similar to the ones
@@ -75,7 +76,7 @@ The plotting formats are the following:
 
 Used to launch the external program gnuplot, which must be installed in
 your system.  All plotting commands and data are saved into the file
-@code{maxout.gnuplot}.
+@code{maxout_xxx.gnuplot}.
 
 @item
 @strong{gnuplot_pipes} (default on non-Windows platforms)
@@ -83,7 +84,7 @@ your system.  All plotting commands and data are saved into the file
 This format is not available in Windows platforms.
 It is similar to the @code{gnuplot} format except that the commands are sent
 to gnuplot through a pipe, while the data are saved into the file
-@code{maxout.gnuplot_pipes}.  A single gnuplot process is kept open
+@code{maxout_xxx.gnuplot_pipes}.  A single gnuplot process is kept open
 and subsequent plot commands will be sent to the same process, replacing
 previous plots, unless the gnuplot pipe is closed with the function
 @mrefdot{gnuplot_close}  When this format is used, the function
@@ -93,7 +94,7 @@ displayed on the screen.
 This format is only used to plot to the screen; whenever graphic files are
 created, the format is silently switched to @code{gnuplot} and
 the commands needed to create the graphic file are saved with the data
-in file @code{maxout.gnuplot}.
+in file @code{maxout_xxx.gnuplot}.
 
 @item
 @strong{mgnuplot}
@@ -115,7 +116,7 @@ Maxima is being run from the Xmaxima console, the data and commands are
 passed to xmaxima through the same socket used for the communication
 between Maxima and the Xmaxima console. When used from a terminal or
 from graphical interfaces different from Xmaxima, the commands and data
-are saved in the file @code{maxout.xmaxima} and xmaxima is run with the
+are saved in the file @code{maxout_xxx.xmaxima} and xmaxima is run with the
 name of that file as argument.
 
 In previous versions this format used to be called @code{openmath}; that
@@ -245,7 +246,7 @@ This variable is used to parse the argument that will be passed to the
 gnuplot program when the plot format is @code{gnuplot}. Its default
 value is "-persist ~s", where "~s" will be replaced with the name of the
 file where the gnuplot commands have been written (usually
-"maxout.gnuplot"). The option @code{-persist} tells gnuplot to exit
+"maxout_xxx.gnuplot"). The option @code{-persist} tells gnuplot to exit
 after the commands in the file have been executed, without closing the
 window that displays the plot.
 
@@ -1472,14 +1473,14 @@ terminal is @code{default} or when the Gnuplot terminal is set to
 @code{dumb} (see @mref{gnuplot_term}) and can have a true or false
 value.
 
-If the terminal is @code{default}, a file @code{maxout.gnuplot} (or
+If the terminal is @code{default}, a file @code{maxout_xxx.gnuplot} (or
 other name specified with @mref{gnuplot_out_file}) is created with the
 gnuplot commands necessary to generate the plot. Option @code{run_viewer}
 controls whether or not Gnuplot will be launched to execute those
 commands and show the plot.
 
 If the terminal is @code{default}, gnuplot is run to execute the
-commands in @code{maxout.gnuplot}, producing another file
+commands in @code{maxout_xxx.gnuplot}, producing another file
 @code{maxplot.txt} (or other name specified with
 @mref{gnuplot_out_file}). Option @code{run_viewer} controls whether or
 not that file, with an ASCII representation of the plot, will be shown
@@ -1802,10 +1803,10 @@ gnuplot terminal used will be specified by the value of the option
 @item
 @strong{dumb}
 
-Gnuplot output is saved to a file @code{maxout.gnuplot} using "ASCII
+Gnuplot output is saved to a file @code{maxout_xxx.gnuplot} using "ASCII
 art" approximation to graphics. If the option @mref{gnuplot_out_file} is
 set to @var{filename}, the plot will be saved there, instead of the
-default @code{maxout.gnuplot}. The settings for the ``dumb'' terminal of
+default @code{maxout_xxx.gnuplot}. The settings for the ``dumb'' terminal of
 Gnuplot are given by the value of option
 @mrefdot{gnuplot_dumb_term_command} If option @mref{run_viewer} is set
 to true and the plot_format is @code{gnuplot} that ASCII representation

@@ -2012,7 +2012,7 @@
               (merror "draw: item ~M is not recognized" x))) )
 
     ;; prepare script file
-    (setf gfn (plot-temp-file "maxout.tcl"))
+    (setf gfn (plot-temp-file (format nil "maxout~d.tcl" (getpid))))
     (setf cmdstorage
       (open gfn
             :direction :output :if-exists :supersede))

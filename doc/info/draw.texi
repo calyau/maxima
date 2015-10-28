@@ -1416,7 +1416,9 @@ See also @code{font}.
 
 
 @defvr {Graphic option} gnuplot_file_name
-Default value: @code{"maxout.gnuplot"}
+Default value: @code{"maxout_xxx.gnuplot"} with @code{"xxx"}
+being a number that is unique to each concurrently-running
+maxima process.
 
 This is the name of the file with the necessary commands to
 be processed by Gnuplot.

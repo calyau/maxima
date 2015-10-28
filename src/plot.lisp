@@ -1876,7 +1876,8 @@ sin(y)*(10.0+6*cos(x)),
         (setq file (plot-file-path gnuplot-out-file))
         (setq file
               (plot-file-path
-               (format nil "maxout.~(~a~)"
+               (format nil "maxout~d.~(~a~)"
+		       (getpid)
                        (ensure-string (getf options :plot_format))))))
 
     ;; old function $plot2dopen incorporated here
@@ -2213,7 +2214,7 @@ sin(y)*(10.0+6*cos(x)),
 
 (defun show-open-plot (ans file)
   (cond ($show_openplot
-         (with-open-file (st1 (plot-temp-file "maxout.xmaxima") :direction :output :if-exists :supersede)
+         (with-open-file (st1 (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))) :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
                                (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
@@ -2492,7 +2493,8 @@ Several functions depending on the two variables v1 and v2:
       (setq file (plot-file-path gnuplot-out-file))
       (setq file
             (plot-file-path
-             (format nil "maxout.~(~a~)"
+             (format nil "maxout~d.~(~a~)"
+		     (getpid)
                      (ensure-string (getf options :plot_format))))))
 
   (and $in_netmath 
