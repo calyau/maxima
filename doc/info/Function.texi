@@ -753,6 +753,22 @@ functions.
 @code{compile} quotes its arguments; 
 the quote-quote operator @code{'@w{}'} defeats quotation.
 
+Compiling a function to native code can mean a big increase in speed and might 
+cause the memory footprint to reduce drastically.
+Code tends to be especially effective when the flexibility it needs to provide
+is limited. If compilation doesn't provide the speed that is needed a few ways
+to limit the code's functionality are the following:
+@itemize @bullet
+@item If the function accesses global variables the complexity of the function
+      can be drastically reduced by limiting these variables to one data type,
+      for example with a statement like the following one:
+      @code{put(x_1, bigfloat, numerical_type)}
+@item The compiler might warn about undeclared variables if text could either be
+      a named option to a command or (if they are assigned a value to) the name
+      of a variable. Prepending the option with a single quote @code{'}
+      tells the compiler that the text is meant as an option.
+@end itemize
+
 @opencatbox
 @category{Translation and compilation}
 @closecatbox

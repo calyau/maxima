@@ -190,13 +190,13 @@ elif [ "$MAXIMA_LISP" = "ecl" ]; then
 
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # Use executable image if it exists.
-# Since compiling lapack already needed >1200 Megabytes od RAM in August of 2015 
-# we have to extend the amount of memory sbcl will be able to claim by using the
-# switch --dynamic-space-size
+# Since compiling lapack already needed >1200 Megabytes of RAM in August of 2015 
+# one has to extend the amount of memory sbcl will be able to claim by using the
+# switch --dynamic-space-size in order to do so.
   if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform --dynamic-space-size 1900 $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   else
-    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --dynamic-space-size 1900 $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   fi
 
 else
