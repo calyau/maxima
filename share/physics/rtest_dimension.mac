@@ -1,0 +1,57 @@
+kill(all);
+'done$
+
+(load("dimension"),'done);
+'done$
+
+(qput(x, "length", dimension),
+  qput(c, "length" / "time", dimension),
+  qput(t, "time", dimension),
+  qput(sigma,1,dimension),
+  'done);
+'done$
+
+dimension(4 * sqrt(3) /t);
+1/"time"$
+
+dimension(x + c * t);
+"length"$
+
+dimension(sin(c * t / x));
+1$
+
+dimension(abs(x - c * t));
+"length"$
+
+dimension(log(x) - log(c*t));
+1$
+
+dimension([42, min(x,c*t), max(x,c*t), x^^4, x . c]);
+[1,"length","length","length"^4,"length"^2/"time"]$
+
+errcatch(dimension(x + c));
+[]$
+
+errcatch(dimension(sin(x)));
+[]$
+
+dimension(x = c * t);
+"length"$
+
+dimension(x * t = 0);
+"length"*"time"$
+
+dimension('diff(x,t));
+"length"/"time"$
+
+dimension('diff(x,t,2));
+"length"/"time"^2$
+
+dimension('diff(x,c,2,t,1));
+"time"/"length"$
+
+dimension('integrate (x,t));
+"length"*"time"$
+
+(kill(x, c, t, sigma), 'done);
+'done$
