@@ -1477,6 +1477,7 @@ By default @code{base64_decode} decodes the @var{base64-string} back to the orig
 
 The optional argument @var{return-type} allows @code{base64_decode} to 
 alternatively return the corresponding number or list of octets.
+@var{return-type} may be @code{string}, @code{number} or @code{list}.
 
 Example: See @ref{base64}.
 
@@ -1497,6 +1498,7 @@ as a string.
 
 The optional argument @var{return-type} allows @code{crc24sum} to 
 alternatively return the corresponding number or list of octets.
+@var{return-type} may be @code{string}, @code{number} or @code{list}.
 
 Example:
 @example
@@ -1546,6 +1548,7 @@ a list of octets. The default return value is a string containing 32 hex charact
 
 The optional argument @var{return-type} allows @code{md5sum} to alternatively 
 return the corresponding number or list of octets.
+@var{return-type} may be @code{string}, @code{number} or @code{list}.
 
 Example:
 
@@ -1564,6 +1567,40 @@ Example:
 
 Note that in case @var{arg} contains German umlauts or other non-ASCII 
 characters (resp. octets larger than 127) the @code{MD5} checksum is platform dependend.
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mgf1_sha1}
+@deffn {Function} mgf1_sha1 @
+@fname{mgf1_sha1} (@var{seed}, @var{len}) @
+@fname{mgf1_sha1} (@var{seed}, @var{len}, @var{return-type})
+
+Returns a pseudo random number of variable length. 
+By default the returned value is a number with a length of @var{len} octets.
+
+The optional argument @var{return-type} allows @code{mgf1_sha1} to alternatively 
+return the corresponding list of @var{len} octets.
+@var{return-type} may be @code{number} or @code{list}.
+
+The computation of the returned value is described in @code{RFC 3447}, 
+appendix @code{B.2.1 MGF1}. 
+@code{SHA1} ist used as hash function, i.e. the randomness of the computed number 
+relies on the randomness of @code{SHA1} hashes.
+
+Example:
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) number: mgf1_sha1(4711., 8);
+(%o2)                        0e0252e5a2a42fea1
+(%i3) octets: mgf1_sha1(4711., 8, 'list);
+(%o3)                  [0E0,25,2E,5A,2A,42,0FE,0A1]
+@end example
 
 @opencatbox
 @category{Package stringproc}
@@ -1656,6 +1693,7 @@ a list of octets. The default return value is a string containing 40 hex charact
 
 The optional argument @var{return-type} allows @code{sha1sum} to alternatively 
 return the corresponding number or list of octets.
+@var{return-type} may be @code{string}, @code{number} or @code{list}.
 
 Example:
 

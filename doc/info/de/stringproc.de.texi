@@ -1226,6 +1226,7 @@ wieder zur@"uck in die urspr@"ungliche Zeichenkette.
 Das optionale Argument @var{return-type} erlaubt es @code{base64_decode}, 
 alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
 zur@"uck zu geben.
+@var{return-type} kann @code{string}, @code{number} oder @code{list} sein.
 
 Beispiel: Siehe @ref{base64}.
 @end deffn
@@ -1241,6 +1242,7 @@ Zeichenkette zur@"uck.
 Das optionale Argument @var{return-type} erlaubt es @code{crc24sum}, 
 alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
 zur@"uck zu geben.
+@var{return-type} kann @code{string}, @code{number} oder @code{list} sein.
 
 Beispiel:
 @example
@@ -1287,6 +1289,8 @@ ist eine Zeichenkette mit 32 hexadezimalen Zeichen.
 Das optionale Argument @var{return-type} erlaubt es @code{md5sum}, 
 alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
 zur@"uck zu geben.
+@var{return-type} kann @code{string}, @code{number} oder @code{list} sein.
+
 
 Beispiel:
 
@@ -1305,6 +1309,36 @@ Beispiel:
 
 Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
 gr@"o@ss{}er als 127), ist das Ergebnis von der verwendeten Plattform abh@"angig. 
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mgf1_sha1}
+@deffn {Funktion} mgf1_sha1 (@var{seed}, @var{len})
+@deffnx {Funktion} mgf1_sha1 (@var{seed}, @var{len}, @var{return-type}) 
+
+Gibt eine Pseudozufallszahl variabler L@"ange zur@"uck. 
+Standardm@"a@ss{}ig ist dies eine Zahl mit einer L@"ange von @var{len} Oktetten.
+
+Das optionale Argument @var{return-type} erlaubt es @code{mgf1_sha1}, 
+alternativ hierzu die Liste mit den @var{len} entsprechenden Oktetten 
+zur@"uck zu geben.
+@var{return-type} kann @code{number} oder @code{list} sein.
+
+Die Berechnung des R@"uckgabewerts wird in der @code{RFC 3447} 
+im Anhang @code{B.2.1 MGF1} beschrieben. 
+Verwendet wird dabei @code{SHA1} als Hashfunktion, d.h. die Zuf@"alligkeit der 
+berechneten Zahl beruht auf der Zuf@"alligkeit von @code{SHA1}-Hashwerten.
+
+Beispiel:
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) number: mgf1_sha1(4711., 8);
+(%o2)                        0e0252e5a2a42fea1
+(%i3) octets: mgf1_sha1(4711., 8, 'list);
+(%o3)                  [0E0,25,2E,5A,2A,42,0FE,0A1]
+@end example
 
 @end deffn
 
@@ -1379,6 +1413,7 @@ ist eine Zeichenkette mit 40 hexadezimalen Zeichen.
 Das optionale Argument @var{return-type} erlaubt es @code{sha1sum}, 
 alternativ hierzu auch die entsprechende Ganzzahl oder Liste von Oktetten 
 zur@"uck zu geben.
+@var{return-type} kann @code{string}, @code{number} oder @code{list} sein.
 
 Beispiel:
 

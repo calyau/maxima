@@ -174,6 +174,7 @@
        $base64_decode
        $crc24sum
        $md5sum
+       $mgf1_sha1
        $number_to_octets
        $octets_to_number
        $octets_to_oid
