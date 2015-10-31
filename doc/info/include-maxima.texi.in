@@ -925,7 +925,7 @@ Understanding maxima's output
 
 @c end includes
 
-@node Function and Variable Index,  , zeilberger, Top
+@node Function and Variable Index,  , Error and warning messages, Top
 @appendix Function and Variable Index
 
 @printindex fn

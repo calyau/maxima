@@ -16,7 +16,7 @@ or on how to recover from errors.
 
 @node part fell off the end, undefined variable during plotting, Error messages, Error messages
 @subsection part: fell off the end
-@code{part ()} was used to access the @code{n}th item in something that has less than
+@code{part()} was used to access the @code{n}th item in something that has less than
 @code{n} items.
 @opencatbox
 @category{Error messages}
@@ -36,7 +36,7 @@ the drawing command sees.
 @example
 (%i1) load("draw")$
 (%i2) f(x):=sin(omega*t);
-(%o2)                        f(x) := sin(omega t)
+(%o2) f(x) := sin(omega t)
 (%i3) draw2d(
         explicit(
           f(x),
@@ -51,7 +51,7 @@ draw2d (explicit): non defined variable
           x,1,10
         )
       );
-(%o4)              ddraw2d(explicit(sin(omega t), x, 1, 10))
+(%o4) ddraw2d(explicit(sin(omega t), x, 1, 10))
 @end example
 
 @opencatbox
@@ -66,7 +66,7 @@ counter.
 @node out of memory, ,undefined variable during plotting, Error messages
 @subsection Out of memory
 Lisp typically handles several types of memory containing at least one stack
-and a heap that contains user objects. To avoid running out of memory several<
+and a heap that contains user objects. To avoid running out of memory several
 approaches might be useful:
 @itemize @bullet
 @item If possible, the best solution normally is to use an algorithm that is
@@ -104,9 +104,9 @@ resolve this issue.
 @node replaced x by y, ,undefined variable during translation,Warning messages
 @subsection Rat: replaced <x> by <y> = <z>
 Floating-point numbers provide a maximum number of digits that is typically high,
-but still limited. Popular examples include the fact that an exact 1/10 cannot be
-expressed as a binary floating-point number and
-@uref{https://en.wikipedia.org/wiki/Wilkinson%27s_polynomial, Wilkinsons Polynomial}.
+but still limited. Popular examples include
+@uref{https://en.wikipedia.org/wiki/Wilkinson%27s_polynomial, Wilkinsons Polynomial}
+and the fact that an exact 1/10 cannot be expressed as a binary floating-point number.
 In places where the floating-point error might add up or hinder terms from
 cancelling each other out maxima therefore by default replaces them with exact
 fractions.
