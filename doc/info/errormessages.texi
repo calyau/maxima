@@ -1,0 +1,116 @@
+@menu
+* Error messages::
+* Warning messages::
+@end menu
+
+This chapter provides detailed information about the meaning of some error messages
+or on how to recover from errors.
+@node Error messages, part fell off the end, Error and warning messages, Error and warning messages
+@section Error messages
+@menu
+* part fell off the end::
+* undefined variable during plotting::
+* Only symbols can be bound::
+* out of memory::
+@end menu
+
+@node part fell off the end, undefined variable during plotting, Error messages, Error messages
+@subsection part: fell off the end
+@code{part ()} was used to access the @code{n}th item in something that has less than
+@code{n} items.
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+@node undefined variable during plotting,out of memory, part fell off the end, Error messages
+@subsection undefined variable (draw or plot)
+A function could not be plotted since it still contained a variable maxima
+doesn't know the value of.
+
+In order to find out which variable this could be it is sometimes helpful to
+temporarily replace the name of the drawing command (@code{draw2d}, @code{plot2d}
+or similar) by a random name (for example @code{ddraw2d}) that doesn't coincide
+with the name of an existing function to make maxima print out what parameters
+the drawing command sees.
+
+@example
+(%i1) load("draw")$
+(%i2) f(x):=sin(omega*t);
+(%o2)                        f(x) := sin(omega t)
+(%i3) draw2d(
+        explicit(
+          f(x),
+          x,1,10
+        )
+      );
+draw2d (explicit): non defined variable
+ -- an error. To debug this try: debugmode(true);
+(%i4) ddraw2d(
+        explicit(
+          f(x),
+          x,1,10
+        )
+      );
+(%o4)              ddraw2d(explicit(sin(omega t), x, 1, 10))
+@end example
+
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+@node Only symbols can be bound, out of memory,undefined variable during plotting, Error messages
+@subsection Only symbols can be bound
+The most probable cause for this error is that there was an attempt to eiter
+use a number or a variable whose numerical value is known as a loop
+counter.
+@subsection Out of memory
+Lisp typically handles several types of memory containing at least one stack
+and a heap that contains user objects. To avoid running out of memory several<
+approaches might be useful:
+@itemize @bullet
+@item If possible, the best solution normally is to use an algorithm that is
+      more memory-efficient.
+@item Compiling a function might drastically reduce the amount of memory it
+      needs.
+@item Arrays of a fixed type might be more memory-efficient than lists.
+@item If maxima is run by sbcl sbcl's memory limit might be set to a value
+      that is too low to solve the current problem. In this case the
+      command-line option @code{--dynamic-space-size <n>} allows to tell
+      sbcl to reserve @code{n} megabytes for the heap. It is to note, though,
+      that sbcl has to handle several distinct types of memory and therefore
+      might be able to only reserve about half of the available physical
+      memory. Also note that 32-bit processes might only be able to access
+      2GB of physical memory.
+@end itemize
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+@node Warning messages, undefined variable during translation,Error and warning messages, Error and warning messages
+@section Warning messages
+@menu
+* undefined variable during translation::
+* replaced x by y::
+@end menu
+@node undefined variable during translation,replaced x by y ,Warning messages,Warning messages
+@subsection Encountered undefined variable <x> in translation
+A function was compiled but the type of the variable @code{x} was not known.
+This means that the compiled command contains additional code that makes it
+retain all the flexibility maxima provides in respect to this variable.
+If @code{x} isn't meant as a variable name but just a named option to a
+command prepending the named option by a single quote (@code{'}) should
+resolve this issue.
+@node replaced x by y, ,undefined variable during translation,Warning messages
+@subsection Rat: replaced <x> by <y> = <z>
+Floating-point numbers provide a maximum number of digits that is typically high,
+but still limited. Popular examples include the fact that an exact 1/10 cannot be
+expressed as a binary floating-point number and
+@uref{https://en.wikipedia.org/wiki/Wilkinson%27s_polynomial, Wilkinsons Polynomial}.
+In places where the floating-point error might add up or hinder terms from
+cancelling each other out maxima therefore by default replaces them with exact
+fractions.
+See also @code{ratprint}, @code{ratepsilon}, @code{bftorat}, @code{fpprintprec}
+and @code{rationalize}.
+@opencatbox
+@category{Warning messages}
+@closecatbox
