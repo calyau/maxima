@@ -82,7 +82,7 @@
 
 ;; -- number-octet-conversions: --------------------------------------------- ;;
 
-(defun word-to-octets (n) ;; used by stringproc/sha1.lisp and md5.lisp
+(defun word-to-octets (n) ;; assume that n fits into a word
   (do ((k 4 (1- k)) octs) 
       ((= k 0) octs)
     (push (logand n #xff) octs)
