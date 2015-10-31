@@ -181,6 +181,9 @@ Additional packages
 * unit::                        Units and dimensions package.
 * zeilberger::                  Functions for hypergeometric summation.
 
+Understanding maxima's output
+* Error and warning messages::  Error and warning messages
+
 Index
 * Function and Variable Index:: Index.
 
@@ -567,6 +570,9 @@ zeilberger
 * Introduction to zeilberger::
 * Functions and Variables for zeilberger::
 
+Understanding maxima's output
+* Error messages::
+* Warning messages::
 @comment @end detailmenu
 @end menu
 
@@ -909,9 +915,13 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node zeilberger, Function and Variable Index, unit, Top
+@node zeilberger, Error and warning messages, unit, Top
 @chapter zeilberger
 @include zeilberger.texi
+
+@node Error and warning messages, Function and Variable Index, zeilberger, Top
+@chapter Error and warning messages
+@include errormessages.texi
 
 @c end includes
 

@@ -51,7 +51,7 @@ maxima_TEXINFOS = category-macros.texi Introduction.texi \
  minpack.texi makeOrders.texi mnewton.texi numericalio.texi opsubst.texi \
  orthopoly.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
- zeilberger.texi
+ zeilberger.texi errormessages.texi
 
 figurefiles = \
 figures/introduction1.gif\
