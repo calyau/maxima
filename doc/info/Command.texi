@@ -1514,12 +1514,13 @@ Default value: @code{10}
 @code{ibase} may be assigned any integer between 2 and 36 (decimal), inclusive.
 When @code{ibase} is greater than 10,
 the numerals comprise the decimal numerals 0 through 9
-plus letters of the alphabet A, B, C, @dots{},
+plus letters of the alphabet @code{A}, @code{B}, @code{C}, @dots{},
 as needed to make @code{ibase} digits in all.
 Letters are interpreted as digits only if the first digit is 0 through 9.
+
 Uppercase and lowercase letters are not distinguished.
 The numerals for base 36, the largest acceptable base,
-comprise 0 through 9 and A through Z.
+comprise 0 through 9 and @code{A} through @code{Z}.
 
 Whatever the value of @code{ibase},
 when an integer is terminated by a decimal point,
@@ -1549,7 +1550,9 @@ Examples:
 @end example
 
 @code{ibase} greater than 10.
-Letters are interpreted as digits only if the first digit is 0 through 9.
+Letters are interpreted as digits only if the first digit is 0
+through 9 which means that hexadecimal numbers might need to
+be prepended by a 0.
 
 @c ===beg===
 @c ibase : 16 $
