@@ -1530,7 +1530,7 @@ See also @mrefdot{obase}
 
 Examples:
 
-@code{ibase} less than 10.
+@code{ibase} less than 10 (for example binary numbers).
 
 @c ===beg===
 @c ibase : 2 $
