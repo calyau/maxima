@@ -90,9 +90,9 @@ approaches might be useful:
 
 @node No such list element, ,out of memory, Error messages
 @subsection apply: no such "list" element
-The square brackets operator (@code{[ ]}) was used trying to access an
-element of a list. Unfortunately the element number was @code{< 1} or
-@code{> length(list)}.
+One common cause for this error message is that square brackets operator
+(@code{[ ]}) was used trying to access a list element that whose element
+number was @code{< 1} or @code{> length(list)}.
 @opencatbox
 @category{Error messages}
 @closecatbox
