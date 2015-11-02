@@ -54,18 +54,6 @@ itself, since after it has been through the simplifier the list would become
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-Lists provide efficient ways of adding new elements. They can be used as
-stacks and fifos whose maximum size does not need to be known at creation
-time. There are efficient ways of appending 
-
-
-One of rhese 
-In the case of lists it is to note that accessing the @code{n}th element
-this way might need roughly @code{n} times the time needed for accessing
-the first. If long lists are 
-
-
-@c -----------------------------------------------------------------------------
 @anchor{[}
 @anchor{]}
 @fnindex List delimiters
@@ -1439,14 +1427,14 @@ stack or a fifo:
 @c ===end===
 @example
 @group
-(%i1) l:[Test,1,2,3,4];
-(%o1)                  [Test, 1, 2, 3, 4]
+(%i1) l:[Test,1,2,3];
+(%o1)                  [Test, 1, 2, 3]
 @end group
 (%i2) while l # [] do
  (
    disp(first(l)),
    l:rest(l)
- );
+ )$
                               Test
 
                                 1
@@ -1454,14 +1442,10 @@ stack or a fifo:
                                 2
 
                                 3
-
-                                4
-
-(%o2)                         done
 @end example
 
 Beginning traversal with the last element of a list is possible after
-reversing the list with @code{reverse ()}.
+reversing the list using @code{reverse ()}.
 If the elements of a long list need to be processed in a different
 order performance might be increased by converting the list into a
 declared array first.
