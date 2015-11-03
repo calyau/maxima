@@ -1409,12 +1409,14 @@ See @mref{first} for more details.
 @subsection Performance considerations for Lists
 @c -----------------------------------------------------------------------------
 
-Lists provide efficient way of appending and removing elements.
+Lists provide efficient ways of appending and removing elements.
+They can be created without knowing their final dimensions.
+Lisp provides efficient means of copying and handling lists.
 Also nested lists do not need to be strictly rectangular.
 These advantages over arrays come with the drawback that the amount of time
 needed for accessing a random element within a list is roughly
-proportional to the element's distance from its beginning. Efficient
-traversal of lists is still possible, though, by using the list as a
+proportional to the element's distance from its beginning.
+Efficient traversal of lists is still possible, though, by using the list as a
 stack or a fifo:
 
 @c ===beg===

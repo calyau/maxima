@@ -13,6 +13,8 @@ or on how to recover from errors.
 * Only symbols can be bound::
 * out of memory::
 * No such list element::
+* Comma is not a prefix operator::
+* Illegal use of delimiter::
 @end menu
 
 @node part fell off the end, undefined variable during plotting, Error messages, Error messages
@@ -88,11 +90,27 @@ approaches might be useful:
 @category{Error messages}
 @closecatbox
 
-@node No such list element, ,out of memory, Error messages
+@node No such list element, Comma is not a prefix operator, out of memory, Error messages
 @subsection apply: no such "list" element
 One common cause for this error message is that square brackets operator
 (@code{[ ]}) was used trying to access a list element that whose element
 number was @code{< 1} or @code{> length(list)}.
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+@node Comma is not a prefix operator, Illegal use of delimiter, No such list element, Error messages
+@subsection incorrect syntax: , is not a prefix operator
+This might be caused by a command starting with a comma (@code{,}) or by one comma
+being directly followed by another one..
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+@node Illegal use of delimiter, , Comma is not a prefix operator, Error messages
+@subsection incorrect syntax: Illegal use of delimiter )
+Common reasons for this error appearing are a closing parenthesis without an
+opening one or a closing parenthesis directly preceded by a comma.
 @opencatbox
 @category{Error messages}
 @closecatbox
