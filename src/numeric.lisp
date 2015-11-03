@@ -1521,7 +1521,7 @@
 	    ((= b (truncate b))
 	     (with-extra-precision ((expt-extra-bits a b)
 				    (a b))
-	       (expt a (truncate b))))
+	       (intofp (expt a (truncate b)))))
 	    (t
 	     (with-extra-precision ((expt-extra-bits a b)
 				    (a b))

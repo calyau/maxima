@@ -59,5 +59,9 @@ zeta(8);
 zeta(10);
 %pi^10/93555$
 
+/* bfloat(zeta(5)) should not return a rational! */
+bfloat(zeta(5));
+1.03692775514337b0;
+
 (remfunction(chk),0);
 0$
