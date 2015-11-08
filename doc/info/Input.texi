@@ -419,6 +419,10 @@ while processing @var{filename}, the global variables @code{_}, @code{__},
 @code{%}, and @code{%th} have whatever bindings they had when @code{load} was
 called.
 
+It is also to note that structures will only be read back as structures if
+they have been defined by @code{defstruct} before the @code{load} command
+is called.
+
 See also @mrefcomma{loadfile} @mrefcomma{batch} @mrefcomma{batchload} and
 @mrefdot{demo}  @code{loadfile} processes Lisp files; @code{batch},
 @code{batchload}, and @code{demo} process Maxima files.
@@ -607,7 +611,8 @@ other objects.  If a name has no value or function associated with it, it is
 ignored.  @code{save} returns @var{filename}.
 
 @code{save} stores data in the form of Lisp expressions.
-The data stored by @code{save} may be recovered by @code{load (@var{filename})}.
+If @var{filename} ends in @code{.lisp} the
+data stored by @code{save} may be recovered by @code{load (@var{filename})}.
 See @mrefdot{load}
 
 The global flag @mref{file_output_append} governs whether @code{save} appends or

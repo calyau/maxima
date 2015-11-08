@@ -631,7 +631,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 
 (defun $room (&optional (arg nil arg-p))
-  (if arg-p
+  (if (and arg-p (member arg '(t nil) :test #'eq))
       (room arg)
       (room)))
 

@@ -1228,7 +1228,19 @@
                                            (car y-start) (car y-mid) (car y-end)
                                            depth 1e-5)))
           (when (notevery #'(lambda (x) (or (numberp x) (eq x t) )) sublst)
-            (merror "draw2d (explicit): non defined variable"))
+            (let ((items sublst) (item 'nil))
+	      ;; Search for the item in sublist that is the undefined variable
+	      (while items
+		(if
+		    (not
+		     (or (numberp (car items)) (eq (car items) t) ))
+		    (setq item (car items))
+		  )
+		(setq items (cdr items))
+		)
+	      (merror "draw2d (explicit): non defined variable in term ~M" item)
+	      )
+	    )
           (when (not (null result))
             (setf sublst (cddr sublst)))
           (do ((lst sublst (cddr lst)))
@@ -1772,7 +1784,21 @@
          (count -1)
          ncols result)
     (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2)))
-       (merror "draw3d (explicit): non defined variable"))
+            (let ((items (rest ($listofvars fcn))) (item 'nil))
+	      ;; Search for the item in sublist that is the undefined variable
+	      (while items
+		(if
+		    (
+		     not
+		     (subsetp (list (car items)) (list par1 par2))
+		     )
+		    (setq item (car items))
+		  )
+		(setq items (cdr items))
+		)
+	      (merror "draw3d (explicit): non defined variable in term ~M" item)
+	      )
+	    )
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)

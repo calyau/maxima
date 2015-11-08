@@ -7,6 +7,7 @@
 @menu
 * Introduction to Lists::
 * Functions and Variables for Lists::
+* Performance considerations for Lists::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -48,7 +49,7 @@ itself, since after it has been through the simplifier the list would become
 @end example
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Lists,  , Introduction to Lists, Lists
+@node Functions and Variables for Lists, Performance considerations for Lists ,Introduction to Lists, Lists
 @subsection Functions and Variables for Lists
 @c -----------------------------------------------------------------------------
 
@@ -64,7 +65,11 @@ itself, since after it has been through the simplifier the list would become
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of
-a list, array, hash array, or array function.
+a list, array, hash array, or array function. Note that
+other than for arrays accessing the @code{n}th element of a list
+needs an amount of time that is roughly proportional to  @code{n},
+@xref{Performance considerations for Lists}.
+
 
 Examples:
 
@@ -182,16 +187,16 @@ so @code{assoc} returns @code{false}.
 @c ===end===
 @example
 @group
-(%i1)                 assoc(y, [[x, 1], [y, 2], [z, 3]])
-(%o1)                                  2
+(%i1) assoc (y, [[x,1], [y,2],[z,3]]);
+(%o1)                           2
 @end group
 @group
-(%i2)                 assoc(z, [[x, 1], [z, 2], [z, 3]])
-(%o2)                                  2
+(%i2) assoc (z, [[x,1], [z,2], [z,3]]);
+(%o2)                           2
 @end group
 @group
-(%i3)                         assoc(x, [[y, 1]])
-(%o3)                                false
+(%i3) assoc (x, [[y,1]]);
+(%o3)                         false
 @end group
 @end example
 
@@ -216,15 +221,17 @@ than a list and this might be useful. In this case, @code{cons (@var{expr_1}, @v
 returns an expression with same operator as @var{expr_2} but with argument @code{cons(expr_1, args(expr_2))}.
 Examples:
 @c ===beg===
-@c cons(a,[b,c,d])
-@c cons(a,f(b,c,d))
+@c cons(a,[b,c,d]);
+@c cons(a,f(b,c,d));
 @c ===end===
 @example
 @group
 (%i1) cons(a,[b,c,d]);
-(%o1)                            [a, b, c, d]
+(%o1)                     [a, b, c, d]
+@end group
+@group
 (%i2) cons(a,f(b,c,d));
-(%o2)                            f(a, b, c, d)
+(%o2)                     f(a, b, c, d)
 @end group
 @end example
 
@@ -235,16 +242,18 @@ When @code{inflag} is true, @code{cons} operates on the internal structure of an
 @code{cons} operates on the displayed form. Especially when @code{inflag} is true, @code{cons} applied 
 to a nonlist sometimes gives a surprising result; for example
 @c ===beg===
-@c cons(a,-a), inflag : true
+@c cons(a,-a), inflag : true;
 @c cons(a,-a), inflag : false;
 @c ===end===
 @example
 @group
 (%i1) cons(a,-a), inflag : true;
-                                        2
-(%o1)                                - a
+                                 2
+(%o1)                         - a
+@end group
+@group
 (%i2) cons(a,-a), inflag : false;
-(%o2)                                  0
+(%o2)                           0
 @end group
 @end example
 
@@ -422,8 +431,6 @@ Arguments which are @code{equal} but not "=" are not removed.
 @example
 @group
 (%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
-rat: replaced 0.0 by 0/1 = 0.0
-`rat' replaced 0.0B0 by 0/1 = 0.0B0
 (%o1)                  [true, true, true]
 @end group
 @group
@@ -479,15 +486,17 @@ the second argument is other than a list and this might be useful. In this case,
 @code{endcons (@var{expr_1}, @var{expr_2})} returns an expression with same operator as 
 @var{expr_2} but with argument @code{endcons(expr_1, args(expr_2))}. Examples:
 @c ===beg===
-@c endcons(a,[b,c,d])
-@c endcons(a,f(b,c,d))
+@c endcons(a,[b,c,d]);
+@c endcons(a,f(b,c,d));
 @c ===end===
 @example
 @group
 (%i1) endcons(a,[b,c,d]);
-(%o1)                            [b, c, d, a]
+(%o1)                     [b, c, d, a]
+@end group
+@group
 (%i2) endcons(a,f(b,c,d));
-(%o2)                            f(b, c, d, a)
+(%o2)                     f(b, c, d, a)
 @end group
 @end example
 
@@ -498,16 +507,18 @@ When @code{inflag} is true, @code{endcons} operates on the internal structure of
 @code{endcons} operates on the displayed form. Especially when @code{inflag} is true, @code{endcons} applied 
 to a nonlist sometimes gives a surprising result; for example
 @c ===beg===
-@c endcons(a,-a), inflag : true
+@c endcons(a,-a), inflag : true;
 @c endcons(a,-a), inflag : false;
 @c ===end===
 @example
 @group
-(%i1) endcons(a,-a),inflag : true;
-                                        2
-(%o1)                                - a
-(%i2) endcons(a,-a),inflag : false;
-(%o2)                                  0
+(%i1) endcons(a,-a), inflag : true;
+                                 2
+(%o1)                         - a
+@end group
+@group
+(%i2) endcons(a,-a), inflag : false;
+(%o2)                           0
 @end group
 @end example
 
@@ -662,6 +673,11 @@ The @code{length} command is affected by the @mref{inflag} switch.  So, e.g.
 @code{length(a/(b*c));} gives 2 if @code{inflag} is @code{false} (Assuming
 @mref{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} (the
 internal representation is essentially @code{a*b^-1*c^-1}).
+
+Determining a list's length typically needs an amount of time proportional
+to the number of elements in the list. If the length of a list is used inside
+a loop it therefore might drastically increase the performance if the length
+is calculated outside the loop instead.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -891,26 +907,44 @@ Examples:
 @c ===end===
 @example
 @group
-(%i1) ll : [];
-(%o1)                                 []
-(%i2) push(x,ll);
-(%o2)                                 [x]
-(%i3) push(x^2+y,ll);
-                                        2
-(%o3)                             [y + x , x]
-(%i4) push("string",ll);
-                                            2
-(%o4)                         [string, y + x , x]
-(%i5) pop(ll);
-(%o5)                               string
-(%i6) pop(ll);
-                                         2
-(%o6)                               y + x
-(%i7) pop(ll);
-(%o7)                                  x
+(%i1) ll: [];
+(%o1)                          []
+@end group
+@group
+(%i2) push (x, ll);
+(%o2)                          [x]
+@end group
+@group
+(%i3) push (x^2+y, ll);
+                                 2
+(%o3)                      [y + x , x]
+@end group
+@group
+(%i4) a: push ("string", ll);
+                                     2
+(%o4)                  [string, y + x , x]
+@end group
+@group
+(%i5) pop (ll);
+(%o5)                        string
+@end group
+@group
+(%i6) pop (ll);
+                                  2
+(%o6)                        y + x
+@end group
+@group
+(%i7) pop (ll);
+(%o7)                           x
+@end group
+@group
 (%i8) ll;
-(%o8)                                 []
-(%i9)
+(%o8)                          []
+@end group
+@group
+(%i9) a;
+                                     2
+(%o9)                  [string, y + x , x]
 @end group
 @end example
 
@@ -1057,6 +1091,8 @@ which defines a strict weak order on the elements of the list.
 @group
 (%i1) sort ([1, a, b, 2, 3, c], 'orderlessp);
 (%o1)                  [1, 2, 3, a, b, c]
+@end group
+@group
 (%i2) sort ([1, a, b, 2, 3, c], 'ordergreatp);
 (%o2)                  [c, b, a, 3, 2, 1]
 @end group
@@ -1079,18 +1115,30 @@ the name of an operator, the name must be enclosed in double quotes.
 @group
 (%i1) L : [[1, x], [3, y], [4, w], [2, z]];
 (%o1)           [[1, x], [3, y], [4, w], [2, z]]
+@end group
+@group
 (%i2) foo (a, b) := a[1] > b[1];
 (%o2)                 foo(a, b) := a  > b
                                     1    1
+@end group
+@group
 (%i3) sort (L, 'foo);
 (%o3)           [[4, w], [3, y], [2, z], [1, x]]
+@end group
+@group
 (%i4) infix (">>");
 (%o4)                          >>
+@end group
+@group
 (%i5) a >> b := a[1] > b[1];
-(%o5)                   a >> b := a  > b
-                                   1    1
+(%o5)                  (a >> b) := a  > b
+                                    1    1
+@end group
+@group
 (%i6) sort (L, ">>");
 (%o6)           [[4, w], [3, y], [2, z], [1, x]]
+@end group
+@group
 (%i7) sort (L, lambda ([a, b], a[1] > b[1]));
 (%o7)           [[4, w], [3, y], [2, z], [1, x]]
 @end group
@@ -1107,8 +1155,12 @@ the name of an operator, the name must be enclosed in double quotes.
 @group
 (%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
 (%o1)             [a, 2 b, - 5, 7, %e + 1, %pi]
+@end group
+@group
 (%i2) sort (L);
 (%o2)             [- 5, 7, %e + 1, %pi, a, 2 b]
+@end group
+@group
 (%i3) sort (L, 'orderlessp);
 (%o3)             [- 5, 7, %e + 1, %pi, a, 2 b]
 @end group
@@ -1124,11 +1176,15 @@ The default sorting order is ascending, as determined by @mrefdot{orderlessp} Th
 @example
 @group
 (%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
-(%o1)                    [a, 2 b, - 5, 7, %e + 1, %pi]
+(%o1)             [a, 2 b, - 5, 7, %e + 1, %pi]
+@end group
+@group
 (%i2) sort (L);
-(%o2)                    [- 5, 7, %e + 1, %pi, a, 2 b]
+(%o2)             [- 5, 7, %e + 1, %pi, a, 2 b]
+@end group
+@group
 (%i3) sort (L, 'ordergreatp);
-(%o3)                    [2 b, a, %pi, %e + 1, 7, - 5]
+(%o3)             [2 b, a, %pi, %e + 1, 7, - 5]
 @end group
 @end example
 
@@ -1145,10 +1201,14 @@ All Maxima atoms and expressions are comparable under @code{orderlessp} and @cod
                                                  5
 (%o1)  [11, - 17, 2.9b1, 9 c, 7.55, foo(x, y), - -, b + a]
                                                  2
+@end group
+@group
 (%i2) sort (L, orderlessp);
                 5
 (%o2)  [- 17, - -, 7.55, 11, 2.9b1, b + a, 9 c, foo(x, y)]
                 2
+@end group
+@group
 (%i3) sort (L, ordergreatp);
                                                   5
 (%o3)  [foo(x, y), 9 c, b + a, 2.9b1, 11, 7.55, - -, - 17]
@@ -1168,8 +1228,12 @@ Note that @code{orderlessp} and @code{ordergreatp} do not order numbers, constan
 @group
 (%i1) L : [%pi, 3, 4, %e, %gamma];
 (%o1)                [%pi, 3, 4, %e, %gamma]
+@end group
+@group
 (%i2) sort (L, ">");
 (%o2)                [4, %pi, 3, %e, %gamma]
+@end group
+@group
 (%i3) sort (L, ordergreatp);
 (%o3)                [%pi, %gamma, %e, 4, 3]
 @end group
@@ -1188,12 +1252,16 @@ and all other elements the same as @code{orderlessp}.
 (%i1) L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
 (%o1) [%i, %i + 1, 2 x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 
                                                            1.0b0]
+@end group
+@group
 (%i2) sort (L, ordermagnitudep);
 (%o2) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
                                                      %i + 1, 2 x]
+@end group
+@group
 (%i3) sort (L, orderlessp);
-(%o3) [0, 1, 1.0, 2, 3, %e, %i, %i + 1, inf, minf, sin(1), 
-                                                      1.0b0, 2 x]
+(%o3) [0, 1, 1.0, 2, 3, sin(1), 1.0b0, %e, %i, %i + 1, inf, 
+                                                       minf, 2 x]
 @end group
 @end example
 
@@ -1336,3 +1404,83 @@ See @mref{first} for more details.
 @closecatbox
 @end deffn
 
+@c h-----------------------------------------------------------------------------
+@node Performance considerations for Lists, Functions and Variables for Lists, Introduction to Lists, Lists
+@subsection Performance considerations for Lists
+@c -----------------------------------------------------------------------------
+
+Lists provide efficient ways of appending and removing elements.
+They can be created without knowing their final dimensions.
+Lisp provides efficient means of copying and handling lists.
+Also nested lists do not need to be strictly rectangular.
+These advantages over arrays come with the drawback that the amount of time
+needed for accessing a random element within a list is roughly
+proportional to the element's distance from its beginning.
+Efficient traversal of lists is still possible, though, by using the list as a
+stack or a fifo:
+
+@c ===beg===
+@c l:[Test,1,2,3,4];
+@c while l # [] do
+@c  (
+@c    disp(first(l)),
+@c    l:rest(l)
+@c  );
+@c ===end===
+@example
+@group
+(%i1) l:[Test,1,2,3];
+(%o1)                  [Test, 1, 2, 3]
+@end group
+(%i2) while l # [] do
+ (
+   disp(first(l)),
+   l:rest(l)
+ )$
+                              Test
+
+                                1
+
+                                2
+
+                                3
+@end example
+
+Beginning traversal with the last element of a list is possible after
+reversing the list using @code{reverse ()}.
+If the elements of a long list need to be processed in a different
+order performance might be increased by converting the list into a
+declared array first.
+
+It is also to note that the ending condition of @code{for} loops
+is tested for every iteration which means that the result of a
+@code{length} should be cached if it is used in the ending
+condition:
+
+@c ===beg===
+@c l:makelist(i,i,1,100000)$
+@c lngth:length(l);
+@c x:1;
+@c for i:1 thru lngth do
+@c     x:x+1$
+@c x;
+@c ===end===
+@example
+(%i1) l:makelist(i,i,1,100000)$
+@group
+(%i2) lngth:length(l);
+(%o2)                        100000
+@end group
+@group
+(%i3) x:1;
+(%o3)                           1
+@end group
+@group
+(%i4) for i:1 thru lngth do
+    x:x+1$
+@end group
+@group
+(%i5) x;
+(%o5)                        100001
+@end group
+@end example
