@@ -3911,7 +3911,39 @@ Example:
              xlabel = "X variable" )$
 @end example
 
-See also @code{xlabel}, and @code{ylabel}.
+See also @code{xlabel}, @code{ylabel}, and @code{zlabel_rotate}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} zlabel_rotate
+Default value: @code{"auto"}
+
+This graphics option allows to choose if the z axis label of 3d plots is
+drawn horizontal (@code{false}), vertical (@code{true}) or if maxima
+automatically chooses an orientation based on the length of the label
+(@code{auto}).
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+          explicit(sin(x)*sin(y),x,0,10,y,0,10),
+          zlabel_rotate=false
+      )$
+@end example
+
+See also @code{zlabel}.
 
 @opencatbox
 @category{Package draw}
