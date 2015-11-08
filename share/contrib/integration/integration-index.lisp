@@ -15,4 +15,4 @@
 ("Definitions for abs_integrate" . ("abs_integrate.info" 3642 7417))
 ("Introduction to abs_integrate" . ("abs_integrate.info" 489 3003))
 )))
-(load-info-hashtables (list (pathname-device #-gcl *load-pathname* #+gcl sys:*load-pathname*) (pathname-directory #-gcl *load-pathname* #+gcl sys:*load-pathname*)) deffn-defvr-pairs section-pairs))
+(load-info-hashtables (maxima::maxima-load-pathname-directory) deffn-defvr-pairs section-pairs))

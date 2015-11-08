@@ -25,4 +25,4 @@
 ("Definitions for logic" . ("logic.info" 2324 10665))
 ("Introduction to logic" . ("logic.info" 385 1813))
 )))
-(load-info-hashtables (list (pathname-device #-gcl *load-pathname* #+gcl sys:*load-pathname*) (pathname-directory #-gcl *load-pathname* #+gcl sys:*load-pathname*)) deffn-defvr-pairs section-pairs))
+(load-info-hashtables (maxima::maxima-load-pathname-directory) deffn-defvr-pairs section-pairs))

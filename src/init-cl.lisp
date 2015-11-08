@@ -677,10 +677,11 @@ When one changes, the other does too."
   "Return a pathname string such that subdirs is a subdirectory of maxima_objdir"
   (apply #'combine-path *maxima-objdir* subdirs))
 
-;; The directory part of *load-pathname*.  GCL doesn't seem to have a
-;; usable *LOAD-PATHNAME*, but it does have SYS:*LOAD-PATHNAME*.
 (defun maxima-load-pathname-directory ()
   "Return the directory part of *load-pathname*."
-  (let ((path *load-pathname*))
+  (let ((path #-gcl *load-pathname*
+              ;; Accommodate standard and nonstandard definitions of *LOAD-PATHNAME* in GCL.
+              ;; This can go away someday when nonstandard GCL's (<= 2.6.12) are ancient history.
+              #+gcl (symbol-value (or (find-symbol "*LOAD-PATHNAME*" :sys) (find-symbol "*LOAD-PATHNAME*" :common-lisp)))))
     (make-pathname :directory (pathname-directory path)
                    :device (pathname-device path))))

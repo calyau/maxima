@@ -192,3 +192,17 @@ diff(%,x);
 2/(3*((2*x-1)^2/3+1))+(2*x-1)/(6*(x^2-x+1))-1/(3*(x+1))$
 ratsimp(%);
 x/(x^3+1)$
+
+/* verify that loading share packages via defsystem and retrieving documentation
+ * (both make use of *LOAD-PATHNAME*) do not cause errors
+ */
+
+describe ("sin");
+true;
+
+(load ("load-graphs"), 0);
+0;
+
+(load ("integration-index"), 0);
+0;
+

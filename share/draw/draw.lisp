@@ -4,8 +4,6 @@
 
 #+ecl ($load "lisp-utils/defsystem.lisp")
 
-(load (merge-pathnames (make-pathname :name "draw" :type "system")
-		       #-gcl *load-pathname*
-		       #+gcl sys:*load-pathname*))
+(load (merge-pathnames (make-pathname :name "draw" :type "system") (maxima-load-pathname-directory)))
 
 (mk:oos "draw" :compile)
