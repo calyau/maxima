@@ -193,6 +193,16 @@ diff(%,x);
 ratsimp(%);
 x/(x^3+1)$
 
+/* verify that file_search finds a file specified by a path relative to top-level directory
+ * bug reported to mailing list 2015-11-08: "testsuite failure with ecl"
+ */
+
+is  (file_search ("tests/test_readbase_lisp.lisp") = false);
+false;
+
+is (file_search ("tests/rtest1.mac") = false);
+false;
+
 /* verify that loading share packages via defsystem and retrieving documentation
  * (both make use of *LOAD-PATHNAME*) do not cause errors
  */

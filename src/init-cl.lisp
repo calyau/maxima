@@ -24,6 +24,7 @@
 ;;; jfa 02/07/04
 
 (defvar *maxima-prefix*)
+(defvar *maxima-topdir*)        ;; top-level installation or build directory
 (defvar *maxima-imagesdir*)
 (defvar *maxima-sharedir*)
 (defvar *maxima-srcdir*)
@@ -65,6 +66,7 @@ When one changes, the other does too."
 
 (defun print-directories ()
   (format t "maxima-prefix=~a~%" *maxima-prefix*)
+  (format t "maxima-topdir=~a~%" *maxima-topdir*)
   (format t "maxima-imagesdir=~a~%" *maxima-imagesdir*)
   (format t "maxima-sharedir=~a~%" *maxima-sharedir*)
   (format t "maxima-srcdir=~a~%" *maxima-srcdir*)
@@ -138,6 +140,7 @@ When one changes, the other does too."
 	  (setq libexecdir (maxima-parse-dirstring *autoconf-libexecdir*))
 	  (setq datadir    (maxima-parse-dirstring *autoconf-datadir*))
 	  (setq infodir    (maxima-parse-dirstring *autoconf-infodir*))))
+    (setq *maxima-topdir*    (combine-path datadir package-version))
     (setq *maxima-imagesdir* (combine-path libdir package-version binary-subdirectory))
     (setq *maxima-sharedir*  (combine-path datadir package-version "share"))
     (setq *maxima-srcdir*    (combine-path datadir package-version "src"))
@@ -154,6 +157,7 @@ When one changes, the other does too."
 			   (maxima-parse-dirstring *autoconf-prefix*)))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
 
+    (setq *maxima-topdir*    maxima-prefix)
     (setq *maxima-imagesdir* (combine-path maxima-prefix "src" binary-subdirectory))
     (setq *maxima-sharedir*  (combine-path maxima-prefix "share"))
     (setq *maxima-srcdir*    (combine-path maxima-prefix "src"))
@@ -325,12 +329,14 @@ When one changes, the other does too."
 		(combine-path *maxima-userdir* lisp-patterns)
 		(combine-path *maxima-sharedir* lisp-patterns)
 		(combine-path *maxima-sharedir* share-subdirs lisp-patterns)
-		(combine-path *maxima-srcdir* lisp-patterns)))
+		(combine-path *maxima-srcdir* lisp-patterns)
+        (combine-path *maxima-topdir* lisp-patterns)))
     (setq $file_search_maxima
 	  (list '(mlist)
 		(combine-path *maxima-userdir* maxima-patterns)
 		(combine-path *maxima-sharedir* maxima-patterns)
-		(combine-path *maxima-sharedir* share-subdirs maxima-patterns)))
+		(combine-path *maxima-sharedir* share-subdirs maxima-patterns)
+        (combine-path *maxima-topdir* maxima-patterns)))
     (setq $file_search_demo
 	  (list '(mlist)
 		(combine-path *maxima-sharedir* demo-patterns)
