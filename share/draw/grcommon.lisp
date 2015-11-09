@@ -141,6 +141,7 @@
       (gethash '$ylabel *gr-options*) ""
       (gethash '$ylabel_secondary *gr-options*) ""
       (gethash '$zlabel *gr-options*) ""
+      (gethash '$zlabel_rotate *gr-options*) '$auto
 
       ; point options
       (gethash '$point_size *gr-options*)    1
@@ -354,8 +355,6 @@
     ($bottom_center (setf (gethash '$key_pos *gr-options*) "bottom center"))
     ($bottom_right  (setf (gethash '$key_pos *gr-options*) "bottom right"))
     (otherwise (merror "draw: illegal key position specification"))))
-
-
 
 
 ;; update option terminal
@@ -947,6 +946,10 @@
         (update-terminal val))
       ($key_pos
         (update-key_pos val))
+      ($zlabel_rotate
+            (if (member val '(t nil $auto))
+		(setf (gethash opt *gr-options*) val)
+	        (merror "draw: illegal zlabel_rotate option: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
