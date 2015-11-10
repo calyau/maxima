@@ -211,9 +211,6 @@
         
 	((and (eq (caar expres) '%derivative)
 	      (eq (caar exp) (caar expres))
-	      (or (atom (cadr exp))
-		  (not (eq (caaadr exp) 'mqapply))
-		  (merror (intl:gettext "integrate: invalid argument: ~M") exp))
 	      (checkderiv exp)))
         
         ;; Stop intform if we have not a power function.

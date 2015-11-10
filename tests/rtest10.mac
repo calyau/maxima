@@ -130,3 +130,42 @@ apply(min,%);
 -5/2$
 factcomb(3*x/(2*3^x*x!));
 3^(1-x)/(2*(x-1)!)$
+
+/* mailing list 2015-11-10: "Problem integrating subbscripted and diff'ed function" */
+
+(kill (x, t, a, b, foo), foo : diff (x[1](t), t));
+'diff(x[1](t), t);
+
+integrate (foo, t, a, b);
+x[1](b) - x[1](a);
+
+integrate (foo, t);
+x[1](t);
+
+(kill (k, l, u), foo : diff (x[k, l](t, u), u));
+'diff (x[k, l](t, u), u);
+
+integrate (foo, u, a, b);
+x[k, l](t, b) - x[k, l](t, a);
+
+integrate (foo, u);
+x[k, l](t, u);
+
+foo : diff ((x[1](t))^3, t);
+3*(x[1](t))^2*'diff(x[1](t), t);
+
+expand (integrate (foo, t, a, b));
+(x[1](b))^3 - (x[1](a))^3;
+
+integrate (foo, t);
+(x[1](t))^3;
+
+foo : diff (sin(x[1](t)), t);
+cos(x[1](t))*'diff(x[1](t), t);
+
+integrate (foo, t, a, b);
+sin(x[1](b)) - sin(x[1](a));
+
+integrate (foo, t);
+sin(x[1](t));
+
