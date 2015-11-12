@@ -2839,10 +2839,16 @@
                (format nil "unset logscale y2~%"))
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
-               (format nil "unset logscale cb~%") )
-            (if (get-option '$grid)
-                (format nil "set grid~%")
-                (format nil "unset grid~%"))
+	      (format nil "unset logscale cb~%") )
+	    
+	    ( if (equal (car (get-option '$grid)) 0)
+		(format nil "unset grid~%")
+	        (format nil "set grid xtics ytics mxtics mytics~%set mxtics ~a~%set mytics ~d~%"
+		      (car  (get-option '$grid))
+		      (cadr (get-option '$grid))
+		      )
+	      )
+		   
             (format nil "set title '~a'~%"  (get-option '$title))
             (format nil "set xlabel '~a'~%" (get-option '$xlabel))
             (format nil "set x2label '~a'~%" (get-option '$xlabel_secondary))
@@ -3031,9 +3037,13 @@
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
-            (if (get-option '$grid)
-                (format nil "set grid~%")
-                (format nil "unset grid~%"))
+	    (if (equal (car (get-option '$grid)) 0)
+		(format nil "unset grid~%")
+	        (format nil "set grid xtics ytics ztics mxtics mytics mztics~%set mxtics ~a~%set mytics ~d~%"
+		      (car  (get-option '$grid))
+		      (cadr (get-option '$grid))
+		      )
+	      )
             (if (get-option '$xaxis)
                (format nil "set xzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$xaxis_width)
