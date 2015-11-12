@@ -2840,7 +2840,7 @@
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
-            (cond ((equals (get-option '$grid) (list 0 0))
+            (cond ((equal (get-option '$grid) (list 0 0))
 		   (format nil "unset grid~%"))
 		  (t
 		   (format nil "set grid xtics ytics mxtics mytics~%set mxtics ~d~%set mytics ~d~%"
