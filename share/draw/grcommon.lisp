@@ -64,7 +64,6 @@
       ; global options to control general aspects of graphics
       (gethash '$allocation *gr-options*)       nil      ; or user-defined allocation
       (gethash '$proportional_axes *gr-options*) '$none  ; three possible options: none, xy, xyz
-      (gethash '$grid   *gr-options*)           nil      ; nil => no grid
       (gethash '$xrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$xrange_secondary *gr-options*) nil      ; nil => automatic computation
       (gethash '$yrange *gr-options*)           nil      ; nil => automatic computation
@@ -101,7 +100,7 @@
       (gethash '$z_voxel *gr-options*)       10
 
       ; tics
-      (gethash '$grid *gr-options*)            nil
+      (gethash '$grid *gr-options*)            (list 0 0)
       (gethash '$xtics *gr-options*)           "autofreq"
       (gethash '$xtics_secondary *gr-options*) nil   ; no tics in top x-axis
       (gethash '$ytics *gr-options*)           "autofreq"
@@ -1015,9 +1014,11 @@
 	       ; 0   0 means "off",
                ; >0 >0 means "on with n grid lines per tick",
             (cond ((member val '(nil))
-		   (setf (gethash opt *gr-options*) (list 0 0)))
+		   (setf (gethash opt *gr-options*) (list 0 0))
+		   )
 		  ((member val '(t))
-                     (setf (gethash opt *gr-options*) (list 1 1)))
+		   (setf (gethash opt *gr-options*) (list 1 1))
+		   )
                   ((or (not ($listp val))
                        (/=  ($length val) 2))
                      (merror "draw: illegal grid lines specification: ~M " val))
@@ -1027,11 +1028,11 @@
                        (cond
                          ((or (not (floatp fval1))
                               (not (floatp fval2))
-                              (< fval1 0)
-			      (< fval2 0)
-			      (and (equal fval1 0) (>     fval2 0) )
-			      (and (>     fval1 0) (equal fval2 0) ))
+                              (< fval1 1)
+			      (< fval2 1))
                             (merror "grid: illegal grid lines specification"))
+                         (t
+			   (setf (gethash opt *gr-options*) (list fval1 fval2)) )
 			 )  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))
