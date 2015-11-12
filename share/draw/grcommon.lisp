@@ -100,7 +100,7 @@
       (gethash '$z_voxel *gr-options*)       10
 
       ; tics
-      (gethash '$grid *gr-options*)            nil
+      (gethash '$grid *gr-options*)            (list 0 0)
       (gethash '$xtics *gr-options*)           "autofreq"
       (gethash '$xtics_secondary *gr-options*) nil   ; no tics in top x-axis
       (gethash '$ytics *gr-options*)           "autofreq"
@@ -882,7 +882,7 @@
       ($opacity
          (update-opacity val))
       (($transparent $border $logx $logx_secondary $logy $logy_secondary
-        $logz $logcb $head_both $grid
+        $logz $logcb $head_both
         $xaxis_secondary $yaxis_secondary $axis_bottom $axis_left $axis_top
         $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
         $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
@@ -1010,6 +1010,30 @@
                             (setf (gethash opt *gr-options*) (list fval1 fval2)))
                          (t  ; should be length 3 or nil option => automatic computation of ranks
                             (setf (gethash opt *gr-options*) (list fval1 fval2 0)) ))  ))) )
+      (($grid) ; defined as a Maxima list with two numbers.
+	       ; 0   0 means "off",
+               ; >0 >0 means "on with n grid lines per tick",
+            (cond ((member val '(nil))
+		   (setf (gethash opt *gr-options*) (list 0 0))
+		   )
+		  ((member val '(t))
+		   (setf (gethash opt *gr-options*) (list 1 1))
+		   )
+                  ((or (not ($listp val))
+                       (/=  ($length val) 2))
+                     (merror "draw: illegal grid lines specification: ~M " val))
+                  (t
+                     (let ((fval1 ($float (cadr val)))
+                           (fval2 ($float (caddr val))))
+                       (cond
+                         ((or (not (floatp fval1))
+                              (not (floatp fval2))
+                              (< fval1 1)
+			      (< fval2 1))
+                            (merror "grid: illegal grid lines specification"))
+                         (t
+			   (setf (gethash opt *gr-options*) (list fval1 fval2)) )
+			 )  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))
            (merror "draw: illegal value for grid")

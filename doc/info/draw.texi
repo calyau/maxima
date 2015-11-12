@@ -1451,7 +1451,11 @@ See also @code{data_file_name}.
 @defvr {Graphic option} grid
 Default value: @code{false}
 
-If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
+If @code{grid} is @code{not false}, a grid will be drawn on the @var{xy} plane.
+If @code{grid} is assigned true, one grid line per tick of each axis is drawn.
+If @code{grid} is assigned a list @code{nx,ny} with @code{[nx,ny] > [0,0]}
+instead @code{nx} lines per tick of the x axis and @code{ny} lines per tick of
+the y axis are drawn.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
