@@ -5,9 +5,7 @@
 (in-package #:cl-user)
 (require :f2cl)
 
-(defparameter *minpack-root*
-  (make-pathname :host (pathname-host *load-pathname*)
-		 :directory (pathname-directory *load-pathname*)))
+(defparameter *minpack-root* (maxima::maxima-load-pathname-directory))
 
 (mk:define-language :f2cl-lisp
     :compiler #'f2cl:f2cl

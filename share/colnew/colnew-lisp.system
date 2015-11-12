@@ -17,9 +17,7 @@
     :source-extension "f"
     :binary-extension "lisp")
 
-(defparameter *colnew-root*
-  (make-pathname :host (pathname-host *load-pathname*)
-		 :directory (pathname-directory *load-pathname*)))
+(defparameter *colnew-root* (maxima::maxima-load-pathname-directory))
 
 (mk:defsystem colnew-lisp
   :source-pathname *colnew-root*

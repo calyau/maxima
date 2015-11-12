@@ -17,9 +17,7 @@
     :source-extension "f"
     :binary-extension "lisp")
 
-(defparameter *lapack-root*
-  (make-pathname :host (pathname-host *load-pathname*)
-		 :directory (pathname-directory *load-pathname*)))
+(defparameter *lapack-root* (maxima::maxima-load-pathname-directory))
 
 (mk:defsystem "lapack-package"
   :source-pathname *lapack-root*

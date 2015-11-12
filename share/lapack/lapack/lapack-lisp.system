@@ -7,17 +7,14 @@
     :binary-extension "lisp")
 
 (mk:defsystem "lapack-package"
-  :source-pathname (directory-namestring #-gcl *load-pathname*
-					 #+gcl sys:*load-pathname*)
+  :source-pathname (maxima::maxima-load-pathname-directory)
   :depends-on ("blas-package")
   :components
   ((:file "lapack-package")))
 
 (mk:defsystem "lapack-lisp"
-  :source-pathname (directory-namestring #-gcl *load-pathname*
-					 #+gcl sys:*load-pathname*)
-  :binary-pathname (make-pathname :directory (pathname-directory #-gcl *load-pathname*
-								 #+gcl sys:*load-pathname*))
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-load-pathname-directory)
   :depends-on ("lapack-package" "blas-lisp")
   :components
   (

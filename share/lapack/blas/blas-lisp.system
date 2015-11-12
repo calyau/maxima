@@ -34,12 +34,12 @@
     :binary-extension "lisp")
 
 (mk:defsystem blas-package
-  :source-pathname (directory-namestring *load-pathname*)
+  :source-pathname (maxima::maxima-load-pathname-directory)
   :components
   ((:file "blas-package")))
 
 (mk:defsystem blas-lisp
-  :source-pathname (directory-namestring *load-pathname*)
+  :source-pathname (maxima::maxima-load-pathname-directory)
   :source-extension "f"
   :language :f2cl-lisp
   :depends-on ("blas-package")
