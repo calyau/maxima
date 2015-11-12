@@ -2840,9 +2840,16 @@
             (if (get-option '$logcb)
                (format nil "set logscale cb~%")
                (format nil "unset logscale cb~%") )
-            (if (get-option '$grid)
-                (format nil "set grid~%")
-                (format nil "unset grid~%"))
+            (cond ((equals (get-option '$grid) (list 0 0))
+		   (format nil "unset grid~%"))
+		  (t
+		   (format nil "set grid xtics ytics mxtics mytics~%set mxtics ~d~%set mytics ~d~%"
+			   (cadr  (get-option '$grid))
+			   (caddr (get-option '$grid))
+			   )
+		   )
+		  )
+		   
             (format nil "set title '~a'~%"  (get-option '$title))
             (format nil "set xlabel '~a'~%" (get-option '$xlabel))
             (format nil "set x2label '~a'~%" (get-option '$xlabel_secondary))
