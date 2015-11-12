@@ -91,14 +91,13 @@
 (defun ctmathml(exp)
   (cond ((atom exp) (a2ml exp))     ;; atoms
         ((fractionp exp) nil)       ;; fractional number
-	((get (caar exp) 'ctfun)    ;; known function
-	    (op2ml (caar exp) (cdr exp)))
-	((member 'array (car exp) :test #'eq)
-		    (ctarray exp))
         ((get (caar exp) 'ct-proc)
-             (funcall (get (caar exp) 'ct-proc) (caar exp)  (cdr exp))
-	)
-	((cpxp exp) nil)      ;; complex number
+             (funcall (get (caar exp) 'ct-proc) (caar exp)  (cdr exp)))
+        ((get (caar exp) 'ctfun)    ;; known function
+            (op2ml (caar exp) (cdr exp)))
+        ((member 'array (car exp) :test #'eq)
+                    (ctarray exp))
+        ((cpxp exp) nil)      ;; complex number
         (t (op2ml (caar exp) (cdr exp)))
   )
 )
