@@ -296,7 +296,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{enable_ccl}
 %files exec-ccl
-%{_libdir}/maxima/%{version}/binary-ccl
+%{_libdir}/maxima/%{version}/binary-openmcl
 %endif
 
 %if %{enable_cmucl}
