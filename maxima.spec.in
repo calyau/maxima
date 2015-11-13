@@ -4,6 +4,8 @@
 # This can be changed by modifying the variables below.
 %define enable_clisp 1
 %define clisp_flags --enable-clisp
+%define enable_ccl 0
+%define ccl_flags --disable-ccl --with-ccl=lx86cl
 %define enable_cmucl 0
 %define cmucl_flags --disable-cmucl
 %define enable_sbcl 0
@@ -84,6 +86,16 @@ Requires: maxima = %{version}
 Provides: maxima-exec
 %description exec-clisp
 Maxima compiled with clisp.
+%endif
+
+%if %{enable_ccl}
+%package exec-ccl
+Summary: Maxima compiled with Clozure CL
+Group: Sciences/Mathematics
+Requires: maxima = %{version}
+Provides: maxima-exec
+%description exec-ccl
+Maxima compiled with Clozure Common Lisp.
 %endif
 
 %if %{enable_cmucl}
@@ -172,7 +184,7 @@ Maxima Brazilian Portuguese language support (UTF-8).
 
 %prep
 %setup -q
-%configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:} \
+%configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:} %{?ccl_flags:} \
 	    %{?lang_es_flags:} %{?lang_es_flags_utf:} \
 	    %{?lang_pt_flags:} %{?lang_pt_flags_utf:} \
 	    %{?lang_pt_br_flags:} %{?lang_pt_br_flags_utf:}
@@ -280,6 +292,11 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_clisp}
 %files exec-clisp
 %{_libdir}/maxima/%{version}/binary-clisp
+%endif
+
+%if %{enable_ccl}
+%files exec-ccl
+%{_libdir}/maxima/%{version}/binary-ccl
 %endif
 
 %if %{enable_cmucl}
