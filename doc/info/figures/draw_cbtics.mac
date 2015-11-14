@@ -1,0 +1,7 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_cbtics",
+	enhanced3d = true,
+	color = green,
+	cbtics = {["High",10],["Medium",05],["Low",0]},
+	cbrange = [0, 10],
+	explicit(x^2+y^2, x,-2,2,y,-2,2)) $

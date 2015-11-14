@@ -1,0 +1,12 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_color",
+	explicit(x^2,x,-1,1), /* default is black */
+	color = red,
+	explicit(0.5 + x^2,x,-1,1),
+	color = blue,
+	explicit(1 + x^2,x,-1,1),
+	color = light_blue,
+	explicit(1.5 + x^2,x,-1,1),
+	color = "#23ab0f",
+	label(["This is a label",0,1.2])
+)$

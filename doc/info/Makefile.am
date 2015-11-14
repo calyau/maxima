@@ -138,7 +138,10 @@ figures/draw_scene.gif\
 figures/draw_equiv.gif\
 figures/draw_axis3d.gif\
 figures/draw_axis_bottom.gif\
-figures/draw_border.gif
+figures/draw_border.gif\
+figures/draw_cbrange.gif\
+figures/draw_cbtics.gif\
+figures/draw_color.gif
 
 
 pdffigures = \
@@ -210,7 +213,10 @@ figures/draw_scene.pdf\
 figures/draw_equiv.pdf\
 figures/draw_axis3d.pdf\
 figures/draw_axis_bottom.pdf\
-figures/draw_border.pdf
+figures/draw_border.pdf\
+figures/draw_cbrange.pdf\
+figures/draw_cbtics.pdf\
+figures/draw_color.pdf
 
 
 if CHM
@@ -230,10 +236,10 @@ html: maxima.html contents.hhc
 maxima-index.lisp: maxima.info build_index.pl
 	perl ./build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maxima.html: maxima.texi $(maxima_TEXINFOS)
+maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles)
 	sh extract_categories.sh maxima
 
-maxima.pdf: maxima.texi $(maxima_TEXINFOS)
+maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
 	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
@@ -324,7 +330,21 @@ figures/draw_axis_bottom.pdf: figures/draw_axis_bottom.mac docdraw.mac
 figures/draw_axis_bottom.gif: figures/draw_axis_bottom.mac docdraw.mac
 figures/draw_border.pdf: figures/draw_border.mac docdraw.mac
 figures/draw_border.gif: figures/draw_border.mac docdraw.mac
+figures/draw_cbrange.gif: figures/draw_cbrange.mac docdraw.mac
+figures/draw_cbrange.pdf: figures/draw_cbrange.mac docdraw.mac
+figures/draw_cbtics.gif: figures/draw_cbtics.mac docdraw.mac
+figures/draw_cbtics.pdf: figures/draw_cbtics.mac docdraw.mac
+figures/draw_color.gif: figures/draw_color.mac docdraw.mac
+figures/draw_color.pdf: figures/draw_color.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo
+
+.mac.pdf:
+	maxima < $<
+
+.mac.gif:
+	maxima < $<
+
+SUFFIXES=.pdf .gif .mac
 

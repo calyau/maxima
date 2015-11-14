@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_cbrange",
+	enhanced3d = true,
+	color = green,
+	cbrange = [-3,10],
+	explicit(x^2+y^2, x,-2,2,y,-2,2)) $

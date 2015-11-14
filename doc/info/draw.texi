@@ -615,6 +615,7 @@ Example:
         cbrange = [-3,10],
         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
 @end example
+@figure{draw_cbrange}
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
 
@@ -647,6 +648,7 @@ Example :
         cbrange = [0, 10],
         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
 @end example
+@figure{draw_cbtics}
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
@@ -695,7 +697,7 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,_1,1), /* default is black */
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
              color = red,
              explicit(0.5 + x^2,x,-1,1),
              color = blue,
@@ -705,6 +707,7 @@ Example:
              color = "#23ab0f",
              label(["This is a label",0,1.2])  )$
 @end example
+@figure{draw_color}
 
 See also @code{fill_color}.
 
