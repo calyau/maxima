@@ -1117,6 +1117,7 @@ Examples:
          palette    = gray,
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+@figure{draw_enhanced3d}
 
 @code{explicit} object with coloring defined by the @code{[f(x,y), x, y]} model.
 The names of the variables defined in the lists may be different to those
@@ -1129,6 +1130,7 @@ to @code{x}, and @code{s} to @code{y}.
          enhanced3d = [sin(r*s),r,s],
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+@figure{draw_enhanced3d2}
 
 @code{parametric} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1140,6 +1142,7 @@ to @code{x}, and @code{s} to @code{y}.
          enhanced3d = [if y>= 0 then 1 else 0, x, y, z],
          parametric(sin(u)^2,cos(u),u,u,0,4*%pi)) $
 @end example
+@figure{draw_enhanced3d3}
 
 @code{parametric} object with coloring defined by the @code{[f(u), u]} model.
 In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
@@ -1152,6 +1155,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          enhanced3d = (u-1)^2,
          parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
 @end example
+@figure{draw_enhanced3d4}
 
 @code{elevation_grid} object with coloring defined by the @code{[f(x,y), x, y]} model.
 
@@ -1166,6 +1170,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          xlabel = "x",
          ylabel = "y");
 @end example
+@figure{draw_enhanced3d5}
 
 @code{tube} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1177,6 +1182,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          xu_grid = 50,
          tube(cos(a), a, 0, 1, a, 0, 4*%pi) )$
 @end example
+@figure{draw_enhanced3d6}
 
 @code{tube} object with coloring defined by the @code{[f(u), u]} model.
 Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,foo]}.
@@ -1189,6 +1195,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,
          enhanced3d = [-foo, foo],
          tube(a, a, a^2, 1, a, -2, 2) )$
 @end example
+@figure{draw_enhanced3d7}
 
 @code{implicit} and @code{points} objects with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1199,12 +1206,16 @@ Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,
          implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
                   x,-1,1,y,-1.2,2.3,z,-1,1)) $
 (%i3) m: makelist([random(1.0),random(1.0),random(1.0)],k,1,2000)$
+@end example
+@figure{draw_enhanced3d9}
+@example
 (%i4) draw3d(
          point_type = filled_circle,
          point_size = 2,
          enhanced3d = [u+v-w,u,v,w],
          points(m) ) $
 @end example
+@figure{draw_enhanced3d10}
 
 When points have a chronological nature, model @code{[f(k), k]} is also valid,
 being @code{k} an ordering parameter.
@@ -1219,6 +1230,7 @@ being @code{k} an ordering parameter.
          points_joined = true,
          points(m)) $
 @end example
+@figure{draw_enhanced3d11}
 
 @opencatbox
 @category{Package draw}

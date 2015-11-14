@@ -145,7 +145,18 @@ figures/draw_color.gif\
 figures/draw_colorbox.gif\
 figures/draw_colorbox2.gif\
 figures/draw_contour.gif\
-figures/draw_contour.gif
+figures/draw_contour.gif\
+figures/draw_enhanced3d.gif\
+figures/draw_enhanced3d2.gif\
+figures/draw_enhanced3d3.gif\
+figures/draw_enhanced3d4.gif\
+figures/draw_enhanced3d5.gif\
+figures/draw_enhanced3d6.gif\
+figures/draw_enhanced3d7.gif\
+figures/draw_enhanced3d8.gif\
+figures/draw_enhanced3d9.gif\
+figures/draw_enhanced3d10.gif\
+figures/draw_enhanced3d11.gif
 
 
 pdffigures = \
@@ -224,7 +235,18 @@ figures/draw_color.pdf\
 figures/draw_colorbox.pdf\
 figures/draw_colorbox2.pdf\
 figures/draw_contour.pdf\
-figures/draw_contour2.gif
+figures/draw_contour2.pdf\
+figures/draw_enhanced3d.pdf\
+figures/draw_enhanced3d2.pdf\
+figures/draw_enhanced3d3.pdf\
+figures/draw_enhanced3d4.pdf\
+figures/draw_enhanced3d5.pdf\
+figures/draw_enhanced3d6.pdf\
+figures/draw_enhanced3d7.pdf\
+figures/draw_enhanced3d8.pdf\
+figures/draw_enhanced3d9.pdf\
+figures/draw_enhanced3d10.pdf\
+figures/draw_enhanced3d11.pdf
 
 
 if CHM
@@ -354,6 +376,28 @@ figures/draw_contour.gif: figures/draw_contour.mac docdraw.mac
 figures/draw_contour.pdf: figures/draw_contour.mac docdraw.mac
 figures/draw_contour2.gif: figures/draw_contour.mac docdraw.mac
 figures/draw_contour2.pdf: figures/draw_contour.mac docdraw.mac
+figures/draw_enhanced3d.gif: figures/draw_enhanced3d.mac docdraw.mac
+figures/draw_enhanced3d.pdf: figures/draw_enhanced3d.mac docdraw.mac
+figures/draw_enhanced3d2.gif: figures/draw_enhanced3d2.mac docdraw.mac
+figures/draw_enhanced3d2.pdf: figures/draw_enhanced3d2.mac docdraw.mac
+figures/draw_enhanced3d3.gif: figures/draw_enhanced3d3.mac docdraw.mac
+figures/draw_enhanced3d3.pdf: figures/draw_enhanced3d3.mac docdraw.mac
+figures/draw_enhanced3d4.gif: figures/draw_enhanced3d4.mac docdraw.mac
+figures/draw_enhanced3d4.pdf: figures/draw_enhanced3d4.mac docdraw.mac
+figures/draw_enhanced3d5.gif: figures/draw_enhanced3d5.mac docdraw.mac
+figures/draw_enhanced3d5.pdf: figures/draw_enhanced3d5.mac docdraw.mac
+figures/draw_enhanced3d6.gif: figures/draw_enhanced3d6.mac docdraw.mac
+figures/draw_enhanced3d6.pdf: figures/draw_enhanced3d6.mac docdraw.mac
+figures/draw_enhanced3d7.gif: figures/draw_enhanced3d7.mac docdraw.mac
+figures/draw_enhanced3d7.pdf: figures/draw_enhanced3d7.mac docdraw.mac
+figures/draw_enhanced3d8.gif: figures/draw_enhanced3d8.mac docdraw.mac
+figures/draw_enhanced3d8.pdf: figures/draw_enhanced3d8.mac docdraw.mac
+figures/draw_enhanced3d9.gif: figures/draw_enhanced3d9.mac docdraw.mac
+figures/draw_enhanced3d9.pdf: figures/draw_enhanced3d9.mac docdraw.mac
+figures/draw_enhanced3d10.gif: figures/draw_enhanced3d10.mac docdraw.mac
+figures/draw_enhanced3d10.pdf: figures/draw_enhanced3d10.mac docdraw.mac
+figures/draw_enhanced3d11.gif: figures/draw_enhanced3d11.mac docdraw.mac
+figures/draw_enhanced3d11.pdf: figures/draw_enhanced3d11.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo
