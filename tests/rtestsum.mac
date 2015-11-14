@@ -818,6 +818,19 @@ niceindices (sum (sum (1/(foo + foo0), foo, 1, n), foo0, 1, m));
 (reset (niceindicespref), 0);
 0;
 
+/* Tests for bashindices, which used to not transform all indices in nested
+ * sums and products (only the outermost)
+ */
+
+(reset (gensumnum), 0);
+0;
+
+bashindices (sum (product (sum (F (l, m, n), l, 0, m), m, 0, n), n, 0, N));
+'sum ('product ('sum (F (j1, j2, j3), j1, 0, j2), j2, 0, j3), j3, 0, N);
+
+(reset (gensumnum), 0);
+0;
+
 /* Test for bug report [ 1552710 ] product(sum(f(i),i,1,inf),j,1,inf) => inf (wrong) */
 
 /* Since sum(f(i), i, 1, inf) is free of j, another result

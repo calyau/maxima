@@ -132,11 +132,14 @@
 	(if (free llist try) (return try)))))
 
 (defmfun $bashindices (e)	       ; e is assumed to be simplified
-  (let (($genindex '$j))
-    (cond ((atom e) e)
-	  ((member (caar e) '(%sum %product) :test #'eq)
-	   (sumconsimp (subst (gensumindex) (caddr e) e)))
-	  (t (recur-apply #'$bashindices e)))))
+  (if (atom e)
+    e
+    (let (($genindex '$j)
+	  (e (recur-apply #'$bashindices e)))
+      (cond ((atom e) e)
+	    ((member (caar e) '(%sum %product) :test #'eq)
+	     (sumconsimp (subst (gensumindex) (caddr e) e)))
+	    (t e)))))
 
 (defmfun $niceindices (e)
   (if (atom e)
