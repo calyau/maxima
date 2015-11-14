@@ -1,0 +1,26 @@
+load("draw")$
+docdraw(name,[contents]):=
+(
+    draw(
+	append(
+		[
+			terminal=gif,
+			dimensions=[800,600],
+	                file_name=name
+		],
+		contents
+	)
+    ),
+    draw(
+	append(
+		[
+			terminal=pdf,
+		        dimensions=[1200,800],
+	                file_name=name
+		],
+		contents
+	)
+    )
+)$
+docdraw2d(name,[contents]):=docdraw(name,gr2d(contents))$
+docdraw3d(name,[contents]):=docdraw(name,gr3d(contents))$

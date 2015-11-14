@@ -11,7 +11,7 @@
 @section Introduction to draw
 
 
-@code{draw} is a Maxima-Gnuplot interface.
+@code{draw} is a Maxima-Gnuplot and a Maxima-vtk interface.
 
 There are three main functions to be used at Maxima level: 
 @code{draw2d}, @code{draw3d} and @code{draw}.
@@ -53,6 +53,51 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 See also @code{draw} and @code{draw2d}.
 
 To make use of this object, write first @code{load(draw)}.
+
+@c ===beg===
+@c load("draw");
+@c draw(
+@c     gr2d(
+@c         key="sin (x)",grid=[2,2],
+@c         explicit(
+@c             sin(x),
+@c             x,0,2*%pi
+@c         )
+@c     ),
+@c     gr2d(
+@c         key="cos (x)",grid=[2,2],
+@c         explicit(
+@c             cos(x),
+@c             x,0,2*%pi
+@c         )
+@c     )
+@c  );
+@c ===end===
+@example
+@group
+(%i1) load("draw");
+(%o1)     /maxima/share/draw/draw.lisp
+@end group
+(%i2) draw(
+    gr2d(
+        key="sin (x)",grid=[2,2],
+        explicit(
+            sin(x),
+            x,0,2*%pi
+        )
+    ),
+    gr2d(
+        key="cos (x)",grid=[2,2],
+        explicit(
+            cos(x),
+            x,0,2*%pi
+        )
+    )
+ );
+(%o2)           [gr2d(explicit), gr2d(explicit)]
+@end example
+@figure{draw_scene}
+
 
 @opencatbox
 @category{Package draw}
@@ -145,7 +190,7 @@ An animated gif file:
 End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
-
+@figure{draw_equiv}
 See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 
 @opencatbox
@@ -373,6 +418,7 @@ Example:
 (%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
+@figure{draw_axis3d}
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
 
@@ -399,6 +445,7 @@ Example:
 (%i2) draw2d(axis_bottom = false,
              explicit(x^3,x,-1,1))$
 @end example
+@figure{draw_axis_bottom}
 
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
 
@@ -531,6 +578,7 @@ Example:
              fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+@figure{draw_border}
 
 @opencatbox
 @category{Package draw}

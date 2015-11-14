@@ -133,7 +133,13 @@ figures/bodephase8.gif\
 figures/bodephase9.gif\
 figures/scene1.png\
 figures/scene2.png\
-figures/color_terminal.png
+figures/color_terminal.png\
+figures/draw_scene.gif\
+figures/draw_equiv.gif\
+figures/draw_axis3d.gif\
+figures/draw_axis_bottom.gif\
+figures/draw_border.gif
+
 
 pdffigures = \
 figures/introduction1.pdf\
@@ -199,7 +205,13 @@ figures/bodephase8.pdf\
 figures/bodephase9.pdf\
 figures/scene1.pdf\
 figures/scene2.pdf\
-figures/color_terminal.pdf
+figures/color_terminal.pdf\
+figures/draw_scene.pdf\
+figures/draw_equiv.pdf\
+figures/draw_axis3d.pdf\
+figures/draw_axis_bottom.pdf\
+figures/draw_border.pdf
+
 
 if CHM
 MAXIMA_CHM = maxima.chm

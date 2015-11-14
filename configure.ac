@@ -1080,7 +1080,7 @@ AC_CONFIG_FILES([src/maxima.bat], (perl -ne 'BEGIN{binmode(STDOUT,":crlf")};' -e
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
 admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
 src/share-subdirs.lisp \
-lisp-utils/Makefile tests/Makefile doc/Makefile \
+lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/figures/Makefile \
 crosscompile-windows/Makefile crosscompile-windows/wxwidgets/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/de/Makefile \
