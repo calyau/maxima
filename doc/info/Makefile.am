@@ -310,5 +310,21 @@ warn_texinfo:
 	[ -z  "$$bad_files" ] || ( echo "WARNING: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run /doc/info/fix_tab to fix the problem." )
 
+
+# Files that can be auto-generated, but still have been added to
+# the git repo in case that not every developer using make
+# owns a running gnuplot.
+figures/draw_scene.pdf: figures/draw_scene.mac docdraw.mac
+figures/draw_scene.gif: figures/draw_scene.mac docdraw.mac
+figures/draw_equiv.pdf: figures/draw_equiv.mac docdraw.mac
+figures/draw_equiv.gif: figures/draw_equiv.mac docdraw.mac
+figures/draw_axis3d.pdf: figures/draw_axis3d.mac docdraw.mac
+figures/draw_axis3d.gif: figures/draw_axis3d.mac docdraw.mac
+figures/draw_axis_bottom.pdf: figures/draw_axis_bottom.mac docdraw.mac
+figures/draw_axis_bottom.gif: figures/draw_axis_bottom.mac docdraw.mac
+figures/draw_border.pdf: figures/draw_border.mac docdraw.mac
+figures/draw_border.gif: figures/draw_border.mac docdraw.mac
+
+
 .PHONY: check_texinfo warn_texinfo
 

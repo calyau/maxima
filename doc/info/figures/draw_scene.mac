@@ -1,5 +1,5 @@
 load("docdraw.mac");
-docdraw("draw_scene",
+docdraw("figures/draw_scene",
     gr2d(
         key="sin (x)",grid=[2,2],
         explicit(

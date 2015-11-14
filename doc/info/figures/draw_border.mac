@@ -1,5 +1,5 @@
 load("docdraw.mac");
-docdraw2d("draw_border",color = brown,
+docdraw2d("figures/draw_border",color = brown,
 line_width = 8,
 polygon([[3,2],[7,2],[5,5]]),
 border = false,
