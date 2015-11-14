@@ -1,0 +1,11 @@
+load("docdraw.mac");
+m: apply(
+   matrix,
+   makelist(makelist(cos(i^2/80-k/30),k,1,30),i,1,20)
+)$
+docdraw3d("figures/draw_enhanced3d5",
+	enhanced3d = [cos(x*y*10),x,y],
+	elevation_grid(m,-1,-1,2,2),
+	xlabel = "x",
+	ylabel = "y"
+)$

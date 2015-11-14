@@ -1,0 +1,8 @@
+load("docdraw.mac");
+m: makelist([random(1.0),random(1.0),random(1.0)],k,1,2000)$
+docdraw3d("figures/draw_enhanced3d10",
+	point_type = filled_circle,
+	point_size = 2,
+	enhanced3d = [u+v-w,u,v,w],
+	points(m)
+)$
