@@ -1,0 +1,5 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_contour2",
+	explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+	contour_levels = 15,
+	contour = map) $

@@ -141,7 +141,11 @@ figures/draw_axis_bottom.gif\
 figures/draw_border.gif\
 figures/draw_cbrange.gif\
 figures/draw_cbtics.gif\
-figures/draw_color.gif
+figures/draw_color.gif\
+figures/draw_colorbox.gif\
+figures/draw_colorbox2.gif\
+figures/draw_contour.gif\
+figures/draw_contour.gif
 
 
 pdffigures = \
@@ -216,7 +220,11 @@ figures/draw_axis_bottom.pdf\
 figures/draw_border.pdf\
 figures/draw_cbrange.pdf\
 figures/draw_cbtics.pdf\
-figures/draw_color.pdf
+figures/draw_color.pdf\
+figures/draw_colorbox.pdf\
+figures/draw_colorbox2.pdf\
+figures/draw_contour.pdf\
+figures/draw_contour2.gif
 
 
 if CHM
@@ -336,6 +344,16 @@ figures/draw_cbtics.gif: figures/draw_cbtics.mac docdraw.mac
 figures/draw_cbtics.pdf: figures/draw_cbtics.mac docdraw.mac
 figures/draw_color.gif: figures/draw_color.mac docdraw.mac
 figures/draw_color.pdf: figures/draw_color.mac docdraw.mac
+figures/draw_colorbox.gif: figures/draw_colorbox.mac docdraw.mac
+figures/draw_colorbox.pdf: figures/draw_colorbox.mac docdraw.mac
+figures/draw_colorbox2.gif: figures/draw_colorbox2.mac docdraw.mac
+figures/draw_colorbox2.pdf: figures/draw_colorbox2.mac docdraw.mac
+figures/draw_columns.gif: figures/draw_columns.mac docdraw.mac
+figures/draw_columns.pdf: figures/draw_columns.mac docdraw.mac
+figures/draw_contour.gif: figures/draw_contour.mac docdraw.mac
+figures/draw_contour.pdf: figures/draw_contour.mac docdraw.mac
+figures/draw_contour2.gif: figures/draw_contour.mac docdraw.mac
+figures/draw_contour2.pdf: figures/draw_contour.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo

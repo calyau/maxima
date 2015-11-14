@@ -737,10 +737,12 @@ Color scale and images.
 (%i1) load(draw)$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
-(%i3) draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(colorbox = false, image(im,0,0,30,30))$
+(%i3) draw(
+          gr2d(image(im,0,0,30,30)),
+          gr2d(colorbox = false, image(im,0,0,30,30))
+      )$
 @end example
-
+@figure{draw_colorbox}
 Color scale and 3D coloured object.
 
 @example
@@ -750,6 +752,7 @@ Color scale and 3D coloured object.
         enhanced3d = true,
         explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
+@figure{draw_colorbox2}
 
 See also @code{palette}.
 
@@ -781,6 +784,7 @@ Example:
                    polygon([4,5,7],[6,4,2]))$
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
+@figure{draw_columns}
 
 @opencatbox
 @category{Package draw}
@@ -833,6 +837,16 @@ Example:
              contour        = both,
              surface_hide   = true) $
 @end example
+@figure{draw_contour}
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = map
+      ) $
+@end example
+@figure{draw_contour2}
 
 @opencatbox
 @category{Package draw}
