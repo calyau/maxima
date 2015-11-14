@@ -196,7 +196,7 @@
 ;; Test dependence via derivative to account for declared dependencies.
 (defun at-not-dependent-find-vars (eqn arg)
   (let ((e (mapcar #'second (rest eqn))))
-    (partition-by #'(lambda (x) (eq (mfuncall '$diff arg x) 0)) e)))
+    (partition-by #'(lambda (x) (eql (mfuncall '$diff arg x) 0)) e)))
 
 (defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))

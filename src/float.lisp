@@ -1737,7 +1737,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   ;; '((BIGFLOAT ...) FOO BAR) instead of '(FOO BAR).
   ;; However FPROOT does return something like '(FOO BAR).
 
-  (if (eq (cadr a) 0)
+  (if (eql (cadr a) 0)
       '(0 0)
       (progn
 	(let* ((ofprec fpprec)

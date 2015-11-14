@@ -1626,10 +1626,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (format t "~&in SIGN-MEXPT for ~A, base is $imaginary.~%" x))
 	   (cond
 	     ((and (integerp expt) (eq evod '$even))
-	      (setq sign (if (eq (mod expt 4) 0) '$pz '$nz)))
+	      (setq sign (if (eql (mod expt 4) 0) '$pz '$nz)))
 	     ((and (integerp expt) (eq evod '$odd))
 	      (setq sign '$imaginary
-		    minus (if (eq (mod (- expt 1) 4) 0) t nil)))
+		    minus (if (eql (mod (- expt 1) 4) 0) t nil)))
 	     (t (setq sign '$complex))))
 
 	  ((and (eq sign-base '$zero)
