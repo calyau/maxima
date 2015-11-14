@@ -156,7 +156,12 @@ figures/draw_enhanced3d7.gif\
 figures/draw_enhanced3d8.gif\
 figures/draw_enhanced3d9.gif\
 figures/draw_enhanced3d10.gif\
-figures/draw_enhanced3d11.gif
+figures/draw_enhanced3d11.gif\
+figures/draw_filledfunc.gif\
+figures/draw_filledfunc2.gif\
+figures/draw_grid.gif\
+figures/draw_grid2.gif\
+figures/draw_head_angle.gif
 
 
 pdffigures = \
@@ -246,7 +251,12 @@ figures/draw_enhanced3d7.pdf\
 figures/draw_enhanced3d8.pdf\
 figures/draw_enhanced3d9.pdf\
 figures/draw_enhanced3d10.pdf\
-figures/draw_enhanced3d11.pdf
+figures/draw_enhanced3d11.pdf\
+figures/draw_filledfunc.pdf\
+figures/draw_filledfunc2.pdf\
+figures/draw_grid.pdf\
+figures/draw_grid2.pdf\
+figures/draw_head_angle.pdf
 
 
 if CHM
@@ -398,6 +408,16 @@ figures/draw_enhanced3d10.gif: figures/draw_enhanced3d10.mac docdraw.mac
 figures/draw_enhanced3d10.pdf: figures/draw_enhanced3d10.mac docdraw.mac
 figures/draw_enhanced3d11.gif: figures/draw_enhanced3d11.mac docdraw.mac
 figures/draw_enhanced3d11.pdf: figures/draw_enhanced3d11.mac docdraw.mac
+figures/draw_filledfunc.gif: figures/draw_filledfunc.mac docdraw.mac
+figures/draw_filledfunc.pdf: figures/draw_filledfunc.mac docdraw.mac
+figures/draw_filledfunc2.gif: figures/draw_filledfunc2.mac docdraw.mac
+figures/draw_filledfunc2.pdf: figures/draw_filledfunc2.mac docdraw.mac
+figures/draw_grid.gif: figures/draw_grid.mac docdraw.mac
+figures/draw_grid.pdf: figures/draw_grid.mac docdraw.mac
+figures/draw_grid2.gif: figures/draw_grid2.mac docdraw.mac
+figures/draw_grid2.pdf: figures/draw_grid2.mac docdraw.mac
+figures/draw_head_angle.gif: figures/draw_head_angle.mac docdraw.mac
+figures/draw_head_angle.pdf: figures/draw_head_angle.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo

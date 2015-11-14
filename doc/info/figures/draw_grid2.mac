@@ -1,0 +1,5 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_grid2",
+	grid = [5,5],
+	explicit(sin(x),x,0,2*%pi)
+)$

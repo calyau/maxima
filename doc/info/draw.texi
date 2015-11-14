@@ -1335,7 +1335,7 @@ graphic window.
              filled_func = true,
              explicit(sin(x),x,0,10) )$
 @end example
-
+@figure{draw_filledfunc}
 Region bounded by an @code{explicit} object and the function
 defined by option @code{filled_func}. Note that the variable in
 @code{filled_func} must be the same as that used in @code{explicit}.
@@ -1345,7 +1345,7 @@ defined by option @code{filled_func}. Note that the variable in
              filled_func = sin(x),
              explicit(-sin(x),x,0,%pi));
 @end example
-
+@figure{draw_filledfunc2}
 See also @code{fill_color} and @code{explicit}.
 
 @opencatbox
@@ -1544,6 +1544,14 @@ Example:
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
+@figure{draw_grid}
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = [2,2],
+             explicit(sin(x),x,0,2*%pi))$
+@end example
+@figure{draw_grid2}
 
 @opencatbox
 @category{Package draw}
@@ -1587,6 +1595,7 @@ Example:
              head_angle  = 180,
              vector([9,1],[0,6]) )$
 @end example
+@figure{draw_head_angle}
 
 See also @code{head_both}, @code{head_length}, and @code{head_type}. 
 
