@@ -1,0 +1,9 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_head_both",
+	xrange = [0,8],
+	yrange = [0,8],
+	head_length = 0.7,
+	vector([1,1],[6,0]),
+	head_both = true,
+	vector([1,7],[6,0])
+)$

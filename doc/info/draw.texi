@@ -1626,6 +1626,7 @@ Example:
              head_both   = true,
              vector([1,7],[6,0]) )$
 @end example
+@figure{draw_head_both}
 
 See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
 
@@ -1658,6 +1659,7 @@ Example:
              head_length = 0.25,
              vector([6,1],[5,5]))$
 @end example
+@figure{draw_head_length}
 
 See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
 
@@ -1693,6 +1695,7 @@ Example:
              head_type = 'nofilled,
              vector([6,1],[5,5]))$
 @end example
+@figure{draw_head_type}
 
 See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
 
@@ -1732,15 +1735,22 @@ Color interpolation with explicit functions.
 (%i2) draw3d(
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+@end example
+@figure{draw_interpolate_color}
+@example
 (%i3) draw3d(
         interpolate_color = true,
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+@end example
+@figure{draw_interpolate_color2}
+@example
 (%i4) draw3d(
         interpolate_color = [-10,0],
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
 @end example
+@figure{draw_interpolate_color3}
 
 Color interpolation with the @code{mesh} graphic object.
 
@@ -1753,12 +1763,18 @@ Interpolating colors in parametric surfaces can give unexpected results.
         mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+@figure{draw_interpolate_color4}
+@example
 (%i3) draw3d( 
         enhanced3d        = true,
         interpolate_color = true,
         mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+@figure{draw_interpolate_color5}
+@example
 (%i4) draw3d( 
         enhanced3d        = true,
         interpolate_color = true,
@@ -1767,6 +1783,7 @@ Interpolating colors in parametric surfaces can give unexpected results.
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
 @end example
+@figure{draw_interpolate_color6}
 
 See also @code{enhanced3d}. 
 

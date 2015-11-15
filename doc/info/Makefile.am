@@ -161,7 +161,16 @@ figures/draw_filledfunc.gif\
 figures/draw_filledfunc2.gif\
 figures/draw_grid.gif\
 figures/draw_grid2.gif\
-figures/draw_head_angle.gif
+figures/draw_head_angle.gif\
+figures/draw_head_both.gif\
+figures/draw_head_length.gif\
+figures/draw_head_type.gif\
+figures/draw_interpolate_color.gif\
+figures/draw_interpolate_color2.gif\
+figures/draw_interpolate_color3.gif\
+figures/draw_interpolate_color4.gif\
+figures/draw_interpolate_color5.gif\
+figures/draw_interpolate_color6.gif
 
 
 pdffigures = \
@@ -256,7 +265,16 @@ figures/draw_filledfunc.pdf\
 figures/draw_filledfunc2.pdf\
 figures/draw_grid.pdf\
 figures/draw_grid2.pdf\
-figures/draw_head_angle.pdf
+figures/draw_head_angle.pdf\
+figures/draw_head_both.pdf\
+figures/draw_head_length.pdf\
+figures/draw_head_type.pdf\
+figures/draw_interpolate_color.pdf\
+figures/draw_interpolate_color2.pdf\
+figures/draw_interpolate_color3.pdf\
+figures/draw_interpolate_color4.pdf\
+figures/draw_interpolate_color5.pdf\
+figures/draw_interpolate_color6.pdf
 
 
 if CHM
@@ -418,6 +436,24 @@ figures/draw_grid2.gif: figures/draw_grid2.mac docdraw.mac
 figures/draw_grid2.pdf: figures/draw_grid2.mac docdraw.mac
 figures/draw_head_angle.gif: figures/draw_head_angle.mac docdraw.mac
 figures/draw_head_angle.pdf: figures/draw_head_angle.mac docdraw.mac
+figures/draw_head_both.gif: figures/draw_head_both.mac docdraw.mac
+figures/draw_head_both.pdf: figures/draw_head_both.mac docdraw.mac
+figures/draw_head_length.gif: figures/draw_head_length.mac docdraw.mac
+figures/draw_head_length.pdf: figures/draw_head_length.mac docdraw.mac
+figures/draw_head_type.gif: figures/draw_head_type.mac docdraw.mac
+figures/draw_head_type.pdf: figures/draw_head_type.mac docdraw.mac
+figures/draw_interpolate_color.gif: figures/draw_interpolate_color.mac docdraw.mac
+figures/draw_interpolate_color.pdf: figures/draw_interpolate_color.mac docdraw.mac
+figures/draw_interpolate_color2.gif: figures/draw_interpolate_color2.mac docdraw.mac
+figures/draw_interpolate_color2.pdf: figures/draw_interpolate_color2.mac docdraw.mac
+figures/draw_interpolate_color3.gif: figures/draw_interpolate_color3.mac docdraw.mac
+figures/draw_interpolate_color3.pdf: figures/draw_interpolate_color3.mac docdraw.mac
+figures/draw_interpolate_color4.gif: figures/draw_interpolate_color4.mac docdraw.mac
+figures/draw_interpolate_color4.pdf: figures/draw_interpolate_color4.mac docdraw.mac
+figures/draw_interpolate_color5.gif: figures/draw_interpolate_color5.mac docdraw.mac
+figures/draw_interpolate_color5.pdf: figures/draw_interpolate_color5.mac docdraw.mac
+figures/draw_interpolate_color6.gif: figures/draw_interpolate_color6.mac docdraw.mac
+figures/draw_interpolate_color6.pdf: figures/draw_interpolate_color6.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo
