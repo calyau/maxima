@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_transparent",
+	polygon([[3,2],[7,2],[5,5]]),
+	transparent = true,
+	color = blue,
+	polygon([[5,2],[9,2],[7,5]]) )$

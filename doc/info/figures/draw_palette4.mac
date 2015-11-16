@@ -1,0 +1,11 @@
+load("docdraw.mac");
+im: apply(
+    'matrix,
+    makelist(makelist(random(200),i,1,30),i,1,30)
+)$
+
+docdraw2d("figures/draw_palette4",
+	palette = [15,20,-4],
+	colorbox=false,
+	image(im,0,0,30,30)
+)$

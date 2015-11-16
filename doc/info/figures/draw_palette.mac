@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_palette",
+	enhanced3d = [z-x+2*y,x,y,z],
+	palette = [32, -8, 17],
+	explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3)
+)$

@@ -1,0 +1,10 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_xaxis_secondary",
+	key = "Bottom x-axis",
+	explicit(x+1,x,1,2),
+	color = red,
+	key = "Above x-axis",
+	xtics_secondary = true,
+	xaxis_secondary = true,
+	explicit(x^2,x,-1,1)) $

@@ -1,0 +1,8 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_key",
+	key = "Sinus",
+	explicit(sin(x),x,0,10),
+	key = "Cosinus",
+	color = red,
+	explicit(cos(x),x,0,10)
+)$
