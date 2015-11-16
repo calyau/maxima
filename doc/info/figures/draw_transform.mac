@@ -1,5 +1,8 @@
 load("docdraw.mac");
 
+
+th:%pi/4;
+
 docdraw2d("figures/draw_transform",
         color = "#e245f0",
         proportional_axes = 'xy,

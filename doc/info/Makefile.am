@@ -246,8 +246,8 @@ figures/draw_view.gif\
 figures/draw_wired_surface.gif\
 figures/draw_xaxis.gif\
 figures/draw_xaxis_secondary.gif\
-figures/draw_ylabel_secondary.gif
-# figures/draw_transform.gif
+figures/draw_ylabel_secondary.gif\
+figures/draw_transform.gif
 
 
 pdffigures = \
@@ -427,8 +427,8 @@ figures/draw_view.pdf\
 figures/draw_wired_surface.pdf\
 figures/draw_xaxis.pdf\
 figures/draw_xaxis_secondary.pdf\
-figures/draw_ylabel_secondary.pdf
-# figures/draw_transform.pdf
+figures/draw_ylabel_secondary.pdf\
+figures/draw_transform.pdf
 
 
 if CHM

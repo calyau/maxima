@@ -2746,6 +2746,7 @@ Rotation in 2D.
                       sin(th)*x + cos(th)*y, x, y],
         triangle([3,2],[7,2],[5,5]) )$
 @end example
+@figure{draw_transform}
 
 Translation in 3D.
 
