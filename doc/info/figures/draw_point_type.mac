@@ -1,0 +1,25 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_point_type",
+	xrange = [0,10],
+	yrange = [0,10],
+	point_size = 3,
+	point_type = diamant,
+	points([[1,1],[5,1],[9,1]]),
+	point_type = filled_down_triangle,
+	points([[1,2],[5,2],[9,2]]),
+	point_type = asterisk,
+	points([[1,3],[5,3],[9,3]]),
+	point_type = filled_diamant,
+	points([[1,4],[5,4],[9,4]]),
+	point_type = 5,
+	points([[1,5],[5,5],[9,5]]),
+	point_type = 6,
+	points([[1,6],[5,6],[9,6]]),
+	point_type = filled_circle,
+	points([[1,7],[5,7],[9,7]]),
+	point_type = 8,
+	points([[1,8],[5,8],[9,8]]),
+	point_type = filled_diamant,
+	points([[1,9],[5,9],[9,9]])
+)$

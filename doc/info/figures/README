@@ -45,7 +45,15 @@ to pdffigures.
 Jaime Villate, January 27, 2015.
 
 
+MACROS THAT HELP CREATING FIGURE FILES IN THE NEEDED FORMATS
+------------------------------------------------------------
 
+../docdraw.mac contains macros that create a figure in both formats
+needed for building the documentation:
+
+docdraw("test",gr2d(explicit(sin(x),x,1,10)));
+docdraw2d("test",explicit(sin(x),x,1,10));
+docdraw3d("test",explicit(sin(x)*cos(y),x,1,10,y,1,10));
 
 
 INTRODUCTION

@@ -1,0 +1,7 @@
+load("docdraw.mac");
+scene1: gr2d(title="Ellipse", nticks=30, parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+scene2: gr2d(title="Triangle",polygon([4,5,7],[6,4,2]))$
+
+docdraw("figures/draw_columns",
+	scene1, scene2, columns = 2
+)$

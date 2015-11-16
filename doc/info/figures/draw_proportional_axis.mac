@@ -1,0 +1,10 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_proportional_axis",
+	ellipse(0,0,1,1,0,360),
+	transparent=true,
+	color = blue,
+	line_width = 4,
+	ellipse(0,0,2,1/2,0,360),
+	proportional_axes = xy
+) $

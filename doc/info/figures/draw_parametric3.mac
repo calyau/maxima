@@ -1,0 +1,12 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_parametric3",
+	title = "Sea shell",
+	xu_grid = 100,
+	yv_grid = 25,
+	view = [100,20],
+	surface_hide = true,
+	parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+		0.5*u*sin(u)*(cos(v)+1),
+		u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+		u, 0, 13*%pi, v, -%pi, %pi) )$

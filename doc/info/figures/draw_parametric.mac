@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_parametric",
+	explicit(exp(x),x,-1,3),
+	color = red,
+	key = "This is the parametric one!!",
+	parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi)
+)$

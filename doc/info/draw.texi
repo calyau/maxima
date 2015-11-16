@@ -11,7 +11,7 @@
 @section Introduction to draw
 
 
-@code{draw} is a Maxima-Gnuplot interface.
+@code{draw} is a Maxima-Gnuplot and a Maxima-vtk interface.
 
 There are three main functions to be used at Maxima level: 
 @code{draw2d}, @code{draw3d} and @code{draw}.
@@ -53,6 +53,51 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 See also @code{draw} and @code{draw2d}.
 
 To make use of this object, write first @code{load(draw)}.
+
+@c ===beg===
+@c load("draw");
+@c draw(
+@c     gr2d(
+@c         key="sin (x)",grid=[2,2],
+@c         explicit(
+@c             sin(x),
+@c             x,0,2*%pi
+@c         )
+@c     ),
+@c     gr2d(
+@c         key="cos (x)",grid=[2,2],
+@c         explicit(
+@c             cos(x),
+@c             x,0,2*%pi
+@c         )
+@c     )
+@c  );
+@c ===end===
+@example
+@group
+(%i1) load("draw");
+(%o1)     /maxima/share/draw/draw.lisp
+@end group
+(%i2) draw(
+    gr2d(
+        key="sin (x)",grid=[2,2],
+        explicit(
+            sin(x),
+            x,0,2*%pi
+        )
+    ),
+    gr2d(
+        key="cos (x)",grid=[2,2],
+        explicit(
+            cos(x),
+            x,0,2*%pi
+        )
+    )
+ );
+(%o2)           [gr2d(explicit), gr2d(explicit)]
+@end example
+@figure{draw_scene}
+
 
 @opencatbox
 @category{Package draw}
@@ -145,7 +190,7 @@ An animated gif file:
 End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
-
+@figure{draw_equiv}
 See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 
 @opencatbox
@@ -373,6 +418,7 @@ Example:
 (%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
+@figure{draw_axis3d}
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
 
@@ -399,6 +445,7 @@ Example:
 (%i2) draw2d(axis_bottom = false,
              explicit(x^3,x,-1,1))$
 @end example
+@figure{draw_axis_bottom}
 
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
 
@@ -531,6 +578,7 @@ Example:
              fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+@figure{draw_border}
 
 @opencatbox
 @category{Package draw}
@@ -567,6 +615,7 @@ Example:
         cbrange = [-3,10],
         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
 @end example
+@figure{draw_cbrange}
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
 
@@ -599,6 +648,7 @@ Example :
         cbrange = [0, 10],
         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
 @end example
+@figure{draw_cbtics}
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
@@ -647,7 +697,7 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,_1,1), /* default is black */
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
              color = red,
              explicit(0.5 + x^2,x,-1,1),
              color = blue,
@@ -657,6 +707,7 @@ Example:
              color = "#23ab0f",
              label(["This is a label",0,1.2])  )$
 @end example
+@figure{draw_color}
 
 See also @code{fill_color}.
 
@@ -686,10 +737,12 @@ Color scale and images.
 (%i1) load(draw)$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
-(%i3) draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(colorbox = false, image(im,0,0,30,30))$
+(%i3) draw(
+          gr2d(image(im,0,0,30,30)),
+          gr2d(colorbox = false, image(im,0,0,30,30))
+      )$
 @end example
-
+@figure{draw_colorbox}
 Color scale and 3D coloured object.
 
 @example
@@ -699,6 +752,7 @@ Color scale and 3D coloured object.
         enhanced3d = true,
         explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
+@figure{draw_colorbox2}
 
 See also @code{palette}.
 
@@ -730,6 +784,7 @@ Example:
                    polygon([4,5,7],[6,4,2]))$
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
+@figure{draw_columns}
 
 @opencatbox
 @category{Package draw}
@@ -782,6 +837,16 @@ Example:
              contour        = both,
              surface_hide   = true) $
 @end example
+@figure{draw_contour}
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = map
+      ) $
+@end example
+@figure{draw_contour2}
 
 @opencatbox
 @category{Package draw}
@@ -1052,6 +1117,7 @@ Examples:
          palette    = gray,
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+@figure{draw_enhanced3d}
 
 @code{explicit} object with coloring defined by the @code{[f(x,y), x, y]} model.
 The names of the variables defined in the lists may be different to those
@@ -1064,6 +1130,7 @@ to @code{x}, and @code{s} to @code{y}.
          enhanced3d = [sin(r*s),r,s],
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+@figure{draw_enhanced3d2}
 
 @code{parametric} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1075,6 +1142,7 @@ to @code{x}, and @code{s} to @code{y}.
          enhanced3d = [if y>= 0 then 1 else 0, x, y, z],
          parametric(sin(u)^2,cos(u),u,u,0,4*%pi)) $
 @end example
+@figure{draw_enhanced3d3}
 
 @code{parametric} object with coloring defined by the @code{[f(u), u]} model.
 In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
@@ -1087,6 +1155,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          enhanced3d = (u-1)^2,
          parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
 @end example
+@figure{draw_enhanced3d4}
 
 @code{elevation_grid} object with coloring defined by the @code{[f(x,y), x, y]} model.
 
@@ -1101,6 +1170,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          xlabel = "x",
          ylabel = "y");
 @end example
+@figure{draw_enhanced3d5}
 
 @code{tube} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1112,6 +1182,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
          xu_grid = 50,
          tube(cos(a), a, 0, 1, a, 0, 4*%pi) )$
 @end example
+@figure{draw_enhanced3d6}
 
 @code{tube} object with coloring defined by the @code{[f(u), u]} model.
 Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,foo]}.
@@ -1124,6 +1195,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,
          enhanced3d = [-foo, foo],
          tube(a, a, a^2, 1, a, -2, 2) )$
 @end example
+@figure{draw_enhanced3d7}
 
 @code{implicit} and @code{points} objects with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
 
@@ -1134,12 +1206,16 @@ Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,
          implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
                   x,-1,1,y,-1.2,2.3,z,-1,1)) $
 (%i3) m: makelist([random(1.0),random(1.0),random(1.0)],k,1,2000)$
+@end example
+@figure{draw_enhanced3d9}
+@example
 (%i4) draw3d(
          point_type = filled_circle,
          point_size = 2,
          enhanced3d = [u+v-w,u,v,w],
          points(m) ) $
 @end example
+@figure{draw_enhanced3d10}
 
 When points have a chronological nature, model @code{[f(k), k]} is also valid,
 being @code{k} an ordering parameter.
@@ -1154,6 +1230,7 @@ being @code{k} an ordering parameter.
          points_joined = true,
          points(m)) $
 @end example
+@figure{draw_enhanced3d11}
 
 @opencatbox
 @category{Package draw}
@@ -1258,7 +1335,7 @@ graphic window.
              filled_func = true,
              explicit(sin(x),x,0,10) )$
 @end example
-
+@figure{draw_filledfunc}
 Region bounded by an @code{explicit} object and the function
 defined by option @code{filled_func}. Note that the variable in
 @code{filled_func} must be the same as that used in @code{explicit}.
@@ -1268,7 +1345,7 @@ defined by option @code{filled_func}. Note that the variable in
              filled_func = sin(x),
              explicit(-sin(x),x,0,%pi));
 @end example
-
+@figure{draw_filledfunc2}
 See also @code{fill_color} and @code{explicit}.
 
 @opencatbox
@@ -1467,6 +1544,14 @@ Example:
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
+@figure{draw_grid}
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = [2,2],
+             explicit(sin(x),x,0,2*%pi))$
+@end example
+@figure{draw_grid2}
 
 @opencatbox
 @category{Package draw}
@@ -1510,6 +1595,7 @@ Example:
              head_angle  = 180,
              vector([9,1],[0,6]) )$
 @end example
+@figure{draw_head_angle}
 
 See also @code{head_both}, @code{head_length}, and @code{head_type}. 
 
@@ -1540,6 +1626,7 @@ Example:
              head_both   = true,
              vector([1,7],[6,0]) )$
 @end example
+@figure{draw_head_both}
 
 See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
 
@@ -1572,6 +1659,7 @@ Example:
              head_length = 0.25,
              vector([6,1],[5,5]))$
 @end example
+@figure{draw_head_length}
 
 See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
 
@@ -1607,6 +1695,7 @@ Example:
              head_type = 'nofilled,
              vector([6,1],[5,5]))$
 @end example
+@figure{draw_head_type}
 
 See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
 
@@ -1646,15 +1735,22 @@ Color interpolation with explicit functions.
 (%i2) draw3d(
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+@end example
+@figure{draw_interpolate_color}
+@example
 (%i3) draw3d(
         interpolate_color = true,
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
+@end example
+@figure{draw_interpolate_color2}
+@example
 (%i4) draw3d(
         interpolate_color = [-10,0],
         enhanced3d   = sin(x*y),
         explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)) $
 @end example
+@figure{draw_interpolate_color3}
 
 Color interpolation with the @code{mesh} graphic object.
 
@@ -1667,12 +1763,18 @@ Interpolating colors in parametric surfaces can give unexpected results.
         mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+@figure{draw_interpolate_color4}
+@example
 (%i3) draw3d( 
         enhanced3d        = true,
         interpolate_color = true,
         mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+@figure{draw_interpolate_color5}
+@example
 (%i4) draw3d( 
         enhanced3d        = true,
         interpolate_color = true,
@@ -1681,6 +1783,7 @@ Interpolating colors in parametric surfaces can give unexpected results.
              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
 @end example
+@figure{draw_interpolate_color6}
 
 See also @code{enhanced3d}. 
 
@@ -1750,7 +1853,7 @@ Example:
              color = red,
              explicit(cos(x),x,0,10) )$
 @end example
-
+@figure{draw_key}
 @opencatbox
 @category{Package draw}
 @closecatbox
@@ -1791,6 +1894,7 @@ Example:
         key   = "x squared",
         explicit(x^2+y^2,x,0,10,y,0,10))$
 @end example
+@figure{draw_key_pos}
 
 @opencatbox
 @category{Package draw}
@@ -1824,6 +1928,7 @@ Example:
              label_alignment = 'right,
              label(["Right alignment",5,8]))$
 @end example
+@figure{draw_label_alignment}
 
 See also @code{label_orientation}, and @code{color}. 
 
@@ -1859,6 +1964,7 @@ Package @code{draw} needs always data to draw an scene.
              color             = "#654321",
              label(["Vertical orientation",1,5]))$
 @end example
+@figure{draw_label_orientation}
 
 See also @code{label_alignment} and @code{color}. 
 
@@ -1898,6 +2004,7 @@ Example:
              line_type = solid, /* default */
              explicit(2 + x^2,x,-1,1))$
 @end example
+@figure{draw_line_type}
 
 See also @code{line_width}.
 
@@ -1936,6 +2043,7 @@ Example:
              line_width = 10,
              explicit(2 + x^2,x,-1,1))$
 @end example
+@figure{draw_line_width}
 
 See also @code{line_type}.
 
@@ -1971,6 +2079,7 @@ Example:
         palette = [-15,24,-9],
         explicit(exp(x^2-y^2), x,-2,2,y,-2,2)) $
 @end example
+@figure{draw_logcb}
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
@@ -2036,6 +2145,7 @@ Example:
         color = blue,
         explicit(x^2,x,1,100) )$
 @end example
+@figure{draw_logx_secondary}
 
 See also @code{logx}, @code{logy}, @code{logy_secondary}, and @code{logz}.
 
@@ -2164,6 +2274,7 @@ Example:
              nticks = 5,
              ellipse(0,0,4,2,180,180) )$
 @end example
+@figure{draw_nticks}
 
 @opencatbox
 @category{Package draw}
@@ -2226,6 +2337,7 @@ It works together with option @code{enhanced3d} in 3D graphics.
         palette = [32, -8, 17],
         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+@figure{draw_palette}
 
 It also works with gray images.
 
@@ -2241,6 +2353,7 @@ It also works with gray images.
              colorbox=false,
              image(im,0,0,30,30))$
 @end example
+@figure{draw_palette2}
 
 @code{palette} can be a user defined lookup table.
 In this example, low values of @code{x} are colored
@@ -2253,6 +2366,7 @@ in red, and higher values in yellow.
          enhanced3d = x,
          explicit(x^2+y^2,x,-1,1,y,-1,1)) $
 @end example
+@figure{draw_palette3}
 
 See also @code{colorbox} and @code{enhanced3d}.
 
@@ -2290,6 +2404,7 @@ Example:
         point_size = 5,
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
+@figure{draw_point_size}
 
 @opencatbox
 @category{Package draw}
@@ -2345,6 +2460,7 @@ Example:
              point_type = filled_diamant,
              points([[1,9],[5,9],[9,9]]) )$
 @end example
+@figure{draw_point_type}
 
 @opencatbox
 @category{Package draw}
@@ -2390,6 +2506,7 @@ Example:
              line_width    = 7,
              points([[1,3],[5,3],[9,3]]) )$
 @end example
+@figure{draw_points_joined}
 
 @opencatbox
 @category{Package draw}
@@ -2425,6 +2542,7 @@ Single 2D plot.
         ellipse(0,0,2,1/2,0,360),
         proportional_axes = xy) $
 @end example
+@figure{draw_proportional_axis}
 
 Multiplot.
 
@@ -2440,6 +2558,7 @@ Multiplot.
              proportional_axes=xy),
         gr2d(explicit(x^2,x,0,1)))$
 @end example
+@figure{draw_proportional_axis2}
 
 @opencatbox
 @category{Package draw}
@@ -2466,6 +2585,7 @@ Example:
            gr3d(surface_hide = true,
                 explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
 @end example
+@figure{draw_surface_hide}
 
 @opencatbox
 @category{Package draw}
@@ -2585,6 +2705,7 @@ Example:
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
+@figure{draw_title}
 
 @opencatbox
 @category{Package draw}
@@ -2625,6 +2746,7 @@ Rotation in 2D.
                       sin(th)*x + cos(th)*y, x, y],
         triangle([3,2],[7,2],[5,5]) )$
 @end example
+@figure{draw_transform}
 
 Translation in 3D.
 
@@ -2666,6 +2788,7 @@ Example:
              color       = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+@figure{draw_transparent}
 
 @opencatbox
 @category{Package draw}
@@ -2691,6 +2814,7 @@ Example:
         tube(0, 0, a, 1,
              a, 0, 8) )$
 @end example
+@figure{draw_tube_extremes}
 
 @opencatbox
 @category{Package draw}
@@ -2721,6 +2845,7 @@ Example:
              color        = red,
              vector([0,3],[5,2]))$
 @end example
+@figure{draw_unit_vectors}
 
 @opencatbox
 @category{Package draw}
@@ -2753,6 +2878,7 @@ Tell Gnuplot to draw axes on top of graphics objects,
         user_preamble="set grid front",
         region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$
 @end example
+@figure{draw_region}
 
 @opencatbox
 @category{Package draw}
@@ -2784,10 +2910,14 @@ Example:
 (%i2) draw3d(view = [170, 50],
              enhanced3d = true,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+@figure{draw_view}
+@example
 (%i3) draw3d(view = map,
              enhanced3d = true,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
+@figure{draw_view2}
 
 @opencatbox
 @category{Package draw}
@@ -2816,6 +2946,7 @@ Example:
         wired_surface = true,
         explicit(x^2+y^2,x,-1,1,y,-1,1)) $
 @end example
+@figure{draw_wired_surface}
 
 @opencatbox
 @category{Package draw}
@@ -2859,6 +2990,7 @@ Example:
              xaxis       = true,
              xaxis_color = blue)$
 @end example
+@figure{draw_xaxis}
 
 See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
 
@@ -2920,6 +3052,7 @@ Example:
          xaxis_secondary = true,
          explicit(x^2,x,-1,1)) $
 @end example
+@figure{draw_xaxis_secondary}
 
 See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
 @code{xtics_axis_secondary} and @code{xaxis_secondary}.
@@ -3037,6 +3170,7 @@ Example:
          ylabel_secondary="U[V]",
          explicit(sin(t),t,0,10) )$
 @end example
+@figure{draw_ylabel_secondary}
 
 See also @code{xlabel}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
 
@@ -4071,6 +4205,7 @@ Example:
        bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
        xaxis = true);
 @end example
+@figure{draw_bars}
 
 @opencatbox
 @category{Package draw}
@@ -4101,6 +4236,7 @@ Example:
 (%i1) load(draw)$
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
+@figure{draw_cylindrical}
 
 @opencatbox
 @category{Package draw}
@@ -4139,6 +4275,7 @@ Example:
          ylabel = "y",
          surface_hide = true);
 @end example
+@figure{draw_elevation_grid}
 
 @opencatbox
 @category{Package draw}
@@ -4183,6 +4320,7 @@ Example:
              xrange      = [-3,6],
              yrange      = [2,9] )$
 @end example
+@figure{draw_ellipse}
 
 @opencatbox
 @category{Package draw}
@@ -4223,6 +4361,7 @@ Horizontal error bars.
         error_type = y,
         errors([[1,2,1], [3,5,3], [10,3,1], [17,6,2]]))$
 @end example
+@figure{draw_errors}
 
 Vertical and horizontal error bars.
 
@@ -4234,6 +4373,7 @@ Vertical and horizontal error bars.
         color = blue,
         errors([[1,2,1,2], [3,5,2,1], [10,3,1,1], [17,6,1/2,2]])); 
 @end example
+@figure{draw_errors2}
 
 @opencatbox
 @category{Package draw}
@@ -4265,10 +4405,14 @@ Example:
 (%i2) draw2d(line_width = 3,
              color      = blue,
              explicit(x^2,x,-3,3) )$
+@end example
+@figure{draw_explicit}
+@example
 (%i3) draw2d(fill_color  = brown,
              filled_func = true,
              explicit(x^2,x,-3,3) )$
 @end example
+@figure{draw_explicit2}
 
 @b{3D}
 
@@ -4294,6 +4438,7 @@ Example:
              explicit(x+y,x,-5,5,y,-5,5),
              surface_hide = true)$
 @end example
+@figure{draw_explicit3}
 
 See also @code{filled_func} for filled functions.
 
@@ -4356,11 +4501,18 @@ to graphic option @code{palette}.
             makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) /* palette = color, default */
       draw2d(image(im,0,0,30,30))$
+@end example
+@figure{draw_image}
+@example
 (%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+@end example
+@figure{draw_image2}
+@example
 (%i5) draw2d(palette = [15,20,-4],
              colorbox=false,
              image(im,0,0,30,30))$
 @end example
+@figure{draw_image3}
 
 See also @code{colorbox}.
 
@@ -4376,6 +4528,7 @@ as red, green and blue color components.
                          random(300)],i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
 @end example
+@figure{draw_image4}
 
 Package @code{draw} automatically loads package @code{picture}. In this
 example, a level picture object is built by hand and then rendered.
@@ -4385,10 +4538,14 @@ example, a level picture object is built by hand and then rendered.
 (%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
 (%i3) /* default color palette */
       draw2d(image(im,0,0,30,30))$
+@end example
+@figure{draw_image5}
+@example
 (%i4) /* gray palette */
       draw2d(palette = gray,
              image(im,0,0,30,30))$
 @end example
+@figure{draw_image6}
 
 An xpm file is read and then rendered.
 @example
@@ -4432,8 +4589,7 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(terminal  = eps,
-             grid      = true,
+(%i2) draw2d(grid      = true,
              line_type = solid,
              key       = "y^2=x^3-2*x+1",
              implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
@@ -4442,6 +4598,7 @@ Example:
              implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
              title     = "Two implicit functions" )$
 @end example
+@figure{draw_implicit}
 
 @b{3D}
 
@@ -4465,6 +4622,7 @@ Example:
                  x,-1,1,y,-1.2,2.3,z,-1,1),
         surface_hide=true);
 @end example
+@figure{draw_implicit2}
 
 @opencatbox
 @category{Package draw}
@@ -4503,6 +4661,7 @@ Example:
              label(["Label in light-blue",0,0.9],
                    ["Another light-blue",0,1.2])  )$
 @end example
+@figure{draw_label}
 
 @b{3D}
 
@@ -4519,6 +4678,7 @@ Example:
              color = blue,
              label(["DOWN 1",2,0,-3]) )$
 @end example
+@figure{draw_label2}
 
 @opencatbox
 @category{Package draw}
@@ -4552,6 +4712,7 @@ A simple example.
               [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
               [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
 @end example
+@figure{draw_mesh}
 
 Plotting a triangle in 3D.
 
@@ -4562,6 +4723,7 @@ Plotting a triangle in 3D.
         mesh([[1,0,0],[0,1,0]],
              [[0,0,1],[0,0,1]])) $
 @end example
+@figure{draw_mesh2}
 
 Two quadrilaterals.
 
@@ -4577,6 +4739,7 @@ Two quadrilaterals.
         mesh([[0,0,2], [0,1,2]],
              [[2,0,4], [2,2,4]])) $
 @end example
+@figure{draw_mesh3}
 
 @opencatbox
 @category{Package draw}
@@ -4610,6 +4773,7 @@ Example:
              key   = "This is the parametric one!!",
              parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
 @end example
+@figure{draw_parametric}
 
 @b{3D}
 
@@ -4631,6 +4795,7 @@ Example:
              surface_hide = true,
              title = "Surface & curves" )$
 @end example
+@figure{draw_parametric2}
 
 @opencatbox
 @category{Package draw}
@@ -4671,6 +4836,7 @@ Example:
                            u*sin(v) - ((u+3)/8*%pi)^2 - 20,
                            u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
+@figure{draw_parametric3}
 
 @opencatbox
 @category{Package draw}
@@ -4736,6 +4902,7 @@ of separate coordinates.
         color         = red,
         points([2,12,8]))$
 @end example
+@figure{draw_points}
 
 Drawing impulses.
 @example
@@ -4746,6 +4913,7 @@ Drawing impulses.
         color         = red,
         points(makelist([random(20),random(50)],k,1,10)))$
 @end example
+@figure{draw_points2}
 
 Array with ordinates.
 @example
@@ -4754,6 +4922,7 @@ Array with ordinates.
 (%i3) for i:0 thru 99 do a[i]: random(1.0) $
 (%i4) draw2d(points(a)) $
 @end example
+@figure{draw_points3}
 
 Two arrays with separate coordinates.
 @example
@@ -4765,6 +4934,7 @@ Two arrays with separate coordinates.
         y[i]: random(10) ) $
 (%i5) draw2d(points(x, y)) $
 @end example
+@figure{draw_points4}
 
 A two-column 2D array.
 @example
@@ -4775,6 +4945,7 @@ A two-column 2D array.
         xy[i, 1]: random(10) ) $
 (%i4) draw2d(points(xy)) $
 @end example
+@figure{draw_points5}
 
 Drawing an array filled with function @code{read_array}.
 @example
@@ -4835,6 +5006,7 @@ Unidimensional arrays,
         z[i]: random(10) ) $
 (%i6) draw3d(points(x,y,z)) $
 @end example
+@figure{draw_points6}
 
 Bidimensional colored array,
 @example
@@ -4849,6 +5021,7 @@ Bidimensional colored array,
          points_joined = true,
          points(xyz)) $
 @end example
+@figure{draw_points7}
 
 Color numbers explicitly specified by the user.
 @example
@@ -4861,6 +5034,7 @@ Color numbers explicitly specified by the user.
         point_type = filled_circle,
         points(pts))$
 @end example
+@figure{draw_points8}
 
 @opencatbox
 @category{Package draw}
@@ -4897,6 +5071,7 @@ Example:
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
 @end example
+@figure{draw_polar}
 
 @opencatbox
 @category{Package draw}
@@ -4936,6 +5111,7 @@ Example:
              fill_color  = yellow,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+@figure{draw_polygon}
 
 @opencatbox
 @category{Package draw}
@@ -4967,6 +5143,7 @@ Example:
 (%i2) draw2d(
         quadrilateral([1,1],[2,2],[3,-1],[2,-2]))$
 @end example
+@figure{draw_quadrilateral}
 
 @b{3D}
 
@@ -5015,6 +5192,7 @@ Example:
              xrange      = [-3,10],
              yrange      = [-3,4.5] )$
 @end example
+@figure{draw_rectangle}
 
 @opencatbox
 @category{Package draw}
@@ -5048,6 +5226,7 @@ Example:
                x, -1.5, 1.5, y, -1.5, 1.5));
 @end example
 @end deffn
+@figure{draw_region}
 
 
 
@@ -5072,6 +5251,7 @@ Example:
 (%i1) load(draw)$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
+@figure{draw_spherical}
 
 @opencatbox
 @category{Package draw}
@@ -5101,6 +5281,7 @@ Example:
 (%i2) draw2d(
         triangle([1,1],[2,2],[3,-1]))$
 @end example
+@figure{draw_triangle}
 
 @b{3D}
 
@@ -5142,6 +5323,7 @@ Example:
         tube(cos(a), a, 0, cos(a/10)^2,
              a, 0, 4*%pi) )$
 @end example
+@figure{draw_tube}
 
 @opencatbox
 @category{Package draw}
@@ -5182,6 +5364,7 @@ Example:
              line_type = dots,
              vector([6,1],[5,5]))$
 @end example
+@figure{draw_vector}
 
 @b{3D}
 
@@ -5198,6 +5381,7 @@ Example:
              vector([0,0,0],[1,-1,0]/sqrt(2)),
              vector([0,0,0],[1,1,-2]/sqrt(6)) )$
 @end example
+@figure{draw_vector2}
 
 @opencatbox
 @category{Package draw}

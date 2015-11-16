@@ -1,0 +1,17 @@
+load("docdraw.mac");
+docdraw("figures/draw_scene",
+    gr2d(
+        key="sin (x)",grid=[2,2],
+        explicit(
+            sin(x),
+            x,0,2*%pi
+        )
+    ),
+    gr2d(
+        key="cos (x)",grid=[2,2],
+        explicit(
+            cos(x),
+            x,0,2*%pi
+        )
+    )
+)$

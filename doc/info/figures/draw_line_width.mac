@@ -1,0 +1,8 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_line_width",
+	explicit(x^2,x,-1,1), /* default width */
+	line_width = 5.5,
+	explicit(1 + x^2,x,-1,1),
+	line_width = 10,
+	explicit(2 + x^2,x,-1,1)
+)$

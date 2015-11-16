@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_mesh3",
+	surface_hide = true,
+	line_width = 3,
+	color = red,
+        mesh([[0,0,0], [0,1,0]],
+             [[2,0,2], [2,2,2]]),
+        color = blue,
+        mesh([[0,0,2], [0,1,2]],
+             [[2,0,4], [2,2,4]])) $

@@ -1,0 +1,4 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_spherical",
+	spherical(1,a,0,2*%pi,z,0,%pi))$

@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_region",
+	x_voxel = 30,
+	y_voxel = 30,
+	region(x^2+y^2<1 and x^2+y^2 > 1/2,
+	x, -1.5, 1.5, y, -1.5, 1.5));

@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_point_size",
+	points(makelist([random(20),random(50)],k,1,10)),
+	point_size = 5,
+	points(makelist(k,k,1,20),makelist(random(30),k,1,20))
+)$

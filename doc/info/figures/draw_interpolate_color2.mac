@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_interpolate_color2",
+	interpolate_color = true,
+	enhanced3d = sin(x*y),
+	explicit(20*exp(-x^2-y^2)-10, x ,-3, 3, y, -3, 3)
+) $

@@ -1,0 +1,12 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_ylabel_secondary",
+	key="current",
+	xlabel="t[s]",
+	ylabel="I[A]",ylabel_secondary="P[W]",
+	explicit(sin(t),t,0,10),
+	yaxis_secondary=true,
+	ytics_secondary=true,
+	color=red,key="Power",
+	explicit((sin(t))^2,t,0,10)
+)$

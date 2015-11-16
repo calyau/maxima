@@ -1,0 +1,9 @@
+load("docdraw.mac");
+
+pts: makelist([t,t^2,cos(t)], t, 0, 15)$
+col_num: makelist(k, k, 1, length(pts))$
+docdraw3d("figures/draw_points8",
+	enhanced3d = ['part(col_num,k),k],
+	   point_size = 3,
+	   point_type = filled_circle,
+	   points(pts))$

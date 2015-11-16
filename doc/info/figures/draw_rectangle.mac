@@ -1,0 +1,15 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_rectangle",
+	fill_color = red,
+	line_width = 6,
+	line_type = dots,
+	transparent = false,
+	fill_color = blue,
+	rectangle([-2,-2],[8,-1]), /* opposite vertices */
+	transparent = true,
+	line_type = solid,
+	line_width = 1,
+	rectangle([9,4],[2,-1.5]),
+	xrange = [-3,10],
+	yrange = [-3,4.5] )$

@@ -1,0 +1,15 @@
+load("docdraw.mac");
+
+
+th:%pi/4;
+
+docdraw2d("figures/draw_transform",
+        color = "#e245f0",
+        proportional_axes = 'xy,
+        line_width = 8,
+        triangle([3,2],[7,2],[5,5]),
+        border     = false,
+        fill_color = yellow,
+        transform  = [cos(th)*x - sin(th)*y,
+                      sin(th)*x + cos(th)*y, x, y],
+        triangle([3,2],[7,2],[5,5]) )$

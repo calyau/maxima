@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_label2",
+	explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+	color = red,
+	label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
+	color = blue,
+	label(["DOWN 1",2,0,-3]) )$

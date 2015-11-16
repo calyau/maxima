@@ -1,0 +1,11 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_head_type",
+	xrange = [0,12],
+	yrange = [0,10],
+	head_length = 1,
+	vector([0,1],[5,5]), /* default type */
+	head_type = 'empty,
+	vector([3,1],[5,5]),
+	head_type = 'nofilled,
+	vector([6,1],[5,5])
+)$

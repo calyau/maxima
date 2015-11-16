@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_transform2",
+	color = "#a02c00",
+	explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+	transform = [x+10,y+10,z+10,x,y,z],
+	color = blue,
+	explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3) )$

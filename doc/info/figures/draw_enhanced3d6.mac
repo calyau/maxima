@@ -1,0 +1,7 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_enhanced3d6",
+	enhanced3d = [cos(x-y),x,y,z],
+	palette = gray,
+	xu_grid = 50,
+	tube(cos(a), a, 0, 1, a, 0, 4*%pi)
+)$

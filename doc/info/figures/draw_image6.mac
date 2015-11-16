@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+im: make_level_picture([45,87,2,134,204,16],3,2);
+
+docdraw2d("figures/draw_image6",
+	palette = gray,
+	image(im,0,0,30,30))$

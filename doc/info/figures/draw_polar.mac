@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_polar",
+	user_preamble = "set grid polar",
+             nticks        = 200,
+             xrange        = [-5,5],
+             yrange        = [-5,5],
+             color         = blue,
+             line_width    = 3,
+             title         = "Hyperbolic Spiral",
+             polar(10/theta,theta,1,10*%pi) )$

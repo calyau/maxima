@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_filledfunc2",
+	fill_color = grey,
+	filled_func = sin(x),
+	explicit(-sin(x),x,0,%pi)
+);

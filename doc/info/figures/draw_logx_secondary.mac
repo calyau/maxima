@@ -1,0 +1,13 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_logx_secondary",
+	grid = true,
+	key="x^2, linear scale",
+	color=red,
+	explicit(x^2,x,1,100),
+	xaxis_secondary = true,
+	xtics_secondary = true,
+	logx_secondary = true,
+	key = "x^2, logarithmic x scale",
+	color = blue,
+	explicit(x^2,x,1,100)
+)$

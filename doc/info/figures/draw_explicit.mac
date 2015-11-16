@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_explicit",
+	line_width = 3,
+	color = blue,
+	explicit(x^2,x,-3,3)
+)$

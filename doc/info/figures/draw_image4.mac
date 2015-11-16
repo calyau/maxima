@@ -1,0 +1,10 @@
+load("docdraw.mac");
+
+im: apply(
+    'matrix,
+	makelist(
+		makelist([random(300),
+			random(300),
+			random(300)],i,1,30),i,1,30))$
+docdraw2d("figures/draw_image4",
+	image(im,0,0,30,30))$

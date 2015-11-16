@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_label",
+	yrange = [0.1,1.4],
+	color = red,
+	label(["Label in red",0,0.3]),
+	color = "#0000ff",
+	label(["Label in blue",0,0.6]),
+	color = light_blue,
+	label(["Label in light-blue",0,0.9],
+	["Another light-blue",0,1.2]) )$

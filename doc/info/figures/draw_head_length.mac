@@ -1,0 +1,12 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_head_length",
+	xrange = [0,12],
+	yrange = [0,8],
+	vector([0,1],[5,5]),
+	head_length = 1,
+	vector([2,1],[5,5]),
+	head_length = 0.5,
+	vector([4,1],[5,5]),
+	head_length = 0.25,
+	vector([6,1],[5,5])
+)$

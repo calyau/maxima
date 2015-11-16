@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_title",
+	explicit(exp(u),u,-2,2),
+	title = "Exponential function")$

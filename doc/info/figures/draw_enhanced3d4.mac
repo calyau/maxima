@@ -1,0 +1,7 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_enhanced3d4",
+	nticks = 60,
+	line_width = 3,
+	enhanced3d = (u-1)^2,
+	parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2)
+)$

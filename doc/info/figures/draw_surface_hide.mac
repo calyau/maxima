@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+docdraw("figures/draw_surface_hide",
+	columns=2,
+	gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
+	gr3d(surface_hide = true,
+	explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3))
+)$

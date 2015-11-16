@@ -1,0 +1,7 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_enhanced3d7",
+	tube_extremes = [open, closed],
+	palette = [26,15,-2],
+	enhanced3d = [-foo, foo],
+	tube(a, a, a^2, 1, a, -2, 2)
+)$

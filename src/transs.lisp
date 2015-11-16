@@ -56,7 +56,7 @@
 
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
-    (if (eq 1 (length forms))
+    (if (eql 1 (length forms))
       (merror (intl:gettext "compfile: no functions specified; I refuse to create an empty file.")))
     (bind-transl-state
      (setq $transcompile t

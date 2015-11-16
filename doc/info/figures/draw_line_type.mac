@@ -1,0 +1,7 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_line_type",
+	line_type = dots,
+	explicit(1 + x^2,x,-1,1),
+	line_type = solid, /* default */
+	explicit(2 + x^2,x,-1,1)
+)$

@@ -1,0 +1,12 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_label_orientation",
+	xrange = [0,10],
+	yrange = [0,10],
+	point_size = 0,
+	points([[5,5]]),
+	color = navy,
+	label(["Horizontal orientation (default)",5,2]),
+	label_orientation = 'vertical,
+	color = "#654321",
+	label(["Vertical orientation",1,5])
+)$

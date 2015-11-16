@@ -1,0 +1,6 @@
+load("docdraw.mac");
+im: apply('matrix,makelist(makelist(random(200),i,1,30),i,1,30))$
+docdraw("figures/draw_colorbox",
+	gr2d(image(im,0,0,30,30)),
+	gr2d(colorbox = false, image(im,0,0,30,30))
+)$

@@ -1,0 +1,13 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_label_alignment",
+	xrange = [0,10],
+	yrange = [0,10],
+	points_joined = true,
+	points([[5,0],[5,10]]),
+	color = blue,
+	label(["Centered alignment (default)",5,2]),
+	label_alignment = 'left,
+	label(["Left alignment",5,5]),
+	label_alignment = 'right,
+	label(["Right alignment",5,8])
+)$

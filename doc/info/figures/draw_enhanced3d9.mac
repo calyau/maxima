@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_enhanced3d9",
+	enhanced3d = [x-y,x,y,z],
+	implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+	x,-1,1,y,-1.2,2.3,z,-1,1)
+) $

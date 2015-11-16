@@ -260,7 +260,7 @@ integration / differentiation variable."))
        (listp (car exp))
        (eq (caar exp) '%sum)
        (eq (caddr exp) *index)
-       (eq (cadddr exp) 0)
+       (eql (cadddr exp) 0)
        (eq (cadr (cdddr exp)) '$inf)))
 
 ;; A stripped down version of (sumcontract (intosum EXP)). Coalesce occurrences

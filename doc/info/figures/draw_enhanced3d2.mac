@@ -1,0 +1,5 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_enhanced3d2",
+	enhanced3d = [sin(r*s),r,s],
+	explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3)
+)$

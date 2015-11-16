@@ -1,0 +1,10 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_unit_vectors",
+	xrange	= [-1,6],
+	yrange = [-1,6],
+	head_length = 0.1,
+	vector([0,0],[5,2]),
+	unit_vectors = true,
+	color = red,
+	vector([0,3],[5,2]))$

@@ -1,0 +1,6 @@
+load("docdraw.mac");
+docdraw2d("figures/draw_filledfunc",
+	fill_color = red,
+	filled_func = true,
+	explicit(sin(x),x,0,10)
+)$

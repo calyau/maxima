@@ -1,0 +1,14 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_points",
+	key = "Small points",
+	points(makelist([random(20),random(50)],k,1,10)),
+	point_type = circle,
+	point_size = 3,
+	points_joined = true,
+	key = "Great points",
+	points(makelist(k,k,1,20),makelist(random(30),k,1,20)),
+	point_type = filled_down_triangle,
+	key = "Automatic abscissas",
+	color = red,
+	points([2,12,8]))$

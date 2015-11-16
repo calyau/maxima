@@ -1,0 +1,4 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_axis_bottom",axis_bottom = false,
+             explicit(x^3,x,-1,1))$

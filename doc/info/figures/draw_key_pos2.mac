@@ -1,0 +1,9 @@
+load("docdraw.mac");
+docdraw3d("figures/draw_key_pos2",
+	key_pos = center,
+	key = "x",
+	explicit(x+y,x,0,10,y,0,10),
+	color= red,
+	key = "x squared",
+	explicit(x^2+y^2,x,0,10,y,0,10)
+)$

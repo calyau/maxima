@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+x: make_array (fixnum, 10) $
+y: make_array (fixnum, 10) $
+z: make_array (fixnum, 10) $
+for i:0 thru 9 do (
+    x[i]: random(10),
+    y[i]: random(10),
+    z[i]: random(10) ) $
+docdraw3d("figures/draw_points6",
+	points(x,y,z))$
