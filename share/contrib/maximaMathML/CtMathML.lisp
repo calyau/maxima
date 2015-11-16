@@ -403,8 +403,8 @@
 ;;(setup '(mdottimes (ctfun "&CenterDot;")))
 (setup '(mquotient (ctfun "quotient/"))) 
 (setup '(rat (ct-proc rat)))
-(setup '($sqrt (ctfun "sqrt/")))
-(setup '(%sqrt (ctfun "sqrt/")))
+(setup '($sqrt (ctfun "root/")))
+(setup '(%sqrt (ctfun "root/")))
 
 (setup '(mquote  (ctfun "quote/")))
 
