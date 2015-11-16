@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+pts: makelist([t,t^2,cos(t)], t, 0, 15)$
+col_num: makelist(k, k, 1, length(pts))$
+docdraw2d("figures/draw_polygon",
+	color = "#e245f0",
+	line_width = 8,
+	polygon([[3,2],[7,2],[5,5]]),
+	border = false,
+	fill_color = yellow,
+	polygon([[5,2],[9,2],[7,5]]) )$

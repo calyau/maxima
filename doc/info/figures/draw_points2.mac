@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_points2",
+	points_joined = impulses,
+	line_width = 2,
+	color = red,
+	points(makelist([random(20),random(50)],k,1,10)))$

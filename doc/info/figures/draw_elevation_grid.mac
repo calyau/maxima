@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+m: apply(
+matrix,
+makelist(makelist(random(10.0),k,1,30),i,1,20)) $
+docdraw3d("figures/draw_elevation_grid",
+	color = blue,
+	elevation_grid(m,0,0,3,2),
+	xlabel = "x",
+	ylabel = "y",
+	surface_hide = true);

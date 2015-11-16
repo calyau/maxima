@@ -1,6 +1,6 @@
 load("docdraw.mac");
 
-docdraw("figures/draw_proportional_axis",
+docdraw2d("figures/draw_proportional_axis",
 	ellipse(0,0,1,1,0,360),
 	transparent=true,
 	color = blue,

@@ -1,0 +1,13 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_bars",
+	key = "Group A",
+	fill_color = blue,
+	fill_density = 0.2,
+	bars([0.8,5,0.4],[1.8,7,0.4],[2.8,-4,0.4]),
+	key = "Group B",
+	fill_color = red,
+	fill_density = 0.6,
+	line_width = 4,
+	bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
+	xaxis = true);

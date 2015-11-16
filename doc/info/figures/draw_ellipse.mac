@@ -1,0 +1,16 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_ellipse",
+	transparent = false,
+	fill_color = red,
+	color = gray30,
+	transparent = false,
+	line_width = 5,
+	ellipse(0,6,3,2,270,-270),
+	/* center (x,y), a, b, start & end in degrees */
+	transparent = true,
+	color = blue,
+	line_width = 3,
+	ellipse(2.5,6,2,3,30,-90),
+	xrange = [-3,6],
+	yrange = [2,9] )$

@@ -1,5 +1,5 @@
 load("docdraw.mac");
-docdraw2d("figures/draw_key_label_orientation",
+docdraw2d("figures/draw_label_orientation",
 	xrange = [0,10],
 	yrange = [0,10],
 	point_size = 0,

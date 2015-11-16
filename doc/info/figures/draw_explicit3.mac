@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_explicit3",
+	key = "Gauss",
+	color = "#a02c00",
+	explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+	yv_grid = 10,
+	color = blue,
+	key = "Plane",
+	explicit(x+y,x,-5,5,y,-5,5),
+	surface_hide = true)$

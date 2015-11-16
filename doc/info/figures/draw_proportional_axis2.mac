@@ -1,6 +1,6 @@
 load("docdraw.mac");
 
-docdraw2d("figures/draw_proportional_axis2",
+docdraw("figures/draw_proportional_axis2",
 	gr2d(proportional_axes = xy,
 	explicit(x^2,x,0,1)),
 	gr2d(explicit(x^2,x,0,1),

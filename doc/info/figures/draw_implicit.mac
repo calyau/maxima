@@ -1,0 +1,12 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_implicit",
+	grid = true,
+	line_type = solid,
+	key = "y^2=x^3-2*x+1",
+	implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+	line_type = dots,
+	key = "x^3+y^3 = 3*x*y^2-x-1",
+	implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
+	title = "Two implicit functions"
+)$

@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_parametric2",
+	     explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = royalblue,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             color      = turquoise,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$

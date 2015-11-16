@@ -1,0 +1,10 @@
+load("docdraw.mac");
+
+
+x: make_array (flonum, 100) $
+y: make_array (fixnum, 100) $
+for i:0 thru 99 do (
+    x[i]: float(i/100),
+    y[i]: random(10) ) $
+docdraw2d("figures/draw_points4",
+	points(x,y))$

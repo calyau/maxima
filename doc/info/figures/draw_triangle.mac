@@ -1,0 +1,4 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_triangle",
+	triangle([1,1],[2,2],[3,-1]))$

@@ -134,19 +134,23 @@ figures/bodephase9.gif\
 figures/scene1.png\
 figures/scene2.png\
 figures/color_terminal.png\
-figures/draw_scene.gif\
-figures/draw_equiv.gif\
 figures/draw_axis3d.gif\
 figures/draw_axis_bottom.gif\
+figures/draw_bars.gif\
 figures/draw_border.gif\
 figures/draw_cbrange.gif\
 figures/draw_cbtics.gif\
-figures/draw_color.gif\
-figures/draw_colorbox.gif\
 figures/draw_colorbox2.gif\
+figures/draw_colorbox.gif\
+figures/draw_color.gif\
+figures/draw_columns.gif\
+figures/draw_contour2.gif\
 figures/draw_contour.gif\
-figures/draw_contour.gif\
-figures/draw_enhanced3d.gif\
+figures/draw_cylindrical.gif\
+figures/draw_elevation_grid.gif\
+figures/draw_ellipse.gif\
+figures/draw_enhanced3d10.gif\
+figures/draw_enhanced3d11.gif\
 figures/draw_enhanced3d2.gif\
 figures/draw_enhanced3d3.gif\
 figures/draw_enhanced3d4.gif\
@@ -155,22 +159,95 @@ figures/draw_enhanced3d6.gif\
 figures/draw_enhanced3d7.gif\
 figures/draw_enhanced3d8.gif\
 figures/draw_enhanced3d9.gif\
-figures/draw_enhanced3d10.gif\
-figures/draw_enhanced3d11.gif\
-figures/draw_filledfunc.gif\
+figures/draw_enhanced3d.gif\
+figures/draw_equiv.gif\
+figures/draw_errors2.gif\
+figures/draw_errors.gif\
+figures/draw_explicit2.gif\
+figures/draw_explicit3.gif\
+figures/draw_explicit.gif\
 figures/draw_filledfunc2.gif\
-figures/draw_grid.gif\
+figures/draw_filledfunc.gif\
 figures/draw_grid2.gif\
+figures/draw_grid.gif\
 figures/draw_head_angle.gif\
 figures/draw_head_both.gif\
 figures/draw_head_length.gif\
 figures/draw_head_type.gif\
-figures/draw_interpolate_color.gif\
+figures/draw_image2.gif\
+figures/draw_image3.gif\
+figures/draw_image4.gif\
+figures/draw_image5.gif\
+figures/draw_image6.gif\
+figures/draw_image.gif\
+figures/draw_implicit2.gif\
+figures/draw_implicit.gif\
 figures/draw_interpolate_color2.gif\
 figures/draw_interpolate_color3.gif\
 figures/draw_interpolate_color4.gif\
 figures/draw_interpolate_color5.gif\
-figures/draw_interpolate_color6.gif
+figures/draw_interpolate_color6.gif\
+figures/draw_interpolate_color.gif\
+figures/draw_key.gif\
+figures/draw_key_pos2.gif\
+figures/draw_key_pos.gif\
+figures/draw_label2.gif\
+figures/draw_label_alignment.gif\
+figures/draw_label.gif\
+figures/draw_label_orientation.gif\
+figures/draw_line_type.gif\
+figures/draw_line_width.gif\
+figures/draw_logcb.gif\
+figures/draw_logx_secondary.gif\
+figures/draw_mesh2.gif\
+figures/draw_mesh3.gif\
+figures/draw_mesh.gif\
+figures/draw_nticks.gif\
+figures/draw_palette2.gif\
+figures/draw_palette3.gif\
+figures/draw_palette4.gif\
+figures/draw_palette5.gif\
+figures/draw_palette.gif\
+figures/draw_parametric3.gif\
+figures/draw_parametric2.gif\
+figures/draw_parametric.gif\
+figures/draw_points2.gif\
+figures/draw_points3.gif\
+figures/draw_points4.gif\
+figures/draw_points5.gif\
+figures/draw_points6.gif\
+figures/draw_points7.gif\
+figures/draw_points8.gif\
+figures/draw_point_size.gif\
+figures/draw_points_joined.gif\
+figures/draw_points.gif\
+figures/draw_point_type.gif\
+figures/draw_polygon.gif\
+figures/draw_polar.gif\
+figures/draw_proportional_axis2.gif\
+figures/draw_proportional_axis.gif\
+figures/draw_quadrilateral.gif\
+figures/draw_rectangle.gif\
+figures/draw_region.gif\
+figures/draw_scene.gif\
+figures/draw_spherical.gif\
+figures/draw_surface_hide.gif\
+figures/draw_title.gif\
+figures/draw_transform2.gif\
+figures/draw_transparent.gif\
+figures/draw_triangle.gif\
+figures/draw_tube_extremes.gif\
+figures/draw_tube.gif\
+figures/draw_unit_vectors.gif\
+figures/draw_vector2.gif\
+figures/draw_vector.gif\
+figures/draw_view2.gif\
+figures/draw_view.gif\
+figures/draw_wired_surface.gif\
+figures/draw_xaxis.gif\
+figures/draw_xaxis_secondary.gif\
+figures/draw_ylabel_secondary.gif
+# figures/draw_transform.gif
 
 
 pdffigures = \
@@ -238,19 +315,23 @@ figures/bodephase9.pdf\
 figures/scene1.pdf\
 figures/scene2.pdf\
 figures/color_terminal.pdf\
-figures/draw_scene.pdf\
-figures/draw_equiv.pdf\
 figures/draw_axis3d.pdf\
 figures/draw_axis_bottom.pdf\
+figures/draw_bars.pdf\
 figures/draw_border.pdf\
 figures/draw_cbrange.pdf\
 figures/draw_cbtics.pdf\
-figures/draw_color.pdf\
-figures/draw_colorbox.pdf\
 figures/draw_colorbox2.pdf\
-figures/draw_contour.pdf\
+figures/draw_colorbox.pdf\
+figures/draw_color.pdf\
+figures/draw_columns.pdf\
 figures/draw_contour2.pdf\
-figures/draw_enhanced3d.pdf\
+figures/draw_contour.pdf\
+figures/draw_cylindrical.pdf\
+figures/draw_elevation_grid.pdf\
+figures/draw_ellipse.pdf\
+figures/draw_enhanced3d10.pdf\
+figures/draw_enhanced3d11.pdf\
 figures/draw_enhanced3d2.pdf\
 figures/draw_enhanced3d3.pdf\
 figures/draw_enhanced3d4.pdf\
@@ -259,22 +340,95 @@ figures/draw_enhanced3d6.pdf\
 figures/draw_enhanced3d7.pdf\
 figures/draw_enhanced3d8.pdf\
 figures/draw_enhanced3d9.pdf\
-figures/draw_enhanced3d10.pdf\
-figures/draw_enhanced3d11.pdf\
-figures/draw_filledfunc.pdf\
+figures/draw_enhanced3d.pdf\
+figures/draw_equiv.pdf\
+figures/draw_errors2.pdf\
+figures/draw_errors.pdf\
+figures/draw_explicit2.pdf\
+figures/draw_explicit3.pdf\
+figures/draw_explicit.pdf\
 figures/draw_filledfunc2.pdf\
-figures/draw_grid.pdf\
+figures/draw_filledfunc.pdf\
 figures/draw_grid2.pdf\
+figures/draw_grid.pdf\
 figures/draw_head_angle.pdf\
 figures/draw_head_both.pdf\
 figures/draw_head_length.pdf\
 figures/draw_head_type.pdf\
-figures/draw_interpolate_color.pdf\
+figures/draw_image2.pdf\
+figures/draw_image3.pdf\
+figures/draw_image4.pdf\
+figures/draw_image5.pdf\
+figures/draw_image6.pdf\
+figures/draw_image.pdf\
+figures/draw_implicit2.pdf\
+figures/draw_implicit.pdf\
 figures/draw_interpolate_color2.pdf\
 figures/draw_interpolate_color3.pdf\
 figures/draw_interpolate_color4.pdf\
 figures/draw_interpolate_color5.pdf\
-figures/draw_interpolate_color6.pdf
+figures/draw_interpolate_color6.pdf\
+figures/draw_interpolate_color.pdf\
+figures/draw_key.pdf\
+figures/draw_key_pos2.pdf\
+figures/draw_key_pos.pdf\
+figures/draw_label2.pdf\
+figures/draw_label_alignment.pdf\
+figures/draw_label.pdf\
+figures/draw_label_orientation.pdf\
+figures/draw_line_type.pdf\
+figures/draw_line_width.pdf\
+figures/draw_logcb.pdf\
+figures/draw_logx_secondary.pdf\
+figures/draw_mesh2.pdf\
+figures/draw_mesh3.pdf\
+figures/draw_mesh.pdf\
+figures/draw_nticks.pdf\
+figures/draw_palette2.pdf\
+figures/draw_palette3.pdf\
+figures/draw_palette4.pdf\
+figures/draw_palette5.pdf\
+figures/draw_palette.pdf\
+figures/draw_parametric3.pdf\
+figures/draw_parametric2.pdf\
+figures/draw_parametric.pdf\
+figures/draw_points2.pdf\
+figures/draw_points3.pdf\
+figures/draw_points4.pdf\
+figures/draw_points5.pdf\
+figures/draw_points6.pdf\
+figures/draw_points7.pdf\
+figures/draw_points8.pdf\
+figures/draw_point_size.pdf\
+figures/draw_points_joined.pdf\
+figures/draw_points.pdf\
+figures/draw_point_type.pdf\
+figures/draw_polygon.pdf\
+figures/draw_polar.pdf\
+figures/draw_proportional_axis2.pdf\
+figures/draw_proportional_axis.pdf\
+figures/draw_quadrilateral.pdf\
+figures/draw_rectangle.pdf\
+figures/draw_region.pdf\
+figures/draw_scene.pdf\
+figures/draw_spherical.pdf\
+figures/draw_surface_hide.pdf\
+figures/draw_title.pdf\
+figures/draw_transform2.pdf\
+figures/draw_transparent.pdf\
+figures/draw_triangle.pdf\
+figures/draw_tube_extremes.pdf\
+figures/draw_tube.pdf\
+figures/draw_unit_vectors.pdf\
+figures/draw_vector2.pdf\
+figures/draw_vector.pdf\
+figures/draw_view2.pdf\
+figures/draw_view.pdf\
+figures/draw_wired_surface.pdf\
+figures/draw_xaxis.pdf\
+figures/draw_xaxis_secondary.pdf\
+figures/draw_ylabel_secondary.pdf
+# figures/draw_transform.pdf
 
 
 if CHM
@@ -378,6 +532,8 @@ warn_texinfo:
 # Files that can be auto-generated, but still have been added to
 # the git repo in case that not every developer using make
 # owns a running gnuplot.
+
+
 figures/draw_scene.pdf: figures/draw_scene.mac docdraw.mac
 figures/draw_scene.gif: figures/draw_scene.mac docdraw.mac
 figures/draw_equiv.pdf: figures/draw_equiv.mac docdraw.mac
@@ -454,6 +610,234 @@ figures/draw_interpolate_color5.gif: figures/draw_interpolate_color5.mac docdraw
 figures/draw_interpolate_color5.pdf: figures/draw_interpolate_color5.mac docdraw.mac
 figures/draw_interpolate_color6.gif: figures/draw_interpolate_color6.mac docdraw.mac
 figures/draw_interpolate_color6.pdf: figures/draw_interpolate_color6.mac docdraw.mac
+figures/draw_axis3d.gif: figures/draw_axis3d.mac docdraw.mac
+figures/draw_axis3d.pdf: figures/draw_axis3d.mac docdraw.mac
+figures/draw_axis_bottom.gif: figures/draw_axis_bottom.mac docdraw.mac
+figures/draw_axis_bottom.pdf: figures/draw_axis_bottom.mac docdraw.mac
+figures/draw_bars.gif: figures/draw_bars.mac docdraw.mac
+figures/draw_bars.pdf: figures/draw_bars.mac docdraw.mac
+figures/draw_border.gif: figures/draw_border.mac docdraw.mac
+figures/draw_border.pdf: figures/draw_border.mac docdraw.mac
+figures/draw_cbrange.gif: figures/draw_cbrange.mac docdraw.mac
+figures/draw_cbrange.pdf: figures/draw_cbrange.mac docdraw.mac
+figures/draw_cbtics.gif: figures/draw_cbtics.mac docdraw.mac
+figures/draw_cbtics.pdf: figures/draw_cbtics.mac docdraw.mac
+figures/draw_colorbox2.gif: figures/draw_colorbox2.mac docdraw.mac
+figures/draw_colorbox2.pdf: figures/draw_colorbox2.mac docdraw.mac
+figures/draw_colorbox.gif: figures/draw_colorbox.mac docdraw.mac
+figures/draw_colorbox.pdf: figures/draw_colorbox.mac docdraw.mac
+figures/draw_color.gif: figures/draw_color.mac docdraw.mac
+figures/draw_color.pdf: figures/draw_color.mac docdraw.mac
+figures/draw_columns.gif: figures/draw_columns.mac docdraw.mac
+figures/draw_columns.pdf: figures/draw_columns.mac docdraw.mac
+figures/draw_contour2.gif: figures/draw_contour2.mac docdraw.mac
+figures/draw_contour2.pdf: figures/draw_contour2.mac docdraw.mac
+figures/draw_contour.gif: figures/draw_contour.mac docdraw.mac
+figures/draw_contour.pdf: figures/draw_contour.mac docdraw.mac
+figures/draw_cylindrical.gif: figures/draw_cylindrical.mac docdraw.mac
+figures/draw_cylindrical.pdf: figures/draw_cylindrical.mac docdraw.mac
+figures/draw_elevation_grid.gif: figures/draw_elevation_grid.mac docdraw.mac
+figures/draw_elevation_grid.pdf: figures/draw_elevation_grid.mac docdraw.mac
+figures/draw_ellipse.gif: figures/draw_ellipse.mac docdraw.mac
+figures/draw_ellipse.pdf: figures/draw_ellipse.mac docdraw.mac
+figures/draw_enhanced3d10.gif: figures/draw_enhanced3d10.mac docdraw.mac
+figures/draw_enhanced3d10.pdf: figures/draw_enhanced3d10.mac docdraw.mac
+figures/draw_enhanced3d11.gif: figures/draw_enhanced3d11.mac docdraw.mac
+figures/draw_enhanced3d11.pdf: figures/draw_enhanced3d11.mac docdraw.mac
+figures/draw_enhanced3d2.gif: figures/draw_enhanced3d2.mac docdraw.mac
+figures/draw_enhanced3d2.pdf: figures/draw_enhanced3d2.mac docdraw.mac
+figures/draw_enhanced3d3.gif: figures/draw_enhanced3d3.mac docdraw.mac
+figures/draw_enhanced3d3.pdf: figures/draw_enhanced3d3.mac docdraw.mac
+figures/draw_enhanced3d4.gif: figures/draw_enhanced3d4.mac docdraw.mac
+figures/draw_enhanced3d4.pdf: figures/draw_enhanced3d4.mac docdraw.mac
+figures/draw_enhanced3d5.gif: figures/draw_enhanced3d5.mac docdraw.mac
+figures/draw_enhanced3d5.pdf: figures/draw_enhanced3d5.mac docdraw.mac
+figures/draw_enhanced3d6.gif: figures/draw_enhanced3d6.mac docdraw.mac
+figures/draw_enhanced3d6.pdf: figures/draw_enhanced3d6.mac docdraw.mac
+figures/draw_enhanced3d7.gif: figures/draw_enhanced3d7.mac docdraw.mac
+figures/draw_enhanced3d7.pdf: figures/draw_enhanced3d7.mac docdraw.mac
+figures/draw_enhanced3d8.gif: figures/draw_enhanced3d8.mac docdraw.mac
+figures/draw_enhanced3d8.pdf: figures/draw_enhanced3d8.mac docdraw.mac
+figures/draw_enhanced3d9.gif: figures/draw_enhanced3d9.mac docdraw.mac
+figures/draw_enhanced3d9.pdf: figures/draw_enhanced3d9.mac docdraw.mac
+figures/draw_enhanced3d.gif: figures/draw_enhanced3d.mac docdraw.mac
+figures/draw_enhanced3d.pdf: figures/draw_enhanced3d.mac docdraw.mac
+figures/draw_equiv.gif: figures/draw_equiv.mac docdraw.mac
+figures/draw_equiv.pdf: figures/draw_equiv.mac docdraw.mac
+figures/draw_errors2.gif: figures/draw_errors2.mac docdraw.mac
+figures/draw_errors2.pdf: figures/draw_errors2.mac docdraw.mac
+figures/draw_errors.gif: figures/draw_errors.mac docdraw.mac
+figures/draw_errors.pdf: figures/draw_errors.mac docdraw.mac
+figures/draw_explicit2.gif: figures/draw_explicit2.mac docdraw.mac
+figures/draw_explicit2.pdf: figures/draw_explicit2.mac docdraw.mac
+figures/draw_explicit3.gif: figures/draw_explicit3.mac docdraw.mac
+figures/draw_explicit3.pdf: figures/draw_explicit3.mac docdraw.mac
+figures/draw_explicit.gif: figures/draw_explicit.mac docdraw.mac
+figures/draw_explicit.pdf: figures/draw_explicit.mac docdraw.mac
+figures/draw_filledfunc2.gif: figures/draw_filledfunc2.mac docdraw.mac
+figures/draw_filledfunc2.pdf: figures/draw_filledfunc2.mac docdraw.mac
+figures/draw_filledfunc.gif: figures/draw_filledfunc.mac docdraw.mac
+figures/draw_filledfunc.pdf: figures/draw_filledfunc.mac docdraw.mac
+figures/draw_grid2.gif: figures/draw_grid2.mac docdraw.mac
+figures/draw_grid2.pdf: figures/draw_grid2.mac docdraw.mac
+figures/draw_grid.gif: figures/draw_grid.mac docdraw.mac
+figures/draw_grid.pdf: figures/draw_grid.mac docdraw.mac
+figures/draw_head_angle.gif: figures/draw_head_angle.mac docdraw.mac
+figures/draw_head_angle.pdf: figures/draw_head_angle.mac docdraw.mac
+figures/draw_head_both.gif: figures/draw_head_both.mac docdraw.mac
+figures/draw_head_both.pdf: figures/draw_head_both.mac docdraw.mac
+figures/draw_head_length.gif: figures/draw_head_length.mac docdraw.mac
+figures/draw_head_length.pdf: figures/draw_head_length.mac docdraw.mac
+figures/draw_head_type.gif: figures/draw_head_type.mac docdraw.mac
+figures/draw_head_type.pdf: figures/draw_head_type.mac docdraw.mac
+figures/draw_image2.gif: figures/draw_image2.mac docdraw.mac
+figures/draw_image2.pdf: figures/draw_image2.mac docdraw.mac
+figures/draw_image3.gif: figures/draw_image3.mac docdraw.mac
+figures/draw_image3.pdf: figures/draw_image3.mac docdraw.mac
+figures/draw_image4.gif: figures/draw_image4.mac docdraw.mac
+figures/draw_image4.pdf: figures/draw_image4.mac docdraw.mac
+figures/draw_image5.gif: figures/draw_image5.mac docdraw.mac
+figures/draw_image5.pdf: figures/draw_image5.mac docdraw.mac
+figures/draw_image6.gif: figures/draw_image6.mac docdraw.mac
+figures/draw_image6.pdf: figures/draw_image6.mac docdraw.mac
+figures/draw_image.gif: figures/draw_image.mac docdraw.mac
+figures/draw_image.pdf: figures/draw_image.mac docdraw.mac
+figures/draw_implicit2.gif: figures/draw_implicit2.mac docdraw.mac
+figures/draw_implicit2.pdf: figures/draw_implicit2.mac docdraw.mac
+figures/draw_implicit.gif: figures/draw_implicit.mac docdraw.mac
+figures/draw_implicit.pdf: figures/draw_implicit.mac docdraw.mac
+figures/draw_interpolate_color2.gif: figures/draw_interpolate_color2.mac docdraw.mac
+figures/draw_interpolate_color2.pdf: figures/draw_interpolate_color2.mac docdraw.mac
+figures/draw_interpolate_color3.gif: figures/draw_interpolate_color3.mac docdraw.mac
+figures/draw_interpolate_color3.pdf: figures/draw_interpolate_color3.mac docdraw.mac
+figures/draw_interpolate_color4.gif: figures/draw_interpolate_color4.mac docdraw.mac
+figures/draw_interpolate_color4.pdf: figures/draw_interpolate_color4.mac docdraw.mac
+figures/draw_interpolate_color5.gif: figures/draw_interpolate_color5.mac docdraw.mac
+figures/draw_interpolate_color5.pdf: figures/draw_interpolate_color5.mac docdraw.mac
+figures/draw_interpolate_color6.gif: figures/draw_interpolate_color6.mac docdraw.mac
+figures/draw_interpolate_color6.pdf: figures/draw_interpolate_color6.mac docdraw.mac
+figures/draw_interpolate_color.gif: figures/draw_interpolate_color.mac docdraw.mac
+figures/draw_interpolate_color.pdf: figures/draw_interpolate_color.mac docdraw.mac
+figures/draw_key.gif: figures/draw_key.mac docdraw.mac
+figures/draw_key.pdf: figures/draw_key.mac docdraw.mac
+figures/draw_key_pos2.gif: figures/draw_key_pos2.mac docdraw.mac
+figures/draw_key_pos2.pdf: figures/draw_key_pos2.mac docdraw.mac
+figures/draw_key_pos.gif: figures/draw_key_pos.mac docdraw.mac
+figures/draw_key_pos.pdf: figures/draw_key_pos.mac docdraw.mac
+figures/draw_label2.gif: figures/draw_label2.mac docdraw.mac
+figures/draw_label2.pdf: figures/draw_label2.mac docdraw.mac
+figures/draw_label_alignment.gif: figures/draw_label_alignment.mac docdraw.mac
+figures/draw_label_alignment.pdf: figures/draw_label_alignment.mac docdraw.mac
+figures/draw_label.gif: figures/draw_label.mac docdraw.mac
+figures/draw_label.pdf: figures/draw_label.mac docdraw.mac
+figures/draw_label_orientation.gif: figures/draw_label_orientation.mac docdraw.mac
+figures/draw_label_orientation.pdf: figures/draw_label_orientation.mac docdraw.mac
+figures/draw_line_type.gif: figures/draw_line_type.mac docdraw.mac
+figures/draw_line_type.pdf: figures/draw_line_type.mac docdraw.mac
+figures/draw_line_width.gif: figures/draw_line_width.mac docdraw.mac
+figures/draw_line_width.pdf: figures/draw_line_width.mac docdraw.mac
+figures/draw_logcb.gif: figures/draw_logcb.mac docdraw.mac
+figures/draw_logcb.pdf: figures/draw_logcb.mac docdraw.mac
+figures/draw_logx_secondary.gif: figures/draw_logx_secondary.mac docdraw.mac
+figures/draw_logx_secondary.pdf: figures/draw_logx_secondary.mac docdraw.mac
+figures/draw_mesh2.gif: figures/draw_mesh2.mac docdraw.mac
+figures/draw_mesh2.pdf: figures/draw_mesh2.mac docdraw.mac
+figures/draw_mesh3.gif: figures/draw_mesh3.mac docdraw.mac
+figures/draw_mesh3.pdf: figures/draw_mesh3.mac docdraw.mac
+figures/draw_mesh.gif: figures/draw_mesh.mac docdraw.mac
+figures/draw_mesh.pdf: figures/draw_mesh.mac docdraw.mac
+figures/draw_nticks.gif: figures/draw_nticks.mac docdraw.mac
+figures/draw_nticks.pdf: figures/draw_nticks.mac docdraw.mac
+figures/draw_palette2.gif: figures/draw_palette2.mac docdraw.mac
+figures/draw_palette2.pdf: figures/draw_palette2.mac docdraw.mac
+figures/draw_palette3.gif: figures/draw_palette3.mac docdraw.mac
+figures/draw_palette3.pdf: figures/draw_palette3.mac docdraw.mac
+figures/draw_palette4.gif: figures/draw_palette4.mac docdraw.mac
+figures/draw_palette4.pdf: figures/draw_palette4.mac docdraw.mac
+figures/draw_palette5.gif: figures/draw_palette5.mac docdraw.mac
+figures/draw_palette5.pdf: figures/draw_palette5.mac docdraw.mac
+figures/draw_palette.gif: figures/draw_palette.mac docdraw.mac
+figures/draw_palette.pdf: figures/draw_palette.mac docdraw.mac
+figures/draw_parametric3.gif: figures/draw_parametric3.mac docdraw.mac
+figures/draw_parametric3.pdf: figures/draw_parametric3.mac docdraw.mac
+figures/draw_parametric2.gif: figures/draw_parametric2.mac docdraw.mac
+figures/draw_parametric2.pdf: figures/draw_parametric2.mac docdraw.mac
+figures/draw_parametric.gif: figures/draw_parametric.mac docdraw.mac
+figures/draw_parametric.pdf: figures/draw_parametric.mac docdraw.mac
+figures/draw_points2.gif: figures/draw_points2.mac docdraw.mac
+figures/draw_points2.pdf: figures/draw_points2.mac docdraw.mac
+figures/draw_points3.gif: figures/draw_points3.mac docdraw.mac
+figures/draw_points3.pdf: figures/draw_points3.mac docdraw.mac
+figures/draw_points4.gif: figures/draw_points4.mac docdraw.mac
+figures/draw_points4.pdf: figures/draw_points4.mac docdraw.mac
+figures/draw_points5.gif: figures/draw_points5.mac docdraw.mac
+figures/draw_points5.pdf: figures/draw_points5.mac docdraw.mac
+figures/draw_points6.gif: figures/draw_points6.mac docdraw.mac
+figures/draw_points6.pdf: figures/draw_points6.mac docdraw.mac
+figures/draw_points7.gif: figures/draw_points7.mac docdraw.mac
+figures/draw_points7.pdf: figures/draw_points7.mac docdraw.mac
+figures/draw_points8.gif: figures/draw_points8.mac docdraw.mac
+figures/draw_points8.pdf: figures/draw_points8.mac docdraw.mac
+figures/draw_point_size.gif: figures/draw_point_size.mac docdraw.mac
+figures/draw_point_size.pdf: figures/draw_point_size.mac docdraw.mac
+figures/draw_points_joined.gif: figures/draw_points_joined.mac docdraw.mac
+figures/draw_points_joined.pdf: figures/draw_points_joined.mac docdraw.mac
+figures/draw_points.gif: figures/draw_points.mac docdraw.mac
+figures/draw_points.pdf: figures/draw_points.mac docdraw.mac
+figures/draw_point_type.gif: figures/draw_point_type.mac docdraw.mac
+figures/draw_point_type.pdf: figures/draw_point_type.mac docdraw.mac
+figures/draw_polygon.gif: figures/draw_polygon.mac docdraw.mac
+figures/draw_polygon.pdf: figures/draw_polygon.mac docdraw.mac
+figures/draw_polar.gif: figures/draw_polar.mac docdraw.mac
+figures/draw_polar.pdf: figures/draw_polar.mac docdraw.mac
+figures/draw_proportional_axis2.gif: figures/draw_proportional_axis2.mac docdraw.mac
+figures/draw_proportional_axis2.pdf: figures/draw_proportional_axis2.mac docdraw.mac
+figures/draw_proportional_axis.gif: figures/draw_proportional_axis.mac docdraw.mac
+figures/draw_proportional_axis.pdf: figures/draw_proportional_axis.mac docdraw.mac
+figures/draw_quadrilateral.gif: figures/draw_quadrilateral.mac docdraw.mac
+figures/draw_quadrilateral.pdf: figures/draw_quadrilateral.mac docdraw.mac
+figures/draw_rectangle.gif: figures/draw_rectangle.mac docdraw.mac
+figures/draw_rectangle.pdf: figures/draw_rectangle.mac docdraw.mac
+figures/draw_region.gif: figures/draw_region.mac docdraw.mac
+figures/draw_region.pdf: figures/draw_region.mac docdraw.mac
+figures/draw_scene.gif: figures/draw_scene.mac docdraw.mac
+figures/draw_scene.pdf: figures/draw_scene.mac docdraw.mac
+figures/draw_spherical.gif: figures/draw_spherical.mac docdraw.mac
+figures/draw_spherical.pdf: figures/draw_spherical.mac docdraw.mac
+figures/draw_surface_hide.gif: figures/draw_surface_hide.mac docdraw.mac
+figures/draw_surface_hide.pdf: figures/draw_surface_hide.mac docdraw.mac
+figures/draw_title.gif: figures/draw_title.mac docdraw.mac
+figures/draw_title.pdf: figures/draw_title.mac docdraw.mac
+figures/draw_transform2.gif: figures/draw_transform2.mac docdraw.mac
+figures/draw_transform2.pdf: figures/draw_transform2.mac docdraw.mac
+figures/draw_transform.gif: figures/draw_transform.mac docdraw.mac
+figures/draw_transform.pdf: figures/draw_transform.mac docdraw.mac
+figures/draw_transparent.gif: figures/draw_transparent.mac docdraw.mac
+figures/draw_transparent.pdf: figures/draw_transparent.mac docdraw.mac
+figures/draw_triangle.gif: figures/draw_triangle.mac docdraw.mac
+figures/draw_triangle.pdf: figures/draw_triangle.mac docdraw.mac
+figures/draw_tube_extremes.gif: figures/draw_tube_extremes.mac docdraw.mac
+figures/draw_tube_extremes.pdf: figures/draw_tube_extremes.mac docdraw.mac
+figures/draw_tube.gif: figures/draw_tube.mac docdraw.mac
+figures/draw_tube.pdf: figures/draw_tube.mac docdraw.mac
+figures/draw_unit_vectors.gif: figures/draw_unit_vectors.mac docdraw.mac
+figures/draw_unit_vectors.pdf: figures/draw_unit_vectors.mac docdraw.mac
+figures/draw_vector2.gif: figures/draw_vector2.mac docdraw.mac
+figures/draw_vector2.pdf: figures/draw_vector2.mac docdraw.mac
+figures/draw_vector.gif: figures/draw_vector.mac docdraw.mac
+figures/draw_vector.pdf: figures/draw_vector.mac docdraw.mac
+figures/draw_view2.gif: figures/draw_view2.mac docdraw.mac
+figures/draw_view2.pdf: figures/draw_view2.mac docdraw.mac
+figures/draw_view.gif: figures/draw_view.mac docdraw.mac
+figures/draw_view.pdf: figures/draw_view.mac docdraw.mac
+figures/draw_wired_surface.gif: figures/draw_wired_surface.mac docdraw.mac
+figures/draw_wired_surface.pdf: figures/draw_wired_surface.mac docdraw.mac
+figures/draw_xaxis.gif: figures/draw_xaxis.mac docdraw.mac
+figures/draw_xaxis.pdf: figures/draw_xaxis.mac docdraw.mac
+figures/draw_xaxis_secondary.gif: figures/draw_xaxis_secondary.mac docdraw.mac
+figures/draw_xaxis_secondary.pdf: figures/draw_xaxis_secondary.mac docdraw.mac
+figures/draw_ylabel_secondary.gif: figures/draw_ylabel_secondary.mac docdraw.mac
+figures/draw_ylabel_secondary.pdf: figures/draw_ylabel_secondary.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo

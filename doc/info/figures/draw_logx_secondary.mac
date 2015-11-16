@@ -1,5 +1,5 @@
 load("docdraw.mac");
-docdraw3d("figures/draw_logx_secondary",
+docdraw2d("figures/draw_logx_secondary",
 	grid = true,
 	key="x^2, linear scale",
 	color=red,

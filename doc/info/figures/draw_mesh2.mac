@@ -1,0 +1,6 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_mesh2",
+	line_width = 2,
+	mesh([[1,0,0],[0,1,0]],
+	[[0,0,1],[0,0,1]])) $

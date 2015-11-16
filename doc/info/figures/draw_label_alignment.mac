@@ -1,5 +1,5 @@
 load("docdraw.mac");
-docdraw2d("figures/draw_key_label_alignment",
+docdraw2d("figures/draw_label_alignment",
 	xrange = [0,10],
 	yrange = [0,10],
 	points_joined = true,

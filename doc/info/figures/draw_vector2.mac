@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_vector2",
+color = cyan,
+vector([0,0,0],[1,1,1]/sqrt(3)),
+vector([0,0,0],[1,-1,0]/sqrt(2)),
+vector([0,0,0],[1,1,-2]/sqrt(6)) )$
