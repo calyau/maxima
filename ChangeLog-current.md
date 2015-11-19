@@ -3,15 +3,18 @@ Maxima 5.37 change log
 
 New items in core:
 ------------------
-
+ * commit [ae11414]: Images in the HTML manual now are automatically shrinked to fit
+   within the browser window, if neeeded.
+ * commit [d817ac5]: A singlepage HTML manual (doc/info/maxima_singlepage.html)
 
 New items in share:
 -------------------
-
+ * commits [68d866e]-[4d1f046]: draw: grid now not only accepts boolean values, but also
+   a list of 2 numbers.
 
 Changes in core:
 ----------------
-
+ * commits [3631127]-[82aea3a]: Documentation: Add example images for the draw options.
 
 Changes in share:
 --------------

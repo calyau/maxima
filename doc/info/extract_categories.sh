@@ -42,6 +42,8 @@ for f in Category-*.texi; do echo '@include' $f; done >> tmp-target.texi
 echo '@bye' >> tmp-target.texi
 mv tmp-target.texi $TARGET_TEXI
 
+perl "$d/texi2html" --lang=en --output=maxima_singlepage.html \
+ --css-include="$d/manual.css" --init-file "$d/texi2html.init" $TARGET_TEXI
 perl "$d/texi2html" -split_chapter --lang=en --output=. \
  --css-include="$d/manual.css" --init-file "$d/texi2html.init" $TARGET_TEXI
 
