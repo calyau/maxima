@@ -7,12 +7,14 @@ New items in core:
 
 New items in share:
 -------------------
+ * commits [68d866e]-[4d1f046]: draw: grid now not only accepts boolean values, but also
+   a list of 2 numbers.
 
 
 Changes in core:
 ----------------
-
-
+ * A singlepage HTML manual (doc/info/maxima_singlepage.html)
+ * commits [3631127]-[82aea3a]: Add example images to the draw options.
 Changes in share:
 --------------
 
