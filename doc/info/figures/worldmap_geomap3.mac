@@ -1,0 +1,15 @@
+load("docdraw.mac");
+
+load(worldmap)$
+
+mymap: append(
+   [color      = white],
+   [fill_color = red],             make_poly_country(Bolivia),
+   [fill_color = cyan],            make_poly_country(Paraguay),
+   [fill_color = green],           make_poly_country(Colombia),
+   [fill_color = blue],            make_poly_country(Chile),
+   [fill_color = "#23ab0f"],       make_poly_country(Brazil),
+   [fill_color = goldenrod],       make_poly_country(Argentina),
+   [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
+
+docdraw2d("figures/worldmap_geomap3",mymap)$

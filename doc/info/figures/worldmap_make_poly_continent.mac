@@ -1,0 +1,4 @@
+load("docdraw.mac");
+
+load(worldmap)$
+docdraw2d("figures/worldmap_make_poly_continent",make_poly_continent(Africa))$

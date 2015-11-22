@@ -247,10 +247,19 @@ figures/draw_wired_surface.gif\
 figures/draw_xaxis.gif\
 figures/draw_xaxis_secondary.gif\
 figures/draw_ylabel_secondary.gif\
-figures/draw_worldmap.gif\
-figures/draw_worldmap2.gif\
-figures/draw_transform.gif
-
+figures/draw_transform.gif\
+figures/worldmap_make_poly_continent.gif\
+figures/worldmap_make_poly_continent2.gif\
+figures/worldmap_make_poly_country.gif\
+figures/worldmap_make_polygon.gif\
+figures/worldmap_region_boundaries.gif\
+figures/worldmap_region_boundaries_plus.gif\
+figures/worldmap_geomap.gif\
+figures/worldmap_geomap3.gif\
+figures/worldmap_geomap4.gif\
+figures/worldmap_geomap5.gif\
+figures/worldmap_geomap6.gif
+# figures/worldmap_geomap2.gif
 
 pdffigures = \
 figures/introduction1.pdf\
@@ -430,9 +439,21 @@ figures/draw_wired_surface.pdf\
 figures/draw_xaxis.pdf\
 figures/draw_xaxis_secondary.pdf\
 figures/draw_ylabel_secondary.pdf\
-figures/draw_worldmap.pdf\
-figures/draw_worldmap2.pdf\
-figures/draw_transform.pdf
+figures/draw_transform.pdf\
+figures/worldmap_make_poly_continent.pdf\
+figures/worldmap_make_poly_continent.pdf\
+figures/worldmap_make_poly_continent.pdf\
+figures/worldmap_make_poly_continent2.pdf\
+figures/worldmap_make_poly_country.pdf\
+figures/worldmap_make_polygon.pdf\
+figures/worldmap_region_boundaries.pdf\
+figures/worldmap_region_boundaries_plus.pdf\
+figures/worldmap_geomap.pdf\
+figures/worldmap_geomap3.pdf\
+figures/worldmap_geomap4.pdf\
+figures/worldmap_geomap5.pdf\
+figures/worldmap_geomap6.pdf
+#figures/worldmap_geomap2.pdf
 
 
 if CHM
@@ -842,10 +863,36 @@ figures/draw_xaxis_secondary.gif: figures/draw_xaxis_secondary.mac docdraw.mac
 figures/draw_xaxis_secondary.pdf: figures/draw_xaxis_secondary.mac docdraw.mac
 figures/draw_ylabel_secondary.gif: figures/draw_ylabel_secondary.mac docdraw.mac
 figures/draw_ylabel_secondary.pdf: figures/draw_ylabel_secondary.mac docdraw.mac
-figures/draw_worldmap.gif: figures/draw_worldmap.mac docdraw.mac
-figures/draw_worldmap.pdf: figures/draw_worldmap.mac docdraw.mac
-figures/draw_worldmap2.gif: figures/draw_worldmap2.mac docdraw.mac
-figures/draw_worldmap2.pdf: figures/draw_worldmap2.mac docdraw.mac
+figures/worldmap_make_poly_continent.gif: figures/worldmap_make_poly_continent.mac docdraw.mac
+figures/worldmap_make_poly_continent.pdf: figures/worldmap_make_poly_continent.mac docdraw.mac
+figures/worldmap_make_poly_continent2.gif: figures/worldmap_make_poly_continent2.mac docdraw.mac
+figures/worldmap_make_poly_continent2.pdf: figures/worldmap_make_poly_continent2.mac docdraw.mac
+figures/worldmap_geomap.gif: figures/worldmap_geomap.mac docdraw.mac
+figures/worldmap_geomap.pdf: figures/worldmap_geomap.mac docdraw.mac
+figures/worldmap_make_poly_continent2.gif: figures/worldmap_make_poly_continent2.mac docdraw.mac
+figures/worldmap_make_poly_continent2.pdf: figures/worldmap_make_poly_continent2.mac docdraw.mac
+figures/worldmap_make_poly_continent.gif: figures/worldmap_make_poly_continent.mac docdraw.mac
+figures/worldmap_make_poly_continent.pdf: figures/worldmap_make_poly_continent.mac docdraw.mac
+figures/worldmap_make_poly_country.gif: figures/worldmap_make_poly_country.mac docdraw.mac
+figures/worldmap_make_poly_country.pdf: figures/worldmap_make_poly_country.mac docdraw.mac
+figures/worldmap_make_polygon.gif: figures/worldmap_make_polygon.mac docdraw.mac
+figures/worldmap_make_polygon.pdf: figures/worldmap_make_polygon.mac docdraw.mac
+figures/worldmap_region_boundaries.gif: figures/worldmap_region_boundaries.mac docdraw.mac
+figures/worldmap_region_boundaries.pdf: figures/worldmap_region_boundaries.mac docdraw.mac
+figures/worldmap_region_boundaries_plus.gif: figures/worldmap_region_boundaries_plus.mac docdraw.mac
+figures/worldmap_region_boundaries_plus.pdf: figures/worldmap_region_boundaries_plus.mac docdraw.mac
+figures/worldmap_geomap.gif: figures/worldmap_geomap.mac docdraw.mac
+figures/worldmap_geomap.pdf: figures/worldmap_geomap.mac docdraw.mac
+figures/worldmap_geomap2.gif: figures/worldmap_geomap2.mac docdraw.mac
+figures/worldmap_geomap2.pdf: figures/worldmap_geomap2.mac docdraw.mac
+figures/worldmap_geomap3.gif: figures/worldmap_geomap3.mac docdraw.mac
+figures/worldmap_geomap3.pdf: figures/worldmap_geomap3.mac docdraw.mac
+figures/worldmap_geomap4.gif: figures/worldmap_geomap4.mac docdraw.mac
+figures/worldmap_geomap4.pdf: figures/worldmap_geomap4.mac docdraw.mac
+figures/worldmap_geomap5.gif: figures/worldmap_geomap5.mac docdraw.mac
+figures/worldmap_geomap5.pdf: figures/worldmap_geomap5.mac docdraw.mac
+figures/worldmap_geomap6.gif: figures/worldmap_geomap6.mac docdraw.mac
+figures/worldmap_geomap6.pdf: figures/worldmap_geomap6.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo
