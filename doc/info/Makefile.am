@@ -247,6 +247,8 @@ figures/draw_wired_surface.gif\
 figures/draw_xaxis.gif\
 figures/draw_xaxis_secondary.gif\
 figures/draw_ylabel_secondary.gif\
+figures/draw_worldmap.gif\
+figures/draw_worldmap2.gif\
 figures/draw_transform.gif
 
 
@@ -428,6 +430,8 @@ figures/draw_wired_surface.pdf\
 figures/draw_xaxis.pdf\
 figures/draw_xaxis_secondary.pdf\
 figures/draw_ylabel_secondary.pdf\
+figures/draw_worldmap.pdf\
+figures/draw_worldmap2.pdf\
 figures/draw_transform.pdf
 
 
@@ -838,6 +842,10 @@ figures/draw_xaxis_secondary.gif: figures/draw_xaxis_secondary.mac docdraw.mac
 figures/draw_xaxis_secondary.pdf: figures/draw_xaxis_secondary.mac docdraw.mac
 figures/draw_ylabel_secondary.gif: figures/draw_ylabel_secondary.mac docdraw.mac
 figures/draw_ylabel_secondary.pdf: figures/draw_ylabel_secondary.mac docdraw.mac
+figures/draw_worldmap.gif: figures/draw_worldmap.mac docdraw.mac
+figures/draw_worldmap.pdf: figures/draw_worldmap.mac docdraw.mac
+figures/draw_worldmap2.gif: figures/draw_worldmap2.mac docdraw.mac
+figures/draw_worldmap2.pdf: figures/draw_worldmap2.mac docdraw.mac
 
 
 .PHONY: check_texinfo warn_texinfo

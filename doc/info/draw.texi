@@ -5663,10 +5663,14 @@ Example:
 (%i2) /* A continent */
       make_poly_continent(Africa)$
 (%i3) apply(draw2d, %)$
+@end example
+@figure{draw_worldmap}
+@example
 (%i4) /* A list of countries */
       make_poly_continent([Germany,Denmark,Poland])$
 (%i5) apply(draw2d, %)$
 @end example
+@figure{draw_worldmap2}
 
 @opencatbox
 @category{Package draw}
