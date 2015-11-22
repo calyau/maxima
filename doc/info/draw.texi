@@ -5670,7 +5670,7 @@ Example:
       make_poly_continent([Germany,Denmark,Poland])$
 (%i5) apply(draw2d, %)$
 @end example
-@figure{worldmap_make_poly_continent}
+@figure{worldmap_make_poly_continent2}
 
 @opencatbox
 @category{Package draw}
