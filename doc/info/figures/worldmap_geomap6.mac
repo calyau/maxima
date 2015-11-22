@@ -1,0 +1,6 @@
+load("docdraw.mac");
+
+load(worldmap)$
+
+docdraw3d("figures/worldmap_geomap6",geomap(World_coastlines,
+                    [conic_projection,0,0,0,1,90]))$

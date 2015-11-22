@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+load(worldmap)$
+
+docdraw3d("figures/worldmap_geomap4",geomap(Australia), /* default projection */
+             geomap(Australia,
+                    [spherical_projection,2,2,2,3]))$

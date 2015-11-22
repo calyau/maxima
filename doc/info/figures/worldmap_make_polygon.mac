@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+load(worldmap)$
+Bhutan_polygon: make_polygon([171,173,1143])$
+docdraw2d("figures/worldmap_make_polygon",Bhutan_polygon)$

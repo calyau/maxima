@@ -1,0 +1,4 @@
+load("docdraw.mac");
+
+load(worldmap)$
+docdraw2d("figures/worldmap_make_poly_country",make_poly_country(India))$
