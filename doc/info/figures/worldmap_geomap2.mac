@@ -1,11 +1,11 @@
 load("docdraw.mac");
 
 load(worldmap)$
-c1: gr2d(geomap(Canada,United_States,
-                      Mexico,Cuba))$
+c1: gr2d(geomap([Canada,United_States,
+                      Mexico,Cuba]))$
 c2: gr2d(geomap(Africa))$
-c3: gr2d(geomap(Oceania,China,Japan))$
-c4: gr2d(geomap(France,Portugal,Spain,
-                      Morocco,Western_Sahara))$
+c3: gr2d(geomap([Oceania,China,Japan]))$
+c4: gr2d(geomap([France,Portugal,Spain,
+                      Morocco,Western_Sahara]))$
 docdraw("figures/worldmap_geomap2",columns  = 2,
            c1,c2,c3,c4)$

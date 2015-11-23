@@ -255,11 +255,11 @@ figures/worldmap_make_polygon.gif\
 figures/worldmap_region_boundaries.gif\
 figures/worldmap_region_boundaries_plus.gif\
 figures/worldmap_geomap.gif\
+figures/worldmap_geomap2.gif\
 figures/worldmap_geomap3.gif\
 figures/worldmap_geomap4.gif\
 figures/worldmap_geomap5.gif\
 figures/worldmap_geomap6.gif
-# figures/worldmap_geomap2.gif
 
 pdffigures = \
 figures/introduction1.pdf\
@@ -449,11 +449,11 @@ figures/worldmap_make_polygon.pdf\
 figures/worldmap_region_boundaries.pdf\
 figures/worldmap_region_boundaries_plus.pdf\
 figures/worldmap_geomap.pdf\
+figures/worldmap_geomap2.pdf\
 figures/worldmap_geomap3.pdf\
 figures/worldmap_geomap4.pdf\
 figures/worldmap_geomap5.pdf\
 figures/worldmap_geomap6.pdf
-#figures/worldmap_geomap2.pdf
 
 
 if CHM

@@ -5903,6 +5903,7 @@ package @code{worldmap}.
 (%i6) draw(columns  = 2,
            c1,c2,c3,c4)$
 @end example
+@figure{worldmap_geomap}2
 
 Package @code{worldmap} is also useful for plotting
 countries as polygons. In this case, graphic object
