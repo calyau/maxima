@@ -111,8 +111,8 @@ being directly followed by another one..
 @node makelist second argument must evaluate to a number, Illegal use of delimiter, Comma is not a prefix operator, Error messages
 @subsection makelist: second argument must evaluate to a number
 @code{makelist} expects the second argument to be the name of the variable whose value is to
-be stepped. This time instead of the name of a still-undefined variable maxima has either
-found a list or the name of a list.
+be stepped. This time instead of the name of a still-undefined variable maxima has found
+something else, possibly a list or the name of a list.
 
 @opencatbox
 @category{Error messages}
