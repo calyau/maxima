@@ -14,6 +14,7 @@ or on how to recover from errors.
 * out of memory::
 * No such list element::
 * Comma is not a prefix operator::
+* makelist second argument must evaluate to a number::
 * Illegal use of delimiter::
 @end menu
 
@@ -25,7 +26,7 @@ or on how to recover from errors.
 @category{Error messages}
 @closecatbox
 
-@node undefined variable during plotting,out of memory, part fell off the end, Error messages
+@node undefined variable during plotting,Only symbols can be bound, part fell off the end, Error messages
 @subsection undefined variable (draw or plot)
 A function could not be plotted since it still contained a variable maxima
 doesn't know the value of.
@@ -60,13 +61,12 @@ draw2d (explicit): non defined variable
 @opencatbox
 @category{Error messages}
 @closecatbox
-
 @node Only symbols can be bound, out of memory,undefined variable during plotting, Error messages
 @subsection Only symbols can be bound
 The most probable cause for this error is that there was an attempt to eiter
 use a number or a variable whose numerical value is known as a loop
 counter.
-@node out of memory,No such list element,undefined variable during plotting, Error messages
+@node out of memory,No such list element,Only symbols can be bound, Error messages
 @subsection Out of memory
 Lisp typically handles several types of memory containing at least one stack
 and a heap that contains user objects. To avoid running out of memory several
@@ -99,7 +99,7 @@ number was @code{< 1} or @code{> length(list)}.
 @category{Error messages}
 @closecatbox
 
-@node Comma is not a prefix operator, Illegal use of delimiter, No such list element, Error messages
+@node Comma is not a prefix operator,makelist second argument must evaluate to a number, No such list element, Error messages
 @subsection incorrect syntax: , is not a prefix operator
 This might be caused by a command starting with a comma (@code{,}) or by one comma
 being directly followed by another one..
@@ -107,7 +107,19 @@ being directly followed by another one..
 @category{Error messages}
 @closecatbox
 
-@node Illegal use of delimiter, , Comma is not a prefix operator, Error messages
+
+@node makelist second argument must evaluate to a number, Illegal use of delimiter, Comma is not a prefix operator, Error messages
+@subsection makelist: second argument must evaluate to a number
+@code{makelist} expects the second argument to be the name of the variable whose value is to
+be stepped. This time instead of the name of a still-undefined variable maxima has either
+found a list or the name of a list.
+
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+
+@node Illegal use of delimiter, ,makelist second argument must evaluate to a number, Error messages
 @subsection incorrect syntax: Illegal use of delimiter )
 Common reasons for this error appearing are a closing parenthesis without an
 opening one or a closing parenthesis directly preceded by a comma.

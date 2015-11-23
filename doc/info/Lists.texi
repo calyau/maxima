@@ -1405,7 +1405,7 @@ See @mref{first} for more details.
 @end deffn
 
 @c h-----------------------------------------------------------------------------
-@node Performance considerations for Lists, Functions and Variables for Lists, Introduction to Lists, Lists
+@node Performance considerations for Lists, , Introduction to Lists, Lists
 @subsection Performance considerations for Lists
 @c -----------------------------------------------------------------------------
 
