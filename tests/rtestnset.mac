@@ -1831,3 +1831,30 @@ true;
 (a * kran_dalta (i, j)) . b, dotscrules=true;
 (a * kran_dalta (i, j)) . b;
 
+/* SF bug #3049: "set should act like list" */
+
+(kill (a, b, c, d, foo, bar, baz), foo : {a, b, c, d});
+{a, b, c, d};
+
+([a, b] : [17, 29], bar : '{a, b, c, d});
+{a, b, c, d};
+
+is (foo = bar);
+true;
+
+baz : {a, b, c, d};
+{17, 29, c, d};
+
+is (baz = subst (['a = a, 'b = b], foo));
+true;
+
+op (foo);
+"{";
+
+op (bar);
+"{";
+
+"{" (a, b, c, d);
+{17, 29, c, d};
+
+

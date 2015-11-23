@@ -1164,7 +1164,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     (cond ((eq '|$(| (first-c))
 	   (list '$any (mheader '|$'|) (parse '$any 190.)))
 	  ((or (atom (setq right (parse '$any 190.)))
-	       (member (caar right) '(mquote mlist mprog mprogn lambda) :test #'eq))
+	       (member (caar right) '(mquote mlist $set mprog mprogn lambda) :test #'eq))
 	   (list '$any (mheader '|$'|) right))
 	  ((eq 'mqapply (caar right))
 	   (cond ((eq (caaadr right) 'lambda)

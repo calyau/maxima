@@ -27,6 +27,7 @@
 ;; Parse {a, b, c} into set(a, b, c).
 
 (putopr "{" '$set)
+(setf (get '$set 'op) "{")
 
 (setf (get '|$}| 'nud) 'delim-err)
 (setf (get '|$}| 'led) 'erb-err)
