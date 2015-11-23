@@ -240,7 +240,7 @@ if(USE_VTK)
         URL "${VTK_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
         URL_MD5 ${VTK_MD5}
-	PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/vtk-6.3.patch
+        PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/vtk-6.3.patch
         DEPENDS tcl tk vtk-native
         CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/generic -DTCL_TCLSH=C:/maxima-${MAXIMAVERSION}/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/generic -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/wine -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/xlib -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
@@ -278,11 +278,13 @@ set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
 \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
 \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
 \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
+WriteRegStr HKCR \\\".wxmx\\\\ShellNew\\\" \\\"NullFile\\\" \\\"\\\"
 ")
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
 \\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
 \\\${unregisterExtension} \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
 \\\${unregisterExtension} \\\".mac\\\" \\\"Maxima Batch File\\\"
+DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
 ")
 
 include(CPack)

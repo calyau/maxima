@@ -1,0 +1,6 @@
+load("docdraw.mac");
+
+load(worldmap)$
+
+docdraw3d("figures/worldmap_geomap5",geomap([America_coastlines,Eurasia_coastlines],
+                    [cylindrical_projection,2,2,2,3,4]))$

@@ -4569,12 +4569,12 @@ package @code{worldmap}.
 
 @example
 (%i1) load(worldmap)$
-(%i2) c1: gr2d(geomap(Canada,United_States,
-                      Mexico,Cuba))$
+(%i2) c1: gr2d(geomap([Canada,United_States,
+                       Mexico,Cuba]))$
 (%i3) c2: gr2d(geomap(Africa))$
 (%i4) c3: gr2d(geomap(Oceania,China,Japan))$
-(%i5) c4: gr2d(geomap(France,Portugal,Spain,
-                      Morocco,Western_Sahara))$
+(%i5) c4: gr2d(geomap([France,Portugal,Spain,
+                       Morocco,Western_Sahara]))$
 (%i6) draw(columns  = 2,
            c1,c2,c3,c4)$
 @end example
@@ -4647,7 +4647,7 @@ to sphere.
 @end example
 @end itemize
 
-See also @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
+See also @url{http://riotorto.users.sf.net/gnuplot/geomap}
 for more elaborated examples.
 @end deffn
 

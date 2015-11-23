@@ -5663,10 +5663,14 @@ Example:
 (%i2) /* A continent */
       make_poly_continent(Africa)$
 (%i3) apply(draw2d, %)$
+@end example
+@figure{worldmap_make_poly_continent}
+@example
 (%i4) /* A list of countries */
       make_poly_continent([Germany,Denmark,Poland])$
 (%i5) apply(draw2d, %)$
 @end example
+@figure{worldmap_make_poly_continent2}
 
 @opencatbox
 @category{Package draw}
@@ -5690,6 +5694,7 @@ Example:
 (%i2) make_poly_country(India)$
 (%i3) apply(draw2d, %)$
 @end example
+@figure{worldmap_make_poly_country}
 
 @opencatbox
 @category{Package draw}
@@ -5757,6 +5762,7 @@ polygon can be drawn.
 (%i6) Bhutan_polygon: make_polygon([171,173,1143])$
 (%i7) draw2d(Bhutan_polygon)$
 @end example
+@figure{worldmap_make_polygon}
 
 @opencatbox
 @category{Package draw}
@@ -5782,6 +5788,7 @@ Returns segment numbers for plotting southern Italy.
 (%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i3) draw2d(geomap(%))$
 @end example
+@figure{worldmap_region_boundaries}
 
 @opencatbox
 @category{Package draw}
@@ -5805,6 +5812,7 @@ Example:
        1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
 (%i3) draw2d(geomap(%))$
 @end example
+@figure{worldmap_region_boundaries_plus}
 
 @opencatbox
 @category{Package draw}
@@ -5872,6 +5880,7 @@ A simple map defined by hand:
      boundaries_array[4]: bnd4 )$
 (%i8) draw2d(geomap([0,1,2,3,4]))$
 @end example
+@figure{worldmap_geomap}
 
 The auxiliary package @code{worldmap} sets the global variable
 @code{boundaries_array} to real world boundaries in
@@ -5885,12 +5894,12 @@ for more information). Package @code{worldmap} automatically loads
 package @code{worldmap}.
 @example
 (%i1) load(worldmap)$
-(%i2) c1: gr2d(geomap(Canada,United_States,
-                      Mexico,Cuba))$
+(%i2) c1: gr2d(geomap([Canada,United_States,
+                       Mexico,Cuba]))$
 (%i3) c2: gr2d(geomap(Africa))$
-(%i4) c3: gr2d(geomap(Oceania,China,Japan))$
-(%i5) c4: gr2d(geomap(France,Portugal,Spain,
-                      Morocco,Western_Sahara))$
+(%i4) c3: gr2d(geomap([Oceania,China,Japan]))$
+(%i5) c4: gr2d(geomap([France,Portugal,Spain,
+                       Morocco,Western_Sahara]))$
 (%i6) draw(columns  = 2,
            c1,c2,c3,c4)$
 @end example
@@ -5914,6 +5923,7 @@ and @code{make_poly_continent} to understand the following code.
    [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
 (%i3) apply(draw2d, mymap)$
 @end example
+@figure{worldmap_geomap3}
 
 
 @b{3D}
@@ -5934,6 +5944,7 @@ radius @var{r} centered at (@var{x},@var{y},@var{z}).
              geomap(Australia,
                     [spherical_projection,2,2,2,3]))$
 @end example
+@figure{worldmap_geomap4}
 
 @item
 @code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-projects spherical map boundaries on the cylinder of radius
@@ -5943,6 +5954,7 @@ radius @var{r} centered at (@var{x},@var{y},@var{z}).
 (%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
                     [cylindrical_projection,2,2,2,3,4]))$
 @end example
+@figure{worldmap_geomap5}
 
 @item
 @code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-projects spherical map boundaries on the cones of angle @var{alpha},
@@ -5954,8 +5966,9 @@ the northern and southern cones are tangent to sphere.
                     [conic_projection,0,0,0,1,90]))$
 @end example
 @end itemize
+@figure{worldmap_geomap6}
 
-See also @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
+See also @url{http://riotorto.users.sf.net/gnuplot/geomap}
 for more elaborated examples.
 
 @opencatbox
