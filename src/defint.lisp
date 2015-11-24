@@ -2110,7 +2110,7 @@ in the interval of integration.")
   (let* ((rat-exp ($rat exp))
 	 (denom (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
-	   '$undefined)
+	   '$und)
 	  (t (try-intsubs exp ll ul)))))
 
 (defun try-intsubs (exp ll ul)
