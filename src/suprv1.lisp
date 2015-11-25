@@ -856,7 +856,6 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
       '(($debugmode debugmode1)
-	($ttyintfun ttyintfunsetup)
 	($fpprec fpprec1) ($poislim poislim1)
 	($default_let_rule_package let-rule-setter)
 	($current_let_rule_package let-rule-setter)

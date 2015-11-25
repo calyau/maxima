@@ -375,8 +375,6 @@
    "trigexpandtimes"
    "triginverses"
    "trigsign"
-   "ttyintfun"
-   "ttyintnum"
    "ttyoff"
    "undeclaredwarn"
    "values"
