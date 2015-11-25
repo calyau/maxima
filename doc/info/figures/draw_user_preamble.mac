@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_user_preamble",
+        xaxis =true, xaxis_type=solid,
+        yaxis =true, yaxis_type=solid,
+        user_preamble="set grid front",
+        region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$

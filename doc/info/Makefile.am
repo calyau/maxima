@@ -239,6 +239,8 @@ figures/draw_triangle.gif\
 figures/draw_tube_extremes.gif\
 figures/draw_tube.gif\
 figures/draw_unit_vectors.gif\
+figures/draw_user_preamble.gif\
+figures/draw_user_preamble2.gif\
 figures/draw_vector2.gif\
 figures/draw_vector.gif\
 figures/draw_view2.gif\
@@ -431,6 +433,8 @@ figures/draw_triangle.pdf\
 figures/draw_tube_extremes.pdf\
 figures/draw_tube.pdf\
 figures/draw_unit_vectors.pdf\
+figures/draw_user_preamble.pdf\
+figures/draw_user_preamble2.pdf\
 figures/draw_vector2.pdf\
 figures/draw_vector.pdf\
 figures/draw_view2.pdf\
@@ -847,6 +851,10 @@ figures/draw_tube.gif: figures/draw_tube.mac docdraw.mac
 figures/draw_tube.pdf: figures/draw_tube.mac docdraw.mac
 figures/draw_unit_vectors.gif: figures/draw_unit_vectors.mac docdraw.mac
 figures/draw_unit_vectors.pdf: figures/draw_unit_vectors.mac docdraw.mac
+figures/draw_user_preamble.gif: figures/draw_user_preamble.mac docdraw.mac
+figures/draw_user_preamble.pdf: figures/draw_user_preamble.mac docdraw.mac
+figures/draw_user_preamble2.gif: figures/draw_user_preamble2.mac docdraw.mac
+figures/draw_user_preamble2.pdf: figures/draw_user_preamble2.mac docdraw.mac
 figures/draw_vector2.gif: figures/draw_vector2.mac docdraw.mac
 figures/draw_vector2.pdf: figures/draw_vector2.mac docdraw.mac
 figures/draw_vector.gif: figures/draw_vector.mac docdraw.mac
