@@ -1422,10 +1422,7 @@ stack or a fifo:
 @c ===beg===
 @c l:[Test,1,2,3,4];
 @c while l # [] do
-@c  (
-@c    disp(first(l)),
-@c    l:rest(l)
-@c  );
+@c    disp(pop(l));
 @c ===end===
 @example
 @group
@@ -1433,10 +1430,7 @@ stack or a fifo:
 (%o1)                  [Test, 1, 2, 3]
 @end group
 (%i2) while l # [] do
- (
-   disp(first(l)),
-   l:rest(l)
- )$
+   disp(pop(l))$
                               Test
 
                                 1
