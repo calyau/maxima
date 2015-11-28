@@ -1,0 +1,9 @@
+;;; -*- Mode: lisp -*-
+
+(mk:defsystem numericalio
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "numericalio")
+  :source-extension "lisp"
+  :components
+  ((:file "encode-decode-float")
+   (:file "numericalio")))
