@@ -108,31 +108,24 @@
   (if (and args (lisp-or-declared-maxima-array-p (car args)))
     (let
       ((A (car args))
-       (sep-ch-flag (and (cdr args) (cadr args)))       ;; CORRECT ??
-       (mode (or (and (cddr args) (caddr args)) 'text))) ;; CORRECT ?? TEXT OR $TEXT HERE ??
-      (read-into-array stream-or-filename A sep-ch-flag mode))
+       (sep-ch-flag (and (cdr args) (cadr args)))
+       (mode (or (and (cddr args) (caddr args)) 'text)))
+      (read-into-existing-array stream-or-filename A sep-ch-flag mode))
     (let
-      ((sep-ch-flag (and args (car args)))      ;; CORRECT ??
-       (mode (or (and (cdr args) (cadr args)) 'text))) ;; CORRECT ?? TEXT OR $TEXT HERE ??
-      (read-and-return-array stream-or-filename sep-ch-flag mode nil))))
+      ((sep-ch-flag (and args (car args)))
+       (mode (or (and (cdr args) (cadr args)) 'text)))
+      (read-and-return-new-array stream-or-filename sep-ch-flag mode))))
 
 (defun $read_binary_array (file-name A)
-  (read-into-array file-name A nil 'binary))
+  (read-into-existing-array file-name A nil 'binary))
 
-(defun read-into-array (file-name A sep-ch-flag mode)
+(defun read-into-existing-array (file-name A sep-ch-flag mode)
+  (if (not (arrayp A))
+    (setq A (get (mget A 'array) 'array)))
   (let*
-    ((dimensions
-       (if (arrayp A)
-         (array-dimensions A)
-         (cdr (third (cdr (mfuncall '$arrayinfo A))))))
-     (n
-       (apply #'* (mapcar #'(lambda (m) (1+ m)) dimensions)))
-     (L
-       (if (eq mode 'text)
-         ;; MAYBE USE DISPLACED ARRAY HERE ?? !!
-         ($read_list file-name sep-ch-flag n)
-         ($read_binary_list file-name n))))
-    ($fillarray A L)
+    ((dimensions (array-dimensions A))
+     (n (apply #'* dimensions)))
+    (read-into-existing-array-size-known file-name A sep-ch-flag mode n)
     '$done))
 
 (defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
@@ -217,34 +210,48 @@
       (nconc A (cons x nil))
       (if n (decf n)))))
 
-(defun read-and-return-array (stream-or-filename sep-ch-flag mode n)
+(defun read-into-existing-array-size-known (stream-or-filename A sep-ch-flag mode n)
   (if (streamp stream-or-filename)
-    (read-and-return-array-from-stream stream-or-filename sep-ch-flag mode n)
+    (read-from-stream-into-existing-array-size-known stream-or-filename A sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
         (in file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
-          (read-and-return-array-from-stream in sep-ch-flag mode n)
+          (read-from-stream-into-existing-array-size-known in A sep-ch-flag mode n)
           (merror "read_array: no such file `~a'" file-name))))))
 
-(defun read-and-return-array-from-stream (in sep-ch-flag mode n)
-  (let (A (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
-    (setq A (if n (make-array n :fill-pointer 0) (make-array 0 :adjustable t :fill-pointer t)))
-    (read-from-stream-into-array in A sep-ch mode n)))
+(defun read-and-return-new-array (stream-or-filename sep-ch-flag mode)
+  (if (streamp stream-or-filename)
+    (read-and-return-new-array-from-stream stream-or-filename sep-ch-flag mode)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
+        (if (not (null in))
+          (read-and-return-new-array-from-stream in sep-ch-flag mode)
+          (merror "read_array: no such file `~a'" file-name))))))
 
-(defun read-from-stream-into-array (in A sep-ch mode n)
+(defun read-and-return-new-array-from-stream (in sep-ch-flag mode)
+  (let ((A (make-array 0 :adjustable t :fill-pointer t))
+        (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (read-from-stream-into-existing-array-size-unknown in A sep-ch mode)))
+
+(defun read-from-stream-into-existing-array-size-unknown (in A sep-ch mode)
   (let (x)
     (loop
-      (if
-        (or
-          (and n (eq n 0))
-          (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
-              'eof))
+      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
-      (if n (vector-push x A) (vector-push-extend x A))
-      (if n (decf n)))))
+      (vector-push-extend x A))))
+
+(defun read-from-stream-into-existing-array-size-known (in A sep-ch mode n)
+  (let (x)
+    (dotimes (i n)
+      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
+        (return A))
+      (setf (row-major-aref A i) x))))
 
 (defun $read_binary_list (stream-or-filename &rest args)
   (if ($listp (car args))
