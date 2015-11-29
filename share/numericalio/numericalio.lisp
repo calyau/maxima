@@ -212,14 +212,14 @@
 
 (defun read-into-existing-array-size-known (stream-or-filename A sep-ch-flag mode n)
   (if (streamp stream-or-filename)
-    (read-from-stream-into-existing-array-size-known stream-or-filename A sep-ch-flag mode n)
+    (read-into-existing-array-size-known-from-stream stream-or-filename A sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
         (in file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
-          (read-from-stream-into-existing-array-size-known in A sep-ch-flag mode n)
+          (read-into-existing-array-size-known-from-stream in A sep-ch-flag mode n)
           (merror "read_array: no such file `~a'" file-name))))))
 
 (defun read-and-return-new-array (stream-or-filename sep-ch-flag mode)
@@ -237,16 +237,16 @@
 (defun read-and-return-new-array-from-stream (in sep-ch-flag mode)
   (let ((A (make-array 0 :adjustable t :fill-pointer t))
         (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
-    (read-from-stream-into-existing-array-size-unknown in A sep-ch mode)))
+    (read-into-existing-array-size-unknown-from-stream in A sep-ch mode)))
 
-(defun read-from-stream-into-existing-array-size-unknown (in A sep-ch mode)
+(defun read-into-existing-array-size-unknown-from-stream (in A sep-ch mode)
   (let (x)
     (loop
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
       (vector-push-extend x A))))
 
-(defun read-from-stream-into-existing-array-size-known (in A sep-ch-flag mode n)
+(defun read-into-existing-array-size-known-from-stream (in A sep-ch-flag mode n)
   (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
