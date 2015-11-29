@@ -12,6 +12,7 @@
 ;;
 ;;   M: read_matrix (source, sep_ch_flag)
 ;;   read_matrix (source, M, sep_ch_flag)
+;;   A : read_array (source, sep_ch_flag)
 ;;   read_array (source, A, sep_ch_flag)
 ;;   read_hashed_array (source, A, sep_ch_flag)
 ;;   L: read_nested_list (source, sep_ch_flag)
@@ -103,28 +104,36 @@
           (setq k (1+ k))))))
   M)
 
-(defun $read_array (file-name A &optional sep-ch-flag)
-  (read-array file-name A sep-ch-flag 'text))
+(defun $read_array (stream-or-filename &rest args)
+  (if (and args (lisp-or-declared-maxima-array-p (car args)))
+    (let
+      ((A (car args))
+       (sep-ch-flag (and (cdr args) (cadr args)))       ;; CORRECT ??
+       (mode (or (and (cddr args) (caddr args)) 'text))) ;; CORRECT ?? TEXT OR $TEXT HERE ??
+      (read-into-array stream-or-filename A sep-ch-flag mode))
+    (let
+      ((sep-ch-flag (and args (car args)))      ;; CORRECT ??
+       (mode (or (and (cdr args) (cadr args)) 'text))) ;; CORRECT ?? TEXT OR $TEXT HERE ??
+      (read-and-return-array stream-or-filename sep-ch-flag mode nil))))
 
 (defun $read_binary_array (file-name A)
-  (read-array file-name A nil 'binary))
+  (read-into-array file-name A nil 'binary))
 
-(defun read-array (file-name A sep-ch-flag mode)
-  (if (lisp-or-declared-maxima-array-p A)
-    (let*
-      ((dimensions
-         (if (arrayp A)
-           (array-dimensions A)
-           (cdr (third (cdr (mfuncall '$arrayinfo A))))))
-       (n
-         (apply #'* (mapcar #'(lambda (m) (1+ m)) dimensions)))
-       (L
-         (if (eq mode 'text)
-           ($read_list file-name sep-ch-flag n)
-           ($read_binary_list file-name n))))
-      ($fillarray A L)
-      '$done)
-    (merror "read-array: expected a declared array, found ~a instead" (type-of A))))
+(defun read-into-array (file-name A sep-ch-flag mode)
+  (let*
+    ((dimensions
+       (if (arrayp A)
+         (array-dimensions A)
+         (cdr (third (cdr (mfuncall '$arrayinfo A))))))
+     (n
+       (apply #'* (mapcar #'(lambda (m) (1+ m)) dimensions)))
+     (L
+       (if (eq mode 'text)
+         ;; MAYBE USE DISPLACED ARRAY HERE ?? !!
+         ($read_list file-name sep-ch-flag n)
+         ($read_binary_list file-name n))))
+    ($fillarray A L)
+    '$done))
 
 (defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
   (if (streamp stream-or-filename)
@@ -197,15 +206,44 @@
           (merror "read_list: no such file `~a'" file-name))))))
 
 (defun read-list-from-stream (in sep-ch-flag mode n)
-  (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+  (let ((A (list '(mlist simp))) x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
     (loop
       (if
         (or
           (and n (eq n 0))
           (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
               'eof))
-        (return (cons '(mlist simp) (nreverse A))))
-      (setq A (nconc (list x) A))
+        (return A))
+      (nconc A (cons x nil))
+      (if n (decf n)))))
+
+(defun read-and-return-array (stream-or-filename sep-ch-flag mode n)
+  (if (streamp stream-or-filename)
+    (read-and-return-array-from-stream stream-or-filename sep-ch-flag mode n)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
+        (if (not (null in))
+          (read-and-return-array-from-stream in sep-ch-flag mode n)
+          (merror "read_array: no such file `~a'" file-name))))))
+
+(defun read-and-return-array-from-stream (in sep-ch-flag mode n)
+  (let (A (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (setq A (if n (make-array n :fill-pointer 0) (make-array 0 :adjustable t :fill-pointer t)))
+    (read-from-stream-into-array in A sep-ch mode n)))
+
+(defun read-from-stream-into-array (in A sep-ch mode n)
+  (let (x)
+    (loop
+      (if
+        (or
+          (and n (eq n 0))
+          (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
+              'eof))
+        (return A))
+      (if n (vector-push x A) (vector-push-extend x A))
       (if n (decf n)))))
 
 (defun $read_binary_list (stream-or-filename &rest args)
