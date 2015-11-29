@@ -246,8 +246,8 @@
         (return A))
       (vector-push-extend x A))))
 
-(defun read-from-stream-into-existing-array-size-known (in A sep-ch mode n)
-  (let (x)
+(defun read-from-stream-into-existing-array-size-known (in A sep-ch-flag mode n)
+  (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
