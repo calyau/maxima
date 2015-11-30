@@ -489,3 +489,31 @@ true;
 ''([50, 30, length (l1) - (50 + 30), l1]);
 
 /* NEED ADDITIONAL TESTS HERE FOR PARTIAL READS TO PRODUCE ARRAYS */
+
+/* read from a file and return a new array */
+
+block ([a, l],
+  kill (a), /* ensure no declared array */
+  l : read_list (file_search ("rectangular.data")),
+  a : read_array (file_search ("rectangular.data")),
+  [is (length (l) = ?length (a)), every (makelist (l[i] = a[i - 1], i, length (l)))]);
+[true, true];
+
+block ([a, l],
+  l : read_list (file_search ("rectangular.csv")),
+  a : read_array (file_search ("rectangular.csv")),
+  [is (length (l) = ?length (a)), every (makelist (l[i] = a[i - 1], i, length (l)))]);
+[true, true];
+
+block ([a, l],
+  l : read_list (file_search ("really-csv.data"), 'comma),
+  a : read_array (file_search ("really-csv.data"), 'comma),
+  [is (length (l) = ?length (a)), every (makelist (l[i] = a[i - 1], i, length (l)))]);
+[true, true];
+
+block ([a, l],
+  l : read_list (file_search ("really-space-separated.csv"), 'space),
+  a : read_array (file_search ("really-space-separated.csv"), 'space),
+  [is (length (l) = ?length (a)), every (makelist (l[i] = a[i - 1], i, length (l)))]);
+[true, true];
+
