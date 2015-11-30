@@ -452,6 +452,9 @@ done;
  is (A4b = A4b));
 true;
 
+is (listarray (read_binary_array (tmp2_msb)) = L4);
+true;
+
 (assume_external_byte_order (lsb),
  write_binary_data (A4, tmp2_lsb));
 done;
@@ -459,6 +462,9 @@ done;
 (A4c : make_array (any, 3, 7, 19),
  read_binary_array (tmp2_lsb, A4c),
  is (A4c = A4));
+true;
+
+is (listarray (read_binary_array (tmp2_lsb)) = L4);
 true;
 
 /* Read specific number of data via optional argument */

@@ -20,6 +20,7 @@
 ;;   read_list (source, L, sep_ch_flag)
 ;;
 ;;   read_binary_matrix (source, M)
+;;   A : read_binary_array (source)
 ;;   read_binary_array (source, A)
 ;;   L: read_binary_list (source)
 ;;   read_binary_list (source, L)
@@ -120,8 +121,10 @@
        (mode (or (and (cdr args) (cadr args)) 'text)))
       (read-and-return-new-array stream-or-filename sep-ch-flag mode))))
 
-(defun $read_binary_array (file-name A)
-  (read-into-existing-array file-name A nil 'binary))
+(defun $read_binary_array (file-name &rest args)
+  (if (car args)
+    (read-into-existing-array file-name (car args) nil 'binary)
+    (read-and-return-new-array file-name nil 'binary)))
 
 (defun read-into-existing-array (file-name A sep-ch-flag mode)
   (if (not (arrayp A))
