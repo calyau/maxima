@@ -74,6 +74,8 @@
 
 ;; -------------------- read functions --------------------
 
+;; ---- functions to read a matrix
+
 (defun $read_matrix (stream-or-filename &rest args)
   (if ($matrixp (car args))
     (let*
@@ -104,6 +106,8 @@
           (setq k (1+ k))))))
   M)
 
+;; ---- functions to read a Lisp array or Maxima declared array
+
 (defun $read_array (stream-or-filename &rest args)
   (if (and args (lisp-or-declared-maxima-array-p (car args)))
     (let
@@ -128,6 +132,51 @@
     (read-into-existing-array-size-known file-name A sep-ch-flag mode n)
     '$done))
 
+(defun read-into-existing-array-size-known (stream-or-filename A sep-ch-flag mode n)
+  (if (streamp stream-or-filename)
+    (read-into-existing-array-size-known-from-stream stream-or-filename A sep-ch-flag mode n)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
+        (if (not (null in))
+          (read-into-existing-array-size-known-from-stream in A sep-ch-flag mode n)
+          (merror "read_array: no such file `~a'" file-name))))))
+
+(defun read-into-existing-array-size-known-from-stream (in A sep-ch-flag mode n)
+  (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
+    (dotimes (i n)
+      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
+        (return A))
+      (setf (row-major-aref A i) x))))
+
+(defun read-into-existing-array-size-unknown-from-stream (in A sep-ch mode)
+  (let (x)
+    (loop
+      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
+        (return A))
+      (vector-push-extend x A))))
+
+(defun read-and-return-new-array (stream-or-filename sep-ch-flag mode)
+  (if (streamp stream-or-filename)
+    (read-and-return-new-array-from-stream stream-or-filename sep-ch-flag mode)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
+        (if (not (null in))
+          (read-and-return-new-array-from-stream in sep-ch-flag mode)
+          (merror "read_array: no such file `~a'" file-name))))))
+
+(defun read-and-return-new-array-from-stream (in sep-ch-flag mode)
+  (let ((A (make-array 0 :adjustable t :fill-pointer t))
+        (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (read-into-existing-array-size-unknown-from-stream in A sep-ch mode)))
+
+;; ---- functions to read a Maxima undeclared array
+
 (defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
   (if (streamp stream-or-filename)
     (read-hashed-array-from-stream stream-or-filename A sep-ch-flag)
@@ -150,6 +199,8 @@
            (arrstore (list (list A 'array) key) nil)
            (arrstore (list (list A 'array) key) ($rest L)))))))
   A)
+
+;; ---- functions to read a list or nested list
 
 (defun $read_nested_list (stream-or-filename &optional sep-ch-flag)
   (if (streamp stream-or-filename)
@@ -210,49 +261,6 @@
       (nconc A (cons x nil))
       (if n (decf n)))))
 
-(defun read-into-existing-array-size-known (stream-or-filename A sep-ch-flag mode n)
-  (if (streamp stream-or-filename)
-    (read-into-existing-array-size-known-from-stream stream-or-filename A sep-ch-flag mode n)
-    (let ((file-name (require-string stream-or-filename)))
-      (with-open-file
-        (in file-name
-            :if-does-not-exist nil
-            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
-        (if (not (null in))
-          (read-into-existing-array-size-known-from-stream in A sep-ch-flag mode n)
-          (merror "read_array: no such file `~a'" file-name))))))
-
-(defun read-and-return-new-array (stream-or-filename sep-ch-flag mode)
-  (if (streamp stream-or-filename)
-    (read-and-return-new-array-from-stream stream-or-filename sep-ch-flag mode)
-    (let ((file-name (require-string stream-or-filename)))
-      (with-open-file
-        (in file-name
-            :if-does-not-exist nil
-            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
-        (if (not (null in))
-          (read-and-return-new-array-from-stream in sep-ch-flag mode)
-          (merror "read_array: no such file `~a'" file-name))))))
-
-(defun read-and-return-new-array-from-stream (in sep-ch-flag mode)
-  (let ((A (make-array 0 :adjustable t :fill-pointer t))
-        (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
-    (read-into-existing-array-size-unknown-from-stream in A sep-ch mode)))
-
-(defun read-into-existing-array-size-unknown-from-stream (in A sep-ch mode)
-  (let (x)
-    (loop
-      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
-        (return A))
-      (vector-push-extend x A))))
-
-(defun read-into-existing-array-size-known-from-stream (in A sep-ch-flag mode n)
-  (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
-    (dotimes (i n)
-      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
-        (return A))
-      (setf (row-major-aref A i) x))))
-
 (defun $read_binary_list (stream-or-filename &rest args)
   (if ($listp (car args))
     (let*
@@ -266,34 +274,6 @@
       L)
     (let ((n (car args)))
       (read-list stream-or-filename nil 'binary n))))
-
-(let (pushback-sep-ch)
-  (defun parse-next-element (in sep-ch)
-    (let
-      ((*parse-stream* in)
-       (sign 1)
-       (initial-pos (file-position in))
-       token
-       found-sep-ch)
-      (loop
-        (if pushback-sep-ch
-          (setq token pushback-sep-ch pushback-sep-ch nil)
-          (setq token (scan-one-token-g t 'eof)))
-        (cond
-          ((eq token 'eof)
-           (if found-sep-ch
-             (return nil)
-             (return 'eof)))
-          ((and (eq token sep-ch) (not (eq sep-ch #\space)))
-           (if (or found-sep-ch (eq initial-pos 0))
-             (progn
-               (setq pushback-sep-ch token)
-               (return nil))
-             (setq found-sep-ch token)))
-          ((member token '($- $+))
-           (setq sign (* sign (if (eq token '$-) -1 1))))
-          (t
-            (return (m* sign token))))))))
 
 (defun make-mlist-from-string (s sep-ch)
   ; scan-one-token-g isn't happy with symbol at end of string.
@@ -345,6 +325,36 @@
 (defun $read_maxima_array (file-name A &optional sep-ch-flag)
   ($read_array file-name A sep-ch-flag))
 ;; -----  end backwards compatibility stuff ... sigh  -----
+
+;; ---- read one element
+
+(let (pushback-sep-ch)
+  (defun parse-next-element (in sep-ch)
+    (let
+      ((*parse-stream* in)
+       (sign 1)
+       (initial-pos (file-position in))
+       token
+       found-sep-ch)
+      (loop
+        (if pushback-sep-ch
+          (setq token pushback-sep-ch pushback-sep-ch nil)
+          (setq token (scan-one-token-g t 'eof)))
+        (cond
+          ((eq token 'eof)
+           (if found-sep-ch
+             (return nil)
+             (return 'eof)))
+          ((and (eq token sep-ch) (not (eq sep-ch #\space)))
+           (if (or found-sep-ch (eq initial-pos 0))
+             (progn
+               (setq pushback-sep-ch token)
+               (return nil))
+             (setq found-sep-ch token)))
+          ((member token '($- $+))
+           (setq sign (* sign (if (eq token '$-) -1 1))))
+          (t
+            (return (m* sign token))))))))
 
 
 ;; -------------------- write functions -------------------
