@@ -250,15 +250,15 @@
           (merror "read_list: no such file `~a'" file-name))))))
 
 (defun read-list-from-stream (in sep-ch-flag mode n)
-  (let ((A (list '(mlist simp))) x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+  (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
     (loop
       (if
         (or
           (and n (eq n 0))
           (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
               'eof))
-        (return A))
-      (nconc A (cons x nil))
+        (return (cons '(mlist simp) (nreverse A))))
+      (setq A (nconc (list x) A))
       (if n (decf n)))))
 
 (defun $read_binary_list (stream-or-filename &rest args)
