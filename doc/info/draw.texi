@@ -2869,7 +2869,7 @@ does not matter.
 
 Example:
 
-Tell Gnuplot to draw axes on top of graphics objects,
+Tell Gnuplot to draw axes and grid on top of graphics objects,
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
@@ -2878,7 +2878,21 @@ Tell Gnuplot to draw axes on top of graphics objects,
         user_preamble="set grid front",
         region(x^2+y^2<1 ,x,-1.5,1.5,y,-1.5,1.5))$
 @end example
-@figure{draw_region}
+@figure{draw_user_preamble}
+
+Tell gnuplot to draw all contour lines in black
+
+@example
+(%i1) load(draw)$
+(%i2) wxdraw3d(
+          contour=both,
+          surface_hide=true,enhanced3d=true,wired_surface=true,
+          contour_levels=10,
+          user_preamble="set for [i=1:8] linetype i dashtype i linecolor 0",
+          explicit(sin(x)*cos(y),x,1,10,y,1,10)
+      );
+@end example
+@figure{draw_user_preamble2}
 
 @opencatbox
 @category{Package draw}
@@ -5229,8 +5243,6 @@ Example:
 @figure{draw_region}
 
 
-
-
 @deffn  {Graphic object} spherical (@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen}, @var{minzen}, @var{maxzen})
 Draws 3D functions defined in spherical coordinates.
 
@@ -5903,6 +5915,7 @@ package @code{worldmap}.
 (%i6) draw(columns  = 2,
            c1,c2,c3,c4)$
 @end example
+@figure{worldmap_geomap2}
 
 Package @code{worldmap} is also useful for plotting
 countries as polygons. In this case, graphic object

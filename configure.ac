@@ -1083,6 +1083,7 @@ src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 crosscompile-windows/Makefile crosscompile-windows/wxwidgets/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
+doc/info/figures/Makefile \
 doc/info/de/Makefile \
 doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \

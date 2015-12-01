@@ -1,0 +1,9 @@
+load("docdraw.mac");
+
+docdraw3d("figures/draw_user_preamble2",
+          contour=both,
+          surface_hide=true,enhanced3d=true,wired_surface=true,
+          contour_levels=10,
+          user_preamble="set for [i=1:8] linetype i dashtype i linecolor 0",
+          explicit(sin(x)*cos(y),x,1,10,y,1,10)
+);

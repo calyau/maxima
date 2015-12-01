@@ -180,9 +180,11 @@ Examples:
 @c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
 @c ===end===
 @example
+@group
 (%i1) coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
                                 3
 (%o1)                          b
+@end group
 @end example
 
 @code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
@@ -193,12 +195,16 @@ to @code{coeff(@var{expr}, @var{x}, @var{n})}.
 @c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
 @c ===end===
 @example
+@group
 (%i1) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
 (%o1)                         - c
                                  3
+@end group
+@group
 (%i2) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
 (%o2)                         - c
                                  3
+@end group
 @end example
 
 @code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
@@ -208,9 +214,11 @@ which is free of @var{x}.
 @c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
 @c ===end===
 @example
+@group
 (%i1) coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
                             3  3
 (%o1)                      c  u  + a u
+@end group
 @end example
 
 @var{x} may be a simple variable or a subscripted variable,
@@ -224,15 +232,23 @@ comprises an operator and all of its arguments.
 @c coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
 @c ===end===
 @example
+@group
 (%i1) coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
 (%o1)                        - 2 %pi
+@end group
+@group
 (%i2) coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
 (%o2)                        - 2 %pi
+@end group
+@group
 (%i3) coeff (sin(1+x)*sin(x) + sin(1+x)^3*sin(x)^3, sin(1+x)^3);
                                 3
 (%o3)                        sin (x)
+@end group
+@group
 (%i4) coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
 (%o4)                         c - d
+@end group
 @end example
 
 @code{coeff} itself does not apply @code{expand} or @code{factor} or any other
@@ -247,21 +263,33 @@ function.
 @c coeff (%, (a + b)^3);
 @c ===end===
 @example
+@group
 (%i1) coeff (c*(a + b)^3, a);
 (%o1)                           0
+@end group
+@group
 (%i2) expand (c*(a + b)^3);
                  3          2        2        3
 (%o2)           b  c + 3 a b  c + 3 a  b c + a  c
+@end group
+@group
 (%i3) coeff (%, a);
                                 2
 (%o3)                        3 b  c
+@end group
+@group
 (%i4) coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
 (%o4)                           0
+@end group
+@group
 (%i5) factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
                                   3
 (%o5)                      (b + a)  c
+@end group
+@group
 (%i6) coeff (%, (a + b)^3);
 (%o6)                           c
+@end group
 @end example
 
 @code{coeff} distributes over lists, matrices, and equations.
@@ -272,16 +300,20 @@ function.
 @c coeff (a*u - b*v = 7*u + 3*v, u);
 @c ===end===
 @example
+@group
 (%i1) coeff ([4*a, -3*a, 2*a], a);
 (%o1)                      [4, - 3, 2]
-(%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@end group
 @group
+(%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
                           [  a    b  ]
 (%o2)                     [          ]
                           [ - c  - d ]
 @end group
+@group
 (%i3) coeff (a*u - b*v = 7*u + 3*v, u);
 (%o3)                         a = 7
+@end group
 @end example
 
 @opencatbox
@@ -320,6 +352,39 @@ Examples:
 @deffn {Function} denom (@var{expr})
 
 Returns the denominator of the rational expression @var{expr}.
+
+See also @mref{num}
+
+@c ===beg===
+@c g1:(x+2)*(x+1)/((x+3)^2);
+@c denom(g1);
+@c g2:sin(x)/10*cos(x)/y;
+@c denom(g2);
+@c ===end===
+@example
+@group
+(%i1) g1:(x+2)*(x+1)/((x+3)^2);
+                         (x + 1) (x + 2)
+(%o1)                    ---------------
+                                   2
+                            (x + 3)
+@end group
+@group
+(%i2) denom(g1);
+                                   2
+(%o2)                       (x + 3)
+@end group
+@group
+(%i3) g2:sin(x)/10*cos(x)/y;
+                          cos(x) sin(x)
+(%o3)                     -------------
+                              10 y
+@end group
+@group
+(%i4) denom(g2);
+(%o4)                         10 y
+@end group
+@end example
 
 @opencatbox
 @category{Expressions}
@@ -645,13 +710,17 @@ Example:
 @c factorout(%,x);
 @c ===end===
 @example
+@group
 (%i1) expand (a*(x+1)*(x-1)*(u+1)^2);
              2  2          2      2      2
 (%o1)     a u  x  + 2 a u x  + a x  - a u  - 2 a u - a
+@end group
+@group
 (%i2) factorout(%,x);
          2
 (%o2) a u  (x - 1) (x + 1) + 2 a u (x - 1) (x + 1)
                                               + a (x - 1) (x + 1)
+@end group
 @end example
 
 @opencatbox
@@ -951,15 +1020,17 @@ Examples:
 @c % . [x^2 + 1, x^3 + 4, -1];
 @c ===end===
 @example
-(%i1) gcdex (x^2 + 1, x^3 + 4);
 @group
+(%i1) gcdex (x^2 + 1, x^3 + 4);
                        2
                       x  + 4 x - 1  x + 4
 (%o1)/R/           [- ------------, -----, 1]
                            17        17
 @end group
+@group
 (%i2) % . [x^2 + 1, x^3 + 4, -1];
 (%o2)/R/                        0
+@end group
 @end example
 
 @c SORRY FOR BEING DENSE BUT WHAT IS THIS ABOUT EXACTLY
@@ -970,8 +1041,8 @@ not the  @code{y+1} we would expect in @code{k[y, x]}.
 @c gcdex (x*(y + 1), y^2 - 1, x);
 @c ===end===
 @example
-(%i1) gcdex (x*(y + 1), y^2 - 1, x);
 @group
+(%i1) gcdex (x*(y + 1), y^2 - 1, x);
                                1
 (%o1)/R/                 [0, ------, 1]
                               2
@@ -1117,15 +1188,17 @@ Examples:
 @c rat(x/2.0), keepfloat;
 @c ===end===
 @example
+@group
 (%i1) rat(x/2.0);
-
-`rat' replaced 0.5 by 1/2 = 0.5
-                                       x
-(%o1)/R/                               -
-                                       2
+rat: replaced 0.5 by 1/2 = 0.5
+                                x
+(%o1)/R/                        -
+                                2
+@end group
+@group
 (%i2) rat(x/2.0), keepfloat;
-
-(%o2)/R/                             0.5 x
+(%o2)/R/                      0.5 x
+@end group
 @end example
 
 @code{solve} ignores @code{keepfloat}:
@@ -1134,10 +1207,11 @@ Examples:
 @c solve(1.0-x,x), keepfloat;
 @c ===end===
 @example
-(%i3) solve(1.0-x,x), keepfloat;
-
-`rat' replaced 1.0 by 1/1 = 1.0
-(%o3)                               [x = 1]
+@group
+(%i1) solve(1.0-x,x), keepfloat;
+rat: replaced 1.0 by 1/1 = 1.0
+(%o1)                        [x = 1]
+@end group
 @end example
 
 @opencatbox
@@ -1290,6 +1364,38 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 
 @code{num} evaluates its argument.
 
+See also @mref{denom}
+
+@c ===beg===
+@c g1:(x+2)*(x+1)/((x+3)^2);
+@c num(g1);
+@c g2:sin(x)/10*cos(x)/y;
+@c num(g2);
+@c ===end===
+@example
+@group
+(%i1) g1:(x+2)*(x+1)/((x+3)^2);
+                         (x + 1) (x + 2)
+(%o1)                    ---------------
+                                   2
+                            (x + 3)
+@end group
+@group
+(%i2) num(g1);
+(%o2)                    (x + 1) (x + 2)
+@end group
+@group
+(%i3) g2:sin(x)/10*cos(x)/y;
+                          cos(x) sin(x)
+(%o3)                     -------------
+                              10 y
+@end group
+@group
+(%i4) num(g2);
+(%o4)                     cos(x) sin(x)
+@end group
+@end example
+
 @c NEED SOME EXAMPLES HERE
 @opencatbox
 @category{Expressions}
@@ -1322,15 +1428,21 @@ Examples:
 @c polydecomp (p, x);
 @c ===end===
 @example
+@group
 (%i1) polydecomp (x^210, x);
                           7   5   3   2
 (%o1)                   [x , x , x , x ]
+@end group
+@group
 (%i2) p : expand (subst (x^3 - x - 1, x, x^2 - a));
                 6      4      3    2
 (%o2)          x  - 2 x  - 2 x  + x  + 2 x - a + 1
+@end group
+@group
 (%i3) polydecomp (p, x);
                         2       3
 (%o3)                 [x  - a, x  - x - 1]
+@end group
 @end example
 
 The following function composes @code{L = [e_1, ..., e_n]} as functions in
@@ -1341,8 +1453,10 @@ The following function composes @code{L = [e_1, ..., e_n]} as functions in
 @c   block ([r : x], for e in L do r : subst (e, x, r), r) $
 @c ===end===
 @example
-compose (L, x) :=
+@group
+(%i1) compose (L, x) :=
   block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end group
 @end example
 
 Re-express above example using @code{compose}:
@@ -1351,9 +1465,11 @@ Re-express above example using @code{compose}:
 @c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
 @c ===end===
 @example
-(%i3) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
-                        2       3
-(%o3)                 [x  - a, x  - x - 1]
+@group
+(%i1) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                          2       3
+(%o1)          [compose([x  - a, x  - x - 1], x)]
+@end group
 @end example
 
 Note that though @code{compose (polydecomp (@var{p}, @var{x}), @var{x})} always
@@ -1366,14 +1482,16 @@ returns @var{p} (unexpanded), @code{polydecomp (compose ([@var{p_1}, ...,
 @c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
 @c ===end===
 @example
-(%i4) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
-                          2       2
-(%o4)                   [x  + 2, x  + 1]
-(%i5) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
-                      2       2
-                     x  + 3  x  + 5
-(%o5)               [------, ------, 2 x + 1]
-                       4       2
+@group
+(%i1) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                           2             2
+(%o1)           [compose([x  + 2 x + 3, x ], x)]
+@end group
+@group
+(%i2) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                        2           2
+(%o2)        [compose([x  + x + 1, x  + x + 1], x)]
+@end group
 @end example
 
 @opencatbox
@@ -1474,7 +1592,6 @@ Examples:
 @example
 (%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
       (4*y^2 + x^2);
-@group
                                            4
                                   (x - 2 y)
               (y + a) (2 y + x) (------------ + 1)
@@ -1483,11 +1600,12 @@ Examples:
 (%o1)         ------------------------------------
                               2    2
                            4 y  + x
-@end group
+@group
 (%i2) rat (%, y, a, x);
                             2 a + 2 y
 (%o2)/R/                    ---------
                              x + 2 y
+@end group
 @end example
 
 @opencatbox
@@ -2004,27 +2122,37 @@ Examples:
 @c ratsubst (u, sqrt(x), x);
 @c ===end===
 @example
+@group
 (%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
                               3      4
 (%o1)                      a x  y + a
+@end group
+@group
 (%i2) cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
                4         3         2
 (%o2)       cos (x) + cos (x) + cos (x) + cos(x) + 1
+@end group
+@group
 (%i3) ratsubst (1 - sin(x)^2, cos(x)^2, %);
             4           2                     2
 (%o3)    sin (x) - 3 sin (x) + cos(x) (2 - sin (x)) + 3
-(%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@end group
 @group
+(%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
                         4           2
 (%o4)                cos (x) - 2 cos (x) + 1
 @end group
 (%i5) radsubstflag: false$
+@group
 (%i6) ratsubst (u, sqrt(x), x);
 (%o6)                           x
+@end group
 (%i7) radsubstflag: true$
+@group
 (%i8) ratsubst (u, sqrt(x), x);
                                 2
 (%o8)                          u
+@end group
 @end example
 
 @opencatbox

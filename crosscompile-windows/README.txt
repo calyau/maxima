@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine mingw-w64-dev p7zip-full rsync
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync maxima
 
 then you can start the crosscompiling-process:
 
@@ -13,7 +13,7 @@ cmake ..
 make
 make package
 
-This will download the required Software (CLISP, Gnuplot, Maxima,
+This will download the required Software (CLISP, Gnuplot,
 wxMaxima, wxWidgets, Tcl, Tk, jsMath TeX Fonts) from the internet
 into the directory "download".
 
@@ -32,7 +32,8 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 If you want to include VTK, use
 cmake -DUSE_VTK=YES ..
 (Attention: The compilation time will increase!!! The size of the installation will
-approximately be 100% more than without VTK.)
+approximately be 100% more than without VTK. [This is work in progress and does
+not work for now])
 
 
 
@@ -40,17 +41,6 @@ In case a software gets upgraded (and no new patches are needed), it should
 be sufficient to just increase the version number and MD5-checksum for the new
 release in CMakeLists.txt.
 
-
-
-Some issues:
-------------
-
-Creating a windows compiled help file (chm) is only possible with 
-proprietary tools and it does work without on Linux. 
-So the (generated) help files from Andrej's package are included.
-I suggest removing the code (or make it optional (e.g. --enable-chm-help or 
-something similar) and use by default the standard HTML help (as in Linux)
-Why create a proprietary file format?
 
 
 Testing the installed package:

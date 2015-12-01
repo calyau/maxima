@@ -1132,8 +1132,7 @@ wrapper for this."
 	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
 	($all neverset) ($numer numerset) ($fortindent msetchk)
 	($gensumnum msetchk) ($genindex msetchk) ($fpprintprec msetchk)
-	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)
-	($ttyintnum msetchk)))
+	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
 
 (defmfun msetchk (x y)
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
@@ -1141,7 +1140,7 @@ wrapper for this."
 	       ((or (not (fixnump y)) (< y 2) (> y 36)) (mseterr x y))
 	       ((eq x '*read-base*))))
 	((member x '($linel $fortindent $gensumnum $fpprintprec $floatwidth
-		   $parsewindow $ttyintnum) :test #'eq)
+		   $parsewindow) :test #'eq)
 	 (if (not (fixnump y)) (mseterr x y))
          (if (eq x '$linel)
              (cond ((not (and (> y 0)         ; at least one char per line
@@ -1149,7 +1148,7 @@ wrapper for this."
                     (mseterr x y))
                    (t
                     (setq linel y))))
-	 (cond ((and (member x '($fortindent $gensumnum $floatwidth $ttyintnum) :test #'eq) (< y 0))
+	 (cond ((and (member x '($fortindent $gensumnum $floatwidth) :test #'eq) (< y 0))
 		(mseterr x y))
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
 	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
