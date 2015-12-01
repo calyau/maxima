@@ -2560,15 +2560,21 @@ Several functions depending on the two variables v1 and v2:
                                          ,(second yrange) $z)
                                        (second fun) (third fun) (fourth fun)))
                 (setq fun '$zero_fun))
-              (progn
+              (let*
+                ((x0 (third xrange))
+                 (x1 (fourth xrange))
+                 (y0 (third yrange))
+                 (y1 (fourth yrange))
+                 (xmid (+ x0 (/ (- x1 x0) 2)))
+                 (ymid (+ y0 (/ (- y1 y0) 2))))
                 (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
                 (setq fun (coerce-float-fun fun lvars))
-                (when (cdr
-                       ($delete
-                        (second lvars)
-                        ($delete
-                         (third lvars)
-                         ($listofvars (mfuncall fun (second lvars) (third lvars))))))
+                ;; Evaluate FUN at a typical point, taken here as the middle point of the range.
+                ;; This approach is somewhat unreliable since this is only looking at a single point.
+                ;; Call FUN with numerical arguments since with symbolic arguments,
+                ;; FUN may fail due to trouble computing real/imaginary parts for complicated expressions,
+                ;; or FUN may be undefined for symbolic arguments (e.g. functions defined by numerical methods).
+                (when (cdr ($listofvars (mfuncall fun xmid ymid)))
                   (mtell (intl:gettext "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]~%"))
                   (mtell (intl:gettext "plot3d: keep going and hope for the best.~%")))))
           (let* ((pl
