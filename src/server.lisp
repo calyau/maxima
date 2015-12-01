@@ -8,7 +8,6 @@
 
 #+(or ecl sbcl)
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+sbcl (require 'asdf)		    ;not needed here for a recent SBCL
   #+sbcl (require 'sb-posix)
   (require 'sb-bsd-sockets))
 
