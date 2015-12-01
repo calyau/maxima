@@ -85,6 +85,7 @@
        (nrow (length (cdr M)))
        (ncol (if (> nrow 0) (length (cdadr M)) 0))
        (L ($read_list stream-or-filename sep-ch-flag (* nrow ncol))))
+      ;; COPYING DATA HERE !!
       (fill-matrix-from-list L M nrow ncol))
     (let ((sep-ch-flag (car args)))
       `(($matrix) ,@(cdr ($read_nested_list stream-or-filename sep-ch-flag))))))
@@ -95,6 +96,7 @@
       ((nrow (length (cdr M)))
        (ncol (if (> nrow 0) (length (cdadr M)) 0))
        (L ($read_binary_list stream-or-filename (* nrow ncol))))
+      ;; COPYING DATA HERE !!
       (fill-matrix-from-list L M nrow ncol))
     (merror "read_binary_matrix: expected a matrix, found ~a instead" (type-of M))))
 
@@ -227,18 +229,33 @@
     (let*
       ((L (car args))
        (sep-ch-flag (cadr args))
-       (n (or (caddr args) ($length L)))
-       ;; Probably we could try to avoid creating a second list
-       ;; by reading directly into the first one ...
-       (L2 (read-list stream-or-filename sep-ch-flag 'text n)))
-      (dotimes (i (length L2))
-        (setf (nth i L) (nth i L2)))
-      L)
+       (n (or (caddr args) ($length L))))
+      (read-into-existing-list stream-or-filename L sep-ch-flag 'text n))
     (if (integerp (car args))
       (let ((n (car args)))
         (read-list stream-or-filename nil 'text n))
       (let ((sep-ch-flag (car args)) (n (cadr args)))
         (read-list stream-or-filename sep-ch-flag 'text n)))))
+
+(defun read-into-existing-list (stream-or-filename L sep-ch-flag mode n)
+  (if (streamp stream-or-filename)
+    (read-into-existing-list-from-stream stream-or-filename L sep-ch-flag mode n)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
+        (if (not (null in))
+          (read-into-existing-list-from-stream in L sep-ch-flag mode n)
+          (merror "read_list: no such file `~a'" file-name))))))
+
+(defun read-into-existing-list-from-stream (in L sep-ch-flag mode n)
+  (let (x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (dotimes (i n)
+      (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
+        (return))
+      (setf (nth (1+ i) L) x))
+    L))
 
 (defun read-list (stream-or-filename sep-ch-flag mode n)
   (if (streamp stream-or-filename)
@@ -268,13 +285,8 @@
   (if ($listp (car args))
     (let*
       ((L (car args))
-       (n (or (cadr args) ($length L)))
-       ;; Probably we could try to avoid creating a second list
-       ;; by reading directly into the first one ...
-       (L2 (read-list stream-or-filename nil 'binary n)))
-      (dotimes (i (length L2))
-        (setf (nth i L) (nth i L2)))
-      L)
+       (n (or (cadr args) ($length L))))
+      (read-into-existing-list stream-or-filename nil 'binary n))
     (let ((n (car args)))
       (read-list stream-or-filename nil 'binary n))))
 
