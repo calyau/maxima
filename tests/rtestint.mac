@@ -1594,3 +1594,14 @@ asinh(2/sqrt(n))*sqrt(n)-asinh(1/sqrt(n))*sqrt(n);
 
 (forget(n>0),0);
 0;
+
+/* mailing list 2015-11-23: "Change in behavior for taylor/integrate - a bug?" */
+
+(kill(f, x, c, deltax), trunc(integrate(taylor(f(x), x, c, 6), x, c-deltax, c+deltax)));
+(deltax^7*('at('diff(f(x),x,6),x = c))+42*deltax^5*('at('diff(f(x),x,4),x = c))
+                                      +840*deltax^3*('at('diff(f(x),x,2),x = c))+5040*f(c)*deltax)
+                                       /2520$
+
+integrate (taylor (f(x), x, 0, 1), x, a, b);
+((b^2-a^2)*('at('diff(f(x),x,1),x = 0))+2*f(0)*b-2*f(0)*a)/2$
+

@@ -196,7 +196,18 @@
 ;; Test dependence via derivative to account for declared dependencies.
 (defun at-not-dependent-find-vars (eqn arg)
   (let ((e (mapcar #'second (rest eqn))))
-    (partition-by #'(lambda (x) (eql (mfuncall '$diff arg x) 0)) e)))
+    (partition-by #'(lambda (x) (at-not-dependent-find-vars-1 x arg)) e)))
+
+(defun at-not-dependent-find-vars-1 (x arg)
+  (if ($mapatom x)
+    (eql (mfuncall '$diff arg x) 0)
+    ;; We might be called with something like -1*x as the variable.
+    ;; (That might or might not be a bug in itself, but let it go for the moment.)
+    ;; Try to extract a variable and test for dependence on that.
+    ;; If there are 2 or more variables, return NIL (i.e., not at-not-dependent).
+    (let ((v ($listofvars x)))
+      (if (eql ($length v) 1)
+        (at-not-dependent-find-vars-1 ($first v) arg)))))
 
 (defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))
