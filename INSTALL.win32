@@ -308,5 +308,8 @@ If plotting fails
 -----------------
 
 If plotting fails on a new platform (win64, arm or similar) it might
-be that the variable gnuplot_command was set to an incorrect value for
-the current platform in src/plot.lisp.
+be that some of the tests for the operating system (
+   	(and sbcl win32)
+or
+	(string= *autoconf-win32* "true")
+) might not detect the current flavour of the OS.

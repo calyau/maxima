@@ -12,6 +12,7 @@
 (defparameter *autoconf-infodir* "@expanded_infodir@")
 (defparameter *autoconf-host* "@host@")
 (defparameter *autoconf-win32* "@win32@")
+(defparameter *autoconf-win64* "@win64@")
 (defparameter *autoconf-ld-flags* "@LDFLAGS@")
  
 (defparameter *maxima-source-root* "@expanded_top_srcdir@")
