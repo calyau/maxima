@@ -20,7 +20,46 @@
    
    Copyright Volker van Nek, 2015
    
-   1. number_to_octets(number) and octets_to_number(octets).
+   1. string_to_octets(string [,encoding]) and octets_to_string(octets [,encoding]).
+   The default encoding depends on the underlying Lisp, the platform and the 
+   application. The following example shows Maxima/GCL in a GNU/Linux terminal.
+   GCL uses no format definition and simply passes through the utf-8-octets encoded 
+   by the terminal.
+
+   (%i1) octets: string_to_octets("abc");
+   (%o1)                            [61, 62, 63]
+   (%i2) octets_to_string(octets);
+   (%o2)                                 abc
+   (%i3) ibase : obase : 16.$
+   (%i4) string: unicode(3bb);
+   (%o4)                                 λ
+   (%i5) octets: string_to_octets(string);
+   (%o5)                             [0CE, 0BB]
+   (%i6) octets_to_string(octets);
+   (%o6)                                 λ
+   (%i7) utf8_to_unicode(octets);
+   (%o7)                                 3BB
+   
+   Maxima/SBCL in a GNU/Linux terminal using the optional encoding argument.
+   
+   (%i1) ibase : obase : 16.$
+   (%i2) string: simplode(map(unicode, [3b1,3b2,3b3]));
+   (%o2)                                 αβγ
+   (%i3) octets: string_to_octets(string, "ucs-2be");
+   (%o3)                      [3, 0B1, 3, 0B2, 3, 0B3]
+   (%i4) octets_to_string(octets, "ucs-2be");
+   (%o4)                                 αβγ
+   (%i5) octets: string_to_octets(string, "iso-8859-7");
+   (%o5)                           [0E1, 0E2, 0E3]
+   (%i6) octets_to_string(octets, "iso-8859-7");
+   (%o6)                                 αβγ
+         
+   Examples of supported encodings:
+   CCL,CLISP,SBCL: utf-8, ucs-2be, iso-8859-1, cp1252, cp850
+   CMUCL: utf-8, utf-16-be, iso8859-1, cp1252
+   ECL: utf-8, ucs-2be, iso-8859-1, windows-cp1252, dos-cp850
+   
+   2. number_to_octets(number) and octets_to_number(octets).
 
    (%i1) ibase : obase : 16.$
    (%i2) octets: [0ca,0fe,0ba,0be]$
@@ -30,7 +69,7 @@
    (%o4)                      [0CA, 0FE, 0BA, 0BE]
 
    
-   2. octets_to_oid(octets) and oid_to_octets(string) compute object identifiers 
+   3. octets_to_oid(octets) and oid_to_octets(string) compute object identifiers 
    (OIDs) from lists of octets and convert OIDs back to octets.
    
    (%i1) ibase : obase : 16.$
@@ -40,7 +79,7 @@
    (%o3)               [2A, 86, 48, 86, 0F7, 0D, 1, 1, 1]
 
    
-   3. crc24sum(octets) returns the crc24 checksum of an octet-list. The returned 
+   4. crc24sum(octets) returns the crc24 checksum of an octet-list. The returned 
    value is a string (default), a number or a list of octets.
    
    Example: OpenPGP uses crc24
@@ -78,6 +117,53 @@
   #-gcl (:compile-toplevel :execute)
     (defvar old-ibase *read-base*)
     (setq *read-base* 10.) )
+
+
+;; -- string-octet-conversions: --------------------------------------------- ;;
+
+(defun $string_to_octets (str &optional enc) 
+  (unless (stringp str) 
+    (gf-merror (intl:gettext "`string_to_octets': argument must be a string.")) )
+  (setq enc (get-encoding enc "string_to_octets"))
+  (let ((ov #+ccl (ccl:encode-string-to-octets str :external-format enc) ;; maybe these (CCL, ECL) .. 
+            #+clisp (ext:convert-string-to-bytes str enc)
+            #+ecl (ecl-string-to-octets str enc)                         ;; .. could move to intl.lisp
+            #- (or ccl clisp ecl) (intl::string-to-octets str enc) ))    ;; GCL ignores enc
+    (cons '(mlist simp) (coerce ov 'list)) ))
+;;
+#+ecl
+(defun ecl-string-to-octets (str enc)
+  (let ((a (make-array 
+             (ceiling (* 1.2 (length str))) ;; initially add 20 % for non-ascii chars
+             :element-type '(unsigned-byte 8)
+             :adjustable t 
+             :fill-pointer 0 )))
+    (with-open-stream 
+      (stream (ext:make-sequence-output-stream a :external-format enc))
+      (format stream str)
+      a )))
+
+
+(defun $octets_to_string (ol &optional enc) 
+  (unless ($listp ol)
+    (gf-merror (intl:gettext 
+      "`octets_to_string': argument must be a list of octets." )))
+  (setq ol (cdr ol) 
+        enc (get-encoding enc "octets_to_string") )
+  (let ((ov (map-into 
+              (make-array (length ol) :element-type '(unsigned-byte 8))
+              #'identity
+              ol )))
+    #+ccl (ccl:decode-string-from-octets ov :external-format enc)
+    #+clisp (ext:convert-string-from-bytes ov enc)
+    #+ecl (ecl-octets-to-string ov enc)
+    #- (or ccl clisp ecl) (intl::octets-to-string ov enc) ))
+;;
+#+ecl
+(defun ecl-octets-to-string (ov enc)
+  (with-open-stream 
+    (stream (ext:make-sequence-input-stream ov :external-format enc))
+    (read-line stream) ))
 
 
 ;; -- number-octet-conversions: --------------------------------------------- ;;
@@ -133,10 +219,8 @@
 ;;
 (defun oid-to-octets (str)
   (let* ((*read-base* 10.)
-         ;~ (lst (mapcar #'$parse_string (cdr ($split str "."))))
-         ;~ (lst (mapcar #'parse-string (split str ".")))
          (lst (mapcar #'(lambda (s) (with-input-from-string (a s) (read a))) 
-                      (split str ".") ))
+                      (split str ".") )) ;; stringproc.lisp/split
           oct octs )
     (when (< (length lst) 2)
       (gf-merror (intl:gettext "No valid OID: ~m") str) )
