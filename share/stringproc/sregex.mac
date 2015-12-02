@@ -1,0 +1,3 @@
+load("stringproc.lisp")$
+load("pregexp.lisp")$
+load("sregex.lisp")$
