@@ -1357,6 +1357,7 @@ Examples:
 @c @end defvar
 
 @c -----------------------------------------------------------------------------
+@anchor{num}
 @deffn {Function} num (@var{expr})
 
 Returns the numerator of @var{expr} if it is a ratio.
@@ -1677,6 +1678,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{denom}
 @deffn {Function} ratdenom (@var{expr})
 
 Returns the denominator of @var{expr},

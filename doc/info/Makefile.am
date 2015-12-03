@@ -33,7 +33,7 @@ endif
 SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8) $(DE_DIR) $(DE_DIR_UTF8)
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = category-macros.texi Introduction.texi \
+maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  Bugs.texi Help.texi Command.texi DataTypes.texi Constants.texi Lists.texi \
  Arrays.texi defstruct.texi Expressions.texi Operators.texi Evaluation.texi \
  Simplification.texi MathFunctions.texi Database.texi Plotting.texi \
@@ -45,7 +45,8 @@ maxima_TEXINFOS = category-macros.texi Introduction.texi \
  Program.texi Debugging.texi alt-display.texi asympa.texi \
  augmented_lagrangian.texi bernstein.texi bode.texi celine.texi clebsch_gordan.texi \
  cobyla.texi contrib_ode.texi descriptive.texi diag.texi distrib.texi \
- draw.texi drawdf.texi dynamics.texi ezunits.texi f90.texi finance.texi \
+ draw.texi drawdf.texi dynamics.texi engineering-format.texi \
+ ezunits.texi f90.texi finance.texi \
  fractals.texi ggf.texi graphs.texi grobner.texi impdiff.texi interpol.texi \
  lapack.texi lbfgs.texi lindstedt.texi linearalgebra.texi lsquares.texi \
  minpack.texi makeOrders.texi mnewton.texi numericalio.texi opsubst.texi \
