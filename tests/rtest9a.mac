@@ -110,7 +110,7 @@ done;
       close (S),
       if is (output = expected_output) then true else [expected_output, output])),
  verify_display_1d (expr, expected_output) :=
-  if is (string (expr) = expected_output) then true else [expected_output, output],
+   block ([output : string (expr)], if is (output = expected_output) then true else [expected_output, output]),
  0);
 0;
 
