@@ -89,7 +89,7 @@ sin(y)*(10.0+6*cos(x)),
 (defvar *gnuplot-command* "")
 
 (defvar $gnuplot_command (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
-                             "wgnuplot"
+                             "gnuplot"
                              "gnuplot"))
 
 (defun start-gnuplot-process (path)
