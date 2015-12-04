@@ -18,28 +18,34 @@ AC_CANONICAL_HOST
 
 dnl If we were using a C compiler, EXEEXT would get defined
 dnl automatically. But we aren't, so we have to define it ourselves.
+dnl Still to do: Add Win64 support here, if this is needed.
 case "$host" in
         *mingw*)
                 win32=true
+                win64=false
                 mingw=true
                 EXEEXT=.exe
 		CLISPEXT=${EXEEXT}
                 ;;
         *cygwin*)
                 win32=false
+                win64=false
                 mingw=false
                 EXEEXT=.exe
 		CLISPEXT=${EXEEXT}
                 ;;
         *)
                 win32=false
+                win64=false
                 mingw=false
                 EXEEXT=
 		CLISPEXT=.run
 esac
 AC_SUBST(EXEEXT)
 AC_SUBST(win32)
+AC_SUBST(win64)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
+AM_CONDITIONAL(WIN64, test x$win64 = xtrue)
 
 dnl To make life more confusing, the automake test machinery (which we
 dnl use in ./tests) needs the am__EXEEXT conditional. This would have

@@ -1,0 +1,46 @@
+(kill (all), 0);
+0;
+
+( regex : regex_compile("ne{2}dle"),
+  str : "his hay needle stack -- my hay needle stack -- her hay needle stack",
+  0);
+0;
+
+regex_match_pos(regex, str);
+[[9, 15]];
+
+regex_match_pos("ne{2}dle", str); 
+[[9, 15]];
+
+regex_match_pos("ne{2}dle", str, 25, 44);
+[[32, 38]];
+
+regex_match_pos("ne{2}dle", str, 32, 38);
+[[32, 38]];
+
+regex_match_pos("ne{2}dle", str, 25, 37);
+false;
+
+regex_match_pos("ne{2}dle", str, 25);
+[[32, 38]];
+
+regex_match("ne{2}dle", "hay needle stack");
+["needle"];
+
+regex_split("[,;]+", "split,pea;;;soup");
+["split", "pea", "soup"];
+
+regex_subst_first("ty", "t.", "liberte egalite fraternite");
+"liberty egalite fraternite";
+
+regex_subst("ty", "t.", "liberte egalite fraternite");
+"liberty egality fratyrnity";
+
+regex_split("\\D+", "13. 3. 2009  13:03 Uhr");
+["13", "3", "2009", "13", "03"];
+
+string_to_regex(". :");
+"\\. :";
+
+(remvalue(regex, str), 0); 
+0;

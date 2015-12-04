@@ -1,19 +1,15 @@
 
-;; copyright notice:
-;;
-;; The following statement could be found today (08-03-15) on 
-;; http://www.ccs.neu.edu/home/dorai
-
+;; Portable regular expressions for Common Lisp
 ;; Dorai Sitaram
-;; Here are some Scheme- and Common-Lisp-related items. 
-;; Everything presented here is freely distributable and freely usable, and comes with no warranty of any kind. 
-;; FS (as in GPL, LGPL) bundlers who require a standard license may use the LGPL to bundle any of these items. 
-;; Others should find my COPYING file adequate.
-;;
-;; COPYING file from pregexp.tar.gz (http://www.ccs.neu.edu/home/dorai/pregexp/pregexp.html) :
+
+;; https://github.com/ds26gte/pregexp/
+;; (October 2015)
+
+;; --- file COPYING --------------------------------------------------------- ;;
+
 ;; Copyright (c) 1999-2005, Dorai Sitaram.
 ;; All rights reserved.
-;; 
+
 ;; Permission to copy, modify, distribute, and use this work or
 ;; a modified copy of this work, for any purpose, is hereby
 ;; granted, provided that the copy includes this copyright
@@ -21,755 +17,642 @@
 ;; notice of modification.  This work is provided as is, with
 ;; no warranty of any kind.
 
-;; The rest of this file is an unmodified copy of pregexp.cl from pregexp.tar.gz. Volker van Nek, 2008-03-15
+;; -------------------------------------------------------------------------- ;;
 
 
-;Configured for Common Lisp CLISP 2.33.2 (2004-06-02) (built 3322385124) (memory 3322385911) by scmxlate, v 2004-09-08,
-;(c) Dorai Sitaram, 
-;http://www.ccs.neu.edu/~dorai/scmxlate/scmxlate.html
-
-
-(defparameter *pregexp-version* 20050425)
+(defparameter *pregexp-version* 20090325) ;last change
 
 (defparameter *pregexp-comment-char* #\;)
 
-(defparameter *pregexp-nul-char-int* (- (char-code #\a) 97))
+(defparameter *pregexp-space-sensitive-p* t)
 
-(defparameter *pregexp-return-char* (code-char (+ 13 *pregexp-nul-char-int*)))
-
-(defparameter *pregexp-tab-char* (code-char (+ 9 *pregexp-nul-char-int*)))
-
-(defparameter *pregexp-space-sensitive?* t)
-
-(defun pregexp-error (&rest whatever) 
-  (princ "Error:")
-  (mapc #'(lambda (x) (princ #\space) (prin1 x)) 
-        whatever) 
-  (terpri)
-  (error "pregexp-error"))
+(defmacro pregexp-recur (name varvals &rest body)
+  `(labels ((,name ,(mapcar #'first varvals) ,@body))
+     (,name ,@(mapcar #'second varvals))))
 
 (defun pregexp-read-pattern (s i n)
-  (if (>= i n) 
-    (list (list ':or (list ':seq)) i)
-    (let ((branches 'nil) 
-          (i i))
-      (flet ((loop! (branches i) 
-               (throw 'loop! (values branches i))))
-        (loop
-          (multiple-value-setq (branches i)
-            (let ((branches branches) 
-                  (i i))
-              (catch 'loop!
-                (return
-                  (if (or (>= i n) (char= (char s i) #\)))
-                  (list (cons ':or (nreverse branches)) i)
-                  (let ((vv (pregexp-read-branch s (if (char= (char s i) #\|) (+ i 1) i) n)))
-                    (loop! (cons (car vv) branches) (cadr vv)))))))))))))
+  (if (>= i n) (values `(:or (:seq)) i)
+    (let ((branches '()))
+      (loop
+        (when (or (>= i n)
+                  (char= (char s i) #\)))
+          (return (values (cons :or (nreverse branches)) i)))
+        (multiple-value-bind (branch1 i1)
+          (pregexp-read-branch
+            s (if (char= (char s i) #\|) (+ i 1) i) n)
+          (push branch1 branches)
+          (setq i i1))))))
 
 (defun pregexp-read-branch (s i n)
- (let ((pieces 'nil) (i i))
-  (flet ((loop! (pieces i) (throw 'loop! (values pieces i))))
-   (loop
-    (multiple-value-setq (pieces i)
-     (let ((pieces pieces) (i i))
-      (catch 'loop!
-       (return
-        (cond ((>= i n) (list (cons ':seq (nreverse pieces)) i))
-         ((let ((c (char s i))) (or (char= c #\|) (char= c #\))))
-          (list (cons ':seq (nreverse pieces)) i))
-         (t
-          (let ((vv (pregexp-read-piece s i n)))
-           (loop! (cons (car vv) pieces) (cadr vv)))))))))))))
+  (let ((pieces '()))
+    (loop
+      (cond ((or (>= i n)
+            (member (char s i) '(#\| #\))))
+             (return (values (cons :seq (nreverse pieces)) i)))
+            (t (multiple-value-bind (pc i-new)
+                 (pregexp-read-piece s i n)
+                 (push pc pieces)
+                 (setq i i-new)))))))
 
 (defun pregexp-read-piece (s i n)
- (let ((c (char s i)))
-  (case c ((#\^) (list ':bos (+ i 1))) ((#\$) (list ':eos (+ i 1)))
-   ((#\.) (pregexp-wrap-quantifier-if-any (list ':any (+ i 1)) s n))
-   ((#\[)
-    (let ((i+1 (+ i 1)))
-     (pregexp-wrap-quantifier-if-any
-      (case (and (< i+1 n) (char s i+1))
-       ((#\^)
-        (let ((vv (pregexp-read-char-list s (+ i 2) n)))
-         (list (list ':neg-char (car vv)) (cadr vv))))
-       (t (pregexp-read-char-list s i+1 n)))
-      s n)))
-   ((#\()
-    (pregexp-wrap-quantifier-if-any (pregexp-read-subpattern s (+ i 1) n) s n))
-   ((#\\)
-    (pregexp-wrap-quantifier-if-any
-     (let ((__cond_temp__ nil))
-       (cond ((setq __cond_temp__ (pregexp-read-escaped-number s i n))
-                (funcall
-                  #'(lambda (num-i) (list (list ':backref (car num-i)) (cadr num-i)))
-                  __cond_temp__))
-             ((setq __cond_temp__ (pregexp-read-escaped-char s i n))
-                (funcall 
-                  #'(lambda (char-i) (list (car char-i) (cadr char-i)))
-                  __cond_temp__))
-             (t (pregexp-error 'pregexp-read-piece 'backslash))))
-     s n))
-   (t
-    (if
-     (or *pregexp-space-sensitive?*
-      (and
-       (not
-        (let ((|Scheme-to-CL-3| c))
-         (or (char= |Scheme-to-CL-3| #\space) (char= |Scheme-to-CL-3| #\tab)
-          (not (graphic-char-p |Scheme-to-CL-3|)))))
-       (not (char= c *pregexp-comment-char*))))
-     (pregexp-wrap-quantifier-if-any (list c (+ i 1)) s n)
-     (let ((i i) (in-comment? nil))
-      (flet ((loop! (i in-comment?) (throw 'loop! (values i in-comment?))))
-       (loop
-        (multiple-value-setq (i in-comment?)
-         (let ((i i) (in-comment? in-comment?))
-          (catch 'loop!
-           (return
-            (if (>= i n) (list ':empty i)
-             (let ((c (char s i)))
-              (cond (in-comment? (loop! (+ i 1) (not (char= c #\newline))))
-               ((let ((|Scheme-to-CL-4| c))
-                 (or (char= |Scheme-to-CL-4| #\space)
-                  (char= |Scheme-to-CL-4| #\tab)
-                  (not (graphic-char-p |Scheme-to-CL-4|))))
-                (loop! (+ i 1) nil))
-               ((char= c *pregexp-comment-char*) (loop! (+ i 1) t))
-               (t (list ':empty i)))))))))))))))))
+  (let ((c (char s i))) (incf i)
+    (case c
+      (#\^ (values :bos i))
+      (#\$ (values :eos i))
+      (#\. (pregexp-wrap-quantifier-if-any :any s i n))
+      (#\[ (let ((negp nil))
+             (when (and (< i n)
+                        (char= (char s i) #\^))
+               (incf i)
+               (setq negp t))
+             (when (< i n)
+               (multiple-value-bind (chars i1)
+                 (pregexp-read-char-list s i n)
+                 (pregexp-wrap-quantifier-if-any
+                   (if negp (list :neg-char chars) chars)
+                   s i1 n)))))
+      (#\( (multiple-value-bind (re i1)
+             (pregexp-read-subpattern s i n)
+             (pregexp-wrap-quantifier-if-any
+               re s i1 n)))
+      (#\\ (multiple-value-bind (m i1)
+             (pregexp-read-escaped-number s i n)
+             (if m
+               (pregexp-wrap-quantifier-if-any
+                 (list :backref m) s i1 n)
+               (multiple-value-bind (c i1)
+                 (pregexp-read-escaped-char s i)
+                 (if c
+                   (pregexp-wrap-quantifier-if-any c s i1 n)
+                   (error "pregexp-read-piece: backslash"))))))
+      (t (if (or *pregexp-space-sensitive-p*
+                 (and (not (pregexp-whitespacep c))
+                      (not (char= c *pregexp-comment-char*))))
+           (pregexp-wrap-quantifier-if-any c s i n)
+           (let ((in-comment-p nil))
+             (loop
+               (cond (in-comment-p
+                       (when (char= c #\newline)
+                         (setq in-comment-p nil)))
+                     ((pregexp-whitespacep c) t)
+                     ((char= c *pregexp-comment-char*)
+                      (setq in-comment-p t))
+                     (t (decf i) (return (values :empty i))))
+               (when (>= i n) (return (values :empty i)))
+               (setq c (char s i))
+               (incf i))))))))
 
 (defun pregexp-read-escaped-number (s i n)
- (and (< (+ i 1) n)
-  (let ((c (char s (+ i 1))))
-   (and (digit-char-p c)
-    (let ((i (+ i 2)) (r (list c)))
-     (flet ((loop! (i r) (throw 'loop! (values i r))))
-      (loop
-       (multiple-value-setq (i r)
-        (let ((i i) (r r))
-         (catch 'loop!
-          (return
-           (if (>= i n)
-            (list
-             (let ((|Scheme-to-CL-5| (concatenate 'string (nreverse r))))
-              (if (position #\: |Scheme-to-CL-5| :test #'char=) nil
-               (let
-                ((|Scheme-to-CL-6| (read-from-string |Scheme-to-CL-5| nil)))
-                (if (numberp |Scheme-to-CL-6|) |Scheme-to-CL-6| nil))))
-             i)
-            (let ((c (char s i)))
-             (if (digit-char-p c) (loop! (+ i 1) (cons c r))
-              (list
-               (let ((|Scheme-to-CL-7| (concatenate 'string (nreverse r))))
-                (if (position #\: |Scheme-to-CL-7| :test #'char=) nil
-                 (let
-                  ((|Scheme-to-CL-8| (read-from-string |Scheme-to-CL-7| nil)))
-                  (if (numberp |Scheme-to-CL-8|) |Scheme-to-CL-8| nil))))
-               i)))))))))))))))
+  (let ((r '()) (c nil))
+    (loop
+      (when (or (>= i n)
+                (not (digit-char-p (setq c (char s i)))))
+        (return r))
+      (incf i)
+      (push c r))
+    (when r
+      (values (read-from-string (concatenate 'string (nreverse r)))
+              i))))
 
-(defun pregexp-read-escaped-char (s i n)
-  (and (< (+ i 1) n)
-    (let ((c (char s (+ i 1))))
-      (case c ((#\b) (list ':wbdry (+ i 2))) 
-              ((#\B) (list ':not-wbdry (+ i 2)))
-              ((#\d) (list ':digit (+ i 2))) 
-              ((#\D) (list '(:neg-char :digit) (+ i 2)))
-              ((#\n) (list #\newline (+ i 2)))
-              ((#\r) (list *pregexp-return-char* (+ i 2))) 
-              ((#\s) (list ':space (+ i 2)))
-              ((#\S) (list '(:neg-char :space) (+ i 2)))
-              ((#\t) (list *pregexp-tab-char* (+ i 2))) 
-              ((#\w) (list ':word (+ i 2)))
-              ((#\W) (list '(:neg-char :word) (+ i 2))) 
-              (t     (list c (+ i 2)))))))
+(defun pregexp-read-escaped-char (s i)
+  (let ((c (char s i)))
+    (values
+      (case c
+        (#\b :wbdry)
+        (#\B :not-wbdry)
+        (#\d :digit)
+        (#\D (list :neg-char :digit))
+        (#\n #\newline)
+        (#\r #\return)
+        (#\s :space)
+        (#\S (list :neg-char :space))
+        (#\t #\tab)
+        (#\w :word)
+        (#\W (list :neg-char :word))
+        (t c))
+      (+ i 1))))
 
 (defun pregexp-read-posix-char-class (s i n)
- (let ((neg? nil))
-  (let ((i i) (r (list #\:)))
-   (flet ((loop! (i r) (throw 'loop! (values i r))))
+  (let ((r '()) (negp nil))
     (loop
-     (multiple-value-setq (i r)
-      (let ((i i) (r r))
-       (catch 'loop!
-        (return
-         (if (>= i n) (pregexp-error 'pregexp-read-posix-char-class)
-          (let ((c (char s i)))
-           (cond ((char= c #\^) (setq neg? t) (loop! (+ i 1) r))
-            ((alpha-char-p c) (loop! (+ i 1) (cons c r)))
-            ((char= c #\:)
-             (if (or (>= (+ i 1) n) (not (char= (char s (+ i 1)) #\])))
-              (pregexp-error 'pregexp-read-posix-char-class)
-              (let
-               ((posix-class
-                 (let
-                  ((|Scheme-to-CL-9|
-                    (map 'string
-                     #'(lambda (c)
-                        (cond ((upper-case-p c) (char-downcase c))
-                         ((lower-case-p c) (char-upcase c)) (t c)))
-                     (concatenate 'string (nreverse r)))))
-                  (if
-                   (or (string= |Scheme-to-CL-9| "")
-                    (not (char= (char |Scheme-to-CL-9| 0) #\:)))
-                   (intern |Scheme-to-CL-9|)
-                   (intern (subseq |Scheme-to-CL-9| 1) :keyword)))))
-               (list (if neg? (list ':neg-char posix-class) posix-class)
-                (+ i 2)))))
-            (t (pregexp-error 'pregexp-read-posix-char-class))))))))))))))
+      (when (>= i n) (error "pregexp-read-posix-char-class"))
+      (let ((c (char s i))) (incf i)
+        (cond ((char= c #\^) (setq negp t))
+              ((alpha-char-p c) (push c r))
+              ((char= c #\:)
+               (when (or (>= i n)
+                         (not (char= (char s i) #\])))
+                 (error "pregexp-read-posix-char-class"))
+               (incf i)
+               (return))
+              (t (error "pregexp-read-posix-char-class")))))
+    (let ((posix-class
+            (intern (string-upcase (concatenate 'string (nreverse r)))
+                    :keyword)))
+      (values
+        (if negp (list :neg-char posix-class) posix-class)
+        i))))
 
-(defun pregexp-read-cluster-type (s i n)
- (let ((c (char s i)))
-  (case c
-   ((#\?)
-    (let ((i (+ i 1)))
-     (case (char s i) ((#\:) (list 'nil (+ i 1)))
-      ((#\=) (list '(:lookahead) (+ i 1)))
-      ((#\!) (list '(:neg-lookahead) (+ i 1)))
-      ((#\>) (list '(:no-backtrack) (+ i 1)))
-      ((#\<)
-       (list
-        (case (char s (+ i 1)) ((#\=) '(:lookbehind))
-         ((#\!) '(:neg-lookbehind))
-         (t (pregexp-error 'pregexp-read-cluster-type)))
-        (+ i 2)))
-      (t
-       (let ((i i) (r 'nil) (inv? nil))
-        (flet ((loop! (i r inv?) (throw 'loop! (values i r inv?))))
-         (loop
-          (multiple-value-setq (i r inv?)
-           (let ((i i) (r r) (inv? inv?))
-            (catch 'loop!
-             (return
-              (let ((c (char s i)))
-               (case c ((#\-) (loop! (+ i 1) r t))
-                ((#\i)
-                 (loop! (+ i 1)
-                  (cons (if inv? ':case-sensitive ':case-insensitive) r) nil))
-                ((#\x) (setq *pregexp-space-sensitive?* inv?)
-                 (loop! (+ i 1) r nil))
-                ((#\:) (list r (+ i 1)))
-                (t (pregexp-error 'pregexp-read-cluster-type)))))))))))))))
-   (t (list '(:sub) i)))))
+(defun pregexp-read-cluster-type (s i)
+  (let ((c (char s i))) (incf i)
+    (case c
+      (#\?
+       (setq c (char s i)) (incf i)
+       (case c
+         (#\: (values '() i))
+         (#\= (values `(:lookahead) i))
+         (#\! (values `(:neg-lookahead) i))
+         (#\> (values `(:no-backtrack) i))
+         (#\< (setq c (char s i)) (incf i)
+          (case c
+            (#\= (values `(:lookbehind) i))
+            (#\! (values `(:neg-lookbehind) i))
+            (t (error "pregexp-read-cluster-type"))))
+         (t (let ((r '()) (invp nil))
+              (loop
+                (case c
+                  (#\- (setq invp t))
+                  (#\i (push (if invp :case-sensitive
+                               :case-insensitive) r)
+                   (setq invp nil))
+                  (#\x (setq *pregexp-space-sensitive-p* invp)
+                   (setq invp nil))
+                  (#\: (return (values (nreverse r) i)))
+                  (t (error "pregexp-read-cluster-type")))
+                (setq c (char s i))
+                (incf i))))))
+      (t (decf i) (values '(:sub) i)))))
 
 (defun pregexp-read-subpattern (s i n)
- (let ((remember-space-sensitive? *pregexp-space-sensitive?*))
-  (let ((ctyp-i (pregexp-read-cluster-type s i n)))
-   (let ((ctyp (car ctyp-i)))
-    (let ((i (cadr ctyp-i)))
-     (let ((vv (pregexp-read-pattern s i n)))
-      (setq *pregexp-space-sensitive?* remember-space-sensitive?)
-      (let ((vv-re (car vv)) (vv-i (cadr vv)))
-       (if (and (< vv-i n) (char= (char s vv-i) #\)))
-        (list
-         (let ((ctyp ctyp) (re vv-re))
-          (flet ((loop! (ctyp re) (throw 'loop! (values ctyp re))))
-           (loop
-            (multiple-value-setq (ctyp re)
-             (let ((ctyp ctyp) (re re))
-              (catch 'loop!
-               (return
-                (if (null ctyp) re
-                 (loop! (cdr ctyp) (list (car ctyp) re))))))))))
-         (+ vv-i 1))
-        (pregexp-error 'pregexp-read-subpattern)))))))))
+  (let ((remember-space-sensitive-p *pregexp-space-sensitive-p*))
+    (multiple-value-bind (ctyp i1)
+      (pregexp-read-cluster-type s i)
+      (multiple-value-bind (re i2)
+        (pregexp-read-pattern s i1 n)
+        (setq *pregexp-space-sensitive-p* remember-space-sensitive-p)
+        (cond ((and (< i2 n)
+                    (char= (char s i2) #\)))
+               (incf i2)
+               (dolist (ct ctyp)
+                 (setq re (list ct re)))
+               (values re i2))
+              (t (error "pregexp-read-subpattern")))))))
 
-(defun pregexp-wrap-quantifier-if-any (vv s n)
- (let ((re (car vv)))
-  (let ((i (cadr vv)))
-   (flet ((loop! (i) (throw 'loop! (values i))))
-    (loop
-     (multiple-value-setq (i)
-      (let ((i i))
-       (catch 'loop!
-        (return
-         (if (>= i n) vv
-          (let ((c (char s i)))
-           (if
-            (and
-             (let ((|Scheme-to-CL-10| c))
-              (or (char= |Scheme-to-CL-10| #\space)
-               (char= |Scheme-to-CL-10| #\tab)
-               (not (graphic-char-p |Scheme-to-CL-10|))))
-             (not *pregexp-space-sensitive?*))
-            (loop! (+ i 1))
-            (case c
-             ((#\* #\+ #\? #\{)
-              (let ((new-re (list ':between 'minimal? 'at-least 'at-most re)))
-               (let ((new-vv (list new-re 'next-i)))
-                (case c
-                 ((#\*) (rplaca (cddr new-re) 0) (rplaca (cdddr new-re) nil))
-                 ((#\+) (rplaca (cddr new-re) 1) (rplaca (cdddr new-re) nil))
-                 ((#\?) (rplaca (cddr new-re) 0) (rplaca (cdddr new-re) 1))
-                 ((#\{)
-                  (let ((pq (pregexp-read-nums s (+ i 1) n)))
-                   (if (not pq)
-                    (pregexp-error 'pregexp-wrap-quantifier-if-any
-                     'left-brace-must-be-followed-by-number))
-                   (rplaca (cddr new-re) (car pq))
-                   (rplaca (cdddr new-re) (cadr pq)) (setq i (caddr pq)))))
-                (let ((i (+ i 1)))
-                 (flet ((loop! (i) (throw 'loop! (values i))))
-                  (loop
-                   (multiple-value-setq (i)
-                    (let ((i i))
-                     (catch 'loop!
-                      (return
-                       (if (>= i n)
-                        (progn (rplaca (cdr new-re) nil)
-                         (rplaca (cdr new-vv) i))
-                        (let ((c (char s i)))
-                         (cond
-                          ((and
-                            (let ((|Scheme-to-CL-11| c))
-                             (or (char= |Scheme-to-CL-11| #\space)
-                              (char= |Scheme-to-CL-11| #\tab)
-                              (not (graphic-char-p |Scheme-to-CL-11|))))
-                            (not *pregexp-space-sensitive?*))
-                           (loop! (+ i 1)))
-                          ((char= c #\?) (rplaca (cdr new-re) t)
-                           (rplaca (cdr new-vv) (+ i 1)))
-                          (t (rplaca (cdr new-re) nil)
-                           (rplaca (cdr new-vv) i))))))))))))
-                new-vv)))
-             (t vv))))))))))))))
+(defun pregexp-wrap-quantifier-if-any (re s i n)
+  (loop
+    (when (>= i n) (return (values re i)))
+    (let ((c (char s i))) (incf i)
+      (if (and (pregexp-whitespacep c) (not *pregexp-space-sensitive-p*)) t
+        (case c
+          ((#\* #\+ #\? #\{)
+           (let* ((new-re (list :between nil 1 1 re)))
+             ; (:between non-greedy at-least at-most re)
+             (case c
+               (#\* (setf (third new-re) 0
+                          (fourth new-re) nil))
+               (#\+ (setf (fourth new-re) nil))
+               (#\? (setf (third new-re) 0))
+               (#\{ (multiple-value-bind (p q i1)
+                      (pregexp-read-nums s i n)
+                      (setf (third new-re) p
+                            (fourth new-re) q
+                            i i1))))
+             (loop
+               (when (>= i n) (return))
+               (let ((c (char s i))) (incf i)
+                 (cond ((and (pregexp-whitespacep c)
+                             (not *pregexp-space-sensitive-p*)) t)
+                       ((char= c #\?)
+                        (setf (second new-re) t)
+                        (return))
+                       (t (decf i) (return)))))
+             (return (values new-re i))))
+          (t (decf i) (return (values re i))))))))
+
+(defun pregexp-whitespacep (c)
+  (or (char= c #\space) (char= c #\tab)
+      (not (graphic-char-p c))))
 
 (defun pregexp-read-nums (s i n)
- (let ((p 'nil) (q 'nil) (k i) (reading 1))
-  (flet ((loop! (p q k reading) (throw 'loop! (values p q k reading))))
-   (loop
-    (multiple-value-setq (p q k reading)
-     (let ((p p) (q q) (k k) (reading reading))
-      (catch 'loop!
-       (return
-        (progn (if (>= k n) (pregexp-error 'pregexp-read-nums))
-         (let ((c (char s k)))
-          (cond
-           ((digit-char-p c)
-            (if (= reading 1) (loop! (cons c p) q (+ k 1) 1)
-             (loop! p (cons c q) (+ k 1) 2)))
-           ((and
-             (let ((|Scheme-to-CL-12| c))
-              (or (char= |Scheme-to-CL-12| #\space)
-               (char= |Scheme-to-CL-12| #\tab)
-               (not (graphic-char-p |Scheme-to-CL-12|))))
-             (not *pregexp-space-sensitive?*))
-            (loop! p q (+ k 1) reading))
-           ((and (char= c #\,) (= reading 1)) (loop! p q (+ k 1) 2))
-           ((char= c #\})
-            (let
-             ((p
-               (let ((|Scheme-to-CL-13| (concatenate 'string (nreverse p))))
-                (if (position #\: |Scheme-to-CL-13| :test #'char=) nil
-                 (let
-                  ((|Scheme-to-CL-14|
-                    (read-from-string |Scheme-to-CL-13| nil)))
-                  (if (numberp |Scheme-to-CL-14|) |Scheme-to-CL-14| nil)))))
-              (q
-               (let ((|Scheme-to-CL-15| (concatenate 'string (nreverse q))))
-                (if (position #\: |Scheme-to-CL-15| :test #'char=) nil
-                 (let
-                  ((|Scheme-to-CL-16|
-                    (read-from-string |Scheme-to-CL-15| nil)))
-                  (if (numberp |Scheme-to-CL-16|) |Scheme-to-CL-16| nil))))))
-             (cond ((and (not p) (= reading 1)) (list 0 nil k))
-              ((= reading 1) (list p p k)) (t (list p q k)))))
-           (t nil))))))))))))
-
-(defun pregexp-invert-char-list (vv) (rplaca (car vv) ':none-of-chars) vv)
+  (let ((p '()) (q '()) (reading 1))
+    (loop
+      (when (>= i n) (error "pregexp-read-nums: unmatched left brace"))
+      (let ((c (char s i)))
+        (cond ((digit-char-p c)
+               (if (= reading 1)
+                 (push c p)
+                 (push c q))
+               (incf i))
+              ((and (pregexp-whitespacep c) (not *pregexp-space-sensitive-p*))
+               (incf i))
+              ((and (char= c #\,) (= reading 1))
+               (incf i) (incf reading))
+              ((char= c #\})
+               (incf i)
+               (setq p (read-from-string (concatenate 'string (nreverse p)) nil)
+                     q (read-from-string (concatenate 'string (nreverse q)) nil))
+               (return
+                 (cond ((and (not p) (= reading 1)) (values 0 nil i))
+                       ((= reading 1) (values p p i))
+                       (t (values p q i)))))
+              (t (error "pregexp-read-nums: left brace must be followed by number")))))))
 
 (defun pregexp-read-char-list (s i n)
- (let ((r 'nil) (i i))
-  (flet ((loop! (r i) (throw 'loop! (values r i))))
-   (loop
-    (multiple-value-setq (r i)
-     (let ((r r) (i i))
-      (catch 'loop!
-       (return
-        (if (>= i n)
-         (pregexp-error 'pregexp-read-char-list
-          'character-class-ended-too-soon)
-         (let ((c (char s i)))
-          (case c
-           ((#\])
-            (if (null r) (loop! (cons c r) (+ i 1))
-             (list (cons ':one-of-chars (nreverse r)) (+ i 1))))
-           ((#\\)
-            (let ((char-i (pregexp-read-escaped-char s i n)))
-             (if char-i (loop! (cons (car char-i) r) (cadr char-i))
-              (pregexp-error 'pregexp-read-char-list 'backslash))))
-           ((#\-)
-            (if
-             (or (null r)
-              (let ((i+1 (+ i 1))) (and (< i+1 n) (char= (char s i+1) #\]))))
-             (loop! (cons c r) (+ i 1))
-             (let ((c-prev (car r)))
-              (if (characterp c-prev)
-               (loop!
-                (cons (list ':char-range c-prev (char s (+ i 1))) (cdr r))
-                (+ i 2))
-               (loop! (cons c r) (+ i 1))))))
-           ((#\[)
-            (if (char= (char s (+ i 1)) #\:)
-             (let
-              ((posix-char-class-i
-                (pregexp-read-posix-char-class s (+ i 2) n)))
-              (loop! (cons (car posix-char-class-i) r)
-               (cadr posix-char-class-i)))
-             (loop! (cons c r) (+ i 1))))
-           (t (loop! (cons c r) (+ i 1))))))))))))))
+  (let ((r '()))
+    (loop
+      (when (>= i n) (error "pregexp-read-char-list: char class ended too soon"))
+      (let ((c (char s i))) (incf i)
+        (case c
+          (#\] (if (null r)
+                 (progn (push c r) (incf i))
+                 (return r)))
+          (#\\ (multiple-value-bind (c2 i2)
+                 (pregexp-read-escaped-char s i)
+                 (when (not c2)
+                   (error "pregexp-read-char-list: backslash"))
+                 (push c2 r)
+                 (setq i i2)))
+          (#\- (if (or (null r)
+                       (and (< i n)
+                            (char= (char s i) #\])))
+                 (push #\- r)
+                 (let ((c-1 (car r)))
+                   (if (characterp c-1)
+                     (progn
+                       (pop r)
+                       (push `(:char-range ,c-1 ,(char s i)) r)
+                       (incf i))
+                     (push #\- r)))))
+          (#\[ (if (char= (char s i) #\:)
+                 (multiple-value-bind (c i1)
+                   (pregexp-read-posix-char-class s (1+ i) n)
+                   (push c r)
+                   (setq i i1))
+                 (push #\[ r)))
+          (t (push c r)))))
+    (values (cons :one-of-chars
+                  (nreverse r))
+            i)))
 
 (defun pregexp-string-match (s1 s i n sk fk)
- (let ((n1 (length s1)))
-  (if (> n1 n) (funcall fk)
-   (let ((j 0) (k i))
-    (flet ((loop! (j k) (throw 'loop! (values j k))))
-     (loop
-      (multiple-value-setq (j k)
-       (let ((j j) (k k))
-        (catch 'loop!
-         (return
-          (cond ((>= j n1) (funcall sk k)) ((>= k n) (funcall fk))
-           ((char= (char s1 j) (char s k)) (loop! (+ j 1) (+ k 1)))
-           (t (funcall fk)))))))))))))
+  (let ((n1 (length s1)))
+    (if (> n1 n) (funcall fk)
+      (let ((j 0) (k i) (failp nil))
+        (loop
+          (cond ((>= j n1) (return))
+                ((>= k n) (return (setq failp t)))
+                ((char= (char s1 j) (char s k))
+                 (incf j) (incf k))
+                (t (return (setq failp t)))))
+        (if failp (funcall fk)
+          (funcall sk k))))))
 
 (defun pregexp-char-word? (c)
  (or (alpha-char-p c) (digit-char-p c) (char= c #\_)))
 
-(defun pregexp-at-word-boundary? (s i n)
- (or (= i 0) (>= i n)
-  (let ((c/i (char s i)) (c/i-1 (char s (- i 1))))
-   (let
-    ((c/i/w? (pregexp-check-if-in-char-class? c/i ':word))
-     (c/i-1/w? (pregexp-check-if-in-char-class? c/i-1 ':word)))
-    (or (and c/i/w? (not c/i-1/w?)) (and (not c/i/w?) c/i-1/w?))))))
+(defun pregexp-at-word-boundary-p (s i n)
+  (or (= i 0)
+      (>= i n)
+      (let* ((c-i (char s i))
+            (c-i-minus-1 (char s (- i 1)))
+            (c-i-is-word-p (pregexp-check-if-in-char-class-p c-i :word))
+            (c-i-minus-1-is-word-p (pregexp-check-if-in-char-class-p c-i-minus-1 :word)))
+        (or (and c-i-is-word-p (not c-i-minus-1-is-word-p))
+            (and (not c-i-is-word-p) c-i-minus-1-is-word-p)))))
 
-(defun pregexp-check-if-in-char-class? (c char-class)
- (case char-class ((:any) (not (char= c #\newline)))
-  ((:alnum) (or (alpha-char-p c) (digit-char-p c))) ((:alpha) (alpha-char-p c))
-  ((:ascii) (< (char-code c) 128))
-  ((:blank) (or (char= c #\space) (char= c *pregexp-tab-char*)))
-  ((:cntrl) (< (char-code c) 32)) ((:digit) (digit-char-p c))
-  ((:graph)
-   (and (>= (char-code c) 32)
-    (not
-     (let ((|Scheme-to-CL-17| c))
-      (or (char= |Scheme-to-CL-17| #\space) (char= |Scheme-to-CL-17| #\tab)
-       (not (graphic-char-p |Scheme-to-CL-17|)))))))
-  ((:lower) (lower-case-p c)) ((:print) (>= (char-code c) 32))
-  ((:punct)
-   (and (>= (char-code c) 32)
-    (not
-     (let ((|Scheme-to-CL-18| c))
-      (or (char= |Scheme-to-CL-18| #\space) (char= |Scheme-to-CL-18| #\tab)
-       (not (graphic-char-p |Scheme-to-CL-18|)))))
-    (not (alpha-char-p c)) (not (digit-char-p c))))
-  ((:space)
-   (let ((|Scheme-to-CL-19| c))
-    (or (char= |Scheme-to-CL-19| #\space) (char= |Scheme-to-CL-19| #\tab)
-     (not (graphic-char-p |Scheme-to-CL-19|)))))
-  ((:upper) (upper-case-p c))
-  ((:word) (or (alpha-char-p c) (digit-char-p c) (char= c #\_)))
-  ((:xdigit)
-   (or (digit-char-p c) (char-equal c #\a) (char-equal c #\b)
-    (char-equal c #\c) (char-equal c #\d) (char-equal c #\e)
-    (char-equal c #\f)))
-  (t (pregexp-error 'pregexp-check-if-in-char-class?))))
-
-(defun pregexp-list-ref (s i)
- (let ((s s) (k 0))
-  (flet ((loop! (s k) (throw 'loop! (values s k))))
-   (loop
-    (multiple-value-setq (s k)
-     (let ((s s) (k k))
-      (catch 'loop!
-       (return
-        (cond ((null s) nil) ((= k i) (car s))
-         (t (loop! (cdr s) (+ k 1))))))))))))
+(defun pregexp-check-if-in-char-class-p (c char-class) ;check thoroughly
+  (case char-class
+    (:any (not (char= c #\newline)))
+    (:alnum (or (alpha-char-p c) (digit-char-p c)))
+    (:alpha (alpha-char-p c))
+    (:ascii (< (char-code c) 128))
+    (:blank (or (char= c #\space) (char= c #\tab)))
+    (:cntrl (< (char-code c) 32))
+    (:digit (digit-char-p c))
+    (:graph (and (pregexp-check-if-in-char-class-p c :print)
+                 (not (pregexp-whitespacep c))))
+    (:lower (lower-case-p c))
+    (:print (>= (char-code c) 32))
+    (:punct (and (pregexp-check-if-in-char-class-p c :print)
+                 (not (or (pregexp-whitespacep c)
+                          (alpha-char-p c)
+                          (digit-char-p c)))))
+    (:space (pregexp-whitespacep c))
+    (:upper (upper-case-p c))
+    (:word (or (alpha-char-p c) (digit-char-p c) (char= c #\_)))
+    (:xdigit (or (digit-char-p c)
+                 (member c '(#\a #\b #\c #\d #\e #\f) :test #'char-equal)))
+    (t (error "pregexp-check-if-in-char-class-p"))))
 
 (defun pregexp-make-backref-list (re)
- (labels
-  ((sub (re)
-    (if (consp re)
-     (let ((car-re (car re)) (sub-cdr-re (sub (cdr re))))
-      (if (eql car-re ':sub) (cons (cons re nil) sub-cdr-re)
-       (append (sub car-re) sub-cdr-re)))
-     'nil)))
-  (sub re)))
+  (if (consp re)
+    (let ((re1 (car re))
+          (rest-backrefs (pregexp-make-backref-list (cdr re))))
+      (if (eq re1 :sub)
+        (cons (cons re nil) rest-backrefs)
+        (append (pregexp-make-backref-list re1) rest-backrefs)))
+    '()))
 
 (defun pregexp-match-positions-aux (re s sn start n i)
- (let
-  ((identity #'(lambda (x) x)) (backrefs (pregexp-make-backref-list re))
-   (case-sensitive? t))
-  (labels
-   ((sub (re i sk fk)
-     (cond ((eql re ':bos) (if (= i 0) (funcall sk i) (funcall fk)))
-      ((eql re ':eos) (if (>= i sn) (funcall sk i) (funcall fk)))
-      ((eql re ':empty) (funcall sk i))
-      ((eql re ':wbdry)
-       (if (pregexp-at-word-boundary? s i n) (funcall sk i) (funcall fk)))
-      ((eql re ':not-wbdry)
-       (if (pregexp-at-word-boundary? s i n) (funcall fk) (funcall sk i)))
-      ((and (characterp re) (< i n))
-       (if (funcall (if case-sensitive? #'char= #'char-equal) (char s i) re)
-        (funcall sk (+ i 1)) (funcall fk)))
-      ((and (not (consp re)) (< i n))
-       (if (pregexp-check-if-in-char-class? (char s i) re) (funcall sk (+ i 1))
-        (funcall fk)))
-      ((and (consp re) (eql (car re) ':char-range) (< i n))
-       (let ((c (char s i)))
-        (if
-         (let ((c< (if case-sensitive? #'char<= #'char-not-greaterp)))
-          (and (funcall c< (cadr re) c) (funcall c< c (caddr re))))
-         (funcall sk (+ i 1)) (funcall fk))))
-      ((consp re)
-       (case (car re)
-        ((:char-range)
-         (if (>= i n) (funcall fk)
-          (pregexp-error 'pregexp-match-positions-aux)))
-        ((:one-of-chars)
-         (if (>= i n) (funcall fk)
-          (labels
-           ((loup-one-of-chars (chars)
-             (if (null chars) (funcall fk)
-              (sub (car chars) i sk
-               #'(lambda nil (loup-one-of-chars (cdr chars)))))))
-           (loup-one-of-chars (cdr re)))))
-        ((:neg-char)
-         (if (>= i n) (funcall fk)
-          (sub (cadr re) i #'(lambda (i1) (funcall fk))
-           #'(lambda nil (funcall sk (+ i 1))))))
-        ((:seq)
-         (labels
-          ((loup-seq (res i)
-            (if (null res) (funcall sk i)
-             (sub (car res) i #'(lambda (i1) (loup-seq (cdr res) i1)) fk))))
-          (loup-seq (cdr re) i)))
-        ((:or)
-         (labels
-          ((loup-or (res)
-            (if (null res) (funcall fk)
-             (sub (car res) i
-              #'(lambda (i1) (or (funcall sk i1) (loup-or (cdr res))))
-              #'(lambda nil (loup-or (cdr res)))))))
-          (loup-or (cdr re))))
-        ((:backref)
-         (let ((c (pregexp-list-ref backrefs (cadr re))))
-          (let
-           ((backref
-             (let ((__cond_temp__ nil))
-              (cond ((setq __cond_temp__ c) (funcall #'cdr __cond_temp__))
-               (t
-                (pregexp-error 'pregexp-match-positions-aux
-                 'non-existent-backref re)
-                nil)))))
-           (if backref
-            (pregexp-string-match (subseq s (car backref) (cdr backref)) s i n
-             #'(lambda (i) (funcall sk i)) fk)
-            (funcall sk i)))))
-        ((:sub)
-         (sub (cadr re) i
-          #'(lambda (i1) (rplacd (assoc re backrefs) (cons i i1))
-             (funcall sk i1))
-          fk))
-        ((:lookahead)
-         (let ((found-it? (sub (cadr re) i identity #'(lambda nil nil))))
-          (if found-it? (funcall sk i) (funcall fk))))
-        ((:neg-lookahead)
-         (let ((found-it? (sub (cadr re) i identity #'(lambda nil nil))))
-          (if found-it? (funcall fk) (funcall sk i))))
-        ((:lookbehind)
-         (let ((n-actual n) (sn-actual sn)) (setq n i) (setq sn i)
-          (let
-           ((found-it?
-             (sub (list ':seq '(:between nil 0 nil :any) (cadr re) ':eos) 0
-              identity #'(lambda nil nil))))
-           (setq n n-actual) (setq sn sn-actual)
-           (if found-it? (funcall sk i) (funcall fk)))))
-        ((:neg-lookbehind)
-         (let ((n-actual n) (sn-actual sn)) (setq n i) (setq sn i)
-          (let
-           ((found-it?
-             (sub (list ':seq '(:between nil 0 nil :any) (cadr re) ':eos) 0
-              identity #'(lambda nil nil))))
-           (setq n n-actual) (setq sn sn-actual)
-           (if found-it? (funcall fk) (funcall sk i)))))
-        ((:no-backtrack)
-         (let ((found-it? (sub (cadr re) i identity #'(lambda nil nil))))
-          (if found-it? (funcall sk found-it?) (funcall fk))))
-        ((:case-sensitive :case-insensitive)
-         (let ((old case-sensitive?))
-          (setq case-sensitive? (eql (car re) ':case-sensitive))
-          (sub (cadr re) i
-           #'(lambda (i1) (setq case-sensitive? old) (funcall sk i1))
-           #'(lambda nil (setq case-sensitive? old) (funcall fk)))))
-        ((:between)
-         (let ((maximal? (not (cadr re))))
-          (let ((p (caddr re)))
-           (let ((q (cadddr re)))
-            (let ((could-loop-infinitely? (and maximal? (not q))))
-             (let ((re (car (cddddr re))))
-              (labels
-               ((loup-p (k i)
-                 (if (< k p)
-                  (sub re i
-                   #'(lambda (i1)
-                      (if (and could-loop-infinitely? (= i1 i))
-                       (pregexp-error 'pregexp-match-positions-aux
-                        'greedy-quantifier-operand-could-be-empty))
-                      (loup-p (+ k 1) i1))
-                   fk)
-                  (let ((q (and q (- q p))))
-                   (labels
-                    ((loup-q (k i)
-                      (let ((fk #'(lambda nil (funcall sk i))))
-                       (if (and q (>= k q)) (funcall fk)
-                        (if maximal?
-                         (sub re i
-                          #'(lambda (i1)
-                             (if (and could-loop-infinitely? (= i1 i))
-                              (pregexp-error 'pregexp-match-positions-aux
-                               'greedy-quantifier-operand-could-be-empty))
-                             (or (loup-q (+ k 1) i1) (funcall fk)))
-                          fk)
-                         (or (funcall fk)
-                          (sub re i #'(lambda (i1) (loup-q (+ k 1) i1))
-                           fk)))))))
-                    (loup-q 0 i))))))
-               (loup-p 0 i))))))))
-        (t (pregexp-error 'pregexp-match-positions-aux))))
-      ((>= i n) (funcall fk))
-      (t (pregexp-error 'pregexp-match-positions-aux)))))
-   (sub re i identity #'(lambda nil nil)))
-  (let ((backrefs (mapcar #'cdr backrefs))) (and (car backrefs) backrefs))))
+  (let* ((backrefs (pregexp-make-backref-list re))
+         (case-sensitive-p t))
+    (flet ((char=1 (c1 c2)
+                   (if case-sensitive-p
+                     (char= c1 c2)
+                     (char-equal c1 c2)))
+           (char<=1 (c1 c2 c3)
+                    (if case-sensitive-p
+                      (char<= c1 c2 c3)
+                      (char-not-greaterp c1 c2 c3))))
+      (pregexp-recur
+        match-loop ((re re) (i i) (sk #'identity) (fk (lambda () nil)))
+        (cond ((eq re :bos)
+               (if (= i start) (funcall sk i) (funcall fk)))
+              ((eq re :eos)
+               (if (>= i n) (funcall sk i) (funcall fk)))
+              ((eq re :empty) (funcall sk i))
+              ((eq re :wbdry)
+               (if (pregexp-at-word-boundary-p s i n)
+                 (funcall sk i)
+                 (funcall fk)))
+              ((eq re :not-wbdry)
+               (if (pregexp-at-word-boundary-p s i n)
+                 (funcall fk)
+                 (funcall sk i)))
+              ((and (characterp re) (< i n))
+               (if (char=1 (char s i) re)
+                 (funcall sk (1+ i))
+                 (funcall fk)))
+              ((and (not (consp re)) (< i n))
+               (if (pregexp-check-if-in-char-class-p (char s i) re)
+                 (funcall sk (1+ i))
+                 (funcall fk)))
+              ((consp re)
+               (case (car re)
+                 (:char-range
+                   (if (>= i n) (funcall fk)
+                     (if (char<=1 (second re) (char s i) (third re))
+                       (funcall sk (1+ i))
+                       (funcall fk))))
+                 (:one-of-chars
+                   (if (>= i n) (funcall fk)
+                     (pregexp-recur
+                       one-of-chars-loop ((chars (rest re)))
+                       (if (null chars) (funcall fk)
+                         (match-loop (first chars) i sk
+                                     (lambda ()
+                                       (one-of-chars-loop (rest chars))))))))
+                 (:neg-char
+                   (if (>= i n) (funcall fk)
+                     (match-loop (second re) i
+                                 (lambda (i1)
+                                   (declare (ignore i1))
+                                   (funcall fk))
+                                 (lambda () (funcall sk (1+ i))))))
+                 (:seq
+                   (pregexp-recur
+                     seq-loop ((res (rest re)) (i i))
+                     (if (null res) (funcall sk i)
+                       (match-loop (first res) i
+                                   (lambda (i1) (seq-loop (rest res) i1))
+                                   fk))))
+                 (:or
+                   (pregexp-recur
+                     or-loop ((res (rest re)))
+                     (if (null res) (funcall fk)
+                       (match-loop (first res) i
+                                   (lambda (i1)
+                                     (or (funcall sk i1)
+                                         (or-loop (rest res))))
+                                   (lambda ()
+                                     (or-loop (cdr res)))))))
+                 (:backref
+                   (let* ((cell (nth (second re) backrefs))
+                          (backref
+                            (cond (cell (cdr cell))
+                                  (t (error "pregexp-match-positions-aux: non-existent backref ~s" re)
+                                     ;FIXME
+                                     nil))))
+                     (if backref
+                       (pregexp-string-match
+                         (subseq s (car backref) (cdr backref))
+                         s i n sk fk)
+                       (funcall sk i))))
+                 (:sub
+                   (match-loop (second re) i
+                               (lambda (i1)
+                                 (setf (cdr (assoc re backrefs)) (cons i i1))
+                                 (funcall sk i1))
+                               fk))
+                 (:lookahead
+                   (let ((found-it-p
+                           (match-loop (second re) i
+                                       #'identity
+                                       (lambda () nil))))
+                     (if found-it-p (funcall sk i) (funcall fk))))
+                 (:neg-lookahead
+                   (let ((found-it-p
+                           (match-loop (second re) i
+                                       #'identity
+                                       (lambda () nil))))
+                     (if found-it-p (funcall fk) (funcall sk i))))
+                 (:lookbehind
+                   (let ((n-actual n) (sn-actual sn))
+                     (setq n i sn i)
+                     (let ((found-it-p
+                             (match-loop `(:seq (:between nil 0 nil :any)
+                                                ,(second re) :eos)
+                                         0
+                                         #'identity
+                                         (lambda () nil))))
+                       (setq n n-actual sn sn-actual)
+                       (if found-it-p (funcall sk i) (funcall fk)))))
+                 (:neg-lookbehind
+                   (let ((n-actual n) (sn-actual sn))
+                     (setq n i sn i)
+                     (let ((found-it-p
+                             (match-loop `(:seq (:between nil 0 nil :any)
+                                                ,(second re) :eos)
+                                         0
+                                         #'identity
+                                         (lambda () nil))))
+                       (setq n n-actual sn sn-actual)
+                       (if found-it-p (funcall fk) (funcall sk i)))))
+                 (:no-backtrack
+                   (let ((found-it-p
+                           (match-loop (second re) i #'identity (lambda () nil))))
+                     (if found-it-p
+                       (funcall sk found-it-p)
+                       (funcall fk))))
+                 ((:case-sensitive :case-insensitive)
+                  (let ((old-case-sensitive-p case-sensitive-p))
+                    (setq case-sensitive-p
+                          (eq (first re) :case-sensitive))
+                    (match-loop (second re) i
+                                (lambda (i1)
+                                  (setq case-sensitive-p old-case-sensitive-p)
+                                  (funcall sk i1))
+                                (lambda ()
+                                  (setq case-sensitive-p old-case-sensitive-p)
+                                  (funcall fk)))))
+                 (:between
+                   (let* ((non-greedy-p (second re))
+                          (p (third re))
+                          (q (fourth re))
+                          (re (fifth re))
+                          (could-loop-infinitely-p
+                            (and (not non-greedy-p) (not q)))
+                          (q (and q (- q p))))
+                     (pregexp-recur
+                       p-loop ((k 0) (i i))
+                       (if (< k p)
+                         (match-loop re i
+                                     (lambda (i1)
+                                       (if (and could-loop-infinitely-p
+                                                (= i1 i))
+                                         (error "pregexp-match-positions-aux: greedy quantifier operand could be empty")
+                                         (p-loop (1+ k) i1)))
+                                     fk)
+                         (pregexp-recur
+                           q-loop ((k 0) (i i))
+                           (let ((fk (lambda () (funcall sk i))))
+                             (if (and q (>= k q)) (funcall fk)
+                               (if (not non-greedy-p)
+                                 (match-loop re i
+                                             (lambda (i1)
+                                               (if (and could-loop-infinitely-p
+                                                        (= i1 i))
+                                                 (error "pregexp-match-positions-aux greedy quantifier operand could be empty"))
+                                               (or (q-loop (1+ k) i1)
+                                                   (funcall fk)))
+                                             fk)
+                                 (or (funcall fk)
+                                     (match-loop re i
+                                                 (lambda (i1)
+                                                   (q-loop (1+ k) i1))
+                                                 fk))))))))))
+                 (t (error "pregexp-match-positions-aux"))))
+              ((>= i n) (funcall fk))
+              (t (error "pregexp-match-positions-aux")))))
+    (setq backrefs (mapcar #'cdr backrefs))
+    (and (car backrefs) backrefs)))
 
 (defun pregexp-replace-aux (str ins n backrefs)
- (let ((i 0) (r ""))
-  (flet ((loop! (i r) (throw 'loop! (values i r))))
-   (loop
-    (multiple-value-setq (i r)
-     (let ((i i) (r r))
-      (catch 'loop!
-       (return
-        (if (>= i n) r
-         (let ((c (char ins i)))
-          (if (char= c #\\)
-           (let ((br-i (pregexp-read-escaped-number ins i n)))
-            (let
-             ((br
-               (if br-i (car br-i) (if (char= (char ins (+ i 1)) #\&) 0 nil))))
-             (let ((i (if br-i (cadr br-i) (if br (+ i 2) (+ i 1)))))
-              (if (not br)
-               (let ((c2 (char ins i)))
-                (loop! (+ i 1)
-                 (if (char= c2 #\$) r
-                  (concatenate 'string r (concatenate 'string (list c2))))))
-               (loop! i
-                (let ((backref (pregexp-list-ref backrefs br)))
-                 (if backref
-                  (concatenate 'string r
-                   (subseq str (car backref) (cdr backref)))
-                  r)))))))
-           (loop! (+ i 1)
-            (concatenate 'string r (concatenate 'string (list c)))))))))))))))
+  (let ((r "") (i 0))
+    (loop
+      (when (>= i n) (return r))
+      (let ((c (char ins i)))
+        (incf i)
+        (if (char= c #\\)
+          (multiple-value-bind (m i1)
+            (pregexp-read-escaped-number ins i n)
+            (when (and (not i1) (char= (char str i) #\&))
+              (setq m 0)
+              (setq i1 (1+ i)))
+            (cond (m (let ((backref (nth m backrefs)))
+                       (when backref
+                         (setq r (concatenate 'string r
+                                   (subseq str (car backref) (cdr backref)))))
+                       (setq i i1)))
+                  (t (let ((c2 (char ins i)))
+                       (incf i)
+                       (unless (char= c2 #\$)
+                         (setq r (concatenate 'string r (string c2))))))))
+          (setq r (concatenate 'string r (string c))))))))
 
-(defun pregexp (s) (setq *pregexp-space-sensitive?* t)
- (list ':sub (car (pregexp-read-pattern s 0 (length s)))))
+(defun pregexp (s)
+  (setq *pregexp-space-sensitive-p* t) ;in case it got corrupted
+  (list :sub (pregexp-read-pattern s 0 (length s))))
 
-(defun pregexp-match-positions (pat str &rest opt-args)
- (cond ((stringp pat) (setq pat (pregexp pat))) ((consp pat) t)
-  (t
-   (pregexp-error 'pregexp-match-positions
-    'pattern-must-be-compiled-or-string-regexp pat)))
- (let ((str-len (length str)))
-  (let
-   ((start
-     (if (null opt-args) 0
-      (let ((start (car opt-args))) (setq opt-args (cdr opt-args)) start))))
-   (let ((end (if (null opt-args) str-len (car opt-args))))
+(defun pregexp-match-positions (pat str &optional start end)
+  (when (stringp pat) (setq pat (pregexp pat)))
+  (unless (consp pat)
+    (error "pregexp-match-positions: pattern ~s must be compiled or string regexp"
+           pat))
+  (let ((str-len (length str)))
+    (when (not start) (setq start 0))
+    (when (or (not end) (> end str-len)) (setq end str-len))
     (let ((i start))
-     (flet ((loop! (i) (throw 'loop! (values i))))
       (loop
-       (multiple-value-setq (i)
-        (let ((i i))
-         (catch 'loop!
-          (return
-           (and (<= i end)
-            (or (pregexp-match-positions-aux pat str str-len start end i)
-             (loop! (+ i 1)))))))))))))))
+        (unless (<= i end) (return nil))
+        (let ((res (pregexp-match-positions-aux
+                     pat str str-len start end i)))
+          (if res (return res)
+            (incf i)))))))
 
-(defun pregexp-match (pat str &rest opt-args)
- (let ((ix-prs (apply #'pregexp-match-positions pat str opt-args)))
-  (and ix-prs
-   (mapcar #'(lambda (ix-pr) (and ix-pr (subseq str (car ix-pr) (cdr ix-pr))))
-    ix-prs))))
+(defun pregexp-match (pat str &optional start end)
+  (let ((index-pairs
+          (pregexp-match-positions pat str start end)))
+    (and index-pairs
+         (mapcar
+           (lambda (index-pair)
+             (and index-pair
+                  (subseq str (car index-pair) (cdr index-pair))))
+           index-pairs))))
 
 (defun pregexp-split (pat str)
- (let ((n (length str)))
-  (let ((i 0) (r 'nil) (picked-up-one-undelimited-char? nil))
-   (flet
-    ((loop! (i r picked-up-one-undelimited-char?)
-      (throw 'loop! (values i r picked-up-one-undelimited-char?))))
+  ;split str into substrings, using pat as delim
+  (let ((r '()) (n (length str)) (i 0) (picked-up-one-undelimited-char-p nil) it)
     (loop
-     (multiple-value-setq (i r picked-up-one-undelimited-char?)
-      (let
-       ((i i) (r r)
-        (picked-up-one-undelimited-char? picked-up-one-undelimited-char?))
-       (catch 'loop!
-        (return
-         (let ((__cond_temp__ nil))
-          (cond ((>= i n) (nreverse r))
-           ((setq __cond_temp__ (pregexp-match-positions pat str i n))
-            (funcall
-             #'(lambda (y)
-                (let ((jk (car y)))
-                 (let ((j (car jk)) (k (cdr jk)))
-                  (cond
-                   ((= j k) (loop! (+ k 1) (cons (subseq str i (+ j 1)) r) t))
-                   ((and (= j i) picked-up-one-undelimited-char?)
-                    (loop! k r nil))
-                   (t (loop! k (cons (subseq str i j) r) nil))))))
-             __cond_temp__))
-           (t (loop! n (cons (subseq str i n) r) nil)))))))))))))
+      (cond ((>= i n) (return (nreverse r)))
+            ((setq it (car (pregexp-match-positions pat str i n)))
+             (let ((j (car it)) (k (cdr it)))
+               (cond ((= j k) (push (subseq str i (1+ j)) r)
+                              (setq i (1+ k))
+                              (setq picked-up-one-undelimited-char-p t))
+                     ((and (= j i) picked-up-one-undelimited-char-p)
+                      (setq i k)
+                      (setq picked-up-one-undelimited-char-p nil))
+                     (t (push (subseq str i j) r)
+                        (setq i k)
+                        (setq picked-up-one-undelimited-char-p nil)))))
+            (t (push (subseq str i n) r)
+               (setq i n))))))
 
 (defun pregexp-replace (pat str ins)
- (let ((n (length str)))
-  (let ((pp (pregexp-match-positions pat str 0 n)))
-   (if (not pp) str
-    (let ((ins-len (length ins)) (m-i (caar pp)) (m-n (cdar pp)))
-     (concatenate 'string (subseq str 0 m-i)
-      (pregexp-replace-aux str ins ins-len pp) (subseq str m-n n)))))))
+  (let* ((n (length str))
+         (pp (pregexp-match-positions pat str 0 n)))
+    (if (not pp) str
+      (let ((ins-len (length ins))
+            (m-i (caar pp))
+            (m-n (cdar pp)))
+        (concatenate 'string
+          (subseq str 0 m-i)
+          (pregexp-replace-aux str ins ins-len pp)
+          (subseq str m-n n))))))
 
 (defun pregexp-replace* (pat str ins)
- (let
-  ((pat (if (stringp pat) (pregexp pat) pat)) (n (length str))
-   (ins-len (length ins)))
-  (let ((i 0) (r ""))
-   (flet ((loop! (i r) (throw 'loop! (values i r))))
+  ;return str with every occurrence of pat replaced by ins
+  (when (stringp pat) (setq pat (pregexp pat)))
+  (let ((n (length str))
+        (ins-len (length ins))
+        (i 0)
+        (r ""))
     (loop
-     (multiple-value-setq (i r)
-      (let ((i i) (r r))
-       (catch 'loop!
-        (return
-         (if (>= i n) r
-          (let ((pp (pregexp-match-positions pat str i n)))
-           (if (not pp)
-            (if (= i 0) str (concatenate 'string r (subseq str i n)))
-            (loop! (cdar pp)
-             (concatenate 'string r (subseq str i (caar pp))
-              (pregexp-replace-aux str ins ins-len pp)))))))))))))))
+      ;i = index in str to start replacing from
+      ;r = already calculated prefix of answer
+      (when (>= i n) (return r))
+      (let ((pp (pregexp-match-positions pat str i n)))
+        (when (not pp)
+          (return
+            (if (= i 0)
+              ;this implies pat didn't match str at all,
+              ;so let's return original str
+              str
+              (concatenate 'string r (subseq str i n)))))
+        (setq r (concatenate 'string r
+                  (subseq str i (caar pp))
+                  (pregexp-replace-aux str ins ins-len pp)))
+        (setq i (cdar pp))))))
 
+
+;; The original pregexp-quote loops endlessly. Fixed by van_nek.
 (defun pregexp-quote (s)
- (let ((i (- (length s) 1)) (r 'nil))
-  (flet ((loop! (i r) (throw 'loop! (values i r))))
-   (loop
-    (multiple-value-setq (i r)
-     (let ((i i) (r r))
-      (catch 'loop!
-       (return
-        (if (< i 0) (concatenate 'string r)
-         (loop! (- i 1)
-          (let ((c (char s i)))
-           (if
-            (member c
-             '(#\\ #\. #\? #\* #\+ #\| #\^ #\$ #\[ #\] #\{ #\} #\( #\)))
-            (cons #\\ (cons c r)) (cons c r)))))))))))))
+  (let (r)
+    (dolist (c (nreverse (coerce s 'list)) (concatenate 'string r))
+      (push c r)
+      (when (member c '(#\\ #\. #\? #\* #\+ #\| #\^ #\$ #\[ #\] #\{ #\} #\( #\)))
+        (push #\\ r) ))))
 
+
+;; The original file ends with a trace command for debugging. Commented out by van_nek.

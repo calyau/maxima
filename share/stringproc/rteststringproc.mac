@@ -38,10 +38,18 @@ control : "~:(~r~) bird~p ~[is~;are~] singing.";
 printf(false, control, n, n, if n = 1 then 1 else 2), n = 2;
 "Two birds are singing."$
 
-block([res:{},tmp],for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then res : adjoin (tmp, res)), subsetp ({"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"}, res));
+block([res:{},tmp],
+  for n from 0 thru 127 do (
+    tmp : ascii(n), 
+    if alphacharp(tmp) then res : adjoin (tmp, res) ), 
+  subsetp ({"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"}, res) );
 true;
 
-block([res:{},tmp],for n from 0 thru 255 do (tmp : ascii(n), if constituent(tmp) then res : adjoin (tmp, res)), subsetp ({"!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","{","|","}","~"}, res));
+block([res:{},tmp],
+  for n from 0 thru 127 do (
+    tmp : ascii(n), 
+    if constituent(tmp) then res : adjoin (tmp, res) ), 
+  subsetp ({"!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","{","|","}","~"}, res) );
 true;
 
 charat("Lisp", 1);
@@ -141,7 +149,7 @@ ssearch ("foo", "bar");
 false;
 ssort("I don't like Mondays.");
 "   '.IMaddeiklnnoosty"$
-ssort("I don't like Mondays.", 'cgreaterpignore);
+block([us_ascii_only:true], ssort("I don't like Mondays.", 'cgreaterpignore));
 "ytsoonnMlkIiedda.'   "$   
 ssubst("like", "hate", "I hate Thai food. I hate green tea.");
 "I like Thai food. I like green tea."$

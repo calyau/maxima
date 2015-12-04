@@ -51,7 +51,7 @@ sin(y)*(10.0+6*cos(x)),
 
 (defvar *plot-options* 
   `(:plot_format
-    ,(if (string= *autoconf-win32* "true")
+    ,(if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
          '$gnuplot
          '$gnuplot_pipes)
     :grid (30 30) :run_viewer t :axes t
@@ -68,7 +68,7 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $plot_options 
   `((mlist)
     ((mlist) $plot_format
-     ,(if (string= *autoconf-win32* "true")
+     ,(if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
           '$gnuplot
           '$gnuplot_pipes))))
 
@@ -88,8 +88,8 @@ sin(y)*(10.0+6*cos(x)),
 (defvar *gnuplot-stream* nil)
 (defvar *gnuplot-command* "")
 
-(defvar $gnuplot_command (if (string= *autoconf-win32* "true")
-                             "wgnuplot"
+(defvar $gnuplot_command (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+                             "gnuplot"
                              "gnuplot"))
 
 (defun start-gnuplot-process (path)
@@ -1343,9 +1343,9 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; creates the output file, when there is one to be created
     (when (and out-file (not (eq gnuplot-term '$default)))
-      #+(or (and sbcl win32) (and ccl windows))
+      #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
       ($system $gnuplot_command (format nil $gnuplot_file_args file))
-      #-(or (and sbcl win32) (and ccl windows))
+      #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
       ($system (format nil "~a ~a" $gnuplot_command
                        (format nil $gnuplot_file_args file))))
 
@@ -1356,9 +1356,9 @@ sin(y)*(10.0+6*cos(x)),
         ($default
          ;; the options given to gnuplot will be different when the user
          ;; redirects the output by using "set output" in the preamble
-	 #+(or (and sbcl win32) (and ccl windows))
+	 #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 	 ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file))
-	 #-(or (and sbcl win32) (and ccl windows))
+	 #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 	 ($system 
 	  (format nil "~a ~a" $gnuplot_command
 		  (format nil (if (search "set out" gnuplot-preamble) 
@@ -1674,7 +1674,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
-  (if (string= *autoconf-win32* "true")
+  (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
       (setq formats '($geomview $gnuplot $mgnuplot $openmath $xmaxima))
       (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $openmath $xmaxima)))
   (unless (member (cadr option) formats)
@@ -2217,11 +2217,11 @@ sin(y)*(10.0+6*cos(x)),
          (with-open-file (st1 (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))) :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
-                               (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
+                               (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")) "\\bin\\" "/bin/") 
                                $xmaxima_plot_command)
-		  #-(or (and sbcl win32) (and ccl windows))
+		  #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 		  (format nil " ~s &" file)
-		  #+(or (and sbcl win32) (and ccl windows))
+		  #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 		  file))
         (t (princ ans) "")))
 
@@ -2628,11 +2628,11 @@ Several functions depending on the two variables v1 and v2:
                   ($system
                    (concatenate
                     'string *maxima-prefix* 
-                    (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
+                    (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")) "\\bin\\" "/bin/")
                     $xmaxima_plot_command) 
-                   #-(or (and sbcl win32) (and ccl windows))
+                   #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
                    (format nil " ~s &" file)
-                   #+(or (and sbcl win32) (and ccl windows))
+                   #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
                    file))
                  ($geomview 
                   ($system $geomview_command

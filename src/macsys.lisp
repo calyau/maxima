@@ -606,7 +606,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+(or gcl ecl lispworks)
     (declare (ignore s))
 
-    (cond ((string= *autoconf-win32* "true")
+    (cond ((or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
 	   (setf shell "cmd") (setf shell-opt "/c"))
 	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
 
@@ -620,8 +620,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+(or cmu scl) (ext:run-program shell (list shell-opt (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
     #+sbcl (sb-ext:run-program shell
-			       #+win32 (cons shell-opt (mapcar '$sconcat args))
-			       #-win32 (list shell-opt (apply '$sconcat args))
+			       #+(or win32 win64) (cons shell-opt (mapcar '$sconcat args))
+			       #-(or win32 win64) (list shell-opt (apply '$sconcat args))
 			       :search t :output (or s t))
     #+openmcl (ccl::run-program shell
 				#+windows (cons shell-opt (mapcar '$sconcat args))

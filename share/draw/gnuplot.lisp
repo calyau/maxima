@@ -33,7 +33,7 @@
 
 
 
-(defvar *windows-OS* (string= *autoconf-win32* "true"))
+(defvar *windows-OS* (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")))
 
 (defmacro write-font-type ()
    '(if (string= (get-option '$font) "")
@@ -3448,9 +3448,9 @@
                (format cmdstorage "~%quit~%~%")
                (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
-	     #+(or (and sbcl win32) (and ccl windows))
+	     #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
              ($system $gnuplot_command gfn)
-	     #-(or (and sbcl win32) (and ccl windows))
+	     #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 	     ($system (format nil "~a \"~a\"" 
 			      $gnuplot_command
 			      gfn) ))
@@ -3487,11 +3487,11 @@
                 ; call gnuplot via system command
                 (t
 
-		 #+(or (and sbcl win32) (and ccl windows))
+		 #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
 		     ($system $gnuplot_command "-persist" gfn)
 		     ($system $gnuplot_command gfn))
-		 #-(or (and sbcl win32) (and ccl windows))
+		 #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
 			      (format nil "~a ~a"
 				      $gnuplot_command

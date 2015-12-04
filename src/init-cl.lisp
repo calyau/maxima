@@ -134,7 +134,7 @@ When one changes, the other does too."
 	  (setq libdir     (combine-path maxima-prefix-env "lib"))
 	  (setq libexecdir (combine-path maxima-prefix-env "libexec"))
 	  (setq datadir    (combine-path maxima-prefix-env "share"))
-	  (setq infodir    (combine-path maxima-prefix-env #+(or cygwin windows win32) "share" "info")))
+	  (setq infodir    (combine-path maxima-prefix-env #+(or cygwin windows win32 win64) "share" "info")))
 	(progn
 	  (setq libdir     (maxima-parse-dirstring *autoconf-libdir*))
 	  (setq libexecdir (maxima-parse-dirstring *autoconf-libexecdir*))
@@ -171,7 +171,7 @@ When one changes, the other does too."
 (defun default-userdir ()
   (let ((home-env (maxima-getenv "HOME"))
 	(base-dir "")
-	(maxima-dir (if (string= *autoconf-win32* "true")
+	(maxima-dir (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
 			"maxima"
 			".maxima")))
     (setf base-dir
@@ -183,7 +183,7 @@ When one changes, the other does too."
 		  "c:\\user\\"
 		  home-env)
 	      ;; we have to make a guess
-	      (if (string= *autoconf-win32* "true")
+	      (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
 		  "c:\\user\\"
 		  "/tmp")))
     (combine-path (maxima-parse-dirstring base-dir) maxima-dir)))
@@ -196,7 +196,7 @@ When one changes, the other does too."
 	      (if (string= home-env "c:\\")
 		  "c:\\user\\"
 		  home-env)
-	      (if (string= *autoconf-win32* "true")
+	      (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
 		  "c:\\user\\"
 		  "/tmp")))
     (maxima-parse-dirstring base-dir)))
@@ -284,7 +284,7 @@ When one changes, the other does too."
 
     ; On Windows Vista gcc requires explicit include
     #+gcl
-    (when (string= *autoconf-win32* "true")
+    (when (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
       (let ((mingw-gccver (maxima-getenv "mingw_gccver")))
 	(when mingw-gccver
 	  (setq compiler::*cc*
