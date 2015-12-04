@@ -316,3 +316,10 @@ true;
 block ([powerdisp : true], verify_display_1d (2^(x^3+x^2+x+1), "2^(1+x+x^2+x^3)"));
 true;
 
+/* SF bug #3046 "Changes of behaviour with simp:false" */
+
+block ([simp:false], string((3/6)*x));
+"(3/6)*x";
+
+string (lambda ([], (2/2)*u));
+"lambda([],(2/2)*u)";
