@@ -88,9 +88,7 @@ sin(y)*(10.0+6*cos(x)),
 (defvar *gnuplot-stream* nil)
 (defvar *gnuplot-command* "")
 
-(defvar $gnuplot_command (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
-                             "gnuplot"
-                             "gnuplot"))
+(defvar $gnuplot_command "gnuplot")
 
 (defun start-gnuplot-process (path)
   #+clisp (setq *gnuplot-stream* (ext:make-pipe-output-stream path))
