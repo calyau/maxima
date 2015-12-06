@@ -402,6 +402,25 @@ How to convert a matrix to a nested list:
 @end group
 @end example
 
+Since maxima internally treats a sum of @code{n} terms as a summation command
+with @code{n} arguments args() can extract the list of terms in a sum:
+@c ===beg===
+@c a+b+c;
+@c args(%);
+@c ===end===
+@example
+@group
+(%i1) a+b+c;
+(%o1)                       c + b + a
+@end group
+@group
+(%i2) args(%);
+(%o2)                       [c, b, a]
+@end group
+@end example
+
+
+
 @opencatbox
 @category{Expressions}
 @closecatbox
