@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2009 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2009-2015 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -263,7 +263,7 @@
       ($draw_wave_options
          (if ($listp val)
             (setf (gethash opt *sound-options*) val)
-            (merror "sound: draw adds must be a list of draw options and graphics objects")))
+            (merror "sound: draw_wave_options must be a list of draw options")))
 
       ($normalize
          (cond
@@ -460,6 +460,7 @@
       (declare (type fixnum num-chn num-sam)
                (type flonum time)
                (type (simple-array flonum *) array1d))
+      (sound-user-defaults)
       ($apply
          '$draw
          (cons '(mlist simp)
@@ -494,6 +495,7 @@
       (declare (type fixnum num-chn num-sam)
                (type flonum time)
                (type (simple-array flonum *) array1d))
+      (sound-user-defaults)
       ($apply
          '$wxdraw
          (cons '(mlist simp)
@@ -531,7 +533,7 @@
            (res1 nil)
            (res2 nil))
           (cond 
-              ((or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+              ((string= *autoconf-win32* "true")
                  (setf res1 ($ssearch ":" str))
                  (setf res2 ($ssearch "\\" str))
                  (if (and res2 (>= res2 1) (not (and res1 (= res1 2))))
