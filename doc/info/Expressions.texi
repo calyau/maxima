@@ -96,29 +96,46 @@ Examples:
 @c ev (%, nouns);
 @c ===end===
 @example
+@group
 (%i1) foo (x) := x^2;
                                      2
 (%o1)                     foo(x) := x
+@end group
+@group
 (%i2) foo (42);
 (%o2)                         1764
+@end group
+@group
 (%i3) 'foo (42);
 (%o3)                        foo(42)
+@end group
+@group
 (%i4) 'foo (42), nouns;
 (%o4)                         1764
+@end group
+@group
 (%i5) declare (bar, noun);
 (%o5)                         done
+@end group
+@group
 (%i6) bar (x) := x/17;
-                                     x
-(%o6)                    ''bar(x) := --
-                                     17
+                                    x
+(%o6)                     bar(x) := --
+                                    17
+@end group
+@group
 (%i7) bar (52);
 (%o7)                        bar(52)
+@end group
+@group
 (%i8) bar (52), nouns;
-                               52
-(%o8)                          --
-                               17
+(%o8)                        bar(52)
+@end group
+@group
 (%i9) integrate (1/x, x, 1, 42);
 (%o9)                        log(42)
+@end group
+@group
 (%i10) 'integrate (1/x, x, 1, 42);
                              42
                             /
@@ -127,8 +144,11 @@ Examples:
                             ]   x
                             /
                              1
+@end group
+@group
 (%i11) ev (%, nouns);
 (%o11)                       log(42)
+@end group
 @end example
 
 @opencatbox
@@ -178,32 +198,58 @@ Examples:
 @c ?\*my\-lisp\-variable\*;
 @c ===end===
 @example
+@group
 (%i1) %an_ordinary_identifier42;
 (%o1)               %an_ordinary_identifier42
+@end group
+@group
 (%i2) embedded\ spaces\ in\ an\ identifier;
 (%o2)           embedded spaces in an identifier
+@end group
+@group
 (%i3) symbolp (%);
 (%o3)                         true
+@end group
+@group
 (%i4) [foo+bar, foo\+bar];
 (%o4)                 [foo + bar, foo+bar]
+@end group
+@group
 (%i5) [1729, \1729];
 (%o5)                     [1729, 1729]
+@end group
+@group
 (%i6) [symbolp (foo\+bar), symbolp (\1729)];
 (%o6)                     [true, true]
+@end group
+@group
 (%i7) [is (foo\+bar = foo+bar), is (\1729 = 1729)];
 (%o7)                    [false, false]
+@end group
+@group
 (%i8) baz\~quux;
 (%o8)                       baz~quux
+@end group
+@group
 (%i9) declare ("~", alphabetic);
 (%o9)                         done
+@end group
+@group
 (%i10) baz~quux;
 (%o10)                      baz~quux
+@end group
+@group
 (%i11) [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
 (%o11)                [false, false, false]
+@end group
+@group
 (%i12) :lisp (defvar *my-lisp-variable* '$foo)
 *MY-LISP-VARIABLE*
+@end group
+@group
 (%i12) ?\*my\-lisp\-variable\*;
 (%o12)                         foo
+@end group
 @end example
 
 @opencatbox
@@ -269,10 +315,14 @@ For example,
 @c part (expr, [2, 5]);
 @c ===end===
 @example
+@group
 (%i1) expr : e + d + c + b + a;
 (%o1)                   e + d + c + b + a
+@end group
+@group
 (%i2) part (expr, [2, 5]);
 (%o2)                         d + a
+@end group
 @end example
 
 while
@@ -282,10 +332,14 @@ while
 @c part (expr, allbut (2, 5));
 @c ===end===
 @example
+@group
 (%i1) expr : e + d + c + b + a;
 (%o1)                   e + d + c + b + a
+@end group
+@group
 (%i2) part (expr, allbut (2, 5));
 (%o2)                       e + c + b
+@end group
 @end example
 
 @code{allbut} is also recognized by @mrefdot{kill}
@@ -296,12 +350,18 @@ while
 @c [aa, bb, cc, dd];
 @c ===end===
 @example
+@group
 (%i1) [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
 (%o1)                 [11, 22, 33, 44, 55]
+@end group
+@group
 (%i2) kill (allbut (cc, dd));
 (%o0)                         done
+@end group
+@group
 (%i1) [aa, bb, cc, dd];
 (%o1)                   [aa, bb, 33, 44]
+@end group
 @end example
 
 @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of
@@ -322,9 +382,26 @@ The order of the items in the list may depend on the global flag
 @mrefdot{inflag}
 
 @code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
-See also @mrefcomma{substpart} and @mrefdot{op}
+See also @mrefcomma{substpart} @mrefcomma{apply} @mrefcomma{funmake} and @mrefdot{op}
 
-@c NEEDS EXAMPLES
+How to convert a matrix to a nested list:
+@c ===beg===
+@c M:matrix([1,2],[3,4]);
+@c args(M);
+@c ===end===
+@example
+@group
+(%i1) M:matrix([1,2],[3,4]);
+                            [ 1  2 ]
+(%o1)                       [      ]
+                            [ 3  4 ]
+@end group
+@group
+(%i2) args(M);
+(%o2)                   [[1, 2], [3, 4]]
+@end group
+@end example
+
 @opencatbox
 @category{Expressions}
 @closecatbox
@@ -381,35 +458,51 @@ Examples:
 @c box (sin(x) + cos(y));
 @c ===end===
 @example
+@group
 (%i1) box (a^2 + b^2);
                             """""""""
                             " 2    2"
 (%o1)                       "b  + a "
                             """""""""
+@end group
+@group
 (%i2) a : 1234;
 (%o2)                         1234
+@end group
+@group
 (%i3) b : c - d;
 (%o3)                         c - d
+@end group
+@group
 (%i4) box (a^2 + b^2);
                       """"""""""""""""""""
                       "       2          "
 (%o4)                 "(c - d)  + 1522756"
                       """"""""""""""""""""
+@end group
+@group
 (%i5) box (a^2 + b^2, term_1);
                       term_1""""""""""""""
                       "       2          "
 (%o5)                 "(c - d)  + 1522756"
                       """"""""""""""""""""
+@end group
+@group
 (%i6) 1729 - box (1729);
                                  """"""
 (%o6)                     1729 - "1729"
                                  """"""
+@end group
+@group
 (%i7) boxchar: "-";
 (%o7)                           -
+@end group
+@group
 (%i8) box (sin(x) + cos(y));
                         -----------------
 (%o8)                   -cos(y) + sin(x)-
                         -----------------
+@end group
 @end example
 
 @opencatbox
@@ -497,16 +590,24 @@ while the external representation is "minus @code{x}".
 @c ?format (true, "~S~%", %);
 @c ===end===
 @example
+@group
 (%i1) - x;
 (%o1)                          - x
+@end group
+@group
 (%i2) ?format (true, "~S~%", %);
 ((MTIMES SIMP) -1 $X)
 (%o2)                         false
+@end group
+@group
 (%i3) dispform (- x);
 (%o3)                          - x
+@end group
+@group
 (%i4) ?format (true, "~S~%", %);
 ((MMINUS SIMP) $X)
 (%o4)                         false
+@end group
 @end example
 
 The internal representation of @code{sqrt(x)} is "@code{x} to the power 1/2"
@@ -519,16 +620,24 @@ while the external representation is "square root of @code{x}".
 @c ?format (true, "~S~%", %);
 @c ===end===
 @example
+@group
 (%i1) sqrt (x);
 (%o1)                        sqrt(x)
+@end group
+@group
 (%i2) ?format (true, "~S~%", %);
 ((MEXPT SIMP) $X ((RAT SIMP) 1 2))
 (%o2)                         false
+@end group
+@group
 (%i3) dispform (sqrt (x));
 (%o3)                        sqrt(x)
+@end group
+@group
 (%i4) ?format (true, "~S~%", %);
 ((%SQRT SIMP) $X)
 (%o4)                         false
+@end group
 @end example
 
 Use of the optional argument @code{all}.
@@ -540,14 +649,22 @@ Use of the optional argument @code{all}.
 @c freeof (sqrt, dispform (expr, all));
 @c ===end===
 @example
+@group
 (%i1) expr : sin (sqrt (x));
 (%o1)                     sin(sqrt(x))
+@end group
+@group
 (%i2) freeof (sqrt, expr);
 (%o2)                         true
+@end group
+@group
 (%i3) freeof (sqrt, dispform (expr));
 (%o3)                         true
+@end group
+@group
 (%i4) freeof (sqrt, dispform (expr, all));
 (%o4)                         false
+@end group
 @end example
 
 @opencatbox
@@ -614,26 +731,26 @@ for @code{%e^x} in @code{%e^(a x)}.
 @example
 @group
 (%i1) %e^(a*x);
-                                       a x
-(%o1)                                %e
+                                a x
+(%o1)                         %e
 @end group
 @group
 (%i2) exptsubst;
-(%o2)                                false
+(%o2)                         false
 @end group
 @group
 (%i3) subst(y, %e^x, %e^(a*x));
-                                       a x
-(%o3)                                %e
+                                a x
+(%o3)                         %e
 @end group
 @group
 (%i4) exptsubst: not exptsubst;
-(%o4)                                true
+(%o4)                         true
 @end group
 @group
 (%i5) subst(y, %e^x, %e^(a*x));
-                                       a
-(%o5)                                 y
+                                a
+(%o5)                          y
 @end group
 @end example
 
@@ -967,15 +1084,15 @@ Example:
 @example
 @group
 (%i1) lfreeof ([ a, x], x^2+b);
-(%o1)                                false
+(%o1)                         false
 @end group
 @group
-lfreeof ([ b, x], x^2+b);
-(%o2)                                false
+(%i2) lfreeof ([ b, x], x^2+b);
+(%o2)                         false
 @end group
 @group
-lfreeof ([ a, y], x^2+b);
-(%o3)                                true
+(%i3) lfreeof ([ a, y], x^2+b);
+(%o3)                         true
 @end group
 @end example
 
@@ -1038,16 +1155,24 @@ Example:
 @c ''%, nouns;
 @c ===end===
 @example
+@group
 (%i1) factor (12345678);
                              2
 (%o1)                     2 3  47 14593
+@end group
+@group
 (%i2) declare (factor, noun);
 (%o2)                         done
+@end group
+@group
 (%i3) factor (12345678);
 (%o3)                   factor(12345678)
+@end group
+@group
 (%i4) ''%, nouns;
                              2
 (%o4)                     2 3  47 14593
+@end group
 @end example
 
 @opencatbox
@@ -1148,31 +1273,55 @@ Examples:
 @c ===end===
 @example
 (%i1) stringdisp: true$
+@group
 (%i2) op (a * b * c);
 (%o2)                          "*"
+@end group
+@group
 (%i3) op (a * b + c);
 (%o3)                          "+"
+@end group
+@group
 (%i4) op ('sin (a + b));
 (%o4)                          sin
+@end group
+@group
 (%i5) op (a!);
 (%o5)                          "!"
+@end group
+@group
 (%i6) op (-a);
 (%o6)                          "-"
+@end group
+@group
 (%i7) op ([a, b, c]);
 (%o7)                          "["
+@end group
+@group
 (%i8) op ('(if a > b then c else d));
 (%o8)                         "if"
+@end group
+@group
 (%i9) op ('foo (a));
 (%o9)                          foo
+@end group
+@group
 (%i10) prefix (foo);
 (%o10)                        "foo"
+@end group
+@group
 (%i11) op (foo a);
 (%o11)                        "foo"
+@end group
+@group
 (%i12) op (F [x, y] (a, b, c));
 (%o12)                        F
                                x, y
+@end group
+@group
 (%i13) op (G [u, v, w]);
 (%o13)                          G
+@end group
 @end example
 
 @opencatbox
@@ -1221,28 +1370,28 @@ substitute into the operator of an expression.  E.g.,
 @example
 @group
 (%i1) r+r[0];
-(%o1)                               r + r
-                                         0
+(%o1)                        r + r
+                                  0
 @end group
 @group
 (%i2) opsubst;
-(%o2)                                true
+(%o2)                         true
 @end group
 @group
 (%i3) subst (x^2, r, r+r[0]);
-                                   2     2
-(%o3)                             x  + (x )
-                                           0
+                            2     2
+(%o3)                      x  + (x )
+                                    0
 @end group
 @group
 (%i4) opsubst: not opsubst;
-(%o4)                                false
+(%o4)                         false
 @end group
 @group
 (%i5) subst (x^2, r, r+r[0]);
-                                     2
-(%o5)                               x  + r
-                                          0
+                              2
+(%o5)                        x  + r
+                                   0
 @end group
 @end example
 
@@ -1358,10 +1507,14 @@ Note that @code{%pi} is not ordered according to its numerical value.
 @c sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
 @c ===end===
 @example
+@group
 (%i1) stringdisp : true;
 (%o1)                         true
-(%i2) sort([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
-(%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
+@end group
+@group
+(%i2) sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+(%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", X, a, x]
+@end group
 @end example
 
 Effect of @code{ordergreat} and @code{orderless} functions.
@@ -1373,14 +1526,22 @@ Effect of @code{ordergreat} and @code{orderless} functions.
 @c sort ([M, H, K, T, E, W, G, A, P, J, S]);
 @c ===end===
 @example
+@group
 (%i1) sort ([M, H, K, T, E, W, G, A, P, J, S]);
 (%o1)           [A, E, G, H, J, K, M, P, S, T, W]
+@end group
+@group
 (%i2) ordergreat (S, J);
 (%o2)                         done
+@end group
+@group
 (%i3) orderless (M, H);
 (%o3)                         done
+@end group
+@group
 (%i4) sort ([M, H, K, T, E, W, G, A, P, J, S]);
 (%o4)           [M, H, A, E, G, K, P, T, W, J, S]
+@end group
 @end example
 
 Effect of @code{mainvar}, @code{constant}, and @code{scalar} declarations.
@@ -1393,16 +1554,26 @@ Effect of @code{mainvar}, @code{constant}, and @code{scalar} declarations.
 @c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
 @c ===end===
 @example
+@group
 (%i1) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
-(%o1)   [aa, bar, baz, bb, cc, dd, foo, quux, A1, B1, C1]
+(%o1)   [A1, B1, C1, aa, bar, baz, bb, cc, dd, foo, quux]
+@end group
+@group
 (%i2) declare (aa, mainvar);
 (%o2)                         done
+@end group
+@group
 (%i3) declare ([baz, quux], constant);
 (%o3)                         done
+@end group
+@group
 (%i4) declare ([A1, B1], scalar);
 (%o4)                         done
+@end group
+@group
 (%i5) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
-(%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
+(%o5)   [baz, quux, A1, B1, C1, bar, bb, cc, dd, foo, aa]
+@end group
 @end example
 
 Ordering non-atomic expressions.
@@ -1413,13 +1584,17 @@ Ordering non-atomic expressions.
 @c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
 @c ===end===
 @example
-(%i1) sort([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n),
-            f(n, 1)]);
+@group
+(%i1) sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n),
+       f(n, 1)]);
 (%o1) [1, 2, f(1), g(1), g(1, 2), f(2), f(2, 1), n, g(n), 
                                                          f(n, 1)]
+@end group
+@group
 (%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
-(%o2)            [1, foo(1), X , k, foo(k), X ]
-                              1              k
+(%o2)            [1, X , foo(1), k, X , foo(k)]
+                      1              k
+@end group
 @end example
 
 @opencatbox
@@ -1466,12 +1641,18 @@ Examples:
 @c part(z+2*y+a,2,1);
 @c ===end===
 @example
+@group
 (%i1) part(z+2*y+a,2);
-(%o1)                                 2 y
+(%o1)                          2 y
+@end group
+@group
 (%i2) part(z+2*y+a,[1,3]);
-(%o2)                                z + a
+(%o2)                         z + a
+@end group
+@group
 (%i3) part(z+2*y+a,2,1);
-(%o3)                                  2
+(%o3)                           2
+@end group
 @end example
 
 @code{example (part)} displays additional examples.
@@ -1665,10 +1846,14 @@ substitution.
 @c subst ([a^2=b, b=a], sin(a^2) + sin(b));
 @c ===end===
 @example
-(%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
-(%o4)                           sin(b) + sin(a)
-(%i5) subst ([a^2=b, b=a], sin(a^2) + sin(b));
-(%o5)                              2 sin(a)
+@group
+(%i1) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o1)                    sin(b) + sin(a)
+@end group
+@group
+(%i2) subst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o2)                       2 sin(a)
+@end group
 @end example
 
 @opencatbox
@@ -1707,29 +1892,28 @@ Examples:
 @c rembox (expr2);
 @c ===end===
 @example
-(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
 @group
+(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
                                   a d - b c
 (%o1)                sin(%pi x) + ---------
                                       2
                                      h
 @end group
+@group
 (%i2) dpart (dpart (expr, 1, 1), 2, 2);
-                        """""""    a d - b c
-(%o2)               sin("%pi x") + ---------
-                        """""""      """"
-                                     " 2"
-                                     "h "
-                                     """"
+dpart: fell off the end.
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i3) expr2: lpart (BAR, lpart (FOO, %, 1), 2);
-                  FOO"""""""""""   BAR""""""""
-                  "    """"""" "   "a d - b c"
-(%o3)             "sin("%pi x")" + "---------"
-                  "    """"""" "   "  """"   "
-                  """"""""""""""   "  " 2"   "
-                                   "  "h "   "
-                                   "  """"   "
-                                   """""""""""
+                                  BAR""""""""
+                   FOO"""""""""   "a d - b c"
+(%o3)              "sin(%pi x)" + "---------"
+                   """"""""""""   "    2    "
+                                  "   h     "
+                                  """""""""""
+@end group
+@group
 (%i4) rembox (expr2, unlabelled);
                                   BAR""""""""
                    FOO"""""""""   "a d - b c"
@@ -1737,28 +1921,30 @@ Examples:
                    """"""""""""   "    2    "
                                   "   h     "
                                   """""""""""
+@end group
+@group
 (%i5) rembox (expr2, FOO);
-                                  BAR""""""""
-                       """""""    "a d - b c"
-(%o5)              sin("%pi x") + "---------"
-                       """""""    "  """"   "
-                                  "  " 2"   "
-                                  "  "h "   "
-                                  "  """"   "
-                                  """""""""""
+                                 BAR""""""""
+                                 "a d - b c"
+(%o5)               sin(%pi x) + "---------"
+                                 "    2    "
+                                 "   h     "
+                                 """""""""""
+@end group
+@group
 (%i6) rembox (expr2, BAR);
-                   FOO"""""""""""
-                   "    """"""" "   a d - b c
-(%o6)              "sin("%pi x")" + ---------
-                   "    """"""" "     """"
-                   """"""""""""""     " 2"
-                                      "h "
-                                      """"
+                    FOO"""""""""   a d - b c
+(%o6)               "sin(%pi x)" + ---------
+                    """"""""""""       2
+                                      h
+@end group
+@group
 (%i7) rembox (expr2);
                                   a d - b c
 (%o7)                sin(%pi x) + ---------
                                       2
                                      h
+@end group
 @end example
 
 @opencatbox
@@ -1872,8 +2058,10 @@ Example:
 @c sublis ([a=b, b=a], sin(a) + cos(b));
 @c ===end===
 @example
+@group
 (%i1) sublis ([a=b, b=a], sin(a) + cos(b));
 (%o1)                    sin(b) + cos(a)
+@end group
 @end example
 
 @opencatbox
@@ -1968,11 +2156,15 @@ Examples:
 @c subst (-%i, %i, a + b*%i);
 @c ===end===
 @example
+@group
 (%i1) subst (a, x+y, x + (x+y)^2 + y);
                                     2
 (%o1)                      y + x + a
+@end group
+@group
 (%i2) subst (-%i, %i, a + b*%i);
 (%o2)                       a - %i b
+@end group
 @end example
 
 The substitution is done in serial for a list of equations.  Compare this with
@@ -1983,10 +2175,14 @@ a parallel substitution:
 @c sublis([a=b, b=c], a+b);
 @c ===end===
 @example
-(%i3) subst([a=b, b=c], a+b);
-(%o3)                                 2 c
-(%i4) sublis([a=b, b=c], a+b);
-(%o4)                                c + b
+@group
+(%i1) subst([a=b, b=c], a+b);
+(%o1)                          2 c
+@end group
+@group
+(%i2) sublis([a=b, b=c], a+b);
+(%o2)                         c + b
+@end group
 @end example
 
 Single-character Operators like @code{+} and @code{-} have to be quoted in
@@ -2023,17 +2219,23 @@ Examples:
 @c substinpart (f1, f[1](x + 1), 0);
 @c ===end===
 @example
+@group
 (%i1) x . 'diff (f(x), x, 2);
                               2
                              d
 (%o1)                   x . (--- (f(x)))
                                2
                              dx
+@end group
+@group
 (%i2) substinpart (d^2, %, 2);
                                   2
 (%o2)                        x . d
+@end group
+@group
 (%i3) substinpart (f1, f[1](x + 1), 0);
 (%o3)                       f1(x + 1)
+@end group
 @end example
 
 If the last argument to a @code{part} function is a list of indices then
@@ -2044,8 +2246,10 @@ index of the list.  Thus
 @c part (x + y + z, [1, 3]);
 @c ===end===
 @example
+@group
 (%i1) part (x + y + z, [1, 3]);
 (%o1)                         z + x
+@end group
 @end example
 
 @mref{piece} holds the value of the last expression selected when using the
@@ -2064,25 +2268,37 @@ message is given.
 @c substpart (xthru (piece), expr, [2, 3]);
 @c ===end===
 @example
+@group
 (%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
               3         2       2            3
 (%o1)     27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+@end group
+@group
 (%i2) part (expr, 2, [1, 3]);
                                   2
 (%o2)                         54 y
+@end group
+@group
 (%i3) sqrt (piece/54);
 (%o3)                        abs(y)
+@end group
+@group
 (%i4) substpart (factor (piece), expr, [1, 2, 3, 5]);
                                3
 (%o4)               (3 y + 2 x)  + y + x + 1
+@end group
+@group
 (%i5) expr: 1/x + y/x - 1/z;
-                             1   y   1
-(%o5)                      - - + - + -
-                             z   x   x
+                             1    y   1
+(%o5)                     (- -) + - + -
+                             z    x   x
+@end group
+@group
 (%i6) substpart (xthru (piece), expr, [2, 3]);
                             y + 1   1
 (%o6)                       ----- - -
                               x     z
+@end group
 @end example
 
 Also, setting the option @mref{inflag} to @code{true} and calling @mref{part}
@@ -2114,20 +2330,28 @@ Example:
 @c substpart ("+", %, 1, 0);
 @c ===end===
 @example
+@group
 (%i1) 1/(x^2 + 2);
                                1
 (%o1)                        ------
                               2
                              x  + 2
+@end group
+@group
 (%i2) substpart (3/2, %, 2, 1, 2);
                                1
 (%o2)                       --------
                              3/2
                             x    + 2
+@end group
+@group
 (%i3) a*x + f(b, y);
 (%o3)                     a x + f(b, y)
+@end group
+@group
 (%i4) substpart ("+", %, 1, 0);
 (%o4)                    x + f(b, y) + a
+@end group
 @end example
 
 Also, setting the option @mref{inflag} to @code{true} and calling @mref{part}
@@ -2186,24 +2410,34 @@ output @code{%o7}.
 @c %th(2);
 @c ===end===
 @example
+@group
 (%i1) unorder();
 (%o1)                          []
-(%i2) b*x+a^2;
+@end group
+@group
+(%i2) b*x + a^2;
                                    2
 (%o2)                       b x + a
-(%i3) ordergreat(a);
+@end group
+@group
+(%i3) ordergreat (a);
 (%o3)                         done
-(%i4) b*x+a^2;
+@end group
+@group
+(%i4) b*x + a^2;
+ %th(1) - %th(3);
                              2
 (%o4)                       a  + b x
-(%i5) %th(1)-%th(3);
+@end group
+@group
+(%i5) unorder();
                               2    2
 (%o5)                        a  - a
-(%i6) unorder();
+@end group
+@group
+(%i6) %th(2);
 (%o6)                          [a]
-(%i7) %th(2);
-                                2    2
-(%o7)                      _101a  - a
+@end group
 @end example
 
 @opencatbox
@@ -2227,14 +2461,22 @@ Examples:
 @c :lisp $%
 @c ===end===
 @example
+@group
 (%i1) verbify ('foo);
 (%o1)                          foo
+@end group
+@group
 (%i2) :lisp $%
 $FOO
+@end group
+@group
 (%i2) nounify (foo);
 (%o2)                          foo
+@end group
+@group
 (%i3) :lisp $%
 %FOO
+@end group
 @end example
 
 @opencatbox

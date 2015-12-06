@@ -224,10 +224,14 @@ The resulting expression is not evaluated until the explicit evaluation
 @c ===end===
 @example
 (%i1) (a: 17, b: 29, c: 1729)$
+@group
 (%i2) buildq ([a: x, b], a + b + c);
 (%o2)                      x + c + 29
+@end group
+@group
 (%i3) ''%;
 (%o3)                       x + 1758
+@end group
 @end example
 
 @code{e} is bound to a list, which appears as such in the arguments of
@@ -238,10 +242,14 @@ The resulting expression is not evaluated until the explicit evaluation
 @c buildq ([e: [a, b, c]], bar (x, splice (e), y));
 @c ===end===
 @example
+@group
 (%i1) buildq ([e: [a, b, c]], foo (x, e, y));
 (%o1)                 foo(x, [a, b, c], y)
+@end group
+@group
 (%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
 (%o2)                  bar(x, a, b, c, y)
+@end group
 @end example
 
 The result is simplified after substitution.  If simplification were applied
@@ -252,10 +260,14 @@ before substitution, these two results would be the same.
 @c buildq ([e: [a, b, c]], 2 * splice (e));
 @c ===end===
 @example
+@group
 (%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
 (%o1)                    2 c + 2 b + 2 a
+@end group
+@group
 (%i2) buildq ([e: [a, b, c]], 2 * splice (e));
 (%o2)                        2 a b c
+@end group
 @end example
 
 The variables in @var{L} are bound in parallel; if bound sequentially,
@@ -272,14 +284,20 @@ which carries out substitutions sequentially.
 @c              bar (u, v, w, x, y, z));
 @c ===end===
 @example
+@group
 (%i1) buildq ([a: b, b: a], foo (a, b));
 (%o1)                       foo(b, a)
+@end group
+@group
 (%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
               bar (u, v, w, x, y, z));
 (%o2)                 bar(v, w, x, y, z, u)
+@end group
+@group
 (%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u],
              bar (u, v, w, x, y, z));
 (%o3)                 bar(u, u, u, u, u, u)
+@end group
 @end example
 
 Construct a list of equations with some variables or expressions on the
@@ -293,13 +311,19 @@ shows the expression returned by @code{show_values}.
 @c macroexpand (show_values (a, b, c - a - b));
 @c ===end===
 @example
+@group
 (%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 (%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+@end group
 (%i2) (a: 17, b: 29, c: 1729)$
+@group
 (%i3) show_values (a, b, c - a - b);
 (%o3)          [a = 17, b = 29, c - b - a = 1683]
+@end group
+@group
 (%i4) macroexpand (show_values (a, b, c - a - b));
 (%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
+@end group
 @end example
 
 Given a function of several arguments,
@@ -312,12 +336,18 @@ create another function for which some of the arguments are fixed.
 @c by3 (a + b);
 @c ===end===
 @example
+@group
 (%i1) curry (f, [a]) :=
         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+@end group
+@group
 (%i2) by3 : curry ("*", 3);
 (%o2)        lambda([[x]], apply(*, append([3], x)))
+@end group
+@group
 (%i3) by3 (a + b);
 (%o3)                       3 (b + a)
+@end group
 @end example
 
 @opencatbox
@@ -352,22 +382,32 @@ Examples
 @c h (y);
 @c ===end===
 @example
+@group
 (%i1) g (x) ::= x / 99;
                                     x
 (%o1)                      g(x) ::= --
                                     99
+@end group
+@group
 (%i2) h (x) ::= buildq ([x], g (x - a));
 (%o2)            h(x) ::= buildq([x], g(x - a))
+@end group
+@group
 (%i3) a: 1234;
 (%o3)                         1234
+@end group
+@group
 (%i4) macroexpand (h (y));
                               y - a
 (%o4)                         -----
                                99
+@end group
+@group
 (%i5) h (y);
                             y - 1234
 (%o5)                       --------
                                99
+@end group
 @end example
 
 @opencatbox
@@ -402,20 +442,30 @@ Examples
 @c h (y);
 @c ===end===
 @example
+@group
 (%i1) g (x) ::= x / 99;
                                     x
 (%o1)                      g(x) ::= --
                                     99
+@end group
+@group
 (%i2) h (x) ::= buildq ([x], g (x - a));
 (%o2)            h(x) ::= buildq([x], g(x - a))
+@end group
+@group
 (%i3) a: 1234;
 (%o3)                         1234
+@end group
+@group
 (%i4) macroexpand1 (h (y));
 (%o4)                       g(y - a)
+@end group
+@group
 (%i5) h (y);
                             y - 1234
 (%o5)                       --------
                                99
+@end group
 @end example
 
 @opencatbox
@@ -469,18 +519,26 @@ Examples
 @c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
 @c ===end===
 @example
+@group
 (%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
                        foo(1, %pi, z - y)
 (%o1)                -----------------------
                      length([1, %pi, z - y])
+@end group
+@group
 (%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
                                 1
 (%o2)                          ---
                                %pi
+@end group
+@group
 (%i3) matchfix ("<>", "<>");
 (%o3)                          <>
+@end group
+@group
 (%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
 (%o4)                   <>1, %pi, z - y<>
+@end group
 @end example
 
 @opencatbox
@@ -508,6 +566,8 @@ functions; when @var{F} is the name of an array function, @code{apply} evaluates
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
 this case.
 
+See also @code{funmake} and @code{args}.
+
 Examples:
 
 @code{apply} evaluates its arguments.
@@ -518,10 +578,14 @@ In this example, @code{min} is applied to the value of @code{L}.
 @c apply (min, L);
 @c ===end===
 @example
+@group
 (%i1) L : [1, 5, -10.2, 4, 3];
 (%o1)                 [1, 5, - 10.2, 4, 3]
+@end group
+@group
 (%i2) apply (min, L);
 (%o2)                        - 10.2
+@end group
 @end example
 
 @code{apply} evaluates arguments, even if the function @var{F} quotes them.
@@ -534,28 +598,37 @@ In this example, @code{min} is applied to the value of @code{L}.
 @c apply (dispfun, [fname]);
 @c ===end===
 @example
+@group
 (%i1) F (x) := x / 1729;
                                    x
 (%o1)                     F(x) := ----
                                   1729
+@end group
+@group
 (%i2) fname : F;
 (%o2)                           F
+@end group
+@group
 (%i3) dispfun (F);
                                    x
 (%t3)                     F(x) := ----
                                   1729
 
 (%o3)                         [%t3]
-(%i4) dispfun (fname);
-fname is not the name of a user function.
- -- an error.  Quitting.  To debug this try debugmode(true);
-(%i5) apply (dispfun, [fname]);
+@end group
 @group
+(%i4) dispfun (fname);
+fundef: no such function: fname
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
+(%i5) apply (dispfun, [fname]);
                                    x
 (%t5)                     F(x) := ----
                                   1729
-@end group
+
 (%o5)                         [%t5]
+@end group
 @end example
 
 @code{apply} evaluates the function name @var{F}.
@@ -569,17 +642,43 @@ Single quote @code{'} defeats evaluation.
 @c apply ('demoivre, [exp (%i * x)]);
 @c ===end===
 @example
+@group
 (%i1) demoivre;
 (%o1)                         false
+@end group
+@group
 (%i2) demoivre (exp (%i * x));
 (%o2)                  %i sin(x) + cos(x)
+@end group
+@group
 (%i3) apply (demoivre, [exp (%i * x)]);
-demoivre evaluates to false
-Improper name or value in functional position.
- -- an error.  Quitting.  To debug this try debugmode(true);
+apply: found false where a function was expected.
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i4) apply ('demoivre, [exp (%i * x)]);
 (%o4)                  %i sin(x) + cos(x)
+@end group
 @end example
+
+How to convert a nested list into a matrix:
+@c ===beg===
+@c a:[[1,2],[3,4]];
+@c apply(matrix,a);
+@c ===end===
+@example
+@group
+(%i1) a:[[1,2],[3,4]];
+(%o1)                   [[1, 2], [3, 4]]
+@end group
+@group
+(%i2) apply(matrix,a);
+                            [ 1  2 ]
+(%o2)                       [      ]
+                            [ 3  4 ]
+@end group
+@end example
+
 
 @opencatbox
 @category{Function application}
@@ -829,16 +928,26 @@ Examples:
 @c F2 (a, b);
 @c ===end===
 @example
+@group
 (%i1) expr : cos(y) - sin(x);
 (%o1)                    cos(y) - sin(x)
+@end group
+@group
 (%i2) define (F1 (x, y), expr);
 (%o2)              F1(x, y) := cos(y) - sin(x)
+@end group
+@group
 (%i3) F1 (a, b);
 (%o3)                    cos(b) - sin(a)
+@end group
+@group
 (%i4) F2 (x, y) := expr;
 (%o4)                   F2(x, y) := expr
+@end group
+@group
 (%i5) F2 (a, b);
 (%o5)                    cos(y) - sin(x)
+@end group
 @end example
 
 The function defined by @code{define} may be an ordinary Maxima function or an
@@ -849,11 +958,15 @@ array function.
 @c define (G2 [x, y], x.y - y.x);
 @c ===end===
 @example
+@group
 (%i1) define (G1 (x, y), x.y - y.x);
 (%o1)               G1(x, y) := x . y - y . x
+@end group
+@group
 (%i2) define (G2 [x, y], x.y - y.x);
 (%o2)                G2     := x . y - y . x
                        x, y
+@end group
 @end example
 
 When the last or only function argument @var{x_n} is a list of one element,
@@ -864,10 +977,14 @@ the function defined by @code{define} accepts a variable number of arguments.
 @c H (a, b, c);
 @c ===end===
 @example
+@group
 (%i1) define (H ([L]), '(apply ("+", L)));
 (%o1)                H([L]) := apply("+", L)
+@end group
+@group
 (%i2) H (a, b, c);
 (%o2)                       c + b + a
+@end group
 @end example
 
 When the first argument is an expression with operator @code{funmake},
@@ -882,19 +999,31 @@ When the first argument is an expression with operator @code{funmake},
 @c define (ev (foo (x, y)), sin(x) - cos(y));
 @c ===end===
 @example
+@group
 (%i1) [F : I, u : x];
 (%o1)                        [I, x]
+@end group
+@group
 (%i2) funmake (F, [u]);
 (%o2)                         I(x)
+@end group
+@group
 (%i3) define (funmake (F, [u]), cos(u) + 1);
 (%o3)                  I(x) := cos(x) + 1
+@end group
+@group
 (%i4) define (arraymake (F, [u]), cos(u) + 1);
 (%o4)                   I  := cos(x) + 1
                          x
+@end group
+@group
 (%i5) define (foo (x, y), bar (y, x));
 (%o5)                foo(x, y) := bar(y, x)
+@end group
+@group
 (%i6) define (ev (foo (x, y)), sin(x) - cos(y));
 (%o6)             bar(y, x) := sin(x) - cos(y)
+@end group
 @end example
 
 @opencatbox
@@ -967,17 +1096,28 @@ Examples:
 @c foo;
 @c ===end===
 @example
+@group
 (%i1) define_variable (foo, true, boolean);
 (%o1)                         true
+@end group
+@group
 (%i2) foo;
 (%o2)                         true
+@end group
+@group
 (%i3) foo: false;
 (%o3)                         false
+@end group
+@group
 (%i4) foo: %pi;
-Error: foo was declared mode boolean, has value: %pi
- -- an error.  Quitting.  To debug this try debugmode(true);
+translator: foo was declared with mode boolean
+                                          , but it has value: %pi
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i5) foo;
 (%o5)                         false
+@end group
 @end example
 
 @code{bar} is an integer variable, which must be prime.
@@ -992,23 +1132,33 @@ Error: foo was declared mode boolean, has value: %pi
 @c bar;
 @c ===end===
 @example
+@group
 (%i1) define_variable (bar, 2, integer);
 (%o1)                           2
+@end group
+@group
 (%i2) qput (bar, prime_test, value_check);
 (%o2)                      prime_test
+@end group
+@group
 (%i3) prime_test (y) := if not primep(y) then
                            error (y, "is not prime.");
 (%o3) prime_test(y) := if not primep(y)
-
                                    then error(y, "is not prime.")
+@end group
+@group
 (%i4) bar: 1439;
 (%o4)                         1439
+@end group
+@group
 (%i5) bar: 1440;
 1440 is not prime.
-#0: prime_test(y=1440)
- -- an error.  Quitting.  To debug this try debugmode(true);
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i6) bar;
 (%o6)                         1439
+@end group
 @end example
 
 @code{baz_quux} is a variable which cannot be assigned a value.
@@ -1025,26 +1175,34 @@ The mode @code{any_check} is like @code{any}, but @code{any_check} enables the
 @c baz_quux;
 @c ===end===
 @example
+@group
 (%i1) define_variable (baz_quux, 'baz_quux, any_check);
 (%o1)                       baz_quux
+@end group
+@group
 (%i2) F: lambda ([y], if y # 'baz_quux then
                  error ("Cannot assign to `baz_quux'."));
 (%o2) lambda([y], if y # 'baz_quux
-
                         then error(Cannot assign to `baz_quux'.))
+@end group
+@group
 (%i3) qput (baz_quux, ''F, value_check);
 (%o3) lambda([y], if y # 'baz_quux
-
                         then error(Cannot assign to `baz_quux'.))
+@end group
+@group
 (%i4) baz_quux: 'baz_quux;
 (%o4)                       baz_quux
+@end group
+@group
 (%i5) baz_quux: sqrt(2);
 Cannot assign to `baz_quux'.
-#0: lambda([y],if y # 'baz_quux then
-                 error("Cannot assign to `baz_quux'."))(y=sqrt(2))
- -- an error.  Quitting.  To debug this try debugmode(true);
+ -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i6) baz_quux;
 (%o6)                       baz_quux
+@end group
 @end example
 
 @opencatbox
@@ -1093,31 +1251,41 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) m(x, y) ::= x^(-y);
                                      - y
 (%o1)                   m(x, y) ::= x
+@end group
+@group
 (%i2) f(x, y) :=  x^(-y);
                                      - y
 (%o2)                    f(x, y) := x
+@end group
+@group
 (%i3) g[x, y] :=  x^(-y);
                                     - y
 (%o3)                     g     := x
                            x, y
+@end group
+@group
 (%i4) h[x](y) :=  x^(-y);
                                     - y
 (%o4)                     h (y) := x
                            x
+@end group
+@group
 (%i5) i[8](y) :=  8^(-y);
                                     - y
 (%o5)                     i (y) := 8
                            8
+@end group
+@group
 (%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
                                      - y
 (%t6)                   m(x, y) ::= x
-@group
+
                                      - y
 (%t7)                    f(x, y) := x
-@end group
 
                                     - y
 (%t8)                     g     := x
@@ -1142,14 +1310,17 @@ Examples:
                            8
 
 (%o12)       [%t6, %t7, %t8, %t9, %t10, %t11, %t12]
-(%i12) ''%;
+@end group
+@group
+(%i13) ''%;
                      - y              - y            - y
-(%o12) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
+(%o13) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
                                             x, y
                   - y           1              1             - y
         h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
          x              5        y   10         y   8
                                 5             10
+@end group
 @end example
 
 @opencatbox
@@ -1176,12 +1347,18 @@ Examples:
 @c map (g, %th(2));
 @c ===end===
 @example
+@group
 (%i1) a + b * c;
 (%o1)                        b c + a
+@end group
+@group
 (%i2) fullmap (g, %);
 (%o2)                   g(b) g(c) + g(a)
+@end group
+@group
 (%i3) map (g, %th(2));
 (%o3)                     g(b c) + g(a)
+@end group
 @end example
 
 @opencatbox
@@ -1202,8 +1379,10 @@ Example:
 @c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 @c ===end===
 @example
+@group
 (%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 (%o1)                [[a + 3, 4], [4, 3.5]]
+@end group
 @end example
 
 @opencatbox
@@ -1243,32 +1422,50 @@ Examples:
 @c arrays;
 @c ===end===
 @example
+@group
 (%i1) F_1 (x) := x - 100;
 (%o1)                   F_1(x) := x - 100
+@end group
+@group
 (%i2) F_2 (x, y) := x / y;
                                       x
 (%o2)                    F_2(x, y) := -
                                       y
+@end group
+@group
 (%i3) define (F_3 (x), sqrt (x));
 (%o3)                   F_3(x) := sqrt(x)
+@end group
+@group
 (%i4) G_1 [x] := x - 100;
 (%o4)                    G_1  := x - 100
                             x
+@end group
+@group
 (%i5) G_2 [x, y] := x / y;
                                      x
 (%o5)                     G_2     := -
                              x, y    y
+@end group
+@group
 (%i6) define (G_3 [x], sqrt (x));
 (%o6)                    G_3  := sqrt(x)
                             x
+@end group
+@group
 (%i7) H_1 [x] (y) := x^y;
                                       y
 (%o7)                     H_1 (y) := x
                              x
+@end group
+@group
 (%i8) functions;
 (%o8)              [F_1(x), F_2(x, y), F_3(x)]
+@end group
+@group
 (%i9) arrays;
 (%o9)                 [G_1, G_2, G_3, H_1]
+@end group
 @end example
 
 @opencatbox
@@ -1320,6 +1517,8 @@ functions; when @var{F} is the name of an array function,
 
 @code{funmake} evaluates its arguments.
 
+See also @code{apply} and @code{args}.
+
 Examples:
 
 @code{funmake} applied to an ordinary Maxima function.
@@ -1330,14 +1529,20 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) F (x, y) := y^2 - x^2;
                                    2    2
 (%o1)                  F(x, y) := y  - x
+@end group
+@group
 (%i2) funmake (F, [a + 1, b + 1]);
 (%o2)                    F(a + 1, b + 1)
+@end group
+@group
 (%i3) ''%;
                               2          2
 (%o3)                  (b + 1)  - (a + 1)
+@end group
 @end example
 
 @code{funmake} applied to a macro.
@@ -1348,16 +1553,22 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) G (x) ::= (x - 1)/2;
                                   x - 1
 (%o1)                    G(x) ::= -----
                                     2
+@end group
+@group
 (%i2) funmake (G, [u]);
 (%o2)                         G(u)
+@end group
+@group
 (%i3) ''%;
                               u - 1
 (%o3)                         -----
                                 2
+@end group
 @end example
 
 @code{funmake} applied to a subscripted function.
@@ -1370,22 +1581,32 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) H [a] (x) := (x - 1)^a;
                                         a
 (%o1)                   H (x) := (x - 1)
                          a
+@end group
+@group
 (%i2) funmake (H [n], [%e]);
                                        n
 (%o2)               lambda([x], (x - 1) )(%e)
+@end group
+@group
 (%i3) ''%;
                                     n
 (%o3)                       (%e - 1)
+@end group
+@group
 (%i4) funmake ('(H [n]), [%e]);
 (%o4)                        H (%e)
                               n
+@end group
+@group
 (%i5) ''%;
                                     n
 (%o5)                       (%e - 1)
+@end group
 @end example
 
 @code{funmake} applied to a symbol which is not a defined function of any kind.
@@ -1395,10 +1616,14 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) funmake (A, [u]);
 (%o1)                         A(u)
+@end group
+@group
 (%i2) ''%;
 (%o2)                         A(u)
+@end group
 @end example
 
 @code{funmake} evaluates its arguments, but not the return value.
@@ -1411,17 +1636,27 @@ Examples:
 @c ''%;
 @c ===end===
 @example
+@group
 (%i1) det(a,b,c) := b^2 -4*a*c;
                                     2
 (%o1)              det(a, b, c) := b  - 4 a c
+@end group
+@group
 (%i2) (x : 8, y : 10, z : 12);
 (%o2)                          12
+@end group
+@group
 (%i3) f : det;
 (%o3)                          det
+@end group
+@group
 (%i4) funmake (f, [x, y, z]);
 (%o4)                    det(8, 10, 12)
+@end group
+@group
 (%i5) ''%;
 (%o5)                         - 284
+@end group
 @end example
 
 Maxima simplifies @code{funmake}'s return value.
@@ -1430,8 +1665,10 @@ Maxima simplifies @code{funmake}'s return value.
 @c funmake (sin, [%pi / 2]);
 @c ===end===
 @example
+@group
 (%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
+@end group
 @end example
 
 @opencatbox
@@ -1489,12 +1726,16 @@ function.
 @c f(a);
 @c ===end===
 @example
+@group
 (%i1) f: lambda ([x], x^2);
                                       2
 (%o1)                    lambda([x], x )
+@end group
+@group
 (%i2) f(a);
                                 2
 (%o2)                          a
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1507,15 +1748,21 @@ A lambda expression may appear in contexts in which a function evaluation is exp
 @c map (lambda ([x], x^2), [a, b, c, d, e]);
 @c ===end===
 @example
-(%i3) lambda ([x], x^2) (a);
+@group
+(%i1) lambda ([x], x^2) (a);
                                 2
-(%o3)                          a
-(%i4) apply (lambda ([x], x^2), [a]);
+(%o1)                          a
+@end group
+@group
+(%i2) apply (lambda ([x], x^2), [a]);
                                 2
-(%o4)                          a
-(%i5) map (lambda ([x], x^2), [a, b, c, d, e]);
+(%o2)                          a
+@end group
+@group
+(%i3) map (lambda ([x], x^2), [a, b, c, d, e]);
                         2   2   2   2   2
-(%o5)                 [a , b , c , d , e ]
+(%o3)                 [a , b , c , d , e ]
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1536,22 +1783,30 @@ unless some special evaluation is forced by some means, such as @code{'@w{}'}.
 @c g2(1/2);
 @c ===end===
 @example
-(%i6) a: %pi$
+(%i1) a: %pi$
+(%i2) b: %e$
+@group
+(%i3) g: lambda ([a], a*b);
+(%o3)                   lambda([a], a b)
+@end group
+(%i4) b: %gamma$
+@group
+(%i5) g(1/2);
+                             %gamma
+(%o5)                        ------
+                               2
+@end group
+@group
+(%i6) g2: lambda ([a], a*''b);
+(%o6)                 lambda([a], a %gamma)
+@end group
 (%i7) b: %e$
-(%i8) g: lambda ([a], a*b);
-(%o8)                   lambda([a], a b)
-(%i9) b: %gamma$
-(%i10) g(1/2);
+@group
+(%i8) g2(1/2);
                              %gamma
-(%o10)                       ------
+(%o8)                        ------
                                2
-(%i11) g2: lambda ([a], a*''b);
-(%o11)                lambda([a], a %gamma)
-(%i12) b: %e$
-(%i13) g2(1/2);
-                             %gamma
-(%o13)                       ------
-                               2
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1565,14 +1820,18 @@ variables of the same names.
 @c h(%pi, %gamma);
 @c ===end===
 @example
-(%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@group
+(%i1) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
                                                    1
-(%o14)    lambda([a, b], h2 : lambda([a], a b), h2(-))
+(%o1)     lambda([a, b], h2 : lambda([a], a b), h2(-))
                                                    2
-(%i15) h(%pi, %gamma);
+@end group
+@group
+(%i2) h(%pi, %gamma);
                              %gamma
-(%o15)                       ------
+(%o2)                        ------
                                2
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1589,20 +1848,30 @@ via @code{buildq}, as in lambda expression @code{i2} below.
 @c i2(1/2)(%pi);
 @c ===end===
 @example
-(%i16) i: lambda ([a], lambda ([x], a*x));
-(%o16)            lambda([a], lambda([x], a x))
-(%i17) i(1/2);
-(%o17)                  lambda([x], a x)
-(%i18) i2: lambda([a], buildq([a: a], lambda([x], a*x)));
-(%o18)    lambda([a], buildq([a : a], lambda([x], a x)))
-(%i19) i2(1/2);
-                                     x
-(%o19)                   lambda([x], -)
-                                     2
-(%i20) i2(1/2)(%pi);
+@group
+(%i1) i: lambda ([a], lambda ([x], a*x));
+(%o1)             lambda([a], lambda([x], a x))
+@end group
+@group
+(%i2) i(1/2);
+(%o2)                   lambda([x], a x)
+@end group
+@group
+(%i3) i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+(%o3)    lambda([a], buildq([a : a], lambda([x], a x)))
+@end group
+@group
+(%i4) i2(1/2);
+                                    1
+(%o4)                  lambda([x], (-) x)
+                                    2
+@end group
+@group
+(%i5) i2(1/2)(%pi);
                                %pi
-(%o20)                         ---
+(%o5)                          ---
                                 2
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1618,14 +1887,22 @@ The arguments appear within the function body as a list.
 @c g (17, 29, x, y, z, %e);
 @c ===end===
 @example
+@group
 (%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
 (%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+@end group
+@group
 (%i2) f (foo, %i, 17, 29, 256);
 (%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+@end group
+@group
 (%i3) g : lambda ([[aa]], apply ("+", aa));
 (%o3)             lambda([[aa]], apply(+, aa))
+@end group
+@group
 (%i4) g (17, 29, x, y, z, %e);
 (%o4)                  z + y + x + %e + 46
+@end group
 @end example
 
 @opencatbox
@@ -1669,14 +1946,22 @@ A local function definition.
 @c foo (100);
 @c ===end===
 @example
+@group
 (%i1) foo (x) := 1 - x;
 (%o1)                    foo(x) := 1 - x
+@end group
+@group
 (%i2) foo (100);
 (%o2)                         - 99
+@end group
+@group
 (%i3) block (local (foo), foo (x) := 2 * x, foo (100));
 (%o3)                          200
+@end group
+@group
 (%i4) foo (100);
 (%o4)                         - 99
+@end group
 @end example
 
 @opencatbox
@@ -1733,38 +2018,52 @@ and the calling expression is not modified.
 @c f (a * b);
 @c ===end===
 @example
+@group
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
+@end group
+@group
 (%i2) g (x) ::= block (print ("x + 99 is equal to", x),
                        return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
+@end group
+@group
 (%i3) h (x) ::= block (print ("x - 99 is equal to", x),
                        return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
+@end group
+@group
 (%i4) macroexpansion: false;
 (%o4)                         false
+@end group
+@group
 (%i5) f (a * b);
 x - 99 is equal to x 
 x + 99 is equal to x 
                             a b - 99
 (%o5)                       --------
                             a b + 99
+@end group
+@group
 (%i6) dispfun (f);
                                   h(x)
 (%t6)                     f(x) := ----
                                   g(x)
 
-(%o6)                         done
+(%o6)                         [%t6]
+@end group
+@group
 (%i7) f (a * b);
 x - 99 is equal to x 
 x + 99 is equal to x 
                             a b - 99
 (%o7)                       --------
                             a b + 99
+@end group
 @end example
 
 When @code{macroexpansion} is @code{expand},
@@ -1783,36 +2082,50 @@ and the calling expression is not modified.
 @c f (a * b);
 @c ===end===
 @example
+@group
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
+@end group
+@group
 (%i2) g (x) ::= block (print ("x + 99 is equal to", x),
                        return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
+@end group
+@group
 (%i3) h (x) ::= block (print ("x - 99 is equal to", x),
                        return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
+@end group
+@group
 (%i4) macroexpansion: expand;
 (%o4)                        expand
+@end group
+@group
 (%i5) f (a * b);
 x - 99 is equal to x 
 x + 99 is equal to x 
                             a b - 99
 (%o5)                       --------
                             a b + 99
+@end group
+@group
 (%i6) dispfun (f);
-                                  h(x)
-(%t6)                     f(x) := ----
-                                  g(x)
+                      mmacroexpanded(x - 99, h(x))
+(%t6)         f(x) := ----------------------------
+                      mmacroexpanded(x + 99, g(x))
 
-(%o6)                         done
+(%o6)                         [%t6]
+@end group
+@group
 (%i7) f (a * b);
                             a b - 99
 (%o7)                       --------
                             a b + 99
+@end group
 @end example
 
 When @code{macroexpansion} is @code{displace},
@@ -1831,36 +2144,50 @@ and the calling expression is modified.
 @c f (a * b);
 @c ===end===
 @example
+@group
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
+@end group
+@group
 (%i2) g (x) ::= block (print ("x + 99 is equal to", x),
                        return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
+@end group
+@group
 (%i3) h (x) ::= block (print ("x - 99 is equal to", x),
                        return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
+@end group
+@group
 (%i4) macroexpansion: displace;
 (%o4)                       displace
+@end group
+@group
 (%i5) f (a * b);
 x - 99 is equal to x 
 x + 99 is equal to x 
                             a b - 99
 (%o5)                       --------
                             a b + 99
+@end group
+@group
 (%i6) dispfun (f);
                                  x - 99
 (%t6)                    f(x) := ------
                                  x + 99
 
-(%o6)                         done
+(%o6)                         [%t6]
+@end group
+@group
 (%i7) f (a * b);
                             a b - 99
 (%o7)                       --------
                             a b + 99
+@end group
 @end example
 
 @opencatbox
