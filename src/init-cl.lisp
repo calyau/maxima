@@ -171,7 +171,7 @@ When one changes, the other does too."
 (defun default-userdir ()
   (let ((home-env (maxima-getenv "HOME"))
 	(base-dir "")
-	(maxima-dir (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+	(maxima-dir (if (string= *autoconf-windows* "true")
 			"maxima"
 			".maxima")))
     (setf base-dir
@@ -183,7 +183,7 @@ When one changes, the other does too."
 		  "c:\\user\\"
 		  home-env)
 	      ;; we have to make a guess
-	      (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+	      (if (string= *autoconf-windows* "true")
 		  "c:\\user\\"
 		  "/tmp")))
     (combine-path (maxima-parse-dirstring base-dir) maxima-dir)))
@@ -196,7 +196,7 @@ When one changes, the other does too."
 	      (if (string= home-env "c:\\")
 		  "c:\\user\\"
 		  home-env)
-	      (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+	      (if (string= *autoconf-windows* "true")
 		  "c:\\user\\"
 		  "/tmp")))
     (maxima-parse-dirstring base-dir)))
@@ -284,7 +284,7 @@ When one changes, the other does too."
 
     ; On Windows Vista gcc requires explicit include
     #+gcl
-    (when (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+    (when (string= *autoconf-windows* "true")
       (let ((mingw-gccver (maxima-getenv "mingw_gccver")))
 	(when mingw-gccver
 	  (setq compiler::*cc*

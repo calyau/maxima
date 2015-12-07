@@ -533,7 +533,7 @@
            (res1 nil)
            (res2 nil))
           (cond 
-              ((or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+              (string= *autoconf-windows* "true")
                  (setf res1 ($ssearch ":" str))
                  (setf res2 ($ssearch "\\" str))
                  (if (and res2 (>= res2 1) (not (and res1 (= res1 2))))

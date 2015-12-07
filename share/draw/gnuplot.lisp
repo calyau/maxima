@@ -33,7 +33,7 @@
 
 
 
-(defvar *windows-OS* (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")))
+(defvar *windows-OS* (string= *autoconf-windows* "true") )
 
 (defmacro write-font-type ()
    '(if (string= (get-option '$font) "")

@@ -51,7 +51,7 @@ sin(y)*(10.0+6*cos(x)),
 
 (defvar *plot-options* 
   `(:plot_format
-    ,(if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+    ,(if (string= *autoconf-windows* "true")
          '$gnuplot
          '$gnuplot_pipes)
     :grid (30 30) :run_viewer t :axes t
@@ -68,7 +68,7 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $plot_options 
   `((mlist)
     ((mlist) $plot_format
-     ,(if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+     ,(if (string= *autoconf-windows* "true")
           '$gnuplot
           '$gnuplot_pipes))))
 
@@ -1672,7 +1672,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
-  (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+  (if (string= *autoconf-windows* "true")
       (setq formats '($geomview $gnuplot $mgnuplot $openmath $xmaxima))
       (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $openmath $xmaxima)))
   (unless (member (cadr option) formats)
@@ -2215,7 +2215,7 @@ sin(y)*(10.0+6*cos(x)),
          (with-open-file (st1 (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))) :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
-                               (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")) "\\bin\\" "/bin/") 
+                               (if (string= *autoconf-windows* "true") "\\bin\\" "/bin/") 
                                $xmaxima_plot_command)
 		  #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
 		  (format nil " ~s &" file)
@@ -2626,7 +2626,7 @@ Several functions depending on the two variables v1 and v2:
                   ($system
                    (concatenate
                     'string *maxima-prefix* 
-                    (if (or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true")) "\\bin\\" "/bin/")
+                    (if (string= *autoconf-windows* "true") "\\bin\\" "/bin/")
                     $xmaxima_plot_command) 
                    #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
                    (format nil " ~s &" file)
