@@ -2999,7 +2999,7 @@
                (when (near-equal zi zf)
                   (setf zi (- zi 0.01)
                         zf (+ zf 0.01)))
-               (format nil "set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
+               (format nil "set format '%h'~%set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
                            xi xf yi yf zi zf))
             (if (get-option '$cbrange)
                (format nil "set cbrange [~a:~a]~%" 
