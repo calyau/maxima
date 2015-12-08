@@ -155,7 +155,7 @@ at (diff (f (x, y), x, 1, y, 1), x = a);
 'at ('diff (f (x, y), x, 1, y, 1), [x = a]);
 
 at (at (diff (f (x, y), x, 1, y, 1), [x = a, y = b]), a = c);
-'at ('at ('diff (f (x, y), x, 1, y, 1), [x = a, y = b]), [a = c]);
+'at ('diff (f (x, y), x, 1, y, 1), [x = c, y = b]);
 
 at (at (diff (f (x, y), x, 1, y, 1), [x = a, y = b]), c = z);
 'at ('diff (f (x, y), x, 1, y, 1), [x = a, y = b]);
@@ -198,3 +198,39 @@ ev (b, nouns);
 
 (taylor (cos(x), x, 0, 3), ev (%%, x=7/5));
 ''(rat(1/50)); /* not a vanilla 1/50 ... */
+
+kill(all);
+done;
+
+at('at('diff(f(x,a),x,1),x=y),a=z);
+'at('diff(f(x,z),x,1),x=y);
+
+at('at('diff(f(x,a),x,1),x=y),y=z);
+'at('diff(f(x,a),x,1),x=z);
+
+at(diff(f(x),x),s=0);
+'diff(f(x),x,1);
+
+at('diff(f(x,n),x,m),n=2);
+'diff(f(x,2),x,m);
+
+at('diff(f(x,n),x,m),m=2);
+'diff(f(x,n),x,2);
+
+/* from mailing list 2015-12-08: "Evaluate derivative in Maxima" */
+
+(kill(all),
+ f1(x):=diff(f(x),x,1),
+ f2(x):=diff(f(x),x,2),
+ x0(s):=mu+s*at(f1(x),x=mu)/(1/sigma^2-s*at(f2(x),x=mu)),
+ g(s,x):=s*f(x)-1/2*((x-mu)/sigma)^2,
+ g2(s,x):=diff(g(s,x),x,2),
+ g0(s):=at(g(s,x),x=x0(s)),
+ g20(s):=at(g2(s,x),x=x0(s)),
+ h(s):=1/sigma*exp(g0(s))*sqrt(1/abs(g20(s))),
+ at(diff(h(s),s,1),s=0));
+(sigma*abs(sigma)*('at('diff(f(x),x,2),x = mu)))/2+(f(mu)*abs(sigma))/sigma$
+
+(h(s):=s*(at(f1(x),x=mu)),
+ at(diff(h(s),s),s=0));
+'at('diff(f(x),x,1), x=mu);

@@ -1248,7 +1248,7 @@ errcatch(at(atan2(y^2+1,x),[x=0,y=%i]));
 /* Bug report ID: 2014941 - compositions of 'at'
  */
 at(at(diff(f(x),x),[x=b]),[b=y]);
-'at('at('diff(f(x),x,1),[x = b]),[b = y]);
+'at('diff(f(x),x,1),[x = y]);
 
 at(diff(f(x,y),x,1,y,1),[x=a,y=b]) - at(diff(f(x,y),x,1,y,1),[y=b,x=a]);
 0;

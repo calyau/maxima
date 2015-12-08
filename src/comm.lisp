@@ -227,6 +227,30 @@
              (third z))               ; never change integration var
        (mapcar (lambda (z) (subst1 x y z)); do subst in limits of integral
                (cdddr z))))
+    ((eq (caar z) '%at)
+     ;; similar considerations here, but different structure of expression.
+     (let*
+       ((at-eqn-or-eqns (third z))
+        (at-eqns-list (if (eq (caar at-eqn-or-eqns) 'mlist) (rest at-eqn-or-eqns) (list at-eqn-or-eqns))))
+       (list
+         (remove 'simp (car z)) ;; ensure resimplification after substitution
+         (if (member y (mapcar #'(lambda (e) (second e)) at-eqns-list))
+           (second z)
+           (subst1 x y (second z)))
+         `((mlist) ,@(mapcar #'(lambda (e) (list (first e) (second e) (subst1 x y (third e)))) at-eqns-list)))))
+    ((eq (caar z) '%derivative)
+     ;; and again, with yet a different structure.
+     (let*
+       ((vars-and-degrees (rest (rest z)))
+        (diff-vars (loop for v in vars-and-degrees by #'cddr collect v))
+        (diff-degrees (loop for n in (rest vars-and-degrees) by #'cddr collect n)))
+       (append
+         (list
+           (remove 'simp (car z)) ;; ensure resimplification after substitution
+           (if (member y diff-vars)
+             (second z)
+             (subst1 x y (second z))))
+         (apply #'append (loop for v in diff-vars for n in diff-degrees collect (list v (subst1 x y n)))))))
     (t z)))
 
 (defmfun subst0 (new old)
