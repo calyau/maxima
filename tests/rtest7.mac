@@ -182,7 +182,7 @@ at ('integrate (f(x), x, a, b), x = y);
 'integrate (f(x), x, a, b);
 
 at ('laplace (f(t), t, s), [t = a, s = b]);
-'at ('laplace (f(t), t, s), [s = b]);
+'laplace (f(t), t, b);
 
 a : at (taylor (f(x), x, 0, 3), [x = 7/5]);
 (343*('at('diff(f(x),x,3),x = 0)))/750+(49*('at('diff(f(x),x,2),x = 0)))/50

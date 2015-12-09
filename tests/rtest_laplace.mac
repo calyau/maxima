@@ -438,7 +438,7 @@ laplace (foo (a * u), u, v);
 /* frequency shifting */
 
 assuming (v - a > 0, laplace (exp (a * u) * foo (u), u, v));
-'at ('laplace (foo (u), u, v), v = v - a);
+'laplace (foo (u), u, v - a);
 
 (laplace (exp (a * u) * cosh (u), u, v), if equal (%%,  (v - a) / ((v - a)^2 - 1)) then true else %%);
 true;

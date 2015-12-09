@@ -217,7 +217,7 @@
 ;; and we do not wish to subst 3 for x inside integrand.
 (defun subst-except-second-arg (x y z)
   (cond 
-    ((member (caar z) '(%integrate %sum %product %limit))
+    ((member (caar z) '(%integrate %sum %product %limit %laplace))
      (append 
        (list (car z)
              (if (eq y (third z))     ; if (third z) is new var that shadows y
