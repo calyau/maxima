@@ -197,8 +197,7 @@
   (let (newexpt)
     (cond ((atom z) z)
 	  ((specrepp z) (subst2 x y (specdisrep z) negxpty timesp))
-	  ((and *atp* (member (caar z) '(%derivative %laplace) :test #'eq)) z)
-	  ((at-substp z) z)
+	  ((at-substp z) z) ;; IS SUBST-EXCEPT-SECOND-ARG APPROPRIATE HERE ?? !!
 	  ((alike1 y z) x)
 	  ((and timesp (eq (caar z) 'mtimes) (alike1 y (setq z (nformat z)))) x)
 	  ((and (eq (caar y) 'mexpt) (eq (caar z) 'mexpt) (alike1 (cadr y) (cadr z))
