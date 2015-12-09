@@ -219,7 +219,7 @@
   (cond 
     ((member (caar z) '(%integrate %sum %product %limit %laplace))
      (append 
-       (list (car z)
+       (list (remove 'simp (car z))   ; ensure resimplification after substitution
              (if (eq y (third z))     ; if (third z) is new var that shadows y
                  (second z)           ; leave (second z) unchanged
                  (subst1 x y (second z))) ; otherwise replace y with x in (second z)

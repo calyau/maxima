@@ -234,3 +234,12 @@ at('diff(f(x,n),x,m),m=2);
 (h(s):=s*(at(f1(x),x=mu)),
  at(diff(h(s),s),s=0));
 'at('diff(f(x),x,1), x=mu);
+
+/* SF bug #1085: "Function \"at\" is overly cautious" */
+
+at('integrate(f(t),t,0,x),x=0);
+0;
+
+at('integrate(f(t),t,x,y),[x=a, y=b]);
+'integrate(f(t),t,a,b);
+
