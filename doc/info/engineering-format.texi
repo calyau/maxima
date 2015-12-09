@@ -42,7 +42,7 @@ This variable allows to temporarily switch off engineering-format.
 See also @code{fpprintprec} and @code{float}.
 
 @opencatbox
-@category{Lists} @category{Global flags}
+@category{Display functions} @category{Global flags} @category{Share packages}
 @closecatbox
 @end defvr
 

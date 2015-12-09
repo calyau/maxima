@@ -52,7 +52,7 @@
 
 (in-package :maxima)
 
-(defvar *windows-OS* (string= *autoconf-win32* "true"))
+(defvar *windows-OS* (string= *autoconf-windows* "true"))
 (defmvar $wxplot_size '((mlist simp) 400 250))
 (defmvar $wxplot_old_gnuplot nil)
 (defvar *image-counter* 0)

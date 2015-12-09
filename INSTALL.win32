@@ -311,5 +311,5 @@ If plotting fails on a new platform (win64, arm or similar) it might
 be that some of the tests for the operating system (
    	(and sbcl win32)
 or
-	(string= *autoconf-win32* "true")
+	(string= *autoconf-windows* "true")
 ) might not detect the current flavour of the OS.

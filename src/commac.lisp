@@ -690,7 +690,7 @@ values")
 ; GMT) afterwards.
 ; see discussion on mailing list circa 2015-04-21: "parse_timedate error"
 
-(if (and (string= (lisp-implementation-type) "CLISP") (string= *autoconf-win32* "true"))
+(if (and (string= (lisp-implementation-type) "CLISP") (string= *autoconf-windows* "true"))
   ; Clisp/Windows case:
   (defun construct-universal-time (year month day &optional (hour 0) (minute 0) (second 0) (ms 0))
     (add (div ms 1000) (sub (encode-universal-time second minute hour day month (add year 400)) 12622780800)))

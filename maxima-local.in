@@ -7,5 +7,12 @@ export MAXIMA_LAYOUT_AUTOTOOLS
 MAXIMA_OBJDIR="$top_srcdir/binary"
 export MAXIMA_OBJDIR
 
+# quick fix for plotting with plot_format=openmath (bug 3052)
+mkdir -p bin
+ln -sf ../xmaxima-local bin/xmaxima
+ln -sf ../doc bin/doc
+ln -sf ../src bin/src
+ln -sf ../interfaces bin/interfaces
+
 POSIX_SHELL=@POSIX_SHELL@
 exec $POSIX_SHELL "$top_srcdir/src/maxima" "$@"

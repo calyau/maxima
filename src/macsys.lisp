@@ -606,7 +606,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+(or gcl ecl lispworks)
     (declare (ignore s))
 
-    (cond ((or (string= *autoconf-win32* "true") (string= *autoconf-win64* "true"))
+    (cond ((string= *autoconf-windows* "true")
 	   (setf shell "cmd") (setf shell-opt "/c"))
 	  (t (setf shell "/bin/sh") (setf shell-opt "-c")))
 
