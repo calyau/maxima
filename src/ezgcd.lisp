@@ -106,7 +106,8 @@
 
 (defun ez1call (builder factrs lc1 valist ovarlist)
   (prog (*prime plim nn* ne nn*-1 zl zfactr oldlc lcd0
-	 dlp limk genvar mult)
+	 dlp limk genvar mult subval subvar)
+     (declare (special subval subvar))
      (setq oldlc (caddr builder))
      (cond ((not (equal 1 lc1))
 	    (setq builder (ptimes builder lc1))))
