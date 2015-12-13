@@ -1104,7 +1104,7 @@ interfaces/xmaxima/doc/Makefile interfaces/xmaxima/doc/figures/Makefile \
 interfaces/xmaxima/msgs/Makefile interfaces/xmaxima/win32/Makefile \
 plotting/mgnuplot share/Makefile demo/Makefile plotting/Makefile locale/Makefile \
 share/contrib/Makefile share/contrib/integration/Makefile \
-share/contrib/maxima-odesolve/Makefile \
+share/contrib/maxima-odesolve/Makefile share/contrib/operatingsystem/Makefile \
 share/draw/Makefile share/logic/Makefile  doc/info/es/include-maxima.texi \
 src/lisp)
 

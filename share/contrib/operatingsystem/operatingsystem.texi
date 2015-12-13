@@ -1,0 +1,86 @@
+\input texinfo
+
+@c makeinfo operatingsystem.texi         to make .info
+@c texi2html operatingsystem.texi        to make .html
+@c texi2pdf operatingsystem.texi         to make .pdf
+
+@setfilename operatingsystem.info
+@settitle operatingsystem
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to operatingsystem, (dir), (dir)
+@top
+@menu
+* Introduction to operatingsystem::
+* Directory operations::
+* Environment operations::
+* Function and variable index::
+@end menu
+
+@node Introduction to operatingsystem, , Top, Top
+@chapter Introduction to operatingsystem
+
+Package @code{operatingsystem} contains functions for operatingsystem-tasks, like file system operations.
+
+
+@node Directory operations, Environment operations, Introduction to operatingsystem, Top
+@chapter Directory operations
+
+
+@deffn {Function} chdir (@var{dir})
+Change to directory @var{dir}
+@end deffn
+
+@deffn {Function} mkdir (@var{dir})
+Create directory @var{dir}
+@end deffn
+
+@deffn {Function} rmdir (@var{dir})
+remove directory @var{dir}
+@end deffn
+
+@deffn {Function} getcurrentdirectory ()
+returns the current working directory.
+@end deffn
+
+Examples:
+
+@example
+(%i1) load("operatingsystem")$
+(%i2) mkdir("testdirectory");
+(%i3) chdir("testdirectory");
+(%i4) chdir("..");
+(%i5) rmdir("testdirectory");
+@end example
+
+
+@node Environment operations, Function and variable index, Directory operations, Top
+@chapter Environment operations
+
+
+@deffn {Function} getenv (@var{env})
+Get the value of the environmentvariable @var{env}
+
+Example:
+
+@example
+(%i1) load("operatingsystem")$
+(%i2) getenv("PATH");
+(%o2) /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+@end example
+
+@end deffn
+
+
+
+@node Function and variable index,  , Environment operations, Top
+@appendix Function and variable index
+@printindex fn
+@c @printindex vr
+
+@bye

@@ -1,0 +1,5 @@
+( load("operatingsystem"), 0 );
+0;
+
+(cwd : getcurrentdirectory(), 0);
+0;
