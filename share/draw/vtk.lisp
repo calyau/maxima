@@ -134,21 +134,19 @@
                 :fill-pointer 0)) )
     (format str "vtkAppendPolyData ~a~%" an)
     (loop for n from (1+ ff) to *vtk-filter-counter* do
-      (format str "  ~a AddInput [filter~a GetOutput]~%" an n))
+      (format str "  ~a AddInputConnection [filter~a GetOutputPort]~%" an n))
     (format str "  ~a Update~%" an)
     str))
 
 (defun vtkoutlinefilter-code (on an)
   (concatenate 'string
     (format nil "vtkOutlineFilter ~a~%" on)
-    (format nil "  ~a SetInput [~a GetOutput]~%" on an)))
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" on an)))
 
-(defun vtkpolydatamapper-code (mn fn &optional tube)
+(defun vtkpolydatamapper-code (mn fn)
   (concatenate 'string
     (format nil "vtkPolyDataMapper ~a~%" mn)
-    (if tube
-      (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" mn fn)
-      (format nil "  ~a SetInput [~a GetOutput]~%" mn fn) )))
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" mn fn) ))
 
 (defun vtktextproperty-code (tn)
   (concatenate 'string
@@ -158,7 +156,7 @@
 (defun vtkcubeaxesActor2d-code (can adn tn)
   (concatenate 'string
     (format nil "vtkCubeAxesActor2D ~a~%" can)
-    (format nil "  ~a SetInput [~a GetOutput]~%" can adn)
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" can adn)
     (format nil "  ~a SetLabelFormat %6.4g~%" can)
     (format nil "  ~a SetFlyModeToOuterEdges~%" can)
     (format nil "  ~a SetFontFactor 0.8~%" can)
@@ -237,8 +235,8 @@
 (defun vtkglyph3d-code (fn sn pdn)
   (concatenate 'string
     (format nil "vtkGlyph3D ~a~%" fn)
-    (format nil "  ~a SetInput ~a~%" fn sn)
-    (format nil "  ~a SetSource ~a~%" fn pdn)
+    (format nil "  ~a SetInputData ~a~%" fn sn)
+    (format nil "  ~a SetSourceData ~a~%" fn pdn)
     (format nil "  ~a ScalingOff~%" fn)))
 
 (defun vtkpoints-code (pn sn x y z)
@@ -261,15 +259,15 @@
 (defun vtktransformfilter-code (fn sn tn)
   (concatenate 'string
     (format nil "vtkTransformFilter ~a~%" fn)
-    (format nil "  ~a SetInput [~a GetOutput]~%" fn sn)
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" fn sn)
     (format nil "  ~a SetTransform ~a~%" fn tn) ))
 
 (defun vtktransformpolydatafilter-code (fn sn tn ds)
   (concatenate 'string
     (format nil "vtkTransformPolyDataFilter ~a~%" fn)
     (if ds
-      (format nil "  ~a SetInput ~a~%" fn sn)
-      (format nil "  ~a SetInput [~a GetOutput]~%" fn sn))
+      (format nil "  ~a SetInputData ~a~%" fn sn)
+      (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" fn sn))
     (format nil "  ~a SetTransform ~a~%" fn tn) ))
 
 (defun vtkactor-code (an mn col op lw ws)
@@ -369,7 +367,7 @@
             "vtkWindowToImageFilter w2if"
             "  w2if SetInput renWin"
             classformat "writer"
-            "  writer SetInput [w2if GetOutput]"
+            "  writer SetInputConnection [w2if GetOutputPort]"
             "  writer SetFileName" filename extension
             "  writer Write"
             "vtkCommand DeleteAllObjects"
@@ -392,15 +390,13 @@
             "vtkCommand DeleteAllObjects"
             "exit"))
        ((eq terminal '$screen)
-          (format nil "~a~%~a~%~a~%~a~%~a~%~a~%~a~%~a~%"
+          (format nil "~a~%~a~%~a~%~a~%~a~%~a~%"
             "vtkRenderWindowInteractor iren"
             "   iren SetRenderWindow renWin"
             "   iren Initialize"
             "   iren AddObserver UserEvent {wm deiconify .vtkInteract}"
-            "   iren AddObserver ExitEvent {exit}"
-            "   renWin Render "
             "wm withdraw ."
-            "tkwait window ."))
+            "iren Start"))
        (t
           (merror "draw: unknown terminal for vtk")))))
 
@@ -908,7 +904,7 @@
       (vtktransform-code trans-name)
       (vtktransformpolydatafilter-code filter-name polydata-name trans-name t)
       (format nil "vtkPolyDataMapper ~a~%" mapper-name)
-      (format nil "  ~a SetInput ~a~%" mapper-name polydata-name)
+      (format nil "  ~a SetInputData ~a~%" mapper-name polydata-name)
       (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))))
 
 
@@ -1104,7 +1100,7 @@
                 (setf tube-name (get-tube-name))
                 (concatenate 'string
                   (vtktubefilter-code tube-name filter-name line-type)
-                  (vtkpolydatamapper-code mapper-name tube-name t)))
+                  (vtkpolydatamapper-code mapper-name tube-name)))
              (t
                 (vtkpolydatamapper-code mapper-name filter-name)))
           (if (> *draw-enhanced3d-type* 0)
@@ -1188,7 +1184,7 @@
              (vtkglyph3d-code filter-name source-name polydata-name)
              (format nil "~a ~a~%  ~a ~a~a ~a~%"
                "vtkPolyDataMapper" polydatamapper-name
-               polydatamapper-name "SetInput [" filter-name "GetOutput]")
+               polydatamapper-name "SetInputConnection [" filter-name "GetOutputPort]")
              (if (> *draw-enhanced3d-type* 0)
                (format nil "  ~a SetLookupTable ~a~%" polydatamapper-name lookup-table-name)
                "")
@@ -1230,7 +1226,7 @@
              (vtkglyph3d-code filter-name source-name (format nil "[~a GetOutput]" solidsource-name))
              (format nil "~a ~a~%  ~a ~a~a ~a~%"
                      "vtkPolyDataMapper" polydatamapper-name
-                     polydatamapper-name "SetInput [" filter-name "GetOutput]")
+                     polydatamapper-name "SetInputConnection [" filter-name "GetOutputPort]")
              (if (> *draw-enhanced3d-type* 0)
                (format nil "  ~a SetLookupTable ~a~%" polydatamapper-name lookup-table-name)
                "")
@@ -1339,7 +1335,7 @@
             (setf tube-name (get-tube-name))
             (concatenate 'string
               (vtktubefilter-code tube-name filter-name line-type)
-              (vtkpolydatamapper-code mapper-name tube-name t)))
+              (vtkpolydatamapper-code mapper-name tube-name)))
          (t
             (vtkpolydatamapper-code mapper-name filter-name)))
       (if (> *draw-enhanced3d-type* 0)
