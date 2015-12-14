@@ -703,7 +703,7 @@ AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 dnl Optionally build xmaxima.exe under windows
 dnl default to false as additional software
 AC_ARG_ENABLE(winkill_exe,
-  [  --enable-winkill         Build Windows winkill.exe and winkill_lib.dll for installer],
+  [  --enable-winkill             Build Windows winkill.exe and winkill_lib.dll for installer],
   [case "${enableval}" in
        		yes) winkill_exe=true ;;
        		no)  winkill_exe=false ;;
@@ -711,6 +711,18 @@ AC_ARG_ENABLE(winkill_exe,
    esac],
    [winkill_exe=false])
 AM_CONDITIONAL(WINKILL_EXE, test x$winkill_exe = xtrue)
+
+dnl Should we build a win64 installer?
+AC_ARG_ENABLE(win64-installer,
+  [  --enable-win64-installer     Build a 64bit installer on Windows],
+  [case "${enableval}" in
+                yes) win64_installer=true ;;
+                no) win64_installer=false ;;
+                *) AC_MSG_ERROR(bad valu ${enableval} for --enable-win64-installer) ;;
+  esac],
+  [win64_installer=false])
+AM_CONDITIONAL(WIN64_INSTALLER, test x$win64_installer = xtrue)
+AC_SUBST(win64_installer)
 
 dnl Tools for building xmaxima.exe on windows
 dnl Hard code the filenames for now.  Can over-ride on make command line
