@@ -22,7 +22,7 @@
 * Function and variable index::
 @end menu
 
-@node Introduction to operatingsystem, , Top, Top
+@node Introduction to operatingsystem, Directory operations, Top, Top
 @chapter Introduction to operatingsystem
 
 Package @code{operatingsystem} contains functions for operatingsystem-tasks, like file system operations.
