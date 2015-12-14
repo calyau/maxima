@@ -1,5 +1,29 @@
+/* Tests for the operatingsystem package */
+/* File tests may need write and read permissions in the current directory */
+/* run the test (if you start maxima with ./maxima-local) with */
+/* batch("share/contrib/operatingsystem/rtest_operatingsystem.mac", 'test); */
+/* Be careful: if operations fail, directories may be left over or one might be in another directory! */
+
+(kill(all),0);
+0$
+
 ( load("operatingsystem"), 0 );
-0;
+0$
 
 (cwd : getcurrentdirectory(), 0);
-0;
+0$
+
+mkdir("testdir1");
+true$
+
+(p2:chdir("testdir1"),0);
+0$
+
+if sequal(concat(cwd, "testdir1/"), p2) then "ok" else "not ok";
+ok$
+
+(chdir(".."),0);
+0$
+
+rmdir("testdir1");
+true$

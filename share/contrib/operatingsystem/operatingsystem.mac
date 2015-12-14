@@ -22,5 +22,9 @@ mkdir(s) := ?os\-mkdir(os_endwithslash(s)) $
 
 rmdir(s) := ?os\-rmdir(os_endwithslash(s)) $
 
+/* currently works only with files; TODO: allow directories too.
+(CLISP: (ext:rename-directory "testdir1/" "testdir2/") (with trailing slashes) */
+rename_file(s, t) := ?rename\-file(t, t)$
+
 /* ensure that the directoryname ends with an slash */
 os_endwithslash(s) := if charat(s, slength(s)) = "/" then s else concat (s, "/")$
