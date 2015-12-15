@@ -1,0 +1,12 @@
+foo[a,b,c,d];
+put('foo,'([presubscript,presuperscript,postsuperscript,postsubscript]),'display_indices);
+foo[a,b,c,d];
+1/(1-foo[a,b,c,d]);
+foo[a,b,c,d]+foo[w,x,y,z]+foo[1,2,3,4];
+foo[aaaaa,b,c,d];
+foo[a,b,c,ddddd];
+foo[a,b,ccccc,d];
+foo[a,bbbbb,c,d];
+foo[a,b+x+1,c^2,d[k]];
+put('U,'([presubscript,presuperscript]),'display_indices);
+U[92,235];

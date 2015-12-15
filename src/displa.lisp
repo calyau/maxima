@@ -204,35 +204,97 @@
   result)
 
 (defun dimension-array (x result)
-  (prog (dummy bas (w 0) (h 0) (d 0) sub)
+  (prog (dummy bas (w-base 0) (h-base 0) (d-base 0))
      (if (eq (caar x) 'mqapply)
-	 (setq dummy (cadr x) x (cdr x))
-	 (setq dummy (caar x)))
+     (setq dummy (cadr x) x (cdr x))
+     (setq dummy (caar x)))
      (cond ((or (not $noundisp) (not (symbolp (caar x)))))
-	   ((and (get (caar x) 'verb) (get (caar x) 'alias))
-	    (push-string "''" result) (setq w 2))
-	   ((and (get (caar x) 'noun) (not (member (caar x) (cdr $aliases) :test #'eq))
-		 (not (get (caar x) 'reversealias)))
-	    (setq result (cons #\' result) w 1)))
-     (setq sub (let ((lop 'mparen)
-		     (rop 'mparen)
-		     (break nil) (size 1))
-		 (dimension-list x nil))
-	   w (+ w width)
-	   h height
-	   d depth)
-     (setq bas (if (and (not (atom dummy)) (member 'array (car dummy) :test #'eq))
-		   (let ((break nil) (right 0)) (dimension-paren dummy result))
-		   (let ((atom-context 'dimension-array))
-		     (dimension dummy result lop 'mfunction nil 0))))
-     (cond ((not (checkfit (setq width (+ w width))))
-	    (return (dimension-function (cons '(subscript) (cons dummy (cdr x))) result)))
-	   ((and (atom (car bas)) (char= #\ (car bas))) ; Adding the test (atom (car bas))
-	    (setq result (cons (cons 0 (cons (- h) sub)) bas) depth (max (+ h d) depth)))
-	   (t (setq result (cons (cons 0 (cons (- (+ depth h)) sub)) bas)
-		    depth (+ h d depth))))
-     (update-heights height depth)
-     (return result)))
+       ((and (get (caar x) 'verb) (get (caar x) 'alias))
+        (push-string "''" result) (setq w-base 2))
+       ((and (get (caar x) 'noun) (not (member (caar x) (cdr $aliases) :test #'eq))
+         (not (get (caar x) 'reversealias)))
+        (setq result (cons #\' result) w-base 1)))
+     (setq
+       bas (if (and (not (atom dummy)) (member 'array (car dummy) :test #'eq))
+             (let ((break nil) (right 0)) (dimension-paren dummy result))
+             (let ((atom-context 'dimension-array))
+               (dimension dummy nil lop 'mfunction nil 0)))
+       w-base (+ w-base width)
+       h-base height
+       d-base depth)
+     (multiple-value-bind (w00 w01 w10 w11 h00 h01 h10 h11 d00 d01 d10 d11 pre-subscripts-output pre-superscripts-output post-subscripts-output post-superscripts-output)
+       (dimension-indices dummy (cdr x))
+       (cond
+         ((not (checkfit (setq width (+ w-base (max w00 w01) (max w10 w11))))) ;; ?? !!
+          (return (dimension-function (cons '(subscript) (cons dummy (cdr x))) result)))
+         ((and (atom (car bas)) (char= #\ (car bas))) ; Adding the test (atom (car bas))
+          (setq result (cons (cons 0 (cons (- h-base) post-subscripts)) bas) depth (max (+ h-base d-base) depth))) ;; ?? !!
+         (t
+           (setq result
+                 (append
+                   (list
+                     (append (list (- w10) (+ h-base d11)) post-superscripts-output)
+                     (append (list 0 (- h10)) post-subscripts-output)
+                     (append (list 0 0) bas)
+                     (append (list (- w01) (+ h-base d01)) pre-superscripts-output)
+                     (append (list (if (> w01 w00) (- w01 w00) 0) (- h00)) pre-subscripts-output))
+                   result)
+                 height (+ h-base (max (+ d01 h01) (+ d11 h11)))
+                 depth (+ d-base (max (+ d00 h00) (+ d10 h10))))))
+       (update-heights height depth)
+       (return result))))
+
+(defun dimension-indices (base-symbol indices)
+  (let ((display-indices (cdr ($get base-symbol '$display_indices))))
+    (if (and (> (length display-indices) 0) (not (= (length display-indices) (length indices))))
+      ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
+      (setq display-indices nil))
+    (let (pre-subscripts pre-superscripts post-subscripts post-superscripts)
+      (if display-indices
+        (setq pre-subscripts (extract-indices indices display-indices '$presubscript)
+              pre-superscripts (extract-indices indices display-indices '$presuperscript)
+              post-subscripts (extract-indices indices display-indices '$postsubscript)
+              post-superscripts (extract-indices indices display-indices '$postsuperscript))
+        (setq pre-subscripts nil
+              pre-superscripts nil
+              post-subscripts indices
+              post-superscripts nil))
+      (let (pre-subscripts-output pre-superscripts-output post-subscripts-output post-superscripts-output
+            (w00 0) (w01 0) (w10 0) (w11 0) (h00 0) (h01 0) (h10 0) (h11 0) (d00 0) (d01 0) (d10 0) (d11 0))
+        (if pre-subscripts
+          (setq pre-subscripts-output
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
+                  (dimension-list (cons '(mlist) pre-subscripts) nil))
+                w00 width
+                h00 height
+                d00 depth))
+        (if pre-superscripts
+          (setq pre-superscripts-output
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
+                  (dimension-list (cons '(mlist) pre-superscripts) nil))
+                w01 width
+                h01 height
+                d01 depth))
+        (if post-subscripts
+          (setq post-subscripts-output
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
+                  (dimension-list (cons '(mlist) post-subscripts) nil))
+                w10 width
+                h10 height
+                d10 depth))
+        (if post-superscripts
+          (setq post-superscripts-output
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
+                  (dimension-list (cons '(mlist) post-superscripts) nil))
+                w11 width
+                h11 height
+                d11 depth))
+        (values w00 w01 w10 w11 h00 h01 h10 h11 d00 d01 d10 d11 pre-subscripts-output pre-superscripts-output post-subscripts-output post-superscripts-output)))))
+
+(defun extract-indices (indices display-indices index-flag)
+  (remove nil
+          (loop for i from 0 to (length display-indices)
+                collect (if (eq (nth i display-indices) index-flag) (nth i indices)))))
 
 (defun dimension-function (x result)
   (prog (fun (w 0) (h 0) (d 0))
