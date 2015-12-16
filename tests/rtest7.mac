@@ -243,3 +243,7 @@ at('integrate(f(t),t,0,x),x=0);
 at('integrate(f(t),t,x,y),[x=a, y=b]);
 'integrate(f(t),t,a,b);
 
+/* SF bug #2302: "'at' applied to definite integral" */
+
+at(integrate(f(t),t,0,x),x=0);
+0;
