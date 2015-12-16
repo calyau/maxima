@@ -1,35 +1,17 @@
-\input texinfo
-
-@c makeinfo operatingsystem.texi         to make .info
-@c texi2html operatingsystem.texi        to make .html
-@c texi2pdf operatingsystem.texi         to make .pdf
-
-@setfilename operatingsystem.info
-@settitle operatingsystem
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to operatingsystem, (dir), (dir)
-@top
 @menu
 * Introduction to operatingsystem::
 * Directory operations::
 * Environment operations::
-* Function and variable index::
 @end menu
 
-@node Introduction to operatingsystem, Directory operations, Top, Top
-@chapter Introduction to operatingsystem
+@node Introduction to operatingsystem, Directory operations, operatingsystem, operatingsystem
+@section Introduction to operatingsystem
 
 Package @code{operatingsystem} contains functions for operatingsystem-tasks, like file system operations.
 
 
-@node Directory operations, Environment operations, Introduction to operatingsystem, Top
-@chapter Directory operations
+@node Directory operations, Environment operations, Introduction to operatingsystem, operatingsystem
+@section Directory operations
 
 
 @deffn {Function} chdir (@var{dir})
@@ -59,8 +41,8 @@ Examples:
 @end example
 
 
-@node Environment operations, Function and variable index, Directory operations, Top
-@chapter Environment operations
+@node Environment operations, , Directory operations, operatingsystem
+@section Environment operations
 
 
 @deffn {Function} getenv (@var{env})
@@ -75,12 +57,3 @@ Example:
 @end example
 
 @end deffn
-
-
-
-@node Function and variable index,  , Environment operations, Top
-@appendix Function and variable index
-@printindex fn
-@c @printindex vr
-
-@bye

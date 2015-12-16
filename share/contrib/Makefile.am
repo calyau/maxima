@@ -1,1 +1,1 @@
-SUBDIRS = integration maxima-odesolve operatingsystem
+SUBDIRS = integration maxima-odesolve
