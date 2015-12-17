@@ -1349,7 +1349,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (funcall (get (mop (mop x)) 'sign-function) x))
 	((specrepp x) (sign (specdisrep x)))
 	((kindp (caar x) '$posfun) (sign-posfun x))
-	((and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing)) (sign-oddinc x))
+	((and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing))
+	 (sign-odd-inc x))
+	((and (kindp (caar x) '$oddfun) (kindp (caar x) '$decreasing))
+	 (sign-odd-dec x))
 	(t (sign-any x))))
 
 (defun sign-any (x)
@@ -1831,8 +1834,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	odds nil
 	evens nil))
 
-(defun sign-oddinc (x)
+(defun sign-odd-inc (x)
   (sign (cadr x)))
+
+(defun sign-odd-dec (x)
+  (sign (neg (cadr x))))
 
 (defun imag-err (x)
   (if sign-imag-errp

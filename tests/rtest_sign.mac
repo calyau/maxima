@@ -1069,3 +1069,29 @@ true$
 
 (forget(r > q), 0);
 0$
+
+/* Increasing and decreasing odd functions */
+
+(declare(i, [oddfun, increasing], d, [oddfun, decreasing]),0);
+0$
+
+(assume(q < 0, r > 0),0);
+0$
+
+sign(i(q));
+neg$
+
+sign(i(r));
+pos$
+
+sign(d(q));
+pos$
+
+sign(d(r));
+neg$
+
+(remove(i, [oddfun, increasing], d, [oddfun, decreasing]),0);
+0$
+
+(forget(q < 0, r > 0),0);
+0$
