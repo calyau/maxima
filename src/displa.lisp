@@ -232,12 +232,13 @@
          (t
            (setq result
                  (append
-                   (list
-                     (append (list (- w10) (+ h-base d11)) post-superscripts-output)
-                     (append (list 0 (- h10)) post-subscripts-output)
-                     (append (list 0 0) bas)
-                     (append (list (- w01) (+ h-base d01)) pre-superscripts-output)
-                     (append (list (if (> w01 w00) (- w01 w00) 0) (- h00)) pre-subscripts-output))
+                   (remove-if #'(lambda (l) (= (length l) 2))
+                              (list
+                                (append (list (- w10) (+ h-base d11)) post-superscripts-output)
+                                (append (list 0 (- h10)) post-subscripts-output)
+                                (append (list 0 0) bas)
+                                (append (list (- w01) (+ h-base d01)) pre-superscripts-output)
+                                (append (list (if (> w01 w00) (- w01 w00) 0) (- h00)) pre-subscripts-output)))
                    result)
                  height (+ h-base (max (+ d01 h01) (+ d11 h11)))
                  depth (+ d-base (max (+ d00 h00) (+ d10 h10))))))
