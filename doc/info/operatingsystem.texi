@@ -28,6 +28,9 @@ remove directory @var{dir}
 
 @deffn {Function} getcurrentdirectory ()
 returns the current working directory.
+
+See also @mrefdot{directory}
+
 @end deffn
 
 Examples:
