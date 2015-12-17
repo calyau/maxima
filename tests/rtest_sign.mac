@@ -1050,6 +1050,23 @@ errcatch(asksign(%i));
 errcatch(asksign(infinity));
 []$ /* sign of infinity is undefined. */
 
+/* Odd functions */
+
+(declare(o, oddfun),0);
+0$
+
+(assume(equal(q, 0)),0);
+0$
+
+sign(o(q));
+zero$
+
+(remove(o, oddfun),0);
+0$
+
+(forget(equal(q, 0)),0);
+0$
+
 /* Increasing and decreasing functions */
 
 (declare(i, increasing, d, decreasing),0);

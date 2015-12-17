@@ -1349,10 +1349,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (funcall (get (mop (mop x)) 'sign-function) x))
 	((specrepp x) (sign (specdisrep x)))
 	((kindp (caar x) '$posfun) (sign-posfun x))
-	((and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing))
-	 (sign-odd-inc x))
-	((and (kindp (caar x) '$oddfun) (kindp (caar x) '$decreasing))
-	 (sign-odd-dec x))
+	((kindp (caar x) '$oddfun) (sign-oddfun x))
 	(t (sign-any x))))
 
 (defun sign-any (x)
@@ -1834,11 +1831,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	odds nil
 	evens nil))
 
-(defun sign-odd-inc (x)
-  (sign (cadr x)))
-
-(defun sign-odd-dec (x)
-  (sign (neg (cadr x))))
+(defun sign-oddfun (x)
+  (cond ((kindp (caar x) '$increasing)
+         ; Take the sign of the argument
+         (sign (cadr x)))
+        ((kindp (caar x) '$decreasing)
+         ; Take the sign of negative of the argument
+         (sign (neg (cadr x))))
+        (t
+         ; If the sign of the argument is zero, then we're done (the sign of
+         ; the function value is the same).  Otherwise, punt to SIGN-ANY.
+         (sign (cadr x))
+         (unless (eq sign '$zero)
+           (sign-any x)))))
 
 (defun imag-err (x)
   (if sign-imag-errp
