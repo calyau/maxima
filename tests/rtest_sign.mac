@@ -1050,3 +1050,22 @@ errcatch(asksign(%i));
 errcatch(asksign(infinity));
 []$ /* sign of infinity is undefined. */
 
+/* Increasing and decreasing functions */
+
+(declare(i, increasing, d, decreasing),0);
+0$
+
+(assume(r > q),0);
+0$
+
+is(i(r) > i(q));
+true$
+
+is(d(r) < d(q));
+true$
+
+(remove(i, increasing, d, decreasing),0);
+0$
+
+(forget(r > q), 0);
+0$
