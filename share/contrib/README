@@ -54,6 +54,12 @@ nset/           This is nset by Barton Willis and Stavros
 numericalio/	Robert Dodier's package for reading and writing 
                 numerical data.
 
+operatingsystem/ Some functions for tasks like accessing the
+                Environment, handling of directories and files, etc.
+                (perhaps a better name might be 'filesystem'?)
+                Added to Maxima by Wolfgang Dautermann (mostly code 
+                from http://clocc.sourceforge.net/)
+
 pdiff/          This is Barton Willis's pdiff package from
                 http://www.unk.edu/acad/math/people/willisb/
 
