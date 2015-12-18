@@ -691,21 +691,26 @@ How to convert a nested list into a matrix:
 @fname{block} ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n}) @
 @fname{block} (@var{expr_1}, @dots{}, @var{expr_n})
 
-@code{block} evaluates @var{expr_1}, @dots{}, @var{expr_n} in sequence and
-returns the value of the last expression evaluated.  The sequence can be
+The function @code{block} allows to make the variables @var{v_1}, @dots{},
+@var{v_m} to be local for a sequence of commands. If these variables
+are already bound @code{block} saves the current values of the
+variables @var{v_1}, @dots{}, @var{v_m} (if any) upon entry to the
+block, then unbinds the variables so that they evaluate to themselves;
+The local variables may be bound to arbitrary values within the block
+but when the block is exited the saved values are restored, and the
+values assigned within the block are lost.
+
+If there is no need to define local then the list at the beginning of
+the @code{block} command may be omitted and @code{block} behaves
+similar to the following construct:
+
+@indent@code{     ( expr_1}, @dots{}, @code{expr_n )}
+
+@var{expr_1}, @dots{}, @var{expr_n} will be evaluated in sequence and
+the value of the last expression will be returned. The sequence can be 
 modified by the @code{go}, @code{throw}, and @code{return} functions.  The last
 expression is @var{expr_n} unless @code{return} or an expression containing
 @code{throw} is evaluated.
-Some variables @var{v_1}, @dots{}, @var{v_m} can be declared local to the block;
-these are distinguished from global variables of the same names.  If no
-variables are declared local then the list may be omitted.  Within the block,
-any variable other than @var{v_1}, @dots{}, @var{v_m} is a global variable.
-
-@code{block} saves the current values of the variables @var{v_1}, @dots{},
-@var{v_m} (if any) upon entry to the block, then unbinds the variables so that
-they evaluate to themselves.  The local variables may be bound to arbitrary
-values within the block but when the block is exited the saved values are
-restored, and the values assigned within the block are lost.
 
 The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
 saves the properties associated with the symbols @var{v_1}, @dots{}, @var{v_m},
@@ -738,6 +743,8 @@ another statement in the block.  For example:
 
 Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
+
+@c Needs some examples.
 
 @opencatbox
 @category{Expressions} @category{Programming}
