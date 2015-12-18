@@ -38,6 +38,7 @@ For comments, bugs or suggestions, please contact the author at
 @node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
 @section Functions and Variables for inference_result
 
+@anchor{inference_result}
 @deffn {Function} inference_result (@var{title}, @var{values}, @var{numbers})
 
 Constructs an @code{inference_result} object of the type returned by the
@@ -91,7 +92,7 @@ not displayed; to access its value, make use of function @code{take_inference}.
 (%o4)                        sqrt(13)
 @end example
 
-See also @code{take_inference}.
+See also @mrefdot{take_inference}
 
 @opencatbox
 @category{Package stats}
@@ -104,6 +105,7 @@ See also @code{take_inference}.
 
 
 
+@anchor{inferencep}
 @deffn {Function} inferencep (@var{obj})
 
 Returns @code{true} or @code{false}, depending on whether @var{obj} is an
@@ -120,6 +122,7 @@ Returns @code{true} or @code{false}, depending on whether @var{obj} is an
 
 
 
+@anchor{items_inference}
 @deffn {Function} items_inference (@var{obj})
 
 Returns a list with the names of the items stored in @var{obj}, which must
@@ -158,6 +161,7 @@ of all items, no matter they are displayed or not.
 
 
 
+@anchor{take_inference}
 @deffn {Function} take_inference @
 @fname{take_inference} (@var{n}, @var{obj}) @
 @fname{take_inference} (@var{name}, @var{obj}) @
@@ -217,7 +221,7 @@ called in order to extract some information stored in it.
 (%o7)                [3, 2, sqrt(13), 6, 10]
 @end example
 
-See also @code{inference_result} and @code{take_inference}.
+See also @mrefcomma{inference_result} and @mrefdot{take_inference}
 
 @opencatbox
 @category{Package stats}
@@ -237,6 +241,7 @@ See also @code{inference_result} and @code{take_inference}.
 @section Functions and Variables for stats
 
 
+@anchor{stats_numer}
 @defvr {Option variable} stats_numer
 Default value: @code{true}
 
@@ -252,6 +257,7 @@ results are given in symbolic and rational format.
 
 
 
+@anchor{test_mean}
 @deffn {Function} test_mean @
 @fname{test_mean} (@var{x}) @
 @fname{test_mean} (@var{x}, @var{options} ...)
@@ -403,6 +409,7 @@ this procedure should be applied to large samples.
 
 
 
+@anchor{test_means_difference}
 @deffn {Function} test_means_difference @
 @fname{test_means_difference} (@var{x1}, @var{x2}) @
 @fname{test_means_difference} (@var{x1}, @var{x2}, @var{options} ...)
@@ -567,6 +574,7 @@ equal.
 
 @end deffn
 
+@anchor{test_variance}
 @deffn {Function} test_variance @
 @fname{test_variance} (@var{x}) @
 @fname{test_variance} (@var{x}, @var{options}, ...)
@@ -670,6 +678,7 @@ is equal to or greater than 200.
 
 
 
+@anchor{test_variance_ratio}
 @deffn {Function} test_variance_ratio @
 @fname{test_variance_ratio} (@var{x1}, @var{x2}) @
 @fname{test_variance_ratio} (@var{x1}, @var{x2}, @var{options} ...)
@@ -781,6 +790,7 @@ against the alternative that the first is greater than the second.
 
 
 
+@anchor{test_proportion}
 @deffn {Function} test_proportion @
 @fname{test_proportion} (@var{x}, @var{n}) @
 @fname{test_proportion} (@var{x}, @var{n}, @var{options} ...)
@@ -917,6 +927,7 @@ A two sided asymptotic test. Confidence level is 99/100.
 
 
 
+@anchor{test_proportions_difference}
 @deffn {Function} test_proportions_difference @
 @fname{test_proportions_difference} (@var{x1}, @var{n1}, @var{x2}, @var{n2}) @
 @fname{test_proportions_difference} (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} @dots{})
@@ -1043,6 +1054,7 @@ distribution when the data are unknown.
 
 @end deffn
 
+@anchor{test_sign}
 @deffn {Function} test_sign @
 @fname{test_sign} (@var{x}) @
 @fname{test_sign} (@var{x}, @var{options} @dots{})
@@ -1123,6 +1135,7 @@ against the alternative @math{H_1: median > 6}.
 
 @end deffn
 
+@anchor{test_signed_rank}
 @deffn {Function} test_signed_rank @
 @fname{test_signed_rank} (@var{x}) @
 @fname{test_signed_rank} (@var{x}, @var{options} @dots{})
@@ -1132,7 +1145,8 @@ continuous population. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample. Performs normal approximation if the
 sample size is greater than 20, or if there are zeroes or ties.
 
-See also @code{pdf_rank_test} and @code{cdf_rank_test}.
+@c TODO: These two variables/functions aren't documented
+See also @code{pdf_rank_test} and @code{cdf_rank_test}
 
 Options:
 
@@ -1244,6 +1258,7 @@ since there are ties.
 
 @end deffn
 
+@anchor{test_rank_sum}
 @deffn {Function} test_rank_sum @
 @fname{test_rank_sum} (@var{x1}, @var{x2}) @
 @fname{test_rank_sum} (@var{x1}, @var{x2}, @var{option})
@@ -1364,6 +1379,7 @@ normal approximation. The alternative hypothesis is
 
 
 
+@anchor{test_normality}
 @deffn {Function} test_normality (@var{x})
 
 Shapiro-Wilk test for normality. Argument @var{x} is a list of numbers, and sample
@@ -1417,6 +1433,7 @@ Checks for the normality of a population, based on a sample of size 9.
 
 @end deffn
 
+@anchor{linear_regression}
 @deffn {Function} linear_regression @
 @fname{linear_regression} (@var{x}) @
 @fname{linear_regression} (@var{x} @var{option})
@@ -1569,12 +1586,13 @@ v_distribution, residuals, adc, aic, bic]
 @section Functions and Variables for special distributions
 
 
+@anchor{pdf_signed_rank}
 @deffn {Function} pdf_signed_rank (@var{x}, @var{n})
 Probability density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer.
 
-See also @code{test_signed_rank}.
+See also @mrefdot{test_signed_rank}
 
 @opencatbox
 @category{Package stats}
@@ -1582,12 +1600,13 @@ See also @code{test_signed_rank}.
 
 @end deffn
 
+@anchor{cdf_signed_rank}
 @deffn {Function} cdf_signed_rank (@var{x}, @var{n})
 Cumulative density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer. 
 
-See also @code{test_signed_rank}.
+See also @mrefdot{test_signed_rank}
 
 @opencatbox
 @category{Package stats}
@@ -1595,12 +1614,13 @@ See also @code{test_signed_rank}.
 
 @end deffn
 
+@anchor{pdf_rank_sum}
 @deffn {Function} pdf_rank_sum (@var{x}, @var{n}, @var{m})
 Probability density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
 number and @var{n} and @var{m} are both positive integers. 
 
-See also @code{test_rank_sum}.
+See also @mrefdot{test_rank_sum}
 
 @opencatbox
 @category{Package stats}
@@ -1608,12 +1628,13 @@ See also @code{test_rank_sum}.
 
 @end deffn
 
+@anchor{cdf_rank_sum}
 @deffn {Function} cdf_rank_sum (@var{x}, @var{n}, @var{m})
 Cumulative density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
 number and @var{n} and @var{m} are both positive integers. 
 
-See also @code{test_rank_sum}.
+See also @mrefdot{test_rank_sum}
 
 @opencatbox
 @category{Package stats}

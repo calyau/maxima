@@ -51,6 +51,7 @@ References:
 @node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
 @section Functions and Variables for cobyla
 
+@anchor{fmin_cobyla}
 @deffn {Function} fmin_cobyla @
 @fname{fmin_cobyla} (@var{F}, @var{X}, @var{Y}) @
 @fname{fmin_cobyla} (@var{F}, @var{X}, @var{Y}, optional_args)
@@ -121,6 +122,7 @@ Return code with the following meanings
 
 @end deffn
 
+@anchor{bf_fmin_cobyla}
 @deffn {Function} bf_fmin_cobyla @
 @fname{bf_fmin_cobyla} (@var{F}, @var{X}, @var{Y}) @
 @fname{bf_fmin_cobyla} (@var{F}, @var{X}, @var{Y}, optional_args)
@@ -129,7 +131,7 @@ This function is identical to @code{fmin_cobyla}, except that bigfloat
 operations are used, and the default value for @var{rhoend} is
 @code{10^(fpprec/2)}. 
 
-See @code{fmin_cobyla} for more information.
+See @mref{fmin_cobyla} for more information.
 
 @code{load(bf_fmin_cobyla)} loads this function.
 

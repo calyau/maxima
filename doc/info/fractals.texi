@@ -150,7 +150,7 @@ Example:
                 [grid, 150, 150])$
 @end example
 
-See also @code{julia_parameter}.
+See also @mref{julia_parameter}.
 
 @opencatbox
 @category{Package fractals}
@@ -160,12 +160,12 @@ See also @code{julia_parameter}.
 
 
 
-
+@anchor{julia_parameter}
 @defvr {Optional variable} julia_parameter
-Default value: @code{%i}
+Default value: @mref{%i}
 
 Complex parameter for Julia fractals.
-Its default value is @code{%i}; we  suggest the  values @code{-.745+%i*.113002}, 
+Its default value is @mref{%i}; we  suggest the  values @code{-.745+%i*.113002}, 
 @code{-.39054-%i*.58679}, @code{-.15652+%i*1.03225}, @code{-.194+%i*.6557} and 
 @code{.011031-%i*.67037}.
 
@@ -201,7 +201,7 @@ the computing time is also related with the number of grid points.
                 [grid, 150, 150])$
 @end example
 
-See also @code{julia_parameter}.
+See also @mref{julia_parameter}.
 
 @opencatbox
 @category{Package fractals}

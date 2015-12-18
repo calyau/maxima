@@ -23,6 +23,7 @@ Author: Nicolas Guarin Zapata.
 @section Functions and Variables for finance
 
 
+@anchor{days360}
 @deffn {Function} days360 (@var{year1},@var{month1},@var{day1},@var{year2},@var{month2},@var{day2})
 
 Calculates the distance between 2 dates, assuming 360 days years, 30 days months.
@@ -42,6 +43,7 @@ Example:
 @end deffn
 
 
+@anchor{fv}
 @deffn {Function} fv (@var{rate},@var{PV},@var{num})
 
 We can calculate the future value of a Present one given a certain interest rate.
@@ -63,6 +65,7 @@ Example:
 @end deffn
 
 
+@anchor{pv}
 @deffn {Function} pv (@var{rate},@var{FV},@var{num})
 
 We can calculate the present value of a Future one given a certain interest rate.
@@ -84,6 +87,7 @@ Example:
 @end deffn
 
 
+@anchor{graph_flow}
 @deffn {Function} graph_flow (@var{val})
 
 Plots the money flow in a time line, the positive values are in blue
@@ -105,6 +109,7 @@ Example:
 @end deffn
 
 
+@anchor{annuity_pv}
 @deffn {Function} annuity_pv (@var{rate},@var{PV},@var{num})
 
 We can calculate the annuity knowing the present value (like an amount),
@@ -126,6 +131,7 @@ Example:
 @end deffn
 
 
+@anchor{annuity_fv}
 @deffn {Function} annuity_fv (@var{rate},@var{FV},@var{num})
 
 We can calculate the annuity knowing the desired value (future value),
@@ -147,6 +153,7 @@ Example:
 @end deffn
 
 
+@anchor{geo_annuity_pv}
 @deffn {Function} geo_annuity_pv (@var{rate},@var{growing_rate},@var{PV},@var{num})
 
 We can calculate the annuity knowing the present value (like an amount),
@@ -168,6 +175,7 @@ Example:
 @end deffn
 
 
+@anchor{geo_annuity_fv}
 @deffn {Function} geo_annuity_fv (@var{rate},@var{growing_rate},@var{FV},@var{num})
 
 We can calculate the annuity knowing the desired value (future value),
@@ -188,6 +196,7 @@ Example:
 
 @end deffn
 
+@anchor{amortization}
 @deffn {Function} amortization (@var{rate},@var{amount},@var{num})
 
 Amortization table determined by a specific rate.
@@ -222,6 +231,7 @@ Example:
 @end deffn
 
 
+@anchor{arit_amortization}
 @deffn {Function} arit_amortization (@var{rate},@var{increment},@var{amount},@var{num})
 
 The amortization table determined by a specific rate and with growing payment
@@ -260,6 +270,7 @@ Example:
 @end deffn
 
 
+@anchor{geo_amortization}
 @deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{amount},@var{num})
 
 The amortization table determined by rate, amount,
@@ -298,6 +309,7 @@ Example:
 @end deffn
 
 
+@anchor{saving}
 @deffn {Function} saving (@var{rate},@var{amount},@var{num})
 
 The table that represents the values in a constant and periodic
@@ -336,6 +348,7 @@ Example:
 @end deffn
 
 
+@anchor{npv}
 @deffn {Function} npv (@var{rate},@var{val})
 
 Calculates the present value of a value series to evaluate the viability in a
@@ -357,6 +370,7 @@ Example:
 @end deffn
 
 
+@anchor{irr}
 @deffn {Function} irr (@var{val},@var{IO})
 
 IRR (Internal Rate of Return) is the value of rate which makes Net Present Value
@@ -380,6 +394,7 @@ Example:
 @end deffn
 
 
+@anchor{benefit_cost}
 @deffn {Function} benefit_cost (@var{rate},@var{input},@var{output})
 
 Calculates the ratio Benefit/Cost. Benefit is the Net Present Value (NPV)

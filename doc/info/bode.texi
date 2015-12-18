@@ -6,6 +6,7 @@
 @section Functions and Variables for bode
 
 
+@anchor{bode_gain}
 @deffn {Function} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
 Function to draw Bode gain plots.
 
@@ -52,7 +53,7 @@ Examples (1 through 7 from
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-To use this function write first @code{load("bode")}. See also @code{bode_phase}
+To use this function write first @code{load("bode")}. See also @mrefdot{bode_phase}
 
 @opencatbox
 @category{Plotting} @category{Package bode}
@@ -60,7 +61,7 @@ To use this function write first @code{load("bode")}. See also @code{bode_phase}
 
 @end deffn
 
-
+@anchor{bode_phase}
 @deffn {Function} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
 Function to draw Bode phase plots.
 
@@ -113,7 +114,7 @@ Examples (1 through 7 from
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-To use this function write first @code{load("bode")}. See also @code{bode_gain}
+To use this function write first @code{load("bode")}. See also @mrefdot{bode_gain}
 
 @opencatbox
 @category{Plotting} @category{Package bode}

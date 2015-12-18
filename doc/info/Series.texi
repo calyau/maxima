@@ -106,7 +106,7 @@ When the global variable @code{simpproduct} is @code{true}, additional rules
 are applied.  In some cases, simplification yields a result which is not a
 product; otherwise, the result is a noun form @code{'product}.
 
-See also @code{nouns} and @code{evflag}.
+See also @mref{nouns} and @mrefdot{evflag}
 
 Examples:
 
@@ -217,9 +217,9 @@ summation, when an automatically generated index is needed.
 When @code{gensumnum} is @code{false}, an automatically-generated index is only
 @code{genindex} with no numeric suffix.
 
-See also @code{sumcontract}, @code{intosum},
-@code{bashindices}, @code{niceindices},
-@code{nouns}, @code{evflag}, and @code{zeilberger}.
+See also @mrefcomma{sumcontract} @mrefcomma{intosum}
+@mrefcomma{bashindices} @mrefcomma{niceindices}
+@mrefcomma{nouns} @mrefcomma{evflag} and @mrefdot{zeilberger}
 
 Examples:
 
@@ -339,7 +339,7 @@ Default value: @code{false}
 When @code{sumexpand} is @code{true}, products of sums and
 exponentiated sums simplify to nested sums.
 
-See also @code{cauchysum}.
+See also @mrefdot{cauchysum}
 
 Examples:
 
@@ -590,7 +590,7 @@ inf.  Thus, since there is no formula for the general partial sum of
 the binomial series, @code{nusum} can't do it.
 
 @code{nusum} and @code{unsum} know a little about sums and differences of
-finite products.  See also @code{unsum}.
+finite products.  See also @mrefdot{unsum}
 
 Examples:
 
@@ -892,7 +892,7 @@ a multivariate expression is displayed just as in the rational function package.
 When @code{psexpand} is  @code{multi},
 then terms with the same total degree in the variables are grouped together.
 
-See also the @code{taylor_logexpand} switch for controlling expansion.
+See also the @mref{taylor_logexpand} switch for controlling expansion.
 
 Examples:
 
@@ -1212,7 +1212,7 @@ Returns the first backward difference
 @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
 Thus @code{unsum} in a sense is the inverse of @code{sum}.
 
-See also @code{nusum}.
+See also @mrefdot{nusum}
 
 Examples:
 @c GENERATED FROM THE FOLLOWING INPUTS

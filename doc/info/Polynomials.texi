@@ -1836,7 +1836,7 @@ Typically @code{ratdisrep} is called to convert a canonical rational expression
 This is sometimes convenient if one wishes to stop the "contagion", or
 use rational functions in non-rational contexts.
 
-See also @code{totaldisrep}.
+See also @mrefdot{totaldisrep}
 
 @opencatbox
 @category{Rational expressions}
@@ -1844,6 +1844,7 @@ See also @code{totaldisrep}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratexpand}
 @deffn  {Function} ratexpand (@var{expr})
 @deffnx {Option variable} ratexpand
 
@@ -1861,7 +1862,7 @@ The switch @code{ratexpand} if @code{true} will cause CRE
 expressions to be fully expanded when they are converted back to
 general form or displayed, while if it is @code{false} then they will be put
 into a recursive form.
-See also @code{ratsimp}.
+See also @mrefdot{ratsimp}
 
 When @code{ratdenomdivide} is @code{true},
 @code{ratexpand} expands a ratio in which the numerator is a sum 
@@ -2011,7 +2012,7 @@ specification of variable ordering as in @code{ratvars}.
 When @code{ratsimpexpons} is @code{true},
 @code{ratsimp} is applied to the exponents of expressions during simplification.
 
-See also @code{ratexpand}.
+See also @mrefdot{ratexpand}
 Note that @code{ratsimp} is affected by some of the
 flags which affect @code{ratexpand}.
 
@@ -2163,6 +2164,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratvars}
 @deffn  {Function} ratvars (@var{x_1}, @dots{}, @var{x_n})
 @deffnx {Function} ratvars ()
 @deffnx {System variable} ratvars
@@ -2451,7 +2453,7 @@ containing some of the same factors.
 Returns a list of the canonical rational expression (CRE) variables in
 expression @code{expr}.
 
-See also @code{ratvars}.
+See also @mrefdot{ratvars}
 
 @opencatbox
 @category{Rational expressions} @category{Display functions}
@@ -2464,9 +2466,9 @@ See also @code{ratvars}.
 @anchor{sqfr}
 @deffn {Function} sqfr (@var{expr})
 
-is similar to @code{factor} except that the polynomial factors are
+is similar to @mref{factor} except that the polynomial factors are
 "square-free."  That is, they have factors only of degree one.
-This algorithm, which is also used by the first stage of @code{factor}, utilizes
+This algorithm, which is also used by the first stage of @mrefcomma{factor} utilizes
 the fact that a polynomial has in common with its n'th derivative all
 its factors of degree greater than n.  Thus by taking greatest common divisors
 with the polynomial of
@@ -2568,6 +2570,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{totaldisrep}
 @deffn {Function} totaldisrep (@var{expr})
 
 Converts every subexpression of @var{expr} from canonical rational expressions
@@ -2586,6 +2589,7 @@ have some subexpressions in CRE form.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{untelltat}
 @deffn {Function} untellrat (@var{x_1}, @dots{}, @var{x_n})
 
 Removes @code{tellrat} properties from @var{x_1}, @dots{}, @var{x_n}.

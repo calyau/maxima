@@ -202,6 +202,7 @@ One must take care when working with categorical data. In the next example, symb
 
 
 
+@anchor{build_sample}
 @deffn {Function} build_sample @
 @fname{build_sample} (@var{list}) @
 @fname{build_sample} (@var{matrix})
@@ -281,6 +282,7 @@ Multivariate frequency table.
 
 
 
+@anchor{continuous_freq}
 @deffn {Function} continuous_freq @
 @fname{continuous_freq} (@var{list}) @
 @fname{continuous_freq} (@var{list}, @var{m})
@@ -354,6 +356,7 @@ Optional argument indicates we want the default number of classes with limits
 
 
 
+@anchor{discrete_freq}
 @deffn {Function} discrete_freq (@var{list})
 Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
 
@@ -382,6 +385,7 @@ The first list gives the sample values and the second their absolute frequencies
 
 
 
+@anchor{standardize}
 @deffn {Function} standardize @
 @fname{standardize} (@var{list}) @
 @fname{standardize} (@var{matrix})
@@ -399,6 +403,7 @@ divides each component by the corresponding standard deviation.
 
 
 
+@anchor{subsample}
 @deffn {Function} subsample @
 @fname{subsample} (@var{data_matrix}, @var{predicate_function}) @
 @fname{subsample} (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
@@ -572,6 +577,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 
 
 
+@anchor{transform_sample}
 @deffn {Function} transform_sample (@var{matrix}, @var{varlist}, @var{exprlist})
 
 Transforms the sample @var{matrix}, where each column is called according to
@@ -630,6 +636,7 @@ Add a constant column and remove the third variable.
 
 
 
+@anchor{mean}
 @deffn {Function} mean @
 @fname{mean} (@var{list}) @
 @fname{mean} (@var{matrix})
@@ -687,6 +694,7 @@ Example:
 
 
 
+@anchor{var}
 @deffn {Function} var @
 @fname{var} (@var{list}) @
 @fname{var} (@var{matrix})
@@ -725,7 +733,7 @@ Example:
 @end group
 @end example
 
-See also function @code{var1}.
+See also function @mrefdot{var1}
 
 @opencatbox
 @category{Package descriptive}
@@ -734,6 +742,7 @@ See also function @code{var1}.
 
 
 
+@anchor{var1}
 @deffn {Function} var1 @
 @fname{var1} (@var{list}) @
 @fname{var1} (@var{matrix})
@@ -780,7 +789,7 @@ Example:
 @end group
 @end example
 
-See also function @code{var}.
+See also function @mrefdot{var}
 
 @opencatbox
 @category{Package descriptive}
@@ -789,6 +798,7 @@ See also function @code{var}.
 
 
 
+@anchor{std}
 @deffn {Function} std @
 @fname{std} (@var{list}) @
 @fname{std} (@var{matrix})
@@ -819,7 +829,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{var} and @code{std1}.
+See also functions @mref{var} and @mrefdot{std1}
 
 @opencatbox
 @category{Package descriptive}
@@ -828,11 +838,12 @@ See also functions @code{var} and @code{std1}.
 
 
 
+@anchor{std1}
 @deffn {Function} std1 @
 @fname{std1} (@var{list}) @
 @fname{std1} (@var{matrix})
 
-This is the square root of the function @code{var1}, the variance with denominator @math{n-1}.
+This is the square root of the function @mrefcomma{var1} the variance with denominator @math{n-1}.
 
 Example:
 
@@ -858,7 +869,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{var1} and @code{std}.
+See also functions @mref{var1} and @mrefdot{std}
 
 @opencatbox
 @category{Package descriptive}
@@ -867,6 +878,7 @@ See also functions @code{var1} and @code{std}.
 
 
 
+@anchor{noncentral_moment}
 @deffn {Function} noncentral_moment @
 @fname{noncentral_moment} (@var{list}, @var{k}) @
 @fname{noncentral_moment} (@var{matrix}, @var{k})
@@ -915,7 +927,7 @@ Example:
 @end group
 @end example
 
-See also function @code{central_moment}.
+See also function @mrefdot{central_moment}
 
 @opencatbox
 @category{Package descriptive}
@@ -924,6 +936,7 @@ See also function @code{central_moment}.
 
 
 
+@anchor{central_moment}
 @deffn {Function} central_moment @
 @fname{central_moment} (@var{list}, @var{k}) @
 @fname{central_moment} (@var{matrix}, @var{k})
@@ -970,7 +983,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{central_moment} and @code{mean}.
+See also functions @mref{central_moment} and @mrefdot{mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -979,11 +992,12 @@ See also functions @code{central_moment} and @code{mean}.
 
 
 
+@anchor{cv}
 @deffn {Function} cv @
 @fname{cv} (@var{list}) @
 @fname{cv} (@var{matrix})
 
-The variation coefficient is the quotient between the sample standard deviation (@code{std}) and the @code{mean},
+The variation coefficient is the quotient between the sample standard deviation (@mref{std}) and the @mrefcomma{mean}
 
 @c ===beg===
 @c load (descriptive)$
@@ -1007,7 +1021,7 @@ The variation coefficient is the quotient between the sample standard deviation 
 @end group
 @end example
 
-See also functions @code{std} and @code{mean}.
+See also functions @mref{std} and @mrefdot{mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -1016,12 +1030,13 @@ See also functions @code{std} and @code{mean}.
 
 
 
+@anchor{smin}
 @deffn {Function} smin @
 @fname{smin} (@var{list}) @
 @fname{smin} (@var{matrix})
 
 This is the minimum value of the sample @var{list}.
-When the argument is a matrix, @code{smin} returns
+When the argument is a matrix, @mref{smin} returns
 a list containing the minimum values of the columns,
 which are associated to statistical variables.
 
@@ -1046,7 +1061,7 @@ which are associated to statistical variables.
 @end group
 @end example
 
-See also function @code{smax}.
+See also function @mrefdot{smax}
 
 @opencatbox
 @category{Package descriptive}
@@ -1055,12 +1070,13 @@ See also function @code{smax}.
 
 
 
+@anchor{smax}
 @deffn {Function} smax @
 @fname{smax} (@var{list}) @
 @fname{smax} (@var{matrix})
 
 This is the maximum value of the sample @var{list}.
-When the argument is a matrix, @code{smax} returns
+When the argument is a matrix, @mref{smax} returns
 a list containing the maximum values of the columns,
 which are associated to statistical variables.
 
@@ -1085,7 +1101,7 @@ which are associated to statistical variables.
 @end group
 @end example
 
-See also function @code{smin}.
+See also function @mrefdot{smin}
 
 @opencatbox
 @category{Package descriptive}
@@ -1094,6 +1110,7 @@ See also function @code{smin}.
 
 
 
+@anchor{range}
 @deffn {Function} range @
 @fname{range} (@var{list}) @
 @fname{range} (@var{matrix})
@@ -1130,12 +1147,13 @@ Example:
 
 
 
+@anchor{quantile}
 @deffn {Function} quantile @
 @fname{quantile} (@var{list}, @var{p}) @
 @fname{quantile} (@var{matrix}, @var{p})
 
 This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
-Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
+Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @mrefdot{descriptive}
 
 Example:
 
@@ -1169,6 +1187,7 @@ Example:
 
 
 
+@anchor{median}
 @deffn {Function} median @
 @fname{median} (@var{list}) @
 @fname{median} (@var{matrix})
@@ -1202,7 +1221,7 @@ Example:
 
 The median is the 1/2-quantile.
 
-See also function @code{quantile}.
+See also function @mrefdot{quantile}
 
 @opencatbox
 @category{Package descriptive}
@@ -1211,6 +1230,7 @@ See also function @code{quantile}.
 
 
 
+@anchor{qrange}
 @deffn {Function} qrange @
 @fname{qrange} (@var{list}) @
 @fname{qrange} (@var{matrix})
@@ -1241,7 +1261,7 @@ The interquartilic range is the difference between the third and first quartiles
 @end group
 @end example
 
-See also function @code{quantile}.
+See also function @mrefdot{quantile}
 
 @opencatbox
 @category{Package descriptive}
@@ -1250,6 +1270,7 @@ See also function @code{quantile}.
 
 
 
+@anchor{mean_deviation}
 @deffn {Function} mean_deviation @
 @fname{mean_deviation} (@var{list}) @
 @fname{mean_deviation} (@var{matrix})
@@ -1298,7 +1319,7 @@ Example:
 @end group
 @end example
 
-See also function @code{mean}.
+See also function @mrefdot{mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -1307,6 +1328,7 @@ See also function @code{mean}.
 
 
 
+@anchor{median_deviation}
 @deffn {Function} median_deviation @
 @fname{median_deviation} (@var{list}) @
 @fname{median_deviation} (@var{matrix})
@@ -1355,7 +1377,7 @@ Example:
 @end group
 @end example
 
-See also function @code{mean}.
+See also function @mrefdot{mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -1364,6 +1386,7 @@ See also function @code{mean}.
 
 
 
+@anchor{harmonic_mean}
 @deffn {Function} harmonic_mean @
 @fname{harmonic_mean} (@var{list}) @
 @fname{harmonic_mean} (@var{matrix})
@@ -1412,7 +1435,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{mean} and @code{geometric_mean}.
+See also functions @mref{mean} and @mrefdot{geometric_mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -1422,6 +1445,7 @@ See also functions @code{mean} and @code{geometric_mean}.
 
 
 
+@anchor{geometric_mean}
 @deffn {Function} geometric_mean @
 @fname{geometric_mean} (@var{list}) @
 @fname{geometric_mean} (@var{matrix})
@@ -1468,7 +1492,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{mean} and @code{harmonic_mean}.
+See also functions @mref{mean} and @mrefdot{harmonic_mean}
 
 @opencatbox
 @category{Package descriptive}
@@ -1477,6 +1501,7 @@ See also functions @code{mean} and @code{harmonic_mean}.
 
 
 
+@anchor{kurtosis}
 @deffn {Function} kurtosis @
 @fname{kurtosis} (@var{list}) @
 @fname{kurtosis} (@var{matrix})
@@ -1523,7 +1548,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{mean}, @code{var} and @code{skewness}.
+See also functions @mrefcomma{mean} @mref{var} and @mrefdot{skewness}
 
 @opencatbox
 @category{Package descriptive}
@@ -1532,6 +1557,7 @@ See also functions @code{mean}, @code{var} and @code{skewness}.
 
 
 
+@anchor{skewness}
 @deffn {Function} skewness @
 @fname{skewness} (@var{list}) @
 @fname{skewness} (@var{matrix})
@@ -1578,7 +1604,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{mean}, @code{var} and @code{kurtosis}.
+See also functions @mrefcomma{mean}, @mref{var} and @mrefdot{kurtosis}
 
 @opencatbox
 @category{Package descriptive}
@@ -1587,6 +1613,7 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 
 
 
+@anchor{pearson_skewness}
 @deffn {Function} pearson_skewness @
 @fname{pearson_skewness} (@var{list}) @
 @fname{pearson_skewness} (@var{matrix})
@@ -1631,7 +1658,7 @@ Example:
 @end group
 @end example
 
-See also functions @code{mean}, @code{var} and @code{median}.
+See also functions @mrefcomma{mean} @mref{var} and @mrefdot{median}
 
 @opencatbox
 @category{Package descriptive}
@@ -1640,6 +1667,7 @@ See also functions @code{mean}, @code{var} and @code{median}.
 
 
 
+@anchor{quartile_skewness}
 @deffn {Function} quartile_skewness @
 @fname{quartile_skewness} (@var{list}) @
 @fname{quartile_skewness} (@var{matrix})
@@ -1686,7 +1714,7 @@ Example:
 @end group
 @end example
 
-See also function @code{quantile}.
+See also function @mrefdot{quantile}
 
 @opencatbox
 @category{Package descriptive}
@@ -1695,6 +1723,7 @@ See also function @code{quantile}.
 
 
 
+@anchor{cov}
 @deffn {Function} cov (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
@@ -1741,7 +1770,7 @@ Example:
 @end group
 @end example
 
-See also function @code{cov1}.
+See also function @mrefdot{cov1}
 
 @opencatbox
 @category{Package descriptive}
@@ -1750,6 +1779,7 @@ See also function @code{cov1}.
 
 
 
+@anchor{cov1}
 @deffn {Function} cov1 (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
@@ -1796,7 +1826,7 @@ Example:
 @end group
 @end example
 
-See also function @code{cov}.
+See also function @mrefdot{cov}
 
 @opencatbox
 @category{Package descriptive}
@@ -1805,6 +1835,7 @@ See also function @code{cov}.
 
 
 
+@anchor{global_variances}
 @deffn {Function} global_variances @
 @fname{global_variances} (@var{matrix}) @
 @fname{global_variances} (@var{matrix}, @var{options} ...)
@@ -1872,7 +1903,7 @@ Calculate the @code{global_variances} from the covariance matrix.
 @end group
 @end example
 
-See also @code{cov} and @code{cov1}.
+See also @mref{cov} and @mrefdot{cov1}
 
 @opencatbox
 @category{Package descriptive}
@@ -1881,6 +1912,7 @@ See also @code{cov} and @code{cov1}.
 
 
 
+@anchor{cor}
 @deffn {Function} cor @
 @fname{cor} (@var{matrix}) @
 @fname{cor} (@var{matrix}, @var{logical_value})
@@ -1950,7 +1982,7 @@ Calculate de correlation matrix from the covariance matrix.
 @end group
 @end example
 
-See also @code{cov} and @code{cov1}.
+See also @mref{cov} and @mrefdot{cov1}
 
 @opencatbox
 @category{Package descriptive}
@@ -1959,6 +1991,7 @@ See also @code{cov} and @code{cov1}.
 
 
 
+@anchor{list_correlations}
 @deffn {Function} list_correlations @
 @fname{list_correlations} (@var{matrix}) @
 @fname{list_correlations} (@var{matrix}, @var{options} ...)
@@ -2075,7 +2108,7 @@ Example:
 @end group
 @end example
 
-See also @code{cov} and @code{cov1}.
+See also @mref{cov} and @mrefdot{cov1}
 
 @opencatbox
 @category{Package descriptive}
@@ -2085,6 +2118,7 @@ See also @code{cov} and @code{cov1}.
 
 
 
+@anchor{principal_components}
 @deffn {Function} principal_components @
 @fname{principal_components} (@var{matrix}) @
 @fname{principal_components} (@var{matrix}, @var{options} ...)
@@ -2097,7 +2131,7 @@ Option:
 @itemize @bullet
 @item
 @code{'data}, default @code{'true}, indicates whether the input matrix contains the sample data,
-in which case the covariance matrix @code{cov1} must be calculated, or not, and then the covariance
+in which case the covariance matrix @mref{cov1} must be calculated, or not, and then the covariance
 matrix (symmetric) must be given, instead of the data.
 @end itemize
 
@@ -2198,6 +2232,7 @@ but option @code{data=false} must be used.
 
 
 
+@anchor{barsplot}
 @deffn {Function} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 
 Plots bars diagrams for discrete statistical variables,
@@ -2254,7 +2289,7 @@ complex scenes, make use of @code{barsplot_description}. See example below.
 @item
 The following local @code{draw} options: @code{key}, @code{color}, 
 @code{fill_color}, @code{fill_density} and @code{line_width}. See also
-@code{bars}.
+@mrefdot{barsplot}
 
 @end itemize
 
@@ -2381,14 +2416,15 @@ Stacked bars.
 @end group
 @end example
 
-For bars diagrams related options, see @code{bars} of package @code{draw}.
-See also functions @code{histogram} and @code{piechart}.
+For bars diagrams related options, see @mref{barsplot} of package @mrefdot{draw}
+See also functions @mref{histogram} and @mrefdot{piechart}
 
 @opencatbox
 @category{Package descriptive} @category{Plotting}
 @closecatbox
 @end deffn
 
+@anchor{barsplot_description}
 @deffn {Function} barsplot_description (@dots{})
 
 Function @code{barsplot_description} creates a graphic object
@@ -2423,6 +2459,7 @@ Example: @code{barsplot} in a multiplot context.
 @closecatbox
 @end deffn
 
+@anchor{boxplot}
 @deffn {Function} boxplot (@var{data}) @
 @fname{boxplot} (@var{data}, @var{option_1}, @var{option_2}, @dots{})
 
@@ -2515,6 +2552,7 @@ Box-and-whishker diagram from three samples of different sizes.
 @closecatbox
 @end deffn
 
+@anchor{boxplot_description}
 @deffn {Function} boxplot_description (@dots{})
 
 Function @code{boxplot_description} creates a graphic object
@@ -2526,6 +2564,7 @@ graphic objects.
 @closecatbox
 @end deffn
 
+@anchor{histogram}
 @deffn {Function} histogram @
 @fname{histogram} (@var{list}) @
 @fname{histogram} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -2563,9 +2602,9 @@ If you want to set your own values for these options, make use of
 @code{histogram_description}. See examples bellow.
 
 @item
-The following local @code{draw} options: @code{key}, @code{color}, 
-@code{fill_color}, @code{fill_density} and @code{line_width}. See also
-@code{bars}.
+The following local @mref{draw} options: @mrefcomma{key} @mrefcomma{color}
+@mrefcomma{fill_color} @mref{fill_density} and @mrefdot{line_width} See also
+@mrefdot{barsplot}
 
 @end itemize
 
@@ -2621,6 +2660,7 @@ Also, we introduce predefined tics:
 @closecatbox
 @end deffn
 
+@anchor{histogram_description}
 @deffn {Function} histogram_description (@dots{})
 
 Function @code{histogram_description} creates a graphic object
@@ -2649,6 +2689,7 @@ the @code{xrange} and adding an explicit curve into the scene:
 @closecatbox
 @end deffn
 
+@anchor{piechart}
 @deffn {Function} piechart @
 @fname{piechart} (@var{list}) @
 @fname{piechart} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -2683,7 +2724,7 @@ complex scenes, make use of @code{piechart_description}.
 @item
 The following local @code{draw} options: @code{key}, @code{color}, 
 @code{fill_density} and @code{line_width}. See also
-@code{ellipse}.
+@code{ellipse}
 
 @end itemize
 
@@ -2711,13 +2752,14 @@ Example:
         title   = "Digit frequencies in pi")$
 @end example
 
-See also function @code{barsplot}.
+See also function @mrefdot{barsplot}
 
 @opencatbox
 @category{Package descriptive} @category{Plotting}
 @closecatbox
 @end deffn
 
+@anchor{piechart_description}
 @deffn {Function} piechart_description (@dots{})
 
 Function @code{piechart_description} creates a graphic object
@@ -2729,6 +2771,7 @@ graphic objects.
 @closecatbox
 @end deffn
 
+@anchor{scatterplot}
 @deffn {Function} scatterplot @
 @fname{scatterplot} (@var{list}) @
 @fname{scatterplot} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -2834,13 +2877,14 @@ Five dimensional scatter plot, with five classes histograms.
 @end example
 
 For plotting isolated or line-joined points in two and three dimensions,
-see @code{points}. See also @code{histogram}.
+see @code{points}. See also @mrefdot{histogram}
 
 @opencatbox
 @category{Package descriptive} @category{Plotting}
 @closecatbox
 @end deffn
 
+@anchor{scatterplot_description}
 @deffn {Function} scatterplot_description (@dots{})
 
 Function @code{scatterplot_description} creates a graphic object
@@ -2852,6 +2896,7 @@ graphic objects.
 @closecatbox
 @end deffn
 
+@anchor{starplot}
 @deffn {Function} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 
 Plots star diagrams for discrete statistical variables,
@@ -2929,6 +2974,7 @@ Location and radius defined by the user.
 @closecatbox
 @end deffn
 
+@anchor{starplot_description}
 @deffn {Function} starplot_description (@dots{})
 
 Function @code{starplot_description} creates a graphic object
@@ -2940,6 +2986,7 @@ graphic objects.
 @closecatbox
 @end deffn
 
+@anchor{stemplot}
 @deffn {Function} stemplot @
 @fname{stemplot} (@var{data}) @
 @fname{stemplot} (@var{data}, @var{option})

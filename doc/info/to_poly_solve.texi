@@ -259,6 +259,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
+@anchor{complex_number_p}
 @deffn {Function} complex_number_p (@var{x})
 
 The predicate @code{complex_number_p} returns true if its argument is
@@ -286,6 +287,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{compose_functions}
 @deffn {Function} compose_functions (@var{l})
 
 The function call @code{compose_functions(l)} returns a lambda form that is
@@ -353,6 +355,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
+@anchor{dfloat}
 @deffn {Function} dfloat (@var{x})
 
 The function @code{dfloat} is a similar to @code{float}, but the function
@@ -392,6 +395,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{elim}
 @deffn {Function} elim (@var{l}, @var{x})
 
 The function @code{elim} eliminates the variables in the set or list
@@ -465,6 +469,7 @@ other Maxima functions.
 
 @end deffn
  
+@anchor{elim_allbut}
 @deffn {Function} elim_allbut (@var{l}, @var{x})
 
 This function is similar to @code{elim}, except that it eliminates all the
@@ -490,6 +495,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{eliminate_using}
 @deffn {Function} eliminate_using (@var{l}, @var{e}, @var{x})
 
 Using @code{e} as the pivot, eliminate the symbol @code{x} from the
@@ -526,6 +532,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{fourier_elim}
 @deffn {Function} fourier_elim ([@var{eq1}, @var{eq2}, @dots{}], [@var{var1}, @var{var}, @dots{}])
 
 Fourier elimination is the analog of Gauss elimination for linear inequations
@@ -615,6 +622,7 @@ handles some expressions that are the product or quotient of linear terms:
 
 @end deffn
 
+@anchor{isreal_p}
 @deffn {Function} isreal_p (@var{e})
 
 The predicate @code{isreal_p} returns true when Maxima is able to
@@ -665,6 +673,7 @@ other Maxima functions.
 @end deffn
 
 
+@anchor{new_variable}
 @deffn {Function} new_variable (type)
 
 Return a unique symbol of the form @code{%[z,n,r,c,g]k}, where
@@ -716,6 +725,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{nicedummies}
 @deffn {Function} nicedummies
 
 Starting with zero, the function @code{nicedummies} re-indexes the variables 
@@ -795,6 +805,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{real_imagpart_to_conjugate}
 @deffn {Function} real_imagpart_to_conjugate (@var{e})
 
 The function @code{real_imagpart_to_conjugate} replaces all occurrences
@@ -818,6 +829,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{rectform_log_if_constant}
 @deffn {Function} rectform_log_if_constant (@var{e})
 
 The function @code{rectform_log_if_constant} converts all terms of the form
@@ -846,6 +858,7 @@ might be merged into other Maxima functions.
 
 @end deffn
 
+@anchor{simp_inequality}
 @deffn {Function} simp_inequality (@var{e})
 
 The function @code{simp_inequality} applies some simplifications to
@@ -878,6 +891,7 @@ other Maxima functions.
 
 @end deffn
 
+@anchor{standardize_inverse_trig}
 @deffn {Function} standardize_inverse_trig (@var{e})
 
 This function applies the identities @code{cot(x) = atan(1/x),
@@ -892,6 +906,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
+@anchor{subst_parallel}
 @deffn {Function} subst_parallel (@var{l}, @var{e})
 
 When @code{l} is a single equation or a list of equations, substitute
@@ -959,6 +974,7 @@ functionality might be merged into other Maxima functions.
 
 @end deffn
 
+@anchor{to_poly}
 @deffn {Function} to_poly (@var{e}, @var{l})
 
 The function @code{to_poly} attempts to convert the equation @code{e}

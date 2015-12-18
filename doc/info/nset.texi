@@ -430,7 +430,7 @@ Returns the union of the set @var{a} with @code{@{@var{x}@}}.
 are equivalent;
 however, @code{adjoin} may be somewhat faster than @code{union}.
 
-See also @code{disjoin}.
+See also @mref{disjoin}.
 
 Examples:
 
@@ -1315,7 +1315,7 @@ the result is equivalent to @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 The function @var{F} is first applied to the
 @i{leftmost} list elements, thus the name "lreduce". 
 
-See also @code{rreduce}, @code{xreduce}, and @code{tree_reduce}.
+See also @mref{rreduce}, @mref{xreduce}, and @mref{tree_reduce}.
 
 Examples:
 
@@ -1383,7 +1383,7 @@ and each member of @var{s} must be a list of one element.
 @c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
 @c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
 
-See also @code{makelist}.
+See also @mref{makelist}.
 
 Examples:
 
@@ -1612,7 +1612,7 @@ and the second comprises any other elements of @var{a}.
 
 @code{partition_set} complains if @var{a} is not a literal set.
 
-See also @code{subset}.
+See also @mref{subset}.
 
 Examples:
 
@@ -1646,7 +1646,7 @@ in the permutations.
 
 @code{permutations} complains if @var{a} is not a literal list or set.
 
-See also @code{random_permutation}.
+See also @mref{random_permutation}.
 
 Examples:
 
@@ -1714,6 +1714,7 @@ Examples:
 
 @end deffn
 
+@anchor{random_permutation}
 @deffn {Function} random_permutation (@var{a})
 
 Returns a random permutation of the set or list @var{a},
@@ -1763,7 +1764,7 @@ the result is equivalent to @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @v
 The function @var{F} is first applied to the
 @i{rightmost} list elements, thus the name "rreduce". 
 
-See also @code{lreduce}, @code{tree_reduce}, and @code{xreduce}.
+See also @mref{lreduce}, @mref{tree_reduce}, and @mref{xreduce}.
 
 Examples:
 
@@ -2268,7 +2269,7 @@ for which @var{f} returns anything other than @code{false}.
 
 @code{subset} complains if @var{a} is not a literal set.
 
-See also @code{partition_set}.
+See also @mref{partition_set}.
 
 Examples:
 

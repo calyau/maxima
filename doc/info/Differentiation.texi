@@ -173,8 +173,8 @@ two-dimensional form.
 
 @code{at} carries out multiple substitutions in parallel.
 
-See also @code{atvalue}.  For other functions which carry out substitutions,
-see also @code{subst} and @code{ev}.
+See also @mrefdot{atvalue}  For other functions which carry out substitutions,
+see also @mref{subst} and @mrefdot{ev}
 
 Examples:
 
@@ -412,7 +412,7 @@ and @var{x_1}, @dots{}, @var{x_m} are any number of arguments.
 
 @code{dependencies(@var{f}(@var{x_1}, @dots{}, @var{x_m}))} is equivalent to @code{depends(@var{f}, [@var{x_1}, @dots{}, @var{x_m}])}.
 
-See also @code{depends} and @code{gradef}.
+See also @mref{depends} and @mrefdot{gradef}
 
 @c ===beg===
 @c dependencies;
@@ -944,7 +944,7 @@ as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}.  If
 laplace fails to find a transform the function @code{specint} is called.
 @code{specint} can find the laplace transform for expressions with special
 functions like the bessel functions @code{bessel_j}, @code{bessel_i}, @dots{}
-and can handle the @code{unit_step} function.  See also @code{specint}.
+and can handle the @code{unit_step} function.  See also @mrefdot{specint}
 
 If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
 
@@ -967,7 +967,7 @@ implicit relations, established by @code{depends}, are not recognized.
 That is, if @var{f} depends on @var{x} and @var{y},
 @code{f (x, y)} must appear in @var{expr}.
 
-See also @code{ilt}, the inverse Laplace transform.
+See also @mrefcomma{ilt}, the inverse Laplace transform.
 
 Examples:
 

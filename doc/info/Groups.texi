@@ -5,6 +5,7 @@
 @node Functions and Variables for Groups,  , Groups, Groups
 @section Functions and Variables for Groups
 
+@anchor{todd_coxeter}
 @deffn {Function} todd_coxeter @
 @fname{todd_coxeter} (@var{relations}, @var{subgroup}) @
 @fname{todd_coxeter} (@var{relations})

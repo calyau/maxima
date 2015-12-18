@@ -584,7 +584,7 @@ make a difference is that the simplifier re-orders expressions:
 The functions @code{second} @dots{}
 @code{tenth} yield the second through the tenth part of their input argument.
 
-See also @code{part}.
+See also @mrefdot{part}
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -872,7 +872,7 @@ See @mref{first} for more details.
 
 @code{pop} removes and returns the first element from the list @var{list}. The second argument 
 @var{list} must be a mapatom that is bound to a nonempty list. If the argument @var{list} is 
-not bound to a nonempty list, Maxima signals an error. For examples, see @mref{push}.
+not bound to a nonempty list, Maxima signals an error. For examples, see @mrefdot{push}
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -889,7 +889,7 @@ can be any Maxima symbol or expression. If the argument @var{list} is not bound 
 signals an error.
 
 
-To remove the first item from a list, see @mref{pop}.
+To remove the first item from a list, see @mrefdot{pop}
 
 
 Examples:

@@ -20,7 +20,7 @@ then you should give enough terms in order to make the
 computation accurate enough.
 
 
-See also @code{ggf}.
+See also @mref{ggf}.
 
 @opencatbox
 @category{Package ggf}
@@ -42,7 +42,7 @@ not being a fraction of two polynomials and the function will
 exit. Put freely a greater value for more complicated
 generating functions.
 
-See also @code{ggf}.
+See also @mref{ggf}.
 
 @opencatbox
 @category{Package ggf}

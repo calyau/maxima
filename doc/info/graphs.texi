@@ -34,6 +34,7 @@ To use the @code{graphs} package, first load it with @code{load(graphs)}.
 
 @subsection Building graphs
 
+@anchor{create_graph}
 @deffn {Function} create_graph @
 @fname{create_graph} (@var{v_list}, @var{e_list}) @
 @fname{create_graph} (@var{n}, @var{e_list}) @
@@ -122,6 +123,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{copy_graph}
 @deffn {Function} copy_graph (@var{g})
 Returns a copy of the graph @var{g}.
 
@@ -130,6 +132,7 @@ Returns a copy of the graph @var{g}.
 @closecatbox
 @end deffn
 
+@anchor{circulant_graph}
 @deffn {Function} circulant_graph (@var{n}, @var{d})
 Returns the circulant graph with parameters @var{n} and @var{d}.
 
@@ -162,6 +165,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{clebsch_graph}
 @deffn {Function} clebsch_graph ()
 Returns the Clebsch graph.
 
@@ -170,6 +174,7 @@ Returns the Clebsch graph.
 @closecatbox
 @end deffn
 
+@anchor{complement_graph}
 @deffn {Function} complement_graph (@var{g})
 Returns the complement of the graph @var{g}.
 
@@ -178,6 +183,7 @@ Returns the complement of the graph @var{g}.
 @closecatbox
 @end deffn
 
+@anchor{complete_bipartite_graph}
 @deffn {Function} complete_bipartite_graph (@var{n}, @var{m})
 Returns the complete bipartite graph on @var{n+m} vertices.
 
@@ -186,6 +192,7 @@ Returns the complete bipartite graph on @var{n+m} vertices.
 @closecatbox
 @end deffn
 
+@anchor{complete_graph}
 @deffn {Function} complete_graph (@var{n})
 Returns the complete graph on @var{n} vertices.
 
@@ -194,6 +201,7 @@ Returns the complete graph on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{cycle_digraph}
 @deffn {Function} cycle_digraph (@var{n})
 Returns the directed cycle on @var{n} vertices.
 
@@ -202,6 +210,7 @@ Returns the directed cycle on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{cycle_graph}
 @deffn {Function} cycle_graph (@var{n})
 Returns the cycle on @var{n} vertices.
 
@@ -210,6 +219,7 @@ Returns the cycle on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{cuboctahedron_graph}
 @deffn {Function} cuboctahedron_graph (@var{n})
 Returns the cuboctahedron graph.
 
@@ -218,6 +228,7 @@ Returns the cuboctahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{cube_graph}
 @deffn {Function} cube_graph (@var{n})
 Returns the @var{n}-dimensional cube.
 
@@ -226,6 +237,7 @@ Returns the @var{n}-dimensional cube.
 @closecatbox
 @end deffn
 
+@anchor{dodecahedron_graph}
 @deffn {Function} dodecahedron_graph ()
 Returns the dodecahedron graph.
 
@@ -234,6 +246,7 @@ Returns the dodecahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{empty_graph}
 @deffn {Function} empty_graph (@var{n})
 Returns the empty graph on @var{n} vertices.
 
@@ -242,6 +255,7 @@ Returns the empty graph on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{flower_snark}
 @deffn {Function} flower_snark (@var{n})
 Returns the flower graph on @var{4n} vertices.
 
@@ -263,6 +277,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{from_adjacency_matrix}
 @deffn {Function} from_adjacency_matrix (@var{A})
 Returns the graph represented by its adjacency matrix @var{A}.
 
@@ -271,6 +286,7 @@ Returns the graph represented by its adjacency matrix @var{A}.
 @closecatbox
 @end deffn
 
+@anchor{frucht_graph}
 @deffn {Function} frucht_graph ()
 Returns the Frucht graph.
 
@@ -279,6 +295,7 @@ Returns the Frucht graph.
 @closecatbox
 @end deffn
 
+@anchor{graph_product}
 @deffn {Function} graph_product (@var{g1}, @var{g1})
 Returns the direct product of graphs @var{g1} and @var{g2}.
 
@@ -303,6 +320,7 @@ Example:
 @image{figures/graphs01,6cm}
 @end ifhtml
 
+@anchor{graph_union}
 @deffn {Function} graph_union (@var{g1}, @var{g1})
 Returns the union (sum) of graphs @var{g1} and @var{g2}.
 
@@ -311,6 +329,7 @@ Returns the union (sum) of graphs @var{g1} and @var{g2}.
 @closecatbox
 @end deffn
 
+@anchor{grid_graph}
 @deffn {Function} grid_graph (@var{n}, @var{m})
 Returns the @var{n x m} grid.
 
@@ -319,6 +338,7 @@ Returns the @var{n x m} grid.
 @closecatbox
 @end deffn
 
+@anchor{great_rhombicosidodecahedron_graph}
 @deffn {Function} great_rhombicosidodecahedron_graph ()
 Returns the great rhombicosidodecahedron graph.
 
@@ -327,6 +347,7 @@ Returns the great rhombicosidodecahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{great_rhombicuboctahedron_graph}
 @deffn {Function} great_rhombicuboctahedron_graph ()
 Returns the great rhombicuboctahedron graph.
 
@@ -335,6 +356,7 @@ Returns the great rhombicuboctahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{grotzch_graph}
 @deffn {Function} grotzch_graph ()
 Returns the Grotzch graph.
 
@@ -343,6 +365,7 @@ Returns the Grotzch graph.
 @closecatbox
 @end deffn
 
+@anchor{heawood_graph}
 @deffn {Function} heawood_graph ()
 Returns the Heawood graph.
 
@@ -351,6 +374,7 @@ Returns the Heawood graph.
 @closecatbox
 @end deffn
 
+@anchor{icosahedron_graph}
 @deffn {Function} icosahedron_graph ()
 Returns the icosahedron graph.
 
@@ -359,6 +383,7 @@ Returns the icosahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{icosidodecahedron_graph}
 @deffn {Function} icosidodecahedron_graph ()
 Returns the icosidodecahedron graph.
 
@@ -367,6 +392,7 @@ Returns the icosidodecahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{induced_subgraph}
 @deffn {Function} induced_subgraph (@var{V}, @var{g})
 Returns the graph induced on the subset @var{V} of vertices of the graph
 @var{g}.
@@ -399,6 +425,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{line_graph}
 @deffn {Function} line_graph (@var{g})
 Returns the line graph of the graph @var{g}.
 
@@ -407,6 +434,7 @@ Returns the line graph of the graph @var{g}.
 @closecatbox
 @end deffn
 
+@anchor{make_graph}
 @deffn {Function} make_graph @
 @fname{make_graph} (@var{vrt}, @var{f}) @
 @fname{make_graph} (@var{vrt}, @var{f}, @var{oriented})
@@ -461,6 +489,7 @@ Example 2:
 @closecatbox
 @end deffn
 
+@anchor{mycielski_graph}
 @deffn {Function} mycielski_graph (@var{g})
 Returns the mycielskian graph of the graph @var{g}.
 
@@ -469,6 +498,7 @@ Returns the mycielskian graph of the graph @var{g}.
 @closecatbox
 @end deffn
 
+@anchor{new_graph}
 @deffn {Function} new_graph ()
 Returns the graph with no vertices and no edges.
 
@@ -477,6 +507,7 @@ Returns the graph with no vertices and no edges.
 @closecatbox
 @end deffn
 
+@anchor{path_digraph}
 @deffn {Function} path_digraph (@var{n})
 Returns the directed path on @var{n} vertices.
 
@@ -485,6 +516,7 @@ Returns the directed path on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{path_graph}
 @deffn {Function} path_graph (@var{n})
 Returns the path on @var{n} vertices.
 
@@ -493,6 +525,7 @@ Returns the path on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{petersen_graph}
 @deffn {Function} petersen_graph @
 @fname{petersen_graph} () @
 @fname{petersen_graph} (@var{n}, @var{d})
@@ -505,6 +538,7 @@ Returns the petersen graph @var{P_@{n,d@}}. The default values for
 @closecatbox
 @end deffn
 
+@anchor{random_bipartite_graph}
 @deffn {Function} random_bipartite_graph (@var{a}, @var{b}, @var{p})
 Returns a random bipartite graph on @code{a+b} vertices. Each edge is
 present with probability @var{p}.
@@ -514,6 +548,7 @@ present with probability @var{p}.
 @closecatbox
 @end deffn
 
+@anchor{random_digraph}
 @deffn {Function} random_digraph (@var{n}, @var{p})
 Returns a random directed graph on @var{n} vertices. Each arc is present
 with probability @var{p}.
@@ -523,6 +558,7 @@ with probability @var{p}.
 @closecatbox
 @end deffn
 
+@anchor{random_regular_graph}
 @deffn {Function} random_regular_graph @
 @fname{random_regular_graph} (@var{n}) @
 @fname{random_regular_graph} (@var{n}, @var{d})
@@ -535,6 +571,7 @@ value for @var{d} is @code{d=3}.
 @closecatbox
 @end deffn
 
+@anchor{random_graph}
 @deffn {Function} random_graph (@var{n}, @var{p})
 Returns a random graph on @var{n} vertices. Each edge is present with
 probability @var{p}.
@@ -544,6 +581,7 @@ probability @var{p}.
 @closecatbox
 @end deffn
 
+@anchor{random_graph1}
 @deffn {Function} random_graph1 (@var{n}, @var{m})
 Returns a random graph on @var{n} vertices and random @var{m} edges.
 
@@ -552,6 +590,7 @@ Returns a random graph on @var{n} vertices and random @var{m} edges.
 @closecatbox
 @end deffn
 
+@anchor{random_network}
 @deffn {Function} random_network (@var{n}, @var{p}, @var{w})
 Returns a random network on @var{n} vertices. Each arc is present with
 probability @var{p} and has a weight in the range @code{[0,w]}. The
@@ -578,6 +617,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{random_tournament}
 @deffn {Function} random_tournament (@var{n})
 Returns a random tournament on @var{n} vertices.
 
@@ -586,6 +626,7 @@ Returns a random tournament on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{random_tree}
 @deffn {Function} random_tree (@var{n})
 Returns a random tree on @var{n} vertices.
 
@@ -594,6 +635,7 @@ Returns a random tree on @var{n} vertices.
 @closecatbox
 @end deffn
 
+@anchor{small_rhombicosidodecahedron_graph}
 @deffn {Function} small_rhombicosidodecahedron_graph ()
 Returns the small rhombicosidodecahedron graph.
 
@@ -602,6 +644,7 @@ Returns the small rhombicosidodecahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{small_rhombicuboctahedron_graph}
 @deffn {Function} small_rhombicuboctahedron_graph ()
 Returns the small rhombicuboctahedron graph.
 
@@ -610,6 +653,7 @@ Returns the small rhombicuboctahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{snub_cube_graph}
 @deffn {Function} snub_cube_graph ()
 Returns the snub cube graph.
 
@@ -618,6 +662,7 @@ Returns the snub cube graph.
 @closecatbox
 @end deffn
 
+@anchor{snub_dodecahedron_graph}
 @deffn {Function} snub_dodecahedron_graph ()
 Returns the snub dodecahedron graph.
 
@@ -626,6 +671,7 @@ Returns the snub dodecahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{truncated_cube_graph}
 @deffn {Function} truncated_cube_graph ()
 Returns the truncated cube graph.
 
@@ -634,6 +680,7 @@ Returns the truncated cube graph.
 @closecatbox
 @end deffn
 
+@anchor{truncated_dodecahedron_graph}
 @deffn {Function} truncated_dodecahedron_graph ()
 Returns the truncated dodecahedron graph.
 
@@ -643,6 +690,7 @@ Returns the truncated dodecahedron graph.
 @end deffn
 
 
+@anchor{truncated_icosahedron_graph}
 @deffn {Function} truncated_icosahedron_graph ()
 Returns the truncated icosahedron graph.
 
@@ -652,6 +700,7 @@ Returns the truncated icosahedron graph.
 @end deffn
 
 
+@anchor{truncated_tetrahedron_graph}
 @deffn {Function} truncated_tetrahedron_graph ()
 Returns the truncated tetrahedron graph.
 
@@ -660,6 +709,7 @@ Returns the truncated tetrahedron graph.
 @closecatbox
 @end deffn
 
+@anchor{tutte_graph}
 @deffn {Function} tutte_graph ()
 Returns the Tutte graph.
 
@@ -668,6 +718,7 @@ Returns the Tutte graph.
 @closecatbox
 @end deffn
 
+@anchor{underlying_graph}
 @deffn {Function} underlying_graph (@var{g})
 Returns the underlying graph of the directed graph @var{g}.
 
@@ -676,6 +727,7 @@ Returns the underlying graph of the directed graph @var{g}.
 @closecatbox
 @end deffn
 
+@anchor{wheel_graph}
 @deffn {Function} wheel_graph (@var{n})
 Returns the wheel graph on @var{n+1} vertices.
 
@@ -686,6 +738,7 @@ Returns the wheel graph on @var{n+1} vertices.
 
 @subsection Graph properties
 
+@anchor{adjacency_matrix}
 @deffn {Function} adjacency_matrix (@var{gr})
 Returns the adjacency matrix of the graph @var{gr}.
 
@@ -713,6 +766,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{average_degree}
 @deffn {Function} average_degree (@var{gr})
 Returns the average degree of vertices in the graph @var{gr}.
 
@@ -734,6 +788,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{biconnected_components}
 @deffn {Function} biconnected_components (@var{gr})
 Returns the (vertex sets of) 2-connected components of the graph
 @var{gr}.
@@ -770,6 +825,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{bipartition}
 @deffn {Function} bipartition (@var{gr})
 Returns a bipartition of the vertices of the graph @var{gr} or an empty
 list if @var{gr} is not bipartite.
@@ -799,6 +855,7 @@ Example:
 @image{figures/graphs02,6cm}
 @end ifhtml
 
+@anchor{chromatic_index}
 @deffn {Function} chromatic_index (@var{gr})
 Returns the chromatic index of the graph @var{gr}.
 
@@ -820,6 +877,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{chromatic_number}
 @deffn {Function} chromatic_number (@var{gr})
 Returns the chromatic number of the graph @var{gr}.
 
@@ -842,6 +900,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{clear_edge_weight}
 @deffn {Function} clear_edge_weight (@var{e}, @var{gr})
 Removes the weight of the edge  @var{e} in the graph @var{gr}.
 
@@ -869,6 +928,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{clear_vertex_label}
 @deffn {Function} clear_vertex_label (@var{v}, @var{gr})
 Removes the label of the vertex @var{v} in the graph @var{gr}.
 
@@ -896,6 +956,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{connected_components}
 @deffn {Function} connected_components (@var{gr})
 Returns the (vertex sets of) connected components of the graph @var{gr}.
 
@@ -917,6 +978,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{diameter}
 @deffn {Function} diameter (@var{gr})
 Returns the diameter of the graph @var{gr}.
 
@@ -936,6 +998,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{edge_coloring}
 @deffn {Function} edge_coloring (@var{gr})
 Returns an optimal coloring of the edges of the graph @var{gr}.
 
@@ -969,6 +1032,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{degree_sequence}
 @deffn {Function} degree_sequence (@var{gr})
 Returns the list of vertex degrees of the graph @var{gr}.
 
@@ -988,16 +1052,18 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{edge_connectivity}
 @deffn {Function} edge_connectivity (@var{gr})
 Returns the edge-connectivity of the graph @var{gr}.
 
-See also @code{min_edge_cut}.
+See also @mref{min_edge_cut}.
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
+@anchor{edges}
 @deffn {Function} edges (@var{gr})
 Returns the list of edges (arcs) in a (directed) graph @var{gr}.
 
@@ -1017,6 +1083,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{get_edge_weight}
 @deffn {Function} get_edge_weight @
 @fname{get_edge_weight} (@var{e}, @var{gr}) @
 @fname{get_edge_weight} (@var{e}, @var{gr}, @var{ifnot})
@@ -1051,6 +1118,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{get_vertex_label}
 @deffn {Function} get_vertex_label (@var{v}, @var{gr})
 Returns the label of the vertex @var{v} in the graph @var{gr}.
 
@@ -1072,6 +1140,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_charpoly}
 @deffn {Function} graph_charpoly (@var{gr}, @var{x})
 Returns the characteristic polynomial (in variable @var{x}) of the graph
 @var{gr}.
@@ -1095,6 +1164,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_center}
 @deffn {Function} graph_center (@var{gr})
 Returns the center of the graph @var{gr}.
 
@@ -1116,9 +1186,10 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_eigenvalues}
 @deffn {Function} graph_eigenvalues (@var{gr})
 Returns the eigenvalues of the graph @var{gr}. The function returns
-eigenvalues in the same format as maxima @code{eigenvalue} function.
+eigenvalues in the same format as maxima @mref{eigenvalues} function.
 
 Example:
 @c ===beg===
@@ -1138,6 +1209,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_periphery}
 @deffn {Function} graph_periphery (@var{gr})
 Returns the periphery of the graph @var{gr}.
 
@@ -1159,6 +1231,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_size}
 @deffn {Function} graph_size (@var{gr})
 Returns the number of edges in the graph @var{gr}.
 
@@ -1180,6 +1253,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{graph_order}
 @deffn {Function} graph_order (@var{gr})
 Returns the number of vertices in the graph @var{gr}.
 
@@ -1201,6 +1275,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{girth}
 @deffn {Function} girth (@var{gr})
 Returns the length of the shortest cycle in @var{gr}.
 
@@ -1222,6 +1297,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{hamilton_cycle}
 @deffn {Function} hamilton_cycle (@var{gr})
 Returns the Hamilton cycle of the graph @var{gr} or an empty list if
 @var{gr} is not hamiltonian.
@@ -1250,6 +1326,7 @@ Example:
 @image{figures/graphs03,6cm}
 @end ifhtml
 
+@anchor{hamilton_path}
 @deffn {Function} hamilton_path (@var{gr})
 Returns the Hamilton path of the graph @var{gr} or an empty list if
 @var{gr} does not have a Hamilton path.
@@ -1278,6 +1355,7 @@ Example:
 @image{figures/graphs04,6cm}
 @end ifhtml
 
+@anchor{isomorphism}
 @deffn {Function} isomorphism (@var{gr1}, @var{gr2})
 
 Returns a an isomorphism between graphs/digraphs @var{gr1} and
@@ -1303,6 +1381,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{in_neighbors}
 @deffn {Function} in_neighbors (@var{v}, @var{gr})
 Returns the list of in-neighbors of the vertex @var{v} in the directed
 graph @var{gr}.
@@ -1328,6 +1407,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_biconnected}
 @deffn {Function} is_biconnected (@var{gr})
 Returns @code{true} if @var{gr} is 2-connected and @code{false} otherwise.
 
@@ -1350,6 +1430,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_bipartite}
 @deffn {Function} is_bipartite (@var{gr})
 Returns @code{true} if @var{gr} is bipartite (2-colorable) and @code{false} otherwise.
 
@@ -1372,6 +1453,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_connected}
 @deffn {Function} is_connected (@var{gr})
 Returns @code{true} if the graph @var{gr} is connected and @code{false} otherwise.
 
@@ -1391,6 +1473,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_digraph}
 @deffn {Function} is_digraph (@var{gr})
 Returns @code{true} if @var{gr} is a directed graph and @code{false} otherwise.
 
@@ -1413,6 +1496,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_edge_in_graph}
 @deffn {Function} is_edge_in_graph (@var{e}, @var{gr})
 Returns @code{true} if @var{e} is an edge (arc) in the (directed) graph @var{g}
 and @code{false} otherwise.
@@ -1444,6 +1528,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_graph}
 @deffn {Function} is_graph (@var{gr})
 Returns @code{true} if @var{gr} is a graph and @code{false} otherwise.
 
@@ -1466,6 +1551,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_graph_or_digraph}
 @deffn {Function} is_graph_or_digraph (@var{gr})
 Returns @code{true} if @var{gr} is a graph or a directed graph and @code{false} otherwise.
 
@@ -1488,12 +1574,13 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_isomorphic}
 @deffn {Function} is_isomorphic (@var{gr1}, @var{gr2})
 
 Returns @code{true} if graphs/digraphs @var{gr1} and @var{gr2} are isomorphic
 and @code{false} otherwise.
 
-See also @code{isomorphism}.
+See also @mrefdot{isomorphism}
 
 Example:
 @c ===beg===
@@ -1513,6 +1600,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_planar}
 @deffn {Function} is_planar (@var{gr})
 
 Returns @code{true} if @var{gr} is a planar graph and @code{false} otherwise.
@@ -1542,6 +1630,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_sconnected}
 @deffn {Function} is_sconnected (@var{gr})
 Returns @code{true} if the directed graph @var{gr} is strongly connected and
 @code{false} otherwise.
@@ -1565,6 +1654,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_vertex_in_graph}
 @deffn {Function} is_vertex_in_graph (@var{v}, @var{gr})
 Returns @code{true} if @var{v} is a vertex in the graph @var{g} and @code{false}  otherwise.
 
@@ -1589,6 +1679,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{is_tree}
 @deffn {Function} is_tree (@var{gr})
 Returns @code{true} if @var{gr} is a tree and @code{false}  otherwise.
 
@@ -1611,6 +1702,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{laplacian_matrix}
 @deffn {Function} laplacian_matrix (@var{gr})
 Returns the laplacian matrix of the graph @var{gr}.
 
@@ -1638,6 +1730,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{max_clique}
 @deffn {Function} max_clique (@var{gr})
 Returns a maximum clique of the graph @var{gr}.
 
@@ -1659,6 +1752,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{max_degree}
 @deffn {Function} max_degree (@var{gr})
 Returns the maximal degree of vertices of the graph @var{gr} and a
 vertex of maximal degree.
@@ -1684,6 +1778,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{max_flow}
 @deffn {Function} max_flow (@var{net}, @var{s}, @var{t})
 Returns a maximum flow through the network @var{net} with the source
 @var{s} and the sink @var{t}.
@@ -1740,6 +1835,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{max_independent_set}
 @deffn {Function} max_independent_set (@var{gr})
 Returns a maximum independent set of the graph @var{gr}.
 
@@ -1767,6 +1863,7 @@ Example:
 @image{figures/graphs05,6cm}
 @end ifhtml
 
+@anchor{max_matching}
 @deffn {Function} max_matching (@var{gr})
 Returns a maximum matching of the graph @var{gr}.
 
@@ -1795,6 +1892,7 @@ Example:
 @image{figures/graphs06,6cm}
 @end ifhtml
 
+@anchor{min_degree}
 @deffn {Function} min_degree (@var{gr})
 Returns the minimum degree of vertices of the graph @var{gr} and a
 vertex of minimum degree.
@@ -1820,16 +1918,18 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{min_edge_cut}
 @deffn {Function} min_edge_cut (@var{gr})
 Returns the minimum edge cut in the graph @var{gr}.
 
-See also @code{edge_connectivity}.
+See also @mrefdot{edge_connectivity}
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
+@anchor{min_vertex_cover}
 @deffn {Function} min_vertex_cover (@var{gr})
 Returns the minimum vertex cover of the graph @var{gr}.
 
@@ -1838,16 +1938,18 @@ Returns the minimum vertex cover of the graph @var{gr}.
 @closecatbox
 @end deffn
 
+@anchor{min_vertex_cut}
 @deffn {Function} min_vertex_cut (@var{gr})
 Returns the minimum vertex cut in the graph @var{gr}.
 
-See also @code{vertex_connectivity}.
+See also @mrefdot{vertex_connectivity}
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
+@anchor{minimum_spanning_tree}
 @deffn {Function} minimum_spanning_tree (@var{gr})
 Returns the minimum spanning tree of the graph @var{gr}.
 
@@ -1874,6 +1976,7 @@ Example:
 @image{figures/graphs07,6cm}
 @end ifhtml
 
+@anchor{neighbors}
 @deffn {Function} neighbors (@var{v}, @var{gr})
 Returns the list of neighbors of the vertex @var{v} in the graph @var{gr}.
 
@@ -1895,6 +1998,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{odd_girth}
 @deffn {Function} odd_girth (@var{gr})
 Returns the length of the shortest odd cycle in the graph @var{gr}.
 
@@ -1919,6 +2023,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{out_neighbors}
 @deffn {Function} out_neighbors (@var{v}, @var{gr})
 Returns the list of out-neighbors of the vertex @var{v} in the directed
 graph @var{gr}.
@@ -1944,6 +2049,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{planar_embedding}
 @deffn {Function} planar_embedding (@var{gr})
 
 Returns the list of facial walks in a planar embedding of @var{gr} and
@@ -1971,6 +2077,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{print_graph}
 @deffn {Function} print_graph (@var{gr})
 Prints some information about the graph @var{gr}.
 
@@ -2012,6 +2119,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{radius}
 @deffn {Function} radius (@var{gr})
 Returns the radius of the graph @var{gr}.
 
@@ -2031,6 +2139,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{set_edge_weight}
 @deffn {Function} set_edge_weight (@var{e}, @var{w}, @var{gr})
 Assigns the weight @var{w} to the edge @var{e} in the graph @var{gr}.
 
@@ -2058,6 +2167,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{set_vertex_label}
 @deffn {Function} set_vertex_label (@var{v}, @var{l}, @var{gr})
 Assigns the label @var{l} to the vertex @var{v} in the graph @var{gr}.
 
@@ -2085,6 +2195,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{shortest_path}
 @deffn {Function} shortest_path (@var{u}, @var{v}, @var{gr})
 Returns the shortest path from @var{u} to @var{v} in the graph @var{gr}.
 
@@ -2112,6 +2223,7 @@ Example:
 @image{figures/graphs08,6cm}
 @end ifhtml
 
+@anchor{shortest_weighted_path}
 @deffn {Function} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
 Returns the length of the shortest weighted path and the shortest
 weighted path from @var{u} to @var{v} in the graph @var{gr}.
@@ -2140,6 +2252,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{strong_components}
 @deffn {Function} strong_components (@var{gr})
 Returns the strong components of a directed graph @var{gr}.
 
@@ -2164,6 +2277,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{topological_sort}
 @deffn {Function} topological_sort (@var{dag})
 
 Returns a topological sorting of the vertices of a directed graph
@@ -2199,16 +2313,18 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{vertex_connectivity}
 @deffn {Function} vertex_connectivity (@var{g})
 Returns the vertex connectivity of the graph @var{g}.
 
-See also @code{min_vertex_cut}.
+See also @mrefdot{min_vertex_cut}
 
 @opencatbox
 @category{Package graphs} @category{Package graphs - properties}
 @closecatbox
 @end deffn
 
+@anchor{vertex_degree}
 @deffn {Function} vertex_degree (@var{v}, @var{gr})
 Returns the degree of the vertex @var{v} in the graph @var{gr}.
 
@@ -2217,6 +2333,7 @@ Returns the degree of the vertex @var{v} in the graph @var{gr}.
 @closecatbox
 @end deffn
 
+@anchor{vertex_distance}
 @deffn {Function} vertex_distance (@var{u}, @var{v}, @var{gr})
 Returns the length of the shortest path between @var{u} and @var{v} in
 the (directed) graph @var{gr}.
@@ -2242,6 +2359,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{vertex_eccentricity}
 @deffn {Function} vertex_eccentricity (@var{v}, @var{gr})
 
 Returns the eccentricity of the vertex @var{v} in the graph @var{gr}.
@@ -2264,6 +2382,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{vertex_in_degree}
 @deffn {Function} vertex_in_degree (@var{v}, @var{gr})
 Returns the in-degree of the vertex @var{v} in the directed graph @var{gr}.
 
@@ -2297,6 +2416,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{vertex_out_degree}
 @deffn {Function} vertex_out_degree (@var{v}, @var{gr})
 Returns the out-degree of the vertex @var{v} in the directed graph @var{gr}.
 
@@ -2321,6 +2441,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{vertices}
 @deffn {Function} vertices (@var{gr})
 Returns the list of vertices in the graph @var{gr}.
 
@@ -2340,6 +2461,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{vertex_coloring}
 @deffn {Function} vertex_coloring (@var{gr})
 Returns an optimal coloring of the vertices of the graph @var{gr}.
 
@@ -2365,6 +2487,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{wiener_index}
 @deffn {Function} wiener_index (@var{gr})
 Returns the Wiener index of the graph @var{gr}.
 
@@ -2385,6 +2508,7 @@ Example:
 
 @subsection Modifying graphs
 
+@anchor{add_edge}
 @deffn {Function} add_edge (@var{e}, @var{gr})
 Adds the edge @var{e} to the graph @var{gr}.
 
@@ -2412,6 +2536,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{add_edges}
 @deffn {Function} add_edges (@var{e_list}, @var{gr})
 Adds all edges in the list @var{e_list} to the graph @var{gr}.
 
@@ -2439,6 +2564,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{add_vertex}
 @deffn {Function} add_vertex (@var{v}, @var{gr})
 Adds the vertex @var{v} to the graph @var{gr}.
 
@@ -2466,6 +2592,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{add_vertices}
 @deffn {Function} add_vertices (@var{v_list}, @var{gr})
 Adds all vertices in the list @var{v_list} to the graph @var{gr}.
 
@@ -2474,6 +2601,7 @@ Adds all vertices in the list @var{v_list} to the graph @var{gr}.
 @closecatbox
 @end deffn
 
+@anchor{connect_vertices}
 @deffn {Function} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
 Connects all vertices from the list @var{v_list} with the vertices in
 the list @var{u_list} in the graph @var{gr}.
@@ -2506,6 +2634,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{contract_edge}
 @deffn {Function} contract_edge (@var{e}, @var{gr})
 Contracts the edge @var{e} in the graph @var{gr}.
 
@@ -2551,6 +2680,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{remove_edge}
 @deffn {Function} remove_edge (@var{e}, @var{gr})
 Removes the edge @var{e} from the graph @var{gr}.
 
@@ -2578,6 +2708,7 @@ Adjacencies:
 @closecatbox
 @end deffn
 
+@anchor{remove_vertex}
 @deffn {Function} remove_vertex (@var{v}, @var{gr})
 Removes the vertex @var{v} from the graph @var{gr}.
 
@@ -2588,6 +2719,7 @@ Removes the vertex @var{v} from the graph @var{gr}.
 
 @subsection Reading and writing to files
 
+@anchor{dimacs_export}
 @deffn {Function} dimacs_export @
 @fname{dimacs_export} (@var{gr}, @var{fl}) @
 @fname{dimacs_export} (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
@@ -2600,6 +2732,7 @@ comments will be added to the top of the file.
 @closecatbox
 @end deffn
 
+@anchor{dimacs_import}
 @deffn {Function} dimacs_import (@var{fl})
 
 Returns the graph from file @var{fl} in the DIMACS format.
@@ -2609,6 +2742,7 @@ Returns the graph from file @var{fl} in the DIMACS format.
 @closecatbox
 @end deffn
 
+@anchor{graph6_decode}
 @deffn {Function} graph6_decode (@var{str})
 
 Returns the graph encoded in the graph6 format in the string @var{str}.
@@ -2618,6 +2752,7 @@ Returns the graph encoded in the graph6 format in the string @var{str}.
 @closecatbox
 @end deffn
 
+@anchor{graph6_encode}
 @deffn {Function} graph6_encode (@var{gr})
 
 Returns a string which encodes the graph @var{gr} in the graph6 format.
@@ -2627,6 +2762,7 @@ Returns a string which encodes the graph @var{gr} in the graph6 format.
 @closecatbox
 @end deffn
 
+@anchor{graph6_export}
 @deffn {Function} graph6_export (@var{gr_list}, @var{fl})
 
 Exports graphs in the list @var{gr_list} to the file @var{fl} in the
@@ -2637,6 +2773,7 @@ graph6 format.
 @closecatbox
 @end deffn
 
+@anchor{graph6_import}
 @deffn {Function} graph6_import (@var{fl})
 
 Returns a list of graphs from the file @var{fl} in the graph6 format.
@@ -2646,6 +2783,7 @@ Returns a list of graphs from the file @var{fl} in the graph6 format.
 @closecatbox
 @end deffn
 
+@anchor{sparse6_decode}
 @deffn {Function} sparse6_decode (@var{str})
 
 Returns the graph encoded in the sparse6 format in the string @var{str}.
@@ -2655,6 +2793,7 @@ Returns the graph encoded in the sparse6 format in the string @var{str}.
 @closecatbox
 @end deffn
 
+@anchor{sparse6_encode}
 @deffn {Function} sparse6_encode (@var{gr})
 
 Returns a string which encodes the graph @var{gr} in the sparse6 format.
@@ -2664,6 +2803,7 @@ Returns a string which encodes the graph @var{gr} in the sparse6 format.
 @closecatbox
 @end deffn
 
+@anchor{sparse6_export}
 @deffn {Function} sparse6_export (@var{gr_list}, @var{fl})
 
 Exports graphs in the list @var{gr_list} to the file @var{fl} in the
@@ -2674,6 +2814,7 @@ sparse6 format.
 @closecatbox
 @end deffn
 
+@anchor{sparse6_import}
 @deffn {Function} sparse6_import (@var{fl})
 
 Returns a list of graphs from the file @var{fl} in the sparse6 format.
@@ -2685,11 +2826,12 @@ Returns a list of graphs from the file @var{fl} in the sparse6 format.
 
 @subsection Visualization
 
+@anchor{draw_graph}
 @deffn {Function} draw_graph @
 @fname{draw_graph} (@var{graph}) @
 @fname{draw_graph} (@var{graph}, @var{option1}, ..., @var{optionk})
 
-Draws the graph using the @code{draw} package.
+Draws the graph using the @mref{draw} package.
 
 The algorithm used to position vertices is specified by the optional
 argument @var{program}. The default value is
@@ -2916,6 +3058,7 @@ Example 6:
 @closecatbox
 @end deffn
 
+@anchor{draw_graph_program}
 @defvr {Option variable} draw_graph_program
 Default value: @var{spring_embedding}
 
@@ -2927,6 +3070,7 @@ The default value for the program used to position vertices in
 @closecatbox
 @end defvr
 
+@anchor{show_id}
 @defvr {draw_graph option} show_id
 Default value: @var{false}
 
@@ -2937,6 +3081,7 @@ If @var{true} then ids of the vertices are displayed.
 @closecatbox
 @end defvr
 
+@anchor{show_label}
 @defvr {draw_graph option} show_label
 Default value: @var{false}
 
@@ -2947,6 +3092,7 @@ If @var{true} then labels of the vertices are displayed.
 @closecatbox
 @end defvr
 
+@anchor{label_alignment_graphs}
 @defvr {draw_graph option} label_alignment
 Default value: @var{center}
 
@@ -2958,6 +3104,7 @@ be @code{left}, @code{center} or @code{right}.
 @closecatbox
 @end defvr
 
+@anchor{show_weight }
 @defvr {draw_graph option} show_weight 
 Default value: @var{false}
 
@@ -2968,6 +3115,7 @@ If @var{true} then weights of the edges are displayed.
 @closecatbox
 @end defvr
 
+@anchor{vertex_type}
 @defvr {draw_graph option} vertex_type
 Default value: @var{circle}
 
@@ -2979,6 +3127,7 @@ the @code{draw} package for possible values.
 @closecatbox
 @end defvr
 
+@anchor{vertex_size}
 @defvr {draw_graph option} vertex_size
 The size of vertices.
 
@@ -2987,6 +3136,7 @@ The size of vertices.
 @closecatbox
 @end defvr
 
+@anchor{vertex_color }
 @defvr {draw_graph option} vertex_color 
 The color used for displaying vertices.
 
@@ -2995,6 +3145,7 @@ The color used for displaying vertices.
 @closecatbox
 @end defvr
 
+@anchor{show_vertices}
 @defvr {draw_graph option} show_vertices
 Default value: []
 
@@ -3005,6 +3156,7 @@ Display selected vertices in the using a different color.
 @closecatbox
 @end defvr
 
+@anchor{show_vertex_type}
 @defvr {draw_graph option} show_vertex_type
 Defines how vertices specified in @var{show_vertices} are displayed.
 See the @var{point_type} option for the @code{draw} package for possible
@@ -3015,6 +3167,7 @@ values.
 @closecatbox
 @end defvr
 
+@anchor{show_vertex_size}
 @defvr {draw_graph option} show_vertex_size
 The size of vertices in @var{show_vertices}.
 
@@ -3023,6 +3176,7 @@ The size of vertices in @var{show_vertices}.
 @closecatbox
 @end defvr
 
+@anchor{show_vertex_color }
 @defvr {draw_graph option} show_vertex_color 
 The color used for displaying vertices in the @var{show_vertices} list.
 
@@ -3031,6 +3185,7 @@ The color used for displaying vertices in the @var{show_vertices} list.
 @closecatbox
 @end defvr
 
+@anchor{vertex_partition}
 @defvr {draw_graph option} vertex_partition
 Default value: []
 
@@ -3043,6 +3198,7 @@ different color.
 @closecatbox
 @end defvr
 
+@anchor{vertex_coloring_variable}
 @defvr {draw_graph option} vertex_coloring
 Specifies coloring of the vertices. The coloring @var{col} must be
 specified in the format as returned by @var{vertex_coloring}.
@@ -3052,6 +3208,7 @@ specified in the format as returned by @var{vertex_coloring}.
 @closecatbox
 @end defvr
 
+@anchor{edge_color }
 @defvr {draw_graph option} edge_color 
 The color used for displaying edges.
 
@@ -3060,6 +3217,7 @@ The color used for displaying edges.
 @closecatbox
 @end defvr
 
+@anchor{edge_width}
 @defvr {draw_graph option} edge_width
 The width of edges.
 
@@ -3068,6 +3226,7 @@ The width of edges.
 @closecatbox
 @end defvr
 
+@anchor{edge_type}
 @defvr {draw_graph option} edge_type
 Defines how edges are displayed. See the @var{line_type} option for the
 @code{draw} package.
@@ -3077,6 +3236,7 @@ Defines how edges are displayed. See the @var{line_type} option for the
 @closecatbox
 @end defvr
 
+@anchor{show_edges}
 @defvr {draw_graph option} show_edges
 Display edges specified in the list @var{e_list} using a different
 color.
@@ -3086,6 +3246,7 @@ color.
 @closecatbox
 @end defvr
 
+@anchor{show_edge_color}
 @defvr {draw_graph option} show_edge_color
 The color used for displaying edges in the @var{show_edges} list.
 
@@ -3094,6 +3255,7 @@ The color used for displaying edges in the @var{show_edges} list.
 @closecatbox
 @end defvr
 
+@anchor{show_edge_width}
 @defvr {draw_graph option} show_edge_width
 The width of edges in @var{show_edges}.
 
@@ -3102,6 +3264,7 @@ The width of edges in @var{show_edges}.
 @closecatbox
 @end defvr
 
+@anchor{show_edge_type}
 @defvr {draw_graph option} show_edge_type
 Defines how edges in @var{show_edges} are displayed. See the
 @var{line_type} option for the @code{draw} package.
@@ -3111,6 +3274,7 @@ Defines how edges in @var{show_edges} are displayed. See the
 @closecatbox
 @end defvr
 
+@anchor{edge_partition}
 @defvr {draw_graph option} edge_partition
 A partition @code{[[e1,e2,...],...,[ek,...,em]]} of edges of the
 graph. The edges of each list in the partition will be drawn using a
@@ -3121,6 +3285,7 @@ different color.
 @closecatbox
 @end defvr
 
+@anchor{edge_coloring_variable}
 @defvr {draw_graph option} edge_coloring
 The coloring of edges. The coloring must be specified in the
 format as returned by the function @var{edge_coloring}.
@@ -3130,6 +3295,7 @@ format as returned by the function @var{edge_coloring}.
 @closecatbox
 @end defvr
 
+@anchor{redraw }
 @defvr {draw_graph option} redraw 
 Default value: @var{false}
 
@@ -3141,6 +3307,7 @@ have been saved from a previous drawing of the graph.
 @closecatbox
 @end defvr
 
+@anchor{head_angle_graphs}
 @defvr {draw_graph option} head_angle
 Default value: 15
 
@@ -3151,6 +3318,7 @@ The angle for the arrows displayed on arcs (in directed graphs).
 @closecatbox
 @end defvr
 
+@anchor{head_length_graphs}
 @defvr {draw_graph option} head_length
 Default value: 0.1
 
@@ -3161,6 +3329,7 @@ The length for the arrows displayed on arcs (in directed graphs).
 @closecatbox
 @end defvr
 
+@anchor{spring_embedding_depth}
 @defvr {draw_graph option} spring_embedding_depth
 Default value: 50
 
@@ -3172,6 +3341,7 @@ algorithm.
 @closecatbox
 @end defvr
 
+@anchor{terminal_graphs}
 @defvr {draw_graph option} terminal
 The terminal used for drawing (see the @var{terminal} option in the
 @code{draw} package).
@@ -3181,6 +3351,7 @@ The terminal used for drawing (see the @var{terminal} option in the
 @closecatbox
 @end defvr
 
+@anchor{file_name_graphs}
 @defvr {draw_graph option} file_name
 The filename of the drawing if terminal is not screen.
 
@@ -3189,6 +3360,7 @@ The filename of the drawing if terminal is not screen.
 @closecatbox
 @end defvr
 
+@anchor{program}
 @defvr {draw_graph option} program
 Defines the program used for positioning vertices of the graph. Can be
 one of the graphviz programs (dot, neato, twopi, circ, fdp),
@@ -3203,6 +3375,7 @@ of vertices with fixed position can be specified with the
 @closecatbox
 @end defvr
 
+@anchor{fixed_vertices}
 @defvr {draw_graph option} fixed_vertices
 Specifies a list of vertices which will have positions fixed along a regular polygon.
 Can be used when @code{program=spring_embedding}.
@@ -3212,6 +3385,7 @@ Can be used when @code{program=spring_embedding}.
 @closecatbox
 @end defvr
 
+@anchor{vertices_to_path}
 @deffn {Function} vertices_to_path (@var{v_list})
 Converts a list @var{v_list} of vertices to a list of edges of the path
 defined by @var{v_list}.
@@ -3221,6 +3395,7 @@ defined by @var{v_list}.
 @closecatbox
 @end deffn
 
+@anchor{vertices_to_cycle}
 @deffn {Function} vertices_to_cycle (@var{v_list})
 Converts a list @var{v_list} of vertices to a list of edges of the cycle
 defined by @var{v_list}.

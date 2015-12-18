@@ -156,7 +156,7 @@ symbol @code{nofeature}, @var{item} is deleted from the list of system features.
 This can be useful for package writers, to keep track of what features they have
 loaded in.
 
-See also @code{status}.
+See also @mrefdot{status}
 
 @opencatbox
 @category{Programming}
@@ -187,7 +187,7 @@ character, such as a hyphen, must be given as a string argument. For example,
 @code{status (feature, "ansi-cl")}.
 @end itemize
 
-See also @code{sstatus}.
+See also @mrefdot{sstatus}
 
 The variable @code{features} contains a list of features which apply to 
 mathematical expressions. See @code{features} and @code{featurep} for more 
@@ -318,7 +318,7 @@ The string @var{S} must have one of the following formats:
 where the fields are year, month, day, hours, minutes, seconds, and milliseconds,
 and square brackets indicate acceptable alternatives.
 
-See also @code{timedate} and @code{absolute_real_time}.
+See also @mref{timedate} and @mrefdot{absolute_real_time}
 
 Examples:
 
@@ -362,7 +362,7 @@ Midnight, January 1, 1900, in the local time zone, in each acceptable format.
 Returns the number of seconds since midnight, January 1, 1900 UTC.
 The return value is an integer.
 
-See also @code{elapsed_real_time} and @code{elapsed_run_time}.
+See also @mref{elapsed_real_time} and @mrefdot{elapsed_run_time}
 
 Example:
 
@@ -390,7 +390,7 @@ Returns the number of seconds (including fractions of a second)
 since Maxima was most recently started or restarted.
 The return value is a floating-point number.
 
-See also @code{absolute_real_time} and @code{elapsed_run_time}.
+See also @mref{absolute_real_time} and @mrefdot{elapsed_run_time}
 
 Example:
 
@@ -420,7 +420,7 @@ Returns an estimate of the number of seconds (including fractions of a second)
 which Maxima has spent in computations since Maxima was most recently started
 or restarted.  The return value is a floating-point number.
 
-See also @code{absolute_real_time} and @code{elapsed_real_time}.
+See also @mref{absolute_real_time} and @mrefdot{elapsed_real_time}
 
 Example:
 

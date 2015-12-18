@@ -104,6 +104,7 @@ For example:@*
 @node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
 @section Functions and Variables for zeilberger
 
+@anchor{AntiDifference}
 @deffn {Function} AntiDifference (@math{F_k}, @var{k})
 
 Returns the hypergeometric anti-difference of @math{F_k}, if it exists.@*
@@ -313,6 +314,7 @@ Each solution has the form
 
 @section General global variables
 
+@anchor{MAX_ORD}
 @defvr {Global variable} MAX_ORD
 Default value: 5
 
@@ -324,6 +326,7 @@ Default value: 5
 
 @end defvr
 
+@anchor{simplified_output}
 @defvr {Global variable} simplified_output
 Default value: @code{false}
 
@@ -337,6 +340,7 @@ further simplification of the solution.
 
 @end defvr
 
+@anchor{linear_solver}
 @defvr {Global variable} linear_solver
 Default value: @code{linsolve}
 
@@ -349,6 +353,7 @@ of equations in Zeilberger's algorithm.
 
 @end defvr
 
+@anchor{warnings}
 @defvr {Global variable} warnings
 Default value: @code{true}
 
@@ -362,6 +367,7 @@ warning messages during execution.
 
 @end defvr
 
+@anchor{Gosper_in_Zeilberger}
 @defvr {Global variable} Gosper_in_Zeilberger
 Default value: @code{true}
 
@@ -375,6 +381,7 @@ Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
 
 @end defvr
 
+@anchor{trivial_solutions}
 @defvr {Global variable} trivial_solutions
 Default value: @code{true}
 
@@ -390,6 +397,7 @@ which have certificate equal to zero, or all coefficients equal to zero.
 
 @section Variables related to the modular test
 
+@anchor{mod_test}
 @defvr {Global variable} mod_test
 Default value: @code{false}
 
@@ -403,6 +411,7 @@ modular test for discarding systems with no solutions.
 
 @end defvr
 
+@anchor{modular_linear_solver}
 @defvr {Global variable} modular_linear_solver
 Default value: @code{linsolve}
 
@@ -414,6 +423,7 @@ Default value: @code{linsolve}
 
 @end defvr
 
+@anchor{ev_point}
 @defvr {Global variable} ev_point
 Default value: @code{big_primes[10]}
 
@@ -426,6 +436,7 @@ when executing the modular test in @code{parGosper}.
 
 @end defvr
 
+@anchor{mod_big_prime}
 @defvr {Global variable} mod_big_prime
 Default value: @code{big_primes[1]}
 
@@ -437,6 +448,7 @@ Default value: @code{big_primes[1]}
 
 @end defvr
 
+@anchor{mod_threshold}
 @defvr {Global variable} mod_threshold
 Default value: 4
 

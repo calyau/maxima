@@ -328,6 +328,7 @@ the Bessel function is expanded.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{scaled_bessel_i}
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
 The scaled modified Bessel function of the first kind of order
@@ -343,6 +344,7 @@ symbolic work, it is probably preferable to work with the expression
 @closecatbox
 @end deffn
 
+@anchor{scaled_bessel_i0}
 @deffn {Function} scaled_bessel_i0 (@var{z}) 
 
 Identical to @code{scaled_bessel_i(0,z)}.
@@ -353,6 +355,7 @@ Identical to @code{scaled_bessel_i(0,z)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{scaled_bessel_i1}
 @deffn {Function} scaled_bessel_i1 (@var{z})
 
 Identical to @code{scaled_bessel_i(1,z)}.
@@ -384,12 +387,13 @@ of the Airy differential equation @code{diff (y(x), x, 2) - x y(x) = 0}.
 If the argument @code{x} is a real or complex floating point 
 number, the numerical value of the function is returned.
 
+@anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
 The Airy function Ai(x).  (A&S 10.4.2)
 
 The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
 
-See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
+See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} @mrefdot{airy_dbi}
 
 @opencatbox
 @category{Airy functions} @category{Special functions}
@@ -397,6 +401,7 @@ See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{airy_dai}
 @deffn {Function} airy_dai (@var{x})
 The derivative of the Airy function Ai @code{airy_ai(x)}. 
 
@@ -408,6 +413,7 @@ See @code{airy_ai}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
 The Airy function Bi(x).  (A&S 10.4.3)
 
@@ -421,6 +427,7 @@ See @code{airy_ai}, @code{airy_dbi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{airy_dbi}
 @deffn {Function} airy_dbi (@var{x})
 The derivative of the Airy Bi function @code{airy_bi(x)}.
 
@@ -595,7 +602,7 @@ The deriviative of @code{gamma}:
                            0
 @end example
 
-See also @code{makegamma}.
+See also @mrefdot{makegamma}
 
 The Euler-Mascheroni constant is @code{%gamma}.
 
@@ -634,7 +641,7 @@ The lower incomplete gamma function (A&S 6.5.2):
 $$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
-See also @code{gamma_incomplete} (upper incomplete gamma function).
+See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
@@ -642,6 +649,7 @@ See also @code{gamma_incomplete} (upper incomplete gamma function).
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma_incomplete}
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
 
 The incomplete upper gamma function (A&S 6.5.3):
@@ -661,7 +669,7 @@ The incomplete upper gamma function (A&S 6.5.3):
 $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
-See also @code{gamma_expand} for controlling how
+See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
 and @code{erfc}.
 
@@ -690,9 +698,9 @@ gamma_incomplete_regularized(a, z) =
 $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
 @end tex
 
-See also @code{gamma_expand} for controlling how
+See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
-and @code{erfc}.
+and @mrefdot{erfc}
 
 Also see @code{gamma_incomplete}.
 
@@ -731,6 +739,7 @@ Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma_expand}
 @defvr {Option variable} gamma_expand
 Default value: @code{false}
 
@@ -787,7 +796,7 @@ simplification of the result of @code{gamma} of an integer argument as well.
 Transforms instances of binomial, factorial, and beta
 functions in @var{expr} into gamma functions.
 
-See also @code{makefact}.
+See also @mrefdot{makefact}
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -1485,11 +1494,12 @@ value.
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
+@anchor{makefact}
 @deffn {Function} makefact (@var{expr})
 Transforms instances of binomial, gamma, and beta
 functions in @var{expr} into factorials.
 
-See also @code{makegamma}.
+See also @mrefdot{makegamma}
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -1620,12 +1630,13 @@ Abramowitz and Stegun,
 
 The Error Function erf(z) (A&S 7.1.1)
 
-See also flag @code{erfflag}.
+See also flag @mrefdot{erfflag}
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
 
+@anchor{erfc}
 @deffn {Function} erfc (@var{z})
 The Complementary Error Function erfc(z) (A&S 7.1.2)
 
@@ -1821,7 +1832,7 @@ The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1)
 @section Functions and Variables for Special Functions
 
 
-
+@anchor{specint}
 @deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
 Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
