@@ -1479,14 +1479,18 @@ Examples:
 
 Returns the definition of the function @var{f}.
 
-@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
-The argument may be the name of a macro (defined with @code{::=}), an ordinary
-function (defined with @code{:=} or @code{define}), an array function (defined
-with @code{:=} or @code{define}, but enclosing arguments in square brackets
-@code{[ ]}), a subscripted function (defined with @code{:=} or @code{define},
+The argument may be
+@itemize @bullet
+@item the name of a macro (defined with @code{::=}),
+@item an ordinary function (defined with @code{:=} or @code{define}),
+@item an array function (defined with @code{:=} or @code{define}, but enclosing arguments in square brackets @code{[ ]}),
+@item a subscripted function (defined with @code{:=} or @code{define},
 but enclosing some arguments in square brackets and others in parentheses
-@code{( )}), one of a family of subscripted functions selected by a particular
-subscript value, or a subscripted function defined with a constant subscript.
+@code{( )}),
+@item one of a family of subscripted functions selected by a particular
+subscript value,
+@item or a subscripted function defined with a constant subscript.
+@end itemize
 
 @code{fundef} quotes its argument;
 the quote-quote operator @code{'@w{}'} defeats quotation.
