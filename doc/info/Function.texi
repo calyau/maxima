@@ -700,9 +700,10 @@ The local variables may be bound to arbitrary values within the block
 but when the block is exited the saved values are restored, and the
 values assigned within the block are lost.
 
-If there is no need to define local then the list at the beginning of
-the @code{block} command may be omitted and @code{block} behaves
-similar to the following construct:
+If there is no need to define local variables then the list at the
+beginning of the @code{block} command may be omitted.
+In this case if neither @code{return} nor @code{go} are used
+@code{block} behaves similar to the following construct:
 
 @indent@code{     ( expr_1}, @dots{}, @code{expr_n )}
 
