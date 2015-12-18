@@ -8,7 +8,7 @@
 ;;; See <URL:http://www.gnu.org/copyleft/lesser.html>
 ;;; for details and the precise copyright document.
 ;;;
-;;; Added to maxima by Wolfgang Dautermann
+;;; Added to Maxima by Wolfgang Dautermann
 
 
 
@@ -60,6 +60,7 @@
 ; tested with clisp, ccl, sbcl, ecl
 (defun os-getcurrentdirectory ()
   "Return the current directory."
+  (namestring
   #+allegro (excl:current-directory)
   #+clisp (ext:default-directory)
   #+cmu (ext:default-directory)
@@ -67,5 +68,5 @@
   #+lispworks (hcl:get-working-directory)
   #+lucid (lcl:working-directory)
   #+sbcl (sb-unix:posix-getcwd/)
-  #-(or allegro clisp cmu cormanlisp lispworks lucid sbcl) (truename "."))
+  #-(or allegro clisp cmu cormanlisp lispworks lucid sbcl) (truename ".")))
   
