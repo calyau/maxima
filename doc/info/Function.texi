@@ -702,10 +702,12 @@ values assigned within the block are lost.
 
 If there is no need to define local variables then the list at the
 beginning of the @code{block} command may be omitted.
-In this case if neither @code{return} nor @code{go} are used
+In this case if neither @mref{return} nor @mref{go} are used
 @code{block} behaves similar to the following construct:
 
-@indent@code{     ( expr_1}, @dots{}, @code{expr_n )}
+@example
+( expr_1, expr_2,... , expr_n );
+@end example
 
 @var{expr_1}, @dots{}, @var{expr_n} will be evaluated in sequence and
 the value of the last expression will be returned. The sequence can be 
@@ -744,6 +746,8 @@ another statement in the block.  For example:
 
 Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
+
+See also @mref{return} and @mrefdot{go}
 
 @c Needs some examples.
 

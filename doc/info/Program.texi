@@ -908,6 +908,7 @@ See also @code{is} and @code{maybe}.
 
 @end defvr
 
+@anchor{return}
 @deffn {Function} return (@var{value})
 May be used to exit explicitly from a block, bringing
 its argument.  See @code{block} for more information.
