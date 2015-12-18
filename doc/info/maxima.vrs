@@ -1,7 +1,7 @@
 \initial {%}
 \entry {\code {%}}{14}
 \entry {\code {%%}}{14}
-\entry {\code {%c}}{650}
+\entry {\code {%c}}{652}
 \entry {\code {%e}}{43}
 \entry {\code {%e_to_numlog}}{154}
 \entry {\code {%edispflag}}{23}
@@ -10,13 +10,13 @@
 \entry {\code {%gamma}}{43}
 \entry {\code {%i}}{43}
 \entry {\code {%iargs}}{161}
-\entry {\code {%k1}}{650}
-\entry {\code {%k2}}{650}
+\entry {\code {%k1}}{652}
+\entry {\code {%k2}}{652}
 \entry {\code {%phi}}{43}
 \entry {\code {%pi}}{44}
 \entry {\code {%piargs}}{160}
 \entry {\code {%rnum_list}}{327}
-\entry {\code {%unitexpand}}{1096}
+\entry {\code {%unitexpand}}{1098}
 \initial {[}
 \entry {\code {[}}{46}
 \initial {]}
@@ -31,7 +31,7 @@
 \initial {A}
 \entry {\code {absboxchar}}{24}
 \entry {\code {activecontexts}}{178}
-\entry {\code {adapt_depth}}{207, 729}
+\entry {\code {adapt_depth}}{207, 731}
 \entry {\code {additive}}{129}
 \entry {\code {adim}}{455}
 \entry {\code {aform}}{455}
@@ -41,10 +41,10 @@
 \entry {\code {aliases}}{73}
 \entry {\code {all_dotsimp_denoms}}{389}
 \entry {\code {allbut}}{74}
-\entry {\code {allocation}}{729}
+\entry {\code {allocation}}{731}
 \entry {\code {allsym}}{404}
 \entry {\code {alphabetic}}{169}
-\entry {\code {animation}}{852}
+\entry {\code {animation}}{854}
 \entry {\code {antisymmetric}}{129}
 \entry {\code {arrays}}{62}
 \entry {\code {askexp}}{525}
@@ -55,50 +55,50 @@
 \entry {\code {atomgrad}}{295}
 \entry {\code {atrig1}}{162}
 \entry {\code {axes}}{207}
-\entry {\code {axis_3d}}{730}
-\entry {\code {axis_bottom}}{730}
-\entry {\code {axis_left}}{731}
-\entry {\code {axis_right}}{731}
-\entry {\code {axis_top}}{731}
-\entry {\code {azimuth}}{208, 850}
+\entry {\code {axis_3d}}{732}
+\entry {\code {axis_bottom}}{732}
+\entry {\code {axis_left}}{733}
+\entry {\code {axis_right}}{733}
+\entry {\code {axis_top}}{733}
+\entry {\code {azimuth}}{208, 852}
 \initial {B}
-\entry {\code {background}}{850}
-\entry {\code {background_color}}{732}
+\entry {\code {background}}{852}
+\entry {\code {background_color}}{734}
 \entry {\code {backsubst}}{330}
 \entry {\code {berlefact}}{233}
-\entry {\code {bernstein_explicit}}{633}
+\entry {\code {bernstein_explicit}}{635}
 \entry {\code {besselexpand}}{263}
 \entry {\code {beta_args_sum_to_integer}}{276}
 \entry {\code {beta_expand}}{276}
 \entry {\code {bftorat}}{36}
 \entry {\code {bftrunc}}{36}
 \entry {\code {bindtest}}{169}
-\entry {\code {border}}{732}
-\entry {\code {boundaries_array}}{829}
+\entry {\code {border}}{734}
+\entry {\code {boundaries_array}}{831}
 \entry {\code {box}}{208}
 \entry {\code {boxchar}}{76}
 \entry {\code {breakup}}{331}
 \initial {C}
-\entry {\code {capping}}{852}
+\entry {\code {capping}}{854}
 \entry {\code {cauchysum}}{461}
-\entry {\code {cbrange}}{732}
-\entry {\code {cbtics}}{733}
-\entry {\code {center}}{852}
+\entry {\code {cbrange}}{734}
+\entry {\code {cbtics}}{735}
+\entry {\code {center}}{854}
 \entry {\code {cflength}}{480}
 \entry {\code {cframe_flag}}{447}
 \entry {\code {cnonmet_flag}}{447}
-\entry {\code {color}}{208, 734, 852}
+\entry {\code {color}}{208, 736, 854}
 \entry {\code {color_bar}}{208}
 \entry {\code {color_bar_tics}}{208}
-\entry {\code {colorbox}}{735}
-\entry {\code {columns}}{736}
+\entry {\code {colorbox}}{737}
+\entry {\code {columns}}{738}
 \entry {\code {commutative}}{130}
 \entry {\code {complex}}{177}
-\entry {\code {cone}}{851}
+\entry {\code {cone}}{853}
 \entry {\code {context}}{182}
 \entry {\code {contexts}}{182}
-\entry {\code {contour}}{737}
-\entry {\code {contour_levels}}{738}
+\entry {\code {contour}}{739}
+\entry {\code {contour_levels}}{740}
 \entry {\code {cosnpiflag}}{474}
 \entry {\code {ct_coords}}{450}
 \entry {\code {ctaypov}}{447}
@@ -107,15 +107,15 @@
 \entry {\code {ctayvar}}{447}
 \entry {\code {ctorsion_flag}}{447}
 \entry {\code {ctrgsimp}}{447}
-\entry {\code {cube}}{851}
+\entry {\code {cube}}{853}
 \entry {\code {current_let_rule_package}}{530}
-\entry {\code {cylinder}}{852}
+\entry {\code {cylinder}}{854}
 \initial {D}
-\entry {\code {data_file_name}}{739}
-\entry {\code {debugmode}}{617}
+\entry {\code {data_file_name}}{741}
+\entry {\code {debugmode}}{619}
 \entry {\code {decreasing}}{172}
 \entry {\code {default_let_rule_package}}{530}
-\entry {\code {delay}}{739}
+\entry {\code {delay}}{741}
 \entry {\code {dependencies}}{297}
 \entry {\code {derivabbrev}}{299}
 \entry {\code {derivsubst}}{299}
@@ -123,7 +123,7 @@
 \entry {\code {diagmetric}}{447}
 \entry {\code {diff}}{301}
 \entry {\code {dim}}{447}
-\entry {\code {dimensions}}{740}
+\entry {\code {dimensions}}{742}
 \entry {\code {dispflag}}{332}
 \entry {\code {display_format_internal}}{25}
 \entry {\code {display2d}}{25}
@@ -145,26 +145,26 @@
 \entry {\code {dotexptsimp}}{369}
 \entry {\code {dotident}}{369}
 \entry {\code {dotscrules}}{369}
-\entry {\code {draw_graph_program}}{915}
-\entry {\code {draw_realpart}}{741}
+\entry {\code {draw_graph_program}}{917}
+\entry {\code {draw_realpart}}{743}
 \initial {E}
-\entry {\code {edge_color}}{916}
-\entry {\code {edge_coloring}}{916}
-\entry {\code {edge_partition}}{916}
-\entry {\code {edge_type}}{916}
-\entry {\code {edge_width}}{916}
-\entry {\code {elevation}}{208, 850}
-\entry {\code {endphi}}{852}
-\entry {\code {endtheta}}{853}
-\entry {\code {enhanced3d}}{741}
-\entry {\code {epsilon_lp}}{1010}
+\entry {\code {edge_color}}{918}
+\entry {\code {edge_coloring}}{918}
+\entry {\code {edge_partition}}{918}
+\entry {\code {edge_type}}{918}
+\entry {\code {edge_width}}{918}
+\entry {\code {elevation}}{208, 852}
+\entry {\code {endphi}}{854}
+\entry {\code {endtheta}}{855}
+\entry {\code {enhanced3d}}{743}
+\entry {\code {epsilon_lp}}{1012}
 \entry {\code {erf_representation}}{278}
 \entry {\code {erfflag}}{307}
 \entry {\code {error_size}}{607}
 \entry {\code {error_syms}}{608}
-\entry {\code {error_type}}{747}
+\entry {\code {error_type}}{749}
 \entry {\code {errormsg}}{608}
-\entry {\code {ev_point}}{1100}
+\entry {\code {ev_point}}{1102}
 \entry {\code {eval}}{124}
 \entry {\code {even}}{172}
 \entry {\code {evenfun}}{132}
@@ -180,7 +180,7 @@
 \entry {\code {exptsubst}}{77}
 \initial {F}
 \entry {\code {facexpand}}{237}
-\entry {\code {facsum_combine}}{1014}
+\entry {\code {facsum_combine}}{1016}
 \entry {\code {factlim}}{153}
 \entry {\code {factorflag}}{240}
 \entry {\code {factorial_expand}}{153}
@@ -189,7 +189,7 @@
 \entry {\code {fb}}{449}
 \entry {\code {feature}}{173}
 \entry {\code {features}}{173}
-\entry {\code {file_name}}{747, 917}
+\entry {\code {file_name}}{749, 919}
 \entry {\code {file_output_append}}{219}
 \entry {\code {file_search_demo}}{220}
 \entry {\code {file_search_lisp}}{220}
@@ -198,14 +198,14 @@
 \entry {\code {file_search_usage}}{220}
 \entry {\code {file_type_lisp}}{221}
 \entry {\code {file_type_maxima}}{221}
-\entry {\code {fill_color}}{747}
-\entry {\code {fill_density}}{747}
-\entry {\code {filled_func}}{748}
-\entry {\code {fixed_vertices}}{917}
+\entry {\code {fill_color}}{749}
+\entry {\code {fill_density}}{749}
+\entry {\code {filled_func}}{750}
+\entry {\code {fixed_vertices}}{919}
 \entry {\code {flipflag}}{397}
 \entry {\code {float2bf}}{36}
-\entry {\code {font}}{749}
-\entry {\code {font_size}}{750}
+\entry {\code {font}}{751}
+\entry {\code {font_size}}{752}
 \entry {\code {fortindent}}{230}
 \entry {\code {fortspaces}}{231}
 \entry {\code {fpprec}}{37}
@@ -217,8 +217,8 @@
 \entry {\code {gdet}}{448}
 \entry {\code {genindex}}{525}
 \entry {\code {gensumnum}}{525}
-\entry {\code {GGFCFMAX}}{887}
-\entry {\code {GGFINFINITY}}{887}
+\entry {\code {GGFCFMAX}}{889}
+\entry {\code {GGFINFINITY}}{889}
 \entry {\code {globalsolve}}{333}
 \entry {\code {gnuplot_command}}{191}
 \entry {\code {gnuplot_curve_styles}}{216}
@@ -226,7 +226,7 @@
 \entry {\code {gnuplot_default_term_command}}{215}
 \entry {\code {gnuplot_dumb_term_command}}{215}
 \entry {\code {gnuplot_file_args}}{192}
-\entry {\code {gnuplot_file_name}}{750}
+\entry {\code {gnuplot_file_name}}{752}
 \entry {\code {gnuplot_out_file}}{214}
 \entry {\code {gnuplot_pdf_term_command}}{215}
 \entry {\code {gnuplot_pm3d}}{215}
@@ -237,18 +237,18 @@
 \entry {\code {gnuplot_svg_term_command}}{216}
 \entry {\code {gnuplot_term}}{214}
 \entry {\code {gnuplot_view_args}}{192}
-\entry {\code {Gosper_in_Zeilberger}}{1100}
+\entry {\code {Gosper_in_Zeilberger}}{1102}
 \entry {\code {gradefs}}{303}
-\entry {\code {grid}}{209, 751}
+\entry {\code {grid}}{209, 753}
 \entry {\code {grid2d}}{209}
 \entry {\code {grind}}{28}
 \initial {H}
 \entry {\code {halfangles}}{162}
-\entry {\code {head_angle}}{752, 916}
-\entry {\code {head_both}}{753}
-\entry {\code {head_length}}{754, 916}
-\entry {\code {head_type}}{754}
-\entry {\code {height}}{850, 853}
+\entry {\code {head_angle}}{754, 918}
+\entry {\code {head_both}}{755}
+\entry {\code {head_length}}{756, 918}
+\entry {\code {head_type}}{756}
+\entry {\code {height}}{852, 855}
 \entry {\code {hypergeometric_representation}}{278}
 \initial {I}
 \entry {\code {ibase}}{28}
@@ -286,30 +286,30 @@
 \entry {\code {integrate_use_rootsof}}{313}
 \entry {\code {integration_constant}}{311}
 \entry {\code {integration_constant_counter}}{312}
-\entry {\code {interpolate_color}}{755}
+\entry {\code {interpolate_color}}{757}
 \entry {\code {intfaclim}}{245}
-\entry {\code {ip_grid}}{758}
-\entry {\code {ip_grid_in}}{758}
+\entry {\code {ip_grid}}{760}
+\entry {\code {ip_grid_in}}{760}
 \entry {\code {irrational}}{177}
 \entry {\code {isolate_wrt_times}}{80}
 \entry {\code {iterations}}{209}
 \entry {\code {itr}}{417}
 \initial {J}
-\entry {\code {julia_parameter}}{884}
+\entry {\code {julia_parameter}}{886}
 \initial {K}
 \entry {\code {keepfloat}}{245}
-\entry {\code {key}}{759}
-\entry {\code {key_pos}}{759}
+\entry {\code {key}}{761}
+\entry {\code {key_pos}}{761}
 \entry {\code {kinvariant}}{449}
 \entry {\code {kt}}{449}
 \initial {L}
 \entry {\code {label}}{209}
-\entry {\code {label_alignment}}{760, 915}
-\entry {\code {label_orientation}}{761}
+\entry {\code {label_alignment}}{762, 917}
+\entry {\code {label_orientation}}{763}
 \entry {\code {labels}}{19}
 \entry {\code {lassociative}}{135}
-\entry {\code {lbfgs_ncorrections}}{950}
-\entry {\code {lbfgs_nfeval_max}}{950}
+\entry {\code {lbfgs_ncorrections}}{952}
+\entry {\code {lbfgs_nfeval_max}}{952}
 \entry {\code {leftjust}}{30}
 \entry {\code {legend}}{209}
 \entry {\code {let_rule_packages}}{535}
@@ -318,14 +318,14 @@
 \entry {\code {lg}}{449}
 \entry {\code {lhospitallim}}{291}
 \entry {\code {limsubst}}{291}
-\entry {\code {line_type}}{762}
-\entry {\code {line_width}}{763}
+\entry {\code {line_type}}{764}
+\entry {\code {line_width}}{765}
 \entry {\code {linear}}{135}
-\entry {\code {linear_solver}}{1099}
+\entry {\code {linear_solver}}{1101}
 \entry {\code {linechar}}{19}
 \entry {\code {linel}}{31}
 \entry {\code {linenum}}{19}
-\entry {\code {linewidth}}{853}
+\entry {\code {linewidth}}{855}
 \entry {\code {linsolve_params}}{337}
 \entry {\code {linsolvewarn}}{336}
 \entry {\code {lispdisp}}{31}
@@ -337,16 +337,16 @@
 \entry {\code {loadprint}}{222}
 \entry {\code {logabs}}{158}
 \entry {\code {logarc}}{158}
-\entry {\code {logcb}}{764}
+\entry {\code {logcb}}{766}
 \entry {\code {logconcoeffp}}{158}
 \entry {\code {logexpand}}{158}
 \entry {\code {lognegint}}{159}
 \entry {\code {logsimp}}{159}
-\entry {\code {logx}}{209, 764}
-\entry {\code {logx_secondary}}{765}
-\entry {\code {logy}}{209, 765}
-\entry {\code {logy_secondary}}{766}
-\entry {\code {logz}}{766}
+\entry {\code {logx}}{209, 766}
+\entry {\code {logx_secondary}}{767}
+\entry {\code {logy}}{209, 767}
+\entry {\code {logy_secondary}}{768}
+\entry {\code {logz}}{768}
 \entry {\code {lriem}}{448}
 \initial {M}
 \entry {\code {m1pbranch}}{37}
@@ -359,7 +359,7 @@
 \entry {\code {matrix_element_add}}{379}
 \entry {\code {matrix_element_mult}}{380}
 \entry {\code {matrix_element_transpose}}{380}
-\entry {\code {MAX_ORD}}{1099}
+\entry {\code {MAX_ORD}}{1101}
 \entry {\code {maxapplydepth}}{538}
 \entry {\code {maxapplyheight}}{538}
 \entry {\code {maxima_tempdir}}{519}
@@ -372,15 +372,15 @@
 \entry {\code {maxpsiposint}}{276}
 \entry {\code {maxtayorder}}{462}
 \entry {\code {mesh_lines_color}}{209}
-\entry {\code {method}}{650}
+\entry {\code {method}}{652}
 \entry {\code {minf}}{43}
-\entry {\code {mod_big_prime}}{1100}
-\entry {\code {mod_test}}{1100}
-\entry {\code {mod_threshold}}{1100}
+\entry {\code {mod_big_prime}}{1102}
+\entry {\code {mod_test}}{1102}
+\entry {\code {mod_threshold}}{1102}
 \entry {\code {mode_check_errorp}}{593}
 \entry {\code {mode_check_warnp}}{593}
 \entry {\code {mode_checkp}}{593}
-\entry {\code {modular_linear_solver}}{1100}
+\entry {\code {modular_linear_solver}}{1102}
 \entry {\code {modulus}}{246}
 \entry {\code {multiplicative}}{136}
 \entry {\code {multiplicities}}{337}
@@ -389,16 +389,16 @@
 \entry {\code {nary}}{138}
 \entry {\code {negdistrib}}{138}
 \entry {\code {negsumdispflag}}{31}
-\entry {\code {newline}}{1057}
-\entry {\code {newtonepsilon}}{981}
-\entry {\code {newtonmaxiter}}{981}
-\entry {\code {nextlayerfactor}}{1014}
+\entry {\code {newline}}{1059}
+\entry {\code {newtonepsilon}}{983}
+\entry {\code {newtonmaxiter}}{983}
+\entry {\code {nextlayerfactor}}{1016}
 \entry {\code {niceindicespref}}{463}
 \entry {\code {nm}}{449}
 \entry {\code {nmc}}{449}
 \entry {\code {noeval}}{127}
 \entry {\code {nolabels}}{19}
-\entry {\code {nonegative_lp}}{1011}
+\entry {\code {nonegative_lp}}{1013}
 \entry {\code {noninteger}}{174}
 \entry {\code {nonscalar}}{175}
 \entry {\code {noun}}{82}
@@ -406,7 +406,7 @@
 \entry {\code {nouns}}{127}
 \entry {\code {np}}{449}
 \entry {\code {npi}}{449}
-\entry {\code {nticks}}{209, 766}
+\entry {\code {nticks}}{209, 768}
 \entry {\code {ntrig}}{163}
 \entry {\code {numer}}{38}
 \entry {\code {numer_pbranch}}{39}
@@ -414,66 +414,66 @@
 \entry {\code {obase}}{31}
 \entry {\code {odd}}{172}
 \entry {\code {oddfun}}{132}
-\entry {\code {opacity}}{853}
+\entry {\code {opacity}}{855}
 \entry {\code {opproperties}}{138}
 \entry {\code {opsubst}}{84}
 \entry {\code {optimprefix}}{84}
 \entry {\code {optionset}}{20}
-\entry {\code {orientation}}{853}
-\entry {\code {origin}}{853}
-\entry {\code {orthopoly_returns_intervals}}{1002}
+\entry {\code {orientation}}{855}
+\entry {\code {origin}}{855}
+\entry {\code {orthopoly_returns_intervals}}{1004}
 \entry {\code {outative}}{138}
 \entry {\code {outchar}}{20}
 \initial {P}
 \entry {\code {packagefile}}{526}
-\entry {\code {palette}}{209, 767}
+\entry {\code {palette}}{209, 769}
 \entry {\code {partswitch}}{87}
 \entry {\code {pdf_file}}{210}
 \entry {\code {pfeformat}}{32}
-\entry {\code {phiresolution}}{853}
+\entry {\code {phiresolution}}{855}
 \entry {\code {piece}}{89}
-\entry {\code {pivot_count_sx}}{1011}
-\entry {\code {pivot_max_sx}}{1011}
+\entry {\code {pivot_count_sx}}{1013}
+\entry {\code {pivot_max_sx}}{1013}
 \entry {\code {plot_format}}{210}
 \entry {\code {plot_options}}{206}
 \entry {\code {plot_realpart}}{210}
 \entry {\code {png_file}}{211}
-\entry {\code {pochhammer_max_index}}{1003}
-\entry {\code {point_size}}{769}
-\entry {\code {point_type}}{210, 770}
-\entry {\code {points}}{853}
-\entry {\code {points_joined}}{771}
-\entry {\code {pointsize}}{853}
+\entry {\code {pochhammer_max_index}}{1005}
+\entry {\code {point_size}}{771}
+\entry {\code {point_type}}{210, 772}
+\entry {\code {points}}{855}
+\entry {\code {points_joined}}{773}
+\entry {\code {pointsize}}{855}
 \entry {\code {poislim}}{475}
 \entry {\code {poisson}}{475}
-\entry {\code {poly_coefficient_ring}}{920}
-\entry {\code {poly_elimination_order}}{920}
-\entry {\code {poly_grobner_algorithm}}{920}
-\entry {\code {poly_grobner_debug}}{920}
-\entry {\code {poly_monomial_order}}{920}
-\entry {\code {poly_primary_elimination_order}}{920}
-\entry {\code {poly_return_term_list}}{920}
-\entry {\code {poly_secondary_elimination_order}}{920}
-\entry {\code {poly_top_reduction_only}}{921}
+\entry {\code {poly_coefficient_ring}}{922}
+\entry {\code {poly_elimination_order}}{922}
+\entry {\code {poly_grobner_algorithm}}{922}
+\entry {\code {poly_grobner_debug}}{922}
+\entry {\code {poly_monomial_order}}{922}
+\entry {\code {poly_primary_elimination_order}}{922}
+\entry {\code {poly_return_term_list}}{922}
+\entry {\code {poly_secondary_elimination_order}}{922}
+\entry {\code {poly_top_reduction_only}}{923}
 \entry {\code {polyfactor}}{337}
 \entry {\code {posfun}}{175}
-\entry {\code {position}}{854}
+\entry {\code {position}}{856}
 \entry {\code {powerdisp}}{32}
 \entry {\code {pred}}{127}
 \entry {\code {prederror}}{611}
 \entry {\code {primep_number_of_tests}}{484}
-\entry {\code {product_use_gamma}}{1026}
-\entry {\code {program}}{917}
+\entry {\code {product_use_gamma}}{1028}
+\entry {\code {program}}{919}
 \entry {\code {programmode}}{337}
 \entry {\code {promote_float_to_bigfloat}}{39}
 \entry {\code {prompt}}{21}
-\entry {\code {proportional_axes}}{772}
+\entry {\code {proportional_axes}}{774}
 \entry {\code {props}}{176}
 \entry {\code {ps_file}}{211}
 \entry {\code {psexpand}}{467}
 \initial {R}
 \entry {\code {radexpand}}{139}
-\entry {\code {radius}}{854}
+\entry {\code {radius}}{856}
 \entry {\code {radsubstflag}}{254}
 \entry {\code {rassociative}}{140}
 \entry {\code {ratalgdenom}}{249}
@@ -493,18 +493,18 @@
 \entry {\code {ratwtlvl}}{257}
 \entry {\code {real}}{177}
 \entry {\code {realonly}}{337}
-\entry {\code {redraw}}{916}
-\entry {\code {refcheck}}{618}
-\entry {\code {resolution}}{854}
-\entry {\code {restart}}{851}
+\entry {\code {redraw}}{918}
+\entry {\code {refcheck}}{620}
+\entry {\code {resolution}}{856}
+\entry {\code {restart}}{853}
 \entry {\code {resultant}}{258}
 \entry {\code {ric}}{448}
 \entry {\code {riem}}{448}
 \entry {\code {rmxchar}}{382}
-\entry {\code {rombergabs}}{1006}
-\entry {\code {rombergit}}{1007}
-\entry {\code {rombergmin}}{1007}
-\entry {\code {rombergtol}}{1007}
+\entry {\code {rombergabs}}{1008}
+\entry {\code {rombergit}}{1009}
+\entry {\code {rombergmin}}{1009}
+\entry {\code {rombergtol}}{1009}
 \entry {\code {rootsconmode}}{339}
 \entry {\code {rootsepsilon}}{340}
 \entry {\code {run_viewer}}{211}
@@ -515,26 +515,26 @@
 \entry {\code {savefactors}}{258}
 \entry {\code {scalar}}{178}
 \entry {\code {scalarmatrixp}}{383}
-\entry {\code {scale}}{854}
-\entry {\code {scale_lp}}{1011}
-\entry {\code {setcheck}}{618}
-\entry {\code {setcheckbreak}}{618}
-\entry {\code {setval}}{618}
-\entry {\code {show_edge_color}}{916}
-\entry {\code {show_edge_type}}{916}
-\entry {\code {show_edge_width}}{916}
-\entry {\code {show_edges}}{916}
-\entry {\code {show_id}}{915}
-\entry {\code {show_label}}{915}
-\entry {\code {show_vertex_color}}{915}
-\entry {\code {show_vertex_size}}{915}
-\entry {\code {show_vertex_type}}{915}
-\entry {\code {show_vertices}}{915}
-\entry {\code {show_weight}}{915}
+\entry {\code {scale}}{856}
+\entry {\code {scale_lp}}{1013}
+\entry {\code {setcheck}}{620}
+\entry {\code {setcheckbreak}}{620}
+\entry {\code {setval}}{620}
+\entry {\code {show_edge_color}}{918}
+\entry {\code {show_edge_type}}{918}
+\entry {\code {show_edge_width}}{918}
+\entry {\code {show_edges}}{918}
+\entry {\code {show_id}}{917}
+\entry {\code {show_label}}{917}
+\entry {\code {show_vertex_color}}{917}
+\entry {\code {show_vertex_size}}{917}
+\entry {\code {show_vertex_type}}{917}
+\entry {\code {show_vertices}}{917}
+\entry {\code {show_weight}}{917}
 \entry {\code {showtime}}{22}
 \entry {\code {simp}}{140}
-\entry {\code {simplified_output}}{1099}
-\entry {\code {simplify_products}}{1024}
+\entry {\code {simplified_output}}{1101}
+\entry {\code {simplify_products}}{1026}
 \entry {\code {simpsum}}{458}
 \entry {\code {sinnpiflag}}{474}
 \entry {\code {solvedecomposes}}{343}
@@ -543,15 +543,15 @@
 \entry {\code {solvenullwarn}}{344}
 \entry {\code {solveradcan}}{344}
 \entry {\code {solvetrigwarn}}{344}
-\entry {\code {space}}{1057}
+\entry {\code {space}}{1059}
 \entry {\code {sparse}}{383}
-\entry {\code {sphere}}{852}
-\entry {\code {spring_embedding_depth}}{916}
+\entry {\code {sphere}}{854}
+\entry {\code {spring_embedding_depth}}{918}
 \entry {\code {sqrtdispflag}}{33}
 \entry {\code {stardisp}}{34}
-\entry {\code {startphi}}{854}
-\entry {\code {starttheta}}{854}
-\entry {\code {stats_numer}}{1031}
+\entry {\code {startphi}}{856}
+\entry {\code {starttheta}}{856}
+\entry {\code {stats_numer}}{1033}
 \entry {\code {stringdisp}}{42}
 \entry {\code {structures}}{68}
 \entry {\code {style}}{211}
@@ -559,23 +559,23 @@
 \entry {\code {subnumsimp}}{91}
 \entry {\code {sumexpand}}{461}
 \entry {\code {sumsplitfact}}{154}
-\entry {\code {surface}}{854}
-\entry {\code {surface_hide}}{773}
+\entry {\code {surface}}{856}
+\entry {\code {surface_hide}}{775}
 \entry {\code {svg_file}}{212}
 \entry {\code {symmetric}}{141}
 \initial {T}
 \entry {\code {t}}{212}
-\entry {\code {tab}}{1057}
+\entry {\code {tab}}{1059}
 \entry {\code {taylor_logexpand}}{471}
 \entry {\code {taylor_order_coefficients}}{471}
 \entry {\code {taylor_truncate_polynomials}}{472}
 \entry {\code {taylordepth}}{471}
 \entry {\code {tensorkill}}{449}
-\entry {\code {terminal}}{774, 917}
+\entry {\code {terminal}}{776, 919}
 \entry {\code {testsuite_files}}{7}
-\entry {\code {thetaresolution}}{854}
-\entry {\code {timer_devalue}}{619}
-\entry {\code {title}}{212, 775}
+\entry {\code {thetaresolution}}{856}
+\entry {\code {timer_devalue}}{621}
+\entry {\code {title}}{212, 777}
 \entry {\code {tlimswitch}}{292}
 \entry {\code {tr}}{449}
 \entry {\code {tr_array_as_ref}}{597}
@@ -593,113 +593,113 @@
 \entry {\code {tr_warn_mode}}{598}
 \entry {\code {tr_warn_undeclared}}{599}
 \entry {\code {tr_warn_undefined_variable}}{599}
-\entry {\code {track}}{855}
+\entry {\code {track}}{857}
 \entry {\code {transcompile}}{595}
-\entry {\code {transform}}{776}
+\entry {\code {transform}}{778}
 \entry {\code {transform_xy}}{212}
 \entry {\code {translate_fast_arrays}}{67}
-\entry {\code {transparent}}{777}
+\entry {\code {transparent}}{779}
 \entry {\code {transrun}}{597}
 \entry {\code {trigexpandplus}}{164}
 \entry {\code {trigexpandtimes}}{164}
 \entry {\code {triginverses}}{164}
 \entry {\code {trigsign}}{165}
-\entry {\code {trivial_solutions}}{1100}
+\entry {\code {trivial_solutions}}{1102}
 \entry {\code {true}}{44}
-\entry {\code {tstep}}{851}
+\entry {\code {tstep}}{853}
 \entry {\code {ttyoff}}{34}
-\entry {\code {tube_extremes}}{778}
+\entry {\code {tube_extremes}}{780}
 \initial {U}
 \entry {\code {ufg}}{448}
 \entry {\code {ug}}{449}
 \entry {\code {und}}{44}
-\entry {\code {unit_vectors}}{778}
+\entry {\code {unit_vectors}}{780}
 \entry {\code {uric}}{449}
 \entry {\code {uriem}}{448}
 \entry {\code {use_fast_arrays}}{67}
-\entry {\code {user_preamble}}{779}
-\entry {\code {usersetunits}}{1092}
+\entry {\code {user_preamble}}{781}
+\entry {\code {usersetunits}}{1094}
 \initial {V}
 \entry {\code {values}}{23}
 \entry {\code {vect_cross}}{386}
 \entry {\code {verbose}}{473}
-\entry {\code {vertex_color}}{915}
-\entry {\code {vertex_coloring}}{916}
-\entry {\code {vertex_partition}}{915}
-\entry {\code {vertex_size}}{915}
-\entry {\code {vertex_type}}{915}
-\entry {\code {view}}{780}
+\entry {\code {vertex_color}}{917}
+\entry {\code {vertex_coloring}}{918}
+\entry {\code {vertex_partition}}{917}
+\entry {\code {vertex_size}}{917}
+\entry {\code {vertex_type}}{917}
+\entry {\code {view}}{782}
 \initial {W}
-\entry {\code {warnings}}{1099}
+\entry {\code {warnings}}{1101}
 \entry {\code {weyl}}{449}
-\entry {\code {width}}{851}
-\entry {\code {windowname}}{851}
-\entry {\code {windowtitle}}{851}
-\entry {\code {wired_surface}}{781}
-\entry {\code {wireframe}}{855}
+\entry {\code {width}}{853}
+\entry {\code {windowname}}{853}
+\entry {\code {windowtitle}}{853}
+\entry {\code {wired_surface}}{783}
+\entry {\code {wireframe}}{857}
 \initial {X}
 \entry {\code {x}}{212}
-\entry {\code {x_voxel}}{782}
-\entry {\code {xaxis}}{782}
-\entry {\code {xaxis_color}}{783}
-\entry {\code {xaxis_secondary}}{783}
-\entry {\code {xaxis_type}}{784}
-\entry {\code {xaxis_width}}{784}
-\entry {\code {xlabel}}{213, 784}
-\entry {\code {xlabel_secondary}}{785}
-\entry {\code {xlength}}{855}
-\entry {\code {xrange}}{785}
-\entry {\code {xrange_secondary}}{786}
-\entry {\code {xtics}}{213, 786}
-\entry {\code {xtics_axis}}{787}
-\entry {\code {xtics_rotate}}{787}
-\entry {\code {xtics_rotate_secondary}}{787}
-\entry {\code {xtics_secondary}}{787}
-\entry {\code {xtics_secondary_axis}}{787}
-\entry {\code {xu_grid}}{788}
-\entry {\code {xy_file}}{788}
+\entry {\code {x_voxel}}{784}
+\entry {\code {xaxis}}{784}
+\entry {\code {xaxis_color}}{785}
+\entry {\code {xaxis_secondary}}{785}
+\entry {\code {xaxis_type}}{786}
+\entry {\code {xaxis_width}}{786}
+\entry {\code {xlabel}}{213, 786}
+\entry {\code {xlabel_secondary}}{787}
+\entry {\code {xlength}}{857}
+\entry {\code {xrange}}{787}
+\entry {\code {xrange_secondary}}{788}
+\entry {\code {xtics}}{213, 788}
+\entry {\code {xtics_axis}}{789}
+\entry {\code {xtics_rotate}}{789}
+\entry {\code {xtics_rotate_secondary}}{789}
+\entry {\code {xtics_secondary}}{789}
+\entry {\code {xtics_secondary_axis}}{789}
+\entry {\code {xu_grid}}{790}
+\entry {\code {xy_file}}{790}
 \entry {\code {xy_scale}}{213}
-\entry {\code {xyplane}}{788}
+\entry {\code {xyplane}}{790}
 \initial {Y}
 \entry {\code {y}}{213}
-\entry {\code {y_voxel}}{788}
-\entry {\code {yaxis}}{788}
-\entry {\code {yaxis_color}}{789}
-\entry {\code {yaxis_secondary}}{789}
-\entry {\code {yaxis_type}}{789}
-\entry {\code {yaxis_width}}{790}
-\entry {\code {ylabel}}{213, 790}
-\entry {\code {ylabel_secondary}}{790}
-\entry {\code {ylength}}{855}
-\entry {\code {yrange}}{791}
-\entry {\code {yrange_secondary}}{791}
-\entry {\code {ytics}}{213, 791}
-\entry {\code {ytics_axis}}{791}
-\entry {\code {ytics_rotate}}{792}
-\entry {\code {ytics_rotate_secondary}}{792}
-\entry {\code {ytics_secondary}}{792}
-\entry {\code {ytics_secondary_axis}}{792}
-\entry {\code {yv_grid}}{792}
+\entry {\code {y_voxel}}{790}
+\entry {\code {yaxis}}{790}
+\entry {\code {yaxis_color}}{791}
+\entry {\code {yaxis_secondary}}{791}
+\entry {\code {yaxis_type}}{791}
+\entry {\code {yaxis_width}}{792}
+\entry {\code {ylabel}}{213, 792}
+\entry {\code {ylabel_secondary}}{792}
+\entry {\code {ylength}}{857}
+\entry {\code {yrange}}{793}
+\entry {\code {yrange_secondary}}{793}
+\entry {\code {ytics}}{213, 793}
+\entry {\code {ytics_axis}}{793}
+\entry {\code {ytics_rotate}}{794}
+\entry {\code {ytics_rotate_secondary}}{794}
+\entry {\code {ytics_secondary}}{794}
+\entry {\code {ytics_secondary_axis}}{794}
+\entry {\code {yv_grid}}{794}
 \entry {\code {yx_ratio}}{213}
 \initial {Z}
 \entry {\code {z}}{213}
-\entry {\code {z_voxel}}{792}
-\entry {\code {zaxis}}{793}
-\entry {\code {zaxis_color}}{793}
-\entry {\code {zaxis_type}}{793}
-\entry {\code {zaxis_width}}{793}
+\entry {\code {z_voxel}}{794}
+\entry {\code {zaxis}}{795}
+\entry {\code {zaxis_color}}{795}
+\entry {\code {zaxis_type}}{795}
+\entry {\code {zaxis_width}}{795}
 \entry {\code {zeroa}}{44}
 \entry {\code {zerob}}{45}
 \entry {\code {zerobern}}{485}
 \entry {\code {zeta%pi}}{486}
-\entry {\code {zlabel}}{213, 794}
-\entry {\code {zlabel_rotate}}{794}
-\entry {\code {zlength}}{855}
+\entry {\code {zlabel}}{213, 796}
+\entry {\code {zlabel_rotate}}{796}
+\entry {\code {zlength}}{857}
 \entry {\code {zmin}}{214}
 \entry {\code {zn_primroot_limit}}{497}
 \entry {\code {zn_primroot_pretest}}{498}
 \entry {\code {zn_primroot_verbose}}{498}
-\entry {\code {zrange}}{794}
-\entry {\code {ztics}}{795}
-\entry {\code {ztics_axis}}{795}
-\entry {\code {ztics_rotate}}{795}
+\entry {\code {zrange}}{796}
+\entry {\code {ztics}}{797}
+\entry {\code {ztics_axis}}{797}
+\entry {\code {ztics_rotate}}{797}

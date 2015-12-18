@@ -609,16 +609,23 @@ value.  The global value of @code{errormsg} is always present.
 @c sin(a,b);
 @c ===end===
 @example
+@group
 (%i1) errormsg;
-(%o1)                                true
+(%o1)                         true
+@end group
+@group
 (%i2) sin(a,b);
-Wrong number of arguments to sin
+sin: wrong number of arguments.
  -- an error. To debug this try: debugmode(true);
+@end group
+@group
 (%i3) errormsg:false;
-(%o3)                                false
+(%o3)                         false
+@end group
+@group
 (%i4) sin(a,b);
-
  -- an error. To debug this try: debugmode(true);
+@end group
 @end example
 
 The option variable @code{errormsg} can not be set in a block to a local value.
@@ -631,18 +638,25 @@ The option variable @code{errormsg} can not be set in a block to a local value.
 @c f(true);
 @c ===end===
 @example
-(%i1) f(bool):=block([errormsg:bool], 
-                     print ("value of errormsg is",errormsg))$
+(%i1) f(bool):=block([errormsg:bool], print ("value of errormsg is",errormsg))$
+@group
 (%i2) errormsg:true;
-(%o2)                                true
+(%o2)                         true
+@end group
+@group
 (%i3) f(false);
 value of errormsg is true 
-(%o3)                                true
+(%o3)                         true
+@end group
+@group
 (%i4) errormsg:false;
-(%o4)                                false
+(%o4)                         false
+@end group
+@group
 (%i5) f(true);
 value of errormsg is false 
-(%o5)                                false
+(%o5)                         false
+@end group
 @end example
 
 @opencatbox
@@ -910,8 +924,69 @@ See also @mref{is} and @mrefdot{maybe}
 
 @anchor{return}
 @deffn {Function} return (@var{value})
-May be used to exit explicitly from a block, bringing
-its argument.  See @code{block} for more information.
+May be used to exit explicitly from the current @mrefcomma{block} @mrefcomma{while}
+@mref{for} or @mref{do} loop bringing its argument. It therefore can be compared
+with the @code{return} statement found in other programming languages but it yields
+one difference: In maxima only returns from the current block, not from the entire
+function it was called in.
+
+@c ===beg===
+@c for i:1 thru 10 do o:i;
+@c for i:1 thru 10 do if i=3 then return(i);
+@c for i:1 thru 10 do 
+@c     (
+@c         block([i],
+@c             i:3,
+@c             return(i)
+@c         ), 
+@c         return(8)
+@c     );
+@c block([i],
+@c     i:4,
+@c     block([o],
+@c         o:5,
+@c         return(o)
+@c     ),
+@c     return(i),
+@c     return(10)
+@c );
+@c ===end===
+@example
+@group
+(%i1) for i:1 thru 10 do o:i;
+(%o1)                         done
+@end group
+@group
+(%i2) for i:1 thru 10 do if i=3 then return(i);
+(%o2)                           3
+@end group
+@group
+(%i3) for i:1 thru 10 do
+    (
+        block([i],
+            i:3,
+            return(i)
+        ),
+        return(8)
+    );
+(%o3)                           8
+@end group
+@group
+(%i4) block([i],
+    i:4,
+    block([o],
+        o:5,
+        return(o)
+    ),
+    return(i),
+    return(10)
+(%o4)                           4
+@end group
+(%i5) );
+@end example
+
+
+See also @mrefcomma{for} @mrefcomma{while} @mref{do} and .
 
 @opencatbox
 @category{Programming}
@@ -1048,10 +1123,13 @@ To show the argument combinations more clearly, @code{F} is left undefined.
 @c outermap ("+", [a, b, c], [1, 2, 3]);
 @c ===end===
 @example
-(%i1) outermap(F, [a, b, c], [1, 2, 3]);
+@group
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
 (%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
                                      [F(c, 1), F(c, 2), F(c, 3)]]
-(%i2) outermap(F, matrix([a, b],[c, d]), matrix([1, 2],[3, 4]));
+@end group
+@group
+(%i2) outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
          [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
          [ [                  ]  [                  ] ]
          [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
@@ -1059,10 +1137,14 @@ To show the argument combinations more clearly, @code{F} is left undefined.
          [ [ F(c, 1)  F(c, 2) ]  [ F(d, 1)  F(d, 2) ] ]
          [ [                  ]  [                  ] ]
          [ [ F(c, 3)  F(c, 4) ]  [ F(d, 3)  F(d, 4) ] ]
+@end group
+@group
 (%i3) outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
        [ F(a, x, 1)  F(a, x, 2) ]  [ F(b, x, 1)  F(b, x, 2) ]
 (%o3) [[                        ], [                        ]]
        [ F(a, x, 3)  F(a, x, 4) ]  [ F(b, x, 3)  F(b, x, 4) ]
+@end group
+@group
 (%i4) outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
        [ [ F(a, 1, x) ]  [ F(a, 2, x) ] ]
 (%o4) [[ [            ]  [            ] ], 
@@ -1070,9 +1152,12 @@ To show the argument combinations more clearly, @code{F} is left undefined.
                               [ [ F(b, 1, x) ]  [ F(b, 2, x) ] ]
                               [ [            ]  [            ] ]]
                               [ [ F(b, 1, y) ]  [ F(b, 2, y) ] ]
+@end group
+@group
 (%i5) outermap ("+", [a, b, c], [1, 2, 3]);
 (%o5) [[a + 1, a + 2, a + 3], [b + 1, b + 2, b + 3], 
                                            [c + 1, c + 2, c + 3]]
+@end group
 @end example
 
 A closer examination of the @code{outermap} return value.  The first, second,
@@ -1094,15 +1179,21 @@ and each element of each list is a matrix.
 @c [op (xx_0), op (xx_1), op (xx_2)];
 @c ===end===
 @example
+@group
 (%i1) arg_1 :  matrix ([a, b], [c, d]);
                             [ a  b ]
 (%o1)                       [      ]
                             [ c  d ]
+@end group
+@group
 (%i2) arg_2 : [11, 22];
 (%o2)                       [11, 22]
+@end group
+@group
 (%i3) arg_3 : matrix ([xx, yy]);
 (%o3)                      [ xx  yy ]
-(%i4) xx_0 : outermap(lambda([x, y, z], x / y + z), arg_1,
+@end group
+(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1,
                                                    arg_2, arg_3);
                [  [      a        a  ]  [      a        a  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
@@ -1111,7 +1202,6 @@ and each element of each list is a matrix.
                [  [      c        c  ]  [      c        c  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                [  [      11       11 ]  [      22       22 ]  ]
-@group
                  [  [      b        b  ]  [      b        b  ]  ]
                  [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                  [  [      11       11 ]  [      22       22 ]  ]
@@ -1119,23 +1209,32 @@ and each element of each list is a matrix.
                  [  [      d        d  ]  [      d        d  ]  ]
                  [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                  [  [      11       11 ]  [      22       22 ]  ]
-@end group
+@group
 (%i5) xx_1 : xx_0 [1][1];
            [      a        a  ]  [      a        a  ]
 (%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]
            [      11       11 ]  [      22       22 ]
+@end group
+@group
 (%i6) xx_2 : xx_0 [1][1] [1];
                       [      a        a  ]
 (%o6)                 [ xx + --  yy + -- ]
                       [      11       11 ]
+@end group
+@group
 (%i7) xx_3 : xx_0 [1][1] [1] [1][1];
                                   a
 (%o7)                        xx + --
                                   11
+@end group
+@group
 (%i8) [op (arg_1), op (arg_2), op (arg_3)];
 (%o8)                  [matrix, [, matrix]
+@end group
+@group
 (%i9) [op (xx_0), op (xx_1), op (xx_2)];
 (%o9)                  [matrix, [, matrix]
+@end group
 @end example
 
 @code{outermap} preserves the structure of the arguments in the return value,
@@ -1149,18 +1248,26 @@ while @code{cartesian_product} does not.
 @c is (equal (%, %th (2)));
 @c ===end===
 @example
+@group
 (%i1) outermap (F, [a, b, c], [1, 2, 3]);
 (%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
                                      [F(c, 1), F(c, 2), F(c, 3)]]
+@end group
+@group
 (%i2) setify (flatten (%));
 (%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
-(%i3) map(lambda([L], apply(F, L)),
-                     cartesian_product(@{a, b, c@}, @{1, 2, 3@}));
+@end group
+@group
+(%i3) map (lambda ([L], apply (F, L)),
+                     cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
 (%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
+@end group
+@group
 (%i4) is (equal (%, %th (2)));
 (%o4)                         true
+@end group
 @end example
 
 @opencatbox
