@@ -11,7 +11,7 @@
 
 
 @c start of header
-@settitle Maxima @manual_version@ Manual
+@settitle Maxima 5.37.272.gae15142 Manual
 
 @synindex ky fn
 @synindex vr fn
@@ -43,7 +43,7 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Maxima Manual}
-@center Version @manual_version@
+@center Version 5.37.272.gae15142
 @page
 @vskip 0pt plus 1filll
 Maxima is a computer algebra system, implemented in Lisp.
@@ -87,7 +87,6 @@ and develop DOE Macsyma, now called Maxima.
 @menu
 
 @b{Maxima infrastructure}
-
 * Introduction to Maxima::      Sample Maxima sessions.
 * Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
 * Help::                        Asking for help from within a Maxima session.
@@ -168,7 +167,6 @@ Additional packages
 * minpack::                     MINPACK functions for minimization and roots
 * mnewton::                     Newton's method.
 * numericalio::                 Reading and writing files.
-* operatingsystem::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst::                     Substitutions utility.
 * orthopoly::                   Orthogonal polynomials.
 * romberg::                     Romberg method for numerical integration.
@@ -515,11 +513,6 @@ numericalio
 * Introduction to numericalio::
 * Functions and Variables for plain-text input and output::
 * Functions and Variables for binary input and output::
-
-operatingsystem
-* Introduction to operatingsystem::
-* Directory operations::
-* Environment operations::
 
 opsubst
 * Functions and Variables for opsubst::
@@ -873,15 +866,11 @@ Understanding maxima's output
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio, operatingsystem, mnewton, Top
+@node numericalio, opsubst, mnewton, Top
 @chapter numericalio
 @include numericalio.texi
 
-@node operatingsystem, opsubst, numericalio, Top
-@chapter operatingsystem
-@include operatingsystem.texi
-
-@node opsubst, orthopoly, operatingsystem, Top
+@node opsubst, orthopoly, numericalio, Top
 @chapter opsubst
 @include opsubst.texi
 
