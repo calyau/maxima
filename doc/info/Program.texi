@@ -949,7 +949,7 @@ function it was called in.
 @c     ),
 @c     return(i),
 @c     return(10)
-@c );
+@c  );
 @c ===end===
 @example
 @group
@@ -971,7 +971,6 @@ function it was called in.
     );
 (%o3)                           8
 @end group
-@group
 (%i4) block([i],
     i:4,
     block([o],
@@ -980,13 +979,12 @@ function it was called in.
     ),
     return(i),
     return(10)
+ );
 (%o4)                           4
-@end group
-(%i5) );
 @end example
 
 
-See also @mrefcomma{for} @mrefcomma{while} @mref{do} and .
+See also @mrefcomma{for} @mrefcomma{while} @mref{do} and @mref{block}.
 
 @opencatbox
 @category{Programming}
