@@ -547,7 +547,7 @@ If @code{cabs} returns a noun form this most communly is caused by
 some properties of the variables involved not being known:
 @c ===beg===
 @c cabs (a+%i*b);
-@c declare(a,b,real);
+@c declare(a,real,b,real);
 @c cabs (a+%i*b);
 @c assume(a>0,b>0);
 @c cabs (a+%i*b);
@@ -559,9 +559,8 @@ some properties of the variables involved not being known:
 (%o1)                     sqrt(b  + a )
 @end group
 @group
-(%i2) declare(a,b,real);
-declare: number of arguments must be a multiple of 2.
- -- an error. To debug this try: debugmode(true);
+(%i2) declare(a,real,b,real);
+(%o2)                         done
 @end group
 @group
 (%i3) cabs (a+%i*b);
@@ -705,7 +704,7 @@ If @code{carg} returns a noun form this most communly is caused by
 some properties of the variables involved not being known:
 @c ===beg===
 @c carg (a+%i*b);
-@c declare(a,b,real);
+@c declare(a,real,b,real);
 @c carg (a+%i*b);
 @c assume(a>0,b>0);
 @c carg (a+%i*b);
@@ -716,9 +715,8 @@ some properties of the variables involved not being known:
 (%o1)                      atan2(b, a)
 @end group
 @group
-(%i2) declare(a,b,real);
-declare: number of arguments must be a multiple of 2.
- -- an error. To debug this try: debugmode(true);
+(%i2) declare(a,real,b,real);
+(%o2)                         done
 @end group
 @group
 (%i3) carg (a+%i*b);
