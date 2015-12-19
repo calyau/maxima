@@ -301,7 +301,7 @@ in this stream can be retrieved by @ref{get_output_stream_string}.
 @fname{newline} (@var{stream}) 
 
 Writes a new line (to @var{stream}).
-See @mrefdot{sprint}for an example of using @code{newline()}.
+See @mref{sprint} for an example of using @code{newline()}.
 Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @opencatbox
@@ -962,7 +962,7 @@ Returns a copy of @var{string} as a new string.
 @fname{sdowncase} (@var{string}, @var{start})  @
 @fname{sdowncase} (@var{string}, @var{start}, @var{end})
 
-Like @mrefdot{supcase} but uppercase characters are converted to lowercase. 
+Like @mref{supcase} but uppercase characters are converted to lowercase. 
 
 @opencatbox
 @category{Package stringproc}
