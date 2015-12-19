@@ -70,3 +70,19 @@
   #+sbcl (sb-unix:posix-getcwd/)
   #-(or allegro clisp cmu cormanlisp lispworks lucid sbcl) (truename ".")))
   
+; The copy function below was written by StackOverflow user user224021 and is licensed
+; under CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/).
+; http://stackoverflow.com/a/15813006
+(defun os-copy-file (from-file to-file)
+  (with-open-file (input-stream from-file
+                :direction :input
+                :element-type '(unsigned-byte 8))
+    (with-open-file (output-stream to-file
+                   :direction :output
+                   :if-exists :supersede
+                   :if-does-not-exist :create
+                   :element-type '(unsigned-byte 8))
+      (let ((buf (make-array 4096 :element-type (stream-element-type input-stream))))
+    (loop for pos = (read-sequence buf input-stream)
+       while (plusp pos)
+       do (write-sequence buf output-stream :end pos))))))
