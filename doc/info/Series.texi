@@ -86,6 +86,22 @@ the @code{intosum}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{simpproduct}
+@defvr {Option variable} simpproduct
+Default value: @code{false}
+
+When @code{simpproduct} is @code{true}, the result of a @code{product} is simplified.
+This simplification may sometimes be able to produce a closed form.  If
+@code{simpproduct} is @code{false} or if the quoted form @code{'product} is used, the
+value is a product noun form which is a representation of the pi notation used
+in mathematics.
+
+@opencatbox
+@category{Sums and products} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{product}
 @deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
