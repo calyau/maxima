@@ -1238,7 +1238,7 @@ simplification of expressions with the factorial function.
 @c -----------------------------------------------------------------------------
 @anchor{factlim}
 @defvr {Option variable} factlim
-Default value: -1
+Default value: 100000
 
 @code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
