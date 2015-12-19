@@ -29,6 +29,16 @@ Create directory @var{dir}
 remove directory @var{dir}
 @end deffn
 
+@anchor{copy_file}
+@deffn {Function} copy_file (@var{file1}, @var{file2})
+copies file @var{file1} to @var{file2}
+@end deffn
+
+@anchor{rename_file}
+@deffn {Function} rename_file (@var{file1}, @var{file2})
+renames file @var{file1} to @var{file2}
+@end deffn
+
 @anchor{getcurrentdirectory}
 @deffn {Function} getcurrentdirectory ()
 returns the current working directory.
