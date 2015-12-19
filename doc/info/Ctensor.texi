@@ -197,7 +197,7 @@ Sets up a predefined coordinate system and metric. The argument
                                             cylindrical z
  paraboloidal          3  [u,v,phi]         Paraboloidal coords.
  conical               3  [u,v,w]           Conical coordinates
- toroidal              3  [u,v,phi]         Toroidal coordinates
+ toroidal              3  [phi,u,v]         Toroidal coordinates
  spherical             3  [r,theta,phi]     Spherical coord. system
  oblatespheroidal      3  [u,v,phi]         Oblate spheroidal
                                             coordinates
