@@ -97,6 +97,7 @@
 
 @c Macros for cross references
 
+@ifnottex
 @macro mref {nodename}
 @code{\nodename\}
 @end macro
@@ -124,5 +125,34 @@
 @macro mrefparen {nodename}
 @code{\nodename\})
 @end macro
+@end ifnottex
+@iftex
+@macro mref {nodename}
+@code{@code{\nodename\}}
+@end macro
 
+@macro mxref {nodename, text}
+@code{@code{\nodename\, \text\}}
+@end macro
+
+@macro mrefdot {nodename}
+@code{@code{\nodename\}}.
+@end macro
+
+@macro mxrefdot {nodename, text}
+@code{@code{\nodename\, \text\}}.
+@end macro
+
+@macro mrefcomma {nodename}
+@code{@code{\nodename\}},
+@end macro
+
+@macro mxrefcomma {nodename, text}
+@code{@code{\nodename\, \text\}},
+@end macro
+
+@macro mrefparen {nodename}
+@code{@code{\nodename\}})
+@end macro
+@end iftex
 @end ifnothtml

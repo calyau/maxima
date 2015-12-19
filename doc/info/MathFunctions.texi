@@ -515,9 +515,6 @@ calculates the absolute value of @code{x + %i*y} as
 @c cabs (exp (%pi * %i));
 @c cabs (exp (3/2 * %pi * %i));
 @c cabs (17 * exp (2 * %i));
-@c declare(a,b,real);
-@c assume(a>0,b>0);
-@c cabs (a+%i*b);
 @c ===end===
 @example
 @group
@@ -544,19 +541,41 @@ calculates the absolute value of @code{x + %i*y} as
 (%i6) cabs (17 * exp (2 * %i));
 (%o6)                          17
 @end group
+@end example
+
+If @code{cabs} returns a noun form this most communly is caused by
+some properties of the variables involved not being known:
+@c ===beg===
+@c cabs (a+%i*b);
+@c declare(a,b,real);
+@c cabs (a+%i*b);
+@c assume(a>0,b>0);
+@c cabs (a+%i*b);
+@c ===end===
+@example
 @group
-(%i7) declare(a,b,real);
+(%i1) cabs (a+%i*b);
+                                2    2
+(%o1)                     sqrt(b  + a )
+@end group
+@group
+(%i2) declare(a,b,real);
 declare: number of arguments must be a multiple of 2.
  -- an error. To debug this try: debugmode(true);
 @end group
 @group
-(%i8) assume(a>0,b>0);
-(%o8)                    [a > 0, b > 0]
+(%i3) cabs (a+%i*b);
+                                2    2
+(%o3)                     sqrt(b  + a )
 @end group
 @group
-(%i9) cabs (a+%i*b);
+(%i4) assume(a>0,b>0);
+(%o4)                    [a > 0, b > 0]
+@end group
+@group
+(%i5) cabs (a+%i*b);
                                 2    2
-(%o9)                     sqrt(b  + a )
+(%o5)                     sqrt(b  + a )
 @end group
 @end example
 
@@ -646,9 +665,6 @@ Examples:
 @c carg (exp (%pi * %i));
 @c carg (exp (3/2 * %pi * %i));
 @c carg (17 * exp (2 * %i));
-@c declare(a,b,real);
-@c assume(a>0,b>0);
-@c carg (a+%i*b);
 @c ===end===
 @example
 @group
@@ -683,19 +699,39 @@ Examples:
 (%o6)                  atan(------) + %pi
                             cos(2)
 @end group
+@end example
+
+If @code{carg} returns a noun form this most communly is caused by
+some properties of the variables involved not being known:
+@c ===beg===
+@c carg (a+%i*b);
+@c declare(a,b,real);
+@c carg (a+%i*b);
+@c assume(a>0,b>0);
+@c carg (a+%i*b);
+@c ===end===
+@example
 @group
-(%i7) declare(a,b,real);
+(%i1) carg (a+%i*b);
+(%o1)                      atan2(b, a)
+@end group
+@group
+(%i2) declare(a,b,real);
 declare: number of arguments must be a multiple of 2.
  -- an error. To debug this try: debugmode(true);
 @end group
 @group
-(%i8) assume(a>0,b>0);
-(%o8)                    [a > 0, b > 0]
+(%i3) carg (a+%i*b);
+(%o3)                      atan2(b, a)
 @end group
 @group
-(%i9) carg (a+%i*b);
+(%i4) assume(a>0,b>0);
+(%o4)                    [a > 0, b > 0]
+@end group
+@group
+(%i5) carg (a+%i*b);
                                   b
-(%o9)                        atan(-)
+(%o5)                        atan(-)
                                   a
 @end group
 @end example
