@@ -168,6 +168,7 @@ Additional packages
 * minpack::                     MINPACK functions for minimization and roots
 * mnewton::                     Newton's method.
 * numericalio::                 Reading and writing files.
+* operatingsystem::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst::                     Substitutions utility.
 * orthopoly::                   Orthogonal polynomials.
 * romberg::                     Romberg method for numerical integration.
@@ -514,6 +515,11 @@ numericalio
 * Introduction to numericalio::
 * Functions and Variables for plain-text input and output::
 * Functions and Variables for binary input and output::
+
+operatingsystem
+* Introduction to operatingsystem::
+* Directory operations::
+* Environment operations::
 
 opsubst
 * Functions and Variables for opsubst::
@@ -867,11 +873,15 @@ Understanding maxima's output
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio, opsubst, mnewton, Top
+@node numericalio, operatingsystem, mnewton, Top
 @chapter numericalio
 @include numericalio.texi
 
-@node opsubst, orthopoly, numericalio, Top
+@node operatingsystem, opsubst, numericalio, Top
+@chapter operatingsystem
+@include operatingsystem.texi
+
+@node opsubst, orthopoly, operatingsystem, Top
 @chapter opsubst
 @include opsubst.texi
 

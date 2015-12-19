@@ -370,7 +370,7 @@ that macro function call is also expanded.
 However, if the expansion of a macro function call has side effects,
 those side effects are executed.
 
-See also @code{::=}, @code{macros}, and @code{macroexpand1}.
+See also @mrefcomma{::=} @mrefcomma{macros} and @mrefdot{macroexpand1}.
 
 Examples
 
@@ -430,7 +430,7 @@ those side effects are executed.
 If the expansion of @var{expr} yields another macro function call,
 that macro function call is not expanded.
 
-See also @code{::=}, @code{macros}, and @code{macroexpand}.
+See also @mrefcomma{::=} @mrefcomma{macros} and @mrefdot{macroexpand}
 
 Examples
 
@@ -483,7 +483,7 @@ The macro function definition operator @code{::=} puts a new macro function
 onto this list, and @code{kill}, @code{remove}, and @code{remfunction} remove
 macro functions from the list.
 
-See also @code{infolists}.
+See also @mrefdot{infolists}
 
 @opencatbox
 @category{Function definition} @category{Global variables}
@@ -566,7 +566,7 @@ functions; when @var{F} is the name of an array function, @code{apply} evaluates
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
 this case.
 
-See also @code{funmake} and @code{args}.
+See also @mref{funmake} and @mrefdot{args}
 
 Examples:
 
@@ -691,21 +691,29 @@ How to convert a nested list into a matrix:
 @fname{block} ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n}) @
 @fname{block} (@var{expr_1}, @dots{}, @var{expr_n})
 
-@code{block} evaluates @var{expr_1}, @dots{}, @var{expr_n} in sequence and
-returns the value of the last expression evaluated.  The sequence can be
+The function @code{block} allows to make the variables @var{v_1}, @dots{},
+@var{v_m} to be local for a sequence of commands. If these variables
+are already bound @code{block} saves the current values of the
+variables @var{v_1}, @dots{}, @var{v_m} (if any) upon entry to the
+block, then unbinds the variables so that they evaluate to themselves;
+The local variables may be bound to arbitrary values within the block
+but when the block is exited the saved values are restored, and the
+values assigned within the block are lost.
+
+If there is no need to define local variables then the list at the
+beginning of the @code{block} command may be omitted.
+In this case if neither @mref{return} nor @mref{go} are used
+@code{block} behaves similar to the following construct:
+
+@example
+( expr_1, expr_2,... , expr_n );
+@end example
+
+@var{expr_1}, @dots{}, @var{expr_n} will be evaluated in sequence and
+the value of the last expression will be returned. The sequence can be 
 modified by the @code{go}, @code{throw}, and @code{return} functions.  The last
 expression is @var{expr_n} unless @code{return} or an expression containing
 @code{throw} is evaluated.
-Some variables @var{v_1}, @dots{}, @var{v_m} can be declared local to the block;
-these are distinguished from global variables of the same names.  If no
-variables are declared local then the list may be omitted.  Within the block,
-any variable other than @var{v_1}, @dots{}, @var{v_m} is a global variable.
-
-@code{block} saves the current values of the variables @var{v_1}, @dots{},
-@var{v_m} (if any) upon entry to the block, then unbinds the variables so that
-they evaluate to themselves.  The local variables may be bound to arbitrary
-values within the block but when the block is exited the saved values are
-restored, and the values assigned within the block are lost.
 
 The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
 saves the properties associated with the symbols @var{v_1}, @dots{}, @var{v_m},
@@ -738,6 +746,10 @@ another statement in the block.  For example:
 
 Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
+
+See also @mref{return} and @mrefdot{go}
+
+@c Needs some examples.
 
 @opencatbox
 @category{Expressions} @category{Programming}
@@ -816,7 +828,7 @@ the Lisp compiler.
 @code{translate} creates and evaluates Lisp translations.  @code{compile_file}
 translates Maxima into Lisp, and then executes the Lisp compiler.
 
-See also @code{translate}, @code{translate_file}, and @code{compile_file}.
+See also @mrefcomma{translate} @mrefcomma{translate_file} and @mrefdot{compile_file}
 
 @opencatbox
 @category{Translation and compilation}
@@ -914,7 +926,7 @@ If some formal argument @var{x_k} is a quoted symbol (after evaluation), the
 function defined by @code{define} does not evaluate the corresponding actual
 argument.  Otherwise all actual arguments are evaluated.
 
-See also @code{:=} and @code{::=}.
+See also @mref{:=} and @mrefdot{::=}
 
 Examples:
 
@@ -1479,14 +1491,18 @@ Examples:
 
 Returns the definition of the function @var{f}.
 
-@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
-The argument may be the name of a macro (defined with @code{::=}), an ordinary
-function (defined with @code{:=} or @code{define}), an array function (defined
-with @code{:=} or @code{define}, but enclosing arguments in square brackets
-@code{[ ]}), a subscripted function (defined with @code{:=} or @code{define},
+The argument may be
+@itemize @bullet
+@item the name of a macro (defined with @code{::=}),
+@item an ordinary function (defined with @code{:=} or @code{define}),
+@item an array function (defined with @code{:=} or @code{define}, but enclosing arguments in square brackets @code{[ ]}),
+@item a subscripted function (defined with @code{:=} or @code{define},
 but enclosing some arguments in square brackets and others in parentheses
-@code{( )}), one of a family of subscripted functions selected by a particular
-subscript value, or a subscripted function defined with a constant subscript.
+@code{( )}),
+@item one of a family of subscripted functions selected by a particular
+subscript value,
+@item or a subscripted function defined with a constant subscript.
+@end itemize
 
 @code{fundef} quotes its argument;
 the quote-quote operator @code{'@w{}'} defeats quotation.
@@ -1517,7 +1533,7 @@ functions; when @var{F} is the name of an array function,
 
 @code{funmake} evaluates its arguments.
 
-See also @code{apply} and @code{args}.
+See also @mref{apply} and @mrefdot{args}
 
 Examples:
 
@@ -2517,28 +2533,29 @@ See @code{compile_file} for more on this topic.
 @c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
 See also 
 @flushleft
-@code{tr_array_as_ref},
+@code{tr_array_as_ref}
 @c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
 @c WE DON'T WANT TO MENTION IT
 @c @code{tr_bind_mode_hook}, 
-@code{tr_bound_function_applyp},
+@mrefcomma{tr_bound_function_applyp}
 @c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
 @c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
-@code{tr_exponent},
-@code{tr_file_tty_messagesp}, 
-@code{tr_float_can_branch_complex},
-@code{tr_function_call_default}, 
-@code{tr_numer},
-@code{tr_optimize_max_loop}, 
-@code{tr_semicompile},
-@code{tr_state_vars}, 
-@code{tr_warnings_get},
-@code{tr_warn_bad_function_calls},
-@code{tr_warn_fexpr}, 
-@code{tr_warn_meval},
-@code{tr_warn_mode},
-@code{tr_warn_undeclared},
-and @code{tr_warn_undefined_variable}.
+@code{tr_exponent}
+@mrefcomma{tr_file_tty_messagesp}
+@mrefcomma{tr_float_can_branch_complex}
+@mrefcomma{tr_function_call_default}
+@mrefcomma{tr_numer}
+@mrefcomma{tr_optimize_max_loop}
+@mrefcomma{tr_semicompile}
+@mrefcomma{tr_state_vars}
+@mrefcomma{tr_warnings_get}
+@c Not documented
+@code{tr_warn_bad_function_calls}
+@mrefcomma{tr_warn_fexpr} 
+@mrefcomma{tr_warn_meval}
+@mrefcomma{tr_warn_mode}
+@mrefcomma{tr_warn_undeclared}
+and @mrefdot{tr_warn_undefined_variable}
 @end flushleft
 
 @opencatbox
@@ -2605,7 +2622,7 @@ the warning message.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{tr_file_tty_message}
+@anchor{tr_file_tty_messagesp}
 @defvr {Option variable} tr_file_tty_messagesp
 Default value: @code{false}
 

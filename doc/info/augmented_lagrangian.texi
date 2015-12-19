@@ -46,7 +46,7 @@ which is a quasi-Newton algorithm.
 
 @code{load(augmented_lagrangian)} loads this function.
 
-See also @code{lbfgs}.
+See also @mrefdot{lbfgs}
 
 References:
 

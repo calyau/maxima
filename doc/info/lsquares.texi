@@ -20,6 +20,7 @@ to estimate parameters for a model from numerical data.
 @section Functions and Variables for lsquares
 @c -----------------------------------------------------------------------------
 
+@anchor{lsquares_estimates}
 @deffn {Function} lsquares_estimates @
 @fname{lsquares_estimates} (@var{D}, @var{x}, @var{e}, @var{a}) @
 @fname{lsquares_estimates} (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
@@ -60,11 +61,11 @@ so all other kinds of numbers are converted to ordinary floats for calculations.
 @code{load(lsquares)} loads this function.
 
 See also
-@code{lsquares_estimates_exact},
-@code{lsquares_estimates_approximate},@*
-@code{lsquares_mse},
-@code{lsquares_residuals},
-and @code{lsquares_residual_mse}.
+@mref{lsquares_estimates_exact},
+@mref{lsquares_estimates_approximate},@*
+@mref{lsquares_mse},
+@mref{lsquares_residuals},
+and @mref{lsquares_residual_mse}.
 
 Examples:
 
@@ -140,6 +141,7 @@ so @code{lsquares_estimates} resorts to numerical approximation.
 
 @end deffn
 
+@anchor{lsquares_estimates_exact}
 @deffn {Function} lsquares_estimates_exact (@var{MSE}, @var{a})
 
 Estimate parameters @var{a} to minimize the mean square error @var{MSE},
@@ -153,11 +155,11 @@ If two or more elements are returned,
 each represents a distinct, equivalent minimum of the mean square error.
 
 See also
-@code{lsquares_estimates},
-@code{lsquares_estimates_approximate},
-@code{lsquares_mse},
-@code{lsquares_residuals},
-and @code{lsquares_residual_mse}.
+@mref{lsquares_estimates},
+@mref{lsquares_estimates_approximate},
+@mref{lsquares_mse},
+@mref{lsquares_residuals},
+and @mref{lsquares_residual_mse}.
 
 Example:
 
@@ -207,6 +209,7 @@ Example:
 
 @end deffn
 
+@anchor{lsquares_estimates_approximate}
 @deffn {Function} lsquares_estimates_approximate (@var{MSE}, @var{a}, initial = @var{L}, tol = @var{t})
 
 Estimate parameters @var{a} to minimize the mean square error @var{MSE},
@@ -233,11 +236,11 @@ so all other kinds of numbers are converted to ordinary floats for calculations.
 @code{load(lsquares)} loads this function.
 
 See also
-@code{lsquares_estimates},
-@code{lsquares_estimates_exact},
-@code{lsquares_mse},@*
-@code{lsquares_residuals},
-and @code{lsquares_residual_mse}.
+@mref{lsquares_estimates},
+@mref{lsquares_estimates_exact},
+@mref{lsquares_mse},@*
+@mref{lsquares_residuals},
+and @mref{lsquares_residual_mse}.
 
 Example:
 
@@ -288,6 +291,7 @@ Example:
 
 @end deffn
 
+@anchor{lsquares_mse}
 @deffn {Function} lsquares_mse (@var{D}, @var{x}, @var{e})
 
 Returns the mean square error (MSE), a summation expression, for the equation @var{e}
@@ -387,6 +391,7 @@ Example:
 
 @end deffn
 
+@anchor{lsquares_residuals}
 @deffn {Function} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
 
 Returns the residuals for the equation @var{e}
@@ -461,6 +466,7 @@ Example:
 
 @end deffn
 
+@anchor{lsquares_residual_mse}
 @deffn {Function} lsquares_residual_mse (@var{D}, @var{x}, @var{e}, @var{a})
 
 Returns the residual mean square error (MSE) for the equation @var{e}
@@ -536,6 +542,7 @@ Example:
 
 @end deffn
 
+@anchor{plsquares}
 @deffn {Function} plsquares @
 @fname{plsquares} (@var{Mat},@var{VarList},@var{depvars}) @
 @fname{plsquares} (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon}) @

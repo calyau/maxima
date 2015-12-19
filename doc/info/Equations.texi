@@ -1091,7 +1091,7 @@ Converts products of roots into roots of products.  For example,
 @code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
 
 When @mref{radexpand} is @code{true} and @mref{domain} is @code{real},
-@code{rootscontract} converts @mref{abs} into @mref{sqrt}, e.g.,
+@code{rootscontract} converts @mref{abs} into @mrefcomma{sqrt}  e.g.,
 @code{rootscontract (abs(x)*sqrt(y))} yields @code{sqrt(x^2*y)}.
 
 There is an option @mref{rootsconmode} affecting @code{rootscontract} as
@@ -1379,6 +1379,7 @@ See @mref{algsys} and @mref{%rnum_list} for more information.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{solvedecomposes}
 @defvr {Option variable} solvedecomposes
 Default value: @code{true}
 

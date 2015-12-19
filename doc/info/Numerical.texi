@@ -43,9 +43,9 @@ a = r cos(t)
 b = r sin(t)
 @end example
 
-@code{polartorect} is the inverse function of @code{recttopolar}.
+@mref{polartorect} is the inverse function of @mrefdot{recttopolar}
 
-@code{load(fft)} loads this function.  See also @code{fft}.
+@code{load(fft)} loads this function.  See also @mrefdot{fft}
 
 @opencatbox
 @category{Package fft} @category{Complex variables}
@@ -72,9 +72,9 @@ t = atan2(b, a)
 
 The computed angle is in the range @code{-%pi} to @code{%pi}.
 
-@code{recttopolar} is the inverse function of @code{polartorect}.
+@code{recttopolar} is the inverse function of @mrefdot{polartorect}
 
-@code{load(fft)} loads this function.  See also @code{fft}.
+@code{load(fft)} loads this function.  See also @mrefdot{fft}
 
 @opencatbox
 @category{Package fft} @category{Complex variables}
@@ -111,8 +111,8 @@ this definition of the transform may differ from that used by other mathematical
 
 @code{load(fft)} loads this function.
 
-See also @code{fft} (forward transform), @code{recttopolar}, and
-@code{polartorect}.
+See also @mref{fft} (forward transform), @mrefcomma{recttopolar} and
+@mrefdot{polartorect}
 
 Examples:
 
@@ -230,8 +230,8 @@ b[n/2] = 0
 
 @code{load(fft)} loads this function.
 
-See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and
-@code{polartorect}.
+See also @mref{inverse_fft} (inverse transform), @mrefcomma{recttopolar} and
+@mrefdot{polartorect}
 
 Examples:
 
@@ -360,7 +360,7 @@ which case the main variable of the canonical rational expression form of
 
 @code{horner} sometimes improves stability if @code{expr} is
 to be numerically evaluated.  It is also useful if Maxima is used to
-generate programs to be run in Fortran.  See also @code{stringout}.
+generate programs to be run in Fortran.  See also @mrefdot{stringout}
 
 @c ===beg===
 @c expr: 1e-155*x^2 - 5.5*x + 5.2e155;
@@ -406,7 +406,7 @@ To enable the Lisp debugger set *debugger-hook* to nil.
 
 Finds a root of the expression @var{expr} or the function @var{f} over the
 closed interval @math{[@var{a}, @var{b}]}.  The expression @var{expr} may be an
-equation, in which case @code{find_root} seeks a root of
+equation, in which case @mref{find_root} seeks a root of
 @code{lhs(@var{expr}) - rhs(@var{expr})}.
 
 Given that Maxima can evaluate @var{expr} or @var{f} over
@@ -534,8 +534,8 @@ Thus it is not necessary that @var{expr} evaluate to a number.
 
 @code{load(newton1)} loads this function.
 
-See also @code{realroots}, @code{allroots}, @code{find_root}, and
-@code{mnewton}.
+See also @mrefcomma{realroots} @mrefcomma{allroots} @mrefcomma{find_root} and
+@mrefdot{mnewton}
 
 Examples:
 

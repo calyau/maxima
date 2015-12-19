@@ -36,7 +36,7 @@ You need Gnuplot 4.2 or newer to run this program.
 @subsection Scenes
 
 
-
+@anchor{gr2d}
 @deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
 
 Function @code{gr2d} builds an object describing a 2D scene. Arguments are
@@ -50,7 +50,8 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 @code{rectangle}, @code{triangle}, @code{vector}, and @code{geomap}
 (this one defined in package @code{worldmap}).
 
-See also @code{draw} and @code{draw2d}.
+See also @mref{draw}
+and @mrefdot{draw2d}
 
 To make use of this object, write first @code{load(draw)}.
 
@@ -106,6 +107,7 @@ To make use of this object, write first @code{load(draw)}.
 @end deffn
 
 
+@anchor{gr3d}
 @deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
 
 Function @code{gr3d} builds an object describing a 3d scene. Arguments are
@@ -122,7 +124,7 @@ dimensions:@*
 @code{spherical}, @code{triangle}, @code{tube},@*
 @code{vector}, and @code{geomap} (this one defined in package @code{worldmap}).
 
-See also @code{draw} and @code{draw3d}.
+See also @mref{draw} and @mrefdot{draw3d}
 
 To make use of this object, write first @code{load(draw)}.
 
@@ -139,6 +141,7 @@ To make use of this object, write first @code{load(draw)}.
 
 
 
+@anchor{draw_func}
 @deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
 
 Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
@@ -152,7 +155,7 @@ Function @code{draw} accepts the following global options: @code{terminal},
 Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
 when only one scene is required, in two or three dimensions, respectively.
 
-See also @code{gr2d} and @code{gr3d}.
+See also @mref{gr2d} and @mrefdot{gr3d}
 
 To make use of this function, write first @code{load(draw)}.
 
@@ -191,7 +194,7 @@ End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
 @figure{draw_equiv}
-See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
+See also @mrefcomma{gr2d} @mrefcomma{gr3d} @mref{draw2d} and @mrefdot{draw3d}
 
 @opencatbox
 @category{Package draw} @category{File output}
@@ -202,6 +205,7 @@ See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 
 
 
+@anchor{draw2d}
 @deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
 
 This function is a short cut for
@@ -211,7 +215,7 @@ It can be used to plot a unique scene in 2d.
 
 To make use of this function, write first @code{load(draw)}.
 
-See also @code{draw} and @code{gr2d}.
+See also @mref{draw_func} and @mrefdot{gr2d}
 
 @opencatbox
 @category{Package draw} @category{File output}
@@ -223,6 +227,7 @@ See also @code{draw} and @code{gr2d}.
 
 
 
+@anchor{draw3d}
 @deffn {Function} draw3d (@var{option}, @var{graphic_object}, ...)
 
 This function is a short cut for
@@ -232,7 +237,7 @@ It can be used to plot a unique scene in 3d.
 
 To make use of this function, write first @code{load(draw)}.
 
-See also @code{draw} and @code{gr3d}.
+See also @mref{draw_func} and @mrefdot{gr3d}
 
 @opencatbox
 @category{Package draw} @category{File output}
@@ -241,6 +246,7 @@ See also @code{draw} and @code{gr3d}.
 
 
 
+@anchor{draw_file}
 @deffn {Function} draw_file (@var{graphic option}, ..., @var{graphic object}, ...)
 
 Saves the current plot into a file. Accepted graphics options are:
@@ -264,6 +270,7 @@ Example:
 
 
 
+@anchor{multiplot_mode}
 @deffn {Function} multiplot_mode (@var{term})
 
 This function enables Maxima to work in one-window multiplot mode with terminal
@@ -304,6 +311,7 @@ Example:
 
 
 
+@anchor{set_draw_defaults}
 @deffn {Function} set_draw_defaults (@var{graphic option}, ..., @var{graphic object}, ...)
 
 Sets user graphics options. This function is useful for plotting a sequence
@@ -340,6 +348,7 @@ To make use of this function, write first @code{load(draw)}.
 @subsection Graphics options
 
 
+@anchor{adapt_depth_draw}
 @defvr {Graphic option} adapt_depth
 Default value: 10
 
@@ -354,6 +363,7 @@ This option is relevant only for 2d @code{explicit} functions.
 @end defvr
 
 
+@anchor{allocation}
 @defvr {Graphic option} allocation
 Default value: @code{false}
 
@@ -394,7 +404,7 @@ Multiplot with selected dimensions.
           explicit(x^2+y^2,x,-1,1,y,-1,1) ))$
 @end example
 
-See also option @code{columns}.
+See also option @mrefdot{columns}
 
 @opencatbox
 @category{Package draw}
@@ -403,6 +413,7 @@ See also option @code{columns}.
 @end defvr
 
 
+@anchor{axis_3d}
 @defvr {Graphic option} axis_3d
 Default value: @code{true}
 
@@ -420,7 +431,7 @@ Example:
 @end example
 @figure{draw_axis3d}
 
-See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
+See also @mrefcomma{axis_bottom}  @mrefcomma{axis_left} @mrefcomma{axis_top} and @mref{axis_right} for axis in 2d.
 
 @opencatbox
 @category{Package draw}
@@ -430,6 +441,7 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_
 
 
 
+@anchor{axis_bottom}
 @defvr {Graphic option} axis_bottom
 Default value: @code{true}
 
@@ -447,7 +459,7 @@ Example:
 @end example
 @figure{draw_axis_bottom}
 
-See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+See also @mrefcomma{axis_left}  @mrefcomma{axis_top} @mref{axis_right} and @mrefdot{axis_3d}
 
 @opencatbox
 @category{Package draw}
@@ -457,6 +469,7 @@ See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3
 
 
 
+@anchor{axis_left}
 @defvr {Graphic option} axis_left
 Default value: @code{true}
 
@@ -473,7 +486,7 @@ Example:
              explicit(x^3,x,-1,1))$
 @end example
 
-See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+See also @mrefcomma{axis_bottom}  @mrefcomma{axis_top} @mref{axis_right} and @mrefdot{axis_3d}
 
 @opencatbox
 @category{Package draw}
@@ -483,6 +496,7 @@ See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis
 
 
 
+@anchor{axis_right}
 @defvr {Graphic option} axis_right
 Default value: @code{true}
 
@@ -499,7 +513,7 @@ Example:
              explicit(x^3,x,-1,1))$
 @end example
 
-See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
+See also @mrefcomma{axis_bottom}  @mrefcomma{axis_left} @mref{axis_top} and @mrefdot{axis_3d}
 
 @opencatbox
 @category{Package draw}
@@ -509,6 +523,7 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_
 
 
 
+@anchor{axis_top}
 @defvr {Graphic option} axis_top
 Default value: @code{true}
 
@@ -525,7 +540,7 @@ Example:
              explicit(x^3,x,-1,1))$
 @end example
 
-See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
+See also @mrefcomma{axis_bottom}   @mrefcomma{axis_left}  @mrefcomma{axis_right}  and @mrefdot{axis_3d}
 
 @opencatbox
 @category{Package draw}
@@ -535,6 +550,7 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axi
 
 
 
+@anchor{background_color}
 @defvr {Graphic option} background_color
 Default value: @code{white}
 
@@ -545,7 +561,7 @@ does not matter.
 
 This option das not work with terminals @code{epslatex} and @code{epslatex_standalone}.
 
-See also @code{color}.
+See also @mrefdot{color}
 
 @opencatbox
 @category{Package draw}
@@ -555,6 +571,7 @@ See also @code{color}.
 
 
 
+@anchor{border}
 @defvr {Graphic option} border
 Default value: @code{true}
 
@@ -588,6 +605,7 @@ Example:
 
 
 
+@anchor{cbrange}
 @defvr {Graphic option} cbrange
 Default value: @code{auto}
 
@@ -617,7 +635,7 @@ Example:
 @end example
 @figure{draw_cbrange}
 
-See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
+See also @mrefcomma{enhanced3d}  @mref{colorbox} and @mrefdot{cbtics}
 
 @opencatbox
 @category{Package draw}
@@ -626,6 +644,7 @@ See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
 
 
 
+@anchor{cbtics}
 @defvr {Graphic option} cbtics
 Default value: @code{auto}
 
@@ -650,7 +669,7 @@ Example :
 @end example
 @figure{draw_cbtics}
 
-See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
+See also @mrefcomma{enhanced3d}  @mref{colorbox} and @mrefdot{cbrange}
 
 @opencatbox
 @category{Package draw}
@@ -658,6 +677,7 @@ See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
 @end defvr
 
+@anchor{color_draw}
 @defvr {Graphic option} color
 Default value: @code{blue}
 
@@ -709,7 +729,7 @@ Example:
 @end example
 @figure{draw_color}
 
-See also @code{fill_color}.
+See also @mrefdot{fill_color}
 
 @opencatbox
 @category{Package draw}
@@ -719,6 +739,7 @@ See also @code{fill_color}.
 
 
 
+@anchor{colorbox}
 @defvr {Graphic option} colorbox
 Default value: @code{true}
 
@@ -754,7 +775,7 @@ Color scale and 3D coloured object.
 @end example
 @figure{draw_colorbox2}
 
-See also @code{palette}.
+See also @mrefdot{palette}
 
 @opencatbox
 @category{Package draw}
@@ -765,6 +786,7 @@ See also @code{palette}.
 
 
 
+@anchor{columns}
 @defvr {Graphic option} columns
 Default value: 1
 
@@ -794,6 +816,7 @@ Example:
 
 
 
+@anchor{contour}
 @defvr {Graphic option} contour
 Default value: @code{none}
 
@@ -856,6 +879,7 @@ Example:
 
 
 
+@anchor{contour_levels}
 @defvr {Graphic option} contour_levels
 Default value: 5
 
@@ -917,7 +941,7 @@ Isolines at levels -7, -6, 0.8 and 5.
              surface_hide   = true) $
 @end example
 
-See also @code{contour}.
+See also @mrefdot{contour}
 
 @opencatbox
 @category{Package draw}
@@ -927,6 +951,7 @@ See also @code{contour}.
 
 
 
+@anchor{data_file_name}
 @defvr {Graphic option} data_file_name
 Default value: @code{"data.gnuplot"}
 
@@ -946,6 +971,7 @@ See example in @code{gnuplot_file_name}.
 
 
 
+@anchor{delay}
 @defvr {Graphic option} delay
 Default value: 5
 
@@ -972,7 +998,7 @@ End of animation sequence
 Option @code{delay} is only active in animated gif's; it is ignored in
 any other case.
 
-See also @code{terminal}, @code{dimensions}.
+See also @mrefcomma{terminal}  @mrefdot{dimensions}
 
 @opencatbox
 @category{Package draw}
@@ -982,6 +1008,7 @@ See also @code{terminal}, @code{dimensions}.
 
 
 
+@anchor{dimensions_draw}
 @defvr {Graphic option} dimensions
 Default value: @code{[600,500]}
 
@@ -1039,6 +1066,7 @@ We want an eps file with A4 portrait dimensions.
 
 
 
+@anchor{draw_realpart}
 @defvr {Graphic option} draw_realpart
 Default value: @code{true}
 
@@ -1071,6 +1099,7 @@ Option @code{draw_realpart} affects objects @code{explicit} and @code{parametric
 
 
 
+@anchor{enhanced3d}
 @defvr {Graphic option} enhanced3d
 Default value: @code{none}
 
@@ -1241,6 +1270,7 @@ being @code{k} an ordering parameter.
 
 
 
+@anchor{error_type}
 @defvr {Graphic option} error_type
 Default value: @code{y}
 
@@ -1249,11 +1279,12 @@ graphic object @code{errors} will draw points with horizontal, vertical,
 or both, error bars. When @code{error_type=boxes}, boxes will be drawn
 instead of crosses.
 
-See also @code{errors}.
+See also @mrefdot{errors}
 @end defvr
 
 
 
+@anchor{file_name}
 @defvr {Graphic option} file_name
 Default value: @code{"maxima_out"}
 
@@ -1273,7 +1304,7 @@ Example:
              terminal  = 'png)$
 @end example
 
-See also @code{terminal}, @code{dimensions}.
+See also @mrefcomma{terminal}  @mrefdot{dimensions}
 
 @opencatbox
 @category{Package draw}
@@ -1283,6 +1314,7 @@ See also @code{terminal}, @code{dimensions}.
 
 
 
+@anchor{fill_color}
 @defvr {Graphic option} fill_color
 Default value: @code{"red"}
 
@@ -1300,6 +1332,7 @@ See @code{color} to learn how colors are specified.
 
 
 
+@anchor{fill_density}
 @defvr {Graphic option} fill_density
 Default value: 0
 
@@ -1312,6 +1345,7 @@ See @code{bars} for examples.
 
 
 
+@anchor{filled_func}
 @defvr {Graphic option} filled_func
 Default value: @code{false}
 
@@ -1346,7 +1380,7 @@ defined by option @code{filled_func}. Note that the variable in
              explicit(-sin(x),x,0,%pi));
 @end example
 @figure{draw_filledfunc2}
-See also @code{fill_color} and @code{explicit}.
+See also @mref{fill_color} and @mrefdot{explicit}
 
 @opencatbox
 @category{Package draw}
@@ -1356,6 +1390,7 @@ See also @code{fill_color} and @code{explicit}.
 
 
 
+@anchor{font}
 @defvr {Graphic option} font
 Default value: @code{""} (empty string)
 
@@ -1365,7 +1400,7 @@ Only one font face and size can be used throughout the plot.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-See also @code{font_size}.
+See also @mrefdot{font_size}
 
 Gnuplot doesn't handle fonts by itself, it leaves this task to the
 support libraries of the different terminals, each one with its own
@@ -1472,6 +1507,7 @@ The gnuplot documentation is an important source of information about terminals 
 
 
 
+@anchor{font_size}
 @defvr {Graphic option} font_size
 Default value: 10
 
@@ -1482,7 +1518,7 @@ active only when option @code{font} is not equal to the empty string.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-See also @code{font}.
+See also @mrefdot{font}
 
 @opencatbox
 @category{Package draw}
@@ -1492,6 +1528,7 @@ See also @code{font}.
 
 
 
+@anchor{gnuplot_file_name}
 @defvr {Graphic option} gnuplot_file_name
 Default value: @code{"maxout_xxx.gnuplot"} with @code{"xxx"}
 being a number that is unique to each concurrently-running
@@ -1515,7 +1552,7 @@ Example:
        explicit(x^2,x,-1,1)) $
 @end example
 
-See also @code{data_file_name}.
+See also @mrefdot{data_file_name}
 
 @opencatbox
 @category{Package draw}
@@ -1525,6 +1562,7 @@ See also @code{data_file_name}.
 
 
 
+@anchor{grid_draw}
 @defvr {Graphic option} grid
 Default value: @code{false}
 
@@ -1561,6 +1599,7 @@ Example:
 
 
 
+@anchor{head_angle}
 @defvr {Graphic option} head_angle
 Default value: 45
 
@@ -1597,7 +1636,7 @@ Example:
 @end example
 @figure{draw_head_angle}
 
-See also @code{head_both}, @code{head_length}, and @code{head_type}. 
+See also @mrefcomma{head_both}  @mrefcomma{head_length}  and @mrefdot{head_type} 
 
 @opencatbox
 @category{Package draw}
@@ -1607,6 +1646,7 @@ See also @code{head_both}, @code{head_length}, and @code{head_type}.
 
 
 
+@anchor{head_both}
 @defvr {Graphic option} head_both
 Default value: @code{false}
 
@@ -1628,7 +1668,7 @@ Example:
 @end example
 @figure{draw_head_both}
 
-See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
+See also @mrefcomma{head_length}  @mrefcomma{head_angle}  and @mrefdot{head_type} 
 
 @opencatbox
 @category{Package draw}
@@ -1638,6 +1678,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 
 
 
+@anchor{head_length}
 @defvr {Graphic option} head_length
 Default value: 2
 
@@ -1661,7 +1702,7 @@ Example:
 @end example
 @figure{draw_head_length}
 
-See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
+See also @mrefcomma{head_both}  @mrefcomma{head_angle}  and @mrefdot{head_type} 
 
 @opencatbox
 @category{Package draw}
@@ -1673,6 +1714,7 @@ See also @code{head_both}, @code{head_angle}, and @code{head_type}.
 
 
 
+@anchor{head_type}
 @defvr {Graphic option} head_type
 Default value: @code{filled}
 
@@ -1697,7 +1739,7 @@ Example:
 @end example
 @figure{draw_head_type}
 
-See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
+See also @mrefcomma{head_both}  @mrefcomma{head_angle}  and @mrefdot{head_length} 
 
 @opencatbox
 @category{Package draw}
@@ -1707,6 +1749,7 @@ See also @code{head_both}, @code{head_angle}, and @code{head_length}.
 
 
 
+@anchor{interpolate_color}
 @defvr {Graphic option} interpolate_color
 Default value: @code{false}
 
@@ -1785,7 +1828,7 @@ Interpolating colors in parametric surfaces can give unexpected results.
 @end example
 @figure{draw_interpolate_color6}
 
-See also @code{enhanced3d}. 
+See also @mrefdot{enhanced3d} 
 
 @opencatbox
 @category{Package draw}
@@ -1795,6 +1838,7 @@ See also @code{enhanced3d}.
 
 
 
+@anchor{ip_grid}
 @defvr {Graphic option} ip_grid
 Default value: @code{[50, 50]}
 
@@ -1810,6 +1854,7 @@ This option is relevant only for @code{implicit} objects.
 
 
 
+@anchor{ip_grid_in}
 @defvr {Graphic option} ip_grid_in
 Default value: @code{[5, 5]}
 
@@ -1825,6 +1870,7 @@ This option is relevant only for @code{implicit} objects.
 
 
 
+@anchor{key}
 @defvr {Graphic option} key
 Default value: @code{""} (empty string)
 
@@ -1863,6 +1909,7 @@ Example:
 
 
 
+@anchor{key_pos}
 @defvr {Graphic option} key_pos
 Default value: @code{""} (empty string)
 
@@ -1904,6 +1951,7 @@ Example:
 
 
 
+@anchor{label_alignment}
 @defvr {Graphic option} label_alignment
 Default value: @code{center}
 
@@ -1930,7 +1978,7 @@ Example:
 @end example
 @figure{draw_label_alignment}
 
-See also @code{label_orientation}, and @code{color}. 
+See also @mrefcomma{label_orientation}  and @mrefdot{color} 
 
 @opencatbox
 @category{Package draw}
@@ -1940,6 +1988,7 @@ See also @code{label_orientation}, and @code{color}.
 
 
 
+@anchor{label_orientation}
 @defvr {Graphic option} label_orientation
 Default value: @code{horizontal}
 
@@ -1966,7 +2015,7 @@ Package @code{draw} needs always data to draw an scene.
 @end example
 @figure{draw_label_orientation}
 
-See also @code{label_alignment} and @code{color}. 
+See also @mref{label_alignment} and @mrefdot{color} 
 
 @opencatbox
 @category{Package draw}
@@ -1976,6 +2025,7 @@ See also @code{label_alignment} and @code{color}.
 
 
 
+@anchor{line_type}
 @defvr {Graphic option} line_type
 Default value: @code{solid}
 
@@ -2006,7 +2056,7 @@ Example:
 @end example
 @figure{draw_line_type}
 
-See also @code{line_width}.
+See also @mrefdot{line_width}
 
 @opencatbox
 @category{Package draw}
@@ -2016,6 +2066,7 @@ See also @code{line_width}.
 
 
 
+@anchor{line_width}
 @defvr {Graphic option} line_width
 Default value: 1
 
@@ -2045,7 +2096,7 @@ Example:
 @end example
 @figure{draw_line_width}
 
-See also @code{line_type}.
+See also @mrefdot{line_type}
 
 @opencatbox
 @category{Package draw}
@@ -2055,10 +2106,11 @@ See also @code{line_type}.
 
 
 
+@anchor{logcb}
 @defvr {Graphic option} logcb
 Default value: @code{false}
 
-If @code{logcb} is @code{true}, the tics in the colorbox will be drawn in the
+If @mref{logcb} is @code{true}, the tics in the colorbox will be drawn in the
 logarithmic scale.
 
 When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{logcb} has
@@ -2081,7 +2133,7 @@ Example:
 @end example
 @figure{draw_logcb}
 
-See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
+See also @mrefcomma{enhanced3d}  @mref{colorbox} and @mrefdot{cbrange}
 
 @opencatbox
 @category{Package draw}
@@ -2091,6 +2143,7 @@ See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
 
 
+@anchor{logx_draw}
 @defvr {Graphic option} logx
 Default value: @code{false}
 
@@ -2108,7 +2161,7 @@ Example:
              logx = true)$
 @end example
 
-See also @code{logy}, @code{logx_secondary}, @code{logy_secondary}, and @code{logz}.
+See also @mrefcomma{logy}  @mrefcomma{logx_secondary}  @mrefcomma{logy_secondary}  and @mrefdot{logz}
 
 @opencatbox
 @category{Package draw}
@@ -2118,6 +2171,7 @@ See also @code{logy}, @code{logx_secondary}, @code{logy_secondary}, and @code{lo
 
 
 
+@anchor{logx_secondary}
 @defvr {Graphic option} logx_secondary
 Default value: @code{false}
 
@@ -2147,7 +2201,7 @@ Example:
 @end example
 @figure{draw_logx_secondary}
 
-See also @code{logx}, @code{logy}, @code{logy_secondary}, and @code{logz}.
+See also @mrefcomma{logx}  @mrefcomma{logy}  @mrefcomma{logy_secondary}  and @mrefdot{logz}
 
 @opencatbox
 @category{Package draw}
@@ -2157,6 +2211,7 @@ See also @code{logx}, @code{logy}, @code{logy_secondary}, and @code{logz}.
 
 
 
+@anchor{logy_draw}
 @defvr {Graphic option} logy
 Default value: @code{false}
 
@@ -2174,7 +2229,7 @@ Example:
              explicit(exp(x),x,0,5))$
 @end example
 
-See also @code{logx}, @code{logx_secondary}, @code{logy_secondary}, and @code{logz}.
+See also @mrefcomma{logx}  @mrefcomma{logx_secondary}  @mrefcomma{logy_secondary}  and @mrefdot{logz}
 
 @opencatbox
 @category{Package draw}
@@ -2184,6 +2239,7 @@ See also @code{logx}, @code{logx_secondary}, @code{logy_secondary}, and @code{lo
 
 
 
+@anchor{logy_secondary}
 @defvr {Graphic option} logy_secondary
 Default value: @code{false}
 
@@ -2212,7 +2268,7 @@ Example:
         explicit(x^2,x,1,100) )$
 @end example
 
-See also @code{logx}, @code{logy}, @code{logx_secondary}, and @code{logz}.
+See also @mrefcomma{logx}  @mrefcomma{logy}  @mrefcomma{logx_secondary}  and @mrefdot{logz}
 
 @opencatbox
 @category{Package draw}
@@ -2222,6 +2278,7 @@ See also @code{logx}, @code{logy}, @code{logx_secondary}, and @code{logz}.
 
 
 
+@anchor{logz}
 @defvr {Graphic option} logz
 Default value: @code{false}
 
@@ -2239,7 +2296,7 @@ Example:
              explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
 @end example
 
-See also @code{logx} and @code{logy}.
+See also @mref{logx} and @mrefdot{logy}
 
 @opencatbox
 @category{Package draw}
@@ -2249,6 +2306,7 @@ See also @code{logx} and @code{logy}.
 
 
 
+@anchor{nticks_draw}
 @defvr {Graphic option} nticks
 Default value: 29
 
@@ -2284,6 +2342,7 @@ Example:
 
 
 
+@anchor{palette_draw}
 @defvr {Graphic option} palette
 Default value: @code{color}
 
@@ -2368,7 +2427,7 @@ in red, and higher values in yellow.
 @end example
 @figure{draw_palette3}
 
-See also @code{colorbox} and @code{enhanced3d}.
+See also @mref{colorbox} and @mrefdot{enhanced3d}
 
 @opencatbox
 @category{Package draw}
@@ -2378,6 +2437,7 @@ See also @code{colorbox} and @code{enhanced3d}.
 
 
 
+@anchor{point_size}
 @defvr {Graphic option} point_size
 Default value: 1
 
@@ -2414,6 +2474,7 @@ Example:
 
 
 
+@anchor{point_type_draw}
 @defvr {Graphic option} point_type
 Default value: 1
 
@@ -2470,6 +2531,7 @@ Example:
 
 
 
+@anchor{points_joined}
 @defvr {Graphic option} points_joined
 Default value: @code{false}
 
@@ -2516,6 +2578,7 @@ Example:
 
 
 
+@anchor{proportional_axes}
 @defvr {Graphic option} proportional_axes
 Default value: @code{none}
 
@@ -2568,6 +2631,7 @@ Multiplot.
 
 
 
+@anchor{surface_hide}
 @defvr {Graphic option} surface_hide
 Default value: @code{false}
 
@@ -2595,6 +2659,7 @@ Example:
 
 
 
+@anchor{terminal}
 @defvr {Graphic option} terminal
 Default value: @code{screen}
 
@@ -2679,7 +2744,7 @@ Multipage output in eps format.
         gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1))) $
 @end example
 
-See also @code{file_name}, @code{dimensions} and @code{delay}.
+See also @mrefcomma{file_name}  @mref{dimensions} and @mrefdot{delay}
 
 @opencatbox
 @category{Package draw}
@@ -2689,6 +2754,7 @@ See also @code{file_name}, @code{dimensions} and @code{delay}.
 
 
 
+@anchor{title_draw}
 @defvr {Graphic option} title
 Default value: @code{""} (empty string)
 
@@ -2715,6 +2781,7 @@ Example:
 
 
 
+@anchor{transform}
 @defvr {Graphic option} transform
 Default value: @code{none}
 
@@ -2767,6 +2834,7 @@ Translation in 3D.
 
 
 
+@anchor{transparent}
 @defvr {Graphic option} transparent
 Default value: @code{false}
 
@@ -2798,6 +2866,7 @@ Example:
 
 
 
+@anchor{tube_extremes}
 @defvr {Graphic option} tube_extremes
 Default value: @code{[open, open]}
 
@@ -2824,6 +2893,7 @@ Example:
 
 
 
+@anchor{unit_vectors}
 @defvr {Graphic option} unit_vectors
 Default value: @code{false}
 
@@ -2855,6 +2925,7 @@ Example:
 
 
 
+@anchor{user_preamble}
 @defvr {Graphic option} user_preamble
 Default value: @code{""} (empty string)
 
@@ -2903,6 +2974,7 @@ Tell gnuplot to draw all contour lines in black
 
 
 
+@anchor{view}
 @defvr {Graphic option} view
 Default value: @code{[60,30]}
 
@@ -2942,6 +3014,7 @@ Example:
 
 
 
+@anchor{wired_surface}
 @defvr {Graphic option} wired_surface
 Default value: @code{false}
 
@@ -2971,6 +3044,7 @@ Example:
 
 
 
+@anchor{x_voxel}
 @defvr {Graphic option} x_voxel
 Default value: 10
 
@@ -2988,6 +3062,7 @@ object @code{region}.
 
 
 
+@anchor{xaxis}
 @defvr {Graphic option} xaxis
 Default value: @code{false}
 
@@ -3006,7 +3081,7 @@ Example:
 @end example
 @figure{draw_xaxis}
 
-See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
+See also @mrefcomma{xaxis_width}  @mref{xaxis_type} and @mrefdot{xaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3017,6 +3092,7 @@ See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
 
 
 
+@anchor{xaxis_color}
 @defvr {Graphic option} xaxis_color
 Default value: @code{"black"}
 
@@ -3035,7 +3111,7 @@ Example:
              xaxis_color = red)$
 @end example
 
-See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
+See also @mrefcomma{xaxis}  @mref{xaxis_width} and @mrefdot{xaxis_type}
 
 @opencatbox
 @category{Package draw}
@@ -3045,6 +3121,7 @@ See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
 
 
 
+@anchor{xaxis_secondary}
 @defvr {Graphic option} xaxis_secondary
 Default value: @code{false}
 
@@ -3068,9 +3145,9 @@ Example:
 @end example
 @figure{draw_xaxis_secondary}
 
-See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
-@code{xtics_axis_secondary} and @code{xaxis_secondary}.
-
+See also @mrefcomma{xrange_secondary}  @mrefcomma{xtics_secondary}  @mrefcomma{xtics_rotate_secondary} 
+@code{xtics_axis_secondary} and @mrefdot{xaxis_secondary}
+@c TODO: Document xtics_axis_secondary
 @opencatbox
 @category{Package draw}
 @closecatbox
@@ -3080,6 +3157,7 @@ See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_sec
 
 
 
+@anchor{xaxis_type}
 @defvr {Graphic option} xaxis_type
 Default value: @code{dots}
 
@@ -3098,7 +3176,7 @@ Example:
              xaxis_type  = solid)$
 @end example
 
-See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
+See also @mrefcomma{xaxis}  @mref{xaxis_width} and @mrefdot{xaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3108,6 +3186,7 @@ See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
 
 
 
+@anchor{xaxis_width}
 @defvr {Graphic option} xaxis_width
 Default value: 1
 
@@ -3126,7 +3205,7 @@ Example:
              xaxis_width = 3)$
 @end example
 
-See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
+See also @mrefcomma{xaxis}  @mref{xaxis_type} and @mrefdot{xaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3136,6 +3215,7 @@ See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
 
 
 
+@anchor{xlabel_draw}
 @defvr {Graphic option} xlabel
 Default value: @code{""} (empty string)
 
@@ -3154,7 +3234,7 @@ Example:
              ylabel = "Population")$
 @end example
 
-See also @code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
+See also @mrefcomma{xlabel_secondary}  @mrefcomma{ylabel}  @mref{ylabel_secondary} and @mrefdot{zlabel}
 
 @opencatbox
 @category{Package draw}
@@ -3164,6 +3244,7 @@ See also @code{xlabel_secondary}, @code{ylabel}, @code{ylabel_secondary} and @co
 
 
 
+@anchor{xlabel_secondary}
 @defvr {Graphic option} xlabel_secondary
 Default value: @code{""} (empty string)
 
@@ -3186,7 +3267,7 @@ Example:
 @end example
 @figure{draw_ylabel_secondary}
 
-See also @code{xlabel}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}.
+See also @mrefcomma{xlabel}  @mrefcomma{ylabel}  @mref{ylabel_secondary} and @mrefdot{zlabel}
 
 @opencatbox
 @category{Package draw}
@@ -3196,6 +3277,7 @@ See also @code{xlabel}, @code{ylabel}, @code{ylabel_secondary} and @code{zlabel}
 
 
 
+@anchor{xrange}
 @defvr {Graphic option} xrange
 Default value: @code{auto}
 
@@ -3216,7 +3298,7 @@ Example:
              explicit(x^2,x,-1,1))$
 @end example
 
-See also @code{yrange} and @code{zrange}.
+See also @mref{yrange} and @mrefdot{zrange}
 
 @opencatbox
 @category{Package draw}
@@ -3226,6 +3308,7 @@ See also @code{yrange} and @code{zrange}.
 
 
 
+@anchor{xrange_secondary}
 @defvr {Graphic option} xrange_secondary
 Default value: @code{auto}
 
@@ -3238,7 +3321,7 @@ Maxima list, as in @code{xrange_secondary=[-2, 3]}.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}.
+See also @mrefcomma{xrange}  @mrefcomma{yrange}  @mref{zrange} and @mrefdot{yrange_secondary}
 
 @opencatbox
 @category{Package draw}
@@ -3248,6 +3331,7 @@ See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}
 
 
 
+@anchor{xtics_draw}
 @defvr {Graphic option} xtics
 Default value: @code{true}
 
@@ -3322,7 +3406,7 @@ Labeled tics.
              explicit(x^3,x,-1,1)  )$
 @end example
 
-See also @code{ytics}, and @code{ztics}.
+See also @mrefcomma{ytics}  and @mrefdot{ztics}
 
 @opencatbox
 @category{Package draw}
@@ -3332,6 +3416,7 @@ See also @code{ytics}, and @code{ztics}.
 
 
 
+@anchor{xtics_axis}
 @defvr {Graphic option} xtics_axis
 Default value: @code{false}
 
@@ -3349,6 +3434,7 @@ does not matter.
 
 
 
+@anchor{xtics_rotate}
 @defvr {Graphic option} xtics_rotate
 Default value: @code{false}
 
@@ -3365,6 +3451,7 @@ does not matter.
 @end defvr
 
 
+@anchor{xtics_rotate_secondary}
 @defvr {Graphic option} xtics_rotate_secondary
 Default value: @code{false}
 
@@ -3382,6 +3469,7 @@ does not matter.
 
 
 
+@anchor{xtics_secondary}
 @defvr {Graphic option} xtics_secondary
 Default value: @code{auto}
 
@@ -3397,6 +3485,7 @@ See @code{xtics} for a complete description.
 
 
 
+@anchor{xtics_secondary_axis}
 @defvr {Graphic option} xtics_secondary_axis
 Default value: @code{false}
 
@@ -3414,6 +3503,7 @@ does not matter.
 
 
 
+@anchor{xu_grid}
 @defvr {Graphic option} xu_grid
 Default value: 30
 
@@ -3436,7 +3526,7 @@ Example:
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
 @end example
 
-See also @code{yv_grid}.
+See also @mrefdot{yv_grid}
 
 @opencatbox
 @category{Package draw}
@@ -3447,6 +3537,7 @@ See also @code{yv_grid}.
 
 
 
+@anchor{xy_file}
 @defvr {Graphic option} xy_file
 Default value: @code{""} (empty string)
 
@@ -3466,6 +3557,7 @@ does not matter.
 
 
 
+@anchor{xyplane}
 @defvr {Graphic option} xyplane
 Default value: @code{false}
 
@@ -3494,6 +3586,7 @@ Example:
 
 
 
+@anchor{y_voxel}
 @defvr {Graphic option} y_voxel
 Default value: 10
 
@@ -3510,6 +3603,7 @@ object @code{region}.
 
 
 
+@anchor{yaxis}
 @defvr {Graphic option} yaxis
 Default value: @code{false}
 
@@ -3527,7 +3621,7 @@ Example:
              yaxis_color = blue)$
 @end example
 
-See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
+See also @mrefcomma{yaxis_width}  @mref{yaxis_type} and @mrefdot{yaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3537,6 +3631,7 @@ See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
 
 
 
+@anchor{yaxis_color}
 @defvr {Graphic option} yaxis_color
 Default value: @code{"black"}
 
@@ -3555,7 +3650,7 @@ Example:
              yaxis_color = red)$
 @end example
 
-See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
+See also @mrefcomma{yaxis}  @mref{yaxis_width} and @mrefdot{yaxis_type}
 
 @opencatbox
 @category{Package draw}
@@ -3565,6 +3660,7 @@ See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
 
 
 
+@anchor{yaxis_secondary}
 @defvr {Graphic option} yaxis_secondary
 Default value: @code{false}
 
@@ -3586,8 +3682,9 @@ Example:
          explicit(100*sin(x+0.1)+2,x,0,10));
 @end example
 
-See also @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary}
-and @code{ytics_axis_secondary}.
+See also @mrefcomma{yrange_secondary}  @mrefcomma{ytics_secondary}  @mref{ytics_rotate_secondary}
+and @code{ytics_axis_secondary}
+@c TODO: Document ytics_axis_secondary
 
 @opencatbox
 @category{Package draw}
@@ -3597,6 +3694,7 @@ and @code{ytics_axis_secondary}.
 
 
 
+@anchor{yaxis_type}
 @defvr {Graphic option} yaxis_type
 Default value: @code{dots}
 
@@ -3615,7 +3713,7 @@ Example:
              yaxis_type  = solid)$
 @end example
 
-See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
+See also @mrefcomma{yaxis}  @mref{yaxis_width} and @mrefdot{yaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3625,6 +3723,7 @@ See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
 
 
 
+@anchor{yaxis_width}
 @defvr {Graphic option} yaxis_width
 Default value: 1
 
@@ -3643,7 +3742,7 @@ Example:
              yaxis_width = 3)$
 @end example
 
-See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
+See also @mrefcomma{yaxis}  @mref{yaxis_type} and @mrefdot{yaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3653,6 +3752,7 @@ See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
 
 
 
+@anchor{ylabel_draw}
 @defvr {Graphic option} ylabel
 Default value: @code{""} (empty string)
 
@@ -3671,7 +3771,7 @@ Example:
              explicit(exp(u),u,-2,2) )$
 @end example
 
-See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel_secondary}, and @code{zlabel}.
+See also @mrefcomma{xlabel}  @mrefcomma{xlabel_secondary}  @mrefcomma{ylabel_secondary}  and @mrefdot{zlabel}
 
 @opencatbox
 @category{Package draw}
@@ -3681,6 +3781,7 @@ See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel_secondary}, and @c
 
 
 
+@anchor{ylabel_secondary}
 @defvr {Graphic option} ylabel_secondary
 Default value: @code{""} (empty string)
 
@@ -3706,7 +3807,7 @@ Example:
     )$
 @end example
 
-See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel} and @code{zlabel}.
+See also @mrefcomma{xlabel}  @mrefcomma{xlabel_secondary}  @mref{ylabel} and @mrefdot{zlabel}
 
 @opencatbox
 @category{Package draw}
@@ -3716,6 +3817,7 @@ See also @code{xlabel}, @code{xlabel_secondary}, @code{ylabel} and @code{zlabel}
 
 
 
+@anchor{yrange}
 @defvr {Graphic option} yrange
 Default value: @code{auto}
 
@@ -3737,7 +3839,7 @@ Example:
              xrange = [-3,3])$
 @end example
 
-See also @code{xrange}, @code{yrange_secondary} and @code{zrange}.
+See also @mrefcomma{xrange}  @mref{yrange_secondary} and @mrefdot{zrange}
 
 @opencatbox
 @category{Package draw}
@@ -3747,6 +3849,7 @@ See also @code{xrange}, @code{yrange_secondary} and @code{zrange}.
 
 
 
+@anchor{yrange_secondary}
 @defvr {Graphic option} yrange_secondary
 Default value: @code{auto}
 
@@ -3773,7 +3876,7 @@ Example:
          explicit(100*sin(x+0.1)+2,x,0,10)) $
 @end example
 
-See also @code{xrange}, @code{yrange} and @code{zrange}.
+See also @mrefcomma{xrange}  @mref{yrange} and @mrefdot{zrange}
 
 @opencatbox
 @category{Package draw}
@@ -3782,6 +3885,7 @@ See also @code{xrange}, @code{yrange} and @code{zrange}.
 
 
 
+@anchor{ytics_draw}
 @defvr {Graphic option} ytics
 Default value: @code{true}
 
@@ -3797,6 +3901,7 @@ See @code{xtics} for a complete description.
 
 
 
+@anchor{ytics_axis}
 @defvr {Graphic option} ytics_axis
 Default value: @code{false}
 
@@ -3815,6 +3920,7 @@ does not matter.
 
 
 
+@anchor{ytics_rotate}
 @defvr {Graphic option} ytics_rotate
 Default value: @code{false}
 
@@ -3832,6 +3938,7 @@ does not matter.
 
 
 
+@anchor{ytics_rotate_secondary}
 @defvr {Graphic option} ytics_rotate_secondary
 Default value: @code{false}
 
@@ -3849,6 +3956,7 @@ does not matter.
 
 
 
+@anchor{ytics_secondary}
 @defvr {Graphic option} ytics_secondary
 Default value: @code{auto}
 
@@ -3864,6 +3972,7 @@ See @code{xtics} for a complete description.
 
 
 
+@anchor{ytics_secondary_axis}
 @defvr {Graphic option} ytics_secondary_axis
 Default value: @code{false}
 
@@ -3881,6 +3990,7 @@ does not matter.
 
 
 
+@anchor{yv_grid}
 @defvr {Graphic option} yv_grid
 Default value: 30
 
@@ -3903,7 +4013,7 @@ Example:
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
 @end example
 
-See also @code{xu_grid}.
+See also @mrefdot{xu_grid}
 
 @opencatbox
 @category{Package draw}
@@ -3912,6 +4022,7 @@ See also @code{xu_grid}.
 @end defvr
 
 
+@anchor{z_voxel}
 @defvr {Graphic option} z_voxel
 Default value: 10
 
@@ -3926,6 +4037,7 @@ by the 3d @code{implicit} object.
 @end defvr
 
 
+@anchor{zaxis}
 @defvr {Graphic option} zaxis
 Default value: @code{false}
 
@@ -3945,7 +4057,7 @@ Example:
              zaxis_color = blue)$
 @end example
 
-See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
+See also @mrefcomma{zaxis_width}  @mref{zaxis_type} and @mrefdot{zaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -3955,6 +4067,7 @@ See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
 
 
 
+@anchor{zaxis_color}
 @defvr {Graphic option} zaxis_color
 Default value: @code{"black"}
 
@@ -3975,7 +4088,7 @@ Example:
              zaxis_color = red)$
 @end example
 
-See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
+See also @mrefcomma{zaxis}  @mref{zaxis_width} and @mrefdot{zaxis_type}
 
 @opencatbox
 @category{Package draw}
@@ -3985,6 +4098,7 @@ See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
 
 
 
+@anchor{zaxis_type}
 @defvr {Graphic option} zaxis_type
 Default value: @code{dots}
 
@@ -4004,7 +4118,7 @@ Example:
              zaxis_type  = solid)$
 @end example
 
-See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
+See also @mrefcomma{zaxis}  @mref{zaxis_width} and @mrefdot{zaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -4015,6 +4129,7 @@ See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
 
 
 
+@anchor{zaxis_width}
 @defvr {Graphic option} zaxis_width
 Default value: 1
 
@@ -4034,7 +4149,7 @@ Example:
              zaxis_width = 3)$
 @end example
 
-See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
+See also @mrefcomma{zaxis}  @mref{zaxis_type} and @mrefdot{zaxis_color}
 
 @opencatbox
 @category{Package draw}
@@ -4044,6 +4159,7 @@ See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
 
 
 
+@anchor{zlabel_draw}
 @defvr {Graphic option} zlabel
 Default value: @code{""} (empty string)
 
@@ -4063,7 +4179,7 @@ Example:
              xlabel = "X variable" )$
 @end example
 
-See also @code{xlabel}, @code{ylabel}, and @code{zlabel_rotate}.
+See also @mrefcomma{xlabel}  @mrefcomma{ylabel}  and @mrefdot{zlabel_rotate}
 
 @opencatbox
 @category{Package draw}
@@ -4074,6 +4190,7 @@ See also @code{xlabel}, @code{ylabel}, and @code{zlabel_rotate}.
 
 
 
+@anchor{zlabel_rotate}
 @defvr {Graphic option} zlabel_rotate
 Default value: @code{"auto"}
 
@@ -4095,7 +4212,7 @@ Example:
       )$
 @end example
 
-See also @code{zlabel}.
+See also @mrefdot{zlabel}
 
 @opencatbox
 @category{Package draw}
@@ -4106,6 +4223,7 @@ See also @code{zlabel}.
 
 
 
+@anchor{zrange}
 @defvr {Graphic option} zrange
 Default value: @code{auto}
 
@@ -4128,7 +4246,7 @@ Example:
              xrange = [-3,3])$
 @end example
 
-See also @code{xrange} and @code{yrange}.
+See also @mref{xrange} and @mrefdot{yrange}
 
 @opencatbox
 @category{Package draw}
@@ -4136,6 +4254,7 @@ See also @code{xrange} and @code{yrange}.
 @end defvr
 
 
+@anchor{ztics}
 @defvr {Graphic option} ztics
 Default value: @code{true}
 
@@ -4152,6 +4271,7 @@ See @code{xtics} for a complete description.
 
 
 
+@anchor{ztics_axis}
 @defvr {Graphic option} ztics_axis
 Default value: @code{false}
 
@@ -4168,6 +4288,7 @@ does not matter.
 @end defvr
 
 
+@anchor{ztics_rotate}
 @defvr {Graphic option} ztics_rotate
 Default value: @code{false}
 
@@ -4190,7 +4311,7 @@ does not matter.
 
 
 
-
+@anchor{bars}
 @deffn  {Graphic object} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
 Draws vertical bars in 2D.
 
@@ -4229,7 +4350,7 @@ Example:
 
 
 
-
+@anchor{cylindrical}
 @deffn  {Graphic object} cylindrical (@var{radius}, @var{z}, @var{minz}, @var{maxz}, @var{azi}, @var{minazi}, @var{maxazi})
 Draws 3D functions defined in cylindrical coordinates.
 
@@ -4261,7 +4382,7 @@ Example:
 
 
 
-
+@anchor{elevation_grid}
 @deffn  {Graphic object} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
 Draws matrix @var{mat} in 3D space. @var{z} values are taken from @var{mat},
 the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
@@ -4269,11 +4390,11 @@ and ordinates from @var{y0} to @math{@var{y0} + @var{height}}. Element @math{a(1
 is projected on point @math{(x0,y0+height)}, @math{a(1,n)} on @math{(x0+width,y0+height)},
 @math{a(m,1)} on @math{(x0,y0)}, and @math{a(m,n)} on @math{(x0+width,y0)}.
 
-This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{line_type},
+@mref{line_width}  @mrefcomma{key}  @mrefcomma{wired_surface}  @mrefcomma{enhanced3d}  and @mrefdot{color}
 
-In older versions of Maxima, @code{elevation_grid} was called @code{mesh}.
-See also @code{mesh}.
+In older versions of Maxima, @mref{elevation_grid} was called @mrefdot{mesh}
+See also @mrefdot{mesh}
 
 Example:
 
@@ -4300,7 +4421,7 @@ Example:
 
 
 
-
+@anchor{ellipse}
 @deffn  {Graphic object} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
 Draws ellipses and circles in 2D.
 
@@ -4343,7 +4464,7 @@ Example:
 @end deffn
 
 
-
+@anchor{errors}
 @deffn  {Graphic object} errors ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
 Draws points with error bars, horizontally, vertically or both, depending on the
 value of option @code{error_type}.
@@ -4357,13 +4478,13 @@ arguments must be of the form @code{[x, y, ydelta]} or
 @code{error_type = boxes}, arguments to @code{errors} must be of the form
 @code{[x, y, xdelta, ydelta]} or @code{[x, y, xlow, xhigh, ylow, yhigh]}.
 
-See also @code{error_type}.
+See also @mrefdot{error_type}
 
-This object is affected by the following @i{graphic options}: @code{error_type}, 
-@code{points_joined}, @code{line_width}, @code{key}, @code{line_type}, 
-@code{color}, @code{fill_density}, @code{xaxis_secondary}, and  @code{yaxis_secondary}.
+This object is affected by the following @i{graphic options}: @mrefcomma{error_type}  
+@mrefcomma{points_joined}  @mrefcomma{line_width}  @mrefcomma{key}  @mrefcomma{line_type}  
+@mrefcomma{color}  @mrefcomma{fill_density}  @mrefcomma{xaxis_secondary}  and  @mrefdot{yaxis_secondary}
 
-Option @code{fill_density} is only relevant when @code{error_type=boxes}.
+Option @mref{fill_density} is only relevant when @code{error_type=boxes}.
 
 Examples:
 
@@ -4396,7 +4517,7 @@ Vertical and horizontal error bars.
 @end deffn
 
 
-
+@anchor{explicit}
 @deffn  {Graphic object} explicit @
 @fname{explicit} (@var{fcn},@var{var},@var{minval},@var{maxval}) @
 @fname{explicit} (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
@@ -4454,7 +4575,7 @@ Example:
 @end example
 @figure{draw_explicit3}
 
-See also @code{filled_func} for filled functions.
+See also @mref{filled_func} for filled functions.
 
 @opencatbox
 @category{Package draw}
@@ -4464,7 +4585,7 @@ See also @code{filled_func} for filled functions.
 
 
 
-
+@anchor{image}
 @deffn  {Graphic object} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
 Renders images in 2D.
 
@@ -4528,7 +4649,7 @@ to graphic option @code{palette}.
 @end example
 @figure{draw_image3}
 
-See also @code{colorbox}.
+See also @mrefdot{colorbox}
 
 If @var{im} is a matrix of vectors of length three, they are interpreted
 as red, green and blue color components.
@@ -4568,7 +4689,7 @@ An xpm file is read and then rendered.
 (%i3) draw2d(image(im,0,0,10,7))$
 @end example
 
-See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
+See also @mrefcomma{make_level_picture}  @mref{make_rgb_picture} and @mrefdot{read_xpm}
 
 @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}@*
 contains more elaborated examples.
@@ -4582,7 +4703,7 @@ contains more elaborated examples.
 
 
 
-
+@anchor{implicit}
 @deffn  {Graphic object} implicit @
 @fname{implicit} (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax}) @
 @fname{implicit} (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
@@ -4645,7 +4766,7 @@ Example:
 
 
 
-
+@anchor{label_draw}
 @deffn  {Graphic object} label @
 @fname{label} ([@var{string},@var{x},@var{y}],...) @
 @fname{label} ([@var{string},@var{x},@var{y},@var{z}],...)
@@ -4701,7 +4822,7 @@ Example:
 @end deffn
 
 
-
+@anchor{mesh}
 @deffn  {Graphic object} mesh (@var{row_1},@var{row_2},...)
 Draws a quadrangular mesh in 3D.
 
@@ -4762,7 +4883,7 @@ Two quadrilaterals.
 @end deffn
 
 
-
+@anchor{parametric}
 @deffn  {Graphic object} parametric @
 @fname{parametric} (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax}) @
 @fname{parametric} (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
@@ -4819,7 +4940,7 @@ Example:
 
 
 
-
+@anchor{parametric_surface}
 @deffn  {Graphic object} parametric_surface (@var{xfun}, @var{yfun}, @var{zfun}, @var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min}, @var{par2max})
 Draws parametric surfaces in 3D.
 
@@ -4860,7 +4981,7 @@ Example:
 
 
 
-
+@anchor{points}
 @deffn  {Graphic object} points @
 @fname{points} ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...]) @
 @fname{points} ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...]) @
@@ -5058,7 +5179,7 @@ Color numbers explicitly specified by the user.
 
 
 
-
+@anchor{polar}
 @deffn  {Graphic object} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
 Draws 2D functions defined in polar coordinates.
 
@@ -5096,7 +5217,7 @@ Example:
 
 
 
-
+@anchor{polygon}
 @deffn  {Graphic object} polygon @
 @fname{polygon} ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], @dots{}]) @
 @fname{polygon} ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
@@ -5134,7 +5255,7 @@ Example:
 @end deffn
 
 
-
+@anchor{quadrilateral}
 @deffn  {Graphic object} quadrilateral (@var{point_1}, @var{point_2}, @var{point_3}, @var{point_4})
 Draws a quadrilateral.
 
@@ -5176,7 +5297,7 @@ This object is affected by the following @i{graphic options}: @code{line_type},
 @closecatbox
 @end deffn
 
-
+@anchor{rectangle}
 @deffn  {Graphic object} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
 Draws rectangles in 2D.
 
@@ -5217,7 +5338,7 @@ Example:
 
 
 
-
+@anchor{region}
 @deffn  {Graphic object} region (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
 Plots a region on the plane defined by inequalities.
 
@@ -5243,6 +5364,7 @@ Example:
 @figure{draw_region}
 
 
+@anchor{spherical}
 @deffn  {Graphic object} spherical (@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen}, @var{minzen}, @var{maxzen})
 Draws 3D functions defined in spherical coordinates.
 
@@ -5272,7 +5394,7 @@ Example:
 @end deffn
 
 
-
+@anchor{triangle}
 @deffn  {Graphic object} triangle (@var{point_1}, @var{point_2}, @var{point_3})
 Draws a triangle.
 
@@ -5310,7 +5432,7 @@ This object is affected by the following @i{graphic options}: @code{line_type},
 @end deffn
 
 
-
+@anchor{tube}
 @deffn  {Graphic object} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
 Draws a tube in 3D with varying diameter.
 
@@ -5345,7 +5467,7 @@ Example:
 
 
 
-
+@anchor{vector}
 @deffn  {Graphic object} vector @
 @fname{vector} ([@var{x},@var{y}], [@var{dx},@var{dy}]) @
 @fname{vector} ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
@@ -5410,6 +5532,7 @@ Example:
 
 
 
+@anchor{get_pixel}
 @deffn  {Function} get_pixel (@var{pic},@var{x},@var{y})
 Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
 @code{width-1} and @code{height-1}, respectively.
@@ -5423,6 +5546,7 @@ Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
 
 
 
+@anchor{make_level_picture}
 @deffn  {Function} make_level_picture @
 @fname{make_level_picture} (@var{data}) @
 @fname{make_level_picture} (@var{data},@var{width},@var{height})
@@ -5471,6 +5595,7 @@ Level picture from numeric list.
 
 
 
+@anchor{make_rgb_picture}
 @deffn  {Function} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
 Returns an rgb-coloured @var{picture} object. All three arguments must
 be levels picture; with red, green and blue levels.
@@ -5512,6 +5637,7 @@ Example:
 
 
 
+@anchor{negative_picture}
 @deffn  {Function} negative_picture (@var{pic})
 Returns the negative of a (@var{level} or @var{rgb}) picture.
 
@@ -5524,6 +5650,7 @@ Returns the negative of a (@var{level} or @var{rgb}) picture.
 
 
 
+@anchor{picture_equalp}
 @deffn  {Function} picture_equalp (@var{x},@var{y})
 Returns @code{true} in case of equal pictures, and @code{false} otherwise.
 
@@ -5536,6 +5663,7 @@ Returns @code{true} in case of equal pictures, and @code{false} otherwise.
 
 
 
+@anchor{picturep}
 @deffn  {Function} picturep (@var{x})
 Returns @code{true} if the argument is a well formed image,
 and @code{false} otherwise.
@@ -5548,6 +5676,7 @@ and @code{false} otherwise.
 
 
 
+@anchor{read_xpm}
 @deffn  {Function} read_xpm (@var{xpm_file})
 Reads a file in xpm and returns a picture object.
 
@@ -5560,6 +5689,7 @@ Reads a file in xpm and returns a picture object.
 
 
 
+@anchor{rgb2level}
 @deffn  {Function} rgb2level (@var{pic})
 Transforms an @var{rgb} picture into a @var{level} one by
 averaging the red, green and blue channels.
@@ -5573,6 +5703,7 @@ averaging the red, green and blue channels.
 
 
 
+@anchor{take_channel}
 @deffn  {Function} take_channel (@var{im},@var{color})
 If argument @var{color} is @code{red}, @code{green} or @code{blue},
 function @code{take_channel} returns the corresponding color channel of
@@ -5615,6 +5746,7 @@ This package automatically loads package @code{draw}.
 
 
 
+@anchor{boundaries_array}
 @defvr {Global variable} boundaries_array
 Default value: @code{false}
 
@@ -5624,7 +5756,7 @@ for boundaries coordinates.
 Each component of @code{boundaries_array} is an array of floating
 point quantities, the coordinates of a polygonal segment or map boundary.
 
-See also @code{geomap}.
+See also @mrefdot{geomap}
 
 @opencatbox
 @category{Package draw}
@@ -5636,6 +5768,7 @@ See also @code{geomap}.
 
 
 
+@anchor{numbered_boundaries}
 @deffn  {Function} numbered_boundaries (@var{nlist})
 Draws a list of polygonal segments (boundaries), labeled by
 its numbers (@code{boundaries_array} coordinates). This is of great
@@ -5661,6 +5794,7 @@ Map of Europe labeling borders with their component number in
 
 
 
+@anchor{make_poly_continent}
 @deffn  {Function} make_poly_continent @
 @fname{make_poly_continent} (@var{continent_name}) @
 @fname{make_poly_continent} (@var{country_list})
@@ -5694,6 +5828,7 @@ Example:
 
 
 
+@anchor{make_poly_country}
 @deffn  {Function} make_poly_country (@var{country_name})
 Makes the necessary polygons to draw a colored country.
 If islands exist, one country can be defined with more than
@@ -5718,6 +5853,7 @@ Example:
 
 
 
+@anchor{make_polygon}
 @deffn  {Function} make_polygon (@var{nlist})
 Returns a @code{polygon} object from boundary indices. Argument
 @var{nlist} is a list of components of @code{boundaries_array}.
@@ -5786,6 +5922,7 @@ polygon can be drawn.
 
 
 
+@anchor{region_boundaries}
 @deffn  {Function} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
 Detects polygonal segments of global variable @code{boundaries_array}
 fully contained in the rectangle with vertices (@var{x1},@var{y1}) -upper left- 
@@ -5810,6 +5947,7 @@ Returns segment numbers for plotting southern Italy.
 
 
 
+@anchor{region_boundaries_plus}
 @deffn  {Function} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
 Detects polygonal segments of global variable @code{boundaries_array}
 containing at least one vertex in the rectangle defined by vertices (@var{x1},@var{y1})
@@ -5838,7 +5976,7 @@ Example:
 @subsection Graphic objects
 
 
-
+@anchor{geomap}
 @deffn  {Graphic object} geomap @
 @fname{geomap} (@var{numlist}) @
 @fname{geomap} (@var{numlist},@var{3Dprojection})
@@ -5921,8 +6059,8 @@ Package @code{worldmap} is also useful for plotting
 countries as polygons. In this case, graphic object
 @code{geomap} is no longer necessary and the @code{polygon}
 object is used instead. Since lists are now used and not
-arrays, maps rendering will be slower. See also @code{make_poly_country}
-and @code{make_poly_continent} to understand the following code.
+arrays, maps rendering will be slower. See also @mref{make_poly_country}
+and @mref{make_poly_continent} to understand the following code.
 @example
 (%i1) load(worldmap)$
 (%i2) mymap: append(

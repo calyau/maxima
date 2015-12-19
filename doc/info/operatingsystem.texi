@@ -14,18 +14,32 @@ Package @code{operatingsystem} contains functions for operatingsystem-tasks, lik
 @section Directory operations
 
 
+@anchor{chdir}
 @deffn {Function} chdir (@var{dir})
 Change to directory @var{dir}
 @end deffn
 
+@anchor{mkdir}
 @deffn {Function} mkdir (@var{dir})
 Create directory @var{dir}
 @end deffn
 
+@anchor{rmdir}
 @deffn {Function} rmdir (@var{dir})
 remove directory @var{dir}
 @end deffn
 
+@anchor{copy_file}
+@deffn {Function} copy_file (@var{file1}, @var{file2})
+copies file @var{file1} to @var{file2}
+@end deffn
+
+@anchor{rename_file}
+@deffn {Function} rename_file (@var{file1}, @var{file2})
+renames file @var{file1} to @var{file2}
+@end deffn
+
+@anchor{getcurrentdirectory}
 @deffn {Function} getcurrentdirectory ()
 returns the current working directory.
 
@@ -48,6 +62,7 @@ Examples:
 @section Environment operations
 
 
+@anchor{getenv}
 @deffn {Function} getenv (@var{env})
 Get the value of the environmentvariable @var{env}
 

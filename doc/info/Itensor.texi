@@ -290,6 +290,7 @@ which were defined.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{entertensor}
 @deffn {Function} entertensor (@var{name})
 
 is a function which, by prompting, allows one to create an indexed
@@ -303,6 +304,7 @@ null) is acceptable input (see the example under @code{covdiff}).
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{changename}
 @deffn {Function} changename (@var{old}, @var{new}, @var{expr})
 
 will change the name of all indexed objects called @var{old} to @var{new}
@@ -318,6 +320,8 @@ renamed to @var{new}.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} listoftens
+
+@anchor{listoftens}
 
 Lists all tensors in a tensorial expression, complete with their indices. E.g.,
 
@@ -354,6 +358,7 @@ throughout this document).
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{indices}
 @deffn {Function} indices (@var{expr})
 
 Returns a list of two elements.  The first is a list of the free
@@ -385,6 +390,7 @@ illegal expression, its behavior should be considered undefined.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{rename}
 @deffn {Function} rename @
 @fname{rename} (@var{expr}) @
 @fname{rename} (@var{expr}, @var{count})
@@ -471,6 +477,7 @@ separated from the covariant indices by a comma.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flipflag}
 @defvr {Option variable} flipflag
 Default value: @code{false}
 
@@ -491,6 +498,7 @@ under @code{rename}).
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{defcon}
 @deffn {Function} defcon @
 @fname{defcon} (@var{tensor_1}) @
 @fname{defcon} (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
@@ -517,6 +525,7 @@ contraction properties with @code{defcon}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{remcon}
 @deffn {Function} remcon @
 @fname{remcon} (@var{tensor_1}, ..., @var{tensor_n}) @
 @fname{remcon} (all)
@@ -531,6 +540,7 @@ properties from all indexed objects.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{contract_Itensor}
 @deffn {Function} contract (@var{expr})
 
 Carries out the tensorial contractions in @var{expr} which may be any
@@ -547,6 +557,7 @@ cancellations are unnecessary.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{indexed_tensor}
 @deffn {Function} indexed_tensor (@var{tensor})
 
 Must be executed before assigning components to a @var{tensor} for which
@@ -559,6 +570,7 @@ a built in value already exists as with @code{ichr1}, @code{ichr2},
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{components}
 @deffn {Function} components (@var{tensor}, @var{expr})
 
 permits one to assign an indicial value to an expression
@@ -668,6 +680,7 @@ of covariant and contravariant indices and no derivative indices, and
 @closecatbox
 @end deffn
 
+@anchor{remcomps}
 @deffn {Function} remcomps (@var{tensor})
 
 Unbinds all values from @var{tensor} which were assigned with the
@@ -681,6 +694,7 @@ Unbinds all values from @var{tensor} which were assigned with the
 @c NEED LIST OF ARGUMENTS HERE
 
 @c -----------------------------------------------------------------------------
+@anchor{showcomps}
 @deffn {Function} showcomps (@var{tensor})
 
 Shows component assignments of a tensor, as made using the @code{components}
@@ -734,6 +748,7 @@ rank higher than 2.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{idummy}
 @deffn {Function} idummy ()
 
 Increments @code{icounter} and returns as its value an index of the form
@@ -746,6 +761,7 @@ already in use (see the example under @code{indices}).
 @closecatbox
 @end deffn
 
+@anchor{idummyx}
 @defvr {Option variable} idummyx
 Default value: @code{%}
 
@@ -757,6 +773,7 @@ Is the prefix for dummy indices (see the example under @code{indices}).
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{icounter}
 @defvr {Option variable} icounter
 Default value: @code{1}
 
@@ -770,6 +787,7 @@ determined by the option @code{idummy} (default: @code{%}).
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{kdelta}
 @deffn {Function} kdelta (@var{L1}, @var{L2})
 is the generalized Kronecker delta function defined in
 the @code{itensor} package with @var{L1} the list of covariant indices and @var{L2}
@@ -790,6 +808,7 @@ imply that @code{kdelta([i,j],[])} is a valid tensorial object.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{kdels}
 @deffn {Function} kdels (@var{L1}, @var{L2})
 
 Symmetrized Kronecker delta, used in some calculations. For instance:
@@ -819,6 +838,7 @@ Symmetrized Kronecker delta, used in some calculations. For instance:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{levi_civita}
 @deffn {Function} levi_civita (@var{L})
 is the permutation (or Levi-Civita) tensor which yields 1 if
 the list @var{L} consists of an even permutation of integers, -1 if it
@@ -831,6 +851,7 @@ repeated.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{lc2kdt}
 @deffn {Function} lc2kdt (@var{expr})
 Simplifies expressions containing the Levi-Civita symbol, converting these
 to Kronecker-delta expressions when possible. The main difference between
@@ -916,8 +937,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
 
 @c -----------------------------------------------------------------------------
+@anchor{lc_l}
 @deffn {Function} lc_l
-
 Simplification rule used for expressions containing the unevaluated Levi-Civita
 symbol (@code{levi_civita}). Along with @code{lc_u}, it can be used to simplify
 many expressions more efficiently than the evaluation of @code{levi_civita}.
@@ -963,6 +984,7 @@ For details, see @code{lc_l}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{canten}
 @deffn {Function} canten (@var{expr})
 Simplifies @var{expr} by renaming (see @code{rename})
 and permuting dummy indices. @code{rename} is restricted to sums of tensor
@@ -981,6 +1003,7 @@ set to @code{true}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{concan}
 @deffn {Function} concan (@var{expr})
 Similar to @code{canten} but also performs index contraction.
 
@@ -994,6 +1017,7 @@ Similar to @code{canten} but also performs index contraction.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{allsym}
 @defvr {Option variable} allsym
 Default value: @code{false}
 
@@ -1009,6 +1033,7 @@ unless @code{iframe_flag} is set to @code{true}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{decsym}
 @deffn {Function} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
 Declares symmetry properties for @var{tensor} of @var{m} covariant and
@@ -1069,6 +1094,7 @@ illustrates.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{remsym}
 @deffn {Function} remsym (@var{tensor}, @var{m}, @var{n})
 Removes all symmetry properties from @var{tensor} which has @var{m}
 covariant indices and @var{n} contravariant indices.
@@ -1079,6 +1105,7 @@ covariant indices and @var{n} contravariant indices.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{canform}
 @deffn {Function} canform @
 @fname{canform} (@var{expr}) @
 @fname{canform} (@var{expr}, @var{rename})
@@ -1107,6 +1134,7 @@ The optional second parameter @var{rename}, if set to @code{false}, suppresses r
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{itensor_diff}
 @deffn {Function} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
 is the usual Maxima differentiation function which has been expanded
@@ -1135,6 +1163,7 @@ the Einstein tensor and field equations from the action principle.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{idiff}
 @deffn {Function} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 Indicial differentiation. Unlike @code{diff}, which differentiates
 with respect to an independent variable, @code{idiff)} can be used
@@ -1155,6 +1184,7 @@ is chosen appropriately.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{liediff}
 @deffn {Function} liediff (@var{v}, @var{ten})
 
 Computes the Lie-derivative of the tensorial expression @var{ten} with
@@ -1183,6 +1213,7 @@ field. For example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{rediff}
 @deffn {Function} rediff (@var{ten})
 
 Evaluates all occurrences of the @code{idiff} command in the tensorial
@@ -1194,6 +1225,7 @@ expression @var{ten}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{undiff}
 @deffn {Function} undiff (@var{expr})
 
 Returns an expression equivalent to @var{expr} but with all derivatives
@@ -1210,6 +1242,7 @@ in @var{expr} and then carry out the differentiation by saying
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{evundiff}
 @deffn {Function} evundiff (@var{expr})
 
 Equivalent to the execution of @code{undiff}, followed by @code{ev} and
@@ -1277,6 +1310,7 @@ so @code{evundiff} is no longer necessary for expressions like this:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flush}
 @deffn {Function} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have no derivative indices.
@@ -1287,6 +1321,7 @@ Set to zero, in
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flushd}
 @deffn {Function} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have derivative indices.
@@ -1297,6 +1332,7 @@ Set to zero, in
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flushnd}
 @deffn {Function} flushnd (@var{expr}, @var{tensor}, @var{n})
 Set to zero, in @var{expr}, all
 occurrences of the differentiated object @var{tensor} that have @var{n} or more
@@ -1321,6 +1357,7 @@ derivative indices as the following example demonstrates.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{coord}
 @deffn {Function} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Gives @var{tensor_i} the coordinate differentiation property that the
@@ -1335,6 +1372,7 @@ been done then @code{idiff(x([],[i]),j)} gives @code{kdelta([i],[j])}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{remcoord}
 @deffn {Function} remcoord @
 @fname{remcoord} (@var{tensor_1}, @var{tensor_2}, ...) @
 @fname{remcoord} (all)
@@ -1349,6 +1387,7 @@ removes this property from all indexed objects.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{makebox}
 @deffn {Function} makebox (@var{expr})
 Display @var{expr} in the same manner as @code{show}; however,
 any tensor d'Alembertian occurring in @var{expr} will be indicated using the
@@ -1361,6 +1400,7 @@ symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{conmetderiv}
 @deffn {Function} conmetderiv (@var{expr}, @var{tensor})
 
 Simplifies expressions containing ordinary derivatives of
@@ -1389,6 +1429,7 @@ symbols as seen from the following:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{simpmetderiv}
 @deffn {Function} simpmetderiv @
 @fname{simpmetderiv} (@var{expr}) @
 @fname{simpmetderiv} (@var{expr}[, @var{stop}])
@@ -1474,15 +1515,16 @@ errexp1 has improper indices
 
 @end example
 
-See also @code{weyl.dem} for an example that uses @code{simpmetderiv}
-and @code{conmetderiv} together to simplify contractions of the Weyl tensor.
+See also @code{weyl.dem} for an example that uses @mref{simpmetderiv}
+and @mref{conmetderiv} together to simplify contractions of the Weyl tensor.
 
 @opencatbox
 @category{Package itensor}
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------}
+@anchor{flush1deriv}
 @deffn {Function} flush1deriv (@var{expr}, @var{tensor})
 
 Set to zero, in @code{expr}, all occurrences of @code{tensor} that have
@@ -1498,6 +1540,7 @@ exactly one derivative index.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{imetric}
 @deffn {Function} imetric (@var{g})
 @deffnx {System variable} imetric
 
@@ -1513,6 +1556,7 @@ the @code{imetric(@var{g})} command.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{idim}
 @deffn {Function} idim (@var{n})
 Sets the dimensions of the metric. Also initializes the antisymmetry
 properties of the Levi-Civita symbols for the given dimension.
@@ -1523,6 +1567,7 @@ properties of the Levi-Civita symbols for the given dimension.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ichr1}
 @deffn {Function} ichr1 ([@var{i}, @var{j}, @var{k}])
 Yields the Christoffel symbol of the first kind via the
 definition
@@ -1540,6 +1585,7 @@ variable @code{imetric} must be assigned a name as in the example under @code{ch
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ichr2}
 @deffn {Function} ichr2 ([@var{i}, @var{j}], [@var{k}])
 Yields the Christoffel symbol of the second kind
 defined by the relation
@@ -1555,6 +1601,7 @@ defined by the relation
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{icurvature}
 @deffn {Function} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 Yields the Riemann
 curvature tensor in terms of the Christoffel symbols of the second
@@ -1574,6 +1621,7 @@ kind (@code{ichr2}).  The following notation is used:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{covdiff}
 @deffn {Function} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 Yields the covariant derivative of @var{expr} with
 respect to the variables @var{v_i} in terms of the Christoffel symbols of the
@@ -1629,6 +1677,7 @@ Enter a list of the derivative indices: [];
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{lorentz}
 @deffn {Function} lorentz_gauge (@var{expr})
 Imposes the Lorentz condition by substituting 0 for all
 indexed objects in @var{expr} that have a derivative index identical to a
@@ -1640,6 +1689,7 @@ contravariant index.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{igeodesic}
 @deffn {Function} igeodesic_coords (@var{expr}, @var{name})
 
 Causes undifferentiated Christoffel symbols and
@@ -1765,7 +1815,8 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
 
 @end example
 
-@c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------}
+@anchor{iframes}
 @deffn {Function} iframes ()
 
 Since in this version of Maxima, contraction identities for @code{ifr} and
@@ -1778,6 +1829,7 @@ function does nothing.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ifb}
 @defvr {Variable} ifb
 
 The frame bracket. The contribution of the frame metric to the connection
@@ -1822,6 +1874,7 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{icc1}
 @defvr {Variable} icc1
 
 Connection coefficients of the first kind. In @code{itensor}, defined as
@@ -1847,6 +1900,7 @@ Lastly, of @code{inonmet_flag} is @code{false},
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{icc2}
 @defvr {Variable} icc2
 
 Connection coefficients of the second kind. In @code{itensor}, defined as
@@ -1873,6 +1927,7 @@ Lastly, of @code{inonmet_flag} is @code{false},
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifc1}
 @defvr {Variable} ifc1
 
 Frame coefficient of the first kind (also known as Ricci-rotation
@@ -1896,6 +1951,7 @@ ifc1    = --------------------------------
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifc2}
 @defvr {Variable} ifc2
 
 Frame coefficient of the second kind. This tensor represents the contribution
@@ -1917,6 +1973,7 @@ ifc2   = ifg   ifc1
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifr}
 @defvr {Variable} ifr
 
 The frame field. Contracts with the inverse frame field (@code{ifri}) to
@@ -1928,6 +1985,7 @@ form the frame metric (@code{ifg}).
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifri}
 @defvr {Variable} ifri
 
 The inverse frame field. Specifies the frame base (dual basis vectors). Along
@@ -1940,6 +1998,7 @@ frames.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifg}
 @defvr {Variable} ifg
 
 The frame metric. Defaults to @code{kdelta}, but can be changed using
@@ -1951,6 +2010,7 @@ The frame metric. Defaults to @code{kdelta}, but can be changed using
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ifgi}
 @defvr {Variable} ifgi
 
 The inverse frame metric. Contracts with the frame metric (@code{ifg})
@@ -1962,6 +2022,7 @@ to @code{kdelta}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{iframe_bracket_form}
 @defvr {Option variable} iframe_bracket_form
 Default value: @code{true}
 
@@ -1982,6 +2043,7 @@ is added to the connection coefficients. Similarly, when the flag
 @code{inonmet_flag} is true, nonmetricity components are included.
 
 @c -----------------------------------------------------------------------------
+@anchor{inm}
 @defvr {Variable} inm
 
 The nonmetricity vector. Conformal nonmetricity is defined through the
@@ -2002,6 +2064,7 @@ g     =- g  inm
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{inmc1}
 @defvr {Variable} inmc1
 
 Covariant permutation of the nonmetricity vector components. Defined as
@@ -2023,6 +2086,7 @@ inmc1    = ------------------------------
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{inmc2}
 @defvr {Variable} inmc2
 
 Contravariant permutation of the nonmetricity vector components. Used
@@ -2047,6 +2111,7 @@ inmc2   = -------------------------------------------
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ikt1}
 @defvr {Variable} ikt1
 
 Covariant permutation of the torsion tensor (also known as contorsion).
@@ -2070,6 +2135,7 @@ ikt1    = ----------------------------------
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ikt2}
 @defvr {Variable} ikt2
 
 Contravariant permutation of the torsion tensor (also known as contorsion).
@@ -2091,6 +2157,7 @@ ikt2   = g   ikt1
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{itr}
 @defvr {Variable} itr
 
 The torsion tensor. For a metric with torsion, repeated covariant
@@ -2210,6 +2277,7 @@ implemented that controls the behavior of the wedge product: if
 definition is used, otherwise the second, "geometric" definition will
 be applied.
 
+@anchor{~}
 @defvr {Operator} ~
 @ifinfo
 @fnindex Wedge product
@@ -2254,6 +2322,7 @@ The behavior of the wedge product operator is controlled by the
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{|}
 @defvr {Operator} |
 @ifinfo
 @fnindex Contraction with a vector
@@ -2294,6 +2363,7 @@ the results will be incorrect.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{extdiff}
 @deffn {Function} extdiff (@var{expr}, @var{i})
 
 Computes the exterior derivative of @var{expr} with respect to the index
@@ -2334,6 +2404,7 @@ For instance:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hodge}
 @deffn {Function} hodge (@var{expr})
 
 Compute the Hodge-dual of @var{expr}. For instance:
@@ -2381,6 +2452,7 @@ Compute the Hodge-dual of @var{expr}. For instance:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{igeowedge_flag}
 @defvr {Option variable} igeowedge_flag
 Default value: @code{false}
 
@@ -2406,6 +2478,7 @@ output. You can try instead the @code{tentex} command, which attempts
 to translate tensor expressions into appropriately indexed TeX objects.
 
 @c -----------------------------------------------------------------------------
+@anchor{tentex}
 @deffn {Function} tentex (@var{expr})
 
 To use the @code{tentex} function, you must first load @code{tentex},
@@ -2450,6 +2523,7 @@ then be executed in the context of the @code{ctensor} package. The function that
 this task is @code{ic_convert}.
 
 @c -----------------------------------------------------------------------------
+@anchor{ic_convert}
 @deffn {Function} ic_convert (@var{eqn})
 
 Converts the @code{itensor} equation @var{eqn} to a @code{ctensor} assignment statement.

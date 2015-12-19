@@ -366,6 +366,7 @@ method.
 
 @end defvr
 
+@anchor{gauss_a}
 @deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
@@ -377,7 +378,7 @@ The only use of these functions is in solutions of ODEs returned by
 @code{odelin} and @code{contrib_ode}.  The definition and use of these 
 functions may change in future releases of Maxima.
 
-See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
+See also @mrefcomma{gauss_b} @mref{dgauss_a} and @mrefdot{gauss_b}
 
 @opencatbox
 @category{Package contrib_ode}
@@ -385,8 +386,9 @@ See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
 
 @end deffn
 
+@anchor{gauss_b}
 @deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-See @code{gauss_a}.
+See @mrefdot{gauss_a}
 
 @opencatbox
 @category{Package contrib_ode}
@@ -394,6 +396,7 @@ See @code{gauss_a}.
 
 @end deffn
 
+@anchor{dgauss_a}
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
 
@@ -413,6 +416,7 @@ The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c
 @end deffn
 
 
+@anchor{kummer_m}
 @deffn {Function} kummer_m (@var{a}, @var{b}, @var{x})
 
 Kummer's M function, as defined in Abramowitz and Stegun,
@@ -422,7 +426,7 @@ The only use of this function is in solutions of ODEs returned by
 @code{odelin} and @code{contrib_ode}.  The definition and use of this 
 function may change in future releases of Maxima.
 
-See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
+See also @mrefcomma{kummer_u} @mrefcomma{dkummer_m} and @mrefdot{dkummer_u}
 
 @opencatbox
 @category{Package contrib_ode}
@@ -430,12 +434,13 @@ See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
 
 @end deffn
 
+@anchor{kummer_u}
 @deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
 
 Kummer's U function, as defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
 
-See @code{kummer_m}.
+See @mrefdot{kummer_m}
 
 @opencatbox
 @category{Package contrib_ode}
@@ -443,6 +448,7 @@ See @code{kummer_m}.
 
 @end deffn
 
+@anchor{dkummer_m}
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
 
@@ -452,6 +458,7 @@ The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{
 
 @end deffn
 
+@anchor{dkummer_u}
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
 

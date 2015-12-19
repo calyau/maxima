@@ -109,6 +109,7 @@ useful when the expressions are very large.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
+@anchor{facsum}
 @deffn {Function} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Returns  a form  of @var{expr}  which depends  on the
 arguments @var{arg_1}, ..., @var{arg_n}.
@@ -153,6 +154,7 @@ In  addition,  the  setting  of  the  switches   @code{facsum_combine}  and
 
 @end deffn
 
+@anchor{nextlayerfactor}
 @defvr {Global variable} nextlayerfactor
 Default value: @code{false}
 
@@ -175,6 +177,7 @@ must be presented single-quoted whenever it appears in the argument list of @cod
 
 @end defvr
 
+@anchor{facsum_combine}
 @defvr {Global variable} facsum_combine
 Default value: @code{true}
 
@@ -196,6 +199,7 @@ through the terms of the numerator.
 
 @end defvr
 
+@anchor{factorfacsum}
 @deffn {Function} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
 Returns a  form of @var{expr}  which is
 obtained by calling  @code{facsum} on the factors  of @var{expr} with @var{arg_1}, ... @var{arg_n} as
@@ -402,6 +406,7 @@ Example:
 
 @c lcm already described in doc/info/Number.texi
 
+@anchor{arithmetic}
 @deffn {Function} arithmetic (@var{a}, @var{d}, @var{n})
 Returns the @var{n}-th term of the arithmetic series
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
@@ -414,6 +419,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{geometric}
 @deffn {Function} geometric (@var{a}, @var{r}, @var{n})
 Returns the @var{n}-th term of the geometric series
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
@@ -426,6 +432,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{harmonic}
 @deffn {Function} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
 Returns the @var{n}-th term of the harmonic series
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
@@ -438,6 +445,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{arithsum}
 @deffn {Function} arithsum (@var{a}, @var{d}, @var{n})
 Returns the sum of the arithmetic series from 1 to @var{n}.
 
@@ -449,6 +457,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{geosum}
 @deffn {Function} geosum (@var{a}, @var{r}, @var{n})
 Returns the sum of the geometric series from 1 to @var{n}.  If @var{n} is
 infinity (@code{inf}) then a sum is finite only if the absolute value
@@ -462,6 +471,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{gaussprob}
 @deffn {Function} gaussprob (@var{x})
 Returns the Gaussian probability function
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
@@ -474,6 +484,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{gd}
 @deffn {Function} gd (@var{x})
 Returns the Gudermannian function
 @code{2*atan(%e^x)-%pi/2}.
@@ -486,6 +497,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{agd}
 @deffn {Function} agd (@var{x})
 Returns the inverse Gudermannian function
 @code{log (tan (%pi/4 + x/2))}.
@@ -498,6 +510,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{vers}
 @deffn {Function} vers (@var{x})
 Returns the versed sine @code{1 - cos (x)}.
 
@@ -509,6 +522,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{covers}
 @deffn {Function} covers (@var{x})
 Returns the coversed sine @code{1 - sin (@var{x})}.
 
@@ -520,6 +534,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{exsec}
 @deffn {Function} exsec (@var{x})
 Returns the exsecant @code{sec (@var{x}) - 1}.
 
@@ -531,6 +546,7 @@ To use this function write first @code{load(functs)}.
 
 @end deffn
 
+@anchor{hav}
 @deffn {Function} hav (@var{x})
 Returns the haversine @code{(1 - cos(x))/2}.
 
@@ -543,6 +559,7 @@ To use this function write first @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
+@anchor{combination}
 @deffn {Function} combination (@var{n}, @var{r})
 Returns the number of combinations of @var{n} objects
 taken @var{r} at a time.
@@ -556,6 +573,7 @@ To use this function write first @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
+@anchor{permutation}
 @deffn {Function} permutation (@var{n}, @var{r})
 Returns the number of permutations of @var{r} objects
 selected from a set of @var{n} objects.
@@ -712,6 +730,7 @@ or @code{disprule ("*rule2")} to display the definition of the second multiplica
 @closecatbox
 
 
+@anchor{reduce_consts}
 @deffn {Function} reduce_consts (@var{expr})
 Replaces constant subexpressions of @var{expr} with
 constructed constant atoms, saving the definition of all these
@@ -763,6 +782,7 @@ symbols to represent each constant subexpression found by @code{reduce_consts}.
 @closecatbox
 
 
+@anchor{gcfac}
 @deffn {Function} gcfac (@var{expr})
 @code{gcfac} is a factoring function that attempts to apply the same heuristics which
 scientists apply in trying to make expressions simpler.  @code{gcfac} is limited
@@ -800,6 +820,7 @@ compact pair-factored result.
 @node Package sqdnst,  , Package scifac, simplification
 @section Package sqdnst
 
+@anchor{sqrtdenest}
 @deffn {Function} sqrtdenest (@var{expr})
 Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 

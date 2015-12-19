@@ -53,7 +53,7 @@ subexpression, the result is returned.
 @code{maxapplydepth} is the depth of the deepest subexpressions processed by
 @code{apply1} and @code{apply2}.
 
-See also @code{applyb1}, @code{apply2}, and @code{let}.
+See also @mrefcomma{applyb1} @mref{apply2} and @mrefdot{let}
 
 @opencatbox
 @category{Rules and patterns}
@@ -75,7 +75,7 @@ subexpression is reprocessed, starting with the first rule.
 @code{maxapplydepth} is the depth of the deepest subexpressions processed by
 @code{apply1} and @code{apply2}.
 
-See also @code{apply1} and @code{let}.
+See also @mref{apply1} and @mrefdot{let}
 
 @opencatbox
 @category{Rules and patterns}
@@ -101,7 +101,7 @@ the bottom up instead of from the top down.
 @code{maxapplyheight} is the maximum height which @code{applyb1} reaches
 before giving up.
 
-See also @code{apply1}, @code{apply2}, and @code{let}.
+See also @mrefcomma{apply1} @mref{apply2} and @mrefdot{let}
 
 @opencatbox
 @category{Rules and patterns}
@@ -175,8 +175,8 @@ subexpressions they match.  If the match fails, @var{progname} returns
 A literal pattern (that is, a pattern which contains neither pattern arguments
 nor pattern variables) returns @code{true} if the match succeeds.
 
-See also @code{matchdeclare}, @code{defrule}, @code{tellsimp}, and
-@code{tellsimpafter}.
+See also @mrefcomma{matchdeclare} @mrefcomma{defrule} @mref{tellsimp} and
+@mrefdot{tellsimpafter}
 
 Examples:
 
@@ -330,7 +330,7 @@ Each rule is displayed with an intermediate expression label (@code{%t}).
 @code{disprule} returns the list of intermediate expression labels corresponding
 to the displayed rules.
 
-See also @code{letrules}, which displays rules defined by @code{let}.
+See also @mrefcomma{letrules}  which displays rules defined by @mrefdot{let}
 
 Examples:
 
@@ -393,7 +393,7 @@ power.  A term to a negative power
 on the other hand will only match a term with a power at least as
 negative.  In the case of negative powers in @var{prod} the switch
 @code{letrat} must be set to @code{true}.
-See also @code{letrat}.
+See also @mrefdot{letrat}
 
 If a predicate is included in the @code{let} function followed by a list of
 arguments, a tentative match (i.e. one that would be accepted if the predicate
@@ -508,8 +508,8 @@ The current rule package is named by @code{current_let_rule_package}.
 If not otherwise specified, @code{current_let_rule_package}
 defaults to @code{default_let_rule_package}.
 
-See also @code{disprule}, which displays rules defined by @code{tellsimp} and
-@code{tellsimpafter}.
+See also @mrefcomma{disprule} which displays rules defined by @mref{tellsimp} and
+@mrefdot{tellsimpafter}
 @c WHAT ABOUT defmatch AND defrule ??
 
 @opencatbox
@@ -826,8 +826,8 @@ using the same product (literally) with the @code{let} function and the new
 replacement and/or predicate name.  Should @code{remlet (@var{prod})} now be
 called the original substitution rule is revived.
 
-See also @code{remrule}, which removes a rule defined by @code{tellsimp} or
-@code{tellsimpafter}.
+See also @mrefcomma{remrule} which removes a rule defined by @mref{tellsimp} or
+@mrefdot{tellsimpafter}
 
 @opencatbox
 @category{Rules and patterns}
@@ -850,7 +850,7 @@ When @var{op} is a built-in or user-defined operator
 
 @code{remrule (@var{op}, all)} removes all rules for the operator @var{op}.
 
-See also @code{remlet}, which removes a rule defined by @code{let}.
+See also @mrefcomma{remlet} which removes a rule defined by @mrefdot{let}
 
 Examples:
 
@@ -1061,8 +1061,8 @@ and @code{:lisp (symbol-function '$foorule1)} displays its definition.
 @var{pattern}, including the newly established rule.
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
-See also @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp},
-@code{let}, @code{kill}, @code{remrule}, and @code{clear_rules}.
+See also @mrefcomma{matchdeclare} @mrefcomma{defmatch} @mrefcomma{defrule} @mrefcomma{tellsimp}
+@mrefcomma{let} @mrefcomma{kill} @mref{remrule} and @mrefdot{clear_rules}
 
 Examples:
 

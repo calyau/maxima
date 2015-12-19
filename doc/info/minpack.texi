@@ -16,6 +16,7 @@ Fortran library MINPACK, as obtained from Netlib.
 @node Functions and Variables for minpack,  , Introduction to minpack, minpack
 @section Functions and Variables for minpack
 
+@anchor{minpack_lsquares}
 @deffn {Function} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
 Compute the point that minimizes the sum of the squares of the
@@ -82,6 +83,7 @@ is possible.
 
 @end deffn
 
+@anchor{minpack_solve}
 @deffn {Function} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 Solve a system of @code{n} equations in @code{n} unknowns.
 The @code{n} equations are given in the list @var{flist}, and the

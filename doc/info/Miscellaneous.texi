@@ -158,7 +158,7 @@ Removes the values of user variables @var{name_1}, @dots{}, @var{name_n}
 the list of all variables given names by the user
 (as opposed to those which are automatically assigned by Maxima).
 
-See also @code{values}.
+See also @mrefdot{values}
 
 @opencatbox
 @category{Evaluation}

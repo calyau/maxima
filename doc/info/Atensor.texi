@@ -106,6 +106,7 @@ simplifications.
 
 @section Functions and Variables for atensor
 
+@anchor{init_atensor}
 @deffn {Function} init_atensor @
 @fname{init_atensor} (@var{alg_type}, @var{opt_dims}) @
 @fname{init_atensor} (@var{alg_type})
@@ -168,6 +169,7 @@ Cl(3,1). A call to @code{init_atensor(dirac)} is equivalent to
 @end deffn
 
 
+@anchor{atensimp}
 @deffn {Function} atensimp (@var{expr})
 
 Simplifies an algebraic tensor expression @var{expr} according to the rules
@@ -183,8 +185,8 @@ for complex expressions.
 
 @end deffn
 
+@anchor{alg_type}
 @deffn {Function} alg_type
-
 The algebra type. Valid values are @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
 
@@ -194,6 +196,7 @@ The algebra type. Valid values are @code{universal}, @code{grassmann},
 
 @end deffn
 
+@anchor{adim}
 @defvr {Variable} adim
 Default value: 0
 
@@ -206,6 +209,7 @@ to determine if an indexed object is a valid base vector.  See @code{abasep}.
 
 @end defvr
 
+@anchor{aform}
 @defvr {Variable} aform
 Default value: @code{ident(3)}
 
@@ -218,6 +222,7 @@ Default values for the bilinear forms @code{sf}, @code{af}, and
 
 @end defvr
 
+@anchor{asymbol}
 @defvr {Variable} asymbol
 Default value: @code{v}
 
@@ -242,6 +247,7 @@ corresponding value from the matrix @code{aform}.
 
 @end deffn
 
+@anchor{af}
 @deffn {Function} af (@var{u}, @var{v})
 
 An antisymmetric scalar function that is used in commutation relations.
@@ -255,6 +261,7 @@ corresponding value from the matrix @code{aform}.
 
 @end deffn
 
+@anchor{av}
 @deffn {Function} av (@var{u}, @var{v})
 
 An antisymmetric function that is used in commutation relations.
@@ -289,6 +296,7 @@ For instance:
 @end deffn
 
 
+@anchor{abasep}
 @deffn {Function} abasep (@var{v})
 
 Checks if its argument is an @code{atensor} base vector. That is, if it is

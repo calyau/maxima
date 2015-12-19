@@ -12,7 +12,7 @@ including some functions for dimensional analysis.
 @code{ezunits} can carry out arithmetic operations on dimensional quantities and unit conversions.
 The built-in units include Systeme Internationale (SI) and US customary units,
 and other units can be declared.
-See also @code{physical_constants}, a collection of physical constants.
+See also @mrefcomma{physical_constants} a collection of physical constants.
 
 @code{load(ezunits)} loads this package.
 @code{demo(ezunits)} displays several examples.
@@ -90,6 +90,7 @@ but other fundamental dimensions and units can be declared.
 @node Introduction to physical_constants, Functions and Variables for ezunits, Introduction to ezunits, ezunits
 @section Introduction to physical_constants
 
+@anchor{physical_constants}
 @code{physical_constants} is a collection of physical constants,
 copied from CODATA 2006 recommended values
 (@url{http://physics.nist.gov/constants}).
@@ -636,6 +637,7 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
+@anchor{constvalue}
 @deffn {Function} constvalue (@var{x})
 
 Shows the value and the units of one of the constants declared by package
@@ -702,6 +704,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{remove_constvalue}
 @deffn {Function} remove_constvalue (@var{a})
 
 Reverts the effect of @mrefdot{declare_constvalue} This function should be
@@ -768,6 +771,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{declare_units}
 @deffn {Function} declare_units (@var{a}, @var{u})
 
 Declares that @mref{units} should return units @var{u} for @var{a},
@@ -851,6 +855,7 @@ Example:
 @closecatbox
 @end deffn
 
+@anchor{declare_qty}
 @deffn {Function} declare_qty (@var{a}, @var{x})
 
 Declares that @mref{qty} should return @var{x} for symbol @var{a}, where
@@ -888,6 +893,7 @@ Example:
 @end deffn
 
 @c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
+@anchor{unitp}
 @deffn {Function} unitp (@var{x})
 
 Returns @code{true} if @var{x} is a literal dimensional expression,
@@ -953,6 +959,7 @@ Examples:
 
 @end deffn
 
+@anchor{declare_unit_conversion}
 @deffn {Function} declare_unit_conversion (@var{u} = @var{v}, ...)
 
 Appends equations @var{u} = @var{v}, ... to the list of unit conversions
@@ -1019,6 +1026,7 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
+@anchor{declare_dimensions}
 @deffn {Function} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
 
 Declares @var{a_1}, ..., @var{a_n} to have dimensions @var{d_1}, ...,
@@ -1059,6 +1067,7 @@ Examples:
 @closecatbox
 @end deffn
 
+@anchor{remove_dimensions}
 @deffn {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
 Reverts the effect of @code{declare_dimensions}. This function should be
@@ -1070,6 +1079,7 @@ loaded with @code{load(ezunits)}.
 @closecatbox
 @end deffn
 
+@anchor{declare_fundamental_dimensions}
 @deffn {Function} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Function} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Global variable} fundamental_dimensions
@@ -1116,6 +1126,7 @@ Examples:
 
 @end deffn
 
+@anchor{declare_fundamental_units}
 @deffn {Function} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
 @deffnx {Function} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
 
@@ -1171,6 +1182,7 @@ Examples:
 
 @end deffn
 
+@anchor{dimensions}
 @deffn {Function} dimensions (@var{x})
 @deffnx {Function} dimensions_as_list (@var{x})
 
@@ -1237,6 +1249,7 @@ Examples:
 
 @end deffn
 
+@anchor{fundamental_units}
 @deffn {Function} fundamental_units @
 @fname{fundamental_units} (@var{x}) @
 @fname{fundamental_units} ()
@@ -1289,6 +1302,7 @@ Examples:
 
 @end deffn
 
+@anchor{dimensionless}
 @deffn {Function} dimensionless (@var{L})
 
 Returns a basis for the dimensionless quantities which can be formed
@@ -1340,6 +1354,7 @@ is proportional to the fine-structure constant.
 @end deffn
 
 @c NEED TO FILL IN !!
+@anchor{natural_unit}
 @deffn {Function} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
 
 Finds exponents @var{e_1}, ..., @var{e_n} such that

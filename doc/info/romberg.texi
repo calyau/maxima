@@ -5,6 +5,7 @@
 @node Functions and Variables for romberg, , Top, Top
 @section Functions and Variables for romberg
 
+@anchor{romberg_function}
 @deffn {Function} romberg @
 @fname{romberg} (@var{expr}, @var{x}, @var{a}, @var{b}) @
 @fname{romberg} (@var{F}, @var{a}, @var{b})
@@ -135,6 +136,7 @@ A 2-dimensional integration, implemented by nested calls to @code{romberg}.
 
 @end deffn
 
+@anchor{rombergabs}
 @defvr {Option variable} rombergabs
 Default value: 0.0
 
@@ -146,7 +148,7 @@ or the relative difference in successive approximations is less than @code{rombe
 Thus when @code{rombergabs} is 0.0 (the default)
 only the relative error test has any effect on @code{romberg}.
 
-See also @code{rombergit} and @code{rombergmin}.
+See also @mref{rombergit} and @mref{rombergmin}.
 
 @opencatbox
 @category{Package romberg}
@@ -154,6 +156,7 @@ See also @code{rombergit} and @code{rombergmin}.
 
 @end defvr
 
+@anchor{rombergit}
 @defvr {Option variable} rombergit
 Default value: 11
 
@@ -162,7 +165,7 @@ the maximum number of function evaluations is therefore @code{2^rombergit}.
 @code{romberg} always makes at least @code{rombergmin} iterations;
 this is a heuristic intended to prevent spurious termination when the integrand is oscillatory.
 
-See also @code{rombergabs} and @code{rombergtol}.
+See also @mref{rombergabs} and @mref{rombergtol}.
 
 @opencatbox
 @category{Package romberg}
@@ -170,13 +173,14 @@ See also @code{rombergabs} and @code{rombergtol}.
 
 @end defvr
 
+@anchor{rombergmin}
 @defvr {Option variable} rombergmin
 Default value: 0
 
 @code{romberg} always makes at least @code{rombergmin} iterations;
 this is a heuristic intended to prevent spurious termination when the integrand is oscillatory.
 
-See also @code{rombergit}, @code{rombergabs}, and @code{rombergtol}.
+See also @mref{rombergit}, @mref{rombergabs}, and @mref{rombergtol}.
 
 @opencatbox
 @category{Package romberg}
@@ -184,6 +188,7 @@ See also @code{rombergit}, @code{rombergabs}, and @code{rombergtol}.
 
 @end defvr
 
+@anchor{rombergtol}
 @defvr {Option variable} rombergtol
 Default value: 1e-4
 
@@ -195,7 +200,7 @@ or the relative difference in successive approximations is less than @code{rombe
 Thus when @code{rombergabs} is 0.0 (the default)
 only the relative error test has any effect on @code{romberg}.
 
-See also @code{rombergit} and @code{rombergmin}.
+See also @mref{rombergit} and @mref{rombergmin}.
 
 @opencatbox
 @category{Package romberg}

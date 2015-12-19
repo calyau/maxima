@@ -5,6 +5,7 @@
 @node Functions and Variables for opsubst,  , opsubst, opsubst
 @section Functions and Variables for opsubst
 
+@anchor{opsubst_func}
 @deffn {Function} opsubst @
 @fname{opsubst} (@var{f},@var{g},@var{e}) @
 @fname{opsubst} (@var{g}=@var{f},@var{e}) @

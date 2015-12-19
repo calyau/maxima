@@ -254,6 +254,7 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 @section Functions and Variables for continuous distributions
 
 
+@anchor{pdf_normal}
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a @math{Normal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -264,6 +265,7 @@ Returns the value at @var{x} of the density function of a @math{Normal(m,s)} ran
 @end deffn
 
 
+@anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the distribution function of a @math{Normal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
@@ -281,7 +283,7 @@ Returns the value at @var{x} of the distribution function of a @math{Normal(m,s)
                              2          2
 @end example
 
-See also @code{erf}.
+See also @mrefdot{erf}
 
 @opencatbox
 @category{Package distrib}
@@ -290,8 +292,9 @@ See also @code{erf}.
 @end deffn
 
 
+@anchor{quantile_normal}
 @deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @mrefdot{cdf_normal} Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -315,6 +318,7 @@ Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math
 @end deffn
 
 
+@anchor{mean_normal}
 @deffn {Function} mean_normal (@var{m},@var{s})
 Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load(distrib)}.
 
@@ -325,6 +329,7 @@ Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namel
 @end deffn
 
 
+@anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
 Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -334,6 +339,7 @@ Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, n
 
 @end deffn
 
+@anchor{std_normal}
 @deffn {Function} std_normal (@var{m},@var{s})
 Returns the standard deviation of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load(distrib)}.
 
@@ -344,6 +350,7 @@ Returns the standard deviation of a @math{Normal(m,s)} random variable, with @ma
 @end deffn
 
 
+@anchor{skewness_normal}
 @deffn {Function} skewness_normal (@var{m},@var{s})
 Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 
@@ -354,6 +361,7 @@ Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @
 @end deffn
 
 
+@anchor{kurtosis_normal}
 @deffn {Function} kurtosis_normal (@var{m},@var{s})
 Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 
@@ -364,6 +372,7 @@ Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @
 @end deffn
 
 
+@anchor{random_normal}
 @deffn {Function} random_normal (@var{m},@var{s}) @
 @fname{random_normal} (@var{m},@var{s},@var{n})
 
@@ -380,6 +389,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_student_t}
 @deffn {Function} pdf_student_t (@var{x},@var{n})
 Returns the value at @var{x} of the density function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom. To make use of this function, write first @code{load(distrib)}.
 
@@ -390,6 +400,7 @@ Returns the value at @var{x} of the density function of a Student random variabl
 @end deffn
 
 
+@anchor{cdf_student_t}
 @deffn {Function} cdf_student_t (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom.
 
@@ -417,6 +428,7 @@ Returns the value at @var{x} of the distribution function of a Student random va
 @end deffn
 
 
+@anchor{quantile_student_t}
 @deffn {Function} quantile_student_t (@var{q},@var{n})
 Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -427,6 +439,7 @@ Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @mat
 @end deffn
 
 
+@anchor{mean_student_t}
 @deffn {Function} mean_student_t (@var{n})
 Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 
@@ -437,6 +450,7 @@ Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, whic
 @end deffn
 
 
+@anchor{var_student_t}
 @deffn {Function} var_student_t (@var{n})
 Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 
@@ -459,6 +473,7 @@ Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 @end deffn
 
 
+@anchor{std_student_t}
 @deffn {Function} std_student_t (@var{n})
 Returns the standard deviation of a Student random variable @math{t(n)}, with @math{n>2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -469,6 +484,7 @@ Returns the standard deviation of a Student random variable @math{t(n)}, with @m
 @end deffn
 
 
+@anchor{skewness_student_t}
 @deffn {Function} skewness_student_t (@var{n})
 Returns the skewness coefficient of a Student random variable @math{t(n)}, with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 
@@ -479,6 +495,7 @@ Returns the skewness coefficient of a Student random variable @math{t(n)}, with 
 @end deffn
 
 
+@anchor{kurtosis_student_t}
 @deffn {Function} kurtosis_student_t (@var{n})
 Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with @math{n>4}. To make use of this function, write first @code{load(distrib)}.
 
@@ -489,6 +506,7 @@ Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
 @end deffn
 
 
+@anchor{random_student_t}
 @deffn {Function} random_student_t (@var{n}) @
 @fname{random_student_t} (@var{n},@var{m})
 
@@ -519,6 +537,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the density function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -552,6 +571,7 @@ Sometimes an extra work is necessary to get the final result.
 @end deffn
 
 
+@anchor{cdf_noncentral_student_t}
 @deffn {Function} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the distribution function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true} or at least one of the arguments is a float,  otherwise it returns a nominal expression.
 
@@ -575,6 +595,7 @@ Returns the value at @var{x} of the distribution function of a noncentral Studen
 @end deffn
 
 
+@anchor{quantile_noncentral_student_t}
 @deffn {Function} quantile_noncentral_student_t (@var{q},@var{n},@var{ncp})
 Returns the @var{q}-quantile of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -585,6 +606,7 @@ Returns the @var{q}-quantile of a noncentral Student random variable @math{nc_t(
 @end deffn
 
 
+@anchor{mean_noncentral_student_t}
 @deffn {Function} mean_noncentral_student_t (@var{n},@var{ncp})
 Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -611,6 +633,7 @@ Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, wit
 @end deffn
 
 
+@anchor{var_noncentral_student_t}
 @deffn {Function} var_noncentral_student_t (@var{n},@var{ncp})
 Returns the variance of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -621,6 +644,7 @@ Returns the variance of a noncentral Student random variable @math{nc_t(n,ncp)},
 @end deffn
 
 
+@anchor{std_noncentral_student_t}
 @deffn {Function} std_noncentral_student_t (@var{n},@var{ncp})
 Returns the standard deviation of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -631,6 +655,7 @@ Returns the standard deviation of a noncentral Student random variable @math{nc_
 @end deffn
 
 
+@anchor{skewness_noncentral_student_t}
 @deffn {Function} skewness_noncentral_student_t (@var{n},@var{ncp})
 Returns the skewness coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -641,6 +666,7 @@ Returns the skewness coefficient of a noncentral Student random variable @math{n
 @end deffn
 
 
+@anchor{kurtosis_noncentral_student_t}
 @deffn {Function} kurtosis_noncentral_student_t (@var{n},@var{ncp})
 Returns the kurtosis coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
 
@@ -651,6 +677,7 @@ Returns the kurtosis coefficient of a noncentral Student random variable @math{n
 @end deffn
 
 
+@anchor{random_noncentral_student_t}
 @deffn {Function} random_noncentral_student_t (@var{n},@var{ncp}) @
 @fname{random_noncentral_student_t} (@var{n},@var{ncp},@var{m})
 
@@ -681,6 +708,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the density function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -713,6 +741,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -738,6 +767,7 @@ Returns the value at @var{x} of the distribution function of a Chi-square random
 @end deffn
 
 
+@anchor{quantile_chi2}
 @deffn {Function} quantile_chi2 (@var{q},@var{n})
 Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -765,6 +795,7 @@ This function has no closed form and it is numerically computed if the global va
 @end deffn
 
 
+@anchor{mean_chi2}
 @deffn {Function} mean_chi2 (@var{n})
 Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -792,6 +823,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{var_chi2}
 @deffn {Function} var_chi2 (@var{n})
 Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -819,6 +851,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{std_chi2}
 @deffn {Function} std_chi2 (@var{n})
 Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -846,6 +879,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{skewness_chi2}
 @deffn {Function} skewness_chi2 (@var{n})
 Returns the skewness coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -875,6 +909,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{kurtosis_chi2}
 @deffn {Function} kurtosis_chi2 (@var{n})
 Returns the kurtosis coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
@@ -904,6 +939,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
+@anchor{random_chi2}
 @deffn {Function} random_chi2 (@var{n}) @
 @fname{random_chi2} (@var{n},@var{m})
 
@@ -920,6 +956,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_noncentral_chi2}
 @deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the density function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -930,6 +967,7 @@ Returns the value at @var{x} of the density function of a noncentral Chi-square 
 @end deffn
 
 
+@anchor{cdf_noncentral_chi2}
 @deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -940,6 +978,7 @@ Returns the value at @var{x} of the distribution function of a noncentral Chi-sq
 @end deffn
 
 
+@anchor{quantile_noncentral_chi2}
 @deffn {Function} quantile_noncentral_chi2 (@var{q},@var{n},@var{ncp})
 Returns the @var{q}-quantile of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}; in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -952,6 +991,7 @@ This function has no closed form and it is numerically computed if the global va
 @end deffn
 
 
+@anchor{mean_noncentral_chi2}
 @deffn {Function} mean_noncentral_chi2 (@var{n},@var{ncp})
 Returns the mean of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
@@ -962,6 +1002,7 @@ Returns the mean of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp
 @end deffn
 
 
+@anchor{var_noncentral_chi2}
 @deffn {Function} var_noncentral_chi2 (@var{n},@var{ncp})
 Returns the variance of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
@@ -972,6 +1013,7 @@ Returns the variance of a noncentral Chi-square random variable @math{nc_Chi^2(n
 @end deffn
 
 
+@anchor{std_noncentral_chi2}
 @deffn {Function} std_noncentral_chi2 (@var{n},@var{ncp})
 Returns the standard deviation of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
@@ -982,6 +1024,7 @@ Returns the standard deviation of a noncentral Chi-square random variable @math{
 @end deffn
 
 
+@anchor{skewness_noncentral_chi2}
 @deffn {Function} skewness_noncentral_chi2 (@var{n},@var{ncp})
 Returns the skewness coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
@@ -992,6 +1035,7 @@ Returns the skewness coefficient of a noncentral Chi-square random variable @mat
 @end deffn
 
 
+@anchor{kurtosis_noncentral_chi2}
 @deffn {Function} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
 Returns the kurtosis coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
@@ -1002,6 +1046,7 @@ Returns the kurtosis coefficient of a noncentral Chi-square random variable @mat
 @end deffn
 
 
+@anchor{random_noncentral_chi2}
 @deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp}) @
 @fname{random_noncentral_chi2} (@var{n},@var{ncp},@var{m})
 
@@ -1017,6 +1062,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 
+@anchor{pdf_f}
 @deffn {Function} pdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the density function of a F random variable @math{F(m,n)}, with @math{m,n>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1027,6 +1073,7 @@ Returns the value at @var{x} of the density function of a F random variable @mat
 @end deffn
 
 
+@anchor{cdf_f}
 @deffn {Function} cdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
 
@@ -1052,6 +1099,7 @@ Returns the value at @var{x} of the distribution function of a F random variable
 @end deffn
 
 
+@anchor{quantile_f}
 @deffn {Function} quantile_f (@var{q},@var{m},@var{n})
 Returns the @var{q}-quantile of a F random variable @math{F(m,n)}, with @math{m,n>0}; in other words, this is the inverse of @code{cdf_f}. Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -1079,6 +1127,7 @@ This function has no closed form and it is numerically computed if the global va
 @end deffn
 
 
+@anchor{mean_f}
 @deffn {Function} mean_f (@var{m},@var{n})
 Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1089,6 +1138,7 @@ Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To 
 @end deffn
 
 
+@anchor{var_f}
 @deffn {Function} var_f (@var{m},@var{n})
 Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1099,6 +1149,7 @@ Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}.
 @end deffn
 
 
+@anchor{std_f}
 @deffn {Function} std_f (@var{m},@var{n})
 Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1109,6 +1160,7 @@ Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{
 @end deffn
 
 
+@anchor{skewness_f}
 @deffn {Function} skewness_f (@var{m},@var{n})
 Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>6}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1119,6 +1171,7 @@ Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @mat
 @end deffn
 
 
+@anchor{kurtosis_f}
 @deffn {Function} kurtosis_f (@var{m},@var{n})
 Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>8}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1129,6 +1182,7 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 @end deffn
 
 
+@anchor{random_f}
 @deffn {Function} random_f (@var{m},@var{n}) @
 @fname{random_f} (@var{m},@var{n},@var{k})
 
@@ -1156,6 +1210,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_exp}
 @deffn {Function} pdf_exp (@var{x},@var{m})
 Returns the value at @var{x} of the density function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1184,6 +1239,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{cdf_exp}
 @deffn {Function} cdf_exp (@var{x},@var{m})
 Returns the value at @var{x} of the distribution function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1212,6 +1268,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{quantile_exp}
 @deffn {Function} quantile_exp (@var{q},@var{m})
 Returns the @var{q}-quantile of an @math{Exponential(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -1239,6 +1296,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{mean_exp}
 @deffn {Function} mean_exp (@var{m})
 Returns the mean of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1268,6 +1326,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{var_exp}
 @deffn {Function} var_exp (@var{m})
 Returns the variance of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1298,6 +1357,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{std_exp}
 @deffn {Function} std_exp (@var{m})
 Returns the standard deviation of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1327,6 +1387,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{skewness_exp}
 @deffn {Function} skewness_exp (@var{m})
 Returns the skewness coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1354,6 +1415,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{kurtosis_exp}
 @deffn {Function} kurtosis_exp (@var{m})
 Returns the kurtosis coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
@@ -1381,6 +1443,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
+@anchor{random_exp}
 @deffn {Function} random_exp (@var{m}) @
 @fname{random_exp} (@var{m},@var{k})
 
@@ -1397,6 +1460,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_lognormal}
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1407,6 +1471,7 @@ Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} 
 @end deffn
 
 
+@anchor{cdf_lognormal}
 @deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the distribution function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
@@ -1424,7 +1489,7 @@ Returns the value at @var{x} of the distribution function of a @math{Lognormal(m
                               2          2
 @end example
 
-See also @code{erf}.
+See also @mrefdot{erf}
 
 @opencatbox
 @category{Package distrib}
@@ -1433,6 +1498,7 @@ See also @code{erf}.
 @end deffn
 
 
+@anchor{quantile_lognormal}
 @deffn {Function} quantile_lognormal (@var{q},@var{m},@var{s})
 Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1457,6 +1523,7 @@ Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @m
 @end deffn
 
 
+@anchor{mean_lognormal}
 @deffn {Function} mean_lognormal (@var{m},@var{s})
 Returns the mean of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1467,6 +1534,7 @@ Returns the mean of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To
 @end deffn
 
 
+@anchor{var_lognormal}
 @deffn {Function} var_lognormal (@var{m},@var{s})
 Returns the variance of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1476,6 +1544,7 @@ Returns the variance of a @math{Lognormal(m,s)} random variable, with @math{s>0}
 
 @end deffn
 
+@anchor{std_lognormal}
 @deffn {Function} std_lognormal (@var{m},@var{s})
 Returns the standard deviation of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1486,6 +1555,7 @@ Returns the standard deviation of a @math{Lognormal(m,s)} random variable, with 
 @end deffn
 
 
+@anchor{skewness_lognormal}
 @deffn {Function} skewness_lognormal (@var{m},@var{s})
 Returns the skewness coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1496,6 +1566,7 @@ Returns the skewness coefficient of a @math{Lognormal(m,s)} random variable, wit
 @end deffn
 
 
+@anchor{kurtosis_lognormal}
 @deffn {Function} kurtosis_lognormal (@var{m},@var{s})
 Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1506,6 +1577,7 @@ Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, wit
 @end deffn
 
 
+@anchor{random_lognormal}
 @deffn {Function} random_lognormal (@var{m},@var{s}) @
 @fname{random_lognormal} (@var{m},@var{s},@var{n})
 
@@ -1522,6 +1594,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_gamma}
 @deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1532,6 +1605,7 @@ Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} rand
 @end deffn
 
 
+@anchor{cdf_gamma}
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. 
 
@@ -1557,6 +1631,7 @@ Returns the value at @var{x} of the distribution function of a @math{Gamma(a,b)}
 @end deffn
 
 
+@anchor{quantile_gamma}
 @deffn {Function} quantile_gamma (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Gamma(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1567,6 +1642,7 @@ Returns the @var{q}-quantile of a @math{Gamma(a,b)} random variable, with @math{
 @end deffn
 
 
+@anchor{mean_gamma}
 @deffn {Function} mean_gamma (@var{a},@var{b})
 Returns the mean of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1577,6 +1653,7 @@ Returns the mean of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To m
 @end deffn
 
 
+@anchor{var_gamma}
 @deffn {Function} var_gamma (@var{a},@var{b})
 Returns the variance of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1586,6 +1663,7 @@ Returns the variance of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. 
 
 @end deffn
 
+@anchor{std_gamma}
 @deffn {Function} std_gamma (@var{a},@var{b})
 Returns the standard deviation of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1596,6 +1674,7 @@ Returns the standard deviation of a @math{Gamma(a,b)} random variable, with @mat
 @end deffn
 
 
+@anchor{skewness_gamma}
 @deffn {Function} skewness_gamma (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1606,6 +1685,7 @@ Returns the skewness coefficient of a @math{Gamma(a,b)} random variable, with @m
 @end deffn
 
 
+@anchor{kurtosis_gamma}
 @deffn {Function} kurtosis_gamma (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1616,6 +1696,7 @@ Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @m
 @end deffn
 
 
+@anchor{random_gamma}
 @deffn {Function} random_gamma (@var{a},@var{b}) @
 @fname{random_gamma} (@var{a},@var{b},@var{n})
 
@@ -1636,6 +1717,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_beta}
 @deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1647,6 +1729,7 @@ Returns the value at @var{x} of the density function of a @math{Beta(a,b)} rando
 
 
 
+@anchor{cdf_beta}
 @deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} random variable, with @math{a,b>0}.
 
@@ -1672,6 +1755,7 @@ Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} 
 @end deffn
 
 
+@anchor{quantile_beta}
 @deffn {Function} quantile_beta (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Beta(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1682,6 +1766,7 @@ Returns the @var{q}-quantile of a @math{Beta(a,b)} random variable, with @math{a
 @end deffn
 
 
+@anchor{mean_beta}
 @deffn {Function} mean_beta (@var{a},@var{b})
 Returns the mean of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1692,6 +1777,7 @@ Returns the mean of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To ma
 @end deffn
 
 
+@anchor{var_beta}
 @deffn {Function} var_beta (@var{a},@var{b})
 Returns the variance of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1701,6 +1787,7 @@ Returns the variance of a @math{Beta(a,b)} random variable, with @math{a,b>0}. T
 
 @end deffn
 
+@anchor{std_beta}
 @deffn {Function} std_beta (@var{a},@var{b})
 Returns the standard deviation of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1711,6 +1798,7 @@ Returns the standard deviation of a @math{Beta(a,b)} random variable, with @math
 @end deffn
 
 
+@anchor{skewness_beta}
 @deffn {Function} skewness_beta (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1721,6 +1809,7 @@ Returns the skewness coefficient of a @math{Beta(a,b)} random variable, with @ma
 @end deffn
 
 
+@anchor{kurtosis_beta}
 @deffn {Function} kurtosis_beta (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1731,6 +1820,7 @@ Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @ma
 @end deffn
 
 
+@anchor{random_beta}
 @deffn {Function} random_beta (@var{a},@var{b}) @
 @fname{random_beta} (@var{a},@var{b},@var{n})
 
@@ -1746,6 +1836,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 @end deffn
 
+@anchor{pdf_continuous_uniform}
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1756,6 +1847,7 @@ Returns the value at @var{x} of the density function of a @math{Continuous Unifo
 @end deffn
 
 
+@anchor{cdf_continuous_uniform}
 @deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1766,6 +1858,7 @@ Returns the value at @var{x} of the distribution function of a @math{Continuous 
 @end deffn
 
 
+@anchor{quantile_continuous_uniform}
 @deffn {Function} quantile_continuous_uniform (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1776,6 +1869,7 @@ Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} random variable
 @end deffn
 
 
+@anchor{mean_continuous_uniform}
 @deffn {Function} mean_continuous_uniform (@var{a},@var{b})
 Returns the mean of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1786,6 +1880,7 @@ Returns the mean of a @math{Continuous Uniform(a,b)} random variable, with @math
 @end deffn
 
 
+@anchor{var_continuous_uniform}
 @deffn {Function} var_continuous_uniform (@var{a},@var{b})
 Returns the variance of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1795,6 +1890,7 @@ Returns the variance of a @math{Continuous Uniform(a,b)} random variable, with @
 
 @end deffn
 
+@anchor{std_continuous_uniform}
 @deffn {Function} std_continuous_uniform (@var{a},@var{b})
 Returns the standard deviation of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1805,6 +1901,7 @@ Returns the standard deviation of a @math{Continuous Uniform(a,b)} random variab
 @end deffn
 
 
+@anchor{skewness_continuous_uniform}
 @deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1815,6 +1912,7 @@ Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} random vari
 @end deffn
 
 
+@anchor{kurtosis_continuous_uniform}
 @deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1825,6 +1923,7 @@ Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random vari
 @end deffn
 
 
+@anchor{random_continuous_uniform}
 @deffn {Function} random_continuous_uniform (@var{a},@var{b}) @
 @fname{random_continuous_uniform} (@var{a},@var{b},@var{n})
 
@@ -1832,7 +1931,7 @@ Returns a @math{Continuous Uniform(a,b)} random variate, with @math{a<b}. Callin
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}. To make use of this function, write first @code{load(distrib)}.
+See also @mrefdot{random} To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1841,6 +1940,7 @@ See also @code{random}. To make use of this function, write first @code{load(dis
 @end deffn
 
 
+@anchor{pdf_logistic}
 @deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1851,6 +1951,7 @@ Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} r
 @end deffn
 
 
+@anchor{cdf_logistic}
 @deffn {Function} cdf_logistic (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1861,6 +1962,7 @@ Returns the value at @var{x} of the distribution function of a @math{Logistic(a,
 @end deffn
 
 
+@anchor{quantile_logistic}
 @deffn {Function} quantile_logistic (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1871,6 +1973,7 @@ Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @m
 @end deffn
 
 
+@anchor{mean_logistic}
 @deffn {Function} mean_logistic (@var{a},@var{b})
 Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1881,6 +1984,7 @@ Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To
 @end deffn
 
 
+@anchor{var_logistic}
 @deffn {Function} var_logistic (@var{a},@var{b})
 Returns the variance of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1891,6 +1995,7 @@ Returns the variance of a @math{Logistic(a,b)} random variable , with @math{b>0}
 @end deffn
 
 
+@anchor{std_logistic}
 @deffn {Function} std_logistic (@var{a},@var{b})
 Returns the standard deviation of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1901,6 +2006,7 @@ Returns the standard deviation of a @math{Logistic(a,b)} random variable , with 
 @end deffn
 
 
+@anchor{skewness_logistic}
 @deffn {Function} skewness_logistic (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1911,6 +2017,7 @@ Returns the skewness coefficient of a @math{Logistic(a,b)} random variable , wit
 @end deffn
 
 
+@anchor{kurtosis_logistic}
 @deffn {Function} kurtosis_logistic (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1921,6 +2028,7 @@ Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , wit
 @end deffn
 
 
+@anchor{random_logistic}
 @deffn {Function} random_logistic (@var{a},@var{b}) @
 @fname{random_logistic} (@var{a},@var{b},@var{n})
 
@@ -1937,6 +2045,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_pareto}
 @deffn {Function} pdf_pareto (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1947,6 +2056,7 @@ Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} ran
 @end deffn
 
 
+@anchor{cdf_pareto}
 @deffn {Function} cdf_pareto (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1957,6 +2067,7 @@ Returns the value at @var{x} of the distribution function of a @math{Pareto(a,b)
 @end deffn
 
 
+@anchor{quantile_pareto}
 @deffn {Function} quantile_pareto (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Pareto(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1967,6 +2078,7 @@ Returns the @var{q}-quantile of a @math{Pareto(a,b)} random variable, with @math
 @end deffn
 
 
+@anchor{mean_pareto}
 @deffn {Function} mean_pareto (@var{a},@var{b})
 Returns the mean of a @math{Pareto(a,b)} random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1977,6 +2089,7 @@ Returns the mean of a @math{Pareto(a,b)} random variable, with @math{a>1,b>0}. T
 @end deffn
 
 
+@anchor{var_pareto}
 @deffn {Function} var_pareto (@var{a},@var{b})
 Returns the variance of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1986,6 +2099,7 @@ Returns the variance of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0
 
 @end deffn
 
+@anchor{std_pareto}
 @deffn {Function} std_pareto (@var{a},@var{b})
 Returns the standard deviation of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -1997,6 +2111,7 @@ Returns the standard deviation of a @math{Pareto(a,b)} random variable, with @ma
 
 
 
+@anchor{skewness_pareto}
 @deffn {Function} skewness_pareto (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Pareto(a,b)} random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2007,6 +2122,7 @@ Returns the skewness coefficient of a @math{Pareto(a,b)} random variable, with @
 @end deffn
 
 
+@anchor{kurtosis_pareto}
 @deffn {Function} kurtosis_pareto (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2017,6 +2133,7 @@ Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @
 @end deffn
 
 
+@anchor{random_pareto}
 @deffn {Function} random_pareto (@var{a},@var{b}) @
 @fname{random_pareto} (@var{a},@var{b},@var{n})
 
@@ -2033,6 +2150,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_weibull}
 @deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2043,6 +2161,7 @@ Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} ra
 @end deffn
 
 
+@anchor{cdf_weibull}
 @deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2053,6 +2172,7 @@ Returns the value at @var{x} of the distribution function of a @math{Weibull(a,b
 @end deffn
 
 
+@anchor{quantile_weibull}
 @deffn {Function} quantile_weibull (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Weibull(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2063,6 +2183,7 @@ Returns the @var{q}-quantile of a @math{Weibull(a,b)} random variable, with @mat
 @end deffn
 
 
+@anchor{mean_weibull}
 @deffn {Function} mean_weibull (@var{a},@var{b})
 Returns the mean of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2073,6 +2194,7 @@ Returns the mean of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To
 @end deffn
 
 
+@anchor{var_weibull}
 @deffn {Function} var_weibull (@var{a},@var{b})
 Returns the variance of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2082,6 +2204,7 @@ Returns the variance of a @math{Weibull(a,b)} random variable, with @math{a,b>0}
 
 @end deffn
 
+@anchor{std_weibull}
 @deffn {Function} std_weibull (@var{a},@var{b})
 Returns the standard deviation of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2093,6 +2216,7 @@ Returns the standard deviation of a @math{Weibull(a,b)} random variable, with @m
 
 
 
+@anchor{skewness_weibull}
 @deffn {Function} skewness_weibull (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2103,6 +2227,7 @@ Returns the skewness coefficient of a @math{Weibull(a,b)} random variable, with 
 @end deffn
 
 
+@anchor{kurtosis_weibull}
 @deffn {Function} kurtosis_weibull (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2113,6 +2238,7 @@ Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with 
 @end deffn
 
 
+@anchor{random_weibull}
 @deffn {Function} random_weibull (@var{a},@var{b}) @
 @fname{random_weibull} (@var{a},@var{b},@var{n})
 
@@ -2130,6 +2256,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 
+@anchor{pdf_rayleigh}
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2159,6 +2286,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{cdf_rayleigh}
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2188,6 +2316,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{quantile_rayleigh}
 @deffn {Function} quantile_rayleigh (@var{q},@var{b})
 Returns the @var{q}-quantile of a @math{Rayleigh(b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -2217,6 +2346,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{mean_rayleigh}
 @deffn {Function} mean_rayleigh (@var{b})
 Returns the mean of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2246,6 +2376,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{var_rayleigh}
 @deffn {Function} var_rayleigh (@var{b})
 Returns the variance of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2278,6 +2409,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{std_rayleigh}
 @deffn {Function} std_rayleigh (@var{b})
 Returns the standard deviation of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2309,6 +2441,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{skewness_rayleigh}
 @deffn {Function} skewness_rayleigh (@var{b})
 Returns the skewness coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2343,6 +2476,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{kurtosis_rayleigh}
 @deffn {Function} kurtosis_rayleigh (@var{b})
 Returns the kurtosis coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
@@ -2377,6 +2511,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @end deffn
 
 
+@anchor{random_rayleigh}
 @deffn {Function} random_rayleigh (@var{b}) @
 @fname{random_rayleigh} (@var{b},@var{n})
 
@@ -2394,6 +2529,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 
+@anchor{pdf_laplace}
 @deffn {Function} pdf_laplace (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2404,6 +2540,7 @@ Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} ra
 @end deffn
 
 
+@anchor{cdf_laplace}
 @deffn {Function} cdf_laplace (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2414,6 +2551,7 @@ Returns the value at @var{x} of the distribution function of a @math{Laplace(a,b
 @end deffn
 
 
+@anchor{quantile_laplace}
 @deffn {Function} quantile_laplace (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Laplace(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2424,6 +2562,7 @@ Returns the @var{q}-quantile of a @math{Laplace(a,b)} random variable, with @mat
 @end deffn
 
 
+@anchor{mean_laplace}
 @deffn {Function} mean_laplace (@var{a},@var{b})
 Returns the mean of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2434,6 +2573,7 @@ Returns the mean of a @math{Laplace(a,b)} random variable, with @math{b>0}. To m
 @end deffn
 
 
+@anchor{var_laplace}
 @deffn {Function} var_laplace (@var{a},@var{b})
 Returns the variance of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2444,6 +2584,7 @@ Returns the variance of a @math{Laplace(a,b)} random variable, with @math{b>0}. 
 @end deffn
 
 
+@anchor{std_laplace}
 @deffn {Function} std_laplace (@var{a},@var{b})
 Returns the standard deviation of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2454,6 +2595,7 @@ Returns the standard deviation of a @math{Laplace(a,b)} random variable, with @m
 @end deffn
 
 
+@anchor{skewness_laplace}
 @deffn {Function} skewness_laplace (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2464,6 +2606,7 @@ Returns the skewness coefficient of a @math{Laplace(a,b)} random variable, with 
 @end deffn
 
 
+@anchor{kurtosis_laplace}
 @deffn {Function} kurtosis_laplace (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2474,6 +2617,7 @@ Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with 
 @end deffn
 
 
+@anchor{random_laplace}
 @deffn {Function} random_laplace (@var{a},@var{b}) @
 @fname{random_laplace} (@var{a},@var{b},@var{n})
 
@@ -2491,6 +2635,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 
+@anchor{pdf_cauchy}
 @deffn {Function} pdf_cauchy (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2501,6 +2646,7 @@ Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} ran
 @end deffn
 
 
+@anchor{cdf_cauchy}
 @deffn {Function} cdf_cauchy (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2511,6 +2657,7 @@ Returns the value at @var{x} of the distribution function of a @math{Cauchy(a,b)
 @end deffn
 
 
+@anchor{quantile_cauchy}
 @deffn {Function} quantile_cauchy (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2521,6 +2668,7 @@ Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math
 @end deffn
 
 
+@anchor{random_cauchy}
 @deffn {Function} random_cauchy (@var{a},@var{b}) @
 @fname{random_cauchy} (@var{a},@var{b},@var{n})
 
@@ -2538,6 +2686,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 
+@anchor{pdf_gumbel}
 @deffn {Function} pdf_gumbel (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2548,6 +2697,7 @@ Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} ran
 @end deffn
 
 
+@anchor{cdf_gumbel}
 @deffn {Function} cdf_gumbel (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2558,6 +2708,7 @@ Returns the value at @var{x} of the distribution function of a @math{Gumbel(a,b)
 @end deffn
 
 
+@anchor{quantile_gumbel}
 @deffn {Function} quantile_gumbel (@var{q},@var{a},@var{b})
 Returns the @var{q}-quantile of a @math{Gumbel(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2568,6 +2719,7 @@ Returns the @var{q}-quantile of a @math{Gumbel(a,b)} random variable, with @math
 @end deffn
 
 
+@anchor{mean_gumbel}
 @deffn {Function} mean_gumbel (@var{a},@var{b})
 Returns the mean of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
 
@@ -2580,7 +2732,7 @@ Returns the mean of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
-where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @code{%gamma}.
+where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @mrefdot{%gamma}
 
 @opencatbox
 @category{Package distrib}
@@ -2589,6 +2741,7 @@ where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @c
 @end deffn
 
 
+@anchor{var_gumbel}
 @deffn {Function} var_gumbel (@var{a},@var{b})
 Returns the variance of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2599,6 +2752,7 @@ Returns the variance of a @math{Gumbel(a,b)} random variable, with @math{b>0}. T
 @end deffn
 
 
+@anchor{std_gumbel}
 @deffn {Function} std_gumbel (@var{a},@var{b})
 Returns the standard deviation of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2609,6 +2763,7 @@ Returns the standard deviation of a @math{Gumbel(a,b)} random variable, with @ma
 @end deffn
 
 
+@anchor{skewness_gumbel}
 @deffn {Function} skewness_gumbel (@var{a},@var{b})
 Returns the skewness coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
 
@@ -2636,6 +2791,7 @@ where @code{zeta} stands for the Riemann's zeta function.
 @end deffn
 
 
+@anchor{kurtosis_gumbel}
 @deffn {Function} kurtosis_gumbel (@var{a},@var{b})
 Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2646,6 +2802,7 @@ Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @
 @end deffn
 
 
+@anchor{random_gumbel}
 @deffn {Function} random_gumbel (@var{a},@var{b}) @
 @fname{random_gumbel} (@var{a},@var{b},@var{n})
 
@@ -2666,6 +2823,7 @@ To make use of this function, write first @code{load(distrib)}.
 @section Functions and Variables for discrete distributions
 
 
+@anchor{pdf_general_finite_discrete}
 @deffn {Function} pdf_general_finite_discrete (@var{x},@var{v})
 Returns the value at @var{x} of the probability function of a general finite discrete random variable, with vector probabilities @math{v}, such that @code{Pr(X=i) = v_i}. Vector @math{v} can be a list of nonnegative expressions, whose components will be normalized to get a vector of probabilities. To make use of this function, write first @code{load(distrib)}.
 
@@ -2693,6 +2851,7 @@ Returns the value at @var{x} of the probability function of a general finite dis
 @end deffn
 
 
+@anchor{cdf_general_finite_discrete}
 @deffn {Function} cdf_general_finite_discrete (@var{x},@var{v})
 Returns the value at @var{x} of the distribution function of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2727,6 +2886,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{quantile_general_finite_discrete}
 @deffn {Function} quantile_general_finite_discrete (@var{q},@var{v})
 Returns the @var{q}-quantile of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2739,6 +2899,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{mean_general_finite_discrete}
 @deffn {Function} mean_general_finite_discrete (@var{v})
 Returns the mean of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2751,6 +2912,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{var_general_finite_discrete}
 @deffn {Function} var_general_finite_discrete (@var{v})
 Returns the variance of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2763,6 +2925,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{std_general_finite_discrete}
 @deffn {Function} std_general_finite_discrete (@var{v})
 Returns the standard deviation of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2775,6 +2938,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{skewness_general_finite_discrete}
 @deffn {Function} skewness_general_finite_discrete (@var{v})
 Returns the skewness coefficient of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2787,6 +2951,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{kurtosis_general_finite_discrete}
 @deffn {Function} kurtosis_general_finite_discrete (@var{v})
 Returns the kurtosis coefficient of a general finite discrete random variable, with vector probabilities @math{v}.
 
@@ -2799,6 +2964,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{random_general_finite_discrete}
 @deffn {Function} random_general_finite_discrete (@var{v}) @
 @fname{random_general_finite_discrete} (@var{v},@var{m})
 
@@ -2826,6 +2992,7 @@ See @code{pdf_general_finite_discrete} for more details.
 @end deffn
 
 
+@anchor{pdf_binomial}
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
                                   4
@@ -2838,6 +3005,7 @@ Returns the value at @var{x} of the probability function of a @math{Binomial(n,p
 @end deffn
 
 
+@anchor{cdf_binomial}
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
 
@@ -2863,6 +3031,7 @@ Returns the value at @var{x} of the distribution function of a @math{Binomial(n,
 @end deffn
 
 
+@anchor{quantile_binomial}
 @deffn {Function} quantile_binomial (@var{q},@var{n},@var{p})
 Returns the @var{q}-quantile of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2873,6 +3042,7 @@ Returns the @var{q}-quantile of a @math{Binomial(n,p)} random variable, with @ma
 @end deffn
 
 
+@anchor{mean_binomial}
 @deffn {Function} mean_binomial (@var{n},@var{p})
 Returns the mean of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -2883,6 +3053,7 @@ Returns the mean of a @math{Binomial(n,p)} random variable, with @math{0<p<1} an
 @end deffn
 
 
+@anchor{var_binomial}
 @deffn {Function} var_binomial (@var{n},@var{p})
 Returns the variance of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -2893,6 +3064,7 @@ Returns the variance of a @math{Binomial(n,p)} random variable, with @math{0<p<1
 @end deffn
 
 
+@anchor{std_binomial}
 @deffn {Function} std_binomial (@var{n},@var{p})
 Returns the standard deviation of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -2903,6 +3075,7 @@ Returns the standard deviation of a @math{Binomial(n,p)} random variable, with @
 @end deffn
 
 
+@anchor{skewness_binomial}
 @deffn {Function} skewness_binomial (@var{n},@var{p})
 Returns the skewness coefficient of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -2913,6 +3086,7 @@ Returns the skewness coefficient of a @math{Binomial(n,p)} random variable, with
 @end deffn
 
 
+@anchor{kurtosis_binomial}
 @deffn {Function} kurtosis_binomial (@var{n},@var{p})
 Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -2923,6 +3097,7 @@ Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with
 @end deffn
 
 
+@anchor{random_binomial}
 @deffn {Function} random_binomial (@var{n},@var{p}) @
 @fname{random_binomial} (@var{n},@var{p},@var{m})
 
@@ -2939,6 +3114,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_poisson}
 @deffn {Function} pdf_poisson (@var{x},@var{m})
 Returns the value at @var{x} of the probability function of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2949,6 +3125,7 @@ Returns the value at @var{x} of the probability function of a @math{Poisson(m)} 
 @end deffn
 
 
+@anchor{cdf_poisson}
 @deffn {Function} cdf_poisson (@var{x},@var{m})
 Returns the value at @var{x} of the distribution function of a @math{Poisson(m)} random variable, with @math{m>0}.
 
@@ -2972,6 +3149,7 @@ Returns the value at @var{x} of the distribution function of a @math{Poisson(m)}
 @end deffn
 
 
+@anchor{quantile_poisson}
 @deffn {Function} quantile_poisson (@var{q},@var{m})
 Returns the @var{q}-quantile of a @math{Poisson(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2982,6 +3160,7 @@ Returns the @var{q}-quantile of a @math{Poisson(m)} random variable, with @math{
 @end deffn
 
 
+@anchor{mean_poisson}
 @deffn {Function} mean_poisson (@var{m})
 Returns the mean of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -2992,6 +3171,7 @@ Returns the mean of a @math{Poisson(m)} random variable, with  @math{m>0}. To ma
 @end deffn
 
 
+@anchor{var_poisson}
 @deffn {Function} var_poisson (@var{m})
 Returns the variance of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3002,6 +3182,7 @@ Returns the variance of a @math{Poisson(m)} random variable, with  @math{m>0}. T
 @end deffn
 
 
+@anchor{std_poisson}
 @deffn {Function} std_poisson (@var{m})
 Returns the standard deviation of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3012,6 +3193,7 @@ Returns the standard deviation of a @math{Poisson(m)} random variable, with @mat
 @end deffn
 
 
+@anchor{skewness_poisson}
 @deffn {Function} skewness_poisson (@var{m})
 Returns the skewness coefficient of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3022,6 +3204,7 @@ Returns the skewness coefficient of a @math{Poisson(m)} random variable, with @m
 @end deffn
 
 
+@anchor{kurtosis_poisson}
 @deffn {Function} kurtosis_poisson (@var{m})
 Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3032,6 +3215,7 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 @end deffn
 
 
+@anchor{random_poisson}
 @deffn {Function} random_poisson (@var{m}) @
 @fname{random_poisson} (@var{m},@var{n})
 
@@ -3048,6 +3232,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_bernoulli}
 @deffn {Function} pdf_bernoulli (@var{x},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3073,6 +3258,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{cdf_bernoulli}
 @deffn {Function} cdf_bernoulli (@var{x},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Bernoulli(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3083,6 +3269,7 @@ Returns the value at @var{x} of the distribution function of a @math{Bernoulli(p
 @end deffn
 
 
+@anchor{quantile_bernoulli}
 @deffn {Function} quantile_bernoulli (@var{q},@var{p})
 Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3093,6 +3280,7 @@ Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @mat
 @end deffn
 
 
+@anchor{mean_bernoulli}
 @deffn {Function} mean_bernoulli (@var{p})
 Returns the mean of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3118,6 +3306,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{var_bernoulli}
 @deffn {Function} var_bernoulli (@var{p})
 Returns the variance of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3143,6 +3332,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{std_bernoulli}
 @deffn {Function} std_bernoulli (@var{p})
 Returns the standard deviation of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3168,6 +3358,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{skewness_bernoulli}
 @deffn {Function} skewness_bernoulli (@var{p})
 Returns the skewness coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3195,6 +3386,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{kurtosis_bernoulli}
 @deffn {Function} kurtosis_bernoulli (@var{p})
 Returns the kurtosis coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
@@ -3222,6 +3414,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @end deffn
 
 
+@anchor{random_bernoulli}
 @deffn {Function} random_bernoulli (@var{p}) @
 @fname{random_bernoulli} (@var{p},@var{n})
 
@@ -3229,7 +3422,7 @@ Returns a @math{Bernoulli(p)} random variate, with @math{0<p<1}. Calling @code{r
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}. To make use of this function, write first @code{load(distrib)}.
+See also @mrefdot{random} To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -3238,6 +3431,7 @@ See also @code{random}. To make use of this function, write first @code{load(dis
 @end deffn
 
 
+@anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3248,6 +3442,7 @@ Returns the value at @var{x} of the probability function of a @math{Geometric(p)
 @end deffn
 
 
+@anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3258,6 +3453,7 @@ Returns the value at @var{x} of the distribution function of a @math{Geometric(p
 @end deffn
 
 
+@anchor{quantile_geometric}
 @deffn {Function} quantile_geometric (@var{q},@var{p})
 Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_geometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3268,6 +3464,7 @@ Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with @mat
 @end deffn
 
 
+@anchor{mean_geometric}
 @deffn {Function} mean_geometric (@var{p})
 Returns the mean of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3278,6 +3475,7 @@ Returns the mean of a @math{Geometric(p)} random variable, with @math{0<p<1}. To
 @end deffn
 
 
+@anchor{var_geometric}
 @deffn {Function} var_geometric (@var{p})
 Returns the variance of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3288,6 +3486,7 @@ Returns the variance of a @math{Geometric(p)} random variable, with @math{0<p<1}
 @end deffn
 
 
+@anchor{std_geometric}
 @deffn {Function} std_geometric (@var{p})
 Returns the standard deviation of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3298,6 +3497,7 @@ Returns the standard deviation of a @math{Geometric(p)} random variable, with @m
 @end deffn
 
 
+@anchor{skewness_geometric}
 @deffn {Function} skewness_geometric (@var{p})
 Returns the skewness coefficient of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3308,6 +3508,7 @@ Returns the skewness coefficient of a @math{Geometric(p)} random variable, with 
 @end deffn
 
 
+@anchor{kurtosis_geometric}
 @deffn {Function} kurtosis_geometric (@var{p})
 Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3318,6 +3519,7 @@ Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, 
 @end deffn
 
 
+@anchor{random_geometric}
 @deffn {Function} random_geometric (@var{p}) @
 @fname{random_geometric} (@var{p},@var{n})
 
@@ -3334,6 +3536,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_discrete_uniform}
 @deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
 Returns the value at @var{x} of the probability function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3344,6 +3547,7 @@ Returns the value at @var{x} of the probability function of a @math{Discrete Uni
 @end deffn
 
 
+@anchor{cdf_discrete_uniform}
 @deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3354,6 +3558,7 @@ Returns the value at @var{x} of the distribution function of a @math{Discrete Un
 @end deffn
 
 
+@anchor{quantile_discrete_uniform}
 @deffn {Function} quantile_discrete_uniform (@var{q},@var{n})
 Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3364,6 +3569,7 @@ Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} random variable, wi
 @end deffn
 
 
+@anchor{mean_discrete_uniform}
 @deffn {Function} mean_discrete_uniform (@var{n})
 Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3374,6 +3580,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @end deffn
 
 
+@anchor{var_discrete_uniform}
 @deffn {Function} var_discrete_uniform (@var{n})
 Returns the variance of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3384,6 +3591,7 @@ Returns the variance of a @math{Discrete Uniform(n)} random variable, with @math
 @end deffn
 
 
+@anchor{std_discrete_uniform}
 @deffn {Function} std_discrete_uniform (@var{n})
 Returns the standard deviation of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3394,6 +3602,7 @@ Returns the standard deviation of a @math{Discrete Uniform(n)} random variable, 
 @end deffn
 
 
+@anchor{skewness_discrete_uniform}
 @deffn {Function} skewness_discrete_uniform (@var{n})
 Returns the skewness coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3404,6 +3613,7 @@ Returns the skewness coefficient of a @math{Discrete Uniform(n)} random variable
 @end deffn
 
 
+@anchor{kurtosis_discrete_uniform}
 @deffn {Function} kurtosis_discrete_uniform (@var{n})
 Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 
@@ -3414,6 +3624,7 @@ Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable
 @end deffn
 
 
+@anchor{random_discrete_uniform}
 @deffn {Function} random_discrete_uniform (@var{n}) @
 @fname{random_discrete_uniform} (@var{n},@var{m})
 
@@ -3421,7 +3632,7 @@ Returns a @math{Discrete Uniform(n)} random variate, with @math{n} a strictly po
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}. To make use of this function, write first @code{load(distrib)}.
+See also @mrefdot{random} To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -3430,6 +3641,7 @@ See also @code{random}. To make use of this function, write first @code{load(dis
 @end deffn
 
 
+@anchor{pdf_hypergeometric}
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
 Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)}
 random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
@@ -3446,6 +3658,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{cdf_hypergeometric}
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
 Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} 
 random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. 
@@ -3460,6 +3673,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{quantile_hypergeometric}
 @deffn {Function} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
 Returns the @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3470,6 +3684,7 @@ Returns the @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} random variable
 @end deffn
 
 
+@anchor{mean_hypergeometric}
 @deffn {Function} mean_hypergeometric (@var{n1},@var{n2},@var{n})
 Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3480,6 +3695,7 @@ Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with
 @end deffn
 
 
+@anchor{var_hypergeometric}
 @deffn {Function} var_hypergeometric (@var{n1},@var{n2},@var{n})
 Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3490,6 +3706,7 @@ Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, w
 @end deffn
 
 
+@anchor{std_hypergeometric}
 @deffn {Function} std_hypergeometric (@var{n1},@var{n2},@var{n})
 Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3500,6 +3717,7 @@ Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} random variab
 @end deffn
 
 
+@anchor{skewness_hypergeometric}
 @deffn {Function} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
 Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3510,6 +3728,7 @@ Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 @end deffn
 
 
+@anchor{kurtosis_hypergeometric}
 @deffn {Function} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
 Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3520,6 +3739,7 @@ Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 @end deffn
 
 
+@anchor{random_hypergeometric}
 @deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n}) @
 @fname{random_hypergeometric} (@var{n1},@var{n2},@var{n},@var{m})
 
@@ -3536,6 +3756,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
+@anchor{pdf_negative_binomial}
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3546,6 +3767,7 @@ Returns the value at @var{x} of the probability function of a @math{Negative Bin
 @end deffn
 
 
+@anchor{cdf_negative_binomial}
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number.
 
@@ -3571,6 +3793,7 @@ Returns the value at @var{x} of the distribution function of a @math{Negative Bi
 @end deffn
 
 
+@anchor{quantile_negative_binomial}
 @deffn {Function} quantile_negative_binomial (@var{q},@var{n},@var{p})
 Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
@@ -3581,6 +3804,7 @@ Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable,
 @end deffn
 
 
+@anchor{mean_negative_binomial}
 @deffn {Function} mean_negative_binomial (@var{n},@var{p})
 Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3591,6 +3815,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 @end deffn
 
 
+@anchor{var_negative_binomial}
 @deffn {Function} var_negative_binomial (@var{n},@var{p})
 Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3601,6 +3826,7 @@ Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @m
 @end deffn
 
 
+@anchor{std_negative_binomial}
 @deffn {Function} std_negative_binomial (@var{n},@var{p})
 Returns the standard deviation of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3611,6 +3837,7 @@ Returns the standard deviation of a @math{Negative Binomial(n,p)} random variabl
 @end deffn
 
 
+@anchor{skewness_negative_binomial}
 @deffn {Function} skewness_negative_binomial (@var{n},@var{p})
 Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3621,6 +3848,7 @@ Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random varia
 @end deffn
 
 
+@anchor{kurtosis_negative_binomial}
 @deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
 Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
@@ -3631,6 +3859,7 @@ Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random varia
 @end deffn
 
 
+@anchor{random_negative_binomial}
 @deffn {Function} random_negative_binomial (@var{n},@var{p}) @
 @fname{random_negative_binomial} (@var{n},@var{p},@var{m})
 

@@ -32,6 +32,7 @@ Example:
 @node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec
 @section Functions and Variables for solve_rec
 
+@anchor{reduce_order}
 @deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
 
 Reduces the order of linear recurrence @var{rec} when a particular solution
@@ -95,13 +96,14 @@ So the general solution is
 
 @end deffn
 
+@anchor{simplify_products}
 @defvr {Option variable} simplify_products
 Default value: @code{true}
 
 If @code{simplify_products} is @code{true}, @code{solve_rec} will try to
 simplify products in result.
 
-See also: @code{solve_rec}.
+See also: @mrefdot{solve_rec}
 
 @opencatbox
 @category{Package solve_rec}
@@ -109,6 +111,7 @@ See also: @code{solve_rec}.
 
 @end defvr
 
+@anchor{simplify_sum}
 @deffn {Function} simplify_sum (@var{expr})
 
 Tries to simplify all sums appearing in @var{expr} to a closed form.
@@ -149,6 +152,7 @@ Example:
 
 @end deffn
 
+@anchor{solve_rec_func}
 @deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Solves for hypergeometrical solutions to linear recurrence @var{eqn} with
 polynomials coefficient in variable @var{var}. Optional arguments @var{init}
@@ -226,7 +230,7 @@ Example of Ricatti type recurrence:
 @end example
 
 
-See also: @code{solve_rec_rat}, @code{simplify_products}, and @code{product_use_gamma}.
+See also: @mrefcomma{solve_rec_rat} @mref{simplify_products} and @mrefdot{product_use_gamma}
 
 @opencatbox
 @category{Package solve_rec}
@@ -234,6 +238,7 @@ See also: @code{solve_rec_rat}, @code{simplify_products}, and @code{product_use_
 
 @end deffn
 
+@anchor{solve_rec_rat}
 @deffn {Function} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
 Solves for rational solutions to linear recurrences. See solve_rec for
@@ -262,7 +267,7 @@ Example:
 @end example
 
 
-See also: @code{solve_rec}.
+See also: @mrefdot{solve_rec}
 
 @opencatbox
 @category{Package solve_rec}
@@ -270,13 +275,14 @@ See also: @code{solve_rec}.
 
 @end deffn
 
+@anchor{product_use_gamma}
 @defvr {Option variable} product_use_gamma
 Default value: @code{true}
 
 When simplifying products, @code{solve_rec} introduces gamma function
 into the expression if @code{product_use_gamma} is @code{true}.
 
-See also: @code{simplify_products}, @code{solve_rec}.
+See also: @mrefcomma{simplify_products} @mrefdot{solve_rec}
 
 @opencatbox
 @category{Package solve_rec}
@@ -284,6 +290,7 @@ See also: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
+@anchor{summand_to_rec}
 @deffn {Function} summand_to_rec @
 @fname{summand_to_rec} (@var{summand}, @var{k}, @var{n}) @
 @fname{summand_to_rec} (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})

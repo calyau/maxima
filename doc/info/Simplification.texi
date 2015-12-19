@@ -396,7 +396,7 @@ less than @code{n}.
 
 @code{expand(expr, 0, 0)} causes a resimplification of @code{expr}.  @code{expr}
 is not reevaluated.  In distinction from @code{ev(expr, noeval)} a special
-representation (e. g. a CRE form) is removed.  See also @code{ev}.
+representation (e. g. a CRE form) is removed.  See also @mrefdot{ev}
 
 The @code{expand} flag used with @code{ev} causes expansion.
 
@@ -648,7 +648,7 @@ Example:
 @end example
 
 @code{linear} is equivalent to @code{additive} and @code{outative}.
-See also @code{opproperties}.
+See also @mrefdot{opproperties}
 
 Example:
 
@@ -693,7 +693,7 @@ Example:
 Default value: 1000
 
 @code{maxnegex} is the largest negative exponent which will
-be expanded by the @code{expand} command (see also @code{maxposex}).
+be expanded by the @code{expand} command, see also @mrefdot{maxposex}
 
 @opencatbox
 @category{Expressions}
@@ -708,7 +708,7 @@ be expanded by the @code{expand} command (see also @code{maxposex}).
 Default value: 1000
 
 @code{maxposex} is the largest exponent which will be
-expanded with the @code{expand} command (see also @code{maxnegex}).
+expanded with the @code{expand} command, see also @mrefdot{maxnegex}
 
 @opencatbox
 @category{Expressions}
@@ -1112,7 +1112,7 @@ simplifications are tried, it returns the original answer.
 Default value: @code{true}
 
 @code{simp} enables simplification.  This is the standard.  @code{simp} is also
-an @code{evflag}, which is recognized by the function @code{ev}.  See @code{ev}.
+an @code{evflag}, which is recognized by the function @code{ev}.  See @mrefdot{ev}
 
 When @code{simp} is used as an @code{evflag} with a value @code{false}, the 
 simplification is suppressed only during the evaluation phase of an expression.

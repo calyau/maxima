@@ -77,7 +77,7 @@ Springer-Verlag, New York Berlin, 308-320, 1989.
 
 @subsection Changing bases
 
-
+@anchor{comp2pui}
 @deffn {Function} comp2pui (@var{n}, @var{L})
 implements passing from the complete symmetric functions given in the list
 @var{L} to the elementary symmetric functions from 0 to @var{n}. If the
@@ -101,7 +101,7 @@ otherwise the size is set to @var{n}.
 @closecatbox
 @end deffn
 
-
+@anchor{ele2pui}
 @deffn {Function} ele2pui (@var{m}, @var{L})
 goes from the elementary symmetric functions to the complete functions.
 Similar to @code{comp2ele} and @code{comp2pui}.
@@ -113,7 +113,7 @@ Other functions for changing bases: @code{comp2ele}.
 @closecatbox
 @end deffn
 
-
+@anchor{ele2comp}
 @deffn {Function} ele2comp (@var{m}, @var{L})
 Goes from the elementary symmetric functions to the compete functions.
 Similar to @code{comp2ele} and @code{comp2pui}.
@@ -125,7 +125,7 @@ Other functions for changing bases: @code{comp2ele}.
 @closecatbox
 @end deffn
 
-
+@anchor{elem}
 @deffn {Function} elem (@var{ele}, @var{sym}, @var{lvar})
 decomposes the symmetric polynomial @var{sym}, in the variables
 contained in the list @var{lvar}, in terms of the elementary symmetric
@@ -169,7 +169,7 @@ Other functions for changing bases: @code{comp2ele}.
 @closecatbox
 @end deffn
 
-
+@anchor{mon2schur}
 @deffn {Function} mon2schur (@var{L})
 The list @var{L} represents the Schur function @math{S_L}: we have
 @iftex
@@ -236,7 +236,7 @@ Other functions for changing bases: @code{comp2ele}.
 @closecatbox
 @end deffn
 
-
+@anchor{multi}
 @deffn {Function} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
 decomposes a multi-symmetric polynomial in the multi-contracted form
 @var{multi_pc} in the groups of variables contained in the list of lists
@@ -269,6 +269,7 @@ Other functions for changing bases: @code{comp2ele}.
 
 
 @c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ?? (original comment)
+@anchor{multi_pui}
 @deffn {Function} multi_pui
 is to the function @code{pui} what the function @code{multi_elem} is to
 the function @code{elem}.
@@ -293,6 +294,7 @@ the function @code{elem}.
 
 
 @c HMM, pui IS A VARIABLE AS WELL.  It's a function, for sure.
+@anchor{pui}
 @deffn {Function} pui (@var{L}, @var{sym}, @var{lvar})
 decomposes the symmetric polynomial @var{sym}, in the variables in the
 list @var{lvar}, in terms of the power functions in the list @var{L}.
@@ -338,7 +340,7 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-
+@anchor{pui2comp}
 @deffn {Function} pui2comp (@var{n}, @var{lpui})
 renders the list of the first @var{n} complete functions (with the
 length first) in terms of the power functions given in the list
@@ -384,7 +386,7 @@ Other functions for changing bases: @code{comp2ele}.
 @end deffn
 
 
-
+@anchor{pui2ele}
 @deffn {Function} pui2ele (@var{n}, @var{lpui})
 effects the passage from power functions to the elementary symmetric functions.
 If the flag @code{pui2ele} is @code{girard}, it will return the list of
@@ -398,7 +400,7 @@ Other functions for changing bases: @code{comp2ele}.
 @closecatbox
 @end deffn
 
-
+@anchor{puireduc}
 @deffn {Function} puireduc (@var{n}, @var{lpui})
 @var{lpui} is a list whose first element is an integer @var{m}.
 @code{puireduc} gives the first @var{n} power functions in terms of the
@@ -428,7 +430,7 @@ first @var{m}.
 @closecatbox
 @end deffn
 
-
+@anchor{schur2comp}
 @deffn {Function} schur2comp (@var{P}, @var{l_var})
 @var{P} is a polynomial in the variables of the list @var{l_var}.  Each
 of these variables represents a complete symmetric function.  In
@@ -464,7 +466,7 @@ functions.
 
 
 @subsection Changing representations
-
+@anchor{cont2part}
 @deffn {Function} cont2part (@var{pc}, @var{lvar})
 returns the partitioned polynomial associated to the contracted form
 @var{pc} whose variables are in @var{lvar}.
@@ -491,7 +493,7 @@ returns the partitioned polynomial associated to the contracted form
 @end deffn
 
 
-
+@anchor{contract}
 @deffn {Function} contract (@var{psym}, @var{lvar})
 returns a contracted form (i.e. a monomial orbit under the action of the
 @c CHECK ME!!
@@ -524,7 +526,7 @@ the polynomial.
 @closecatbox
 @end deffn
 
-
+@anchor{explose}
 @deffn {Function} explose (@var{pc}, @var{lvar})
 returns the symmetric polynomial associated with the contracted form
 @var{pc}. The list @var{lvar} contains the variables.
@@ -543,7 +545,7 @@ returns the symmetric polynomial associated with the contracted form
 @closecatbox
 @end deffn
 
-
+@anchor{part2cont}
 @deffn {Function} part2cont (@var{ppart}, @var{lvar})
 goes from the partitioned form to the contracted form of a symmetric polynomial.
 The contracted form is rendered with the variables in @var{lvar}.
@@ -564,7 +566,7 @@ The contracted form is rendered with the variables in @var{lvar}.
 @end deffn
 
 
-
+@anchor{partpol}
 @deffn {Function} partpol (@var{psym}, @var{lvar})
 @var{psym} is a symmetric polynomial in the variables of the list
 @var{lvar}. This function retturns its partitioned representation.
@@ -583,7 +585,7 @@ The contracted form is rendered with the variables in @var{lvar}.
 @closecatbox
 @end deffn
 
-
+@anchor{tcontract}
 @deffn {Function} tcontract (@var{pol}, @var{lvar})
 tests if the polynomial @var{pol} is symmetric in the variables of the
 list @var{lvar}.  If so, it returns a contracted representation like the
@@ -595,7 +597,7 @@ function @code{contract}.
 @end deffn
 
 
-
+@anchor{tpartpol}
 @deffn {Function} tpartpol (@var{pol}, @var{lvar})
 tests if the polynomial @var{pol} is symmetric in the variables of the
 list @var{lvar}.  If so, it returns its partitioned representation like
@@ -611,7 +613,7 @@ the function @code{partpol}.
 
 @subsection Groups and orbits
 
-
+@anchor{direct}
 @deffn {Function} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
 calculates the direct image (see M. Giusti, D. Lazard et A. Valibouze,
 ISSAC 1988, Rome) associated to the function @var{f}, in the lists of
@@ -720,7 +722,7 @@ Functions of @code{sym} used in this function:
 
 
 
-
+@anchor{multi_orbit}
 @deffn {Function} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2},..., @var{lvar_p}])
 
 @var{P} is a polynomial in the set of variables contained in the lists
@@ -752,7 +754,7 @@ Also see: @code{orbit} for the action of a single symmetric group.
 
 
 
-
+@anchor{multsym}
 @deffn {Function} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
 returns the product of the two symmetric polynomials in @var{n}
 variables by working only modulo the action of the symmetric group of
@@ -784,7 +786,7 @@ Functions for changing the representations of a symmetric polynomial:
 @end deffn
 
 
-
+@anchor{orbit}
 @deffn {Function} orbit (@var{P}, @var{lvar})
 computes the orbit of the polynomial @var{P} in the variables in the list
 @var{lvar} under the action of the symmetric group of the set of
@@ -805,7 +807,7 @@ variables in the list @var{lvar}.
 @end group
 @end example
 @noindent
-See also @code{multi_orbit} for the action of a product of symmetric
+See also @mref{multi_orbit} for the action of a product of symmetric
 groups on a polynomial.
 
 @opencatbox
@@ -814,7 +816,7 @@ groups on a polynomial.
 @end deffn
 
 
-
+@anchor{pui_direct}
 @deffn {Function} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 
 Let @var{f} be a polynomial in @var{n} blocks of variables @var{lvar_1},
@@ -902,7 +904,7 @@ element is kept per orbit, under the action of @var{SD}.
 
 
 @subsection Partitions
-
+@anchor{kostka}
 @deffn {Function} kostka (@var{part_1}, @var{part_2})
 written by P. Esperet, calculates the Kostka number of the partition
 @var{part_1} and @var{part_2}.
@@ -922,7 +924,7 @@ written by P. Esperet, calculates the Kostka number of the partition
 @end deffn
 
 
-
+@anchor{lgtreillis}
 @deffn {Function} lgtreillis (@var{n}, @var{m})
 returns the list of partitions of weight @var{n} and length @var{m}.
 
@@ -943,7 +945,7 @@ Also see: @code{ltreillis}, @code{treillis} and @code{treinat}.
 @end deffn
 
 
-
+@anchor{ltreillis}
 @deffn {Function} ltreillis (@var{n}, @var{m})
 returns the list of partitions of weight @var{n} and length less than or
 equal to @var{m}.
@@ -965,7 +967,7 @@ Also see: @code{lgtreillis}, @code{treillis} and @code{treinat}.
 @end deffn
 
 
-
+@anchor{treillis}
 @deffn {Function} treillis (@var{n})
 returns all partitions of weight @var{n}.
 
@@ -978,7 +980,7 @@ returns all partitions of weight @var{n}.
 @end group
 @end example
 
-See also: @code{lgtreillis}, @code{ltreillis} and @code{treinat}.
+See also: @mrefcomma{lgtreillis} @mref{ltreillis} and @mrefdot{treinat}
 
 @opencatbox
 @category{Package sym}
@@ -986,7 +988,7 @@ See also: @code{lgtreillis}, @code{ltreillis} and @code{treinat}.
 @end deffn
 
 
-
+@anchor{treinat}
 @deffn {Function} treinat (@var{part})
 retruns the list of partitions inferior to the partition @var{part} w.r.t.
 the natural order.
@@ -1012,7 +1014,7 @@ the natural order.
 @end group
 @end example
 
-See also: @code{lgtreillis}, @code{ltreillis} and @code{treillis}.
+See also: @mrefcomma{lgtreillis} @mref{ltreillis} and @mrefdot{treillis}
 
 @opencatbox
 @category{Package sym}
@@ -1025,6 +1027,7 @@ See also: @code{lgtreillis}, @code{ltreillis} and @code{treillis}.
 
 @subsection Polynomials and their roots
 
+@anchor{ele2polynome}
 @deffn {Function} ele2polynome (@var{L}, @var{z})
 returns the polynomial in @var{z} s.t. the elementary symmetric
 functions of its roots are in the list @code{@var{L} = [@var{n},
@@ -1063,7 +1066,7 @@ Also see:
 @end deffn
 
 
-
+@anchor{polynome2ele}
 @deffn {Function} polynome2ele (@var{P}, @var{x})
 gives the list @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}
 where @var{n} is the degree of the polynomial @var{P} in the variable
@@ -1093,7 +1096,7 @@ The inverse: @code{ele2polynome (@var{l}, @var{x})}
 @end deffn
 
 
-
+@anchor{prodrac}
 @deffn {Function} prodrac (@var{L}, @var{k})
 @var{L} is a list containing the elementary symmetric functions 
 on a set @var{A}. @code{prodrac} returns the polynomial whose roots
@@ -1106,7 +1109,7 @@ Also see @code{somrac}.
 @closecatbox
 @end deffn
 
-
+@anchor{pui2polynome}
 @deffn {Function} pui2polynome (@var{x}, @var{lpui})
 calculates the polynomial in @var{x} whose power functions of the roots
 are given in the list @var{lpui}.
@@ -1140,7 +1143,7 @@ are given in the list @var{lpui}.
 @end example
 @noindent
 See also:
-@code{polynome2ele}, @code{ele2polynome}.
+@mrefcomma{polynome2ele} @mrefdot{ele2polynome}
 
 @opencatbox
 @category{Package sym}
@@ -1148,7 +1151,7 @@ See also:
 @end deffn
 
 
-
+@anchor{somrac}
 @deffn {Function} somrac (@var{L}, @var{k})
 The list @var{L} contains elementary symmetric functions of a polynomial
 @var{P} . The function computes the polynomial whose roots are the 
@@ -1167,6 +1170,7 @@ Also see @code{prodrac}.
 
 @subsection Resolvents
 
+@anchor{resolvante}
 @deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
 calculates the resolvent of the polynomial @var{P} in @var{x} of degree
 @var{n} >= @var{d} by the function @var{f} expressed in the variables
@@ -1407,9 +1411,9 @@ polynomial must necessarily be of degree 5.
 
 See also:
 @flushleft
-@code{resolvante_bipartite}, @code{resolvante_produit_sym},
-@code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
-@code{resolvante_klein3}, @code{resolvante_vierer}, @code{resolvante_diedrale}.
+@mrefcomma{resolvante_bipartite} @mrefcomma{resolvante_produit_sym}
+@mrefcomma{resolvante_unitaire} @mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein} 
+@mrefcomma{resolvante_klein3} @mrefcomma{resolvante_vierer} @mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1418,7 +1422,7 @@ See also:
 @end deffn
 
 
-
+@anchor{resolvante_alternee1}
 @deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
 calculates the transformation
 @code{@var{P}(@var{x})} of degree @var{n} by the function
@@ -1431,9 +1435,9 @@ calculates the transformation
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_bipartite}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante}  @mrefcomma{resolvante_klein} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante_vierer} @mrefcomma{resolvante_diedrale} @mrefdot{resolvante_bipartite}
 @end flushleft
 
 @opencatbox
@@ -1442,6 +1446,7 @@ See also:
 @end deffn
 
 
+@anchor{resolvante_bipartite}
 @deffn {Function} resolvante_bipartite (@var{P}, @var{x})
 calculates the transformation of
 @code{@var{P}(@var{x})} of even degree @var{n} by the function 
@@ -1466,9 +1471,9 @@ calculates the transformation of
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_alternee1}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante} @mrefcomma{resolvante_klein} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante_vierer} @mrefcomma{resolvante_diedrale} @mrefdot{resolvante_alternee1}
 @end flushleft
 
 @opencatbox
@@ -1477,7 +1482,7 @@ See also:
 @end deffn
 
 
-
+@anchor{resolvante_diedrale}
 @deffn {Function} resolvante_diedrale (@var{P}, @var{x})
 calculates the transformation of @code{@var{P}(@var{x})} by the function
 @code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
@@ -1499,9 +1504,9 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante_vierer} @mrefdot{resolvante}
 @end flushleft
 
 @opencatbox
@@ -1510,16 +1515,16 @@ See also:
 @end deffn
 
 
-
+@anchor{resolvante_klein}
 @deffn {Function} resolvante_klein (@var{P}, @var{x})
 calculates the transformation of @code{@var{P}(@var{x})} by the function
 @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante_vierer} @mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1527,16 +1532,16 @@ See also:
 @closecatbox
 @end deffn
 
-
+@anchor{resolvante_klein3}
 @deffn {Function} resolvante_klein3 (@var{P}, @var{x})
 calculates the transformation of @code{@var{P}(@var{x})} by the function
 @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
-@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein} @mrefcomma{resolvante}
+@mrefcomma{resolvante_vierer} @mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1545,7 +1550,7 @@ See also:
 @end deffn
 
 
-
+@anchor{resolvante_produit_sym}
 @deffn {Function} resolvante_produit_sym (@var{P}, @var{x})
 calculates the list of all product resolvents of the polynomial
 @code{@var{P}(@var{x})}.
@@ -1581,10 +1586,10 @@ calculates the list of all product resolvents of the polynomial
 
 See also:
 @flushleft
-@code{resolvante}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein},
-@code{resolvante_klein3}, @code{resolvante_vierer},
-@code{resolvante_diedrale}.
+@mrefcomma{resolvante} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein}
+@mrefcomma{resolvante_klein3} @mrefcomma{resolvante_vierer}
+@mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1593,16 +1598,16 @@ See also:
 @end deffn
 
 
-
+@anchor{resolvante_unitaire}
 @deffn {Function} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
 computes the resolvent of the polynomial @code{@var{P}(@var{x})} by the
 polynomial @code{@var{Q}(@var{x})}. 
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante_vierer} @mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1610,7 +1615,7 @@ See also:
 @closecatbox
 @end deffn
 
-
+@anchor{resolvante_vierer}
 @deffn {Function} resolvante_vierer (@var{P}, @var{x})
 computes the transformation of
 @code{@var{P}(@var{x})} by the function @code{@var{x_1} @var{x_2} -
@@ -1618,9 +1623,9 @@ computes the transformation of
 
 See also:
 @flushleft
-@code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante}, @code{resolvante_diedrale}.
+@mrefcomma{resolvante_produit_sym} @mrefcomma{resolvante_unitaire}
+@mrefcomma{resolvante_alternee1} @mrefcomma{resolvante_klein} @mrefcomma{resolvante_klein3}
+@mrefcomma{resolvante} @mrefdot{resolvante_diedrale}
 @end flushleft
 
 @opencatbox
@@ -1633,7 +1638,7 @@ See also:
 
 @subsection Miscellaneous
 
-
+@anchor{multinomial}
 @deffn {Function} multinomial (@var{r}, @var{part})
 where @var{r} is the weight of the partition @var{part}.  This function
 returns the associate multinomial coefficient: if the parts of
@@ -1645,7 +1650,7 @@ returns the associate multinomial coefficient: if the parts of
 @closecatbox
 @end deffn
 
-
+@anchor{permut}
 @deffn {Function} permut (@var{L})
 returns the list of permutations of the list @var{L}.
 

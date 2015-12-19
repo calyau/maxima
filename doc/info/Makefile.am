@@ -487,7 +487,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
-	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	rm maxima.fns maxima.vr \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima.html
