@@ -30,7 +30,7 @@
 @end macro
 @end ifinfo
 
-@ifhtml
+@ifinfo
 @macro opencatbox {}
 @html
 <div class=categorybox>
@@ -80,11 +80,11 @@
 @code{@ref{\nodename\}})
 @end macro
 
-@end ifhtml
+@end ifinfo
 
 @c Non html versions of the macros
 
-@ifnothtml
+@ifnotinfo
 
 @macro opencatbox {}
 @end macro
@@ -125,4 +125,4 @@
 @code{\nodename\})
 @end macro
 
-@end ifnothtml
+@end ifnotinfo
