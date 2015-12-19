@@ -928,7 +928,8 @@ May be used to exit explicitly from the current @mrefcomma{block} @mrefcomma{whi
 @mref{for} or @mref{do} loop bringing its argument. It therefore can be compared
 with the @code{return} statement found in other programming languages but it yields
 one difference: In maxima only returns from the current block, not from the entire
-function it was called in.
+function it was called in. In this aspect it more closely resembles the @code{break}
+statement from C.
 
 @c ===beg===
 @c for i:1 thru 10 do o:i;

@@ -1426,11 +1426,11 @@ stack or a fifo:
 @c ===end===
 @example
 @group
-(%i1) l:[Test,1,2,3];
-(%o1)                  [Test, 1, 2, 3]
+(%i1) l:[Test,1,2,3,4];
+(%o1)                  [Test, 1, 2, 3, 4]
 @end group
 (%i2) while l # [] do
-   disp(pop(l))$
+   disp(pop(l));
                               Test
 
                                 1
@@ -1438,6 +1438,35 @@ stack or a fifo:
                                 2
 
                                 3
+
+                                4
+
+(%o2)                         done
+@end example
+Another even faster example would be:
+@c ===beg===
+@c l:[Test,1,2,3,4];
+@c for i in l do
+@c    disp(pop(l));
+@c ===end===
+@example
+@group
+(%i1) l:[Test,1,2,3,4];
+(%o1)                  [Test, 1, 2, 3, 4]
+@end group
+(%i2) for i in l do
+   disp(pop(l));
+                              Test
+
+                                1
+
+                                2
+
+                                3
+
+                                4
+
+(%o2)                         done
 @end example
 
 Beginning traversal with the last element of a list is possible after
