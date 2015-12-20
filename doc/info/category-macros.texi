@@ -127,33 +127,66 @@
 @end macro
 @end ifnottex
 @iftex
+@c Hyperlinks that work in some programs, but in others do not work
+@c @macro mref {nodename}
+@c @uref{maxima.pdf#\nodename\,,@code{\nodename\}}
+@c @end macro
+
+@c @macro mxref {nodename, text}
+@c @uref{maxima.pdf#\nodename\,,@code{\text\}}
+@c @end macro
+
+@c @macro mrefdot {nodename}
+@c @uref{maxima.pdf#\nodename\,,@code{\nodename\.}}
+@c @end macro
+
+@c @macro mxrefdot {nodename, text}
+@c @uref{maxima.pdf#\nodename\,,@code{\text\.}}
+@c @end macro
+
+@c @macro mrefcomma {nodename}
+@c @uref{maxima.pdf#\nodename\,,@code{\nodename\,}}
+@c @end macro
+
+@c @macro mxrefcomma {nodename, text}
+@c @uref{maxima.pdf#\nodename\,,@code{\text\,}}
+@c @end macro
+
+@c @macro mrefparen {nodename}
+@c @uref{maxima.pdf#\nodename\,,@code{\nodename\)}}
+@c @end macro
+
+@c Fallback code that doesn't provide links - and therefore is broken in the
+@c same way in every pdf viewer.
+
 @macro mref {nodename}
-@uref{maxima.pdf#\nodename\,,@code{\nodename\}}
+@code{\nodename\}
 @end macro
 
 @macro mxref {nodename, text}
-@uref{maxima.pdf#\nodename\,,@code{\text\}}
+@code{\text\}
 @end macro
 
 @macro mrefdot {nodename}
-@uref{maxima.pdf#\nodename\,,@code{\nodename\.}}
+@code{\nodename\}.
 @end macro
 
 @macro mxrefdot {nodename, text}
-@uref{maxima.pdf#\nodename\,,@code{\text\.}}
+@code{\text\}.
 @end macro
 
 @macro mrefcomma {nodename}
-@uref{maxima.pdf#\nodename\,,@code{\nodename\,}}
+@code{\nodename\},
 @end macro
 
 @macro mxrefcomma {nodename, text}
-@uref{maxima.pdf#\nodename\,,@code{\text\,}}
+@code{\text\},
 @end macro
 
 @macro mrefparen {nodename}
-@uref{maxima.pdf#\nodename\,,@code{\nodename\)}}
+@code{\nodename\})
 @end macro
+
 @end iftex
 @end ifnothtml
 

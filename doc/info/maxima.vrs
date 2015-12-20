@@ -370,7 +370,7 @@
 \entry {\code {maxpsifracnum}}{280}
 \entry {\code {maxpsinegint}}{280}
 \entry {\code {maxpsiposint}}{280}
-\entry {\code {maxtayorder}}{466}
+\entry {\code {maxtayorder}}{467}
 \entry {\code {mesh_lines_color}}{213}
 \entry {\code {method}}{656}
 \entry {\code {minf}}{43}
@@ -535,6 +535,7 @@
 \entry {\code {simp}}{142}
 \entry {\code {simplified_output}}{1105}
 \entry {\code {simplify_products}}{1030}
+\entry {\code {simpproduct}}{461}
 \entry {\code {simpsum}}{462}
 \entry {\code {sinnpiflag}}{478}
 \entry {\code {solvedecomposes}}{347}
@@ -556,7 +557,7 @@
 \entry {\code {structures}}{69}
 \entry {\code {style}}{215}
 \entry {\code {sublis_apply_lambda}}{93}
-\entry {\code {subnumsimp}}{94}
+\entry {\code {subnumsimp}}{93}
 \entry {\code {sumexpand}}{465}
 \entry {\code {sumsplitfact}}{157}
 \entry {\code {surface}}{860}
@@ -567,7 +568,7 @@
 \entry {\code {t}}{216}
 \entry {\code {tab}}{1063}
 \entry {\code {taylor_logexpand}}{475}
-\entry {\code {taylor_order_coefficients}}{475}
+\entry {\code {taylor_order_coefficients}}{476}
 \entry {\code {taylor_truncate_polynomials}}{476}
 \entry {\code {taylordepth}}{475}
 \entry {\code {tensorkill}}{453}
