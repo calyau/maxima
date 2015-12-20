@@ -387,6 +387,9 @@ double_factorial(n-3);
 double_factorial(n-4),factorial_expand:true;
 double_factorial(n)/(n*(n-2));
 
+makegamma(double_factorial(n));
+(gamma(n/2+1)*2^((1-cos(%pi*n))/4+n/2))/%pi^((1-cos(%pi*n))/4);
+
 /* Some small numbers */
 
 double_factorial(-3);

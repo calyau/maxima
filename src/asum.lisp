@@ -177,7 +177,7 @@
 
         ;; Double factorial
 
-        ((eq (caar e) '%factorial_double)
+        ((eq (caar e) '%double_factorial)
          (let ((x (makegamma1 (nth 1 e))))
            (mul
              (power
