@@ -13,7 +13,6 @@
 
 
 ; tested with clisp, ccl, sbcl, ecl
-; returns 
 (defun os-chdir (dir)
   "Change the working directory."
   #+allegro (excl:chdir dir)
@@ -30,7 +29,7 @@
   #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl)
   (error 'not-implemented :proc (list 'chdir dir)))
 
-; tested with clisp, ccl, sbcl
+; tested with clisp, ccl, sbcl, ecl
 (defun os-mkdir (dir)
   "Create a directory."
   #+allegro (excl:make-directory dir)
@@ -39,7 +38,8 @@
   #+lispworks (system:make-directory dir)
   #+sbcl (sb-unix:unix-mkdir (directory-namestring dir) #o777)
   #+ccl (ensure-directories-exist dir)
-  #-(or allegro clisp cmu lispworks sbcl ccl)
+  #+ecl (ensure-directories-exist dir)
+  #-(or allegro clisp cmu lispworks sbcl ccl ecl)
   (error 'not-implemented :proc (list 'mkdir dir)))
   
 ; tested with clisp, ccl, sbcl, ecl
@@ -49,12 +49,13 @@
   #+clisp (ext:delete-directory dir)
   #+cmu (unix:unix-rmdir dir)
   #+sbcl (zerop (sb-posix:rmdir (namestring dir)))
+  #+:ecl (si:rmdir dir)
   #+lispworks
   ;; `lw:delete-directory' is present in LWW 4.1.20 but not on LWL 4.1.0
   (if (fboundp 'lw::delete-directory)
       (lw::delete-directory dir)
       (delete-file dir))
-  #-(or allegro clisp cmu lispworks sbcl) (delete-file dir))
+  #-(or allegro clisp cmu lispworks sbcl ecl) (delete-file dir))
   
   
 ; tested with clisp, ccl, sbcl, ecl

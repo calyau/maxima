@@ -13,45 +13,43 @@
 (olddir : getcurrentdirectory(), 0);
 0$
 
-mkdirokay : mkdir("testdir1");
-true$
+(mkdir("testdir1"), 0);
+0$
 
-/* do this test only if creating a new directory worked */
-(if mkdirokay = true then chdir("testdir1"),0);
+(chdir("testdir1"),0);
 0$
 
 (newdir : getcurrentdirectory(), 0);
 0$
 
-if sequal(concat(olddir, "testdir1/"), newdir) then "ok" else "not ok";
+mkdirokay : if sequal(concat(olddir, "testdir1/"), newdir) then "ok" else "not ok";
 "ok"$
 
-/* do this test only if creating a new directory worked */
-(if mkdirokay = true then chdir(".."),0);
+(if sequal(mkdirokay, "ok") then chdir(".."),0);
 0$
 
 /* do this test only if creating a new directory worked */
-if mkdirokay = true then rmdir("testdir1");
-true$
+(if sequal(mkdirokay, "ok") then rmdir("testdir1"), 0);
+0$
 
 /* now test a more complicated name - with spaces, german umlauts */
-mkdirokay : mkdir("testdir1 äöüß");
-true$
+(mkdir("testdir1 äöüß"), 0);
+0$
 
 /* do this test only if creating a new directory worked */
-(if mkdirokay = true then chdir("testdir1 äöüß"),0);
+(chdir("testdir1 äöüß"),0);
 0$
 
 (newdir : getcurrentdirectory(), 0);
 0$
 
-if sequal(concat(olddir, "testdir1 äöüß/"), newdir) then "ok" else "not ok";
+mkdirokay : if sequal(concat(olddir, "testdir1 äöüß/"), newdir) then "ok" else "not ok";
 "ok"$
 
 /* do this test only if creating a new directory worked */
-(if mkdirokay = true then chdir(".."),0);
+(if sequal(mkdirokay, "ok") then chdir(".."),0);
 0$
 
 /* do this test only if creating a new directory worked */
-if mkdirokay = true then rmdir("testdir1 äöüß");
-true$
+(if sequal(mkdirokay, "ok") then rmdir("testdir1 äöüß"), 0);
+0$
