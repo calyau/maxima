@@ -128,31 +128,38 @@
 @end ifnottex
 @iftex
 @macro mref {nodename}
-@code{@code{\nodename\}}
+@uref{maxima.pdf#\nodename\,,@code{\nodename\}}
 @end macro
 
 @macro mxref {nodename, text}
-@code{@code{\nodename\, \text\}}
+@uref{maxima.pdf#\nodename\,,@code{\text\}}
 @end macro
 
 @macro mrefdot {nodename}
-@code{@code{\nodename\}}.
+@uref{maxima.pdf#\nodename\,,@code{\nodename\.}}
 @end macro
 
 @macro mxrefdot {nodename, text}
-@code{@code{\nodename\, \text\}}.
+@uref{maxima.pdf#\nodename\,,@code{\text\.}}
 @end macro
 
 @macro mrefcomma {nodename}
-@code{@code{\nodename\}},
+@uref{maxima.pdf#\nodename\,,@code{\nodename\,}}
 @end macro
 
 @macro mxrefcomma {nodename, text}
-@code{@code{\nodename\, \text\}},
+@uref{maxima.pdf#\nodename\,,@code{\text\,}}
 @end macro
 
 @macro mrefparen {nodename}
-@code{@code{\nodename\}})
+@uref{maxima.pdf#\nodename\,,@code{\nodename\)}}
 @end macro
 @end iftex
 @end ifnothtml
+
+
+@tex
+\global\def\linkcolor{0 .5 0}
+\global\def\urlcolor{0 0 .5}
+@end tex
+
