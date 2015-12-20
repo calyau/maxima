@@ -49,13 +49,14 @@
   #+clisp (ext:delete-directory dir)
   #+cmu (unix:unix-rmdir dir)
   #+sbcl (zerop (sb-posix:rmdir (namestring dir)))
-  #+:ecl (si:rmdir dir)
+  #+ccl (ccl:delete-directory dir)
+  #+ecl (si:rmdir dir)
   #+lispworks
   ;; `lw:delete-directory' is present in LWW 4.1.20 but not on LWL 4.1.0
   (if (fboundp 'lw::delete-directory)
       (lw::delete-directory dir)
       (delete-file dir))
-  #-(or allegro clisp cmu lispworks sbcl ecl) (delete-file dir))
+  #-(or allegro clisp cmu lispworks sbcl ecl ccl) (delete-file dir))
   
   
 ; tested with clisp, ccl, sbcl, ecl
