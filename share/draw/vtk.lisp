@@ -52,9 +52,10 @@
 (defvar *vtk-triangle-counter* 0)
 (defvar *vtk-label-counter* 0)
 (defvar *vtk-tube-counter* 0)
+(defvar *vtk-chart-counter* 0)
+(defvar *vtk-table-counter* 0)
 (defvar *vtk-arrayX-counter* 0)
 (defvar *vtk-arrayY-counter* 0)
-(defvar *vtk-viewer-counter* 0)
 (defvar *lookup-tables* nil)
 (defvar *unitscale-already-defined* nil)
 (defvar *label-actors* nil)
@@ -126,14 +127,17 @@
 (defun get-tube-name ()
   (format nil "tube~a" (incf *vtk-tube-counter*)))
 
+(defun get-chart-name ()
+  (format nil "chart~a" (incf *vtk-chart-counter*)))
+
+(defun get-table-name ()
+  (format nil "table~a" (incf *vtk-table-counter*)))
+
 (defun get-arrayX-name ()
   (format nil "arrayX~a" (incf *vtk-arrayX-counter*)))
 
 (defun get-arrayY-name ()
   (format nil "arrayY~a" (incf *vtk-arrayY-counter*)))
-
-(defun get-viewer-name ()
-  (format nil "view~a" (incf *vtk-viewer-counter*)))
 
 
 
@@ -173,12 +177,20 @@
     (format nil "  ~a SetAxisTitleTextProperty ~a~%" can tn)
     (format nil "  ~a SetAxisLabelTextProperty ~a~%" can tn)))
 
-(defun vtkrenderer-code (rn an on bgcol af)
-  (let ((colist (hex-to-numeric-list bgcol))
-        (str (make-array 0 
+(defun vtkrenderer3d-code (rn an on bgcol af cn rv rh)
+  (let* ((k 0.0174532925199433) ; %pi/180
+         (rvk (* k rv))
+         (rhk (* k rh))
+         (x (* (sin rvk) (sin rhk)))
+         (y (- (* (sin rvk) (cos rhk))))
+         (z (cos rvk))
+         (colist (hex-to-numeric-list bgcol))
+         (str (make-array 0 
                 :element-type 'character 
                 :adjustable t 
                 :fill-pointer 0)) )
+    (format str "vtkCamera ~a~%" cn)
+    (format str "  ~a SetPosition ~a ~a ~a~%" cn x y z)
     (format str "vtkRenderer ~a~%" rn)
     (format str "  ~a SetBackground ~a ~a ~a~%" rn (first colist) (second colist) (third colist))
     (loop for n from (1+ af) to *vtk-actor-counter* do
@@ -187,42 +199,41 @@
     (when (gethash '$axis_3d *gr-options*)
       (format str "  ~a AddActor ~a~%" rn on)     ; add box
       (format str "  ~a AddViewProp ~a~%" rn an)) ; add axes tics
+    (format str "  ~a SetActiveCamera ~a~%" rn cn)
+    (format str "  ~a ResetCamera~%~%" rn)
     str))
 
-(defun vtkcontextview-code (vn bgcol)
+(defun vtkrenderer2d-code (cn rn bgcol)
   (let ((colist (hex-to-numeric-list bgcol))
         (str (make-array 0 
                 :element-type 'character 
                 :adjustable t 
                 :fill-pointer 0)) )
-    (format str "vtkRenderer ~a~%" vn)
-    (format str "  [~a GetRenderer] SetBackground ~a ~a ~a~%" vn (first colist) (second colist) (third colist))
-    (format str "  [~a GetRenderWindow] SetSize 400 300~%" vn)
-    (format str "  [~a GetScene] AddItem chart ~%" vn)
-    (format str "  [~a GetRenderWindow] SetMultiSamples 0~%" vn)
+    (format str "vtkContextScene scene~a~%  scene~a AddItem ~a~%" cn cn cn)
+    (format str "vtkContextActor actor~a~%  actor~a SetScene scene~a~%" cn cn cn)
+    (format str "vtkRenderer ~a~%" rn)
+    (format str "  ~a SetBackground ~a ~a ~a~%" rn (first colist) (second colist) (third colist))
+    (format str "  ~a AddActor actor~a~%" rn cn)
+    (format str "  scene~a SetRenderer ~a~%" cn rn)
     str))
 
-(defun vtkcamera-code (cn rn rv rh)
-  (let* ((k 0.0174532925199433) ; %pi/180
-         (rvk (* k rv))
-         (rhk (* k rh))
-         (x (* (sin rvk) (sin rhk)))
-         (y (- (* (sin rvk) (cos rhk))))
-         (z (cos rvk))
-         (str (make-array 0 
-                  :element-type 'character 
-                  :adjustable t 
-                  :fill-pointer 0)))
-    (dolist (k *label-actors*)
-      (format str "  actor~a SetCamera [~a GetActiveCamera]~%" k rn))
-
-    (concatenate 'string
-      (format nil "vtkCamera ~a~%" cn)
-      (format nil "  ~a SetPosition ~a ~a ~a~%" cn x y z)
-      (format nil "#  ~a SetViewUp 0 0 1~%" cn)
-      (format nil "  ~a SetActiveCamera ~a~%" rn cn)
-      (format nil "  ~a ResetCamera~%" rn)
-      str)))
+(defun vtkchartxy-code (cn)
+  (let ((str (make-array 0 
+                :element-type 'character 
+                :adjustable t 
+                :fill-pointer 0)) )
+    (format str "vtkChartXY ~a~%" cn)
+    (format str "  [~a GetAxis 0] SetGridVisible ~a~%"
+       cn
+       (case (first (get-option '$grid))
+         (0 0)
+         (otherwise 1))  )
+    (format str "  [~a GetAxis 1] SetGridVisible ~a~%~%"
+       cn
+       (case (second (get-option '$grid))
+         (0 0)
+         (otherwise 1))  )
+    str))
 
 (defun vtkcellarray-code (cn pn celldim ind)
   (let ((str (make-array 0 
@@ -331,6 +342,8 @@
     (when (> nrow 0)
       (setf dx (/ 1.0 ncol)
             dy (/ 1.0 nrow)))
+
+
     ; place scenes on the graphic window
     (loop for counter from 1 to ns do
       (setf thisalloc (car alloc))
@@ -348,6 +361,8 @@
                   y1 (* (- nrow (ceiling nilcounter ncol)) dy)
                   y2 (+ y1 dy))))
       (format str "  renderer~a SetViewport ~a ~a ~a ~a ~%" counter x1 y1 x2 y2))
+
+
     (format str "vtkRenderWindow renWin~%  renWin SetMultiSamples 0~%")
     (format str "  renWin SetSize ~a ~a~%" (car dim) (cadr dim))
     (loop for k from 1 to ns do
@@ -1261,8 +1276,8 @@
 
 
 
-;; parametric(xfun,yfun,zfun,par1,parmin,parmax)
-;; ---------------------------------------------
+;; 3D: parametric(xfun,yfun,zfun,par1,parmin,parmax)
+;; -------------------------------------------------
 (defun vtk3d-parametric (xfun yfun zfun par1 parmin parmax)
   (let* ((nticks       (gethash '$nticks    *gr-options*))
          (color        (gethash '$color     *gr-options*))
@@ -1375,8 +1390,83 @@
 
 
 
-;; parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)
-;; ----------------------------------------------------------------------------
+;; 2D: parametric(xfun,yfun,par,parmin,parmax)
+;; -----------------------------------
+;; Options:
+;;     nticks
+;;     line_width
+;;     line_type
+;;     color
+;;     key
+(defun vtk2d-parametric (xfun yfun par parmin parmax)
+  (let* ((nticks      (get-option '$nticks))
+         (linewidth   (get-option '$line_width))
+         (linetype    (get-option '$line_type))
+         (key         (get-option '$key))
+         (color       (hex-to-numeric-list (get-option '$color)))
+         (key         (get-option '$key))
+         (arrayX-name (get-arrayX-name))
+         (arrayY-name (get-arrayY-name))
+         (table-name  (get-table-name))
+         ($numer t)
+         (tmin ($float parmin))
+         (tmax ($float parmax))
+         (eps (/ (- tmax tmin) (- ($float nticks) 1)))
+         (*plot-realpart* *plot-realpart*)
+         (str (make-array 0 
+                  :element-type 'character 
+                  :adjustable t 
+                  :fill-pointer 0))
+         (tt ($float parmin))
+         result f1 f2 xx yy result-array)
+
+    (when (< tmax tmin)
+       (merror "draw2d (parametric): illegal range"))
+    (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par)))
+       (merror "draw2d (parametric): non defined variable"))
+    (setq *plot-realpart* (get-option '$draw_realpart))
+    (setq f1 (coerce-float-fun xfun `((mlist), par)))
+    (setq f2 (coerce-float-fun yfun `((mlist), par)))
+    (setf result
+       (loop
+          do (setf xx ($float (funcall f1 tt)))
+             (setf yy ($float (funcall f2 tt)))
+             (transform-point 2)
+          collect xx
+          collect yy
+          when (>= tt tmax) do (loop-finish)
+          do (setq tt (+ tt eps))
+             (if (>= tt tmax) (setq tt tmax)) ))
+    (setf result-array (make-array (length result) :initial-contents result))
+
+    ; tcl-vtk code
+    (format str "vtkFloatArray ~a~%" arrayX-name)
+    (format str "  ~a SetName '~a'~%" arrayX-name arrayX-name)
+    (format str "vtkFloatArray ~a~%" arrayY-name)
+    (format str "  ~a SetName '~a'~%" arrayY-name key)
+    (loop for i from 0 below (length result) by 2 do
+      (format str "~a InsertNextValue ~a~%" arrayX-name (aref result-array i))
+      (format str "~a InsertNextValue ~a~%" arrayY-name (aref result-array (+ i 1)))  )
+    (format str "vtkTable ~a~%" table-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
+    (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
+    (format str "  $line SetInputData ~a 0 1~%" table-name)
+    (format str "  $line SetColor ~a ~a ~a 255 ~%"
+      (round (* 255 (first color)))
+      (round (* 255 (second color)))
+      (round (* 255 (third color))) )
+    (format str "  $line SetWidth ~a~%" linewidth)
+    (format str "  eval [$line GetPen] SetLineType ~a~%~%"
+      (case linetype ; translate some gnuplot codes into vtk codes
+        (0 3)
+        (6 4)
+        (otherwise linetype) ) ) ))
+
+
+
+;; 3D: parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)
+;; --------------------------------------------------------------------------------
 (defun build-surface-grid (nx ny)
   (let ((poly nil)
         cont)
@@ -1518,8 +1608,8 @@
 
 
 
-;; explicit(fcn,par1,minval1,maxval1,par2,minval2,maxval2)
-;; -------------------------------------------------------
+;; 3D: explicit(fcn,par1,minval1,maxval1,par2,minval2,maxval2)
+;; -----------------------------------------------------------
 (defun vtk3d-explicit (fcn par1 minval1 maxval1 par2 minval2 maxval2)
   (let* ((xu_grid      (gethash '$xu_grid *gr-options*))
          (yv_grid      (gethash '$yv_grid *gr-options*))
@@ -1624,25 +1714,36 @@
 
 
 
+;; 2D: explicit(fcn,var,minval,maxval)
+;; -----------------------------------
+;; Options:
+;;     nticks
+;;     adapt_depth
+;;     line_width
+;;     line_type
+;;     color
+;;     key
 (defun vtk2d-explicit (fcn var minval maxval)
   (let* ((nticks      (get-option '$nticks))
          (adaptdepth  (get-option '$adapt_depth))
          (linewidth   (get-option '$line_width))
          (linetype    (get-option '$line_type))
-         (color       (get-option '$color))
+         (key         (get-option '$key))
+         (color       (hex-to-numeric-list (get-option '$color)))
          (key         (get-option '$key))
          (xmin        ($float minval))
          (xmax        ($float maxval))
          (x-step      (/ (- xmax xmin) ($float nticks) 2))
          (arrayX-name (get-arrayX-name))
          (arrayY-name (get-arrayY-name))
+         (table-name  (get-table-name))
          (*plot-realpart* *plot-realpart*)
-
-(output-string "")
-
+         (str (make-array 0 
+                  :element-type 'character 
+                  :adjustable t 
+                  :fill-pointer 0))
          ($numer t)
          x-samples y-samples result result-array )
-
     (when (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
     (setq *plot-realpart* (get-option '$draw_realpart))
@@ -1671,16 +1772,10 @@
             (let ((items sublst) (item 'nil))
 	      ;; Search for the item in sublist that is the undefined variable
 	      (while items
-		(if
-		    (not
-		     (or (numberp (car items)) (eq (car items) t) ))
-		    (setq item (car items))
-		  )
-		(setq items (cdr items))
-		)
-	      (merror "draw2d (explicit): non defined variable in term ~M" item)
-	      )
-	    )
+		(when (not (or (numberp (car items)) (eq (car items) t) ))
+		    (setq item (car items)) )
+		(setq items (cdr items)) )
+	      (merror "draw2d (explicit): non defined variable in term ~M" item) ) )
           (when (not (null result))
             (setf sublst (cddr sublst)))
           (do ((lst sublst (cddr lst)))
@@ -1707,34 +1802,29 @@
          ; No geometric transformation invoked.
          (setf result-array (make-array (length result)
                                         :initial-contents result))))
-
     ; tcl-vtk code
-
-(concatenate 'string
-  (format nil "vtkChartXY chart~%")
-  (format nil "vtkFloatArray arrayX1~%")
-  (format nil "  arrayX1 SetName 'arrayX1'~%")
-  (format nil "vtkFloatArray arrayY1~%")
-  (format nil "  arrayY1 SetName 'arrayY1'~%")
-  (format nil "arrayX1 InsertNextValue 1.0~%")
-  (format nil "arrayX1 InsertNextValue 2.0~%")
-  (format nil "arrayX1 InsertNextValue 3.0~%")
-  (format nil "arrayX1 InsertNextValue 4.0~%")
-  (format nil "arrayX1 InsertNextValue 7.0~%")
-  (format nil "arrayY1 InsertNextValue 2.0~%")
-  (format nil "arrayY1 InsertNextValue 3.0~%")
-  (format nil "arrayY1 InsertNextValue 6.0~%")
-  (format nil "arrayY1 InsertNextValue 1.0~%")
-  (format nil "arrayY1 InsertNextValue 3.0~%")
-  (format nil "vtkTable table1~%")
-  (format nil "  table1 AddColumn arrayX1~%")
-  (format nil "  table1 AddColumn arrayY1~%")
-  (format nil "set line [chart AddPlot 0]~%")
-  (format nil "  $line SetInputData table1 0 1~%")
-  (format nil "  $line SetColor 0 255 0 255 ~%")
-  (format nil "  $line SetWidth 1.0~%")   )
-
- ) )
+    (format str "vtkFloatArray ~a~%" arrayX-name)
+    (format str "  ~a SetName '~a'~%" arrayX-name arrayX-name)
+    (format str "vtkFloatArray ~a~%" arrayY-name)
+    (format str "  ~a SetName '~a'~%" arrayY-name key)
+    (loop for i from 0 below (length result) by 2 do
+      (format str "~a InsertNextValue ~a~%" arrayX-name (aref result-array i))
+      (format str "~a InsertNextValue ~a~%" arrayY-name (aref result-array (+ i 1)))  )
+    (format str "vtkTable ~a~%" table-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
+    (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
+    (format str "  $line SetInputData ~a 0 1~%" table-name)
+    (format str "  $line SetColor ~a ~a ~a 255 ~%"
+      (round (* 255 (first color)))
+      (round (* 255 (second color)))
+      (round (* 255 (third color))) )
+    (format str "  $line SetWidth ~a~%" linewidth)
+    (format str "  eval [$line GetPen] SetLineType ~a~%~%"
+      (case linetype ; translate some gnuplot codes into vtk codes
+        (0 3)
+        (6 4)
+        (otherwise linetype) ) ) ))
 
 
 
@@ -1990,11 +2080,12 @@
 
 ; table of 2d graphic objects
 (setf (gethash '$explicit           *vtk2d-graphic-objects*) 'vtk2d-explicit
-             )
+      (gethash '$parametric         *vtk2d-graphic-objects*) 'vtk2d-parametric       )
 
 (defun make-vtk-scene-2d (args)
   (let ((objects "")
-        (viewer-name        (get-viewer-name))
+        (chart-name     (get-chart-name))
+        (renderer-name  (get-renderer-name))
         largs obj)
     (ini-gr-options)
     (ini-local-option-variables)
@@ -2014,6 +2105,8 @@
                 ($nticks           (update-positive-integer  '$nticks           ($rhs x)))
                 ($line_width       (update-positive-float    '$line_width       ($rhs x)))
                 ($line_type        (update-linestyle         '$line_type        ($rhs x)))
+                ($key              (update-string            '$key              ($rhs x)))
+                ($grid             (update-gr-option         '$grid             ($rhs x)))
                 ($transform        (update-transform                            ($rhs x)))
                 ($points_joined    (update-pointsjoined                         ($rhs x)))
                 ($point_type       (update-pointtype                            ($rhs x)))
@@ -2029,19 +2122,16 @@
                        (apply obj (rest x)))))
 
             (t
-              (merror "vtk2d: item ~M is not recognized" x))))    
+              (merror "vtk2d: item ~M is not recognized" x))))
     ; scene allocation
     (setf *allocations* (cons (get-option '$allocation) *allocations*))
     (concatenate 'string
+      (vtkchartxy-code chart-name)
       objects
-      (vtkcontextview-code
-        viewer-name
-        (gethash '$background_color *gr-options*))  )))
-
-
-
-
-
+      (vtkrenderer2d-code
+         chart-name
+         renderer-name
+         (gethash '$background_color *gr-options*))  )))
 
 
 
@@ -2135,17 +2225,15 @@
       (vtkactor-code outlineactor-name polydatamapper-name "#ff0000" 1 1 nil)
       (vtktextproperty-code textproperty-name)
       (vtkcubeaxesactor2d-code cubeaxesactor2d-name appenddata-name textproperty-name)
-      (vtkrenderer-code
+      (vtkrenderer3d-code
         renderer-name
         cubeaxesactor2d-name
         outlineactor-name
         (gethash '$background_color *gr-options*)
-        actor-first)
-      (vtkcamera-code
+        actor-first
         camera-name
-        renderer-name
         (car  (gethash '$view *gr-options*))
-        (cadr (gethash '$view *gr-options*))))))
+        (cadr (gethash '$view *gr-options*)) ) )))
 
 
 
@@ -2181,6 +2269,10 @@
           *vtk-triangle-counter* 0
           *vtk-label-counter* 0
           *vtk-tube-counter* 0
+          *vtk-chart-counter* 0
+          *vtk-table-counter* 0
+          *vtk-arrayX-counter* 0
+          *vtk-arrayY-counter* 0
           *lookup-tables* nil
           *unitscale-already-defined* nil
           *label-actors* nil)
