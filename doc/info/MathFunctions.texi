@@ -543,7 +543,7 @@ calculates the absolute value of @code{x + %i*y} as
 @end group
 @end example
 
-If @code{cabs} returns a noun form this most communly is caused by
+If @code{cabs} returns a noun form this most commonly is caused by
 some properties of the variables involved not being known:
 @c ===beg===
 @c cabs (a+%i*b);
