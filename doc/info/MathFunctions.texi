@@ -139,19 +139,29 @@ Here are examples of the simplifications that @code{ceiling} knows about:
 @c tex (ceiling (a));
 @c ===end===
 @example
+@group
 (%i1) ceiling (ceiling (x));
 (%o1)                      ceiling(x)
+@end group
+@group
 (%i2) ceiling (floor (x));
 (%o2)                       floor(x)
+@end group
 (%i3) declare (n, integer)$
+@group
 (%i4) [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
-(%o4)                [n, abs(n), max(n, 6)]
+(%o4)                [n, abs(n), max(6, n)]
+@end group
 (%i5) assume (x > 0, x < 1)$
+@group
 (%i6) ceiling (x);
 (%o6)                           1
+@end group
+@group
 (%i7) tex (ceiling (a));
 $$\left \lceil a \right \rceil$$
 (%o7)                         false
+@end group
 @end example
 
 The @code{ceiling} function distributes over lists, matrices and equations.
@@ -171,10 +181,14 @@ can use this information; for example:
 @c ===end===
 @example
 (%i1) declare (f, integervalued)$
+@group
 (%i2) floor (f(x));
 (%o2)                         f(x)
+@end group
+@group
 (%i3) ceiling (f(x) - 1);
 (%o3)                       f(x) - 1
+@end group
 @end example
 
 Example use:
@@ -195,39 +209,57 @@ Example use:
 @c apply ("+", %);
 @c ===end===
 @example
-@group
 (%i1) unitfrac(r) := block([uf : [], q],
     if not(ratnump(r)) then
        error("unitfrac: argument must be a rational number"),
     while r # 0 do (
         uf : cons(q : 1/ceiling(1/r), uf),
         r : r - q),
-    reverse(uf))$
-@end group
+    reverse(uf));
+(%o1) unitfrac(r) := block([uf : [], q], 
+if not ratnump(r) then error("unitfrac: argument must be a rational number"
+                                     1
+), while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+                                         1
+                                 ceiling(-)
+                                         r
+reverse(uf))
+@group
 (%i2) unitfrac (9/10);
                             1  1  1
 (%o2)                      [-, -, --]
                             2  3  15
+@end group
+@group
 (%i3) apply ("+", %);
                                9
 (%o3)                          --
                                10
+@end group
+@group
 (%i4) unitfrac (-9/10);
                                   1
 (%o4)                       [- 1, --]
                                   10
+@end group
+@group
 (%i5) apply ("+", %);
                                 9
 (%o5)                         - --
                                 10
+@end group
+@group
 (%i6) unitfrac (36/37);
                         1  1  1  1    1
 (%o6)                  [-, -, -, --, ----]
                         2  3  8  69  6808
+@end group
+@group
 (%i7) apply ("+", %);
                                36
 (%o7)                          --
                                37
+@end group
 @end example
 
 @opencatbox
@@ -275,19 +307,29 @@ are examples of the simplifications that @code{floor} knows about:
 @c tex (floor (a));
 @c ===end===
 @example
+@group
 (%i1) floor (ceiling (x));
 (%o1)                      ceiling(x)
+@end group
+@group
 (%i2) floor (floor (x));
 (%o2)                       floor(x)
+@end group
 (%i3) declare (n, integer)$
+@group
 (%i4) [floor (n), floor (abs (n)), floor (min (n, 6))];
-(%o4)                [n, abs(n), min(n, 6)]
+(%o4)                [n, abs(n), min(6, n)]
+@end group
 (%i5) assume (x > 0, x < 1)$
+@group
 (%i6) floor (x);
 (%o6)                           0
+@end group
+@group
 (%i7) tex (floor (a));
 $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
+@end group
 @end example
 
 The @code{floor} function distributes over lists, matrices and equations.
@@ -307,10 +349,14 @@ can use this information; for example:
 @c ===end===
 @example
 (%i1) declare (f, integervalued)$
+@group
 (%i2) floor (f(x));
 (%o2)                         f(x)
+@end group
+@group
 (%i3) ceiling (f(x) - 1);
 (%o3)                       f(x) - 1
+@end group
 @end example
 
 @opencatbox
@@ -462,9 +508,74 @@ number.  Unlike the function @mrefcomma{abs} the @code{cabs} function always
 decomposes its argument into a real and an imaginary part.  If @code{x} and
 @code{y} represent real variables or expressions, the @code{cabs} function
 calculates the absolute value of @code{x + %i*y} as
+@c ===beg===
+@c cabs (1);
+@c cabs (1 + %i);
+@c cabs (exp (%i));
+@c cabs (exp (%pi * %i));
+@c cabs (exp (3/2 * %pi * %i));
+@c cabs (17 * exp (2 * %i));
+@c ===end===
 @example
-                           2    2
-                     sqrt(y  + x )
+@group
+(%i1) cabs (1);
+(%o1)                           1
+@end group
+@group
+(%i2) cabs (1 + %i);
+(%o2)                        sqrt(2)
+@end group
+@group
+(%i3) cabs (exp (%i));
+(%o3)                           1
+@end group
+@group
+(%i4) cabs (exp (%pi * %i));
+(%o4)                           1
+@end group
+@group
+(%i5) cabs (exp (3/2 * %pi * %i));
+(%o5)                           1
+@end group
+@group
+(%i6) cabs (17 * exp (2 * %i));
+(%o6)                          17
+@end group
+@end example
+
+If @code{cabs} returns a noun form this most commonly is caused by
+some properties of the variables involved not being known:
+@c ===beg===
+@c cabs (a+%i*b);
+@c declare(a,real,b,real);
+@c cabs (a+%i*b);
+@c assume(a>0,b>0);
+@c cabs (a+%i*b);
+@c ===end===
+@example
+@group
+(%i1) cabs (a+%i*b);
+                                2    2
+(%o1)                     sqrt(b  + a )
+@end group
+@group
+(%i2) declare(a,real,b,real);
+(%o2)                         done
+@end group
+@group
+(%i3) cabs (a+%i*b);
+                                2    2
+(%o3)                     sqrt(b  + a )
+@end group
+@group
+(%i4) assume(a>0,b>0);
+(%o4)                    [a > 0, b > 0]
+@end group
+@group
+(%i5) cabs (a+%i*b);
+                                2    2
+(%o5)                     sqrt(b  + a )
+@end group
 @end example
 
 The @code{cabs} function can use known properties like symmetry properties of
@@ -555,22 +666,72 @@ Examples:
 @c carg (17 * exp (2 * %i));
 @c ===end===
 @example
+@group
 (%i1) carg (1);
 (%o1)                           0
+@end group
+@group
 (%i2) carg (1 + %i);
                                %pi
 (%o2)                          ---
                                 4
+@end group
+@group
 (%i3) carg (exp (%i));
-(%o3)                           1
+                               sin(1)
+(%o3)                     atan(------)
+                               cos(1)
+@end group
+@group
 (%i4) carg (exp (%pi * %i));
 (%o4)                          %pi
+@end group
+@group
 (%i5) carg (exp (3/2 * %pi * %i));
                                 %pi
 (%o5)                         - ---
                                  2
+@end group
+@group
 (%i6) carg (17 * exp (2 * %i));
-(%o6)                           2
+                            sin(2)
+(%o6)                  atan(------) + %pi
+                            cos(2)
+@end group
+@end example
+
+If @code{carg} returns a noun form this most communly is caused by
+some properties of the variables involved not being known:
+@c ===beg===
+@c carg (a+%i*b);
+@c declare(a,real,b,real);
+@c carg (a+%i*b);
+@c assume(a>0,b>0);
+@c carg (a+%i*b);
+@c ===end===
+@example
+@group
+(%i1) carg (a+%i*b);
+(%o1)                      atan2(b, a)
+@end group
+@group
+(%i2) declare(a,real,b,real);
+(%o2)                         done
+@end group
+@group
+(%i3) carg (a+%i*b);
+(%o3)                      atan2(b, a)
+@end group
+@group
+(%i4) assume(a>0,b>0);
+(%o4)                    [a > 0, b > 0]
+@end group
+@group
+(%i5) carg (a+%i*b);
+                                  b
+(%o5)                        atan(-)
+                                  a
+@end group
 @end example
 
 @opencatbox
@@ -592,21 +753,26 @@ Returns the complex conjugate of @var{x}.
 @c conjugate (xx + yy);
 @c ===end===
 @example
+@group
 (%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
-
 (%o1)                         done
+@end group
+@group
 (%i2) conjugate (aa + bb*%i);
-
 (%o2)                      aa - %i bb
+@end group
+@group
 (%i3) conjugate (cc);
-
 (%o3)                     conjugate(cc)
+@end group
+@group
 (%i4) conjugate (ii);
-
 (%o4)                         - ii
+@end group
+@group
 (%i5) conjugate (xx + yy);
-
-(%o5)             conjugate(yy) + conjugate(xx)
+(%o5)                        yy + xx
+@end group
 @end example
 
 @opencatbox
@@ -636,14 +802,22 @@ Example:
 @c imagpart (sqrt(2)*%i);
 @c ===end===
 @example
+@group
 (%i1) imagpart (a+b*%i);
-(%o1)                                  b
+(%o1)                           b
+@end group
+@group
 (%i2) imagpart (1+sqrt(2)*%i);
-(%o2)                               sqrt(2)
+(%o2)                        sqrt(2)
+@end group
+@group
 (%i3) imagpart (1);
-(%o3)                                  0
+(%o3)                           0
+@end group
+@group
 (%i4) imagpart (sqrt(2)*%i);
-(%o4)                               sqrt(2)
+(%o4)                        sqrt(2)
+@end group
 @end example
 
 @opencatbox
@@ -668,17 +842,23 @@ Example:
 @c polarform(1+2*%i);
 @c ===end===
 @example
+@group
 (%i1) polarform(a+b*%i);
-                              2    2    %i atan2(b, a)
-(%o1)                   sqrt(b  + a ) %e
+                       2    2    %i atan2(b, a)
+(%o1)            sqrt(b  + a ) %e
+@end group
+@group
 (%i2) polarform(1+%i);
-                                         %i %pi
-                                         ------
-                                           4
-(%o2)                          sqrt(2) %e
+                                  %i %pi
+                                  ------
+                                    4
+(%o2)                   sqrt(2) %e
+@end group
+@group
 (%i3) polarform(1+2*%i);
-                                       %i atan(2)
-(%o3)                        sqrt(5) %e
+                                %i atan(2)
+(%o3)                 sqrt(5) %e
+@end group
 @end example
 
 @opencatbox
@@ -703,14 +883,22 @@ Example:
 @c realpart (1);
 @c ===end===
 @example
+@group
 (%i1) realpart (a+b*%i);
-(%o1)                                  a
+(%o1)                           a
+@end group
+@group
 (%i2) realpart (1+sqrt(2)*%i);
-(%o2)                                  1
+(%o2)                           1
+@end group
+@group
 (%i3) realpart (sqrt(2)*%i);
-(%o3)                                  0
+(%o3)                           0
+@end group
+@group
 (%i4) realpart (1);
-(%o4)                                  1
+(%o4)                           1
+@end group
 @end example
 
 @opencatbox
@@ -733,12 +921,18 @@ Example:
 @c rectform(sqrt(5)*%e^(%i*atan(2)));
 @c ===end===
 @example
+@group
 (%i1) rectform(sqrt(2)*%e^(%i*%pi/4));
-(%o1)                               %i + 1
+(%o1)                        %i + 1
+@end group
+@group
 (%i2) rectform(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
-(%o2)                              %i b + a
+(%o2)                       %i b + a
+@end group
+@group
 (%i3) rectform(sqrt(5)*%e^(%i*atan(2)));
-(%o3)                              2 %i + 1
+(%o3)                       2 %i + 1
+@end group
 @end example
 
 @opencatbox
@@ -800,20 +994,30 @@ Examples:
 @c binomial (11, y);
 @c ===end===
 @example
+@group
 (%i1) binomial (11, 7);
 (%o1)                          330
+@end group
+@group
 (%i2) 11! / 7! / (11 - 7)!;
 (%o2)                          330
+@end group
+@group
 (%i3) binomial (x, 7);
         (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
 (%o3)   -------------------------------------------------
                               5040
+@end group
+@group
 (%i4) binomial (x + 7, x);
       (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
 (%o4) -------------------------------------------------------
                                5040
+@end group
+@group
 (%i5) binomial (11, y);
 (%o5)                    binomial(11, y)
+@end group
 @end example
 
 @opencatbox
@@ -843,20 +1047,32 @@ Example:
 @c factcomb (%);
 @c ===end===
 @example
+@group
 (%i1) sumsplitfact;
-(%o1)                                true
+(%o1)                         true
+@end group
+@group
 (%i2) (n + 1)*(n + 1)*n!;
-                                         2
-(%o2)                             (n + 1)  n!
+                                  2
+(%o2)                      (n + 1)  n!
+@end group
+@group
 (%i3) factcomb (%);
-(%o3)                         (n + 2)! - (n + 1)!
+(%o3)                  (n + 2)! - (n + 1)!
+@end group
+@group
 (%i4) sumsplitfact: not sumsplitfact;
-(%o4)                                false
+(%o4)                         false
+@end group
+@group
 (%i5) (n + 1)*(n + 1)*n!;
-                                          2
-(%o5)                             (n + 1)  n!
+                                  2
+(%o5)                      (n + 1)  n!
+@end group
+@group
 (%i6) factcomb (%);
-(%o6)                        n (n + 1)! + (n + 1)!
+(%o6)                 n (n + 1)! + (n + 1)!
+@end group
 @end example
 
 @opencatbox
@@ -914,20 +1130,26 @@ evaluated in float or bigfloat precision.
 @c [2.86b0!, 1.0b0+%i)!];
 @c ===end===
 @example
-(%i1) factlim:10;
-(%o1)                                 10
-(%i2) [0!, (7/2)!, 8!, 20!];
 @group
-                            105 sqrt(%pi)
-(%o2)                   [1, -------------, 40320, 20!]
-                                 16
+(%i1) factlim : 10;
+(%o1)                          10
 @end group
-(%i3) [4.77!, (1.0+%i)!];
-(%o3)    [81.44668037931197, 
-          .3430658398165454 %i + .6529654964201665]
-(%i4) [2.86b0!, (1.0b0+%i)!];
-(%o4) [5.046635586910012b0, 
-       3.430658398165454b-1 %i + 6.529654964201667b-1]
+@group
+(%i2) [0!, (7/2)!, 8!, 20!];
+                     105 sqrt(%pi)
+(%o2)            [1, -------------, 40320, 20!]
+                          16
+@end group
+@group
+(%i3) [4,77!, (1.0+%i)!];
+(%o3) [4, 77!, 0.3430658398165453 %i + 0.6529654964201667]
+@end group
+@group
+(%i4) [2.86b0!, 1.0b0+%i)!];
+incorrect syntax: Missing ]
+[2.86b0!, 1.0b0+%i)
+                 ^
+@end group
 @end example
 
 The factorial of a known constant, or general expression is not simplified.
@@ -939,12 +1161,15 @@ operand.
 @c ev (%, numer, %enumer);
 @c ===end===
 @example
+@group
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
+@end group
+@group
 (%i2) ev (%, numer, %enumer);
-(%o2) [.3430658398165454 %i + .6529654964201665, 
-       7.188082728976031, 
-       4.260820476357003, 1.227580202486819]
+(%o2) [0.3430658398165453 %i + 0.6529654964201667, 
+         7.188082728976031, 4.260820476357003, 1.227580202486819]
+@end group
 @end example
 
 @c REMOVING THIS EXAMPLE. IT IS NOT SPECIFIC FOR THE FACTORIAL FUNCTION:
@@ -968,11 +1193,13 @@ Thus @code{x!} may be replaced even in a quoted expression.
 @c '([0!, (7/2)!, 4.77!, 8!, 20!]);
 @c ===end===
 @example
+@group
 (%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
           105 sqrt(%pi)
-(%o1) [1, -------------, 81.44668037931199, 40320, 
+(%o1) [1, -------------, 81.44668037931197, 40320, 
                16
                                              2432902008176640000]
+@end group
 @end example
 
 Maxima knows the derivative of the factorial function.
@@ -981,9 +1208,11 @@ Maxima knows the derivative of the factorial function.
 @c diff(x!,x);
 @c ===end===
 @example
+@group
 (%i1) diff(x!,x);
-(%o1)                           x! psi (x + 1)
-                                      0
+(%o1)                    x! psi (x + 1)
+                               0
+@end group
 @end example
 
 The option variable @code{factorial_expand} controls expansion and 
@@ -993,8 +1222,10 @@ simplification of expressions with the factorial function.
 @c (n+1)!/n!,factorial_expand:true;
 @c ===end===
 @example
+@group
 (%i1) (n+1)!/n!,factorial_expand:true;
-(%o1)                                n + 1
+(%o1)                         n + 1
+@end group
 @end example
 
 @opencatbox
@@ -1007,7 +1238,7 @@ simplification of expressions with the factorial function.
 @c -----------------------------------------------------------------------------
 @anchor{factlim}
 @defvr {Option variable} factlim
-Default value: -1
+Default value: 100000
 
 @code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
@@ -1093,28 +1324,39 @@ When @code{sumsplitfact} is @code{false},
 @c n!/(n+2)!;
 @c factcomb(%);
 @c ===end=== 
-
 @example
-(%i1) sumsplitfact
-(%o1)                                true
-(%i2) n!/(2+n)!
-                                      n!
-(%o2)                              --------
-                                   (n + 2)!
-(%i3) factcomb(%)
-                                      n!
-(%o3)                              --------
-                                   (n + 2)!
-(%i4) sumsplitfact:not sumsplitfact
-(%o4)                                false
-(%i5) n!/(2+n)!
-                                      n!
-(%o5)                              --------
-                                   (n + 2)!
-(%i6) factcomb(%)
-                                       1
-(%o6)                           ---------------
-                                (n + 1) (n + 2)
+@group
+(%i1) sumsplitfact;
+(%o1)                         true
+@end group
+@group
+(%i2) n!/(n+2)!;
+                               n!
+(%o2)                       --------
+                            (n + 2)!
+@end group
+@group
+(%i3) factcomb(%);
+                               n!
+(%o3)                       --------
+                            (n + 2)!
+@end group
+@group
+(%i4) sumsplitfact: not sumsplitfact ;
+(%o4)                         false
+@end group
+@group
+(%i5) n!/(n+2)!;
+                               n!
+(%o5)                       --------
+                            (n + 2)!
+@end group
+@group
+(%i6) factcomb(%);
+                                1
+(%o6)                    ---------------
+                         (n + 1) (n + 2)
+@end group
 @end example
 
 @opencatbox
@@ -1172,29 +1414,43 @@ When @code{%emode} is @code{false}, no special simplification of
 @c %e^(%pi*%i*121/144);
 @c ===end===
 @example
-(%i1) %emode
-(%o1)                                true
-(%i2) %e^(%pi*%i*1)
-(%o2)                                 - 1
-(%i3) %e^(%pi*%i*216/144)
-(%o3)                                - %i
-(%i4) %e^(%pi*%i*192/144)
-                                 sqrt(3) %i   1
-(%o4)                          - ---------- - -
-                                     2        2
-(%i5) %e^(%pi*%i*180/144)
-                                  %i         1
-(%o5)                         - ------- - -------
-                                sqrt(2)   sqrt(2)
-(%i6) %e^(%pi*%i*120/144)
-                                 %i   sqrt(3)
-(%o6)                            -- - -------
-                                 2       2
-(%i7) %e^(%pi*%i*121/144)
-                                   121 %i %pi
-                                   ----------
-                                      144
-(%o7)                            %e
+@group
+(%i1) %emode;
+(%o1)                         true
+@end group
+@group
+(%i2) %e^(%pi*%i*1);
+(%o2)                          - 1
+@end group
+@group
+(%i3) %e^(%pi*%i*216/144);
+(%o3)                         - %i
+@end group
+@group
+(%i4) %e^(%pi*%i*192/144);
+                          sqrt(3) %i    1
+(%o4)                  (- ----------) - -
+                              2         2
+@end group
+@group
+(%i5) %e^(%pi*%i*180/144);
+                           %i          1
+(%o5)                 (- -------) - -------
+                         sqrt(2)    sqrt(2)
+@end group
+@group
+(%i6) %e^(%pi*%i*120/144);
+                          %i   sqrt(3)
+(%o6)                     -- - -------
+                          2       2
+@end group
+@group
+(%i7) %e^(%pi*%i*121/144);
+                            121 %i %pi
+                            ----------
+                               144
+(%o7)                     %e
+@end group
 @end example
 
 @opencatbox
@@ -1227,25 +1483,43 @@ See also @mref{ev} and @mrefdot{numer}
 @c 2*%e^x;  
 @c ===end===
 @example
-(%i1) %enumer
-(%o1)                                false
-(%i2) numer
-(%o2)                                false
-(%i3) 2*%e
-(%o3)                                2 %e
-(%i4) %enumer:not %enumer
-(%o4)                                true
-(%i5) 2*%e
-(%o5)                                2 %e
-(%i6) numer:not numer
-(%o6)                                true
-(%i7) 2*%e
-(%o7)                          5.43656365691809
-(%i8) 2*%e^1
-(%o8)                          5.43656365691809
-(%i9) 2*%e^x
-                                               x
-(%o9)                       2 2.718281828459045 
+@group
+(%i1) %enumer;
+(%o1)                         false
+@end group
+@group
+(%i2) numer;
+(%o2)                         false
+@end group
+@group
+(%i3) 2*%e;
+(%o3)                         2 %e
+@end group
+@group
+(%i4) %enumer: not %enumer;
+(%o4)                         true
+@end group
+@group
+(%i5) 2*%e;
+(%o5)                         2 %e
+@end group
+@group
+(%i6) numer: not numer;
+(%o6)                         true
+@end group
+@group
+(%i7) 2*%e;
+(%o7)                   5.43656365691809
+@end group
+@group
+(%i8) 2*%e^1;
+(%o8)                   5.43656365691809
+@end group
+@group
+(%i9) 2*%e^x;
+                                         x
+(%o9)                 2 2.718281828459045
+@end group
 @end example
 
 @opencatbox
@@ -1280,16 +1554,24 @@ See @mrefdot{%emode}
 @c %e^(a + b*%i);
 @c ===end===
 @example
+@group
 (%i1) demoivre;
-(%o1)                                false
+(%o1)                         false
+@end group
+@group
 (%i2) %e^(a + b*%i);
-                                    %i b + a
-(%o2)                             %e
+                             %i b + a
+(%o2)                      %e
+@end group
+@group
 (%i3) demoivre: not demoivre;
-(%o3)                                true
+(%o3)                         true
+@end group
+@group
 (%i4) %e^(a + b*%i);
-                             a
-(%o4)                      %e  (%i sin(b) + cos(b))
+                      a
+(%o4)               %e  (%i sin(b) + cos(b))
+@end group
 @end example
 
 @opencatbox
@@ -1346,39 +1628,55 @@ Examples:
 @c map (lambda ([x], li [3] (x)), L);
 @c ===end===
 @example
+@group
 (%i1) assume (x > 0);
 (%o1)                        [x > 0]
+@end group
+@group
 (%i2) integrate ((log (1 - t)) / t, t, 0, x);
 (%o2)                       - li (x)
                                 2
+@end group
+@group
 (%i3) li [2] (7);
 (%o3)                        li (7)
                                2
+@end group
+@group
 (%i4) li [2] (7), numer;
-(%o4)        1.24827317833392 - 6.113257021832577 %i
+(%o4)       1.248273182099423 - 6.113257028817991 %i
+@end group
+@group
 (%i5) li [3] (7);
 (%o5)                        li (7)
                                3
+@end group
+@group
 (%i6) li [2] (7), numer;
-(%o6)        1.24827317833392 - 6.113257021832577 %i
+(%o6)       1.248273182099423 - 6.113257028817991 %i
+@end group
+@group
 (%i7) L : makelist (i / 4.0, i, 0, 8);
 (%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
-(%i8) map (lambda ([x], li [2] (x)), L);
-@group
-(%o8) [0, .2676526384986274, .5822405249432515, 
-.9784693966661848, 1.64493407, 2.190177004178597
- - .7010261407036192 %i, 2.374395264042415
- - 1.273806203464065 %i, 2.448686757245154
- - 1.758084846201883 %i, 2.467401098097648
- - 2.177586087815347 %i]
 @end group
+@group
+(%i8) map (lambda ([x], li [2] (x)), L);
+(%o8) [0.0, 0.2676526390827326, 0.5822405264650125, 
+0.978469392930306, 1.644934066848226, 
+2.190177011441645 - 0.7010261415046585 %i, 
+2.37439527027248 - 1.2738062049196 %i, 
+2.448686765338205 - 1.758084848210787 %i, 
+2.467401100272339 - 2.177586090303601 %i]
+@end group
+@group
 (%i9) map (lambda ([x], li [3] (x)), L);
-(%o9) [0, .2584613953442624, 0.537213192678042, 
-.8444258046482203, 1.2020569, 1.642866878950322
- - .07821473130035025 %i, 2.060877505514697
- - .2582419849982037 %i, 2.433418896388322
- - .4919260182322965 %i, 2.762071904015935
- - .7546938285978846 %i]
+(%o9) [0.0, 0.2584613953442624, 0.537213192678042, 
+0.8444258046482203, 1.2020569, 1.642866878950322
+ - 0.07821473130035025 %i, 2.060877505514697
+ - 0.2582419849982037 %i, 2.433418896388322
+ - 0.4919260182322965 %i, 2.762071904015935
+ - 0.7546938285978846 %i]
+@end group
 @end example
 
 @opencatbox
@@ -1496,9 +1794,11 @@ subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @c ===end===
 @example
 (%i1) 2*(a*log(x) + 2*a*log(y))$
+@group
 (%i2) logcontract(%);
                                  2  4
 (%o2)                     a log(x  y )
+@end group
 @end example
 
 The declaration @code{declare(n,integer)} causes
@@ -1712,9 +2012,9 @@ an integer variable.
 @c ===end===
 @example
 (%i1) declare (n, integer, m, even)$
+@group
 (%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
        cos (%pi/2 * m)];
-@group
                                       m/2
 (%o2)                  [0, 1, 0, (- 1)   ]
 @end group
@@ -1757,11 +2057,15 @@ Examples:
 @c ===end===
 @example
 (%i1) %iargs : false$
+@group
 (%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
 (%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+@end group
 (%i3) %iargs : true$
+@group
 (%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
 (%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end group
 @end example
 
 Even when the argument is demonstrably real, the simplification is applied.
@@ -2045,26 +2349,30 @@ Examples:
 @c sin(x / 2);
 @c ===end===
 @example
-(%i1) halfangles:false;
-(%o1)                                false
-(%i2) sin(x/2);
-                                        x
-(%o2)                               sin(-)
-                                        2
-(%i3) halfangles:true;
-(%o3)                                true
-(%i4) sin(x/2);
-                                                    x
-                                            floor(-----)
-                                                  2 %pi
-                      sqrt(1 - cos(x)) (- 1)
-(%o4)                 ----------------------------------
-                                   sqrt(2)
+(%i1) halfangles : false$
+@group
+(%i2) sin (x / 2);
+                                 x
+(%o2)                        sin(-)
+                                 2
+@end group
+(%i3) halfangles : true$
+@group
+(%i4) sin (x / 2);
+                            x
+                    floor(-----)
+                          2 %pi
+               (- 1)             sqrt(1 - cos(x))
+(%o4)          ----------------------------------
+                            sqrt(2)
+@end group
 (%i5) assume(x>0, x<2*%pi)$
-(%i6) sin(x/2);
-                               sqrt(1 - cos(x))
-(%o6)                          ----------------
-                                   sqrt(2)
+@group
+(%i6) sin(x / 2);
+                        sqrt(1 - cos(x))
+(%o6)                   ----------------
+                            sqrt(2)
+@end group
 @end example
 
 @opencatbox
@@ -2189,13 +2497,15 @@ Examples:
 @c trigexpand(sin(10*x+y));
 @c ===end===
 @example
-(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
 @group
-                         2           2
-(%o1)               - sin (x) + 3 cos (x) + x
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+                         2            2
+(%o1)              (- sin (x)) + 3 cos (x) + x
 @end group
+@group
 (%i2) trigexpand(sin(10*x+y));
 (%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
+@end group
 @end example
 
 @opencatbox
@@ -2276,8 +2586,8 @@ See also @code{poissimp}.
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
 @c ===end===
 @example
-(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
 @group
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
                cos(2 x)      cos(2 x)   1        1
 (%o1)          -------- + 3 (-------- + -) + x - -
                   2             2       2        2
@@ -2396,16 +2706,16 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @c ===end===
 @example
 (%i1) c : %pi/3 - a - b$
-(%i2) bc : sin(a)*sin(3*c)/sin(a+b);
 @group
-                                          %pi
-                  sin(a) sin(3 (- b - a + ---))
-                                           3
-(%o2)             -----------------------------
+(%i2) bc : sin(a)*sin(3*c)/sin(a+b);
+                                           %pi
+                 sin(a) sin(3 ((- b) - a + ---))
+                                            3
+(%o2)            -------------------------------
                            sin(b + a)
 @end group
-(%i3) ba : bc, c=a, a=c;
 @group
+(%i3) ba : bc, c=a, a=c;
                                          %pi
                     sin(3 a) sin(b + a - ---)
                                           3
@@ -2414,8 +2724,8 @@ Addison-Wesley), section 1.5.5, Morley theorem.
                           sin(a - ---)
                                    3
 @end group
-(%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
 @group
+(%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
          2         2         %pi
       sin (3 a) sin (b + a - ---)
                               3
@@ -2423,21 +2733,21 @@ Addison-Wesley), section 1.5.5, Morley theorem.
                 2     %pi
              sin (a - ---)
                        3
-                                       %pi
- - (2 sin(a) sin(3 a) sin(3 (- b - a + ---)) cos(b)
-                                        3
+                                         %pi
+ - (2 sin(a) sin(3 a) sin(3 ((- b) - a + ---)) cos(b)
+                                          3
              %pi            %pi
  sin(b + a - ---))/(sin(a - ---) sin(b + a))
               3              3
-      2       2              %pi
-   sin (a) sin (3 (- b - a + ---))
-                              3
- + -------------------------------
-                2
-             sin (b + a)
+      2       2                %pi
+   sin (a) sin (3 ((- b) - a + ---))
+                                3
+ + ---------------------------------
+                 2
+              sin (b + a)
 @end group
-(%i5) trigrat (ac2);
 @group
+(%i5) trigrat (ac2);
 (%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
  - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
  - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
@@ -2543,29 +2853,51 @@ Examples:
 @c ===end===
 @example
 (%i1) s1: make_random_state (654321)$
+@group
 (%i2) set_random_state (s1);
 (%o2)                         done
+@end group
+@group
 (%i3) random (1000);
 (%o3)                          768
+@end group
+@group
 (%i4) random (9573684);
 (%o4)                        7657880
+@end group
+@group
 (%i5) random (2^75);
 (%o5)                11804491615036831636390
+@end group
 (%i6) s2: make_random_state (false)$
+@group
 (%i7) random (1.0);
-(%o7)                   .2310127244107132
+(%o7)                  0.2310127244107132
+@end group
+@group
 (%i8) random (10.0);
 (%o8)                   4.394553645870825
+@end group
+@group
 (%i9) random (100.0);
 (%o9)                   32.28666704056853
+@end group
+@group
 (%i10) set_random_state (s2);
 (%o10)                        done
+@end group
+@group
 (%i11) random (1.0);
-(%o11)                  .2310127244107132
+(%o11)                 0.2310127244107132
+@end group
+@group
 (%i12) random (10.0);
 (%o12)                  4.394553645870825
+@end group
+@group
 (%i13) random (100.0);
 (%o13)                  32.28666704056853
+@end group
 @end example
 
 @opencatbox

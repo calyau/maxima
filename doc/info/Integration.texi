@@ -276,11 +276,11 @@ the interval of integration.  If there are, then the integral is evaluated
 appropriately as a principal value integral.  If intanalysis is @code{false}, 
 this check is not performed and integration is done assuming there are no poles.
 
-See also @code{ldefint}.
+See also @mrefdot{ldefint}
 
 Examples:
 
-Maxima can solve the following integrals, when @code{intanalysis} is set to
+Maxima can solve the following integrals, when @mref{intanalysis} is set to
 @code{false}:
 
 @c ===beg===
@@ -362,7 +362,7 @@ and trigonometric integrals.  Processing rational functions may include
 computation of residues.  If an applicable special case is not found, an attempt
 will be made to compute the indefinite integral and evaluate it at the limits of
 integration.  This may include taking a limit as a limit of integration goes to
-infinity or negative infinity; see also @code{ldefint}.
+infinity or negative infinity; see also @mrefdot{ldefint}
 
 Special cases of indefinite integrals include trigonometric functions,
 exponential and logarithmic functions,
@@ -374,15 +374,15 @@ if the integrand has the form @code{f(g(x)) * diff(g(x), x)}.
 @code{integrate} attempts to find a subexpression @code{g(x)} such that
 the derivative of @code{g(x)} divides the integrand.
 This search may make use of derivatives defined by the @code{gradef} function.
-See also @code{changevar} and @code{antid}.
+See also @mref{changevar} and @mrefdot{antid}
 
 If none of the preceding heuristics find the indefinite integral, the Risch
-algorithm is executed.  The flag @code{risch} may be set as an @code{evflag},
+algorithm is executed.  The flag @mref{risch} may be set as an @code{evflag},
 in a call to @code{ev} or on the command line, e.g.,
 @code{ev (integrate (@var{expr}, @var{x}), risch)} or
 @code{integrate (@var{expr}, @var{x}), risch}.  If @code{risch} is present,
-@code{integrate} calls the @code{risch} function without attempting heuristics
-first.  See also @code{risch}.
+@code{integrate} calls the @mref{risch} function without attempting heuristics
+first.  See also @mrefdot{risch}
 @c END EXPOSITION ON HEURISTICS
 
 @code{integrate} works only with functional relations represented explicitly
@@ -486,7 +486,7 @@ Return value contains the @code{'integrate} noun form.  In this example, Maxima
 can extract one factor of the denominator of a rational function, but cannot
 factor the remainder or otherwise find its integral.  @code{grind} shows the
 noun form @code{'integrate} in the result.  See also
-@code{integrate_use_rootsof} for more on integrals of rational functions.
+@mref{integrate_use_rootsof} for more on integrals of rational functions.
 
 @example
 @group

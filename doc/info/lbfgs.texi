@@ -30,6 +30,7 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
 
+@anchor{lbfgs_func}
 @deffn {Function} lbfgs @
 @fname{lbfgs} (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint}) @
 @fname{lbfgs} ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
@@ -99,7 +100,7 @@ An internal parameter of the search algorithm.
 Additional information concerning details of the algorithm are found in the
 comments of the original Fortran code [2].
 
-See also @code{lbfgs_nfeval_max} and @code{lbfgs_ncorrections}.
+See also @mref{lbfgs_nfeval_max} and @mrefdot{lbfgs_ncorrections}
 
 References:
 
@@ -424,6 +425,7 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 
 @end deffn
 
+@anchor{lbfgs_nfeval_max}
 @defvr {Variable} lbfgs_nfeval_max
 Default value: 100
 
@@ -437,6 +439,7 @@ When @code{lbfgs_nfeval_max} is reached,
 
 @end defvr
 
+@anchor{lbfgs_ncorrections}
 @defvr {Variable} lbfgs_ncorrections
 Default value: 25
 

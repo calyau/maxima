@@ -46,6 +46,7 @@ all fields are always visible.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{structures}
 @defvr {Global variable} structures
 
 @code{structures} is the list of user-defined structures defined by @code{defstruct}.
@@ -56,6 +57,7 @@ all fields are always visible.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{defstruct}
 @deffn  {Function} defstruct @
 @fname{defstruct} (@var{S}(@var{a_1}, @dots{}, @var{a_n})) @
 @fname{defstruct} (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
@@ -113,6 +115,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{new}
 @deffn {Function} new @
 @fname{new} (@var{S}) @
 @fname{new} (@var{S} (@var{v_1}, @dots{}, @var{v_n}))

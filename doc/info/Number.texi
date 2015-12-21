@@ -17,7 +17,7 @@ Returns the @var{n}'th Bernoulli number for integer @var{n}.
 Bernoulli numbers equal to zero are suppressed if @code{zerobern} is
 @code{false}.
 
-See also @code{burn}.
+See also @mrefdot{burn}
 
 @example
 (%i1) zerobern: true$
@@ -111,12 +111,12 @@ tolerable efficiency:
                              %pi
 @end example
 
-@code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
-as @code{bern} computes all the Bernoulli numbers up to index @var{n} before 
+@code{burn} may be more efficient than @mref{bern} for large, isolated @var{n}
+as @mref{bern} computes all the Bernoulli numbers up to index @var{n} before 
 returning.  @code{burn} invokes the approximation for even integers @var{n} >
-255.  For odd integers and @var{n} <= 255 the function @code{bern} is called.
+255.  For odd integers and @var{n} <= 255 the function @mref{bern} is called.
 
-@code{load ("bffac")} loads this function.  See also @code{bern}.
+@code{load ("bffac")} loads this function.  See also @mrefdot{bern}
 
 @opencatbox
 @category{Number theory}
@@ -176,14 +176,14 @@ A continued fraction @code{a + 1/(b + 1/(c + ...))} is represented by the list
 @code{[a, b, c, ...]}.  The list elements @code{a}, @code{b}, @code{c}, @dots{}
 must evaluate to integers.  @var{expr} may also contain @code{sqrt (n)} where
 @code{n} is an integer.  In this case @code{cf} will give as many terms of the
-continued fraction as the value of the variable @code{cflength} times the
+continued fraction as the value of the variable @mref{cflength} times the
 period.
 
 A continued fraction can be evaluated to a number by evaluating the arithmetic
-representation returned by @code{cfdisrep}.  See also @code{cfexpand} for
+representation returned by @mrefdot{cfdisrep}  See also @mref{cfexpand} for
 another way to evaluate a continued fraction.
 
-See also @code{cfdisrep}, @code{cfexpand}, and @code{cflength}.
+See also @mrefcomma{cfdisrep} @mrefcomma{cfexpand} and @mrefdot{cflength}
 
 Examples:
 
@@ -217,7 +217,7 @@ are computed for algebraic, irrational numbers.
 
 @item
 A continued fraction can be evaluated by evaluating the arithmetic
-representation returned by @code{cfdisrep}.
+representation returned by @mrefdot{cfdisrep}
 
 @example
 (%i1) cflength: 3$
@@ -380,12 +380,12 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @defvr {Option variable} factors_only
 Default value: @code{false}
 
-Controls the value returned by @mref{ifactors}. The default @code{false} 
+Controls the value returned by @mrefdot{ifactors} The default @code{false} 
 causes @code{ifactors} to provide information about multiplicities of the 
 computed prime factors. If @code{factors_only} is set to @code{true}, 
 @code{ifactors} returns nothing more than a list of prime factors.
 
-Example: See @mref{ifactors}.
+Example: See @mrefdot{ifactors}
 
 @opencatbox
 @category{Number theory}
@@ -466,7 +466,7 @@ factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 Factorization methods used are trial divisions by primes up to 9973,
 Pollard's rho and p-1 method and elliptic curves.
 
-The value returned by @code{ifactors} is controlled by the option variable @mref{factors_only}.
+The value returned by @code{ifactors} is controlled by the option variable @mrefdot{factors_only}
 The default @code{false} causes @code{ifactors} to provide information about 
 the multiplicities of the computed prime factors. If @code{factors_only} 
 is set to @code{true}, @code{ifactors} simply returns the list of 
@@ -877,7 +877,7 @@ the value @code{false}.
 
 The Riemann zeta function distributes over lists, matrices, and equations.
 
-See also @code{bfzeta} and @code{zeta%pi}.
+See also @mref{bfzeta} and @mrefdot{zeta%pi}
 
 Examples:
 
@@ -907,7 +907,7 @@ Examples:
 @c -----------------------------------------------------------------------------
 @anchor{zeta%pi}
 @defvr {Option variable} zeta%pi
-Default value: @code{true}
+Default value: @mref{true}
 
 When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
 proportional to @code{%pi^n} for even integer @code{n}.  Otherwise, @code{zeta} 
@@ -944,7 +944,7 @@ Examples:
 
 Shows an addition table of all elements in (Z/@var{n}Z).
 
-See also @mref{zn_mult_table}, @mref{zn_power_table}.
+See also @mrefcomma{zn_mult_table}  @mrefdot{zn_power_table}
 
 @opencatbox
 @category{Number theory}
@@ -973,7 +973,7 @@ This factor is also known as Carmichael function or Carmichael lambda.
 If @code{n > 2}, then @code{totient(n)/2^r} is the number of quadratic residues, 
 and each of these has @code{2^r} square roots.
 
-See also @mref{totient}, @mref{zn_primroot}, @mref{zn_factor_generators}.
+See also @mrefcomma{totient}  @mrefcomma{zn_primroot}  @mrefdot{zn_factor_generators}
 
 Examples:
 
@@ -1044,7 +1044,7 @@ and each of these has @code{2^2} square roots.
 Returns @code{1} if @var{n} is @code{1} and otherwise 
 the greatest characteristic factor of the totient of @var{n}.
 
-For remarks and examples see @mref{zn_characteristic_factors}.
+For remarks and examples see @mrefdot{zn_characteristic_factors}
 
 @opencatbox
 @category{Number theory}
@@ -1062,7 +1062,7 @@ However if the determinant is equal to zero the LU-decomposition might fail.
 In that case @code{zn_determinant} computes the determinant non-modular 
 and reduces thereafter.
 
-See also @mref{zn_invert_by_lu}.
+See also @mrefdot{zn_invert_by_lu}
 
 Examples:
 
@@ -1095,7 +1095,7 @@ Examples:
 Returns a list containing factor generators corresponding to the 
 characteristic factors of the totient of @var{n}.
 
-For remarks and examples see @mref{zn_characteristic_factors}.
+For remarks and examples see @mrefdot{zn_characteristic_factors}
 
 @opencatbox
 @category{Number theory}
@@ -1111,7 +1111,7 @@ Uses the technique of LU-decomposition to compute the modular inverse of
 invertible. @code{zn_invert_by_lu} returns @code{false} if @var{matrix} 
 is not invertible.
 
-See also @mref{zn_determinant}.
+See also @mrefdot{zn_determinant}
 
 Example:
 
@@ -1157,7 +1157,7 @@ The algorithm uses a Pohlig-Hellman-reduction and Pollard's Rho-method for
 discrete logarithms. The run time of @code{zn_log} primarily depends on the 
 bitlength of the totient's greatest prime factor.
 
-See also @mref{zn_primroot}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
+See also @mrefcomma{zn_primroot}  @mrefcomma{zn_order}  @mrefcomma{ifactors}  @mrefdot{totient}
 
 Examples:
 
@@ -1225,7 +1225,7 @@ elements in (Z/@var{n}Z).
 The second example shows an alternative way to create a multiplication table 
 for subgroups.
 
-See also @mref{zn_add_table}, @mref{zn_power_table}.
+See also @mrefcomma{zn_add_table}  @mrefdot{zn_power_table}
 
 Examples:
 
@@ -1455,7 +1455,7 @@ and then to pass the list of factors to @code{zn_log} as the third argument.
 The list must be of the same form as the list returned by @code{ifactors(totient(n))} 
 using the default option @code{factors_only : false}.
 
-See also @mref{zn_primroot}, @mref{ifactors}, @mref{totient}.
+See also @mrefcomma{zn_primroot}  @mrefcomma{ifactors}  @mrefdot{totient}
 
 Examples:
 
@@ -1523,7 +1523,7 @@ in (Z/@var{n}Z).
 If the optional third argument @var{max_exp} is given, the exponent loops from 
 @code{1} to @var{max_exp}. 
 
-See also @mref{zn_add_table}, @mref{zn_mult_table}.
+See also @mrefcomma{zn_add_table}  @mrefdot{zn_mult_table}
 
 Examples:
 
@@ -1614,7 +1614,7 @@ smallest primitive root modulo @var{n}.  (Z/@var{n}Z)* is cyclic if @var{n} is e
 greater than @code{2} and @code{k} is a natural number.  @code{zn_primroot} 
 performs an according pretest if the option variable @mref{zn_primroot_pretest}
 (default: @code{false}) is set to @code{true}.  In any case the computation is limited 
-by the upper bound @mref{zn_primroot_limit}.
+by the upper bound @mrefdot{zn_primroot_limit}
 
 If (Z/@var{n}Z)* is not cyclic or if there is no primitive root up to 
 @code{zn_primroot_limit}, @code{zn_primroot} returns @code{false}.
@@ -1625,7 +1625,7 @@ and then to pass the list of factors to @code{zn_log} as an additional argument.
 The list must be of the same form as the list returned by @code{ifactors(totient(n))} 
 using the default option @code{factors_only : false}.
 
-See also @mref{zn_primroot_p}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
+See also @mrefcomma{zn_primroot_p}  @mrefcomma{zn_order}  @mrefcomma{ifactors}  @mrefdot{totient}
 
 Examples:
 
@@ -1698,7 +1698,7 @@ pass the list of factors to @code{zn_log} as a third argument.
 The list must be of the same form as the list returned by @code{ifactors(totient(n))} 
 using the default option @code{factors_only : false}.
 
-See also @mref{zn_primroot}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
+See also @mrefcomma{zn_primroot}  @mrefcomma{zn_order}  @mrefcomma{ifactors}  @mrefdot{totient}
 
 Examples:
 
@@ -1759,7 +1759,7 @@ performed.
 Default value: @code{false} 
 
 Controls whether @mref{zn_primroot} prints a message when reaching 
-@mref{zn_primroot_limit}.
+@mrefdot{zn_primroot_limit}
 
 @opencatbox
 @category{Number theory}

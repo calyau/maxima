@@ -115,7 +115,7 @@
 (eval-when
   #+gcl (compile eval)
   #-gcl (:compile-toplevel :execute)
-    (defvar old-ibase *read-base*)
+    (defvar old-ibase-cryptools *read-base*)
     (setq *read-base* 10.) )
 
 
@@ -295,4 +295,4 @@
 (eval-when
   #+gcl (compile eval)
   #-gcl (:compile-toplevel :execute)
-    (setq *read-base* old-ibase) )
+    (setq *read-base* old-ibase-cryptools) )

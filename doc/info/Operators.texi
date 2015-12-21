@@ -487,21 +487,21 @@ Examples:
 
 The dot operator, for matrix (non-commutative) multiplication.
 When @code{"."} is used in this way, spaces should be left on both sides of
-it, e.g.  @code{A . B}.  This distinguishes it plainly from a decimal point in
+it, e.g.  @code{A . B}  This distinguishes it plainly from a decimal point in
 a floating point number.
 
 See also
-@code{dot},
-@code{dot0nscsimp},
-@code{dot0simp},
-@code{dot1simp},
-@code{dotassoc},
-@code{dotconstrules},
-@code{dotdistrib},
-@code{dotexptsimp},
-@code{dotident},
+@mrefcomma{Dot}
+@mrefcomma{dot0nscsimp}
+@mrefcomma{dot0simp}
+@mrefcomma{dot1simp}
+@mrefcomma{dotassoc}
+@mrefcomma{dotconstrules}
+@mrefcomma{dotdistrib}
+@mrefcomma{dotexptsimp}
+@mrefcomma{dotident}
 and
-@code{dotscrules}.
+@mrefdot{dotscrules}
 
 @opencatbox
 @category{Operators}

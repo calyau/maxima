@@ -1050,3 +1050,65 @@ errcatch(asksign(%i));
 errcatch(asksign(infinity));
 []$ /* sign of infinity is undefined. */
 
+/* Odd functions */
+
+(declare(o, oddfun),0);
+0$
+
+(assume(equal(q, 0)),0);
+0$
+
+sign(o(q));
+zero$
+
+(remove(o, oddfun),0);
+0$
+
+(forget(equal(q, 0)),0);
+0$
+
+/* Increasing and decreasing functions */
+
+(declare(i, increasing, d, decreasing),0);
+0$
+
+(assume(r > q),0);
+0$
+
+is(i(r) > i(q));
+true$
+
+is(d(r) < d(q));
+true$
+
+(remove(i, increasing, d, decreasing),0);
+0$
+
+(forget(r > q), 0);
+0$
+
+/* Increasing and decreasing odd functions */
+
+(declare(i, [oddfun, increasing], d, [oddfun, decreasing]),0);
+0$
+
+(assume(q < 0, r > 0),0);
+0$
+
+sign(i(q));
+neg$
+
+sign(i(r));
+pos$
+
+sign(d(q));
+pos$
+
+sign(d(r));
+neg$
+
+(remove(i, [oddfun, increasing], d, [oddfun, decreasing]),0);
+0$
+
+(forget(q < 0, r > 0),0);
+0$

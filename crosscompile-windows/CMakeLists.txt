@@ -184,11 +184,11 @@ externalproject_add(maxima
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
-  BUILD_COMMAND $(MAKE) -C src clisp-depends.mk
+  BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
         COMMAND mv src/clisp-depends.mk-new src/clisp-depends.mk
-        COMMAND $(MAKE)
-  INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+        COMMAND LANG=C $(MAKE)
+  INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
 

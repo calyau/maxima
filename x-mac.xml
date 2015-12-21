@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-maximasession">
+    <comment>Maxima Session</comment>
+    <comment xml:lang="de">Maxima-Sitzung</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.mac"/>
+  </mime-type>
+</mime-info>

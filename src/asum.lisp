@@ -177,7 +177,7 @@
 
         ;; Double factorial
 
-        ((eq (caar e) '%factorial_double)
+        ((eq (caar e) '%double_factorial)
          (let ((x (makegamma1 (nth 1 e))))
            (mul
              (power
@@ -564,130 +564,115 @@ summation when necessary."
             ind (meval (caddr l)) (meval (cadddr l))))))
 
 (defun simpsum1 (e k lo hi)
-  (let ((fact1) (fact2) (acc 0) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
-    (setq lo ($ratdisrep lo))
-    (setq hi ($ratdisrep hi))
-   
-    (setq n ($limit (add 1 (sub hi lo))))
-    (setq sgn ($sign n))
-  
-    (setq fact1 `((mgeqp) ,i ,lo))
-    (setq fact2 `((mgeqp) ,hi ,i))
-    
-    (if (not (eq t (csign lo))) (mfuncall '$assume fact1))
-    (if (not (eq t (csign hi))) (mfuncall '$assume fact2))
-    
-    (setq ex (subst i k e))
-    (setq ex (subst i k ex))
+  (with-new-context (context)
+    (let ((acc 0) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
+      (setq lo ($ratdisrep lo))
+      (setq hi ($ratdisrep hi))
 
-    (setq acc
-	  (cond ((and (eq n '$inf) ($freeof i ex))
-		 (setq sgn (csign ex))
-		 (cond ((eq sgn '$pos) '$inf)
-		       ((eq sgn '$neg) '$minf)
-		       ((eq sgn '$zero) 0)
-		       (t `((%sum simp) ,ex ,i ,lo ,hi))))
+      (setq n ($limit (add 1 (sub hi lo))))
+      (setq sgn ($sign n))
 
-		((and (mbagp e) $listarith)
-		 (simplifya
-		  `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$sum s k lo hi)) (margs e))) t))
-		 		
-		((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz)) 0)
-		
-		((like ex 0) 0)
-			
-		(($freeof i ex) (mult n ex))
-			
-		((and (integerp n) (eq sgn '$pos) $simpsum)
-		 (unwind-protect 
-		      (dotimes (j n acc)
-			(setq acc (add acc (resimplify (subst (add j lo) i ex)))))
-		   (mfuncall '$forget fact1)
-		   (mfuncall '$forget fact2)))
-		(t 
-		 (setq ex (subst '%sum '$sum ex))
-		 `((%sum simp) ,(subst k i ex) ,k ,lo ,hi))))
-	      
-    (setq acc (subst k i acc))
-    
-    ;; If expression is still a summation,
-    ;; punt to previous simplification code.
+      (if (not (eq t (csign lo))) (mfuncall '$assume `((mgeqp) ,i ,lo)))
+      (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
 
-    (if (and $simpsum (op-equalp acc '$sum '%sum))
-	(let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
-	  (setq acc (simpsum1-save e i i0 i1))))
+      (setq ex (subst i k e))
+      (setq ex (subst i k ex))
 
-    (mfuncall '$forget fact1)
-    (mfuncall '$forget fact2)
+      (setq acc
+            (cond ((and (eq n '$inf) ($freeof i ex))
+                   (setq sgn (csign ex))
+                   (cond ((eq sgn '$pos) '$inf)
+                         ((eq sgn '$neg) '$minf)
+                         ((eq sgn '$zero) 0)
+                         (t `((%sum simp) ,ex ,i ,lo ,hi))))
 
-    acc))
+                  ((and (mbagp e) $listarith)
+                   (simplifya
+                    `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$sum s k lo hi)) (margs e))) t))
+
+                  ((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz)) 0)
+
+                  ((like ex 0) 0)
+
+                  (($freeof i ex) (mult n ex))
+
+                  ((and (integerp n) (eq sgn '$pos) $simpsum)
+                   (dotimes (j n acc)
+                     (setq acc (add acc (resimplify (subst (add j lo) i ex))))))
+
+                  (t
+                   (setq ex (subst '%sum '$sum ex))
+                   `((%sum simp) ,(subst k i ex) ,k ,lo ,hi))))
+
+      (setq acc (subst k i acc))
+
+      ;; If expression is still a summation,
+      ;; punt to previous simplification code.
+
+      (if (and $simpsum (op-equalp acc '$sum '%sum))
+        (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+          (setq acc (simpsum1-save e i i0 i1))))
+
+      acc)))
 
 (defun simpprod1 (e k lo hi)
-  (let ((fact1) (fact2) (acc 1) (n) (sgn) ($prederror nil) (i (gensym)) (ex) (ex-mag) (realp))
+  (with-new-context (context)
+    (let ((acc 1) (n) (sgn) ($prederror nil) (i (gensym)) (ex) (ex-mag) (realp))
 
-    (setq lo ($ratdisrep lo))
-    (setq hi ($ratdisrep hi))
-    (setq n ($limit (add 1 (sub hi lo))))
-    (setq sgn ($sign n))
-    (setq fact1 `((mgeqp) ,i ,lo))
-    (setq fact2 `((mgeqp) ,hi ,i))
-    
-    (if (not (eq t (csign lo))) (mfuncall '$assume fact1))
-    (if (not (eq t (csign hi))) (mfuncall '$assume fact2))
+      (setq lo ($ratdisrep lo))
+      (setq hi ($ratdisrep hi))
+      (setq n ($limit (add 1 (sub hi lo))))
+      (setq sgn ($sign n))
 
-    (setq ex (subst i k e))
-    (setq ex (subst i k ex))
+      (if (not (eq t (csign lo))) (mfuncall '$assume `((mgeqp) ,i ,lo)))
+      (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
 
-    (setq acc
-          (cond
-            ((like ex 1) 1)
+      (setq ex (subst i k e))
+      (setq ex (subst i k ex))
 
-            ((and (eq n '$inf) ($freeof i ex))
-             (setq ex-mag (mfuncall '$cabs ex))
-             (setq realp (mfuncall '$imagpart ex))
-             (setq realp (mevalp `((mequal) 0 ,realp)))
-             
-             (cond ((eq t (mevalp `((mlessp) ,ex-mag 1))) 0)
-                   ((and (eq realp t) (eq t (mevalp `((mgreaterp) ,ex 1)))) '$inf)
-                   ((eq t (mevalp `((mgreaterp) ,ex-mag 1))) '$infinity)
-                   ((eq t (mevalp `((mequal) 1 ,ex-mag))) '$und)
-                   (t `((%product) ,e ,k ,lo ,hi))))
-            
-            ((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz))
-             1)
+      (setq acc
+            (cond
+              ((like ex 1) 1)
 
-            ((and (mbagp e) $listarith)
-             (simplifya
-	      `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$product s k lo hi)) (margs e))) t))
-            
-            (($freeof i ex) (power ex n))
-            
-            ((and (integerp n) (eq sgn '$pos) $simpproduct)
-             (unwind-protect
-		  (dotimes (j n acc)
-		    (setq acc (mult acc (resimplify (subst (add j lo) i ex)))))
-               
-               (mfuncall '$forget fact1)
-               (mfuncall '$forget fact2)))
-            
-            (t
-	     (setq ex (subst '%product '$product ex))
-	     `((%product simp) ,(subst k i ex) ,k ,lo ,hi))))
+              ((and (eq n '$inf) ($freeof i ex))
+               (setq ex-mag (mfuncall '$cabs ex))
+               (setq realp (mfuncall '$imagpart ex))
+               (setq realp (mevalp `((mequal) 0 ,realp)))
 
-    ;; Hmm, this is curious... don't call existing product simplifications
-    ;; if index range is infinite -- what's up with that??
+               (cond ((eq t (mevalp `((mlessp) ,ex-mag 1))) 0)
+                     ((and (eq realp t) (eq t (mevalp `((mgreaterp) ,ex 1)))) '$inf)
+                     ((eq t (mevalp `((mgreaterp) ,ex-mag 1))) '$infinity)
+                     ((eq t (mevalp `((mequal) 1 ,ex-mag))) '$und)
+                     (t `((%product) ,e ,k ,lo ,hi))))
 
-    (if (and $simpproduct (op-equalp acc '$product '%product) (not (like n '$inf)))
-	(let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
-	  (setq acc (simpprod1-save e i i0 i1))))
+              ((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz))
+               1)
 
-    (setq acc (subst k i acc))
-    (setq acc (subst '%product '$product acc))
+              ((and (mbagp e) $listarith)
+               (simplifya
+                `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$product s k lo hi)) (margs e))) t))
 
-    (mfuncall '$forget fact1)
-    (mfuncall '$forget fact2)
+              (($freeof i ex) (power ex n))
 
-    acc))
+              ((and (integerp n) (eq sgn '$pos) $simpproduct)
+               (dotimes (j n acc)
+                 (setq acc (mult acc (resimplify (subst (add j lo) i ex))))))
+
+              (t
+               (setq ex (subst '%product '$product ex))
+               `((%product simp) ,(subst k i ex) ,k ,lo ,hi))))
+
+      ;; Hmm, this is curious... don't call existing product simplifications
+      ;; if index range is infinite -- what's up with that??
+
+      (if (and $simpproduct (op-equalp acc '$product '%product) (not (like n '$inf)))
+        (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+          (setq acc (simpprod1-save e i i0 i1))))
+
+      (setq acc (subst k i acc))
+      (setq acc (subst '%product '$product acc))
+
+      acc)))
 
 ; This function was SIMPPROD1 until the sum/product code was revised Nov 2005.
 ; The revised code punts back to this function since this code knows

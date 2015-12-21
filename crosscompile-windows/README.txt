@@ -31,9 +31,8 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 
 If you want to include VTK, use
 cmake -DUSE_VTK=YES ..
-(Attention: The compilation time will increase!!! The size of the installation will
-approximately be 100% more than without VTK. [This is work in progress and does
-not work for now])
+(Attention: The compilation time will increase!!! The size of the installer will
+approximately be 50% more than without VTK).
 
 
 

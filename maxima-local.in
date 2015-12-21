@@ -7,6 +7,17 @@ export MAXIMA_LAYOUT_AUTOTOOLS
 MAXIMA_OBJDIR="$top_srcdir/binary"
 export MAXIMA_OBJDIR
 
+# report the compiled in Lisp versions
+if [ x"$1" = "x--list-avail" ]; then
+    V=$(./maxima-local --version | sed s/Maxima.//)
+    echo "Available versions:"
+    for i in src/binary-* ; do
+        L=$(echo $i | sed s/src.binary-//)
+        echo "version $V, lisp $L"
+    done;
+    exit;
+fi;
+
 # quick fix for plotting with plot_format=openmath (bug 3052)
 mkdir -p bin
 ln -sf ../xmaxima-local bin/xmaxima

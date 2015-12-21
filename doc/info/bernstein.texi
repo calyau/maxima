@@ -5,6 +5,7 @@
 @node Functions and Variables for Bernstein,  , Bernstein, Bernstein
 @section Functions and Variables for Bernstein
 
+@anchor{bernstein_poly}
 @deffn {Function} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 Provided @code{k} is not a negative integer, the Bernstein polynomials
@@ -56,6 +57,7 @@ To use @code{bernstein_poly}, first @code{load("bernstein")}.
 @end deffn
 
 
+@anchor{bernstein_explicit}
 @defvr {Variable} bernstein_explicit
 Default value: @code{false}
 
@@ -76,6 +78,7 @@ When both @code{k} and @code{n} are explicitly integers, @code{bernstein(k,n,x)}
 @end defvr
 
 
+@anchor{multibernstein_poly}
 @deffn {Function} multibernstein_poly (@var{[k1,k2,@dots{}, kp]}, @var{[n1,n2,@dots{}, np]}, @var{[x1,x2,@dots{}, xp]})
 
 The multibernstein polynomial @code{multibernstein_poly (@var{[k1, k2, ..., 
@@ -87,6 +90,7 @@ To use @code{multibernstein_poly}, first @code{load("bernstein")}.
 
 @end deffn
 
+@anchor{bernstein_approx}
 @deffn {Function} bernstein_approx (@var{f}, @var{[x1, x1, @dots{}, xn]}, n)
 
 Return the @code{n}-th order uniform Bernstein polynomial approximation for the
@@ -119,6 +123,7 @@ To use @code{bernstein_approx}, first @code{load("bernstein")}.
 
 @end deffn
 
+@anchor{bernstein_expand}
 @deffn {Function} bernstein_expand (@var{e}, @var{[x1, x1, @dots{}, xn]})
 
 Express the @emph{polynomial} @code{e} exactly as a linear combination of multi-variable

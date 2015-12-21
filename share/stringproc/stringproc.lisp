@@ -359,7 +359,7 @@ in Windows 7.
 (defun $adjust_external_format () 
   #+ccl (let ((ef (stream-external-format *standard-input*)))
     (format t "The external format is currently ~a" ef)
-    #+unix (format t "~%and has not been changed.~%")
+    #+unix (format t " (i.e. utf-8)~%and has not been changed.~%")
     #-unix (progn
       (format t ".~%Changing the external format is not necessary when you are using wxMaxima.~%")
       (use-cp1252)
@@ -480,12 +480,15 @@ in Windows 7.
     (and (> nr 47.) (< nr 58.)) ))
 
 
-;; Character <--> code point
+;; Maxima character <--> code point or character name
 ;;
 ;;  $cint returns the corresponding unicode code point.
 ;;  $ascii returns a Maxima us-ascii-character for code points < 128.
-;;  $unicode returns a Maxima character but does not check if codepoint is valid.
+;;  $unicode returns a Maxima character for a given code point or name.
 ;;
+;;  The conversion Maxima character to name is possible in clisp, ecl, sbcl
+;;  via printf(false, "~@c", mc);
+;;  
 ;;  GCL in Linux/Unix: 
 ;;    A non-ASCII-character is encoded in UTF-8 by wxMaxima or terminal.
 ;;    GCL just passes them through octet by octet. Process these octets.
@@ -493,6 +496,8 @@ in Windows 7.
 ;;  CMUCL in Linux/Unix: (Windows ?) 
 ;;    It is assumed that the external format has been adjusted to UTF-8
 ;;    (see $adjust_external_format above for more).
+;;    $cint recognizes 16 bit characters only. 
+;;    utf8_to_unicode(string_to_octets(mc)); works where $cint fails.
 ;;
 (defun $cint (mc) 
   (unless ($charp mc)
@@ -504,26 +509,39 @@ in Windows 7.
       (utf8-to-uc (mapcar #'char-code (coerce mc 'list))) ))
 ;;
 (defun $ascii (int) 
-  (unless (and (integerp int) (< int 128))
+  (unless (and (integerp int) (< int 128.))
     (gf-merror (intl:gettext 
       "`ascii': argument must be a non-negative integer less than 128.
 Please use `unicode' for code points larger than 127." )))
   (string (code-char int)) )
 ;;
-(defun $unicode (int) 
-  (unless (integerp int)
-    (gf-merror (intl:gettext "`unicode': argument must be a non-negative integer.")) )
-  #- (and (or cmucl gcl) unix) (string (code-char int))
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8*
-      (string (code-char int))
-      (let ((ol (uc-to-utf8 int)))
-        (utf-8-m-char (length ol) ol) )))
-
-
-;; Code point conversion utf-8 <--> unicode 2 octets big endian
+;; Code points as arguments are not checked for validity. 
+;; Names as arguments work in clisp, ecl, sbcl.
+;; In allegro, cmucl code points and names are limited to 16 bit.
+;; abcl, ccl, gcl, lispworks: unicode(name) returns false.
+;; octets_to_string(unicode_to_utf8(code_point)); often works where unicode(code_point) fails.
 ;;
-(defun $utf8_to_unicode (utf8) ;; unicode = ucs2be
+(defun $unicode (arg) 
+  (cond
+    ((integerp arg)
+      (ignore-errors ;; cmucl errors for arguments larger than 16 bit
+        #- (and (or cmucl gcl) unix) (string (code-char arg))
+        #+ (and (or cmucl gcl) unix) 
+          (if *read-utf-8*
+            (string (code-char arg))
+            (let ((ol (uc-to-utf8 arg)))
+              (utf-8-m-char (length ol) ol) ))))
+    ((stringp arg)
+      (setq arg (concatenate 'string "#\\" ($ssubst "_" " " arg)))
+      (let ((*standard-input* (make-string-input-stream arg)))
+        (ignore-errors (string (eval (read)))) ))
+    (t
+      (gf-merror (intl:gettext 
+        "`unicode': argument must be a string or a non-negative integer." )))))
+
+;; Code point conversion utf-8 <--> unicode
+;;
+(defun $utf8_to_unicode (utf8)
   (unless (listp utf8) (utf8_to_unicode-error))
   (utf8-to-uc (cdr utf8)) )
 ;;
@@ -536,7 +554,7 @@ Please use `unicode' for code points larger than 127." )))
   (gf-merror (intl:gettext 
     "`utf8_to_unicode': argument must be a list of octets representing a single character." )))
 ;;
-(defun utf8-to-uc (u) ;; uc = ucs-2be
+(defun utf8-to-uc (u) ;; u = utf8
   (let ((l (length u)))
     (cond
       ((= 1 l) 
@@ -559,7 +577,7 @@ Please use `unicode' for code points larger than 127." )))
                 (ldb (byte 6 0) (cadddr u)) ))
       (t (utf8_to_unicode-error)) )))
 ;;
-(defun uc-to-utf8 (uc) ;; uc = ucs-2be
+(defun uc-to-utf8 (uc) ;; uc = unicode
   (let (utf8)
     (cond
       ((< uc #x7f)

@@ -918,7 +918,7 @@ and undeclared arrays are implemented with Maxima's own hash table implementatio
 
 Arrays created by @code{make_array} are not affected by @code{use_fast_arrays}.
 
-See also @code{translate_fast_arrays}.
+See also @mrefdot{translate_fast_arrays}
 
 @opencatbox
 @category{Arrays} @category{Global flags}

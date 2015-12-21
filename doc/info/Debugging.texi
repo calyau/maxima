@@ -288,7 +288,7 @@ At this point, @code{setval} holds the value to which the variable is
 about to be assigned.
 Hence, one may assign a different value by assigning to @code{setval}.
 
-See also @code{setcheck} and @code{setval}.
+See also @mref{setcheck} and @mrefdot{setval}
 
 @opencatbox
 @category{Console interaction} @category{Global flags}
@@ -300,10 +300,10 @@ See also @code{setcheck} and @code{setval}.
 @defvr {System variable} setval
 
 Holds the value to which a variable is about to be set when
-a @code{setcheckbreak} occurs.
-Hence, one may assign a different value by assigning to @code{setval}.
+a @mref{setcheckbreak} occurs.
+Hence, one may assign a different value by assigning to @mref{setval}.
 
-See also @code{setcheck} and @code{setcheckbreak}.
+See also @mref{setcheck} and @mrefdot{setcheckbreak}
 
 @opencatbox
 @category{Console interaction} @category{Global variables}
@@ -339,7 +339,7 @@ total time elapsed.
 If @code{trace(f)} is in effect, then @code{timer(f)} has no effect;
 @code{trace} and @code{timer} cannot both be in effect at the same time.
 
-See also @code{timer_devalue}.
+See also @mrefdot{timer_devalue}
 
 @opencatbox
 @category{Debugging}
@@ -380,7 +380,7 @@ for each function includes the time spent in other functions.
 Note that time spent in untimed functions is not subtracted from the
 total time.
 
-See also @code{timer} and @code{timer_info}.
+See also @mref{timer} and @mrefdot{timer_info}
 
 @opencatbox
 @category{Debugging} @category{Global flags}
@@ -409,7 +409,7 @@ can also be obtained by the @code{get} function:
 get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @end example
 
-See also @code{timer}.
+See also @mrefdot{timer}
 
 @opencatbox
 @category{Debugging}
@@ -434,7 +434,7 @@ With no arguments,
 @code{trace} returns a list of all the functions currently being traced.
 
 The @code{untrace} function disables tracing.
-See also @code{trace_options}.
+See also @mrefdot{trace_options}
 
 @code{trace} quotes its arguments.  Thus,
 @code{f(x) := x^2$ g:f$ trace(g)$} does not put @code{f} on the trace list.

@@ -512,7 +512,7 @@ The first argument @var{M} should be a square matrix or a non-matrix.  When
 @var{M} can be a blocked Maxima matrix.  The matrix can be blocked to any
 (finite) depth.
 
-See also @code{zerofor}
+See also @mref{zerofor}
 
 @opencatbox
 @category{Package linearalgebra}
@@ -661,7 +661,7 @@ Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, or
     the infinity norm condition number of @var{M}.  For all fields, the
     condition number might not be estimated; for such fields, @code{lu_factor}
     returns a two item list.  Both the lower and upper bounds can differ from
-    their true values by arbitrarily large factors.  (See also @code{mat_cond}.)
+    their true values by arbitrarily large factors.  (See also @mref{mat_cond}.)
    
   The argument @var{M} must be a square matrix.
 
@@ -719,7 +719,7 @@ the field needn't be Maxima expressions.  Members of the
 after computing the factorization, the matrix entries must be
 converted to Maxima expressions.
 
-See also  @code{get_lu_factors}.
+See also  @mref{get_lu_factors}.
 
 Examples:
 
@@ -822,7 +822,7 @@ a matrix and @var{p} evaluates to @code{true} for every matrix element.
 When @code{matrixp} is not given an optional argument, return @code{true} 
 if @code{e} is a matrix.  In all other cases, return @code{false}.
 
-See also @code{blockmatrixp}
+See also @mref{blockmatrixp}
 
 @opencatbox
 @category{Package linearalgebra} @category{Predicate functions}
@@ -879,7 +879,7 @@ unblocked matrix, but if each entry of @var{M} is a block matrix,
 
 If you use block matrices, most likely you'll want to set
 @code{matrix_element_mult} to @code{"."} and @code{matrix_element_transpose} to
-@code{'transpose}.  See also @code{mat_fullunblocker}.
+@code{'transpose}.  See also @mref{mat_fullunblocker}.
 
 Example:
 
@@ -1168,7 +1168,7 @@ non-matrix.  When @var{M} is a matrix, each entry of @var{M} can be a
 square matrix -- thus @var{M} can be a blocked Maxima matrix.  The
 matrix can be blocked to any (finite) depth.
 
-See also @code{identfor}
+See also @mref{identfor}
 
 @opencatbox
 @category{Package linearalgebra}

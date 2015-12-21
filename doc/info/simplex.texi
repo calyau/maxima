@@ -81,12 +81,13 @@ sc50a          - 64.5750770585645     no
 @node Functions and Variables for simplex,  , Introduction to simplex, simplex
 @section Functions and Variables for simplex
 
+@anchor{epsilon_lp}
 @defvr {Option variable} epsilon_lp
 Default value: @code{10^-8}
 
 Epsilon used for numerical computations in @code{linear_program}.
 
-See also: @code{linear_program}.
+See also: @mref{linear_program}.
 
 @opencatbox
 @category{Package simplex}
@@ -94,6 +95,7 @@ See also: @code{linear_program}.
 
 @end defvr
 
+@anchor{linear_program}
 @deffn {Function} linear_program (@var{A}, @var{b}, @var{c})
 
 @code{linear_program} is an implementation of the simplex algorithm.
@@ -128,7 +130,7 @@ Example:
                    2      2         2
 @end example
 
-See also: @code{minimize_lp}, @code{scale_lp}, and @code{epsilon_lp}.
+See also: @mref{minimize_lp}, @mref{scale_lp}, and @mref{epsilon_lp}.
 
 @opencatbox
 @category{Package simplex} @category{Numerical methods}
@@ -136,14 +138,15 @@ See also: @code{minimize_lp}, @code{scale_lp}, and @code{epsilon_lp}.
 
 @end deffn
 
+@anchor{maximize_lp}
 @deffn {Function} maximize_lp (@var{obj}, @var{cond}, [@var{pos}])
 
 Maximizes linear objective function @var{obj} subject to some linear
-constraints @var{cond}. See @code{minimize_lp} for detailed
+constraints @var{cond}. See @mref{minimize_lp} for detailed
 description of arguments and return value.
 
 
-See also: @code{minimize_lp}.
+See also: @mref{minimize_lp}.
 
 @opencatbox
 @category{Package simplex} @category{Numerical methods}
@@ -151,6 +154,7 @@ See also: @code{minimize_lp}.
 
 @end deffn
 
+@anchor{minimize_lp}
 @deffn {Function} minimize_lp (@var{obj}, @var{cond}, [@var{pos}])
 
 Minimizes a linear objective function @var{obj} subject to some linear
@@ -200,7 +204,7 @@ Examples:
 @end example
 
 
-See also: @code{maximize_lp}, @code{nonegative_lp}, @code{epsilon_lp}.
+See also: @mref{maximize_lp}, @mref{nonegative_lp}, @mref{epsilon_lp}.
 
 @opencatbox
 @category{Package simplex} @category{Numerical methods}
@@ -208,13 +212,14 @@ See also: @code{maximize_lp}, @code{nonegative_lp}, @code{epsilon_lp}.
 
 @end deffn
 
+@anchor{nonegative_lp}
 @defvr {Option variable} nonegative_lp
 Default value: @code{false}
 
 If @code{nonegative_lp} is true all decision variables to
 @code{minimize_lp} and @code{maximize_lp} are assumed to be positive.
 
-See also: @code{minimize_lp}.
+See also: @mref{minimize_lp}.
 
 @opencatbox
 @category{Package simplex}
@@ -222,6 +227,7 @@ See also: @code{minimize_lp}.
 
 @end defvr
 
+@anchor{scale_lp}
 @defvr {Option variable} scale_lp
 Default value: @code{false}
 
@@ -234,6 +240,7 @@ When @code{scale_lp} is @code{true},
 
 @end defvr
 
+@anchor{pivot_count_sx}
 @defvr {Variable} pivot_count_sx
 
 After @code{linear_program} returns,
@@ -245,6 +252,7 @@ After @code{linear_program} returns,
 
 @end defvr
 
+@anchor{pivot_max_sx}
 @defvr {Variable} pivot_max_sx
 
 @code{pivot_max_sx} is the maximum number of pivots allowed by @code{linear_program}.

@@ -163,7 +163,7 @@ You can add any options accepted by @code{plot3d}; for instance, the
 option @mref{legend} with a value of false, to remove the
 legend. By default, Gnuplot chooses and displays 3 contours. To increase the
 number of contours, it is necessary to use a custom
-@mref{gnuplot_preamble}, as in the next example:
+@mrefcomma{gnuplot_preamble}  as in the next example:
 
 @c ===beg===
 @c contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 

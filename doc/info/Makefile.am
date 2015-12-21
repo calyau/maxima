@@ -50,6 +50,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  fractals.texi ggf.texi graphs.texi grobner.texi impdiff.texi interpol.texi \
  lapack.texi lbfgs.texi lindstedt.texi linearalgebra.texi lsquares.texi \
  minpack.texi makeOrders.texi mnewton.texi numericalio.texi opsubst.texi \
+ operatingsystem.texi \
  orthopoly.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
  zeilberger.texi errormessages.texi
@@ -486,7 +487,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
-	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	rm maxima.fns maxima.vr \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima.html

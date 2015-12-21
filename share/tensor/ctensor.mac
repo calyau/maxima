@@ -523,7 +523,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
   else if coordinate_system='toroidal then
   (
     dim:3,
-    ct_coords:[u,v,phi],
+    ct_coords:[phi,u,v],
     declare(e,constant),
     if cframe_flag then
     (

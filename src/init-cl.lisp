@@ -620,7 +620,9 @@ When one changes, the other does too."
   (throw 'to-maxima t))
 
 (defun maxima-read-eval-print-loop ()
-  (setf *debugger-hook* #'maxima-lisp-debugger-repl)
+  (when *debugger-hook*
+    ; Only set a new debugger hook if *DEBUGGER-HOOK* has not been set to NIL
+    (setf *debugger-hook* #'maxima-lisp-debugger-repl))
   (loop
      (catch 'to-maxima-repl
        (format-prompt t "~%~A> " (package-name *package*))

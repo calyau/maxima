@@ -35,7 +35,7 @@
 ;;; Maxima User variable:
 ;;;
 ;;;   $factorial_expand    - Allows argument simplificaton for expressions like
-;;;                          factorial_double(n-1) and factorial_double(2*k+n)
+;;;                          double_factorial(n-1) and double_factorial(2*k+n)
 ;;;   $beta_expand         - Switch on further expansions for the Beta functions
 ;;;
 ;;;   $erf_representation  - When T erfc, erfi, erf_generalized, fresnel_s 

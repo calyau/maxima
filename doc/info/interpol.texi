@@ -19,6 +19,7 @@ For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT x
 @section Functions and Variables for interpol
 
 
+@anchor{lagrange}
 @deffn {Function} lagrange @
 @fname{lagrange} (@var{points}) @
 @fname{lagrange} (@var{points}, @var{option})
@@ -40,7 +41,7 @@ With the @var{option} argument it is possible to select the name for the indepen
 
 Note that when working with high degree polynomials, floating point evaluations are unstable.
 
-See also @code{linearinterpol}, @code{cspline}, and @code{ratinterpol}.
+See also @mrefcomma{linearinterpol}  @mrefcomma{cspline}  and @mrefdot{ratinterpol}
 
 Examples:
 
@@ -126,6 +127,7 @@ Examples:
 @end deffn
 
 
+@anchor{charfun2}
 @deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
 Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and @code{false} otherwise.
 
@@ -136,6 +138,7 @@ Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and
 @end deffn
 
 
+@anchor{linearinterpol}
 @deffn {Function} linearinterpol @
 @fname{linearinterpol} (@var{points}) @
 @fname{linearinterpol} (@var{points}, @var{option})
@@ -155,7 +158,7 @@ In the first two cases the pairs are ordered with respect to the first coordinat
 
 With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
 
-See also @code{lagrange}, @code{cspline}, and @code{ratinterpol}.
+See also @mrefcomma{lagrange}  @mrefcomma{cspline}  and @mrefdot{ratinterpol}
 
 Examples:
 
@@ -215,6 +218,7 @@ Examples:
 
 
 
+@anchor{cspline}
 @deffn {Function} cspline @
 @fname{cspline} (@var{points}) @
 @fname{cspline} (@var{points}, @var{option1}, @var{option2}, ...)
@@ -244,7 +248,7 @@ There are three options to fit specific needs:
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize
 
-See also @code{lagrange}, @code{linearinterpol}, and @code{ratinterpol}.
+See also @mrefcomma{lagrange}  @mrefcomma{linearinterpol}  and @mrefdot{ratinterpol}
 
 Examples:
 @example
@@ -324,6 +328,7 @@ Examples:
 
 @end deffn
 
+@anchor{ratinterpol}
 @deffn {Function} ratinterpol @
 @fname{ratinterpol} (@var{points}, @var{numdeg}) @
 @fname{ratinterpol} (@var{points}, @var{numdeg}, @var{option1})
@@ -349,7 +354,7 @@ There is one option to fit specific needs:
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize
 
-See also @code{lagrange}, @code{linearinterpol}, @code{cspline}, @code{minpack_lsquares}, and @code{lbfgs}.
+See also @mrefcomma{lagrange}  @mrefcomma{linearinterpol}  @mrefcomma{cspline}  @mrefcomma{minpack_lsquares}  and @mrefdot{lbfgs}
 
 Examples:
 

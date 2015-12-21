@@ -22,7 +22,13 @@ AppPublisherURL=http://maxima.sourceforge.net
 AppSupportURL=http://maxima.sourceforge.net
 AppUpdatesURL=http://maxima.sourceforge.net
 AppVersion=@VERSION@
+#if "@win64_installer@" == "true"
+OutputBaseFilename=maxima-@DEFAULTLISP@-@VERSION@-win64
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+#else
 OutputBaseFilename=maxima-@DEFAULTLISP@-@VERSION@
+#endif
 DefaultDirName={pf}\Maxima-@DEFAULTLISP@-@VERSION@
 DefaultGroupName=Maxima @VERSION@ (@DEFAULTLISP@)
 InfoBeforeFile=interfaces\xmaxima\win32\InfoBefore.txt

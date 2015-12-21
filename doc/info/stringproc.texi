@@ -152,6 +152,7 @@ and an integer: ~20t~d~%"$
 @end example
 
 @c -----------------------------------------------------------------------------
+@anchor{close}
 @deffn {Function} close (@var{stream}) 
 Closes @var{stream} and returns @code{true} if @var{stream} had been open. 
 
@@ -162,6 +163,7 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flength}
 @deffn {Function} flength (@var{stream})
 @var{stream} has to be an open stream from or to a file. 
 @code{flength} then returns the number of bytes which are currently present in this file.
@@ -175,6 +177,7 @@ Example: See @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flush_output}
 @deffn {Function} flush_output (@var{stream})
 Flushes @var{stream} where @var{stream} has to be an output stream to a file. 
 
@@ -187,6 +190,7 @@ Example: See @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{fposition}
 @deffn {Function} fposition @
 @fname{fposition} (@var{stream}) @
 @fname{fposition} (@var{stream}, @var{pos})
@@ -204,13 +208,14 @@ is in position 1.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{freshline}
 @deffn {Function} freshline @
 @fname{freshline} ()  @
 @fname{freshline} (@var{stream}) 
 
 Writes a new line (to @var{stream}),
 if the position is not at the beginning of a line.
-See also @code{newline}.
+See also @mrefdot{newline}
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -296,7 +301,7 @@ in this stream can be retrieved by @ref{get_output_stream_string}.
 @fname{newline} (@var{stream}) 
 
 Writes a new line (to @var{stream}).
-See @code{sprint} for an example of using @code{newline()}.
+See @mref{sprint} for an example of using @code{newline()}.
 Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @opencatbox
@@ -798,6 +803,7 @@ Returns @code{true} if @var{char} is a lowercase character.
 
 @end deffn
 
+@anchor{newline }
 @defvr {Variable} newline 
 The newline character. 
 
@@ -807,6 +813,7 @@ The newline character.
 
 @end defvr
 
+@anchor{space   }
 @defvr {Variable} space   
 The space character.
 
@@ -816,6 +823,7 @@ The space character.
 
 @end defvr
 
+@anchor{tab     }
 @defvr {Variable} tab     
 The tab character.
 
@@ -880,6 +888,7 @@ Returns the list of all characters in @var{string}.
 
 @end deffn
 
+@anchor{eval_string}
 @deffn {Function} eval_string (@var{str})
 Parse the string @var{str} as a Maxima expression and evaluate it.
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
@@ -900,7 +909,7 @@ Examples:
 (%o2)                   baz + 1764
 @end example
 
-See also @code{parse_string}.
+See also @mrefdot{parse_string}
 
 @opencatbox
 @category{Package stringproc}
@@ -909,6 +918,7 @@ See also @code{parse_string}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{parse_string}
 @deffn {Function} parse_string (@var{str})
 Parse the string @var{str} as a Maxima expression (do not evaluate it).
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
@@ -930,7 +940,7 @@ Examples:
 (%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
-See also @code{eval_string}.
+See also @mrefdot{eval_string}
 
 @opencatbox
 @category{Package stringproc}
@@ -952,7 +962,7 @@ Returns a copy of @var{string} as a new string.
 @fname{sdowncase} (@var{string}, @var{start})  @
 @fname{sdowncase} (@var{string}, @var{start}, @var{end})
 
-Like @code{supcase}, but uppercase characters are converted to lowercase. 
+Like @mref{supcase} but uppercase characters are converted to lowercase. 
 
 @opencatbox
 @category{Package stringproc}
@@ -1142,10 +1152,11 @@ If @var{multiple} is set to @code{false}, each delimiter is noted.
 
 @end deffn
 
+@anchor{sposition}
 @deffn {Function} sposition (@var{char}, @var{string}) 
 Returns the position of the first character in @var{string} which matches @var{char}.
 The first character in @var{string} is in position 1.
-For matching characters ignoring case see @code{ssearch}.
+For matching characters ignoring case see @mrefdot{ssearch}
 
 @opencatbox
 @category{Package stringproc}
@@ -1153,6 +1164,7 @@ For matching characters ignoring case see @code{ssearch}.
 
 @end deffn
 
+@anchor{sremove}
 @deffn {Function} sremove @
 @fname{sremove} (@var{seq}, @var{string}) @
 @fname{sremove} (@var{seq}, @var{string}, @var{test}) @
@@ -1182,6 +1194,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@anchor{sremovefirst}
 @deffn {Function} sremovefirst @
 @fname{sremovefirst} (@var{seq}, @var{string}) @
 @fname{sremovefirst} (@var{seq}, @var{string}, @var{test}) @
@@ -1196,6 +1209,7 @@ Like @code{sremove} except that only the first substring that matches @var{seq} 
 
 @end deffn
 
+@anchor{sreverse}
 @deffn {Function} sreverse (@var{string}) 
 Returns a string with all the characters of @var{string} in reverse order. 
 
@@ -1205,6 +1219,7 @@ Returns a string with all the characters of @var{string} in reverse order.
 
 @end deffn
 
+@anchor{ssearch}
 @deffn {Function} ssearch @
 @fname{ssearch} (@var{seq}, @var{string}) @
 @fname{ssearch} (@var{seq}, @var{string}, @var{test}) @
@@ -1228,6 +1243,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@anchor{ssort}
 @deffn {Function} ssort @
 @fname{ssort} (@var{string}) @
 @fname{ssort} (@var{string}, @var{test})
@@ -1253,6 +1269,7 @@ The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpi
 
 @end deffn
 
+@anchor{ssubst}
 @deffn {Function} ssubst @
 @fname{ssubst} (@var{new}, @var{old}, @var{string}) @
 @fname{ssubst} (@var{new}, @var{old}, @var{string}, @var{test}) @
@@ -1283,6 +1300,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@anchor{ssubstfirst}
 @deffn {Function} ssubstfirst @
 @fname{ssubstfirst} (@var{new}, @var{old}, @var{string}) @
 @fname{ssubstfirst} (@var{new}, @var{old}, @var{string}, @var{test}) @
@@ -1297,6 +1315,7 @@ Like @code{subst} except that only the first substring that matches @var{old} is
 
 @end deffn
 
+@anchor{strim}
 @deffn {Function} strim (@var{seq},@var{string}) 
 Returns a string like @var{string},
 but with all characters that appear in @var{seq} removed from both ends. 
@@ -1320,6 +1339,7 @@ but with all characters that appear in @var{seq} removed from both ends.
 
 @end deffn
 
+@anchor{striml}
 @deffn {Function} striml (@var{seq}, @var{string}) 
 Like @code{strim} except that only the left end of @var{string} is trimmed. 
 
@@ -1329,6 +1349,7 @@ Like @code{strim} except that only the left end of @var{string} is trimmed.
 
 @end deffn
 
+@anchor{strimr}
 @deffn {Function} strimr (@var{seq}, @var{string}) 
 Like @code{strim} except that only the right end of @var{string} is trimmed.
 
@@ -1339,6 +1360,7 @@ Like @code{strim} except that only the right end of @var{string} is trimmed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{stringp}
 @deffn {Function} stringp (@var{obj}) 
 Returns @code{true} if @var{obj} is a string.
 See introduction for example.
@@ -1350,6 +1372,7 @@ See introduction for example.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{substring}
 @deffn {Function} substring @
 @fname{substring} (@var{string}, @var{start}) @
 @fname{substring} (@var{string}, @var{start}, @var{end})
@@ -1376,6 +1399,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@anchor{supcase}
 @deffn {Function} supcase @
 @fname{supcase} (@var{string}) @
 @fname{supcase} (@var{string}, @var{start}) @
@@ -1399,6 +1423,7 @@ all lowercase characters from @var{start} to the end of @var{string} are replace
 
 @end deffn
 
+@anchor{tokens}
 @deffn {Function} tokens @
 @fname{tokens} (@var{string}) @
 @fname{tokens} (@var{string}, @var{test})

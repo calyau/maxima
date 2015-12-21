@@ -27,7 +27,7 @@ Default value: @code{10.0^(-fpprec/2)}
 
 Precision to determine when the @code{mnewton} function has converged towards
 the solution.  If @code{newtonepsilon} is a bigfloat, then @code{mnewton}
-computations are done with bigfloats.  See also @code{mnewton}.
+computations are done with bigfloats.  See also @mrefdot{mnewton}
 
 @opencatbox
 @category{Package mnewton}
@@ -42,7 +42,7 @@ Default value: @code{50}
 Maximum number of iterations to stop the @code{mnewton} function
 if it does not converge or if it converges too slowly.
 
-See also @code{mnewton}.
+See also @mrefdot{mnewton}
 
 @opencatbox
 @category{Package mnewton}
@@ -61,8 +61,8 @@ Multiple nonlinear functions solution using the Newton method.
 The solution is returned in the same format that @code{solve()} returns.
 If the solution is not found, @code{[]} is returned.
 
-This function is controlled by global variables @code{newtonepsilon} and
-@code{newtonmaxiter}.
+This function is controlled by global variables @mref{newtonepsilon} and
+@mrefdot{newtonmaxiter}
 
 @example
 (%i1) load("mnewton")$
@@ -91,7 +91,7 @@ floats or bigfloats.
 @end example
 
 To use this function write first @code{load("mnewton")}.
-See also @code{newtonepsilon} and @code{newtonmaxiter}.
+See also @mref{newtonepsilon} and @mrefdot{newtonmaxiter}
 
 @opencatbox
 @category{Package mnewton}
