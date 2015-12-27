@@ -109,7 +109,7 @@ To avoid this problem, a new notation has been developed that remains fully
 compatible with the existing notation and can be used interchangeably. In
 this notation, contravariant indices are inserted in the appropriate
 positions in the covariant index list, but with a minus sign prepended.
-Functions like @code{contract} and @code{ishow} are now aware of this
+Functions like @mref{contract_Itensor} and @mref{ishow} are now aware of this
 new index notation and can process tensors appropriately.
 
 In this new notation, the previous example yields a correct result:
@@ -2497,7 +2497,7 @@ as in the following example:
             j k      m1 l        j l      m1 k        j l,k
 
                                                       i
-                                               + ichr2
+                          1                     + ichr2
                                                       j k,l
 (%i5) tentex(%)$
 $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
