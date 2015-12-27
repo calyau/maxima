@@ -154,7 +154,7 @@
 \entry {\code {edge_type}}{922}
 \entry {\code {edge_width}}{922}
 \entry {\code {elevation}}{212, 856}
-\entry {\code {endphi}}{858}
+\entry {\code {endphi}}{859}
 \entry {\code {endtheta}}{859}
 \entry {\code {enhanced3d}}{747}
 \entry {\code {epsilon_lp}}{1016}
@@ -441,9 +441,9 @@
 \entry {\code {pochhammer_max_index}}{1009}
 \entry {\code {point_size}}{775}
 \entry {\code {point_type}}{214, 776}
-\entry {\code {points}}{859}
+\entry {\code {points}}{860}
 \entry {\code {points_joined}}{777}
-\entry {\code {pointsize}}{859}
+\entry {\code {pointsize}}{860}
 \entry {\code {poislim}}{479}
 \entry {\code {poisson}}{479}
 \entry {\code {poly_coefficient_ring}}{926}
@@ -551,7 +551,7 @@
 \entry {\code {sqrtdispflag}}{33}
 \entry {\code {stardisp}}{34}
 \entry {\code {startphi}}{860}
-\entry {\code {starttheta}}{860}
+\entry {\code {starttheta}}{861}
 \entry {\code {stats_numer}}{1037}
 \entry {\code {stringdisp}}{42}
 \entry {\code {structures}}{69}
@@ -560,7 +560,7 @@
 \entry {\code {subnumsimp}}{93}
 \entry {\code {sumexpand}}{465}
 \entry {\code {sumsplitfact}}{157}
-\entry {\code {surface}}{860}
+\entry {\code {surface}}{861}
 \entry {\code {surface_hide}}{779}
 \entry {\code {svg_file}}{216}
 \entry {\code {symmetric}}{143}
@@ -574,7 +574,7 @@
 \entry {\code {tensorkill}}{453}
 \entry {\code {terminal}}{780, 923}
 \entry {\code {testsuite_files}}{7}
-\entry {\code {thetaresolution}}{860}
+\entry {\code {thetaresolution}}{861}
 \entry {\code {timer_devalue}}{625}
 \entry {\code {title}}{216, 781}
 \entry {\code {tlimswitch}}{296}
@@ -637,7 +637,7 @@
 \entry {\code {windowname}}{857}
 \entry {\code {windowtitle}}{857}
 \entry {\code {wired_surface}}{787}
-\entry {\code {wireframe}}{861}
+\entry {\code {wireframe}}{862}
 \initial {X}
 \entry {\code {x}}{216}
 \entry {\code {x_voxel}}{788}
@@ -695,7 +695,7 @@
 \entry {\code {zeta%pi}}{490}
 \entry {\code {zlabel}}{217, 800}
 \entry {\code {zlabel_rotate}}{800}
-\entry {\code {zlength}}{861}
+\entry {\code {zlength}}{862}
 \entry {\code {zmin}}{218}
 \entry {\code {zn_primroot_limit}}{501}
 \entry {\code {zn_primroot_pretest}}{502}
