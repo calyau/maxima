@@ -2497,7 +2497,7 @@ as in the following example:
             j k      m1 l        j l      m1 k        j l,k
 
                                                       i
-                          1                     + ichr2
+                                               + ichr2
                                                       j k,l
 (%i5) tentex(%)$
 $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
