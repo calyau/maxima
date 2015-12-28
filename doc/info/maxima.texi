@@ -1,3 +1,4 @@
+@tex
 \def\mmref#1#2{%
   \ifpdf%
     {\leavevmode%
@@ -11,6 +12,7 @@
     \endlink%
   \fi%
 }
+@end tex
 \input texinfo
 @setfilename  maxima.info
 @finalout

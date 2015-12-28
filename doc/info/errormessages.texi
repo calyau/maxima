@@ -10,6 +10,7 @@ or on how to recover from errors.
 @menu
 * part fell off the end::
 * undefined variable during plotting::
+* loadfile failed to load::
 * Only symbols can be bound::
 * out of memory::
 * No such list element::
@@ -26,7 +27,7 @@ or on how to recover from errors.
 @category{Error messages}
 @closecatbox
 
-@node undefined variable during plotting,Only symbols can be bound, part fell off the end, Error messages
+@node undefined variable during plotting,loadfile failed to load, part fell off the end, Error messages
 @subsection undefined variable (draw or plot)
 A function could not be plotted since it still contained a variable maxima
 doesn't know the value of.
@@ -61,7 +62,33 @@ draw2d (explicit): non defined variable
 @opencatbox
 @category{Error messages}
 @closecatbox
-@node Only symbols can be bound, out of memory,undefined variable during plotting, Error messages
+
+
+@node loadfile failed to load,undefined variable during plotting, Error messages
+@subsection loadfile: failed to load <filename>
+This error message normally indicates that the file exists, but can not be read.
+If the file is present and readable there is another possible for this error
+message: Maxima can compile packages to native binary files in order to make them
+run faster. If after compiling the file something in the system has changed in a
+way that makes it incompatible with the binary the binary the file cannot be
+loaded any more. Maxima normally puts binary files it creates from its own packages
+in a folder named @code{binary} within the folder whose name it is printed after
+typing:
+@c ===beg===
+@c maxima_userdir;
+@c ===end===
+@example
+@group
+(%i1) maxima_userdir;
+(%o1)                 /home/gunter/.maxima
+@end group
+@end example
+If this directory is missing maxima will recreate it again as soon as it has to
+compile a package.
+@opencatbox
+@category{Error messages}
+@closecatbox
+@node Only symbols can be bound,out of memory,loadfile failed to load, Error messages
 @subsection Only symbols can be bound
 The most probable cause for this error is that there was an attempt to eiter
 use a number or a variable whose numerical value is known as a loop
