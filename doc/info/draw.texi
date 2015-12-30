@@ -2151,14 +2151,15 @@ If @code{logx} is @code{true}, the @var{x} axis will be drawn in the
 logarithmic scale.
 
 Since this is a global graphics option, its position in the scene description
-does not matter.
+does not matter, with the exception that it should be written before any 
+2D @code{explicit} object, so that @code{draw} can produce a better plot.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(log(x),x,0.01,5),
-             logx = true)$
+(%i2) draw2d(logx = true,
+             explicit(log(x),x,0.01,5))$
 @end example
 
 See also @mrefcomma{logy}  @mrefcomma{logx_secondary}  @mrefcomma{logy_secondary}  and @mrefdot{logz}
