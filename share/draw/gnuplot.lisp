@@ -1205,14 +1205,25 @@
     (when (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
     (setq *plot-realpart* (get-option '$draw_realpart))
-    (setf fcn ($float fcn))
-
     (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
-    (flet ((fun (x) (funcall fcn x)))
-        (dotimes (k (1+ (* 2 nticks)))
-          (let ((x (+ xmin (* k x-step))))
-            (push x x-samples)
-            (push (fun x) y-samples)))
+    (when (get-option '$logx)
+      (setf xmin (log xmin))
+      (setf xmax (log xmax))
+      (setf x-step (/ (- xmax xmin) ($float nticks) 2)))
+    (flet ((fun (x)
+               (let ((y (if (get-option '$logx)
+                            (funcall fcn (exp x))
+                            (funcall fcn x))))
+                 (if (and (get-option '$logy)
+                          (numberp y))
+                     (if (> y 0)
+                       (log y)
+                       (merror "draw2d (explicit): logarithm of negative number"))
+                     y))))
+      (dotimes (k (1+ (* 2 nticks)))
+        (let ((x (+ xmin (* k x-step))))
+          (push x x-samples)
+          (push (fun x) y-samples)))
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
       ;; For each region, adaptively plot it.
@@ -1241,11 +1252,26 @@
 	      (merror "draw2d (explicit): non defined variable in term ~M" item)
 	      )
 	    )
+
+
           (when (not (null result))
             (setf sublst (cddr sublst)))
           (do ((lst sublst (cddr lst)))
               ((null lst) 'done)
-            (setf result (append result (list (first lst) (second lst))))))))
+            (setf result (append result
+                                 (list
+                                   (if (and (get-option '$logx)
+                                            (numberp (first lst)))
+                                     (exp (first lst))
+                                     (first lst))
+                                   (if (and (get-option '$logy)
+                                            (numberp (second lst)))
+                                     (exp (second lst))
+                                     (second lst)))))))))
+    ; reset x extremes to original values
+    (when (get-option '$logx)
+      (setf xmin (exp xmin))
+      (setf xmax (exp xmax)))
 
     (cond ((null (get-option '$filled_func))
              (cond
@@ -2780,7 +2806,7 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (format nil "set style rectangle fillcolor rgb '~a' fs solid 1.0 noborder ~%"
+            (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
                         (get-option '$background_color)) ; background rectangle
             (if (equal (get-option '$proportional_axes) '$none)
                (format nil "set size noratio~%")
@@ -3363,7 +3389,7 @@
                 (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
                 (when (and (not *multiplot-is-active*)
                            (not (member (get-option '$terminal) '($epslatex $epslatex_standalone))))
-                  (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a fs solid noborder~%" 
+                  (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
                                      origin1 origin2 (+ origin1 size1 ) (+ origin2 size2)))  ))
         (setf is1stobj t
               biglist '()
