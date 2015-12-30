@@ -16,7 +16,7 @@
 \entry {\code {%pi}}{44}
 \entry {\code {%piargs}}{163}
 \entry {\code {%rnum_list}}{331}
-\entry {\code {%unitexpand}}{1102}
+\entry {\code {%unitexpand}}{1104}
 \initial {[}
 \entry {\code {[}}{46}
 \initial {]}
@@ -157,14 +157,14 @@
 \entry {\code {endphi}}{859}
 \entry {\code {endtheta}}{859}
 \entry {\code {enhanced3d}}{747}
-\entry {\code {epsilon_lp}}{1016}
+\entry {\code {epsilon_lp}}{1018}
 \entry {\code {erf_representation}}{282}
 \entry {\code {erfflag}}{311}
 \entry {\code {error_size}}{611}
 \entry {\code {error_syms}}{612}
 \entry {\code {error_type}}{753}
 \entry {\code {errormsg}}{612}
-\entry {\code {ev_point}}{1106}
+\entry {\code {ev_point}}{1108}
 \entry {\code {eval}}{126}
 \entry {\code {even}}{176}
 \entry {\code {evenfun}}{134}
@@ -180,7 +180,7 @@
 \entry {\code {exptsubst}}{79}
 \initial {F}
 \entry {\code {facexpand}}{241}
-\entry {\code {facsum_combine}}{1020}
+\entry {\code {facsum_combine}}{1022}
 \entry {\code {factlim}}{156}
 \entry {\code {factorflag}}{244}
 \entry {\code {factorial_expand}}{156}
@@ -237,7 +237,7 @@
 \entry {\code {gnuplot_svg_term_command}}{220}
 \entry {\code {gnuplot_term}}{218}
 \entry {\code {gnuplot_view_args}}{196}
-\entry {\code {Gosper_in_Zeilberger}}{1106}
+\entry {\code {Gosper_in_Zeilberger}}{1108}
 \entry {\code {gradefs}}{307}
 \entry {\code {grid}}{213, 757}
 \entry {\code {grid2d}}{213}
@@ -321,7 +321,7 @@
 \entry {\code {line_type}}{768}
 \entry {\code {line_width}}{769}
 \entry {\code {linear}}{137}
-\entry {\code {linear_solver}}{1105}
+\entry {\code {linear_solver}}{1107}
 \entry {\code {linechar}}{19}
 \entry {\code {linel}}{31}
 \entry {\code {linenum}}{19}
@@ -359,7 +359,7 @@
 \entry {\code {matrix_element_add}}{383}
 \entry {\code {matrix_element_mult}}{384}
 \entry {\code {matrix_element_transpose}}{384}
-\entry {\code {MAX_ORD}}{1105}
+\entry {\code {MAX_ORD}}{1107}
 \entry {\code {maxapplydepth}}{542}
 \entry {\code {maxapplyheight}}{542}
 \entry {\code {maxima_tempdir}}{523}
@@ -374,13 +374,13 @@
 \entry {\code {mesh_lines_color}}{213}
 \entry {\code {method}}{656}
 \entry {\code {minf}}{43}
-\entry {\code {mod_big_prime}}{1106}
-\entry {\code {mod_test}}{1106}
-\entry {\code {mod_threshold}}{1106}
+\entry {\code {mod_big_prime}}{1108}
+\entry {\code {mod_test}}{1108}
+\entry {\code {mod_threshold}}{1108}
 \entry {\code {mode_check_errorp}}{597}
 \entry {\code {mode_check_warnp}}{597}
 \entry {\code {mode_checkp}}{597}
-\entry {\code {modular_linear_solver}}{1106}
+\entry {\code {modular_linear_solver}}{1108}
 \entry {\code {modulus}}{250}
 \entry {\code {multiplicative}}{138}
 \entry {\code {multiplicities}}{341}
@@ -389,16 +389,16 @@
 \entry {\code {nary}}{140}
 \entry {\code {negdistrib}}{140}
 \entry {\code {negsumdispflag}}{31}
-\entry {\code {newline}}{1063}
+\entry {\code {newline}}{1065}
 \entry {\code {newtonepsilon}}{987}
 \entry {\code {newtonmaxiter}}{987}
-\entry {\code {nextlayerfactor}}{1020}
+\entry {\code {nextlayerfactor}}{1022}
 \entry {\code {niceindicespref}}{467}
 \entry {\code {nm}}{453}
 \entry {\code {nmc}}{453}
 \entry {\code {noeval}}{129}
 \entry {\code {nolabels}}{19}
-\entry {\code {nonegative_lp}}{1017}
+\entry {\code {nonegative_lp}}{1019}
 \entry {\code {noninteger}}{178}
 \entry {\code {nonscalar}}{179}
 \entry {\code {noun}}{84}
@@ -432,8 +432,8 @@
 \entry {\code {pfeformat}}{32}
 \entry {\code {phiresolution}}{859}
 \entry {\code {piece}}{91}
-\entry {\code {pivot_count_sx}}{1017}
-\entry {\code {pivot_max_sx}}{1017}
+\entry {\code {pivot_count_sx}}{1019}
+\entry {\code {pivot_max_sx}}{1019}
 \entry {\code {plot_format}}{214}
 \entry {\code {plot_options}}{210}
 \entry {\code {plot_realpart}}{214}
@@ -462,7 +462,7 @@
 \entry {\code {pred}}{129}
 \entry {\code {prederror}}{615}
 \entry {\code {primep_number_of_tests}}{488}
-\entry {\code {product_use_gamma}}{1032}
+\entry {\code {product_use_gamma}}{1034}
 \entry {\code {program}}{923}
 \entry {\code {programmode}}{341}
 \entry {\code {promote_float_to_bigfloat}}{39}
@@ -501,10 +501,10 @@
 \entry {\code {ric}}{452}
 \entry {\code {riem}}{452}
 \entry {\code {rmxchar}}{386}
-\entry {\code {rombergabs}}{1012}
-\entry {\code {rombergit}}{1013}
-\entry {\code {rombergmin}}{1013}
-\entry {\code {rombergtol}}{1013}
+\entry {\code {rombergabs}}{1014}
+\entry {\code {rombergit}}{1015}
+\entry {\code {rombergmin}}{1015}
+\entry {\code {rombergtol}}{1015}
 \entry {\code {rootsconmode}}{343}
 \entry {\code {rootsepsilon}}{344}
 \entry {\code {run_viewer}}{215}
@@ -516,7 +516,7 @@
 \entry {\code {scalar}}{182}
 \entry {\code {scalarmatrixp}}{387}
 \entry {\code {scale}}{860}
-\entry {\code {scale_lp}}{1017}
+\entry {\code {scale_lp}}{1019}
 \entry {\code {setcheck}}{624}
 \entry {\code {setcheckbreak}}{624}
 \entry {\code {setval}}{624}
@@ -533,8 +533,8 @@
 \entry {\code {show_weight}}{921}
 \entry {\code {showtime}}{22}
 \entry {\code {simp}}{142}
-\entry {\code {simplified_output}}{1105}
-\entry {\code {simplify_products}}{1030}
+\entry {\code {simplified_output}}{1107}
+\entry {\code {simplify_products}}{1032}
 \entry {\code {simpproduct}}{461}
 \entry {\code {simpsum}}{462}
 \entry {\code {sinnpiflag}}{478}
@@ -544,7 +544,7 @@
 \entry {\code {solvenullwarn}}{348}
 \entry {\code {solveradcan}}{348}
 \entry {\code {solvetrigwarn}}{348}
-\entry {\code {space}}{1063}
+\entry {\code {space}}{1065}
 \entry {\code {sparse}}{387}
 \entry {\code {sphere}}{858}
 \entry {\code {spring_embedding_depth}}{922}
@@ -552,7 +552,7 @@
 \entry {\code {stardisp}}{34}
 \entry {\code {startphi}}{860}
 \entry {\code {starttheta}}{861}
-\entry {\code {stats_numer}}{1037}
+\entry {\code {stats_numer}}{1039}
 \entry {\code {stringdisp}}{42}
 \entry {\code {structures}}{69}
 \entry {\code {style}}{215}
@@ -566,7 +566,7 @@
 \entry {\code {symmetric}}{143}
 \initial {T}
 \entry {\code {t}}{216}
-\entry {\code {tab}}{1063}
+\entry {\code {tab}}{1065}
 \entry {\code {taylor_logexpand}}{475}
 \entry {\code {taylor_order_coefficients}}{476}
 \entry {\code {taylor_truncate_polynomials}}{476}
@@ -605,7 +605,7 @@
 \entry {\code {trigexpandtimes}}{167}
 \entry {\code {triginverses}}{167}
 \entry {\code {trigsign}}{168}
-\entry {\code {trivial_solutions}}{1106}
+\entry {\code {trivial_solutions}}{1108}
 \entry {\code {true}}{44}
 \entry {\code {tstep}}{857}
 \entry {\code {ttyoff}}{34}
@@ -619,7 +619,7 @@
 \entry {\code {uriem}}{452}
 \entry {\code {use_fast_arrays}}{68}
 \entry {\code {user_preamble}}{785}
-\entry {\code {usersetunits}}{1098}
+\entry {\code {usersetunits}}{1100}
 \initial {V}
 \entry {\code {values}}{23}
 \entry {\code {vect_cross}}{390}
@@ -631,7 +631,7 @@
 \entry {\code {vertex_type}}{921}
 \entry {\code {view}}{786}
 \initial {W}
-\entry {\code {warnings}}{1105}
+\entry {\code {warnings}}{1107}
 \entry {\code {weyl}}{453}
 \entry {\code {width}}{857}
 \entry {\code {windowname}}{857}
