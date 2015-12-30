@@ -25,8 +25,56 @@
 mkdirokay : if sequal(concat(olddir, "testdir1/"), newdir) then "ok" else "not ok";
 "ok"$
 
+/* in the new directory, try to create, rename and remove a file */
+pathname_name(stringout("testfile", "testdata"));
+"testfile"$
+
+length(directory("*"));
+1$
+
+pathname_name(first(directory("*")));
+"testfile"$
+
+(rename_file("testfile", "testfile2"),0);
+0$
+
+length(directory("*"));
+1$
+
+pathname_name(first(directory("*")));
+"testfile2"$
+
+(copy_file("testfile2", "testfile3"),0);
+0$
+
+length(directory("*"));
+2$
+
+pathname_name(first(sort(directory("*"))));
+"testfile2"$
+
+pathname_name(second(sort(directory("*"))));
+"testfile3"$
+
+(delete_file("testfile2"),0);
+0$
+
+length(directory("*"));
+1$
+
+pathname_name(first(directory("*")));
+"testfile3"$
+
+(delete_file("testfile3"),0);
+0$
+
+length(directory("*"));
+0$
+
+
 (if sequal(mkdirokay, "ok") then chdir(".."),0);
 0$
+
 
 /* do this test only if creating a new directory worked */
 (if sequal(mkdirokay, "ok") then rmdir("testdir1"), 0);
