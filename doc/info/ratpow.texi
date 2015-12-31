@@ -6,6 +6,8 @@ first. Returned coefficients are in CRE form except for numbers.
 In order to get a list of vars in a CRE polynomial @mref{showratvars} can be
 used.
 
+For information about CREs see also @mrefcomma{rat} @mref{ratdisrep} and
+@mrefdot{showratvars}
 @menu
 * Functions and Variables for ratpow::
 @end menu
@@ -72,6 +74,38 @@ The following example will return 0 since @code{1} equals @code{x^0}:
 @group
 (%i2) ratp_lopow( x^5 + x^2 + 1, x);
 (%o2)                           0
+@end group
+@end example
+
+The CRE form of the following equation contains @code{sqrt(x)} and
+@code{x}. Since they are interpreted as independent variables
+@code{ratp_lopow} returns @code{0} in this case:
+@c ===beg===
+@c load("ratpow")$
+@c g:sqrt(x)^5 + sqrt(x)^2;
+@c showratvars(g);
+@c ratp_lopow( g, x);
+@c ratp_lopow( g, sqrt(x));
+@c ===end===
+@example
+(%i1) load("ratpow")$
+@group
+(%i2) g:sqrt(x)^5 + sqrt(x)^2;
+                             5/2
+(%o2)                       x    + x
+@end group
+@group
+(%i3) showratvars(g);
+                              1/2
+(%o3)                       [x   , x]
+@end group
+@group
+(%i4) ratp_lopow( g, x);
+(%o4)                           0
+@end group
+@group
+(%i5) ratp_lopow( g, sqrt(x));
+(%o5)                           0
 @end group
 @end example
 
