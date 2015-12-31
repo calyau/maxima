@@ -1,7 +1,7 @@
 The package @code{ratpow} provides functions that find the exponents
 of the denominator in a CRE polynomial. If the exponents in the denominator
 are needed instead @mref{ratdenom} can be used to extract this denominator
-first.
+first. Returned coefficients are in CRE form except for numbers.
 
 In order to get a list of vars in a CRE polynomial @mref{showratvars} can be
 used.
@@ -21,52 +21,23 @@ used.
 
 Finds the highest power of the main variable in @code{ratnumer(expr)}
 
-
-
 @c ===beg===
 @c load("ratpow")$
-@c ratp_hipow( x^(5/2) + x^2 , x) => 2;
-@c ratp_hipow( x^(5/2) + x^2 , sqrt(x)) => 5;
+@c ratp_hipow( x^(5/2) + x^2 , x);
+@c ratp_hipow( x^(5/2) + x^2 , sqrt(x));
 @c ===end===
 @example
 (%i1) load("ratpow")$
 @group
-(%i2) ratp_hipow( x^(5/2) + x^2 , x) => 2;
-incorrect syntax: > is not a prefix operator
-(5/2) + x^2 , x) => 
-                  ^
+(%i2) ratp_hipow( x^(5/2) + x^2 , x);
+(%o2)                           2
 @end group
 @group
-(%i2) ratp_hipow( x^(5/2) + x^2 , sqrt(x)) => 5;
-incorrect syntax: > is not a prefix operator
-+ x^2 , sqrt(x)) => 
-                  ^
-@end group
-@end example
-@opencatbox
-@category{Package ratpow}
-@closecatbox
-@end deffn
-
-@anchor{ratp_lopow}
-@deffn {Function} ratp_lopow @
-@fname{ratp_lopow} (@var{expr}, @var{x}) @
-
-Finds the lowest power of the main variable in @code{ratnumer(expr)}
-
-@c ===beg===
-@c load("ratpow")$
-@c ratp_lopow( x^(5/2) + x^3 , x);
-@c ===end===
-@example
-(%i1) load("ratpow")$
-@group
-(%i2) ratp_lopow( x^(5/2) + x^3 , x);
-(%o2)                           0
+(%i3) ratp_hipow( x^(5/2) + x^2 , sqrt(x));
+(%o3)                           5
 @end group
 @end example
 
-Explanation: The CRE is x^3 + (x^(1/2))^5 * x^0.
 @opencatbox
 @category{Package ratpow}
 @closecatbox
@@ -78,12 +49,9 @@ Explanation: The CRE is x^3 + (x^(1/2))^5 * x^0.
 @fname{ratp_coeffs} (@var{expr}, @var{x}) @
 
 Generates a list of powers and coefficients of the main variable
-@code{ratnumer(expr)}; returned coefficients are in CRE form except for
-numbers.
-
+@code{ratnumer(expr)}.
 @c ===beg===
 @c load("ratpow")$
-@c ratp_coeffs( 4*x^3 + x + sqrt(x), x);
 @c ratp_coeffs( 4*x^3 + x + sqrt(x), x);
 @c ===end===
 @example
@@ -91,10 +59,6 @@ numbers.
 @group
 (%i2) ratp_coeffs( 4*x^3 + x + sqrt(x), x);
 (%o2)/R/         [[3, 4], [1, 1], [0, sqrt(x)]]
-@end group
-@group
-(%i3) ratp_coeffs( 4*x^3 + x + sqrt(x), x);
-(%o3)/R/         [[3, 4], [1, 1], [0, sqrt(x)]]
 @end group
 @end example
 @opencatbox
@@ -108,6 +72,18 @@ numbers.
 
 Generates a list of coefficients in @code{ratnumer(expr)}; returned
 coefficients are in CRE form except for numbers.
+
+@c ===beg===
+@c load("ratpow")$
+@c ratp_dense_coeffs( 4*x^3 + x + sqrt(x), x);
+@c ===end===
+@example
+(%i1) load("ratpow")$
+@group
+(%i2) ratp_dense_coeffs( 4*x^3 + x + sqrt(x), x);
+(%o2)/R/               [4, 0, 1, sqrt(x)]
+@end group
+@end example
 
 @opencatbox
 @category{Package ratpow}
