@@ -44,6 +44,44 @@ Finds the highest power of the main variable in @code{ratnumer(expr)}
 @end deffn
 
 
+@anchor{ratp_lopow}
+@deffn {Function} ratp_lopow @
+@fname{ratp_lopow} (@var{expr}, @var{x}) @
+
+Finds the lowest power of the main variable in @code{ratnumer(expr)}
+
+@c ===beg===
+@c load("ratpow")$
+@c ratp_lopow( x^5 + x^2 , x);
+@c ===end===
+@example
+(%i1) load("ratpow")$
+@group
+(%i2) ratp_lopow( x^5 + x^2 , x);
+(%o2)                           2
+@end group
+@end example
+
+The following example will return 0 since @code{1} equals @code{x^0}:
+@c ===beg===
+@c load("ratpow")$
+@c ratp_lopow( x^5 + x^2 + 1, x);
+@c ===end===
+@example
+(%i1) load("ratpow")$
+@group
+(%i2) ratp_lopow( x^5 + x^2 + 1, x);
+(%o2)                           0
+@end group
+@end example
+
+
+@opencatbox
+@category{Package ratpow}
+@closecatbox
+@end deffn
+
+
 @anchor{ratp_coeffs}
 @deffn {Function} ratp_coeffs @
 @fname{ratp_coeffs} (@var{expr}, @var{x}) @
