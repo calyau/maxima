@@ -1,0 +1,2 @@
+Makefile.am text eol-lf
+*.lisp text eol-lf
