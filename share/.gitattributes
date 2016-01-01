@@ -1,2 +1,3 @@
 Makefile.am text eol-lf
 *.lisp text eol-lf
+*.mac text eol-lf
