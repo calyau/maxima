@@ -19,7 +19,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS)
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
-	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc: maxima.html

@@ -1,0 +1,26 @@
+There currently are no formal rules for adding documentation.
+
+There are some guidelines, though:
+
+ * separate exposition and examples
+ * examples recapitulate exposition
+ * order exposition by decreasing importance
+ * be precise, be complete, get to the point
+
+
+In order to test if the new document works the following steps
+have proven helpful:
+
+- Do the TeXinfo and HTML documentations build without producing new warning
+  or error messages? Both will be created after typing the following command:
+
+  make
+
+- Does the pdf documentation build? This type of documentation can be created
+  by typing
+
+  make pdf
+
+- Do all of the documentation types look like they should
+
+- Is the documentation accessible to the ? and ?? commands of maxima?

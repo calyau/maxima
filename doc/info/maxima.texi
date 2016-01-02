@@ -1,18 +1,4 @@
-@tex
-\def\mmref#1#2{%
-  \ifpdf%
-    {\leavevmode%
-     \startlink attr{/Border [0 0 0]}%
-     goto file{maxima.pdf} name{#1}%
-    }%
-    \setcolor{\linkcolor}%
-  \fi%
-  #2%
-  \ifpdf%
-    \endlink%
-  \fi%
-}
-@end tex
+\input mmref 
 \input texinfo
 @setfilename  maxima.info
 @finalout

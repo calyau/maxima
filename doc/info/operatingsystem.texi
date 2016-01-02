@@ -1,6 +1,7 @@
 @menu
 * Introduction to operatingsystem::
 * Directory operations::
+* File operations::
 * Environment operations::
 @end menu
 
@@ -10,7 +11,7 @@
 Package @code{operatingsystem} contains functions for operatingsystem-tasks, like file system operations.
 
 
-@node Directory operations, Environment operations, Introduction to operatingsystem, operatingsystem
+@node Directory operations, File operations, Introduction to operatingsystem, operatingsystem
 @section Directory operations
 
 
@@ -29,16 +30,6 @@ Create directory @var{dir}
 remove directory @var{dir}
 @end deffn
 
-@anchor{copy_file}
-@deffn {Function} copy_file (@var{file1}, @var{file2})
-copies file @var{file1} to @var{file2}
-@end deffn
-
-@anchor{rename_file}
-@deffn {Function} rename_file (@var{file1}, @var{file2})
-renames file @var{file1} to @var{file2}
-@end deffn
-
 @anchor{getcurrentdirectory}
 @deffn {Function} getcurrentdirectory ()
 returns the current working directory.
@@ -51,14 +42,33 @@ Examples:
 
 @example
 (%i1) load("operatingsystem")$
-(%i2) mkdir("testdirectory");
-(%i3) chdir("testdirectory");
-(%i4) chdir("..");
-(%i5) rmdir("testdirectory");
+(%i2) mkdir("testdirectory")$
+(%i3) chdir("testdirectory")$
+(%i4) chdir("..")$
+(%i5) rmdir("testdirectory")$
 @end example
 
+@node File operations, Environment operations, Directory operations, operatingsystem
+@section File operations
 
-@node Environment operations, , Directory operations, operatingsystem
+
+@anchor{copy_file}
+@deffn {Function} copy_file (@var{file1}, @var{file2})
+copies file @var{file1} to @var{file2}
+@end deffn
+
+@anchor{rename_file}
+@deffn {Function} rename_file (@var{file1}, @var{file2})
+renames file @var{file1} to @var{file2}
+@end deffn
+
+@anchor{delete_file}
+@deffn {Function} delete_file (@var{file1})
+deletes file @var{file1}
+@end deffn
+
+
+@node Environment operations, , File operations, operatingsystem
 @section Environment operations
 
 

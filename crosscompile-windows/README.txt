@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync maxima
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync
 
 then you can start the crosscompiling-process:
 
@@ -32,7 +32,7 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 If you want to include VTK, use
 cmake -DUSE_VTK=YES ..
 (Attention: The compilation time will increase!!! The size of the installer will
-approximately be 50% more than without VTK).
+approximately be 50% larger than without VTK).
 
 
 
@@ -40,6 +40,19 @@ In case a software gets upgraded (and no new patches are needed), it should
 be sufficient to just increase the version number and MD5-checksum for the new
 release in CMakeLists.txt.
 
+
+
+Installing the package
+======================
+
+Of course just by double-clicking/executing the generated EXE on
+Windows. This Maxima installer installs into C:\maxima-VERSION, you
+can not change this directory.
+
+If you want to do an *unattended* installation (e.g. if you plan to
+install Maxima on many computers in a school, university or company),
+this installer (and uninstaller) understands the command line switch
+"/S" (for 'silent install').
 
 
 Testing the installed package:
@@ -89,15 +102,5 @@ works properly. To test Maxima, try the following:
    file and check if the file is processed correctly.
 
 
-INSTALLING THE PACKAGE
-======================
 
-Of course just by double-clicking/executing the generated EXE on
-Windows. This Maxima installer installs into C:\maxima-VERSION, you
-can not change this directory.
-
-If you want to do an *unattended* installation (e.g. if you plan to
-install Maxima on many computers in a school, university or company),
-this installer (and uninstaller) understands the command line switch
-"/S" (for 'silent install').
 

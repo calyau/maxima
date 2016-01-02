@@ -230,10 +230,10 @@ To report a bug, you must have a Sourceforge account.
 Please include the following information with your bug report:
 -------------------------------------------------------------
 Maxima version: "5.36.1"
-Maxima build date: "2015-07-25 15:04:14"
+Maxima build date: "2015-06-02 11:26:48"
 Host type: "x86_64-unknown-linux-gnu"
-Lisp implementation type: "CLISP"
-Lisp implementation version: "2.49 (2010-07-07) (built 3589338791) (memory 3646818256)"
+Lisp implementation type: "GNU Common Lisp (GCL)"
+Lisp implementation version: "GCL 2.6.12"
 -------------------------------------------------------------
 The above information is also reported by the function 'build_info()'.
 @end example
@@ -243,20 +243,78 @@ The above information is also reported by the function 'build_info()'.
 @anchor{build_info}
 @deffn {Funktion} build_info ()
 
-Zeigt die Maxima- und Lisp-Version der Installation.  @code{build_info} gibt
-eine leere Zeichenkette @code{""} zur@"uck.
+Zeigt die Maxima- und Lisp-Version der Installation.  @code{build_info} gibt die Eigenschaften der Maxima-Version als Maxima structure (definiert durch @code{defstruct}) zur@"uck.
+Die Felder der Struktur sind:
+@code{version}, @code{timestamp}, @code{host}, @code{lisp_name} und @code{lisp_version}.
+Wenn die Ausgabe formatiert erfolgt (mit @code{display2d:true;}),
+werden die Ergebnisse als kurze Tabelle ausgegeben.
 
 Beispiel:
 
 @example
-(%i1) build_info();
+@group
+(%i1) build_info ();
 (%o1) 
 Maxima version: "5.36.1"
-Maxima build date: "2015-07-25 15:04:14"
+Maxima build date: "2015-06-02 11:26:48"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "GNU Common Lisp (GCL)"
+Lisp implementation version: "GCL 2.6.12"
+@end group
+(%i2) x : build_info ()$
+@group
+(%i3) x@@version;
+(%o3)                               5.36.1
+@end group
+@group
+(%i4) x@@timestamp;
+(%o4)                         2015-06-02 11:26:48
+@end group
+@group
+(%i5) x@@host;
+(%o5)                      x86_64-unknown-linux-gnu
+@end group
+@group
+(%i6) x@@lisp_name;
+(%o6)                        GNU Common Lisp (GCL)
+@end group
+@group
+(%i7) x@@lisp_version;
+(%o7)                             GCL 2.6.12
+@end group
+@group
+(%i8) x;
+(%o8) 
+Maxima version: "5.36.1"
+Maxima build date: "2015-06-02 11:26:48"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "GNU Common Lisp (GCL)"
+Lisp implementation version: "GCL 2.6.12"
+@end group
+@end example
+
+Der Versionsstring (hier 5.36.1) kann auch folgendermassen aussehen:
+branch_5_37_base_331_g8322940_dirty
+
+@example
+(%i1) build_info();
+(%o1) 
+Maxima version: "branch_5_37_base_331_g8322940_dirty"
+Maxima build date: "2016-01-01 15:37:35"
 Host type: "x86_64-unknown-linux-gnu"
 Lisp implementation type: "CLISP"
-Lisp implementation version: "2.49 (2010-07-07) (built 3589338791) (memory 3646818256)"
+Lisp implementation version: "2.49 (2010-07-07) (built 3605577779) 
+     (memory 3660647857)"
 @end example
+
+@c The version number comes from "git describe", and is (in that example)
+@c 331 commits after the latest tag, that is reachable from that commit
+@c dont know how to describe it better...
+In diesem Fall wurde Maxima nicht von einem Release sondern direkt aus dem Git checkout des
+Sourcecodes compiliert.
+Im obigen Beispiel ist der Checkout 331 Commits nach dem letzten Git-Tag (@"ublicherweise ein
+Maxima-Release (5.37 im obigen Beispiel)) und der verk@"urzte Commit Hash des letzten Commits
+lautet "8322940".
 @end deffn
 
 @c --- End of file Bugs.de.texi ------------------------------------------------

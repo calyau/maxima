@@ -1,0 +1,73 @@
+Improvements / TODOs for the crosscompiling script
+==================================================
+
+And some reasons why I did make some decisions...
+
+1. The fixed installation directory (C:\Maxima-VERSION)
+-------------------------------------------------------
+
+That was chosen, because of three reasons:
+
+- The default installation root ("C:\Program files") contains a space, which
+might cause issues, because one needs to escape it.
+
+- The default installation path for a 32 Bit program is different on 32 and 
+64 Bit Windows Systems.
+
+- When one builds Maxima using Autoconf, in './configure', the installation 
+prefix (--prefix=...) is set to a fixed value - and that value is used when 
+compiling maxima (at least in the manpage (not really relevant on Windows) 
+but also for some Lisp-variables (e.g. *autoconf-prefix*, ...).
+
+So making the installation directory not fixed, might cause issues.
+
+
+Letting the user select his installation directory might be nice, but might
+lead to trouble.
+
+
+2. Using (only) CLISP
+---------------------
+
+Clisp was chosen, because it worked nice with "Wine" (which is needed for
+crosscompiling) and they just released a ZIP file, which one can easy extract.
+
+
+Using other LISPs might be a good idea (I tried it), but there are some issues:
+
+SBCL released only a MSI-installer
+
+GCL released exe installers (currently only for older versions)
+
+ECL released an exe installer. 
+
+Trying to crosscompile GCL or ECL did not work for me.
+
+CCL released a ZIP File for windows (which is promising), but sadly it does
+not work with wine.
+
+
+3. No kill/interrupt functionality
+----------------------------------
+
+There is a program included (winkill) for interrupting Maxima from wxMaxima
+and xMaxima, but that does only work (according to Andrej) for GCL, so that is 
+not included in the crosscompiled installer.
+
+Perhaps wxMaxima / Xmaxima can use the (native) Windows command "taskkill" 
+instead of  our own winkill) on Windows?
+
+
+4. Font installation
+--------------------
+
+Not really an issue, but currently everything is installed in the directory
+C:\maxima-VERSION - except the jsMath TeX-fonts, which are in the Windows 
+System Font directory. 
+That works, but I uninstall the fonts when one uninstalls Maxima - and the 
+user might have used the fonts somewhere else.
+It would be nice, if the fonts can also be somewhere in the "C:\Maxima-VERSION" 
+installation directory and wxMaxima can read them from there.
+
+
+Wolfgang Dautermann
