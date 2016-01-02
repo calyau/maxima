@@ -209,6 +209,7 @@
   ;; Should really get the truename of FILE.
   (if printp (format t (intl:gettext "loadfile: loading ~A.~%") file))
   (let* ((path (pathname file))
+	 (*package* (find-package :maxima))
 	 ($load_pathname path)
 	 (*read-base* 10.)
 	 (tem (errset #-sbcl (load (pathname file)) #+sbcl (with-compilation-unit nil (load (pathname file))))))
