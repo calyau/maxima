@@ -10,8 +10,8 @@ There are some guidelines, though:
  * be precise, be complete, get to the point
 
 
-How to thest the documentation?
-===============================
+How to test the documentation?
+==============================
 
 In order to test if the new document works the following steps
 have proven helpful:
@@ -33,20 +33,20 @@ have proven helpful:
 Documentation interna
 =====================
 
-The central file the documentation is generated from is generated from
+The central file the documentation is generated from
 include-maxima.texi.in
 
 All maxima-specific extensions to texinfo that aren't contained in mmref.tex
 can be found in category-macros.texi
 
-Other possibly important details (in random ordeR)
+Other possibly important details (in random order)
 include-maxima.texi is included by maxima.texi that (if the pdf manual is generated
 using "make pdf" also draws in mmref.tex (a file that provides a @mmref
 command that links to a keyword without printing out the page number and
 chapter name) and texinfo.tex: The logic that allows pdfTeX to interpret .texi files.
-The newest version of texinfo.tex is always available at https://gnu.org - and
-it probably makes sense to update the version shipped with maxima from time
-to time.
+The newest version of texinfo.tex is always available at
+https://ftp.gnu.org/gnu/texinfo/texinfo.tex - and it probably makes sense
+to update the "texinfo.tex" files shipped with maxima from time to time.
 
 
 TO DO
