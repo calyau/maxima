@@ -5,11 +5,10 @@
 @node Introduction to celine
 @section Introduction to celine
 
-Maxima implementation of Sister Celine's method. Barton Willis wrote this code. It is released under the 
-Creative Commons CC0 license (https://creativecommons.org/about/cc0).
+Maxima implementation of Sister Celine's method. Barton Willis wrote this code. It is released under the @uref{https://creativecommons.org/about/cc0,Creative Commons CC0 license}.
 
 Celine's method is described in Sections 4.1--4.4 of the book "A=B", by Marko Petkovsek, Herbert S. Wilf, and Doron Zeilberger.
-This book is available at http://www.math.rutgers.edu/~zeilberg/AeqB.pdf 
+This book is available at @uref{http://www.math.rutgers.edu/~zeilberg/AeqB.pdf}
 
 Let f = F(n,k). The function celine returns a set of recursion relations for F of the form
 
