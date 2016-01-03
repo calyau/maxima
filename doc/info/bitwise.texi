@@ -89,7 +89,7 @@ This function calculates a bitwise @code{and} of two or more signed integers.
 @end example
 
 If it is known if one of the parameters to @code{bit_and} is even this information
-is taken into considoration by the function.
+is taken into consideration by the function.
 @c ===beg===
 @c load("bitwise")$
 @c declare(e,even,o,odd);
@@ -152,7 +152,7 @@ This function calculates a bitwise @code{or} of two or more signed integers.
 @end example
 
 If it is known if one of the parameters to @code{bit_or} is even this information
-is taken into considoration by the function.
+is taken into consideration by the function.
 @c ===beg===
 @c load("bitwise")$
 @c declare(e,even,o,odd);
@@ -215,7 +215,7 @@ This function calculates a bitwise @code{or} of two or more signed integers.
 @end example
 
 If it is known if one of the parameters to @code{bit_xor} is even this information
-is taken into considoration by the function.
+is taken into consideration by the function.
 @c ===beg===
 @c load("bitwise")$
 @c declare(e,even,o,odd);
@@ -259,8 +259,8 @@ this process. The result of @code{bit_lsh} therefore is @code{int * 2}.
 @c bit_lsh(1,0);
 @c bit_lsh(1,1);
 @c bit_lsh(1,i);
-@c bit_lsh(-3,i);
-@c bit_lsh(-2,i);
+@c bit_lsh(-3,1);
+@c bit_lsh(-2,1);
 @c ===end===
 @example
 (%i1) load("bitwise")$
@@ -281,12 +281,12 @@ this process. The result of @code{bit_lsh} therefore is @code{int * 2}.
 (%o5)                     bit_lsh(1, i)
 @end group
 @group
-(%i6) bit_lsh(-3,i);
-(%o6)                    bit_lsh(- 3, i)
+(%i6) bit_lsh(-3,1);
+(%o6)                          - 6
 @end group
 @group
-(%i7) bit_lsh(-2,i);
-(%o7)                    bit_lsh(- 2, i)
+(%i7) bit_lsh(-2,1);
+(%o7)                          - 4
 @end group
 @end example
 @opencatbox
@@ -309,9 +309,10 @@ this process.
 @c bit_rsh(0,1);
 @c bit_rsh(2,0);
 @c bit_rsh(2,1);
-@c bit_rsh(2,i);
-@c bit_rsh(-3,i);
-@c bit_rsh(-2,i);
+@c bit_rsh(2,2);
+@c bit_rsh(-3,1);
+@c bit_rsh(-2,1);
+@c bit_rsh(-2,2);
 @c ===end===
 @example
 (%i1) load("bitwise")$
@@ -328,31 +329,20 @@ this process.
 (%o4)                           1
 @end group
 @group
-(%i5) bit_rsh(2,i);
-Maxima encountered a Lisp error:
-
- Argument N is not a NUMBER: $I
-
-Automatically continuing.
-To enable the Lisp debugger set *debugger-hook* to nil.
+(%i5) bit_rsh(2,2);
+(%o5)                           0
 @end group
 @group
-(%i6) bit_rsh(-3,i);
-Maxima encountered a Lisp error:
-
- Argument N is not a NUMBER: $I
-
-Automatically continuing.
-To enable the Lisp debugger set *debugger-hook* to nil.
+(%i6) bit_rsh(-3,1);
+(%o6)                          - 2
 @end group
 @group
-(%i7) bit_rsh(-2,i);
-Maxima encountered a Lisp error:
-
- Argument N is not a NUMBER: $I
-
-Automatically continuing.
-To enable the Lisp debugger set *debugger-hook* to nil.
+(%i7) bit_rsh(-2,1);
+(%o7)                          - 1
+@end group
+@group
+(%i8) bit_rsh(-2,2);
+(%o8)                          - 1
 @end group
 @end example
 @opencatbox
@@ -365,7 +355,8 @@ To enable the Lisp debugger set *debugger-hook* to nil.
 @anchor{bit_length}
 @deffn {Function} bit_length (@var{int})
 
-determines how many bits a variable needs to be long in order to store the number @code{int}.
+determines how many bits a variable needs to be long in order to store the
+number @code{int}. This function only operates on positive numbers.
 
 @c ===beg===
 @c load("bitwise")$
@@ -373,9 +364,6 @@ determines how many bits a variable needs to be long in order to store the numbe
 @c bit_length(1);
 @c bit_length(7);
 @c bit_length(8);
-@c bit_length(-7);
-@c bit_length(-8);
-@c bit_length(-9);
 @c ===end===
 @example
 (%i1) load("bitwise")$
@@ -394,21 +382,6 @@ determines how many bits a variable needs to be long in order to store the numbe
 @group
 (%i5) bit_length(8);
 (%o5)                           4
-@end group
-@group
-(%i6) bit_length(-7);
-argument to `bit_length' must be non-negative.
- -- an error. To debug this try: debugmode(true);
-@end group
-@group
-(%i7) bit_length(-8);
-argument to `bit_length' must be non-negative.
- -- an error. To debug this try: debugmode(true);
-@end group
-@group
-(%i8) bit_length(-9);
-argument to `bit_length' must be non-negative.
- -- an error. To debug this try: debugmode(true);
 @end group
 @end example
 @opencatbox
@@ -496,7 +469,7 @@ left of the leftmost bit of @code{int} that reads @code{1}.
 
 
 If it is known if the number to be tested is even this information
-is taken into considoration by the function.
+is taken into consideration by the function.
 @c ===beg===
 @c load("bitwise")$
 @c declare(e,even,o,odd);
