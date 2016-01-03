@@ -102,7 +102,7 @@ and develop DOE Macsyma, now called Maxima.
 * Plotting::                    2D and 3D graphical output.
 * File Input and Output::       File input and output.
 
-Support for specific areas of mathematics
+@b{Support for specific areas of mathematics}
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
 * Special Functions::           Special functions
@@ -124,7 +124,7 @@ Support for specific areas of mathematics
 * Symmetries::                  
 * Groups::                      Abstract algebra.
 
-Advanced facilities and programming
+@b{Advanced facilities and programming}
 * Runtime Environment::         Customization of the Maxima environment.
 * Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
@@ -134,7 +134,7 @@ Advanced facilities and programming
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
 
-Additional packages
+@b{Additional packages}
 * alt-display-pkg::                 Alternative display package.
 * asympa-pkg::                      Asymptotic analysis package.
 * augmented_lagrangian-pkg::        augmented_lagrangian package.
@@ -172,6 +172,7 @@ Additional packages
 * operatingsystem-pkg::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst-pkg::                     Substitutions utility.
 * orthopoly-pkg::                   Orthogonal polynomials.
+* ratpow-pkg::                      Determine the coefficients of polynoms.
 * romberg-pkg::                     Romberg method for numerical integration.
 * simplex-pkg::                     Linear programming.
 * simplification-pkg::              Simplification rules and functions.
@@ -183,14 +184,14 @@ Additional packages
 * unit-pkg::                        Units and dimensions package.
 * zeilberger-pkg::                  Functions for hypergeometric summation.
 
-Understanding maxima's output
+@b{Understanding maxima's output}
 * Error and warning messages::  Error and warning messages
 
-Index
+@b{Index}
 * Function and Variable Index:: Index.
 
 @comment @detailmenu
- --- The Detailed Node Listing ---
+@b{ --- The Detailed Node Listing --- }
 
 Introduction
 * Introduction to Maxima::
@@ -528,6 +529,9 @@ opsubst
 orthopoly
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
+
+ratpow
+* Functions and Variables for ratpow::
 
 romberg
 * Functions and Variables for romberg::
@@ -890,11 +894,15 @@ Understanding maxima's output
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly-pkg, romberg-pkg, opsubst-pkg, Top
-@chapter orthopoly
+@node orthopoly-pkg, ratpow-pkg, opsubst-pkg, Top
+@chapter ratpow
 @include orthopoly.texi
 
-@node romberg-pkg, simplex-pkg, orthopoly-pkg, Top
+@node ratpow-pkg, romberg-pkg, orthopoly-pkg, Top
+@chapter orthopoly
+@include ratpow.texi
+
+@node romberg-pkg, simplex-pkg, ratpow-pkg, Top
 @chapter romberg
 @include romberg.texi
 

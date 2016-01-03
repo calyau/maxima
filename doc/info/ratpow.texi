@@ -18,8 +18,7 @@ For information about CREs see also @mrefcomma{rat} @mref{ratdisrep} and
 
 
 @anchor{ratp_hipow}
-@deffn {Function} ratp_hipow @
-@fname{ratp_hipow} (@var{expr}, @var{x}) @
+@deffn {Function} ratp_hipow (@var{expr}, @var{x})
 
 Finds the highest power of the main variable in @code{ratnumer(expr)}
 
@@ -41,14 +40,14 @@ Finds the highest power of the main variable in @code{ratnumer(expr)}
 @end example
 
 @opencatbox
+@category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
 @end deffn
 
 
 @anchor{ratp_lopow}
-@deffn {Function} ratp_lopow @
-@fname{ratp_lopow} (@var{expr}, @var{x}) @
+@deffn {Function} ratp_lopow (@var{expr}, @var{x})
 
 Finds the lowest power of the main variable in @code{ratnumer(expr)}
 
@@ -111,14 +110,14 @@ The CRE form of the following equation contains @code{sqrt(x)} and
 
 
 @opencatbox
+@category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
 @end deffn
 
 
 @anchor{ratp_coeffs}
-@deffn {Function} ratp_coeffs @
-@fname{ratp_coeffs} (@var{expr}, @var{x}) @
+@deffn {Function} ratp_coeffs (@var{expr}, @var{x})
 
 Generates a list of powers and coefficients of the main variable
 @code{ratnumer(expr)}.
@@ -134,13 +133,13 @@ Generates a list of powers and coefficients of the main variable
 @end group
 @end example
 @opencatbox
+@category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
 @end deffn
 
 @anchor{ratp_dense_coeffs}
-@deffn {Function} ratp_dense_coeffs @
-@fname{ratp_dense_coeffs} (@var{expr}, @var{x}) @
+@deffn {Function} ratp_dense_coeffs (@var{expr}, @var{x})
 
 Generates a list of coefficients in @code{ratnumer(expr)}; returned
 coefficients are in CRE form except for numbers.
@@ -158,6 +157,7 @@ coefficients are in CRE form except for numbers.
 @end example
 
 @opencatbox
+@category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
 @end deffn
