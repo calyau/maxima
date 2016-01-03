@@ -11,6 +11,7 @@
 @anchor{antid}
 @deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
 
+@c TODO: The antid package is currently undocumented except of this function.
 Returns a two-element list, such that an antiderivative of @var{expr} with
 respect to @var{x} can be constructed from the list.  The expression @var{expr}
 may contain an unknown function @var{u} and its derivatives.
@@ -29,7 +30,7 @@ the first element is zero and the second nonzero.
 @code{load ("antid")} loads this function.  The @code{antid} package also
 defines the functions @code{nonzeroandfreeof} and @code{linear}.
 
-@code{antid} is related to @code{antidiff} as follows.
+@code{antid} is related to @mref{antidiff} as follows.
 Let @var{L}, a list of two elements, be the return value of @code{antid}.
 Then the return value of @code{antidiff} is equal to
 @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} where @var{x} is the
@@ -222,6 +223,8 @@ Examples:
 @end deffn
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
+@c
+@c Me, too: Where is desolve, for example?
 
 @c -----------------------------------------------------------------------------
 @anchor{atomgrad}
@@ -400,7 +403,7 @@ p;
 @defvrx {Function} dependencies (@var{f_1}, @dots{}, @var{f_n})
 
 The variable @code{dependencies} is the list of atoms which have functional
-dependencies, assigned by @code{depends}, the function @code{dependencies}, or @code{gradef}.
+dependencies, assigned by @mref{depends}, the function @code{dependencies}, or @code{gradef}.
 The @code{dependencies} list is cumulative:
 each call to @code{depends}, @code{dependencies}, or @code{gradef} appends additional items.
 The default value of @code{dependencies} is @code{[]}.
@@ -755,16 +758,18 @@ Applies the scalar d'Alembertian to the scalar function @var{f}.
 @c operators.  To force evaluation of these derivatives, the built-in @code{ev}
 @c function can be used together with the @code{diff} evflag, after using the
 @c built-in @code{depends} function to establish any new implicit dependencies.
+@c
+@c TODO: curl, grad, div and laplacian aren't currently documented.
 
 Expands differential operator nouns into expressions in terms of partial
 derivatives.  @code{express} recognizes the operators @code{grad}, @code{div},
 @code{curl}, @code{laplacian}.  @code{express} also expands the cross product
-@code{~}.
+@mref{~}.
 
 Symbolic derivatives (that is, @code{diff} nouns)
 in the return value of express may be evaluated by including @code{diff}
 in the @code{ev} function call or command line.
-In this context, @code{diff} acts as an @code{evfun}.
+In this context, @mref{diff} acts as an @mref{evfun}.
 
 @code{load ("vect")} loads this function.
 @c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN WHICH DOES ALL THE WORK
