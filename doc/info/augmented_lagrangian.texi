@@ -50,16 +50,10 @@ See also @ref{lbfgs-pkg}
 
 References:
 
-@ifnottex
+@c Both links seem invalid now (one redirects somewhere, one is access forbidden). Remove them?
 [1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
 
 [2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
-@end ifnottex
-@iftex
-[1] @url{http://www-fp.mcs.anl.gov/@-otc/@-Guide/@-OptWeb/@-continuous/@-constrained/@*nonlinearcon/@-auglag.html}
-
-[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
-@end iftex
 
 Examples:
 

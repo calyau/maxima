@@ -16,9 +16,10 @@
 There are three main functions to be used at Maxima level: 
 @code{draw2d}, @code{draw3d} and @code{draw}.
 
-Follow this link for more elaborated examples of this package:
+Follow this links for more elaborated examples of this package:
 
-@url{http://riotorto.users.sourceforge.net/gnuplot}
+@url{http://riotorto.users.sourceforge.net/gnuplot} @*
+@url{http://riotorto.users.sourceforge.net/vtk} 
 
 You need Gnuplot 4.2 or newer to run this program.
 
@@ -6037,7 +6038,8 @@ The auxiliary package @code{worldmap} sets the global variable
 @code{boundaries_array} to real world boundaries in
 (longitude, latitude) coordinates. These data are in the 
 public domain and come from 
-@url{http://www-cger.nies.go.jp/@-grid-e/@-gridtxt/@-grid19.html}.
+@c Link is dead, linked to archive.org. Does someone know a better Link?
+@url{https://web.archive.org/web/20100310124019/http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
 Package @code{worldmap} defines also boundaries for countries,
 continents and coastlines as lists with the necessary components of 
 @code{boundaries_array} (see file @code{share/draw/worldmap.mac}

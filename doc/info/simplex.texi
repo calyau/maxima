@@ -52,7 +52,7 @@ apply(linear_program, klee_minty(10));
 
 @subsubsection NETLIB
 
-Some smaller problems from netlib (@code{http://www.netlib.org/lp/data/}) test
+Some smaller problems from netlib (@url{http://www.netlib.org/lp/data/}) test
 suite are converted to a format, readable by Maxima. Problems are @code{adlittle},
 @code{afiro}, @code{kb2} and @code{sc50a}. Each problem has three input files in CSV format for
 matrix @var{A} and vectors @var{b} and @var{c}.
