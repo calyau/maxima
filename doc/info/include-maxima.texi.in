@@ -895,11 +895,11 @@ Understanding maxima's output
 @include opsubst.texi
 
 @node orthopoly-pkg, ratpow-pkg, opsubst-pkg, Top
-@chapter ratpow
+@chapter orthopoly
 @include orthopoly.texi
 
 @node ratpow-pkg, romberg-pkg, orthopoly-pkg, Top
-@chapter orthopoly
+@chapter ratpow
 @include ratpow.texi
 
 @node romberg-pkg, simplex-pkg, ratpow-pkg, Top
