@@ -139,6 +139,7 @@ and develop DOE Macsyma, now called Maxima.
 * asympa-pkg::                      Asymptotic analysis package.
 * augmented_lagrangian-pkg::        augmented_lagrangian package.
 * Bernstein-pkg::                   Bernstein polynomials.
+* bitwise-pkg::                     Manipulate bits of integers.
 * bode-pkg::                        Bode gain and phase plots.
 * celine-pkg::                      Sister Celine's method 
 * clebsch_gordan-pkg::              Clebsch-Gordan and Wigner coefficients
@@ -398,6 +399,9 @@ augmented_lagrangian
 
 Bernstein
 * Functions and Variables for Bernstein::
+
+Bitwise
+* Functions and Variables for bitwise::
 
 bode
 * Functions and Variables for bode::
@@ -762,9 +766,13 @@ Understanding maxima's output
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node Bernstein-pkg, bode-pkg, augmented_lagrangian-pkg, Top
+@node Bernstein-pkg, bitwise-pkg, augmented_lagrangian-pkg, Top
 @chapter Bernstein
 @include bernstein.texi
+
+@node bitwise-pkg
+@chapter bitwise
+@include bitwise.texi
 
 @node bode-pkg
 @chapter bode
