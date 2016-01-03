@@ -36,13 +36,18 @@ Documentation interna
 The central file the documentation is generated from is generated from
 include-maxima.texi.in
 
-This file is included by maxima.texi that (if the pdf manual is generated
+All maxima-specific extensions to texinfo that aren't contained in mmref.tex
+can be found in category-macros.texi
+
+Other possibly important details (in random ordeR)
+include-maxima.texi is included by maxima.texi that (if the pdf manual is generated
 using "make pdf" also draws in mmref.tex (a file that provides a @mmref
 command that links to a keyword without printing out the page number and
 chapter name) and texinfo.tex: The logic that allows pdfTeX to interpret .texi files.
 The newest version of texinfo.tex is always available at https://gnu.org - and
 it probably makes sense to update the version shipped with maxima from time
 to time.
+
 
 TO DO
 =====
