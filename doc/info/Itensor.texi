@@ -344,6 +344,7 @@ Lists all tensors in a tensorial expression, complete with their indices. E.g.,
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ishow}
 @deffn {Function} ishow (@var{expr})
 
 displays @var{expr} with the indexed objects in it shown having their

@@ -2,7 +2,7 @@
 * Functions and Variables for clebsch_gordan::
 @end menu
 
-@node Functions and Variables for clebsch_gordan, , clebsch_gordan, clebsch_gordan
+@node Functions and Variables for clebsch_gordan, , clebsch_gordan-pkg, clebsch_gordan-pkg
 @section Functions and Variables for clebsch_gordan
 
 @deffn {Function} clebsch_gordan (@var{j1}, @var{j2}, @var{m1}, @var{m2}, @var{j}, @var{m})

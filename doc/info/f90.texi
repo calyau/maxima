@@ -3,7 +3,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for f90,  , f90, f90
+@node Functions and Variables for f90,  , f90-pkg, f90-pkg
 @section Functions and Variables for f90
 @c -----------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
 
 
 
-@node Introduction to draw, Functions and Variables for draw, draw, draw
+@node Introduction to draw, Functions and Variables for draw, draw-pkg, draw-pkg
 @section Introduction to draw
 
 
@@ -27,7 +27,7 @@ You need Gnuplot 4.2 or newer to run this program.
 @closecatbox
 
 
-@node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
+@node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw-pkg
 @section Functions and Variables for draw
 
 
@@ -141,7 +141,7 @@ To make use of this object, write first @code{load(draw)}.
 
 
 
-@anchor{draw_func}
+@anchor{draw}
 @deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
 
 Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
@@ -215,7 +215,7 @@ It can be used to plot a unique scene in 2d.
 
 To make use of this function, write first @code{load(draw)}.
 
-See also @mref{draw_func} and @mrefdot{gr2d}
+See also @mref{draw} and @mrefdot{gr2d}
 
 @opencatbox
 @category{Package draw} @category{File output}
@@ -237,7 +237,7 @@ It can be used to plot a unique scene in 3d.
 
 To make use of this function, write first @code{load(draw)}.
 
-See also @mref{draw_func} and @mrefdot{gr3d}
+See also @mref{draw} and @mrefdot{gr3d}
 
 @opencatbox
 @category{Package draw} @category{File output}
@@ -5528,7 +5528,7 @@ Example:
 
 
 
-@node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw
+@node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw-pkg
 @section Functions and Variables for pictures
 
 
@@ -5736,7 +5736,7 @@ Example:
 
 
 
-@node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw
+@node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw-pkg
 @section Functions and Variables for worldmap
 
 

@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to mnewton, Functions and Variables for mnewton, mnewton, mnewton
+@node Introduction to mnewton, Functions and Variables for mnewton, mnewton-pkg, mnewton-pkg
 @section Introduction to mnewton
 @c -----------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ equations in one or more variables.
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton
+@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton-pkg
 @section Functions and Variables for mnewton
 @c -----------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ See also @mrefdot{mnewton}
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{function_mnewton}
+@anchor{mnewton}
 @deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
 
 Multiple nonlinear functions solution using the Newton method.

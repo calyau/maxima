@@ -2,7 +2,7 @@
 * Functions and Variables for stirling::
 @end menu
 
-@node Functions and Variables for stirling,  , stirling, stirling
+@node Functions and Variables for stirling,  , stirling-pkg, stirling-pkg
 @section Functions and Variables for stirling
 
 @deffn {Function} stirling @
