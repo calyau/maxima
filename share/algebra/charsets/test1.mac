@@ -379,7 +379,7 @@ charsets_testsub( rr,ss):=block( [ i,ii,_ind],
       _ind:false,
       for i in ss do (
         ii:if listp(i) then i else setify1(i),
-        if charsets_equal ( setdifference ( rr, ii), setdifference ( ii, rr)) 
+        if charsets_equal ( charsets_setdifference ( rr, ii), charsets_setdifference ( ii, rr)) 
           then (
            return ( _ind:true))) ,
       return(_ind))
