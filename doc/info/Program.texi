@@ -580,7 +580,7 @@ See also @mref{error} and @mrefdot{error_size}
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{errormsg}
+@anchor{errormsg_fn}
 @deffn {Function} errormsg ()
 
 Reprints the most recent error message.

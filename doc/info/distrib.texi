@@ -4,7 +4,7 @@
 * Functions and Variables for discrete distributions::
 @end menu
 
-@node Introduction to distrib, Functions and Variables for continuous distributions, distrib, distrib
+@node Introduction to distrib, Functions and Variables for continuous distributions, distrib-pkg, distrib-pkg
 @section Introduction to distrib
 
 
@@ -250,7 +250,7 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 
 
 
-@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib
+@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib-pkg
 @section Functions and Variables for continuous distributions
 
 
@@ -2819,7 +2819,7 @@ To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, distrib
+@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, distrib-pkg
 @section Functions and Variables for discrete distributions
 
 

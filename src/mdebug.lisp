@@ -499,7 +499,7 @@ Command      Description~%~
 
 (defun *break-points* (form)
   (let ((pos(position form *break-points* :key 'car)))
-    (format t "Bkpt ~a:" pos)
+    (format *debug-io* "Bkpt ~a:" pos)
     (break-dbm-loop  (aref *break-points* pos))))
 
 ;; fun = function name eg '$|odeSeriesSolve| and 

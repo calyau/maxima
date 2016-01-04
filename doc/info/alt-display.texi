@@ -3,7 +3,7 @@
 * Functions and Variables for alt-display::
 @end menu
 
-@node Introduction to alt-display, Functions and Variables for alt-display, alt-display, alt-display
+@node Introduction to alt-display, Functions and Variables for alt-display, alt-display-pkg, alt-display-pkg
 @section Introduction to alt-display
 
 The @emph{alt-display} package provides a means to change the way that
@@ -86,7 +86,7 @@ Messge: Condition designator ((MLABEL) $%O9 $X) is not of type (OR SYMBOL STRING
 (%o10)                                 x
 @end example
 
-@node Functions and Variables for alt-display,  , Introduction to alt-display, alt-display
+@node Functions and Variables for alt-display,  , Introduction to alt-display, alt-display-pkg
 @section Functions and Variables for alt-display
 
 @deffn {Function} define_alt_display (@var{function}(@var{input}), @var{expr})

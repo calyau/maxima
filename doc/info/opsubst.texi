@@ -2,7 +2,7 @@
 * Functions and Variables for opsubst::
 @end menu
 
-@node Functions and Variables for opsubst,  , opsubst, opsubst
+@node Functions and Variables for opsubst,  , opsubst-pkg, opsubst-pkg
 @section Functions and Variables for opsubst
 
 @anchor{opsubst_func}

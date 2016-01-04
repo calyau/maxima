@@ -125,44 +125,64 @@ Examples:
 @group
 (%i1) build_info ();
 (%o1) 
-Maxima version: "5.26.0_16_gb72c64c_dirty"
-Maxima build date: "2012-01-29 12:29:04"
-Host type: "i686-pc-linux-gnu"
-Lisp implementation type: "CMU Common Lisp"
-Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+Maxima version: "5.36.1"
+Maxima build date: "2015-06-02 11:26:48"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "GNU Common Lisp (GCL)"
+Lisp implementation version: "GCL 2.6.12"
 @end group
 (%i2) x : build_info ()$
 @group
 (%i3) x@@version;
-(%o3)               5.26.0_16_gb72c64c_dirty
+(%o3)                               5.36.1
 @end group
 @group
 (%i4) x@@timestamp;
-(%o4)                  2012-01-29 12:29:04
+(%o4)                         2015-06-02 11:26:48
 @end group
 @group
 (%i5) x@@host;
-(%o5)                   i686-pc-linux-gnu
+(%o5)                      x86_64-unknown-linux-gnu
 @end group
 @group
 (%i6) x@@lisp_name;
-(%o6)                    CMU Common Lisp
+(%o6)                        GNU Common Lisp (GCL)
 @end group
 @group
 (%i7) x@@lisp_version;
-(%o7) 
-    CVS release-19a 19a-release-20040728 + minimal debian patches
+(%o7)                             GCL 2.6.12
 @end group
 @group
 (%i8) x;
 (%o8) 
-Maxima version: "5.26.0_16_gb72c64c_dirty"
-Maxima build date: "2012-01-29 12:29:04"
-Host type: "i686-pc-linux-gnu"
-Lisp implementation type: "CMU Common Lisp"
-Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+Maxima version: "5.36.1"
+Maxima build date: "2015-06-02 11:26:48"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "GNU Common Lisp (GCL)"
+Lisp implementation version: "GCL 2.6.12"
 @end group
 @end example
+
+The Maxima version string can (here 5.36.1) can look very different:
+
+@example
+(%i1) build_info();
+(%o1) 
+Maxima version: "branch_5_37_base_331_g8322940_dirty"
+Maxima build date: "2016-01-01 15:37:35"
+Host type: "x86_64-unknown-linux-gnu"
+Lisp implementation type: "CLISP"
+Lisp implementation version: "2.49 (2010-07-07) (built 3605577779) (memory 3660647857)"
+@end example
+
+@c The version number comes from "git describe", and is (in that example)
+@c 331 commits after the latest tag, that is reachable from that commit
+@c dont know how to describe it better...
+In that case, Maxima was not build from a released sourcecode, 
+but directly from the GIT-checkout of the sourcecode.
+In the example, the checkout is 331 commits after the latest GIT tag
+(usually a Maxima (major) release (5.37 in our example)) and the 
+abbreviated commit hash of the last commit was "8322940".
 
 @opencatbox
 @category{Debugging}

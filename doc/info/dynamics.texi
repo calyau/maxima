@@ -4,7 +4,7 @@
 * Visualization with VTK::
 @end menu
 
-@node The dynamics package, Graphical analysis of discrete dynamical systems, dynamics, dynamics
+@node The dynamics package, Graphical analysis of discrete dynamical systems, dynamics-pkg, dynamics-pkg
 @section The dynamics package
 
 Package @code{dynamics} includes functions for 3D visualization,
@@ -21,7 +21,7 @@ time they are used.
 @category{Dynamical systems} @category{Share packages} @category{Package dynamics}
 @closecatbox
 
-@node Graphical analysis of discrete dynamical systems,  Visualization with VTK, The dynamics package, dynamics
+@node Graphical analysis of discrete dynamical systems,  Visualization with VTK, The dynamics package, dynamics-pkg
 @section Graphical analysis of discrete dynamical systems
 
 @anchor{chaosgame}
@@ -267,7 +267,7 @@ reached. The options are the same as for @mrefdot{plot2d}
 
 @end deffn
 
-@node Visualization with VTK, , Graphical analysis of discrete dynamical systems, dynamics
+@node Visualization with VTK, , Graphical analysis of discrete dynamical systems, dynamics-pkg
 @section Visualization with VTK
 
 Function scene creates 3D images and animations using the @emph{Visualization

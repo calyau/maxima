@@ -394,7 +394,9 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
-  (displa ($build_info))
+  ; Display the 2D-formatted build information
+  (let (($display2d t))
+    (displa ($build_info)))
   (format t "-------------------------------------------------------------~%")
   (format t (intl:gettext "The above information is also reported by the function 'build_info()'.~%~%"))
   "")

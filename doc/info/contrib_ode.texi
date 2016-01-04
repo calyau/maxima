@@ -6,7 +6,7 @@
 * References for contrib_ode::
 @end menu
 
-@node Introduction to contrib_ode, Functions and Variables for contrib_ode, contrib_ode, contrib_ode
+@node Introduction to contrib_ode, Functions and Variables for contrib_ode, contrib_ode-pkg, contrib_ode-pkg
 
 @section Introduction to contrib_ode 
 
@@ -234,7 +234,7 @@ Extensive debugging traces and messages are displayed if the command
 @closecatbox
 
 
-@node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
+@node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode-pkg
 @section Functions and Variables for contrib_ode
 
 @deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
@@ -532,7 +532,7 @@ using the recurrence (A&S 5.1.14).
 @end deffn
 
 
-@node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode
+@node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode-pkg
 @section Possible improvements to contrib_ode
 
 
@@ -569,7 +569,7 @@ Add more test cases.
 
 @end itemize
 
-@node Test cases for contrib_ode, References for contrib_ode, Possible improvements to contrib_ode, contrib_ode
+@node Test cases for contrib_ode, References for contrib_ode, Possible improvements to contrib_ode, contrib_ode-pkg
 @section Test cases for contrib_ode
 
 
@@ -596,7 +596,7 @@ There are some crashes.
 
 @end itemize
 
-@node References for contrib_ode, ,Test cases for contrib_ode, contrib_ode
+@node References for contrib_ode, ,Test cases for contrib_ode, contrib_ode-pkg
 @section References for contrib_ode
 
 
@@ -624,25 +624,17 @@ F. Schwarz, Algorithmic Solution of Abel's Equation,
 @item
 E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
     ODE Patterns, Computer Physics Communications 113 (1998), p 239.
-@ifnottex
+@c dead link
     (@url{http://lie.uwaterloo.ca/papers/ode_vii.pdf})
-@end ifnottex
-@tex
-    (\texttt{http://lie.uwaterloo.ca/\-papers/\-ode\_vii.pdf})
-@end tex
 
 @item
 E. S. Cheb-Terrab, T. Kolokolnikov,  First Order ODEs,
     Symmetries and Linear Transformations, European Journal of
     Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
-@c @ifnottex
+@c dead link
     (@url{http://arxiv.org/abs/math-ph/0007023},@*
     @url{http://lie.uwaterloo.ca/papers/ode_iv.pdf})
-@c @end ifnottex
-@c @tex
-@c     (\texttt{http://\-arxiv.org/\-abs/\-math-ph/\-0007023},
-@c     \texttt{http://\-lie.\-uwaterloo.ca/\-papers/\-ode\_iv.pdf})
-@c @end tex
+
 
 @item
 G. W. Bluman, S. C. Anco, Symmetry and Integration Methods for
