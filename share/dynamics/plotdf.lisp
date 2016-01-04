@@ -142,7 +142,7 @@
                                     (expr_to_str (second ode)) "\"")))
           (t (merror 
               (intl:gettext "plotdf: first argument must be either an expression or a list with two expressions."))))
-    (setq file (plot-temp-file "maxout.xmaxima"))
+    (setq file (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))))
     (show-open-plot
      (with-output-to-string
          (st)
@@ -199,7 +199,7 @@
     (unless (search "-yaxislabel " opts)
       (setq opts (concatenate 'string opts " -yaxislabel " (ensure-string s2))))
 							      
-    (setq file (plot-temp-file "maxout.xmaxima"))
+    (setq file (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))))
     (show-open-plot
      (with-output-to-string
          (st)

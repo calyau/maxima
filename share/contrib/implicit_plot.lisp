@@ -153,8 +153,8 @@
          (if (and (eq gnuplot-term '$default)
                   gnuplot-out-file)
              (setf file-name gnuplot-out-file)
-             (setf file-name (plot-temp-file "maxout.gnuplot")))
-         (setf file-name (plot-temp-file "maxout.xmaxima")))
+             (setf file-name (plot-temp-file (format nil "maxout~d.gnuplot" (getpid)))))
+         (setf file-name (plot-temp-file (format nil "maxout~d.xmaxima" (getpid)))))
     
     ;; output data
     (with-open-file
@@ -258,5 +258,5 @@
         (gnuplot-process options file-name (getf options :gnuplot_out_file))
         ($system (concatenate 'string *maxima-prefix*
                               "/bin/" $xmaxima_plot_command)
-                 (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima")))))
+                 (format nil " \"~a\"" (plot-temp-file (format nil "maxout~d.xmaxima" (getpid)))))))
     '$done)

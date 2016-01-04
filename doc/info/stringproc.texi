@@ -8,7 +8,7 @@
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Introduction to String Processing, Input and Output, stringproc, stringproc
+@node Introduction to String Processing, Input and Output, stringproc-pkg, stringproc-pkg
 @section Introduction to String Processing
 
 @code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
@@ -117,7 +117,7 @@ now offers a lot of functions for manipulating strings. Tokenizing can be done b
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Input and Output, Characters, Introduction to String Processing, stringproc
+@node Input and Output, Characters, Introduction to String Processing, stringproc-pkg
 @section Input and Output
 
 Example: 
@@ -625,7 +625,7 @@ GNU/Linux
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Characters, String Processing, Input and Output, stringproc
+@node Characters, String Processing, Input and Output, stringproc-pkg
 @section Characters
 
 @deffn {Function} alphacharp (@var{char})    
@@ -844,7 +844,7 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node String Processing, Octets and Utilities for Cryptography, Characters, stringproc
+@node String Processing, Octets and Utilities for Cryptography, Characters, stringproc-pkg
 @section String Processing
 
 
@@ -1455,7 +1455,7 @@ If test is not given, @var{constituent} is used as the default test.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Octets and Utilities for Cryptography,  , String Processing, stringproc
+@node Octets and Utilities for Cryptography,  , String Processing, stringproc-pkg
 @section Octets and Utilities for Cryptography
 
 @c -----------------------------------------------------------------------------

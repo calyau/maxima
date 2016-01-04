@@ -2,7 +2,7 @@
 * Functions and Variables for augmented_lagrangian::
 @end menu
 
-@node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian-pkg, augmented_lagrangian-pkg
 @section Functions and Variables for augmented_lagrangian
 
 @deffn  {Function} augmented_lagrangian_method @
@@ -46,20 +46,14 @@ which is a quasi-Newton algorithm.
 
 @code{load(augmented_lagrangian)} loads this function.
 
-See also @mrefdot{lbfgs}
+See also @ref{lbfgs-pkg}
 
 References:
 
-@ifnottex
+@c Both links seem invalid now (one redirects somewhere, one is access forbidden). Remove them?
 [1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
 
 [2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
-@end ifnottex
-@iftex
-[1] @url{http://www-fp.mcs.anl.gov/@-otc/@-Guide/@-OptWeb/@-continuous/@-constrained/@*nonlinearcon/@-auglag.html}
-
-[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
-@end iftex
 
 Examples:
 

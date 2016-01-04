@@ -17,6 +17,7 @@ or on how to recover from errors.
 * Comma is not a prefix operator::
 * makelist second argument must evaluate to a number::
 * Illegal use of delimiter::
+* VTK is not installed::
 @end menu
 
 @node part fell off the end, undefined variable during plotting, Error messages, Error messages
@@ -145,14 +146,34 @@ something else, possibly a list or the name of a list.
 @category{Error messages}
 @closecatbox
 
-
-@node Illegal use of delimiter, ,makelist second argument must evaluate to a number, Error messages
+@node Illegal use of delimiter, VTK is not installed ,makelist second argument must evaluate to a number, Error messages
 @subsection incorrect syntax: Illegal use of delimiter )
 Common reasons for this error appearing are a closing parenthesis without an
 opening one or a closing parenthesis directly preceded by a comma.
 @opencatbox
 @category{Error messages}
 @closecatbox
+
+@node VTK is not installed, ,Illegal use of delimiter, Error messages
+@subsection VTK is not installed, which is required for Scene
+
+This might either mean that VTK is actually not installed - or cannot be found by
+maxima - or that maxima has no write access to the directory whose name is output
+if the following maxima command is entered:
+@c ===beg===
+@c maxima_tempdir;
+@c ===end===
+@example
+@group
+(%i1) maxima_tempdir;
+(%o1)                     /home/gunter
+@end group
+@end example
+
+@opencatbox
+@category{Error messages}
+@closecatbox
+
 
 @node Warning messages, undefined variable during translation,Error and warning messages, Error and warning messages
 @section Warning messages

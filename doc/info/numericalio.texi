@@ -4,7 +4,7 @@
 * Functions and Variables for binary input and output::
 @end menu
 
-@node Introduction to numericalio, Functions and Variables for plain-text input and output, numericalio, numericalio
+@node Introduction to numericalio, Functions and Variables for plain-text input and output, numericalio-pkg, numericalio-pkg
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write files and streams.
@@ -87,7 +87,7 @@ The effect of reading such values with @code{numericalio} is undefined.
 @code{numericalio} includes functions to open a stream for reading or writing a stream of bytes.
 
 
-@node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, numericalio
+@node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, numericalio-pkg
 @section Functions and Variables for plain-text input and output
 
 @deffn {Function} read_matrix @
@@ -252,7 +252,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@node Functions and Variables for binary input and output, , Functions and Variables for plain-text input and output, numericalio
+@node Functions and Variables for binary input and output, , Functions and Variables for plain-text input and output, numericalio-pkg
 @section Functions and Variables for binary input and output
 
 @deffn {Function} assume_external_byte_order (@var{byte_order_flag})

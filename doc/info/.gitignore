@@ -14,5 +14,12 @@ maxima-index.lisp
 maxima.t2p
 maxima.pdf
 maxima.vrs
-
+maxima.aux
+maxima.fn
+maxima.fns
+maxima.log
+maxima.t2d
+maxima.toc
+maxima.vr
 *chm
+bin

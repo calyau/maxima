@@ -3,7 +3,7 @@
 * Functions and Variables for solve_rec::
 @end menu
 
-@node Introduction to solve_rec, Functions and Variables for solve_rec, solve_rec, solve_rec
+@node Introduction to solve_rec, Functions and Variables for solve_rec, solve_rec-pkg, solve_rec-pkg
 @section Introduction to solve_rec
 
 @code{solve_rec} is a package for solving linear recurrences with polynomial
@@ -29,7 +29,7 @@ Example:
 @category{Linear recurrences} @category{Share packages} @category{Package solve_rec}
 @closecatbox
 
-@node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec
+@node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec-pkg
 @section Functions and Variables for solve_rec
 
 @anchor{reduce_order}
@@ -152,7 +152,7 @@ Example:
 
 @end deffn
 
-@anchor{solve_rec_func}
+@anchor{solve_rec}
 @deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Solves for hypergeometrical solutions to linear recurrence @var{eqn} with
 polynomials coefficient in variable @var{var}. Optional arguments @var{init}

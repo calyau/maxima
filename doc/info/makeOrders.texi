@@ -3,7 +3,7 @@
 @end menu
 
 
-@node Functions and Variables for makeOrders,  , makeOrders, makeOrders
+@node Functions and Variables for makeOrders,  , makeOrders-pkg, makeOrders-pkg
 @section Functions and Variables for makeOrders
 
 @anchor{makeOrders_func}

@@ -349,6 +349,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{denom}
 @deffn {Function} denom (@var{expr})
 
 Returns the denominator of the rational expression @var{expr}.
@@ -1543,6 +1544,7 @@ arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
 @c -----------------------------------------------------------------------------
+@anchor{rat}
 @deffn  {Function} rat @
 @fname{rat} (@var{expr}) @
 @fname{rat} (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
@@ -1678,7 +1680,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{denom}
+@anchor{ratdenom}
 @deffn {Function} ratdenom (@var{expr})
 
 Returns the denominator of @var{expr},
@@ -1825,6 +1827,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratdisrep}
 @deffn {Function} ratdisrep (@var{expr})
 
 Returns its argument as a general expression.

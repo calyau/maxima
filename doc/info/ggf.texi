@@ -2,7 +2,7 @@
 * Functions and Variables for ggf::
 @end menu
 
-@node Functions and Variables for ggf,  , ggf, ggf
+@node Functions and Variables for ggf,  , ggf-pkg, ggf-pkg
 @section Functions and Variables for ggf
 
 @defvr {Option variable} GGFINFINITY
@@ -50,6 +50,7 @@ See also @mref{ggf}.
 
 @end defvr
 
+@anchor{ggf}
 @deffn {Function} ggf (@var{l})
 Compute the generating function (if it is a fraction of two
 polynomials) of a sequence, its first terms being given. @var{l}
