@@ -151,7 +151,6 @@ externalproject_add(sbcl
   URL "${SBCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${SBCL_MD5}
-#  DOWNLOAD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl-prefix/src/sbcl && mkdir contrib && 7z x "${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi" && "${CMAKE_SOURCE_DIR}/sbcl.sh"
   DOWNLOAD_COMMAND ${CMAKE_BINARY_DIR}/sbcl.sh
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
@@ -201,7 +200,6 @@ externalproject_add(maxima-sbcl
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
-#            COMMAND CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 ./configure --host=${HOST} --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
             COMMAND ./configure --host=${HOST} --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND LANG=C $(MAKE)
   INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-sbcl-prefix/src/maxima-sbcl install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
