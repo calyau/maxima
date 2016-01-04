@@ -1068,7 +1068,7 @@ tricci(disp):=block
   if not symmetricp(_lg(),dim) then
     error("Frame base calculations require a symmetric metric."),
   if not member('lriem,arrays) then triemann(false),
-  kill(ric),
+  /* kill(ric), */
   df:true,
   for i thru dim do for j from i thru dim do
   (
@@ -1272,7 +1272,7 @@ triemann(disp):=block
   if not symmetricp(_lg(),dim) then
     error("Frame base calculations require a symmetric metric."),
   if not member('lcs,arrays) then trrc(false),
-  kill(lriem),
+  /* kill(lriem), */
   df:true,
   for i thru dim do
     for j from i thru dim do
