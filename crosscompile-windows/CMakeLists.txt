@@ -17,6 +17,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." OFF)
 option(USE_VTK "Use VTK." OFF)
+option(USE_SBCL "Use SBCL Lisp." OFF)
 
 
 # If you want to use a updated version of a program,
@@ -32,6 +33,7 @@ set(GNUPLOTVERSION   5.0.1)
 set(TCLVERSION       8.6.4)
 set(TKVERSION        8.6.4)
 set(VTKVERSION       6.3.0)
+set(SBCLVERSION      1.3.1)
 
 
 # MD5 checksums for the current program versions.
@@ -43,6 +45,7 @@ set(TCL_MD5       "d7cbb91f1ded1919370a30edd1534304")
 set(TK_MD5        "261754d7dc2a582f00e35547777e1fea")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
+set(SBCL_MD5      "29dc7210e794fce456ddde73b91ab6d2")
 
 # Get Maxima version from configure.ac
 file(STRINGS "${CMAKE_SOURCE_DIR}/../configure.ac" CONFIGUREAC REGEX "AC_INIT\\(.*\\)")
@@ -59,7 +62,7 @@ set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPL
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz")
-
+set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
@@ -142,6 +145,20 @@ externalproject_add(clisp
 install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
 
 
+configure_file("${CMAKE_SOURCE_DIR}/sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/sbcl.sh")
+
+externalproject_add(sbcl
+  URL "${SBCL_URL}"
+  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+  URL_MD5 ${SBCL_MD5}
+#  DOWNLOAD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl-prefix/src/sbcl && mkdir contrib && 7z x "${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi" && "${CMAKE_SOURCE_DIR}/sbcl.sh"
+  DOWNLOAD_COMMAND ${CMAKE_BINARY_DIR}/sbcl.sh
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl-prefix/src/sbcl/ DESTINATION bin)
+
 # Gnuplot (already a binary package just extract it...)
 externalproject_add(gnuplot
   URL "${GNUPLOT_URL}"
@@ -172,9 +189,24 @@ endif()
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
+configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
 
 
 # Build Maxima
+if(USE_SBCL)
+externalproject_add(maxima-sbcl
+  # first copy the maxima source to a build directory, since out-of-source-builds do not work
+  DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-sbcl-prefix/src/maxima-sbcl"
+  DEPENDS sbcl
+  BUILD_IN_SOURCE 1
+  PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
+  CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
+#            COMMAND CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 ./configure --host=${HOST} --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
+            COMMAND ./configure --host=${HOST} --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
+  BUILD_COMMAND LANG=C $(MAKE)
+  INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-sbcl-prefix/src/maxima-sbcl install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+)
+else()
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
@@ -190,7 +222,7 @@ externalproject_add(maxima
         COMMAND LANG=C $(MAKE)
   INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
-
+endif()
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)

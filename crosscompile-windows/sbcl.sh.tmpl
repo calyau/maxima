@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# get and 'install' SBCL
+
+cd @CMAKE_SOURCE_DIR@/downloads
+
+if [  ! -f  @CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi ] ; then
+    wget -c @SBCL_URL@
+fi
+
+
+MD5=$(md5sum @CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi | sed s/\ .*//)
+
+if [ "$MD5" != "@SBCL_MD5@" ] ; then
+    wget -c @SBCL_URL@
+fi
+    
+cd @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl
+7z x @CMAKE_SOURCE_DIR@/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
+mkdir -p contrib
+for i in File_obj_sbcl.home_contrib_* ; do  mv $i contrib/$(echo $i | sed s/File_obj_sbcl.home_contrib_//); done
+for i in contrib/sb.* ; do mv $i $(echo $i | sed s/sb./sb-/) ; done
+mv contrib/sb-bsd.sockets.asd contrib/sb-bsd-sockets.asd
+mv contrib/sb-bsd.sockets.fasl contrib/sb-bsd-sockets.fasl
+cd @CMAKE_BINARY_DIR@/
