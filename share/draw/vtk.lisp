@@ -60,6 +60,7 @@
 (defvar *lookup-tables* nil)
 (defvar *unitscale-already-defined* nil)
 (defvar *label-actors* nil)
+(defvar *stl-surfaces* nil)
 
 (defun get-appenddata-name ()
   (format nil "appenddata~a" (incf *vtk-appenddata-counter*)))
@@ -458,6 +459,21 @@
             "   iren SetRenderWindow renWin"
             "   iren Initialize"
             "   iren Start"))
+       ((eq terminal '$stl)
+          (let ((str (make-array 0 
+                      :element-type 'character 
+                      :adjustable t 
+                      :fill-pointer 0)))
+            (loop for f in *stl-surfaces* do
+              (format str "vtkTriangleFilter triangulator~a~%" f)
+              (format str "  triangulator~a SetInputConnection [filter~a GetOutputPort]~%" f f)
+              (format str "vtkSTLWriter stl~a~%" f)
+              (format str "  stl~a SetInputConnection [triangulator~a GetOutputPort]~%" f f)
+              (format str "  stl~a SetFileName \"~a~a.stl\"~%" f filename f)
+              (format str "  stl~a Write~%~%" f) )
+            (format str "vtkCommand DeleteAllObjects~%")
+            (format str "exit~%~%")
+          str) )
        (t
           (merror "draw: unknown terminal for vtk")))))
 
@@ -652,6 +668,7 @@
     (when (and (not (equal cap nil))
               (not (equal cap t)) )
           (merror "vtk3d: cone capping must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if cap
         (setf capn 1)
         (setf capn 0))
@@ -710,6 +727,7 @@
     (when (and (not (equal cap nil))
               (not (equal cap t)) )
           (merror "vtk3d: cylinder capping must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if cap
         (setf capn 1)
         (setf capn 0))
@@ -762,6 +780,7 @@
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
           (merror "vtk3d: cube center must be a list of three floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkCubeSource ~a~%" source-name)
       (format nil "  ~a SetXLength ~a~%" source-name fxlen)
@@ -838,6 +857,7 @@
     (when (and (not (equal tes nil))
                (not (equal tes t)) )
           (merror "vtk3d: sphere tesselation must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if tes
         (setf tesn 1)
         (setf tesn 0))
@@ -884,6 +904,7 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fori fp1 fp2))
       (merror "vtk3d: arguments to parallelogram must be lists of floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkPlaneSource ~a~%" source-name)
       (format nil "  ~a SetOrigin ~a ~a ~a~%"
@@ -933,6 +954,7 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fv1 fv2 fv3))
       (merror "vtk3d: arguments to triangle must be lists of floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkPoints ~a~%" points-name)
       (format nil "  ~a SetNumberOfPoints 3~%" points-name)
@@ -1685,6 +1707,7 @@
     (when (or (< umax umin)
               (< vmax vmin))
        (merror "vtk3d (parametric_surface): illegal range"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setq f1 (coerce-float-fun xfun `((mlist) ,par1 ,par2)))
     (setq f2 (coerce-float-fun yfun `((mlist) ,par1 ,par2)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par1 ,par2)))
@@ -1822,6 +1845,7 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (loop for j below ny
            initially (setf vv fminval2)
            do (setf uu fminval1)
@@ -2076,6 +2100,7 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (loop for row on (cdr mat) by #'cdr do
        (setf xi fx0)
        (loop for col on (cdar row) by #'cdr do
@@ -2174,6 +2199,7 @@
     (setf vertices (find-triangles expr par1 fxmin fxmax par2 fymin fymax par3 fzmin fzmax))
     (when (null vertices)
       (merror "draw3d (implicit): no surface within these ranges"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setf numvert (length vertices))
     (setf x (make-array numvert :element-type 'flonum :initial-contents (map 'list #'first vertices))
           y (make-array numvert :element-type 'flonum :initial-contents (map 'list #'second vertices))
@@ -2489,7 +2515,8 @@
           *vtk-2dkey-counter* 0
           *lookup-tables* nil
           *unitscale-already-defined* nil
-          *label-actors* nil)
+          *label-actors* nil
+          *stl-surfaces* nil)
     (setf largs (listify-arguments args))
     (dolist (x largs)
       (cond ((equal ($op x) "=")
