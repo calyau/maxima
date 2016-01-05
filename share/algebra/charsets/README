@@ -28,3 +28,41 @@ match set.lisp and flatten.lisp.
 
 Robert Dodier
 2005/02/23
+
+charsets appears to be broken, and I don't see how it ever worked. I've
+made some recent commits to fix some things, but there are still some
+references to undefined functions, and maybe other problems. The 
+undefined functions are some subset of:
+
+[Gcd, RootOf, charsets_die, charsets_dieA, coeffs, complexity, 
+das, eval, evala, fmedset, gbasis, lcm, leadmon, medset, ml2, ml3, 
+normalf, numer, prem, rand, readstat, simplify, sprem, theRankFunction, 
+tn, variablep]
+
+which are the symbols which appear in function calls in functions
+defined in charset.mac, which are apparently not defined functions
+(i.e., neither a Lisp function, nor a Maxima := function, nor a 
+Maxima defmspec, nor a Maxima autoloading function). Some of those
+symbols are local names of functions which are arguments, so it is
+expected that there will be no function definitions for those 
+symbols. I haven't tried to sort out which are the local names and
+which are honest-to-goodness undefined functions. 
+
+Some fragmentary notes about the undefined functions.
+
+ * Gcd and RootOf are only referenced in charsets_Malgcd which is
+   not called anywhere.
+ * charsets_die and charsets_dieA are used as variables but then
+   as functions. The value of the variables doesn't appear to be
+   a lambda expression. Is the variable supposed to be assigned
+   lambda([], foo) where foo is the value now assigned? In both
+   cases, the value is a random number, so it's meaningful to
+   call it (to get a different number each time).
+ * gbasis, leadmon, and normalf appear to be functions from an old
+   Maple package for computing Groebner bases.
+ * theRankFunction and tn are function arguments which are, I believe,
+   supposed to be function names.
+ * rand maybe is supposed to be random.
+
+Robert Dodier
+2016-01-04
