@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full wget
 
 then you can start the crosscompiling-process:
 
@@ -29,10 +29,10 @@ Instead of "make clean" just remove everything in the build directory.
 If you want to use the current wxMaxima development version, you can use
 cmake -DUSE_WXMAXIMA_GIT=YES ..
 
-If you want to include VTK, use
-cmake -DUSE_VTK=YES ..
-(Attention: The compilation time will increase!!! The size of the installer will
-approximately be 50% larger than without VTK).
+If you want to exclude VTK, use
+cmake -DUSE_VTK=NO ..
+(Attention: The compilation time will increase with vtk!!! The size of the installer
+will approximately be 50% larger than without VTK).
 
 
 

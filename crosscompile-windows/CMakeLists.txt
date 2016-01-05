@@ -11,13 +11,12 @@ set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
 project(maxima)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.3)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
-option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." OFF)
-option(USE_VTK "Use VTK." OFF)
-option(USE_SBCL "Use SBCL Lisp." OFF)
+option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
+option(USE_VTK "Use VTK." YES)
 
 
 # If you want to use a updated version of a program,
@@ -76,23 +75,9 @@ set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 #
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll     OUTPUT_VARIABLE MINGW_LIBSTDCPP OUTPUT_STRIP_TRAILING_WHITESPACE)
-# That does work on Debian 7 and Ubuntu 14.04, but not on Opensuse 13.1 (don't know why)
-# There the libraries are in /usr/i686-w64-mingw32/sys-root/mingw/bin
-# (with repository: http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/)
-# so try that...
 
-if("${MINGW_LIBGCC}" STREQUAL "libgcc_s_sjlj-1.dll")
-    message(STATUS "The command ${CMAKE_CXX_COMPILER} -print-file-name=libgcc_s_sjlj-1.dll   did not work (perhaps on Opensuse 13.1).")
-    find_path(MINGW_LIBSTDCPP_DIR "libstdc++-6.dll" "/usr/i686-w64-mingw32/sys-root/mingw/bin")
-    set(MINGW_LIBSTDCPP "${MINGW_LIBSTDCPP_DIR}/${MINGW_LIBSTDCPP}")
-    message(STATUS "Dont worry. Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
-    find_path(MINGW_LIBGCC_DIR "libgcc_s_sjlj-1.dll" "/usr/i686-w64-mingw32/sys-root/mingw/bin")
-    set(MINGW_LIBGCC "${MINGW_LIBGCC_DIR}/${MINGW_LIBGCC}")
-    message(STATUS "Dont worry. Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
-else()
-    message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
-    message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
-endif()
+message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
+message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
 
 
 include(ExternalProject)
@@ -191,28 +176,15 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
 
 
-# Build Maxima
-if(USE_SBCL)
-externalproject_add(maxima-sbcl
-  # first copy the maxima source to a build directory, since out-of-source-builds do not work
-  DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-sbcl-prefix/src/maxima-sbcl"
-  DEPENDS sbcl
-  BUILD_IN_SOURCE 1
-  PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
-  CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
-            COMMAND ./configure --host=${HOST} --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
-  BUILD_COMMAND LANG=C $(MAKE)
-  INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-sbcl-prefix/src/maxima-sbcl install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
-)
-else()
+
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
-  DEPENDS clisp
+  DEPENDS clisp sbcl
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
   CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
-            COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --prefix=C:/maxima-${MAXIMAVERSION}
+            COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
@@ -220,7 +192,6 @@ externalproject_add(maxima
         COMMAND LANG=C $(MAKE)
   INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
-endif()
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
@@ -272,7 +243,7 @@ if(USE_VTK)
         URL_MD5 ${VTK_MD5}
         PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/vtk-6.3.patch
         DEPENDS tcl tk vtk-native
-        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/generic -DTCL_TCLSH=C:/maxima-${MAXIMAVERSION}/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/generic -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/wine -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/xlib -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
+        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/generic -DTCL_TCLSH=C:/maxima-${MAXIMAVERSION}/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/generic -DCMAKE_CROSSCOMPILING_EMULATOR=${WINE_EXE} -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/xlib -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
         INSTALL_COMMAND $(MAKE) install
     )
@@ -300,7 +271,7 @@ set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
 set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima")
-set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}")
 
 # File associations:
 set(CPACK_NSIS_DEFINES "!include ${CMAKE_SOURCE_DIR}\\\\FileAssociation.nsh")
