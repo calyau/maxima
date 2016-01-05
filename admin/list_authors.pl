@@ -130,7 +130,7 @@ for (my $y=$year; $y >= 2000; $y--) {
         $authors[$i] =~ s/^van_nek$/Volker van Nek/;
         $authors[$i] =~ s/^villate$/Jaime E. Villate/;
         $authors[$i] =~ s/^Jaime Villate$/Jaime E. Villate/; # same spelling as above
-        $authors[$i] =~ s/^vttoth$/Viktor Toth/;
+        $authors[$i] =~ s/^vttoth$/Viktor T. Toth/;
         # unknown: Author: vvzhy <vvzhy>
         $authors[$i] =~ s/^wfs$/William F. Schelter/; # unknown (Author: wfs <wfs>), I assume, that is William F. Schelter?
         $authors[$i] =~ s/^willisbl$/Barton Willis/;
