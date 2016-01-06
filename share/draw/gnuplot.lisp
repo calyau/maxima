@@ -3124,7 +3124,7 @@
                                ($xyz      "set view equal xyz")
                                (otherwise ""))))
             (if (not (get-option '$axis_3d))
-                (format nil "set border 0~%"))
+                (format nil "set border 0~%unset xtics~%unset ytics~%unset ztics~%"))
             (when (not (null (get-option '$enhanced3d)))
               (if (null (get-option '$wired_surface))
                 (format nil "set pm3d at s ~a explicit~%" (get-option '$interpolate_color))
