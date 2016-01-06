@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2012-2015 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2012-2016 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -56,9 +56,11 @@
 (defvar *vtk-table-counter* 0)
 (defvar *vtk-arrayX-counter* 0)
 (defvar *vtk-arrayY-counter* 0)
+(defvar *vtk-2dkey-counter* 0)
 (defvar *lookup-tables* nil)
 (defvar *unitscale-already-defined* nil)
 (defvar *label-actors* nil)
+(defvar *stl-surfaces* nil)
 
 (defun get-appenddata-name ()
   (format nil "appenddata~a" (incf *vtk-appenddata-counter*)))
@@ -203,14 +205,47 @@
     (format str "  ~a ResetCamera~%~%" rn)
     str))
 
-(defun vtkrenderer2d-code (cn rn bgcol)
-  (let ((colist (hex-to-numeric-list bgcol))
+(defun vtkrenderer2d-code (cn rn)
+  (let ((colist (hex-to-numeric-list (get-option '$background_color)))
+        (xrange (get-option '$xrange))
+        (yrange (get-option '$yrange))
         (str (make-array 0 
                 :element-type 'character 
                 :adjustable t 
                 :fill-pointer 0)) )
+    (when yrange
+      (format str "  [~a GetAxis 0] SetBehavior 1~%" cn)
+      (format str "  [~a GetAxis 0] SetRange ~a ~a~%~%" cn (first yrange) (second yrange)) )
+    (when xrange
+      (format str "  [~a GetAxis 1] SetBehavior 1~%" cn)
+      (format str "  [~a GetAxis 1] SetRange ~a ~a~%~%" cn (first xrange) (second xrange)) )
     (format str "vtkContextScene scene~a~%  scene~a AddItem ~a~%" cn cn cn)
     (format str "vtkContextActor actor~a~%  actor~a SetScene scene~a~%" cn cn cn)
+    (format str "  ~a SetShowLegend ~a~%"
+      cn
+      (if (> *vtk-2dkey-counter* 0) 1 0))
+    (when (get-option '$logx)
+      (format str "  [~a GetAxis 1] SetLogScale 1~%" cn))
+    (when (get-option '$logy)
+      (format str "  [~a GetAxis 0] SetLogScale 1~%" cn))
+    (let ((pos (get-option '$key_pos))
+          vp hp)
+      (when pos
+        (setf pos (rest ($split pos)))
+        (setf vp (first  pos)
+              hp (second pos))
+        (format str "  [~a GetLegend] SetVerticalAlignment ~a~%"
+          cn
+          (cond
+            ((string= vp "top")    3)
+            ((string= vp "center") 1)
+            ((string= vp "bottom") 4)))
+        (format str "  [~a GetLegend] SetHorizontalAlignment ~a~%"
+          cn
+          (cond
+            ((string= hp "left")   0)
+            ((string= hp "center") 1)
+            ((string= hp "right")  2)))  ))
     (format str "vtkRenderer ~a~%" rn)
     (format str "  ~a SetBackground ~a ~a ~a~%" rn (first colist) (second colist) (third colist))
     (format str "  ~a AddActor actor~a~%" rn cn)
@@ -342,8 +377,6 @@
     (when (> nrow 0)
       (setf dx (/ 1.0 ncol)
             dy (/ 1.0 nrow)))
-
-
     ; place scenes on the graphic window
     (loop for counter from 1 to ns do
       (setf thisalloc (car alloc))
@@ -361,8 +394,6 @@
                   y1 (* (- nrow (ceiling nilcounter ncol)) dy)
                   y2 (+ y1 dy))))
       (format str "  renderer~a SetViewport ~a ~a ~a ~a ~%" counter x1 y1 x2 y2))
-
-
     (format str "vtkRenderWindow renWin~%  renWin SetMultiSamples 0~%")
     (format str "  renWin SetSize ~a ~a~%" (car dim) (cadr dim))
     (loop for k from 1 to ns do
@@ -370,11 +401,6 @@
     str))
 
 
-
-
-
-
-;;; AUXILIARY FUNCTIONS
 
 ; code for file output
 (defun vtk-terminal ()
@@ -433,6 +459,21 @@
             "   iren SetRenderWindow renWin"
             "   iren Initialize"
             "   iren Start"))
+       ((eq terminal '$stl)
+          (let ((str (make-array 0 
+                      :element-type 'character 
+                      :adjustable t 
+                      :fill-pointer 0)))
+            (loop for f in *stl-surfaces* do
+              (format str "vtkTriangleFilter triangulator~a~%" f)
+              (format str "  triangulator~a SetInputConnection [filter~a GetOutputPort]~%" f f)
+              (format str "vtkSTLWriter stl~a~%" f)
+              (format str "  stl~a SetInputConnection [triangulator~a GetOutputPort]~%" f f)
+              (format str "  stl~a SetFileName \"~a~a.stl\"~%" f filename f)
+              (format str "  stl~a Write~%~%" f) )
+            (format str "vtkCommand DeleteAllObjects~%")
+            (format str "exit~%~%")
+          str) )
        (t
           (merror "draw: unknown terminal for vtk")))))
 
@@ -627,6 +668,7 @@
     (when (and (not (equal cap nil))
               (not (equal cap t)) )
           (merror "vtk3d: cone capping must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if cap
         (setf capn 1)
         (setf capn 0))
@@ -685,6 +727,7 @@
     (when (and (not (equal cap nil))
               (not (equal cap t)) )
           (merror "vtk3d: cylinder capping must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if cap
         (setf capn 1)
         (setf capn 0))
@@ -737,6 +780,7 @@
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
           (merror "vtk3d: cube center must be a list of three floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkCubeSource ~a~%" source-name)
       (format nil "  ~a SetXLength ~a~%" source-name fxlen)
@@ -813,6 +857,7 @@
     (when (and (not (equal tes nil))
                (not (equal tes t)) )
           (merror "vtk3d: sphere tesselation must be 'true' or 'false'"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (if tes
         (setf tesn 1)
         (setf tesn 0))
@@ -859,6 +904,7 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fori fp1 fp2))
       (merror "vtk3d: arguments to parallelogram must be lists of floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkPlaneSource ~a~%" source-name)
       (format nil "  ~a SetOrigin ~a ~a ~a~%"
@@ -908,6 +954,7 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fv1 fv2 fv3))
       (merror "vtk3d: arguments to triangle must be lists of floats"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (concatenate 'string
       (format nil "vtkPoints ~a~%" points-name)
       (format nil "  ~a SetNumberOfPoints 3~%" points-name)
@@ -1011,8 +1058,8 @@
 
 
 
-;; points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])
-;; ------------------------------------------------
+;; 3D: points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])
+;; ----------------------------------------------------
 (defun vtk3d-points (arg)
   (let ((points-joined (gethash '$points_joined *gr-options*))
         (point-type    (gethash '$point_type    *gr-options*))
@@ -1275,6 +1322,128 @@
 
 
 
+;; 2D: points([[x1,y1], [x2,y2], [x3,y3],...])
+;; -------------------------------------------
+;; Options:
+;;     point_size
+;;     point_type
+;;     points_joined
+;;     line_width
+;;     key
+;;     line_type
+;;     color
+;;     transform
+(defun vtk2d-points (arg1 &optional (arg2 nil))
+  (let ((pointsjoined  (gethash '$points_joined *gr-options*))
+        (pointtype     (gethash '$point_type    *gr-options*))
+        (pointsize     ($float  (gethash '$point_size    *gr-options*)))
+        (linetype      (gethash '$line_type     *gr-options*))
+        (color         (hex-to-numeric-list (get-option '$color)))
+        (linewidth     (gethash '$line_width    *gr-options*))
+        (key           (get-option '$key))
+        (arrayX-name   (get-arrayX-name))
+        (arrayY-name   (get-arrayY-name))
+        (table-name    (get-table-name))
+        (str (make-array 0 
+                 :element-type 'character 
+                 :adjustable t 
+                 :fill-pointer 0))
+        tmp x y ax ay n)
+
+    (when (not (string= (string-trim " " key) ""))
+       (incf *vtk-2dkey-counter*) )
+    ; check type of input
+    (cond 
+       ((and ($listp arg1)
+             (null arg2)
+             (every #'$listp (rest arg1)))     ; xy format
+          (let ((tmp (mapcar #'rest (rest arg1))))
+             (setf x (map 'list #'$float (map 'list #'first tmp))
+                   y (map 'list #'$float (map 'list #'second tmp)))) )
+       ((and ($matrixp arg1)
+             (= (length (cadr arg1)) 3)
+             (null arg2))                 ; two-column matrix
+          (let ((tmp (mapcar #'rest (rest arg1))))
+             (setf x (map 'list #'$float (map 'list #'first tmp))
+                   y (map 'list #'$float (map 'list #'second tmp)) ) ) )
+       ((and ($listp arg1)
+             (null arg2)
+             (notany #'$listp (rest arg1)))   ; y format
+          (setf x (loop for xx from 1 to (length (rest arg1)) collect ($float xx))
+                y (map 'list #'$float (rest arg1))))
+       ((and ($matrixp arg1)
+             (= (length (cadr arg1)) 2)
+             (null arg2))                 ; one-column matrix
+          (setf x (loop for xx from 1 to (length (rest arg1)) collect ($float xx))
+                y (map 'list #'$float (map 'list #'second (rest arg1)))))
+       ((and ($matrixp arg1)
+             (= ($length arg1) 1)
+             (null arg2))                 ; one-row matrix
+          (setf x (loop for xx from 1 to (length (cdadr arg1)) collect ($float xx))
+                y (map 'list #'$float (cdadr arg1))))
+       ((and ($listp arg1)
+             ($listp arg2)
+             (= (length arg1) (length arg2)))  ; xx yy format
+          (setf x (map 'list #'$float (rest arg1))
+                y (map 'list #'$float (rest arg2))))
+       ((and ($matrixp arg1)
+             (= ($length arg1) 2)
+             (null arg2))            ; two-row matrix
+          (setf x (map 'list #'$float (cdadr arg1))
+                y (map 'list #'$float (cdaddr arg1))))
+       (t (merror "draw (points2d): incorrect input format")))
+    (setf n (length x))
+    (setf ax (make-array n :element-type 'flonum :initial-contents x)
+          ay (make-array n :element-type 'flonum :initial-contents y))
+    ; tcl-vtk code
+    (format str "vtkFloatArray ~a~%" arrayX-name)
+    (format str "  ~a SetName \"~a\"~%" arrayX-name arrayX-name)
+    (format str "vtkFloatArray ~a~%" arrayY-name)
+    (format str "  ~a SetName \"~a\"~%" arrayY-name key)
+    (loop for i from 0 below n do
+      (format str "~a InsertNextValue ~a~%" arrayX-name (aref ax i))
+      (format str "~a InsertNextValue ~a~%" arrayY-name (aref ay i))  )
+    (format str "vtkTable ~a~%" table-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
+    (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
+    (when (equal pointsjoined t)
+      (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 0)
+      (format str "  $line SetInputData ~a 0 1~%" table-name)
+      (format str "  $line SetColor ~a ~a ~a 255 ~%"
+        (round (* 255 (first color)))
+        (round (* 255 (second color)))
+        (round (* 255 (third color))) )
+      (format str "  $line SetWidth ~a~%" linewidth)
+      (format str "  $line SetLegendVisibility 0~%")
+      (format str "  $line SetMarkerStyle ~a~%" 0)
+      (format str "  eval [$line GetPen] SetLineType ~a~%"
+        (case linetype ; translate some gnuplot codes into vtk codes
+          (0 3)
+          (6 4)
+          (otherwise linetype) ) ) )
+    (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 1)
+    (format str "  $line SetInputData ~a 0 1~%" table-name)
+    (format str "  $line SetColor ~a ~a ~a 255 ~%"
+      (round (* 255 (first color)))
+      (round (* 255 (second color)))
+      (round (* 255 (third color))) )
+    (format str "  $line SetWidth ~a~%" pointsize)
+    (format str "  $line SetLegendVisibility ~a~%" 
+      (if (string= (string-trim " " key) "")
+       0
+       1 ))
+    (format str "  $line SetMarkerStyle ~a~%~%"
+      (case pointtype
+        ((-1 0) 0)
+        (1 2)
+        ((2 3) 1)
+        ((4 5 15) 3)
+        ((6 7 14) 4)
+        ((12 13) 5)
+        (otherwise 3) ))
+    str  ))
+
+
 
 ;; 3D: parametric(xfun,yfun,zfun,par1,parmin,parmax)
 ;; -------------------------------------------------
@@ -1422,6 +1591,8 @@
 
     (when (< tmax tmin)
        (merror "draw2d (parametric): illegal range"))
+    (when (not (string= (string-trim " " key) ""))
+       (incf *vtk-2dkey-counter*) )
     (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par)))
        (merror "draw2d (parametric): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
@@ -1441,9 +1612,9 @@
 
     ; tcl-vtk code
     (format str "vtkFloatArray ~a~%" arrayX-name)
-    (format str "  ~a SetName '~a'~%" arrayX-name arrayX-name)
+    (format str "  ~a SetName \"~a\"~%" arrayX-name arrayX-name)
     (format str "vtkFloatArray ~a~%" arrayY-name)
-    (format str "  ~a SetName '~a'~%" arrayY-name key)
+    (format str "  ~a SetName \"~a\"~%" arrayY-name key)
     (loop for i from 0 below (length result) by 2 do
       (format str "~a InsertNextValue ~a~%" arrayX-name (aref result-array i))
       (format str "~a InsertNextValue ~a~%" arrayY-name (aref result-array (+ i 1)))  )
@@ -1457,11 +1628,30 @@
       (round (* 255 (second color)))
       (round (* 255 (third color))) )
     (format str "  $line SetWidth ~a~%" linewidth)
+    (format str "  $line SetLegendVisibility ~a~%" 
+      (if (string= (string-trim " " key) "")
+       0
+       1 ))
     (format str "  eval [$line GetPen] SetLineType ~a~%~%"
       (case linetype ; translate some gnuplot codes into vtk codes
         (0 3)
         (6 4)
         (otherwise linetype) ) ) ))
+
+
+
+;; 2D: polar(radius,ang,minang,maxang)
+;; -----------------------------------
+;; Options:
+;;     nticks
+;;     line_width
+;;     line_type
+;;     color
+;;     key
+(defun vtk2d-polar (radius ang minang maxang)
+  (vtk2d-parametric `((mtimes simp) ,radius ((%cos simp) ,ang))
+                    `((mtimes simp) ,radius ((%sin simp) ,ang))
+                    ang minang maxang) )
 
 
 
@@ -1517,6 +1707,7 @@
     (when (or (< umax umin)
               (< vmax vmin))
        (merror "vtk3d (parametric_surface): illegal range"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setq f1 (coerce-float-fun xfun `((mlist) ,par1 ,par2)))
     (setq f2 (coerce-float-fun yfun `((mlist) ,par1 ,par2)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par1 ,par2)))
@@ -1654,6 +1845,7 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (loop for j below ny
            initially (setf vv fminval2)
            do (setf uu fminval1)
@@ -1730,6 +1922,7 @@
          (linetype    (get-option '$line_type))
          (key         (get-option '$key))
          (color       (hex-to-numeric-list (get-option '$color)))
+         (fillcolor   (hex-to-numeric-list (get-option '$fill_color)))
          (key         (get-option '$key))
          (xmin        ($float minval))
          (xmax        ($float maxval))
@@ -1746,14 +1939,28 @@
          x-samples y-samples result result-array )
     (when (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
+    (when (not (string= (string-trim " " key) ""))
+       (incf *vtk-2dkey-counter*) )
+    (when (get-option '$logx)
+      (setf xmin (log xmin))
+      (setf xmax (log xmax))
+      (setf x-step (/ (- xmax xmin) ($float nticks) 2)))
     (setq *plot-realpart* (get-option '$draw_realpart))
-    (setf fcn ($float fcn))
     (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
-    (flet ((fun (x) (funcall fcn x)))
-        (dotimes (k (1+ (* 2 nticks)))
-          (let ((x (+ xmin (* k x-step))))
-            (push x x-samples)
-            (push (fun x) y-samples)))
+    (flet ((fun (x)
+               (let ((y (if (get-option '$logx)
+                            (funcall fcn (exp x))
+                            (funcall fcn x))))
+                 (if (and (get-option '$logy)
+                          (numberp y))
+                     (if (> y 0)
+                       (log y)
+                       (merror "draw2d (explicit): logarithm of negative number"))
+                     y))))
+      (dotimes (k (1+ (* 2 nticks)))
+        (let ((x (+ xmin (* k x-step))))
+          (push x x-samples)
+          (push (fun x) y-samples)))
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
       ;; For each region, adaptively plot it.
@@ -1780,7 +1987,16 @@
             (setf sublst (cddr sublst)))
           (do ((lst sublst (cddr lst)))
               ((null lst) 'done)
-            (setf result (append result (list (first lst) (second lst))))))))
+            (setf result (append result
+                                 (list
+                                   (if (and (get-option '$logx)
+                                            (numberp (first lst)))
+                                     (exp (first lst))
+                                     (first lst))
+                                   (if (and (get-option '$logy)
+                                            (numberp (second lst)))
+                                     (exp (second lst))
+                                     (second lst)))))))))
     (cond
       ((> *draw-transform-dimensions* 0)
          ; With geometric transformation.
@@ -1804,22 +2020,35 @@
                                         :initial-contents result))))
     ; tcl-vtk code
     (format str "vtkFloatArray ~a~%" arrayX-name)
-    (format str "  ~a SetName '~a'~%" arrayX-name arrayX-name)
+    (format str "  ~a SetName \"~a\"~%" arrayX-name arrayX-name)
     (format str "vtkFloatArray ~a~%" arrayY-name)
-    (format str "  ~a SetName '~a'~%" arrayY-name key)
+    (format str "  ~a SetName \"~a\"~%" arrayY-name key)
     (loop for i from 0 below (length result) by 2 do
-      (format str "~a InsertNextValue ~a~%" arrayX-name (aref result-array i))
-      (format str "~a InsertNextValue ~a~%" arrayY-name (aref result-array (+ i 1)))  )
+      (when (not (equal (aref result-array (+ i 1)) t))
+        ; in case of division by zero, do not insert next value.
+        ; A vertical line will be plotted, which should be fixed.
+        (format str "~a InsertNextValue ~a~%" arrayX-name (aref result-array i))
+        (format str "~a InsertNextValue ~a~%" arrayY-name (aref result-array (+ i 1))) ) )
     (format str "vtkTable ~a~%" table-name)
     (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
     (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
-    (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
+    (format str "set line [chart~a AddPlot ~a]~%"
+      *vtk-chart-counter*
+      (if (get-option '$filled_func) 3 0))
     (format str "  $line SetInputData ~a 0 1~%" table-name)
-    (format str "  $line SetColor ~a ~a ~a 255 ~%"
-      (round (* 255 (first color)))
-      (round (* 255 (second color)))
-      (round (* 255 (third color))) )
+    (let (col)
+      (if (get-option '$filled_func)
+        (setf col fillcolor)
+        (setf col color))
+      (format str "  $line SetColor ~a ~a ~a 255 ~%"
+        (round (* 255 (first  col)))
+        (round (* 255 (second col)))
+        (round (* 255 (third  col))) ))
     (format str "  $line SetWidth ~a~%" linewidth)
+    (format str "  $line SetLegendVisibility ~a~%" 
+      (if (string= (string-trim " " key) "")
+       0
+       1 ))
     (format str "  eval [$line GetPen] SetLineType ~a~%~%"
       (case linetype ; translate some gnuplot codes into vtk codes
         (0 3)
@@ -1871,6 +2100,7 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (loop for row on (cdr mat) by #'cdr do
        (setf xi fx0)
        (loop for col on (cdar row) by #'cdr do
@@ -1969,6 +2199,7 @@
     (setf vertices (find-triangles expr par1 fxmin fxmax par2 fymin fymax par3 fzmin fzmax))
     (when (null vertices)
       (merror "draw3d (implicit): no surface within these ranges"))
+    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setf numvert (length vertices))
     (setf x (make-array numvert :element-type 'flonum :initial-contents (map 'list #'first vertices))
           y (make-array numvert :element-type 'flonum :initial-contents (map 'list #'second vertices))
@@ -2022,8 +2253,8 @@
 
 
 
-;; label([string1,x1,y1,z1],[string2,x2,y2,z2],...)
-;; ------------------------------------------------
+;; 3d: label([string1,x1,y1,z1],[string2,x2,y2,z2],...)
+;; ----------------------------------------------------
 (defun vtk3d-label (&rest lab)
   (let ((font-size (gethash '$font_size *gr-options*))
         (colist (hex-to-numeric-list (gethash '$color *gr-options*)))
@@ -2080,7 +2311,9 @@
 
 ; table of 2d graphic objects
 (setf (gethash '$explicit           *vtk2d-graphic-objects*) 'vtk2d-explicit
-      (gethash '$parametric         *vtk2d-graphic-objects*) 'vtk2d-parametric       )
+      (gethash '$parametric         *vtk2d-graphic-objects*) 'vtk2d-parametric
+      (gethash '$points             *vtk2d-graphic-objects*) 'vtk2d-points
+      (gethash '$polar              *vtk2d-graphic-objects*) 'vtk2d-polar        )
 
 (defun make-vtk-scene-2d (args)
   (let ((objects "")
@@ -2096,6 +2329,7 @@
               (case ($lhs x)
                 ($allocation       (update-allocation                           ($rhs x)))
                 ($color            (update-color             '$color            ($rhs x)))
+                ($fill_color       (update-color             '$fill_color       ($rhs x)))
                 ($file_name        (update-string            '$file_name        ($rhs x)))
                 ($font_size        (update-positive-float    '$font_size        ($rhs x)))
                 ($head_angle       (update-positive-float    '$head_angle       ($rhs x)))
@@ -2106,7 +2340,13 @@
                 ($line_width       (update-positive-float    '$line_width       ($rhs x)))
                 ($line_type        (update-linestyle         '$line_type        ($rhs x)))
                 ($key              (update-string            '$key              ($rhs x)))
+                ($key_pos          (update-key_pos                              ($rhs x)))
+                ($logx             (update-boolean-option    '$logx             ($rhs x)))
+                ($logy             (update-boolean-option    '$logy             ($rhs x)))
+                ($filled_func      (update-gr-option         '$filled_func      ($rhs x)))
                 ($grid             (update-gr-option         '$grid             ($rhs x)))
+                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
+                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
                 ($transform        (update-transform                            ($rhs x)))
                 ($points_joined    (update-pointsjoined                         ($rhs x)))
                 ($point_type       (update-pointtype                            ($rhs x)))
@@ -2130,8 +2370,7 @@
       objects
       (vtkrenderer2d-code
          chart-name
-         renderer-name
-         (gethash '$background_color *gr-options*))  )))
+         renderer-name)  )))
 
 
 
@@ -2273,9 +2512,11 @@
           *vtk-table-counter* 0
           *vtk-arrayX-counter* 0
           *vtk-arrayY-counter* 0
+          *vtk-2dkey-counter* 0
           *lookup-tables* nil
           *unitscale-already-defined* nil
-          *label-actors* nil)
+          *label-actors* nil
+          *stl-surfaces* nil)
     (setf largs (listify-arguments args))
     (dolist (x largs)
       (cond ((equal ($op x) "=")

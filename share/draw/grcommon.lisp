@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2014 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -369,7 +369,7 @@
                  $epslatex $epslatex_standalone $svg $x11 $qt
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 
-                 $multipage_eps_color $aquaterm $tiff $vrml $obj $pnm)))
+                 $multipage_eps_color $aquaterm $tiff $vrml $obj $stl $pnm)))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)
