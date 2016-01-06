@@ -2148,3 +2148,20 @@ done;
 forget(nonneg>=0,notequal(nonzero,0));
 [nonneg>=0,notequal(nonzero,0)];
 
+/* mailing list 2016-01-06: "coerce-float-fun and hashed arrays" */
+
+(kill(a, s, t), a:make_array(hashed), a[s]:5, 0);
+0;
+
+a[s];
+5;
+
+a[s], nouns;
+5;
+
+a[t];
+false;
+
+a[t], nouns;
+false;
+
