@@ -412,7 +412,7 @@ charsets_equal ( a,b):= block(
           if not charsets_equal ( i, j) then return (_ind : false)),
         if not _ind then return ( false)),
       return (_ind))
-     else if operatorp(b, [ "[", setp]) then ( false)
+     else if charsets_operatorp(b, charsets_ListOrSet) then ( false)
      else if polynomialp(a,listofvars(a)) then (
       if second(divide ( a, b)) = 0 and second(divide ( b, a)) = 0 then ( true)
         else (
