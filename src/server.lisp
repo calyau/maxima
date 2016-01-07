@@ -20,7 +20,13 @@
   ;; the connection is opened. If it isn't the first unicode 
   ;; character maxima wants to send causes sbcl to wait indefinitely.
   #+sbcl (setf sb-impl::*default-external-format* :utf-8)
-  (let* ((sock (open-socket host port)))
+  (multiple-value-bind (sock condition) (ignore-errors (open-socket host port))
+    (unless sock
+      ; It appears that we were unable to open a socket or connect to the
+      ; specified port.
+      (mtell (intl:gettext "~%Unable to connect Maxima to port ~:M.~%") port)
+      (mtell (intl:gettext "Error: ~A~%") condition)
+      ($quit))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
     (defvar $old_stdout)
