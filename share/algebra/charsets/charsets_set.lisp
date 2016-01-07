@@ -65,6 +65,16 @@
 	((or ($listp x) ($listp y)) nil)
 	(t ($charsets_xequalp x y))))
 
+;;  Adjoin x to the Maxima list a; use equalp for the equality test.
+;;  When a isn't a list, signal an error.
+;;  Name this function charsets_adjoin2 to distinguish from 3-arg function
+;;  of same name in charsets.mac.
+
+(defun $charsets_adjoin2 (x a)
+  (cond (($listp a)
+	 (cons '(mlist) (adjoin x (margs a) :test #'$charsets_elem_equalp)))
+	(t (merror "The second argument to `charsets_adjoin2' must be a list"))))
+
 ;; Setify removes duplicates from a Maxima list and sorts the
 ;; list using the partial ordering function canonlt. To remove the
 ;; duplicates from the list, we use element_equalp to test for equality.
