@@ -55,6 +55,10 @@
 /* Do not create variables with the name args, until the argument name */
 /* bug is fixed. */
 
+load ("charsets_set.lisp");
+load ("charsets_flatten.lisp");
+load ("charsets_powers.lisp");
+
 define_variable(charsets_printlevel,0,any)$
 define_variable(charsets_qs,true,any,"Used as array")$
 define_variable(charsets_fact,1,any,"Stores a factor")$
@@ -95,23 +99,6 @@ safeLcoeff(p,v):=
       else (
         if "*" = op(p) then safeLcoeff(first(p),v)*safeLcoeff(rest(p),v)
         else lcoeff(p,v)))$
-
-lcoeff (p, [x]) :=
-  if x = []
-    then lcoeff (p, listofvars(p))
-    else
-     (x : x[1],
-      if mapatom(x)
-        then coeff (p, x, hipow (p, x))
-      elseif listp(x)
-        then
-          if length(x) = 0
-            then error ("lcoeff: don't know how to handle second argument:", x)
-          elseif length(x) = 1
-            then lcoeff (p, first(x))
-            else lcoeff (lcoeff (p, first(x)), rest(x))
-      else
-        error ("lcoeff: don't know how to handle second argument:", x));
 
 /* this function is used to set up the charsets_qs variable */
 init_qs(ord):=block([l:length(ord)],
@@ -912,12 +899,6 @@ charsets_degree ( f,x):=block([c:facsum( f, x)],
    if mapatom(x) then degree(c,x)
    else max(map(lambda([u],degree(c,u)),x))
 )$
-
-degree (c, x) :=
-  if mapatom(x)
-    then hipow (c, x)
-    else error ("degree: don't know how to handle second argument: ", x);
-
 charsets_degreel ( f,ord):=block([last],
       last:expand ( f),
       degree ( last, charsets_lvar ( last, ord) ) 
