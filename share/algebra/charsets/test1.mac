@@ -363,12 +363,14 @@ charsets_test : lambda ([], block(
 
    for i : 1 thru length(test_in) do (
      print("Executing test number ",i),
-     rr : setify1(apply(first(test_in[i]), second(test_in[i]))),
-     if charsets_testsub( rr, test_out[i]) 
-       then (
-        print("CharSets_Test:",aa,"Good"))
-      else (
-        print("CharSets_Test:",aa,"Bad",rr)))
+     errcatch
+      (rr : setify1(apply(first(test_in[i]), second(test_in[i]))),
+       if charsets_testsub( rr, test_out[i]) 
+         then (
+          print("CharSets_Test:",aa,"Good"))
+        else (
+          print("CharSets_Test:",aa,"Bad",rr))),
+     if %% = [] then print ("CharSets_Test: error in test."))
 ))$
 /* subroutine for test */
 
