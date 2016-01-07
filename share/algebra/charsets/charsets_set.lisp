@@ -65,14 +65,6 @@
 	((or ($listp x) ($listp y)) nil)
 	(t ($charsets_xequalp x y))))
 
-;;  Adjoin x to the Maxima list a; use equalp for the equality test.
-;;  When a isn't a list, signal an error.
-
-(defun $charsets_adjoin (x a)
-  (cond (($listp a)
-	 (cons '(mlist) (adjoin x (margs a) :test #'$charsets_elem_equalp)))
-	(t (merror "The second argument to `adjoin' must be a list"))))
-
 ;; Setify removes duplicates from a Maxima list and sorts the
 ;; list using the partial ordering function canonlt. To remove the
 ;; duplicates from the list, we use element_equalp to test for equality.
@@ -191,14 +183,6 @@
 
 ;; Return those elements of a for which the predicate f evaluates
 ;; to true; signal an error if a isn't a list.
-
-(defun $charsets_subset (a f)
-  (cond (($listp a)
-	 (setq a (margs a))
-	 (let ((acc nil))
-	   (dolist (x a (cons '(mlist) acc))
-	     (if (mfuncall f x) (setq acc (cons x acc))))))
-	(t (merror "First argument to `subset' must be a list."))))
 
 ;; Return the union of a - b and b - a; signal an error if a or b
 ;; aren't lists.
