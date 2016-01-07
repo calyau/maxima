@@ -3974,8 +3974,12 @@ charsets_complexityp(a,b):=block(
 )$
 
 charsets_setorder_reversep(a,b):=
-   if length(a) > length(b) then true
-   else(if length(a) < length(b) then false else ordergreatp(a,b))$
+   if not mapatom(a) and not mapatom(b)
+   then
+     if length(a) > length(b) then true
+     else(if length(a) < length(b) then false else ordergreatp(a,b))
+   else
+     ordergreatp (a, b) $
 
 charsets_setorderp(a,b):=
    if not mapatom(a) and not mapatom(b)
