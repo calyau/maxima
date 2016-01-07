@@ -28,7 +28,7 @@ or on how to recover from errors.
 @category{Error messages}
 @closecatbox
 
-@node undefined variable during plotting,loadfile failed to load, part fell off the end, Error messages
+@node undefined variable during plotting, loadfile failed to load, part fell off the end, Error messages
 @subsection undefined variable (draw or plot)
 A function could not be plotted since it still contained a variable maxima
 doesn't know the value of.
@@ -65,7 +65,7 @@ draw2d (explicit): non defined variable
 @closecatbox
 
 
-@node loadfile failed to load,undefined variable during plotting, Error messages
+@node loadfile failed to load, Only symbols can be bound, undefined variable during plotting, Error messages
 @subsection loadfile: failed to load <filename>
 This error message normally indicates that the file exists, but can not be read.
 If the file is present and readable there is another possible for this error
@@ -89,12 +89,12 @@ compile a package.
 @opencatbox
 @category{Error messages}
 @closecatbox
-@node Only symbols can be bound,out of memory,loadfile failed to load, Error messages
+@node Only symbols can be bound, out of memory, loadfile failed to load, Error messages
 @subsection Only symbols can be bound
 The most probable cause for this error is that there was an attempt to eiter
 use a number or a variable whose numerical value is known as a loop
 counter.
-@node out of memory,No such list element,Only symbols can be bound, Error messages
+@node out of memory, No such list element, Only symbols can be bound, Error messages
 @subsection Out of memory
 Lisp typically handles several types of memory containing at least one stack
 and a heap that contains user objects. To avoid running out of memory several
@@ -127,7 +127,7 @@ number was @code{< 1} or @code{> length(list)}.
 @category{Error messages}
 @closecatbox
 
-@node Comma is not a prefix operator,makelist second argument must evaluate to a number, No such list element, Error messages
+@node Comma is not a prefix operator, makelist second argument must evaluate to a number, No such list element, Error messages
 @subsection incorrect syntax: , is not a prefix operator
 This might be caused by a command starting with a comma (@code{,}) or by one comma
 being directly followed by another one..
@@ -154,7 +154,7 @@ opening one or a closing parenthesis directly preceded by a comma.
 @category{Error messages}
 @closecatbox
 
-@node VTK is not installed, ,Illegal use of delimiter, Error messages
+@node VTK is not installed, , Illegal use of delimiter, Error messages
 @subsection VTK is not installed, which is required for Scene
 
 This might either mean that VTK is actually not installed - or cannot be found by
@@ -175,13 +175,13 @@ if the following maxima command is entered:
 @closecatbox
 
 
-@node Warning messages, undefined variable during translation,Error and warning messages, Error and warning messages
+@node Warning messages, undefined variable during translation, Error and warning messages, Error and warning messages
 @section Warning messages
 @menu
 * undefined variable during translation::
 * replaced x by y::
 @end menu
-@node undefined variable during translation,replaced x by y ,Warning messages,Warning messages
+@node undefined variable during translation, replaced x by y, Warning messages, Warning messages
 @subsection Encountered undefined variable <x> in translation
 A function was compiled but the type of the variable @code{x} was not known.
 This means that the compiled command contains additional code that makes it
@@ -189,7 +189,7 @@ retain all the flexibility maxima provides in respect to this variable.
 If @code{x} isn't meant as a variable name but just a named option to a
 command prepending the named option by a single quote (@code{'}) should
 resolve this issue.
-@node replaced x by y, ,undefined variable during translation,Warning messages
+@node replaced x by y, , undefined variable during translation, Warning messages
 @subsection Rat: replaced <x> by <y> = <z>
 Floating-point numbers provide a maximum number of digits that is typically high,
 but still limited. Good examples that this limitation might be too low
