@@ -599,11 +599,23 @@ When one changes, the other does too."
           intl::*locale-directories*)))
 
 (defun adjust-character-encoding ()
+  #+cmu
+  (handler-bind ((error #'(lambda (c)
+			    ;; If there's a continue restart, restart
+			    ;; to set the filename encoding anyway.
+			    (if (find-restart 'cl:continue c)
+				(invoke-restart 'cl:continue)))))
+    ;; Set both the terminal external format and filename encoding to
+    ;; utf-8.  The handler-bind is needed in case the filename
+    ;; encoding was already set to something else; we forcibly change
+    ;; it to utf-8. (Is that right?)
+    (stream:set-system-external-format :utf-8 :utf-8))
+  #+clisp
   (ignore-errors
-    #+clisp (progn (setf custom:*default-file-encoding*
-                         (ext:make-encoding :input-error-action #\?))
-                   (setf custom:*terminal-encoding*
-                         custom:*default-file-encoding*))))
+    (progn (setf custom:*default-file-encoding*
+		 (ext:make-encoding :input-error-action #\?))
+	   (setf custom:*terminal-encoding*
+		 custom:*default-file-encoding*))))
 
 (import 'cl-user::run)
 

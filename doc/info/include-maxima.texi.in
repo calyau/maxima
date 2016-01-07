@@ -814,7 +814,7 @@ Understanding maxima's output
 @chapter drawdf
 @include drawdf.texi
 
-@node dynamics-pkg, ezunits-pkg, drawdf-pkg, Top
+@node dynamics-pkg, engineering-format-pkg, drawdf-pkg, Top
 @chapter dynamics
 @include dynamics.texi
 
