@@ -129,14 +129,6 @@
 	       (t
 		(cons '(mlist simp) (odds (cadr e) 0)))))))
 	       
-;; odds is defined in mactex.lisp. Here is its definition.
-
-(defun odds (n c)
-  ;; if c = 1, get the odd terms  (first, third...)
-  (cond ((null n) nil)
-	((= c 1) (cons (car n) (odds (cdr n) 0)))
-	((= c 0) (odds (cdr n) 1))))
-
 ;; Return the highest power of the polynomial e in the variable x.
 
 (defun $hipower (e x)
