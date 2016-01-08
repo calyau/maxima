@@ -96,11 +96,10 @@
 ;; sets a1,a2,...an.
 
 (defmfun $charsets_union ( &rest a)
-  (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to `union' must be a list."))
 	(t
-	 (cons '(mlist) (remove-duplicates (apply 'append  (map 'list 'rest a)) :test #'$charsets_elem_equalp)))))
+	 (charsets_mysort (cons '(mlist) (remove-duplicates (apply 'append  (map 'list 'rest a)) :test #'$charsets_elem_equalp))))))
 
 ;; Remove elements of b from a.  Signal an error if a or b aren't lists.
 ;; Use element_equalp for the equality test.
@@ -114,7 +113,6 @@
 ;; equality test. Signal an error if a or b aren't lists.
 
 (defmfun $charsets_intersection ( &rest a)
-  (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to `intersection' must be a list."))
 	(t
