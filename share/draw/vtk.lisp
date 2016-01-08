@@ -231,7 +231,7 @@
     (let ((pos (get-option '$key_pos))
           vp hp)
       (when pos
-        (setf pos (rest ($split pos)))
+        (setf pos (rest (mfunction-call $split pos)))
         (setf vp (first  pos)
               hp (second pos))
         (format str "  [~a GetLegend] SetVerticalAlignment ~a~%"
