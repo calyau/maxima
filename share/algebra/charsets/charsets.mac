@@ -3934,16 +3934,22 @@ charsets_eicsTest ( ps,ord,medset):=block(
 /* ordering wrt length */
 
 charsets_lenord ( a,b):=block(
-   if length ( b)  < length ( a) then ( true) else ( false)
+  [len_a : if mapatom(a) then 1 else length(a),
+   len_b : if mapatom(b) then 1 else length(b)],
+   if len_b  < len_a then ( true) else ( false)
 )$
-charsets_lenord1( a,b):=block([ii,flag],
-   if length ( b)  < length ( a) then true
+charsets_lenord1( a,b):=block([ii,flag,
+   len_a : if mapatom(a) then 1 else length(a),
+   len_b : if mapatom(b) then 1 else length(b)],
+   if len_b  < len_a then true
    else (
-      if length(b) > length(a) then false
+      if len_b > len_a then false
       else (
           flag:true,
-          for i:1 thru length(a) do (
-              if length(b[i]) < length(a[i]) then return(flag:false)
+          for i:1 thru length(a) do block(
+              [len_ai : if mapatom(a[i]) then 1 else length(a[i]),
+               len_bi : if mapatom(b[i]) then 1 else length(b[i])],
+              if len_bi < len_ai then return(flag:false)
           ),
           flag
       )
@@ -3951,11 +3957,13 @@ charsets_lenord1( a,b):=block([ii,flag],
 )$
 
 charsets_lenord2( a,b):=block(
-   if length ( b) > length ( a) then true
+  [len_a : if mapatom(a) then 1 else length(a),
+   len_b : if mapatom(b) then 1 else length(b)],
+   if len_b > len_a then true
    else (
-      if length(b) < length(a) then false
+      if len_b < len_a then false
       else (
-         if sum( length(b[i]),i,1,length(b)) < sum(length(a[i]),i,1,length(a))
+         if sum( if mapatom(b[i]) then 1 else length(b[i]),i,1,length(b)) < sum(if mapatom(a[i]) then 1 else length(a[i]),i,1,length(a))
             then true else false
       )
    )
