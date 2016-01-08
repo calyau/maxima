@@ -890,10 +890,6 @@ charsets_sort ( ps,theRankFunction,ord):=block(
 charsets_minus ( ps,qs):=block(
    charsets_setdifference (  setify1(ps),  setify1(qs))
 )$
-/* the charsets_union of three lists */
-
-charsets_union ( ps1,ps2,ps3):=charsets_setify(append(ps1,ps2,ps3))$
-
 /* the product of all elements in a list */
 
 charsets_prod ( ps):=block( [ i],
@@ -1260,9 +1256,9 @@ charsets_subtriset ( i,ord):=block(
 /* remove factor g from f until f has no factor g */
 /*      if g is removed then assign true to ja       */
 
-charsets_movefactor ( f,g,ord):=block([ fg,ja,last],
-   if not charsets_operatorp(f,charsets_ListOrSet) and not ratnump(g) and
-          (fg:first(last:divide ( f, g)),second(last)) = 0 then (
+charsets_movefactor ( f,g,ord):=block([ fg,ja,last_result],
+   if not charsets_operatorp(f,charsets_ListOrSet) and not ratnump(g) and not freeof (last(ord), g)
+          and (fg:first(last_result:divide ( f, g)),second(last_result)) = 0 then (
        ja:if 0 < charsets_class ( g, ord) then true else false,
        [first(charsets_movefactor ( fg, g, ord)),ja])
    else [f,false]
