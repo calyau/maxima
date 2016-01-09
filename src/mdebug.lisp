@@ -78,7 +78,7 @@
 			  (if (cdr v) "," "")))
 	   (princ ")" st)
 	   (and lineinfo
-		(format st (intl:gettext "(~a line ~a)")
+		(format st (intl:gettext " (~a line ~a)")
 			(short-name (cadr lineinfo)) (car lineinfo)))
 	   (terpri st)
 	   (values fname vals params backtr lineinfo bdlist))
@@ -499,7 +499,7 @@ Command      Description~%~
 
 (defun *break-points* (form)
   (let ((pos(position form *break-points* :key 'car)))
-    (format *debug-io* "Bkpt ~a:" pos)
+    (format *debug-io* "Bkpt ~a: " pos)
     (break-dbm-loop  (aref *break-points* pos))))
 
 ;; fun = function name eg '$|odeSeriesSolve| and 
@@ -591,11 +591,11 @@ Command      Description~%~
       (when (eq (car bpt) nil)
 	(setq disabled t)
 	(setq bpt (cdr bpt)))
-      (format t "Bkpt ~a:(~a line ~a)~@[(disabled)~]"
+      (format t "Bkpt ~a: (~a line ~a)~@[ (disabled)~]"
 	      n (short-name (second bpt))
 	      (third bpt) disabled)
       (let ((fun (fourth bpt)))
-	(format t "(line ~a of ~a)"  (relative-line fun (nth 2 bpt))
+	(format t " (line ~a of ~a)" (relative-line fun (nth 2 bpt))
 		fun)))))
 
 (defun relative-line (fun l)
