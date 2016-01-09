@@ -121,14 +121,18 @@
        
 		(cond (return-list (return-from complete-prop all))
 		      ((> (length all) 1)
-               ;; NOTE TO TRANSLATORS: MEANING OF FOLLOWING IS UNKNOWN
-		       (format t
-		         (intl:gettext 
-                           "~&Not unique with property ~(~a: ~{~s~^, ~}~).")
-			       prop all))
+		       (format *debug-io*
+			 (intl:gettext "~&Break command '~(~s~)' is ambiguous.~%")
+			 sym)
+		       (format *debug-io*
+			 (intl:gettext "Perhaps you meant one of the following: ~(~{~s~^, ~}~).")
+			 all)
+		       (finish-output *debug-io*))
 		      ((null all)
-		       (format t 
-		         (intl:gettext "~& No such break command: ~a") sym))
+		       (format *debug-io*
+			 (intl:gettext "~&Break command '~(~s~)' does not exist.")
+			 sym)
+		       (finish-output *debug-io*))
 		      (t (return-from complete-prop
 			   (car all)))))))
 
