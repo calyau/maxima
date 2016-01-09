@@ -1089,16 +1089,17 @@
         (output-string "")
         (minscalar most-positive-double-float)
         (maxscalar most-negative-double-float)
-        newscalar slope scalars x y z n)
+        newscalar slope scalars x y z ax ay az n)
 
     (setf n ($length arg))
     ; create array of points
-    (setf x (make-array n :element-type 'flonum
-                          :initial-contents (map 'list #'$float (map 'list #'first tmp)))
-          y (make-array n :element-type 'flonum
-                          :initial-contents (map 'list #'$float (map 'list #'second tmp)))
-          z (make-array n :element-type 'flonum
-                          :initial-contents (map 'list #'$float (map 'list #'third tmp))))
+    (setf x (map 'list #'$float (map 'list #'first tmp))
+          y (map 'list #'$float (map 'list #'second tmp))
+          z (map 'list #'$float (map 'list #'third tmp)) )
+    (transform-lists 3)
+    (setf ax (make-array n :element-type 'flonum :initial-contents x)
+          ay (make-array n :element-type 'flonum :initial-contents y)
+          az (make-array n :element-type 'flonum :initial-contents z))
 
     ; check enhanced3d model
     (check-enhanced3d-model "points" '(0 1 3))
@@ -1113,7 +1114,7 @@
              (setf (aref scalars k) newscalar )) )
         ((= *draw-enhanced3d-type* 3)
            (dotimes (k n)
-             (setf newscalar (funcall *draw-enhanced3d-fun* (aref x k) (aref y k) (aref z k)))
+             (setf newscalar (funcall *draw-enhanced3d-fun* (aref ax k) (aref ay k) (aref az k)))
              (when (< newscalar minscalar) (setf minscalar newscalar))
              (when (> newscalar maxscalar) (setf maxscalar newscalar))
              (setf (aref scalars k) newscalar))))
@@ -1135,7 +1136,7 @@
       (concatenate 'string
         output-string
         (format nil "vtkPolyData ~a~%" source-name)
-        (vtkpoints-code points-name source-name x y z)
+        (vtkpoints-code points-name source-name ax ay az)
         (when (> *draw-enhanced3d-type* 0)
           (vtkfloatarray-code floatarray-name source-name scalars))))
     (when points-joined ; true or impulses
@@ -1160,13 +1161,13 @@
                        (zz (make-array (* 2 n) :element-type 'flonum))
                        (ind 0))
                    (loop for k from 0 below n do
-                     (setf (aref xx ind) (aref x k)
-                           (aref yy ind) (aref y k)
+                     (setf (aref xx ind) (aref ax k)
+                           (aref yy ind) (aref ay k)
                            (aref zz ind) 0.0)
                      (setf ind (1+ ind))
-                     (setf (aref xx ind) (aref x k)
-                           (aref yy ind) (aref y k)
-                           (aref zz ind) (aref z k))
+                     (setf (aref xx ind) (aref ax k)
+                           (aref yy ind) (aref ay k)
+                           (aref zz ind) (aref az k))
                      (setf ind (1+ ind)) )
                    (vtkpoints-code points-name2 source-name2 xx yy zz))
                  (vtkcellarray-code cellarray-name2 source-name2 1 
@@ -1393,6 +1394,7 @@
                 y (map 'list #'$float (cdaddr arg1))))
        (t (merror "draw (points2d): incorrect input format")))
     (setf n (length x))
+    (transform-lists 2)
     (setf ax (make-array n :element-type 'flonum :initial-contents x)
           ay (make-array n :element-type 'flonum :initial-contents y))
     ; tcl-vtk code
