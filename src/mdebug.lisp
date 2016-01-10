@@ -78,7 +78,7 @@
 			  (if (cdr v) "," "")))
 	   (princ ")" st)
 	   (and lineinfo
-		(format st (intl:gettext "(~a line ~a)")
+		(format st (intl:gettext " (~a line ~a)")
 			(short-name (cadr lineinfo)) (car lineinfo)))
 	   (terpri st)
 	   (values fname vals params backtr lineinfo bdlist))
@@ -121,14 +121,18 @@
        
 		(cond (return-list (return-from complete-prop all))
 		      ((> (length all) 1)
-               ;; NOTE TO TRANSLATORS: MEANING OF FOLLOWING IS UNKNOWN
-		       (format t
-		         (intl:gettext 
-                           "~&Not unique with property ~(~a: ~{~s~^, ~}~).")
-			       prop all))
+		       (format *debug-io*
+			 (intl:gettext "~&Break command '~(~s~)' is ambiguous.~%")
+			 sym)
+		       (format *debug-io*
+			 (intl:gettext "Perhaps you meant one of the following: ~(~{~s~^, ~}~).")
+			 all)
+		       (finish-output *debug-io*))
 		      ((null all)
-		       (format t 
-		         (intl:gettext "~& No such break command: ~a") sym))
+		       (format *debug-io*
+			 (intl:gettext "~&Break command '~(~s~)' does not exist.")
+			 sym)
+		       (finish-output *debug-io*))
 		      (t (return-from complete-prop
 			   (car all)))))))
 
@@ -381,7 +385,7 @@
           (short-name (bkpt-file bkpt))
 	  (bkpt-file-line bkpt)
 	  nil)				; (bkpt-function bkpt)
-  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
+  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
 	  (bkpt-file-line bkpt)))
 
 (defvar *diff-mspeclist* nil)
@@ -499,7 +503,7 @@ Command      Description~%~
 
 (defun *break-points* (form)
   (let ((pos(position form *break-points* :key 'car)))
-    (format *debug-io* "Bkpt ~a:" pos)
+    (format *debug-io* "Bkpt ~a: " pos)
     (break-dbm-loop  (aref *break-points* pos))))
 
 ;; fun = function name eg '$|odeSeriesSolve| and 
@@ -591,11 +595,11 @@ Command      Description~%~
       (when (eq (car bpt) nil)
 	(setq disabled t)
 	(setq bpt (cdr bpt)))
-      (format t "Bkpt ~a:(~a line ~a)~@[(disabled)~]"
+      (format t "Bkpt ~a: (~a line ~a)~@[ (disabled)~]"
 	      n (short-name (second bpt))
 	      (third bpt) disabled)
       (let ((fun (fourth bpt)))
-	(format t "(line ~a of ~a)"  (relative-line fun (nth 2 bpt))
+	(format t " (line ~a of ~a)" (relative-line fun (nth 2 bpt))
 		fun)))))
 
 (defun relative-line (fun l)
@@ -740,5 +744,5 @@ Command      Description~%~
     (remove-bindings bdlist)
     (when lineinfo
       (fresh-line *debug-io*)
-      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
+      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
     (values)))

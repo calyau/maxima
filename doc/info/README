@@ -52,10 +52,21 @@ to update the "texinfo.tex" files shipped with maxima from time to time.
 TO DO
 =====
 
+Duplicate nodes
+---------------
+
 Compiling the manual generates tons of warnings about doubly-defined nodes.
 Most of them originate from the fact that some functions have the same name
 as variables and that @deffn or @defvr both generate nodes named like the
 function or veriable they document.
-Is there a way to get around this? And if there is a way to do so:
-Is there a way to avoid conflicts if two packages in share/ use the same
-function names?
+
+- Is there a way to get around this? And if there is a way to do so:
+- Is there a way to avoid conflicts if two packages in share/ use the same
+  function names?
+
+
+Documented TODOs
+----------------
+
+The .texi sources of the manual contain many comments that show excellent
+starting points on where to start when wanting to improve the manual.
