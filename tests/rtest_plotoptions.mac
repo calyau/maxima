@@ -1,0 +1,4 @@
+/* mailing list 2016-01-08: "set_plot_option question" */
+
+(set_plot_option([style,[points,3],[lines,2]]),get_plot_option(style));
+[style, [points, 3], [lines, 2]]$

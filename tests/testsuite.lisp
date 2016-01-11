@@ -63,4 +63,5 @@
         "rtest_limit"
         "rtest_powerseries"
         ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
+        "rtest_plotoptions"
 	))
