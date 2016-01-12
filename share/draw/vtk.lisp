@@ -183,9 +183,9 @@
   (let* ((k 0.0174532925199433) ; %pi/180
          (rvk (* k rv))
          (rhk (* k rh))
-         (x (* (sin rvk) (sin rhk)))
-         (y (- (* (sin rvk) (cos rhk))))
-         (z (cos rvk))
+         (x (* ($sin rvk) ($sin rhk)))
+         (y (- (* ($sin rvk) ($cos rhk))))
+         (z ($cos rvk))
          (colist (hex-to-numeric-list bgcol))
          (str (make-array 0 
                 :element-type 'character 
@@ -631,47 +631,42 @@
 
 ;;; OBJECT BUILDERS
 
-;; cone(height, radius, center, direction, resolution, capping)
-;; ------------------------------------------------------------
-(defun vtk3d-cone (hei rad cen dir res cap)
-  (let ((color         (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+;; cone(center, radius, height, direction)
+;; ---------------------------------------
+(defun vtk3d-cone (cen rad hei dir)
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
+        (capping       (rest (get-option '$capping)))
+        (fcen ($float cen))
         (fhei ($float hei))
         (frad ($float rad))
-        (fcen ($float cen))
         (fdir ($float dir))
         (source-name (get-source-name))
         (mapper-name (get-mapper-name))
         (actor-name  (get-actor-name))
         (trans-name  (get-trans-name))
         (filter-name (get-filter-name))
-        capn)
-    (when (or (not (floatp fhei))
-              (< fhei 0.0))
-          (merror "vtk3d: cone height must be a real equal or greater than zero"))
-    (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: cone radius must be a real equal or greater than zero"))
+        capn )
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: cone center must be a list of three floats"))
+          (merror "vtk3d: cone center must be a list of three numbers"))
+    (when (or (not (floatp frad))
+              (< frad 0.0))
+          (merror "vtk3d: cone radius must be a number equal or greater than zero"))
+    (when (or (not (floatp fhei))
+              (< fhei 0.0))
+          (merror "vtk3d: cone height must be a number equal or greater than zero"))
     (when (or (not ($listp fdir))
               (not (= ($length fdir) 3))
               (not (every #'floatp (rest fdir))) )
-          (merror "vtk3d: cone direction must be a list of three floats"))
-    (when (or (not (integerp res))
-              (< res 0))
-          (merror "vtk3d: cone resolution must be a positive integer"))
-    (when (and (not (equal cap nil))
-              (not (equal cap t)) )
-          (merror "vtk3d: cone capping must be 'true' or 'false'"))
+          (merror "vtk3d: cone direction must be a list of three numbers"))
     (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
-    (if cap
-        (setf capn 1)
-        (setf capn 0))
+    (if (first capping)
+      (setf capn 1)
+      (setf capn 0))
     (concatenate 'string
       (format nil "vtkConeSource ~a~%" source-name)
       (format nil "  ~a SetHeight ~a~%" source-name fhei)
@@ -686,7 +681,7 @@
               (cadr fdir)
               (caddr fdir)
               (cadddr fdir))
-      (format nil "  ~a SetResolution ~a~%" source-name res)
+      (format nil "  ~a SetResolution ~a~%" source-name 30)
       (format nil "  ~a SetCapping ~a~%" source-name capn)
       (vtktransform-code trans-name)
       (vtktransformpolydatafilter-code filter-name source-name trans-name nil)
@@ -695,56 +690,83 @@
 
 
 
-;; cylinder(height, radius, center, resolution, capping)
-;; -----------------------------------------------------
-(defun vtk3d-cylinder (hei rad cen res cap)
+;; cylinder(center, radius, height, direction)
+;; -------------------------------------------
+(defun vtk3d-cylinder (cen rad hei dir)
   (let ((color (gethash '$color *gr-options*))
         (opacity       (gethash '$opacity *gr-options*))
         (linewidth     (gethash '$line_width *gr-options*))
         (wiredsurface  (gethash '$wired_surface *gr-options*))
-        (fhei ($float hei))
-        (frad ($float rad))
+        (capping       (rest (get-option '$capping)))
         (fcen ($float cen))
+        (frad ($float rad))
+        (fhei ($float hei))
+        (fdir ($float dir))
         (source-name (get-source-name))
         (mapper-name (get-mapper-name))
         (actor-name  (get-actor-name))
         (trans-name  (get-trans-name))
         (filter-name (get-filter-name))
-        capn)
-    (when (or (not (floatp fhei))
-              (< fhei 0.0))
-          (merror "vtk3d: cylinder height must be a real equal or greater than zero"))
-    (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: cylinder radius must be a real equal or greater than zero"))
+        capn dirmod xrot yrot zrot)
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: cylinder center must be a list of three floats"))
-    (when (or (not (integerp res))
-              (< res 0))
-          (merror "vtk3d: cylinder resolution must be a positive integer"))
-    (when (and (not (equal cap nil))
-              (not (equal cap t)) )
-          (merror "vtk3d: cylinder capping must be 'true' or 'false'"))
+          (merror "vtk3d: cylinder center must be a list of three numbers"))
+    (when (or (not (floatp fhei))
+              (< fhei 0.0))
+          (merror "vtk3d: cylinder height must be a number equal or greater than zero"))
+    (when (or (not (floatp frad))
+              (< frad 0.0))
+          (merror "vtk3d: cylinder radius must be a number equal or greater than zero"))
+    (when (or (not ($listp fdir))
+              (not (= ($length fdir) 3))
+              (not (every #'floatp (rest fdir))) )
+          (merror "vtk3d: cylinder direction must be a list of three numbers"))
     (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
-    (if cap
-        (setf capn 1)
-        (setf capn 0))
+    (if (first capping)
+      (setf capn 1)
+      (setf capn 0))
+    (setf dirmod (sqrt (+ (* (cadr fdir)   (cadr fdir))
+                          (* (caddr fdir)  (caddr fdir))
+                          (* (cadddr fdir) (cadddr fdir)))))
+    (cond
+      ((= dirmod 0.0)
+         ; we use the same default direction used by cones,
+         ; which is the positive X-direction
+         (setf xrot 0.0
+               yrot 0.0
+               zrot -90.0))
+      ((= (caddr fdir) 0.0)
+         (setf xrot 90.0
+               yrot (* 57.29577951308232
+                       ($acos (/ (cadddr fdir)
+                                 (sqrt (+ (* (cadr fdir)   (cadr fdir))
+                                          (* (cadddr fdir) (cadddr fdir)) )))))
+               zrot 0.0))
+      ((< (caddr fdir) 0.0)
+         (setf xrot (* 57.29577951308232 ($asin (/ (cadddr fdir) dirmod)))
+               yrot 0.0
+               zrot (* 57.29577951308232 (+ -3.141592653589793 (- ($atan (/ (cadr fdir) (caddr fdir))))))))
+      (t
+         (setf xrot (* 57.29577951308232 ($asin (/ (cadddr fdir) dirmod)))
+               yrot 0.0
+               zrot (* 57.29577951308232 (- ($atan (/ (cadr fdir) (caddr fdir)))))))  )
     (concatenate 'string
       (format nil "vtkCylinderSource ~a~%" source-name)
       (format nil "  ~a SetHeight ~a~%" source-name fhei)
       (format nil "  ~a SetRadius ~a~%" source-name frad)
-      (format nil "  ~a SetCenter ~a ~a ~a~%"
-              source-name
+      (format nil "  ~a SetResolution ~a~%" source-name 30)
+      (format nil "  ~a SetCapping ~a~%" source-name capn)
+      (vtktransform-code trans-name)
+      (format nil "  ~a Translate ~a ~a ~a~%"
+              trans-name
               (cadr fcen)
               (caddr fcen)
               (cadddr fcen))
-      (format nil "  ~a SetResolution ~a~%" source-name res)
-      (format nil "  ~a SetCapping ~a~%" source-name capn)
-      (format nil "  ~a SetResolution ~a~%" source-name res)
-      (format nil "  ~a SetCapping ~a~%" source-name capn)
-      (vtktransform-code trans-name)
+      ; rotations are made in reverse order as indicated here
+      (format nil "  ~a RotateZ ~a~%" trans-name zrot) ; azimuth
+      (format nil "  ~a RotateY ~a~%" trans-name yrot)
+      (format nil "  ~a RotateX ~a~%" trans-name xrot) ; elevation
       (vtktransformpolydatafilter-code filter-name source-name trans-name nil)
       (vtkpolydatamapper-code mapper-name filter-name)
       (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface) )))
@@ -798,69 +820,28 @@
 
 
 
-;; sphere(radius, center, theta_resolution, phi_resolution, 
-;;        theta_start, theta_end, phi_start, phi_end, tesselation)
-;; --------------------------------------------------------------
-;; theta is longitude and phi is latitude. With tesselation=false,
-;; surface is generated by triangles, if true, with quadrilaterals.
-;; Angles are measured in degrees.
-(defun vtk3d-sphere (rad cen th-res ph-res th-sta th-end ph-sta ph-end tes)
-  (let ((color (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+;; sphere(center, radius)
+;; ----------------------
+(defun vtk3d-sphere (cen rad)
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
         (frad ($float rad))
         (fcen ($float cen))
-        (fth-sta ($float th-sta))
-        (fth-end ($float th-end))
-        (fph-sta ($float ph-sta))
-        (fph-end ($float ph-end))
         (source-name (get-source-name))
         (mapper-name (get-mapper-name))
         (actor-name  (get-actor-name))
         (trans-name  (get-trans-name))
-        (filter-name (get-filter-name))
-        tesn)
-    (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: sphere radius must be a real equal or greater than zero"))
+        (filter-name (get-filter-name)))
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: sphere center must be a list of three floats"))
-    (when (or (not (integerp th-res))
-              (< th-res 0))
-          (merror "vtk3d: sphere theta resolution must be a positive integer"))
-    (when (or (not (integerp ph-res))
-              (< ph-res 0))
-          (merror "vtk3d: sphere phi resolution must be a positive integer"))
-    (when (or (not (floatp fth-sta))
-              (< fth-sta 0.0)
-              (> fth-sta 360.0))
-          (merror "vtk3d: sphere theta start must be a real equal or greater than zero"))
-    (when (or (not (floatp fth-end))
-              (< fth-end 0.0)
-              (> fth-end 360.0))
-          (merror "vtk3d: sphere theta end must be a real equal or greater than zero"))
-    (when (< fth-end fth-sta)
-          (merror "vtk3d: sphere theta start must be less than theta end"))
-    (when (< fph-end fph-sta)
-          (merror "vtk3d: sphere phi start must be less than phi end"))
-    (when (or (not (floatp fph-sta))
-              (< fph-sta 0.0)
-              (> fph-sta 180.0))
-          (merror "vtk3d: sphere phi start must be a real equal or greater than zero"))
-    (when (or (not (floatp fph-end))
-              (< fph-end 0.0)
-              (> fph-end 180.0))
-          (merror "vtk3d: sphere phi end must be a real equal or greater than zero"))
-    (when (and (not (equal tes nil))
-               (not (equal tes t)) )
-          (merror "vtk3d: sphere tesselation must be 'true' or 'false'"))
+          (merror "vtk3d: sphere center must be a list of three numbers"))
+    (when (or (not (floatp frad))
+              (< frad 0.0))
+          (merror "vtk3d: sphere radius must be a number equal or greater than zero"))
     (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
-    (if tes
-        (setf tesn 1)
-        (setf tesn 0))
     (concatenate 'string
       (format nil "vtkSphereSource ~a~%" source-name)
       (format nil "  ~a SetRadius ~a~%" source-name frad)
@@ -869,13 +850,8 @@
               (cadr fcen)
               (caddr fcen)
               (cadddr fcen))
-      (format nil "  ~a SetThetaResolution ~a~%" source-name th-res)
-      (format nil "  ~a SetPhiResolution ~a~%" source-name ph-res)
-      (format nil "  ~a SetStartTheta ~a~%" source-name fth-sta)
-      (format nil "  ~a SetEndTheta ~a~%" source-name fth-end)
-      (format nil "  ~a SetStartPhi ~a~%" source-name fph-sta)
-      (format nil "  ~a SetEndPhi ~a~%" source-name fph-end)
-      (format nil "  ~a SetLatLongTessellation ~a~%" source-name tesn)
+      (format nil "  ~a SetThetaResolution ~a~%" source-name 30)
+      (format nil "  ~a SetPhiResolution ~a~%" source-name 30)
       (vtktransform-code trans-name)
       (vtktransformpolydatafilter-code filter-name source-name trans-name nil)
       (vtkpolydatamapper-code mapper-name filter-name)
@@ -883,15 +859,16 @@
 
 
 
-;; parallelogram(origin, point1, point2)
-;; ------------------------------------
+;; 3d: parallelogram(origin, point1, point2)
+;; -----------------------------------------
 ;; The parallelogram is defined by one vertex and the two other adjacent vertices
 
 (defun vtk3d-parallelogram (ori p1 p2)
-  (let ((color (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
+        (capping       (get-option '$capping))
         (source-name (get-source-name))
         (trans-name  (get-trans-name))
         (filter-name (get-filter-name))
@@ -931,8 +908,8 @@
 
 
 
-;; triangle(vertex1, vertex2, vertex3)
-;; ------------------------------------
+;; 3d: triangle(vertex1, vertex2, vertex3)
+;; ---------------------------------------
 ;; The triangle is defined by three vertices
 
 (defun vtk3d-triangle (v1 v2 v3)
@@ -2445,6 +2422,7 @@
                 ($x_voxel          (update-positive-integer  '$x_voxel          ($rhs x)))
                 ($y_voxel          (update-positive-integer  '$y_voxel          ($rhs x)))
                 ($z_voxel          (update-positive-integer  '$z_voxel          ($rhs x)))
+                ($capping          (update-capping                              ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
                 (otherwise (merror "vtk3d: unknown option ~M " ($lhs x)))))
 

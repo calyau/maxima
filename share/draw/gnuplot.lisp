@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2015 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -2466,7 +2466,7 @@
 ;;     surface_hide
 ;;     transform
 (defmacro check-tube-extreme (ex cx cy cz circ)
-    `(when (equal (nth ,ex (get-option '$tube_extremes)) '$closed)
+    `(when (equal (nth ,ex (get-option '$capping)) t)
        (let ((cxx ,cx)
              (cyy ,cy)
              (czz ,cz))

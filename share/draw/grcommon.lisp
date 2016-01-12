@@ -196,7 +196,7 @@
       (gethash '$palette  *gr-options*)       '$color ; '$color is a short cut for [7,5,15]
                                                       ; and '$gray is a short cut for [3,3,3].
                                                       ; See command 'show palette rgbformulae' in gnuplot.
-      (gethash '$tube_extremes *gr-options*) '((mlist simp) '$open '$open) ; or '$closed
+      (gethash '$capping *gr-options*)        '((mlist simp) nil nil)
   ) )
 
 ;; Returns option value
@@ -786,6 +786,23 @@
 
 
 
+;; update capping option
+;; a list of two elements, false and/or true
+;; -----------------------------------------
+(defun update-capping (val)
+  (cond
+    ((and ($listp val)
+          (= ($length val) 2)
+          (member ($first val) '(nil t))
+          (member ($second val) '(nil t)))
+       (setf (gethash '$capping *gr-options*) val))
+    ((member val '(nil t))
+       (setf (gethash '$capping *gr-options*) (list '(mlist simp) val val)))
+    (t
+      (merror "draw: illegal capping: ~M " val))) )
+
+
+
 (defun ini-local-option-variables ()
   (setf ; global variables
        *draw-transform-dimensions* 0
@@ -848,13 +865,8 @@
               (merror "draw: illegal colorbox option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
          (update-linestyle opt val) )
-      (($tube_extremes) ; defined as a list of two elements, $open and/or $closed
-            (if (and ($listp val)
-                     (= ($length val) 2)
-                     (member ($first val) '($open $closed))
-                     (member ($second val) '($open $closed)))
-               (setf (gethash opt *gr-options*) val)
-               (merror "draw: illegal tube extreme types: ~M" val)))
+      ($capping
+         (update-capping val))
       ($point_type
          (update-pointtype val))
       (($columns $nticks $adapt_depth $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel)
@@ -1053,6 +1065,9 @@
 
 
       ; DEPRECATED OPTIONS
+      ($tube_extremes
+        ($print "WARNING: 'tube_extremes' is deprecated, using 'capping' instead...")
+        (update-capping (substitute nil '$open (substitute t '$closed val))))
       ($file_bgcolor
         ($print "WARNING: 'file_bgcolor' is deprecated, using 'background_color' instead...")
         (update-color '$background_color val))
