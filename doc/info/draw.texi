@@ -606,6 +606,36 @@ Example:
 
 
 
+@anchor{capping}
+@defvr {Graphic option} capping
+Default value: @code{[false, false]}
+
+A list with two possible elements, @code{true} and @code{false},
+indicating whether the extremes of a graphic object @code{tube} remain closed
+or open. By default, both extremes are left open.
+
+Setting @code{capping = false} is equivalent to @code{capping = [false, false]},
+and @code{capping = true} is equivalent to @code{capping = [true, true]}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        capping = [false, true],
+        tube(0, 0, a, 1,
+             a, 0, 8) )$
+@end example
+@figure{draw_tube_extremes}
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @anchor{cbrange}
 @defvr {Graphic option} cbrange
 Default value: @code{auto}
@@ -1220,7 +1250,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,
 @example
 (%i1) load(draw)$
 (%i2) draw3d(
-         tube_extremes = [open, closed],
+         capping = [true, false],
          palette = [26,15,-2],
          enhanced3d = [-foo, foo],
          tube(a, a, a^2, 1, a, -2, 2) )$
@@ -2859,33 +2889,6 @@ Example:
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @figure{draw_transparent}
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@anchor{tube_extremes}
-@defvr {Graphic option} tube_extremes
-Default value: @code{[open, open]}
-
-A list with two possible elements, @code{open} and @code{closed},
-indicating whether the extremes of a graphic object @code{tube} remain open
-or must be closed. By default, both extremes are left open.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(
-        tube_extremes = [open, closed],
-        tube(0, 0, a, 1,
-             a, 0, 8) )$
-@end example
-@figure{draw_tube_extremes}
 
 @opencatbox
 @category{Package draw}
@@ -5447,7 +5450,7 @@ the parametric curve and perpendicular to it.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
-@code{color}, and @code{tube_extremes}.
+@code{color}, and @code{capping}.
 
 Example:
 
