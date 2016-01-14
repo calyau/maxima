@@ -862,7 +862,6 @@
 ;; 3d: parallelogram(origin, point1, point2)
 ;; -----------------------------------------
 ;; The parallelogram is defined by one vertex and the two other adjacent vertices
-
 (defun vtk3d-parallelogram (ori p1 p2)
   (let ((color         (get-option '$color))
         (opacity       (get-option '$opacity))
@@ -874,6 +873,7 @@
         (filter-name (get-filter-name))
         (mapper-name (get-mapper-name))
         (actor-name  (get-actor-name))
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
         fori fp1 fp2  )
     (setf fori (map 'list #'$float (rest ori))
           fp1  (map 'list #'$float (rest p1))
@@ -882,36 +882,34 @@
                     (append fori fp1 fp2))
       (merror "vtk3d: arguments to parallelogram must be lists of floats"))
     (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
-    (concatenate 'string
-      (format nil "vtkPlaneSource ~a~%" source-name)
-      (format nil "  ~a SetOrigin ~a ~a ~a~%"
-              source-name
-              (car fori)
-              (cadr fori)
-              (caddr fori))
-      (format nil "  ~a SetPoint1 ~a ~a ~a~%"
-              source-name
-              (car fp1)
-              (cadr fp1)
-              (caddr fp1))
-      (format nil "  ~a SetPoint2 ~a ~a ~a~%"
-              source-name
-              (car fp2)
-              (cadr fp2)
-              (caddr fp2))
-      (format nil "  ~a SetXResolution ~a~%" source-name 10)
-      (format nil "  ~a SetYResolution ~a~%" source-name 10)
-      (vtktransform-code trans-name)
-      (vtktransformpolydatafilter-code filter-name source-name trans-name nil)
-      (vtkpolydatamapper-code mapper-name filter-name)
-      (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))))
+    (format str "vtkPlaneSource ~a~%" source-name)
+    (setf xx (car   fori)
+          yy (cadr  fori)
+          zz (caddr fori))
+    (transform-point 3)
+    (format str "  ~a SetOrigin ~a ~a ~a~%" source-name xx yy zz)
+    (setf xx (car   fp1)
+          yy (cadr  fp1)
+          zz (caddr fp1))
+    (transform-point 3)
+    (format str "  ~a SetPoint1 ~a ~a ~a~%" source-name xx yy zz)
+    (setf xx (car   fp2)
+          yy (cadr  fp2)
+          zz (caddr fp2))
+    (transform-point 3)
+    (format str "  ~a SetPoint2 ~a ~a ~a~%" source-name xx yy zz)
+    (format nil "  ~a SetXResolution ~a~%" source-name 10)
+    (format str "  ~a SetYResolution ~a~%" source-name 10)
+    (format str "~a" (vtktransform-code trans-name))
+    (format str "~a" (vtktransformpolydatafilter-code filter-name source-name trans-name nil))
+    (format str "~a" (vtkpolydatamapper-code mapper-name filter-name))
+    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))))
 
 
 
 ;; 3d: triangle(vertex1, vertex2, vertex3)
 ;; ---------------------------------------
 ;; The triangle is defined by three vertices
-
 (defun vtk3d-triangle (v1 v2 v3)
   (let ((color (gethash '$color *gr-options*))
         (opacity       (gethash '$opacity *gr-options*))
@@ -924,48 +922,50 @@
         (filter-name   (get-filter-name))
         (mapper-name   (get-mapper-name))
         (actor-name    (get-actor-name))
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
         fv1 fv2 fv3  )
     (setf fv1 (map 'list #'$float (rest v1))
           fv2 (map 'list #'$float (rest v2))
           fv3 (map 'list #'$float (rest v3)) )
     (when (notevery #'(lambda (z) (floatp z))
                     (append fv1 fv2 fv3))
-      (merror "vtk3d: arguments to triangle must be lists of floats"))
+      (merror "vtk3d: arguments to triangle must be lists of three numbers"))
     (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
-    (concatenate 'string
-      (format nil "vtkPoints ~a~%" points-name)
-      (format nil "  ~a SetNumberOfPoints 3~%" points-name)
-      (format nil "  ~a InsertPoint 0 ~a ~a ~a~%"
-              points-name
-              (car fv1)
-              (cadr fv1)
-              (caddr fv1))
-      (format nil "  ~a InsertPoint 1 ~a ~a ~a~%"
-              points-name
-              (car fv2)
-              (cadr fv2)
-              (caddr fv2))
-      (format nil "  ~a InsertPoint 2 ~a ~a ~a~%"
-              points-name
-              (car fv3)
-              (cadr fv3)
-              (caddr fv3))
-      (format nil "vtkTriangle ~a~%" triangle-name)
-      (format nil "  [~a GetPointIds] SetId 0 0~%" triangle-name)
-      (format nil "  [~a GetPointIds] SetId 1 1~%" triangle-name)
-      (format nil "  [~a GetPointIds] SetId 2 2~%" triangle-name)
-      (format nil "vtkPolyData ~a~%" polydata-name)
-      (format nil "  ~a Allocate 1 1~%" polydata-name)
-      (format nil "  ~a InsertNextCell [~a GetCellType] [~a GetPointIds]~%"
-              polydata-name
-              triangle-name
-              triangle-name)
-      (format nil "  ~a SetPoints ~a~%" polydata-name points-name)
-      (vtktransform-code trans-name)
-      (vtktransformpolydatafilter-code filter-name polydata-name trans-name t)
-      (format nil "vtkPolyDataMapper ~a~%" mapper-name)
-      (format nil "  ~a SetInputData ~a~%" mapper-name polydata-name)
-      (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))))
+    ; vtk-code
+    (format str "vtkPoints ~a~%" points-name)
+    (format str "  ~a SetNumberOfPoints 3~%" points-name)
+    (setf xx (car   fv1)
+          yy (cadr  fv1)
+          zz (caddr fv1))
+    (transform-point 3)
+    (format str "  ~a InsertPoint 0 ~a ~a ~a~%" points-name xx yy zz)
+    (setf xx (car   fv2)
+          yy (cadr  fv2)
+          zz (caddr fv2))
+    (transform-point 3)
+    (format str "  ~a InsertPoint 1 ~a ~a ~a~%" points-name xx yy zz)
+    (setf xx (car   fv3)
+          yy (cadr  fv3)
+          zz (caddr fv3))
+    (transform-point 3)
+    (format str "  ~a InsertPoint 2 ~a ~a ~a~%" points-name xx yy zz)
+    (format str "vtkTriangle ~a~%" triangle-name)
+    (format str "  [~a GetPointIds] SetId 0 0~%" triangle-name)
+    (format str "  [~a GetPointIds] SetId 1 1~%" triangle-name)
+    (format str "  [~a GetPointIds] SetId 2 2~%" triangle-name)
+    (format str "vtkPolyData ~a~%" polydata-name)
+    (format str "  ~a Allocate 1 1~%" polydata-name)
+    (format str "  ~a InsertNextCell [~a GetCellType] [~a GetPointIds]~%"
+            polydata-name
+            triangle-name
+            triangle-name)
+    (format str "  ~a SetPoints ~a~%" polydata-name points-name)
+    (format str "~a" (vtktransform-code trans-name))
+    (format str "~a" (vtktransformpolydatafilter-code filter-name polydata-name trans-name t))
+    (format str "vtkPolyDataMapper ~a~%" mapper-name)
+    (format str "  ~a SetInputData ~a~%" mapper-name polydata-name)
+    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+    str))
 
 
 
@@ -2283,6 +2283,15 @@
 
 
 
+;; 3d: tube(xfun,yfun,zfun,rad,par1,parmin,parmax)
+;; ----------------------------------------------------
+;(defun vtk3d-tube (xfun yfun zfun rad par1 parmin parmax)
+;)
+
+
+
+
+
 
 ;; 2D SCENE BUILDER
 
@@ -2373,7 +2382,8 @@
       (gethash '$spherical          *vtk3d-graphic-objects*) 'vtk3d-spherical
       (gethash '$cylindrical        *vtk3d-graphic-objects*) 'vtk3d-cylindrical
       (gethash '$explicit           *vtk3d-graphic-objects*) 'vtk3d-explicit
-      (gethash '$label              *vtk3d-graphic-objects*) 'vtk3d-label )
+      (gethash '$label              *vtk3d-graphic-objects*) 'vtk3d-label
+      (gethash '$tube               *vtk3d-graphic-objects*) 'vtk3d-tube )
 
 (defun make-vtk-scene-3d (args)
   (let ((objects "")
