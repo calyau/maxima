@@ -19,11 +19,13 @@ if [ x"$1" = "x--list-avail" ]; then
 fi;
 
 # quick fix for plotting with plot_format=openmath (bug 3052)
-mkdir -p bin
-ln -sf ../xmaxima-local bin/xmaxima
-ln -sf ../doc bin/doc
-ln -sf ../src bin/src
-ln -sf ../interfaces bin/interfaces
+if [ ! -d "$top_srcdir/bin" ]; then
+    mkdir -p $top_srcdir/bin
+    ln -sf $top_srcdir/xmaxima-local $top_srcdir/bin/xmaxima
+    ln -sf $top_srcdir/doc $top_srcdir/bin/doc
+    ln -sf $top_srcdir/src $top_srcdir/bin/src
+    ln -sf $top_srcdir/interfaces $top_srcdir/bin/interfaces
+fi
 
 POSIX_SHELL=@POSIX_SHELL@
 exec $POSIX_SHELL "$top_srcdir/src/maxima" "$@"

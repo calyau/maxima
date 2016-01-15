@@ -1,4 +1,4 @@
-@c English version 2014-11-30
+@c English version 2016-01-16
 @menu
 * Introducción a draw::
 * Funciones y variables para draw::
@@ -479,6 +479,31 @@ Ejemplo:
 @end example
 @end defvr
 
+
+
+
+@defvr {Opción gráfica} capping
+Valor por defecto: @code{[false, false]}
+
+Una lista de dos elementos, @code{true} y @code{false},
+indicando si los extremos de un objeto gráfico @code{tube}
+permanece abiertos o si deben ser cerrados. Por defecto, ambos
+extremos se dejan abiertos.
+
+La asignación @code{capping = false} equivale a @code{capping = [false, false]}
+y @code{capping = true} equivale a @code{capping = [true, true]}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        capping = [false, true],
+        tube(0, 0, a, 1,
+             a, 0, 8) )$
+@end example
+
+@end defvr
 
 
 
@@ -1029,7 +1054,7 @@ En este caso, @code{enhanced3d = -a} puede ser una simplificación de
 @example
 (%i1) load(draw)$
 (%i2) draw3d(
-         tube_extremes = [open, closed],
+         capping = [true, false],
          palette = [26,15,-2],
          enhanced3d = [-foo, foo],
          tube(a, a, a^2, 1, a, -2, 2) )$
@@ -1327,8 +1352,13 @@ Véase también @code{data_file_name}.
 @defvr {Opción gráfica} grid
 Valor por defecto: @code{false}
 
-Cuando @code{grid} vale @code{true}, se dibujará una rejilla sobre el
-plano @var{xy}.
+Cuando 
+
+Cuando @code{grid} toma un valor distinto de @code{false}, se dibujará una rejilla
+sobre el plano @var{xy}. Si a @code{grid} se le asigna el valor @code{true}, se dibujará
+una línea de la rejilla por cada marca que haya sobre los ejes. Si a @code{grid} se le
+asigna la lista @code{[nx,ny]}, con @var{[nx,ny] > [0,0]}, se dibujarán @code{nx} 
+líneas por cada marca del eje-@var{x} y @var{ny} líneas por cada marca del eje-@var{y}.
 
 Puesto que ésta es una opción global, su posición dentro de la
 descripción de la escena no reviste importancia.
@@ -1618,17 +1648,17 @@ Ejemplos:
 (%i1) load(draw)$
 (%i2) draw2d(
         key_pos = top_left,
-        key   = "x",
+        key     = "x",
         explicit(x,  x,0,10),
-        color= red,
-        key   = "x squared",
+        color   = red,
+        key     = "x squared",
         explicit(x^2,x,0,10))$
 (%i3) draw3d(
         key_pos = center,
-        key   = "x",
+        key     = "x",
         explicit(x+y,x,0,10,y,0,10),
         color= red,
-        key   = "x squared",
+        key     = "x squared",
         explicit(x^2+y^2,x,0,10,y,0,10))$
 @end example
 
@@ -2426,30 +2456,6 @@ Ejemplo:
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @end defvr
-
-
-
-
-@defvr {Opción gráfica} tube_extremes
-Valor por defecto: @code{[open, open]}
-
-Una lista de dos elementos, @code{open} y @code{closed},
-indicando si los extremos de un objeto gráfico @code{tube}
-permanece abiertos o si deben ser cerrados. Por defecto, ambos
-extremos se dejan abiertos.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(
-        tube_extremes = [open, closed],
-        tube(0, 0, a, 1,
-             a, 0, 8) )$
-@end example
-
-@end defvr
-
 
 
 
@@ -4556,7 +4562,7 @@ con sus centros sobre la curva paramétrica y perpendiculares a ella.
 
 Este objeto se ve afectado por las siguientes @i{opciones gráficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
-@code{color} y @code{tube_extremes}.
+@code{color} y @code{capping}.
 
 Ejemplo:
 
@@ -4564,7 +4570,7 @@ Ejemplo:
 (%i1) load(draw)$
 (%i2) draw3d(
         enhanced3d = true,
-        xu_grid = 50,
+        xu_grid    = 50,
         tube(cos(a), a, 0, cos(a/10)^2,
              a, 0, 4*%pi) )$
 @end example

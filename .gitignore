@@ -13,6 +13,7 @@ Makefile.in
 /missing
 /depcomp
 /test-driver
+/bin
 
 mkinstalldirs
 xmaxima-local
