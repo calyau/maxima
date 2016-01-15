@@ -301,6 +301,7 @@
     > put maxima-*5.mm.nn*.rpm
     > cd ..
     > mkdir 5.mm.nn-source
+    > cd 5.mm.nn-source
     > lcd /path/to/tar.gz
     > put maxima-5.mm.nn.tar.gz
     > quit
