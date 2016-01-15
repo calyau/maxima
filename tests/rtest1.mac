@@ -470,3 +470,120 @@ sort ([aaa, A_i, bbb, ccc, C_R_tia, C_tia, l, R_tia, v, x1, x10, x8, A0,
 C_S_2, C_S_MESS, C_tia, ION, R_tia, U0, aaa, bbb, ccc, l, 
 v, x1, x10, x8];
 
+/* SF bug #365: "orderlessp not transitive" */
+
+(kill(l, p, q, r, s, x, v), l: [z+x*(x+2)+v+1,z+x^2+x+v+1,z+(x+1)^2+v], 0);
+0;
+
+orderlessp(l[1],l[2]);
+true;
+
+orderlessp(l[2],l[3]);
+true;
+
+orderlessp(l[1],l[3]);
+true;
+
+(q: x^2, r: (x+1)^2, s: x*(x+2), 0);
+0;
+
+orderlessp(s,q);
+true;
+
+orderlessp(q,r);
+true;
+
+orderlessp(r,s);
+false;
+
+orderlessp(s, r);
+true;
+
+[q+r+s, q+s+r, r+q+s, r+s+q, s+q+r, s+r+q];
+[(x+1)^2+x^2+x*(x+2),
+ (x+1)^2+x^2+x*(x+2),
+ (x+1)^2+x^2+x*(x+2),
+ (x+1)^2+x^2+x*(x+2),
+ (x+1)^2+x^2+x*(x+2),
+ (x+1)^2+x^2+x*(x+2)];
+
+(q+s+r)-(q+s+r);
+0;
+
+(q+s+r)-(s+q+r);
+0;
+
+(q+r+s)-(q+s+r);
+0;
+
+foo : q+r+s;
+(x+1)^2+x^2+x*(x+2);
+
+expand(foo,0,0);
+(x+1)^2+x^2+x*(x+2);
+
+expand(foo,0,0);
+(x+1)^2+x^2+x*(x+2);
+
+q+r+s-r-q-s;
+0;
+
+orderlessp(t/2,t);
+true;
+
+orderlessp(t,t+1/4);
+true;
+
+orderlessp(t/2,t+1/4);
+true;
+
+orderlessp((x+1)^2,x^2-1);
+false;
+
+orderlessp(x^2-1,x^2);
+true;
+
+orderlessp((x+1)^2,x^2);
+false;
+
+/* additional tests related to #365, from mailing list 2016-01-14:
+ * "Simplifier can't decide and enters a cycle (minimalistic example)"
+ */
+
+(kill(a, b, c, A, x, w), a:x, b:A(x - 1), c:A(w*(x - 1)), 0);
+0;
+
+(kill(in_order, exactly_1),
+ in_order (a, b, c) := orderlessp(a, b) and orderlessp(b, c) and orderlessp(a, c),
+ exactly_1 ([p]) := is (length (sublist (p, lambda ([e], e=true))) = 1),
+ 0);
+0;
+
+exactly_1 (in_order(a, b, c), in_order(a, c, b), in_order(b, a, c),
+ in_order(b, c, a), in_order(c, a, b), in_order(c, b, a));
+true;
+
+exactly_1 (in_order(q, r, s), in_order(q, s, r), in_order(r, q, s),
+ in_order(r, s, q), in_order(s, q, r), in_order(s, r, q));
+true;
+
+exactly_1 (in_order(l[1], l[2], l[3]), in_order(l[1], l[3], l[2]), in_order(l[2], l[1], l[3]),
+ in_order(l[2], l[3], l[1]), in_order(l[3], l[1], l[2]), in_order(l[3], l[2], l[1]));
+true;
+
+/* other examples -- let a = x + 1 or a = x - 1 instead of a = x. */
+
+(a : x + 1, 0);
+0;
+
+exactly_1 (in_order(a, b, c), in_order(a, c, b), in_order(b, a, c),
+ in_order(b, c, a), in_order(c, a, b), in_order(c, b, a));
+true;
+
+(a : x - 1, 0);
+0;
+
+exactly_1 (in_order(a, b, c), in_order(a, c, b), in_order(b, a, c),
+ in_order(b, c, a), in_order(c, a, b), in_order(c, b, a));
+true;
+
