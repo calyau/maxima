@@ -198,3 +198,116 @@
     - wiki
 
     - bug database
+
+
+  9  Releases
+
+  9.1  Release policies
+
+    Releases are prepared (nominally) three times a year, on April 1,
+    August 1, and December 1. Releases simply package whatever seems
+    stable at that time.
+
+    It is the responsibility of developers (not the release
+    administrator) to copy bug fixes from the release branch to master
+    or vice versa (it doesn't matter whether bug fixes are introduced
+    on one branch or the other).
+
+    I don't recommend major changes on a release branch, but there is
+    really nothing to stop it. As always I'll appeal to good judgement.
+
+    If I've forgotten some step, please add it to this document.
+
+  9.2  Release numbering
+
+    The first release on the 5.mm release branch is 5.mm.0, the second
+    is 5.mm.1, third 5.mm.2, etc. The highest number on the branch is
+    the "best" or, at least, the most committed-to version. There is no
+    release candidate numbering.
+
+    The version major number has been 5 for many years. If you feel like
+    changing it to, say, 6, well, there's nothing to stop you.
+
+  9.3  Changelog
+
+    The changelog for 5.mm is named ChangeLog-5.mm.md (the suffix .md
+    indicating that it is in so-called "markdown" format). To obtain the
+    raw material for the changelog:
+
+    $ git log branch-5.${mm-1}-base..HEAD
+
+    Use the git-log output as the basis for ChangeLog-5.mm.md. Use your
+    best judgement as to what to include; the git-log output is
+    typically much, much larger than the changelog. Look at previous
+    changelogs to see the markdown format and organization.
+
+    Commit ChangeLog-5.mm.md to master.
+
+  9.4  Git commands for releases
+
+    Release versions live on a branch named branch-5_mm, and are tagged
+    5.mm.0, 5.mm.1, 5.mm.2, etc. The Git tag must be the same as the
+    version number declared to autoconf.
+
+    $ git checkout master
+    $ git tag -a branch-5_mm-base
+    $ git push --tags origin master
+    $ git checkout -b branch-5_mm
+    $ <edit configure.ac to set version number to 5.mm.0>
+    $ git add configure.ac && git commit
+    $ git tag -a 5.mm.0
+
+    <at this point, verify that you can build packages BEFORE you push>
+
+    $ git push --tags origin branch-5_mm-base
+    $ git checkout master
+    $ <edit configure.ac to set version number to 5.${mm-1}post>
+    $ git add configure.ac && git commit
+    $ git push origin master
+
+    Repeat 5.mm.0 stuff (edit configure.ac and tag) for 5.mm.1, 2, 3, ....
+
+    To copy bug fixes from one branch to another:
+
+    $ git cherry-pick -x <commit hash>
+
+  9.5  Building a release
+
+    $ git checkout branch-5_mm
+    $ sh bootstrap
+    $ ./configure
+    $ make dist-gzip
+
+    At this point you now have maxima-5.mm.nn.tar.gz.
+    
+    Binaries for Linux are created by RPM. It can be argued that Debian
+    packages would be more widely useful. Feel free to create Debian
+    packages instead of RPMs. If, in addition, you can create MacOS 
+    binaries, so much the better.
+
+    I'll assume you know how to build stuff with RPM. Copy the tar.gz
+    to <path to rpm build tree>/SOURCES/. Then:
+
+    $ rpmbuild -ba maxima.spec
+
+  9.6  Uploading files
+
+    $ sftp mysfusername,maxima@frs.sourceforge.net
+    > cd /home/frs/project/m/ma/maxima
+    > cd Maxima-Linux
+    > mkdir 5.mm.nn-Linux
+    > cd 5.mm.nn-Linux
+    > lcd /path/to/rpms
+    > put maxima-*5.mm.nn*.rpm
+    > cd ..
+    > mkdir 5.mm.nn-source
+    > lcd /path/to/tar.gz
+    > put maxima-5.mm.nn.tar.gz
+    > quit
+
+  9.7  Announcements
+
+    Post an announcement about every 5.mm.nn release to the Maxima
+    mailing list. When it seems stable enough (i.e. no immediate plans
+    to create another release) feel free to announce it in other forums,
+    e.g. sage-devel.
