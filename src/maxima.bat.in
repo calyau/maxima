@@ -20,6 +20,16 @@ set path=%maxima_prefix%\gnuplot;%maxima_prefix%\gnuplot\bin;%maxima_prefix%\bin
 if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%USERPROFILE%\maxima
 if "%MAXIMA_TEMPDIR%" == "" set MAXIMA_TEMPDIR=%USERPROFILE%
 
+rem read maximarc and set the lisp type, if the user did specify MAXIMA_LISP
+rem currently no comments or other (Unix shell) commands are understood
+if EXIST "%MAXIMA_USERDIR%/maximarc" (
+    setlocal enabledelayedexpansion
+    for /F %%L in (%MAXIMA_USERDIR%/maximarc) do (
+        set %%L
+        set lisp=!MAXIMA_LISP!
+    )
+)
+
 :startparseargs
 if x%1 == x-l goto foundlisp
 if x%1 == x--lisp goto foundlisp
