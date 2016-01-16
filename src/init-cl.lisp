@@ -635,11 +635,17 @@ When one changes, the other does too."
   (when *debugger-hook*
     ; Only set a new debugger hook if *DEBUGGER-HOOK* has not been set to NIL
     (setf *debugger-hook* #'maxima-lisp-debugger-repl))
-  (loop
-     (catch 'to-maxima-repl
-       (format-prompt t "~%~A> " (package-name *package*))
-       (finish-output)
-       (format t "~{~&~S~}" (multiple-value-list (eval (read)))))))
+  (let ((eof (gensym)))
+    (loop
+      (catch 'to-maxima-repl
+        (format-prompt t "~%~A> " (package-name *package*))
+        (finish-output)
+        (let ((input (read *standard-input* nil eof)))
+          ; Return to Maxima on EOF
+          (when (eq input eof)
+            (fresh-line)
+            (to-maxima))
+          (format t "~{~&~S~}" (multiple-value-list (eval input))))))))
 
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
