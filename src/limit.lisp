@@ -211,24 +211,22 @@
 		   ((eq d '$und) (return '$und))
 		   ((eq d 'retn) )
 		   (t (setq exp d)))
-		  (setq ans (limit-catch exp var val))));; and find limit from one side
+		  (setq ans (limit-catch exp var val));; and find limit from one side
 
-	      ;; try gruntz
-	      (if (and (not ans)
-		       (or (real-epsilonp val)		;; if direction of limit specified
-			   (real-infinityp val)))
-		  (setq ans (catch 'taylor-catch
-		              (let ((silent-taylor-flag t))
-		                (declare (special silent-taylor-flag))       
-				(gruntz1 exp var val)))))
+		  ;; try gruntz
+		  (if (not ans)
+		      (setq ans (catch 'taylor-catch
+				  (let ((silent-taylor-flag t))
+				    (declare (special silent-taylor-flag))       
+				    (gruntz1 exp var val)))))
 
-	      ;; try taylor series expansion if simple limit didn't work
-	      (if (and (null ans)		;; if no limit found and
-		       $tlimswitch		;; user says ok to use taylor and
-		       (not limit-using-taylor));; not already doing taylor
-		  (let ((limit-using-taylor t))
-		    (declare (special limit-using-taylor))
-		    (setq ans (limit-catch exp var val))))
+		  ;; try taylor series expansion if simple limit didn't work
+		  (if (and (null ans)		;; if no limit found and
+			   $tlimswitch		;; user says ok to use taylor and
+			   (not limit-using-taylor));; not already doing taylor
+		      (let ((limit-using-taylor t))
+			(declare (special limit-using-taylor))
+			(setq ans (limit-catch exp var val))))))
 
 	      (if ans
 		  (return (clean-limit-exp ans))
