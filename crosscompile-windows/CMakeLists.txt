@@ -207,7 +207,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp"
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
 install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/)
-
+install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/)
+install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/)
 
 if(USE_WXMAXIMA_GIT)
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/src")
@@ -280,7 +281,7 @@ set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima\\\\maxima-ico
 set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation""bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
