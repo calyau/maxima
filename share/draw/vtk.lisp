@@ -198,7 +198,7 @@
     (loop for n from (1+ af) to *vtk-actor-counter* do
       (format str "  ~a AddActor actor~a~%" rn n))
     (format str "  ~a SetCamera [~a GetActiveCamera]~%" an rn)
-    (when (gethash '$axis_3d *gr-options*)
+    (when (get-option '$axis_3d)
       (format str "  ~a AddActor ~a~%" rn on)     ; add box
       (format str "  ~a AddViewProp ~a~%" rn an)) ; add axes tics
     (format str "  ~a SetActiveCamera ~a~%" rn cn)
@@ -360,11 +360,11 @@
     (format nil "vtkTubeFilter ~a~%" tn)
     (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" tn fn)
     (format nil "  ~a SetNumberOfSides ~a~%" tn (- lt))
-    (format nil "  ~a SetRadius ~a~%" tn (gethash '$line_width *gr-options*)) ))
+    (format nil "  ~a SetRadius ~a~%" tn (get-option '$line_width)) ))
 
 (defun vtkrendererwindow-code (ns)
-  (let* ((dim  (gethash '$dimensions *gr-options*))
-         (ncol (gethash '$columns *gr-options*))
+  (let* ((dim  (get-option '$dimensions))
+         (ncol (get-option '$columns))
          (str (make-array 0 
                 :element-type 'character 
                 :adjustable t 
@@ -404,8 +404,8 @@
 
 ; code for file output
 (defun vtk-terminal ()
-  (let ((terminal   (gethash '$terminal *gr-options*))
-        (filename   (gethash '$file_name *gr-options*))
+  (let ((terminal   (get-option '$terminal))
+        (filename   (get-option '$file_name))
         (binaryterms '($png $pngcairo $jpg $eps $eps_color $tiff $pnm))
         (extension "")
         (classformat ""))
@@ -544,10 +544,11 @@
       (format nil "  ~a~%" expr)
       (format nil "  return [interval $x 0 1] }~%~%"))   ))
 
+
 ; Creates lookup table. See info for option 'palette'.
 ; Returns list with lookup table name and the string.
 (defun check-lookup-table ()
-  (let ((palette (gethash '$palette *gr-options*))
+  (let ((palette (get-option '$palette))
         (lut "")
         pos palette-name lutn)
     (cond ((equal palette '$gray)
@@ -558,10 +559,7 @@
     (setf lutn (1+ (length *lookup-tables*)))
     (setf *lookup-tables* (append *lookup-tables* (list palette)))
     (setf palette-name (format nil "lut~a" lutn))
-    (cond ((> pos 0)  ; lookup table already defined
-             (list (format nil "lut~a" pos)
-                   nil))
-          ((and (listp palette)  ; build lookup table with transform functions
+    (cond ((and (listp palette)  ; build lookup table with transform functions
                 (= (length palette) 3)
                 (every #'(lambda (x) (and (integerp x) (<= (abs x) 36))) palette) )
              ; if *unitscale-already-defined* is null, write
@@ -625,6 +623,14 @@
                             palette-name k (car triplete) (cadr triplete) (caddr triplete) (cadddr triplete))))))))))
 
 
+(defun build-surface-grid (nx ny)
+  (let ((poly nil)
+        cont)
+    (dotimes (f (1- ny))
+      (setf cont (* f nx))
+      (dotimes (c (1- nx))
+         (setf poly (cons  (list (+ cont c) (+ cont c 1) (+ cont nx c 1) (+ cont nx c)) poly))))
+    (reverse poly)))
 
 
 
@@ -693,10 +699,10 @@
 ;; cylinder(center, radius, height, direction)
 ;; -------------------------------------------
 (defun vtk3d-cylinder (cen rad hei dir)
-  (let ((color (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
         (capping       (rest (get-option '$capping)))
         (fcen ($float cen))
         (frad ($float rad))
@@ -776,10 +782,10 @@
 ;; cube(xlength, ylength, zlength, center)
 ;; ---------------------------------------
 (defun vtk3d-cube (xlen ylen zlen cen)
-  (let ((color (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
         (fxlen ($float xlen))
         (fylen ($float ylen))
         (fzlen ($float zlen))
@@ -911,10 +917,10 @@
 ;; ---------------------------------------
 ;; The triangle is defined by three vertices
 (defun vtk3d-triangle (v1 v2 v3)
-  (let ((color (gethash '$color *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
         (points-name   (get-points-name))
         (triangle-name (get-triangle-name))
         (polydata-name (get-polydata-name))
@@ -977,16 +983,16 @@
             (not ($listp arg2))
             (not (= ($length arg2) 3)))
       (merror "vtk3d (vector): coordinates are not correct"))
-  (let ((color        (gethash '$color        *gr-options*))
-        (head-length  (gethash '$head_length  *gr-options*))
-        (head-angle   (gethash '$head_angle   *gr-options*))
-        (line-width   (gethash '$line_width   *gr-options*))
-        (unit-vectors (gethash '$unit_vectors *gr-options*))
-        (opacity      (gethash '$opacity *gr-options*))
-        (wiredsurface (gethash '$wired_surface *gr-options*))
-        (x ($float (cadr arg1)))
-        (y ($float (caddr arg1)))
-        (z ($float (cadddr arg1)))
+  (let ((color        (get-option '$color))
+        (head-length  (get-option '$head_length))
+        (head-angle   (get-option '$head_angle))
+        (line-width   (get-option '$line_width))
+        (unit-vectors (get-option '$unit_vectors))
+        (opacity      (get-option '$opacity))
+        (wiredsurface (get-option '$wired_surface))
+        (x  ($float (cadr arg1)))
+        (y  ($float (caddr arg1)))
+        (z  ($float (cadddr arg1)))
         (dx ($float (cadr arg2)))
         (dy ($float (caddr arg2)))
         (dz ($float (cadddr arg2)))
@@ -1038,14 +1044,14 @@
 ;; 3D: points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])
 ;; ----------------------------------------------------
 (defun vtk3d-points (arg)
-  (let ((points-joined (gethash '$points_joined *gr-options*))
-        (point-type    (gethash '$point_type    *gr-options*))
-        (point-size    ($float (gethash '$point_size    *gr-options*)))
-        (line-type     (gethash '$line_type     *gr-options*))
-        (color         (gethash '$color         *gr-options*))
-        (opacity       (gethash '$opacity *gr-options*))
-        (linewidth     (gethash '$line_width *gr-options*))
-        (wiredsurface  (gethash '$wired_surface *gr-options*))
+  (let ((points-joined (get-option '$points_joined))
+        (point-type    (get-option '$point_type))
+        (point-size    ($float (get-option '$point_size)))
+        (line-type     (get-option '$line_type))
+        (color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
         (tmp (mapcar #'rest (rest arg)))
         source-name
         source-name2
@@ -1312,12 +1318,12 @@
 ;;     color
 ;;     transform
 (defun vtk2d-points (arg1 &optional (arg2 nil))
-  (let ((pointsjoined  (gethash '$points_joined *gr-options*))
-        (pointtype     (gethash '$point_type    *gr-options*))
-        (pointsize     ($float  (gethash '$point_size    *gr-options*)))
-        (linetype      (gethash '$line_type     *gr-options*))
+  (let ((pointsjoined  (get-option '$points_joined))
+        (pointtype     (get-option '$point_type))
+        (pointsize     ($float  (get-option '$point_size)))
+        (linetype      (get-option '$line_type))
         (color         (hex-to-numeric-list (get-option '$color)))
-        (linewidth     (gethash '$line_width    *gr-options*))
+        (linewidth     (get-option '$line_width))
         (key           (get-option '$key))
         (arrayX-name   (get-arrayX-name))
         (arrayY-name   (get-arrayY-name))
@@ -1427,12 +1433,12 @@
 ;; 3D: parametric(xfun,yfun,zfun,par1,parmin,parmax)
 ;; -------------------------------------------------
 (defun vtk3d-parametric (xfun yfun zfun par1 parmin parmax)
-  (let* ((nticks       (gethash '$nticks    *gr-options*))
-         (color        (gethash '$color     *gr-options*))
-         (line-type    (gethash '$line_type *gr-options*))
-         (opacity      (gethash '$opacity *gr-options*))
-         (linewidth    (gethash '$line_width *gr-options*))
-         (wiredsurface (gethash '$wired_surface *gr-options*))
+  (let* ((nticks       (get-option '$nticks))
+         (color        (get-option '$color))
+         (line-type    (get-option '$line_type))
+         (opacity      (get-option '$opacity))
+         (linewidth    (get-option '$line_width))
+         (wiredsurface (get-option '$wired_surface))
          ($numer t)
          (tmin ($float parmin))
          (tmax ($float parmax))
@@ -1636,22 +1642,13 @@
 
 ;; 3D: parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)
 ;; --------------------------------------------------------------------------------
-(defun build-surface-grid (nx ny)
-  (let ((poly nil)
-        cont)
-    (dotimes (f (1- ny))
-      (setf cont (* f nx))
-      (dotimes (c (1- nx))
-         (setf poly (cons  (list (+ cont c) (+ cont c 1) (+ cont nx c 1) (+ cont nx c)) poly))))
-    (reverse poly)))
-
 (defun vtk3d-parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
-  (let* ((xu_grid      (gethash '$xu_grid    *gr-options*))
-         (yv_grid      (gethash '$yv_grid    *gr-options*))
-         (color        (gethash '$color *gr-options*))
-         (opacity      (gethash '$opacity *gr-options*))
-         (linewidth    (gethash '$line_width *gr-options*))
-         (wiredsurface (gethash '$wired_surface *gr-options*))
+  (let* ((xu_grid      (get-option '$xu_grid))
+         (yv_grid      (get-option '$yv_grid))
+         (color        (get-option '$color))
+         (opacity      (get-option '$opacity))
+         (linewidth    (get-option '$line_width))
+         (wiredsurface (get-option '$wired_surface))
          (umin ($float par1min))
          (umax ($float par1max))
          (vmin ($float par2min))
@@ -1781,12 +1778,12 @@
 ;; 3D: explicit(fcn,par1,minval1,maxval1,par2,minval2,maxval2)
 ;; -----------------------------------------------------------
 (defun vtk3d-explicit (fcn par1 minval1 maxval1 par2 minval2 maxval2)
-  (let* ((xu_grid      (gethash '$xu_grid *gr-options*))
-         (yv_grid      (gethash '$yv_grid *gr-options*))
-         (color        (gethash '$color   *gr-options*))
-         (opacity      (gethash '$opacity *gr-options*))
-         (linewidth    (gethash '$line_width *gr-options*))
-         (wiredsurface (gethash '$wired_surface *gr-options*))
+  (let* ((xu_grid      (get-option '$xu_grid))
+         (yv_grid      (get-option '$yv_grid))
+         (color        (get-option '$color))
+         (opacity      (get-option '$opacity))
+         (linewidth    (get-option '$line_width))
+         (wiredsurface (get-option '$wired_surface))
          (fminval1 ($float minval1))
          (fminval2 ($float minval2))
          (fmaxval1 ($float maxval1))
@@ -2043,10 +2040,10 @@
          (fy0 ($float y0))
          (fwidth ($float width))
          (fheight ($float height))
-         (color        (gethash '$color *gr-options*))
-         (opacity      (gethash '$opacity *gr-options*))
-         (linewidth    (gethash '$line_width *gr-options*))
-         (wiredsurface (gethash '$wired_surface *gr-options*))
+         (color        (get-option '$color))
+         (opacity      (get-option '$opacity))
+         (linewidth    (get-option '$line_width))
+         (wiredsurface (get-option '$wired_surface))
          (source-name     (get-source-name))
          (points-name     (get-points-name))
          (cellarray-name  (get-cellarray-name))
@@ -2154,11 +2151,11 @@
         (fymax ($float ymax))
         (fzmin ($float zmin))
         (fzmax ($float zmax))
-        (color        (gethash '$color *gr-options*))
-        (opacity      (gethash '$opacity *gr-options*))
-        (linewidth    (gethash '$line_width *gr-options*))
-        (wiredsurface (gethash '$wired_surface *gr-options*))
-        (transform (gethash '$transform *gr-options*))
+        (color        (get-option '$color))
+        (opacity      (get-option '$opacity))
+        (linewidth    (get-option '$line_width))
+        (wiredsurface (get-option '$wired_surface))
+        (transform    (get-option '$transform))
         (source-name     (get-source-name))
         (points-name     (get-points-name))
         (cellarray-name  (get-cellarray-name))
@@ -2235,8 +2232,8 @@
 ;; 3d: label([string1,x1,y1,z1],[string2,x2,y2,z2],...)
 ;; ----------------------------------------------------
 (defun vtk3d-label (&rest lab)
-  (let ((font-size (gethash '$font_size *gr-options*))
-        (colist (hex-to-numeric-list (gethash '$color *gr-options*)))
+  (let ((font-size (get-option '$font_size))
+        (colist    (hex-to-numeric-list (get-option '$color)))
         (out "")
         label-name
         polydatamapper-name
@@ -2283,10 +2280,202 @@
 
 
 
-;; 3d: tube(xfun,yfun,zfun,rad,par1,parmin,parmax)
-;; ----------------------------------------------------
-;(defun vtk3d-tube (xfun yfun zfun rad par1 parmin parmax)
-;)
+;; 3d: tube(xfun,yfun,zfun,rad,par,parmin,parmax)
+;; ----------------------------------------------
+(defmacro vtk-check-tube-extreme (ex cx cy cz)
+    `(when (equal (nth ,ex (get-option '$capping)) t)
+       (let ((cxx ,cx)
+             (cyy ,cy)
+             (czz ,cz))
+         (when (> *draw-transform-dimensions* 0)
+           (setf cxx (funcall *draw-transform-f1* ,cx ,cy ,cz)
+                 cyy (funcall *draw-transform-f2* ,cx ,cy ,cz)
+                 czz (funcall *draw-transform-f3* ,cx ,cy ,cz)))
+
+        ; check texture model
+        (when (> *draw-enhanced3d-type* 0)
+          (case *draw-enhanced3d-type*
+            ((1 99)
+               (setf newscalar (funcall *draw-enhanced3d-fun* tt)))
+            (3
+               (setf newscalar (funcall *draw-enhanced3d-fun* cxx cyy czz))) )
+          (cond
+            ((< newscalar minscalar)
+               (setf minscalar newscalar))
+            ((> newscalar maxscalar)
+               (setf maxscalar newscalar)))
+          (setf (aref scalars (incf scalars-count)) newscalar)  )
+        (dotimes (k vgrid)
+          (setf (aref x (incf count)) cxx)
+          (setf (aref y count) cyy)
+          (setf (aref z count) czz) ))))
+
+(defun vtk3d-tube (xfun yfun zfun rad par parmin parmax)
+  (let* ((ugrid        (get-option '$xu_grid))
+         (vgrid        (get-option '$yv_grid))
+         (color        (get-option '$color))
+         (opacity      (get-option '$opacity))
+         (linewidth    (get-option '$line_width))
+         (wiredsurface (get-option '$wired_surface))
+         (capping       (rest (get-option '$capping)))
+         (tmin ($float parmin))
+         (tmax ($float parmax))
+         (vmax 6.283185307179586) ; = float(2*%pi)
+         (teps (/ (- tmax tmin) (- ugrid 1)))
+         (veps (/ vmax (- vgrid 1)))
+         (nu (+ ugrid (count t capping)))
+         (nv vgrid)
+         (count -1)        
+         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
+         (source-name     (get-source-name))
+         (points-name     (get-points-name))
+         (cellarray-name  (get-cellarray-name))
+         (floatarray-name (get-floatarray-name))
+         (trans-name      (get-trans-name))
+         (filter-name     (get-filter-name))
+         (mapper-name     (get-mapper-name))
+         (actor-name      (get-actor-name))
+         (scalars-count -1)
+         (minscalar most-positive-double-float)
+         (maxscalar most-negative-double-float)
+         scalars newscalar tt
+         lookup-table-name
+         f1 f2 f3 radius
+         cx cy cz nx ny nz
+         ux uy uz vx vy vz
+         xx yy zz module r vv rcos rsin
+         cxold cyold czold
+         uxold uyold uzold ttnext
+         x y z)
+    (when (< tmax tmin)
+       (merror "draw3d (tube): illegal parametric range"))
+    (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun)
+                                       ($listofvars zfun) ($listofvars rad)))
+                        (list par)))
+       (merror "draw3d (tube): non defined variable"))
+    (check-enhanced3d-model "tube" '(0 1 3 99))
+    (when (= *draw-enhanced3d-type* 99)
+       (update-enhanced3d-expression (list '(mlist) par)))
+    (setq f1 (coerce-float-fun xfun `((mlist) ,par)))
+    (setq f2 (coerce-float-fun yfun `((mlist) ,par)))
+    (setq f3 (coerce-float-fun zfun `((mlist) ,par)))
+    (setf radius (coerce-float-fun rad `((mlist) ,par)))
+    (setf x (make-array (* nu nv) :element-type 'flonum)
+          y (make-array (* nu nv) :element-type 'flonum)
+          z (make-array (* nu nv) :element-type 'flonum))
+    (when (> *draw-enhanced3d-type* 0)
+      (setf scalars (make-array (* nu nv) :element-type 'flonum)))
+    (loop for j from 0 below ugrid do
+      (setf tt (+ tmin (* j teps)))
+      ; calculate center and radius of circle
+      (cond
+        ((= j 0)  ; 1st circle
+           (setf cx (funcall f1 tt)
+                 cy (funcall f2 tt)
+                 cz (funcall f3 tt)
+                 ttnext (+ tt teps))
+           (vtk-check-tube-extreme 1 cx cy cz)
+           (setf nx (- (funcall f1 ttnext) cx)
+                 ny (- (funcall f2 ttnext) cy)
+                 nz (- (funcall f3 ttnext) cz)))
+        (t  ; all next circles
+           (setf cxold cx
+                 cyold cy
+                 czold cz)
+           (setf cx (funcall f1 tt)
+                 cy (funcall f2 tt)
+                 cz (funcall f3 tt))
+           (setf nx (- cx cxold)
+                 ny (- cy cyold)
+                 nz (- cz czold))))
+      (setf r (funcall radius tt))
+      ; calculate the unitary normal vector      
+      (setf module (sqrt (+ (* nx nx) (* ny ny) (* nz nz))))
+      (setf nx (/ nx module)
+            ny (/ ny module)
+            nz (/ nz module))
+      ; calculate unitary vector perpendicular to n=(nx,ny,nz)
+      ; ux.nx+uy.ny+uz.nz=0 => ux=-t(ny+nz)/nx, uy=uz=t
+      ; let's take t=1
+      (cond
+        ((= nx 0.0)
+           (setf ux 1.0 uy 0.0 uz 0.0))
+        ((= ny 0.0)
+           (setf ux 0.0 uy 1.0 uz 0.0))
+        ((= nz 0.0)
+           (setf ux 0.0 uy 0.0 uz 1.0))
+        (t  ; all other cases
+           (setf ux (- (/ (+ ny nz) nx))
+                 uy 1.0
+                 uz 1.0)))
+      (setf module (sqrt (+ (* ux ux) (* uy uy) (* uz uz))))
+      (setf ux (/ ux module)
+            uy (/ uy module)
+            uz (/ uz module))
+      (when (and (> tt tmin)
+                 (< (+ (* uxold ux) (* uyold uy) (* uzold uz)) 0))
+        (setf ux (- ux)
+              uy (- uy)
+              uz (- uz)))
+      (setf uxold ux
+            uyold uy
+            uzold uz)
+      ; vector v = n times u
+      (setf vx (- (* ny uz) (* nz uy))
+            vy (- (* nz ux) (* nx uz))
+            vz (- (* nx uy) (* ny ux)))
+      ; parametric equation of the circumference of radius
+      ; r and centered at c=(cx,cy,cz):
+      ; x(t) = c + r(cos(t)u + sin(t)v),
+      ; for t in (0, 2*%pi)
+      (setf vv 0.0)
+      ; calculate points of one circumference
+      (loop for i below vgrid do
+        (setf rcos (* r (cos vv))
+              rsin (* r (sin vv)))
+        (setf xx (+ cx (* rcos ux) (* rsin vx))
+              yy (+ cy (* rcos uy) (* rsin vy))
+              zz (+ cz (* rcos uz) (* rsin vz)))
+        (transform-point 3)
+        (setf (aref x (incf count)) xx)
+        (setf (aref y count) yy)
+        (setf (aref z count) zz)
+        ; check texture model
+        (when (> *draw-enhanced3d-type* 0)
+          (case *draw-enhanced3d-type*
+            ((1 99)
+               (setf newscalar (funcall *draw-enhanced3d-fun* tt)))
+            (3 (setf newscalar (funcall *draw-enhanced3d-fun* xx yy zz))) )
+          (cond
+            ((< newscalar minscalar)
+               (setf minscalar newscalar))
+            ((> newscalar maxscalar)
+               (setf maxscalar newscalar)))
+          (setf (aref scalars (incf scalars-count)) newscalar)  )
+        (setf vv (+ vv veps))
+        (when (> vv vmax) (setf vv vmax))  ) ) ; end both loops
+    (vtk-check-tube-extreme 2 cx cy cz)
+    ; rescale array of scalars to interval [0,1]
+    (if (< minscalar maxscalar)
+      (setf slope (/ 1.0 (- maxscalar minscalar)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars) do
+      (setf (aref scalars s) (* slope (- (aref scalars s) minscalar))))
+    (let ((lut (check-lookup-table)))
+      (setf lookup-table-name (car lut))
+      (format str "~a~%" (cadr lut)))
+
+    ; tcl-vtk code
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a" (vtkpoints-code points-name source-name x y z))
+    (format str "~a" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nv nu)))
+    (format str "~a" (vtktransform-code trans-name))
+    (format str "~a" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a" (vtkpolydatamapper-code mapper-name filter-name))
+    (when (> *draw-enhanced3d-type* 0)
+      (format str "~a" (vtkfloatarray-code floatarray-name source-name scalars))
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name))
+    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface)) ))
 
 
 
@@ -2458,11 +2647,11 @@
         renderer-name
         cubeaxesactor2d-name
         outlineactor-name
-        (gethash '$background_color *gr-options*)
+        (get-option '$background_color)
         actor-first
         camera-name
-        (car  (gethash '$view *gr-options*))
-        (cadr (gethash '$view *gr-options*)) ) )))
+        (car  (get-option '$view))
+        (cadr (get-option '$view)) ) )))
 
 
 
