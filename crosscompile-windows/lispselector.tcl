@@ -1,7 +1,7 @@
 # Simple GUI for selecting the default Lisp for Windows users.
 
 proc selectclisp {} {
-    set maximarc [file join $::env(HOME) maxima maximarc]
+    set maximarc [file join $::env(USERPROFILE) maxima maximarc]
     file mkdir [file dirname $maximarc]
     set f [open $maximarc "w"]
     puts $f "MAXIMA_LISP=clisp"
@@ -10,7 +10,7 @@ proc selectclisp {} {
 }
 
 proc selectsbcl {} {
-    set maximarc [file join $::env(HOME) maxima maximarc]
+    set maximarc [file join $::env(USERPROFILE) maxima maximarc]
     file mkdir [file dirname $maximarc]
     set f [open $maximarc "w"]
     puts $f "MAXIMA_LISP=sbcl"
@@ -35,7 +35,7 @@ will be created with your default Lisp selection. If the configuration file alre
 
 # Buttons (clisp, sbcl, exit)
 frame .toolbar
-button .toolbar.clisp -text "Swlect CLISP" -command "selectclisp"
+button .toolbar.clisp -text "Select CLISP" -command "selectclisp"
 button .toolbar.sbcl -text "Select SBCL" -command "selectsbcl"
 button .toolbar.exit -text "Exit (without changes)" -command "exit"
 pack .toolbar.clisp -side left
