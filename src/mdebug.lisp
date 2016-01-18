@@ -381,10 +381,10 @@
 
 (defun set-env (bkpt)
   (format *debug-io* 
-          (intl:gettext "(~a line ~a~@[ in ~a~])")
+          (intl:gettext "(~a line ~a~@[, in function ~a~])")
           (short-name (bkpt-file bkpt))
 	  (bkpt-file-line bkpt)
-	  nil)				; (bkpt-function bkpt)
+	  (bkpt-function bkpt))
   (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
 	  (bkpt-file-line bkpt)))
 
