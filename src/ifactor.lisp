@@ -897,7 +897,6 @@
       (= (gcd n 162490421) 1)
       ;; gcd agaist product of primes in [59..2897]
       (= (gcd n bigprimemultiple) 1)
-      (miller-rabin n)
       (primep n)
       (return-from next-prime-prob n))
      ;; skip all multiples of 2,3,5,7"
