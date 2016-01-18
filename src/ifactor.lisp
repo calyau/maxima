@@ -639,7 +639,7 @@
   (cond 
     ((= n 1) nil)
     ((evenp n) (= n 2))
-    ((<= n *largest-small-prime*) (member n *small-primes*))
+    ((<= n *largest-small-prime*) (when (member n *small-primes*) t))
     ((< n 9080191) (primep-small n '(31 73)))
     ((< n 4759123141) (primep-small n '(2 7 61)))
     ((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
