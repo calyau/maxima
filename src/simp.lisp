@@ -3161,9 +3161,11 @@
 	 (let ((u (car (last e))))
 	   (cond ((eq u a) (not (ordhack e))) (t (great u a)))))
 	((eq (caar e) '%del))
-	((prog2 (setq e (car (margs e)))
+	((prog2 (setq e (car (margs e)))	; use first arg of e
 	     (and (not (atom e)) (member (caar e) '(mplus mtimes) :test #'eq)))
-	 (let ((u (car (last e)))) (or (eq u a) (great u a))))
+	 (let ((u (car (last e))))		; and compare using 
+	   (cond ((eq u a) (not (ordhack e)))	; same procedure as above
+		 (t (great u a)))))
 	((eq e a))
 	(t (great e a))))
 
