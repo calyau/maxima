@@ -636,70 +636,82 @@
       (merror (intl:gettext "primep: argument must be an integer; found: ~M") n)))
 
 (defun primep (n)
-  (cond ((= n 1) nil)
-	((evenp n) (= n 2))
-	((member n *small-primes*) t)
-	((< n 9080191) (primep-small n '(31 73)))
-	((< n 4759123141) (primep-small n '(2 7 61)))
-	((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
-	((< n 3474749660383) (primep-small n '(2 3 5 7 11 13)))
-	((< n 341550071728321) (primep-small n '(2 3 5 7 11 13 17)))
-	((member n *large-primes*) t)
-	(t (primep-prob n))))
+  (cond 
+    ((= n 1) nil)
+    ((evenp n) (= n 2))
+    ((< n *largest-small-prime*) (member n *small-primes*))
+    ((< n 9080191) (primep-small n '(31 73)))
+    ((< n 4759123141) (primep-small n '(2 7 61)))
+    ((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
+    ((< n 3474749660383) (primep-small n '(2 3 5 7 11 13)))
+    ((< n 341550071728321) (primep-small n '(2 3 5 7 11 13 17)))
+    ((< n 3825123056546413051) (primep-small n '(2 3 5 7 11 13 17 19 23)))
+    ((< n 318665857834031151167461) (primep-small n '(2 3 5 7 11 13 17 19 23 29 31 37)))
+    ((< n 3317044064679887385961981) (primep-small n '(2 3 5 7 11 13 17 19 23 29 31 37 41)))
+    ((member n *large-primes*) t)
+    (t (primep-prob n)) ))
 
-;;; miller-rabin test is deterministic for small n
-;;; if we test for small bases
+;;; A Miller-Rabin test is deterministic for small n if we test for small bases.
 ;;; Reference:
 ;;;  [1] G. Jaeschke, On Strong Pseudoprimes to Several Bases,
 ;;;         Math. Comp., 61 (1993), 915-926.
 ;;;  [2] http://primes.utm.edu/prove/prove2_3.html
+;;;  [3] Jiang, Deng - Strong pseudoprimes to the first eight prime bases (2014)
+;;;         Mathematics of Computation, Vol 83, Nr 290, Pages 2915–2924
+;;;  [3] Sorenson, Webster - Strong Pseudoprimes to Twelve Prime Bases (2015)
+;;;         arXiv:1509.00864v1 [math.NT]
 
 (defun primep-small (n bases)
-  (dolist (x bases)
-    (unless (miller-rabin n x)
-      (return-from primep-small nil)))
-  t)
+  (multiple-value-bind (q k) (miller-rabin-decomposition n)
+    (dolist (x bases t)
+      (unless (miller-rabin-kernel n q k x)
+        (return-from primep-small nil) ))))
 
 ;;; strong primality test:
-;;;  - run miller-rabin test $primep_number_of_tests times
-;;;  - run one lucas test
+;;;  - run $primep_number_of_tests times a Miller-Rabin test 
+;;;  - run one Lucas test
 
 (defun primep-prob (n)
-  (let ((nroot (isqrt n)))
-    (if (= (* nroot nroot) n)
-	(return-from primep-prob nil)))
-  ;; Miller-Rabin Test:
-  (dotimes (i $primep_number_of_tests)
-    (unless (miller-rabin n)
-      (return-from primep-prob nil)))
-  ;; Lucas Test:
-  (primep-lucas n))
+  ;; Miller-Rabin tests:
+  (multiple-value-bind (q k) (miller-rabin-decomposition n)
+    (dotimes (i $primep_number_of_tests)
+      (unless (miller-rabin-kernel n q k)
+        (return-from primep-prob nil) )))
+  ;; Lucas test:
+  (primep-lucas n) )
 
 
-;;; miller-rabin (algorithm P from D. Knuth, TAOCP, 4.5.4)
-;;;   - write n-1=2^k*q (n,q odd, n>2)
-;;;   - x is a random number 1<x<n
-;;;   - n passes the test if:
-;;;        o x^q=1 (mod n)
-;;;        o x^(q*2^j)=n-1 (mod n) for some j=0..k-1
+;;; Miller-Rabin (algorithm P from D. Knuth, TAOCP, 4.5.4)
 ;;;
-;;; probability of n passing one test and beeing not a prime is less than 1/4
+;;;   - write n-1 = q*2^k (n,q odd, n > 2)
+;;;   - x is a random number 1 < x < n
+;;;   - n passes the test if 
+;;;         x^q = 1 (mod n)
+;;;         or x^(q*2^j) = -1 (mod n) for some j = 0..k-1
+;;;
+;;; A prime number must pass this test.
+;;; The probability of passing one test and not beeing a prime is less than 1/4.
 
-(defun miller-rabin (n &optional (x (+ (random (- n 2)) 2)))
-  (let ((k 0) (j 0) (y 0)
-	(q (1- n)))
-    (do ()
-	((logbitp 0 q))
-      (setq q (ash q -1))
-      (incf k))
-    (setq y (power-mod x q n))
-    (do ()
-	((= j k))
-      (if (or (and (zerop j) (= y 1)) (= y (1- n)))
-	  (return t)
-	  (if (and (plusp j) (= y 1)) (return)))
-      (incf j)
-      (setq y (power-mod y 2 n)))))
+;; return values q,k with n-1 = q*2^k
+(defun miller-rabin-decomposition (n) ;; assume n > 2 (n-1 is even)
+  (do ((k 1 (1+ k)) 
+       (q (ash n -1) (ash q -1)) )
+      ((logbitp 0 q) (values q k)) ))
+;;
+;; now assume n-1 = q*2^k, k >= 1
+(defun miller-rabin-kernel (n q k &optional x)
+  (unless x 
+    (setq x (+ (random (- n 2)) 2)) )
+  (let ((y (power-mod x q n)) ;; j = 0
+        (minus1 (1- n)) )
+    (if (or (= y 1) (= y minus1))
+      t
+      (do ((j 1 (1+ j)))
+          ((= j k))
+        (setq y (power-mod y 2 n))
+        (when (= y minus1) (return t))
+        (when (= y 1) (return)) )))) ;; n prime => last y must have been 1 or -1
+
 
 (defun $power_mod (b e m)
   (unless (and (integerp b) (integerp e) (integerp m))
