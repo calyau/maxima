@@ -12,6 +12,10 @@
     (defmacro fb (op &rest args)
       `(,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args))))
 
+(defstruct (line-info (:type list)) line file)
+
+(defstruct (bkpt (:type list)) form file file-line function)
+
 ;; This function is not documented and not used in Maxima core or share.
 (defun $bt()
   (loop for v in *baktrcl*
@@ -496,10 +500,6 @@ Command      Description~%~
 
 (def-break :top  #'(lambda( &rest l)l (throw 'macsyma-quit 'top)) 
   "Throw to top level")
-
-(defstruct (line-info (:type list)) line file)
-
-(defstruct (bkpt (:type list)) form file file-line function)
 
 (defun *break-points* (form)
   (let ((pos(position form *break-points* :key 'car)))
