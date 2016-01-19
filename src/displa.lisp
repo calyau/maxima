@@ -245,8 +245,10 @@
        (update-heights height depth)
        (return result))))
 
+(defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
+
 (defun dimension-indices (base-symbol indices)
-  (let ((display-indices (cdr ($get base-symbol '$display_indices))))
+  (let ((display-indices (mget base-symbol 'display-indices)))
     (if (and (> (length display-indices) 0) (not (= (length display-indices) (length indices))))
       ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
       (setq display-indices nil))
