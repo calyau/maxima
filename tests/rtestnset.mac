@@ -1857,4 +1857,34 @@ op (bar);
 "{" (a, b, c, d);
 {17, 29, c, d};
 
+/* examples listed under "Bugs" in doc/info/nset.texi -- all work as expected now */
+
+{[x], [rat (x)]};
+{[x], [''(rat(x))]};
+
+setify ([[rat(a)], [rat(b)]]);
+{[''(rat(a))], [''(rat(b))]};
+
+orderlessp ([rat(a)], [rat(b)]);
+true;
+
+is ([rat(a)] = [rat(a)]);
+true;
+
+{x, rat (x)};
+{x, ''(rat(x))};
+
+/* for the record, q, r, s example is treated in greater generality in rtest1 */
+
+(kill (q, r, s), q: x^2,  r: (x + 1)^2,  s: x*(x + 2), 0);
+0;
+
+[orderlessp (q, r), orderlessp (r, s), orderlessp (q, s)]; 
+[true, false, false];
+
+kron_delta (1/sqrt(2), sqrt(2)/2);
+1;
+
+sign (1/sqrt(2) - sqrt(2)/2);
+zero;
 
