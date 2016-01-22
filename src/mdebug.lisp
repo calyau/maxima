@@ -389,7 +389,7 @@
           (short-name (bkpt-file bkpt))
 	  (bkpt-file-line bkpt)
 	  (bkpt-function bkpt))
-  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
+  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
 	  (bkpt-file-line bkpt)))
 
 (defvar *diff-mspeclist* nil)
@@ -744,5 +744,5 @@ Command      Description~%~
     (remove-bindings bdlist)
     (when lineinfo
       (fresh-line *debug-io*)
-      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
+      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
     (values)))
