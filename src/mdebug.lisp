@@ -464,9 +464,10 @@
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
 	       (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t
+	 ; Skip any undocumented break commands
 	 (loop for vv being the symbols of 'keyword
-		when (get vv 'break-command)
-		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
+		when (and (get vv 'break-command) (get vv 'break-doc))
+		collect (cons vv (get vv 'break-doc))
 		into all
 		finally (setq all (sort all 'alphalessp))
 	      (format t (intl:gettext "~
