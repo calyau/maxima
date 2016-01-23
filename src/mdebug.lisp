@@ -483,7 +483,9 @@ Command      Description~%~
   "Print help on a break command or with no arguments on
              all break commands")
 
-;; What is this debug command for?
+;; This is an undocumented break command which gets placed in
+;; *LAST-DBM-COMMAND* when an invalid (nonexistent or ambiguous)
+;; break command is read in.
 (def-break :_none #'(lambda()) nil)
 
 (def-break :next  'step-next
