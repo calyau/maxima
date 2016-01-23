@@ -273,12 +273,11 @@
 
 (declaim (special *mread-prompt*))
 
-;; RLT: What is the repeat-if-newline option for?  A grep of the code
-;; indicates that dbm-read is never called with more than 3 args.  Can
-;; we just flush it?  Can probably get rid of the &aux stuff too.
-
 (defvar *need-prompt* t)
 
+;; STREAM, EOF-ERROR-P and EOF-VALUE are analogous to the corresponding
+;; arguments to Lisp's READ.  REPEAT-IF-NEWLINE, when T, says to repeat
+;; the last break command (if available) when only a newline is read.
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 		 (eof-value nil) repeat-if-newline  &aux tem  ch
 		 (mprompt *mread-prompt*) (*mread-prompt* ""))
