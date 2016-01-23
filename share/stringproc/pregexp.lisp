@@ -19,6 +19,7 @@
 
 ;; -------------------------------------------------------------------------- ;;
 
+(in-package :maxima)
 
 (defparameter *pregexp-version* 20090325) ;last change
 

@@ -96,6 +96,8 @@
 
 |#
 
+(in-package :maxima)
+
 (eval-when
   #+gcl (compile eval)
   #-gcl (:compile-toplevel :execute)
