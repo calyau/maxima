@@ -189,6 +189,7 @@
       (gethash '$surface_hide *gr-options*)   nil
       (gethash '$interpolate_color *gr-options*)   "depthorder"
       (gethash '$enhanced3d *gr-options*)     '$none
+      (gethash '$isolines *gr-options*)       '$none
       (gethash '$wired_surface *gr-options*)  nil
       (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5       ; 1-50, [lowest_level,step,highest_level] or {z1,z2,...}
@@ -532,6 +533,68 @@
 
 
 
+;; update option isolines
+;; ----------------------
+(defvar *draw-isolines-type* 0)
+(defvar *draw-isolines-fun* nil)
+
+(defun check-isolines-model (grobj lis)
+  (when (null (position *draw-isolines-type* lis))
+    (merror (format nil "draw (~a): unacceptable isolines model" grobj))))
+
+(defun update-isolines-expression (vars)
+  (let ((texture (gethash '$isolines *gr-options*)))
+    (when (not ($subsetp ($setify ($listofvars texture))
+                         ($setify vars)))
+      (merror "draw: incompatible variables in isolines expression"))
+    (setf *draw-isolines-fun* (coerce-float-fun texture vars))))
+
+(defun update-isolines (val)
+  (cond
+    ((or (null val)
+         (equal val '$none))
+      (setf (gethash '$isolines *gr-options*) '$none
+            *draw-isolines-type* 0
+            *draw-isolines-fun* nil))
+    ((equal val t)
+      (let ((model '((mlist) $z $x $y $z)))
+        (setf (gethash '$isolines *gr-options*) model
+              *draw-isolines-type* 3
+              *draw-isolines-fun* (coerce-float-fun
+                              ($first model)
+                              (list '(mlist) ($second model) ($third model) ($fourth model))))))
+    ((and ($listp val)
+          ($subsetp ($setify ($listofvars ($first val)))
+                    ($setify ($rest val))))
+       (case ($length val)
+         (2 (setf (gethash '$isolines *gr-options*) val
+                  *draw-isolines-type* 1
+                  *draw-isolines-fun* (coerce-float-fun
+                              ($first val)
+                              (list '(mlist) ($second val)))))
+         (3 (setf (gethash '$isolines *gr-options*) val
+                  *draw-isolines-type* 2
+                  *draw-isolines-fun* (coerce-float-fun
+                                  ($first val)
+                                  (list '(mlist) ($second val) ($third val)))))
+         (4 (setf (gethash '$isolines *gr-options*) val
+                  *draw-isolines-type* 3
+                  *draw-isolines-fun* (coerce-float-fun
+                                  ($first val)
+                                  (list '(mlist) ($second val) ($third val) ($fourth val)))))
+         (otherwise (merror "draw: illegal length of isolines"))))
+    ((not ($listp val))
+       ; isolines is given an expression without 
+       ; explicit declaration of its variables.
+       ; Each graphic object must check for them.
+       (setf (gethash '$isolines *gr-options*) val
+             *draw-isolines-type* 99
+             *draw-isolines-fun* nil))
+    (t
+        (merror "draw: illegal isolines definition")) ) )
+
+
+
 ;; update boolean type options
 ;; ---------------------------
 (defun update-boolean-option (opt val)
@@ -810,7 +873,9 @@
        *draw-transform-f2* nil
        *draw-transform-f3* nil
        *draw-enhanced3d-type* 0
-       *draw-enhanced3d-fun* nil)  )
+       *draw-enhanced3d-fun* nil
+       *draw-isolines-type* 0
+       *draw-isolines-fun* nil)  )
 
 
 
@@ -907,6 +972,8 @@
          (update-transform val))
       ($enhanced3d
          (update-enhanced3d val))
+      ($isolines
+         (update-isolines val))
       (($xtics $ytics $xtics_secondary $ytics_secondary $ztics $cbtics)
         ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
