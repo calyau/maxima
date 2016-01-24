@@ -1358,10 +1358,7 @@
         (arrayX-name   (get-arrayX-name))
         (arrayY-name   (get-arrayY-name))
         (table-name    (get-table-name))
-        (str (make-array 0 
-                 :element-type 'character 
-                 :adjustable t 
-                 :fill-pointer 0))
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
         tmp x y ax ay n)
 
     (when (not (string= (string-trim " " key) ""))
@@ -1410,6 +1407,7 @@
     (transform-lists 2)
     (setf ax (make-array n :element-type 'flonum :initial-contents x)
           ay (make-array n :element-type 'flonum :initial-contents y))
+
     ; tcl-vtk code
     (format str "vtkFloatArray ~a~%" arrayX-name)
     (format str "  ~a SetName \"~a\"~%" arrayX-name arrayX-name)
@@ -1420,22 +1418,51 @@
       (format str "~a InsertNextValue ~a~%" arrayY-name (aref ay i))  )
     (format str "vtkTable ~a~%" table-name)
     (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
-    (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
-    (when (equal pointsjoined t)
-      (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 0)
-      (format str "  $line SetInputData ~a 0 1~%" table-name)
-      (format str "  $line SetColor ~a ~a ~a 255 ~%"
-        (round (* 255 (first color)))
-        (round (* 255 (second color)))
-        (round (* 255 (third color))) )
-      (format str "  $line SetWidth ~a~%" linewidth)
-      (format str "  $line SetLegendVisibility 0~%")
-      (format str "  $line SetMarkerStyle ~a~%" 0)
-      (format str "  eval [$line GetPen] SetLineType ~a~%"
-        (case linetype ; translate some gnuplot codes into vtk codes
-          (0 3)
-          (6 4)
-          (otherwise linetype) ) ) )
+    (format str "  ~a AddColumn ~a~%~%" table-name arrayY-name)
+    (cond
+      ((equal pointsjoined t)
+        (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 0)
+        (format str "  $line SetInputData ~a 0 1~%" table-name)
+        (format str "  $line SetColor ~a ~a ~a 255 ~%"
+          (round (* 255 (first color)))
+          (round (* 255 (second color)))
+          (round (* 255 (third color))) )
+        (format str "  $line SetWidth ~a~%" linewidth)
+        (format str "  $line SetLegendVisibility 0~%")
+        (format str "  $line SetMarkerStyle ~a~%" 0)
+        (format str "  eval [$line GetPen] SetLineType ~a~%"
+          (case linetype ; translate some gnuplot codes into vtk codes
+            (0 3)
+            (6 4)
+            (otherwise linetype) ) ))
+      ((equal pointsjoined '$impulses)
+        (let (tbl impx impy)
+          (loop for i from 0 below n do
+            (setf tbl (get-table-name)
+                  impx (get-arrayX-name)
+                  impy (get-arrayY-name))
+            (format str "vtkTable ~a~%" tbl)
+            (format str "vtkFloatArray ~a~%" impx)
+            (format str "  ~a SetNumberOfTuples 2~%" impx)
+            (format str "  ~a SetName \"~a\"~%" impx impx)
+            (format str "vtkFloatArray ~a~%" impy)
+            (format str "  ~a SetNumberOfTuples 2~%" impy)
+            (format str "  ~a SetName \"~a\"~%" impy impy)
+            (format str "~a InsertValue 0 [[~a GetColumn 0] GetValue ~a]~%" impx table-name i)
+            (format str "~a InsertValue 1 [[~a GetColumn 0] GetValue ~a]~%" impx table-name i)
+            (format str "~a InsertValue 0 [[~a GetColumn 1] GetValue ~a]~%" impy table-name i)
+            (format str "~a InsertValue 1 0.0~%" impy)
+            (format str "~a AddColumn ~a~%" tbl impx)
+            (format str "~a AddColumn ~a~%" tbl impy)
+
+            (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
+            (format str "  $line SetInputData ~a 0 1~%" tbl)
+            (format str "  $line SetColor ~a ~a ~a 255 ~%"
+              (round (* 255 (first color)))
+              (round (* 255 (second color)))
+              (round (* 255 (third color))) )
+            (format str "  $line SetWidth ~a~%" linewidth)
+            (format str "  $line SetLegendVisibility 0~%~%") )) ) )
     (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 1)
     (format str "  $line SetInputData ~a 0 1~%" table-name)
     (format str "  $line SetColor ~a ~a ~a 255 ~%"
