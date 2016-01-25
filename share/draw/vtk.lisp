@@ -188,7 +188,10 @@
     (format nil "  ~a SetFlyModeToOuterEdges~%" can)
     (format nil "  ~a SetFontFactor 0.8~%" can)
     (format nil "  ~a SetAxisTitleTextProperty ~a~%" can tn)
-    (format nil "  ~a SetAxisLabelTextProperty ~a~%" can tn)))
+    (format nil "  ~a SetAxisLabelTextProperty ~a~%" can tn)
+    (format nil "  ~a SetXLabel \"~a\"~%" can (get-option '$xlabel))
+    (format nil "  ~a SetYLabel \"~a\"~%" can (get-option '$ylabel))
+    (format nil "  ~a SetZLabel \"~a\"~%~%" can (get-option '$zlabel)) ))
 
 (defun vtkrenderer3d-code (rn an on bgcol af cn rv rh)
   (let* ((k 0.0174532925199433) ; %pi/180
@@ -1454,7 +1457,6 @@
             (format str "~a InsertValue 1 0.0~%" impy)
             (format str "~a AddColumn ~a~%" tbl impx)
             (format str "~a AddColumn ~a~%" tbl impy)
-
             (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
             (format str "  $line SetInputData ~a 0 1~%" tbl)
             (format str "  $line SetColor ~a ~a ~a 255 ~%"
@@ -2833,6 +2835,12 @@
                 ($point_size       (update-nonnegative-float '$point_size       ($rhs x)))
                 ($terminal         (update-terminal                             ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
+
+                ; options not yet implemented for 2D-vtk
+                ; they are included here to avoid error messages
+                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
+                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
+
                 (otherwise (merror "vtk2d: unknown option ~M " ($lhs x)))))
 
             ((setf obj (gethash (caar x) *vtk2d-graphic-objects*))
@@ -2927,6 +2935,17 @@
                 ($z_voxel          (update-positive-integer  '$z_voxel          ($rhs x)))
                 ($capping          (update-capping                              ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
+                ($xlabel           (update-string            '$xlabel           ($rhs x)))
+                ($ylabel           (update-string            '$ylabel           ($rhs x)))
+                ($zlabel           (update-string            '$zlabel           ($rhs x)))
+
+                ; options not yet implemented for 3D-vtk
+                ; they are included here to avoid error messages
+                ($surface_hide     (update-boolean-option    '$surface_hide     ($rhs x)))
+                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
+                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
+                ($zrange           (update-gr-option         '$yrange           ($rhs x)))
+
                 (otherwise (merror "vtk3d: unknown option ~M " ($lhs x)))))
 
             ((setf obj (gethash (caar x) *vtk3d-graphic-objects*))
