@@ -251,7 +251,7 @@ See also @mref{draw} and @mrefdot{gr3d}
 @deffn {Function} draw_file (@var{graphic option}, ..., @var{graphic object}, ...)
 
 Saves the current plot into a file. Accepted graphics options are:
-@code{terminal}, @code{dimensions}, @code{file_name} and @code{background_color}. 
+@code{terminal}, @code{dimensions} and @code{file_name}. 
 
 Example:
 
@@ -1386,7 +1386,10 @@ bounded by the function defined with object @code{explicit} and the
 bottom of the graphic window is filled with @code{fill_color}. When 
 @code{filled_func} contains a function expression, then the region bounded
 by this function and the function defined with object @code{explicit} 
-will be filled. By default, explicit functions are not filled. 
+will be filled. By default, explicit functions are not filled.
+
+A useful special case is @code{filled_func=0}, which generates the region 
+bond by the horizontal axis and the explicit function.
 
 This option affects only the 2d graphic object @code{explicit}.
 
@@ -1401,6 +1404,7 @@ graphic window.
              explicit(sin(x),x,0,10) )$
 @end example
 @figure{draw_filledfunc}
+
 Region bounded by an @code{explicit} object and the function
 defined by option @code{filled_func}. Note that the variable in
 @code{filled_func} must be the same as that used in @code{explicit}.

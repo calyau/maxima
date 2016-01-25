@@ -1,4 +1,4 @@
-@c English version 2016-01-16
+@c English version 2016-01-25
 @menu
 * Introducción a draw::
 * Funciones y variables para draw::
@@ -178,8 +178,7 @@ Véanse también @code{draw} y @code{gr3d}.
 @deffn {Función} draw_file (@var{Opción gráfica}, ..., @var{Opción gráfica}, ...)
 
 Almacena el gráfico actual en un fichero. Las opciones gráficas que
-acepta son: @code{terminal}, @code{dimensions},
-@code{file_name} y @code{background_color}. 
+acepta son: @code{terminal}, @code{dimensions} y@code{file_name}. 
 
 Ejemplo:
 
@@ -1168,6 +1167,9 @@ Si @code{filled_func} guarda la expresión de una función, entonces la
 región limitada por esta función y la definida en el objeto @code{explicit}
 será la que se rellene. Por defecto, las funciones explícitas
 no se rellenan.
+
+Un caso de especial utilidad es @code{filled_func=0}, con lo que se sombrea la
+región limitada por el eje horizontal y la función explícita.
 
 Esta opción sólo afecta al objeto gráfico bidimensional @code{explicit}.
 
