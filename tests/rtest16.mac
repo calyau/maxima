@@ -1975,3 +1975,8 @@ exp(10000/3),numer;
 4.449108642015706b1447$
 exp(10000/3),numer,%enumer;
 4.449108642014918b1447$
+
+/* Bug #3075: #3075 answer "3*false" from "integrate(3*asinh(x),x,-inf,inf)" */
+/* We can't check for the correct answer zero (yet), because Maxima can't solve integrate(asinh(x),x,-inf,inf). */
+is(integrate(3*asinh(x),x,-inf,inf)#3*false);
+true$
