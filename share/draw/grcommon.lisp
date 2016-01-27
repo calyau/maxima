@@ -136,11 +136,11 @@
       (gethash '$zaxis_width *gr-options*) 1
       (gethash '$zaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
       (gethash '$zaxis_color *gr-options*) "#000000"
-      (gethash '$xlabel *gr-options*) ""
+      (gethash '$xlabel *gr-options*)      "X"
       (gethash '$xlabel_secondary *gr-options*) ""
-      (gethash '$ylabel *gr-options*) ""
+      (gethash '$ylabel *gr-options*)      "Y"
       (gethash '$ylabel_secondary *gr-options*) ""
-      (gethash '$zlabel *gr-options*) ""
+      (gethash '$zlabel *gr-options*)      "Z"
       (gethash '$zlabel_rotate *gr-options*) '$auto
 
       ; point options

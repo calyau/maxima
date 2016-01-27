@@ -1,4 +1,4 @@
-@c English version 2016-01-25
+@c English version 2016-01-26
 @menu
 * Introducción a draw::
 * Funciones y variables para draw::
@@ -2707,10 +2707,10 @@ Véanse también @code{xaxis}, @code{xaxis_type} y @code{xaxis_color}.
 
 
 @defvr {Opción gráfica} xlabel
-Valor por defecto: @code{""} (cadena vacía)
+Valor por defecto: @code{"x"}
 
 La opción @code{xlabel} almacena una cadena con la
-etiqueta del eje @var{x}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @var{x}. Por defecto, el eje tiene etiqueta @code{"x"}.
 
 Puesto que ésta es una opción global, su posición dentro de la
 descripción de la escena no reviste importancia.
@@ -3140,10 +3140,10 @@ Véanse también @code{yaxis}, @code{yaxis_type} y @code{yaxis_color}.
 
 
 @defvr {Opción gráfica} ylabel
-Valor por defecto: @code{""} (cadena vacía)
+Valor por defecto: @code{"y"}
 
 La opción @code{ylabel} almacena una cadena con la
-etiqueta del eje @var{y}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @var{y}. Por defecto, el eje tiene etiqueta @code{"y"}.
 
 Puesto que ésta es una opción global, su posición dentro de la
 descripción de la escena no reviste importancia.
@@ -3478,10 +3478,10 @@ Véanse también @code{zaxis}, @code{zaxis_type} y @code{zaxis_color}.
 
 
 @defvr {Opción gráfica} zlabel
-Valor por defecto: @code{""} (cadena vacía)
+Valor por defecto: @code{"z"}
 
 La opción @code{zlabel} almacena una cadena con la
-etiqueta del eje @var{z}. Por defecto, el eje no tiene etiqueta.
+etiqueta del eje @var{z}. Por defecto, el eje tiene etiqueta @code{"z"}.
 
 Puesto que ésta es una opción global, su posición dentro de la
 descripción de la escena no reviste importancia.

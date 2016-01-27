@@ -3226,10 +3226,10 @@ See also @mrefcomma{xaxis}  @mref{xaxis_type} and @mrefdot{xaxis_color}
 
 @anchor{xlabel_draw}
 @defvr {Graphic option} xlabel
-Default value: @code{""} (empty string)
+Default value: @code{"x"}
 
 Option @code{xlabel}, a string, is the label for the @var{x} axis.
-By default, no label is written.
+By default, the axis is labeled with string @code{"x"}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -3763,10 +3763,10 @@ See also @mrefcomma{yaxis}  @mref{yaxis_type} and @mrefdot{yaxis_color}
 
 @anchor{ylabel_draw}
 @defvr {Graphic option} ylabel
-Default value: @code{""} (empty string)
+Default value: @code{"y"}
 
 Option @code{ylabel}, a string, is the label for the @var{y} axis.
-By default, no label is written.
+By default, the axis is labeled with string @code{"y"}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -4170,10 +4170,10 @@ See also @mrefcomma{zaxis}  @mref{zaxis_type} and @mrefdot{zaxis_color}
 
 @anchor{zlabel_draw}
 @defvr {Graphic option} zlabel
-Default value: @code{""} (empty string)
+Default value: @code{"z"}
 
 Option @code{zlabel}, a string, is the label for the @var{z} axis.
-By default, no label is written.
+By default, the axis is labeled with string @code{"z"}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
