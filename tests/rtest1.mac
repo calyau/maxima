@@ -587,3 +587,22 @@ exactly_1 (in_order(a, b, c), in_order(a, c, b), in_order(b, a, c),
  in_order(b, c, a), in_order(c, a, b), in_order(c, b, a));
 true;
 
+/* additional examples from mailing list 2016-01-28 tnx Stavros Macrakis */
+
+([[  sqrt(2), (1-sqrt(2))^x, log(1-sqrt(2))],
+  [  sqrt(2), (1-sqrt(2))^x, log(2)],
+  [  sqrt(2), (1-sqrt(2))^x, log(log(1-sqrt(2)))],
+  [  sqrt(2), (1-sqrt(2))^x, log(log(2))],
+  [  sqrt(2), (1-sqrt(2))^x, (1-sqrt(2))^(x+1)*log(2)*log(1-sqrt(2))],
+  [ -sqrt(2), (1-sqrt(2))^x, log(1-sqrt(2))],
+  [ -sqrt(2), (1-sqrt(2))^x, log(2)],
+  [ -sqrt(2), (1-sqrt(2))^x, log(log(1-sqrt(2)))],
+  [ -sqrt(2), (1-sqrt(2))^x, log(log(2))],
+  [ -sqrt(2), (1-sqrt(2))^x, (1-sqrt(2))^(x+1)*log(2)*log(1-sqrt(2))],
+  [1-sqrt(2), (1-sqrt(2))^x, (1-sqrt(2))^(x+1)*log(2)*log(1-sqrt(2))],
+  [1-sqrt(2), (1-sqrt(2))^x, log(1-sqrt(2))],
+  [1-sqrt(2), (1-sqrt(2))^x, log(2)],
+  [1-sqrt(2), (1-sqrt(2))^x, log(log(1-sqrt(2)))],
+  [1-sqrt(2), (1-sqrt(2))^x, log(log(2))]],
+ map (lambda ([l], apply (exactly_1, listify (permutations (l)))), %%));
+[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
