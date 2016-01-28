@@ -2159,7 +2159,7 @@
                  ((or ($bfloatp r1) ($bfloatp r2))
                   (exptrl r1 r2))
 		 (t
-                  (exp (* r2 (log r1)))))))
+                  (exptb %e-val (* r2 (log r1)))))))
 	((floatp r2) (list '(mexpt simp) r1 r2))
 	((integerp r2)
 	 (cond ((minusp r2)

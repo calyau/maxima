@@ -1967,3 +1967,16 @@ integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x);
 [log(sec(x)),-log(csc(x)+cot(x)),log(sec(x)+tan(x)),log(sin(x)),log(cosh(x)),log(sinh(x)),log(tanh(x/2))]$
 integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x),logabs;
 [log(abs(sec(x))),-log(abs(csc(x)+cot(x))),log(abs(sec(x)+tan(x))),log(abs(sin(x))),log(cosh(x)),log(abs(sinh(x))),log(abs(tanh(x/2)))]$
+
+/* Bug #3081: abs(...) -> "bfloat: attempted conversion of floating-point infinity." */
+abs(%e^(10000/3)+1);
+abs(%e^(10000/3)+1)$
+exp(10000/3),numer;
+4.449108642015706b1447$
+exp(10000/3),numer,%enumer;
+4.449108642014918b1447$
+
+/* Bug #3075: #3075 answer "3*false" from "integrate(3*asinh(x),x,-inf,inf)" */
+/* We can't check for the correct answer zero (yet), because Maxima can't solve integrate(asinh(x),x,-inf,inf). */
+is(integrate(3*asinh(x),x,-inf,inf)#3*false);
+true$

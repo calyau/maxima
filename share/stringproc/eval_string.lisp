@@ -20,6 +20,8 @@
 ;; eval_string ("(foo: 42, bar: foo^2 + baz)")  =>  baz + 1764
 ;; Complain if s is not a string.
 
+(in-package :maxima)
+
 (defun $eval_string (s)
   (cond
     ((stringp s)

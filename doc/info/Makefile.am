@@ -475,8 +475,8 @@ endif
 # fails conflicting with a subsequent "make html".
 all-local: html maxima.info maxima-index.lisp $(MAXIMA_CHM)
 
-maxima.info : maxima.texi
-	$(MAKEINFO) --split-size=1000000 maxima.texi
+maxima.info: $(top_srcdir)/doc/info/maxima.texi
+	$(MAKEINFO) --split-size=1000000 $<
 
 html: maxima.html contents.hhc
 
@@ -486,8 +486,8 @@ maxima-index.lisp: maxima.info build_index.pl
 maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	sh extract_categories.sh maxima
 
-maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
-	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima.texi
+maxima.pdf: $(top_srcdir)/doc/info/maxima.texi $(maxima_TEXINFOS) $(pdffigures)
+	$(TEXI2PDF) $(AM_V_texinfo) -o $@ $<
 	rm maxima.fns maxima.vr \
 	maxima.toc maxima.fn maxima.aux maxima.log
 

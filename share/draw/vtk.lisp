@@ -57,10 +57,10 @@
 (defvar *vtk-arrayX-counter* 0)
 (defvar *vtk-arrayY-counter* 0)
 (defvar *vtk-2dkey-counter* 0)
+(defvar *vtk-isolines-counter* 0)
 (defvar *lookup-tables* nil)
 (defvar *unitscale-already-defined* nil)
 (defvar *label-actors* nil)
-(defvar *stl-surfaces* nil)
 
 (defun get-appenddata-name ()
   (format nil "appenddata~a" (incf *vtk-appenddata-counter*)))
@@ -141,6 +141,8 @@
 (defun get-arrayY-name ()
   (format nil "arrayY~a" (incf *vtk-arrayY-counter*)))
 
+(defun get-isolines-name ()
+  (format nil "isolines~a" (incf *vtk-isolines-counter*)))
 
 
 (defun vtkappendpolydata-code (an ff)
@@ -164,6 +166,14 @@
     (format nil "vtkPolyDataMapper ~a~%" mn)
     (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" mn fn) ))
 
+;; Isolines mapper
+(defun vtkpolydatamapper2-code (mn sn fn in)
+  (concatenate 'string
+    (format nil "vtkPolyDataMapper ~a~%" mn)
+    (format nil "  [~a GetPointData] SetActiveScalars name~a~%" sn fn)
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" mn in)
+    (format nil "  ~a ScalarVisibilityOn~%" mn)  ))
+
 (defun vtktextproperty-code (tn)
   (concatenate 'string
     (format nil "vtkTextProperty ~a~%" tn)
@@ -177,7 +187,10 @@
     (format nil "  ~a SetFlyModeToOuterEdges~%" can)
     (format nil "  ~a SetFontFactor 0.8~%" can)
     (format nil "  ~a SetAxisTitleTextProperty ~a~%" can tn)
-    (format nil "  ~a SetAxisLabelTextProperty ~a~%" can tn)))
+    (format nil "  ~a SetAxisLabelTextProperty ~a~%" can tn)
+    (format nil "  ~a SetXLabel \"~a\"~%" can (get-option '$xlabel))
+    (format nil "  ~a SetYLabel \"~a\"~%" can (get-option '$ylabel))
+    (format nil "  ~a SetZLabel \"~a\"~%~%" can (get-option '$zlabel)) ))
 
 (defun vtkrenderer3d-code (rn an on bgcol af cn rv rh)
   (let* ((k 0.0174532925199433) ; %pi/180
@@ -298,7 +311,8 @@
     (format str "vtkFloatArray ~a~%" fan)
     (loop for k from 0 below n do
       (format str "  ~a InsertNextValue ~a~%" fan (aref values k)))
-    (format str "  [~a GetPointData] SetScalars ~a~%" sn fan)
+    (format str "  ~a SetName name~a~%" fan fan)
+    (format str "  [~a GetPointData] AddArray ~a~%" sn fan)
     str))
 
 (defun vtkglyph3d-code (fn sn pdn)
@@ -355,12 +369,30 @@
         (format nil "  [~a GetProperty] EdgeVisibilityOn~%  [~a GetProperty] SetEdgeColor 0 0 0~%" an an)
         (format nil "~%")) )))
 
+;; Isolines actor
+(defun vtkactor2-code (an mn lw)
+  (concatenate 'string
+    (format nil "vtkActor ~a~%" an)
+    (format nil "  ~a SetMapper ~a~%" an mn)
+    (format nil "  #    [~a GetProperty] SetColor 1.0 0.0 0.0~%" an)
+    (format nil "  [~a GetProperty] SetLineWidth ~a~%" an lw) ))
+
 (defun vtktubefilter-code (tn fn lt)
   (concatenate 'string
     (format nil "vtkTubeFilter ~a~%" tn)
     (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" tn fn)
     (format nil "  ~a SetNumberOfSides ~a~%" tn (- lt))
     (format nil "  ~a SetRadius ~a~%" tn (get-option '$line_width)) ))
+
+(defun vtkContourFilter-code (in fn)
+  (concatenate 'string
+    (format nil "vtkContourFilter ~a~%" in)
+    (format nil "  ~a SetInputConnection [~a GetOutputPort]~%" in fn)
+    (format nil "  eval ~a GenerateValues 10 [[~a GetOutput] GetScalarRange]~%" in fn)
+    (format nil "  #    ~a GenerateValues 5 0.0 1.0~%" in)
+    (format nil "  #    ~a ComputeScalarsOn~%" in)
+    (format nil "  #    ~a ComputeGradientsOff~%" in)
+    (format nil "  #    ~a SetValue 0 0.5~%~%" in) ) )
 
 (defun vtkrendererwindow-code (ns)
   (let* ((dim  (get-option '$dimensions))
@@ -456,24 +488,19 @@
        ((eq terminal '$screen)
           (format nil "~a~%~a~%~a~%~a~%"
             "vtkRenderWindowInteractor iren"
-            "   iren SetRenderWindow renWin"
-            "   iren Initialize"
-            "   iren Start"))
+            "  iren SetRenderWindow renWin"
+            "  iren Initialize"
+            "  iren Start"))
        ((eq terminal '$stl)
-          (let ((str (make-array 0 
-                      :element-type 'character 
-                      :adjustable t 
-                      :fill-pointer 0)))
-            (loop for f in *stl-surfaces* do
-              (format str "vtkTriangleFilter triangulator~a~%" f)
-              (format str "  triangulator~a SetInputConnection [filter~a GetOutputPort]~%" f f)
-              (format str "vtkSTLWriter stl~a~%" f)
-              (format str "  stl~a SetInputConnection [triangulator~a GetOutputPort]~%" f f)
-              (format str "  stl~a SetFileName \"~a~a.stl\"~%" f filename f)
-              (format str "  stl~a Write~%~%" f) )
-            (format str "vtkCommand DeleteAllObjects~%")
-            (format str "exit~%~%")
-          str) )
+          (format nil "~a~%~a~%~a~%~a~%~a~a~a~%~a~%~a~%~a~%"
+            "vtkTriangleFilter triangulator"
+            "  triangulator SetInputConnection [appenddata1 GetOutputPort]"
+            "vtkSTLWriter stl"
+            "  stl SetInputConnection [triangulator GetOutputPort]"
+            "  stl SetFileName \"" filename ".stl\"" 
+            "  stl Write"
+            "vtkCommand DeleteAllObjects"
+            "exit" ))
        (t
           (merror "draw: unknown terminal for vtk")))))
 
@@ -658,18 +685,17 @@
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: cone center must be a list of three numbers"))
+          (merror "draw3d: cone center must be a list of three numbers"))
     (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: cone radius must be a number equal or greater than zero"))
+              (<= frad 0.0))
+          (merror "draw3d: cone radius must be a number greater than zero"))
     (when (or (not (floatp fhei))
-              (< fhei 0.0))
-          (merror "vtk3d: cone height must be a number equal or greater than zero"))
+              (<= fhei 0.0))
+          (merror "draw3d: cone height must be a number greater than zero"))
     (when (or (not ($listp fdir))
               (not (= ($length fdir) 3))
               (not (every #'floatp (rest fdir))) )
-          (merror "vtk3d: cone direction must be a list of three numbers"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+          (merror "draw3d: cone direction must be a list of three numbers"))
     (if (first capping)
       (setf capn 1)
       (setf capn 0))
@@ -696,6 +722,123 @@
 
 
 
+;; 3d: prism(center, n, edgepoint, height, direction)
+;; --------------------------------------------------
+
+; rotates point (x,y,z) rad radians around the line with unitary direction
+; vector (u,v,w) containing point (a,b,c)
+(defun rotate (x y z a b c u v w rad)
+    (list
+      (+ (* (cos rad) x)
+         (* ($sin rad) (+ (* -1 c v) (* b w) (* -1 w y) (* v z)))
+         (* (+ 1 (* -1 ($cos rad)))
+            (+ (* a (+ (expt v 2) (expt w 2)))
+               (* -1 u (+ (* b v) (* c w) (* -1 u x) (* -1 v y) (* -1 w z)))))) 
+      (+ (* ($cos rad) y)
+         (* ($sin rad) (+ (* c u) (* -1 a w) (* w x) (* -1 u z)))
+         (* (+ 1 (* -1 ($cos rad)))
+            (+ (* b (+ (expt u 2) (expt w 2)))
+               (* -1 v (+ (* a u) (* c w) (* -1 u x) (* -1 v y) (* -1 w z)))))) 
+      (+ (* ($sin rad) (+ (* -1 b u) (* a v) (* -1 v x) (* u y)))
+         (* ($cos rad) z)
+         (* (+ 1 (* -1 ($cos rad)))
+            (+ (* c (+ (expt u 2) (expt v 2)))
+               (* -1 w (+ (* a u) (* b v) (* -1 u x) (* -1 v y) (* -1 w z))))))   ))
+
+(defun vtk3d-prism (cen n edgp hei dir)
+  (let ((color         (get-option '$color))
+        (opacity       (get-option '$opacity))
+        (linewidth     (get-option '$line_width))
+        (wiredsurface  (get-option '$wired_surface))
+        (capping       (rest (get-option '$capping)))
+        (fcen  ($float cen))
+        (fedgp ($float edgp))
+        (fhei  ($float hei))
+        (fdir  ($float dir))
+        (source-name    (get-source-name))
+        (points-name    (get-points-name))
+        (cellarray-name (get-cellarray-name))
+        (mapper-name    (get-mapper-name))
+        (actor-name     (get-actor-name))
+        (trans-name     (get-trans-name))
+        (filter-name    (get-filter-name))
+        (ang (/ 6.283185307179586 n)) ; = 2*%pi/n
+        (xcount -1)
+        (ycount -1)
+        (zcount -1)
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
+        dirmod c1 c2 c3 d1 d2 d3 p1 p2 p3 du1 du2 du3 v v1 v2 v3 x y z)
+    (when (or (not ($listp fcen))
+              (not (= ($length fcen) 3))
+              (not (every #'floatp (rest fcen))) )
+          (merror "draw3d: prism center must be a list of three numbers"))
+    (when (or (not ($listp fedgp))
+              (not (= ($length fedgp) 3))
+              (not (every #'floatp (rest fedgp))) )
+          (merror "draw3d: point on prism edge must be a list of three numbers"))
+    (when (or (not (floatp fhei))
+              (<= fhei 0.0))
+          (merror "draw3d: prism height must be a number greater than zero"))
+    (when (or (not ($listp fdir))
+              (not (= ($length fdir) 3))
+              (not (every #'floatp (rest fdir))) )
+          (merror "draw3d: cylinder direction must be a list of three numbers"))
+    ; direction vector with module = height/2
+    (setf c1 (cadr fcen)  c2 (caddr fcen)  c3 (cadddr fcen)
+          p1 (cadr fedgp) p2 (caddr fedgp) p3 (cadddr fedgp)
+          d1 (cadr fdir)  d2 (caddr fdir)  d3 (cadddr fdir))
+    (setf dirmod (sqrt (+ (* d1 d1) (* d2 d2) (* d3 d3))))
+    (when (= dirmod 0.0)
+      (setf d1 0 d2 0 d3 1 dirmod 1))
+    (setf du1 (/ (* d1 fhei) (* 2 dirmod))
+          du2 (/ (* d2 fhei) (* 2 dirmod))
+          du3 (/ (* d3 fhei) (* 2 dirmod)))
+    ; intersection between edge and perpendicular plane passing through center:
+    ; linsolve([d1*v1+d2*v2+d3*v3=d1*c1+d2*c2+d3*c3,
+    ;           d2*v1-d1*v2      =d2*p1-d1*p2,
+    ;                 d3*v2-d2*v3=d3*p2-d2*p3], [v1,v2,v3]);
+    (let ((den (* dirmod dirmod)))
+      (setf v1 (/ (+ (* c1 d1 d1) (* c2 d1 d2) (* c3 d1 d3) (* d2 d2 p1) (* d3 d3 p1) (* -1 d1 d2 p2) (* -1 d1 d3 p3))
+                  den)
+            v2 (/ (+ (* c1 d1 d2) (* c2 d2 d2) (* c3 d2 d3) (* -1 d1 d2 p1) (* d1 d1 p2) (* d3 d3 p2) (* -1 d2 d3 p3))
+                  den)
+            v3 (/ (+ (* c1 d1 d3) (* c2 d2 d3) (* c3 d3 d3) (* -1 d1 d3 p1) (* -1 d2 d3 p2) (* d1 d1 p3) (* d2 d2 p3)) 
+                  den)))
+    ; rotate n times 2 pi/n and save the vertices of the lateral rectangles
+    (setf x (make-array (* (+ 2 (count t capping)) (+ n 1) ) :element-type 'flonum))
+    (setf y (make-array (* (+ 2 (count t capping)) (+ n 1) ) :element-type 'flonum))
+    (setf z (make-array (* (+ 2 (count t capping)) (+ n 1) ) :element-type 'flonum))
+    (loop for s from 0 to n do
+      ; bottom capping?
+      (when (equal (second capping) t)
+        (setf (aref x (incf xcount)) (- c1 du1))
+        (setf (aref y (incf ycount)) (- c2 du2))
+        (setf (aref z (incf zcount)) (- c3 du3)))
+      (setf v (rotate v1 v2 v3 c1 c2 c3 (/ d1 dirmod) (/ d2 dirmod) (/ d3 dirmod) (* s ang)) )
+      (setf (aref x (incf xcount)) (- (first v) du1))
+      (setf (aref y (incf ycount)) (- (second v) du2))
+      (setf (aref z (incf zcount)) (- (third v) du3))
+      (setf (aref x (incf xcount)) (+ (first v) du1))
+      (setf (aref y (incf ycount)) (+ (second v) du2))
+      (setf (aref z (incf zcount)) (+ (third v) du3))
+      ; top capping?
+      (when (equal (first capping) t)
+        (setf (aref x (incf xcount)) (+ c1 du1))
+        (setf (aref y (incf ycount)) (+ c2 du2))
+        (setf (aref z (incf zcount)) (+ c3 du3))) ) ; end loop
+
+    ; tcl-vtk code
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid (+ 2 (count t capping)) (+ n 1))))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+    str))
+
+
+
 ;; cylinder(center, radius, height, direction)
 ;; -------------------------------------------
 (defun vtk3d-cylinder (cen rad hei dir)
@@ -717,18 +860,17 @@
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: cylinder center must be a list of three numbers"))
+          (merror "draw3d: cylinder center must be a list of three numbers"))
     (when (or (not (floatp fhei))
-              (< fhei 0.0))
-          (merror "vtk3d: cylinder height must be a number equal or greater than zero"))
+              (<= fhei 0.0))
+          (merror "draw3d: cylinder height must be a number greater than zero"))
     (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: cylinder radius must be a number equal or greater than zero"))
+              (<= frad 0.0))
+          (merror "draw3d: cylinder radius must be a number greater than zero"))
     (when (or (not ($listp fdir))
               (not (= ($length fdir) 3))
               (not (every #'floatp (rest fdir))) )
-          (merror "vtk3d: cylinder direction must be a list of three numbers"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+          (merror "draw3d: cylinder direction must be a list of three numbers"))
     (if (first capping)
       (setf capn 1)
       (setf capn 0))
@@ -796,19 +938,18 @@
         (trans-name  (get-trans-name))
         (filter-name (get-filter-name)))
     (when (or (not (floatp fxlen))
-              (< fxlen 0.0))
-          (merror "vtk3d: cube x-length must be a real equal or greater than zero"))
+              (<= fxlen 0.0))
+          (merror "draw3d: cube x-length must be a number greater than zero"))
     (when (or (not (floatp fylen))
-              (< fylen 0.0))
-          (merror "vtk3d: cube y-length must be a real equal or greater than zero"))
+              (<= fylen 0.0))
+          (merror "draw3d: cube y-length must be a number greater than zero"))
     (when (or (not (floatp fzlen))
-              (< fzlen 0.0))
-          (merror "vtk3d: cube z-length must be a real equal or greater than zero"))
+              (<= fzlen 0.0))
+          (merror "draw3d: cube z-length must be a number greater than zero"))
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: cube center must be a list of three floats"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+          (merror "draw3d: cube center must be a list of three floats"))
     (concatenate 'string
       (format nil "vtkCubeSource ~a~%" source-name)
       (format nil "  ~a SetXLength ~a~%" source-name fxlen)
@@ -843,11 +984,10 @@
     (when (or (not ($listp fcen))
               (not (= ($length fcen) 3))
               (not (every #'floatp (rest fcen))) )
-          (merror "vtk3d: sphere center must be a list of three numbers"))
+          (merror "draw3d: sphere center must be a list of three numbers"))
     (when (or (not (floatp frad))
-              (< frad 0.0))
-          (merror "vtk3d: sphere radius must be a number equal or greater than zero"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+              (<= frad 0.0))
+          (merror "draw3d: sphere radius must be a number greater than zero"))
     (concatenate 'string
       (format nil "vtkSphereSource ~a~%" source-name)
       (format nil "  ~a SetRadius ~a~%" source-name frad)
@@ -887,7 +1027,6 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fori fp1 fp2))
       (merror "vtk3d: arguments to parallelogram must be lists of floats"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (format str "vtkPlaneSource ~a~%" source-name)
     (setf xx (car   fori)
           yy (cadr  fori)
@@ -936,7 +1075,6 @@
     (when (notevery #'(lambda (z) (floatp z))
                     (append fv1 fv2 fv3))
       (merror "vtk3d: arguments to triangle must be lists of three numbers"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     ; vtk-code
     (format str "vtkPoints ~a~%" points-name)
     (format str "  ~a SetNumberOfPoints 3~%" points-name)
@@ -1328,10 +1466,7 @@
         (arrayX-name   (get-arrayX-name))
         (arrayY-name   (get-arrayY-name))
         (table-name    (get-table-name))
-        (str (make-array 0 
-                 :element-type 'character 
-                 :adjustable t 
-                 :fill-pointer 0))
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
         tmp x y ax ay n)
 
     (when (not (string= (string-trim " " key) ""))
@@ -1380,6 +1515,7 @@
     (transform-lists 2)
     (setf ax (make-array n :element-type 'flonum :initial-contents x)
           ay (make-array n :element-type 'flonum :initial-contents y))
+
     ; tcl-vtk code
     (format str "vtkFloatArray ~a~%" arrayX-name)
     (format str "  ~a SetName \"~a\"~%" arrayX-name arrayX-name)
@@ -1390,22 +1526,50 @@
       (format str "~a InsertNextValue ~a~%" arrayY-name (aref ay i))  )
     (format str "vtkTable ~a~%" table-name)
     (format str "  ~a AddColumn ~a~%" table-name arrayX-name)
-    (format str "  ~a AddColumn ~a~%" table-name arrayY-name)
-    (when (equal pointsjoined t)
-      (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 0)
-      (format str "  $line SetInputData ~a 0 1~%" table-name)
-      (format str "  $line SetColor ~a ~a ~a 255 ~%"
-        (round (* 255 (first color)))
-        (round (* 255 (second color)))
-        (round (* 255 (third color))) )
-      (format str "  $line SetWidth ~a~%" linewidth)
-      (format str "  $line SetLegendVisibility 0~%")
-      (format str "  $line SetMarkerStyle ~a~%" 0)
-      (format str "  eval [$line GetPen] SetLineType ~a~%"
-        (case linetype ; translate some gnuplot codes into vtk codes
-          (0 3)
-          (6 4)
-          (otherwise linetype) ) ) )
+    (format str "  ~a AddColumn ~a~%~%" table-name arrayY-name)
+    (cond
+      ((equal pointsjoined t)
+        (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 0)
+        (format str "  $line SetInputData ~a 0 1~%" table-name)
+        (format str "  $line SetColor ~a ~a ~a 255 ~%"
+          (round (* 255 (first color)))
+          (round (* 255 (second color)))
+          (round (* 255 (third color))) )
+        (format str "  $line SetWidth ~a~%" linewidth)
+        (format str "  $line SetLegendVisibility 0~%")
+        (format str "  $line SetMarkerStyle ~a~%" 0)
+        (format str "  eval [$line GetPen] SetLineType ~a~%"
+          (case linetype ; translate some gnuplot codes into vtk codes
+            (0 3)
+            (6 4)
+            (otherwise linetype) ) ))
+      ((equal pointsjoined '$impulses)
+        (let (tbl impx impy)
+          (loop for i from 0 below n do
+            (setf tbl (get-table-name)
+                  impx (get-arrayX-name)
+                  impy (get-arrayY-name))
+            (format str "vtkTable ~a~%" tbl)
+            (format str "vtkFloatArray ~a~%" impx)
+            (format str "  ~a SetNumberOfTuples 2~%" impx)
+            (format str "  ~a SetName \"~a\"~%" impx impx)
+            (format str "vtkFloatArray ~a~%" impy)
+            (format str "  ~a SetNumberOfTuples 2~%" impy)
+            (format str "  ~a SetName \"~a\"~%" impy impy)
+            (format str "~a InsertValue 0 [[~a GetColumn 0] GetValue ~a]~%" impx table-name i)
+            (format str "~a InsertValue 1 [[~a GetColumn 0] GetValue ~a]~%" impx table-name i)
+            (format str "~a InsertValue 0 [[~a GetColumn 1] GetValue ~a]~%" impy table-name i)
+            (format str "~a InsertValue 1 0.0~%" impy)
+            (format str "~a AddColumn ~a~%" tbl impx)
+            (format str "~a AddColumn ~a~%" tbl impy)
+            (format str "set line [chart~a AddPlot 0]~%" *vtk-chart-counter*)
+            (format str "  $line SetInputData ~a 0 1~%" tbl)
+            (format str "  $line SetColor ~a ~a ~a 255 ~%"
+              (round (* 255 (first color)))
+              (round (* 255 (second color)))
+              (round (* 255 (third color))) )
+            (format str "  $line SetWidth ~a~%" linewidth)
+            (format str "  $line SetLegendVisibility 0~%~%") )) ) )
     (format str "set line [chart~a AddPlot ~a]~%" *vtk-chart-counter* 1)
     (format str "  $line SetInputData ~a 0 1~%" table-name)
     (format str "  $line SetColor ~a ~a ~a 255 ~%"
@@ -1658,13 +1822,13 @@
          (source-name    (get-source-name))
          (points-name    (get-points-name))
          (cellarray-name (get-cellarray-name))
-         (floatarray-name (get-floatarray-name))
          (mapper-name    (get-mapper-name))
          (actor-name     (get-actor-name))
          (trans-name     (get-trans-name))
          (filter-name    (get-filter-name))
          lookup-table-name
-         (output-string "")
+         isolines-name
+         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (xx 0.0) (uu 0.0)
          (yy 0.0) (vv 0.0)
          (zz 0.0)
@@ -1672,18 +1836,27 @@
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
+         (scalars nil)   ; used for coloring
+         (floatarray-name (get-floatarray-name))
          (scalars-count -1)
          (minscalar most-positive-double-float)
          (maxscalar most-negative-double-float)
-         newscalar slope scalars
-         f1 f2 f3 x y z)
+         (scalars2 nil) ; used for isolines
+         floatarray2-name
+         (scalars2-count -1)
+         (minscalar2 most-positive-double-float)
+         (maxscalar2 most-negative-double-float)
+         mapper2-name actor2-name
+         newscalar slope f1 f2 f3 x y z)
     (check-enhanced3d-model "parametric_surface" '(0 2 3 99))
+    (check-isolines-model "parametric_surface" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
+    (when (= *draw-isolines-type* 99)
+       (update-isolines-expression (list '(mlist) par1 par2)))
     (when (or (< umax umin)
               (< vmax vmin))
        (merror "vtk3d (parametric_surface): illegal range"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setq f1 (coerce-float-fun xfun `((mlist) ,par1 ,par2)))
     (setq f2 (coerce-float-fun yfun `((mlist) ,par1 ,par2)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par1 ,par2)))
@@ -1692,6 +1865,8 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
+    (when (> *draw-isolines-type* 0)
+      (setf scalars2 (make-array (* nx ny) :element-type 'flonum)))
     (loop for j below ny
            initially (setf vv vmin)
            do (setf uu umin)
@@ -1700,6 +1875,11 @@
                   (setf xx (funcall f1 uu vv))
                   (setf yy (funcall f2 uu vv))
                   (setf zz (funcall f3 uu vv))
+                  ; geometric transformation
+                  (transform-point 3)
+                  (setf (aref x (incf count)) xx)
+                  (setf (aref y count) yy)
+                  (setf (aref z count) zz)
                   ; check texture model
                   (case *draw-enhanced3d-type*
                     ((2 99) (setf newscalar (funcall *draw-enhanced3d-fun* uu vv))
@@ -1716,38 +1896,71 @@
                          ((> newscalar maxscalar)
                           (setf maxscalar newscalar)))
                        (setf (aref scalars (incf scalars-count)) newscalar)) )
-                  (transform-point 3)
-                  (setf (aref x (incf count)) xx)
-                  (setf (aref y count) yy)
-                  (setf (aref z count) zz)
+                  ; check isolines model
+                  (case *draw-isolines-type*
+                    ((2 99) (setf newscalar (funcall *draw-isolines-fun* uu vv))
+                            (cond
+                              ((< newscalar minscalar2)
+                                (setf minscalar2 newscalar))
+                              ((> newscalar maxscalar2)
+                                (setf maxscalar2 newscalar)))
+                            (setf (aref scalars2 (incf scalars2-count)) newscalar))
+                    (3      (setf newscalar (funcall *draw-isolines-fun* xx yy zz))
+                            (cond
+                              ((< newscalar minscalar2)
+                                (setf minscalar2 newscalar))
+                              ((> newscalar maxscalar2)
+                                (setf maxscalar2 newscalar)))
+                            (setf (aref scalars2 (incf scalars2-count)) newscalar)) )
                   (setq uu (+ uu epsu)))
            (setq vv (+ vv epsv)))
+    ; rescale array of scalars to interval [0,1]
     (if (< minscalar maxscalar)
       (setf slope (/ 1.0 (- maxscalar minscalar)))
       (setf slope 0.0))
-    ; rescale array of scalars to interval [0,1]
     (loop for s from 0 below (length scalars) do
       (setf (aref scalars s) (* slope (- (aref scalars s) minscalar))))
-    (let ((lut (check-lookup-table)))
-      (setf lookup-table-name (car lut))
-      (setf output-string (cadr lut)))
+    (when (> *draw-enhanced3d-type* 0)
+      (let ((lut (check-lookup-table)))
+        (setf lookup-table-name (car lut))
+        (format str "~a~%" (cadr lut))))
+    ; rescale array of scalars2 to interval [0,1].
+    (if (< minscalar2 maxscalar2)
+      (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars2) do
+      (setf (aref scalars2 s) (* slope (- (aref scalars2 s) minscalar2))))
 
     ; tcl-vtk code
-    (setf output-string
-      (concatenate 'string
-        output-string
-        (format nil "vtkPolyData ~a~%" source-name)
-        (vtkpoints-code points-name source-name x y z)
-        (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny))
-        (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))
-        (vtktransform-code trans-name)
-        (vtktransformpolydatafilter-code filter-name source-name trans-name t)
-        (vtkpolydatamapper-code mapper-name filter-name)
-        (if (> *draw-enhanced3d-type* 0)
-          (format nil "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
-          "")
-        (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface)))))
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny)))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+
+    (when (> *draw-enhanced3d-type* 0)
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
+      (format str "  ~a SetScalarModeToUsePointFieldData~%" mapper-name)
+      (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
+      (setf floatarray-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
+      ; remove next string if we want solid color when enhanced3d is not active
+      (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
+
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+
+    (when (> *draw-isolines-type* 0)
+      (setf floatarray2-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray2-name source-name scalars2))
+      (setf isolines-name (get-isolines-name))
+      (format str "~a~%" (vtkContourFilter-code isolines-name filter-name))
+      (setf mapper2-name (get-mapper-name))
+      (format str "~a" (vtkpolydatamapper2-code mapper2-name source-name floatarray2-name isolines-name))
+      (setf actor2-name (get-actor-name))
+      (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
+
+    str ))
 
 
 
@@ -1793,13 +2006,13 @@
          (source-name     (get-source-name))
          (points-name     (get-points-name))
          (cellarray-name  (get-cellarray-name))
-         (floatarray-name (get-floatarray-name))
          (mapper-name     (get-mapper-name))
          (actor-name      (get-actor-name))
          (trans-name      (get-trans-name))
          (filter-name     (get-filter-name))
          lookup-table-name
-         (output-string "")
+         isolines-name
+         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (xx 0.0) (uu 0.0)
          (yy 0.0) (vv 0.0)
          (zz 0.0)
@@ -1807,21 +2020,32 @@
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
+         (scalars nil)   ; used for coloring
+         floatarray-name
          (scalars-count -1)
          (minscalar most-positive-double-float)
          (maxscalar most-negative-double-float)
-         (scalars nil)
+         (scalars2 nil) ; used for isolines
+         floatarray2-name
+         (scalars2-count -1)
+         (minscalar2 most-positive-double-float)
+         (maxscalar2 most-negative-double-float)
+         mapper2-name actor2-name 
          newscalar slope x y z)
     (check-enhanced3d-model "explicit" '(0 2 3 99))
+    (check-isolines-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
+    (when (= *draw-isolines-type* 99)
+       (update-isolines-expression (list '(mlist) par1 par2)))
     (setq fcn (coerce-float-fun fcn `((mlist) ,par1 ,par2)))
     (setf x (make-array (* nx ny) :element-type 'flonum)
           y (make-array (* nx ny) :element-type 'flonum)
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+    (when (> *draw-isolines-type* 0)
+      (setf scalars2 (make-array (* nx ny) :element-type 'flonum)))
     (loop for j below ny
            initially (setf vv fminval2)
            do (setf uu fminval1)
@@ -1830,6 +2054,11 @@
                   (setf xx uu
                         yy vv)
                   (setf zz (funcall fcn xx yy))
+                  ; geometric transformation
+                  (transform-point 3)
+                  (setf (aref x (incf count)) xx)
+                  (setf (aref y count) yy)
+                  (setf (aref z count) zz)
                   ; check texture model
                   (case *draw-enhanced3d-type*
                     ((2 99) (setf newscalar (funcall *draw-enhanced3d-fun* xx yy))
@@ -1846,39 +2075,72 @@
                               ((> newscalar maxscalar)
                                 (setf maxscalar newscalar)))
                             (setf (aref scalars (incf scalars-count)) newscalar)) )
-                  (transform-point 3)
-                  (setf (aref x (incf count)) xx)
-                  (setf (aref y count) yy)
-                  (setf (aref z count) zz)
+                  ; check isolines model
+                  (case *draw-isolines-type*
+                    ((2 99) (setf newscalar (funcall *draw-isolines-fun* xx yy))
+                            (cond
+                              ((< newscalar minscalar2)
+                                (setf minscalar2 newscalar))
+                              ((> newscalar maxscalar2)
+                                (setf maxscalar2 newscalar)))
+                            (setf (aref scalars2 (incf scalars2-count)) newscalar))
+                    (3      (setf newscalar (funcall *draw-isolines-fun* xx yy zz))
+                            (cond
+                              ((< newscalar minscalar2)
+                                (setf minscalar2 newscalar))
+                              ((> newscalar maxscalar2)
+                                (setf maxscalar2 newscalar)))
+                            (setf (aref scalars2 (incf scalars2-count)) newscalar)) )
+
                   (setq uu (+ uu epsx)))
            (setq vv (+ vv epsy)))
+    ; rescale array of scalars to interval [0,1]
     (if (< minscalar maxscalar)
       (setf slope (/ 1.0 (- maxscalar minscalar)))
       (setf slope 0.0))
-    ; rescale array of scalars to interval [0,1]
     (loop for s from 0 below (length scalars) do
       (setf (aref scalars s) (* slope (- (aref scalars s) minscalar))))
     (when (> *draw-enhanced3d-type* 0)
       (let ((lut (check-lookup-table)))
         (setf lookup-table-name (car lut))
-        (setf output-string (cadr lut))))
+        (format str "~a~%" (cadr lut))))
+    ; rescale array of scalars2 to interval [0,1].
+    (if (< minscalar2 maxscalar2)
+      (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars2) do
+      (setf (aref scalars2 s) (* slope (- (aref scalars2 s) minscalar2))))
 
     ; tcl-vtk code
-    (setf output-string
-      (concatenate 'string
-        output-string
-        (format nil "vtkPolyData ~a~%" source-name)
-        (vtkpoints-code points-name source-name x y z)
-        (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny))
-        (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))
-        (vtktransform-code trans-name)
-        (vtktransformpolydatafilter-code filter-name source-name trans-name t)
-        (vtkpolydatamapper-code mapper-name filter-name)
-        (if (> *draw-enhanced3d-type* 0)
-          (format nil "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
-          "")
-        (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))) ) )
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny)))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+
+    (when (> *draw-enhanced3d-type* 0)
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
+      (format str "  ~a SetScalarModeToUsePointFieldData~%" mapper-name)
+      (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
+      (setf floatarray-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
+      ; remove next string if we want solid color when enhanced3d is not active
+      (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
+
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+
+    (when (> *draw-isolines-type* 0)
+      (setf floatarray2-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray2-name source-name scalars2))
+      (setf isolines-name (get-isolines-name))
+      (format str "~a~%" (vtkContourFilter-code isolines-name filter-name))
+      (setf mapper2-name (get-mapper-name))
+      (format str "~a" (vtkpolydatamapper2-code mapper2-name source-name floatarray2-name isolines-name))
+      (setf actor2-name (get-actor-name))
+      (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
+
+    str ))
 
 
 
@@ -2033,8 +2295,8 @@
 
 
 
-;; elevation_grid(mat x0 y0 width height)
-;; --------------------------------------
+;; 3d: elevation_grid(mat x0 y0 width height)
+;; ------------------------------------------
 (defun vtk3d-elevation_grid (mat x0 y0 width height)
   (let* ((fx0 ($float x0))
          (fy0 ($float y0))
@@ -2053,18 +2315,27 @@
          (trans-name      (get-trans-name))
          (filter-name     (get-filter-name))
          lookup-table-name
-         (output-string "")
+         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (xi 0.0)
          (yi (+ fy0 fheight))
          (xx 0.0)
          (yy 0.0)
          (zz 0.0)
          (count -1)
+         (scalars nil)   ; used for coloring
+         floatarray-name
          (scalars-count -1)
          (minscalar most-positive-double-float)
          (maxscalar most-negative-double-float)
-         ny nx scalars newscalar dx dy slope x y z)
+         (scalars2 nil) ; used for isolines
+         floatarray2-name
+         (scalars2-count -1)
+         (minscalar2 most-positive-double-float)
+         (maxscalar2 most-negative-double-float)
+         mapper2-name actor2-name
+         ny nx newscalar dx dy slope x y z)
     (check-enhanced3d-model "elevation_grid" '(0 2 3))
+    (check-isolines-model   "elevation_grid" '(0 2 3))
     (when (null ($matrixp mat))
       (merror "draw3d (elevation_grid): Argument not recognized"))
     (setf nx (length (cdadr mat))
@@ -2076,13 +2347,19 @@
           z (make-array (* nx ny) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nx ny) :element-type 'flonum)))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
+    (when (> *draw-isolines-type* 0)
+      (setf scalars2 (make-array (* nx ny) :element-type 'flonum)))
     (loop for row on (cdr mat) by #'cdr do
        (setf xi fx0)
        (loop for col on (cdar row) by #'cdr do
           (setf xx xi
                 yy yi)
           (setf zz ($float (car col)))
+          ; geometric transformation
+          (transform-point 3)
+          (setf (aref x (incf count)) xx)
+          (setf (aref y count) yy)
+          (setf (aref z count) zz)
           ; check texture model
           (case *draw-enhanced3d-type*
             (2 (setf newscalar (funcall *draw-enhanced3d-fun* xx yy))
@@ -2099,43 +2376,76 @@
                  ((> newscalar maxscalar)
                    (setf maxscalar newscalar)))
                (setf (aref scalars (incf scalars-count)) newscalar)))
-          (transform-point 3)
-          (setf (aref x (incf count)) xx)
-          (setf (aref y count) yy)
-          (setf (aref z count) zz)
+          ; check isolines model
+          (case *draw-isolines-type*
+            (2 (setf newscalar (funcall *draw-isolines-fun* xx yy))
+               (cond
+                 ((< newscalar minscalar2)
+                   (setf minscalar2 newscalar))
+                 ((> newscalar maxscalar2)
+                   (setf maxscalar2 newscalar)))
+               (setf (aref scalars2 (incf scalars2-count)) newscalar))
+            (3 (setf newscalar (funcall *draw-isolines-fun* xx yy zz))
+               (cond
+                 ((< newscalar minscalar2)
+                   (setf minscalar2 newscalar))
+                 ((> newscalar maxscalar2)
+                   (setf maxscalar2 newscalar)))
+               (setf (aref scalars2 (incf scalars2-count)) newscalar)) )
           (setf xi (+ xi dx)))
        (setf yi (- yi dy)))
+    ; rescale array of scalars to interval [0,1]
     (if (< minscalar maxscalar)
       (setf slope (/ 1.0 (- maxscalar minscalar)))
       (setf slope 0.0))
-    ; rescale array of scalars to interval [0,1]
     (loop for s from 0 below (length scalars) do
       (setf (aref scalars s) (* slope (- (aref scalars s) minscalar))))
-    (let ((lut (check-lookup-table)))
-      (setf lookup-table-name (car lut))
-      (setf output-string (cadr lut)))
+    (when (> *draw-enhanced3d-type* 0)
+      (let ((lut (check-lookup-table)))
+        (setf lookup-table-name (car lut))
+        (format str "~a~%" (cadr lut))))
+    ; rescale array of scalars2 to interval [0,1].
+    (if (< minscalar2 maxscalar2)
+      (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars2) do
+      (setf (aref scalars2 s) (* slope (- (aref scalars2 s) minscalar2))))
 
     ; tcl-vtk code
-    (setf output-string
-      (concatenate 'string
-        output-string
-        (format nil "vtkPolyData ~a~%" source-name)
-        (vtkpoints-code points-name source-name x y z)
-        (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny))
-        (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))
-        (vtktransform-code trans-name)
-        (vtktransformpolydatafilter-code filter-name source-name trans-name t)
-        (vtkpolydatamapper-code mapper-name filter-name)
-        (if (> *draw-enhanced3d-type* 0)
-          (format nil "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
-          "")
-        (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))) ))
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nx ny)))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+
+    (when (> *draw-enhanced3d-type* 0)
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
+      (format str "  ~a SetScalarModeToUsePointFieldData~%" mapper-name)
+      (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
+      (setf floatarray-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
+      ; remove next string if we want solid color when enhanced3d is not active
+      (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
+
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+
+    (when (> *draw-isolines-type* 0)
+      (setf floatarray2-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray2-name source-name scalars2))
+      (setf isolines-name (get-isolines-name))
+      (format str "~a~%" (vtkContourFilter-code isolines-name filter-name))
+      (setf mapper2-name (get-mapper-name))
+      (format str "~a" (vtkpolydatamapper2-code mapper2-name source-name floatarray2-name isolines-name))
+      (setf actor2-name (get-actor-name))
+      (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
+
+    str ))
 
 
 
-;; implicit(expr,x,xmin,xmax,y,ymin,ymax,z,zmin,zmax)
-;; --------------------------------------------------
+;; 3d: implicit(expr,x,xmin,xmax,y,ymin,ymax,z,zmin,zmax)
+;; ------------------------------------------------------
 (defun build-surface-triangular-grid (ntri)
   (let ((poly nil)
         (cont -1)
@@ -2164,29 +2474,50 @@
         (actor-name      (get-actor-name))
         (trans-name      (get-trans-name))
         (filter-name     (get-filter-name))
+        lookup-table-name
+        isolines-name
+        (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
+        (scalars nil)   ; used for coloring
+        floatarray-name
+        (scalars-count -1)
         (minscalar most-positive-double-float)
         (maxscalar most-negative-double-float)
-        lookup-table-name
-        (output-string "")
-        vertices numvert scalars slope newscalar xx yy zz x y z)
+        (scalars2 nil) ; used for isolines
+        floatarray2-name
+        (scalars2-count -1)
+        (minscalar2 most-positive-double-float)
+        (maxscalar2 most-negative-double-float)
+        mapper2-name actor2-name 
+        vertices numvert slope newscalar xx yy zz x y z)
     (check-enhanced3d-model "implicit" '(0 3 99))
+    (check-isolines-model   "implicit" '(0 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2 par3)))
+    (when (= *draw-isolines-type* 99)
+       (update-isolines-expression (list '(mlist) par1 par2 par3)))
     (setf vertices (find-triangles expr par1 fxmin fxmax par2 fymin fymax par3 fzmin fzmax))
     (when (null vertices)
       (merror "draw3d (implicit): no surface within these ranges"))
-    (setf *stl-surfaces* (cons *vtk-filter-counter* *stl-surfaces*))
     (setf numvert (length vertices))
     (setf x (make-array numvert :element-type 'flonum :initial-contents (map 'list #'first vertices))
           y (make-array numvert :element-type 'flonum :initial-contents (map 'list #'second vertices))
           z (make-array numvert :element-type 'flonum :initial-contents (map 'list #'third vertices)))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array numvert :element-type 'flonum)))
+    (when (> *draw-isolines-type* 0)
+      (setf scalars2 (make-array numvert :element-type 'flonum)))
     (do ((nf 0 (1+ nf)))
         ((= nf numvert) 'done)
       (setf xx (aref x nf)
             yy (aref y nf)
             zz (aref z nf))
+      ; geometric transformation
+      (when (not (eq transform '$none))
+        (transform-point 3)
+        (setf (aref x nf) xx)
+        (setf (aref y nf) yy)
+        (setf (aref z nf) zz))
+      ; check texture model
       (when (> *draw-enhanced3d-type* 0)
         (setf newscalar (funcall *draw-enhanced3d-fun* xx yy zz))
         (cond
@@ -2195,37 +2526,61 @@
           ((> newscalar maxscalar)
              (setf maxscalar newscalar)))
         (setf (aref scalars nf) newscalar))
-      (when (not (eq transform '$none))
-        (transform-point 3)
-        (setf (aref x nf) xx)
-        (setf (aref y nf) yy)
-        (setf (aref z nf) zz)) )
+      ; check isolines model
+      (when (> *draw-isolines-type* 0)
+        (setf newscalar (funcall *draw-isolines-fun* xx yy zz))
+        (cond
+          ((< newscalar minscalar2)
+             (setf minscalar2 newscalar))
+          ((> newscalar maxscalar2)
+             (setf maxscalar2 newscalar)))
+        (setf (aref scalars2 nf) newscalar)) )
+    ; rescale array of scalars to interval [0,1]
     (if (< minscalar maxscalar)
       (setf slope (/ 1.0 (- maxscalar minscalar)))
       (setf slope 0.0))
-    ; rescale array of scalars to interval [0,1]
     (loop for s from 0 below (length scalars) do
       (setf (aref scalars s) (* slope (- (aref scalars s) minscalar))))
     (let ((lut (check-lookup-table)))
       (setf lookup-table-name (car lut))
-      (setf output-string (cadr lut)))
+      (format str "~a~%" (cadr lut)))
+    ; rescale array of scalars2 to interval [0,1].
+    (if (< minscalar2 maxscalar2)
+      (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars2) do
+      (setf (aref scalars2 s) (* slope (- (aref scalars2 s) minscalar2))))
 
     ; tcl-vtk code
-    (setf output-string
-      (concatenate 'string
-        output-string
-        (format nil "vtkPolyData ~a~%" source-name)
-        (vtkpoints-code points-name source-name x y z)
-        (vtkcellarray-code cellarray-name source-name 2 (build-surface-triangular-grid numvert))
-        (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))
-        (vtktransform-code trans-name)
-        (vtktransformpolydatafilter-code filter-name source-name trans-name t)
-        (vtkpolydatamapper-code mapper-name filter-name)
-        (if (> *draw-enhanced3d-type* 0)
-          (format nil "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
-          "")
-        (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))) ))
+    (format str "vtkPolyData ~a~%" source-name)
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-triangular-grid numvert)))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+
+    (when (> *draw-enhanced3d-type* 0)
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
+      (format str "  ~a SetScalarModeToUsePointFieldData~%" mapper-name)
+      (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
+      (setf floatarray-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
+      ; remove next string if we want solid color when enhanced3d is not active
+      (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
+
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+
+    (when (> *draw-isolines-type* 0)
+      (setf floatarray2-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray2-name source-name scalars2))
+      (setf isolines-name (get-isolines-name))
+      (format str "~a~%" (vtkContourFilter-code isolines-name filter-name))
+      (setf mapper2-name (get-mapper-name))
+      (format str "~a" (vtkpolydatamapper2-code mapper2-name source-name floatarray2-name isolines-name))
+      (setf actor2-name (get-actor-name))
+      (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
+
+    str ))
 
 
 
@@ -2325,21 +2680,28 @@
          (veps (/ vmax (- vgrid 1)))
          (nu (+ ugrid (count t capping)))
          (nv vgrid)
-         (count -1)        
-         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (source-name     (get-source-name))
          (points-name     (get-points-name))
          (cellarray-name  (get-cellarray-name))
-         (floatarray-name (get-floatarray-name))
          (trans-name      (get-trans-name))
          (filter-name     (get-filter-name))
          (mapper-name     (get-mapper-name))
          (actor-name      (get-actor-name))
+         lookup-table-name
+         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
+         (count -1)
+         (scalars nil)   ; used for coloring
+         floatarray-name
          (scalars-count -1)
          (minscalar most-positive-double-float)
          (maxscalar most-negative-double-float)
-         scalars newscalar tt
-         lookup-table-name
+         (scalars2 nil) ; used for isolines
+         floatarray2-name
+         (scalars2-count -1)
+         (minscalar2 most-positive-double-float)
+         (maxscalar2 most-negative-double-float)
+         mapper2-name actor2-name 
+         newscalar tt
          f1 f2 f3 radius
          cx cy cz nx ny nz
          ux uy uz vx vy vz
@@ -2354,8 +2716,11 @@
                         (list par)))
        (merror "draw3d (tube): non defined variable"))
     (check-enhanced3d-model "tube" '(0 1 3 99))
+    (check-isolines-model "tube" '(0 1 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par)))
+    (when (= *draw-isolines-type* 99)
+       (update-isolines-expression (list '(mlist) par)))
     (setq f1 (coerce-float-fun xfun `((mlist) ,par)))
     (setq f2 (coerce-float-fun yfun `((mlist) ,par)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par)))
@@ -2365,6 +2730,8 @@
           z (make-array (* nu nv) :element-type 'flonum))
     (when (> *draw-enhanced3d-type* 0)
       (setf scalars (make-array (* nu nv) :element-type 'flonum)))
+    (when (> *draw-isolines-type* 0)
+      (setf scalars2 (make-array (* nu nv) :element-type 'flonum)))
     (loop for j from 0 below ugrid do
       (setf tt (+ tmin (* j teps)))
       ; calculate center and radius of circle
@@ -2436,6 +2803,7 @@
         (setf xx (+ cx (* rcos ux) (* rsin vx))
               yy (+ cy (* rcos uy) (* rsin vy))
               zz (+ cz (* rcos uz) (* rsin vz)))
+        ; geometric translation
         (transform-point 3)
         (setf (aref x (incf count)) xx)
         (setf (aref y count) yy)
@@ -2452,6 +2820,18 @@
             ((> newscalar maxscalar)
                (setf maxscalar newscalar)))
           (setf (aref scalars (incf scalars-count)) newscalar)  )
+        ; check isolines model
+        (when (> *draw-isolines-type* 0)
+          (case *draw-isolines-type*
+            ((1 99)
+               (setf newscalar (funcall *draw-isolines-fun* tt)))
+            (3 (setf newscalar (funcall *draw-isolines-fun* xx yy zz))) )
+          (cond
+            ((< newscalar minscalar2)
+               (setf minscalar2 newscalar))
+            ((> newscalar maxscalar2)
+               (setf maxscalar2 newscalar)))
+          (setf (aref scalars2 (incf scalars2-count)) newscalar)  )
         (setf vv (+ vv veps))
         (when (> vv vmax) (setf vv vmax))  ) ) ; end both loops
     (vtk-check-tube-extreme 2 cx cy cz)
@@ -2464,18 +2844,43 @@
     (let ((lut (check-lookup-table)))
       (setf lookup-table-name (car lut))
       (format str "~a~%" (cadr lut)))
+    ; rescale array of scalars2 to interval [0,1].
+    (if (< minscalar2 maxscalar2)
+      (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
+      (setf slope 0.0))
+    (loop for s from 0 below (length scalars2) do
+      (setf (aref scalars2 s) (* slope (- (aref scalars2 s) minscalar2))))
 
     ; tcl-vtk code
     (format str "vtkPolyData ~a~%" source-name)
-    (format str "~a" (vtkpoints-code points-name source-name x y z))
-    (format str "~a" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nv nu)))
-    (format str "~a" (vtktransform-code trans-name))
-    (format str "~a" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
-    (format str "~a" (vtkpolydatamapper-code mapper-name filter-name))
+    (format str "~a~%" (vtkpoints-code points-name source-name x y z))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nu nv)))
+    (format str "~a~%" (vtktransform-code trans-name))
+    (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
+    (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
+
     (when (> *draw-enhanced3d-type* 0)
-      (format str "~a" (vtkfloatarray-code floatarray-name source-name scalars))
-      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name))
-    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface)) ))
+      (format str "  ~a SetLookupTable ~a~%" mapper-name lookup-table-name)
+      (format str "  ~a SetScalarModeToUsePointFieldData~%" mapper-name)
+      (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
+      (setf floatarray-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
+      ; remove next string if we want solid color when enhanced3d is not active
+      (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
+
+    (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+
+    (when (> *draw-isolines-type* 0)
+      (setf floatarray2-name (get-floatarray-name))
+      (format str "~a~%" (vtkfloatarray-code floatarray2-name source-name scalars2))
+      (setf isolines-name (get-isolines-name))
+      (format str "~a~%" (vtkContourFilter-code isolines-name filter-name))
+      (setf mapper2-name (get-mapper-name))
+      (format str "~a" (vtkpolydatamapper2-code mapper2-name source-name floatarray2-name isolines-name))
+      (setf actor2-name (get-actor-name))
+      (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
+
+    str ))
 
 
 
@@ -2530,6 +2935,12 @@
                 ($point_size       (update-nonnegative-float '$point_size       ($rhs x)))
                 ($terminal         (update-terminal                             ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
+
+                ; options not yet implemented for 2D-vtk
+                ; they are included here to avoid error messages
+                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
+                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
+
                 (otherwise (merror "vtk2d: unknown option ~M " ($lhs x)))))
 
             ((setf obj (gethash (caar x) *vtk2d-graphic-objects*))
@@ -2559,6 +2970,7 @@
 (setf (gethash '$cone               *vtk3d-graphic-objects*) 'vtk3d-cone
       (gethash '$cylinder           *vtk3d-graphic-objects*) 'vtk3d-cylinder
       (gethash '$cube               *vtk3d-graphic-objects*) 'vtk3d-cube
+      (gethash '$prism              *vtk3d-graphic-objects*) 'vtk3d-prism
       (gethash '$elevation_grid     *vtk3d-graphic-objects*) 'vtk3d-elevation_grid
       (gethash '$implicit           *vtk3d-graphic-objects*) 'vtk3d-implicit
       (gethash '$sphere             *vtk3d-graphic-objects*) 'vtk3d-sphere
@@ -2616,6 +3028,7 @@
                 ($point_type       (update-pointtype                            ($rhs x)))
                 ($point_size       (update-nonnegative-float '$point_size       ($rhs x)))
                 ($enhanced3d       (update-enhanced3d                           ($rhs x)))
+                ($isolines         (update-isolines                             ($rhs x)))
                 ($wired_surface    (update-boolean-option    '$wired_surface    ($rhs x)))
                 ($terminal         (update-terminal                             ($rhs x)))
                 ($x_voxel          (update-positive-integer  '$x_voxel          ($rhs x)))
@@ -2623,6 +3036,17 @@
                 ($z_voxel          (update-positive-integer  '$z_voxel          ($rhs x)))
                 ($capping          (update-capping                              ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
+                ($xlabel           (update-string            '$xlabel           ($rhs x)))
+                ($ylabel           (update-string            '$ylabel           ($rhs x)))
+                ($zlabel           (update-string            '$zlabel           ($rhs x)))
+
+                ; options not yet implemented for 3D-vtk
+                ; they are included here to avoid error messages
+                ($surface_hide     (update-boolean-option    '$surface_hide     ($rhs x)))
+                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
+                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
+                ($zrange           (update-gr-option         '$yrange           ($rhs x)))
+
                 (otherwise (merror "vtk3d: unknown option ~M " ($lhs x)))))
 
             ((setf obj (gethash (caar x) *vtk3d-graphic-objects*))
@@ -2692,10 +3116,10 @@
           *vtk-arrayX-counter* 0
           *vtk-arrayY-counter* 0
           *vtk-2dkey-counter* 0
+          *vtk-isolines-counter* 0
           *lookup-tables* nil
           *unitscale-already-defined* nil
-          *label-actors* nil
-          *stl-surfaces* nil)
+          *label-actors* nil)
     (setf largs (listify-arguments args))
     (dolist (x largs)
       (cond ((equal ($op x) "=")
@@ -2734,6 +3158,7 @@
 
     ; close script file
     (close cmdstorage)
+
     #+(or (and sbcl win32) (and ccl windows))
     ($system "vtk" gfn)
     #-(or (and sbcl win32) (and ccl windows))

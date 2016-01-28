@@ -17,6 +17,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)
+# the following option is used for nightly builds of the installer.
+# it builds the current Maxima/wxMaxima Git versions and also
+# sets the installation directory to C:\maxima-current
+option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 
 
@@ -48,10 +52,17 @@ set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
 set(SBCL_MD5      "29dc7210e794fce456ddde73b91ab6d2")
 
-# Get Maxima version from configure.ac
-file(STRINGS "${CMAKE_SOURCE_DIR}/../configure.ac" CONFIGUREAC REGEX "AC_INIT\\(.*\\)")
-string(REGEX REPLACE "AC_INIT\\(\\[maxima\\], \\[(.*)\\]\\)" "\\1" MAXIMAVERSION ${CONFIGUREAC})
-message(STATUS "Maxima version (from configure.ac): ${MAXIMAVERSION}")
+if(BUILD_CURRENT)
+    set(USE_WXMAXIMA_GIT YES)
+    set(MAXIMAVERSION "current")
+else()
+    # Get Maxima version from configure.ac
+    file(STRINGS "${CMAKE_SOURCE_DIR}/../configure.ac" CONFIGUREAC REGEX "AC_INIT\\(.*\\)")
+    string(REGEX REPLACE "AC_INIT\\(\\[maxima\\], \\[(.*)\\]\\)" "\\1" MAXIMAVERSION ${CONFIGUREAC})
+    message(STATUS "Maxima version (from configure.ac): ${MAXIMAVERSION}")
+endif()
+
+
 
 string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
 
@@ -95,7 +106,7 @@ externalproject_add(wxWidgets
   INSTALL_COMMAND ""
 )
 
-# build tcl/tk (required for xmaxima)
+# build tcl/tk (required for xmaxima and the Lisp selection tool)
 externalproject_add(tcl
   URL "${TCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
@@ -185,15 +196,14 @@ externalproject_add(maxima
   DEPENDS clisp sbcl
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
-  CONFIGURE_COMMAND sh -c "test -x configure || ./bootstrap"
+  CONFIGURE_COMMAND ./bootstrap
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
-        COMMAND sh -c "tr '\\\\' / <src/clisp-depends.mk >src/clisp-depends.mk-new"
-        COMMAND mv src/clisp-depends.mk-new src/clisp-depends.mk
+        COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
         COMMAND LANG=C $(MAKE)
         COMMAND LANG=C $(MAKE) pdf
-  INSTALL_COMMAND LANG=C $(MAKE) -C ${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+  INSTALL_COMMAND LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
 # crosscompiling winkill with autoconf does not work, compile it using CMake.
@@ -211,21 +221,19 @@ install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/)
 install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/)
 
 if(USE_WXMAXIMA_GIT)
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/src")
     externalproject_add(wxMaxima-git
         GIT_REPOSITORY ${WXMAXIMA_GIT}
         DEPENDS wxWidgets
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND sh -c "cp ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4"
-                  COMMAND ./bootstrap
-                  COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4
+              COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/bootstrap
+        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) -C locales allmo
-        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git wxMaxima.win
+              COMMAND $(MAKE) allmo
+              COMMAND $(MAKE) wxMaxima.win
+       INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
 else()
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/src")
     externalproject_add(wxMaxima
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
@@ -234,8 +242,9 @@ else()
         BUILD_IN_SOURCE 1
         CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) -C locales allmo
-        INSTALL_COMMAND $(MAKE) -C ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima wxMaxima.win
+              COMMAND $(MAKE) allmo
+              COMMAND $(MAKE) wxMaxima.win
+        INSTALL_COMMAND ""
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/wxMaxima/ DESTINATION wxMaxima)
 endif()

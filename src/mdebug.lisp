@@ -273,12 +273,11 @@
 
 (declaim (special *mread-prompt*))
 
-;; RLT: What is the repeat-if-newline option for?  A grep of the code
-;; indicates that dbm-read is never called with more than 3 args.  Can
-;; we just flush it?  Can probably get rid of the &aux stuff too.
-
 (defvar *need-prompt* t)
 
+;; STREAM, EOF-ERROR-P and EOF-VALUE are analogous to the corresponding
+;; arguments to Lisp's READ.  REPEAT-IF-NEWLINE, when T, says to repeat
+;; the last break command (if available) when only a newline is read.
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 		 (eof-value nil) repeat-if-newline  &aux tem  ch
 		 (mprompt *mread-prompt*) (*mread-prompt* ""))
@@ -389,7 +388,7 @@
           (short-name (bkpt-file bkpt))
 	  (bkpt-file-line bkpt)
 	  (bkpt-function bkpt))
-  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
+  (format *debug-io* "~&~a:~a::~%" (bkpt-file bkpt)
 	  (bkpt-file-line bkpt)))
 
 (defvar *diff-mspeclist* nil)
@@ -465,9 +464,10 @@
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
 	       (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t
+	 ; Skip any undocumented break commands
 	 (loop for vv being the symbols of 'keyword
-		when (get vv 'break-command)
-		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
+		when (and (get vv 'break-command) (get vv 'break-doc))
+		collect (cons vv (get vv 'break-doc))
 		into all
 		finally (setq all (sort all 'alphalessp))
 	      (format t (intl:gettext "~
@@ -484,7 +484,9 @@ Command      Description~%~
   "Print help on a break command or with no arguments on
              all break commands")
 
-;; What is this debug command for?
+;; This is an undocumented break command which gets placed in
+;; *LAST-DBM-COMMAND* when an invalid (nonexistent or ambiguous)
+;; break command is read in.
 (def-break :_none #'(lambda()) nil)
 
 (def-break :next  'step-next
@@ -744,5 +746,5 @@ Command      Description~%~
     (remove-bindings bdlist)
     (when lineinfo
       (fresh-line *debug-io*)
-      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
+      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
     (values)))

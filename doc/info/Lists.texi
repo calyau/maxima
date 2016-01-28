@@ -145,6 +145,8 @@ by the elements of @var{list_2}, @dots{}  @code{append} also works on
 general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 @code{f(a,b,c,d,e)}.
 
+See also @mrefdot{join}
+
 Do @code{example(append);} for an example.
 
 @opencatbox
@@ -616,6 +618,8 @@ If the lists are different lengths, @code{join} ignores elements of the longer
 list.
 
 Maxima complains if @var{l} or @var{m} is not a list.
+
+See also @mrefdot{append}
 
 Examples:
 
