@@ -9,7 +9,7 @@
       '((mlist simp)
         "rtest_rules"
         "rtestnset" 
-        "rtest1" 
+        ((mlist) "rtest1" 180)
         "rtest1a"
         ((mlist) "rtest2" 86 95)
          "rtest4"
