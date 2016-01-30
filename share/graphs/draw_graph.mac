@@ -309,7 +309,9 @@ draw_graph(G, [options]) := block(
         'xtics = false,
         'ytics = false,
         'ztics = false,
-        'transparent=true
+        'transparent=true,
+        'xlabel = "",
+        'ylabel = ""
        ],
         loops,
         edges,
