@@ -2674,7 +2674,7 @@
          (opacity      (get-option '$opacity))
          (linewidth    (get-option '$line_width))
          (wiredsurface (get-option '$wired_surface))
-         (capping       (rest (get-option '$capping)))
+         (capping      (rest (get-option '$capping)))
          (tmin ($float parmin))
          (tmax ($float parmax))
          (vmax 6.283185307179586) ; = float(2*%pi)
@@ -2856,7 +2856,7 @@
     ; tcl-vtk code
     (format str "vtkPolyData ~a~%" source-name)
     (format str "~a~%" (vtkpoints-code points-name source-name x y z))
-    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nu nv)))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nv nu)))
     (format str "~a~%" (vtktransform-code trans-name))
     (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
     (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
@@ -2883,7 +2883,6 @@
       (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
 
     str ))
-
 
 
 
