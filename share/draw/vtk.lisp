@@ -302,7 +302,7 @@
        cn)
     str ))
 
-(defun vtkfloatarray-code (fan sn values)
+(defun vtkfloatarray-code (fan sn values &optional (addarr t))
   (let ((n (length values))
         (str (make-array 0 
                 :element-type 'character 
@@ -312,7 +312,12 @@
     (loop for k from 0 below n do
       (format str "  ~a InsertNextValue ~a~%" fan (aref values k)))
     (format str "  ~a SetName name~a~%" fan fan)
-    (format str "  [~a GetPointData] AddArray ~a~%" sn fan)
+    (format str "  [~a GetPointData] ~a ~a~%"
+       sn
+       (if addarr
+          "AddArray"
+          "SetScalars")
+       fan)
     str))
 
 (defun vtkglyph3d-code (fn sn pdn)
@@ -1260,7 +1265,7 @@
         (format nil "vtkPolyData ~a~%" source-name)
         (vtkpoints-code points-name source-name ax ay az)
         (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))))
+          (vtkfloatarray-code floatarray-name source-name scalars nil))))
     (when points-joined ; true or impulses
       (setf trans-name       (get-trans-name)
             filter-name      (get-filter-name)
