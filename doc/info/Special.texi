@@ -1540,56 +1540,130 @@ Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 5
 
 @deffn {Function} expintegral_e1 (@var{z})
-The Exponential Integral E1(z) (A&S 5.1.1)
+The Exponential Integral E1(z) (A&S 5.1.1) defined as
+
+@ifhtml
+@math{integrate(exp(-t)/t, t, z, inf)}
+@end ifhtml
+@ifinfo
+@math{integrate(exp(-t)/t, t, z, inf)}
+@end ifinfo
+with @math{abs(arg z) < %pi}.
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_ei (@var{z})
-The Exponential Integral Ei(z) (A&S 5.1.2)
+The Exponential Integral Ei(z) (A&S 5.1.2) defined as
+
+@ifhtml
+@math{-integrate(exp(-t)/t, t, -x, inf)}
+@end ifhtml
+@ifinfo
+@math{-integrate(exp(-t)/t, t, -x, inf)}
+@end ifinfo
+with @math{x > 0}.
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_li (@var{z})
-The Exponential Integral Li(z)  (A&S 5.1.3)
+The Exponential Integral Li(z)  (A&S 5.1.3), defined as
+
+@ifhtml
+@math{integrate(1/log(t), t, 0, x)}
+@end ifhtml
+@ifinfo
+@math{integrate(1/log(t), t, 0, x)}
+@end ifinfo
+with @math{x > 1}.
+
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_e (@var{n},@var{z})
-The Exponential Integral En(z)  (A&S 5.1.4)
+The Exponential Integral En(z)  (A&S 5.1.4) defined as
+
+@ifhtml
+@math{integrate(exp(-z*t)/t^n, t, 1, inf)}
+@end ifhtml
+@ifinfo
+@math{integrate(exp(-z*t)/t^n, t, 1, inf)}
+@end ifinfo
+with @math{real(x) > 1} and @math{n} a non-negative integer.
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_si (@var{z})
-The Exponential Integral Si(z) (A&S 5.2.1)
+The Exponential Integral Si(z) (A&S 5.2.1) defined as
+
+@ifhtml
+@math{integrate(sin(t)/t, t, 0, z)}
+@end ifhtml
+@ifinfo
+@math{integrate(sin(t)/t, t, 0, z)}
+@end ifinfo
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_ci (@var{z})
-The Exponential Integral Ci(z) (A&S 5.2.2)
+The Exponential Integral Ci(z) (A&S 5.2.2) defined as
+
+@ifhtml
+@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
+@end ifhtml
+@ifinfo
+@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
+@end ifinfo
+
+with @math{abs(arg z) < %pi}
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_shi (@var{z})
-The Exponential Integral Shi(z) (A&S 5.2.3)
+The Exponential Integral Shi(z) (A&S 5.2.3) defined as
+
+@ifhtml
+@math{integrate(sinh(t)/t, t, 0, z)}
+@end ifhtml
+@ifinfo
+@math{integrate(sinh(t)/t, t, 0, z)}
+@end ifinfo
+
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_chi (@var{z})
-The Exponential Integral Chi(z) (A&S 5.2.4)
+The Exponential Integral Chi(z) (A&S 5.2.4) defined as
+
+@ifhtml
+@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+@end ifhtml
+@ifinfo
+@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+@end ifinfo
+
+with @math{abs(arg z) < %pi}
+
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
 @closecatbox
@@ -1598,9 +1672,21 @@ The Exponential Integral Chi(z) (A&S 5.2.4)
 @defvr {Option variable} expintrep
 Default value: false
 
-Change the representation of the Exponential Integral to
-  gamma_incomplete, expintegral_e1, expintegral_ei, 
-  expintegral_li, expintegral_trig, expintegral_hyp
+Change the representation of one of the exponential integrals,
+@math{expintegral_e(m, z)}, @math{expintegral_e1}, or
+@math{expintegral_ei} to an equivalent form if possible.
+
+Possible values for @var{expintrep} are @var{false},
+@var{gamma_incomplete}, @var{expintegral_e1}, @var{expintegral_ei},
+@var{expintegral_li}, @var{expintegral_trig}, or
+@var{expintegral_hyp}.
+
+@var{false} means that the representation is not changed.  Other
+values indicate the representation is to be changed to use the
+function specified where @var{expintegral_trig} means expintegral_si,
+expintegral_ci, and @var{expintegral_hyp} means expintegral_shi or
+expintegral_chi.
+
 @opencatbox
 @category{Exponential Integrals}
 @closecatbox
