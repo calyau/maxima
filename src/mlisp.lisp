@@ -1661,14 +1661,16 @@ wrapper for this."
     (declare-index-properties-1 (first l) (second l))))
 
 (defun declare-index-properties-1 (x l)
-  (if (not (symbolp x))
-    (merror (intl:gettext "declare_index_properties: first argument must be a symbol; found: ~M") x))
+  (if (not (or (symbolp x) (and ($listp x) (every #'symbolp (cdr x)))))
+    (merror (intl:gettext "declare_index_properties: first argument must be a symbol or a list of symbols; found: ~M") x))
   (if (not ($listp l))
     (merror (intl:gettext "declare_index_properties: second argument must be a list; found: ~M") l))
   (if (not (every #'(lambda (y) (member y (cdr $known_index_properties))) (cdr l)))
     (merror (intl:gettext "declare_index_properties: unknown index property; found: ~M~%~
                            declare_index_properties: known properties are: ~M") l $known_index_properties))
-  (mputprop x (cdr l) 'display-indices))
+  (if ($listp x)
+    (mapcar #'(lambda (x1) (mputprop x1 (cdr l) 'display-indices)) (cdr x))
+    (mputprop x (cdr l) 'display-indices)))
 
 ;;; Define $matrix so that apply(matrix,...) does not need to use Lisp
 ;;; apply -- in GCL, apply is limited to 63 arguments.
