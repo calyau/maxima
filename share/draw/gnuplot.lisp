@@ -3369,7 +3369,8 @@
       (dolist (scn scenes)
         ; write size and origin if necessary
         (cond ((or isanimatedgif ismultipage)
-                (format cmdstorage "~%set size 1.0, 1.0~%") )
+                (format cmdstorage "~%set size 1.0, 1.0~%")
+                (format cmdstorage "set obj 1 rectangle behind from screen 0.0,0.0 to screen 1.0,1.0~%") )
               (t ; it's not an animated gif
                 (setf thisalloc (car alloc))
                 (setf alloc (cdr alloc))
