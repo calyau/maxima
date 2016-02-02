@@ -302,7 +302,7 @@
        cn)
     str ))
 
-(defun vtkfloatarray-code (fan sn values)
+(defun vtkfloatarray-code (fan sn values &optional (addarr t))
   (let ((n (length values))
         (str (make-array 0 
                 :element-type 'character 
@@ -312,7 +312,12 @@
     (loop for k from 0 below n do
       (format str "  ~a InsertNextValue ~a~%" fan (aref values k)))
     (format str "  ~a SetName name~a~%" fan fan)
-    (format str "  [~a GetPointData] AddArray ~a~%" sn fan)
+    (format str "  [~a GetPointData] ~a ~a~%"
+       sn
+       (if addarr
+          "AddArray"
+          "SetScalars")
+       fan)
     str))
 
 (defun vtkglyph3d-code (fn sn pdn)
@@ -436,13 +441,13 @@
 
 ; code for file output
 (defun vtk-terminal ()
-  (let ((terminal   (get-option '$terminal))
-        (filename   (get-option '$file_name))
-        (binaryterms '($png $pngcairo $jpg $eps $eps_color $tiff $pnm))
+  (let ((terminal  (get-option '$terminal))
+        (filename  (get-option '$file_name))
+        (offscreenterms '($png $pngcairo $jpg $eps $eps_color $tiff $pnm))
         (extension "")
         (classformat ""))
       (cond
-        ((member terminal binaryterms)
+        ((member terminal offscreenterms)
           (case terminal
             (($png $pngcairo)
                (setf extension   "png"
@@ -459,7 +464,8 @@
             (($eps $eps_color)
                (setf extension   "eps"
                      classformat "vtkPostScriptWriter")))
-          (format nil "~a~%~a~%~a ~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%"
+          (format nil "~a~%~a~%~a~%~a ~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%"
+            "renWin OffScreenRenderingOn"
             "vtkWindowToImageFilter w2if"
             "  w2if SetInput renWin"
             classformat "writer"
@@ -1259,7 +1265,7 @@
         (format nil "vtkPolyData ~a~%" source-name)
         (vtkpoints-code points-name source-name ax ay az)
         (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))))
+          (vtkfloatarray-code floatarray-name source-name scalars nil))))
     (when points-joined ; true or impulses
       (setf trans-name       (get-trans-name)
             filter-name      (get-filter-name)
@@ -1924,6 +1930,7 @@
       (let ((lut (check-lookup-table)))
         (setf lookup-table-name (car lut))
         (format str "~a~%" (cadr lut))))
+
     ; rescale array of scalars2 to interval [0,1].
     (if (< minscalar2 maxscalar2)
       (setf slope (/ 1.0 (- maxscalar2 minscalar2)))
@@ -1945,7 +1952,7 @@
       (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
       (setf floatarray-name (get-floatarray-name))
       (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
-      ; remove next string if we want solid color when enhanced3d is not active
+      ; remove next string if we want isolines and solid color when enhanced3d is not active
       (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
 
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
@@ -2125,7 +2132,7 @@
       (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
       (setf floatarray-name (get-floatarray-name))
       (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
-      ; remove next string if we want solid color when enhanced3d is not active
+      ; remove next string if we want isolines and solid color when enhanced3d is not active
       (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
 
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
@@ -2425,7 +2432,7 @@
       (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
       (setf floatarray-name (get-floatarray-name))
       (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
-      ; remove next string if we want solid color when enhanced3d is not active
+      ; remove next string if we want isolines and solid color when enhanced3d is not active
       (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
 
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
@@ -2565,7 +2572,7 @@
       (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
       (setf floatarray-name (get-floatarray-name))
       (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
-      ; remove next string if we want solid color when enhanced3d is not active
+      ; remove next string if we want isolines and solid color when enhanced3d is not active
       (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
 
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
@@ -2672,7 +2679,7 @@
          (opacity      (get-option '$opacity))
          (linewidth    (get-option '$line_width))
          (wiredsurface (get-option '$wired_surface))
-         (capping       (rest (get-option '$capping)))
+         (capping      (rest (get-option '$capping)))
          (tmin ($float parmin))
          (tmax ($float parmax))
          (vmax 6.283185307179586) ; = float(2*%pi)
@@ -2854,7 +2861,7 @@
     ; tcl-vtk code
     (format str "vtkPolyData ~a~%" source-name)
     (format str "~a~%" (vtkpoints-code points-name source-name x y z))
-    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nu nv)))
+    (format str "~a~%" (vtkcellarray-code cellarray-name source-name 2 (build-surface-grid nv nu)))
     (format str "~a~%" (vtktransform-code trans-name))
     (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
     (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
@@ -2865,7 +2872,7 @@
       (format str "  ~a ScalarVisibilityOn~%~%" mapper-name)
       (setf floatarray-name (get-floatarray-name))
       (format str "~a~%" (vtkfloatarray-code floatarray-name source-name scalars))
-      ; remove next string if we want solid color when enhanced3d is not active
+      ; remove next string if we want isolines and solid color when enhanced3d is not active
       (format str "  ~a SelectColorArray name~a~%" mapper-name floatarray-name) )
 
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
@@ -2881,7 +2888,6 @@
       (format str "~a~%" (vtkactor2-code actor2-name mapper2-name linewidth)) )
 
     str ))
-
 
 
 

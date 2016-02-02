@@ -250,6 +250,7 @@
 	      (or (approx-alike (mop f) (mop g)) 
 		  (and (symbolp (mop f)) (symbolp (mop g))
 		       (approx-alike ($nounify (mop f)) ($nounify (mop g)))))
+	      (eq ($subvarp f) ($subvarp g))
 	      (approx-alike-list (margs f) (margs g))))
 	
 	(t nil)))

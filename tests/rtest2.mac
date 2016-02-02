@@ -576,6 +576,13 @@ true;
 member (quux, arrays);
 true;
 
+/* Bug #481: ('m)[1] (meval) */
+('m)[1];
+m[1];
+
+('m)(1);
+m(1);
+
 kill (functions, arrays);
 done;
 
