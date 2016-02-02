@@ -385,3 +385,48 @@ true;
      if is ("warning" = split(line, ":")[1]) then push(line, acc),
    acc));
 []$
+
+/* makelist translated incorrectly
+ * SF bug #3083: "Error on compiling a working maxima function"
+ */
+
+(kill(all),
+ f1(n) := makelist (1, n),
+ f2(n) := makelist (i^2, i, n),
+ f3(l) := makelist (i^3, i, l),
+ f4(n) := makelist (i^4, i, 1, n),
+ f5(m, n) := makelist (i^5, i, 1, n, m),
+ translate(f1, f2, f3, f4, f5),
+ 0);
+0;
+
+f1(5);
+[1,1,1,1,1];
+
+f2(5);
+[1, 4, 9, 16, 25];
+
+f3([1,2,3]);
+[1, 8, 27];
+
+f4(4);
+[1, 16, 81, 256];
+
+f5(2, 10);
+[1, 243, 3125, 16807, 59049];
+
+/* original function from bug report */
+
+(ordersort(lis,vars,oper):=block([negsumdispflag:false,liss:lis,varlist:vars,temp], /*Does lexicographical sort */
+ for i:1 thru length(varlist) do (
+     for j:1 thru i do (
+         liss:sort(liss,lambda([x,y],apply("and",map(oper,makelist(part(x,2)[k],k,1,i)
+                             ,makelist(part(y,2)[k],k,1,i)))))
+     )),liss),
+ translate (ordersort)); /* 'translate' doesn't trigger an error, so check return value */
+[ordersort];
+ 
+[member ('transfun, properties(ordersort)),
+ ordersort([[-7,[0,2,1]],[3,[1,2,1]],[1,[0,4,1]],[6,[4,3,3]],[6,[4,4,3]],[-7,[3,5,4]],[2,[0,0,5]],[-10,[2,2,5]],[-10,[3,4,7]],[7,[3,8,9]]],[x,y,z],">=")];
+[true, [[6,[4,4,3]],[6,[4,3,3]],[7,[3,8,9]],[-7,[3,5,4]],[-10,[3,4,7]],[-10,[2,2,5]],[3,[1,2,1]],[1,[0,4,1]],[-7,[0,2,1]],[2,[0,0,5]]]];
+

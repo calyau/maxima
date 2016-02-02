@@ -223,7 +223,7 @@
                 (if ($listp ,nn)
                    (do ((,lil (cdr ,nn) (cdr ,lil))
                         (,sum nil) (,x))
-                       ((null ,lil) `((mlist) ,@(nreverse ,sum)))
+                       ((null ,lil) (cons '(mlist) (nreverse ,sum)))
                      (setq
                       ,x (car ,lil)
                       ,sum 
@@ -237,7 +237,7 @@
                                      ,(cdr (tr-local-exp exp x (value-mode x)))
                                      ,sum)))
                              ((> ,x ,nn)
-                              `((mlist) ,@(nreverse ,sum)))
+                              (cons '(mlist) (nreverse ,sum)))
                            (declare (special ,x)))
                          (merror
                           (intl:gettext "makelist: third argument must be a number or a list; found: ~M") ,nn)))))
@@ -257,7 +257,7 @@
                                (cons
                                 ,(cdr (tr-local-exp exp x (value-mode x)))
                                 ,sum)))
-                        ((> ,ii ,nn) `((mlist) ,@(nreverse ,sum)))
+                        ((> ,ii ,nn) (cons '(mlist) (nreverse ,sum)))
                       (declare (special ,x)))
                     (merror
                      (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M")
@@ -278,7 +278,7 @@
                                (cons
                                 ,(cdr (tr-local-exp exp x (value-mode x)))
                                 ,sum)))
-                        ((> ,ii ,nn) `((mlist) ,@(nreverse ,sum)))
+                        ((> ,ii ,nn) (cons '(mlist) (nreverse ,sum)))
                       (declare (special ,x)))
                     (merror
                      (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M")
