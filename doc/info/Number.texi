@@ -466,6 +466,10 @@ factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 Factorization methods used are trial divisions by primes up to 9973,
 Pollard's rho and p-1 method and elliptic curves.
 
+If the variable @code{ifactor_verbose} is set to @code{true}
+ifactor produces detailled output about what it is doing including
+immediate feedback as soon as a factor has been found.
+
 The value returned by @code{ifactors} is controlled by the option variable @mrefdot{factors_only}
 The default @code{false} causes @code{ifactors} to provide information about 
 the multiplicities of the computed prime factors. If @code{factors_only} 
