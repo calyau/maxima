@@ -1019,14 +1019,13 @@
         (opacity       (get-option '$opacity))
         (linewidth     (get-option '$line_width))
         (wiredsurface  (get-option '$wired_surface))
-        (capping       (get-option '$capping))
         (source-name (get-source-name))
         (trans-name  (get-trans-name))
         (filter-name (get-filter-name))
         (mapper-name (get-mapper-name))
         (actor-name  (get-actor-name))
         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
-        fori fp1 fp2  )
+        fori fp1 fp2 xx yy zz)
     (setf fori (map 'list #'$float (rest ori))
           fp1  (map 'list #'$float (rest p1))
           fp2  (map 'list #'$float (rest p2)) )
@@ -1074,7 +1073,7 @@
         (mapper-name   (get-mapper-name))
         (actor-name    (get-actor-name))
         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
-        fv1 fv2 fv3  )
+        fv1 fv2 fv3 xx yy zz)
     (setf fv1 (map 'list #'$float (rest v1))
           fv2 (map 'list #'$float (rest v2))
           fv3 (map 'list #'$float (rest v3)) )
@@ -1482,15 +1481,15 @@
        ((and ($listp arg1)
              (null arg2)
              (every #'$listp (rest arg1)))     ; xy format
-          (let ((tmp (mapcar #'rest (rest arg1))))
-             (setf x (map 'list #'$float (map 'list #'first tmp))
-                   y (map 'list #'$float (map 'list #'second tmp)))) )
+          (setf tmp (mapcar #'rest (rest arg1)))
+          (setf x (map 'list #'$float (map 'list #'first tmp))
+                y (map 'list #'$float (map 'list #'second tmp))) )
        ((and ($matrixp arg1)
              (= (length (cadr arg1)) 3)
              (null arg2))                 ; two-column matrix
-          (let ((tmp (mapcar #'rest (rest arg1))))
-             (setf x (map 'list #'$float (map 'list #'first tmp))
-                   y (map 'list #'$float (map 'list #'second tmp)) ) ) )
+          (setf tmp (mapcar #'rest (rest arg1)))
+          (setf x (map 'list #'$float (map 'list #'first tmp))
+                y (map 'list #'$float (map 'list #'second tmp))) )
        ((and ($listp arg1)
              (null arg2)
              (notany #'$listp (rest arg1)))   ; y format
@@ -1726,7 +1725,6 @@
   (let* ((nticks      (get-option '$nticks))
          (linewidth   (get-option '$line_width))
          (linetype    (get-option '$line_type))
-         (key         (get-option '$key))
          (color       (hex-to-numeric-list (get-option '$color)))
          (key         (get-option '$key))
          (arrayX-name (get-arrayX-name))
@@ -2165,7 +2163,6 @@
          (adaptdepth  (get-option '$adapt_depth))
          (linewidth   (get-option '$line_width))
          (linetype    (get-option '$line_type))
-         (key         (get-option '$key))
          (color       (hex-to-numeric-list (get-option '$color)))
          (fillcolor   (hex-to-numeric-list (get-option '$fill_color)))
          (key         (get-option '$key))
@@ -2316,11 +2313,11 @@
          (source-name     (get-source-name))
          (points-name     (get-points-name))
          (cellarray-name  (get-cellarray-name))
-         (floatarray-name (get-floatarray-name))
          (mapper-name     (get-mapper-name))
          (actor-name      (get-actor-name))
          (trans-name      (get-trans-name))
          (filter-name     (get-filter-name))
+         isolines-name
          lookup-table-name
          (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (xi 0.0)
@@ -2476,7 +2473,6 @@
         (source-name     (get-source-name))
         (points-name     (get-points-name))
         (cellarray-name  (get-cellarray-name))
-        (floatarray-name (get-floatarray-name))
         (mapper-name     (get-mapper-name))
         (actor-name      (get-actor-name))
         (trans-name      (get-trans-name))
@@ -2486,12 +2482,10 @@
         (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
         (scalars nil)   ; used for coloring
         floatarray-name
-        (scalars-count -1)
         (minscalar most-positive-double-float)
         (maxscalar most-negative-double-float)
         (scalars2 nil) ; used for isolines
         floatarray2-name
-        (scalars2-count -1)
         (minscalar2 most-positive-double-float)
         (maxscalar2 most-negative-double-float)
         mapper2-name actor2-name 
@@ -2694,6 +2688,7 @@
          (filter-name     (get-filter-name))
          (mapper-name     (get-mapper-name))
          (actor-name      (get-actor-name))
+         isolines-name
          lookup-table-name
          (str (make-array 0 :element-type 'character :adjustable t :fill-pointer 0))
          (count -1)
@@ -2715,7 +2710,7 @@
          xx yy zz module r vv rcos rsin
          cxold cyold czold
          uxold uyold uzold ttnext
-         x y z)
+         slope x y z)
     (when (< tmax tmin)
        (merror "draw3d (tube): illegal parametric range"))
     (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun)
@@ -2933,8 +2928,6 @@
                 ($logy             (update-boolean-option    '$logy             ($rhs x)))
                 ($filled_func      (update-gr-option         '$filled_func      ($rhs x)))
                 ($grid             (update-gr-option         '$grid             ($rhs x)))
-                ($xrange           (update-gr-option         '$xrange           ($rhs x)))
-                ($yrange           (update-gr-option         '$yrange           ($rhs x)))
                 ($transform        (update-transform                            ($rhs x)))
                 ($points_joined    (update-pointsjoined                         ($rhs x)))
                 ($point_type       (update-pointtype                            ($rhs x)))
@@ -3166,8 +3159,8 @@
     (close cmdstorage)
 
     #+(or (and sbcl win32) (and ccl windows))
-    ($system "vtk" gfn)
+    ($system "vtk6" gfn)
     #-(or (and sbcl win32) (and ccl windows))
-    ($system (format nil "(~a \"~a\")&" "vtk " gfn))
+    ($system (format nil "(~a \"~a\")&" "vtk6 " gfn))
     '$done))
 
