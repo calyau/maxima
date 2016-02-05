@@ -1542,13 +1542,17 @@ Abramowitz and Stegun,
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) (A&S 5.1.1) defined as
 
-@ifhtml
-@math{integrate(exp(-t)/t, t, z, inf)}
-@end ifhtml
+@ifnotinfo
+@tex
+$$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
+
+with $|\arg\ z| < \pi$.
+@end tex
+@end ifnotinfo
 @ifinfo
 @math{integrate(exp(-t)/t, t, z, inf)}
-@end ifinfo
 with @math{abs(arg z) < %pi}.
+@end ifinfo
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1556,15 +1560,7 @@ with @math{abs(arg z) < %pi}.
 @end deffn
 
 @deffn {Function} expintegral_ei (@var{z})
-The Exponential Integral Ei(z) (A&S 5.1.2) defined as
-
-@ifhtml
-@math{-integrate(exp(-t)/t, t, -x, inf)}
-@end ifhtml
-@ifinfo
-@math{-integrate(exp(-t)/t, t, -x, inf)}
-@end ifinfo
-with @math{x > 0}.
+The Exponential Integral Ei(z) (A&S 5.1.2)
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1572,16 +1568,7 @@ with @math{x > 0}.
 @end deffn
 
 @deffn {Function} expintegral_li (@var{z})
-The Exponential Integral Li(z)  (A&S 5.1.3), defined as
-
-@ifhtml
-@math{integrate(1/log(t), t, 0, x)}
-@end ifhtml
-@ifinfo
-@math{integrate(1/log(t), t, 0, x)}
-@end ifinfo
-with @math{x > 1}.
-
+The Exponential Integral Li(z)  (A&S 5.1.3)
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1591,13 +1578,16 @@ with @math{x > 1}.
 @deffn {Function} expintegral_e (@var{n},@var{z})
 The Exponential Integral En(z)  (A&S 5.1.4) defined as
 
-@ifhtml
-@math{integrate(exp(-z*t)/t^n, t, 1, inf)}
+@ifnotinfo
+@tex
+$$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
+with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
+@end tex
 @end ifhtml
 @ifinfo
 @math{integrate(exp(-z*t)/t^n, t, 1, inf)}
-@end ifinfo
 with @math{real(x) > 1} and @math{n} a non-negative integer.
+@end ifinfo
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1607,9 +1597,11 @@ with @math{real(x) > 1} and @math{n} a non-negative integer.
 @deffn {Function} expintegral_si (@var{z})
 The Exponential Integral Si(z) (A&S 5.2.1) defined as
 
-@ifhtml
-@math{integrate(sin(t)/t, t, 0, z)}
-@end ifhtml
+@ifnotinfo
+@tex
+$${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
+@end tex
+@end ifnotinfo
 @ifinfo
 @math{integrate(sin(t)/t, t, 0, z)}
 @end ifinfo
@@ -1622,14 +1614,18 @@ The Exponential Integral Si(z) (A&S 5.2.1) defined as
 @deffn {Function} expintegral_ci (@var{z})
 The Exponential Integral Ci(z) (A&S 5.2.2) defined as
 
-@ifhtml
-@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
-@end ifhtml
+@ifnotinfo
+@tex
+$${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
+
+with $|\arg\ z| < \pi$.
+@end tex
+@end ifnotinfo
 @ifinfo
 @math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
-@end ifinfo
 
 with @math{abs(arg z) < %pi}
+@end ifinfo
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1639,9 +1635,11 @@ with @math{abs(arg z) < %pi}
 @deffn {Function} expintegral_shi (@var{z})
 The Exponential Integral Shi(z) (A&S 5.2.3) defined as
 
-@ifhtml
-@math{integrate(sinh(t)/t, t, 0, z)}
-@end ifhtml
+@ifnotinfo
+@tex
+$${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
+@end tex
+@end ifnotinfo
 @ifinfo
 @math{integrate(sinh(t)/t, t, 0, z)}
 @end ifinfo
@@ -1655,14 +1653,18 @@ The Exponential Integral Shi(z) (A&S 5.2.3) defined as
 @deffn {Function} expintegral_chi (@var{z})
 The Exponential Integral Chi(z) (A&S 5.2.4) defined as
 
-@ifhtml
-@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
-@end ifhtml
+@ifnotinfo
+@tex
+$${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
+
+with $|\arg\ z| < \pi$.
+@end tex
+@end ifnotinfo
 @ifinfo
 @math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
-@end ifinfo
 
 with @math{abs(arg z) < %pi}
+@end ifinfo
 
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
@@ -1673,8 +1675,8 @@ with @math{abs(arg z) < %pi}
 Default value: false
 
 Change the representation of one of the exponential integrals,
-@math{expintegral_e(m, z)}, @math{expintegral_e1}, or
-@math{expintegral_ei} to an equivalent form if possible.
+@var{expintegral_e(m, z)}, @var{expintegral_e1}, or
+@var{expintegral_ei} to an equivalent form if possible.
 
 Possible values for @var{expintrep} are @var{false},
 @var{gamma_incomplete}, @var{expintegral_e1}, @var{expintegral_ei},
@@ -1683,9 +1685,9 @@ Possible values for @var{expintrep} are @var{false},
 
 @var{false} means that the representation is not changed.  Other
 values indicate the representation is to be changed to use the
-function specified where @var{expintegral_trig} means expintegral_si,
-expintegral_ci, and @var{expintegral_hyp} means expintegral_shi or
-expintegral_chi.
+function specified where @var{expintegral_trig} means
+@var{expintegral_si}, @var{expintegral_ci}, and @var{expintegral_hyp}
+means @var{expintegral_shi} or @var{expintegral_chi}.
 
 @opencatbox
 @category{Exponential Integrals}
