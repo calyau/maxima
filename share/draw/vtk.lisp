@@ -1686,7 +1686,7 @@
         (vtktransform-code trans-name)
         (vtktransformpolydatafilter-code filter-name source-name trans-name t)
         (when (> *draw-enhanced3d-type* 0)
-          (vtkfloatarray-code floatarray-name source-name scalars))))
+          (vtkfloatarray-code floatarray-name source-name scalars nil))))
     (concatenate 'string
       output-string
       (cond
