@@ -177,7 +177,7 @@ Some samples contain non numeric data. As an example, file @code{biomed.data} (w
 
 The first individual belongs to group @code{A}, is 30 years old and his/her blood measures were 167.0, 89.0, 25.6 and 364.
 
-One must take care when working with categorical data. In the next example, symbol @code{a} is asigned a value in some previous moment and then a sample with categorical value @code{a} is taken,
+One must take care when working with categorical data. In the next example, symbol @code{a} is assigned a value in some previous moment and then a sample with categorical value @code{a} is taken,
 
 @c ===beg===
 @c a : 1$
@@ -416,7 +416,7 @@ Its behaviour is better understood with examples.
 These are multivariate records in which the wind speed
 in the first meteorological station were greater than 18.
 See that in the lambda expression the @var{i}-th component is
-refered to as @code{v[i]}.
+referred to as @code{v[i]}.
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -2260,7 +2260,7 @@ the gap between two consecutive groups of bars.
 
 @item
 @var{bars_colors} (default, @code{[]}): a list of colors for multiple samples.
-When there are more samples than specified colors, the extra necesary colors 
+When there are more samples than specified colors, the extra necessary colors 
 are chosen at random. See @code{color} to learn more about them.
 
 @item
@@ -2707,7 +2707,7 @@ Available options are:
 
 @item
 @var{sector_colors} (default, @code{[]}): a list of colors for sectors.
-When there are more sectors than specified colors, the extra necesary colors 
+When there are more sectors than specified colors, the extra necessary colors 
 are chosen at random. See @code{color} to learn more about them.
 
 @item
@@ -2913,7 +2913,7 @@ Available options are:
 
 @item
 @var{stars_colors} (default, @code{[]}): a list of colors for multiple samples.
-When there are more samples than specified colors, the extra necesary colors 
+When there are more samples than specified colors, the extra necessary colors 
 are chosen at random. See @code{color} to learn more about them.
 
 @item

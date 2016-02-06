@@ -91,7 +91,7 @@ compile a package.
 @closecatbox
 @node Only symbols can be bound, out of memory, loadfile failed to load, Error messages
 @subsection Only symbols can be bound
-The most probable cause for this error is that there was an attempt to eiter
+The most probable cause for this error is that there was an attempt to either
 use a number or a variable whose numerical value is known as a loop
 counter.
 @node out of memory, No such list element, Only symbols can be bound, Error messages

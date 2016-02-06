@@ -311,7 +311,7 @@ followed by its value. The list of allowed options can be found in the
 @mxref{object_options,Scene object's options} section.
 
 @strong{Example}. This will show a sphere falling to the ground and
-bouncing off without loosing any energy. To start or pause the
+bouncing off without losing any energy. To start or pause the
 animation, press the play/pause button.
 @c ===beg===
 @c p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$

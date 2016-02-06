@@ -310,7 +310,7 @@ Returns the recurrence sattisfied by the sum
 @end example
 
 where summand is hypergeometrical in @var{k} and @var{n}. If @var{lo} and @var{hi}
-are omited, they are assumed to be @code{lo = -inf} and @code{hi = inf}.
+are omitted, they are assumed to be @code{lo = -inf} and @code{hi = inf}.
 
 To use this function first load the @code{simplify_sum} package with
 @code{load(simplify_sum)}.

@@ -557,7 +557,7 @@ Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 Returns the highest degree of the derivative
 of the dependent variable @var{y} with respect to the independent variable
-@var{x} occuring in @var{expr}.
+@var{x} occurring in @var{expr}.
 
 Example:
 

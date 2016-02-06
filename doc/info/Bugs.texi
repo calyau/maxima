@@ -177,7 +177,7 @@ Lisp implementation version: "2.49 (2010-07-07) (built 3605577779) (memory 36606
 
 @c The version number comes from "git describe", and is (in that example)
 @c 331 commits after the latest tag, that is reachable from that commit
-@c dont know how to describe it better...
+@c don't know how to describe it better...
 In that case, Maxima was not build from a released sourcecode, 
 but directly from the GIT-checkout of the sourcecode.
 In the example, the checkout is 331 commits after the latest GIT tag

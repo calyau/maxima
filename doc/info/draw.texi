@@ -43,7 +43,7 @@ You need Gnuplot 4.2 or newer to run this program.
 Function @code{gr2d} builds an object describing a 2D scene. Arguments are
 @i{graphic options}, @i{graphic objects}, or lists containing both graphic options and objects.
 This scene is interpreted sequentially: @i{graphic options} affect those @i{graphic objects}
-placed on its right. Some @i{graphic options} affect the global appearence of the scene.
+placed on its right. Some @i{graphic options} affect the global appearance of the scene.
 
 This is the list of @i{graphic objects} available for scenes in two dimensions:
 @code{bars}, @code{ellipse}, @code{explicit}, @code{image}, @code{implicit}, @code{label},
@@ -115,7 +115,7 @@ Function @code{gr3d} builds an object describing a 3d scene. Arguments are
 @i{graphic options}, @i{graphic objects}, or lists containing both graphic options
 and objects. This scene is interpreted sequentially: @i{graphic options} affect those 
 @i{graphic objects} placed on its right. Some @i{graphic options} affect the global
-appearence of the scene.
+appearance of the scene.
 
 This is the list of @i{graphic objects} available for scenes in three
 dimensions:@*

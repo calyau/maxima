@@ -2461,7 +2461,7 @@ translation of a user's function to Lisp.
 
 Note that translated
 functions may not run identically to the way they did before
-translation as certain incompatabilities may exist between the Lisp
+translation as certain incompatibilities may exist between the Lisp
 and Maxima versions.  Principally, the @code{rat} function with more than
 one argument and the @code{ratvars} function should not be used if any
 variables are @code{mode_declare}'d canonical rational expressions (CRE).

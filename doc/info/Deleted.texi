@@ -83,7 +83,7 @@ The scaled modified Bessel function of the first kind of order 1.  Use @code{sca
 The scaled modified Bessel function of the first kind of order @var{n}.  
 Use @code{scaled_bessel_i (@var{n}, @var{x})}.
 
-In addition it set up an array GARRAY, analagous to JARRAY for @code{jn}.
+In addition it set up an array GARRAY, analogous to JARRAY for @code{jn}.
 
 @xref{Bessel Functions}.
 @end deffn
@@ -118,7 +118,7 @@ Use @code{bessel_i (@var{1}, @var{x})}.
 The modified Bessel function of the first kind of order @var{n}.  
 Use @code{bessel_i (@var{order}, @var{x})}.
 
-In addition it set up an array IARRAY, analagous to JARRAY for @code{jn}.
+In addition it set up an array IARRAY, analogous to JARRAY for @code{jn}.
 
 @xref{Bessel Functions}.
 @end deffn

@@ -183,7 +183,7 @@ called the currently active function.
 @code{backtrace (@var{n})} prints the @var{n} most recent 
 functions, including the currently active function.
 
-@c IS THIS STATMENT REALLY NEEDED ?? 
+@c IS THIS STATEMENT REALLY NEEDED ?? 
 @c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
 @code{backtrace} can be called from a script, a function, or the interactive
 prompt (not only in a debugging context).

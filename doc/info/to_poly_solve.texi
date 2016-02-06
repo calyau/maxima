@@ -1088,7 +1088,7 @@ Subsitution into a @code{%solve} nounform can sometimes result in the solution
 @end example
 
 Especially for trigonometric equations, the solver sometimes needs
-to introduce an arbitary integer.  These arbitary integers have the 
+to introduce an arbitrary integer.  These arbitrary integers have the 
 form @code{%zXXX}, where @code{XXX} is an integer; for example
 
 @example
@@ -1103,8 +1103,8 @@ To re-index these variables to zero, use @code{nicedummies}:
 (%o6)    %union([x = 2 %pi %z0 + %pi], [x = 2 %pi %z1])
 @end example
 
-Occasionally, the solver introduces an arbitary complex number of the
-form @code{%cXXX} or an  arbitary real number of the form @code{%rXXX}.
+Occasionally, the solver introduces an arbitrary complex number of the
+form @code{%cXXX} or an  arbitrary real number of the form @code{%rXXX}.
 The function @code{nicedummies} will re-index these identifiers to zero.
 
 The solution set sometimes involves simplifing versions of various

@@ -105,7 +105,7 @@ depth.  The set of graphic options and objects supported by
 The arguments are interpreted sequentially: @i{graphic options} affect
 all following @i{graphic objects}.  Furthermore, @i{graphic objects}
 are drawn on the canvas in order specified, and may obscure graphics
-drawn earlier.  Some @i{graphic options} affect the global appearence
+drawn earlier.  Some @i{graphic options} affect the global appearance
 of the scene.
 
 The additional @i{graphic objects} supported by @code{drawdf} include:

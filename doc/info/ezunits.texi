@@ -105,7 +105,7 @@ the constant value is not the ordinary value of the symbol,
 so symbols of physical constants persist in evaluated expressions until their
 values are fetched by @code{constvalue}.
 
-@code{physical_constants} includes some auxilliary information,
+@code{physical_constants} includes some auxiliary information,
 namely, a description string for each constant,
 an estimate of the error of its numerical value,
 and a property for TeX display.

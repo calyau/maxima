@@ -467,7 +467,7 @@ Factorization methods used are trial divisions by primes up to 9973,
 Pollard's rho and p-1 method and elliptic curves.
 
 If the variable @code{ifactor_verbose} is set to @code{true}
-ifactor produces detailled output about what it is doing including
+ifactor produces detailed output about what it is doing including
 immediate feedback as soon as a factor has been found.
 
 The value returned by @code{ifactors} is controlled by the option variable @mrefdot{factors_only}
@@ -765,7 +765,7 @@ For @var{n} bigger than 341550071728321 @code{primep} uses
 @code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
 Lucas pseudo-primality test.  The probability that a non-prime @var{n} will 
 pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
-@code{primep_number_of_tests}, the probability of @var{n} beeing
+@code{primep_number_of_tests}, the probability of @var{n} being
 composite is much smaller that 10^-15.
 
 @opencatbox
