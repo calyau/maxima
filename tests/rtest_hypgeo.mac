@@ -1978,7 +1978,7 @@ specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:true;
  * Bug ID: 2866802 - specint(exp(-s*t)*t^(5/2)*bessel_j(-1/2,sqrt(t))^2,t) wrong
  *
  * We add two tests to show that the square of bessel_j(v,t) works for
- * v=-1/2 (the orignally bug) and v=1/2 as expected.
+ * v=-1/2 (the originally bug) and v=1/2 as expected.
  */
  
 res:factor(ratsimp(specint(exp(-s*t)*t*bessel_j(-1/2,t)^2,t))),

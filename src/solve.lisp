@@ -414,7 +414,7 @@
 
 ;; To recursively looks through a list
 ;; structure (the VLIST) for members of the SET appearing in the MACSYMA 
-;; functional position (caar list). Returning an assoc. list of appearence
+;; functional position (caar list). Returning an assoc. list of appearance
 ;; frequencies. Notice the use of EXTEND.
 
 (defun operator-frequency-table (vlist set)

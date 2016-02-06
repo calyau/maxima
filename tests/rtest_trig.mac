@@ -393,7 +393,7 @@ sqrt(1-cos(2*%pi+%i*y2))/sqrt(2);
 sin((2*%pi+%i*y1)/2);
 -sqrt(1-cos(2*%pi+%i*y1))/sqrt(2);
 
-/* Simplification for negative or postive imaginary part */
+/* Simplification for negative or positive imaginary part */
 (assume(yneg<0,ypos>0),done);
 done;
 
@@ -442,7 +442,7 @@ sqrt(1+cos(%pi+%i*y2))/sqrt(2);
 cos((%pi+%i*y1)/2);
 -sqrt(1+cos(%pi+%i*y1))/sqrt(2);
 
-/* Simplification for negative or postive imaginary part */
+/* Simplification for negative or positive imaginary part */
 (assume(yneg<0,ypos>0),done);
 done;
 

@@ -64,7 +64,7 @@
 
 ;;; ELL has just shown a bug with FIRST and REST interaction with
 ;;; DEFMATCH and MATCHDECLARE. The extra simplification needed
-;;; it seems. LIST mode must be implemented, untill then the
+;;; it seems. LIST mode must be implemented, until then the
 ;;; cost of the extra SIMPLFY call is not much compared with the
 ;;; consing involved. Above all, we must have correct code !!!
 

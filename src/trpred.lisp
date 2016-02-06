@@ -43,8 +43,8 @@
 ;;; Note: This TRANSLATE-PREDICATE and TRANSLATE should be combinded
 ;;; to a single function which takes a second argument of the
 ;;; TARGET (mode). Targeting is a pretty basic concept in compilation
-;;; so its suprising this was done. In order to make this change all
-;;; special-forms need to do targetting.
+;;; so its surprising this was done. In order to make this change all
+;;; special-forms need to do targeting.
 
 (defun translate-predicate (form)
   ;; N.B. This returns s-exp, not (<mode> . <s-exp>)

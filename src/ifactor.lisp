@@ -690,7 +690,7 @@
 ;;;         or x^(q*2^j) = -1 (mod n) for some j = 0..k-1
 ;;;
 ;;; A prime number must pass this test.
-;;; The probability of passing one test and not beeing a prime is less than 1/4.
+;;; The probability of passing one test and not being a prime is less than 1/4.
 
 ;; return values q,k with n-1 = q*2^k
 (defun miller-rabin-decomposition (n) ;; assume n > 2 (n-1 is even)

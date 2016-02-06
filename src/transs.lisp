@@ -15,7 +15,7 @@
 ;;; User-hacking code, file-io, translator toplevel.
 ;;; There are various macros to cons-up filename TEMPLATES
 ;;; which to mergef into. The filenames should be the only
-;;; system dependant part of the code, although certain behavior
+;;; system dependent part of the code, although certain behavior
 ;;; of RENAMEF/MERGEF/DELETE-FILE is assumed.
 
 (defmvar $tr_output_file_default '$trlisp

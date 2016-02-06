@@ -154,7 +154,7 @@
   (let ((n (first args))
         (z (second args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
            (take '(%expintegral_e)
                  (take '($conjugate) n) 
                  (take '($conjugate) z)))
@@ -763,7 +763,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Numerical Bigfloat evaluation for a real (Bigfloat) parameter.
-;;; The algorithm would work for a Complex Bigfloat paramter too. But we
+;;; The algorithm would work for a Complex Bigfloat parameter too. But we
 ;;; need the values of Gamma for Complex Bigfloats. This is at this time (2008)
 ;;; not implemented in Maxima.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -883,7 +883,7 @@
 (defun conjugate-expintegral-e1 (args)
   (let ((z (first args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
            (take '(%expintegral_e1) (take '($conjugate) z)))
           (t
            ;; On the negative real axis or no information. Unsimplified.
@@ -1211,7 +1211,7 @@
 (defun conjugate-expintegral-li (args)
   (let ((z (first args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
            (take '(%expintegral_li) (take '($conjugate) z)))
           (t
             ;; On the negative real axis or no information. Unsimplified.
@@ -1698,7 +1698,7 @@
 (defun conjugate-expintegral-ci (args)
   (let ((z (first args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
            (take '(%expintegral_ci) (take '($conjugate) z)))
           (t
            ;; On the negative real axis or no information. Unsimplified.
@@ -1883,7 +1883,7 @@
 (defun conjugate-expintegral-chi (args)
   (let ((z (first args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
            (take '(%expintegral_chi) (take '($conjugate) z)))
           (t
            ;; On the negative real axis or no information. Unsimplified.

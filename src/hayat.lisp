@@ -115,7 +115,7 @@
 
 (declare-top
  (special vlist
-	  varlist		;List of all the variables occuring in a power
+	  varlist		;List of all the variables occurring in a power
 				;series, the power series variables at the end
 	  genvar		;The list of gensyms corresponding to varlist
 	  modulus		;
@@ -1190,7 +1190,7 @@
 				   ps-terms)))
 		  ((null po-terms)
 	   ;; This must be exact so that when we invert in rat-ps above
-	   ;; we dont lose any terms. E.g. try
+	   ;; we don't lose any terms. E.g. try
 	   ;; taylor(log(1+exp(-1/x)),x,0,5). When taylor2'ing exp(-1/x),
 	   ;; if you used current trunc here this would return exp(1/x)...5
 	   ;; which would then be trunc'd to degree 3 by psexpt.
@@ -1852,7 +1852,7 @@
    (let ((exact-poly t) (tlist) (*within-srf?* 't))
       (setq x (taylor1 x ()) tlist (mrat-tlist x))
       ;; Set trunc levels in the local tlist to correspond to the maximum
-      ;; level occuring in any series.
+      ;; level occurring in any series.
       (do ((data tlist (cdr data))
 	   (truncs (trunc-vector (mrat-ps x) () )))
 	  ((null data))
@@ -2307,7 +2307,7 @@
 		     ;; The reason we call var-expand below instead of taylor2
 		     ;; is that we must be sure the call is not truncated to
 		     ;; 0 which would cause an error in psexpt if exp < 0.
-		     ;; For example, this occured in TAYLOR(X^2/Y,[X,Y],0,2).
+		     ;; For example, this occurred in TAYLOR(X^2/Y,[X,Y],0,2).
 		     (pstimes
 		      ;; Must ensure that we get back a series truncated
 		      ;; to at least what is specified by tlist. This means
@@ -2348,7 +2348,7 @@
 
 (defun try-expansion (arg func)
   (prog (funame funord fun-lc argord psarg arg-trunc temp exact-poly)
-     ;; We bind exact-poly to () since we dont want psexpt retaining
+     ;; We bind exact-poly to () since we don't want psexpt retaining
      ;; higher order terms when subst'ing into series (which aren't exact).
      ;; Try diff-expanding unknown subsripted functions.
      (unless (or (atom func) (known-ps (caar func)))

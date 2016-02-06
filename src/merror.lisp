@@ -146,7 +146,7 @@
   "errormsg() redisplays the maxima-error message while in a `maxima-error' break."
   ;; Don't optimize out call to PROCESS-ERROR-ARGL in case of
   ;; multiple calls to $ERRORMSG, because the user may have changed
-  ;; the values of the special variables controling its behavior.
+  ;; the values of the special variables controlling its behavior.
   ;; The real expense here is when MFORMAT calls the DISPLA package.
   (let ((the-jig (process-error-argl (cddr $error))))
     (mapc #'(lambda (v x) (setf (symbol-value v) x)) (car the-jig) (cadr the-jig))

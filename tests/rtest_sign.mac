@@ -733,7 +733,7 @@ complex;
 
 /* This does not work correctly. 
    The answer complex is not really wrong, but could be better.
-   To achive this we have first to improve the function rectform. */
+   To achieve this we have first to improve the function rectform. */
 
 csign((1+%i)*(1-%i));
 complex; /* shoule be pos */

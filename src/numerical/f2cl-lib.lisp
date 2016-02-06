@@ -1952,7 +1952,7 @@ causing all pending operations to be flushed"
 ;;;   is multi-dimensional.
 ;;;
 ;;; Revision 1.64  2006/01/04 17:53:40  rtoy
-;;; We were not correctly processing intialization of string arrays in
+;;; We were not correctly processing initialization of string arrays in
 ;;; data statements.
 ;;;
 ;;; src/f2cl1.l:

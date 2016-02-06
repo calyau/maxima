@@ -365,7 +365,7 @@
 (defun conjugate-gamma-incomplete (args)
   (let ((a (first args)) (z (second args)))
     (cond ((off-negative-real-axisp z)
-           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
 	   (simplify
              (list
               '(%gamma_incomplete)
@@ -820,7 +820,7 @@
 	(%gamma-incomplete a x)
       (cond (lower-incomplete-tail-p
 	     ;; %gamma-incomplete compute the lower incomplete gamma
-	     ;; function, so we need to substract that from gamma(a),
+	     ;; function, so we need to subtract that from gamma(a),
 	     ;; more or less.
 	     (cond (regularized
 		    (- 1 (* result factor)))
@@ -1155,7 +1155,7 @@
 (defun conjugate-gamma-incomplete-generalized (args)
   (let ((a (first args)) (z1 (second args)) (z2 (third args)))
     (cond ((and (off-negative-real-axisp z1) (off-negative-real-axisp z2))
-           ;; z1 and z2 definitly not on the negative real axis. 
+           ;; z1 and z2 definitely not on the negative real axis. 
            ;; Mirror symmetry.
 	   (simplify
              (list
@@ -1372,7 +1372,7 @@
 (defun conjugate-gamma-incomplete-regularized (args)
   (let ((a (first args)) (z (second args)))
     (cond ((off-negative-real-axisp z)
-           ;; z definitly not on the negative real axis. Mirror symmetry.
+           ;; z definitely not on the negative real axis. Mirror symmetry.
 	   (simplify
              (list
               '(%gamma_incomplete_regularized)

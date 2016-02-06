@@ -1534,7 +1534,7 @@ ignoring dummy variables and array indices."
 	((let ((scnum (involve num '(%asin %acos %atan))))
 	   ;; If the numerator contains an inverse trig and the
 	   ;; denominator or reciprocal of denominator is polynomial,
-	   ;; leave everthing as is.  If the inverse trig is moved to
+	   ;; leave everything as is.  If the inverse trig is moved to
 	   ;; the denominator, things get messy, even if the numerator
 	   ;; becomes a polynomial.  This is not perfect.
 	   (cond ((and scnum (or (polyinx denom var ())
@@ -2225,7 +2225,7 @@ ignoring dummy variables and array indices."
 	     (cond ((not (member lim-ans '($inf $minf $und $ind) :test #'eq))  0.)
 		   (t  1.))))
 	  (t
-	   ;; Make T1 and T2 be a list of terms that are multipled
+	   ;; Make T1 and T2 be a list of terms that are multiplied
 	   ;; together.
 	   (cond ((mtimesp t1)  (setq t1 (cdr t1)))
 		 (t (setq t1 (list t1))))
@@ -2241,7 +2241,7 @@ ignoring dummy variables and array indices."
 			  (eq (car ans) 'gen) (eq (car d) 'gen))  0.))
 	       (if (eq (car ans) 'var)  (setq ans (add-up-deg t1)))
 	       (if (eq (car d) 'var)  (setq d (add-up-deg t2)))
-	       ;; Cant just just compare dominating terms if there are
+	       ;; Can't just just compare dominating terms if there are
 	       ;; indeterm-inates present; e.g. X-X^2*LOG(1+1/X). So
 	       ;; check for this.
 	       (cond ((or (zero-lim t1)
@@ -2655,7 +2655,7 @@ ignoring dummy variables and array indices."
 ;;There is some confusion here. We need to be aware of Branch cuts etc....
 ;;when doing this section of code. It is not very carefully done so there
 ;;are bugs still lurking. Another misfortune is that LIMIT or its inferiors
-;;somtimes decides to change the limit VAL in midstream. This must be corrected
+;;sometimes decides to change the limit VAL in midstream. This must be corrected
 ;;since LIMIT's interaction with the data base environment must be maintained.
 ;;I'm not sure that this code can ever be called with VAL other than $INF but
 ;;there is a hook in the first important cond clause to cathc them anyway.

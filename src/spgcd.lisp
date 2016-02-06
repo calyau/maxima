@@ -103,7 +103,7 @@
     (setf (aref mat row i) (ctimes (aref mat row i) c))))
 
 ;; FILL-ROW is given a point and the value of the skeleton at the point and
-;; fills the apropriate row in the matrix. with the values of the monomials
+;; fills the appropriate row in the matrix. with the values of the monomials
 ;; n is the length of the skeleton
 
 (defun fill-row (skel mat n row pt val)

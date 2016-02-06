@@ -183,7 +183,7 @@
 ;; Maybe this is a bug in the simplifier, maybe not. -gjc
 
 ;; There are many possible non-trivial optimizations possible involving
-;; SIGNUM. MODE TARGETTING must be built in to get these easily of course,
+;; SIGNUM. MODE TARGETING must be built in to get these easily of course,
 ;; examples are: SIGNUM(X*Y); No need to multiple X and Y, just multiply
 ;; there SIGN's, which is a conditional and comparisons. However, these
 ;; are only optimizations if X and Y are numeric. What if

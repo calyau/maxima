@@ -646,7 +646,7 @@ sin(y)*(10.0+6*cos(x)),
 ;;sort the edges array so that drawing the edges will happen from the back towards
 ;; the front.   The if n==4 the edges array coming in looks like
 ;; v1 v2 v3 v4 0 w1 w2 w3 w4 0 ...
-;; where vi,wi are indices pointint into the points array specifiying a point
+;; where vi,wi are indices pointint into the points array specifying a point
 ;; in 3 space.   After the sorting is done, the 0 is filled in with the vertex
 ;; which is closer to us (ie highest z component after rotating towards the user)
 ;; and this is then they are sorted in groups of 5.   

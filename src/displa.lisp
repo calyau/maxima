@@ -1326,7 +1326,7 @@
 	     (pop dmstr)))
 	  ((integerp (caar dmstr))
 	   ;; Why update OLDCOL and not OLDROW?  Should either update both
-	   ;; (requiring multiple value return) or neither (analagous to lambda
+	   ;; (requiring multiple value return) or neither (analogous to lambda
 	   ;; binding).
 	   (setq oldcol (draw-linear (reverse (cddar dmstr))
 				     (+ oldrow (cadar dmstr))

@@ -158,7 +158,7 @@
 ;; characters, since if you do
 ;; PREFIX("ABCDEFGH");
 ;; then ABCDEFGA should read as a symbol.
-;; 99% of the time we dont have to unparse-tyi, and so there will
+;; 99% of the time we don't have to unparse-tyi, and so there will
 ;; be no consing...
 
 (defun parse-tyi ()
@@ -676,13 +676,13 @@
   (cond ((not (consp op))
 	 (let ((existing-lbp (get op 'lbp))
 	       (existing-rbp (get op 'rbp)))
-	   (cond ((not lbp) ;; ignore ommitted arg
+	   (cond ((not lbp) ;; ignore omitted arg
 		  )
 		 ((not existing-lbp)
 		  (putprop op lbp 'lbp))
 		 ((not (equal existing-lbp lbp))
 		  (maxima-error "Incompatible LBP's defined for this operator ~a" op)))
-	   (cond ((not rbp) ;; ignore ommitted arg
+	   (cond ((not rbp) ;; ignore omitted arg
 		  )
 		 ((not existing-rbp)
 		  (putprop op rbp 'rbp))
@@ -831,7 +831,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;
 ;;; If you want rubout processing, be sure to call some stream which knows
 ;;; about such things. Also, I'm figuring that the PROMPT will be
-;;; an atribute of the stream which somebody can hack before calling
+;;; an attribute of the stream which somebody can hack before calling
 ;;; MREAD if he wants to.
 
 

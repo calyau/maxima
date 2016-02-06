@@ -921,7 +921,7 @@
 ;;;
 ;;;   FPCOFRAT1 computes the quotient of NU/D.
 ;;;
-;;; Exeptional situations:
+;;; Exceptional situations:
 ;;;   A Lisp error is generated, if the rational number does not fit into a
 ;;;   float number.
 ;;;-----------------------------------------------------------------------------

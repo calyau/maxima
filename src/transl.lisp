@@ -47,9 +47,9 @@
 
 ;;; Functions and literals have various MODE properties;;; >
 ;;; (at user level set up by $MODEDECLARE), such as "$FLOAT" and "$ANY".
-;;; The main problem solved by this translater (and the reason that
+;;; The main problem solved by this translator (and the reason that
 ;;; it works on forms from the "inside out" as an evaluator would do
-;;; (expect for macro forms)), is the problem of type (MODE) dependant
+;;; (expect for macro forms)), is the problem of type (MODE) dependent
 ;;; function calling and mode conversion. The function TRANSLATE
 ;;; returns a list  where the CAR of the list is the MODE of the
 ;;; expression and the CDR is the expression to be evaluated by
@@ -59,7 +59,7 @@
 ;;; of all its parts. See "*UNION-MODE"
 
 ;;; weak points in the code
-;;; [1] duplication of functionality in the translaters for
+;;; [1] duplication of functionality in the translators for
 ;;; MPLUS MTIMES etc. 
 ;;; [3] primitive mode scheme. lack of even the most primitive general
 ;;; type coercion code. Most FORTRAN compilers are better than this.
@@ -83,7 +83,7 @@
 ;;; frobs are seen outside of the functions. Note: this can be done
 ;;; simply by type coercion and operator folding.
 
-;;; General comments on the stucture of the code.
+;;; General comments on the structure of the code.
 ;;; A function named TR-<something> means that it translates
 ;;; something having to do with that something.
 ;;; N.B. It does not mean that that is the translate property for <something>.
@@ -170,7 +170,7 @@ GENERAL, the default gives code good for mexprs and mlexprs but not macros.
 GENERAL assures variable bindings are correct in compiled code.
 In GENERAL mode, when translating F(X), if F is a bound variable, then
 it assumes that APPLY(F,[X]) is meant, and translates a such, with 
-apropriate warning. There is no need to turn this off.
+appropriate warning. There is no need to turn this off.
 APPLY means like APPLY.")
 
 (defmvar $tr_array_as_ref t
@@ -236,7 +236,7 @@ APPLY means like APPLY.")
 ;;;     Undefined Variables ... same thing
 ;;;     Incomprehensible special forms
 ;;;     EV                      ....
-;;;     Predicate Mode Targetting failures.
+;;;     Predicate Mode Targeting failures.
 ;;;     .....  -gjc
 
 ;;; The way it works now is to print too little or too much.
@@ -857,7 +857,7 @@ APPLY means like APPLY.")
 
 
 
-;;; Some atoms, soley by usage, are self evaluating. 
+;;; Some atoms, solely by usage, are self evaluating. 
 
 (defun implied-quotep (atom)
   (cond
@@ -873,7 +873,7 @@ APPLY means like APPLY.")
 	(t nil)))
 
 (defun translate-atoms (form)
-  ;; This is an oldy moldy which tries to declare everthing
+  ;; This is an oldy moldy which tries to declare everything
   ;; special so that calling fexpr's will work in compiled
   ;; code. What a joke.
   (cond ((atom form)

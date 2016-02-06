@@ -1015,7 +1015,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 ;; Other than sums, products, and lambda forms, meqp knows nothing
 ;; about dummy variables. Because of the way niceindices chooses names
-;; for the sum indicies, it's necessary to locally assign a new value to
+;; for the sum indices, it's necessary to locally assign a new value to
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
@@ -1387,7 +1387,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
 	  ((and *complexsign* (eq sign '$complex))
-	   ;; Found a complex factor. Return immediatly. The sign is $complex.
+	   ;; Found a complex factor. Return immediately. The sign is $complex.
 	   (return t))
 	  ((and *complexsign* (eq sign '$imaginary))
 	   ;; Found an imaginary factor. Look if we have already one.

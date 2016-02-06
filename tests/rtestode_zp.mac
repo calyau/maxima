@@ -1,7 +1,7 @@
 /* Tests from:
     F Postel and P Zimmermann, A Review of the ODE solvers of 
     AXIOM, DERIVE, MACSYMA, MATHEMATICA, MUPAD and REDUCE
-    Procedings of the 5th Rhine Workshop on Computer Algebra
+    Proceedings of the 5th Rhine Workshop on Computer Algebra
     April 1-3, 1996, Saint-Louis, France
     http://www.loria.fr/~zimmerma/ComputerAlgebra/
 */

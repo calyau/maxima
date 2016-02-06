@@ -300,7 +300,7 @@ is EQ to FNNAME if the latter is non-NIL."
                      (member (caar form)
                              '(mplus mtimes mexpt mnctimes) :test #'eq))
                 (go c))
-               ;; dont bother pushing mplus and friends on *baktrcl*
+               ;; don't bother pushing mplus and friends on *baktrcl*
                ;; should maybe even go below aryp.
                ((and *mdebug*
                      (progn

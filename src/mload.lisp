@@ -403,7 +403,7 @@
 ;; name = foo or foo.type or dir/foo.type or dir/foo 
 ;; the empty parts are filled successively from defaults in templates in
 ;; the path.   A template may use multiple {a,b,c} constructions to indicate
-;; multiple possiblities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
+;; multiple possibilities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
 (defun $file_search (name &optional paths)
   (if (and (symbolp name)
 	   (member (char (symbol-name name) 0) '(#\$)))
