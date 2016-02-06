@@ -1583,7 +1583,7 @@ The Exponential Integral En(z)  (A&S 5.1.4) defined as
 $$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
 with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
 @end tex
-@end ifhtml
+@end ifnotinfo
 @ifinfo
 @math{integrate(exp(-z*t)/t^n, t, 1, inf)}
 with @math{real(x) > 1} and @math{n} a non-negative integer.
