@@ -37,6 +37,8 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
+@mathjax_enable@
+
 @include category-macros.texi
 
 @titlepage
