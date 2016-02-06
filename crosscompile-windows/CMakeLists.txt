@@ -145,6 +145,7 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-
 
 configure_file("${CMAKE_SOURCE_DIR}/sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/sbcl.sh")
 
+# SBCL is released as a 'MSI'-installer; download and extract it (using 7z) with an own DOWNLOAD_COMMAND shell script.
 externalproject_add(sbcl
   URL "${SBCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
@@ -193,7 +194,7 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
-  DEPENDS clisp sbcl
+  DEPENDS clisp sbcl tcl tk
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
   CONFIGURE_COMMAND ./bootstrap
@@ -266,6 +267,9 @@ if(USE_VTK)
         CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/generic -DTCL_TCLSH=C:/maxima-${MAXIMAVERSION}/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/generic -DCMAKE_CROSSCOMPILING_EMULATOR=${WINE_EXE} -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/xlib -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
         INSTALL_COMMAND $(MAKE) install
+                # install vtk.exe as vtk6.exe too (it is called as "vtk6" in vtk.lisp)
+                COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/bin/vtk.exe ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/bin/vtk6.exe
+
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 endif()
