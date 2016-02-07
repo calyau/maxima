@@ -20,6 +20,16 @@
 @setchapternewpage odd
 @c end of header
 
+@ifnothtml
+@c We want texinfo not to change quotes to backticks in the pdf and the
+@c info version of the examples.
+@c
+@c In the HTML output the quotes are automatically output The Right Way
+@c and setting codequoteundirected manually results in the warning that
+@c this command is unsupported => we leave out this command in HTML.
+@codequoteundirected on
+@end ifnothtml
+
 @ifinfo
 This is a Texinfo Maxima Manual
 
