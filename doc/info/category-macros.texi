@@ -165,3 +165,7 @@
 \global\def\urlcolor{0 0 .5}
 @end tex
 
+@ifnothtml
+@c We want texinfo not to change quotes to backticks in examples.
+@codequoteundirected on
+@end ifnothtml
