@@ -27,7 +27,10 @@
 @c In the HTML output the quotes are automatically output The Right Way
 @c and setting codequoteundirected manually results in the warning that
 @c this command is unsupported => we leave out this command in HTML.
-@codequoteundirected on
+@c
+@c @codequoteundirected on
+@c does the same - but requires texinfo 5. txicodequoteundirected requires only texinfo 4.
+@set txicodequoteundirected
 @end ifnothtml
 
 @ifinfo
