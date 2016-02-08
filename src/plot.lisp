@@ -1336,7 +1336,8 @@ sin(y)*(10.0+6*cos(x)),
 (defun gnuplot-process (plot-options &optional file out-file)
   (let ((gnuplot-term (getf plot-options :gnuplot_term))
         (run-viewer (getf plot-options :run_viewer))
-        (gnuplot-preamble
+        #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+		(gnuplot-preamble
          (string-downcase (getf plot-options :gnuplot_preamble))))
 
     ;; creates the output file, when there is one to be created

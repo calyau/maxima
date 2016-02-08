@@ -14,6 +14,8 @@
 (defvar $in_netmath nil)
 (defvar $show_openplot t)
 (defvar *socket-connection*)
+(defvar $old_stdout)
+(defvar $old_stdin)
 
 (defun setup-client (port &optional (host "localhost"))
   ;; The following command has to be executed on windows before
@@ -29,8 +31,6 @@
       ($quit))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
-    (defvar $old_stdout)
-    (defvar $old_stdin)
     (setq $old_stderr *error-output*
 	  $old_stdout *standard-output*)
     #+ecl (setq *old-stdin* *standard-input*
