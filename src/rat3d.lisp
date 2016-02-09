@@ -420,7 +420,7 @@
 			     (t a))))
 	      ((equal (car a) 1) (setq a (cddr a)) (go b))
 	      (t (setq a (map2c #'retfactor1 a))
-		 (return (cond ((member 0 a :test #'eq) 0)
+		 (return (cond ((member 0 a) 0)
 			       (t (setq a (let (($expop 0) ($expon 0)
 						$negdistrib)
 					    (muln (sortgreat a) t)))
