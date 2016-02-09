@@ -310,7 +310,7 @@
 
 ;; This is DLMF: http://dlmf.nist.gov/15.15#E1 with zo = 1/2. Also here is Maxima code that
 ;; sums the first n+1 terms of the sum. The CL function 2f1-numeric-alt uses a running
-;; error and it sums until three consectutive partial sums have a modified relative difference
+;; error and it sums until three consecutive partial sums have a modified relative difference
 ;; that is bounded by the machine epsilon.
 
 #|

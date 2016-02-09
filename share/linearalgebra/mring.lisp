@@ -1,4 +1,4 @@
-;; A Maxima ring stucture
+;; A Maxima ring structure
 ;; Copyright (C) 2005, 2007, Barton Willis
 
 ;; Barton Willis

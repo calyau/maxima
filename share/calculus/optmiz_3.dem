@@ -45,7 +45,7 @@ of the constraint in the latter case: */
 stapoints(ev(volsub,l=42)) ;
 stapoints(volsub) ;
 /* The second-order test is inadequate when
-constraints have been artifically activated.  For example, the one
+constraints have been artificially activated.  For example, the one
 eigenvalue for the case  D = 15/2 above is negative, but this
 stationary point is actually a saddle.  To see this, we must check the 
 unactivated gradient at this point to see if it points into or out of

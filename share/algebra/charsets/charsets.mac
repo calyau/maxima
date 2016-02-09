@@ -94,7 +94,7 @@ ml2(u,v,l)::=buildq([u,v,l],
    (block([ml2_temp:l],u:first(ml2_temp),v:second(ml2_temp))))$
 ml3(u,v,w,l)::=buildq([u,v,w,l],(block([ml3_temp:l],
    u:first(ml3_temp),v:second(ml3_temp),w:third(ml3_temp))))$
-/* This function is used when there is a possiblity that lcoeff could be
+/* This function is used when there is a possibility that lcoeff could be
    called by -(x) */
 safeLcoeff(p,v):=
    if mapatom(p) then p /* what should lcoeff(x,y) be */
@@ -2772,7 +2772,7 @@ charsets_qqfactor ( nf,ord):=block( [temp, i,last,f:nf/numfactor(nf)],
    else (num( f / lcoeff ( f,ord) ))
 )$
 /*  the following routines implement a heuristic procedure for poly factorization */
-/*  over algebraic function fields by interger substitution and solving systems */
+/*  over algebraic function fields by integer substitution and solving systems */
 /*  of linear equations     */
 /* the main routine                   */
 
@@ -3161,7 +3161,7 @@ the table rather than being recomputed.
 )$
 /* the following routine implements some heuristics for verifying the */
 /* irreducibilty of polynomials over algebraic function fields by  */
-/* interger substitution */
+/* integer substitution */
 
 charsets_tsfactor ( f,as,ord,var):=block(
    [ i,vf,nv,df,_inf,ff,sol,das,secondLast,last],

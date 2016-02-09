@@ -3,7 +3,7 @@
 *    This package originally included a modified pois2m.lisp  *
 *    file.  This file can not be included in Maxima due to    *
 *    the presence of a Macsyma Inc. copyright in the code.    *
-*    As of the inital import of the code, it does not work    *
+*    As of the initial import of the code, it does not work    *
 *    with the current Maxima.                                 *
 ***************************************************************
 

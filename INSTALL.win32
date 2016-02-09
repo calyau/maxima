@@ -155,7 +155,7 @@ c:/programs/star.
 <http://www.jrsoftware.org/isinfo.php>. 
 
 5) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
-It is recomended to use version 4.6 patchlevel 3 or more recent (If you
+It is recommended to use version 4.6 patchlevel 3 or more recent (If you
 do have to use an older version, read the Maxima documentation for variable
 gnuplot_view_args).  
 Install gnuplot in your MSYS user home directory in ~/programs/gnuplot 

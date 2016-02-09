@@ -673,7 +673,7 @@
       )
     )
     (
-      (eq (caar e) 'mtimes)           ; Leibnitz rule
+      (eq (caar e) 'mtimes)           ; Leibniz rule
                                       ; Lv(cadr e)*(cddr e)+(cadr e)*Lv(cddr e)
       (list
         '(mplus)

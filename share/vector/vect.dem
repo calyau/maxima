@@ -48,7 +48,7 @@ potential at point [0,0]:*/
 
 potential(example);
 
-/*There is an analagous function named VECTORPOTENTIAL that computes the
+/*There is an analogous function named VECTORPOTENTIAL that computes the
 vector potential associated with a given curl vector.*/
 
 

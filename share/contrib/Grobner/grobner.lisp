@@ -1527,7 +1527,7 @@ that all polynomials in F are non-zero."
 		 c d e
 		 (b-new (make-pair-queue))
 		 g-new)
-  "An implementation of the auxillary UPDATE algorithm used by the
+  "An implementation of the auxiliary UPDATE algorithm used by the
 Gebauer-Moeller algorithm. G is a list of polynomials, B is a list of
 critical pairs and H is a new polynomial which possibly will be added
 to G. The naming conventions used are very close to the one used in
@@ -2172,7 +2172,7 @@ are assumed to be defined.")
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Auxillary function for removing zero polynomial
+;; Auxiliary function for removing zero polynomial
 (defun remzero (plist) (remove #'poly-zerop plist))
 
 ;;Simple operators

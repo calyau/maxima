@@ -886,7 +886,7 @@
       (gethash '$terminal *gr-options*)     '$screen  ; defined as screen, png, jpg, gif, svg,
                                                       ; eps, eps_color, pdf, pdfcairo, wxt or
                                                       ; aquaterm. A list of type [term, number]
-                                                      ; is also admited if term is screen, wxt
+                                                      ; is also admitted if term is screen, wxt
                                                       ; or aquaterm
       (gethash '$key_pos *gr-options*)            nil
       (gethash '$dimensions *gr-options*)        '(600 500)

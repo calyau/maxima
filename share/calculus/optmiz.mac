@@ -95,7 +95,7 @@ modh(grad,decslkmults) /*end MODHESSIAN*/,
       decslkmults: cons(rtslack[i], decslkmults),
    decslkmults: append(decisionvars, decslkmults),
    grad: gradient(decslkmults),  /* form gradient  */
-   dispflag: false, /* supress automatic output from solve */
+   dispflag: false, /* suppress automatic output from solve */
    stapts: solve(grad,decslkmults),/* solve GRAD=0*/
 
    if stapts = [] then apply('disp,["no stationary points found"])

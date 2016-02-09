@@ -51,7 +51,7 @@ gs_prove(expr,k,cert) :=
 );
 
 
-/* Routines related to the proof writer for Zeilberger's algoritm */
+/* Routines related to the proof writer for Zeilberger's algorithm */
 
 zb_meaning(zb_in,k,n,zb_cert,zb_rec) :=
   block([j__],

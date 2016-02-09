@@ -175,7 +175,7 @@ levin_u(a__,terms__,[mode__]):=block([i__,j__,l__,n__,beta__,last__,
       b__[j__]:subvar(a__,i__),
       j__:j__+1
     ) /* else (
-      if levin_options["debug"] then print("ommitting zero term with index ",i)
+      if levin_options["debug"] then print("omitting zero term with index ",i)
     )*/
   ),
   last__:j__-1,

@@ -198,7 +198,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 						 (ncons (car deriv))))))))
 	     (t e)))
 
-(defun equiv-table (a)                ;Makes appropiate name changes converting
+(defun equiv-table (a)                ;Makes appropriate name changes converting
        (cond ((member a '($ichr1 %ichr1) :test #'eq) '$lcs)            ;from ITENSOR to ETENSR
 	     ((member a '($ichr2 %ichr2) :test #'eq) '$mcs)
 	     (t a)))

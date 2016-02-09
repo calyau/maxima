@@ -1036,7 +1036,7 @@
       (setf v (* v (- u *rbin-p3*) *rbin-xlr*))
 
       s70
-      ;; determine appropiate way to perform accept/reject test
+      ;; determine appropriate way to perform accept/reject test
       (setf k (abs (- ix *rbin-m*)))
       (if (and (> k 20) (< k (- (/ *rbin-xnpq* 2.0) 1.0))) (go s130))
 

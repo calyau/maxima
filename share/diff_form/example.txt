@@ -223,7 +223,7 @@ this integral value is n*4pai. n is a integer.
 
 (%o79) is written by using vector,(p1,p2,p3).{(d/dx(p1,p2,p3)Xd/dy(p1,p2,p3))*Dx@Dy}
 integrate with IxI,this is homotopy invariant.
-generaly speaking,in exchaing coordinates, vector equations are not always invariant but differntial forms are invariant. so we can calculate forms with
+generally speaking,in exchaing coordinates, vector equations are not always invariant but differntial forms are invariant. so we can calculate forms with
 some suitable or fit coordinate,then by pulling back it  with general ones. 
 
 C.Integral factor (always possible locally,but not global)

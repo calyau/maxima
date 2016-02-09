@@ -18,7 +18,7 @@
 
 ;; The set package doesn't distinguish between sets and lists.  We're
 ;; in trouble if we need to work simultaneously with a set of 
-;; lists and a set of sets.  The commerical Macsyma seems to treat
+;; lists and a set of sets.  The commercial Macsyma seems to treat
 ;; all set elements as lists; thus setify([[1,2],[2,1]) returns 
 ;; [[1,2],[2,1]] because [1,2] and [2,1] are treated as lists 
 ;; (and consequently they are not equal).  In this package, the 

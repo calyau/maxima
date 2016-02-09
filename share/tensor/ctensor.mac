@@ -1592,7 +1592,7 @@ psi(disp):=block
    Classifying geometries in general relativity: III Classification in practice
    by Pollney, Skea, d'Inverno, Class. Quant. Grav. 17 2885-2992 (2000)
 
-   The algoritm has been optimized to compute only quantities that are
+   The algorithm has been optimized to compute only quantities that are
    required for a specific (sub)case. As of 12/19/2004, it is essentially
    untested, may even contain typos in some expressions.
 */

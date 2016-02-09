@@ -289,7 +289,7 @@
   (tprinc "</msub>") (row-end "</mrow>")
 )
 ;;      in mPr_engine ,whennever mexpress is an atom this function taking care 
-;;of it by getting a TeX symbol if it exsits. Also it handles some word wich
+;;of it by getting a TeX symbol if it exists. Also it handles some word which
 ;;has a reserved character for TeX
 
 ;; prints instead of returning value now

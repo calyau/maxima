@@ -121,7 +121,7 @@ in free space Maxwell equation d(F)=0 and d(h_st(F))=0 */
 
 /*to translate this relation to vector ,we introduce d_2 operator which is exterior
 derivative with space variables only. it is easy to define this.
-or like as %i152,can use local d operator,maybe this is more confortable */
+or like as %i152,can use local d operator,maybe this is more comfortable */
 
 (%i49)  d_2(_pform):=sum(basis[i]@(diff(_pform,coords[i])),i,1,dim-1);
 (%o49) d_2(_pform) := sum(basis  @ diff(_pform, coords ), i, 1, dim - 1)

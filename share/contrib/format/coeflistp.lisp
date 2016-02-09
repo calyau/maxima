@@ -225,7 +225,7 @@
 ;;;
 ;;; Use POISSON Series facilities to contruct coefficient list.
 ;;;  1) Find maximum multiples for each variable and ensure that the poisson series
-;;;     parameters can accomodate the expression.
+;;;     parameters can accommodate the expression.
 ;;;  2) use INTOPOIS to convert to POISSON representation.
 ;;;  3) walk the poisson form constructing the list of coefficients & multipliers.
 ;;;********************************************************************************
@@ -334,7 +334,7 @@
   (setq expr (totalspecdisrep expr))
   (let ((v (car (instanciate-variable-list (list var) expr '$series_coeffs 1))))
     (setq v ($ratdisrep v))
-    (labels ((mino (expr)			; Find minumum power of V in expr (for mult)
+    (labels ((mino (expr)			; Find minimum power of V in expr (for mult)
 	       (let ((op (and (listp expr)(caar expr))))
 		 (cond ((like expr v)   1)	; Trivial case: expr is V itself
 		       ((or ($atom expr)(freeof v expr)) 0)	; `constant' case

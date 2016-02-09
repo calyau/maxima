@@ -189,7 +189,7 @@
 ;;; Note: %matrix subtemplates apply to ROWS. To target elements, use %list for rows.
 
 ;;;;******************************************************************************************
-;;; Targetting templates.
+;;; Targeting templates.
 ;;; mostly shorthand for things which can be done using subtemplates, but more concise.
 
 (defun format-nth (expr n)

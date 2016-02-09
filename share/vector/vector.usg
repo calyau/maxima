@@ -94,7 +94,7 @@ coordsystem(arg)  Specifies that coordinate system arg is to be set
 	values.  Note that just setting coordsystem does not cause
 	other global variables to be changed.
 
-4.  Descripton of Vector Operators Available.
+4.  Description of Vector Operators Available.
 
 Operation	Explanation
 ---------	-----------
