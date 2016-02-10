@@ -855,7 +855,7 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (setq li (cdr li))
   (cond 
     ((string= ds "")
-      (apply #'$sconcat li) )
+      (reduce #'$sconcat li) )
     (t
       (do (acc) (())
         (push ($sconcat (pop li)) acc)
