@@ -662,3 +662,63 @@ limit( 27^(log(n)/log(3)+1)/n^3, n, inf);
 
 limit( ((27^(log(n)/log(3)+1)-1)/26+n-log(n)/log(3)-1)/n^3,n,inf);
 27/26;
+
+/* examples from mailing list 2014-10-10: "Re: bug in limit code" */
+
+(newcontext (), 
+ kill (beta, hbar, omega, delta, n),
+ assume (beta > 0, hbar > 0, omega > 0, delta > 0, 2*n - 1 > 0),
+ 0);
+0;
+
+limit (%e^(beta*hbar*omega-beta*(hbar*(2*n+1)*omega+delta))
+ /(1/(1-%e^-(beta*hbar*omega))^2
+ +(%e^-(beta*delta)-1)/(1-%e^-(2*beta*hbar*omega))), beta, inf);
+0;
+
+(kill (h, d, z),
+ assume (h > 0, d > 0, z > 0, 2*h*z > d),
+ 0);
+0;
+
+limit ((%e^-(b*d)-1)/(1-%e^-(2*b*h*z)), b, inf);
+-1;
+
+(kill (a), assume (a < 0), 0);
+0;
+
+limit (exp (b*a), b, inf);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf) ;
+-1;
+
+(forget (a < 0), assume (a > 0), 0);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf) ;
+1;
+
+(forget (a > 0), assume (equal (a, 0)), 0);
+0;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf) ;
+0;
+
+(forget (equal (a, 0)), assume (a > 0), 0);
+0;
+
+integrate(%e^(-a*r)*sin(k*r),r,0,inf);
+k/(k^2+a^2);
+
+limit (a*x, x, inf);
+inf;
+
+(forget (a > 0), assume (a < 0), limit (a*x, x, inf));
+minf;
+
+(forget (a < 0), assume (equal (a, 0)), limit (a*x, x, inf));
+0;
+
+killcontext (context);
+done;
