@@ -7,7 +7,7 @@ to the Maxima community.
 
 1. When fun in sdiffgrad is lambda, do not differentiate using positional
 derivatives.  Without checking for a lambda form, derivatives of lambda 
-forms were incorrectly differentiated (commerical Macsyma has this bug). 
+forms were incorrectly differentiated (commercial Macsyma has this bug). 
 Maxima doesn't support derivatives of lambda forms.
 
 2.  Similar to the support for %sqrt in %pderivop, I added support for 

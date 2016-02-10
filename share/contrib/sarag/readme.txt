@@ -643,7 +643,7 @@ describing the open interval "]a,b["
 
 
 - findRoots[withZ](pol,x,threshold)
-INPUT : polynomial pol in x, theshold for the intervals
+INPUT : polynomial pol in x, threshold for the intervals
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
 -- monomial [root isolation in the monomial basis] (**)
@@ -659,7 +659,7 @@ describing the open interval "]a,b[" smaller then threshold
 
 
 - findRootsBetween[withZ](pol,x,threshold)
-INPUT : polynomial pol in x, theshold for the intervals
+INPUT : polynomial pol in x, threshold for the intervals
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
 -- monomial [root isolation in the monomial basis] (**)
@@ -836,7 +836,7 @@ topology.mac
 -----------------------------------------------------------------
 
 NOTE: When we refer to an algorithm for isolating real roots
-in an archimedian real closed field we assume 
+in an archimedean real closed field we assume 
 that has the same input/output format as
 "isolateRoots" (see ROOT ISOLATION).
 
@@ -846,7 +846,7 @@ Main functions
 - archimedianTopology(P,isolAlg,x,y)
 INPUT : a square free polynomial P in x and y, 
 algorithm "isolAlg" for the
-isolation of real roots in an archimedian real closed field
+isolation of real roots in an archimedean real closed field
 OUTPUT : a couple containing 
 
 i) the number "a" of changes of 
@@ -872,7 +872,7 @@ ii.2.2) the position of the critical on the projection
 
 -drawTopology(tpg) (*)
 INPUT : the topology of the curve (as in the second
-element of the output of archimedian topology)
+element of the output of archimedean topology)
 OUTPUT : number of critical points 
 EFFECT: it uses gnuplot (3.7.x, 4.0.x or above) to draw the topological graph
 corresponding to description in tpg

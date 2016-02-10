@@ -440,7 +440,6 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{infolists}
 @defvr {System variable} infolists
 Default value: @code{[]}
 
@@ -729,7 +728,7 @@ the prefix, the prefixes @mrefcomma{inchar} @code{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlabels)} do not work as expected.
 
-See also @code{labels}.
+See also @mref{labels}.
 
 Example:
 

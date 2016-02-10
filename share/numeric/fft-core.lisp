@@ -108,7 +108,7 @@ in Maxima's 'format'."
 ;;
 (defun fft+ifft-common (input lisp-function-to-call maxima-function-name)
   "This function checks the type of input argument,
-does the apropriate conversion to `fft arrays', calls
+does the appropriate conversion to `fft arrays', calls
 the list function given and converts the result back
 into the original datatype of `input'"
   (multiple-value-bind (convert reverse-convert)

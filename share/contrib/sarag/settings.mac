@@ -33,7 +33,7 @@ THOM_SIGN_DET_ALG : smartSignDetermination; /* experimental! */
 
 
 
-/* Assume generic position for curves when studing the topology */
+/* Assume generic position for curves when studying the topology */
 ASSUME_GENERIC_POSITION : false;
 
 /* Warnings */

@@ -166,7 +166,7 @@ ode1_abel_f0_0_f1_0(f0,f1,f2,f3,y,x) := block(
   ode_disp2("   A: ",A),
 
   if not(freeof(x,A)) then (
-    ode_disp("   A is not constant, so this algorithm dosen't apply"),
+    ode_disp("   A is not constant, so this algorithm doesn't apply"),
     return(false)
   ),
 

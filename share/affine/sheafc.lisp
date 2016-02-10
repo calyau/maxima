@@ -730,7 +730,7 @@
 	     eqns))
 
 ;checks if the ldata eqns are in triangular linear form
-;that is if there's a linear variable in eqn1 not occuring in remaining eqns
+;that is if there's a linear variable in eqn1 not occurring in remaining eqns
 ;etc.
 
 

@@ -59,7 +59,7 @@ LinsolveM(ees,vees):=block(
       equations (ees) */
   am:augcoefmatrix(ees,nvees),
   tam:triangularize(am),
-   /* search for inconsistant equations.  this assumes that they are on
+   /* search for inconsistent equations.  this assumes that they are on
       the bottom of the matrix.  there may be a better way of doing
       this but i am not sure of it */
    /* copy the rhs, its the last column of the matrix, and whack it */
@@ -75,7 +75,7 @@ LinsolveM(ees,vees):=block(
       Solve_Inconsistent_Terms : cons(ees[i], Solve_Inconsistent_Terms)
     )
   ),
-  if ic # [] then ( /* equations are inconsistant */
+  if ic # [] then ( /* equations are inconsistent */
     if Solve_Inconsistent_Error = false then (
       Solve_Inconsistent_Eqn_Nos:ic, return([inconsistant])
     )

@@ -85,7 +85,7 @@ Lastly, there is a low-level interface `Eulix_Step`_ which computes a single tim
 
 
   :``range[2]``:
-    and ``range[3]`` specify the inital and final time, respectively. If ``range[3]`` < ``range[2]``
+    and ``range[3]`` specify the initial and final time, respectively. If ``range[3]`` < ``range[2]``
     the ODE is integrated **backwards** in time.
 
 
@@ -365,7 +365,7 @@ give the suffix which the star stands for.
 :TP: Here we solve a system of 2 equations with a tolerance of 1E-30.
   Since the exact solution is known, we can check the tolerance achieved.
 
-:TS: This is an extremly stiff ODE (`Shampine's ball of flame`)
+:TS: This is an extremely stiff ODE (`Shampine's ball of flame`)
 
 :Step_TP: A 2-d ODE with a known solution, demonstrating high precision
   solving using the low level `Eulix_Step` interface.

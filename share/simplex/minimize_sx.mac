@@ -122,7 +122,7 @@ minimize_lp(target, constraints, [pozitive]) := block(
   for v in var do (
     c[j] : ratcoeff(t, v),
     if not(floatp_sx(c[j])) then
-      error("Error: cost funtion not linear."),
+      error("Error: cost function not linear."),
     t : t-c[j]*v,
     j : j+1,
     if not(member(v,pozitive)) then (
@@ -132,7 +132,7 @@ minimize_lp(target, constraints, [pozitive]) := block(
   ),
 
   if not(floatp_sx(t)) then
-    error("Error: cost funtion not linear in constrained variables."),
+    error("Error: cost function not linear in constrained variables."),
 
   if return_input_lp then return([A, b, c]),
 

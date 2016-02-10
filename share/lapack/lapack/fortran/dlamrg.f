@@ -25,7 +25,7 @@
 *
 *  N1     (input) INTEGER
 *  N2     (input) INTEGER
-*         These arguements contain the respective lengths of the two
+*         These arguments contain the respective lengths of the two
 *         sorted lists to be merged.
 *
 *  A      (input) DOUBLE PRECISION array, dimension (N1+N2)

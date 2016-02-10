@@ -24,7 +24,7 @@ bar(maxi=100000,foop);
 
 bar();
 
-/* mispell an argument on purpose: */
+/* misspell an argument on purpose: */
 
 errcatch(bar(maxi=10,timem=33));
 

@@ -350,7 +350,7 @@ print("r : ", r)
 ),
 
 
-/* Interger linear computation */
+/* Integer linear computation */
 
 numList : intLinNormList(intLinNum,k), 
 

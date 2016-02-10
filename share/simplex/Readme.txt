@@ -65,4 +65,4 @@ This package was written by
   Andrej Vodopivec <andrejv@users.sourceforge.net>
   http://wxmaxima.sourceforge.net/maxima.html
 
-It is licenced under the GPL licence.
+It is licensed under the GPL licence.

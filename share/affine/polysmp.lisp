@@ -151,7 +151,7 @@ substituting them to be zero."
 (defun replacements (&optional (simps *poly-simplifications*))
   (loop for v in simps by #'cddr collecting v))
 
-;;These check for  occurence of seq in poly.  But using this seems to
+;;These check for  occurrence of seq in poly.  But using this seems to
 ;;be slower than just checking the part-above just in case we will need
 ;;to replace. The only advantage is this does no consing.  But
 ;;with our new storage techniques..

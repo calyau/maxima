@@ -611,7 +611,7 @@ SetupSolver( Equations, SolverParams ) := (
       if not listp( Variables ) then
         ErrorHandler( "VarNotLst", Variables, 'Fatal ),
 
-      /* delete multiple occurences of identical symbols */
+      /* delete multiple occurrences of identical symbols */
 
       Variables : Setify( Variables ),
 
@@ -626,7 +626,7 @@ SetupSolver( Equations, SolverParams ) := (
         if not listp( Parameters ) then
           ErrorHandler( "ParNotLst", Parameters, 'Fatal ),
 
-        /* delete multiple occurences of identical symbols */
+        /* delete multiple occurrences of identical symbols */
 
         Parameters : Setify( Parameters ),
 
@@ -2043,7 +2043,7 @@ Valuation( Expr, Var ) := (
 
 
 /******************************************************************************/
-/* OccurrenceMatrix sets up a matrix in which the number of occurences of     */
+/* OccurrenceMatrix sets up a matrix in which the number of occurrences of     */
 /* each variable in each equation is counted.                                 */
 /******************************************************************************/
 

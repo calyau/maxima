@@ -263,7 +263,7 @@ isListWithSignsSort(isListWithSigns) :=
 deCasteljauIsolateRoots(pol,var) :=
   deCasteljauIsolateRootsGenStruct(pol,var,true); /* with Z by default */
 
-deCasteljauIsolateRootsWithARCF(pol,var) := /* ARCF stands for Archimedian Real Closed Field */
+deCasteljauIsolateRootsWithARCF(pol,var) := /* ARCF stands for Archimedean Real Closed Field */
   deCasteljauIsolateRootsGenStruct(pol,var,false);
 
 deCasteljauIsolateRootsWithZ(pol,var) :=
@@ -758,7 +758,7 @@ intersectIn(inList1,inList2) :=
 
 
 /* Comparison of real roots */
-/* in an archimedian real closed field */
+/* in an archimedean real closed field */
 deCasteljauCompareRoots(p,q,var) :=
   deCasteljauCompareRootsVerbose(p,q,var,DEFAULT_VERBOSITY);
 

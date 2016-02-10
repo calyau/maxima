@@ -278,8 +278,8 @@ besksimp(ex):=block(
 
 /* This is a helper function for besksimp.
   - the function bk has been substituted for bessel_k in ex
-  - collect all the arguments of each occurence of bk in e
-  - partition arguements into sets with same argument and where 
+  - collect all the arguments of each occurrence of bk in e
+  - partition arguments into sets with same argument and where 
     either the orders m and n differ by integer or m and (-n) 
     differ by integer (so m+n is an integer).
   - for the elements where  m+n is an integer, substitute

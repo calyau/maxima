@@ -214,7 +214,7 @@ CC: GJC at MIT-MC
 There is now a new version of CTENSR called TENSOR;CTENSR NFASL.
 It runs about twice as fast as the old version, CTENSR FASL,
 but may leave less work space for the user. This may not, however,
-be apparant for standard problems.
+be apparent for standard problems.
 
 I am asking users to test the new version and let me know how it
 runs. If there are no core problems I will let this become the working

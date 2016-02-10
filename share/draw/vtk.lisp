@@ -1749,8 +1749,8 @@
     (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par)))
        (merror "draw2d (parametric): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
-    (setq f1 (coerce-float-fun xfun `((mlist), par)))
-    (setq f2 (coerce-float-fun yfun `((mlist), par)))
+    (setq f1 (coerce-float-fun xfun `((mlist) ,par)))
+    (setq f2 (coerce-float-fun yfun `((mlist) ,par)))
     (setf result
        (loop
           do (setf xx ($float (funcall f1 tt)))
@@ -1789,7 +1789,8 @@
       (case linetype ; translate some gnuplot codes into vtk codes
         (0 3)
         (6 4)
-        (otherwise linetype) ) ) ))
+        (otherwise linetype) ) )
+    str ))
 
 
 
@@ -2295,7 +2296,8 @@
       (case linetype ; translate some gnuplot codes into vtk codes
         (0 3)
         (6 4)
-        (otherwise linetype) ) ) ))
+        (otherwise linetype) ) )
+    str ))
 
 
 

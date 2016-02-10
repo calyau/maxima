@@ -360,7 +360,7 @@ nicedummies(to_poly_solve(cosh(x) - sinh(2*x)/2 = 0,x));
 nicedummies(to_poly_solve(sinh(x) + cosh(x) = 1,x));
 %union([x=2*%i*%pi*%z0])$
 
-/* miscelaneous */
+/* miscellaneous */
 
 nicedummies(to_poly_solve(sin(x) = cos(x), x,simpfuncs = ['expand]));
 %union([x = %pi*%z0+%pi/4])$

@@ -328,7 +328,7 @@ C...  perform forward and backward substitution for mode=0,2, or 3.
 C
       CALL SBBLOK (G, INTEGS, N, IPVTG, DELZ)
 C
-C...  finaly find deldmz
+C...  finally find deldmz
 C
       CALL DMZSOL (KD, MSTAR, N, V, DELZ, DELDMZ)
 C
@@ -362,7 +362,7 @@ C
   350 CONTINUE
       CALL SBBLOK (G, INTEGS, N, IPVTG, Z)
 C
-C...  finaly find dmz
+C...  finally find dmz
 C
       CALL DMZSOL (KD, MSTAR, N, V, Z, DMZ)
 C
