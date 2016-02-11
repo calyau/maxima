@@ -27,6 +27,7 @@
 (defprop %and 120. wxxml-lbp)
 (defprop %and 120. wxxml-rbp)
 (displa-def %and dimension-nary " %and ")
+(setf (get '%and 'grind) 'msize-nary)
 (defprop %and tex-nary tex)
 (defprop %and (" \\land ") texsym)
 (setf (get '$%and 'operators) 'simp-%and)
@@ -80,6 +81,7 @@
 (defprop %or (" \\lor ") texsym)
 
 (displa-def %or dimension-nary " %or ")
+(setf (get '%or 'grind) 'msize-nary)
 (setf (get '$%or 'operators) 'simp-%or)
 (setf (get '%or 'operators) 'simp-%or)
 

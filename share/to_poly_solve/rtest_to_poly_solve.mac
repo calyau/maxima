@@ -1210,6 +1210,20 @@ nicedummies(%solve(tan(x)=tan(%pi/5),x));
 %solve(conjugate(atanh(x/8+7)),x);
 %union([x=-56])$
 
+/* SF bug #3088: "string(a %or b) => ?%or(a,b)" */
+
+(kill (a, b, c, d), string (a %or b));
+"a %or b";
+
+string (a %or b %or c %or d);
+"a %or b %or c %or d";
+
+string (a %and b);
+"a %and b";
+
+string (a %and b %and c %and d);
+"a %and b %and c %and d";
+
 /* clean up */
 (print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 200));
 true$
