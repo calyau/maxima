@@ -126,12 +126,15 @@
 (defun $string_to_octets (str &optional enc) 
   (unless (stringp str) 
     (gf-merror (intl:gettext "`string_to_octets': argument must be a string.")) )
+    (cons '(mlist simp) (string-to-octets str enc)) )
+
+(defun string-to-octets (str &optional enc) 
   (setq enc (get-encoding enc "string_to_octets"))
   (let ((ov #+ccl (ccl:encode-string-to-octets str :external-format enc) ;; maybe these (CCL, ECL) .. 
             #+clisp (ext:convert-string-to-bytes str enc)
             #+ecl (ecl-string-to-octets str enc)                         ;; .. could move to intl.lisp
             #- (or ccl clisp ecl) (intl::string-to-octets str enc) ))    ;; GCL ignores enc
-    (cons '(mlist simp) (coerce ov 'list)) ))
+    (coerce ov 'list) ))
 ;;
 #+ecl
 (defun ecl-string-to-octets (str enc)
@@ -150,8 +153,10 @@
   (unless ($listp ol)
     (gf-merror (intl:gettext 
       "`octets_to_string': argument must be a list of octets." )))
-  (setq ol (cdr ol) 
-        enc (get-encoding enc "octets_to_string") )
+  (octets-to-string (cdr ol) enc) )
+
+(defun octets-to-string (ol &optional enc) 
+  (setq enc (get-encoding enc "octets_to_string"))
   (let ((ov (map-into 
               (make-array (length ol) :element-type '(unsigned-byte 8))
               #'identity

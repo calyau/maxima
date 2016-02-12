@@ -205,7 +205,7 @@
   (let (bytes len)
     (cond
       ((stringp s)
-        (setq bytes (mapcar #'char-code (coerce s 'list))) )
+        (setq bytes (string-to-octets s)) )
       ((and (integerp s) (>= s 0))
         (setq bytes (number-to-octets s)) )
       (($listp s)
@@ -322,7 +322,7 @@
   (let (bytes len)
     (cond
       ((stringp s)
-        (setq bytes (mapcar #'char-code (coerce s 'list))) )
+        (setq bytes (string-to-octets s)) )
       ((and (integerp s) (>= s 0))
         (setq bytes (number-to-octets s)) )
       (($listp s)
