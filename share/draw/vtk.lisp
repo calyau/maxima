@@ -464,8 +464,9 @@
             (($eps $eps_color)
                (setf extension   "eps"
                      classformat "vtkPostScriptWriter")))
-          (format nil "~a~%~a~%~a~%~a ~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%"
+          (format nil "~a~%~a~%~a~%~a~%~a ~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%"
             "renWin OffScreenRenderingOn"
+            "renWin Render"
             "vtkWindowToImageFilter w2if"
             "  w2if SetInput renWin"
             classformat "writer"
@@ -492,10 +493,14 @@
             "vtkCommand DeleteAllObjects"
             "exit"))
        ((eq terminal '$screen)
-          (format nil "~a~%~a~%~a~%~a~%"
+          (format nil "~a~%~a~%~a~%~a~%~a~%~a~%~a~%~a~%"
             "vtkRenderWindowInteractor iren"
             "  iren SetRenderWindow renWin"
             "  iren Initialize"
+            "  renderer1 ResetCamera"
+            "  [renderer1 GetActiveCamera] Zoom 1.01"
+            "  renWin Render"
+            "  wm withdraw ."
             "  iren Start"))
        ((eq terminal '$stl)
           (format nil "~a~%~a~%~a~%~a~%~a~a~a~%~a~%~a~%~a~%"
@@ -841,7 +846,7 @@
     (format str "~a~%" (vtktransformpolydatafilter-code filter-name source-name trans-name t))
     (format str "~a~%" (vtkpolydatamapper-code mapper-name filter-name))
     (format str "~a~%" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
-    str))
+  str))
 
 
 
@@ -1053,7 +1058,8 @@
     (format str "~a" (vtktransform-code trans-name))
     (format str "~a" (vtktransformpolydatafilter-code filter-name source-name trans-name nil))
     (format str "~a" (vtkpolydatamapper-code mapper-name filter-name))
-    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))))
+    (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
+  str))
 
 
 
@@ -1114,7 +1120,7 @@
     (format str "vtkPolyDataMapper ~a~%" mapper-name)
     (format str "  ~a SetInputData ~a~%" mapper-name polydata-name)
     (format str "~a" (vtkactor-code actor-name mapper-name color opacity linewidth wiredsurface))
-    str))
+  str))
 
 
 
