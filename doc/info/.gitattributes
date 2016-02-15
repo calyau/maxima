@@ -1,2 +1,2 @@
-*.texi text eol-lf
+*.texi text eol=lf
 *.png binary
