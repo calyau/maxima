@@ -1412,6 +1412,7 @@ Scalar base to a matrix exponent, element by element.
 @itemize @bullet
 @item
 Matrix base to a matrix exponent.  This is not carried out element by element.
+See also @mrefdot{matrixexp}
 @c WHAT IS THIS ??
 @end itemize
 @example
@@ -1481,6 +1482,23 @@ matrix inverse, if it exists.
 @category{Matrices}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matrixexp}
+@deffn {Function} matrixexp @
+@fname{matrixexp} (@var{f}) @
+@fname{matrixexp} (@var{f}, @var{n}) @
+@fname{matrixexp} (@var{f}, @var{V})
+
+Calculates a Matrix Exponential.
+@c NEEDS MORE DESCRIPTION
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
 
 @c -----------------------------------------------------------------------------
 @anchor{matrixmap}

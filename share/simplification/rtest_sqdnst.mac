@@ -1,0 +1,21 @@
+(kill(all), 'done);
+'done$
+
+(load("sqdnst"), 'done);
+'done$
+
+sqrtdenest(sqrt(3+2*sqrt(2)));
+sqrt(2)+1$
+
+sqrtdenest(sqrt(5+2*sqrt(6)));
+sqrt(3)+sqrt(2)$
+
+sqrtdenest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12));
+(sqrt(3)/2+1/2)/(3*2^(1/4)-2^(3/4))$
+
+/* apply more than once */
+sqrtdenest((19601-13860*sqrt(2))^(7/4));
+(99-35*2^(3/2))^(7/2)$
+
+sqrtdenest(sqrtdenest((19601-13860*sqrt(2))^(7/4)));
+(5*sqrt(2)-7)^7$
