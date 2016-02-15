@@ -2358,15 +2358,19 @@
        (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
 
      (mul -1
-          const
-          (inv (mul p r (power a (mul c v (power (power var r) p)))))
-          var
-          (power (power a (add d (mul c (power (power var r) p)))) v)
-          (take '(%gamma_incomplete)
-                (inv (mul p r))
-                (mul -1 c v (power (power var r) p) (take '(%log) a)))
-          (power (mul -1 c v (power (power var r) p) (take '(%log) a))
-                 (div -1 (mul p r)))))
+	  const
+	  ;; 1/(p*r*(a^(c*v*(var^r)^p)))
+	  (inv (mul p r (power a (mul c v (power (power var r) p)))))
+	  var
+	  ;; (a^(d+c*(var^r)^p))^v
+	  (power (power a (add d (mul c (power (power var r) p)))) v)
+	  ;; gamma_incomplete(1/(p*r), -c*v*(var^r)^p*log(a))
+	  (take '(%gamma_incomplete)
+		(inv (mul p r))
+		(mul -1 c v (power (power var r) p) (take '(%log) a)))
+	  ;; (-c*v*(var^r)^p*log(a))^(-1/(p*r))
+	  (power (mul -1 c v (power (power var r) p) (take '(%log) a))
+		 (div -1 (mul p r)))))
 
     ((m2-exp-type-2 (facsum-exponent expr))
      (a b d v r)
