@@ -465,7 +465,7 @@ Emacs version."
 
 (defun imaxima-color-to-rgb (str)
   "Convert color name STR to rgb values understood by TeX."
-  (mapcar '(lambda (x) (/ x 65535.0)) (imaxima-color-values str)))
+  (mapcar #'(lambda (x) (/ x 65535.0)) (imaxima-color-values str)))
 
 (defmacro imaxima-with-temp-dir (dir &rest body)
   "Change to DIR temporarily and execute BODY."
