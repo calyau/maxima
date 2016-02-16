@@ -1486,12 +1486,47 @@ matrix inverse, if it exists.
 @c -----------------------------------------------------------------------------
 @anchor{matrixexp}
 @deffn {Function} matrixexp @
-@fname{matrixexp} (@var{f}) @
-@fname{matrixexp} (@var{f}, @var{n}) @
-@fname{matrixexp} (@var{f}, @var{V})
+@fname{matrixexp} (@var{M}) @
+@fname{matrixexp} (@var{M}, @var{n}) @
+@fname{matrixexp} (@var{M}, @var{V})
 
-Calculates a Matrix Exponential.
-@c NEEDS MORE DESCRIPTION
+Calculates the matrix exponential
+@ifnotinfo
+@tex
+@math{e^{MV}}
+@end tex
+@ifset mathjax
+@html
+$$e^{M\cdot V}$$
+@end html
+@end ifset
+@ifclear mathjax
+@math{e^(M*V)}
+@end ifclear
+@end ifnotinfo 
+@ifinfo
+@math{e^(M*V)}
+@end ifinfo
+. Instead of the vector @var{V} a number @var{n} can be specified as the second
+argument. If this argument is omitted @code{matrixexp} replaces it by @code{1}.
+
+The matrix exponential of a matrix @var{M} can be expressed as a power series:
+@ifnotinfo
+@tex
+@math{e^M=\sum_{k=0}^\infty{{M^k}\over{k!}}}
+@end tex
+@ifset mathjax
+@html
+$$e^M=\sum_{k=0}^\infty{\left(\frac{M^k}{k!}\right)}$$
+@end html
+@end ifset
+@ifclear mathjax
+@math{e^M=sum(M^k/k!,0,inf)}
+@end ifclear
+@end ifnotinfo 
+@ifinfo
+@math{e^M=sum(M^k/k!,0,inf)}
+@end ifinfo
 
 @c NEED EXAMPLE HERE
 @opencatbox
