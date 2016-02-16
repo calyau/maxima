@@ -116,6 +116,7 @@ figures/draw_view.pdf\
 figures/draw_wired_surface.pdf\
 figures/draw_xaxis.pdf\
 figures/draw_xaxis_secondary.pdf\
+figures/draw_xugrid.pdf\
 figures/draw_ylabel_secondary.pdf\
 figures/draw_transform.pdf\
 figures/worldmap_make_poly_continent.pdf\
@@ -246,6 +247,7 @@ figures/draw_view.gif\
 figures/draw_wired_surface.gif\
 figures/draw_xaxis.gif\
 figures/draw_xaxis_secondary.gif\
+figures/draw_xugrid.gif\
 figures/draw_ylabel_secondary.gif\
 figures/draw_transform.gif\
 figures/worldmap_make_poly_continent.gif\

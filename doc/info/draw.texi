@@ -46,9 +46,9 @@ This scene is interpreted sequentially: @i{graphic options} affect those @i{grap
 placed on its right. Some @i{graphic options} affect the global appearance of the scene.
 
 This is the list of @i{graphic objects} available for scenes in two dimensions:
-@code{bars}, @code{ellipse}, @code{explicit}, @code{image}, @code{implicit}, @code{label},
-@code{parametric}, @code{points}, @code{polar}, @code{polygon}, @code{quadrilateral},
-@code{rectangle}, @code{triangle}, @code{vector}, and @code{geomap}
+@mrefcomma{bars} @mrefcomma{ellipse} @mrefcomma{explicit} @mrefcomma{image} @mrefcomma{implicit} @mrefcomma{label}
+@mrefcomma{parametric} @mrefcomma{points} @mrefcomma{polar} @mrefcomma{polygon} @mrefcomma{quadrilateral}
+@mrefcomma{rectangle} @mrefcomma{triangle} @mref{vector} and @code{geomap}
 (this one defined in package @code{worldmap}).
 
 See also @mref{draw}
@@ -119,11 +119,11 @@ appearance of the scene.
 
 This is the list of @i{graphic objects} available for scenes in three
 dimensions:@*
-@code{cylindrical}, @code{elevation_grid}, @code{explicit}, @code{implicit},
-@code{label}, @code{mesh}, @code{parametric},@*
-@code{parametric_surface}, @code{points}, @code{quadrilateral},
-@code{spherical}, @code{triangle}, @code{tube},@*
-@code{vector}, and @code{geomap} (this one defined in package @code{worldmap}).
+@mrefcomma{cylindrical} @mrefcomma{elevation_grid} @mrefcomma{explicit} @mrefcomma{implicit}
+@mrefcomma{label} @mrefcomma{mesh} @mrefcomma{parametric}@*
+@mrefcomma{parametric_surface} @mrefcomma{points} @mrefcomma{quadrilateral}
+@mrefcomma{spherical} @mrefcomma{triangle} @mrefcomma{tube}@*
+@mrefcomma{vector} and @mref{geomap} (this one defined in package @code{worldmap}).
 
 See also @mref{draw} and @mrefdot{draw3d}
 
@@ -562,7 +562,7 @@ does not matter.
 
 This option das not work with terminals @code{epslatex} and @code{epslatex_standalone}.
 
-See also @mrefdot{color_draw}
+See also @code{color}
 
 @opencatbox
 @category{Package draw}
@@ -581,8 +581,9 @@ according to @code{line_type} and @code{line_width}.
 
 This option affects the following graphic objects:
 @itemize @bullet
+
 @item
-@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
+@code{gr2d}: @mrefcomma{polygon} @mref{rectangle} and @mrefdot{ellipse}
 @end itemize
 
 Example:
@@ -1029,7 +1030,7 @@ End of animation sequence
 Option @code{delay} is only active in animated gif's; it is ignored in
 any other case.
 
-See also @mrefcomma{terminal}  @mrefdot{dimensions}
+See also @mrefcomma{terminal} and @code{dimensions}.
 
 @opencatbox
 @category{Package draw}
@@ -1105,12 +1106,12 @@ When @code{true}, functions to be drawn are considered as complex functions whos
 real part value should be plotted; when @code{false}, nothing will be plotted when
 the function does not give a real value. 
 
-This option affects objects @code{explicit} and @code{parametric} in 2D and 3D, and
-@code{parametric_surface}.
+This option affects objects @mref{explicit} and @mref{parametric} in 2D and 3D, and
+@mrefdot{parametric_surface}
 
 Example:
 
-Option @code{draw_realpart} affects objects @code{explicit} and @code{parametric}.
+Option @code{draw_realpart} affects objects @mref{explicit} and @mrefdot{parametric}
 
 @example
 (%i1) load(draw)$
@@ -1136,17 +1137,17 @@ Default value: @code{none}
 
 If @code{enhanced3d} is @code{none}, surfaces are not colored in 3D plots.
 In order to get a colored surface, a list must be assigned to option
-@code{enhanced3d}, where the first element is an expression and the rest
+@mrefcomma{enhanced3d} where the first element is an expression and the rest
 are the names of the variables or parameters used in that expression. A list such 
 @code{[f(x,y,z), x, y, z]} means that point @code{[x,y,z]} of the surface 
 is assigned number @code{f(x,y,z)}, which will be colored according to 
 the actual @code{palette}. For those 3D graphic objects defined in terms of
 parameters, it is possible to define the color number in terms of
-the parameters, as in @code{[f(u), u]}, as in objects @code{parametric} and 
-@code{tube}, or @code{[f(u,v), u, v]}, as in object @code{parametric_surface}.
+the parameters, as in @code{[f(u), u]}, as in objects @mref{parametric} and 
+@mrefcomma{tube} or @code{[f(u,v), u, v]}, as in object @code{parametric_surface}.
 While all 3D objects admit the model based on absolute coordinates,
 @code{[f(x,y,z), x, y, z]}, only two of them, namely @code{explicit}
-and @code{elevation_grid}, accept also models defined on the @code{[x,y]} coordinates,
+and @mrefcomma{elevation_grid} accept also models defined on the @code{[x,y]} coordinates,
 @code{[f(x,y), x, y]}. 3D graphic object @code{implicit} accepts only the
 @code{[f(x,y,z), x, y, z]} model. Object @code{points} accepts also the
 @code{[f(x,y,z), x, y, z]} model, but when points have a chronological nature,
@@ -1160,7 +1161,7 @@ used in the definitions of the graphic objects.
 
 In order to maintain back compatibility, @code{enhanced3d = false} is equivalent
 to @code{enhanced3d = none}, and @code{enhanced3d = true} is equivalent to 
-@code{enhanced3d = [z, x, y, z]}.  If an expression is given to @code{enhanced3d},
+@code{enhanced3d = [z, x, y, z]}.  If an expression is given to @mrefcomma{enhanced3d}
 its variables must be the same used in the surface definition. This is not
 necessary when using lists.
 
@@ -1391,7 +1392,7 @@ will be filled. By default, explicit functions are not filled.
 A useful special case is @code{filled_func=0}, which generates the region 
 bond by the horizontal axis and the explicit function.
 
-This option affects only the 2d graphic object @code{explicit}.
+This option affects only the 2d graphic object @mrefdot{explicit}
 
 Example:
 
@@ -1915,13 +1916,13 @@ empty string, no key is assigned to the function.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
-@code{parametric}, and @code{polar}.
+@code{gr2d}: @mrefcomma{points} @mrefcomma{polygon} @mrefcomma{rectangle}
+@mrefcomma{ellipse} @mrefcomma{vector} @mrefcomma{explicit} @mrefcomma{implicit}
+@mref{parametric} and @mrefdot{polar}
 
 @item
-@code{gr3d}: @code{points}, @code{explicit}, @code{parametric},
-and @code{parametric_surface}.
+@code{gr3d}: @mrefcomma{points} @mrefcomma{explicit} @mref{parametric}
+and @mrefdot{parametric_surface}
 @end itemize
 
 Example:
@@ -2013,7 +2014,7 @@ Example:
 @end example
 @figure{draw_label_alignment}
 
-See also @mrefcomma{label_orientation}  and @mrefdot{color_draw} 
+See also @mrefcomma{label_orientation}  and @code{color} 
 
 @opencatbox
 @category{Package draw}
@@ -2050,7 +2051,7 @@ Package @code{draw} needs always data to draw an scene.
 @end example
 @figure{draw_label_orientation}
 
-See also @mref{label_alignment} and @mrefdot{color_draw} 
+See also @mref{label_alignment} and @code{color} 
 
 @opencatbox
 @category{Package draw}
@@ -2072,12 +2073,12 @@ and @code{dot_dash}, which are not available in @code{png}, @code{jpg}, and @cod
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
-@code{parametric} and @code{polar}.
+@code{gr2d}: @mrefcomma{points} @mrefcomma{polygon} @mrefcomma{rectangle}
+@mrefcomma{ellipse} @mrefcomma{vector} @mrefcomma{explicit} @mrefcomma{implicit} 
+@mref{parametric} and @mrefdot{polar}
 
 @item
-@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} and @code{parametric_surface}.
+@code{gr3d}: @mrefcomma{points} @mrefcomma{explicit} @mref{parametric} and @mrefdot{parametric_surface}
 @end itemize
 
 Example:
@@ -2111,12 +2112,12 @@ Its value must be a positive number.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
-@code{parametric} and @code{polar}.
+@code{gr2d}: @mrefcomma{points} @mrefcomma{polygon} @mrefcomma{rectangle} 
+@mrefcomma{ellipse} @mrefcomma{vector} @mrefcomma{explicit} @mrefcomma{implicit} 
+@mref{parametric} and @mrefdot{polar}
 
 @item
-@code{gr3d}: @code{points} and @code{parametric}.
+@code{gr3d}: @mref{points} and @mrefdot{parametric}
 @end itemize
 
 Example:
@@ -2353,10 +2354,10 @@ number of points that will be shown in parametric and polar curves.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} and @code{polar}.
+@code{gr2d}: @mrefcomma{ellipse} @mrefcomma{explicit} @mref{parametric} and @mrefdot{polar}
 
 @item
-@code{gr3d}: @code{parametric}.
+@code{gr3d}: @mrefdot{parametric}
 @end itemize
 
 Example:
@@ -2414,7 +2415,7 @@ negative numbers mean negative colour component.
 Second, @code{palette} can be a user defined lookup table. In this case,
 the format for building a lookup table of length @code{n} is
 @code{palette=[color_1, color_2, ..., color_n]}, where @code{color_i} is
-a well formed color (see option @code{color}), such that @code{color_1} is
+a well formed color (see option @code{color}) such that @code{color_1} is
 assigned to the lowest gray level and @code{color_n} to the highest. The rest
 of colors are interpolated.
 
@@ -2486,10 +2487,10 @@ set to @code{dot}.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}.
+@code{gr2d}: @mrefdot{points}
 
 @item
-@code{gr3d}: @code{points}.
+@code{gr3d}: @mrefdot{points}
 @end itemize
 
 Example:
@@ -2525,10 +2526,10 @@ a point style: @code{$none} (-1), @code{dot} (0), @code{plus} (1), @code{multipl
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}.
+@code{gr2d}: @mrefdot{points}
 
 @item
-@code{gr3d}: @code{points}.
+@code{gr3d}: @mrefdot{points}
 @end itemize
 
 Example:
@@ -2579,10 +2580,10 @@ or to the xy-plane (3D).
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}.
+@code{gr2d}: @mrefdot{points}
 
 @item
-@code{gr3d}: @code{points}.
+@code{gr3d}: @mrefdot{points}
 @end itemize
 
 Example:
@@ -2880,7 +2881,7 @@ filled according to @code{fill_color}.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
+@code{gr2d}: @mrefcomma{polygon} @mref{rectangle} and @mrefdot{ellipse}
 @end itemize
 
 Example:
@@ -3060,7 +3061,7 @@ Default value: 10
 @code{x_voxel} is the number of voxels in the x direction to
 be used by the @i{marching cubes algorithm} implemented
 by the 3d @code{implicit} object. It is also used by graphic
-object @code{region}.
+object @mrefdot{region}
 
 @opencatbox
 @category{Package draw}
@@ -3171,7 +3172,7 @@ See also @mrefcomma{xrange_secondary}  @mrefcomma{xtics_secondary}  @mrefcomma{x
 Default value: @code{dots}
 
 @code{xaxis_type} indicates how the @var{x} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
+possible values are @code{solid} and @code{dots}
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -3602,7 +3603,7 @@ Default value: 10
 @code{y_voxel} is the number of voxels in the y direction to
 be used by the @i{marching cubes algorithm} implemented
 by the 3d @code{implicit} object. It is also used by graphic
-object @code{region}.
+object @mrefdot{region}
 
 @opencatbox
 @category{Package draw}
@@ -4010,7 +4011,7 @@ build the grid of sample points.
 This option affects the following graphic objects:
 @itemize @bullet
 @item
-@code{gr3d}: @code{explicit} and @code{parametric_surface}.
+@code{gr3d}: @mref{explicit} and @mref{parametric_surface}.
 @end itemize
 
 Example:
@@ -4021,6 +4022,7 @@ Example:
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
 @end example
+@figure{draw_xugrid}
 
 See also @mrefdot{xu_grid}
 
@@ -4330,8 +4332,8 @@ Draws vertical bars in 2D.
 draws bars centered at values @var{x1}, @var{x2}, ... with heights @var{h1}, @var{h2}, ...
 and widths @var{w1}, @var{w2}, ...
 
-This object is affected by the following @i{graphic options}: @code{key}, 
-@code{fill_color}, @code{fill_density} and @code{line_width}.
+This object is affected by the following @i{graphic options}: @mrefcomma{key} 
+@mrefcomma{fill_color} @mref{fill_density} and @mrefdot{line_width}
 
 Example:
 
@@ -4371,8 +4373,8 @@ Draws 3D functions defined in cylindrical coordinates.
 values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values
 from @var{minazi} to @var{maxazi}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{xu_grid} 
+@mrefcomma{yv_grid} @mrefcomma{line_type} @mrefcomma{key} @mrefcomma{wired_surface} @code{enhanced3d} and @code{color}
 
 Example:
 
@@ -4400,7 +4402,7 @@ is projected on point @math{(x0,y0+height)}, @math{a(1,n)} on @math{(x0+width,y0
 @math{a(m,1)} on @math{(x0,y0)}, and @math{a(m,n)} on @math{(x0+width,y0)}.
 
 This object is affected by the following @i{graphic options}: @mrefcomma{line_type},
-@mref{line_width}  @mrefcomma{key}  @mrefcomma{wired_surface}  @mrefcomma{enhanced3d}  and @mrefdot{color_draw}
+@mref{line_width}  @mrefcomma{key}  @mrefcomma{wired_surface}  @mref{enhanced3d} and @code{color}
 
 In older versions of Maxima, @mref{elevation_grid} was called @mrefdot{mesh}
 See also @mrefdot{mesh}
@@ -4442,9 +4444,9 @@ plots an ellipse centered at @code{[@var{xc}, @var{yc}]} with horizontal and ver
 semi axis @var{a} and @var{b}, respectively, starting at angle @var{ang1} with an amplitude
 equal to angle @var{ang2}.
 
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
-@code{line_type}, @code{key} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
+@mrefcomma{transparent} @mrefcomma{fill_color} @mrefcomma{border} @code{line_width}, 
+@mrefcomma{line_type} @mref{key} and @code{color}
 
 Example:
 
@@ -4491,7 +4493,7 @@ See also @mrefdot{error_type}
 
 This object is affected by the following @i{graphic options}: @mrefcomma{error_type}  
 @mrefcomma{points_joined}  @mrefcomma{line_width}  @mrefcomma{key}  @mrefcomma{line_type}  
-@mrefcomma{color_draw}  @mrefcomma{fill_density}  @mrefcomma{xaxis_secondary}  and  @mrefdot{yaxis_secondary}
+@code{color}  @mrefcomma{fill_density}  @mref{xaxis_secondary}  and  @mrefdot{yaxis_secondary}
 
 Option @mref{fill_density} is only relevant when @code{error_type=boxes}.
 
@@ -4538,9 +4540,9 @@ Draws explicit functions in 2D and 3D.
 @code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} plots explicit function @var{fcn},
 with variable @var{var} taking values from @var{minval} to @var{maxval}.
 
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{adapt_depth}, @code{draw_realpart}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_func}, @code{fill_color} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
+@code{adapt_depth}, @mrefcomma{draw_realpart} @mrefcomma{line_width} @mrefcomma{line_type} @mrefcomma{key} 
+@mrefcomma{filled_func} @mref{fill_color} and @code{color}
 
 Example:
 
@@ -4565,9 +4567,9 @@ Example:
 variable @var{var1} taking values from @var{minval1} to @var{maxval1} and
 variable @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
-This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid},
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface},
-@code{enhanced3d}, and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{draw_realpart} @mrefcomma{xu_grid}
+@mrefcomma{yv_grid} @mrefcomma{line_type} @mrefcomma{line_width} @mrefcomma{key} @mrefcomma{wired_surface}
+@mref{enhanced3d} and @code{color}.
 
 Example:
 
@@ -4606,7 +4608,7 @@ plane. Argument @var{im} must be a matrix of real numbers, a matrix of
 vectors of length three or a @var{picture} object.
 
 If @var{im} is a matrix of real numbers or a @var{levels picture} object,
-pixel values are interpreted according to graphic option @code{palette}, 
+pixel values are interpreted according to graphic option @code{palette},
 which is a vector of length three with components 
 ranging from -36 to +36; each value is an index for a formula mapping the levels
 onto red, green and blue colors, respectively:
@@ -4726,8 +4728,8 @@ plots the implicit function defined by @var{fcn}, with variable @var{x} taking v
 from @var{xmin} to @var{xmax}, and variable @var{y} taking values
 from @var{ymin} to @var{ymax}.
 
-This object is affected by the following @i{graphic options}: @code{ip_grid}, 
-@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{ip_grid} 
+@mrefcomma{ip_grid_in} @mrefcomma{line_width} @mrefcomma{line_type} @mref{key} and @code{color}.
 
 Example:
 
@@ -4752,9 +4754,9 @@ from @var{xmin} to @var{xmax}, variable @var{y} taking values
 from @var{ymin} to @var{ymax} and variable @var{z} taking values
 from @var{zmin} to @var{zmax}. This object implements the @i{marching cubes algorithm}.
 
-This object is affected by the following @i{graphic options}: @code{x_voxel}, 
-@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key},
-@code{wired_surface}, @code{enhanced3d},and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{x_voxel} 
+@mrefcomma{y_voxel} @mrefcomma{z_voxel} @mrefcomma{line_width} @mrefcomma{line_type} @mrefcomma{key}
+@mrefcomma{wired_surface} @mref{enhanced3d} and @code{color}.
 
 Example:
 
@@ -4784,8 +4786,8 @@ Writes labels in 2D and 3D.
 
 Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
 
-This object is affected by the following @i{graphic options}: @code{label_alignment}, 
-@code{label_orientation} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{label_alignment} 
+@mref{label_orientation} and @code{color}.
 
 @b{2D}
 
@@ -4842,8 +4844,8 @@ Argument @var{row_i} is a list of @var{n} 3D points of the form
 of equal length. All these points define an arbitrary surface in 3D and
 in some sense it's a generalization of the @code{elevation_grid} object.
 
-This object is affected by the following @i{graphic options}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and @code{transform}.
+This object is affected by the following @i{graphic options}: @mrefcomma{line_type} 
+@mrefcomma{line_width} @mrefcomma{color} @mrefcomma{key} @mrefcomma{wired_surface} @mref{enhanced3d} and @mrefdot{transform}
 
 Examples:
 
@@ -4899,8 +4901,8 @@ Two quadrilaterals.
 
 Draws parametric functions in 2D and 3D.
 
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, @code{color} and @code{enhanced3d}.
+This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
+@mrefcomma{line_width} @mrefcomma{line_type} @mrefcomma{key} @mref{color} and @mrefdot{enhanced3d}
 
 @b{2D}
 
@@ -4962,8 +4964,8 @@ The command @code{parametric_surface(@var{xfun}, @var{yfun}, @var{zfun},
 @var{par1max} and parameter @var{par2} taking values from @var{par2min} to
 @var{par2max}.
 
-This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
+This object is affected by the following @i{graphic options}: @mrefcomma{draw_realpart} @mrefcomma{xu_grid} 
+@mrefcomma{yv_grid} @mrefcomma{line_type} @mrefcomma{line_width} @mrefcomma{key} @mrefcomma{wired_surface} @mref{enhanced3d}
  and @code{color}.
 
 Example:
@@ -5006,9 +5008,9 @@ Example:
 
 Draws points in 2D and 3D.
 
-This object is affected by the following @i{graphic options}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
-@code{line_type} and @code{color}. In 3D mode, it is also affected by @code{enhanced3d}.
+This object is affected by the following @i{graphic options}: @mrefcomma{point_size} 
+@mrefcomma{point_type} @mrefcomma{points_joined} @mrefcomma{line_width} @mrefcomma{key}
+@mref{line_type} and @code{color}. In 3D mode, it is also affected by @mref{enhanced3d}
 
 @b{2D}
 
@@ -5199,8 +5201,8 @@ Draws 2D functions defined in polar coordinates.
 @var{ang} taking values from 
 @var{minang} to @var{maxang}.
 
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
+@mrefcomma{line_width} @mrefcomma{line_type} @mref{key} and @code{color}.
 
 Example:
 
@@ -5240,9 +5242,9 @@ or @code{polygon([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...])} plot on
 the plane a polygon with vertices @code{[@var{x1}, @var{y1}]}, @code{[@var{x2},
 @var{y2}]}, etc.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key},
- @code{line_type} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{transparent} 
+@mrefcomma{fill_color} @mrefcomma{border} @mrefcomma{line_width} @mrefcomma{key}
+ @mref{line_type} and @code{color}.
 
 Example:
 
@@ -5276,8 +5278,8 @@ Draws a quadrilateral.
 @code{[@var{x3}, @var{y3}]}, and @code{[@var{x4}, @var{y4}]}.
 
 This object is affected by the following @i{graphic options}:@*
-@code{transparent}, @code{fill_color}, @code{border}, @code{line_width},
-@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type},
+@mrefcomma{transparent} @mrefcomma{fill_color} @mrefcomma{border} @mrefcomma{line_width}
+@mrefcomma{key} @mrefcomma{xaxis_secondary} @mrefcomma{yaxis_secondary} @mrefcomma{line_type}
 @code{transform} and @code{color}.
 
 Example:
@@ -5297,9 +5299,9 @@ draws a quadrilateral with vertices @code{[@var{x1}, @var{y1}, @var{z1}]},
 @code{[@var{x2}, @var{y2}, @var{z2}]}, @code{[@var{x3}, @var{y3}, @var{z3}]},
 and @code{[@var{x4}, @var{y4}, @var{z4}]}.
 
-This object is affected by the following @i{graphic options}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and
-@code{transform}.
+This object is affected by the following @i{graphic options}: @mrefcomma{line_type} 
+@mrefcomma{line_width} @mrefcomma{color} @mrefcomma{key} @mref{enhanced3d} and
+@mrefdot{transform}
 
 @opencatbox
 @category{Package draw}
@@ -5315,9 +5317,9 @@ Draws rectangles in 2D.
 @code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} draws a rectangle with opposite vertices
 @code{[@var{x1},@var{y1}]} and @code{[@var{x2},@var{y2}]}.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key},
-@code{line_type} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{transparent} 
+@mrefcomma{fill_color} @mrefcomma{border} @mrefcomma{line_width} @mrefcomma{key}
+@mref{line_type} and @code{color}.
 
 Example:
 
@@ -5353,11 +5355,11 @@ Plots a region on the plane defined by inequalities.
 
 @b{2D}
 @var{expr} is an expression formed by inequalities and boolean operators
-@code{and}, @code{or}, and @code{not}. The region is bounded by the rectangle
+@code{and}, @code{or}, and @mrefdot{not} The region is bounded by the rectangle
 defined by @math{[@var{minval1}, @var{maxval1}]} and @math{[@var{minval2}, @var{maxval2}]}.
 
-This object is affected by the following @i{graphic options}: @code{fill_color}, 
-@code{key}, @code{x_voxel}, and @code{y_voxel}.
+This object is affected by the following @i{graphic options}: @mrefcomma{fill_color} 
+@mrefcomma{key} @mref{x_voxel} and @mrefdot{y_voxel}
 
 Example:
 
@@ -5385,8 +5387,8 @@ Draws 3D functions defined in spherical coordinates.
 values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values
 from @var{minzen} to @var{maxzen}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{xu_grid} 
+@mrefcomma{yv_grid} @mrefcomma{line_type} @mrefcomma{key} @mrefcomma{wired_surface} @mref{enhanced3d} and @code{color}.
 
 Example:
 
@@ -5413,9 +5415,9 @@ Draws a triangle.
 and @code{[@var{x3},@var{y3}]}.
 
 This object is affected by the following @i{graphic options}:@*
-@code{transparent}, @code{fill_color}, @code{border}, @code{line_width},
-@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type},
-@code{transform}, and @code{color}.
+@mrefcomma{transparent} @mrefcomma{fill_color} @mrefcomma{border} @mrefcomma{line_width}
+@mrefcomma{key} @mrefcomma{xaxis_secondary} @mrefcomma{yaxis_secondary} @mrefcomma{line_type}
+@mref{transform} and @code{color}.
 
 Example:
 
@@ -5431,8 +5433,8 @@ Example:
 @code{triangle ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}])} draws a triangle with vertices @code{[@var{x1},@var{y1},@var{z1}]},
 @code{[@var{x2},@var{y2},@var{z2}]}, and @code{[@var{x3},@var{y3},@var{z3}]}.
 
-This object is affected by the following @i{graphic options}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
+This object is affected by the following @i{graphic options}: @mrefcomma{line_type} 
+@mrefcomma{line_width} @mrefcomma{color} @mrefcomma{key} @mref{enhanced3d} and @mrefdot{transform}
 
 @opencatbox
 @category{Package draw}
@@ -5452,9 +5454,9 @@ is the parametric curve with parameter @var{p} taking values from @var{pmin}
 to @var{pmax}. Circles of radius @var{rfun} are placed with their centers on
 the parametric curve and perpendicular to it.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
-@code{color}, and @code{capping}.
+This object is affected by the following @i{graphic options}: @mrefcomma{xu_grid} 
+@mrefcomma{yv_grid} @mrefcomma{line_type} @mrefcomma{line_width} @mrefcomma{key} @mrefcomma{wired_surface} @mrefcomma{enhanced3d}
+@mref{color} and @mrefdot{capping}
 
 Example:
 
@@ -5483,9 +5485,9 @@ Example:
 
 Draws vectors in 2D and 3D.
 
-This object is affected by the following @i{graphic options}: @code{head_both}, 
-@code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
-@code{line_type}, @code{key} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{head_both} 
+@mrefcomma{head_length} @mrefcomma{head_angle} @mrefcomma{head_type} @mrefcomma{line_width} 
+@mrefcomma{line_type} @mref{key} and @code{color}.
 
 @b{2D}
 
@@ -5748,7 +5750,7 @@ Example:
 @section Functions and Variables for worldmap
 
 
-This package automatically loads package @code{draw}.
+This package automatically loads package @mrefdot{draw}
 
 
 @subsection Variables and Functions
@@ -6006,8 +6008,8 @@ point quantities, the coordinates of a polygonal segment or map boundary.
 @code{geomap (@var{numlist})} flattens its arguments and draws the
 associated boundaries in @code{boundaries_array}.
 
-This object is affected by the following @i{graphic options}: @code{line_width}, 
-@code{line_type} and @code{color}.
+This object is affected by the following @i{graphic options}: @mrefcomma{line_width} 
+@mref{line_type} and @code{color}.
 
 Examples:
 
