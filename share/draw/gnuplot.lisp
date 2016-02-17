@@ -1566,7 +1566,7 @@
 	  ((> j ($second grid)))
 	(let ((fun-val (funcall expr x-val y-val)))
           (when (not (floatp fun-val))
-                (merror "draw2d (implicit): non defined variable"))
+                (merror "draw2d (implicit): non defined variable in condition ~M=0" fun-val))
 	  (if (or (eq fun-val t) (>= fun-val epsilon))
 	      (setf (aref sample i j) 1)
 	      (setf (aref sample i j) -1)))))))
