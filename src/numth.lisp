@@ -872,14 +872,18 @@
           (push (nconc e (list n)) tmp) ))
       (setq res (nreverse tmp)) )))
 
-;; handle composite r:
+;; handle composite r (which are not coprime to totient(q)):
 ;;   e.g. r=x*x*y*z, then a^(1/r) = (((a^(1/x))^(1/x))^(1/y))^(1/z)
 ;;
 (defun zq-nrt (a r p q) ;; prime power q = p^e
   ;; assume a < q, r <= q
   (let (rts)
     (cond 
-      ((or (= 1 r) (primep r)) (setq rts (zq-amm a r p q)))
+      ((or (= 1 r) (primep r)) 
+        (setq rts (zq-amm a r p q)) )
+      ((and (= (gcd r (1- p)) 1) (or (= p q) (= (gcd r p) 1))) ;; r is coprime to totient(q):
+        (let ((ord (* (1- p) (truncate q p))))
+          (setq rts (list (power-mod a (inv-mod r ord) q))) )) ;;   unique solution
       (t 
         (let* (($intfaclim) (rs (get-factor-list r)))
           (setq rs (sort rs #'< :key #'car))
