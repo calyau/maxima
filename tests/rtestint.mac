@@ -1605,3 +1605,42 @@ asinh(2/sqrt(n))*sqrt(n)-asinh(1/sqrt(n))*sqrt(n);
 integrate (taylor (f(x), x, 0, 1), x, a, b);
 ((b^2-a^2)*('at('diff(f(x),x,1),x = 0))+2*f(0)*b-2*f(0)*a)/2$
 
+/* mailing list 2015-11-08: "un-nerving behavior of numer... yikes!" */
+
+/* disable this test pending resolution of SF bug #3097 !!
+integrate(x*sin(%pi/2*x), x,0,1 ),    numer;
+0.4052847345693511;
+ */
+
+integrate(x*sin(1.5*x), x,0,1 ),    numer;
+0.3961729707122222;
+
+integrate(x*cos(1.5*x), x,0,1 ),    numer;
+0.2519909695883491;
+
+integrate(x*(cos(2.5*x) + 1.25), x, 0, 1), numer;
+0.5762058791540733;
+
+integrate(x*(cos(2.5*x^2 - 1) + 1.25), x, 0, 1), numer;
+0.9927931942823904;
+
+integrate (sin(4*asin(x)),x, 0.5, 0.75), numer;
+0.09667085773175951;
+
+/* These next 4 examples yield big messy rational expressions.
+ * It's maybe not so great to have to squash them (with bfloat and rectform) 
+ * but at least we get a result; these examples cause a floating-point error
+ * in previous versions.
+ */
+rectform (bfloat (ev (integrate ((x^2*(%e^(2*%i*x)+%e^-(2*%i*x))*%e^(30*%i*x-200*%i))/2,x, 1.25, 1.5), numer)));
+(- 6.358161510436547b-2*%i) - 2.859595163448958b-2;
+
+rectform (bfloat (ev (integrate ((x^2*(%e^(2*%i*x)+%e^-(2*%i*x))*%e^(30*%i*x-20*%i))/2,x, 1.25, 1.5), numer)));
+6.096077978946073b-2*%i - 3.382504333513841b-2;
+
+rectform (bfloat (ev (integrate (x^2*%e^(30*%i*x-200*%i)*cos(2*x),x, 1.25, 1.5), numer)));
+(- 6.35816151043802b-2*%i) - 2.859595163448362b-2;
+
+rectform (bfloat (ev (integrate (x^2*%e^(30*%i*x-20*%i)*cos(2*x),x, 1.25, 1.5), numer)));
+6.096077978946119b-2*%i - 3.382504333513988b-2;
+
