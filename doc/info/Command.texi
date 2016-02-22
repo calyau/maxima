@@ -440,6 +440,7 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{infolists}
 @defvr {System variable} infolists
 Default value: @code{[]}
 
