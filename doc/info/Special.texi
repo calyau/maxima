@@ -2044,21 +2044,21 @@ any @code{%f}, @code{%w}, and @code{%m} in the expression @var{e} are not affect
 Any unsimplified hypergeometric functions are returned unchanged
 (instead of changing to @code{%f} as @code{hgfred} would).
 
-@code{load(hypergeometric_mac);} loads this function.
+@code{load(hypergeometric);} loads this function.
 
 See also @mrefdot{hgfred}
 
 Examples:
 
 @c ===beg===
-@c load (hypergeometric_mac) $
+@c load (hypergeometric) $
 @c foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
 @c hypergeometric_simp (foo);
 @c bar : hypergeometric([n], [m], z + 1);
 @c hypergeometric_simp (bar);
 @c ===end===
 @example
-(%i1) load (hypergeometric_mac) $
+(%i1) load (hypergeometric) $
 (%i2) foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
 (%o2) [hypergeometric([1, 1], [2], z), 
                                                      1
