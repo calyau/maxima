@@ -2033,6 +2033,53 @@ the representation to @code{expintegral_e1}:
 @closecatbox
 @end deffn
 
+@deffn {Function} hypergeometric_simp (@var{e})
+
+@code{hypergeometric_simp} simplifies hypergeometric functions
+by applying @code{hgfred}
+to the arguments of any hypergeometric functions in the expression @var{e}.
+
+Only instances of @code{hypergeometric} are affected;
+any @code{%f}, @code{%w}, and @code{%m} in the expression @var{e} are not affected.
+Any unsimplified hypergeometric functions are returned unchanged
+(instead of changing to @code{%f} as @code{hgfred} would).
+
+@code{load(hypergeometric_mac);} loads this function.
+
+See also @mrefdot{hgfred}
+
+Examples:
+
+@c ===beg===
+@c load (hypergeometric_mac) $
+@c foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
+@c hypergeometric_simp (foo);
+@c bar : hypergeometric([n], [m], z + 1);
+@c hypergeometric_simp (bar);
+@c ===end===
+@example
+(%i1) load (hypergeometric_mac) $
+(%i2) foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
+(%o2) [hypergeometric([1, 1], [2], z), 
+                                                     1
+                                     hypergeometric([-], [1], z)]
+                                                     2
+(%i3) hypergeometric_simp (foo);
+                 log(1 - z)              z    z/2
+(%o3)         [- ----------, bessel_i(0, -) %e   ]
+                     z                   2
+(%i4) bar : hypergeometric([n], [m], z + 1);
+(%o4)            hypergeometric([n], [m], z + 1)
+(%i5) hypergeometric_simp (bar);
+(%o5)            hypergeometric([n], [m], z + 1)
+@end example
+
+@opencatbox
+@category{Hypergeometric functions} @category{Simplification functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@anchor{hgfred}
 @deffn {Function} hgfred (@var{a}, @var{b}, @var{t})
 
 Simplify the generalized hypergeometric function in terms of other,
