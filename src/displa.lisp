@@ -266,29 +266,33 @@
             (w00 0) (w01 0) (w10 0) (w11 0) (h00 0) (h01 0) (h10 0) (h11 0) (d00 0) (d01 0) (d10 0) (d11 0))
         (if pre-subscripts
           (setq pre-subscripts-output
-                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
-                  (dimension-list (cons '(mlist) pre-subscripts) nil))
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
+                      (separator ($get base-symbol '$display_index_separator)))
+                  (dimension-list (cons '(mlist) pre-subscripts) nil separator))
                 w00 width
                 h00 height
                 d00 depth))
         (if pre-superscripts
           (setq pre-superscripts-output
-                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
-                  (dimension-list (cons '(mlist) pre-superscripts) nil))
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
+                      (separator ($get base-symbol '$display_index_separator)))
+                  (dimension-list (cons '(mlist) pre-superscripts) nil separator))
                 w01 width
                 h01 height
                 d01 depth))
         (if post-subscripts
           (setq post-subscripts-output
-                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
-                  (dimension-list (cons '(mlist) post-subscripts) nil))
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
+                      (separator ($get base-symbol '$display_index_separator)))
+                  (dimension-list (cons '(mlist) post-subscripts) nil separator))
                 w10 width
                 h10 height
                 d10 depth))
         (if post-superscripts
           (setq post-superscripts-output
-                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
-                  (dimension-list (cons '(mlist) post-superscripts) nil))
+                (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
+                      (separator ($get base-symbol '$display_index_separator)))
+                  (dimension-list (cons '(mlist) post-superscripts) nil separator))
                 w11 width
                 h11 height
                 d11 depth))
@@ -329,14 +333,14 @@
 	   width (+ symlength width))
      (return result)))
 
-(defun dimension-list (form result)
+(defun dimension-list (form result &optional separator)
   (prog ((w 0) (h 0) (d 0))
      (setq result (dimension (cadr form) result lop 'mcomma 0 right)
 	   w width h height d depth)
      (do ((l (cddr form) (cdr l)))
 	 ((null l))
-       (push-string ", " result)
-       (incf w 2)
+       (push-string (or separator ", ") result)
+       (incf w (if separator (length separator) 2))
        (checkbreak result w)
        (setq result (dimension (car l) result 'mcomma 'mcomma w right)
 	     w (+ w width) h (max h height) d (max d depth)))
