@@ -14,6 +14,9 @@ cp -R *.texi figures $WORKING_DIRECTORY
 d=`pwd`
 cd $WORKING_DIRECTORY
 
+# Remove the working directory when we're done.
+trap "rm -r $WORKING_DIRECTORY" 0
+
 for f in *.texi; do
   if [ $f = "maxima.texi" ]
     then echo SKIP OVER $f
