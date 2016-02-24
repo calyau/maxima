@@ -584,6 +584,8 @@ When one changes, the other does too."
     (set-readtable-for-macsyma)
     (setf *read-default-float-format* 'lisp::double-float))
 
+  #+sbcl (setf *read-default-float-format* 'double-float)
+
   (initialize-real-and-run-time)
   (intl::setlocale)
   (set-locale-subdir)
