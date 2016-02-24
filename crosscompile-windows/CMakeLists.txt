@@ -21,6 +21,7 @@ option(USE_VTK "Use VTK." YES)
 # it builds the current Maxima/wxMaxima Git versions and also
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
+option(SBCL_64BIT "Build a installer with a 64 bit SBCL." NO)
 
 
 
@@ -50,7 +51,6 @@ set(TCL_MD5       "d7cbb91f1ded1919370a30edd1534304")
 set(TK_MD5        "261754d7dc2a582f00e35547777e1fea")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
-set(SBCL_MD5      "89937dd17926fd4fc01161f0df80f6fe")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -74,7 +74,15 @@ set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPL
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz")
-set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x86-windows-binary.msi")
+if(SBCL_64BIT)
+    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
+    set(SBCL_MD5      "1a7a4952cc2da477239622629a7675e3")
+else()
+    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
+    set(SBCL_MD5      "89937dd17926fd4fc01161f0df80f6fe")
+endif()
+set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
+
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
@@ -177,7 +185,13 @@ externalproject_add(texfonts
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
+
+if(SBCL_64BIT)
+find_program(WINE_EXE NAMES wine64)
+else()
 find_program(WINE_EXE NAMES wine)
+endif()
+
 if(WINE_EXE)
     message(STATUS "Found wine at ${WINE_EXE}")
 else()

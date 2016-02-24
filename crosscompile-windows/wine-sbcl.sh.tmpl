@@ -1,2 +1,4 @@
 #!/bin/sh
+WINEPREFIX=@CMAKE_BINARY_DIR@/wine
+export WINEPREFIX
 @WINE_EXE@ @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl/sbcl.exe --core @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl/sbcl.core "$@"

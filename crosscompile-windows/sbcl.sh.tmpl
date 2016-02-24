@@ -4,19 +4,19 @@
 
 cd @CMAKE_SOURCE_DIR@/downloads
 
-if [  ! -f  @CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi ] ; then
+if [  ! -f  @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@ ] ; then
     wget -c @SBCL_URL@
 fi
 
 
-MD5=$(md5sum @CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi | sed s/\ .*//)
+MD5=$(md5sum @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@ | sed s/\ .*//)
 
 if [ "$MD5" != "@SBCL_MD5@" ] ; then
     wget -c @SBCL_URL@
 fi
     
 cd @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl
-7z x @CMAKE_SOURCE_DIR@/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
+7z x @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@
 mkdir -p contrib
 # Move files File_obj_sbcl.home_contrib_* in the directory "contrib" and remove the "File_obj_sbcl.home_contrib_"-prefix:
 for i in File_obj_sbcl.home_contrib_* ; do

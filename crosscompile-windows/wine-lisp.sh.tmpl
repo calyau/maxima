@@ -1,2 +1,4 @@
 #!/bin/sh
+WINEPREFIX=@CMAKE_BINARY_DIR@/wine
+export WINEPREFIX
 @WINE_EXE@ @CLISPROOT@/base/lisp.exe "$@"
