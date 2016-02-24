@@ -4784,7 +4784,7 @@ Example:
 
 Writes labels in 2D and 3D.
 
-Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
+Colored labels work only with Gnuplot 4.3 and up.
 
 This object is affected by the following @i{graphic options}: @mrefcomma{label_alignment} 
 @mref{label_orientation} and @code{color}.
