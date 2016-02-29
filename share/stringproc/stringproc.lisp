@@ -3,7 +3,7 @@
 ;;
 ;; Maxima string processing
 ;;
-;; Copyright     : 2005-2015 Volker van Nek
+;; Copyright     : 2005-2016 Volker van Nek
 ;; Licence       : GPL2
 ;;
 ;; Test file     : rteststringproc.mac
@@ -22,19 +22,18 @@ the following consistency.
 (in-package :maxima)
 
 
-#+ (and (or cmucl gcl) unix) 
-(declare-top (special *read-utf-8*))
-
+(declare-top (special *parse-utf-8-input*))
 #|
-The following refers to CMUCL and GCL builds on Linux only:
+In an application which encodes characters in UTF-8 and the external format of 
+the Lisp reader is set to e.g. cp1252 (or has no format definition like in GCL)
+a string of length 1 which contains a non-us-ascii character like an umlaut 
+is read as a sequence of two or more octets, e.g. auml -> #(195 164), and 
+misinterpreted as a sequence of two or more characters.
 
-In a terminal which encodes characters in UTF-8 a string of length 1 which 
-contains a non-us-ascii character like an umlaut is read as a sequence of two 
-or more octets, e.g. auml -> #(195 164), i.e. as two or more characters.
-
-When the flag *read-utf-8* is set to false (the default) the string processing 
-functions in this file decode and restructure octet sequences in a way that 
-octet groups like '(195 164) are coded back into the original string of length 1.
+When the flag *parse-utf-8-input* is set to true the string processing 
+functions in stringproc.lisp and sregex.lisp decode and restructure octet 
+sequences in a way that octet groups like '(195 164) are coded back into the 
+original string of length 1.
 
 In addition to this position indices in strings are fixed accordingly.
 
@@ -42,39 +41,70 @@ Functions like $alphacharp which need a Lisp character representation of a
 Maxima character do not work for non-us-ascii characters, e.g. auml is not 
 recognized as alphabetic.
 
-CMUCL (GNU/Linux terminal) reads ISO8859-1 by default. 
-But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format 
-(see $adjust_external_format below).
+See comments to $adjust_external_format below for a detailed description.
 |#
 
-#+ (and (or cmucl gcl) unix)
-(defvar *read-utf-8* 
-  #+gcl nil 
-  #+cmucl (eq (stream-external-format *standard-output*) :utf-8) 
-  ;; CMUCL: wxMaxima: format is :utf-8
-  ;;        terminal: -output* is :iso8859-1 resp. :utf-8, -input* is 'default'
-  "The external format has been set to UTF-8." )
-
-
-;; Setting this flag to true saves CMUCL and GCL from parsing UTF-8 encoding.
-;;   (CMUCL: Adjusting the external format should be preferred.)
+;; adjust the external format where necessary and possible
 ;;
-#+ (and (or cmucl gcl) unix) 
+#-gcl (eval-when (:load-toplevel :execute)
+  #+cmucl 
+    (unless (eq (stream-external-format *standard-output*) :utf-8) 
+      (stream:set-system-external-format :utf-8) )
+  ;;
+  #+ (and clisp (not unix))
+    (when (boundp 'maxima::$wxplot_size)
+      (setf custom:*terminal-encoding* 
+        (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) ))
+)
+
+;; find the right value for *parse-utf-8-input*
+;;
+(defun init-*parse-utf-8-input* ()
+  #+unix (progn
+    #+gcl t
+    ;; should not be needed:
+    #+cmucl (and 
+              (not (boundp 'maxima::$wxplot_size)) ;; we are not in wxMaxima (terminal, Xmaxima)
+              (not (search "UTF"                   ;; and the external format is not utf-8
+                           (format nil "~s" (stream-external-format *standard-output*)) ;; input remains 'default'
+                           :test 'string-equal ))) 
+    #- (or gcl cmucl) nil ) 
+  #-unix (progn
+    #+gcl (boundp 'maxima::$wxplot_size)  ;; we are in wxMaxima
+    #+ccl nil
+    #- (or ccl gcl)
+      (and (boundp 'maxima::$wxplot_size) ;; we are in wxMaxima and 
+           (not (search "UTF"             ;; the external format is not utf-8 (e.g. SBCL)
+                        (format nil "~s" (stream-external-format *standard-output*))
+                        :test 'string-equal ))) ))
+
+(defvar *parse-utf-8-input* 
+  (init-*parse-utf-8-input*)
+  "Maxima itself parses the utf-8 input." )
+
+
+;; when *parse-utf-8-input* is t read raw bytes according to the default external format
+;;
+(defun string-to-raw-bytes (str) 
+  (intl::string-to-octets str #+cmucl :iso8859-1 ;; GNU/Linux terminal             ;; should not be needed
+                              #-cmucl :cp1252 )) ;; wxMaxima on Windows (GCL,SBCL) ;; CLISP: should not be needed
+                                                 ;; and GCL in GNU/Linux (GCL ignores encoding arg)
+
+
+;; Setting this flag to true saves Maxima from parsing UTF-8 encoding.
+;;   (If possible adjusting the external format should be preferred.)
+;;
 (defvar $us_ascii_only nil "Promise to use only US-ASCII characters.")
 ;;
-#+ (and (or cmucl gcl) unix)
-(putprop '$us_ascii_only 'set-*read-utf-8* 'assign)
+(putprop '$us_ascii_only 'set-*parse-utf-8-input* 'assign)
 ;;
-#+ (and (or cmucl gcl) unix)
-(defun set-*read-utf-8* (assign-var arg) 
+(defun set-*parse-utf-8-input* (assign-var arg) 
   (declare (ignore assign-var))
-  (setq *read-utf-8* 
-    (if arg 
-      t
-      #+gcl nil 
-      #+cmucl (eq (stream-external-format *standard-output*) :utf-8) )))
+  (setq *parse-utf-8-input* 
+    (if arg nil (init-*parse-utf-8-input*)) ))
 
 
+;; -------------------------------------------------------------------------- ;;
 ;; frequently used error messages:
 
 (defun io-error (name which)
@@ -91,6 +121,7 @@ But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format
 
 (defun s-pos-error2 (name)
   (gf-merror (intl:gettext "`~m': unsuitable start or end position.") name) )
+;; -------------------------------------------------------------------------- ;;
 
 
 ;;  1. I/O
@@ -221,11 +252,11 @@ But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format
 ;; $printf is in printf.lisp
 
 
-;; -- get a suitable encoding (hopefully) ----------------------------------- ;;
+;; -- get or set a suitable encoding (hopefully) ---------------------------- ;;
 ;;
 (defun get-encoding (enc name) 
   (cond
-    (enc 
+    (enc ;; set encoding:
       (unless (stringp enc) 
         (gf-merror (intl:gettext 
           "`~m': the optional second argument must be a string." ) name ))
@@ -234,30 +265,25 @@ But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format
       #+ccl (progn
         #+unix enc
         #-unix (cond 
-          ((stream-external-format *standard-input*) ;; nil by default in a terminal
-            enc )
-          (t 
-            (is-ignored enc name "to get some help")
-            :utf-8 )))
+          ((boundp 'maxima::$wxplot_size) enc)
+          (t (is-ignored enc name "to get some help") 
+             :utf-8 )))
       ;;
       #+clisp (progn
         #+unix (ext:make-encoding :charset (symbol-name enc) :line-terminator :unix)
         #-unix (let ((ef (stream-external-format *standard-input*)))
           (cond 
-            ((search "UTF" (mfuncall '$string ef))
+            ((search "UTF" (format nil "~s" ef) :test 'string-equal)
               (ext:make-encoding :charset (symbol-name enc) :line-terminator :dos) )
-            (t 
-              (is-ignored enc name "to enable the encoding argument")
-              ef ))))
+            (t (is-ignored enc name "to enable the encoding argument")
+               ef ))))
       ;;
       #+cmucl (progn
-        #+unix (let ((ef (stream-external-format *standard-output*))) ;; -input* remains 'default'
+        #+unix (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
           (cond 
-            ((eq ef :utf-8)
-              enc )
-            (t 
-              (is-ignored enc name "to enable the encoding argument")
-              ef )))
+            ((eq ef :utf-8) enc)
+            (t (is-ignored enc name "to enable the encoding argument") 
+               ef )))
         #-unix enc )
       ;;
       #+gcl (format t "`~a': GCL ignores the argument ~s.~%" name 
@@ -265,21 +291,20 @@ But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format
       ;;
       #+sbcl (progn
         #+unix enc
-        #-unix (cond 
-          ((eq (stream-external-format *standard-input*) :cp1252) 
-            (is-ignored enc name "to enable the encoding argument")
-            (stream-external-format *standard-input*) )
-          (t enc) ))
+        #-unix (let ((ef (stream-external-format *standard-input*)))
+          (cond 
+            ((eq ef :cp1252) 
+              (is-ignored enc name "to enable the encoding argument")
+              ef )
+            (t enc) )))
       ;;
       #- (or ccl clisp cmucl gcl sbcl) enc ) ;; ECL and others
       ;;
-    (t
-      #+cmucl (stream-external-format *standard-output*) ;; -input* remains 'default' in terminal
+    (t ;; get encoding:
       #+ (or ccl gcl) :utf-8 ;; ignored by GCL
-      #- (or ccl cmucl gcl) (stream-external-format *standard-input*) )))
+      #- (or ccl gcl) (stream-external-format *standard-output*) )))
+                          ;; cmucl: format of *standard-input* remains 'default' when changed to utf-8
 
-
-#+ (or cmucl (and (not unix) (or ccl clisp sbcl)))
 (defun is-ignored (enc name adds)
   (format t "`~a': The argument ~s is ignored. Enter~%" name 
     (string-downcase (symbol-name enc)) )
@@ -290,112 +315,119 @@ But unlike GCL CMUCL may be set to UTF-8 by adjusting the used external format
 #|
 Linux/Unix:
 
-       terminal, wxMaxima              Lisp reader            string_to_octets
+          terminal, GUI                Lisp reader            string_to_octets
 string_0 ----encode----> UTF-8-octets ----decode----> string_1 ----encode----> octets
 
-wMaxima and commonly used terminals read characters in UTF-8 
+wMaxima, Xmaxima and commonly used terminals read characters in UTF-8 
 which means the characters are encoded as UTF-8-octets.
 
 From the Lisp's point of view this is the external format of the input.
-Any Lisp reader should read and decode this input in UTF-8.
-Then all characters are read as they are entered in wMaxima or terminal.
+Any Lisp reader should read and decode this input in UTF-8 too.
+Then all characters are read as they are entered in a GUI or terminal. 
+string_0 is equal to string_1. This is necessary for all stringproc functions 
+like e.g. cryptools.lisp/string_to_octets to work properly.
 
-This is the default for SBCL, CLISP, ECL and CCL.
+UTF-8 is the default external format for SBCL, CLISP, ECL, CCL and CMUCL(GUI).
 
-CMUCL uses :iso8859-1 as the default external format 
-and GCL has no format definition. 
-So these two read characters each corresponding to a single UTF-8-octet.
-Characters encoded in more than one octet are misinterpreted.
+GCL has no format definition and Maxima itself parses the UTF-8 octets.
 
-The result of e.g. cryptools.lisp/string_to_octets is based on this pre-processing. 
+By default CMUCL uses ISO8859-1 in a terminal. The format is changed to UTF-8 
+when loading stringproc.lisp. 
 
-In SBCL, CLISP, ECL and CCL string_0 is equal to string_1 and string_to_octets 
-can use any valid encoding format to encode the string.
+So in GNU/Linux adjust_external_format prints a message and does nothing.
 
-GCL applies no format definition on the UTF-8-octets read from input 
-and the octets effectively remain UTF-8-encoded.
-
-If CMUCL uses the default external format :iso8859-1 then like in GCL 
-string_to_octets returns the UTF-8-octets from input unchanged.
-But if string_to_octets should use any other format for encoding 
-CMUCL must switch to the external format :utf-8 for reading.
-
-CMUCL: adjust_external_format sets the external format to UTF-8.
-All others: adjust_external_format prints a message and does nothing.
-
-Observations based on Maxima 5.37post from git (Nov 2015).
+Observations based on Maxima 5.37post from git (Feb 2016).
 
 Windows:
 
 Like in Linux the external format of the Lisp reader should meet the format 
-used by the terminal resp. by wxMaxima. 
+used by the terminal resp. by the GUI. 
 
-If the terminal uses cp850 it should be set to cp1252.
-The font should be set to true type. 
-Both changes enable the full range of cp1252 and are assumed in the following.
+If the terminal uses cp850 it should be set to cp1252 (or ISO-8859-1).
+The font should be set to true type. Both changes enable the full range of 
+cp1252 (resp. ISO-8859-1) and are assumed in the following.
 
-CCL(terminal) reads UTF-8 but the input from terminal is cp1252. 
+CCL(terminal) reads UTF-8 and the input from terminal is (assumed to be) ISO-8859-1. 
   The UTF-8 reader misinterprets codepoints > 127. Adjustment needed. 
-  Switch to ISO-8859-1 via Lisp option in 'maxima.bat'. cp1252 is not supported.
+  Switch to ISO-8859-1 via Lisp option in 'maxima.bat'. 
+  (CCL does not support cp1252. Both encodiings should be iso8859-1.)
 
 CCL(wxMaxima) reads UTF-8 and the input from wxMaxima is UTF-8. Do nothing.
 
-CLISP(terminal) reads cp1252 and the input is cp1252. Do nothing.
+CLISP(terminal) reads cp1252 and the input is (assumed to be) cp1252. Do nothing.
 
-CLISP(wxMaxima) reads cp1252 but the input is UTF-8. Adjustment needed. 
-  Switch to UTF-8 via Lisp command for the current session.
+CLISP(wxMaxima) reads cp1252 and the input is UTF-8. 
+  cp1252 is changed to to UTF-8 when loading stringproc.lisp. Nothing left to do.
 
-GCL has no format definition. Input from terminal and wxMaxima is cp1252. Do nothing.
+GCL has no format definition. Input from terminal and wxMaxima is (assumed to be) cp1252. Do nothing.
 
 SBCL(terminal) reads UCS-2LE and the input is UCS-2LE. Do nothing.
 
 SBCL(wxMaxima) reads cp1252 but the input is UTF-8. Adjustment needed. 
   Switch to UTF-8 via Lisp command in init file.
 
-Observations based on Maxima 5.36.1(ccl), 5.37.2(clisp), 5.28.0(gcl), 5.37.2(sbcl)
+Observations based on Maxima 5.36.1(ccl), 5.37.2(clisp), 5.37.3(gcl), 5.37.2(sbcl)
 in Windows 7.
+
+TODO: Comments on Xmaxima in Windows.
 |#
 
 (defun $adjust_external_format () 
-  #+ccl (let ((ef (stream-external-format *standard-input*)))
-    (format t "The external format is currently ~a" ef)
-    #+unix (format t " (i.e. utf-8)~%and has not been changed.~%")
-    #-unix (progn
-      (format t ".~%Changing the external format is not necessary when you are using wxMaxima.~%")
-      (use-cp1252)
-      (format t "The external format for Maxima in a terminal is settable by a Lisp option~%")
-      (format t "in 'maxima.bat'. Please change the line~%set lisp_options=~%to~%") 
-      (format t "set lisp_options=-K :iso-8859-1~%") 
-      (format t "(The terminal encodings cp850 and cp1252 are not supported by CCL.)~%") ))
+  #+ccl (progn
+    #+unix (format t "The external format is utf-8 and has not been changed.~%")
+    #-unix (let ((ef (stream-external-format *standard-input*)))
+      (format t "The external format is ~a and has not been changed.~%" ef)
+      (unless (boundp 'maxima::$wxplot_size)
+        (format t "Command line: The external format is settable by an option in~%~a~%"
+          (combine-path *maxima-prefix* "bin" "maxima.bat") )
+        (format t "Change the line~%set lisp_options=~%to~%") 
+        (format t "set lisp_options=-K :iso-8859-1~%") 
+        (format t "(cp850 and cp1252 are not supported by CCL.)~%")
+        (use-cp "iso-8859-1" 28591) )))
   ;;
   #+clisp (let ((ef (stream-external-format *standard-input*)))
     #-unix (cond 
-      ((search "UTF" (mfuncall '$string ef))
-        (format t "The external format is already ~a.~%Any change is not necessary.~%" ef) )
-      (t
-        (format t "The external format has been changed~%from ~a to ~a for this session only.~%" ef
+      ((search "UTF" (format nil "~s" ef) :test 'string-equal)
+        (format t "The external format is ~a.~%and has not been changed.~%" ef) )
+      ((boundp 'maxima::$wxplot_size)
+        ;; this should not happen
+        ;; format should be adjusted when loading stringproc.lisp
+        (format t "The external format has been changed to ~a~%"
           (setf custom:*terminal-encoding* 
             (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) ))
-        (use-cp1252)
-        t ))
-    #+unix (format t "The external format is currently ~a~%and has not been changed.~%" ef) )
+        (format t "for this session only. For a permanent change put the lines~%")
+        (format t "(setf custom:*terminal-encoding*~%")
+        (format t "  (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) )~%")
+        (format t "into the init file .clisprc in your home directory. ")
+        (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".clisprc"))
+        (setq *parse-utf-8-input* nil)
+        t )
+      (t
+        (format t "The external format is ~a~%and has not been changed.~%" ef)
+        (use-cp "cp1252" 1252) )) 
+    #+unix (format t "The external format is ~a~%and has not been changed.~%" ef) )
   ;;
-  #+cmucl (let ((ef (stream-external-format *standard-output*))) ;; -input* might be 'default'
-    (setq *read-utf-8* t)
-    (cond
+  #+cmucl (let ((ef (stream-external-format *standard-output*))) ;; format of ..
+    (cond                             ;; .. *standard-input* might be 'default'
       ((eq ef :utf-8) 
-        (format t "The external format is already ~a.~%Any change is not necessary.~%" ef) )
-      (t 
-        (format t "The external format has been changed~%from ~a to UTF-8 for this session only.~%" ef)
+        (format t "The external format is ~a~%and has not been changed.~%" ef) )
+      (t ;; this should not happen
+         ;; format should be adjusted when loading stringproc.lisp
+        (format t "The external format has been changed to utf-8~%")
+        (format t "for this session only. For a permanent change put the line~%")
+        (format t "(stream:set-system-external-format :utf-8)~%")
+        (format t "into the init file .cmucl-init in your home directory. ")   
+        (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".cmucl-init"))
+        (setq *parse-utf-8-input* nil)
         (stream:set-system-external-format :utf-8) ))) ;; returns t
   ;;
   #+ecl
-    (format t "The external format is currently ~a~%and has not been changed.~%"
+    (format t "The external format is ~a~%and has not been changed.~%"
       (stream-external-format *standard-input*) )
   ;;
   #+gcl (progn
-    (format t "Changing the external format is not possible.~%")
-    #-unix (use-cp1252) )
+    (format t "There is no settable external format.~%")
+    #-unix (use-cp "cp1252" 1252) )
   ;;
   #+sbcl (let ((ef (stream-external-format *standard-input*)))
     (cond
@@ -408,21 +440,21 @@ in Windows 7.
                            :if-exists :append 
                            :if-does-not-exist :create ) 
             (format stream "~a~%" cmd) )
+          (format t "The external format is cp1252 and has not been changed.~%")
           (format t "The line~%~a~%has been appended to the init file~%~a~%" cmd path)
-          (format t "Please restart Maxima to set the external format to UTF-8.~%") ))
+          (format t "Please restart Maxima to change the external format to utf-8.~%") ))
       (t
-        (format t "The external format is currently ~a~%and has not been changed.~%" ef) )))
+        (format t "The external format is ~a~%and has not been changed.~%" ef) )))
   ;;
   #- (or ccl clisp cmucl ecl gcl sbcl) ;; all others
-    (format t "Please file a report if adjusting the external format is necessary.~%") )
+    (format t "Please file a report if adjusting the external format seems necessary.~%") )
 
 
-#+ (and (not unix) (or ccl clisp gcl))
-(defun use-cp1252 () 
-  (format t "If you work in a terminal you should consider to insert a line~%")
-  (format t "chcp 1252~%immediately below of '@echo off' in~%~s~%" 
-    (combine-path *maxima-prefix* "bin" "maxima.bat") )
-  (format t "and to change the font of the terminal window to a true type font.~%") )
+(defun use-cp (name id) 
+  (format t "Command line: To change the terminal encoding to ~a insert a line~%" name)
+  (format t "chcp ~a~%immediately below of '@echo off' in~%~s~%" 
+    id (combine-path *maxima-prefix* "bin" "maxima.bat") )
+  (format t "and in the properties of the terminal window set the font to a true type font.~%") )
 
 
 ;; -------------------------------------------------------------------------- ;;
@@ -435,9 +467,7 @@ in Windows 7.
 ;;
 (defun $charp (obj)
   (and (stringp obj) 
-       (= 1 #- (and (or cmucl gcl) unix) (length obj)
-            #+ (and (or cmucl gcl) unix) 
-              (if *read-utf-8* (length obj) (utf-8-slength obj)) )))
+       (= 1 (if *parse-utf-8-input* (utf-8-slength obj) (length obj)) )))
 
 
 ;; Convert a string of length 1 into a Lisp character.
@@ -466,8 +496,8 @@ in Windows 7.
 
 ;; Tests for Lisp characters at Maxima level (Lisp level functions see below).
 ;;
-;;   GCL, non-utf-8-CMUCL: 
-;;     If code point is larger than 127 these functions throw an error via l-char.
+;;   When *parse-utf-8-input* is t and 
+;;     code point is larger than 127 these functions throw an error via l-char.
 ;;
 (defun $constituent (mc)   (constituent (l-char mc)))
 (defun $alphanumericp (mc) (alphanumericp (l-char mc)))
@@ -489,24 +519,24 @@ in Windows 7.
 ;;  The conversion Maxima character to name is possible in clisp, ecl, sbcl
 ;;  via printf(false, "~@c", mc);
 ;;  
-;;  GCL in Linux/Unix: 
-;;    A non-ASCII-character is encoded in UTF-8 by wxMaxima or terminal.
+;;  GCL: 
+;;    A non-ASCII-character is encoded in UTF-8 by wxMaxima or a Linux terminal.
 ;;    GCL just passes them through octet by octet. Process these octets.
 ;;
-;;  CMUCL in Linux/Unix: (Windows ?) 
-;;    It is assumed that the external format has been adjusted to UTF-8
-;;    (see $adjust_external_format above for more).
+;;  CMUCL (Linux, wxMaxima): 
 ;;    $cint recognizes 16 bit characters only. 
 ;;    utf8_to_unicode(string_to_octets(mc)); works where $cint fails.
+;;
+;;  SBCL (Windows, wxMaxima): 
+;;    It is assumed that the external format has been adjusted to UTF-8.
 ;;
 (defun $cint (mc) 
   (unless ($charp mc)
     (gf-merror (intl:gettext "`cint': argument must be a Maxima character.")) )
-  #- (and (or cmucl gcl) unix) (char-code (character mc))
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8*
-      (char-code (character mc))
-      (utf8-to-uc (mapcar #'char-code (coerce mc 'list))) ))
+  (if *parse-utf-8-input*
+    (ignore-errors ;; arguments larger than 16 bit might cause errors
+      (utf8-to-uc (coerce (string-to-raw-bytes mc) 'list)) )
+    (char-code (character mc)) ))
 ;;
 (defun $ascii (int) 
   (unless (and (integerp int) (< int 128.))
@@ -517,20 +547,18 @@ Please use `unicode' for code points larger than 127." )))
 ;;
 ;; Code points as arguments are not checked for validity. 
 ;; Names as arguments work in clisp, ecl, sbcl.
-;; In allegro, cmucl code points and names are limited to 16 bit.
+;; In allegro, cmuc code points and names are limited to 16 bit.
 ;; abcl, ccl, gcl, lispworks: unicode(name) returns false.
 ;; octets_to_string(unicode_to_utf8(code_point)); often works where unicode(code_point) fails.
 ;;
 (defun $unicode (arg) 
   (cond
     ((integerp arg)
-      (ignore-errors ;; cmucl errors for arguments larger than 16 bit
-        #- (and (or cmucl gcl) unix) (string (code-char arg))
-        #+ (and (or cmucl gcl) unix) 
-          (if *read-utf-8*
-            (string (code-char arg))
-            (let ((ol (uc-to-utf8 arg)))
-              (utf-8-m-char (length ol) ol) ))))
+      (ignore-errors ;; arguments larger than 16 bit might cause errors
+        (if *parse-utf-8-input*
+          (let ((ol (uc-to-utf8 arg)))
+            (utf-8-m-char (length ol) ol) )
+          (string (code-char arg)) )))
     ((stringp arg)
       (setq arg (concatenate 'string "#\\" ($ssubst "_" " " arg)))
       (let ((*standard-input* (make-string-input-stream arg)))
@@ -598,7 +626,8 @@ Please use `unicode' for code points larger than 127." )))
 
 ;; Comparison - test functions - at Maxima level
 ;;
-;;   GCL (maybe CMUCL): If code point is larger than 127 these functions throw an error.
+;;   When *parse-utf-8-input* is t and 
+;;     code point is larger than 127 these functions throw an error via l-char.
 ;;
 (defun $cequal          (mc1 mc2)  (char=         (l-char mc1) (l-char mc2)))
 (defun $cequalignore    (mc1 mc2)  (char-equal    (l-char mc1) (l-char mc2)))
@@ -640,12 +669,11 @@ Please use `unicode' for code points larger than 127." )))
 ;;   charlist(str)[i] = charat(str, i), i >= 1.
 
 ;; -------------------------------------------------------------------------- ;;
-;; 3.0 some tools for GCL/CMUCL reading UTF-8
+;; 3.0 tools for parsing UTF-8 encoded strings
 ;;
 ;; Remove the first n octets which form an UTF-8 character from a list of octets.
 ;; Values: 1. A reference to the rest of the list.
 ;;         2. The first n octets (we do not always need them). 
-#+ (and (or cmucl gcl) unix)
 (defun rm-first-utf-8-char (ol) ;; ol is an octet list of utf-8 coded characters
   (let ((oct (car ol)))
     (if (logbitp 7 oct)
@@ -659,20 +687,18 @@ Please use `unicode' for code points larger than 127." )))
       (values (cdr ol) (firstn 1 ol)) )))
 
 ;; Retrieve an UTF-8 character from a list of octets.
-#+ (and (or cmucl gcl) unix)
 (defun utf-8-m-char (len ol)
   (if (= len 1) 
     (string (code-char (car ol)))
     (map-into (make-string len) #'code-char ol) ))
 
 
-;; With GCL/UTF-8 positions are counted in octets.
-;; We want them in numbers of characters to find the right position in a string.
+;; We want positions in numbers of characters (not just octets) to find the 
+;;   right position in a string.
 ;; utf-8-pos-dec returns the decrement we need to adjust.
 ;;   (string position = octet position - decrement)
-#+ (and (or cmucl gcl) unix)
 (defun utf-8-pos-dec (str pos)
-  (do ((ov (intl::string-to-octets str :iso8859-1))
+  (do ((ov (string-to-raw-bytes str))
        (i 0 (1+ i))
        (n 0) ) 
       ((= i pos) n)
@@ -680,7 +706,6 @@ Please use `unicode' for code points larger than 127." )))
       (incf n) )))
 
 ;; Fix start and end character positions according to given UTF-8 octets.
-#+ (and (or cmucl gcl) unix)
 (defun utf-8-fix-start-end (ov args) ;; args contain start and end positions.
   (let ((start (cadr args))
         (end (caddr args))
@@ -695,7 +720,6 @@ Please use `unicode' for code points larger than 127." )))
 
 ;; Compute the position increment we need to find the right octet position.
 ;;   (octet position = string position + increment)
-#+ (and (or cmucl gcl) unix)
 (defun utf-8-pos-inc (ov off pos) ;; begin to count at a given offset
   (do ((i off (1+ i))
        (pos0 pos)
@@ -726,11 +750,9 @@ Please use `unicode' for code points larger than 127." )))
     (gf-merror (intl:gettext "`smake': first argument must be an integer.")) )
   (unless ($charp mc)
     (gf-merror (intl:gettext "`smake': second argument must be a Maxima character.")) )
-  #- (and (or cmucl gcl) unix) (make-string n :initial-element (character mc))
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8*
-      (make-string n :initial-element (character mc))
-      (eval `(concatenate 'string ,@(make-list n :initial-element mc))) ))
+  (if *parse-utf-8-input*
+    (eval `(concatenate 'string ,@(make-list n :initial-element mc)))
+    (make-string n :initial-element (character mc)) ))
 
 
 (defun $charat (str pos)
@@ -738,12 +760,11 @@ Please use `unicode' for code points larger than 127." )))
   (let ((end pos))
     (decf pos)
     (or (ignore-errors 
-          #+ (and (or cmucl gcl) unix) 
-            (unless *read-utf-8*
-              (let* ((ov (intl::string-to-octets str :iso8859-1))
-                     (args (utf-8-fix-start-end ov (list nil pos end))) )
-                (setq pos (cadr args)
-                      end (caddr args) )))
+          (when *parse-utf-8-input*
+            (let* ((ov (string-to-raw-bytes str))
+                   (args (utf-8-fix-start-end ov (list nil pos end))) )
+              (setq pos (cadr args)
+                    end (caddr args) )))
           (subseq str pos end) )
       (s-pos-error1 "charat" pos) )))
 
@@ -752,11 +773,8 @@ Please use `unicode' for code points larger than 127." )))
   (unless (stringp str) (s-error1 "charlist" ""))
   (let ((cl (coerce str 'list)))
     (cons '(mlist) 
-      #- (and (or cmucl gcl) unix) (mapcar #'string cl)
-      #+ (and (or cmucl gcl) unix) 
-        (if *read-utf-8* (mapcar #'string cl) (utf-8-charlist cl)) )))
+      (if *parse-utf-8-input* (utf-8-charlist cl) (mapcar #'string cl)) )))
 ;;
-#+ (and (or cmucl gcl) unix) 
 (defun utf-8-charlist (cl)
   (do ((ol (mapcar #'char-code cl)) 
         ch m-chars ) 
@@ -770,8 +788,8 @@ Please use `unicode' for code points larger than 127." )))
 
 ;; $tokens is an interface to `tokens' by Paul Graham.
 ;;
-;;   GCL/utf-8: Aside from $charp these test functions recognize only characters 
-;;              which are coded in one single octet, i.e. $cint(mc) < 128.
+;;   When *parse-utf-8-input* is t 
+;;     then aside from $charp the test functions recognize us-ascii characters only.
 ;;
 (defun $tokens (str &optional (test '$constituent))
   (unless (stringp str) (s-error1 "tokens" "first"))
@@ -866,14 +884,11 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 
 (defun $slength (str)
   (unless (stringp str) (s-error1 "slength" ""))
-  #- (and (or cmucl gcl) unix) (length str)
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8* (length str) (utf-8-slength str)) )
+  (if *parse-utf-8-input* (utf-8-slength str) (length str)) )
 ;;
-;; GCL: if we don't know the number of non-ascii characters, we have to count
-#+ (and (or cmucl gcl) unix) 
+;; if we don't know the number of non-ascii characters, we have to count
 (defun utf-8-slength (str)
-  (do* ((ov (intl::string-to-octets str :iso8859-1)) 
+  (do* ((ov (string-to-raw-bytes str))
         (i 0 (1+ i))
         (n 0)
         (len (array-dimension ov 0)) ) 
@@ -884,29 +899,21 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 
 (defun $sposition (mc str)
   (unless (and (stringp mc) 
-               (= 1 #- (and (or cmucl gcl) unix) (length mc)
-                    #+ (and (or cmucl gcl) unix) ($slength mc) ))
+               (= 1 (if *parse-utf-8-input* ($slength mc) (length mc))) )
     (gf-merror (intl:gettext 
       "`sposition': first argument must be a Maxima character." )))
   (unless (stringp str)
     (s-error1 "sposition" "second") )
-  #- (and (or cmucl gcl) unix) 
+  (if *parse-utf-8-input*
+    ($ssearch mc str) 
     (let ((pos (position (character mc) str))) 
-      (when pos (1+ pos)) )
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8*
-      (let ((pos (position (character mc) str))) 
-        (when pos (1+ pos)) )
-      ($ssearch mc str) ))
+      (when pos (1+ pos)) )))
 
 
 (defun $sreverse (str)
   (unless (stringp str) (s-error1 "sreverse" ""))
-  #- (and (or cmucl gcl) unix) (reverse str)
-  #+ (and (or cmucl gcl) unix) 
-    (if *read-utf-8* (reverse str) (utf-8-sreverse str)) )
+  (if *parse-utf-8-input* (utf-8-sreverse str) (reverse str)) )
 ;;
-#+ (and (or cmucl gcl) unix) 
 (defun utf-8-sreverse (str)
   (do ((ol (mapcar #'char-code (coerce str 'list)))
         ch m-chars )
@@ -921,12 +928,11 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (decf start)
   (when end (decf end))
   (or (ignore-errors 
-        #+ (and (or cmucl gcl) unix) 
-          (unless *read-utf-8*
-            (let* ((ov (intl::string-to-octets str :iso8859-1))
-                   (args (utf-8-fix-start-end ov (list nil start end))) )
-              (setq start (cadr args)
-                    end (caddr args) )))
+        (when *parse-utf-8-input*
+          (let* ((ov (string-to-raw-bytes str))
+                 (args (utf-8-fix-start-end ov (list nil start end))) )
+            (setq start (cadr args)
+                  end (caddr args) )))
         (subseq str start end) )
       (s-pos-error2 "substring") ))
 
@@ -947,11 +953,9 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
       "`smismatch': optional third argument must be `sequal' or `sequalignore'." )))
   (let ((pos (mismatch s1 s2 :test test)))
     (when pos 
-      #- (and (or cmucl gcl) unix) (1+ pos)
-      #+ (and (or cmucl gcl) unix) 
-        (if *read-utf-8* 
-          (1+ pos) 
-          (- (1+ pos) (utf-8-pos-dec s1 pos)) ))))
+      (if *parse-utf-8-input* 
+        (- (1+ pos) (utf-8-pos-dec s1 pos))
+        (1+ pos) ))))
 
 
 ;; searching
@@ -964,11 +968,9 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (or (ignore-errors 
         (let ((pos (apply #'ssearch `(,seq ,str ,@args))))
           (if pos 
-            #- (and (or cmucl gcl) unix) (1+ pos)
-            #+ (and (or cmucl gcl) unix) 
-              (if *read-utf-8* 
-                (1+ pos) 
-                (- (1+ pos) (utf-8-pos-dec str pos)) )
+            (if *parse-utf-8-input* 
+              (- (1+ pos) (utf-8-pos-dec str pos))
+              (1+ pos) )
             (return-from $ssearch nil) )))
       (s-pos-error2 "ssearch") ))
 ;;
@@ -980,7 +982,6 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 ;;  (where start is of course the first integer in sequence)
 ;;
 (defun s-optional-args (name str args) 
-  #- (and (or cmucl gcl) unix) (declare (ignore str))
   (let ((test '$sequal) 
         (start 1) 
         (end nil) 
@@ -992,12 +993,11 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
         ((member a '($sequal $sequalignore))      (setq test  a    ))
         (t (gf-merror (intl:gettext "~m: unsuitable optional arguments.") name)) ))
     (setq args (list test (1- start) (if end (1- end) nil)))
-    #+ (and (or cmucl gcl) unix) 
-      (unless *read-utf-8*
-        (or (ignore-errors 
-              (setq args 
-                (utf-8-fix-start-end (intl::string-to-octets str :iso8859-1) args) ))
-            (s-pos-error2 name) ))
+    (when *parse-utf-8-input*
+      (or (ignore-errors 
+            (setq args 
+              (utf-8-fix-start-end (string-to-raw-bytes str) args) ))
+          (s-pos-error2 name) ))
     args ))
 
 
@@ -1076,9 +1076,8 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (decf pos)
   (unless (and (stringp seq) (stringp str)) (s-error2 "sinsert" "first two"))
   (or (ignore-errors 
-        #+ (and (or cmucl gcl) unix) 
-          (unless *read-utf-8*
-            (incf pos (utf-8-pos-inc (intl::string-to-octets str :iso8859-1) 0 pos)) )
+        (when *parse-utf-8-input*
+          (incf pos (utf-8-pos-inc (string-to-raw-bytes str) 0 pos)) )
         (let ((sq1 (subseq str 0 pos))
               (sq2 (subseq str pos)) )
           (concatenate 'string sq1 seq sq2) ))
@@ -1087,11 +1086,12 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 
 (defun $ssort (str &optional (test '$clessp))
   (unless (stringp str) (s-error1 "ssort" "first"))
-  #+ (and (or cmucl gcl) unix) 
-    (unless (or *read-utf-8* (string= test '$clessp))
-      (let ((alt #+gcl "" #+cmucl "and the external format is not adjusted to UTF-8"))
-        (gf-merror (intl:gettext 
-          "`ssort': when us_ascii_only is false ~a the optional second argument must be `clessp'." ) alt )))
+  (when (and *parse-utf-8-input* (not (string= test '$clessp)))
+    (let ((alt #+gcl "" 
+               #-gcl "and the external format is not adjusted to UTF-8" ))
+      (gf-merror (intl:gettext 
+        "`ssort': when us_ascii_only is false ~a the optional second argument must be `clessp'." ) 
+        alt )))
   (unless 
     (member test '($clessp $cgreaterp $cequal $clesspignore $cgreaterpignore $cequalignore))
       (gf-merror (intl:gettext 
@@ -1099,11 +1099,8 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 clessp[ignore], cequal[ignore], cgreaterp[ignore]" )))
   (setq test (stripdollar test))
   (let ((copy (copy-seq str)))
-    #- (and (or cmucl gcl) unix) (stable-sort copy test)
-    #+ (and (or cmucl gcl) unix) 
-      (if *read-utf-8* (stable-sort copy test) (utf-8-ssort copy)) ))
+    (if *parse-utf-8-input* (utf-8-ssort copy) (stable-sort copy test)) ))
 ;;
-#+ (and (or cmucl gcl) unix) 
 (defun utf-8-ssort (str)
   (labels ((l< (a b)
             (cond 
@@ -1146,13 +1143,11 @@ clessp[ignore], cequal[ignore], cgreaterp[ignore]" )))
   (decf start)
   (when end (decf end))
   (or (ignore-errors 
-        #- (and (or cmucl gcl) unix) (funcall sfun str :start start :end end)
-        #+ (and (or cmucl gcl) unix) 
-          (if *read-utf-8*
-            (funcall sfun str :start start :end end)
-            (let* ((ov (intl::string-to-octets str :iso8859-1))
-                   (args (utf-8-fix-start-end ov (list nil start end))) )
-              (funcall sfun str :start (cadr args) :end (caddr args)) )))
+        (if *parse-utf-8-input*
+          (let* ((ov (string-to-raw-bytes str))
+                 (args (utf-8-fix-start-end ov (list nil start end))) )
+            (funcall sfun str :start (cadr args) :end (caddr args)) )
+          (funcall sfun str :start start :end end) ))
       (s-pos-error2 name) ))
 
 
@@ -1161,12 +1156,11 @@ clessp[ignore], cequal[ignore], cgreaterp[ignore]" )))
   (decf start)
   (when end (decf end))
   (or (ignore-errors 
-        #+ (and (or cmucl gcl) unix) 
-          (unless *read-utf-8*
-            (let* ((ov (intl::string-to-octets str :iso8859-1))
-                   (args (utf-8-fix-start-end ov (list nil start end))) )
-              (setq start (cadr args)
-                    end (caddr args) )))
+        (when *parse-utf-8-input*
+          (let* ((ov (string-to-raw-bytes str))
+                 (args (utf-8-fix-start-end ov (list nil start end))) )
+            (setq start (cadr args)
+                  end (caddr args) )))
         (let ((sq1 (subseq str 0 start))
               (sq2 (s-invert-case (subseq str start end)))
               (sq3 (if end (subseq str end) "")) )

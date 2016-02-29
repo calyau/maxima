@@ -3,7 +3,7 @@
   
     Maxima interface to pregexp.lisp (a portable regex parser by Dorai Sitaram)
   
-    Copyright : 2008 - 2015 Volker van Nek
+    Copyright : 2008 - 2016 Volker van Nek
 
 --------------------------------------------------------------------------------
 
@@ -68,18 +68,18 @@
 
    Like in stringproc.lisp we use 1-indexed position specifications. 
    
-   When GCL is the underlying Lisp the positions are counted in octets at Lisp 
-   level and in Maxima characters at Maxima level. See remark in stringproc.lisp.
-   Non-us-ascii Maxima characters are not recognized in GCL, e.g. the regex "." 
-   doesn't match to an umlaut.
+   When the external format is not utf-8 (unicode) positions are counted in 
+   octets at Lisp level and in Maxima characters at Maxima level. 
+   See remarks in stringproc.lisp.
+   Without unicode support non-us-ascii Maxima characters are not recognized 
+   by regular expressions, e.g. the regex "." doesn't match to an umlaut.
 
 |#
 
 (in-package :maxima)
 
 
-#+ (and (or cmucl gcl) unix) 
-(declare-top (special *read-utf-8*))
+(declare-top (special *parse-utf-8-input*))
 
 
 
@@ -111,11 +111,10 @@
   (gf-merror (intl:gettext "`~m': improper start or end index.") name) )
 
 
-;; With GCL/utf-8 positions are counted in octets.
+;; When the external format is not utf-8 (unicode) positions are counted in octets.
 ;; We want them in numbers of characters to find the right position in a string.
 ;; utf-8-pos-dec returns the decrement we need to adjust.
 ;;   (string position = octet position - decrement)
-#+ (and (or cmucl gcl) unix)
 (defun regex-utf-8-pos-dec (ov off pos) ;; begin to count at a given offset
   (do ((i off (1+ i))
        (n 0)) 
@@ -128,23 +127,21 @@
   (setq regex (regex-check-and-maybe-coerce "regex_match_pos" regex str))
   (decf start)
   (when end (decf end))
-  (let (#+ (and (or cmucl gcl) unix) ov)
+  (let (ov)
     (or (ignore-errors 
-          #+ (and (or cmucl gcl) unix) 
-            (unless *read-utf-8*
-              (setq ov (intl::string-to-octets str :iso8859-1))
-              (let ((args (utf-8-fix-start-end ov (list nil start end))))
-                (setq start (cadr args)
-                      end (caddr args) )))
+          (when *parse-utf-8-input*
+            (setq ov (string-to-raw-bytes str))
+            (let ((args (utf-8-fix-start-end ov (list nil start end))))
+              (setq start (cadr args)
+                    end (caddr args) )))
           (let ((pos-list (pregexp-match-positions regex str start end))
                 (pos-mlist nil) )
             (if pos-list 
               (dolist (pos pos-list (cons '(mlist simp) (nreverse pos-mlist)))
-                #+ (and (or cmucl gcl) unix) 
-                  (unless *read-utf-8*
-                    (let ((dec (regex-utf-8-pos-dec ov 0 (car pos))))
-                      (decf (cdr pos) (+ dec (regex-utf-8-pos-dec ov (car pos) (cdr pos))))
-                      (decf (car pos) dec) ))
+                (when *parse-utf-8-input*
+                  (let ((dec (regex-utf-8-pos-dec ov 0 (car pos))))
+                    (decf (cdr pos) (+ dec (regex-utf-8-pos-dec ov (car pos) (cdr pos))))
+                    (decf (car pos) dec) ))
                 (push `((mlist simp) ,(1+ (car pos)) ,(1+ (cdr pos))) pos-mlist) )
               (return-from $regex_match_pos nil) )))
         (regex-index-error "regex_match_pos") )))
@@ -153,12 +150,11 @@
 (defun $regex_match (regex str &optional (start 1) (end nil))
   (setq regex (regex-check-and-maybe-coerce "regex_match" regex str))
   (or (ignore-errors 
-        #+ (and (or cmucl gcl) unix) 
-          (unless *read-utf-8*
-            (let* ((ov (intl::string-to-octets str :iso8859-1))
-                   (args (utf-8-fix-start-end ov (list nil start end))) )
-              (setq start (cadr args)
-                    end (caddr args) )))
+        (when *parse-utf-8-input*
+          (let* ((ov (string-to-raw-bytes str))
+                 (args (utf-8-fix-start-end ov (list nil start end))) )
+            (setq start (cadr args)
+                  end (caddr args) )))
         (let ((match 
                 (pregexp-match regex str (1- start) (if end (1- end) nil)) ))
           (if match 
