@@ -625,7 +625,7 @@ wrapper for this."
 		     (and (not (atom x))
 			  (memalike (caar x) (cdr $setcheck))))
 		 (not (eq x y)))
-	    (displa (list '(mtext) (disp2 x) '| set to | y))
+	    (mtell (intl:gettext "~:M is being set to ~:M.~%") x y)
 	    (if (and $setcheckbreak (not (eq x '$setval)))
 		(let (($setval y))
 		  (merrbreak t)

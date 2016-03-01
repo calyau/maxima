@@ -1238,18 +1238,18 @@
         (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                            (car y-start) (car y-mid) (car y-end)
                                            depth 1e-5)))
-          (when (notevery #'(lambda (x) (or (numberp x) (eq x t) )) sublst)
+          (when (notevery #'(lambda (x) (or (numberp x) (eq x t) (eq x nil))) sublst)
             (let ((items sublst) (item 'nil))
 	      ;; Search for the item in sublist that is the undefined variable
 	      (while items
 		(if
 		    (not
-		     (or (numberp (car items)) (eq (car items) t) ))
+		     (or (numberp (car items)) (eq (car items) t) (eq (car items) nil)))
 		    (setq item (car items))
 		  )
 		(setq items (cdr items))
 		)
-	      (merror "draw2d (explicit): non defined variable in term ~M" item)
+	      (merror "draw2d (explicit): non defined variable in term: ~M" item)
 	      )
 	    )
 
