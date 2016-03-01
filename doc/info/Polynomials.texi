@@ -1634,6 +1634,7 @@ when canonical rational expressions (CRE) are used in algebraic mode.
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
+@anchor{ratcoef}
 @deffn  {Function} ratcoef @
 @fname{ratcoef} (@var{expr}, @var{x}, @var{n}) @
 @fname{ratcoef} (@var{expr}, @var{x})
