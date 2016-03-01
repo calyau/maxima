@@ -156,6 +156,7 @@ Example:
 Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr},
 where @var{expr} is a polynomial or a monomial term in @var{x}.
 
+
 @code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
 to @code{coeff(@var{expr}, @var{x}, @var{n})}.
 @code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
@@ -171,6 +172,8 @@ to @var{expr} by applying @code{expand} or @code{factor}.  @code{coeff} itself
 does not apply @code{expand} or @code{factor} or any other function.
 
 @code{coeff} distributes over lists, matrices, and equations.
+
+See also @mref{ratcoef}
 
 Examples:
 
