@@ -156,9 +156,8 @@ Example:
 Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr},
 where @var{expr} is a polynomial or a monomial term in @var{x}.
 Other than @mref{ratcoef} @code{coef} is a strictly syntactical
-operation and will only find only instances of
-@code{@var{x}^@var{n}} that appear literally in the internal
-representation of @var{expr}.
+operation and will only find literal instances of
+@code{@var{x}^@var{n}} in the internal representation of @var{expr}.
 
 @code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
 to @code{coeff(@var{expr}, @var{x}, @var{n})}.
