@@ -252,6 +252,14 @@
   (mPr_engine (cadr mexpress) 'mparen 'mparen)
   (tprinc "<mo>|</mo>"))
 
+(defun mPr-conjugate (mexpress)
+  (tprinc "<mover>")
+  (tprinc "<mrow>")
+  (mPr_engine (cadr mexpress) 'mparen 'mparen)
+  (tprinc "</mrow>")
+  (tprinc "<mo>&#xaf;</mo>") ;; macron
+  (tprinc "</mover>"))
+
 ;; a[1]^2 or a[x,y]^z
 (defun mPr-arr-power(b e)
   (tprinc "<msubsup>")
@@ -812,6 +820,8 @@
 (setup '(mabs (mPrprocess mPr-abs)))
 
 (setup '(%abs (mPrprocess mPr-abs)))
+
+(setup '($conjugate (mPrprocess mPr-conjugate)))
 
 (setup '(mnctimes (mPrprocess mPr-infix) (mPr-lbp 110) (mPr-rbp 109)
             (chchr "&CenterDot;")))

@@ -397,6 +397,7 @@
 (setup '(mfactorial  (ctfun "factorial/")))
 (setup '(mabs (ctfun "abs/")))
 (setup '(%abs (ct-proc abs)))
+(setup '($conjugate (ctfun "conjugate/")))
 (setup '(mnctimes  (ctfun "times type=\"noncommutative\"/")))
 (setup '(mtimes  (ctfun "times/")))
 (setup '(mexpt (ctfun "power/")))
