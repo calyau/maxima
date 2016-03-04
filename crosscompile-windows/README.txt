@@ -3,9 +3,9 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full wget tcl-dev tk-dev texlive g++ libgl1-mesa-dev
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full wget tcl-dev tk-dev texlive g++ libgl1-mesa-dev gettext
 
-then you can start the crosscompiling-process:
+Then you can start the crosscompiling-process:
 
 
 cd build # change to the build directory
@@ -13,14 +13,14 @@ cmake ..
 make
 make package
 
-This will download the required Software (CLISP, Gnuplot,
-wxMaxima, wxWidgets, Tcl, Tk, jsMath TeX Fonts) from the internet
+This will download the required Software (CLISP, Gnuplot, wxMaxima,
+wxWidgets, Tcl, Tk, jsMath TeX Fonts, SBCL, VTK) from the internet
 into the directory "download".
 
 The packages will be compiled (if necessary) and a Windows 
 installer for Maxima is generated.
 
-This should work (at least) on Ubuntu, Debian and openSUSE (I hope on other
+This should work (at least) on Ubuntu and Debian (I hope on other
 Linux-Distributions too...).
 (if you want you may even omit the first "make")
 
@@ -31,15 +31,13 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 
 If you want to exclude VTK, use
 cmake -DUSE_VTK=NO ..
-(Attention: The compilation time will increase with vtk!!! The size of the installer
-will approximately be 50% larger than without VTK).
+(Attention: The compilation time will increase with vtk!!! 
+The size of the installer will approximately be 50% larger than without VTK).
 
 
-
-In case a software gets upgraded (and no new patches are needed), it should
-be sufficient to just increase the version number and MD5-checksum for the new
-release in CMakeLists.txt.
-
+In case a software gets upgraded (and no new patches are needed), it
+should be sufficient to just increase the version number and MD5-checksum
+for the new release in CMakeLists.txt.
 
 
 Installing the package
@@ -58,9 +56,9 @@ this installer (and uninstaller) understands the command line switch
 Testing the installed package:
 ==============================
 
-After building it, you can (and should) test the new Maxima installation package.
-Install it on Windows and check that the installation (and later the deinstallation)
-works properly. To test Maxima, try the following:
+After building it, you can (and should) test the new Maxima installation 
+package.  Install it on Windows and check that the installation (and later
+the deinstallation) works properly. To test Maxima, try the following:
 
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
@@ -100,7 +98,4 @@ works properly. To test Maxima, try the following:
    graphics system in the next step.
    Open that file and then select "Cells/Evaluate all cells" in this
    file and check if the file is processed correctly.
-
-
-
 

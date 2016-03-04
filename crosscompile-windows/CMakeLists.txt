@@ -21,7 +21,8 @@ option(USE_VTK "Use VTK." YES)
 # it builds the current Maxima/wxMaxima Git versions and also
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
-option(SBCL_64BIT "Build a installer with a 64 bit SBCL." NO)
+# SBCL (64 Bit) does currently not support Wine, so disable that option:
+# option(SBCL_64BIT "Build a installer with a 64 bit SBCL." NO)
 
 
 
@@ -74,13 +75,14 @@ set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPL
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz")
-if(SBCL_64BIT)
-    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
-    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
-else()
+# SBCL (64 Bit) does currently not support Wine, so disable that option:
+# if(SBCL_64BIT)
+#    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
+#    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
+# else()
     set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
     set(SBCL_MD5      "8b287f4c710b84cb7f60882c6aac82c3")
-endif()
+# endif()
 set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
 
 # No license at the homepage, but the TeX fonts are public domain according to:
