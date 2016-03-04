@@ -215,7 +215,7 @@ is in position 1.
 
 Writes a new line (to @var{stream}),
 if the position is not at the beginning of a line.
-See also @mrefdot{newline}
+See also @ref{newline}.
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -301,7 +301,7 @@ in this stream can be retrieved by @ref{get_output_stream_string}.
 @fname{newline} (@var{stream}) 
 
 Writes a new line (to @var{stream}).
-See @mref{sprint} for an example of using @code{newline()}.
+See @ref{sprint} for an example of using @code{newline()}.
 Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @opencatbox
@@ -628,6 +628,74 @@ GNU/Linux
 @node Characters, String Processing, Input and Output, stringproc-pkg
 @section Characters
 
+Characters are strings of length 1.
+
+@c -----------------------------------------------------------------------------
+@anchor{adjust_external_format}
+@deffn {Function} adjust_external_format () 
+Prints information about the current external format of the Lisp reader 
+and in case the external format encoding differs from UTF-8 it tries to adjust 
+the encoding or prints some help or instruction.
+@code{adjust_external_format} returns @code{true} when the external format has 
+been changed and @code{false} otherwise.
+
+Functions like @ref{cint}, @ref{unicode}, @ref{octets_to_string} 
+and @ref{string_to_octets} need UTF-8 as the external format of the 
+Lisp reader to work properly over the full range of Unicode characters. 
+
+Examples (Maxima on Windows, March 2016): 
+Using @code{adjust_external_format} when the default external format 
+is not equal to the encoding provided by the application.
+
+1. Command line Maxima
+
+In case a terminal session is preferred it is recommended to use Maxima compiled 
+with SBCL. Here Unicode support is provided by default and calls to 
+@code{adjust_external_format} are unnecessary. 
+
+If Maxima is compiled with CLISP or GCL it is recommended to change 
+the terminal encoding from CP850 to CP1252. 
+@code{adjust_external_format} prints some help. 
+
+CCL reads UTF-8 while the terminal input is CP850 by default. 
+CP1252 is not supported by CCL. @code{adjust_external_format} 
+prints instructions for changing the terminal encoding and external format 
+both to iso-8859-1.
+
+2. wxMaxima
+
+In wxMaxima SBCL reads CP1252 by default but the input from the application 
+is UTF-8 encoded. Adjustment is needed. 
+
+Calling @code{adjust_external_format} and restarting Maxima 
+permanently changes the default external format to UTF-8.
+
+@example
+(%i1)adjust_external_format();
+The line
+(setf sb-impl::*default-external-format* :utf-8)
+has been appended to the init file
+C:/Users/Username/.sbclrc
+Please restart Maxima to set the external format to UTF-8.
+(%i1) false
+@end example
+
+Restarting Maxima.
+
+@example
+(%i1) adjust_external_format();
+The external format is currently UTF-8
+and has not been changed.
+(%i1) false
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} alphacharp (@var{char})    
 Returns @code{true} if @var{char} is an alphabetic character. 
 
@@ -637,6 +705,7 @@ Returns @code{true} if @var{char} is an alphabetic character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} alphanumericp (@var{char}) 
 Returns @code{true} if @var{char} is an alphabetic character or a digit. 
 
@@ -646,19 +715,21 @@ Returns @code{true} if @var{char} is an alphabetic character or a digit.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ascii}
 @deffn {Function} ascii (@var{int}) 
-Returns the character corresponding to the ASCII number @var{int}.
-( -1 < int < 256 )
+Returns the US-ASCII character corresponding to the integer @var{int}
+which has to be less than @code{128}.
 
-@c ===beg===
-@c for n from 0 thru 255 do ( 
-@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), 
-@c       if n=96 then newline() )$
-@c ===end===
+See @ref{unicode} for converting code points larger than @code{127}.
+
+Examples:
+
 @example
-(%i1) for n from 0 thru 255 do ( 
-   tmp: ascii(n), if alphacharp(tmp) then sprint(tmp),
-      if n=96 then newline() )$
+(%i1) for n from 0 thru 127 do ( 
+        ch: ascii(n), 
+        if alphacharp(ch) then sprint(ch),
+        if n = 96 then newline() )$
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example
@@ -669,6 +740,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cequal (@var{char_1}, @var{char_2})          
 Returns @code{true} if @var{char_1} and @var{char_2} are the same. 
 
@@ -678,6 +750,7 @@ Returns @code{true} if @var{char_1} and @var{char_2} are the same.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cequalignore (@var{char_1}, @var{char_2})    
 Like @code{cequal} but ignores case. 
 
@@ -687,6 +760,7 @@ Like @code{cequal} but ignores case.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cgreaterp (@var{char_1}, @var{char_2})       
 Returns @code{true} if the ASCII number of @var{char_1} is greater than the number of @var{char_2}. 
 
@@ -696,6 +770,7 @@ Returns @code{true} if the ASCII number of @var{char_1} is greater than the numb
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
 Like @code{cgreaterp} but ignores case. 
 
@@ -705,6 +780,7 @@ Like @code{cgreaterp} but ignores case.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} charp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Maxima-character.
 See introduction for example.
@@ -715,8 +791,42 @@ See introduction for example.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{cint}
 @deffn {Function} cint (@var{char}) 
-Returns the ASCII number of @var{char}.
+Returns the Unicode code point of @var{char} which must be a 
+Maxima character, i.e. a string of length @code{1}.
+
+Examples: The hexadecimal code point of some characters 
+(Maxima with SBCL on GNU/Linux). 
+
+@example
+(%i1) obase: 16.$
+(%i2) map(cint, ["$","@pounds{}","@euro{}"]);
+(%o2)                           [24, 0A3, 20AC]
+@end example
+
+Warning: It is not possible to enter characters corresponding to code points 
+larger than 16 bit in wxMaxima with SBCL on Windows when the external format 
+has not been set to UTF-8. See @ref{adjust_external_format}.
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i3) cint("@U{1d538}");
+@c (%o3)                                1D538
+@c @end example
+
+CMUCL doesn't process these characters as one character. 
+@code{cint} then returns @code{false}. 
+Converting to UTF-8-octets and finally to Unicode serves as a workaround.
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i4) utf8_to_unicode(string_to_octets("@U{1d538}"));
+@c (%o4)                                1D538
+@c @end example
+
+See @ref{string_to_octets}, @ref{utf8_to_unicode}.
 
 @opencatbox
 @category{Package stringproc}
@@ -724,6 +834,7 @@ Returns the ASCII number of @var{char}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} clessp (@var{char_1}, @var{char_2})
 Returns @code{true} if the ASCII number of @var{char_1} is less than the number of @var{char_2}. 
 
@@ -733,6 +844,7 @@ Returns @code{true} if the ASCII number of @var{char_1} is less than the number 
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} clesspignore (@var{char_1}, @var{char_2})
 Like @code{clessp} but ignores case. 
 
@@ -742,6 +854,7 @@ Like @code{clessp} but ignores case.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} constituent (@var{char})   
 Returns @code{true} if @var{char} is a graphic character and not the space character.
 A graphic character is a character one can see, plus the space character.
@@ -765,6 +878,7 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cunlisp (@var{lisp_char}) 
 Converts a Lisp-character into a Maxima-character.
 (You won't need it.)
@@ -775,6 +889,7 @@ Converts a Lisp-character into a Maxima-character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} digitcharp (@var{char})    
 Returns @code{true} if @var{char} is a digit. 
 
@@ -784,6 +899,7 @@ Returns @code{true} if @var{char} is a digit.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} lcharp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-character.
 (You won't need it.)
@@ -794,6 +910,7 @@ Returns @code{true} if @var{obj} is a Lisp-character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} lowercasep (@var{char})    
 Returns @code{true} if @var{char} is a lowercase character. 
 
@@ -803,6 +920,7 @@ Returns @code{true} if @var{char} is a lowercase character.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{newline }
 @defvr {Variable} newline 
 The newline character. 
@@ -813,6 +931,7 @@ The newline character.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @anchor{space   }
 @defvr {Variable} space   
 The space character.
@@ -823,6 +942,7 @@ The space character.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @anchor{tab     }
 @defvr {Variable} tab     
 The tab character.
@@ -833,6 +953,94 @@ The tab character.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{unicode}
+@deffn {Function} unicode (@var{arg}) 
+Returns the character defined by @var{arg} which might be a Unicode code point 
+or a name string if the underlying Lisp provides full Unicode support. 
+
+Example: Characters defined by hexadecimal code points
+(Maxima with SBCL on GNU/Linux). 
+
+@example
+(%i1) ibase: 16.$
+(%i2) map(unicode, [24, 0A3, 20AC]);
+(%o2)                            [$, @pounds{}, @euro{}]
+@end example
+
+Warning: In wxMaxima with SBCL on Windows it is not possible to convert 
+code points larger than 16 bit to characters when the external format 
+has not been set to UTF-8. See @ref{adjust_external_format} for more information.
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i3) unicode(1D538);
+@c (%o3)                                  @U{1d538}
+@c @end example
+
+CMUCL doesn't process code points larger than 16 bit. 
+In these cases @code{unicode} returns @code{false}. 
+Converting characters to UTF-8 octets and finally to Unicode serves as a workaround. 
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i4) octets_to_string(unicode_to_utf8(1D538));
+@c (%o4)                                  @U{1d538}
+@c @end example
+
+In case the underlying Lisp provides full Unicode support the character might be 
+specified by its name. The following is possible in ECL, CLISP and SBCL, 
+where in SBCL on Windows the external format has to be set to UTF-8.
+@code{unicode(name)} is supported by CMUCL too but again limited to 16 bit 
+characters. 
+
+The string argument to @code{unicode} is basically the same string returned by 
+@code{printf} using the "~@@c" specifier. 
+But as shown below the prefix "#\" must be omitted. 
+Underlines might be replaced by spaces and uppercase letters by lowercase ones.
+
+Example (continued): Characters defined by names 
+(Maxima with SBCL on GNU/Linux). 
+
+@example
+(%i3) printf(false, "~@@c", unicode(0DF));
+(%o3)                    #\LATIN_SMALL_LETTER_SHARP_S
+(%i4) unicode("LATIN_SMALL_LETTER_SHARP_S");
+(%o4)                                  @ss{}
+(%i5) unicode("Latin small letter sharp s");
+(%o5)                                  @ss{}
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unicode_to_utf8}
+@deffn {Function} unicode_to_utf8 (@var{code_point}) 
+Returns a list containing the UTF-8 code corresponding to the Unicode @var{code_point}.
+
+Examples: Converting Unicode code points to UTF-8 and vice versa. 
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) map(cint, ["$","@pounds{}","@euro{}"]);
+(%o2)                           [24, 0A3, 20AC]
+(%i3) map(unicode_to_utf8, %);
+(%o3)                 [[24], [0C2, 0A3], [0E2, 82, 0AC]]
+(%i4) map(utf8_to_unicode, %);
+(%o4)                           [24, 0A3, 20AC]
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} uppercasep (@var{char})    
 Returns @code{true} if @var{char} is an uppercase character. 
 
@@ -843,22 +1051,68 @@ Returns @code{true} if @var{char} is an uppercase character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{us_ascii_only}
+@defvr {Variable} us_ascii_only
+This option variable affects Maxima when the character encoding 
+provided by the application which runs Maxima is UTF-8 but the 
+external format of the Lisp reader is not equal to UTF-8. 
+
+On GNU/Linux this is true when Maxima is built with GCL 
+and on Windows in wxMaxima with GCL- and SBCL-builds. 
+With SBCL it is recommended to change the external format to UTF-8. 
+Setting @code{us_ascii_only} is unnecessary then. 
+See @ref{adjust_external_format} for details. 
+
+@code{us_ascii_only} is @code{false} by default. 
+Maxima itself then parses the UTF-8 encoding.
+
+When @code{us_ascii_only} is set to @code{true} it is assumed that all strings 
+used as arguments to string processing functions do not contain Non-US-ASCII characters. 
+Given that promise, Maxima avoids parsing UTF-8 and strings can be processed more efficiently.
+
+@opencatbox
+@category{Global variables} @category{Package stringproc}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{utf8_to_unicode}
+@deffn {Function} utf8_to_unicode (@var{list}) 
+Returns a Unicode code point corresponding to the @var{list} containing 
+the UTF-8 encoding of a single character.
+
+Examples: See @ref{unicode_to_utf8}.
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
 @node String Processing, Octets and Utilities for Cryptography, Characters, stringproc-pkg
 @section String Processing
 
+Position indices in strings are 1-indexed like in Maxima lists. 
+See example in @ref{charat}.
 
 @c -----------------------------------------------------------------------------
+@anchor{charat}
 @deffn {Function} charat (@var{string}, @var{n}) 
 Returns the @var{n}-th character of @var{string}.
-The first character in @var{string} is returned with @var{n} = 1.
+The first character in @var{string} is returned with @var{n} = 1. 
 
 @c ===beg===
 @c charat("Lisp",1);
+@c charlist("Lisp")[1];
 @c ===end===
 @example
 (%i1) charat("Lisp",1);
 (%o1)                           L
+(%i2) charlist("Lisp")[1];
+(%o2)                           L
 @end example
 
 @opencatbox
@@ -873,13 +1127,10 @@ Returns the list of all characters in @var{string}.
 
 @c ===beg===
 @c charlist("Lisp");
-@c %[1];
 @c ===end===
 @example
 (%i1) charlist("Lisp");
 (%o1)                     [L, i, s, p]
-(%i2) %[1];
-(%o2)                           L
 @end example
 
 @opencatbox
@@ -909,7 +1160,7 @@ Examples:
 (%o2)                   baz + 1764
 @end example
 
-See also @mrefdot{parse_string}
+See also @ref{parse_string}.
 
 @opencatbox
 @category{Package stringproc}
@@ -940,7 +1191,7 @@ Examples:
 (%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
-See also @mrefdot{eval_string}
+See also @ref{eval_string}.
 
 @opencatbox
 @category{Package stringproc}
@@ -962,7 +1213,7 @@ Returns a copy of @var{string} as a new string.
 @fname{sdowncase} (@var{string}, @var{start})  @
 @fname{sdowncase} (@var{string}, @var{start}, @var{end})
 
-Like @mref{supcase} but uppercase characters are converted to lowercase. 
+Like @ref{supcase} but uppercase characters are converted to lowercase. 
 
 @opencatbox
 @category{Package stringproc}
@@ -1027,7 +1278,7 @@ If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 @end deffn
 
 @deffn {Function} sinsert (@var{seq}, @var{string}, @var{pos})  
-Returns a string that is a concatenation of @code{substring (@var{string}, 1, @var{pos} - 1)},
+Returns a string that is a concatenation of @code{substring(@var{string}, 1, @var{pos}-1)},
 the string @var{seq} and @code{substring (@var{string}, @var{pos})}.
 Note that the first character in @var{string} is in position 1.
 
@@ -1156,7 +1407,7 @@ If @var{multiple} is set to @code{false}, each delimiter is noted.
 @deffn {Function} sposition (@var{char}, @var{string}) 
 Returns the position of the first character in @var{string} which matches @var{char}.
 The first character in @var{string} is in position 1.
-For matching characters ignoring case see @mrefdot{ssearch}
+For matching characters ignoring case see @ref{ssearch}.
 
 @opencatbox
 @category{Package stringproc}
@@ -1455,6 +1706,7 @@ If test is not given, @var{constituent} is used as the default test.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Octets and Utilities for Cryptography,  , String Processing, stringproc-pkg
 @section Octets and Utilities for Cryptography
 
@@ -1694,6 +1946,59 @@ Example: RSA encryption OID
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{octets_to_string}
+@deffn {Function} octets_to_string @
+@fname{octets_to_string} (@var{octets})  @
+@fname{octets_to_string} (@var{octets}, @var{encoding}) 
+
+Decodes the list of @var{octets} into a string according to current system defaults. 
+When decoding octets corresponding to Non-US-ASCII characters 
+the result depends on the platform, application and underlying Lisp.
+
+Example: Using system defaults 
+(Maxima compiled with GCL, which uses no format definition and 
+simply passes through the UTF-8-octets encoded by the GNU/Linux terminal).
+
+@example
+(%i1) octets: string_to_octets("abc");
+(%o1)                            [61, 62, 63]
+(%i2) octets_to_string(octets);
+(%o2)                                 abc
+(%i3) ibase: obase: 16.$
+(%i4) unicode(20AC);
+(%o4)                                  @euro{}
+(%i5) octets: string_to_octets(%);
+(%o5)                           [0E2, 82, 0AC]
+(%i6) octets_to_string(octets);
+(%o6)                                  @euro{}
+(%i7) utf8_to_unicode(octets);
+(%o7)                                20AC
+@end example
+
+In case the external format of the Lisp reader is equal to UTF-8 the optional 
+argument @var{encoding} allows to set the encoding for the octet to string conversion. 
+If necessary see @ref{adjust_external_format} for changing the external format. 
+
+Some names of supported encodings (see corresponding Lisp manual for more): @*
+CCL, CLISP, SBCL: @code{utf-8, ucs-2be, ucs-4be, iso-8859-1, cp1252, cp850} @*
+CMUCL: @code{utf-8, utf-16-be, utf-32-be, iso8859-1, cp1252} @*
+ECL: @code{utf-8, ucs-2be, ucs-4be, iso-8859-1, windows-cp1252, dos-cp850} 
+   
+Example (continued): Using the optional encoding argument 
+(Maxima compiled with SBCL, GNU/Linux terminal).
+
+@example
+(%i8) string_to_octets("@euro{}", "ucs-2be");
+(%o8)                              [20, 0AC]
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{oid_to_octets}
 @deffn {Function} oid_to_octets (@var{oid-string})
 
@@ -1771,3 +2076,26 @@ characters (resp. octets larger than 127) the @code{SHA256} fingerprint is platf
 @closecatbox
 
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{string_to_octets}
+@deffn {Function} string_to_octets @
+@fname{string_to_octets} (@var{string})  @
+@fname{string_to_octets} (@var{string}, @var{encoding}) 
+
+Encodes a @var{string} into a list of octets according to current system defaults. 
+When encoding strings containing Non-US-ASCII characters 
+the result depends on the platform, application and underlying Lisp.
+
+In case the external format of the Lisp reader is equal to UTF-8 the optional 
+argument @var{encoding} allows to set the encoding for the string to octet conversion. 
+If necessary see @ref{adjust_external_format} for changing the external format. 
+
+See @ref{octets_to_string} for examples and some more information.
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
