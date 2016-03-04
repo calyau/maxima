@@ -2620,8 +2620,8 @@ Example:
 Default value: @code{none}
 
 When @code{proportional_axes} is equal to @code{xy} or @code{xyz},
-a 2D or 3D scene will be drawn with axes proportional to their relative
-lengths.
+the aspect ratio of the axis units will be set to 1:1 resulting in a 2D or 3D
+scene that will be drawn with axes proportional to their relative lengths.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
