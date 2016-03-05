@@ -818,7 +818,8 @@ has not been set to UTF-8. See @ref{adjust_external_format}.
 
 CMUCL doesn't process these characters as one character. 
 @code{cint} then returns @code{false}. 
-Converting to UTF-8-octets and finally to Unicode serves as a workaround.
+Converting a character to a code point via UTF-8-octets may serve as a workaround: @*
+@code{utf8_to_unicode(string_to_octets(character));}
 
 @c Command @U not supported by texinfo 5.
 @c @example
@@ -826,7 +827,7 @@ Converting to UTF-8-octets and finally to Unicode serves as a workaround.
 @c (%o4)                                1D538
 @c @end example
 
-See @ref{string_to_octets}, @ref{utf8_to_unicode}.
+See @ref{utf8_to_unicode}, @ref{string_to_octets}.
 
 @opencatbox
 @category{Package stringproc}
@@ -980,13 +981,16 @@ has not been set to UTF-8. See @ref{adjust_external_format} for more information
 
 CMUCL doesn't process code points larger than 16 bit. 
 In these cases @code{unicode} returns @code{false}. 
-Converting characters to UTF-8 octets and finally to Unicode serves as a workaround. 
+Converting a code point to a character via UTF-8 octets may serve as a workaround: @*
+@code{octets_to_string(unicode_to_utf8(code_point));}
 
 @c Command @U not supported by texinfo 5.
 @c @example
 @c (%i4) octets_to_string(unicode_to_utf8(1D538));
 @c (%o4)                                  @U{1d538}
 @c @end example
+
+See @ref{octets_to_string}, @ref{unicode_to_utf8}.
 
 In case the underlying Lisp provides full Unicode support the character might be 
 specified by its name. The following is possible in ECL, CLISP and SBCL, 
