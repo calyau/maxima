@@ -1823,6 +1823,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defvar  *fpsincheck* nil)
 
+;; FL is a T for sin and NIL for cos.
 (defun fpsin (x fl)
   (prog (piby2 r sign res k *cancelled)
      (setq sign (cond (fl (signp g (car x)))

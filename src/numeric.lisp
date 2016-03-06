@@ -1290,8 +1290,8 @@
 
 (defmethod cis ((a bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::bcons (maxima::fpsin (cdr (real-value a)) t))
-		 :imag (maxima::bcons (maxima::fpsin (cdr (real-value a)) nil))))
+		 :real (maxima::bcons (maxima::fpsin (cdr (real-value a)) nil))
+		 :imag (maxima::bcons (maxima::fpsin (cdr (real-value a)) t))))
 
 (defmethod phase ((a bigfloat))
   (let ((r (cdr (real-value a))))
