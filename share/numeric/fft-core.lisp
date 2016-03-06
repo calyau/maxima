@@ -324,38 +324,82 @@ Returns transformed real and imaginary arrays."
   (values x-real x-imag))
 
 
-;; Radix-2 FFT with natural order input and output and out-of-place.
+;;; Bigfloat FFT
+
+;; Convert a sequence to an array of complex bigfloat numbers.
+(defun seq->bfft-array (seq)
+  (map 'vector #'(lambda (z)
+		   (destructuring-bind (rp . ip)
+		       (risplit ($bfloat z))
+		     (bigfloat:bigfloat rp ip)))
+       seq))
+
+(defun mlist->bfft-array (mlist)
+  (seq->bfft-array (cdr mlist)))
+
+(defun lisp-array->bfft-array (arr)
+  (seq->bfft-array arr))
+
+(defun bfft-array->seq (arr seqtype)
+    (map seqtype #'to arr))
+
+(defun bfft-array->mlist (arr)
+  (cons '(mlist simp) (bfft-array->seq arr 'list)))
+
+(defun bfft-array->lisp-array (arr)
+  (bfft-array->seq arr 'vector))
+
+(defun bfft-array->maxima-symbol-array (arr)
+  "Outputs a Maxima array as does Maxima's 'array()' function."
+  (let ((lisp-array (bfft-array->lisp-array arr))
+        (maxima-symbol (meval `(($array)
+                                ,(intern (symbol-name (gensym "$G")))
+                                $float
+                                ,(1- (length arr))))))
+    (setf (symbol-array (mget maxima-symbol 'array)) lisp-array)
+    maxima-symbol))
+
+;; Bigfloat forward and inverse FFTs.  Length of the input must be a
+;; power of 2.
 (defun $bf_fft (input)
-  (let* ((size (1- (length input)))
-	 (x (make-array size)))
-    (map-into x #'(lambda (z)
-		    (let ((fl (risplit ($bfloat z))))
-		      (bigfloat:bigfloat (car fl) (cdr fl))))
-	 (cdr input))
-    (format t "input = ~A~%" x)
-    (let ((result
-	   (bigfloat::fft-r2-nn x)))
-      (format t "result = ~A~%" result)
-      (cons '(mlist simp)
-	    (map 'list #'(lambda (z)
-			   (to (bigfloat:/ z size)))
-		 result)))))
+  (multiple-value-bind (convert unconvert)
+      (cond (($listp input)
+	     (values #'mlist->bfft-array
+		     #'bfft-array->mlist))
+	    ((arrayp input)
+	     (values #'lisp-array->bfft-array
+		     #'bfft-array->lisp-array))
+	    ((and (symbolp input) (symbol-array (mget input 'array)))
+	     (values #'(lambda (x)
+			 (lisp-array->bfft-array
+			  (symbol-array (mget x 'array))))
+		     #'bfft-array->maxima-symbol-array))
+	    (t
+	     (merror "bf_fft: input is not a list or an array.")))
+    (let* ((x (funcall convert input)))
+      (if (> (length x) 1)
+	  (funcall unconvert (bigfloat::fft-r2-nn x))
+	  (funcall unconvert x)))))
 
 (defun $bf_inverse_fft (input)
-  (let* ((size (1- (length input)))
-	 (x (make-array size)))
-    (map-into x #'(lambda (z)
-		    (let ((fl (risplit ($bfloat z))))
-		      (bigfloat:bigfloat (car fl) (cdr fl))))
-	 (cdr input))
-    (format t "input = ~A~%" x)
-    (let ((result
-	   (bigfloat::fft-r2-nn x :inverse-fft-p t)))
-      (format t "result = ~A~%" result)
-      (cons '(mlist simp)
-	    (map 'list #'(lambda (z)
-			   (to z))
-		 result)))))
+  (multiple-value-bind (convert unconvert)
+      (cond (($listp input)
+	     (values #'mlist->bfft-array
+		     #'bfft-array->mlist))
+	    ((arrayp input)
+	     (values #'lisp-array->bfft-array
+		     #'bfft-array->lisp-array))
+	    ((and (symbolp input) (symbol-array (mget input 'array)))
+	     (values #'(lambda (x)
+			 (lisp-array->bfft-array
+			  (symbol-array (mget x 'array))))
+		     #'bfft-array->maxima-symbol-array))
+	    (t
+	     (merror "bf_fft: input is not a list or an array.")))
+    (let ((x (funcall convert input)))
+      (if (> (length x) 1)
+	  (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
+	  (funcall unconvert x)))))
 
 
 (in-package "BIGFLOAT")
@@ -399,6 +443,8 @@ Returns transformed real and imaginary arrays."
 	(setf pairs-in-group (ash pairs-in-group -1))
 	(setf number-of-groups (ash number-of-groups 1))
 	(setf distance (ash distance -1)))
-      (if not-switch-input
+      (if inverse-fft-p
 	  a
-	  b))))
+	  (map-into a #'(lambda (z)
+			       (/ z n))
+		    a)))))
