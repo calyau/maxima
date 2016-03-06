@@ -322,3 +322,83 @@ Returns transformed real and imaginary arrays."
       (fft-dif-internal x-real x-imag nil)
       (fft-bit-reverse x-real x-imag)))
   (values x-real x-imag))
+
+
+;; Radix-2 FFT with natural order input and output and out-of-place.
+(defun $bf_fft (input)
+  (let* ((size (1- (length input)))
+	 (x (make-array size)))
+    (map-into x #'(lambda (z)
+		    (let ((fl (risplit ($bfloat z))))
+		      (bigfloat:bigfloat (car fl) (cdr fl))))
+	 (cdr input))
+    (format t "input = ~A~%" x)
+    (let ((result
+	   (bigfloat::fft-r2-nn x)))
+      (format t "result = ~A~%" result)
+      (cons '(mlist simp)
+	    (map 'list #'(lambda (z)
+			   (to (bigfloat:/ z size)))
+		 result)))))
+
+(defun $bf_inverse_fft (input)
+  (let* ((size (1- (length input)))
+	 (x (make-array size)))
+    (map-into x #'(lambda (z)
+		    (let ((fl (risplit ($bfloat z))))
+		      (bigfloat:bigfloat (car fl) (cdr fl))))
+	 (cdr input))
+    (format t "input = ~A~%" x)
+    (let ((result
+	   (bigfloat::fft-r2-nn x :inverse-fft-p t)))
+      (format t "result = ~A~%" result)
+      (cons '(mlist simp)
+	    (map 'list #'(lambda (z)
+			   (to z))
+		 result)))))
+
+
+(in-package "BIGFLOAT")
+
+;; Simple Radix-2 out-of-place FFT with in-order input and output.
+(defun fft-r2-nn (x &key (debug 0) (inverse-fft-p nil))
+  (let* ((n (length x))
+	 (half-n (ash n -1))
+	 (pairs-in-group (ash n -1))
+	 (number-of-groups 1)
+	 (distance (ash n -1))
+	 (not-switch-input t)
+	 (a (copy-seq x))
+	 (b (make-array (length x)))
+	 (omega (/ (* (if inverse-fft-p -2 2)
+		      (%pi (aref x 0)))
+		   n)))
+    (flet ((fft ()
+	     (let ((index 0))
+	       (dotimes (k number-of-groups)
+		 (let* ((jfirst (* 2 k pairs-in-group))
+			(jlast (+ jfirst pairs-in-group -1))
+			(jtwiddle (* k pairs-in-group))
+			(w (cis (* omega jtwiddle))))
+		   (when (> debug 0)
+		     (format t  "k = ~D, jfirst/last = ~D ~D jtwiddle = ~D dist ~D index ~D, W ~S~%"
+			     k jfirst jlast jtwiddle distance index w))
+		   (loop for j from jfirst upto jlast do
+		     (let ((temp (* w (aref a (+ j distance)))))
+		       (setf (aref b index) (+ (aref a j) temp))
+		       (setf (aref b (+ index half-n)) (- (aref a j) temp))
+		       (incf index))))))))
+      (loop while (< number-of-groups n) do
+	(when (> debug 0)
+	  (format t "number-of-groups = ~D~%" number-of-groups))
+	(fft)
+	(when (> debug 0)
+	  (format t "Output = ~S~%" b))
+	(rotatef a b)
+	(setf not-switch-input (not not-switch-input))
+	(setf pairs-in-group (ash pairs-in-group -1))
+	(setf number-of-groups (ash number-of-groups 1))
+	(setf distance (ash distance -1)))
+      (if not-switch-input
+	  a
+	  b))))
