@@ -617,15 +617,13 @@
   (mtell-open "~M" `((mtext) ((spaceout) ,(min $trace_max_indent trace-indent-level)) ,@l)))
 
 (defun trace-print (form)
-  (terpri)
   (do ((j (min $trace_max_indent trace-indent-level) (1- j)))
       ((not (> j 0)))
     (write-char #\space))
   (if *prin1*
       (funcall *prin1* form)
       (prin1 form))
-  (write-char #\space))
-
+  (terpri))
 
 ;; 9:02pm  Monday, 18 May 1981 -GJC
 ;; A function benchmark facility using trace utilities.
