@@ -118,7 +118,7 @@
                                ,(1+ ($second $ip_grid)))))
         (ssample (make-array `(,(1+ ($first $ip_grid_in))
                                 ,(1+ ($second $ip_grid_in)))))
-        file-name gnuplot-out-file gnuplot-term
+        file-name gnuplot-out-file gnuplot-term ip-gnuplot
         (xmaxima-titles nil))
     
     ;; Parse the given options into the list options
@@ -143,25 +143,27 @@
     (if (not ($listp expr))
         (setq expr `((mlist simp) ,expr)))
 
-    (setf gnuplot-term (getf options :gnuplot_term))
+    (setq gnuplot-term (getf options :gnuplot_term))
+    (setq gnuplot-out-file (getf options :gnuplot_out_file))
     
     (if (eq (getf options :plot_format) '$xmaxima)
         (setq ip-gnuplot nil)
         (setq ip-gnuplot t))
 
     (if  ip-gnuplot
-         (if (and (eq gnuplot-term '$default)
-                  gnuplot-out-file)
-             (setf file-name gnuplot-out-file)
-             (setf file-name (plot-temp-file (format nil "maxout~d.gnuplot" (getpid)))))
-         (setf file-name (plot-temp-file (format nil "maxout~d.xmaxima" (getpid)))))
+        (if (and (eq gnuplot-term '$default) gnuplot-out-file)
+            (setq file-name (plot-file-path gnuplot-out-file))
+          (setq file-name (plot-file-path
+                           (format nil "maxout~d.gnuplot" (getpid)))))
+      (setq file-name (plot-file-path
+                       (format nil "maxout~d.xmaxima" (getpid)))))
     
     ;; output data
     (with-open-file
         (file file-name :direction :output :if-exists :supersede)
       (if ip-gnuplot
           (progn
-            (gnuplot-print-header file options)
+            (setq gnuplot-out-file (gnuplot-print-header file options))
             (format file "set style data lines~%")
             (format file "plot"))
           (xmaxima-print-header file options))
@@ -255,7 +257,7 @@
     
     ;; call plotter
     (if ip-gnuplot
-        (gnuplot-process options file-name (getf options :gnuplot_out_file))
+        (gnuplot-process options file-name gnuplot-out-file)
         ($system (concatenate 'string *maxima-prefix*
                               "/bin/" $xmaxima_plot_command)
                  (format nil " \"~a\"" (plot-temp-file (format nil "maxout~d.xmaxima" (getpid)))))))
