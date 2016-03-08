@@ -714,3 +714,9 @@ block ([foo, bar],
  apply1 (abs (foo - bar), rfoo),
  apply ("and", map (is, flatten (%))));
 true;
+
+/* SF bug #3102: "find_root(x,x,-1e300,1e300) => overflow" */
+
+find_root(x,x,-1e300,1e300);
+0.0;
+

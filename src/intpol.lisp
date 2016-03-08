@@ -77,7 +77,7 @@ Perhaps you meant to enter `~a'.~%"
 	(return-from find-root-subr a))
       (when (<= (abs fb) (to abserr))
 	(return-from find-root-subr b))
-      (when (plusp (* fa fb))
+      (when (plusp (* (float-sign fa) (float-sign fb)))
 	(if (eq maxima::$find_root_error t)
 	    (maxima::merror (intl:gettext "find_root: function has same sign at endpoints: ~M, ~M")
 			    `((maxima::mequal) ((f) ,a) ,fa)
