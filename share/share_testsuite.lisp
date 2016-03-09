@@ -90,5 +90,6 @@
     "rtest_antid"
     "rtest_bffac"
     "rtest_grobner"
-    "rtest_finance")
+    "rtest_finance"
+    "rtest_fft")
   )
