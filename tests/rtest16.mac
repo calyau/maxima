@@ -1980,3 +1980,17 @@ exp(10000/3),numer,%enumer;
 /* We can't check for the correct answer zero (yet), because Maxima can't solve integrate(asinh(x),x,-inf,inf). */
 is(integrate(3*asinh(x),x,-inf,inf)#3*false);
 true$
+
+/*
+ * Bug #3056: exp(1b19) signals error that 1b19 doesn't have enough
+ * precision to compute its integer part.  Add test for this and also
+ * the original test from commit 576c7508.)
+ */
+
+/* Don't really care what the answer is as long as we don't signal an error */
+is(errcatch(exp(1b19)) # []);
+true;
+
+/* Test from the commit 576c7508 */
+ceiling((207300647060*%e^-563501581931)/(403978495031*%e^-1098127402131));
+ceiling((207300647060*%e^534625820200)/403978495031);
