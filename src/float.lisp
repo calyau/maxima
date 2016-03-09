@@ -1912,7 +1912,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; as requested.
 ;;
 ;; For the bigfloat code here, skip-exponent-check-p should be true.
-;; For other uses (see commit576c7508 and bug #2784), this should be
+;; For other uses (see commit 576c7508 and bug #2784), this should be
 ;; nil, which is the default.
 (defun fpintpart (f &key skip-exponent-check-p)
   (destructuring-bind (mantissa exponent)
