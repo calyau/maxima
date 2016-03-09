@@ -3809,7 +3809,7 @@ Example:
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
-	key_pos=bottom_right,
+        key_pos=bottom_right,
         key="current",
         xlabel="t[s]",
         ylabel="I[A]",ylabel_secondary="P[W]",
