@@ -97,6 +97,9 @@ or symbolic constants.
 which is not modified.
 Results are always computed as floats
 or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
+If bigfloat precision is needed the function @code{bf_inverse_fft} can
+be used instead as a drop-in replacement of @code{inverse_fft} that is
+slower, but supports bfloats. 
 
 The inverse discrete Fourier transform is defined as follows.
 Let @code{x} be the output of the inverse transform.
@@ -188,6 +191,9 @@ or symbolic constants.
 which is not modified.
 Results are always computed as floats
 or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
+If bigfloat precision is needed the function @code{bf_fft} can be used
+instead as a drop-in replacement of @code{fft} that is slower, but
+supports bfloats. 
 
 The discrete Fourier transform is defined as follows.
 Let @code{y} be the output of the transform.
