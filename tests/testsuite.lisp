@@ -12,7 +12,7 @@
         ((mlist) "rtest1" 180)
         "rtest1a"
         ((mlist) "rtest2" 86 95)
-         "rtest4"
+	"rtest4"
         "rtest5"
         "rtest6" "rtest6a" "rtest6b" "rtest7"
         "rtest9" 
@@ -67,3 +67,4 @@
         ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
         "rtest_plotoptions"
 	))
+

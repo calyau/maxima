@@ -1103,7 +1103,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (prog (r s)
      (unless (signp ge (car x))
        (return (fpquotient (fpone) (fpexp (fpabs x)))))
-     (setq r (fpintpart x))
+     (setq r (fpintpart x :skip-exponent-check-p t))
      (return (cond ((< r 2)
 		    (fpexp1 x))
 		   (t
@@ -1841,7 +1841,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	   (prog (x)
 	    loop (setq x (cdr (bigfloatp xt)))
 	    (setq piby2 (fpquotient (fppi) (intofp 2)))
-	    (setq r (fpintpart (fpquotient x piby2)))
+	    (setq r (fpintpart (fpquotient x piby2) :skip-exponent-check-p t))
 	    (setq x (fpplus x (fptimes* (intofp (- r)) piby2)))
 	    (setq k *cancelled)
 	    (fpplus x (fpminus piby2))
@@ -1904,15 +1904,26 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; shift. The pair denotes the number MANTISSA * 2^(EXPONENT - FPPREC), of which
 ;; FPPREC bits are known.
 ;;
-;; If EXPONENT is large and positive then we might not have enough information
-;; to calculate the integer part. Specifically, we only have enough information
-;; if EXPONENT < FPPREC. If that isn't the case, we signal a Maxima error.
-(defun fpintpart (f)
-  (destructuring-bind (mantissa exponent) f
-    (if (< exponent fpprec)
-        (quotient mantissa (expt 2 (- fpprec exponent)))
-        (merror "~M doesn't have enough precision to compute its integer part"
-                `((bigfloat ,fpprec) ,mantissa ,exponent)))))
+;; If EXPONENT is large and positive then we might not have enough
+;; information to calculate the integer part. Specifically, we only
+;; have enough information if EXPONENT < FPPREC. If that isn't the
+;; case, we signal a Maxima error.  However, if SKIP-EXPONENT-CHECK-P
+;; is non-NIL, this check is skipped, and we compute the integer part
+;; as requested.
+;;
+;; For the bigfloat code here, skip-exponent-check-p should be true.
+;; For other uses (see commit 576c7508 and bug #2784), this should be
+;; nil, which is the default.
+(defun fpintpart (f &key skip-exponent-check-p)
+  (destructuring-bind (mantissa exponent)
+      f
+    (let ((m (- fpprec exponent)))
+	(if (plusp m)
+	    (quotient mantissa (expt 2 (- fpprec exponent)))
+	    (if (and (not skip-exponent-check-p) (< exponent fpprec))
+		(merror "~M doesn't have enough precision to compute its integer part"
+                `((bigfloat ,fpprec) ,mantissa ,exponent))
+		(* mantissa (expt 2 (- m))))))))
 
 (defun logbigfloat (a)
   (cond (($bfloatp (car a))

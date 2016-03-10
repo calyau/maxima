@@ -490,8 +490,13 @@
     (namestring file)))
 
   
-  
+;; The default set of tests for the test suite.  This is initialized
+;; by run_testsuite by loading tests/testsuite.lisp.
 (defmvar $testsuite_files nil)
+
+;; The set of tests for the functions in the share directory.  This is
+;; initialized by run_testsuite by loading share/share_testsuite.lisp.
+(defmvar $share_testsuite_files nil)
 
 (defvar *maxima-testsdir*)
 
@@ -528,7 +533,7 @@
 		  (t
 		   (cdr $testsuite_files))))))
 
-(defun run-testsuite (&key display_known_bugs display_all tests time)
+(defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
   (declare (special $file_search_tests))
   (let ((test-file)
 	(expected-failures))
@@ -539,35 +544,64 @@
       (merror (intl:gettext "run_testsuite: display_all must be true or false; found: ~M") display_all))
     (unless (member time '(t nil $all))
       (merror (intl:gettext "run_testsuite: time must be true, false, or all; found: ~M") time))
+
+    (unless (member share_tests '(t nil $only))
+      (merror (intl:gettext "run_testsuite: share_tests must be true, false or only: found ~M") share_tests))
     
     (setq *collect-errors* nil)
     (unless $testsuite_files
-      (let ((*read-base* 10.)) (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))))
-    (let ((error-break-file)
-	  (testresult)
-	  (tests-to-run (intersect-tests (cond ((consp tests) tests)
-					       (tests (list '(mlist) tests)))))
-	  (test-count 0)
-	  (total-count 0)
-	  (error-count 0))
-      (flet
-	  ((testsuite ()
-	     (loop with errs = 'nil
-		   for testentry in tests-to-run
-		   do (if (atom testentry)
-			  (progn
-			    (setf test-file testentry)
-			    (setf expected-failures nil))
-			  (progn
-			    (setf test-file (second testentry))
-			    (setf expected-failures (cddr testentry))))
-		      (format t
-			      (intl:gettext "Running tests in ~a: ")
-			      (if (symbolp test-file)
-				  (subseq (print-invert-case test-file) 1)
-				  test-file))
-		      (or
-			(errset
+      (let ((*read-base* 10.))
+	(when debug
+	  (format t "Loading testsuite.lisp~%"))
+	(load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))))
+    (when share_tests
+      (when debug
+	(format t "Loading share_testsuite.lisp~%"))
+      (load (concatenate 'string *maxima-sharedir* "/" "share_testsuite.lisp")))
+
+    (multiple-value-bind ($testsuite_files $file_search_tests)
+	(ecase share_tests
+	  ((nil)
+	   ;; Do nothing
+	   (values $testsuite_files $file_search_tests))
+	  ((t)
+	   ;; Append the share files
+	   (values ($append $testsuite_files $share_testsuite_files)
+		   $file_search_maxima))
+	  ($only
+	   ;; Only the share test files
+	   (values $share_testsuite_files $file_search_maxima)))
+      (when debug
+	(let (($stringdisp t))
+	  (mformat t "$testsuite_files = ~M~%" $testsuite_files)))
+      (let ((error-break-file)
+	    (testresult)
+	    (tests-to-run (intersect-tests (cond ((consp tests) tests)
+						 (tests (list '(mlist) tests)))))
+	    (test-count 0)
+	    (total-count 0)
+	    (error-count 0))
+	(when debug
+	  (let (($stringdisp t))
+	    (mformat t "tests-to-run = ~M~%" tests-to-run)))
+	(flet
+	    ((testsuite ()
+	       (loop with errs = 'nil
+		     for testentry in tests-to-run
+		     do (if (atom testentry)
+			    (progn
+			      (setf test-file testentry)
+			      (setf expected-failures nil))
+			    (progn
+			      (setf test-file (second testentry))
+			      (setf expected-failures (cddr testentry))))
+			(format t
+				(intl:gettext "Running tests in ~a: ")
+				(if (symbolp test-file)
+				    (subseq (print-invert-case test-file) 1)
+				    test-file))
+			(or
+			 (errset
 			  (progn
 			    (multiple-value-setq (testresult test-count)
 			      (test-batch ($file_search test-file $file_search_tests)
@@ -578,40 +612,40 @@
 			    (when testresult
 			      (incf error-count (length (cdr testresult)))
 			      (setq errs (append errs (list testresult))))))
-			(progn
-			  (setq error-break-file (format nil "~a" test-file))
-			  (setq errs
-				(append errs
-					(list (list error-break-file "error break"))))
-			  (format t
-				  (intl:gettext "~%Caused an error break: ~a~%")
-				  test-file)))
-		   finally (cond
-			     ((null errs)
-			      (format t
-				      (intl:gettext
-				       "~%~%No unexpected errors found out of ~:d tests.~%")
-				      total-count))
-			     (t
-			      (format t (intl:gettext "~%Error summary:~%"))
-			      (mapcar
-			       #'(lambda (x)
-				   (let ((s (if (> (length (rest x)) 1) "s" "")))
-				     (format t
-					     (intl:gettext
-					      "Error~a found in ~a, problem~a:~%~a~%")
-					     s
-					     (first x)
-					     s
-					     (sort (rest x) #'<))))
-			       errs)
-			      (format t
-				      (intl:gettext
-				       "~&~:d test~p failed out of ~:d total tests.~%")
-				      error-count
-				      error-count
-				      total-count))))))
-      (time (testsuite)))))
+			 (progn
+			   (setq error-break-file (format nil "~a" test-file))
+			   (setq errs
+				 (append errs
+					 (list (list error-break-file "error break"))))
+			   (format t
+				   (intl:gettext "~%Caused an error break: ~a~%")
+				   test-file)))
+		     finally (cond
+			       ((null errs)
+				(format t
+					(intl:gettext
+					 "~%~%No unexpected errors found out of ~:d tests.~%")
+					total-count))
+			       (t
+				(format t (intl:gettext "~%Error summary:~%"))
+				(mapcar
+				 #'(lambda (x)
+				     (let ((s (if (> (length (rest x)) 1) "s" "")))
+				       (format t
+					       (intl:gettext
+						"Error~a found in ~a, problem~a:~%~a~%")
+					       s
+					       (first x)
+					       s
+					       (sort (rest x) #'<))))
+				 errs)
+				(format t
+					(intl:gettext
+					 "~&~:d test~p failed out of ~:d total tests.~%")
+					error-count
+					error-count
+					total-count))))))
+	  (time (testsuite))))))
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
@@ -651,6 +685,14 @@
 		    (merror (intl:gettext "Unrecognized keyword: ~M") opt))))
 	    options)))
 
+;; Run the testsuite.  Options are
+;;  tests                List of tests to run
+;;  display_all          Display output from each test entry
+;;  display_known_bugs   Include tests that are known to fail.
+;;  time                 Display time to run each test entry
+;;  share_tests          Whether to include the share testsuite or not
+;;  debug                Set to enable some debugging prints.
 (defun $run_testsuite (&rest options)
   (apply #'run-testsuite
-	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time))))
+	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time
+						   $share_tests $debug))))
