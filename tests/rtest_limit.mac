@@ -722,3 +722,32 @@ minf;
 
 killcontext (context);
 done;
+
+/* SF bug #3104: "limit(log(1 - exp(x)), x, 0, plus), numer => stack overflow" */
+
+limit(log(1 - exp(x)), x, 0, plus);
+infinity;
+
+limit(log(1 - exp(x)), x, 0, plus), numer;
+infinity;
+
+limit(log(1 + exp(x)), x, 0, plus);
+log(2);
+
+limit(log(1 + exp(x)), x, 0, plus), numer;
+0.6931471805599453;
+
+/* inspired by this example from #3103; for the present purpose,
+ * it's not too important to get these specific results,
+ * only that numer doesn't cause an error here.
+ */
+
+integrate(x^3/(exp(x)-1),x,0,inf);
+'limit(6*li[4](%e^x)-6*x*li[3](%e^x)+3*x^2*li[2](%e^x)+x^3*log(1-%e^x)-x^4/4,
+       x,inf,minus) -%pi^4/15$
+
+integrate(x^3/(exp(x)-1),x,0,inf), numer;
+'limit(6.0*li[4](%e^x)-6.0*x*li[3](%e^x)+3.0*x^2*li[2](%e^x)
+                      +1.0*x^3*log(1-%e^x)-0.25*x^4,x,inf,minus)
+ -6.0*li[4](1.0)$
+
