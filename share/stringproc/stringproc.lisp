@@ -496,8 +496,9 @@ TODO: Comments on Xmaxima in Windows.
 
 ;; Tests for Lisp characters at Maxima level (Lisp level functions see below).
 ;;
-;;   When *parse-utf-8-input* is t and 
-;;     code point is larger than 127 these functions throw an error via l-char.
+;;  These functions assume that we know what alphabetic characters are.
+;;  If mc is a non-US-ASCII character and we don't have Unicode support 
+;;  i.e. *parse-utf-8-input* is t, an error is thrown via l-char.
 ;;
 (defun $constituent (mc)   (constituent (l-char mc)))
 (defun $alphanumericp (mc) (alphanumericp (l-char mc)))
@@ -533,6 +534,9 @@ TODO: Comments on Xmaxima in Windows.
 (defun $cint (mc) 
   (unless ($charp mc)
     (gf-merror (intl:gettext "`cint': argument must be a Maxima character.")) )
+  (mc2int mc) ) 
+;;
+(defun mc2int (mc) 
   (if *parse-utf-8-input*
     (ignore-errors ;; arguments larger than 16 bit might cause errors
       (utf8-to-uc (coerce (string-to-raw-bytes mc) 'list)) )
@@ -626,24 +630,38 @@ Please use `unicode' for code points larger than 127." )))
 
 ;; Comparison - test functions - at Maxima level
 ;;
-;;   When *parse-utf-8-input* is t and 
-;;     code point is larger than 127 these functions throw an error via l-char.
+(defun $cequal (mc1 mc2) 
+  (if *parse-utf-8-input*
+    (= (mc2int mc1) (mc2int mc2))
+    (char= (l-char mc1) (l-char mc2)) ))
 ;;
-(defun $cequal          (mc1 mc2)  (char=         (l-char mc1) (l-char mc2)))
-(defun $cequalignore    (mc1 mc2)  (char-equal    (l-char mc1) (l-char mc2)))
-(defun $clessp          (mc1 mc2)  (char<         (l-char mc1) (l-char mc2)))
+(defun $clessp (mc1 mc2)  
+  (if *parse-utf-8-input*
+    (< (mc2int mc1) (mc2int mc2))
+    (char< (l-char mc1) (l-char mc2)) ))
+;;
+(defun $cgreaterp (mc1 mc2)  
+  (if *parse-utf-8-input*
+    (> (mc2int mc1) (mc2int mc2))
+    (char> (l-char mc1) (l-char mc2)) ))
+;;
+;;  Ignoring case assumes alphabetic characters. But we can't check for 
+;;  non-US-ASCII alphabetic characters when we don't have Unicode support and 
+;;  *parse-utf-8-input* is t. Throw an error via l-char for non-US-ASCII chars.
+;;
+(defun $cequalignore    (mc1 mc2)  (char-equal    (l-char mc1) (l-char mc2))) 
 (defun $clesspignore    (mc1 mc2)  (char-lessp    (l-char mc1) (l-char mc2)))
-(defun $cgreaterp       (mc1 mc2)  (char>         (l-char mc1) (l-char mc2)))
 (defun $cgreaterpignore (mc1 mc2)  (char-greaterp (l-char mc1) (l-char mc2)))
 
 
 ;; Comparison - test functions - at Lisp level
 ;;
-(defun cequal          (c1 c2)  (char=         c1 c2))
-(defun cequalignore    (c1 c2)  (char-equal    c1 c2))
+(defun cequal          (c1 c2)  (char=         c1 c2)) ;; Lisp chars assumed 
 (defun clessp          (c1 c2)  (char<         c1 c2))
-(defun clesspignore    (c1 c2)  (char-lessp    c1 c2))
 (defun cgreaterp       (c1 c2)  (char>         c1 c2))
+;;
+(defun cequalignore    (c1 c2)  (char-equal    c1 c2))
+(defun clesspignore    (c1 c2)  (char-lessp    c1 c2))
 (defun cgreaterpignore (c1 c2)  (char-greaterp c1 c2))
 
 
@@ -714,7 +732,8 @@ Please use `unicode' for code points larger than 127." )))
     (incf start inc)
     (rplaca (cdr args) start)
     (when end
-      (incf end (+ inc (utf-8-pos-inc ov start end)))
+      (incf end inc) 
+      (incf end (utf-8-pos-inc ov start end))
       (rplaca (cddr args) end) )
     args ))
 
@@ -751,7 +770,7 @@ Please use `unicode' for code points larger than 127." )))
   (unless ($charp mc)
     (gf-merror (intl:gettext "`smake': second argument must be a Maxima character.")) )
   (if *parse-utf-8-input*
-    (eval `(concatenate 'string ,@(make-list n :initial-element mc)))
+    (reduce #'$sconcat (make-list n :initial-element mc)) 
     (make-string n :initial-element (character mc)) ))
 
 
@@ -766,13 +785,13 @@ Please use `unicode' for code points larger than 127." )))
               (setq pos (cadr args)
                     end (caddr args) )))
           (subseq str pos end) )
-      (s-pos-error1 "charat" pos) )))
+      (s-pos-error1 "charat" (1+ pos)) ))) 
 
 
 (defun $charlist (str)
   (unless (stringp str) (s-error1 "charlist" ""))
   (let ((cl (coerce str 'list)))
-    (cons '(mlist) 
+    (cons '(mlist simp) 
       (if *parse-utf-8-input* (utf-8-charlist cl) (mapcar #'string cl)) )))
 ;;
 (defun utf-8-charlist (cl)
@@ -798,7 +817,7 @@ Please use `unicode' for code points larger than 127." )))
                          lowercasep uppercasep charp ))
     (gf-merror (intl:gettext "`tokens': optional second argument must be one of ~%
 constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, charp" )))
-  (cons '(mlist) (tokens str test 0)) )
+  (cons '(mlist simp) (tokens str test 0)) ) 
 ;;
 (defun tokens (str test start) ;; this is the original version by Paul Graham
                                ;;   (ANSI Common Lisp, 1996, page 67)
@@ -839,7 +858,7 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
         (t (gf-merror (intl:gettext "`split': unsuitable optional arguments."))) ))
     (if (string= ds "")
       ($charlist str)
-      (cons '(mlist) (split str ds multiple?)) )))
+      (cons '(mlist simp) (split str ds multiple?)) ))) 
 ;;
 (defun split (str ds &optional (multiple? t))
   (let ((pos1 (search ds str)))
@@ -1084,39 +1103,34 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
       (s-pos-error1 "sinsert" (1+ pos)) ))
 
 
-(defun $ssort (str &optional (test '$clessp))
+(defun $ssort (str &optional (test '$clessp)) 
   (unless (stringp str) (s-error1 "ssort" "first"))
-  (when (and *parse-utf-8-input* (not (string= test '$clessp)))
-    (let ((alt #+gcl "" 
-               #-gcl "and the external format is not adjusted to UTF-8" ))
+  (if *parse-utf-8-input* 
+    (unless (member test '($clessp $cgreaterp))
+      (let ((alt #+gcl "" 
+                 #-gcl "and the external format is not adjusted to UTF-8" ))
+        (gf-merror (intl:gettext 
+          "`ssort': when us_ascii_only is false ~a 
+the optional second argument must be `clessp' or `cgreaterp'." ) alt )))
+    (unless (member test '($clessp $cgreaterp $clesspignore $cgreaterpignore))
       (gf-merror (intl:gettext 
-        "`ssort': when us_ascii_only is false ~a the optional second argument must be `clessp'." ) 
-        alt )))
-  (unless 
-    (member test '($clessp $cgreaterp $cequal $clesspignore $cgreaterpignore $cequalignore))
-      (gf-merror (intl:gettext 
-        "`ssort': optional second argument must be one of ~% 
-clessp[ignore], cequal[ignore], cgreaterp[ignore]" )))
+        "`ssort': optional second argument must be one of ~%clessp[ignore], cgreaterp[ignore]" ))))
   (setq test (stripdollar test))
   (let ((copy (copy-seq str)))
-    (if *parse-utf-8-input* (utf-8-ssort copy) (stable-sort copy test)) ))
+    (if *parse-utf-8-input* (utf-8-ssort copy test) (sort copy test)) ))
 ;;
-(defun utf-8-ssort (str)
-  (labels ((l< (a b)
-            (cond 
-              ((null a) (not (null b)))
-              ((null b) nil)
-              ((= (car a) (car b)) (l< (cdr a) (cdr b)))
-              (t (< (car a) (car b))) )))
-    (do ((ol (mapcar #'char-code (coerce str 'list))) 
-          ch chars ) 
-        ((null ol) 
-          (eval 
-            `(concatenate 'string
-              ,@(mapcar #'(lambda (ch) (utf-8-m-char (length ch) ch))
-                        (sort chars #'l<) ))))
-      (multiple-value-setq (ol ch) (rm-first-utf-8-char ol))
-      (push ch chars) )))
+(defun utf-8-ssort (str &optional (test 'clessp)) 
+  (setq test 
+    (if (equal test 'clessp) #'< #'> ))
+  (do ((ol (coerce (string-to-raw-bytes str) 'list))
+        utf8 code-pts ) 
+      ((null ol) 
+        (eval 
+          `(concatenate 'string
+            ,@(mapcar #'(lambda (n) ($unicode n))
+                      (sort code-pts test) ))))
+    (multiple-value-setq (ol utf8) (rm-first-utf-8-char ol))
+    (push (utf8-to-uc utf8) code-pts) ))
 
 
 (defun $strim (seq str)
