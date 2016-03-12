@@ -1903,9 +1903,6 @@ true$
 bfloatp(1000! * 0.01);
 true$
 
-floor(log(1000! ^ 0.1));
-591$
-
 /* Test the behaviour of promote_float_to_bigfloat */
 errcatch (block ([promote_float_to_bigfloat: false], 1000! * 0.01));
 []$
