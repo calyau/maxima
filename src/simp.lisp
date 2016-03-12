@@ -109,12 +109,6 @@
 
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
-(defmvar $promote_float_to_bigfloat t
-  "This variable controls automatic bigfloat promotion. If it is true, then
-   floating point overflows are caught during simplification and the calculation
-   is continued using bigfloats. If it is false, the overflow is allowed to
-   propagate.")
-
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
 (defmvar $algepsilon 100000000)
@@ -675,31 +669,20 @@
 ;; Try to evaluate FIRST-TRY. If there's a floating point overflow (or any old
 ;; error if we're on a Lisp where they're harder to catch), evaluate
 ;; ALTERNATIVE, which should try to do the same computation, but with bigfloats.
-;;
-;; The automatic bigfloat promotion is turned on iff $PROMOTE_FLOAT_TO_BIGFLOAT
-;; is true. If not, we are careful to raise a error here. This takes no work on
-;; platforms other than GCL and ECL but those two return a float infinity on
-;; overflow. Bleurgh.
 (defmacro bigfloat-alternative (first-try alternative)
-  #-(or gcl ecl)
-  `(if $promote_float_to_bigfloat
-       (handler-case ,first-try
-         (floating-point-overflow () ,alternative)
-         (type-error (e)
-           (if (member (type-error-expected-type e)
-                       '(double-float single-float))
-               ,alternative
-               (error e))))
-       ,first-try)
-
-  #+(or gcl ecl)
-  `(let ((result ,first-try))
-     (if (float-inf-p result)
-         (if $promote_float_to_bigfloat
+  `(handler-case
+       #-(or gcl ecl) ,first-try
+       #+(or gcl ecl)
+       (let ((result ,first-try))
+         (if (float-inf-p result)
              ,alternative
-             (merror "Floating point overflow"))
-         result)))
-
+             result))
+     (floating-point-overflow () ,alternative)
+     (type-error (e)
+       (if (member (type-error-expected-type e)
+                   '(double-float single-float))
+           ,alternative
+           (error e)))))
 
 ;; Try to evaluate (,cl-op ,arg1 ,arg2), but correctly handle floating point
 ;; overflows. When one occurs, use bfloats to return a sensible answer.
@@ -995,9 +978,7 @@
 ;;;   (exptb 2.0 1000) -> 1.995063116880758b3010
 ;;;
 ;;; Affected by:
-;;;   The option variables $FLOAT and $PROMOTE_FLOAT_TO_BIGFLOAT. The latter
-;;;   variable controls the automatic promotion in the last example. If
-;;;   disabled, the example should throw a merror.
+;;;   The option variable $FLOAT.
 ;;;
 ;;; Notes:
 ;;;   EXPTB calls the Lisp functions EXP or EXPT to compute the result.
@@ -1009,6 +990,11 @@
           ;; Make B a float so we'll get double-precision result.
           (exp (float b)))
          ((or (floatp a) (not (minusp b)))
+          #+gcl
+          (if (float-inf-p (setq b (expt a b)))
+              (merror (intl:gettext "EXPT: floating point overflow."))
+              b)
+          #-gcl
           (expt a b))
          (t
           (setq b (expt a (- b)))
