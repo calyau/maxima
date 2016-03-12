@@ -579,7 +579,7 @@ stirling
 stringproc
 * Einf@"uhrung in die Verarbeitung von Zeichenketten::
 * Ein- und Ausgabe::
-* Buchstaben::
+* Schriftzeichen::
 * Verarbeitung von Zeichenketten::
 * Oktette und Werkzeuge f@"ur die Kryptographie::
 

@@ -10,7 +10,7 @@
 @menu
 * Einf@"uhrung in die Verarbeitung von Zeichenketten::
 * Ein- und Ausgabe::
-* Buchstaben::
+* Schriftzeichen::
 * Verarbeitung von Zeichenketten::
 * Oktette und Werkzeuge f@"ur die Kryptographie::
 @end menu
@@ -20,125 +20,144 @@
 @section Einf@"uhrung in die Verarbeitung von Zeichenketten
 @c -----------------------------------------------------------------------------
 
-@code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
-and adds some useful functions for file in/output.
+Das Paket @code{stringproc} enth@"alt Funktionen f@"ur die Verarbeitung von 
+Zeichen und Zeichenketten, was Formatierung, Zeichenkodierung und 
+die Behandlung von Datenstr@"omen mit einschlie@ss{}t. 
+Abgerundet wird dieses Paket durch Werkzeuge f@"ur die Kryptographie, wie z.B. 
+Base64 und Hashfunktionen.
 
-For questions and bugs please mail to volkervannek at gmail dot com .
+Das Paket kann explizit durch @code{load(stringproc)} geladen werden oder 
+automatisch durch die Verwendung einer der enthaltenden Funktionen. 
 
-In Maxima a string is easily constructed by typing "text".
-@mref{stringp} tests for strings.
+Fragen und Fehlerberichte senden Sie bitte direkt an den Autor, 
+dessen e-Mail-Adresse durch den folgenden Befehl ausgegeben wird. 
+
+@code{printf(true, "~@{~a~@}@@gmail.com", split(sdowncase("Volker van Nek")))$}
+
+
+Eine Zeichenkette wird durch die Eingabe von z.B. @code{"Text"} erzeugt. 
+Ist die Optionsvariable @code{stringdisp} auf @code{false} gesetzt, was 
+standardm@"a@ss{}ig der Fall ist, werden die (doppelten) Anf@"uhrungszeichen 
+nicht mit ausgegeben. @ref{stringp} ist ein Test, ob ein Objekt eine 
+Zeichenkette ist.
 
 @example
-(%i1) m: "text";
-(%o1)                         text
-(%i2) stringp(m);
+(%i1) str: "Text";
+(%o1)                         Text
+(%i2) stringp(str);
 (%o2)                         true
 @end example
 
-Characters are represented as strings of length 1.
-These are not Lisp characters.
-Tests can be done with @mref{charp} (respectively @mref{lcharp}@w{}
-and conversion from Lisp to Maxima characters with @mref{cunlisp}).
+Schriftzeichen werden in Maxima durch Zeichenketten der L@"ange 1 dargestellt. 
+@ref{charp} ist hier der entsprechende Test.
 
 @example
-(%i1) c: "e";
+(%i1) char: "e";
 (%o1)                           e
-(%i2) [charp(c),lcharp(c)];
-(%o2)                     [true, false]
-(%i3) supcase(c);
-(%o3)                           E
-(%i4) charp(%);
-(%o4)                         true
+(%i2) charp(char);
+(%o2)                         true
 @end example
 
-All functions in @code{stringproc.lisp} that return characters, return 
-Maxima characters.  Due to the fact, that the introduced characters are strings 
-of length 1, you can use a lot of string functions also for characters.
-As seen, @mref{supcase} is one example.
-
-It is important to know, that the first character in a Maxima string is at 
-position 1.  This is designed due to the fact that the first element in a 
-Maxima list is at position 1 too.  See definitions of @mref{charat} and
-@mref{charlist} for examples.
-
-In applications string functions are often used when working with files.
-You will find some useful stream and print functions in @code{stringproc.lisp}.
-The following example shows some of the here introduced functions at work.
-
-Example: 
-
-@mref{openw} returns an output stream to a file, @code{printf} then allows
-formatted writing to this file.  See @mref{printf} for details.
+Positionsindizes in Zeichenketten sind in Maxima genau so wie in Listen 
+1-indiziert, wodurch die folgende @"Ubereinstimmung entsteht.
 
 @example
-(%i1) s: openw("E:/file.txt");
-(%o1)                    #<output stream E:/file.txt>
-(%i2) for n:0 thru 10 do printf( s, "~d ", fib(n) );
-(%o2)                                done
-(%i3) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
-              42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
-(%o3)                                false
-(%i4) close(s);
-(%o4)                                true
+(%i1) is(charat("Lisp",1) = charlist("Lisp")[1]);
+(%o1)                         true
 @end example
 
-After closing the stream you can open it again, this time with input direction.
-@mref{readline} returns the entire line as one string.  The @code{stringproc}
-package now offers a lot of functions for manipulating strings.  Tokenizing can 
-be done by @mref{split} or @mrefdot{tokens}
+Eine Zeichenkette kann Ausdr@"ucke enthalten, die Maxima versteht. 
+Diese k@"onnen mit @ref{parse_string} heraus gel@"ost werden.
 
 @example
-(%i5) s: openr("E:/file.txt");
-(%o5)                     #<input stream E:/file.txt>
-(%i6) readline(s);
-(%o6)                     0 1 1 2 3 5 8 13 21 34 55 
-(%i7) line: readline(s);
-(%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
-(%i8) list: tokens(line);
-(%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
-(%i9) map( parse_string, list );
-(%o9)            [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
-(%i10) float(%);
-(%o10) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
-                                                     0.01, 0.01]
-(%i11) readline(s);
-(%o11)                               false
-(%i12) close(s)$
+(%i1) map(parse_string, ["42" ,"sqrt(2)", "%pi"]);
+(%o1)                   [42, sqrt(2), %pi]
+(%i2) map('float, %);
+(%o2)        [42.0, 1.414213562373095, 3.141592653589793]
 @end example
 
-@code{readline} returns @code{false} when the end of file occurs.
+Zeichenketten k@"onnen als Schriftzeichen und bin@"ar als Oktette verarbeitet werden. 
+@ref{string_to_octets} bzw. @ref{octets_to_string} dienen hierbei zur Umrechnung. 
+Die verwendbaren Kodierungen sind dabei von der Plattform, der Anwendung und vom 
+unter Maxima liegenden Lisp abh@"angig. 
+(Folgend Maxima in GNU/Linux, kompiliert mit SBCL.)
+
+@example
+(%i1) obase: 16.$
+(%i2) string_to_octets("$@pounds{}@euro{}", "cp1252");
+(%o2)                     [24, 0A3, 80]
+(%i3) string_to_octets("$@pounds{}@euro{}", "utf-8");
+(%o3)               [24, 0C2, 0A3, 0E2, 82, 0AC]
+@end example
+
+Dem entsprechend k@"onnen Zeichenketten an Datenstr@"ome f@"ur Schriftzeichen und 
+als Oktette an bin@"are Str@"ome weiter gegeben werden. Das folgende Beispiel 
+zeigt das Schreiben und Lesen von Schriftzeichen in bzw. aus einer Datei.
+
+@ref{openw} gibt dabei einen Ausgabestrom in eine Datei zur@"uck, 
+mit @ref{printf} wird formatiert in diesen Strom geschrieben und 
+mit z.B. @ref{close} werden die im Strom enthaltenden Zeichen in die Datei 
+geschrieben. 
+
+@example
+(%i1) s: openw("file.txt");
+(%o1)                #<output stream file.txt>
+(%i2) printf(s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+42, 1.234, sqrt(2), %pi, 1.0e-2, 1.0e-2, 1.0b-2)$
+(%i3) close(s)$
+@end example
+
+@ref{openr} gibt folgend einen Eingabestrom aus der obigen Datei zur@"uck und 
+@ref{readline} die gelesene Zeile als Zeichenkette.
+Mit z.B. @ref{split} oder @ref{tokens} kann die Zeichenkette anschlie@ss{}end 
+in seine Bestandteile zerlegt werden. 
+@ref{parse_string} verwandelt diese dann in auswertbare Ausdr@"ucke.
+
+@example
+(%i4) s: openr("file.txt");
+(%o4)                 #<input stream file.txt>
+(%i5) readline(s);
+(%o5)          42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i6) map(parse_string, split(%));
+(%o6)       [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i7) close(s)$
+@end example
 
 @c -----------------------------------------------------------------------------
-@node Ein- und Ausgabe, Buchstaben, Einf@"uhrung in die Verarbeitung von Zeichenketten, stringproc
+@node Ein- und Ausgabe, Schriftzeichen, Einf@"uhrung in die Verarbeitung von Zeichenketten, stringproc
 @section Ein- und Ausgabe
 @c -----------------------------------------------------------------------------
 
-Example: 
+Beispiel: Formatiertes Schreiben in eine Datei mit anschlie@ss{}endem Lesen.
 
 @example
-(%i1) s: openw("E:/file.txt");
-(%o1)                     #<output stream E:/file.txt>
+(%i1) s: openw("file.txt");
+(%o1)                      #<output stream file.txt>
 (%i2) control: 
 "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2t\
 and an integer: ~20t~d~%"$
-(%i3) printf( s,control, 'true,[1,2,3],42 )$
+(%i3) printf(s, control, 'true,[1,2,3],42)$
 (%o3)                                false
 (%i4) close(s);
 (%o4)                                true
-(%i5) s: openr("E:/file.txt");
-(%o5)                     #<input stream E:/file.txt>
-(%i6) while stringp( tmp:readline(s) ) do print(tmp)$
+(%i5) s: openr("file.txt");
+(%o5)                      #<input stream file.txt>
+(%i6) while stringp(tmp:readline(s)) do print(tmp)$
   An atom:          true 
   and a list:       one two three  
   and an integer:   42 
 (%i7) close(s)$
 @end example
 
+Beispiel: Lesen aus einer bin@"aren Datei. Siehe @ref{readbyte}.
+
 @c -----------------------------------------------------------------------------
 @anchor{close}
-@deffn {Function} close (@var{stream}) 
+@deffn {Funktion} close (@var{stream}) 
 
-Closes @var{stream} and returns @code{true} if @var{stream} had been open.
+Schlie@ss{}t den Datenstrom @var{stream} und gibt @code{true} zur@"uck, 
+wenn @var{stream} noch ge@"offnet war.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -153,6 +172,7 @@ Beispiel: Siehe @ref{writebyte} .
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{flush_output}
 @deffn {Funktion} flush_output (@var{stream}) 
 
 Leert den Inhalt des Dateiausgabestroms @var{stream} in die Datei.
@@ -166,11 +186,14 @@ Beispiel: Siehe @ref{writebyte} .
 @deffn  {Function} fposition (@var{stream})
 @deffnx {Function} fposition (@var{stream}, @var{pos})
 
-Returns the current position in @var{stream}, if @var{pos} is not used. 
-If @var{pos} is used, @code{fposition} sets the position in @var{stream}.
-@var{stream} has to be a stream from or to a file and 
-@var{pos} has to be a positive number where the first element in @var{stream} 
-is in position 1.
+Ohne das optionale Argument @var{pos} gibt @code{fposition} die aktuelle Position 
+in dem Datenstrom @var{stream} zur@"uck. 
+Wird @var{pos} verwendet, legt @code{fposition} diesen Wert als aktuelle Position 
+in @var{stream} fest. @var{pos} muss eine positive Zahl sein. 
+
+Die Positionen in Datenstr@"omen sind wie in Zeichenketten und Listen 1-indiziert, 
+d.h. das erste Element in @var{stream} hat die Position 1.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -178,17 +201,24 @@ is in position 1.
 @deffn  {Function} freshline () 
 @deffnx {Function} freshline (@var{stream})
 
-Writes a new line (to @var{stream}), if the position is not at the beginning of 
-a line.  See also @mrefdot{newline}
+Schreibt einen Zeilenumbruch in den Standardausgabestrom, falls die aktuelle 
+Ausgabeposition nicht gerade der Anfang einer Zeile ist und gibt @code{true} 
+zur@"uck. Bei der Verwendung des optionalen Arguments @var{stream} wird der 
+Umbruch in diesen Datenstrom geschrieben. 
+
+Es gibt Situationen, in denen @code{freshline()} nicht wie erwartet funktioniert.
+
+Siehe auch @ref{newline}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{get_output_stream_string}
 @deffn {Funktion} get_output_stream_string (@var{stream})
 
-Gibt Buchstaben, aktuell in dem ge@"offneten Datenstrom @var{stream} 
+Gibt Schriftzeichen, die aktuell in dem ge@"offneten Datenstrom @var{stream} 
 enthalten sind, in einer Zeichenkette zur@"uck. Die zur@"uck gegebenen 
-Buchstaben werden dabei aus dem Datenstrom entfernt. @var{stream} muss durch 
+Zeichen werden dabei aus dem Datenstrom entfernt. @var{stream} muss durch 
 @code{make_string_output_stream} erzeugt worden sein.
 
 Beispiel: Siehe @ref{make_string_output_stream} .
@@ -203,9 +233,9 @@ Beispiel: Siehe @ref{make_string_output_stream} .
 Gibt einen Datenstrom zur@"uck, der Teile der Zeichenkette @var{string} 
 und ein Dateiende enth@"alt. 
 Ohne optionale Argumente enth@"alt der Strom die gesamte Zeichenkette 
-und ist vor dem ersten Buchstaben positioniert. Mit den optionalen Argumenten 
+und ist vor dem ersten Zeichen positioniert. Mit den optionalen Argumenten 
 @var{start} und @var{end} l@"asst sich der Abschnitt der Zeichenkette festlegen, 
-den der Datenstrom enth@"alt. Der erste Buchstabe befindet sich dabei an der 
+den der Datenstrom enth@"alt. Das erste Zeichen befindet sich dabei an der 
 Position 1.
  
 @example
@@ -221,8 +251,8 @@ t e x
 @anchor{make_string_output_stream}
 @deffn {Funktion} make_string_output_stream ()
 
-Gibt einen Datenstrom zur@"uck, der Buchstaben aufnehmen kann. Die aktuell  
-im Strom enthaltenden Buchstaben k@"onnen mit @ref{get_output_stream_string} 
+Gibt einen Datenstrom zur@"uck, der Schriftzeichen aufnehmen kann. Die aktuell  
+im Strom enthaltenden Zeichen k@"onnen mit @ref{get_output_stream_string} 
 entnommen werden.
  
 @example
@@ -244,22 +274,26 @@ entnommen werden.
 
 @c -----------------------------------------------------------------------------
 @anchor{newline}
-@deffn  {Function} newline () 
-@deffnx {Function} newline (@var{stream})
+@deffn  {Funktion} newline () 
+@deffnx {Funktion} newline (@var{stream})
 
-Writes a new line (to @var{stream}).  See @mref{sprint} for an example of using
-@code{newline()}.  Note that there are some cases, where @code{newline()} does 
-not work as expected.
+Schreibt einen Zeilenumbruch in den Standardausgabestrom und gibt @code{false} 
+zur@"uck. Bei der Verwendung des optionalen Arguments @var{stream} wird der 
+Umbruch in diesen Datenstrom geschrieben. 
+Es gibt Situationen, in denen @code{newline()} nicht wie erwartet funktioniert.
+
+Beispiel: Siehe @ref{sprint}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{opena}
 @deffn {Funktion} opena (@var{file})
 
-Gibt einen Dateiausgabestrom f@"ur Buchstaben zur@"uck. 
+Gibt einen Dateiausgabestrom f@"ur Schriftzeichen zur@"uck. 
 Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt. 
 Wird eine bereits vorhandene Datei ge@"offnet, werden alle Ausgaben in die 
-Datei am Ende hinzu gef@"ugt.
+Datei am Ende hinzugef@"ugt.
 
 @ref{Functions and Variables for binary input and output, , opena_binary} 
 ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
@@ -269,7 +303,7 @@ ist die entsprechende Funktion f@"ur die Ausgabe in eine Bin@"ardatei.
 @anchor{openr}
 @deffn {Funktion} openr (@var{file})
 
-Gibt einen Dateieingabestrom f@"ur Buchstaben aus einer Textdatei zur@"uck. 
+Gibt einen Dateieingabestrom f@"ur Schriftzeichen aus einer Textdatei zur@"uck. 
 Voraussetzung ist, dass die Datei @var{file} bereits existiert. 
 
 @ref{Functions and Variables for binary input and output, , openr_binary} 
@@ -280,7 +314,7 @@ ist die entsprechende Funktion f@"ur die Eingabe aus einer Bin@"ardatei.
 @anchor{openw}
 @deffn {Funktion} openw (@var{file})
 
-Gibt einen Dateiausgabestrom f@"ur Buchstaben zur@"uck. 
+Gibt einen Dateiausgabestrom f@"ur Schriftzeichen zur@"uck. 
 Sollte die Textdatei @var{file} nicht existieren, wird sie erzeugt. 
 Wird eine bereits vorhandene Datei ge@"offnet, wird sie destruktiv ver@"andert. 
 
@@ -299,10 +333,10 @@ Variablen @code{true} und @code{false}. @code{true} bewirkt eine Ausgabe im Term
 Der R@"uckgabewert von @code{printf} ist in diesem Fall @code{false}. 
 @code{false} als Zielparameter bewirkt die Ausgabe im R@"uckgabewert. 
 
-Die Buchstaben des Kontrollparameters @var{string} werden der Reihe nach ausgegeben, 
+Die Zeichen des Kontrollparameters @var{string} werden der Reihe nach ausgegeben, 
 wobei jedoch eine Tilde eine Direktive einleitet. Die Direktiven verwenden 
 dann im Allgemeinen die nachstehenden Parameter @var{expr_1}, @dots{}, @var{expr_n}, 
-um die Ausgabe zu erzeugen. Der Buchstabe nach der Tilde gibt dabei an, 
+um die Ausgabe zu erzeugen. Das Zeichen nach der Tilde gibt dabei an, 
 welche Art der Formatierung gew@"unscht ist. 
 
 @code{printf} stellt die Common Lisp Funktion @code{format} in Maxima zur Verf@"ugung. 
@@ -447,7 +481,7 @@ Datei werden gelesen und ausgewertet.
 @anchor{readchar}
 @deffn {Funktion} readchar (@var{stream})
 
-Entfernt und gibt den ersten Buchstaben in @var{stream} zur@"uck. 
+Entfernt und gibt das erste Schriftzeichen in @var{stream} zur@"uck. 
 Falls das Ende des Streams erreicht sein sollte, gibt @code{readchar} 
 @code{false} zur@"uck.
 
@@ -458,9 +492,10 @@ Beispiel: Siehe @ref{make_string_input_stream}.
 @anchor{readline}
 @deffn {Function} readline (@var{stream})
 
-Returns a string containing the characters from the current position in 
-@var{stream} up to the end of the line or @code{false} if the end of the file 
-is encountered.
+Gibt die Zeichenkette zur@"uck, die s@"amtliche Zeichen von der 
+aktuellen Position in @var{stream} bis zum Ende der Zeile enth@"alt 
+oder @code{false}, falls das Ende der Datei erreicht wurde.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -471,16 +506,15 @@ Wertet ihre Argumente der Reihe nach von links nach rechts aus und gibt sie dann
 auf einer Linie aus. Zeilenbegrenzungen werden dabei au@ss{}er Acht gelassen. 
 An die ausgegebenen Ausdr@"ucke wird jeweils rechts ein Leerzeichen angef@"ugt. 
 
-Die Funktion @code{newline()} kann verwendet werden, um zwischenliegende 
-Zeilenumbr@"uche zu erzeugen.
-
-Beispiel:
+Beispiel: Sequentielle Ausgabe mit @code{sprint}. 
+Zeilenumbr@"uche werden hier mit @code{newline()} erzeugt.
 
 @example
-(%i1) for n:0 thru 19 do sprint( fib(n) )$
+(%i1) for n:0 thru 19 do sprint(fib(n))$
 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
 (%i2) for n:0 thru 22 do ( 
-         sprint(fib(n)), if mod(n,10)=9 then newline() )$
+         sprint(fib(n)), 
+         if mod(n,10) = 9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 
 55 89 144 233 377 610 987 1597 2584 4181 
 6765 10946 17711 
@@ -504,7 +538,7 @@ oder @code{close} aufgerufen werden.
 @example
 (%i1) ibase: obase: 16.$
 
-(%i2) bytes: map(cint, charlist("GNU/Linux"));
+(%i2) bytes: string_to_octets("GNU/Linux");
 (%o2)                [47, 4E, 55, 2F, 4C, 69, 6E, 75, 78]
 (%i3) out: openw_binary("test.bin");
 (%o3)                      #<output stream test.bin>
@@ -531,111 +565,274 @@ GNU/Linux
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Buchstaben, Verarbeitung von Zeichenketten, Ein- und Ausgabe, stringproc
-@section Buchstaben
+@node Schriftzeichen, Verarbeitung von Zeichenketten, Ein- und Ausgabe, stringproc
+@section Schriftzeichen
 @c -----------------------------------------------------------------------------
+
+In Maxima sind Schriftzeichen Zeichenketten der L@"ange 1.
+
+@c -----------------------------------------------------------------------------
+@anchor{adjust_external_format}
+@deffn {Function} adjust_external_format () 
+
+Gibt Informationen zum aktuellen externen Format des Lisp Lesers aus 
+und in dem Fall, dass die Kodierung des externen Formats nicht mit der 
+Kodierung der Anwendung, in der Maxima l@"auft, @"ubereinstimmt, 
+versucht @code{adjust_external_format}, die Kodierung anzupassen 
+oder gibt entsprechende Hilfen oder Anleitungen aus. 
+@code{adjust_external_format} gibt @code{true} zur@"uck, wenn das externe 
+Format ge@"andert wurde und @code{false}, wenn nicht.
+
+Funktionen wie @ref{cint}, @ref{unicode}, @ref{octets_to_string} 
+und @ref{string_to_octets} ben@"otigen UTF-8 als das externe Format 
+des Lisp Lesers, um @"uber dem vollst@"andigen Bereich der Unicode-Zeichen 
+korrekt arbeiten zu k@"onnen.
+
+Beispiele (Maxima in Windows, M@"arz 2016): 
+Die Verwendung von @code{adjust_external_format} in dem Fall, dass das 
+externe Format nicht mit der Kodierung der Anwendung, in der Maxima l@"auft, 
+@"ubereinstimmt.
+
+1. Maxima in der Kommandozeile
+
+F@"ur die Sitzung in einem Terminal wird empfohlen, ein mit SBCL kompiliertes 
+Maxima zu verwenden. Unicode wird hier standardm@"a@ss{}ig unterst@"utzt 
+und ein Aufruf von @code{adjust_external_format} ist nicht notwendig. 
+
+Falls Maxima mit CLISP oder GCL kompiliert wurde, wird empfohlen, 
+die Kodierung des Terminals von CP850 in CP1252 abzu@"andern. 
+@code{adjust_external_format} gibt eine entsprechende Hilfe aus.
+
+CCL liest UTF-8, obwohl der Input vom Terminal standardm@"a@ss{}ig in CP850 
+kodiert ist. CP1252 wird jedoch von CCL nicht unterst@"utzt. 
+@code{adjust_external_format} gibt deshalb eine Anleitung aus, 
+wie die Kodierung des Terminals und die des externen Formats beide 
+auf ISO-8859-1 abge@"andert werden k@"onnen.
+
+2. wxMaxima
+
+In wxMaxima liest SBCL standardm@"a@ss{}ig CP1252.
+Der Input von der Anwendung (wxMaxima) ist jedoch UTF-8-kodiert. 
+Hier ist eine Anpassung erforderlich. 
+
+Ein Aufruf von @code{adjust_external_format} und ein Neustart von Maxima 
+@"andern das standardm@"a@ss{}ige externe Format auf UTF-8.
+
+@example
+(%i1)adjust_external_format();
+The line
+(setf sb-impl::*default-external-format* :utf-8)
+has been appended to the init file
+C:/Users/Username/.sbclrc
+Please restart Maxima to set the external format to UTF-8.
+(%i1) false
+@end example
+
+Maxima wird neu gestartet.
+
+@example
+(%i1) adjust_external_format();
+The external format is currently UTF-8
+and has not been changed.
+(%i1) false
+@end example
+
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{alphacharp}
 @deffn {Function} alphacharp (@var{char})
 
-Returns @code{true} if @var{char} is an alphabetic character.
+Gibt @code{true} zur@"uck, falls @var{char} ein Buchstabe eines Alphabets ist. 
+
+Um ein Nicht-US-ASCII-Zeichen als Buchstaben eines Alphabets erkennen zu k@"onnen, 
+muss das unter Maxima liegende Lisp Unicode voll unterst@"utzen. 
+So wird z.B. ein Umlaut mit SBCL in GNU/Linux als Buchstabe erkannt, 
+mit GCL jedoch nicht. 
+(In Windows muss ein mit SBCL kompiliertes Maxima auf UTF-8 umgestellt worden sein. 
+Siehe hierzu @ref{adjust_external_format}.)
+
+Beispiele:
+
+Das unter Maxima liegende Lisp (SBCL, GNU/Linux) kann das eingegebene Zeichen 
+in ein Lisp-Schriftzeichen umwandeln und untersuchen.
+
+@example
+(%i1) alphacharp("@"u");
+(%o1)                          true
+@end example
+
+Mit GCL ist dies nicht m@"oglich. Es kommt zu einem Fehlerabbruch.
+
+@example
+(%i1) alphacharp("u");
+(%o1)                          true
+(%i2) alphacharp("@"u");
+
+package stringproc: @"u cannot be converted into a Lisp character.
+ -- an error.
+@end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{alphanumericp}
 @deffn {Function} alphanumericp (@var{char})
 
-Returns @code{true} if @var{char} is an alphabetic character or a digit.
+Gibt @code{true} zur@"uck, falls @var{char} ein Buchstabe eines Alphabets 
+oder ein Zahlzeichen ist 
+(als Zahlzeichen werden hier nur entprechende US-ASCII-Zeichen betrachtet).
+
+Hinweis: Siehe Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ascii}
-@deffn {Function} ascii (@var{int})
+@deffn {Funktion} ascii (@var{int})
 
-Returns the character corresponding to the ASCII number @var{int}.
-( -1 < int < 256 )
+Gibt das US-ASCII-Zeichen zur@"uck, das der Ganzzahl @var{int} entspricht. 
+@var{int} muss dabei kleiner als @code{128} sein.
 
-Examples:
+Siehe @ref{unicode} f@"ur die Umwandlung von Codepunkten gr@"o@ss{}er @code{127}.
+
+Beispiele:
 
 @example
-(%i1) for n from 0 thru 255 do ( 
-   tmp: ascii(n), if alphacharp(tmp) then sprint(tmp),
-      if n=96 then newline() )$
+(%i1) for n from 0 thru 127 do ( 
+        ch: ascii(n), 
+        if alphacharp(ch) then sprint(ch),
+        if n = 96 then newline() )$
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cequal}
 @deffn {Function} cequal (@var{char_1}, @var{char_2})
 
-Returns @code{true} if @var{char_1} and @var{char_2} are the same.
+Gibt @code{true} zur@"uck, falls @var{char_1} und @var{char_2} ein 
+und das selbe Schriftzeichen sind.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cequalignore}
 @deffn {Function} cequalignore (@var{char_1}, @var{char_2})
 
-Like @mref{cequal} but ignores case.
+Arbeitet wie @ref{cequal}, ignoriert jedoch die Gro@ss{}- und Kleinschreibung,  
+was f@"ur Nicht-US-ASCII-Zeichen nur m@"oglich ist, wenn das unter Maxima liegende 
+Lisp einen Buchstaben auch als Buchstaben eines Alphabets erkennen kann.
+Siehe hierzu die Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cgreaterp}
 @deffn {Function} cgreaterp (@var{char_1}, @var{char_2})
 
-Returns @code{true} if the ASCII number of @var{char_1} is greater than the 
-number of @var{char_2}.
+Gibt @code{true} zur@"uck, wenn der Codepunkt des Zeichens @var{char_1} 
+gr@"o@ss{}er ist als der des Zeichens @var{char_2}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cgreaterpignore}
-@deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
+@deffn {Funktion} cgreaterpignore (@var{char_1}, @var{char_2})
 
-Like @mref{cgreaterp} but ignores case.
+Arbeitet wie @ref{cgreaterp}, ignoriert jedoch die Gro@ss{}- und Kleinschreibung,  
+was f@"ur Nicht-US-ASCII-Zeichen nur m@"oglich ist, wenn das unter Maxima liegende 
+Lisp einen Buchstaben auch als Buchstaben eines Alphabets erkennen kann.
+Siehe hierzu die Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charp}
-@deffn {Function} charp (@var{obj})
+@deffn {Funktion} charp (@var{obj})
 
-Returns @code{true} if @var{obj} is a Maxima character.
-See introduction for example.
+Gibt @code{true} zur@"uck, wenn @var{obj} ein Schriftzeichen ist.
+
+Beispiel: Siehe Einf@"uhrung.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cint}
-@deffn {Function} cint (@var{char})
+@deffn {Funktion} cint (@var{char})
 
-Returns the ASCII number of @var{char}.
+Gibt den Unicode Codepunkt des Arguments @var{char} zur@"uck, das ein 
+Schriftzeichen sein muss, d.h. eine Zeichenkette der L@"ange @code{1}.
+
+Beispiele: Der hexadedimale Codepunkt von Schriftzeichen 
+(Maxima kompiliert mit SBCL in GNU/Linux). 
+
+@example
+(%i1) obase: 16.$
+(%i2) map(cint, ["$","@pounds{}","@euro{}"]);
+(%o2)                           [24, 0A3, 20AC]
+@end example
+
+Warnung: In Windows ist es nicht m@"oglich, Schriftzeichen, 
+die Codepunkten gr@"o@ss{}er 16 Bit entsprechen, in wxMaxima einzugeben, 
+wenn Maxima mit SBCL kompiliert wurde und das aktuelle externe Format nicht UTF-8 ist. 
+Siehe @ref{adjust_external_format} f@"ur weitere Informationen.
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i3) cint("@U{1d538}");
+@c (%o3)                                1D538
+@c @end example
+
+CMUCL verarbeitet solche Zeichen nicht als ein einziges Zeichen und @code{cint} 
+gibt dann @code{false} zur@"uck. 
+Als Ausweg kann hier die Umwandlung von Schriftzeichen in Codepunkte @"uber 
+UTF-8-Oktette dienen: @*
+@code{utf8_to_unicode(string_to_octets(character));}
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i4) utf8_to_unicode(string_to_octets("@U{1d538}"));
+@c (%o4)                                1D538
+@c @end example
+
+Siehe @ref{utf8_to_unicode}, @ref{string_to_octets}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{clessp}
 @deffn {Function} clessp (@var{char_1}, @var{char_2})
 
-Returns @code{true} if the ASCII number of @var{char_1} is less than the number 
-of @var{char_2}.
+Gibt @code{true} zur@"uck, wenn der Codepunkt des Zeichens @var{char_1} 
+kleiner ist als der des Zeichens @var{char_2}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{clesspignore}
-@deffn {Function} clesspignore (@var{char_1}, @var{char_2})
+@deffn {Funktion} clesspignore (@var{char_1}, @var{char_2})
 
-Like @mref{clessp} but ignores case.
+Arbeitet wie @ref{clessp}, ignoriert jedoch die Gro@ss{}- und Kleinschreibung,  
+was f@"ur Nicht-US-ASCII-Zeichen nur m@"oglich ist, wenn das unter Maxima liegende 
+Lisp einen Buchstaben auch als Buchstaben eines Alphabets erkennen kann.
+Siehe hierzu die Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{constituent}
-@deffn {Function} constituent (@var{char})
+@deffn {Funktion} constituent (@var{char})
 
-Returns @code{true} if @var{char} is a graphic character and not the space 
-character.  A graphic character is a character one can see, plus the space 
-character.  (@code{constituent} is defined by Paul Graham, ANSI Common Lisp, 
-1996, page 67.)
+Gibt @code{true} zur@"uck, wenn @var{char} ein graphisches Schriftzeichen, 
+aber kein Leerzeichen ist. 
+Ein graphisches Schriftzeichen ist ein Leerzeichen oder ein Zeichen, das man sehen kann. 
+(@code{constituent} wurde definiert von Paul Graham.
+Siehe Paul Graham, ANSI Common Lisp, 1996, Seite 67.)
 
-Example:
+Beispiel:
 
 @example
 (%i1) for n from 0 thru 255 do ( 
@@ -644,83 +841,230 @@ tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
 C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c
 d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 @end example
+
+Hinweis: Siehe Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{cunlisp}
-@deffn {Function} cunlisp (@var{lisp_char})
-
-Converts a Lisp character into a Maxima character.
-(You won't need it.)
-@end deffn
+@c @anchor{cunlisp}
+@c @deffn {Function} cunlisp (@var{lisp_char})
+@c 
+@c Converts a Lisp character into a Maxima character.
+@c (You won't need it.)
+@c @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{digitcharp}
-@deffn {Function} digitcharp (@var{char})
+@deffn {Funktion} digitcharp (@var{char})
 
-Returns @code{true} if @var{char} is a digit.
+Gibt @code{true} zur@"uck, wenn @var{char} ein Zahlzeichen ist, 
+wobei als Zahlzeichen hier nur entsprechende US-ASCII-Zeichen betrachtet werden.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{lcharp}
-@deffn {Function} lcharp (@var{obj})
-
-Returns @code{true} if @var{obj} is a Lisp character.
-(You won't need it.)
-@end deffn
+@c @anchor{lcharp}
+@c @deffn {Function} lcharp (@var{obj})
+@c 
+@c Returns @code{true} if @var{obj} is a Lisp character.
+@c (You won't need it.)
+@c @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{lowercasep}
-@deffn {Function} lowercasep (@var{char})
+@deffn {Funktion} lowercasep (@var{char})
 
-Returns @code{true} if @var{char} is a lowercase character.
+Gibt @code{true} zur@"uck, wenn @var{char} ein Kleinbuchstabe ist.
+
+Hinweis: Siehe Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{newline_variable}
 @defvr {Variable} newline
 
-The newline character.
+Das Steuerzeichen f@"ur den Zeilenvorschub (ASCII-Zeichen 10).
+
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{space}
 @defvr {Variable} space
 
-The space character.
+Das Leerzeichen.
+
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{tab}
 @defvr {Variable} tab
 
-The tab character.
+Das Tabulatorzeichen.
+
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{uppercasep}
-@deffn {Function} uppercasep (@var{char})
+@anchor{unicode}
+@deffn {Funktion} unicode (@var{arg}) 
 
-Returns @code{true} if @var{char} is an uppercase character.
+Gibt das durch @var{arg} definierte Schriftzeichen zur@"uck. 
+@var{arg} kann ein Unicode Codepunkt oder auch eine Zeichenkette mit einem Namen sein, 
+falls das unter Maxima liegende Lisp Unicode vollst@"andig unterst@"utzt.
+
+Beispiel: Durch hexadezimale Codepunkte definierte Schriftzeichen
+(Maxima kompiliert mit SBCL in GNU/Linux). 
+
+@example
+(%i1) ibase: 16.$
+(%i2) map(unicode, [24, 0A3, 20AC]);
+(%o2)                            [$, @pounds{}, @euro{}]
+@end example
+
+Warnung: In wxMaxima in Windows ist es nicht m@"oglich, 
+Codepunkte gr@"o@ss{}er 16 Bit in Schriftzeichen umzuwandeln,
+wenn Maxima mit SBCL kompiliert wurde 
+und das aktuelle externe Format nicht UTF-8 ist. 
+Siehe @ref{adjust_external_format} f@"ur weitere Informationen.
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i3) unicode(1D538);
+@c (%o3)                                  @U{1d538}
+@c @end example
+
+CMUCL verarbeitet keine Codepunkte gr@"o@ss{}er 16 Bit.
+@code{unicode} gibt dann @code{false} zur@"uck. 
+Als Ausweg kann hier die Umwandlung der Codepunkte in Schriftzeichen @"uber 
+UTF-8-Oktette dienen: 
+
+@code{octets_to_string(unicode_to_utf8(code_point));}
+
+@c Command @U not supported by texinfo 5.
+@c @example
+@c (%i4) octets_to_string(unicode_to_utf8(1D538));
+@c (%o4)                                  @U{1d538}
+@c @end example
+
+Siehe @ref{octets_to_string}, @ref{unicode_to_utf8}.
+
+Falls das unter Maxima liegende Lisp Unicode vollst@"andig unterst@"utzt, 
+kann ein Schriftzeichen durch seinen Namen angegeben werden.
+
+Das folgende Beispiel ist mit ECL, CLISP und SBCL m@"oglich, wobei mit SBCL in 
+wxMaxima in Windows das externe Format auf UTF-8 gesetzt werden muss.
+@code{unicode(name)} wird auch von CMUCL unterst@"utzt, jedoch wieder beschr@"ankt 
+auf 16-Bit-Zeichen.
+
+Die Zeichenkette als Argument f@"ur @code{unicode} muss prinzipiell die sein, 
+die @code{printf} mit der Spezifikation "~@@c" zur@"uck gibt,  
+jedoch, wie unten gezeigt, ohne den Pr@"afix "#\". 
+Unterstriche k@"onnen durch Leerzeichen und Gro@ss{}- durch Kleinbuchstaben 
+ersetzt werden.
+
+Beispiel (fortgesetzt): Ein Schriftzeichen ist durch seinen Namen gegeben 
+(Maxima kompiliert mit SBCL in GNU/Linux). 
+
+@example
+(%i3) printf(false, "~@@c", unicode(0DF));
+(%o3)                    #\LATIN_SMALL_LETTER_SHARP_S
+(%i4) unicode("LATIN_SMALL_LETTER_SHARP_S");
+(%o4)                                  @ss{}
+(%i5) unicode("Latin small letter sharp S");
+(%o5)                                  @ss{}
+@end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Verarbeitung von Zeichenketten, Oktette und Werkzeuge f@"ur die Kryptographie, Buchstaben, stringproc
+@anchor{unicode_to_utf8}
+@deffn {Funktion} unicode_to_utf8 (@var{code_point}) 
+
+Gibt eine Liste mit UTF-8-Code zur@"uck, der dem Unicode @var{code_point} entspricht. 
+
+Beispiel: Umwandlung von Unicode Codepunkten in UTF-8 und umgekehrt. 
+
+@example
+(%i1) ibase: obase: 16.$
+(%i2) map(cint, ["$","@pounds{}","@euro{}"]);
+(%o2)                           [24, 0A3, 20AC]
+(%i3) map(unicode_to_utf8, %);
+(%o3)                 [[24], [0C2, 0A3], [0E2, 82, 0AC]]
+(%i4) map(utf8_to_unicode, %);
+(%o4)                           [24, 0A3, 20AC]
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{uppercasep}
+@deffn {Funktion} uppercasep (@var{char})
+
+Gibt @code{true} zur@"uck, wenn @var{char} ein Gro@ss{}buchstabe ist.
+
+Hinweis: Siehe Bemerkungen zu @ref{alphacharp}. 
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{us_ascii_only}
+@defvr {Variable} us_ascii_only
+
+Diese Optionsvariable beeinflusst Maxima, wenn die Zeichenkodierung der 
+Anwendung, in der Maxima l@"auft, UTF-8 ist, das externe Format des Lisp Readers 
+jedoch nicht.
+
+In GNU/Linux trifft dies zu, wenn Maxima mit GCL kompiliert wurde und 
+in Windows in wxMaxima in GCL- und SBCL-Versionen. 
+Es wird empfohlen, in der SBCL-Version das externe Format in UTF-8 abzu@"andern. 
+Eine Festlegung von @code{us_ascii_only} wird damit unn@"otig. 
+Siehe @ref{adjust_external_format} f@"ur Details. 
+
+@code{us_ascii_only} ist standardm@"a@ss{}ig @code{false}. 
+Maxima analysiert dann (d.h. in der oben beschriebenen Situation) selbst die UTF-8-Kodierung.
+
+Wurde @code{us_ascii_only} auf @code{true} gesetzt, wird angenommen, dass alle 
+Zeichenketten, die als Argumente f@"ur Funktionen des Pakets @code{stringproc} 
+verwendet werden, nur ausschlie@ss{}lich US-ASCII-Zeichen enthalten. 
+Durch diese Vereinbarung wird die UTF-8-Analyse des Inputs @"uberfl@"ussig 
+und Zeichenketten k@"onnen effizienter verarbeitet werden.
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{utf8_to_unicode}
+@deffn {Function} utf8_to_unicode (@var{list}) 
+
+Gibt den Unicode Codepunkt zur@"uck, der der Liste @var{list} entspricht, 
+die die UTF-8-Kodierung eines einzelnen Schriftzeichens enthalten muss.
+
+Beispiel: Siehe @ref{unicode_to_utf8}.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Verarbeitung von Zeichenketten, Oktette und Werkzeuge f@"ur die Kryptographie, Schriftzeichen, stringproc
 @section Verarbeitung von Zeichenketten
 @c -----------------------------------------------------------------------------
+
+Positionsindizes in Strings sind in Maxima genau so wie Listen 1-indiziert. 
+Siehe hierzu das Beispiel in @ref{charat}.
 
 @c -----------------------------------------------------------------------------
 @anchor{charat}
 @deffn {Funktion} charat (@var{string}, @var{n})
 
-Gibt den @var{n}-ten Buchstaben in @var{string} zur@"uck.
-Den ersten Buchstaben in @var{string} erh@"alt man mit @var{n} = 1. 
+Gibt das @var{n}-te Schriftzeichen in @var{string} zur@"uck.
+Das erste Zeichen in @var{string} erh@"alt man mit @var{n} = 1. 
 
 Beispiel:
 
 @example
-(%i1) charat("Lisp", 1);
+(%i1) charat("Lisp",1);
 (%o1)                           L
+(%i2) charlist("Lisp")[1];
+(%o2)                           L
 @end example
 @end deffn
 
@@ -728,15 +1072,13 @@ Beispiel:
 @anchor{charlist}
 @deffn {Funktion} charlist (@var{string})
 
-Gibt eine Liste mit allen Buchstaben in @var{string} zur@"uck.
+Gibt eine Liste mit allen Schriftzeichen in @var{string} zur@"uck.
 
 Beispiel:
 
 @example
 (%i1) charlist("Lisp");
 (%o1)                     [L, i, s, p]
-(%i2) %[1];
-(%o2)                           L
 @end example
 @end deffn
 
@@ -751,7 +1093,7 @@ than one.
 
 Complain if @var{str} is not a string.
 
-See also @mrefdot{parse_string}
+See also @ref{parse_string}.
 
 Examples:
 
@@ -774,7 +1116,7 @@ than one.
 
 Complain if @var{str} is not a string.
 
-See also @mrefdot{eval_string}
+See also @ref{eval_string}.
 
 Examples:
 
@@ -789,40 +1131,48 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{scopy}
-@deffn {Function} scopy (@var{string})
+@deffn {Funktion} scopy (@var{string})
 
-Returns a copy of @var{string} as a new string.
+Gibt eine Kopie der Zeichenkette @var{string} als neue Zeichenkette zur@"uck.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sdowncase}
-@deffn  {Function} sdowncase (@var{string}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}, @var{end})
+@deffn  {Funktion} sdowncase (@var{string}) 
+@deffnx {Funktion} sdowncase (@var{string}, @var{start}) 
+@deffnx {Funktion} sdowncase (@var{string}, @var{start}, @var{end})
 
-Like @mrefcomma{supcase} but uppercase characters are converted to lowercase.
+Arbeitet wie @ref{supcase}, jedoch werden Gro@ss{}- in Kleinbuchstaben umgewandelt.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sequal}
-@deffn {Function} sequal (@var{string_1}, @var{string_2})
+@deffn {Funktion} sequal (@var{string_1}, @var{string_2})
 
-Returns @code{true} if @var{string_1} and @var{string_2} are the same length 
-and contain the same characters.
+Gibt @code{true} zur@"uck, wenn @var{string_1} und @var{string_2} die selbe 
+Zeichensequenz enthalten.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sequalignore}
-@deffn {Function} sequalignore (@var{string_1}, @var{string_2})
+@deffn {Funktion} sequalignore (@var{string_1}, @var{string_2})
 
-Like @mref{sequal} but ignores case.
+Arbeitet wie @ref{sequal}, ignoriert jedoch die Gro@ss{}- und Kleinschreibung,  
+was f@"ur Nicht-US-ASCII-Zeichen nur m@"oglich ist, wenn das unter Maxima liegende 
+Lisp einen Buchstaben auch als Buchstaben eines Alphabets erkennen kann.
+Siehe hierzu die Bemerkungen zu @ref{alphacharp}. 
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sexplode}
-@deffn {Function} sexplode (@var{string})
+@deffn {Funktion} sexplode (@var{string})
 
-@code{sexplode} is an alias for function @mrefdot{charlist}
+@code{sexplode} ist ein Alias f@"ur die Funktion @ref{charlist}.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -885,18 +1235,18 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{slength}
-@deffn {Function} slength (@var{string})
+@deffn {Funktion} slength (@var{string})
 
-Returns the number of characters in @var{string}.
+Gibt die Anzahl der Zeichen in der Zeichenkette @var{string} zur@"uck.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{smake}
-@deffn {Function} smake (@var{num}, @var{char})
+@deffn {Funktion} smake (@var{num}, @var{char})
 
-Returns a new string with a number of @var{num} characters @var{char}.
+Gibt eine neue Zeichenkette mit @var{num} Zeichen @var{char} zur@"uck.
 
-Example:
+Beispiel:
 
 @example
 (%i1) smake(3,"w");
@@ -911,8 +1261,8 @@ Example:
 
 Returns the position of the first character of @var{string_1} at which 
 @var{string_1} and @var{string_2} differ or @code{false}.  Default test function
-for matching is @mrefdot{sequal}  If @code{smismatch} should ignore case, use 
-@mref{sequalignore} as test.
+for matching is @ref{sequal}.  If @code{smismatch} should ignore case, use 
+@ref{sequalignore} as test.
 
 Example:
 
@@ -953,7 +1303,7 @@ Examples:
 
 Returns the position of the first character in @var{string} which matches 
 @var{char}.  The first character in @var{string} is in position 1.
-For matching characters ignoring case see @mrefdot{ssearch}
+For matching characters ignoring case see @ref{ssearch}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -964,9 +1314,9 @@ For matching characters ignoring case see @mrefdot{ssearch}
 @deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
  
 Returns a string like @var{string} but without all substrings matching 
-@var{seq}.  Default test function for matching is @mrefdot{sequal}  If 
-@code{sremove} should ignore case while searching for @var{seq}, use 
-@mref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
+@var{seq}.  Default test function for matching is @ref{sequal}.  
+If @code{sremove} should ignore case while searching for @var{seq}, 
+use @ref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
 
 Examples:
@@ -992,9 +1342,11 @@ is removed.
 
 @c -----------------------------------------------------------------------------
 @anchor{sreverse}
-@deffn {Function} sreverse (@var{string}) 
+@deffn {Funktion} sreverse (@var{string}) 
 
-Returns a string with all the characters of @var{string} in reverse order.
+Gibt eine Zeichenkette mit allen Zeichen von @var{string} in umgekehrter 
+Reihenfolge zur@"uck.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1005,17 +1357,16 @@ Returns a string with all the characters of @var{string} in reverse order.
 @deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
 Returns the position of the first substring of @var{string} that matches the 
-string @var{seq}.  Default test function for matching is @mrefdot{sequal}  If
-@code{ssearch} should ignore case, use @mref{sequalignore} as test.  Use
-@var{start} and @var{end} to limit searching.  Note that the first character in 
+string @var{seq}.  Default test function for matching is @ref{sequal}. 
+If @code{ssearch} should ignore case, use @ref{sequalignore} as test.  
+Use @var{start} and @var{end} to limit searching.  Note that the first character in 
 @var{string} is in position 1.
-
-Example:
 
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
 (%o1)                                  4
 @end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1027,11 +1378,8 @@ Returns a string that contains all characters from @var{string} in an order such
 there are no two successive characters @var{c} and @var{d} such that
 @code{test (@var{c}, @var{d})} is @code{false} and @code{test (@var{d}, 
 @var{c})} is @code{true}.  Default test function for sorting is
-@mrefdot{clessp}  The set of test functions is @code{@{@mrefcomma{clessp}@w{}
-@mrefcomma{clesspignore} @mrefcomma{cgreaterp} @mrefcomma{cgreaterpignore}@w{}
-@mrefcomma{cequal} @mref{cequalignore}@}}.
-
-Example:
+@ref{clessp}.  The set of test functions is 
+@code{@{@ref{clessp}, @ref{clesspignore}, @ref{cgreaterp}, @ref{cgreaterpignore}, @ref{cequal}, @ref{cequalignore}@}}.
 
 @example
 (%i1) ssort("I don't like Mondays.");
@@ -1050,12 +1398,10 @@ Example:
 
 Returns a string like @var{string} except that all substrings matching @var{old}
 are replaced by @var{new}.  @var{old} and @var{new} need not to be of the same 
-length.  Default test function for matching is @mrefdot{sequal}  If
+length.  Default test function for matching is @ref{sequal}.  If
 @code{ssubst} should ignore case while searching for old, use 
-@mref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
+@ref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
-
-Examples:
 
 @example
 (%i1) ssubst("like","hate","I hate Thai food. I hate green tea.");
@@ -1072,7 +1418,7 @@ Examples:
 @deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
 @deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 
-Like @mref{subst} except that only the first substring that matches @var{old}
+Like @ref{subst} except that only the first substring that matches @var{old}
 is replaced.
 @end deffn
 
@@ -1082,8 +1428,6 @@ is replaced.
 
 Returns a string like @var{string}, but with all characters that appear in 
 @var{seq} removed from both ends.
-
-Examples:
 
 @example
 (%i1) "/* comment */"$
@@ -1098,22 +1442,24 @@ Examples:
 @anchor{striml}
 @deffn {Function} striml (@var{seq}, @var{string}) 
 
-Like @mref{strim} except that only the left end of @var{string} is trimmed.
+Like @ref{strim} except that only the left end of @var{string} is trimmed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{strimr}
 @deffn {Function} strimr (@var{seq}, @var{string}) 
 
-Like @mref{strim} except that only the right end of string is trimmed.
+Like @ref{strim} except that only the right end of string is trimmed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{stringp}
-@deffn {Function} stringp (@var{obj})
+@deffn {Funktion} stringp (@var{obj})
 
-Returns @code{true} if @var{obj} is a string.
-See introduction for example.
+Gibt @code{true} zur@"uck, wenn @var{obj} eine Zeichenkette ist.
+
+Beispiel: Siehe Einf@"uhrung.
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1126,14 +1472,13 @@ ending at position @var{end}.  The character at position @var{end} is not
 included.  If @var{end} is not given, the substring contains the rest of the 
 string.  Note that the first character in @var{string} is in position 1.
 
-Examples:
-
 @example
 (%i1) substring("substring",4);
 (%o1)                        string
 (%i2) substring(%,4,6);
 (%o2)                          in
 @end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1147,12 +1492,11 @@ to @var{end} are replaced by the corresponding uppercase ones.  If @var{end} is
 not given, all lowercase characters from @var{start} to the end of @var{string} 
 are replaced.
 
-Example:
-
 @example
 (%i1) supcase("english",1,2);
 (%o1)                        English
 @end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1166,8 +1510,6 @@ If @var{test} is not given, @var{constituent} is used as the default test.
 @code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} is the set of test functions. 
 (The Lisp-version of @code{tokens} is written by Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
-Examples:
-
 @example
 (%i1) tokens("24 October 2005");
 (%o1)                  [24, October, 2005]
@@ -1176,6 +1518,7 @@ Examples:
 (%i3) map(parse_string,%);
 (%o3)                      [5, 10, 24]
 @end example
+
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1307,7 +1650,7 @@ Beispiel:
 (%o6)           ab:07:ac:bb:1e:49:68:01:93:7a:df:a7:72:42:4b:f7
 @end example
 
-Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+Sind in @var{arg} Umlaute oder andere Nicht-US-ASCII-Zeichen enthalten (bzw. Oktette 
 gr@"o@ss{}er als 127), ist das Ergebnis von der verwendeten Plattform abh@"angig. 
 
 @end deffn
@@ -1392,6 +1735,59 @@ Beispiel: RSA encryption OID
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{octets_to_string}
+@deffn {Funktion} octets_to_string (@var{octets})
+@deffnx {Funktion} octets_to_string (@var{octets}, @var{encoding}) 
+
+Dekodiert den aktuellen Systemstandards entsprechend die Liste @var{octets} 
+in eine Zeichenkette. 
+Bei der Dekodierung von Oktetten, die nicht ausschlie@ss{}lich US-ASCII-Zeichen 
+entsprechen, ist das Ergebnis abh@"angig von der Plattform, der Anwendung und vom 
+unter Maxima liegenden Lisp. 
+
+Beispiel: Die Verwendung des Systemstandards 
+(Maxima kompiliert mit GCL, das keine Format-Definition verwendet und die 
+vom GNU/Linux Terminal kodierten UTF-8-Oktette unge@"andert an Maxima weitergibt).
+
+@example
+(%i1) octets: string_to_octets("abc");
+(%o1)                            [61, 62, 63]
+(%i2) octets_to_string(octets);
+(%o2)                                 abc
+(%i3) ibase: obase: 16.$
+(%i4) unicode(20AC);
+(%o4)                                  @euro{}
+(%i5) octets: string_to_octets(%);
+(%o5)                           [0E2, 82, 0AC]
+(%i6) octets_to_string(octets);
+(%o6)                                  @euro{}
+(%i7) utf8_to_unicode(octets);
+(%o7)                                20AC
+@end example
+
+In dem Fall, dass UTF-8 das externe Format des Lisp Readers ist, kann das 
+optionale Argument @var{encoding} genutzt werden, um f@"ur die Oktett-String-Umwandlung 
+eine gewünschte Kodierung auszuw@"ahlen. 
+Siehe @ref{adjust_external_format}, falls es notwendig sein sollte, hierf@"ur das 
+externe Format zu @"andern.
+
+Die Namen einiger unterst@"utzter Kodierungen 
+(weitere siehe das entsprechende Lisp Manual): @*
+CCL, CLISP, SBCL: @code{utf-8, ucs-2be, ucs-4be, iso-8859-1, cp1252, cp850} @*
+CMUCL: @code{utf-8, utf-16-be, utf-32-be, iso8859-1, cp1252} @*
+ECL: @code{utf-8, ucs-2be, ucs-4be, iso-8859-1, windows-cp1252, dos-cp850} 
+
+Beispiel (fortgesetzt): Die Verwendung des optionalen Arguments 
+(Maxima kompiliert mit SBCL, GNU/Linux Terminal).
+
+@example
+(%i8) string_to_octets("@euro{}", "ucs-2be");
+(%o8)                              [20, 0AC]
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{oid_to_octets}
 @deffn {Funktion} oid_to_octets (@var{oid-string})
 
@@ -1430,7 +1826,7 @@ Beispiel:
 (%o6)     c7:56:7e:8b:39:e2:42:8e:38:bf:9c:92:26:ac:68:de:4c:67:dc:39
 @end example
 
-Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+Sind in @var{arg} Umlaute oder andere Nicht-US-ASCII-Zeichen enthalten (bzw. Oktette 
 gr@"o@ss{}er als 127), ist der @code{SHA1}-Fingerabdruck von der verwendeten 
 Plattform abh@"angig. 
 
@@ -1456,9 +1852,30 @@ Beispiel:
 (%o1)  dbd318c1c462aee872f41109a4dfd3048871a03dedd0fe0e757ced57dad6f2d7
 @end example
 
-Sind in @var{arg} Umlaute oder andere Nicht-ASCII-Zeichen enthalten (bzw. Oktette 
+Sind in @var{arg} Umlaute oder andere Nicht-US-ASCII-Zeichen enthalten (bzw. Oktette 
 gr@"o@ss{}er als 127), ist der @code{SHA256}-Fingerabdruck von der verwendeten 
 Plattform abh@"angig. 
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{string_to_octets}
+@deffn {Funktion} string_to_octets (@var{string})
+@deffnx {Funktion} string_to_octets (@var{string}, @var{encoding}) 
+
+Kodiert den aktuellen Systemstandards entsprechend die Zeichenkette @var{string} 
+in eine Liste von Oktetten.
+Bei der Kodierung von Zeichenketten, die nicht ausschlie@ss{}lich US-ASCII-Zeichen 
+enthalten, ist das Ergebnis abh@"angig von der Plattform, der Anwendung und vom 
+unter Maxima liegenden Lisp. 
+
+In dem Fall, dass UTF-8 das externe Format des Lisp Readers ist, kann das 
+optionale Argument @var{encoding} genutzt werden, um f@"ur die String-Oktett-Umwandlung 
+eine gewünschte Kodierung auszuw@"ahlen. 
+Siehe @ref{adjust_external_format}, falls es notwendig sein sollte, hierf@"ur das 
+externe Format zu @"andern.
+
+Siehe @ref{octets_to_string} f@"ur Beispiele und zus@"atzliche Informationen.
 
 @end deffn
 
