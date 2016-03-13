@@ -11,104 +11,103 @@
 @node Introduction to String Processing, Input and Output, stringproc-pkg, stringproc-pkg
 @section Introduction to String Processing
 
-@code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
-and adds some useful functions for file in/output.
+The package @code{stringproc} contains functions for processing strings 
+and characters including formatting, encoding and data streams. 
+This package is completed by some tools for cryptography, e.g. base64 and hash 
+functions.
 
-For questions and bugs please mail to volkervannek at gmail dot com .
+It can be directly loaded via @code{load(stringproc)} or automatically by 
+using one of its functions.
 
-In Maxima a string is easily constructed by typing "text".
-@code{stringp} tests for strings.
+For questions and bug reports please contact the author. The following 
+command prints his e-mail-address.
 
-@c ===beg===
-@c m: "text";
-@c stringp(m);
-@c ===end===
+@code{printf(true, "~@{~a~@}@@gmail.com", split(sdowncase("Volker van Nek")))$}
+
+
+A string is constructed by typing e.g. @code{"Text"}. 
+When the option variable @code{stringdisp} is set to @code{false}, which is 
+the default, the double quotes won't be printed. 
+@ref{stringp} is a test, if an object is a string.
+
 @example
-(%i1) m: "text";
-(%o1)                         text
-(%i2) stringp(m);
+(%i1) str: "Text";
+(%o1)                         Text
+(%i2) stringp(str);
 (%o2)                         true
 @end example
 
-Characters are represented as strings of length 1.
-These are not Lisp characters.
-Tests can be done with @code{charp} (respectively @code{lcharp}
-and conversion from Lisp to Maxima characters with @code{cunlisp}).
+Characters are represented by a string of length 1. 
+@ref{charp} is the corresponding test.
 
-
-@c ===beg===
-@c c: "e";
-@c [charp(c),lcharp(c)];
-@c supcase(c);
-@c charp(%);
-@c ===end===
 @example
-(%i1) c: "e";
+(%i1) char: "e";
 (%o1)                           e
-(%i2) [charp(c),lcharp(c)];
-(%o2)                     [true, false]
-(%i3) supcase(c);
-(%o3)                           E
-(%i4) charp(%);
-(%o4)                         true
+(%i2) charp(char);
+(%o2)                         true
 @end example
 
-All functions in @code{stringproc.lisp} that return characters, return Maxima-characters.
-Due to the fact, that the introduced characters are strings of length 1,
-you can use a lot of string functions also for characters.
-As seen, @code{supcase} is one example.
-
-It is important to know,
-that the first character in a Maxima-string is at position 1.
-This is designed due to the fact that the first element in a Maxima-list is at position 1 too.
-See definitions of @code{charat} and @code{charlist} for examples.
-
-In applications string-functions are often used when working with files.
-You will find some useful stream- and print-functions in @code{stringproc.lisp}.
-The following example shows some of the here introduced functions at work.
-
-Example: 
-
-@code{openw} returns an output stream to a file, @code{printf} then allows formatted writing 
-to this file. See @code{printf} for details.
+In Maxima position indices in strings are like in list 1-indexed 
+which results to the following consistency.
 
 @example
-(%i1) s: openw("E:/file.txt");
-(%o1)                    #<output stream E:/file.txt>
-(%i2) for n:0 thru 10 do printf( s, "~d ", fib(n) );
-(%o2)                                done
-(%i3) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
-              42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
-(%o3)                                false
-(%i4) close(s);
-(%o4)                                true
+(%i1) is(charat("Lisp",1) = charlist("Lisp")[1]);
+(%o1)                         true
 @end example
 
-After closing the stream you can open it again, this time with input direction. 
-@code{readline} returns the entire line as one string. The @code{stringproc} package 
-now offers a lot of functions for manipulating strings. Tokenizing can be done by 
-@code{split} or @code{tokens}.
+A string may contain Maxima expressions. 
+These can be parsed with @ref{parse_string}.
 
 @example
-(%i5) s: openr("E:/file.txt");
-(%o5)                     #<input stream E:/file.txt>
-(%i6) readline(s);
-(%o6)                     0 1 1 2 3 5 8 13 21 34 55 
-(%i7) line: readline(s);
-(%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
-(%i8) list: tokens(line);
-(%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
-(%i9) map( parse_string, list );
-(%o9)            [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
-(%i10) float(%);
-(%o10) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
-                                                     0.01, 0.01]
-(%i11) readline(s);
-(%o11)                               false
-(%i12) close(s)$
+(%i1) map(parse_string, ["42" ,"sqrt(2)", "%pi"]);
+(%o1)                   [42, sqrt(2), %pi]
+(%i2) map('float, %);
+(%o2)        [42.0, 1.414213562373095, 3.141592653589793]
 @end example
 
-@code{readline} returns @code{false} when the end of file occurs.
+Strings can be processed as characters or in binary form as octets. 
+Functions for conversions are @ref{string_to_octets} and @ref{octets_to_string}.
+Usable encodings depend on the platform, the application and the 
+underlying Lisp.
+(The following shows Maxima in GNU/Linux, compiled with SBCL.)
+
+@example
+(%i1) obase: 16.$
+(%i2) string_to_octets("$@pounds{}@euro{}", "cp1252");
+(%o2)                     [24, 0A3, 80]
+(%i3) string_to_octets("$@pounds{}@euro{}", "utf-8");
+(%o3)               [24, 0C2, 0A3, 0E2, 82, 0AC]
+@end example
+
+Strings may be written to character streams or as octets to binary streams. 
+The following example demonstrates file in and output of characters.
+
+@ref{openw} returns an output stream to a file, 
+@ref{printf} writes formatted to that file and by e.g. 
+@ref{close} all characters contained in the stream are written to the file.
+
+@example
+(%i1) s: openw("file.txt");
+(%o1)                #<output stream file.txt>
+(%i2) printf(s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+42, 1.234, sqrt(2), %pi, 1.0e-2, 1.0e-2, 1.0b-2)$
+(%i3) close(s)$
+@end example
+
+@ref{openr} then returns an input stream from the previously used file and 
+@ref{readline} returns the line read as a string.
+The string may be tokenized by e.g. @ref{split} or @ref{tokens} and 
+finally parsed by @ref{parse_string}.
+
+@example
+(%i4) s: openr("file.txt");
+(%o4)                 #<input stream file.txt>
+(%i5) readline(s);
+(%o5)          42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i6) map(parse_string, split(%));
+(%o6)       [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i7) close(s)$
+@end example
 
 @opencatbox
 @category{Strings} @category{Share packages} @category{Package stringproc}
@@ -120,21 +119,11 @@ now offers a lot of functions for manipulating strings. Tokenizing can be done b
 @node Input and Output, Characters, Introduction to String Processing, stringproc-pkg
 @section Input and Output
 
-Example: 
+Example: Formatted printing to a file.
 
-@c ===beg===
-@c s: openw("E:/file.txt");
-@c control: 
-@c  "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
-@c printf( s,control, 'true,[1,2,3],42 )$
-@c close(s);
-@c s: openr("E:/file.txt");
-@c while stringp( tmp:readline(s) ) do print(tmp)$
-@c close(s)$
-@c ===end===
 @example
-(%i1) s: openw("E:/file.txt");
-(%o1)                     #<output stream E:/file.txt>
+(%i1) s: openw("file.txt");
+(%o1)                      #<output stream file.txt>
 (%i2) control: 
 "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2t\
 and an integer: ~20t~d~%"$
@@ -142,8 +131,8 @@ and an integer: ~20t~d~%"$
 (%o3)                                false
 (%i4) close(s);
 (%o4)                                true
-(%i5) s: openr("E:/file.txt");
-(%o5)                     #<input stream E:/file.txt>
+(%i5) s: openr("file.txt");
+(%o5)                      #<input stream file.txt>
 (%i6) while stringp( tmp:readline(s) ) do print(tmp)$
   An atom:          true 
   and a list:       one two three  
@@ -154,6 +143,7 @@ and an integer: ~20t~d~%"$
 @c -----------------------------------------------------------------------------
 @anchor{close}
 @deffn {Function} close (@var{stream}) 
+
 Closes @var{stream} and returns @code{true} if @var{stream} had been open. 
 
 @opencatbox
@@ -165,6 +155,7 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @c -----------------------------------------------------------------------------
 @anchor{flength}
 @deffn {Function} flength (@var{stream})
+
 @var{stream} has to be an open stream from or to a file. 
 @code{flength} then returns the number of bytes which are currently present in this file.
 
@@ -179,6 +170,7 @@ Example: See @ref{writebyte} .
 @c -----------------------------------------------------------------------------
 @anchor{flush_output}
 @deffn {Function} flush_output (@var{stream})
+
 Flushes @var{stream} where @var{stream} has to be an output stream to a file. 
 
 Example: See @ref{writebyte} .
@@ -198,8 +190,10 @@ Example: See @ref{writebyte} .
 Returns the current position in @var{stream}, if @var{pos} is not used. 
 If @var{pos} is used, @code{fposition} sets the position in @var{stream}.
 @var{stream} has to be a stream from or to a file and 
-@var{pos} has to be a positive number where the first element in @var{stream} 
-is in position 1.
+@var{pos} has to be a positive number.
+
+Positions in data streams are like in strings or lists 1-indexed, 
+i.e. the first element in @var{stream} is in position 1.
 
 @opencatbox
 @category{File input} @category{File output} @category{Package stringproc}
@@ -213,8 +207,11 @@ is in position 1.
 @fname{freshline} ()  @
 @fname{freshline} (@var{stream}) 
 
-Writes a new line (to @var{stream}),
-if the position is not at the beginning of a line.
+Writes a new line to the standard output stream 
+if the position is not at the beginning of a line und returns @code{true}.
+Using the optional argument @var{stream} the new line is written to that stream. 
+There are some cases, where @code{freshline()} does not work as expected. 
+
 See also @ref{newline}.
 
 @opencatbox
@@ -296,13 +293,16 @@ in this stream can be retrieved by @ref{get_output_stream_string}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{newline}
 @deffn {Function} newline @
 @fname{newline} ()  @
 @fname{newline} (@var{stream}) 
 
-Writes a new line (to @var{stream}).
+Writes a new line to the standard output stream. 
+Using the optional argument @var{stream} the new line is written to that stream. 
+There are some cases, where @code{newline()} does not work as expected. 
+
 See @ref{sprint} for an example of using @code{newline()}.
-Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @opencatbox
 @category{File output} @category{Package stringproc}
@@ -311,7 +311,9 @@ Note that there are some cases, where @code{newline()} does not work as expected
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{opena}
 @deffn {Function} opena (@var{file}) 
+
 Returns a character output stream to @var{file}.
 If an existing file is opened, @code{opena} appends elements at the end of @var{file}.
 
@@ -324,7 +326,9 @@ For binary output see @ref{Functions and Variables for binary input and output, 
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{openr}
 @deffn {Function} openr (@var{file}) 
+
 Returns a character input stream to @var{file}.
 @code{openr} assumes that @var{file} already exists.
 
@@ -337,7 +341,9 @@ For binary input see @ref{Functions and Variables for binary input and output, ,
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{openw}
 @deffn {Function} openw (@var{file}) 
+
 Returns a character output stream to @var{file}.
 If @var{file} does not exist, it will be created.
 If an existing file is opened, @code{openw} destructively modifies @var{file}.
@@ -351,6 +357,7 @@ For binary output see @ref{Functions and Variables for binary input and output, 
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{printf}
 @deffn {Function} printf @
 @fname{printf} (@var{dest}, @var{string}) @
 @fname{printf} (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
@@ -420,15 +427,6 @@ Note that the directive ~* is not supported.
 If @var{dest} is a stream or @code{true}, then @code{printf} returns @code{false}.
 Otherwise, @code{printf} returns a string containing the output.
 
-@c ===beg===
-@c printf( false, "~a ~a ~4f ~a ~@@r", 
-@c         "String",sym,bound,sqrt(12),144), bound = 1.234;
-@c printf( false,"~@{~a ~@}",["one",2,"THREE"] );
-@c printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
-@c         mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
-@c control: "~:(~r~) bird~p ~[is~;are~] singing."$
-@c printf( false,control, n,n,if n=1 then 1 else 2 ), n=2;
-@c ===end===
 @example
 (%i1) printf( false, "~a ~a ~4f ~a ~@@r", 
               "String",sym,bound,sqrt(12),144), bound = 1.234;
@@ -536,8 +534,10 @@ Example: See @ref{make_string_input_stream}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{readline}
 @deffn {Function} readline (@var{stream}) 
-Returns a string containing the characters from the current position 
+
+Returns a string containing all characters starting at the current position 
 in @var{stream} up to the end of the line or @code{false} 
 if the end of the file is encountered.
 
@@ -554,20 +554,17 @@ if the end of the file is encountered.
 Evaluates and displays its arguments one after the other `on a line' starting at
 the leftmost position.  The expressions are printed with a space character right next 
 to the number, and it disregards line length.  
-@code{newline()} might be useful, if you whish to place intermediate line breaking.
+@code{newline()} might be used for line breaking.
 
-Example:
+Example: Sequential printing with @code{sprint}. 
+Creating a new line with @code{newline()}.
 
-@c ===beg===
-@c for n:0 thru 19 do sprint( fib(n) )$
-@c for n:0 thru 22 do ( 
-@c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
-@c ===end===
 @example
-(%i1) for n:0 thru 19 do sprint( fib(n) )$
+(%i1) for n:0 thru 19 do sprint(fib(n))$
 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
 (%i2) for n:0 thru 22 do ( 
-         sprint(fib(n)), if mod(n,10)=9 then newline() )$
+         sprint(fib(n)), 
+         if mod(n,10) = 9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 
 55 89 144 233 377 610 987 1597 2584 4181 
 6765 10946 17711 
@@ -633,8 +630,10 @@ Characters are strings of length 1.
 @c -----------------------------------------------------------------------------
 @anchor{adjust_external_format}
 @deffn {Function} adjust_external_format () 
+
 Prints information about the current external format of the Lisp reader 
-and in case the external format encoding differs from UTF-8 it tries to adjust 
+and in case the external format encoding differs from the encoding of the 
+application which runs Maxima @code{adjust_external_format} tries to adjust 
 the encoding or prints some help or instruction.
 @code{adjust_external_format} returns @code{true} when the external format has 
 been changed and @code{false} otherwise.
@@ -696,8 +695,38 @@ and has not been changed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} alphacharp (@var{char})    
+@anchor{alphacharp}
+@deffn {Function} alphacharp (@var{char})  
+  
 Returns @code{true} if @var{char} is an alphabetic character. 
+
+To identify a non-US-ASCII character as an alphabetic character 
+the underlying Lisp must provide full Unicode support. 
+E.g. a German umlaut is detected as an alphabetic character with SBCL in GNU/Linux 
+but not with GCL. 
+(In Windows Maxima, when compiled with SBCL, must be set to UTF-8. 
+See @ref{adjust_external_format} for more.) 
+
+Example: Examination of non-US-ASCII characters.
+
+The underlying Lisp (SBCL, GNU/Linux) is able to convert the typed character 
+into a Lisp character and to examine.
+
+@example
+(%i1) alphacharp("@"u");
+(%o1)                          true
+@end example
+
+In GCL this is not possible. An error break occurs.
+
+@example
+(%i1) alphacharp("u");
+(%o1)                          true
+(%i2) alphacharp("@"u");
+
+package stringproc: @"u cannot be converted into a Lisp character.
+ -- an error.
+@end example
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -706,8 +735,13 @@ Returns @code{true} if @var{char} is an alphabetic character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{alphanumericp}
 @deffn {Function} alphanumericp (@var{char}) 
-Returns @code{true} if @var{char} is an alphabetic character or a digit. 
+
+Returns @code{true} if @var{char} is an alphabetic character or a digit 
+(only corresponding US-ASCII characters are regarded as digits). 
+
+Note: See remarks on @ref{alphacharp}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -718,6 +752,7 @@ Returns @code{true} if @var{char} is an alphabetic character or a digit.
 @c -----------------------------------------------------------------------------
 @anchor{ascii}
 @deffn {Function} ascii (@var{int}) 
+
 Returns the US-ASCII character corresponding to the integer @var{int}
 which has to be less than @code{128}.
 
@@ -741,8 +776,10 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cequal (@var{char_1}, @var{char_2})          
-Returns @code{true} if @var{char_1} and @var{char_2} are the same. 
+@anchor{cequal}
+@deffn {Function} cequal (@var{char_1}, @var{char_2}) 
+         
+Returns @code{true} if @var{char_1} and @var{char_2} are the same character. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -751,8 +788,12 @@ Returns @code{true} if @var{char_1} and @var{char_2} are the same.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cequalignore (@var{char_1}, @var{char_2})    
-Like @code{cequal} but ignores case. 
+@anchor{cequalignore}
+@deffn {Function} cequalignore (@var{char_1}, @var{char_2}) 
+  
+Like @code{cequal} but ignores case which is only possible for non-US-ASCII 
+characters when the underlying Lisp is able to recognize a character as an 
+alphabetic character. See remarks on @ref{alphacharp}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -761,8 +802,11 @@ Like @code{cequal} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cgreaterp (@var{char_1}, @var{char_2})       
-Returns @code{true} if the ASCII number of @var{char_1} is greater than the number of @var{char_2}. 
+@anchor{cgreaterp}
+@deffn {Function} cgreaterp (@var{char_1}, @var{char_2}) 
+  
+Returns @code{true} if the code point of @var{char_1} is greater than the 
+code point of @var{char_2}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -771,8 +815,12 @@ Returns @code{true} if the ASCII number of @var{char_1} is greater than the numb
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
-Like @code{cgreaterp} but ignores case. 
+@anchor{cgreaterpignore}
+@deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2}) 
+
+Like @code{cgreaterp} but ignores case which is only possible for non-US-ASCII 
+characters when the underlying Lisp is able to recognize a character as an 
+alphabetic character. See remarks on @ref{alphacharp}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -781,7 +829,9 @@ Like @code{cgreaterp} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{charp}
 @deffn {Function} charp (@var{obj}) 
+
 Returns @code{true} if @var{obj} is a Maxima-character.
 See introduction for example.
 
@@ -794,6 +844,7 @@ See introduction for example.
 @c -----------------------------------------------------------------------------
 @anchor{cint}
 @deffn {Function} cint (@var{char}) 
+
 Returns the Unicode code point of @var{char} which must be a 
 Maxima character, i.e. a string of length @code{1}.
 
@@ -818,7 +869,9 @@ has not been set to UTF-8. See @ref{adjust_external_format}.
 
 CMUCL doesn't process these characters as one character. 
 @code{cint} then returns @code{false}. 
-Converting a character to a code point via UTF-8-octets may serve as a workaround: @*
+@c Converting to UTF-8-octets and finally to Unicode serves as a workaround.
+Converting a character to a code point via UTF-8-octets may serve as a workaround: 
+
 @code{utf8_to_unicode(string_to_octets(character));}
 
 @c Command @U not supported by texinfo 5.
@@ -836,8 +889,11 @@ See @ref{utf8_to_unicode}, @ref{string_to_octets}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{clessp}
 @deffn {Function} clessp (@var{char_1}, @var{char_2})
-Returns @code{true} if the ASCII number of @var{char_1} is less than the number of @var{char_2}. 
+
+Returns @code{true} if the code point of @var{char_1} is less than the 
+code point of @var{char_2}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -846,8 +902,12 @@ Returns @code{true} if the ASCII number of @var{char_1} is less than the number 
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{clesspignore}
 @deffn {Function} clesspignore (@var{char_1}, @var{char_2})
-Like @code{clessp} but ignores case. 
+
+Like @code{clessp} but ignores case which is only possible for non-US-ASCII 
+characters when the underlying Lisp is able to recognize a character as an 
+alphabetic character. See remarks on @ref{alphacharp}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -856,15 +916,14 @@ Like @code{clessp} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} constituent (@var{char})   
-Returns @code{true} if @var{char} is a graphic character and not the space character.
-A graphic character is a character one can see, plus the space character.
-(@code{constituent} is defined by Paul Graham, ANSI Common Lisp, 1996, page 67.)
+@anchor{constituent}
+@deffn {Function} constituent (@var{char}) 
 
-@c ===beg===
-@c for n from 0 thru 255 do ( 
-@c    tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
-@c ===end===
+Returns @code{true} if @var{char} is a graphic character but not a space character.
+A graphic character is a character one can see, plus the space character.
+(@code{constituent} is defined by Paul Graham. 
+See Paul Graham, ANSI Common Lisp, 1996, page 67.)
+
 @example
 (%i1) for n from 0 thru 255 do ( 
 tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
@@ -880,30 +939,22 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cunlisp (@var{lisp_char}) 
-Converts a Lisp-character into a Maxima-character.
-(You won't need it.)
-
-@opencatbox
-@category{Package stringproc}
-@closecatbox
-
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} digitcharp (@var{char})    
-Returns @code{true} if @var{char} is a digit. 
-
-@opencatbox
-@category{Predicate functions} @category{Package stringproc}
-@closecatbox
-
-@end deffn
+@c @deffn {Function} cunlisp (@var{lisp_char}) 
+@c Converts a Lisp-character into a Maxima-character.
+@c (You won't need it.)
+@c 
+@c @opencatbox
+@c @category{Package stringproc}
+@c @closecatbox
+@c 
+@c @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lcharp (@var{obj}) 
-Returns @code{true} if @var{obj} is a Lisp-character.
-(You won't need it.)
+@anchor{digitcharp}
+@deffn {Function} digitcharp (@var{char}) 
+  
+Returns @code{true} if @var{char} is a digit where only the corresponding 
+US-ASCII-character is regarded as a digit.
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -912,9 +963,24 @@ Returns @code{true} if @var{obj} is a Lisp-character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lowercasep (@var{char})    
+@c @deffn {Function} lcharp (@var{obj}) 
+@c Returns @code{true} if @var{obj} is a Lisp-character.
+@c (You won't need it.)
+@c 
+@c @opencatbox
+@c @category{Predicate functions} @category{Package stringproc}
+@c @closecatbox
+@c 
+@c @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lowercasep}
+@deffn {Function} lowercasep (@var{char}) 
+   
 Returns @code{true} if @var{char} is a lowercase character. 
 
+Note: See remarks on @ref{alphacharp}.
+
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
 @closecatbox
@@ -922,9 +988,10 @@ Returns @code{true} if @var{char} is a lowercase character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{newline }
+@anchor{newline_variable}
 @defvr {Variable} newline 
-The newline character. 
+
+The newline character (ASCII-character 10). 
 
 @opencatbox
 @category{Global variables} @category{Package stringproc}
@@ -933,8 +1000,9 @@ The newline character.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{space   }
+@anchor{space_variable}
 @defvr {Variable} space   
+
 The space character.
 
 @opencatbox
@@ -944,8 +1012,9 @@ The space character.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{tab     }
+@anchor{tab_variable}
 @defvr {Variable} tab     
+
 The tab character.
 
 @opencatbox
@@ -957,6 +1026,7 @@ The tab character.
 @c -----------------------------------------------------------------------------
 @anchor{unicode}
 @deffn {Function} unicode (@var{arg}) 
+
 Returns the character defined by @var{arg} which might be a Unicode code point 
 or a name string if the underlying Lisp provides full Unicode support. 
 
@@ -981,7 +1051,9 @@ has not been set to UTF-8. See @ref{adjust_external_format} for more information
 
 CMUCL doesn't process code points larger than 16 bit. 
 In these cases @code{unicode} returns @code{false}. 
-Converting a code point to a character via UTF-8 octets may serve as a workaround: @*
+@c Converting characters to UTF-8 octets and finally to Unicode serves as a workaround.
+Converting a code point to a character via UTF-8 octets may serve as a workaround: 
+
 @code{octets_to_string(unicode_to_utf8(code_point));}
 
 @c Command @U not supported by texinfo 5.
@@ -1024,6 +1096,7 @@ Example (continued): Characters defined by names
 @c -----------------------------------------------------------------------------
 @anchor{unicode_to_utf8}
 @deffn {Function} unicode_to_utf8 (@var{code_point}) 
+
 Returns a list containing the UTF-8 code corresponding to the Unicode @var{code_point}.
 
 Examples: Converting Unicode code points to UTF-8 and vice versa. 
@@ -1045,8 +1118,12 @@ Examples: Converting Unicode code points to UTF-8 and vice versa.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} uppercasep (@var{char})    
+@anchor{uppercasep}
+@deffn {Function} uppercasep (@var{char})  
+  
 Returns @code{true} if @var{char} is an uppercase character. 
+
+Note: See remarks on @ref{alphacharp}.
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -1057,6 +1134,7 @@ Returns @code{true} if @var{char} is an uppercase character.
 @c -----------------------------------------------------------------------------
 @anchor{us_ascii_only}
 @defvr {Variable} us_ascii_only
+
 This option variable affects Maxima when the character encoding 
 provided by the application which runs Maxima is UTF-8 but the 
 external format of the Lisp reader is not equal to UTF-8. 
@@ -1068,7 +1146,7 @@ Setting @code{us_ascii_only} is unnecessary then.
 See @ref{adjust_external_format} for details. 
 
 @code{us_ascii_only} is @code{false} by default. 
-Maxima itself then parses the UTF-8 encoding.
+Maxima itself then (i.e. in the above described situation) parses the UTF-8 encoding.
 
 When @code{us_ascii_only} is set to @code{true} it is assumed that all strings 
 used as arguments to string processing functions do not contain Non-US-ASCII characters. 
@@ -1083,7 +1161,8 @@ Given that promise, Maxima avoids parsing UTF-8 and strings can be processed mor
 @c -----------------------------------------------------------------------------
 @anchor{utf8_to_unicode}
 @deffn {Function} utf8_to_unicode (@var{list}) 
-Returns a Unicode code point corresponding to the @var{list} containing 
+
+Returns a Unicode code point corresponding to the @var{list} which must contain 
 the UTF-8 encoding of a single character.
 
 Examples: See @ref{unicode_to_utf8}.
@@ -1105,13 +1184,10 @@ See example in @ref{charat}.
 @c -----------------------------------------------------------------------------
 @anchor{charat}
 @deffn {Function} charat (@var{string}, @var{n}) 
+
 Returns the @var{n}-th character of @var{string}.
 The first character in @var{string} is returned with @var{n} = 1. 
 
-@c ===beg===
-@c charat("Lisp",1);
-@c charlist("Lisp")[1];
-@c ===end===
 @example
 (%i1) charat("Lisp",1);
 (%o1)                           L
@@ -1126,12 +1202,11 @@ The first character in @var{string} is returned with @var{n} = 1.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{charlist}
 @deffn {Function} charlist (@var{string}) 
+
 Returns the list of all characters in @var{string}. 
 
-@c ===beg===
-@c charlist("Lisp");
-@c ===end===
 @example
 (%i1) charlist("Lisp");
 (%o1)                     [L, i, s, p]
@@ -1143,8 +1218,10 @@ Returns the list of all characters in @var{string}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{eval_string}
 @deffn {Function} eval_string (@var{str})
+
 Parse the string @var{str} as a Maxima expression and evaluate it.
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
 Only the first expression is parsed and evaluated, if there is more than one.
@@ -1153,10 +1230,6 @@ Complain if @var{str} is not a string.
 
 Examples:
 
-@c ===beg===
-@c eval_string ("foo: 42; bar: foo^2 + baz");
-@c eval_string ("(foo: 42, bar: foo^2 + baz)");
-@c ===end===
 @example
 (%i1) eval_string ("foo: 42; bar: foo^2 + baz");
 (%o1)                       42
@@ -1175,6 +1248,7 @@ See also @ref{parse_string}.
 @c -----------------------------------------------------------------------------
 @anchor{parse_string}
 @deffn {Function} parse_string (@var{str})
+
 Parse the string @var{str} as a Maxima expression (do not evaluate it).
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
 Only the first expression is parsed, if there is more than one.
@@ -1183,10 +1257,6 @@ Complain if @var{str} is not a string.
 
 Examples:
 
-@c ===beg===
-@c parse_string ("foo: 42; bar: foo^2 + baz");
-@c parse_string ("(foo: 42, bar: foo^2 + baz)");
-@c ===end===
 @example
 (%i1) parse_string ("foo: 42; bar: foo^2 + baz");
 (%o1)                    foo : 42
@@ -1203,7 +1273,10 @@ See also @ref{eval_string}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{scopy}
 @deffn {Function} scopy (@var{string}) 
+
 Returns a copy of @var{string} as a new string. 
 
 @opencatbox
@@ -1212,6 +1285,8 @@ Returns a copy of @var{string} as a new string.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sdowncase}
 @deffn {Function} sdowncase @
 @fname{sdowncase} (@var{string}) @
 @fname{sdowncase} (@var{string}, @var{start})  @
@@ -1225,8 +1300,12 @@ Like @ref{supcase} but uppercase characters are converted to lowercase.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sequal}
 @deffn {Function} sequal (@var{string_1}, @var{string_2}) 
-Returns @code{true} if @var{string_1} and @var{string_2} are the same length and contain the same characters. 
+
+Returns @code{true} if @var{string_1} and @var{string_2} contain the same 
+sequence of characters. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -1234,8 +1313,13 @@ Returns @code{true} if @var{string_1} and @var{string_2} are the same length and
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sequalignore}
 @deffn {Function} sequalignore (@var{string_1}, @var{string_2})
-Like @code{sequal} but ignores case. 
+
+Like @code{sequal} but ignores case which is only possible for non-US-ASCII 
+characters when the underlying Lisp is able to recognize a character as an 
+alphabetic character. See remarks on @ref{alphacharp}. 
 
 @opencatbox
 @category{Predicate functions} @category{Package stringproc}
@@ -1243,7 +1327,10 @@ Like @code{sequal} but ignores case.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sexplode}
 @deffn {Function} sexplode (@var{string})
+
 @code{sexplode} is an alias for function @code{charlist}.
 
 @opencatbox
@@ -1253,6 +1340,7 @@ Like @code{sequal} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{simplode}
 @deffn {Function} simplode @
 @fname{simplode} (@var{list})   @
 @fname{simplode} (@var{list}, @var{delim})  
@@ -1261,11 +1349,8 @@ Like @code{sequal} but ignores case.
 If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 @var{delim} can be any string.
 
-@c ===beg===
-@c simplode(["xx[",3,"]:",expand((x+y)^3)]);
-@c simplode( sexplode("stars")," * " );
-@c simplode( ["One","more","coffee."]," " );
-@c ===end===
+Examples:
+
 @example
 (%i1) simplode(["xx[",3,"]:",expand((x+y)^3)]);
 (%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
@@ -1281,16 +1366,15 @@ If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sinsert}
 @deffn {Function} sinsert (@var{seq}, @var{string}, @var{pos})  
 Returns a string that is a concatenation of @code{substring(@var{string}, 1, @var{pos}-1)},
 the string @var{seq} and @code{substring (@var{string}, @var{pos})}.
 Note that the first character in @var{string} is in position 1.
 
-@c ===beg===
-@c s: "A submarine."$
-@c concat( substring(s,1,3),"yellow ",substring(s,3) );
-@c sinsert("hollow ",s,3);
-@c ===end===
+Examples:
+
 @example
 (%i1) s: "A submarine."$
 (%i2) concat( substring(s,1,3),"yellow ",substring(s,3) );
@@ -1305,6 +1389,8 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sinvertcase}
 @deffn {Function} sinvertcase @
 @fname{sinvertcase} (@var{string}) @
 @fname{sinvertcase} (@var{string}, @var{start}) @
@@ -1314,9 +1400,8 @@ Returns @var{string} except that each character from position @var{start} to @va
 If @var{end} is not given,
 all characters from @var{start} to the end of @var{string} are replaced.
 
-@c ===beg===
-@c sinvertcase("sInvertCase");
-@c ===end===
+Examples:
+
 @example
 (%i1) sinvertcase("sInvertCase");
 (%o1)                      SiNVERTcASE
@@ -1328,7 +1413,10 @@ all characters from @var{start} to the end of @var{string} are replaced.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{slength}
 @deffn {Function} slength (@var{string}) 
+
 Returns the number of characters in @var{string}. 
 
 @opencatbox
@@ -1337,12 +1425,14 @@ Returns the number of characters in @var{string}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{smake}
 @deffn {Function} smake (@var{num}, @var{char}) 
+
 Returns a new string with a number of @var{num} characters @var{char}. 
 
-@c ===beg===
-@c smake(3,"w");
-@c ===end===
+Example:
+
 @example
 (%i1) smake(3,"w");
 (%o1)                          www
@@ -1354,6 +1444,8 @@ Returns a new string with a number of @var{num} characters @var{char}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{smismatch}
 @deffn {Function} smismatch @
 @fname{smismatch} (@var{string_1}, @var{string_2}) @
 @fname{smismatch} (@var{string_1}, @var{string_2}, @var{test})
@@ -1362,9 +1454,8 @@ Returns the position of the first character of @var{string_1} at which @var{stri
 Default test function for matching is @code{sequal}.
 If @code{smismatch} should ignore case, use @code{sequalignore} as test.
 
-@c ===beg===
-@c smismatch("seven","seventh");
-@c ===end===
+Example:
+
 @example
 (%i1) smismatch("seven","seventh");
 (%o1)                           6
@@ -1376,6 +1467,8 @@ If @code{smismatch} should ignore case, use @code{sequalignore} as test.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{split}
 @deffn {Function} split @
 @fname{split} (@var{string}) @
 @fname{split} (@var{string}, @var{delim}) @
@@ -1390,10 +1483,8 @@ Multiple delimiters are read as one.
 This is useful if tabs are saved as multiple space characters.
 If @var{multiple} is set to @code{false}, each delimiter is noted.
 
-@c ===beg===
-@c split("1.2   2.3   3.4   4.5");
-@c split("first;;third;fourth",";",false);
-@c ===end===
+Examples:
+
 @example
 (%i1) split("1.2   2.3   3.4   4.5");
 (%o1)                 [1.2, 2.3, 3.4, 4.5]
@@ -1407,6 +1498,7 @@ If @var{multiple} is set to @code{false}, each delimiter is noted.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{sposition}
 @deffn {Function} sposition (@var{char}, @var{string}) 
 Returns the position of the first character in @var{string} which matches @var{char}.
@@ -1419,6 +1511,7 @@ For matching characters ignoring case see @ref{ssearch}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{sremove}
 @deffn {Function} sremove @
 @fname{sremove} (@var{seq}, @var{string}) @
@@ -1432,10 +1525,8 @@ If @code{sremove} should ignore case while searching for @var{seq}, use @code{se
 Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
 
-@c ===beg===
-@c sremove("n't","I don't like coffee.");
-@c sremove ("DO ",%,'sequalignore);
-@c ===end===
+Examples:
+
 @example
 (%i1) sremove("n't","I don't like coffee.");
 (%o1)                   I do like coffee.
@@ -1449,6 +1540,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{sremovefirst}
 @deffn {Function} sremovefirst @
 @fname{sremovefirst} (@var{seq}, @var{string}) @
@@ -1464,8 +1556,10 @@ Like @code{sremove} except that only the first substring that matches @var{seq} 
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{sreverse}
 @deffn {Function} sreverse (@var{string}) 
+
 Returns a string with all the characters of @var{string} in reverse order. 
 
 @opencatbox
@@ -1474,6 +1568,7 @@ Returns a string with all the characters of @var{string} in reverse order.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{ssearch}
 @deffn {Function} ssearch @
 @fname{ssearch} (@var{seq}, @var{string}) @
@@ -1487,6 +1582,8 @@ If @code{ssearch} should ignore case, use @code{sequalignore} as test.
 Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
 
+Example:
+
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
 (%o1)                                  4
@@ -1498,6 +1595,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{ssort}
 @deffn {Function} ssort @
 @fname{ssort} (@var{string}) @
@@ -1507,10 +1605,8 @@ Returns a string that contains all characters from @var{string} in an order such
 Default test function for sorting is @var{clessp}.
 The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
-@c ===beg===
-@c ssort("I don't like Mondays.");
-@c ssort("I don't like Mondays.",'cgreaterpignore);
-@c ===end===
+Examples:
+
 @example
 (%i1) ssort("I don't like Mondays.");
 (%o1)                    '.IMaddeiklnnoosty
@@ -1524,6 +1620,7 @@ The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpi
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{ssubst}
 @deffn {Function} ssubst @
 @fname{ssubst} (@var{new}, @var{old}, @var{string}) @
@@ -1538,10 +1635,8 @@ If @code{ssubst} should ignore case while searching for old, use @code{sequalign
 Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
 
-@c ===beg===
-@c ssubst("like","hate","I hate Thai food. I hate green tea.");
-@c ssubst("Indian","thai",%,'sequalignore,8,12);
-@c ===end===
+Examples:
+
 @example
 (%i1) ssubst("like","hate","I hate Thai food. I hate green tea.");
 (%o1)          I like Thai food. I like green tea.
@@ -1555,6 +1650,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{ssubstfirst}
 @deffn {Function} ssubstfirst @
 @fname{ssubstfirst} (@var{new}, @var{old}, @var{string}) @
@@ -1570,16 +1666,15 @@ Like @code{subst} except that only the first substring that matches @var{old} is
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{strim}
 @deffn {Function} strim (@var{seq},@var{string}) 
+
 Returns a string like @var{string},
 but with all characters that appear in @var{seq} removed from both ends. 
 
-@c ===beg===
-@c "/* comment */"$
-@c strim(" /*",%);
-@c slength(%);
-@c ===end===
+Examples:
+
 @example
 (%i1) "/* comment */"$
 (%i2) strim(" /*",%);
@@ -1594,8 +1689,10 @@ but with all characters that appear in @var{seq} removed from both ends.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{striml}
 @deffn {Function} striml (@var{seq}, @var{string}) 
+
 Like @code{strim} except that only the left end of @var{string} is trimmed. 
 
 @opencatbox
@@ -1604,8 +1701,10 @@ Like @code{strim} except that only the left end of @var{string} is trimmed.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{strimr}
 @deffn {Function} strimr (@var{seq}, @var{string}) 
+
 Like @code{strim} except that only the right end of @var{string} is trimmed.
 
 @opencatbox
@@ -1617,6 +1716,7 @@ Like @code{strim} except that only the right end of @var{string} is trimmed.
 @c -----------------------------------------------------------------------------
 @anchor{stringp}
 @deffn {Function} stringp (@var{obj}) 
+
 Returns @code{true} if @var{obj} is a string.
 See introduction for example.
 
@@ -1637,10 +1737,8 @@ The character at position @var{end} is not included.
 If @var{end} is not given, the substring contains the rest of the string.
 Note that the first character in @var{string} is in position 1.
 
-@c ===beg===
-@c substring("substring",4);
-@c substring(%,4,6);
-@c ===end===
+Examples:
+
 @example
 (%i1) substring("substring",4);
 (%o1)                        string
@@ -1654,6 +1752,7 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{supcase}
 @deffn {Function} supcase @
 @fname{supcase} (@var{string}) @
@@ -1664,9 +1763,8 @@ Returns @var{string} except that lowercase characters from position @var{start} 
 If @var{end} is not given,
 all lowercase characters from @var{start} to the end of @var{string} are replaced.
 
-@c ===beg===
-@c supcase("english",1,2);
-@c ===end===
+Example:
+
 @example
 (%i1) supcase("english",1,2);
 (%o1)                        English
@@ -1678,6 +1776,7 @@ all lowercase characters from @var{start} to the end of @var{string} are replace
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{tokens}
 @deffn {Function} tokens @
 @fname{tokens} (@var{string}) @
@@ -1689,11 +1788,8 @@ If test is not given, @var{constituent} is used as the default test.
 @code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} is the set of test functions. 
 (The Lisp-version of @code{tokens} is written by Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
-@c ===beg===
-@c tokens("24 October 2005");
-@c tokens("05-10-24",'digitcharp);
-@c map(parse_string,%);
-@c ===end===
+Examples:
+
 @example
 (%i1) tokens("24 October 2005");
 (%o1)                  [24, October, 2005]
@@ -1721,7 +1817,7 @@ If test is not given, @var{constituent} is used as the default test.
 Returns the base64-representation of @var{arg} as a string. 
 The argument @var{arg} may be a string, a non-negative integer or a list of octets.
 
-Example:
+Examples:
 
 @example
 (%i1) base64: base64("foo bar baz");
@@ -1782,6 +1878,7 @@ alternatively return the corresponding number or list of octets.
 @var{return-type} may be @code{string}, @code{number} or @code{list}.
 
 Example:
+
 @example
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
@@ -1831,7 +1928,7 @@ The optional argument @var{return-type} allows @code{md5sum} to alternatively
 return the corresponding number or list of octets.
 @var{return-type} may be @code{string}, @code{number} or @code{list}.
 
-Example:
+Examples:
 
 @example
 (%i1) ibase: obase: 16.$
