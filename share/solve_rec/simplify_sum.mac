@@ -62,6 +62,8 @@ define_variable(use_telescoping, true, boolean)$
 define_variable(simplify_sum_depth, 0, fixnum)$
 define_variable(simplify_sum_max_depth, 3, fixnum)$
 
+declare(simplify_sum, evfun)$
+
 /*******************
  *
  * Debugging.
@@ -752,7 +754,7 @@ to_hypergeometric(expr, var, lo, hi) := block(
 
 
 to_hypergeometric1(expr, var, lo, hi) := block(
-  [quo, upper, lower, a:[], b:[], x, c, warnings:false],
+  [quo, upper, lower, a:[], b:[], x, c, warnings:false, besselexpand:true],
 
   for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
 /*  expr:subst(var=var+lo, expr),*/
