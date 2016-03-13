@@ -1941,12 +1941,6 @@ integrate ([foo(x), bar(x)], x, x[1], x[2]);
 
 trigsimp (diff (J, t) - I);
 0;
-
-/* bug #2749: Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat */
-
-block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
-[9.850355570085235b433, 9.850355570085235b433];
-
 /* bug #2980: Infinite recursion with (e: log(e), rectform(e)) */
 block ([e: log(e)], rectform(e));
 log(abs(e)) + %i*atan2(0, e)$
