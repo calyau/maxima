@@ -221,6 +221,7 @@ into the original datatype of `input'"
 ;; math, and is the opposite used by maxima.
 ;;
 ;; Scaling and bit-reversed ordering is not done by this routine.
+#+nil
 (defun fft-dif-internal (vec-r vec-i &optional direction)
   "Internal FFT routine for decimation-in-frequency FFT
 fft-dif-internal (vec &optional direction)
@@ -275,6 +276,7 @@ The result is returned in vec."
 	    (setq le le1))))
   (values vec-r vec-i))
 
+#+nil
 (defun fft-bit-reverse (vec-r vec-i)
   "fft-bit-reverse (vec)
 
@@ -299,6 +301,7 @@ must be a power of 2."
 	(setq k (ash k -1)))
       (setq j (+ j k)))))
 
+#+nil
 (defun forward-fft (x-real x-imag)
   "forward-fft
 Takes two lisp arrays, one for real parts
@@ -314,6 +317,7 @@ A normalisation is performed."
         (dotimes (k size) (setf (aref x-imag k) (* (aref x-imag k) 1/N)))))
     (values x-real x-imag)))
 
+#+nil
 (defun inverse-fft (x-real x-imag)
   "inverse-fft
 Takes two lisp arrays, one for real parts
@@ -324,7 +328,6 @@ Returns transformed real and imaginary arrays."
       (fft-dif-internal x-real x-imag nil)
       (fft-bit-reverse x-real x-imag)))
   (values x-real x-imag))
-
 
 (defun mlist->complex-cl-array (object)
   (let ((z (make-array (1- (length object)) :element-type '(complex double-float))))
@@ -342,42 +345,36 @@ Returns transformed real and imaginary arrays."
 	      collect (add (realpart w)
 			   (mul (imagpart w) '$%i)))))
 
+(defun array->complex-cl-array (array)
+  (let ((z (make-array  (length array) :element-type '(complex double-float))))
+    (loop for k of-type fixnum from 0
+	  for x across array
+	  do
+	     (let ((fl (risplit ($float x))))
+	       (setf (aref z k) (complex (car fl) (cdr fl)))))
+    z))
+
+(defun complex-cl-array->vector (array)
+  (map 'vector #'(lambda (x)
+		   (add (realpart x)
+			(mul '$%i (imagpart x))))
+       array))  
+  
 (defun find-complex-converters (object maxima-function-name)
   (cond (($listp object)
 	 (values
-	  #'mlist->complex-cl-array
+	  (mlist->complex-cl-array object)
 	  #'complex-cl-array->mlist))
 	((arrayp object)
 	 (values
-	  #'(lambda (obj)
-	      (let ((z (make-array  (length object) :element-type '(complex double-float))))
-		(loop for k of-type fixnum from 0
-		      for x across obj
-		      do
-			 (let ((fl (risplit ($float x))))
-			   (setf (aref z k) (complex (car fl) (cdr fl)))))
-		z))
-	  #'(lambda (array)
-	      (map 'vector #'(lambda (x)
-			       (add (realpart x)
-				    (mul '$%i (imagpart x))))
-		   array))))
+	  (array->complex-cl-array object)
+	  #'complex-cl-array->vector))
 	((and (symbolp object) (symbol-array (mget object 'array)))
 	 (values
-	  #'(lambda (obj)
-	      (let* ((sym-array (symbol-array (mget obj 'array)))
-		     (z (make-array  (length sym-array) :element-type '(complex double-float))))
-		(loop for k of-type fixnum from 0
-		      for x across sym-array
-		      do
-			 (let ((fl (risplit ($float x))))
-			   (setf (aref z k) (complex (car fl) (cdr fl)))))
-		z))
+	  (let* ((sym-array (symbol-array (mget object 'array))))
+	    (array->complex-cl-array sym-array))
 	  #'(lambda (array)
-	      (let ((ar (map 'vector #'(lambda (x)
-					 (add (realpart x)
-					      (mul '$%i (imagpart x))))
-			     array))
+	      (let ((ar (complex-cl-array->vector array))
 		    (sym (meval `(($array)
 				  ,(intern (symbol-name (gensym "$G")))
 				  $float
@@ -388,7 +385,7 @@ Returns transformed real and imaginary arrays."
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
-(defun fft-r2-nn (x &key (debug 0) (inverse-fft-p nil))
+(defun fft-r2-nn (x &key (inverse-fft-p nil))
   (declare (type (simple-array (complex double-float) (*)) x))
   (let* ((n (length x))
 	 (half-n (ash n -1))
@@ -400,9 +397,9 @@ Returns transformed real and imaginary arrays."
 	 (a x)
 	 (b (make-array (length x) :element-type '(complex double-float))))
     (declare (fixnum n half-n pairs-in-group number-of-groups distance)
-	     (type (simple-array (complex double-float) (*)) a b sincos)
-	     (optimize (speed 3)))
+	     (type (simple-array (complex double-float) (*)) a b sincos))
     (flet ((fft ()
+	     (declare (optimize (speed 3) (safety 0)))
 	     (let ((index 0))
 	       (declare (fixnum index))
 	       (dotimes (k number-of-groups)
@@ -417,64 +414,57 @@ Returns transformed real and imaginary arrays."
 		   (declare (fixnum jfirst jlast jtwiddle)
 			    (type (complex double-float) w))
 		   #+nil
-		   (when (> debug 0)
-		     (format t  "k = ~D, jfirst/last = ~D ~D jtwiddle = ~D dist ~D index ~D, W ~S~%"
-			     k jfirst jlast jtwiddle distance index w))
+		   (format t  "k = ~D, jfirst/last = ~D ~D jtwiddle = ~D dist ~D index ~D, W ~S~%"
+			   k jfirst jlast jtwiddle distance index w)
 		   (loop for j of-type fixnum from jfirst upto jlast do
 		     (let ((temp (* w (aref a (+ j distance)))))
 		       (setf (aref b index) (+ (aref a j) temp))
 		       (setf (aref b (+ index half-n)) (- (aref a j) temp))
 		       (incf index))))))))
       (loop while (< number-of-groups n) do
-	#+nil
-	(when (> debug 0)
-	  (format t "number-of-groups = ~D~%" number-of-groups))
 	(fft)
+	
 	#+nil
-	(when (> debug 0)
+	(progn
+	  (format t "number-of-groups = ~D~%" number-of-groups)
 	  (format t "Output = ~S~%" b))
+
 	(rotatef a b)
 	(setf not-switch-input (not not-switch-input))
 	(setf pairs-in-group (ash pairs-in-group -1))
 	(setf number-of-groups (ash number-of-groups 1))
 	(setf distance (ash distance -1)))
+
       (if inverse-fft-p
 	  a
 	  (dotimes (k n a)
+	    (declare (fixnum k)
+		     (optimize (speed 3) (safety 0)))
 	    (let ((w (aref a k)))
 	      (setf (aref a k) (/ w n))))))))
 
-#+nil
-(defun $fftip (input)
-  (let* ((n (length (cdr input)))
-	 (z (mlist->complex-cl-array input)))
-    (setf z (fft-r2-nn z))
-    (cons '(mlist simp)
-	  (loop for w across z
-		collect (add (realpart w)
-			     (mul (imagpart w) '$%i)))
-	  #+nil
-	  (map 'list #'(lambda (w)
-			 (add (realpart w)
-			      (mul (imagpart w) '$%i)))
-	       result))))
-
 (defun $fft (input)
-  (multiple-value-bind (to-lisp from-lisp)
+  (multiple-value-bind (z from-lisp)
       (find-complex-converters input "$fftip")
-    (let ((z (funcall to-lisp input)))
+    (let* ((size (length z))
+	   (order (log-base2 size)))
+      (unless (= size (ash 1 order))
+	(merror "fft: size of input must be a power of 2, not ~M" size))
       (when (> (length z) 1)
 	(setf z (fft-r2-nn z)))
       (funcall from-lisp z))))
 
 (defun $inverse_fft (input)
-  (multiple-value-bind (to-lisp from-lisp)
+  (multiple-value-bind (z from-lisp)
       (find-complex-converters input "$fftip")
-    (let ((z (funcall to-lisp input)))
+    (let* ((size (length z))
+	   (order (log-base2 size)))
+      (unless (= size (ash 1 order))
+	(merror "inverse_fft: size of input must be a power of 2, not ~M" size))
       (when (> (length z) 1)
 	(setf z (fft-r2-nn z :inverse-fft-p t)))
       (funcall from-lisp z))))
-  
+
 (defun mlist->rfft-array (object)
   (let* ((n (length (cdr object)))
 	 (z (make-array (ash n -1) :element-type '(complex double-float))))
@@ -492,35 +482,36 @@ Returns transformed real and imaginary arrays."
 			    (mul '$%i (imagpart z))))
 	     array)))
 
+(defun array->rfft-array (array)
+  (let* ((n (length array))
+	 (z (make-array (ash n -1) :element-type '(complex double-float))))
+    (loop for k from 0 below n by 2
+	  for m from 0
+	  do
+	     (setf (aref z m) (complex ($float (aref array k))
+				       ($float (aref array (1+ k))))))
+    z))
+  
 (defun find-rfft-converters (object maxima-function-name)
   (cond (($listp object)
 	 (values
-	  #'mlist->rfft-array
+	  (mlist->rfft-array object)
 	  #'complex-cl-array->mlist))
 	((arrayp object)
 	 (values
-	  #'(lambda (obj)
-	      (let ((z (make-array  (length object) :element-type '(complex double-float))))
-		(loop for k of-type fixnum from 0
-		      for x across obj
-		      do
-			 (let ((fl (risplit ($float x))))
-			   (setf (aref z k) (complex (car fl) (cdr fl)))))
-		z))
-	  #'(lambda (array)
-	      (map 'vector #'(lambda (x)
-			       (add (realpart x)
-				    (mul '$%i (imagpart x))))
-		   array))))
+	  (let ((z (make-array  (length object) :element-type '(complex double-float))))
+	    (loop for k of-type fixnum from 0
+		  for x across object
+		  do
+		     (let ((fl (risplit ($float x))))
+		       (setf (aref z k) (complex (car fl) (cdr fl)))))
+	    z)
+	  #'complex-cl-array->vector))
 	((and (symbolp object) (symbol-array (mget object 'array)))
 	 (values
-	  #'(lambda (obj)
-	      (mlist->complex-cl-array (symbol-array (mget obj 'array))))
+	  (array->rfft-array (symbol-array (mget object 'array)))
 	  #'(lambda (array)
-	      (let ((ar (map 'vector #'(lambda (x)
-					 (add (realpart x)
-					      (mul '$%i (imagpart x))))
-			     array))
+	      (let ((ar (complex-cl-array->vector array))
 		    (sym (meval `(($array)
 				  ,(intern (symbol-name (gensym "$G")))
 				  $float
@@ -530,126 +521,54 @@ Returns transformed real and imaginary arrays."
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
-#+nil
 (defun $rfft (input)
-  (let* ((n (length (cdr input)))
-	 (z (make-array (ash n -1)))
-	 (result (make-array (1+ (length z)))))
-    (loop for k from 0
-	  for (re im) on (cdr input) by #'cddr
-	  while im
-	  do (setf (aref z k) (complex ($float re) ($float im))))
-    ;; Compute FFT of shorter complex vector.  NOTE: the result
-    ;; returned by fft has scaled the output by the length of
-    ;; z.  That is, divided by n/2.  For our final result, we want to
-    ;;     divide by n, so in the following bits of code, we have an
-    ;;     extra factor of 2 to divide by.
-    (setf z (fft-r2-nn z))
-
-    ;;(format t "z = ~A~%" z)
-    ;; Reconstruct the FFT of the original from the parts
-    (setf (aref result 0)
-	  (* 0.5
-	     (+ (realpart (aref z 0))
-		(imagpart (aref z 0)))))
-
-    (let ((omega (/ (* 2 pi) n))
-	  (sincos (sincos-table (log-base2 n)))
-	  (n/2 (length z)))
-      ;;(format t "n/2 = ~A~%" n/2)
-      (loop for k from 1 below (length z) do
-	(setf (aref result k)
-	      (* 0.25 (+ (+ (aref z k)
-			    (conjugate (aref z (- n/2 k))))
-			 (* #c(0 -1)
-			    (aref sincos k)
-			    (- (aref z k)
-			       (conjugate (aref z (- n/2 k)))))))))
-      (setf (aref result (length z))
-	    (* 0.5
-	       (- (realpart (aref z 0))
-		  (imagpart (aref z 0)))))
-      (bfft-array->mlist result))))
-
-(defun $rfft (input)
-  (multiple-value-bind (to-lisp from-lisp)
+  (multiple-value-bind (z from-lisp)
       (find-rfft-converters input "rfft")
-    (let* ((n (length (cdr input)))
-	   (z (funcall to-lisp input))
-	   (result (make-array (1+ (length z)))))
-      (declare (type (simple-array (complex double-float) (*)) z result)
-	       (optimize (speed 3)))
+    (declare (type (simple-array (complex double-float) (*)) z))
+    (let* ((n (ash (length z) 1))
+	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
+      (declare (type (simple-array (complex double-float) (*)) result))
 
-      ;; Compute FFT of shorter complex vector.  NOTE: the result
-      ;; returned by fft has scaled the output by the length of
-      ;; z.  That is, divided by n/2.  For our final result, we want to
-      ;;     divide by n, so in the following bits of code, we have an
-      ;;     extra factor of 2 to divide by.
-      (fft-r2-nn z)
+      (locally
+	  (declare (optimize (speed 3) (safety 0)))
+	;; Compute FFT of shorter complex vector.  NOTE: the result
+	;; returned by fft has scaled the output by the length of
+	;; z.  That is, divided by n/2.  For our final result, we want to
+	;;     divide by n, so in the following bits of code, we have an
+	;;     extra factor of 2 to divide by.
+	(setf z (fft-r2-nn z))
 
-      ;;(format t "z = ~A~%" z)
-      ;; Reconstruct the FFT of the original from the parts
-      (setf (aref result 0)
-	    (complex (* 0.5
-			(+ (realpart (aref z 0))
-			   (imagpart (aref z 0))))))
+	;;(format t "z = ~A~%" z)
+	;; Reconstruct the FFT of the original from the parts
+	(setf (aref result 0)
+	      (complex (* 0.5
+			  (+ (realpart (aref z 0))
+			     (imagpart (aref z 0))))))
 
-      (let ((sincos (sincos-table (log-base2 n)))
-	    (n/2 (length z)))
-	(declare (type (simple-array (complex double-float) (*)) sincos))
+	(let ((sincos (sincos-table (log-base2 n)))
+	      (n/2 (length z)))
+	  (declare (type (simple-array (complex double-float) (*)) sincos))
 
-	;;(format t "n/2 = ~A~%" n/2)
-	(loop for k of-type fixnum from 1 below (length z) do
-	  (setf (aref result k)
-		(* 0.25 (+ (+ (aref z k)
-			      (conjugate (aref z (- n/2 k))))
-			   (* #c(0 -1)
-			      (aref sincos k)
-			      (- (aref z k)
-				 (conjugate (aref z (- n/2 k)))))))))
-	(setf (aref result (length z))
-	      (complex 
-	       (* 0.5
-		  (- (realpart (aref z 0))
-		     (imagpart (aref z 0))))))
-	(funcall from-lisp result)))))
-
-#+nil
-(defun $inverse_rfft (input)
-  (let* ((n (1- (length (cdr input))))
-	 (ft (map 'vector #'(lambda (z)
-			      (destructuring-bind (rp . ip)
-				  (risplit ($float z))
-				(complex rp ip)))
-		  (cdr input)))
-	 (z (make-array n))
-	 (omega (/ (* -2 pi)
-		   (* 2 n))))
-
-    (loop for k from 0 below n
-	  do
-	     (let ((evenpart (+ (aref ft k)
-				(conjugate (aref ft (- n k)))))
-		   (oddpart (* (- (aref ft k)
-				  (conjugate (aref ft (- n k))))
-			       (cis (* omega k)))))
-	       (setf (aref z k)
-		     (+ evenpart
-			(* #c(0 1) oddpart)))))
-
-    ;;(format t "z = ~A~%" z)
-    (let ((inverse (fft-r2-nn z :inverse-fft-p t))
-	  result)
-      (map nil #'(lambda (z)
-		   (push (realpart z) result)
-		   (push (imagpart z) result))
-	   inverse)
-      (cons '(mlist simp) (nreverse result)))))
+	  ;;(format t "n/2 = ~A~%" n/2)
+	  (loop for k of-type fixnum from 1 below (length z) do
+	    (setf (aref result k)
+		  (* 0.25 (+ (+ (aref z k)
+				(conjugate (aref z (- n/2 k))))
+			     (* #c(0 -1d0)
+				(aref sincos k)
+				(- (aref z k)
+				   (conjugate (aref z (- n/2 k)))))))))
+	  (setf (aref result (length z))
+		(complex 
+		 (* 0.5
+		    (- (realpart (aref z 0))
+		       (imagpart (aref z 0))))))))
+	(funcall from-lisp result))))
 
 (defun find-irfft-converters (object maxima-function-name)
   (cond (($listp object)
 	 (values
-	  #'mlist->complex-cl-array
+	  (mlist->complex-cl-array object)
 	  #'(lambda (obj)
 	      (let (result)
 		(map nil #'(lambda (z)
@@ -659,15 +578,7 @@ Returns transformed real and imaginary arrays."
 		(cons '(mlist simp) (nreverse result))))))
 	((arrayp object)
 	 (values
-	  #'(lambda (obj)
-	      (let ((z (make-array  (length object) :element-type '(complex double-float))))
-		(loop for k of-type fixnum from 0
-		      for x across obj
-		      do
-			 (let ((fl (risplit ($float x))))
-			   (setf (aref z k) (complex (car fl) (cdr fl)))))
-		z))
-	  
+	  (array->complex-cl-array object)
 	  #'(lambda (obj)
 	      (let ((result (make-array (* 2 (length obj)))))
 		(loop for k from 0 by 2
@@ -677,33 +588,35 @@ Returns transformed real and imaginary arrays."
 			   (setf (aref result k) (realpart z))
 			   (setf (aref result (1+ k)) (imagpart z))))
 		result))))
-	
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
 (defun $inverse_rfft (input)
-  (multiple-value-bind (to-lisp from-lisp)
+  (multiple-value-bind (ft from-lisp)
       (find-irfft-converters input "inverse_rfft")
-    (let* ((n (1- (length (cdr input))))
-	   (ft (funcall to-lisp input))
-	   (sincos (sincos-table (ash n 1)))
-	   (z (make-array n))
-	   (omega (/ (* -2 pi)
-		     (* 2 n))))
+    (declare (type (simple-array (complex double-float) (*)) ft))
+    (let* ((n (1- (length ft)))
+	   (order (log-base2 n))
+	   (sincos (sincos-table (1+ order)))
+	   (z (make-array n :element-type '(complex double-float))))
+      (declare (type (simple-array (complex double-float) (*)) sincos))
 
-      (loop for k from 0 below n
-	    do
-	       (let ((evenpart (+ (aref ft k)
-				  (conjugate (aref ft (- n k)))))
-		     (oddpart (* (- (aref ft k)
-				    (conjugate (aref ft (- n k))))
-				 (cis (* omega k)))))
-		 (setf (aref z k)
-		       (+ evenpart
-			  (* #c(0 1) oddpart)))))
+      (unless (= n (ash order 1))
+	(merror "inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
 
-      ;;(format t "z = ~A~%" z)
-      (fft-r2-nn z :inverse-fft-p t)
+      (locally
+	  (declare (optimize (speed 3)))
+	(loop for k from 0 below n
+	      do
+		 (let ((evenpart (+ (aref ft k)
+				    (conjugate (aref ft (- n k)))))
+		       (oddpart (* (- (aref ft k)
+				      (conjugate (aref ft (- n k))))
+				   (conjugate (aref sincos k)))))
+		   (setf (aref z k) (+ evenpart
+				       (* #c(0 1d0) oddpart)))))
+
+	(setf z (fft-r2-nn z :inverse-fft-p t)))
       (funcall from-lisp z))))
 
 ;;; Bigfloat FFT
