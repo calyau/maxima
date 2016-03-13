@@ -136,9 +136,11 @@ into the original datatype of `input'"
 ;; Maxima functions fft() and inverse_fft()
 ;;
 
+#+nil
 (defun $fft (input)
   (fft+ifft-common input #'forward-fft "fft"))
 
+#+nil
 (defun $inverse_fft (input)
   (fft+ifft-common input #'inverse-fft "inverse_fft"))
 
@@ -363,7 +365,14 @@ Returns transformed real and imaginary arrays."
 	((and (symbolp object) (symbol-array (mget object 'array)))
 	 (values
 	  #'(lambda (obj)
-	      (mlist->complex-cl-array (symbol-array (mget obj 'array))))
+	      (let* ((sym-array (symbol-array (mget obj 'array)))
+		     (z (make-array  (length sym-array) :element-type '(complex double-float))))
+		(loop for k of-type fixnum from 0
+		      for x across sym-array
+		      do
+			 (let ((fl (risplit ($float x))))
+			   (setf (aref z k) (complex (car fl) (cdr fl)))))
+		z))
 	  #'(lambda (array)
 	      (let ((ar (map 'vector #'(lambda (x)
 					 (add (realpart x)
@@ -374,7 +383,8 @@ Returns transformed real and imaginary arrays."
 				  $float
 				  ,(1- (length array))))))
 		(setf (symbol-array (mget sym 'array))
-		      ar)))))
+		      ar)
+		sym))))
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
@@ -449,18 +459,20 @@ Returns transformed real and imaginary arrays."
 			      (mul (imagpart w) '$%i)))
 	       result))))
 
-(defun $fftip (input)
+(defun $fft (input)
   (multiple-value-bind (to-lisp from-lisp)
       (find-complex-converters input "$fftip")
     (let ((z (funcall to-lisp input)))
-      (setf z (fft-r2-nn z))
+      (when (> (length z) 1)
+	(setf z (fft-r2-nn z)))
       (funcall from-lisp z))))
 
-(defun $inverse_fftip (input)
+(defun $inverse_fft (input)
   (multiple-value-bind (to-lisp from-lisp)
       (find-complex-converters input "$fftip")
     (let ((z (funcall to-lisp input)))
-      (setf z (fft-r2-nn z :inverse-fft-p t))
+      (when (> (length z) 1)
+	(setf z (fft-r2-nn z :inverse-fft-p t)))
       (funcall from-lisp z))))
   
 (defun mlist->rfft-array (object)
@@ -602,6 +614,7 @@ Returns transformed real and imaginary arrays."
 		     (imagpart (aref z 0))))))
 	(funcall from-lisp result)))))
 
+#+nil
 (defun $inverse_rfft (input)
   (let* ((n (1- (length (cdr input))))
 	 (ft (map 'vector #'(lambda (z)
@@ -632,6 +645,66 @@ Returns transformed real and imaginary arrays."
 		   (push (imagpart z) result))
 	   inverse)
       (cons '(mlist simp) (nreverse result)))))
+
+(defun find-irfft-converters (object maxima-function-name)
+  (cond (($listp object)
+	 (values
+	  #'mlist->complex-cl-array
+	  #'(lambda (obj)
+	      (let (result)
+		(map nil #'(lambda (z)
+			     (push (realpart z) result)
+			     (push (imagpart z) result))
+		     obj)
+		(cons '(mlist simp) (nreverse result))))))
+	((arrayp object)
+	 (values
+	  #'(lambda (obj)
+	      (let ((z (make-array  (length object) :element-type '(complex double-float))))
+		(loop for k of-type fixnum from 0
+		      for x across obj
+		      do
+			 (let ((fl (risplit ($float x))))
+			   (setf (aref z k) (complex (car fl) (cdr fl)))))
+		z))
+	  
+	  #'(lambda (obj)
+	      (let ((result (make-array (* 2 (length obj)))))
+		(loop for k from 0 by 2
+		      for z across obj
+		      do
+			 (progn
+			   (setf (aref result k) (realpart z))
+			   (setf (aref result (1+ k)) (imagpart z))))
+		result))))
+	
+	(t
+	 (merror "~A: input is not a list or an array." maxima-function-name))))
+
+(defun $inverse_rfft (input)
+  (multiple-value-bind (to-lisp from-lisp)
+      (find-irfft-converters input "inverse_rfft")
+    (let* ((n (1- (length (cdr input))))
+	   (ft (funcall to-lisp input))
+	   (sincos (sincos-table (ash n 1)))
+	   (z (make-array n))
+	   (omega (/ (* -2 pi)
+		     (* 2 n))))
+
+      (loop for k from 0 below n
+	    do
+	       (let ((evenpart (+ (aref ft k)
+				  (conjugate (aref ft (- n k)))))
+		     (oddpart (* (- (aref ft k)
+				    (conjugate (aref ft (- n k))))
+				 (cis (* omega k)))))
+		 (setf (aref z k)
+		       (+ evenpart
+			  (* #c(0 1) oddpart)))))
+
+      ;;(format t "z = ~A~%" z)
+      (fft-r2-nn z :inverse-fft-p t)
+      (funcall from-lisp z))))
 
 ;;; Bigfloat FFT
 
@@ -826,7 +899,10 @@ Returns transformed real and imaginary arrays."
 		 (let* ((jfirst (* 2 k pairs-in-group))
 			(jlast (+ jfirst pairs-in-group -1))
 			(jtwiddle (* k pairs-in-group))
-			(w (aref sincos jtwiddle)))
+			(w (let ((w (aref sincos jtwiddle)))
+			     (if inverse-fft-p
+			       (conjugate w)
+			       w))))
 		   (when (> debug 0)
 		     (format t  "k = ~D, jfirst/last = ~D ~D jtwiddle = ~D dist ~D index ~D, W ~S~%"
 			     k jfirst jlast jtwiddle distance index w))
