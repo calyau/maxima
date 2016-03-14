@@ -84,3 +84,9 @@ string('minusi = minusi);
 ''(if is_sbcl then "minusi = #.SB-EXT:DOUBLE-FLOAT-NEGATIVE-INFINITY"
    elseif is_gcl then "minusi = #<-inf>"
    elseif is_ecl then "minusi = #.ext::double-float-negative-infinity");
+
+/* SF bug report #2680: "1000!^0.01 gives i.nfE+6166368" */
+errcatch (string (1000!^0.01));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
