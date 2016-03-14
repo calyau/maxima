@@ -348,11 +348,20 @@ values")
     ;; we just need to make sure the exponent marker is
     ;; printed.
     (if *fortran-print*
-        (setq string (format nil "~e" symb))
+        (setq string (cond
+                       ;; Strings for non-finite numbers as specified for input in Fortran 2003 spec;
+                       ;; they apparently did not exist in earlier versions.
+                       ((float-nan-p symb) "NAN")
+                       ((float-inf-p symb) (if (< symb 0) "-INF" "INF"))
+                       (t (format nil "~e" symb))))
         (multiple-value-bind (form digits)
           (cond
             ((zerop a)
              (values "~,vf" 1))
+            ;; Work around for GCL bug #47404.
+            ;; Avoid numeric comparisons with NaN, which erroneously return T.
+            #+gcl ((or (float-inf-p symb) (float-nan-p symb))
+             (return-from exploden-format-float (format nil "~a" symb)))
             ((<= 0.001 a 1e7)
              (let*
                ((integer-log10 (floor (/ (log a) #.(log 10.0))))
@@ -360,6 +369,8 @@ values")
                (if (< scale effective-printprec)
                  (values "~,vf" (- effective-printprec scale))
                  (values "~,ve" (1- effective-printprec)))))
+            #-gcl ((or (float-inf-p symb) (float-nan-p symb))
+             (return-from exploden-format-float (format nil "~a" symb)))
             (t
               (values "~,ve" (1- effective-printprec))))
 
