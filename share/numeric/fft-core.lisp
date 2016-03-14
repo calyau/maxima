@@ -340,25 +340,29 @@ Returns transformed real and imaginary arrays."
     z))
 
 (defun complex-cl-array->mlist (array)
+  (declare (type (simple-array (complex double-float) (*)) array))
   (cons '(mlist simp)
-	(loop for w across array
+	(loop for w of-type (complex double-float) across array
 	      collect (add (realpart w)
 			   (mul (imagpart w) '$%i)))))
 
 (defun array->complex-cl-array (array)
-  (let ((z (make-array  (length array) :element-type '(complex double-float))))
-    (loop for k of-type fixnum from 0
-	  for x across array
-	  do
-	     (let ((fl (risplit ($float x))))
-	       (setf (aref z k) (complex (car fl) (cdr fl)))))
+  (let* ((n (length array))
+	 (z (make-array n :element-type '(complex double-float))))
+    (dotimes (k n)
+      (let ((fl (risplit ($float (aref array k)))))
+	(setf (aref z k) (complex (car fl) (cdr fl)))))
     z))
 
 (defun complex-cl-array->vector (array)
-  (map 'vector #'(lambda (x)
-		   (add (realpart x)
-			(mul '$%i (imagpart x))))
-       array))  
+  (declare (type (simple-array (complex double-float) (*)) array))
+  (let* ((n (length array))
+	 (z (make-array n)))
+    (dotimes (k n)
+      (let ((item (aref array k)))
+	(setf (aref z k) (add (realpart item)
+			      (mul '$%i (imagpart item))))))
+    z))
   
 (defun find-complex-converters (object maxima-function-name)
   (cond (($listp object)
