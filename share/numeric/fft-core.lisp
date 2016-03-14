@@ -179,8 +179,9 @@ into the original datatype of `input'"
 ;;; well.)  So, take two separate arrays, one for the real part and
 ;;; one for the imaginary part.
 
+(declaim (inline log-base2))
 (defun log-base2 (n)
-  (declare (type (and fixnum (integer 1)) n)
+  (declare (type (and fixnum (integer 0)) n)
 	   (optimize (speed 3)))
   ;; Just find m such that 2^m <= n < 2^(m+1).  It's up to the caller
   ;; to make sure that n is a power of two.  (The previous
@@ -722,9 +723,7 @@ Returns transformed real and imaginary arrays."
 		      (bigfloat:+ (bigfloat:realpart (aref z 0))
 				  (bigfloat:imagpart (aref z 0)))))
 
-    (let ((omega (bigfloat:/ (bigfloat:* 2 (bigfloat:%pi (aref result 0)))
-			     n))
-	  (sincos (bigfloat::sincos-table (maxima::log-base2 n)))
+    (let ((sincos (bigfloat::sincos-table (maxima::log-base2 n)))
 	  (n/2 (length z)))
       ;;(format t "n/2 = ~A~%" n/2)
       (loop for k from 1 below (length z) do
@@ -732,7 +731,6 @@ Returns transformed real and imaginary arrays."
 	      (bigfloat:* 0.25 (bigfloat:+ (bigfloat:+ (aref z k)
 						       (bigfloat:conjugate (aref z (- n/2 k))))
 					   (bigfloat:* #c(0 -1)
-						       ;;(bigfloat:cis (bigfloat:* omega k))
 						       (aref sincos k)
 						       (bigfloat:- (aref z k)
 								   (bigfloat:conjugate (aref z (- n/2 k)))))))))
@@ -746,8 +744,11 @@ Returns transformed real and imaginary arrays."
   (let* ((n (1- (length (cdr input))))
 	 (ft (mlist->bfft-array input))
 	 (z (make-array n))
-	 (omega (bigfloat:/ (bigfloat:* -2 (bigfloat:%pi (aref ft 0)))
-			    (* 2 n))))
+	 (order (log-base2 n))
+	 (sincos (sincos-table (1+ order))))
+
+    (unless (= n (ash order 1))
+      (merror "bf_inverse_fft: input length must be one more than a power of two, not ~M" (1+ n)))
 
     (loop for k from 0 below n
 	  do
@@ -755,7 +756,7 @@ Returns transformed real and imaginary arrays."
 					 (bigfloat:conjugate (aref ft (- n k)))))
 		   (oddpart (bigfloat:* (bigfloat:- (aref ft k)
 						    (bigfloat:conjugate (aref ft (- n k))))
-					(bigfloat:cis (bigfloat:* omega k)))))
+					(bigfloat:conjugate (aref sincos k)))))
 	       (setf (aref z k)
 		     (bigfloat:+ evenpart
 				 (bigfloat:* #c(0 1) oddpart)))))
@@ -797,7 +798,7 @@ Returns transformed real and imaginary arrays."
   
   
 ;; Simple Radix-2 out-of-place FFT with in-order input and output.
-(defun fft-r2-nn (x &key (debug 0) (inverse-fft-p nil))
+(defun fft-r2-nn (x &key (inverse-fft-p nil))
   (let* ((n (length x))
 	 (half-n (ash n -1))
 	 (pairs-in-group (ash n -1))
@@ -806,10 +807,8 @@ Returns transformed real and imaginary arrays."
 	 (not-switch-input t)
 	 (sincos (sincos-table (maxima::log-base2 n)))
 	 (a (copy-seq x))
-	 (b (make-array (length x)))
-	 (omega (/ (* (if inverse-fft-p -2 2)
-		      (%pi (aref x 0)))
-		   n)))
+	 (b (make-array (length x))))
+
     (flet ((fft ()
 	     (let ((index 0))
 	       (dotimes (k number-of-groups)
@@ -820,20 +819,14 @@ Returns transformed real and imaginary arrays."
 			     (if inverse-fft-p
 			       (conjugate w)
 			       w))))
-		   (when (> debug 0)
-		     (format t  "k = ~D, jfirst/last = ~D ~D jtwiddle = ~D dist ~D index ~D, W ~S~%"
-			     k jfirst jlast jtwiddle distance index w))
+
 		   (loop for j from jfirst upto jlast do
 		     (let ((temp (* w (aref a (+ j distance)))))
 		       (setf (aref b index) (+ (aref a j) temp))
 		       (setf (aref b (+ index half-n)) (- (aref a j) temp))
 		       (incf index))))))))
       (loop while (< number-of-groups n) do
-	(when (> debug 0)
-	  (format t "number-of-groups = ~D~%" number-of-groups))
 	(fft)
-	(when (> debug 0)
-	  (format t "Output = ~S~%" b))
 	(rotatef a b)
 	(setf not-switch-input (not not-switch-input))
 	(setf pairs-in-group (ash pairs-in-group -1))
