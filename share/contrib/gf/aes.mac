@@ -18,7 +18,7 @@
    
 **** AES en/decryption *********************************************************
    
-   Copyright Volker van Nek, 2012 - 2015
+   Copyright Volker van Nek, 2012 - 2016
    
    
    This file shows the polynomial aspects of the AES algorithm and its functions 
@@ -39,6 +39,12 @@
    lists of octets and can be coerced back to these three types.
    The new interface is based on new functions in share/stringproc. So you 
    should have installed Maxima version 5.37 or higher.
+   
+   March, 2016: mix_columns polynomial version added.
+   The abstract polynomial description of the mix_columns step is added as 
+   mix_columns_2 and inv_mix_columns_2. If cipher or inv_cipher should use these 
+   alternative versions the code of cipher resp. inv_cipher has to be changed 
+   accordingly.
 */
 
 
@@ -113,6 +119,22 @@ mix_columns(state) := block([mixed],
    mat_p2n(mixed) )$
 
 
+/* mix_columns (polynomial version) ***************************************** */
+
+ef_minimal_set(x^4+1)$ /* needs gf_set_data(2, x^8+x^4+x^3+x+1)$ */
+
+aes_p2c(p) := transpose(reverse(ef_p2l(p,4)))$       /* poly to column vector */
+aes_c2p(c) := ef_l2p(reverse(first(transpose(c))))$  /* column vector to poly */
+
+%_p3 : 3*x^3+x^2+x+2$
+
+mix_columns_2(state) := block([mixed],
+   mixed : matrix(),
+   for i:1 thru 4 do
+      mixed : addcol(mixed, aes_p2c(ef_mult(%_p3, aes_c2p(col(state, i))))),
+   mixed )$
+
+
 /* inv_mix_columns ********************************************************** */
 
 %_INV_MIX_COLUMNS : gf_invert_by_lu(%_MIX_COLUMNS)$
@@ -120,15 +142,26 @@ mix_columns(state) := block([mixed],
 inv_mix_columns(state) := block([mixed],
    state : mat_n2p(state),
    mixed : matrix(),
-   for n:1 thru 4 do 
-      mixed : addcol(mixed, gf_matmult(%_INV_MIX_COLUMNS, col(state, n))),
+   for i:1 thru 4 do 
+      mixed : addcol(mixed, gf_matmult(%_INV_MIX_COLUMNS, col(state, i))),
    mat_p2n(mixed) )$
+
+
+/* inv_mix_columns (polynomial version) ************************************* */
+
+%_p3_inv : ef_inv(%_p3)$
+
+inv_mix_columns_2(state) := block([mixed],
+   mixed : matrix(),
+   for i:1 thru 4 do 
+      mixed : addcol(mixed, aes_p2c(ef_mult(%_p3_inv, aes_c2p(col(state, i))))),
+   mixed )$
 
 
 /* add_round_key ************************************************************ */
 
 add_round_key(state, key) := 
-   matrixmap(?logxor, state, key)$
+   matrixmap('?logxor, state, key)$
 /* with polynomial addition:
    mat_p2n( gf_matadd( mat_n2p(state), mat_n2p(key) ))$
 */
@@ -177,7 +210,7 @@ cipher(state) := (
    
    for i:1 thru 9 do (
       state : shift_rows( sub_bytes(state) ), 
-      state : mix_columns(state), 
+      state : mix_columns(state), /* or mix_columns_2 */
       state : add_round_key(state, %_round_key[i]) ),
    
    state : shift_rows( sub_bytes(state) ), 
@@ -192,7 +225,7 @@ inv_cipher(state) := (
    for n:9 step -1 thru 1 do (
       state : inv_shift_rows( inv_sub_bytes(state) ), 
       state : add_round_key(state, %_round_key[n]),
-      state : inv_mix_columns(state) ),
+      state : inv_mix_columns(state) ), /* or inv_mix_columns_2 */
    
    state : inv_shift_rows( inv_sub_bytes(state) ), 
    add_round_key(state, %_round_key[0]) )$
@@ -246,6 +279,7 @@ compile(
    sub_bytes, inv_sub_bytes, 
    rotate, shift_rows, inv_rotate, inv_shift_rows, 
    mat_n2p, mat_p2n, mix_columns, inv_mix_columns, 
+   aes_p2c, aes_c2p, mix_columns_2, inv_mix_columns_2,
    add_round_key, 
    rot_word, key_expansion1, key_expansion2, next_round_key, key_expansion, 
    cipher, inv_cipher, 
