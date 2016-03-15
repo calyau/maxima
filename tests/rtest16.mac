@@ -1899,17 +1899,6 @@ trigreduce(sin(1/8*%pi)*sin(3/8*%pi)*sin(5/8*%pi)*sin(7/8*%pi));
 closeto(zeta(40.0) - 1, 1e-12);
 true$
 
-/* #2680: Floating point overflow multiplying an integer by float */
-bfloatp(1000! * 0.01);
-true$
-
-floor(log(1000! ^ 0.1));
-591$
-
-/* Test the behaviour of promote_float_to_bigfloat */
-errcatch (block ([promote_float_to_bigfloat: false], 1000! * 0.01));
-[]$
-
 /* #2675 (1/3): Integration yields noun form with subscripted variable */
 integrate(exp(-(1+%i)*x[1]),x[1],0,inf);
 -((-1 + %i)/2)$
@@ -1952,12 +1941,6 @@ integrate ([foo(x), bar(x)], x, x[1], x[2]);
 
 trigsimp (diff (J, t) - I);
 0;
-
-/* bug #2749: Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat */
-
-block ([promote_float_to_bigfloat : true], [sinh (1000.0), cosh (1000.0)]);
-[9.850355570085235b433, 9.850355570085235b433];
-
 /* bug #2980: Infinite recursion with (e: log(e), rectform(e)) */
 block ([e: log(e)], rectform(e));
 log(abs(e)) + %i*atan2(0, e)$
@@ -1967,14 +1950,6 @@ integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x);
 [log(sec(x)),-log(csc(x)+cot(x)),log(sec(x)+tan(x)),log(sin(x)),log(cosh(x)),log(sinh(x)),log(tanh(x/2))]$
 integrate([tan(x),csc(x),sec(x),cot(x),tanh(x),coth(x),csch(x)],x),logabs;
 [log(abs(sec(x))),-log(abs(csc(x)+cot(x))),log(abs(sec(x)+tan(x))),log(abs(sin(x))),log(cosh(x)),log(abs(sinh(x))),log(abs(tanh(x/2)))]$
-
-/* Bug #3081: abs(...) -> "bfloat: attempted conversion of floating-point infinity." */
-abs(%e^(10000/3)+1);
-abs(%e^(10000/3)+1)$
-exp(10000/3),numer;
-4.449108642015706b1447$
-exp(10000/3),numer,%enumer;
-4.449108642014918b1447$
 
 /* Bug #3075: #3075 answer "3*false" from "integrate(3*asinh(x),x,-inf,inf)" */
 /* We can't check for the correct answer zero (yet), because Maxima can't solve integrate(asinh(x),x,-inf,inf). */
