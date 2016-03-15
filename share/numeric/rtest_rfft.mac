@@ -1,0 +1,86 @@
+/* Test rfft routines */
+
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<=tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<=tol) then true else abse);
+
+(compare_rfft(tol, x) :=
+  block([rft: rfft(x),
+         ft: fft(x),
+         maperror: false,
+         maxdiff],
+    maxdiff: lreduce('max, abs(rft - ft)),
+    closeto(maxdiff, tol)),
+ 0);
+0;
+
+(compare_inverse_rfft(tol, x) :=
+  block([rft: inverse_rfft(rfft(x)),
+         maxdiff],
+    maxdiff: lreduce('max, abs(x - rft)),
+    closeto(maxdiff, tol)),
+ 0);
+0;
+
+
+/* verify that rfft does not modify its argument */
+
+(foo0 : [1, 2, 4, 8], 0);
+0;
+
+(kill (foo), foo : foo0, fft (foo), foo);
+''foo0;
+
+(foo : make_array (any, 4), fillarray (foo, foo0), fft (foo), listarray (foo));
+''foo0;
+
+(kill (foo), array (foo, 3), fillarray (foo, foo0), fft (foo), listarray (foo));
+''foo0;
+
+/* Verify basic computation */
+
+rfft([]);
+[];
+
+rfft([123]);
+[123.0];
+
+rfft([1,2]);
+[1.5, -0.5];
+
+errcatch(rfft([1,2,3]));
+[];
+
+compare_rfft(0, makelist(k, k, 1, 4));
+true;
+
+compare_rfft(1.2413e-16, makelist(k, k, 1, 16));
+true;
+
+compare_rfft(8.544e-14, makelist(k, k, 1, 1024));
+true;
+
+compare_rfft(3.8703e-13, makelist(k, k, 1, 4096));
+true;
+
+inverse_rfft([]);
+[];
+
+inverse_rfft([123]);
+[123.0];
+
+inverse_rfft([1.5 ,-0.5]);
+[1.0, 2.0];
+
+compare_inverse_rfft(0, makelist(k, k, 1, 4));
+true;
+
+compare_inverse_rfft(1.7764e-15, makelist(k, k, 1, 16));
+true;
+
+compare_inverse_rfft(3.9791e-13, makelist(k, k, 1, 1024));
+true;
+
+compare_inverse_rfft(2.0464e-12, makelist(k, k, 1, 4096));
+true;
+
+
