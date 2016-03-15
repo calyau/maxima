@@ -534,6 +534,8 @@ Returns transformed real and imaginary arrays."
 	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
       (declare (type (simple-array (complex double-float) (*)) result))
 
+      (when (< n 3)
+	(return-from $rfft ($fft input)))
       (locally
 	  (declare (optimize (speed 3) (safety 0)))
 	;; Compute FFT of shorter complex vector.  NOTE: the result
@@ -606,7 +608,7 @@ Returns transformed real and imaginary arrays."
 	   (z (make-array n :element-type '(complex double-float))))
       (declare (type (simple-array (complex double-float) (*)) sincos))
 
-      (unless (= n (ash order 1))
+      (unless (= n (ash 1 order))
 	(merror "inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
 
       (locally
