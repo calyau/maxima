@@ -1,0 +1,120 @@
+/* some tests for non-numeric floats
+ * these are only meaningful for Lisps which support such values
+ * GCL, ECL, SBCL, maybe others;
+ *
+ * SBCL: allows both inf/-inf and NaN; enable via:
+ * :lisp (sb-vm::set-floating-point-modes :traps nil)
+ *
+ * GCL: allows both inf/-inf and NaN;
+ * requires *PRINT-NAN* = T but that's already enabled by Maxima
+ *
+ * ECL: allows only inf/-inf, not NaN
+ * (although maybe in a future version)
+ * no special action needed to enable, as far as I know
+ */
+
+kill (all);
+done;
+
+(is_sbcl : is (ssearch ("SBCL", build_info()@lisp_name) # false),
+ is_gcl : is (ssearch ("GCL", build_info()@lisp_name) # false),
+ is_ecl : is (ssearch ("ECL", build_info()@lisp_name) # false),
+ is (is_sbcl or is_gcl or is_ecl));
+true;
+
+(x:1e300, i:x*x, if not is_ecl then n:i-i, minusi:-i, 0);
+0;
+
+/* Maxima "=" calls ALIKE1 which compares atoms with EQUAL.
+ * As long as that's the case, we expect is(n=n) => true.
+ */
+[is(x=x), is(i=i), if is_ecl then [] else is(n=n), is(minusi=minusi)];
+[true, true, true, true];
+
+/* Lisp "=" yields false for NaN. */
+[?\=(x, x), ?\=(i, i), if is_ecl then [] else ?\=(n, n), ?\=(minusi, minusi)];
+[true, true, false, true];
+
+/* bfloat and rat should trigger an error on non-numeric floats */
+
+errcatch(bfloat(i));
+[];
+
+if is_ecl then false else errcatch(bfloat(n));
+[];
+
+errcatch(bfloat(minusi));
+[];
+
+/* GCL: rat(nonnumeric) => hangs; SF bug report # !! */
+
+if not is_gcl then errcatch(rat(i));
+[];
+
+if is_ecl then false else if not is_gcl then errcatch(rat(n));
+[];
+
+if not is_gcl then errcatch(rat(minusi));
+[];
+
+/* Fortran output should produce INF/-INF or NAN */
+
+map (fortran, ' ['x = x, 'i = i, 'n = n, 'minusi = minusi]);
+[done, done, done, done];
+
+/* At present, Maxima will output implementation-dependent
+ * representations of non-numeric floats.
+ */
+
+string('x = x);
+''(if is_sbcl then "x = 1.0e+300"
+   elseif is_gcl then "x = 1.0E+300"
+   elseif is_ecl then "x = 1.0e+300");
+
+string('i = i);
+''(if is_sbcl then "i = #.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"
+   elseif is_gcl then "i = #<inf>"
+   elseif is_ecl then "i = #.ext::double-float-positive-infinity");
+
+string('n = n);
+''(if is_sbcl then "n = #<DOUBLE-FLOAT quiet NaN>"
+   elseif is_gcl then "n = #<nan>");
+
+string('minusi = minusi);
+''(if is_sbcl then "minusi = #.SB-EXT:DOUBLE-FLOAT-NEGATIVE-INFINITY"
+   elseif is_gcl then "minusi = #<-inf>"
+   elseif is_ecl then "minusi = #.ext::double-float-negative-infinity");
+
+/* SF bug report #2680: "1000!^0.01 gives i.nfE+6166368" */
+errcatch (string (1000!^0.01));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
+
+/* SF bug report #2749: "Float evaluation of sinh causes Lisp error instead of overflowing to bigfloat" */
+
+errcatch(string(sinh(1e3)));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
+
+errcatch(string(cosh(1e3)));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
+
+/* SF bug report #3081: abs(...) -> "bfloat: attempted conversion of floating-point infinity." */
+
+[abs(%e^(10000/3)+1), abs(%e^10000+1), abs(%e^(10000/3))];
+[abs(%e^(10000/3)+1), abs(%e^10000+1), abs(%e^(10000/3))];
+
+errcatch(string(ev(exp(10000/3),numer)));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
+
+errcatch(string(ev(exp(10000/3),numer,%enumer)));
+''(if is_sbcl then ["#.SB-EXT:DOUBLE-FLOAT-POSITIVE-INFINITY"]
+   elseif is_gcl then ["#<inf>"]
+   elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
+

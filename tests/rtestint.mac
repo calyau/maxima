@@ -1627,6 +1627,9 @@ integrate(x*(cos(2.5*x^2 - 1) + 1.25), x, 0, 1), numer;
 integrate (sin(4*asin(x)),x, 0.5, 0.75), numer;
 0.09667085773175951;
 
+/* disable these next few tests, since these fail (with a floating point error)
+ * in the absence of float-to-bigfloat promotion, which was recently reverted.
+ *
 /* These next 4 examples yield big messy rational expressions.
  * It's maybe not so great to have to squash them (with bfloat and rectform) 
  * but at least we get a result; these examples cause a floating-point error
@@ -1643,4 +1646,6 @@ rectform (bfloat (ev (integrate (x^2*%e^(30*%i*x-200*%i)*cos(2*x),x, 1.25, 1.5),
 
 rectform (bfloat (ev (integrate (x^2*%e^(30*%i*x-20*%i)*cos(2*x),x, 1.25, 1.5), numer)));
 6.096077978946119b-2*%i - 3.382504333513988b-2;
+ *
+ */
 
