@@ -683,6 +683,8 @@ Returns transformed real and imaginary arrays."
 	    (t
 	     (merror "bf_fft: input is not a list or an array.")))
     (let* ((x (funcall convert input)))
+      (unless (= (length x) (ash 1 (log-base2 (length x))))
+	(merror "fft: size of input must be a power of 2, not ~M" (length x)))
       (if (> (length x) 1)
 	  (funcall unconvert (bigfloat::fft-r2-nn x))
 	  (funcall unconvert x)))))
@@ -707,44 +709,87 @@ Returns transformed real and imaginary arrays."
 	  (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
 	  (funcall unconvert x)))))
 
-(defun $bf_rfft (input)
-  (let* ((n (length (cdr input)))
-	 (z (make-array (ash n -1)))
-	 (result (make-array (1+ (length z)))))
+(defun mlist->bf-rfft-array (object)
+  (let* ((n (length (cdr object)))
+	 (z (make-array (ash n -1))))
     (loop for k from 0
-	  for (re im) on (cdr input) by #'cddr
+	  for (re im) on (cdr object) by #'cddr
 	  while im
-	  do (setf (aref z k) (bigfloat:bigfloat re im)))
-    ;; Compute FFT of shorter complex vector.  NOTE: the result
-    ;; returned by bigfloat:fft has scaled the output by the length of
-    ;; z.  That is, divided by n/2.  For our final result, we want to
-    ;;     divide by n, so in the following bits of code, we have an
-    ;;     extra factor of 2 to divide by.
-    (setf z (bigfloat::fft-r2-nn z))
+	  do
+	     (setf (aref z k) (complex ($float re) ($float im))))
+    z))
 
-    ;;(format t "z = ~A~%" z)
-    ;; Reconstruct the FFT of the original from the parts
-    (setf (aref result 0)
-	  (bigfloat:* 0.5
-		      (bigfloat:+ (bigfloat:realpart (aref z 0))
-				  (bigfloat:imagpart (aref z 0)))))
+(defun lisp-array->bf-rfft-array (object)
+  (let ((z (make-array (length object))))
+    (loop for k of-type fixnum from 0
+	  for x across object
+	  do
+	     (let ((fl (risplit ($float x))))
+	       (setf (aref z k) (complex (car fl) (cdr fl)))))
+    z))
 
-    (let ((sincos (bigfloat::sincos-table (maxima::log-base2 n)))
-	  (n/2 (length z)))
-      ;;(format t "n/2 = ~A~%" n/2)
-      (loop for k from 1 below (length z) do
-	(setf (aref result k)
-	      (bigfloat:* 0.25 (bigfloat:+ (bigfloat:+ (aref z k)
-						       (bigfloat:conjugate (aref z (- n/2 k))))
-					   (bigfloat:* #c(0 -1)
-						       (aref sincos k)
-						       (bigfloat:- (aref z k)
-								   (bigfloat:conjugate (aref z (- n/2 k)))))))))
-      (setf (aref result (length z))
+(defun find-bf-rfft-converters (object maxima-function-name)
+  (cond (($listp object)
+	 (values
+	  (mlist->bf-rfft-array object)
+	  #'bfft-array->mlist))
+	((arrayp object)
+	 (values
+	  (lisp-array->bf-rfft-array object)
+	  #'bfft-array->lisp-array))
+	((and (symbolp object) (symbol-array (mget object 'array)))
+	 (values
+	  (lisp-array->bf-rfft-array (symbol-array (mget object 'array)))
+	  #'(lambda (array)
+	      (let ((ar (bfft-array->lisp-array array))
+		    (sym (meval `(($array)
+				  ,(intern (symbol-name (gensym "$G")))
+				  $float
+				  ,(1- (length array))))))
+		(setf (symbol-array (mget sym 'array))
+		      ar)))))
+	(t
+	 (merror "~A: input is not a list or an array." maxima-function-name))))
+
+(defun $bf_rfft (input)
+  (multiple-value-bind (z from-lisp)
+      (find-bf-rfft-converters input "bf_rfft")
+    (let* ((n (ash (length z) 1))
+	   (result (make-array (1+ (length z)))))
+
+      (when (< n 3)
+	(return-from $bf_rfft ($bf_fft input)))
+    
+      ;; Compute FFT of shorter complex vector.  NOTE: the result
+      ;; returned by bigfloat:fft has scaled the output by the length of
+      ;; z.  That is, divided by n/2.  For our final result, we want to
+      ;;     divide by n, so in the following bits of code, we have an
+      ;;     extra factor of 2 to divide by.
+      (setf z (bigfloat::fft-r2-nn z))
+
+      ;;(format t "z = ~A~%" z)
+      ;; Reconstruct the FFT of the original from the parts
+      (setf (aref result 0)
 	    (bigfloat:* 0.5
-			(bigfloat:- (bigfloat:realpart (aref z 0))
+			(bigfloat:+ (bigfloat:realpart (aref z 0))
 				    (bigfloat:imagpart (aref z 0)))))
-      (bfft-array->mlist result))))
+
+      (let ((sincos (bigfloat::sincos-table (maxima::log-base2 n)))
+	    (n/2 (length z)))
+	;;(format t "n/2 = ~A~%" n/2)
+	(loop for k from 1 below (length z) do
+	  (setf (aref result k)
+		(bigfloat:* 0.25 (bigfloat:+ (bigfloat:+ (aref z k)
+							 (bigfloat:conjugate (aref z (- n/2 k))))
+					     (bigfloat:* #c(0 -1)
+							 (aref sincos k)
+							 (bigfloat:- (aref z k)
+								     (bigfloat:conjugate (aref z (- n/2 k)))))))))
+	(setf (aref result (length z))
+	      (bigfloat:* 0.5
+			  (bigfloat:- (bigfloat:realpart (aref z 0))
+				      (bigfloat:imagpart (aref z 0)))))
+	(funcall from-lisp result)))))
 
 (defun $bf_inverse_rfft (input)
   (let* ((n (1- (length (cdr input))))
