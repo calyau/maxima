@@ -602,29 +602,33 @@ Returns transformed real and imaginary arrays."
   (multiple-value-bind (ft from-lisp)
       (find-irfft-converters input "inverse_rfft")
     (declare (type (simple-array (complex double-float) (*)) ft))
-    (let* ((n (1- (length ft)))
-	   (order (log-base2 n))
-	   (sincos (sincos-table (1+ order)))
-	   (z (make-array n :element-type '(complex double-float))))
-      (declare (type (simple-array (complex double-float) (*)) sincos))
+    (let* ((n (1- (length ft))))
+      (when (< n 2)
+	;; Just use the regular inverse fft to compute these values
+	;; because inverse_rfft below doesn't work for these cases.
+	(return-from $inverse_rfft ($inverse_fft input)))
+      (let* ((order (log-base2 n))
+	     (sincos (sincos-table (1+ order)))
+	     (z (make-array n :element-type '(complex double-float))))
+	(declare (type (simple-array (complex double-float) (*)) sincos))
 
-      (unless (= n (ash 1 order))
-	(merror "inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
+	(unless (= n (ash 1 order))
+	  (merror "inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
 
-      (locally
-	  (declare (optimize (speed 3)))
-	(loop for k from 0 below n
-	      do
-		 (let ((evenpart (+ (aref ft k)
-				    (conjugate (aref ft (- n k)))))
-		       (oddpart (* (- (aref ft k)
-				      (conjugate (aref ft (- n k))))
-				   (conjugate (aref sincos k)))))
-		   (setf (aref z k) (+ evenpart
-				       (* #c(0 1d0) oddpart)))))
+	(locally
+	    (declare (optimize (speed 3)))
+	  (loop for k from 0 below n
+		do
+		   (let ((evenpart (+ (aref ft k)
+				      (conjugate (aref ft (- n k)))))
+			 (oddpart (* (- (aref ft k)
+					(conjugate (aref ft (- n k))))
+				     (conjugate (aref sincos k)))))
+		     (setf (aref z k) (+ evenpart
+					 (* #c(0 1d0) oddpart)))))
 
-	(setf z (fft-r2-nn z :inverse-fft-p t)))
-      (funcall from-lisp z))))
+	  (setf z (fft-r2-nn z :inverse-fft-p t)))
+	(funcall from-lisp z)))))
 
 ;;; Bigfloat FFT
 
