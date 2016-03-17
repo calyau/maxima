@@ -37,7 +37,7 @@ for a list with 4 elements.  Internally this corresponds to a Lisp list
 of the form
 
 @example
-((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
+((MLIST) 1 2 7 ((MPLUS) $X $Y))
 @end example
 
 @noindent

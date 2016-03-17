@@ -559,7 +559,7 @@
 	(format t "Loading share_testsuite.lisp~%"))
       (load (concatenate 'string *maxima-sharedir* "/" "share_testsuite.lisp")))
 
-    (multiple-value-bind ($testsuite_files $file_search_tests)
+    (multiple-value-bind (desired-tests desired-search-path)
 	(ecase share_tests
 	  ((nil)
 	   ;; Do nothing
@@ -571,81 +571,83 @@
 	  ($only
 	   ;; Only the share test files
 	   (values $share_testsuite_files $file_search_maxima)))
-      (when debug
-	(let (($stringdisp t))
-	  (mformat t "$testsuite_files = ~M~%" $testsuite_files)))
-      (let ((error-break-file)
-	    (testresult)
-	    (tests-to-run (intersect-tests (cond ((consp tests) tests)
-						 (tests (list '(mlist) tests)))))
-	    (test-count 0)
-	    (total-count 0)
-	    (error-count 0))
+      (let (($testsuite_files desired-tests)
+	    ($file_search_tests desired-search-path))
 	(when debug
 	  (let (($stringdisp t))
-	    (mformat t "tests-to-run = ~M~%" tests-to-run)))
-	(flet
-	    ((testsuite ()
-	       (loop with errs = 'nil
-		     for testentry in tests-to-run
-		     do (if (atom testentry)
+	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)))
+	(let ((error-break-file)
+	      (testresult)
+	      (tests-to-run (intersect-tests (cond ((consp tests) tests)
+						   (tests (list '(mlist) tests)))))
+	      (test-count 0)
+	      (total-count 0)
+	      (error-count 0))
+	  (when debug
+	    (let (($stringdisp t))
+	      (mformat t "tests-to-run = ~M~%" tests-to-run)))
+	  (flet
+	      ((testsuite ()
+		 (loop with errs = 'nil
+		       for testentry in tests-to-run
+		       do (if (atom testentry)
+			      (progn
+				(setf test-file testentry)
+				(setf expected-failures nil))
+			      (progn
+				(setf test-file (second testentry))
+				(setf expected-failures (cddr testentry))))
+			  (format t
+				  (intl:gettext "Running tests in ~a: ")
+				  (if (symbolp test-file)
+				      (subseq (print-invert-case test-file) 1)
+				      test-file))
+			  (or
+			    (errset
+			      (progn
+				(multiple-value-setq (testresult test-count)
+				  (test-batch ($file_search test-file $file_search_tests)
+					      expected-failures :show-expected display_known_bugs
+					      :show-all display_all :showtime time))
+				(setf testresult (rest testresult))
+				(incf total-count test-count)
+				(when testresult
+				  (incf error-count (length (cdr testresult)))
+				  (setq errs (append errs (list testresult))))))
 			    (progn
-			      (setf test-file testentry)
-			      (setf expected-failures nil))
-			    (progn
-			      (setf test-file (second testentry))
-			      (setf expected-failures (cddr testentry))))
-			(format t
-				(intl:gettext "Running tests in ~a: ")
-				(if (symbolp test-file)
-				    (subseq (print-invert-case test-file) 1)
-				    test-file))
-			(or
-			 (errset
-			  (progn
-			    (multiple-value-setq (testresult test-count)
-			      (test-batch ($file_search test-file $file_search_tests)
-					  expected-failures :show-expected display_known_bugs
-					  :show-all display_all :showtime time))
-			    (setf testresult (rest testresult))
-			    (incf total-count test-count)
-			    (when testresult
-			      (incf error-count (length (cdr testresult)))
-			      (setq errs (append errs (list testresult))))))
-			 (progn
-			   (setq error-break-file (format nil "~a" test-file))
-			   (setq errs
-				 (append errs
-					 (list (list error-break-file "error break"))))
-			   (format t
-				   (intl:gettext "~%Caused an error break: ~a~%")
-				   test-file)))
-		     finally (cond
-			       ((null errs)
-				(format t
-					(intl:gettext
-					 "~%~%No unexpected errors found out of ~:d tests.~%")
-					total-count))
-			       (t
-				(format t (intl:gettext "~%Error summary:~%"))
-				(mapcar
-				 #'(lambda (x)
-				     (let ((s (if (> (length (rest x)) 1) "s" "")))
-				       (format t
-					       (intl:gettext
-						"Error~a found in ~a, problem~a:~%~a~%")
-					       s
-					       (first x)
-					       s
-					       (sort (rest x) #'<))))
-				 errs)
-				(format t
-					(intl:gettext
-					 "~&~:d test~p failed out of ~:d total tests.~%")
-					error-count
-					error-count
-					total-count))))))
-	  (time (testsuite))))))
+			      (setq error-break-file (format nil "~a" test-file))
+			      (setq errs
+				    (append errs
+					    (list (list error-break-file "error break"))))
+			      (format t
+				      (intl:gettext "~%Caused an error break: ~a~%")
+				      test-file)))
+		       finally (cond
+				 ((null errs)
+				  (format t
+					  (intl:gettext
+					   "~%~%No unexpected errors found out of ~:d tests.~%")
+					  total-count))
+				 (t
+				  (format t (intl:gettext "~%Error summary:~%"))
+				  (mapcar
+				   #'(lambda (x)
+				       (let ((s (if (> (length (rest x)) 1) "s" "")))
+					 (format t
+						 (intl:gettext
+						  "Error~a found in ~a, problem~a:~%~a~%")
+						 s
+						 (first x)
+						 s
+						 (sort (rest x) #'<))))
+				   errs)
+				  (format t
+					  (intl:gettext
+					   "~&~:d test~p failed out of ~:d total tests.~%")
+					  error-count
+					  error-count
+					  total-count))))))
+	    (time (testsuite)))))))
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
