@@ -82,3 +82,55 @@ true;
 
 compare_inverse_rfft(2.0464e-12, makelist(k, k, 1, 4096));
 true;
+
+/* verify that bf_rfft does not modify its argument */
+
+(foo0 : [1, 2, 4, 8], 0);
+0;
+
+(kill (foo), foo : foo0, bf_rfft (foo), foo);
+''foo0;
+
+(foo : make_array (any, 4), fillarray (foo, foo0), bf_rfft (foo), listarray (foo));
+''foo0;
+
+(kill (foo), array (foo, 3), fillarray (foo, foo0), bf_rfft (foo), listarray (foo));
+''foo0;
+
+/* Verify basic computation */
+
+bf_rfft([]);
+[];
+
+bf_rfft([123]);
+[123b0];
+
+bf_rfft([1,2]);
+[1.5b0, -0.5b0];
+
+errcatch(bf_rfft([1,2,3]));
+[];
+
+(compare_bf_rfft(tol, x) :=
+  block([rft: bf_rfft(x),
+         ft: bf_fft(x),
+         maperror: false,
+         maxdiff],
+    maxdiff: lreduce('max, abs(rft - ft)),
+    closeto(maxdiff, tol)),
+ 0);
+0;
+
+compare_bf_rfft(0, makelist(k, k, 1, 4));
+true;
+
+compare_bf_rfft(2.7756b-17, makelist(k, k, 1, 16));
+true;
+
+compare_bf_rfft(5.7034b-15, makelist(k, k, 1, 1024));
+true;
+
+compare_bf_rfft(2.4145b-14, makelist(k, k, 1, 4096));
+true;
+
+
