@@ -27,13 +27,13 @@ closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<=tol) then true else
 (foo0 : [1, 2, 4, 8], 0);
 0;
 
-(kill (foo), foo : foo0, fft (foo), foo);
+(kill (foo), foo : foo0, rfft (foo), foo);
 ''foo0;
 
-(foo : make_array (any, 4), fillarray (foo, foo0), fft (foo), listarray (foo));
+(foo : make_array (any, 4), fillarray (foo, foo0), rfft (foo), listarray (foo));
 ''foo0;
 
-(kill (foo), array (foo, 3), fillarray (foo, foo0), fft (foo), listarray (foo));
+(kill (foo), array (foo, 3), fillarray (foo, foo0), rfft (foo), listarray (foo));
 ''foo0;
 
 /* Verify basic computation */
@@ -82,5 +82,3 @@ true;
 
 compare_inverse_rfft(2.0464e-12, makelist(k, k, 1, 4096));
 true;
-
-
