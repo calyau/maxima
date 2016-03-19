@@ -47,6 +47,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun mlist->fft-arrays (mlist)
   "Converts a maxima list into two Lisp flonum
 arrays - to be used by FFT algorithm"
@@ -63,6 +64,7 @@ arrays - to be used by FFT algorithm"
             (setf (aref realparts index) (coerce (car fl) 'flonum))
             (setf (aref imagparts index) (coerce (cdr fl) 'flonum))))))
 
+#+nil
 (defun lisp-array->fft-arrays (arr)
   (let* ((N (length arr))
          (realparts (make-array N :element-type 'flonum))
@@ -75,6 +77,7 @@ arrays - to be used by FFT algorithm"
 
 ;; Backwards data conversion (from fft arrays)
 
+#+nil
 (defun fft-arrays->mlist (realparts imagparts)
   "Takes two Lisp arrays with real and imaginary
 parts and returns a Maxima list of complex numbers
@@ -85,6 +88,7 @@ in Maxima's 'format'."
             ans))
     (cons '(mlist simp) (nreverse ans))))
 
+#+nil
 (defun fft-arrays->lisp-array (realparts imagparts)
   "Outputs a Lisp array of Maxima expressions."
   (let ((ans (make-array (length realparts))))
@@ -93,6 +97,7 @@ in Maxima's 'format'."
             (add (aref realparts i) (mul (aref imagparts i) '$%i))))
     ans))
 
+#+nil
 (defun fft-arrays->maxima-symbol-array (realparts imagparts)
   "Outputs a Maxima array as does Maxima's 'array()' function."
   (let ((lisp-array (fft-arrays->lisp-array realparts imagparts))
@@ -102,35 +107,6 @@ in Maxima's 'format'."
                                 ,(1- (length realparts))))))
     (setf (symbol-array (mget maxima-symbol 'array)) lisp-array)
     maxima-symbol))
-
-;;
-;; main function used by both fft() and inverse_fft()
-;;
-(defun fft+ifft-common (input lisp-function-to-call maxima-function-name)
-  "This function checks the type of input argument,
-does the appropriate conversion to `fft arrays', calls
-the list function given and converts the result back
-into the original datatype of `input'"
-  (multiple-value-bind (convert reverse-convert)
-      ;; set the conversion functions
-      (cond (($listp input)
-	     (values #'mlist->fft-arrays
-		     #'fft-arrays->mlist))
-	    ((arrayp input)
-	     (values  #'lisp-array->fft-arrays
-		      #'fft-arrays->lisp-array))
-	    ((and (symbolp input) (symbol-array (mget input 'array)))
-	     (values #'(lambda (x)
-			 (lisp-array->fft-arrays
-			  (symbol-array (mget x 'array))))
-		     #'fft-arrays->maxima-symbol-array))
-	    (t
-	     (merror "~A: input is not a list or an array." maxima-function-name)))
-    (multiple-value-bind (realparts imagparts)
-	;; perform fft or inverse fft
-	(apply lisp-function-to-call (funcall convert input))
-      ;; return the same data type as was the input
-      (funcall reverse-convert realparts imagparts))))
 
 ;; These functions perhaps need revision if they are
 ;; needed at all. Output ignores the type of input.
@@ -159,13 +135,6 @@ into the original datatype of `input'"
 	  (p (aref phase k)))
       (setf (aref mag k) (* r (cos p)))
       (setf (aref phase k) (* r (sin p))))))
-
-;;; FFT written by Raymond Toy, based on the Fortran version in
-;;; Oppenheim and Schaffer.  The original version used an array of
-;;; complex numbers, but this causes quite a bit of consing if your
-;;; Lisp doesn't handle them well.  (CMUCL does handle complex numbers
-;;; well.)  So, take two separate arrays, one for the real part and
-;;; one for the imaginary part.
 
 (declaim (inline log-base2))
 (defun log-base2 (n)
@@ -374,6 +343,13 @@ into the original datatype of `input'"
       (funcall from-lisp z))))
 
 ;;; RFFT
+;;;
+;;; The FFT of a real signal of length N can be computed using complex
+;;; FFT of length N/2.  For large values of N, this can represent
+;;; significant savings in computation.
+;;;
+;;; See http://www.engineeringproductivitytools.com/stuff/T0001/PT10.HTM.
+
 (defun mlist->rfft-array (object)
   "Convert Maxima list to a (simple-array (complex double-float) (*))
   with the same values suitable for as the input for the RFFT routine.
@@ -436,6 +412,12 @@ into the original datatype of `input'"
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
+;;; Maxima's RFFT function.
+;;;
+;;; The input is assumed to consist of objects that can be converted
+;;; to a real-valued float.  If the input has length N, then the
+;;; output is a complex reuslt of length N/2 + 1 because of the
+;;; symmetry of the FFT for real inputs.
 (defun $rfft (input)
   (multiple-value-bind (z from-lisp)
       (find-rfft-converters input)
@@ -447,16 +429,14 @@ into the original datatype of `input'"
       #-ccl
       (declare (type (simple-array (complex double-float) (*)) result))
 
+      ;; We don't handle input of length 4 or less.  Use the complex
+      ;; FFT routine to produce the desired (correct) output.
       (when (< n 3)
 	(return-from $rfft ($fft input)))
       (locally
 	  ;; Setting safety to 0 causes an internal compiler error with CCL 1.11.
 	  (declare (optimize (speed 3) (safety #-ccl 0 #+ccl 1)))
-	;; Compute FFT of shorter complex vector.  NOTE: the result
-	;; returned by fft has scaled the output by the length of
-	;; z.  That is, divided by n/2.  For our final result, we want to
-	;;     divide by n, so in the following bits of code, we have an
-	;;     extra factor of 2 to divide by.
+	;; Compute FFT of shorter complex vector.
 	(setf z (fft-r2-nn z))
 
 	;; Reconstruct the FFT of the original from the parts
@@ -516,6 +496,11 @@ into the original datatype of `input'"
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
+;;; Maxima's inverse RFFT routine.
+;;;
+;;; The input is assumed to consist of objects that can be converted
+;;; to a complex-valued floats.  The input MUST have a lenght that is
+;;; one more than a power of two, as is returned by RFFT.
 (defun $inverse_rfft (input)
   (multiple-value-bind (ft from-lisp)
       (find-irfft-converters input "inverse_rfft")
@@ -549,6 +534,9 @@ into the original datatype of `input'"
 	(funcall from-lisp z)))))
 
 ;;; Bigfloat FFT
+;;;
+;;; The same set of FFT routines as for floats, but modified to return
+;;; a bigfloat result.
 
 ;; Convert a sequence to an array of complex bigfloat numbers.  These
 ;; probably don't have to be very fast because the conversions to
@@ -774,6 +762,8 @@ into the original datatype of `input'"
 	;;(format t "inverse = ~A~%" inverse)
 	(funcall from-lisp inverse))))))
 
+;;; Bigfloat implementation of Fast Fourier Transform using a radix-2
+;;; algorithm with inputs and outputs in natural order.
 (in-package "BIGFLOAT")
 
 (defvar *bf-sincos-tables*
@@ -782,6 +772,9 @@ into the original datatype of `input'"
   array of exp(2*pi*i/N), where N is the FFT size.")
 
 (defun sincos-table (m)
+  "For an FFT order of M, return an array of complex bigfloat twiddle
+  factors for the FFT. The array contains the values
+  exp(i*pi*k/2^(m-1))."
   (cond ((gethash (list m maxima::fpprec) *bf-sincos-tables*))
 	(t
 	 ;; Need to create the sincos table.  Only need to have a half
@@ -801,8 +794,17 @@ into the original datatype of `input'"
 	   table))))
   
   
-;; Simple Radix-2 out-of-place FFT with in-order input and output.
+;; Fast Fourier Transform using a simple radix-2 implementation with
+;; inputs and outputs in natural order.  The definition of the forward
+;; FFT follows Maxima's definition of the forward FFT.  The input and
+;; output are assumed to be bigfloats objects.
 (defun fft-r2-nn (x &key (inverse-fft-p nil))
+  "Compute the FFT of X which MUST be a specialzed vector of complex
+  bigfloat's whose length MUST be a power of 2.  If INVERSE-FFT-P is
+  non-NIL, the inverse FFT is computed.  The scaling by 1/N is
+  included in the inverse FFT.
+
+  The contents of the input X may be destroyed."
   (let* ((n (length x))
 	 (half-n (ash n -1))
 	 (pairs-in-group (ash n -1))
