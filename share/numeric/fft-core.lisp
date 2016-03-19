@@ -632,7 +632,9 @@ Returns transformed real and imaginary arrays."
 
 ;;; Bigfloat FFT
 
-;; Convert a sequence to an array of complex bigfloat numbers.
+;; Convert a sequence to an array of complex bigfloat numbers.  These
+;; probably don't have to be very fast because the conversions to
+;; bigfloat and back are relatively slow.
 (defun seq->bfft-array (seq)
   (map 'vector #'(lambda (z)
 		   (destructuring-bind (rp . ip)
@@ -665,49 +667,54 @@ Returns transformed real and imaginary arrays."
     (setf (symbol-array (mget maxima-symbol 'array)) lisp-array)
     maxima-symbol))
 
+(defun find-bf-fft-converter (input)
+  (cond (($listp input)
+	 (values
+	  (mlist->bfft-array input)
+	  #'bfft-array->mlist))
+	((arrayp input)
+	 (values
+	  (lisp-array->bfft-array input)
+	  #'bfft-array->lisp-array))
+	((and (symbolp input) (symbol-array (mget input 'array)))
+	 (values
+	  (lisp-array->bfft-array (symbol-array (mget input 'array)))
+	  #'bfft-array->maxima-symbol-array))
+	(t
+	 (merror "bf_fft: input is not a list or an array."))))
+
 ;; Bigfloat forward and inverse FFTs.  Length of the input must be a
 ;; power of 2.
 (defun $bf_fft (input)
-  (multiple-value-bind (convert unconvert)
-      (cond (($listp input)
-	     (values #'mlist->bfft-array
-		     #'bfft-array->mlist))
-	    ((arrayp input)
-	     (values #'lisp-array->bfft-array
-		     #'bfft-array->lisp-array))
-	    ((and (symbolp input) (symbol-array (mget input 'array)))
-	     (values #'(lambda (x)
-			 (lisp-array->bfft-array
-			  (symbol-array (mget x 'array))))
-		     #'bfft-array->maxima-symbol-array))
-	    (t
-	     (merror "bf_fft: input is not a list or an array.")))
-    (let* ((x (funcall convert input)))
-      (unless (= (length x) (ash 1 (log-base2 (length x))))
-	(merror "fft: size of input must be a power of 2, not ~M" (length x)))
-      (if (> (length x) 1)
-	  (funcall unconvert (bigfloat::fft-r2-nn x))
-	  (funcall unconvert x)))))
+  (multiple-value-bind (z from-lisp)
+      (find-bf-fft-converter input)
+    (let ((n (length z)))
+    (unless (= n (ash 1 (log-base2 n)))
+	(merror "fft: size of input must be a power of 2, not ~M" n))
+      (if (> n 1)
+	  (funcall from-lisp (bigfloat::fft-r2-nn z))
+	  (funcall from-lisp z)))))
 
+(defun find-bf-rfft-converter (input)
+  (cond (($listp input)
+	 (values (mlist->bfft-array input)
+		 #'bfft-array->mlist))
+	((arrayp input)
+	 (values (lisp-array->bfft-array input)
+		 #'bfft-array->lisp-array))
+	((and (symbolp input) (symbol-array (mget input 'array)))
+	 (values (lisp-array->bfft-array (symbol-array (mget input 'array)))
+		 #'bfft-array->maxima-symbol-array))
+	(t
+	 (merror "bf_fft: input is not a list or an array."))))
+  
 (defun $bf_inverse_fft (input)
-  (multiple-value-bind (convert unconvert)
-      (cond (($listp input)
-	     (values #'mlist->bfft-array
-		     #'bfft-array->mlist))
-	    ((arrayp input)
-	     (values #'lisp-array->bfft-array
-		     #'bfft-array->lisp-array))
-	    ((and (symbolp input) (symbol-array (mget input 'array)))
-	     (values #'(lambda (x)
-			 (lisp-array->bfft-array
-			  (symbol-array (mget x 'array))))
-		     #'bfft-array->maxima-symbol-array))
-	    (t
-	     (merror "bf_fft: input is not a list or an array.")))
-    (let ((x (funcall convert input)))
-      (if (> (length x) 1)
-	  (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
-	  (funcall unconvert x)))))
+  (multiple-value-bind (x unconvert)
+      (find-bf-rfft-converter input)
+    (let ((n (length x)))
+	  (if (> n 1)
+	      (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
+	      (funcall unconvert x)))))
 
 (defun mlist->bf-rfft-array (object)
   (let* ((n (length (cdr object)))
@@ -791,35 +798,63 @@ Returns transformed real and imaginary arrays."
 				      (bigfloat:imagpart (aref z 0)))))
 	(funcall from-lisp result)))))
 
+(defun find-bf-irfft-converters (object maxima-function-name)
+  (cond (($listp object)
+	 (values
+	  (mlist->bfft-array object)
+	  #'(lambda (obj)
+	      (let (result)
+		(map nil #'(lambda (z)
+			     (push (to (bigfloat:realpart z)) result)
+			     (push (to (bigfloat:imagpart z)) result))
+		     obj)
+		(cons '(mlist simp) (nreverse result))))))
+	((arrayp object)
+	 (values
+	  (lisp-array->bfft-array object)
+	  #'(lambda (obj)
+	      (let ((result (make-array (* 2 (length obj)))))
+		(loop for k from 0 by 2
+		      for z across obj
+		      do
+			 (progn
+			   (setf (aref result k) (realpart z))
+			   (setf (aref result (1+ k)) (imagpart z))))
+		result))))
+	(t
+	 (merror "~A: input is not a list or an array." maxima-function-name))))
+  
 (defun $bf_inverse_rfft (input)
-  (let* ((n (1- (length (cdr input))))
-	 (ft (mlist->bfft-array input))
-	 (z (make-array n))
-	 (order (log-base2 n))
-	 (sincos (sincos-table (1+ order))))
+  (multiple-value-bind (ft from-lisp)
+      (find-bf-irfft-converters input "bf_inverse_rfft")
+  (let* ((n (1- (length ft))))
+    (when (< n 2)
+      ;; Just use the regular inverse fft to compute these values
+      ;; because inverse_rfft below doesn't work for these cases.
+      (return-from $bf_inverse_rfft ($bf_inverse_fft input)))
 
-    (unless (= n (ash order 1))
-      (merror "bf_inverse_fft: input length must be one more than a power of two, not ~M" (1+ n)))
+    (let* ((z (make-array n))
+	   (order (log-base2 n))
+	   (sincos (bigfloat::sincos-table (1+ order))))
 
-    (loop for k from 0 below n
-	  do
-	     (let ((evenpart (bigfloat:+ (aref ft k)
-					 (bigfloat:conjugate (aref ft (- n k)))))
-		   (oddpart (bigfloat:* (bigfloat:- (aref ft k)
-						    (bigfloat:conjugate (aref ft (- n k))))
-					(bigfloat:conjugate (aref sincos k)))))
-	       (setf (aref z k)
-		     (bigfloat:+ evenpart
-				 (bigfloat:* #c(0 1) oddpart)))))
+      (unless (= n (ash 1 order))
+	(merror "bf_inverse_fft: input length must be one more than a power of two, not ~M" (1+ n)))
 
-    ;;(format t "z = ~A~%" z)
-    (let ((inverse (bigfloat::fft-r2-nn z :inverse-fft-p t))
-	  result)
-      (map nil #'(lambda (z)
-		   (push (bigfloat:realpart z) result)
-		   (push (bigfloat:imagpart z) result))
-	   inverse)
-      (cons '(mlist simp) (nreverse result)))))
+      (loop for k from 0 below n
+	    do
+	       (let ((evenpart (bigfloat:+ (aref ft k)
+					   (bigfloat:conjugate (aref ft (- n k)))))
+		     (oddpart (bigfloat:* (bigfloat:- (aref ft k)
+						      (bigfloat:conjugate (aref ft (- n k))))
+					  (bigfloat:conjugate (aref sincos k)))))
+		 (setf (aref z k)
+		       (bigfloat:+ evenpart
+				   (bigfloat:* #c(0 1) oddpart)))))
+
+      ;;(format t "z = ~A~%" z)
+      (let ((inverse (bigfloat::fft-r2-nn z :inverse-fft-p t)))
+	;;(format t "inverse = ~A~%" inverse)
+	(funcall from-lisp inverse))))))
 
 (in-package "BIGFLOAT")
 
