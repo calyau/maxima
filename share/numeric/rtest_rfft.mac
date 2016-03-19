@@ -121,6 +121,14 @@ errcatch(bf_rfft([1,2,3]));
  0);
 0;
 
+(compare_bf_inverse_rfft(tol, x) :=
+  block([rft: bf_inverse_rfft(bf_rfft(x)),
+         maxdiff],
+    maxdiff: lreduce('max, abs(x - rft)),
+    closeto(maxdiff, tol)),
+ 0);
+0;
+
 compare_bf_rfft(0, makelist(k, k, 1, 4));
 true;
 
@@ -133,4 +141,20 @@ true;
 compare_bf_rfft(2.4145b-14, makelist(k, k, 1, 4096));
 true;
 
+bf_inverse_rfft([]);
+[];
 
+bf_inverse_rfft([1.5 ,-0.5]);
+[1b0, 2b0];
+
+compare_bf_inverse_rfft(0, makelist(k, k, 1, 4));
+true;
+
+compare_bf_inverse_rfft(3.3088b-24, makelist(k, k, 1, 16));
+true;
+
+compare_bf_inverse_rfft(8.4704b-22, makelist(k, k, 1, 1024));
+true;
+
+compare_bf_inverse_rfft(5.0822b-21, makelist(k, k, 1, 4096));
+true;
