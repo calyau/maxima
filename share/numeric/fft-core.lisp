@@ -532,12 +532,16 @@ Returns transformed real and imaginary arrays."
     (declare (type (simple-array (complex double-float) (*)) z))
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
+      ;; This declaration causes CCL to generate incorrect code for at
+      ;; least version 1.11 DarwinX8664 on OSX 10.11.3.  Disable it.
+      #-ccl
       (declare (type (simple-array (complex double-float) (*)) result))
 
       (when (< n 3)
 	(return-from $rfft ($fft input)))
       (locally
-	  (declare (optimize (speed 3) (safety 0)))
+	  ;; Setting safety to 0 causes an internal compiler error with CCL 1.11.
+	  (declare (optimize (speed 3) (safety #-ccl 0 #+ccl 1)))
 	;; Compute FFT of shorter complex vector.  NOTE: the result
 	;; returned by fft has scaled the output by the length of
 	;; z.  That is, divided by n/2.  For our final result, we want to
@@ -545,13 +549,12 @@ Returns transformed real and imaginary arrays."
 	;;     extra factor of 2 to divide by.
 	(setf z (fft-r2-nn z))
 
-	;;(format t "z = ~A~%" z)
 	;; Reconstruct the FFT of the original from the parts
 	(setf (aref result 0)
 	      (complex (* 0.5
 			  (+ (realpart (aref z 0))
 			     (imagpart (aref z 0))))))
-
+	  
 	(let ((sincos (sincos-table (log-base2 n)))
 	      (n/2 (length z)))
 	  (declare (type (simple-array (complex double-float) (*)) sincos))
