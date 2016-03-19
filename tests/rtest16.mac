@@ -1969,3 +1969,19 @@ true;
 /* Test from the commit 576c7508 */
 ceiling((207300647060*%e^-563501581931)/(403978495031*%e^-1098127402131));
 ceiling((207300647060*%e^534625820200)/403978495031);
+
+/* Bug #3098: numerical evaluation of li[3] */
+li[3](0.0);
+0.0;
+
+closeto(li[3](1.0) - zeta(3.0), 1e-15);
+true;
+
+closeto(li[3](0.5) - li[3](1/2), 1e-15);
+true;
+
+closeto(li[3](-2.0) - float(subst(z=-2.0, li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2))), 1e-15);
+true;
+
+closeto(abs(li[3](2.0) - expand(float(subst(z=2.0, li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2))))), 1e-15);
+true;
