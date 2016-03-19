@@ -252,7 +252,7 @@ into the original datatype of `input'"
 			      (mul '$%i (imagpart item))))))
     z))
   
-(defun find-complex-converters (object &optiona (maxima-function-name "$fft"))
+(defun find-complex-converters (object &optional (maxima-function-name "$fft"))
   "Convert a Maxima OBJECT to a specialized CL vector suitable for the
   complex FFT routines.  Two values are returned: The specialized
   vector and a function that will convert the result of the FFT
