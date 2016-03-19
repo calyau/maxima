@@ -56,7 +56,7 @@ true;
 compare_rfft(1.2413e-16, makelist(k, k, 1, 16));
 true;
 
-compare_rfft(8.544e-14, makelist(k, k, 1, 1024));
+compare_rfft(9.8712e-14, makelist(k, k, 1, 1024));
 true;
 
 compare_rfft(3.8703e-13, makelist(k, k, 1, 4096));
@@ -80,7 +80,7 @@ true;
 compare_inverse_rfft(3.9791e-13, makelist(k, k, 1, 1024));
 true;
 
-compare_inverse_rfft(2.0464e-12, makelist(k, k, 1, 4096));
+compare_inverse_rfft(2.2738e-12, makelist(k, k, 1, 4096));
 true;
 
 /* verify that bf_rfft does not modify its argument */
