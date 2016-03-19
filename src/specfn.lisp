@@ -831,11 +831,11 @@
     (cond ((zerop x)
 	   0.0)
 	  ((= x 1)
-	   (maxima::$zeta (float 3 x)))
+	   (maxima::$zeta (maxima::to (float 3 x))))
 	  ((= x -1)
 	   ;; li[3](-1) = -(1-2^(1-3))*li[3](1)
 	   ;;           = 3/4*zeta(3)
-	   (* 3/4 (maxima::$zeta (float 3 x))))
+	   (* 3/4 (to (maxima::$zeta (maxima::to (float 3 x))))))
 	  ((> (abs x) 1)
 	   ;; For z not in the interval (0, 1) and for integral n, we
 	   ;; have the identity:
