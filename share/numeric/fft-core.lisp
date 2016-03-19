@@ -132,18 +132,6 @@ into the original datatype of `input'"
       ;; return the same data type as was the input
       (funcall reverse-convert realparts imagparts))))
 
-;;
-;; Maxima functions fft() and inverse_fft()
-;;
-
-#+nil
-(defun $fft (input)
-  (fft+ifft-common input #'forward-fft "fft"))
-
-#+nil
-(defun $inverse_fft (input)
-  (fft+ifft-common input #'inverse-fft "inverse_fft"))
-
 ;; These functions perhaps need revision if they are
 ;; needed at all. Output ignores the type of input.
 (defun $recttopolar (rary iary)
@@ -181,6 +169,8 @@ into the original datatype of `input'"
 
 (declaim (inline log-base2))
 (defun log-base2 (n)
+  "Return the M such that 2^m <= N.  If N is a power of two, M =
+  log2(N).  Expected usage is for the case of N a power of two."
   (declare (type (and fixnum (integer 0)) n)
 	   (optimize (speed 3)))
   ;; Just find m such that 2^m <= n < 2^(m+1).  It's up to the caller
@@ -195,6 +185,9 @@ into the original datatype of `input'"
   array of exp(2*pi*i/N), where N is the FFT size.")
 
 (defun sincos-table (m)
+  "For an FFT order of M, return an array of complex twiddle factors
+  for the FFT. The array contains the values exp(i*pi*k/2^(m-1))."
+  (declare (type (and fixnum unsigned-byte) m))
   (cond ((gethash m *sincos-tables*))
 	(t
 	 ;; Need to create the sincos table.  Only need to have a half
@@ -216,121 +209,9 @@ into the original datatype of `input'"
 	   (setf (gethash m *sincos-tables*) table)
 	   table))))
 
-;; Warning: What this routine thinks is the foward or inverse
-;; direction is the "engineering" definition used in Oppenheim and
-;; Schafer.  This is usually the opposite of the definitions used in
-;; math, and is the opposite used by maxima.
-;;
-;; Scaling and bit-reversed ordering is not done by this routine.
-#+nil
-(defun fft-dif-internal (vec-r vec-i &optional direction)
-  "Internal FFT routine for decimation-in-frequency FFT
-fft-dif-internal (vec &optional direction)
-
-	vec		-- simple-array of elements.
-	direction	-- NIL for forward, non-NIL for inverse
-			   Default is forward.
-
-The result is returned in vec."
-  (declare (type (simple-array flonum (*)) vec-r vec-i)
-	   (optimize speed))
-  (let* ((size (length vec-r))
-	 (le size)
-	 (m (log-base2 le))
-	 (sincos (sincos-table m))
-	 (dir (if direction 1 -1)))
-    (declare (fixnum size le)
-	     (type (simple-array #+(and cmu flonum-double-double) (complex double-double-float)
-				 #-flonum-double-double (complex double-float)
-				 (*))
-		   sincos))
-    (unless (= size (ash 1 m))
-      (merror "fft: size of array must be a power of 2; found: ~:M" size))
-    (loop for level of-type fixnum from 0 below m
-	  for repetition of-type fixnum = 1 then (ash repetition 1)
-	  do
-	  (let* ((le1 (truncate le 2)))
-	    (declare (type fixnum le1))
-	    (loop for j of-type fixnum from 0 below le1
-	       for phase of-type fixnum from 0 by repetition
-	       do
-	       (let* ((u (aref sincos phase))
-		      (u-r (realpart u))
-		      (u-i (* dir (imagpart u))))
-		 (declare (type #+(and cmu flonum-double-double) (complex double-double-float)
-				#-flonum-double-double (complex double-float)
-				u)
-			  (type flonum u-r u-i))
-		 (loop for k of-type fixnum from j below size by le
-		    do
-		    (let* ((kp (+ k le1))
-			   (tmp-r (+ (aref vec-r k) (aref vec-r kp)))
-			   (tmp-i (+ (aref vec-i k) (aref vec-i kp)))
-			   (diff-r (- (aref vec-r k) (aref vec-r kp)))
-			   (diff-i (- (aref vec-i k) (aref vec-i kp))))
-		      (declare (fixnum kp)
-			       (type flonum tmp-r tmp-i))
-		      (psetf (aref vec-r kp) (- (* u-r diff-r) (* u-i diff-i))
-			     (aref vec-i kp) (+ (* u-r diff-i) (* u-i diff-r)))
-		      (setf (aref vec-r k) tmp-r)
-		      (setf (aref vec-i k) tmp-i)))))
-	    (setq le le1))))
-  (values vec-r vec-i))
-
-#+nil
-(defun fft-bit-reverse (vec-r vec-i)
-  "fft-bit-reverse (vec)
-
-Reorder vec in bit-reversed order.  The length of vec
-must be a power of 2."
-  (declare (type (simple-array flonum (*)) vec-r vec-i)
-	   (optimize speed))
-  (let* ((size (length vec-r))
-	 (n/2 (/ size 2))
-	 (j 0)
-	 (k 0))
-    (declare (type fixnum size n/2 j k))
-    (dotimes (i (- size 1))
-      (declare (fixnum i))
-      (when (< i j)
-	(rotatef (aref vec-r i) (aref vec-r j))
-	(rotatef (aref vec-i i) (aref vec-i j)))
-      (setq k n/2)
-      (do* ()
-	  ((> k j))
-	(setq j (- j k))
-	(setq k (ash k -1)))
-      (setq j (+ j k)))))
-
-#+nil
-(defun forward-fft (x-real x-imag)
-  "forward-fft
-Takes two lisp arrays, one for real parts
-and the other for imaginary parts.
-Returns transformed real and imaginary arrays.
-A normalisation is performed."
-  (let ((size (length x-real)))
-    (when (> size 1)
-      (fft-dif-internal x-real x-imag t)
-      (fft-bit-reverse x-real x-imag)
-      (let ((1/N (/ (coerce 1 'flonum) size)))
-        (dotimes (k size) (setf (aref x-real k) (* (aref x-real k) 1/N)))
-        (dotimes (k size) (setf (aref x-imag k) (* (aref x-imag k) 1/N)))))
-    (values x-real x-imag)))
-
-#+nil
-(defun inverse-fft (x-real x-imag)
-  "inverse-fft
-Takes two lisp arrays, one for real parts
-and the other for imaginary parts.
-Returns transformed real and imaginary arrays."
-  (let ((size (length x-real)))
-    (when (> size 1)
-      (fft-dif-internal x-real x-imag nil)
-      (fft-bit-reverse x-real x-imag)))
-  (values x-real x-imag))
-
 (defun mlist->complex-cl-array (object)
+  "Convert Maxima list to a (simple-array (complex double-float) (*))
+  with the same values."
   (let ((z (make-array (1- (length object)) :element-type '(complex double-float))))
     (loop for k of-type fixnum from 0
 	  for x in (cdr object)
@@ -341,6 +222,8 @@ Returns transformed real and imaginary arrays."
     z))
 
 (defun complex-cl-array->mlist (array)
+  "Convert a CL array of complex values to a Maxima list containing
+  the same values."
   (declare (type (simple-array (complex double-float) (*)) array))
   (cons '(mlist simp)
 	(loop for w of-type (complex double-float) across array
@@ -348,6 +231,8 @@ Returns transformed real and imaginary arrays."
 			   (mul (imagpart w) '$%i)))))
 
 (defun array->complex-cl-array (array)
+  "Convert a CL vector of maxima values to a (simsple-array (complex
+  double-float) (*)) with the same complex values."
   (let* ((n (length array))
 	 (z (make-array n :element-type '(complex double-float))))
     (dotimes (k n)
@@ -356,6 +241,8 @@ Returns transformed real and imaginary arrays."
     z))
 
 (defun complex-cl-array->vector (array)
+  "Convert (simple-array (complex double-float) (*)) to a CL vector of
+  maxima expressions of the same value."
   (declare (type (simple-array (complex double-float) (*)) array))
   (let* ((n (length array))
 	 (z (make-array n)))
@@ -365,7 +252,12 @@ Returns transformed real and imaginary arrays."
 			      (mul '$%i (imagpart item))))))
     z))
   
-(defun find-complex-converters (object maxima-function-name)
+(defun find-complex-converters (object &optiona (maxima-function-name "$fft"))
+  "Convert a Maxima OBJECT to a specialized CL vector suitable for the
+  complex FFT routines.  Two values are returned: The specialized
+  vector and a function that will convert the result of the FFT
+  routine to a Maxima object of the same type as
+  OBJECT. MAXIMA-FUNCTION-NAME is a string to use for error messages."
   (cond (($listp object)
 	 (values
 	  (mlist->complex-cl-array object)
@@ -390,7 +282,16 @@ Returns transformed real and imaginary arrays."
 	(t
 	 (merror "~A: input is not a list or an array." maxima-function-name))))
 
+;; Fast Fourier Transform using a simple radix-2 implementation with
+;; inputs and outputs in natural order.  The definition of the forward
+;; FFT follows Maxima's definition of the forward FFT.
 (defun fft-r2-nn (x &key (inverse-fft-p nil))
+  "Compute the FFT of X which MUST be a specialzed vector of complex
+  double-float's whose length MUST be a power of 2.  If INVERSE-FFT-P
+  is non-NIL, the inverse FFT is computed.  The scaling by 1/N is
+  included in the inverse FFT.
+
+  The contents of the input X may be destroyed."
   (declare (type (simple-array (complex double-float) (*)) x))
   (let* ((n (length x))
 	 (half-n (ash n -1))
@@ -448,9 +349,10 @@ Returns transformed real and imaginary arrays."
 	    (let ((w (aref a k)))
 	      (setf (aref a k) (/ w n))))))))
 
+;; Maxima's forward FFT routine.
 (defun $fft (input)
   (multiple-value-bind (z from-lisp)
-      (find-complex-converters input "$fftip")
+      (find-complex-converters input)
     (let* ((size (length z))
 	   (order (log-base2 size)))
       (unless (= size (ash 1 order))
@@ -459,9 +361,10 @@ Returns transformed real and imaginary arrays."
 	(setf z (fft-r2-nn z)))
       (funcall from-lisp z))))
 
+;; Maxima's inverse FFT routine.
 (defun $inverse_fft (input)
   (multiple-value-bind (z from-lisp)
-      (find-complex-converters input "$fftip")
+      (find-complex-converters input "$inverse_fft")
     (let* ((size (length z))
 	   (order (log-base2 size)))
       (unless (= size (ash 1 order))
@@ -470,7 +373,11 @@ Returns transformed real and imaginary arrays."
 	(setf z (fft-r2-nn z :inverse-fft-p t)))
       (funcall from-lisp z))))
 
+;;; RFFT
 (defun mlist->rfft-array (object)
+  "Convert Maxima list to a (simple-array (complex double-float) (*))
+  with the same values suitable for as the input for the RFFT routine.
+  The maxima list is assumed to consist only of real values."
   (let* ((n (length (cdr object)))
 	 (z (make-array (ash n -1) :element-type '(complex double-float))))
     (loop for k from 0
@@ -480,14 +387,11 @@ Returns transformed real and imaginary arrays."
 	     (setf (aref z k) (complex ($float re) ($float im))))
     z))
 
-(defun rfft-array->mlist (array)
-  (cons '(mlist simp)
-	(map 'list #'(lambda (z)
-		       (add (realpart z)
-			    (mul '$%i (imagpart z))))
-	     array)))
-
 (defun array->rfft-array (array)
+  "Convert CL array of real (Maxima) values to a (simple-array
+  (complex double-float) (*)) with the same values suitable for as the
+  input for the RFFT routine.  The CL array is assumed to consist only
+  of real values."
   (let* ((n (length array))
 	 (z (make-array (ash n -1) :element-type '(complex double-float))))
     (loop for k from 0 below n by 2
@@ -497,7 +401,13 @@ Returns transformed real and imaginary arrays."
 				       ($float (aref array (1+ k))))))
     z))
   
-(defun find-rfft-converters (object maxima-function-name)
+(defun find-rfft-converters (object &optional (maxima-function-name "$rfft"))
+  "Convert a Maxima OBJECT to a specialized CL vector suitable for the
+  RFFT routines.  Two values are returned: The specialized vector and
+  a function that will convert the result of the RFFT routine to a
+  Maxima object of the same type as OBJECT. MAXIMA-FUNCTION-NAME is a
+  string to use for error messages."
+
   (cond (($listp object)
 	 (values
 	  (mlist->rfft-array object)
@@ -528,7 +438,7 @@ Returns transformed real and imaginary arrays."
 
 (defun $rfft (input)
   (multiple-value-bind (z from-lisp)
-      (find-rfft-converters input "rfft")
+      (find-rfft-converters input)
     (declare (type (simple-array (complex double-float) (*)) z))
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
@@ -575,7 +485,12 @@ Returns transformed real and imaginary arrays."
 		       (imagpart (aref z 0))))))))
 	(funcall from-lisp result))))
 
-(defun find-irfft-converters (object maxima-function-name)
+(defun find-irfft-converters (object &optional (maxima-function-name "$inverse_rfft"))
+  "Convert a Maxima OBJECT to a specialized CL vector suitable for the
+  inverse RFFT routines.  Two values are returned: The specialized
+  vector and a function that will convert the result of the inverse
+  RFFT routine to a Maxima object of the same type as
+  OBJECT. MAXIMA-FUNCTION-NAME is a string to use for error messages."
   (cond (($listp object)
 	 (values
 	  (mlist->complex-cl-array object)
