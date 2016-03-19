@@ -78,7 +78,14 @@
                    (power (take '(%log) 2) 2))))))
 
 (defun li3simp (arg)
-  (cond ((mnumericalp arg) (li3numer (float arg)))
+  (cond ((or (bigfloat-numerical-eval-p arg)
+	     (complex-bigfloat-numerical-eval-p arg))
+	 (to (bigfloat::li3numer (bigfloat:to ($bfloat arg)))))
+	((or (float-numerical-eval-p arg)
+	     (complex-float-numerical-eval-p arg)
+	     (bigfloat-numerical-eval-p arg)
+	     (complex-bigfloat-numerical-eval-p arg))
+	 (to (bigfloat::li3numer (bigfloat:to ($float arg)))))
         ((alike1 arg '((rat) 1 2))
          (add (mul '((rat simp) 7 8) (take '(%zeta) 3))
               (mul (div (take '(%zeta) 2) -2) (take '(%log) 2))
@@ -171,78 +178,6 @@
 			  (/ (cl:expt (float pi) 2) 6)))))))
     (complexify (li2 y))))
 
-
-(defun li3numer (x)
-  ;; If |x| < series-threshold, the series is used.
-  (let ((series-threshold 0.8))
-    (cond ((zerop x)
-	   0.0)
-	  ((= x 1)
-	   ($zeta 3.0))
-	  ((= x -1)
-	   ;; li[3](-1) = -(1-2^(1-3))*li[3](1)
-	   ;;           = 3/4*zeta(3)
-	   (* 3/4 ($zeta 3.0)))
-	  ((> (abs x) 1)
-	   ;; For z not in the interval (0, 1) and for integral n, we
-	   ;; have the identity:
-	   ;;
-	   ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
-	   ;;               + 2 * sum(li[2*r](-1)/(n-2*r)!*log(-z)^(n-2*r), r, 1, floor(n/2))
-	   ;;
-	   ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog/17/02/01/01/0008/)
-	   ;;
-	   ;; In particular for n = 3:
-	   ;;
-	   ;; li[3](z) = li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2)
-	   (let* ((lg (log (- x)))
-		  (dpi (coerce pi 'double-float))
-		  (result (- (li3numer (/ x))
-			     (* (/ lg 6)
-				(+ (* lg lg) (* dpi dpi))))))
-	     (if (complexp result)
-		 (add (realpart result)
-		      (mul '$%i (imagpart result)))
-		 result)))
-	  ((> (abs x) series-threshold)
-	   ;; The series converges too slowly so use the identity:
-	   ;;
-	   ;;   li[3](-x/(1-x)) + li[3](1-x) + li[3](x)
-	   ;;     = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
-	   ;;
-	   ;; Or
-	   ;;
-	   ;;   li[3](x) = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
-	   ;;      - li[3](-x/(1-x)) - li[3](x)
-	   (let* ((dpi (coerce cl:pi 'double-float))
-		  (u (log x))
-		  (s (/ (* u u u) 6))
-		  (xc (- 1 x)))
-	     (decf s (* 0.5 u u (log xc)))
-	     (incf s (/ (* dpi dpi u) 6))
-	     (decf s (li3numer (- (/ xc x))))
-	     (decf s (li3numer xc))
-	     (incf s (li3numer 1))))
-	  (t
-	   ;; Sum the power series.  threshold determines when the
-	   ;; summation has converted.  max-terms stops the series
-	   ;; evaluations (with an error) in case roundoff is
-	   ;; preventing us from reaching the threshold.
-	   (let* ((threshold 1.1e-16)
-		  (max-terms 100)
-		  (p (* x x x))
-		  (term (/ p 27)))
-	     (incf term (* 0.125 x x))
-	     (incf term x)
-	     (do* ((k 4 (1+ k))
-		   (p1 (* p x) (* p1 x))
-		   (h (/ p1 (* k k k)) (/ p1 (* k k k)))
-		   (s h (+ s h)))
-		  ((<= (abs (/ h s)) threshold)
-		   (+ s term))
-	       (when (> k max-terms)
-		 (merror (intl:gettext "li[3](~M): series failed converge after ~M terms.")
-			 x max-terms))))))))
 
 (defvar *li2* (make-array 15. :initial-contents '(14.0 1.93506430 .166073033 2.48793229e-2
 						  4.68636196e-3 1.0016275e-3 2.32002196e-4
@@ -887,3 +822,75 @@
      ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
       (to (bigfloat::lambert-w-k k (bigfloat:to x))))
      (t (list '(%generalized_lambert_w simp) k x)))))
+
+(in-package "BIGFLOAT")
+
+(defun li3numer (x)
+  ;; If |x| < series-threshold, the series is used.
+  (let ((series-threshold 0.8))
+    (cond ((zerop x)
+	   0.0)
+	  ((= x 1)
+	   (maxima::$zeta (float 3 x)))
+	  ((= x -1)
+	   ;; li[3](-1) = -(1-2^(1-3))*li[3](1)
+	   ;;           = 3/4*zeta(3)
+	   (* 3/4 (maxima::$zeta (float 3 x))))
+	  ((> (abs x) 1)
+	   ;; For z not in the interval (0, 1) and for integral n, we
+	   ;; have the identity:
+	   ;;
+	   ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+	   ;;               + 2 * sum(li[2*r](-1)/(n-2*r)!*log(-z)^(n-2*r), r, 1, floor(n/2))
+	   ;;
+	   ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog/17/02/01/01/0008/)
+	   ;;
+	   ;; In particular for n = 3:
+	   ;;
+	   ;; li[3](z) = li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2)
+	   (let* ((lg (log (- x)))
+		  (dpi (%pi x))
+		  (result (- (li3numer (/ x))
+			     (* (/ lg 6)
+				(+ (* lg lg) (* dpi dpi))))))
+		 result))
+	  ((> (abs x) series-threshold)
+	   ;; The series converges too slowly so use the identity:
+	   ;;
+	   ;;   li[3](-x/(1-x)) + li[3](1-x) + li[3](x)
+	   ;;     = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
+	   ;;
+	   ;; Or
+	   ;;
+	   ;;   li[3](x) = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
+	   ;;      - li[3](-x/(1-x)) - li[3](x)
+	   (let* ((dpi (%pi x))
+		  (u (log x))
+		  (s (/ (* u u u) 6))
+		  (xc (- 1 x)))
+	     (decf s (* 0.5 u u (log xc)))
+	     (incf s (/ (* dpi dpi u) 6))
+	     (decf s (li3numer (- (/ xc x))))
+	     (decf s (li3numer xc))
+	     (incf s (li3numer 1))))
+	  (t
+	   ;; Sum the power series.  threshold determines when the
+	   ;; summation has converted.  max-terms stops the series
+	   ;; evaluations (with an error) in case roundoff is
+	   ;; preventing us from reaching the threshold.
+	   (let* ((threshold (epsilon x))
+		  (max-terms 100)
+		  (p (* x x x))
+		  (term (/ p 27)))
+	     (incf term (* 0.125 x x))
+	     (incf term x)
+	     (do* ((k 4 (1+ k))
+		   (p1 (* p x) (* p1 x))
+		   (h (/ p1 (* k k k)) (/ p1 (* k k k)))
+		   (s h (+ s h)))
+		  ((<= (abs (/ h s)) threshold)
+		   (+ s term))
+	       (when (> k max-terms)
+		 (maxima::merror (intl:gettext "li[3](~M): series failed converge after ~M terms.")
+			 x max-terms))))))))
+
