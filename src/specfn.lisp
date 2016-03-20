@@ -72,6 +72,10 @@
 
 (defun li2simp (arg)
   (cond ((mnumericalp arg) (li2numer (float arg)))
+	((or (complex-float-numerical-eval-p arg)
+	     (bigfloat-numerical-eval-p arg)
+	     (complex-bigfloat-numerical-eval-p arg))
+	 (to (bigfloat::li2numer (bigfloat:to ($bfloat arg)))))
         ((alike1 arg '((rat) 1 2))
          (add (div (take '(%zeta) 2) 2)
               (mul '((rat simp) -1 2)
@@ -879,7 +883,6 @@
 	   ;; evaluations (with an error) in case roundoff is
 	   ;; preventing us from reaching the threshold.
 	   (let* ((threshold (epsilon x))
-		  (max-terms 100)
 		  (p (* x x x))
 		  (term (/ p 27)))
 	     (incf term (* 0.125 x x))
@@ -889,8 +892,45 @@
 		   (h (/ p1 (* k k k)) (/ p1 (* k k k)))
 		   (s h (+ s h)))
 		  ((<= (abs (/ h s)) threshold)
-		   (+ s term))
-	       (when (> k max-terms)
-		 (maxima::merror (intl:gettext "li[3](~M): series failed converge after ~M terms.")
-			 x max-terms))))))))
+		   (+ s term))))))))
 
+(defun li2numer (z)
+  (let ((series-threshold 0.625))
+    (cond ((zerop z)
+	 0)
+	((= z 1)
+	 ;; %pi^2/6
+	 (/ (expt (%pi z) 2) 6))
+	((= z -1)
+	 ;; -%pi^2/12
+	 (/ (expt (%pi z) 2) -12))
+	((> (abs z) 1)
+	 ;; Use
+	 ;;   li[2](z) = -li[2](1/z) - 1/2*log(-z)^2 - %pi^2/6,
+	 ;;
+	 ;; valid for all z not in the intervale (0, 1).
+	 (- (+ (li2numer (/ z))
+	       (* 0.5 (expt (log (- z)) 2))
+	       (/ (expt (%pi z) 2) 6))))
+	((> (abs z) series-threshold)
+	 ;; For 0.5 <= |z|, where the series would not converge very quickly, use
+	 ;;
+	 ;;  li[2](z) = li[2](1/(1-z)) + 1/2*log(1-z)^2 - log(-z)*log(1-z) - %pi^2/6
+	 (let* ((1-z (- 1 z))
+		(ln (log 1-z)))
+	   (+ (li2numer (/ 1-z))
+	      (* 0.5 ln ln)
+	      (- (* (log (- z))
+		    ln))
+	      (- (/ (expt (%pi z) 2) 6)))))
+	(t
+	 ;; Series evaluation:
+	 ;;
+	 ;; li[2](z) = sum(z^k/k^2, k, 1, inf);
+	 (let ((eps (epsilon z)))
+	   (do* ((k 0 (1+ k))
+		 (term z (* term (/ (* z k k)
+				    (expt (1+ k) 2))))
+		 (sum z (+ term sum)))
+		((<= (abs (/ term sum)) eps)
+		 sum)))))))
