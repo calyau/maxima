@@ -893,7 +893,11 @@
 		   (+ s term))))))))
 
 (defun li2numer (z)
-  (let ((series-threshold 0.625))
+  ;; The series threshold to above sqrt(1/2) because li[2](%i) needs
+  ;; the value of li[2](1/2-%i/2), and the magnitude of the argument
+  ;; is sqrt(1/2) = 0.707.  If the threshold is below this, we get
+  ;; into an infinite recursion oscillating between the two args.
+  (let ((series-threshold .75))
     (cond ((zerop z)
 	 0)
 	((= z 1)
