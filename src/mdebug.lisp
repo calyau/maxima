@@ -654,11 +654,12 @@ Command      Description~%~
   "Print information about item")
 
 (defmacro lisp-quiet (&rest l)
+  (setq *mread-prompt* "")
   (eval (cons 'progn l))
   nil)
 
 (def-break :lisp-quiet 'lisp-quiet 
-  "Evaluate the lisp form without printing the result")
+  "Evaluate the lisp form without printing a prompt")
 
 (def-break :lisp 'lisp-eval 
   "Evaluate the lisp form following on the line")
