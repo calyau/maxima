@@ -901,16 +901,22 @@
     (cond ((zerop z)
 	 0)
 	((= z 1)
-	 ;; %pi^2/6
+	 ;; %pi^2/6.  This follows from the series.
 	 (/ (expt (%pi z) 2) 6))
 	((= z -1)
-	 ;; -%pi^2/12
+	 ;; -%pi^2/12.  From the formula
+	 ;;
+	 ;;   li[s](-1) = (2^(1-s)-1)*zeta(s)
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.03.0003.01)
 	 (/ (expt (%pi z) 2) -12))
 	((> (abs z) 1)
 	 ;; Use
 	 ;;   li[2](z) = -li[2](1/z) - 1/2*log(-z)^2 - %pi^2/6,
 	 ;;
 	 ;; valid for all z not in the intervale (0, 1).
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.17.0013.01)
 	 (- (+ (li2numer (/ z))
 	       (* 0.5 (expt (log (- z)) 2))
 	       (/ (expt (%pi z) 2) 6))))
@@ -918,6 +924,8 @@
 	 ;; For 0.5 <= |z|, where the series would not converge very quickly, use
 	 ;;
 	 ;;  li[2](z) = li[2](1/(1-z)) + 1/2*log(1-z)^2 - log(-z)*log(1-z) - %pi^2/6
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.17.0016.01)
 	 (let* ((1-z (- 1 z))
 		(ln (log 1-z)))
 	   (+ (li2numer (/ 1-z))
