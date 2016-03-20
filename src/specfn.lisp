@@ -879,9 +879,7 @@
 	     (incf s (li3numer 1))))
 	  (t
 	   ;; Sum the power series.  threshold determines when the
-	   ;; summation has converted.  max-terms stops the series
-	   ;; evaluations (with an error) in case roundoff is
-	   ;; preventing us from reaching the threshold.
+	   ;; summation has converted.
 	   (let* ((threshold (epsilon x))
 		  (p (* x x x))
 		  (term (/ p 27)))
