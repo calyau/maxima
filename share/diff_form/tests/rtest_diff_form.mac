@@ -4,6 +4,9 @@
 (load("diff_form"), 'done);
 'done$
 
+(load("diag"), 'done); /* needed by share/diff_form/poisson.mac */
+'done$
+
 /* examples are taken from share/diff_form/example.txt */
 
 /* A1.vector to form */
@@ -127,15 +130,30 @@ f_star([p1,p2,p3,q1,q2,q3],(depends([g],[p1,p2,p3,q1,q2,q3]),omega:Dp1@Dq1+Dp2@D
 Dq3*'diff(g,q3,1)+Dq2*'diff(g,q2,1)+Dq1*'diff(g,q1,1)+Dp3*'diff(g,p3,1)
 +Dp2*'diff(g,p2,1)+Dp1*'diff(g,p1,1)$
 
-/*
-FAILS:
+f_star([p1,p2,p3,q1,q2,q3],(depends([g],[p1,p2,p3,q1,q2,q3]),omega:Dp1@Dq1+Dp2@Dq2
+	+Dp3@Dq3,inner(diff(g,q1)*Dp1-diff(g,p1)*Dq1+diff(g,q2)*Dp2-diff(g,p2)*Dq2+diff(g,q3)*Dp3
+          -diff(g,p3)*Dq3,omega)));
+Dq3*'diff(g,q3,1)+Dq2*'diff(g,q2,1)+Dq1*'diff(g,q1,1)+Dp3*'diff(g,p3,1)
+                 +Dp2*'diff(g,p2,1)+Dp1*'diff(g,p1,1) $
+
+f_star([p1,q1,p2,q2,p3,q3],(depends([f,g],[p1,q1,p2,q2,p3,q3]),p_braket(f,g)));
+'diff(f,p3,1)*'diff(g,q3,1)+'diff(f,p2,1)*'diff(g,q2,1)
+                           +'diff(f,p1,1)*'diff(g,q1,1)
+                           -'diff(f,q3,1)*'diff(g,p3,1)
+                           -'diff(f,q2,1)*'diff(g,p2,1)
+                           -'diff(f,q1,1)*'diff(g,p1,1)$
 
 f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
-p_braket(f*g,h)-f*p_braket(g,h)-g*p_braket(f,h)));
+    p_braket(p_braket(f,g),h)+p_braket(p_braket(g,h),f)+p_braket(p_braket(h,f),g)));
+0$
 
-part: invalid index of list or matrix.
-#0: p_braket(_f=f,_g=g)(poisson.mac line 15)
-#1: f_star(newcoords=[p1,q1,p2,q2,p3,q3],a_form=(depends([f,g],[p1,q1,p2,q2,p3,q3]),p_braket(f,g)))
- -- an error. To debug this try: debugmode(true);
+ratsimp(f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
+      p_braket(f,g*h)-g*p_braket(f,h)-h*p_braket(f,g))));
+0$
 
-*/
+trigsimp(f_star([p,q],(P:q*cot(p),Q:log(sin(p)/q),d(P)@d(Q))));
+Dp*Dq$
+
+ratsimp(f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
+      p_braket(f*g,h)-f*p_braket(g,h)-g*p_braket(f,h))));
+0$
