@@ -1701,3 +1701,30 @@ minf;
 
 max(-inf,minf);
 minf;
+
+/* mailing list 2016-03-11: "bfloat divide bad; WAS: nonzero remainder of mod(x*x, x) where x is a small integer float or bigfloat" */
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], float(i*i)/float(i) - float(i) # 0.0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], float(i)/float(i) # 1.0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], bfloat(i*i)/bfloat(i) - bfloat(i) # 0b0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], bfloat(i)/bfloat(i) # 1b0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], mod (float(i*i), float(i)) # 0.0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], mod (float(i), float(i)) # 0.0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i*i), bfloat(i)) # 0b0));
+[];
+
+sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i), bfloat(i)) # 0b0));
+[];
+

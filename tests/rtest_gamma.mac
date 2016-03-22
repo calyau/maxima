@@ -1333,7 +1333,7 @@ fpprec:64;
 closeto(
   gamma_incomplete(0.25b0,1.50b0),
   0.1211549910403384861486034087836891246955052387140720625064500006b0,
-  1b-63);
+  1.5b-63);
 true;
 
 fpprec:128;
@@ -1342,13 +1342,13 @@ fpprec:128;
 closeto(
   gamma_incomplete(0.25b0,1.50b0),
   0.12115499104033848614860340878368912469550523871407206250645000059332022509505923467877887847273887882437030555876962014143410940b0,
-  1b-127);
+  4b-127);
 true;
 
 closeto(
   gamma_incomplete(0.25b0,1.50b0),
   1.5b0^0.25b0*expintegral_e(1.0b0-0.25b0,1.50b0),
-  1b-128);
+  5b-128);
 true;
 
 fpprec:34; /* Two extra digits to get 32 digits in the following tests */
@@ -2981,7 +2981,7 @@ true;
 relerror(
   fresnel_s(2.0b0),
   0.3434156783636982421953008159580684568865418122025247675792689204b0,
-  5.3b-64);
+  1.5b-63);
 true;
 
 relerror(
@@ -3128,7 +3128,7 @@ true;
 relerror(
   fresnel_c(2.0b0),
   0.4882534060753407545002235033572610376883671545092153829475964427b0,
-  5.0b-64);
+  5.1b-64);
 true;
 
 relerror(
@@ -3654,13 +3654,13 @@ fpprec:24;
 relerror(
  erf(inverse_erf(2b0)),
  2b0,
- 2.9b-24);
+ 5.9b-24);
 true;
 
 relerror(
  erf(inverse_erf(-2b0)),
  -2b0,
- 2.9b-24);
+ 5.9b-24);
 true;
 
 relerror(

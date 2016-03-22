@@ -1491,6 +1491,12 @@
 	 (*red (cadr x) (caddr x)))
 	((and (numberp (cadr x)) (numberp (caddr x)) (not (zerop (caddr x))))
 	 (/ (cadr x) (caddr x)))
+	((and (floatp (cadr x)) (floatp (caddr x)) #-ieee-floating-point (not (zerop (caddr x))))
+	 (/ (cadr x) (caddr x)))
+	((and ($bfloatp (cadr x)) ($bfloatp (caddr x)) (not (equal bigfloatzero (caddr x))))
+	 ;; Call BIGFLOATP to ensure that arguments have same precision.
+	 ;; Otherwise FPQUOTIENT could return a spurious value.
+	 (bcons (fpquotient (cdr (bigfloatp (cadr x))) (cdr (bigfloatp (caddr x))))))
 	(t (setq y (simplifya (cadr x) z))
 	   (setq x (simplifya (list '(mexpt) (caddr x) -1) z))
 	   (if (equal y 1) x (simplifya (list '(mtimes) y x) t)))))
