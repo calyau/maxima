@@ -71,9 +71,15 @@
              index1 1 n t)))))
 
 (defun li2simp (arg)
-  (cond ((mnumericalp arg) (li2numer (float arg)))
-	((or (complex-float-numerical-eval-p arg)
-	     (bigfloat-numerical-eval-p arg)
+  (cond ((mnumericalp arg)
+	 ;; When arg is a float or rational, use the original li2numer
+	 ;; using Spences function.
+	 (li2numer (float arg)))
+	((complex-float-numerical-eval-p arg)
+	 ;; For complex args that should should result in float
+	 ;; answers, use bigfloat::li2numer.
+	 (to (bigfloat::li2numer (bigfloat:to ($float arg)))))
+	((or (bigfloat-numerical-eval-p arg)
 	     (complex-bigfloat-numerical-eval-p arg))
 	 (to (bigfloat::li2numer (bigfloat:to ($bfloat arg)))))
         ((alike1 arg '((rat) 1 2))
