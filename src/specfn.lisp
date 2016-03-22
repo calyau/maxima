@@ -843,6 +843,12 @@
 	  ((= x -1)
 	   ;; li[3](-1) = -(1-2^(1-3))*li[3](1)
 	   ;;           = 3/4*zeta(3)
+	   ;;
+	   ;; From the formula
+	   ;;
+	   ;;   li[s](-1) = (2^(1-s)-1)*zeta(s)
+	   ;;
+	   ;; (See http://functions.wolfram.com/10.08.03.0003.01)
 	   (* 3/4 (to (maxima::$zeta (maxima::to (float 3 x))))))
 	  ((> (abs x) 1)
 	   ;; For z not in the interval (0, 1) and for integral n, we
@@ -862,6 +868,39 @@
 			     (* (/ lg 6)
 				(+ (* lg lg) (* dpi dpi))))))
 		 result))
+	  ((> (abs x) .9)
+	   ;; When x is on or near the unit circle the other
+	   ;; approaches don't work.  Use the expansion in powers of
+	   ;; log(z) (from cephes cpolylog)
+	   ;;
+	   ;;   li[s](z) = sum(Z(s-j)*(log(z))^j/j!, j = 0, inf)
+	   ;;
+	   ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
+	   ;;
+	   ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
+	   (flet ((zfun (j)
+		    (cond ((= j 1)
+			   (let ((sum (- (log (- (log x))))))
+			     (+ sum
+				(loop for k from 1 below 3
+				      sum (/ k)))))
+			  (t
+			   (to (maxima::$zeta (maxima::to (float j (realpart x)))))))))
+	     (let ((eps (epsilon x))
+		   (logx (log x)))
+	       ;; FIXME: Rearrange this to handle better the case
+	       ;; where (zfun (- 3 j)) is 0.
+	       (do* ((sum (zfun 3) (+ sum term))
+		     (j 1 (1+ j))
+		     (top logx (* top logx))
+		     (bot 1 (* bot j))
+		     (term (* (/ top bot) (zfun (- 3 j)))
+			   (* (/ top bot) (zfun (- 3 j)))))
+		    ;; when 3-j is a negative even integer, zfun is 0
+		    ;; so term is zero.  We want to skip that.
+		    ((and (not (zerop term))
+			  (<= (abs term) (* (abs sum) eps)))
+		     (+ sum term))))))
 	  ((> (abs x) series-threshold)
 	   ;; The series converges too slowly so use the identity:
 	   ;;
@@ -872,6 +911,8 @@
 	   ;;
 	   ;;   li[3](x) = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
 	   ;;      - li[3](-x/(1-x)) - li[3](1-x)
+	   ;;
+	   ;; (See http://functions.wolfram.com/10.08.17.0048.01)
 	   (let* ((dpi (%pi x))
 		  (u (log x))
 		  (s (/ (* u u u) 6))

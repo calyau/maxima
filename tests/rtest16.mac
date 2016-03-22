@@ -2018,6 +2018,11 @@ true;
 ?floatp(realpart(li[2](1.0+1.0*%i)));
 true;
 
+closeto(li[3](0.5) - float((7*zeta(3))/8+log(2)^3/6-(%pi^2*log(2))/12), 1.1103e-16);
+true;
+
+closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 4.5776e-16);
+true;
 /* Bug 3112: zeta(n) for negative even n is inaccurate */
 zeta(-4.0);
 0.0;
