@@ -2010,3 +2010,7 @@ true;
 
 closeto(li[2](1.0-%i) - (%pi^2/16-%i*0.915965594177219015054603514932384110774149374281672134266 - %pi*%i*log(2)/4), 1.6654e-16), numer;
 true;
+
+/* Make sure li[3](1/7),numer returns a float and not a bfloat */
+?floatp(li[3](float(1/7)));
+true;
