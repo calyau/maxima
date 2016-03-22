@@ -2023,10 +2023,25 @@ true;
 
 closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 4.5776e-16);
 true;
+
 /* Bug 3112: zeta(n) for negative even n is inaccurate */
 zeta(-4.0);
 0.0;
 
 zeta(-6b0);
 0b0;
+
+/* Bug 3105: li[s](1.0) doesn't simplify */
+closeto(li[4](1.0)-li[4](1), 1.11022e-16);
+true;
+
+closeto(li[4](-1.0)-li[4](-1), 1.11022e-16);
+true;
+
+closeto(li[4](1b0)-li[4](1), 10^-fpprec);
+true;
+
+closeto(li[4](-1b0)-li[4](-1), 10^-fpprec);
+true;
+
 
