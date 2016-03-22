@@ -2018,3 +2018,10 @@ true;
 ?floatp(realpart(li[2](1.0+1.0*%i)));
 true;
 
+/* Bug 3112: zeta(n) for negative even n is inaccurate */
+zeta(-4.0);
+0.0;
+
+zeta(-6b0);
+0b0;
+
