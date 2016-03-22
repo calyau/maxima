@@ -653,6 +653,11 @@
 
       ;; Reflection formula
       ((bigfloat:minusp sigma)
+       (let ((n (bigfloat:floor sigma)))
+	 ;; If sigma is a negative even integer, zeta(sigma) is zero,
+	 ;; from the reflection formula because sin(%pi*n/2) is 0.
+	 (when (and (bigfloat:= n sigma) (evenp n))
+	   (return-from float-zeta (bigfloat:float 0.0 sigma))))
        (bigfloat:* (bigfloat:expt 2 s)
                    (bigfloat:expt (bigfloat:%pi s)
                                   (bigfloat:- s 1))
