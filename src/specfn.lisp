@@ -893,6 +893,23 @@
 	   ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
 	   ;;
 	   ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
+	   ;;
+	   ;;
+	   ;; This is similar to
+	   ;; http://functions.wolfram.com/10.08.06.0024.01, but that
+	   ;; identity is clearly undefined if v is a positive
+	   ;; integer because zeta(1) is undefined.
+	   ;;
+	   ;; Thus,
+	   ;;
+	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-k)*log(z)^(k+4)/(k+4)!,k,1,inf);
+	   ;;
+	   ;; But Z(-k) = zeta(-k) is 0 if k is even.  So
+	   ;;
+	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-(2*k+1))*log(z)^(2*k+4)/(2*k+4)!,k,0,inf);
+
 	   (flet ((zfun (j)
 		    (cond ((= j 1)
 			   (let ((sum (- (log (- (log x))))))
@@ -901,21 +918,22 @@
 				      sum (/ k)))))
 			  (t
 			   (to (maxima::$zeta (maxima::to (float j (realpart x)))))))))
-	     (let ((eps (epsilon x))
-		   (logx (log x)))
-	       ;; FIXME: Rearrange this to handle better the case
-	       ;; where (zfun (- 3 j)) is 0.
-	       (do* ((sum (zfun 3) (+ sum term))
-		     (j 1 (1+ j))
-		     (top logx (* top logx))
-		     (bot 1 (* bot j))
-		     (term (* (/ top bot) (zfun (- 3 j)))
-			   (* (/ top bot) (zfun (- 3 j)))))
-		    ;; when 3-j is a negative even integer, zfun is 0
-		    ;; so term is zero.  We want to skip that.
-		    ((and (not (zerop term))
-			  (<= (abs term) (* (abs sum) eps)))
-		     (+ sum term))))))
+	     (let* ((eps (epsilon x))
+		    (logx (log x))
+		    (logx^2 (* logx logx))
+		    (sum (+ (zfun 3)
+			    (* (zfun 2) logx)
+			    (* (zfun 1) logx^2 1/2)
+			    (* (zfun 0) (* logx^2 logx) 1/6))))
+	       (do* ((k 0 (1+ k))
+		     (top (expt logx 4) (* top logx^2))
+		     (bot 24 (* bot (+ k k 3) (+ k k 4)))
+		     (term (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))
+			   (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))))
+		    ((<= (abs term) (* (abs sum) eps)))
+		 ;;(format t "~3d: ~A / ~A = ~A~%" k top bot term)
+		 (incf sum term))
+	       sum)))
 	  ((> (abs x) series-threshold)
 	   ;; The series converges too slowly so use the identity:
 	   ;;
