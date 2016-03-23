@@ -1842,29 +1842,30 @@
 		   (find-first-trigarg exp))
 		 (cdr y)))))
 
+;; return constant factor that makes elements of alist match elements of blist
+;; or nil if no match found
+;; (we could replace this using rat package to divide alist and blist)
 (defun matchsum (alist blist)
   (prog (r s *c* *d*)
-     (setq s (m2 (car alist)
+     (setq s (m2 (car alist)	;; find coeff for first term of alist
 		 '((mtimes)
 		   ((coefftt) (a freevar))
 		   ((coefftt) (c true)))))
      (setq *c* (cdr (assoc 'c s :test #'eq)))
-     (cond ((not (setq r
-		       (m2 (cons '(mplus) blist)
-			   (list '(mplus)
-				 (cons '(mtimes)
-				       (cons '((coefftt) (b free1))
-					     (cond ((mtimesp *c*)
-						    (cdr *c*))
-						   (t (list *c*)))))
-				 '(d true)))))
+     (cond ((not (setq r	;; find coeff for first term of blist
+		       (m2 (car blist)
+                           (cons '(mtimes)
+                                 (cons '((coefftt) (b free1))
+                                       (cond ((mtimesp *c*)
+                                              (cdr *c*))
+                                             (t (list *c*))))))))
 	    (return nil)))
      (setq *d* (simplify (list '(mtimes)
 			     (subliss s 'a)
 			     (list '(mexpt)
 				   (subliss r 'b)
 				   -1))))
-     (cond ((m2 (cons '(mplus) alist)
+     (cond ((m2 (cons '(mplus) alist)	;; check that all terms match
 		(timesloop *d* blist))
 	    (return *d*))
 	   (t (return nil)))))
