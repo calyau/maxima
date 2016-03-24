@@ -31,7 +31,6 @@
 ;; Let's have version numbers 1,2,3,...
 
 (eval-when (:load-toplevel :execute)
-  (mfuncall '$declare '$integervalued '$feature)
   ($put '$nummod 3 '$version))
 
 (defmacro opcons (op &rest args)
