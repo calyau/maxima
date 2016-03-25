@@ -233,7 +233,7 @@ summation, when an automatically generated index is needed.
 When @code{gensumnum} is @code{false}, an automatically-generated index is only
 @code{genindex} with no numeric suffix.
 
-See also @mrefcomma{sumcontract} @mrefcomma{intosum}
+See also @mrefcomma{lsum} @mrefcomma{sumcontract} @mrefcomma{intosum}
 @mrefcomma{bashindices} @mrefcomma{niceindices}
 @mrefcomma{nouns} @mrefcomma{evflag} and @ref{zeilberger-pkg}
 
