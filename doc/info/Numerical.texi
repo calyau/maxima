@@ -349,6 +349,43 @@ Computation of sine and cosine coefficients.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{rfft}
+@deffn {Function} rfft (@var{x})
+
+Computes the fast Fourier transform of a real-valued sequence
+@var{x}.  This is equivalent to performing @code{fft(x)}, except that
+only the first @code{N/2+1} results are returned, where @code{N} is
+the length of @var{x}.  @code{N} must be power of two.
+
+No check is made that @var{x} contains only real values.
+
+The symmetry properites of the Fourier transform of real sequences to
+reduce he complexity.  In particular the first and last output values
+of @code{rfft} are purely real.  For larger sequencyes, @code{rfft}
+may be computed more quickly than @code{fft}.
+
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inverse_rfft}
+@deffn {Function} inverse_rfft (@var{y})
+Computes the inverse Fourier transfrom of @var{y}, which must have a
+length of @code{N/2+1} where @code{N} is a power of two.  That is, the
+input @var{x} is expected to be the output of @code{rfft}.
+
+No check is made to ensure that the input has the correct format.
+(The first and last elements must be purely real.)
+
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{bf_inverse_fft}
 @deffn {Function} bf_inverse_fft (@var{y})
 
@@ -370,6 +407,18 @@ bigfloats and returns a bigfloat result.
 @category{Package fft}
 @closecatbox
 @end deffn
+
+@anchor{bf_rfft}
+@deffn {Function} bf_rfft (@var{x})
+
+Computes the forward fast Fourier transform of a real-valued input
+returning a bigfloat result.  This is the bigfloat version of
+@code{rfft}.
+
+@anchor{bf_inverse_rfft}
+@deffn {Function} bf_inverse_rfft (@var{y})
+Computes the inverse fast Fourier transfrom with a real-valued
+bigfloat output.  This is the bigfloat version of @code{inverse_rfft}.
 
 @c -----------------------------------------------------------------------------
 @node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for fast Fourier transform, Numerical
