@@ -99,7 +99,7 @@
 	   (setf (gethash m *sincos-tables*) table)
 	   table))))
 
-(defun mlist->complex-cl-array (object)
+(defun mlist->complex-cl-vector (object)
   "Convert Maxima list to a (simple-array (complex double-float) (*))
   with the same values."
   (let ((z (make-array (1- (length object)) :element-type '(complex double-float))))
@@ -111,7 +111,7 @@
 	       (setf (aref z k) (complex (car fl) (cdr fl)))))
     z))
 
-(defun complex-cl-array->mlist (array)
+(defun complex-cl-vector->mlist (array)
   "Convert a CL array of complex values to a Maxima list containing
   the same values."
   (declare (type (simple-array (complex double-float) (*)) array))
@@ -120,7 +120,7 @@
 	      collect (add (realpart w)
 			   (mul (imagpart w) '$%i)))))
 
-(defun array->complex-cl-array (array)
+(defun array->complex-cl-vector (array)
   "Convert a CL vector of maxima values to a (simsple-array (complex
   double-float) (*)) with the same complex values."
   (let* ((n (length array))
@@ -130,7 +130,7 @@
 	(setf (aref z k) (complex (car fl) (cdr fl)))))
     z))
 
-(defun complex-cl-array->vector (array)
+(defun complex-cl-vector->vector (array)
   "Convert (simple-array (complex double-float) (*)) to a CL vector of
   maxima expressions of the same value."
   (declare (type (simple-array (complex double-float) (*)) array))
@@ -142,7 +142,7 @@
 			      (mul '$%i (imagpart item))))))
     z))
   
-(defun find-complex-converters (object &optional (maxima-function-name "$fft"))
+(defun find-complex-fft-converters (object &optional (maxima-function-name "fft"))
   "Convert a Maxima OBJECT to a specialized CL vector suitable for the
   complex FFT routines.  Two values are returned: The specialized
   vector and a function that will convert the result of the FFT
@@ -150,18 +150,18 @@
   OBJECT. MAXIMA-FUNCTION-NAME is a string to use for error messages."
   (cond (($listp object)
 	 (values
-	  (mlist->complex-cl-array object)
-	  #'complex-cl-array->mlist))
+	  (mlist->complex-cl-vector object)
+	  #'complex-cl-vector->mlist))
 	((arrayp object)
 	 (values
-	  (array->complex-cl-array object)
-	  #'complex-cl-array->vector))
+	  (array->complex-cl-vector object)
+	  #'complex-cl-vector->vector))
 	((and (symbolp object) (symbol-array (mget object 'array)))
 	 (values
 	  (let* ((sym-array (symbol-array (mget object 'array))))
-	    (array->complex-cl-array sym-array))
+	    (array->complex-cl-vector sym-array))
 	  #'(lambda (array)
-	      (let ((ar (complex-cl-array->vector array))
+	      (let ((ar (complex-cl-vector->vector array))
 		    (sym (meval `(($array)
 				  ,(intern (symbol-name (gensym "$G")))
 				  $float
@@ -170,7 +170,7 @@
 		      ar)
 		sym))))
 	(t
-	 (merror "~A: input is not a list or an array." maxima-function-name))))
+	 (merror "~A: input is not a list or an array: ~M." maxima-function-name object))))
 
 ;; Fast Fourier Transform using a simple radix-2 implementation with
 ;; inputs and outputs in natural order.  The definition of the forward
@@ -242,7 +242,7 @@
 ;; Maxima's forward FFT routine.
 (defun $fft (input)
   (multiple-value-bind (z from-lisp)
-      (find-complex-converters input)
+      (find-complex-fft-converters input)
     (let* ((size (length z))
 	   (order (log-base2 size)))
       (unless (= size (ash 1 order))
@@ -254,7 +254,7 @@
 ;; Maxima's inverse FFT routine.
 (defun $inverse_fft (input)
   (multiple-value-bind (z from-lisp)
-      (find-complex-converters input "$inverse_fft")
+      (find-complex-fft-converters input "inverse_fft")
     (let* ((size (length z))
 	   (order (log-base2 size)))
       (unless (= size (ash 1 order))
@@ -271,7 +271,7 @@
 ;;;
 ;;; See http://www.engineeringproductivitytools.com/stuff/T0001/PT10.HTM.
 
-(defun mlist->rfft-array (object)
+(defun mlist->rfft-vector (object)
   "Convert Maxima list to a (simple-array (complex double-float) (*))
   with the same values suitable for as the input for the RFFT routine.
   The maxima list is assumed to consist only of real values."
@@ -284,7 +284,7 @@
 	     (setf (aref z k) (complex ($float re) ($float im))))
     z))
 
-(defun array->rfft-array (array)
+(defun array->rfft-vector (array)
   "Convert CL array of real (Maxima) values to a (simple-array
   (complex double-float) (*)) with the same values suitable for as the
   input for the RFFT routine.  The CL array is assumed to consist only
@@ -298,17 +298,17 @@
 				       ($float (aref array (1+ k))))))
     z))
   
-(defun find-rfft-converters (object &optional (maxima-function-name "$rfft"))
+(defun find-rfft-converters (object)
   "Convert a Maxima OBJECT to a specialized CL vector suitable for the
   RFFT routines.  Two values are returned: The specialized vector and
   a function that will convert the result of the RFFT routine to a
   Maxima object of the same type as OBJECT. MAXIMA-FUNCTION-NAME is a
   string to use for error messages."
-
   (cond (($listp object)
 	 (values
-	  (mlist->rfft-array object)
-	  #'complex-cl-array->mlist))
+	  (mlist->rfft-vector object)
+	  #'complex-cl-vector->mlist
+	  (1- (length object))))
 	((arrayp object)
 	 (values
 	  (let ((z (make-array  (length object) :element-type '(complex double-float))))
@@ -318,20 +318,23 @@
 		     (let ((fl (risplit ($float x))))
 		       (setf (aref z k) (complex (car fl) (cdr fl)))))
 	    z)
-	  #'complex-cl-array->vector))
+	  #'complex-cl-vector->vector
+	  (length object)))
 	((and (symbolp object) (symbol-array (mget object 'array)))
-	 (values
-	  (array->rfft-array (symbol-array (mget object 'array)))
-	  #'(lambda (array)
-	      (let ((ar (complex-cl-array->vector array))
-		    (sym (meval `(($array)
-				  ,(intern (symbol-name (gensym "$G")))
-				  $float
-				  ,(1- (length array))))))
-		(setf (symbol-array (mget sym 'array))
-		      ar)))))
+	 (let ((sym-array (symbol-array (mget object 'array))))
+	   (values
+	    (array->rfft-vector sym-array)
+	    #'(lambda (array)
+		(let ((ar (complex-cl-vector->vector array))
+		      (sym (meval `(($array)
+				    ,(intern (symbol-name (gensym "$G")))
+				    $float
+				    ,(1- (length array))))))
+		  (setf (symbol-array (mget sym 'array))
+			ar)))
+	    (length sym-array))))
 	(t
-	 (merror "~A: input is not a list or an array." maxima-function-name))))
+	 (merror "rfft: input is not a list or an array: ~M." object))))
 
 ;;; Maxima's RFFT function.
 ;;;
@@ -340,9 +343,11 @@
 ;;; output is a complex reuslt of length N/2 + 1 because of the
 ;;; symmetry of the FFT for real inputs.
 (defun $rfft (input)
-  (multiple-value-bind (z from-lisp)
+  (multiple-value-bind (z from-lisp input-length)
       (find-rfft-converters input)
     (declare (type (simple-array (complex double-float) (*)) z))
+    (unless (= input-length (ash 1 (log-base2 input-length)))
+      (merror "rfft: size of input must be a power of 2, not ~M" input-length))
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
       ;; This declaration causes CCL to generate incorrect code for at
@@ -386,7 +391,7 @@
 		       (imagpart (aref z 0))))))))
 	(funcall from-lisp result))))
 
-(defun find-irfft-converters (object &optional (maxima-function-name "$inverse_rfft"))
+(defun find-irfft-converters (object)
   "Convert a Maxima OBJECT to a specialized CL vector suitable for the
   inverse RFFT routines.  Two values are returned: The specialized
   vector and a function that will convert the result of the inverse
@@ -394,7 +399,7 @@
   OBJECT. MAXIMA-FUNCTION-NAME is a string to use for error messages."
   (cond (($listp object)
 	 (values
-	  (mlist->complex-cl-array object)
+	  (mlist->complex-cl-vector object)
 	  #'(lambda (obj)
 	      (let (result)
 		(map nil #'(lambda (z)
@@ -404,7 +409,7 @@
 		(cons '(mlist simp) (nreverse result))))))
 	((arrayp object)
 	 (values
-	  (array->complex-cl-array object)
+	  (array->complex-cl-vector object)
 	  #'(lambda (obj)
 	      (let ((result (make-array (* 2 (length obj)))))
 		(loop for k from 0 by 2
@@ -415,7 +420,7 @@
 			   (setf (aref result (1+ k)) (imagpart z))))
 		result))))
 	(t
-	 (merror "~A: input is not a list or an array." maxima-function-name))))
+	 (merror "inverse_rfft: input is not a list or an array: ~M." object))))
 
 ;;; Maxima's inverse RFFT routine.
 ;;;
@@ -424,7 +429,7 @@
 ;;; one more than a power of two, as is returned by RFFT.
 (defun $inverse_rfft (input)
   (multiple-value-bind (ft from-lisp)
-      (find-irfft-converters input "inverse_rfft")
+      (find-irfft-converters input)
     (declare (type (simple-array (complex double-float) (*)) ft))
     (let* ((n (1- (length ft))))
       (when (< n 2)
@@ -462,31 +467,31 @@
 ;; Convert a sequence to an array of complex bigfloat numbers.  These
 ;; probably don't have to be very fast because the conversions to
 ;; bigfloat and back are relatively slow.
-(defun seq->bfft-array (seq)
+(defun seq->bfft-vector (seq)
   (map 'vector #'(lambda (z)
 		   (destructuring-bind (rp . ip)
 		       (risplit ($bfloat z))
 		     (bigfloat:bigfloat rp ip)))
        seq))
 
-(defun mlist->bfft-array (mlist)
-  (seq->bfft-array (cdr mlist)))
+(defun mlist->bfft-vector (mlist)
+  (seq->bfft-vector (cdr mlist)))
 
-(defun lisp-array->bfft-array (arr)
-  (seq->bfft-array arr))
+(defun lisp-array->bfft-vector (arr)
+  (seq->bfft-vector arr))
 
-(defun bfft-array->seq (arr seqtype)
+(defun bfft-vector->seq (arr seqtype)
     (map seqtype #'to arr))
 
-(defun bfft-array->mlist (arr)
-  (cons '(mlist simp) (bfft-array->seq arr 'list)))
+(defun bfft-vector->mlist (arr)
+  (cons '(mlist simp) (bfft-vector->seq arr 'list)))
 
-(defun bfft-array->lisp-array (arr)
-  (bfft-array->seq arr 'vector))
+(defun bfft-vector->lisp-array (arr)
+  (bfft-vector->seq arr 'vector))
 
-(defun bfft-array->maxima-symbol-array (arr)
+(defun bfft-vector->maxima-symbol-array (arr)
   "Outputs a Maxima array as does Maxima's 'array()' function."
-  (let ((lisp-array (bfft-array->lisp-array arr))
+  (let ((lisp-array (bfft-vector->lisp-array arr))
         (maxima-symbol (meval `(($array)
                                 ,(intern (symbol-name (gensym "$G")))
                                 $float
@@ -494,21 +499,21 @@
     (setf (symbol-array (mget maxima-symbol 'array)) lisp-array)
     maxima-symbol))
 
-(defun find-bf-fft-converter (input)
+(defun find-bf-fft-converter (input &optional (name "bf_fft"))
   (cond (($listp input)
 	 (values
-	  (mlist->bfft-array input)
-	  #'bfft-array->mlist))
+	  (mlist->bfft-vector input)
+	  #'bfft-vector->mlist))
 	((arrayp input)
 	 (values
-	  (lisp-array->bfft-array input)
-	  #'bfft-array->lisp-array))
+	  (lisp-array->bfft-vector input)
+	  #'bfft-vector->lisp-array))
 	((and (symbolp input) (symbol-array (mget input 'array)))
 	 (values
-	  (lisp-array->bfft-array (symbol-array (mget input 'array)))
-	  #'bfft-array->maxima-symbol-array))
+	  (lisp-array->bfft-vector (symbol-array (mget input 'array)))
+	  #'bfft-vector->maxima-symbol-array))
 	(t
-	 (merror "bf_fft: input is not a list or an array."))))
+	 (merror "~A: input is not a list or an array: ~M." name input))))
 
 ;; Bigfloat forward and inverse FFTs.  Length of the input must be a
 ;; power of 2.
@@ -516,34 +521,23 @@
   (multiple-value-bind (z from-lisp)
       (find-bf-fft-converter input)
     (let ((n (length z)))
-    (unless (= n (ash 1 (log-base2 n)))
-	(merror "fft: size of input must be a power of 2, not ~M" n))
+      (unless (= n (ash 1 (log-base2 n)))
+	(merror "bf_fft: size of input must be a power of 2, not ~M" n))
       (if (> n 1)
 	  (funcall from-lisp (bigfloat::fft-r2-nn z))
 	  (funcall from-lisp z)))))
 
-(defun find-bf-rfft-converter (input)
-  (cond (($listp input)
-	 (values (mlist->bfft-array input)
-		 #'bfft-array->mlist))
-	((arrayp input)
-	 (values (lisp-array->bfft-array input)
-		 #'bfft-array->lisp-array))
-	((and (symbolp input) (symbol-array (mget input 'array)))
-	 (values (lisp-array->bfft-array (symbol-array (mget input 'array)))
-		 #'bfft-array->maxima-symbol-array))
-	(t
-	 (merror "bf_fft: input is not a list or an array."))))
-  
 (defun $bf_inverse_fft (input)
   (multiple-value-bind (x unconvert)
-      (find-bf-rfft-converter input)
+      (find-bf-fft-converter input "bf_inverse_fft")
     (let ((n (length x)))
-	  (if (> n 1)
-	      (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
-	      (funcall unconvert x)))))
+      (unless (= n (ash 1 (log-base2 n)))
+	(merror "bf_inverse_fft: size of input must be a power of 2, not ~M" n))
+      (if (> n 1)
+	  (funcall unconvert (bigfloat::fft-r2-nn x :inverse-fft-p t))
+	  (funcall unconvert x)))))
 
-(defun mlist->bf-rfft-array (object)
+(defun mlist->bf-rfft-vector (object)
   (let* ((n (length (cdr object)))
 	 (z (make-array (ash n -1))))
     (loop for k from 0
@@ -553,7 +547,7 @@
 	     (setf (aref z k) (complex ($float re) ($float im))))
     z))
 
-(defun lisp-array->bf-rfft-array (object)
+(defun lisp-array->bf-rfft-vector (object)
   (let ((z (make-array (length object))))
     (loop for k of-type fixnum from 0
 	  for x across object
@@ -562,20 +556,20 @@
 	       (setf (aref z k) (complex (car fl) (cdr fl)))))
     z))
 
-(defun find-bf-rfft-converters (object maxima-function-name)
+(defun find-bf-rfft-converters (object)
   (cond (($listp object)
 	 (values
-	  (mlist->bf-rfft-array object)
-	  #'bfft-array->mlist))
+	  (mlist->bf-rfft-vector object)
+	  #'bfft-vector->mlist))
 	((arrayp object)
 	 (values
-	  (lisp-array->bf-rfft-array object)
-	  #'bfft-array->lisp-array))
+	  (lisp-array->bf-rfft-vector object)
+	  #'bfft-vector->lisp-array))
 	((and (symbolp object) (symbol-array (mget object 'array)))
 	 (values
-	  (lisp-array->bf-rfft-array (symbol-array (mget object 'array)))
+	  (lisp-array->bf-rfft-vector (symbol-array (mget object 'array)))
 	  #'(lambda (array)
-	      (let ((ar (bfft-array->lisp-array array))
+	      (let ((ar (bfft-vector->lisp-array array))
 		    (sym (meval `(($array)
 				  ,(intern (symbol-name (gensym "$G")))
 				  $float
@@ -583,11 +577,11 @@
 		(setf (symbol-array (mget sym 'array))
 		      ar)))))
 	(t
-	 (merror "~A: input is not a list or an array." maxima-function-name))))
+	 (merror "bf_rfft: input is not a list or an array: ~M." object))))
 
 (defun $bf_rfft (input)
   (multiple-value-bind (z from-lisp)
-      (find-bf-rfft-converters input "bf_rfft")
+      (find-bf-rfft-converters input)
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)))))
 
@@ -625,10 +619,10 @@
 				      (bigfloat:imagpart (aref z 0)))))
 	(funcall from-lisp result)))))
 
-(defun find-bf-irfft-converters (object maxima-function-name)
+(defun find-bf-irfft-converters (object)
   (cond (($listp object)
 	 (values
-	  (mlist->bfft-array object)
+	  (mlist->bfft-vector object)
 	  #'(lambda (obj)
 	      (let (result)
 		(map nil #'(lambda (z)
@@ -638,7 +632,7 @@
 		(cons '(mlist simp) (nreverse result))))))
 	((arrayp object)
 	 (values
-	  (lisp-array->bfft-array object)
+	  (lisp-array->bfft-vector object)
 	  #'(lambda (obj)
 	      (let ((result (make-array (* 2 (length obj)))))
 		(loop for k from 0 by 2
@@ -649,11 +643,11 @@
 			   (setf (aref result (1+ k)) (imagpart z))))
 		result))))
 	(t
-	 (merror "~A: input is not a list or an array." maxima-function-name))))
+	 (merror "bf_inverse_rfft: input is not a list or an array: ~M." object))))
   
 (defun $bf_inverse_rfft (input)
   (multiple-value-bind (ft from-lisp)
-      (find-bf-irfft-converters input "bf_inverse_rfft")
+      (find-bf-irfft-converters input)
   (let* ((n (1- (length ft))))
     (when (< n 2)
       ;; Just use the regular inverse fft to compute these values
@@ -665,7 +659,7 @@
 	   (sincos (bigfloat::sincos-table (1+ order))))
 
       (unless (= n (ash 1 order))
-	(merror "bf_inverse_fft: input length must be one more than a power of two, not ~M" (1+ n)))
+	(merror "bf_inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
 
       (loop for k from 0 below n
 	    do

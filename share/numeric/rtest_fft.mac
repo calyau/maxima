@@ -396,3 +396,22 @@ true;
 
 reset (float_approx_equal_tolerance);
 [float_approx_equal_tolerance];
+
+/*
+ * Test error messages
+ */
+
+errormsg:false;
+false;
+
+(errcatch(fft([1,2,3])), error);
+["fft: size of input must be a power of 2, not ~M",3];
+
+(errcatch(inverse_fft([1,2,3])), error);
+["inverse_fft: size of input must be a power of 2, not ~M",3];
+
+(errcatch(bf_fft([1,2,3])), error);
+["bf_fft: size of input must be a power of 2, not ~M",3];
+
+(errcatch(bf_inverse_fft([1,2,3])), error);
+["bf_inverse_fft: size of input must be a power of 2, not ~M",3];

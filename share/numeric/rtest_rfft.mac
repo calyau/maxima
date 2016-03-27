@@ -158,3 +158,17 @@ true;
 
 compare_bf_inverse_rfft(5.0822b-21, makelist(k, k, 1, 4096));
 true;
+
+(errcatch(rfft([1,2,3])), error);
+["rfft: size of input must be a power of 2, not ~M",3];
+
+(errcatch(inverse_rfft([1,2,3,4])), error);
+["inverse_rfft: input length must be one more than a power of two, not ~M",4];
+
+(errcatch(bf_rfft([1,2,3])), error);
+["bf_fft: size of input must be a power of 2, not ~M",3];
+
+(errcatch(bf_inverse_rfft([1,2,3,4])), error);
+["bf_inverse_rfft: input length must be one more than a power of two, not ~M",4];
+
+
