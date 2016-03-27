@@ -345,6 +345,18 @@
 (autof 'simp-pochhammer "orthopoly")
 
 (dolist (f
+  '($draw
+    $draw2d
+    $draw3d
+    $set_draw_defaults
+    $multiplot_mode
+    $make_level_picture
+    $make_rgb_picture
+    $get_pixel
+    $take_channel))
+  (setf (get f 'autoload) "draw"))
+
+(dolist (f
   '($julia
     $mandelbrot
     $plotdf
