@@ -145,10 +145,10 @@ objects, together with some options, or lists of scenes and options.
 By default, the scenes are put together
 in one column.
 
-Function @code{draw} accepts the following global options: @code{terminal},
-@code{columns}, @code{dimensions}, @code{file_name} and @code{delay}.
+Function @code{draw} accepts the following global options: @mrefcomma{terminal}
+@mrefcomma{columns} @mrefcomma{dimensions} @mref{file_name} and @mrefdot{delay}
 
-Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
+Functions @mref{draw2d} and @mref{draw3d} are short cuts to be used 
 when only one scene is required, in two or three dimensions, respectively.
 
 See also @mref{gr2d} and @mrefdot{gr3d}
