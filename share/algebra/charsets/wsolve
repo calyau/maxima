@@ -1,0 +1,3862 @@
+# -*- mode: maplev; -*-
+# vim: syntax=maple
+
+
+
+######################################################### 
+#11111111111111111111111111111111111111111111111111111111 
+# 
+#Part I: The basic functions 
+#        Class, Leader, Initial 
+######################################################### 
+
+readlib(factors): 
+with(Groebner):
+_field_characteristic_:=0;
+
+      
+# the class of poly f wrt variable ordering ord 
+Class := proc(dp,ord) 
+     local i,idt; 
+     options remember,system; 
+                     idt:=dIndets(dp); 
+                     for i to nops(ord) do 
+                         if member(ord[i], idt) then RETURN(nops(ord)-i+1) fi 
+                     od; 
+                     0 
+                 end: 
+# the highest order of the indeterminate var in dp 
+# INPUT: 
+#     dp : a diff pol 
+#     var: an indeterminate 
+# OUTPUT: the order 
+# 
+dOrder:=proc(dp,var) 
+    local idt,i,dvar; 
+    options remember,system;     
+    idt:=indets(dp); 
+    dvar:=-1;      
+    for i in idt do 
+      if has(i,var) then 
+           if  dvar=-1 or type(dvar,symbol) 
+               or (   ( not type(i,symbol) ) and ( op(1,i) > op(1,dvar) ) ) then 
+               dvar:=i  ; 
+           fi 
+     fi; 
+    od; 
+    if dvar=-1 then -1 
+       elif   type(dvar,symbol) then 0 
+       else if nops(dvar) =1 then op(1,dvar) 
+                else [op(1..nops(dvar),dvar)] 
+             fi; 
+                 fi; 
+    end:     
+       
+                         
+dIndets:=proc(dp) 
+    local i,indet_d,idt; 
+    options remember,system;      
+    idt:={}; 
+    indet_d:=indets(dp); 
+     
+    if POLY_MODE='Algebraic' then RETURN(indet_d) fi; 
+     
+    for i in indet_d do 
+      if type(i,symbol) then idt:={op(idt),i} else idt:={op(idt),op(0,i)} fi; 
+    od; 
+      idt 
+    end: 
+
+# the initial of poly f wrt ord 
+Initial := 
+
+   proc(f,ord) 
+   options remember,system; 
+       if Class(f,ord) = 0 then 1 
+       else lcoeff(f,Leader(f,ord)); 
+       fi 
+   end: 
+
+# the separant of poly f wrt ord 
+Separant := 
+
+   proc(f,ord) 
+   options remember,system; 
+       if Class(f,ord) = 0 then 1 
+       else diff(f,Leader(f,ord)); 
+       fi 
+   end: 
+
+Sept:=proc(p,ord) 
+local pol;
+options remember,system;  
+     pol:=Separant(p,ord); 
+     if Class(pol,ord)=0 then RETURN(1) fi; 
+     pol 
+end: 
+
+# the set of all nonconstant factors of separants of polys in as 
+    
+Septs:=proc(bset,ord) 
+local i,list;
+  options remember,system; 
+    list:={}; 
+    for i in bset do list:=list union Factorlist(Sept(i,ord)) od; 
+    for i in list do if Class(i,ord)=0 then list:=list minus {i} fi od; 
+    list 
+end: 
+  
+    
+
+
+Lessp:= 
+
+proc(f,g,ord) 
+local cf,cg,cmp,df,dg,leadf,leadg; 
+options remember,system; 
+   cf := Class(f,ord); 
+   cg := Class(g,ord); 
+   if type(f,integer) then 
+         true 
+   elif type(g,integer) then 
+        false      
+   elif cf = 0 then 
+        true     
+   elif cg = 0 then 
+        false     
+   else 
+        leadf:=Leader(f,ord); 
+        leadg:=Leader(g,ord); 
+        
+        cmp:=dercmp(leadf,leadg,ord); 
+        if cmp = 1 then 
+            true 
+        elif cmp=-1 then 
+            false 
+        else         
+            df := degree(f,leadf); 
+            dg := degree(g,leadg); 
+            if df < dg then 
+               true 
+            elif df = dg then 
+               Lessp(Initial(f,ord),Initial(g,ord),ord) 
+            else 
+               false 
+            fi 
+        fi 
+   fi 
+end:     
+
+Least:= 
+
+proc(ps,ord) 
+local i,lpol; 
+options remember,system; 
+
+  lpol:=op(1,ps); 
+  for i from 2 to nops( ps ) do     
+    if Lessp(op(i,ps),lpol,ord) then lpol:=op(i,ps) fi; 
+  od; 
+  lpol 
+end: 
+
+
+#############################################4 Reduced Definitions########################3 
+
+Reducedp:= 
+proc(p,q,ord,T) 
+local mvar,var,idt; 
+options remember,system; 
+
+    mvar:=Leader(q,ord); 
+    if type(mvar,symbol) then var:=mvar else var:=op(0,mvar) fi; 
+     
+     if POLY_MODE='Algebraic' then 
+###############Algebraic mode#################################       
+       if   nargs <4 or T='std_asc' then 
+      if Class(p,ord) > Class(q,ord) and degree(p,mvar) < degree(q,mvar) then 1 else 0 fi; 
+    elif T='wu_asc' then 
+      if Class(p,ord) > Class(q,ord) and degree(Initial(p,ord),mvar) < degree(q,mvar) then 1 else 0 fi;        
+    elif T='gao_asc' then 
+    ###########################in the following case , q is a list################# 
+      if Class(p,ord) > Class(op(1,q),ord) and Premas(Initial(p,ord),q,ord,'std_asc') <>0 then 1 else 0 fi;      
+    elif T='tri_asc' then 
+      if Class(p,ord) > Class(q,ord) then 1 else 0 fi;      
+    fi;             
+###############Algebraic mode#################################          
+     elif POLY_MODE='Ordinary_Differential' then 
+###############ODE mode#################################           
+       if nargs <4 or T='std_asc' then 
+        
+           if Class(p,ord) > Class(q,ord) and degree(p,mvar) < degree(q,mvar) 
+              and dOrder(p,var) <= dOrder(q,var) then 
+              1 
+           else 
+              0 
+           fi; 
+    elif T='wu_asc' then 
+      if Class(p,ord) > Class(q,ord) and degree(Initial(p,ord),mvar) < degree(q,mvar) then 1 else 0 fi;        
+    elif T='gao_asc' then 
+    ###########################in the following case , q is a list################# 
+      if Class(p,ord) > Class(op(1,q),ord) and Premas(Initial(p,ord),q,ord,'std_asc') <>0 then 1 else 0 fi;      
+    elif T='tri_asc' then 
+      if Class(p,ord) > Class(q,ord) then 1 else 0 fi;                  
+            
+       fi; 
+###############ODE mode#################################     
+     elif POLY_MODE='Partial_Differential' then         
+###############PDE mode#################################       
+       if nargs <4 or T='std_asc' then 
+              idt:=indets(p); 
+              
+           if dercmp(Leader(p,ord), mvar, ord)=-1 and degree(p,mvar) < degree(q,mvar) 
+              and   (not member(true, map(Is_proper_derivative,idt,mvar)) )  then 
+              1 
+           else 
+              0 
+           fi; 
+    elif T='wu_asc' then 
+      if Class(p,ord) > Class(q,ord) and degree(Initial(p,ord),mvar) < degree(q,mvar) then 1 else 0 fi;        
+    elif T='gao_asc' then 
+    ###########################in the following case , q is a list################# 
+      if Class(p,ord) > Class(op(1,q),ord) and Premas(Initial(p,ord),q,ord,'std_asc') <>0 then 1 else 0 fi;      
+    elif T='tri_asc' then 
+      if Class(p,ord) > Class(q,ord) then 1 else 0 fi;                  
+            
+       fi; 
+
+      
+###############PDE mode#################################       
+     fi; 
+end:      
+
+############################# 
+# 
+# Name:          Reducedset 
+# Input:     ps:     a poly set 
+#          p:     a polynomial 
+# OUTPUT:     redset:={q | q is in ps, q is rReduced to p } 
+############################# 
+
+Reducedset:= 
+
+proc(ps,p,ord,T) 
+local i, redset;   
+options remember,system; 
+    redset:={}; 
+    for i in ps do 
+      if Reducedp(i,p,ord,T)=1 then redset:={i,op(redset)} fi; 
+    od; 
+redset 
+end:      
+
+############################################################################## 
+############################################################################## 
+# the basic set of polyset ps 
+Basicset:= 
+
+proc(ps,ord,T) 
+local qs,b,bs; 
+options remember,system; 
+         if nops(ps) < 2 then [op(ps)] 
+         else 
+             qs:=ps;             
+             bs:=[]; 
+             while (nops(qs) <>0) do 
+                b:=Least(qs,ord); 
+                bs:=[b,op(bs)]; 
+                if T='gao_asc' then 
+                  qs :=Reducedset(qs,bs,ord,T);                 
+                else 
+                  qs :=Reducedset(qs,b,ord,T); 
+                fi; 
+             od; 
+             bs                               
+         fi 
+end: 
+
+############################################################## 
+# modified pseudo division: I1^s1...Ir^sr*uu = q*vv + r, 
+#    where I1, ..., I_r are all distinct factors of lcoeff(vv,x) 
+#    and s1, ..., sr are chosen to be the smallest 
+############################################################## 
+NPrem := 
+
+   proc(uu,vv,x) 
+   local r,v,dr,dv,l,t,lu,lv,gcd0; 
+   options remember,system; 
+       if type(vv/x,integer) then subs(x = 0,uu) 
+       else 
+           r := expand(uu); 
+           dr := degree(r,x); 
+           v := expand(vv); 
+           dv := degree(v,x); 
+           if dv <= dr then l := coeff(v,x,dv); v := expand(v-l*x^dv) 
+           else l := 1 
+           fi; 
+           while dv <= dr and r <> 0 do 
+#                gcd0:=gcd(l,coeff(r,x,dr),'lu','lv'); 
+         gcd0:=gcd(l,coeff(r,x,dr)); 
+               lu:=simplify(l/gcd0); 
+               lv:=simplify(coeff(r,x,dr)/gcd0); 
+         lu:=l; 
+         lv:=coeff(r,x,dr); 
+               t := expand(x^(dr-dv)*v*lv); 
+               if dr = 0 then r := 0 else r := subs(x^dr = 0,r) fi; 
+               r := expand(lu*r)-t; 
+               dr := degree(r,x) 
+           od; 
+           r 
+       fi 
+   end: 
+    
+    
+################################################################################### 
+############################################################## 
+# modified pseudo division: I1^s1...Ir^sr*uu = q*vv + r, 
+#    where I1, ..., I_r are all distinct factors of lcoeff(vv,x) 
+#    and s1, ..., sr are chosen to be the smallest 
+############################################################## 
+NPremfinite := 
+
+   proc(uu,vv,x,ord) 
+   local r,v,dr,dv,l,t,lu,lv,gcd0; 
+   options remember,system; 
+   global _field_characteristic_;
+       if type(vv/x,integer) then subs(x = 0,uu) 
+       else 
+           r := expand(uu); 
+           dr := degree(r,x); 
+           v := expand(vv); 
+           dv := degree(v,x); 
+           if dv <= dr then l := coeff(v,x,dv); v := expand(v-l*x^dv) 
+           else l := 1 
+           fi; 
+           while dv <= dr and r <> 0 do 
+#                gcd0:=gcd(l,coeff(r,x,dr),'lu','lv'); 
+         gcd0:=gcd(l,coeff(r,x,dr)); 
+               lu:=simplify(l/gcd0); 
+               lv:=simplify(coeff(r,x,dr)/gcd0); 
+         lu:=l; 
+         lv:=coeff(r,x,dr); 
+               t := expand(x^(dr-dv)*v*lv) mod _field_characteristic_; 
+               if dr = 0 then r := 0 else r := subs(x^dr = 0,r) mod _field_characteristic_ fi; 
+               r := expand(lu*r)-t mod _field_characteristic_; 
+#               r :=finite_simplify(r,ord,_field_characteristic_);
+               dr := degree(r,x) 
+           od; 
+           r 
+       fi 
+   end: 
+#################################################
+finite_simplify:=proc(r,ord,p)
+local i,res;    
+   res:=r;
+   for i to nops(ord) do
+     res:=subs(ord[i]^p=ord[i],res) mod p;
+  od;
+  res:
+end: 
+
+    
+################################################################################### 
+################################################################################### 
+# 
+# pseudo remainder of poly f wrt ascending set as 
+
+Premas := 
+
+   proc(f,as,ord,T) 
+   local r0,r1,asc;
+   options remember,system;
+   if nargs < 4 then asc:='std_asc' else asc:=T fi;      
+     r0:=Premas_a(f,as,ord,asc);
+   if POLY_MODE <> 'Partial_Differential' then RETURN(r0) fi;
+   
+     r1:=Premas_a(r0,as,ord,asc);
+     while(r1 <> r0) do
+        r0:=r1;
+        r1:=Premas_a(r0,as,ord,asc);
+     od;
+     r1:
+end:     
+     
+
+
+
+
+Premas_a := 
+
+   proc(f,as,ord,T) 
+   local remd,i,degenerate;
+   options remember,system;  
+   global  _field_characteristic_ ;  
+       remd := f; 
+#################下面专门处理有限域的情形############
+       if (_field_characteristic_ <> 0) then
+         for i to nops(as)  do 
+
+            
+           remd := NPremfinite(remd,as[i],Leader(as[i],ord),ord); 
+
+            
+         od;        
+       fi;
+
+
+#######################################################        
+       if nargs <4 then 
+        
+         for i to nops(as)  do 
+
+            
+           remd := NewPrem(remd,as[i],Leader(as[i],ord)); 
+
+            
+         od; 
+          
+       elif T='std_asc' then 
+  
+         for i to nops(as)  do 
+        
+           remd := NewPrem(remd,as[i],Leader(as[i],ord)); 
+        
+         od; 
+          
+       elif T='tri_asc' then 
+        
+         for i to nops(as) do 
+               if Class(remd,ord) = Class(as[i],ord) then                   
+                       remd := NewPrem(remd,as[i],Leader(as[i],ord)); 
+               fi 
+         od;         
+         
+
+###########for wu ascending set#############         
+       elif T='wu_asc' then 
+        
+         for i to nops(as) do 
+             remd := WuPrem(remd,as[i],Leader(as[i],ord),ord,'degenerate'); 
+             if degenerate=1 then RETURN( Premas(remd,as,ord,T)) fi;
+         od;       
+##################################################                  
+        
+       elif T='gao_asc' then 
+        
+         if Premas( Initial(remd,ord), as,ord,'std_asc' ) =0 then RETURN( Premas(remd,as,ord,'std_asc') ) fi;         
+            for i to nops(as) do 
+               if Class(remd,ord) = Class(as[i],ord) then 
+                       remd := NewPrem(remd,as[i],Leader(as[i],ord));
+                       if Premas( Initial(remd,ord), as,ord,'std_asc' ) =0 then RETURN( Premas(remd,as,ord,'std_asc') ) fi;  
+ 
+               fi 
+            od;         
+          
+       fi; 
+        
+        
+       if remd <> 0 then numer(remd/lcoeff(remd)) else 0 fi 
+   end: 
+
+    
+################################################################################### 
+################################################################################### 
+
+# set of non-zero remainders of polys in ps wrt ascending set as 
+Remset := 
+
+  proc(ps,as,ord,T) 
+  local i,set,pset,r;
+  options remember,system; 
+  
+     set:={}; 
+     pset:={op(ps)} minus {op(as)}; 
+      
+     if POLY_MODE='Partial_Differential' then pset := pset union spolyset(as,ord) fi; 
+      
+#       print("pset=",pset); 
+      
+      for i in pset do r:=Premas(i,as,ord,T); 
+            if r <>0  and Class(r,ord) =0 
+                 then RETURN({1}) 
+                 else set:=set union {r} fi 
+                  od; 
+    set minus {0} 
+    end: 
+###############################misc procedures###########
+Reverse:=proc(list)
+local i,n,list1;
+    n := nops(list); list1 := [seq(list[n-i+1],i = 1 .. n)]; list1
+end:
+
+################ 
+
+################################################################################### 
+# Factor the polynomials in Remaider set 
+################################################################################### 
+
+Produce:=proc(rs,ord,test) 
+global remfac;
+options remember,system;  
+local i,j,list1,list2; 
+   list2 := {}; 
+   for i in rs do 
+       list1 := Nonumber(Factorlist(i),ord); 
+       remfac := remfac union (list1 intersect test); 
+       list1 := list1 minus test; 
+       for j in list1 do 
+           if Class(j,ord) = 0 then list1 := list1 minus {j} fi 
+       od; 
+       list2 := list2 union {list1} 
+   od; 
+   for j in list2 do  if j = {} then RETURN({}) fi od; 
+   list2 
+end: 
+
+Nonumber:=proc(list,ord) 
+local i,ls;
+  options remember,system;  
+   ls := {}; 
+   for i in list do  if 0 < Class(i,ord) then ls := ls union {i} fi od; 
+   ls 
+end: 
+
+Factorlist:=proc(pol) 
+local i,list1,list2; 
+     options remember,system; 
+   if (_field_characteristic_ <>0) then 
+     list1:=(Factors(pol) mod _field_characteristic_)[2]; 
+   else
+     list1 := factors(pol)[2]; 
+   fi;
+   list2 := {}; 
+   for i in list1 do  list2 := list2 union {numer(i[1])} od; 
+   list2 
+end: 
+
+#input  two poly set set1,set2 
+#output 
+Ltl:=proc(list1,list2) 
+local set,i,j; 
+     options remember,system; 
+   set := {}; 
+   for i in list1 do  for j in list2 do  set := set union {{j,i}} od od 
+end: 
+
+Lltl:=proc(llist1,list2) 
+local set,i,j; 
+     options remember,system; 
+   set := {}; 
+   for i in llist1 do 
+       for j in list2 do  set := set union {i union {j}} od 
+   od 
+end: 
+
+# Procedure Nrs: 
+#input  a polynomial set  RS:={R1,R2,...,Rn} 
+#output a set in which every element is a poly set. set:={set1,set2,...,sets} 
+
+Nrs:=proc(rs,ord,test) 
+local rm,rss,l1,i,j,rset; 
+     options remember,system; 
+   rss := Produce(rs,ord,test); 
+   if rss={} then RETURN({}) fi; 
+#    print("rss=");print(rss); 
+   rset:=LProduct(rss); 
+   rset 
+end: 
+
+LProduct:=proc(inlist)    # 输入是集合的集合，输出也是集合的集合 
+  local i,j,k,m,n,B,C,D,T; 
+     options remember,system;   
+   B:=[]; 
+   for i from 1 to nops(op(1,inlist)) do 
+     B:=[op(B),{op(i,op(1,inlist))}]; 
+   end: 
+   for i from 2 to nops(inlist) do 
+      C:=[];D:=[]; 
+      for j from 1 to nops(B) do       
+        if ((B[j] intersect op(i,inlist))<>{}) then   
+           C:=[op(C),B[j]]; 
+         else D:=[op(D),B[j]]; 
+        end: 
+      end: 
+      B:=C; 
+      for m from 1 to nops(D) do 
+        T:=op(i,inlist); 
+        for n from 1 to nops(C) do 
+           if (nops(C[n] minus D[m])=1) then 
+            T:=T minus (C[n] minus D[m]);   
+           end:   
+         end: 
+       for k from 1 to nops(T) do 
+           B:= [op(B),D[m] union {op(k,T)}]; 
+        end : 
+      end:     
+    end:   
+    B:={op(B)}; 
+ end: 
+  
+LProduct_wdk:=proc(list1) 
+local len,lls,i,j; 
+     options remember,system; 
+ len:=nops(list1); 
+ if len=0 then RETURN(list1) fi; 
+ lls:={}; 
+ for i in op(1,list1) do 
+   lls:=lls union { {i} } 
+ od; 
+ if len=1 then RETURN (lls) fi; 
+ for j from 2 to len do 
+   lls:=Lltl(lls, op(j,list1)); 
+ od; 
+ lls; 
+end: 
+
+Lltl:=proc(lls,ls) 
+local res,i,j,l1,rm; 
+     options remember,system; 
+ res:={}; 
+ for i in lls do 
+   if i intersect ls ={} then 
+      for j in ls do 
+      res:= res union { i union {j} }; 
+      od; 
+   else 
+      res:=res union {i}; 
+   fi; 
+ od; 
+  
+   l1 := nops(res); 
+   rm := {}; 
+   for i to l1-1 do 
+       for j from i+1 to l1 do 
+           if op(i,res) minus op(j,res) = {} then 
+               rm := rm union {op(j,res)} 
+           fi; 
+           if op(j,res) minus op(i,res) = {} then 
+               rm := rm union {op(i,res)} 
+           fi 
+       od 
+   od; 
+   res := res minus rm; 
+   res   
+end: 
+
+####################################################### 
+# Aux functions: 
+# 
+# 
+###################################################### 
+Nums:=proc(ps,ord) 
+local i,n; 
+     options remember,system; 
+     n:=0; 
+     for i in ps do 
+       if Class(i,ord)=1 and POLY_MODE='Algebraic' then n:=n+1 fi ; 
+       if Class(i,ord)=1 and (POLY_MODE='Partial_Differential'  or POLY_MODE='Ordinary_Differential') and torder(Leader(i,ord))=0 then n:=n+1 fi; 
+     od; 
+     n 
+end: 
+
+Emptyset:=proc(ds,as,ord) 
+local i; 
+     options remember,system; 
+
+    if {op(ds)} intersect {op(as)} <> {} then RETURN(1) fi;
+#    for i in ds do if grobner[normalf](i,as,tdeg(op(ord)))=0 then RETURN(1) fi od; 
+   0; 
+end: 
+
+Non0Constp:=proc(ps,ord) 
+local i; 
+     options remember,system; 
+   for i in ps do if Class(i,ord)=0 and i <> 0 then RETURN(1) fi od; 
+   0; 
+end:     
+    
+
+TestQ:=proc(ps,as,ord) 
+global remfac; 
+local i; 
+     options remember,system; 
+
+   for i in ps do  if grobner[normalf](i,as,ord) = 0 then remfac:=remfac union {i};RETURN(1) fi od; 
+   0 
+end: 
+
+Init:=proc(p,ord) 
+local pol; 
+     options remember,system; 
+     pol:=Initial(p,ord); 
+     if Class(pol,ord)=0 then RETURN(1) fi; 
+     pol 
+end: 
+
+JInitials:=proc(bset,ord) 
+local pol, product; 
+     options remember,system; 
+     product:=1; 
+     for pol in bset do 
+    product:=product*Initial(pol,ord); 
+     od; 
+     product; 
+end: 
+        
+
+Inits:=proc(bset,ord) 
+local i,list; 
+     options remember,system; 
+    list:={}; 
+    for i in bset do list:=list union Factorlist(Init(i,ord)) od; 
+    for i in list do if Class(i,ord)=0 then list:=list minus {i} fi od; 
+    list 
+end: 
+
+#The following will be used in algebraci case ONLY!!! 
+
+Inits1:=proc(bset,ord) 
+local i,list; 
+     options remember,system; 
+    list:={}; 
+    for i in bset do if Class(Init(i,ord),ord)>1 then list:=list union Factorlist(Init(i,ord)) fi od; 
+###  remove the the factors with class <2 
+    for i in list do if Class(i,ord) < 2 then list:=list minus {i} fi od; 
+    list 
+end: 
+
+####################################################################### 
+####################################################################### 
+# Compute the Characteristic set with FACTORIZATION      
+####################################################################### 
+####################################################################### 
+# 
+# NAME:  Cs_a 
+# INPUT: ps:     a polynomial set, Suppose each pol in ps is irreducible over Q. 
+#      ord:   indeterminate ordering. if ord:=[z,y,x] means z>y>x; 
+#      nzero: a polynomial set. Each pol in nzero is NOT equal to 0 
+#                       
+#      test:  a polynomial set, which is NOT equal to 0. 
+#      T:     a symbol to decide to use which kind of ascending set 
+#          T: r_asc, w_asc,g_asc,q_asc=t_asc 
+# OUTPUT: a list of ascending set 
+##################################################################### 
+
+Cs_a:=proc(ps,ord,nzero,test,T) 
+global asc_set,INDEX,time_bs,time_rs, time_f,__testp__; 
+local asc,i,j,rm,cset,test1,ps1,bset,rset, ltime_b,ltime_r,ltime_f; 
+options remember,system; 
+
+   if Nums(ps,ord)>1 then RETURN({}) fi; 
+   rm := {}; 
+   cset := {}; 
+  if {op(ps)} intersect nzero <> {} then RETURN({}) fi; 
+  if POLY_MODE='Algebraic' then 
+       if nops(nzero) <> 0 and  Emptyset(nzero,ps,ord) = 1 then print("An empty set");RETURN({})  fi; 
+  
+       if __testp__= 1 and nops(test)  <> 0 and TestQ(test ,ps,ord) = 1 then 
+           print("One factor of an initial has been found and it will be appended to the original polynomial set "); 
+#           print("remfac=",remfac);
+           RETURN({}) 
+       fi; 
+   fi; 
+  
+#      print("ps=",ps); 
+     ltime_b:=time(); 
+     bset := Basicset(ps,ord,T); 
+#      print("bset=",bset); 
+     time_bs:=time_bs+time()-ltime_b; 
+     ltime_r:=time(); 
+               
+     
+     rset := Remset([op(ps)],bset,ord,T); 
+#       print("rset=",rset); 
+     time_rs:=time_rs+time()-ltime_r; 
+
+  
+   if rset={1} then RETURN({}) fi; 
+# for i in rset do if Class(i,ord)=0 then RETURN({}) fi od; 
+   if rset = {} then 
+       INDEX:= INDEX+1; 
+       asc_set[INDEX] := bset; 
+       print(`A New Component`); 
+       RETURN({bset}) 
+   fi; 
+#    for i in rset do 
+#        if (Class(i,ord) = 0) and (i <> 0) then RETURN({}) fi 
+#    od; 
+
+############## 
+    if POLY_MODE='Algebraic' and __testp__= 1 then
+       test1 := test union Inits(bset,ord); 
+    else
+       test1:=test;
+    fi;
+##############   
+   
+   
+   ltime_f:=time(); 
+   rset := Nrs(rset,ord,nzero union test1); 
+   time_f:=time_f+time()-ltime_f; 
+   if rset = {} then RETURN({}) fi; 
+   cset:=map(Cs_a,map(`union`,rset,{op(bset)}),ord,nzero,test1,T); 
+   map(op,cset); 
+end: 
+
+####################################################################### 
+####################################################################### 
+# 
+# NAME:  charset_a 
+# INPUT: ps:     a polynomial set, Suppose each pol in ps is irreducible over Q. 
+#      ord:   indeterminate ordering. if ord:=[z,y,x] means z>y>x; 
+#      nzero: a polynomial set. Each pol in nzero is NOT equal to 0 
+#                       
+#      T:     a symbol to decide to use which kind of ascending set 
+#          T: r_asc, w_asc,g_asc,q_asc=t_asc 
+# OUTPUT: a list of ascending set 
+##################################################################### 
+
+charset_a:=proc(ps,ord,nzero,T) 
+global asc_set,INDEX,time_bs,time_rs, time_f; 
+local asc,i,j,rm,cset,test1,ps1,bset,rset, ltime_b,ltime_r,ltime_f; 
+options remember,system; 
+#    if Nums(ps,ord)>1 then RETURN({}) fi; 
+   rm := {}; 
+   cset := {}; 
+  if {op(ps)} intersect nzero <> {} then RETURN({}) fi; 
+  
+  if nops(nzero) <> 0 and Emptyset(nzero,ps,ord) = 1 then print("An empty set");RETURN({})   fi;   
+
+  
+#      print("ps=",ps); 
+     ltime_b:=time(); 
+     bset := Basicset(ps,ord,T); 
+#      print("bset=",bset); 
+     time_bs:=time_bs+time()-ltime_b; 
+     ltime_r:=time(); 
+     rset := Remset([op(ps)],bset,ord,T); 
+     rset := map(primpart,rset,ord);
+#      print("rset=",rset); 
+     time_rs:=time_rs+time()-ltime_r; 
+
+  
+   if rset={1} or Non0Constp(rset,ord)=1 then RETURN([]) fi; 
+# for i in rset do if Class(i,ord)=0 then RETURN({}) fi od; 
+   if rset = {} then 
+       INDEX:= INDEX+1; 
+       asc_set[INDEX] := bset; 
+       print(`A New Component`); 
+       RETURN(bset) 
+   fi; 
+#    for i in rset do 
+#        if (Class(i,ord) = 0) and (i <> 0) then RETURN({}) fi 
+#    od; 
+#    test1 := test union Inits(bset,ord); 
+   ltime_f:=time(); 
+#    rset := Nrs(rset,ord,nzero union test1); 
+   time_f:=time_f+time()-ltime_f; 
+#    if rset = {} then RETURN({}) fi; 
+
+   cset:=charset_a({op(bset)} union rset,ord,nzero,T); 
+   cset; 
+end: 
+
+charset_b:=proc(ps,ord,nzero,T) 
+local cset,rs; 
+options remember,system; 
+
+   cset := charset_a(ps,ord,nzero,T); 
+   rs:=Remset([op(ps)],cset,ord,T);
+#   rs:=map(primpart,rs,ord);
+
+   if rs={} then RETURN(cset) fi; 
+   if rs={1} then RETURN([]) fi; 
+   if cset=[] then RETURN([]) fi; 
+#   #lprint("kkkkkkkkkkkkk");
+#   cset:=charset_b({op(ps)} union {op(cset)} union rs,ord,nzero,T); 
+   while rs<> {} do
+      cset:=charset_a({op(cset)} union rs, ord,nzero,T);
+#####we should consider the the following special case which  cset=[]      
+      if nops(cset)=0 then RETURN(cset) fi;
+      rs:=Remset(ps,cset,ord,T);
+   od;
+   cset 
+end: 
+
+CS_a:=proc(ps,ord,nzero,T) 
+local  pset,cset,order,nonzero,asc; 
+options remember, system; 
+   if nargs < 1 then ERROR(`too few arguments`) 
+     elif nargs>4 then ERROR(`too many arguments`) 
+   fi; 
+   if nargs<2 then order:=[op(indets(ps))] else order:=[op(ord)] fi; 
+   if nargs<3 then nonzero:={} else nonzero:=nzero fi; 
+   if nargs<4 then asc:=`` else asc:=T fi; 
+   cset:={}; 
+   pset:=Nrs(ps,order,nonzero); 
+   cset:=map(Cs_a,pset,order,nonzero,{},asc); 
+   [op(map(op,cset))]; 
+end: 
+
+####################################################################### 
+# 
+# NAME:  Cs_b 
+# INPUT: ps:     a polynomial set, Suppose each pol in ps is irreducible over Q. 
+#      ord:   indeterminate ordering. if ord:=[z,y,x] means z>y>x; 
+#      nzero: a polynomial set. Each pol in nzero is NOT equal to 0 
+#                       
+#      test:  a polynomial set, which is NOT equal to 0. 
+#      T:     a symbol to decide to use which kind of ascending set 
+#          T: r_asc, w_asc,g_asc,q_asc=t_asc 
+# OUTPUT: a list of ascending set 
+##################################################################### 
+
+Cs_b:=proc(ps,ord,nzero,test,T) 
+local cset,cset1,i,j,rs,rs1; 
+options remember,system; 
+if Nums(ps,ord)>1 then RETURN({}) fi; 
+   rs1:={}; 
+   cset := Cs_a(ps,ord,nzero,test,T); 
+   cset1:=cset; 
+   for i in cset1 do rs:=Remset([op(ps)],i,ord,'std_asc'); 
+   
+#    for i in cset1 do rs:=Remset([op(ps)],i,ord,T); 
+#                    if rs<>{} then if rs <> {1} then rs1:=rs1 union {rs union {op(i)} } fi; 
+if rs<>{} then if rs <> {1} then rs:=Nrs(rs,ord,nzero union test); rs1:=rs1 union map(`union`,rs , {op(i)} ) fi; 
+                                   cset:=cset minus {i} fi 
+                  od; 
+   if rs1={} then RETURN(cset) fi; 
+   for j in rs1 do  cset:=cset union Cs_b(ps union j,ord,nzero,test,T) od; 
+   cset 
+end: 
+
+####################################################################### 
+# 
+# NAME:  Cs_c 
+# INPUT: ps:     a polynomial set, Suppose each pol in ps is irreducible over Q. 
+#      ord:   indeterminate ordering. if ord:=[z,y,x] means z>y>x; 
+#      nzero: a polynomial set. Each pol in nzero is NOT equal to 0 
+#                       
+#      test:  a polynomial set, which is NOT equal to 0. 
+#      T:     a symbol to decide to use which kind of ascending set 
+#          T: r_asc, w_asc,g_asc,q_asc=t_asc 
+# OUTPUT: a list of ascending set 
+##################################################################### 
+Cs_c:=proc(ps,ord,nzero,T) 
+local cset,remf,ps1,i,nzeros; 
+global remfac; 
+options remember,system; 
+
+if Nums(ps,ord)>1 then RETURN({}) fi; 
+    remfac:={}; 
+        cset:=Cs_b({op(ps)},ord,{op(nzero)},{},T); 
+    remf:=remfac minus {op(nzero)}; 
+#    print(remf);
+#     print(remf); 
+  for i to nops(remf) do 
+#     print(remf[i]); 
+#     print(ps); 
+       ps1 := {op(ps)} union {remf[i]}; 
+       if i = 1 then nzeros := {op(nzero)} else nzeros := nzeros union {remf[i-1]} fi; 
+       cset := cset union Cs_c(ps1,ord,nzeros,T) 
+   od; 
+   cset 
+end: 
+
+CS:=proc(ps,ord,nzero,T) 
+local i,pset,cset,order,nonzero,asc; 
+options remember, system; 
+   if nargs < 1 then ERROR(`too few arguments`) 
+    elif nargs > 4 then ERROR(`too many arguments`) 
+   fi; 
+   if nargs < 2 then order:=[op(indets(ps))] else order:=[op(ord)] fi; 
+   if nargs < 3 then nonzero:={} else nonzero:=realfac({op(nzero)},ord) fi; 
+   if nargs < 4 then asc:='std_asc' else asc:=T fi; 
+   cset:={}; 
+   pset:=Nrs(ps,order,nonzero); 
+   for i to nops(pset) do cset:=cset union Cs_c(pset[i],order,nonzero,asc) od; 
+   [op(cset)] 
+end: 
+
+checknum:=0: 
+Css:=proc(ps,ord,nzero,T) 
+global remfac,checknum; 
+local cset1,cset,i,j,nzero1, ps1,ps2,Is,Ninits; 
+options remember,system; 
+    checknum:=checknum+1; 
+   remfac := {}; 
+   cset1 := Cs_c(ps,ord,nzero,T); 
+   cset := cset1; 
+#          nn:=0;
+      for i in cset1 do 
+#      	  print(nops(cset1));
+#      	  nn:=nn+1;
+#      	  print(nn);
+       if Class(i[nops(i)],ord)=1 and POLY_MODE='Algebraic' then Is:=Inits1(i,ord) else Is := Inits(i,ord) fi; 
+       if POLY_MODE='Partial_Differential' or POLY_MODE='Ordinary_Differential' then Is := Is union Septs(i,ord) fi; 
+       Ninits := Is minus {op(nzero)}; 
+#        print("checknum=",checknum, "Ninits=",Ninits); 
+       for j to nops(Ninits) do 
+           ps1 := ({op(ps)} union {op(i)}) union {Ninits[j]}; 
+           if j = 1 then nzero1 := {op(nzero)} 
+           else nzero1 := nzero1 union {Ninits[j-1]} 
+           fi; 
+           cset := cset union Css(ps1,ord,nzero1,T) 
+       od 
+   od; 
+   cset 
+end: 
+
+realfac:=proc(ps,ord) 
+local  s,res,i; 
+     options remember,system; 
+      s:=Produce(ps,ord,{}); 
+      res:={}; 
+      for i in s do 
+         res:=res union i; 
+      od; 
+      res; 
+end:               
+  
+Degenerate:=proc(ds,as,ord) 
+local i,r; 
+     options remember,system; 
+       for i in ds do 
+         r:=Premas(i,as,ord,'std_asc'); 
+         if r =0 then return 1 fi; 
+       od; 
+         0; 
+end: 
+          
+###  POLY_MODE:= one of ['Algebraic','Ordinary_Differential','Partial_Differential']
+### depend_relation  is like : [[x,y],[t]];          
+#### T:= one of ['std_asc','norm_asc','wu_asc','gao_asc','tri_asc']          
+CSS:=proc(ps,ord,nzero,T) 
+global factor_time,prem_time, t_time,time_bs,time_rs,time_f; 
+local asc,i,pset,cset,nonzero,order,result,wm; 
+options remember,system; 
+   if nargs < 2 then order:=[op(indets(ps))] else order:=[op(ord)] fi; 
+   if nargs < 3 then nonzero:={} else nonzero:=realfac({op(nzero)},ord) fi; 
+   if nargs < 4 then asc:='std_asc' else asc:=T fi; 
+   if asc='norm_asc' then return Dec({op(ps)},order,nonzero,'std_asc');fi; 
+   cset:={}; 
+   factor_time:=0; 
+   prem_time:=0; 
+   time_bs:=0; 
+   time_rs:=0; 
+   time_f:=0; 
+    
+   t_time:=time(); 
+   pset:=Nrs(ps,order,nonzero); 
+
+   
+   if asc='norm_asc' then 
+        for i to nops(pset) do cset:=cset union Dec(pset[i],order,nonzero,'std_asc') od;
+   else         
+   	for i to nops(pset) do cset:=cset union Css(pset[i],order,nonzero,asc) od; 
+   fi;
+   result:=[]; 
+   for i in cset do if Degenerate(nonzero,i,order)<>1 then result:=[op(result),i]; fi od; 
+       #lprint("Timing","Total", time()-t_time, "Factoring", factor_time,"Prem",prem_time); 
+       #lprint("BasicSet",time_bs,"RS",time_rs,"factor",time_f); 
+   result; 
+
+end: 
+
+charset:=proc(ps,ord,nzero,T) 
+global factor_time,prem_time, t_time,time_bs,time_rs,time_f; 
+local asc,nonzero,order,result,cm; 
+options remember,system; 
+   if nargs < 2 then order:=[op(indets(ps))] else order:=[op(ord)] fi; 
+   if nargs < 3 then nonzero:={} else nonzero:=realfac({op(nzero)},ord) fi; 
+   if nargs < 4 then asc:='std_asc' else asc:=T fi; 
+
+   prem_time:=0; 
+   time_bs:=0; 
+    
+  
+        
+   t_time:=time(); 
+   
+  result:=charset_b({op(ps)}, order,nonzero,asc); 
+#   result:=charset_b(map(primpart,{op(ps)},order),order,nonzero,asc); 
+
+       #lprint("Timing","Total", time()-t_time, "BasicSet",time_bs,"Prem",prem_time); 
+
+   result; 
+
+end: 
+
+Css1:=proc(ps,ord,test,type) 
+local  cset,i,j,septs,cset1,nonzero,vv; 
+     options remember,system; 
+       cset:=CSS(ps,ord,test,type); 
+#       septs:={}; 
+       cset1:=cset; 
+       nonzero:={op(test)};
+       for i in cset1 do 
+               septs:=Septs(i,ord) minus Inits(i,ord); 
+               if septs<>{} then
+
+                       for j in septs do 
+                       vv:=  {op(Css1(ps union {op(i)} union {j},ord,nonzero,type))};   
+                       nonzero:={op(nonzero),j};                   
+                       cset:={op(cset)} union vv ;
+                       od 
+               fi 
+       od; 
+   [op(cset)] 
+end: 
+
+Gsolve:=proc(ps,ord,test) 
+    gsolve(ps,ord,test) 
+end: 
+
+e_val:=proc(ps,ord,test,T) 
+global factor_time,prem_time, t_time,time_bs,time_rs,time_f; 
+local asc,nonzero,order,result,cm; 
+options remember,system; 
+   if nargs < 2 then error("The input should have at least 2 parameters") fi; 
+   if nargs < 3 then nonzero:={} else nonzero:=realfac({op(nzero)},ord) fi; 
+   if nargs < 4 then asc:='std_asc' else asc:=T fi; 
+
+   prem_time:=0; 
+   time_bs:=0;               
+   t_time:=time(); 
+   nonzero:=test;
+  result:=Css1({op(ps)}, ord,nonzero,asc); 
+       #lprint("Timing","Total", time()-t_time, "BasicSet",time_bs,"Prem",prem_time); 
+
+   result; 
+end: 
+
+ 
+
+wsolve:=proc() 
+local rt; 
+global POLY_MODE; 
+POLY_MODE:='Algebraic'; 
+ rt:=CSS(args); 
+ rt; 
+end: 
+
+od_wsolve:=proc() 
+local rt; 
+global POLY_MODE,depend_relation; 
+POLY_MODE:='Ordinary_Differential'; 
+ if type(depend_relation,'list') and nops(depend_relation) >1 and 
+    type(depend_relation[2],'list') and nops(depend_relation[2])=1 then 
+     rt:=CSS(args); 
+  else 
+     #lprint("Please set depend_relation:=[[x,y,...],[t]] first, if x,y,... depend on t"); 
+     rt:=0; 
+  fi; 
+ rt; 
+end: 
+
+pd_wsolve:=proc() 
+local rt; 
+global POLY_MODE,depend_relation; 
+POLY_MODE:='Partial_Differential'; 
+ if type(depend_relation,'list') and nops(depend_relation) >1 and 
+    type(depend_relation[2],'list') and nops(depend_relation[2])>1 then 
+     rt:=CSS(args); 
+  else 
+     #lprint("Please set depend_relation:=[[x1,x2,...],[t1,t2,...]] first, if x1,x2,... depend on t1,t2,..."); 
+     rt:=0; 
+  fi; 
+ rt; 
+end: 
+
+INDEX:=0: 
+__testp__:=0:
+remfac:={}: 
+prem_time:=0: 
+factor_time:=0: 
+time_bs:=0: 
+time_rs:=0: 
+time_f:=0: 
+POLY_MODE:=Algebraic: 
+RANKING_MODE:='cls_ord_var': 
+
+# Test Program for Differentiation 
+
+
+#---------------------------------------- 
+# Global dependence 
+#---------------------------------------- 
+
+######################################################### 
+#11111111111111111111111111111111111111111111111111111111 
+# 
+#Part IV: The basic functions for differential poly 
+#         
+######################################################### 
+
+#Diff_Var:=[u,v,w]; # Declare variables; 
+
+#Diff_Indets:=[X1,X2,X3]; # Declare Diff ndeterminates; 
+
+#Lvar:=nops(Diff_Var); 
+
+#---------------------------------------------------------- 
+# main function 
+#---------------------------------------------------------- 
+
+dDiff:=proc(dp,var,n) 
+   local df,i; 
+     options remember,system;    
+   df:=dp; 
+   if nargs=2 then RETURN (DF(dp,var)) fi; 
+   for i to n do 
+      df:=DF(df,var); 
+   od; 
+   df; 
+end: 
+          
+#========================================================== 
+#         
+#          dq  <- DF(dp, var) 
+# 
+#          (differetiating a diff polynomial) 
+# 
+# 
+#          Input: dp, a diff polynomial; 
+#                 var,  the variable w.r.t which to be differentiate   
+# 
+#          Output: dq,  the result after differentiating dp w.r.t var; 
+# 
+#=========================================================== 
+
+DF:=proc(dp, var) 
+   local dq, dp1, dp2; 
+     options remember,system;    
+
+#Step1 [Recursive base] 
+
+      if op(0,dp) <> `+` then 
+         dq:=DF_prod(dp,var); 
+         RETURN(dq); 
+      fi; 
+    
+#Step2 [Recursion] 
+
+     dp1:=op(1,dp); 
+     dp2:=normal(dp-dp1); 
+     dq:=normal(DF_prod(dp1,var)+DF(dp2,var));             
+          
+#Step3 [Prepare for return] 
+
+     RETURN(dq); 
+      
+end: 
+
+#------------------------------------------ 
+# subroutines 
+#------------------------------------------ 
+
+#========================================================= 
+# 
+# 
+#                der <- DF_indet(indet, var) 
+#       
+#           (differentiate a differential indeterminante) 
+# 
+#   Input: indet, a differential indeterminate which is a 
+#                 derivative of symobls in Diff_Indets w.r.t 
+#                 some variables in Diff_Var; 
+# 
+#          var,   the variable w.r.t which to be differeniated 
+# 
+#   Output: der,  the derivative of indet w.r.t var 
+# 
+#=========================================================== 
+
+DF_indet:=proc(indet, var) 
+         local der, p, i, index, j,Diff_Var,Diff_Indets,Lvar; 
+         global depend_relation; 
+     options remember,system;          
+
+#STEP0 [Initiation diffs]; 
+          
+         Diff_Var:=depend_relation[2]; 
+         Diff_Indets:=depend_relation[1]; 
+         Lvar:=nops(Diff_Var); 
+          
+#STEP1 [Special cases] 
+          
+         if  not member(var, Diff_Var, 'p') then 
+             der := diff(indet, var); 
+             RETURN(der); 
+         fi; 
+          
+         if not member(indet, Diff_Indets) and 
+            not member(op(0,indet), Diff_Indets) then 
+            der := diff(indet, var); 
+            RETURN(der); 
+         fi; 
+          
+#STEP2 [Compute] 
+
+         index:=NULL; #Initialization 
+          
+         if member(indet, Diff_Indets) then   
+          
+         # build a derivative from a diff indet       
+          
+            for i from 1 to Lvar do 
+                if i = p then 
+                   index:=index,1; 
+                else 
+                   index:=index,0; 
+                fi; 
+            od; 
+            der:=indet[index]; 
+         else   
+          
+         # modify a derivative from a given one 
+          
+           for i from 1 to Lvar do 
+               j:=op(i,indet); 
+               if i = p then 
+                  index:=index,(j+1); 
+               else 
+                  index:=index,j; 
+               fi; 
+           od; 
+           der:=op(0,indet)[index] 
+         fi; 
+          
+#STEP3 [Prepare for return] 
+          
+          RETURN(der); 
+          
+end: 
+
+#======================================================== 
+# 
+#           dq <- DF_power(dp, var) 
+# 
+#           (differentiating a power of a drivative of a diff indet) 
+# 
+#           input:  dp, a power of a diff indet 
+#                   var, the variable w.r.t which to be differentiated 
+# 
+#           output: dq, the result after differentiating dp w.r.t var 
+# 
+#========================================================= 
+
+DF_power:=proc(dp, var) 
+         local dq, indet, expon; 
+              options remember,system; 
+          
+#Step1 [Special cases] 
+
+      # constant case 
+      
+      if dp = 1 then 
+         dq := 0; 
+         RETURN(dq); 
+      fi; 
+      
+      # indeterminate case 
+      
+      if op(0,dp) <> `^` then 
+         dq := DF_indet(dp, var); 
+         RETURN(dq); 
+      fi; 
+                
+#Step2 [Compute] 
+
+      indet:=op(1,dp); 
+      expon:=op(2,dp); 
+      dq:=expon*indet^(expon-1)*DF_indet(indet,var); 
+    
+#Step3 [Prepare for return] 
+
+      RETURN(dq); 
+
+end: 
+
+#========================================================= 
+# 
+#        dq <- DF_prod(dp, var) 
+# 
+#        (differentiating a product of derivatives of some diff indets)     
+# 
+#        input: dp, a product of derivatives of some diff indets   
+#               var,  the variable w.r.t which to be differentiated 
+# 
+#        output:  dq, the result after differentiating dp w.r.t var; 
+# 
+#========================================================== 
+
+DF_prod:=proc(dp, var) 
+        local dq, dp1, dp2; 
+             options remember,system; 
+
+#Step1 [Recursive base] 
+
+      if op(0,dp) <> `*` then 
+         dq := DF_power(dp, var); 
+         RETURN(dq); 
+     fi; 
+
+#Step2 [Recursion] 
+
+     dp1:=op(1,dp); 
+     dp2:=normal(dp/dp1); 
+      
+     dq:=normal(DF_power(dp1,var)*dp2+dp1*DF_prod(dp2,var)); 
+      
+#Step3 [Prepare for return] 
+
+     RETURN(dq); 
+      
+end: 
+                                        
+#=============================================================== 
+# 
+#            ord  <- torder(der) 
+# 
+#           computing the order of a derivative of a diff indet 
+# 
+#           input: der, a derivative of a diff indet 
+# 
+#           output: ord, ord is the order of der. 
+# 
+#================================================================= 
+
+torder:=proc(der) 
+local ord,i,Diff_Var,Lvar; 
+global depend_relation; 
+     options remember,system; 
+
+#STEP1 [Initialize] 
+
+      if type(der,symbol) then RETURN(0) fi; 
+
+         ord := 0; 
+              
+#STEP2 [Compute] 
+
+           
+              for i from 1 to nops(der) do 
+                 ord := ord + op(i, der); 
+              od; 
+ ord; 
+end: 
+                    
+
+#================================================================== 
+#     
+#            lead <- Leader(dp, ranking,ord, _cls, _ord) 
+#     
+#            Input: dp, a  nonzero diff poly; 
+#                   ranking, a specified ranking; 
+# 
+#            Output: the Leader w.r.t. ranking; 
+# 
+#            Option: _cls, the class of the lead; 
+#                   _ord,, the order of the lead; 
+# 
+#=================================================================== 
+Mainvar:=proc(p,ord) 
+     options remember,system; 
+ Leader(p,ord); 
+ end: 
+
+Leader := proc(dp, ord, _cls, _ord) 
+         local lead, cls, order, L, l,  der, clsord, i, j, cls1, ord1,Diff_Var,Lvar; 
+      global depend_relation; 
+           options remember,system;     
+           
+#Step1 [Initialize] 
+
+         Diff_Var:=depend_relation[2]; 
+         Lvar:=nops(Diff_Var); 
+         L:=indets(dp); l:=nops(L); 
+         lead := 1; 
+         cls := 0; 
+         order := 0; 
+
+#Step 2 [Algebraic mode] 
+
+        if POLY_MODE='Algebraic' then 
+         for i to nops(ord) do 
+           if member(ord[i],L) then RETURN(ord[i]) fi 
+         od; 
+        fi; 
+
+#Step2 [cls_ord_var case] 
+
+         if RANKING_MODE = cls_ord_var then 
+            for i from  1 to l do 
+                der := L[i]; 
+
+                cls1:=Class(der,ord); 
+                ord1:=torder(der); 
+                
+                if cls1 > cls  or (cls1 = cls and ord1 > order) then 
+                   lead := der; 
+                   cls := cls1; 
+                   order := ord1 
+                else 
+                   if cls1 = cls and ord1 = order and ord1 > 0 then 
+                      for j from 1 to Lvar do 
+                         if op(j, lead) < op(j, der) then 
+                            lead := der; 
+                            cls := cls1; 
+                            order := ord1; 
+                            break; 
+                         else 
+                            if op(j, lead) > op(j, der) then; 
+                            break; 
+                            fi; 
+                         fi; 
+                     od; 
+                   fi; 
+               fi; 
+            od; 
+         fi; 
+          
+#Step3 [ord_cls_var case] 
+          
+         if RANKING_MODE = ord_cls_var then 
+            for i from  1 to l do 
+                der := L[i]; 
+                cls1:=Class(der,ord); 
+                ord1:=torder(der); 
+                if ord1 > order or (ord1 = order and cls1 > cls) then 
+                   lead := der; 
+                   cls := cls1; 
+                   order := ord1 
+                elif ord1 = order and cls1 = cls and ord1 > 0 then 
+                     for j from 1 to Lvar do 
+                         if op(j, lead) < op(j, der) then 
+                            lead := der; 
+                            cls := cls1; 
+                            order := ord1; 
+                            break; 
+                         elif op(j, lead) > op(j, der) then; 
+                            break; 
+                         fi; 
+                     od; 
+               fi; 
+            od; 
+         fi; 
+          
+
+#STEP3 [Prepare for return] 
+
+          
+         if nargs > 2 then 
+            _cls := cls; 
+         fi; 
+         if nargs > 3 then 
+            _ord := order; 
+         fi; 
+          
+         RETURN(lead); 
+          
+end: 
+
+
+
+         
+
+
+          
+depend:=proc(l1,l2) 
+global depend_relation; 
+ depend_relation:=[l1,l2]; 
+ 1: 
+ end: 
+#============================================================ 
+# 
+#       {1,-1,0} <- dercmp(der1, der2) 
+# 
+#       input: der1, der2, two derivatives; 
+#           
+# 
+#       output: 0 if der1 = der2 
+#               1 if der1 < der2 
+#              -1 if der1 > der2 
+# 
+#============================================================   
+dercmp:=proc(der1, der2,ord) 
+           local dp, lead; 
+                options remember,system; 
+            
+           if der1=der2 then RETURN(0) fi; 
+            
+           dp := der1 + der2; 
+           lead:=Leader(dp,ord); 
+           if lead = der1 then 
+              RETURN(-1); 
+           else 
+              RETURN(1); 
+           fi; 
+            
+end: 
+
+#if der1 is a derivative of der2 then return true else false
+Is_derivative:=proc(der1, der2) 
+              local dt1,dt2,i, l1,l2; 
+                   options remember,system; 
+              
+              
+               if type(der1,symbol) then dt1:=der1 else dt1:=op(0,der1) fi; 
+               if type(der2,symbol) then dt2:=der2 else dt2:=op(0,der2) fi; 
+            if dt1<>dt2 then RETURN(false) fi; 
+            if der1=der2 then RETURN(true) fi; 
+             
+            if torder(der2)=0 then 
+                 RETURN(true) 
+            elif torder(der1)=0 then 
+                   RETURN(false) ; 
+           else 
+                l1:=dOrder(der1,dt1); 
+                l2:=dOrder(der2,dt1); 
+                for i to nops(l1) do 
+                     if op(i,l1) < op(i,l2) then RETURN(false) fi; 
+                od; 
+         fi; 
+                           
+           true; 
+end: 
+                                                  
+#if der1 is a proper derivative of der2 then return true else false
+Is_proper_derivative:=proc(der1, der2) 
+              local dt1,dt2,i, l1,l2; 
+                   options remember,system; 
+              
+              
+               if type(der1,symbol) then dt1:=der1 else dt1:=op(0,der1) fi; 
+               if type(der2,symbol) then dt2:=der2 else dt2:=op(0,der2) fi; 
+            if dt1<>dt2 then RETURN(false) fi; 
+            if der1=der2 then RETURN(false) fi; 
+             
+            if torder(der2)=0 then 
+                 RETURN(true) 
+            elif torder(der1)=0 then 
+                   RETURN(false) ; 
+           else 
+                l1:=dOrder(der1,dt1); 
+                l2:=dOrder(der2,dt1); 
+                for i to nops(l1) do 
+                     if op(i,l1) < op(i,l2) then RETURN(false) fi; 
+                od; 
+         fi; 
+                           
+           true; 
+end: 
+
+#return all the derivatives in dp of der
+proper_derivatives:=proc(dp,der) 
+    local i,idt,dets; 
+         options remember,system; 
+    idt:=indets(dp); 
+    dets:={}; 
+     
+    for i in idt do 
+      if Is_proper_derivative(i,der) then 
+         dets:={i,op(dets)}; 
+         
+      fi; 
+    od; 
+    dets;      
+end:      
+
+       
+     
+     
+
+#sometimes, Maple's GCD is NOT valid for parameters which has indexes such a[1],a[2]; 
+
+NPremO := 
+
+   proc(uu,vv,xx) 
+   local r,v,dr,dv,lcv,rtv,g,lu,lv; 
+    options remember,system; 
+     if degree(vv,xx)=0 then RETURN(0) fi; 
+     if type(vv/xx,integer) then coeff(uu,xx,0) 
+       else 
+           r := expand(uu); 
+           dr := degree(r,xx); 
+           v := expand(vv); 
+           dv := degree(v,xx); 
+            
+             lcv:=lcoeff(v,xx); 
+#            rtv:=sterm(v,xx); 
+           rtv:=v-expand(lcoeff(v,xx)*xx^degree(v,xx)); 
+
+           while dv <= dr and r <> 0 do 
+
+#              g:=gcd(lcv,coeff(r,xx,dr)); 
+
+             lu:=lcv; 
+
+             lv:=coeff(r,xx,dr); 
+                  
+               r:=expand(lu*(r-expand(lcoeff(r,xx)*xx^degree(r,xx)))-lv*rtv*xx^(dr-dv)); 
+               dr := degree(r,xx) 
+           od; 
+           r 
+       fi 
+   end: 
+  
+  
+#######变量y有两种情形.y and y[1]所以要小心. 
+
+  
+ODPrem:= 
+
+  proc(uu,vv,y) 
+    local u,x,dv,du,d,t,var; 
+    global depend_relation; 
+    options remember,system;         
+    
+       t:=depend_relation[2][1]; 
+       var:=depend_relation[1]; 
+  
+#        if dClass(uu,var)=0 then RETURN(uu) fi; 
+
+          u:=uu; 
+          if type(y,symbol) then x:=y else         x:=op(0,y)  fi;                 
+          dv:=dOrder(vv,x); 
+          du:=dOrder(u,x); 
+          d:=du-dv; 
+          if d<0 then RETURN(uu) fi; 
+#the following program is for ordinary differential case                 
+          while d>0 do 
+
+            u:=NPremO(u,dDiff(vv,t,d), x[du]); 
+            du:=dOrder(u,x); 
+            d:=du-dv; 
+          od; 
+#         
+          if dv =0 then NPremO(u,vv,x) else NPremO(u,vv,x[dv]) fi;                           
+
+            
+   end:     
+
+    
+NewPrem:= 
+
+  proc(uu,vv,y) 
+    local u,x,dv,du,d,t,var; 
+    global depend_relation;
+    options remember,system;      
+    
+    if POLY_MODE='Algebraic' then 
+    
+       NPrem(uu,vv,y); 
+        
+    elif POLY_MODE='Ordinary_Differential' then         
+    
+    ODPrem(uu,vv,y);                      
+     
+    elif POLY_MODE='Partial_Differential' then 
+        
+       PDPrem(uu,vv,y); 
+        
+    fi; 
+            
+   end:     
+
+
+
+Headder:=proc(idts) 
+local hder,i,j; 
+     options remember,system; 
+  hder:=op(1,idts);   
+  
+#   if type(hder,symbol) then var:=hder else var:=op(0,hder) fi; 
+        
+  for i in idts do 
+  
+    if torder(i) > torder(hder) then 
+        hder:=i ;           
+    elif torder(i)=torder(her) then 
+       for j to nops(hder) do 
+          if op(j,i) > op(j,hder) then hder:=i;break; 
+          elif op(j,i) < op(j,hder) then break; 
+          fi; 
+       od; 
+    fi; 
+                   
+   od; 
+    
+  hder: 
+  
+end: 
+
+
+PDPrem:=proc(dp, dq, y) 
+          local Diff_Indets,Diff_Var, var,dr, idt,l2,lder,da,l1,i,s; 
+          options remember,system; 
+
+#Step1 [Special case] 
+
+          
+    Diff_Indets:=depend_relation[1]; 
+    Diff_Var:=depend_relation[2]; 
+               
+    if y=1 then RETURN(0) fi; 
+     
+    if type(y,symbol) then var:=y else var:=op(0,y) fi; 
+     
+    dr:=dp; 
+     
+       idt:=proper_derivatives(dr,y); 
+       l2:=dOrder(y,var); 
+
+#Step2 [Recursive base]         
+
+       while  nops(idt)<>0 do 
+
+          
+          lder:=Headder(idt); 
+          
+          da := dq; 
+                    
+
+          
+          l1:=dOrder(lder,var); 
+
+          
+          
+          for i to nops(l1) do 
+          
+           if l2=0 then s:=op(i,l1) else s:=op(i,l1) -op(i,l2) fi; 
+           
+                  da := dDiff(da, Diff_Var[i],s); 
+            
+          od; 
+          
+          dr := NPremO(dr, da, lder); 
+          
+       idt:=proper_derivatives(dr,y);           
+          
+    od; 
+
+         dr:=NPremO(dr,dq,y) ; 
+          
+#Step4 [Prepare for return] 
+
+    dr;           
+          
+end:                 
+          
+  
+    
+
+# 
+# set:  A set; 
+
+cmb:=proc(set0) 
+local p,q, ls,set1; 
+     options remember,system; 
+    ls:={}; 
+    
+    set1:=set0; 
+    
+ for p in set0 do 
+    set1:=set1 minus {p}; 
+    for q in set1  do 
+        ls:={op(ls),[p,q]} 
+    od; 
+ od; 
+ ls; 
+end: 
+  
+
+######## modified Nov.6 ######## 
+
+          
+spolyset:=proc(as,ord) 
+local res,bs,l,p,cls,i,poly; 
+     options remember,system; 
+    
+   res:={}; 
+   bs:={op(as)}; 
+   l:=nops(bs); 
+   if l <= 1 then RETURN(res) fi; 
+    
+   p:=op(1,bs); 
+   cls:=Class(Leader(p,ord),ord); 
+   bs:=bs minus {p}; 
+        
+   while nops(bs) <>0  do 
+     for i in bs do 
+        if Class(Leader(i,ord),ord) = cls then poly:=PD_spoly(i,p,ord); res:=res union {poly} fi; 
+     od; 
+      
+      
+   p:=op(1,bs); 
+   cls:=Class(Leader(p,ord),ord); 
+   bs:=bs minus {p};   
+      
+   od; 
+  
+   res minus {0}; 
+end: 
+    
+          
+
+      
+            
+    
+    
+PD_spoly:=proc(p,q,ord)     
+local     leadp,leadq,var,l1,l2,ml,dp,dq,i,Diff_Var; 
+global  depend_relation; 
+options remember,system; 
+    leadp:=Leader(p,ord); 
+    leadq:=Leader(q,ord); 
+     
+    var:=op(0,leadp); 
+    Diff_Var:=depend_relation[2]; 
+     
+    l1:=dOrder(leadp,var); 
+    l2:=dOrder(leadq,var); 
+     
+    ml:=maxlist(l1,l2); 
+     
+    dp:=p; 
+    dq:=q; 
+     
+    for i to nops(ml) do 
+      dp:=dDiff(dp,Diff_Var[i],ml[i]-l1[i]); 
+      dq:=dDiff(dq,Diff_Var[i],ml[i]-l2[i]); 
+    od; 
+     
+######直觉觉得可以直接用PDPrem(dp,q,Leader(q,ord)) 更好。而这里用的是标准的方法。      
+   NPremO(dp,dq, Leader(dq,ord)); 
+    
+end:     
+     
+     
+maxlist:=proc(l1,l2)      
+local i,list;
+options remember,system;  
+    list:=[]; 
+    for i to nops(l1) do 
+      list:=[op(list), max(l1[i],l2[i])]; 
+    od: 
+list 
+end:      
+
+#torder   Is_deriv Reducedp Leader Head Leader PDE map Num spoly NewPrem 
+
+# the class of poly f wrt variable ordering ord 
+MainVariables := proc(ps,ord) 
+    local i,set; 
+       options remember,system; 
+    set:={}; 
+    for i in ps do 
+      set:=set union {Leader(i,ord)}; 
+    od; 
+set 
+end:      
+            
+PNormalp:=proc(p,as,ord) 
+    local i,idts,mvs,initp;
+    options remember,system;      
+    initp:=Initial(p,ord); 
+    idts:=indets(initp); 
+    if idts={} then RETURN(true) fi; 
+    mvs:=MainVariables(as,ord); 
+    for i in idts do 
+       if member(i,mvs) then RETURN(false) fi; 
+    od; 
+true 
+end:      
+
+ASNormalp:=proc(ps,ord) 
+    local i,l,as,p; 
+    options remember,system; 
+    l:=nops(ps); 
+    if l=1 then RETURN(true) fi; 
+    as:=[ps[l]]; 
+    for i from l-1 to 1 by -1 do 
+      p:=ps[i]; 
+      if not PNormalp(p,as,ord) then RETURN(false) fi; 
+      as:=[p,op(as)]; 
+    od;        
+true 
+end:      
+
+Dec:=proc(ps,ord,nzero,T) 
+global remfac,checknum; 
+local i,cset1,cset;
+options remember,system; 
+
+    cset1:=Cs_c(ps,ord,nzero,T); 
+    cset:={}; 
+    for i in cset1 do 
+      if ASNormalp(i,ord) then 
+         cset:=cset union NormDec1(ps,i,ord,nzero,T);      
+         else 
+                cset:=cset union NormDec2(ps,i,ord,nzero,T); 
+         fi;                     
+   od; 
+cset 
+end: 
+
+NormDec1:=proc(ps,as,ord,nzero,T) 
+local     cset,j,nzero1, ps1,ps2,Is,Ninits;
+options remember,system;
+
+        cset:= {as};      
+         if Class(as[nops(as)],ord)=1 then Is:=Inits1(as,ord) else Is := Inits(as,ord) fi;             
+         Ninits := Is minus {op(nzero)}; 
+     
+         for j to nops(Ninits) do 
+               ps1 := ({op(ps)} union {op(as)}) union {Ninits[j]}; 
+               if j = 1 then nzero1 := {op(nzero)} 
+               else nzero1 := nzero1 union {Ninits[j-1]} 
+               fi; 
+               cset := cset union Dec(ps1,ord,nzero1,T) 
+         od; 
+cset 
+end:           
+          
+NormDec2:=proc(ps,as,ord,nzero,T) 
+local cset,i,j,l,regas,p,initp,lp,pol,r1,r2,Is,Ninits,l2,ps1,nzero1,mvar,vars,mv,d,f,g;
+options remember,system; 
+    cset:={}; 
+     
+    l:=nops(as); 
+    regas:=[as[l]]; 
+     
+    for i from 2 to l do 
+      p:=as[l-i+1]; 
+      mvar:=Leader(p,ord); 
+      d:=degree(p,mvar); 
+      if PNormalp(p,regas,ord) then 
+         regas:= [p,op(regas)] 
+      else 
+         initp:=Initial(p,ord); 
+         vars:=indets(initp); 
+         lp:=nops(regas); 
+         ###1 开始111 
+             for j to lp do 
+                 pol:=regas[j]; 
+                 mv:=Leader(pol,ord); 
+                 if member(mv,vars) then 
+#                  注意Resultant函数 
+
+                 r1:=NResultantE(initp,pol, Leader(pol,ord),'f','g'); 
+                 r2:=Premas(r1,regas,ord,'std_asc'); 
+                 if r2=0 then 
+       
+                          if Class(as[nops(regas)],ord)=1 then Is:=Inits1(regas,ord) else Is := Inits(regas,ord) fi;             
+                          Ninits := Is minus {op(nzero)}; 
+               
+                       l2:=nops(Ninits); 
+                       nzero1:={op(nzero)}; 
+
+                          for j to l2 do 
+                              ps1 := ({op(ps)} union {op(as)}) union {Ninits[j]}; 
+                              if j <> 1 then 
+                               nzero1 := nzero1 union {Ninits[j-1]} 
+                              fi; 
+                              cset := cset union Dec(ps1,ord,nzero1,T) 
+                          od; 
+                          print("kkkkkkkkkk"); 
+                          if l2 <> 0 then nzero1:=nzero1 union {Ninits[l2]} fi; 
+#                   f;g; 
+#                   print("cset=",cset);
+#                   print("ps=",ps);
+#                   print("as=", as);
+#                   print("regas=",regas);
+                   
+                          cset:=cset union Dec(ps union {op(as)} union {op(regas)} union {f},ord,nzero1,T) union Dec(ps union {op(as)} union {op(regas)} union {initp},ord,nzero1,T); 
+                   RETURN(cset);            
+                 else 
+             
+#                  p 变形成新的p 
+              p:=expand(f*p+g*pol*mvar^d); 
+              p:=Premas(p,regas,ord,'std_asc'); 
+                 initp:=Initial(p,ord); 
+                 vars:=indets(initp); 
+              fi; 
+              fi; 
+             od;   
+         ###1 结束111   
+         regas:=[p,op(regas)]   
+      fi;        
+      od; 
+    cset:=NormDec1(ps,regas,ord,nzero,T); 
+cset      
+end:        
+
+
+#如果首项系数变成0，而余式不是0则置degenerate为1否则为0。
+WuPrem:=
+
+   proc(uu,vv,x,ord,degenerate)
+   local r,init,lead,lmono,red,init_r,s,t;
+   options remember,system;    
+   degenerate:=0;
+   if uu=0 then RETURN(0) fi;
+      r:=uu;  
+   if Class(uu,ord) = Class(vv,ord) then 
+      r:= NPrem(uu,vv,x);
+   elif Class(uu,ord) > Class(vv,ord) then
+      init:=Initial(uu,ord); 
+      if  degree(init,x) >0 and Reducedp(init, vv,ord,'std_asc') = 0  then 
+          lead:=Leader(uu,ord);
+#	  collect(uu,lead);
+          lmono:=lead^degree(uu,lead);
+          red:=expand(uu-init*lmono);
+          init_r:=NPremE(init,vv,x,'s','t');    
+          r:=expand(init_r*lmono+s*red); 
+          if init_r=0 and r <>0 then degenerate:=1 fi;
+#          collect(r,lead);
+       fi;
+    fi;
+    r;
+end:    
+
+NPremE := 
+
+   proc(uu,vv,x,s1,t1) 
+   local r,v,dr,dv,l,t,lu,lv,s0,t0; 
+   options remember,system; 
+
+        s0:=1; 
+        t0:=0;           
+           r := expand(uu); 
+           dr := degree(r,x); 
+           v := expand(vv); 
+           dv := degree(v,x); 
+           if dv <= dr then l := coeff(v,x,dv); v := expand(v-l*x^dv) 
+           else l := 1 
+           fi; 
+           while dv <= dr and r <> 0 do 
+               gcd(l,coeff(r,x,dr),'lu','lv'); 
+         s0:=lu*s0; 
+         t0:=lu*t0+lv*x^(dr-dv); 
+               t := expand(x^(dr-dv)*v*lv); 
+               if dr = 0 then r := 0 else r := subs(x^dr = 0,r) fi; 
+               r := expand(lu*r)-t; 
+               dr := degree(r,x) 
+           od; 
+        s1:=expand(s0); 
+        t1:=expand(t0);           
+           r 
+   end: 
+
+#This function is for ascending set normalization. 
+#in fact, it is not  a resultant for 2 pols with indeterminate x. 
+#for two polys uu,vv with indeterminate x 
+#it has the property m*uu+n*vv=r with degree(r,x)=0; 
+NResultantE := 
+
+   proc(uu,vv,x,m,n) 
+   local r,s,t,r0,s0,t0,r1,s1,t1,tmpr,tmps,tmpt; 
+   options remember,system; 
+        r0:=uu; 
+        s0:=1; 
+        t0:=0; 
+        r1:=vv; 
+        s1:=0; 
+        t1:=1;           
+        if degree(r0,x)=0 then m:=1;n:=0;RETURN(r0) fi; 
+           if degree(r1,x)=0 then m:=0;n:=1;RETURN(r1) fi; 
+
+           while degree(r1,x) >= 1 do 
+             r:=NPremE(r0,r1,x,'s','t');        
+          
+            tmpr:=r1; 
+         tmps:=s1; 
+         tmpt:=t1; 
+         r1:=r; 
+         s1:=s*s0-t*s1; 
+         t1:=s*t0-t*t1; 
+         r0:=tmpr; 
+         s0:=tmps; 
+         t0:=tmpt; 
+           od; 
+        m:=s1; 
+        n:=t1; 
+           r 
+   end: 
+
+
+
+##############################################################################
+# Name: SylvesterResultant
+# Calling sequence:  SylvesterResultant(f, g, x, u, v)
+#   Input: f, g two polynomials in x with positive degrees
+#          x, a name
+#   Output: the Sylvester resultant of f and g with respect to x
+#   Optional: u, v,  such that 
+#                   u*f+v*g = resultant
+###############################################################################
+
+#SylvesterResultant := proc(f, g, x, u, v)
+NResultantE := proc(f, g, x, u, v)
+   local df, dg, deg, A, a, b, U, V, i, m, Q, l, e, s, us, vs;
+
+   #-------------------------------------------
+   # check input
+   #-------------------------------------------
+
+   (df, dg) := degree(f, x), degree(g, x);
+   if df = 0 or dg = 0 then 
+      error "input polynomials should be of positive degrees";
+   end if;
+
+   #---------------------------------------------
+   # initialize data
+   #---------------------------------------------
+
+   if df >= dg then
+      (A[1], A[2]) := f, g;
+      (deg[1], deg[2]) := df, dg;
+   else
+      (A[1], A[2]) := g, f;
+      (deg[1], deg[2]) := dg, df;
+   end if;
+
+   if nargs > 3 then
+         (U[1], U[2]) := 1, 0;
+         if nargs > 4 then
+            (V[1], V[2]) := 0, 1;
+         end if;
+   end if;
+
+   (a[1], b[1], a[2], b[2]) := (1, 1, lcoeff(A[2],x), lcoeff(A[2], x)^(deg[1]-deg[2]));
+
+   i := 2;
+   l[i] := deg[i-1]-deg[i]+1;
+
+   #----------------------------------------------
+   #  compute
+   #----------------------------------------------
+
+   while true do
+         i := i + 1;
+
+	 #-------------------------------
+	 # form extraneous factor
+	 #-------------------------------
+
+	 e[i] := (-1)^l[i-1]*a[i-2]*b[i-2];
+
+	 #--------------------------------
+	 # compute remainder
+	 #--------------------------------
+
+	 if nargs = 3 then
+	    A[i] := evala(Simplify(prem(A[i-2], A[i-1], x)/e[i]));
+	 else
+	    A[i] := evala(Simplify(prem(A[i-2], A[i-1], x, 'm', 'Q')/e[i]));
+	    U[i] := evala(Simplify((m*U[i-2] - Q*U[i-1])/e[i]));
+	    if nargs = 5 then
+	       V[i] := evala(Simplify((m*V[i-2] - Q*V[i-1])/e[i]));
+	    end if;
+	  end if;
+
+	  #-----------------------------------
+	  # Resultant is zero
+	  #-----------------------------------
+         	    
+          if A[i] = 0 then 
+	     if nargs > 3 then
+	        u := U[i];
+		if nargs > 4 then
+		   v := V[i];
+		end if;
+	      end if;
+	      return A[i];
+	   end if;
+
+	   #------------------------------------
+	   # update auxiliary sequences
+	   #------------------------------------
+
+	   deg[i] := degree(A[i], x);
+	   l[i] := deg[i-1]-deg[i]+1;
+	   a[i] := lcoeff(A[i], x);
+	   b[i] := evala(Simplify(a[i]^(l[i]-1)/b[i-1]^(l[i]-2)));
+	   
+
+           #-------------------------------------------
+	   # Resultant is nonzero
+	   #-------------------------------------------
+
+	   if deg[i] = 0 then
+	      if nargs > 3 then
+	         s := evala(Simplify(b[i]/a[i]));
+	         us := evala(Simplify(U[i]*s));
+		 if nargs > 4 then
+		    vs  := evala(Simplify(V[i]*s));
+		 end if;
+	         if df >= dg then
+	            u := us;
+	            if nargs > 4 then
+	               v := vs;
+	            end if;
+	         else
+	            u := (-1)^(df*dg)*vs;
+	            if nargs > 4 then
+	               v := (-1)^(df*dg)*us;
+	            end if;
+	         end if;
+	      end if;
+	      if df >= dg then
+	         return b[i];
+	      else
+	         return (-1)^(df*dg)*b[i];
+	      end if;
+	   end if;
+    end do;
+end proc:
+   
+
+
+#printf("    Pls type 'with(linalg)' firstly before calling function 'Resultant_E' "); 
+
+##The following is to compute the resultant of 2 pols via computing the determinant directly.
+# input: M is a list of lists , whereby to denote a matrix; 
+#        i,j are two integer numbers; 
+# output:sM is a new list of lists, obtained by removing 
+#        the ith row and jth column of L, 
+SubM:=proc(M,i,j) 
+    local row,tmp,sM; 
+    if i<1 or i>nops(M) 
+         then error "Input row index %1 broke bounds",i;fi; 
+    if j<1 or j>nops(M[1]) 
+         then error "Input column index %1 broke bounds",j;fi; 
+    sM:=[]; 
+    tmp:=subsop(i=NULL,M); 
+    for row in tmp 
+         do row:=subsop(j=NULL,row); 
+            sM:=[op(sM),row]; 
+         od; 
+    sM; 
+end: 
+     
+
+
+
+# with(linalg) firstly 
+# input: A,B are two polynomials, v is a variable; 
+# output:[R,T,U]; R,T,U are three polynomials, where R is the resultant 
+#        of A,B w.r.t v, so that A*T+B*U=R 
+#with(linalg); 
+NResultantE_Matrix:=proc(A,B,v,TA,UB) 
+    local m,n,d1,d2,cA,cB,row,i,j,syl,msyl,sM,sign,R,T,U,result; 
+#    #lprint("nargs=",nargs); 
+
+    if (nargs <> 3) and (nargs <> 5) then error "Number of parameters should be 3 or 5" fi; 
+     
+    m:=degree(A,v); 
+    n:=degree(B,v); 
+    if m=0 then error "InPut Polynomial %1 Has No Variable %2",A,v;fi; 
+    if n=0 then error "InPut Polynomial %1 Has No Variable %2",B,v;fi; 
+  
+#  to get coefficients of A and B 
+    cA:=[]; 
+    for d1 from 0 to m 
+         do cA:=[coeff(A,v,d1),op(cA)]; 
+         od; 
+    cB:=[]; 
+    for d2 from 0 to n 
+         do cB:=[coeff(B,v,d2),op(cB)]; 
+         od; 
+
+#  initialize sylvester matrix 
+     
+    syl:=[]; 
+    for i from 1 to n         
+         do row:=cA; 
+               for j from 1 to i-1 
+              do row:=[0,op(row)];od; 
+            for j from 1 to n-i 
+                do row:=[op(row),0];od; 
+               syl:=[op(syl),row]; 
+            od; 
+             
+    for i from 1 to m 
+         do row:=cB; 
+               for j from 1 to i-1 
+              do row:=[0,op(row)];od; 
+            for j from 1 to m-i 
+                do row:=[op(row),0];od; 
+               syl:=[op(syl),row]; 
+            od; 
+     
+    msyl:=linalg[matrix](m+n,m+n,syl); 
+     
+#   to get resultant of A,B w.r.t v 
+    R:=linalg[det](msyl); 
+    R:=expand(R); 
+    if nargs=3 then RETURN(R) fi; 
+     
+#   to get T 
+    T:=0; 
+    for d1 from 1 to n 
+         do 
+         sign:=(-1)^(d1+m+n mod 2);           
+         sM:=SubM(syl,d1,m+n); 
+         T:=T+(v^(n-d1))*expand(sign*linalg[det](linalg[matrix](m+n-1,m+n-1,sM))); 
+         T:=expand(T); 
+         od; 
+          
+#  to get U 
+        U:=0; 
+    for d2 from 1 to m 
+         do 
+         sign:=(-1)^(d2+m mod 2);      
+         sM:=SubM(syl,d2+n,m+n); 
+         U:=U+(v^(m-d2))*expand(sign*linalg[det](linalg[matrix](m+n-1,m+n-1,sM))); 
+         U:=expand(U); 
+         od; 
+        if nargs=5 then TA:=T; UB:=U fi; 
+    R; 
+end: 
+
+###########################################################################################
+###########################################################################################
+############## computing partioned-parametric Grobner basis 2005.11.4###################
+##需要　“wsolve” 和　“project”
+##文后付有主要函数调用的例子
+###########################################################################################
+###########################################################################################
+###########################################################################################
+
+interface(warnlevel=0);
+with(Groebner): 
+
+
+########p在约束Zero(a11/a12)下一定不为０,ord是参变元########## 
+NotZeroUnderCons:=proc(a11,a12,p,ord) 
+option remember; 
+    RETURN(IsEmpty({op(a11),p},a12,ord)); 
+end: 
+
+########p在约束Zero(a11/a12)下一定为０,ord是参变元########## 
+IsZeroUnderCons:=proc(a11,a12,p,ord) 
+option remember; 
+    RETURN(IsEmpty(a11,{op(a12),p},ord)); 
+end: 
+
+########约束多项式conspolyset形式:[[{a11}，{a12}]，[{a21}，{a22}]]##
+UnAmbiguous:=proc(conspolyset,var_para::list,term_order) 
+local p,vp,result,a11,a12,a21,a22,newa11,newa22,lc,vars,paras,reduct; 
+
+vars:=var_para[1]; 
+paras:=var_para[2]; 
+
+a11:=conspolyset[1][1]; 
+a12:=conspolyset[1][2]; 
+a21:=conspolyset[2][1]; 
+a22:=conspolyset[2][2]; 
+if a22={} then RETURN ({conspolyset}); fi; 
+
+p:=a22[1]; 
+newa22:=a22 minus {p};
+
+if nops(a21) <>0 then p:=numer(normalf(p,a21,term_order(op(vars)))); fi;
+
+##########AAA
+if (_field_characteristic_ <>0 )	then p :=expand(p) mod _field_characteristic_ fi;
+
+if nops(a11) <>0 then p:=numer(normalf(p,a11,term_order(op(paras)))); fi;
+
+if (_field_characteristic_ <>0 )	then p :=expand(p) mod _field_characteristic_ fi;
+
+
+#########如果p是0多项式############ 
+if p=0 then  result:=UnAmbiguous([[a11,a12],[a21,newa22]],var_para,term_order);  RETURN(result); fi; 
+
+##########如果p是非0常数##############   
+if (p <> 0) and ( type(p,'constant') ) then RETURN ( {[conspolyset[1],[{1},{} ]  ]}); fi; 
+
+#lprint("p="); #lprint(p);  
+lc:=leadcoeff(p,term_order(op(vars))); 
+#lprint("lc="); #lprint(lc);
+reduct:=expand(p-lc*leadterm(p,term_order(op(vars)))); 
+vp:=indets(p); 
+    
+#######如果p含有变元############   
+ if (vp intersect {op(vars)}) <> {} then 
+     if(type(lc,'constant')=true) then 
+        result:=UnAmbiguous([[a11,a12],[a21 union {p}, newa22]],var_para,term_order); 
+
+     elif NotZeroUnderCons(a11,a12,lc,paras) 
+         then result:=UnAmbiguous([[a11,a12],[a21 union {p}, newa22]],var_para,term_order); 
+             
+     elif IsZeroUnderCons(a11,a12,lc,paras) 
+         then result:=UnAmbiguous([[a11,a12],[a21,newa22 union {reduct}]],var_para,term_order); 
+           
+     else         
+         lc:=CutNozeroFactors(lc,a12); 
+         newa11:=CutPolyByFactor(a11,lc);
+         result:=UnAmbiguous([[{op(newa11),lc},a12],[a21,newa22 union {reduct}]],var_para,term_order) 
+               union UnAmbiguous([[a11,a12 union FactorList(lc)],[a21 union {p}, newa22]],var_para,term_order); 
+                 
+     fi; 
+ else 
+
+#######如果p不含变元，只含参数############   
+##modify 
+     if NotZeroUnderCons(a11,a12,p,paras) then result:={[conspolyset[1],[{1},{} ]]}; 
+     elif IsZeroUnderCons(a11,a12,p,paras) then result:=UnAmbiguous([[a11,a12],[a21,newa22]],var_para,term_order) ;           
+        
+     else 
+          lc:=CutNozeroFactors(lc,a12);  
+          newa11:=CutPolyByFactor(a11,lc);    
+          result:=UnAmbiguous([[{op(newa11),lc},a12],[a21,newa22]],var_para,term_order) 
+                  union UnAmbiguous([[a11,a12 union FactorList(lc)],[{1}, {}]],var_para,term_order); 
+     fi; 
+ fi; 
+
+result: 
+end: 
+
+
+
+
+
+
+######pol对list1中的多项式逐个做除法，返回商#######
+DivideList:=proc(pol,list1)
+local i,q,rt;
+   rt:=pol;
+   for i in list1 do
+      if divide(rt,i,'q') then   rt:=q; fi;
+   od;
+   rt;
+end:
+
+###<1>list1中的多项式已不可约
+###<2>去掉pol中在list1里列出的因子且忽略重数
+CutNozeroFactors:=proc(pol,list1)
+local i,q,sqf_pol,rt;
+   sqf_pol:=sqrfree(pol);
+   sqf_pol:=sqf_pol[2];
+   for i from 1 to nops(sqf_pol) do
+      sqf_pol[i][1]:=DivideList(sqf_pol[i][1],list1);
+   od;
+   rt:=1;
+   for i from 1 to nops(sqf_pol) do
+      rt:=rt*(sqf_pol[i][1]);
+   od;
+   rt;
+end:      
+
+###去掉list1中以pol为因子的多项式
+CutPolyByFactor:=proc(list1,pol)
+local p,rt,q;
+    rt:={};
+    for p in list1 do
+       if not divide(p,pol,'q') then rt:={op(rt),p};fi;
+    od;
+rt; 
+end:     
+
+
+
+##<1>通过gb对等于零的约束部分做normalform来化简
+##<2>因为gb的首系数一定不为零，通过对gb做primpart来化简
+SimplifyConsgb:=proc(consgb,var_para,term_order)
+local rt,i,temp,paras,vars;
+    vars:=var_para[1];
+    paras:=var_para[2];
+    rt:={};
+    for i in consgb do
+        temp:=map(normalf,i[2],i[1][1],term_order(op(paras)));
+        temp:=map(primpart,map(numer,temp),vars);        
+        rt:={op(rt),[i[1],temp]};
+    od;
+    rt;
+end:
+
+
+FactorList:=proc(pol) 
+local i,list1,list2; 
+  list1 := factors(pol)[2]; 
+  list2 := {}; 
+  for i in list1 do  list2 := {op(list2),i[1]}; od; 
+  list2 
+end: 
+ 
+
+#######如果p在constrain的条件下为0在返回1,np=0 
+#######如果p在constrain的条件下为非0的常数返回10,np=10  
+#######如果p在constrain的条件下首项系数一定不是0则返回-1 
+#######其他情形返回0。np=pol 
+########paracons=[ [part=0 ],[part <>0]] 是参数的约束; 
+
+nonzerolc:=proc(pol,paracons,var_para,np,term_order) 
+local lc,vars,paras,cons1,cons2,np0,t,pol2; 
+global _field_characteristic_ ;
+    vars:=var_para[1]; 
+    paras:=var_para[2]; 
+    cons1:=paracons[1]; 
+    cons2:=paracons[2];
+    lc:=leadcoeff(pol,term_order(op(vars))); 
+    if pol=0 then np:=0; RETURN(1); fi; 
+    if type(pol,'constant') then np:=10; RETURN(10); fi;       
+    if type(lc,'constant') then np:=pol; RETURN(-1); fi; 
+     
+    
+    ##########lc在约束下一定为０#######   
+    if IsZeroUnderCons(cons1,cons2,lc,paras) then 
+         pol2:=reductum(pol,term_order(op(vars))); 
+         if (_field_characteristic_ <>0  ) then pol2:=pol2 mod _field_characteristic_ fi;
+         t:=nonzerolc(pol2,paracons,var_para,'np0',term_order); 
+         np:=np0; 
+         RETURN(t); 
+          
+   ##########lc在约束下一定不为０####### 
+    elif NotZeroUnderCons(cons1,cons2,lc,paras) then  
+         if lc=pol then np:=10; RETURN(10);
+         else  np:=pol;  RETURN(-1);
+         fi; 
+    
+    else 
+        np:=pol; 
+        RETURN(0); 
+    fi; 
+end: 
+
+reductum:=proc(p,ord) 
+local res; 
+    expand(p-leadcoeff(p,ord)*leadterm(p,ord)); 
+end:       
+
+gb:=proc(ps,var_para,term_order) 
+local res; 
+  res:=gb0([[{},{}],[{},{op(ps)}]],var_para,term_order); 
+  res:=SimplifyConsgb(res,var_para,term_order);
+end:   
+
+
+
+gb0:=proc(conspolyset,var_para,term_order) 
+local i,branches, res,temp; 
+   res:={}; 
+   branches:=UnAmbiguous(conspolyset,var_para,term_order); 
+   for i in branches do 
+        temp:=gb1(i,var_para,term_order);
+        res:=res union temp; 
+   od; 
+   res; 
+end:   
+
+#################Step 1######################## 
+gb1:=proc(conspolyset,var_para,term_order) 
+local i,j,T,paracons,pset,pset0,pset1,pol,pset3,l,nonzerosp,sp,bs2,vars,newpol,cr,nf,np; 
+global _field_characteristic_;
+	T:={}; 
+	vars:=var_para[1]; 
+	paracons:=conspolyset[1];
+	pset:=conspolyset[2][1]; 
+	  
+	pset0:=pset; 
+	pset1:={}; 
+	  
+	if nops(pset)=0 then  RETURN({[paracons,[0]]}) fi; 
+	  
+	if  nops(pset) =1 then     RETURN({[paracons,[op(pset)]]}) fi; 
+	
+	#################Step 2-----  Normalization------#####################             
+	for i in pset do 
+	       pset0:=pset0 minus {i}; 
+	       nf:=normalf(i,pset0 union pset1,term_order(op(vars))); 
+	       pol:=expand(numer(nf )); 
+	       cr:=nonzerolc(pol,paracons,var_para,'newpol',term_order); 
+	       
+	       newpol:=numer(normalf(newpol,pset0 union pset1,term_order(op(vars))));
+
+	       if (_field_characteristic_ <>0 )	then newpol :=expand(newpol) mod _field_characteristic_ fi;
+	       #lprint("newpol=");#lprint(newpol);
+	       if cr=1 then ; 
+	       elif cr=10 then RETURN( { [paracons,[1]] }); 
+	       elif cr=-1 then if   newpol <>0 then pset1:=pset1 union {newpol} fi; 
+	       else 
+	          pset3:=[paracons,[ pset0 union pset1 ,{newpol} ]]; 
+	          RETURN( gb0(pset3,var_para,term_order) ); 
+	        fi;                       
+	od; 
+	
+	##############Step 3-----  S-polynomial------#################################### 
+	l:=nops(pset1); 
+	if  l=1 then RETURN( {[paracons,[op(pset1)]] }) fi; 
+	
+	nonzerosp:={}; 
+	for i to l do 
+	    for j from i+1 to l do 
+	       sp:=expand(numer(normalf(spoly(pset1[i],pset1[j],term_order(op(vars))),pset1,term_order(op(vars))))); 
+	       if( _field_characteristic_ <>0) then sp:= expand(sp) mod _field_characteristic_ fi;
+	       	      #lprint("sp="); #lprint(sp);
+	       if (nonzerolc(sp,paracons,var_para,'np',term_order)<>1) then  nonzerosp:=nonzerosp union {np} fi; 
+	    od; 
+	od; 
+	
+	if nonzerosp={} then RETURN( {[paracons,inter_reduce([op(pset1)],term_order(op(vars)) )] } ) ; 
+	else 
+	         bs2:=[paracons,[{op(pset1)},nonzerosp ]]; 
+	         T:=T union gb0(bs2,var_para,term_order); 
+	fi; 
+
+	T: 
+end:
+
+
+#############################
+###   solution number    ####
+#############################
+
+basis:=proc(a,b,ord)
+local i,j,k1,k;k:={};
+for i in a do
+   k1:=normalf(i,b,ord);
+   if(k1<>0) then 
+     k:=k union {k1};
+   end if;  
+end do;
+return k;
+end:   
+
+mulset:=proc(a,b)
+local i,j,k;
+k:={};
+if b={} then return a; fi;
+for i in a do
+  for j in b do
+     k:=k union {i*j};
+  od;
+od;
+return k;
+end:    
+
+create:=proc(a,b,num)
+local i,j,k,k1,b1;
+
+b1:=b union {1}; 
+k1:=b1 union mulset(a,b1);
+if num=0 then return k1;fi;
+  k:=create(a,k1,num-1);
+
+end:    
+
+havefinitesolution:=proc(l,var)
+local i,lvs,lv1;
+lv1:={};
+for i in l do
+   lvs:=indets(i) intersect {op(var)};
+   if nops(lvs)=1 then lv1:=lv1 union lvs; fi;
+od;
+
+if ({op(var)} minus lv1 )={}  then return true;
+else return false;
+fi;
+end: 
+ 
+  
+comp:=proc(a,b)
+local i,j,k,l;k:={};
+for i in b do
+  for j in a do
+     if j=i then   
+        k:=k union {j};
+     fi;
+   od;     
+od;
+return k;
+end:   
+
+getmostdegree:=proc(l)
+local i,j,k1,k2;
+k2:={};
+k1:={};
+for i in l do 
+  k1:={op(i)};
+  for j in k1 do
+    k2:=k2 union {op(j)};
+  od;
+od;    
+return k2;
+end:
+
+ltt:=proc(l,vorder)
+ local i,k;
+ k:={};
+ for i to nops(l) do
+ k:={leadterm(l[i],vorder)} union k;
+ end do;
+ return k;
+ end:
+
+GetDim:=proc(lts,vars)
+local i,branch,l,rt;
+rt:=nops(lts);
+branch:=Nrs(lts,[op(vars)],{});
+branch:=[op(branch)];
+for i to nops(branch) do
+   l:=nops(branch[i]);
+   if l<rt then rt:=l;fi;
+ od;
+ return nops(vars)-rt;
+ end:
+
+
+##for reduced groebner basis
+sumofdegree:=proc(lts)
+local i,rt;
+rt:=0;
+for i in lts do
+   if nops(indets(i))=1 then
+       rt:=rt+degree(i);
+   fi;
+od;
+return rt;
+end: 
+
+solution1:=proc(ps,ord,term_order)
+local i,j,k,cgb,lt,mosttotaldeg,dim;
+cgb:=gb(ps,ord,term_order);
+cgb:=[op(cgb)];
+for i to nops(cgb) do
+  lt:=ltt(cgb[i][2],term_order(op(ord[1])));
+  if  havefinitesolution(lt,ord[1]) then
+    mosttotaldeg:=sumofdegree(lt); 
+    k:=basis(create({op(ord[1])},{},mosttotaldeg),lt,term_order(op(ord[1])));
+    cgb[i]:=[op(cgb[i]),k,cat("finite solution with number: ", nops(k))];
+
+  elif cgb[i][2]=[1] then cgb[i]:=[op(cgb[i]),"no solution"];
+  elif cgb[i][2]=[0] then cgb[i]:=[op(cgb[i]),cat("infinite solution with dimension: ",nops(ord[1]))];
+  else 
+       dim:=GetDim(lt,ord[1]);
+       cgb[i]:=[op(cgb[i]),[lt],cat("infinite solution with dimension: ", dim)];
+  fi;
+od;
+return {op(cgb)};
+end:
+
+
+##第4个参数可省,如果有,必须加单引号!
+solution:=proc(ps,ord,term_order,pgb)
+local i,j,k,cgb,lt,mosttotaldeg,dim;
+cgb:=gb(ps,ord,term_order);
+cgb:=[op(cgb)];
+if nargs=4 then pgb:={op(cgb)};fi;
+for i to nops(cgb) do
+  lt:=ltt(cgb[i][2],term_order(op(ord[1])));
+  if  havefinitesolution(lt,ord[1]) then
+    mosttotaldeg:=sumofdegree(lt); 
+    k:=basis(create({op(ord[1])},{},mosttotaldeg),lt,term_order(op(ord[1])));
+    cgb[i][2]:=cat("finite solution with number: ", nops(k)); 
+  elif cgb[i][2]=[1] then cgb[i][2]:="no solution";
+  elif cgb[i][2]=[0] then cgb[i][2]:=cat("infinite solution with dimension: ",nops(ord[1]));
+  else 
+       dim:=GetDim(lt,ord[1]);
+       cgb[i][2]:= cat("infinite solution with dimension: ", dim);
+  fi;
+od;
+{op(cgb)};
+end:
+
+FindRightGB:=proc(paragb)
+local gb,pgb,rt,i,j;
+j:=0;
+pgb:=[op(paragb)];
+for i to nops(pgb) do
+   gb:=pgb[i];
+   if nops(gb[1][1])=0 then gb[1][1]:={0} fi;
+    if nops(gb[1][2])=0 then gb[1][2]:={1} fi;
+   if {op(gb[1][1])}={0} and (gb[1][2] intersect {0})<>{0} then 
+           j:=j+1;
+           rt:=gb[2];
+   fi;
+od;
+if j<>1 then print("ambiguous occur!");fi;
+rt;
+end:
+
+EvalAll:=proc(op,vars,vals)
+local i,rt;
+rt:=op;
+for i to nops(vars) do
+    rt:=eval(rt,vars[i]=vals[i]);
+od;
+rt;
+end:
+
+
+#把ps中的多项式设成首项系数为１
+SetLC1:=proc(ps)
+local i,p,rt;
+rt:={};
+for i to nops(ps) do 
+    p:=expand(ps[i]);
+    if p=0 then rt:={op(rt),p};
+    else
+         p:=p/lcoeff(p);   
+         rt:={op(rt),p};
+    fi;
+od;
+rt;
+end:
+
+
+###检验约束groebnerbasis程序的正确性  
+check:=proc(paravalue,paragb,ps,ord,term_order)
+local i,gb,gb1,spec_paragb,spec_ps;
+if nops(paravalue)<>nops(ord[2]) then return "Error in parameter assignment: parameter number is NOT matched!" fi;   
+
+spec_ps:=EvalAll(ps,ord[2],paravalue);
+spec_ps:={op(spec_ps)} minus {0};
+ spec_ps:=[op(spec_ps)];
+gb1:=gbasis(spec_ps,term_order(op(ord[1])));
+
+spec_paragb:=EvalAll(paragb,ord[2],paravalue);
+gb:=FindRightGB(spec_paragb);
+
+if SetLC1(gb)=SetLC1(gb1) then print( "two results are the same polynomial set!");
+else print("two results are NOT the same polynomial set!");
+fi;
+
+print("greobner basis gotten by parameter assignment at begin:");
+print(gb1);
+
+print("greobner basis gotten by CGB method:");
+gb;
+
+end:
+
+
+########  例子 ######################
+#参数：
+#ps:=[a*x^2-b*x,b*y^2-c*x,c*z^2-a*x+b];
+#ord:=[[x,y,z],[a,b,c]];
+#termord:=tdeg;
+#'pgb';　是一个变量名，该参数可缺省
+
+#调用１：
+#gb(ps,ord,termord)
+#返回：
+#ps的约束GroebnerBasis
+
+#调用２：
+#solution(ps,ord,termord,'pgb');　
+#返回：
+#ps的不同约束下解的个数。
+#pgb为ps的约束GroebnerBasis
+
+#调用３：
+#solution1(ps,ord,termord);　
+#返回：
+#ps的约束GroebnerBasis及相应解的个数（若有限，还列出不属于首理想的单项式）。
+
+#参数：
+#paraval:=[1,2,3];　是参数[a,b,c]的特定值
+#pgb; ps的约束GroebnerBasis
+
+#调用4：
+# check(paraval,pgb,ps,ord,termord); 
+#该函数比较pgb在特定参数值paraval下的GroebnerBasis与先对参数取值后再求的GroebnerBasis是否相同。
+#同时也列出这两个GroebnerBasis。此函数可做为全文的测试函数。
+#返回：
+#pgb在特定参数值paraval下的GroebnerBasis
+
+
+###########################################################################################
+###########################################################################################
+############## computing partioned-parametric Grobner basis 2005.11.4 #####################
+############## END END END END END END END END END END END END END END#####################
+###########################################################################################
+###########################################################################################
+###########################################################################################
+
+
+########################for computing the projection of quasi-variety 2005.11.4###############
+###  read "wsolve.txt" firstly  ### 
+if not type(wsolve,procedure) then 
+#lprint(" Warning: please read 'wsolve.txt' firstly ! "):
+fi:
+
+##-----main function------------------------------------------------
+##Project(ps,ds,ord,pord) //old main function
+##Sproject(result_of_project,pord) //no component is redundant 
+##Example:  [[ASC,[a,b]],...] == (ASC=0 and a*b<>0 ) or ...
+
+##Proj(ps,ds,ord,pord)  //new main function 
+##Sproj(result_of_project,pord)  //no component is redundant 
+##Example: [[ASC,[a,b]],...] == (ASC=0 and ( a<>0 or b<>0) ) or ...
+##-------------------------------------------------------------------
+
+
+#-----------Part1------<algebraic case>---------------
+#         project(ps,ds,ord,pord)
+#         ord:= all variables (descending order list)
+#         pord:=variables to eliminate (as above)
+#-----------------------------------------------------
+#QV (QuasiVariety) ; ASC (ascendant characteristic set)
+
+# get the product of the initials of cs
+
+Mainvar := proc(f,ord)
+                  local i;
+                  options remember,system;
+                      for i to nops(ord) do
+                          if has(f,ord[i]) then RETURN(ord[i]) fi
+                      od;
+                      #lprint(`Warning: lvar is called with constant`);
+                      0
+                  end:
+
+GetIP:=proc(cs,ord)
+	local i,rt;
+	rt:=1;
+	for i from 1 to nops(cs) do
+		rt:=rt*Initial(cs[i],ord);
+	od;
+	rt;
+end:
+
+# get the product of the polys in ds.
+GetProduct:=proc(ds)
+	local jds,d;
+	jds:=1;
+	for d in ds do
+		jds:=jds*d;
+		od;
+	jds;
+end:
+
+#get the union of two lists, denoted as list also.
+ListUnion:=proc(list1,list2)
+	local rt;
+	rt:={op(list1)} union {op(list2)};
+	rt:=[op(rt)];
+end:
+
+# inverse a list
+Inverse:=proc(lis)
+    local i,result;
+    result:=[];
+    for i from nops(lis)  to 1 by -1
+        do result:=[op(result),lis[i]];
+        od;
+    result;
+end:     
+
+# inverse every list in a list.
+InverseAll:=proc(lislis)
+	local rt,l;
+	rt:=[];
+	for l in lislis do
+		rt:=[op(rt),Inverse(l)];
+	od;
+end:
+
+# eliminate such ASC in cslist that Premas(jds,ASC,ord)=0
+Newcslist:=proc(cslist,jds,ord)
+	local rt,cs;
+	rt:=[];
+	for cs in cslist do
+	        if Premas(jds,cs,ord)<>0
+	        	then rt:=[op(rt),cs]                               
+	        fi;
+	        od;
+        rt;
+end:
+
+# factors of a polynomial w.r.t ord; 
+# facts(x^2*y+x*y-x,[x,y]); [x,x*y+y-1]
+# facts(x^2*y+x*y-x,[y]); [x*y+y-1]
+# facts(x^2*y+x*y-x,[u,v,w]); []
+Ordfacts:=proc(pol,ord)
+   local i,temp,facl,result;
+   if type(pol,polynom) then	  
+	   result:=[];
+	   facl:=factors(pol);
+	   facl:=facl[2];
+	   if facl=[] then RETURN([]) fi;
+	   for i from 1 to nops(facl)
+	       do temp:=facl[i];
+	          if dClass(temp[1],ord)<>0 then
+	          result:=[op(result),temp[1]];
+	          fi;
+	       od;
+	   RETURN(result);
+   else  
+         #lprint(`Warning: facts is called with no polynomial`);
+	 RETURN(pol);
+   fi;  
+end:  
+
+# put p to proper position in notzerolist s.t. MV(ASC[i-1])<=MV(p)<MV(ASC[i])
+PutToNotZero:=proc(p,notzerolist,mvl,ord)
+	local i,cp,rt;
+	rt:=notzerolist;
+	cp:=Class(p,ord);	
+	if cp=0 then RETURN(rt);fi;
+	for i from 1 to nops(mvl) do 
+		if cp<mvl[i] then rt:=subsop(i=rt[i]*p,rt);break;
+		fi; 
+	od;
+	i;
+        if i=nops(mvl)+1 then 
+        	rt:=subsop(-1=rt[-1]*p,rt) ;
+        fi;
+        rt;
+end:	
+
+# all factors(noted fpolys) of polys in ds and initials, 
+# notzerolist[i]= the product of p, 
+# s.t. <1> p in fpolys and <2> MV(ASC[i-1])<=MV(p)<MV(ASC[i])       
+CreatNotZeroList:=proc(cs,ds,mvl,ord)
+	local i,fs,p,notzerolist;
+	
+	notzerolist:=[];
+	for i from 0 to nops(cs) do
+  	     notzerolist:=[op(notzerolist),1];
+	od;
+	
+	fs:=[];
+	for p in ds do
+		fs:=ListUnion(fs,Ordfacts(p,ord));
+		od;
+	for p in fs do
+		notzerolist:=PutToNotZero(p,notzerolist,mvl,ord);
+		od;
+	notzerolist;
+end:
+
+#a front part of ASC whose polynomials contain no variables in pord     
+SubASC:=proc(asc,pord)
+   local i, result;
+   result:=[];
+   for i from 1 to nops(asc)
+       do if Class(asc[i],pord)=0 
+             then result:=[op(result),asc[i]];
+          else break;          
+          fi;
+       od;
+   RETURN(result);
+end:     
+
+#judge the result of ProjectASC
+#if it is [[...],1] return 1;
+#if it is [[...],0] return 0;
+#else return 3;
+IsTrival:=proc(qv,ord)
+	local rt;
+	if nops(qv)<>2 then rt:=3;
+	elif not type(qv[2],polynom) then rt:=3;
+	elif Class(qv[2],ord)<>0 then rt:=3;
+	elif qv[2]=0 then rt:=0;
+	else rt:=1;
+	fi;  
+	RETURN(rt);
+end:
+
+# get variables of pol which are of higher order then the highest
+# polynomial in asc. 
+HigherOrdVars:=proc(pol,mvl,len,ord)
+	local vl,rt,var,index;
+	vl:=indets(pol) intersect {op(pord)};
+	rt:=[];
+	if len<=1 then RETURN(rt);fi;
+	for var in vl do
+		index:=Class(var,ord);
+		if index>mvl[len-1] then
+			rt:=[op(rt),var];
+		fi;
+	od;
+	rt;
+end:
+
+# decompose the pol in [[ASC],pol] to ['UN',[[ASC],pol1],...]
+# so as to eliminate variables in varl.  
+DecompList:=proc(qv,subasc,notzerolist,varList,ord)
+	local i,flag,lenasc,rt,pol,coeffsList,coeff;
+	if varList=[] then RETURN(qv);fi;
+	pol:=qv[2];
+	
+	if pol=0 then rt:=[subasc,pol]; 
+	else 
+		flag:=0; 
+		lenasc:=nops(qv[1]);
+		for i from 1 to lenasc do
+			if notzerolist[i]!=1 then flag:=1; break;fi;
+		od;
+		coeffsList:=[coeffs(expand(pol),varList)];
+		if nops(coeffsList)>1 then rt:=["UN"];
+		else rt:=[]; 
+		fi;
+		for coeff in coeffsList do
+			if Class(coeff,ord)=0 and flag=0 then 
+				RETURN([subasc,1]);				
+			else
+				rt:=[op(rt),[qv[1],coeff]];
+			fi;
+		od;		
+	fi;
+        if nops(rt)=1 then rt:=rt[1];fi;
+        rt;
+end:
+
+
+#when ASC has no variables in varl . 
+# decompose the pol in [[ASC],pol] to ['UN',[[ASC],pol1],...]
+# so as to eliminate variables in varl 
+DecompList1:=proc(qv,subasc,notzerolist,varList,ord)
+	local i,flag,lenasc,rt,pol,coeffsList,coeff;
+	if varList=[] then RETURN(qv);fi;
+	pol:=qv[2];
+	
+	if pol=0 then rt:=[subasc,pol]; 
+	else 
+		flag:=1; 
+		lenasc:=nops(qv[1]);
+		for i from 1 to lenasc do
+			flag:=flag*notzerolist[i] ; 
+		od;
+		
+		coeffsList:=[coeffs(expand(pol),varList)];
+		if nops(coeffsList)>1 then rt:=["UN"];
+		else rt:=[]; 
+		fi;
+		for coeff in coeffsList do
+			if Class(coeff,ord)=0 and flag=1 then 
+				RETURN([subasc,1]);				
+			else
+				rt:=[op(rt),[qv[1],coeff*flag]];
+			fi;
+		od;		
+	fi;
+        if nops(rt)=1 then rt:=rt[1];fi;
+        rt;
+end:
+
+
+#  eliminate the highest polynomial in ASC, within [[ASC],pol] 
+ElimPoly:=proc(qv,notzerolist,mvl,subasc,ord,pord)
+	local rt,newasc,asc,pol,hPol,hVar,hDeg,rem,newPol,tempList,varList,len;
+	asc:=qv[1];
+	len:=nops(asc);
+	newasc:=subsop(len=NULL,asc);
+	pol:=qv[2];
+	hPol:=asc[len];
+	hVar:=Mainvar(hPol,ord);
+	hDeg:=degree(hPol,hVar);
+	if degree(pol,hVar)=0 then 
+		rt:=[newasc,pol*notzerolist[len]];
+		RETURN(rt);
+	else
+		rem:=sprem(pol^hDeg,hPol,hVar);
+		if rem=0 then 
+			rt:=[subasc,0];
+			RETURN(rt);			
+		fi; 
+		newPol:=rem*notzerolist[len];
+		tempList:=[newasc,newPol];
+		varList:=HigherOrdVars(newPol,mvl,len,ord,pord);	
+		rt:=DecompList(tempList,subasc,notzerolist,varList,ord);
+		RETURN(rt);
+	fi;
+end:
+
+# project wth one QV formed by one ASC(prepair share done by ProjASC)
+ProjectASC:=proc(qv,notzerolist,mvl,subasc,lensub,ord,pord)
+	local pol,asc,nproj,tempList,sign,rt,nozero,i;
+	pol:=qv[2];
+	asc:=qv[1];
+	
+#  get the nonzero polynomial to prject with here.    
+	nozero:=pol;
+	for i from 1 to nops(asc) do
+		nozero:=nozero*notzerolist[i];
+		od;
+
+#  recursion ending conditions		
+	if nops(asc)=0 or nops(asc)=lensub then
+		if Class(nozero,pord)>0 then 
+			rt:=DecompList1(qv,subasc,notzerolist,pord,ord);
+		elif Class(nozero,ord)>0 then 
+			rt:=[asc,nozero];
+		else 
+			rt:=[asc,Get1or0(nozero)];
+		fi;
+		RETURN(rt);
+	elif Class(nozero,pord)=0 then
+		if Class(nozero,ord)>0 then rt:=[subasc,nozero];
+		else 
+			rt:=[subasc,Get1or0(nozero)];
+		fi;
+		RETURN(rt);
+	fi;
+	
+#  eliminate the highest polynomial in asc of QV.
+	tempList:=ElimPoly(qv,notzerolist,mvl,subasc,ord,pord);
+	
+	# whether have many branchs in the result of ElimPoly.
+	if not type(tempList[1],string) then 
+		rt:=ProjectASC(tempList,notzerolist,mvl,subasc,lensub,ord,pord);
+	else 
+		rt:=[tempList[1]];
+		for i from 2 to nops(tempList) do
+			nproj:=ProjectASC(tempList[i],notzerolist,mvl,subasc,lensub,ord,pord);
+			
+			# deal with trival cases.
+			sign:=IsTrival(nproj,ord);
+			if sign=0 then next;
+			elif sign=1 then rt:= [subasc,1];break;
+			else rt:=[op(rt),nproj];
+			fi;
+		od:
+		
+		# rt:=["UN"]
+		if nops(rt)=1 then rt:=[subasc,0]; fi;
+		
+		# rt:=["UN",[...]]
+		if nops(rt)=2 and type(rt[2],list) then rt:=rt[2];fi;
+	fi;
+	rt;
+end: 
+
+# project with one QV formed by one ASC
+ProjASC:=proc(cs,ds,ord,pord)
+	local mvl,notzerolist,p,qv,subasc,lensub,rt;
+	
+	# mainvars order list
+	mvl:=[];
+	for p in cs do
+	    mvl:=[op(mvl),Class(p,ord)];
+	od;
+	# notzerolist 
+	notzerolist:=CreatNotZeroList(cs,ds,mvl,ord);
+	
+	qv:=[cs,notzerolist[-1]];
+	subasc:=SubASC(cs,pord);
+	lensub:=nops(subasc);
+	rt:=ProjectASC(qv,notzerolist,mvl,subasc,lensub,ord,pord);
+	rt:=Format1(rt);
+end:
+	
+
+#whether input QuasiVariety is [[[],[1]]]
+QVIsTruth:=proc(qv)
+	if qv=[[[],[1]]] then RETURN(true);
+	else RETURN(false);
+	fi;
+end:
+
+#----main func.-------
+# project with the QV [ps,ds], eliminate variables in pord
+# return [] if zero(ps) is empty  
+# return [[[],[0]]] if zero(ps/ds) is empty
+# else return [  [[ASC],[p1,p2,...]]  , ...]
+Project:=proc(ps,ds,ord,pord)
+	local jds,cslist,cs,p,ini,qvs,newds,subasc,rt;
+	jds:=GetProduct(ds);
+	cslist:=wsolve(ps,ord);
+	#printf("The characteristic sets are:");
+	##lprint(cslist);
+	rt:=[];
+	if nops(cslist)<>0 then
+		cslist:=Newcslist(cslist,jds,ord);  
+		if nops(cslist)=0 then RETURN([]);
+		fi;
+		cslist:=InverseAll(cslist);
+		for cs in cslist do
+		        
+		        #add initials to ds
+		        newds:={op(ds)};
+		        for p in cs do
+				ini:=Initial(p,ord);
+				if Class(ini,ord)>0 then
+					newds:={op(newds),ini};
+				fi;
+			od;
+			newds:=[op(newds)];
+			
+			qvs:=ProjASC(cs,newds,ord,pord);
+ 			subasc:=qvs[1][1];
+		        qvs:=Simplify1(qvs,subasc,ord);
+		        if QVIsTruth(qvs) then rt:=qvs; RETURN(rt); 
+		        else  
+		        	rt:=ListUnion(qvs,rt);
+		        fi;
+		od;
+	fi;
+	if nops(rt)=0 then RETURN([[[],[0]]]); fi;
+	rt;
+end:	        
+
+
+
+## the subasc in qvs is the same one 
+AddQVS:=proc(rt,qvs)
+  local newrt,i,j,subasc;
+  newrt:=rt;
+  subasc:=qvs[1];
+  j:=0;
+  for i from 1 to nops(newrt) do
+     if subasc=newrt[i][1] then newrt[i][2]:=ListUnion(qvs[2],newrt[i][2]); j:=1; break;fi;    
+  od;
+  if j=0 then newrt:=[op(newrt),qvs];fi;
+  newrt;
+end:
+
+SqfreeList:=proc(plist)
+   local j,p,q,rt,sq;
+   rt:=[];
+   for p in plist do
+      j:=1;
+      sq:=sqrfree(p);
+      sq:=sq[2];
+      for q in sq do
+        j:=j*q[1];
+      od;
+      rt:=[op(rt),j];      
+   od;
+   rt;
+end:
+
+
+SqfreeGB:=proc(plist,ord)
+local rt,gb1,gb2;
+   gb1:=plist;
+   gb2:=Groebner[gbasis](gb1,plex(op(ord)));
+   gb2:=SqfreeList(gb2);
+   while(gb1<>gb2) do
+      gb1:=gb2;
+      gb2:=Groebner[gbasis](gb1,plex(op(ord)));
+      gb2:=SqfreeList(gb2);   
+   od;
+   gb2;
+end:    
+
+GBsimplify:=proc(qvs,ord)
+local qv,rt;
+   rt:=[];
+   for qv in qvs do
+       rt:=[op(rt),[qv[1],SqfreeGB(qv[2],ord) ] ];
+   od;
+   rt;
+end:
+
+Congre:=proc(qvs)
+local rt,qv,notzero;
+    notzero:=[];
+    for qv in qvs do
+        notzero:=[op(notzero),qv[2]];
+     od;
+     notzero:={op(notzero)};
+     notzero:=[op(notzero)];
+    rt:=[qvs[1][1],notzero];
+end:
+
+#new project
+Proj:=proc(ps,ds,ord,pord)
+	local jds,cslist,cs,p,ini,qvs,newds,subasc,rt;
+	jds:=GetProduct(ds);
+	cslist:=wsolve(ps,ord);
+	#printf("The characteristic sets are:");
+	##lprint(cslist);
+	rt:=[];
+	if nops(cslist)<>0 then
+		cslist:=Newcslist(cslist,jds,ord);  
+		if nops(cslist)=0 then RETURN("Characteristic Set is empty set");
+		fi;
+		cslist:=InverseAll(cslist);
+		for cs in cslist do
+		        
+		        #add initials to ds
+		        newds:={op(ds)};
+		        for p in cs do
+				ini:=Initial(p,ord);
+				if Class(ini,ord)>0 then
+					newds:={op(newds),ini};
+				fi;
+			od;
+			newds:=[op(newds)];
+			
+			qvs:=ProjASC(cs,newds,ord,pord);
+ 			subasc:=qvs[1][1];
+		        		        
+		        qvs:=Simplify2(qvs,subasc,ord);
+		        if qvs=[[[],1]] then RETURN([[[],[1]]]); 
+		        else  
+		              qvs:=Congre(qvs);
+		              rt:=AddQVS(rt,qvs); 
+		        fi;
+		od;
+	fi;
+	if nops(rt)=0 then RETURN([[[],[0]]]); fi;	
+	rt:=GBsimplify(rt,ord);
+end:	        
+
+
+
+# return 1 if zero(ps,ds)=empty 
+# else return 0
+IsEmpty:=proc(ps,ds,ord)
+	local jds,cslist,cs,p,ini,qvs,newds,subasc;
+	if nops(ps)=0 then RETURN(false);fi;
+	jds:=GetProduct(ds);
+	cslist:=wsolve(ps,ord);
+	#printf("The characteristic sets are:");
+	##lprint(cslist);
+	if nops(cslist)<>0 then
+		cslist:=Newcslist(cslist,jds,ord);  
+		if nops(cslist)=0 then RETURN(true);
+		fi;
+		cslist:=InverseAll(cslist);
+		for cs in cslist do
+		        
+		        #add initials to ds
+		        newds:=ds;
+		        for p in cs do
+				ini:=Initial(p,ord);
+				if Class(ini,ord)>0 then
+					newds:=[op(ds),ini];
+				fi;
+			od;
+			
+			qvs:=ProjASC(cs,newds,ord,ord);
+ 			subasc:=qvs[1][1];
+		        qvs:=Simplify1(qvs,subasc,ord);
+		        if QVIsTruth(qvs) then RETURN(false);
+		        fi;
+		od;
+	fi;
+	RETURN(true)
+end:	       
+
+#return -1 if zero([ ps, [op(ds),p] ])=empty 
+#return 1 if zero([ [op(ps),p],ds ])=empty
+#else return 0
+whichcase:=proc(ps0,ds0,p,ord)
+        local ps,ds;
+        ps:=[op(ps0)];
+        ds:=[op(ds0)];
+	if IsEmpty(ps,[op(ds),p],ord,ord) then RETURN(-1) fi;
+	if IsEmpty([op(ps),p],ds,ord,ord) then RETURN(1) fi;	        
+        RETURN(0);     
+end:	   
+
+
+#---------------- Format1(qvs)-----------------
+
+#when the input is as:["UN",...]
+#step1: formated all the branchs of "UN".
+#step2: Union all the branchs.   
+FormatUN:=proc(qvs)
+	local i,temp,rt;
+	rt:=[];
+	for i from 2 to nops(qvs) do
+		temp:=Format1(qvs[i]);
+		rt:=ListUnion(rt,temp);
+	od;
+	rt;
+end:               
+
+# when the input is as:[[ASC],pol]
+# output [[[ASC],pol]]
+FormatList:=proc(qv)
+	RETURN([qv]);
+end:
+
+# format the result of ProjectASC()
+# to the form: [[[ASC],pol1],[[ASC],pol2],...];
+Format1:=proc(qvs)
+	local rt;
+	if type(qvs[1],string) then
+		rt:=FormatUN(qvs);
+	else 
+		rt:=FormatList(qvs);
+	fi;
+	rt;
+end:
+
+
+#-----------------Simplify1(qvs)---------------
+#for every qausi variety in the result of Project() call doRem1
+#for empty set , return []; the result form: [[[ASC],[p1,p2,...]],...]
+#p1<>0 and p2<>0 and ...
+Simplify1:=proc(qvs,subasc,ord)
+	local qv,rt,newqv;
+	rt:=[];
+	for qv in qvs do
+		newqv:=doRem1(qv,subasc,ord);
+		if newqv<>[] then 
+			if member(1,newqv[2]) then RETURN([[subasc,[1]]]);fi;
+		fi;
+		rt:=[op(rt),newqv];		
+	od;
+	rt;
+end:
+
+# a qausi variety is denoted as: [[asc],pol]
+# rem=premas(pol,asc,ord)
+# notZero:= all factors of rem of dClass w.r.t ord zero.  
+# return [[asc], [notZero]]
+doRem1:=proc(qv,subasc,ord)
+	local pol,rem,notZero,rt;
+	pol:=qv[2];
+# modified   2003.3.21
+#	if nops(subasc)=0 or Class(pol,ord)=0 then
+#		if pol=0 then rt:=[];
+#		else rt:=[subasc,[1]];
+#		fi;
+#		RETURN(rt);
+#	fi;
+	rem:=Premas(pol,Inverse(subasc),ord);
+	if rem=0 then rt:=[];
+	else 
+		notZero:=Factorlist_chen(rem,ord);
+		rt:=[subasc,notZero];
+	fi;
+	rt;
+end:
+#-----------------Simplify2(qvs)---------------
+#for every qausi variety in the result of Project() call doRem2
+#for empty set , return []; the result form: [[[ASC],[p1,p2,...]],...]
+#p1<>0 or p2<>0 or ...
+
+#for every qausi variety in the result of Project() call doRem
+#for empty set , return []; the result form: [[[ASC],[p1,p2,...]],...]
+Simplify2:=proc(qvs,subasc,ord)
+	local qv,rt,newqv;
+	rt:=[];
+	for qv in qvs do
+		newqv:=doRem2(qv,subasc,ord);
+		if newqv<>[] then 
+			if newqv[2]=1 then RETURN([[subasc,1]]);fi;
+		fi;
+		rt:=[op(rt),newqv];		
+	od;
+	rt;
+end:
+
+# a qausi variety is denoted as: [[asc],pol]
+# rem=premas(pol,asc,ord)
+# return [[asc], rem]
+doRem2:=proc(qv,subasc,ord)
+	local pol,rem,notZero,rt;
+	pol:=qv[2];
+
+	rem:=Premas(pol,Inverse(subasc),ord);
+	if rem=0 then rt:=[];
+	else 
+	        notZero:=Factorlist_chen(rem,ord);
+		rt:=[subasc,GetProduct(notZero)];
+	fi;
+	rt;
+end:
+
+
+# if 0 return 0 else return 1
+Get1or0:=proc(p)
+	local rt;
+	if p=0 then rt:=0;
+	else rt:=1;
+	fi;
+	rt;
+end:
+
+
+# p=3*(x+y)^2*(x-y)*u; ord=[x,y]; result=[x+y,x-y];
+# p=2; result=[1]; p=0; result=[0]
+Factorlist_chen:=proc(p,ord)
+	local i,j,fl,pair,fact,rt;
+	if Class(p,ord)=0 then rt:=[Get1or0(p)];
+	else 
+		rt:=[];
+		fl:=factors(p);
+		fl:=fl[2];
+		for pair in fl do
+			fact:=pair[1];
+			if Class(fact,ord)<>0 then 
+				rt:=[op(rt),fact];	
+			fi;
+		od;
+	fi;
+	rt;
+end:
+
+#########----------Simplify----------###########       
+
+
+###----- computation of QV---------- ############
+
+
+# judge whether or not Zero(ps/ds) is empty
+
+
+# judge whether or not Zero(ps1/ds1) is included in Zero(ps2/ds2)
+# QVInclude:=proc(ps1,ds1,ps2,ds2)
+
+
+#------Simplify the output of Project--------# 
+# whether or not QV is included in the union of QVS
+# output: 1(yes), 0(not included)
+QVSInclude:=proc(QV,QVS,ord)
+	local D,newQVS,rt,temp,i,ass,proj,ps,ds,newucs;
+	#if QVS=[] then return 0;fi;
+	D:=GetProduct(QV[2]);
+	newQVS:=QVS;
+	for i from 1 to nops(QVS) do 
+		newQVS[i]:=[op(newQVS[i][1]),GetProduct(newQVS[i][2])];		
+	od;
+	ass:=AllSorts(newQVS,ord);
+	for i from 1 to nops(ass) do
+		temp:=ass[i];
+		ds:=[D,op(temp[2])];
+		if temp[1]<>[] then 
+			ps:=[op(QV[1]),op(temp[1])];
+			proj:=Project(ps,ds,ord,ord);
+			# case :not empty set 
+			if proj<>[] and proj[1][2][1]<>0 then RETURN(0);fi;
+		else 
+			proj:=ProjASC(QV[1],ds,ord,ord); 
+			# case: not empty set
+		        if proj[1][2]<>0 then RETURN(0);fi;
+		fi;
+	od;
+        RETURN(1);
+end:
+
+# if every QV in QVS is included in the union of the others
+# then expunge it.
+Sproject:=proc(QVS,ord)
+	local i,rt,UQV,len;
+	rt:=[];
+	len:=nops(QVS);
+	for i from 1 to len do
+	        if i=len then UQV:=[]; fi;
+		UQV:=QVS[i+1..len];
+		UQV:=[op(rt),op(UQV)];
+		if UQV=[] then rt:=[QVS[i]];break ;fi;
+		if QVSInclude(QVS[i],UQV,ord)=0 then 
+			rt:=[op(rt),QVS[i]];
+		fi;
+	od;
+	rt;
+end:
+
+Sproj:=proc(qvs,ord)
+	local temprt,rt, tempqvs,qv,nozerop;
+	tempqvs:=[];
+	#change to old form
+	for qv in qvs do 
+	   for nozerop in qv[2] do
+	      tempqvs:=[op(tempqvs), [ qv[1],[nozerop] ] ];
+	   od;
+	od;
+	temprt:=Sproject(tempqvs,ord);
+	rt:=[];
+	#return to new form
+	for qv in temprt do
+	    rt:=AddQVS(rt,qv);
+	od;
+	rt;
+end:
+	
+#------Simplify the output of wsolve--------# 
+#AllSort([[a1,a3],[c1,c2,c3]]);
+#output:[ [[],[c1,a1]], [[],[c2,a1]], [[c3],[a1]], [[a3],[c1]],
+#          [[a3],[c2]], [[c3,a3],[]] ]
+AllSorts:=proc(lists,ord)
+	local ls,C,ls_len,p,i,reculist,list,onesort,rt;
+	
+	rt:=[];
+	ls:=lists[1];
+	ls_len:=nops(lists[1]);
+	
+	C:=Class(ls[ls_len],ord);
+	
+	if nops(lists)=1 then
+		for i from 1 to ls_len-1 do
+			p:=[[],[ls[i]]];
+			rt:=[op(rt),p ];
+		od;
+		if C<>0 then
+			rt:=[op(rt),[[ls[ls_len]],[]]];
+		fi;
+		RETURN(rt); 
+	fi;
+	
+	reculist:=AllSorts(subsop(1=NULL,lists),ord);
+	
+	for i from 1 to ls_len-1 do
+		for list in reculist do
+			onesort:=list;
+			onesort[2]:=[op(onesort[2]),ls[i]];
+			rt:=[op(rt),onesort];
+		od;
+	od;
+	if C<>0 then
+		for list in reculist do
+				onesort:=list;
+				onesort[1]:=[op(onesort[1]),ls[ls_len]];
+				rt:=[op(rt),onesort];
+			od;
+	fi;	
+	rt;
+end:
+
+# whether or not cs is included in the union of ucs
+# output: 1(yes), 0(not included)
+CSSInclude:=proc(cs,ucs,ord)
+	local proj,IP,ass,rt,temp,i,ps,ds,newucs;
+	if ucs=[] then return 0;fi;
+	IP:=GetIP(cs,ord);
+	newucs:=ucs;
+	for i from 1 to nops(ucs) do 
+		newucs[i]:=[op(newucs[i]),GetIP(newucs[i],ord)];		
+	od;
+	ass:=AllSorts(newucs,ord);
+	for i from 1 to nops(ass) do
+		temp:=ass[i];
+		ds:=[IP,op(temp[2])];
+		if temp[1]<>[] then 
+			ps:=[op(cs),op(temp[1])];
+			proj:=Project(ps,ds,ord,ord);
+			# case :not empty set 
+			if proj<>[] and proj[1][2][1]<>0 then RETURN(0);fi;
+		else 
+			proj:=ProjASC(cs,ds,ord,ord); 
+			# case: not empty set
+		        if proj[1][2]<>0 then RETURN(0);fi;
+		fi;
+	od;
+        RETURN(1);
+end:
+
+
+# if every cs in css is included in the union of the others
+# then expunge it.
+Swsolve:=proc(css,ord)
+	local i,rt,newcss,UCS,len;
+	rt:=[];
+	newcss:=InverseAll(css);
+	len:=nops(newcss);
+	for i from 1 to len do
+		UCS:=newcss[i+1..len];
+		UCS:=[op(rt),op(UCS)];
+		if CSSInclude(newcss[i],UCS,ord)=0 then 
+			rt:=[op(rt),newcss[i]];
+		fi;
+	od;
+	InverseAll(rt);
+end:
+
+
+
+
+
