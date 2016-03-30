@@ -657,7 +657,7 @@
 ;;;         Math. Comp., 61 (1993), 915-926.
 ;;;  [2] http://primes.utm.edu/prove/prove2_3.html
 ;;;  [3] Jiang, Deng - Strong pseudoprimes to the first eight prime bases (2014)
-;;;         Mathematics of Computation, Vol 83, Nr 290, Pages 2915â€“2924
+;;;         Mathematics of Computation, Vol 83, Nr 290, Pages 2915€“2924
 ;;;  [3] Sorenson, Webster - Strong Pseudoprimes to Twelve Prime Bases (2015)
 ;;;         arXiv:1509.00864v1 [math.NT]
 
