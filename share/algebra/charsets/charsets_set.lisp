@@ -18,7 +18,7 @@
 
 ;; The set package doesn't distinguish between sets and lists.  We're
 ;; in trouble if we need to work simultaneously with a set of 
-;; lists and a set of sets.  The commercial Macsyma seems to treat
+;; lists and a set of sets.  The commerical Macsyma seems to treat
 ;; all set elements as lists; thus setify([[1,2],[2,1]) returns 
 ;; [[1,2],[2,1]] because [1,2] and [2,1] are treated as lists 
 ;; (and consequently they are not equal).  In this package, the 
@@ -96,10 +96,11 @@
 ;; sets a1,a2,...an.
 
 (defmfun $charsets_union ( &rest a)
+  ; (setq a (margs a)) this is buggy
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to `union' must be a list."))
 	(t
-	 (charsets_mysort (cons '(mlist) (remove-duplicates (apply 'append  (map 'list 'rest a)) :test #'$charsets_elem_equalp))))))
+	 (cons '(mlist) (remove-duplicates (apply 'append  (map 'list 'rest a)) :test #'$charsets_elem_equalp)))))
 
 ;; Remove elements of b from a.  Signal an error if a or b aren't lists.
 ;; Use element_equalp for the equality test.
@@ -113,6 +114,7 @@
 ;; equality test. Signal an error if a or b aren't lists.
 
 (defmfun $charsets_intersection ( &rest a)
+  (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to `intersection' must be a list."))
 	(t
