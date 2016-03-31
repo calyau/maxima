@@ -48,3 +48,5 @@
         (setq s1 (if *exploden-strip-float-zeros* (or (strip-float-zeros s) s) s))
         (funcall foo s1))
       (funcall foo x))))
+
+(putprop 'engineering_format_floats t 'evflag)

@@ -312,3 +312,11 @@
     mailing list. When it seems stable enough (i.e. no immediate plans
     to create another release) feel free to announce it in other forums,
     e.g. sage-devel.
+
+    Since wxMaxima does do a simultaneous release with maxima and
+    windows installers containing wxMaxima and maxima are usually
+    published within hours of the new maxima release the wxMaxima
+    developers beg to be informed in advance about the planned release
+    date. Filing a ticket at http://andrejv.github.com/wxmaxima/
+    or sending the project maintainer an email should be sufficient
+    for this task.
