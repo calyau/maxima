@@ -505,8 +505,11 @@
 	      (freel (cdr exp) var)))))
 
 (defmfun freel (l var)
-  (do ((l l (cdr l))) ((null l) t)
-    (cond ((not (free (car l) var)) (return nil)))))
+  (cond ((and (listp l) (listp (cdr l)))
+	 (do ((l l (cdr l))) ((null l) t)
+	   (cond ((not (free (car l) var)) (return nil)))))
+	(t
+	 t)))
 
 (defmfun freeargs (exp var)
   (cond ((alike1 exp var) nil)
